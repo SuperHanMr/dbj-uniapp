@@ -1,9 +1,45 @@
 {
 	"pages": [ //pages数组中第一项表示应用启动页，参考：https://uniapp.dcloud.io/collocation/pages
 		{
-			"path": "pages/index/index",
+			"path": "pages/home/index/index",
 			"style": {
-				"navigationBarTitleText": "uni-app"
+				"navigationBarTitleText": "首页"
+			}
+		},
+		{
+			"path": "pages/classify/index/index",
+			"style": {
+				"navigationBarTitleText": "分类"
+			}
+		},
+		{
+			"path": "pages/decorate/index/index",
+			"style": {
+				"navigationBarTitleText": "装修"
+			}
+		},
+		{
+			"path": "pages/message/index/index",
+			"style": {
+				"navigationBarTitleText": "消息"
+			}
+		},
+		{
+			"path": "pages/my/index/index",
+			"style": {
+				"navigationBarTitleText": "我的"
+			}
+		},
+		{
+			"path": "pages/common/goods-detail/index",
+			"style": {
+				"navigationBarTitleText": "商品详情"
+			}
+		},
+		{
+			"path": "pages/common/shop-detail/index",
+			"style": {
+				"navigationBarTitleText": "店铺详情"
 			}
 		}
 	],
@@ -15,5 +51,37 @@
 	},
 	"easycom": {
 	  "autoscan": true
+	},
+	"tabBar": {
+	    "color": "red",
+	    "selectedColor": "yellow",
+	    "borderStyle": "black",
+	    "backgroundColor": "#ffffff",
+	    "list": [{
+	        "pagePath": "pages/home/index/index",
+			// "iconPath": "static/component.png",
+			// "selectedIconPath": "static/componentHL.png",
+	        "text": "首页"
+	    }, {
+	        "pagePath": "pages/classify/index/index",
+			// "iconPath": "static/component.png",
+			// "selectedIconPath": "static/componentHL.png",
+	        "text": "分类"
+	    },{
+	        "pagePath": "pages/decorate/index/index",
+			// "iconPath": "static/component.png",
+			// "selectedIconPath": "static/componentHL.png",
+	        "text": "装修"
+	    },{
+	        "pagePath": "pages/message/index/index",
+			// "iconPath": "static/component.png",
+			// "selectedIconPath": "static/componentHL.png",
+	        "text": "消息"
+	    },{
+	        "pagePath": "pages/my/index/index",
+			// "iconPath": "static/component.png",
+			// "selectedIconPath": "static/componentHL.png",
+	        "text": "我的"
+	    }]
 	}
 }
