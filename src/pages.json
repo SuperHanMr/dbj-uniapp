@@ -31,13 +31,13 @@
 			}
 		},
 		{
-			"path": "pages/common/goods-detail/index",
+			"path": "pages/common/goods-detail/goods-detail",
 			"style": {
 				"navigationBarTitleText": "商品详情"
 			}
 		},
 		{
-			"path": "pages/common/shop-detail/index",
+			"path": "pages/common/shop-detail/shop-detail",
 			"style": {
 				"navigationBarTitleText": "店铺详情"
 			}

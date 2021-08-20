@@ -1,7 +1,7 @@
 <template>
-	<view class="">
+	<div class="">
 		我的
-	</view>
+	</div>
 	
 	
 </template>
