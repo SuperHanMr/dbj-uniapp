@@ -1,9 +1,9 @@
 <template>
 	<view class="content">
 		首页
-		<view class="content">
+		<view class="bg">
 			<button @click="toNextPage" type="default">点我页面跳转</button>
-
+			
 
 		</view>
 	</view>
@@ -31,5 +31,10 @@
 	}
 </script>
 
-<style>
+<style lang="scss">
+	// $link-color: blue;
+	// $link-color: red;
+	// .bg {
+	// color: $link-color;
+	// }
 </style>
