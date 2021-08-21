@@ -4,6 +4,9 @@
 		<uni-badge text="1"></uni-badge>
 		<uni-badge text="2" type="success" @click="bindClick"></uni-badge>
 		<uni-badge text="3" type="primary" :inverted="true"></uni-badge>
+		<view :active="active">
+			<view v-for="item in list">{{item}}</view>
+		</view>
 	</view>
 	
 	
@@ -12,7 +15,25 @@
 <script>
 	import {uniBadge} from '@dcloudio/uni-ui'
 	export default {
-	    components: {uniBadge}
+	    components: {uniBadge},
+		data(){
+			return {
+				list: [
+					{
+						key: "1",
+						value: "全部",
+					},
+					{
+						key: "2",
+						value: "待付款",
+					},
+					{
+						key: "3",
+						value: "进行中",
+					}
+				]
+			}
+		}
 	}
 </script>
 
