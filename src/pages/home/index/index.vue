@@ -6,6 +6,12 @@
 			
 
 		</view>
+		<view class="test">
+			<view class="sub">
+				
+			</view>
+			
+		</view>
 	</view>
 
 
@@ -32,9 +38,15 @@
 </script>
 
 <style lang="scss">
-	// $link-color: blue;
-	// $link-color: red;
-	// .bg {
-	// color: $link-color;
-	// }
+	.test{
+		width: 100%;
+		height: 50rpx;
+		background-color: red;
+		.sub{
+			width: 50%;
+			background-color: $uni-color-primary;
+			height: 25rpx;
+		}
+	}
+
 </style>
