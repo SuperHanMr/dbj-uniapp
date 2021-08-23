@@ -7,6 +7,7 @@
 		<view :active="active">
 			<view v-for="item in list">{{item}}</view>
 		</view>
+		<view @click="handlerToShop">购物车</view>
 	</view>
 	
 	
@@ -32,6 +33,14 @@
 						value: "进行中",
 					}
 				]
+			}
+		},
+		methods:{
+			handlerToShop(){
+				console.log("点击了")
+				uni.navigateTo({
+					url:"../shopping-car/index"
+				})
 			}
 		}
 	}
