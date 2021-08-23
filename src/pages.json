@@ -1,5 +1,11 @@
 {
 	"pages": [ //pages数组中第一项表示应用启动页，参考：https://uniapp.dcloud.io/collocation/pages
+	{
+		"path": "pages/decorate/index/index",
+		"style": {
+			"navigationBarTitleText": "装修"
+		}
+	},
 		{
 			"path": "pages/home/index/index",
 			"style": {
@@ -12,12 +18,7 @@
 				"navigationBarTitleText": "分类"
 			}
 		},
-		{
-			"path": "pages/decorate/index/index",
-			"style": {
-				"navigationBarTitleText": "装修"
-			}
-		},
+		
 		{
 			"path": "pages/message/index/index",
 			"style": {
@@ -42,7 +43,7 @@
 				"navigationBarTitleText": "店铺详情"
 			}
 		}
-	],
+    ],
 	"globalStyle": {
 		"navigationBarTextStyle": "black",
 		"navigationBarTitleText": "uni-app",
