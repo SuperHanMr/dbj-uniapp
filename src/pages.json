@@ -52,7 +52,25 @@
 				"navigationBarTitleText": "购物车"
 			}
 		}
-	],
+	    ,{
+            "path" : "pages/decorate/friends/friends",
+            "style" :                                                                                    
+            {
+                "navigationBarTitleText": "亲友团",
+                "enablePullDownRefresh": false
+            }
+            
+        }
+        ,{
+            "path" : "pages/decorate/add-friends/add-friends",
+            "style" :                                                                                    
+            {
+                "navigationBarTitleText": "添加亲友",
+                "enablePullDownRefresh": false
+            }
+            
+        }
+    ],
 	"globalStyle": {
 		"navigationBarTextStyle": "black",
 		"navigationBarTitleText": "uni-app",
