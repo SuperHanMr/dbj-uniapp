@@ -41,6 +41,12 @@
 			"style": {
 				"navigationBarTitleText": "店铺详情"
 			}
+		},
+		{
+			"path": "pages/my/shopping-car/index",
+			"style": {
+				"navigationBarTitleText": "购物车"
+			}
 		}
 	],
 	"globalStyle": {
