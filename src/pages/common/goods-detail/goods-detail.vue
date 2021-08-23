@@ -10,19 +10,15 @@
 		data() {
 			return {}
 		},
-		onLoad() {
+		onLoad(e) {
+			console.log(e);
 
 		},
 		methods: {
 			onTap(){
-				uni.sendNativeEvent('unimp-event', {
-					method: 'navigateToPage',
-					params: {
-						page: 'userInfo'
-					}
-				}, ret => {
-					this.nativeMsg = '宿主App回传的数据：' + ret;
-				})
+				uni.switchTab({
+				    url: '/pages/message/index/index'
+				});
 			}
 		
 		}

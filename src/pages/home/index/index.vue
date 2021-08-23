@@ -1,17 +1,10 @@
 <template>
-	<view class="content">
-		首页
-		<view class="bg">
-			<button @click="toNextPage" type="default">点我页面跳转</button>
-			
+	<view class="content" >
+		<button type="default"  @click="toNextPage">
+			首页？？!!!
+		</button>
+		
 
-		</view>
-		<view class="test">
-			<view class="sub">
-				
-			</view>
-			
-		</view>
 	</view>
 
 
@@ -29,8 +22,9 @@
 		},
 		methods: {
 			toNextPage() {
+				console.log('??????/')
 				uni.navigateTo({
-					url: '../../common/goods-detail/index'
+					url: '../../common/goods-detail/goods-detail?id=1111&name=张三'
 				});
 			}
 		}
