@@ -12,7 +12,7 @@
 			</view>
 		
 		</view>
-
+	</view>
 
 </template>
 
