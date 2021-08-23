@@ -14,7 +14,7 @@
 				{{item.name}}
 			</view>
 		</view>
-		<view v-if="isEditing" class="add-friends">
+		<view v-if="!isEditing" class="add-friends"@click="toAddFriends">
 			添加亲友
 
 		</view>
@@ -100,6 +100,11 @@
 			};
 		},
 		methods:{
+			toAddFriends(){
+			uni.navigateTo({
+				url:"../add-friends/add-friends"
+			})	
+			},
 			addAll(){
 				console.log(this.selectList.length)
 				console.log(this.list.length)
