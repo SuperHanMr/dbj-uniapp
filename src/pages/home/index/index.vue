@@ -1,11 +1,17 @@
 <template>
-	<view class="content" >
-		<button type="default"  @click="toNextPage">
-			首页？？!!!
-		</button>
-		
+	<view class="content">
 
-	</view>
+
+		<view class="navi-header-state" :style="{height:tophight}">
+
+			 
+		</view>
+		<view class="navi-header" :style="{height:navBarHeight}">
+			<view class="select-city">
+				
+			</view>
+		
+		</view>
 
 
 </template>
@@ -14,33 +20,62 @@
 	export default {
 		data() {
 			return {
-				title: 'Hello'
+				tophight: 0,
+				imgUrl: '../../../static/app-plus/uni@2x.png',
+				navBarHeight: 0
 			}
 		},
 		onLoad() {
+			getApp().globalData.userInfo = {
+				name: "张三",
+				token: "asdasdasd"
+			}
+			const systemInfo = uni.getSystemInfoSync();
+			//状态栏高度
+			this.tophight = systemInfo.statusBarHeight + 'px';
+			console.log('@@@@@@')
+			console.log(this.tophight)
+			// 获取胶囊按钮的位置
+			const menuButtonInfo = uni.getMenuButtonBoundingClientRect();
+			// 导航栏高度 = 状态栏到胶囊的间距（ 胶囊距上距离 - 状态栏高度 ）*2  +  胶囊高度 
+			this.navBarHeight = (menuButtonInfo.top - systemInfo.statusBarHeight) * 2 + menuButtonInfo
+				.height + 'px';
+			let menuRight = systemInfo.screenWidth - menuButtonInfo.right;
+			let menuBotton = menuButtonInfo.top - systemInfo.statusBarHeight;
+			let menuHeight = menuButtonInfo.height;
+
 
 		},
 		methods: {
 			toNextPage() {
-				console.log('??????/')
-				uni.navigateTo({
-					url: '../../common/goods-detail/goods-detail?id=1111&name=张三'
-				});
+				console.log(getApp().globalData.userInfo);
 			}
 		}
 	}
 </script>
 
 <style lang="scss">
-	.test{
-		width: 100%;
-		height: 50rpx;
-		background-color: red;
-		.sub{
-			width: 50%;
-			background-color: $uni-color-primary;
-			height: 25rpx;
-		}
+	.banner {
+		height: 2000rpx;
+		background-color: yellow;
 	}
 
+	.navi-header-state {
+		display: flex;
+		flex-direction: row;
+		width: 100%;
+		background-color: red;
+	}
+	.navi-header {
+		display: flex;
+		flex-direction: row;
+		width: 100%;
+		background-color: blue;
+		align-items: center;
+		.select-city{
+			width: 30rpx;
+			height: 20rpx;
+			background-color: green;
+		}
+	}
 </style>
