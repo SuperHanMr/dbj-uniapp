@@ -74,7 +74,7 @@
 		width: 100%;
 		background-color: blue;
 	}
-	..swiper{
+	.swiper{
 		flex: 1;
 		display: flex;
 	}
