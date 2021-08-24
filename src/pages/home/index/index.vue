@@ -1,23 +1,13 @@
 <template>
   <view class="content">
-
-    <view
-      class="navi-header-state"
-      :style="{height:tophight}"
-    >
-
-       
-    </view>
-    <view
-      class="navi-header"
-      :style="{height:navBarHeight}"
+    <custom-navbar title="????"></custom-navbar>
+    <button
+      type="default"
       @click="toNextPage"
-    >
-      <view class="select-city">
+    >去封装好的列表页</button>
+    <uni-easyinput>
 
-      </view>
-
-    </view>
+    </uni-easyinput>
   </view>
 
 </template>

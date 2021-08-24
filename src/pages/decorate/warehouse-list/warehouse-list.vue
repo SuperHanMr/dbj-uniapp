@@ -1,22 +1,20 @@
 <template>
-	<view>
+	<view class="fill">
 		<view class="top-tab">
-			<view  v-for="(item,index) in tabList" class="item" :class="{selected:index==currentIndex}" @click="currentIndex=index">
+			<view v-for="(item,index) in tabList" class="item" :class="{selected:index==currentIndex}"
+				@click="currentIndex=index">
 				{{item}}
 			</view>
-			
-			
 		</view>
-		<swiper  class="swiper" :indicator-dots="true" :autoplay="true" :interval="3000" :duration="1000" @change="swiperChange">
-			<swiper-item>
-				<view class="swiper-item">
-					!!!!!!
-				</view>
-			</swiper-item>
-			<swiper-item>
-				<view class="swiper-item">
-					???????
-				</view>
+		<swiper class="swiper" :current="currentIndex" :duration="200" @change="swiperChange">
+			<swiper-item v-for="(item,tabindex) in tabList" :key="item">
+				<scroll-view class="scroll-view" scroll-y="true" refresher-background="#FFF" refresher-enabled="true"
+					:refresher-triggered="triggered" @refresherrefresh="onRefresh"  @scrolltolower="onLoadMore">
+					<view v-for="(item,index) in currentList" :key="index" class="swiper-item">
+						{{tabindex}}!!!!!!----------{{item}}
+					</view>
+				</scroll-view>
+
 			</swiper-item>
 		</swiper>
 	</view>
@@ -26,57 +24,99 @@
 	export default {
 		data() {
 			return {
-				list:[1,2,3,4,5,6,7,8,9,0],
-				tabList:[
-					'待发货','已发货','已收货','退款'
+				triggered: false,
+				list: [1, 2, 3, 4, 5, 6, 7, 8, 9, 0, 11, '阿道夫', '刮大风', '部分地方', '不梵蒂冈', '有人特'],
+				list1: ['sad', 'ddw', 'sdfsda', 'sdfas', 'gfds', 'zxcv', 'bgf', 'uytre', '阿道夫', '刮大风', '部分地方', '不梵蒂冈',
+					'有人特'
 				],
-				currentIndex:0
+				list2: ['阿道夫', '刮大风', '部分地方', '不梵蒂冈', '有人特', '阿道夫', '刮大风', '部分地方', '不梵蒂冈', '有人特'],
+				tabList: [
+					'待发货', '已发货', '已收货', '退款'
+				],
+				triggered: false,//控制刷新显示字段
+				currentIndex: 0
 			};
 		},
-		methods:{
-			swiperChange(e){
-				console.log(e);
-				
+		computed: {
+			currentList() {
+				if (this.currentIndex == 0) {
+					return this.list
+				} else if (this.currentIndex == 1) {
+					return this.list1
+				} else if (this.currentIndex == 2) {
+					return this.list2
+				} else {
+					return this.list1
+				}
+			}
+		},
+		methods: {
+			swiperChange(e) {
+				let index = e.target.current || e.detail.current;
+				this.currentIndex = index;
+
+			},
+			onLoadMore(){
+				console.log('onLoadMore!!!!!!!!!!!!!!')
+			},
+			onRefresh(e) {
+				console.log('刷新!!!!!')
+				this.triggered = true;
+				setTimeout(() => {
+					console.log('????!!!!')
+					this.triggered = false;
+				}, 1000)
 			}
 		}
 	}
 </script>
 
 <style lang="scss">
-	   page {
-	        width: 100%;
-	        min-height: 100%;
-	        display: flex;
-			
-        flex-direction: column;
-	    }
-	.item{
+	.fill {
+		width: 100%;
+		min-height: 100%;
+		display: flex;
+		flex-direction: column;
+	}
+
+	.item {
 		width: 100%;
 		height: 80rpx;
 	}
-	.top-tab{
+
+	.top-tab {
 		width: 100%;
 		display: flex;
 		flex-direction: row;
 		height: 80rpx;
-		.item{
+
+		.item {
 			flex: 1;
 			display: flex;
 			justify-content: center;
 			align-items: center;
 		}
-		.selected{
+
+		.selected {
 			color: yellow;
 		}
 	}
-	.swiper-item{
-		flex: 1;
+
+	.swiper-item {
+		height: 200rpx;
 		width: 100%;
 		background-color: blue;
 	}
-	.swiper{
+
+	.swiper {
 		flex: 1;
 		display: flex;
+		flex-direction: column;
 	}
-	
+
+	.scroll-view {
+		flex: 1;
+		height: 100%;
+		background-color: green;
+	}
 </style>
