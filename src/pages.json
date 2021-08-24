@@ -65,7 +65,16 @@
 				"enablePullDownRefresh": false
 			}
 		}
-	],
+	    ,{
+            "path" : "pages/decorate/calendar/calendar",
+            "style" :                                                                                    
+            {
+                "navigationBarTitleText": "",
+                "enablePullDownRefresh": false
+            }
+            
+        }
+    ],
 	"globalStyle": {
 		"navigationBarTextStyle": "black",
 		"navigationBarTitleText": "uni-app",
