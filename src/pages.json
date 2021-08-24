@@ -7,6 +7,15 @@
 			}
 		},
 		{
+			"path": "pages/login/login",
+			"style": {
+				"navigationBarTitleText": "用户登录",
+				"usingComponents": {
+					"loginEmpower": "/wxcomponents/loginSDK/loginEmpower"
+				}
+			}
+		},
+		{
 			"path": "pages/home/index/index",
 			"style": {
 				"navigationBarTitleText": "首页",
@@ -64,34 +73,36 @@
 				"navigationBarTitleText": "添加亲友",
 				"enablePullDownRefresh": false
 			}
+		},
+		{
+			"path": "pages/decorate/calendar/calendar",
+			"style": {
+				"navigationBarTitleText": "",
+				"enablePullDownRefresh": false
+			}
+		},
+		{
+			"path": "pages/decorate/replace-worker/replace-worker",
+			"style": {
+				"navigationBarTitleText": "申请更换工匠",
+				"enablePullDownRefresh": false
+			}
+		},
+		{
+			"path": "pages/decorate/grab/grab",
+			"style": {
+				"navigationBarTitleText": "抢单审核",
+				"enablePullDownRefresh": false
+			}
+		},
+		{
+			"path": "pages/decorate/warehouse-list/warehouse-list",
+			"style": {
+				"navigationBarTitleText": "我的仓库",
+				"enablePullDownRefresh": false
+			}
 		}
-	    ,{
-            "path" : "pages/decorate/calendar/calendar",
-            "style" :                                                                                    
-            {
-                "navigationBarTitleText": "装修日历",
-                "enablePullDownRefresh": false
-            }
-            
-        }
-        ,{
-            "path" : "pages/decorate/memo-list/memo-list",
-            "style" :                                                                                    
-            {
-                "navigationBarTitleText": "",
-                "enablePullDownRefresh": false
-            }
-            
-        } ,{
-            "path" : "pages/decorate/warehouse-list/warehouse-list",
-            "style" :                                                                                    
-            {
-                "navigationBarTitleText": "我的仓库",
-                "enablePullDownRefresh": false
-            }
-            
-        }
-    ],
+	],
 	"globalStyle": {
 		"navigationBarTextStyle": "black",
 		"navigationBarTitleText": "uni-app",

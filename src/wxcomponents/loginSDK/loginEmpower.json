@@ -1,0 +1,8 @@
+{
+  "component": true,
+  "usingComponents": {
+    "logincall": "components/gome-mini/login231c44b8/src/components/loginCall/index",
+    "newUserReg": "components/gome-mini/login231c44b8/src/components/newUserReg/index",
+    "oldUserReg": "components/gome-mini/login231c44b8/src/components/oldUserReg/index"
+  }
+}

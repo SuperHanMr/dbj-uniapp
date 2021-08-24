@@ -1,5 +1,5 @@
 {
-    "name" : "",
+    "name" : "wxe4bac8776b7bcbbd",
     "appid" : "__UNI__B1DB5D4",
     "description" : "",
     "versionName" : "1.0.0",
@@ -55,7 +55,7 @@
     /* 快应用特有相关 */
     "mp-weixin" : {
         /* 微信小程序特有相关 */
-        "appid" : "",
+        "appid" : "wxe4bac8776b7bcbbd",
         "setting" : {
             "urlCheck" : false
         },

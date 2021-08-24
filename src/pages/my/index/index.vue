@@ -39,7 +39,7 @@
 			handlerToShop(){
 				console.log("点击了")
 				uni.navigateTo({
-					url:"../shopping-car/index"
+					url:"../shopping-cart/index"
 				})
 			}
 		}
