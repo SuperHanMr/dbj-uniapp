@@ -55,7 +55,7 @@
 			}
 		},
 		{
-			"path": "pages/my/shopping-car/index",
+			"path": "pages/my/shopping-cart/index",
 			"style": {
 				"navigationBarTitleText": "购物车"
 			}
@@ -77,56 +77,63 @@
 		{
 			"path": "pages/decorate/calendar/calendar",
 			"style": {
-				"navigationBarTitleText": "",
+				"navigationBarTitleText": "装修日历",
 				"enablePullDownRefresh": false
 			}
-		}
-	    ,{
-            "path" : "pages/decorate/replace-worker/replace-worker",
-            "style" :                                                                                    
-            {
-                "navigationBarTitleText": "申请更换工匠",
-                "enablePullDownRefresh": false
-            }
-            
-        }
-        ,{
-            "path" : "pages/decorate/grab/grab",
-            "style" :                                                                                    
-            {
-                "navigationBarTitleText": "抢单审核",
-                "enablePullDownRefresh": false
-            }
-            
-        }
-        ,{
-            "path" : "pages/decorate/my-decorate/my-decorate",
-            "style" :                                                                                    
-            {
-                "navigationBarTitleText": "我的装修服务",
-                "enablePullDownRefresh": false
-            }
-            
-        }
-        ,{
-            "path" : "pages/decorate/decorate-progress/decorate-progress",
-            "style" :                                                                                    
-            {
-                "navigationBarTitleText": "装修进度",
-                "enablePullDownRefresh": false
-            }
-            
-        }
-        ,{
-            "path" : "pages/decorate/service-evaluate/service-evaluate",
-            "style" :                                                                                    
-            {
-                "navigationBarTitleText": "服务评价",
-                "enablePullDownRefresh": false
-            }
-            
-        }
-    ],
+		},
+		{
+			"path": "pages/decorate/warehouse-list/warehouse-list",
+			"style": {
+				"navigationBarTitleText": "我的仓库",
+				"enablePullDownRefresh": false
+			}
+		},
+    {
+          "path" : "pages/decorate/replace-worker/replace-worker",
+          "style" :                                                                                    
+          {
+              "navigationBarTitleText": "申请更换工匠",
+              "enablePullDownRefresh": false
+          }
+          
+      }
+      ,{
+          "path" : "pages/decorate/grab/grab",
+          "style" :                                                                                    
+          {
+              "navigationBarTitleText": "抢单审核",
+              "enablePullDownRefresh": false
+          }
+          
+      }
+      ,{
+          "path" : "pages/decorate/my-decorate/my-decorate",
+          "style" :                                                                                    
+          {
+              "navigationBarTitleText": "我的装修服务",
+              "enablePullDownRefresh": false
+          }
+          
+      }
+      ,{
+          "path" : "pages/decorate/decorate-progress/decorate-progress",
+          "style" :                                                                                    
+          {
+              "navigationBarTitleText": "装修进度",
+              "enablePullDownRefresh": false
+          }
+          
+      }
+      ,{
+          "path" : "pages/decorate/service-evaluate/service-evaluate",
+          "style" :                                                                                    
+          {
+              "navigationBarTitleText": "服务评价",
+              "enablePullDownRefresh": false
+          }
+          
+      }
+	],
 	"globalStyle": {
 		"navigationBarTextStyle": "black",
 		"navigationBarTitleText": "uni-app",
