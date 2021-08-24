@@ -81,7 +81,25 @@
 				"enablePullDownRefresh": false
 			}
 		}
-	],
+	    ,{
+            "path" : "pages/decorate/replace-worker/replace-worker",
+            "style" :                                                                                    
+            {
+                "navigationBarTitleText": "申请更换工匠",
+                "enablePullDownRefresh": false
+            }
+            
+        }
+        ,{
+            "path" : "pages/decorate/grab/grab",
+            "style" :                                                                                    
+            {
+                "navigationBarTitleText": "抢单审核",
+                "enablePullDownRefresh": false
+            }
+            
+        }
+    ],
 	"globalStyle": {
 		"navigationBarTextStyle": "black",
 		"navigationBarTitleText": "uni-app",
