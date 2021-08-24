@@ -99,6 +99,33 @@
             }
             
         }
+        ,{
+            "path" : "pages/decorate/my-decorate/my-decorate",
+            "style" :                                                                                    
+            {
+                "navigationBarTitleText": "我的装修服务",
+                "enablePullDownRefresh": false
+            }
+            
+        }
+        ,{
+            "path" : "pages/decorate/decorate-progress/decorate-progress",
+            "style" :                                                                                    
+            {
+                "navigationBarTitleText": "装修进度",
+                "enablePullDownRefresh": false
+            }
+            
+        }
+        ,{
+            "path" : "pages/decorate/service-evaluate/service-evaluate",
+            "style" :                                                                                    
+            {
+                "navigationBarTitleText": "服务评价",
+                "enablePullDownRefresh": false
+            }
+            
+        }
     ],
 	"globalStyle": {
 		"navigationBarTextStyle": "black",
