@@ -1083,10 +1083,10 @@
     "@babel/types" "^7.3.3"
     vue-template-compiler "^2.6.10"
 
-"@dcloudio/uni-ui@^1.4.1":
-  version "1.4.1"
-  resolved "https://registry.npmjs.org/@dcloudio/uni-ui/-/uni-ui-1.4.1.tgz"
-  integrity sha512-UA4mX7sbdDSgRGsiz0qDhNq6yw3k+3tDR0v4xuJfz5AVCoHTNSdgF3eAQiMu0pOLzhL2yIYi8YOkFu1+VTtnDA==
+"@dcloudio/uni-ui@1.4.0":
+  version "1.4.0"
+  resolved "https://registry.nlark.com/@dcloudio/uni-ui/download/@dcloudio/uni-ui-1.4.0.tgz#a4c23a6172f45b5edf8c9e707c4c44fe65ae30bb"
+  integrity sha1-pMI6YXL0W17fjJ5wfExE/mWuMLs=
 
 "@dcloudio/vue-cli-plugin-hbuilderx@^2.0.0-31920210709003":
   version "2.0.0-31920210709003"
