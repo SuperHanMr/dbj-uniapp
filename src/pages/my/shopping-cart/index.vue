@@ -1,6 +1,8 @@
 <template>
-	<view class="shopping-car">
-		购物车
+	<view class="cartContainer">
+		<view class="shoppingCart">
+			购物车
+		</view>
 	</view>
 </template>
 
@@ -13,4 +15,6 @@
 </script>
 
 <style>
+	
+	
 </style>
