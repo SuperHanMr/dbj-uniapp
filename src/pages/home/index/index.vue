@@ -54,7 +54,7 @@ export default {
     toNextPage() {
       console.log(getApp().globalData.userInfo);
       uni.navigateTo({
-        url: "../../decorate/friends/friends",
+        url: "../../decorate/warehouse-list/warehouse-list",
       });
     },
   },

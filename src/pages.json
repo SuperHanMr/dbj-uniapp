@@ -69,7 +69,24 @@
             "path" : "pages/decorate/calendar/calendar",
             "style" :                                                                                    
             {
+                "navigationBarTitleText": "装修日历",
+                "enablePullDownRefresh": false
+            }
+            
+        }
+        ,{
+            "path" : "pages/decorate/memo-list/memo-list",
+            "style" :                                                                                    
+            {
                 "navigationBarTitleText": "",
+                "enablePullDownRefresh": false
+            }
+            
+        } ,{
+            "path" : "pages/decorate/warehouse-list/warehouse-list",
+            "style" :                                                                                    
+            {
+                "navigationBarTitleText": "我的仓库",
                 "enablePullDownRefresh": false
             }
             
