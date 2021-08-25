@@ -44,6 +44,7 @@
 				})
 			}
 			handlerToSetUp(){
+				console.log("点击了设置")
 				uni.navigateTo({
 					url:"../set-up/index/index"
 				})
