@@ -34,13 +34,13 @@
 <style scoped>
 
 .container{
-
+height: 100%;
 }
 .container .main-body {
 	height: 100%;
 	width: 100%;
-	margin-top: 20rpx;
-	padding: 20repx;
+	padding-top: 8rpx;
+	background: #f5f6f6;
 }
 .container .main-body .uni-list{
 	

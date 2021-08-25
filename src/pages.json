@@ -61,7 +61,8 @@
 		{
 			"path": "pages/my/set-up/set-up",
 			"style": {
-				"navigationBarTitleText": "设置"
+				"navigationBarTitleText": "设置",
+				"navigationBarBackgroundColor": "#FFFFFF"
 			}
 		},
 		{
