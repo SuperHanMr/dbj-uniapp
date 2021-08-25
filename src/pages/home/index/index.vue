@@ -1,6 +1,6 @@
 <template>
 	<view class="">
-			<custom-navbar title="????AAAA" :opacity="scrollTop/100"></custom-navbar>
+		<custom-navbar title="????AAAA" :opacity="scrollTop/100"></custom-navbar>
 
 		<scroll-view class="content" scroll-y="true" @scroll="onScroll">
 			<view style="margin-top: 300rpx;">
@@ -9,12 +9,16 @@
 			<view class="test">
 				<button type="default" @click="toNextPage">去封装好的列表页</button>
 			</view>
-			asdfasd
+
 		</scroll-view>
 	</view>
 </template>
 
 <script>
+	import {
+		getBanner,
+		queryLive
+	} from '../../../api/home.js';
 	export default {
 		data() {
 			return {
@@ -43,11 +47,15 @@
 			let menuBotton = menuButtonInfo.top - systemInfo.statusBarHeight;
 			let menuHeight = menuButtonInfo.height;
 		},
-	
+		onShow() {
+			this.getBannerList();
+		},
 		methods: {
+			async getBannerList() {
+				let list = await queryLive();
+
+			},
 			onScroll(e) {
-				console.log('@@@@@@@@');
-				console.log(e.detail)
 				this.scrollTop = e.detail.scrollTop
 			},
 			toNextPage() {
