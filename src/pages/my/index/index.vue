@@ -8,6 +8,7 @@
 			<view v-for="item in list">{{item}}</view>
 		</view>
 		<view @click="handlerToShop">购物车</view>
+		<view @click="handlerToSetUp">设置</view>
 	</view>
 	
 	
@@ -40,6 +41,12 @@
 				console.log("点击了")
 				uni.navigateTo({
 					url:"../shopping-cart/shopping-cart"
+				})
+			},
+			handlerToSetUp(){
+				console.log("点击了设置")
+				uni.navigateTo({
+					url:"../set-up/index/index"
 				})
 			}
 		}

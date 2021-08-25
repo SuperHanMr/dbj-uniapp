@@ -1,12 +1,17 @@
 <template>
-	<loginEmpower 
-    v-if="isLogin"
-    :loginInit="loginInit"
-    @suceess="loginSuccess"
-    @fail="loginFail"></loginEmpower>
+	<view>
+		<temp :title="isLogin" ></temp>
+		<gome-login
+		  v-if="isLogin"
+		  :loginInit="loginInit"
+		  @suceess="loginSuccess"
+		  @fail="loginFail"
+		></gome-login>
+	</view>
 </template>
 
 <script>
+	const url = require("@/pages/login/imgs/Lark20210823-152715.png");
 	export default {
 		data() {
 			return {
@@ -17,10 +22,12 @@
 		onLoad() {
 			console.log("login页面加载进来了", )
 			let loginInit = {};
-			loginInit.imgUrl = "./imgs/Lark20210823-152715.png"; // 登录logo
-			loginInit.imgWidth = 330; // logo的宽度
-			loginInit.imgHeight = 180; // logo的高度
-			loginInit.appId = "wxe4bac8776b7bcbbd"; //唯一标识 
+			loginInit.imgUrl = url; // 登录logo
+			loginInit.imgWidth = 420; // logo的宽度
+			loginInit.imgHeight = 240; // logo的高度
+			// 测试环境小程序appletId=B7E436F6DEF6E37296AADD3BC9F35165
+			// 生产环境appletId=E370C3ABB4F1EEC5A3946F23BCB15C29
+			loginInit.appId = "B7E436F6DEF6E37296AADD3BC9F35165"; //唯一标识 
 			loginInit.ctx = "app-guomeijia|ver-v8.2.2|plt-wxApp|cmpid-"; //登录ctx
 			loginInit.sharerUserId = uni.getStorageSync("sharerUserId") || ""; //邀请人userId
 			loginInit.sharerUnionId = uni.getStorageSync("sharerUnionId") || '';
