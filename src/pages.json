@@ -7,12 +7,12 @@
 			}
 		},
 		{
-			"path": "pages/decorate/have-house/index",
+			"path": "pages/login/login",
 			"style": {
-				"navigationBarTitleText": "我的房屋名称",
-				"navigationBarTextStyle": "black",
-				"navigationStyle": "custom",
-				"usingComponents": {}
+				"navigationBarTitleText": "用户登录",
+				"usingComponents": {
+					"gome-login": "/wxcomponents/gome-login/loginEmpower"
+				}
 			}
 		},
 		{
@@ -23,12 +23,12 @@
 			}
 		},
 		{
-			"path": "pages/login/login",
+			"path": "pages/decorate/have-house/index",
 			"style": {
-				"navigationBarTitleText": "用户登录",
-				"usingComponents": {
-					"loginEmpower": "/wxcomponents/loginSDK/loginEmpower"
-				}
+				"navigationBarTitleText": "我的房屋名称",
+				"navigationBarTextStyle": "black",
+				"navigationStyle": "custom",
+				"usingComponents": {}
 			}
 		},
 		{
@@ -186,42 +186,35 @@
 			}
 		},
 		{
-			"path" : "pages/my/set-up/agreement/service-agreement",
-			"style" :                                                                                    
-			{
-			    "navigationBarTitleText": "",
-					"navigationStyle": "custom",
-			    "enablePullDownRefresh": false
+			"path": "pages/my/set-up/agreement/service-agreement",
+			"style": {
+				"navigationBarTitleText": "",
+				"navigationStyle": "custom",
+				"enablePullDownRefresh": false
 			}
-    },
-       {
-            "path" : "pages/my/set-up/privacy-agreement/privacy-agreement",
-            "style" :                                                                                    
-            {
-                "navigationBarTitleText": "",
-                "enablePullDownRefresh": false
-            }
-            
-        }
-        ,{
-            "path" : "pages/my/set-up/code-of-conduct/code-of-conduct",
-            "style" :                                                                                    
-            {
-                "navigationBarTitleText": "",
-                "enablePullDownRefresh": false
-            }
-            
-        }
-        ,{
-            "path" : "pages/my/set-up/property-rights-clause/property-rights-clause",
-            "style" :                                                                                    
-            {
-                "navigationBarTitleText": "",
-                "enablePullDownRefresh": false
-            }
-            
-        }
-    ],
+		},
+		{
+			"path": "pages/my/set-up/privacy-agreement/privacy-agreement",
+			"style": {
+				"navigationBarTitleText": "",
+				"enablePullDownRefresh": false
+			}
+		},
+		{
+			"path": "pages/my/set-up/code-of-conduct/code-of-conduct",
+			"style": {
+				"navigationBarTitleText": "",
+				"enablePullDownRefresh": false
+			}
+		},
+		{
+			"path": "pages/my/set-up/property-rights-clause/property-rights-clause",
+			"style": {
+				"navigationBarTitleText": "",
+				"enablePullDownRefresh": false
+			}
+		}
+	],
 	"globalStyle": {
 		"navigationBarTextStyle": "black",
 		"navigationBarTitleText": "uni-app",
