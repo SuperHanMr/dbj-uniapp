@@ -1,6 +1,15 @@
 {
 	"pages": [ //pages数组中第一项表示应用启动页，参考：https://uniapp.dcloud.io/collocation/pages
 		{
+			"path": "pages/login/login",
+			"style": {
+				"navigationBarTitleText": "用户登录",
+				"usingComponents": {
+					"gome-login": "/wxcomponents/gome-login/loginEmpower"
+				}
+			}
+		},
+		{
 			"path": "pages/decorate/index/index",
 			"style": {
 				"navigationBarTitleText": "装修"
@@ -20,15 +29,6 @@
 			"style": {
 				"navigationBarTitleText": "未绑定房屋",
 				"usingComponents": {}
-			}
-		},
-		{
-			"path": "pages/login/login",
-			"style": {
-				"navigationBarTitleText": "用户登录",
-				"usingComponents": {
-					"loginEmpower": "/wxcomponents/loginSDK/loginEmpower"
-				}
 			}
 		},
 		{

@@ -57,7 +57,10 @@
 			    loginName: data.loginName || ''
 			  });
 						
-			  console.log('type',type) // 根据 type 类型，跳转路由
+			  console.log('type',type) // 根据 type 类型，跳转页面/路由
+				uni.navigateTo({
+					url: "/pages/home/index/index"
+				})
 			},
 			// 登录请求失败回调
 			loginFail(e) {
