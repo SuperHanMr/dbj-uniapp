@@ -6,7 +6,13 @@
 			}
 		},
 		onLaunch: function() {
-			console.log('App Launch')
+			if (!uni.getStorageSync("userId")) {
+				setTimeout(() => {
+					uni.redirectTo({
+						url: 'pages/login/login'
+					})
+				}, 0)
+			}
 		},
 		onShow: function() {
 			console.log('App Show')
