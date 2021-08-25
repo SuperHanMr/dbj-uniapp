@@ -1,12 +1,17 @@
 <template>
-	<scroll-view class="content">
-		<custom-navbar title="????AAAA" :opacity="scrollTop/100"></custom-navbar>
+	<view class="">
+			<custom-navbar title="????AAAA" :opacity="scrollTop/100"></custom-navbar>
 
-		<view class="test">
-			<button type="default" @click="toNextPage">去封装好的列表页</button>
-		</view>
-	</scroll-view>
-
+		<scroll-view class="content" scroll-y="true" @scroll="onScroll">
+			<view style="margin-top: 300rpx;">
+				asdfasdf
+			</view>
+			<view class="test">
+				<button type="default" @click="toNextPage">去封装好的列表页</button>
+			</view>
+			asdfasd
+		</scroll-view>
+	</view>
 </template>
 
 <script>
@@ -38,12 +43,13 @@
 			let menuBotton = menuButtonInfo.top - systemInfo.statusBarHeight;
 			let menuHeight = menuButtonInfo.height;
 		},
-		onPageScroll(e) {
-			console.log('@@@@@@@@');
-			console.log(e)
-			this.scrollTop = e.scrollTop
-		},
+	
 		methods: {
+			onScroll(e) {
+				console.log('@@@@@@@@');
+				console.log(e.detail)
+				this.scrollTop = e.detail.scrollTop
+			},
 			toNextPage() {
 				console.log(getApp().globalData.userInfo);
 				uni.navigateTo({
@@ -56,7 +62,7 @@
 
 <style lang="scss">
 	.content {
-		scrollbar-width: none;
+		height: 100vh;
 	}
 
 

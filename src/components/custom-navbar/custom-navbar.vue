@@ -1,5 +1,5 @@
 <template>
-	<view :class="{'navbar':opacity<100}">
+	<view class="nav" :class="{'navbar':opacity<100}">
 		<view class="navi-header-state" :style="{height:tophight,backgroundColor:bgcolor,opacity:opacity}">
 		</view>
 		<view class="navi-header" :style="{height:navBarHeight,backgroundColor:bgcolor,opacity:opacity}">
@@ -33,9 +33,8 @@
 				default: 100
 			}
 		},
-		methods: {
-		},
-	
+		methods: {},
+
 		mounted() {
 			const systemInfo = uni.getSystemInfoSync();
 			//状态栏高度
@@ -63,7 +62,7 @@
 		top: 0;
 		left: 0;
 		right: 0;
-
+		z-index: 999;
 	}
 
 	.navi-header-state {
