@@ -55,7 +55,7 @@
 			}
 		},
 		{
-			"path": "pages/my/shopping-cart/index",
+			"path": "pages/my/shopping-cart/shopping-cart",
 			"style": {
 				"navigationBarTitleText": "购物车"
 			}
