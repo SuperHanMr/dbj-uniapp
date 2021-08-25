@@ -42,7 +42,7 @@
 				uni.navigateTo({
 					url:"../shopping-cart/shopping-cart"
 				})
-			}
+			},
 			handlerToSetUp(){
 				console.log("点击了设置")
 				uni.navigateTo({
