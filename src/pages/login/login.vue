@@ -60,7 +60,7 @@
 				});
 
 				console.log('type', type) // 根据 type 类型，跳转页面/路由
-				uni.navigateTo({
+				uni.switchTab({
 					url: "/pages/home/index/index"
 				})
 			},
