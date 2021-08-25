@@ -9,22 +9,47 @@
 				<text style="color: red;">2</text>
 			</view>
 		</drag-button-follow>
+		<uni-popup ref="popup" type="bottom">
+			<view style="background-color: #fff;">
+				<button @btnClick="goToAddHouseInfo()">添加房屋信息</button>
+				<button @btnClick="goToDecorateService()">进行装修服务</button>
+				<button @btnClick="goToVerifyHouse()">进行验房服务</button>
+			</view>
+		</uni-popup>
 	</view>
 
 </template>
 
 <script>
 	export default {
+		mounted() {
+			if(this.houses.length < 1) {
+				this.openPopup()
+			}
+		},
 		data() {
 			return {
 				style: '',
-				noticeActive: false
+				noticeActive: false,
+				houses: []
 			}
 		},
 		methods: {
 			closeNotice() {
-
 				this.noticeActive = false
+			},
+			openPopup() {
+				// 通过组件定义的ref调用uni-popup方法 ,如果传入参数 ，type 属性将失效 ，仅支持 ['top','left','bottom','right','center']
+				this.$refs.popup.open('bottom')
+			},
+			goToAddHouseInfo() {
+				
+			},
+			goToDecorateService() {
+				
+			},
+			goToVerifyHouse() {
+				
 			}
 		}
 	}
