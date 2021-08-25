@@ -7,6 +7,22 @@
 			}
 		},
 		{
+			"path": "pages/decorate/have-house/index",
+			"style": {
+				"navigationBarTitleText": "我的房屋名称",
+				"navigationBarTextStyle": "black",
+				"navigationStyle": "custom",
+				"usingComponents": {}
+			}
+		},
+		{
+			"path": "pages/decorate/no-house/index",
+			"style": {
+				"navigationBarTitleText": "未绑定房屋",
+				"usingComponents": {}
+			}
+		},
+		{
 			"path": "pages/login/login",
 			"style": {
 				"navigationBarTitleText": "用户登录",
@@ -58,6 +74,34 @@
 			"path": "pages/my/edit-personal-data/edit-personal-data",
 			"style": {
 				"navigationBarTitleText": "编辑个人资料"
+			}
+		},
+		{
+			"path": "pages/my/personal-center/my-collection/my-collection",
+			"style": {
+				"navigationBarTitleText": "我的收藏",
+				"enablePullDownRefresh": false
+			}
+		},
+		{
+			"path": "pages/my/personal-center/my-attention/my-attention",
+			"style": {
+				"navigationBarTitleText": "我的关注",
+				"enablePullDownRefresh": false
+			}
+		},
+		{
+			"path": "pages/my/personal-center/my-wallet/my-wallet",
+			"style": {
+				"navigationBarTitleText": "我的钱包",
+				"enablePullDownRefresh": false
+			}
+		},
+		{
+			"path": "pages/my/personal-center/complaints-and-suggestions/complaints-and-suggestions",
+			"style": {
+				"navigationBarTitleText": "投诉与建议",
+				"enablePullDownRefresh": false
 			}
 		},
 		{
@@ -142,30 +186,9 @@
 			}
 		},
 		{
-			"path": "pages/my/personal-center/my-collection/index",
+			"path": "pages/my/set-up/index/index",
 			"style": {
-				"navigationBarTitleText": "我的收藏",
-				"enablePullDownRefresh": false
-			}
-		},
-		{
-			"path": "pages/my/personal-center/my-attention/index",
-			"style": {
-				"navigationBarTitleText": "我的关注",
-				"enablePullDownRefresh": false
-			}
-		},
-		{
-			"path": "pages/my/personal-center/my-wallet/index",
-			"style": {
-				"navigationBarTitleText": "我的钱包",
-				"enablePullDownRefresh": false
-			}
-		},
-		{
-			"path": "pages/my/personal-center/complaints-and-suggestions/index",
-			"style": {
-				"navigationBarTitleText": "投诉与建议",
+				"navigationBarTitleText": "",
 				"enablePullDownRefresh": false
 			}
 		}

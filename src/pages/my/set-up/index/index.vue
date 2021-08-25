@@ -1,6 +1,6 @@
 <template>
 	<view>
-		我的钱包 哈哈哈哈 好鼓啊
+		设置页面
 	</view>
 </template>
 
