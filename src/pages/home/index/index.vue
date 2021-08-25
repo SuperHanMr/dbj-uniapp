@@ -1,90 +1,100 @@
 <template>
-  <view class="content">
+	<view class="">
+			<custom-navbar title="????AAAA" :opacity="scrollTop/100"></custom-navbar>
 
-    <view
-      class="navi-header-state"
-      :style="{height:tophight}"
-    >
-
-       
-    </view>
-    <view
-      class="navi-header"
-      :style="{height:navBarHeight}"
-      @click="toNextPage"
-    >
-      <view class="select-city">
-
-      </view>
-
-    </view>
-  </view>
-
+		<scroll-view class="content" scroll-y="true" @scroll="onScroll">
+			<view style="margin-top: 300rpx;">
+				asdfasdf
+			</view>
+			<view class="test">
+				<button type="default" @click="toNextPage">去封装好的列表页</button>
+			</view>
+			asdfasd
+		</scroll-view>
+	</view>
 </template>
 
 <script>
-export default {
-  data() {
-    return {
-      tophight: 0,
-      imgUrl: "../../../static/app-plus/uni@2x.png",
-      navBarHeight: 0,
-    };
-  },
-  onLoad() {
-    getApp().globalData.userInfo = {
-      name: "张三",
-      token: "asdasdasd",
-    };
-    const systemInfo = uni.getSystemInfoSync();
-    //状态栏高度
-    this.tophight = systemInfo.statusBarHeight + "px";
-    // 获取胶囊按钮的位置
-    const menuButtonInfo = uni.getMenuButtonBoundingClientRect();
-    // 导航栏高度 = 状态栏到胶囊的间距（ 胶囊距上距离 - 状态栏高度 ）*2  +  胶囊高度
-    this.navBarHeight =
-      (menuButtonInfo.top - systemInfo.statusBarHeight) * 2 +
-      menuButtonInfo.height +
-      "px";
-    let menuRight = systemInfo.screenWidth - menuButtonInfo.right;
-    let menuBotton = menuButtonInfo.top - systemInfo.statusBarHeight;
-    let menuHeight = menuButtonInfo.height;
-  },
-  methods: {
-    toNextPage() {
-      console.log(getApp().globalData.userInfo);
-      uni.navigateTo({
-        url: "../../decorate/friends/friends",
-      });
-    },
-  },
-};
+	export default {
+		data() {
+			return {
+				tophight: 0,
+				imgUrl: "../../../static/app-plus/uni@2x.png",
+				navBarHeight: 0,
+				scrollTop: 0
+			};
+		},
+		onLoad() {
+			getApp().globalData.userInfo = {
+				name: "张三",
+				token: "asdasdasd",
+			};
+			const systemInfo = uni.getSystemInfoSync();
+			//状态栏高度
+			this.tophight = systemInfo.statusBarHeight + "px";
+			// 获取胶囊按钮的位置
+			const menuButtonInfo = uni.getMenuButtonBoundingClientRect();
+			// 导航栏高度 = 状态栏到胶囊的间距（ 胶囊距上距离 - 状态栏高度 ）*2  +  胶囊高度
+			this.navBarHeight =
+				(menuButtonInfo.top - systemInfo.statusBarHeight) * 2 +
+				menuButtonInfo.height +
+				"px";
+			let menuRight = systemInfo.screenWidth - menuButtonInfo.right;
+			let menuBotton = menuButtonInfo.top - systemInfo.statusBarHeight;
+			let menuHeight = menuButtonInfo.height;
+		},
+	
+		methods: {
+			onScroll(e) {
+				console.log('@@@@@@@@');
+				console.log(e.detail)
+				this.scrollTop = e.detail.scrollTop
+			},
+			toNextPage() {
+				console.log(getApp().globalData.userInfo);
+				uni.navigateTo({
+					url: "../../decorate/warehouse-list/warehouse-list",
+				});
+			},
+		},
+	};
 </script>
 
 <style lang="scss">
-.banner {
-  height: 2000rpx;
-  background-color: yellow;
-}
+	.content {
+		height: 100vh;
+	}
 
-.navi-header-state {
-  display: flex;
-  flex-direction: row;
-  width: 100%;
-  background-color: red;
-}
 
-.navi-header {
-  display: flex;
-  flex-direction: row;
-  width: 100%;
-  background-color: blue;
-  align-items: center;
+	.banner {
+		height: 2000rpx;
+		background-color: yellow;
+	}
 
-  .select-city {
-    width: 30rpx;
-    height: 20rpx;
-    background-color: green;
-  }
-}
+	.navi-header-state {
+		display: flex;
+		flex-direction: row;
+		width: 100%;
+		background-color: red;
+	}
+
+	.navi-header {
+		display: flex;
+		flex-direction: row;
+		width: 100%;
+		background-color: blue;
+		align-items: center;
+
+		.select-city {
+			width: 30rpx;
+			height: 20rpx;
+			background-color: green;
+		}
+	}
+
+	.test {
+		height: 2000rpx;
+		width: 750px;
+		background-color: red;
+	}
 </style>

@@ -14,7 +14,7 @@
 					</picker> -->
 					<scroll-view :scroll-top="scrollTop" scroll-y="true" class="scroll-Y" @scrolltoupper="upper"
 						@scrolltolower="lower" @scroll="scroll">
-						<view id="demo1" v-for="(item, i) in houses" :key="`house${i}`" class="house-item">{{item}}</view>
+						<view id="demo1" @ v-for="(item, i) in houses" :key="i" class="house-item">{{item}}</view>
 					</scroll-view>
 				</view>
 			</view>

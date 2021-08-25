@@ -22,7 +22,10 @@
 				this.$emit('closeNotice')
 			},
 			to(param){
-				console.log(param)
+				this.close()
+				uni.navigateTo({
+					url:'/pages/decorate/grab/grab'
+				})
 			}
 		}
 	}
