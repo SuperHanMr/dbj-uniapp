@@ -1,6 +1,6 @@
 <template>
 	<view>
-		
+		设置页面
 	</view>
 </template>
 
