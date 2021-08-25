@@ -184,6 +184,35 @@
 				"navigationBarTitleText": "服务评价",
 				"enablePullDownRefresh": false
 			}
+		},
+		{
+			"path": "pages/my/set-up/agreement/service-agreement",
+			"style": {
+				"navigationBarTitleText": "",
+				"navigationStyle": "custom",
+				"enablePullDownRefresh": false
+			}
+		},
+		{
+			"path": "pages/my/set-up/privacy-agreement/privacy-agreement",
+			"style": {
+				"navigationBarTitleText": "",
+				"enablePullDownRefresh": false
+			}
+		},
+		{
+			"path": "pages/my/set-up/code-of-conduct/code-of-conduct",
+			"style": {
+				"navigationBarTitleText": "",
+				"enablePullDownRefresh": false
+			}
+		},
+		{
+			"path": "pages/my/set-up/property-rights-clause/property-rights-clause",
+			"style": {
+				"navigationBarTitleText": "",
+				"enablePullDownRefresh": false
+			}
 		}
 	],
 	"globalStyle": {
