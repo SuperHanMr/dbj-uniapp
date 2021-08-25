@@ -6,6 +6,13 @@
 			<view style="margin-top: 300rpx;">
 				asdfasdf
 			</view>
+			<view class="flex-row">
+				<view class="item" v-for="(item,index) in liveList">
+					???
+				</view>
+
+
+			</view>
 			<view class="test">
 				<button type="default" @click="toNextPage">去封装好的列表页</button>
 			</view>
@@ -25,7 +32,8 @@
 				tophight: 0,
 				imgUrl: "../../../static/app-plus/uni@2x.png",
 				navBarHeight: 0,
-				scrollTop: 0
+				scrollTop: 0,
+				liveList: []
 			};
 		},
 		onLoad() {
@@ -53,7 +61,8 @@
 		methods: {
 			async getBannerList() {
 				let list = await queryLive();
-
+				console.log(list);
+				this.liveList = list.lives;
 			},
 			onScroll(e) {
 				this.scrollTop = e.detail.scrollTop
@@ -69,6 +78,24 @@
 </script>
 
 <style lang="scss">
+	.flex-row {
+		width: 100%;
+		height: 200rpx;
+		display: flex;
+		flex-direction: row;
+		align-items: center;
+		justify-content: center;
+		background-color: yellow;
+		overflow: auto;
+		.item {
+			flex-shrink: 0;
+			width: 200rpx;
+			height: 200rpx;
+			text-align: center;
+			background-color: red;
+		}
+	}
+
 	.content {
 		height: 100vh;
 	}
