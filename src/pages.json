@@ -122,12 +122,6 @@
 				"navigationBarTitleText": "服务评价",
 				"enablePullDownRefresh": false
 			}
-		},
-		{
-			"path": "pages/decorate/warehouse-list/warehouse-list",
-			"style": {
-				"navigationBarTitleText": "我的仓库"
-			}
 		}
 	],
 	"globalStyle": {
