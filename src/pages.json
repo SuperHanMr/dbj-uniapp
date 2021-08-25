@@ -7,19 +7,19 @@
 			}
 		},
 		{
+			"path": "pages/decorate/no-house/index",
+			"style": {
+				"navigationBarTitleText": "未绑定房屋",
+				"usingComponents": {}
+			}
+		},
+		{
 			"path": "pages/login/login",
 			"style": {
 				"navigationBarTitleText": "用户登录",
 				"usingComponents": {
 					"gome-login": "/wxcomponents/gome-login/loginEmpower"
 				}
-			}
-		},
-		{
-			"path": "pages/decorate/no-house/index",
-			"style": {
-				"navigationBarTitleText": "未绑定房屋",
-				"usingComponents": {}
 			}
 		},
 		{
