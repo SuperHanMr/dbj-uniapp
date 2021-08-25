@@ -1,9 +1,9 @@
 <template>
-	<view>
-		<view class="navi-header-state" :style="{height:tophight,backgroundColor:bgcolor}">
+	<view :class="{'navbar':opacity<100}">
+		<view class="navi-header-state" :style="{height:tophight,backgroundColor:bgcolor,opacity:opacity}">
 		</view>
-		<view class="navi-header" :style="{height:navBarHeight,backgroundColor:bgcolor}">
-			<view >
+		<view class="navi-header" :style="{height:navBarHeight,backgroundColor:bgcolor,opacity:opacity}">
+			<view>
 				{{title}}
 			</view>
 		</view>
@@ -19,18 +19,24 @@
 				navBarHeight: 0,
 			};
 		},
-		props:{
-			bgcolor:{
-				type:String,
-				default:'#F8F8F8'
+		props: {
+			bgcolor: {
+				type: String,
+				default: '#F8F8F8'
 			},
-			title:{
-				type:String,
-				default:''
+			title: {
+				type: String,
+				default: ''
+			},
+			opacity: {
+				type: Number,
+				default: 100
 			}
 		},
+		methods: {
+		},
+	
 		mounted() {
-			console.log('??????>>>>>>>>')
 			const systemInfo = uni.getSystemInfoSync();
 			//状态栏高度
 			this.tophight = systemInfo.statusBarHeight + "px";
@@ -44,15 +50,22 @@
 			let menuRight = systemInfo.screenWidth - menuButtonInfo.right;
 			let menuBotton = menuButtonInfo.top - systemInfo.statusBarHeight;
 			let menuHeight = menuButtonInfo.height;
-			console.log('!!!!!@@@@@@#######')
 		},
 		onLoad() {
-		
+
 		}
 	}
 </script>
 
 <style lang="scss">
+	.navbar {
+		position: fixed;
+		top: 0;
+		left: 0;
+		right: 0;
+
+	}
+
 	.navi-header-state {
 		display: flex;
 		flex-direction: row;
@@ -69,7 +82,7 @@
 		.select-city {
 			width: 30rpx;
 			height: 20rpx;
-			
+
 		}
 	}
 </style>

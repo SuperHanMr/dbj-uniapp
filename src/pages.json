@@ -21,7 +21,10 @@
 				"navigationBarTitleText": "首页",
 				"enablePullDownRefresh": true,
 				"transparentTitle": "auto",
-				"navigationStyle": "custom"
+				"navigationStyle": "custom",
+				"mp-weixin":{
+					"scrollIndicator":"none"
+				}
 			}
 		},
 		{
