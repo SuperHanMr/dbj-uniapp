@@ -1,6 +1,12 @@
 {
 	"pages": [ //pages数组中第一项表示应用启动页，参考：https://uniapp.dcloud.io/collocation/pages
 		{
+			"path": "pages/decorate/index/index",
+			"style": {
+				"navigationBarTitleText": "装修"
+			}
+		},
+		{
 			"path": "pages/decorate/have-house/index",
 			"style": {
 				"navigationBarTitleText": "我的房屋名称",
@@ -14,12 +20,6 @@
 			"style": {
 				"navigationBarTitleText": "未绑定房屋",
 				"usingComponents": {}
-			}
-		},
-		{
-			"path": "pages/decorate/index/index",
-			"style": {
-				"navigationBarTitleText": "装修"
 			}
 		},
 		{
