@@ -3,9 +3,9 @@
 		<view class="main-body">
 			<uni-list class="uni-list" :border="false">
 			    <uni-list-item title="打扮家装修服务协议" link to="./agreement/service-agreement" @click="onClick($event,1)" ></uni-list-item>
-			    <uni-list-item title="打扮家装修隐私协议" link="reLaunch" to="./privacy-agreement/privacy-agreement" @click="onClick($event,1)" ></uni-list-item>
-			    <uni-list-item title="打扮家用户行为规范" link="reLaunch" to="./code-of-conduct/code-of-conduct" @click="onClick($event,1)" ></uni-list-item>
-			    <uni-list-item title="打扮家知识产权条款" link="reLaunch" to="./property-rights-clause/property-rights-clause" @click="onClick($event,1)" ></uni-list-item>
+			    <uni-list-item title="打扮家装修隐私协议" link to="./agreement/privacy-agreement" @click="onClick($event,1)" ></uni-list-item>
+			    <uni-list-item title="打扮家用户行为规范" link to="./agreement/code-of-conduct" @click="onClick($event,1)" ></uni-list-item>
+			    <uni-list-item title="打扮家知识产权条款" link to="./agreement/property-rights-clause" @click="onClick($event,1)" ></uni-list-item>
 			    <uni-list-item title="关于打扮家" link to="./about-dabanjia/about-dabanjia" /> 
 			</uni-list>
 		</view>
