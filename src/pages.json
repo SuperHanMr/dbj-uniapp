@@ -34,6 +34,24 @@
 			}
 		},
 		{
+			"path": "pages/my/set-up/index",
+			"style": {
+				"navigationBarTitleText": "设置"
+			}
+		},
+		{
+			"path": "pages/my/set-up/about-dabanjia/index",
+			"style": {
+				"navigationBarTitleText": "关于打扮家"
+			}
+		},
+		{
+			"path": "pages/my/edit-personal-data/index",
+			"style": {
+				"navigationBarTitleText": "编辑个人资料"
+			}
+		},
+		{
 			"path": "pages/common/goods-detail/goods-detail",
 			"style": {
 				"navigationBarTitleText": "商品详情"
@@ -64,8 +82,40 @@
 				"navigationBarTitleText": "添加亲友",
 				"enablePullDownRefresh": false
 			}
+		},
+		{
+			"path" : "pages/my/personal-center/my-collection/index",
+			"style" :                                                                                    
+			{
+					"navigationBarTitleText": "我的收藏",
+					"enablePullDownRefresh": false
+			}
+		},
+		{
+			"path" : "pages/my/personal-center/my-attention/index",
+			"style" :                                                                                    
+			{
+					"navigationBarTitleText": "我的关注",
+					"enablePullDownRefresh": false
+			}
+		},
+		{
+			"path" : "pages/my/personal-center/my-wallet/index",
+			"style" :                                                                                    
+			{
+					"navigationBarTitleText": "我的钱包",
+					"enablePullDownRefresh": false
+			}
+		},
+		{
+			"path" : "pages/my/personal-center/complaints-and-suggestions/index",
+			"style" :                                                                                    
+			{
+					"navigationBarTitleText": "投诉与建议",
+					"enablePullDownRefresh": false
+			}
 		}
-	],
+    ],
 	"globalStyle": {
 		"navigationBarTextStyle": "black",
 		"navigationBarTitleText": "uni-app",
