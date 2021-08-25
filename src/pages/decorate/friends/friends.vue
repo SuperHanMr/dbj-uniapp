@@ -7,14 +7,14 @@
 			</view>
 			<view v-else>
 				未选中
-				
+
 			</view>
 			<view >
-				
+
 				{{item.name}}
 			</view>
 		</view>
-		<view v-if="!isEditing" class="add-friends"@click="toAddFriends">
+		<view v-if="!isEditing" class="add-friends" @click="toAddFriends">
 			添加亲友
 
 		</view>
@@ -24,7 +24,7 @@
 			</view>
 			<view class="btn" @click="deleteFriends">
 				删除
-				
+
 			</view>
 		</view>
 	</view>
@@ -103,7 +103,7 @@
 			toAddFriends(){
 			uni.navigateTo({
 				url:"../add-friends/add-friends"
-			})	
+			})
 			},
 			addAll(){
 				console.log(this.selectList.length)
@@ -112,26 +112,26 @@
 				this.selectList=[]
 					this.list.forEach(e=>{
 						this.selectList.push(e.id)
-						
+
 					})
 				}else{
-					
+
 						this.selectList=[]
 				}
-				
+
 			},
 			deleteFriends(){
-				
+
 			},
 			onSelect(index){
 				let selectIndex = this.selectList.indexOf(index)
 				if(selectIndex>-1){
 					this.selectList.splice(selectIndex,1)
-					
+
 				}else{
 					this.selectList.push(index)
 				}
-				
+
 			}
 		}
 	}
@@ -161,7 +161,7 @@
 		background-color: yellow;
 	}
 	.edit-friends{
-		
+
 		position: fixed;
 		left: 0;
 		bottom: 0;
