@@ -43,6 +43,24 @@
 			}
 		},
 		{
+			"path": "pages/my/set-up/set-up",
+			"style": {
+				"navigationBarTitleText": "设置"
+			}
+		},
+		{
+			"path": "pages/my/set-up/about-dabanjia/about-dabanjia",
+			"style": {
+				"navigationBarTitleText": "关于打扮家"
+			}
+		},
+		{
+			"path": "pages/my/edit-personal-data/edit-personal-data",
+			"style": {
+				"navigationBarTitleText": "编辑个人资料"
+			}
+		},
+		{
 			"path": "pages/common/goods-detail/goods-detail",
 			"style": {
 				"navigationBarTitleText": "商品详情"
@@ -120,6 +138,34 @@
 			"path": "pages/decorate/service-evaluate/service-evaluate",
 			"style": {
 				"navigationBarTitleText": "服务评价",
+				"enablePullDownRefresh": false
+			}
+		},
+		{
+			"path": "pages/my/personal-center/my-collection/index",
+			"style": {
+				"navigationBarTitleText": "我的收藏",
+				"enablePullDownRefresh": false
+			}
+		},
+		{
+			"path": "pages/my/personal-center/my-attention/index",
+			"style": {
+				"navigationBarTitleText": "我的关注",
+				"enablePullDownRefresh": false
+			}
+		},
+		{
+			"path": "pages/my/personal-center/my-wallet/index",
+			"style": {
+				"navigationBarTitleText": "我的钱包",
+				"enablePullDownRefresh": false
+			}
+		},
+		{
+			"path": "pages/my/personal-center/complaints-and-suggestions/index",
+			"style": {
+				"navigationBarTitleText": "投诉与建议",
 				"enablePullDownRefresh": false
 			}
 		}
