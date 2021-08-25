@@ -142,7 +142,7 @@
 		{
 			"path": "pages/my/set-up/index/index",
 			"style": {
-				"navigationBarTitleText": "",
+				"navigationBarTitleText": "设置",
 				"enablePullDownRefresh": false
 			}
 
