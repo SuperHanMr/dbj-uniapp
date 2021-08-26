@@ -19,9 +19,12 @@
 				</view>
 			</view>
 		</view>
-		<view class="logOut">
+		<view class="logOut" @click="onOpen">
 			退出登录
 		</view>
+		<uni-popup ref="popup" type="dialog" class="uni-popup">
+				<uni-popup-dialog class="uni-popup-dialog" mode="base" type="info" title="确定退出当前账号登录吗?" :duration="2000" :before-close="true" @close="close" @confirm="confirm"></uni-popup-dialog>
+		</uni-popup>
 	</view>
 </template>
 
@@ -60,6 +63,16 @@
 					url: this.listArr[val].path
 				})
 				console.log("dadad")
+			},
+			onOpen(){
+				this.$refs.popup.open();
+			},
+			close(){
+				this.$refs.popup.close();
+			},
+			confirm(val){
+				console.log(val, 'asdsada');
+				this.$refs.popup.close();
 			}
 		}
 	}
@@ -114,5 +127,19 @@ height: 100%;
 }
 button::after{
 	border:none;
+}
+.container .uni-popup .uni-popup-dialog /deep/ .uni-dialog-button-group .uni-border-left .uni-dialog-button-text{
+	color: rgba(255,51,71,1);
+	font-size: 30rpx;
+	font-family: PingFangSC, PingFangSC-Medium;
+	font-weight: 500;
+	text-align: left;
+}
+.container .uni-popup .uni-popup-dialog /deep/ .uni-dialog-title .uni-dialog-title-text{
+	font-size: 32rpx;
+	font-family: PingFangSC, PingFangSC-Medium;
+	font-weight: 500;
+	text-align: center;
+	color: #111111;
 }
 </style>
