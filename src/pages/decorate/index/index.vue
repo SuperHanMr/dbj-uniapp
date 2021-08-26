@@ -1,12 +1,11 @@
 <template>
   <view class="content">
-    <span @click='toAdd'>装修</span>
 		<view class="v1">
 			<text>装修服务</text>
-			<text>></text>
+			<view @click="goToMyDecorate">></view>
 		</view>
-		<view>
-			<text>设计图</text>
+		<view class="design-picture">
+			<image @click="goDesignPicture" mode="aspectFit" src="https://gimg2.baidu.com/image_search/src=http%3A%2F%2Fclubfiles.liba.com%2F2006%2F08%2F23%2F15%2F4603714.jpg&refer=http%3A%2F%2Fclubfiles.liba.com&app=2002&size=f9999,10000&q=a80&n=0&g=0n&fmt=jpeg?sec=1632561406&t=2224059e9c261a09a68eaffa2d2e371d"></image>
 		</view>
     <decorate-notice
       v-if="noticeActive"
@@ -26,8 +25,8 @@
       </view>
     </drag-button-follow>
     <view>
-      <view>量房</view>
-      <view>计算服务</view>
+      <view class="v1"><text>量房</text> <text>量房员抢单中</text></view>
+      <view>精算服务</view>
       <view>设计服务</view>
     </view>
     <uni-popup
@@ -35,46 +34,26 @@
       type="bottom"
     >
       <view style="background-color: #fff;">
-        <button @btnClick="goToAddHouseInfo">添加房屋信息</button>
-        <button @btnClick="goToDecorateService">进行装修服务</button>
-        <button @btnClick="goToVerifyHouse">进行验房服务</button>
+        <button @click="goToAddHouseInfo">添加房屋信息</button>
+        <button @click="goToDecorateService">进行装修服务</button>
+        <button @click="goToVerifyHouse">进行验房服务</button>
       </view>
     </uni-popup>
   </view>
-
 </template>
 
 <script>
+import { queryEstates } from "../../../api/decorate.js"
 export default {
-  mounted() {
-    if (this.houses.length < 1) {
-      this.openPopup();
-    }
-  },
+	created() {
+		this.getHouses()
+	},
+  mounted() {},
   data() {
     return {
       style: "",
       noticeActive: false,
-      houses: [
-        {
-          id: 1,
-          housename: "北京市石景山区叠翠庭院1区",
-          isfirend: false,
-          status: "设计阶段",
-        },
-        {
-          id: 2,
-          housename: "北京市石景山区叠翠庭院1区",
-          isfirend: false,
-          status: "未开工",
-        },
-        {
-          id: 3,
-          housename: "北京市石景山区叠翠庭院1区",
-          isfirend: true,
-          status: "未开工",
-        },
-      ],
+      houses: [],
     };
   },
   methods: {
@@ -85,15 +64,31 @@ export default {
       // 通过组件定义的ref调用uni-popup方法 ,如果传入参数 ，type 属性将失效 ，仅支持 ['top','left','bottom','right','center']
       this.$refs.popup.open("bottom");
     },
-    toAdd() {
-      console.log(123);
-      uni.navigateTo({
-        url: "/pages/decorate/add-house/add-house",
-      });
-    },
-    goToAddHouseInfo() {},
+    goToAddHouseInfo() {
+			uni.navigateTo({
+			  url: "/pages/decorate/add-house/add-house",
+			});
+		},
     goToDecorateService() {},
     goToVerifyHouse() {},
+		goDesignPicture() {
+			uni.navigateTo({
+			 url: "/pages/decorate/design-picture/index",	
+			})
+		},
+		goToMyDecorate() {
+			uni.navigateTo({
+			 url: "/pages/decorate/my-decorate/my-decorate",	
+			})
+		},
+		getHouses() {
+			queryEstates({isNeedRelative: true}).then(data => {
+				if (data.length < 1) {
+				  this.openPopup();
+				}
+				this.houses = data
+			})
+		}
   },
 };
 </script>
@@ -126,5 +121,12 @@ export default {
   display: flex;
   align-items: center;
   justify-content: center;
+}
+.design-picture {
+	border: 2rpx solid green;
+	image{
+		width: 250rpx;
+		height: 250rpx;
+	}
 }
 </style>
