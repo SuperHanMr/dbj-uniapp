@@ -1,5 +1,10 @@
 <template>
 	<view class="cartContainer">
+		<view class="header">
+			<view class="left">共{{}}个商品</view>
+			<view class="manage" @click="manageGoods">管理</view>
+		</view>
+		
 		<view class="noGoods" v-if="!shopList.length&&!disabledSkuList.length">
 			<image src="../../../static/shopping-cart/blank_ic@3x.png" class="noGoodsImg"></image>
 			<view class="noGoodsText">
@@ -12,34 +17,40 @@
 		<view class="shoppingCart" v-else>
 			<view class="shopItem" v-for="(shopItem,index) in shopList" :key="shopItem.storeId">
 				<view class="shopInfo">
-					<view class="check"></view>
+					<view class="check" v-if="!shopItem.shopChecked" @click="checkShop(shopItem.storeId)"></view>
+					<image class="checked" src="../../../static/shopping-cart/checked@2x.png" @click="checkShop(shopItem.storeId)" v-else></image>
 					<view class="goShop">
 						<text class="shopName">{{shopItem.storeName}}</text>
 						<image src="../../../static/shopping-cart/goShop_ic@2x.png" class="shopIcon"></text>
 					</view>
 				</view>	
 				<view class="goodsItem" v-for="(goodsItem,index) in shopItem.skuList" :key="goodsItem.skuId">
-					<view class="check"></view>
+					<view class="check" v-if="!goodsItem.goodsChecked" @click="checkGoods(goodsItem.skuId)"></view>
+					<image class="checked" src="../../../static/shopping-cart/checked@2x.png" @click="checkGoods(goodsItem.skuId)" v-else></image>
 					<image :src="goodsItem.image" class="goodsItemImg"></image>
 					<view class="goodsInfo">
 						<view class="goodsDesc">
-							<span>服务</span>
-							<span class="goodsCate">{{goodsItem.spuName}}</span>
+							<span class="goodsType">服务</span>
+							{{goodsItem.spuName}}
 						</view>
-						<view class="goodsSpec">
+						<view class="goodsSpec" @click="open">
 							{{goodsItem.skuName}}
+							<image src="../../../static/shopping-cart/selectOptions@2x.png" class="selectOptions"></image>
 						</view>
+						
 						<view class="foot">
-							<view class="goodsPrice">{{goodsItem.price}}</view>
+							<view class="goodsPrice">¥{{goodsItem.price}}/{{goodsItem.unitName}}</view>
 							<view class="countCtrl">
-							  <text class="del" @click="changeCount(false, index)"> - </text>
-							  <text class="count"> {{goodsItem.buyCount}} </text>
-							  <text class="add" @click="changeCount(true, index)"> + </text>          
+							  <image src="../../../static/shopping-cart/details_pop_subtract_disabled@2x.png" class="dec" @click="changeCount(false, index)"></image>
+							  <view class="count"> {{goodsItem.buyCount}} </view>
+							  <image src="../../../static/shopping-cart/details_pop_add_normal@2x.png" class="inc" @click="changeCount(true, index)"></image>          
 							</view>
 						</view>
 					</view>
 				</view>	
 				</view>
+				<uni-popup ref="popup" type="bottom"></uni-popup>
+				<select-sku></select-sku>
 				<view class="disabledSku" v-if="disabledSkuList.length">
 					<view class="top">
 						<view class="title">已失效商品</view>
@@ -47,14 +58,17 @@
 					</view>
 					<view class="disabldSkuItem" v-for="disabldSkuItem in disabledSkuList" :key="disabldSkuItem.skuId">
 						<image :src="disabldSkuItem.image" class="disabldSkuImg"></image>
-						<view class="sku">
-							<view class="skuTitle">{{disabldSkuItem.skuName}}</view>
-							<view class="spec"></view>
+						<view class="disabledSkuInfo">
+							<view class="disabledSkuDesc">
+								<span class="disabledSkuType">服务</span>
+								{{disabldSkuItem.spuName}}
+							</view>
+							<view class="spec">{{disabldSkuItem.skuName}}</view>
 							<view class="text">该商品已经失效</view>
 						</view>
 					</view>
 				</view>
-				<view class="cartFooter">
+				<view class="cartFooter" v-if="showFooter">
 					<text></text> 
 					<text class="allSelected">全选{{totalCount}}</text>
 					<view class="right">
@@ -71,13 +85,19 @@
 
 <script>
 	import {getShoppingCartProductInfo} from "../../../api/user.js"
+	import SelectSku from "../../../components/select-sku/select-sku"
 	export default {
+		components:{
+			SelectSku
+		},
 		data(){
 			return {
 				shopList:[],
 				disabledSkuList:[],
 				totalCount:0,
-				totalPrice:0
+				totalPrice:0,
+				showPecification:false,
+				showFooter:false
 			}
 		},
 		onLoad: ()=> {
@@ -234,6 +254,14 @@
 					let {code,data,message} = res
 					if(code === 1&&data){
 						let {storeList,disabledSkuList} = data
+						storeList.map(item=>{
+							item.shopChecked = false
+							item.skuList.map(ele=>{
+								ele.goodsChecked = false
+								return ele
+							})
+							return item
+						})
 						this.shopList = storeList || []
 						this.disabledSkuList = disabledSkuList || []
 					}else{
@@ -251,7 +279,41 @@
 				// 				state.cartList.splice(index, 1)
 				// 			}
 				// 		}
-			}
+			},
+			manageGoods(){
+				this.showFooter = true
+			},	
+			checkShop(id){
+				this.shopList.forEach(item=>{
+					if(item.storeId === id){
+						item.shopChecked = !item.shopChecked
+						item.skuList.map(ele=>{
+							ele.goodsChecked = item.shopChecked?true:false
+							return ele
+						})
+					}
+				})
+				
+			},
+			checkGoods(skuId){
+				this.shopList.forEach(item=>{
+					console.log(item.skuList.every(ele=>ele.goodsChecked))
+					if(item.skuList.every(ele=>ele.goodsChecked)){
+						item.shopChecked = true
+					}
+					item.skuList.forEach(ele=>{
+						if(ele.skuId === skuId){
+							ele.goodsChecked = !ele.goodsChecked
+						}
+					})
+				})
+			},
+			open(){
+				this.showPecification = true
+				console.log(this.$refs.popup)
+				this.$refs.popup.open('top')
+			},
+		
 		}
 	}
 </script>
@@ -260,8 +322,34 @@
 	.cartContainer{
 		width: 100%;
 		height: 100%;
+		overflow: auto;
 		background: #f5f6f7;
 		position: relative;
+	}
+	.header{
+		width: 100%;
+		height: 40px;
+		background: #fff;
+		display: flex;
+		justify-content: space-between;
+		align-items: center;
+	}
+	.header .left{
+		width: 62px;
+		height: 20px;
+		margin-left: 20px;
+		font-size: 14px;
+		text-align: center;
+		color: #666666;
+		line-height: 20px;
+	}
+	.header .manage {
+		width: 28px;
+		height: 20px;
+		margin-right: 20px;
+		font-size: 14px;
+		text-align: center;
+		line-height: 20px;
 	}
 	.noGoods{
 		width: 200px;
@@ -304,11 +392,11 @@
 	}
 	.shoppingCart{
 		width: 100%;
-		background-color: pink;
 	}
 	.shopItem{
-		margin: 12px 11px 12px 11px;
+		margin: 12px 11px 0px 11px;
 		background: #FFFFFF;
+		border-radius: 8px;
 	}
 	.shopInfo{
 		height: 53px;
@@ -322,6 +410,11 @@
 		border-radius: 50%;
 		background: #ffffff;
 		border: 1px solid #e5e5e5;
+	}
+	.shopInfo .checked{
+		width: 18px;
+		height: 18px;
+		display: block;
 	}
 	.shopInfo .goShop{
 		height: 100%;
@@ -347,6 +440,8 @@
 		width: 100%;
 		display: flex;
 		align-items: center;
+		padding-left: 12px;
+		padding-bottom: 12px;
 	}
 	.goodsItem .check{
 		width: 18px;
@@ -355,26 +450,176 @@
 		background: #ffffff;
 		border: 1px solid #e5e5e5;
 	}
+	.goodsItem .checked{
+		width: 18px;
+		height: 18px;
+		display: block;
+	}
 	.goodsItem .goodsItemImg{
 		width: 96px;
 		height: 96px;
 		display: block;
+		margin-left: 5px;
+		margin-right: 10px;
+		border-radius: 4px;
 	}
 	.goodsItem .goodsInfo{
+		height: 100%;
+		margin-right: 10px;
+	}
+	.goodsInfo .goodsDesc{
+		width: 190px;
 		height: 40px;
 		font-size: 14px;
 		color: #333333;
 		line-height: 20px;
+		text-overflow: ellipsis;
 	}
-	.goodsItem .goodsSpec{
-		width: 85px;
+	.goodsInfo .goodsDesc .goodsType{
+		width: 30px;
+		height: 15px;
+		padding: 1px 5px 1px 5px;
+		margin-right: 2px;
+		border: 1px solid #35c4c4;
+		border-radius: 2px;
+		font-size: 10px;
+		font-weight: 500;
+		color: #35c4c4;
+		line-height: 14px;
+		text-align:center;
+	}
+	.goodsInfo .goodsSpec{
 		height: 19px;
+		margin-top: 8px;
+		margin-bottom: 8px;
 		background: #fafafa;
 		border: 1px solid #f0f0f0;
 		border-radius: 2px;
+		font-size: 11px;
+		color: #999999;
+		display: flex;
 	}
+	.goodsInfo .goodsSpec .selectOptions{
+		width: 14px;
+		height: 14px;
+		display: block;
+	}
+	.goodsInfo .foot{
+		display: flex;
+		justify-content: space-between;
+	}
+	.goodsInfo .foot .goodsPrice{
+		width: 76px;
+		height: 18px;
+		color: #ff3347;
+		line-height: 28px;
+	}
+	.goodsInfo .foot .countCtrl{
+		display: flex;
+	}
+	.goodsInfo .foot .countCtrl .dec{
+		width: 24px;
+		height: 24px;
+		display: block;
+	} 
+	.goodsInfo .foot .countCtrl .count{
+		width: 46px;
+		height: 24px;
+		background: #f2f2f2;
+		font-size: 12px;
+		font-weight: 500;
+		text-align: center;
+		color: #333333;
+		line-height: 24px;
+	}
+	.goodsInfo .foot .countCtrl .inc{
+		width: 24px;
+		height: 24px;
+		display: block;
+	} 
+	//已失效
 	.disabledSku{
-		
+		margin: 12px;
+		padding: 1px 10px 20px 10px;
+		background: #ffffff;
+		border-radius: 8px;
 	}
-	
+	.disabledSku .top{
+		width: 100%;
+		margin-top: 12px;
+		display: flex;
+		justify-content: space-between;
+	}
+	.disabledSku .top .title{
+		width: 70px;
+		height: 20px;
+		font-size: 14px;
+		color: #333333;
+		line-height: 20px;
+	}
+	.disabledSku .top .clear{
+		width: 84px;
+		height: 20px;
+		margin-right: 10px;
+		font-size: 14px;
+		color: #35c4c4;
+		line-height: 20px;
+	}
+	.disabledSku .disabldSkuItem{
+		width: 100%;
+		height: 96px;
+		display: flex;
+		margin-top: 16px;
+	}
+	.disabldSkuItem .disabldSkuImg{
+		width: 96px;
+		height: 96px;
+		background: rgba(0,0,0,0.30);
+		display: block;
+		margin-right: 10px;
+		border-radius: 4px;
+	}
+	.disabldSkuItem .disabledSkuInfo{
+		height: 100%;
+		margin-right: 10px;
+	}
+	.disabledSkuInfo .disabledSkuDesc{
+		width: 218px;
+		height: 40px;
+		font-size: 14px;
+		color: #cdcdcd;
+		line-height: 20px;
+		text-overflow: ellipsis;
+	}
+	.disabledSkuInfo .disabledSkuDesc .disabledSkuType{
+		width: 30px;
+		height: 15px;
+		padding: 1px 5px 1px 5px;
+		margin-right: 2px;
+		border: 1px solid #cdcdcd;
+		border-radius: 2px;
+		font-size: 10px;
+		font-weight: 500;
+		color: #cdcdcd;
+		line-height: 14px;
+		text-align:center;
+	}
+	.disabledSkuInfo .spec{
+		width: 100px;
+		height: 19px;
+		margin-top: 8px;
+		margin-bottom: 8px;
+		background: #fafafa;
+		border: 1px solid #f0f0f0;
+		border-radius: 2px;
+		font-size: 11px;
+		color: #999999;
+	}
+	.disabledSkuInfo .text{
+		width: 190px;
+		height: 20px;
+		font-size: 14px;
+		color: #333333;
+		line-height: 20px;
+	}
 </style>
