@@ -1,16 +1,19 @@
 <template>
-	<view>
+	<view class="real-case">
+		1111
 		<DesignCase />
-		·12·12·12
+		<Decorate />
 	</view>
 </template>
 
 <script>
-	import DesignCase from './component/design-case.vue'
+	import DesignCase from './component/design-case.vue';
+	import Decorate from './component/decorate.vue';
 	export default {
-		components:{
-			DesignCase
-		}
+		components: {
+			DesignCase,
+			Decorate
+		},
 		data() {
 			return {
 				
@@ -22,6 +25,9 @@
 	}
 </script>
 
-<style>
-
+<style scoped>
+.real-case{
+	height: 100%;
+	background-color: #FFFFFF;
+}
 </style>
