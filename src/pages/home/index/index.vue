@@ -1,16 +1,22 @@
 <template>
-	<view class="">
-		<custom-navbar title="????AAAA" :opacity="scrollTop/100"></custom-navbar>
+	<view>
+		<custom-navbar title="????AAAA" :opacity="scrollTop/100" :showBack="false">
+			<slot-one>
+				<view @click="toCity">
+					{{citydata}}
+				</view>
+
+			</slot-one>
+		</custom-navbar>
 
 		<scroll-view class="content" scroll-y="true" @scroll="onScroll">
-			<view style="margin-top: 300rpx;" @click="toCity">
+			<view style="margin-top: 300rpx;">
 				asdfasdf
 			</view>
 			<view class="flex-row">
 				<view class="item" v-for="(item,index) in liveList" @click="toLiveRoom(item)">
 					{{item.title}}
 				</view>
-
 			</view>
 			<view class="test">
 				<button type="default" @click="toNextPage">去封装好的列表页</button>
@@ -36,36 +42,29 @@
 				navBarHeight: 0,
 				scrollTop: 0,
 				liveList: [],
-				citydata: ''
+				citydata: '北京市'
 			};
 		},
 		onLoad() {
-			getApp().globalData.userInfo = {
-				name: "张三",
-				token: "asdasdasd",
-			};
-			const systemInfo = uni.getSystemInfoSync();
-			//状态栏高度
-			this.tophight = systemInfo.statusBarHeight + "px";
-			// 获取胶囊按钮的位置
-			const menuButtonInfo = uni.getMenuButtonBoundingClientRect();
-			// 导航栏高度 = 状态栏到胶囊的间距（ 胶囊距上距离 - 状态栏高度 ）*2  +  胶囊高度
-			this.navBarHeight =
-				(menuButtonInfo.top - systemInfo.statusBarHeight) * 2 +
-				menuButtonInfo.height +
-				"px";
-			let menuRight = systemInfo.screenWidth - menuButtonInfo.right;
-			let menuBotton = menuButtonInfo.top - systemInfo.statusBarHeight;
-			let menuHeight = menuButtonInfo.height;
+			this.getAuthorizeInfo();
 		},
 		onShow() {
 			this.getBannerList();
-			this.getAuthorizeInfo();
+			let pages = getCurrentPages();
+			let currPage = pages[pages.length - 1]; //当前页面
+			let res = currPage.data.city;
+			if (res) {
+				this.citydata = res.title;
+				this.changeCity();
+			}
 		},
 		methods: {
+			changeCity() {
+				console.log('切换城市');
+			},
 			toCity() {
 				uni.navigateTo({
-					url: "../select-city/select-city"
+					url: "../select-city/select-city?title="+this.citydata
 				})
 			},
 			getAuthorizeInfo() {
@@ -88,9 +87,8 @@
 					type: 'gcj02',
 					success(res) {
 						let that = vm;
-						const latitude ='38.851287' ;
-						const longitude = '105.729464';
-						console.log(res);
+						const latitude = res.latitude;
+						const longitude = res.longitude;
 						uni.request({
 							header: {
 								"Content-Type": "application/text"
@@ -103,11 +101,10 @@
 								console.log(re)
 								if (re.statusCode === 200) {
 									let addressComponent = re.data.regeocode.addressComponent
-									console.log(addressComponent.city)
-									console.log(addressComponent.province)
 									that.citydata = addressComponent.city.length > 0 ? addressComponent
 										.city :
 										addressComponent.province;
+										getApp().globalData.city=that.citydata;
 
 								} else {
 									console.log("获取信息失败，请重试！")

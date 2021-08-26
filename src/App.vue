@@ -2,9 +2,9 @@
 	export default {
 		globalData: {
 			userInfo: {
-
 			},
-			token:''
+			token:'',
+			city:''
 		},
 		onLaunch: function() {
 			if (!uni.getStorageSync("userId") || !uni.getStorageSync("scn")) {

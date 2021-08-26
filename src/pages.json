@@ -237,11 +237,20 @@
 		{
 			"path": "pages/home/select-city/select-city",
 			"style": {
-				"navigationBarTitleText": "",
+				"navigationBarTitleText": "城市选择",
 				"enablePullDownRefresh": false
 			}
 		}
-	],
+	    ,{
+            "path" : "pages/real-case/real-case",
+            "style" :                                                                                    
+            {
+                "navigationBarTitleText": "真实案例",
+                "enablePullDownRefresh": false
+            }
+            
+        }
+    ],
 	"globalStyle": {
 		"navigationBarTextStyle": "black",
 		"navigationBarTitleText": "uni-app",

@@ -3,19 +3,22 @@
 	<view class="city-select">
 		<scroll-view :scroll-top="scrollTop" scroll-y="true" class="city-select-main" id="city-select-main" :scroll-into-view="toView">
 			<!-- 预留搜索-->
-			<view class="city-serach" v-if="isSearch"><input @input="keyInput" :placeholder="placeholder" class="city-serach-input" /></view>
+			<!-- <view class="city-serach" v-if="isSearch"><input @input="keyInput" :placeholder="placeholder" class="city-serach-input" /></view> -->
+			
+			<view v-if="currentCity!=null"  class="current-title">当前选择城市:{{currentCity.title}}</view>
 			<!-- 当前定位城市 -->
-			<view class="hot-title" v-if="activeCity && !serachCity">当前定位城市</view>
-			<view class="hot-city" v-if="activeCity && !serachCity">
-				<view class="hot-item" @click="cityTrigger(activeCity)">{{ activeCity[formatName] }}</view>
+			<view class="hot-title" >{{activeCity==null?'城市定位失败，请点击下方开启定位服务':'定位城市'}}</view>
+			<view class="hot-city" >
+				<view  v-if="activeCity!=null" class="hot-item" @click="cityTrigger(activeCity)">{{ activeCity[formatName] }}</view>
+				<view v-else class="hot-item"> 开启定位 </view>
 			</view>
 			<!-- 热门城市 -->
-			<view class="hot-title" v-if="hotCity.length > 0 && !serachCity">热门城市</view>
+<!-- 			<view class="hot-title" v-if="hotCity.length > 0 && !serachCity">热门城市</view>
 			<view class="hot-city" v-if="hotCity.length > 0 && !serachCity">
 				<template v-for="(item, index) in hotCity">
 					<view :key="index" @click="cityTrigger(item, 'hot')" class="hot-item">{{ item[formatName] }}</view>
 				</template>
-			</view>
+			</view> -->
 			<!-- 城市列表(搜索前) -->
 			<view class="citys" v-if="!serachCity">
 				<view v-for="(city, index) in sortItems" :key="index" v-show="city.isCity" class="citys-row">
@@ -56,8 +59,13 @@ export default {
 			type: String,
 			default: 'cityName'
 		},
-		//当前定位城市
+	
 		activeCity: {
+			type: Object,
+			default: () => null
+		},
+			//当前定位城市
+		currentCity: {
 			type: Object,
 			default: () => null
 		},
@@ -71,6 +79,18 @@ export default {
 		isSearch: {
 			type: Boolean,
 			default: true
+		}
+	},
+	watch:{
+		currentCity:{
+			handler(newValue){
+				
+				this.currentCity=newValue;
+				console.log('%%%%%%%%%');
+				console.log(newValue.title);
+			},
+			immediate:true
+			
 		}
 	},
 	data() {
@@ -260,7 +280,14 @@ export default {
 view {
 	box-sizing: border-box;
 }
-
+.current-title{
+	color: #333333;
+	font-size: 13px;
+	height: 104rpx;
+	line-height: 104rpx;
+	margin: 0 32rpx;
+	border-bottom: 1rpx #E9E9E9 solid;
+}
 .city-serach {
 	width: 100%;
 	color: #4a4a4a;
@@ -327,6 +354,7 @@ view {
 			color: #4a4a4a;
 			background: #fff;
 			border: 1px solid #ebebf0;
+			border-radius: 8rpx;
 
 			&:nth-child(3n) {
 				margin-right: 0;
