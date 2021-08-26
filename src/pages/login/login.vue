@@ -7,6 +7,7 @@
 
 <script>
 	const url = require("@/pages/login/imgs/Lark20210823-152715.png");
+	import { oauthGomeInfo } from "../../api/user.js";
 	export default {
 		data() {
 			return {
@@ -43,10 +44,7 @@
 				// 登录，注册，绑定成功都在此函数回调内处理返回参数为
 				// data：{ SCN 登录凭证，userId 用户id，gomeNickName 国美用户昵称，gomeHeadImgUrl 国美用户头像，loginName 登录昵称，gradeNO 会员等级，gradeName 会员等级昵称}
 				// type 类型  login为登录， register为注册，bindMobile为绑定手机号
-				let {
-					data,
-					type
-				} = e.detail;
+				let { data, type } = e.detail;
 
 				let userInfo = uni.getStorageSync("userInfo");
 				uni.setStorageSync("scn", data.SCN);
@@ -61,8 +59,10 @@
 
 				console.log('type', type) // 根据 type 类型，跳转页面/路由
 				if(uni.getStorageSync("userId")) {
-					uni.switchTab({
-						url: "/pages/home/index/index"
+					oauthGomeInfo({clientType: "3", accessTokenDuration: 604800000}).then(res => {
+						uni.switchTab({
+							url: "/pages/home/index/index"
+						})
 					})
 				}
 			},
