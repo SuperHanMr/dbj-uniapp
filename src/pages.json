@@ -7,6 +7,12 @@
 			}
 		},
 		{
+			"path": "pages/decorate/design-picture/index",
+			"style": {
+				"navigationBarTitleText": "设计图"
+			}
+		},
+		{
 			"path": "pages/decorate/no-house/index",
 			"style": {
 				"navigationBarTitleText": "未绑定房屋",

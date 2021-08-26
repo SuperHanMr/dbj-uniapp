@@ -1,6 +1,13 @@
 <template>
   <view class="content">
     <span @click='toAdd'>装修</span>
+		<view class="v1">
+			<text>装修服务</text>
+			<text>></text>
+		</view>
+		<view>
+			<text>设计图</text>
+		</view>
     <decorate-notice
       v-if="noticeActive"
       @closeNotice='closeNotice'
@@ -97,7 +104,13 @@ export default {
   height: 100%;
   position: relative;
 }
-
+.v1 {
+	display: flex;
+	flex-direction: row;
+	justify-content: space-between;
+	margin-bottom: 30rpx;
+	border: 2rpx solid green;
+}
 .drag-button {
   background: #ffffff;
   border: 0.5px solid #eeeeee;
