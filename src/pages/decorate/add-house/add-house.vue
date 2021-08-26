@@ -21,8 +21,8 @@
       </view>
       <view class="content">
         <view class="form-item">
-          <label class="item-label">楼栋号</label>
-          <input class="uni-input" name="input" v-model="addData.num" placeholder="请输入楼栋号" />
+          <label class="item-label">楼栋房号</label>
+          <input class="uni-input" name="input" v-model="addData.num" placeholder="请输入楼栋房号" />
         </view>
         <view  class="form-item special">
           <label class="item-label">楼型</label>
@@ -164,6 +164,11 @@
       switchChange(e){
         this.addData.checked=e.detail.value
         console.log(this.addData.checked)
+      },
+      save(){
+        uni.navigateTo({
+          
+        })
       }
     }
   }

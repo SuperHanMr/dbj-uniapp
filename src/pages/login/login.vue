@@ -7,6 +7,7 @@
 
 <script>
 	const url = require("@/pages/login/imgs/Lark20210823-152715.png");
+	import { oauthGomeInfo } from "../../api/login.js";
 	export default {
 		data() {
 			return {
@@ -43,26 +44,27 @@
 				// 登录，注册，绑定成功都在此函数回调内处理返回参数为
 				// data：{ SCN 登录凭证，userId 用户id，gomeNickName 国美用户昵称，gomeHeadImgUrl 国美用户头像，loginName 登录昵称，gradeNO 会员等级，gradeName 会员等级昵称}
 				// type 类型  login为登录， register为注册，bindMobile为绑定手机号
-				let {
-					data,
-					type
-				} = e.detail;
+				let { data, type } = e.detail;
 
-				let userInfo = uni.getStorageSync("userInfo");
+				// let userInfo = uni.getStorageSync("userInfo");
 				uni.setStorageSync("scn", data.SCN);
 				uni.setStorageSync("userId", data.userId);
-				uni.setStorageSync("userInfo", userInfo);
+				// uni.setStorageSync("userInfo", userInfo);
 				uni.setStorageSync('date', Date.now());
 				uni.setStorageSync("memberInfo", {
 					gradeNO: data.gradeNO || '',
 					gradeName: data.gradeName || '',
 					loginName: data.loginName || ''
 				});
+				getApp().globalData.token = data.SCN;
 
 				console.log('type', type) // 根据 type 类型，跳转页面/路由
 				if(uni.getStorageSync("userId")) {
-					uni.switchTab({
-						url: "/pages/home/index/index"
+					oauthGomeInfo({clientType: "3", accessTokenDuration: 86400000}).then(data => {
+						getApp().globalData.userInfo = data;
+						uni.switchTab({
+							url: "/pages/home/index/index"
+						})
 					})
 				}
 			},

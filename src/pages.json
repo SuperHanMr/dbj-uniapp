@@ -7,6 +7,12 @@
 			}
 		},
 		{
+			"path": "pages/decorate/design-picture/index",
+			"style": {
+				"navigationBarTitleText": "设计图"
+			}
+		},
+		{
 			"path": "pages/decorate/no-house/index",
 			"style": {
 				"navigationBarTitleText": "未绑定房屋",
@@ -213,26 +219,37 @@
 				"navigationBarTitleText": "",
 				"enablePullDownRefresh": false
 			}
+		},
+		{
+			"path": "pages/decorate/add-house/add-house",
+			"style": {
+				"navigationBarTitleText": "",
+				"enablePullDownRefresh": false
+			}
+		},
+		{
+			"path": "pages/home/lives-room/lives-room",
+			"style": {
+				"navigationBarTitleText": "",
+				"enablePullDownRefresh": false
+			}
+		},
+		{
+			"path": "pages/home/select-city/select-city",
+			"style": {
+				"navigationBarTitleText": "",
+				"enablePullDownRefresh": false
+			}
 		}
 	    ,{
-            "path" : "pages/home/lives-room/lives-room",
+            "path" : "pages/real-case/real-case",
             "style" :                                                                                    
             {
-                "navigationBarTitleText": "",
+                "navigationBarTitleText": "真实案例",
                 "enablePullDownRefresh": false
             }
             
-        },
-        {
-              "path" : "pages/decorate/add-house/add-house",
-              "style" :                                                                                    
-              {
-                  "navigationBarTitleText": "新建房屋",
-                  "enablePullDownRefresh": false
-              }
-              
-          }
-        
+        }
     ],
 	"globalStyle": {
 		"navigationBarTextStyle": "black",
