@@ -7,7 +7,7 @@
 
 <script>
 	const url = require("@/pages/login/imgs/Lark20210823-152715.png");
-	import { oauthGomeInfo } from "../../api/user.js";
+	import { oauthGomeInfo } from "../../api/login.js";
 	export default {
 		data() {
 			return {
@@ -46,10 +46,10 @@
 				// type 类型  login为登录， register为注册，bindMobile为绑定手机号
 				let { data, type } = e.detail;
 
-				let userInfo = uni.getStorageSync("userInfo");
+				// let userInfo = uni.getStorageSync("userInfo");
 				uni.setStorageSync("scn", data.SCN);
 				uni.setStorageSync("userId", data.userId);
-				uni.setStorageSync("userInfo", userInfo);
+				// uni.setStorageSync("userInfo", userInfo);
 				uni.setStorageSync('date', Date.now());
 				uni.setStorageSync("memberInfo", {
 					gradeNO: data.gradeNO || '',
@@ -60,7 +60,8 @@
 
 				console.log('type', type) // 根据 type 类型，跳转页面/路由
 				if(uni.getStorageSync("userId")) {
-					oauthGomeInfo({clientType: "3", accessTokenDuration: 604800000}).then(res => {
+					oauthGomeInfo({clientType: "3", accessTokenDuration: 86400000}).then(data => {
+						getApp().globalData.userInfo = data;
 						uni.switchTab({
 							url: "/pages/home/index/index"
 						})

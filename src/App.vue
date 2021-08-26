@@ -7,8 +7,7 @@
 			token:''
 		},
 		onLaunch: function() {
-			if (!uni.getStorageSync("userId")) {
-			
+			if (!uni.getStorageSync("userId") || !uni.getStorageSync("scn")) {
 				setTimeout(() => {
 					uni.redirectTo({
 						url: 'pages/login/login'
