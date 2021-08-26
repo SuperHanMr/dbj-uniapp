@@ -212,6 +212,14 @@
 				"navigationBarTitleText": "",
 				"enablePullDownRefresh": false
 			}
+		}, 
+		{
+			"path": "pages/decorate/measure/measure",
+			"style": {
+				"navigationBarTitleText": "量房",
+				"enablePullDownRefresh": false
+			}
+
 		}
 	],
 	"globalStyle": {

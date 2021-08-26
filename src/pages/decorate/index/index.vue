@@ -1,6 +1,5 @@
 <template>
 	<view class="content">
-		装修
 		<decorate-notice v-if="noticeActive" @closeNotice='closeNotice' class="decorate-notice"></decorate-notice>
 		<drag-button-follow :style.sync="style" @btnClick='noticeActive=true' :follow='`left,right`'
 			className="drag-button" class="drag-button">
@@ -9,11 +8,16 @@
 				<text style="color: red;">2</text>
 			</view>
 		</drag-button-follow>
+		<view>
+			<view>量房</view>
+			<view>计算服务</view>
+			<view>设计服务</view>
+		</view>
 		<uni-popup ref="popup" type="bottom">
 			<view style="background-color: #fff;">
-				<button @btnClick="goToAddHouseInfo()">添加房屋信息</button>
-				<button @btnClick="goToDecorateService()">进行装修服务</button>
-				<button @btnClick="goToVerifyHouse()">进行验房服务</button>
+				<button @btnClick="goToAddHouseInfo">添加房屋信息</button>
+				<button @btnClick="goToDecorateService">进行装修服务</button>
+				<button @btnClick="goToVerifyHouse">进行验房服务</button>
 			</view>
 		</uni-popup>
 	</view>
@@ -31,7 +35,13 @@
 			return {
 				style: '',
 				noticeActive: false,
-				houses: []
+				houses: [{
+					id: 1, housename: "北京市石景山区叠翠庭院1区", isfirend: false, status: "设计阶段"
+				},{
+					id: 2, housename: "北京市石景山区叠翠庭院1区", isfirend: false, status: "未开工"
+				},{
+					id: 3, housename: "北京市石景山区叠翠庭院1区", isfirend: true, status: "未开工"
+				}]
 			}
 		},
 		methods: {
