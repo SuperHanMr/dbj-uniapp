@@ -19,14 +19,7 @@
       </view>
       <view class="form-item">
         <label class="item-label">楼型</label>
-        <radio-group>
-            <label>
-                <radio value="cb" checked="true" />选中
-            </label>
-            <label>
-                <radio value="cb" />未选中
-            </label>
-        </radio-group>
+        
       </view>
       <view class="form-item">
         <label class="item-label" >户型</label>

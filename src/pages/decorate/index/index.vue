@@ -1,6 +1,6 @@
 <template>
 	<view class="content">
-    <view @click="addHouse">123</view>
+		<span @click='toAdd'>装修</span>
 		<decorate-notice v-if="noticeActive" @closeNotice='closeNotice' class="decorate-notice"></decorate-notice>
 		<drag-button-follow :style.sync="style" @btnClick='noticeActive=true' :follow='`left,right`'
 			className="drag-button" class="drag-button">
@@ -9,89 +9,65 @@
 				<text style="color: red;">2</text>
 			</view>
 		</drag-button-follow>
+		<uni-popup ref="popup" type="bottom">
+			<view style="background-color: #fff;">
+				<button @btnClick="goToAddHouseInfo()">添加房屋信息</button>
+				<button @btnClick="goToDecorateService()">进行装修服务</button>
+				<button @btnClick="goToVerifyHouse()">进行验房服务</button>
+			</view>
+		</uni-popup>
 	</view>
 
 </template>
 
 <script>
 	export default {
+		mounted() {
+			if(this.houses.length < 1) {
+				this.openPopup()
+			}
+		},
 		data() {
 			return {
 				style: '',
 				noticeActive: false,
+				houses: []
 			}
 		},
 		methods: {
 			closeNotice() {
 				this.noticeActive = false
 			},
-      addHouse(){
+			openPopup() {
+				// 通过组件定义的ref调用uni-popup方法 ,如果传入参数 ，type 属性将失效 ，仅支持 ['top','left','bottom','right','center']
+				this.$refs.popup.open('bottom')
+			},
+      toAdd(){
+        console.log(123)
         uni.navigateTo({
-          url:"/pages/decorate/add-house/add-house"
+          url:'/pages/decorate/add-house/add-house'
         })
-      }
+      },
+			goToAddHouseInfo() {
+				
+			},
+			goToDecorateService() {
+				
+			},
+			goToVerifyHouse() {
+				
+			}
 		}
 	}
 </script>
 
 <style lang="scss" scoped>
-
-  
-  .navi-header-state {
-  	display: flex;
-  	flex-direction: row;
-  	width: 100%;
-  	background-color: red;
-  }
-  
-  .nav-bar {
-  	height: var(--status-bar-height);
-  	width: 100%;
-  }
-  
-  .arrow-b {
-  	width: 32rpx;
-  	height: 32rpx;
-  	margin-left: 1%;
-  	margin-top: 2.5%;
-  }
-  
-  .pop-up-ext {
-  	position: fixed;
-  	width: 100%;
-  	// height: auto;
-  }
-  
-  .pop-up-bu {
-  	position: fixed;
-    height: auto;
-  	bottom: 0;
-  	top: 0;
-  	left: 0;
-  	right: 0;
-  	// background-color: rgba(0, 0, 0, 0.4);
-  	// transition-duration: 0.3s;
-  	// transition: 300ms ease 0ms;
-  	// transform: translateY(102rpx);
-  	// transition-property: transform, opacity;
-  	// transform-origin: 50% 50%;
-  	// opacity: 1;
-  }
-  
-  .pop-up-content {
-  	box-sizing: border-box;
-  	width: 100%;
-  	padding-bottom: 88rpx;
-  	padding-left: 44rpx;
-  	padding-right: 44rpx;
-  	background-color: #fff;
-  	// height: 100%;
-  }
 	.content {
 		width: 100%;
 		height: 100%;
 		position: relative;
 	}
+
 	.drag-button {
 		background: #FFFFFF;
 		border: 0.5px solid #EEEEEE;

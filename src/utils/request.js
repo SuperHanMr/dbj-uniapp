@@ -69,11 +69,10 @@ instance.interceptors.request.use(
 			});
 			const userInfo = getApp().globalData.userInfo;
 
-
-			if (userInfo) {
+			if (userInfo && userInfo.accessToken) {
 				config.headers = {
 					...(config.headers ?? {}),
-					accessToken: `${user.accessToken}`,
+					accessToken: `${userInfo.accessToken}`,
 				};
 			}
 			return config;
@@ -90,14 +89,16 @@ instance.interceptors.response.use(
 			if (res.data.code !== 1) {
 				return Promise.reject(res)
 			} else {
-				return res
+				if(res.data&&res.data.data){
+					return res.data.data;
+				}
+				return res.data;
 			}
 		},
 		// 请求失败
 		(error) => {
 			uni.hideLoading();
-			console.log("response-error:", error.response.status);
-			if (error.response.status === 401) {
+			if (error.response&&error.response.status === 401) {
 				return new Promise((resolve, reject) => {
 					failRequestList.push({
 						config: error.config,
