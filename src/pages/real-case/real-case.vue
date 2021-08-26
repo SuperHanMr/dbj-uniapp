@@ -1,6 +1,7 @@
 <template>
 	<view>
 		<DesignCase />
+		·12·12·12
 	</view>
 </template>
 

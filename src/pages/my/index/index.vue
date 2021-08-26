@@ -96,13 +96,13 @@ export default {
     handlerToSetUp() {
       console.log("点击了设置");
       uni.navigateTo({
-        url: "../set-up/index/index",
+				url: "../../real-case/real-case",
       });
     },
     handleSetUp() {
       console.log("点击设置");
       uni.navigateTo({
-        url: "../../real-case/real-case",
+				url: "../set-up/set-up",
       });
     },
     handlerPersonalData() {
