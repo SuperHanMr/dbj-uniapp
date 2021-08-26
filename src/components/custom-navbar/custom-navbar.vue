@@ -6,6 +6,11 @@
 			<view>
 				{{title}}
 			</view>
+
+		</view>
+		<view class="navi-back" :style="{top:backTop,height:backHeight}">
+			<slot>
+			</slot>
 		</view>
 	</view>
 </template>
@@ -17,6 +22,8 @@
 			return {
 				tophight: 0,
 				navBarHeight: 0,
+				backTop: 0,
+				backHeight: 0
 			};
 		},
 		props: {
@@ -31,6 +38,10 @@
 			opacity: {
 				type: Number,
 				default: 100
+			},
+			showBack: {
+				type: Boolean,
+				default: true
 			}
 		},
 		methods: {},
@@ -41,6 +52,9 @@
 			this.tophight = systemInfo.statusBarHeight + "px";
 			// 获取胶囊按钮的位置
 			const menuButtonInfo = uni.getMenuButtonBoundingClientRect();
+			this.backTop = menuButtonInfo.top + 'px';
+			this.backHeight = menuButtonInfo.height + 'px';
+			console.log('**********', this.backHeight);
 			// 导航栏高度 = 状态栏到胶囊的间距（ 胶囊距上距离 - 状态栏高度 ）*2  +  胶囊高度
 			this.navBarHeight =
 				(menuButtonInfo.top - systemInfo.statusBarHeight) * 2 +
@@ -57,6 +71,16 @@
 </script>
 
 <style lang="scss">
+	.navi-back {
+		position: absolute;
+		left: 12px;
+		width: 50%;
+		display: flex;
+		flex-direction: row;
+		align-items: center;
+		justify-content: flex-start;
+	}
+
 	.navbar {
 		position: fixed;
 		top: 0;
@@ -77,6 +101,7 @@
 		width: 100%;
 		align-items: center;
 		justify-content: center;
+		position: relative;
 
 		.select-city {
 			width: 30rpx;

@@ -237,7 +237,7 @@
 		{
 			"path": "pages/home/select-city/select-city",
 			"style": {
-				"navigationBarTitleText": "",
+				"navigationBarTitleText": "城市选择",
 				"enablePullDownRefresh": false
 			}
 		}
