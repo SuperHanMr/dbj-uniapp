@@ -4,7 +4,7 @@
 		<view class="item-list">
 			<view class="notice-item" @click="to(321)">asfasf</view>
 		</view>
-		
+		 
 	</view>
 </template>
 

@@ -7,6 +7,12 @@
 			}
 		},
 		{
+			"path": "pages/decorate/design-picture/index",
+			"style": {
+				"navigationBarTitleText": "设计图"
+			}
+		},
+		{
 			"path": "pages/decorate/no-house/index",
 			"style": {
 				"navigationBarTitleText": "未绑定房屋",
@@ -213,26 +219,36 @@
 				"navigationBarTitleText": "",
 				"enablePullDownRefresh": false
 			}
+		},
+		{
+			"path": "pages/home/lives-room/lives-room",
+			"style": {
+				"navigationBarTitleText": "",
+				"enablePullDownRefresh": false
+			}
+		},
+		{
+			"path": "pages/decorate/add-house/add-house",
+			"style": {
+				"navigationBarTitleText": "",
+				"enablePullDownRefresh": false
+			}
+		},
+		{
+			"path": "pages/home/lives-room/lives-room",
+			"style": {
+				"navigationBarTitleText": "",
+				"enablePullDownRefresh": false
+			}
+		},
+		{
+			"path": "pages/home/select-city/select-city",
+			"style": {
+				"navigationBarTitleText": "",
+				"enablePullDownRefresh": false
+			}
 		}
-	    ,{
-            "path" : "pages/home/lives-room/lives-room",
-            "style" :                                                                                    
-            {
-                "navigationBarTitleText": "",
-                "enablePullDownRefresh": false
-            }
-            
-        }
-        ,{
-            "path" : "pages/home/select-city/select-city",
-            "style" :                                                                                    
-            {
-                "navigationBarTitleText": "",
-                "enablePullDownRefresh": false
-            }
-            
-        }
-    ],
+	],
 	"globalStyle": {
 		"navigationBarTextStyle": "black",
 		"navigationBarTitleText": "uni-app",
