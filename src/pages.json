@@ -245,7 +245,7 @@
             "path" : "pages/real-case/real-case",
             "style" :                                                                                    
             {
-                "navigationBarTitleText": "",
+                "navigationBarTitleText": "真实案例",
                 "enablePullDownRefresh": false
             }
             
