@@ -221,13 +221,6 @@
 			}
 		},
 		{
-			"path": "pages/home/lives-room/lives-room",
-			"style": {
-				"navigationBarTitleText": "",
-				"enablePullDownRefresh": false
-			}
-		},
-		{
 			"path": "pages/decorate/add-house/add-house",
 			"style": {
 				"navigationBarTitleText": "",
