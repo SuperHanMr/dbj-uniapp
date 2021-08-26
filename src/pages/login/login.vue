@@ -58,6 +58,7 @@
 					gradeName: data.gradeName || '',
 					loginName: data.loginName || ''
 				});
+				getApp().globalData.token = data.SCN;
 
 				console.log('type', type) // 根据 type 类型，跳转页面/路由
 				if(uni.getStorageSync("userId")) {

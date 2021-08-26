@@ -223,6 +223,15 @@
             }
             
         }
+        ,{
+            "path" : "pages/home/select-city/select-city",
+            "style" :                                                                                    
+            {
+                "navigationBarTitleText": "",
+                "enablePullDownRefresh": false
+            }
+            
+        }
     ],
 	"globalStyle": {
 		"navigationBarTextStyle": "black",
