@@ -4,3 +4,6 @@ import request from '../utils/request';
 export function designList(params) {
 	return request.get(`/app/Design/list`, params);
 }
+export function queryEstates(params) {
+	return request.get("/customer/app/estate/queryEstates", params)
+}

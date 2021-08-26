@@ -1,6 +1,5 @@
 <template>
   <view class="content">
-    <span @click='toAdd'>装修</span>
 		<view class="v1">
 			<text>装修服务</text>
 			<text>></text>
@@ -35,46 +34,26 @@
       type="bottom"
     >
       <view style="background-color: #fff;">
-        <button @btnClick="goToAddHouseInfo">添加房屋信息</button>
-        <button @btnClick="goToDecorateService">进行装修服务</button>
-        <button @btnClick="goToVerifyHouse">进行验房服务</button>
+        <button @click="goToAddHouseInfo">添加房屋信息</button>
+        <button @click="goToDecorateService">进行装修服务</button>
+        <button @click="goToVerifyHouse">进行验房服务</button>
       </view>
     </uni-popup>
   </view>
-
 </template>
 
 <script>
+import { queryEstates } from "../../../api/decorate.js"
 export default {
-  mounted() {
-    if (this.houses.length < 1) {
-      this.openPopup();
-    }
-  },
+	created() {
+		this.getHouses()
+	},
+  mounted() {},
   data() {
     return {
       style: "",
       noticeActive: false,
-      houses: [
-        {
-          id: 1,
-          housename: "北京市石景山区叠翠庭院1区",
-          isfirend: false,
-          status: "设计阶段",
-        },
-        {
-          id: 2,
-          housename: "北京市石景山区叠翠庭院1区",
-          isfirend: false,
-          status: "未开工",
-        },
-        {
-          id: 3,
-          housename: "北京市石景山区叠翠庭院1区",
-          isfirend: true,
-          status: "未开工",
-        },
-      ],
+      houses: [],
     };
   },
   methods: {
@@ -85,15 +64,21 @@ export default {
       // 通过组件定义的ref调用uni-popup方法 ,如果传入参数 ，type 属性将失效 ，仅支持 ['top','left','bottom','right','center']
       this.$refs.popup.open("bottom");
     },
-    toAdd() {
-      console.log(123);
-      uni.navigateTo({
-        url: "/pages/decorate/add-house/add-house",
-      });
-    },
-    goToAddHouseInfo() {},
+    goToAddHouseInfo() {
+			uni.navigateTo({
+			  url: "/pages/decorate/add-house/add-house",
+			});
+		},
     goToDecorateService() {},
     goToVerifyHouse() {},
+		getHouses() {
+			queryEstates({}).then(data => {
+				if (data.length < 1) {
+				  this.openPopup();
+				}
+				this.houses = data
+			})
+		}
   },
 };
 </script>
