@@ -1,5 +1,12 @@
 {
 	"pages": [ //pages数组中第一项表示应用启动页，参考：https://uniapp.dcloud.io/collocation/pages
+  {
+  	"path": "pages/decorate/add-house/add-house",
+  	"style": {
+  		"navigationBarTitleText": "",
+  		"enablePullDownRefresh": false
+  	}
+  },
 		{
 			"path": "pages/decorate/index/index",
 			"style": {
@@ -220,13 +227,7 @@
 				"enablePullDownRefresh": false
 			}
 		},
-		{
-			"path": "pages/decorate/add-house/add-house",
-			"style": {
-				"navigationBarTitleText": "",
-				"enablePullDownRefresh": false
-			}
-		},
+		
 		{
 			"path": "pages/home/lives-room/lives-room",
 			"style": {
@@ -246,6 +247,15 @@
             "style" :                                                                                    
             {
                 "navigationBarTitleText": "真实案例",
+                "enablePullDownRefresh": false
+            }
+            
+        }
+        ,{
+            "path" : "pages/my/my-house/my-house",
+            "style" :                                                                                    
+            {
+                "navigationBarTitleText": "房屋管理",
                 "enablePullDownRefresh": false
             }
             

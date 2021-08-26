@@ -11,7 +11,7 @@
       v-if="noticeActive"
       @closeNotice='closeNotice'
       class="decorate-notice"
-    ></decorate-notice>
+    ></decorate-notice> 
     <drag-button-follow
       :style.sync="style"
       @btnClick='noticeActive=true'
