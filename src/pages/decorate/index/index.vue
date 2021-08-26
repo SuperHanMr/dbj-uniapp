@@ -67,7 +67,7 @@
 		height: 100%;
 		position: relative;
 	}
-
+  
 	.drag-button {
 		background: #FFFFFF;
 		border: 0.5px solid #EEEEEE;

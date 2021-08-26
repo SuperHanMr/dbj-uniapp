@@ -26,6 +26,7 @@
 <style>
 	page {
 		height: 100%;
+    background-color: #F5F6F6;
 	}
 
 	::-webkit-scrollbar {

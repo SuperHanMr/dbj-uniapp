@@ -227,11 +227,12 @@
               "path" : "pages/decorate/add-house/add-house",
               "style" :                                                                                    
               {
-                  "navigationBarTitleText": "",
+                  "navigationBarTitleText": "新建房屋",
                   "enablePullDownRefresh": false
               }
               
           }
+        
     ],
 	"globalStyle": {
 		"navigationBarTextStyle": "black",
