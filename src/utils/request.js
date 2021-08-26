@@ -110,6 +110,16 @@ instance.interceptors.response.use(
 					//重新请求接口
 					retryAllFailRequest();
 				})
+			} else if (error.response && error.response.status === 3504) {
+				uni.showModal({
+				    title: '提示',
+				    content: '用户信息已过期,请重新登录',
+				    success: function (res) {
+				       uni.navigateTo({
+				       	url:"/src/pages/login/login.vue"
+				       })
+				    }
+				});
 			}
 			console.error("------response-error-----", error);
 			return Promise.reject(error.response);
