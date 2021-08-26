@@ -3,15 +3,21 @@
 		globalData: {
 			userInfo: {
 
-			}
+			},
+			token:''
 		},
 		onLaunch: function() {
 			if (!uni.getStorageSync("userId")) {
+			
 				setTimeout(() => {
 					uni.redirectTo({
 						url: 'pages/login/login'
 					})
 				}, 0)
+			}else{
+				let token=	uni.getStorageSync("scn");
+				this.globalData.token =token;
+				
 			}
 		},
 		onShow: function() {
