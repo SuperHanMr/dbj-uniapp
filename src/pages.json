@@ -252,7 +252,7 @@
 			"path": "pages/real-case/real-case",
 			"style": {
 				"navigationBarTitleText": "真实案例",
-				"enablePullDownRefresh": false
+				"enablePullDownRefresh": true
 			}
 		},
 		{
