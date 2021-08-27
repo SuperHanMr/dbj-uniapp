@@ -13,6 +13,13 @@
 			}
 		},
 		{
+			"path": "pages/decorate/no-house/index",
+			"style": {
+				"navigationBarTitleText": "未绑定房屋",
+				"usingComponents": {}
+			}
+		},
+		{
 			"path": "pages/login/login",
 			"style": {
 				"navigationBarTitleText": "用户登录",
@@ -25,15 +32,8 @@
 			"path": "pages/decorate/have-house/index",
 			"style": {
 				"navigationBarTitleText": "我的房屋名称",
-				"enablePullDownRefresh": true,
-				"transparentTitle": "auto",
-				"navigationStyle": "custom"
-			}
-		},
-		{
-			"path": "pages/decorate/no-house/index",
-			"style": {
-				"navigationBarTitleText": "未绑定房屋",
+				"navigationBarTextStyle": "black",
+				"navigationStyle": "custom",
 				"usingComponents": {}
 			}
 		},
@@ -223,7 +223,7 @@
 		{
 			"path": "pages/decorate/add-house/add-house",
 			"style": {
-				"navigationBarTitleText": "",
+				"navigationBarTitleText": "新增房屋",
 				"enablePullDownRefresh": false
 			}
 		},
@@ -237,30 +237,44 @@
 		{
 			"path": "pages/home/select-city/select-city",
 			"style": {
-				"navigationBarTitleText": "城市选择",
+				"navigationBarTitleText": "",
 				"enablePullDownRefresh": false
 			}
-		}, {
+		},
+		{
+			"path": "pages/my/my-order/my-order",
+			"style": {
+				"navigationBarTitleText": "我的订单",
+				"enablePullDownRefresh": false
+			}
+		},
+		{
 			"path": "pages/real-case/real-case",
 			"style": {
 				"navigationBarTitleText": "真实案例",
 				"enablePullDownRefresh": false
 			}
-
-		}, {
+		},
+		{
+			"path": "pages/my/my-house/my-house",
+			"style": {
+				"navigationBarTitleText": "房屋",
+				"enablePullDownRefresh": false
+			}
+		},
+		{
 			"path": "pages/decorate/no-house-decorate/no-house-decorate",
 			"style": {
 				"navigationBarTitleText": "装修服务",
 				"enablePullDownRefresh": true
 			}
-
-		}, {
+		},
+		{
 			"path": "pages/decorate/check/check",
 			"style": {
 				"navigationBarTitleText": "验房服务",
 				"enablePullDownRefresh": true
 			}
-
 		}
 	],
 	"globalStyle": {
@@ -281,7 +295,8 @@
 		"selectedColor": "yellow",
 		"borderStyle": "black",
 		"backgroundColor": "#ffffff",
-		"list": [{
+		"list": [
+			{
 				"pagePath": "pages/home/index/index",
 				// "iconPath": "static/component.png",
 				// "selectedIconPath": "static/componentHL.png",
@@ -315,10 +330,12 @@
 	},
 	"condition": { //模式配置，仅开发期间生效
 		"current": 0, //当前激活的模式(list 的索引项)
-		"list": [{
-			"name": "", //模式名称
-			"path": "", //启动页面，必选
-			"query": "" //启动参数，在页面的onLoad函数里面得到
-		}]
+		"list": [
+			{
+				"name": "", //模式名称
+				"path": "", //启动页面，必选
+				"query": "" //启动参数，在页面的onLoad函数里面得到
+			}
+		]
 	}
 }

@@ -2,7 +2,10 @@
   <view class="my-container">
     <view class="my-header">
       <view class="avatar-img">
-        <!-- <image src="../../../static/60x60.png" mode="center" /> -->
+        <image
+          src="../../login/imgs/Lark20210823-152715.png"
+          mode="center"
+        />
       </view>
       <view class="user-name">
         用户名称
@@ -11,7 +14,6 @@
           @click="handlerPersonalData"
         >
           编辑个人资料
-          <uni-icons type=""></uni-icons>
         </view>
       </view>
       <view
@@ -23,13 +25,25 @@
     </view>
     <view class="my-order">
       <view class="order-header">
-        我的订单
+        <uni-list :border="false">
+          <uni-list-item
+            link
+            to="../my-order/my-order"
+            @click="onClick($event,1)"
+          >
+            <template slot="header">
+              我的订单
+            </template>
+            <template slot="footer">
+              全部
+            </template>
+          </uni-list-item>
+        </uni-list>
       </view>
     </view>
     <view class="personal-center">
       <view class="personal-header">
         个人中心
-
       </view>
       <view class="personal-body">
         <view class="main-body">
@@ -135,8 +149,9 @@ export default {
   background-color: #c0c0c0;
 }
 .my-container .my-header .avatar-img image {
-  width: 60rpx;
-  height: 60rpx;
+  width: 120rpx;
+  height: 120rpx;
+  border-radius: 50%;
 }
 .my-container .my-order {
   width: 100%;
@@ -144,6 +159,9 @@ export default {
   background-color: #c0c0c0;
   margin-top: 20rpx;
   display: flex;
+}
+.my-container .my-order .order-header {
+  width: 100%;
 }
 .personal-center {
   width: 100%;

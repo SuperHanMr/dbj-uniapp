@@ -1,7 +1,7 @@
 <template>
-	<view class="content" v-if="houses.length > 0">
+	<view class="content">
 		<view class="v1">
-			<text>装修服务</text>
+			<text @click="openPopup">装修服务</text>
 			<view @click="goToMyDecorate">></view>
 		</view>
 		<view class="design-picture">
@@ -22,28 +22,15 @@
 			<view>精算服务</view>
 			<view>设计服务</view>
 		</view>
-		<!-- <uni-popup
-      ref="popup"
-      type="bottom"
-    >
-      <view style="background-color: #fff;">
-        <button @click="goToAddHouseInfo">添加房屋信息</button>
-        <button @click="goToDecorateService">进行装修服务</button>
-        <button @click="goToVerifyHouse">进行验房服务</button>
-      </view>
-    </uni-popup> -->
+
 	</view>
-	<view v-else></view>
 </template>
 
 <script>
 	import {
 		queryEstates
-	} from "../../../api/decorate.js"
+	} from "../../../api/decorate.js";
 	export default {
-		// created() {
-			
-		// },
 		mounted() {},
 		onShow() {
 			if (this.houses.length < 1) {
@@ -61,41 +48,35 @@
 			closeNotice() {
 				this.noticeActive = false;
 			},
-			// openPopup() {
-			//   // 通过组件定义的ref调用uni-popup方法 ,如果传入参数 ，type 属性将失效 ，仅支持 ['top','left','bottom','right','center']
-			//   this.$refs.popup.open("bottom");
-			// },
 			goToAddHouseInfo() {
 				uni.navigateTo({
 					url: "/pages/decorate/add-house/add-house",
 				});
 			},
-			goToDecorateService() {},
-			goToVerifyHouse() {},
 			goDesignPicture() {
 				uni.navigateTo({
 					url: "/pages/decorate/design-picture/index",
-				})
+				});
 			},
 			goToMyDecorate() {
 				uni.navigateTo({
 					url: "/pages/decorate/my-decorate/my-decorate",
-				})
+				});
 			},
 			getHouses() {
 				queryEstates({
-					isNeedRelative: true
-				}).then(data => {
-					if (data.length <= 1) {
+					isNeedRelative: true,
+				}).then((data) => {
+					if (data.length < 1) {
 						uni.navigateTo({
 							url: "/pages/decorate/no-house/index",
-						})
+						});
 					} else {
 						// this.houses = data;
 						getApp().globalData.houses = data;
 					}
-				})
-			}
+				});
+			},
 		},
 	};
 </script>
