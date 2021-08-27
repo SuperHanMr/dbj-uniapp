@@ -1,7 +1,7 @@
 <template>
   <view class="content">
 		<view class="v1">
-			<text>装修服务</text>
+			<text @click="openPopup">装修服务</text>
 			<view @click="goToMyDecorate">></view>
 		</view>
 		<view class="design-picture">
@@ -63,6 +63,11 @@ export default {
     openPopup() {
       // 通过组件定义的ref调用uni-popup方法 ,如果传入参数 ，type 属性将失效 ，仅支持 ['top','left','bottom','right','center']
       this.$refs.popup.open("bottom");
+      uni.hideTabBar({
+      animation: true
+      })
+      
+
     },
     goToAddHouseInfo() {
 			uni.navigateTo({

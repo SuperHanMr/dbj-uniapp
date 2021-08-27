@@ -131,10 +131,19 @@
         uni.chooseLocation({
             success: function (res) {
               console.log(res)
-                console.log('位置名称：' + res.name);
-                console.log('详细地址：' + res.address);
-                console.log('纬度：' + res.latitude);
-                console.log('经度：' + res.longitude);
+              let that = this
+              uni.request({
+                //将经纬度转换成adcode
+                url:"https://api.map.baidu.com/reverse_geocoding/v3/?ak=s0deCKPpT7GZBxtBLGs9gMkGTs80uuyD&output=json&coordtype=gcj02ll&location="+ res.latitude+','+res.longitude,
+                success: (res) => {
+                        console.log(res.data);
+                        // this.text = 'request success';
+                        // that.addData.location = res.data
+                        // console.log(that.addData.location)
+                    } 
+              })
+              console.log(res) 
+
             }
         });
       },
