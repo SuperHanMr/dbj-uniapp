@@ -246,7 +246,7 @@
               <view class="total-price">
                 <view class="product-price">
                   <text style="font-size:22rpx;">￥</text>
-                  <text>28.</text>
+                  <text>111111111128.</text>
                   <text style="font-size:22rpx;">00</text>
                 </view>
                 <view>共1件</view>
@@ -1059,8 +1059,8 @@ export default {
       }
     }
     .product-img {
-      display: flex;
-      max-width: 532rpx;
+			flex:1;
+			overflow: hidden;
       scroll-view {
         image {
           width: 136rpx;
@@ -1078,7 +1078,7 @@ export default {
     }
     .total-price {
       display: flex;
-      flex: 1;
+			
       flex-flow: column nowrap;
       align-items: flex-end;
       color: #999;
