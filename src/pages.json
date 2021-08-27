@@ -52,6 +52,41 @@
 				"navigationBarTitleText": "分类"
 			}
 		},
+    {
+      "path" : "pages/classify/search/index",
+      "style" :                                                                                    
+      {
+          "navigationBarTitleText": "",
+          "enablePullDownRefresh": false
+      }     
+     }
+    ,{
+        "path" : "pages/classify/search-result/search-result",
+        "style" :                                                                                    
+        {
+            "navigationBarTitleText": "",
+            "enablePullDownRefresh": false
+        }
+        
+    },
+    {
+        "path" : "pages/classify/goods-list/index",
+        "style" :                                                                                    
+        {
+            "navigationBarTitleText": "",
+            "enablePullDownRefresh": false
+        }
+        
+    },
+    {
+        "path" : "pages/classify/goods-detail/goods-detail",
+        "style" :                                                                                    
+        {
+            "navigationBarTitleText": "",
+            "enablePullDownRefresh": false
+        }
+        
+    },
 		{
 			"path": "pages/message/index/index",
 			"style": {
