@@ -1,7 +1,7 @@
 <template>
   <view class="base-info-container">
     <view class="main-body">
-      <uni-list class="uni-list">
+      <uni-list :border="false" class="uni-list">
         <uni-list-item
           title="头像"
           link
