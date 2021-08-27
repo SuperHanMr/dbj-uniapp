@@ -1085,8 +1085,8 @@
 
 "@dcloudio/uni-ui@1.4.0":
   version "1.4.0"
-  resolved "https://registry.nlark.com/@dcloudio/uni-ui/download/@dcloudio/uni-ui-1.4.0.tgz#a4c23a6172f45b5edf8c9e707c4c44fe65ae30bb"
-  integrity sha1-pMI6YXL0W17fjJ5wfExE/mWuMLs=
+  resolved "https://registry.npmjs.org/@dcloudio/uni-ui/-/uni-ui-1.4.0.tgz"
+  integrity sha512-y8+zqb4XYALEQurBG/9kQ+FIULdPnS6aK3yyZ173vgMPJwtw6TCHzvT56ephhs5+q0znqYHczeBIrU8ruu4XMw==
 
 "@dcloudio/vue-cli-plugin-hbuilderx@^2.0.0-31920210709003":
   version "2.0.0-31920210709003"

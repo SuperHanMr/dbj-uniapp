@@ -27,6 +27,7 @@ let failRequestList = [];
 let retryMap = new Map();
 
 function retryAllFailRequest() {
+	console.log('retry!!!!!!!!!!!!!!!!!!!!');
 	failRequestList.forEach(info => {
 		//每个请求最多重试3次
 		let requestKey = getRequestKey(info.config);
@@ -40,7 +41,7 @@ function retryAllFailRequest() {
 		} else {
 			retryMap.set(requestKey, retryTimes + 1);
 		}
-		service(info.config)
+		instance(info.config)
 			.then(info.resolve)
 			.catch(info.reject);
 	});
@@ -67,13 +68,12 @@ instance.interceptors.request.use(
 				title: '加载中...',
 				mask: true
 			});
-			const userInfo = getApp().globalData.userInfo;
+			const token = getApp().globalData.token;
 
-
-			if (userInfo) {
+			if (token) {
 				config.headers = {
 					...(config.headers ?? {}),
-					accessToken: `${user.accessToken}`,
+					accessToken: `${token}`,
 				};
 			}
 			return config;
@@ -90,34 +90,46 @@ instance.interceptors.response.use(
 			if (res.data.code !== 1) {
 				return Promise.reject(res)
 			} else {
-				return res
+				if (res.data && res.data.data) {
+					return res.data.data;
+				}
+				return res.data;
 			}
 		},
 		// 请求失败
 		(error) => {
 			uni.hideLoading();
-			console.log("response-error:", error.response.status);
-			if (error.response.status === 401) {
+			if (error.response && error.response.status === 401) {
+				//刷新token
+				refrishToken();
 				return new Promise((resolve, reject) => {
 					failRequestList.push({
 						config: error.config,
 						resolve: resolve,
 						reject: reject
 					});
-					// window._APP_EVENT_onNewToken = function(token) {
-					// 	if (token) {
-					// 		setAccessToken(token);
-					// 		retryAllFailRequest();
-					// 	}
-					// }
-					// window._APP_ACTION_getNewToken.postMessage(JSON.stringify({
-					// 	token: requestConfig.accessToken || ""
-					// }));
+					//重新请求接口
+					retryAllFailRequest();
 				})
+			} else if (error.response && error.response.status === 3504) {
+				uni.showModal({
+				    title: '提示',
+				    content: '用户信息已过期,请重新登录',
+				    success: function (res) {
+				       uni.navigateTo({
+				       	url:"/src/pages/login/login.vue"
+				       })
+				    }
+				});
 			}
 			console.error("------response-error-----", error);
 			return Promise.reject(error.response);
 		},
 );
+async function refrishToken() {
+	let res = await instance.post('/app/oauth/gome/login', {
+		clientType: 3
+	});
+}
 
 export default instance;

@@ -7,12 +7,9 @@
 			}
 		},
 		{
-			"path": "pages/decorate/have-house/index",
+			"path": "pages/decorate/design-picture/index",
 			"style": {
-				"navigationBarTitleText": "我的房屋名称",
-				"navigationBarTextStyle": "black",
-				"navigationStyle": "custom",
-				"usingComponents": {}
+				"navigationBarTitleText": "设计图"
 			}
 		},
 		{
@@ -27,8 +24,17 @@
 			"style": {
 				"navigationBarTitleText": "用户登录",
 				"usingComponents": {
-					"loginEmpower": "/wxcomponents/loginSDK/loginEmpower"
+					"gome-login": "/wxcomponents/gome-login/loginEmpower"
 				}
+			}
+		},
+		{
+			"path": "pages/decorate/have-house/index",
+			"style": {
+				"navigationBarTitleText": "我的房屋名称",
+				"navigationBarTextStyle": "black",
+				"navigationStyle": "custom",
+				"usingComponents": {}
 			}
 		},
 		{
@@ -61,7 +67,8 @@
 		{
 			"path": "pages/my/set-up/set-up",
 			"style": {
-				"navigationBarTitleText": "设置"
+				"navigationBarTitleText": "设置",
+				"navigationBarBackgroundColor": "#FFFFFF"
 			}
 		},
 		{
@@ -186,21 +193,76 @@
 			}
 		},
 		{
-			"path": "pages/my/set-up/index/index",
+			"path": "pages/my/set-up/agreement/service-agreement",
 			"style": {
 				"navigationBarTitleText": "",
 				"enablePullDownRefresh": false
 			}
 		},
 		{
-				"path" : "pages/my/my-order/my-order",
-				"style" :                                                                                    
-				{
-					"navigationBarTitleText": "我的订单",
-					"enablePullDownRefresh": false
-				}
+			"path": "pages/my/set-up/agreement/code-of-conduct",
+			"style": {
+				"navigationBarTitleText": "",
+				"enablePullDownRefresh": false
+			}
+		},
+		{
+			"path": "pages/my/set-up/agreement/privacy-agreement",
+			"style": {
+				"navigationBarTitleText": "",
+				"enablePullDownRefresh": false
+			}
+		},
+		{
+			"path": "pages/my/set-up/agreement/property-rights-clause",
+			"style": {
+				"navigationBarTitleText": "",
+				"enablePullDownRefresh": false
+			}
+		},
+		{
+			"path": "pages/decorate/add-house/add-house",
+			"style": {
+				"navigationBarTitleText": "新增房屋",
+				"enablePullDownRefresh": false
+			}
+		},
+		{
+			"path": "pages/home/lives-room/lives-room",
+			"style": {
+				"navigationBarTitleText": "",
+				"enablePullDownRefresh": false
+			}
+		},
+		{
+			"path": "pages/home/select-city/select-city",
+			"style": {
+				"navigationBarTitleText": "",
+				"enablePullDownRefresh": false
+			}
+		},
+		{
+			"path": "pages/my/my-order/my-order",
+			"style": {
+				"navigationBarTitleText": "我的订单",
+				"enablePullDownRefresh": false
+			}
+		},
+		{
+			"path": "pages/real-case/real-case",
+			"style": {
+				"navigationBarTitleText": "真实案例",
+				"enablePullDownRefresh": false
+			}
+		},
+		{
+			"path": "pages/my/my-house/my-house",
+			"style": {
+				"navigationBarTitleText": "房屋",
+				"enablePullDownRefresh": false
+			}
 		}
-  ],
+	],
 	"globalStyle": {
 		"navigationBarTextStyle": "black",
 		"navigationBarTitleText": "uni-app",

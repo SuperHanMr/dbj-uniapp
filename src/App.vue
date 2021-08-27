@@ -2,11 +2,22 @@
 	export default {
 		globalData: {
 			userInfo: {
-
-			}
+			},
+			token:'',
+			city:''
 		},
 		onLaunch: function() {
-			console.log('App Launch')
+			if (!uni.getStorageSync("userId") || !uni.getStorageSync("scn")) {
+				setTimeout(() => {
+					uni.redirectTo({
+						url: 'pages/login/login'
+					})
+				}, 0)
+			}else{
+				let token=	uni.getStorageSync("scn");
+				this.globalData.token =token;
+				
+			}
 		},
 		onShow: function() {
 			console.log('App Show')
@@ -20,6 +31,7 @@
 <style>
 	page {
 		height: 100%;
+    background-color: #F5F6F6;
 	}
 
 	::-webkit-scrollbar {

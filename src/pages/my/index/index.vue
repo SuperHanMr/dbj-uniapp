@@ -60,7 +60,7 @@
       </view>
     </view>
     <view @click="handlerToShop">购物车</view>
-    <view @click="handlerToSetUp">设置</view>
+    <view @click="handlerToSetUp">真实案例</view>
   </view>
 
 </template>
@@ -110,13 +110,13 @@ export default {
     handlerToSetUp() {
       console.log("点击了设置");
       uni.navigateTo({
-        url: "../set-up/index/index",
+				url: "../../real-case/real-case",
       });
     },
     handleSetUp() {
       console.log("点击设置");
       uni.navigateTo({
-        url: "../set-up/set-up",
+				url: "../set-up/set-up",
       });
     },
     handlerPersonalData() {
