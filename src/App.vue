@@ -2,9 +2,10 @@
 	export default {
 		globalData: {
 			userInfo: {
-
 			},
-			token:''
+			token:'',
+			city:'',
+			houses: []
 		},
 		onLaunch: function() {
 			if (!uni.getStorageSync("userId") || !uni.getStorageSync("scn")) {
@@ -31,6 +32,7 @@
 <style>
 	page {
 		height: 100%;
+    background-color: #F5F6F6;
 	}
 
 	::-webkit-scrollbar {

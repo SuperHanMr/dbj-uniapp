@@ -1,12 +1,17 @@
 <template>
   <view class="content">
-		<view class="v1">
-			<text>装修服务</text>
-			<view @click="goToMyDecorate">></view>
-		</view>
-		<view class="design-picture">
-			<image @click="goDesignPicture" mode="aspectFit" src="https://gimg2.baidu.com/image_search/src=http%3A%2F%2Fclubfiles.liba.com%2F2006%2F08%2F23%2F15%2F4603714.jpg&refer=http%3A%2F%2Fclubfiles.liba.com&app=2002&size=f9999,10000&q=a80&n=0&g=0n&fmt=jpeg?sec=1632561406&t=2224059e9c261a09a68eaffa2d2e371d"></image>
-		</view>
+    <view class="v1">
+      <text>装修服务</text>
+      <view @click="goToMyDecorate">></view>
+    </view>
+    <view class="design-picture">
+      <image
+        @click="goDesignPicture"
+        mode="aspectFit"
+        src="https://gimg2.baidu.com/image_search/src=http%3A%2F%2Fclubfiles.liba.com%2F2006%2F08%2F23%2F15%2F4603714.jpg&refer=http%3A%2F%2Fclubfiles.liba.com&app=2002&size=f9999,10000&q=a80&n=0&g=0n&fmt=jpeg?sec=1632561406&t=2224059e9c261a09a68eaffa2d2e371d"
+      >
+      </image>
+    </view>
     <decorate-notice
       v-if="noticeActive"
       @closeNotice='closeNotice'
@@ -29,66 +34,59 @@
       <view>精算服务</view>
       <view>设计服务</view>
     </view>
-    <uni-popup
-      ref="popup"
-      type="bottom"
-    >
-      <view style="background-color: #fff;">
-        <button @click="goToAddHouseInfo">添加房屋信息</button>
-        <button @click="goToDecorateService">进行装修服务</button>
-        <button @click="goToVerifyHouse">进行验房服务</button>
-      </view>
-    </uni-popup>
+
   </view>
 </template>
 
 <script>
-import { queryEstates } from "../../../api/decorate.js"
+import { queryEstates } from "../../../api/decorate.js";
 export default {
-	created() {
-		this.getHouses()
-	},
   mounted() {},
+  onShow() {
+    if (this.houses.length < 1) {
+      this.getHouses();
+    }
+  },
   data() {
     return {
       style: "",
       noticeActive: false,
-      houses: [],
+      houses: getApp().globalData.houses,
     };
   },
   methods: {
     closeNotice() {
       this.noticeActive = false;
     },
-    openPopup() {
-      // 通过组件定义的ref调用uni-popup方法 ,如果传入参数 ，type 属性将失效 ，仅支持 ['top','left','bottom','right','center']
-      this.$refs.popup.open("bottom");
-    },
     goToAddHouseInfo() {
-			uni.navigateTo({
-			  url: "/pages/decorate/add-house/add-house",
-			});
-		},
-    goToDecorateService() {},
-    goToVerifyHouse() {},
-		goDesignPicture() {
-			uni.navigateTo({
-			 url: "/pages/decorate/design-picture/index",	
-			})
-		},
-		goToMyDecorate() {
-			uni.navigateTo({
-			 url: "/pages/decorate/my-decorate/my-decorate",	
-			})
-		},
-		getHouses() {
-			queryEstates({isNeedRelative: true}).then(data => {
-				if (data.length < 1) {
-				  this.openPopup();
-				}
-				this.houses = data
-			})
-		}
+      uni.navigateTo({
+        url: "/pages/decorate/add-house/add-house",
+      });
+    },
+    goDesignPicture() {
+      uni.navigateTo({
+        url: "/pages/decorate/design-picture/index",
+      });
+    },
+    goToMyDecorate() {
+      uni.navigateTo({
+        url: "/pages/decorate/my-decorate/my-decorate",
+      });
+    },
+    getHouses() {
+      queryEstates({
+        isNeedRelative: true,
+      }).then((data) => {
+        if (data.length < 1) {
+          uni.navigateTo({
+            url: "/pages/decorate/no-house/index",
+          });
+        } else {
+          // this.houses = data;
+          getApp().globalData.houses = data;
+        }
+      });
+    },
   },
 };
 </script>
@@ -99,13 +97,15 @@ export default {
   height: 100%;
   position: relative;
 }
+
 .v1 {
-	display: flex;
-	flex-direction: row;
-	justify-content: space-between;
-	margin-bottom: 30rpx;
-	border: 2rpx solid green;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  margin-bottom: 30rpx;
+  border: 2rpx solid green;
 }
+
 .drag-button {
   background: #ffffff;
   border: 0.5px solid #eeeeee;
@@ -122,11 +122,13 @@ export default {
   align-items: center;
   justify-content: center;
 }
+
 .design-picture {
-	border: 2rpx solid green;
-	image{
-		width: 250rpx;
-		height: 250rpx;
-	}
+  border: 2rpx solid green;
+
+  image {
+    width: 250rpx;
+    height: 250rpx;
+  }
 }
 </style>

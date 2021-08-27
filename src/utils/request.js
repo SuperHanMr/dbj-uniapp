@@ -27,6 +27,7 @@ let failRequestList = [];
 let retryMap = new Map();
 
 function retryAllFailRequest() {
+	console.log('retry!!!!!!!!!!!!!!!!!!!!');
 	failRequestList.forEach(info => {
 		//每个请求最多重试3次
 		let requestKey = getRequestKey(info.config);
@@ -40,7 +41,7 @@ function retryAllFailRequest() {
 		} else {
 			retryMap.set(requestKey, retryTimes + 1);
 		}
-		service(info.config)
+		instance(info.config)
 			.then(info.resolve)
 			.catch(info.reject);
 	});
