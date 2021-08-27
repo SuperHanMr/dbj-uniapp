@@ -13,6 +13,10 @@
 			<view style="margin-top: 300rpx;">
 				asdfasdf
 			</view>
+			<view class="" @click="toFriends">
+				去亲友团
+				
+			</view>
 			<view class="flex-row">
 				<view class="item" v-for="(item,index) in liveList" @click="toLiveRoom(item)">
 					{{item.title}}
@@ -59,6 +63,11 @@
 			}
 		},
 		methods: {
+			toFriends(){
+				uni.navigateTo({
+					url:"../../decorate/friends/friends"
+				})
+			},
 			changeCity() {
 				console.log('切换城市');
 			},
