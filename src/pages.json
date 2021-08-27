@@ -191,8 +191,16 @@
 				"navigationBarTitleText": "",
 				"enablePullDownRefresh": false
 			}
+		},
+		{
+				"path" : "pages/my/my-order/my-order",
+				"style" :                                                                                    
+				{
+					"navigationBarTitleText": "我的订单",
+					"enablePullDownRefresh": false
+				}
 		}
-	],
+  ],
 	"globalStyle": {
 		"navigationBarTextStyle": "black",
 		"navigationBarTitleText": "uni-app",
