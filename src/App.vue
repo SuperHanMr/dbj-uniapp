@@ -4,7 +4,8 @@
 			userInfo: {
 			},
 			token:'',
-			city:''
+			city:'',
+			houses: []
 		},
 		onLaunch: function() {
 			if (!uni.getStorageSync("userId") || !uni.getStorageSync("scn")) {
