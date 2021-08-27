@@ -29,6 +29,7 @@ export default {
 <style>
 page {
   height: 100%;
+  background-color: #f5f6f6;
 }
 
 ::-webkit-scrollbar {
