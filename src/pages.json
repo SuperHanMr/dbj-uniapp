@@ -261,6 +261,13 @@
 				"navigationBarTitleText": "房屋",
 				"enablePullDownRefresh": false
 			}
+		},
+		{
+			"path": "pages/my/refund-list/refund-list",
+			"style": {
+				"navigationBarTitleText": "退款",
+				"enablePullDownRefresh": false
+			}
 		}
 	],
 	"globalStyle": {
