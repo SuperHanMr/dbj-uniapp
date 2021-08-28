@@ -22,14 +22,13 @@
       </view>
     </view>
     <view class="my-order">
-      <view class="order-header">
-        我的订单
+      <view class="order-header"> 
+        我的订单 
       </view>
     </view>
     <view class="personal-center">
       <view class="personal-header">
         个人中心
-
       </view>
       <view class="personal-body">
         <view class="main-body">
@@ -45,6 +44,7 @@
         </view>
       </view>
     </view>
+    <view @click="handlerToMyHouse">我的房屋</view>
     <view @click="handlerToShop">购物车</view>
     <view @click="handlerToSetUp">真实案例</view>
   </view>
@@ -117,6 +117,11 @@ export default {
         url: item.url,
       });
     },
+    handlerToMyHouse(){
+      uni.navigateTo({
+        url:'/pages/my/my-house/my-house'
+      })
+    }
   },
 };
 </script>

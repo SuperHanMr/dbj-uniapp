@@ -6,7 +6,7 @@
 	</view>
 </template>
 
-<script>
+<script> 
 	import DesignCase from './component/design-case.vue';
 	import Decorate from './component/decorate.vue';
 	export default {
