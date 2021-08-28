@@ -1,8 +1,8 @@
 <template>
 	<view class="cartContainer">
 		<view class="header">
-			<view class="left">共{{}}个商品</view>
-			<view class="manage" @click="manageGoods">管理</view>
+			<view class="left"></view>
+			<view class="manage" @click="isManage=!isManage">{{isManage?"管理":"完成"}}</view>
 		</view>
 		
 		<view class="noGoods" v-if="!shopList.length&&!disabledSkuList.length">
@@ -15,7 +15,7 @@
 			</button>
 		</view>
 		<view class="shoppingCart" v-else>
-			<view class="shopItem" v-for="(shopItem,index) in shopList" :key="shopItem.storeId">
+			<view class="shopItem" v-for="(shopItem,shopIndex) in shopList" :key="shopItem.storeId">
 				<view class="shopInfo">
 					<view class="check" v-if="!shopItem.shopChecked" @click="checkShop(shopItem.storeId)"></view>
 					<image class="checked" src="../../../static/shopping-cart/checked@2x.png" @click="checkShop(shopItem.storeId)" v-else></image>
@@ -24,13 +24,13 @@
 						<image src="../../../static/shopping-cart/goShop_ic@2x.png" class="shopIcon"></text>
 					</view>
 				</view>	
-				<view class="goodsItem" v-for="(goodsItem,index) in shopItem.skuList" :key="goodsItem.skuId">
-					<view class="check" v-if="!goodsItem.goodsChecked" @click="checkGoods(goodsItem.skuId)"></view>
-					<image class="checked" src="../../../static/shopping-cart/checked@2x.png" @click="checkGoods(goodsItem.skuId)" v-else></image>
+				<view class="goodsItem" v-for="(goodsItem,goodsIndex) in shopItem.skuList" :key="goodsItem.skuId">
+					<view class="check" v-if="!goodsItem.goodsChecked" @click="checkGoods(shopItem.storeId,goodsItem.skuId)"></view>
+					<image class="checked" src="../../../static/shopping-cart/checked@2x.png" @click="checkGoods(shopItem.storeId,goodsItem.skuId)" v-else></image>
 					<image :src="goodsItem.image" class="goodsItemImg"></image>
 					<view class="goodsInfo">
 						<view class="goodsDesc">
-							<span class="goodsType">服务</span>
+							<span class="goodsType">{{goodsItem.productType=== 1?"服务":"物品"}}</span>
 							{{goodsItem.spuName}}
 						</view>
 						<view class="goodsSpec" @click="open">
@@ -41,9 +41,9 @@
 						<view class="foot">
 							<view class="goodsPrice">¥{{goodsItem.price}}/{{goodsItem.unitName}}</view>
 							<view class="countCtrl">
-							  <image src="../../../static/shopping-cart/details_pop_subtract_disabled@2x.png" class="dec" @click="changeCount(false, index)"></image>
+							  <image src="../../../static/shopping-cart/details_pop_subtract_disabled@2x.png" class="dec" @click="changeCount(false,shopIndex, goodsIndex)"></image>
 							  <view class="count"> {{goodsItem.buyCount}} </view>
-							  <image src="../../../static/shopping-cart/details_pop_add_normal@2x.png" class="inc" @click="changeCount(true, index)"></image>          
+							  <image src="../../../static/shopping-cart/details_pop_add_normal@2x.png" class="inc" @click="changeCount(true, shopIndex,goodsIndex)"></image>          
 							</view>
 						</view>
 					</view>
@@ -68,14 +68,28 @@
 						</view>
 					</view>
 				</view>
-				<view class="cartFooter" v-if="showFooter">
-					<text></text> 
-					<text class="allSelected">全选{{totalCount}}</text>
+				<view class="bottom"></view>
+				<view class="shopCheck" v-if="isManage">
+					<view class="left">
+						<view class="check" @click="checkedAll" v-if="!isCheckedAll"></view>
+						<image src="../../../static/shopping-cart/checked@2x.png" class="check" @click="checkedAll" v-else></image>
+						<view class="text">全选</view>
+					</view>
 					<view class="right">
-						<text class="totalPrice">合计：¥{{totalPrice}}</text>
-						<button type="primary" class="preOrder">
-							结算
-						</button>
+						<view class="text">合计：</view>
+						<view class="totalPrice">¥{{totalPrice}}</view>
+						<view class="preOrder">结算({{checkedCout}})</view>
+					</view>
+				</view>  							
+				<view class="shopCheck" v-else>
+					<view class="left">
+						<view class="check" @click="checkedAll" v-if="!isCheckedAll"></view>
+						<image src="../../../static/shopping-cart/checked@2x.png" class="check" @click="checkedAll" v-else></image>
+						<view class="text">全选</view>
+					</view>
+					<view class="right">
+						<view class="collect">移入收藏</view>
+						<view class="delete">删除</view>
 					</view>
 				</view>
 			</view>
@@ -95,9 +109,11 @@
 				shopList:[],
 				disabledSkuList:[],
 				totalCount:0,
+				checkedCout:0,
 				totalPrice:0,
 				showPecification:false,
-				showFooter:false
+				isManage:true,
+				isCheckedAll:false
 			}
 		},
 		onLoad: ()=> {
@@ -269,44 +285,86 @@
 					}
 				// })
 			},
-			changeCount(isAdd, index){
-				// if(isAdd){ // 累加
-				// 			state.cartList[index].count += 1
-				// 		}else { // 累减
-				// 			if(state.cartList[index].count > 1){
-				// 				state.cartList[index].count -= 1
-				// 			}else { // 数量 == 1， 直接删除当前的商品
-				// 				state.cartList.splice(index, 1)
-				// 			}
-				// 		}
-			},
-			manageGoods(){
-				this.showFooter = true
+			changeCount(isAdd, shopIndex,goodsIndex){
+				let count = +this.shopList[shopIndex].skuList[goodsIndex].buyCount
+				if(isAdd){ // 累加
+					count += 1
+					this.shopList[shopIndex].skuList[goodsIndex].buyCount = count.toFixed(2).toString()
+				}else { // 累减
+					if(count > 1){
+						count -= 1
+						this.shopList[shopIndex].skuList[goodsIndex].buyCount = count.toFixed(2).toString()
+					}else { // 数量为1，直接删除当前的商品
+						this.shopList[shopIndex].skuList.splice(goodsIndex, 1)
+					}
+				}
+				
 			},	
+			checkedAll(){
+				this.isCheckedAll = !this.isCheckedAll
+				this.shopList.map(item=>{
+					item.shopChecked = this.isCheckedAll
+					item.skuList.map(ele=>{
+						ele.goodsChecked = this.isCheckedAll
+						if(ele.goodsChecked){
+							this.checkedCout=this.checkedCout+(+ele.buyCount)
+						}else{
+							this.checkedCout=this.checkedCout-(+ele.buyCount)
+						}
+						return ele
+					})
+					return item
+				})
+			},
 			checkShop(id){
-				this.shopList.forEach(item=>{
+				this.shopList.map(item=>{
 					if(item.storeId === id){
 						item.shopChecked = !item.shopChecked
 						item.skuList.map(ele=>{
-							ele.goodsChecked = item.shopChecked?true:false
+							ele.goodsChecked = item.shopChecked
+							if(ele.goodsChecked){
+								this.checkedCout=this.checkedCout+(+ele.buyCount)
+							}else{
+								this.checkedCout=this.checkedCout-(+ele.buyCount)
+							}
 							return ele
 						})
 					}
+					return item
 				})
-				
+				if(this.shopList.every(ele=>ele.shopChecked)){
+					this.isCheckedAll = true
+				}else{
+					this.isCheckedAll = false
+				}
 			},
-			checkGoods(skuId){
-				this.shopList.forEach(item=>{
-					console.log(item.skuList.every(ele=>ele.goodsChecked))
-					if(item.skuList.every(ele=>ele.goodsChecked)){
-						item.shopChecked = true
-					}
-					item.skuList.forEach(ele=>{
-						if(ele.skuId === skuId){
-							ele.goodsChecked = !ele.goodsChecked
+			checkGoods(storeId,skuId){
+				this.shopList.map(item=>{
+					if(item.storeId === storeId){
+						item.skuList.map(ele=>{
+							if(ele.skuId === skuId){
+								ele.goodsChecked = !ele.goodsChecked
+							}
+							if(ele.goodsChecked){
+								this.checkedCout=this.checkedCout+(+ele.buyCount)
+							}else{
+								this.checkedCout=this.checkedCout-(+ele.buyCount)
+							}
+							return ele
+						})
+						if(item.skuList.every(ele=>ele.goodsChecked)){
+							item.shopChecked = true
+						}else{
+							item.shopChecked = false
 						}
-					})
+					}
+					return item
 				})
+				if(this.shopList.every(ele=>ele.shopChecked)){
+					this.isCheckedAll = true
+				}else{
+					this.isCheckedAll = false
+				}
 			},
 			open(){
 				this.showPecification = true
@@ -489,7 +547,9 @@
 		text-align:center;
 	}
 	.goodsInfo .goodsSpec{
+		width: 70%;
 		height: 19px;
+		text-overflow: ellipsis;
 		margin-top: 8px;
 		margin-bottom: 8px;
 		background: #fafafa;
@@ -539,14 +599,13 @@
 	} 
 	//已失效
 	.disabledSku{
-		margin: 12px;
-		padding: 1px 10px 20px 10px;
+		margin: 12px 12px 26px 12px;
+		padding: 12px 10px 12px 10px;
 		background: #ffffff;
 		border-radius: 8px;
 	}
 	.disabledSku .top{
 		width: 100%;
-		margin-top: 12px;
 		display: flex;
 		justify-content: space-between;
 	}
@@ -621,5 +680,93 @@
 		font-size: 14px;
 		color: #333333;
 		line-height: 20px;
+	}
+	.bottom{
+		width: 100%;
+		height: 76px;
+	}
+	.shopCheck{
+		width:100%;
+		height: 52px;
+	  background: #fff;
+	  padding-bottom: 32px;
+	  display: flex;
+		justify-content: space-between;
+	  align-items: center;
+	  position: fixed;
+	  bottom: 0px; 
+	  left: 0px;
+	}
+	.shopCheck .left{
+		display: flex;
+	}
+	.shopCheck .check{
+		width: 18px;
+		height: 18px;
+		margin-left: 14px;
+		margin-right: 10px;
+		border-radius: 50%;
+		background: #ffffff;
+		border: 1px solid #e5e5e5;
+	}
+	.shopCheck .text{
+	  width: 29px;
+	  height: 20px;
+	  color: #999999;
+		font-size: 14px;
+	  line-height: 20px;
+	}
+	.shopCheck .right {
+	  display: flex;
+		justify-content: flex-end;
+	  align-items: center;
+	}
+	.right .text{
+	  width: 42px;
+	  height: 14px;
+	  line-height: 14px;
+	  font-size: 14px;
+	  color: #333;
+	}
+	.totalPrice{
+	  width: 57px;
+	  height: 18px;
+	  font-size: 12px;
+	  color: #ff3347;
+	}
+	
+	.preOrder{
+	  width: 124px;
+	  height: 44px;
+	  text-align: center;
+		line-height: 44px;
+	  margin-right: 10px;
+	  border-radius: 6px;
+		font-size: 16px;
+	  color: #fff;
+	  background: linear-gradient(135deg,#53d5cc, #4fc9c9);;
+	}    
+	.collect{
+		width: 84px;
+		height: 32px;
+		line-height: 32px;
+		font-size: 13px;
+		text-align: center;
+		color: #fe9000;
+		background: #ffffff;
+		border: 1px solid #fe9000;
+		border-radius: 6px;
+	}
+	.delete{
+		width: 58px;
+		height: 32px;
+		margin: 0 16px 0 16px;
+		line-height: 32px;
+		font-size: 13px;
+		text-align: center;
+		color: #ff3347;
+		background: #ffffff;
+		border: 1px solid #ff3347;
+		border-radius: 6px;
 	}
 </style>

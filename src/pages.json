@@ -298,6 +298,13 @@
 			}
 		},
 		{
+			"path": "pages/my/refund-list/refund-list",
+			"style": {
+				"navigationBarTitleText": "退款",
+				"enablePullDownRefresh": false
+			}
+		},
+		{
 			"path": "pages/decorate/no-house-decorate/no-house-decorate",
 			"style": {
 				"navigationBarTitleText": "装修服务",

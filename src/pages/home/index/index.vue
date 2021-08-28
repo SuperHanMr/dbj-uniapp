@@ -10,8 +10,9 @@
 		</custom-navbar>
 
 		<scroll-view class="content" scroll-y="true" @scroll="onScroll">
-			<view style="margin-top: 300rpx;">
-				asdfasdf
+			asdasd
+			<view style="margin-top: 300rpx;" class="" @click="toFriends">
+				去亲友团
 			</view>
 			<view class="flex-row">
 				<view class="item" v-for="(item,index) in liveList" @click="toLiveRoom(item)">
@@ -31,9 +32,13 @@
 		getBanner,
 		queryLive
 	} from "../../../api/home.js";
+	
 	import {
 		orderList
 	} from "../../../api/order.js"
+	import {
+		queryEstates
+	} from "../../../api/decorate.js"
 	export default {
 		data() {
 			return {
@@ -42,13 +47,15 @@
 				navBarHeight: 0,
 				scrollTop: 0,
 				liveList: [],
-				citydata: '北京市'
+				citydata: '北京市',
+				roomId:''
 			};
 		},
 		onLoad() {
 			this.getAuthorizeInfo();
 		},
 		onShow() {
+			
 			this.getBannerList();
 			let pages = getCurrentPages();
 			let currPage = pages[pages.length - 1]; //当前页面
@@ -57,8 +64,14 @@
 				this.citydata = res.title;
 				this.changeCity();
 			}
+			this.getHomeList();
 		},
 		methods: {
+			toFriends(){
+				uni.navigateTo({
+					url:"../../decorate/friends/friends?id="+this.roomId
+				})
+			},
 			changeCity() {
 				console.log('切换城市');
 			},
@@ -147,11 +160,17 @@
 				// this.liveList = list.lives;
 				// console.log(this.liveList);
 			},
+			async getHomeList() {
+				let list = await queryEstates();
+				console.log(list);
+				this.roomId=list[0].id;
+				// this.liveList = list.lives;
+				// console.log(this.liveList);
+			},
 			onScroll(e) {
 				this.scrollTop = e.detail.scrollTop;
 			},
 			toNextPage() {
-				console.log(getApp().globalData.userInfo);
 				uni.navigateTo({
 					url: "../../decorate/warehouse-list/warehouse-list",
 				});
