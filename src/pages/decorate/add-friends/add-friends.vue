@@ -8,6 +8,12 @@
 		</view>
 		<view class="form-content">
 			<input class="input" type="number" v-model="phone" placeholder="输入亲友手机号" />
+			<view v-if="phoneError" class="phone-tips">
+				请输入正确手机号
+			</view>
+			<view v-if="resError" class="phone-tips">
+				抱歉，您的亲友尚未注册打扮家，请先联系您的亲友注册后再添加
+			</view>
 			<picker @change="bindPickerChange" :value="index" :range="array">
 				<view class="input btn" @click="chooseFriends">
 					<view class="holder">
@@ -21,7 +27,7 @@
 				<view class="cancel btns ">
 					取消
 				</view>
-				<view class="add btns ">
+				<view class="add btns " @click="addFriend">
 					确认添加
 				</view>
 			</view>
@@ -35,17 +41,71 @@
 
 <script>
 	import bgImg from "@/static/add-friends-bg.png"
+	import {
+		addFriends
+	} from "../../../api/decorate.js"
 	export default {
 		data() {
 			return {
 				phone: "",
 				bgImg: bgImg,
-				array: ['老公', '老婆', '爸爸', '妈妈', '儿子', '女儿', '岳父', '岳母', '公公', '婆婆', '其他'],
+				array: ['老公', '老婆', '儿子', '女儿', '父亲', '母亲', '岳父', '岳母', '公公', '婆婆', '其他'],
 				index: 0,
-				type: ''
+				type: '',
+				phoneError: false,
+				roomId: '',
+				resError: false
 			};
 		},
+		watch: {
+			phone(e) {
+				if (e && e.length >= 11) {
+					let myreg = /^[1][3,4,5,7,8,9][0-9]{9}$/;
+					if (!myreg.test(e)) {
+						this.phoneError = true;
+					} else {
+						this.phoneError = false;
+					}
+				} else {
+					this.phoneError = false;
+				}
+			}
+		},
+		onLoad(e) {
+			if (e && e.roomId) {
+				this.roomId = e.roomId;
+			}
+		},
 		methods: {
+			async addFriend() {
+				let myreg = /^[1][3,4,5,7,8,9][0-9]{9}$/;
+				if (!myreg.test(this.phone)) {
+					this.phoneError = true;
+					return;
+				}
+				if (!this.type) {
+					uni.showToast({
+						title: '请选择亲友关系',
+						icon:'none'
+					});
+					return;
+				}
+
+				addFriends({
+					phone: this.phone,
+					relationType: Number(this.index) + 1,
+					estateId: this.roomId
+				}).then(e => {
+					uni.navigateBack({
+
+					});
+
+				}).catch(e => {
+					if (e && e.data && e.data.code == 3000) {
+						this.resError = true;
+					}
+				});
+			},
 			bindPickerChange(e) {
 				this.index = e.target.value
 				this.type = this.array[this.index];
@@ -96,6 +156,15 @@
 			display: flex;
 			flex-direction: column;
 			align-items: center;
+
+			.phone-tips {
+				margin-top: 12rpx;
+				width: 557rpx;
+				color: #CCA459;
+				font-size: 22rpx;
+				text-align: start;
+
+			}
 
 			.input {
 				width: 493rpx;
