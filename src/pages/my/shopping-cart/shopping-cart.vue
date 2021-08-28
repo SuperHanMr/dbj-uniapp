@@ -6,7 +6,7 @@
 		</view>
 		
 		<view class="noGoods" v-if="!shopList.length&&!disabledSkuList.length">
-			<image src="../../../static/shopping-cart/blank_ic@3x.png" class="noGoodsImg"></image>
+			<image src="../../../static/shopping-cart/blank_ic@2x.png" class="noGoodsImg"></image>
 			<view class="noGoodsText">
 				购物车空空如也，快去逛逛吧～
 			</view>
@@ -24,7 +24,14 @@
 						<image src="../../../static/shopping-cart/goShop_ic@2x.png" class="shopIcon"></text>
 					</view>
 				</view>	
-				<view class="goodsItem" v-for="(goodsItem,goodsIndex) in shopItem.skuList" :key="goodsItem.skuId">
+				<uni-swipe-action>
+				  <uni-swipe-action-item
+				    v-for="(goodsItem,goodsIndex) in shopItem.skuList"
+				    :key="goodsItem.skuId"
+				    :right-options="options"
+				    @click="bindClick(shopIndex,goodsIndex)"
+				  >
+				<view class="goodsItem"  >
 					<view class="check" v-if="!goodsItem.goodsChecked" @click="checkGoods(shopItem.storeId,goodsItem.skuId)"></view>
 					<image class="checked" src="../../../static/shopping-cart/checked@2x.png" @click="checkGoods(shopItem.storeId,goodsItem.skuId)" v-else></image>
 					<image :src="goodsItem.image" class="goodsItemImg"></image>
@@ -41,20 +48,24 @@
 						<view class="foot">
 							<view class="goodsPrice">¥{{goodsItem.price}}/{{goodsItem.unitName}}</view>
 							<view class="countCtrl">
-							  <image src="../../../static/shopping-cart/details_pop_subtract_disabled@2x.png" class="dec" @click="changeCount(false,shopIndex, goodsIndex)"></image>
-							  <view class="count"> {{goodsItem.buyCount}} </view>
+								<image src="../../../static/shopping-cart/details_pop_@2x.png" v-if="!isMiniOrder" class="dec" @click="changeCount(false,shopIndex, goodsIndex)"></image>
+							  <image src="../../../static/shopping-cart/details_pop_subtract_disabled@2x.png" v-else class="dec" @click="changeCount(false,shopIndex, goodsIndex)"></image>
+							  <view class="count" @click="defineCount"> {{goodsItem.buyCount}} </view>
 							  <image src="../../../static/shopping-cart/details_pop_add_normal@2x.png" class="inc" @click="changeCount(true, shopIndex,goodsIndex)"></image>          
 							</view>
 						</view>
 					</view>
 				</view>	
+				</uni-swipe-action-item>
+				</uni-swipe-action>
 				</view>
+				<popup-input v-if="showDefineCount"></popup-input>
 				<uni-popup ref="popup" type="bottom"></uni-popup>
 				<select-sku></select-sku>
 				<view class="disabledSku" v-if="disabledSkuList.length">
 					<view class="top">
 						<view class="title">已失效商品</view>
-						<view class="clear">清空失效商品</view>
+						<view class="clear" @click="clearDisaledSku">清空失效商品</view>
 					</view>
 					<view class="disabldSkuItem" v-for="disabldSkuItem in disabledSkuList" :key="disabldSkuItem.skuId">
 						<image :src="disabldSkuItem.image" class="disabldSkuImg"></image>
@@ -100,12 +111,22 @@
 <script>
 	import {getShoppingCartProductInfo} from "../../../api/user.js"
 	import SelectSku from "../../../components/select-sku/select-sku"
+	import PopupInput from "../../../components/popup-input/popup-input"
 	export default {
 		components:{
-			SelectSku
+			SelectSku,
+			PopupInput
 		},
 		data(){
 			return {
+				options: [
+				  {
+				    text: "删除",
+				    style: {
+				      backgroundColor: "#dd524d",
+				    },
+				  },
+				],
 				shopList:[],
 				disabledSkuList:[],
 				totalCount:0,
@@ -113,7 +134,9 @@
 				totalPrice:0,
 				showPecification:false,
 				isManage:true,
-				isCheckedAll:false
+				isCheckedAll:false,
+				isMiniOrder:false,
+				showDefineCount:false
 			}
 		},
 		onLoad: ()=> {
@@ -285,17 +308,26 @@
 					}
 				// })
 			},
+			defineCount(){
+				this.showDefineCount = true
+			},
 			changeCount(isAdd, shopIndex,goodsIndex){
 				let count = +this.shopList[shopIndex].skuList[goodsIndex].buyCount
+				let step = +this.shopList[shopIndex].skuList[goodsIndex].stepLength
+				let miniOrder = +this.shopList[shopIndex].skuList[goodsIndex].minimumOrderQuantity
 				if(isAdd){ // 累加
-					count += 1
+					count += step
 					this.shopList[shopIndex].skuList[goodsIndex].buyCount = count.toFixed(2).toString()
 				}else { // 累减
-					if(count > 1){
-						count -= 1
+					if(count > miniOrder){
+						count -= step
 						this.shopList[shopIndex].skuList[goodsIndex].buyCount = count.toFixed(2).toString()
-					}else { // 数量为1，直接删除当前的商品
-						this.shopList[shopIndex].skuList.splice(goodsIndex, 1)
+					}else { // 数量为最小步长
+						this.isMiniOrder = true
+						uni.showToast({
+							title:"商品数量不能再减少了",
+							icon:"none"
+						})
 					}
 				}
 				
@@ -365,6 +397,24 @@
 				}else{
 					this.isCheckedAll = false
 				}
+			},
+		
+			bindClick(shopIndex,goodsIndex){
+				this.shopList[shopIndex].skuList.splice(goodsIndex, 1)//直接删除当前的商品
+			}, 
+			clearDisaledSku(){
+				uni.showModal({
+				    content: "确定要清空失效商品吗？",
+						cancelColor:"#333333",
+						confirmColor:"#ff3347",
+				    success:res => {
+				        if (res.confirm) {
+									this.disabledSkuList = []	
+				        } else if (res.cancel) {
+										return
+				        }
+				    }
+				});
 			},
 			open(){
 				this.showPecification = true

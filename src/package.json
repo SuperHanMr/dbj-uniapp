@@ -1,0 +1,11 @@
+{
+    "id": "nk-popup-input",
+    "name": "底部弹窗输入框",
+    "version": "1.0.3",
+    "description": "从底部弹起的输入框",
+    "keywords": [
+        "底部弹窗输入框",
+        "popup",
+        "input"
+    ]
+}
