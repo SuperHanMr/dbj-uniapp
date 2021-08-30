@@ -51,9 +51,12 @@
 				this.getList();
 			},800);
 		},
+		onReachBottom() {
+			console.log("aaaaaaaaaaaaaaaaaaaaaaaaaaaaaa")
+		},
 		methods: {
-			onHeight() {
-				this.$parent.onHeight();
+			onHeight(height, tag) {
+				this.$parent.onHeight(height, tag);
 			},
 			onClick (index, tag){
 				this.$parent.onClick(index, tag);
@@ -63,6 +66,9 @@
 </script>
 
 <style lang="scss" scoped>
+	.decorate{
+		width: 100%;
+	}
 	.waterfall-box {
 		padding: 24rpx 8rpx 24rpx 24rpx;
 		box-sizing: border-box;
