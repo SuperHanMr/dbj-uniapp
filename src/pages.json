@@ -4,7 +4,7 @@
 			"path": "pages/decorate/index/index",
 			"style": {
 				"navigationBarTitleText": "装修"
-			}
+			} 
 		},
 		{
 			"path": "pages/decorate/design-picture/design-picture",
@@ -202,7 +202,7 @@
 		{
 			"path": "pages/my/set-up/agreement/code-of-conduct",
 			"style": {
-				"navigationBarTitleText": "",
+				"navigationBarTitleText": "", 
 				"enablePullDownRefresh": false
 			}
 		},
@@ -247,7 +247,7 @@
 				"navigationBarTitleText": "我的订单",
 				"enablePullDownRefresh": false
 			}
-		},
+		}, 
 		{
 			"path": "pages/real-case/real-case",
 			"style": {
@@ -258,7 +258,7 @@
 		{
 			"path": "pages/my/my-house/my-house",
 			"style": {
-				"navigationBarTitleText": "房屋",
+				"navigationBarTitleText": "房屋管理",
 				"enablePullDownRefresh": false
 			}
 		},
