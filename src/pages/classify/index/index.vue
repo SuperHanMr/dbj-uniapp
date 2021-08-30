@@ -12,13 +12,13 @@
         </view> 
         <view class="content-view">
           <scroll-view id="tab-bar" class="scroll-h" :scroll-x="true" :show-scrollbar="false" :scroll-into-view="scrollInto">
-              <view v-for="(tab,index) in tabBars" :key="tab.id" class="uni-tab-item" :id="tab.id" :data-current="index" @click="ontabtap">
+              <view v-for="(tab,index) in dataList" :key="index" class="uni-tab-item" :id="index" :data-current="index" @click="ontabtap">
                   <text class="uni-tab-item-title" :class="tabIndex==index ? 'uni-tab-item-title-active' : ''">{{tab.name}}</text>
               </view>
           </scroll-view>
           <swiper :current="tabIndex"  style="flex: 1;height: 100%" :duration="300" @change="ontabchange">
-              <swiper-item class="swiper-item" v-for="(tab,index1) in newsList" :key="index1">
-                  <index-item :options="newsitem" @click="goDetail(newsitem)"></index-item>
+              <swiper-item class="swiper-item" v-for="(tab,index1) in dataList" :key="index1">
+                  <index-item :detailData="tab['children']"></index-item>
               </swiper-item>
           </swiper>
         </view>
@@ -26,11 +26,8 @@
 </template>
 <script>
     import indexItem from './index-item.vue';
-
-    // 缓存每页最多
-    const MAX_CACHE_DATA = 100;
-    // 缓存页签数量
-    const MAX_CACHE_PAGE = 3;
+    import {getClassifyList} from "../../../api/classify.js";
+    console.log(getClassifyList)
 
     export default {
         components: {
@@ -39,28 +36,21 @@
         data() {
             return {
                 navBarHeight: 0,
+                dataList: [],
                 newsList: [1,2,3,4],
                 cacheTab: [],
                 tabIndex: 0,
-                tabBars: [{
-                    name: '关注',
-                    id: 'guanzhu'
-                }, {
-                    name: '推荐',
-                    id: 'tuijian'
-                }, {
-                    name: '体育',
-                    id: 'tiyu'
-                }, {
-                    name: '热点',
-                    id: 'redian'
-                }],
-                scrollInto: "",
-                navigateFlag: false
+                scrollInto: ""
             }
         },
         onLoad() {
-              // this.getList(0);
+          console.log(111)
+        },
+        onReady() {
+          console.log(222)
+        },
+        onShow() {
+          this.getList();
         },
         methods: {
             searchClick(){
@@ -68,20 +58,11 @@
               	url: "/pages/classify/search/index"
               })
             },
-            getList(index) {
-                
-            },
-            goDetail(e) {
-                if (this.navigateFlag) {
-                    return;
-                }
-                this.navigateFlag = true;
-                uni.navigateTo({
-                    url: './detail/detail?title=' + e.title
-                });
-                setTimeout(() => {
-                    this.navigateFlag = false;
-                }, 200)
+            getList() {
+                getClassifyList().then((data) => {
+                  this.dataList = data
+                  console.log(data)
+                })
             },
             ontabtap(e) {
                 let index = e.target.dataset.current || e.currentTarget.dataset.current;
@@ -96,7 +77,8 @@
                     return;
                 }
                 this.tabIndex = index;
-                this.scrollInto = this.tabBars[index].id;
+                console.log(index)
+                this.scrollInto = index;
             }
         }
     }

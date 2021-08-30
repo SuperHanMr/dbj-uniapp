@@ -2,13 +2,13 @@
 	<view class="page-body">
 		<scroll-view class="nav-left" scroll-y :scroll-top="scrollLeftTop" scroll-with-animation>
 			<view class="nav-left-item" @click="categoryClickMain(index)" :key="index" :class="index==categoryActive?'active':''"
-				v-for="(item,index) in classifyData">
+				v-for="(item,index) in detailData">
 				{{item.name}}
 			</view>
 		</scroll-view>
     <scroll-view class="nav-right" scroll-y="true">
-      <view class="right-view" v-for="(v, k) in rightArr" :key="k">
-        <text>text</text>
+      <view class="right-view" v-for="(v, k) in detailData[categoryActive]['children']" :key="k">
+        <text>{{v.name}}</text>
         <scroll-view class="right-card" scroll-y="true">
           <view class="right-detail" v-for="(v, k) in imgArr" :key="k" @click="toGoodsList">
             <image src="../../../static/arrow_b.svg" ></image>
@@ -22,58 +22,17 @@
 
 <script>
 	export default {
+    props: {
+      detailData: {
+        type: Array,
+        default: []
+      }
+    },
 		data() {
 			return {
 				height: 0,
 				categoryActive: 0,
 				scrollLeftTop: 0,
-				classifyData:[
-          {
-          name: "test1"
-          },
-          {
-          name: "test1"
-          },
-          {
-          name: "test1"
-          },
-          {
-          name: "test1"
-          },
-          {
-          name: "test1"
-          },
-          {
-          name: "test1"
-          },
-          {
-          name: "test1"
-          },
-          {
-          name: "test1"
-          },
-          {
-          name: "test9"
-          },
-          {
-          name: "test10"
-          },
-          {
-          name: "test11"
-          },
-          {
-          name: "test12"
-          },
-          {
-          name: "test13"
-          },
-          {
-          name: "test14"
-          },
-          {
-          name: "test15"
-          }
-        ],
 				arr:[0,584,1168,1752,2336,2805,3274,3858,4442,4911,5380,5734,6203,6672,7017],//初始值，后边计算会根据手机适配覆盖
 				leftItemHeight: 51,//49行会计算出新值进行覆盖
 				navLeftHeight:0,//左边scroll-view 内层nav的总高度
@@ -84,13 +43,16 @@
 			}
 		},
 		created(){
-      console.log(111)
+      setTimeout(()=>{
+        console.log(this.detailData)
+      }, 2000)
 			//如果你的分类数据为后台异步获取请	将下方代码放置你的数据回调中
 			// this.$nextTick(()=>{
-			// 	this.getHeightList();
+   //      console.log(this.detailData)
+			// 	// this.getHeightList();
 			// })
 		},
-		onReady() {
+		onShow() {
       this.height = uni.getSystemInfoSync().windowHeight - this.tabBarHeight;
       this.getHeightList();
 		},
@@ -100,7 +62,7 @@
 				let selectorQuery=uni.createSelectorQuery().in(this);
 				selectorQuery.selectAll('.nav-left-item').boundingClientRect(function(rects) {
 					_this.leftItemHeight  =  rects[0].height;
-					_this.navLeftHeight = _this.leftItemHeight * _this.classifyData.length;
+					_this.navLeftHeight = _this.leftItemHeight * _this.detailData.length;
 					_this.diff =  _this.navLeftHeight - _this.height;
 					let arr = [0];
 					let top = 0;
@@ -121,7 +83,7 @@
 			},
 			categoryClickMain(index) {
 				this.categoryActive = index;
-			  (this.diff>0) && (this.scrollLeftTop = Math.round((this.categoryActive * this.diff)/(this.classifyData.length-1)));
+			  (this.diff>0) && (this.scrollLeftTop = Math.round((this.categoryActive * this.diff)/(this.detailData.length-1)));
       },
       toGoodsList() {
         uni.navigateTo({
