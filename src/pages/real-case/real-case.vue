@@ -2,9 +2,11 @@
 	<view class="real-case">
 		<view class="collectWrapper">
 			<view class="tabbar">
-				<view :class="selectStatus == index ? 'selectStatus' : ''" v-for="(item, index) in items"
-					@tap="changeTabs(index)">
-					{{item}}
+				<view class="tabbar-switch-box">
+					<view :class="selectStatus == index ? 'selectStatus' : 'tabbar-switch'" v-for="(item, index) in items"
+						@tap="changeTabs(index)">
+						{{item}}
+					</view>
 				</view>
 			</view>
 			<view class="uni-padding-wrap">
@@ -330,8 +332,15 @@
 	}
 
 	.selectStatus {
-		color: rgba(19, 149, 244, 1);
-		border-bottom: 4rpx solid rgba(19, 149, 244, 1);
+		padding: 10rpx 112rpx;
+		margin: 4rpx 0 4rpx 4rpx;
+		font-size: 28rpx;
+		font-family: PingFangSC, PingFangSC-Medium;
+		font-weight: bold;
+		text-align: center;
+		color: #333333;
+		background: #ffffff;
+		border-radius: 6px;
 	}
 
 	.collectWrapper {
@@ -342,17 +351,32 @@
 
 	.collectWrapper .tabbar {
 		width: 100%;
-		height: 70rpx;
-		display: flex;
-		justify-content: space-around;
+		height: 96rpx;
 		position: fixed;
 		z-index: 100;
-		background-color: #f0f0f0;
+		background-color: #ffffff;
+	}
+	
+	.tabbar-switch-box{
+		display: flex;
+		background: #f5f6f6;
+		border-radius: 8px;
+		margin: 20rpx 32rpx 8rpx 32rpx;
+	}
+	.tabbar-switch-box .tabbar-switch{
+		padding: 10rpx 112rpx;
+		margin: 4rpx 4rpx 4rpx 0;
+		text-align: center;
+		font-size: 28rpx;
+		font-family: PingFangSC, PingFangSC-Regular;
+		font-weight: 400;
+		text-align: center;
+		color: #999999;
 	}
 
 	.collectWrapper .uni-padding-wrap {
 		height: 100%;
-		padding-top: 70rpx;
+		padding-top: 96rpx;
 	}
 
 	.collectWrapper .uni-padding-wrap .page-section-spacing {

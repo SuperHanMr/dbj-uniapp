@@ -1,20 +1,26 @@
 <template>
 	<view class="waterfall-item" @tap="onTap">
 		<image :src="params.url" mode="widthFix" @load="emitHeight" @error="emitHeight"></image>
+		<view class="decorate-state">
+			已竣工
+		</view>
 		<view class="content">
-			<view>{{params.title}}</view>
-			<view class="money">{{params.money}}元</view>
-			<view style="margin: 0 0 8rpx 0;">
-				<text class="label">{{params.label}}</text>
+			<view class="title">{{params.title}}</view>
+			<view class="decorate-info">
+				<view class="size">
+					120.00m²
+				</view>
+				<view class="phase">
+					设计阶段
+				</view>
 			</view>
-			<view class="shop-name">{{params.shop}}</view>
 		</view>
 	</view>
 </template>
 
 <script>
 	export default {
-		name:"waterfall-decorate",
+		name:"waterfall-design-case",
 		props:{
 			params:{
 				type: Object,
@@ -54,39 +60,73 @@
 
 <style lang="scss" scoped>
 .waterfall-item{
-	padding: 16rpx;
-	background-color: #fff;
-	border-radius: 4px;
+	position: relative;
+	margin-right: 16rpx;
 	font-size: 28rpx;
-	color: #666;
 	margin-bottom: 20rpx;
-	
+	background: #ffffff;
+	border: 1px solid #ececec;
+	border-radius: 8px;
+	.decorate-state{
+		padding: 4rpx 16rpx;
+		background: linear-gradient(45deg,rgba(51,51,51,1),rgba(86,86,86,1));
+		border-radius: 8px 0px 6px 0px;
+		position: absolute;
+		top: 0;
+		left: 0;
+		font-size: 22rpx;
+		font-family: PingFangSC, PingFangSC-Regular;
+		font-weight: 400;
+		text-align: left;
+		color: #ffffff;
+	}
 	image{
 		display: block;
 		width: 100%;
 		// 默认设置一个图片的大约值
 		height: 350rpx;
+		border-radius: 8px 8px 0px 0px;
 	}
 	
 	.content{
-		margin-top: 16rpx;
-		
-		.money{
-			color: #fa3534;
-			margin-top: 8rpx;
+		.title{
+			margin: 20rpx 16rpx 18rpx 20rpx;
+			font-size: 28rpx;
+			font-family: PingFangSC, PingFangSC-Medium;
+			font-weight: bold;
+			text-align: left;
+			color: #333333;
+			letter-spacing: 0px;
+			text-overflow: -o-ellipsis-lastline;
+			overflow: hidden;
+			text-overflow: ellipsis;
+			display: -webkit-box;
+			-webkit-line-clamp: 2;
+			line-clamp: 2;
+			-webkit-box-orient: vertical;
 		}
-		
-		.label{
-			background-color: #fa3534;
-			color: #fff;
-			font-size: 20rpx;
-			padding: 4rpx 16rpx;
-			border-radius: 20rpx;
-		}
-		
-		.shop-name{
-			font-size: 20rpx;
-			color: #999;
+		.decorate-info{
+			display: flex;
+			justify-content: space-between;
+			align-items: center;
+			padding: 0 16rpx 28rpx 16rpx;
+			.size{
+				font-size: 24rpx;
+				font-family: PingFangSC, PingFangSC-Regular;
+				font-weight: 400;
+				text-align: left;
+				color: #999999;
+			}
+			.phase{
+				padding: 0 8rpx;
+				font-size: 22rpx;
+				font-family: PingFangSC, PingFangSC-Regular;
+				font-weight: 400;
+				text-align: left;
+				color: #ffffff;
+				background: #35c4c4;
+				border-radius: 3px;
+			}
 		}
 	}
 }

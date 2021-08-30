@@ -2,12 +2,21 @@
 	<view class="waterfall-item" @tap="onTap">
 		<image :src="params.url" mode="widthFix" @load="emitHeight" @error="emitHeight"></image>
 		<view class="content">
-			<view>{{params.title}}</view>
-			<view class="money">{{params.money}}元</view>
-			<view style="margin: 0 0 8rpx 0;">
-				<text class="label">{{params.label}}</text>
+			<view class="title">{{params.title}}</view>
+			<view class="case-info">
+				<view class="info-img">
+					<image :src="params.url" alt="">
+					<view class="info-text">
+						小橘子干
+					</view>
+				</view>
+				<view class="collection-box">
+					<image src="/static/images/collection-no.png" mode=""></image>
+					<view class="collection-number">
+						4234
+					</view>
+				</view>
 			</view>
-			<view class="shop-name">{{params.shop}}</view>
 		</view>
 	</view>
 </template>
@@ -54,39 +63,86 @@
 
 <style lang="scss" scoped>
 .waterfall-item{
-	padding: 16rpx;
-	background-color: #fff;
-	border-radius: 4px;
+	margin-right: 16rpx;
 	font-size: 28rpx;
-	color: #666;
 	margin-bottom: 20rpx;
+	background: #ffffff;
+	border: 1px solid #ececec;
+	border-radius: 8px;
 	
 	image{
 		display: block;
 		width: 100%;
 		// 默认设置一个图片的大约值
 		height: 350rpx;
+		border-radius: 8px 8px 0px 0px;
 	}
 	
 	.content{
-		margin-top: 16rpx;
-		
-		.money{
-			color: #fa3534;
-			margin-top: 8rpx;
+		.title{
+			margin: 20rpx 16rpx 18rpx 20rpx;
+			font-size: 28rpx;
+			font-family: PingFangSC, PingFangSC-Medium;
+			font-weight: bold;
+			text-align: left;
+			color: #333333;
+			letter-spacing: 0px;
+			text-overflow: -o-ellipsis-lastline;
+			overflow: hidden;
+			text-overflow: ellipsis;
+			display: -webkit-box;
+			-webkit-line-clamp: 2;
+			line-clamp: 2;
+			-webkit-box-orient: vertical;
 		}
-		
-		.label{
-			background-color: #fa3534;
-			color: #fff;
-			font-size: 20rpx;
-			padding: 4rpx 16rpx;
-			border-radius: 20rpx;
-		}
-		
-		.shop-name{
-			font-size: 20rpx;
-			color: #999;
+		.case-info{
+			padding: 0 16rpx 24rpx 16rpx;
+			display: flex;
+			justify-content: space-between;
+			.info-img{
+				display: flex;
+				align-items: center;
+				image{
+					width: 18px;
+					height: 18px;
+					opacity: 1;
+					border: 1px solid #f2f5f8;
+					margin-right: 8rpx;
+				}
+				.info-text{
+					font-size: 24rpx;
+					font-family: PingFangSC, PingFangSC-Regular;
+					font-weight: 400;
+					text-align: left;
+					color: #999999;
+					max-width: 160rpx;
+					height: 34rpx;
+					text-overflow: -o-ellipsis-lastline;
+					overflow: hidden;
+					text-overflow: ellipsis;
+					display: -webkit-box;
+					-webkit-line-clamp: 1;
+					line-clamp: 1;
+					-webkit-box-orient: vertical;
+				}
+			}
+			.collection-box{
+				display: flex;
+				align-items: center;
+				image{
+					width: 24rpx;
+					height: 24rpx;
+					opacity: 1;
+					margin-right: 8rpx;
+				}
+				.collection-number{
+					font-size: 24rpx;
+					font-family: PingFangSC, PingFangSC-Regular;
+					font-weight: 400;
+					text-align: left;
+					color: #999999;
+				}
+			}
 		}
 	}
 }

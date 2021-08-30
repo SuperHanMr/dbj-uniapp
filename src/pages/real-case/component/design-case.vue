@@ -62,20 +62,10 @@
 	}
 </script>
 
-<style lang="scss">
-	page {
-		background-color: #f3f3f3;
-	}
-</style>
-
 <style lang="scss" scoped>
 	.waterfall-box {
-		padding: 20rpx 10rpx;
+		padding: 24rpx 8rpx 24rpx 24rpx;
 		box-sizing: border-box;
-
-		>view {
-			padding: 0 10rpx;
-		}
 	}
 
 	.h-flex-x {

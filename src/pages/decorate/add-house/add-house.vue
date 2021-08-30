@@ -72,11 +72,12 @@
               <view class="item" v-for="item of roomList" :key="item">{{item}}卫</view>
           </picker-view-column>
       </picker-view> 
-    </uni-popup>
+    </uni-popup> 
   </view>
 </template>
 
 <script>
+ import { addHouse } from "../../../api/decorate.js";
   export default {
     data() {
       return {
@@ -199,9 +200,12 @@
       },
       save(){
         if(this.check()){
-          uni.navigateBack({
-              // delta: 2
-          });
+          addHouse(this.addData).then(res=>{
+            console.log(res)
+          })
+          // uni.navigateBack({
+          //     // delta: 2
+          // });
         }
       },
       check(){
