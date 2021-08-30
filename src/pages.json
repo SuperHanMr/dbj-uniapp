@@ -53,6 +53,34 @@
 			}
 		},
 		{
+			"path": "pages/classify/search/index",
+			"style": {
+				"navigationBarTitleText": "",
+				"enablePullDownRefresh": false
+			}
+		},
+		{
+			"path": "pages/classify/search-result/search-result",
+			"style": {
+				"navigationBarTitleText": "",
+				"enablePullDownRefresh": false
+			}
+		},
+		{
+			"path": "pages/classify/goods-list/index",
+			"style": {
+				"navigationBarTitleText": "",
+				"enablePullDownRefresh": false
+			}
+		},
+		{
+			"path": "pages/classify/goods-detail/goods-detail",
+			"style": {
+				"navigationBarTitleText": "",
+				"enablePullDownRefresh": false
+			}
+		},
+		{
 			"path": "pages/message/index/index",
 			"style": {
 				"navigationBarTitleText": "消息"
@@ -258,7 +286,7 @@
 		{
 			"path": "pages/my/my-house/my-house",
 			"style": {
-				"navigationBarTitleText": "房屋",
+				"navigationBarTitleText": "房屋管理",
 				"enablePullDownRefresh": false
 			}
 		},
@@ -282,45 +310,44 @@
 				"navigationBarTitleText": "验房服务",
 				"enablePullDownRefresh": true
 			}
+		},
+		{
+			"path": "pages/my/my-order/order-in-progress/order-in-progress",
+			"style": {
+				"navigationBarTitleText": "",
+				"enablePullDownRefresh": false
+			}
+		},
+		{
+			"path": "pages/my/my-order/order-success/order-success",
+			"style": {
+				"navigationBarTitleText": "",
+				"enablePullDownRefresh": false
+			}
+		},
+		{
+			"path": "pages/my/my-order/order-failed/order-failed",
+			"style": {
+				"navigationBarTitleText": "",
+				"enablePullDownRefresh": false
+			}
+		},
+		{
+			"path": "pages/my/evaluate/evaluate",
+			"style": {
+				"navigationBarTitleText": "我的评价",
+				"enablePullDownRefresh": false,
+				"navigationBarBackgroundColor": "#FFFFFF"
+			}
+		},
+		{
+			"path": "pages/changeGoodsSku/changeGoodsSku",
+			"style": {
+				"navigationBarTitleText": "",
+				"enablePullDownRefresh": false
+			}
 		}
-        ,{
-            "path" : "pages/my/my-order/order-in-progress/order-in-progress",
-            "style" :                                                                                    
-            {
-                "navigationBarTitleText": "",
-                "enablePullDownRefresh": false
-            }
-            
-        }
-        ,{
-            "path" : "pages/my/my-order/order-success/order-success",
-            "style" :                                                                                    
-            {
-                "navigationBarTitleText": "",
-                "enablePullDownRefresh": false
-            }
-            
-        }
-        ,{
-            "path" : "pages/my/my-order/order-failed/order-failed",
-            "style" :                                                                                    
-            {
-                "navigationBarTitleText": "",
-                "enablePullDownRefresh": false
-            }
-            
-        }
-        ,{
-            "path" : "pages/my/evaluate/evaluate",
-            "style" :                                                                                    
-            {
-                "navigationBarTitleText": "我的评价",
-                "enablePullDownRefresh": false,
-								"navigationBarBackgroundColor":"#FFFFFF"
-            }
-            
-        }
-    ],
+	],
 	"globalStyle": {
 		"navigationBarTextStyle": "black",
 		"navigationBarTitleText": "uni-app",

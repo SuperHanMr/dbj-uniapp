@@ -72,6 +72,7 @@
         </view>
       </view>
     </view>
+    <view @click="handlerToMyHouse">我的房屋</view>
     <view @click="handlerToShop">购物车</view>
     <view @click="handlerToSetUp">真实案例</view>
   </view>
@@ -180,7 +181,12 @@ export default {
 			uni.navigateTo({
 				url:item.url,
 			})
-		}
+		},
+    handlerToMyHouse(){
+      uni.navigateTo({
+        url:'/pages/my/my-house/my-house'
+      })
+    }
   },
 };
 </script>

@@ -43,7 +43,7 @@ import { queryEstates } from "../../../api/decorate.js";
 export default {
   mounted() {},
   onShow() {
-    if (this.houses.length < 1) {
+    if (this.houses && this.houses.length < 1) {
       this.getHouses();
     }
   },

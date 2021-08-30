@@ -4,25 +4,25 @@
       <view class="content">
         <view class="form-item">
           <label class="item-label">业主姓名</label>
-          <input class="uni-input" name="input" v-model="addData.name" placeholder="请输入业主姓名" />
+          <input class="uni-input" placeholder-class="placeholder" name="input" v-model="addData.contactName" placeholder="请输入业主姓名" />
         </view>
         <view class="form-item">
           <label class="item-label">手机号</label>
-          <input class="uni-input" name="input" v-model="addData.phone" placeholder="请输入业主姓名" />
+          <input class="uni-input"  placeholder-class="placeholder" type="number" name="input" v-model="addData.contactPhone" placeholder="请输入手机号" />
         </view>
         <view class="form-item">
           <label class="item-label">所在地区</label>
-          <input class="uni-input" @click="chooseMap" disabled name="input" v-model="addData.path" placeholder=" " />
+          <input class="uni-input"  placeholder-class="placeholder" @click="chooseMap" disabled name="input" v-model="addData.locationName" placeholder="请选择您房屋所在地区" />
         </view>
         <view class="form-item">
           <label class="item-label">小区</label>
-          <input class="uni-input" :disabled="!addData.path" name="input" v-model="addData.home" placeholder=" " />
+          <input class="uni-input"  placeholder-class="placeholder" :disabled="!hasPoint" name="input" v-model="addData.housingEstate" placeholder="房屋所在小区" />
         </view>
       </view>
       <view class="content">
         <view class="form-item">
           <label class="item-label">楼栋房号</label>
-          <input class="uni-input" name="input" v-model="addData.num" placeholder="请输入楼栋房号" />
+          <input class="uni-input"  placeholder-class="placeholder" name="input" v-model="addData.address" placeholder="例:16号楼5层301" />
         </view>
         <view  class="form-item special">
           <label class="item-label">楼型</label>
@@ -30,24 +30,24 @@
         </view>
         <view class="form-item">
           <label class="item-label" >户型</label>
-          <input type="text" class="uni-input" disabled v-model="addData.roomData"  @click="openList"/>
+          <input type="text"  placeholder-class="placeholder" class="uni-input" disabled v-model="houseType" placeholder="请选择房屋户型" @click="openList"/>
         </view>
         <view class="form-item">
           <label class="item-label">房屋面积</label>
-          <input class="uni-input" type="digit" name="input" v-model="addData.name" placeholder="请输入业主姓名" />
+          <input class="uni-input" placeholder-class="placeholder" type="digit" name="input" v-model="addData.insideArea" placeholder="请输入您的房屋面积" />
         </view>
         <view class="form-item special ele">
           <label class="item-label">有无电梯</label>
             <choose-btn :btnList='elevatorList' @chooseBtn="chooseEle"></choose-btn>
-          <input v-if="addData.ele" class="ele-input" name="input" v-model="addData.ele" placeholder="请输入电梯楼层" />
+          <input v-if="!addData.hasLift"  placeholder-class="placeholder" class="ele-input" name="input" v-model="addData.floors" placeholder="请输入电梯楼层" />
         </view>
-      </view>
+      </view> 
       <view class="content bottom-switch">
         <view class="text-left">
           <text class="text">设置为默认地址</text>
           <text class="tips">提醒：每次下单会默认使用该地址</text>
         </view>
-        <switch color="#24BDBD" :checked='addData.checked' @change="switchChange" style="transform:scale(0.9)"></switch>
+        <switch color="#24BDBD" :checked='addData.defaultEstate' @change="switchChange" style="transform:scale(0.9)"></switch>
       </view>
       <view class="submit-bottom">
         <text class="submit" @click="save">保存</text>
@@ -72,78 +72,97 @@
               <view class="item" v-for="item of roomList" :key="item">{{item}}卫</view>
           </picker-view-column>
       </picker-view> 
-    </uni-popup>
+    </uni-popup> 
   </view>
 </template>
 
 <script>
+ import { addHouse } from "../../../api/decorate.js";
   export default {
     data() {
       return {
         visible:false,
         addData:{
-          roomData:'',
-          name:1,
-          ele:0
+          contactName:'',
+          houseStructure:'',
+          contactPhone:'',
+          housingEstate:'',
+          locationName:'',
+          address:'',
+          roomNum:0,
+          hallNum:0,
+          kitchenNum:0,
+          bathroomNum:0,
+          insideArea:null,
+          floors:null,
+          hasLift:true,
+          defaultEstate:false,
         },
-        roomData:[],
+        roomData:[0,0,0,0],
         roomList:[1,2,3,4,5],
+        houseType:'',
         currentFloor:0,
         floorList:[
           {
             label:'平层',
-            id:0
-          },
-          {
-            label:'错层',
             id:1
           },
           {
-            label:'跃层',
+            label:'错层',
             id:2
           },
           {
-            label:'复式',
+            label:'跃层',
             id:3
           },
           {
-            label:'别墅',
+            label:'复式',
             id:4
+          },
+          {
+            label:'别墅',
+            id:5
           }
         ],
         elevatorList:[
           {
             label:'有',
-            id:0
+            id:true
           },
           {
             label:'无',
-            id:1
+            id:false
           }
         ],
+        room:{},
+        //是否已经获取点位
+        hasPoint:false,
         indicatorClass:'choose-item'
-      };
+      }; 
     }, 
     methods:{
       formSubmit(){},
       formReset(){},
       chooseMap(){
+        let that = this
         uni.chooseLocation({
-            success: function (res) {
-              console.log(res)
-              let that = this
-              uni.request({
-                //将经纬度转换成adcode
-                url:"https://api.map.baidu.com/reverse_geocoding/v3/?ak=s0deCKPpT7GZBxtBLGs9gMkGTs80uuyD&output=json&coordtype=gcj02ll&location="+ res.latitude+','+res.longitude,
-                success: (res) => {
-                        console.log(res.data);
-                        // this.text = 'request success';
-                        // that.addData.location = res.data
-                        // console.log(that.addData.location)
-                    } 
-              })
-              console.log(res) 
-
+            success: function (res) { 
+              if(res.address){
+                console.log(res)
+                that.hasPoint = true
+                that.addData.locationName = res.address
+                that.addData.housingEstate = res.name
+                that.addData.latitude = res.latitude 
+                that.addData.longitude = res.longitude
+                uni.request({
+                  //将经纬度转换成adcode
+                  url:"https://api.map.baidu.com/reverse_geocoding/v3/?ak=s0deCKPpT7GZBxtBLGs9gMkGTs80uuyD&output=json&coordtype=gcj02ll&location="+ res.latitude+','+res.longitude,
+                  success: (res) => {
+                      console.log(res.data);
+                  } 
+                })
+              }
+             
             }
         });
       },
@@ -156,29 +175,67 @@
         this.roomData = e.detail.value
       },
       pickerCancel(){
-        this.roomData = this.addData.roomData
+        this.roomData = [...this.room]
         this.$refs.popup.close()
       },
       pickerSure(){
-        this.addData.roomData = this.roomData 
-        this.$refs.popup.close()
+        this.room = [...this.roomData]
+        this.addData.roomNum =  +this.roomData[0]+1
+        this.addData.hallNum =  +this.roomData[1]+1
+        this.addData.kitchenNum =  +this.roomData[2]+1
+        this.addData.bathroomNum =  +this.roomData[3]+1
+        this.houseType =this.addData.roomNum +'室'+ this.addData.hallNum +'厅'+ this.addData.kitchenNum  +'厨'+ this.addData.bathroomNum +'卫'
+        this.$refs.popup.close()  
       },
       chooseFloor(id){
-        console.log(id)
-        this.addData.type = id
+        // console.log(id)
+        this.addData.houseStructure = id
       },
-      chooseEle(id){
-        this.addData.ele = id
-        console.log(this.addData.ele)
+      chooseEle(id){ 
+        this.addData.hasLift = id
       },
       switchChange(e){
-        this.addData.checked=e.detail.value
-        console.log(this.addData.checked)
+        this.addData.defaultEstate=e.detail.value
+        // console.log(this.addData.defaultEstate)
       },
       save(){
-        uni.navigateTo({
-          
-        })
+        if(this.check()){
+          addHouse(this.addData).then(res=>{
+            console.log(res)
+          })
+          // uni.navigateBack({
+          //     // delta: 2
+          // });
+        }
+      },
+      check(){
+        let data = {...this.addData}
+        if(!(/^1[3456789]\d{9}$/.test(data.contactPhone))){
+          uni.showToast({
+              title: '请输入正确的手机号', 
+              duration: 2000,
+              icon:'none'
+          });
+          return false
+        }
+        if(data.hasLift){
+          delete data.floors 
+        }
+        delete data.defaultEstate
+        delete data.hasLift
+        for (let item in data) {
+          console.log(data[item],item)
+          if(!data[item]){
+            console.log(data[item],item)
+            uni.showToast({
+                title: '请输入信息',
+                duration: 2000,
+                icon:'error'
+            });
+            return false
+          }
+        } 
+        return true
       }
     }
   }
@@ -198,7 +255,7 @@
       line-height: 68rpx;
     }
     label.item-label:before{
-      display: none;
+      // display: none;
     }
   }
   view .ele{
@@ -206,6 +263,7 @@
     .ele-input{
       margin-bottom: 38rpx;
       border: 1px solid #ebebeb;
+      width: 80%;
       height: 84rpx;
       line-height: 84rpx;
       padding:0 16rpx ;
@@ -232,7 +290,7 @@
     label.item-label:before{
       content: '*';
       font-size: 26rpx;
-      widthw: 14rpx;
+      width: 14rpx;
       color: red;
     }
     
@@ -250,6 +308,11 @@
     line-height: 116rpx;
     vertical-align: top;
     color: #111;
+    font-size: 28rpx;
+  }
+  .placeholder{
+    color: #BBBBBB;
+    font-size: 28rpx;
   }
   .picker-view {
     width: 750rpx;
@@ -342,5 +405,6 @@
       border-radius: 12rpx;
     }
   }
+  
 }
 </style>
