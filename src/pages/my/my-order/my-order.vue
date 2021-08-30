@@ -116,7 +116,7 @@
       
 			</swiper-item>
       <swiper-item>
-        <!-- 待发货 -->
+        <!-- 待付款 -->
         <view class="pending-payment">
           <view class="header">
             <view class="store-name">
@@ -860,7 +860,7 @@ export default {
         "不梵蒂冈",
         "有人特",
       ],
-      tabList: ["全部", "待发货", "进行中", "已完成", "已关闭"],
+      tabList: ["全部", "待付款", "进行中", "已完成", "已关闭"],
       triggered: false, //控制刷新显示字段
       currentIndex: 1,
     };
