@@ -13,13 +13,13 @@
 				去亲友团
 			</view>
 			<swiper class="banner-content" :indicator-dots="true" :autoplay="true" interval="2000" duration="500">
-				<swiper-item v-for="(item,index) in bannerList">
+				<swiper-item v-for="(item,index) in bannerList" :key="index">
 					<image class="banner-img" :src="item.resUrl" mode="aspectFit" @click="toWebview(item.jumpUrl)">
 					</image>
 				</swiper-item>
 			</swiper>
 			<view class="flex-row">
-				<view class="item" v-for="(item,index) in liveList" @click="toLiveRoom(item)">
+				<view class="item" v-for="(item,index) in liveList"  :key="index" @click="toLiveRoom(item)">
 					{{item.title}}
 				</view>
 			</view>
@@ -52,7 +52,8 @@
 				liveList: [],
 				citydata: '北京市',
 				roomId: '',
-				bannerList: []
+				bannerList: [],
+				list:[]
 			};
 		},
 		onLoad() {
@@ -165,7 +166,6 @@
 			},
 			async getBannerList() {
 				this.bannerList = await getBanner();
-				console.log(list);
 				// this.liveList = list.lives;
 				// console.log(this.liveList);
 			},
