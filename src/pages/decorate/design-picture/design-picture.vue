@@ -23,9 +23,7 @@
 </template>
 
 <script>
-	const originImgUrl =
-		"https://gimg2.baidu.com/image_search/src=http%3A%2F%2Fhbimg.b0.upaiyun.com%2F1e8945784b68dcdf99160642be0786cd2594d6cabcda-Gljuui_fw658&refer=http%3A%2F%2Fhbimg.b0.upaiyun.com&app=2002&size=f9999,10000&q=a80&n=0&g=0n&fmt=jpeg?sec=1632541741&t=bb4860ac5dc004037d33f85c390d386f"
-
+	import originImgUrl from "../../../static/app-plus/uni@2x.png"
 	export default {
 		data() {
 			return {
