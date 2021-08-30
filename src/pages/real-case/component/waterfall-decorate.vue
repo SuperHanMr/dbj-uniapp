@@ -1,6 +1,6 @@
 <template>
 	<view class="waterfall-item" @tap="onTap">
-		<image :src="params.url" mode="widthFix" @load="emitHeight" @error="emitHeight"></image>
+		<image :src="params.imageUrl" mode="widthFix" @load="emitHeight" @error="emitHeight"></image>
 		<view class="decorate-state">
 			已竣工
 		</view>

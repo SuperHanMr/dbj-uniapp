@@ -24,7 +24,7 @@
 				</view>
 			</view>
 			<view class="test">
-				<button type="default" @click="toNextPage">去封装好的列表页</button>
+				<button style="width: 50%;" type="default" @click="toNextPage">去封装好的列表页</button>
 			</view>
 		</scroll-view>
 	</view>
@@ -77,7 +77,10 @@
 					url: '../../common/webview/webview?url=' + url
 				})
 			},
-			toFriends() {
+			async toFriends() {
+				let list = await queryEstates();
+				console.log(list);
+				this.roomId = list[0].id;
 				uni.navigateTo({
 					url: "../../decorate/friends/friends?id=" + this.roomId
 				});
@@ -170,9 +173,7 @@
 				// console.log(this.liveList);
 			},
 			async getHomeList() {
-				let list = await queryEstates();
-				console.log(list);
-				this.roomId = list[0].id;
+			
 				// this.liveList = list.lives;
 				// console.log(this.liveList);
 			},
@@ -204,7 +205,6 @@
 		flex-direction: column;
 		align-items: center;
 		justify-content: center;
-		background-color: yellow;
 		overflow: auto;
 
 		.item {
@@ -212,7 +212,6 @@
 			width: 200rpx;
 			height: 200rpx;
 			text-align: center;
-			background-color: red;
 		}
 	}
 
@@ -222,33 +221,10 @@
 
 	.banner {
 		height: 2000rpx;
-		background-color: yellow;
-	}
-
-	.navi-header-state {
-		display: flex;
-		flex-direction: row;
-		width: 100%;
-		background-color: red;
-	}
-
-	.navi-header {
-		display: flex;
-		flex-direction: row;
-		width: 100%;
-		background-color: blue;
-		align-items: center;
-
-		.select-city {
-			width: 30rpx;
-			height: 20rpx;
-			background-color: green;
-		}
 	}
 
 	.test {
 		height: 2000rpx;
-		width: 750px;
-		background-color: red;
+		width: 750rpx;
 	}
 </style>
