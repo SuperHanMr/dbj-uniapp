@@ -40,18 +40,7 @@
 			return {
 				startX: 0, //开始坐标
 				startY: 0,
-        listData:[
-          {id:1,isTouchMove:false,title:'1'},
-          {id:2,isTouchMove:false,title:'2'},
-          {id:3,isTouchMove:false,title:'3'},
-          {id:4,isTouchMove:false,title:'4'},
-          {id:4,isTouchMove:false,title:'5'},
-          {id:4,isTouchMove:false,title:'6'},
-          {id:4,isTouchMove:false,title:'7'},
-          {id:4,isTouchMove:false,title:'8'},
-          {id:4,isTouchMove:false,title:'9'},
-          {id:4,isTouchMove:false,title:'10'},
-        ], 
+        listData:[], 
         systemBottom:'',
         systemHeight:''
 			};
@@ -116,13 +105,15 @@
 					v.isTouchMove = false
 					//滑动超过30度角 return
 					if (Math.abs(angle) > 30) return;
+          //如果已经是默认则不滑动
+          if(v.defaultEstate)return
 					if (i == index) {
 						if (touchMoveX > startX) //右滑
 							v.isTouchMove = false
 						else //左滑
-							v.isTouchMove = true
-              console.log(that.listData)
-					}
+							v.isTouchMove = true 
+              // console.log(that.listData)
+					} 
 				})
 				//更新数据
 				
@@ -138,6 +129,10 @@
           isNeedRelative: true,
         }).then(res=>{  
           this.listData = res
+          this.listData.forEach(function(v,i){
+            v.isTouchMove = false
+          }) 
+          console.log(this.listData)
         })
       },
       edit(item){
