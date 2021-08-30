@@ -1,6 +1,14 @@
 {
 	"pages": [ //pages数组中第一项表示应用启动页，参考：https://uniapp.dcloud.io/collocation/pages
 		{
+			"path": "pages/home/index/index",
+			"style": {
+				"navigationBarTitleText": "首页",
+				"enablePullDownRefresh": true,
+				"transparentTitle": "auto",
+				"navigationStyle": "custom"
+			}
+		},{
 			"path": "pages/decorate/index/index",
 			"style": {
 				"navigationBarTitleText": "装修"
@@ -34,15 +42,7 @@
 				"navigationBarTitleText": "有房屋无服务"
 			}
 		},
-		{
-			"path": "pages/home/index/index",
-			"style": {
-				"navigationBarTitleText": "首页",
-				"enablePullDownRefresh": true,
-				"transparentTitle": "auto",
-				"navigationStyle": "custom"
-			}
-		},
+		
 		{
 			"path": "pages/classify/index/index",
 			"style": {
