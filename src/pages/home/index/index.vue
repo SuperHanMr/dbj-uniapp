@@ -5,15 +5,19 @@
 				<view @click="toCity">
 					{{citydata}}
 				</view>
-
 			</slot-one>
 		</custom-navbar>
-
 		<scroll-view class="content" scroll-y="true" @scroll="onScroll">
 			asdasd
 			<view style="margin-top: 300rpx;" class="" @click="toFriends">
 				去亲友团
 			</view>
+			<swiper class="banner-content" :indicator-dots="true" :autoplay="true" interval="2000" duration="500">
+				<swiper-item v-for="(item,index) in bannerList">
+					<image class="banner-img" :src="item.resUrl" mode="aspectFit" @click="toWebview(item.jumpUrl)">
+					</image>
+				</swiper-item>
+			</swiper>
 			<view class="flex-row">
 				<view class="item" v-for="(item,index) in liveList" @click="toLiveRoom(item)">
 					{{item.title}}
@@ -22,7 +26,6 @@
 			<view class="test">
 				<button type="default" @click="toNextPage">去封装好的列表页</button>
 			</view>
-
 		</scroll-view>
 	</view>
 </template>
@@ -32,7 +35,7 @@
 		getBanner,
 		queryLive
 	} from "../../../api/home.js";
-	
+
 	import {
 		orderList
 	} from "../../../api/order.js"
@@ -48,14 +51,15 @@
 				scrollTop: 0,
 				liveList: [],
 				citydata: '北京市',
-				roomId:''
+				roomId: '',
+				bannerList: []
 			};
 		},
 		onLoad() {
 			this.getAuthorizeInfo();
 		},
 		onShow() {
-			
+
 			this.getBannerList();
 			let pages = getCurrentPages();
 			let currPage = pages[pages.length - 1]; //当前页面
@@ -67,17 +71,22 @@
 			this.getHomeList();
 		},
 		methods: {
-			toFriends(){
+			toWebview(url) {
 				uni.navigateTo({
-					url:"../../decorate/friends/friends?id="+this.roomId
+					url: '../../common/webview/webview?url=' + url
 				})
+			},
+			toFriends() {
+				uni.navigateTo({
+					url: "../../decorate/friends/friends?id=" + this.roomId
+				});
 			},
 			changeCity() {
 				console.log('切换城市');
 			},
 			toCity() {
 				uni.navigateTo({
-					url: "../select-city/select-city?title="+this.citydata
+					url: "../select-city/select-city?title=" + this.citydata
 				})
 			},
 			getAuthorizeInfo() {
@@ -117,7 +126,7 @@
 									that.citydata = addressComponent.city.length > 0 ? addressComponent
 										.city :
 										addressComponent.province;
-										getApp().globalData.city=that.citydata;
+									getApp().globalData.city = that.citydata;
 
 								} else {
 									console.log("获取信息失败，请重试！")
@@ -155,7 +164,7 @@
 				}
 			},
 			async getBannerList() {
-				let list = await orderList();
+				this.bannerList = await getBanner();
 				console.log(list);
 				// this.liveList = list.lives;
 				// console.log(this.liveList);
@@ -163,7 +172,7 @@
 			async getHomeList() {
 				let list = await queryEstates();
 				console.log(list);
-				this.roomId=list[0].id;
+				this.roomId = list[0].id;
 				// this.liveList = list.lives;
 				// console.log(this.liveList);
 			},
@@ -180,6 +189,16 @@
 </script>
 
 <style lang="scss">
+	.banner-content {
+		width: 100%;
+		height: 200rpx;
+
+		.banner-img {
+			width: 100%;
+			height: 200rpx;
+		}
+	}
+
 	.flex-row {
 		display: flex;
 		flex-direction: column;

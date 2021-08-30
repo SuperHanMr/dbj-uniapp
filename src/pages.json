@@ -29,12 +29,9 @@
 			}
 		},
 		{
-			"path": "pages/decorate/have-house/have-house",
+			"path": "pages/decorate/have-house-no-service/have-house-no-service",
 			"style": {
-				"navigationBarTitleText": "我的房屋名称",
-				"navigationBarTextStyle": "black",
-				"navigationStyle": "custom",
-				"usingComponents": {}
+				"navigationBarTitleText": "有房屋无服务"
 			}
 		},
 		{
@@ -342,6 +339,13 @@
 		},
 		{
 			"path": "pages/changeGoodsSku/changeGoodsSku",
+			"style": {
+				"navigationBarTitleText": "",
+				"enablePullDownRefresh": false
+			}
+		},
+		{
+			"path": "pages/common/webview/webview",
 			"style": {
 				"navigationBarTitleText": "",
 				"enablePullDownRefresh": false

@@ -65,7 +65,7 @@ export default {
     },
     goDesignPicture() {
       uni.navigateTo({
-        url: "/pages/decorate/design-picture/index",
+        url: "/pages/decorate/design-picture/design-picture",
       });
     },
     goToMyDecorate() {
@@ -79,11 +79,13 @@ export default {
       }).then((data) => {
         if (data.length < 1) {
           uni.navigateTo({
-            url: "/pages/decorate/no-house/index",
+            url: "/pages/decorate/no-house/no-house",
           });
         } else {
-          // this.houses = data;
           getApp().globalData.houses = data;
+					uni.navigateTo({
+					  url: "/pages/decorate/have-house-no-service/have-house-no-service",
+					});
         }
       });
     },
@@ -125,7 +127,6 @@ export default {
 
 .design-picture {
   border: 2rpx solid green;
-
   image {
     width: 250rpx;
     height: 250rpx;
