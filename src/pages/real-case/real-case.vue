@@ -33,6 +33,7 @@
 <script>
 	import DesignCase from "./component/design-case.vue";
 	import Decorate from "./component/decorate.vue";
+	import { getCaseList } from "../../api/real-case.js";
 	export default {
 		components: {
 			DesignCase,
@@ -63,87 +64,6 @@
 				currentVal: 0,
 				// 顶部tabs显示状态
 				selectStatus: 0,
-				listArr: [{
-						title: "测试图片1",
-						name: "名字1",
-					},
-					{
-						title: "测试图片1",
-						name: "名字1",
-					},
-					{
-						title: "测试图片1",
-						name: "名字1",
-					},
-					{
-						title: "测试图片1",
-						name: "名字1",
-					},
-					{
-						title: "测试图片1",
-						name: "名字1",
-					},
-					{
-						title: "测试图片1",
-						name: "名字1",
-					},
-					{
-						title: "测试图片1",
-						name: "名字1",
-					},
-					{
-						title: "测试图片1",
-						name: "名字1",
-					},
-					{
-						title: "测试图片1",
-						name: "名字1",
-					},
-					{
-						title: "测试图片1",
-						name: "名字1",
-					},
-					{
-						title: "测试图片1",
-						name: "名字1",
-					},
-					{
-						title: "测试图片1",
-						name: "名字1",
-					},
-					{
-						title: "测试图片1",
-						name: "名字1",
-					},
-					{
-						title: "测试图片1",
-						name: "名字1",
-					},
-					{
-						title: "测试图片1",
-						name: "名字1",
-					},
-					{
-						title: "测试图片1",
-						name: "名字1",
-					},
-					{
-						title: "测试图片1",
-						name: "名字1",
-					},
-					{
-						title: "测试图片1",
-						name: "名字1",
-					},
-					{
-						title: "测试图片1",
-						name: "名字1",
-					},
-					{
-						title: "测试图片1",
-						name: "名字1",
-					},
-				],
 			};
 		},
 		onReady() {
@@ -199,45 +119,52 @@
 					自行替换 请求方法将数据 传入 addList() 方法中
 					自行解决数据格式，自行修改组件内布局和内容绑定
 				*/
-				if (!this.ajax.load) {
-					return;
-				}
-				this.ajax.load = false;
-				this.ajax.loadTxt = "加载中";
+			  getCaseList({
+					page: 0,
+					rows: 10,
+				}).then((res) => {
+					console.log(res, 'asd>>>>>>>>>>>>>>>>');
+					this.addList(res.list);
+				})
+				// if (!this.ajax.load) {
+				// 	return;
+				// }
+				// this.ajax.load = false;
+				// this.ajax.loadTxt = "加载中";
 
-				setTimeout(() => {
-					// 生成随机数方法
-					let random = (min = 0, max) => {
-						return Math.floor(Math.random() * max) + min;
-					};
-					// 待选的图片数据
-					let imgs = [];
-					// 待选的标题数据
-					let titles = [
-						"桃花坞里桃花庵，桃花庵里桃花仙；",
-						"桃花仙人种桃树，又摘桃花卖酒钱。",
-						"酒醒只在花前坐，酒醉还来花下眠；半醒半醉日复日，花落花开年复年。",
-						"但愿老死花酒间，不愿鞠躬车马前；",
-						"车尘马足富者趣，酒盏花枝贫者缘。若将富贵比贫贱，",
-						"一在平地一在天；若将贫贱比车马，他得驱驰我得闲。",
-						"别人笑我太疯癫，我笑他人看不穿；不见五陵豪杰墓，无花无酒锄作田。",
-					];
+				// setTimeout(() => {
+				// 	// 生成随机数方法
+				// 	let random = (min = 0, max) => {
+				// 		return Math.floor(Math.random() * max) + min;
+				// 	};
+				// 	// 待选的图片数据
+				// 	let imgs = [];
+				// 	// 待选的标题数据
+				// 	let titles = [
+				// 		"桃花坞里桃花庵，桃花庵里桃花仙；",
+				// 		"桃花仙人种桃树，又摘桃花卖酒钱。",
+				// 		"酒醒只在花前坐，酒醉还来花下眠；半醒半醉日复日，花落花开年复年。",
+				// 		"但愿老死花酒间，不愿鞠躬车马前；",
+				// 		"车尘马足富者趣，酒盏花枝贫者缘。若将富贵比贫贱，",
+				// 		"一在平地一在天；若将贫贱比车马，他得驱驰我得闲。",
+				// 		"别人笑我太疯癫，我笑他人看不穿；不见五陵豪杰墓，无花无酒锄作田。",
+				// 	];
 
-					let res = [];
-					for (let i = 0; i < 10; i++) {
-						res.push({
-							url: `/uni_modules/helang-waterfall/static/waterfall/${random(
-              0,
-              3
-            )}.jpg`,
-							title: titles[random(0, titles.length)],
-							money: random(9, 9999),
-							label: "官方自营",
-							shop: "唐诗三百首旗舰店",
-						});
-					}
-					this.addList(res);
-				}, 1000);
+				// 	let res = [];
+				// 	for (let i = 0; i < 10; i++) {
+				// 		res.push({
+				// 			url: `/uni_modules/helang-waterfall/static/waterfall/${random(
+    //           0,
+    //           3
+    //         )}.jpg`,
+				// 			title: titles[random(0, titles.length)],
+				// 			money: random(9, 9999),
+				// 			label: "官方自营",
+				// 			shop: "唐诗三百首旗舰店",
+				// 		});
+				// 	}
+				// 	this.addList(res);
+				// }, 1000);
 			},
 			addList(res) {
 				// 获取到的数据，请注意数据结构

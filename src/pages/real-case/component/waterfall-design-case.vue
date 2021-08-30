@@ -1,19 +1,19 @@
 <template>
 	<view class="waterfall-item" @tap="onTap">
-		<image :src="params.url" mode="widthFix" @load="emitHeight" @error="emitHeight"></image>
+		<image :src="params.imageUrl" mode="widthFix" @load="emitHeight" @error="emitHeight"></image>
 		<view class="content">
-			<view class="title">{{params.title}}</view>
+			<view class="title">{{params.name}}</view>
 			<view class="case-info">
 				<view class="info-img">
-					<image :src="params.url" alt="">
+					<image :src="params.authorAvatar" alt="">
 					<view class="info-text">
-						小橘子干
+						{{params.authorNickname}}
 					</view>
 				</view>
 				<view class="collection-box">
 					<image src="/static/images/collection-no.png" mode=""></image>
 					<view class="collection-number">
-						4234
+						{{params.likeCount}}
 					</view>
 				</view>
 			</view>
