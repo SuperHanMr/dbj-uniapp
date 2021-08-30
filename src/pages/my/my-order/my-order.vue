@@ -113,10 +113,10 @@
 
           </view>
         </view>
-      
-			</swiper-item>
+
+      </swiper-item>
       <swiper-item>
-        <!-- 待发货 -->
+        <!-- 待付款 -->
         <view class="pending-payment">
           <view class="header">
             <view class="store-name">
@@ -812,6 +812,7 @@
 </template>
 
 <script>
+import { orderList } from "../../../api/order.js";
 export default {
   data() {
     return {
@@ -862,7 +863,7 @@ export default {
       ],
       tabList: ["全部", "待发货", "进行中", "已完成", "已关闭"],
       triggered: false, //控制刷新显示字段
-      currentIndex: 1,
+      currentIndex: 0,
     };
   },
   computed: {
@@ -878,6 +879,12 @@ export default {
       }
     },
   },
+  onLoad() {
+    orderList().then((e) => {
+      console.log(e);
+    });
+  },
+
   methods: {
     swiperChange(e) {
       let index = e.target.current || e.detail.current;
@@ -911,6 +918,7 @@ export default {
 .item {
   width: 100%;
   height: 96rpx;
+
   .tab-text {
     width: 150rpx;
     height: 96rpx;
@@ -925,6 +933,7 @@ export default {
   flex-direction: row;
   height: 96rpx;
   font-size: 30rpx;
+
   .item {
     flex: 1;
     display: flex;
@@ -935,9 +944,11 @@ export default {
     color: #999;
     position: relative;
   }
+
   .selected {
     color: black;
     font-weight: 1000;
+
     .bottom-icon {
       position: absolute;
       width: 32rpx;
@@ -959,10 +970,12 @@ export default {
   display: flex;
   align-items: center;
   justify-content: space-between;
+
   .store-name {
     display: flex;
     flex-flow: row nowrap;
     align-items: center;
+
     text {
       font-weight: 1000;
       max-width: 476rpx;
@@ -971,12 +984,14 @@ export default {
       text-overflow: ellipsis;
       white-space: nowrap;
     }
+
     image {
       width: 34rpx;
       height: 34rpx;
       object-fit: cover;
     }
   }
+
   .order-status {
     color: #fc8b19;
     font-size: 24rpx;
@@ -992,20 +1007,24 @@ export default {
   display: flex;
   flex: 1;
   flex-direction: column;
+
   .product-info {
     margin-top: 32rpx;
     display: flex;
     flex: 1;
     flex-flow: row nowrap;
     align-items: center;
+
     image {
       width: 136rpx;
       height: 136rpx;
       background-color: pink;
       margin-right: 16rpx;
     }
+
     .basic-info {
       flex: 1;
+
       .top {
         display: flex;
         flex: 1;
@@ -1013,6 +1032,7 @@ export default {
         align-items: center;
         max-height: 64rpx;
         margin-bottom: 16rpx;
+
         .icon {
           width: 60rpx;
           height: 30rpx;
@@ -1024,10 +1044,12 @@ export default {
           font-size: 20rpx;
           text-align: center;
         }
+
         .name-and-price {
           display: flex;
           flex: 1;
           flex-flow: row nowrap;
+
           .product-name {
             max-height: 64rpx;
             line-height: 32rpx;
@@ -1043,12 +1065,14 @@ export default {
             -webkit-line-clamp: 2;
             -webkit-box-orient: vertical;
           }
+
           .product-price {
             height: 32rpx;
             font-size: 32rpx;
           }
         }
       }
+
       .bottom {
         display: flex;
         height: 26rpx;
@@ -1058,9 +1082,11 @@ export default {
         justify-content: space-between;
       }
     }
+
     .product-img {
-			flex:1;
-			overflow: hidden;
+      flex: 1;
+      overflow: hidden;
+
       scroll-view {
         image {
           width: 136rpx;
@@ -1071,19 +1097,22 @@ export default {
           background-color: pink;
           margin-right: 24rpx;
         }
+
         image:nth-last-child(1) {
           margin-right: 0;
         }
       }
     }
+
     .total-price {
       display: flex;
-			
+
       flex-flow: column nowrap;
       align-items: flex-end;
       color: #999;
       font-size: 22rpx;
       margin-left: 24rpx;
+
       .product-price {
         height: 32rpx;
         font-size: 32rpx;
@@ -1101,9 +1130,11 @@ export default {
   flex-flow: row nowrap;
   justify-content: space-between;
   background-color: #ffffff;
+
   .total-pay {
     color: #999;
   }
+
   .need-pay {
     color: #333;
   }
@@ -1122,8 +1153,10 @@ export default {
   justify-content: space-between;
   padding: 32rpx;
   background-color: #ffffff;
+
   .set-interval {
   }
+
   .button {
     .cancel-order {
       width: 140rpx;
@@ -1135,6 +1168,7 @@ export default {
       border-radius: 32rpx;
       padding: 0;
     }
+
     .go-to-pay {
       width: 140rpx;
       height: 56rpx;
@@ -1154,6 +1188,7 @@ export default {
   text-align: right;
   padding: 32rpx;
   background-color: #ffffff;
+
   .confirm {
     width: 140rpx;
     height: 56rpx;
@@ -1173,6 +1208,7 @@ export default {
   display: flex;
   flex-direction: column;
   background-color: red;
+
   .swiper-item {
     .pending-payment,
     .ongoing-order,

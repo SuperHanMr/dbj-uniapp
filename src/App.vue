@@ -4,6 +4,7 @@ export default {
     userInfo: {},
     token: "",
     city: "",
+		houses: []
   },
   onLaunch: function () {
     if (!uni.getStorageSync("userId")) {
