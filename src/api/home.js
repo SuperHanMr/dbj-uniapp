@@ -5,7 +5,7 @@ export function getBanner(params){
     return request.get(`/app/banner/list`,{params});
 }
 
-//直播与回放+预告
+//APP 直播+预告+回放列表
 export function queryLive(params){
-    return request.get(`/app/publicRoom/queryLive/0`,{params});
+    return request.get(`/customer/app/publicRoom/queryLiveList`,{params});
 }
