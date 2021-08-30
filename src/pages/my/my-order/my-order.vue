@@ -30,7 +30,7 @@
 			</swiper-item> -->
       <swiper-item>
         <!-- 全部的订单 -->
-        <view class="pending-payment">
+        <view  v-for="(item,index) in list" :key="index" class="pending-payment">
           <view class="header">
             <view class="store-name">
               <text>不知道叫什么名字的店铺nizhidaomahahahahahahaha</text>
@@ -108,7 +108,7 @@
                 type="default"
                 size="mini"
                 class="go-to-pay"
-              >去付款</button>
+               @click="toDetail(item)">去付款</button>
             </view>
 
           </view>
@@ -882,10 +882,17 @@ export default {
   onLoad() {
     orderList().then((e) => {
       console.log(e);
+			this.list=e
     });
   },
 
   methods: {
+		toDetail(item){
+			console.log(item);
+			uni.navigateTo({
+				url:'order-in-progress/order-in-progress?orderNo='+item.id
+			})
+		},
     swiperChange(e) {
       let index = e.target.current || e.detail.current;
       this.currentIndex = index;

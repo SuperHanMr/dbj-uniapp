@@ -1,13 +1,6 @@
 {
 	"pages": [ //pages数组中第一项表示应用启动页，参考：https://uniapp.dcloud.io/collocation/pages
 		{
-			"path": "pages/decorate/no-house-decorate/no-house-decorate",
-			"style": {
-				"navigationBarTitleText": "装修服务",
-				"enablePullDownRefresh": true
-			}
-		},
-		{
 			"path": "pages/home/index/index",
 			"style": {
 				"navigationBarTitleText": "首页",
@@ -301,13 +294,13 @@
 				"enablePullDownRefresh": false
 			}
 		},
-		// {
-		// 	"path": "pages/decorate/no-house-decorate/no-house-decorate",
-		// 	"style": {
-		// 		"navigationBarTitleText": "装修服务",
-		// 		"enablePullDownRefresh": true
-		// 	}
-		// },
+		{
+			"path": "pages/decorate/no-house-decorate/no-house-decorate",
+			"style": {
+				"navigationBarTitleText": "装修服务",
+				"enablePullDownRefresh": true
+			}
+		},
 		{
 			"path": "pages/decorate/check/check",
 			"style": {
@@ -363,6 +356,27 @@
 			"style": {
 				"navigationBarTitleText": "",
 				"enablePullDownRefresh": false
+			}
+		},
+		{
+			"path": "pages/common/video-player/video-player",
+			"style": {
+				"navigationBarTitleText": "",
+				"enablePullDownRefresh": false
+			}
+		},
+		{
+			"path": "pages/my/set-up/comments-feedback/comments-feedback",
+			"style": {
+				"navigationBarTitleText": "",
+				"enablePullDownRefresh": false
+			}
+		},
+		{
+			"path": "pages/decorate/design-service-list/design-service-list",
+			"style": {
+				"navigationBarTitleText": "设计服务",
+				"enablePullDownRefresh": true
 			}
 		}
 	],
