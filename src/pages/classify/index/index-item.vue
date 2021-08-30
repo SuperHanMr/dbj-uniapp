@@ -100,6 +100,8 @@
     height: calc(100% - 200rpx);
 		background: #fff;
 		overflow: hidden;
+    font-size: 14px;
+    color: #666666;
 	}
 
 	.nav {
@@ -109,14 +111,11 @@
 
 	.nav-left {
 		width: 25%;
-		background: #fafafa;
+		background: #FFFFFF;
 	}
 
 	.nav-left-item {
-		height: 100upx;
-		border-right: solid 1px #f1f1f1;
-		border-bottom: solid 1px #f1f1f1;
-		font-size: 30upx;
+		height: 100rpx;
 		display: flex;
 		align-items: center;
 		justify-content: center;
@@ -125,13 +124,13 @@
 		border-bottom: none;
 	}
 	.active {
-		color: #FF80AB;
-		background: #fff;
+		color: #111111;
+		background: #F7F7F7;
 		border-right: 0;
 	}
   .nav-right{
     padding: 30rpx;
-    background-color: #ccc;
+    background-color: #F7F7F7;
     width: 75%;
   }
   .right-view{

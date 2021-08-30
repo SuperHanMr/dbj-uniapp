@@ -11,8 +11,9 @@
           </view>
         </view> 
         <view class="content-view">
-          <scroll-view id="tab-bar" class="scroll-h" :scroll-x="true" :show-scrollbar="false" :scroll-into-view="scrollInto">
-              <view v-for="(tab,index) in dataList" :key="index" class="uni-tab-item" :id="index" :data-current="index" @click="ontabtap">
+          <scroll-view id="tab-bar" class="scroll-h" :scroll-x="true" :show-scrollbar="false" :scroll-into-view="scrollInto" v-if="dataList.length > 1">
+              <view v-for="(tab,index) in dataList" :key="index" :class="{'uni-tab-item': dataList.length >3, 'uni-tab-item-short3': dataList.length === 3, 
+              'uni-tab-item-short2': dataList.length === 2}" :id="index" :data-current="index" @click="ontabtap">
                   <text class="uni-tab-item-title" :class="tabIndex==index ? 'uni-tab-item-title-active' : ''">{{tab.name}}</text>
               </view>
           </scroll-view>
@@ -132,24 +133,34 @@
         flex-direction: column;
         overflow: hidden;
         background-color: #ffffff;
-        /* #ifndef APP-PLUS */
         height: 100vh;
-        /* #endif */
     }
 
     .scroll-h {
         width: 750rpx;
-		/* #ifdef H5 */
-		width:100%;
-		/* #endif */
-		height: 80rpx;
+        width:100%;
+        height: 80rpx;
         flex-direction: row;
-        /* #ifndef APP-PLUS */
         white-space: nowrap;
-        /* #endif */
     }
 
 
+    .uni-tab-item-short2 {
+        /* #ifndef APP-PLUS */
+        display: inline-block;
+        /* #endif */
+        flex-wrap: nowrap;
+        text-align: center;
+        width: 50%;
+    }
+    .uni-tab-item-short3 {
+        /* #ifndef APP-PLUS */
+        display: inline-block;
+        /* #endif */
+        flex-wrap: nowrap;
+        text-align: center;
+        width: 33.3%;
+    }
     .uni-tab-item {
         /* #ifndef APP-PLUS */
         display: inline-block;
@@ -157,10 +168,7 @@
         flex-wrap: nowrap;
         text-align: center;
         width: 25%;
-     /*   padding-left: 34rpx;
-        padding-right: 34rpx; */
     }
-
     .uni-tab-item-title {
         color: #555;
         font-size: 30rpx;
@@ -170,12 +178,28 @@
         /* #ifndef APP-PLUS */
         white-space: nowrap;
         /* #endif */
+        font-size: 15px;
+        font-family: PingFangSC;
+        color: #999999;
     }
 
     .uni-tab-item-title-active {
-        color: #007AFF;
+      position: relative;
+      color: #111111;
     }
-
+    .uni-tab-item-title-active::after{
+      content: "";
+      display: inline-block;
+      width: 32rpx;
+      height: 4rpx;
+      background-color: #00ed7d;
+      border-radius: 100px 100px 0px 0px;
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      margin: auto;
+    }
     .swiper-item {
         flex: 1;
         flex-direction: row;
