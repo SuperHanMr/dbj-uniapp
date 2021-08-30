@@ -94,23 +94,36 @@
 					this.rightHeight += height;
 				}
 			},
+			onJump(list, index) {
+				console.log(list[index].parentType, 'asdasdas');
+				if (list[index].parentType === 1){
+					const listUrl = list[index].videoUrl
+					uni.navigateTo({
+						url: `./component/panorama/panorama?url=${listUrl}`
+					})
+				}
+				
+			},
 			// 组件点击事件
 			onClick(index, tag) {
 				console.log(index, tag);
 				// 对应的数据
 				if (tag == "left") {
 					console.log(this.leftList);
+					this.onJump(this.leftList, index);
+					
 				} else {
 					console.log(this.rightList);
+					this.onJump(this.rightList, index);
 				}
-				let direction = {
-					left: "左",
-					right: "右",
-				};
-				uni.showToast({
-					title: `${direction[tag]}侧列表第${index + 1}个被点击`,
-					icon: "none",
-				});
+				// let direction = {
+				// 	left: "左",
+				// 	right: "右",
+				// };
+				// uni.showToast({
+				// 	title: `${direction[tag]}侧列表第${index + 1}个被点击`,
+				// 	icon: "none",
+				// });
 			},
 			// 获取数据
 			getList() {

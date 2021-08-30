@@ -23,8 +23,7 @@
 					:index="index"
 				></waterfall>
 			</view>
-			<web-view src="https://pano-stage.meiwu365.com/vr-home/viewer/5460/Wo7XZf37"></web-view>
-			<!-- <image src='https://img.yzcdn.cn/vant/apple-1.jpg' mode=""></image> -->					<video id="myVideo" src="https://pano-stage.meiwu365.com/vr-home/viewer/5460/Wo7XZf37"					                    @error="videoErrorCallback" :danmu-list="danmuList" enable-danmu danmu-btn controls></video>
+			<!-- <image src='https://img.yzcdn.cn/vant/apple-1.jpg' mode=""></image> -->					<!-- <video id="myVideo" src="https://pano-stage.meiwu365.com/vr-home/viewer/5460/Wo7XZf37"					                    @error="videoErrorCallback" :danmu-list="danmuList" enable-danmu danmu-btn controls></video> -->
 		</view>
 	</view>
 </template>

@@ -1,6 +1,8 @@
 <template>
 	<view class="waterfall-item" @tap="onTap">
 		<image :src="params.imageUrl" mode="widthFix" @load="emitHeight" @error="emitHeight"></image>
+		<!-- <video v-if="params.parentType !== 0" id="myVideo" :src="params.videoUrl"
+		                    @error="videoErrorCallback" :danmu-list="danmuList" enable-danmu danmu-btn controls></video> -->
 		<view class="content">
 			<view class="title">{{params.name}}</view>
 			<view class="case-info">
