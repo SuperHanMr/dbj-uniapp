@@ -359,6 +359,15 @@
 			    "enablePullDownRefresh": false
 			}
 		}
+        ,{
+            "path" : "pages/common/video-player/video-player",
+            "style" :                                                                                    
+            {
+                "navigationBarTitleText": "",
+                "enablePullDownRefresh": false
+            }
+            
+        }
     ],
 	"globalStyle": {
 		"navigationBarTextStyle": "black",
