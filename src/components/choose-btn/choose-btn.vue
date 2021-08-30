@@ -1,6 +1,6 @@
 <template>
   <view class="floor-btn">
-    <button class="btn" :class="{active:item.id===currentBtn}" v-for="item of btnList" :key='item.id' @click="chooseBtn(item.id)">{{item.label}}</button>
+    <button class="btn" :class="{active:item.id==currentBtn}" v-for="item of btnList" :key='item.id' @click="chooseBtn(item.id)">{{item.label}}</button>
   </view>
 </template>
 
@@ -12,14 +12,14 @@
         type:Array,
         default:[{id:0}]
       },
+      currentBtn:''
     },
     data() {
       return {
-        currentBtn:''
+        
       };
     },
     mounted(){
-      this.currentBtn = this.btnList[0].id
     },
     // watch:{
     //   btnList(){
@@ -29,7 +29,7 @@
     // },
     methods:{
       chooseBtn(id){
-        this.currentBtn = id
+        
         this.$emit('chooseBtn',id)
       }
     }

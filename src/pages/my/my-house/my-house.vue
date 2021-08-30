@@ -9,13 +9,13 @@
                 <text class="defalut" v-if="item.defaultEstate">默认</text>
                 <text class="province">{{item.housingEstate}}</text>
               </view>
-              <text class="address">{{item.locationName}}马上快到了南方猫屎咖啡没上课吗</text>
+              <text class="address">{{item.locationName}}</text>
               <view class="item">
-                <text class="name" >赵先生{{item.contactName}}</text>
-                <text class="phone">12343454577{{item.contactPhone}}</text>
+                <text class="name" >{{item.contactName}}</text>
+                <text class="phone">{{item.contactPhone}}</text>
               </view>
             </view> 
-            <view class="edit" @click="edit">编辑</view>
+            <view class="edit" @click="edit(item)"><image src="../../../static/images/edit.svg" class="edit-icon"></image></view>
           </view>
           <view class="dle-btn centerboth" @click.stop="delThis(item,index)">
             <view class="del-icon centerboth">
@@ -78,7 +78,7 @@
     },
 		methods: {
 			delThis:function(item,index){
-				setDefault(item.estateId).then(res=>{
+				setDefault(item.id).then(res=>{
           this.getHouseList()
         })
 			},
@@ -121,6 +121,7 @@
 							v.isTouchMove = false
 						else //左滑
 							v.isTouchMove = true
+              console.log(that.listData)
 					}
 				})
 				//更新数据
@@ -139,9 +140,10 @@
           this.listData = res
         })
       },
-      edit(){
+      edit(item){
+        // console.log(item)
         uni.navigateTo({
-          url:'/pages/decorate/add-house/add-house'
+          url:'/pages/decorate/add-house/add-house?id='+item.id
         })
       }, 
       toAddHouse(){
@@ -280,6 +282,10 @@
         font-size: 24rpx;
       }
     }
+    .edit-icon{
+      width: 36rpx;
+      height: 36rpx;
+    }
     .address{
       color: #111;
       font-size: 28rpx;
@@ -328,7 +334,5 @@
       color: #FFFFFF;
       font-size: 32rpx;
     }
-    
-
   }
 </style>
