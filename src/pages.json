@@ -1,6 +1,14 @@
 {
 	"pages": [ //pages数组中第一项表示应用启动页，参考：https://uniapp.dcloud.io/collocation/pages
 		{
+			"path": "pages/home/index/index",
+			"style": {
+				"navigationBarTitleText": "首页",
+				"enablePullDownRefresh": true,
+				"transparentTitle": "auto",
+				"navigationStyle": "custom"
+			}
+		},{
 			"path": "pages/decorate/index/index",
 			"style": {
 				"navigationBarTitleText": "装修"
@@ -29,23 +37,12 @@
 			}
 		},
 		{
-			"path": "pages/decorate/have-house/have-house",
+			"path": "pages/decorate/have-house-no-service/have-house-no-service",
 			"style": {
-				"navigationBarTitleText": "我的房屋名称",
-				"navigationBarTextStyle": "black",
-				"navigationStyle": "custom",
-				"usingComponents": {}
+				"navigationBarTitleText": "有房屋无服务"
 			}
 		},
-		{
-			"path": "pages/home/index/index",
-			"style": {
-				"navigationBarTitleText": "首页",
-				"enablePullDownRefresh": true,
-				"transparentTitle": "auto",
-				"navigationStyle": "custom"
-			}
-		},
+		
 		{
 			"path": "pages/classify/index/index",
 			"style": {
@@ -346,17 +343,15 @@
 				"navigationBarTitleText": "",
 				"enablePullDownRefresh": false
 			}
+		},
+		{
+			"path": "pages/common/webview/webview",
+			"style": {
+				"navigationBarTitleText": "",
+				"enablePullDownRefresh": false
+			}
 		}
-	    ,{
-            "path" : "pages/common/webview/webview",
-            "style" :                                                                                    
-            {
-                "navigationBarTitleText": "",
-                "enablePullDownRefresh": false
-            }
-            
-        }
-    ],
+	],
 	"globalStyle": {
 		"navigationBarTextStyle": "black",
 		"navigationBarTitleText": "uni-app",
