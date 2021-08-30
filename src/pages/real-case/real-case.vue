@@ -38,7 +38,7 @@
 	} from "../../api/real-case.js";
 	import {
 		debounce
-	} from "utils/public-Fun.js"
+	} from "utils/public-fun.js"
 	export default {
 		components: {
 			DesignCase,
