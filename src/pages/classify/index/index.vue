@@ -61,7 +61,6 @@
         },
         onLoad() {
               // this.getList(0);
-            },350)
         },
         methods: {
             searchClick(){
