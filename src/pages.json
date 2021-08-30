@@ -283,7 +283,16 @@
 				"enablePullDownRefresh": true
 			}
 		}
-	],
+	    ,{
+            "path" : "pages/common/webview/webview",
+            "style" :                                                                                    
+            {
+                "navigationBarTitleText": "",
+                "enablePullDownRefresh": false
+            }
+            
+        }
+    ],
 	"globalStyle": {
 		"navigationBarTextStyle": "black",
 		"navigationBarTitleText": "uni-app",

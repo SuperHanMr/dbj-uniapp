@@ -24,7 +24,7 @@
 				</view>
 			</picker>
 			<view class="btn-list">
-				<view class="cancel btns ">
+				<view class="cancel btns " @click="goBack">
 					取消
 				</view>
 				<view class="add btns " @click="addFriend">
@@ -77,6 +77,11 @@
 			}
 		},
 		methods: {
+			goBack(){
+				uni.navigateBack({
+					
+				})
+			},
 			async addFriend() {
 				let myreg = /^[1][3,4,5,7,8,9][0-9]{9}$/;
 				if (!myreg.test(this.phone)) {
