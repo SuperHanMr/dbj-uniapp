@@ -1,6 +1,13 @@
 {
 	"pages": [ //pages数组中第一项表示应用启动页，参考：https://uniapp.dcloud.io/collocation/pages
 		{
+			"path": "pages/decorate/no-house-decorate/no-house-decorate",
+			"style": {
+				"navigationBarTitleText": "装修服务",
+				"enablePullDownRefresh": true
+			}
+		},
+		{
 			"path": "pages/home/index/index",
 			"style": {
 				"navigationBarTitleText": "首页",
@@ -8,7 +15,8 @@
 				"transparentTitle": "auto",
 				"navigationStyle": "custom"
 			}
-		},{
+		},
+		{
 			"path": "pages/decorate/index/index",
 			"style": {
 				"navigationBarTitleText": "装修"
@@ -42,7 +50,6 @@
 				"navigationBarTitleText": "有房屋无服务"
 			}
 		},
-		
 		{
 			"path": "pages/classify/index/index",
 			"style": {
@@ -294,13 +301,13 @@
 				"enablePullDownRefresh": false
 			}
 		},
-		{
-			"path": "pages/decorate/no-house-decorate/no-house-decorate",
-			"style": {
-				"navigationBarTitleText": "装修服务",
-				"enablePullDownRefresh": true
-			}
-		},
+		// {
+		// 	"path": "pages/decorate/no-house-decorate/no-house-decorate",
+		// 	"style": {
+		// 		"navigationBarTitleText": "装修服务",
+		// 		"enablePullDownRefresh": true
+		// 	}
+		// },
 		{
 			"path": "pages/decorate/check/check",
 			"style": {
@@ -352,14 +359,13 @@
 			}
 		},
 		{
-			"path" : "pages/real-case/component/panorama/panorama",
-			"style" :                                                                                    
-			{
-			    "navigationBarTitleText": "",
-			    "enablePullDownRefresh": false
+			"path": "pages/real-case/component/panorama/panorama",
+			"style": {
+				"navigationBarTitleText": "",
+				"enablePullDownRefresh": false
 			}
 		}
-    ],
+	],
 	"globalStyle": {
 		"navigationBarTextStyle": "black",
 		"navigationBarTitleText": "uni-app",
