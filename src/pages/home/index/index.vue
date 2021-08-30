@@ -5,24 +5,27 @@
 				<view @click="toCity">
 					{{citydata}}
 				</view>
-
 			</slot-one>
 		</custom-navbar>
-
 		<scroll-view class="content" scroll-y="true" @scroll="onScroll">
 			asdasd
 			<view style="margin-top: 300rpx;" class="" @click="toFriends">
 				去亲友团
 			</view>
+			<swiper class="banner-content" :indicator-dots="true" :autoplay="true" interval="2000" duration="500">
+				<swiper-item v-for="(item,index) in bannerList" :key="index">
+					<image class="banner-img" :src="item.resUrl" mode="aspectFit" @click="toWebview(item.jumpUrl)">
+					</image>
+				</swiper-item>
+			</swiper>
 			<view class="flex-row">
-				<view class="item" v-for="(item,index) in liveList" @click="toLiveRoom(item)">
+				<view class="item" v-for="(item,index) in liveList"  :key="index" @click="toLiveRoom(item)">
 					{{item.title}}
 				</view>
 			</view>
 			<view class="test">
-				<button type="default" @click="toNextPage">去封装好的列表页</button>
+				<button style="width: 50%;" type="default" @click="toNextPage">去封装好的列表页</button>
 			</view>
-
 		</scroll-view>
 	</view>
 </template>
@@ -32,7 +35,7 @@
 		getBanner,
 		queryLive
 	} from "../../../api/home.js";
-	
+
 	import {
 		orderList
 	} from "../../../api/order.js"
@@ -48,14 +51,16 @@
 				scrollTop: 0,
 				liveList: [],
 				citydata: '北京市',
-				roomId:''
+				roomId: '',
+				bannerList: [],
+				list:[]
 			};
 		},
 		onLoad() {
 			this.getAuthorizeInfo();
 		},
 		onShow() {
-			
+
 			this.getBannerList();
 			let pages = getCurrentPages();
 			let currPage = pages[pages.length - 1]; //当前页面
@@ -67,17 +72,25 @@
 			this.getHomeList();
 		},
 		methods: {
-			toFriends(){
+			toWebview(url) {
 				uni.navigateTo({
-					url:"../../decorate/friends/friends?id="+this.roomId
+					url: '../../common/webview/webview?url=' + url
 				})
+			},
+			async toFriends() {
+				let list = await queryEstates();
+				console.log(list);
+				this.roomId = list[0].id;
+				uni.navigateTo({
+					url: "../../decorate/friends/friends?id=" + this.roomId
+				});
 			},
 			changeCity() {
 				console.log('切换城市');
 			},
 			toCity() {
 				uni.navigateTo({
-					url: "../select-city/select-city?title="+this.citydata
+					url: "../select-city/select-city?title=" + this.citydata
 				})
 			},
 			getAuthorizeInfo() {
@@ -117,7 +130,7 @@
 									that.citydata = addressComponent.city.length > 0 ? addressComponent
 										.city :
 										addressComponent.province;
-										getApp().globalData.city=that.citydata;
+									getApp().globalData.city = that.citydata;
 
 								} else {
 									console.log("获取信息失败，请重试！")
@@ -155,15 +168,12 @@
 				}
 			},
 			async getBannerList() {
-				let list = await orderList();
-				console.log(list);
+				this.bannerList = await getBanner();
 				// this.liveList = list.lives;
 				// console.log(this.liveList);
 			},
 			async getHomeList() {
-				let list = await queryEstates();
-				console.log(list);
-				this.roomId=list[0].id;
+			
 				// this.liveList = list.lives;
 				// console.log(this.liveList);
 			},
@@ -180,12 +190,21 @@
 </script>
 
 <style lang="scss">
+	.banner-content {
+		width: 100%;
+		height: 200rpx;
+
+		.banner-img {
+			width: 100%;
+			height: 200rpx;
+		}
+	}
+
 	.flex-row {
 		display: flex;
 		flex-direction: column;
 		align-items: center;
 		justify-content: center;
-		background-color: yellow;
 		overflow: auto;
 
 		.item {
@@ -193,7 +212,6 @@
 			width: 200rpx;
 			height: 200rpx;
 			text-align: center;
-			background-color: red;
 		}
 	}
 
@@ -203,33 +221,10 @@
 
 	.banner {
 		height: 2000rpx;
-		background-color: yellow;
-	}
-
-	.navi-header-state {
-		display: flex;
-		flex-direction: row;
-		width: 100%;
-		background-color: red;
-	}
-
-	.navi-header {
-		display: flex;
-		flex-direction: row;
-		width: 100%;
-		background-color: blue;
-		align-items: center;
-
-		.select-city {
-			width: 30rpx;
-			height: 20rpx;
-			background-color: green;
-		}
 	}
 
 	.test {
 		height: 2000rpx;
-		width: 750px;
-		background-color: red;
+		width: 750rpx;
 	}
 </style>

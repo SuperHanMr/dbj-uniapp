@@ -1,10 +1,18 @@
 {
 	"pages": [ //pages数组中第一项表示应用启动页，参考：https://uniapp.dcloud.io/collocation/pages
 		{
+			"path": "pages/home/index/index",
+			"style": {
+				"navigationBarTitleText": "首页",
+				"enablePullDownRefresh": true,
+				"transparentTitle": "auto",
+				"navigationStyle": "custom"
+			}
+		},{
 			"path": "pages/decorate/index/index",
 			"style": {
 				"navigationBarTitleText": "装修"
-			} 
+			}
 		},
 		{
 			"path": "pages/decorate/design-picture/design-picture",
@@ -29,64 +37,46 @@
 			}
 		},
 		{
-			"path": "pages/decorate/have-house/have-house",
+			"path": "pages/decorate/have-house-no-service/have-house-no-service",
 			"style": {
-				"navigationBarTitleText": "我的房屋名称",
-				"navigationBarTextStyle": "black",
-				"navigationStyle": "custom",
-				"usingComponents": {}
+				"navigationBarTitleText": "有房屋无服务"
 			}
 		},
-		{
-			"path": "pages/home/index/index",
-			"style": {
-				"navigationBarTitleText": "首页",
-				"enablePullDownRefresh": true,
-				"transparentTitle": "auto",
-				"navigationStyle": "custom"
-			}
-		},
+		
 		{
 			"path": "pages/classify/index/index",
 			"style": {
 				"navigationBarTitleText": "分类"
 			}
 		},
-    {
-      "path" : "pages/classify/search/index",
-      "style" :                                                                                    
-      {
-          "navigationBarTitleText": "",
-          "enablePullDownRefresh": false
-      }     
-     }
-    ,{
-        "path" : "pages/classify/search-result/search-result",
-        "style" :                                                                                    
-        {
-            "navigationBarTitleText": "",
-            "enablePullDownRefresh": false
-        }
-        
-    },
-    {
-        "path" : "pages/classify/goods-list/index",
-        "style" :                                                                                    
-        {
-            "navigationBarTitleText": "",
-            "enablePullDownRefresh": false
-        }
-        
-    },
-    {
-        "path" : "pages/classify/goods-detail/goods-detail",
-        "style" :                                                                                    
-        {
-            "navigationBarTitleText": "",
-            "enablePullDownRefresh": false
-        }
-        
-    },
+		{
+			"path": "pages/classify/search/index",
+			"style": {
+				"navigationBarTitleText": "",
+				"enablePullDownRefresh": false
+			}
+		},
+		{
+			"path": "pages/classify/search-result/search-result",
+			"style": {
+				"navigationBarTitleText": "",
+				"enablePullDownRefresh": false
+			}
+		},
+		{
+			"path": "pages/classify/goods-list/index",
+			"style": {
+				"navigationBarTitleText": "",
+				"enablePullDownRefresh": false
+			}
+		},
+		{
+			"path": "pages/classify/goods-detail/goods-detail",
+			"style": {
+				"navigationBarTitleText": "",
+				"enablePullDownRefresh": false
+			}
+		},
 		{
 			"path": "pages/message/index/index",
 			"style": {
@@ -237,7 +227,7 @@
 		{
 			"path": "pages/my/set-up/agreement/code-of-conduct",
 			"style": {
-				"navigationBarTitleText": "", 
+				"navigationBarTitleText": "",
 				"enablePullDownRefresh": false
 			}
 		},
@@ -282,7 +272,7 @@
 				"navigationBarTitleText": "我的订单",
 				"enablePullDownRefresh": false
 			}
-		}, 
+		},
 		{
 			"path": "pages/real-case/real-case",
 			"style": {
@@ -317,16 +307,58 @@
 				"navigationBarTitleText": "验房服务",
 				"enablePullDownRefresh": true
 			}
+		},
+		{
+			"path": "pages/my/my-order/order-in-progress/order-in-progress",
+			"style": {
+				"navigationBarTitleText": "",
+				"enablePullDownRefresh": false
+			}
+		},
+		{
+			"path": "pages/my/my-order/order-success/order-success",
+			"style": {
+				"navigationBarTitleText": "",
+				"enablePullDownRefresh": false
+			}
+		},
+		{
+			"path": "pages/my/my-order/order-failed/order-failed",
+			"style": {
+				"navigationBarTitleText": "",
+				"enablePullDownRefresh": false
+			}
+		},
+		{
+			"path": "pages/my/evaluate/evaluate",
+			"style": {
+				"navigationBarTitleText": "我的评价",
+				"enablePullDownRefresh": false,
+				"navigationBarBackgroundColor": "#FFFFFF"
+			}
+		},
+		{
+			"path": "pages/changeGoodsSku/changeGoodsSku",
+			"style": {
+				"navigationBarTitleText": "",
+				"enablePullDownRefresh": false
+			}
+		},
+		{
+			"path": "pages/common/webview/webview",
+			"style": {
+				"navigationBarTitleText": "",
+				"enablePullDownRefresh": false
+			}
+		},
+		{
+			"path" : "pages/real-case/component/panorama/panorama",
+			"style" :                                                                                    
+			{
+			    "navigationBarTitleText": "",
+			    "enablePullDownRefresh": false
+			}
 		}
-	    ,{
-            "path" : "pages/changeGoodsSku/changeGoodsSku",
-            "style" :                                                                                    
-            {
-                "navigationBarTitleText": "",
-                "enablePullDownRefresh": false
-            }
-            
-        }
     ],
 	"globalStyle": {
 		"navigationBarTextStyle": "black",

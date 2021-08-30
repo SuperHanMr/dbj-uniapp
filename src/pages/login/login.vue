@@ -76,7 +76,6 @@
 				if (uni.getStorageSync("userId")) {
 					oauthGomeInfo({
 						clientType: "3",
-						accessTokenDuration: 86400000
 					}).then(data => {
 						getApp().globalData.userInfo = data;
 						uni.switchTab({
