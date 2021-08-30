@@ -126,7 +126,8 @@ export default {
         },
         {
           key: "4",
-          value: "待评价",
+          value: "评价",
+					url:"../evaluate/evaluate",
         },
         {
           key: "5",
@@ -154,6 +155,7 @@ export default {
       uni.navigateTo({
         url: "../set-up/set-up",
       });
+			
     },
     handlerPersonalData() {
       console.log("编辑个人资料");
