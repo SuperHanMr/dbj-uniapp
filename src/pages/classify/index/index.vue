@@ -39,7 +39,7 @@
         data() {
             return {
                 navBarHeight: 0,
-                newsList: [],
+                newsList: [1,2,3,4],
                 cacheTab: [],
                 tabIndex: 0,
                 tabBars: [{
@@ -92,33 +92,11 @@
                 this.switchTab(index);
             },
             switchTab(index) {
-                if (this.newsList[index].data.length === 0) {
-                    this.getList(index);
-                }
-
                 if (this.tabIndex === index) {
                     return;
                 }
-
-                // 缓存 tabId
-                if (this.newsList[this.tabIndex].data.length > MAX_CACHE_DATA) {
-                    let isExist = this.cacheTab.indexOf(this.tabIndex);
-                    if (isExist < 0) {
-                        this.cacheTab.push(this.tabIndex);
-                        //console.log("cache index:: " + this.tabIndex);
-                    }
-                }
-
                 this.tabIndex = index;
                 this.scrollInto = this.tabBars[index].id;
-
-                // 释放 tabId
-                if (this.cacheTab.length > MAX_CACHE_PAGE) {
-                    let cacheIndex = this.cacheTab[0];
-                    this.clearTabData(cacheIndex);
-                    this.cacheTab.splice(0, 1);
-                    //console.log("remove cache index:: " + cacheIndex);
-                }
             }
         }
     }
