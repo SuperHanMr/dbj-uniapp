@@ -72,6 +72,7 @@
         </view>
       </view>
     </view>
+    <view @click="handlerToMyHouse">我的房屋</view>
     <view @click="handlerToShop">购物车</view>
     <view @click="handlerToSetUp">真实案例</view>
   </view>
@@ -126,7 +127,8 @@ export default {
         },
         {
           key: "4",
-          value: "待评价",
+          value: "评价",
+					url:"../evaluate/evaluate",
         },
         {
           key: "5",
@@ -154,6 +156,7 @@ export default {
       uni.navigateTo({
         url: "../set-up/set-up",
       });
+			
     },
     handlerPersonalData() {
       console.log("编辑个人资料");
@@ -178,7 +181,12 @@ export default {
 			uni.navigateTo({
 				url:item.url,
 			})
-		}
+		},
+    handlerToMyHouse(){
+      uni.navigateTo({
+        url:'/pages/my/my-house/my-house'
+      })
+    }
   },
 };
 </script>
