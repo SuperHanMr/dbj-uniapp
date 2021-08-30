@@ -113,11 +113,14 @@
 			swiperChange(e) {
 				this.selectStatus = e.detail.current;
 				this.pagState.rows = 10;
-				this.pagState.page = 10;
+				this.pagState.page = 1;
 				this.pagState.totalPage = "";
 				this.pagState.totalRows = "";
 				this.leftHeight = 0;
 				this.rightHeight = 0;
+				this.leftList = [];
+				this.rightList = [];
+				this.getList();
 			},
 
 			// 监听高度变化

@@ -50,6 +50,10 @@
 						path: "./agreement/property-rights-clause"
 					},
 					{
+						title: "意见与反馈",
+						path: "./comments-feedback/comments-feedback"
+					},
+					{
 						title: "关于打扮家",
 						path: "./about-dabanjia/about-dabanjia"
 					}
