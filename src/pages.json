@@ -8,7 +8,8 @@
 				"transparentTitle": "auto",
 				"navigationStyle": "custom"
 			}
-		},{
+		},
+		{
 			"path": "pages/decorate/index/index",
 			"style": {
 				"navigationBarTitleText": "装修"
@@ -42,7 +43,6 @@
 				"navigationBarTitleText": "有房屋无服务"
 			}
 		},
-		
 		{
 			"path": "pages/classify/index/index",
 			"style": {
@@ -352,14 +352,34 @@
 			}
 		},
 		{
-			"path" : "pages/real-case/component/panorama/panorama",
-			"style" :                                                                                    
-			{
-			    "navigationBarTitleText": "",
-			    "enablePullDownRefresh": false
+			"path": "pages/real-case/component/panorama/panorama",
+			"style": {
+				"navigationBarTitleText": "",
+				"enablePullDownRefresh": false
+			}
+		},
+		{
+			"path": "pages/common/video-player/video-player",
+			"style": {
+				"navigationBarTitleText": "",
+				"enablePullDownRefresh": false
+			}
+		},
+		{
+			"path": "pages/my/set-up/comments-feedback/comments-feedback",
+			"style": {
+				"navigationBarTitleText": "",
+				"enablePullDownRefresh": false
+			}
+		},
+		{
+			"path": "pages/decorate/design-service-list/design-service-list",
+			"style": {
+				"navigationBarTitleText": "设计服务",
+				"enablePullDownRefresh": true
 			}
 		}
-    ],
+	],
 	"globalStyle": {
 		"navigationBarTextStyle": "black",
 		"navigationBarTitleText": "uni-app",

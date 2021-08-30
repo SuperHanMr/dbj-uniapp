@@ -1,11 +1,6 @@
 <template>
 	<view class="cartContainer">
-		<view class="header">
-			<view class="left"></view>
-			<view class="manage" @click="isManage=!isManage">{{isManage?"管理":"完成"}}</view>
-		</view>
-		
-		<view class="noGoods" v-if="!shopList.length&&!disabledSkuList.length">
+		<view class="noGoods" v-if="!shopList.length">
 			<image src="../../../static/shopping-cart/blank_ic@2x.png" class="noGoodsImg"></image>
 			<view class="noGoodsText">
 				购物车空空如也，快去逛逛吧～
@@ -15,6 +10,22 @@
 			</button>
 		</view>
 		<view class="shoppingCart" v-else>
+			<uni-popup
+			    ref="popup"
+			    type="dialog"
+			  >
+			    <uni-popup-dialog
+			      mode="input"
+			      title="编辑数量"
+			      value=""
+			      placeholder="可输入至小数点后两位"
+			      @confirm="dialogInputConfirm"
+			    />
+			</uni-popup>
+			<view class="header">
+				<view class="left"></view>
+				<view class="manage" @click="isManage=!isManage">{{isManage?"管理":"完成"}}</view>
+			</view>
 			<view class="shopItem" v-for="(shopItem,shopIndex) in shopList" :key="shopItem.storeId">
 				<view class="shopInfo">
 					<view class="check" v-if="!shopItem.shopChecked" @click="checkShop(shopItem.storeId)"></view>
@@ -24,6 +35,13 @@
 						<image src="../../../static/shopping-cart/goShop_ic@2x.png" class="shopIcon"></text>
 					</view>
 				</view>	
+				<view class="freeMail">	
+					<view class="text">还差元可获得一次免运费权益</view>
+					<view class="toShop">
+						<text>去凑单</text>
+						<image class="icon" src="../../../static/shopping-cart/toPostFree@2x.png"></image>
+					</view>
+				</view>
 				<uni-swipe-action>
 				  <uni-swipe-action-item
 				    v-for="(goodsItem,goodsIndex) in shopItem.skuList"
@@ -31,36 +49,37 @@
 				    :right-options="options"
 				    @click="bindClick(shopIndex,goodsIndex)"
 				  >
-				<view class="goodsItem"  >
-					<view class="check" v-if="!goodsItem.goodsChecked" @click="checkGoods(shopItem.storeId,goodsItem.skuId)"></view>
-					<image class="checked" src="../../../static/shopping-cart/checked@2x.png" @click="checkGoods(shopItem.storeId,goodsItem.skuId)" v-else></image>
-					<image :src="goodsItem.image" class="goodsItemImg"></image>
-					<view class="goodsInfo">
-						<view class="goodsDesc">
-							<span class="goodsType">{{goodsItem.productType=== 1?"服务":"物品"}}</span>
-							{{goodsItem.spuName}}
-						</view>
-						<view class="goodsSpec" @click="open">
-							{{goodsItem.skuName}}
-							<image src="../../../static/shopping-cart/selectOptions@2x.png" class="selectOptions"></image>
-						</view>
-						
-						<view class="foot">
-							<view class="goodsPrice">¥{{goodsItem.price}}/{{goodsItem.unitName}}</view>
-							<view class="countCtrl">
-								<image v-if="!isMiniOrder" src="../../../static/shopping-cart/details_pop_@2x.png" class="dec" @click="changeCount(false,shopIndex, goodsIndex)"></image>
-							  <button v-else class="btn" @click="changeCount(false,shopIndex, goodsIndex)"></button>
-							  <view class="count" @click="defineCount"> {{goodsItem.buyCount}} </view>
-							  <image src="../../../static/shopping-cart/details_pop_add_normal@2x.png" class="inc" @click="changeCount(true, shopIndex,goodsIndex)"></image>          
+						<view class="goodsItem"  >
+							<view class="check" v-if="!goodsItem.goodsChecked" @click="checkGoods(shopItem.storeId,goodsItem.skuId)"></view>
+							<image class="checked" src="../../../static/shopping-cart/checked@2x.png" @click="checkGoods(shopItem.storeId,goodsItem.skuId)" v-else></image>
+							<image :src="goodsItem.image" class="goodsItemImg"></image>
+							<view class="goodsInfo">
+								<view class="goodsDesc">
+									<text class="goodsType">{{goodsItem.productType=== 1?"服务":"物品"}}</text>
+									{{goodsItem.spuName}}
+								</view>
+								<view class="goodsSpec" @click="openSpec">
+									{{goodsItem.skuName}}
+									<image src="../../../static/shopping-cart/selectOptions@2x.png" class="selectOptions"></image>
+								</view>
+								
+								<view class="foot">
+									<view class="goodsPrice">¥{{goodsItem.price}}/{{goodsItem.unitName}}</view>
+									<view class="countCtrl">
+										<image v-if="!goodsItem.isMiniOrder" class="dec" src="../../../static/shopping-cart/details_pop_@2x.png" @click="changeCount(false,shopIndex, goodsIndex)"></image>
+										<image v-else class="dec" src="../../../static/shopping-cart/details_pop_subtract_disabled@2x.png" @click="changeCount(false,shopIndex, goodsIndex)"></image>
+										<view class="count" @click="open"> {{goodsItem.buyCount}} </view>
+											
+										<image src="../../../static/shopping-cart/details_pop_add_normal@2x.png" class="inc" @click="changeCount(true, shopIndex,goodsIndex)"></image>          
+									</view>
+								</view>
 							</view>
-						</view>
-					</view>
-				</view>	
-				</uni-swipe-action-item>
+						</view>	
+					</uni-swipe-action-item>
 				</uni-swipe-action>
 				</view>
-				<popup-input v-if="showDefineCount"></popup-input>
-				<uni-popup ref="popup" type="bottom"></uni-popup>
+				
+				
 				<select-sku></select-sku>
 				<view class="disabledSku" v-if="disabledSkuList.length">
 					<view class="top">
@@ -74,7 +93,7 @@
 								<span class="disabledSkuType">服务</span>
 								{{disabldSkuItem.spuName}}
 							</view>
-							<view class="spec">{{disabldSkuItem.skuName}}</view>
+							<view class="disabledSkuSpec">{{disabldSkuItem.skuName}}</view>
 							<view class="text">该商品已经失效</view>
 						</view>
 					</view>
@@ -89,7 +108,7 @@
 					<view class="right">
 						<view class="text">合计：</view>
 						<view class="totalPrice">¥{{totalPrice}}</view>
-						<view class="preOrder">结算({{totalCout}})</view>
+						<view class="preOrder" @click="pay">结算({{totalCout}})</view>
 					</view>
 				</view>  							
 				<view class="shopCheck" v-else>
@@ -99,7 +118,7 @@
 						<view class="text">全选</view>
 					</view>
 					<view class="right">
-						<view class="collect">移入收藏</view>
+						<view class="collect" @click="toCollect">移入收藏</view>
 						<view class="delete">删除</view>
 					</view>
 				</view>
@@ -111,11 +130,9 @@
 <script>
 	import {getShoppingCartProductInfo} from "../../../api/user.js"
 	import SelectSku from "../../../components/select-sku/select-sku"
-	import PopupInput from "../../../components/popup-input/popup-input"
 	export default {
 		components:{
 			SelectSku,
-			PopupInput
 		},
 		data(){
 			return {
@@ -129,208 +146,111 @@
 				],
 				shopList:[],
 				disabledSkuList:[],
-				totalCout:0,
-				totalPrice:0,
 				showPecification:false,
 				isManage:true,
 				isCheckedAll:false,
-				showDefineCount:false
+				value:""
 			}
 		},
 		onLoad: ()=> {
 			console.log("跳转了")
-			
 		},
 		mounted(){
 			this.requestPage()
 		},
-		watch:{},
+		computed:{
+			totalCout(){
+				let count = 0
+				this.shopList.forEach(item=>{
+					item.skuList.forEach(ele=>{
+						if(ele.goodsChecked){
+							count+=(+ele.buyCount)
+						}
+					})
+				})
+				return count
+			},
+			totalPrice(){
+				let sum = 0
+				this.shopList.forEach(item=>{
+					item.skuList.forEach(ele=>{
+						if(ele.goodsChecked){
+							sum+=(+ele.buyCount*ele.price)
+						}
+					})
+				})
+				return sum
+			}
+		},
 		methods:{
 			requestPage(){
-				let res = {
-					"code": 1,
-					"message": "Success",
-					"data": {
-							"storeList": [
-									{
-											"storeId": 1,
-											"storeName": "测试店铺1",
-											"skuList": [
-													{
-															"skuId": 1642,
-															"storeId": 1,
-															"spuName": "testcj测试设计类商品1",
-															"skuName": "橙色 | 大师 | 大师全案",
-															"image": "https://ali-image-test.dabanjia.com/image/20210816/11/1629087052820_2600%241626858792066_0436s4.png",
-															"price": 1,
-															"unitName": "套",
-															"minimumOrderQuantity": "2",
-															"stepLength": "1",
-															"buyCount": "1.1",
-															"productType": 2
-													},
-													{
-															"skuId": 1633,
-															"storeId": 1,
-															"spuName": "纯设计 全案设计服务 平层设计",
-															"skuName": "尊享全案",
-															"image": "https://ali-image.dabanjia.com/image/20210427/18/1619518964857_2021%24%E5%85%A8%E6%A1%88%E8%AE%BE%E8%AE%A1app%E5%A4%B4%E5%9B%BE.jpg",
-															"price": 1,
-															"unitName": "平米",
-															"minimumOrderQuantity": "70",
-															"stepLength": 1,
-															"buyCount": "3.1",
-															"productType": 2
-													},
-													{
-															"skuId": 1624,
-															"storeId": 1,
-															"spuName": "爆爆爆",
-															"skuName": "橙色 | 299",
-															"image": "https://ali-image-test.dabanjia.com//image/20210306/1615000401478_3393%244%E6%AF%943.jpg",
-															"price":2,
-															"unitName": "套",
-															"minimumOrderQuantity": 1,
-															"stepLength": 1,
-															"buyCount": "1",
-															"productType": 2
-													}
-											]
-									},
-									{
-											"storeId": 2,
-											"storeName": "测试店铺2",
-											"skuList": [
-													{
-															"skuId": 1616,
-															"storeId": 2,
-															"spuName": "设计师的测试商品1",
-															"skuName": "单空间",
-															"image": "https://ali-image-test.dabanjia.com/image/20210811/16/1628671199526_5719%249cfb968c817c2d1cc6afdb9ed7516c68.jpg",
-															"price": 1,
-															"unitName": "套",
-															"minimumOrderQuantity": "1",
-															"stepLength": 1,
-															"buyCount": "2",
-															"productType": 2
-													},
-													{
-															"skuId": 1597,
-															"storeId": 2,
-															"spuName": "纯设计 全案设计服务 平层设计",
-															"skuName": "大师全案",
-															"image": "https://ali-image.dabanjia.com/image/20210427/18/1619518964857_2021%24%E5%85%A8%E6%A1%88%E8%AE%BE%E8%AE%A1app%E5%A4%B4%E5%9B%BE.jpg",
-															"price": 1,
-															"unitName": "平米",
-															"minimumOrderQuantity": "50",
-															"stepLength": 1,
-															"buyCount": "11",
-															"productType": 2
-													},
-													{
-															"skuId": 1570,
-															"storeId": 2,
-															"spuName": "设计师的测试商品1",
-															"skuName": "双空间",
-															"image": "https://ali-image-test.dabanjia.com/image/20210811/16/1628671199526_5719%249cfb968c817c2d1cc6afdb9ed7516c68.jpg",
-															"price": 1,
-															"unitName": "套",
-															"minimumOrderQuantity": "1",
-															"stepLength": 1,
-															"buyCount": "1",
-															"productType": 2
-													},
-													{
-															"skuId": 1555,
-															"storeId": 2,
-															"spuName": "设计类商品测试",
-															"skuName": "甄选 | 搭配师",
-															"image": "https://ali-image.dabanjia.com//image/20210312/161552364613400.png",
-															"price": 3,
-															"unitName": "平米",
-															"minimumOrderQuantity": "3",
-															"stepLength": 1,
-															"buyCount": "4",
-															"productType": 2
-													}
-											]
-									}
-							],
-							"disabledSkuList": [
-									{
-											"skuId": 1240,
-											"storeId": 3,
-											"spuName": "最最最最牛的设计",
-											"skuName": "尊享 | 大师全案",
-											"image": "https://ali-image-test.dabanjia.com/image/20210722/11/1626925656305_9648%2457c7ec49ccd6b4f6b5ae9a17bcb5ae80.jpg",
-											"price": 2,
-											"unitName": "平米",
-											"minimumOrderQuantity": 1,
-											"stepLength": 1,
-											"buyCount": "4",
-											"productType": 2
-									},
-									{
-											"skuId": 1452,
-											"storeId": 4,
-											"spuName": "完美单身全案设计服务",
-											"skuName": "大师全案",
-											"image": "https://ali-image-test.dabanjia.com//image/20210314/1615676007347_1525%24%E6%87%92%E7%8E%8B%E5%A4%B4%E5%9B%BE%E6%89%93%E6%89%AE%E5%AE%B6app%E5%B9%B3%E5%8F%B0.jpg",
-											"price": 5,
-											"unitName": "平米",
-											"minimumOrderQuantity": 1,
-											"stepLength": 1,
-											"buyCount": "14",
-											"productType": 2
-									}
-							]
-					}
-				}
-				// let userId = uni.getStorageSync("userId")
-				// getShoppingCartProductInfo(123).then(res=>{
-					let {code,data,message} = res
-					if(code === 1&&data){
+				
+				let userId = uni.getStorageSync("userId")
+				getShoppingCartProductInfo(123).then(data => {
+						
 						let {storeList,disabledSkuList} = data
-						storeList.map(item=>{
+						storeList.map(item => {
 							item.shopChecked = false
-							item.skuList.map(ele=>{
+							item.skuList.map(ele => {
 								ele.goodsChecked = false
-								ele.isMiniOrder = (+ele.buyCount <= +ele.minimumOrderQuantity) ?true:false
+								ele.isMiniOrder = (+ele.buyCount <= +ele.minimumOrderQuantity) ? true:false
 									
 								return ele
 							})
 							return item
 						})
+						
 						this.shopList = storeList || []
 						this.disabledSkuList = disabledSkuList || []
-					}
-				// 	else{
-				// 		this.$message.error(message|| "获取购物车商品失败")
-				// 	}
-				// })
+				})
 			},
-			defineCount(){
-				this.showDefineCount = true
+			open(){
+				console.log(this.$refs.popup)
+				this.$refs.popup.open()
 			},
-			calcTotalPrice(){
-				this.shopList.forEach(item=>{
-					item.skuList.forEach(ele=>{
-						if(ele.goodsChecked){
-							this.totalPrice+=(+ele.buyCount*ele.price)
-						}
+			// close() {
+			// 	this.$refs.popup[0].close()
+			// },
+			// confirm(value){
+			// 	console.log(value)
+			// 	this.$refs.popup.close()
+			// },
+			dialogInputConfirm( val) {
+			      uni.showLoading({
+			        title: "1秒后会关闭",
+			      });
+			      this.value = val;
+						console.log(val,'//')
+			      setTimeout(() => {
+			        uni.hideLoading();
+			      }, 1000);
+			    },
+			toCollect(){
+				this.shopList.forEach(item => {
+					item.skuList.filter(ele => {
+						return ele.goodsChecked
 					})
 				})
-				return this.totalPrice
 			},
-			calcTotalCout(){
-				this.shopList.forEach(item=>{
-					item.skuList.forEach(ele=>{
+			delete(){
+				this.shopList.forEach(item => {
+					item.skuList.forEach((ele,index) => {
 						if(ele.goodsChecked){
-							this.totalCout+=(+ele.buyCount)
+							item.skuList.splice(index,1)
 						}
+						//接口 
 					})
 				})
-				return this.totalCout
+			},
+			pay(){
+				if(!this.totalCout){
+					uni.showToast({
+						title:"您还没有选择任何商品哦",
+						icon:"none"
+					})
+				}else{
+					//跳转至结算页面
+				}
 			},
 			changeCount(isAdd, shopIndex,goodsIndex){
 				let count = +this.shopList[shopIndex].skuList[goodsIndex].buyCount
@@ -351,8 +271,6 @@
 						})
 					}
 				}
-				this.calcTotalCout()
-				this.calcTotalPrice()
 			},	
 			checkedAll(){
 				this.isCheckedAll = !this.isCheckedAll
@@ -364,8 +282,6 @@
 					})
 					return item
 				})
-				this.calcTotalCout()
-				this.calcTotalPrice()
 			},
 			checkShop(id){
 				this.shopList.map(item=>{
@@ -378,8 +294,6 @@
 					}
 					return item
 				})
-				this.calcTotalCout()
-				this.calcTotalPrice()
 				if(this.shopList.every(ele=>ele.shopChecked)){
 					this.isCheckedAll = true
 				}else{
@@ -403,8 +317,6 @@
 					}
 					return item
 				})
-				this.calcTotalCout()
-				this.calcTotalPrice()
 				if(this.shopList.every(ele=>ele.shopChecked)){
 					this.isCheckedAll = true
 				}else{
@@ -417,7 +329,8 @@
 			}, 
 			clearDisaledSku(){
 				uni.showModal({
-				    content: "确定要清空失效商品吗？",
+				    title: "确定要清空失效商品吗？",
+						content: "清空后会移除全部已失效商品",
 						cancelColor:"#333333",
 						confirmColor:"#ff3347",
 				    success:res => {
@@ -429,7 +342,7 @@
 				    }
 				});
 			},
-			open(){
+			openSpec(){
 				this.showPecification = true
 				console.log(this.$refs.popup)
 				this.$refs.popup.open('top')
@@ -447,94 +360,112 @@
 		background: #f5f6f7;
 		position: relative;
 	}
+	.cartContainer >>> .uni-dialog-button-text{
+		color: #666666;
+	}
+	.cartContainer >>> .uni-dialog-button-text.uni-button-color{
+		color: #35c4c4;
+	}
 	.header{
 		width: 100%;
-		height: 40px;
+		height: 80rpx;
 		background: #fff;
 		display: flex;
 		justify-content: space-between;
 		align-items: center;
 	}
 	.header .left{
-		width: 62px;
-		height: 20px;
-		margin-left: 20px;
-		font-size: 14px;
+		width: 62rpx;
+		height: 20rpx;
+		margin-left: 20rpx;
+		font-size: 14rpx;
 		text-align: center;
 		color: #666666;
-		line-height: 20px;
+		line-height: 20rpx;
 	}
 	.header .manage {
-		width: 28px;
-		height: 20px;
-		margin-right: 20px;
-		font-size: 14px;
+		width: 56rpx;
+		height: 40rpx;
+		margin-right: 40rpx;
+		font-size: 28rpx;
+		color: #333333;
 		text-align: center;
-		line-height: 20px;
+		line-height: 40rpx;
 	}
 	.noGoods{
-		width: 200px;
+		width: 400rpx;
 		position: absolute;
-		left: 97px;
+		left: 196rpx;
 		right: 0;
-		top: 150px;
+		top: 300rpx;
 		bottom: 0;
 	}
 	.noGoods .noGoodsImg{
-		width: 124px;
-		height: 124px;
+		width: 248rpx;
+		height: 248rpx;
 		display: block;
-		margin-left: 35px;
-		margin-bottom: 10px;
+		margin-left: 70rpx;
+		margin-bottom: 20rpx;
 	}
 	.noGoods .noGoodsText{
-		width: 182px;
-		height: 13px;
-		line-height: 13px;
-		margin-left: 5px;
-		font-size: 13px;
+		width: 364rpx;
+		height: 26rpx;
+		line-height: 26rpx;
+		margin-left: 10rpx;
+		font-size: 26rpx;
 		text-align: center;
 		color: #999999;
 	}
 	.noGoods .goShopping{
-		width: 124px;
-		height: 44px;
+		width: 248rpx;
+		height: 88rpx;
 		background: linear-gradient(135deg,#53d5cc, #4fc9c9);
-		border-radius: 6px;
-		margin-top: 24px;
+		border-radius: 12rpx;
+		margin-top: 48rpx;
 	}
 	.noGoods .goShopping .text{
-		width: 48px;
-		height: 16px;
-		font-size: 16px;
+		width: 96rpx;
+		height: 32rpx;
+		font-size: 32rpx;
 		text-align: center;
 		color: #ffffff;
-		line-height: 16px;
+		line-height: 32rpx;
 	}
 	.shoppingCart{
 		width: 100%;
 	}
+	.mask {
+	  width: 100%;
+	  height: 100%;
+	  background: rgba(0, 0, 0, 0.3);
+	  position: fixed;
+	  left: 0;
+	  top: 0;
+	  right: 0;
+	  bottom: 0;
+	  z-index: 998;
+	}
 	.shopItem{
-		margin: 12px 11px 0px 11px;
+		margin: 24rpx 22rpx 0rpx 24rpx;
 		background: #FFFFFF;
-		border-radius: 8px;
+		border-radius: 16rpx;
 	}
 	.shopInfo{
-		height: 53px;
-		margin-left: 10px;
+		height: 106rpx;
+		margin-left: 24rpx;
 		display: flex;
 		align-items: center;
 	}
 	.shopInfo .check{
-		width: 18px;
-		height: 18px;
+		width: 36rpx;
+		height: 36rpx;
 		border-radius: 50%;
 		background: #ffffff;
-		border: 1px solid #e5e5e5;
+		border: 2rpx solid #e5e5e5;
 	}
 	.shopInfo .checked{
-		width: 18px;
-		height: 18px;
+		width: 36rpx;
+		height: 36rpx;
 		display: block;
 	}
 	.shopInfo .goShop{
@@ -543,17 +474,49 @@
 		align-items: center;
 	}
 	.shopInfo .shopName{
-		height: 20px;
-		line-height: 20px;
-		font-size: 14px;
+		height: 40rpx;
+		line-height: 40rpx;
+		font-size: 28rpx;
 		font-weight: 500;
 		color: #333333;
-		margin-left:10px;
-		margin-right: 10px;
+		margin-left:24rpx;
+		margin-right: 12rpx;
 	}
 	.shopInfo .shopIcon{
-		width: 15px;
-		height: 15px;
+		width: 30rpx;
+		height: 30rpx;
+		display: block;
+	}
+	.freeMail{
+		width: 604rpx;
+		height: 60rpx;
+		margin-left: 76rpx;
+		margin-bottom: 24rpx;
+		display: flex;
+		justify-content: space-between;
+		align-items: center;
+		background: #fafafa;
+		border-radius: 6rpx;
+	}
+	.freeMail .text{
+		width: 392rpx;
+		height: 34rpx;
+		margin-left: 24rpx;
+		font-size: 24rpx;
+		color: #333333;
+		line-height: 34rpx;
+	}
+	.freeMail .toShop{
+		width: 102rpx;
+		height: 34rpx;
+		font-size: 24rpx;
+		color: #fe9000;
+		line-height: 34rpx;
+		display: flex;
+	}
+	.freeMail .toShop .icon{
+		width: 30rpx;
+		height: 30rpx;
 		display: block;
 	}
 	//商品
@@ -561,115 +524,113 @@
 		width: 100%;
 		display: flex;
 		align-items: center;
-		padding-left: 12px;
-		padding-bottom: 12px;
+		padding-left: 24rpx;
+		padding-bottom: 24rpx;
 	}
 	.goodsItem .check{
-		width: 18px;
-		height: 18px;
+		width: 36rpx;
+		height: 36rpx;
 		border-radius: 50%;
 		background: #ffffff;
-		border: 1px solid #e5e5e5;
+		border: 1rpx solid #e5e5e5;
 	}
 	.goodsItem .checked{
-		width: 18px;
-		height: 18px;
+		width: 36rpx;
+		height: 36rpx;
 		display: block;
 	}
 	.goodsItem .goodsItemImg{
-		width: 96px;
-		height: 96px;
+		width: 192rpx;
+		height: 192rpx;
 		display: block;
-		margin-left: 5px;
-		margin-right: 10px;
-		border-radius: 4px;
+		margin-left: 12rpx;
+		margin-right: 20rpx;
+		border-radius: 8rpx;
 	}
 	.goodsItem .goodsInfo{
 		height: 100%;
-		margin-right: 10px;
+		margin-right: 20rpx;
 	}
 	.goodsInfo .goodsDesc{
-		width: 190px;
-		height: 40px;
-		font-size: 14px;
+		width: 380rpx;
+		height: 80rpx;
+		font-size: 28rpx;
 		color: #333333;
-		line-height: 20px;
+		line-height: 40rpx;
 		text-overflow: ellipsis;
 	}
 	.goodsInfo .goodsDesc .goodsType{
-		width: 30px;
-		height: 15px;
-		padding: 1px 5px 1px 5px;
-		margin-right: 2px;
-		border: 1px solid #35c4c4;
-		border-radius: 2px;
-		font-size: 10px;
+		width: 60rpx;
+		height: 30rpx;
+		padding: 2rpx 10rpx 2rpx 10rpx;
+		margin-right: 4rpx;
+		border: 2rpx solid #35c4c4;
+		border-radius: 4rpx;
+		font-size: 20rpx;
 		font-weight: 500;
 		color: #35c4c4;
-		line-height: 14px;
+		line-height: 28rpx;
 		text-align:center;
 	}
 	.goodsInfo .goodsSpec{
-		width: 70%;
-		height: 19px;
+		width: fit-content;
+		height: 38rpx;
 		text-overflow: ellipsis;
-		margin-top: 8px;
-		margin-bottom: 8px;
+		padding: 4rpx;
+		margin: 12rpx 0 12rpx 0;
 		background: #fafafa;
-		border: 1px solid #f0f0f0;
-		border-radius: 2px;
-		font-size: 11px;
+		border:1rpx solid #f0f0f0;
+		border-radius: 4rpx;
+		font-size: 22rpx;
 		color: #999999;
 		display: flex;
 	}
 	.goodsInfo .goodsSpec .selectOptions{
-		width: 14px;
-		height: 14px;
+		width: 28rpx;
+		height: 28rpx;
 		display: block;
 	}
 	.goodsInfo .foot{
 		display: flex;
 		justify-content: space-between;
+		align-items: flex-end;
 	}
 	.goodsInfo .foot .goodsPrice{
-		width: 76px;
-		height: 18px;
+		width: fit-content;
+		height: 36rpx;
 		color: #ff3347;
-		line-height: 28px;
+		font-size: 24rpx;
+		line-height: 36rpx;
 	}
 	.goodsInfo .foot .countCtrl{
 		display: flex;
 	}
 	.goodsInfo .foot .countCtrl .dec{
-		width: 24px;
-		height: 24px;
+		width: 48rpx;
+		height: 48rpx;
 		display: block;
 	} 
-	.goodsInfo .foot .countCtrl .btn{
-		width: 24px;
-		height: 24px;
-	}
 	.goodsInfo .foot .countCtrl .count{
-		width: 46px;
-		height: 24px;
+		width: 92rpx;
+		height: 48rpx;
 		background: #f2f2f2;
-		font-size: 12px;
+		font-size: 24rpx;
 		font-weight: 500;
 		text-align: center;
 		color: #333333;
-		line-height: 24px;
+		line-height: 48rpx;
 	}
 	.goodsInfo .foot .countCtrl .inc{
-		width: 24px;
-		height: 24px;
+		width: 48rpx;
+		height: 48rpx;
 		display: block;
 	} 
-	//已失效
+	//已失效商品
 	.disabledSku{
-		margin: 12px 12px 26px 12px;
-		padding: 12px 10px 12px 10px;
+		margin: 24rpx 22rpx 48rpx 24rpx;
+		padding: 24rpx 28rpx 32rpx 24rpx;
 		background: #ffffff;
-		border-radius: 8px;
+		border-radius: 16rpx;
 	}
 	.disabledSku .top{
 		width: 100%;
@@ -677,111 +638,110 @@
 		justify-content: space-between;
 	}
 	.disabledSku .top .title{
-		width: 70px;
-		height: 20px;
-		font-size: 14px;
+		width: 140rpx;
+		height: 40rpx;
+		font-size: 28rpx;
 		color: #333333;
-		line-height: 20px;
+		line-height: 40rpx;
 	}
 	.disabledSku .top .clear{
-		width: 84px;
-		height: 20px;
-		margin-right: 10px;
-		font-size: 14px;
+		width: 168rpx;
+		height: 40rpx;
+		font-size: 28rpx;
 		color: #35c4c4;
-		line-height: 20px;
+		line-height: 40rpx;
 	}
 	.disabledSku .disabldSkuItem{
 		width: 100%;
-		height: 96px;
+		height: 192rpx;
 		display: flex;
-		margin-top: 16px;
+		margin-top: 32rpx;
 	}
 	.disabldSkuItem .disabldSkuImg{
-		width: 96px;
-		height: 96px;
+		width: 192rpx;
+		height: 192rpx;
 		background: rgba(0,0,0,0.30);
 		display: block;
-		margin-right: 10px;
-		border-radius: 4px;
+		margin-right: 24rpx;
+		border-radius: 8rpx;
 	}
 	.disabldSkuItem .disabledSkuInfo{
 		height: 100%;
-		margin-right: 10px;
 	}
 	.disabledSkuInfo .disabledSkuDesc{
-		width: 218px;
-		height: 40px;
-		font-size: 14px;
+		width: 436rpx;
+		height: 80rpx;
+		font-size: 28rpx;
 		color: #cdcdcd;
-		line-height: 20px;
+		line-height: 40rpx;
 		text-overflow: ellipsis;
 	}
 	.disabledSkuInfo .disabledSkuDesc .disabledSkuType{
-		width: 30px;
-		height: 15px;
-		padding: 1px 5px 1px 5px;
-		margin-right: 2px;
-		border: 1px solid #cdcdcd;
-		border-radius: 2px;
-		font-size: 10px;
+		width: 60rpx;
+		height: 30rpx;
+		padding: 2rpx 10rpx 2rpx 10rpx;
+		margin-right: 4rpx;
+		border: 1rpx solid #cdcdcd;
+		border-radius: 4rpx;
+		font-size: 20rpx;
 		font-weight: 500;
 		color: #cdcdcd;
-		line-height: 14px;
+		line-height: 28rpx;
 		text-align:center;
 	}
-	.disabledSkuInfo .spec{
-		width: 100px;
-		height: 19px;
-		margin-top: 8px;
-		margin-bottom: 8px;
+	.disabledSkuInfo .disabledSkuSpec{
+		width: fit-content;
+		height: 38rpx;
+		padding: 4rpx;
+		margin: 12rpx 0 12rpx 0;
 		background: #fafafa;
-		border: 1px solid #f0f0f0;
-		border-radius: 2px;
-		font-size: 11px;
-		color: #999999;
+		border: 1rpx solid #f0f0f0;
+		border-radius: 4rpx;
+		font-size: 22rpx;		
+		text-overflow: ellipsis;
+		color: #cdcdcd;
 	}
 	.disabledSkuInfo .text{
-		width: 190px;
-		height: 20px;
-		font-size: 14px;
+		width: 380rpx;
+		height: 40rpx;
+		font-size: 28rpx;
 		color: #333333;
-		line-height: 20px;
+		line-height: 40rpx;
 	}
 	.bottom{
 		width: 100%;
-		height: 76px;
+		height: 152rpx;
 	}
 	.shopCheck{
-		width:100%;
-		height: 52px;
+		width: 100%;
+		height: 104rpx;
 	  background: #fff;
-	  padding-bottom: 32px;
+	  padding-bottom: 68rpx;
 	  display: flex;
 		justify-content: space-between;
 	  align-items: center;
 	  position: fixed;
-	  bottom: 0px; 
-	  left: 0px;
+	  bottom: 0rpx; 
+	  left: 0rpx;
 	}
 	.shopCheck .left{
 		display: flex;
 	}
 	.shopCheck .check{
-		width: 18px;
-		height: 18px;
-		margin-left: 14px;
-		margin-right: 10px;
+		width: 36rpx;
+		height: 36rpx;
+		margin-left: 32rpx;
+		margin-right: 20rpx;
 		border-radius: 50%;
 		background: #ffffff;
-		border: 1px solid #e5e5e5;
+		border: 2rpx solid #e5e5e5;
 	}
 	.shopCheck .text{
-	  width: 29px;
-	  height: 20px;
+	  width: 56rpx;
+	  height: 40rpx;
 	  color: #333;
-		font-size: 14px;
-	  line-height: 20px;
+		font-size: 28rpx;
+	  line-height: 40rpx;
 	}
 	.shopCheck .right {
 	  display: flex;
@@ -789,51 +749,51 @@
 	  align-items: center;
 	}
 	.right .text{
-	  width: 42px;
-	  height: 14px;
-	  line-height: 14px;
-	  font-size: 14px;
+	  width: 84rpx;
+	  height: 28rpx;
+	  line-height: 28rpx;
+	  font-size: 28rpx;
 	  color: #333;
 	}
 	.totalPrice{
-	  width: 57px;
-	  height: 18px;
-	  font-size: 12px;
+	  width: 114rpx;
+	  height: 36rpx;
+	  font-size: 24rpx;
 	  color: #ff3347;
 	}
 	
 	.preOrder{
-	  width: 124px;
-	  height: 44px;
+	  width: 248rpx;
+	  height: 88rpx;
 	  text-align: center;
-		line-height: 44px;
-	  margin-right: 10px;
-	  border-radius: 6px;
-		font-size: 16px;
+		line-height: 88rpx;
+	  margin-right: 32rpx;
+	  border-radius: 12rpx;
+		font-size: 32rpx;
 	  color: #fff;
-	  background: linear-gradient(135deg,#53d5cc, #4fc9c9);;
+	  background: linear-gradient(135deg,#53d5cc, #4fc9c9);
 	}    
 	.collect{
-		width: 84px;
-		height: 32px;
-		line-height: 32px;
-		font-size: 13px;
+		width: 168rpx;
+		height: 64rpx;
+		line-height: 64rpx;
+		font-size: 26rpx;
 		text-align: center;
 		color: #fe9000;
 		background: #ffffff;
-		border: 1px solid #fe9000;
-		border-radius: 6px;
+		border: 2rpx solid #fe9000;
+		border-radius: 12rpx;
 	}
 	.delete{
-		width: 58px;
-		height: 32px;
-		margin: 0 16px 0 16px;
-		line-height: 32px;
-		font-size: 13px;
+		width: 116rpx;
+		height: 64rpx;
+		margin: 0 32rpx 0 32rpx;
+		line-height: 64rpx;
+		font-size: 26rpx;
 		text-align: center;
 		color: #ff3347;
 		background: #ffffff;
-		border: 1px solid #ff3347;
-		border-radius: 6px;
+		border: 2rpx solid #ff3347;
+		border-radius: 12rpx;
 	}
 </style>

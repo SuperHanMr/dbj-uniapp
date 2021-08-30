@@ -6,7 +6,7 @@
 			<text class="price">{{__countPrice[0]}}</text>
 			<text class="flot">.{{__countPrice[1]}}</text>
 		</view>
-		<button class="btn">去结算</button>
+		<button class="btn" :disabled="!isAllChecked" :class="{ disabled: !isAllChecked }" @click="gotopay">去结算</button>
 	</view>
 </template>
 
@@ -21,6 +21,10 @@
 			countPrice: {
 				type: String,
 				default: "1000.00"
+			},
+			isAllChecked: {
+				type: Boolean,
+				default: false
 			}
 		},
 		computed: {
@@ -30,6 +34,11 @@
 		},
 		data() {
 			return {}
+		},
+		methods:{
+			gotopay() {
+				this.$emit("gotopay")
+			}
 		}
 	}
 </script>
@@ -48,6 +57,7 @@
 		flex-direction: row;
 		align-items: flex-end;
 		margin-bottom: 16rpx;
+
 		.pieces {
 			letter-spacing: 0;
 			font-size: 28rpx;
@@ -92,7 +102,6 @@
 		box-sizing: border-box;
 		width: 248rpx;
 		height: 88rpx;
-		opacity: 1;
 		background: linear-gradient(135deg, #53d5cc, #4fc9c9);
 		border-radius: 12rpx;
 		font-size: 32rpx;
@@ -101,5 +110,10 @@
 		text-align: center;
 		color: #ffffff;
 		line-height: 88rpx;
+	}
+	.btn.disabled {
+		opacity: 0.5;
+		background: linear-gradient(135deg,#53d5cc, #4fc9c9);
+		color: #ffffff;
 	}
 </style>

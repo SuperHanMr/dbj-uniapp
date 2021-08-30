@@ -30,8 +30,21 @@
 	import {
 		queryEstates
 	} from "../../../api/decorate.js";
+  import { connect } from 'mqtt/dist/mqtt';
+
 	export default {
-		mounted() {},
+		mounted() {
+      // console.log(connect)
+      // const url = 'ws://broker-cn.emqx.io:8083/mqtt';
+
+      // const client = connect(url, {
+      
+      // 	// 8位16进制的随机值组成clientId
+      // 	clientId: `mqttjs_${Math.random().toString(16).substr(2, 8)}`,
+      
+      // });
+      
+    },
 		onShow() {
 			if (this.houses && this.houses.length < 1) {
 				this.getHouses();
