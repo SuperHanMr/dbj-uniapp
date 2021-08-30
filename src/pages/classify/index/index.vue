@@ -32,60 +32,6 @@
     // 缓存页签数量
     const MAX_CACHE_PAGE = 3;
 
-    const newsData = {
-        data0: {
-            "datetime": "40分钟前",
-            "article_type": 0,
-            "title": "uni-app行业峰会频频亮相，开发者反响热烈!",
-            "source": "DCloud",
-            "comment_count": 639
-        },
-        data1: {
-            "datetime": "一天前",
-            "article_type": 1,
-            "title": "DCloud完成B2轮融资，uni-app震撼发布!",
-            "image_url": "https://vkceyugu.cdn.bspapp.com/VKCEYUGU-dc-site/b7c7f970-517d-11eb-97b7-0dc4655d6e68.jpg",
-            "source": "DCloud",
-            "comment_count": 11395
-        },
-        data2: {
-            "datetime": "一天前",
-            "article_type": 2,
-            "title": "中国技术界小奇迹：HBuilder开发者突破200万",
-            "image_url": "https://vkceyugu.cdn.bspapp.com/VKCEYUGU-dc-site/b4cd3000-517d-11eb-a16f-5b3e54966275.jpg",
-            "source": "DCloud",
-            "comment_count": 11395
-        },
-        data3: {
-            "article_type": 3,
-            "image_list": [{
-                "url": "https://vkceyugu.cdn.bspapp.com/VKCEYUGU-dc-site/b2e201d0-517d-11eb-8a36-ebb87efcf8c0.jpg",
-                "width": 563,
-                "height": 316
-            }, {
-                "url": "https://vkceyugu.cdn.bspapp.com/VKCEYUGU-dc-site/b4cd3000-517d-11eb-a16f-5b3e54966275.jpg",
-                "width": 641,
-                "height": 360
-            }, {
-                "url": "https://vkceyugu.cdn.bspapp.com/VKCEYUGU-dc-site/b7c7f970-517d-11eb-97b7-0dc4655d6e68.jpg",
-                "width": 640,
-                "height": 360
-            }],
-            "datetime": "5分钟前",
-            "title": "uni-app 支持使用 npm 安装第三方包，生态更趋丰富",
-            "source": "DCloud",
-            "comment_count": 11
-        },
-        data4: {
-            "datetime": "2小时前",
-            "article_type": 4,
-            "title": "uni-app 支持原生小程序自定义组件，更开放、更自由",
-            "image_url": "https://vkceyugu.cdn.bspapp.com/VKCEYUGU-dc-site/b2e201d0-517d-11eb-8a36-ebb87efcf8c0.jpg",
-            "source": "DCloud",
-            "comment_count": 69
-        }
-    };
-
     export default {
         components: {
             indexItem
@@ -114,13 +60,7 @@
             }
         },
         onLoad() {
-            setTimeout(()=>{
-              this.tabBars.forEach((tabBar) => {
-                  this.newsList.push({
-                      data: []
-                  });
-              });
-              this.getList(0);
+              // this.getList(0);
             },350)
         },
         methods: {
@@ -130,14 +70,7 @@
               })
             },
             getList(index) {
-                let activeTab = this.newsList[index];
-                let list = [];
-                for (let i = 1; i <= 10; i++) {
-                    let item = Object.assign({}, newsData['data' + Math.floor(Math.random() * 5)]);
-                    item.id = this.newGuid();
-                    list.push(item);
-                }
-                activeTab.data = activeTab.data.concat(list);
+                
             },
             goDetail(e) {
                 if (this.navigateFlag) {
@@ -187,16 +120,6 @@
                     this.cacheTab.splice(0, 1);
                     //console.log("remove cache index:: " + cacheIndex);
                 }
-            },
-            clearTabData(e) {
-                this.newsList[e].data.length = 0;
-                this.newsList[e].loadingText = "加载更多...";
-            },
-            newGuid() {
-                let s4 = function() {
-                    return (65536 * (1 + Math.random()) | 0).toString(16).substring(1);
-                }
-                return (s4() + s4() + "-" + s4() + "-4" + s4().substr(0, 3) + "-" + s4() + "-" + s4() + s4() + s4()).toUpperCase();
             }
         }
     }
