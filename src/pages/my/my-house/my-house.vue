@@ -9,13 +9,13 @@
                 <text class="defalut" v-if="item.defaultEstate">默认</text>
                 <text class="province">{{item.housingEstate}}</text>
               </view>
-              <text class="address">{{item.locationName}}马上快到了南方猫屎咖啡没上课吗</text>
+              <text class="address">{{item.locationName}}</text>
               <view class="item">
-                <text class="name" >赵先生{{item.contactName}}</text>
-                <text class="phone">12343454577{{item.contactPhone}}</text>
+                <text class="name" >{{item.contactName}}</text>
+                <text class="phone">{{item.contactPhone}}</text>
               </view>
             </view> 
-            <view class="edit" @click="edit">编辑</view>
+            <view class="edit" @click="edit(item)"><image src="../../../static/images/edit.svg" class="edit-icon"></image></view>
           </view>
           <view class="dle-btn centerboth" @click.stop="delThis(item,index)">
             <view class="del-icon centerboth">
@@ -40,18 +40,7 @@
 			return {
 				startX: 0, //开始坐标
 				startY: 0,
-        listData:[
-          {id:1,isTouchMove:false,title:'1'},
-          {id:2,isTouchMove:false,title:'2'},
-          {id:3,isTouchMove:false,title:'3'},
-          {id:4,isTouchMove:false,title:'4'},
-          {id:4,isTouchMove:false,title:'5'},
-          {id:4,isTouchMove:false,title:'6'},
-          {id:4,isTouchMove:false,title:'7'},
-          {id:4,isTouchMove:false,title:'8'},
-          {id:4,isTouchMove:false,title:'9'},
-          {id:4,isTouchMove:false,title:'10'},
-        ], 
+        listData:[], 
         systemBottom:'',
         systemHeight:''
 			};
@@ -78,7 +67,7 @@
     },
 		methods: {
 			delThis:function(item,index){
-				setDefault(item.estateId).then(res=>{
+				setDefault(item.id).then(res=>{
           this.getHouseList()
         })
 			},
@@ -116,12 +105,15 @@
 					v.isTouchMove = false
 					//滑动超过30度角 return
 					if (Math.abs(angle) > 30) return;
+          //如果已经是默认则不滑动
+          if(v.defaultEstate)return
 					if (i == index) {
 						if (touchMoveX > startX) //右滑
 							v.isTouchMove = false
 						else //左滑
-							v.isTouchMove = true
-					}
+							v.isTouchMove = true 
+              // console.log(that.listData)
+					} 
 				})
 				//更新数据
 				
@@ -137,11 +129,16 @@
           isNeedRelative: true,
         }).then(res=>{  
           this.listData = res
+          this.listData.forEach(function(v,i){
+            v.isTouchMove = false
+          }) 
+          console.log(this.listData)
         })
       },
-      edit(){
+      edit(item){
+        // console.log(item)
         uni.navigateTo({
-          url:'/pages/decorate/add-house/add-house'
+          url:'/pages/decorate/add-house/add-house?id='+item.id
         })
       }, 
       toAddHouse(){
@@ -280,6 +277,10 @@
         font-size: 24rpx;
       }
     }
+    .edit-icon{
+      width: 36rpx;
+      height: 36rpx;
+    }
     .address{
       color: #111;
       font-size: 28rpx;
@@ -328,7 +329,5 @@
       color: #FFFFFF;
       font-size: 32rpx;
     }
-    
-
   }
 </style>

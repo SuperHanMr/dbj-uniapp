@@ -23,8 +23,7 @@
 					:index="index"
 				></waterfall>
 			</view>
-			<web-view src="https://pano-stage.meiwu365.com/vr-home/viewer/5460/Wo7XZf37"></web-view>
-			<!-- <image src='https://img.yzcdn.cn/vant/apple-1.jpg' mode=""></image> -->					<video id="myVideo" src="https://pano-stage.meiwu365.com/vr-home/viewer/5460/Wo7XZf37"					                    @error="videoErrorCallback" :danmu-list="danmuList" enable-danmu danmu-btn controls></video>
+			<!-- <image src='https://img.yzcdn.cn/vant/apple-1.jpg' mode=""></image> -->					<!-- <video id="myVideo" src="https://pano-stage.meiwu365.com/vr-home/viewer/5460/Wo7XZf37"					                    @error="videoErrorCallback" :danmu-list="danmuList" enable-danmu danmu-btn controls></video> -->
 		</view>
 	</view>
 </template>
@@ -52,9 +51,12 @@
 				this.getList();
 			},800);
 		},
+		onReachBottom() {
+			console.log("aaaaaaaaaaaaaaaaaaaaaaaaaaaaaa")
+		},
 		methods: {
-			onHeight() {
-				this.$parent.onHeight();
+			onHeight(height, tag) {
+				this.$parent.onHeight(height, tag);
 			},
 			onClick (index, tag){
 				this.$parent.onClick(index, tag);
@@ -64,6 +66,9 @@
 </script>
 
 <style lang="scss" scoped>
+	.decorate{
+		width: 100%;
+	}
 	.waterfall-box {
 		padding: 24rpx 8rpx 24rpx 24rpx;
 		box-sizing: border-box;

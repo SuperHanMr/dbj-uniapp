@@ -48,8 +48,8 @@
 						<view class="foot">
 							<view class="goodsPrice">¥{{goodsItem.price}}/{{goodsItem.unitName}}</view>
 							<view class="countCtrl">
-								<image src="../../../static/shopping-cart/details_pop_@2x.png" v-if="!isMiniOrder" class="dec" @click="changeCount(false,shopIndex, goodsIndex)"></image>
-							  <image src="../../../static/shopping-cart/details_pop_subtract_disabled@2x.png" v-else class="dec" @click="changeCount(false,shopIndex, goodsIndex)"></image>
+								<image v-if="!isMiniOrder" src="../../../static/shopping-cart/details_pop_@2x.png" class="dec" @click="changeCount(false,shopIndex, goodsIndex)"></image>
+							  <button v-else class="btn" @click="changeCount(false,shopIndex, goodsIndex)"></button>
 							  <view class="count" @click="defineCount"> {{goodsItem.buyCount}} </view>
 							  <image src="../../../static/shopping-cart/details_pop_add_normal@2x.png" class="inc" @click="changeCount(true, shopIndex,goodsIndex)"></image>          
 							</view>
@@ -134,7 +134,6 @@
 				showPecification:false,
 				isManage:true,
 				isCheckedAll:false,
-				isMiniOrder:false,
 				showDefineCount:false
 			}
 		},
@@ -179,7 +178,7 @@
 															"price": 1,
 															"unitName": "平米",
 															"minimumOrderQuantity": "70",
-															"stepLength": null,
+															"stepLength": 1,
 															"buyCount": "3.1",
 															"productType": 2
 													},
@@ -189,10 +188,10 @@
 															"spuName": "爆爆爆",
 															"skuName": "橙色 | 299",
 															"image": "https://ali-image-test.dabanjia.com//image/20210306/1615000401478_3393%244%E6%AF%943.jpg",
-															"price": null,
+															"price":2,
 															"unitName": "套",
-															"minimumOrderQuantity": null,
-															"stepLength": null,
+															"minimumOrderQuantity": 1,
+															"stepLength": 1,
 															"buyCount": "1",
 															"productType": 2
 													}
@@ -208,10 +207,10 @@
 															"spuName": "设计师的测试商品1",
 															"skuName": "单空间",
 															"image": "https://ali-image-test.dabanjia.com/image/20210811/16/1628671199526_5719%249cfb968c817c2d1cc6afdb9ed7516c68.jpg",
-															"price": null,
+															"price": 1,
 															"unitName": "套",
 															"minimumOrderQuantity": "1",
-															"stepLength": null,
+															"stepLength": 1,
 															"buyCount": "2",
 															"productType": 2
 													},
@@ -224,7 +223,7 @@
 															"price": 1,
 															"unitName": "平米",
 															"minimumOrderQuantity": "50",
-															"stepLength": null,
+															"stepLength": 1,
 															"buyCount": "11",
 															"productType": 2
 													},
@@ -234,10 +233,10 @@
 															"spuName": "设计师的测试商品1",
 															"skuName": "双空间",
 															"image": "https://ali-image-test.dabanjia.com/image/20210811/16/1628671199526_5719%249cfb968c817c2d1cc6afdb9ed7516c68.jpg",
-															"price": null,
+															"price": 1,
 															"unitName": "套",
 															"minimumOrderQuantity": "1",
-															"stepLength": null,
+															"stepLength": 1,
 															"buyCount": "1",
 															"productType": 2
 													},
@@ -247,10 +246,10 @@
 															"spuName": "设计类商品测试",
 															"skuName": "甄选 | 搭配师",
 															"image": "https://ali-image.dabanjia.com//image/20210312/161552364613400.png",
-															"price": null,
+															"price": 3,
 															"unitName": "平米",
 															"minimumOrderQuantity": "3",
-															"stepLength": null,
+															"stepLength": 1,
 															"buyCount": "4",
 															"productType": 2
 													}
@@ -264,10 +263,10 @@
 											"spuName": "最最最最牛的设计",
 											"skuName": "尊享 | 大师全案",
 											"image": "https://ali-image-test.dabanjia.com/image/20210722/11/1626925656305_9648%2457c7ec49ccd6b4f6b5ae9a17bcb5ae80.jpg",
-											"price": null,
+											"price": 2,
 											"unitName": "平米",
-											"minimumOrderQuantity": null,
-											"stepLength": null,
+											"minimumOrderQuantity": 1,
+											"stepLength": 1,
 											"buyCount": "4",
 											"productType": 2
 									},
@@ -277,10 +276,10 @@
 											"spuName": "完美单身全案设计服务",
 											"skuName": "大师全案",
 											"image": "https://ali-image-test.dabanjia.com//image/20210314/1615676007347_1525%24%E6%87%92%E7%8E%8B%E5%A4%B4%E5%9B%BE%E6%89%93%E6%89%AE%E5%AE%B6app%E5%B9%B3%E5%8F%B0.jpg",
-											"price": null,
+											"price": 5,
 											"unitName": "平米",
-											"minimumOrderQuantity": null,
-											"stepLength": null,
+											"minimumOrderQuantity": 1,
+											"stepLength": 1,
 											"buyCount": "14",
 											"productType": 2
 									}
@@ -296,6 +295,8 @@
 							item.shopChecked = false
 							item.skuList.map(ele=>{
 								ele.goodsChecked = false
+								ele.isMiniOrder = (+ele.buyCount <= +ele.minimumOrderQuantity) ?true:false
+									
 								return ele
 							})
 							return item
@@ -343,7 +344,7 @@
 						count -= step
 						this.shopList[shopIndex].skuList[goodsIndex].buyCount = count.toFixed(2).toString()
 					}else { // 数量为最小步长
-						this.isMiniOrder = true
+						this.shopList[shopIndex].skuList[goodsIndex].isMiniOrder = true
 						uni.showToast({
 							title:"商品数量不能再减少了",
 							icon:"none"
@@ -644,6 +645,10 @@
 		height: 24px;
 		display: block;
 	} 
+	.goodsInfo .foot .countCtrl .btn{
+		width: 24px;
+		height: 24px;
+	}
 	.goodsInfo .foot .countCtrl .count{
 		width: 46px;
 		height: 24px;
