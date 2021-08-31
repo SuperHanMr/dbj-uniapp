@@ -92,8 +92,8 @@
 								<view class="title">服务类商品</view>
 								<view class="count">件</view>
 							</view>
-							<view class="check" v-if=""></view>
-							<image class="checked" v-else src="../../../static/shopping-cart/checked@2x.png"></image>
+							<!-- <view class="check" v-if=""></view> -->
+							<!-- <image class="checked" v-else src="../../../static/shopping-cart/checked@2x.png"></image> -->
 						</view>
 						<!-- <view class="goods" v-for="">
 							<image :src="" mode=""></image>
