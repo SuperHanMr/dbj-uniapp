@@ -31,27 +31,27 @@
 		display: flex;
 		justify-content: center;
 		align-items: center;
-		margin-left: 48rpx;
-		padding: 16rpx 24rpx 16rpx;
+		padding: 40rpx 32rpx 40rpx 24rpx;
 		background: #f5f6f6;
 		border-radius: 16rpx;
 
 		image {
-			width: 136rpx;
-			height: 136rpx;
+			width: 176rpx;
+			height: 176rpx;
 			opacity: 1;
 			border-radius: 12rpx;
 			margin-right: 16rpx;
+			margin-left: 16rpx;
 		}
 
 		.subtitle {
-			// width: 446rpx;
-			// height: 36rpx;
+			width: 454rpx;
+			opacity: 1;
 			font-size: 26rpx;
 			font-family: PingFangSC, PingFangSC-Regular;
 			font-weight: 400;
 			text-align: left;
-			color: #333333;
+			color: #333;
 			line-height: 36rpx;
 			margin-bottom: 8rpx;
 		}

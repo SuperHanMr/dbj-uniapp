@@ -8,15 +8,18 @@
 				</button>
 				<view class="decs"><text>打扮家按房子面积计算价格</text></view>
 			</view>
-			<my-current-house v-else :houseData="currentHouse" @changCurrentHouse="changCurrentHouse"></my-current-house>
+			<my-current-house v-else :houseData="currentHouse" @changCurrentHouse="changCurrentHouse">
+			</my-current-house>
 			<service-card :setting="design" class="service-card" @selectAnother="selectAnother('design')">
 				<template slot="check">
-					<check-box :checked="design.checked" @change="(value)=> {change(design.id, value)}"></check-box>
+					<check-box :checked="design.checked" @change="(value)=> {change(design.cardtype, value)}">
+					</check-box>
 				</template>
 			</service-card>
-			<service-card :setting="actuary" class="service-card">
+			<service-card :setting="actuary" class="service-card" @selectAnother="selectAnother('actuary')">
 				<template slot="check">
-					<check-box :checked="actuary.checked" @change="(value)=> {change(actuary.id, value)}"></check-box>
+					<check-box :checked="actuary.checked" @change="(value)=> {change(actuary.cardtype, value)}">
+					</check-box>
 				</template>
 			</service-card>
 		</view>
@@ -28,7 +31,10 @@
 	import ServiceCard from "../../../components/service-card/service-card.vue";
 	import Payment from "../../../components/payment/payment.vue";
 	import CheckBox from "../../../components/check-box/check-box.vue";
-	import { queryEstates } from "../../../api/decorate.js"
+	import {
+		queryEstates,
+		getProductsSkusPage
+	} from "../../../api/decorate.js"
 	export default {
 		components: {
 			ServiceCard,
@@ -37,26 +43,27 @@
 		},
 		data() {
 			return {
+				dataList: [],
 				design: {
-					index: 1,
-					id: "design",
-					title: "设计服务",
-					subtitle: "28.8全放个性化设计(适用全房设计…",
-					area: "100.00",
-					price: "199.00",
-					cover: "https://img2.baidu.com/it/u=110114637,4171866431&fm=26&fmt=auto&gp=0.jpg",
-					checked: false
+					// index: 1,
+					// id: "design",
+					// title: "设计服务",
+					// fullName: "28.8全放个性化设计(适用全房设计…",
+					// area: "100.00",
+					// price: "199.00",
+					// imageUrl: "https://img2.baidu.com/it/u=110114637,4171866431&fm=26&fmt=auto&gp=0.jpg",
+					// checked: false
 				},
 				actuary: {
-					isLast: true,
-					index: 2,
-					id: "actuary",
-					title: "精算服务",
-					subtitle: "28.8全放个性化设计(适用全房设计…",
-					area: "120.00",
-					price: "299.00",
-					cover: "https://img2.baidu.com/it/u=110114637,4171866431&fm=26&fmt=auto&gp=0.jpg",
-					checked: true
+					// isLast: true,
+					// index: 2,
+					// id: "actuary",
+					// title: "精算服务",
+					// fullName: "28.8全放个性化设计(适用全房设计…",
+					// area: "120.00",
+					// price: "299.00",
+					// imageUrl: "https://img2.baidu.com/it/u=110114637,4171866431&fm=26&fmt=auto&gp=0.jpg",
+					// checked: true
 				},
 				currentHouse: {}
 			}
@@ -68,15 +75,54 @@
 		},
 		onShow() {
 			this.getMyHouseList();
+			this.getProductsSkusPage();
 		},
 		methods: {
+			getProductsSkusPage() {
+				getProductsSkusPage({
+					categoryTypeId: [5, 6]
+				}).then(data => {
+					this.dataList = data.list
+					// const { noHouseActuaryId, noHouseDesignId } = getApp.globalData
+					// if( noHouseActuaryId ) {
+
+					// } else {
+
+					// }
+					// data.list.forEach((item, idx) => {
+					// 	if() {
+					// 		this.actuary = {
+					// 			...item,
+					// 			cardtype: "actuary",
+					// 			checked: true
+					// 		}
+					// 	}
+					// })
+					this.actuary = {
+						...data.list[0],
+					  title: "精算服务",
+						cardtype: "actuary",
+						checked: true
+					}
+					this.design = {
+						...data.list[1],
+					  title: "设计服务",
+						cardtype: "design",
+						checked: true
+					}
+				})
+			},
 			selectAnother(pp) {
-				if(pp === "design") {
+				if (pp === "design") {
 					uni.navigateTo({
-						url: "/pages/decorate/design-service-list/design-service-list"
+						url: '/pages/decorate/design-service-list/design-service-list?id=6'
 					})
 				}
-				
+				if (pp === "actuary") {
+					uni.navigateTo({
+						url: '/pages/decorate/design-service-list/design-service-list?id=5'
+					})
+				}
 			},
 			changCurrentHouse() {
 				uni.redirectTo({
@@ -84,9 +130,11 @@
 				})
 			},
 			getMyHouseList() {
-				queryEstates({isNeedRelative: true}).then(data => {
+				queryEstates({
+					isNeedRelative: true
+				}).then(data => {
 					let flt = data.filter(t => t.defaultEstate);
-					if(flt && flt.length > 0) {
+					if (flt && flt.length > 0) {
 						this.currentHouse = flt[0]
 					} else {
 						this.currentHouse = {}

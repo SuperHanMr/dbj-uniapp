@@ -5,12 +5,12 @@
 				<slot name="check"></slot>
 				<text class="text">{{setting.title}}</text>
 			</view>
-			<button v-if="setting.id !== 'actuary'" class="change-service" @click="selectAnother">
+			<button class="change-service" @click="selectAnother">
 				<text>更换</text>
 				<image class="ic-triangle-999" src="../../static/images/ic_triangle_999.svg"/>
 			</button>
 		</view>
-		<server-content :setting="setting"></server-content>
+		<server-content :content="setting"></server-content>
 	</view>
 </template>
 
@@ -49,8 +49,7 @@
 	.wrap {
 		width: 100%;
 		box-sizing: border-box;
-		height: 300rpx;
-		opacity: 1;
+		min-height: 300rpx;
 		background: #fff;
 		border-radius: 40rpx;
 		padding: 32rpx;
