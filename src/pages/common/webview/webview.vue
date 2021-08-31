@@ -1,8 +1,6 @@
 <template>
 	<view>
-
 		<web-view ref="web" :webview-styles="webviewStyles" :src="url"></web-view>
-
 	</view>
 </template>
 
@@ -18,13 +16,11 @@
 				}
 			};
 		},
-		onReady() {
-			var active = this.$refs.web;
-			console.log(active);
-		},
+		onReady() {},
 		onLoad(e) {
 			if (e && e.url) {
-				this.url = e.url;
+				this.url = decodeURIComponent(e.url);
+				console.log(this.url)
 			}
 		}
 	}

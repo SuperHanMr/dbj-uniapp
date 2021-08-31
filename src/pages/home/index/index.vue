@@ -12,10 +12,9 @@
 				去亲友团
 			</view>
 			<button style="width: 50%;margin-top: 20rpx;" type="default" @click="toNextPage">去封装好的列表页</button>
-			
+
 			<button style="width: 50%;margin-top: 20rpx;" type="default" @click="toSubPage">去分包1</button>
 			<button style="width: 50%;margin-top: 20rpx;" type="default" @click="toCalebdar">去日历</button>
-			
 			<swiper class="banner-content" :indicator-dots="true" :autoplay="true" interval="2000" duration="500"
 				:circular="true">
 				<swiper-item v-for="(item,index) in bannerList" :key="index">
@@ -29,7 +28,6 @@
 					{{item.title}}
 				</view>
 			</view>
-			<button style="width: 50%;margin-top: 20rpx;" type="default" @click="toNextPage">去封装好的列表页</button>
 			<waterfall :list="caseList" @selectedItem="onSelectedItem"></waterfall>
 		</scroll-view>
 	</view>
@@ -60,8 +58,10 @@
 				bannerList: [],
 				list: [],
 				comList: [],
-				caseList: [
-				],
+				caseList: [],
+				loading: false,
+				page: 1,
+				totalPage: 1
 			};
 		},
 		onLoad() {
@@ -78,28 +78,34 @@
 			// }
 		},
 		methods: {
-			toSubPage(){
+			toSubPage() {
 				uni.navigateTo({
-					url:"/sub-pagesA/pages/test1/test1"
+					url: "/sub-pagesA/pages/test1/test1"
 				})
 			},
-			toCalebdar(){
+			toCalebdar() {
 				uni.navigateTo({
-					url:"../../decorate/calendar/calendar"
+					url: "../../decorate/calendar/calendar"
 				})
 			},
 			onLoadMore() {
-				this.goodsList = this.goodsList.concat(this.goodsList);
+				if (this.loading || this.page >= this.totalPage) {
+					return;
+				}
+				this.page++;
+				this.getCaseList();
 			},
 			onSelectedItem(item) {
-				console.log(item);
+				if(item.shareLinks){
+					this.toWebview(item.shareLinks);
+				}
 			},
 			toWebview(url) {
 				if (!url) {
 					return;
 				}
 				uni.navigateTo({
-					url: "../../common/webview/webview?url=" + url,
+					url: "../../common/webview/webview?url=" + encodeURIComponent(url),
 				});
 			},
 			async toFriends() {
@@ -194,9 +200,9 @@
 					uni.navigateTo({
 						url: "../lives-room/lives-room?livePreview=" + item.livePreview,
 					});
-				}else if(item&&item.videoFileUrl){
+				} else if (item && item.videoFileUrl) {
 					uni.navigateTo({
-						url:"../../common/video-player/video-player?url="+item.videoFileUrl
+						url: "../../common/video-player/video-player?url=" + item.videoFileUrl
 					})
 				}
 			},
@@ -205,9 +211,14 @@
 				this.getHomeList();
 				this.getCaseList();
 			},
-			async getCaseList(){
-				let caseItem = await caseList();
-				this.caseList=caseItem.list;
+			async getCaseList() {
+				this.loading = true;
+				let caseItem = await caseList({
+					page: this.page
+				});
+				this.totalPage = caseItem.totalPage
+				this.caseList = this.caseList.concat(caseItem.list);
+				this.loading = false;
 				console.log(this.caseList.length);
 			},
 			async getBannerList() {
@@ -313,7 +324,7 @@
 	.flex-row {
 		display: flex;
 		flex-direction: row;
-		align-items: center;
+		align-items: flex-start;
 		justify-content: flex-start;
 		overflow: auto;
 		width: 100%;
@@ -321,10 +332,10 @@
 		.item {
 			flex-shrink: 0;
 			width: 200rpx;
-			height: 200rpx;
+			// height: 200rpx;
 			text-align: center;
 			margin-left: 20rpx;
-			background-color: yellow;
+			// background-color: yellow;
 
 			.img {
 				width: 200rpx;
