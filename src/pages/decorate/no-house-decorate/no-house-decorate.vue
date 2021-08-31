@@ -1,14 +1,15 @@
 <template>
 	<view class="no-house-decorate">
 		<view class="content">
-			<view class="addhouse-decs">
+			<view class="addhouse-decs" v-if="!currentHouse && !currentHouse.id">
 				<button class="addhouse" @click="goAddHouse">
 					<image src="../../../static/images/ic_add_house_info.svg"></image>
 					<text>添加房屋信息</text>
 				</button>
 				<view class="decs"><text>打扮家按房子面积计算价格</text></view>
 			</view>
-			<service-card :setting="design" class="service-card">
+			<my-current-house v-else :houseData="currentHouse" @changCurrentHouse="changCurrentHouse"></my-current-house>
+			<service-card :setting="design" class="service-card" @selectAnother="selectAnother('design')">
 				<template slot="check">
 					<check-box :checked="design.checked" @change="(value)=> {change(design.id, value)}"></check-box>
 				</template>
@@ -27,6 +28,7 @@
 	import ServiceCard from "../../../components/service-card/service-card.vue";
 	import Payment from "../../../components/payment/payment.vue";
 	import CheckBox from "../../../components/check-box/check-box.vue";
+	import { queryEstates } from "../../../api/decorate.js"
 	export default {
 		components: {
 			ServiceCard,
@@ -55,7 +57,8 @@
 					price: "299.00",
 					cover: "https://img2.baidu.com/it/u=110114637,4171866431&fm=26&fmt=auto&gp=0.jpg",
 					checked: true
-				}
+				},
+				currentHouse: {}
 			}
 		},
 		computed: {
@@ -63,14 +66,42 @@
 				return this.design.checked && this.actuary.checked
 			}
 		},
+		onShow() {
+			this.getMyHouseList();
+		},
 		methods: {
+			selectAnother(pp) {
+				if(pp === "design") {
+					uni.navigateTo({
+						url: "/pages/decorate/design-service-list/design-service-list"
+					})
+				}
+				
+			},
+			changCurrentHouse() {
+				uni.redirectTo({
+					url: "/pages/my/my-house/my-house"
+				})
+			},
+			getMyHouseList() {
+				queryEstates({isNeedRelative: true}).then(data => {
+					let flt = data.filter(t => t.defaultEstate);
+					if(flt && flt.length > 0) {
+						this.currentHouse = flt[0]
+					} else {
+						this.currentHouse = {}
+					}
+				})
+			},
 			gotopay() {
 				// TODO去结算页面
-				if(getApp().globalData.houses && getApp().globalData.houses.length > 0) {
-					
+				if (this.currentHouse && this.currentHouse.id) {
+					uni.redirectTo({
+						url: ""
+					})
 				} else {
 					uni.showToast({
-						title:"请您先添加房屋信息",
+						title: "请您先添加房屋信息",
 						icon: "none",
 						duration: 3000
 					})

@@ -5,7 +5,7 @@
 				<slot name="check"></slot>
 				<text class="text">{{setting.title}}</text>
 			</view>
-			<button class="change-service">
+			<button v-if="setting.id !== 'actuary'" class="change-service" @click="selectAnother">
 				<text>更换</text>
 				<image class="ic-triangle-999" src="../../static/images/ic_triangle_999.svg"/>
 			</button>
@@ -40,6 +40,11 @@
 			return {
 
 			};
+		},
+		methods: {
+			selectAnother() {
+				this.$emit("selectAnother")
+			}
 		}
 	}
 </script>

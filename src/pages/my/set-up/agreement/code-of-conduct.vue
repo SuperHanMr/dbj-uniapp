@@ -1,9 +1,19 @@
 <template>
-	<web-view src="https://local.meiwu365.com/app-pages/real-name-authentication/index.html"></web-view>
+	<web-view :src="url"></web-view>
 	<!-- 打扮家用户行为规范 -->
 </template>
 
 <script>
+	export default {
+		data() {
+			return {
+				url: `${process.env.VUE_APP_BASE_API}/app-pages/user-code-of-conduct/index.html`
+			}
+		},
+		methods: {
+			
+		}
+	}
 </script>
 
 <style>
