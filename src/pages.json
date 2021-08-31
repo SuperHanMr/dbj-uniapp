@@ -8,7 +8,8 @@
 				"transparentTitle": "auto",
 				"navigationStyle": "custom"
 			}
-		},{
+		},
+		{
 			"path": "pages/decorate/index/index",
 			"style": {
 				"navigationBarTitleText": "装修"
@@ -42,7 +43,6 @@
 				"navigationBarTitleText": "有房屋无服务"
 			}
 		},
-		
 		{
 			"path": "pages/classify/index/index",
 			"style": {
@@ -312,7 +312,6 @@
 			"path": "pages/my/my-order/order-in-progress/order-in-progress",
 			"style": {
 				"navigationBarTitleText": "",
-					"navigationBarBackgroundColor":"#FC8B19",
 				"enablePullDownRefresh": false
 			}
 		},
@@ -320,7 +319,6 @@
 			"path": "pages/my/my-order/order-success/order-success",
 			"style": {
 				"navigationBarTitleText": "",
-				"navigationBarBackgroundColor":"#22D4C3",
 				"enablePullDownRefresh": false
 			}
 		},
@@ -328,7 +326,6 @@
 			"path": "pages/my/my-order/order-failed/order-failed",
 			"style": {
 				"navigationBarTitleText": "",
-				"navigationBarBackgroundColor":"#999999",
 				"enablePullDownRefresh": false
 			}
 		},
@@ -352,6 +349,34 @@
 			"style": {
 				"navigationBarTitleText": "",
 				"enablePullDownRefresh": false
+			}
+		},
+		{
+			"path": "pages/real-case/component/panorama/panorama",
+			"style": {
+				"navigationBarTitleText": "",
+				"enablePullDownRefresh": false
+			}
+		},
+		{
+			"path": "pages/common/video-player/video-player",
+			"style": {
+				"navigationBarTitleText": "",
+				"enablePullDownRefresh": false
+			}
+		},
+		{
+			"path": "pages/my/set-up/comments-feedback/comments-feedback",
+			"style": {
+				"navigationBarTitleText": "",
+				"enablePullDownRefresh": false
+			}
+		},
+		{
+			"path": "pages/decorate/design-service-list/design-service-list",
+			"style": {
+				"navigationBarTitleText": "设计服务",
+				"enablePullDownRefresh": true
 			}
 		}
 	],
@@ -415,5 +440,19 @@
 				"query": "" //启动参数，在页面的onLoad函数里面得到
 			}
 		]
-	}
+	},
+	"subPackages": [
+		{
+			"root": "sub-pagesA",
+			"pages": [
+				{
+					"path": "pages/test1/test1",
+					"style": {
+						"navigationBarTitleText": "",
+						"enablePullDownRefresh": false
+					}
+				}
+			]
+		}
+	]
 }

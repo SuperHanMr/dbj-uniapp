@@ -3,36 +3,42 @@
 		<view class="collectWrapper">
 			<view class="tabbar">
 				<view class="tabbar-switch-box">
-					<view :class="selectStatus == index ? 'selectStatus' : 'tabbar-switch'" v-for="(item, index) in items"
-						@tap="changeTabs(index)">
+					<view :class="selectStatus == index ? 'selectStatus' : 'tabbar-switch'"
+						v-for="(item, index) in items" @tap="changeTabs(index)">
 						{{item}}
 					</view>
 				</view>
 			</view>
 			<view class="uni-padding-wrap">
-				<view class="page-section swiper">
-					<view class="page-section-spacing">
-						<swiper class="swiper" :duration="duration" @change="swiperChange" :current="currentVal">
-							<swiper-item class="swiper-item">
-								<DesignCase v-if="selectStatus === 0" :leftList="leftList" :rightList="rightList"
-									:leftHeight="leftHeight" :rightHeight="rightHeight" />
-							</swiper-item>
-							<swiper-item class="swiper-item">
-								<Decorate v-if="selectStatus === 1" :leftList="leftList" :rightList="rightList"
-									:leftHeight="leftHeight" :rightHeight="rightHeight" />
-							</swiper-item>
-						</swiper>
-					</view>
-				</view>
+				<swiper class="swiper" :duration="duration" @change="swiperChange" :current="currentVal">
+					<swiper-item class="swiper-item">
+						<scroll-view scroll-y="true" style="height: 100%" @scrolltolower="bindscrolltolower">
+							<DesignCase v-if="selectStatus === 0" :leftList="leftList" :rightList="rightList"
+								:leftHeight="leftHeight" :rightHeight="rightHeight" />
+						</scroll-view>
+					</swiper-item>
+					<swiper-item class="swiper-item">
+						<scroll-view scroll-y="true" style="height: 100%" @scrolltolower="bindscrolltolower">
+							<Decorate v-if="selectStatus === 1" :leftList="leftList" :rightList="rightList"
+								:leftHeight="leftHeight" :rightHeight="rightHeight" />
+						</scroll-view>
+					</swiper-item>
+				</swiper>
 			</view>
 		</view>
-		<view class="load-txt">{{ajax.loadTxt}}</view>
+		<view class="load-txt">{{pagState.loadTxt}}</view>
 	</view>
 </template>
 
 <script>
 	import DesignCase from "./component/design-case.vue";
 	import Decorate from "./component/decorate.vue";
+	import {
+		getCaseList
+	} from "../../api/real-case.js";
+	import {
+		debounce
+	} from "utils/fun-public.js"
 	export default {
 		components: {
 			DesignCase,
@@ -44,7 +50,7 @@
 				rightHeight: 0,
 				leftList: [],
 				rightList: [],
-				ajax: {
+				pagState: {
 					// 是否可以加载
 					load: true,
 					// 加载中提示文字
@@ -53,6 +59,9 @@
 					rows: 10,
 					// 页码
 					page: 1,
+					totalPage: '',
+					totalRows: '',
+					end: "",
 				},
 
 				items: ["设计案例", "装修现场"],
@@ -63,96 +72,29 @@
 				currentVal: 0,
 				// 顶部tabs显示状态
 				selectStatus: 0,
-				listArr: [{
-						title: "测试图片1",
-						name: "名字1",
-					},
-					{
-						title: "测试图片1",
-						name: "名字1",
-					},
-					{
-						title: "测试图片1",
-						name: "名字1",
-					},
-					{
-						title: "测试图片1",
-						name: "名字1",
-					},
-					{
-						title: "测试图片1",
-						name: "名字1",
-					},
-					{
-						title: "测试图片1",
-						name: "名字1",
-					},
-					{
-						title: "测试图片1",
-						name: "名字1",
-					},
-					{
-						title: "测试图片1",
-						name: "名字1",
-					},
-					{
-						title: "测试图片1",
-						name: "名字1",
-					},
-					{
-						title: "测试图片1",
-						name: "名字1",
-					},
-					{
-						title: "测试图片1",
-						name: "名字1",
-					},
-					{
-						title: "测试图片1",
-						name: "名字1",
-					},
-					{
-						title: "测试图片1",
-						name: "名字1",
-					},
-					{
-						title: "测试图片1",
-						name: "名字1",
-					},
-					{
-						title: "测试图片1",
-						name: "名字1",
-					},
-					{
-						title: "测试图片1",
-						name: "名字1",
-					},
-					{
-						title: "测试图片1",
-						name: "名字1",
-					},
-					{
-						title: "测试图片1",
-						name: "名字1",
-					},
-					{
-						title: "测试图片1",
-						name: "名字1",
-					},
-					{
-						title: "测试图片1",
-						name: "名字1",
-					},
-				],
 			};
 		},
 		onReady() {
+			let obj = {
+				a: 10,
+				b: {
+					c: "aaaaa"
+				}
+			}
+			let obj1 = {
+				...obj
+			}
+			obj1.a = 20;
+			obj1.b.c = 100;
+			console.log(obj, obj1, "aaaaaaaaaaaa");
 			this.getList();
 		},
-		// 触底触发
-		onReachBottom() {
-			this.getList();
-		},
+		// // 触底触发
+		// onReachBottom() {
+		// 	if (this.pagState.page <= this.pagState.totalPage) {
+		// 		this.getList();
+		// 	}
+		// },
 		methods: {
 			switchTabs(val) {
 				this.active = val;
@@ -161,9 +103,24 @@
 				this.currentVal = i;
 				this.selectStatus = i;
 			},
+			bindscrolltolower() {
+				console.log("aaaaaaaaaaaaaaaaaa>>>>>>>>>>>>>");
+				if (this.pagState.page <= this.pagState.totalPage) {
+					debounce(this.getList(), 1000);
+				}
+			},
 			// swiper切换此函数被监听
 			swiperChange(e) {
 				this.selectStatus = e.detail.current;
+				this.pagState.rows = 10;
+				this.pagState.page = 1;
+				this.pagState.totalPage = "";
+				this.pagState.totalRows = "";
+				this.leftHeight = 0;
+				this.rightHeight = 0;
+				this.leftList = [];
+				this.rightList = [];
+				this.getList();
 			},
 
 			// 监听高度变化
@@ -174,23 +131,36 @@
 					this.rightHeight += height;
 				}
 			},
+			onJump(list, index) {
+				console.log(list[index].parentType, 'asdasdas');
+				if (list[index].parentType === 1) {
+					const listUrl = list[index].videoUrl
+					uni.navigateTo({
+						url: `./component/panorama/panorama?url=${listUrl}`
+					})
+				}
+
+			},
 			// 组件点击事件
 			onClick(index, tag) {
 				console.log(index, tag);
 				// 对应的数据
 				if (tag == "left") {
 					console.log(this.leftList);
+					this.onJump(this.leftList, index);
+
 				} else {
 					console.log(this.rightList);
+					this.onJump(this.rightList, index);
 				}
-				let direction = {
-					left: "左",
-					right: "右",
-				};
-				uni.showToast({
-					title: `${direction[tag]}侧列表第${index + 1}个被点击`,
-					icon: "none",
-				});
+				// let direction = {
+				// 	left: "左",
+				// 	right: "右",
+				// };
+				// uni.showToast({
+				// 	title: `${direction[tag]}侧列表第${index + 1}个被点击`,
+				// 	icon: "none",
+				// });
 			},
 			// 获取数据
 			getList() {
@@ -199,52 +169,64 @@
 					自行替换 请求方法将数据 传入 addList() 方法中
 					自行解决数据格式，自行修改组件内布局和内容绑定
 				*/
-				if (!this.ajax.load) {
-					return;
-				}
-				this.ajax.load = false;
-				this.ajax.loadTxt = "加载中";
-
-				setTimeout(() => {
-					// 生成随机数方法
-					let random = (min = 0, max) => {
-						return Math.floor(Math.random() * max) + min;
-					};
-					// 待选的图片数据
-					let imgs = [];
-					// 待选的标题数据
-					let titles = [
-						"桃花坞里桃花庵，桃花庵里桃花仙；",
-						"桃花仙人种桃树，又摘桃花卖酒钱。",
-						"酒醒只在花前坐，酒醉还来花下眠；半醒半醉日复日，花落花开年复年。",
-						"但愿老死花酒间，不愿鞠躬车马前；",
-						"车尘马足富者趣，酒盏花枝贫者缘。若将富贵比贫贱，",
-						"一在平地一在天；若将贫贱比车马，他得驱驰我得闲。",
-						"别人笑我太疯癫，我笑他人看不穿；不见五陵豪杰墓，无花无酒锄作田。",
-					];
-
-					let res = [];
-					for (let i = 0; i < 10; i++) {
-						res.push({
-							url: `/uni_modules/helang-waterfall/static/waterfall/${random(
-              0,
-              3
-            )}.jpg`,
-							title: titles[random(0, titles.length)],
-							money: random(9, 9999),
-							label: "官方自营",
-							shop: "唐诗三百首旗舰店",
-						});
+				getCaseList({
+					page: this.pagState.page,
+					rows: this.pagState.rows,
+				}).then((res) => {
+					if (res && res.list) {
+						this.addList(res.list);
+						this.pagState.page = res.page + 1;
+						this.pagState.totalPage = res.totalPage;
+						this.pagState.totalRows = res.totalRows;
 					}
-					this.addList(res);
-				}, 1000);
+					console.log(res, this.pagState.page, 'asd>>>>>>>>>>>>>>>>');
+				})
+				// if (!this.ajax.load) {
+				// 	return;
+				// }
+				// this.ajax.load = false;
+				// this.ajax.loadTxt = "加载中";
+
+				// setTimeout(() => {
+				// 	// 生成随机数方法
+				// 	let random = (min = 0, max) => {
+				// 		return Math.floor(Math.random() * max) + min;
+				// 	};
+				// 	// 待选的图片数据
+				// 	let imgs = [];
+				// 	// 待选的标题数据
+				// 	let titles = [
+				// 		"桃花坞里桃花庵，桃花庵里桃花仙；",
+				// 		"桃花仙人种桃树，又摘桃花卖酒钱。",
+				// 		"酒醒只在花前坐，酒醉还来花下眠；半醒半醉日复日，花落花开年复年。",
+				// 		"但愿老死花酒间，不愿鞠躬车马前；",
+				// 		"车尘马足富者趣，酒盏花枝贫者缘。若将富贵比贫贱，",
+				// 		"一在平地一在天；若将贫贱比车马，他得驱驰我得闲。",
+				// 		"别人笑我太疯癫，我笑他人看不穿；不见五陵豪杰墓，无花无酒锄作田。",
+				// 	];
+
+				// 	let res = [];
+				// 	for (let i = 0; i < 10; i++) {
+				// 		res.push({
+				// 			url: `/uni_modules/helang-waterfall/static/waterfall/${random(
+				//           0,
+				//           3
+				//         )}.jpg`,
+				// 			title: titles[random(0, titles.length)],
+				// 			money: random(9, 9999),
+				// 			label: "官方自营",
+				// 			shop: "唐诗三百首旗舰店",
+				// 		});
+				// 	}
+				// 	this.addList(res);
+				// }, 1000);
 			},
 			addList(res) {
 				// 获取到的数据，请注意数据结构
 				console.log(res);
 
 				if (!res || res.length < 1) {
-					this.ajax.loadTxt = "没有更多了";
+					this.pagState.loadTxt = "没有更多了";
 					return;
 				}
 
@@ -260,17 +242,16 @@
 					[],
 					[]
 				];
-
 				// 获取插入的方向
 				let getDirection = (index) => {
 					/* 左侧高度大于右侧超过 600px 时，则前3条数据都插入到右边 */
-					if (differ >= 600 && index < 3) {
+					if (differ >= 800 && index < 3) {
 						differVal = 1;
 						return "right";
 					}
 
 					/* 右侧高度大于左侧超过 600px 时，则前3条数据都插入到左边 */
-					if (differ <= -600 && index < 3) {
+					if (differ <= -800 && index < 3) {
 						differVal = -1;
 						return "left";
 					}
@@ -307,7 +288,7 @@
 				});
 
 				// 将左右列表的数据插入，第一页时则覆盖
-				if (this.ajax.page == 1) {
+				if (this.pagState.page == 1) {
 					this.leftList = left;
 					this.rightList = right;
 					uni.stopPullDownRefresh();
@@ -316,9 +297,9 @@
 					this.rightList = [...this.rightList, ...right];
 				}
 
-				this.ajax.load = true;
-				this.ajax.loadTxt = "上拉加载更多";
-				this.ajax.page++;
+				this.pagState.load = true;
+				this.pagState.loadTxt = "上拉加载更多";
+				this.pagState.page++;
 			},
 		},
 	};
@@ -327,9 +308,11 @@
 <style scoped>
 	.real-case {
 		width: 100%;
-		height: 100%;
 		background-color: #ffffff;
+		height: 100%;
 	}
+
+
 
 	.selectStatus {
 		padding: 10rpx 112rpx;
@@ -356,14 +339,15 @@
 		z-index: 100;
 		background-color: #ffffff;
 	}
-	
-	.tabbar-switch-box{
+
+	.tabbar-switch-box {
 		display: flex;
 		background: #f5f6f6;
 		border-radius: 8px;
 		margin: 20rpx 32rpx 8rpx 32rpx;
 	}
-	.tabbar-switch-box .tabbar-switch{
+
+	.tabbar-switch-box .tabbar-switch {
 		padding: 10rpx 112rpx;
 		margin: 4rpx 4rpx 4rpx 0;
 		text-align: center;
@@ -388,6 +372,6 @@
 	}
 
 	.collectWrapper .uni-padding-wrap .swiper .swiper-item {
-		overflow-y: auto;
+		height: 100%;
 	}
 </style>

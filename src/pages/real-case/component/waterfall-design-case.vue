@@ -1,19 +1,41 @@
 <template>
 	<view class="waterfall-item" @tap="onTap">
-		<image :src="params.url" mode="widthFix" @load="emitHeight" @error="emitHeight"></image>
+		<view class="img-box">
+			<image :src="params.imageUrl" mode="widthFix" @load="emitHeight" @error="emitHeight"></image>
+			<view class="comment-like">
+				<view class="comment" v-if="params.commentCount">
+					<view class="comment-icon">
+						
+					</view>
+					<view class="comment-count">
+						{{params.commentCount}}
+					</view>
+				</view>
+				<view class="like" v-if="params.isLike">
+					<view class="comment-icon">
+						
+					</view>
+					<view class="comment-count">
+						{{params.likeCount}}
+					</view>
+				</view>
+			</view>
+		</view>
+		<!-- <video v-if="params.parentType !== 0" id="myVideo" :src="params.videoUrl"
+		                    @error="videoErrorCallback" :danmu-list="danmuList" enable-danmu danmu-btn controls></video> -->
 		<view class="content">
-			<view class="title">{{params.title}}</view>
+			<view class="title">{{params.name}}</view>
 			<view class="case-info">
 				<view class="info-img">
-					<image :src="params.url" alt="">
+					<image :src="params.authorAvatar" alt="">
 					<view class="info-text">
-						小橘子干
+						{{params.authorNickname}}
 					</view>
 				</view>
 				<view class="collection-box">
 					<image src="/static/images/collection-no.png" mode=""></image>
 					<view class="collection-number">
-						4234
+						{{params.likeCount}}
 					</view>
 				</view>
 			</view>
@@ -69,13 +91,45 @@
 	background: #ffffff;
 	border: 1px solid #ececec;
 	border-radius: 8px;
-	
-	image{
-		display: block;
-		width: 100%;
-		// 默认设置一个图片的大约值
-		height: 350rpx;
-		border-radius: 8px 8px 0px 0px;
+	.img-box{
+		position: relative;
+		image{
+			display: block;
+			width: 100%;
+			// 默认设置一个图片的大约值
+			max-height: 600rpx;
+			border-radius: 8px 8px 0px 0px;
+		}
+		.comment-like{
+			position: absolute;
+			bottom: 10rpx;
+			left: 16rpx;
+			display: flex;
+			align-items: center;
+			.comment{
+				display: flex;
+				align-items: center;
+				margin-right: 16rpx;
+				.comment-icon{
+					width: 20rpx;
+					height: 20rpx;
+					opacity: 1;
+					border: 1px solid #ffffff;
+					margin-right: 4rpx;
+				}
+				.comment-count{
+					font-size: 22rpx;
+					font-family: PingFangSC, PingFangSC-Regular;
+					font-weight: 400;
+					text-align: left;
+					color: #ffffff;
+				}
+			}
+			.like{
+				display: flex;
+				align-items: center;
+			}
+		}
 	}
 	
 	.content{
@@ -108,6 +162,7 @@
 					opacity: 1;
 					border: 1px solid #f2f5f8;
 					margin-right: 8rpx;
+					border-radius: 0;
 				}
 				.info-text{
 					font-size: 24rpx;

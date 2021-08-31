@@ -1,6 +1,6 @@
 <template>
   <view class="add-house">
-    <form @submit="formSubmit" @reset="formReset">
+    <form>
       <view class="content">
         <view class="form-item">
           <label class="item-label">业主姓名</label>
@@ -13,6 +13,7 @@
         <view class="form-item">
           <label class="item-label">所在地区</label>
           <input class="uni-input"  placeholder-class="placeholder" @click="chooseMap" disabled name="input" v-model="addData.locationName" placeholder="请选择您房屋所在地区" />
+          <image src="../../../static/images/ic_more_black.svg" class="shopIcon"></image>
         </view>
         <view class="form-item">
           <label class="item-label">小区</label>
@@ -26,19 +27,22 @@
         </view>
         <view  class="form-item special">
           <label class="item-label">楼型</label>
-          <choose-btn :btnList='floorList' @chooseBtn='chooseFloor'></choose-btn>
+          <choose-btn :btnList='floorList' :currentBtn ='addData.houseStructure' @chooseBtn='chooseFloor'></choose-btn>
         </view>
         <view class="form-item">
           <label class="item-label" >户型</label>
           <input type="text"  placeholder-class="placeholder" class="uni-input" disabled v-model="houseType" placeholder="请选择房屋户型" @click="openList"/>
+          <image src="../../../static/images/ic_more_black.svg" class="shopIcon"></image>
         </view>
         <view class="form-item">
           <label class="item-label">房屋面积</label>
-          <input class="uni-input" placeholder-class="placeholder" type="digit" name="input" v-model="addData.insideArea" placeholder="请输入您的房屋面积" />
+          <!-- <text class="placeholder" v-if="!addData.insideArea">请输入房屋面积</text> -->
+          <view v-if="addData.insideArea" class="uni-input area-text"><text style="visibility: hidden">{{addData.insideArea}}</text>m²</view>
+          <input v-if="!visible" :maxlength="7" class="uni-input house-area"  placeholder-class="placeholder" placeholder="请输入房屋面积" type="digit" name="input" v-model="addData.insideArea"  />
         </view>
         <view class="form-item special ele">
           <label class="item-label">有无电梯</label>
-            <choose-btn :btnList='elevatorList' @chooseBtn="chooseEle"></choose-btn>
+            <choose-btn :btnList='elevatorList' :currentBtn ='addData.hasLift' @chooseBtn="chooseEle"></choose-btn>
           <input v-if="!addData.hasLift"  placeholder-class="placeholder" class="ele-input" name="input" v-model="addData.floors" placeholder="请输入电梯楼层" />
         </view>
       </view> 
@@ -77,14 +81,14 @@
 </template>
 
 <script>
- import { addHouse } from "../../../api/decorate.js";
+ import { addHouse, getHouse, editHouse } from "../../../api/decorate.js";
   export default {
     data() {
       return {
         visible:false,
         addData:{
           contactName:'',
-          houseStructure:'',
+          houseStructure:1,
           contactPhone:'',
           housingEstate:'',
           locationName:'',
@@ -93,11 +97,12 @@
           hallNum:0,
           kitchenNum:0,
           bathroomNum:0,
-          insideArea:null,
+          insideArea:'',
           floors:null,
           hasLift:true,
           defaultEstate:false,
         },
+        
         roomData:[0,0,0,0],
         roomList:[1,2,3,4,5],
         houseType:'',
@@ -134,28 +139,86 @@
             id:false
           }
         ],
-        room:{},
+        room:[],
         //是否已经获取点位
         hasPoint:false,
-        indicatorClass:'choose-item'
+        indicatorClass:'choose-item',
+        roomId:0,
       }; 
     }, 
+    onLoad(e){
+      if (e && e.id) {
+        this.roomId = e.id;
+        uni.setNavigationBarTitle({
+          title:'编辑房屋'
+        })
+        this.getHouse()
+      }
+    },
+    // watch:{
+    //   'addData.insideArea':function(){
+    //     console.log(this.addData.insideArea)
+    //     // this.addData.insideArea.
+    //     this.insideArea = ''
+    //   }
+    // },
     methods:{
-      formSubmit(){},
-      formReset(){},
+      getHouse(){
+        getHouse(this.roomId).then(res=>{
+          let {
+            id,
+            contactName,
+            houseStructure,
+            contactPhone,
+            housingEstate,
+            locationName,
+            address,
+            roomNum,
+            hallNum,
+            kitchenNum,
+            bathroomNum,
+            insideArea,
+            floors,
+            hasLift,
+            defaultEstate,
+          } = res
+          this.addData = {
+            contactName,
+            houseStructure,
+            contactPhone,
+            housingEstate,
+            locationName,
+            address,
+            roomNum,
+            hallNum,
+            kitchenNum,
+            bathroomNum,
+            insideArea,
+            floors,
+            hasLift,
+            defaultEstate,
+            id,
+          }
+          if(this.addData.floors === 0){
+            this.addData.floors = null
+          }
+          this.roomData = [this.addData.roomNum++,this.addData.hallNum++,this.addData.kitchenNum++,this.addData.bathroomNum++,]
+          this.changeRoomText()
+        }) 
+      }, 
       chooseMap(){
         let that = this
         uni.chooseLocation({
             success: function (res) { 
               if(res.address){
-                console.log(res)
+                // console.log(res)
                 that.hasPoint = true
                 that.addData.locationName = res.address
                 that.addData.housingEstate = res.name
                 that.addData.latitude = res.latitude 
                 that.addData.longitude = res.longitude
                 uni.request({
-                  //将经纬度转换成adcode
+                  //将经纬度转换成adcode，然后用adcode去获取省市区id ak需要更换为公司的ak
                   url:"https://api.map.baidu.com/reverse_geocoding/v3/?ak=s0deCKPpT7GZBxtBLGs9gMkGTs80uuyD&output=json&coordtype=gcj02ll&location="+ res.latitude+','+res.longitude,
                   success: (res) => {
                       console.log(res.data);
@@ -177,6 +240,7 @@
       pickerCancel(){
         this.roomData = [...this.room]
         this.$refs.popup.close()
+        this.visible = false
       },
       pickerSure(){
         this.room = [...this.roomData]
@@ -184,14 +248,18 @@
         this.addData.hallNum =  +this.roomData[1]+1
         this.addData.kitchenNum =  +this.roomData[2]+1
         this.addData.bathroomNum =  +this.roomData[3]+1
-        this.houseType =this.addData.roomNum +'室'+ this.addData.hallNum +'厅'+ this.addData.kitchenNum  +'厨'+ this.addData.bathroomNum +'卫'
+        this.changeRoomText()
         this.$refs.popup.close()  
+        this.visible = false
+      },
+      changeRoomText(){
+        this.houseType =this.addData.roomNum +'室'+ this.addData.hallNum +'厅'+ this.addData.kitchenNum  +'厨'+ this.addData.bathroomNum +'卫'
       },
       chooseFloor(id){
         // console.log(id)
         this.addData.houseStructure = id
       },
-      chooseEle(id){ 
+      chooseEle(id){  
         this.addData.hasLift = id
       },
       switchChange(e){
@@ -200,12 +268,27 @@
       },
       save(){
         if(this.check()){
-          addHouse(this.addData).then(res=>{
-            console.log(res)
-          })
-          // uni.navigateBack({
-          //     // delta: 2
-          // });
+          if(!this.roomId){
+            addHouse(this.addData).then(res=>{
+              console.log(res)
+              uni.showToast({
+                  title: '添加成功',
+                  duration: 2000,
+                  icon:'success'
+              });
+              // uni.navigateBack({
+              //     // delta: 2
+              // });
+            })
+          }else{
+            editHouse(this.addData).then(res=>{
+              uni.navigateBack({
+                  // delta: 2
+              });
+            })
+          }
+          
+          
         }
       },
       check(){
@@ -226,7 +309,7 @@
         for (let item in data) {
           console.log(data[item],item)
           if(!data[item]){
-            console.log(data[item],item)
+            console.log(item+'为空')
             uni.showToast({
                 title: '请输入信息',
                 duration: 2000,
@@ -275,6 +358,7 @@
     height: 116rpx;
     margin: 0 32rpx;
     border-bottom: 1px solid #F2F2F2;
+    position: relative;
     line-height: 116rpx;
     .item-label{
       color: #333333;
@@ -309,6 +393,7 @@
     vertical-align: top;
     color: #111;
     font-size: 28rpx;
+    // width: 70%;
   }
   .placeholder{
     color: #BBBBBB;
@@ -405,6 +490,30 @@
       border-radius: 12rpx;
     }
   }
-  
+  .area-text{
+    // width: 200rpx;
+    
+    position: absolute;
+    left: 172rpx;
+    z-index: 5;
+    text{
+      display: inline-block;
+      max-width: 300rpx;
+    }
+  }
+  .house-area{
+    // visibility: hidden;
+    // opacity: 0;
+    position: absolute;
+    left: 172rpx;
+    z-index: 111;
+  }
+  .shopIcon{
+    width: 32rpx;
+    height: 32rpx;
+    position: absolute;
+    right: 0;
+    top: 42rpx;
+  }
 }
 </style>

@@ -1,53 +1,123 @@
 <template>
 	<view class="no-house-decorate">
 		<view class="content">
-			<view class="addhouse-decs">
-				<button class="addhouse">
+			<view class="addhouse-decs" v-if="!currentHouse && !currentHouse.id">
+				<button class="addhouse" @click="goAddHouse">
 					<image src="../../../static/images/ic_add_house_info.svg"></image>
 					<text>添加房屋信息</text>
 				</button>
 				<view class="decs"><text>打扮家按房子面积计算价格</text></view>
 			</view>
-			<service-card v-for="(item, index) in serviceCards" :key="item.id" :setting="item" class="service-card">
+			<my-current-house v-else :houseData="currentHouse" @changCurrentHouse="changCurrentHouse"></my-current-house>
+			<service-card :setting="design" class="service-card" @selectAnother="selectAnother('design')">
+				<template slot="check">
+					<check-box :checked="design.checked" @change="(value)=> {change(design.id, value)}"></check-box>
+				</template>
+			</service-card>
+			<service-card :setting="actuary" class="service-card">
+				<template slot="check">
+					<check-box :checked="actuary.checked" @change="(value)=> {change(actuary.id, value)}"></check-box>
+				</template>
 			</service-card>
 		</view>
-		<payment class="payment" @gotopay="gotopay"></payment>
+		<payment class="payment" @gotopay="gotopay" :isAllChecked="isAllChecked"></payment>
 	</view>
 </template>
 
 <script>
 	import ServiceCard from "../../../components/service-card/service-card.vue";
-	import Payment from "../../../components/payment/payment.vue"
+	import Payment from "../../../components/payment/payment.vue";
+	import CheckBox from "../../../components/check-box/check-box.vue";
+	import { queryEstates } from "../../../api/decorate.js"
 	export default {
 		components: {
 			ServiceCard,
-			Payment
+			Payment,
+			CheckBox
 		},
 		data() {
 			return {
-				serviceCards: [{
+				design: {
 					index: 1,
-					id: "design1",
+					id: "design",
 					title: "设计服务",
 					subtitle: "28.8全放个性化设计(适用全房设计…",
 					area: "100.00",
 					price: "199.00",
-					cover: "https://img2.baidu.com/it/u=110114637,4171866431&fm=26&fmt=auto&gp=0.jpg"
-				}, {
+					cover: "https://img2.baidu.com/it/u=110114637,4171866431&fm=26&fmt=auto&gp=0.jpg",
+					checked: false
+				},
+				actuary: {
 					isLast: true,
 					index: 2,
-					id: "actuary2",
+					id: "actuary",
 					title: "精算服务",
 					subtitle: "28.8全放个性化设计(适用全房设计…",
 					area: "120.00",
 					price: "299.00",
-					cover: "https://img2.baidu.com/it/u=110114637,4171866431&fm=26&fmt=auto&gp=0.jpg"
-				}]
+					cover: "https://img2.baidu.com/it/u=110114637,4171866431&fm=26&fmt=auto&gp=0.jpg",
+					checked: true
+				},
+				currentHouse: {}
 			}
 		},
+		computed: {
+			isAllChecked() {
+				return this.design.checked && this.actuary.checked
+			}
+		},
+		onShow() {
+			this.getMyHouseList();
+		},
 		methods: {
+			selectAnother(pp) {
+				if(pp === "design") {
+					uni.navigateTo({
+						url: "/pages/decorate/design-service-list/design-service-list"
+					})
+				}
+				
+			},
+			changCurrentHouse() {
+				uni.redirectTo({
+					url: "/pages/my/my-house/my-house"
+				})
+			},
+			getMyHouseList() {
+				queryEstates({isNeedRelative: true}).then(data => {
+					let flt = data.filter(t => t.defaultEstate);
+					if(flt && flt.length > 0) {
+						this.currentHouse = flt[0]
+					} else {
+						this.currentHouse = {}
+					}
+				})
+			},
 			gotopay() {
-				// TODO
+				// TODO去结算页面
+				if (this.currentHouse && this.currentHouse.id) {
+					uni.redirectTo({
+						url: ""
+					})
+				} else {
+					uni.showToast({
+						title: "请您先添加房屋信息",
+						icon: "none",
+						duration: 3000
+					})
+				}
+			},
+			change(id, value) {
+				if (id === "design") {
+					this.design.checked = value;
+				} else if (id === "actuary") {
+					this.actuary.checked = value;
+				}
+			},
+			goAddHouse() {
+				uni.navigateTo({
+					url: "/pages/decorate/add-house/add-house"
+				})
 			}
 		}
 	}
