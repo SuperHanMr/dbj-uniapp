@@ -3,16 +3,16 @@
 		<view class="left">
 			<block v-for="(item, index) in leftList" :key="index">
 				<view class="waterfall-item" @click="toDetail(item)">
-					<image :src="item.src" mode="widthFix" lazy-load @load="onImageLoad"></image>
-					<view class="title">{{ item.title }}</view>
+					<image :src="item.imageUrl" mode="widthFix" lazy-load @load="onImageLoad"></image>
+					<view class="title">{{ item.name }}</view>
 				</view>
 			</block>
 		</view>
 		<view class="right">
 			<block v-for="(item, index) in rightList" :key="index">
 				<view class="waterfall-item" @click="toDetail(item)">
-					<image :src="item.src" mode="widthFix" lazy-load @load="onImageLoad"></image>
-					<view class="title">{{ item.title }}</view>
+					<image :src="item.imageUrl" mode="widthFix" lazy-load @load="onImageLoad"></image>
+					<view class="title">{{ item.name }}</view>
 				</view>
 			</block>
 		</view>
@@ -53,7 +53,9 @@
 			};
 		},
 		created() {
-			this.leftList = [this.list[0]]; //第一张图片入栈
+			if(this.list.length){
+				this.leftList = [this.list[0]]; //第一张图片入栈
+			}
 		},
 		destroyed() {
 			console.log('destroy');

@@ -8,13 +8,13 @@
 			</slot-one>
 		</custom-navbar>
 		<scroll-view class="content" scroll-y="true" @scroll="onScroll" @scrolltolower="onLoadMore">
-			asdasd
 			<view style="margin-top: 300rpx;" class="" @click="toFriends">
 				去亲友团
 			</view>
 			<button style="width: 50%;margin-top: 20rpx;" type="default" @click="toNextPage">去封装好的列表页</button>
 			
 			<button style="width: 50%;margin-top: 20rpx;" type="default" @click="toSubPage">去分包1</button>
+			<button style="width: 50%;margin-top: 20rpx;" type="default" @click="toCalebdar">去日历</button>
 			
 			<swiper class="banner-content" :indicator-dots="true" :autoplay="true" interval="2000" duration="500"
 				:circular="true">
@@ -30,7 +30,7 @@
 				</view>
 			</view>
 			<button style="width: 50%;margin-top: 20rpx;" type="default" @click="toNextPage">去封装好的列表页</button>
-			<waterfall :list="goodsList" @selectedItem="onSelectedItem"></waterfall>
+			<waterfall :list="caseList" @selectedItem="onSelectedItem"></waterfall>
 		</scroll-view>
 	</view>
 </template>
@@ -38,7 +38,8 @@
 <script>
 	import {
 		getBanner,
-		queryLive
+		queryLive,
+		caseList
 	} from "../../../api/home.js";
 
 	import {
@@ -59,90 +60,7 @@
 				bannerList: [],
 				list: [],
 				comList: [],
-				goodsList: [{
-						src: "http://www.dragonn.top/2_%E8%B4%AD%E7%89%A9%E8%BD%A6_%E6%89%8B%E5%8A%A8%E8%BE%93%E5%85%A5%E5%B8%A6%E5%B0%8F%E6%95%B0%E7%82%B9.png",
-						title: "大图",
-					},
-					{
-						src: "http://www.dragonn.top/v2-0c018c48c87c57dd3740cbdc3eedf249_xll.jpg",
-						title: "小图",
-					},
-					{
-						src: "http://www.dragonn.top/2_%E8%B4%AD%E7%89%A9%E8%BD%A6_%E6%89%8B%E5%8A%A8%E8%BE%93%E5%85%A5%E5%B8%A6%E5%B0%8F%E6%95%B0%E7%82%B9.png",
-						title: "大图",
-					},
-					{
-						src: "http://www.dragonn.top/v2-0c018c48c87c57dd3740cbdc3eedf249_xll.jpg",
-						title: "小图",
-					},
-					{
-						src: "http://www.dragonn.top/1624505407536_0817%24%E5%AE%B6%E8%A3%85%E5%9B%BE2.jpeg",
-						title: "大图",
-					},
-					{
-						src: "http://www.dragonn.top/v2-0c018c48c87c57dd3740cbdc3eedf249_xll.jpg",
-						title: "小图",
-					},
-					{
-						src: "http://www.dragonn.top/v2-0c018c48c87c57dd3740cbdc3eedf249_xll.jpg",
-						title: "小图",
-					},
-					{
-						src: "http://www.dragonn.top/2_%E8%B4%AD%E7%89%A9%E8%BD%A6_%E6%89%8B%E5%8A%A8%E8%BE%93%E5%85%A5%E5%B8%A6%E5%B0%8F%E6%95%B0%E7%82%B9.png",
-						title: "大图",
-					},
-					{
-						src: "http://www.dragonn.top/v2-0c018c48c87c57dd3740cbdc3eedf249_xll.jpg",
-						title: "小图",
-					},
-					{
-						src: "http://www.dragonn.top/1624505407536_0817%24%E5%AE%B6%E8%A3%85%E5%9B%BE2.jpeg",
-						title: "大图",
-					},
-					{
-						src: "http://www.dragonn.top/v2-0c018c48c87c57dd3740cbdc3eedf249_xll.jpg",
-						title: "小图",
-					},
-					{
-						src: "http://www.dragonn.top/v2-0c018c48c87c57dd3740cbdc3eedf249_xll.jpg",
-						title: "小图",
-					},
-					{
-						src: "http://www.dragonn.top/2_%E8%B4%AD%E7%89%A9%E8%BD%A6_%E6%89%8B%E5%8A%A8%E8%BE%93%E5%85%A5%E5%B8%A6%E5%B0%8F%E6%95%B0%E7%82%B9.png",
-						title: "大图",
-					},
-					{
-						src: "http://www.dragonn.top/v2-0c018c48c87c57dd3740cbdc3eedf249_xll.jpg",
-						title: "小图",
-					},
-					{
-						src: "http://www.dragonn.top/1624505407536_0817%24%E5%AE%B6%E8%A3%85%E5%9B%BE2.jpeg",
-						title: "大图",
-					},
-					{
-						src: "http://www.dragonn.top/v2-0c018c48c87c57dd3740cbdc3eedf249_xll.jpg",
-						title: "小图",
-					},
-					{
-						src: "http://www.dragonn.top/v2-0c018c48c87c57dd3740cbdc3eedf249_xll.jpg",
-						title: "小图",
-					},
-					{
-						src: "http://www.dragonn.top/2_%E8%B4%AD%E7%89%A9%E8%BD%A6_%E6%89%8B%E5%8A%A8%E8%BE%93%E5%85%A5%E5%B8%A6%E5%B0%8F%E6%95%B0%E7%82%B9.png",
-						title: "大图",
-					},
-					{
-						src: "http://www.dragonn.top/v2-0c018c48c87c57dd3740cbdc3eedf249_xll.jpg",
-						title: "小图",
-					},
-					{
-						src: "http://www.dragonn.top/1624505407536_0817%24%E5%AE%B6%E8%A3%85%E5%9B%BE2.jpeg",
-						title: "大图",
-					},
-					{
-						src: "http://www.dragonn.top/v2-0c018c48c87c57dd3740cbdc3eedf249_xll.jpg",
-						title: "小图",
-					},
+				caseList: [
 				],
 			};
 		},
@@ -163,6 +81,11 @@
 			toSubPage(){
 				uni.navigateTo({
 					url:"/sub-pagesA/pages/test1/test1"
+				})
+			},
+			toCalebdar(){
+				uni.navigateTo({
+					url:"../../decorate/calendar/calendar"
 				})
 			},
 			onLoadMore() {
@@ -280,6 +203,12 @@
 			reloadData() {
 				this.getBannerList();
 				this.getHomeList();
+				this.getCaseList();
+			},
+			async getCaseList(){
+				let caseItem = await caseList();
+				this.caseList=caseItem.list;
+				console.log(this.caseList.length);
 			},
 			async getBannerList() {
 				this.bannerList = await getBanner();

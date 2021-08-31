@@ -9,3 +9,8 @@ export function getBanner(params){
 export function queryLive(params){
     return request.get(`/app/publicRoom/queryLiveList`,{params});
 }
+
+//查询案例列表
+export function caseList(params){
+    return request.get(`/app/case/v2/list`,{params});
+}
