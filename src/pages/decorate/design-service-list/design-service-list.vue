@@ -1,6 +1,6 @@
 <template>
 	<view>
-		design-service-list
+		设计类型的商品列表页面
 	</view>
 </template>
 
@@ -8,11 +8,11 @@
 	export default {
 		data() {
 			return {
-				
+
 			}
 		},
 		methods: {
-			
+
 		}
 	}
 </script>

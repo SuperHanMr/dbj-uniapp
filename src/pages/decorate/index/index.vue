@@ -21,6 +21,8 @@
 			<view class="v1"><text>量房</text> <text>量房员抢单中</text></view>
 			<view>精算服务</view>
 			<view>设计服务</view>
+			<view @click="godesignservicelist">pages/decorate/design-service-list/design-service-list</view>
+			<view @click="gonohousedecatore">pages/decorate/no-house-decorate/no-house-decorate</view>
 		</view>
 
 	</view>
@@ -58,6 +60,16 @@
 			};
 		},
 		methods: {
+			gonohousedecatore() {
+				uni.navigateTo({
+					url: "/pages/decorate/no-house-decorate/no-house-decorate"
+				})
+			},
+			godesignservicelist() {
+				uni.navigateTo({
+					url: "/pages/decorate/design-service-list/design-service-list"
+				})
+			},
 			closeNotice() {
 				this.noticeActive = false;
 			},
