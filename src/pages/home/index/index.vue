@@ -162,7 +162,7 @@
 		methods: {
 			toSubPage(){
 				uni.navigateTo({
-					url:"../../../sub-pagesA/pages/test1/test1"
+					url:"/sub-pagesA/pages/test1/test1"
 				})
 			},
 			onLoadMore() {
