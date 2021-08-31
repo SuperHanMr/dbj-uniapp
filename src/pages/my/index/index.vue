@@ -116,14 +116,17 @@ export default {
         {
           key: "1",
           value: "待付款",
+					url:"../my-order/my-order?index=1",
         },
         {
           key: "2",
           value: "进行中",
+					url:"../my-order/my-order?index=2",
         },
         {
           key: "3",
           value: "已完成",
+					url:"../my-order/my-order?index=3",
         },
         {
           key: "4",
@@ -143,7 +146,7 @@ export default {
       console.log("点击了");
       uni.navigateTo({
         url: "../shopping-cart/shopping-cart",
-      });
+			});
     },
     handlerToSetUp() {
       console.log("点击了设置");
@@ -173,7 +176,7 @@ export default {
     handlerTotalOrder() {
       console.log("点击我的订单全部按钮");
       uni.navigateTo({
-        url: "../my-order/my-order",
+        url: "../my-order/my-order?index=1",
       });
     },
 		handlerOrder(item){
