@@ -127,8 +127,8 @@
       getHouseList(){
         queryEstates({
           isNeedRelative: true,
-        }).then(res=>{  
-          this.listData = res
+        }).then(res=>{
+          this.listData = res||[]
           this.listData.forEach(function(v,i){
             v.isTouchMove = false
           }) 
