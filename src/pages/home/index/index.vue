@@ -12,6 +12,10 @@
 			<view style="margin-top: 300rpx;" class="" @click="toFriends">
 				去亲友团
 			</view>
+			<button style="width: 50%;margin-top: 20rpx;" type="default" @click="toNextPage">去封装好的列表页</button>
+			
+			<button style="width: 50%;margin-top: 20rpx;" type="default" @click="toSubPage">去分包1</button>
+			
 			<swiper class="banner-content" :indicator-dots="true" :autoplay="true" interval="2000" duration="500"
 				:circular="true">
 				<swiper-item v-for="(item,index) in bannerList" :key="index">
@@ -147,15 +151,20 @@
 		},
 		onShow() {
 			this.reloadData();
-			let pages = getCurrentPages();
-			let currPage = pages[pages.length - 1]; //当前页面
-			let res = currPage.data.city;
-			if (res) {
-				this.citydata = res.title;
-				this.changeCity();
-			}
+			// let pages = getCurrentPages();
+			// let currPage = pages[pages.length - 1]; //当前页面
+			// let res = currPage.data.city;
+			// if (res) {
+			// 	this.citydata = res.title;
+			// 	this.changeCity();
+			// }
 		},
 		methods: {
+			toSubPage(){
+				uni.navigateTo({
+					url:"../../../sub-pagesA/pages/test1/test1"
+				})
+			},
 			onLoadMore() {
 				this.goodsList = this.goodsList.concat(this.goodsList);
 			},
