@@ -312,6 +312,7 @@
 			"path": "pages/my/my-order/order-in-progress/order-in-progress",
 			"style": {
 				"navigationBarTitleText": "",
+					"navigationBarBackgroundColor":"#FC8B19",
 				"enablePullDownRefresh": false
 			}
 		},
@@ -319,6 +320,7 @@
 			"path": "pages/my/my-order/order-success/order-success",
 			"style": {
 				"navigationBarTitleText": "",
+				"navigationBarBackgroundColor":"#22D4C3",
 				"enablePullDownRefresh": false
 			}
 		},
@@ -326,6 +328,7 @@
 			"path": "pages/my/my-order/order-failed/order-failed",
 			"style": {
 				"navigationBarTitleText": "",
+				"navigationBarBackgroundColor":"#999999",
 				"enablePullDownRefresh": false
 			}
 		},
