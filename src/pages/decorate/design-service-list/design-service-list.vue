@@ -52,6 +52,8 @@
 					getApp().globalData.noHouseDesignId = obj.value
 				} else if (this.categoryTypeId == 5){
 					getApp().globalData.noHouseActuaryId = obj.value
+				} else if (this.categoryTypeId == 4) {
+					getApp().globalData.noHouseCheckId = obj.value
 				}
 				setTimeout(() => {
 					console.log(getApp().globalData)

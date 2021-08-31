@@ -23,8 +23,9 @@
 			<view class="v1"><text>量房</text> <text>量房员抢单中</text></view>
 			<view>精算服务</view>
 			<view>设计服务</view>
-			<view @click="godesignservicelist">pages/decorate/design-service-list/design-service-list</view>
-			<view @click="gonohousedecatore">pages/decorate/no-house-decorate/no-house-decorate</view>
+			<view @click="gonohouse">无房屋无服入口</view>
+			<view @click="gonohousedecatore">无房屋无服务装修</view>
+			<view @click="gonohousecheck">无房屋无服务验房</view>
 		</view>
 
 	</view>
@@ -165,9 +166,14 @@
 					url: "/pages/decorate/no-house-decorate/no-house-decorate"
 				})
 			},
-			godesignservicelist() {
+			gonohousecheck() {
 				uni.navigateTo({
-					url: "/pages/decorate/design-service-list/design-service-list"
+					url: "/pages/decorate/no-house-checkhouse/no-house-checkhouse"
+				})
+			},
+			gonohouse() {
+				uni.navigateTo({
+					url: "/pages/decorate/no-house/no-house"
 				})
 			},
       toSend(){

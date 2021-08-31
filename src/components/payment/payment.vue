@@ -6,7 +6,7 @@
 			<text class="price">{{__countPrice[0]}}</text>
 			<text class="flot">.{{__countPrice[1]}}</text>
 		</view>
-		<button class="btn" :disabled="!isAllChecked" :class="{ disabled: !isAllChecked }" @click="gotopay">去结算</button>
+		<view class="btn" :disabled="!isAllChecked" :class="{ disabled: !isAllChecked }" @click="gotopay">去结算</view>
 	</view>
 </template>
 

@@ -3,12 +3,13 @@
 		<view class="title">
 			<view class="title-check">
 				<slot name="check"></slot>
-				<text class="text">{{setting.title}}</text>
+				<text class="text">{{setting.title}}({{setting.level | filterLevel}})</text>
 			</view>
-			<button class="change-service" @click="selectAnother">
+			<view class="change-service" v-if="setting.cardtype == 'design'" @click="changeLevel">更换等级</view>
+			<view class="change-service" @click="selectAnother">
 				<text>更换</text>
-				<image class="ic-triangle-999" src="../../static/images/ic_triangle_999.svg"/>
-			</button>
+				<image class="ic-triangle-999" src="../../static/images/ic_triangle_999.svg" />
+			</view>
 		</view>
 		<server-content :content="setting"></server-content>
 	</view>
@@ -16,10 +17,12 @@
 
 <script>
 	import ServerContent from "./service-content.vue";
-	
+
 	export default {
 		name: "ServiceCard",
-		components: { ServerContent },
+		components: {
+			ServerContent
+		},
 		props: {
 			setting: {
 				required: true,
@@ -35,6 +38,32 @@
 		methods: {
 			selectAnother() {
 				this.$emit("selectAnother")
+			},
+			changeLevel() {
+				this.$emit("changeLevel")
+			}
+		},
+		filters: {
+			filterLevel(value) {
+				let res = ""
+				switch (value) {
+					case 1:
+						res = "中级"
+						break;
+					case 2:
+						res = "高级"
+						break;
+					case 3:
+						res = "特级"
+						break;
+					case 4:
+						res = "钻石"
+						break;
+					default:
+						res = "中级"
+						break;
+				}
+				return res;
 			}
 		}
 	}
@@ -79,7 +108,7 @@
 			line-height: 44rpx;
 		}
 
-		button {
+		.change-service {
 			display: flex;
 			justify-content: center;
 			align-items: center;
@@ -90,7 +119,12 @@
 			font-family: PingFangSC, PingFangSC-Regular;
 			font-weight: 400;
 			text-align: center;
+			border-radius: 12rpx;
+			border: 0 solid #f5f6f6;
+			outline: none;
 			color: #333333;
+			font-size: 22rpx;
+			box-sizing: border-box;
 
 			text {
 				font-size: 22rpx;
@@ -103,6 +137,4 @@
 			}
 		}
 	}
-
-
 </style>
