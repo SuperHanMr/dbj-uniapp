@@ -68,6 +68,7 @@
 							type="default"
 							size="mini"
 							style="margin-left: 24rpx;"
+							@click="goToDetail()"
 						>查看详情</button>
 					</view>
 		  </view>
@@ -91,9 +92,9 @@
 			goToDetail(){
 				console.log("去详情页面")
 				uni.navigateTo({
-					// url:"refund-in-progress/refund-in-progress"
-					url:"refund-success/refund-success"
-					// url:"refund-failed/refund-failed"
+					// url:"../my-order/order-failed/order-failed"
+					url:"../my-order/order-success/order-success"
+					// url:"../my-order/order-failed/order-failed"
 				})
 			}
 		}

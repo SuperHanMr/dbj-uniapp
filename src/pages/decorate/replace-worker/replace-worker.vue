@@ -13,19 +13,23 @@
 		</view>
 		<text>上传照片（{{num}}/6）</text>
 		<uni-file-picker 
-		    v-model="imageValue" 
-		    fileMediatype="image" 
-		    mode="grid"   
-        :limit="6"
-		    @select="select" 
-		    @progress="progress" 
-		    @success="success" 
-		    @fail="fail" 
+      v-model="imageValue" 
+      fileMediatype="image" 
+      mode="grid"   
+      :limit="6"
+      @select="select" 
+      @progress="progress" 
+      @success="success" 
+      @fail="fail" 
 		/>
+    <view class="bottom">
+      <button @click="subimt">确定</button>
+    </view>
 	</view>
 </template>
 
 <script>
+  import {replaceGrab} from '../../../api/decorate.js'
 	export default {
 		data() {
 			return {
@@ -74,7 +78,12 @@
 			// 上传失败
 			fail(e){
 				console.log('上传失败：',e)
-			}
+			},
+      subimt(){
+        replaceGrab().then(res=>{
+          
+        })
+      }
 	}
 }
 </script>
