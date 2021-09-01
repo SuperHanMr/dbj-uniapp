@@ -90,7 +90,7 @@
 					<view class="service">
 						<view class="top">
 							<view class="left">
-								<view class="title">服务类商品</view>
+								<view class="title">服务商品</view>
 								<view class="count">件</view>
 							</view>
 							<!-- <view class="check" v-if=""></view> -->
@@ -105,7 +105,7 @@
 					</view>
 					<view class="entity">
 						<view class="left">
-							<view class="title">实物类商品</view>
+							<view class="title">实物商品</view>
 							<view class="count">件</view>
 						</view>
 						<!-- <view class="check" v-if=""></view>
@@ -630,6 +630,7 @@
 		height: 296rpx;
 		margin: 32rpx;
 		border: 2rpx solid #00bfb6;
+		background: #00BFB6;
 		border-radius: 16rpx;
 	}
 	.popupClass .entity{
@@ -637,6 +638,7 @@
 		height: 296rpx;
 		margin: 0 32rpx 68rpx 32rpx;
 		border: 2rpx solid #eeeeee;
+		background: #F7F7F7;
 		border-radius: 16rpx;
 	}
 	.popupClass .top{
