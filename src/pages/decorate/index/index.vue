@@ -23,6 +23,9 @@
 			<view class="v1"><text>量房</text> <text>量房员抢单中</text></view>
 			<view>精算服务</view>
 			<view>设计服务</view>
+			<view @click="gonohouse">无房屋无服入口</view>
+			<view @click="gonohousedecatore">无房屋无服务装修</view>
+			<view @click="gonohousecheck">无房屋无服务验房</view>
 		</view>
 
 	</view>
@@ -41,14 +44,14 @@
       // const url = 'wxs://post-cn-tl32ajx3u0l.mqtt.aliyuncs.com';
       // // console.log(url)
       // const client = mqtt.connect(url, {
-      // 	// 8位16进制的随机值组成clientId 
+      // 	// 8位16进制的随机值组成clientId
       //   keepalive: 0,
       // 	clientId: this.clientId,
       //   username:this.username,
       //   password:this.password,
       //   connectTimeout: 5000,
-      // }); 
-      
+      // });
+
       // this.client = client
       // client.on('connect', function(connack){
       //   console.log('连接中')
@@ -70,9 +73,9 @@
       //     console.log('失败')
       // 		return;
       // 	}
-      
+
       // 	// 以下各监听事件的绑定，必须在连接成功后才可以做
-      
+
       // 	// 监听消息事件
       // 	client.on('message', (topic, message, error) => {
       //     console.log('message',message)
@@ -87,31 +90,31 @@
       // 			console.error(error);
       // 		}
       // 	});
-      
+
       // 	// 监听关闭事件
       // 	client.on('close', () => {
       // 		console.log('连接已关闭');
       // 	});
-      
+
       // 	// 订阅话题，可以订1个或多个
       // 	// @topic String | Array
       // 	// client.subscribe('dabanjia/testTopic');
-      
+
       // 	// 发布消息，话题必须有且只能一个
       // // 	client.publish('testtopic', 'hello', (error) => {
       // // 		if (!error) {
       // // 			// @todo 发布成功
-      
+
       // // 		} else {
       // // 			// @todo 发布失败
-      
+
       // // 		}
       // // 	});
       // });
       //   client.on('reconnect', (error) => {
       //    console.log('正在重连:', error)
       //   })
-       
+
       //   client.on('error', (error) => {
       //    console.log('连接失败:', error)
       //   })
@@ -125,7 +128,7 @@
       //   });
     },
 		mounted() {
-      
+
     },
 		onShow() {
 			if (this.houses && this.houses.length < 1) {
@@ -158,6 +161,21 @@
       }
     },
 		methods: {
+			gonohousedecatore() {
+				uni.navigateTo({
+					url: "/pages/decorate/no-house-decorate/no-house-decorate"
+				})
+			},
+			gonohousecheck() {
+				uni.navigateTo({
+					url: "/pages/decorate/no-house-checkhouse/no-house-checkhouse"
+				})
+			},
+			gonohouse() {
+				uni.navigateTo({
+					url: "/pages/decorate/no-house/no-house"
+				})
+			},
       toSend(){
         console.log('发送消息')
         this.client.publish('dabanjia/testTopic', 'hello zzz')

@@ -372,10 +372,12 @@ export default {
       }
     },
   },
-  onLoad() {
+  onLoad(e) {
+		 console.log(e,"请求回来的数据呢呢呢呢呢呢呢呢呢呢");
     orderList().then((e) => {
-      console.log(e);
+      console.log(e,"请求回来的数据呢呢呢呢呢呢呢呢呢呢");
       this.list = e;
+			console.log("this.list=",this.list)
     });
   },
 
@@ -411,10 +413,9 @@ export default {
           break;
       }
     },
-    onLoad(option) {
-      console.log("上个页面传递的参数", option);
-      this.currentIndex = Number(option.index);
-    },
+    // onLoad(option) {
+    //   this.currentIndex = Number(option.index);
+    // },
   },
 };
 </script>

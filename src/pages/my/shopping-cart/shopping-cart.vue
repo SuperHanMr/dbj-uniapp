@@ -21,7 +21,8 @@
 			      placeholder="可输入至小数点后两位"
 						@close="closeDialog"
 			      @confirm="defineCount"
-			    />
+			    >
+					</uni-popup-dialog>
 			</uni-popup>
 			<view class="header">
 				<view class="left"></view>
@@ -153,7 +154,7 @@
 					</view>
 					<view class="right">
 						<view class="collect" @click="toCollect">移入收藏</view>
-						<view class="deleteChecked">删除</view>
+						<view class="delete" @click="deleteChecked">删除</view>
 					</view>
 				</view>
 			</view>
@@ -162,7 +163,7 @@
 </template>
 
 <script>
-	import {getShoppingCartProductInfo,deleteProduct} from "../../../api/user.js"
+	import {clearDisabled,getShoppingCartInfo,deleteProduct,setBuyCount} from "../../../api/user.js"
 	import SelectSku from "../../../components/select-sku/select-sku"
 	export default {
 		components:{
@@ -223,7 +224,7 @@
 		},
 		methods:{
 			requestPage(){
-				getShoppingCartProductInfo(123).then(data => {
+				getShoppingCartInfo(123).then(data => {
 						let {storeList,disabledSkuList} = data
 						storeList.map(item => {
 							item.shopChecked = false
@@ -252,10 +253,11 @@
 				this.showMask = false
 			},
 			defineCount(val) {
-				let count = +this.shopList[this.currentShopIndex].skuList[this.currentGoodsIndex].buyCount
-				let step = +this.shopList[this.currentShopIndex].skuList[this.currentGoodsIndex].stepLength || 1
-				let miniOrder = +this.shopList[this.currentShopIndex].skuList[this.currentGoodsIndex].minimumOrderQuantity || 1
-				this.shopList[this.currentShopIndex].skuList[this.currentGoodsIndex].buyCount = val
+				let target = this.shopList[this.currentShopIndex].skuList[this.currentGoodsIndex]
+				let count = +target.buyCount
+				let step = +target.stepLength || 1
+				let miniOrder = +target.minimumOrderQuantity || 1
+				target.buyCount = val
 				if(+val < miniOrder) {
 					setTimeout(() => {
 					  uni.showToast({
@@ -281,6 +283,18 @@
 						});
 					}, 100)
 				}else{
+					let params = {
+						userId:this.userId,
+						skuList:[{
+							skuId:target.skuId,
+							buyCount:target.buyCount
+						}]
+					}
+					setBuyCount(params).then(data => {
+						if(data){
+							this.requestPage()
+						}
+					})
 					this.$refs.popup.close()
 				}
 				console.log(val,step,miniOrder,'//');
@@ -322,7 +336,10 @@
 									this.shopList.forEach(item => {
 										item.skuList.forEach(ele => {
 											if(ele.goodsChecked){
-												skuList.push(ele)
+												skuList.push({
+													skuId:ele.skuId,
+													buyCount:ele.buyCount
+												})
 											}
 										})
 									})
@@ -452,8 +469,14 @@
 				  confirmColor:"#ff3347",
 				  success:res => {
 				      if (res.confirm) {
-				  			this.disabledSkuList = []	
-				  			//接口
+								let params = {
+									userId:this.userId,
+								}
+				  			clearDisabled(params).then(data => {
+									if(data){
+										this.requestPage()
+									}
+								})
 				      } else if (res.cancel) {
 				  			return
 				      }

@@ -5,7 +5,9 @@
 			userInfo: {},
 			token: "",
 			city: "",
-			houses: []
+			houses: [],
+			noHouseActuaryId: null,
+			noHouseDesignId: null
 		},
 		onLaunch: function() {
 			if (!uni.getStorageSync("userId")) {

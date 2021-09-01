@@ -9,19 +9,26 @@
 				</view>
 				<text class="time">2021-01-12 16:58:26</text>
 			</view>
-			<view class="order-header2">
-				<image src="../../../../static/order/ic_location@2x.png" mode=""></image>
-				<view class="basic-info">
-					<view>
-						<text>小明</text>
-						<text>15226088888</text>
+			
+			<order-user-base-info></order-user-base-info>
+			
+			<view class="body2">
+				<view class="part1">
+					<view class="header">
+						<text>不知道叫什么名字的店铺nizhidaomahahahahahahaha</text>
+						<image
+							src="../../../../static/order/ic_more@2x.png"
+							mode=""
+						></image>
 					</view>
-					<view>
-						北京 北京市 石景山区 点石商务公园8号楼打扮家科技有限公司
-					</view>
+					<order-item></order-item>
+					<view class="price-special"></view>
 				</view>
 			</view>
-		
+			<order-price></order-price>
+	
+	
+	
 			<view class="order-header1">
 				<view class="refund-price">
 					<text>退款总金额</text>
@@ -41,41 +48,17 @@
 				</view>
 			</view>
 		
-			<view class="body">
+			<view class="body1">
 				<order-item></order-item>
 			</view>
 			
-			<view class="refund-info">
-				<view class="header">
-					退款信息
-				</view>
-				<view class="item">
-					<text class="item-header">退款原因：</text>
-					<text class="item-body">退款原因退款原因退款原因退款原因退款原因退款原因退款原因退款原因退款原因退款原因退款原因退款原因退款原因退款原因退款原因退款原因退款原因退款原因退款原因退款原因</text>
-				</view>
-				<view class="item">
-					<text class="item-header">退款金额：</text>
-					<text class="item-body">￥320.00</text>
-				</view>
-				<view class="item">
-					<text class="item-header">申请时间：</text>
-					<text class="item-body">2021-01-21   16:58:59</text>
-				</view>
-				<view class="item">
-					<text class="item-header" >退款编号：</text>
-					<view class="item-body">
-						<text style="display: block;margin-right:16rpx;">DDPG2020121400001</text>
-						<view class="copy-style">复制</view>
-					</view>
-				</view>
-			</view>
-			
+			<order-refund-info></order-refund-info>
 		</view>
 	</view>
 </template>
 
 <script>
-	import bgImg from "@/static/order/order_bg_gray@2x.png"
+	import bgImg from "@/static/order/order_bg_green@2x.png"
 	export default {
 		data() {
 			return {
@@ -94,6 +77,7 @@
 		width: 100%;
 		height: 100%;
 		overflow: auto;
+		padding-bottom: 100rpx;
 		// background-color: skyblue;
 		.order-container{
 			.order-status{
@@ -152,31 +136,45 @@
 				}
 				
 			}
-			.order-header2{
-				background: #FFFFFF;
-				border-radius: 20rpx;
-				color: #333333;
-				margin-bottom: 16rpx;
-				padding: 32rpx;
-				box-sizing: border-box;
-				display: flex;
-				flex-flow: row nowrap;
-				flex: 1;
-				image{
-					width: 48rpx;
-					height: 48rpx;
-					object-fit: cover;
-				}
-				.basic-info{
-					
-				}
-			}
-		
-			.body{
+			
+			.body1{
 				padding: 32rpx 32rpx 0;
 				background: #FFFFFF;
 				border-radius: 24rpx;
 				margin-bottom: 16rpx;
+			}
+			
+			.body2{
+				background: #FFFFFF;
+				border-radius: 24rpx;
+				.part1{
+					padding: 32rpx 32rpx 0;
+					border-radius: 24rpx 24rpx 0 0;
+					background: #FFFFFF;
+					.header{
+						box-sizing: border-box;
+						display: flex;
+						align-items: center;
+						flex-flow: row nowrap;
+						padding-bottom: 32rpx;
+						text {
+							font-weight: 1000;
+							max-width: 476rpx;
+							font-size: 28rpx; 
+							line-height: 40rpx;
+							overflow: hidden;
+							text-overflow: ellipsis;
+							white-space: nowrap;
+							color: #333333;
+						}
+					
+						image {
+							width: 34rpx;
+							height: 34rpx;
+							object-fit: cover;
+						}
+					}
+				}
 			}
 			
 			.refund-info{
@@ -191,7 +189,7 @@
 					font-weight: 1000;
 					height: 48rpx;
 					line-height: 48rpx;
-					margin-bottom: 32rpx;
+					margin-bottom: 16rpx;
 				}
 				.item{
 					font-size: 28rpx;

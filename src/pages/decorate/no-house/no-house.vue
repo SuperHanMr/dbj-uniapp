@@ -45,7 +45,7 @@
 
 			goCheckService() {
 				uni.navigateTo({
-					url: "/pages/decorate/check/check",
+					url: "/pages/decorate/no-house-checkhouse/no-house-checkhouse",
 				});
 			},
 			gobackHome() {

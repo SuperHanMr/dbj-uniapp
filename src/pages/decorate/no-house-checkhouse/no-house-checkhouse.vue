@@ -10,44 +10,15 @@
 			</view>
 			<my-current-house v-else :houseData="currentHouse" @changCurrentHouse="changCurrentHouse">
 			</my-current-house>
-			<service-card :setting="design" class="service-card" @selectAnother="selectAnother('design')"
-				@changeLevel="open">
+			<service-card :setting="checkHouse" class="service-card" @selectAnother="selectAnother('checkHouse')">
 				<template slot="check">
-					<check-box :checked="design.checked" @change="(value)=> {change(design.cardtype, value)}">
-					</check-box>
-				</template>
-			</service-card>
-			<service-card :setting="actuary" class="service-card" @selectAnother="selectAnother('actuary')">
-				<template slot="check">
-					<check-box :checked="actuary.checked" @change="(value)=> {change(actuary.cardtype, value)}">
+					<check-box :checked="checkHouse.checked" @change="(value)=> {change(checkHouse.cardtype, value)}">
 					</check-box>
 				</template>
 			</service-card>
 		</view>
-		<payment class="payment" @gotopay="gotopay" :pieces="pieces" :countPrice="countPrice" :isAllChecked="isAllChecked"></payment>
-		<uni-popup ref="popup" type="dialog" :mask-click="false">
-			<uni-popup-dialog mode="base" type="info" title="请选择您想要更换人工的等级" :duration="2000" :before-close="true"
-				@close="close" @confirm="confirm">
-				<view class="radio-wrap">
-					<view class="radio-item">
-						<dbj-radio value="1" :checked="selectLevel == 1" @change="radioChange"></dbj-radio>
-						<text>中级</text>
-					</view>
-					<view class="radio-item">
-						<dbj-radio value="2" :checked="selectLevel == 2" @change="radioChange"></dbj-radio>
-						<text>高级</text>
-					</view>
-					<view class="radio-item">
-						<dbj-radio value="3" :checked="selectLevel == 3" @change="radioChange"></dbj-radio>
-						<text>特级</text>
-					</view>
-					<view class="radio-item">
-						<dbj-radio value="4" :checked="selectLevel == 4" @change="radioChange"></dbj-radio>
-						<text>钻级</text>
-					</view>
-				</view>
-			</uni-popup-dialog>
-		</uni-popup>
+		<payment class="payment" @gotopay="gotopay" :pieces="pieces" :countPrice="countPrice"
+			:isAllChecked="isAllChecked"></payment>
 	</view>
 </template>
 
@@ -70,28 +41,26 @@
 		data() {
 			return {
 				dataList: [],
-				design: {},
-				actuary: {},
+				checkHouse: {
+					title: "验房服务",
+					cardtype: "checkHouse",
+					checked: true
+				},
 				currentHouse: {},
-				selectLevel: 2
 			}
 		},
 		computed: {
 			isAllChecked() {
-				return this.design.checked && this.actuary.checked
+				return this.checkHouse.checked
 			},
 			pieces() {
-				let num = this.design.checked + this.actuary.checked;
-				return num 
+				let num = this.checkHouse.checked + 0;
+				return num
 			},
 			countPrice() {
 				let qian = 0.00
-				if(this.design.checked) {
-					qian += Number(this.design.price) * 88
-					console.log()
-				}
-				if(this.actuary.checked) {
-					qian += Number(this.actuary.price) * 88
+				if (this.checkHouse.checked) {
+					qian += Number(this.checkHouse.price) * 88
 				}
 				return qian + "0.00"
 			}
@@ -101,67 +70,23 @@
 			this.getProductsSkusPage();
 		},
 		methods: {
-			radioChange(obj) {
-				this.selectLevel = obj.value
-			},
-			open() {
-				this.$refs.popup.open('dialog')
-			},
-			close() {
-				this.$refs.popup.close();
-			},
-			confirm(value) {
-				// 输入框的值
-				console.log(value)
-				// TODO 做一些其他的事情，手动执行 close 才会关闭对话框
-				// ...
-				this.$refs.popup.close()
-				this.design.level = Number(this.selectLevel)
-			},
 			getProductsSkusPage() {
 				getProductsSkusPage({
-					categoryTypeId: [5, 6]
+					categoryTypeId: [4, 5, 6]
 				}).then(data => {
 					this.dataList = data.list
-					// const { noHouseActuaryId, noHouseDesignId } = getApp.globalData
-					// if( noHouseActuaryId ) {
-
-					// } else {
-
-					// }
-					// data.list.forEach((item, idx) => {
-					// 	if() {
-					// 		this.actuary = {
-					// 			...item,
-					// 			cardtype: "actuary",
-					// 			checked: true
-					// 		}
-					// 	}
-					// })
-					this.actuary = {
-						...data.list[0],
-						title: "精算服务",
-						cardtype: "actuary",
+					this.checkHouse = {
+						...data.list[3],
+						title: "验房服务",
+						cardtype: "checkHouse",
 						checked: true
-					}
-					this.design = {
-						...data.list[1],
-						title: "设计服务",
-						cardtype: "design",
-						checked: true,
-						level: 2
 					}
 				})
 			},
 			selectAnother(pp) {
-				if (pp === "design") {
+				if (pp === "checkHouse") {
 					uni.navigateTo({
-						url: '/pages/decorate/design-service-list/design-service-list?id=6'
-					})
-				}
-				if (pp === "actuary") {
-					uni.navigateTo({
-						url: '/pages/decorate/design-service-list/design-service-list?id=5'
+						url: '/pages/decorate/design-service-list/design-service-list?id=4'
 					})
 				}
 			},
@@ -197,10 +122,8 @@
 				}
 			},
 			change(id, value) {
-				if (id === "design") {
-					this.design.checked = value;
-				} else if (id === "actuary") {
-					this.actuary.checked = value;
+				if (id === "checkHouse") {
+					this.checkHouse.checked = value;
 				}
 			},
 			goAddHouse() {
@@ -302,7 +225,6 @@
 			}
 		}
 	}
-	
 </style>
 <style>
 	.uni-popup__info {

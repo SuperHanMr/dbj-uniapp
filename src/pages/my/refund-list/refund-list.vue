@@ -93,8 +93,8 @@
 				console.log("去详情页面")
 				uni.navigateTo({
 					// url:"../my-order/order-failed/order-failed"
-					url:"../my-order/order-success/order-success"
-					// url:"../my-order/order-failed/order-failed"
+					// url:"../my-order/order-success/order-success"
+					url:"../my-order/order-in-progress/order-in-progress"
 				})
 			}
 		}

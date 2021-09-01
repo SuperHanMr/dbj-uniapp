@@ -59,3 +59,7 @@ export function deleteFriends(params) {
 	return request.post("/customer/app/relative/delete",params )
 }
 
+//SKU商品表格
+export function getProductsSkusPage(params) {
+	return request.get("/product/web/products/skus/page", params)
+}
