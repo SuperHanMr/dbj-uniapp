@@ -11,18 +11,18 @@
 		</view>
 		<view class="shoppingCart" v-else>
 			<uni-popup
-			    ref="popup"
-			    type="dialog"
+			  ref="popup"
+			  type="dialog"
+			>
+			  <uni-popup-dialog
+			    mode="input"
+			    title="编辑数量"
+			    :duration="2000" :before-close="true" 
+			    placeholder="可输入至小数点后两位"
+					@close="closeDialog"
+			    @confirm="defineCount"
 			  >
-			    <uni-popup-dialog
-			      mode="input"
-			      title="编辑数量"
-			      :duration="2000" :before-close="true" 
-			      placeholder="可输入至小数点后两位"
-						@close="closeDialog"
-			      @confirm="defineCount"
-			    >
-					</uni-popup-dialog>
+				</uni-popup-dialog>    
 			</uni-popup>
 			<view class="header">
 				<view class="left"></view>
@@ -114,63 +114,74 @@
 					<view class="footer">去结算</view>
 				</view>
 			</view>	
-				
-				<select-sku></select-sku>
-				<view class="disabledSku" v-if="disabledSkuList.length">
-					<view class="top">
-						<view class="title">已失效商品</view>
-						<view class="clear" @click="clearDisaledSku">清空失效商品</view>
-					</view>
-					<view class="disabldSkuItem" v-for="disabldSkuItem in disabledSkuList" :key="disabldSkuItem.skuId">
-						<image :src="disabldSkuItem.image" class="disabldSkuImg"></image>
-						<view class="disabledSkuInfo">
-							<view class="disabledSkuDesc">
-								<span class="disabledSkuType">服务</span>
-								{{disabldSkuItem.spuName}}
-							</view>
-							<view class="disabledSkuSpec">{{disabldSkuItem.skuName}}</view>
-							<view class="text">该商品已经失效</view>
+			<echone-sku
+			  :show="popupShow"
+			  :theme-color="themeColor"
+			  :combinations="combinations"
+			  :specifications="specifications"
+			  :default-select-index="selectedIndex"
+			  @close="popupShow=false"
+			  @confirm="handleConfirm"
+			></echone-sku>
+			<view class="disabledSku" v-if="disabledSkuList.length">
+				<view class="top">
+					<view class="title">已失效商品</view>
+					<view class="clear" @click="clearDisaledSku">清空失效商品</view>
+				</view>
+				<view class="disabldSkuItem" v-for="disabldSkuItem in disabledSkuList" :key="disabldSkuItem.skuId">
+					<image :src="disabldSkuItem.image" class="disabldSkuImg"></image>
+					<view class="disabledSkuInfo">
+						<view class="disabledSkuDesc">
+							<span class="disabledSkuType">服务</span>
+							{{disabldSkuItem.spuName}}
 						</view>
+						<view class="disabledSkuSpec">{{disabldSkuItem.skuName}}</view>
+						<view class="text">该商品已经失效</view>
 					</view>
-				</view>
-				<view class="bottom"></view>
-				<view class="shopCheck" v-if="isManage">
-					<view class="left">
-						<view class="check" @click="checkedAll" v-if="!isCheckedAll"></view>
-						<image src="../../../static/shopping-cart/checked@2x.png" class="check" @click="checkedAll" v-else></image>
-						<view class="text">全选</view>
-					</view>
-					<view class="right">
-						<view class="text">合计：</view>
-						<view class="totalPrice">¥{{totalPrice}}</view>
-						<view class="preOrder" @click="pay">结算({{totalCout}})</view>
-					</view>
-				</view>  							
-				<view class="shopCheck" v-else>
-					<view class="left">
-						<view class="check" @click="checkedAll" v-if="!isCheckedAll"></view>
-						<image src="../../../static/shopping-cart/checked@2x.png" class="check" @click="checkedAll" v-else></image>
-						<view class="text">全选</view>
-					</view>
-					<view class="right">
-						<view class="collect" @click="toCollect">移入收藏</view>
-						<view class="delete" @click="deleteChecked">删除</view>
-					</view>
-				</view>
+				</view>	
 			</view>
-		</view>
+			<view class="bottom"></view>
+			<view class="shopCheck" v-if="isManage">
+				<view class="left">
+					<view class="check" @click="checkedAll" v-if="!isCheckedAll"></view>
+					<image src="../../../static/shopping-cart/checked@2x.png" class="check" @click="checkedAll" v-else></image>
+					<view class="text">全选</view>
+				</view>
+				<view class="right">
+					<view class="text">合计：</view>
+					<view class="totalPrice">¥{{totalPrice}}</view>
+					<view class="preOrder" @click="pay">结算({{totalCout}})</view>
+				</view>
+			</view>	  							
+			<view class="shopCheck" v-else>
+				<view class="left">
+					<view class="check" @click="checkedAll" v-if="!isCheckedAll"></view>
+					<image src="../../../static/shopping-cart/checked@2x.png" class="check" @click="checkedAll" v-else></image>
+					<view class="text">全选</view>
+				</view>
+				<view class="right">
+					<view class="collect" @click="toCollect">移入收藏</view>
+					<view class="delete" @click="deleteChecked">删除</view>
+				</view>
+			</view>	
+		</view>					
 	</view>
 </template>
 
 <script>
 	import {clearDisabled,getShoppingCartInfo,deleteProduct,setBuyCount} from "../../../api/user.js"
-	import SelectSku from "../../../components/select-sku/select-sku"
+	import echoneSku from '../../../components/echone-sku/echone-sku.vue'
 	export default {
 		components:{
-			SelectSku,
+			echoneSku,
 		},
 		data(){
 			return {
+				popupShow:false,
+				themeColor:"#1ac792",
+				specifications:[],
+				combinations:[],
+				selectedIndex:0,
 				options: [
 				  {
 				    text: "删除",
@@ -191,11 +202,55 @@
 				
 			}
 		},
-		onLoad: ()=> {
-			console.log("跳转了")
-		},
 		mounted(){
-			this.userId = uni.getStorageSync("userId")
+			this.specifications= [
+			  {
+			    name: '发证机关',
+			    id: '123',
+			    list: ['成都市锦江区', '成都市青羊区'],
+			  },
+			  {
+			    name: '教育年度',
+			    id: '456',
+			    list: ['2020年', '2019年'],
+			  },
+			]
+			this.combinations= [
+			  {
+			    id: '1',
+			    value: '成都市锦江区,2020年',
+			    image:
+			      'https://miniprogram-img01.caishuib.com/wx15168444f005a4ab/material/image/202005135/3a014c2f42c1c46b.PNG',
+			    price: 80.0,
+			    stock: 1000,
+			  },
+			  {
+			    id: '2',
+			    value: '成都市锦江区,2019年',
+			    image:
+			      'https://miniprogram-img01.caishuib.com/wx15168444f005a4ab/material/image/20200383/ebd0c8d01a6e9c10.PNG',
+			    price: 100.0,
+			    stock: 500,
+			  },
+			  {
+			    id: '3',
+			    value: '成都市青羊区,2020年',
+			    image:
+			      'https://miniprogram-img01.caishuib.com/wx15168444f005a4ab/material/image/202005135/3a014c2f42c1c46b.PNG',
+			    price: 80.0,
+			    stock: 1000,
+			  },
+			  {
+			    id: '4',
+			    value: '成都市青羊区,2019年',
+			    image:
+			      'https://miniprogram-img01.caishuib.com/wx15168444f005a4ab/material/image/20200383/ebd0c8d01a6e9c10.PNG',
+			    price: 100.0,
+			    stock: 0,
+			  },
+			]
+			// this.userId = uni.getStorageSync("userId")
+			this.userId = 123
 			this.requestPage()
 		},
 		computed:{
@@ -223,8 +278,12 @@
 			}
 		},
 		methods:{
+			handleConfirm(){
+				console.log("确认")
+			},
+			
 			requestPage(){
-				getShoppingCartInfo(123).then(data => {
+				getShoppingCartInfo(this.userId).then(data => {
 						let {storeList,disabledSkuList} = data
 						storeList.map(item => {
 							item.shopChecked = false
@@ -484,9 +543,9 @@
 				});
 			},
 			openSpec(){
-				this.showPecification = true
-				console.log(this.$refs.popup)
-				this.$refs.popup.open('top')
+				this.popupShow = true
+				console.log('tiao')
+				
 			},
 		
 		}
@@ -630,7 +689,7 @@
 		height: 296rpx;
 		margin: 32rpx;
 		border: 2rpx solid #00bfb6;
-		background: #00BFB6;
+		background: #E7FFFE;
 		border-radius: 16rpx;
 	}
 	.popupClass .entity{
