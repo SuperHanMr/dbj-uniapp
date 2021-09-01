@@ -58,7 +58,8 @@
 	import DbjRadio from "../../../components/dbj-radio/dbj-radio.vue";
 	import {
 		queryEstates,
-		getProductsSkusPage
+		getProductsSkusPage,
+		getServiceSku
 	} from "../../../api/decorate.js"
 	export default {
 		components: {
@@ -98,7 +99,11 @@
 		},
 		onShow() {
 			this.getMyHouseList();
-			this.getProductsSkusPage();
+			this.getServiceSku();
+			const {noHouseActuaryId, noHouseDesignId} = getApp().globalData;
+			if (noHouseActuaryId || noHouseDesignId) {
+				this.getProductsSkusPage();
+			}
 		},
 		methods: {
 			radioChange(obj) {
@@ -117,6 +122,28 @@
 				// ...
 				this.$refs.popup.close()
 				this.design.level = Number(this.selectLevel)
+			},
+			getServiceSku() {
+				getServiceSku({codeKey: "decoration_default_service"}).then(data => {
+					const {noHouseActuaryId, noHouseDesignId} = getApp().globalData
+					if(!noHouseDesignId) {
+						this.design = {
+							...data[0],
+							title: "设计服务",
+							cardtype: "design",
+							checked: true,
+							level: 1
+						}
+					}
+					if(!noHouseActuaryId) {
+						this.design = {
+							...data[0],
+							title: "精算服务",
+							cardtype: "actuary",
+							checked: true
+						}
+					}
+				})
 			},
 			getProductsSkusPage() {
 				getProductsSkusPage({
@@ -166,7 +193,7 @@
 				}
 			},
 			changCurrentHouse() {
-				uni.redirectTo({
+				uni.navigateTo({
 					url: "/pages/my/my-house/my-house"
 				})
 			},
