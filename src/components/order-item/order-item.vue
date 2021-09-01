@@ -112,7 +112,7 @@
 				.product-price {
 					height: 32rpx;
 					font-size: 32rpx;
-					margin-bottom: 8rpx;
+					margin-bottom: 16rpx;
 				}
 			}
 		}
