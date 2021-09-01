@@ -36,11 +36,10 @@ export default {
   border-radius: 6px;
 
   .avatar {
+    width: 100%;
+    height: 100%;
     box-sizing: border-box;
-
-    img {
-      object-fit: cover;
-    }
+    object-fit: cover;
   }
 
   &.group-avatars--children2 {

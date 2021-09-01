@@ -17,10 +17,12 @@
 			    <uni-popup-dialog
 			      mode="input"
 			      title="编辑数量"
-			      value=""
+			      :duration="2000" :before-close="true" 
 			      placeholder="可输入至小数点后两位"
-			      @confirm="dialogInputConfirm"
-			    />
+						@close="closeDialog"
+			      @confirm="defineCount"
+			    >
+					</uni-popup-dialog>
 			</uni-popup>
 			<view class="header">
 				<view class="left"></view>
@@ -47,7 +49,7 @@
 				    v-for="(goodsItem,goodsIndex) in shopItem.skuList"
 				    :key="goodsItem.skuId"
 				    :right-options="options"
-				    @click="bindClick(shopIndex,goodsIndex)"
+				    @click="deleteGoods(goodsItem.skuId,goodsItem.buyCount)"
 				  >
 						<view class="goodsItem"  >
 							<view class="check" v-if="!goodsItem.goodsChecked" @click="checkGoods(shopItem.storeId,goodsItem.skuId)"></view>
@@ -68,7 +70,7 @@
 									<view class="countCtrl">
 										<image v-if="!goodsItem.isMiniOrder" class="dec" src="../../../static/shopping-cart/details_pop_@2x.png" @click="changeCount(false,shopIndex, goodsIndex)"></image>
 										<image v-else class="dec" src="../../../static/shopping-cart/details_pop_subtract_disabled@2x.png" @click="changeCount(false,shopIndex, goodsIndex)"></image>
-										<view class="count" @click="open"> {{goodsItem.buyCount}} </view>
+										<view class="count" @click="openCount(shopIndex, goodsIndex)"> {{goodsItem.buyCount}} </view>
 											
 										<image src="../../../static/shopping-cart/details_pop_add_normal@2x.png" class="inc" @click="changeCount(true, shopIndex,goodsIndex)"></image>          
 									</view>
@@ -77,8 +79,41 @@
 						</view>	
 					</uni-swipe-action-item>
 				</uni-swipe-action>
+			</view>
+			<view class="mask" v-if="showMask">
+				<view class="popupClass">
+					<view class="header">
+						<text class="tit">所选商品为不同类型商品，请分开结算</text>
+						<image @click="goBackCart" src="../../../static/shopping-cart/ic_closed_black@2x.png" class="closedIcon"></image>
+					</view>
+					<view class="line"></view>
+					<view class="service">
+						<view class="top">
+							<view class="left">
+								<view class="title">服务类商品</view>
+								<view class="count">件</view>
+							</view>
+							<!-- <view class="check" v-if=""></view> -->
+							<!-- <image class="checked" v-else src="../../../static/shopping-cart/checked@2x.png"></image> -->
+						</view>
+						<!-- <view class="goods" v-for="">
+							<image :src="" mode=""></image>
+							<view class="goodsName"></view>
+							<view class="check" v-if=""></view>
+							<image class="checked" v-else src="../../../static/shopping-cart/checked@2x.png"></image>
+						</view> -->
+					</view>
+					<view class="entity">
+						<view class="left">
+							<view class="title">实物类商品</view>
+							<view class="count">件</view>
+						</view>
+						<!-- <view class="check" v-if=""></view>
+						<image class="checked" v-else src="../../../static/shopping-cart/checked@2x.png"></image> -->
+					</view>
+					<view class="footer">去结算</view>
 				</view>
-				
+			</view>	
 				
 				<select-sku></select-sku>
 				<view class="disabledSku" v-if="disabledSkuList.length">
@@ -119,7 +154,7 @@
 					</view>
 					<view class="right">
 						<view class="collect" @click="toCollect">移入收藏</view>
-						<view class="delete">删除</view>
+						<view class="delete" @click="deleteChecked">删除</view>
 					</view>
 				</view>
 			</view>
@@ -128,7 +163,7 @@
 </template>
 
 <script>
-	import {getShoppingCartProductInfo} from "../../../api/user.js"
+	import {clearDisabled,getShoppingCartInfo,deleteProduct,setBuyCount} from "../../../api/user.js"
 	import SelectSku from "../../../components/select-sku/select-sku"
 	export default {
 		components:{
@@ -144,18 +179,23 @@
 				    },
 				  },
 				],
+				userId:0,
 				shopList:[],
 				disabledSkuList:[],
 				showPecification:false,
 				isManage:true,
 				isCheckedAll:false,
-				value:""
+				currentShopIndex:0,
+				currentGoodsIndex:0,
+				showMask:false,
+				
 			}
 		},
 		onLoad: ()=> {
 			console.log("跳转了")
 		},
 		mounted(){
+			this.userId = uni.getStorageSync("userId")
 			this.requestPage()
 		},
 		computed:{
@@ -184,10 +224,7 @@
 		},
 		methods:{
 			requestPage(){
-				
-				let userId = uni.getStorageSync("userId")
-				getShoppingCartProductInfo(123).then(data => {
-						
+				getShoppingCartInfo(123).then(data => {
 						let {storeList,disabledSkuList} = data
 						storeList.map(item => {
 							item.shopChecked = false
@@ -204,51 +241,137 @@
 						this.disabledSkuList = disabledSkuList || []
 				})
 			},
-			open(){
-				console.log(this.$refs.popup)
+			openCount(shopIndex, goodsIndex){
 				this.$refs.popup.open()
+				this.currentShopIndex = shopIndex 
+				this.currentGoodsIndex = goodsIndex 
 			},
-			// close() {
-			// 	this.$refs.popup[0].close()
-			// },
-			// confirm(value){
-			// 	console.log(value)
-			// 	this.$refs.popup.close()
-			// },
-			dialogInputConfirm( val) {
-			      uni.showLoading({
-			        title: "1秒后会关闭",
-			      });
-			      this.value = val;
-						console.log(val,'//')
-			      setTimeout(() => {
-			        uni.hideLoading();
-			      }, 1000);
-			    },
-			toCollect(){
-				this.shopList.forEach(item => {
-					item.skuList.filter(ele => {
-						return ele.goodsChecked
-					})
-				})
+			closeDialog() {
+				this.$refs.popup.close()
 			},
-			delete(){
-				this.shopList.forEach(item => {
-					item.skuList.forEach((ele,index) => {
-						if(ele.goodsChecked){
-							item.skuList.splice(index,1)
+			goBackCart(){
+				this.showMask = false
+			},
+			defineCount(val) {
+				let target = this.shopList[this.currentShopIndex].skuList[this.currentGoodsIndex]
+				let count = +target.buyCount
+				let step = +target.stepLength || 1
+				let miniOrder = +target.minimumOrderQuantity || 1
+				target.buyCount = val
+				if(+val < miniOrder) {
+					setTimeout(() => {
+					  uni.showToast({
+					  	title:`商品数量不得低于${miniOrder}件`,
+							icon:"none",
+							duration:3000
+					  })
+					}, 100);
+				}else if(+val % step !== 0) {
+					setTimeout(() => {
+					  uni.showToast({
+					  	title:`当前最小单位为${step}，输入的数量需为${step}的倍数`,
+							icon:"none",
+							duration:3000
+					  })
+					}, 100);
+				}else if(+val >= 99999.99) {
+					setTimeout(() => {
+						uni.showToast({
+							title:"商品数量超出范围",
+							icon:"none",
+							duration:3000
+						});
+					}, 100)
+				}else{
+					let params = {
+						userId:this.userId,
+						skuList:[{
+							skuId:target.skuId,
+							buyCount:target.buyCount
+						}]
+					}
+					setBuyCount(params).then(data => {
+						if(data){
+							this.requestPage()
 						}
-						//接口 
 					})
-				})
+					this.$refs.popup.close()
+				}
+				console.log(val,step,miniOrder,'//');
 			},
-			pay(){
+			toCollect(){
 				if(!this.totalCout){
 					uni.showToast({
 						title:"您还没有选择任何商品哦",
 						icon:"none"
 					})
 				}else{
+					//选中的商品会从购物车中消失
+					this.shopList.forEach(item => {
+						item.skuList.filter(ele => {
+							return ele.goodsChecked
+						})
+					})
+					uni.showToast({
+						title:"该商品已移入收藏夹，可去收藏夹查看",
+						icon:"none"
+					})
+				}
+				
+			},
+			deleteChecked(){
+				if(!this.totalCout){
+					uni.showToast({
+						title:"您还没有选择任何商品哦",
+						icon:"none"
+					})
+				}else{
+					uni.showModal({
+						title: "确定要删除所选商品吗？",
+						cancelColor:"#333333",
+						confirmColor:"#ff3347",
+						success:res => {
+						    if (res.confirm) {
+									let skuList = []
+									this.shopList.forEach(item => {
+										item.skuList.forEach(ele => {
+											if(ele.goodsChecked){
+												skuList.push({
+													skuId:ele.skuId,
+													buyCount:ele.buyCount
+												})
+											}
+										})
+									})
+									let params = {
+										userId:this.userId,
+										skuList:skuList
+									}
+									deleteProduct(params).then(data => {
+										if(data){
+											this.requestPage()
+										}
+									})
+						    } else if (res.cancel) {
+									return
+						    }
+						}
+					})
+				}
+				
+			},
+			pay(){
+				this.showMask = true
+				if(!this.totalCout){
+					uni.showToast({
+						title:"您还没有选择任何商品哦",
+						icon:"none"
+					})
+				}
+				// else if(){
+				// 	//当用户在购物车内选择了不同类型的商品时，点击结算无法进入到确认订单页面，会弹出左图所示弹窗
+				// }
+				else{
 					//跳转至结算页面
 				}
 			},
@@ -324,22 +447,40 @@
 				}
 			},
 		
-			bindClick(shopIndex,goodsIndex){
-				this.shopList[shopIndex].skuList.splice(goodsIndex, 1)//直接删除当前的商品
+			deleteGoods(skuId,buyCount){
+				let params = {
+					userId: this.userId,
+					skuList:[{
+						skuId:skuId,
+						buyCount:buyCount
+					}]
+				}
+				deleteProduct(params).then(data => {
+					if(data){
+						this.requestPage()
+					}
+				})
 			}, 
 			clearDisaledSku(){
 				uni.showModal({
-				    title: "确定要清空失效商品吗？",
-						content: "清空后会移除全部已失效商品",
-						cancelColor:"#333333",
-						confirmColor:"#ff3347",
-				    success:res => {
-				        if (res.confirm) {
-									this.disabledSkuList = []	
-				        } else if (res.cancel) {
-										return
-				        }
-				    }
+				  title: "确定要清空失效商品吗？",
+				  content: "清空后会移除全部已失效商品",
+				  cancelColor:"#333333",
+				  confirmColor:"#ff3347",
+				  success:res => {
+				      if (res.confirm) {
+								let params = {
+									userId:this.userId,
+								}
+				  			clearDisabled(params).then(data => {
+									if(data){
+										this.requestPage()
+									}
+								})
+				      } else if (res.cancel) {
+				  			return
+				      }
+				  }  
 				});
 			},
 			openSpec(){
@@ -359,6 +500,12 @@
 		overflow: auto;
 		background: #f5f6f7;
 		position: relative;
+	}
+	.cartContainer >>> .uni-dialog-title-text.uni-popup__info{
+		color: #333;
+	}
+	.cartContainer >>> .uni-dialog-input{
+		background: #f5f5f5;
 	}
 	.cartContainer >>> .uni-dialog-button-text{
 		color: #666666;
@@ -444,6 +591,110 @@
 	  right: 0;
 	  bottom: 0;
 	  z-index: 998;
+	}
+	.popupClass{
+		width: 100%;
+		height: 1046rpx;
+		background: #ffffff;
+		position: fixed;
+		left: 0;
+		bottom: 0;
+		z-index: 999;
+	}
+	.popupClass .header{
+		display: flex;
+		height: 104rpx;
+		border-radius: 32rpx;
+	}
+	.popupClass .header .tit{
+		width: 544rpx;
+		height: 40rpx;
+		padding: 32rpx 4rpx 32rpx 102rpx;
+		font-size: 32rpx;
+		font-weight: 500;
+		text-align: center;
+		color: #333333;
+		line-height: 40rpx;
+	}
+	.popupClass .header .closedIcon{
+		width: 80rpx;
+		height: 80rpx;
+		display: block;
+	}
+	.popupClass .line{
+		height: 2rpx;
+		background: #f2f2f2;
+	}
+	.popupClass .service{
+		width: 686rpx;
+		height: 296rpx;
+		margin: 32rpx;
+		border: 2rpx solid #00bfb6;
+		border-radius: 16rpx;
+	}
+	.popupClass .entity{
+		width: 686rpx;
+		height: 296rpx;
+		margin: 0 32rpx 68rpx 32rpx;
+		border: 2rpx solid #eeeeee;
+		border-radius: 16rpx;
+	}
+	.popupClass .top{
+		display: flex;
+		justify-content: space-between;
+		align-items: center;
+	}
+	.popupClass .left{
+		margin-left: 32rpx;
+	}
+	.popupClass .left .title{
+		width: fit-content;
+		height: 44rpx;
+		font-size: 32rpx;
+		font-weight: 500;
+		color: #00bfb6;
+		line-height: 44rpx;
+		margin-top: 14rpx;
+	}
+	.popupClass .entity .left .title{
+		color: #333333;
+	}
+	.popupClass .left .count{
+		width: 42rpx;
+		height: 36rpx;
+		font-size: 26rpx;
+		font-weight: 500;
+		color: #00bfb6;
+		line-height: 36rpx;
+	}
+	.popupClass .entity .left .count{
+		color: #666666;
+	}
+	.popupClass .check{
+		width: 36rpx;
+		height: 36rpx;
+		border: 2rpx solid #e5e5e5;
+		border-radius: 50%;
+		margin-right: 32rpx;
+		margin-top: 32rpx;
+	}
+	.popupClass .checked{
+		width: 36rpx;
+		height: 36rpx;
+		display: block;
+		margin-right: 32rpx;
+		margin-top: 32rpx;
+	}
+	.popupClass .footer{
+		width: 686rpx;
+		height: 88rpx;
+		background: linear-gradient(135deg,#53d5cc, #4fc9c9);
+		border-radius: 12rpx;
+		margin-left: 32rpx;
+		font-size: 32rpx;
+		color: #ffffff;
+		text-align: center;
+		line-height: 88rpx;
 	}
 	.shopItem{
 		margin: 24rpx 22rpx 0rpx 24rpx;
