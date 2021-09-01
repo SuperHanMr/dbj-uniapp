@@ -1,6 +1,7 @@
 <template>
 	<view class="daj-radio" :class="{'checked': checked}" @click="change"
 		:style="{width: width, height: width , borderRadius: borderRadius}">
+		<text class="after" v-if="checked"></text>
 	</view>
 </template>
 
@@ -27,7 +28,10 @@
 		methods: {
 			change() {
 				if (!this.checked) {
-					this.$emit("change", {value: this.value, checked: true})
+					this.$emit("change", {
+						value: this.value,
+						checked: true
+					})
 				}
 			}
 		}
@@ -44,16 +48,17 @@
 	.checked {
 		transition: all 0.2s;
 		display: flex;
+		flex-direction: row;
 		justify-content: center;
 		align-items: center;
 		box-sizing: border-box;
 		border: 2rpx solid #01c2c3;
 
-		&:after {
-			content: " ";
+		.after {
+			box-sizing: border-box;
 			width: 56%;
-			height: 18rpx;
-			border-radius: 56%;
+			height: 56%;
+			border-radius: 50%;
 			background: #01c2c3;
 		}
 	}
