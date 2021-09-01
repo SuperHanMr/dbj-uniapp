@@ -72,6 +72,9 @@
     border: 2rpx solid #333333 !important;
     border-radius: 16rpx !important;
   }
+  .uni-searchbar__cancel{
+    line-height: 62rpx !important;
+  }
 </style>
 <style scoped>
 
