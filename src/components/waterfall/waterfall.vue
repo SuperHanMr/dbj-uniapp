@@ -3,16 +3,16 @@
 		<view class="left">
 			<block v-for="(item, index) in leftList" :key="index">
 				<view class="waterfall-item" @click="toDetail(item)">
-					<image :src="item.src" mode="widthFix" lazy-load @load="onImageLoad"></image>
-					<view class="title">{{ item.title }}</view>
+					<image :src="item.imageUrl" mode="widthFix" lazy-load @load="onImageLoad"></image>
+					<view class="title">{{ item.name }}</view>
 				</view>
 			</block>
 		</view>
 		<view class="right">
 			<block v-for="(item, index) in rightList" :key="index">
 				<view class="waterfall-item" @click="toDetail(item)">
-					<image :src="item.src" mode="widthFix" lazy-load @load="onImageLoad"></image>
-					<view class="title">{{ item.title }}</view>
+					<image :src="item.imageUrl" mode="widthFix" lazy-load @load="onImageLoad"></image>
+					<view class="title">{{ item.name }}</view>
 				</view>
 			</block>
 		</view>
@@ -53,14 +53,16 @@
 			};
 		},
 		created() {
-			this.leftList = [this.list[0]]; //第一张图片入栈
+			if (this.list.length) {
+				this.leftList = [this.list[0]]; //第一张图片入栈
+			}
 		},
 		destroyed() {
 			console.log('destroy');
 		},
 		methods: {
 			toDetail(item) {
-				this.$emit('selectedItem',item)
+				this.$emit('selectedItem', item)
 			},
 			onImageLoad(e) {
 				if (!e) {
@@ -68,7 +70,7 @@
 					return;
 				}
 				let imgH = (e.detail.height / e.detail.width) * 345 + 100 +
-				20; //图片显示高度加上下面的文字的高度100rpx,加上margin-bottom20rpx
+					20; //图片显示高度加上下面的文字的高度100rpx,加上margin-bottom20rpx
 				let that = this;
 				if (that.itemIndex === 0) {
 					that.leftHeight += imgH; //第一张图片高度加到左边
@@ -109,8 +111,8 @@
 			.waterfall-item {
 				width: 345rpx;
 				margin-bottom: 20rpx;
-				background-color: pink;
 				box-sizing: border-box;
+				background-color: #FFFFFF;
 
 				image {
 					width: 345rpx;
@@ -118,9 +120,11 @@
 				}
 
 				.title {
-					width: 345rpx;
-					height: 100rpx;
+					display: -webkit-box;
+					-webkit-box-orient: vertical;
+					-webkit-line-clamp: 2;
 					overflow: hidden;
+					margin: 16rpx;
 				}
 			}
 		}

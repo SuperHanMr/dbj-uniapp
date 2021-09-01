@@ -118,7 +118,7 @@
 				// border: 2rpx solid #CCCCCC;
 				// color: #111;
 				padding: 0;
-				background: linear-gradient(135deg, #36D9CD 0%, #28C6C6 100%);
+				background: linear-gradient(135deg, #36D9CD 0%, #28C6C6 100%);   
 			}
 		}
 	}

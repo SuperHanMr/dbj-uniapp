@@ -12,8 +12,13 @@
 			<text>我的家</text>
 			<image class="ic-triangle" src="../../../static/images/ic_triangle.svg"></image>
 		</view>
+		<!-- 切换房屋弹窗 -->
+		<uni-popup ref="sw">
+			<house-switch :datalist="myHouseList" :current="current" @goAddHouse="addHouse" @checkHouse="checkHouse"></house-switch>
+		</uni-popup>
+		
 		<view class="uni-padding-wrap">
-			<view class="uni-title">{{ currentHouse }}</view>
+			<view class="uni-title">{{ currentHouse.locationName }}{{currentHouse.housingEstate}}</view>
 		</view>
 		<view class="design-wrap">
 			<view class="design" @click="goDesignPicture">
@@ -21,41 +26,72 @@
 				<image src="../../../static/images/ic_triangle_999.svg"></image>
 			</view>
 		</view>
-		<picker-view v-if="visible" :indicator-style="indicatorStyle" :value="value" @change="bindChange"
-			class="picker-view">
-			<picker-view-column>
-				<view class="item" v-for="(item, index) in houses" :key="index">{{item.area}}</view>
-			</picker-view-column>
-		</picker-view>
 	</view>
 </template>
 
 <script>
+	import { HouseSwitch } from "../../../components/house-switch/house-switch.vue"
+	import {
+		queryEstates,
+	} from "../../../api/decorate.js"
 	export default {
-		components: {},
+		components: { HouseSwitch },
 		data() {
 			return {
-				visible: false,
 				indicatorStyle: 'height: 50px;',
-				value: [0],
-				currentHouse: ""
+				currentHouse: {},
+				isSwitchHouse:false,
+				myHouseList: [],
+				current: null
 			}
 		},
 		mounted() {
-			this.currentHouse = this.houses[this.value[0]].area
+			this.getMyHouseList();
 		},
-		computed: {
-			houses() {
-				console.log(getApp().globalData.houses)
-				return getApp().globalData.houses
-			},
-		},
+		computed: {},
 		methods: {
+			addHouse() {
+				uni.navigateTo({
+					url: "/pages/decorate/add-house/add-house"
+				})
+			},
+			checkHouse(item) {
+				this.current = item.id
+				this.currentHouse = item
+				this.$refs.sw.close()
+			},
+			getMyHouseList() {
+				queryEstates({
+					isNeedRelative: true
+				}).then(data => {
+					let i = 1;
+					let names = ["设计阶段", "未开工", "已竣工"]
+					for(let item of data) {
+						item.statusName = names[i - 1]
+						item.status = i++
+					}
+					data[1].ext = "第二次装修"
+					data[2].friend = true
+					data[2].ext = "首次装修"
+					this.myHouseList = data
+					const arr = data.filter(t => t.defaultEstate)
+					let temp = null;
+					if(arr.length > 0) {
+						temp = arr[0]
+					} else {
+						data[0].defaultEstate = true
+						temp = data[0]
+					}
+					this.currentHouse = temp
+					this.current = temp.id
+					console.log(this.current, this.currentHouse)
+				})
+			},
 			bindChange(e) {
 				console.log(e)
 			},
 			switchVisible() {
-				this.visible = !this.visible
+				this.$refs.sw.open('top')
 			},
 			goDesignPicture(){
 				uni.navigateTo({
@@ -64,12 +100,6 @@
 			}
 		},
 		watch: {
-			houses(val) {
-				console.log(val)
-			},
-			value(val) {
-				this.currentHouse = this.houses[val[0]].area
-			}
 		}
 	}
 </script>
@@ -78,8 +108,9 @@
 	.have-house-no-service {
 		height: 100%;
 		background-color: #fff;
+		position: relative;
 	}
-
+	
 	.title {
 		display: flex;
 		justify-content: flex-start;
@@ -106,7 +137,9 @@
 			margin-right: 9rpx;
 		}
 	}
-
+	.sw.title {
+		margin-bottom: 0;
+	}
 	.picker-view {
 		width: 750rpx;
 		height: 600rpx;
@@ -125,7 +158,7 @@
 		margin-bottom: 24rpx;
 
 		.uni-title {
-			width: 314rpx;
+			// width: 314rpx;
 			height: 34rpx;
 			font-size: 24rpx;
 			font-family: PingFangSC, PingFangSC-Regular;
