@@ -18,7 +18,7 @@
 		</uni-popup>
 		
 		<view class="uni-padding-wrap">
-			<view class="uni-title">{{ currentHouse.locationName }}{{currentHouse.address}}</view>
+			<view class="uni-title">{{ currentHouse.locationName }}{{currentHouse.housingEstate}}</view>
 		</view>
 		<view class="design-wrap">
 			<view class="design" @click="goDesignPicture">
@@ -75,8 +75,16 @@
 					data[2].ext = "首次装修"
 					this.myHouseList = data
 					const arr = data.filter(t => t.defaultEstate)
-					this.currentHouse = arr[0]
-					this.current = arr[0].id
+					let temp = null;
+					if(arr.length > 0) {
+						temp = arr[0]
+					} else {
+						data[0].defaultEstate = true
+						temp = data[0]
+					}
+					this.currentHouse = temp
+					this.current = temp.id
+					console.log(this.current, this.currentHouse)
 				})
 			},
 			bindChange(e) {
