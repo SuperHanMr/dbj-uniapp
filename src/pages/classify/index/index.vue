@@ -9,7 +9,8 @@
           </view>
         </view> 
         <view class="content-view">
-          <scroll-view id="tab-bar" class="scroll-h" scroll-x="true" :show-scrollbar="false" :scroll-into-view="'tab' + scrollInto" v-if="dataList.length > 1">
+          <!-- :scroll-into-view="'tab' + scrollInto" 点击移动 -->
+          <scroll-view id="tab-bar" class="scroll-h" scroll-x="true" :show-scrollbar="false"  v-if="dataList.length > 1">
              <view v-for="(tab,index) in dataList" :key="index" :class="{'uni-tab-item': dataList.length >4, 'uni-tab-item-short2': dataList.length === 2,
              'uni-tab-item-short3': dataList.length === 3, 'uni-tab-item-short4': dataList.length === 4}" :id="'tab' + index" :data-current="index" @click="ontabtap">
                  <text class="uni-tab-item-title" :class="tabIndex==index ? 'uni-tab-item-title-active' : ''">{{tab.name}}</text>
