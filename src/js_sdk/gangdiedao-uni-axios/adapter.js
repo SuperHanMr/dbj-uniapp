@@ -23,7 +23,7 @@ export const adapter = config => {
 			method: requestMethod,
 			url: requestUrl,
 			header: requestHeaders,
-			data: requestMethod === 'POST' || requestMethod === 'PUT' || requestMethod === 'PATCH' ? requestData : '',
+			data: requestMethod === 'POST' || requestMethod === 'PUT' || requestMethod === 'PATCH' || requestMethod === 'DELETE'  ? requestData : '',
 			responseType: config.responseType === 'arraybuffer' ? 'arraybuffer' : 'text',
 			dataType: config.responseType === 'json' ? 'json' : config.responseType,
 			success: (res) => {
