@@ -341,13 +341,6 @@
 			}
 		},
 		{
-			"path": "pages/changeGoodsSku/changeGoodsSku",
-			"style": {
-				"navigationBarTitleText": "",
-				"enablePullDownRefresh": false
-			}
-		},
-		{
 			"path": "pages/common/webview/webview",
 			"style": {
 				"navigationBarTitleText": "",
