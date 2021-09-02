@@ -187,7 +187,7 @@ export default {
 		},
     handlerToMyHouse(){
       uni.navigateTo({
-        url:'/pages/my/my-house/my-house'
+        url:'/pages/my/my-house/my-house?isMy=true'
       })
     }
   },
