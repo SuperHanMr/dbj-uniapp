@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="351px" height="60px" viewBox="0 0 351 60" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <title>服务卡头部</title>
+    <defs>
+        <linearGradient x1="100%" y1="48.5389729%" x2="0%" y2="51.4610271%" id="linearGradient-1">
+            <stop stop-color="#E1ECFE" offset="0%"></stop>
+            <stop stop-color="#F2EDFF" offset="48.5094106%"></stop>
+            <stop stop-color="#FFF1F4" offset="100%"></stop>
+        </linearGradient>
+        <linearGradient x1="50%" y1="84.2337036%" x2="50%" y2="3.061617e-15%" id="linearGradient-2">
+            <stop stop-color="#FFFFFF" offset="0%"></stop>
+            <stop stop-color="#FFFFFF" stop-opacity="0" offset="100%"></stop>
+        </linearGradient>
+    </defs>
+    <g id="量房服务" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="01装修-只购买量房服务" transform="translate(-12.000000, -193.000000)">
+            <g id="服务卡头部" transform="translate(12.000000, 193.000000)">
+                <path d="M12,0 L339,0 C345.627417,-1.21743675e-15 351,5.372583 351,12 L351,60 L351,60 L0,60 L0,12 C9.64732338e-16,5.372583 5.372583,1.21743675e-15 12,0 Z" id="矩形备份-19" fill="url(#linearGradient-1)"></path>
+                <rect id="矩形备份-23" fill="url(#linearGradient-2)" x="0" y="0" width="351" height="60"></rect>
+            </g>
+        </g>
+    </g>
+</svg>

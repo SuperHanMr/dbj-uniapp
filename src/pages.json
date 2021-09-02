@@ -12,7 +12,9 @@
 		{
 			"path": "pages/decorate/index/index",
 			"style": {
-				"navigationBarTitleText": "装修"
+				"navigationBarTitleText": "装修",
+				"transparentTitle": "auto",
+				"navigationStyle": "custom"
 			}
 		},
 		{
