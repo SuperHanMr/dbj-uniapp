@@ -12,7 +12,9 @@
 		{
 			"path": "pages/decorate/index/index",
 			"style": {
-				"navigationBarTitleText": "装修"
+				"navigationBarTitleText": "装修",
+				"transparentTitle": "auto",
+				"navigationStyle": "custom"
 			}
 		},
 		{
@@ -61,7 +63,7 @@
 			"style": {
 				"navigationBarTitleText": "",
 				"enablePullDownRefresh": false,
-        "navigationBarBackgroundColor": "#FFFFFF"
+				"navigationBarBackgroundColor": "#FFFFFF"
 			}
 		},
 		{
@@ -69,7 +71,7 @@
 			"style": {
 				"navigationBarTitleText": "商品详情",
 				"enablePullDownRefresh": false,
-        "navigationStyle": "custom"
+				"navigationStyle": "custom"
 			}
 		},
     {
@@ -316,7 +318,7 @@
 			"path": "pages/my/my-order/order-in-progress/order-in-progress",
 			"style": {
 				"navigationBarTitleText": "",
-				"navigationBarBackgroundColor":"#FFB344",
+				"navigationBarBackgroundColor": "#FFB344",
 				"enablePullDownRefresh": false
 			}
 		},
@@ -324,7 +326,7 @@
 			"path": "pages/my/my-order/order-success/order-success",
 			"style": {
 				"navigationBarTitleText": "",
-				"navigationBarBackgroundColor":"#23D5C6",
+				"navigationBarBackgroundColor": "#23D5C6",
 				"enablePullDownRefresh": false
 			}
 		},
@@ -332,7 +334,7 @@
 			"path": "pages/my/my-order/order-failed/order-failed",
 			"style": {
 				"navigationBarTitleText": "",
-				"navigationBarBackgroundColor":"#C6C6C6",
+				"navigationBarBackgroundColor": "#C6C6C6",
 				"enablePullDownRefresh": false
 			}
 		},
@@ -378,14 +380,15 @@
 				"navigationBarTitleText": "设计服务",
 				"enablePullDownRefresh": true
 			}
-		}, {
+		},
+		{
 			"path": "pages/decorate/no-house-checkhouse/no-house-checkhouse",
 			"style": {
 				"navigationBarTitleText": "验房服务",
 				"enablePullDownRefresh": false
 			}
 		}
-    ],
+	],
 	"globalStyle": {
 		"navigationBarTextStyle": "black",
 		"navigationBarTitleText": "uni-app",
@@ -445,7 +448,72 @@
 		}]
 	},
 	"subPackages": [{
-		"root": "sub-pagesA",
+		"root": "sub-home",//首页模块分包
+		"pages": [{
+				"path": "pages/test1/test1",
+				"style": {
+					"navigationBarTitleText": "",
+					"enablePullDownRefresh": false
+				}
+			},
+			{
+				"path": "apply-for-refund/apply-for-refund",
+				"style": {
+					"navigationBarTitleText": "申请退款",
+					"enablePullDownRefresh": false
+				}
+			},
+			{
+				"path": "pages/decorate/amoutDelivery/amoutDelivery",
+				"style": {
+					"navigationBarTitleText": "确认量房结果",
+					"enablePullDownRefresh": false
+				}
+			},
+			{
+				"path": "pages/decorate/warehouse-refund/warehouse-refund",
+				"style": {
+					"navigationBarTitleText": "",
+					"enablePullDownRefresh": false
+				}
+			},
+			{
+				"path": "pages/decorate/warehouse-refund-detail/warehouse-refund-detail",
+				"style": {
+					"navigationBarTitleText": "",
+					"enablePullDownRefresh": false
+				}
+			}
+		]
+	}, {
+		"root": "sub-message",//消息模块分包
+		"pages": [{
+			"path": "pages/test1/test1",
+			"style": {
+				"navigationBarTitleText": "",
+				"enablePullDownRefresh": false
+			}
+		}]
+	}, {
+		"root": "sub-my",//我的模块分包
+		"pages": [{
+			"path": "pages/test1/test1",
+			"style": {
+				"navigationBarTitleText": "",
+				"enablePullDownRefresh": false
+			}
+		}]
+	}, {
+		"root": "sub-classify",//商城模块分包
+		"pages": [{
+			"path": "pages/test1/test1",
+			"style": {
+				"navigationBarTitleText": "",
+				"enablePullDownRefresh": false
+			}
+		}]
+	}, {
+		"root": "sub-decorate", //装修模块分包
 		"pages": [{
 			"path": "pages/test1/test1",
 			"style": {
