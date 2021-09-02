@@ -1,5 +1,6 @@
 <template>
 	<view class="s-w">
+		<view class="top"></view>
 		<view class="house-list">
 			<view class="item" v-for="(item ,i) in datalist" @click="checkHouse(item)">
 				<view class="item-inner flex-row-bet"
@@ -56,6 +57,10 @@
 		border-radius: 0rpx 0rpx 40rpx 40rpx;
 	}
 
+	.top{
+		height: 174rpx;
+		opacity: .7;
+	}
 	.house-list {
 		height: 472rpx;
 		overflow-x: hidden;
