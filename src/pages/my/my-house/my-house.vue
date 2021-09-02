@@ -3,16 +3,19 @@
     <view class="box" :style="{marginBottom:systemHeight}">
       <view class="touch-item" v-for="(item,index) in listData" :class="item.isTouchMove == true?'touch-move-active':''" :key='item.id' @touchstart="touchstart" @touchmove="touchmove" :data-index='index'>
         <view class="list-count">
-          <view class="list-item">
+          <view class="list-item" @click="toChoose(item)">
             <view class="item-message">
-              <view class="item">
-                <text class="defalut" v-if="item.defaultEstate">默认</text>
-                <text class="province">{{item.housingEstate}}</text>
-              </view>
-              <text class="address">{{item.locationName}}</text>
-              <view class="item">
-                <text class="name" >{{item.contactName}}</text>
-                <text class="phone">{{item.contactPhone}}</text>
+              <image src="../../../static/images/choose.svg" v-if="item.id===chooseId" class="choose-icon edit-icon"></image>
+              <view class="message-right">
+                <view class="item">
+                  <text class="defalut" v-if="item.defaultEstate">默认</text>
+                  <text class="province">{{item.housingEstate}}</text>
+                </view>
+                <text class="address">{{item.locationName}}</text>
+                <view class="item">
+                  <text class="name" >{{item.contactName}}</text>
+                  <text class="phone">{{item.contactPhone}}</text>
+                </view>
               </view>
             </view> 
             <view class="edit" @click="edit(item)"><image src="../../../static/images/edit.svg" class="edit-icon"></image></view>
@@ -42,7 +45,8 @@
 				startY: 0,
         listData:[], 
         systemBottom:'',
-        systemHeight:''
+        systemHeight:'',
+        chooseId:''
 			};
 		},
 		mounted() {
@@ -57,10 +61,13 @@
     onShow(){
       this.getHouseList()
     },
+    
     onLoad(e) {
-      // if (e && e.id) {
-      //   this.roomId = e.id;
-      // }
+      if (e && e.id) {
+        this.chooseId = e.id;
+      }
+      this.isMy = e.isMy||false
+
       const menuButtonInfo = uni.getMenuButtonBoundingClientRect();
       this.systemBottom = menuButtonInfo.bottom + 'rpx'; 
       this.systemHeight = menuButtonInfo.bottom + 136 +'rpx'
@@ -145,8 +152,27 @@
         uni.navigateTo({ 
           url:'/pages/decorate/add-house/add-house'
         })
-      }
-		}
+      },
+      toChoose(item){
+        // console.log(this.isMy)
+        if(this.isMy)return
+        this.chooseId = item.id
+        this.currentId = item.id
+      },
+		},
+    onUnload(){
+      if(this.isMy)return
+      uni.setStorageSync(
+          'houseListChooseId',
+          this.chooseId,
+      );
+
+      // EventChannel.emit('getHouse',123)
+      // uni.navigateBack()
+      // wx.reLaunch({
+      //       url: '../logs/logs'
+      //     })
+    }
 	} 
 </script>
 
@@ -277,6 +303,11 @@
         font-size: 24rpx;
       }
     }
+    .choose-icon{
+      display: inline-block;
+      vertical-align: middle;
+      margin-right: 24rpx;
+    }
     .edit-icon{
       width: 36rpx;
       height: 36rpx;
@@ -286,6 +317,12 @@
       font-size: 28rpx;
       font-weight: 500;
     }
+   
+  }
+  .message-right{
+    display: inline-block;
+    vertical-align: middle;
+    // margin-left: 24rpx;
   }
   .defalut-text{
     color: #fff;

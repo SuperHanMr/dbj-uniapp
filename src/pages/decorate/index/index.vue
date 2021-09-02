@@ -12,7 +12,7 @@
 <!--    <button @click="toSend">发送消息</button>
     <text>{{mqttMessage}}</text> -->
 		<decorate-notice v-if="noticeActive" @closeNotice='closeNotice' class="decorate-notice"></decorate-notice>
-		<drag-button-follow :style.sync="style" @btnClick='noticeActive=true' :follow='`left,right`'
+		<drag-button-follow :style.sync="style" @btnClick='openNotice' :follow='`left,right`'
 			className="drag-button" class="drag-button">
 			<view>
 				<text>消息</text>
@@ -182,7 +182,12 @@
       },
 			closeNotice() {
 				this.noticeActive = false;
+        uni.showTabBar()
 			},
+      openNotice(){
+        this.noticeActive = true
+        uni.hideTabBar()
+      },
 			goToAddHouseInfo() {
 				uni.navigateTo({
 					url: "/pages/decorate/add-house/add-house",

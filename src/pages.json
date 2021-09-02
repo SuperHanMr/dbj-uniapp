@@ -455,6 +455,14 @@
 				"navigationBarTitleText": "",
 				"enablePullDownRefresh": false
 			}
-		}]
+		},
+    {
+    	"path": "pages/decorate/amoutDelivery/amoutDelivery",
+    	"style": {
+    		"navigationBarTitleText": "确认量房结果",
+    		"enablePullDownRefresh": false
+    	}
+    }
+    ]
 	}]
 }
