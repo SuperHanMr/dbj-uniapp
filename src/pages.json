@@ -437,7 +437,7 @@
 		}]
 	},
 	"subPackages": [{
-		"root": "sub-pagesA",
+		"root": "sub-home",
 		"pages": [{
 				"path": "pages/test1/test1",
 				"style": {

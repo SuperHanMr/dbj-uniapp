@@ -204,7 +204,7 @@ export default {
     },
     toApplayForRefund() {
       uni.navigateTo({
-        url: "../../../../sub-pagesA/apply-for-refund/apply-for-refund",
+        url: "../../../../sub-home/apply-for-refund/apply-for-refund",
       });
     },
     getOrderDetail() {
