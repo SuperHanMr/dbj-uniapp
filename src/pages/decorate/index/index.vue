@@ -106,7 +106,7 @@
 				currentHouse: {},
 				myHouseList: [],
 				current: null,
-				friendList: [], 
+				friendList: [],
 				DECTORE_DICT,
 			};
 		},
@@ -215,7 +215,12 @@
 			},
 			closeNotice() {
 				this.noticeActive = false;
+        uni.showTabBar()
 			},
+      openNotice(){
+        this.noticeActive = true
+        uni.hideTabBar()
+      },
 			goToAddHouseInfo() {
 				uni.navigateTo({
 					url: "/pages/decorate/add-house/add-house",
