@@ -346,6 +346,7 @@ export default {
       isActive: true,
       ordStatus: 1,
       currentIndex: 2,
+			rows:15,
     };
   },
   computed: {
@@ -372,9 +373,14 @@ export default {
       }
     },
   },
-  onLoad(e) {
-		 console.log(e,"请求回来的数据呢呢呢呢呢呢呢呢呢呢");
-    orderList().then((e) => {
+	
+  onLoad(option) {
+		 this.currentIndex = Number(option.index)
+    orderList({
+			orderStatus:-1,
+			rows:this.rows,
+			lastId:"",
+		}).then((e) => {
       console.log(e,"请求回来的数据呢呢呢呢呢呢呢呢呢呢");
       this.list = e;
 			console.log("this.list=",this.list)

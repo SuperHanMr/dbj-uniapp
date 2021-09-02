@@ -2,7 +2,8 @@
 	<view class="container">
 		
 		<view class="order-container">
-			<view class="order-status" :style="{backgroundImage:`url(${bgImg})`,backgroundSize: '100% 172rpx'}">
+			<view class="order-status">
+				<view  class="backgroundStyle"/>
 				<view class="status">
 					<image src="@/static/order/ic_order_wait@2x.png" mode=""></image>
 					<text>待付款</text>
@@ -16,7 +17,8 @@
 			
 			<order-user-base-info></order-user-base-info>
 			
-			<view class="body2">
+			
+			<!-- <view class="body2">
 				<view class="header">
 					<text>不知道叫什么名字的店铺nizhidaomahahahahahahaha</text>
 					<image
@@ -24,10 +26,121 @@
 						mode=""
 					></image>
 				</view>
-				<order-item></order-item>
-				<view class="footer">
+				<order-item ></order-item>
+				<order-item :paddingBottom="24"></order-item>
+				<view class="tips">
+					<text>本次支付</text>
+					<text style="color: #333333;">满100元</text>
+					<text>，可获得</text>
+					<text style="color: #333333;">10次免邮费额度，</text>
+					<text>搬运费需要根据实际要货时进行核算</text>
+				</view>
+				<view class="tips">
+					<text>搬运费需要根据实际要货时进行核算</text>
+				</view>
+			</view> -->
+			
+			<view class="body2">
+				<view class="shop-item">
+					<view class="header">
+						<text>不知道叫什么名字的店铺nizhidaomahahahahahahaha</text>
+						<image
+							src="@/static/order/ic_more@2x.png"
+							mode=""
+						></image>
+					</view>
+					<order-item :paddingBottom="24"></order-item>
+					
+					<view class="discount-container1">
+						<view class="left">
+							<view class="item">
+								<text>平台优惠</text>
+								<text>--</text>
+							</view>
+							<!-- <view class="item">
+								<text>商家优惠</text>
+								<text>￥100.00</text>
+							</view> -->
+						</view>
+						<view class="line"/>
+						<view class="right">
+							<view class="item">
+								<text>押金</text>
+								<text>--</text>
+							</view>
+							<view class="item">
+								<text>商家优惠</text>
+								<text>￥100.00</text>
+							</view>
+						</view>
+					</view>
+					<view class="split-line" />
+					
+					<!-- <view class="tips">
+						<text>本次支付</text>
+						<text style="color: #333333;">满100元</text>
+						<text>，可获得</text>
+						<text style="color: #333333;">10次免邮费额度，</text>
+						<text>搬运费需要根据实际要货时进行核算</text>
+					</view> -->
+				</view>
+				
+				<view class="shop-item">
+					<view class="header">
+						<text>不知道叫什么名字的店铺nizhidaomahahahahahahaha</text>
+						<image
+							src="@/static/order/ic_more@2x.png"
+							mode=""
+						></image>
+					</view>
+					<order-item :paddingBottom="24"></order-item>
+					
+					<!-- <view class="discount-container2">
+						<view class="left">
+							<view class="item">
+								<text>运费</text>
+								<text>--</text>
+							</view>
+							<view class="item">
+								<text>商家优惠</text>
+								<text>￥100.00</text>
+							</view>
+						</view>
+						<view class="line"/>
+						<view class="right">
+							<view class="item">
+								<text>搬运费</text>
+								<text>--</text>
+							</view>
+							<view class="item">
+								<text>平台优惠</text>
+								<text>￥100.00</text>
+							</view>
+							<view class="item">
+								<text>押金</text>
+								<text>￥100.00</text>
+							</view>
+						</view>
+					</view> -->
+					<view class="discount-container3">
+						<view class="right">
+							<view class="item">
+								<text>押金</text>
+								<text>￥100.00</text>
+							</view>
+						</view>
+					</view>
+		
+					<!-- <view class="tips">
+						<text>本次支付</text>
+						<text style="color: #333333;">满100元</text>
+						<text>，可获得</text>
+						<text style="color: #333333;">10次免邮费额度，</text>
+						<text>搬运费需要根据实际要货时进行核算</text>
+					</view> -->
 					
 				</view>
+			
 			</view>
 			
 			<order-price></order-price>
@@ -46,6 +159,11 @@
 				<text>取消付款</text>
 				<view class="button" @click="toPay()" >
 					去付款
+				</view>
+			</view>
+			<view class="go-to-apply-for-refund">
+				<view class="button" @click="toApplayForRefund()" >
+					申请退款
 				</view>
 			</view>
 		</view>
@@ -76,6 +194,11 @@
 					console.log(e);
 				})
 			},
+			toApplayForRefund(){
+				uni.navigateTo({
+					url:"../../../../sub-pagesA/apply-for-refund/apply-for-refund"
+				})
+			},
 			getOrderDetail(){
 				orderDetail({id:this.orderNo}).then(e=>{
 					console.log(e);
@@ -92,17 +215,24 @@
 		height: 100%;
 		overflow: auto;
 		padding-bottom: 100rpx;
-		background-color: skyblue;
+		// background-color: skyblue;
 		.order-container{
 			.order-status{
 				width: 100%;
 				height: 140rpx;
 				color: #FFFFFF;
-				background-color: pink;
 				background-size: 100% 172rpx;
 				display: flex;
 				flex-flow: column nowrap; 
 				align-items: center;
+				position: relative;
+				.backgroundStyle{
+					position: absolute;
+					z-index: -1;
+					width: 100%;
+					height: 172rpx;
+					background-color: #FFB245;
+				}
 				.status{
 					display: flex;
 					flex-flow: row nowrap;
@@ -164,35 +294,141 @@
 				margin-bottom: 16rpx;
 			}
 			.body2{
-				padding: 32rpx 32rpx 0;
+				padding:32rpx;
 				background: #FFFFFF;
 				border-radius: 24rpx 24rpx 0 0;
-				
-				.header {
-				  margin-top: 16rpx;
-					margin-bottom: 16rpx;
-				  box-sizing: border-box;
-				  display: flex;
-				  align-items: center;
-					text {
-						font-weight: 1000;
-						max-width: 476rpx;
-						font-size: 28rpx;
-						overflow: hidden;
-						text-overflow: ellipsis;
-						white-space: nowrap;
+				.shop-item{
+					margin-bottom: 32rpx;
+					.header {
+						margin-bottom: 32rpx;
+						box-sizing: border-box;
+						display: flex;
+						align-items: center;
+						text {
+							font-weight: 1000;
+							max-width: 476rpx;
+							font-size: 28rpx;
+							overflow: hidden;
+							text-overflow: ellipsis;
+							white-space: nowrap;
+						}
+						image {
+							width: 34rpx;
+							height: 34rpx;
+							object-fit: cover;
+						}
 					}
-			
-					image {
-						width: 34rpx;
-						height: 34rpx;
-						object-fit: cover;
-					}
-				}
-				.footer{
 					
+					.discount-container1{
+						margin-bottom: 24rpx;
+						display: flex;
+						flex-flow: row nowrap;
+						flex: 1;
+						align-items: flex-start;
+						justify-content: flex-end;
+						font-size: 22rpx;
+						color: #999999;
+						.left,.right{
+							
+							.item{
+								width: 302rpx;
+								height: 32rpx;
+								line-height: 32rpx;
+								display: flex;
+								flex: 1;
+								flex-flow: row nowrap;
+								justify-content: space-between;
+								margin-bottom: 8rpx;
+							}
+							.item:nth-last-child(1){
+								margin-bottom: 0;
+							}
+						}
+						.line{
+							width: 2rpx;
+							height:40rpx;
+							background: #EBEBEB;
+							margin: 16rpx 40rpx;
+						}
+					}
+					
+					.discount-container2{
+						margin-bottom: 24rpx;
+						display: flex;
+						flex-flow: row nowrap;
+						flex: 1;
+						align-items: flex-start;
+						justify-content: flex-end;
+						font-size: 22rpx;
+						color: #999999;
+						.left,.right{
+							
+							.item{
+								width: 302rpx;
+								height: 32rpx;
+								line-height: 32rpx;
+								display: flex;
+								flex: 1;
+								flex-flow: row nowrap;
+								justify-content: space-between;
+								margin-bottom: 8rpx;
+							}
+							.item:nth-last-child(1){
+								margin-bottom: 0;
+							}
+						}
+						.line{
+							width: 2rpx;
+							height: 80rpx;
+							background: #EBEBEB;
+							margin: 16rpx 40rpx;
+						}
+					}
+					
+					.discount-container3{
+						margin-bottom: 24rpx;
+						display: flex;
+						flex-flow: row nowrap;
+						flex: 1;
+						align-items: flex-start;
+						justify-content: flex-end;
+						font-size: 22rpx;
+						color: #999999;
+						.right{
+							.item{
+								width: 302rpx;
+								height: 32rpx;
+								line-height: 32rpx;
+								display: flex;
+								flex: 1;
+								flex-flow: row nowrap;
+								justify-content: space-between;
+								margin-bottom: 8rpx;
+							}
+						}
+					}
+					
+					.split-line{
+						height: 1rpx;
+						background-color: #EBEBEB;
+						
+					}
+					
+					.tips{
+						background: #F7F7F7;
+						border-radius: 16rpx;
+						color: #999999;
+						font-size: 22rpx;
+						padding:16rpx 24rpx;
+						box-sizing: border-box;
+					}	
+				
+				}
+				.shop-item:nth-last-child(1){
+					margin-bottom: 0;
 				}
 			}
+			
 			
 			.payment-method{
 				display: flex;
@@ -254,6 +490,25 @@
 					border-radius: 12rpx;
 				}
 			}
+			.go-to-apply-for-refund{
+				margin-top: 40rpx;
+				display: flex;
+				flex: 1;
+				padding:28rpx 32rpx;
+				align-items: flex-end;
+				justify-content: flex-end;
+				background-color: #fff;
+				.button{
+					width: 160rpx;
+					height: 56rpx;
+					line-height: 56rpx;
+					text-align: center;
+					color:#111111 ;
+					font-size: 24rpx;
+					border: 2rpx solid #EAEAEA;
+				}
+			}
+			
 		}
 	}
 

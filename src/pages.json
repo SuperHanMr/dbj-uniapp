@@ -312,7 +312,7 @@
 			"path": "pages/my/my-order/order-in-progress/order-in-progress",
 			"style": {
 				"navigationBarTitleText": "",
-				"navigationBarBackgroundColor":"#FFB344",
+				"navigationBarBackgroundColor": "#FFB344",
 				"enablePullDownRefresh": false
 			}
 		},
@@ -320,7 +320,7 @@
 			"path": "pages/my/my-order/order-success/order-success",
 			"style": {
 				"navigationBarTitleText": "",
-				"navigationBarBackgroundColor":"#23D5C6",
+				"navigationBarBackgroundColor": "#23D5C6",
 				"enablePullDownRefresh": false
 			}
 		},
@@ -328,7 +328,7 @@
 			"path": "pages/my/my-order/order-failed/order-failed",
 			"style": {
 				"navigationBarTitleText": "",
-				"navigationBarBackgroundColor":"#C6C6C6",
+				"navigationBarBackgroundColor": "#C6C6C6",
 				"enablePullDownRefresh": false
 			}
 		},
@@ -381,14 +381,15 @@
 				"navigationBarTitleText": "设计服务",
 				"enablePullDownRefresh": true
 			}
-		}, {
+		},
+		{
 			"path": "pages/decorate/no-house-checkhouse/no-house-checkhouse",
 			"style": {
 				"navigationBarTitleText": "验房服务",
 				"enablePullDownRefresh": false
 			}
 		}
-    ],
+	],
 	"globalStyle": {
 		"navigationBarTextStyle": "black",
 		"navigationBarTitleText": "uni-app",
@@ -407,7 +408,8 @@
 		"selectedColor": "yellow",
 		"borderStyle": "black",
 		"backgroundColor": "#ffffff",
-		"list": [{
+		"list": [
+			{
 				"pagePath": "pages/home/index/index",
 				// "iconPath": "static/component.png",
 				// "selectedIconPath": "static/componentHL.png",
@@ -441,20 +443,33 @@
 	},
 	"condition": { //模式配置，仅开发期间生效
 		"current": 0, //当前激活的模式(list 的索引项)
-		"list": [{
-			"name": "", //模式名称
-			"path": "", //启动页面，必选
-			"query": "" //启动参数，在页面的onLoad函数里面得到
-		}]
-	},
-	"subPackages": [{
-		"root": "sub-pagesA",
-		"pages": [{
-			"path": "pages/test1/test1",
-			"style": {
-				"navigationBarTitleText": "",
-				"enablePullDownRefresh": false
+		"list": [
+			{
+				"name": "", //模式名称
+				"path": "", //启动页面，必选
+				"query": "" //启动参数，在页面的onLoad函数里面得到
 			}
-		}]
-	}]
+		]
+	},
+	"subPackages": [
+		{
+			"root": "sub-pagesA",
+			"pages": [
+				{
+					"path": "pages/test1/test1",
+					"style": {
+						"navigationBarTitleText": "",
+						"enablePullDownRefresh": false
+					}
+				},
+				{
+					"path": "apply-for-refund/apply-for-refund",
+					"style": {
+						"navigationBarTitleText": "申请退款",
+						"enablePullDownRefresh": false
+					}
+				}
+			]
+		}
+	]
 }
