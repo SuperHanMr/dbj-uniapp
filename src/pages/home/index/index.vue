@@ -12,7 +12,6 @@
 				去亲友团
 			</view>
 			<button style="width: 50%;margin-top: 20rpx;" type="default" @click="toNextPage">去封装好的列表页</button>
-
 			<button style="width: 50%;margin-top: 20rpx;" type="default" @click="toSubPage">去分包1</button>
 			<button style="width: 50%;margin-top: 20rpx;" type="default" @click="toCalebdar">去日历</button>
 			<swiper class="banner-content" :indicator-dots="true" :autoplay="true" interval="2000" duration="500"
@@ -96,7 +95,7 @@
 				this.getCaseList();
 			},
 			onSelectedItem(item) {
-				if(item.shareLinks){
+				if (item.shareLinks) {
 					this.toWebview(item.shareLinks);
 				}
 			},

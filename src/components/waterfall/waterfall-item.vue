@@ -9,7 +9,6 @@
 				{{ item.name }}
 			</view>
 		</view>
-
 	</view>
 </template>
 

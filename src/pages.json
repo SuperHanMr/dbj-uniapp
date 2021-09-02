@@ -61,7 +61,7 @@
 			"style": {
 				"navigationBarTitleText": "",
 				"enablePullDownRefresh": false,
-        "navigationBarBackgroundColor": "#FFFFFF"
+				"navigationBarBackgroundColor": "#FFFFFF"
 			}
 		},
 		{
@@ -69,7 +69,7 @@
 			"style": {
 				"navigationBarTitleText": "商品详情",
 				"enablePullDownRefresh": false,
-        "navigationStyle": "custom"
+				"navigationStyle": "custom"
 			}
 		},
 		{
@@ -307,7 +307,7 @@
 			"path": "pages/my/my-order/order-in-progress/order-in-progress",
 			"style": {
 				"navigationBarTitleText": "",
-				"navigationBarBackgroundColor":"#FFB344",
+				"navigationBarBackgroundColor": "#FFB344",
 				"enablePullDownRefresh": false
 			}
 		},
@@ -315,7 +315,7 @@
 			"path": "pages/my/my-order/order-success/order-success",
 			"style": {
 				"navigationBarTitleText": "",
-				"navigationBarBackgroundColor":"#23D5C6",
+				"navigationBarBackgroundColor": "#23D5C6",
 				"enablePullDownRefresh": false
 			}
 		},
@@ -323,7 +323,7 @@
 			"path": "pages/my/my-order/order-failed/order-failed",
 			"style": {
 				"navigationBarTitleText": "",
-				"navigationBarBackgroundColor":"#C6C6C6",
+				"navigationBarBackgroundColor": "#C6C6C6",
 				"enablePullDownRefresh": false
 			}
 		},
@@ -376,7 +376,7 @@
 				"enablePullDownRefresh": false
 			}
 		}
-    ],
+	],
 	"globalStyle": {
 		"navigationBarTextStyle": "black",
 		"navigationBarTitleText": "uni-app",
@@ -438,19 +438,35 @@
 	"subPackages": [{
 		"root": "sub-pagesA",
 		"pages": [{
-			"path": "pages/test1/test1",
-			"style": {
-				"navigationBarTitleText": "",
-				"enablePullDownRefresh": false
+				"path": "pages/test1/test1",
+				"style": {
+					"navigationBarTitleText": "",
+					"enablePullDownRefresh": false
+				}
+			},
+			{
+				"path": "pages/decorate/amoutDelivery/amoutDelivery",
+				"style": {
+					"navigationBarTitleText": "确认量房结果",
+					"enablePullDownRefresh": false
+				}
+			}, {
+				"path": "pages/decorate/warehouse-refund/warehouse-refund",
+				"style": {
+					"navigationBarTitleText": "",
+					"enablePullDownRefresh": false
+				}
+
 			}
-		},
-    {
-    	"path": "pages/decorate/amoutDelivery/amoutDelivery",
-    	"style": {
-    		"navigationBarTitleText": "确认量房结果",
-    		"enablePullDownRefresh": false
-    	}
-    }
-    ]
+
+			, {
+				"path": "pages/decorate/warehouse-refund-detail/warehouse-refund-detail",
+				"style": {
+					"navigationBarTitleText": "",
+					"enablePullDownRefresh": false
+				}
+
+			}
+		]
 	}]
 }

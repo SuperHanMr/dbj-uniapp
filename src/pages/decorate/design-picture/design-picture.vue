@@ -6,7 +6,7 @@
 				量房图（原始结构尺寸图）
 			</view>
 			<view class="imgs img-original">
-				<image mode="aspectFit" :src="data.originImgUrl" @click="clickImg(data.originImgUrl)"></image>
+				<!-- <image mode="aspectFit" :src="data.originImgUrl" @click="clickImg(data.originImgUrl)"></image> -->
 			</view>
 		</view>
 		<!-- 量房图 -->
@@ -23,13 +23,10 @@
 </template>
 
 <script>
-	import originImgUrl from "../../../static/app-plus/uni@2x.png"
 	export default {
 		data() {
 			return {
 				data: {
-					measureImgList: [originImgUrl, originImgUrl, originImgUrl, originImgUrl, originImgUrl, originImgUrl],
-					originImgUrl: originImgUrl
 				}
 			}
 		},
