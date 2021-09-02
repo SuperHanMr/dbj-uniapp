@@ -7,7 +7,8 @@
 			city: "",
 			houses: [],
 			noHouseActuaryId: null,
-			noHouseDesignId: null
+			noHouseDesignId: null,
+			noHouseCheckId: null
 		},
 		onLaunch: function() {
 			if (!uni.getStorageSync("userId")) {

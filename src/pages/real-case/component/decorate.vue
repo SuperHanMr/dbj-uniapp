@@ -51,8 +51,8 @@
 			},800);
 		},
 		methods: {
-			onHeight() {
-				this.$parent.onHeight();
+			onHeight(height, tag) {
+				this.$parent.onHeight(height, tag);
 			},
 			onClick (index, tag){
 				this.$parent.onClick(index, tag);

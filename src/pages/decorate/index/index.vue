@@ -12,7 +12,7 @@
 <!--    <button @click="toSend">发送消息</button>
     <text>{{mqttMessage}}</text> -->
 		<decorate-notice v-if="noticeActive" @closeNotice='closeNotice' class="decorate-notice"></decorate-notice>
-		<drag-button-follow :style.sync="style" @btnClick='noticeActive=true' :follow='`left,right`'
+		<drag-button-follow :style.sync="style" @btnClick='openNotice' :follow='`left,right`'
 			className="drag-button" class="drag-button">
 			<view>
 				<text>消息</text>
@@ -26,6 +26,7 @@
 			<view @click="gonohouse">无房屋无服入口</view>
 			<view @click="gonohousedecatore">无房屋无服务装修</view>
 			<view @click="gonohousecheck">无房屋无服务验房</view>
+			<view @click="gonohavehouse">有房屋无服务首页</view>
 		</view>
 
 	</view>
@@ -171,6 +172,11 @@
 					url: "/pages/decorate/no-house-checkhouse/no-house-checkhouse"
 				})
 			},
+			gonohavehouse() {
+				uni.navigateTo({
+					url: "/pages/decorate/have-house-no-service/have-house-no-service"
+				})
+			},
 			gonohouse() {
 				uni.navigateTo({
 					url: "/pages/decorate/no-house/no-house"
@@ -182,7 +188,12 @@
       },
 			closeNotice() {
 				this.noticeActive = false;
+        uni.showTabBar()
 			},
+      openNotice(){
+        this.noticeActive = true
+        uni.hideTabBar()
+      },
 			goToAddHouseInfo() {
 				uni.navigateTo({
 					url: "/pages/decorate/add-house/add-house",

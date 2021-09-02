@@ -60,21 +60,16 @@
 			"path": "pages/classify/search-result/search-result",
 			"style": {
 				"navigationBarTitleText": "",
-				"enablePullDownRefresh": false
-			}
-		},
-		{
-			"path": "pages/classify/goods-list/index",
-			"style": {
-				"navigationBarTitleText": "",
-				"enablePullDownRefresh": false
+				"enablePullDownRefresh": false,
+				"navigationBarBackgroundColor": "#FFFFFF"
 			}
 		},
 		{
 			"path": "pages/classify/goods-detail/goods-detail",
 			"style": {
-				"navigationBarTitleText": "",
-				"enablePullDownRefresh": false
+				"navigationBarTitleText": "商品详情",
+				"enablePullDownRefresh": false,
+				"navigationStyle": "custom"
 			}
 		},
 		{
@@ -341,13 +336,6 @@
 			}
 		},
 		{
-			"path": "pages/changeGoodsSku/changeGoodsSku",
-			"style": {
-				"navigationBarTitleText": "",
-				"enablePullDownRefresh": false
-			}
-		},
-		{
 			"path": "pages/common/webview/webview",
 			"style": {
 				"navigationBarTitleText": "",
@@ -466,6 +454,13 @@
 					"path": "apply-for-refund/apply-for-refund",
 					"style": {
 						"navigationBarTitleText": "申请退款",
+						"enablePullDownRefresh": false
+					}
+				},
+				{
+					"path": "pages/decorate/amoutDelivery/amoutDelivery",
+					"style": {
+						"navigationBarTitleText": "确认量房结果",
 						"enablePullDownRefresh": false
 					}
 				}

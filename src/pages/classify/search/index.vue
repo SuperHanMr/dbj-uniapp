@@ -1,9 +1,12 @@
 <template>
   <view class="search-page">
     <view class="search">
-      <uni-search-bar  @confirm="searchConfirm" :focus="true"  class="search-bar"></uni-search-bar>
+      <uni-search-bar  @confirm="searchConfirm" focus="true"  @cancel="cancel" class="search-bar"  placeholder="搜索">
+         <uni-icons slot="searchIcon"/>
+      </uni-search-bar>
     </view>
-    <view class="history-search">
+    <!-- 搜索历史记录 -->
+<!--    <view class="history-search">
       <view class="history-search-title">
         <text>历史搜索</text>
         <uni-icons color="#999999" size="18" type="trash" class="history-icon" @click="clearHistory"/>
@@ -24,7 +27,7 @@
      <uni-popup ref="cancelDialog">
         <uni-popup-dialog class="uni-popup-dialog" type="sucess" title="通知" content="欢迎" @confirm="dialogConfirm" @close="dialogClose"></uni-popup-dialog>
       </uni-popup>
-    </view>
+    </view> -->
   </view>  
 </template>
 
@@ -35,23 +38,46 @@
         list: ['test','test','test','test','test']
       }
     },
+    onShow(){
+       // 接收上一个页面传值
+       //  var shequ = getCurrentPages();
+      	// var prevShequ = shequ[shequ.length - 1];
+      	// var brand = prevShequ.brand;
+      	// console.log(brand, 'test')
+    },
     methods: {
       searchConfirm(resText){
-        console.log(resText.value)
         uni.navigateTo({
-          url: "/pages/classify/search-result/search-result"
+          url: "/pages/classify/search-result/search-result?searchText=" + resText.value
         })
       },
       clearHistory() {
         this.$refs.cancelDialog.open()
+      },
+      cancel() {
+        uni.switchTab({
+          url: "/pages/classify/index/index"
+        })
       },
       dialogConfirm() {},
       dialogClose() {}
     }
   }
 </script>
-
+<style>
+  .search-page .uni-searchbar__box{
+    width: 598rpx !important;
+    height: 62rpx !important;
+    opacity: 1;
+    border: 2rpx solid #333333 !important;
+    border-radius: 16rpx !important;
+  }
+  .uni-searchbar__cancel{
+    line-height: 62rpx !important;
+  }
+</style>
 <style scoped>
+
   .hot-content-item, .history-content-item{
     display: inline-block;
     margin: 5rpx;

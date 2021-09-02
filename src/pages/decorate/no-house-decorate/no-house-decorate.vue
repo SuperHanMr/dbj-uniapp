@@ -24,7 +24,8 @@
 				</template>
 			</service-card>
 		</view>
-		<payment class="payment" @gotopay="gotopay" :pieces="pieces" :countPrice="countPrice" :isAllChecked="isAllChecked"></payment>
+		<payment class="payment" @gotopay="gotopay" :pieces="pieces" :countPrice="countPrice"
+			:isAllChecked="isAllChecked"></payment>
 		<uni-popup ref="popup" type="dialog" :mask-click="false">
 			<uni-popup-dialog mode="base" type="info" title="请选择您想要更换人工的等级" :duration="2000" :before-close="true"
 				@close="close" @confirm="confirm">
@@ -58,7 +59,8 @@
 	import DbjRadio from "../../../components/dbj-radio/dbj-radio.vue";
 	import {
 		queryEstates,
-		getProductsSkusPage
+		getProductsSkusPage,
+		getServiceSku
 	} from "../../../api/decorate.js"
 	export default {
 		components: {
@@ -82,15 +84,15 @@
 			},
 			pieces() {
 				let num = this.design.checked + this.actuary.checked;
-				return num 
+				return num
 			},
 			countPrice() {
 				let qian = 0.00
-				if(this.design.checked) {
+				if (this.design.checked) {
 					qian += Number(this.design.price) * 88
 					console.log()
 				}
-				if(this.actuary.checked) {
+				if (this.actuary.checked) {
 					qian += Number(this.actuary.price) * 88
 				}
 				return qian + "0.00"
@@ -98,7 +100,14 @@
 		},
 		onShow() {
 			this.getMyHouseList();
+			this.getServiceSku();
+			const {
+				noHouseActuaryId,
+				noHouseDesignId
+			} = getApp().globalData;
+			// if (noHouseActuaryId || noHouseDesignId) {
 			this.getProductsSkusPage();
+			// }
 		},
 		methods: {
 			radioChange(obj) {
@@ -118,12 +127,42 @@
 				this.$refs.popup.close()
 				this.design.level = Number(this.selectLevel)
 			},
+			getServiceSku() {
+				getServiceSku({
+					codeKey: "decoration_default_service"
+				}).then(data => {
+					const {
+						noHouseActuaryId,
+						noHouseDesignId
+					} = getApp().globalData
+					if (!noHouseDesignId) {
+						this.design = {
+							...data[0],
+							title: "设计服务",
+							cardtype: "design",
+							checked: true,
+							level: 1
+						}
+					}
+					if (!noHouseActuaryId) {
+						this.design = {
+							...data[0],
+							title: "精算服务",
+							cardtype: "actuary",
+							checked: true
+						}
+					}
+				})
+			},
 			getProductsSkusPage() {
 				getProductsSkusPage({
 					categoryTypeId: [5, 6]
 				}).then(data => {
 					this.dataList = data.list
-					// const { noHouseActuaryId, noHouseDesignId } = getApp.globalData
+					const {
+						noHouseActuaryId,
+						noHouseDesignId
+					} = getApp().globalData
 					// if( noHouseActuaryId ) {
 
 					// } else {
@@ -138,6 +177,7 @@
 					// 		}
 					// 	}
 					// })
+					const {} =
 					this.actuary = {
 						...data.list[0],
 						title: "精算服务",
@@ -166,7 +206,7 @@
 				}
 			},
 			changCurrentHouse() {
-				uni.redirectTo({
+				uni.navigateTo({
 					url: "/pages/my/my-house/my-house"
 				})
 			},
@@ -302,7 +342,6 @@
 			}
 		}
 	}
-	
 </style>
 <style>
 	.uni-popup__info {
