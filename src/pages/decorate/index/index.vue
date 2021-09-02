@@ -26,6 +26,7 @@
 			<view @click="gonohouse">无房屋无服入口</view>
 			<view @click="gonohousedecatore">无房屋无服务装修</view>
 			<view @click="gonohousecheck">无房屋无服务验房</view>
+			<view @click="gonohavehouse">有房屋无服务首页</view>
 		</view>
 
 	</view>
@@ -169,6 +170,11 @@
 			gonohousecheck() {
 				uni.navigateTo({
 					url: "/pages/decorate/no-house-checkhouse/no-house-checkhouse"
+				})
+			},
+			gonohavehouse() {
+				uni.navigateTo({
+					url: "/pages/decorate/have-house-no-service/have-house-no-service"
 				})
 			},
 			gonohouse() {

@@ -7,7 +7,7 @@ export function getShoppingCartInfo(id){
 	return request.get(`/product/web/products/shoppingCart/userIds/${id}`,{})
 }
 export function deleteProduct(params){
-	return request.delete(`/product/web/products/shoppingCart`,{params})
+	return request.delete(`/product/web/products/shoppingCart`,{ data: params })
 }
 export function setBuyCount(params){
 	return request.put(`/product/web/products/shoppingCart/changeBuyCount`,params)

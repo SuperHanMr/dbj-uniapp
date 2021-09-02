@@ -63,3 +63,8 @@ export function deleteFriends(params) {
 export function getProductsSkusPage(params) {
 	return request.get("/product/web/products/skus/page", params)
 }
+
+//获取服务类默认商品
+export function getServiceSku(params) {
+	return request.get("/pm/project/getServiceSku", params)
+}
