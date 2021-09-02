@@ -1,6 +1,6 @@
 <template>
   <view>
-     <web-view src="https://local.meiwu365.com/app-pages/goods-detail/index.html"></web-view>
+     <web-view :src="'https://local.meiwu365.com/app-pages/goods-detail/index.html?goodsId='+ id"></web-view>
   </view>
 </template>
 
@@ -8,8 +8,11 @@
   export default {
     data() {
       return {
-        
+        id: ''
       }
+    },
+    onLoad(e){
+      this.id = e.goodId
     },
     methods: {
       

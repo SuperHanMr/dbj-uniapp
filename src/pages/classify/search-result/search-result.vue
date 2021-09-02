@@ -23,7 +23,7 @@
          :key="goodsIndex"
          :right-options="options"
        >
-        <view class="goodsItem" @click="toDetails">
+        <view class="goodsItem" @click="toDetails(goodsItem.id)">
           <image :src="goodsItem.imageUrl" class="goodsItemImg"></image>
           <view class="goodsInfo">
             <view class="goodsDesc">
@@ -101,9 +101,9 @@
       searchConfirm(resText) {
         console.log(resText.value)
       },
-      toDetails(){
+      toDetails(id){
         uni.navigateTo({
-          url: "/pages/classify/goods-detail/goods-detail"
+          url: "/pages/classify/goods-detail/goods-detail?goodId=" + id
         })
       }
     }
