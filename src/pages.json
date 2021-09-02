@@ -87,19 +87,6 @@
 			}
 		},
 		{
-			"path": "pages/my/set-up/set-up",
-			"style": {
-				"navigationBarTitleText": "设置",
-				"navigationBarBackgroundColor": "#FFFFFF"
-			}
-		},
-		{
-			"path": "pages/my/set-up/about-dabanjia/about-dabanjia",
-			"style": {
-				"navigationBarTitleText": "关于打扮家"
-			}
-		},
-		{
 			"path": "pages/my/edit-personal-data/edit-personal-data",
 			"style": {
 				"navigationBarTitleText": "编辑个人资料"
@@ -211,34 +198,6 @@
 			"path": "pages/decorate/service-evaluate/service-evaluate",
 			"style": {
 				"navigationBarTitleText": "服务评价",
-				"enablePullDownRefresh": false
-			}
-		},
-		{
-			"path": "pages/my/set-up/agreement/service-agreement",
-			"style": {
-				"navigationBarTitleText": "",
-				"enablePullDownRefresh": false
-			}
-		},
-		{
-			"path": "pages/my/set-up/agreement/code-of-conduct",
-			"style": {
-				"navigationBarTitleText": "",
-				"enablePullDownRefresh": false
-			}
-		},
-		{
-			"path": "pages/my/set-up/agreement/privacy-agreement",
-			"style": {
-				"navigationBarTitleText": "",
-				"enablePullDownRefresh": false
-			}
-		},
-		{
-			"path": "pages/my/set-up/agreement/property-rights-clause",
-			"style": {
-				"navigationBarTitleText": "",
 				"enablePullDownRefresh": false
 			}
 		},
@@ -359,13 +318,6 @@
 			}
 		},
 		{
-			"path": "pages/my/set-up/comments-feedback/comments-feedback",
-			"style": {
-				"navigationBarTitleText": "",
-				"enablePullDownRefresh": false
-			}
-		},
-		{
 			"path": "pages/decorate/design-service-list/design-service-list",
 			"style": {
 				"navigationBarTitleText": "设计服务",
@@ -439,7 +391,7 @@
 		}]
 	},
 	"subPackages": [{
-		"root": "sub-home",//首页模块分包
+		"root": "sub-home", //首页模块分包
 		"pages": [{
 				"path": "pages/test1/test1",
 				"style": {
@@ -477,7 +429,7 @@
 			}
 		]
 	}, {
-		"root": "sub-message",//消息模块分包
+		"root": "sub-message", //消息模块分包
 		"pages": [{
 			"path": "pages/test1/test1",
 			"style": {
@@ -486,16 +438,60 @@
 			}
 		}]
 	}, {
-		"root": "sub-my",//我的模块分包
+		"root": "sub-my", //我的模块分包
 		"pages": [{
 			"path": "pages/test1/test1",
 			"style": {
 				"navigationBarTitleText": "",
 				"enablePullDownRefresh": false
 			}
+		}, {
+			"path": "pages/set-up/set-up",
+			"style": {
+				"navigationBarTitleText": "设置",
+				"navigationBarBackgroundColor": "#FFFFFF"
+			}
+		},{
+			"path": "pages/set-up/agreement/service-agreement",
+			"style": {
+				"navigationBarTitleText": "",
+				"enablePullDownRefresh": false
+			}
+		},
+		{
+			"path": "pages/set-up/agreement/code-of-conduct",
+			"style": {
+				"navigationBarTitleText": "",
+				"enablePullDownRefresh": false
+			}
+		},
+		{
+			"path": "pages/set-up/agreement/privacy-agreement",
+			"style": {
+				"navigationBarTitleText": "",
+				"enablePullDownRefresh": false
+			}
+		},
+		{
+			"path": "pages/set-up/agreement/property-rights-clause",
+			"style": {
+				"navigationBarTitleText": "",
+				"enablePullDownRefresh": false
+			}
+		},{
+			"path": "pages/set-up/comments-feedback/comments-feedback",
+			"style": {
+				"navigationBarTitleText": "",
+				"enablePullDownRefresh": false
+			}
+		},{
+			"path": "pages/set-up/about-dabanjia/about-dabanjia",
+			"style": {
+				"navigationBarTitleText": "关于打扮家"
+			}
 		}]
 	}, {
-		"root": "sub-classify",//商城模块分包
+		"root": "sub-classify", //商城模块分包
 		"pages": [{
 			"path": "pages/test1/test1",
 			"style": {
