@@ -1,5 +1,5 @@
 <template>
-	<view class="body-main" @click="handleDetail()">
+	<view class="body-main" :style="{paddingBottom:paddingBottom +'rpx'}" @click="handleDetail()" >
 		<view class="pic">
 			<image src="../../wxcomponents/loginSDK/img/logo.0ccb88de.png" mode=""></image>
 		</view>
@@ -27,8 +27,15 @@
 </template>
 
 <script>
+	
 	export default {
 		name:"order-item",
+		props:{
+			paddingBottom:{
+				type: Number,
+				default:34,
+			}
+		},
 		data() {
 			return {
 				
