@@ -540,7 +540,14 @@
 						"navigationBarTitleText": "确认量房结果",
 						"enablePullDownRefresh": false
 					}
-				}
+				},
+        {
+        	"path": "pages/checkResult/checkResult",
+        	"style": {
+        		"navigationBarTitleText": "确认验房结果",
+        		"enablePullDownRefresh": false
+        	}
+        }
 			]
 		}
 	],

@@ -43,7 +43,7 @@
         </view>
         <view
           class="notice-item"
-          @click="to(1)"
+          @click="to(2)"
         >
           <view class="item-top">
             <view class="item-top-left">
@@ -51,7 +51,7 @@
                 src="../../static/home_owner.png"
                 mode=""
               ></image>
-              <text class="item-title">量房交付</text>
+              <text class="item-title">验房交付</text>
             </view>
             <text class="item-top-right">2021-08-21 13:00:00</text>
           </view>
@@ -140,13 +140,14 @@ export default {
       urlList: [
         "/pages/decorate/grab/grab",
         "/sub-decorate/pages/amoutDelivery/amoutDelivery",
+        "/sub-decorate/pages/checkResult/checkResult",
       ],
       systemHeight:''
     };
   },
   mounted(){
     this.systemHeight = wx.getSystemInfoSync().windowHeight + 'px'
-    console.log(this.systemHeight)
+    
   },
   methods: {
     close() {
