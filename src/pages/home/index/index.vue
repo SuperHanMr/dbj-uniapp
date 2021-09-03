@@ -32,11 +32,6 @@
       <button
         style="width: 50%;margin-top: 20rpx;"
         type="default"
-        @click="toSubPage"
-      >去分包1</button>
-      <button
-        style="width: 50%;margin-top: 20rpx;"
-        type="default"
         @click="toCalebdar"
       >去日历</button>
       <swiper
@@ -120,14 +115,9 @@ export default {
     // }
   },
   methods: {
-    toSubPage() {
-      uni.navigateTo({
-        url: "/sub-home/pages/test1/test1",
-      });
-    },
     toCalebdar() {
       uni.navigateTo({
-        url: "../../decorate/calendar/calendar",
+        url: "/sub-decorate/pages/calendar/calendar",
       });
     },
     onLoadMore() {
@@ -155,7 +145,7 @@ export default {
       console.log(list);
       this.roomId = list[0].id;
       uni.navigateTo({
-        url: "../../decorate/friends/friends?id=" + this.roomId,
+        url: "/sub-decorate/pages/friends/friends?id=" + this.roomId,
       });
     },
     changeCity() {
@@ -163,7 +153,7 @@ export default {
     },
     toCity() {
       uni.navigateTo({
-        url: "../select-city/select-city?title=" + this.citydata,
+        url: "/sub-home/pages/select-city/select-city?title=" + this.citydata,
       });
     },
     getAuthorizeInfo() {
@@ -238,10 +228,11 @@ export default {
       });
     },
     toLiveRoom(item) {
-      console.log("../lives-room/lives-room?livePreview=" + item.livePreview);
       if (item && item.livePreview) {
         uni.navigateTo({
-          url: "../lives-room/lives-room?livePreview=" + item.livePreview,
+          url:
+            "/sub-home/pages/lives-room/lives-room?livePreview=" +
+            item.livePreview,
         });
       } else if (item && item.videoFileUrl) {
         uni.navigateTo({
@@ -279,7 +270,7 @@ export default {
     },
     toNextPage() {
       uni.navigateTo({
-        url: "../../decorate/warehouse-list/warehouse-list",
+        url: "/sub-decorate/pages/warehouse-list/warehouse-list",
       });
     },
   },

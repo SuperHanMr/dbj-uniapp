@@ -152,34 +152,6 @@
 			}
 		},
 		{
-			"path": "pages/decorate/friends/friends",
-			"style": {
-				"navigationBarTitleText": "亲友团",
-				"enablePullDownRefresh": false
-			}
-		},
-		{
-			"path": "pages/decorate/add-friends/add-friends",
-			"style": {
-				"navigationBarTitleText": "添加亲友",
-				"enablePullDownRefresh": false
-			}
-		},
-		{
-			"path": "pages/decorate/calendar/calendar",
-			"style": {
-				"navigationBarTitleText": "装修日历",
-				"enablePullDownRefresh": false
-			}
-		},
-		{
-			"path": "pages/decorate/warehouse-list/warehouse-list",
-			"style": {
-				"navigationBarTitleText": "我的仓库",
-				"enablePullDownRefresh": false
-			}
-		},
-		{
 			"path": "pages/decorate/replace-worker/replace-worker",
 			"style": {
 				"navigationBarTitleText": "申请更换工匠",
@@ -218,20 +190,6 @@
 			"path": "pages/decorate/add-house/add-house",
 			"style": {
 				"navigationBarTitleText": "新增房屋",
-				"enablePullDownRefresh": false
-			}
-		},
-		{
-			"path": "pages/home/lives-room/lives-room",
-			"style": {
-				"navigationBarTitleText": "",
-				"enablePullDownRefresh": false
-			}
-		},
-		{
-			"path": "pages/home/select-city/select-city",
-			"style": {
-				"navigationBarTitleText": "",
 				"enablePullDownRefresh": false
 			}
 		},
@@ -411,35 +369,14 @@
 			"root": "sub-home", //首页模块分包
 			"pages": [
 				{
-					"path": "pages/test1/test1",
+					"path": "pages/lives-room/lives-room",
 					"style": {
 						"navigationBarTitleText": "",
 						"enablePullDownRefresh": false
 					}
 				},
 				{
-					"path": "apply-for-refund/apply-for-refund",
-					"style": {
-						"navigationBarTitleText": "申请退款",
-						"enablePullDownRefresh": false
-					}
-				},
-				{
-					"path": "pages/decorate/amoutDelivery/amoutDelivery",
-					"style": {
-						"navigationBarTitleText": "确认量房结果",
-						"enablePullDownRefresh": false
-					}
-				},
-				{
-					"path": "pages/decorate/warehouse-refund/warehouse-refund",
-					"style": {
-						"navigationBarTitleText": "",
-						"enablePullDownRefresh": false
-					}
-				},
-				{
-					"path": "pages/decorate/warehouse-refund-detail/warehouse-refund-detail",
+					"path": "pages/select-city/select-city",
 					"style": {
 						"navigationBarTitleText": "",
 						"enablePullDownRefresh": false
@@ -463,9 +400,9 @@
 			"root": "sub-my", //我的模块分包
 			"pages": [
 				{
-					"path": "pages/test1/test1",
+					"path": "pages/apply-for-refund/apply-for-refund",
 					"style": {
-						"navigationBarTitleText": "",
+						"navigationBarTitleText": "申请退款",
 						"enablePullDownRefresh": false
 					}
 				},
@@ -528,7 +465,42 @@
 			"root": "sub-decorate", //装修模块分包
 			"pages": [
 				{
-					"path": "pages/test1/test1",
+					"path": "pages/add-friends/add-friends",
+					"style": {
+						"navigationBarTitleText": "添加亲友",
+						"enablePullDownRefresh": false
+					}
+				},
+				{
+					"path": "pages/friends/friends",
+					"style": {
+						"navigationBarTitleText": "亲友团",
+						"enablePullDownRefresh": false
+					}
+				},
+				{
+					"path": "pages/calendar/calendar",
+					"style": {
+						"navigationBarTitleText": "装修日历",
+						"enablePullDownRefresh": false
+					}
+				},
+				{
+					"path": "pages/warehouse-list/warehouse-list",
+					"style": {
+						"navigationBarTitleText": "我的仓库",
+						"enablePullDownRefresh": false
+					}
+				},
+				{
+					"path": "pages/warehouse-refund/warehouse-refund",
+					"style": {
+						"navigationBarTitleText": "",
+						"enablePullDownRefresh": false
+					}
+				},
+				{
+					"path": "pages/warehouse-refund-detail/warehouse-refund-detail",
 					"style": {
 						"navigationBarTitleText": "",
 						"enablePullDownRefresh": false

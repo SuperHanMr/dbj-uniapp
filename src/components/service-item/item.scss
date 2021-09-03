@@ -1,11 +1,10 @@
 .item {
 	box-sizing: border-box;
 	width: 100%;
-	height: 104rpx;
+	min-height: 104rpx;
 	background: #fbfbfb;
 	border-radius: 20rpx;
 	margin-bottom: 24rpx;
-	padding: 34rpx 48rpx 34rpx 24rpx;
 }
 .flex-row-bet {
 	display: flex;
@@ -20,6 +19,7 @@
 	align-items: center;
 }
 .item-name {
+	padding: 34rpx 48rpx 34rpx 24rpx;
 	image {
 		width: 32rpx;
 		height: 32rpx;
@@ -36,13 +36,19 @@
 	}
 }
 .status-name {
-	width: 156rpx;
-	height: 36rpx;
-	font-size: 26rpx;
-	font-family: PingFangSC, PingFangSC-Regular;
-	font-weight: 400;
-	text-align: right;
-	line-height: 36rpx;
+	view {
+		width: 156rpx;
+		height: 36rpx;
+		font-size: 26rpx;
+		font-family: PingFangSC, PingFangSC-Regular;
+		font-weight: 400;
+		text-align: right;
+		line-height: 36rpx;
+	}
+	image {
+		width: 14rpx;
+		height: 9rpx;
+	}
 }
 .robbing {
 	color: red;
@@ -58,4 +64,34 @@
 }
 .completed{
 	color: #999999;
+}
+.gc {
+	.procsss {
+		padding: 20rpx 20rpx 18rpx 72rpx;
+		.s0 {
+			height: 34rpx;
+			font-size: 24rpx;
+			font-family: PingFangSC, PingFangSC-Regular;
+			font-weight: 400;
+			text-align: left;
+			color: #999999;
+			line-height: 34rpx;
+		}
+		.s1 {
+			view {
+				height: 34rpx;
+				opacity: 1;
+				font-size: 24rpx;
+				font-family: PingFangSC, PingFangSC-Regular;
+				font-weight: 400;
+				text-align: right;
+				color: #333333;
+				line-height: 34rpx;
+			}
+			image {
+				width: 11rpx;
+				height: 9rpx;
+			}
+		}
+	}
 }

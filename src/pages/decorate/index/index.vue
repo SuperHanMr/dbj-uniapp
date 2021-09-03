@@ -47,9 +47,9 @@
 						</view>
 					</view>
 
-					<service-item :status="DECTORE_DICT.robbing" itemName="量房服务" statusName="待确认量房员"></service-item>
+					<service-item :status="DECTORE_DICT.inservice" itemName="量房服务" statusName="服务中"></service-item>
+					<service-item :status="DECTORE_DICT.robbing" itemName="设计服务" statusName="待确认设计师"></service-item>
 					<service-item :status="DECTORE_DICT.shouldsure" itemName="验房服务" statusName="验房员抢单中"></service-item>
-					<service-item :status="DECTORE_DICT.inservice" itemName="设计服务" statusName="设计师抢单中"></service-item>
 					<service-item :status="DECTORE_DICT.uncheck" itemName="精算服务" statusName="待确认精算师"></service-item>
 				</view>
 			</view>

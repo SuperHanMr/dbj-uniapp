@@ -3,16 +3,34 @@
 		<view class="flex-row-bet">
 			<view class="item-name flex-row-start">
 				<image src="../../static/svg/ic_mer.svg"></image>
-				<!-- <view class="image"></view> -->
 				<text>{{itemName}}</text>
 			</view>
-			<view class="status-name" :class="{
+			<view class="status-name flex-row-start" :class="{
 				robbing: status == '抢单中',
 				shouldsure: status == '待确认',
 				inservice: status == '服务中',
 				uncheck: status == '待验收',
 				completed: status == '完成'
-			}">{{statusName}}</view>
+			}">
+				<view>{{statusName}}</view>
+				<image src=""></image>
+			</view>
+		</view>
+		<view class="gc" v-if="status =='完成' || status =='服务中'">
+			<view class="procsss flex-row-bet">
+				<view class="s0">量房员</view>
+				<view class="s1 flex-row-start">
+					<view>奥特曼</view>
+					<image src="../../static/svg/ic_more.svg"></image>
+				</view>
+			</view>
+			<view class="procsss flex-row-bet">
+				<view class="s0">进度</view>
+				<view class="s1 flex-row-start">
+					<view>0/1</view>
+					<image src="../../static/svg/ic_more.svg"></image>
+				</view>
+			</view>
 		</view>
 	</view>
 </template>
