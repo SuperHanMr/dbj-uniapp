@@ -121,6 +121,13 @@
 			}
 		},
 		{
+			"path": "pages/my/set-up/set-up",
+			"style": {
+				"navigationBarTitleText": "设置",
+				"navigationBarBackgroundColor": "#FFFFFF"
+			}
+		},
+		{
 			"path": "pages/common/goods-detail/goods-detail",
 			"style": {
 				"navigationBarTitleText": "商品详情"
@@ -444,12 +451,6 @@
 			"style": {
 				"navigationBarTitleText": "",
 				"enablePullDownRefresh": false
-			}
-		}, {
-			"path": "pages/set-up/set-up",
-			"style": {
-				"navigationBarTitleText": "设置",
-				"navigationBarBackgroundColor": "#FFFFFF"
 			}
 		},{
 			"path": "pages/set-up/agreement/service-agreement",
