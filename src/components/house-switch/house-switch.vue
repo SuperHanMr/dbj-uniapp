@@ -19,7 +19,7 @@
 			</view>
 		</view>
 		<view class="go-add-house flex-row">
-			<image src="../../static/svg/ic_add_house_c.svg" @click="goaddhouse"></image>
+			<image src="http://dbj.dragonn.top/static/mp/dabanjia/images/decorate/ic_add_house_c.svg" @click="goaddhouse"></image>
 			<text @click="goaddhouse">新增房屋</text>
 		</view>
 	</view>

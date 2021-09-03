@@ -48,13 +48,12 @@
         methods: {
             searchClick(){
               uni.navigateTo({
-              	url: "/pages/classify/search/index"
+              	url: "/sub-classify/pages/search/index"
               })
             },
             getList() {
                 getClassifyList().then((data) => {
                   this.dataList = data
-                  console.log(data)
                 })
             },
             ontabtap(e) {
