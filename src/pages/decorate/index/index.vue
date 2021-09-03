@@ -1,12 +1,12 @@
 <template>
 	<view class="decorate-index">
-		<image class="bg" mode="aspectFit" src="../../../static/bg@2x.png"></image>
+		<image class="bg" mode="aspectFit" src="http://dbj.dragonn.top/static/mp/dabanjia/images/decorate/bg@2x.png"></image>
 		<view class="content">
 			<view class="house-firend">
 				<view class="title">
 					<view class="house" @click="switchVisible">
 						<text>我的家</text>
-						<image class="ic-triangle" src="../../../static/images/ic_triangle.svg"></image>
+						<image class="ic-triangle" src="http://dbj.dragonn.top/static/mp/dabanjia/images/decorate/ic_triangle.svg"></image>
 					</view>
 					<view class="friend">
 						<text>亲友团</text>
@@ -15,7 +15,7 @@
 								:src="item.relativeAvatar"
 								:class="{avtor1: index == 0, avtor1: index == 0,avtor2: index == 1}"></image>
 							<view class="avtor-more" @click="toFriends">
-								<image src="../../../static/svg/ic_avtor_more.svg"></image>
+								<image src="http://dbj.dragonn.top/static/mp/dabanjia/images/decorate/ic_avtor_more.svg"></image>
 							</view>
 						</view>
 					</view>
@@ -31,19 +31,19 @@
 					<view class="uni-title">{{ currentHouse.housingEstate }}{{currentHouse.address}}</view>
 					<view class="design" @click="goDesignPicture">
 						<text>设计图</text>
-						<image src="../../../static/images/ic_triangle_999.svg"></image>
+						<image src="http://dbj.dragonn.top/static/mp/dabanjia/images/decorate/ic_triangle_999.svg"></image>
 					</view>
 				</view>
 
 			</view>
 			<view class="my-decorate-service-wrap">
-				<image mode="aspectFit" class="top-bg" src="../../../static/svg/service-card-top.svg"></image>
+				<image mode="aspectFit" class="top-bg" src="http://dbj.dragonn.top/static/mp/dabanjia/images/decorate/service-card-top.svg"></image>
 				<view class="my-decorate-service">
 					<view class="service-title flex-space-between-row" @click="goToMyDecorate">
 						<text class="t">我的装修服务</text>
 						<view class="r flex-start-row">
 							<text>查看全部</text>
-							<image src="../../../static/svg/ic_more.svg"></image>
+							<image src="http://dbj.dragonn.top/static/mp/dabanjia/images/decorate/ic_more.svg"></image>
 						</view>
 					</view>
 

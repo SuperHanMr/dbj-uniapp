@@ -10,7 +10,7 @@
 	<view class="have-house-no-service">
 		<view class="title" @click="switchVisible">
 			<text>我的家</text>
-			<image class="ic-triangle" src="../../../static/images/ic_triangle.svg"></image>
+			<image class="ic-triangle" src="http://dbj.dragonn.top/static/mp/dabanjia/images/decorate/ic_triangle.svg"></image>
 		</view>
 		<!-- 切换房屋弹窗 -->
 		<uni-popup ref="sw">
@@ -23,7 +23,7 @@
 		<view class="design-wrap">
 			<view class="design" @click="goDesignPicture">
 				<text>设计图</text>
-				<image src="../../../static/images/ic_triangle_999.svg"></image>
+				<image src="http://dbj.dragonn.top/static/mp/dabanjia/images/decorate/ic_triangle_999.svg"></image>
 			</view>
 		</view>
 	</view>
