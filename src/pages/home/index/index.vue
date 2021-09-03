@@ -32,11 +32,6 @@
       <button
         style="width: 50%;margin-top: 20rpx;"
         type="default"
-        @click="toSubPage"
-      >去分包1</button>
-      <button
-        style="width: 50%;margin-top: 20rpx;"
-        type="default"
         @click="toCalebdar"
       >去日历</button>
       <swiper
@@ -120,14 +115,9 @@ export default {
     // }
   },
   methods: {
-    toSubPage() {
-      uni.navigateTo({
-        url: "/sub-home/pages/test1/test1",
-      });
-    },
     toCalebdar() {
       uni.navigateTo({
-        url: "../../decorate/calendar/calendar",
+        url: "/sub-decorate/pages/calendar/calendar",
       });
     },
     onLoadMore() {
@@ -280,7 +270,7 @@ export default {
     },
     toNextPage() {
       uni.navigateTo({
-        url: "../../decorate/warehouse-list/warehouse-list",
+        url: "/sub-decorate/pages/warehouse-list/warehouse-list",
       });
     },
   },

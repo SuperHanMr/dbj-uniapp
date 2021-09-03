@@ -152,20 +152,6 @@
 			}
 		},
 		{
-			"path": "pages/decorate/calendar/calendar",
-			"style": {
-				"navigationBarTitleText": "装修日历",
-				"enablePullDownRefresh": false
-			}
-		},
-		{
-			"path": "pages/decorate/warehouse-list/warehouse-list",
-			"style": {
-				"navigationBarTitleText": "我的仓库",
-				"enablePullDownRefresh": false
-			}
-		},
-		{
 			"path": "pages/decorate/replace-worker/replace-worker",
 			"style": {
 				"navigationBarTitleText": "申请更换工匠",
@@ -409,20 +395,6 @@
 						"navigationBarTitleText": "确认量房结果",
 						"enablePullDownRefresh": false
 					}
-				},
-				{
-					"path": "pages/decorate/warehouse-refund/warehouse-refund",
-					"style": {
-						"navigationBarTitleText": "",
-						"enablePullDownRefresh": false
-					}
-				},
-				{
-					"path": "pages/decorate/warehouse-refund-detail/warehouse-refund-detail",
-					"style": {
-						"navigationBarTitleText": "",
-						"enablePullDownRefresh": false
-					}
 				}
 			]
 		},
@@ -517,6 +489,34 @@
 					"path": "pages/friends/friends",
 					"style": {
 						"navigationBarTitleText": "亲友团",
+						"enablePullDownRefresh": false
+					}
+				},
+				{
+					"path": "pages/calendar/calendar",
+					"style": {
+						"navigationBarTitleText": "装修日历",
+						"enablePullDownRefresh": false
+					}
+				},
+				{
+					"path": "pages/warehouse-list/warehouse-list",
+					"style": {
+						"navigationBarTitleText": "我的仓库",
+						"enablePullDownRefresh": false
+					}
+				},
+				{
+					"path": "pages/warehouse-refund/warehouse-refund",
+					"style": {
+						"navigationBarTitleText": "",
+						"enablePullDownRefresh": false
+					}
+				},
+				{
+					"path": "pages/warehouse-refund-detail/warehouse-refund-detail",
+					"style": {
+						"navigationBarTitleText": "",
 						"enablePullDownRefresh": false
 					}
 				}
