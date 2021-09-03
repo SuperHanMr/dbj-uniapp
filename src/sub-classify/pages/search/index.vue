@@ -48,7 +48,7 @@
     methods: {
       searchConfirm(resText){
         uni.navigateTo({
-          url: "/pages/classify/search-result/search-result?searchText=" + resText.value
+          url: "/sub-classify/pages/search-result/search-result?searchText=" + resText.value
         })
       },
       clearHistory() {
@@ -56,7 +56,7 @@
       },
       cancel() {
         uni.switchTab({
-          url: "/pages/classify/index/index"
+          url: "/sub-classify/pages/classify/index/index"
         })
       },
       dialogConfirm() {},

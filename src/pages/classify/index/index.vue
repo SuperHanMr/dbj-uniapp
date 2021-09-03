@@ -48,7 +48,7 @@
         methods: {
             searchClick(){
               uni.navigateTo({
-              	url: "/pages/classify/search/index"
+              	url: "/sub-classify/pages/search/index"
               })
             },
             getList() {

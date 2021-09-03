@@ -100,7 +100,7 @@
       },
       toGoodsList(name) {
         uni.navigateTo({
-          url: "/pages/classify/search-result/search-result?searchText=" + name
+          url: "/sub-classify/pages/search-result/search-result?searchText=" + name
         })
       }
 		},

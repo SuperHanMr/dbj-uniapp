@@ -52,38 +52,6 @@
 			}
 		},
 		{
-			"path": "pages/classify/search/index",
-			"style": {
-				"navigationBarTitleText": "",
-				"enablePullDownRefresh": false
-			}
-		},
-		{
-			"path": "pages/classify/search-result/search-result",
-			"style": {
-				"navigationBarTitleText": "",
-				"enablePullDownRefresh": false,
-				"navigationBarBackgroundColor": "#FFFFFF"
-			}
-		},
-		{
-			"path": "pages/classify/goods-detail/goods-detail",
-			"style": {
-				"navigationBarTitleText": "商品详情",
-				"enablePullDownRefresh": false,
-				"navigationStyle": "custom"
-			}
-		},
-    {
-        "path" : "pages/classify/pay/pay",
-        "style" :                                                                                    
-        {
-            "navigationBarTitleText": "",
-            "enablePullDownRefresh": false
-        }
-        
-    },
-		{
 			"path": "pages/message/index/index",
 			"style": {
 				"navigationBarTitleText": "消息"
@@ -461,13 +429,37 @@
 		{
 			"root": "sub-classify", //商城模块分包
 			"pages": [
-				{
-					"path": "pages/test1/test1",
-					"style": {
-						"navigationBarTitleText": "",
-						"enablePullDownRefresh": false
-					}
-				}
+        {
+        	"path": "pages/search/index",
+        	"style": {
+        		"navigationBarTitleText": "",
+        		"enablePullDownRefresh": false
+        	}
+        },
+        {
+        	"path": "pages/search-result/search-result",
+        	"style": {
+        		"navigationBarTitleText": "",
+        		"enablePullDownRefresh": false,
+        		"navigationBarBackgroundColor": "#FFFFFF"
+        	}
+        },
+        {
+        	"path": "pages/goods-detail/goods-detail",
+        	"style": {
+        		"navigationBarTitleText": "商品详情",
+        		"enablePullDownRefresh": false,
+        		"navigationStyle": "custom"
+        	}
+        },
+        {
+            "path" : "pages/pay/pay",
+            "style" :                                                                                    
+            {
+                "navigationBarTitleText": "",
+                "enablePullDownRefresh": false
+            }  
+        }
 			]
 		},
 		{

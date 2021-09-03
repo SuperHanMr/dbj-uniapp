@@ -101,7 +101,7 @@
       },
       toDetails(id){
         uni.navigateTo({
-          url: "/pages/classify/goods-detail/goods-detail?goodId=" + id
+          url: "/sub-classify/pages/goods-detail/goods-detail?goodId=" + id
         })
       }
     }
