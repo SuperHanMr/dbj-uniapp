@@ -412,7 +412,7 @@
 						"navigationBarTitleText": "申请退款",
 						"enablePullDownRefresh": false
 					}
-				}
+				},
 				{
 					"path": "pages/set-up/agreement/service-agreement",
 					"style": {
