@@ -1,22 +1,27 @@
 <template>
 	<view>
+		<view class="tabs">
+			<view class="item active" v-for="(item, index) in designArr" :key="index">
+				<view class="name">{{item}}</view>
+				<view class="bt">{{item}}</view>
+			</view>
+		</view>
 		<!-- 原始户型图 -->
 		<view class="original">
 			<view class="subtitle">
-				量房图（原始结构尺寸图）
+				原始结构尺寸图
 			</view>
 			<view class="imgs img-original">
-				<!-- <image mode="aspectFit" :src="data.originImgUrl" @click="clickImg(data.originImgUrl)"></image> -->
+				<image :src="originImgUrl" @click="clickImg(originImgUrl)"></image>
 			</view>
 		</view>
 		<!-- 量房图 -->
 		<view class="measure">
 			<view class="subtitle">
-				量房图（原始结构尺寸图）
+				量房图图片
 			</view>
 			<view class="imgs img-measure">
-				<image mode="aspectFit" v-for="(item,index) in data.measureImgList" :src="item"
-					@click="clickImg(data.measureImgList)"></image>
+				<image v-for="(item,index) in measureImgList" :src="item" @click="clickImg(measureImgList)"></image>
 			</view>
 		</view>
 	</view>
@@ -26,8 +31,16 @@
 	export default {
 		data() {
 			return {
-				data: {
-				}
+				measureImgList: [
+					"http://iph.href.lu/328x216?text=量房图片&fg=EB7662&bg=FFE2DD",
+					"http://iph.href.lu/328x216?text=量房图片&fg=EB7662&bg=FFE2DD",
+					"http://iph.href.lu/328x216?text=量房图片&fg=EB7662&bg=FFE2DD",
+					"http://iph.href.lu/328x216?text=量房图片&fg=EB7662&bg=FFE2DD",
+					"http://iph.href.lu/328x216?text=量房图片&fg=EB7662&bg=FFE2DD",
+					"http://iph.href.lu/328x216?text=量房图片&fg=EB7662&bg=FFE2DD"
+				],
+				originImgUrl: "http://iph.href.lu/286x188?text=原始结构尺寸图&fg=EB7662&bg=FFE2DD",
+				designArr: ['量房']
 			}
 		},
 		methods: {
@@ -49,8 +62,57 @@
 	}
 </script>
 
-<style scoped>
-	.img-measure image {
-		width: 49%;
+<style scoped lang="scss">
+	.tabs {
+		display: flex;
+		align-items: flex-start;
+		justify-content: space-between;
+		flex-direction: row;
+		padding: 28rpx 0 0 48rpx;
+		border: 2rpx solid #EFEFEF;
+		margin-bottom: 40rpx;
+		box-sizing: border-box;
+
+		.item {
+			text-align: center;
+			.name {
+				margin-bottom: 14rpx;
+				width: 56rpx;
+				height: 40rpx;
+				font-size: 28rpx;
+				font-family: PingFangSC, PingFangSC-Medium;
+				font-weight: 700;
+				text-align: center;
+				color: #333333;
+				line-height: 40rpx;
+			}
+
+			.bt {
+				display: none;
+			}
+		}
+
+		.active {
+			.bt {
+				width: 48rpx;
+				height: 6rpx;
+				background: linear-gradient(129deg, #00cdec 0%, #00ed7d 92%);
+				border-radius: 200rpx 200rpx 0rpx 0rpx;
+			}
+		}
+	}
+
+	.img-measure {
+		image {
+			width: 328rpx;
+			height: 216rpx;
+		}
+	}
+
+	.img-original {
+		image {
+			width: 286rpx;
+			height: 188rpx;
+		}
 	}
 </style>

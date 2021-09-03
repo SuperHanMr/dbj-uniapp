@@ -152,7 +152,7 @@
 			},
 			toFriends() {
 				uni.navigateTo({
-					url: "../../decorate/friends/friends?id=" + this.currentHouse.id,
+					url: "/sub-decorate/pages/friends/friends?id=" + this.currentHouse.id,
 				});
 			},
 			addHouse() {
