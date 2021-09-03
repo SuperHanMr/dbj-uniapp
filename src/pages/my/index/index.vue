@@ -89,12 +89,12 @@ export default {
         {
           key: "1",
           value: "我的收藏",
-          url: "../personal-center/my-collection/my-collection",
+					url:"../../../sub-my/pages/personal-center/my-collection/my-collection"
         },
         {
           key: "2",
           value: "我的关注",
-          url: "../personal-center/my-attention/my-attention",
+					url:"../../../sub-my/pages/personal-center/my-attention/my-attention",
         },
         // {
         //   key: "3",
@@ -104,41 +104,41 @@ export default {
         {
           key: "4",
           value: "我的钱包",
-          url: "../personal-center/my-wallet/my-wallet",
+          url:"../../../sub-my/pages/personal-center/my-wallet/my-wallet",
         },
         {
           key: "5",
           value: "投诉与建议",
-          url: "../personal-center/complaints-and-suggestions/complaints-and-suggestions",
+					url:"../../../sub-my/pages/personal-center/complaints-and-suggestions/complaints-and-suggestions",
         },
       ],
       orderStatusList: [
         {
           key: "1",
           value: "待付款",
-					url:"../my-order/my-order?index=1",
+					url:"../../../sub-my/pages/my-order/my-order?index=1",
         },
         {
           key: "2",
           value: "进行中",
-					url:"../my-order/my-order?index=2",
+					url:"../../../sub-my/pages/my-order/my-order?index=2",
         },
         {
           key: "3",
           value: "已完成",
-					url:"../my-order/my-order?index=3",
+					url:"../../../sub-my/pages/my-order/my-order?index=3",
         },
         {
           key: "4",
           value: "评价",
-					url:"../evaluate/evaluate",
+					url:"../../../sub-my/pages/evaluate/evaluate",
         },
         {
           key: "5",
-          value: "退款",
-					url:"../my-order/success/success"
-          // url: "../refund-list/refund-list",
-					// url:"../../../sub-pagesA/apply-for-refund/apply-for-refund"
+          value: "退款",//退款列表
+          url:"../../../sub-my/pages/refund-list/refund-list",
+					// url:"../../../sub-my/pages/my-order/success/success",//订单操作成功的页面
+          // url:"../../../sub-my/pages/apply-for-refund/apply-for-refund",//申请退款
         },
       ],
     };
@@ -147,7 +147,10 @@ export default {
     handlerToShop() {
       console.log("点击了");
       uni.navigateTo({
-        url: "../shopping-cart/shopping-cart",
+				url:"../../../sub-my/pages/shopping-cart/shopping-cart",
+				
+				
+				
 			});
     },
     handlerToSetUp() {
@@ -159,14 +162,13 @@ export default {
     handleSetUp() {
       console.log("点击设置");
       uni.navigateTo({
-        url: "../set-up/set-up",
+				url:"../../../sub-my/pages/set-up/set-up"
       });
-			
     },
     handlerPersonalData() {
       console.log("编辑个人资料");
       uni.navigateTo({
-        url: "../edit-personal-data/edit-personal-data",
+				url:"../../../sub-my/pages/edit-personal-data/edit-personal-data"
       });
     },
     handlePersonalItem(item) {
@@ -178,20 +180,21 @@ export default {
     handlerTotalOrder() {
       console.log("点击我的订单全部按钮");
       uni.navigateTo({
-        url: "../my-order/my-order?index=1",
+				url:"../../../sub-my/pages/my-order/my-order?index=1"
       });
     },
-		handlerOrder(item){
-			console.log(item.value)
-			uni.navigateTo({
-				url:item.url,
-			})
-		},
-    handlerToMyHouse(){
+    handlerOrder(item) {
+      console.log(item.value);
       uni.navigateTo({
-        url:'/pages/my/my-house/my-house?isMy=true'
-      })
-    }
+        url: item.url,
+      });
+    },
+    handlerToMyHouse() {
+      uni.navigateTo({
+        // url: "/pages/my/my-house/my-house?isMy=true",
+				url:"../../../sub-my/pages/my-house/my-house?isMy=true"
+      });
+    },
   },
 };
 </script>

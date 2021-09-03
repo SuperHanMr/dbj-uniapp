@@ -12,20 +12,9 @@
 		{
 			"path": "pages/decorate/index/index",
 			"style": {
-				"navigationBarTitleText": "装修"
-			}
-		},
-		{
-			"path": "pages/decorate/design-picture/design-picture",
-			"style": {
-				"navigationBarTitleText": "设计图"
-			}
-		},
-		{
-			"path": "pages/decorate/no-house/no-house",
-			"style": {
-				"navigationBarTitleText": "未绑定房屋",
-				"usingComponents": {}
+				"navigationBarTitleText": "装修",
+				"transparentTitle": "auto",
+				"navigationStyle": "custom"
 			}
 		},
 		{
@@ -38,38 +27,9 @@
 			}
 		},
 		{
-			"path": "pages/decorate/have-house-no-service/have-house-no-service",
-			"style": {
-				"navigationBarTitleText": "有房屋无服务"
-			}
-		},
-		{
 			"path": "pages/classify/index/index",
 			"style": {
 				"navigationBarTitleText": "分类"
-			}
-		},
-		{
-			"path": "pages/classify/search/index",
-			"style": {
-				"navigationBarTitleText": "",
-				"enablePullDownRefresh": false
-			}
-		},
-		{
-			"path": "pages/classify/search-result/search-result",
-			"style": {
-				"navigationBarTitleText": "",
-				"enablePullDownRefresh": false,
-				"navigationBarBackgroundColor": "#FFFFFF"
-			}
-		},
-		{
-			"path": "pages/classify/goods-detail/goods-detail",
-			"style": {
-				"navigationBarTitleText": "商品详情",
-				"enablePullDownRefresh": false,
-				"navigationStyle": "custom"
 			}
 		},
 		{
@@ -85,53 +45,6 @@
 			}
 		},
 		{
-			"path": "pages/my/set-up/set-up",
-			"style": {
-				"navigationBarTitleText": "设置",
-				"navigationBarBackgroundColor": "#FFFFFF"
-			}
-		},
-		{
-			"path": "pages/my/set-up/about-dabanjia/about-dabanjia",
-			"style": {
-				"navigationBarTitleText": "关于打扮家"
-			}
-		},
-		{
-			"path": "pages/my/edit-personal-data/edit-personal-data",
-			"style": {
-				"navigationBarTitleText": "编辑个人资料"
-			}
-		},
-		{
-			"path": "pages/my/personal-center/my-collection/my-collection",
-			"style": {
-				"navigationBarTitleText": "我的收藏",
-				"enablePullDownRefresh": false
-			}
-		},
-		{
-			"path": "pages/my/personal-center/my-attention/my-attention",
-			"style": {
-				"navigationBarTitleText": "我的关注",
-				"enablePullDownRefresh": false
-			}
-		},
-		{
-			"path": "pages/my/personal-center/my-wallet/my-wallet",
-			"style": {
-				"navigationBarTitleText": "我的钱包",
-				"enablePullDownRefresh": false
-			}
-		},
-		{
-			"path": "pages/my/personal-center/complaints-and-suggestions/complaints-and-suggestions",
-			"style": {
-				"navigationBarTitleText": "投诉与建议",
-				"enablePullDownRefresh": false
-			}
-		},
-		{
 			"path": "pages/common/goods-detail/goods-detail",
 			"style": {
 				"navigationBarTitleText": "商品详情"
@@ -144,195 +57,10 @@
 			}
 		},
 		{
-			"path": "pages/my/shopping-cart/shopping-cart",
-			"style": {
-				"navigationBarTitleText": "购物车"
-			}
-		},
-		{
-			"path": "pages/decorate/friends/friends",
-			"style": {
-				"navigationBarTitleText": "亲友团",
-				"enablePullDownRefresh": false
-			}
-		},
-		{
-			"path": "pages/decorate/add-friends/add-friends",
-			"style": {
-				"navigationBarTitleText": "添加亲友",
-				"enablePullDownRefresh": false
-			}
-		},
-		{
-			"path": "pages/decorate/calendar/calendar",
-			"style": {
-				"navigationBarTitleText": "装修日历",
-				"enablePullDownRefresh": false
-			}
-		},
-		{
-			"path": "pages/decorate/warehouse-list/warehouse-list",
-			"style": {
-				"navigationBarTitleText": "我的仓库",
-				"enablePullDownRefresh": false
-			}
-		},
-		{
-			"path": "pages/decorate/replace-worker/replace-worker",
-			"style": {
-				"navigationBarTitleText": "申请更换工匠",
-				"enablePullDownRefresh": false
-			}
-		},
-		{
-			"path": "pages/decorate/grab/grab",
-			"style": {
-				"navigationBarTitleText": "抢单审核",
-				"enablePullDownRefresh": false
-			}
-		},
-		{
-			"path": "pages/decorate/my-decorate/my-decorate",
-			"style": {
-				"navigationBarTitleText": "我的装修服务",
-				"enablePullDownRefresh": false
-			}
-		},
-		{
-			"path": "pages/decorate/decorate-progress/decorate-progress",
-			"style": {
-				"navigationBarTitleText": "装修进度",
-				"enablePullDownRefresh": false
-			}
-		},
-		{
-			"path": "pages/decorate/service-evaluate/service-evaluate",
-			"style": {
-				"navigationBarTitleText": "服务评价",
-				"enablePullDownRefresh": false
-			}
-		},
-		{
-			"path": "pages/my/set-up/agreement/service-agreement",
-			"style": {
-				"navigationBarTitleText": "",
-				"enablePullDownRefresh": false
-			}
-		},
-		{
-			"path": "pages/my/set-up/agreement/code-of-conduct",
-			"style": {
-				"navigationBarTitleText": "",
-				"enablePullDownRefresh": false
-			}
-		},
-		{
-			"path": "pages/my/set-up/agreement/privacy-agreement",
-			"style": {
-				"navigationBarTitleText": "",
-				"enablePullDownRefresh": false
-			}
-		},
-		{
-			"path": "pages/my/set-up/agreement/property-rights-clause",
-			"style": {
-				"navigationBarTitleText": "",
-				"enablePullDownRefresh": false
-			}
-		},
-		{
-			"path": "pages/decorate/add-house/add-house",
-			"style": {
-				"navigationBarTitleText": "新增房屋",
-				"enablePullDownRefresh": false
-			}
-		},
-		{
-			"path": "pages/home/lives-room/lives-room",
-			"style": {
-				"navigationBarTitleText": "",
-				"enablePullDownRefresh": false
-			}
-		},
-		{
-			"path": "pages/home/select-city/select-city",
-			"style": {
-				"navigationBarTitleText": "",
-				"enablePullDownRefresh": false
-			}
-		},
-		{
-			"path": "pages/my/my-order/my-order",
-			"style": {
-				"navigationBarTitleText": "我的订单",
-				"enablePullDownRefresh": false
-			}
-		},
-		{
 			"path": "pages/real-case/real-case",
 			"style": {
 				"navigationBarTitleText": "真实案例",
 				"enablePullDownRefresh": false
-			}
-		},
-		{
-			"path": "pages/my/my-house/my-house",
-			"style": {
-				"navigationBarTitleText": "房屋管理",
-				"enablePullDownRefresh": false
-			}
-		},
-		{
-			"path": "pages/my/refund-list/refund-list",
-			"style": {
-				"navigationBarTitleText": "退款",
-				"enablePullDownRefresh": false
-			}
-		},
-		{
-			"path": "pages/decorate/no-house-decorate/no-house-decorate",
-			"style": {
-				"navigationBarTitleText": "装修服务",
-				"enablePullDownRefresh": true
-			}
-		},
-		{
-			"path": "pages/decorate/check/check",
-			"style": {
-				"navigationBarTitleText": "验房服务",
-				"enablePullDownRefresh": true
-			}
-		},
-		{
-			"path": "pages/my/my-order/order-in-progress/order-in-progress",
-			"style": {
-				"navigationBarTitleText": "",
-				"navigationBarBackgroundColor": "#FFB344",
-				"enablePullDownRefresh": false
-			}
-		},
-		{
-			"path": "pages/my/my-order/order-success/order-success",
-			"style": {
-				"navigationBarTitleText": "",
-				"navigationBarBackgroundColor": "#23D5C6",
-				"enablePullDownRefresh": false
-			}
-		},
-		{
-			"path": "pages/my/my-order/order-failed/order-failed",
-			"style": {
-				"navigationBarTitleText": "",
-				"navigationBarBackgroundColor": "#C6C6C6",
-				"enablePullDownRefresh": false
-			}
-		},
-		{
-			"path": "pages/my/evaluate/evaluate",
-			"style": {
-				"navigationBarTitleText": "我的评价",
-				"enablePullDownRefresh": false,
-				"navigationBarBackgroundColor": "#FFFFFF"
 			}
 		},
 		{
@@ -355,45 +83,9 @@
 				"navigationBarTitleText": "",
 				"enablePullDownRefresh": false
 			}
-		},
-		{
-			"path": "pages/my/set-up/comments-feedback/comments-feedback",
-			"style": {
-				"navigationBarTitleText": "",
-				"enablePullDownRefresh": false
-			}
-		},
-		{
-			"path": "pages/decorate/design-service-list/design-service-list",
-			"style": {
-				"navigationBarTitleText": "设计服务",
-				"enablePullDownRefresh": true
-			}
-		},
-		{
-			"path": "pages/decorate/no-house-checkhouse/no-house-checkhouse",
-			"style": {
-				"navigationBarTitleText": "验房服务",
-				"enablePullDownRefresh": false
-			}
-		},
-		{
-			"path": "pages/my/evaluate/immediate-evaluate/immediate-evaluate",
-			"style": {
-				"navigationBarTitleText": "精算服务评价",
-				"enablePullDownRefresh": false
-			}
 		}
-		,{
-					"path" : "pages/my/my-order/success/success",
-					"style" :                                                                                    
-					{
-							"navigationBarTitleText": "",
-							"enablePullDownRefresh": false
-					}
-					
-			}
-    ],
+		
+	],
 	"globalStyle": {
 		"navigationBarTextStyle": "black",
 		"navigationBarTitleText": "uni-app",
@@ -457,7 +149,26 @@
 	},
 	"subPackages": [
 		{
-			"root": "sub-pagesA",
+			"root": "sub-home", //首页模块分包
+			"pages": [
+				{
+					"path": "pages/lives-room/lives-room",
+					"style": {
+						"navigationBarTitleText": "",
+						"enablePullDownRefresh": false
+					}
+				},
+				{
+					"path": "pages/select-city/select-city",
+					"style": {
+						"navigationBarTitleText": "",
+						"enablePullDownRefresh": false
+					}
+				}
+			]
+		},
+		{
+			"root": "sub-message", //消息模块分包
 			"pages": [
 				{
 					"path": "pages/test1/test1",
@@ -465,16 +176,356 @@
 						"navigationBarTitleText": "",
 						"enablePullDownRefresh": false
 					}
-				},
+				}
+			]
+		},
+		{
+			"root": "sub-my", //我的模块分包
+			"pages": [
 				{
-					"path": "apply-for-refund/apply-for-refund",
+					"path": "pages/apply-for-refund/apply-for-refund",
 					"style": {
 						"navigationBarTitleText": "申请退款",
 						"enablePullDownRefresh": false
 					}
 				},
 				{
-					"path": "pages/decorate/amoutDelivery/amoutDelivery",
+					"path": "pages/edit-personal-data/edit-personal-data",
+					"style": {
+						"navigationBarTitleText": "编辑个人资料"
+					}
+				},
+				{
+					"path": "pages/evaluate/evaluate",
+					"style": {
+						"navigationBarTitleText": "我的评价",
+						"enablePullDownRefresh": false,
+						"navigationBarBackgroundColor": "#FFFFFF"
+					}
+				},
+				{
+					"path":"pages/evaluate/immediate-evaluate/immediate-evaluate",
+					"style": {
+						"navigationBarTitleText": "立即评价",
+						"enablePullDownRefresh": false
+					}
+					
+				},
+				{
+					"path": "pages/my-house/my-house",
+					"style": {
+						"navigationBarTitleText": "房屋管理",
+						"enablePullDownRefresh": false
+					}
+				},
+				{
+					"path": "pages/my-order/my-order",
+					"style": {
+						"navigationBarTitleText": "我的订单",
+						"enablePullDownRefresh": false
+					}
+				},
+				{
+					"path": "pages/my-order/order-in-progress/order-in-progress",
+					"style": {
+						"navigationBarTitleText": "",
+						"navigationBarBackgroundColor": "#FFB344",
+						"enablePullDownRefresh": false
+					}
+				},
+				{
+					"path": "pages/my-order/order-success/order-success",
+					"style": {
+						"navigationBarTitleText": "",
+						"navigationBarBackgroundColor": "#23D5C6",
+						"enablePullDownRefresh": false
+					}
+				},
+				{
+					"path": "pages/my-order/order-failed/order-failed",
+					"style": {
+						"navigationBarTitleText": "",
+						"navigationBarBackgroundColor": "#C6C6C6",
+						"enablePullDownRefresh": false
+					}
+				},
+				{
+					"path": "pages/my-order/success/success",
+					"style": {
+						"navigationBarTitleText": "",
+						"enablePullDownRefresh": false
+					}
+				},
+				{
+					"path": "pages/personal-center/my-collection/my-collection",
+					"style": {
+						"navigationBarTitleText": "我的收藏",
+						"enablePullDownRefresh": false
+					}
+				},
+				{
+					"path": "pages/personal-center/my-attention/my-attention",
+					"style": {
+						"navigationBarTitleText": "我的关注",
+						"enablePullDownRefresh": false
+					}
+				},
+				{
+					"path": "pages/personal-center/my-wallet/my-wallet",
+					"style": {
+						"navigationBarTitleText": "我的钱包",
+						"enablePullDownRefresh": false
+					}
+				},
+				{
+					"path": "pages/personal-center/complaints-and-suggestions/complaints-and-suggestions",
+					"style": {
+						"navigationBarTitleText": "投诉与建议",
+						"enablePullDownRefresh": false
+					}
+				},
+				{
+					"path": "pages/set-up/set-up",
+					"style": {
+						"navigationBarTitleText": "设置",
+						"navigationBarBackgroundColor": "#FFFFFF"
+					}
+				},
+				{
+					"path": "pages/refund-list/refund-list",
+					"style": {
+						"navigationBarTitleText": "退款",
+						"enablePullDownRefresh": false
+					}
+				},
+				{
+					"path": "pages/set-up/agreement/service-agreement",
+					"style": {
+						"navigationBarTitleText": "",
+						"enablePullDownRefresh": false
+					}
+				},
+				{
+					"path": "pages/set-up/agreement/code-of-conduct",
+					"style": {
+						"navigationBarTitleText": "",
+						"enablePullDownRefresh": false
+					}
+				},
+				{
+					"path": "pages/set-up/agreement/privacy-agreement",
+					"style": {
+						"navigationBarTitleText": "",
+						"enablePullDownRefresh": false
+					}
+				},
+				{
+					"path": "pages/set-up/agreement/property-rights-clause",
+					"style": {
+						"navigationBarTitleText": "",
+						"enablePullDownRefresh": false
+					}
+				},
+				{
+					"path": "pages/set-up/comments-feedback/comments-feedback",
+					"style": {
+						"navigationBarTitleText": "",
+						"enablePullDownRefresh": false
+					}
+				},
+				{
+					"path": "pages/set-up/about-dabanjia/about-dabanjia",
+					"style": {
+						"navigationBarTitleText": "关于打扮家"
+					}
+				},
+				{
+					"path": "pages/shopping-cart/shopping-cart",
+					"style": {
+						"navigationBarTitleText": "购物车"
+					}
+				},
+				{
+					"path": "pages/shopping-cart/confirm-order",
+					"style": {
+						"navigationBarTitleText": "确认订单"
+					}
+				}
+				
+				
+			]
+		},
+		{
+			"root": "sub-classify", //商城模块分包
+			"pages": [
+				{
+					"path": "pages/search/index",
+					"style": {
+						"navigationBarTitleText": "",
+						"enablePullDownRefresh": false
+					}
+				},
+				{
+					"path": "pages/search-result/search-result",
+					"style": {
+						"navigationBarTitleText": "",
+						"enablePullDownRefresh": false,
+						"navigationBarBackgroundColor": "#FFFFFF"
+					}
+				},
+				{
+					"path": "pages/goods-detail/goods-detail",
+					"style": {
+						"navigationBarTitleText": "商品详情",
+						"enablePullDownRefresh": false,
+						"navigationStyle": "custom"
+					}
+				},
+				{
+					"path": "pages/pay/pay",
+					"style": {
+						"navigationBarTitleText": "",
+						"enablePullDownRefresh": false
+					}
+				}
+			]
+		},
+		{
+			"root": "sub-decorate", //装修模块分包
+			"pages": [
+				{
+					"path": "pages/design-service-list/design-service-list",
+					"style": {
+						"navigationBarTitleText": "设计服务",
+						"enablePullDownRefresh": true
+					}
+				},
+				{
+					"path": "pages/no-house-checkhouse/no-house-checkhouse",
+					"style": {
+						"navigationBarTitleText": "验房服务",
+						"enablePullDownRefresh": false
+					}
+				},
+				{
+					"path": "pages/no-house-decorate/no-house-decorate",
+					"style": {
+						"navigationBarTitleText": "装修服务",
+						"enablePullDownRefresh": true
+					}
+				},
+				{
+					"path": "pages/check/check",
+					"style": {
+						"navigationBarTitleText": "验房服务",
+						"enablePullDownRefresh": true
+					}
+				},
+				{
+					"path": "pages/design-picture/design-picture",
+					"style": {
+						"navigationBarTitleText": "设计图"
+					}
+				},
+				{
+					"path": "pages/no-house/no-house",
+					"style": {
+						"navigationBarTitleText": "未绑定房屋",
+						"usingComponents": {}
+					}
+				},
+				{
+					"path": "pages/have-house-no-service/have-house-no-service",
+					"style": {
+						"navigationBarTitleText": "有房屋无服务"
+					}
+				},
+				{
+					"path": "pages/replace-worker/replace-worker",
+					"style": {
+						"navigationBarTitleText": "申请更换工匠",
+						"enablePullDownRefresh": false
+					}
+				},
+				{
+					"path": "pages/grab/grab",
+					"style": {
+						"navigationBarTitleText": "抢单审核",
+						"enablePullDownRefresh": false
+					}
+				},
+				{
+					"path": "pages/my-decorate/my-decorate",
+					"style": {
+						"navigationBarTitleText": "我的装修服务",
+						"enablePullDownRefresh": false
+					}
+				},
+				{
+					"path": "pages/decorate-progress/decorate-progress",
+					"style": {
+						"navigationBarTitleText": "装修进度",
+						"enablePullDownRefresh": false
+					}
+				},
+				{
+					"path": "pages/service-evaluate/service-evaluate",
+					"style": {
+						"navigationBarTitleText": "服务评价",
+						"enablePullDownRefresh": false
+					}
+				},
+				{
+					"path": "pages/add-house/add-house",
+					"style": {
+						"navigationBarTitleText": "新增房屋",
+						"enablePullDownRefresh": false
+					}
+				},
+				{
+					"path": "pages/add-friends/add-friends",
+					"style": {
+						"navigationBarTitleText": "添加亲友",
+						"enablePullDownRefresh": false
+					}
+				},
+				{
+					"path": "pages/friends/friends",
+					"style": {
+						"navigationBarTitleText": "亲友团",
+						"enablePullDownRefresh": false
+					}
+				},
+				{
+					"path": "pages/calendar/calendar",
+					"style": {
+						"navigationBarTitleText": "装修日历",
+						"enablePullDownRefresh": false
+					}
+				},
+				{
+					"path": "pages/warehouse-list/warehouse-list",
+					"style": {
+						"navigationBarTitleText": "我的仓库",
+						"enablePullDownRefresh": false
+					}
+				},
+				{
+					"path": "pages/warehouse-refund/warehouse-refund",
+					"style": {
+						"navigationBarTitleText": "",
+						"enablePullDownRefresh": false
+					}
+				},
+				{
+					"path": "pages/warehouse-refund-detail/warehouse-refund-detail",
+					"style": {
+						"navigationBarTitleText": "",
+						"enablePullDownRefresh": false
+					}
+				},
+				{
+					"path": "pages/amoutDelivery/amoutDelivery",
 					"style": {
 						"navigationBarTitleText": "确认量房结果",
 						"enablePullDownRefresh": false
@@ -482,5 +533,13 @@
 				}
 			]
 		}
-	]
+	],
+	"preloadRule": {
+		"sub-my/pages/set-up/agreement/service-agreement": {
+			"network": "all",
+			"packages": [
+				"sub-my"
+			]
+		}
+	}
 }

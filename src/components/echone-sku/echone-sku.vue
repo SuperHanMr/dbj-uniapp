@@ -5,16 +5,20 @@
 					<image class="goods-img" :src="selectSkuInfo[cbImage]"></image>
 					
 					<view class="sku-goods-info">
-						<view class="money" :style="{color:themeColor}">
-							<text class="symbol fs-26">￥</text>
-							<text class="amount fs-38">{{selectSkuInfo[cbPrice] | toFixed2}}</text>
+						<view class="goodsDesc">
+							<text class="goodsType">服务</text>
+							{{selectSkuInfo[cbStock]}}
 						</view>
-						<view class="stock fs-24">
+						<view class="money">
+							<text class="symbol fs-26">￥</text>
+							<text class="amount fs-38">{{selectSkuInfo[cbPrice] | toFixed2}}/</text>
+						</view>
+						<!-- <view class="stock fs-24">
 							库存{{selectSkuInfo[cbStock]}}件
 						</view>
 						<view class="fs-24">
 							已选："{{selectSkuInfo[cbValue]}}"
-						</view>
+						</view> -->
 					</view>
 				</view>
 				<scroll-view class="sku-list" scroll-y="true">
@@ -26,23 +30,17 @@
 								v-for="(item,index) in sku[speList]"
 								:key="index" 
 								:style="{
-									borderColor: index===sku.sidx? themeColor: '',
-									color:index===sku.sidx?themeColor:'',
-									backgroundColor: index===sku.sidx?'white':'#f5f5f5' }" 
+									borderColor: index===sku.sidx? '#35c4c4': '#fff',
+									color:index===sku.sidx?'#34c4c4':'#333333',
+									backgroundColor: index===sku.sidx?'#e8fafa':'#f5f5f5' 
+								}" 
 								@click="selectSku(sIndex,index)"
 							>{{item}}</text>
 						</view>
 					</view>
 				</scroll-view>
-				<view class="sku-item container count">
-					<view class="sku-name">数量</view>
-					<view class="count-box">
-						<text class="minus" :class="{disabled:buyCount<=1}" @click="handleBuyCount('minus')">-</text>
-						<input class="count-content" v-model="buyCount" :disabled="selectSkuInfo[cbStock]<=0"/>
-						<text class="add" :class="{disabled:buyCount>=selectSkuInfo[cbStock]}" @click="handleBuyCount('add')">+</text>
-					</view>
-				</view>
-				<view class="confirm-btn container" :class="{disabled:selectSkuInfo[cbStock]==0}" :style="{backgroundColor:themeColor}" @click="handleConfirm">{{selectSkuInfo[cbStock]>0?'立即购买':'缺货中'}}</view>
+
+				<view class="confirm-btn container" :class="{disabled:selectSkuInfo[cbStock]==0}" @click="handleConfirm">{{selectSkuInfo[cbStock]>0?'确认':'缺货中'}}</view>
 			</view>
 	</popup-bottom>
 </template>
@@ -111,7 +109,6 @@
 			return {
 				buyCount: 1,
 				selectedIndex: 0,
-				borderWidth: uni.upx2px(2),
 				mySpecifications: [],
 				selectSkuInfo: {},
 			}
@@ -224,43 +221,68 @@
 	$page-bg-color-grey: #f5f5f5;
 
 	.fs-24 {
-		font-size: 24upx;
+		font-size: 24rpx;
 	}
 
 	.fs-26 {
-		font-size: 26upx;
+		font-size: 26rpx;
 	}
 
 	.fs-38 {
-		font-size: 38upx;
+		font-size: 38rpx;
 	}
 
 	.container {
-		width: 690upx;
+		width: 690rpx;
 		margin: 0 auto;
 	}
 
 	.sku-box {
-		min-height: 500upx;
+		min-height: 500rpx;
 		background-color: white;
-		padding-bottom: 20upx;
-		font-size: 28upx;
+		padding-bottom: 92rpx;
+		font-size: 28rpx;
 		color: #333333;
 		.sku-header {
 			display: flex;
-			padding: 40upx 0 20upx;
+			padding: 40rpx 0 40rpx;
 			.goods-img {
-				width: 200upx;
-				height: 200upx;
-				border-radius: 6upx;
-				border: 4upx solid white;
-				flex: none;
-				margin-top: -80upx;
+				width: 192rpx;
+				height: 192rpx;
+				border-radius: 16rpx;
+				border: 1rpx solid  #f4f4f4;
 			}
 		}
 		.sku-goods-info {
-			margin-left: 20upx;
+			display: flex;
+			flex-direction: column;
+			justify-content: space-between;
+			margin-left: 20rpx;
+			.goodsDesc{
+				width: 380rpx;
+				height: 80rpx;
+				font-size: 28rpx;
+				color: #333333;
+				line-height: 40rpx;
+				text-overflow: ellipsis;
+				.goodsType{
+					width: 60rpx;
+					height: 30rpx;
+					padding: 2rpx 10rpx 2rpx 10rpx;
+					margin-right: 4rpx;
+					border: 2rpx solid #35c4c4;
+					border-radius: 4rpx;
+					font-size: 20rpx;
+					font-weight: 500;
+					color: #35c4c4;
+					line-height: 28rpx;
+					text-align:center;
+				}
+				
+			}
 			.money {
+				font-size: 28rpx;
+				color:#FF3347;
 				border: none;
 				padding-bottom: 0;
 			}
@@ -269,23 +291,24 @@
 			}
 		}
 		.sku-list {
-			max-height: 500upx;
+			max-height: 500rpx;
 		}
 		.sku-item {
-			padding: 30upx 0;
+			padding: 8rpx 0;
 			.sku-name {
-				font-size: 30upx;
+				color: #333333;
+				font-size: 28rpx;
+				margin-bottom:12rpx;
 			}
 			.sku-content {
-				border-bottom: 2upx solid $page-bg-color-grey;
-				padding: 20upx 0;
-				@extend .flex-center;
+				padding: 20rpx 0;
 				flex-wrap: wrap;
+				@extend .flex-center;
 				.sku-content-item {
-					padding: 16upx 20upx;
-					border-radius: 6upx;
-					margin: 0 30upx 20upx 0;
-					border: 2upx solid transparent;
+					padding: 16rpx 32rpx 16rpx 32rpx;
+					border-radius: 8rpx;
+					margin-right: 12rpx;
+					border: 2rpx solid transparent;
 				}
 			}
 			&.count {
@@ -295,28 +318,30 @@
 					@extend .flex-center;
 					text,.count-content {
 						@extend .flex-center-center;
-						width: 70upx;
-						height: 70upx;
-						font-size: 32upx;
-						border: 2upx solid $page-bg-color-grey;
+						width: 70rpx;
+						height: 70rpx;
+						font-size: 32rpx;
+						border: 2rpx solid $page-bg-color-grey;
 					}
 					.add,.minus {
-						font-size: 44upx;
+						font-size: 44rpx;
 					}
 					.count-content {
-						border-width: 2upx 0;
+						border-width: 2rpx 0;
 						text-align: center;
 					}
 				}
 			}
 		}
 		.confirm-btn {
-			@extend .flex-center-center;
-			height: 80upx;
-			border-radius: 80upx;
+			height: 88rpx;
+			line-height: 88rpx;
+			text-align: center;
+			border-radius: 12rpx;
 			color: white;
-			font-size: 32upx;
-			margin-top: 10upx;
+			background: linear-gradient(135deg,#53d5cc, #4fc9c9);
+			font-size: 32rpx;
+			margin-top: 14rpx;
 		}
 	}
 
