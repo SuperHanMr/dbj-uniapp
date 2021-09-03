@@ -1,6 +1,6 @@
 <template>
   <view>
-     <web-view :src="'https://local.meiwu365.com/app-pages/goods-detail/index.html?goodsId='+ id"></web-view>
+     <web-view :src='webViewSrc'></web-view>
   </view>
 </template>
 
@@ -8,11 +8,21 @@
   export default {
     data() {
       return {
-        id: ''
+        goodId: '',
+        houseId: '',
+        webViewSrc: ''
       }
     },
-    onLoad(e){
-      this.id = e.goodId
+    onShow() {
+      this.houseId = uni.getStorageSync('houseListChooseId')
+      setTimeout(()=> {
+        this.webViewSrc = 'https://local.meiwu365.com/app-pages/goods-detail/index.html?goodsId='
+        + this.goodId + '&&houseId=' + this.houseId
+      })
+      uni.removeStorageSync('houseListChooseId')
+    },
+    onLoad(e) {
+      this.goodId = e.goodId
     },
     methods: {
       

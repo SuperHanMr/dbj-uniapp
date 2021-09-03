@@ -54,7 +54,6 @@
             getList() {
                 getClassifyList().then((data) => {
                   this.dataList = data
-                  console.log(data)
                 })
             },
             ontabtap(e) {

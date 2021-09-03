@@ -53,11 +53,7 @@
         imgArr:[1,2,3,4,5,6,7,8,9]
 			}
 		},
-		created(){
-      console.log(this.detailData)
-		},
 		onShow() {
-      console.log('show')
       this.height = uni.getSystemInfoSync().windowHeight - this.tabBarHeight;
       this.getHeightList();
 		},
@@ -156,9 +152,12 @@
 		background: #F7F7F7;
 	}
   .nav-right{
-    padding: 30rpx 35rpx;
+    padding: 0 35rpx;
     background-color: #F7F7F7;
     width: 75%;
+  }
+  .right-view{
+    margin-top: 30rpx;
   }
   .menu3-title{
     font-size: 30rpx;

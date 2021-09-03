@@ -166,7 +166,13 @@
           'houseListChooseId',
           this.chooseId,
       );
-
+      
+      // uni.getStorageSync({
+      //     key: 'houseListChooseId',
+      //     success: function (res) {
+      //         console.log(res.data);
+      //     }
+      // });
       // EventChannel.emit('getHouse',123)
       // uni.navigateBack()
       // wx.reLaunch({

@@ -91,8 +91,6 @@
           getGoodsList().then((data) => {
             this.listData = data
             this.isPageReady = true
-            console.log(data.list[0])
-            console.log(this.listData.list && this.listData.list.length>0)
           })
       },
       clickInitSearch() {
