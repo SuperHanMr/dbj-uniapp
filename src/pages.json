@@ -381,13 +381,6 @@
 						"navigationBarTitleText": "",
 						"enablePullDownRefresh": false
 					}
-				},
-				{
-					"path": "pages/decorate/amoutDelivery/amoutDelivery",
-					"style": {
-						"navigationBarTitleText": "确认量房结果",
-						"enablePullDownRefresh": false
-					}
 				}
 			]
 		},
@@ -510,6 +503,13 @@
 					"path": "pages/warehouse-refund-detail/warehouse-refund-detail",
 					"style": {
 						"navigationBarTitleText": "",
+						"enablePullDownRefresh": false
+					}
+				},
+				{
+					"path": "pages/amoutDelivery/amoutDelivery",
+					"style": {
+						"navigationBarTitleText": "确认量房结果",
 						"enablePullDownRefresh": false
 					}
 				}
