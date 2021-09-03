@@ -2,24 +2,19 @@
 	<view class="waterfall">
 		<view class="left">
 			<block v-for="(item, index) in leftList" :key="index">
-				<view class="waterfall-item" @click="toDetail(item)">
-					<image :src="item.imageUrl" mode="widthFix" lazy-load @load="onImageLoad"></image>
-					<view class="title">{{ item.name }}</view>
-				</view>
+				<waterfall-item :item="item" @detail="toDetail" @load="onImageLoad"></waterfall-item>
 			</block>
 		</view>
 		<view class="right">
 			<block v-for="(item, index) in rightList" :key="index">
-				<view class="waterfall-item" @click="toDetail(item)">
-					<image :src="item.imageUrl" mode="widthFix" lazy-load @load="onImageLoad"></image>
-					<view class="title">{{ item.name }}</view>
-				</view>
+				<waterfall-item :item="item" @detail="toDetail" @load="onImageLoad"></waterfall-item>
 			</block>
 		</view>
 	</view>
 </template>
 
 <script>
+	import waterfallItem from "./waterfall-item.vue"
 	export default {
 		name: 'water-fall',
 		props: {
@@ -28,6 +23,7 @@
 				default: []
 			}
 		},
+		components:{waterfallItem},
 		watch: {
 			list(n, o) {
 				let that = this;
@@ -110,9 +106,10 @@
 		.right {
 			.waterfall-item {
 				width: 345rpx;
-				margin-bottom: 20rpx;
+				margin-top: 32rpx;
 				box-sizing: border-box;
 				background-color: #FFFFFF;
+				border-radius: 16rpx;
 
 				image {
 					width: 345rpx;
@@ -124,7 +121,7 @@
 					-webkit-box-orient: vertical;
 					-webkit-line-clamp: 2;
 					overflow: hidden;
-					margin: 16rpx;
+					padding: 16rpx;
 				}
 			}
 		}

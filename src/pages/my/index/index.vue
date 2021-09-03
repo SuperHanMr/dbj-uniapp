@@ -116,27 +116,28 @@ export default {
         {
           key: "1",
           value: "待付款",
-					url:"../my-order/my-order?index=1",
+          url: "../my-order/my-order?index=1",
         },
         {
           key: "2",
           value: "进行中",
-					url:"../my-order/my-order?index=2",
+          url: "../my-order/my-order?index=2",
         },
         {
           key: "3",
           value: "已完成",
-					url:"../my-order/my-order?index=3",
+          url: "../my-order/my-order?index=3",
         },
         {
           key: "4",
           value: "评价",
-					url:"../evaluate/evaluate",
+          url: "../evaluate/evaluate",
         },
         {
           key: "5",
           value: "退款",
-          url: "../refund-list/refund-list",
+          // url: "../refund-list/refund-list",
+          url: "../../../sub-home/apply-for-refund/apply-for-refund",
         },
       ],
     };
@@ -146,7 +147,7 @@ export default {
       console.log("点击了");
       uni.navigateTo({
         url: "../shopping-cart/shopping-cart",
-			});
+      });
     },
     handlerToSetUp() {
       console.log("点击了设置");
@@ -159,7 +160,6 @@ export default {
       uni.navigateTo({
         url: "../set-up/set-up",
       });
-			
     },
     handlerPersonalData() {
       console.log("编辑个人资料");
@@ -179,17 +179,17 @@ export default {
         url: "../my-order/my-order?index=1",
       });
     },
-		handlerOrder(item){
-			console.log(item.value)
-			uni.navigateTo({
-				url:item.url,
-			})
-		},
-    handlerToMyHouse(){
+    handlerOrder(item) {
+      console.log(item.value);
       uni.navigateTo({
-        url:'/pages/my/my-house/my-house?isMy=true'
-      })
-    }
+        url: item.url,
+      });
+    },
+    handlerToMyHouse() {
+      uni.navigateTo({
+        url: "/pages/my/my-house/my-house?isMy=true",
+      });
+    },
   },
 };
 </script>
