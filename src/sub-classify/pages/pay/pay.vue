@@ -1,6 +1,6 @@
 <template>
   <view>
-     <web-view src="https://local.meiwu365.com/app-pages/goods-detail/index.html"></web-view>
+    <button type="default" @click="pay">支付</button>
   </view>
 </template>
 
@@ -11,8 +11,13 @@
         
       }
     },
+    onLoad(e){},
     methods: {
-      
+      pay() {
+        uni.navigateTo({
+          url: ''
+        })
+      }
     }
   }
 </script>

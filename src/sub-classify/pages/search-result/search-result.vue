@@ -23,7 +23,7 @@
          :key="goodsIndex"
          :right-options="options"
        >
-        <view class="goodsItem" @click="toDetails">
+        <view class="goodsItem" @click="toDetails(goodsItem.id)">
           <image :src="goodsItem.imageUrl" class="goodsItemImg"></image>
           <view class="goodsInfo">
             <view class="goodsDesc">
@@ -91,8 +91,6 @@
           getGoodsList().then((data) => {
             this.listData = data
             this.isPageReady = true
-            console.log(data.list[0])
-            console.log(this.listData.list && this.listData.list.length>0)
           })
       },
       clickInitSearch() {
@@ -101,9 +99,9 @@
       searchConfirm(resText) {
         console.log(resText.value)
       },
-      toDetails(){
+      toDetails(id){
         uni.navigateTo({
-          url: "/pages/classify/goods-detail/goods-detail"
+          url: "/sub-classify/pages/goods-detail/goods-detail?goodId=" + id
         })
       }
     }
