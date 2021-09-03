@@ -19,7 +19,7 @@
 	align-items: center;
 }
 .item-name {
-	padding: 34rpx 48rpx 34rpx 24rpx;
+	padding: 34rpx 40rpx 34rpx 24rpx;
 	image {
 		width: 32rpx;
 		height: 32rpx;
@@ -36,6 +36,7 @@
 	}
 }
 .status-name {
+	padding-right: 48rpx;
 	view {
 		width: 156rpx;
 		height: 36rpx;
@@ -46,9 +47,19 @@
 		line-height: 36rpx;
 	}
 	image {
-		width: 14rpx;
-		height: 9rpx;
+		transition: all 0.2s;
+		margin-left: 8rpx;
+		width: 24rpx;
+		height: 24rpx;
+		transform: rotate(180deg);
 	}
+	image.open {
+		transition: all 0.2s;
+		transform: none;
+	}
+}
+.mr.status-name  {
+	padding-right: 16rpx;
 }
 .robbing {
 	color: red;
@@ -67,7 +78,7 @@
 }
 .gc {
 	.procsss {
-		padding: 20rpx 20rpx 18rpx 72rpx;
+		padding: 20rpx 20rpx 9rpx 72rpx;
 		.s0 {
 			height: 34rpx;
 			font-size: 24rpx;
@@ -87,10 +98,11 @@
 				text-align: right;
 				color: #333333;
 				line-height: 34rpx;
+				margin-right: 8rpx;
 			}
 			image {
-				width: 11rpx;
-				height: 9rpx;
+				width: 24rpx;
+				height: 24rpx;
 			}
 		}
 	}

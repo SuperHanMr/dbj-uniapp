@@ -10,13 +10,14 @@
 				shouldsure: status == '待确认',
 				inservice: status == '服务中',
 				uncheck: status == '待验收',
-				completed: status == '完成'
+				completed: status == '完成',
+				mr: status =='完成' || status =='服务中'
 			}">
 				<view>{{statusName}}</view>
-				<image src=""></image>
+				<image @click="openProcsss" :class="{open: open}" v-if="status =='完成' || status =='服务中'" src="../../static/svg/ic_triangle_up.svg"></image>
 			</view>
 		</view>
-		<view class="gc" v-if="status =='完成' || status =='服务中'">
+		<view class="gc" v-if="(status =='完成' || status =='服务中') && open">
 			<view class="procsss flex-row-bet">
 				<view class="s0">量房员</view>
 				<view class="s1 flex-row-start">
@@ -53,6 +54,16 @@
 				required: true
 			}
 		},
-		filters: {}
+		filters: {},
+		data() {
+			return {
+				open: true
+			}
+		},
+		methods:{
+			openProcsss() {
+				this.open = !this.open
+			}
+		}
 	}
 </script>
