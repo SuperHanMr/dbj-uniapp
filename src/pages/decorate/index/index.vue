@@ -14,10 +14,17 @@
 		<decorate-notice v-if="noticeActive" @closeNotice='closeNotice' class="decorate-notice"></decorate-notice>
 		<drag-button-follow :style.sync="style" @btnClick='openNotice' :follow='`left,right`'
 			className="drag-button" class="drag-button">
-			<view>
-				<text>消息</text>
-				<text style="color: red;">2</text>
+			<view class="white-circle">
+				<view class="gray-circle">
+          <view class="black-circle">
+            <text class="image-icon"></text>
+            <text class="tip">8</text>
+          </view>
+        </view>
 			</view>
+<!--     <view class="white-bg">
+        <view class="gray-bg"></view>
+      </view> -->
 		</drag-button-follow>
 		<view>
 			<view class="v1"><text>量房</text> <text>量房员抢单中</text></view>
@@ -28,7 +35,6 @@
 			<view @click="gonohousecheck">无房屋无服务验房</view>
 			<view @click="gonohavehouse">有房屋无服务首页</view>
 		</view>
-
 	</view>
 </template>
 
@@ -132,6 +138,7 @@
 
     },
 		onShow() {
+      uni.showTabBar()
 			if (this.houses && this.houses.length < 1) {
 				this.getHouses();
 			}
@@ -246,20 +253,82 @@
 	}
 
 	.drag-button {
-		background: #ffffff;
-		border: 0.5px solid #eeeeee;
-		box-shadow: 0 5rpx 10rpx 0 rgba(0, 0, 0, 0.08);
-		width: 100rpx;
-		height: 100rpx;
-		font-size: 24rpx;
-		color: #000000;
+		// background: #ffffff;
+		// // border: 0.5px solid #eeeeee;
+		// box-shadow: 0 5rpx 10rpx 0 rgba(0, 0, 0, 0.08);
+		// width: 100rpx;
+		// height: 100rpx;
+		// font-size: 24rpx;
+		// color: #000000;
 		position: absolute;
 		right: 0rpx;
 		bottom: 188rpx;
-		border-radius: 100%;
-		display: flex;
-		align-items: center;
-		justify-content: center;
+		// border-radius: 100%;
+		// display: flex;
+		// align-items: center;
+		// justify-content: center;
+    .white-circle{
+      width: 100rpx;
+      height: 100rpx;
+      opacity: 1;
+      background: #fff;
+      // display: inline-block;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      // position: absolute;
+      // right: 8px;
+      .gray-circle{
+        width: 80rpx;
+        height: 80rpx;
+        opacity: 1;
+        background: #999;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        .black-circle{
+          width: 56rpx;
+          height: 56rpx;
+          opacity: 1;
+          background: #333333;
+          border-radius: 50%;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          .image-icon{
+            width: 36rpx;
+            height: 36rpx;
+            background-color: #fff;
+          }
+          .tip{
+            position: absolute;
+            width: 24rpx;
+            height: 24rpx;
+            opacity: 1;
+            background: #f70000;
+            border-radius: 50%;
+            color: #fff;
+            text-align: center;
+            line-height: 24rpx;
+            font-size: 20rpx;
+            top: 16rpx;
+            right: 16rpx;
+          }
+        }
+      }
+    }
+    // .white-bg{
+    //   width: 28px;
+    //   height: 50px;
+    //   background-color: #fff;
+    //   .gray-bg{
+    //     width: 28px;
+    //     height: 40px;
+    //     background-color: #999999;
+    //   }
+    // }
 	}
 
 	.design-picture {
