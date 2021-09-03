@@ -155,7 +155,7 @@ export default {
       console.log(list);
       this.roomId = list[0].id;
       uni.navigateTo({
-        url: "../../decorate/friends/friends?id=" + this.roomId,
+        url: "/sub-decorate/pages/friends/friends?id=" + this.roomId,
       });
     },
     changeCity() {
@@ -163,7 +163,7 @@ export default {
     },
     toCity() {
       uni.navigateTo({
-        url: "../select-city/select-city?title=" + this.citydata,
+        url: "/sub-home/pages/select-city/select-city?title=" + this.citydata,
       });
     },
     getAuthorizeInfo() {
@@ -238,10 +238,11 @@ export default {
       });
     },
     toLiveRoom(item) {
-      console.log("../lives-room/lives-room?livePreview=" + item.livePreview);
       if (item && item.livePreview) {
         uni.navigateTo({
-          url: "../lives-room/lives-room?livePreview=" + item.livePreview,
+          url:
+            "/sub-home/pages/lives-room/lives-room?livePreview=" +
+            item.livePreview,
         });
       } else if (item && item.videoFileUrl) {
         uni.navigateTo({
