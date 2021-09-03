@@ -1,6 +1,6 @@
 <template>
   <view class="decorate-index">
-    <image
+   <image
       class="bg"
       mode="aspectFit"
       src="../../../static/bg@2x.png"
@@ -37,7 +37,6 @@
             </view>
           </view>
         </view>
-
         <!-- 切换房屋弹窗 -->
         <uni-popup ref="sw">
           <house-switch
@@ -101,11 +100,7 @@
         </view>
       </view>
 
-      <decorate-notice
-        v-if="noticeActive"
-        @closeNotice='closeNotice'
-        class="decorate-notice"
-      ></decorate-notice>
+      
       <drag-button-follow
         :style.sync="style"
         @btnClick='openNotice'
@@ -134,6 +129,11 @@
 			</view> -->
 
     </view>
+    <decorate-notice
+      v-if="noticeActive"
+      @closeNotice='closeNotice'
+      class="decorate-notice"
+    ></decorate-notice>
   </view>
 </template>
 
@@ -402,7 +402,6 @@ export default {
 <style lang="scss" scoped>
 .decorate-index {
   position: relative;
-
   .bg {
     width: 100%;
   }
