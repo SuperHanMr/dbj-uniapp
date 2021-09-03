@@ -146,6 +146,12 @@
 			}
 		},
 		{
+			"path": "pages/my/shopping-cart/confirm-order",
+			"style": {
+				"navigationBarTitleText": "确认订单"
+			}
+		},
+		{
 			"path": "pages/decorate/friends/friends",
 			"style": {
 				"navigationBarTitleText": "亲友团",
