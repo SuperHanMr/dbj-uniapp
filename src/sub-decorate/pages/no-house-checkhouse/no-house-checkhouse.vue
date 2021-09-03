@@ -23,10 +23,10 @@
 </template>
 
 <script>
-	import ServiceCard from "../../../components/service-card/service-card.vue";
-	import Payment from "../../../components/payment/payment.vue";
-	import CheckBox from "../../../components/check-box/check-box.vue";
-	import DbjRadio from "../../../components/dbj-radio/dbj-radio.vue";
+	import ServiceCard from "../../components/service-card/service-card.vue";
+	import Payment from "../../components/payment/payment.vue";
+	import CheckBox from "../../components/check-box/check-box.vue";
+	import DbjRadio from "../../components/dbj-radio/dbj-radio.vue";
 	import {
 		queryEstates,
 		getProductsSkusPage
@@ -86,13 +86,13 @@
 			selectAnother(pp) {
 				if (pp === "checkHouse") {
 					uni.navigateTo({
-						url: '/pages/decorate/design-service-list/design-service-list?id=4'
+						url: '/sub-decorate/pages/design-service-list/design-service-list?id=4'
 					})
 				}
 			},
 			changCurrentHouse() {
 				uni.redirectTo({
-					url: "/pages/my/my-house/my-house"
+					url: "/sub-my/pages/my-house/my-house"
 				})
 			},
 			getMyHouseList() {
@@ -128,7 +128,7 @@
 			},
 			goAddHouse() {
 				uni.navigateTo({
-					url: "/pages/decorate/add-house/add-house"
+					url: "/sub-decorate/pages/add-house/add-house"
 				})
 			}
 		}

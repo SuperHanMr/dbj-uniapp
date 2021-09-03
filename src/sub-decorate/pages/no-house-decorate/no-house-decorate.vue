@@ -53,10 +53,10 @@
 </template>
 
 <script>
-	import ServiceCard from "../../../components/service-card/service-card.vue";
-	import Payment from "../../../components/payment/payment.vue";
-	import CheckBox from "../../../components/check-box/check-box.vue";
-	import DbjRadio from "../../../components/dbj-radio/dbj-radio.vue";
+	import ServiceCard from "../../components/service-card/service-card.vue";
+	import Payment from "../../components/payment/payment.vue";
+	import CheckBox from "../../components/check-box/check-box.vue";
+	import DbjRadio from "../../components/dbj-radio/dbj-radio.vue";
 	import {
 		queryEstates,
 		getProductsSkusPage,

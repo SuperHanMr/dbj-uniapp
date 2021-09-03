@@ -15,10 +15,10 @@
 	} from "../../../api/decorate.js"
 	import {
 		DbjRadio
-	} from "../../../components/dbj-radio/dbj-radio.vue"
+	} from "../../components/dbj-radio/dbj-radio.vue"
 	import {
 		ServiceContentCard
-	} from "../../../components/service-content-card/service-content-card.vue"
+	} from "../../components/service-content-card/service-content-card.vue"
 	export default {
 		components: {
 			DbjRadio,

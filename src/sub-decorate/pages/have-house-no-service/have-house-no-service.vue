@@ -50,7 +50,7 @@
 		methods: {
 			addHouse() {
 				uni.navigateTo({
-					url: "/pages/decorate/add-house/add-house"
+					url: "/sub-decorate/pages/add-house/add-house"
 				})
 			},
 			checkHouse(item) {
