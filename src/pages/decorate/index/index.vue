@@ -46,11 +46,20 @@
 							<image src="../../../static/svg/ic_more.svg"></image>
 						</view>
 					</view>
+
 					<service-item :status="DECTORE_DICT.robbing" itemName="量房服务" statusName="待确认量房员"></service-item>
 					<service-item :status="DECTORE_DICT.shouldsure" itemName="验房服务" statusName="验房员抢单中"></service-item>
 					<service-item :status="DECTORE_DICT.inservice" itemName="设计服务" statusName="设计师抢单中"></service-item>
 					<service-item :status="DECTORE_DICT.uncheck" itemName="精算服务" statusName="待确认精算师"></service-item>
 				</view>
+			</view>
+
+			<view class="tips-design-actuary">
+				<view class="tips">
+					购买相关服务 即刻开启装修
+				</view>
+				<guide-card cardType="service" imageUrl="http://iph.href.lu/702x160?text=设计服务&fg=EB7662&bg=FFE2DD" @buyNow="buyServiceNow"></guide-card>
+				<guide-card cardType="actuary" imageUrl="http://iph.href.lu/702x160?text=精算服务&fg=4173c8&bg=d0e0fa" @buyNow="buyServiceNow"></guide-card>
 			</view>
 
 			<decorate-notice v-if="noticeActive" @closeNotice='closeNotice' class="decorate-notice"></decorate-notice>
@@ -82,10 +91,15 @@
 		HouseSwitch
 	} from "../../../components/house-switch/house-switch.vue"
 	import ServiceItem from "../../../components/service-item/service-item.vue"
-	import { DECTORE_DICT } from "../../../utils/dict.js"
+	import {
+		DECTORE_DICT, SERVICE_TYPE
+	} from "../../../utils/dict.js"
+	import GuideCard from "../../../components/guide-card/guide-card.vue"
 	export default {
 		components: {
-			HouseSwitch, ServiceItem
+			HouseSwitch,
+			ServiceItem,
+			GuideCard
 		},
 		onShow() {
 			if (this.houses && this.houses.length < 1) {
@@ -215,12 +229,12 @@
 			},
 			closeNotice() {
 				this.noticeActive = false;
-        uni.showTabBar()
+				uni.showTabBar()
 			},
-      openNotice(){
-        this.noticeActive = true
-        uni.hideTabBar()
-      },
+			openNotice() {
+				this.noticeActive = true
+				uni.hideTabBar()
+			},
 			goToAddHouseInfo() {
 				uni.navigateTo({
 					url: "/pages/decorate/add-house/add-house",
@@ -253,6 +267,11 @@
 					getApp().globalData.houses = data;
 				});
 			},
+			buyServiceNow(type) {
+				uni.navigateTo({
+					url: "/pages/decorate/design-service-list/design-service-list?categoryTypeId=" + SERVICE_TYPE[type]
+				})
+			}
 		},
 	};
 </script>
@@ -437,6 +456,7 @@
 		box-shadow: 0rpx 2rpx 20rpx 0rpx rgba(0, 0, 0, 0.05);
 		min-height: 256rpx;
 	}
+
 	.my-decorate-service {
 		padding: 0 24rpx 24rpx;
 		position: relative;
@@ -446,20 +466,24 @@
 		width: 100%;
 		height: 120rpx;
 	}
+
 	.flex-space-between-row {
 		display: flex;
 		justify-content: space-between;
 		align-items: center;
 		flex-direction: row;
 	}
+
 	.flex-start-row {
 		display: flex;
 		justify-content: flex-start;
 		align-items: center;
 		flex-direction: row;
 	}
+
 	.service-title {
 		margin: -88rpx 45rpx 44rpx 32rpx;
+
 		.t {
 			font-size: 32rpx;
 			font-family: PingFangSC, PingFangSC-Medium;
@@ -468,6 +492,7 @@
 			color: #333333;
 			letter-spacing: 1rpx;
 		}
+
 		.r {
 			text {
 				height: 36rpx;
@@ -479,6 +504,7 @@
 				color: #999999;
 				line-height: 36rpx;
 			}
+
 			image {
 				width: 11rpx;
 				height: 19rpx;
@@ -526,5 +552,22 @@
 			margin: 10rpx;
 			font-size: 24rpx;
 		}
+	}
+
+	.tips-design-actuary {
+		margin: 0 24rpx;
+		.tips {
+			height: 40rpx;
+			font-size: 28rpx;
+			font-family: PingFangSC, PingFangSC-Regular;
+			font-weight: 400;
+			text-align: center;
+			color: #333333;
+			line-height: 40rpx;
+			letter-spacing: 2rpx;
+			padding-top: 58rpx;
+			margin-bottom: 24rpx;
+		}
+
 	}
 </style>
