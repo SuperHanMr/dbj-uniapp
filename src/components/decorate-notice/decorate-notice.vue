@@ -1,9 +1,6 @@
 <template>
   <view class="notice">
-    <view
-      class="notice-mask"
-      @click="close()"
-    ></view>
+    <view class="notice-mask"></view>
     <view class="item-list">
       <view
         class="notice-item"
@@ -12,7 +9,7 @@
         <view class="item-top">
           <view class="item-top-left">
             <image
-              src="../../pages/login/imgs/Lark20210823-152715.png"
+              src="../../static/home_owner.png"
               mode=""
             ></image>
             <text class="item-title">量房服务</text>
@@ -27,7 +24,22 @@
       <view
         class="notice-item"
         @click="to(1)"
-      >量房交付</view>
+      >
+        <view class="item-top">
+          <view class="item-top-left">
+            <image
+              src="../../static/home_owner.png"
+              mode=""
+            ></image>
+            <text class="item-title">量房交付</text>
+          </view>
+          <text class="item-top-right">2021-08-21 13:00:00</text>
+        </view>
+        <view class="item-content">
+          <text>有量房员交付啦，请确认</text>
+          <image src="../../static/images/ic_more_black.svg"></image>
+        </view>
+      </view>
       <view
         class="close-icon"
         @click="close()"
@@ -49,7 +61,7 @@ export default {
     return {
       urlList: [
         "/pages/decorate/grab/grab",
-        "/sub-home/pages/decorate/amoutDelivery/amoutDelivery",
+        "/sub-pagesA/pages/decorate/amoutDelivery/amoutDelivery",
       ],
     };
   },
@@ -59,10 +71,10 @@ export default {
       this.$emit("closeNotice");
     },
     to(param) {
-      this.close();
       uni.navigateTo({
         url: this.urlList[param],
       });
+      this.close();
     },
   },
 };
@@ -102,10 +114,45 @@ export default {
     .item-top {
       display: flex;
       justify-content: space-between;
+      padding: 0 8rpx;
       .item-top-left {
         image {
-          font-size: 26rpx;
+          // font-size: 26rpx;
+          width: 32rpx;
+          height: 32rpx;
+          margin-right: 16rpx;
+          vertical-align: middle;
         }
+        text {
+          color: #333;
+          font-size: 28rpx;
+          font-weight: 400;
+          vertical-align: middle;
+        }
+      }
+      .item-top-right {
+        font-size: 24rpx;
+        color: #999;
+      }
+    }
+    .item-content {
+      height: 104rpx;
+      line-height: 104rpx;
+      background: #fbfbfb;
+      border-radius: 20rpx;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 0 16rpx 0 24rpx;
+      margin-top: 24rpx;
+      text {
+        color: #333;
+        font-size: 30rpx;
+        font-weight: 500;
+      }
+      image {
+        width: 24rpx;
+        height: 24rpx;
       }
     }
   }
@@ -118,7 +165,7 @@ export default {
     z-index: 10;
     // filter: blur(10rpx);
     background: rgba(0, 0, 0, 0.5);
-    backdrop-filter: blur(8px);
+    backdrop-filter: blur(16rpx);
   }
 }
 </style>

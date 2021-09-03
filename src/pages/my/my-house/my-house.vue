@@ -1,3 +1,9 @@
+/**
+ * @author liuyubo
+ * @desc:选中房屋的id会作为houseListChooseId字段放在storage里面，使用者获取后需要清空该字段。
+ * 从我的里面进来没有选中功能
+ **/
+
 <template>
   <view class="my-house">
     <view class="box" :style="{marginBottom:systemHeight}">

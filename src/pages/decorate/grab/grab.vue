@@ -22,8 +22,8 @@
         </view>
       </view>
 		</view>
-		<view class="grab-bottom">
-			<button class="submit" @click="submit">确定</button>
+		<view class="grab-bottom" :style="{paddingBottom:systemBottom,height:systemHeight}">
+			<button class="add-btn" @click="submit">确定</button>
 		</view>
 	</view>
 </template>
@@ -33,6 +33,8 @@
 	export default {
 		data() {
 			return {
+        systemBottom:'',
+        systemHeight:'',
 				id:0,
         personData:{}
 			};
@@ -40,6 +42,9 @@
     onLoad(e){
       this.id = e.id
       this.getGrabDetail()
+      const menuButtonInfo = uni.getMenuButtonBoundingClientRect();
+      this.systemBottom = menuButtonInfo.bottom + 'rpx'; 
+      this.systemHeight = menuButtonInfo.bottom + 136 +'rpx'
     },
 		methods:{
       getGrabDetail(){
@@ -69,5 +74,26 @@
 </script>
 
 <style lang="scss">
-
+  .grab-bottom{
+    width: 100%;
+    position: fixed;
+    bottom: 0;
+    height: 136rpx;
+    background-color: #fff;
+    display: flex;
+    flex-direction: row; 
+    justify-content: center;  
+    align-items: center;
+    .add-btn {
+      // margin-top: 20rpx;
+      height: 88rpx;
+      background: linear-gradient(135deg, #53d5cc, #4fc9c9);
+      border-radius: 12rpx;
+      width: 686rpx;
+      line-height: 88rpx;
+      text-align: center;
+      color: #FFFFFF;
+      font-size: 32rpx;
+    }
+  }
 </style>
