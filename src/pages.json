@@ -383,13 +383,6 @@
 					}
 				},
 				{
-					"path": "apply-for-refund/apply-for-refund",
-					"style": {
-						"navigationBarTitleText": "申请退款",
-						"enablePullDownRefresh": false
-					}
-				},
-				{
 					"path": "pages/decorate/amoutDelivery/amoutDelivery",
 					"style": {
 						"navigationBarTitleText": "确认量房结果",
@@ -414,12 +407,12 @@
 			"root": "sub-my", //我的模块分包
 			"pages": [
 				{
-					"path": "pages/test1/test1",
+					"path": "pages/apply-for-refund/apply-for-refund",
 					"style": {
-						"navigationBarTitleText": "",
+						"navigationBarTitleText": "申请退款",
 						"enablePullDownRefresh": false
 					}
-				},
+				}
 				{
 					"path": "pages/set-up/agreement/service-agreement",
 					"style": {
