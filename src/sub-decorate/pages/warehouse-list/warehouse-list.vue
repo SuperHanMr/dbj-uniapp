@@ -121,9 +121,8 @@ export default {
   },
   methods: {
     toDetail(e) {
-      console.log("!!!!!!!!!");
       uni.navigateTo({
-        url: "/sub-home/pages/decorate/warehouse-refund/warehouse-refund",
+        url: "/sub-decorate/pages/warehouse-refund/warehouse-refund",
       });
     },
     onScroll(e) {

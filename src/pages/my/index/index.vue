@@ -137,7 +137,7 @@ export default {
           key: "5",
           value: "退款",
           // url: "../refund-list/refund-list",
-          url: "../../../sub-home/apply-for-refund/apply-for-refund",
+          url: "/sub-my/pages/apply-for-refund/apply-for-refund",
         },
       ],
     };

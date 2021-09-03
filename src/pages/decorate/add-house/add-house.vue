@@ -276,9 +276,9 @@
                   duration: 2000,
                   icon:'success'
               });
-              // uni.navigateBack({
-              //     // delta: 2
-              // });
+              uni.navigateBack({
+                  // delta: 2
+              });
             })
           }else{
             editHouse(this.addData).then(res=>{
@@ -293,9 +293,42 @@
       },
       check(){
         let data = {...this.addData}
+       
+        if(data.contactName.length<2||data.contactName.length>15){
+          uni.showToast({
+              title: '姓名在2到15个字之间', 
+              duration: 2000,
+              icon:'none'
+          });
+          return false
+        }
         if(!(/^1[3456789]\d{9}$/.test(data.contactPhone))){
           uni.showToast({
               title: '请输入正确的手机号', 
+              duration: 2000,
+              icon:'none'
+          });
+          return false
+        } 
+        if(!data.hasLift&&(data.floor.length<2||data.floor.length>15)){
+          uni.showToast({
+              title: '电梯楼层在-10到15楼之间', 
+              duration: 2000,
+              icon:'none'
+          });
+          return false
+        }
+        if(data.housingEstate.length<1||data.housingEstate.length>25){
+          uni.showToast({
+              title: '小区名称在25个字之内', 
+              duration: 2000,
+              icon:'none'
+          });
+          return false
+        }
+        if(data.insideArea.length<1||data.insideArea.length>10000){
+          uni.showToast({
+              title: '房屋面积需输入1-10000以内的数字', 
               duration: 2000,
               icon:'none'
           });
@@ -317,6 +350,7 @@
             });
             return false
           }
+          
         } 
         return true
       }

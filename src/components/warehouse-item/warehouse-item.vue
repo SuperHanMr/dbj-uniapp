@@ -53,8 +53,8 @@
 				list: [1, 2]
 			};
 		},
-		methods:{
-			toDetail(){
+		methods: {
+			toDetail() {
 				this.$emit('detail');
 			}
 		}
