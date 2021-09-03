@@ -447,50 +447,51 @@
 	}, {
 		"root": "sub-my", //我的模块分包
 		"pages": [{
-			"path": "pages/test1/test1",
-			"style": {
-				"navigationBarTitleText": "",
-				"enablePullDownRefresh": false
+				"path": "pages/test1/test1",
+				"style": {
+					"navigationBarTitleText": "",
+					"enablePullDownRefresh": false
+				}
+			}, {
+				"path": "pages/set-up/agreement/service-agreement",
+				"style": {
+					"navigationBarTitleText": "",
+					"enablePullDownRefresh": false
+				}
+			},
+			{
+				"path": "pages/set-up/agreement/code-of-conduct",
+				"style": {
+					"navigationBarTitleText": "",
+					"enablePullDownRefresh": false
+				}
+			},
+			{
+				"path": "pages/set-up/agreement/privacy-agreement",
+				"style": {
+					"navigationBarTitleText": "",
+					"enablePullDownRefresh": false
+				}
+			},
+			{
+				"path": "pages/set-up/agreement/property-rights-clause",
+				"style": {
+					"navigationBarTitleText": "",
+					"enablePullDownRefresh": false
+				}
+			}, {
+				"path": "pages/set-up/comments-feedback/comments-feedback",
+				"style": {
+					"navigationBarTitleText": "",
+					"enablePullDownRefresh": false
+				}
+			}, {
+				"path": "pages/set-up/about-dabanjia/about-dabanjia",
+				"style": {
+					"navigationBarTitleText": "关于打扮家"
+				}
 			}
-		},{
-			"path": "pages/set-up/agreement/service-agreement",
-			"style": {
-				"navigationBarTitleText": "",
-				"enablePullDownRefresh": false
-			}
-		},
-		{
-			"path": "pages/set-up/agreement/code-of-conduct",
-			"style": {
-				"navigationBarTitleText": "",
-				"enablePullDownRefresh": false
-			}
-		},
-		{
-			"path": "pages/set-up/agreement/privacy-agreement",
-			"style": {
-				"navigationBarTitleText": "",
-				"enablePullDownRefresh": false
-			}
-		},
-		{
-			"path": "pages/set-up/agreement/property-rights-clause",
-			"style": {
-				"navigationBarTitleText": "",
-				"enablePullDownRefresh": false
-			}
-		},{
-			"path": "pages/set-up/comments-feedback/comments-feedback",
-			"style": {
-				"navigationBarTitleText": "",
-				"enablePullDownRefresh": false
-			}
-		},{
-			"path": "pages/set-up/about-dabanjia/about-dabanjia",
-			"style": {
-				"navigationBarTitleText": "关于打扮家"
-			}
-		}]
+		]
 	}, {
 		"root": "sub-classify", //商城模块分包
 		"pages": [{
@@ -509,5 +510,11 @@
 				"enablePullDownRefresh": false
 			}
 		}]
-	}]
+	}],
+	"preloadRule": {
+		"sub-my/pages/set-up/agreement/service-agreement": {
+			"network": "all",
+			"packages": ["sub-my"]
+		}
+	}
 }
