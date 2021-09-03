@@ -136,8 +136,9 @@ export default {
         {
           key: "5",
           value: "退款",
+					url:"../my-order/success/success"
           // url: "../refund-list/refund-list",
-					url:"../../../sub-pagesA/apply-for-refund/apply-for-refund"
+					// url:"../../../sub-pagesA/apply-for-refund/apply-for-refund"
         },
       ],
     };
