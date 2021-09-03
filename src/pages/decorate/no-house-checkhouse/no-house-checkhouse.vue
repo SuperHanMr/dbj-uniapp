@@ -3,7 +3,7 @@
 		<view class="content">
 			<view class="addhouse-decs" v-if="!currentHouse && !currentHouse.id">
 				<button class="addhouse" @click="goAddHouse">
-					<image src="../../../static/images/ic_add_house_info.svg"></image>
+					<image src="http://dbj.dragonn.top/static/mp/dabanjia/images/decorate/ic_add_house_info.svg"></image>
 					<text>添加房屋信息</text>
 				</button>
 				<view class="decs"><text>打扮家按房子面积计算价格</text></view>

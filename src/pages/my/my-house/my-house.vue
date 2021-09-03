@@ -11,7 +11,7 @@
         <view class="list-count">
           <view class="list-item" @click="toChoose(item)">
             <view class="item-message">
-              <image src="../../../static/images/choose.svg" v-if="item.id===chooseId" class="choose-icon edit-icon"></image>
+              <image src="http://dbj.dragonn.top/static/mp/dabanjia/images/decorate/choose.svg" v-if="item.id===chooseId" class="choose-icon edit-icon"></image>
               <view class="message-right">
                 <view class="item">
                   <text class="defalut" v-if="item.defaultEstate">默认</text>

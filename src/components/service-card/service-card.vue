@@ -8,7 +8,7 @@
 			<view class="change-service" v-if="setting.cardtype == 'design'" @click="changeLevel">更换等级</view>
 			<view class="change-service" @click="selectAnother">
 				<text>更换</text>
-				<image class="ic-triangle-999" src="../../static/images/ic_triangle_999.svg" />
+				<image class="ic-triangle-999" src="http://dbj.dragonn.top/static/mp/dabanjia/images/decorate/ic_triangle_999.svg" />
 			</view>
 		</view>
 		<server-content :content="setting"></server-content>

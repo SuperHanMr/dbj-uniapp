@@ -1,7 +1,7 @@
 <template>
 	<view class="no-house">
 		<button class="add-house" @click="goAddHouse">
-			<image src="../../../static/images/ic_add_house.svg"></image>
+			<image src="http://dbj.dragonn.top/static/mp/dabanjia/images/decorate/ic_add_house.svg"></image>
 			<text>添加房屋信息</text>
 		</button>
 		<view class="decorate-yf">
@@ -15,7 +15,7 @@
 			</view>
 		</view>
 		<view class="cancel-wrap">
-			<image class="cancel" src="../../../static/images/ic_cancel.svg" @click="gobackHome"></image>
+			<image class="cancel" src="http://dbj.dragonn.top/static/mp/dabanjia/images/decorate/ic_cancel.svg" @click="gobackHome"></image>
 		</view>
 	</view>
 </template>

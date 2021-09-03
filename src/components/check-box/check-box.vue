@@ -1,7 +1,7 @@
 <template>
 	<view class="check-box-e" :class="{'checked': checked}" @click="change"
 		:style="{width: width, height: height , borderRadius: borderRadius}">
-		<image v-if="checked" class="checked-img" src="../../static/images/ic_checked.svg"></image>
+		<image v-if="checked" class="checked-img" src="http://dbj.dragonn.top/static/mp/dabanjia/images/decorate/ic_checked.svg"></image>
 	</view>
 </template>
 
