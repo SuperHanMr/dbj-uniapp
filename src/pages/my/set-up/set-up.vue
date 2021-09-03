@@ -35,27 +35,27 @@
 				listArr: [
 					{
 						title: "打扮家装修服务协议",
-						path: "./agreement/service-agreement"
+						path: "../../../sub-my/pages/set-up/agreement/service-agreement"
 					},
 					{
 						title: "打扮家装修隐私协议",
-						path: "./agreement/privacy-agreement"
+						path: "../../../sub-my/pages/set-up/agreement/privacy-agreement"
 					},
 					{
 						title: "打扮家用户行为规范",
-						path: "./agreement/code-of-conduct"
+						path: "../../../sub-my/pages/set-up/agreement/code-of-conduct"
 					},
 					{
 						title: "打扮家知识产权条款",
-						path: "./agreement/property-rights-clause"
+						path: "../../../sub-my/pages/set-up/agreement/property-rights-clause"
 					},
 					{
 						title: "意见与反馈",
-						path: "./comments-feedback/comments-feedback"
+						path: "../../../sub-my/pages/set-up/comments-feedback/comments-feedback"
 					},
 					{
 						title: "关于打扮家",
-						path: "./about-dabanjia/about-dabanjia"
+						path: "../../../sub-my/pages/set-up/about-dabanjia/about-dabanjia"
 					}
 				]
 			};

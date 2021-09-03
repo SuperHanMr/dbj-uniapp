@@ -58,8 +58,10 @@
 				<view class="tips">
 					购买相关服务 即刻开启装修
 				</view>
-				<guide-card cardType="service" imageUrl="http://iph.href.lu/702x160?text=设计服务&fg=EB7662&bg=FFE2DD" @buyNow="buyServiceNow"></guide-card>
-				<guide-card cardType="actuary" imageUrl="http://iph.href.lu/702x160?text=精算服务&fg=4173c8&bg=d0e0fa" @buyNow="buyServiceNow"></guide-card>
+				<guide-card cardType="service" imageUrl="http://iph.href.lu/702x160?text=设计服务&fg=EB7662&bg=FFE2DD"
+					@buyNow="buyServiceNow"></guide-card>
+				<guide-card cardType="actuary" imageUrl="http://iph.href.lu/702x160?text=精算服务&fg=4173c8&bg=d0e0fa"
+					@buyNow="buyServiceNow"></guide-card>
 			</view>
 
 			<decorate-notice v-if="noticeActive" @closeNotice='closeNotice' class="decorate-notice"></decorate-notice>
@@ -79,6 +81,7 @@
 			</view> -->
 
 		</view>
+		<decorate-notice v-if="noticeActive" @closeNotice='closeNotice' class="decorate-notice"></decorate-notice>
 	</view>
 </template>
 
@@ -92,7 +95,8 @@
 	} from "../../../components/house-switch/house-switch.vue"
 	import ServiceItem from "../../../components/service-item/service-item.vue"
 	import {
-		DECTORE_DICT, SERVICE_TYPE
+		DECTORE_DICT,
+		SERVICE_TYPE
 	} from "../../../utils/dict.js"
 	import GuideCard from "../../../components/guide-card/guide-card.vue"
 	export default {
@@ -269,7 +273,8 @@
 			},
 			buyServiceNow(type) {
 				uni.navigateTo({
-					url: "/pages/decorate/design-service-list/design-service-list?categoryTypeId=" + SERVICE_TYPE[type]
+					url: "/pages/decorate/design-service-list/design-service-list?categoryTypeId=" + SERVICE_TYPE[
+						type]
 				})
 			}
 		},
@@ -512,13 +517,6 @@
 		}
 	}
 
-	// <view class="service-title">
-	// 	<text class="t">我的装修服务</text>
-	// 	<text class="r">
-	// 		<text>查看全部</text>
-	// 		<image src="../../../static/svg/ic_more.svg"></image>
-	// 	</text>
-	// </view>
 	.drag-button {
 		background: #ffffff;
 		border: 0.5px solid #eeeeee;
@@ -556,6 +554,7 @@
 
 	.tips-design-actuary {
 		margin: 0 24rpx;
+
 		.tips {
 			height: 40rpx;
 			font-size: 28rpx;

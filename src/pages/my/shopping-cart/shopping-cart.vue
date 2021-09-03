@@ -31,7 +31,7 @@
 			<view class="shopItem" v-for="(shopItem,shopIndex) in shopList" :key="shopItem.storeId">
 				<view class="shopInfo">
 					<view class="check" v-if="!shopItem.shopChecked" @click="checkShop(shopItem.storeId)"></view>
-					<image class="checked" src="../../../static/shopping-cart/checked@2x.png" @click="checkShop(shopItem.storeId)" v-else></image>
+					<image class="checked" v-else @click="checkShop(shopItem.storeId)" src="../../../static/shopping-cart/checked@2x.png" ></image>
 					<view class="goShop">
 						<text class="shopName">{{shopItem.storeName}}</text>
 						<image src="../../../static/shopping-cart/goShop_ic@2x.png" class="shopIcon"></text>
@@ -53,14 +53,14 @@
 				  >
 						<view class="goodsItem"  >
 							<view class="check" v-if="!goodsItem.goodsChecked" @click="checkGoods(shopItem.storeId,goodsItem.skuId)"></view>
-							<image class="checked" src="../../../static/shopping-cart/checked@2x.png" @click="checkGoods(shopItem.storeId,goodsItem.skuId)" v-else></image>
+							<image class="checked" v-else @click="checkGoods(shopItem.storeId,goodsItem.skuId)" src="../../../static/shopping-cart/checked@2x.png" ></image>
 							<image :src="goodsItem.image" class="goodsItemImg"></image>
 							<view class="goodsInfo">
 								<view class="goodsDesc">
 									<text class="goodsType">{{goodsItem.productType=== 1?"服务":"物品"}}</text>
 									{{goodsItem.spuName}}
 								</view>
-								<view class="goodsSpec" @click="openSpec">
+								<view class="goodsSpec" @click="openSpec(goodsItem.skuId)">
 									{{goodsItem.skuName}}
 									<image src="../../../static/shopping-cart/selectOptions@2x.png" class="selectOptions"></image>
 								</view>
@@ -68,11 +68,11 @@
 								<view class="foot">
 									<view class="goodsPrice">¥{{goodsItem.price}}/{{goodsItem.unitName}}</view>
 									<view class="countCtrl">
-										<image v-if="!goodsItem.isMiniOrder" class="dec" src="../../../static/shopping-cart/details_pop_@2x.png" @click="changeCount(false,shopIndex, goodsIndex)"></image>
-										<image v-else class="dec" src="../../../static/shopping-cart/details_pop_subtract_disabled@2x.png" @click="changeCount(false,shopIndex, goodsIndex)"></image>
+										<image v-if="!goodsItem.isMiniOrder" class="dec" @click="changeCount(false,shopIndex, goodsIndex)" src="../../../static/shopping-cart/details_pop_@2x.png"></image>
+										<image v-else class="dec" @click="changeCount(false,shopIndex, goodsIndex)" src="../../../static/shopping-cart/details_pop_subtract_disabled@2x.png"></image>
 										<view class="count" @click="openCount(shopIndex, goodsIndex)"> {{goodsItem.buyCount}} </view>
 											
-										<image src="../../../static/shopping-cart/details_pop_add_normal@2x.png" class="inc" @click="changeCount(true, shopIndex,goodsIndex)"></image>          
+										<image class="inc" @click="changeCount(true, shopIndex,goodsIndex)" src="../../../static/shopping-cart/details_pop_add_normal@2x.png"></image>          
 									</view>
 								</view>
 							</view>
@@ -84,34 +84,38 @@
 				<view class="popupClass">
 					<view class="header">
 						<text class="tit">所选商品为不同类型商品，请分开结算</text>
-						<image @click="goBackCart" src="../../../static/shopping-cart/ic_closed_black@2x.png" class="closedIcon"></image>
+						<image class="closedIcon" @click="goBackCart" src="../../../static/shopping-cart/ic_closed_black@2x.png"></image>
 					</view>
 					<view class="line"></view>
-					<view class="service">
-						<view class="top">
+					<view class="service" :class="{'activeBorder':serviceChecked}">
+						<view class="popupTop" :class="{'activeBg':serviceChecked}">
 							<view class="left">
-								<view class="title">服务商品</view>
-								<view class="count">件</view>
+								<view class="popupTitle" :class="{'activeColor':serviceChecked}">服务商品</view>
+								<view class="popupCount" :class="{'activeColor':serviceChecked}">{{serviceList.length}}件</view>
 							</view>
-							<!-- <view class="check" v-if=""></view> -->
-							<!-- <image class="checked" v-else src="../../../static/shopping-cart/checked@2x.png"></image> -->
+							<view class="check" v-if="!serviceChecked" @click="checkSame(true)"></view>
+							<image class="checked" v-else @click="checkSame(true)" src="../../../static/shopping-cart/checked@2x.png"></image>
 						</view>
-						<!-- <view class="goods" v-for="">
-							<image :src="" mode=""></image>
-							<view class="goodsName"></view>
-							<view class="check" v-if=""></view>
-							<image class="checked" v-else src="../../../static/shopping-cart/checked@2x.png"></image>
-						</view> -->
-					</view>
-					<view class="entity">
-						<view class="left">
-							<view class="title">实物商品</view>
-							<view class="count">件</view>
+						<view class="goods" v-for="item in serviceListShow" :key="item.skuId">
+							<image :src="item.image" class="img"></image>
+							<view class="goodsName">{{item.spuName}}</view>
 						</view>
-						<!-- <view class="check" v-if=""></view>
-						<image class="checked" v-else src="../../../static/shopping-cart/checked@2x.png"></image> -->
 					</view>
-					<view class="footer">去结算</view>
+					<view class="entity" :class="{'activeBorder':entityChecked}">
+						<view class="popupTop" :class="{'activeBg':entityChecked}">
+							<view class="left">
+								<view class="popupTitle" :class="{'activeColor':entityChecked}">实物商品</view>
+								<view class="popupCount" :class="{'activeColor':entityChecked}">{{entityList.length}}件</view>
+							</view>
+							<view class="check" v-if="!entityChecked" @click="checkSame(false)"></view>
+							<image class="checked" v-else @click="checkSame(false)" src="../../../static/shopping-cart/checked@2x.png"></image>
+						</view>
+						<view class="goods" v-for="item in entityListShow" :key="item.skuId">
+							<image :src="item.image" class="img"></image>
+							<view class="goodsName">{{item.spuName}}</view>
+						</view>
+					</view>
+					<view class="footer" @click="paySame">去结算</view>
 				</view>
 			</view>	
 			<echone-sku
@@ -199,7 +203,12 @@
 				currentShopIndex:0,
 				currentGoodsIndex:0,
 				showMask:false,
-				
+				serviceChecked:false,
+				entityChecked:false,
+				serviceList:[],
+				entityList:[],
+				serviceListShow:[],
+				entityListShow:[],
 			}
 		},
 		mounted(){
@@ -281,7 +290,11 @@
 			handleConfirm(){
 				console.log("确认")
 			},
-			
+			openSpec(skuId){
+				this.popupShow = true
+				//jiekou
+				
+			},
 			requestPage(){
 				getShoppingCartInfo(this.userId).then(data => {
 						let {storeList,disabledSkuList} = data
@@ -419,19 +432,81 @@
 				}
 				
 			},
-			pay(){
-				this.showMask = true
-				if(!this.totalCout){
+			checkSame(isService){
+				if(isService){
+					this.serviceChecked = !this.serviceChecked
+					this.entityChecked = !this.serviceChecked
+				}else{
+					this.entityChecked = !this.entityChecked
+					this.serviceChecked = !this.entityChecked
+				}
+			},
+				
+			paySame(){
+				if(this.serviceChecked || this.entityChecked){
+					let checkedList = this.serviceChecked?this.serviceList:this.entityList
+					uni.navigateTo({
+						url:"./confirm-order",
+						success: (res) => {
+							res.eventChannel.emit('acceptDataFromOpenerPage',checkedList)
+						}
+					})
+				}else{
 					uni.showToast({
 						title:"您还没有选择任何商品哦",
 						icon:"none"
 					})
 				}
-				// else if(){
-				// 	//当用户在购物车内选择了不同类型的商品时，点击结算无法进入到确认订单页面，会弹出左图所示弹窗
-				// }
-				else{
-					//跳转至结算页面
+			},
+			pay(){
+				let checkedList = []
+				let isChooseDiff = () => {
+					let flag = false
+					let firstType = this.shopList[0].skuList[0].productType
+					//清空上一次勾选的商品
+					this.serviceList = []
+					this.entityList = []
+					this.shopList.forEach(item => {
+						item.skuList.forEach(ele => {
+							if(ele.goodsChecked){
+								//判断用户是否选择了不同类型的商品
+								if(ele.productType !== firstType){
+									flag = true
+								}
+								//结算页面展示店铺名
+								if(ele.storeId === item.storeId){
+									ele.storeName = item.storeName
+								}
+								checkedList.push(ele)
+								//根据productType商品类型划分为服务类和实物类
+								if(ele.productType === 1){
+									this.serviceList.push(ele)
+								}else{
+									this.entityList.push(ele)
+								}
+							}
+						})
+					})
+					this.serviceListShow = this.serviceList.length >= 2?this.serviceList.slice(0,2):this.serviceList.slice(0)
+					this.entityListShow = this.entityList.length >= 2?this.entityList.slice(0,2):this.entityList.slice(0)
+					
+					return flag
+				}
+				
+				if(!this.totalCout){
+					uni.showToast({
+						title:"您还没有选择任何商品哦",
+						icon:"none"
+					})
+				}else if(isChooseDiff()){
+					this.showMask = true
+				}else{
+					uni.navigateTo({
+						url:"./confirm-order",
+						success: (res) => {
+							res.eventChannel.emit('acceptDataFromOpenerPage',checkedList)
+						}
+					})
 				}
 			},
 			changeCount(isAdd, shopIndex,goodsIndex){
@@ -542,11 +617,7 @@
 				  }  
 				});
 			},
-			openSpec(){
-				this.popupShow = true
-				console.log('tiao')
-				
-			},
+			
 		
 		}
 	}
@@ -684,52 +755,48 @@
 		height: 2rpx;
 		background: #f2f2f2;
 	}
-	.popupClass .service{
+	.service{
 		width: 686rpx;
 		height: 296rpx;
 		margin: 32rpx;
-		border: 2rpx solid #00bfb6;
-		background: #E7FFFE;
+		border: 2rpx solid #eeeeee;
 		border-radius: 16rpx;
 	}
-	.popupClass .entity{
+	
+	.entity{
 		width: 686rpx;
 		height: 296rpx;
 		margin: 0 32rpx 68rpx 32rpx;
 		border: 2rpx solid #eeeeee;
-		background: #F7F7F7;
 		border-radius: 16rpx;
 	}
-	.popupClass .top{
+	.popupTop{
 		display: flex;
 		justify-content: space-between;
 		align-items: center;
+		height: 110rpx;
+		background: #F7F7F7;
+		border-radius: 16rpx 16rpx 0 0;
 	}
 	.popupClass .left{
 		margin-left: 32rpx;
 	}
-	.popupClass .left .title{
+	.popupTitle{
 		width: fit-content;
 		height: 44rpx;
 		font-size: 32rpx;
 		font-weight: 500;
-		color: #00bfb6;
+		color: #333333;
 		line-height: 44rpx;
 		margin-top: 14rpx;
 	}
-	.popupClass .entity .left .title{
-		color: #333333;
-	}
-	.popupClass .left .count{
+	.popupCount{
 		width: 42rpx;
 		height: 36rpx;
 		font-size: 26rpx;
 		font-weight: 500;
-		color: #00bfb6;
-		line-height: 36rpx;
-	}
-	.popupClass .entity .left .count{
 		color: #666666;
+		line-height: 36rpx;
 	}
 	.popupClass .check{
 		width: 36rpx;
@@ -745,6 +812,39 @@
 		display: block;
 		margin-right: 32rpx;
 		margin-top: 32rpx;
+	}
+	.activeBorder{
+		border-color: #00bfb6;
+	}
+	.activeBg{
+		background: #E7FFFE;
+	}
+	.activeColor{
+		color: #00bfb6;
+	}
+	.popupClass .goods{
+		width: 676rpx;
+		height: 92rpx;
+		overflow: scroll;
+		display: flex;
+		align-items: center;
+	}
+	.popupClass .goods .img{
+		width: 64rpx;
+		height: 64rpx;
+		margin-left: 32rpx;
+		margin-right: 12rpx;
+		display: block;
+		border-radius: 8rpx;
+	}
+	.popupClass .goods .goodsName{
+		width: 494rpx;
+		height: 36rpx;
+		font-size: 26rpx;
+		text-align: left;
+		text-overflow: ellipsis;
+		color: #999999;
+		line-height: 36rpx;
 	}
 	.popupClass .footer{
 		width: 686rpx;
