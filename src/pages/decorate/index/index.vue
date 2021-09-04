@@ -64,6 +64,7 @@
 					@buyNow="buyServiceNow"></guide-card>
 			</view>
 
+			<no-service words="暂无进行中服务"></no-service>
 			<decorate-notice v-if="noticeActive" @closeNotice='closeNotice' class="decorate-notice"></decorate-notice>
 			<drag-button-follow :style.sync="style" @btnClick='noticeActive=true' :follow='`left,right`'
 				className="drag-button" class="drag-button">
@@ -72,11 +73,13 @@
 					<text style="color: red;">2</text>
 				</view>
 			</drag-button-follow>
-			<!-- <view class="link">
+			<view class="link">
 				<button @click="gonohouse">无房屋无服入口</button>
 				<button @click="gonohousedecatore">无房屋无服务装修</button>
 				<button @click="gonohousecheck">无房屋无服务验房</button>
-			</view> -->
+				<button @click="checkHouseRemind">验房提醒</button>
+				
+			</view>
 
 		</view>
 		<decorate-notice v-if="noticeActive" @closeNotice='closeNotice' class="decorate-notice"></decorate-notice>
@@ -92,6 +95,7 @@
 		HouseSwitch
 	} from "../../../components/house-switch/house-switch.vue"
 	import ServiceItem from "../../../components/service-item/service-item.vue"
+	import NoService from "../../../components/no-service/no-service.vue"
 	import {
 		DECTORE_DICT,
 		SERVICE_TYPE
@@ -101,7 +105,8 @@
 		components: {
 			HouseSwitch,
 			ServiceItem,
-			GuideCard
+			GuideCard,
+			NoService
 		},
 		onShow() {
 			if (this.houses && this.houses.length < 1) {
@@ -142,6 +147,11 @@
 			}
 		},
 		methods: {
+			checkHouseRemind() {
+				uni.navigateTo({
+					url: "/sub-decorate/pages/check-house-remind/check-house-remind"
+				})
+			},
 			async getFriendsList() {
 				let list = await friendListByEstateId({
 					estateId: this.currentHouse.id
@@ -485,7 +495,7 @@
 	}
 
 	.service-title {
-		margin: -88rpx 45rpx 44rpx 32rpx;
+		margin: -88rpx 21rpx 44rpx 8rpx;
 
 		.t {
 			font-size: 32rpx;
@@ -509,8 +519,8 @@
 			}
 
 			image {
-				width: 11rpx;
-				height: 19rpx;
+				width: 24rpx;
+				height: 24rpx;
 			}
 		}
 	}
