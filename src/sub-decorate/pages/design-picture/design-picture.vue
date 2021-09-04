@@ -3,7 +3,7 @@
 		<view class="tabs">
 			<view class="item active" v-for="(item, index) in designArr" :key="index">
 				<view class="name">{{item}}</view>
-				<view class="bt">{{item}}</view>
+				<image class="bt" src="http://iph.href.lu/48x6?fg=00ed7d"></image>
 			</view>
 		</view>
 		<!-- 原始户型图 -->
@@ -39,7 +39,7 @@
 					"http://iph.href.lu/328x216?text=量房图片&fg=EB7662&bg=FFE2DD",
 					"http://iph.href.lu/328x216?text=量房图片&fg=EB7662&bg=FFE2DD"
 				],
-				originImgUrl: "http://iph.href.lu/286x188?text=原始结构尺寸图&fg=EB7662&bg=FFE2DD",
+				originImgUrl: "http://iph.href.lu/328x216?text=原始结构尺寸图&fg=EB7662&bg=FFE2DD",
 				designArr: ['量房']
 			}
 		},
@@ -72,9 +72,10 @@
 		border: 2rpx solid #EFEFEF;
 		margin-bottom: 40rpx;
 		box-sizing: border-box;
-
+		margin-bottom: 40rpx;
 		.item {
 			text-align: center;
+
 			.name {
 				margin-bottom: 14rpx;
 				width: 56rpx;
@@ -96,23 +97,45 @@
 			.bt {
 				width: 48rpx;
 				height: 6rpx;
-				background: linear-gradient(129deg, #00cdec 0%, #00ed7d 92%);
 				border-radius: 200rpx 200rpx 0rpx 0rpx;
 			}
 		}
 	}
 
-	.img-measure {
-		image {
-			width: 328rpx;
-			height: 216rpx;
+	.original {
+		padding: 0 32rpx;
+		margin-bottom: 56rpx;
+		.img-original {
+			image {
+				width: 328rpx;
+				height: 216rpx;
+				border-radius: 12rpx;
+			}
 		}
 	}
 
-	.img-original {
-		image {
-			width: 286rpx;
-			height: 188rpx;
+	.measure {
+		padding: 0 2rpx 0 32rpx;
+		.img-measure {
+			image {
+				width: 328rpx;
+				height: 216rpx;
+				margin-right: 30rpx;
+				margin-bottom: 30rpx;
+				border-radius: 12rpx;
+			}
 		}
+	}
+
+	.subtitle {
+		width: 196rpx;
+		height: 40rpx;
+		font-size: 28rpx;
+		font-family: PingFangSC, PingFangSC-Medium;
+		font-weight: 500;
+		text-align: left;
+		color: #333333;
+		line-height: 40rpx;
+		margin-bottom: 24rpx;
 	}
 </style>

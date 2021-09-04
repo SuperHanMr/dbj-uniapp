@@ -8,6 +8,7 @@
           	</view>
           </view>
         </view> 
+        <!-- <button @click='test'>test</button> -->
         <view class="content-view">
           <!-- :scroll-into-view="'tab' + scrollInto" 点击移动 -->
           <scroll-view id="tab-bar" class="scroll-h" scroll-x="true" :show-scrollbar="false"  v-if="dataList.length > 1">
@@ -46,6 +47,13 @@
           this.getList();
         },
         methods: {
+            test(){
+              console.log(111)
+              uni.navigateTo({
+              	url: "/sub-classify/pages/pay-order/index"
+                // url: "/sub-classify/pages/search/index"
+              })
+            },
             searchClick(){
               uni.navigateTo({
               	url: "/sub-classify/pages/search/index"
@@ -172,12 +180,12 @@
     .uni-tab-item-title-active::after{
       content: "";
       display: inline-block;
-      width: 32rpx;
+      width: 50%;
       height: 4rpx;
       background-color: #00ed7d;
       border-radius: 100px 100px 0px 0px;
       position: absolute;
-      bottom: 0;
+      bottom: -6rpx;
       left: 0;
       right: 0;
       margin: auto;
