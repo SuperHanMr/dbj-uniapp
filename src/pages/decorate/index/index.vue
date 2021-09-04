@@ -33,6 +33,29 @@
       <view class="scroll-view flex-1">
         <scroll-view :scroll-top="scrollTop" scroll-y="true" class="scroll-Y" @scroll="scroll"
           scroll-with-animation="true" :style="{height: viewHieght + 'rpx'}">
+          <!-- 我的仓库 -->
+          <view class="my-decorate-service-wrap">
+            <image mode="aspectFit" class="top-bg"
+              src="http://dbj.dragonn.top/static/mp/dabanjia/images/decorate/service-card-top.svg">
+            </image>
+            <view class="my-decorate-service">
+              <view class="service-title flex-space-between-row" @click="goToMyDecorate">
+                <text class="t">我的仓库</text>
+                <view class="r flex-start-row">
+                  <text>查看全部</text>
+                  <image src="http://dbj.dragonn.top/static/mp/dabanjia/images/decorate/ic_more.svg">
+                  </image>
+                </view>
+              </view>
+              <view class="my-warehouse">
+                <mwarehouse-btn :iconStyle="{'width': '52rpx','height': '62rpx'}" name="待发货"></mwarehouse-btn>
+                <mwarehouse-btn :iconStyle="{'width': '58rpx','height': '58rpx'}" name="待收货"></mwarehouse-btn>
+                <mwarehouse-btn :iconStyle="{'width': '50rpx','height': '60rpx'}" name="已收货"></mwarehouse-btn>
+                <mwarehouse-btn :iconStyle="{'width': '54rpx','height': '44rpx'}" name="退款"></mwarehouse-btn>
+              </view>
+            </view>
+          </view>
+          <!-- 我的装修服务 -->
           <view class="my-decorate-service-wrap">
             <image mode="aspectFit" class="top-bg"
               src="http://dbj.dragonn.top/static/mp/dabanjia/images/decorate/service-card-top.svg">
@@ -76,16 +99,16 @@
           </uni-popup>
           <decorate-notice @touchmove.stop.prevent="()=>false" v-if="noticeActive" @closeNotice='closeNotice'
             class="decorate-notice"></decorate-notice>
-          <view class="link">
+          <!-- <view class="link">
             <button @click="gonohouse">无房屋无服入口</button>
             <button @click="gonohousedecatore">无房屋无服务装修</button>
             <button @click="gonohousecheck">无房屋无服务验房</button>
             <button @click="checkHouseRemind">验房提醒</button>
-          </view>
+          </view> -->
         </scroll-view>
       </view>
-      <drag-button-follow :style.sync="style" @btnClick='openNotice' :follow='`left,right`'
-        className="drag-button" class="drag-button">
+      <drag-button-follow :style.sync="style" @btnClick='openNotice' :follow='`left,right`' className="drag-button"
+        class="drag-button">
         <view>
           <text>消息</text>
           <text style="color: red;">2</text>
@@ -112,13 +135,16 @@
   } from "../../../utils/dict.js"
   import GuideCard from "../../../components/guide-card/guide-card.vue"
   import PictureBtn from "../../../components/picture-btn/picture-btn.vue"
+
+  import MwarehouseBtn from "../../../components/mwarehouse-btn/mwarehouse-btn.vue"
   export default {
     components: {
       HouseSwitch,
       ServiceItem,
       GuideCard,
       NoService,
-      PictureBtn
+      PictureBtn,
+      MwarehouseBtn
     },
     onLoad() {
       let _this = this
@@ -486,11 +512,21 @@
 
   .my-decorate-service-wrap {
     position: relative;
-    margin: 0 24rpx;
+    margin: 0 24rpx 24rpx;
     background: #ffffff;
     border-radius: 24rpx;
     box-shadow: 0rpx 2rpx 20rpx 0rpx rgba(0, 0, 0, 0.05);
     min-height: 256rpx;
+  }
+
+  .my-warehouse {
+    display: flex;
+    height: 134rpx;
+    justify-content: space-between;
+    flex-direction: row;
+    align-items: flex-end;
+    padding: 0 48rpx 40rpx;
+    background: #ffffff;
   }
 
   .my-decorate-service {
@@ -595,7 +631,7 @@
       color: #333333;
       line-height: 40rpx;
       letter-spacing: 2rpx;
-      padding-top: 58rpx;
+      padding-top: 34rpx;
       margin-bottom: 24rpx;
     }
   }
