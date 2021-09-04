@@ -65,7 +65,8 @@
         <guide-card cardType="actuary" imageUrl="http://iph.href.lu/702x160?text=精算服务&fg=4173c8&bg=d0e0fa"
           @buyNow="buyServiceNow"></guide-card>
       </view>
-
+      <decorate-notice @touchmove.stop.prevent="()=>false" v-if="noticeActive" @closeNotice='closeNotice' class="decorate-notice"></decorate-notice>
+      
       <drag-button-follow :style.sync="style" @btnClick='openNotice' :follow='`left,right`' className="drag-button"
         class="drag-button">
         <view class="white-circle">
@@ -89,7 +90,6 @@
 			</view> -->
 
     </view>
-    <decorate-notice @touchmove.stop.prevent="()=>false" v-if="noticeActive" @closeNotice='closeNotice' class="decorate-notice"></decorate-notice>
 
   </view>
 </template>
@@ -621,7 +621,7 @@
     // color: #000000;
     position: absolute;
     right: 0rpx;
-    bottom: 188rpx;
+    top: 588rpx;
 
     // border-radius: 100%;
     // display: flex;
