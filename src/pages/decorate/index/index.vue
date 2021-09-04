@@ -74,16 +74,6 @@
             <house-switch class="margintop" :datalist="myHouseList" :current="current" @goAddHouse="addHouse"
               @checkHouse="checkHouse"></house-switch>
           </uni-popup>
-
-          <decorate-notice v-if="noticeActive" @closeNotice='closeNotice' class="decorate-notice"></decorate-notice>
-          <drag-button-follow :style.sync="style" @btnClick='noticeActive=true' :follow='`left,right`'
-            className="drag-button" class="drag-button">
-            <view>
-              <text>消息</text>
-              <text style="color: red;">2</text>
-            </view>
-          </drag-button-follow>
-
           <decorate-notice @touchmove.stop.prevent="()=>false" v-if="noticeActive" @closeNotice='closeNotice'
             class="decorate-notice"></decorate-notice>
           <view class="link">
@@ -94,6 +84,13 @@
           </view>
         </scroll-view>
       </view>
+      <drag-button-follow :style.sync="style" @btnClick='openNotice' :follow='`left,right`'
+        className="drag-button" class="drag-button">
+        <view>
+          <text>消息</text>
+          <text style="color: red;">2</text>
+        </view>
+      </drag-button-follow>
     </view>
 
   </view>
@@ -162,6 +159,7 @@
       };
     },
     mounted() {
+      uni.showTabBar()
       this.getMyHouseList();
     },
     computed: {
@@ -560,7 +558,7 @@
     color: #000000;
     position: absolute;
     right: 0rpx;
-    bottom: 188rpx;
+    top: 588rpx;
     border-radius: 100%;
     display: flex;
     align-items: center;
