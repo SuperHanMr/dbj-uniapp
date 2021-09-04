@@ -2,7 +2,7 @@
 	<view class="decorate-index">
 		<image class="bg" mode="aspectFit" src="http://dbj.dragonn.top/static/mp/dabanjia/images/decorate/bg@2x.png">
 		</image>
-		<view class="content">
+		<view class="content flex-column">
 			<view class="house-firend">
 				<view class="title">
 					<view class="house" @click="switchVisible">
@@ -25,12 +25,6 @@
 					</view>
 				</view>
 
-				<!-- 切换房屋弹窗 -->
-				<uni-popup ref="sw">
-					<house-switch class="margintop" :datalist="myHouseList" :current="current" @goAddHouse="addHouse"
-						@checkHouse="checkHouse"></house-switch>
-				</uni-popup>
-
 				<view class="uni-padding-wrap">
 					<view class="uni-title">{{ currentHouse.housingEstate }}{{currentHouse.address}}</view>
 					<view class="design" @click="goDesignPicture">
@@ -41,55 +35,73 @@
 				</view>
 
 			</view>
-			<view class="my-decorate-service-wrap">
-				<image mode="aspectFit" class="top-bg"
-					src="http://dbj.dragonn.top/static/mp/dabanjia/images/decorate/service-card-top.svg"></image>
-				<view class="my-decorate-service">
-					<view class="service-title flex-space-between-row" @click="goToMyDecorate">
-						<text class="t">我的装修服务</text>
-						<view class="r flex-start-row">
-							<text>查看全部</text>
-							<image src="http://dbj.dragonn.top/static/mp/dabanjia/images/decorate/ic_more.svg"></image>
+
+			<view class="scroll-view flex-1">
+				<scroll-view :scroll-top="scrollTop" scroll-y="true" class="scroll-Y" @scroll="scroll"
+					scroll-with-animation="true" :style="{height: viewHieght + 'rpx'}">
+					<view class="my-decorate-service-wrap">
+						<image mode="aspectFit" class="top-bg"
+							src="http://dbj.dragonn.top/static/mp/dabanjia/images/decorate/service-card-top.svg">
+						</image>
+						<view class="my-decorate-service">
+							<view class="service-title flex-space-between-row" @click="goToMyDecorate">
+								<text class="t">我的装修服务</text>
+								<view class="r flex-start-row">
+									<text>查看全部</text>
+									<image src="http://dbj.dragonn.top/static/mp/dabanjia/images/decorate/ic_more.svg">
+									</image>
+								</view>
+							</view>
+
+							<service-item :status="DECTORE_DICT.inservice" itemName="量房服务" statusName="服务中">
+							</service-item>
+							<service-item :status="DECTORE_DICT.robbing" itemName="设计服务" statusName="待确认设计师">
+							</service-item>
+							<service-item :status="DECTORE_DICT.shouldsure" itemName="验房服务" statusName="验房员抢单中">
+							</service-item>
+							<service-item :status="DECTORE_DICT.uncheck" itemName="精算服务" statusName="待确认精算师">
+							</service-item>
 						</view>
 					</view>
+					<view class="tips-design-actuary">
+						<view class="tips">
+							购买相关服务 即刻开启装修
+						</view>
+						<guide-card cardType="service"
+							imageUrl="http://iph.href.lu/702x160?text=设计服务&fg=EB7662&bg=FFE2DD" @buyNow="buyServiceNow">
+						</guide-card>
+						<guide-card cardType="actuary"
+							imageUrl="http://iph.href.lu/702x160?text=精算服务&fg=4173c8&bg=d0e0fa" @buyNow="buyServiceNow">
+						</guide-card>
+					</view>
+					<no-service words="暂无进行中服务"></no-service>
+					<!-- 切换房屋弹窗 -->
+					<uni-popup ref="sw">
+						<house-switch class="margintop" :datalist="myHouseList" :current="current"
+							@goAddHouse="addHouse" @checkHouse="checkHouse"></house-switch>
+					</uni-popup>
+					
+					<decorate-notice v-if="noticeActive" @closeNotice='closeNotice' class="decorate-notice"></decorate-notice>
+					<drag-button-follow :style.sync="style" @btnClick='noticeActive=true' :follow='`left,right`'
+						className="drag-button" class="drag-button">
+						<view>
+							<text>消息</text>
+							<text style="color: red;">2</text>
+						</view>
+					</drag-button-follow>
+					
+					<decorate-notice @touchmove.stop.prevent="()=>false" v-if="noticeActive" @closeNotice='closeNotice'
+						class="decorate-notice"></decorate-notice>
+					<!-- <view class="link">
+						<button @click="gonohouse">无房屋无服入口</button>
+						<button @click="gonohousedecatore">无房屋无服务装修</button>
+						<button @click="gonohousecheck">无房屋无服务验房</button>
+						<button @click="checkHouseRemind">验房提醒</button>
 
-					<service-item :status="DECTORE_DICT.inservice" itemName="量房服务" statusName="服务中"></service-item>
-					<service-item :status="DECTORE_DICT.robbing" itemName="设计服务" statusName="待确认设计师"></service-item>
-					<service-item :status="DECTORE_DICT.shouldsure" itemName="验房服务" statusName="验房员抢单中"></service-item>
-					<service-item :status="DECTORE_DICT.uncheck" itemName="精算服务" statusName="待确认精算师"></service-item>
-				</view>
+					</view> -->
+				</scroll-view>
 			</view>
-
-			<view class="tips-design-actuary">
-				<view class="tips">
-					购买相关服务 即刻开启装修
-				</view>
-				<guide-card cardType="service" imageUrl="http://iph.href.lu/702x160?text=设计服务&fg=EB7662&bg=FFE2DD"
-					@buyNow="buyServiceNow"></guide-card>
-				<guide-card cardType="actuary" imageUrl="http://iph.href.lu/702x160?text=精算服务&fg=4173c8&bg=d0e0fa"
-					@buyNow="buyServiceNow"></guide-card>
-			</view>
-
-			<no-service words="暂无进行中服务"></no-service>
-			<decorate-notice v-if="noticeActive" @closeNotice='closeNotice' class="decorate-notice"></decorate-notice>
-			<drag-button-follow :style.sync="style" @btnClick='noticeActive=true' :follow='`left,right`'
-				className="drag-button" class="drag-button">
-				<view>
-					<text>消息</text>
-					<text style="color: red;">2</text>
-				</view>
-			</drag-button-follow>
-			<view class="link">
-				<button @click="gonohouse">无房屋无服入口</button>
-				<button @click="gonohousedecatore">无房屋无服务装修</button>
-				<button @click="gonohousecheck">无房屋无服务验房</button>
-				<button @click="checkHouseRemind">验房提醒</button>
-
-			</view>
-
 		</view>
-		<decorate-notice @touchmove.stop.prevent="()=>false" v-if="noticeActive" @closeNotice='closeNotice'
-			class="decorate-notice"></decorate-notice>
 
 	</view>
 </template>
@@ -116,6 +128,16 @@
 			GuideCard,
 			NoService
 		},
+		onLoad() {
+			let _this = this
+			uni.getSystemInfo({
+				success(res) {
+					console.log(res)
+					_this.viewHieght = res.windowHeight * 2 - 416  
+				}
+			})
+			
+		},
 		onShow() {
 			if (this.houses && this.houses.length < 1) {
 				this.getHouses();
@@ -123,6 +145,11 @@
 		},
 		data() {
 			return {
+				scrollTop: 416,
+				old: {
+					scrollTop: 416
+				},
+				viewHieght: "",
 				style: "",
 				noticeActive: false,
 				houses: getApp().globalData.houses,
@@ -155,6 +182,16 @@
 			}
 		},
 		methods: {
+			scroll: function(e) {
+				// console.log(e)
+				this.old.scrollTop = e.detail.scrollTop
+			},
+			goTop: function(e) {
+				this.scrollTop = this.old.scrollTop
+				this.$nextTick(() => {
+					this.scrollTop = 0
+				});
+			},
 			checkHouseRemind() {
 				uni.navigateTo({
 					url: "/sub-decorate/pages/check-house-remind/check-house-remind"
@@ -312,10 +349,31 @@
 		height: 100%;
 		position: relative;
 		margin-top: -304rpx;
+		height: 100%;
+	}
+
+	.flex-column {
+		display: flex;
+		flex-direction: column;
+	}
+
+	.scroll-Y {
+		// height: calc(100% - 416rpx);
+		// height: 1208rpx;
+	}
+
+	.flex-1 {
+		flex: 1;
+	}
+
+	.scroll-view {
+		// background-color: red;
+		overflow: hidden;
 	}
 
 	.house-firend {
 		position: relative;
+		height: 242rpx;
 
 		.title {
 			display: flex;
