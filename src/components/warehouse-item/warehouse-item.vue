@@ -1,39 +1,83 @@
 <template>
-	<view class="store" @click="toDetail">
+	<view class="store" >
 		<view class="store-info">
 			<view class="store-name">
 				店铺名字
 			</view>
 			<view class="store-icon">
-				right
+				//TODO icon
 			</view>
-
+			<view class="store-sub">
+				剩余2次免运费额度
+			</view>
 		</view>
-		<view v-for="(item,index) in list" class="good-detail">
-			<view class="img">
-			</view>
-			<view class="goods-info">
-				<view class="name">
-					996加班套餐
+		<view v-for="(item,index) in list" :key="item.id" class="goods-list">
+			<view class="good-detail">
+				<view class="img">
 				</view>
-				<view class="spec">加班一天</view>
-				<view class="price">
-					10元/1天
+				<view class="goods-info">
+					<view class="name">
+						<view class="tip">
+							物品
+						</view>
+						<view class="text">
+							白色绿色油漆颜色简约
+
+						</view>
+						<view style="flex:1">
+						</view>
+						<view class="price">
+							<text class="num-x">¥</text>
+							<text class="num-z">320</text>
+							<text class="num-x">.00</text>
+						</view>
+					</view>
+					<view class="spec">
+						<view class="spec-item">
+							绿色
+						</view>
+						<view class="spec-item">
+							2.0m/根
+						</view>
+						<view style="flex:1">
+
+						</view>
+						<view class="spec-item">
+							共1件
+						</view>
+					</view>
 				</view>
 			</view>
-			<view style="flex:1">
-
-			</view>
-			<view class="btns">
-
-				1.0
-				<view class="">
+			<view class="btn-row">
+				<view class="btn-back">
+					退库存
+				</view>
+				<view class="btn-con">
 					确认收货
 				</view>
 			</view>
+			<view class="back-view">
+				<view class="back-item">
+					<view class="back-title">
+						退款中
+					</view>
+					<view class="back-price">
+						<text class="num-x">¥</text>
+						<text class="num-z">320</text>
+						<text class="num-x">.00</text>
+					</view>
+				</view>
+				<view class="back-row">
+					<view class="back-row-item">
+						取消申请
+					</view>
+
+					<view class="back-row-item" @click="toDetail">
+						查看详情
+					</view>
+				</view>
+			</view>
 		</view>
-
-
 	</view>
 </template>
 
@@ -61,42 +105,196 @@
 	}
 </script>
 
-<style lang="scss">
+<style lang="scss" scoped>
 	.store {
-		padding: 16rpx;
 		background-color: #FFF;
-		margin-top: 32rpx;
+		margin-bottom: 32rpx;
 
 		.store-info {
 			display: flex;
 			flex-direction: row;
-			justify-content: space-between;
 			align-items: center;
+			background: #fafafa;
+			height: 96rpx;
+
+			.store-name {
+				font-size: 28rpx;
+				font-weight: 500;
+				color: #111111;
+				margin-left: 32rpx;
+			}
+
+			.store-sub {
+				font-size: 22rpx;
+				color: #999999;
+				margin-left: 8rpx;
+			}
+		}
+
+		.goods-list {
+
+			margin: 0 32rpx;
+
+			padding: 32rpx 0;
+			border-bottom: 1rpx solid #f4f4f4;
 		}
 
 		.good-detail {
 			display: flex;
-			width: 100%;
-			padding: 16rpx 0;
 			flex-direction: row;
 			align-items: center;
 
 			.img {
-				width: 200rpx;
-				height: 100rpx;
-				background-color: yellow;
+				width: 136rpx;
+				height: 136rpx;
+				border: 1rpx solid #f4f4f4;
+				border-radius: 8rpx;
 			}
 
 			.goods-info {
-				.name {}
+				margin-left: 16rpx;
+				flex: 1;
+				height: 100%;
+				display: flex;
+				flex-direction: column;
+				align-items: center;
 
-				.spec {}
+				.name {
 
-				.price {}
+					display: flex;
+					flex-direction: row;
+					align-items: center;
+					width: 100%;
+					height: 34rpx;
+
+					.tip {
+						width: 60rpx;
+						height: 30rpx;
+						line-height: 30rpx;
+						text-align: center;
+						border: 1rpx solid #35c4c4;
+						border-radius: 4rpx;
+						font-size: 20rpx;
+						color: #35c4c4;
+					}
+
+					.text {
+						font-size: 26rpx;
+						color: #333333;
+						margin-left: 8rpx;
+					}
+
+					.price {
+						color: #333333;
+
+						.num-z {
+							font-size: 32rpx;
+						}
+
+						.num-x {
+							font-size: 22rpx;
+						}
+					}
+				}
+
+				.spec {
+					margin-top: 16rpx;
+					height: 32rpx;
+					width: 100%;
+					display: flex;
+					flex-direction: row;
+
+					.spec-item {
+						color: #999999;
+						font-size: 22rpx;
+						margin-right: 24rpx;
+					}
+				}
 			}
 
-			.btns {
-				text-align: end;
+
+
+		}
+
+		.btn-row {
+			display: flex;
+			flex-direction: row;
+			justify-content: flex-end;
+
+			.btn-back {
+				width: 160rpx;
+				height: 56rpx;
+				line-height: 56rpx;
+				text-align: center;
+				background: #ffffff;
+				border: 1rpx solid #eaeaea;
+				border-radius: 16rpx;
+				font-size: 24rpx;
+				color: #111111;
+
+			}
+
+			.btn-con {
+				width: 160rpx;
+				height: 56rpx;
+				line-height: 56rpx;
+				font-size: 24rpx;
+				color: #ffffff;
+				text-align: center;
+				background: linear-gradient(135deg, #36d9cd, #28c6c6);
+				border-radius: 16rpx;
+			}
+		}
+	}
+
+	.back-view {
+		.back-item {
+			width: 686rpx;
+			height: 80rpx;
+			line-height: 80rpx;
+			background: #fcf9f5;
+			border: 1rpx solid #f5d9bc;
+			border-radius: 16rpx;
+			display: flex;
+			flex-direction: row;
+			align-items: center;
+
+			.back-title {
+				color: #fc8b19;
+				font-size: 28rpx;
+				margin-left: 24rpx;
+			}
+
+			.back-price {
+				color: #fc8b19;
+				margin-left: 16rpx;
+
+				.num-z {
+					font-size: 32rpx;
+				}
+
+				.num-x {
+					font-size: 22rpx;
+				}
+			}
+		}
+
+		.back-row {
+			display: flex;
+			flex-direction: row;
+			justify-content: flex-end;
+			margin-top: 24rpx;
+
+			&-item {
+				width: 140rpx;
+				height: 56rpx;
+				text-align: center;
+				line-height: 56rpx;
+				border: 1rpx solid #cccccc;
+				border-radius: 32rpx;
+				color: #111111;
+				font-size: 24rpx;
+				margin-left: 24rpx;
 			}
 		}
 	}
