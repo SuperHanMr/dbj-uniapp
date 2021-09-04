@@ -6,20 +6,18 @@
 					
 					<view class="sku-goods-info">
 						<view class="goodsDesc">
-							<text class="goodsType">服务</text>
-							{{selectSkuInfo[cbStock]}}
+							<text class="goodsType">{{productType===1?"服务":"物品"}}</text>
+							{{spuName}}
 						</view>
 						<view class="money">
 							<text class="symbol fs-26">￥</text>
-							<text class="amount fs-38">{{selectSkuInfo[cbPrice] | toFixed2}}/</text>
-						</view>
-						<!-- <view class="stock fs-24">
-							库存{{selectSkuInfo[cbStock]}}件
+							<text class="amount fs-38">{{selectSkuInfo[cbPrice] | toFixed2}}/{{selectSkuInfo[cbUnit]}}</text>
 						</view>
 						<view class="fs-24">
 							已选："{{selectSkuInfo[cbValue]}}"
-						</view> -->
+						</view>
 					</view>
+					<image class="close" src="../../static/shopping-cart/ic_closed_black@2x.png" click="show=true"></image>
 				</view>
 				<scroll-view class="sku-list" scroll-y="true">
 					<view class="sku-item container" v-for="(sku,sIndex) in mySpecifications" :key="sku[speId]">
@@ -35,12 +33,12 @@
 									backgroundColor: index===sku.sidx?'#e8fafa':'#f5f5f5' 
 								}" 
 								@click="selectSku(sIndex,index)"
-							>{{item}}</text>
+							>{{item.value}}</text>
 						</view>
 					</view>
 				</scroll-view>
 
-				<view class="confirm-btn container" :class="{disabled:selectSkuInfo[cbStock]==0}" @click="handleConfirm">{{selectSkuInfo[cbStock]>0?'确认':'缺货中'}}</view>
+				<view class="confirm-btn container" @click="handleConfirm">确认</view>
 			</view>
 	</popup-bottom>
 </template>
@@ -82,15 +80,18 @@
 				type: Number,
 				default: 0
 			},
+			spuName: {
+				type: String,
+			},
 			combinationsProps: {
 				type: Object,
 				default(){
 					return {
 						id: 'id',
-						value: 'value',
-						image: 'image',
+						value: 'propValueIds',
+						image: 'imageUrl',
 						price: 'price',
-						stock: 'stock'
+						unit:'unitName',
 					}
 				}
 			},
@@ -99,7 +100,7 @@
 				default(){
 					return {
 						id: 'id',
-						list: 'list',
+						list: 'values',
 						name: 'name'
 					}
 				}
@@ -137,11 +138,12 @@
 			cbPrice() {
 				return this.combinationsProps.price
 			},
-			cbStock() {
-				return this.combinationsProps.stock
-			}
+			cbUnit() {
+				return this.combinationsProps.unit
+			},
 		},
-		created() {
+		mounted() {
+			console.log(this.defaultSelectIndex)
 			if(this.specifications.length) {
 				this.initSkuData()
 			}
@@ -153,12 +155,13 @@
 				this.mySpecifications = JSON.parse(JSON.stringify(this.specifications))
 				this.mySpecifications.forEach((item,idx) => {
 					//当前规格组合值
-					const selects = this.combinations[this.selectedIndex][this.cbValue].split(',')
+					const selects = this.selectSkuInfo[this.cbValue].split(',')
 					//每类规格对应其列表的下标 并记录在属性sidx在mySpecifications的子对象中
 					const sIndex = item[this.speList].indexOf(selects[idx])
 					if(sIndex === -1) {
 						uni.showToast({
-							title:"默认规格值不存在"
+							title:"默认规格值不存在",
+							icon:"none"
 						})
 						return
 					}
@@ -176,12 +179,7 @@
 				},'')
 				this.selectedIndex = this.combinations.findIndex(item => item[this.cbValue] === selectInfo)
 				this.selectSkuInfo = this.combinations[this.selectedIndex]
-				if(this.selectSkuInfo[this.cbStock] === 0) {
-					this.buyCount = 0
-				}
-				if(this.selectSkuInfo[this.cbStock] !== 0 && this.buyCount*1 === 0) {
-					this.buyCount = 1
-				}
+				
 			},
 			handleBuyCount(type) {
 				if(type === 'minus') {
@@ -189,7 +187,6 @@
 					this.buyCount = this.buyCount*1 - 1
 				}
 				if(type === 'add') {
-					if(this.buyCount >= this.selectSkuInfo[this.cbStock]) return
 					this.buyCount = this.buyCount*1 + 1
 				}
 			},
@@ -251,6 +248,13 @@
 				height: 192rpx;
 				border-radius: 16rpx;
 				border: 1rpx solid  #f4f4f4;
+			}
+			.close{
+				width: 80rpx;
+				height: 80rpx;
+				display: block;
+				margin-top: -30rpx;
+				margin-left: 32rpx;
 			}
 		}
 		.sku-goods-info {

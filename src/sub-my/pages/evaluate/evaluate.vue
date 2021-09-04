@@ -23,7 +23,7 @@
 					<button
 						type="default"
 						size="mini"
-						style="margin-left: 24rpx;"
+						@click="immediateEvalute()"
 					>立即评价</button>
 				</view>
 			</view>
@@ -40,7 +40,12 @@
 			}
 		},
 		methods: {
-			
+			immediateEvalute(){
+				console.log("立即评价");
+				uni.navigateTo({
+					url:"immediate-evaluate/immediate-evaluate",
+				})
+			}
 		}
 	}
 </script>
@@ -107,19 +112,19 @@
 			display: flex;
 			flex-flow: row nowrap;
 			justify-content:  flex-end;
-			button{
-				width: 140rpx;
-				height: 56rpx;
-				line-height: 56rpx;
-				text-align: center;
-				font-size: 24rpx;
-				display: block;
-				border-radius: 32rpx;
-				// border: 2rpx solid #CCCCCC;
-				// color: #111;
-				padding: 0;
-				background: linear-gradient(135deg, #36D9CD 0%, #28C6C6 100%);   
-			}
+				button{
+					width: 140rpx;
+					height: 56rpx;
+					line-height: 56rpx;
+					text-align: center;
+					font-size: 24rpx;
+					display: block;
+					border-radius: 32rpx;
+					// border: 2rpx solid #CCCCCC;
+					color: #FFFFFF;
+					padding: 0;
+					background: linear-gradient(135deg, #36D9CD 0%, #28C6C6 100%);   
+				}
 		}
 	}
 	button{

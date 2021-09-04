@@ -1,6 +1,9 @@
 <template>
 	<view class="body-main" :style="{paddingBottom:paddingBottom +'rpx'}" @click="handleDetail()" >
 		<view class="pic">
+			<view class="icon-status1">
+				退款中
+			</view> 
 			<image src="../../wxcomponents/loginSDK/img/logo.0ccb88de.png" mode=""></image>
 		</view>
 		<view class="basic-info">
@@ -34,11 +37,15 @@
 			paddingBottom:{
 				type: Number,
 				default:34,
+			},
+			iconStatus:{
+				type:Number,
+				default:0,
 			}
 		},
 		data() {
 			return {
-				
+
 			};
 		},
 		methods:{
@@ -60,10 +67,24 @@
 		flex-flow: row nowrap;
 		.pic{
 			margin-right: 32rpx;
+			position: relative;
+			.icon-status1{
+				position: absolute;
+				width: 84rpx;
+				height: 32rpx;
+				line-height: 32rpx;
+				// background: #F4F5F6 linear-gradient(314deg, #FFBF38 0%, #FFA94F 100%);
+				background: #F4F5F6 linear-gradient(135deg, #20D4B9 0%, #29D6E0 100%);
+				border-radius: 8rpx 0 16rpx 0;
+				font-size: 20rpx;
+				text-align: center;
+				color: #FFFFFF;
+				letter-spacing: 1rpx;
+			}
 			image{
 				width: 136rpx;
 				height: 136rpx;
-				background-color: skyblue;
+				border-radius: 8rpx;
 			}
 		}
 		.basic-info{

@@ -234,27 +234,27 @@
                       style="width: 100%; white-space: nowrap;"
                     >
                       <image
-                        src="../../login/imgs/2021823-152722.png"
+                        src="../../../static/images/message/ic_interaction@2x.png"
                         mode=""
                       ></image>
                       <image
-                        src="../../login/imgs/2021823-152722.png"
+                        src="../../../static/images/message/ic_interaction@2x.png"
                         mode=""
                       ></image>
                       <image
-                        src="../../login/imgs/2021823-152722.png"
+                         src="../../../static/images/message/ic_interaction@2x.png"
                         mode=""
                       ></image>
                       <image
-                        src="../../login/imgs/2021823-152722.png"
+                        src="../../../static/images/message/ic_interaction@2x.png"
                         mode=""
                       ></image>
                       <image
-                        src="../../login/imgs/2021823-152722.png"
+                        src="../../../static/images/message/ic_interaction@2x.png"
                         mode=""
                       ></image>
                       <image
-                        src="../../login/imgs/2021823-152722.png"
+                        src="../../../static/images/message/ic_interaction@2x.png"
                         mode=""
                       ></image>
                     </scroll-view>
@@ -293,7 +293,7 @@
               <view class="footer">
                 <view class="set-interval">
                   <image
-                    src="../../../static/order/ic／time@2x.png"
+                    src="../../../static/order/ic_time@2x.png"
                     mode=""
                   ></image>
                   <text>
@@ -347,8 +347,12 @@ export default {
       ordStatus: 1,
       currentIndex: 2,
 			rows:15,
+			lastId:-1
     };
   },
+	onShow(){
+		this.getOrderList()
+	},
   computed: {
     currentList() {
       if (this.currentIndex == 0) {
@@ -374,18 +378,19 @@ export default {
     },
   },
 	
-  onLoad(option) {
-		 this.currentIndex = Number(option.index)
-    orderList({
-			orderStatus:-1,
-			rows:this.rows,
-			lastId:"",
-		}).then((e) => {
-      console.log(e,"请求回来的数据呢呢呢呢呢呢呢呢呢呢");
-      this.list = e;
-			console.log("this.list=",this.list)
-    });
-  },
+  // onLoad(option) {
+		//  this.currentIndex = Number(option.index)
+  //   orderList({
+		// 	orderStatus:-1,
+		// 	lastId:this.lastId,
+		// 	rows:this.rows,
+		// 	customerId:4250
+		// }).then((e) => {
+  //     console.log(e,"请求回来的数据呢呢呢呢呢呢呢呢呢呢");
+  //     this.list = e;
+		// 	console.log("this.list=",this.list)
+  //   });
+  // },
 
   methods: {
     toDetail(item) {
@@ -394,13 +399,36 @@ export default {
         url: "order-in-progress/order-in-progress?orderNo=" + item.id,
       });
     },
+		
     swiperChange(e) {
       let index = e.target.current || e.detail.current;
       this.currentIndex = index;
     },
+		
+		async getOrderList(){
+			this.loading = true;
+			let caseItem = await orderList({
+				orderStatus:-1,
+				lastId:this.lastId,
+				rows:this.rows,
+				customerId:3907
+			});
+			console.log(caseItem,"caseItem")
+			
+			// this.totalPage = caseItem.totalPage
+			// this.caseList = this.caseList.concat(caseItem.list);
+			// this.loading = false;
+		},
+		
     onLoadMore() {
       console.log("onLoadMore!!!!!!!!!!!!!!");
+			if (this.loading || this.page >= this.totalPage) {
+				return;
+			}
+			this.page++;
+			this.getOrderList();
     },
+		
     onRefresh(e) {
       console.log("刷新!!!!!");
       this.triggered = true;
@@ -409,6 +437,7 @@ export default {
         this.triggered = false;
       }, 1000);
     },
+		
     orderStatus() {
       switch (this.ordStatus) {
         case 0:
@@ -419,9 +448,7 @@ export default {
           break;
       }
     },
-    // onLoad(option) {
-    //   this.currentIndex = Number(option.index);
-    // },
+    
   },
 };
 </script>
@@ -551,7 +578,6 @@ export default {
           border-radius: 8rpx;
           border: 2rpx solid #f4f4f4;
           box-sizing: border-box;
-          background-color: pink;
           margin-right: 24rpx;
         }
         image:nth-last-child(1) {
@@ -697,9 +723,9 @@ export default {
   swiper-item {
     height: 100%;
     overflow: auto;
-    scroll-view {
-      padding-bottom: 100rpx;
-    }
+    // scroll-view {
+    //   padding-bottom: 100rpx;
+    // }
   }
 }
 
