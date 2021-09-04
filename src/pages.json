@@ -118,7 +118,8 @@
 		"selectedColor": "yellow",
 		"borderStyle": "black",
 		"backgroundColor": "#ffffff",
-		"list": [{
+		"list": [
+			{
 				"pagePath": "pages/home/index/index",
 				// "iconPath": "static/component.png",
 				// "selectedIconPath": "static/componentHL.png",
@@ -152,7 +153,8 @@
 	},
 	"condition": { //模式配置，仅开发期间生效
 		"current": 0, //当前激活的模式(list 的索引项)
-		"list": [{
+		"list": [
+			{
 				"name": "default", //模式名称
 				"path": "pages/home/index/index", //启动页面，必选
 				"query": "" //启动参数，在页面的onLoad函数里面得到
@@ -164,14 +166,16 @@
 			},
 			{
 				"name": "hcl", //模式名称
-				"path": "/sub-decorate/pages/warehouse-refund-detail/warehouse-refund-detail", //启动页面，必选
+				"path": "/sub-decorate/pages/warehouse-refund/warehouse-refund", //启动页面，必选
 				"query": "" //启动参数，在页面的onLoad函数里面得到
 			}
 		]
 	},
-	"subPackages": [{
+	"subPackages": [
+		{
 			"root": "sub-home", //首页模块分包
-			"pages": [{
+			"pages": [
+				{
 					"path": "pages/lives-room/lives-room",
 					"style": {
 						"navigationBarTitleText": "",
@@ -193,7 +197,8 @@
 		},
 		{
 			"root": "sub-my", //我的模块分包
-			"pages": [{
+			"pages": [
+				{
 					"path": "pages/apply-for-refund/apply-for-refund",
 					"style": {
 						"navigationBarTitleText": "申请退款",
@@ -365,7 +370,8 @@
 		},
 		{
 			"root": "sub-classify", //商城模块分包
-			"pages": [{
+			"pages": [
+				{
 					"path": "pages/search/index",
 					"style": {
 						"navigationBarTitleText": "",
@@ -406,7 +412,8 @@
 		},
 		{
 			"root": "sub-decorate", //装修模块分包
-			"pages": [{
+			"pages": [
+				{
 					"path": "pages/design-service-list/design-service-list",
 					"style": {
 						"navigationBarTitleText": "设计服务",
