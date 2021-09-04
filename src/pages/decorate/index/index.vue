@@ -28,7 +28,7 @@
           <view class="design" @click="goDesignPicture">
             <image class="icon"></image>
             <view class="text">设计图</view>
-            <image class="gotopage" src="http://dbj.dragonn.top/static/mp/dabanjia/images/decorate/ic_triangle_999.svg">
+            <image class="gotopage" src="http://dbj.dragonn.top/static/mp/dabanjia/images/decorate/ic_more.svg">
             </image>
           </view>
         </view>
@@ -504,12 +504,12 @@
       justify-content: center;
       flex-direction: row;
       align-items: center;
-      width: 114rpx;
+      width: 146rpx;
       height: 44rpx;
       background: #f5f6f6;
       border-radius: 12rpx;
 
-      .iocn {
+      .icon {
         height: 40rpx;
         width: 40rpx;
       }
@@ -646,6 +646,5 @@
       padding-top: 58rpx;
       margin-bottom: 24rpx;
     }
-
   }
 </style>

@@ -4,7 +4,7 @@
       <text>({{data.value}}项)</text>
     </view>
     <view class="list">
-      <view class="list-item" v-for="item of data.arr" :key="item.title">
+      <view class="list-item" v-for="item of data.arr" :key="item.title" @click="toDetail(item)">
         <view class="item-left">
           <text class="item-title">{{item.title}}</text>
           <text class="item-body">{{item.content}}</text>
@@ -27,7 +27,15 @@
         }
       }
     },
-    data(){}
+    data(){},
+    methods:{
+      toDetail(){
+        console.log(123)
+        uni.navigateTo({
+          url:'/sub-decorate/pages/result-detail/result-detail'
+        })
+      }
+    }
   }
 </script>
 

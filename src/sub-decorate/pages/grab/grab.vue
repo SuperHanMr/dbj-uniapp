@@ -54,7 +54,7 @@
       },
 			toReplace(){
 				uni.navigateTo({
-					url:"/pages/decorate/replace-worker/replace-worker?id="+this.id
+					url:"/sub-decorate/pages/replace-worker/replace-worker?id="+this.id
 				})
 			},
 			submit(){
