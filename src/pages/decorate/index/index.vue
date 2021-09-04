@@ -1,12 +1,14 @@
 <template>
 	<view class="decorate-index">
-		<image class="bg" mode="aspectFit" src="http://dbj.dragonn.top/static/mp/dabanjia/images/decorate/bg@2x.png"></image>
+		<image class="bg" mode="aspectFit" src="http://dbj.dragonn.top/static/mp/dabanjia/images/decorate/bg@2x.png">
+		</image>
 		<view class="content">
 			<view class="house-firend">
 				<view class="title">
 					<view class="house" @click="switchVisible">
 						<text>我的家</text>
-						<image class="ic-triangle" src="http://dbj.dragonn.top/static/mp/dabanjia/images/decorate/ic_triangle.svg"></image>
+						<image class="ic-triangle"
+							src="http://dbj.dragonn.top/static/mp/dabanjia/images/decorate/ic_triangle.svg"></image>
 					</view>
 					<view class="friend">
 						<text>亲友团</text>
@@ -15,7 +17,9 @@
 								:src="item.relativeAvatar"
 								:class="{avtor1: index == 0, avtor1: index == 0,avtor2: index == 1}"></image>
 							<view class="avtor-more" @click="toFriends">
-								<image src="http://dbj.dragonn.top/static/mp/dabanjia/images/decorate/ic_avtor_more.svg"></image>
+								<image
+									src="http://dbj.dragonn.top/static/mp/dabanjia/images/decorate/ic_avtor_more.svg">
+								</image>
 							</view>
 						</view>
 					</view>
@@ -31,13 +35,15 @@
 					<view class="uni-title">{{ currentHouse.housingEstate }}{{currentHouse.address}}</view>
 					<view class="design" @click="goDesignPicture">
 						<text>设计图</text>
-						<image src="http://dbj.dragonn.top/static/mp/dabanjia/images/decorate/ic_triangle_999.svg"></image>
+						<image src="http://dbj.dragonn.top/static/mp/dabanjia/images/decorate/ic_triangle_999.svg">
+						</image>
 					</view>
 				</view>
 
 			</view>
 			<view class="my-decorate-service-wrap">
-				<image mode="aspectFit" class="top-bg" src="http://dbj.dragonn.top/static/mp/dabanjia/images/decorate/service-card-top.svg"></image>
+				<image mode="aspectFit" class="top-bg"
+					src="http://dbj.dragonn.top/static/mp/dabanjia/images/decorate/service-card-top.svg"></image>
 				<view class="my-decorate-service">
 					<view class="service-title flex-space-between-row" @click="goToMyDecorate">
 						<text class="t">我的装修服务</text>
@@ -64,6 +70,7 @@
 					@buyNow="buyServiceNow"></guide-card>
 			</view>
 
+			<no-service words="暂无进行中服务"></no-service>
 			<decorate-notice v-if="noticeActive" @closeNotice='closeNotice' class="decorate-notice"></decorate-notice>
 			<drag-button-follow :style.sync="style" @btnClick='noticeActive=true' :follow='`left,right`'
 				className="drag-button" class="drag-button">
@@ -72,14 +79,18 @@
 					<text style="color: red;">2</text>
 				</view>
 			</drag-button-follow>
-			<!-- <view class="link">
+			<view class="link">
 				<button @click="gonohouse">无房屋无服入口</button>
 				<button @click="gonohousedecatore">无房屋无服务装修</button>
 				<button @click="gonohousecheck">无房屋无服务验房</button>
-			</view> -->
+				<button @click="checkHouseRemind">验房提醒</button>
+
+			</view>
 
 		</view>
-		<decorate-notice v-if="noticeActive" @closeNotice='closeNotice' class="decorate-notice"></decorate-notice>
+		<decorate-notice @touchmove.stop.prevent="()=>false" v-if="noticeActive" @closeNotice='closeNotice'
+			class="decorate-notice"></decorate-notice>
+
 	</view>
 </template>
 
@@ -92,6 +103,7 @@
 		HouseSwitch
 	} from "../../../components/house-switch/house-switch.vue"
 	import ServiceItem from "../../../components/service-item/service-item.vue"
+	import NoService from "../../../components/no-service/no-service.vue"
 	import {
 		DECTORE_DICT,
 		SERVICE_TYPE
@@ -101,7 +113,8 @@
 		components: {
 			HouseSwitch,
 			ServiceItem,
-			GuideCard
+			GuideCard,
+			NoService
 		},
 		onShow() {
 			if (this.houses && this.houses.length < 1) {
@@ -142,6 +155,11 @@
 			}
 		},
 		methods: {
+			checkHouseRemind() {
+				uni.navigateTo({
+					url: "/sub-decorate/pages/check-house-remind/check-house-remind"
+				})
+			},
 			async getFriendsList() {
 				let list = await friendListByEstateId({
 					estateId: this.currentHouse.id
@@ -271,8 +289,9 @@
 			},
 			buyServiceNow(type) {
 				uni.navigateTo({
-					url: "/sub-decorate/pages/design-service-list/design-service-list?categoryTypeId=" + SERVICE_TYPE[
-						type]
+					url: "/sub-decorate/pages/design-service-list/design-service-list?categoryTypeId=" +
+						SERVICE_TYPE[
+							type]
 				})
 			}
 		},
@@ -485,7 +504,7 @@
 	}
 
 	.service-title {
-		margin: -88rpx 45rpx 44rpx 32rpx;
+		margin: -88rpx 21rpx 44rpx 8rpx;
 
 		.t {
 			font-size: 32rpx;
@@ -509,8 +528,8 @@
 			}
 
 			image {
-				width: 11rpx;
-				height: 19rpx;
+				width: 24rpx;
+				height: 24rpx;
 			}
 		}
 	}

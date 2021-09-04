@@ -56,7 +56,7 @@
       },
       cancel() {
         uni.switchTab({
-          url: "/sub-classify/pages/classify/index/index"
+          url: "/pages/classify/index/index"
         })
       },
       dialogConfirm() {},

@@ -1,6 +1,7 @@
 <template>
   <view>
-     <web-view :src='webViewSrc'></web-view>
+     <web-view :src="'https://local.meiwu365.com/app-pages/goods-detail/index.html?goodsId='
+        + goodId + '&&houseId=' + houseId" @message='h5Message'></web-view>
   </view>
 </template>
 
@@ -15,17 +16,17 @@
     },
     onShow() {
       this.houseId = uni.getStorageSync('houseListChooseId')
-      setTimeout(()=> {
-        this.webViewSrc = 'https://local.meiwu365.com/app-pages/goods-detail/index.html?goodsId='
-        + this.goodId + '&&houseId=' + this.houseId
-      })
-      uni.removeStorageSync('houseListChooseId')
-    },
-    onLoad(e) {
-      this.goodId = e.goodId
+      this.goodId = uni.getStorageSync('goodId')
+      uni.removeStorageSync('fromH5')
     },
     methods: {
-      
+      h5Message(ms) {
+        console.log(ms)
+        uni.setStorageSync(
+            'fromH5',
+            ms.detail.data[0].action
+        );
+      }
     }
   }
 </script>

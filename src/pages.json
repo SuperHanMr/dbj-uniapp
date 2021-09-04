@@ -36,16 +36,16 @@
 			"path": "pages/message/index/index",
 			"style": {
 				"navigationBarTitleText": "消息",
-        "navigationBarBackgroundColor": "#ffffff"
+				"navigationBarBackgroundColor": "#ffffff"
 			}
 		},
-    {
-    	"path": "pages/message/conversation/conversation",
-    	"style": {
-    		"navigationBarTitleText": "消息详情",
-        "navigationBarBackgroundColor": "#ffffff"
-    	}
-    },
+		{
+			"path": "pages/message/conversation/conversation",
+			"style": {
+				"navigationBarTitleText": "消息详情",
+				"navigationBarBackgroundColor": "#ffffff"
+			}
+		},
 		{
 			"path": "pages/my/index/index",
 			"style": {
@@ -91,8 +91,14 @@
 				"navigationBarTitleText": "",
 				"enablePullDownRefresh": false
 			}
+		},
+		{
+			"path": "pages/classify/test",
+			"style": {
+				"navigationBarTitleText": "",
+				"enablePullDownRefresh": false
+			}
 		}
-		
 	],
 	"globalStyle": {
 		"navigationBarTextStyle": "black",
@@ -112,8 +118,7 @@
 		"selectedColor": "yellow",
 		"borderStyle": "black",
 		"backgroundColor": "#ffffff",
-		"list": [
-			{
+		"list": [{
 				"pagePath": "pages/home/index/index",
 				// "iconPath": "static/component.png",
 				// "selectedIconPath": "static/componentHL.png",
@@ -147,19 +152,15 @@
 	},
 	"condition": { //模式配置，仅开发期间生效
 		"current": 0, //当前激活的模式(list 的索引项)
-		"list": [
-			{
-				"name": "", //模式名称
-				"path": "", //启动页面，必选
-				"query": "" //启动参数，在页面的onLoad函数里面得到
-			}
-		]
+		"list": [{
+			"name": "", //模式名称
+			"path": "/sub-classify/pages/pay-order/index", //启动页面，必选
+			"query": "" //启动参数，在页面的onLoad函数里面得到
+		}]
 	},
-	"subPackages": [
-		{
+	"subPackages": [{
 			"root": "sub-home", //首页模块分包
-			"pages": [
-				{
+			"pages": [{
 					"path": "pages/lives-room/lives-room",
 					"style": {
 						"navigationBarTitleText": "",
@@ -177,13 +178,11 @@
 		},
 		{
 			"root": "sub-message", //消息模块分包
-			"pages": [
-			]
+			"pages": []
 		},
 		{
 			"root": "sub-my", //我的模块分包
-			"pages": [
-				{
+			"pages": [{
 					"path": "pages/apply-for-refund/apply-for-refund",
 					"style": {
 						"navigationBarTitleText": "申请退款",
@@ -205,12 +204,11 @@
 					}
 				},
 				{
-					"path":"pages/evaluate/immediate-evaluate/immediate-evaluate",
+					"path": "pages/evaluate/immediate-evaluate/immediate-evaluate",
 					"style": {
 						"navigationBarTitleText": "立即评价",
 						"enablePullDownRefresh": false
 					}
-					
 				},
 				{
 					"path": "pages/my-house/my-house",
@@ -352,14 +350,11 @@
 						"navigationBarTitleText": "确认订单"
 					}
 				}
-				
-				
 			]
 		},
 		{
 			"root": "sub-classify", //商城模块分包
-			"pages": [
-				{
+			"pages": [{
 					"path": "pages/search/index",
 					"style": {
 						"navigationBarTitleText": "",
@@ -382,8 +377,15 @@
 						"navigationStyle": "custom"
 					}
 				},
+				// {
+				// 	"path": "pages/search/index",
+				// 	"style": {
+				// 		"navigationBarTitleText": "",
+				// 		"enablePullDownRefresh": false
+				// 	}
+				// },
 				{
-					"path": "pages/pay/pay",
+					"path": "pages/pay-order/index",
 					"style": {
 						"navigationBarTitleText": "",
 						"enablePullDownRefresh": false
@@ -393,8 +395,7 @@
 		},
 		{
 			"root": "sub-decorate", //装修模块分包
-			"pages": [
-				{
+			"pages": [{
 					"path": "pages/design-service-list/design-service-list",
 					"style": {
 						"navigationBarTitleText": "设计服务",
@@ -529,6 +530,27 @@
 					"path": "pages/amoutDelivery/amoutDelivery",
 					"style": {
 						"navigationBarTitleText": "确认量房结果",
+						"enablePullDownRefresh": false
+					}
+				},
+				{
+					"path": "pages/checkResult/checkResult",
+					"style": {
+						"navigationBarTitleText": "确认验房结果",
+						"enablePullDownRefresh": false
+					}
+				},
+				{
+					"path": "pages/result-detail/result-detail",
+					"style": {
+						"navigationBarTitleText": "详情",
+						"enablePullDownRefresh": false
+					}
+				},
+				{
+					"path": "pages/check-house-remind/check-house-remind",
+					"style": {
+						"navigationBarTitleText": "上门验房服务提醒",
 						"enablePullDownRefresh": false
 					}
 				}
