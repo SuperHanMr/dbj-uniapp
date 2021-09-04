@@ -1,12 +1,14 @@
 <template>
 	<view class="decorate-index">
-		<image class="bg" mode="aspectFit" src="http://dbj.dragonn.top/static/mp/dabanjia/images/decorate/bg@2x.png"></image>
+		<image class="bg" mode="aspectFit" src="http://dbj.dragonn.top/static/mp/dabanjia/images/decorate/bg@2x.png">
+		</image>
 		<view class="content">
 			<view class="house-firend">
 				<view class="title">
 					<view class="house" @click="switchVisible">
 						<text>我的家</text>
-						<image class="ic-triangle" src="http://dbj.dragonn.top/static/mp/dabanjia/images/decorate/ic_triangle.svg"></image>
+						<image class="ic-triangle"
+							src="http://dbj.dragonn.top/static/mp/dabanjia/images/decorate/ic_triangle.svg"></image>
 					</view>
 					<view class="friend">
 						<text>亲友团</text>
@@ -15,7 +17,9 @@
 								:src="item.relativeAvatar"
 								:class="{avtor1: index == 0, avtor1: index == 0,avtor2: index == 1}"></image>
 							<view class="avtor-more" @click="toFriends">
-								<image src="http://dbj.dragonn.top/static/mp/dabanjia/images/decorate/ic_avtor_more.svg"></image>
+								<image
+									src="http://dbj.dragonn.top/static/mp/dabanjia/images/decorate/ic_avtor_more.svg">
+								</image>
 							</view>
 						</view>
 					</view>
@@ -31,13 +35,15 @@
 					<view class="uni-title">{{ currentHouse.housingEstate }}{{currentHouse.address}}</view>
 					<view class="design" @click="goDesignPicture">
 						<text>设计图</text>
-						<image src="http://dbj.dragonn.top/static/mp/dabanjia/images/decorate/ic_triangle_999.svg"></image>
+						<image src="http://dbj.dragonn.top/static/mp/dabanjia/images/decorate/ic_triangle_999.svg">
+						</image>
 					</view>
 				</view>
 
 			</view>
 			<view class="my-decorate-service-wrap">
-				<image mode="aspectFit" class="top-bg" src="http://dbj.dragonn.top/static/mp/dabanjia/images/decorate/service-card-top.svg"></image>
+				<image mode="aspectFit" class="top-bg"
+					src="http://dbj.dragonn.top/static/mp/dabanjia/images/decorate/service-card-top.svg"></image>
 				<view class="my-decorate-service">
 					<view class="service-title flex-space-between-row" @click="goToMyDecorate">
 						<text class="t">我的装修服务</text>
@@ -78,11 +84,13 @@
 				<button @click="gonohousedecatore">无房屋无服务装修</button>
 				<button @click="gonohousecheck">无房屋无服务验房</button>
 				<button @click="checkHouseRemind">验房提醒</button>
-				
+
 			</view>
 
 		</view>
-		<decorate-notice v-if="noticeActive" @closeNotice='closeNotice' class="decorate-notice"></decorate-notice>
+		<decorate-notice @touchmove.stop.prevent="()=>false" v-if="noticeActive" @closeNotice='closeNotice'
+			class="decorate-notice"></decorate-notice>
+
 	</view>
 </template>
 
@@ -281,8 +289,9 @@
 			},
 			buyServiceNow(type) {
 				uni.navigateTo({
-					url: "/sub-decorate/pages/design-service-list/design-service-list?categoryTypeId=" + SERVICE_TYPE[
-						type]
+					url: "/sub-decorate/pages/design-service-list/design-service-list?categoryTypeId=" +
+						SERVICE_TYPE[
+							type]
 				})
 			}
 		},

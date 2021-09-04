@@ -172,18 +172,21 @@ export default {
   width: 100%;
   display: flex;
   flex-direction: row;
-  height: 80rpx;
-
+  height: 96rpx;
+background-color: #FFFFFF;
   .item {
     flex: 1;
     display: flex;
     justify-content: center;
     align-items: center;
+		font-size: 30rpx;
+		color: #999999;
   }
 
   .selected {
-    color: #333333;
+    color: #111111;
     font-weight: 500;
+		font-size: 30rpx;
 
     .bottom-icon {
       position: absolute;
