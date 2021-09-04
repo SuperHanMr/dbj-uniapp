@@ -49,10 +49,8 @@
 				</view>
 			</view>
 			<view v-if="showBtns">
-
-
 				<view class="btn-row">
-					<view class="btn-back">
+					<view class="btn-back" @click="toRefund">
 						退库存
 					</view>
 					<view class="btn-con">
@@ -81,6 +79,13 @@
 					</view>
 				</view>
 			</view>
+			<view v-if="isEdit" class="edit">
+				<custom-number-box></custom-number-box>
+				<view class="edit-tip">
+					库存剩余80，最多可退80
+				</view>
+			</view>
+
 		</view>
 	</view>
 </template>
@@ -98,6 +103,10 @@
 			showBtns: {
 				type: Boolean,
 				default: true
+			},
+			isEdit: {
+				type: Boolean,
+				default: false
 			}
 		},
 		data() {
@@ -108,6 +117,10 @@
 		methods: {
 			toDetail() {
 				this.$emit('detail');
+			},
+
+			toRefund() {
+				this.$emit('refund');
 			}
 		}
 	}
@@ -304,6 +317,18 @@
 				font-size: 24rpx;
 				margin-left: 24rpx;
 			}
+		}
+	}
+
+	.edit {
+		display: flex;
+		flex-direction: column;
+		align-items: flex-end;
+
+		.edit-tip {
+			color: #999999;
+			font-size: 22rpx;
+			margin-top: 16rpx;
 		}
 	}
 </style>
