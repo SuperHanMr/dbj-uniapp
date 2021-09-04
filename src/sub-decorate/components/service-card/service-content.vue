@@ -2,7 +2,7 @@
 	<view class="service-content">
 		<slot name="radio"></slot>
 		<image :src="content.imageUrl"></image>
-		<view>
+		<view style="flex: 1">
 			<view class="subtitle">{{content.fullName}}</view>
 			<view class="desc-area">
 				<text>按平方米计价</text>
