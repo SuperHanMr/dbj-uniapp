@@ -1,6 +1,6 @@
 <template>
   <view class="notice" :style="{height:systemHeight}">
-    <view class="notice-mask"  @touchmove.stop.prevent="()=>false"></view>
+    <view class="notice-mask"  ></view>
     <view class="notice-view">
       <scroll-view class="item-list" scroll-y="true">
         <view
@@ -122,7 +122,7 @@
           class="close-icon"
         >
           <image
-            src="../../static/images/ic_cancel_white.svg"
+            src="http://dbj.dragonn.top/static/mp/dabanjia/images/decorate/ic_triangle.svg"
             mode=""
             @click="close()"
           ></image>
