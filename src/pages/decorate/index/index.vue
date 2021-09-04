@@ -493,10 +493,6 @@
         line-height: 34rpx;
         margin-bottom: 40rpx;
       }
-
-      .design-wrap {
-        // margin-left: 40rpx;
-      }
     }
 
     .design {
@@ -505,13 +501,18 @@
       flex-direction: row;
       align-items: center;
       width: 146rpx;
-      height: 44rpx;
-      background: #f5f6f6;
+      height: 48rpx;
+      background: #ffffff;
+      border-radius: 25rpx;
       border-radius: 12rpx;
 
       .icon {
-        height: 40rpx;
-        width: 40rpx;
+        height: 32rpx;
+        width: 32rpx;
+        margin-right: 8rpx;
+        border-radius: 50%;
+        box-sizing: border-box;
+        border: 2rpx solid #666;
       }
 
       view.text {
