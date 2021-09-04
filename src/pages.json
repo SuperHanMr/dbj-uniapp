@@ -279,7 +279,16 @@
 				"enablePullDownRefresh": false
 			}
 		}
-	],
+	    ,{
+            "path" : "pages/classify/test",
+            "style" :                                                                                    
+            {
+                "navigationBarTitleText": "",
+                "enablePullDownRefresh": false
+            }
+            
+        }
+    ],
 	"globalStyle": {
 		"navigationBarTextStyle": "black",
 		"navigationBarTitleText": "uni-app",
@@ -336,7 +345,7 @@
 		"list": [
 			{
 				"name": "", //模式名称
-				"path": "", //启动页面，必选
+				"path": "/sub-classify/pages/pay-order/index", //启动页面，必选
 				"query": "" //启动参数，在页面的onLoad函数里面得到
 			}
 		]
@@ -452,8 +461,15 @@
         		"navigationStyle": "custom"
         	}
         },
+        // {
+        // 	"path": "pages/search/index",
+        // 	"style": {
+        // 		"navigationBarTitleText": "",
+        // 		"enablePullDownRefresh": false
+        // 	}
+        // },
         {
-            "path" : "pages/pay/pay",
+            "path" : "pages/pay-order/index",
             "style" :                                                                                    
             {
                 "navigationBarTitleText": "",

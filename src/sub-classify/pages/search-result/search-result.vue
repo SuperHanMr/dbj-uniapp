@@ -1,5 +1,5 @@
 <template>
-  <view class="search-result">
+  <view class="search-result" v-if='isShow'>
     <view class="search">
       <view class="search-init" v-if="initSearch">
          <view class="uni-searchbar" @click="clickInitSearch">
@@ -46,14 +46,6 @@
         </view>	
       </uni-swipe-action-item>
      </uni-swipe-action>  
-<!--      <view class="content-item" v-for="(v,k) in listData.list" :key="k" @click="toDetails">
-        <image src="../../../static/arrow_b.svg" ></image>
-        <view class="content-info">
-          <text class="info-title">水电工程</text>
-          <text class="info-size">555/平米</text>
-          <text class="info-room">工作室</text>
-        </view>
-      </view> -->
       <view v-if="isPageReady && !(listData.list && listData.list.length > 0)" class="no-goods">
          <view class="img"></view>
          <view class="text">抱歉，没有找到符合的商品 请换关键词再搜搜看吧～</view>
@@ -74,7 +66,21 @@
       return {
         listData: {},
         initSearch: true,
-        isPageReady: false
+        isPageReady: false,
+        isShow: true
+      }
+    },
+    onShow(){
+      if(uni.getStorageSync('fromH5')) {
+        // 从商品详情进入选择地址页面或支付页面后，点击返回会直接返回这里，再重定向到商品详情页
+        this.isShow = false
+        uni.navigateTo({
+          url: "/sub-classify/pages/goods-detail/goods-detail?goodId=" + uni.getStorageSync('goodId')
+        })
+      }else {
+        this.isShow = true
+        uni.removeStorageSync('houseListChooseId')
+        uni.removeStorageSync('goodId')                          
       }
     },
     onLoad(){
@@ -100,8 +106,12 @@
         console.log(resText.value)
       },
       toDetails(id){
+        uni.setStorageSync(
+            'goodId',
+            id
+        );
         uni.navigateTo({
-          url: "/sub-classify/pages/goods-detail/goods-detail?goodId=" + id
+          url: "/sub-classify/pages/goods-detail/goods-detail"
         })
       }
     }
@@ -217,7 +227,20 @@
     	display: flex;
     	align-items: center;
     	padding-left: 24rpx;
-    	padding-bottom: 24rpx;
+    	padding-bottom: 22rpx;
+      margin-top: 25rpx;
+    }
+    .goodsItem::after{
+      content: "";
+      display: inline-block;
+      width: 500rpx;
+      height: 2rpx;
+      background-color: #f2f2f2;
+      border-radius: 100px 100px 0px 0px;
+      position: absolute;
+      bottom: 0;
+      right: 0;
+      margin: auto;
     }
     .goodsItem .check{
     	width: 36rpx;
