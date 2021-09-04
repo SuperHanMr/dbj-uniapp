@@ -98,7 +98,7 @@
 		methods: {
 			toDetail(e) {
 				uni.navigateTo({
-					url: "/sub-decorate/pages/warehouse-refund/warehouse-refund",
+					url: "/sub-decorate/pages/warehouse-refund-detail/warehouse-refund-detail",
 				});
 			},
 			onScroll(e) {

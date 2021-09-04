@@ -1,5 +1,5 @@
 <template>
-	<view class="store" >
+	<view class="store">
 		<view class="store-info">
 			<view class="store-name">
 				店铺名字
@@ -48,32 +48,36 @@
 					</view>
 				</view>
 			</view>
-			<view class="btn-row">
-				<view class="btn-back">
-					退库存
-				</view>
-				<view class="btn-con">
-					确认收货
-				</view>
-			</view>
-			<view class="back-view">
-				<view class="back-item">
-					<view class="back-title">
-						退款中
-					</view>
-					<view class="back-price">
-						<text class="num-x">¥</text>
-						<text class="num-z">320</text>
-						<text class="num-x">.00</text>
-					</view>
-				</view>
-				<view class="back-row">
-					<view class="back-row-item">
-						取消申请
-					</view>
+			<view v-if="showBtns">
 
-					<view class="back-row-item" @click="toDetail">
-						查看详情
+
+				<view class="btn-row">
+					<view class="btn-back">
+						退库存
+					</view>
+					<view class="btn-con">
+						确认收货
+					</view>
+				</view>
+				<view class="back-view">
+					<view class="back-item">
+						<view class="back-title">
+							退款中
+						</view>
+						<view class="back-price">
+							<text class="num-x">¥</text>
+							<text class="num-z">320</text>
+							<text class="num-x">.00</text>
+						</view>
+					</view>
+					<view class="back-row">
+						<view class="back-row-item">
+							取消申请
+						</view>
+
+						<view class="back-row-item" @click="toDetail">
+							查看详情
+						</view>
 					</view>
 				</view>
 			</view>
@@ -90,6 +94,10 @@
 				default: () => {
 
 				}
+			},
+			showBtns: {
+				type: Boolean,
+				default: true
 			}
 		},
 		data() {
