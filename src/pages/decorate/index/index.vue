@@ -76,8 +76,6 @@
 				<button @click="gonohouse">无房屋无服入口</button>
 				<button @click="gonohousedecatore">无房屋无服务装修</button>
 				<button @click="gonohousecheck">无房屋无服务验房</button>
-				<button @click="gonohavehouse">有房屋无服务首页</button>
-				<button @click="gonohavehouse">有房屋无服务首页</button>
 			</view> -->
 
 		</view>
@@ -152,12 +150,12 @@
 			},
 			toFriends() {
 				uni.navigateTo({
-					url: "../../decorate/friends/friends?id=" + this.currentHouse.id,
+					url: "/sub-decorate/pages/friends/friends?id=" + this.currentHouse.id,
 				});
 			},
 			addHouse() {
 				uni.navigateTo({
-					url: "/pages/decorate/add-house/add-house"
+					url: "/sub-decorate/pages/add-house/add-house"
 				})
 			},
 			checkHouse(item) {
@@ -204,27 +202,27 @@
 			},
 			goDesignPicture() {
 				uni.navigateTo({
-					url: "/pages/decorate/design-picture/design-picture"
+					url: "/sub-decorate/pages/design-picture/design-picture"
 				})
 			},
 			gonohousedecatore() {
 				uni.navigateTo({
-					url: "/pages/decorate/no-house-decorate/no-house-decorate"
+					url: "/sub-decorate/pages/no-house-decorate/no-house-decorate"
 				})
 			},
 			gonohousecheck() {
 				uni.navigateTo({
-					url: "/pages/decorate/no-house-checkhouse/no-house-checkhouse"
+					url: "/sub-decorate/pages/no-house-checkhouse/no-house-checkhouse"
 				})
 			},
 			gonohavehouse() {
 				uni.navigateTo({
-					url: "/pages/decorate/have-house-no-service/have-house-no-service"
+					url: "/sub-decorate/pages/have-house-no-service/have-house-no-service"
 				})
 			},
 			gonohouse() {
 				uni.navigateTo({
-					url: "/pages/decorate/no-house/no-house"
+					url: "/sub-decorate/pages/no-house/no-house"
 				})
 			},
 			toSend() {
@@ -241,17 +239,17 @@
 			},
 			goToAddHouseInfo() {
 				uni.navigateTo({
-					url: "/pages/decorate/add-house/add-house",
+					url: "/sub-decorate/pages/add-house/add-house",
 				});
 			},
 			goDesignPicture() {
 				uni.navigateTo({
-					url: "/pages/decorate/design-picture/design-picture",
+					url: "/sub-decorate/pages/design-picture/design-picture",
 				});
 			},
 			goToMyDecorate() {
 				uni.navigateTo({
-					url: "/pages/decorate/my-decorate/my-decorate",
+					url: "/sub-decorate/pages/my-decorate/my-decorate",
 				});
 			},
 			getHouses() {
@@ -273,7 +271,7 @@
 			},
 			buyServiceNow(type) {
 				uni.navigateTo({
-					url: "/pages/decorate/design-service-list/design-service-list?categoryTypeId=" + SERVICE_TYPE[
+					url: "/sub-decorate/pages/design-service-list/design-service-list?categoryTypeId=" + SERVICE_TYPE[
 						type]
 				})
 			}

@@ -35,9 +35,7 @@ function createTim(sdkAppId) {
   _registerEvents(tim);
   _tim = tim;
   
-  //#ifdef MP-WEIXIN
-  wx.$tim = tim;
-  //#endif
+  uni.$tim = tim;
 
   return tim;
 }

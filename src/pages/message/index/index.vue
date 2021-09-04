@@ -25,63 +25,49 @@
     </view>
     <view class="im-chat-message-list">
       <conversation-item 
-        v-for="(conv,index) in convList" 
+        v-for="(conv,index) in conversationList" 
         :key="conv.conversationID" 
-        :conversation="conv">
+        :conversation="conv"
+        >
        </conversation-item>
     </view>
   </view>
 </template>
 
 <script>
-  import {
-    genTestUserSig
-  } from "../../../utils/debug/GenerateTestUserSig.js"
-  import {
-    login,
-    getSafeTim
-  } from "../../../utils/tim.js"
-  import ConversationItem from "../conversation/conversation-item.vue";
+  import { addListener, removeListener } from "@/utils/tim.js"
+  import ConversationItem from "./conversation-item.vue";
+  import { mapState, mapGetters } from "vuex";
   export default {
     components: {
       ConversationItem,
     },
     data() {
       return {
-        cstServConv: {
-          type: "NOTIFICATION",
-          name: "在线客服"
-        },
-        sysConv: {
-          type: "NOTIFICATION",
-          name: "系统消息",
-        },
-        itaConv: {
-          type: "NOTIFICATION",
-          name: "互动消息",
-        },
-        convList: [],
       }
     },
+    computed: {
+      ...mapState({
+        cstServConv: (state) => state.message.cstServConv,
+        sysConv: (state) => state.message.sysConv,
+        itaConv: (state) => state.message.itaConv,
+        conversationList: (state) => state.message.conversationList,
+      }),
+    },
     mounted() {
-      var userId = "user1";
-      var {
-        userSig
-      } = genTestUserSig(userId);
-      login(userId, userSig).then(() => {
-        console.log("im login success")
-      }).catch((e) => {
-        console.error("im login failed", e);
+      let userId = "user1";
+      this.$store.dispatch("loginIM", userId);
+      this.$store.dispatch("requestConversationList");
+      addListener("CONVERSATION_LIST_UPDATED", this.onUpdateConversationList);
+      this.$once("hook:beforeDestroy", () => {
+        removeListener("CONVERSATION_LIST_UPDATED", this.onUpdateConversationList);
       })
-      this.requestConvList();
     },
     methods: {
-      requestConvList() {
-        getSafeTim().then(tim => tim.getConversationList()).then(res => {
-          if (res.code === 0) {
-            this.convList = res.data.conversationList || [];
-          }
-        });
+      onUpdateConversationList(event) {
+        let conversationList = event.data || [];
+        console.log("conversationList  update:", conversationList);
+        this.$store.commit("updateConversationList", conversationList);
       }
     }
   }
