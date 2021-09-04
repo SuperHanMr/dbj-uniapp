@@ -91,13 +91,13 @@
 
           <decorate-notice @touchmove.stop.prevent="()=>false" v-if="noticeActive" @closeNotice='closeNotice'
             class="decorate-notice"></decorate-notice>
-          <!-- <view class="link">
+          <view class="link">
 						<button @click="gonohouse">无房屋无服入口</button>
 						<button @click="gonohousedecatore">无房屋无服务装修</button>
 						<button @click="gonohousecheck">无房屋无服务验房</button>
 						<button @click="checkHouseRemind">验房提醒</button>
 
-					</view> -->
+					</view>
         </scroll-view>
       </view>
     </view>

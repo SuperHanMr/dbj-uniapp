@@ -196,18 +196,18 @@
 			selectAnother(pp) {
 				if (pp === "design") {
 					uni.navigateTo({
-						url: '/pages/decorate/design-service-list/design-service-list?id=6'
+						url: '/sub-decorate/pages/design-service-list/design-service-list?id=6'
 					})
 				}
 				if (pp === "actuary") {
 					uni.navigateTo({
-						url: '/pages/decorate/design-service-list/design-service-list?id=5'
+						url: '/sub-decorate/pages/design-service-list/design-service-list?id=5'
 					})
 				}
 			},
 			changCurrentHouse() {
 				uni.navigateTo({
-					url: "/pages/my/my-house/my-house"
+					url: "/sub-my/pages/my-house/my-house"
 				})
 			},
 			getMyHouseList() {
@@ -245,7 +245,7 @@
 			},
 			goAddHouse() {
 				uni.navigateTo({
-					url: "/pages/decorate/add-house/add-house"
+					url: "/sub-decorate/pages/add-house/add-house"
 				})
 			}
 		}
