@@ -14,7 +14,7 @@
 				<scroll-view class="scroll-view" :enable-back-to-top="true" scroll-y="true" lower-threshold="10"
 					refresher-background="#FFF" refresher-enabled="true" @scroll="onScroll"
 					:refresher-triggered="triggered" @refresherrefresh="onRefresh" @scrolltolower="onLoadMore">
-					<warehouse-item v-for="(item,index) in currentList" :key="item.id" @detail="toDetail"></warehouse-item>
+					<warehouse-item v-for="(item,index) in currentList" :key="item.id" @detail="toDetail" @refund="toRefund"></warehouse-item>
 				</scroll-view>
 			</swiper-item>
 		</swiper>
@@ -99,6 +99,11 @@
 			toDetail(e) {
 				uni.navigateTo({
 					url: "/sub-decorate/pages/warehouse-refund-detail/warehouse-refund-detail",
+				});
+			},
+			toRefund(){
+				uni.navigateTo({
+					url: "/sub-decorate/pages/warehouse-refund/warehouse-refund",
 				});
 			},
 			onScroll(e) {
