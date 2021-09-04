@@ -554,6 +554,13 @@
         		"navigationBarTitleText": "确认验房结果",
         		"enablePullDownRefresh": false
         	}
+        },
+        {
+        	"path": "pages/result-detail/result-detail",
+        	"style": {
+        		"navigationBarTitleText": "详情",
+        		"enablePullDownRefresh": false
+        	}
         }
 			]
 		}
