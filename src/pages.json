@@ -450,7 +450,9 @@
 				{
 					"path": "pages/no-house/no-house",
 					"style": {
-						"navigationBarTitleText": "未绑定房屋",
+						"navigationBarTitleText": "",
+						"transparentTitle": "auto",
+						"navigationStyle": "custom",
 						"usingComponents": {}
 					}
 				},

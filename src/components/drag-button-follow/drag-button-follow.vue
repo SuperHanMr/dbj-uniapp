@@ -67,7 +67,8 @@
 		},
 		mounted() {
 			const systemInfo = uni.getSystemInfoSync() || {}
-			this.$options.safeArea = { left: 0, top: 0, right: systemInfo.windowWidth, bottom: systemInfo.windowHeight }
+      
+			this.$options.safeArea = { left: 0, top: 0, right: systemInfo.windowWidth, bottom: systemInfo.screenHeight }
 			const query = this.$parent.createSelectorQuery()
 			query.select(`.${this.className}`).boundingClientRect(data => {
 				if(data){
@@ -104,6 +105,7 @@
 				if(!this.drag) return
 				if(!this.move) return
 				const { left, right, top, bottom } = this.$options.safeArea
+        
 				const dot = e.changedTouches[0]
 				if(dot.clientX < left + this.width / 2) dot.clientX = left + this.width / 2
 				if(dot.clientX > right - this.width / 2) dot.clientX = right - this.width / 2
@@ -111,6 +113,7 @@
 				if(dot.clientY > bottom - this.height / 2) dot.clientY = bottom - this.height / 2
 				this.offsetX = dot.clientX - this.left - this.width / 2
 				this.offsetY = dot.clientY - this.top - this.height / 2
+        
 				// #ifdef MP-WEIXIN
 				this.$emit("update:style", `
 					transform: translate(${this.offsetX}px, ${this.offsetY}px);

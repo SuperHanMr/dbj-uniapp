@@ -151,12 +151,12 @@
       edit(item){
         // console.log(item)
         uni.navigateTo({
-          url:'/pages/decorate/add-house/add-house?id='+item.id
+          url:'/sub-decorate/pages/add-house/add-house?id='+item.id
         })
       }, 
       toAddHouse(){
         uni.navigateTo({ 
-          url:'/pages/decorate/add-house/add-house'
+          url:'/sub-decorate/pages/add-house/add-house'
         })
       },
       toChoose(item){
