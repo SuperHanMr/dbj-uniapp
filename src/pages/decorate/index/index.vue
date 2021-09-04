@@ -25,12 +25,7 @@
 
         <view class="uni-padding-wrap">
           <view class="uni-title">{{ currentHouse.housingEstate }}{{currentHouse.address}}</view>
-          <view class="design" @click="goDesignPicture">
-            <image class="icon"></image>
-            <view class="text">设计图</view>
-            <image class="gotopage" src="http://dbj.dragonn.top/static/mp/dabanjia/images/decorate/ic_more.svg">
-            </image>
-          </view>
+          <picture-btn text="设计图" @gotoPage="goDesignPicture"></picture-btn>
         </view>
 
       </view>
@@ -92,12 +87,11 @@
           <decorate-notice @touchmove.stop.prevent="()=>false" v-if="noticeActive" @closeNotice='closeNotice'
             class="decorate-notice"></decorate-notice>
           <view class="link">
-						<button @click="gonohouse">无房屋无服入口</button>
-						<button @click="gonohousedecatore">无房屋无服务装修</button>
-						<button @click="gonohousecheck">无房屋无服务验房</button>
-						<button @click="checkHouseRemind">验房提醒</button>
-
-					</view>
+            <button @click="gonohouse">无房屋无服入口</button>
+            <button @click="gonohousedecatore">无房屋无服务装修</button>
+            <button @click="gonohousecheck">无房屋无服务验房</button>
+            <button @click="checkHouseRemind">验房提醒</button>
+          </view>
         </scroll-view>
       </view>
     </view>
@@ -120,12 +114,14 @@
     SERVICE_TYPE
   } from "../../../utils/dict.js"
   import GuideCard from "../../../components/guide-card/guide-card.vue"
+  import PictureBtn from "../../../components/picture-btn/picture-btn.vue"
   export default {
     components: {
       HouseSwitch,
       ServiceItem,
       GuideCard,
-      NoService
+      NoService,
+      PictureBtn
     },
     onLoad() {
       let _this = this
@@ -294,11 +290,6 @@
       goToAddHouseInfo() {
         uni.navigateTo({
           url: "/sub-decorate/pages/add-house/add-house",
-        });
-      },
-      goDesignPicture() {
-        uni.navigateTo({
-          url: "/sub-decorate/pages/design-picture/design-picture",
         });
       },
       goToMyDecorate() {
@@ -483,7 +474,6 @@
       height: 182rpx;
 
       .uni-title {
-        // width: 314rpx;
         height: 34rpx;
         font-size: 24rpx;
         font-family: PingFangSC, PingFangSC-Regular;
@@ -492,43 +482,6 @@
         color: #999999;
         line-height: 34rpx;
         margin-bottom: 40rpx;
-      }
-    }
-
-    .design {
-      display: flex;
-      justify-content: center;
-      flex-direction: row;
-      align-items: center;
-      width: 146rpx;
-      height: 48rpx;
-      background: #ffffff;
-      border-radius: 25rpx;
-      border-radius: 12rpx;
-
-      .icon {
-        height: 32rpx;
-        width: 32rpx;
-        margin-right: 8rpx;
-        border-radius: 50%;
-        box-sizing: border-box;
-        border: 2rpx solid #666;
-      }
-
-      view.text {
-        height: 32rpx;
-        font-size: 22rpx;
-        font-family: PingFangSC, PingFangSC-Regular;
-        font-weight: 400;
-        text-align: left;
-        color: #333333;
-        line-height: 32rpx;
-        margin-right: 8rpx;
-      }
-
-      image.gotopage {
-        height: 24rpx;
-        width: 24rpx;
       }
     }
   }
