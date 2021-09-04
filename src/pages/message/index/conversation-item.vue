@@ -1,5 +1,5 @@
 <template>
-  <view class="im-message-item">
+  <view class="im-message-item" @click="handleClick">
     <view class="im-message-avatar">
       <slot name="avatar">
         <group-avatars :list="avatar" />
@@ -68,10 +68,17 @@
             lastDay: '[昨天]',
             last2Day: '[前天]',
             sameYear: 'MM-DD',
-            sameElse: 'YYYY-MM-DD'
+            sameElse: 'YYYY/MM/DD'
           });
         }
         return "";
+      }
+    },
+    methods: {
+      handleClick() {
+        uni.navigateTo({
+          url: "/pages/message/conversation/conversation?id=" + this.conversation.conversationID,
+        });
       }
     }
   }

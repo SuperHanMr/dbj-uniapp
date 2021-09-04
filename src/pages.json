@@ -35,9 +35,17 @@
 		{
 			"path": "pages/message/index/index",
 			"style": {
-				"navigationBarTitleText": "消息"
+				"navigationBarTitleText": "消息",
+        "navigationBarBackgroundColor": "#ffffff"
 			}
 		},
+    {
+    	"path": "pages/message/conversation/conversation",
+    	"style": {
+    		"navigationBarTitleText": "消息详情",
+        "navigationBarBackgroundColor": "#ffffff"
+    	}
+    },
 		{
 			"path": "pages/my/index/index",
 			"style": {
@@ -170,13 +178,6 @@
 		{
 			"root": "sub-message", //消息模块分包
 			"pages": [
-				{
-					"path": "pages/test1/test1",
-					"style": {
-						"navigationBarTitleText": "",
-						"enablePullDownRefresh": false
-					}
-				}
 			]
 		},
 		{
