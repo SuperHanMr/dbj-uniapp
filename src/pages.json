@@ -103,7 +103,7 @@
 	"globalStyle": {
 		"navigationBarTextStyle": "black",
 		"navigationBarTitleText": "uni-app",
-		"navigationBarBackgroundColor": "#F8F8F8",
+		"navigationBarBackgroundColor": "#FFFFFF",
 		"backgroundColor": "#F8F8F8"
 	},
 	"easycom": {
@@ -153,10 +153,21 @@
 	"condition": { //模式配置，仅开发期间生效
 		"current": 0, //当前激活的模式(list 的索引项)
 		"list": [{
-			"name": "", //模式名称
-			"path": "/sub-classify/pages/pay-order/index", //启动页面，必选
-			"query": "" //启动参数，在页面的onLoad函数里面得到
-		}]
+				"name": "default", //模式名称
+				"path": "pages/home/index/index", //启动页面，必选
+				"query": "" //启动参数，在页面的onLoad函数里面得到
+			},
+			{
+				"name": "wby", //模式名称
+				"path": "/sub-classify/pages/pay-order/index", //启动页面，必选
+				"query": "" //启动参数，在页面的onLoad函数里面得到
+			},
+			{
+				"name": "hcl", //模式名称
+				"path": "/sub-decorate/pages/warehouse-refund-detail/warehouse-refund-detail", //启动页面，必选
+				"query": "" //启动参数，在页面的onLoad函数里面得到
+			}
+		]
 	},
 	"subPackages": [{
 			"root": "sub-home", //首页模块分包
@@ -524,7 +535,7 @@
 				{
 					"path": "pages/warehouse-refund-detail/warehouse-refund-detail",
 					"style": {
-						"navigationBarTitleText": "",
+						"navigationBarTitleText": "商品详情",
 						"enablePullDownRefresh": false
 					}
 				},
