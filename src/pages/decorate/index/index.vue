@@ -26,8 +26,9 @@
         <view class="uni-padding-wrap">
           <view class="uni-title">{{ currentHouse.housingEstate }}{{currentHouse.address}}</view>
           <view class="design" @click="goDesignPicture">
-            <text>设计图</text>
-            <image src="http://dbj.dragonn.top/static/mp/dabanjia/images/decorate/ic_triangle_999.svg">
+            <image class="icon"></image>
+            <view class="text">设计图</view>
+            <image class="gotopage" src="http://dbj.dragonn.top/static/mp/dabanjia/images/decorate/ic_triangle_999.svg">
             </image>
           </view>
         </view>
@@ -508,7 +509,12 @@
       background: #f5f6f6;
       border-radius: 12rpx;
 
-      text {
+      .iocn {
+        height: 40rpx;
+        width: 40rpx;
+      }
+
+      view.text {
         height: 32rpx;
         font-size: 22rpx;
         font-family: PingFangSC, PingFangSC-Regular;
@@ -519,9 +525,9 @@
         margin-right: 8rpx;
       }
 
-      image {
-        height: 13rpx;
-        width: 8rpx;
+      image.gotopage {
+        height: 24rpx;
+        width: 24rpx;
       }
     }
   }
