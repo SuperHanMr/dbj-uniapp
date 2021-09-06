@@ -1,87 +1,171 @@
 <template>
-	<view class="waterfall-item" @click="toDetail(item)">
-		<image :src="item.imageUrl" mode="widthFix" lazy-load @load="onImageLoad"></image>
-		<view class="flex-row">
-			<view class="tab">
-				物品
-			</view>
-			<view class="title">
-				{{ item.name }}
-			</view>
+  <view class="waterfall-item" @click="toDetail(item)">
+    <image
+      class="product-check"
+      src="../../static/images/product_unChecked.png"
+      mode=""
+    ></image>
+   <!-- <image 
+			class="product-check" 
+			src="../../static/images/product_checked.png" 
+			mode=""
+		></image> -->
+		
+		<image class="case-type" src="../../static/images/icon_video.png" mode=""></image>
+   
+		<image
+			class="product-img"
+			:src="item.imageUrl"
+			mode="widthFix"
+			lazy-load
+			@load="onImageLoad"
+		>
+		</image>
+   <view class="info-container" :class="{hasDown:isActive}">
+		<view class="withdraw-text">
+			商品已下架
 		</view>
-	</view>
+    <view class="flex-row">
+      <text class="icon" :class="{iconDown:isActive}">物品</text>
+      <text class="title">
+        {{ item.name }}
+      </text>
+    </view>
+		<view class="price">
+			<text>￥</text>
+			<text style="font-size: 34rpx;font-weight: 500;">3000</text>
+			<text>.00 /个</text>
+		</view>
+   	
+   </view>
+		
+
+  </view>
 </template>
 
 <script>
-	export default {
-		name: 'water-fall-item',
-		props: {
-			item: {
-				type: Object,
-				default: () => {}
-			}
-		},
-		methods: {
-			onImageLoad(e) {
-				this.$emit('load', e)
-			},
-			toDetail(e) {
-				this.$emit('detail', e);
-			}
+export default {
+  name: "water-fall-item",
+  props: {
+    item: {
+      type: Object,
+      default: () => {},
+    },
+  },
+	data(){
+		return{
+			 isActive: false,
 		}
-	}
+	},
+  methods: {
+    onImageLoad(e) {
+      this.$emit("load", e);
+    },
+    toDetail(e) {
+      this.$emit("detail", e);
+    },
+  },
+};
 </script>
 
-<style lang="scss">
-	.waterfall-item {
-		width: 345rpx;
-		margin-top: 32rpx;
-		box-sizing: border-box;
-		background-color: #FFFFFF;
-		border-radius: 16rpx;
-		overflow: hidden;
+<style lang="scss" scoped>
+.waterfall-item {
+  width: 344rpx;
+  margin-top: 32rpx;
+  box-sizing: border-box;
+  background-color: #ffffff;
+  border-radius: 16rpx;
+  overflow: hidden;
+  display: flex;
+  flex-flow: column nowrap;
+  position: relative;
+  .product-check {
+    position: absolute;
+    width: 60rpx;
+    height: 60rpx;
+    object-fit: cover;
+    left: 14rpx;
+    top: 16rpx;
+  }
+	.case-type{
+		position: absolute;
+		width: 44rpx;
+		height: 44rpx;
+		object-fit: cover;
+		right: 16rpx;
+		top: 16rpx;
+	}
+	
+	.product-img {
+		width: 344rpx;
+		display: block;
+	}
+		
+		
+		
 
-		.tab {
-			border: 1rpx solid #00bfb6;
-			border-radius: 8rpx;
-			height: 30rpx;
-			color: #00bfb6;
-			font-size: 20rpx;
+
+	.info-container{
+		padding: 16rpx 30rpx 20rpx 20rpx;
+		position: relative;
+		color: #333333;
+		.withdraw-text{
+			position: absolute;
+			width: 360rpx;
+			height: 50rpx;
+			line-height: 50rpx;
 			text-align: center;
-			padding: 2rpx 10rpx;
+			font-size: 22rpx;
+			color: #FFFFFF;
+			opacity: 1;
+			background: rgba(0,0,0,0.35);
+			top: -50rpx;
+			left: -16rpx;
 		}
-
-		image {
-			width: 345rpx;
-			display: block;
-		}
-
-		.title {
+		.flex-row {
 			display: -webkit-box;
-			-webkit-box-orient: vertical;
-			-webkit-line-clamp: 2;
-			overflow: hidden;
-			padding: 16rpx;
-			line-height: 40rpx;
-			font-size: 28rpx;
-			color: #333333;
 			overflow: hidden;
 			text-overflow: ellipsis;
-		}
-
-		.flex-row {
-			display: flex;
-			flex-direction: row;
-			padding: 16rpx;
-			flex-wrap: wrap;
-			justify-content: flex-start;
-			width: 100%;
-
-			.title {
-				font-size: 28rpx;
-				color: #333333;
+			word-wrap: break-word;
+			word-break: break-all;
+			white-space: normal !important;
+			-webkit-line-clamp: 2;
+			-webkit-box-orient: vertical;
+			font-size: 28rpx;
+			line-height: 40 rpx;
+			width: 294rpx;
+			position: relative;
+			.icon {
+				width: 60rpx;
+				height: 30rpx;
+				margin-right: 8rpx;
+				line-height: 28rpx;
+				border-radius: 4rpx;
+				border: 2rpx solid #35c4c4;
+				color: #35c4c4;
+				font-size: 20rpx;
+				text-align: center;
+				display: inline-block;
 			}
-
+			.title {
+				font-size: 26rpx;
+				
+				line-height: 32rpx;
+			}
+		}
+		
+		.hasDown{
+			color: #999999 !important;
+		}
+		.iconDown{
+			border: 2rpx solid #CCCCCC !important;
+			color: #999999 !important;
+		}
+		
+		.price{
+			margin-top: 22rpx;
+			font-size: 22rpx;
 		}
 	}
+}
 </style>

@@ -32,6 +32,163 @@
           @scrolltolower="onLoadMore"
         >
           <view class="swiper-item">
+
+            <view
+              class="order-container"
+              v-if="currentIndex==1"
+              v-for="item in orderList"
+              :key="item.id"
+            >
+              <view class="header">
+                <view class="store-name">
+                  <text>{{item.orderName?item.orderName:item.storeName}}</text>
+                  <image
+										v-if="!item.orderName"
+                    src="../../../static/order/ic_more@2x.png"
+                    mode=""
+                  ></image>
+                </view>
+                <view
+                  class="order-status"
+                  :class="{active:false}"
+                >
+                  <!-- 代付款 -->
+                  {{
+										item.orderStatus === 0
+										?"代付款"
+										:item.orderStatus === 1
+										?(item.shipmentStatus == 1?"待发货":"已发货")//发货状态（1待发货，2已发货）
+										:item.orderStatus === 2
+										?"已完成"
+										:item.orderStatus === 3
+										?"已关闭"
+										:"1111"
+									}}
+                </view>
+              </view>
+
+              <view class="body">
+								<view class="product-info" v-if="item.orderName">
+								  <view class="product-img">
+								    <scroll-view
+								      scroll-x
+								      style="width: 100%; white-space: nowrap;"
+								    >
+								      <image
+								        src="../../../static/images/message/ic_interaction@2x.png"
+								        mode=""
+								      ></image>
+								      <image
+								        src="../../../static/images/message/ic_interaction@2x.png"
+								        mode=""
+								      ></image>
+								      <image
+								        src="../../../static/images/message/ic_interaction@2x.png"
+								        mode=""
+								      ></image>
+								      <image
+								        src="../../../static/images/message/ic_interaction@2x.png"
+								        mode=""
+								      ></image>
+								      <image
+								        src="../../../static/images/message/ic_interaction@2x.png"
+								        mode=""
+								      ></image>
+								      <image
+								        src="../../../static/images/message/ic_interaction@2x.png"
+								        mode=""
+								      ></image>
+								    </scroll-view>
+								  </view>
+								  <view class="total-price">
+								    <view class="product-price">
+								      <text style="font-size:22rpx;">￥</text>
+								      <text style="font-weight: 400;">1111128</text>
+								      <text style="font-size:22rpx;">.00</text>
+								    </view>
+								    <view>共1件</view>
+								  </view>
+								</view>
+								 
+								 <order-item v-else></order-item>					 
+              </view>
+							
+							<view class="price">
+							  <view class="total-pay">
+							    <text>总价</text>
+							    <text style="font-size:18rpx;">￥</text>
+							    <text>{{handlePrice(item.orderTotalAmount)[0]}}.</text>
+							    <text style="font-size:18rpx;">{{handlePrice(item.orderTotalAmount)[1]}}</text>
+							    <text style="margin-left: 18rpx;">优惠</text>
+							    <text style="font-size:18rpx;">￥</text>
+							    <text>99.</text>
+							    <text style="font-size:18rpx;">00</text>
+							  </view>
+							  <view class="need-pay">
+							    <text>需付款(含搬运费)</text>
+									<!-- <text>实付</text>
+									<text>需付款</text> -->
+							    <text style="color:#FF3347;margin-left: 8rpx;">
+							      <text style="font-size:18rpx;">￥</text>
+							      <text style="font-size: 32rpx;">{{handlePrice(item.orderReceivableAmount)[0]}}.</text>
+							      <text style="font-size:18rpx;">{{handlePrice(item.orderReceivableAmount)[1]}}</text>
+							    </text>
+							  </view>
+							</view>
+
+              <view class="line" v-if="item.showCancelOrderTime || item.showCancelBtn || item.showToPayBtn"/>
+
+              <view class="footer" v-if="item.showCancelOrderTime || item.showCancelBtn || item.showToPayBtn" :class="{buttonContainer:!item.showCancelOrderTime}">
+           
+                <view v-if="item.showCancelOrderTime" class="set-interval">
+                  <image  src="../../static/ic_time@2x.png" mode=""></image>
+                  <view class="time-text">
+                    <text style="margin-right: 12rpx;height: 36rpx;line-height: 36rpx;">剩余支付时间</text>
+                    <text class="time-style1">01</text>
+                    <text style="color:#FF3347; margin: 0 6rpx;">:</text>
+                    <text class="time-style1">59</text>
+                    <text style="color:#FF3347; margin: 0 6rpx;">:</text>
+                    <text class="time-style1">59</text>
+                  </view>
+                  <!-- view class="time-text">
+							      <text style="margin-right: 12rpx;height: 36rpx;line-height: 36rpx;">剩余支付时间</text>
+							      <text class="time-style2">01</text>
+							      <text style="margin: 0 6rpx;">:</text>
+							      <text class="time-style2">59</text>
+							      <text style="margin: 0 6rpx;">:</text>
+							      <text class="time-style2">59</text>
+							    </view> -->
+                </view>
+
+                <view  v-if="item.showToPayBtn || item.showCancelBtn" class="button">
+                  <button
+                    v-if="item.showCancelBtn"
+                    type="default"
+                    size="mini"
+                    class="cancel-order"
+                  >取消订单</button>
+									
+                  <button
+                    v-if="item.showToPayBtn"
+                    type="default"
+                    size="mini"
+                    class="go-to-pay"
+                  >去付款</button>
+                </view>
+              </view>
+            
+						</view>
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+
             <view class="order-container">
               <view class="header">
                 <view class="store-name">
@@ -242,7 +399,7 @@
                         mode=""
                       ></image>
                       <image
-                         src="../../../static/images/message/ic_interaction@2x.png"
+                        src="../../../static/images/message/ic_interaction@2x.png"
                         mode=""
                       ></image>
                       <image
@@ -268,7 +425,10 @@
                     <view>共1件</view>
                   </view>
                 </view>
-              </view>
+              
+							
+							
+							</view>
               <view class="price">
                 <view class="total-pay">
                   <text>总价</text>
@@ -282,6 +442,7 @@
                 </view>
                 <view class="need-pay">
                   <text>需付款(含搬运费)</text>
+									
                   <text style="color:#FF3347;margin-left: 8rpx;">
                     <text style="font-size:18rpx;">￥</text>
                     <text style="font-size: 32rpx;">99.</text>
@@ -337,98 +498,103 @@
 </template>
 
 <script>
-import { orderList } from "../../../api/order.js";
+import { getOrderList } from "@/api/order.js";
 export default {
   data() {
     return {
       tabList: ["全部", "待付款", "进行中", "已完成", "已关闭"],
       triggered: false, //控制刷新显示字段
       isActive: true,
-      ordStatus: 1,
-      currentIndex: 2,
-			rows:15,
-			lastId:-1
+      currentIndex: 1,
+      query: {},
+      orderStatus: 0, //订单状态（-1全部,0待付款，1进行中，2已完成 3已关闭）
+      rows: 15,
+      lastId: -1,
+      customerId: 3907,
+      orderList: [],
     };
   },
-	onShow(){
-		this.getOrderList()
-	},
+  onShow() {
+    this.getOrderList();
+  },
   computed: {
+	
+		
+		
+		
     currentList() {
       if (this.currentIndex == 0) {
         //全部
+        this.orderStatus = -1;
         return this.list;
       } else if (this.currentIndex == 1) {
         //代付款
         this.orderStatus = 0;
-        return this.list1;
+        return this.list;
       } else if (this.currentIndex == 2) {
         // 进行中
         this.orderStatus = 1;
-        return this.list2;
+        return this.list;
       } else if (this.currentIndex == 3) {
         // 已完成
         this.orderStatus = 2;
-        return this.list2;
+        return this.list;
       } else {
         //已关闭
         this.orderStatus = 3;
-        return this.list1;
+        return this.list;
       }
     },
+		
   },
-	
-  // onLoad(option) {
-		//  this.currentIndex = Number(option.index)
-  //   orderList({
-		// 	orderStatus:-1,
-		// 	lastId:this.lastId,
-		// 	rows:this.rows,
-		// 	customerId:4250
-		// }).then((e) => {
-  //     console.log(e,"请求回来的数据呢呢呢呢呢呢呢呢呢呢");
-  //     this.list = e;
-		// 	console.log("this.list=",this.list)
-  //   });
-  // },
+  watch: {
+    orderList() {},
+  },
 
   methods: {
+		handlePrice(price){
+			let list=String(price).split(".")
+			if(list.length==1){
+				return [list[0],"00"]
+			}else{
+				return[list[0],list[1]]
+			}
+		},
     toDetail(item) {
       console.log(item);
       uni.navigateTo({
         url: "order-in-progress/order-in-progress?orderNo=" + item.id,
       });
     },
-		
+
     swiperChange(e) {
       let index = e.target.current || e.detail.current;
       this.currentIndex = index;
     },
-		
-		async getOrderList(){
-			this.loading = true;
-			let caseItem = await orderList({
-				orderStatus:-1,
-				lastId:this.lastId,
-				rows:this.rows,
-				customerId:3907
-			});
-			console.log(caseItem,"caseItem")
-			
-			// this.totalPage = caseItem.totalPage
-			// this.caseList = this.caseList.concat(caseItem.list);
-			// this.loading = false;
-		},
-		
+
+    async getOrderList() {
+      this.loading = true;
+      let caseItem = await getOrderList({
+        orderStatus: this.orderStatus,
+        lastId: this.lastId,
+        rows: this.rows,
+        customerId: this.customerId,
+      });
+      console.log(caseItem, "caseItem");
+      this.orderList = this.orderList.concat(caseItem);
+      this.totalPage = caseItem.totalPage;
+      this.loading = false;
+    },
+
     onLoadMore() {
       console.log("onLoadMore!!!!!!!!!!!!!!");
-			if (this.loading || this.page >= this.totalPage) {
-				return;
-			}
-			this.page++;
-			this.getOrderList();
+      if (this.loading || this.page >= this.totalPage) {
+        return;
+      }
+      this.page++;
+      this.getOrderList();
     },
-		
+
     onRefresh(e) {
       console.log("刷新!!!!!");
       this.triggered = true;
@@ -437,18 +603,6 @@ export default {
         this.triggered = false;
       }, 1000);
     },
-		
-    orderStatus() {
-      switch (this.ordStatus) {
-        case 0:
-          return "color:#FC8B19";
-          break;
-        case 1:
-          return "color:#808080";
-          break;
-      }
-    },
-    
   },
 };
 </script>
@@ -565,7 +719,6 @@ export default {
     image {
       width: 136rpx;
       height: 136rpx;
-      background-color: pink;
       margin-right: 16rpx;
     }
     .product-img {
@@ -629,6 +782,8 @@ export default {
   background-color: #f2f2f2;
 }
 
+
+
 .footer {
   display: flex;
   flex-flow: row nowrap;
@@ -650,22 +805,24 @@ export default {
       object-fit: cover;
       margin-right: 4rpx;
     }
-    .time-style1 {
-      width: 36rpx;
-      height: 36rpx;
-      line-height: 36rpx;
-      background: rgba($color: #ff3347, $alpha: 0.08);
-      border-radius: 4rpx;
-      text-align: center;
-      color: #ff3347;
-    }
-    .time-style2 {
-      width: 36rpx;
-      height: 36rpx;
-      line-height: 36rpx;
-      background: #e4e6e6;
-      border-radius: 4rpx;
-      text-align: center;
+    .time-text {
+      .time-style1 {
+        width: 36rpx;
+        height: 36rpx;
+        line-height: 36rpx;
+        border-radius: 4rpx;
+        background: rgba($color: #ff3347, $alpha: 0.08);
+        text-align: center;
+        color: #ff3347;
+      }
+      .time-style2 {
+        width: 36rpx;
+        height: 36rpx;
+        line-height: 36rpx;
+        background: #e4e6e6;
+        border-radius: 4rpx;
+        text-align: center;
+      }
     }
   }
 
@@ -673,11 +830,13 @@ export default {
     .cancel-order {
       width: 140rpx;
       height: 56rpx;
+      box-sizing: border;
+      border: 2rpx solid #cccccc;
+      line-height: 52rpx;
+      border-radius: 32rpx;
       font-size: 24rpx;
-      line-height: 56rpx;
       text-align: center;
       margin-left: 24rpx;
-      border-radius: 32rpx;
       padding: 0;
     }
 
@@ -687,13 +846,16 @@ export default {
       line-height: 56rpx;
       text-align: center;
       font-size: 24rpx;
-      padding: 0;
       margin-left: 24rpx;
       background: linear-gradient(135deg, #36d9cd 0%, #28c6c6 100%);
       border-radius: 32rpx;
       color: #ffffff;
     }
   }
+}
+
+.buttonContainer {
+  justify-content: flex-end !important;
 }
 
 .confirm-receipt {

@@ -18,3 +18,9 @@ export function clearDisabled(params){
 export function getGoodsSpec(skuId){
 	return request.get(`/product/web/products/skus/${skuId}/properties`,{})
 }
+export function setGoodsSku(params){
+	return request.put(`/product/web/products/shoppingCart/changeSku`,params)
+}
+export function createcollection(params){
+	return request.post(`/web/collection/lists`,params)
+}

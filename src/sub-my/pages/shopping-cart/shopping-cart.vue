@@ -1,6 +1,6 @@
 <template>
 	<view class="cartContainer">
-		<view class="noGoods" v-if="!shopList.length">
+		<view class="noGoods" v-if="!shopList.length&&!disabledSkuList.length">
 			<image src="../../../static/shopping-cart/blank_ic@2x.png" class="noGoodsImg"></image>
 			<view class="noGoodsText">
 				购物车空空如也，快去逛逛吧～
@@ -30,16 +30,18 @@
 			</view>
 			<view class="shopItem" v-for="(shopItem,shopIndex) in shopList" :key="shopItem.storeId">
 				<view class="shopInfo">
-					<view class="check" v-if="!shopItem.shopChecked" @click="checkShop(shopItem.storeId)"></view>
-					<image class="checked" v-else @click="checkShop(shopItem.storeId)" src="../../../static/shopping-cart/checked@2x.png" ></image>
+					<view style="width: 36rpx;height: 36rpx;">
+						<view class="check" v-if="!shopItem.shopChecked" @click="checkShop(shopItem.storeId)"></view>
+						<image class="checked" v-else @click="checkShop(shopItem.storeId)" src="../../../static/shopping-cart/checked@2x.png" ></image>
+					</view>
 					<view class="goShop" @click="toShop">
 						<text class="shopName">{{shopItem.storeName}}</text>
 						<image class="shopIcon" src="../../../static/shopping-cart/goShop_ic@2x.png"></text>
 					</view>
 				</view>	
 				<view class="freeMail">	
-					<view class="text">还差{{freeMailAmount}}元可获得一次免运费权益</view>
-					<view class="toShop" @click="toShop">
+					<view class="text">还差{{shopItem.freeShipping || "0"}}元可获得一次免运费权益</view>
+					<view class="toShop" @click="toShopDetail">
 						<text>去凑单</text>
 						<image class="icon" src="../../../static/shopping-cart/toPostFree@2x.png"></image>
 					</view>
@@ -51,9 +53,11 @@
 				    :right-options="options"
 				    @click="deleteGoods(goodsItem.skuId,goodsItem.buyCount)"
 				  >
-						<view class="goodsItem"  >
-							<view class="check" v-if="!goodsItem.goodsChecked" @click="checkGoods(shopItem.storeId,goodsItem.skuId)"></view>
-							<image class="checked" v-else @click="checkGoods(shopItem.storeId,goodsItem.skuId)" src="../../../static/shopping-cart/checked@2x.png" ></image>
+						<view class="goodsItem" @click="toGoodsDetail(goodsItem.skuId)">
+							<view style="width: 36rpx;height: 36rpx;">
+								<view class="check" v-if="!goodsItem.goodsChecked" @click="checkGoods(shopItem.storeId,goodsItem.skuId)"></view>
+								<image class="checked" v-else @click="checkGoods(shopItem.storeId,goodsItem.skuId)" src="../../../static/shopping-cart/checked@2x.png" ></image>
+							</view>
 							<image :src="goodsItem.image" class="goodsItemImg"></image>
 							<view class="goodsInfo">
 								<view class="goodsDesc">
@@ -123,9 +127,12 @@
 			  :theme-color="themeColor"
 			  :combinations="combinations"
 			  :specifications="specifications"
+				:specifications-props="specificationsProps"
+				:combinations-props="combinationsProps"
 			  :default-select-index="selectedIndex"
 				:spuName="spuName"
 				:productType="productType"
+				:defaultSpecIds="defaultSpecIds"
 			  @close="popupShow=false"
 			  @confirm="handleConfirm"
 			></echone-sku>
@@ -134,7 +141,7 @@
 					<view class="title">已失效商品</view>
 					<view class="clear" @click="clearDisaledSku">清空失效商品</view>
 				</view>
-				<view class="disabldSkuItem" v-for="disabldSkuItem in disabledSkuList" :key="disabldSkuItem.skuId">
+				<view class="disabldSkuItem" @click="toGoodsDetail(disabldSkuItem.skuId,true)" v-for="disabldSkuItem in disabledSkuList" :key="disabldSkuItem.skuId">
 					<image :src="disabldSkuItem.image" class="disabldSkuImg"></image>
 					<view class="disabledSkuInfo">
 						<view class="disabledSkuDesc">
@@ -175,8 +182,8 @@
 </template>
 
 <script>
-	import {clearDisabled,getShoppingCartInfo,deleteProduct,setBuyCount,getGoodsSpec} from "../../../api/user.js"
-	import echoneSku from '../../../components/echone-sku/echone-sku.vue'
+	import {clearDisabled,getShoppingCartInfo,deleteProduct,setBuyCount,getGoodsSpec,setGoodsSku,createcollection} from "../../../api/user.js"
+	import echoneSku from '../../components/echone-sku/echone-sku.vue'
 	export default {
 		components:{
 			echoneSku,
@@ -187,9 +194,12 @@
 				themeColor:"#1ac792",
 				specifications:[],
 				combinations:[],
+				combinationsProps:{},
+				specificationsProps:{},
 				productType:1,
 				spuName:"",
-				selectedIndex:null,
+				selectedIndex:0,
+				defaultSpecIds:"",
 				options: [
 				  {
 				    text: "删除",
@@ -216,56 +226,9 @@
 			}
 		},
 		mounted(){
-			// this.specifications= [
-			//   {
-			//     name: '发证机关',
-			//     id: '123',
-			//     list: ['成都市锦江区', '成都市青羊区'],
-			//   },
-			//   {
-			//     name: '教育年度',
-			//     id: '456',
-			//     list: ['2020年', '2019年'],
-			//   },
-			// ]
-			// this.combinations= [
-			//   {
-			//     id: '1',
-			//     value: '成都市锦江区,2020年',
-			//     image:
-			//       'https://miniprogram-img01.caishuib.com/wx15168444f005a4ab/material/image/202005135/3a014c2f42c1c46b.PNG',
-			//     price: 80.0,
-			//     stock: 1000,
-			//   },
-			//   {
-			//     id: '2',
-			//     value: '成都市锦江区,2019年',
-			//     image:
-			//       'https://miniprogram-img01.caishuib.com/wx15168444f005a4ab/material/image/20200383/ebd0c8d01a6e9c10.PNG',
-			//     price: 100.0,
-			//     stock: 500,
-			//   },
-			//   {
-			//     id: '3',
-			//     value: '成都市青羊区,2020年',
-			//     image:
-			//       'https://miniprogram-img01.caishuib.com/wx15168444f005a4ab/material/image/202005135/3a014c2f42c1c46b.PNG',
-			//     price: 80.0,
-			//     stock: 1000,
-			//   },
-			//   {
-			//     id: '4',
-			//     value: '成都市青羊区,2019年',
-			//     image:
-			//       'https://miniprogram-img01.caishuib.com/wx15168444f005a4ab/material/image/20200383/ebd0c8d01a6e9c10.PNG',
-			//     price: 100.0,
-			//     stock: 0,
-			//   },
-			// ]
 			// this.userId = uni.getStorageSync("userId")
 			this.userId = 123
 			this.requestPage()
-			
 		},
 		computed:{
 			totalCout(){
@@ -290,56 +253,79 @@
 				})
 				return sum
 			},
-			freeMailAmount(){
-				let amount = 0
-				// this.shopList.forEach(item => {
-				// 	item.skuList.forEach(ele => {
-				// 		if(ele.goodsChecked){
-							
-				// 		}
-				// 	})
-				// })
-				return amount
-			}
 		},
 		methods:{
-			handleConfirm(){
-				console.log("确认")
+			handleConfirm(preId,curId){
+				console.log(preId,curId)
+				let params = {
+					userId: this.userId,
+					beforeSkuId: preId,
+					nowSkuId: curId
+				}
+				setGoodsSku(params).then(data => {
+					if(data){
+						this.requestPage()
+					}
+				})
 			},
 			openSpec(skuId){
 				this.popupShow = true
-				this.requestSpec(skuId)
-			},
-			requestSpec(skuId){
 				getGoodsSpec(skuId).then(data => {
 					this.specifications = data.properties
 					this.combinations = data.skuAndProperties
 					this.spuName = data.defaultSpu.spuName
 					this.productType = data.productType
-					console.log(data)
+					this.combinationsProps = {
+						id: 'id',
+						valueIds: 'propValueIds',
+						image: 'imageUrl',
+						price: 'price',
+						unit:'unitName',
+					}
+					this.specificationsProps = {
+						id: 'id',
+						list: 'values',
+						name: 'name'
+					}
 					let Ids = []
 					data.defaultProperties.forEach(item => {
 						Ids.push(item.value.id)
 					})
-					let propValueIds = Ids.join(",")
-					this.selectedIndex = data.skuAndProperties.findIndex(item => item.propValueIds === propValueIds)
 					
+					this.defaultSpecIds = Ids.join(",")
+					this.selectedIndex = data.skuAndProperties.findIndex(item => item.propValueIds === this.defaultSpecIds)
 				})
 			},
-			toShop(){
-				console.log('跳转到店铺主页')
+			toShopDetail(){
+				console.log('跳转到店铺详情页')
+			},
+			toGoodsDetail(skuId,isDisabled){
+				// uni.navigateTo({
+				// 	url: '/sub-classify/pages/goods-detail/goods-detail',
+				// 	success: (res) => {
+				// 		isDisabled?res.eventChannel.emit('acceptDataFromOpenerPage',{skuId,isDisabled:true}):res.eventChannel.emit('acceptDataFromOpenerPage',{skuId,isDisabled:false})
+				// 	}
+				// })
 			},
 			requestPage(){
 				getShoppingCartInfo(this.userId).then(data => {
 						let {storeList,disabledSkuList} = data
 						storeList.map(item => {
+							let sum = 0
 							item.shopChecked = false
 							item.skuList.map(ele => {
 								ele.goodsChecked = false
 								ele.isMiniOrder = (+ele.buyCount <= +ele.minimumOrderQuantity) ? true:false
-									
+								if(ele.goodsChecked){
+									sum += ele.buyCount * ele.price
+								}	
 								return ele
 							})
+							if(sum < item.freeShippingThreshold){
+								item.freeShipping = Math.round(item.freeShippingThreshold-sum)
+							}else if(sum > item.freeShippingThreshold){
+								item.freeShipping = Math.round(item.freeShippingThreshold*2-sum)
+							}
 							return item
 						})
 						
@@ -412,14 +398,27 @@
 						icon:"none"
 					})
 				}else{
-					
+					let deviceId = 0
+					uni.getSystemInfo({
+						success:res => {
+							deviceId = res.deviceId
+						}
+					})
 					let skuList = []
+					let list = []
 					this.shopList.forEach(item => {
 						item.skuList.forEach(ele => {
 							if( ele.goodsChecked){
 								skuList.push({
 									skuId: ele.skuId,
 									buyCount: ele.buyCount
+								})
+								list.push({
+									userId: this.userId,
+									equipmentId: deviceId,
+									authorId: ele.storeId,
+									relationId: ele.skuId,
+									bizType: 1,
 								})
 							}
 						})
@@ -432,6 +431,13 @@
 					deleteProduct(params).then(data => {
 						if(data){
 							this.requestPage()
+						}
+					})
+					let arg = {
+						list: list
+					}
+					createcollection(arg).then(data => {
+						if(data){
 							uni.showToast({
 								title:"该商品已移入收藏夹，可去收藏夹查看",
 								icon:"none"
