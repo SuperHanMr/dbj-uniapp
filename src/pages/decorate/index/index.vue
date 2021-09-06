@@ -81,6 +81,8 @@
               </service-item>
               <service-item :status="DECTORE_DICT.uncheck" itemName="精算服务" statusName="待确认精算师">
               </service-item>
+              <service-item :status="DECTORE_DICT.inservice" itemName="管家服务" statusName="服务中">
+              </service-item>
             </view>
           </view>
           <view class="tips-design-actuary">
