@@ -52,4 +52,35 @@
 	}
 
 	/*每个页面公共css */
+  [class^="icon-"], [class*=" icon-"] {
+    /* use !important to prevent issues with browser extensions that change fonts */
+    font-family: 'iconfont' !important;
+    font-style: normal;
+    font-weight: normal;
+    font-variant: normal;
+    text-transform: none;
+    line-height: 1;
+  
+    /* Better Font Rendering =========== */
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+  @font-face {
+    font-family: "iconfont"; /* Project id 2785499 */
+    src: url('https://ali-res.dabanjia.com/static/mp/dabanjia/font/iconfont.woff2?t=1630568889344') format('woff2'),
+         url('https://ali-res.dabanjia.com/static/mp/dabanjia/font/iconfont.woff?t=1630568889344') format('woff'),
+         url('https://ali-res.dabanjia.com/static/mp/dabanjia/font/iconfont.ttf?t=1630568889344') format('truetype');
+  }
+  
+  .icon-face:before {
+    content: "\e616";
+  }
+  
+  .icon-audio:before {
+    content: "\e622";
+  }
+  
+  .icon-plus-circle:before {
+    content: "\e641";
+  }
 </style>

@@ -37,7 +37,6 @@
     position: fixed;
     bottom: 0;
     height: 136rpx;
-    background-color: #fff;
     display: flex;
     flex-direction: row; 
     justify-content: center;  

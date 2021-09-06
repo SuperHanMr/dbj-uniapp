@@ -6,11 +6,15 @@
 		</button>
 		<view class="decorate-yf">
 			<view class="wrap decorate" @click="goNoHouseDecorate">
-				<view class="bg"></view>
+				<view class="bg">
+					<image src="http://dbj.dragonn.top/static/mp/dabanjia/images/decorate/ic_decorate@2x.png"></image>
+				</view>
 				<text>进行装修服务</text>
 			</view>
 			<view class="wrap yf" @click="goCheckService">
-				<view class="bg"></view>
+				<view class="bg">
+					<image src="http://dbj.dragonn.top/static/mp/dabanjia/images/decorate/ic_checkhouse@2x.png"></image>
+				</view>
 				<text>进行验房服务</text>
 			</view>
 		</view>
@@ -121,6 +125,14 @@
 				margin: 0 14rpx;
 				border-radius: 52rpx;
 				box-sizing: border-box;
+				display: flex;
+				justify-content: center;
+				align-items: center;
+				
+				image {
+					width: 40rpx;
+					height: 40rpx;
+				}
 			}
 
 			text {

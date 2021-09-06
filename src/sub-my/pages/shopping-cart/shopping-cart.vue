@@ -32,14 +32,14 @@
 				<view class="shopInfo">
 					<view class="check" v-if="!shopItem.shopChecked" @click="checkShop(shopItem.storeId)"></view>
 					<image class="checked" v-else @click="checkShop(shopItem.storeId)" src="../../../static/shopping-cart/checked@2x.png" ></image>
-					<view class="goShop">
+					<view class="goShop" @click="toShop">
 						<text class="shopName">{{shopItem.storeName}}</text>
-						<image src="../../../static/shopping-cart/goShop_ic@2x.png" class="shopIcon"></text>
+						<image class="shopIcon" src="../../../static/shopping-cart/goShop_ic@2x.png"></text>
 					</view>
 				</view>	
 				<view class="freeMail">	
-					<view class="text">还差元可获得一次免运费权益</view>
-					<view class="toShop">
+					<view class="text">还差{{freeMailAmount}}元可获得一次免运费权益</view>
+					<view class="toShop" @click="toShop">
 						<text>去凑单</text>
 						<image class="icon" src="../../../static/shopping-cart/toPostFree@2x.png"></image>
 					</view>
@@ -124,6 +124,8 @@
 			  :combinations="combinations"
 			  :specifications="specifications"
 			  :default-select-index="selectedIndex"
+				:spuName="spuName"
+				:productType="productType"
 			  @close="popupShow=false"
 			  @confirm="handleConfirm"
 			></echone-sku>
@@ -173,7 +175,7 @@
 </template>
 
 <script>
-	import {clearDisabled,getShoppingCartInfo,deleteProduct,setBuyCount} from "../../../api/user.js"
+	import {clearDisabled,getShoppingCartInfo,deleteProduct,setBuyCount,getGoodsSpec} from "../../../api/user.js"
 	import echoneSku from '../../../components/echone-sku/echone-sku.vue'
 	export default {
 		components:{
@@ -185,7 +187,9 @@
 				themeColor:"#1ac792",
 				specifications:[],
 				combinations:[],
-				selectedIndex:0,
+				productType:1,
+				spuName:"",
+				selectedIndex:null,
 				options: [
 				  {
 				    text: "删除",
@@ -212,55 +216,56 @@
 			}
 		},
 		mounted(){
-			this.specifications= [
-			  {
-			    name: '发证机关',
-			    id: '123',
-			    list: ['成都市锦江区', '成都市青羊区'],
-			  },
-			  {
-			    name: '教育年度',
-			    id: '456',
-			    list: ['2020年', '2019年'],
-			  },
-			]
-			this.combinations= [
-			  {
-			    id: '1',
-			    value: '成都市锦江区,2020年',
-			    image:
-			      'https://miniprogram-img01.caishuib.com/wx15168444f005a4ab/material/image/202005135/3a014c2f42c1c46b.PNG',
-			    price: 80.0,
-			    stock: 1000,
-			  },
-			  {
-			    id: '2',
-			    value: '成都市锦江区,2019年',
-			    image:
-			      'https://miniprogram-img01.caishuib.com/wx15168444f005a4ab/material/image/20200383/ebd0c8d01a6e9c10.PNG',
-			    price: 100.0,
-			    stock: 500,
-			  },
-			  {
-			    id: '3',
-			    value: '成都市青羊区,2020年',
-			    image:
-			      'https://miniprogram-img01.caishuib.com/wx15168444f005a4ab/material/image/202005135/3a014c2f42c1c46b.PNG',
-			    price: 80.0,
-			    stock: 1000,
-			  },
-			  {
-			    id: '4',
-			    value: '成都市青羊区,2019年',
-			    image:
-			      'https://miniprogram-img01.caishuib.com/wx15168444f005a4ab/material/image/20200383/ebd0c8d01a6e9c10.PNG',
-			    price: 100.0,
-			    stock: 0,
-			  },
-			]
+			// this.specifications= [
+			//   {
+			//     name: '发证机关',
+			//     id: '123',
+			//     list: ['成都市锦江区', '成都市青羊区'],
+			//   },
+			//   {
+			//     name: '教育年度',
+			//     id: '456',
+			//     list: ['2020年', '2019年'],
+			//   },
+			// ]
+			// this.combinations= [
+			//   {
+			//     id: '1',
+			//     value: '成都市锦江区,2020年',
+			//     image:
+			//       'https://miniprogram-img01.caishuib.com/wx15168444f005a4ab/material/image/202005135/3a014c2f42c1c46b.PNG',
+			//     price: 80.0,
+			//     stock: 1000,
+			//   },
+			//   {
+			//     id: '2',
+			//     value: '成都市锦江区,2019年',
+			//     image:
+			//       'https://miniprogram-img01.caishuib.com/wx15168444f005a4ab/material/image/20200383/ebd0c8d01a6e9c10.PNG',
+			//     price: 100.0,
+			//     stock: 500,
+			//   },
+			//   {
+			//     id: '3',
+			//     value: '成都市青羊区,2020年',
+			//     image:
+			//       'https://miniprogram-img01.caishuib.com/wx15168444f005a4ab/material/image/202005135/3a014c2f42c1c46b.PNG',
+			//     price: 80.0,
+			//     stock: 1000,
+			//   },
+			//   {
+			//     id: '4',
+			//     value: '成都市青羊区,2019年',
+			//     image:
+			//       'https://miniprogram-img01.caishuib.com/wx15168444f005a4ab/material/image/20200383/ebd0c8d01a6e9c10.PNG',
+			//     price: 100.0,
+			//     stock: 0,
+			//   },
+			// ]
 			// this.userId = uni.getStorageSync("userId")
 			this.userId = 123
 			this.requestPage()
+			
 		},
 		computed:{
 			totalCout(){
@@ -284,6 +289,17 @@
 					})
 				})
 				return sum
+			},
+			freeMailAmount(){
+				let amount = 0
+				// this.shopList.forEach(item => {
+				// 	item.skuList.forEach(ele => {
+				// 		if(ele.goodsChecked){
+							
+				// 		}
+				// 	})
+				// })
+				return amount
 			}
 		},
 		methods:{
@@ -292,8 +308,26 @@
 			},
 			openSpec(skuId){
 				this.popupShow = true
-				//jiekou
-				
+				this.requestSpec(skuId)
+			},
+			requestSpec(skuId){
+				getGoodsSpec(skuId).then(data => {
+					this.specifications = data.properties
+					this.combinations = data.skuAndProperties
+					this.spuName = data.defaultSpu.spuName
+					this.productType = data.productType
+					console.log(data)
+					let Ids = []
+					data.defaultProperties.forEach(item => {
+						Ids.push(item.value.id)
+					})
+					let propValueIds = Ids.join(",")
+					this.selectedIndex = data.skuAndProperties.findIndex(item => item.propValueIds === propValueIds)
+					
+				})
+			},
+			toShop(){
+				console.log('跳转到店铺主页')
 			},
 			requestPage(){
 				getShoppingCartInfo(this.userId).then(data => {
@@ -378,18 +412,33 @@
 						icon:"none"
 					})
 				}else{
-					//选中的商品会从购物车中消失
+					
+					let skuList = []
 					this.shopList.forEach(item => {
-						item.skuList.filter(ele => {
-							return ele.goodsChecked
+						item.skuList.forEach(ele => {
+							if( ele.goodsChecked){
+								skuList.push({
+									skuId: ele.skuId,
+									buyCount: ele.buyCount
+								})
+							}
 						})
 					})
-					uni.showToast({
-						title:"该商品已移入收藏夹，可去收藏夹查看",
-						icon:"none"
+					let params = {
+						userId: this.userId,
+						skuList: skuList
+					}
+					//选中的商品会从购物车中消失，移入收藏夹
+					deleteProduct(params).then(data => {
+						if(data){
+							this.requestPage()
+							uni.showToast({
+								title:"该商品已移入收藏夹，可去收藏夹查看",
+								icon:"none"
+							})
+						}
 					})
 				}
-				
 			},
 			deleteChecked(){
 				if(!this.totalCout){

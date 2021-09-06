@@ -1,570 +1,638 @@
 <template>
-	<view class="decorate-index">
-		<image class="bg" mode="aspectFit" src="http://dbj.dragonn.top/static/mp/dabanjia/images/decorate/bg@2x.png"></image>
-		<view class="content">
-			<view class="house-firend">
-				<view class="title">
-					<view class="house" @click="switchVisible">
-						<text>我的家</text>
-						<image class="ic-triangle" src="http://dbj.dragonn.top/static/mp/dabanjia/images/decorate/ic_triangle.svg"></image>
-					</view>
-					<view class="friend">
-						<text>亲友团</text>
-						<view class="friend-list">
-							<image class="avtor" v-for="(item, index) in friendList" :key="item.id"
-								:src="item.relativeAvatar"
-								:class="{avtor1: index == 0, avtor1: index == 0,avtor2: index == 1}"></image>
-							<view class="avtor-more" @click="toFriends">
-								<image src="http://dbj.dragonn.top/static/mp/dabanjia/images/decorate/ic_avtor_more.svg"></image>
-							</view>
-						</view>
-					</view>
-				</view>
+  <view class="decorate-index">
+    <image class="bg" mode="aspectFit" src="http://dbj.dragonn.top/static/mp/dabanjia/images/decorate/bg@2x.png">
+    </image>
+    <view class="content flex-column">
+      <view class="house-firend">
+        <view class="title">
+          <view class="house" @click="switchVisible">
+            <text>我的家</text>
+            <image class="ic-triangle" src="http://dbj.dragonn.top/static/mp/dabanjia/images/decorate/ic_triangle.svg">
+            </image>
+          </view>
+          <view class="friend">
+            <text>亲友团</text>
+            <view class="friend-list">
+              <image class="avtor" v-for="(item, index) in friendList" :key="item.id" :src="item.relativeAvatar"
+                :class="{avtor1: index == 0, avtor1: index == 0,avtor2: index == 1}"></image>
+              <view class="avtor-more" @click="toFriends">
+                <image src="http://dbj.dragonn.top/static/mp/dabanjia/images/decorate/ic_avtor_more.svg">
+                </image>
+              </view>
+            </view>
+          </view>
+        </view>
 
-				<!-- 切换房屋弹窗 -->
-				<uni-popup ref="sw">
-					<house-switch class="margintop" :datalist="myHouseList" :current="current" @goAddHouse="addHouse"
-						@checkHouse="checkHouse"></house-switch>
-				</uni-popup>
+        <view class="uni-padding-wrap">
+          <view class="uni-title">{{ currentHouse.housingEstate }}{{currentHouse.address}}</view>
+          <picture-btn text="设计图" @gotoPage="goDesignPicture"></picture-btn>
+        </view>
 
-				<view class="uni-padding-wrap">
-					<view class="uni-title">{{ currentHouse.housingEstate }}{{currentHouse.address}}</view>
-					<view class="design" @click="goDesignPicture">
-						<text>设计图</text>
-						<image src="http://dbj.dragonn.top/static/mp/dabanjia/images/decorate/ic_triangle_999.svg"></image>
-					</view>
-				</view>
+      </view>
 
-			</view>
-			<view class="my-decorate-service-wrap">
-				<image mode="aspectFit" class="top-bg" src="http://dbj.dragonn.top/static/mp/dabanjia/images/decorate/service-card-top.svg"></image>
-				<view class="my-decorate-service">
-					<view class="service-title flex-space-between-row" @click="goToMyDecorate">
-						<text class="t">我的装修服务</text>
-						<view class="r flex-start-row">
-							<text>查看全部</text>
-							<image src="http://dbj.dragonn.top/static/mp/dabanjia/images/decorate/ic_more.svg"></image>
-						</view>
-					</view>
+      <view class="scroll-view flex-1">
+        <scroll-view :scroll-top="scrollTop" scroll-y="true" class="scroll-Y" @scroll="scroll"
+          scroll-with-animation="true" :style="{height: viewHieght + 'rpx'}">
+          <!-- 我的仓库 -->
+          <view class="my-decorate-service-wrap">
+            <image mode="aspectFit" class="top-bg"
+              src="http://dbj.dragonn.top/static/mp/dabanjia/images/decorate/service-card-top.svg">
+            </image>
+            <view class="my-decorate-service">
+              <view class="service-title flex-space-between-row" @click="goToMyDecorate">
+                <text class="t">我的仓库</text>
+                <view class="r flex-start-row">
+                  <text>查看全部</text>
+                  <image src="http://dbj.dragonn.top/static/mp/dabanjia/images/decorate/ic_more.svg">
+                  </image>
+                </view>
+              </view>
+              <view class="my-warehouse">
+                <mwarehouse-btn :iconStyle="{'width': '52rpx','height': '62rpx'}" name="待发货"></mwarehouse-btn>
+                <mwarehouse-btn :iconStyle="{'width': '58rpx','height': '58rpx'}" name="待收货"></mwarehouse-btn>
+                <mwarehouse-btn :iconStyle="{'width': '50rpx','height': '60rpx'}" name="已收货"></mwarehouse-btn>
+                <mwarehouse-btn :iconStyle="{'width': '54rpx','height': '44rpx'}" name="退款"></mwarehouse-btn>
+              </view>
+            </view>
+          </view>
+          <!-- 我的装修服务 -->
+          <view class="my-decorate-service-wrap">
+            <image mode="aspectFit" class="top-bg"
+              src="http://dbj.dragonn.top/static/mp/dabanjia/images/decorate/service-card-top.svg">
+            </image>
+            <view class="my-decorate-service">
+              <view class="service-title flex-space-between-row" @click="goToMyDecorate">
+                <text class="t">我的装修服务</text>
+                <view class="r flex-start-row">
+                  <text>查看全部</text>
+                  <image src="http://dbj.dragonn.top/static/mp/dabanjia/images/decorate/ic_more.svg">
+                  </image>
+                </view>
+              </view>
 
-					<service-item :status="DECTORE_DICT.inservice" itemName="量房服务" statusName="服务中"></service-item>
-					<service-item :status="DECTORE_DICT.robbing" itemName="设计服务" statusName="待确认设计师"></service-item>
-					<service-item :status="DECTORE_DICT.shouldsure" itemName="验房服务" statusName="验房员抢单中"></service-item>
-					<service-item :status="DECTORE_DICT.uncheck" itemName="精算服务" statusName="待确认精算师"></service-item>
-				</view>
-			</view>
+              <service-item :status="DECTORE_DICT.inservice" itemName="量房服务" statusName="服务中">
+              </service-item>
+              <service-item :status="DECTORE_DICT.robbing" itemName="设计服务" statusName="待确认设计师">
+              </service-item>
+              <service-item :status="DECTORE_DICT.shouldsure" itemName="验房服务" statusName="验房员抢单中">
+              </service-item>
+              <service-item :status="DECTORE_DICT.uncheck" itemName="精算服务" statusName="待确认精算师">
+              </service-item>
+            </view>
+          </view>
+          <view class="tips-design-actuary">
+            <view class="tips">
+              购买相关服务 即刻开启装修
+            </view>
+            <guide-card cardType="service" imageUrl="http://iph.href.lu/702x160?text=设计服务&fg=EB7662&bg=FFE2DD"
+              @buyNow="buyServiceNow">
+            </guide-card>
+            <guide-card cardType="actuary" imageUrl="http://iph.href.lu/702x160?text=精算服务&fg=4173c8&bg=d0e0fa"
+              @buyNow="buyServiceNow">
+            </guide-card>
+          </view>
+          <no-service words="暂无进行中服务"></no-service>
+          <!-- 切换房屋弹窗 -->
+          <uni-popup ref="sw">
+            <house-switch class="margintop" :datalist="myHouseList" :current="current" @goAddHouse="addHouse"
+              @checkHouse="checkHouse"></house-switch>
+          </uni-popup>
+          <decorate-notice @touchmove.stop.prevent="()=>false" v-if="noticeActive" @closeNotice='closeNotice'
+            class="decorate-notice"></decorate-notice>
+          <!-- <view class="link">
+            <button @click="gonohouse">无房屋无服入口</button>
+            <button @click="gonohousedecatore">无房屋无服务装修</button>
+            <button @click="gonohousecheck">无房屋无服务验房</button>
+            <button @click="checkHouseRemind">验房提醒</button>
+          </view> -->
+        </scroll-view>
+      </view>
+      <drag-button-follow :style.sync="style" @btnClick='openNotice' :follow='`left,right`' className="drag-button"
+        class="drag-button">
+        <view>
+          <text>消息</text>
+          <text style="color: red;">2</text>
+        </view>
+      </drag-button-follow>
+    </view>
 
-			<view class="tips-design-actuary">
-				<view class="tips">
-					购买相关服务 即刻开启装修
-				</view>
-				<guide-card cardType="service" imageUrl="http://iph.href.lu/702x160?text=设计服务&fg=EB7662&bg=FFE2DD"
-					@buyNow="buyServiceNow"></guide-card>
-				<guide-card cardType="actuary" imageUrl="http://iph.href.lu/702x160?text=精算服务&fg=4173c8&bg=d0e0fa"
-					@buyNow="buyServiceNow"></guide-card>
-			</view>
-
-			<decorate-notice v-if="noticeActive" @closeNotice='closeNotice' class="decorate-notice"></decorate-notice>
-			<drag-button-follow :style.sync="style" @btnClick='noticeActive=true' :follow='`left,right`'
-				className="drag-button" class="drag-button">
-				<view>
-					<text>消息</text>
-					<text style="color: red;">2</text>
-				</view>
-			</drag-button-follow>
-			<!-- <view class="link">
-				<button @click="gonohouse">无房屋无服入口</button>
-				<button @click="gonohousedecatore">无房屋无服务装修</button>
-				<button @click="gonohousecheck">无房屋无服务验房</button>
-			</view> -->
-
-		</view>
-		<decorate-notice v-if="noticeActive" @closeNotice='closeNotice' class="decorate-notice"></decorate-notice>
-	</view>
+  </view>
 </template>
 
 <script>
-	import {
-		queryEstates,
-		friendListByEstateId
-	} from "../../../api/decorate.js";
-	import {
-		HouseSwitch
-	} from "../../../components/house-switch/house-switch.vue"
-	import ServiceItem from "../../../components/service-item/service-item.vue"
-	import {
-		DECTORE_DICT,
-		SERVICE_TYPE
-	} from "../../../utils/dict.js"
-	import GuideCard from "../../../components/guide-card/guide-card.vue"
-	export default {
-		components: {
-			HouseSwitch,
-			ServiceItem,
-			GuideCard
-		},
-		onShow() {
-			if (this.houses && this.houses.length < 1) {
-				this.getHouses();
-			}
-		},
-		data() {
-			return {
-				style: "",
-				noticeActive: false,
-				houses: getApp().globalData.houses,
-				accessKeyId: 'LTAI5tKwuhb948v9oakqnbTf',
-				instanceId: 'post-cn-tl32ajx3u0l',
-				groupId: 'GID_dabanjia',
-				deviceId: `mqttjs_${Math.random().toString(16).substr(2, 8)}`,
-				token: '',
-				client: {},
-				currentHouse: {},
-				myHouseList: [],
-				current: null,
-				friendList: [],
-				DECTORE_DICT,
-			};
-		},
-		mounted() {
-			this.getMyHouseList();
-		},
-		computed: {
-			username() {
-				return `Token|${this.accessKeyId}|${this.instanceId}`
-			},
-			//token和设备id关联，需要后端接口提供
-			password() {
-				return `R|LzMT+XLFl5s/YWJ/MlDz4t/Lq5HC1iGU1P28HAMaxYzmBSHQsWXgdISJ1ZJ+2cxaamjCkkdmS/XOGd160KYNICpRDnjsfBujbJGYgJWUr5piesdvDY0i8S48f1y+kDSyD1qZq3RLscnvooOIjF1CZUnSLi/oIC4juK1MZ8qVI7uIdBoQzt4TbiQgoJWL8b3AQUS1QPxDA2oGf+JBKuN0DyYW6d7mIYhAqXTpVbQw5nNCvKP80Xo0WQLnbM+hoyCSPOmGbPwAsaS1bd9VJjqDoJlCt6GFmJgm2JFY7PJwf/7OOSmUYIYFs5o/PuPpoTMF+hcVXMs+0yDukIMTOzG9m1KmYYo48q4Eb41jz5zvCIjTrIiblxfX1Q==|W|LzMT+XLFl5s/YWJ/MlDz4t/Lq5HC1iGU1P28HAMaxYzmBSHQsWXgdISJ1ZJ+2cxaamjCkkdmS/XOGd160KYNICpRDnjsfBujbJGYgJWUr5piesdvDY0i8S48f1y+kDSyD1qZq3RLscnvooOIjF1CZUnSLi/oIC4juK1MZ8qVI7uIdBoQzt4TbiQgoJWL8b3AQUS1QPxDA2oGf+JBKuN0DyYW6d7mIYhAqXTpVbQw5nNCvKP80Xo0WQLnbM+hoyCSPOmGbPwAsaS1bd9VJjqDoJlCt6GFmJgm2JFY7PJwf/7OOSmUYIYFs5o/PuPpoTMF+hcVXMs+0yDukIMTOzG9m1KmYYo48q4Eb41jz5zvCIjTrIiblxfX1Q==`
-			},
-			clientId() {
-				return `${this.groupId}@@@1234`
-			}
-		},
-		methods: {
-			async getFriendsList() {
-				let list = await friendListByEstateId({
-					estateId: this.currentHouse.id
-				});
-				this.friendList = list.length > 2 ? list.slice(0, 2) : list
-			},
-			toFriends() {
-				uni.navigateTo({
-					url: "/sub-decorate/pages/friends/friends?id=" + this.currentHouse.id,
-				});
-			},
-			addHouse() {
-				uni.navigateTo({
-					url: "/sub-decorate/pages/add-house/add-house"
-				})
-			},
-			checkHouse(item) {
-				this.current = item.id
-				this.currentHouse = item
-				this.$refs.sw.close()
-			},
-			getMyHouseList() {
-				queryEstates({
-					isNeedRelative: true
-				}).then(data => {
-					let i = 1;
-					let names = ["设计阶段", "未开工", "已竣工"]
-					for (let item of data) {
-						item.statusName = names[i - 1]
-						item.status = i++
-					}
-					data[1].ext = "第二次装修"
-					data[2].friend = true
-					data[2].ext = "首次装修"
-					this.myHouseList = data
-					const arr = data.filter(t => t.defaultEstate)
-					// let temp = null;
-					// if(arr.length > 0) {
-					// 	temp = arr[0]
-					// } else {
-					// 	data[0].defaultEstate = true
-					// 	temp = data[0]
-					// }
-					// this.currentHouse = temp
-					// this.current = temp.id
-					this.currentHouse = arr[0]
-					this.current = arr[0].id
-					if (arr[0].id) {
-						this.getFriendsList()
-					}
-				})
-			},
-			bindChange(e) {
-				console.log(e)
-			},
-			switchVisible() {
-				this.$refs.sw.open('top')
-			},
-			goDesignPicture() {
-				uni.navigateTo({
-					url: "/sub-decorate/pages/design-picture/design-picture"
-				})
-			},
-			gonohousedecatore() {
-				uni.navigateTo({
-					url: "/sub-decorate/pages/no-house-decorate/no-house-decorate"
-				})
-			},
-			gonohousecheck() {
-				uni.navigateTo({
-					url: "/sub-decorate/pages/no-house-checkhouse/no-house-checkhouse"
-				})
-			},
-			gonohavehouse() {
-				uni.navigateTo({
-					url: "/sub-decorate/pages/have-house-no-service/have-house-no-service"
-				})
-			},
-			gonohouse() {
-				uni.navigateTo({
-					url: "/sub-decorate/pages/no-house/no-house"
-				})
-			},
-			toSend() {
-				console.log('发送消息')
-				this.client.publish('dabanjia/testTopic', 'hello zzz')
-			},
-			closeNotice() {
-				this.noticeActive = false;
-				uni.showTabBar()
-			},
-			openNotice() {
-				this.noticeActive = true
-				uni.hideTabBar()
-			},
-			goToAddHouseInfo() {
-				uni.navigateTo({
-					url: "/sub-decorate/pages/add-house/add-house",
-				});
-			},
-			goDesignPicture() {
-				uni.navigateTo({
-					url: "/sub-decorate/pages/design-picture/design-picture",
-				});
-			},
-			goToMyDecorate() {
-				uni.navigateTo({
-					url: "/sub-decorate/pages/my-decorate/my-decorate",
-				});
-			},
-			getHouses() {
-				queryEstates({
-					isNeedRelative: true,
-				}).then((data) => {
-					//    if (data.length < 1) {
-					//      uni.navigateTo({
-					//        url: "/pages/decorate/no-house/no-house",
-					//      });
-					//    } else {
-					//      getApp().globalData.houses = data;
-					// uni.navigateTo({
-					//   url: "/pages/decorate/have-house-no-service/have-house-no-service",
-					// });
-					//    }
-					getApp().globalData.houses = data;
-				});
-			},
-			buyServiceNow(type) {
-				uni.navigateTo({
-					url: "/sub-decorate/pages/design-service-list/design-service-list?categoryTypeId=" + SERVICE_TYPE[
-						type]
-				})
-			}
-		},
-	};
+  import {
+    queryEstates,
+    friendListByEstateId
+  } from "../../../api/decorate.js";
+  import {
+    HouseSwitch
+  } from "../../../components/house-switch/house-switch.vue"
+  import ServiceItem from "../../../components/service-item/service-item.vue"
+  import NoService from "../../../components/no-service/no-service.vue"
+  import {
+    DECTORE_DICT,
+    SERVICE_TYPE
+  } from "../../../utils/dict.js"
+  import GuideCard from "../../../components/guide-card/guide-card.vue"
+  import PictureBtn from "../../../components/picture-btn/picture-btn.vue"
+
+  import MwarehouseBtn from "../../../components/mwarehouse-btn/mwarehouse-btn.vue"
+  export default {
+    components: {
+      HouseSwitch,
+      ServiceItem,
+      GuideCard,
+      NoService,
+      PictureBtn,
+      MwarehouseBtn
+    },
+    onLoad() {
+      let _this = this
+      uni.getSystemInfo({
+        success(res) {
+          console.log(res)
+          _this.viewHieght = res.windowHeight * 2 - 416
+        }
+      })
+
+    },
+    onShow() {
+      if (this.houses && this.houses.length < 1) {
+        this.getHouses();
+      }
+    },
+    data() {
+      return {
+        scrollTop: 416,
+        old: {
+          scrollTop: 416
+        },
+        viewHieght: "",
+        style: "",
+        noticeActive: false,
+        houses: getApp().globalData.houses,
+        accessKeyId: 'LTAI5tKwuhb948v9oakqnbTf',
+        instanceId: 'post-cn-tl32ajx3u0l',
+        groupId: 'GID_dabanjia',
+        deviceId: `mqttjs_${Math.random().toString(16).substr(2, 8)}`,
+        token: '',
+        client: {},
+        currentHouse: {},
+        myHouseList: [],
+        current: null,
+        friendList: [],
+        DECTORE_DICT,
+      };
+    },
+    mounted() {
+      uni.showTabBar()
+      this.getMyHouseList();
+    },
+    computed: {
+      username() {
+        return `Token|${this.accessKeyId}|${this.instanceId}`
+      },
+      //token和设备id关联，需要后端接口提供
+      password() {
+        return `R|LzMT+XLFl5s/YWJ/MlDz4t/Lq5HC1iGU1P28HAMaxYzmBSHQsWXgdISJ1ZJ+2cxaamjCkkdmS/XOGd160KYNICpRDnjsfBujbJGYgJWUr5piesdvDY0i8S48f1y+kDSyD1qZq3RLscnvooOIjF1CZUnSLi/oIC4juK1MZ8qVI7uIdBoQzt4TbiQgoJWL8b3AQUS1QPxDA2oGf+JBKuN0DyYW6d7mIYhAqXTpVbQw5nNCvKP80Xo0WQLnbM+hoyCSPOmGbPwAsaS1bd9VJjqDoJlCt6GFmJgm2JFY7PJwf/7OOSmUYIYFs5o/PuPpoTMF+hcVXMs+0yDukIMTOzG9m1KmYYo48q4Eb41jz5zvCIjTrIiblxfX1Q==|W|LzMT+XLFl5s/YWJ/MlDz4t/Lq5HC1iGU1P28HAMaxYzmBSHQsWXgdISJ1ZJ+2cxaamjCkkdmS/XOGd160KYNICpRDnjsfBujbJGYgJWUr5piesdvDY0i8S48f1y+kDSyD1qZq3RLscnvooOIjF1CZUnSLi/oIC4juK1MZ8qVI7uIdBoQzt4TbiQgoJWL8b3AQUS1QPxDA2oGf+JBKuN0DyYW6d7mIYhAqXTpVbQw5nNCvKP80Xo0WQLnbM+hoyCSPOmGbPwAsaS1bd9VJjqDoJlCt6GFmJgm2JFY7PJwf/7OOSmUYIYFs5o/PuPpoTMF+hcVXMs+0yDukIMTOzG9m1KmYYo48q4Eb41jz5zvCIjTrIiblxfX1Q==`
+      },
+      clientId() {
+        return `${this.groupId}@@@1234`
+      }
+    },
+    methods: {
+      scroll: function(e) {
+        // console.log(e)
+        this.old.scrollTop = e.detail.scrollTop
+      },
+      goTop: function(e) {
+        this.scrollTop = this.old.scrollTop
+        this.$nextTick(() => {
+          this.scrollTop = 0
+        });
+      },
+      checkHouseRemind() {
+        uni.navigateTo({
+          url: "/sub-decorate/pages/check-house-remind/check-house-remind"
+        })
+      },
+      async getFriendsList() {
+        let list = await friendListByEstateId({
+          estateId: this.currentHouse.id
+        });
+        this.friendList = list.length > 2 ? list.slice(0, 2) : list
+      },
+      toFriends() {
+        uni.navigateTo({
+          url: "/sub-decorate/pages/friends/friends?id=" + this.currentHouse.id,
+        });
+      },
+      addHouse() {
+        uni.navigateTo({
+          url: "/sub-decorate/pages/add-house/add-house"
+        })
+      },
+      checkHouse(item) {
+        this.current = item.id
+        this.currentHouse = item
+        this.$refs.sw.close()
+      },
+      getMyHouseList() {
+        queryEstates({
+          isNeedRelative: true
+        }).then(data => {
+          let i = 1;
+          let names = ["设计阶段", "未开工", "已竣工"]
+          for (let item of data) {
+            item.statusName = names[i - 1]
+            item.status = i++
+          }
+          data[1].ext = "第二次装修"
+          data[2].friend = true
+          data[2].ext = "首次装修"
+          this.myHouseList = data
+          const arr = data.filter(t => t.defaultEstate)
+          // let temp = null;
+          // if(arr.length > 0) {
+          // 	temp = arr[0]
+          // } else {
+          // 	data[0].defaultEstate = true
+          // 	temp = data[0]
+          // }
+          // this.currentHouse = temp
+          // this.current = temp.id
+          this.currentHouse = arr[0]
+          this.current = arr[0].id
+          if (arr[0].id) {
+            this.getFriendsList()
+          }
+        })
+      },
+      bindChange(e) {
+        console.log(e)
+      },
+      switchVisible() {
+        this.$refs.sw.open('top')
+      },
+      goDesignPicture() {
+        uni.navigateTo({
+          url: "/sub-decorate/pages/design-picture/design-picture"
+        })
+      },
+      gonohousedecatore() {
+        uni.navigateTo({
+          url: "/sub-decorate/pages/no-house-decorate/no-house-decorate"
+        })
+      },
+      gonohousecheck() {
+        uni.navigateTo({
+          url: "/sub-decorate/pages/no-house-checkhouse/no-house-checkhouse"
+        })
+      },
+      gonohavehouse() {
+        uni.navigateTo({
+          url: "/sub-decorate/pages/have-house-no-service/have-house-no-service"
+        })
+      },
+      gonohouse() {
+        uni.navigateTo({
+          url: "/sub-decorate/pages/no-house/no-house"
+        })
+      },
+      toSend() {
+        console.log('发送消息')
+        this.client.publish('dabanjia/testTopic', 'hello zzz')
+      },
+      closeNotice() {
+        this.noticeActive = false;
+        uni.showTabBar()
+      },
+      openNotice() {
+        this.noticeActive = true
+        uni.hideTabBar()
+      },
+      goToAddHouseInfo() {
+        uni.navigateTo({
+          url: "/sub-decorate/pages/add-house/add-house",
+        });
+      },
+      goToMyDecorate() {
+        uni.navigateTo({
+          url: "/sub-decorate/pages/my-decorate/my-decorate",
+        });
+      },
+      getHouses() {
+        queryEstates({
+          isNeedRelative: true,
+        }).then((data) => {
+          //    if (data.length < 1) {
+          //      uni.navigateTo({
+          //        url: "/pages/decorate/no-house/no-house",
+          //      });
+          //    } else {
+          //      getApp().globalData.houses = data;
+          // uni.navigateTo({
+          //   url: "/pages/decorate/have-house-no-service/have-house-no-service",
+          // });
+          //    }
+          getApp().globalData.houses = data;
+        });
+      },
+      buyServiceNow(type) {
+        uni.navigateTo({
+          url: "/sub-decorate/pages/design-service-list/design-service-list?categoryTypeId=" +
+            SERVICE_TYPE[
+              type]
+        })
+      }
+    },
+  };
 </script>
 
 <style lang="scss" scoped>
-	.decorate-index {
-		position: relative;
+  .decorate-index {
+    position: relative;
 
-		.bg {
-			width: 100%;
-		}
-	}
+    .bg {
+      width: 100%;
+    }
+  }
 
-	.content {
-		width: 100%;
-		height: 100%;
-		position: relative;
-		margin-top: -304rpx;
-	}
+  .content {
+    width: 100%;
+    height: 100%;
+    position: relative;
+    margin-top: -304rpx;
+    height: 100%;
+  }
 
-	.house-firend {
-		position: relative;
+  .flex-column {
+    display: flex;
+    flex-direction: column;
+  }
 
-		.title {
-			display: flex;
-			justify-content: space-between;
-			flex-direction: row;
-			align-items: center;
-			margin-bottom: 4rpx;
-		}
+  .scroll-Y {
+    // height: calc(100% - 416rpx);
+    // height: 1208rpx;
+  }
 
-		.house {
-			display: flex;
-			justify-content: flex-start;
-			flex-direction: row;
-			align-items: center;
-			margin-left: 40rpx;
+  .flex-1 {
+    flex: 1;
+  }
 
-			.ic-triangle {
-				width: 13rpx;
-				height: 8rpx;
-			}
+  .scroll-view {
+    // background-color: red;
+    overflow: hidden;
+  }
 
-			text {
-				width: 126rpx;
-				height: 56rpx;
-				font-size: 40rpx;
-				font-family: PingFangSC, PingFangSC-Medium;
-				font-weight: 500;
-				text-align: left;
-				color: #333333;
-				line-height: 56rpx;
-				letter-spacing: 2rpx;
-				margin-right: 9rpx;
-			}
-		}
+  .house-firend {
+    position: relative;
+    height: 242rpx;
 
-		.friend {
-			margin-right: 32rpx;
-			display: flex;
-			justify-content: flex-start;
-			flex-direction: row;
-			align-items: center;
+    .title {
+      display: flex;
+      justify-content: space-between;
+      flex-direction: row;
+      align-items: center;
+      margin-bottom: 4rpx;
+    }
 
-			>text {
-				height: 40rpx;
-				font-size: 24rpx;
-				font-family: PingFangSC, PingFangSC-Regular;
-				font-weight: 400;
-				text-align: right;
-				color: #666666;
-				line-height: 40rpx;
-				margin-right: 16rpx;
-			}
+    .house {
+      display: flex;
+      justify-content: flex-start;
+      flex-direction: row;
+      align-items: center;
+      margin-left: 40rpx;
 
-			.friend-list {
-				display: flex;
-				justify-content: flex-start;
-				flex-direction: row;
-				align-items: center;
+      .ic-triangle {
+        width: 13rpx;
+        height: 8rpx;
+      }
 
-				.avtor {
-					width: 40rpx;
-					height: 40rpx;
-					border-radius: 50%;
-				}
+      text {
+        width: 126rpx;
+        height: 56rpx;
+        font-size: 40rpx;
+        font-family: PingFangSC, PingFangSC-Medium;
+        font-weight: 500;
+        text-align: left;
+        color: #333333;
+        line-height: 56rpx;
+        letter-spacing: 2rpx;
+        margin-right: 9rpx;
+      }
+    }
 
-				.avtor2,
-				.avtor-more {
-					margin-left: -12rpx;
-				}
+    .friend {
+      margin-right: 32rpx;
+      display: flex;
+      justify-content: flex-start;
+      flex-direction: row;
+      align-items: center;
 
-				.avtor2 {
-					z-index: 9;
-				}
+      >text {
+        height: 40rpx;
+        font-size: 24rpx;
+        font-family: PingFangSC, PingFangSC-Regular;
+        font-weight: 400;
+        text-align: right;
+        color: #666666;
+        line-height: 40rpx;
+        margin-right: 16rpx;
+      }
 
-				.avtor-more {
-					box-sizing: border-box;
-					width: 40rpx;
-					height: 40rpx;
-					background: #f5f6f6;
-					border: 1rpx solid #ffffff;
-					border-radius: 50%;
-					z-index: 99;
+      .friend-list {
+        display: flex;
+        justify-content: flex-start;
+        flex-direction: row;
+        align-items: center;
 
-					image {
-						width: 20rpx;
-						height: 4rpx;
-						margin: 13rpx 10rpx;
-					}
-				}
-			}
-		}
+        .avtor {
+          width: 40rpx;
+          height: 40rpx;
+          border-radius: 50%;
+        }
 
-		.picker-view {
-			width: 750rpx;
-			height: 600rpx;
-			margin-top: 20rpx;
-		}
+        .avtor2,
+        .avtor-more {
+          margin-left: -12rpx;
+        }
 
-		.item {
-			height: 50px;
-			align-items: center;
-			justify-content: center;
-			text-align: center;
-		}
+        .avtor2 {
+          z-index: 9;
+        }
 
-		.uni-padding-wrap {
-			margin-left: 40rpx;
-			height: 182rpx;
+        .avtor-more {
+          box-sizing: border-box;
+          width: 40rpx;
+          height: 40rpx;
+          background: #f5f6f6;
+          border: 1rpx solid #ffffff;
+          border-radius: 50%;
+          z-index: 99;
 
-			.uni-title {
-				// width: 314rpx;
-				height: 34rpx;
-				font-size: 24rpx;
-				font-family: PingFangSC, PingFangSC-Regular;
-				font-weight: 400;
-				text-align: left;
-				color: #999999;
-				line-height: 34rpx;
-				margin-bottom: 40rpx;
-			}
+          image {
+            width: 20rpx;
+            height: 4rpx;
+            margin: 13rpx 10rpx;
+          }
+        }
+      }
+    }
 
-			.design-wrap {
-				// margin-left: 40rpx;
-			}
-		}
+    .picker-view {
+      width: 750rpx;
+      height: 600rpx;
+      margin-top: 20rpx;
+    }
 
-		.design {
-			display: flex;
-			justify-content: center;
-			flex-direction: row;
-			align-items: center;
-			width: 114rpx;
-			height: 44rpx;
-			background: #f5f6f6;
-			border-radius: 12rpx;
+    .item {
+      height: 50px;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+    }
 
-			text {
-				height: 32rpx;
-				font-size: 22rpx;
-				font-family: PingFangSC, PingFangSC-Regular;
-				font-weight: 400;
-				text-align: left;
-				color: #333333;
-				line-height: 32rpx;
-				margin-right: 8rpx;
-			}
+    .uni-padding-wrap {
+      margin-left: 40rpx;
+      height: 182rpx;
 
-			image {
-				height: 13rpx;
-				width: 8rpx;
-			}
-		}
-	}
+      .uni-title {
+        height: 34rpx;
+        font-size: 24rpx;
+        font-family: PingFangSC, PingFangSC-Regular;
+        font-weight: 400;
+        text-align: left;
+        color: #999999;
+        line-height: 34rpx;
+        margin-bottom: 40rpx;
+      }
+    }
+  }
 
-	.my-decorate-service-wrap {
-		position: relative;
-		margin: 0 24rpx;
-		background: #ffffff;
-		border-radius: 24rpx;
-		box-shadow: 0rpx 2rpx 20rpx 0rpx rgba(0, 0, 0, 0.05);
-		min-height: 256rpx;
-	}
+  .my-decorate-service-wrap {
+    position: relative;
+    margin: 0 24rpx 24rpx;
+    background: #ffffff;
+    border-radius: 24rpx;
+    box-shadow: 0rpx 2rpx 20rpx 0rpx rgba(0, 0, 0, 0.05);
+    min-height: 256rpx;
+  }
 
-	.my-decorate-service {
-		padding: 0 24rpx 24rpx;
-		position: relative;
-	}
+  .my-warehouse {
+    display: flex;
+    height: 134rpx;
+    justify-content: space-between;
+    flex-direction: row;
+    align-items: flex-end;
+    padding: 0 48rpx 40rpx;
+    background: #ffffff;
+  }
 
-	.top-bg {
-		width: 100%;
-		height: 120rpx;
-	}
+  .my-decorate-service {
+    padding: 0 24rpx 24rpx;
+    position: relative;
+  }
 
-	.flex-space-between-row {
-		display: flex;
-		justify-content: space-between;
-		align-items: center;
-		flex-direction: row;
-	}
+  .top-bg {
+    width: 100%;
+    height: 120rpx;
+  }
 
-	.flex-start-row {
-		display: flex;
-		justify-content: flex-start;
-		align-items: center;
-		flex-direction: row;
-	}
+  .flex-space-between-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-direction: row;
+  }
 
-	.service-title {
-		margin: -88rpx 45rpx 44rpx 32rpx;
+  .flex-start-row {
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    flex-direction: row;
+  }
 
-		.t {
-			font-size: 32rpx;
-			font-family: PingFangSC, PingFangSC-Medium;
-			font-weight: 500;
-			text-align: left;
-			color: #333333;
-			letter-spacing: 1rpx;
-		}
+  .service-title {
+    margin: -88rpx 21rpx 44rpx 8rpx;
 
-		.r {
-			text {
-				height: 36rpx;
-				margin-right: 16rpx;
-				font-size: 26rpx;
-				font-family: PingFangSC, PingFangSC-Regular;
-				font-weight: 400;
-				text-align: right;
-				color: #999999;
-				line-height: 36rpx;
-			}
+    .t {
+      font-size: 32rpx;
+      font-family: PingFangSC, PingFangSC-Medium;
+      font-weight: 500;
+      text-align: left;
+      color: #333333;
+      letter-spacing: 1rpx;
+    }
 
-			image {
-				width: 11rpx;
-				height: 19rpx;
-			}
-		}
-	}
+    .r {
+      text {
+        height: 36rpx;
+        margin-right: 16rpx;
+        font-size: 26rpx;
+        font-family: PingFangSC, PingFangSC-Regular;
+        font-weight: 400;
+        text-align: right;
+        color: #999999;
+        line-height: 36rpx;
+      }
 
-	.drag-button {
-		background: #ffffff;
-		border: 0.5px solid #eeeeee;
-		box-shadow: 0 5rpx 10rpx 0 rgba(0, 0, 0, 0.08);
-		width: 100rpx;
-		height: 100rpx;
-		font-size: 24rpx;
-		color: #000000;
-		position: absolute;
-		right: 0rpx;
-		bottom: 188rpx;
-		border-radius: 100%;
-		display: flex;
-		align-items: center;
-		justify-content: center;
-	}
+      image {
+        width: 24rpx;
+        height: 24rpx;
+      }
+    }
+  }
 
-	.link {
-		display: flex;
-		justify-content: flex-start;
-		align-items: center;
-		flex-wrap: wrap;
+  .drag-button {
+    background: #ffffff;
+    border: 0.5px solid #eeeeee;
+    box-shadow: 0 5rpx 10rpx 0 rgba(0, 0, 0, 0.08);
+    width: 100rpx;
+    height: 100rpx;
+    font-size: 24rpx;
+    color: #000000;
+    position: absolute;
+    right: 0rpx;
+    top: 588rpx;
+    border-radius: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
 
-		button {
-			display: inline-block;
-			line-height: 1;
-			padding: 10rpx 6rpx;
-			border: 2rpx solid green;
-			color: #fff;
-			background-color: #000088;
-			margin: 10rpx;
-			font-size: 24rpx;
-		}
-	}
+  .link {
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    flex-wrap: wrap;
 
-	.tips-design-actuary {
-		margin: 0 24rpx;
+    button {
+      display: inline-block;
+      line-height: 1;
+      padding: 10rpx 6rpx;
+      border: 2rpx solid green;
+      color: #fff;
+      background-color: #000088;
+      margin: 10rpx;
+      font-size: 24rpx;
+    }
+  }
 
-		.tips {
-			height: 40rpx;
-			font-size: 28rpx;
-			font-family: PingFangSC, PingFangSC-Regular;
-			font-weight: 400;
-			text-align: center;
-			color: #333333;
-			line-height: 40rpx;
-			letter-spacing: 2rpx;
-			padding-top: 58rpx;
-			margin-bottom: 24rpx;
-		}
+  .tips-design-actuary {
+    margin: 0 24rpx;
 
-	}
+    .tips {
+      height: 40rpx;
+      font-size: 28rpx;
+      font-family: PingFangSC, PingFangSC-Regular;
+      font-weight: 400;
+      text-align: center;
+      color: #333333;
+      line-height: 40rpx;
+      letter-spacing: 2rpx;
+      padding-top: 34rpx;
+      margin-bottom: 24rpx;
+    }
+  }
 </style>

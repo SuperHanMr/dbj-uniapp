@@ -1,6 +1,6 @@
 <template>
-  <view class="notice" :style="{height:systemHeight}">
-    <view class="notice-mask"  @touchmove.stop.prevent="()=>false"></view>
+  <view class="notice" catchtouchmove=“true” :style="{height:systemHeight}">
+    <view class="notice-mask"></view>
     <view class="notice-view">
       <scroll-view class="item-list" scroll-y="true">
         <view
@@ -43,7 +43,7 @@
         </view>
         <view
           class="notice-item"
-          @click="to(1)"
+          @click="to(2)"
         >
           <view class="item-top">
             <view class="item-top-left">
@@ -51,7 +51,7 @@
                 src="../../static/home_owner.png"
                 mode=""
               ></image>
-              <text class="item-title">量房交付</text>
+              <text class="item-title">验房交付</text>
             </view>
             <text class="item-top-right">2021-08-21 13:00:00</text>
           </view>
@@ -62,7 +62,7 @@
         </view>
         <view
           class="notice-item"
-          @click="to(1)"
+          @click="to(2)"
         >
           <view class="item-top">
             <view class="item-top-left">
@@ -70,7 +70,7 @@
                 src="../../static/home_owner.png"
                 mode=""
               ></image>
-              <text class="item-title">量房交付</text>
+              <text class="item-title">验房交付</text>
             </view>
             <text class="item-top-right">2021-08-21 13:00:00</text>
           </view>
@@ -79,50 +79,13 @@
             <image src="../../static/images/ic_more_black.svg"></image>
           </view>
         </view>
-        <view
-          class="notice-item"
-          @click="to(1)"
-        >
-          <view class="item-top">
-            <view class="item-top-left">
-              <image
-                src="../../static/home_owner.png"
-                mode=""
-              ></image>
-              <text class="item-title">量房交付</text>
-            </view>
-            <text class="item-top-right">2021-08-21 13:00:00</text>
-          </view>
-          <view class="item-content">
-            <text>有量房员交付啦，请确认</text>
-            <image src="../../static/images/ic_more_black.svg"></image>
-          </view>
-        </view>
-        <view
-          class="notice-item"
-          @click="to(1)"
-        >
-          <view class="item-top">
-            <view class="item-top-left">
-              <image
-                src="../../static/home_owner.png"
-                mode=""
-              ></image>
-              <text class="item-title">量房交付</text>
-            </view>
-            <text class="item-top-right">2021-08-21 13:00:00</text>
-          </view>
-          <view class="item-content">
-            <text>有量房员交付啦，请确认</text>
-            <image src="../../static/images/ic_more_black.svg"></image>
-          </view>
-        </view>
+        
         </scroll-view>
         <view
           class="close-icon"
         >
           <image
-            src="../../static/images/ic_cancel_white.svg"
+            src="http://dbj.dragonn.top/static/mp/dabanjia/images/decorate/ic_triangle.svg"
             mode=""
             @click="close()"
           ></image>
@@ -138,15 +101,16 @@ export default {
   data() {
     return {
       urlList: [
-        "/pages/decorate/grab/grab",
+        "/sub-decorate/pages/grab/grab",
         "/sub-decorate/pages/amoutDelivery/amoutDelivery",
+        "/sub-decorate/pages/checkResult/checkResult",
       ],
       systemHeight:''
     };
   },
   mounted(){
     this.systemHeight = wx.getSystemInfoSync().windowHeight + 'px'
-    console.log(this.systemHeight)
+    
   },
   methods: {
     close() {
@@ -165,10 +129,11 @@ export default {
 
 <style lang="scss" scoped>
 .notice {
-  position: absolute;
+  position: fixed;
   top: 0;
   width: 100%;
   height: 100vh;
+  z-index: 100;
   .notice-view{
     position: relative;
     height: 100%;
@@ -176,7 +141,7 @@ export default {
   .item-list {
     position: absolute;
     width: 100%;
-    bottom: 100rpx;
+    bottom: 206rpx;
     height: 1000rpx;
     // padding: 24rpx;
     z-index: 101;
@@ -184,7 +149,7 @@ export default {
   }
   .close-icon {
     position: absolute;
-    bottom: 0;
+    bottom: 30rpx;
     // margin-top: 88rpx ;
     text-align: center;
     width: 100%;

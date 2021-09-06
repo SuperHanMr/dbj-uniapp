@@ -35,6 +35,7 @@
       >
         <view
           class="input btn"
+          @click="chooseFriends"
         >
           <view class="holder">
             <text v-if="!type">请选择亲友关系</text>
