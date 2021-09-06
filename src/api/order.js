@@ -1,8 +1,8 @@
 
 import request from '../utils/request';
 
-export function orderList(params){
-    return request.get(`/order/app/order/list`,{params});
+export function getOrderList(params){
+    return request.get(`/order-center/app/order/list`,{params});
 }
 
 export function orderDetail(params){

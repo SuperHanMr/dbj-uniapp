@@ -180,7 +180,7 @@ export default {
     handlerTotalOrder() {
       console.log("点击我的订单全部按钮");
       uni.navigateTo({
-				url:"../../../sub-my/pages/my-order/my-order?index=1"
+				url:"../../../sub-my/pages/my-order/my-order"
       });
     },
     handlerOrder(item) {
