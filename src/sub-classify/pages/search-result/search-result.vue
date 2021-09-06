@@ -33,7 +33,7 @@
             <view class="goodsSpec">
                   <view class="goods-money">
                     ￥
-                    <text class="integer-price">{{goodsItem.convertedPrice?goodsItem.convertedPrice.split(".")[0]: 0}}333</text>
+                    <text class="integer-price">{{goodsItem.convertedPrice?goodsItem.convertedPrice.split(".")[0]: 0}}</text>
                     <text>.{{goodsItem.convertedPrice?goodsItem.convertedPrice.split(".")[1]: 0}}</text>
                     <text>/{{goodsItem.unitName}}</text>
                   </view>
@@ -242,19 +242,6 @@
       right: 0;
       margin: auto;
     }
-    .goodsItem .check{
-    	width: 36rpx;
-    	height: 36rpx;
-      margin-top: 40rpx;
-    	border-radius: 50%;
-    	background: #ffffff;
-    	border: 1rpx solid #e5e5e5;
-    }
-    .goodsItem .checked{
-    	width: 36rpx;
-    	height: 36rpx;
-    	display: block;
-    }
     .goodsItem .goodsItemImg{
     	width: 192rpx;
     	height: 192rpx;
@@ -318,29 +305,6 @@
     	font-size: 24rpx;
     	line-height: 36rpx;
     }
-    .goodsInfo .foot .countCtrl{
-    	display: flex;
-    }
-    .goodsInfo .foot .countCtrl .dec{
-    	width: 48rpx;
-    	height: 48rpx;
-    	display: block;
-    } 
-    .goodsInfo .foot .countCtrl .count{
-    	width: 92rpx;
-    	height: 48rpx;
-    	background: #f2f2f2;
-    	font-size: 24rpx;
-    	font-weight: 500;
-    	text-align: center;
-    	color: #333333;
-    	line-height: 48rpx;
-    }
-    .goodsInfo .foot .countCtrl .inc{
-    	width: 48rpx;
-    	height: 48rpx;
-    	display: block;
-    } 
     .no-goods{
       width: 355rpx;
       height: 315rpx;

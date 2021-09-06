@@ -371,7 +371,8 @@
         	"path": "pages/search/index",
         	"style": {
         		"navigationBarTitleText": "",
-        		"enablePullDownRefresh": false
+        		"enablePullDownRefresh": false,
+            "navigationBarBackgroundColor": "#ffffff"
         	}
         },
         {
@@ -387,25 +388,20 @@
         	"style": {
         		"navigationBarTitleText": "商品详情",
         		"enablePullDownRefresh": false,
-        		"navigationStyle": "custom"
+        		"navigationStyle": "custom",
+            "navigationBarBackgroundColor": "#ffffff"
         	}
         },
-        // {
-        // 	"path": "pages/search/index",
-        // 	"style": {
-        // 		"navigationBarTitleText": "",
-        // 		"enablePullDownRefresh": false
-        // 	}
-        // },
         {
             "path" : "pages/pay-order/index",
             "style" :                                                                                    
             {
-                "navigationBarTitleText": "",
-                "enablePullDownRefresh": false
+                "navigationBarTitleText": "确认订单",
+                "enablePullDownRefresh": false,
+                "navigationBarBackgroundColor": "#ffffff"
             }  
         }
-			]
+      ]
 		},
 		{
 			"root": "sub-decorate", //装修模块分包

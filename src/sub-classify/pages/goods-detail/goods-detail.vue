@@ -1,7 +1,9 @@
 <template>
   <view>
-     <web-view :src="'https://local.meiwu365.com/app-pages/goods-detail/index.html?goodsId='
-        + goodId + '&&houseId=' + houseId" @message='h5Message'></web-view>
+    <!-- <web-view :src="'https://local.meiwu365.com/app-pages/goods-detail/index.html?goodsId='
+        + goodId + '&&houseId=' + houseId" @message='h5Message'></web-view> -->
+        <web-view :src="'https://local.meiwu365.com/app-pages/goods-detail/index.html#goodsId='
+           + goodId + '&&houseId=' + houseId" @message='h5Message'></web-view>
   </view>
 </template>
 
