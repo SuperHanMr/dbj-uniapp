@@ -1,10 +1,10 @@
 <template>
 	<view class="uni-numbox">
-		<view @click="_calcValue('minus')" class="uni-numbox__minus uni-cursor-point">
+		<view v-if="!onlyShowAdd||inputValue>0" @click="_calcValue('minus')" class="uni-numbox__minus uni-cursor-point">
 			<text class="uni-numbox--text" :class="{ 'uni-numbox--disabled': inputValue <= min || disabled }">-</text>
 		</view>
-		<input :disabled="disabled" @focus="_onFocus" @blur="_onBlur" class="uni-numbox__value" type="number"
-			v-model="inputValue" />
+		<input v-if="!onlyShowAdd||inputValue>0" :disabled="disabled" @focus="_onFocus" @blur="_onBlur"
+			class="uni-numbox__value" type="number" v-model="inputValue" />
 		<view @click="_calcValue('plus')" class="uni-numbox__plus uni-cursor-point">
 			<text class="uni-numbox--text" :class="{ 'uni-numbox--disabled': inputValue >= max || disabled }">+</text>
 		</view>
@@ -29,7 +29,7 @@
 		props: {
 			value: {
 				type: [Number, String],
-				default: 1
+				default: 0
 			},
 			modelValue: {
 				type: [Number, String],
@@ -41,13 +41,17 @@
 			},
 			max: {
 				type: Number,
-				default: 100
+				default: 10000
 			},
 			step: {
 				type: Number,
 				default: 1
 			},
 			disabled: {
+				type: Boolean,
+				default: false
+			},
+			onlyShowAdd: {
 				type: Boolean,
 				default: false
 			}
@@ -118,6 +122,7 @@
 				return scale;
 			},
 			_onBlur(event) {
+				
 				this.$emit('blur', event)
 				let value = event.detail.value;
 				if (!value) {
@@ -154,6 +159,7 @@
 		height: $box-height;
 		line-height: $box-height;
 		width: 200rpx;
+		justify-content: flex-end;
 	}
 
 	.uni-cursor-point {
