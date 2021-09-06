@@ -3,7 +3,7 @@
 		<view class="title">
 			<view class="title-check">
 				<slot name="check"></slot>
-				<text class="text">{{setting.title}}({{setting.level | filterLevel}})</text>
+				<text class="text">{{setting.title}}{{setting.level | filterLevel(setting.cardtype)}}</text>
 			</view>
 			<view class="change-service" v-if="setting.cardtype == 'design'" @click="changeLevel">更换等级</view>
 			<view class="change-service" @click="selectAnother">
@@ -44,23 +44,24 @@
 			}
 		},
 		filters: {
-			filterLevel(value) {
+			filterLevel(value, cardtype) {
+        if (cardtype !== "design") return ""
 				let res = ""
 				switch (value) {
 					case 1:
-						res = "中级"
+						res = "(中级)"
 						break;
 					case 2:
-						res = "高级"
+						res = "(高级)"
 						break;
 					case 3:
-						res = "特级"
+						res = "(特级)"
 						break;
 					case 4:
-						res = "钻石"
+						res = "(钻石)"
 						break;
 					default:
-						res = "中级"
+						res = "(中级)"
 						break;
 				}
 				return res;

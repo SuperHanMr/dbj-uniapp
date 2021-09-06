@@ -457,12 +457,6 @@
 					}
 				},
 				{
-					"path": "pages/have-house-no-service/have-house-no-service",
-					"style": {
-						"navigationBarTitleText": "有房屋无服务"
-					}
-				},
-				{
 					"path": "pages/replace-worker/replace-worker",
 					"style": {
 						"navigationBarTitleText": "申请更换工匠",

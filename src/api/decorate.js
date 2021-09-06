@@ -1,4 +1,5 @@
 import request from '../utils/request';
+import { objectToUrlString } from "../utils/params.js";
 
 //获取设计图列表
 export function designList(params) {
@@ -66,5 +67,6 @@ export function getProductsSkusPage(params) {
 
 //获取服务类默认商品
 export function getServiceSku(params) {
-	return request.get("/pm/project/getServiceSku", params)
+  const str = objectToUrlString(params)
+	return request.get("/pm/app/project/getServiceSku?" + str )
 }
