@@ -39,13 +39,20 @@
 				"navigationBarBackgroundColor": "#ffffff"
 			}
 		},
-		{
-			"path": "pages/message/conversation/conversation",
-			"style": {
-				"navigationBarTitleText": "消息详情",
-				"navigationBarBackgroundColor": "#ffffff"
-			}
-		},
+    {
+      "path": "pages/message/conversation/conversation",
+      "style": {
+        "navigationBarTitleText": "",
+        "navigationBarBackgroundColor": "#ffffff"
+      }
+    },
+    {
+      "path": "pages/message/conversation/conversation-noti",
+      "style": {
+        "navigationBarTitleText": "",
+        "navigationBarBackgroundColor": "#ffffff"
+      }
+    },
 		{
 			"path": "pages/my/index/index",
 			"style": {
