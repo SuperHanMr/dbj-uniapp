@@ -39,19 +39,19 @@
               src="http://dbj.dragonn.top/static/mp/dabanjia/images/decorate/service-card-top.svg">
             </image>
             <view class="my-decorate-service">
-              <view class="service-title flex-space-between-row" @click="goToMyDecorate">
+              <view class="service-title flex-space-between-row">
                 <text class="t">我的仓库</text>
-                <view class="r flex-start-row">
+                <view class="r flex-start-row" @click="goToMyWarehouse">
                   <text>查看全部</text>
                   <image src="http://dbj.dragonn.top/static/mp/dabanjia/images/decorate/ic_more.svg">
                   </image>
                 </view>
               </view>
               <view class="my-warehouse">
-                <mwarehouse-btn :iconStyle="{'width': '52rpx','height': '62rpx'}" name="待发货"></mwarehouse-btn>
-                <mwarehouse-btn :iconStyle="{'width': '58rpx','height': '58rpx'}" name="待收货"></mwarehouse-btn>
-                <mwarehouse-btn :iconStyle="{'width': '50rpx','height': '60rpx'}" name="已收货"></mwarehouse-btn>
-                <mwarehouse-btn :iconStyle="{'width': '54rpx','height': '44rpx'}" name="退款"></mwarehouse-btn>
+                <mwarehouse-btn :iconStyle="{'width': '52rpx','height': '62rpx'}" @gotoPage="gotoPage('待发货')" name="待发货"></mwarehouse-btn>
+                <mwarehouse-btn :iconStyle="{'width': '58rpx','height': '58rpx'}" @gotoPage="gotoPage('待收货')" name="待收货"></mwarehouse-btn>
+                <mwarehouse-btn :iconStyle="{'width': '50rpx','height': '60rpx'}" @gotoPage="gotoPage('已收货')" name="已收货"></mwarehouse-btn>
+                <mwarehouse-btn :iconStyle="{'width': '54rpx','height': '44rpx'}" @gotoPage="gotoPage('退款')" name="退款"></mwarehouse-btn>
               </view>
             </view>
           </view>
@@ -61,9 +61,9 @@
               src="http://dbj.dragonn.top/static/mp/dabanjia/images/decorate/service-card-top.svg">
             </image>
             <view class="my-decorate-service">
-              <view class="service-title flex-space-between-row" @click="goToMyDecorate">
+              <view class="service-title flex-space-between-row">
                 <text class="t">我的装修服务</text>
-                <view class="r flex-start-row">
+                <view class="r flex-start-row" @click="goToMyDecorate">
                   <text>查看全部</text>
                   <image src="http://dbj.dragonn.top/static/mp/dabanjia/images/decorate/ic_more.svg">
                   </image>
@@ -320,6 +320,22 @@
         uni.navigateTo({
           url: "/sub-decorate/pages/my-decorate/my-decorate",
         });
+      },
+      goToMyWarehouse() {
+        uni.navigateTo({
+          url: "/sub-decorate/pages/warehouse-list/warehouse-list",
+        });
+      },
+      gotoPage(value) {
+        if(value === '退款') {
+          uni.navigateTo({
+            url: "/sub-decorate/pages/warehouse-refund/warehouse-refund"
+          })
+        } else {
+          uni.navigateTo({
+            url: "/sub-decorate/pages/warehouse-list/warehouse-list"
+          })
+        }
       },
       getHouses() {
         queryEstates({
