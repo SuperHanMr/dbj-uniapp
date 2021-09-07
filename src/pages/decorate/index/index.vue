@@ -25,11 +25,9 @@
 
         <view class="uni-padding-wrap">
           <view class="uni-title">{{ currentHouse.housingEstate }}{{currentHouse.address}}</view>
-          <view class="design" @click="goDesignPicture">
-            <image class="icon"></image>
-            <view class="text">设计图</view>
-            <image class="gotopage" src="http://dbj.dragonn.top/static/mp/dabanjia/images/decorate/ic_more.svg">
-            </image>
+          <view class="picture-btn-wrap">
+            <picture-btn class="p-i-t" text="量房图" @gotoPage="goDesignPicture"></picture-btn>
+            <picture-btn text="设计图" @gotoPage="goDesignPicture"></picture-btn>
           </view>
         </view>
 
@@ -38,14 +36,37 @@
       <view class="scroll-view flex-1">
         <scroll-view :scroll-top="scrollTop" scroll-y="true" class="scroll-Y" @scroll="scroll"
           scroll-with-animation="true" :style="{height: viewHieght + 'rpx'}">
+          <!-- 我的仓库 -->
           <view class="my-decorate-service-wrap">
             <image mode="aspectFit" class="top-bg"
               src="http://dbj.dragonn.top/static/mp/dabanjia/images/decorate/service-card-top.svg">
             </image>
             <view class="my-decorate-service">
-              <view class="service-title flex-space-between-row" @click="goToMyDecorate">
+              <view class="service-title flex-space-between-row">
+                <text class="t">我的仓库</text>
+                <view class="r flex-start-row" @click="goToMyWarehouse">
+                  <text>查看全部</text>
+                  <image src="http://dbj.dragonn.top/static/mp/dabanjia/images/decorate/ic_more.svg">
+                  </image>
+                </view>
+              </view>
+              <view class="my-warehouse">
+                <mwarehouse-btn :iconStyle="{'width': '52rpx','height': '62rpx'}" @gotoPage="gotoPage('待发货')" name="待发货"></mwarehouse-btn>
+                <mwarehouse-btn :iconStyle="{'width': '58rpx','height': '58rpx'}" @gotoPage="gotoPage('待收货')" name="待收货"></mwarehouse-btn>
+                <mwarehouse-btn :iconStyle="{'width': '50rpx','height': '60rpx'}" @gotoPage="gotoPage('已收货')" name="已收货"></mwarehouse-btn>
+                <mwarehouse-btn :iconStyle="{'width': '54rpx','height': '44rpx'}" @gotoPage="gotoPage('退款')" name="退款"></mwarehouse-btn>
+              </view>
+            </view>
+          </view>
+          <!-- 我的装修服务 -->
+          <view class="my-decorate-service-wrap">
+            <image mode="aspectFit" class="top-bg"
+              src="http://dbj.dragonn.top/static/mp/dabanjia/images/decorate/service-card-top.svg">
+            </image>
+            <view class="my-decorate-service">
+              <view class="service-title flex-space-between-row">
                 <text class="t">我的装修服务</text>
-                <view class="r flex-start-row">
+                <view class="r flex-start-row" @click="goToMyDecorate">
                   <text>查看全部</text>
                   <image src="http://dbj.dragonn.top/static/mp/dabanjia/images/decorate/ic_more.svg">
                   </image>
@@ -60,16 +81,18 @@
               </service-item>
               <service-item :status="DECTORE_DICT.uncheck" itemName="精算服务" statusName="待确认精算师">
               </service-item>
+              <service-item :status="DECTORE_DICT.inservice" itemName="管家服务" statusName="服务中">
+              </service-item>
             </view>
           </view>
           <view class="tips-design-actuary">
             <view class="tips">
               购买相关服务 即刻开启装修
             </view>
-            <guide-card cardType="service" imageUrl="http://iph.href.lu/702x160?text=设计服务&fg=EB7662&bg=FFE2DD"
+            <guide-card cardType="service" imageUrl="http://iph.href.lu/702x160?text=702x160&fg=EB7662&bg=FFE2DD"
               @buyNow="buyServiceNow">
             </guide-card>
-            <guide-card cardType="actuary" imageUrl="http://iph.href.lu/702x160?text=精算服务&fg=4173c8&bg=d0e0fa"
+            <guide-card cardType="actuary" imageUrl="http://iph.href.lu/702x160?text=702x160&fg=4173c8&bg=d0e0fa"
               @buyNow="buyServiceNow">
             </guide-card>
           </view>
@@ -82,16 +105,15 @@
           <decorate-notice @touchmove.stop.prevent="()=>false" v-if="noticeActive" @closeNotice='closeNotice'
             class="decorate-notice"></decorate-notice>
           <view class="link">
-						<button @click="gonohouse">无房屋无服入口</button>
-						<button @click="gonohousedecatore">无房屋无服务装修</button>
-						<button @click="gonohousecheck">无房屋无服务验房</button>
-						<button @click="checkHouseRemind">验房提醒</button>
-
-					</view>
+            <button @click="gonohouse">无房屋无服入口</button>
+            <button @click="gonohousedecatore">无房屋无服务装修</button>
+            <button @click="gonohousecheck">无房屋无服务验房</button>
+            <button @click="checkHouseRemind">验房提醒</button>
+          </view>
         </scroll-view>
       </view>
-      <drag-button-follow :style.sync="style" @btnClick='openNotice' :follow='`left,right`'
-        className="drag-button" class="drag-button">
+      <drag-button-follow :style.sync="style" @btnClick='openNotice' :follow='`left,right`' className="drag-button"
+        class="drag-button">
         <view>
           <text>消息</text>
           <text style="color: red;">2</text>
@@ -117,12 +139,17 @@
     SERVICE_TYPE
   } from "../../../utils/dict.js"
   import GuideCard from "../../../components/guide-card/guide-card.vue"
+  import PictureBtn from "../../../components/picture-btn/picture-btn.vue"
+
+  import MwarehouseBtn from "../../../components/mwarehouse-btn/mwarehouse-btn.vue"
   export default {
     components: {
       HouseSwitch,
       ServiceItem,
       GuideCard,
-      NoService
+      NoService,
+      PictureBtn,
+      MwarehouseBtn
     },
     onLoad() {
       let _this = this
@@ -267,11 +294,6 @@
           url: "/sub-decorate/pages/no-house-checkhouse/no-house-checkhouse"
         })
       },
-      gonohavehouse() {
-        uni.navigateTo({
-          url: "/sub-decorate/pages/have-house-no-service/have-house-no-service"
-        })
-      },
       gonohouse() {
         uni.navigateTo({
           url: "/sub-decorate/pages/no-house/no-house"
@@ -294,15 +316,26 @@
           url: "/sub-decorate/pages/add-house/add-house",
         });
       },
-      goDesignPicture() {
-        uni.navigateTo({
-          url: "/sub-decorate/pages/design-picture/design-picture",
-        });
-      },
       goToMyDecorate() {
         uni.navigateTo({
           url: "/sub-decorate/pages/my-decorate/my-decorate",
         });
+      },
+      goToMyWarehouse() {
+        uni.navigateTo({
+          url: "/sub-decorate/pages/warehouse-list/warehouse-list",
+        });
+      },
+      gotoPage(value) {
+        if(value === '退款') {
+          uni.navigateTo({
+            url: "/sub-decorate/pages/warehouse-refund/warehouse-refund"
+          })
+        } else {
+          uni.navigateTo({
+            url: "/sub-decorate/pages/warehouse-list/warehouse-list"
+          })
+        }
       },
       getHouses() {
         queryEstates({
@@ -315,7 +348,7 @@
           //    } else {
           //      getApp().globalData.houses = data;
           // uni.navigateTo({
-          //   url: "/pages/decorate/have-house-no-service/have-house-no-service",
+          //   url: "",
           // });
           //    }
           getApp().globalData.houses = data;
@@ -481,7 +514,6 @@
       height: 182rpx;
 
       .uni-title {
-        // width: 314rpx;
         height: 34rpx;
         font-size: 24rpx;
         font-family: PingFangSC, PingFangSC-Regular;
@@ -492,52 +524,25 @@
         margin-bottom: 40rpx;
       }
     }
-
-    .design {
-      display: flex;
-      justify-content: center;
-      flex-direction: row;
-      align-items: center;
-      width: 146rpx;
-      height: 48rpx;
-      background: #ffffff;
-      border-radius: 25rpx;
-      border-radius: 12rpx;
-
-      .icon {
-        height: 32rpx;
-        width: 32rpx;
-        margin-right: 8rpx;
-        border-radius: 50%;
-        box-sizing: border-box;
-        border: 2rpx solid #666;
-      }
-
-      view.text {
-        height: 32rpx;
-        font-size: 22rpx;
-        font-family: PingFangSC, PingFangSC-Regular;
-        font-weight: 400;
-        text-align: left;
-        color: #333333;
-        line-height: 32rpx;
-        margin-right: 8rpx;
-      }
-
-      image.gotopage {
-        height: 24rpx;
-        width: 24rpx;
-      }
-    }
   }
 
   .my-decorate-service-wrap {
     position: relative;
-    margin: 0 24rpx;
+    margin: 0 24rpx 24rpx;
     background: #ffffff;
     border-radius: 24rpx;
     box-shadow: 0rpx 2rpx 20rpx 0rpx rgba(0, 0, 0, 0.05);
     min-height: 256rpx;
+  }
+
+  .my-warehouse {
+    display: flex;
+    height: 134rpx;
+    justify-content: space-between;
+    flex-direction: row;
+    align-items: flex-end;
+    padding: 0 48rpx 40rpx;
+    background: #ffffff;
   }
 
   .my-decorate-service {
@@ -642,8 +647,18 @@
       color: #333333;
       line-height: 40rpx;
       letter-spacing: 2rpx;
-      padding-top: 58rpx;
+      padding-top: 34rpx;
       margin-bottom: 24rpx;
+    }
+  }
+  
+  .picture-btn-wrap {
+    display: flex;
+    justify-content: flex-start;
+    flex-direction: row;
+    justify-items: center;
+    .p-i-t {
+      margin-right: 24rpx;
     }
   }
 </style>

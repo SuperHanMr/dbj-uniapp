@@ -3,7 +3,7 @@
 		<image class="ic-location" src="http://dbj.dragonn.top/static/mp/dabanjia/images/decorate/ic_location.svg"></image>
 		<view class="house-info">
 			<view class="address">{{houseData.housingEstate}}</view>
-			<view class="area">面积：{{houseData.area || 89}}m²</view>
+			<view class="area">面积：{{houseData.insideArea}}m²</view>
 		</view>
 		<image class="switch-house" src="http://dbj.dragonn.top/static/mp/dabanjia/images/decorate/ic_more.svg" @click="changCurrentHouse"></image>
 	</view>

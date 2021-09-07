@@ -18,11 +18,7 @@
 				</scroll-view>
 			</swiper-item>
 		</swiper>
-		<view v-if="currentIndex==0" class="bottom-btn" :style="{bottom:systemBottom}">
-			<view class="btn-item">
-				要货
-			</view>
-		</view>
+		<bottom-btn v-if="currentIndex==0" btnContent="要货" @subimt="toRequire"></bottom-btn>
 	</view>
 </template>
 
@@ -75,7 +71,6 @@
 				tabList: ["待发货", "待收款", "已收货", "退款"],
 				triggered: false, //控制刷新显示字段
 				currentIndex: 0,
-				systemBottom: "",
 			};
 		},
 		computed: {
@@ -91,15 +86,16 @@
 				}
 			},
 		},
-		onLoad() {
-			const menuButtonInfo = uni.getMenuButtonBoundingClientRect();
-			this.systemBottom = menuButtonInfo.bottom + "rpx";
-		},
 		methods: {
 			toDetail(e) {
 				uni.navigateTo({
 					url: "/sub-decorate/pages/warehouse-refund-detail/warehouse-refund-detail",
 				});
+			},
+			toRequire(){
+				uni.navigateTo({
+					url:"/sub-decorate/pages/require-goods/require-goods"
+				})
 			},
 			toRefund(){
 				uni.navigateTo({
@@ -199,26 +195,5 @@
 		height: 100%;
 	}
 
-	.bottom-btn {
-		position: fixed;
-		left: 0;
-		right: 0;
-		height: 136rpx;
-		width: 100%;
-		background-color: #FFF;
-		display: flex;
-		justify-content: center;
-		align-items: center;
-
-		.btn-item {
-			width: 686rpx;
-			height: 88rpx;
-			line-height: 88rpx;
-			text-align: center;
-			color: #ffffff;
-			font-size: 32rpx;
-			background: linear-gradient(135deg, #00c2b2, #00c2bf);
-			border-radius: 12rpx;
-		}
-	}
+	
 </style>

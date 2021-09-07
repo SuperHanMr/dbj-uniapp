@@ -113,12 +113,7 @@
 			</view>
 		</view>
 		
-		
-		<view  class="bottom-btn" :style="{bottom:systemBottom}">
-			<view class="btn-item">
-				确认收货
-			</view>
-		</view>
+		<bottom-btn btnContent="确认收货"></bottom-btn>
 	</view>
 </template>
 
@@ -126,12 +121,9 @@
 	export default {
 		data() {
 			return {
-				systemBottom: ''
 			}
 		},
 		onLoad() {
-			const menuButtonInfo = uni.getMenuButtonBoundingClientRect();
-			this.systemBottom = menuButtonInfo.bottom + "rpx";
 		},
 		methods: {
 			copy() {
@@ -236,26 +228,5 @@
 			}
 		}
 	}
-	.bottom-btn {
-		position: fixed;
-		left: 0;
-		right: 0;
-		height: 136rpx;
-		width: 100%;
-		background-color: #FFF;
-		display: flex;
-		justify-content: center;
-		align-items: center;
 	
-		.btn-item {
-			width: 686rpx;
-			height: 88rpx;
-			line-height: 88rpx;
-			text-align: center;
-			color: #ffffff;
-			font-size: 32rpx;
-			background: linear-gradient(135deg, #00c2b2, #00c2bf);
-			border-radius: 12rpx;
-		}
-	}
 </style>

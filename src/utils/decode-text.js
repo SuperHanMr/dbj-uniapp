@@ -1,4 +1,4 @@
-import { emojiMap } from './emojiMap'
+import { emojiMap } from './emoji-map.js'
 /**
  * 解码文本消息中的表情和链接
  * @param {string} text

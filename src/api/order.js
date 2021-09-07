@@ -1,8 +1,9 @@
 
 import request from '../utils/request';
 
-export function orderList(params){
-    return request.get(`/order/app/order/list`,{params});
+//我的-订单列表
+export function getOrderList(params){
+    return request.get(`/order-center/app/order/list`,{params});
 }
 
 export function orderDetail(params){
@@ -16,6 +17,10 @@ export function orderPay(params){
 
 
 // 我的-订单-退款-退款列表
-export function refundList(params){
-	return request.get(`/order/app/order/refundList`,params)
+export function getRefundList(params){
+	return request.get(`/order-center/app/order/refundList`,{params})
+}
+//我的-订单-退款-退款详情
+export function getRefundDetail(params){
+	return request.get(`/order-center/app/order/refundDetail`,{params})
 }

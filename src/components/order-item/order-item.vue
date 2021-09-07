@@ -10,15 +10,22 @@
 			<view class="name-attr">
 				<view class="text">
 					<text class="icon">物品</text>
-					<text class="name">打扮家的爆款产品</text>					
+					<text class="name">打扮家的爆款产品绝对值得购买哈哈哈哈哈哈哈哈哈哈哈nice nice nice nice nice</text>					
 				</view>
 				<view class="attr">
 					<text style="margin-right: 24rpx;">白色</text>
 					<text>2.0m/根</text>
 				</view>						
 			</view>
+			
 			<view class="common-price">
 				<view class="product-price">
+					<text style="margin-right: 8rpx;font-size: 22rpx;">实付</text>
+					<text style="font-size:22rpx;">￥</text>
+					<text>28.</text>
+					<text style="font-size:22rpx;">00</text>
+				</view>
+				<view  class="product-price" style="color: #999999;">
 					<text style="font-size:22rpx;">￥</text>
 					<text>28.</text>
 					<text style="font-size:22rpx;">00</text>
@@ -36,7 +43,7 @@
 		props:{
 			paddingBottom:{
 				type: Number,
-				default:34,
+				default:32,
 			},
 			iconStatus:{
 				type:Number,
@@ -106,6 +113,7 @@
 					-webkit-box-orient: vertical;
 					font-size: 26rpx;
 					line-height: 36 rpx;
+					max-width: 349rpx;
 					.icon{
 						width: 60rpx;
 						height: 30rpx;
@@ -140,8 +148,9 @@
 				.product-price {
 					height: 32rpx;
 					font-size: 32rpx;
-					margin-bottom: 16rpx;
+					margin-bottom: 12rpx;
 				}
+				
 			}
 		}
 	}
