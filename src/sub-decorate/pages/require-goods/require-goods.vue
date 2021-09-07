@@ -51,7 +51,8 @@
 			</view>
 			<view class="cart-content">
 				<view v-for="(cart, cartIndex) in cartList" :key="cartIndex">
-					<goods-item :cartList="cartList" :item="cart" @change="changeFromCart($event,cartIndex)"></goods-item>
+					<goods-item :cartList="cartList" :item="cart" @change="changeFromCart($event,cartIndex)">
+					</goods-item>
 				</view>
 
 			</view>
@@ -61,7 +62,7 @@
 						{{cartCount}}
 					</view>
 				</view>
-				<view class="btn"  @click="toApply">
+				<view class="btn" @click="toApply">
 					要货
 				</view>
 			</view>
@@ -162,12 +163,13 @@
 				return count
 			}
 		},
-		watch:{
-			cartList:{
-				handler(now,pre){
+		watch: {
+			cartList: {
+				handler(now, pre) {
+					console.log('!!!!!!!!1');
 					console.log(now);
 				},
-				deep:true
+				deep: true
 			}
 		},
 		onLoad() {
@@ -176,29 +178,30 @@
 			this.menuBottom = menuButtonInfo.bottom
 		},
 		methods: {
-			toApply(){
+			toApply() {
 				uni.navigateTo({
-					url:'/sub-decorate/pages/require-goods-apply/require-goods-apply'
+					url: '/sub-decorate/pages/require-goods-apply/require-goods-apply'
 				})
 			},
 			openCart() {
 				this.$refs.popup.open();
 			},
 			removeAll() {
-				this.cartList.splice(0,this.cartList.length);
-				this.goodsList[0].children[0].count=0;
+				this.cartList.splice(0, this.cartList.length);
+				this.goodsList[0].children[0].count = 0;
 				let goodsList = this.goodsList;
-				this.goodsList=[];
-				this.goodsList=goodsList;
+				this.goodsList = [];
+				this.goodsList = goodsList;
 				this.$refs.popup.close();
 
 			},
 			categoryClickMain(index) {
 				this.categoryActive = index;
 			},
-			changeFromCart(item,index){
+			changeFromCart(item, index) {
 				console.log(item);
-				this.cartList[index]=item;
+				// this.cartList[index] = item;
+				this.$set(this.cartList,index,item);
 			},
 			onChange(item) {
 
