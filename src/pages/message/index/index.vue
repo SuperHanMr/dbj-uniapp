@@ -66,7 +66,6 @@
     methods: {
       onUpdateConversationList(event) {
         let conversationList = event.data || [];
-        console.log("conversationList  update:", conversationList);
         this.$store.commit("updateConversationList", conversationList);
       }
     }
@@ -74,6 +73,10 @@
 </script>
 
 <style>
+  .webview {
+    height: 200px;
+    width: 100%;
+  }
   .im-container {
     width: 100%;
     height: 100%;

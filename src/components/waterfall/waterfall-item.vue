@@ -1,5 +1,7 @@
 <template>
   <view class="waterfall-item" @click="toDetail(item)">
+		<view class="withdraw-container" />
+		<view class="case-withdraw-text">该内容已下架</view>
     <image
       class="product-check"
       src="../../static/images/product_unChecked.png"
@@ -22,19 +24,24 @@
 		>
 		</image>
    <view class="info-container" :class="{hasDown:isActive}">
-		<view class="withdraw-text">
+		<!-- <view class="withdraw-text">
 			商品已下架
-		</view>
+		</view> -->
     <view class="flex-row">
-      <text class="icon" :class="{iconDown:isActive}">物品</text>
+      <!-- <text class="icon" :class="{iconDown:isActive}">物品</text> -->
       <text class="title">
         {{ item.name }}
       </text>
+			
     </view>
-		<view class="price">
+		<!-- <view class="price">
 			<text>￥</text>
 			<text style="font-size: 34rpx;font-weight: 500;">3000</text>
 			<text>.00 /个</text>
+		</view> -->
+		<view class="avatar-name">
+			<image src="../../static/images/message/ic_interaction@2x.png" mode=""></image>
+			<text>小橘子干啊 小橘子干啊 小橘子干啊  </text>
 		</view>
    	
    </view>
@@ -79,6 +86,29 @@ export default {
   display: flex;
   flex-flow: column nowrap;
   position: relative;
+	.withdraw-container{
+		position: absolute;
+		width: 344rpx;
+		height: 100%;
+		border-radius: 16rpx;
+		background-color: rgba(0,0,0,0.7);
+		z-index: 1;
+	}
+	.case-withdraw-text{
+		position: absolute;
+		left: 0;
+		bottom: 44%;
+		width: 344rpx;
+		height: 44rpx;
+		line-height: 44rpx;
+		text-align: center;
+		color: #FFFFFF;
+		font-size: 32rpx;
+		font-weight: 500;
+		z-index: 1;
+	}
+	
+	
   .product-check {
     position: absolute;
     width: 60rpx;
@@ -106,7 +136,7 @@ export default {
 
 
 	.info-container{
-		padding: 16rpx 30rpx 20rpx 20rpx;
+		padding: 20rpx 16rpx 26rpx 16rpx;
 		position: relative;
 		color: #333333;
 		.withdraw-text{
@@ -165,6 +195,33 @@ export default {
 		.price{
 			margin-top: 22rpx;
 			font-size: 22rpx;
+		}
+		.avatar-name{
+			width: 312rpx;
+			display: flex;
+			flex-flow: row nowrap;
+			align-items: center;
+			margin-top: 18rpx;
+			flex: 1;
+			image{
+				width: 36rpx;
+				height: 36rpx;
+				border-radius: 50%;
+				object-fit: cover;
+				margin-right: 8rpx;
+			}
+			text{
+				font-size: 24rpx;
+				color: #999999;
+				height: 34rpx;
+				line-height: 34rpx;
+				max-width: 268rpx;
+				overflow: hidden;/*超出部分隐藏*/
+				white-space: nowrap;/*不换行*/
+				text-overflow:ellipsis;/*超出部分文字以...显示*/
+			}
+			
+			
 		}
 	}
 }

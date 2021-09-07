@@ -29,7 +29,8 @@
 	import DbjRadio from "../../components/dbj-radio/dbj-radio.vue";
 	import {
 		queryEstates,
-		getProductsSkusPage
+		getProductsSkusPage,
+    getServiceSku
 	} from "../../../api/decorate.js"
 	export default {
 		components: {
@@ -67,9 +68,35 @@
 		},
 		onShow() {
 			this.getMyHouseList();
-			this.getProductsSkusPage();
+			// this.getProductsSkusPage();
 		},
 		methods: {
+      getServiceSku() {
+        console.log(getApp().globalData)
+        getServiceSku({
+          codeKey: "inspection_default_service",
+          province_id: 1,
+          city_id: 1,
+          area_id: 1,
+          serveTypes: [2]
+        }).then(data => {
+          const {
+            noHouseCheckId
+          } = getApp().globalData
+          if (!noHouseCheckId) {
+            let checkHouseData = data.filter(t => t.serviceType === 1)
+            if(checkHouseData && checkHouseData.length > 0) {
+              this.checkHouse = {
+                ...designData[0],
+                title: "验房服务",
+                cardtype: "checkHouse",
+                checked: true,
+                insideArea: this.currentHouse.insideArea
+              }
+            }
+          }
+        })
+      },
 			getProductsSkusPage() {
 				getProductsSkusPage({
 					categoryTypeId: [4, 5, 6]
@@ -105,6 +132,7 @@
 					} else {
 						this.currentHouse = {}
 					}
+          this.getServiceSku()
 				})
 			},
 			gotopay() {

@@ -32,6 +32,13 @@
 					<image src="http://dbj.dragonn.top/static/mp/dabanjia/images/decorate/ic_more.svg"></image>
 				</view>
 			</view>
+      <view class="procsss flex-row-bet" v-if="itemName === '管家服务'">
+      	<view class="s0">工序支付</view>
+      	<view class="s1 flex-row-start">
+      		<view>部分支付</view>
+      		<image src="http://dbj.dragonn.top/static/mp/dabanjia/images/decorate/ic_more.svg"></image>
+      	</view>
+      </view>
 		</view>
 	</view>
 </template>

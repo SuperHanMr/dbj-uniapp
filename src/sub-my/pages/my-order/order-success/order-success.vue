@@ -3,6 +3,7 @@
     <!-- 订单完成/确认收货 -->
     <view class="order-container">
       <view class="order-status">
+				<view class="backgroundStyle" />
         <view class="status">
           <image
             src="@/static/order/ic_order_success@2x.png"
@@ -73,17 +74,22 @@ export default {
   height: 100%;
   overflow: auto;
   padding-bottom: 100rpx;
-  // background-color: skyblue;
   .order-container {
     .order-status {
-      width: 100%;
-      height: 140rpx;
-      color: #ffffff;
-      background-color: pink;
-      background-size: 100% 172rpx;
-      display: flex;
-      flex-flow: column nowrap;
-      align-items: center;
+			 width: 100%;
+			 height: 140rpx;
+			 color: #ffffff;
+			 background-size: 100% 172rpx;
+			 display: flex;
+			 flex-flow: column nowrap;
+			 align-items: center;
+			.backgroundStyle {
+			  position: absolute;
+			  z-index: -1;
+			  width: 100%;
+			  height: 172rpx;
+			  background-color:#23D5C6;
+			}
       .status {
         display: flex;
         flex-flow: row nowrap;

@@ -10,14 +10,17 @@ import {
 const message = {
   state: {
     cstServConv: {
+      conversationID: "NOTIFICATION-cstServ",
       type: "NOTIFICATION",
       name: "在线客服"
     },
     sysConv: {
+      conversationID: "NOTIFICATION-sys",
       type: "NOTIFICATION",
       name: "系统消息",
     },
     itaConv: {
+      conversationID: "NOTIFICATION-ita",
       type: "NOTIFICATION",
       name: "互动消息",
     },
@@ -27,10 +30,12 @@ const message = {
     conversationList: [],
     currentConversation: {},
     currentMessageList: [],
+    isAppendMessageList: false, //是否消息后面拼接新消息
     newMessageMap: {},
     messagePageSize: 15,
     nextReqMessageID: '',
     isCompleted: false, // 当前会话消息列表是否已经拉完了所有消息
+    isRequesting: false, //是否正在请求消息
   },
   mutations: {
     resetConversation(state) {
@@ -79,6 +84,7 @@ const message = {
         obj[msg.ID] = true;
         return obj;
       }, {})
+      state.isAppendMessageList = true;
       state.currentMessageList = state.currentMessageList.concat(list);
     },
   },
@@ -121,17 +127,21 @@ const message = {
      * @param {String} conversationID
      */
     requestMessageList(context, conversationID) {
+      console.log("requestMessageList", conversationID, context.state.isCompleted)
       if (context.state.isCompleted) {
         return Promise.resolve();
       }
       const { nextReqMessageID, messagePageSize, currentMessageList } = context.state
+      context.state.isRequesting = true;
       return getTim().getMessageList({ conversationID, nextReqMessageID, count: messagePageSize }).then(imReponse => {
         console.log("get message list:", conversationID, imReponse, 11111)
         // 更新messageID，续拉时要用到
         context.state.nextReqMessageID = imReponse.data.nextReqMessageID
         context.state.isCompleted = imReponse.data.isCompleted
+        context.state.isRequesting = imReponse.data.isRequesting
         // 更新当前消息列表，从头部插入
         context.state.currentMessageList = [...imReponse.data.messageList, ...currentMessageList]
+        context.state.isAppendMessageList = false;
       })
     },
     /**
@@ -153,11 +163,13 @@ const message = {
       }
       // 2.待切换的会话也进行已读上报
       getTim().setMessageRead({ conversationID }).catch(e => { })
-      context.state.currentConversation = {
-        conversationID
-      }
-      // 3.2 获取消息列表
-      context.dispatch('requestMessageList', conversationID);
+      // 3. 获取会话信息
+      return getTim().getConversationProfile(conversationID).then(({ data }) => {
+        // 3.1 更新当前会话
+        context.state.currentConversation = data.conversation;
+        // 3.2 获取消息列表
+        return context.dispatch('requestMessageList', conversationID);
+      });
     }
   }
 }

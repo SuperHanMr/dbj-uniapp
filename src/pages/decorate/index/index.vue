@@ -25,7 +25,10 @@
 
         <view class="uni-padding-wrap">
           <view class="uni-title">{{ currentHouse.housingEstate }}{{currentHouse.address}}</view>
-          <picture-btn text="设计图" @gotoPage="goDesignPicture"></picture-btn>
+          <view class="picture-btn-wrap">
+            <picture-btn class="p-i-t" text="量房图" @gotoPage="goDesignPicture"></picture-btn>
+            <picture-btn text="设计图" @gotoPage="goDesignPicture"></picture-btn>
+          </view>
         </view>
 
       </view>
@@ -78,16 +81,18 @@
               </service-item>
               <service-item :status="DECTORE_DICT.uncheck" itemName="精算服务" statusName="待确认精算师">
               </service-item>
+              <service-item :status="DECTORE_DICT.inservice" itemName="管家服务" statusName="服务中">
+              </service-item>
             </view>
           </view>
           <view class="tips-design-actuary">
             <view class="tips">
               购买相关服务 即刻开启装修
             </view>
-            <guide-card cardType="service" imageUrl="http://iph.href.lu/702x160?text=设计服务&fg=EB7662&bg=FFE2DD"
+            <guide-card cardType="service" imageUrl="http://iph.href.lu/702x160?text=702x160&fg=EB7662&bg=FFE2DD"
               @buyNow="buyServiceNow">
             </guide-card>
-            <guide-card cardType="actuary" imageUrl="http://iph.href.lu/702x160?text=精算服务&fg=4173c8&bg=d0e0fa"
+            <guide-card cardType="actuary" imageUrl="http://iph.href.lu/702x160?text=702x160&fg=4173c8&bg=d0e0fa"
               @buyNow="buyServiceNow">
             </guide-card>
           </view>
@@ -99,12 +104,12 @@
           </uni-popup>
           <decorate-notice @touchmove.stop.prevent="()=>false" v-if="noticeActive" @closeNotice='closeNotice'
             class="decorate-notice"></decorate-notice>
-          <!-- <view class="link">
+          <view class="link">
             <button @click="gonohouse">无房屋无服入口</button>
             <button @click="gonohousedecatore">无房屋无服务装修</button>
             <button @click="gonohousecheck">无房屋无服务验房</button>
             <button @click="checkHouseRemind">验房提醒</button>
-          </view> -->
+          </view>
         </scroll-view>
       </view>
       <drag-button-follow :style.sync="style" @btnClick='openNotice' :follow='`left,right`' className="drag-button"
@@ -289,11 +294,6 @@
           url: "/sub-decorate/pages/no-house-checkhouse/no-house-checkhouse"
         })
       },
-      gonohavehouse() {
-        uni.navigateTo({
-          url: "/sub-decorate/pages/have-house-no-service/have-house-no-service"
-        })
-      },
       gonohouse() {
         uni.navigateTo({
           url: "/sub-decorate/pages/no-house/no-house"
@@ -348,7 +348,7 @@
           //    } else {
           //      getApp().globalData.houses = data;
           // uni.navigateTo({
-          //   url: "/pages/decorate/have-house-no-service/have-house-no-service",
+          //   url: "",
           // });
           //    }
           getApp().globalData.houses = data;
@@ -649,6 +649,16 @@
       letter-spacing: 2rpx;
       padding-top: 34rpx;
       margin-bottom: 24rpx;
+    }
+  }
+  
+  .picture-btn-wrap {
+    display: flex;
+    justify-content: flex-start;
+    flex-direction: row;
+    justify-items: center;
+    .p-i-t {
+      margin-right: 24rpx;
     }
   }
 </style>

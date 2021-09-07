@@ -35,7 +35,7 @@
 
             <view
               class="order-container"
-              v-if="currentIndex==1"
+              v-if="currentIndex == 4"
               v-for="item in orderList"
               :key="item.id"
             >
@@ -50,9 +50,8 @@
                 </view>
                 <view
                   class="order-status"
-                  :class="{active:false}"
+                  :class="{active: item.orderStatus ==2 || item.orderStatus==3}"
                 >
-                  <!-- 代付款 -->
                   {{
 										item.orderStatus === 0
 										?"代付款"
@@ -61,7 +60,7 @@
 										:item.orderStatus === 2
 										?"已完成"
 										:item.orderStatus === 3
-										?"已关闭"
+										?"交易关闭"
 										:"1111"
 									}}
                 </view>
@@ -189,7 +188,7 @@
 						
 						
 
-            <view class="order-container">
+            <view class="order-container" >
               <view class="header">
                 <view class="store-name">
                   <text>不知道叫什么名字的店铺nizhidaomahahahahahahaha</text>
@@ -374,7 +373,7 @@
 
             </view>
 
-            <view class="order-container">
+            <view class="order-container" @click="toDetail()">
               <view class="header">
                 <view class="store-name">
                   <text>多店铺同时下单的标题样式真复杂</text>
@@ -507,43 +506,18 @@ export default {
       isActive: true,
       currentIndex: 1,
       query: {},
-      orderStatus: 0, //订单状态（-1全部,0待付款，1进行中，2已完成 3已关闭）
+      orderStatus: -1, //订单状态（-1全部,0待付款，1进行中，2已完成 3已关闭）
       rows: 15,
       lastId: -1,
       customerId: 3907,
       orderList: [],
     };
   },
-  onShow() {
-    this.getOrderList();
-  },
+  
   computed: {
-	
-		
-		
-		
-    currentList() {
-      if (this.currentIndex == 0) {
-        //全部
-        this.orderStatus = -1;
-        return this.list;
-      } else if (this.currentIndex == 1) {
-        //代付款
-        this.orderStatus = 0;
-        return this.list;
-      } else if (this.currentIndex == 2) {
-        // 进行中
-        this.orderStatus = 1;
-        return this.list;
-      } else if (this.currentIndex == 3) {
-        // 已完成
-        this.orderStatus = 2;
-        return this.list;
-      } else {
-        //已关闭
-        this.orderStatus = 3;
-        return this.list;
-      }
+		currentList() {
+			this.orderStatus = this.currentIndex -1
+			this.getOrderList()
     },
 		
   },
@@ -563,7 +537,8 @@ export default {
     toDetail(item) {
       console.log(item);
       uni.navigateTo({
-        url: "order-in-progress/order-in-progress?orderNo=" + item.id,
+				url:"order-failed/order-failed?type=close"
+        // url: "order-in-progress/order-in-progress?orderNo=" + item.id,
       });
     },
 
@@ -578,7 +553,7 @@ export default {
         orderStatus: this.orderStatus,
         lastId: this.lastId,
         rows: this.rows,
-        customerId: this.customerId,
+        // customerId: this.customerId,
       });
       console.log(caseItem, "caseItem");
       this.orderList = this.orderList.concat(caseItem);
@@ -744,11 +719,12 @@ export default {
       align-items: flex-end;
       color: #999;
       font-size: 22rpx;
-      margin-left: 24rpx;
+			font-weight: 500;
+			margin-left: 24rpx;
       .product-price {
         height: 32rpx;
         font-size: 32rpx;
-        margin-bottom: 8rpx;
+        margin-bottom: 16rpx;
         color: #333333;
       }
     }

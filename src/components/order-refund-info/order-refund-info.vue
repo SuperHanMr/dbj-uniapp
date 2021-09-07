@@ -8,6 +8,10 @@
 			<text class="item-body">退款原因退款原因退款原因退款原因退款原因退款原因退款原因退款原因退款原因退款原因退款原因退款原因退款原因退款原因退款原因退款原因退款原因退款原因退款原因退款原因</text>
 		</view>
 		<view class="item">
+			<text class="item-header">退款类型：</text>
+			<text class="item-body">仅退款(退库存)</text>
+		</view>
+		<view class="item">
 			<text class="item-header">退款金额：</text>
 			<text class="item-body">￥320.00</text>
 		</view>
@@ -22,6 +26,10 @@
 				<view class="copy-style">复制</view>
 			</view>
 		</view>
+		<view class="item">
+			<text class="item-header">备注信息：</text>
+			<text class="item-body">退款原因是。。退款原因是。。退款原因是。。退款原因是。。退款原因是。。退款原因是。。退款原因是。。</text>
+		</view>
 	</view>
 	
 </template>
@@ -29,6 +37,12 @@
 <script>
 	export default {
 		name:"order-refund-info",
+		props:{
+			data:{
+				type:Object,
+				// required:true,
+			}
+		},
 		data() {
 			return {
 				

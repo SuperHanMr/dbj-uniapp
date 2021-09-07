@@ -39,13 +39,20 @@
 				"navigationBarBackgroundColor": "#ffffff"
 			}
 		},
-		{
-			"path": "pages/message/conversation/conversation",
-			"style": {
-				"navigationBarTitleText": "消息详情",
-				"navigationBarBackgroundColor": "#ffffff"
-			}
-		},
+    {
+      "path": "pages/message/conversation/conversation",
+      "style": {
+        "navigationBarTitleText": "",
+        "navigationBarBackgroundColor": "#ffffff"
+      }
+    },
+    {
+      "path": "pages/message/conversation/conversation-noti",
+      "style": {
+        "navigationBarTitleText": "",
+        "navigationBarBackgroundColor": "#ffffff"
+      }
+    },
 		{
 			"path": "pages/my/index/index",
 			"style": {
@@ -166,7 +173,12 @@
 				"name": "hcl", //模式名称
 				"path": "/sub-decorate/pages/require-history/require-history", //启动页面，必选
 				"query": "" //启动参数，在页面的onLoad函数里面得到
-			}
+			},
+      {
+      	"name": "lyb", //模式名称
+      	"path": "/sub-decorate/pages/checkResult/checkResult", //启动页面，必选
+      	"query": "" //启动参数，在页面的onLoad函数里面得到
+      }
 		]
 	},
 	"subPackages": [{
@@ -263,7 +275,8 @@
 					"path": "pages/my-order/success/success",
 					"style": {
 						"navigationBarTitleText": "",
-						"enablePullDownRefresh": false
+						"enablePullDownRefresh": false,
+						"navigationStyle": "custom"
 					}
 				},
 				{
@@ -447,12 +460,6 @@
 						"transparentTitle": "auto",
 						"navigationStyle": "custom",
 						"usingComponents": {}
-					}
-				},
-				{
-					"path": "pages/have-house-no-service/have-house-no-service",
-					"style": {
-						"navigationBarTitleText": "有房屋无服务"
 					}
 				},
 				{

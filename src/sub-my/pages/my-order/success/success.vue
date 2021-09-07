@@ -1,7 +1,6 @@
 <template>
   <view class="container">
     <custom-navbar
-      title="????AAAA"
       :opacity="scrollTop/100"
       :showBack="false"
     >
@@ -9,10 +8,10 @@
 
     <view
       class="basic-info"
-      :style="{backgroundImage:`url(${bgImg})`,backgroundSize: '100% 100%'}"
+      :style="{backgroundImage:`url(http://dbj.dragonn.top/static/mp/dabanjia/images/my/bg_img.png)`,backgroundSize: '100% 100%'}"
     >
       <image
-        src="../../../../static/order/complete.png"
+        src="../../../static/complete.png"
         mode=""
       ></image>
       <!-- <view class="info">
@@ -41,12 +40,9 @@
 </template>
 
 <script>
-import { bgImg } from "../../../../static/order/success@2x.png";
 export default {
   data() {
-    return {
-      bgImg: bgImg,
-    };
+    return {};
   },
   methods: {},
 };
@@ -58,7 +54,6 @@ export default {
   .basic-info {
     height: 600rpx;
     display: flex;
-    background-color: skyblue;
     flex-flow: column nowrap;
     align-items: center;
     image {
@@ -104,10 +99,11 @@ export default {
     }
 
     .complete-button {
-      margin-top: 200rpx;
+      margin-top: 140rpx;
       line-height: 88rpx;
       color: #ffffff;
       background: linear-gradient(135deg, #36d9cd 0%, #28c6c6 100%);
+      background-size: 100% 100%;
     }
     .detail-button {
       margin-top: 40rpx;
