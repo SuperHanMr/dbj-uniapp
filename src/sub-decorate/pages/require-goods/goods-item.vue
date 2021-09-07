@@ -11,7 +11,7 @@
 					{{item.sub}}
 				</view>
 				<view class="num-input">
-					<custom-number-box @change="onChange" :onlyShowAdd="true" :value="value" ></custom-number-box>
+					<custom-number-box @change="onChange" :onlyShowAdd="true" :value="value"></custom-number-box>
 				</view>
 			</view>
 		</view>
@@ -37,15 +37,15 @@
 		watch: {
 			cartList: {
 				handler(e, pre) {
-					let haveCurrent=false;
-					e.forEach(curr=>{
-						if(curr.id==this.item.id){
-							haveCurrent=true
-							this.value=curr.count
+					let haveCurrent = false;
+					e.forEach(curr => {
+						if (curr.id == this.item.id) {
+							haveCurrent = true
+							this.value = curr.count
 						}
 					});
-					if(!haveCurrent){
-						this.value=0;
+					if (!haveCurrent) {
+						this.value = 0;
 					}
 				},
 				deep: true
@@ -54,7 +54,7 @@
 		},
 		data() {
 			return {
-				value:0
+				value: 0
 			}
 		},
 

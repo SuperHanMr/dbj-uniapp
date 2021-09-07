@@ -57,8 +57,8 @@
 		},
 		methods: {
 			submit() {
-				uni.navigateTo({
-					url:'../require-history/require-history'
+				uni.redirectTo({
+					url:'../require-success/require-success'
 				})
 			}
 		}

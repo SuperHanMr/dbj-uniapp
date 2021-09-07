@@ -204,7 +204,6 @@
 				this.$set(this.cartList,index,item);
 			},
 			onChange(item) {
-
 				let haveItem = false;
 				this.cartList.forEach(e => {
 					if (e.id == item.id) {
