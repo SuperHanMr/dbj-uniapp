@@ -164,7 +164,7 @@
 			},
 			{
 				"name": "hcl", //模式名称
-				"path": "/sub-decorate/pages/require-goods/require-goods", //启动页面，必选
+				"path": "/sub-decorate/pages/require-history/require-history", //启动页面，必选
 				"query": "" //启动参数，在页面的onLoad函数里面得到
 			}
 		]
@@ -573,17 +573,24 @@
 						"navigationBarTitleText": "要货",
 						"enablePullDownRefresh": false
 					}
-				}, {
+				},
+				{
 					"path": "pages/require-goods-apply/require-goods-apply",
 					"style": {
 						"navigationBarTitleText": "要货申请",
 						"enablePullDownRefresh": false
 					}
-
-				}, {
+				},
+				{
 					"path": "pages/require-history/require-history",
 					"style": {
 						"navigationBarTitleText": "要货记录",
+						"enablePullDownRefresh": false
+					}
+				}, {
+					"path": "pages/require-detail/require-detail",
+					"style": {
+						"navigationBarTitleText": "要货单详情",
 						"enablePullDownRefresh": false
 					}
 
