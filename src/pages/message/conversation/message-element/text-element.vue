@@ -10,7 +10,7 @@
 
 <script>
 import MessageBubble from "./message-bubble";
-import { decodeText } from "@/utils/decodeText";
+import { decodeText } from "@/utils/decode-text.js";
 
 export default {
   name: "TextElement",

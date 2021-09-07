@@ -11,13 +11,13 @@
 						</view>
 						<view class="money">
 							<text class="symbol fs-26">￥</text>
-							<text class="amount fs-38">{{selectSkuInfo[cbPrice] | toFixed2}}/{{selectSkuInfo[cbUnit]}}</text>
+							<text class="amount fs-38">{{selectSkuInfo[cbPrice]}}/{{selectSkuInfo[cbUnit]}}</text>
 						</view>
 						<view class="fs-24">
 							已选："{{selectSkuInfo[cbValue]}}"
 						</view>
 					</view>
-					<image class="close" src="../../static/shopping-cart/ic_closed_black@2x.png" click="show=true"></image>
+					<image class="close" src="../../../static/shopping-cart/ic_closed_black@2x.png" @click="closeSkuBox"></image>
 				</view>
 				<scroll-view class="sku-list" scroll-y="true">
 					<view class="sku-item container" v-for="(sku,sIndex) in mySpecifications" :key="sku[speId]">
@@ -26,18 +26,19 @@
 							<text 
 								class="sku-content-item" 
 								v-for="(item,index) in sku[speList]"
-								:key="index" 
+								:key="item.id" 
 								:style="{
 									borderColor: index===sku.sidx? '#35c4c4': '#fff',
 									color:index===sku.sidx?'#34c4c4':'#333333',
 									backgroundColor: index===sku.sidx?'#e8fafa':'#f5f5f5' 
 								}" 
-								@click="selectSku(sIndex,index)"
+								@click="selectSkuCli(sIndex,index)"
 							>{{item.value}}</text>
 						</view>
 					</view>
+					<view class="bottom-space"></view>
 				</scroll-view>
-
+				
 				<view class="confirm-btn container" @click="handleConfirm">确认</view>
 			</view>
 	</popup-bottom>
@@ -83,35 +84,26 @@
 			spuName: {
 				type: String,
 			},
+			productType: {
+				type: Number,
+				default: 1
+			},
 			combinationsProps: {
 				type: Object,
-				default(){
-					return {
-						id: 'id',
-						value: 'propValueIds',
-						image: 'imageUrl',
-						price: 'price',
-						unit:'unitName',
-					}
-				}
 			},
 			specificationsProps: {
 				type: Object,
-				default(){
-					return {
-						id: 'id',
-						list: 'values',
-						name: 'name'
-					}
-				}
 			},
+			defaultSpecIds: {
+				type: String,
+			}
 		},
 		data() {
 			return {
-				buyCount: 1,
 				selectedIndex: 0,
 				mySpecifications: [],
 				selectSkuInfo: {},
+				skuId:0
 			}
 		},
 		watch:{
@@ -130,7 +122,7 @@
 				return this.specificationsProps.name
 			},
 			cbValue() {
-				return this.combinationsProps.value
+				return this.combinationsProps.valueIds
 			},
 			cbImage() {
 				return this.combinationsProps.image
@@ -152,12 +144,17 @@
 			initSkuData() {
 				this.selectedIndex = this.defaultSelectIndex
 				this.selectSkuInfo = this.combinations[this.selectedIndex]
+				this.skuId = this.selectSkuInfo.id
 				this.mySpecifications = JSON.parse(JSON.stringify(this.specifications))
-				this.mySpecifications.forEach((item,idx) => {
+				this.mySpecifications.forEach((item,index) => {
 					//当前规格组合值
 					const selects = this.selectSkuInfo[this.cbValue].split(',')
-					//每类规格对应其列表的下标 并记录在属性sidx在mySpecifications的子对象中
-					const sIndex = item[this.speList].indexOf(selects[idx])
+					const Ids = item[this.speList].map(ele => {
+						return ele.id.toString()
+					})
+					console.log(Ids,selects)
+					
+					const sIndex = Ids.indexOf(selects[index])
 					if(sIndex === -1) {
 						uni.showToast({
 							title:"默认规格值不存在",
@@ -165,10 +162,11 @@
 						})
 						return
 					}
+					//每类规格对应其列表的下标 并记录在属性sidx在mySpecifications的子对象中
 					this.$set(item,'sidx',sIndex)
 				})
 			},
-			selectSku(sIndex,index) {
+			selectSkuCli(sIndex,index) {
 				this.mySpecifications[sIndex].sidx = index
 				const selectInfo = this.mySpecifications.reduce((prev,cur) => {
 					if(prev) {
@@ -176,27 +174,17 @@
 					}else {
 						return cur[this.speList][cur.sidx]
 					}
+					console.log(cur[this.speList][cur.sidx])
 				},'')
 				this.selectedIndex = this.combinations.findIndex(item => item[this.cbValue] === selectInfo)
+				console.log(selectInfo,this.selectedIndex)
 				this.selectSkuInfo = this.combinations[this.selectedIndex]
-				
-			},
-			handleBuyCount(type) {
-				if(type === 'minus') {
-					if(this.buyCount <= 1) return
-					this.buyCount = this.buyCount*1 - 1
-				}
-				if(type === 'add') {
-					this.buyCount = this.buyCount*1 + 1
-				}
 			},
 			closeSkuBox() {
 				this.$emit('close')
 			},
 			handleConfirm() {
-				const result = this.selectSkuInfo
-				result.count = this.buyCount*1
-				this.$emit('confirm', result)
+				this.$emit('confirm',this.skuId, this.selectSkuInfo.id)
 			}
 		}
 	}
@@ -295,7 +283,10 @@
 			}
 		}
 		.sku-list {
-			max-height: 500rpx;
+			max-height: 600rpx;
+			.bottom-space{
+				height: 400rpx;
+			}
 		}
 		.sku-item {
 			padding: 8rpx 0;

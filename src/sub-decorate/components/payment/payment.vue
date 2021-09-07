@@ -85,6 +85,7 @@
 			color: #333333;
 			vertical-align: bottom;
 			line-height: 48rpx;
+      flex: 1;
 		}
 
 		.flot {

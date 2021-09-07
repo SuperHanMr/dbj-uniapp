@@ -18,7 +18,7 @@
 				</scroll-view>
 			</swiper-item>
 		</swiper>
-		<bottom-btn v-if="currentIndex==0" btnContent="要货"></bottom-btn>
+		<bottom-btn v-if="currentIndex==0" btnContent="要货" @subimt="toRequire"></bottom-btn>
 	</view>
 </template>
 
@@ -91,6 +91,11 @@
 				uni.navigateTo({
 					url: "/sub-decorate/pages/warehouse-refund-detail/warehouse-refund-detail",
 				});
+			},
+			toRequire(){
+				uni.navigateTo({
+					url:"/sub-decorate/pages/require-goods/require-goods"
+				})
 			},
 			toRefund(){
 				uni.navigateTo({
