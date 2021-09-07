@@ -23,7 +23,7 @@
     justify-content: center;
     flex-direction: row;
     align-items: center;
-    width: 146rpx;
+    padding: 0 14rpx 0 8rpx;
     height: 48rpx;
     background: #ffffff;
     border-radius: 25rpx;
@@ -50,7 +50,7 @@
   }
 
   image.gotopage {
-    height: 24rpx;
-    width: 24rpx;
+    height: 12rpx;
+    width: 16rpx;
   }
 </style>
