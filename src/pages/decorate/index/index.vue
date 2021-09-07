@@ -1,6 +1,6 @@
 <template>
   <view class="decorate-index">
-    <image class="bg" mode="aspectFit" src="http://dbj.dragonn.top/static/mp/dabanjia/images/decorate/bg@2x.png">
+    <image class="bg-index" mode="aspectFit" src="http://dbj.dragonn.top/static/mp/dabanjia/images/decorate/bg@2x.png">
     </image>
     <view class="content flex-column">
       <view class="house-firend">
@@ -406,8 +406,11 @@
   .decorate-index {
     position: relative;
 
-    .bg {
+    .bg-index {
+      top: 0;
       width: 100%;
+      height: 480rpx;
+      position: fixed;
     }
   }
 
@@ -415,7 +418,8 @@
     width: 100%;
     height: 100%;
     position: relative;
-    margin-top: -304rpx;
+    margin-top: 176rpx;
+    z-index: 9;
     height: 100%;
   }
 
