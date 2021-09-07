@@ -1,39 +1,48 @@
 <template>
-	<view class="body-main" :style="{paddingBottom:paddingBottom +'rpx'}" @click="handleDetail()" >
-		<view class="pic">
-			<view class="icon-status1">
-				退款中
-			</view> 
-			<image src="../../wxcomponents/loginSDK/img/logo.0ccb88de.png" mode=""></image>
-		</view>
-		<view class="basic-info">
-			<view class="name-attr">
-				<view class="text">
-					<text class="icon">物品</text>
-					<text class="name">打扮家的爆款产品绝对值得购买哈哈哈哈哈哈哈哈哈哈哈nice nice nice nice nice</text>					
-				</view>
-				<view class="attr">
-					<text style="margin-right: 24rpx;">白色</text>
-					<text>2.0m/根</text>
-				</view>						
+	<view >
+		<view
+			v-for="(item,index) in dataList" 
+			:key="index"
+			class="body-main" 
+			:style="{paddingBottom:paddingBottom +'rpx'}" 
+			@click="handleDetail()" >
+			<view class="pic">
+				<view class="icon-status1">
+					退款中
+				</view> 
+				<image :src="item.imgUrl" mode=""></image>
 			</view>
-			
-			<view class="common-price">
-				<view class="product-price">
-					<text style="margin-right: 8rpx;font-size: 22rpx;">实付</text>
-					<text style="font-size:22rpx;">￥</text>
-					<text>28.</text>
-					<text style="font-size:22rpx;">00</text>
+			<view class="basic-info">
+				<view class="name-attr">
+					<view class="text">
+						<!-- <text class="icon">物品</text> -->
+						<text class="icon">{{item.goodsType==1?'服务':'物品'}}</text>
+						<text class="name">{{item.fullName}}</text>					
+					</view>
+					<view class="attr">
+						<text style="margin-right: 24rpx;">{{item.saleProperties}}</text>
+						<text>2.0m/根</text>
+					</view>						
 				</view>
-				<view  class="product-price" style="color: #999999;">
-					<text style="font-size:22rpx;">￥</text>
-					<text>28.</text>
-					<text style="font-size:22rpx;">00</text>
-				</view>
-				<view style="color: #999999;">共1件</view>
-			</view>	
+				
+				<view class="common-price">
+					<view class="product-price">
+						<text style="margin-right: 8rpx;font-size: 22rpx;">实付</text>
+						<text style="font-size:22rpx;">￥</text>
+						<text>{{handlePrice(item.actualIncomeAmount)[0]}}.</text>
+						<text style="font-size:22rpx;">{{handlePrice(item.actualIncomeAmount)[0]}}</text>
+					</view>
+					<view  class="product-price" style="color: #999999;">
+						<text style="font-size:22rpx;">￥</text>
+						<text>{{handlePrice(item.price)[0]}}.</text>
+						<text style="font-size:22rpx;">{{handlePrice(item.price)[1]}}</text>
+					</view>
+					<view style="color: #999999;">共{{item.number}}件</view>
+				</view>	
+			</view>
 		</view>
 	</view>
+	
 </template>
 
 <script>
@@ -48,6 +57,10 @@
 			iconStatus:{
 				type:Number,
 				default:0,
+			},
+			dataList:{
+				type:Array,
+				default:[]
 			}
 		},
 		data() {
@@ -59,7 +72,16 @@
 			handleDetail(){
 				console.log("dada")
 				this.$emit('handleDetail')
-			}
+			},
+			
+			handlePrice(price){
+				let list=String(price).split(".")
+				if(list.length==1){
+					return [list[0],"00"]
+				}else{
+					return[list[0],list[1]]
+				}
+			},
 		}
 	}
 </script>

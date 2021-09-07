@@ -27,7 +27,7 @@
 					<view style="flex:1">
 					</view>
 					<view class="">
-						<input style="color: #FF3347;font-size: 38rpx;width: 200rpx;text-align: end;" type="number"
+						<input style="color: #FF3347;font-size: 38rpx;width: 200rpx;text-align: end;" type="number" placeholder="请输入金额"
 							:value="num" />
 					</view>
 				</view>
@@ -63,7 +63,7 @@
 		data() {
 			return {
 				reason: '',
-				num: "0",
+				num: '',
 				remarks: ''
 			}
 		},
