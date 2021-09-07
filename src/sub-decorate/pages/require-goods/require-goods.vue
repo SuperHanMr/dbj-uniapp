@@ -26,7 +26,7 @@
 					<text class="menu3-title">{{menu3.name}}</text>
 					<scroll-view class="right-card" scroll-y="true">
 						<view v-for="(detail, detailK) in menu3['children']" :key="detailK">
-							<goods-item cartList="cartList" :item="detail" @change="onChange"></goods-item>
+							<goods-item :cartList="cartList" :item="detail" @change="onChange"></goods-item>
 						</view>
 					</scroll-view>
 				</view>
@@ -51,7 +51,7 @@
 			</view>
 			<view class="cart-content">
 				<view v-for="(cart, cartIndex) in cartList" :key="cartIndex">
-					<goods-item cartList="cartList" :item="cart" @change="onChange"></goods-item>
+					<goods-item :cartList="cartList" :item="cart" @change="changeFromCart($event,cartIndex)"></goods-item>
 				</view>
 
 			</view>
@@ -154,12 +154,20 @@
 		onShow() {},
 		computed: {
 			cartCount() {
+				console.log(this.cartList);
 				let count = 0;
 				this.cartList.map(e => {
 					count += e.count;
 				})
 				return count
-
+			}
+		},
+		watch:{
+			cartList:{
+				handler(now,pre){
+					console.log(now);
+				},
+				deep:true
 			}
 		},
 		onLoad() {
@@ -187,6 +195,10 @@
 			},
 			categoryClickMain(index) {
 				this.categoryActive = index;
+			},
+			changeFromCart(item,index){
+				console.log(item);
+				this.cartList[index]=item;
 			},
 			onChange(item) {
 

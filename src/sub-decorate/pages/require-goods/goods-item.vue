@@ -11,7 +11,7 @@
 					{{item.sub}}
 				</view>
 				<view class="num-input">
-					<custom-number-box @change="onChange" :onlyShowAdd="true" v-model="item.count"></custom-number-box>
+					<custom-number-box @change="onChange" :onlyShowAdd="true" :value="value" ></custom-number-box>
 				</view>
 			</view>
 		</view>
@@ -33,30 +33,37 @@
 				default: []
 			}
 		},
-	
-		watch:{
-			cartList(now,pre){
-				console.log(now);
-				if(!now.length){
-					item.count=0;
-				}
+
+		watch: {
+			cartList: {
+				handler(e, pre) {
+					let haveCurrent=false;
+					e.forEach(curr=>{
+						if(curr.id==this.item.id){
+							haveCurrent=true
+							this.value=curr.count
+						}
+					});
+					if(!haveCurrent){
+						this.value=0;
+					}
+				},
+				deep: true
 			}
+
 		},
 		data() {
-			return {}
+			return {
+				value:0
+			}
 		},
 
 		methods: {
-			onChange(e){
-				this.item.count=e
-				this.$emit('change',this.item);
+			onChange(e) {
+				this.item.count = e
+				this.$emit('change', this.item);
 			}
 		},
-		watch: {
-			tabIndex(v) {
-				this.categoryActive = 0
-			}
-		}
 	}
 </script>
 
