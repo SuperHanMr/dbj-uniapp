@@ -18,40 +18,39 @@
 </template>
 
 <script>
-  export default{
-    data(){
-      return{}
+export default {
+  data() {
+    return {};
+  },
+  methods: {
+    openModal() {
+      uni.showModal({
+        content: "是否确认量房方案",
+        success: (res) => {
+          if (res.confirm) {
+            this.submit();
+          }
+        },
+      });
     },
-    methods:{
-      openModal(){
-        
-        uni.showModal({
-          content:'是否确认量房方案',
-          success:res => {
-            if(res.confirm){
-              this.subimt();
-            }
+    openChangeModal() {
+      uni.showModal({
+        content: "请先与量房员沟通需要修改的内容",
+        confirmText: "确定修改",
+        success: (res) => {
+          if (res.confirm) {
+            this.submit();
           }
-        })  
-      },
-      openChangeModal(){
-        uni.showModal({
-          content:'请先与量房员沟通需要修改的内容',
-          confirmText:'确定修改',
-          success:res=>{
-            if(res.confirm){
-              this.subimt();
-            }
-          }
-        })  
-      },
-      subimt(){
-        uni.switchTab({
-          url:'/pages/decorate/index/index'
-        })
-      }
-    }
-  }
+        },
+      });
+    },
+    submit() {
+      uni.switchTab({
+        url: "/pages/decorate/index/index",
+      });
+    },
+  },
+};
 </script>
 
 <style>

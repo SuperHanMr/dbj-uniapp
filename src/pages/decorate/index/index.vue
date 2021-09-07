@@ -24,10 +24,19 @@
         </view>
 
         <view class="uni-padding-wrap">
-          <view class="uni-title">{{ currentHouse.housingEstate }}{{currentHouse.address}}</view>
+          <view class="insurance-house">
+            <view class="insurance">
+              <image class="img"></image>
+              <view class="text">工地保险</view>
+            </view>
+
+            <view class="uni-title">{{ currentHouse.housingEstate }}{{currentHouse.address}}</view>
+          </view>
           <view class="picture-btn-wrap">
-            <picture-btn class="p-i-t" text="量房图" @gotoPage="goDesignPicture"></picture-btn>
-            <picture-btn text="设计图" @gotoPage="goDesignPicture"></picture-btn>
+            <picture-btn class="p-i-t" text="设计图" @gotoPage="goDesignPicture"></picture-btn>
+            <picture-btn class="p-i-t" text="精算单" @gotoPage="goDesignPicture"></picture-btn>
+            <picture-btn class="p-i-t" text="工地视频" @gotoPage="goDesignPicture"></picture-btn>
+            <picture-btn text="施工" @gotoPage="goDesignPicture"></picture-btn>
           </view>
         </view>
 
@@ -51,10 +60,14 @@
                 </view>
               </view>
               <view class="my-warehouse">
-                <mwarehouse-btn :iconStyle="{'width': '52rpx','height': '62rpx'}" @gotoPage="gotoPage('待发货')" name="待发货"></mwarehouse-btn>
-                <mwarehouse-btn :iconStyle="{'width': '58rpx','height': '58rpx'}" @gotoPage="gotoPage('待收货')" name="待收货"></mwarehouse-btn>
-                <mwarehouse-btn :iconStyle="{'width': '50rpx','height': '60rpx'}" @gotoPage="gotoPage('已收货')" name="已收货"></mwarehouse-btn>
-                <mwarehouse-btn :iconStyle="{'width': '54rpx','height': '44rpx'}" @gotoPage="gotoPage('退款')" name="退款"></mwarehouse-btn>
+                <mwarehouse-btn :iconStyle="{'width': '52rpx','height': '62rpx'}" @gotoPage="gotoPage('待发货')"
+                  name="待发货"></mwarehouse-btn>
+                <mwarehouse-btn :iconStyle="{'width': '58rpx','height': '58rpx'}" @gotoPage="gotoPage('待收货')"
+                  name="待收货"></mwarehouse-btn>
+                <mwarehouse-btn :iconStyle="{'width': '50rpx','height': '60rpx'}" @gotoPage="gotoPage('已收货')"
+                  name="已收货"></mwarehouse-btn>
+                <mwarehouse-btn :iconStyle="{'width': '54rpx','height': '44rpx'}" @gotoPage="gotoPage('退款')" name="退款">
+                </mwarehouse-btn>
               </view>
             </view>
           </view>
@@ -327,7 +340,7 @@
         });
       },
       gotoPage(value) {
-        if(value === '退款') {
+        if (value === '退款') {
           uni.navigateTo({
             url: "/sub-decorate/pages/warehouse-refund/warehouse-refund"
           })
@@ -513,6 +526,44 @@
       margin-left: 40rpx;
       height: 182rpx;
 
+      .insurance-house {
+        display: flex;
+        justify-content: flex-start;
+        align-items: center;
+        flex-direction: row;
+        margin-bottom: 40rpx;
+      }
+
+      .insurance {
+        padding: 0 8rpx;
+        height: 36rpx;
+        background: linear-gradient(135deg, #36d9cd, #28c6c6);
+        border-radius: 6rpx;
+        margin-right: 16rpx;
+        display: flex;
+        justify-content: flex-start;
+        align-items: center;
+        flex-direction: row;
+
+        image {
+          width: 18rpx;
+          height: 22rpx;
+          margin-right: 6rpx;
+          border: 2rpx solid #fff6;
+          border-radius: 25rpx;
+        }
+
+        .text {
+          height: 28rpx;
+          font-size: 20rpx;
+          font-family: PingFangSC, PingFangSC-Medium;
+          font-weight: 500;
+          text-align: left;
+          color: #ffffff;
+          line-height: 28rpx;
+        }
+      }
+
       .uni-title {
         height: 34rpx;
         font-size: 24rpx;
@@ -521,7 +572,6 @@
         text-align: left;
         color: #999999;
         line-height: 34rpx;
-        margin-bottom: 40rpx;
       }
     }
   }
@@ -651,12 +701,13 @@
       margin-bottom: 24rpx;
     }
   }
-  
+
   .picture-btn-wrap {
     display: flex;
     justify-content: flex-start;
     flex-direction: row;
     justify-items: center;
+
     .p-i-t {
       margin-right: 24rpx;
     }
