@@ -20,6 +20,12 @@
 			
 			<view class="common-price">
 				<view class="product-price">
+					<text style="margin-right: 8rpx;font-size: 22rpx;">实付</text>
+					<text style="font-size:22rpx;">￥</text>
+					<text>28.</text>
+					<text style="font-size:22rpx;">00</text>
+				</view>
+				<view  class="product-price" style="color: #999999;">
 					<text style="font-size:22rpx;">￥</text>
 					<text>28.</text>
 					<text style="font-size:22rpx;">00</text>
@@ -107,6 +113,7 @@
 					-webkit-box-orient: vertical;
 					font-size: 26rpx;
 					line-height: 36 rpx;
+					max-width: 349rpx;
 					.icon{
 						width: 60rpx;
 						height: 30rpx;
@@ -141,8 +148,9 @@
 				.product-price {
 					height: 32rpx;
 					font-size: 32rpx;
-					margin-bottom: 16rpx;
+					margin-bottom: 12rpx;
 				}
+				
 			}
 		}
 	}

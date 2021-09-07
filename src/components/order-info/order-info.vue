@@ -1,5 +1,5 @@
 <template>
-	<view class="container">
+	<view class="container" :style="{marginBottom:marginBottom +'rpx','margintTop':margintTop +'rpx'}">
 		
 			<view class="header">
 				订单信息
@@ -29,6 +29,20 @@
 
 <script>
 	export default {
+		props:{
+			data:{
+				type:Object,
+				// required:true,
+			},
+			marginBottom:{
+				type: Number,
+				default:16,
+			},
+			margintTop:{
+				type: Number,
+				default:16,
+			},
+		},
 		name:"order-info",
 		data() {
 			return {
@@ -42,7 +56,6 @@
 	.container{
 		background: #FFFFFF;
 		border-radius: 24rpx;
-		margin-bottom: 16rpx;
 		display: flex;
 		flex-flow: column nowrap;
 		padding: 32rpx;

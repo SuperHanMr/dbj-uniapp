@@ -1,6 +1,6 @@
 <template>
 	<view class="container">
-		<view class="order-container">
+		<view class="order-container" v-for="(item,index) in 3" :key="index">
 		  <view class="header">
 		    <view class="store-name">
 		      <text>不知道叫什么名字的店铺nizhidaomahahahahahahaha</text>
@@ -10,7 +10,10 @@
 		      ></image>
 		    </view>
 		    <view class="order-status">
-					仅退款(已收货)
+					<!-- <text>仅退款(已收货)</text>
+					<text>仅退款(未发货)</text>
+					<text>仅退款(退库存)</text> -->
+					<text>服务退款</text>
 		    </view>
 		  </view>
 			<!-- 待付款  套餐     -->
@@ -47,14 +50,22 @@
 				</view>		
 			</view>
 			
-			<view class="refund-status">
-				<text style="margin-right: 16rpx;">退款中</text>
-			<!-- 	<text>
+			<!-- :class="{refund-success:index==1}"
+			:class="{refund-close:index==2}"
+			 -->
+			<!--  -->
+			<view class="refund-status" 
+			:class="{refundInProgress:index==0,'refund-success':index==1,'refund-close':index==2}"
+			>
+				<text v-if="index==0" style="margin-right: 16rpx;">退款中</text>
+				<text v-if="index==1" style="margin-right: 16rpx;">退款成功</text>
+				<text v-if="index==2" style="margin-right: 16rpx;">退款关闭</text>
+				<text v-if="index==0 || index==1">
 					<text style="font-size:26rpx;">￥</text>
 					<text style="font-size:40rpx;">28.</text>
 					<text style="font-size:26rpx;">00</text>
-				</text> -->
-				<text style="color: #333333; font-weight: 1000">退款已关闭</text>
+				</text>
+				<text v-if="index==2" style="color: #333333; font-weight: 1000">退款已关闭</text>
 			</view>
 		  
 			<view class="footer">
@@ -62,7 +73,7 @@
 					 <button
 							type="default"
 							size="mini"
-							
+							@click="open()"
 						>取消申请</button>
 						<button
 							type="default"
@@ -73,18 +84,38 @@
 					</view>
 		  </view>
 		</view>
-
+		
+		<uni-popup ref="popup" type="dialog">
+		    <uni-popup-dialog
+					mode="base"
+					message="成功消息"
+					title="确定要取消本次退款申请？"
+					:before-close="true" 
+					@close="close" 
+					@confirm="confirm">
+				</uni-popup-dialog>
+		</uni-popup>
+	
 		
 	</view>
 </template>
 
 <script>
+	import {getRefundList} from "@/api/order.js"
 	export default {
 		data() {
 			return {
-				
+				query:{
+					lastId:-1,
+					rows:15,
+				},
+				dataList:[]
 			}
 		},
+		onShow() {
+		  this.getList();
+		},
+		
 		methods: {
 			orderStatus(){
 				console.log("打印数据")
@@ -92,11 +123,35 @@
 			goToDetail(){
 				console.log("去详情页面")
 				uni.navigateTo({
-					// url:"../my-order/order-failed/order-failed"
+					// url:"../my-order/success/success"
+					// url:"../my-order/order-failed/order-failed?type=refund&id=1"
 					// url:"../my-order/order-success/order-success"
 					url:"../my-order/order-in-progress/order-in-progress"
 				})
-			}
+			},
+			getList(){
+				console.log("获取退款列表数据")
+				let params=this.query
+				getRefundList(params).then(data=>{
+					this.dataList=data;
+					console.log(data,"Data")
+				})
+			},
+			
+			
+			open() {
+				this.$refs.popup.open()
+			},
+			close() {
+				this.$refs.popup.close()
+			},				
+			confirm(value) {
+				// 调用申请退款的接口
+				// 成功就关闭弹框
+				this.$refs.popup.close()
+				console.log("点击了确认按钮")
+			},
+			
 		}
 	}
 </script>
@@ -224,22 +279,33 @@
 		}
 	}
 	
-	.refund-status{
-		margin: 0 32rpx;
-		padding: 20rpx 24rpx;
-		height: 80rpx;
-		line-height: 80rpx;
-		border-radius: 16rpx;
-		// background: #FCF9F5;
-		// border: 2rpx solid #F5D9BC;
-		// color: #FC8B19;
-		// background: #F5FCF9;
-		// border: 2rpx solid #BCF5D9;
-		// color: #0EC270;
+	.refundInProgress{
+		background: #FCF9F5;
+		border: 2rpx solid #F5D9BC;
+		color: #FC8B19;
+		padding:16rpx 32rpx ;
+		line-height: 32rpx;
+	}
+	.refund-success{
+		background: #F5FCF9;
+		border: 2rpx solid #BCF5D9;
+		color: #0EC270;
+		padding:16rpx 32rpx ;
+		line-height: 32rpx;
+	}
+	.refund-close{
 		background: #F7F7F7;
 		color: #808080;
-		
-		
+		padding: 20rpx 24rpx;
+		line-height: 40rpx;
+	}
+	
+	.refund-status{
+		width: 686rpx;
+		height: 80rpx;
+		box-sizing: border-box;
+		margin: 0 32rpx;
+		border-radius: 16rpx;
 		.price{
 			font-size: 32rpx;
 		}
@@ -260,7 +326,8 @@
 			button{
 				width: 140rpx;
 				height: 56rpx;
-				line-height: 56rpx;
+				box-sizing: border-box;
+				line-height: 52rpx;
 				text-align: center;
 				font-size: 24rpx;
 				display: block;
@@ -271,11 +338,45 @@
 			}
 		}
 	}
+
 	button{
 		display: none;
 	}
 	button::after {
 	  border: none;
+	}
+	
+	// 弹框样式
+	::v-deep .uni-popup-dialog{
+		width: 560rpx !important;
+		border-radius: 24rpx !important;
+		background-color: #fff !important;
+	} 
+	::v-deep .uni-dialog-title-text{
+	 color: #111111 !important;
+	 font-size: 32rpx !important;
+	 font-weight: 550 !important;
+	}
+	::v-deep .uni-dialog-title{
+		padding: 48rpx 0 !important;
+		
+	}
+	::v-deep .uni-dialog-content {
+		display:  none !important;
+	}
+	::v-deep .uni-dialog-button-group{
+		border-top:2rpx solid #F5F5F5;
+	}
+	::v-deep .uni-dialog-button{
+		height: 82rpx !important;
+	}
+	::v-deep .uni-button-color{
+		color:#FF3347  !important;
+		font-size: 30rpx !important;
+		font-weight: 500;
+	}
+	::v-deep .uni-dialog-button-text{
+		font-size: 30rpx !important;
 	}
 
 </style>
