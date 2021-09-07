@@ -122,6 +122,10 @@
             <button @click="gonohousedecatore">无房屋无服务装修</button>
             <button @click="gonohousecheck">无房屋无服务验房</button>
             <button @click="checkHouseRemind">验房提醒</button>
+            <button @click="confirm1">平面图交付</button>
+            <button @click="confirm2">三维设计图交付</button>
+            <button @click="confirm3">施工图交付</button>
+            <button @click="confirm4">线上交底</button>
           </view>
         </scroll-view>
       </view>
@@ -232,6 +236,26 @@
       checkHouseRemind() {
         uni.navigateTo({
           url: "/sub-decorate/pages/check-house-remind/check-house-remind"
+        })
+      },
+      confirm1() {
+        uni.navigateTo({
+          url: "/sub-decorate/pages/plan-check/plan-check"
+        })
+      },
+      confirm2() {
+        uni.navigateTo({
+          url: "/sub-decorate/pages/graphic-model/graphic-model"
+        })
+      },
+      confirm3() {
+        uni.navigateTo({
+          url: "/sub-decorate/pages/construction-plans/construction-plans"
+        })
+      },
+      confirm4() {
+        uni.navigateTo({
+          url: "/sub-decorate/pages/design-online-disclosure/design-online-disclosure"
         })
       },
       async getFriendsList() {
