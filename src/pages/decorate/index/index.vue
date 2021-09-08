@@ -112,8 +112,8 @@
           <no-service words="暂无进行中服务"></no-service>
           <!-- 切换房屋弹窗 -->
           <uni-popup ref="sw">
-            <house-switch class="margintop" :datalist="projectList" :current="currentHouse.estateId" @goAddHouse="addHouse"
-              @checkHouse="checkHouse"></house-switch>
+            <house-switch class="margintop" :datalist="projectList" :current="currentHouse.estateId"
+              @goAddHouse="addHouse" @checkHouse="checkHouse"></house-switch>
           </uni-popup>
           <decorate-notice @touchmove.stop.prevent="()=>false" v-if="noticeActive" @closeNotice='closeNotice'
             class="decorate-notice"></decorate-notice>
@@ -304,7 +304,9 @@
         })
       },
       getEstateProjectInfoList() {
-        getEstateProjectInfoList({isNeedRelative: true}).then(data => {
+        getEstateProjectInfoList({
+          isNeedRelative: true
+        }).then(data => {
           this.projectList = data
           const arr = data.filter(t => t.defaultEstate)
           this.currentHouse = arr[0]
@@ -408,6 +410,10 @@
 <style lang="scss" scoped>
   .decorate-index {
     position: relative;
+    padding-top: 176rpx;
+    height: 100%;
+    overflow: hidden;
+    box-sizing: border-box;
 
     .bg-index {
       top: 0;
@@ -421,7 +427,7 @@
     width: 100%;
     height: 100%;
     position: relative;
-    margin-top: 176rpx;
+    // margin-top: 176rpx;
     z-index: 9;
     height: 100%;
   }

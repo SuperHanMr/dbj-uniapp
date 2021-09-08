@@ -31,6 +31,7 @@
 </template>
 
 <script>
+  import { getDesignList } from "../../../api/decorate.js"
 	export default {
 		data() {
 			return {
@@ -66,7 +67,10 @@
 				if (this.currentItem !== item) {
 					this.currentItem = item
 				}
-			}
+			},
+      getDesignList() {
+        
+      }
 		}
 	}
 </script>
