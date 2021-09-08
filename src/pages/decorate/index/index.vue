@@ -126,6 +126,8 @@
             <button @click="confirm2">三维设计图交付</button>
             <button @click="confirm3">施工图交付</button>
             <button @click="confirm4">线上交底</button>
+            <button @click="hcaa">管家竣工验收申请</button>
+            <button @click="housekeeperrefuse">管家竣工拒绝</button>
           </view>
         </scroll-view>
       </view>
@@ -256,6 +258,16 @@
       confirm4() {
         uni.navigateTo({
           url: "/sub-decorate/pages/design-online-disclosure/design-online-disclosure"
+        })
+      },
+      hcaa() {
+        uni.navigateTo({
+          url: "/sub-decorate/pages/housekeeper-c-a-application/housekeeper-c-a-application"
+        })
+      },
+      housekeeperrefuse() {
+        uni.navigateTo({
+          url: "/sub-decorate/pages/housekeeper-refuse/housekeeper-refuse"
         })
       },
       async getFriendsList() {
