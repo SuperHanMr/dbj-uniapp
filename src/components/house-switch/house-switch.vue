@@ -4,18 +4,18 @@
 		<view class="house-list">
 			<view class="item" v-for="(item ,i) in datalist" @click="checkHouse(item)">
 				<view class="item-inner flex-row-bet"
-					:class="{default: item.defaultEstate, current: item.id == current}">
+					:class="{default: item.defaultEstate, current: item.estateId == current}">
 					<view class="left flex-row-start">
-						<view v-if="item.friend" class="friend">亲友</view>
+						<view v-if="item.relegationType == 2" class="friend">亲友</view>
 						<view v-if="item.defaultEstate" class="default">默认</view>
 						<view class="house-address">{{item.housingEstate}}{{item.address}}</view>
 					</view>
 					<view class="status"
-						:class="{status1: item.status == 1, status2: item.status == 2,status3: item.status == 3,}">
-						{{item.statusName}}
+						:class="{status0: item.projectStatus == 0, status1: item.projectStatus == 1,status2: item.projectStatus == 2,status3: item.projectStatus == 3,}">
+						{{item.projectStatus | projectStatusName}}
 					</view>
 				</view>
-				<view class="ext" v-if="item.ext">{{item.ext}}</view>
+				<view class="ext" v-if="item.frequency">第{{item.frequency}}次装修</view>
 			</view>
 		</view>
 		<view class="go-add-house flex-row">
@@ -44,7 +44,29 @@
 			checkHouse(item) {
 				this.$emit("checkHouse", item)
 			}
-		}
+		},
+    filters: {
+      projectStatusName(str) {
+        let res = ""
+        switch (str) {
+          case 0: 
+            res = "未开工";
+            break;
+          case 1:
+            res = "进行中";
+            break;
+          case 2:
+            res = "已竣工";
+            break;
+          case 3:
+            res = "已结束";
+            break;
+          default:
+            break;
+        }
+        return res
+      }
+    }
 	}
 </script>
 
