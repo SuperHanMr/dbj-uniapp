@@ -86,8 +86,8 @@ export default {
     getMsg(){
       getMsgList(1||this.current).then(res=>{
         res.map(item=>{
-          // console.log(item.msgBody)
-          // console.log(JSON.parse(item.msgBody))
+          console.log(item.msgBody)
+          console.log(JSON.parse(item.msgBody))
         })
       })
     }

@@ -81,6 +81,7 @@
 </template>
 
 <script>
+  import {getAdcodeFromAreaId} from "../../../utils/cityData.js"
  import { addHouse, getHouse, editHouse } from "../../../api/decorate.js";
   export default {
     data() {
@@ -223,7 +224,9 @@
                   //将经纬度转换成adcode，然后用adcode去获取省市区id ak需要更换为公司的ak
                   url:"https://api.map.baidu.com/reverse_geocoding/v3/?ak=s0deCKPpT7GZBxtBLGs9gMkGTs80uuyD&output=json&coordtype=gcj02ll&location="+ res.latitude+','+res.longitude,
                   success: (res) => {
-                      console.log(res.data);
+                    let adcode = res.data.result.addressComponent.adcode
+                    console.log(adcode);
+                    console.log(getAdcodeFromAreaId(res.data)) 
                   } 
                 })
               }
