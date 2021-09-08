@@ -1,28 +1,13 @@
 <template>
   <view class="good-toast">
-   <uni-popup ref="noSendToast" type="bottom" :mask-click='false'>
+   <uni-popup ref="noBuyToast" type="bottom" :mask-click='false'>
         <view class="toast-content">
           <view class="good-tip">
             <view>
               <text class="tip-word">部分商品在当前地址下暂时不支持购买，点击确认后会将该商品移回至购物车，其他商品可继续进行结算</text>
             </view>
           </view>
-          <view class="header">
-          	<image src="../../../static/shopping-cart/ic_location@2x.png" class="locationIcon"></image>
-          	<view class="address">
-          		<view class="way">
-          			<text class="default">默认</text>
-          			<text class="txt">北京市北京市石景山区双元路</text>
-          		</view>
-          		<view class="community">点石商务公园8号楼8层101</view>
-          		<view class="userInfo">
-          			<text class="userName">刘先生</text>
-          			<text class="userPhone">123456789</text>
-          		</view>
-          	</view>
-          	<image class="switchSite" src="../../../static/shopping-cart/ic_more_black@2x.png"></image>
-          </view>
-          <image class="addressLine" src="../../../static/shopping-cart/address_line@2x.png"></image>
+          <address-picker></address-picker>
           <scroll-view scroll-y="true" class="shop-scroll">
             <view class="content">
               <view class="shop-item" v-for="(shopItem, index) in shopList" :key='index'>
@@ -48,6 +33,11 @@
                     </view>
                   </view>
                 </view>	
+                <view class="no-send-tip">
+                   <view class="item-reduce-box">
+                      <text>当前地址无法配送该商品，请更换地址</text>
+                   </view>
+                </view>
               </view>
             </view>
           </scroll-view>
@@ -70,13 +60,16 @@
     },
     methods: {
       showPupop() {
-        this.$refs.noSendToast.open()
+        this.$refs.noBuyToast.open()
       },
       confirm(){
-        this.$refs.noSendToast.close()
+        this.$refs.noBuyToast.close()
+        uni.navigateTo({
+          url: '/sub-classify/pages/pay-order/pay-success',
+        });
       },
       backShopCart(){
-        this.$refs.noSendToast.close()
+        this.$refs.noBuyToast.close()
       }
     }
   }
@@ -101,77 +94,6 @@
     color: #FE9000;
     font-size: 24rpx;
     
-  }
-  .header{
-  	display: flex;
-  	width: 100%;
-  	height: 202rpx;
-  	background: #ffffff;
-  }
-  .locationIcon{
-  	width: 48rpx;
-  	height: 48rpx;
-  	display: block;
-  	margin: 32rpx 8rpx 0 32rpx;
-  }
-  .switchSite{
-  	width: 32rpx;
-  	height: 32rpx;
-  	display: block;
-  	margin: 32rpx 32rpx 0 0;
-  }
-  .address{
-  	margin: 32rpx 0;
-  }
-  .address .way{
-  	width: 604rpx;
-  	height: 42rpx;
-  	color: #999999;
-  	line-height: 42rpx;
-  }
-  .address .way .default{
-  	width: 60rpx;
-  	height: 32rpx;
-  	line-height: 32rpx;
-  	text-align: center;
-  	padding: 2rpx 10rpx;
-  	margin-right: 8rpx;
-  	background: linear-gradient(135deg,#36d9cd, #28c6c6);
-  	border-radius: 4rpx;
-  	font-size: 20rpx;
-  	font-weight: 500;
-  	color: #ffffff;
-  }
-  .address .way .txt{
-  	width: fit-content;
-  	height: 42rpx;
-  	font-size: 26rpx;
-  	color: #999999;
-  	line-height: 42rpx;
-  }
-  .address .community{
-  	height: 42rpx;
-  	font-size: 28rpx;
-  	font-weight: 500;
-  	color: #111111;
-  	line-height: 42rpx;
-  	margin: 8rpx 0;
-  }
-  .address .userInfo {
-  	height: 40rpx;
-  	font-size: 24rpx;
-  	color: #999999;
-  	line-height: 40rpx;
-  }
-  .address .userInfo .userName{
-  	margin-right: 10rpx;
-  }
-  .addressLine{
-  	width: 100%;
-  	height: 6rpx;
-  	background: #fff;
-  	margin-bottom: 16rpx;
-  	display: block;
   }
   .shop-scroll{
     height: 750rpx;
@@ -260,6 +182,22 @@
   }
   .goods-money .integer-price{
     font-size: 30rpx;
+  }
+  .no-send-tip{
+    position: relative;
+    height: 56rpx;
+  }
+  .item-reduce-box{
+    height: 56rpx;
+    width: 666rpx;
+    line-height: 56rpx;
+    background-color: #fff6f7;
+    border-radius: 8rpx;
+    padding-left: 20rpx;
+    color: #ff3347;
+    font-size: 22rpx;
+    position: absolute;
+    bottom: 16rpx;
   }
   .bottom{
     height: 136rpx;

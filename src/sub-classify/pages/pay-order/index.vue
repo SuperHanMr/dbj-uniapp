@@ -1,21 +1,6 @@
 <template>
 	<view class="orderContainer">
-		<view class="header">
-			<image src="../../../static/shopping-cart/ic_location@2x.png" class="locationIcon"></image>
-			<view class="address">
-				<view class="way">
-					<text class="default">默认</text>
-					<text class="txt">北京市北京市石景山区双元路</text>
-				</view>
-				<view class="community">点石商务公园8号楼8层101</view>
-				<view class="userInfo">
-					<text class="userName">刘先生</text>
-					<text class="userPhone">123456789</text>
-				</view>
-			</view>
-			<image class="switchSite" src="../../../static/shopping-cart/ic_more_black@2x.png"></image>
-		</view>
-		<image class="addressLine" src="../../../static/shopping-cart/address_line@2x.png"></image>
+    <address-picker></address-picker>
 		<view class="content">
       <view class="shop-item" v-for="(shopItem, index) in shopList" :key='index'>
         <view class="shop-name">李哥工作室</view>
@@ -40,7 +25,7 @@
             </view>
           </view>
         </view>	
-        <view class="cost-detail">
+<!--      <view class="cost-detail">
           <view>
             <text>运费</text>
             <text>¥30.00</text>
@@ -49,22 +34,61 @@
             <text>搬运费</text>
             <text>¥30.00</text>
           </view>
+        </view> -->
+<!--      <view class="shop-reduce">
+          <view class="item-reduce-box">
+             <text class="question-box">本订单已获得了该店铺5次免运费权益
+               <text class="question-icon"></text>
+             </text>
+          </view>
+        </view> -->
+        <view class="shop-reduce no-send-tip">
+           <view class="item-reduce-box">
+              <text>当前地址无法配送该商品，请更换地址</text>
+           </view>
+        </view>
+        <view class="choose-time">
+           <view class="time-bar" @click='chooseTime'>
+             <text>请选择上门时间</text>
+             <image class="chooseIcon" src="../../../static/images/ic_more_black@2x.png"></image>
+           </view>
         </view>
       </view>
 		</view>
-		<view class="total-cost">
+		<view class="good-store-account">
       <view>
         <text>商品总价</text>
         <text>¥30.00</text>
       </view>
-      <view>
-        <text>运费</text>
+     <view>
+        <text class="question-box">
+          运费
+          <text class="question-icon"></text>
+        </text>
         <text>¥30.00</text>
       </view>
       <view>
-        <text>搬运费</text>
+        <text class="question-box">
+          搬运费
+          <text class="question-icon"></text>
+        </text>
         <text>¥30.00</text>
       </view>
+    </view>
+    <view class="good-store-account is-store">
+      <view>
+        <text>商品总价</text>
+        <text>¥30.00</text>
+      </view>
+      <view class="store-read">
+        <text>
+          当前费用不包含运费和搬运费，具体费用会在要货时进行结算
+        </text>
+      </view>
+    </view>
+    <view class="pledge">
+      <text>押金</text>
+      <text>¥200.00</text>
     </view>
     <view class="pay-way">
       <text>支付方式</text>
@@ -72,6 +96,9 @@
     </view>
     <view class='remarks'>
       <text>备注</text>
+      <view>
+        <input type="text" placeholder="选填,说点什么～">
+      </view>
     </view>
     <view class="bottom">
      <view>
@@ -91,14 +118,25 @@
         <button class="pay-button" @click="noSend" ref="test">立即支付</button>
       </view>
     </view>
+    <date-picker ref='datePicker'></date-picker>
     <order-toast ref='orderToast'></order-toast>
+    <uni-popup ref="cancelDialog" :mask-click="false">
+      <view class="popup-item">
+        <view class="popup-title">该服务需精算师指导下完成</view>
+        <view class="popup-button">
+          <view class="popup-ok" @click='cancel'>取消</view>
+          <view class="popup-cancel" @click='goBuy'>去购买</view>
+        </view>
+      </view>
+    </uni-popup>
   </view>
 </template>
 
 <script>
   import orderToast from "./order-toast.vue"
+  import datePicker from "./date-picker.vue"
 	export default{
-    components:{orderToast},
+    components:{orderToast, datePicker},
 		data(){
 			return {
 				goodsList:[1,2],
@@ -111,9 +149,17 @@
 		onLoad(option) {
 		},
     methods:{
+      chooseTime() {
+         this.$refs.datePicker.showDatePicker()
+      },
       noSend() {
         this.$refs.orderToast.showPupop()
+        // this.$refs.cancelDialog.open()
       },
+      cancel() {
+        this.$refs.cancelDialog.close()
+      },
+      goBuy() {}
     }
 	}
 </script>
@@ -126,77 +172,19 @@
 		background: #f5f6f7;
     color: #333333;
 	}
-	.header{
-		display: flex;
-		width: 100%;
-		height: 202rpx;
-		background: #ffffff;
-	}
-	.locationIcon{
-		width: 48rpx;
-		height: 48rpx;
-		display: block;
-		margin: 32rpx 8rpx 0 32rpx;
-	}
-	.switchSite{
-		width: 32rpx;
-		height: 32rpx;
-		display: block;
-		margin: 32rpx 32rpx 0 0;
-	}
-	.address{
-		margin: 32rpx 0;
-	}
-	.address .way{
-		width: 604rpx;
-		height: 42rpx;
-		color: #999999;
-		line-height: 42rpx;
-	}
-	.address .way .default{
-		width: 60rpx;
-		height: 32rpx;
-		line-height: 32rpx;
-		text-align: center;
-		padding: 2rpx 10rpx;
-		margin-right: 8rpx;
-		background: linear-gradient(135deg,#36d9cd, #28c6c6);
-		border-radius: 4rpx;
-		font-size: 20rpx;
-		font-weight: 500;
-		color: #ffffff;
-	}
-	.address .way .txt{
-		width: fit-content;
-		height: 42rpx;
-		font-size: 26rpx;
-		color: #999999;
-		line-height: 42rpx;
-	}
-	.address .community{
-		height: 42rpx;
-		font-size: 28rpx;
-		font-weight: 500;
-		color: #111111;
-		line-height: 42rpx;
-		margin: 8rpx 0;
-	}
-	.address .userInfo {
-		height: 40rpx;
-		font-size: 24rpx;
-		color: #999999;
-		line-height: 40rpx;
-	}
-	.address .userInfo .userName{
-		margin-right: 10rpx;
-	}
-	.addressLine{
-		width: 100%;
-		height: 6rpx;
-		background: #fff;
-		margin-bottom: 16rpx;
-		display: block;
-	}
+  // 问好图标模型布局
+  .question-box{
+    position: relative;
+  }
+  .question-icon{
+    position: absolute;
+    width: 30rpx;
+    height: 28rpx;
+    top:6rpx;
+    margin-left: 2rpx;
+    background-image: url('../../static/image/question.png');
+    background-size: cover;
+  }
 	// 商品item
   .shop-item{
     margin-top: 25rpx;
@@ -301,7 +289,47 @@
   .cost-detail view text:nth-child(2) {
     corlor: #333333
   }
-  .total-cost{
+  .shop-reduce{
+    position: relative;
+    height: 56rpx;
+  }
+  .item-reduce-box{
+    height: 56rpx;
+    width: 666rpx;
+    line-height: 56rpx;
+    background-color: #fafafa;
+    border-radius: 8rpx;
+    padding-left: 20rpx;
+    color: #00bfb6;
+    font-size: 22rpx;
+    position: absolute;
+    bottom: 16rpx;
+  }
+  .item-reduce-box .question-icon{
+    top:0;
+  }
+  .no-send-tip .item-reduce-box{
+    background-color: #fff6f7;
+    color: #ff3347;
+  }
+  .choose-time{
+    padding: 26rpx 0;
+    border-top: 1rpx solid #f4f4f4;
+  }
+  .time-bar{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+  .time-bar text{
+    font-size: 28rpx;
+    color: #333333;
+  }
+  .chooseIcon{
+    width: 32rpx;
+    height: 32rpx;
+  }
+  .good-store-account{
     padding: 5rpx 32rpx;
     height: 210rpx;
     background-color: #FFFFFF;
@@ -313,12 +341,24 @@
     align-content: space-around;
     height: 220rpx;
   }
-  .total-cost view{
+  .good-store-account view{
     width: 100%;
     display: flex;
     justify-content: space-between;
   }
-  .pay-way, .remarks{
+  .good-store-account .is-store{
+    height: 170rpx;
+  }
+  .good-store-account .store-read {
+    color: #666666;
+    font-size: 24rpx;
+    height: 58rpx;
+    line-height: 58rpx;
+    text-align: center;
+    background-color: #fafafa;
+    border-radius: 8rpx;
+  }
+  .pay-way, .pledge, .remarks{
     padding: 5rpx 32rpx;
     background-color: #FFFFFF;
     margin-top: 25rpx;
@@ -329,6 +369,12 @@
     align-items: center;
     height: 104rpx;
     line-height: 104rep;
+  }
+  .remarks text{
+    width: 180rpx;
+  }
+  .remarks view{
+    flex:1;
   }
   .bottom{
     padding: 24rpx 32rpx 50rpx 32rpx;
@@ -382,5 +428,43 @@
     font-size: 32rpx;
     line-height: 88rpx;
     text-align: center;
+  }
+  .popup-item{
+    position: fixed;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    margin: auto;
+    width: 560rpx;
+    height: 212rpx;
+    background: #ffffff;
+    border-radius: 24rpx;
+  }
+  .popup-item .popup-title{
+    height: 128rpx;
+    line-height: 128rpx;
+    border-bottom: 1rpx solid #f5f5f5; 
+    font-size: 32rpx;
+    font-family: PingFangSC, PingFangSC-Medium;
+    font-weight: 500;
+    text-align: center;
+    color: #111111;
+  }
+  .popup-item .popup-button{
+    display: flex;
+  }
+  .popup-item .popup-button view{
+    height: 82rpx;
+    line-height: 84rpx;
+    text-align: center;
+  }
+  .popup-button .popup-ok{
+    width: 50%; 
+    border-right: 1rpx solid #f5f5f5;
+  }
+  .popup-button .popup-cancel{
+    flex: 1;
+    color: #00bfb6;
   }
 </style>

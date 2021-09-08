@@ -1,15 +1,59 @@
 <template>
 	<view class="refund">
-		<view class="goods">
-			<uni-number-box class="num-input" @change="sss"></uni-number-box>
-		</view>
-		<refund-item></refund-item>
-		<view class="textarea">
+		<warehouse-item :showBtns="false" :isEdit="true"></warehouse-item>
+		<view class="back">
+			<view class="back-res">
+				<view class="back-res-row">
+					<view class="res-pre">
+						*退款原因
+					</view>
+					<view style="flex:1">
+					</view>
+					<view class="">
+						请选择原因
+					</view>
+					<view class="">
+						<!-- //todo down -->
 
-			<textarea v-model="reason" placeholder="退款原因" />
+					</view>
+				</view>
+			</view>
+
+			<view class="back-res">
+				<view class="back-res-row">
+					<view class="res-pre">
+						*退款金额
+					</view>
+					<view style="flex:1">
+					</view>
+					<view class="">
+						<input style="color: #FF3347;font-size: 38rpx;width: 200rpx;text-align: end;" type="number" :value="num" />
+					</view>
+				</view>
+			</view>
 		</view>
-		建议与商家沟通后再发起退款
-		<button type="default">提交</button> 
+
+		<view class="textarea">
+			<view class="flex-row-between">
+				<view class="text-area-title">
+					备注说明
+
+				</view>
+				<view class="text-area-count">
+					{{remarks.length}}/200
+				</view>
+			</view>
+
+			<textarea v-model="remarks" maxlength="200" style="font-size: 28rpx" placeholder="可以填写一些与客服沟通过的备注信息" />
+		</view>
+		<view class="remark-tip">
+			建议与商家沟通后再发起退款
+		</view>
+		<view style="height: 300rpx;">
+			
+		</view>
+		<bottom-btn btnContent="提交申请"></bottom-btn>
+		
 	</view>
 </template>
 
@@ -18,11 +62,11 @@
 		data() {
 			return {
 				reason: '',
-				systemBottom: ""
+				num: "0",
+				remarks:''
 			}
 		},
 		onLoad(e) {
-			const menuButtonInfo = uni.getMenuButtonBoundingClientRect();
 			uni.setNavigationBarTitle({
 				title: '退款'
 			});
@@ -32,21 +76,60 @@
 		},
 	}
 </script>
-<style>
-	.refund>>>.uni-numbox {
 
-		width: 150rpx;
-	}
-</style>
 
 <style lang="scss" scoped>
 	.textarea {
 		background-color: #FFF;
 		padding: 32rpx;
+		margin-top: 16rpx;
+
+		.flex-row-between {
+			display: flex;
+			flex-direction: row;
+			justify-content: space-between;
+			align-items: center;
+			margin-top: 36rpx;
+			margin-bottom: 13rpx;
+
+			.text-area-title {
+				color: #666666;
+				font-size: 28rpx;
+			}
+
+			.text-area-count {
+				color: #666666;
+				font-size: 26rpx;
+			}
+		}
 	}
 
-	.num-input {
-		width: 100rpx;
-		height: 20rpx;
+	.remark-tip {
+		color: #808080;
+		font-size: 24rpx;
+		margin: 16rpx 32rpx;
+
+	}
+
+	.back {
+		background-color: #FFF;
+		padding: 0 32rpx;
+	}
+
+	.back-res {
+		padding: 32rpx 0;
+		font-size: 28rpx;
+		border-bottom: 1rpx solid #f4f4f4;
+		;
+
+		&-row {
+			display: flex;
+			flex-direction: row;
+			align-items: center;
+		}
+	}
+
+	.res-pre {
+		color: #666666;
 	}
 </style>

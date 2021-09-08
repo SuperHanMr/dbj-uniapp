@@ -71,17 +71,10 @@
       }
     },
     onShow(){
-      if(uni.getStorageSync('fromH5')) {
-        // 从商品详情进入选择地址页面或支付页面后，点击返回会直接返回这里，再重定向到商品详情页
-        this.isShow = false
-        uni.navigateTo({
-          url: "/sub-classify/pages/goods-detail/goods-detail?goodId=" + uni.getStorageSync('goodId')
-        })
-      }else {
-        this.isShow = true
-        uni.removeStorageSync('houseListChooseId')
-        uni.removeStorageSync('goodId')                          
-      }
+      this.isShow = true
+      //从支付页面或者房屋选择页面回到列表后，清空缓存的id
+      uni.removeStorageSync('houseListChooseId')
+      uni.removeStorageSync('goodId')   
     },
     onLoad(){
       this.getList()
@@ -97,6 +90,7 @@
           getGoodsList().then((data) => {
             this.listData = data
             this.isPageReady = true
+            console.log(data, 111)
           })
       },
       clickInitSearch() {

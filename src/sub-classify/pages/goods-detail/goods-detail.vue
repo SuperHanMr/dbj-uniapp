@@ -1,9 +1,8 @@
 <template>
   <view>
-    <!-- <web-view :src="'https://local.meiwu365.com/app-pages/goods-detail/index.html?goodsId='
-        + goodId + '&&houseId=' + houseId" @message='h5Message'></web-view> -->
-        <web-view :src="'https://local.meiwu365.com/app-pages/goods-detail/index.html#goodsId='
-           + goodId + '&&houseId=' + houseId" @message='h5Message'></web-view>
+       <web-view :src="'https://local.meiwu365.com/app-pages/goods-detail/index.html#wx-goodsId='+ goodId+ '&&wx-houseId='
+        + houseId + '&&wx-houseName=' + houseName + '&&wx-token=' + token">
+       </web-view>
   </view>
 </template>
 
@@ -12,23 +11,20 @@
     data() {
       return {
         goodId: '',
+        defaultHouseId: '',
+        defaultHouseNAme: '',
         houseId: '',
-        webViewSrc: ''
+        houseName: '666',
+        token: getApp().globalData.token
       }
     },
-    onShow() {
-      this.houseId = uni.getStorageSync('houseListChooseId')
+    onShow() { 
+      if(uni.getStorageSync('houseListChooseId')) {
+        this.houseId = uni.getStorageSync('houseListChooseId')
+      }
       this.goodId = uni.getStorageSync('goodId')
-      uni.removeStorageSync('fromH5')
     },
     methods: {
-      h5Message(ms) {
-        console.log(ms)
-        uni.setStorageSync(
-            'fromH5',
-            ms.detail.data[0].action
-        );
-      }
     }
   }
 </script>

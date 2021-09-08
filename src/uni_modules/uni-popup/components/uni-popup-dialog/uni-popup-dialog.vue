@@ -18,7 +18,7 @@
 				<text class="uni-dialog-button-text">{{cancelText}}</text>
 			</view>
 			<view class="uni-dialog-button uni-border-left" @click="onOk">
-				<text class="uni-dialog-button-text uni-button-color">{{okText}}</text>
+				<text class="uni-dialog-button-text uni-button-color">333</text>
 			</view>
 		</view>
 
@@ -84,7 +84,11 @@
 			beforeClose: {
 				type: Boolean,
 				default: false
-			}
+			},
+      ok: {
+      	type: String,
+      	default: ''
+      },
 		},
 		data() {
 			return {

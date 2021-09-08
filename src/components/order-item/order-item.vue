@@ -10,13 +10,14 @@
 			<view class="name-attr">
 				<view class="text">
 					<text class="icon">物品</text>
-					<text class="name">打扮家的爆款产品</text>					
+					<text class="name">打扮家的爆款产品绝对值得购买哈哈哈哈哈哈哈哈哈哈哈nice nice nice nice nice</text>					
 				</view>
 				<view class="attr">
 					<text style="margin-right: 24rpx;">白色</text>
 					<text>2.0m/根</text>
 				</view>						
 			</view>
+			
 			<view class="common-price">
 				<view class="product-price">
 					<text style="font-size:22rpx;">￥</text>
@@ -36,7 +37,7 @@
 		props:{
 			paddingBottom:{
 				type: Number,
-				default:34,
+				default:32,
 			},
 			iconStatus:{
 				type:Number,
