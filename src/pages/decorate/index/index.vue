@@ -117,18 +117,18 @@
           </uni-popup>
           <decorate-notice @touchmove.stop.prevent="()=>false" v-if="noticeActive" :current='current' @closeNotice='closeNotice'
             class="decorate-notice"></decorate-notice>
-          <!-- <view class="link">
+          <view class="link">
+            <button @click="confirm1">平面图交付</button>
             <button @click="gonohouse">无房屋无服入口</button>
             <button @click="gonohousedecatore">无房屋无服务装修</button>
             <button @click="gonohousecheck">无房屋无服务验房</button>
             <button @click="checkHouseRemind">验房提醒</button>
-            <button @click="confirm1">平面图交付</button>
             <button @click="confirm2">三维设计图交付</button>
             <button @click="confirm3">施工图交付</button>
             <button @click="confirm4">线上交底</button>
             <button @click="hcaa">管家竣工验收申请</button>
             <button @click="housekeeperrefuse">管家竣工拒绝</button>
-          </view> -->
+          </view>
         </scroll-view>
       </view>
       <drag-button-follow :style.sync="style" @btnClick='openNotice' :follow='`left,right`' className="drag-button"
@@ -231,7 +231,7 @@
       },
       confirm1() {
         uni.navigateTo({
-          url: "/sub-decorate/pages/plan-check/plan-check"
+          url: "/sub-decorate/pages/design-deliver/design-deliver"
         })
       },
       confirm2() {

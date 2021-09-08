@@ -79,5 +79,5 @@
 </script>
 
 <style scoped lang="scss">
-  @import "./design-picture.scss"
+  @import "../design-deliver/design-picture.scss"
 </style>
