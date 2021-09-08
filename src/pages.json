@@ -121,38 +121,38 @@
 		}
 	},
 	"tabBar": {
-		"color": "red",
-		"selectedColor": "yellow",
+		"color": "#000000",
+		"selectedColor": "#FFA500",
 		"borderStyle": "black",
-		"backgroundColor": "#ffffff",
+		"backgroundColor": "#FFFFFF",
 		"list": [{
 				"pagePath": "pages/home/index/index",
-				// "iconPath": "static/component.png",
-				// "selectedIconPath": "static/componentHL.png",
+				"iconPath": "static/home_owner.png",
+				"selectedIconPath": "static/home_owner.png",
 				"text": "首页"
 			},
 			{
 				"pagePath": "pages/classify/index/index",
-				// "iconPath": "static/component.png",
-				// "selectedIconPath": "static/componentHL.png",
+				"iconPath": "static/home_owner.png",
+				"selectedIconPath": "static/home_owner.png",
 				"text": "分类"
 			},
 			{
 				"pagePath": "pages/decorate/index/index",
-				// "iconPath": "static/component.png",
-				// "selectedIconPath": "static/componentHL.png",
+				"iconPath": "static/home_owner.png",
+				"selectedIconPath": "static/home_owner.png",
 				"text": "装修"
 			},
 			{
 				"pagePath": "pages/message/index/index",
-				// "iconPath": "static/component.png",
-				// "selectedIconPath": "static/componentHL.png",
+				"iconPath": "static/home_owner.png",
+				"selectedIconPath": "static/home_owner.png",
 				"text": "消息"
 			},
 			{
 				"pagePath": "pages/my/index/index",
-				// "iconPath": "static/component.png",
-				// "selectedIconPath": "static/componentHL.png",
+				"iconPath": "static/home_owner.png",
+				"selectedIconPath": "static/home_owner.png",
 				"text": "我的"
 			}
 		]
@@ -665,13 +665,13 @@
 						"navigationBarTitleText": "发起拒绝通过",
 						"enablePullDownRefresh": false
 					}
-				}, {
+				},
+				{
 					"path": "pages/require-pay/require-pay",
 					"style": {
 						"navigationBarTitleText": "要货申请",
 						"enablePullDownRefresh": false
 					}
-
 				}
 			]
 		}
