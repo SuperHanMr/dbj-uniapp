@@ -105,7 +105,7 @@
 					const payInfo = e.wechatPayJsapi;
 					uni.requestPayment({
 						"provider": "wxpay",
-						"orderInfo": payInfo,
+						...payInfo,
 						success(res) {
 							console.log('@@@@@@@');
 							console.log(res);
@@ -192,7 +192,6 @@
 								latitude +
 								"&key=4d1476e82ce1ca125c7452c625e6d541&radius=1000&extensions=all",
 							success(re) {
-								console.log(re);
 								if (re.statusCode === 200) {
 									console.log(re.data);
 									let addressComponent = re.data.regeocode.addressComponent;

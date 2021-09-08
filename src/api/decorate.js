@@ -32,7 +32,7 @@ export function setDefault(params) {
 
 //获取装修消息列表
 export function getMsgList(params) {
-	return request.post("/pm/app/snatch/list",params )
+	return request.get("/pm/app/specialMsg/all?projectId="+params )
 }
 
 //获取抢单审核详情
