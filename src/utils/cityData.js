@@ -26634,7 +26634,7 @@ function getAdcodeFromAreaId(adCode) {
 
 	}
 
-	return list.filter(e => {
+	return list.find(e => {
 		return e.adCode == adCode
 	})
 
