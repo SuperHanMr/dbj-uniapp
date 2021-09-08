@@ -658,6 +658,20 @@
 						"navigationBarTitleText": "当前花销",
 						"enablePullDownRefresh": false
 					}
+				},
+				{
+					"path": "pages/housekeeper-c-a-application/housekeeper-c-a-application",
+					"style": {
+						"navigationBarTitleText": "管家竣工验收申请",
+						"enablePullDownRefresh": false
+					}
+				},
+				{
+					"path": "pages/housekeeper-refuse/housekeeper-refuse",
+					"style": {
+						"navigationBarTitleText": "发起拒绝通过",
+						"enablePullDownRefresh": false
+					}
 				}
 			]
 		}
