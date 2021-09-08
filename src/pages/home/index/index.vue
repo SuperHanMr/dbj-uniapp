@@ -66,14 +66,17 @@
 			};
 		},
 		onLoad() {
-
-			getApp().globalData.currentHouse = {
+			let defaultHouse = {
 				name: '北京市朝阳区',
 				provinceId: 1,
 				cityId: 36,
 				areaId: 41,
 			};
-			
+			uni.setStorageSync(
+				'currentHouse',
+				JSON.stringify(defaultHouse)
+			);
+
 			this.getHomeList();
 		},
 		onShow() {
@@ -118,7 +121,7 @@
 			},
 			toCity() {
 				uni.navigateTo({
-					url: "/sub-home/pages/select-city/select-city?title=" + this.citydata,
+					url: '/sub-my/pages/my-house/my-house'
 				});
 			},
 			getAuthorizeInfo() {
@@ -163,7 +166,10 @@
 									let [areaInfo] = getAdcodeFromAreaId(addressComponent.adcode);
 									console.log(areaInfo);
 									vm.citydata = areaInfo.name;
-									getApp().globalData.currentHouse = areaInfo;
+									uni.setStorageSync(
+										'currentHouse',
+										JSON.stringify(areaInfo)
+									);
 								} else {
 									console.log("获取信息失败，请重试！");
 								}
@@ -215,7 +221,6 @@
 				this.totalPage = caseItem.totalPage;
 				this.caseList = this.caseList.concat(caseItem.list);
 				this.loading = false;
-				console.log(this.caseList.length);
 			},
 			async getBannerList() {
 				this.bannerList = await getBanner();
@@ -224,12 +229,21 @@
 				//
 				if (uni.getStorageSync("userId")) {
 					let houseList = await queryEstates();
-				let defaultHouse=	houseList.filter(e=>{
-						return e.defaultEstate==true;
+					let house = null;
+					let [defaultHouse] = houseList.filter(e => {
+						return e.defaultEstate == true;
 					})
-				if(houseList.length){
-					
-				}
+					if (defaultHouse) {
+						house = defaultHouse
+					} else if (houseList.length) {
+						house = houseList[0]
+					}
+					if (house) {
+						uni.setStorageSync(
+							'currentHouse',
+							JSON.stringify(house)
+						);
+					}
 				} else {
 					this.getAuthorizeInfo();
 				}
