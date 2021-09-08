@@ -75,3 +75,10 @@ export function getServiceSku(params) {
   const str = objectToUrlString(params)
 	return request.get("/pm/app/project/getServiceSku?" + str )
 }
+
+//根据条件查询交付文件列表
+export function getDesignList(params) {
+  const str = objectToUrlString(params)
+	return request.get("/pm/app/serve/design/listByQuery?" + str )
+}
+// /pm/app/serve/design/listByQuery
