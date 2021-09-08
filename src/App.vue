@@ -10,7 +10,10 @@
 			noHouseActuaryId: null,
 			noHouseDesignId: null,
 			noHouseCheckId: null,
-      deviceId:""
+      deviceId:"",
+      message: {
+        title: "施工图"
+      }
 		},
     data(){
       return{

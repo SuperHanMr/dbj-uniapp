@@ -457,7 +457,7 @@
 				{
 					"path": "pages/design-picture/design-picture",
 					"style": {
-						"navigationBarTitleText": "设计图"
+						"navigationBarTitleText": ""
 					}
 				},
 				{
@@ -610,9 +610,9 @@
 					}
 				},
 				{
-					"path": "pages/plan-check/plan-check",
+					"path": "pages/design-deliver/design-deliver",
 					"style": {
-						"navigationBarTitleText": "平面图交付",
+						"navigationBarTitleText": "",
 						"enablePullDownRefresh": false
 					}
 				},
