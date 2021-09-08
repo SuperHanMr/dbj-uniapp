@@ -32,7 +32,7 @@ export function setDefault(params) {
 
 //获取装修消息列表
 export function getMsgList(params) {
-	return request.post("/pm/app/snatch/list",params )
+	return request.get("/pm/app/specialMsg/all?projectId="+params )
 }
 
 //获取抢单审核详情
@@ -75,3 +75,10 @@ export function getServiceSku(params) {
   const str = objectToUrlString(params)
 	return request.get("/pm/app/project/getServiceSku?" + str )
 }
+
+//根据条件查询交付文件列表
+export function getDesignList(params) {
+  const str = objectToUrlString(params)
+	return request.get("/pm/app/serve/design/listByQuery?" + str )
+}
+// /pm/app/serve/design/listByQuery
