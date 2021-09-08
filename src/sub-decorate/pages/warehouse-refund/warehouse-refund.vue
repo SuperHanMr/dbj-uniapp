@@ -9,7 +9,7 @@
 					</view>
 					<view style="flex:1">
 					</view>
-					<view class="">
+					<view class="" @click="selectRes">
 						请选择原因
 					</view>
 					<view class="">
@@ -27,7 +27,8 @@
 					<view style="flex:1">
 					</view>
 					<view class="">
-						<input style="color: #FF3347;font-size: 38rpx;width: 200rpx;text-align: end;" type="number" :value="num" />
+						<input style="color: #FF3347;font-size: 38rpx;width: 200rpx;text-align: end;" type="number"
+							:value="num" />
 					</view>
 				</view>
 			</view>
@@ -50,10 +51,10 @@
 			建议与商家沟通后再发起退款
 		</view>
 		<view style="height: 300rpx;">
-			
+
 		</view>
 		<bottom-btn btnContent="提交申请"></bottom-btn>
-		
+
 	</view>
 </template>
 
@@ -63,7 +64,7 @@
 			return {
 				reason: '',
 				num: "0",
-				remarks:''
+				remarks: ''
 			}
 		},
 		onLoad(e) {
@@ -72,7 +73,17 @@
 			});
 		},
 		methods: {
-
+			selectRes() {
+				uni.showActionSheet({
+					itemList: ['A', 'B', 'C'],
+					success: function(res) {
+						console.log('选中了第' + (res.tapIndex + 1) + '个按钮');
+					},
+					fail: function(res) {
+						console.log(res.errMsg);
+					}
+				});
+			}
 		},
 	}
 </script>

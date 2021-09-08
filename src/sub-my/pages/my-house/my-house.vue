@@ -52,7 +52,8 @@
         listData:[], 
         systemBottom:'',
         systemHeight:'',
-        chooseId:''
+        chooseId:'',
+        delta:1
 			};
 		},
 		mounted() {
@@ -72,6 +73,7 @@
       if (e && e.id) {
         this.chooseId = e.id;
       }
+      this.delta = e.delta||1
       this.isMy = e.isMy||false
 
       const menuButtonInfo = uni.getMenuButtonBoundingClientRect();
@@ -156,7 +158,7 @@
       }, 
       toAddHouse(){
         uni.navigateTo({ 
-          url:'/sub-decorate/pages/add-house/add-house'
+          url:'/sub-decorate/pages/add-house/add-house?delta='+this.delta
         })
       },
       toChoose(item){
@@ -164,6 +166,9 @@
         if(this.isMy)return
         this.chooseId = item.id
         this.currentId = item.id
+        uni.navigateBack({
+          
+        })
       },
 		},
     onUnload(){
