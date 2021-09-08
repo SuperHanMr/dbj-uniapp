@@ -12,7 +12,7 @@ export function orderDetail(params){
 
 //app订单支付接口
 export function orderPay(params){
-    return request.post(`/order/app/order/payOrder`,params);
+    return request.post(`/order-center/app/order/payOrder`,params);
 }
 
 

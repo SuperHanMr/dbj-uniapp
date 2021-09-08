@@ -8,6 +8,9 @@
 			</slot-one>
 		</custom-navbar>
 		<scroll-view class="content" scroll-y="true" @scroll="onScroll" @scrolltolower="onLoadMore">
+			<view style="margin-top: 300rpx;" class="" @click="toPay">
+				调起支付
+			</view>
 			<view style="margin-top: 300rpx;" class="" @click="toFriends">
 				去亲友团
 			</view>
@@ -39,7 +42,8 @@
 	} from "../../../api/home.js";
 
 	import {
-		orderList
+		orderList,
+		orderPay
 	} from "../../../api/order.js";
 	import {
 		queryEstates
@@ -54,7 +58,7 @@
 				navBarHeight: 0,
 				scrollTop: 0,
 				liveList: [],
-				citydata: "北京市",
+				citydata: "",
 				roomId: "",
 				bannerList: [],
 				list: [],
@@ -76,13 +80,42 @@
 				'currentHouse',
 				JSON.stringify(defaultHouse)
 			);
+			this.citydata = defaultHouse.name;
 
 			this.getHomeList();
 		},
 		onShow() {
+			uni.$once('selectedHouse', (item) => {
+				this.citydata = item.locationName;
+				uni.setStorageSync(
+					'currentHouse',
+					JSON.stringify(item)
+				);
+			});
 			this.reloadData();
 		},
 		methods: {
+			toPay() {
+				let openId = uni.getStorageSync('openId');
+				orderPay({
+					orderId: 109,
+					payType: 1,
+					openid: openId
+				}).then(e => {
+					const payInfo = e.wechatPayJsapi;
+					uni.requestPayment({
+						"provider": "wxpay",
+						"orderInfo": payInfo,
+						success(res) {
+							console.log('@@@@@@@');
+							console.log(res);
+						},
+						fail(e) {
+							console.log(e);
+						}
+					})
+				})
+			},
 			toCalebdar() {
 				uni.navigateTo({
 					url: "/sub-decorate/pages/calendar/calendar",
@@ -163,7 +196,7 @@
 								if (re.statusCode === 200) {
 									console.log(re.data);
 									let addressComponent = re.data.regeocode.addressComponent;
-									let [areaInfo] = getAdcodeFromAreaId(addressComponent.adcode);
+									let areaInfo = getAdcodeFromAreaId(addressComponent.adcode);
 									console.log(areaInfo);
 									vm.citydata = areaInfo.name;
 									uni.setStorageSync(
@@ -226,7 +259,6 @@
 				this.bannerList = await getBanner();
 			},
 			async getHomeList() {
-				//
 				if (uni.getStorageSync("userId")) {
 					let houseList = await queryEstates();
 					let house = null;
@@ -243,11 +275,11 @@
 							'currentHouse',
 							JSON.stringify(house)
 						);
+						this.citydata = house.locationName
 					}
 				} else {
 					this.getAuthorizeInfo();
 				}
-
 			},
 			onScroll(e) {
 				this.scrollTop = e.detail.scrollTop;
