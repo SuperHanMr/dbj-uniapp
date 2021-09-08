@@ -30,19 +30,24 @@ export function setDefault(params) {
 	return request.put("/customer/app/estate/setDefaultEstate/"+params )
 }
 
+//获取装修消息列表
+export function getMsgList(params) {
+	return request.post("/pm/app/snatch/list",params )
+}
+
 //获取抢单审核详情
 export function getGrabDetail(params) {
-	return request.get("/pm/snatch/server/"+params )
+	return request.get("/pm/app/snatch/server/"+params )
 }
 
 //确认抢单人员
 export function sureGrab(params) {
-	return request.post("/pm/snatch/confirm",params )
+	return request.post("/pm/app/snatch/confirm",params )
 }
 
 //更换抢单人员
 export function replaceGrab(params) {
-	return request.post("/pm/snatch/server/change",params )
+	return request.post("/pm/app/snatch/server/change",params )
 }
 
 //获取亲友团列表-房屋下的
