@@ -225,8 +225,10 @@
                   url:"https://api.map.baidu.com/reverse_geocoding/v3/?ak=s0deCKPpT7GZBxtBLGs9gMkGTs80uuyD&output=json&coordtype=gcj02ll&location="+ res.latitude+','+res.longitude,
                   success: (res) => {
                     let adcode = res.data.result.addressComponent.adcode
-                    console.log(adcode);
-                    console.log(getAdcodeFromAreaId(res.data)) 
+                    let {areaId,cityId,provinceId} = getAdcodeFromAreaId(adcode)
+                    that.addData.areaId = areaId
+                    that.addData.cityId = cityId
+                    that.addData.provinceId = provinceId
                   } 
                 })
               }
