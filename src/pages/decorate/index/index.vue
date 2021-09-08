@@ -112,7 +112,7 @@
           <no-service words="暂无进行中服务"></no-service>
           <!-- 切换房屋弹窗 -->
           <uni-popup ref="sw">
-            <house-switch class="margintop" :datalist="myHouseList" :current="current" @goAddHouse="addHouse"
+            <house-switch class="margintop" :datalist="projectList" :current="currentHouse.estateId" @goAddHouse="addHouse"
               @checkHouse="checkHouse"></house-switch>
           </uni-popup>
           <decorate-notice @touchmove.stop.prevent="()=>false" v-if="noticeActive" @closeNotice='closeNotice'
@@ -148,6 +148,9 @@
     queryEstates,
     friendListByEstateId
   } from "../../../api/decorate.js";
+  import {
+    getEstateProjectInfoList
+  } from "../../../api/project.js";
   import {
     HouseSwitch
   } from "../../../components/house-switch/house-switch.vue"
@@ -203,14 +206,17 @@
         client: {},
         currentHouse: {},
         myHouseList: [],
+        projectList: [],
         current: null,
+        currentEstateId: null,
         friendList: [],
         DECTORE_DICT,
       };
     },
     mounted() {
       uni.showTabBar()
-      this.getMyHouseList();
+      // this.getMyHouseList();
+      this.getEstateProjectInfoList();
     },
     computed: {
       username() {
@@ -272,7 +278,7 @@
       },
       async getFriendsList() {
         let list = await friendListByEstateId({
-          estateId: this.currentHouse.id
+          estateId: this.currentHouse.estateId
         });
         this.friendList = list.length > 2 ? list.slice(0, 2) : list
       },
@@ -287,7 +293,6 @@
         })
       },
       checkHouse(item) {
-        this.current = item.id
         this.currentHouse = item
         this.$refs.sw.close()
       },
@@ -295,29 +300,16 @@
         queryEstates({
           isNeedRelative: true
         }).then(data => {
-          let i = 1;
-          let names = ["设计阶段", "未开工", "已竣工"]
-          for (let item of data) {
-            item.statusName = names[i - 1]
-            item.status = i++
-          }
-          data[1].ext = "第二次装修"
-          data[2].friend = true
-          data[2].ext = "首次装修"
-          this.myHouseList = data
+          console.log(data)
+        })
+      },
+      getEstateProjectInfoList() {
+        getEstateProjectInfoList({isNeedRelative: true}).then(data => {
+          this.projectList = data
           const arr = data.filter(t => t.defaultEstate)
-          // let temp = null;
-          // if(arr.length > 0) {
-          // 	temp = arr[0]
-          // } else {
-          // 	data[0].defaultEstate = true
-          // 	temp = data[0]
-          // }
-          // this.currentHouse = temp
-          // this.current = temp.id
           this.currentHouse = arr[0]
-          this.current = arr[0].id
-          if (arr[0].id) {
+          console.log(">>>>>>>>>>>>>>>", this.currentHouse)
+          if (this.currentHouse.estateId) {
             this.getFriendsList()
           }
         })
