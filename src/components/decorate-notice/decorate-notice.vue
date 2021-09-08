@@ -5,7 +5,9 @@
       <scroll-view class="item-list" scroll-y="true">
         <view
           class="notice-item"
-          @click="to(0)"
+          @click="to(item)"
+          v-for="item of list"
+          :key = "item.msgType"
         >
           <view class="item-top">
             <view class="item-top-left">
@@ -22,64 +24,6 @@
             <image src="../../static/images/ic_more_black.svg"></image>
           </view>
         </view>
-        <view
-          class="notice-item"
-          @click="to(1)"
-        >
-          <view class="item-top">
-            <view class="item-top-left">
-              <image
-                src="../../static/home_owner.png"
-                mode=""
-              ></image>
-              <text class="item-title">量房交付</text>
-            </view>
-            <text class="item-top-right">2021-08-21 13:00:00</text>
-          </view>
-          <view class="item-content">
-            <text>有量房员交付啦，请确认</text>
-            <image src="../../static/images/ic_more_black.svg"></image>
-          </view>
-        </view>
-        <view
-          class="notice-item"
-          @click="to(2)"
-        >
-          <view class="item-top">
-            <view class="item-top-left">
-              <image
-                src="../../static/home_owner.png"
-                mode=""
-              ></image>
-              <text class="item-title">验房交付</text>
-            </view>
-            <text class="item-top-right">2021-08-21 13:00:00</text>
-          </view>
-          <view class="item-content">
-            <text>有量房员交付啦，请确认</text>
-            <image src="../../static/images/ic_more_black.svg"></image>
-          </view>
-        </view>
-        <view
-          class="notice-item"
-          @click="to(2)"
-        >
-          <view class="item-top">
-            <view class="item-top-left">
-              <image
-                src="../../static/home_owner.png"
-                mode=""
-              ></image>
-              <text class="item-title">验房交付</text>
-            </view>
-            <text class="item-top-right">2021-08-21 13:00:00</text>
-          </view>
-          <view class="item-content">
-            <text>有量房员交付啦，请确认</text>
-            <image src="../../static/images/ic_more_black.svg"></image>
-          </view>
-        </view>
-        
         </scroll-view>
         <view
           class="close-icon"
@@ -90,14 +34,24 @@
             @click="close()"
           ></image>
         </view>
-      
     </view>
   </view>
 </template>
 
 <script>
+import {
+    getMsgList,
+  } from "../../api/decorate.js";
 export default {
   name: "decorate-notice",
+  props:{
+    current:{
+      type:Number,
+      default:()=>{
+        return 1
+      }
+    }
+  },
   data() {
     return {
       urlList: [
@@ -105,12 +59,18 @@ export default {
         "/sub-decorate/pages/amoutDelivery/amoutDelivery",
         "/sub-decorate/pages/checkResult/checkResult",
       ],
-      systemHeight:''
+      systemHeight:'',
+      list:[]
     };
   },
   mounted(){
     this.systemHeight = wx.getSystemInfoSync().windowHeight + 'px'
-    
+    this.getMsg()
+  },
+  watch:{
+    current(newVal){
+      this.getMsg()
+    }
   },
   methods: {
     close() {
@@ -119,10 +79,18 @@ export default {
     },
     to(param) {
       uni.navigateTo({
-        url: this.urlList[param],
+        url: this.urlList[param]+'?id='+param.id
       });
       this.close();
-    },
+    }, 
+    getMsg(){
+      getMsgList(1||this.current).then(res=>{
+        res.map(item=>{
+          // console.log(item.msgBody)
+          // console.log(JSON.parse(item.msgBody))
+        })
+      })
+    }
   },
 };
 </script>

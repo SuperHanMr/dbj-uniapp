@@ -115,7 +115,7 @@
             <house-switch class="margintop" :datalist="myHouseList" :current="current" @goAddHouse="addHouse"
               @checkHouse="checkHouse"></house-switch>
           </uni-popup>
-          <decorate-notice @touchmove.stop.prevent="()=>false" v-if="noticeActive" @closeNotice='closeNotice'
+          <decorate-notice @touchmove.stop.prevent="()=>false" v-if="noticeActive" :current='current' @closeNotice='closeNotice'
             class="decorate-notice"></decorate-notice>
           <view class="link">
             <button @click="gonohouse">无房屋无服入口</button>
@@ -179,6 +179,7 @@
 
     },
     onShow() {
+      uni.showTabBar() 
       if (this.houses && this.houses.length < 1) {
         this.getHouses();
       }
@@ -193,12 +194,6 @@
         style: "",
         noticeActive: false,
         houses: getApp().globalData.houses,
-        accessKeyId: 'LTAI5tKwuhb948v9oakqnbTf',
-        instanceId: 'post-cn-tl32ajx3u0l',
-        groupId: 'GID_dabanjia',
-        deviceId: `mqttjs_${Math.random().toString(16).substr(2, 8)}`,
-        token: '',
-        client: {},
         currentHouse: {},
         myHouseList: [],
         current: null,
@@ -209,18 +204,6 @@
     mounted() {
       uni.showTabBar()
       this.getMyHouseList();
-    },
-    computed: {
-      username() {
-        return `Token|${this.accessKeyId}|${this.instanceId}`
-      },
-      //token和设备id关联，需要后端接口提供
-      password() {
-        return `R|LzMT+XLFl5s/YWJ/MlDz4t/Lq5HC1iGU1P28HAMaxYzmBSHQsWXgdISJ1ZJ+2cxaamjCkkdmS/XOGd160KYNICpRDnjsfBujbJGYgJWUr5piesdvDY0i8S48f1y+kDSyD1qZq3RLscnvooOIjF1CZUnSLi/oIC4juK1MZ8qVI7uIdBoQzt4TbiQgoJWL8b3AQUS1QPxDA2oGf+JBKuN0DyYW6d7mIYhAqXTpVbQw5nNCvKP80Xo0WQLnbM+hoyCSPOmGbPwAsaS1bd9VJjqDoJlCt6GFmJgm2JFY7PJwf/7OOSmUYIYFs5o/PuPpoTMF+hcVXMs+0yDukIMTOzG9m1KmYYo48q4Eb41jz5zvCIjTrIiblxfX1Q==|W|LzMT+XLFl5s/YWJ/MlDz4t/Lq5HC1iGU1P28HAMaxYzmBSHQsWXgdISJ1ZJ+2cxaamjCkkdmS/XOGd160KYNICpRDnjsfBujbJGYgJWUr5piesdvDY0i8S48f1y+kDSyD1qZq3RLscnvooOIjF1CZUnSLi/oIC4juK1MZ8qVI7uIdBoQzt4TbiQgoJWL8b3AQUS1QPxDA2oGf+JBKuN0DyYW6d7mIYhAqXTpVbQw5nNCvKP80Xo0WQLnbM+hoyCSPOmGbPwAsaS1bd9VJjqDoJlCt6GFmJgm2JFY7PJwf/7OOSmUYIYFs5o/PuPpoTMF+hcVXMs+0yDukIMTOzG9m1KmYYo48q4Eb41jz5zvCIjTrIiblxfX1Q==`
-      },
-      clientId() {
-        return `${this.groupId}@@@1234`
-      }
     },
     methods: {
       scroll: function(e) {
