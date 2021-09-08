@@ -1,149 +1,145 @@
-const cityData = [
-	{
+const cityData = [{
 		"id": 1,
 		"name": "北京",
 		"parentId": 0,
 		"sort": null,
 		"adCode": "110000",
-		"children": [
-			{
-				"id": 36,
-				"name": "北京市",
-				"parentId": 1,
-				"sort": null,
-				"adCode": "110100",
-				"children": [
-					{
-						"id": 37,
-						"name": "东城区",
-						"parentId": 36,
-						"sort": null,
-						"adCode": "110101",
-						"children": null
-					},
-					{
-						"id": 38,
-						"name": "西城区",
-						"parentId": 36,
-						"sort": null,
-						"adCode": "110102",
-						"children": null
-					},
-					{
-						"id": 41,
-						"name": "朝阳区",
-						"parentId": 36,
-						"sort": null,
-						"adCode": "110105",
-						"children": null
-					},
-					{
-						"id": 42,
-						"name": "丰台区",
-						"parentId": 36,
-						"sort": null,
-						"adCode": "110106",
-						"children": null
-					},
-					{
-						"id": 43,
-						"name": "石景山区",
-						"parentId": 36,
-						"sort": null,
-						"adCode": "110107",
-						"children": null
-					},
-					{
-						"id": 44,
-						"name": "海淀区",
-						"parentId": 36,
-						"sort": null,
-						"adCode": "110108",
-						"children": null
-					},
-					{
-						"id": 45,
-						"name": "门头沟区",
-						"parentId": 36,
-						"sort": null,
-						"adCode": "110109",
-						"children": null
-					},
-					{
-						"id": 46,
-						"name": "房山区",
-						"parentId": 36,
-						"sort": null,
-						"adCode": "110111",
-						"children": null
-					},
-					{
-						"id": 47,
-						"name": "通州区",
-						"parentId": 36,
-						"sort": null,
-						"adCode": "110112",
-						"children": null
-					},
-					{
-						"id": 48,
-						"name": "顺义区",
-						"parentId": 36,
-						"sort": null,
-						"adCode": "110113",
-						"children": null
-					},
-					{
-						"id": 49,
-						"name": "昌平区",
-						"parentId": 36,
-						"sort": null,
-						"adCode": "110114",
-						"children": null
-					},
-					{
-						"id": 50,
-						"name": "大兴区",
-						"parentId": 36,
-						"sort": null,
-						"adCode": "110115",
-						"children": null
-					},
-					{
-						"id": 51,
-						"name": "怀柔区",
-						"parentId": 36,
-						"sort": null,
-						"adCode": "110116",
-						"children": null
-					},
-					{
-						"id": 52,
-						"name": "平谷区",
-						"parentId": 36,
-						"sort": null,
-						"adCode": "110117",
-						"children": null
-					},
-					{
-						"id": 53,
-						"name": "密云区",
-						"parentId": 36,
-						"sort": null,
-						"adCode": "110118",
-						"children": null
-					},
-					{
-						"id": 54,
-						"name": "延庆区",
-						"parentId": 36,
-						"sort": null,
-						"adCode": "110119",
-						"children": null
-					}
-				]
-			}
-		]
+		"children": [{
+			"id": 36,
+			"name": "北京市",
+			"parentId": 1,
+			"sort": null,
+			"adCode": "110100",
+			"children": [{
+					"id": 37,
+					"name": "东城区",
+					"parentId": 36,
+					"sort": null,
+					"adCode": "110101",
+					"children": null
+				},
+				{
+					"id": 38,
+					"name": "西城区",
+					"parentId": 36,
+					"sort": null,
+					"adCode": "110102",
+					"children": null
+				},
+				{
+					"id": 41,
+					"name": "朝阳区",
+					"parentId": 36,
+					"sort": null,
+					"adCode": "110105",
+					"children": null
+				},
+				{
+					"id": 42,
+					"name": "丰台区",
+					"parentId": 36,
+					"sort": null,
+					"adCode": "110106",
+					"children": null
+				},
+				{
+					"id": 43,
+					"name": "石景山区",
+					"parentId": 36,
+					"sort": null,
+					"adCode": "110107",
+					"children": null
+				},
+				{
+					"id": 44,
+					"name": "海淀区",
+					"parentId": 36,
+					"sort": null,
+					"adCode": "110108",
+					"children": null
+				},
+				{
+					"id": 45,
+					"name": "门头沟区",
+					"parentId": 36,
+					"sort": null,
+					"adCode": "110109",
+					"children": null
+				},
+				{
+					"id": 46,
+					"name": "房山区",
+					"parentId": 36,
+					"sort": null,
+					"adCode": "110111",
+					"children": null
+				},
+				{
+					"id": 47,
+					"name": "通州区",
+					"parentId": 36,
+					"sort": null,
+					"adCode": "110112",
+					"children": null
+				},
+				{
+					"id": 48,
+					"name": "顺义区",
+					"parentId": 36,
+					"sort": null,
+					"adCode": "110113",
+					"children": null
+				},
+				{
+					"id": 49,
+					"name": "昌平区",
+					"parentId": 36,
+					"sort": null,
+					"adCode": "110114",
+					"children": null
+				},
+				{
+					"id": 50,
+					"name": "大兴区",
+					"parentId": 36,
+					"sort": null,
+					"adCode": "110115",
+					"children": null
+				},
+				{
+					"id": 51,
+					"name": "怀柔区",
+					"parentId": 36,
+					"sort": null,
+					"adCode": "110116",
+					"children": null
+				},
+				{
+					"id": 52,
+					"name": "平谷区",
+					"parentId": 36,
+					"sort": null,
+					"adCode": "110117",
+					"children": null
+				},
+				{
+					"id": 53,
+					"name": "密云区",
+					"parentId": 36,
+					"sort": null,
+					"adCode": "110118",
+					"children": null
+				},
+				{
+					"id": 54,
+					"name": "延庆区",
+					"parentId": 36,
+					"sort": null,
+					"adCode": "110119",
+					"children": null
+				}
+			]
+		}]
 	},
 	{
 		"id": 2,
@@ -151,145 +147,142 @@ const cityData = [
 		"parentId": 0,
 		"sort": null,
 		"adCode": "120000",
-		"children": [
-			{
-				"id": 40,
-				"name": "天津市",
-				"parentId": 2,
-				"sort": null,
-				"adCode": "120100",
-				"children": [
-					{
-						"id": 55,
-						"name": "和平区",
-						"parentId": 40,
-						"sort": null,
-						"adCode": "120101",
-						"children": null
-					},
-					{
-						"id": 56,
-						"name": "河东区",
-						"parentId": 40,
-						"sort": null,
-						"adCode": "120102",
-						"children": null
-					},
-					{
-						"id": 57,
-						"name": "河西区",
-						"parentId": 40,
-						"sort": null,
-						"adCode": "120103",
-						"children": null
-					},
-					{
-						"id": 58,
-						"name": "南开区",
-						"parentId": 40,
-						"sort": null,
-						"adCode": "120104",
-						"children": null
-					},
-					{
-						"id": 59,
-						"name": "河北区",
-						"parentId": 40,
-						"sort": null,
-						"adCode": "120105",
-						"children": null
-					},
-					{
-						"id": 60,
-						"name": "红桥区",
-						"parentId": 40,
-						"sort": null,
-						"adCode": "120106",
-						"children": null
-					},
-					{
-						"id": 61,
-						"name": "滨海新区",
-						"parentId": 40,
-						"sort": null,
-						"adCode": "120116",
-						"children": null
-					},
-					{
-						"id": 64,
-						"name": "东丽区",
-						"parentId": 40,
-						"sort": null,
-						"adCode": "120110",
-						"children": null
-					},
-					{
-						"id": 65,
-						"name": "西青区",
-						"parentId": 40,
-						"sort": null,
-						"adCode": "120111",
-						"children": null
-					},
-					{
-						"id": 66,
-						"name": "津南区",
-						"parentId": 40,
-						"sort": null,
-						"adCode": "120112",
-						"children": null
-					},
-					{
-						"id": 67,
-						"name": "北辰区",
-						"parentId": 40,
-						"sort": null,
-						"adCode": "120113",
-						"children": null
-					},
-					{
-						"id": 68,
-						"name": "武清区",
-						"parentId": 40,
-						"sort": null,
-						"adCode": "120114",
-						"children": null
-					},
-					{
-						"id": 69,
-						"name": "宝坻区",
-						"parentId": 40,
-						"sort": null,
-						"adCode": "120115",
-						"children": null
-					},
-					{
-						"id": 70,
-						"name": "宁河区",
-						"parentId": 40,
-						"sort": null,
-						"adCode": "120117",
-						"children": null
-					},
-					{
-						"id": 71,
-						"name": "静海区",
-						"parentId": 40,
-						"sort": null,
-						"adCode": "120118",
-						"children": null
-					},
-					{
-						"id": 72,
-						"name": "蓟州区",
-						"parentId": 40,
-						"sort": null,
-						"adCode": "120119",
-						"children": null
-					}
-				]
-			}
-		]
+		"children": [{
+			"id": 40,
+			"name": "天津市",
+			"parentId": 2,
+			"sort": null,
+			"adCode": "120100",
+			"children": [{
+					"id": 55,
+					"name": "和平区",
+					"parentId": 40,
+					"sort": null,
+					"adCode": "120101",
+					"children": null
+				},
+				{
+					"id": 56,
+					"name": "河东区",
+					"parentId": 40,
+					"sort": null,
+					"adCode": "120102",
+					"children": null
+				},
+				{
+					"id": 57,
+					"name": "河西区",
+					"parentId": 40,
+					"sort": null,
+					"adCode": "120103",
+					"children": null
+				},
+				{
+					"id": 58,
+					"name": "南开区",
+					"parentId": 40,
+					"sort": null,
+					"adCode": "120104",
+					"children": null
+				},
+				{
+					"id": 59,
+					"name": "河北区",
+					"parentId": 40,
+					"sort": null,
+					"adCode": "120105",
+					"children": null
+				},
+				{
+					"id": 60,
+					"name": "红桥区",
+					"parentId": 40,
+					"sort": null,
+					"adCode": "120106",
+					"children": null
+				},
+				{
+					"id": 61,
+					"name": "滨海新区",
+					"parentId": 40,
+					"sort": null,
+					"adCode": "120116",
+					"children": null
+				},
+				{
+					"id": 64,
+					"name": "东丽区",
+					"parentId": 40,
+					"sort": null,
+					"adCode": "120110",
+					"children": null
+				},
+				{
+					"id": 65,
+					"name": "西青区",
+					"parentId": 40,
+					"sort": null,
+					"adCode": "120111",
+					"children": null
+				},
+				{
+					"id": 66,
+					"name": "津南区",
+					"parentId": 40,
+					"sort": null,
+					"adCode": "120112",
+					"children": null
+				},
+				{
+					"id": 67,
+					"name": "北辰区",
+					"parentId": 40,
+					"sort": null,
+					"adCode": "120113",
+					"children": null
+				},
+				{
+					"id": 68,
+					"name": "武清区",
+					"parentId": 40,
+					"sort": null,
+					"adCode": "120114",
+					"children": null
+				},
+				{
+					"id": 69,
+					"name": "宝坻区",
+					"parentId": 40,
+					"sort": null,
+					"adCode": "120115",
+					"children": null
+				},
+				{
+					"id": 70,
+					"name": "宁河区",
+					"parentId": 40,
+					"sort": null,
+					"adCode": "120117",
+					"children": null
+				},
+				{
+					"id": 71,
+					"name": "静海区",
+					"parentId": 40,
+					"sort": null,
+					"adCode": "120118",
+					"children": null
+				},
+				{
+					"id": 72,
+					"name": "蓟州区",
+					"parentId": 40,
+					"sort": null,
+					"adCode": "120119",
+					"children": null
+				}
+			]
+		}]
 	},
 	{
 		"id": 3,
@@ -297,15 +290,13 @@ const cityData = [
 		"parentId": 0,
 		"sort": null,
 		"adCode": "130000",
-		"children": [
-			{
+		"children": [{
 				"id": 73,
 				"name": "石家庄市",
 				"parentId": 3,
 				"sort": null,
 				"adCode": "130100",
-				"children": [
-					{
+				"children": [{
 						"id": 1126,
 						"name": "井陉县",
 						"parentId": 73,
@@ -489,8 +480,7 @@ const cityData = [
 				"parentId": 3,
 				"sort": null,
 				"adCode": "130200",
-				"children": [
-					{
+				"children": [{
 						"id": 1149,
 						"name": "丰南区",
 						"parentId": 74,
@@ -610,8 +600,7 @@ const cityData = [
 				"parentId": 3,
 				"sort": null,
 				"adCode": "130300",
-				"children": [
-					{
+				"children": [{
 						"id": 1163,
 						"name": "北戴河区",
 						"parentId": 75,
@@ -675,8 +664,7 @@ const cityData = [
 				"parentId": 3,
 				"sort": null,
 				"adCode": "130400",
-				"children": [
-					{
+				"children": [{
 						"id": 1170,
 						"name": "丛台区",
 						"parentId": 76,
@@ -828,8 +816,7 @@ const cityData = [
 				"parentId": 3,
 				"sort": null,
 				"adCode": "130500",
-				"children": [
-					{
+				"children": [{
 						"id": 1189,
 						"name": "临城县",
 						"parentId": 77,
@@ -973,8 +960,7 @@ const cityData = [
 				"parentId": 3,
 				"sort": null,
 				"adCode": "130600",
-				"children": [
-					{
+				"children": [{
 						"id": 1210,
 						"name": "博野县",
 						"parentId": 78,
@@ -1174,8 +1160,7 @@ const cityData = [
 				"parentId": 3,
 				"sort": null,
 				"adCode": "130700",
-				"children": [
-					{
+				"children": [{
 						"id": 1233,
 						"name": "万全区",
 						"parentId": 79,
@@ -1319,8 +1304,7 @@ const cityData = [
 				"parentId": 3,
 				"sort": null,
 				"adCode": "130800",
-				"children": [
-					{
+				"children": [{
 						"id": 1250,
 						"name": "丰宁满族自治县",
 						"parentId": 80,
@@ -1416,8 +1400,7 @@ const cityData = [
 				"parentId": 3,
 				"sort": null,
 				"adCode": "131100",
-				"children": [
-					{
+				"children": [{
 						"id": 1261,
 						"name": "冀州区",
 						"parentId": 81,
@@ -1513,8 +1496,7 @@ const cityData = [
 				"parentId": 3,
 				"sort": null,
 				"adCode": "131000",
-				"children": [
-					{
+				"children": [{
 						"id": 1272,
 						"name": "三河市",
 						"parentId": 82,
@@ -1602,8 +1584,7 @@ const cityData = [
 				"parentId": 3,
 				"sort": null,
 				"adCode": "130900",
-				"children": [
-					{
+				"children": [{
 						"id": 1282,
 						"name": "东光县",
 						"parentId": 83,
@@ -1741,15 +1722,13 @@ const cityData = [
 		"parentId": 0,
 		"sort": null,
 		"adCode": "140000",
-		"children": [
-			{
+		"children": [{
 				"id": 84,
 				"name": "太原市",
 				"parentId": 4,
 				"sort": null,
 				"adCode": "140100",
-				"children": [
-					{
+				"children": [{
 						"id": 1298,
 						"name": "万柏林区",
 						"parentId": 84,
@@ -1837,8 +1816,7 @@ const cityData = [
 				"parentId": 4,
 				"sort": null,
 				"adCode": "140200",
-				"children": [
-					{
+				"children": [{
 						"id": 1308,
 						"name": "平城区",
 						"parentId": 85,
@@ -1918,8 +1896,7 @@ const cityData = [
 				"parentId": 4,
 				"sort": null,
 				"adCode": "140300",
-				"children": [
-					{
+				"children": [{
 						"id": 1319,
 						"name": "城区",
 						"parentId": 86,
@@ -1967,8 +1944,7 @@ const cityData = [
 				"parentId": 4,
 				"sort": null,
 				"adCode": "140400",
-				"children": [
-					{
+				"children": [{
 						"id": 1325,
 						"name": "壶关县",
 						"parentId": 87,
@@ -2056,8 +2032,7 @@ const cityData = [
 				"parentId": 4,
 				"sort": null,
 				"adCode": "140500",
-				"children": [
-					{
+				"children": [{
 						"id": 1337,
 						"name": "城区",
 						"parentId": 88,
@@ -2113,8 +2088,7 @@ const cityData = [
 				"parentId": 4,
 				"sort": null,
 				"adCode": "140600",
-				"children": [
-					{
+				"children": [{
 						"id": 1343,
 						"name": "右玉县",
 						"parentId": 89,
@@ -2170,8 +2144,7 @@ const cityData = [
 				"parentId": 4,
 				"sort": null,
 				"adCode": "140700",
-				"children": [
-					{
+				"children": [{
 						"id": 1349,
 						"name": "介休市",
 						"parentId": 90,
@@ -2267,8 +2240,7 @@ const cityData = [
 				"parentId": 4,
 				"sort": null,
 				"adCode": "140800",
-				"children": [
-					{
+				"children": [{
 						"id": 1360,
 						"name": "万荣县",
 						"parentId": 91,
@@ -2380,8 +2352,7 @@ const cityData = [
 				"parentId": 4,
 				"sort": null,
 				"adCode": "140900",
-				"children": [
-					{
+				"children": [{
 						"id": 1373,
 						"name": "五台县",
 						"parentId": 92,
@@ -2501,8 +2472,7 @@ const cityData = [
 				"parentId": 4,
 				"sort": null,
 				"adCode": "141000",
-				"children": [
-					{
+				"children": [{
 						"id": 1387,
 						"name": "乡宁县",
 						"parentId": 93,
@@ -2646,8 +2616,7 @@ const cityData = [
 				"parentId": 4,
 				"sort": null,
 				"adCode": "141100",
-				"children": [
-					{
+				"children": [{
 						"id": 1404,
 						"name": "中阳县",
 						"parentId": 94,
@@ -2761,15 +2730,13 @@ const cityData = [
 		"parentId": 0,
 		"sort": null,
 		"adCode": "150000",
-		"children": [
-			{
+		"children": [{
 				"id": 95,
 				"name": "呼和浩特市",
 				"parentId": 5,
 				"sort": null,
 				"adCode": "150100",
-				"children": [
-					{
+				"children": [{
 						"id": 1417,
 						"name": "和林格尔县",
 						"parentId": 95,
@@ -2849,8 +2816,7 @@ const cityData = [
 				"parentId": 5,
 				"sort": null,
 				"adCode": "150200",
-				"children": [
-					{
+				"children": [{
 						"id": 1426,
 						"name": "东河区",
 						"parentId": 96,
@@ -2930,8 +2896,7 @@ const cityData = [
 				"parentId": 5,
 				"sort": null,
 				"adCode": "150300",
-				"children": [
-					{
+				"children": [{
 						"id": 1435,
 						"name": "乌达区",
 						"parentId": 97,
@@ -2963,8 +2928,7 @@ const cityData = [
 				"parentId": 5,
 				"sort": null,
 				"adCode": "150400",
-				"children": [
-					{
+				"children": [{
 						"id": 1438,
 						"name": "元宝山区",
 						"parentId": 98,
@@ -3068,8 +3032,7 @@ const cityData = [
 				"parentId": 5,
 				"sort": null,
 				"adCode": "150500",
-				"children": [
-					{
+				"children": [{
 						"id": 1450,
 						"name": "奈曼旗",
 						"parentId": 99,
@@ -3141,8 +3104,7 @@ const cityData = [
 				"parentId": 5,
 				"sort": null,
 				"adCode": "150600",
-				"children": [
-					{
+				"children": [{
 						"id": 1458,
 						"name": "东胜区",
 						"parentId": 100,
@@ -3222,8 +3184,7 @@ const cityData = [
 				"parentId": 5,
 				"sort": null,
 				"adCode": "150700",
-				"children": [
-					{
+				"children": [{
 						"id": 1467,
 						"name": "扎兰屯市",
 						"parentId": 101,
@@ -3343,8 +3304,7 @@ const cityData = [
 				"parentId": 5,
 				"sort": null,
 				"adCode": "150800",
-				"children": [
-					{
+				"children": [{
 						"id": 1480,
 						"name": "临河区",
 						"parentId": 102,
@@ -3408,8 +3368,7 @@ const cityData = [
 				"parentId": 5,
 				"sort": null,
 				"adCode": "150900",
-				"children": [
-					{
+				"children": [{
 						"id": 1487,
 						"name": "丰镇市",
 						"parentId": 103,
@@ -3505,8 +3464,7 @@ const cityData = [
 				"parentId": 5,
 				"sort": null,
 				"adCode": "152200",
-				"children": [
-					{
+				"children": [{
 						"id": 1498,
 						"name": "乌兰浩特市",
 						"parentId": 104,
@@ -3562,8 +3520,7 @@ const cityData = [
 				"parentId": 5,
 				"sort": null,
 				"adCode": "152500",
-				"children": [
-					{
+				"children": [{
 						"id": 1504,
 						"name": "东乌珠穆沁旗",
 						"parentId": 105,
@@ -3667,8 +3624,7 @@ const cityData = [
 				"parentId": 5,
 				"sort": null,
 				"adCode": "152900",
-				"children": [
-					{
+				"children": [{
 						"id": 1516,
 						"name": "阿拉善右旗",
 						"parentId": 106,
@@ -3702,15 +3658,13 @@ const cityData = [
 		"parentId": 0,
 		"sort": null,
 		"adCode": "210000",
-		"children": [
-			{
+		"children": [{
 				"id": 107,
 				"name": "沈阳市",
 				"parentId": 6,
 				"sort": null,
 				"adCode": "210100",
-				"children": [
-					{
+				"children": [{
 						"id": 1519,
 						"name": "浑南区",
 						"parentId": 107,
@@ -3822,8 +3776,7 @@ const cityData = [
 				"parentId": 6,
 				"sort": null,
 				"adCode": "210200",
-				"children": [
-					{
+				"children": [{
 						"id": 1532,
 						"name": "中山区",
 						"parentId": 108,
@@ -3911,8 +3864,7 @@ const cityData = [
 				"parentId": 6,
 				"sort": null,
 				"adCode": "210300",
-				"children": [
-					{
+				"children": [{
 						"id": 1542,
 						"name": "千山区",
 						"parentId": 109,
@@ -3976,8 +3928,7 @@ const cityData = [
 				"parentId": 6,
 				"sort": null,
 				"adCode": "210400",
-				"children": [
-					{
+				"children": [{
 						"id": 1549,
 						"name": "东洲区",
 						"parentId": 110,
@@ -4041,8 +3992,7 @@ const cityData = [
 				"parentId": 6,
 				"sort": null,
 				"adCode": "210500",
-				"children": [
-					{
+				"children": [{
 						"id": 1556,
 						"name": "南芬区",
 						"parentId": 111,
@@ -4098,8 +4048,7 @@ const cityData = [
 				"parentId": 6,
 				"sort": null,
 				"adCode": "210600",
-				"children": [
-					{
+				"children": [{
 						"id": 1562,
 						"name": "东港市",
 						"parentId": 112,
@@ -4155,8 +4104,7 @@ const cityData = [
 				"parentId": 6,
 				"sort": null,
 				"adCode": "210700",
-				"children": [
-					{
+				"children": [{
 						"id": 1568,
 						"name": "义县",
 						"parentId": 113,
@@ -4220,8 +4168,7 @@ const cityData = [
 				"parentId": 6,
 				"sort": null,
 				"adCode": "210800",
-				"children": [
-					{
+				"children": [{
 						"id": 1575,
 						"name": "大石桥市",
 						"parentId": 114,
@@ -4277,8 +4224,7 @@ const cityData = [
 				"parentId": 6,
 				"sort": null,
 				"adCode": "210900",
-				"children": [
-					{
+				"children": [{
 						"id": 1581,
 						"name": "太平区",
 						"parentId": 115,
@@ -4342,8 +4288,7 @@ const cityData = [
 				"parentId": 6,
 				"sort": null,
 				"adCode": "211000",
-				"children": [
-					{
+				"children": [{
 						"id": 1588,
 						"name": "太子河区",
 						"parentId": 116,
@@ -4407,8 +4352,7 @@ const cityData = [
 				"parentId": 6,
 				"sort": null,
 				"adCode": "211100",
-				"children": [
-					{
+				"children": [{
 						"id": 1595,
 						"name": "兴隆台区",
 						"parentId": 117,
@@ -4448,8 +4392,7 @@ const cityData = [
 				"parentId": 6,
 				"sort": null,
 				"adCode": "211200",
-				"children": [
-					{
+				"children": [{
 						"id": 1599,
 						"name": "开原市",
 						"parentId": 118,
@@ -4513,8 +4456,7 @@ const cityData = [
 				"parentId": 6,
 				"sort": null,
 				"adCode": "211300",
-				"children": [
-					{
+				"children": [{
 						"id": 1606,
 						"name": "凌源市",
 						"parentId": 119,
@@ -4578,8 +4520,7 @@ const cityData = [
 				"parentId": 6,
 				"sort": null,
 				"adCode": "211400",
-				"children": [
-					{
+				"children": [{
 						"id": 1613,
 						"name": "兴城市",
 						"parentId": 120,
@@ -4637,15 +4578,13 @@ const cityData = [
 		"parentId": 0,
 		"sort": null,
 		"adCode": "220000",
-		"children": [
-			{
+		"children": [{
 				"id": 121,
 				"name": "长春市",
 				"parentId": 7,
 				"sort": null,
 				"adCode": "220100",
-				"children": [
-					{
+				"children": [{
 						"id": 1619,
 						"name": "九台区",
 						"parentId": 121,
@@ -4733,8 +4672,7 @@ const cityData = [
 				"parentId": 7,
 				"sort": null,
 				"adCode": "220200",
-				"children": [
-					{
+				"children": [{
 						"id": 1629,
 						"name": "丰满区",
 						"parentId": 122,
@@ -4814,8 +4752,7 @@ const cityData = [
 				"parentId": 7,
 				"sort": null,
 				"adCode": "220300",
-				"children": [
-					{
+				"children": [{
 						"id": 1638,
 						"name": "伊通满族自治县",
 						"parentId": 123,
@@ -4863,8 +4800,7 @@ const cityData = [
 				"parentId": 7,
 				"sort": null,
 				"adCode": "220400",
-				"children": [
-					{
+				"children": [{
 						"id": 1644,
 						"name": "东丰县",
 						"parentId": 124,
@@ -4904,8 +4840,7 @@ const cityData = [
 				"parentId": 7,
 				"sort": null,
 				"adCode": "220500",
-				"children": [
-					{
+				"children": [{
 						"id": 1648,
 						"name": "东昌区",
 						"parentId": 125,
@@ -4969,8 +4904,7 @@ const cityData = [
 				"parentId": 7,
 				"sort": null,
 				"adCode": "220600",
-				"children": [
-					{
+				"children": [{
 						"id": 1655,
 						"name": "临江市",
 						"parentId": 126,
@@ -5026,8 +4960,7 @@ const cityData = [
 				"parentId": 7,
 				"sort": null,
 				"adCode": "220700",
-				"children": [
-					{
+				"children": [{
 						"id": 1662,
 						"name": "前郭尔罗斯蒙古族自治县",
 						"parentId": 127,
@@ -5075,8 +5008,7 @@ const cityData = [
 				"parentId": 7,
 				"sort": null,
 				"adCode": "220800",
-				"children": [
-					{
+				"children": [{
 						"id": 1666,
 						"name": "大安市",
 						"parentId": 128,
@@ -5124,8 +5056,7 @@ const cityData = [
 				"parentId": 7,
 				"sort": null,
 				"adCode": "222400",
-				"children": [
-					{
+				"children": [{
 						"id": 1671,
 						"name": "和龙市",
 						"parentId": 129,
@@ -5199,15 +5130,13 @@ const cityData = [
 		"parentId": 0,
 		"sort": null,
 		"adCode": "230000",
-		"children": [
-			{
+		"children": [{
 				"id": 130,
 				"name": "哈尔滨市",
 				"parentId": 8,
 				"sort": null,
 				"adCode": "230100",
-				"children": [
-					{
+				"children": [{
 						"id": 1679,
 						"name": "五常市",
 						"parentId": 130,
@@ -5359,8 +5288,7 @@ const cityData = [
 				"parentId": 8,
 				"sort": null,
 				"adCode": "230200",
-				"children": [
-					{
+				"children": [{
 						"id": 1697,
 						"name": "依安县",
 						"parentId": 131,
@@ -5496,8 +5424,7 @@ const cityData = [
 				"parentId": 8,
 				"sort": null,
 				"adCode": "230300",
-				"children": [
-					{
+				"children": [{
 						"id": 1713,
 						"name": "城子河区",
 						"parentId": 132,
@@ -5577,8 +5504,7 @@ const cityData = [
 				"parentId": 8,
 				"sort": null,
 				"adCode": "230400",
-				"children": [
-					{
+				"children": [{
 						"id": 1722,
 						"name": "东山区",
 						"parentId": 133,
@@ -5650,8 +5576,7 @@ const cityData = [
 				"parentId": 8,
 				"sort": null,
 				"adCode": "230500",
-				"children": [
-					{
+				"children": [{
 						"id": 1730,
 						"name": "友谊县",
 						"parentId": 134,
@@ -5723,8 +5648,7 @@ const cityData = [
 				"parentId": 8,
 				"sort": null,
 				"adCode": "230600",
-				"children": [
-					{
+				"children": [{
 						"id": 1738,
 						"name": "大同区",
 						"parentId": 135,
@@ -5804,8 +5728,7 @@ const cityData = [
 				"parentId": 8,
 				"sort": null,
 				"adCode": "230700",
-				"children": [
-					{
+				"children": [{
 						"id": 1747,
 						"name": "大箐山县",
 						"parentId": 136,
@@ -5893,8 +5816,7 @@ const cityData = [
 				"parentId": 8,
 				"sort": null,
 				"adCode": "230800",
-				"children": [
-					{
+				"children": [{
 						"id": 1764,
 						"name": "东风区",
 						"parentId": 137,
@@ -5982,8 +5904,7 @@ const cityData = [
 				"parentId": 8,
 				"sort": null,
 				"adCode": "230900",
-				"children": [
-					{
+				"children": [{
 						"id": 1774,
 						"name": "勃利县",
 						"parentId": 138,
@@ -6023,8 +5944,7 @@ const cityData = [
 				"parentId": 8,
 				"sort": null,
 				"adCode": "231000",
-				"children": [
-					{
+				"children": [{
 						"id": 1778,
 						"name": "东宁市",
 						"parentId": 139,
@@ -6112,8 +6032,7 @@ const cityData = [
 				"parentId": 8,
 				"sort": null,
 				"adCode": "231100",
-				"children": [
-					{
+				"children": [{
 						"id": 1788,
 						"name": "五大连池市",
 						"parentId": 140,
@@ -6169,8 +6088,7 @@ const cityData = [
 				"parentId": 8,
 				"sort": null,
 				"adCode": "231200",
-				"children": [
-					{
+				"children": [{
 						"id": 1795,
 						"name": "兰西县",
 						"parentId": 141,
@@ -6258,8 +6176,7 @@ const cityData = [
 				"parentId": 8,
 				"sort": null,
 				"adCode": "232700",
-				"children": [
-					{
+				"children": [{
 						"id": 1805,
 						"name": "呼玛县",
 						"parentId": 142,
@@ -6317,145 +6234,142 @@ const cityData = [
 		"parentId": 0,
 		"sort": null,
 		"adCode": "310000",
-		"children": [
-			{
-				"id": 39,
-				"name": "上海市",
-				"parentId": 9,
-				"sort": null,
-				"adCode": "310100",
-				"children": [
-					{
-						"id": 143,
-						"name": "黄浦区",
-						"parentId": 39,
-						"sort": null,
-						"adCode": "310101",
-						"children": null
-					},
-					{
-						"id": 145,
-						"name": "徐汇区",
-						"parentId": 39,
-						"sort": null,
-						"adCode": "310104",
-						"children": null
-					},
-					{
-						"id": 146,
-						"name": "长宁区",
-						"parentId": 39,
-						"sort": null,
-						"adCode": "310105",
-						"children": null
-					},
-					{
-						"id": 147,
-						"name": "静安区",
-						"parentId": 39,
-						"sort": null,
-						"adCode": "310106",
-						"children": null
-					},
-					{
-						"id": 148,
-						"name": "普陀区",
-						"parentId": 39,
-						"sort": null,
-						"adCode": "310107",
-						"children": null
-					},
-					{
-						"id": 150,
-						"name": "虹口区",
-						"parentId": 39,
-						"sort": null,
-						"adCode": "310109",
-						"children": null
-					},
-					{
-						"id": 151,
-						"name": "杨浦区",
-						"parentId": 39,
-						"sort": null,
-						"adCode": "310110",
-						"children": null
-					},
-					{
-						"id": 152,
-						"name": "闵行区",
-						"parentId": 39,
-						"sort": null,
-						"adCode": "310112",
-						"children": null
-					},
-					{
-						"id": 153,
-						"name": "宝山区",
-						"parentId": 39,
-						"sort": null,
-						"adCode": "310113",
-						"children": null
-					},
-					{
-						"id": 154,
-						"name": "嘉定区",
-						"parentId": 39,
-						"sort": null,
-						"adCode": "310114",
-						"children": null
-					},
-					{
-						"id": 155,
-						"name": "浦东新区",
-						"parentId": 39,
-						"sort": null,
-						"adCode": "310115",
-						"children": null
-					},
-					{
-						"id": 156,
-						"name": "金山区",
-						"parentId": 39,
-						"sort": null,
-						"adCode": "310116",
-						"children": null
-					},
-					{
-						"id": 157,
-						"name": "松江区",
-						"parentId": 39,
-						"sort": null,
-						"adCode": "310117",
-						"children": null
-					},
-					{
-						"id": 158,
-						"name": "青浦区",
-						"parentId": 39,
-						"sort": null,
-						"adCode": "310118",
-						"children": null
-					},
-					{
-						"id": 160,
-						"name": "奉贤区",
-						"parentId": 39,
-						"sort": null,
-						"adCode": "310120",
-						"children": null
-					},
-					{
-						"id": 161,
-						"name": "崇明区",
-						"parentId": 39,
-						"sort": null,
-						"adCode": "310151",
-						"children": null
-					}
-				]
-			}
-		]
+		"children": [{
+			"id": 39,
+			"name": "上海市",
+			"parentId": 9,
+			"sort": null,
+			"adCode": "310100",
+			"children": [{
+					"id": 143,
+					"name": "黄浦区",
+					"parentId": 39,
+					"sort": null,
+					"adCode": "310101",
+					"children": null
+				},
+				{
+					"id": 145,
+					"name": "徐汇区",
+					"parentId": 39,
+					"sort": null,
+					"adCode": "310104",
+					"children": null
+				},
+				{
+					"id": 146,
+					"name": "长宁区",
+					"parentId": 39,
+					"sort": null,
+					"adCode": "310105",
+					"children": null
+				},
+				{
+					"id": 147,
+					"name": "静安区",
+					"parentId": 39,
+					"sort": null,
+					"adCode": "310106",
+					"children": null
+				},
+				{
+					"id": 148,
+					"name": "普陀区",
+					"parentId": 39,
+					"sort": null,
+					"adCode": "310107",
+					"children": null
+				},
+				{
+					"id": 150,
+					"name": "虹口区",
+					"parentId": 39,
+					"sort": null,
+					"adCode": "310109",
+					"children": null
+				},
+				{
+					"id": 151,
+					"name": "杨浦区",
+					"parentId": 39,
+					"sort": null,
+					"adCode": "310110",
+					"children": null
+				},
+				{
+					"id": 152,
+					"name": "闵行区",
+					"parentId": 39,
+					"sort": null,
+					"adCode": "310112",
+					"children": null
+				},
+				{
+					"id": 153,
+					"name": "宝山区",
+					"parentId": 39,
+					"sort": null,
+					"adCode": "310113",
+					"children": null
+				},
+				{
+					"id": 154,
+					"name": "嘉定区",
+					"parentId": 39,
+					"sort": null,
+					"adCode": "310114",
+					"children": null
+				},
+				{
+					"id": 155,
+					"name": "浦东新区",
+					"parentId": 39,
+					"sort": null,
+					"adCode": "310115",
+					"children": null
+				},
+				{
+					"id": 156,
+					"name": "金山区",
+					"parentId": 39,
+					"sort": null,
+					"adCode": "310116",
+					"children": null
+				},
+				{
+					"id": 157,
+					"name": "松江区",
+					"parentId": 39,
+					"sort": null,
+					"adCode": "310117",
+					"children": null
+				},
+				{
+					"id": 158,
+					"name": "青浦区",
+					"parentId": 39,
+					"sort": null,
+					"adCode": "310118",
+					"children": null
+				},
+				{
+					"id": 160,
+					"name": "奉贤区",
+					"parentId": 39,
+					"sort": null,
+					"adCode": "310120",
+					"children": null
+				},
+				{
+					"id": 161,
+					"name": "崇明区",
+					"parentId": 39,
+					"sort": null,
+					"adCode": "310151",
+					"children": null
+				}
+			]
+		}]
 	},
 	{
 		"id": 10,
@@ -6463,15 +6377,13 @@ const cityData = [
 		"parentId": 0,
 		"sort": null,
 		"adCode": "320000",
-		"children": [
-			{
+		"children": [{
 				"id": 162,
 				"name": "南京市",
 				"parentId": 10,
 				"sort": null,
 				"adCode": "320100",
-				"children": [
-					{
+				"children": [{
 						"id": 2028,
 						"name": "六合区",
 						"parentId": 162,
@@ -6567,8 +6479,7 @@ const cityData = [
 				"parentId": 10,
 				"sort": null,
 				"adCode": "320200",
-				"children": [
-					{
+				"children": [{
 						"id": 2042,
 						"name": "宜兴市",
 						"parentId": 163,
@@ -6632,8 +6543,7 @@ const cityData = [
 				"parentId": 10,
 				"sort": null,
 				"adCode": "320300",
-				"children": [
-					{
+				"children": [{
 						"id": 2048,
 						"name": "丰县",
 						"parentId": 164,
@@ -6721,8 +6631,7 @@ const cityData = [
 				"parentId": 10,
 				"sort": null,
 				"adCode": "320400",
-				"children": [
-					{
+				"children": [{
 						"id": 2059,
 						"name": "天宁区",
 						"parentId": 165,
@@ -6778,8 +6687,7 @@ const cityData = [
 				"parentId": 10,
 				"sort": null,
 				"adCode": "320500",
-				"children": [
-					{
+				"children": [{
 						"id": 2066,
 						"name": "吴中区",
 						"parentId": 166,
@@ -6867,8 +6775,7 @@ const cityData = [
 				"parentId": 10,
 				"sort": null,
 				"adCode": "320600",
-				"children": [
-					{
+				"children": [{
 						"id": 2078,
 						"name": "启东市",
 						"parentId": 167,
@@ -6932,8 +6839,7 @@ const cityData = [
 				"parentId": 10,
 				"sort": null,
 				"adCode": "320700",
-				"children": [
-					{
+				"children": [{
 						"id": 2086,
 						"name": "东海县",
 						"parentId": 168,
@@ -6989,8 +6895,7 @@ const cityData = [
 				"parentId": 10,
 				"sort": null,
 				"adCode": "320800",
-				"children": [
-					{
+				"children": [{
 						"id": 2094,
 						"name": "洪泽区",
 						"parentId": 169,
@@ -7054,8 +6959,7 @@ const cityData = [
 				"parentId": 10,
 				"sort": null,
 				"adCode": "320900",
-				"children": [
-					{
+				"children": [{
 						"id": 2101,
 						"name": "东台市",
 						"parentId": 170,
@@ -7135,8 +7039,7 @@ const cityData = [
 				"parentId": 10,
 				"sort": null,
 				"adCode": "321000",
-				"children": [
-					{
+				"children": [{
 						"id": 2110,
 						"name": "仪征市",
 						"parentId": 171,
@@ -7192,8 +7095,7 @@ const cityData = [
 				"parentId": 10,
 				"sort": null,
 				"adCode": "321100",
-				"children": [
-					{
+				"children": [{
 						"id": 2117,
 						"name": "丹徒区",
 						"parentId": 172,
@@ -7249,8 +7151,7 @@ const cityData = [
 				"parentId": 10,
 				"sort": null,
 				"adCode": "321200",
-				"children": [
-					{
+				"children": [{
 						"id": 2123,
 						"name": "兴化市",
 						"parentId": 173,
@@ -7306,8 +7207,7 @@ const cityData = [
 				"parentId": 10,
 				"sort": null,
 				"adCode": "321300",
-				"children": [
-					{
+				"children": [{
 						"id": 2129,
 						"name": "宿城区",
 						"parentId": 174,
@@ -7357,15 +7257,13 @@ const cityData = [
 		"parentId": 0,
 		"sort": null,
 		"adCode": "330000",
-		"children": [
-			{
+		"children": [{
 				"id": 175,
 				"name": "杭州市",
 				"parentId": 11,
 				"sort": null,
 				"adCode": "330100",
-				"children": [
-					{
+				"children": [{
 						"id": 2134,
 						"name": "上城区",
 						"parentId": 175,
@@ -7469,8 +7367,7 @@ const cityData = [
 				"parentId": 11,
 				"sort": null,
 				"adCode": "330200",
-				"children": [
-					{
+				"children": [{
 						"id": 2147,
 						"name": "余姚市",
 						"parentId": 176,
@@ -7558,8 +7455,7 @@ const cityData = [
 				"parentId": 11,
 				"sort": null,
 				"adCode": "330300",
-				"children": [
-					{
+				"children": [{
 						"id": 2158,
 						"name": "乐清市",
 						"parentId": 177,
@@ -7655,8 +7551,7 @@ const cityData = [
 				"parentId": 11,
 				"sort": null,
 				"adCode": "330400",
-				"children": [
-					{
+				"children": [{
 						"id": 2169,
 						"name": "南湖区",
 						"parentId": 178,
@@ -7720,8 +7615,7 @@ const cityData = [
 				"parentId": 11,
 				"sort": null,
 				"adCode": "330500",
-				"children": [
-					{
+				"children": [{
 						"id": 2176,
 						"name": "南浔区",
 						"parentId": 179,
@@ -7769,8 +7663,7 @@ const cityData = [
 				"parentId": 11,
 				"sort": null,
 				"adCode": "330600",
-				"children": [
-					{
+				"children": [{
 						"id": 2181,
 						"name": "上虞区",
 						"parentId": 180,
@@ -7826,8 +7719,7 @@ const cityData = [
 				"parentId": 11,
 				"sort": null,
 				"adCode": "330900",
-				"children": [
-					{
+				"children": [{
 						"id": 2187,
 						"name": "定海区",
 						"parentId": 181,
@@ -7867,8 +7759,7 @@ const cityData = [
 				"parentId": 11,
 				"sort": null,
 				"adCode": "330800",
-				"children": [
-					{
+				"children": [{
 						"id": 2191,
 						"name": "常山县",
 						"parentId": 182,
@@ -7924,8 +7815,7 @@ const cityData = [
 				"parentId": 11,
 				"sort": null,
 				"adCode": "330700",
-				"children": [
-					{
+				"children": [{
 						"id": 2197,
 						"name": "东阳市",
 						"parentId": 183,
@@ -8005,8 +7895,7 @@ const cityData = [
 				"parentId": 11,
 				"sort": null,
 				"adCode": "331000",
-				"children": [
-					{
+				"children": [{
 						"id": 2206,
 						"name": "三门县",
 						"parentId": 184,
@@ -8086,8 +7975,7 @@ const cityData = [
 				"parentId": 11,
 				"sort": null,
 				"adCode": "331100",
-				"children": [
-					{
+				"children": [{
 						"id": 2215,
 						"name": "云和县",
 						"parentId": 185,
@@ -8169,15 +8057,13 @@ const cityData = [
 		"parentId": 0,
 		"sort": null,
 		"adCode": "340000",
-		"children": [
-			{
+		"children": [{
 				"id": 186,
 				"name": "合肥市",
 				"parentId": 12,
 				"sort": null,
 				"adCode": "340100",
-				"children": [
-					{
+				"children": [{
 						"id": 2224,
 						"name": "包河区",
 						"parentId": 186,
@@ -8257,8 +8143,7 @@ const cityData = [
 				"parentId": 12,
 				"sort": null,
 				"adCode": "340200",
-				"children": [
-					{
+				"children": [{
 						"id": 2232,
 						"name": "南陵县",
 						"parentId": 187,
@@ -8322,8 +8207,7 @@ const cityData = [
 				"parentId": 12,
 				"sort": null,
 				"adCode": "340300",
-				"children": [
-					{
+				"children": [{
 						"id": 2238,
 						"name": "五河县",
 						"parentId": 188,
@@ -8387,8 +8271,7 @@ const cityData = [
 				"parentId": 12,
 				"sort": null,
 				"adCode": "340400",
-				"children": [
-					{
+				"children": [{
 						"id": 2245,
 						"name": "八公山区",
 						"parentId": 189,
@@ -8452,8 +8335,7 @@ const cityData = [
 				"parentId": 12,
 				"sort": null,
 				"adCode": "340500",
-				"children": [
-					{
+				"children": [{
 						"id": 2251,
 						"name": "当涂县",
 						"parentId": 190,
@@ -8509,8 +8391,7 @@ const cityData = [
 				"parentId": 12,
 				"sort": null,
 				"adCode": "340600",
-				"children": [
-					{
+				"children": [{
 						"id": 2255,
 						"name": "杜集区",
 						"parentId": 191,
@@ -8550,8 +8431,7 @@ const cityData = [
 				"parentId": 12,
 				"sort": null,
 				"adCode": "340700",
-				"children": [
-					{
+				"children": [{
 						"id": 2260,
 						"name": "郊区",
 						"parentId": 192,
@@ -8591,8 +8471,7 @@ const cityData = [
 				"parentId": 12,
 				"sort": null,
 				"adCode": "340800",
-				"children": [
-					{
+				"children": [{
 						"id": 2263,
 						"name": "大观区",
 						"parentId": 193,
@@ -8680,8 +8559,7 @@ const cityData = [
 				"parentId": 12,
 				"sort": null,
 				"adCode": "341000",
-				"children": [
-					{
+				"children": [{
 						"id": 2274,
 						"name": "休宁县",
 						"parentId": 194,
@@ -8745,8 +8623,7 @@ const cityData = [
 				"parentId": 12,
 				"sort": null,
 				"adCode": "341100",
-				"children": [
-					{
+				"children": [{
 						"id": 2281,
 						"name": "全椒县",
 						"parentId": 195,
@@ -8818,8 +8695,7 @@ const cityData = [
 				"parentId": 12,
 				"sort": null,
 				"adCode": "341200",
-				"children": [
-					{
+				"children": [{
 						"id": 2289,
 						"name": "临泉县",
 						"parentId": 196,
@@ -8891,8 +8767,7 @@ const cityData = [
 				"parentId": 12,
 				"sort": null,
 				"adCode": "341300",
-				"children": [
-					{
+				"children": [{
 						"id": 2297,
 						"name": "埇桥区",
 						"parentId": 197,
@@ -8940,8 +8815,7 @@ const cityData = [
 				"parentId": 12,
 				"sort": null,
 				"adCode": "341500",
-				"children": [
-					{
+				"children": [{
 						"id": 2308,
 						"name": "舒城县",
 						"parentId": 199,
@@ -9005,8 +8879,7 @@ const cityData = [
 				"parentId": 12,
 				"sort": null,
 				"adCode": "341600",
-				"children": [
-					{
+				"children": [{
 						"id": 2314,
 						"name": "利辛县",
 						"parentId": 200,
@@ -9046,8 +8919,7 @@ const cityData = [
 				"parentId": 12,
 				"sort": null,
 				"adCode": "341700",
-				"children": [
-					{
+				"children": [{
 						"id": 2318,
 						"name": "东至县",
 						"parentId": 201,
@@ -9087,8 +8959,7 @@ const cityData = [
 				"parentId": 12,
 				"sort": null,
 				"adCode": "341800",
-				"children": [
-					{
+				"children": [{
 						"id": 2322,
 						"name": "宁国市",
 						"parentId": 202,
@@ -9154,15 +9025,13 @@ const cityData = [
 		"parentId": 0,
 		"sort": null,
 		"adCode": "350000",
-		"children": [
-			{
+		"children": [{
 				"id": 203,
 				"name": "福州市",
 				"parentId": 13,
 				"sort": null,
 				"adCode": "350100",
-				"children": [
-					{
+				"children": [{
 						"id": 2329,
 						"name": "仓山区",
 						"parentId": 203,
@@ -9274,8 +9143,7 @@ const cityData = [
 				"parentId": 13,
 				"sort": null,
 				"adCode": "350200",
-				"children": [
-					{
+				"children": [{
 						"id": 2342,
 						"name": "同安区",
 						"parentId": 204,
@@ -9331,8 +9199,7 @@ const cityData = [
 				"parentId": 13,
 				"sort": null,
 				"adCode": "350300",
-				"children": [
-					{
+				"children": [{
 						"id": 2348,
 						"name": "仙游县",
 						"parentId": 205,
@@ -9380,8 +9247,7 @@ const cityData = [
 				"parentId": 13,
 				"sort": null,
 				"adCode": "350400",
-				"children": [
-					{
+				"children": [{
 						"id": 2353,
 						"name": "三元区",
 						"parentId": 206,
@@ -9477,8 +9343,7 @@ const cityData = [
 				"parentId": 13,
 				"sort": null,
 				"adCode": "350500",
-				"children": [
-					{
+				"children": [{
 						"id": 2365,
 						"name": "丰泽区",
 						"parentId": 207,
@@ -9582,8 +9447,7 @@ const cityData = [
 				"parentId": 13,
 				"sort": null,
 				"adCode": "350600",
-				"children": [
-					{
+				"children": [{
 						"id": 2377,
 						"name": "东山县",
 						"parentId": 208,
@@ -9671,8 +9535,7 @@ const cityData = [
 				"parentId": 13,
 				"sort": null,
 				"adCode": "350700",
-				"children": [
-					{
+				"children": [{
 						"id": 2388,
 						"name": "光泽县",
 						"parentId": 209,
@@ -9760,8 +9623,7 @@ const cityData = [
 				"parentId": 13,
 				"sort": null,
 				"adCode": "350800",
-				"children": [
-					{
+				"children": [{
 						"id": 2398,
 						"name": "上杭县",
 						"parentId": 210,
@@ -9825,8 +9687,7 @@ const cityData = [
 				"parentId": 13,
 				"sort": null,
 				"adCode": "350900",
-				"children": [
-					{
+				"children": [{
 						"id": 2405,
 						"name": "古田县",
 						"parentId": 211,
@@ -9908,15 +9769,13 @@ const cityData = [
 		"parentId": 0,
 		"sort": null,
 		"adCode": "360000",
-		"children": [
-			{
+		"children": [{
 				"id": 212,
 				"name": "南昌市",
 				"parentId": 14,
 				"sort": null,
 				"adCode": "360100",
-				"children": [
-					{
+				"children": [{
 						"id": 2414,
 						"name": "东湖区",
 						"parentId": 212,
@@ -9996,8 +9855,7 @@ const cityData = [
 				"parentId": 14,
 				"sort": null,
 				"adCode": "360200",
-				"children": [
-					{
+				"children": [{
 						"id": 2423,
 						"name": "乐平市",
 						"parentId": 213,
@@ -10037,8 +9895,7 @@ const cityData = [
 				"parentId": 14,
 				"sort": null,
 				"adCode": "360300",
-				"children": [
-					{
+				"children": [{
 						"id": 2427,
 						"name": "上栗县",
 						"parentId": 214,
@@ -10086,8 +9943,7 @@ const cityData = [
 				"parentId": 14,
 				"sort": null,
 				"adCode": "360400",
-				"children": [
-					{
+				"children": [{
 						"id": 2433,
 						"name": "修水县",
 						"parentId": 215,
@@ -10191,8 +10047,7 @@ const cityData = [
 				"parentId": 14,
 				"sort": null,
 				"adCode": "360500",
-				"children": [
-					{
+				"children": [{
 						"id": 2444,
 						"name": "分宜县",
 						"parentId": 216,
@@ -10216,8 +10071,7 @@ const cityData = [
 				"parentId": 14,
 				"sort": null,
 				"adCode": "360600",
-				"children": [
-					{
+				"children": [{
 						"id": 2446,
 						"name": "余江区",
 						"parentId": 217,
@@ -10249,8 +10103,7 @@ const cityData = [
 				"parentId": 14,
 				"sort": null,
 				"adCode": "360700",
-				"children": [
-					{
+				"children": [{
 						"id": 2449,
 						"name": "上犹县",
 						"parentId": 218,
@@ -10402,8 +10255,7 @@ const cityData = [
 				"parentId": 14,
 				"sort": null,
 				"adCode": "360800",
-				"children": [
-					{
+				"children": [{
 						"id": 2467,
 						"name": "万安县",
 						"parentId": 219,
@@ -10515,8 +10367,7 @@ const cityData = [
 				"parentId": 14,
 				"sort": null,
 				"adCode": "360900",
-				"children": [
-					{
+				"children": [{
 						"id": 2480,
 						"name": "万载县",
 						"parentId": 220,
@@ -10604,8 +10455,7 @@ const cityData = [
 				"parentId": 14,
 				"sort": null,
 				"adCode": "361000",
-				"children": [
-					{
+				"children": [{
 						"id": 2490,
 						"name": "东乡区",
 						"parentId": 221,
@@ -10701,8 +10551,7 @@ const cityData = [
 				"parentId": 14,
 				"sort": null,
 				"adCode": "361100",
-				"children": [
-					{
+				"children": [{
 						"id": 2501,
 						"name": "万年县",
 						"parentId": 222,
@@ -10808,15 +10657,13 @@ const cityData = [
 		"parentId": 0,
 		"sort": null,
 		"adCode": "370000",
-		"children": [
-			{
+		"children": [{
 				"id": 223,
 				"name": "济南市",
 				"parentId": 15,
 				"sort": null,
 				"adCode": "370100",
-				"children": [
-					{
+				"children": [{
 						"id": 2513,
 						"name": "历下区",
 						"parentId": 223,
@@ -10904,8 +10751,7 @@ const cityData = [
 				"parentId": 15,
 				"sort": null,
 				"adCode": "370200",
-				"children": [
-					{
+				"children": [{
 						"id": 2523,
 						"name": "即墨区",
 						"parentId": 224,
@@ -10993,8 +10839,7 @@ const cityData = [
 				"parentId": 15,
 				"sort": null,
 				"adCode": "370300",
-				"children": [
-					{
+				"children": [{
 						"id": 2535,
 						"name": "临淄区",
 						"parentId": 225,
@@ -11066,8 +10911,7 @@ const cityData = [
 				"parentId": 15,
 				"sort": null,
 				"adCode": "370400",
-				"children": [
-					{
+				"children": [{
 						"id": 2543,
 						"name": "台儿庄区",
 						"parentId": 226,
@@ -11123,8 +10967,7 @@ const cityData = [
 				"parentId": 15,
 				"sort": null,
 				"adCode": "370500",
-				"children": [
-					{
+				"children": [{
 						"id": 2549,
 						"name": "东营区",
 						"parentId": 227,
@@ -11172,8 +11015,7 @@ const cityData = [
 				"parentId": 15,
 				"sort": null,
 				"adCode": "370600",
-				"children": [
-					{
+				"children": [{
 						"id": 2554,
 						"name": "招远市",
 						"parentId": 228,
@@ -11269,8 +11111,7 @@ const cityData = [
 				"parentId": 15,
 				"sort": null,
 				"adCode": "370700",
-				"children": [
-					{
+				"children": [{
 						"id": 2566,
 						"name": "临朐县",
 						"parentId": 229,
@@ -11374,8 +11215,7 @@ const cityData = [
 				"parentId": 15,
 				"sort": null,
 				"adCode": "370800",
-				"children": [
-					{
+				"children": [{
 						"id": 2578,
 						"name": "任城区",
 						"parentId": 230,
@@ -11471,8 +11311,7 @@ const cityData = [
 				"parentId": 15,
 				"sort": null,
 				"adCode": "370900",
-				"children": [
-					{
+				"children": [{
 						"id": 2590,
 						"name": "东平县",
 						"parentId": 231,
@@ -11528,8 +11367,7 @@ const cityData = [
 				"parentId": 15,
 				"sort": null,
 				"adCode": "371000",
-				"children": [
-					{
+				"children": [{
 						"id": 2596,
 						"name": "乳山市",
 						"parentId": 232,
@@ -11569,8 +11407,7 @@ const cityData = [
 				"parentId": 15,
 				"sort": null,
 				"adCode": "371100",
-				"children": [
-					{
+				"children": [{
 						"id": 2600,
 						"name": "东港区",
 						"parentId": 233,
@@ -11610,8 +11447,7 @@ const cityData = [
 				"parentId": 15,
 				"sort": null,
 				"adCode": "371300",
-				"children": [
-					{
+				"children": [{
 						"id": 2606,
 						"name": "临沭县",
 						"parentId": 235,
@@ -11715,8 +11551,7 @@ const cityData = [
 				"parentId": 15,
 				"sort": null,
 				"adCode": "371400",
-				"children": [
-					{
+				"children": [{
 						"id": 2618,
 						"name": "临邑县",
 						"parentId": 236,
@@ -11812,8 +11647,7 @@ const cityData = [
 				"parentId": 15,
 				"sort": null,
 				"adCode": "371500",
-				"children": [
-					{
+				"children": [{
 						"id": 2629,
 						"name": "东昌府区",
 						"parentId": 237,
@@ -11885,8 +11719,7 @@ const cityData = [
 				"parentId": 15,
 				"sort": null,
 				"adCode": "371600",
-				"children": [
-					{
+				"children": [{
 						"id": 2637,
 						"name": "博兴县",
 						"parentId": 238,
@@ -11950,8 +11783,7 @@ const cityData = [
 				"parentId": 15,
 				"sort": null,
 				"adCode": "371700",
-				"children": [
-					{
+				"children": [{
 						"id": 2644,
 						"name": "东明县",
 						"parentId": 239,
@@ -12033,15 +11865,13 @@ const cityData = [
 		"parentId": 0,
 		"sort": null,
 		"adCode": "410000",
-		"children": [
-			{
+		"children": [{
 				"id": 240,
 				"name": "郑州市",
 				"parentId": 16,
 				"sort": null,
 				"adCode": "410100",
-				"children": [
-					{
+				"children": [{
 						"id": 2653,
 						"name": "上街区",
 						"parentId": 240,
@@ -12145,8 +11975,7 @@ const cityData = [
 				"parentId": 16,
 				"sort": null,
 				"adCode": "410200",
-				"children": [
-					{
+				"children": [{
 						"id": 2665,
 						"name": "兰考县",
 						"parentId": 241,
@@ -12226,8 +12055,7 @@ const cityData = [
 				"parentId": 16,
 				"sort": null,
 				"adCode": "410300",
-				"children": [
-					{
+				"children": [{
 						"id": 2675,
 						"name": "伊川县",
 						"parentId": 242,
@@ -12347,8 +12175,7 @@ const cityData = [
 				"parentId": 16,
 				"sort": null,
 				"adCode": "410400",
-				"children": [
-					{
+				"children": [{
 						"id": 2690,
 						"name": "卫东区",
 						"parentId": 243,
@@ -12436,8 +12263,7 @@ const cityData = [
 				"parentId": 16,
 				"sort": null,
 				"adCode": "410500",
-				"children": [
-					{
+				"children": [{
 						"id": 2700,
 						"name": "内黄县",
 						"parentId": 244,
@@ -12517,8 +12343,7 @@ const cityData = [
 				"parentId": 16,
 				"sort": null,
 				"adCode": "410600",
-				"children": [
-					{
+				"children": [{
 						"id": 2709,
 						"name": "山城区",
 						"parentId": 245,
@@ -12566,8 +12391,7 @@ const cityData = [
 				"parentId": 16,
 				"sort": null,
 				"adCode": "410700",
-				"children": [
-					{
+				"children": [{
 						"id": 2714,
 						"name": "凤泉区",
 						"parentId": 246,
@@ -12671,8 +12495,7 @@ const cityData = [
 				"parentId": 16,
 				"sort": null,
 				"adCode": "410800",
-				"children": [
-					{
+				"children": [{
 						"id": 2726,
 						"name": "中站区",
 						"parentId": 247,
@@ -12760,8 +12583,7 @@ const cityData = [
 				"parentId": 16,
 				"sort": null,
 				"adCode": "410900",
-				"children": [
-					{
+				"children": [{
 						"id": 2736,
 						"name": "华龙区",
 						"parentId": 248,
@@ -12817,8 +12639,7 @@ const cityData = [
 				"parentId": 16,
 				"sort": null,
 				"adCode": "411000",
-				"children": [
-					{
+				"children": [{
 						"id": 2742,
 						"name": "禹州市",
 						"parentId": 249,
@@ -12874,8 +12695,7 @@ const cityData = [
 				"parentId": 16,
 				"sort": null,
 				"adCode": "411100",
-				"children": [
-					{
+				"children": [{
 						"id": 2748,
 						"name": "临颍县",
 						"parentId": 250,
@@ -12923,8 +12743,7 @@ const cityData = [
 				"parentId": 16,
 				"sort": null,
 				"adCode": "411200",
-				"children": [
-					{
+				"children": [{
 						"id": 2753,
 						"name": "义马市",
 						"parentId": 251,
@@ -12980,8 +12799,7 @@ const cityData = [
 				"parentId": 16,
 				"sort": null,
 				"adCode": "411300",
-				"children": [
-					{
+				"children": [{
 						"id": 2759,
 						"name": "内乡县",
 						"parentId": 252,
@@ -13093,8 +12911,7 @@ const cityData = [
 				"parentId": 16,
 				"sort": null,
 				"adCode": "411400",
-				"children": [
-					{
+				"children": [{
 						"id": 2772,
 						"name": "夏邑县",
 						"parentId": 253,
@@ -13174,8 +12991,7 @@ const cityData = [
 				"parentId": 16,
 				"sort": null,
 				"adCode": "411500",
-				"children": [
-					{
+				"children": [{
 						"id": 2781,
 						"name": "光山县",
 						"parentId": 254,
@@ -13263,8 +13079,7 @@ const cityData = [
 				"parentId": 16,
 				"sort": null,
 				"adCode": "411600",
-				"children": [
-					{
+				"children": [{
 						"id": 2791,
 						"name": "商水县",
 						"parentId": 255,
@@ -13352,8 +13167,7 @@ const cityData = [
 				"parentId": 16,
 				"sort": null,
 				"adCode": "411700",
-				"children": [
-					{
+				"children": [{
 						"id": 2801,
 						"name": "上蔡县",
 						"parentId": 256,
@@ -13441,16 +13255,14 @@ const cityData = [
 				"parentId": 16,
 				"sort": null,
 				"adCode": "419001",
-				"children": [
-					{
-						"id": 2811,
-						"name": "济源市",
-						"parentId": 257,
-						"sort": null,
-						"adCode": "419001",
-						"children": null
-					}
-				]
+				"children": [{
+					"id": 2811,
+					"name": "济源市",
+					"parentId": 257,
+					"sort": null,
+					"adCode": "419001",
+					"children": null
+				}]
 			}
 		]
 	},
@@ -13460,15 +13272,13 @@ const cityData = [
 		"parentId": 0,
 		"sort": null,
 		"adCode": "420000",
-		"children": [
-			{
+		"children": [{
 				"id": 258,
 				"name": "武汉市",
 				"parentId": 17,
 				"sort": null,
 				"adCode": "420100",
-				"children": [
-					{
+				"children": [{
 						"id": 2812,
 						"name": "东西湖区",
 						"parentId": 258,
@@ -13580,8 +13390,7 @@ const cityData = [
 				"parentId": 17,
 				"sort": null,
 				"adCode": "420200",
-				"children": [
-					{
+				"children": [{
 						"id": 2825,
 						"name": "下陆区",
 						"parentId": 259,
@@ -13637,8 +13446,7 @@ const cityData = [
 				"parentId": 17,
 				"sort": null,
 				"adCode": "420300",
-				"children": [
-					{
+				"children": [{
 						"id": 2831,
 						"name": "丹江口市",
 						"parentId": 260,
@@ -13710,8 +13518,7 @@ const cityData = [
 				"parentId": 17,
 				"sort": null,
 				"adCode": "420500",
-				"children": [
-					{
+				"children": [{
 						"id": 2839,
 						"name": "五峰土家族自治县",
 						"parentId": 261,
@@ -13823,8 +13630,7 @@ const cityData = [
 				"parentId": 17,
 				"sort": null,
 				"adCode": "420600",
-				"children": [
-					{
+				"children": [{
 						"id": 2852,
 						"name": "保康县",
 						"parentId": 262,
@@ -13904,8 +13710,7 @@ const cityData = [
 				"parentId": 17,
 				"sort": null,
 				"adCode": "420700",
-				"children": [
-					{
+				"children": [{
 						"id": 2861,
 						"name": "华容区",
 						"parentId": 263,
@@ -13937,8 +13742,7 @@ const cityData = [
 				"parentId": 17,
 				"sort": null,
 				"adCode": "420800",
-				"children": [
-					{
+				"children": [{
 						"id": 2864,
 						"name": "东宝区",
 						"parentId": 264,
@@ -13986,8 +13790,7 @@ const cityData = [
 				"parentId": 17,
 				"sort": null,
 				"adCode": "420900",
-				"children": [
-					{
+				"children": [{
 						"id": 2869,
 						"name": "云梦县",
 						"parentId": 265,
@@ -14051,8 +13854,7 @@ const cityData = [
 				"parentId": 17,
 				"sort": null,
 				"adCode": "421000",
-				"children": [
-					{
+				"children": [{
 						"id": 2876,
 						"name": "公安县",
 						"parentId": 266,
@@ -14124,8 +13926,7 @@ const cityData = [
 				"parentId": 17,
 				"sort": null,
 				"adCode": "421100",
-				"children": [
-					{
+				"children": [{
 						"id": 2884,
 						"name": "团风县",
 						"parentId": 267,
@@ -14213,8 +14014,7 @@ const cityData = [
 				"parentId": 17,
 				"sort": null,
 				"adCode": "421200",
-				"children": [
-					{
+				"children": [{
 						"id": 2894,
 						"name": "咸安区",
 						"parentId": 268,
@@ -14270,8 +14070,7 @@ const cityData = [
 				"parentId": 17,
 				"sort": null,
 				"adCode": "421300",
-				"children": [
-					{
+				"children": [{
 						"id": 2900,
 						"name": "广水市",
 						"parentId": 269,
@@ -14303,8 +14102,7 @@ const cityData = [
 				"parentId": 17,
 				"sort": null,
 				"adCode": "422800",
-				"children": [
-					{
+				"children": [{
 						"id": 2902,
 						"name": "利川市",
 						"parentId": 270,
@@ -14376,16 +14174,14 @@ const cityData = [
 				"parentId": 17,
 				"sort": null,
 				"adCode": "429004",
-				"children": [
-					{
-						"id": 2910,
-						"name": "仙桃市",
-						"parentId": 271,
-						"sort": null,
-						"adCode": "429004",
-						"children": null
-					}
-				]
+				"children": [{
+					"id": 2910,
+					"name": "仙桃市",
+					"parentId": 271,
+					"sort": null,
+					"adCode": "429004",
+					"children": null
+				}]
 			},
 			{
 				"id": 272,
@@ -14393,16 +14189,14 @@ const cityData = [
 				"parentId": 17,
 				"sort": null,
 				"adCode": "429005",
-				"children": [
-					{
-						"id": 2911,
-						"name": "潜江市",
-						"parentId": 272,
-						"sort": null,
-						"adCode": "429005",
-						"children": null
-					}
-				]
+				"children": [{
+					"id": 2911,
+					"name": "潜江市",
+					"parentId": 272,
+					"sort": null,
+					"adCode": "429005",
+					"children": null
+				}]
 			},
 			{
 				"id": 273,
@@ -14410,16 +14204,14 @@ const cityData = [
 				"parentId": 17,
 				"sort": null,
 				"adCode": "429006",
-				"children": [
-					{
-						"id": 2912,
-						"name": "天门市",
-						"parentId": 273,
-						"sort": null,
-						"adCode": "429006",
-						"children": null
-					}
-				]
+				"children": [{
+					"id": 2912,
+					"name": "天门市",
+					"parentId": 273,
+					"sort": null,
+					"adCode": "429006",
+					"children": null
+				}]
 			},
 			{
 				"id": 274,
@@ -14427,16 +14219,14 @@ const cityData = [
 				"parentId": 17,
 				"sort": null,
 				"adCode": "429021",
-				"children": [
-					{
-						"id": 2913,
-						"name": "神农架林区",
-						"parentId": 274,
-						"sort": null,
-						"adCode": "429021",
-						"children": null
-					}
-				]
+				"children": [{
+					"id": 2913,
+					"name": "神农架林区",
+					"parentId": 274,
+					"sort": null,
+					"adCode": "429021",
+					"children": null
+				}]
 			}
 		]
 	},
@@ -14446,15 +14236,13 @@ const cityData = [
 		"parentId": 0,
 		"sort": null,
 		"adCode": "430000",
-		"children": [
-			{
+		"children": [{
 				"id": 275,
 				"name": "长沙市",
 				"parentId": 18,
 				"sort": null,
 				"adCode": "430100",
-				"children": [
-					{
+				"children": [{
 						"id": 2914,
 						"name": "天心区",
 						"parentId": 275,
@@ -14534,8 +14322,7 @@ const cityData = [
 				"parentId": 18,
 				"sort": null,
 				"adCode": "430200",
-				"children": [
-					{
+				"children": [{
 						"id": 2923,
 						"name": "天元区",
 						"parentId": 276,
@@ -14615,8 +14402,7 @@ const cityData = [
 				"parentId": 18,
 				"sort": null,
 				"adCode": "430300",
-				"children": [
-					{
+				"children": [{
 						"id": 2932,
 						"name": "岳塘区",
 						"parentId": 277,
@@ -14664,8 +14450,7 @@ const cityData = [
 				"parentId": 18,
 				"sort": null,
 				"adCode": "430400",
-				"children": [
-					{
+				"children": [{
 						"id": 2937,
 						"name": "南岳区",
 						"parentId": 278,
@@ -14769,8 +14554,7 @@ const cityData = [
 				"parentId": 18,
 				"sort": null,
 				"adCode": "430500",
-				"children": [
-					{
+				"children": [{
 						"id": 2949,
 						"name": "北塔区",
 						"parentId": 279,
@@ -14874,8 +14658,7 @@ const cityData = [
 				"parentId": 18,
 				"sort": null,
 				"adCode": "430600",
-				"children": [
-					{
+				"children": [{
 						"id": 2961,
 						"name": "临湘市",
 						"parentId": 280,
@@ -14955,8 +14738,7 @@ const cityData = [
 				"parentId": 18,
 				"sort": null,
 				"adCode": "430700",
-				"children": [
-					{
+				"children": [{
 						"id": 2970,
 						"name": "临澧县",
 						"parentId": 281,
@@ -15036,8 +14818,7 @@ const cityData = [
 				"parentId": 18,
 				"sort": null,
 				"adCode": "430800",
-				"children": [
-					{
+				"children": [{
 						"id": 2979,
 						"name": "慈利县",
 						"parentId": 282,
@@ -15077,8 +14858,7 @@ const cityData = [
 				"parentId": 18,
 				"sort": null,
 				"adCode": "430900",
-				"children": [
-					{
+				"children": [{
 						"id": 2983,
 						"name": "南县",
 						"parentId": 283,
@@ -15134,8 +14914,7 @@ const cityData = [
 				"parentId": 18,
 				"sort": null,
 				"adCode": "431000",
-				"children": [
-					{
+				"children": [{
 						"id": 2989,
 						"name": "临武县",
 						"parentId": 284,
@@ -15231,8 +15010,7 @@ const cityData = [
 				"parentId": 18,
 				"sort": null,
 				"adCode": "431100",
-				"children": [
-					{
+				"children": [{
 						"id": 3000,
 						"name": "东安县",
 						"parentId": 285,
@@ -15328,8 +15106,7 @@ const cityData = [
 				"parentId": 18,
 				"sort": null,
 				"adCode": "431200",
-				"children": [
-					{
+				"children": [{
 						"id": 3011,
 						"name": "中方县",
 						"parentId": 286,
@@ -15433,8 +15210,7 @@ const cityData = [
 				"parentId": 18,
 				"sort": null,
 				"adCode": "431300",
-				"children": [
-					{
+				"children": [{
 						"id": 3023,
 						"name": "冷水江市",
 						"parentId": 287,
@@ -15482,8 +15258,7 @@ const cityData = [
 				"parentId": 18,
 				"sort": null,
 				"adCode": "433100",
-				"children": [
-					{
+				"children": [{
 						"id": 3028,
 						"name": "保靖县",
 						"parentId": 288,
@@ -15557,15 +15332,13 @@ const cityData = [
 		"parentId": 0,
 		"sort": null,
 		"adCode": "440000",
-		"children": [
-			{
+		"children": [{
 				"id": 289,
 				"name": "广州市",
 				"parentId": 19,
 				"sort": null,
 				"adCode": "440100",
-				"children": [
-					{
+				"children": [{
 						"id": 3037,
 						"name": "南沙区",
 						"parentId": 289,
@@ -15661,8 +15434,7 @@ const cityData = [
 				"parentId": 19,
 				"sort": null,
 				"adCode": "440200",
-				"children": [
-					{
+				"children": [{
 						"id": 3048,
 						"name": "乐昌市",
 						"parentId": 290,
@@ -15750,8 +15522,7 @@ const cityData = [
 				"parentId": 19,
 				"sort": null,
 				"adCode": "440300",
-				"children": [
-					{
+				"children": [{
 						"id": 3058,
 						"name": "南山区",
 						"parentId": 291,
@@ -15823,8 +15594,7 @@ const cityData = [
 				"parentId": 19,
 				"sort": null,
 				"adCode": "440400",
-				"children": [
-					{
+				"children": [{
 						"id": 3064,
 						"name": "斗门区",
 						"parentId": 292,
@@ -15856,8 +15626,7 @@ const cityData = [
 				"parentId": 19,
 				"sort": null,
 				"adCode": "440500",
-				"children": [
-					{
+				"children": [{
 						"id": 3067,
 						"name": "南澳县",
 						"parentId": 293,
@@ -15921,8 +15690,7 @@ const cityData = [
 				"parentId": 19,
 				"sort": null,
 				"adCode": "440600",
-				"children": [
-					{
+				"children": [{
 						"id": 3074,
 						"name": "三水区",
 						"parentId": 294,
@@ -15970,8 +15738,7 @@ const cityData = [
 				"parentId": 19,
 				"sort": null,
 				"adCode": "440700",
-				"children": [
-					{
+				"children": [{
 						"id": 3079,
 						"name": "台山市",
 						"parentId": 295,
@@ -16035,8 +15802,7 @@ const cityData = [
 				"parentId": 19,
 				"sort": null,
 				"adCode": "440800",
-				"children": [
-					{
+				"children": [{
 						"id": 3086,
 						"name": "吴川市",
 						"parentId": 296,
@@ -16116,8 +15882,7 @@ const cityData = [
 				"parentId": 19,
 				"sort": null,
 				"adCode": "440900",
-				"children": [
-					{
+				"children": [{
 						"id": 3095,
 						"name": "信宜市",
 						"parentId": 297,
@@ -16165,8 +15930,7 @@ const cityData = [
 				"parentId": 19,
 				"sort": null,
 				"adCode": "441200",
-				"children": [
-					{
+				"children": [{
 						"id": 3101,
 						"name": "四会市",
 						"parentId": 298,
@@ -16238,8 +16002,7 @@ const cityData = [
 				"parentId": 19,
 				"sort": null,
 				"adCode": "441300",
-				"children": [
-					{
+				"children": [{
 						"id": 3109,
 						"name": "博罗县",
 						"parentId": 299,
@@ -16287,8 +16050,7 @@ const cityData = [
 				"parentId": 19,
 				"sort": null,
 				"adCode": "441400",
-				"children": [
-					{
+				"children": [{
 						"id": 3114,
 						"name": "丰顺县",
 						"parentId": 300,
@@ -16360,8 +16122,7 @@ const cityData = [
 				"parentId": 19,
 				"sort": null,
 				"adCode": "441500",
-				"children": [
-					{
+				"children": [{
 						"id": 3122,
 						"name": "城区",
 						"parentId": 301,
@@ -16401,8 +16162,7 @@ const cityData = [
 				"parentId": 19,
 				"sort": null,
 				"adCode": "441600",
-				"children": [
-					{
+				"children": [{
 						"id": 3126,
 						"name": "东源县",
 						"parentId": 302,
@@ -16458,8 +16218,7 @@ const cityData = [
 				"parentId": 19,
 				"sort": null,
 				"adCode": "441700",
-				"children": [
-					{
+				"children": [{
 						"id": 3132,
 						"name": "江城区",
 						"parentId": 303,
@@ -16499,8 +16258,7 @@ const cityData = [
 				"parentId": 19,
 				"sort": null,
 				"adCode": "441800",
-				"children": [
-					{
+				"children": [{
 						"id": 3136,
 						"name": "佛冈县",
 						"parentId": 304,
@@ -16572,16 +16330,14 @@ const cityData = [
 				"parentId": 19,
 				"sort": null,
 				"adCode": "441900",
-				"children": [
-					{
-						"id": 3144,
-						"name": "东莞市",
-						"parentId": 305,
-						"sort": null,
-						"adCode": "441900",
-						"children": null
-					}
-				]
+				"children": [{
+					"id": 3144,
+					"name": "东莞市",
+					"parentId": 305,
+					"sort": null,
+					"adCode": "441900",
+					"children": null
+				}]
 			},
 			{
 				"id": 306,
@@ -16589,16 +16345,14 @@ const cityData = [
 				"parentId": 19,
 				"sort": null,
 				"adCode": "442000",
-				"children": [
-					{
-						"id": 3145,
-						"name": "中山市",
-						"parentId": 306,
-						"sort": null,
-						"adCode": "442000",
-						"children": null
-					}
-				]
+				"children": [{
+					"id": 3145,
+					"name": "中山市",
+					"parentId": 306,
+					"sort": null,
+					"adCode": "442000",
+					"children": null
+				}]
 			},
 			{
 				"id": 307,
@@ -16606,8 +16360,7 @@ const cityData = [
 				"parentId": 19,
 				"sort": null,
 				"adCode": "445100",
-				"children": [
-					{
+				"children": [{
 						"id": 3146,
 						"name": "湘桥区",
 						"parentId": 307,
@@ -16639,8 +16392,7 @@ const cityData = [
 				"parentId": 19,
 				"sort": null,
 				"adCode": "445200",
-				"children": [
-					{
+				"children": [{
 						"id": 3149,
 						"name": "惠来县",
 						"parentId": 308,
@@ -16688,8 +16440,7 @@ const cityData = [
 				"parentId": 19,
 				"sort": null,
 				"adCode": "445300",
-				"children": [
-					{
+				"children": [{
 						"id": 3154,
 						"name": "云城区",
 						"parentId": 309,
@@ -16739,15 +16490,13 @@ const cityData = [
 		"parentId": 0,
 		"sort": null,
 		"adCode": "450000",
-		"children": [
-			{
+		"children": [{
 				"id": 310,
 				"name": "南宁市",
 				"parentId": 20,
 				"sort": null,
 				"adCode": "450100",
-				"children": [
-					{
+				"children": [{
 						"id": 3159,
 						"name": "上林县",
 						"parentId": 310,
@@ -16851,8 +16600,7 @@ const cityData = [
 				"parentId": 20,
 				"sort": null,
 				"adCode": "450200",
-				"children": [
-					{
+				"children": [{
 						"id": 3171,
 						"name": "三江侗族自治县",
 						"parentId": 311,
@@ -16902,7 +16650,7 @@ const cityData = [
 					},
 					{
 						"id": 3177,
-						"name": "融安县",
+						"name": "融安���������������",
 						"parentId": 311,
 						"sort": null,
 						"adCode": "450224",
@@ -16940,8 +16688,7 @@ const cityData = [
 				"parentId": 20,
 				"sort": null,
 				"adCode": "450300",
-				"children": [
-					{
+				"children": [{
 						"id": 3181,
 						"name": "七星区",
 						"parentId": 312,
@@ -17085,8 +16832,7 @@ const cityData = [
 				"parentId": 20,
 				"sort": null,
 				"adCode": "450400",
-				"children": [
-					{
+				"children": [{
 						"id": 3198,
 						"name": "万秀区",
 						"parentId": 313,
@@ -17150,8 +16896,7 @@ const cityData = [
 				"parentId": 20,
 				"sort": null,
 				"adCode": "450500",
-				"children": [
-					{
+				"children": [{
 						"id": 3205,
 						"name": "合浦县",
 						"parentId": 314,
@@ -17191,8 +16936,7 @@ const cityData = [
 				"parentId": 20,
 				"sort": null,
 				"adCode": "450600",
-				"children": [
-					{
+				"children": [{
 						"id": 3209,
 						"name": "上思县",
 						"parentId": 315,
@@ -17232,8 +16976,7 @@ const cityData = [
 				"parentId": 20,
 				"sort": null,
 				"adCode": "450700",
-				"children": [
-					{
+				"children": [{
 						"id": 3213,
 						"name": "浦北县",
 						"parentId": 316,
@@ -17273,8 +17016,7 @@ const cityData = [
 				"parentId": 20,
 				"sort": null,
 				"adCode": "450800",
-				"children": [
-					{
+				"children": [{
 						"id": 3217,
 						"name": "平南县",
 						"parentId": 317,
@@ -17322,8 +17064,7 @@ const cityData = [
 				"parentId": 20,
 				"sort": null,
 				"adCode": "450900",
-				"children": [
-					{
+				"children": [{
 						"id": 3222,
 						"name": "兴业县",
 						"parentId": 318,
@@ -17387,8 +17128,7 @@ const cityData = [
 				"parentId": 20,
 				"sort": null,
 				"adCode": "451000",
-				"children": [
-					{
+				"children": [{
 						"id": 3228,
 						"name": "乐业县",
 						"parentId": 319,
@@ -17492,8 +17232,7 @@ const cityData = [
 				"parentId": 20,
 				"sort": null,
 				"adCode": "451100",
-				"children": [
-					{
+				"children": [{
 						"id": 3240,
 						"name": "八步区",
 						"parentId": 320,
@@ -17541,8 +17280,7 @@ const cityData = [
 				"parentId": 20,
 				"sort": null,
 				"adCode": "451200",
-				"children": [
-					{
+				"children": [{
 						"id": 3244,
 						"name": "东兰县",
 						"parentId": 321,
@@ -17638,8 +17376,7 @@ const cityData = [
 				"parentId": 20,
 				"sort": null,
 				"adCode": "451300",
-				"children": [
-					{
+				"children": [{
 						"id": 3255,
 						"name": "兴宾区",
 						"parentId": 322,
@@ -17695,8 +17432,7 @@ const cityData = [
 				"parentId": 20,
 				"sort": null,
 				"adCode": "451400",
-				"children": [
-					{
+				"children": [{
 						"id": 3261,
 						"name": "凭祥市",
 						"parentId": 323,
@@ -17762,15 +17498,13 @@ const cityData = [
 		"parentId": 0,
 		"sort": null,
 		"adCode": "460000",
-		"children": [
-			{
+		"children": [{
 				"id": 324,
 				"name": "海口市",
 				"parentId": 21,
 				"sort": null,
 				"adCode": "460100",
-				"children": [
-					{
+				"children": [{
 						"id": 3268,
 						"name": "琼山区",
 						"parentId": 324,
@@ -17810,8 +17544,7 @@ const cityData = [
 				"parentId": 21,
 				"sort": null,
 				"adCode": "460200",
-				"children": [
-					{
+				"children": [{
 						"id": 3272,
 						"name": "吉阳区",
 						"parentId": 325,
@@ -17859,16 +17592,14 @@ const cityData = [
 				"parentId": 21,
 				"sort": null,
 				"adCode": "469001",
-				"children": [
-					{
-						"id": 3273,
-						"name": "五指山市",
-						"parentId": 326,
-						"sort": null,
-						"adCode": "469001",
-						"children": null
-					}
-				]
+				"children": [{
+					"id": 3273,
+					"name": "五指山市",
+					"parentId": 326,
+					"sort": null,
+					"adCode": "469001",
+					"children": null
+				}]
 			},
 			{
 				"id": 327,
@@ -17876,16 +17607,14 @@ const cityData = [
 				"parentId": 21,
 				"sort": null,
 				"adCode": "469002",
-				"children": [
-					{
-						"id": 3274,
-						"name": "琼海市",
-						"parentId": 327,
-						"sort": null,
-						"adCode": "469002",
-						"children": null
-					}
-				]
+				"children": [{
+					"id": 3274,
+					"name": "琼海市",
+					"parentId": 327,
+					"sort": null,
+					"adCode": "469002",
+					"children": null
+				}]
 			},
 			{
 				"id": 328,
@@ -17893,16 +17622,14 @@ const cityData = [
 				"parentId": 21,
 				"sort": null,
 				"adCode": "460400",
-				"children": [
-					{
-						"id": 3275,
-						"name": "儋州市",
-						"parentId": 328,
-						"sort": null,
-						"adCode": "460400",
-						"children": null
-					}
-				]
+				"children": [{
+					"id": 3275,
+					"name": "儋州市",
+					"parentId": 328,
+					"sort": null,
+					"adCode": "460400",
+					"children": null
+				}]
 			},
 			{
 				"id": 329,
@@ -17910,16 +17637,14 @@ const cityData = [
 				"parentId": 21,
 				"sort": null,
 				"adCode": "469005",
-				"children": [
-					{
-						"id": 3276,
-						"name": "文昌市",
-						"parentId": 329,
-						"sort": null,
-						"adCode": "469005",
-						"children": null
-					}
-				]
+				"children": [{
+					"id": 3276,
+					"name": "文昌市",
+					"parentId": 329,
+					"sort": null,
+					"adCode": "469005",
+					"children": null
+				}]
 			},
 			{
 				"id": 330,
@@ -17927,16 +17652,14 @@ const cityData = [
 				"parentId": 21,
 				"sort": null,
 				"adCode": "469006",
-				"children": [
-					{
-						"id": 3277,
-						"name": "万宁市",
-						"parentId": 330,
-						"sort": null,
-						"adCode": "469006",
-						"children": null
-					}
-				]
+				"children": [{
+					"id": 3277,
+					"name": "万宁市",
+					"parentId": 330,
+					"sort": null,
+					"adCode": "469006",
+					"children": null
+				}]
 			},
 			{
 				"id": 331,
@@ -17944,16 +17667,14 @@ const cityData = [
 				"parentId": 21,
 				"sort": null,
 				"adCode": "469007",
-				"children": [
-					{
-						"id": 3278,
-						"name": "东方市",
-						"parentId": 331,
-						"sort": null,
-						"adCode": "469007",
-						"children": null
-					}
-				]
+				"children": [{
+					"id": 3278,
+					"name": "东方市",
+					"parentId": 331,
+					"sort": null,
+					"adCode": "469007",
+					"children": null
+				}]
 			},
 			{
 				"id": 332,
@@ -17961,16 +17682,14 @@ const cityData = [
 				"parentId": 21,
 				"sort": null,
 				"adCode": "469021",
-				"children": [
-					{
-						"id": 3279,
-						"name": "定安县",
-						"parentId": 332,
-						"sort": null,
-						"adCode": "469021",
-						"children": null
-					}
-				]
+				"children": [{
+					"id": 3279,
+					"name": "定安县",
+					"parentId": 332,
+					"sort": null,
+					"adCode": "469021",
+					"children": null
+				}]
 			},
 			{
 				"id": 333,
@@ -17978,16 +17697,14 @@ const cityData = [
 				"parentId": 21,
 				"sort": null,
 				"adCode": "469022",
-				"children": [
-					{
-						"id": 3280,
-						"name": "屯昌县",
-						"parentId": 333,
-						"sort": null,
-						"adCode": "469022",
-						"children": null
-					}
-				]
+				"children": [{
+					"id": 3280,
+					"name": "屯昌县",
+					"parentId": 333,
+					"sort": null,
+					"adCode": "469022",
+					"children": null
+				}]
 			},
 			{
 				"id": 334,
@@ -17995,16 +17712,14 @@ const cityData = [
 				"parentId": 21,
 				"sort": null,
 				"adCode": "469023",
-				"children": [
-					{
-						"id": 3281,
-						"name": "澄迈县",
-						"parentId": 334,
-						"sort": null,
-						"adCode": "469023",
-						"children": null
-					}
-				]
+				"children": [{
+					"id": 3281,
+					"name": "澄迈县",
+					"parentId": 334,
+					"sort": null,
+					"adCode": "469023",
+					"children": null
+				}]
 			},
 			{
 				"id": 335,
@@ -18012,16 +17727,14 @@ const cityData = [
 				"parentId": 21,
 				"sort": null,
 				"adCode": "469024",
-				"children": [
-					{
-						"id": 3282,
-						"name": "临高县",
-						"parentId": 335,
-						"sort": null,
-						"adCode": "469024",
-						"children": null
-					}
-				]
+				"children": [{
+					"id": 3282,
+					"name": "临高县",
+					"parentId": 335,
+					"sort": null,
+					"adCode": "469024",
+					"children": null
+				}]
 			},
 			{
 				"id": 336,
@@ -18029,16 +17742,14 @@ const cityData = [
 				"parentId": 21,
 				"sort": null,
 				"adCode": "469025",
-				"children": [
-					{
-						"id": 3283,
-						"name": "白沙黎族自治县",
-						"parentId": 336,
-						"sort": null,
-						"adCode": "469025",
-						"children": null
-					}
-				]
+				"children": [{
+					"id": 3283,
+					"name": "白沙黎族自治县",
+					"parentId": 336,
+					"sort": null,
+					"adCode": "469025",
+					"children": null
+				}]
 			},
 			{
 				"id": 337,
@@ -18046,16 +17757,14 @@ const cityData = [
 				"parentId": 21,
 				"sort": null,
 				"adCode": "469026",
-				"children": [
-					{
-						"id": 3284,
-						"name": "昌江黎族自治县",
-						"parentId": 337,
-						"sort": null,
-						"adCode": "469026",
-						"children": null
-					}
-				]
+				"children": [{
+					"id": 3284,
+					"name": "昌江黎族自治县",
+					"parentId": 337,
+					"sort": null,
+					"adCode": "469026",
+					"children": null
+				}]
 			},
 			{
 				"id": 338,
@@ -18063,16 +17772,14 @@ const cityData = [
 				"parentId": 21,
 				"sort": null,
 				"adCode": "469027",
-				"children": [
-					{
-						"id": 3285,
-						"name": "乐东黎族自治县",
-						"parentId": 338,
-						"sort": null,
-						"adCode": "469027",
-						"children": null
-					}
-				]
+				"children": [{
+					"id": 3285,
+					"name": "乐东黎族自治县",
+					"parentId": 338,
+					"sort": null,
+					"adCode": "469027",
+					"children": null
+				}]
 			},
 			{
 				"id": 339,
@@ -18080,16 +17787,14 @@ const cityData = [
 				"parentId": 21,
 				"sort": null,
 				"adCode": "469028",
-				"children": [
-					{
-						"id": 3286,
-						"name": "陵水黎族自治县",
-						"parentId": 339,
-						"sort": null,
-						"adCode": "469028",
-						"children": null
-					}
-				]
+				"children": [{
+					"id": 3286,
+					"name": "陵水黎族自治县",
+					"parentId": 339,
+					"sort": null,
+					"adCode": "469028",
+					"children": null
+				}]
 			},
 			{
 				"id": 340,
@@ -18097,16 +17802,14 @@ const cityData = [
 				"parentId": 21,
 				"sort": null,
 				"adCode": "469029",
-				"children": [
-					{
-						"id": 3287,
-						"name": "保亭黎族苗族自治县",
-						"parentId": 340,
-						"sort": null,
-						"adCode": "469029",
-						"children": null
-					}
-				]
+				"children": [{
+					"id": 3287,
+					"name": "保亭黎族苗族自治县",
+					"parentId": 340,
+					"sort": null,
+					"adCode": "469029",
+					"children": null
+				}]
 			},
 			{
 				"id": 341,
@@ -18114,16 +17817,14 @@ const cityData = [
 				"parentId": 21,
 				"sort": null,
 				"adCode": "469030",
-				"children": [
-					{
-						"id": 3288,
-						"name": "琼中黎族苗族自治县",
-						"parentId": 341,
-						"sort": null,
-						"adCode": "469030",
-						"children": null
-					}
-				]
+				"children": [{
+					"id": 3288,
+					"name": "琼中黎族苗族自治县",
+					"parentId": 341,
+					"sort": null,
+					"adCode": "469030",
+					"children": null
+				}]
 			}
 		]
 	},
@@ -18133,321 +17834,318 @@ const cityData = [
 		"parentId": 0,
 		"sort": null,
 		"adCode": "500000",
-		"children": [
-			{
-				"id": 62,
-				"name": "重庆市",
-				"parentId": 22,
-				"sort": null,
-				"adCode": "500200",
-				"children": [
-					{
-						"id": 345,
-						"name": "万州区",
-						"parentId": 62,
-						"sort": null,
-						"adCode": "500101",
-						"children": null
-					},
-					{
-						"id": 346,
-						"name": "涪陵区",
-						"parentId": 62,
-						"sort": null,
-						"adCode": "500102",
-						"children": null
-					},
-					{
-						"id": 347,
-						"name": "渝中区",
-						"parentId": 62,
-						"sort": null,
-						"adCode": "500103",
-						"children": null
-					},
-					{
-						"id": 348,
-						"name": "大渡口区",
-						"parentId": 62,
-						"sort": null,
-						"adCode": "500104",
-						"children": null
-					},
-					{
-						"id": 349,
-						"name": "江北区",
-						"parentId": 62,
-						"sort": null,
-						"adCode": "500105",
-						"children": null
-					},
-					{
-						"id": 350,
-						"name": "沙坪坝区",
-						"parentId": 62,
-						"sort": null,
-						"adCode": "500106",
-						"children": null
-					},
-					{
-						"id": 351,
-						"name": "九龙坡区",
-						"parentId": 62,
-						"sort": null,
-						"adCode": "500107",
-						"children": null
-					},
-					{
-						"id": 352,
-						"name": "南岸区",
-						"parentId": 62,
-						"sort": null,
-						"adCode": "500108",
-						"children": null
-					},
-					{
-						"id": 353,
-						"name": "北碚区",
-						"parentId": 62,
-						"sort": null,
-						"adCode": "500109",
-						"children": null
-					},
-					{
-						"id": 356,
-						"name": "渝北区",
-						"parentId": 62,
-						"sort": null,
-						"adCode": "500112",
-						"children": null
-					},
-					{
-						"id": 357,
-						"name": "巴南区",
-						"parentId": 62,
-						"sort": null,
-						"adCode": "500113",
-						"children": null
-					},
-					{
-						"id": 358,
-						"name": "黔江区",
-						"parentId": 62,
-						"sort": null,
-						"adCode": "500114",
-						"children": null
-					},
-					{
-						"id": 359,
-						"name": "长寿区",
-						"parentId": 62,
-						"sort": null,
-						"adCode": "500115",
-						"children": null
-					},
-					{
-						"id": 360,
-						"name": "綦江区",
-						"parentId": 62,
-						"sort": null,
-						"adCode": "500110",
-						"children": null
-					},
-					{
-						"id": 361,
-						"name": "潼南区",
-						"parentId": 62,
-						"sort": null,
-						"adCode": "500152",
-						"children": null
-					},
-					{
-						"id": 362,
-						"name": "铜梁区",
-						"parentId": 62,
-						"sort": null,
-						"adCode": "500151",
-						"children": null
-					},
-					{
-						"id": 363,
-						"name": "大足区",
-						"parentId": 62,
-						"sort": null,
-						"adCode": "500111",
-						"children": null
-					},
-					{
-						"id": 364,
-						"name": "荣昌区",
-						"parentId": 62,
-						"sort": null,
-						"adCode": "500153",
-						"children": null
-					},
-					{
-						"id": 365,
-						"name": "璧山区",
-						"parentId": 62,
-						"sort": null,
-						"adCode": "500120",
-						"children": null
-					},
-					{
-						"id": 366,
-						"name": "梁平区",
-						"parentId": 62,
-						"sort": null,
-						"adCode": "500155",
-						"children": null
-					},
-					{
-						"id": 367,
-						"name": "城口县",
-						"parentId": 62,
-						"sort": null,
-						"adCode": "500229",
-						"children": null
-					},
-					{
-						"id": 368,
-						"name": "丰都县",
-						"parentId": 62,
-						"sort": null,
-						"adCode": "500230",
-						"children": null
-					},
-					{
-						"id": 369,
-						"name": "垫江县",
-						"parentId": 62,
-						"sort": null,
-						"adCode": "500231",
-						"children": null
-					},
-					{
-						"id": 370,
-						"name": "武隆区",
-						"parentId": 62,
-						"sort": null,
-						"adCode": "500156",
-						"children": null
-					},
-					{
-						"id": 371,
-						"name": "忠县",
-						"parentId": 62,
-						"sort": null,
-						"adCode": "500233",
-						"children": null
-					},
-					{
-						"id": 372,
-						"name": "开州区",
-						"parentId": 62,
-						"sort": null,
-						"adCode": "500154",
-						"children": null
-					},
-					{
-						"id": 373,
-						"name": "云阳县",
-						"parentId": 62,
-						"sort": null,
-						"adCode": "500235",
-						"children": null
-					},
-					{
-						"id": 374,
-						"name": "奉节县",
-						"parentId": 62,
-						"sort": null,
-						"adCode": "500236",
-						"children": null
-					},
-					{
-						"id": 375,
-						"name": "巫山县",
-						"parentId": 62,
-						"sort": null,
-						"adCode": "500237",
-						"children": null
-					},
-					{
-						"id": 376,
-						"name": "巫溪县",
-						"parentId": 62,
-						"sort": null,
-						"adCode": "500238",
-						"children": null
-					},
-					{
-						"id": 377,
-						"name": "石柱土家族自治县",
-						"parentId": 62,
-						"sort": null,
-						"adCode": "500240",
-						"children": null
-					},
-					{
-						"id": 378,
-						"name": "秀山土家族苗族自治县",
-						"parentId": 62,
-						"sort": null,
-						"adCode": "500241",
-						"children": null
-					},
-					{
-						"id": 379,
-						"name": "酉阳土家族苗族自治县",
-						"parentId": 62,
-						"sort": null,
-						"adCode": "500242",
-						"children": null
-					},
-					{
-						"id": 380,
-						"name": "彭水苗族土家族自治县",
-						"parentId": 62,
-						"sort": null,
-						"adCode": "500243",
-						"children": null
-					},
-					{
-						"id": 381,
-						"name": "江津区",
-						"parentId": 62,
-						"sort": null,
-						"adCode": "500116",
-						"children": null
-					},
-					{
-						"id": 382,
-						"name": "合川区",
-						"parentId": 62,
-						"sort": null,
-						"adCode": "500117",
-						"children": null
-					},
-					{
-						"id": 383,
-						"name": "永川区",
-						"parentId": 62,
-						"sort": null,
-						"adCode": "500118",
-						"children": null
-					},
-					{
-						"id": 384,
-						"name": "南川区",
-						"parentId": 62,
-						"sort": null,
-						"adCode": "500119",
-						"children": null
-					}
-				]
-			}
-		]
+		"children": [{
+			"id": 62,
+			"name": "重庆市",
+			"parentId": 22,
+			"sort": null,
+			"adCode": "500200",
+			"children": [{
+					"id": 345,
+					"name": "万州区",
+					"parentId": 62,
+					"sort": null,
+					"adCode": "500101",
+					"children": null
+				},
+				{
+					"id": 346,
+					"name": "涪陵区",
+					"parentId": 62,
+					"sort": null,
+					"adCode": "500102",
+					"children": null
+				},
+				{
+					"id": 347,
+					"name": "渝中区",
+					"parentId": 62,
+					"sort": null,
+					"adCode": "500103",
+					"children": null
+				},
+				{
+					"id": 348,
+					"name": "大渡口区",
+					"parentId": 62,
+					"sort": null,
+					"adCode": "500104",
+					"children": null
+				},
+				{
+					"id": 349,
+					"name": "江北区",
+					"parentId": 62,
+					"sort": null,
+					"adCode": "500105",
+					"children": null
+				},
+				{
+					"id": 350,
+					"name": "沙坪坝区",
+					"parentId": 62,
+					"sort": null,
+					"adCode": "500106",
+					"children": null
+				},
+				{
+					"id": 351,
+					"name": "九龙坡区",
+					"parentId": 62,
+					"sort": null,
+					"adCode": "500107",
+					"children": null
+				},
+				{
+					"id": 352,
+					"name": "南岸区",
+					"parentId": 62,
+					"sort": null,
+					"adCode": "500108",
+					"children": null
+				},
+				{
+					"id": 353,
+					"name": "北碚区",
+					"parentId": 62,
+					"sort": null,
+					"adCode": "500109",
+					"children": null
+				},
+				{
+					"id": 356,
+					"name": "渝北区",
+					"parentId": 62,
+					"sort": null,
+					"adCode": "500112",
+					"children": null
+				},
+				{
+					"id": 357,
+					"name": "巴南区",
+					"parentId": 62,
+					"sort": null,
+					"adCode": "500113",
+					"children": null
+				},
+				{
+					"id": 358,
+					"name": "黔江区",
+					"parentId": 62,
+					"sort": null,
+					"adCode": "500114",
+					"children": null
+				},
+				{
+					"id": 359,
+					"name": "长寿区",
+					"parentId": 62,
+					"sort": null,
+					"adCode": "500115",
+					"children": null
+				},
+				{
+					"id": 360,
+					"name": "綦江区",
+					"parentId": 62,
+					"sort": null,
+					"adCode": "500110",
+					"children": null
+				},
+				{
+					"id": 361,
+					"name": "潼南区",
+					"parentId": 62,
+					"sort": null,
+					"adCode": "500152",
+					"children": null
+				},
+				{
+					"id": 362,
+					"name": "铜梁区",
+					"parentId": 62,
+					"sort": null,
+					"adCode": "500151",
+					"children": null
+				},
+				{
+					"id": 363,
+					"name": "大足区",
+					"parentId": 62,
+					"sort": null,
+					"adCode": "500111",
+					"children": null
+				},
+				{
+					"id": 364,
+					"name": "荣昌区",
+					"parentId": 62,
+					"sort": null,
+					"adCode": "500153",
+					"children": null
+				},
+				{
+					"id": 365,
+					"name": "璧山区",
+					"parentId": 62,
+					"sort": null,
+					"adCode": "500120",
+					"children": null
+				},
+				{
+					"id": 366,
+					"name": "梁平区",
+					"parentId": 62,
+					"sort": null,
+					"adCode": "500155",
+					"children": null
+				},
+				{
+					"id": 367,
+					"name": "城口县",
+					"parentId": 62,
+					"sort": null,
+					"adCode": "500229",
+					"children": null
+				},
+				{
+					"id": 368,
+					"name": "丰都县",
+					"parentId": 62,
+					"sort": null,
+					"adCode": "500230",
+					"children": null
+				},
+				{
+					"id": 369,
+					"name": "垫江县",
+					"parentId": 62,
+					"sort": null,
+					"adCode": "500231",
+					"children": null
+				},
+				{
+					"id": 370,
+					"name": "武隆区",
+					"parentId": 62,
+					"sort": null,
+					"adCode": "500156",
+					"children": null
+				},
+				{
+					"id": 371,
+					"name": "忠县",
+					"parentId": 62,
+					"sort": null,
+					"adCode": "500233",
+					"children": null
+				},
+				{
+					"id": 372,
+					"name": "开州区",
+					"parentId": 62,
+					"sort": null,
+					"adCode": "500154",
+					"children": null
+				},
+				{
+					"id": 373,
+					"name": "云阳县",
+					"parentId": 62,
+					"sort": null,
+					"adCode": "500235",
+					"children": null
+				},
+				{
+					"id": 374,
+					"name": "奉节县",
+					"parentId": 62,
+					"sort": null,
+					"adCode": "500236",
+					"children": null
+				},
+				{
+					"id": 375,
+					"name": "巫山县",
+					"parentId": 62,
+					"sort": null,
+					"adCode": "500237",
+					"children": null
+				},
+				{
+					"id": 376,
+					"name": "巫溪县",
+					"parentId": 62,
+					"sort": null,
+					"adCode": "500238",
+					"children": null
+				},
+				{
+					"id": 377,
+					"name": "石柱土家族自治县",
+					"parentId": 62,
+					"sort": null,
+					"adCode": "500240",
+					"children": null
+				},
+				{
+					"id": 378,
+					"name": "秀山土家族苗族自治县",
+					"parentId": 62,
+					"sort": null,
+					"adCode": "500241",
+					"children": null
+				},
+				{
+					"id": 379,
+					"name": "酉阳土家族苗族自治县",
+					"parentId": 62,
+					"sort": null,
+					"adCode": "500242",
+					"children": null
+				},
+				{
+					"id": 380,
+					"name": "彭水苗族土家族自治县",
+					"parentId": 62,
+					"sort": null,
+					"adCode": "500243",
+					"children": null
+				},
+				{
+					"id": 381,
+					"name": "江津区",
+					"parentId": 62,
+					"sort": null,
+					"adCode": "500116",
+					"children": null
+				},
+				{
+					"id": 382,
+					"name": "合川区",
+					"parentId": 62,
+					"sort": null,
+					"adCode": "500117",
+					"children": null
+				},
+				{
+					"id": 383,
+					"name": "永川区",
+					"parentId": 62,
+					"sort": null,
+					"adCode": "500118",
+					"children": null
+				},
+				{
+					"id": 384,
+					"name": "南川区",
+					"parentId": 62,
+					"sort": null,
+					"adCode": "500119",
+					"children": null
+				}
+			]
+		}]
 	},
 	{
 		"id": 23,
@@ -18455,15 +18153,13 @@ const cityData = [
 		"parentId": 0,
 		"sort": null,
 		"adCode": "510000",
-		"children": [
-			{
+		"children": [{
 				"id": 385,
 				"name": "成都市",
 				"parentId": 23,
 				"sort": null,
 				"adCode": "510100",
-				"children": [
-					{
+				"children": [{
 						"id": 4209,
 						"name": "双流区",
 						"parentId": 385,
@@ -18631,8 +18327,7 @@ const cityData = [
 				"parentId": 23,
 				"sort": null,
 				"adCode": "510300",
-				"children": [
-					{
+				"children": [{
 						"id": 4228,
 						"name": "大安区",
 						"parentId": 386,
@@ -18688,8 +18383,7 @@ const cityData = [
 				"parentId": 23,
 				"sort": null,
 				"adCode": "510400",
-				"children": [
-					{
+				"children": [{
 						"id": 4234,
 						"name": "东区",
 						"parentId": 387,
@@ -18737,8 +18431,7 @@ const cityData = [
 				"parentId": 23,
 				"sort": null,
 				"adCode": "510500",
-				"children": [
-					{
+				"children": [{
 						"id": 4239,
 						"name": "叙永县",
 						"parentId": 388,
@@ -18802,8 +18495,7 @@ const cityData = [
 				"parentId": 23,
 				"sort": null,
 				"adCode": "510600",
-				"children": [
-					{
+				"children": [{
 						"id": 4246,
 						"name": "中江县",
 						"parentId": 389,
@@ -18859,8 +18551,7 @@ const cityData = [
 				"parentId": 23,
 				"sort": null,
 				"adCode": "510700",
-				"children": [
-					{
+				"children": [{
 						"id": 4252,
 						"name": "三台县",
 						"parentId": 390,
@@ -18940,8 +18631,7 @@ const cityData = [
 				"parentId": 23,
 				"sort": null,
 				"adCode": "510800",
-				"children": [
-					{
+				"children": [{
 						"id": 4262,
 						"name": "利州区",
 						"parentId": 391,
@@ -19005,8 +18695,7 @@ const cityData = [
 				"parentId": 23,
 				"sort": null,
 				"adCode": "510900",
-				"children": [
-					{
+				"children": [{
 						"id": 4268,
 						"name": "大英县",
 						"parentId": 392,
@@ -19054,8 +18743,7 @@ const cityData = [
 				"parentId": 23,
 				"sort": null,
 				"adCode": "511000",
-				"children": [
-					{
+				"children": [{
 						"id": 4273,
 						"name": "东兴区",
 						"parentId": 393,
@@ -19103,8 +18791,7 @@ const cityData = [
 				"parentId": 23,
 				"sort": null,
 				"adCode": "511100",
-				"children": [
-					{
+				"children": [{
 						"id": 4278,
 						"name": "五通桥区",
 						"parentId": 394,
@@ -19200,8 +18887,7 @@ const cityData = [
 				"parentId": 23,
 				"sort": null,
 				"adCode": "511300",
-				"children": [
-					{
+				"children": [{
 						"id": 4289,
 						"name": "仪陇县",
 						"parentId": 395,
@@ -19281,8 +18967,7 @@ const cityData = [
 				"parentId": 23,
 				"sort": null,
 				"adCode": "511400",
-				"children": [
-					{
+				"children": [{
 						"id": 4299,
 						"name": "东坡区",
 						"parentId": 396,
@@ -19338,8 +19023,7 @@ const cityData = [
 				"parentId": 23,
 				"sort": null,
 				"adCode": "511500",
-				"children": [
-					{
+				"children": [{
 						"id": 4305,
 						"name": "兴文县",
 						"parentId": 397,
@@ -19427,8 +19111,7 @@ const cityData = [
 				"parentId": 23,
 				"sort": null,
 				"adCode": "511600",
-				"children": [
-					{
+				"children": [{
 						"id": 4315,
 						"name": "华蓥市",
 						"parentId": 398,
@@ -19484,8 +19167,7 @@ const cityData = [
 				"parentId": 23,
 				"sort": null,
 				"adCode": "511700",
-				"children": [
-					{
+				"children": [{
 						"id": 4320,
 						"name": "万源市",
 						"parentId": 399,
@@ -19549,8 +19231,7 @@ const cityData = [
 				"parentId": 23,
 				"sort": null,
 				"adCode": "511800",
-				"children": [
-					{
+				"children": [{
 						"id": 4327,
 						"name": "名山区",
 						"parentId": 400,
@@ -19622,8 +19303,7 @@ const cityData = [
 				"parentId": 23,
 				"sort": null,
 				"adCode": "511900",
-				"children": [
-					{
+				"children": [{
 						"id": 4335,
 						"name": "南江县",
 						"parentId": 401,
@@ -19671,8 +19351,7 @@ const cityData = [
 				"parentId": 23,
 				"sort": null,
 				"adCode": "512000",
-				"children": [
-					{
+				"children": [{
 						"id": 4339,
 						"name": "乐至县",
 						"parentId": 402,
@@ -19704,8 +19383,7 @@ const cityData = [
 				"parentId": 23,
 				"sort": null,
 				"adCode": "513200",
-				"children": [
-					{
+				"children": [{
 						"id": 4343,
 						"name": "九寨沟县",
 						"parentId": 403,
@@ -19817,8 +19495,7 @@ const cityData = [
 				"parentId": 23,
 				"sort": null,
 				"adCode": "513300",
-				"children": [
-					{
+				"children": [{
 						"id": 4356,
 						"name": "丹巴县",
 						"parentId": 404,
@@ -19970,8 +19647,7 @@ const cityData = [
 				"parentId": 23,
 				"sort": null,
 				"adCode": "513400",
-				"children": [
-					{
+				"children": [{
 						"id": 4373,
 						"name": "会东县",
 						"parentId": 405,
@@ -20117,15 +19793,13 @@ const cityData = [
 		"parentId": 0,
 		"sort": null,
 		"adCode": "520000",
-		"children": [
-			{
+		"children": [{
 				"id": 406,
 				"name": "贵阳市",
 				"parentId": 24,
 				"sort": null,
 				"adCode": "520100",
-				"children": [
-					{
+				"children": [{
 						"id": 4390,
 						"name": "乌当区",
 						"parentId": 406,
@@ -20213,8 +19887,7 @@ const cityData = [
 				"parentId": 24,
 				"sort": null,
 				"adCode": "520200",
-				"children": [
-					{
+				"children": [{
 						"id": 4400,
 						"name": "六枝特区",
 						"parentId": 407,
@@ -20254,8 +19927,7 @@ const cityData = [
 				"parentId": 24,
 				"sort": null,
 				"adCode": "520300",
-				"children": [
-					{
+				"children": [{
 						"id": 4404,
 						"name": "习水县",
 						"parentId": 408,
@@ -20375,8 +20047,7 @@ const cityData = [
 				"parentId": 24,
 				"sort": null,
 				"adCode": "520400",
-				"children": [
-					{
+				"children": [{
 						"id": 4418,
 						"name": "关岭布依族苗族自治县",
 						"parentId": 409,
@@ -20432,8 +20103,7 @@ const cityData = [
 				"parentId": 24,
 				"sort": null,
 				"adCode": "520600",
-				"children": [
-					{
+				"children": [{
 						"id": 4425,
 						"name": "印江土家族苗族自治县",
 						"parentId": 410,
@@ -20521,8 +20191,7 @@ const cityData = [
 				"parentId": 24,
 				"sort": null,
 				"adCode": "522300",
-				"children": [
-					{
+				"children": [{
 						"id": 4434,
 						"name": "兴义市",
 						"parentId": 411,
@@ -20594,8 +20263,7 @@ const cityData = [
 				"parentId": 24,
 				"sort": null,
 				"adCode": "520500",
-				"children": [
-					{
+				"children": [{
 						"id": 4442,
 						"name": "大方县",
 						"parentId": 412,
@@ -20667,8 +20335,7 @@ const cityData = [
 				"parentId": 24,
 				"sort": null,
 				"adCode": "522600",
-				"children": [
-					{
+				"children": [{
 						"id": 4450,
 						"name": "三穗县",
 						"parentId": 413,
@@ -20804,8 +20471,7 @@ const cityData = [
 				"parentId": 24,
 				"sort": null,
 				"adCode": "522700",
-				"children": [
-					{
+				"children": [{
 						"id": 4466,
 						"name": "三都水族自治县",
 						"parentId": 414,
@@ -20911,15 +20577,13 @@ const cityData = [
 		"parentId": 0,
 		"sort": null,
 		"adCode": "530000",
-		"children": [
-			{
+		"children": [{
 				"id": 415,
 				"name": "昆明市",
 				"parentId": 25,
 				"sort": null,
 				"adCode": "530100",
-				"children": [
-					{
+				"children": [{
 						"id": 4478,
 						"name": "东川区",
 						"parentId": 415,
@@ -21039,8 +20703,7 @@ const cityData = [
 				"parentId": 25,
 				"sort": null,
 				"adCode": "530300",
-				"children": [
-					{
+				"children": [{
 						"id": 4492,
 						"name": "会泽县",
 						"parentId": 416,
@@ -21120,8 +20783,7 @@ const cityData = [
 				"parentId": 25,
 				"sort": null,
 				"adCode": "530400",
-				"children": [
-					{
+				"children": [{
 						"id": 4501,
 						"name": "元江哈尼族彝族傣族自治县",
 						"parentId": 417,
@@ -21201,8 +20863,7 @@ const cityData = [
 				"parentId": 25,
 				"sort": null,
 				"adCode": "530500",
-				"children": [
-					{
+				"children": [{
 						"id": 4510,
 						"name": "施甸县",
 						"parentId": 418,
@@ -21250,8 +20911,7 @@ const cityData = [
 				"parentId": 25,
 				"sort": null,
 				"adCode": "530600",
-				"children": [
-					{
+				"children": [{
 						"id": 4515,
 						"name": "大关县",
 						"parentId": 419,
@@ -21347,8 +21007,7 @@ const cityData = [
 				"parentId": 25,
 				"sort": null,
 				"adCode": "530700",
-				"children": [
-					{
+				"children": [{
 						"id": 4526,
 						"name": "华坪县",
 						"parentId": 420,
@@ -21396,8 +21055,7 @@ const cityData = [
 				"parentId": 25,
 				"sort": null,
 				"adCode": "530900",
-				"children": [
-					{
+				"children": [{
 						"id": 4531,
 						"name": "临翔区",
 						"parentId": 422,
@@ -21469,8 +21127,7 @@ const cityData = [
 				"parentId": 25,
 				"sort": null,
 				"adCode": "532300",
-				"children": [
-					{
+				"children": [{
 						"id": 4539,
 						"name": "元谋县",
 						"parentId": 423,
@@ -21558,8 +21215,7 @@ const cityData = [
 				"parentId": 25,
 				"sort": null,
 				"adCode": "532500",
-				"children": [
-					{
+				"children": [{
 						"id": 4549,
 						"name": "个旧市",
 						"parentId": 424,
@@ -21671,8 +21327,7 @@ const cityData = [
 				"parentId": 25,
 				"sort": null,
 				"adCode": "532600",
-				"children": [
-					{
+				"children": [{
 						"id": 4562,
 						"name": "丘北县",
 						"parentId": 425,
@@ -21744,8 +21399,7 @@ const cityData = [
 				"parentId": 25,
 				"sort": null,
 				"adCode": "532800",
-				"children": [
-					{
+				"children": [{
 						"id": 4570,
 						"name": "勐海县",
 						"parentId": 426,
@@ -21777,8 +21431,7 @@ const cityData = [
 				"parentId": 25,
 				"sort": null,
 				"adCode": "532900",
-				"children": [
-					{
+				"children": [{
 						"id": 4573,
 						"name": "云龙县",
 						"parentId": 427,
@@ -21882,8 +21535,7 @@ const cityData = [
 				"parentId": 25,
 				"sort": null,
 				"adCode": "533100",
-				"children": [
-					{
+				"children": [{
 						"id": 4585,
 						"name": "梁河县",
 						"parentId": 428,
@@ -21931,8 +21583,7 @@ const cityData = [
 				"parentId": 25,
 				"sort": null,
 				"adCode": "533300",
-				"children": [
-					{
+				"children": [{
 						"id": 45090,
 						"name": "泸水市",
 						"parentId": 429,
@@ -21972,8 +21623,7 @@ const cityData = [
 				"parentId": 25,
 				"sort": null,
 				"adCode": "533400",
-				"children": [
-					{
+				"children": [{
 						"id": 4590,
 						"name": "德钦县",
 						"parentId": 430,
@@ -22005,8 +21655,7 @@ const cityData = [
 				"parentId": 25,
 				"sort": null,
 				"adCode": "530800",
-				"children": [
-					{
+				"children": [{
 						"id": 45132,
 						"name": "思茅区",
 						"parentId": 45131,
@@ -22096,15 +21745,13 @@ const cityData = [
 		"parentId": 0,
 		"sort": null,
 		"adCode": "540000",
-		"children": [
-			{
+		"children": [{
 				"id": 431,
 				"name": "拉萨市",
 				"parentId": 26,
 				"sort": null,
 				"adCode": "540100",
-				"children": [
-					{
+				"children": [{
 						"id": 4593,
 						"name": "城关区",
 						"parentId": 431,
@@ -22176,8 +21823,7 @@ const cityData = [
 				"parentId": 26,
 				"sort": null,
 				"adCode": "540300",
-				"children": [
-					{
+				"children": [{
 						"id": 4601,
 						"name": "丁青县",
 						"parentId": 432,
@@ -22273,8 +21919,7 @@ const cityData = [
 				"parentId": 26,
 				"sort": null,
 				"adCode": "540500",
-				"children": [
-					{
+				"children": [{
 						"id": 4612,
 						"name": "乃东区",
 						"parentId": 433,
@@ -22378,8 +22023,7 @@ const cityData = [
 				"parentId": 26,
 				"sort": null,
 				"adCode": "540200",
-				"children": [
-					{
+				"children": [{
 						"id": 4624,
 						"name": "亚东县",
 						"parentId": 434,
@@ -22531,8 +22175,7 @@ const cityData = [
 				"parentId": 26,
 				"sort": null,
 				"adCode": "540600",
-				"children": [
-					{
+				"children": [{
 						"id": 4642,
 						"name": "嘉黎县",
 						"parentId": 435,
@@ -22620,8 +22263,7 @@ const cityData = [
 				"parentId": 26,
 				"sort": null,
 				"adCode": "542500",
-				"children": [
-					{
+				"children": [{
 						"id": 4652,
 						"name": "噶尔县",
 						"parentId": 436,
@@ -22685,8 +22327,7 @@ const cityData = [
 				"parentId": 26,
 				"sort": null,
 				"adCode": "540400",
-				"children": [
-					{
+				"children": [{
 						"id": 4659,
 						"name": "墨脱县",
 						"parentId": 437,
@@ -22752,15 +22393,13 @@ const cityData = [
 		"parentId": 0,
 		"sort": null,
 		"adCode": "610000",
-		"children": [
-			{
+		"children": [{
 				"id": 438,
 				"name": "西安市",
 				"parentId": 27,
 				"sort": null,
 				"adCode": "610100",
-				"children": [
-					{
+				"children": [{
 						"id": 4666,
 						"name": "临潼区",
 						"parentId": 438,
@@ -22872,8 +22511,7 @@ const cityData = [
 				"parentId": 27,
 				"sort": null,
 				"adCode": "610200",
-				"children": [
-					{
+				"children": [{
 						"id": 4679,
 						"name": "印台区",
 						"parentId": 439,
@@ -22913,8 +22551,7 @@ const cityData = [
 				"parentId": 27,
 				"sort": null,
 				"adCode": "610300",
-				"children": [
-					{
+				"children": [{
 						"id": 4683,
 						"name": "凤县",
 						"parentId": 440,
@@ -23018,8 +22655,7 @@ const cityData = [
 				"parentId": 27,
 				"sort": null,
 				"adCode": "610400",
-				"children": [
-					{
+				"children": [{
 						"id": 4695,
 						"name": "三原县",
 						"parentId": 441,
@@ -23139,8 +22775,7 @@ const cityData = [
 				"parentId": 27,
 				"sort": null,
 				"adCode": "610500",
-				"children": [
-					{
+				"children": [{
 						"id": 4709,
 						"name": "临渭区",
 						"parentId": 442,
@@ -23236,8 +22871,7 @@ const cityData = [
 				"parentId": 27,
 				"sort": null,
 				"adCode": "610600",
-				"children": [
-					{
+				"children": [{
 						"id": 4720,
 						"name": "吴起县",
 						"parentId": 443,
@@ -23349,8 +22983,7 @@ const cityData = [
 				"parentId": 27,
 				"sort": null,
 				"adCode": "610700",
-				"children": [
-					{
+				"children": [{
 						"id": 4733,
 						"name": "佛坪县",
 						"parentId": 444,
@@ -23446,8 +23079,7 @@ const cityData = [
 				"parentId": 27,
 				"sort": null,
 				"adCode": "610800",
-				"children": [
-					{
+				"children": [{
 						"id": 4744,
 						"name": "佳县",
 						"parentId": 445,
@@ -23551,8 +23183,7 @@ const cityData = [
 				"parentId": 27,
 				"sort": null,
 				"adCode": "610900",
-				"children": [
-					{
+				"children": [{
 						"id": 4756,
 						"name": "宁陕县",
 						"parentId": 446,
@@ -23626,7 +23257,7 @@ const cityData = [
 					},
 					{
 						"id": 4765,
-						"name": "镇坪县",
+						"name": "���坪���",
 						"parentId": 446,
 						"sort": null,
 						"adCode": "610927",
@@ -23640,8 +23271,7 @@ const cityData = [
 				"parentId": 27,
 				"sort": null,
 				"adCode": "611000",
-				"children": [
-					{
+				"children": [{
 						"id": 4766,
 						"name": "丹凤县",
 						"parentId": 447,
@@ -23707,15 +23337,13 @@ const cityData = [
 		"parentId": 0,
 		"sort": null,
 		"adCode": "620000",
-		"children": [
-			{
+		"children": [{
 				"id": 448,
 				"name": "兰州市",
 				"parentId": 28,
 				"sort": null,
 				"adCode": "620100",
-				"children": [
-					{
+				"children": [{
 						"id": 4773,
 						"name": "七里河区",
 						"parentId": 448,
@@ -23787,16 +23415,14 @@ const cityData = [
 				"parentId": 28,
 				"sort": null,
 				"adCode": "620200",
-				"children": [
-					{
-						"id": 4781,
-						"name": "嘉峪关市",
-						"parentId": 449,
-						"sort": null,
-						"adCode": "620200",
-						"children": null
-					}
-				]
+				"children": [{
+					"id": 4781,
+					"name": "嘉峪关市",
+					"parentId": 449,
+					"sort": null,
+					"adCode": "620200",
+					"children": null
+				}]
 			},
 			{
 				"id": 450,
@@ -23804,8 +23430,7 @@ const cityData = [
 				"parentId": 28,
 				"sort": null,
 				"adCode": "620300",
-				"children": [
-					{
+				"children": [{
 						"id": 4782,
 						"name": "永昌县",
 						"parentId": 450,
@@ -23829,8 +23454,7 @@ const cityData = [
 				"parentId": 28,
 				"sort": null,
 				"adCode": "620400",
-				"children": [
-					{
+				"children": [{
 						"id": 4784,
 						"name": "会宁县",
 						"parentId": 451,
@@ -23878,8 +23502,7 @@ const cityData = [
 				"parentId": 28,
 				"sort": null,
 				"adCode": "620500",
-				"children": [
-					{
+				"children": [{
 						"id": 4789,
 						"name": "张家川回族自治县",
 						"parentId": 452,
@@ -23943,8 +23566,7 @@ const cityData = [
 				"parentId": 28,
 				"sort": null,
 				"adCode": "620600",
-				"children": [
-					{
+				"children": [{
 						"id": 4796,
 						"name": "凉州区",
 						"parentId": 453,
@@ -23984,8 +23606,7 @@ const cityData = [
 				"parentId": 28,
 				"sort": null,
 				"adCode": "620700",
-				"children": [
-					{
+				"children": [{
 						"id": 4800,
 						"name": "临泽县",
 						"parentId": 454,
@@ -24041,8 +23662,7 @@ const cityData = [
 				"parentId": 28,
 				"sort": null,
 				"adCode": "620800",
-				"children": [
-					{
+				"children": [{
 						"id": 4806,
 						"name": "华亭市",
 						"parentId": 455,
@@ -24106,8 +23726,7 @@ const cityData = [
 				"parentId": 28,
 				"sort": null,
 				"adCode": "620900",
-				"children": [
-					{
+				"children": [{
 						"id": 4813,
 						"name": "敦煌市",
 						"parentId": 456,
@@ -24171,8 +23790,7 @@ const cityData = [
 				"parentId": 28,
 				"sort": null,
 				"adCode": "621000",
-				"children": [
-					{
+				"children": [{
 						"id": 4820,
 						"name": "华池县",
 						"parentId": 457,
@@ -24244,8 +23862,7 @@ const cityData = [
 				"parentId": 28,
 				"sort": null,
 				"adCode": "621100",
-				"children": [
-					{
+				"children": [{
 						"id": 4828,
 						"name": "临洮县",
 						"parentId": 458,
@@ -24309,8 +23926,7 @@ const cityData = [
 				"parentId": 28,
 				"sort": null,
 				"adCode": "621200",
-				"children": [
-					{
+				"children": [{
 						"id": 4835,
 						"name": "两当县",
 						"parentId": 459,
@@ -24390,8 +24006,7 @@ const cityData = [
 				"parentId": 28,
 				"sort": null,
 				"adCode": "622900",
-				"children": [
-					{
+				"children": [{
 						"id": 4844,
 						"name": "东乡族自治县",
 						"parentId": 460,
@@ -24463,8 +24078,7 @@ const cityData = [
 				"parentId": 28,
 				"sort": null,
 				"adCode": "623000",
-				"children": [
-					{
+				"children": [{
 						"id": 4852,
 						"name": "临潭县",
 						"parentId": 461,
@@ -24538,15 +24152,13 @@ const cityData = [
 		"parentId": 0,
 		"sort": null,
 		"adCode": "630000",
-		"children": [
-			{
+		"children": [{
 				"id": 462,
 				"name": "西宁市",
 				"parentId": 29,
 				"sort": null,
 				"adCode": "630100",
-				"children": [
-					{
+				"children": [{
 						"id": 4860,
 						"name": "城东区",
 						"parentId": 462,
@@ -24610,8 +24222,7 @@ const cityData = [
 				"parentId": 29,
 				"sort": null,
 				"adCode": "630200",
-				"children": [
-					{
+				"children": [{
 						"id": 4867,
 						"name": "乐都区",
 						"parentId": 463,
@@ -24667,8 +24278,7 @@ const cityData = [
 				"parentId": 29,
 				"sort": null,
 				"adCode": "632200",
-				"children": [
-					{
+				"children": [{
 						"id": 4873,
 						"name": "刚察县",
 						"parentId": 464,
@@ -24708,8 +24318,7 @@ const cityData = [
 				"parentId": 29,
 				"sort": null,
 				"adCode": "632300",
-				"children": [
-					{
+				"children": [{
 						"id": 4877,
 						"name": "同仁市",
 						"parentId": 465,
@@ -24749,8 +24358,7 @@ const cityData = [
 				"parentId": 29,
 				"sort": null,
 				"adCode": "632500",
-				"children": [
-					{
+				"children": [{
 						"id": 4881,
 						"name": "共和县",
 						"parentId": 466,
@@ -24798,8 +24406,7 @@ const cityData = [
 				"parentId": 29,
 				"sort": null,
 				"adCode": "632600",
-				"children": [
-					{
+				"children": [{
 						"id": 4886,
 						"name": "久治县",
 						"parentId": 467,
@@ -24855,8 +24462,7 @@ const cityData = [
 				"parentId": 29,
 				"sort": null,
 				"adCode": "632700",
-				"children": [
-					{
+				"children": [{
 						"id": 4892,
 						"name": "囊谦县",
 						"parentId": 468,
@@ -24912,8 +24518,7 @@ const cityData = [
 				"parentId": 29,
 				"sort": null,
 				"adCode": "632800",
-				"children": [
-					{
+				"children": [{
 						"id": 4898,
 						"name": "乌兰县",
 						"parentId": 469,
@@ -24979,15 +24584,13 @@ const cityData = [
 		"parentId": 0,
 		"sort": null,
 		"adCode": "640000",
-		"children": [
-			{
+		"children": [{
 				"id": 470,
 				"name": "银川市",
 				"parentId": 30,
 				"sort": null,
 				"adCode": "640100",
-				"children": [
-					{
+				"children": [{
 						"id": 4906,
 						"name": "兴庆区",
 						"parentId": 470,
@@ -25043,8 +24646,7 @@ const cityData = [
 				"parentId": 30,
 				"sort": null,
 				"adCode": "640200",
-				"children": [
-					{
+				"children": [{
 						"id": 4912,
 						"name": "大武口区",
 						"parentId": 471,
@@ -25076,8 +24678,7 @@ const cityData = [
 				"parentId": 30,
 				"sort": null,
 				"adCode": "640300",
-				"children": [
-					{
+				"children": [{
 						"id": 4915,
 						"name": "利通区",
 						"parentId": 472,
@@ -25125,8 +24726,7 @@ const cityData = [
 				"parentId": 30,
 				"sort": null,
 				"adCode": "640400",
-				"children": [
-					{
+				"children": [{
 						"id": 4919,
 						"name": "原州区",
 						"parentId": 473,
@@ -25174,8 +24774,7 @@ const cityData = [
 				"parentId": 30,
 				"sort": null,
 				"adCode": "640500",
-				"children": [
-					{
+				"children": [{
 						"id": 4924,
 						"name": "中宁县",
 						"parentId": 474,
@@ -25209,15 +24808,13 @@ const cityData = [
 		"parentId": 0,
 		"sort": null,
 		"adCode": "650000",
-		"children": [
-			{
+		"children": [{
 				"id": 475,
 				"name": "乌鲁木齐市",
 				"parentId": 31,
 				"sort": null,
 				"adCode": "650100",
-				"children": [
-					{
+				"children": [{
 						"id": 4928,
 						"name": "乌鲁木齐县",
 						"parentId": 475,
@@ -25289,8 +24886,7 @@ const cityData = [
 				"parentId": 31,
 				"sort": null,
 				"adCode": "650200",
-				"children": [
-					{
+				"children": [{
 						"id": 4935,
 						"name": "乌尔禾区",
 						"parentId": 476,
@@ -25330,8 +24926,7 @@ const cityData = [
 				"parentId": 31,
 				"sort": null,
 				"adCode": "650400",
-				"children": [
-					{
+				"children": [{
 						"id": 4940,
 						"name": "托克逊县",
 						"parentId": 477,
@@ -25363,8 +24958,7 @@ const cityData = [
 				"parentId": 31,
 				"sort": null,
 				"adCode": "650500",
-				"children": [
-					{
+				"children": [{
 						"id": 4942,
 						"name": "伊吾县",
 						"parentId": 478,
@@ -25396,8 +24990,7 @@ const cityData = [
 				"parentId": 31,
 				"sort": null,
 				"adCode": "652300",
-				"children": [
-					{
+				"children": [{
 						"id": 4945,
 						"name": "吉木萨尔县",
 						"parentId": 479,
@@ -25461,8 +25054,7 @@ const cityData = [
 				"parentId": 31,
 				"sort": null,
 				"adCode": "652700",
-				"children": [
-					{
+				"children": [{
 						"id": 4953,
 						"name": "博乐市",
 						"parentId": 480,
@@ -25502,8 +25094,7 @@ const cityData = [
 				"parentId": 31,
 				"sort": null,
 				"adCode": "652800",
-				"children": [
-					{
+				"children": [{
 						"id": 4956,
 						"name": "博湖县",
 						"parentId": 481,
@@ -25583,8 +25174,7 @@ const cityData = [
 				"parentId": 31,
 				"sort": null,
 				"adCode": "652900",
-				"children": [
-					{
+				"children": [{
 						"id": 4964,
 						"name": "乌什县",
 						"parentId": 482,
@@ -25664,8 +25254,7 @@ const cityData = [
 				"parentId": 31,
 				"sort": null,
 				"adCode": "653000",
-				"children": [
-					{
+				"children": [{
 						"id": 4973,
 						"name": "乌恰县",
 						"parentId": 483,
@@ -25705,8 +25294,7 @@ const cityData = [
 				"parentId": 31,
 				"sort": null,
 				"adCode": "653100",
-				"children": [
-					{
+				"children": [{
 						"id": 4977,
 						"name": "伽师县",
 						"parentId": 484,
@@ -25810,8 +25398,7 @@ const cityData = [
 				"parentId": 31,
 				"sort": null,
 				"adCode": "653200",
-				"children": [
-					{
+				"children": [{
 						"id": 4989,
 						"name": "于田县",
 						"parentId": 485,
@@ -25883,8 +25470,7 @@ const cityData = [
 				"parentId": 31,
 				"sort": null,
 				"adCode": "654000",
-				"children": [
-					{
+				"children": [{
 						"id": 4997,
 						"name": "伊宁县",
 						"parentId": 486,
@@ -25980,8 +25566,7 @@ const cityData = [
 				"parentId": 31,
 				"sort": null,
 				"adCode": "654200",
-				"children": [
-					{
+				"children": [{
 						"id": 5007,
 						"name": "乌苏市",
 						"parentId": 487,
@@ -26045,8 +25630,7 @@ const cityData = [
 				"parentId": 31,
 				"sort": null,
 				"adCode": "654300",
-				"children": [
-					{
+				"children": [{
 						"id": 5014,
 						"name": "吉木乃县",
 						"parentId": 488,
@@ -26110,16 +25694,14 @@ const cityData = [
 				"parentId": 31,
 				"sort": null,
 				"adCode": "659001",
-				"children": [
-					{
-						"id": 5021,
-						"name": "石河子市",
-						"parentId": 489,
-						"sort": null,
-						"adCode": "659001",
-						"children": null
-					}
-				]
+				"children": [{
+					"id": 5021,
+					"name": "石河子市",
+					"parentId": 489,
+					"sort": null,
+					"adCode": "659001",
+					"children": null
+				}]
 			},
 			{
 				"id": 490,
@@ -26127,16 +25709,14 @@ const cityData = [
 				"parentId": 31,
 				"sort": null,
 				"adCode": "659002",
-				"children": [
-					{
-						"id": 5022,
-						"name": "阿拉尔市",
-						"parentId": 490,
-						"sort": null,
-						"adCode": "659002",
-						"children": null
-					}
-				]
+				"children": [{
+					"id": 5022,
+					"name": "阿拉尔市",
+					"parentId": 490,
+					"sort": null,
+					"adCode": "659002",
+					"children": null
+				}]
 			},
 			{
 				"id": 491,
@@ -26144,16 +25724,14 @@ const cityData = [
 				"parentId": 31,
 				"sort": null,
 				"adCode": "659003",
-				"children": [
-					{
-						"id": 5023,
-						"name": "图木舒克市",
-						"parentId": 491,
-						"sort": null,
-						"adCode": "659003",
-						"children": null
-					}
-				]
+				"children": [{
+					"id": 5023,
+					"name": "图木舒克市",
+					"parentId": 491,
+					"sort": null,
+					"adCode": "659003",
+					"children": null
+				}]
 			},
 			{
 				"id": 492,
@@ -26161,16 +25739,14 @@ const cityData = [
 				"parentId": 31,
 				"sort": null,
 				"adCode": "659004",
-				"children": [
-					{
-						"id": 5024,
-						"name": "五家渠市",
-						"parentId": 492,
-						"sort": null,
-						"adCode": "659004",
-						"children": null
-					}
-				]
+				"children": [{
+					"id": 5024,
+					"name": "五家渠市",
+					"parentId": 492,
+					"sort": null,
+					"adCode": "659004",
+					"children": null
+				}]
 			},
 			{
 				"id": 45142,
@@ -26178,16 +25754,14 @@ const cityData = [
 				"parentId": 31,
 				"sort": null,
 				"adCode": "659005",
-				"children": [
-					{
-						"id": 45143,
-						"name": "北屯市",
-						"parentId": 45142,
-						"sort": null,
-						"adCode": "659005",
-						"children": null
-					}
-				]
+				"children": [{
+					"id": 45143,
+					"name": "北屯市",
+					"parentId": 45142,
+					"sort": null,
+					"adCode": "659005",
+					"children": null
+				}]
 			},
 			{
 				"id": 45144,
@@ -26195,16 +25769,14 @@ const cityData = [
 				"parentId": 31,
 				"sort": null,
 				"adCode": "659006",
-				"children": [
-					{
-						"id": 45145,
-						"name": "铁门关市",
-						"parentId": 45144,
-						"sort": null,
-						"adCode": "659006",
-						"children": null
-					}
-				]
+				"children": [{
+					"id": 45145,
+					"name": "铁门关市",
+					"parentId": 45144,
+					"sort": null,
+					"adCode": "659006",
+					"children": null
+				}]
 			},
 			{
 				"id": 45146,
@@ -26212,16 +25784,14 @@ const cityData = [
 				"parentId": 31,
 				"sort": null,
 				"adCode": "659007",
-				"children": [
-					{
-						"id": 45147,
-						"name": "双河市",
-						"parentId": 45146,
-						"sort": null,
-						"adCode": "659007",
-						"children": null
-					}
-				]
+				"children": [{
+					"id": 45147,
+					"name": "双河市",
+					"parentId": 45146,
+					"sort": null,
+					"adCode": "659007",
+					"children": null
+				}]
 			},
 			{
 				"id": 45148,
@@ -26229,16 +25799,14 @@ const cityData = [
 				"parentId": 31,
 				"sort": null,
 				"adCode": "659008",
-				"children": [
-					{
-						"id": 45149,
-						"name": "可克达拉市",
-						"parentId": 45148,
-						"sort": null,
-						"adCode": "659008",
-						"children": null
-					}
-				]
+				"children": [{
+					"id": 45149,
+					"name": "可克达拉市",
+					"parentId": 45148,
+					"sort": null,
+					"adCode": "659008",
+					"children": null
+				}]
 			},
 			{
 				"id": 45150,
@@ -26246,16 +25814,14 @@ const cityData = [
 				"parentId": 31,
 				"sort": null,
 				"adCode": "659009",
-				"children": [
-					{
-						"id": 45151,
-						"name": "昆玉市",
-						"parentId": 45150,
-						"sort": null,
-						"adCode": "659009",
-						"children": null
-					}
-				]
+				"children": [{
+					"id": 45151,
+					"name": "昆玉市",
+					"parentId": 45150,
+					"sort": null,
+					"adCode": "659009",
+					"children": null
+				}]
 			}
 		]
 	},
@@ -26265,8 +25831,7 @@ const cityData = [
 		"parentId": 0,
 		"sort": null,
 		"adCode": "710000",
-		"children": [
-			{
+		"children": [{
 				"id": 493,
 				"name": "花莲县",
 				"parentId": 32,
@@ -26474,161 +26039,158 @@ const cityData = [
 		"parentId": 0,
 		"sort": null,
 		"adCode": "810000",
-		"children": [
-			{
-				"id": 45197,
-				"name": "香港",
-				"parentId": 33,
-				"sort": null,
-				"adCode": "810000",
-				"children": [
-					{
-						"id": 45198,
-						"name": "中西区",
-						"parentId": 45197,
-						"sort": null,
-						"adCode": "810101",
-						"children": null
-					},
-					{
-						"id": 45199,
-						"name": "东区",
-						"parentId": 45197,
-						"sort": null,
-						"adCode": "810102",
-						"children": null
-					},
-					{
-						"id": 45200,
-						"name": "南区",
-						"parentId": 45197,
-						"sort": null,
-						"adCode": "810105",
-						"children": null
-					},
-					{
-						"id": 45201,
-						"name": "湾仔区",
-						"parentId": 45197,
-						"sort": null,
-						"adCode": "810107",
-						"children": null
-					},
-					{
-						"id": 45202,
-						"name": "九龙城区",
-						"parentId": 45197,
-						"sort": null,
-						"adCode": "810103",
-						"children": null
-					},
-					{
-						"id": 45203,
-						"name": "观塘区",
-						"parentId": 45197,
-						"sort": null,
-						"adCode": "810104",
-						"children": null
-					},
-					{
-						"id": 45204,
-						"name": "深水埗区",
-						"parentId": 45197,
-						"sort": null,
-						"adCode": "810106",
-						"children": null
-					},
-					{
-						"id": 45205,
-						"name": "黄大仙区",
-						"parentId": 45197,
-						"sort": null,
-						"adCode": "810108",
-						"children": null
-					},
-					{
-						"id": 45206,
-						"name": "油尖旺区",
-						"parentId": 45197,
-						"sort": null,
-						"adCode": "810109",
-						"children": null
-					},
-					{
-						"id": 45207,
-						"name": "离岛区",
-						"parentId": 45197,
-						"sort": null,
-						"adCode": "810110",
-						"children": null
-					},
-					{
-						"id": 45208,
-						"name": "葵青区",
-						"parentId": 45197,
-						"sort": null,
-						"adCode": "810111",
-						"children": null
-					},
-					{
-						"id": 45209,
-						"name": "北区",
-						"parentId": 45197,
-						"sort": null,
-						"adCode": "810112",
-						"children": null
-					},
-					{
-						"id": 45210,
-						"name": "西贡区",
-						"parentId": 45197,
-						"sort": null,
-						"adCode": "810113",
-						"children": null
-					},
-					{
-						"id": 45211,
-						"name": "沙田区",
-						"parentId": 45197,
-						"sort": null,
-						"adCode": "810114",
-						"children": null
-					},
-					{
-						"id": 45212,
-						"name": "大埔区",
-						"parentId": 45197,
-						"sort": null,
-						"adCode": "810116",
-						"children": null
-					},
-					{
-						"id": 45213,
-						"name": "荃湾区",
-						"parentId": 45197,
-						"sort": null,
-						"adCode": "810117",
-						"children": null
-					},
-					{
-						"id": 45214,
-						"name": "屯门区",
-						"parentId": 45197,
-						"sort": null,
-						"adCode": "810115",
-						"children": null
-					},
-					{
-						"id": 45215,
-						"name": "元朗区",
-						"parentId": 45197,
-						"sort": null,
-						"adCode": "810118",
-						"children": null
-					}
-				]
-			}
-		]
+		"children": [{
+			"id": 45197,
+			"name": "香港",
+			"parentId": 33,
+			"sort": null,
+			"adCode": "810000",
+			"children": [{
+					"id": 45198,
+					"name": "中西区",
+					"parentId": 45197,
+					"sort": null,
+					"adCode": "810101",
+					"children": null
+				},
+				{
+					"id": 45199,
+					"name": "东区",
+					"parentId": 45197,
+					"sort": null,
+					"adCode": "810102",
+					"children": null
+				},
+				{
+					"id": 45200,
+					"name": "南区",
+					"parentId": 45197,
+					"sort": null,
+					"adCode": "810105",
+					"children": null
+				},
+				{
+					"id": 45201,
+					"name": "湾仔区",
+					"parentId": 45197,
+					"sort": null,
+					"adCode": "810107",
+					"children": null
+				},
+				{
+					"id": 45202,
+					"name": "九龙城区",
+					"parentId": 45197,
+					"sort": null,
+					"adCode": "810103",
+					"children": null
+				},
+				{
+					"id": 45203,
+					"name": "观塘区",
+					"parentId": 45197,
+					"sort": null,
+					"adCode": "810104",
+					"children": null
+				},
+				{
+					"id": 45204,
+					"name": "深水埗区",
+					"parentId": 45197,
+					"sort": null,
+					"adCode": "810106",
+					"children": null
+				},
+				{
+					"id": 45205,
+					"name": "黄大仙区",
+					"parentId": 45197,
+					"sort": null,
+					"adCode": "810108",
+					"children": null
+				},
+				{
+					"id": 45206,
+					"name": "油尖旺区",
+					"parentId": 45197,
+					"sort": null,
+					"adCode": "810109",
+					"children": null
+				},
+				{
+					"id": 45207,
+					"name": "离岛区",
+					"parentId": 45197,
+					"sort": null,
+					"adCode": "810110",
+					"children": null
+				},
+				{
+					"id": 45208,
+					"name": "葵青区",
+					"parentId": 45197,
+					"sort": null,
+					"adCode": "810111",
+					"children": null
+				},
+				{
+					"id": 45209,
+					"name": "北区",
+					"parentId": 45197,
+					"sort": null,
+					"adCode": "810112",
+					"children": null
+				},
+				{
+					"id": 45210,
+					"name": "西贡区",
+					"parentId": 45197,
+					"sort": null,
+					"adCode": "810113",
+					"children": null
+				},
+				{
+					"id": 45211,
+					"name": "沙田区",
+					"parentId": 45197,
+					"sort": null,
+					"adCode": "810114",
+					"children": null
+				},
+				{
+					"id": 45212,
+					"name": "大埔区",
+					"parentId": 45197,
+					"sort": null,
+					"adCode": "810116",
+					"children": null
+				},
+				{
+					"id": 45213,
+					"name": "荃湾区",
+					"parentId": 45197,
+					"sort": null,
+					"adCode": "810117",
+					"children": null
+				},
+				{
+					"id": 45214,
+					"name": "屯门区",
+					"parentId": 45197,
+					"sort": null,
+					"adCode": "810115",
+					"children": null
+				},
+				{
+					"id": 45215,
+					"name": "元朗区",
+					"parentId": 45197,
+					"sort": null,
+					"adCode": "810118",
+					"children": null
+				}
+			]
+		}]
 	},
 	{
 		"id": 34,
@@ -26636,89 +26198,86 @@ const cityData = [
 		"parentId": 0,
 		"sort": null,
 		"adCode": "820000",
-		"children": [
-			{
-				"id": 534,
-				"name": "澳门",
-				"parentId": 34,
-				"sort": null,
-				"adCode": "820000",
-				"children": [
-					{
-						"id": 45189,
-						"name": "花地玛堂区",
-						"parentId": 534,
-						"sort": null,
-						"adCode": "820008",
-						"children": null
-					},
-					{
-						"id": 45190,
-						"name": "圣方济各堂区",
-						"parentId": 534,
-						"sort": null,
-						"adCode": "820004",
-						"children": null
-					},
-					{
-						"id": 45191,
-						"name": "大堂区",
-						"parentId": 534,
-						"sort": null,
-						"adCode": "820006",
-						"children": null
-					},
-					{
-						"id": 45192,
-						"name": "望德堂区",
-						"parentId": 534,
-						"sort": null,
-						"adCode": "820002",
-						"children": null
-					},
-					{
-						"id": 45193,
-						"name": "风顺堂区",
-						"parentId": 534,
-						"sort": null,
-						"adCode": "820003",
-						"children": null
-					},
-					{
-						"id": 45194,
-						"name": "嘉模堂区",
-						"parentId": 534,
-						"sort": null,
-						"adCode": "820005",
-						"children": null
-					},
-					{
-						"id": 45196,
-						"name": "路氹填海区",
-						"parentId": 534,
-						"sort": null,
-						"adCode": "820007",
-						"children": null
-					},
-					{
-						"id": 45217,
-						"name": "花王堂区",
-						"parentId": 534,
-						"sort": null,
-						"adCode": "820001",
-						"children": null
-					},
-					{
-						"id": 45218,
-						"name": "澳门特别行政区直辖",
-						"parentId": 534,
-						"sort": null,
-						"adCode": "820010",
-						"children": null
-					}
-				]
-			}
-		]
+		"children": [{
+			"id": 534,
+			"name": "澳门",
+			"parentId": 34,
+			"sort": null,
+			"adCode": "820000",
+			"children": [{
+					"id": 45189,
+					"name": "花地玛堂区",
+					"parentId": 534,
+					"sort": null,
+					"adCode": "820008",
+					"children": null
+				},
+				{
+					"id": 45190,
+					"name": "圣方济各堂区",
+					"parentId": 534,
+					"sort": null,
+					"adCode": "820004",
+					"children": null
+				},
+				{
+					"id": 45191,
+					"name": "大堂区",
+					"parentId": 534,
+					"sort": null,
+					"adCode": "820006",
+					"children": null
+				},
+				{
+					"id": 45192,
+					"name": "望德堂区",
+					"parentId": 534,
+					"sort": null,
+					"adCode": "820002",
+					"children": null
+				},
+				{
+					"id": 45193,
+					"name": "风顺堂区",
+					"parentId": 534,
+					"sort": null,
+					"adCode": "820003",
+					"children": null
+				},
+				{
+					"id": 45194,
+					"name": "嘉模堂区",
+					"parentId": 534,
+					"sort": null,
+					"adCode": "820005",
+					"children": null
+				},
+				{
+					"id": 45196,
+					"name": "路氹填海区",
+					"parentId": 534,
+					"sort": null,
+					"adCode": "820007",
+					"children": null
+				},
+				{
+					"id": 45217,
+					"name": "花王堂区",
+					"parentId": 534,
+					"sort": null,
+					"adCode": "820001",
+					"children": null
+				},
+				{
+					"id": 45218,
+					"name": "澳门特别行政区直辖",
+					"parentId": 534,
+					"sort": null,
+					"adCode": "820010",
+					"children": null
+				}
+			]
+		}]
 	},
 	{
 		"id": 35,
@@ -26726,8 +26285,7 @@ const cityData = [
 		"parentId": 0,
 		"sort": null,
 		"adCode": "",
-		"children": [
-			{
+		"children": [{
 				"id": 45157,
 				"name": "美国",
 				"parentId": 35,
@@ -27040,4 +26598,48 @@ const cityData = [
 		]
 	}
 ]
-export default cityData
+
+function getAdcodeFromAreaId(adCode) {
+	let list = []
+	for (let index = 0; index < cityData.length; index++) {
+		const element = cityData[index];
+		if (element.adCode) {
+			list.push({
+				provinceId: element.id,
+				name: element.name,
+				adCode: element.adCode
+			});
+		}
+		if (element.children && element.children.length) {
+			element.children.forEach((e) => {
+				list.push({
+					provinceId: element.id,
+					cityId: e.id,
+					name: e.name,
+					adCode: e.adCode
+				})
+				if (e.children && e.children.length) {
+					e.children.forEach(m => {
+						list.push({
+							provinceId: element.id,
+							cityId: e.id,
+							areaId: m.id,
+							name: e.name + m.name,
+							adCode: m.adCode
+						})
+					})
+				}
+			})
+		}
+
+	}
+
+	return list.filter(e => {
+		return e.adCode == adCode
+	})
+
+}
+
+export {
+	getAdcodeFromAreaId
+}

@@ -5,7 +5,7 @@
 		globalData: {
 			userInfo: {},
 			token: "",
-			city: "",
+			currentHouse: {},
 			houses: [],
 			noHouseActuaryId: null,
 			noHouseDesignId: null,
