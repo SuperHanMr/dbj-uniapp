@@ -144,6 +144,7 @@
         hasPoint:false,
         indicatorClass:'choose-item',
         roomId:0,
+        delta:1,
       }; 
     }, 
     onLoad(e){
@@ -154,6 +155,7 @@
         })
         this.getHouse()
       }
+      this.delta = e.delta
     },
     // watch:{
     //   'addData.insideArea':function(){
@@ -277,18 +279,16 @@
                   icon:'success'
               });
               uni.navigateBack({
-                  // delta: 2
+                  delta: this.delta
               });
             })
           }else{
             editHouse(this.addData).then(res=>{
               uni.navigateBack({
-                  // delta: 2
+                  delta: this.delta
               });
             })
           }
-          
-          
         }
       },
       check(){

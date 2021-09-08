@@ -117,7 +117,7 @@
           </uni-popup>
           <decorate-notice @touchmove.stop.prevent="()=>false" v-if="noticeActive" @closeNotice='closeNotice'
             class="decorate-notice"></decorate-notice>
-          <view class="link">
+          <!-- <view class="link">
             <button @click="gonohouse">无房屋无服入口</button>
             <button @click="gonohousedecatore">无房屋无服务装修</button>
             <button @click="gonohousecheck">无房屋无服务验房</button>
@@ -128,7 +128,7 @@
             <button @click="confirm4">线上交底</button>
             <button @click="hcaa">管家竣工验收申请</button>
             <button @click="housekeeperrefuse">管家竣工拒绝</button>
-          </view>
+          </view> -->
         </scroll-view>
       </view>
       <drag-button-follow :style.sync="style" @btnClick='openNotice' :follow='`left,right`' className="drag-button"
@@ -284,7 +284,7 @@
       },
       toFriends() {
         uni.navigateTo({
-          url: "/sub-decorate/pages/friends/friends?id=" + this.currentHouse.id,
+          url: "/sub-decorate/pages/friends/friends?id=" + this.currentHouse.estateId,
         });
       },
       addHouse() {
@@ -308,7 +308,6 @@
           this.projectList = data
           const arr = data.filter(t => t.defaultEstate)
           this.currentHouse = arr[0]
-          console.log(">>>>>>>>>>>>>>>", this.currentHouse)
           if (this.currentHouse.estateId) {
             this.getFriendsList()
           }
