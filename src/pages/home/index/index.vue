@@ -105,7 +105,7 @@
 					const payInfo = e.wechatPayJsapi;
 					uni.requestPayment({
 						"provider": "wxpay",
-						"orderInfo": payInfo,
+						...payInfo,
 						success(res) {
 							console.log('@@@@@@@');
 							console.log(res);
