@@ -131,7 +131,7 @@
 					this.rightHeight += height;
 				}
 			},
-			onJump(list, index) {
+			onJump(list, index ,isDecorate) {
 				console.log(list[index].parentType, 'asdasdas');
 				if (list[index].parentType === 1) {
 					const listUrl = list[index].videoUrl
@@ -139,7 +139,11 @@
 						url: `./component/panorama/panorama?url=${listUrl}`
 					})
 				}
-
+				if(isDecorate){
+					uni.navigateTo({
+						url: `../../sub-home/pages/decorate-scene/decorate-scene`
+					})
+				}
 			},
 			// 组件点击事件
 			onClick(index, tag) {
@@ -147,11 +151,11 @@
 				// 对应的数据
 				if (tag == "left") {
 					console.log(this.leftList);
-					this.onJump(this.leftList, index);
+					this.onJump(this.leftList, index ,false);
 
 				} else {
 					console.log(this.rightList);
-					this.onJump(this.rightList, index);
+					this.onJump(this.rightList, index ,true);
 				}
 				// let direction = {
 				// 	left: "左",

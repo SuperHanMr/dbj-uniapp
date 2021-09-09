@@ -45,6 +45,8 @@
       <view class="scroll-view flex-1">
         <scroll-view :scroll-top="scrollTop" scroll-y="true" class="scroll-Y" @scroll="scroll"
           scroll-with-animation="true" :style="{height: viewHieght + 'rpx'}">
+          <!-- 每日播报 -->
+          <text-scroll></text-scroll>
           <!-- 我的仓库 -->
           <view class="my-decorate-service-wrap">
             <image mode="aspectFit" class="top-bg"
@@ -164,6 +166,7 @@
   import PictureBtn from "../../../components/picture-btn/picture-btn.vue"
 
   import MwarehouseBtn from "../../../components/mwarehouse-btn/mwarehouse-btn.vue"
+  import TextScroll from "../../../components/text-scroll/text-scroll.vue"
   export default {
     components: {
       HouseSwitch,
@@ -171,7 +174,8 @@
       GuideCard,
       NoService,
       PictureBtn,
-      MwarehouseBtn
+      MwarehouseBtn,
+      TextScroll
     },
     onLoad() {
       let _this = this
@@ -181,7 +185,6 @@
           _this.viewHieght = res.windowHeight * 2 - 416
         }
       })
-
     },
     onShow() {
       uni.showTabBar() 

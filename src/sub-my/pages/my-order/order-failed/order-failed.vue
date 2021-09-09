@@ -8,30 +8,36 @@
 					<image src="@/static/order/ic_order_failed@2x.png" mode=""></image>
 					<text>退款关闭</text>
 				</view>
-				<text class="time">2021-01-12 16:58:26</text>
+				<text class="time">{{refundInfo.createTime}}</text>
 			</view>
 
 			<view class="order-header">
 				<image src="@/static/order/ic_failed@2x.png" mode=""></image>
-			<!-- 	<view class="cancel-text">
+				<view class="cancel-text" v-if="status == 4">
 					您已取消了本次退款，如有问题未解决，您可以重新申请
-				</view> -->
-				<view class="cancel-text">
+				</view>
+				<view class="cancel-text" v-if="status == 3">
 					商家拒绝了您的申请，如有问题未解决，您可以重新申请
 				</view>
 			</view>
 
 			<view class="body1">
-				<order-item></order-item>
+					<order-item :dataList="refundInfo.detailAppVOS"></order-item>
 			</view>
 
-			<order-refund-info></order-refund-info>
+			<order-refund-info :refundInfo="refundInfo"></order-refund-info>
 
-			<view class="contact-service">
+			<view class="contact-service" v-if="status == 3">
 				联系客服
 			</view>
 
 		</view>
+		
+		
+		
+		
+		
+		
 
     <!-- 订单详情  已关闭页面 -->
     <view class="order-container" v-if="type == 'close'"  >
@@ -46,22 +52,32 @@
         </view>
       </view>
 
-      <order-user-base-info></order-user-base-info>
+     <order-user-base-info :data="orderInfo.estateVO"></order-user-base-info>
 
-      <view class="body2">
+      <view class="body2"  v-for="(item,index) in orderInfo.details" :key="index">
         <view class="header">
-          <text>不知道叫什么名字的店铺nizhidaomahahahahahahaha</text>
+         <text>{{itme.storeName}}</text>
           <image
             src="@/static/order/ic_more@2x.png"
             mode=""
           ></image>
         </view>
-        <order-item></order-item>
+         <order-item :dataList="item.details"></order-item>
       </view>
-
-      <order-price></order-price>
-
-      <order-info></order-info>
+			<order-price
+				:totalAmount="orderInfo.totalAmount"
+				:freight="orderInfo.freight"
+				:handlingFees="orderInfo.handlingFees"
+				:storeDiscount="orderInfo.storeDiscount"
+				:platformDiscount="orderInfo.platformDiscount"
+				:totalActualIncomeAmount="orderInfo.totalActualIncomeAmount"
+			/>
+			
+			<order-info 
+				:orderNo="orderInfo.orderNo"
+				:createTime="orderInfo.createTime"
+				:payTime="orderInfo.payTime"
+			/>
 
     </view>
 
@@ -69,35 +85,52 @@
 </template>
 
 <script>
-	import {getRefundDetail} from "@/api/order.js"
+	import {getRefundDetail,getOrderDetail} from "@/api/order.js"
 	export default {
 	
   data() {
     return {
-			type:"",//type:refund退款详情   close是订单关闭
-			id:"",
-			data:[]
+			type:"close",//type:refund退款详情   close是订单关闭
+			id:-1,
+			status:"",
+			
+			refundInfo:{},
+			orderInfo:{},
 		};
   },
-	watch:{
-		type(){}
-	},
-	onLoad(options){
-		this.type = options.type,
-		this.id = Number(options.id),
-		console.log("this.id=",this.id, "typeof this.id=",typeof this.id)
-		this.getDetailData()
+	// watch:{
+	// 	type(){}
+	// },
+	onLoad(e){
+		this.type = e.type,
+		this.id = Number(e.id),
+		this.status =Number(e.status)
+		if(this.type == 'refund'){//退款成功页面
+			this.refundDetail()
+		}
+		if(this.type == 'complete'){//订单关闭页面
+			this.orderDetail()
+		}
 	},
 	
   methods: {
-		getDetailData(){
-			console.log("获取详情数据")
-			
-			getRefundDetail({id:this.id}).then(data=>{
-				this.data=data;
-				console.log(data,"Data")
+		orderDetail(){
+			console.log("订单完成页面")
+			getOrderDetail({id:this.id}).then(e=>{
+				this.orderInfo = e
+				console.log("获取详情数据data=",this.orderInfo)
 			})
 		},
+		refundDetail(){
+			getRefundDetail({id:this.id}).then(e=>{
+				this.refundInfo = e
+				console.log("获取详情数据data=",this.refundInfo,)
+			})
+			
+		},
+		
+			
+		
 		
 	},
 	
