@@ -1,10 +1,10 @@
 <template>
   <view class="wrap">
     <view class="message">
-      管家发起竣工验收申请，系统将在72:00:00后自动确认验收
+      拆除工人发起阶段服务验收申请，系统将在72:00:00后自动确认验收
     </view>
     <view class="content">
-      <user-desc-pict :pictList="pictList"></user-desc-pict>
+      <user-desc-pict :pictList="pictList" :isWorker="true"></user-desc-pict>
     </view>
     <view class="bt-btn-wrap flex-row">
       <view class="btn-l" @click="refuse">拒绝通过</view>
