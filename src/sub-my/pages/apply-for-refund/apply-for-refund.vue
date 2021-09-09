@@ -153,6 +153,7 @@
 </template>
 
 <script>
+	import {getOrderDetail} from "@/api/order.js"
 export default {
   data() {
     return {
@@ -167,6 +168,16 @@ export default {
     };
   },
   watch: {
+		// 获取订单详情
+		orderDetail(){
+			console.log("订单完成页面")
+			getOrderDetail({id:this.id}).then(e=>{
+				this.orderInfo = e
+				console.log("获取详情数据data=",this.orderInfo)
+			})
+		},
+		
+		
     showEditInput(newVal, oldVal) {
       if (newVal) {
         this.onKeyFocus();

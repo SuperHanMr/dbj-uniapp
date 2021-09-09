@@ -42,12 +42,21 @@ export function getGrabDetail(params) {
 
 //确认抢单人员
 export function sureGrab(params) {
-	return request.post("/pm/app/snatch/confirm",params )
+	return request.post("/pm/app/snatch/server/confirm",params )
 }
 
 //更换抢单人员
 export function replaceGrab(params) {
 	return request.post("/pm/app/snatch/server/change",params )
+}
+//获取验房交付报告
+export function getCheckResultDetail(params) {
+	return request.get("/pm/app/user/inspectEstate/report/"+params )
+}
+
+//确认验房验房交付
+export function confirmCheckResult(params) {
+	return request.post("/pm/app/user/inspectEstate/confirmReport/"+params )
 }
 
 //获取亲友团列表-房屋下的

@@ -1,7 +1,7 @@
 <template>
   <view class="container">
     <!-- 退款详情 -->
-    <!-- <view class="order-container">
+    <view v-if="type == 'refund'"  class="order-container">
 			<view class="order-status">
 				<view class="backgroundStyle" />
 
@@ -15,17 +15,22 @@
 			</view>
 
 			<view class="refund-product-info">
-				<order-item></order-item>
+				<order-item :dataList="productInfo"></order-item>
 			</view>
 
-			<order-refund-info></order-refund-info>
+			<order-refund-info :refundInfo="refundInfo"></order-refund-info>
 
-			<view class="delete-button">
-				<view class="delete" @click="cancelToPay()">
-					取消退款
-				</view>
-			</view>
-		</view> -->
+			
+		</view>
+		<view
+		  class="cancel-refund-pay"
+		  :style="{paddingBottom:systemBottom,height:systemHeight}"
+		>
+		  <button
+		    class="button"
+		    @click="cancelToPay()"
+		  >取消退款</button>
+		</view>
 		
 		<!-- 进行中 -->
     <!-- <view class="order-container">
@@ -332,27 +337,64 @@
 </template>
 
 <script>
-import { orderDetail, orderPay } from "../../../../api/order.js";
+import { orderDetail, orderPay, getRefundDetail,cancelOrder } from "../../../../api/order.js";
 export default {
   data() {
     return {
       orderNo: "",
 			stockType:1,//"stockType":"int //库存类型  0无仓库  1有仓库",
 			showRefundBtn:false,//"showRefundBtn":"boolean //是否显示退款按钮"
+			
+			
+			
+			
+			type:"",
+			refundInfo:{},
+			productInfo:[],
+			
+			systemBottom: "",
+			systemHeight: "",
     };
   },
+	
+	mounted(e) {
+		const menuButtonInfo = uni.getMenuButtonBoundingClientRect();
+		this.systemBottom = menuButtonInfo.bottom + "rpx";
+		this.systemHeight = menuButtonInfo.bottom + this.num + "rpx";
+		console.log(this.systemBottom);
+	},
+	
+	
   onLoad(e) {
     if (e && e.orderNo) {
       this.orderNo = e.orderNo;
       // this.getOrderDetail();
     }
-  },
+		if(e && e.type){
+			this.type =e.type
+		}
+		if(this.type == 'refund'){
+			this.refundDetail()
+		}
+		
+	},
+	
   methods: {
+		cancelRefund(){
+			console.log("取消退款啊啊啊啊啊啊")
+		},
     toPay() {
       orderPay({ orderId: this.orderNo, payType: 1 }).then((e) => {
         console.log(e);
       });
     },
+		refundDetail(){
+			getRefundDetail({ id: this.orderNo }).then(e=>{
+			console.log("打印请求回来的数据=",e,"e")
+				this.refundInfo = e
+				this.productInfo = this.refundInfo.detailAppVOS
+			})
+		},
     toApplayForRefund() {
       uni.navigateTo({
         url: "/sub-my/pages/apply-for-refund/apply-for-refund",
@@ -364,6 +406,10 @@ export default {
       });
     },
 
+
+
+
+
     cancelToPay() {
       this.$refs.cancelRefund.open();
     },
@@ -371,11 +417,17 @@ export default {
       this.$refs.cancelRefund.close();
     },
     confirmCancelToPay(value) {
-      // 调用申请退款的接口
+      // 调用申请退款的接口、
+			cancelOrder({id:this.orderNo }).then(e=>{
+				console.log(e)
       // 成功就关闭弹框
       this.$refs.cancelRefund.close();
-      console.log("点击了确认按钮");
+				// 跳转到退款关闭页面  退款取消页面
+			})
+      console.log("点击了取消退款按钮");
     },
+
+
 
     confirmReceipt() {
       this.$refs.confirmReceipt.open();
@@ -809,6 +861,31 @@ export default {
     }
   }
 }
+
+// 底部 取消支付按钮样式
+.cancel-refund-pay {
+		position: fixed;
+		bottom: 0;
+		background-color: #FFFFFF;
+		width: 686rpx;
+		display: flex;
+		flex-direction: row;
+		justify-content: space-between;
+		align-items: center;
+		padding: 24rpx 32rpx;
+		font-size: 26rpx;
+		.button{
+			height: 88rpx;
+			background: linear-gradient(135deg, #53d5cc, #4fc9c9);
+			border-radius: 12rpx;
+			width: 686rpx;
+			line-height: 88rpx;
+			text-align: center;
+			color: #ffffff;
+			font-size: 32rpx;
+		}
+	}
+		
 // 弹框样式
 ::v-deep .uni-popup-dialog {
   width: 560rpx !important;

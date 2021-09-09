@@ -209,7 +209,7 @@
 						
 						
 
-            <view class="order-container" >
+            <view class="order-container" @click="goMultiplePay" >
               <view class="header">
                 <view class="store-name">
                   <text>不知道叫什么名字的店铺nizhidaomahahahahahahaha</text>
@@ -537,6 +537,7 @@ export default {
   },
 
   methods: {
+		
 		handlePrice(price){
 			let list=String(price).split(".")
 			if(list.length==1){
@@ -545,7 +546,13 @@ export default {
 				return[list[0],list[1]]
 			}
 		},
-    toDetail(item) {
+		goMultiplePay(){
+			uni.navigateTo({
+				url:"order-success/order-success"
+			})
+		},
+    
+		toDetail(item) {
       console.log(item);
       uni.navigateTo({
 				url:"order-failed/order-failed?type=close"
@@ -597,6 +604,8 @@ export default {
       this.page++;
       this.getOrderList();
     },
+
+
 
     onRefresh(e) {
       console.log("刷新!!!!!");
