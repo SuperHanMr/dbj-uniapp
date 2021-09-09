@@ -4,18 +4,16 @@
       <view class="report-title">
         <view> 
           <text class="title">验房报告</text>
-          <text class="time">2021-08-21 13:00:00</text>
+          <text class="time">{{checkData.submitReportTime}}</text>
         </view>
       </view>
       <view class="charts">
         <uniEcCanvas class="uni-ec-canvas" id="uni-ec-canvas" ref="canvas" canvas-id="uni-ec-canvas" :ec="ec">
         </uniEcCanvas>
       </view>
-      <text class="report-text">这里展示验房人员在总结中的文字稿，不可隐藏所有的内容都展示。第一个版本可支持语音和视频这里的文字是识别出来的。这里展示验房人员在总结中的文字稿，不可隐藏，所有的内容都展示。第一都展都展</text>
+      <text class="report-text">{{checkData.summaryDescription}}</text>
       <view class="img-list">
-        <image></image>
-        <image></image>
-        <image></image>
+        <image v-for="item of checkData.imageUrlList" :key='item' :src="item"></image>
       </view>
     </view>
     <view class="sticky" v-if="isActive&&!isReport">
@@ -31,19 +29,22 @@
     <deliverCard class="major-hazard" color="#CA3737" title="重大隐患" :data='data[2]'></deliverCard>
     <deliverCard class="hazard" color="#F6A93B" title="隐患" :data='data[1]'></deliverCard>
     <deliverCard class="conform" color="#348BE2" title="符合项" :data='data[0]'></deliverCard>
+    <text class="bottom-text">我是有底线的~</text>
+    <bottom-btn style="width: 100%;" :showDefaultBtn="false">
+      <button class="add-btn" @click="submit">确认验房结果</button>
+    </bottom-btn>  
   </view>
 </template>
-
 <script>
   import uniEcCanvas from '../../components/uni-ec-canvas/uni-ec-canvas.vue'
   import * as echarts from '../../components/uni-ec-canvas/echarts'
   import deliverCard from '../delivery-card/delivery-card.vue'
-  import {getCheckResultDetail} from '../../../api/decorate.js'
-  let chart = null
+  import {getCheckResultDetail , confirmCheckResult} from '../../../api/decorate.js'
+  let chart = null 
   export default {
     components: {
       uniEcCanvas,
-      deliverCard
+      deliverCard, 
     },
     props:{
       isReport:false,
@@ -115,14 +116,12 @@
                   verticalAlign: "bottom",
                 },
               },
-
             },
             labelLine: {
               show: false
             },
             data: []
           }]
-
         },
         data: [{
             value: 37,
@@ -130,44 +129,7 @@
             itemStyle: {
               color: '#348BE2'
             },
-            arr:[
-              {
-                title:"满敲墙面，每处空鼓面积≤0.04m²，且每个自然间不多于2处",
-                content:"这里展示验房人员在总结中的文字稿，不可隐藏所有的内容都展示。第版支持语音和视手机都可能发生了咖啡那是开发那开发哪上课"
-              },
-              {
-                title:"满敲墙面，每处空鼓面积≤0.04m²，且每个自然间不多于2处",
-                content:"这里展示验房人员在总结中的文字稿，不可隐藏所有的内容都展示。第版支持语音和视手机都可能发生了咖啡那是开发那开发哪上课"
-              },
-              {
-                title:"满敲墙面，每处空鼓面积≤0.04m²，且每个自然间不多于2处",
-                content:"这里展示验房人员在总结中的文字稿，不可隐藏所有的内容都展示。第版支持语音和视手机都可能发生了咖啡那是开发那开发哪上课"
-              },
-              {
-                title:"满敲墙面，每处空鼓面积≤0.04m²，且每个自然间不多于2处",
-                content:"这里展示验房人员在总结中的文字稿，不可隐藏所有的内容都展示。第版支持语音和视手机都可能发生了咖啡那是开发那开发哪上课"
-              },
-              {
-                title:"满敲墙面，每处空鼓面积≤0.04m²，且每个自然间不多于2处",
-                content:"这里展示验房人员在总结中的文字稿，不可隐藏所有的内容都展示。第版支持语音和视手机都可能发生了咖啡那是开发那开发哪上课"
-              },
-              {
-                title:"满敲墙面，每处空鼓面积≤0.04m²，且每个自然间不多于2处",
-                content:"这里展示验房人员在总结中的文字稿，不可隐藏所有的内容都展示。第版支持语音和视手机都可能发生了咖啡那是开发那开发哪上课"
-              },
-              {
-                title:"满敲墙面，每处空鼓面积≤0.04m²，且每个自然间不多于2处",
-                content:"这里展示验房人员在总结中的文字稿，不可隐藏所有的内容都展示。第版支持语音和视手机都可能发生了咖啡那是开发那开发哪上课"
-              },
-              {
-                title:"满敲墙面，每处空鼓面积≤0.04m²，且每个自然间不多于2处",
-                content:"这里展示验房人员在总结中的文字稿，不可隐藏所有的内容都展示。第版支持语音和视手机都可能发生了咖啡那是开发那开发哪上课"
-              },
-              {
-                title:"满敲墙面，每处空鼓面积≤0.04m²，且每个自然间不多于2处",
-                content:"这里展示验房人员在总结中的文字稿，不可隐藏所有的内容都展示。第版支持语音和视手机都可能发生了咖啡那是开发那开发哪上课"
-              },
-            ]
+            arr:[]
           },
           {
             value: 12,
@@ -175,36 +137,7 @@
             itemStyle: {
               color: '#F6A93B'
             },
-            arr:[
-              {
-                title:"满敲墙面，每处空鼓面积≤0.04m²，且每个自然间不多于2处",
-                content:"这里展示验房人员在总结中的文字稿，不可隐藏所有的内容都展示。第版支持语音和视手机都可能发生了咖啡那是开发那开发哪上课"
-              },
-              {
-                title:"满敲墙面，每处空鼓面积≤0.04m²，且每个自然间不多于2处",
-                content:"这里展示验房人员在总结中的文字稿，不可隐藏所有的内容都展示。第版支持语音和视手机都可能发生了咖啡那是开发那开发哪上课"
-              },
-              {
-                title:"满敲墙面，每处空鼓面积≤0.04m²，且每个自然间不多于2处",
-                content:"这里展示验房人员在总结中的文字稿，不可隐藏所有的内容都展示。第版支持语音和视手机都可能发生了咖啡那是开发那开发哪上课"
-              },
-              {
-                title:"满敲墙面，每处空鼓面积≤0.04m²，且每个自然间不多于2处",
-                content:"这里展示验房人员在总结中的文字稿，不可隐藏所有的内容都展示。第版支持语音和视手机都可能发生了咖啡那是开发那开发哪上课"
-              },
-              {
-                title:"满敲墙面，每处空鼓面积≤0.04m²，且每个自然间不多于2处",
-                content:"这里展示验房人员在总结中的文字稿，不可隐藏所有的内容都展示。第版支持语音和视手机都可能发生了咖啡那是开发那开发哪上课"
-              },
-              {
-                title:"满敲墙面，每处空鼓面积≤0.04m²，且每个自然间不多于2处",
-                content:"这里展示验房人员在总结中的文字稿，不可隐藏所有的内容都展示。第版支持语音和视手机都可能发生了咖啡那是开发那开发哪上课"
-              },
-              {
-                title:"满敲墙面，每处空鼓面积≤0.04m²，且每个自然间不多于2处",
-                content:"这里展示验房人员在总结中的文字稿，不可隐藏所有的内容都展示。第版支持语音和视手机都可能发生了咖啡那是开发那开发哪上课"
-              },
-            ]
+            arr:[]
           },
           {
             value: 8,
@@ -212,50 +145,19 @@
             itemStyle: {
               color: '#CA3737'
             },
-            arr:[
-              {
-                title:"满敲墙面，每处空鼓面积≤0.04m²，且每个自然间不多于2处",
-                content:"这里展示验房人员在总结中的文字稿，不可隐藏所有的内容都展示。第版支持语音和视手机都可能发生了咖啡那是开发那开发哪上课"
-              },
-              {
-                title:"满敲墙面，每处空鼓面积≤0.04m²，且每个自然间不多于2处",
-                content:"这里展示验房人员在总结中的文字稿，不可隐藏所有的内容都展示。第版支持语音和视手机都可能发生了咖啡那是开发那开发哪上课"
-              },
-              {
-                title:"满敲墙面，每处空鼓面积≤0.04m²，且每个自然间不多于2处",
-                content:"这里展示验房人员在总结中的文字稿，不可隐藏所有的内容都展示。第版支持语音和视手机都可能发生了咖啡那是开发那开发哪上课"
-              },
-              {
-                title:"满敲墙面，每处空鼓面积≤0.04m²，且每个自然间不多于2处",
-                content:"这里展示验房人员在总结中的文字稿，不可隐藏所有的内容都展示。第版支持语音和视手机都可能发生了咖啡那是开发那开发哪上课"
-              },
-              {
-                title:"满敲墙面，每处空鼓面积≤0.04m²，且每个自然间不多于2处",
-                content:"这里展示验房人员在总结中的文字稿，不可隐藏所有的内容都展示。第版支持语音和视手机都可能发生了咖啡那是开发那开发哪上课"
-              },
-              {
-                title:"满敲墙面，每处空鼓面积≤0.04m²，且每个自然间不多于2处",
-                content:"这里展示验房人员在总结中的文字稿，不可隐藏所有的内容都展示。第版支持语音和视手机都可能发生了咖啡那是开发那开发哪上课"
-              },
-              
-              
-            ]
+            arr:[]
           },
         ],
-        num: 43,
         top:'',
         hazardTop:'',
         conformTop:'',
         isActive:false,
-        
+        checkData:{},
         currentItem:'top'
       }
     },
     mounted() {
       this.getData();
-      this.$refs.canvas.init(this.initChart)
-      this.drawImage()
-      console.log(uni.createSelectorQuery().select("#majorHazard"))
       let query = uni.createSelectorQuery().in(this)
       query.select(".major-hazard").boundingClientRect((res)=>{
             this.top = res.top;
@@ -271,22 +173,27 @@
       scrollTop(){
         console.log(this.scrollTop)
         if(this.scrollTop>this.top){
-          
           this.isActive = true
           this.currentItem = 'top'
           this.currentItem = this.scrollTop>this.conformTop?'conformTop':this.scrollTop>this.hazardTop?'hazardTop':'top'
-          console.log(this.currentItem)
         }else{ 
           this.isActive = false
         }
       }
     },
-    
     methods: {
       getData(){
         getCheckResultDetail(30).then(res=>{
-          console.log(res)
-        })
+          this.checkData = res
+          this.data[0].arr = res.normalList
+          this.data[0].value = res.normalList.length
+          this.data[1].arr = res.generalProblemList
+          this.data[1].value = res.generalProblemList.length
+          this.data[2].arr = res.seriousProblemList
+          this.data[2].value = res.seriousProblemList.length
+          this.$refs.canvas.init(this.initChart)
+          this.drawImage()
+        }) 
       },
       toItem(id){
         this.currentItem = id
@@ -297,18 +204,18 @@
         uni.pageScrollTo({
         　　　　duration: 100,// 过渡时间
         　　　　scrollTop: this[id]+16,// 滚动的实际距离
-        　　})
+        　　}) 
       },
       drawImage() {
         this.option.series[0].data = this.data
-        let text = [`{a|${this.num}}{b|项}`, "{x|总检查}"].join("\n")
+        let text = [`{a|${this.checkData.checkCount}}{b|项}`, "{x|总检查}"].join("\n")
         this.option.series[0].label.formatter = text
         this.option.legend.formatter = (name) => {
           let i = this.data.findIndex(item => {
             return item.name === name
           })
           return `${name}  {legend2|${this.data[i].value}}`
-        }
+        } 
       },
       initChart(canvas, width, height, canvasDpr) {
         chart = echarts.init(canvas, null, {
@@ -318,9 +225,14 @@
         })
         canvas.setChart(chart)
         chart.setOption(this.option)
-        return chart
+        return chart 
+      },
+      submit(){
+        // console.log(1231)
+        confirmCheckResult(30).then(res=>{
+          uni.navigateBack({}) 
+        })
       }
-
     }
   }
 </script>
@@ -332,11 +244,11 @@
     flex-wrap: wrap;
     // padding: 0 24rpx;
   }
-  
   .report-content {
     // width: 638rpx;
     padding: 32rpx 32rpx 40rpx;
     margin: 0 24rpx;
+    width: 100%;
     // height: 608px;
     opacity: 1;
     background: #ffffff;
@@ -369,13 +281,14 @@
     .img-list{
       display: flex;
       flex-wrap: wrap;
-      justify-content: space-between;
+      // justify-content: space-between;
       margin-top: 40rpx;
       image{
         width: 208rpx;
         height: 208rpx;
         opacity: 1;
         border-radius: 8rpx;
+        margin-right: 8rpx;
         // border: 1px solid #eee;
         background-color: #eee;
       }
@@ -443,5 +356,25 @@
       right: 0;
       margin: auto;
     }
+  }
+  .bottom-text{
+    display: block;
+    margin-top: 80rpx;
+    text-align: center;
+    width: 100%;
+    font-size: 26rpx;
+    color: #999;
+    padding-bottom: 190rpx;
+  }
+  .add-btn {
+  	// margin-top: 20rpx;
+  	height: 88rpx;
+  	background: linear-gradient(135deg, #53d5cc, #4fc9c9);
+  	border-radius: 12rpx;
+  	width: 686rpx;
+  	line-height: 88rpx;
+  	text-align: center;
+  	color: #ffffff;
+  	font-size: 32rpx;
   }
 </style>
