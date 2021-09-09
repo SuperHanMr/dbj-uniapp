@@ -10,7 +10,8 @@
 			noHouseActuaryId: null,
 			noHouseDesignId: null,
 			noHouseCheckId: null,
-      deviceId:""
+      deviceId:"",
+      decorateMsg:{}
 		},
     data(){
       return{

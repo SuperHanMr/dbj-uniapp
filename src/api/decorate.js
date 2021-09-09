@@ -49,6 +49,10 @@ export function sureGrab(params) {
 export function replaceGrab(params) {
 	return request.post("/pm/app/snatch/server/change",params )
 }
+//获取验房交付详情
+export function getCheckResultDetail(params) {
+	return request.get("/pm/app/user/inspectEstate/report/"+params )
+}
 
 //获取亲友团列表-房屋下的
 export function friendListByEstateId(params) {

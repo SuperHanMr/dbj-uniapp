@@ -5,9 +5,7 @@
       <scroll-view class="item-list" scroll-y="true">
         <view
           class="notice-item"
-          @click="to(item)"
-          v-for="item of list"
-          :key = "item.msgType"
+          @click="to(2)"
         >
           <view class="item-top">
             <view class="item-top-left">
@@ -84,10 +82,12 @@ export default {
       this.close();
     }, 
     getMsg(){
-      getMsgList(1||this.current).then(res=>{
+      getMsgList(2||this.current).then(res=>{
         res.map(item=>{
-          console.log(item.msgBody)
+          
           console.log(JSON.parse(item.msgBody))
+          let data = JSON.parse(item.msgBody)
+          getApp().globalData.decorateMsg = data
         })
       })
     }
