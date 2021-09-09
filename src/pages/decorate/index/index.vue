@@ -130,6 +130,7 @@
             <view @click="confirm4">线上交底</view>
             <view @click="hcaa">管家竣工验收申请</view>
             <view @click="housekeeperrefuse">管家竣工拒绝</view>
+            <view @click="workerCapplication">工人阶段验收申请</view>
           </view>
         </scroll-view>
       </view>
@@ -260,6 +261,11 @@
       housekeeperrefuse() {
         uni.navigateTo({
           url: "/sub-decorate/pages/housekeeper-refuse/housekeeper-refuse"
+        })
+      },
+      workerCapplication () {
+        uni.navigateTo({
+          url: "/sub-decorate/pages/worker-c-application/worker-c-application"
         })
       },
       async getFriendsList() {

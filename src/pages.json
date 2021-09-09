@@ -698,6 +698,12 @@
             "navigationBarTitleText": "施工",
             "enablePullDownRefresh": false
           }
+        }, {
+          "path": "pages/worker-c-application/worker-c-application",
+          "style": {
+            "navigationBarTitleText": "拆除服务阶段验收申请",
+            "enablePullDownRefresh": false
+          }
         }
       ]
     }
