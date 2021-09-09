@@ -10,8 +10,11 @@
 		name: "bottom-btn",
 		props: {
 			num: 0,
-			btnContent: "",
-			bgcolor: "",
+			btnContent: "提交",
+			bgcolor: {
+        type:String,
+        default:"#fff"
+      },
 			showDefaultBtn: {
 				type: Boolean,
 				default: true
@@ -44,12 +47,11 @@
 		width: 100%;
 		position: fixed;
 		bottom: 0;
-		height: 136rpx;
+		height: 136rpx; 
 		display: flex;
 		flex-direction: row;
 		justify-content: center;
 		align-items: center;
-
 		.add-btn {
 			// margin-top: 20rpx;
 			height: 88rpx;
