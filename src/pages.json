@@ -121,39 +121,38 @@
 		}
 	},
 	"tabBar": {
-		"color": "red",
-		"selectedColor": "yellow",
+		"color": "#000000",
+		"selectedColor": "#FFA500",
 		"borderStyle": "black",
-		"backgroundColor": "#ffffff",
-		"list": [
-			{
+		"backgroundColor": "#FFFFFF",
+		"list": [{
 				"pagePath": "pages/home/index/index",
-				// "iconPath": "static/component.png",
-				// "selectedIconPath": "static/componentHL.png",
+				"iconPath": "static/home_owner.png",
+				"selectedIconPath": "static/home_owner.png",
 				"text": "首页"
 			},
 			{
 				"pagePath": "pages/classify/index/index",
-				// "iconPath": "static/component.png",
-				// "selectedIconPath": "static/componentHL.png",
+				"iconPath": "static/home_owner.png",
+				"selectedIconPath": "static/home_owner.png",
 				"text": "分类"
 			},
 			{
 				"pagePath": "pages/decorate/index/index",
-				// "iconPath": "static/component.png",
-				// "selectedIconPath": "static/componentHL.png",
+				"iconPath": "static/home_owner.png",
+				"selectedIconPath": "static/home_owner.png",
 				"text": "装修"
 			},
 			{
 				"pagePath": "pages/message/index/index",
-				// "iconPath": "static/component.png",
-				// "selectedIconPath": "static/componentHL.png",
+				"iconPath": "static/home_owner.png",
+				"selectedIconPath": "static/home_owner.png",
 				"text": "消息"
 			},
 			{
 				"pagePath": "pages/my/index/index",
-				// "iconPath": "static/component.png",
-				// "selectedIconPath": "static/componentHL.png",
+				"iconPath": "static/home_owner.png",
+				"selectedIconPath": "static/home_owner.png",
 				"text": "我的"
 			}
 		]
@@ -173,12 +172,12 @@
 			},
 			{
 				"name": "hcl", //模式名称
-				"path": "/sub-decorate/pages/require-history/require-history", //启动页面，必选
+				"path": "/sub-decorate/pages/require-pay/require-pay", //启动页面，必选
 				"query": "" //启动参数，在页面的onLoad函数里面得到
 			},
 			{
 				"name": "lyb", //模式名称
-				"path": "/sub-decorate/pages/checkResult/checkResult", //启动页面，必选
+				"path": "/sub-decorate/pages/time-line/time-line", //启动页面，必选
 				"query": "" //启动参数，在页面的onLoad函数里面得到
 			}
 		]
@@ -464,7 +463,7 @@
 				{
 					"path": "pages/design-picture/design-picture",
 					"style": {
-						"navigationBarTitleText": "设计图"
+						"navigationBarTitleText": ""
 					}
 				},
 				{
@@ -617,9 +616,9 @@
 					}
 				},
 				{
-					"path": "pages/plan-check/plan-check",
+					"path": "pages/design-deliver/design-deliver",
 					"style": {
-						"navigationBarTitleText": "平面图交付",
+						"navigationBarTitleText": "",
 						"enablePullDownRefresh": false
 					}
 				},
@@ -658,8 +657,45 @@
 						"enablePullDownRefresh": false,
 						"navigationStyle": "custom"
 					}
+				},
+				{
+					"path": "pages/current-cost/current-cost",
+					"style": {
+						"navigationBarTitleText": "当前花销",
+						"enablePullDownRefresh": false
+					}
+				},
+				{
+					"path": "pages/housekeeper-c-a-application/housekeeper-c-a-application",
+					"style": {
+						"navigationBarTitleText": "管家竣工验收申请",
+						"enablePullDownRefresh": false
+					}
+				},
+				{
+					"path": "pages/housekeeper-refuse/housekeeper-refuse",
+					"style": {
+						"navigationBarTitleText": "发起拒绝通过",
+						"enablePullDownRefresh": false
+					}
+				},
+				{
+					"path": "pages/require-pay/require-pay",
+					"style": {
+						"navigationBarTitleText": "要货申请",
+						"enablePullDownRefresh": false
+					}
 				}
-			]
+			    ,{
+                    "path" : "pages/time-line/time-line",
+                    "style" :
+                {
+                    "navigationBarTitleText": "",
+                    "enablePullDownRefresh": false
+                }
+
+                }
+            ]
 		}
 	],
 	"preloadRule": {

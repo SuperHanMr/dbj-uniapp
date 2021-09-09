@@ -40,7 +40,8 @@
 			};
 		},
     onLoad(e){
-      this.id = e.id
+      this.id = getApp().globalData.decorateMsg.serveId
+      this.personId = getApp().globalData.decorateMsg.serverId
       this.getGrabDetail()
       const menuButtonInfo = uni.getMenuButtonBoundingClientRect();
       this.systemBottom = menuButtonInfo.bottom + 'rpx'; 
@@ -63,7 +64,6 @@
               title: '确认成功',
               duration: 2000
           });
-
         })
 				uni.switchTab({
 					url:'/pages/decorate/index/index'

@@ -1,7 +1,7 @@
 <template>
   <view>
     <custom-navbar
-      title="????AAAA"
+      title="首页"
       :opacity="scrollTop/100"
       :showBack="false"
     >
@@ -17,6 +17,13 @@
       @scroll="onScroll"
       @scrolltolower="onLoadMore"
     >
+      <view
+        style="margin-top: 300rpx;"
+        class=""
+        @click="toPay"
+      >
+        调起支付
+      </view>
       <view
         style="margin-top: 300rpx;"
         class=""
@@ -81,8 +88,9 @@
 <script>
 import { getBanner, queryLive, caseList } from "../../../api/home.js";
 
-import { orderList } from "../../../api/order.js";
+import { orderList, orderPay } from "../../../api/order.js";
 import { queryEstates } from "../../../api/decorate.js";
+import { getAdcodeFromAreaId } from "../../../utils/cityData.js";
 export default {
   data() {
     return {
@@ -90,7 +98,7 @@ export default {
       navBarHeight: 0,
       scrollTop: 0,
       liveList: [],
-      citydata: "北京市",
+      citydata: "",
       roomId: "",
       bannerList: [],
       list: [],
@@ -102,19 +110,46 @@ export default {
     };
   },
   onLoad() {
-    this.getAuthorizeInfo();
+    let defaultHouse = {
+      name: "北京市朝阳区",
+      provinceId: 1,
+      cityId: 36,
+      areaId: 41,
+    };
+    uni.setStorageSync("currentHouse", JSON.stringify(defaultHouse));
+    this.citydata = defaultHouse.name;
+
+    this.getHomeList();
   },
   onShow() {
+    uni.$once("selectedHouse", (item) => {
+      this.citydata = item.locationName;
+      uni.setStorageSync("currentHouse", JSON.stringify(item));
+    });
     this.reloadData();
-    // let pages = getCurrentPages();
-    // let currPage = pages[pages.length - 1]; //当前页面
-    // let res = currPage.data.city;
-    // if (res) {
-    // 	this.citydata = res.title;
-    // 	this.changeCity();
-    // }
   },
   methods: {
+    toPay() {
+      let openId = uni.getStorageSync("openId");
+      orderPay({
+        orderId: 109,
+        payType: 1,
+        openid: openId,
+      }).then((e) => {
+        const payInfo = e.wechatPayJsapi;
+        uni.requestPayment({
+          provider: "wxpay",
+          ...payInfo,
+          success(res) {
+            console.log("@@@@@@@");
+            console.log(res);
+          },
+          fail(e) {
+            console.log(e);
+          },
+        });
+      });
+    },
     toCalebdar() {
       uni.navigateTo({
         url: "/sub-decorate/pages/calendar/calendar",
@@ -153,7 +188,7 @@ export default {
     },
     toCity() {
       uni.navigateTo({
-        url: "/sub-home/pages/select-city/select-city?title=" + this.citydata,
+        url: "/sub-my/pages/my-house/my-house",
       });
     },
     getAuthorizeInfo() {
@@ -192,14 +227,13 @@ export default {
               latitude +
               "&key=4d1476e82ce1ca125c7452c625e6d541&radius=1000&extensions=all",
             success(re) {
-              console.log(re);
               if (re.statusCode === 200) {
+                console.log(re.data);
                 let addressComponent = re.data.regeocode.addressComponent;
-                that.citydata =
-                  addressComponent.city.length > 0
-                    ? addressComponent.city
-                    : addressComponent.province;
-                getApp().globalData.city = that.citydata;
+                let areaInfo = getAdcodeFromAreaId(addressComponent.adcode);
+                console.log(areaInfo);
+                vm.citydata = areaInfo.name;
+                uni.setStorageSync("currentHouse", JSON.stringify(areaInfo));
               } else {
                 console.log("获取信息失败，请重试！");
               }
@@ -243,7 +277,6 @@ export default {
     },
     reloadData() {
       this.getBannerList();
-      this.getHomeList();
       this.getCaseList();
     },
     async getCaseList() {
@@ -254,16 +287,29 @@ export default {
       this.totalPage = caseItem.totalPage;
       this.caseList = this.caseList.concat(caseItem.list);
       this.loading = false;
-      console.log(this.caseList.length);
     },
     async getBannerList() {
       this.bannerList = await getBanner();
     },
     async getHomeList() {
-      let list = await queryLive();
-      this.liveList = list;
-
-      console.log(this.liveList);
+      if (uni.getStorageSync("userId")) {
+        let houseList = await queryEstates();
+        let house = null;
+        let [defaultHouse] = houseList.filter((e) => {
+          return e.defaultEstate == true;
+        });
+        if (defaultHouse) {
+          house = defaultHouse;
+        } else if (houseList.length) {
+          house = houseList[0];
+        }
+        if (house) {
+          uni.setStorageSync("currentHouse", JSON.stringify(house));
+          this.citydata = house.locationName;
+        }
+      } else {
+        this.getAuthorizeInfo();
+      }
     },
     onScroll(e) {
       this.scrollTop = e.detail.scrollTop;

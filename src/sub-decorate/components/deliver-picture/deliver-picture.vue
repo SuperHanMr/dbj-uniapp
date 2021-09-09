@@ -7,18 +7,8 @@
 				<image class="bt" src="http://iph.href.lu/48x6?fg=00ed7d"></image>
 			</view>
 		</view>
-		<!-- 原始户型图 -->
-		<view class="original">
-			<view class="subtitle">
-				<view class="t">原始结构尺寸图</view>
-				<view class="date">2021-08-19 20:20:00</view>
-			</view>
-			<view class="imgs img-original">
-				<image :src="originImgUrl" @click="clickImg(originImgUrl)"></image>
-			</view>
-		</view>
 		<!-- 量房图 -->
-		<view class="measure">
+		<view class="picture">
 			<view class="subtitle">
 				<view class="t">量房图图片</view>
 				<view class="date">2021-08-19 20:20:00</view>
@@ -31,7 +21,6 @@
 </template>
 
 <script>
-  import { getDesignList } from "../../../api/decorate.js"
 	export default {
 		data() {
 			return {
@@ -67,10 +56,7 @@
 				if (this.currentItem !== item) {
 					this.currentItem = item
 				}
-			},
-      getDesignList() {
-        
-      }
+			}
 		}
 	}
 </script>
@@ -82,7 +68,7 @@
 		justify-content: flex-start;
 		flex-direction: row;
 		padding: 28rpx 0 0 48rpx;
-		border-bottom: 2rpx solid #EFEFEF;
+		border: 2rpx solid #EFEFEF;
 		margin-bottom: 40rpx;
 		box-sizing: border-box;
 		margin-bottom: 40rpx;
@@ -123,18 +109,18 @@
 		}
 	}
 
-	.original {
-		padding: 0 32rpx;
-		margin-bottom: 56rpx;
+	// .original {
+	// 	padding: 0 32rpx;
+	// 	margin-bottom: 56rpx;
 
-		.img-original {
-			image {
-				width: 328rpx;
-				height: 216rpx;
-				border-radius: 12rpx;
-			}
-		}
-	}
+	// 	.img-original {
+	// 		image {
+	// 			width: 328rpx;
+	// 			height: 216rpx;
+	// 			border-radius: 12rpx;
+	// 		}
+	// 	}
+	// }
 
 	.measure {
 		padding: 0 2rpx 0 32rpx;

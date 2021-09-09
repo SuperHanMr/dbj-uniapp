@@ -1,6 +1,6 @@
 <template>
   <view class="decorate-index">
-    <image class="bg" mode="aspectFit" src="http://dbj.dragonn.top/static/mp/dabanjia/images/decorate/bg@2x.png">
+    <image class="bg-index" mode="aspectFit" src="http://dbj.dragonn.top/static/mp/dabanjia/images/decorate/bg@2x.png">
     </image>
     <view class="content flex-column">
       <view class="house-firend">
@@ -112,16 +112,22 @@
           <no-service words="暂无进行中服务"></no-service>
           <!-- 切换房屋弹窗 -->
           <uni-popup ref="sw">
-            <house-switch class="margintop" :datalist="myHouseList" :current="current" @goAddHouse="addHouse"
-              @checkHouse="checkHouse"></house-switch>
+            <house-switch class="margintop" :datalist="projectList" :current="currentHouse.estateId"
+              @goAddHouse="addHouse" @checkHouse="checkHouse"></house-switch>
           </uni-popup>
-          <decorate-notice @touchmove.stop.prevent="()=>false" v-if="noticeActive" @closeNotice='closeNotice'
+          <decorate-notice @touchmove.stop.prevent="()=>false" v-if="noticeActive" :current='current' @closeNotice='closeNotice'
             class="decorate-notice"></decorate-notice>
           <view class="link">
+            <button @click="confirm1">平面图交付</button>
             <button @click="gonohouse">无房屋无服入口</button>
             <button @click="gonohousedecatore">无房屋无服务装修</button>
             <button @click="gonohousecheck">无房屋无服务验房</button>
             <button @click="checkHouseRemind">验房提醒</button>
+            <button @click="confirm2">三维设计图交付</button>
+            <button @click="confirm3">施工图交付</button>
+            <button @click="confirm4">线上交底</button>
+            <button @click="hcaa">管家竣工验收申请</button>
+            <button @click="housekeeperrefuse">管家竣工拒绝</button>
           </view>
         </scroll-view>
       </view>
@@ -142,6 +148,9 @@
     queryEstates,
     friendListByEstateId
   } from "../../../api/decorate.js";
+  import {
+    getEstateProjectInfoList
+  } from "../../../api/project.js";
   import {
     HouseSwitch
   } from "../../../components/house-switch/house-switch.vue"
@@ -175,6 +184,7 @@
 
     },
     onShow() {
+      uni.showTabBar() 
       if (this.houses && this.houses.length < 1) {
         this.getHouses();
       }
@@ -189,34 +199,19 @@
         style: "",
         noticeActive: false,
         houses: getApp().globalData.houses,
-        accessKeyId: 'LTAI5tKwuhb948v9oakqnbTf',
-        instanceId: 'post-cn-tl32ajx3u0l',
-        groupId: 'GID_dabanjia',
-        deviceId: `mqttjs_${Math.random().toString(16).substr(2, 8)}`,
-        token: '',
-        client: {},
         currentHouse: {},
         myHouseList: [],
+        projectList: [],
         current: null,
+        currentEstateId: null,
         friendList: [],
         DECTORE_DICT,
       };
     },
     mounted() {
       uni.showTabBar()
-      this.getMyHouseList();
-    },
-    computed: {
-      username() {
-        return `Token|${this.accessKeyId}|${this.instanceId}`
-      },
-      //token和设备id关联，需要后端接口提供
-      password() {
-        return `R|LzMT+XLFl5s/YWJ/MlDz4t/Lq5HC1iGU1P28HAMaxYzmBSHQsWXgdISJ1ZJ+2cxaamjCkkdmS/XOGd160KYNICpRDnjsfBujbJGYgJWUr5piesdvDY0i8S48f1y+kDSyD1qZq3RLscnvooOIjF1CZUnSLi/oIC4juK1MZ8qVI7uIdBoQzt4TbiQgoJWL8b3AQUS1QPxDA2oGf+JBKuN0DyYW6d7mIYhAqXTpVbQw5nNCvKP80Xo0WQLnbM+hoyCSPOmGbPwAsaS1bd9VJjqDoJlCt6GFmJgm2JFY7PJwf/7OOSmUYIYFs5o/PuPpoTMF+hcVXMs+0yDukIMTOzG9m1KmYYo48q4Eb41jz5zvCIjTrIiblxfX1Q==|W|LzMT+XLFl5s/YWJ/MlDz4t/Lq5HC1iGU1P28HAMaxYzmBSHQsWXgdISJ1ZJ+2cxaamjCkkdmS/XOGd160KYNICpRDnjsfBujbJGYgJWUr5piesdvDY0i8S48f1y+kDSyD1qZq3RLscnvooOIjF1CZUnSLi/oIC4juK1MZ8qVI7uIdBoQzt4TbiQgoJWL8b3AQUS1QPxDA2oGf+JBKuN0DyYW6d7mIYhAqXTpVbQw5nNCvKP80Xo0WQLnbM+hoyCSPOmGbPwAsaS1bd9VJjqDoJlCt6GFmJgm2JFY7PJwf/7OOSmUYIYFs5o/PuPpoTMF+hcVXMs+0yDukIMTOzG9m1KmYYo48q4Eb41jz5zvCIjTrIiblxfX1Q==`
-      },
-      clientId() {
-        return `${this.groupId}@@@1234`
-      }
+      // this.getMyHouseList();
+      this.getEstateProjectInfoList();
     },
     methods: {
       scroll: function(e) {
@@ -234,15 +229,45 @@
           url: "/sub-decorate/pages/check-house-remind/check-house-remind"
         })
       },
+      confirm1() {
+        uni.navigateTo({
+          url: "/sub-decorate/pages/design-deliver/design-deliver"
+        })
+      },
+      confirm2() {
+        uni.navigateTo({
+          url: "/sub-decorate/pages/graphic-model/graphic-model"
+        })
+      },
+      confirm3() {
+        uni.navigateTo({
+          url: "/sub-decorate/pages/construction-plans/construction-plans"
+        })
+      },
+      confirm4() {
+        uni.navigateTo({
+          url: "/sub-decorate/pages/design-online-disclosure/design-online-disclosure"
+        })
+      },
+      hcaa() {
+        uni.navigateTo({
+          url: "/sub-decorate/pages/housekeeper-c-a-application/housekeeper-c-a-application"
+        })
+      },
+      housekeeperrefuse() {
+        uni.navigateTo({
+          url: "/sub-decorate/pages/housekeeper-refuse/housekeeper-refuse"
+        })
+      },
       async getFriendsList() {
         let list = await friendListByEstateId({
-          estateId: this.currentHouse.id
+          estateId: this.currentHouse.estateId
         });
         this.friendList = list.length > 2 ? list.slice(0, 2) : list
       },
       toFriends() {
         uni.navigateTo({
-          url: "/sub-decorate/pages/friends/friends?id=" + this.currentHouse.id,
+          url: "/sub-decorate/pages/friends/friends?id=" + this.currentHouse.estateId,
         });
       },
       addHouse() {
@@ -251,7 +276,6 @@
         })
       },
       checkHouse(item) {
-        this.current = item.id
         this.currentHouse = item
         this.$refs.sw.close()
       },
@@ -259,29 +283,17 @@
         queryEstates({
           isNeedRelative: true
         }).then(data => {
-          let i = 1;
-          let names = ["设计阶段", "未开工", "已竣工"]
-          for (let item of data) {
-            item.statusName = names[i - 1]
-            item.status = i++
-          }
-          data[1].ext = "第二次装修"
-          data[2].friend = true
-          data[2].ext = "首次装修"
-          this.myHouseList = data
+          console.log(data)
+        })
+      },
+      getEstateProjectInfoList() {
+        getEstateProjectInfoList({
+          isNeedRelative: true
+        }).then(data => {
+          this.projectList = data
           const arr = data.filter(t => t.defaultEstate)
-          // let temp = null;
-          // if(arr.length > 0) {
-          // 	temp = arr[0]
-          // } else {
-          // 	data[0].defaultEstate = true
-          // 	temp = data[0]
-          // }
-          // this.currentHouse = temp
-          // this.current = temp.id
           this.currentHouse = arr[0]
-          this.current = arr[0].id
-          if (arr[0].id) {
+          if (this.currentHouse.estateId) {
             this.getFriendsList()
           }
         })
@@ -381,9 +393,16 @@
 <style lang="scss" scoped>
   .decorate-index {
     position: relative;
+    padding-top: 176rpx;
+    height: 100%;
+    overflow: hidden;
+    box-sizing: border-box;
 
-    .bg {
+    .bg-index {
+      top: 0;
       width: 100%;
+      height: 480rpx;
+      position: fixed;
     }
   }
 
@@ -391,7 +410,8 @@
     width: 100%;
     height: 100%;
     position: relative;
-    margin-top: -304rpx;
+    // margin-top: 176rpx;
+    z-index: 9;
     height: 100%;
   }
 
