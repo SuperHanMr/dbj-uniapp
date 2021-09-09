@@ -109,7 +109,7 @@
   ],
   "globalStyle": {
     "navigationBarTextStyle": "black",
-    "navigationBarTitleText": "uni-app",
+    "navigationBarTitleText": "",
     "navigationBarBackgroundColor": "#FFFFFF",
     "backgroundColor": "#F8F8F8"
   },
@@ -171,7 +171,7 @@
       },
       {
         "name": "hcl", //模式名称
-        "path": "/sub-decorate/pages/require-pay/require-pay", //启动页面，必选
+        "path": "/sub-home/pages/lives-decorate/lives-decorate", //启动页面，必选
         "query": "" //启动参数，在页面的onLoad函数里面得到
       },
       {
@@ -187,6 +187,13 @@
           "path": "pages/lives-room/lives-room",
           "style": {
             "navigationBarTitleText": "",
+            "enablePullDownRefresh": false
+          }
+        },
+        {
+          "path": "pages/lives-decorate/lives-decorate",
+          "style": {
+            "navigationBarTitleText": "工地视频",
             "enablePullDownRefresh": false
           }
         },
@@ -457,7 +464,7 @@
         {
           "path": "pages/design-picture/design-picture",
           "style": {
-            "navigationBarTitleText": "设计图"
+            "navigationBarTitleText": ""
           }
         },
         {
@@ -685,14 +692,12 @@
             "navigationBarTitleText": "",
             "enablePullDownRefresh": false
           }
-
         }, {
           "path": "pages/construction/construction",
           "style": {
             "navigationBarTitleText": "施工",
             "enablePullDownRefresh": false
           }
-
         }
       ]
     }

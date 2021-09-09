@@ -7,6 +7,21 @@ import {
   getTim,
   getSafeTim
 } from "@/utils/tim.js"
+
+// 解析自定义消息，并把payload.data字符串值解析后放到message的payloadData属性上
+const parseCustomMessage = (msg) => {
+  if (msg.type === TIM.TYPES.MSG_CUSTOM) {
+    let payloadData = {};
+    try {
+      payloadData = JSON.parse(msg.payload.data);
+    } catch (e) {
+      console.error(e);
+    }
+    msg.payloadData = payloadData;
+  }
+  return msg;
+}
+
 const message = {
   state: {
     cstServConv: {
@@ -36,6 +51,9 @@ const message = {
     nextReqMessageID: '',
     isCompleted: false, // 当前会话消息列表是否已经拉完了所有消息
     isRequesting: false, //是否正在请求消息
+    currentSoundUrl: '', //正在播放的语音url
+    soundPlayStatus: 'stop', //语音播放状态，可用值有 stop playing pause
+    innerAudioContext: null, //音频播放器
   },
   mutations: {
     resetConversation(state) {
@@ -62,7 +80,7 @@ const message = {
       });
     },
     /**
-     * 将消息插入当前会话列表
+     * 将消息插入当前会话的消息列表
      * 调用时机：收/发消息事件触发时
      * @param {Object} state
      * @param {Message[]|Message} data
@@ -85,8 +103,41 @@ const message = {
         return obj;
       }, {})
       state.isAppendMessageList = true;
+      list.forEach(parseCustomMessage);
       state.currentMessageList = state.currentMessageList.concat(list);
     },
+    /**
+     * 将消息插入当前会话的消息列表头部，并记录下次请求的参数
+     * 调用时机：向上滑动拉取消息记录时
+     * @param {Object} state
+     * @param {Object} payload
+     */
+    prependCurrentMessageList(state, payload) {
+      const {
+        nextReqMessageID,
+        isCompleted,
+        messageList = [],
+      } = payload;
+      messageList.forEach(parseCustomMessage);
+      // 更新messageID，续拉时要用到
+      state.nextReqMessageID = nextReqMessageID
+      state.isCompleted = isCompleted
+      // 更新当前消息列表，从头部插入
+      state.currentMessageList = messageList.concat(state.currentMessageList);
+      state.isAppendMessageList = false;
+    },
+    updateSoundStatus(state, payload) {
+      const { status, url } = payload;
+      if (status === "playing") {
+        state.currentSoundUrl = url;
+        state.soundPlayStatus = "playing";
+      } else if (status === "pause") {
+        state.soundPlayStatus = "pause";
+      } else if (status === "stop") {
+        state.currentSoundUrl = "";
+        state.soundPlayStatus = "stop";
+      }
+    }
   },
   actions: {
     requestIMSig(context, userId) {
@@ -134,14 +185,8 @@ const message = {
       const { nextReqMessageID, messagePageSize, currentMessageList } = context.state
       context.state.isRequesting = true;
       return getTim().getMessageList({ conversationID, nextReqMessageID, count: messagePageSize }).then(imReponse => {
-        console.log("get message list:", conversationID, imReponse, 11111)
-        // 更新messageID，续拉时要用到
-        context.state.nextReqMessageID = imReponse.data.nextReqMessageID
-        context.state.isCompleted = imReponse.data.isCompleted
-        context.state.isRequesting = imReponse.data.isRequesting
-        // 更新当前消息列表，从头部插入
-        context.state.currentMessageList = [...imReponse.data.messageList, ...currentMessageList]
-        context.state.isAppendMessageList = false;
+        context.state.isRequesting = false;
+        context.commit("prependCurrentMessageList", imReponse.data);
       })
     },
     /**
@@ -169,6 +214,51 @@ const message = {
         context.state.currentConversation = data.conversation;
         // 3.2 获取消息列表
         return context.dispatch('requestMessageList', conversationID);
+      });
+    },
+    playMessageSound(context, payload) {
+      if (!context.state.innerAudioContext) {
+        context.state.innerAudioContext = uni.createInnerAudioContext();
+        context.state.innerAudioContext.onEnded(() => {
+          context.commit("updateSoundStatus", { status: "stop" });
+        });
+        context.state.innerAudioContext.onStop(() => {
+          context.commit("updateSoundStatus", { status: "stop" });
+        });
+        context.state.innerAudioContext.onError((err) => {
+          console.error("sound play error:", err);
+          context.commit("updateSoundStatus", { status: "stop" });
+        });
+        context.state.innerAudioContext.onPause(() => {
+          context.commit("updateSoundStatus", { status: "pause" });
+        });
+        context.state.innerAudioContext.onPlay(() => {
+          context.commit("updateSoundStatus", { status: "playing", url: context.state.innerAudioContext.src });
+        });
+      }
+      const { url } = payload;
+      const prevSoundUrl = context.state.currentSoundUrl;
+      const status = context.state.soundPlayStatus;
+      if (url === prevSoundUrl && status === "playing") {
+        context.state.innerAudioContext.pause();
+      } else {
+        context.state.innerAudioContext.src = url;
+        context.state.innerAudioContext.play();
+      }
+    },
+    preivewMessageImage(context, payload) {
+      const { url } = payload;
+      let urls = [];
+      context.state.currentMessageList.forEach(msg => {
+        if (msg.type === TIM.TYPES.MSG_CUSTOM && msg.payloadData.type === 'img_message') {
+          urls.push(msg.payloadData.fileUrl);
+        }
+      });
+      let idx = urls.indexOf(url)
+      uni.previewImage({
+        urls: urls,
+        current: idx >= 0 ? idx : 0,
+        indicator: 'number'
       });
     }
   }
