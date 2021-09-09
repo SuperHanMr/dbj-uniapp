@@ -1,10 +1,38 @@
 <template>
 	<view>
 		<live-player :class="{ player:!isFill,'player-fill':isFill}" :src="livePreview" autoplay
-			@statechange="statechange" @error="error">
+			@statechange="statechange" @error="error" :muted="muted" :orientation="isFill?'horizontal':'vertical'">
 
-			<cover-view class="video-left">简单的自定义 controls</cover-view>
-			<cover-view @click="videoFill" class="video-right">简单的自定义 controls</cover-view>
+			<cover-view v-if="!isFill" class="video-bottom">
+
+				<cover-image class="video-voice" @click="changeMuted"
+					src="http://dbj.dragonn.top/static/mp/dabanjia/images/home/player-vioce.png">
+				</cover-image>
+				<cover-view style="flex:1"></cover-view>
+
+
+				<cover-view style="flex:1"></cover-view>
+				<cover-image class="video-voice" @click="videoFill"
+					src="http://dbj.dragonn.top/static/mp/dabanjia/images/home/player-big.png">
+				</cover-image>
+			</cover-view>
+			<cover-view v-else class="video-left">
+
+				<cover-image class="video-voice translate90" @click="changeMuted"
+					src="http://dbj.dragonn.top/static/mp/dabanjia/images/home/player-vioce.png">
+				</cover-image>
+				<cover-view style="flex:1"></cover-view>
+				<cover-image class="video-voice translate90" @click="videoFill"
+					src="http://dbj.dragonn.top/static/mp/dabanjia/images/home/player-small.png">
+				</cover-image>
+			</cover-view>
+
+			<cover-view v-if="isFill" class="video-back">
+				<cover-image class="video-voice translate90" @click="videoFill"
+					src="http://dbj.dragonn.top/static/mp/dabanjia/images/home/ic_cancel_white.png">
+				</cover-image>
+			</cover-view>
+
 		</live-player>
 		<view class="header">
 			直播速看
@@ -17,7 +45,6 @@
 					2021-06-22 周二
 				</view>
 				<view class="flex1">
-
 				</view>
 				<view class="subtext">
 					水电阶段
@@ -28,12 +55,9 @@
 					<cover-view class="cover-video" @click.stop="toDetail"></cover-view>
 				</video>
 			</view>
-
-
 		</view>
-	<view style="height: 100rpx;">
-		
-	</view>
+		<view style="height: 100rpx;">
+		</view>
 		<view class="preview-full" v-if="currentVideoSrc">
 			<video class="preview-full" :autoplay="true" :src="currentVideoSrc" :show-fullscreen-btn="false">
 				<cover-view class="preview-full-close" @click="previewVideoClose"> ×
@@ -48,6 +72,7 @@
 	export default {
 		data() {
 			return {
+				muted: false,
 				livePreview: '',
 				isFill: false,
 				list: [1, 2, 3],
@@ -56,8 +81,11 @@
 			}
 		},
 		methods: {
-			previewVideoClose(){
-				this.currentVideoSrc =''
+			changeMuted() {
+				this.muted = !this.muted
+			},
+			previewVideoClose() {
+				this.currentVideoSrc = ''
 			},
 			toDetail() {
 				this.currentVideoSrc = 'http://qiniu.hydrant.ink/1631176569963742.mp4';
@@ -112,6 +140,29 @@
 </script>
 
 <style lang="scss" scoped>
+	.video-icon {
+		position: absolute;
+		left: 0;
+		bottom: 0;
+	}
+
+	.video-voice {
+		width: 46rpx;
+		height: 34rpx;
+	}
+
+	.translate90 {
+		transform: rotate(90deg);
+		-ms-transform: rotate(90deg);
+		/* Internet Explorer */
+		-moz-transform: rotate(90deg);
+		/* Firefox */
+		-webkit-transform: rotate(90deg);
+		/* Safari 和 Chrome */
+		-o-transform: rotate(90deg);
+		/* Opera */
+	}
+
 	.preview-full {
 		position: fixed;
 		top: 0;
@@ -218,13 +269,42 @@
 
 	}
 
-	.video-left {
+	.video-back {
+		display: flex;
+		flex-direction: column;
+		align-items: center;
 		position: absolute;
-		left: 0;
-		bottom: 0;
-		width: 200rpx;
-		height: 200rpx;
-		background-color: red;
+		right: 53rpx;
+		top: 32rpx;
+		justify-content: center;
+		width: 64rpx;
+		height: 64rpx;
+		background: #000000;
+		border-radius: 26rpx;
+	}
+
+	.video-left {
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+		position: absolute;
+		left: 22rpx;
+		top: 32rpx;
+		bottom: 32rpx;
+		color: #FFF;
+		font-size: 34rpx;
+	}
+
+	.video-bottom {
+		display: flex;
+		flex-direction: row;
+		align-items: center;
+		position: absolute;
+		left: 32rpx;
+		bottom: 32rpx;
+		right: 32rpx;
+		color: #FFF;
+		font-size: 34rpx;
 	}
 
 	.video-right {

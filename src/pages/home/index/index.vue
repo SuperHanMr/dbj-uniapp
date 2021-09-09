@@ -34,11 +34,11 @@
         type="default"
         @click="toCalebdar"
       >去日历</button>
-			<button
-			  style="width: 50%;margin-top: 20rpx;"
-			  type="default"
-			  @click="toLiveDecorate"
-			>去装修现场</button>
+      <button
+        style="width: 50%;margin-top: 20rpx;"
+        type="default"
+        @click="toLiveDecorate"
+      >去装修现场</button>
       <swiper
         class="banner-content"
         :indicator-dots="true"
@@ -121,17 +121,17 @@ export default {
   },
   onShow() {
     uni.$once("selectedHouse", (item) => {
-      this.citydata = item.cityName+item.areaName;
+      this.citydata = item.cityName + item.areaName;
       uni.setStorageSync("currentHouse", JSON.stringify(item));
     });
     this.reloadData();
   },
   methods: {
-		toLiveDecorate(){
-			uni.navigateTo({
-				url:'/sub-home/pages/lives-decorate/lives-decorate'
-			})
-		},
+    toLiveDecorate() {
+      uni.navigateTo({
+        url: "/sub-home/pages/lives-decorate/lives-decorate",
+      });
+    },
     toPay() {
       let openId = uni.getStorageSync("openId");
       orderPay({
@@ -143,8 +143,7 @@ export default {
         uni.requestPayment({
           provider: "wxpay",
           ...payInfo,
-          success(res) {
-          },
+          success(res) {},
           fail(e) {
             console.log(e);
           },
@@ -296,9 +295,12 @@ export default {
       if (uni.getStorageSync("userId")) {
         let houseList = await queryEstates();
         let house = null;
-        let [defaultHouse] = houseList.filter((e) => {
-          return e.defaultEstate == true;
-        });
+        let defaultHouse;
+        if (houseList && houseList.length) {
+          defaultHouse = houseList.find((e) => {
+            return e.defaultEstate == true;
+          });
+        }
         if (defaultHouse) {
           house = defaultHouse;
         } else if (houseList.length) {
@@ -306,7 +308,7 @@ export default {
         }
         if (house) {
           uni.setStorageSync("currentHouse", JSON.stringify(house));
-          this.citydata = house.cityName+house.areaName;
+          this.citydata = house.cityName + house.areaName;
         }
       } else {
         this.getAuthorizeInfo();

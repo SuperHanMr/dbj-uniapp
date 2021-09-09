@@ -1,8 +1,8 @@
 @font-face {
   font-family: "iconfont"; /* Project id 2785499 */
-  src: url('//at.alicdn.com/t/font_2785499_9tjar81mrh9.woff2?t=1631001366414') format('woff2'),
-       url('//at.alicdn.com/t/font_2785499_9tjar81mrh9.woff?t=1631001366414') format('woff'),
-       url('//at.alicdn.com/t/font_2785499_9tjar81mrh9.ttf?t=1631001366414') format('truetype');
+  src: url('//at.alicdn.com/t/font_2785499_xf8zm9msx5.woff2?t=1631181449600') format('woff2'),
+       url('//at.alicdn.com/t/font_2785499_xf8zm9msx5.woff?t=1631181449600') format('woff'),
+       url('//at.alicdn.com/t/font_2785499_xf8zm9msx5.ttf?t=1631181449600') format('truetype');
 }
 
 .iconfont {
@@ -11,6 +11,30 @@
   font-style: normal;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+}
+
+.icon-gaoyin:before {
+  content: "\ece2";
+}
+
+.icon-jingyin:before {
+  content: "\ece3";
+}
+
+.icon-indicator_Selected:before {
+  content: "\e601";
+}
+
+.icon-video-big:before {
+  content: "\e603";
+}
+
+.icon-video-small:before {
+  content: "\e605";
+}
+
+.icon-ic_cancel_white:before {
+  content: "\e606";
 }
 
 .icon-ic_edit:before {
