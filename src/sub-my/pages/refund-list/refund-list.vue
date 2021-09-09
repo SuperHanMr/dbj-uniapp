@@ -1,45 +1,42 @@
 <template>
 	<view class="container">
-		<view class="order-container" v-for="(item,index) in 3" :key="index">
+		<view class="order-container" v-for="(item,index) in dataList" :key="index" >
 		  <view class="header">
 		    <view class="store-name">
-		      <text>不知道叫什么名字的店铺nizhidaomahahahahahahaha</text>
+		      <text>{{item.storeName}}</text>
 		      <image
 		        src="../../../static/order/ic_more@2x.png"
 		        mode=""
 		      ></image>
 		    </view>
 		    <view class="order-status">
-					<!-- <text>仅退款(已收货)</text>
-					<text>仅退款(未发货)</text>
-					<text>仅退款(退库存)</text> -->
-					<text>服务退款</text>
+					<text> {{item.type==0?"仅退款(未发货)":item.type==1 ? "仅退款(退库存)":item.type==2 ? "仅退款(已收货)":item.type==3?"服务退款":""}}</text>
+				
 		    </view>
 		  </view>
-			<!-- 待付款  套餐     -->
 			
-		 
-			<view class="body">
-				<view class="body-main">
+			<view class="body" @click="goToDetail(item)">
+				<view class="body-main" v-for="(item2,index2) in item.detailAppVOS" :key="index2">
 					<view class="pic">
-						<image src="../../../wxcomponents/gome-login/img/logo.0ccb88de.png" mode=""></image>
+						<image :src="item2.imgUrl" mode="	scaleToFill"></image>
 					</view>
 					<view class="basic-info">
 						<view class="name-attr">
 							<view class="text">
-								<text class="icon">物品</text>
-								<text class="name">恶气饿亲热亲热其他任何国家里皮空间屁哦了 让台湾i图人为添加认为i他我</text>					
+								<text class="icon">{{item2.type ==1 ?"物品" :"服务"}}</text>
+								<text class="name">{{item2.fullName}}</text>					
 							</view>
 							<view class="attr">
-								<text style="margin-right: 24rpx;">白色</text>
-								<text>2.0m/根</text>
+								<text>{{item2.scaleProperties}}</text>
+								<!-- <text style="margin-right: 24rpx;">白色</text>
+								<text>2.0m/{{item2.unit}}</text> -->
 							</view>
 							<view class="refund-price">
 								<text style="margin-right:8rpx ;">退款金额</text>
 								<text class="product-price">
 									<text style="font-size:22rpx;">￥</text>
-									<text>28.</text>
-									<text style="font-size:22rpx;">00</text>
+									<text>{{handlePrice(item.refundAmount)[0]}}.</text>
+									<text style="font-size:22rpx;">{{handlePrice(item.refundAmount)[1]}}</text>
 								</text>
 							</view>
 						</view>
@@ -50,38 +47,33 @@
 				</view>		
 			</view>
 			
-			<!-- :class="{refund-success:index==1}"
-			:class="{refund-close:index==2}"
-			 -->
-			<!--  -->
-			<view class="refund-status" 
-			:class="{refundInProgress:index==0,'refund-success':index==1,'refund-close':index==2}"
-			>
-				<text v-if="index==0" style="margin-right: 16rpx;">退款中</text>
-				<text v-if="index==1" style="margin-right: 16rpx;">退款成功</text>
-				<text v-if="index==2" style="margin-right: 16rpx;">退款关闭</text>
-				<text v-if="index==0 || index==1">
+			<view class="refund-status" :class="{refundInProgress:item.status == 0 || item.status == 1 ,'refund-success':item.status == 2,'refund-close':item.status == 3 || item.status == 4}">
+				<text v-if="item.status == 0 || item.status == 1" style="margin-right: 16rpx;">退款中</text>
+				<text v-if="item.status == 2" style="margin-right: 16rpx;">退款成功</text>
+				<text v-if="item.status == 0 || item.status == 1 || item.status == 2">
 					<text style="font-size:26rpx;">￥</text>
-					<text style="font-size:40rpx;">28.</text>
-					<text style="font-size:26rpx;">00</text>
+					<text style="font-size:40rpx;">{{handlePrice(item.refundAmount)[0]}}.</text>
+					<text style="font-size:26rpx;">{{handlePrice(item.refundAmount)[1]}}</text>
 				</text>
-				<text v-if="index==2" style="color: #333333; font-weight: 1000">退款已关闭</text>
+				<text v-if="item.status == 3 || item.status == 4" style="margin-right: 16rpx;">退款关闭</text>
+				<text v-if="item.status == 3 || item.status == 4" style="color: #333333; font-weight: 1000">退款已关闭</text>
 			</view>
 		  
 			<view class="footer">
 					<view class="button-container">
-					 <button
-							type="default"
-							size="mini"
-							@click="open()"
-						>取消申请</button>
 						<button
-							type="default"
-							size="mini"
-							style="margin-left: 24rpx;"
-							@click="goToDetail()"
-						>查看详情</button>
-					</view>
+							v-if="item.type == 0"
+								type="default"
+								size="mini"
+								@click="open(item)"
+							>取消申请</button>
+							<button
+								type="default"
+								size="mini"
+								style="margin-left: 24rpx;"
+								@click="goToDetail(item)"
+							>查看详情</button>
+						</view>
 		  </view>
 		</view>
 		
@@ -97,19 +89,22 @@
 		</uni-popup>
 	
 		
+		
+		
 	</view>
 </template>
 
 <script>
-	import {getRefundList} from "@/api/order.js"
+	import {getRefundList,cancelRefund} from "@/api/order.js"
 	export default {
 		data() {
 			return {
 				query:{
-					lastId:-1,
+					// lastId:-1,
 					rows:15,
 				},
-				dataList:[]
+				dataList:[],
+				itemId:"",
 			}
 		},
 		onShow() {
@@ -117,17 +112,42 @@
 		},
 		
 		methods: {
+			handlePrice(price){
+				let list=String(price).split(".")
+				if(list.length==1){
+					return [list[0],"00"]
+				}else{
+					return[list[0],list[1]]
+				}
+			},
+			
+			
+			
 			orderStatus(){
 				console.log("打印数据")
 			},
-			goToDetail(){
-				console.log("去详情页面")
-				uni.navigateTo({
-					// url:"../my-order/success/success"
-					// url:"../my-order/order-failed/order-failed?type=refund&id=1"
-					// url:"../my-order/order-success/order-success"
-					url:"../my-order/order-in-progress/order-in-progress"
-				})
+			goToDetail(data){
+				console.log("去详情页面",type,"data",data.status)
+				if(data.status == 0 || data.status == 1 ){
+					uni.navigateTo({
+						url:`../my-order/order-in-progress/order-in-progress?type=refund&orderNo=${data.id}`
+					})
+				}else if(data.statis == 2){
+					uni.navigateTo({
+						url:`../my-order/order-success/order-success?type=refund$id=${data.id}`
+					})
+				}else{
+					uni.navigateTo({
+						url:`../my-order/order-failed/order-failed?type=refund&id=${data.id}&status=${data.status}`
+					})
+				}
+				
+				
+				// uni.navigateTo({
+				// 	url:`../my-order/order-success/order-success?type=refund&id=${data.id}`
+				// 	// url:"../my-order/success/success?type=refund&id=${data.id}"
+					
+				// })
 			},
 			getList(){
 				console.log("获取退款列表数据")
@@ -139,7 +159,9 @@
 			},
 			
 			
-			open() {
+			open(data) {
+				this.refundItem  =data
+				this.itemId = data.id 
 				this.$refs.popup.open()
 			},
 			close() {
@@ -148,8 +170,12 @@
 			confirm(value) {
 				// 调用申请退款的接口
 				// 成功就关闭弹框
-				this.$refs.popup.close()
-				console.log("点击了确认按钮")
+				cancelRefund({id:this.itemId}).then(e=>{
+					console.log("e=",e)
+				})
+					this.$refs.popup.close()
+					this.goToDetail(this.refundItem)
+					console.log("点击了确认按钮")
 			},
 			
 		}
@@ -323,6 +349,7 @@
 			display: flex;
 			flex-flow: row nowrap;
 			justify-content:  flex-end;
+			z-index: 99;
 			button{
 				width: 140rpx;
 				height: 56rpx;

@@ -5,15 +5,28 @@ import request from '../utils/request';
 export function getOrderList(params){
     return request.get(`/order-center/app/order/list`,{params});
 }
-
-export function orderDetail(params){
-    return request.get(`/order/app/order/detail`,{params});
+//我的-订单-订单详情
+export function getOrderDetail(params){
+    return request.get(`/order-center/app/order/detail`,{params});
 }
+
+//我的订单-取消订单 
+export function cancelOrder(params){
+	return  request.put(`/order-center/app/order/cancelOrder`,params)
+}
+
+
+
 
 //app订单支付接口
 export function orderPay(params){
     return request.post(`/order/app/order/payOrder`,params);
 }
+
+
+
+
+
 
 
 // 我的-订单-退款-退款列表
@@ -23,4 +36,9 @@ export function getRefundList(params){
 //我的-订单-退款-退款详情
 export function getRefundDetail(params){
 	return request.get(`/order-center/app/order/refundDetail`,{params})
+}
+
+//我的-订单-退款-取消退款
+export function cancelRefund(params){
+	return request.put(`/order-center/app/order/cancelRefund`,params)
 }
