@@ -20,13 +20,6 @@
       <view
         style="margin-top: 300rpx;"
         class=""
-        @click="toPay"
-      >
-        调起支付
-      </view>
-      <view
-        style="margin-top: 300rpx;"
-        class=""
         @click="toFriends"
       >
         去亲友团
@@ -41,6 +34,11 @@
         type="default"
         @click="toCalebdar"
       >去日历</button>
+			<button
+			  style="width: 50%;margin-top: 20rpx;"
+			  type="default"
+			  @click="toLiveDecorate"
+			>去装修现场</button>
       <swiper
         class="banner-content"
         :indicator-dots="true"
@@ -123,12 +121,17 @@ export default {
   },
   onShow() {
     uni.$once("selectedHouse", (item) => {
-      this.citydata = item.locationName;
+      this.citydata = item.cityName+item.areaName;
       uni.setStorageSync("currentHouse", JSON.stringify(item));
     });
     this.reloadData();
   },
   methods: {
+		toLiveDecorate(){
+			uni.navigateTo({
+				url:'/sub-home/pages/lives-decorate/lives-decorate'
+			})
+		},
     toPay() {
       let openId = uni.getStorageSync("openId");
       orderPay({
@@ -141,8 +144,6 @@ export default {
           provider: "wxpay",
           ...payInfo,
           success(res) {
-            console.log("@@@@@@@");
-            console.log(res);
           },
           fail(e) {
             console.log(e);
@@ -305,7 +306,7 @@ export default {
         }
         if (house) {
           uni.setStorageSync("currentHouse", JSON.stringify(house));
-          this.citydata = house.locationName;
+          this.citydata = house.cityName+house.areaName;
         }
       } else {
         this.getAuthorizeInfo();
