@@ -58,11 +58,11 @@
 
 <style lang="scss" scoped>
   .wrap {
-    
-      padding: 24rpx;
+
+    padding: 24rpx;
     position: relative;
     height: 100%;
-    
+
     background: #f5f6f6;
   }
 
@@ -71,11 +71,10 @@
   }
 
   .content {
-    
-      background: #ffffff;
-      border-radius: 16rpx;
-      margin-top: 56rpx;
-      padding: 24rpx;
+    //   background: #ffffff;
+    //   border-radius: 16rpx;
+    margin-top: 56rpx;
+    // padding: 24rpx;
   }
 
   // .content-ext {
