@@ -14,7 +14,7 @@
 </template>
 
 <script>
-  import UserDescPict from "./user-desc-pict.vue"
+  import UserDescPict from "../../components/user-desc-pict/user-desc-pict.vue"
   export default {
     components: {
       UserDescPict

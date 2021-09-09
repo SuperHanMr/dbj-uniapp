@@ -36,7 +36,7 @@
             <picture-btn class="p-i-t" text="设计图" @gotoPage="goDesignPicture"></picture-btn>
             <picture-btn class="p-i-t" text="精算单" @gotoPage="goDesignPicture"></picture-btn>
             <picture-btn class="p-i-t" text="工地视频" @gotoPage="goDesignPicture"></picture-btn>
-            <picture-btn text="施工" @gotoPage="goDesignPicture"></picture-btn>
+            <picture-btn text="施工" @gotoPage="goConstrction"></picture-btn>
           </view>
         </view>
 
@@ -306,6 +306,11 @@
       },
       switchVisible() {
         this.$refs.sw.open('top')
+      },
+      goConstrction () {
+        uni.navigateTo({
+          url: "/sub-decorate/pages/construction/construction"
+        })
       },
       goDesignPicture() {
         uni.navigateTo({
