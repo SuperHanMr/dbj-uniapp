@@ -5,30 +5,31 @@
 		</view>
 		<view class="item">
 			<text class="item-header">退款原因：</text>
-			<text class="item-body">退款原因退款原因退款原因退款原因退款原因退款原因退款原因退款原因退款原因退款原因退款原因退款原因退款原因退款原因退款原因退款原因退款原因退款原因退款原因退款原因</text>
+			<text class="item-body">{{refundInfo.reason}}</text>
 		</view>
 		<view class="item">
 			<text class="item-header">退款类型：</text>
-			<text class="item-body">仅退款(退库存)</text>
+			<text class="item-body"> {{refundInfo.type==0?"仅退款(未发货)":refundInfo.type==1 ? "仅退款(退库存)":refundInfo.type==2 ? "仅退款(已收货)":refundInfo.type==3?"服务退款":""}}</text>
+			<!-- <text  class="item-body"> {{handleStatus(refundInfo.type)}}</text> -->
 		</view>
 		<view class="item">
 			<text class="item-header">退款金额：</text>
-			<text class="item-body">￥320.00</text>
+			<!-- <text class="item-body">￥{{handlePrice(refundInfo.refundAmount)[0]}}.{{handlePrice(refundInfo.refundAmount)[1]}}</text> -->
 		</view>
 		<view class="item">
 			<text class="item-header">申请时间：</text>
-			<text class="item-body">2021-01-21   16:58:59</text>
+			<text class="item-body">{{refundInfo.createTime}}</text>
 		</view>
 		<view class="item">
 			<text class="item-header" >退款编号：</text>
 			<view class="item-body">
-				<text style="display: block;margin-right:16rpx;">DDPG2020121400001</text>
-				<view class="copy-style">复制</view>
+				<text style="display: block;margin-right:16rpx;">{{refundInfo.refundNo}}</text>
+				<view class="copy-style" @click="duplicate()">复制</view>
 			</view>
 		</view>
 		<view class="item">
 			<text class="item-header">备注信息：</text>
-			<text class="item-body">退款原因是。。退款原因是。。退款原因是。。退款原因是。。退款原因是。。退款原因是。。退款原因是。。</text>
+			<text class="item-body">{{refundInfo.remark}}</text>
 		</view>
 	</view>
 	
@@ -37,16 +38,53 @@
 <script>
 	export default {
 		name:"order-refund-info",
-		props:{
-			data:{
-				type:Object,
-				// required:true,
-			}
-		},
+		props:["refundInfo"],
+		// props:{
+		// 	refundInfo:{
+		// 		type:Object,
+		// 		// required:true,
+		// 	}
+		// },
 		data() {
 			return {
 				
 			};
+		},
+		onLoad(){
+			console.log("this.refundInfo",this.refundInfo)
+		},
+		methods:{
+			handleStatus(data){
+				if(data == 0){
+					return "仅退款(未发货)"
+				}else if(data == 1){
+					return "仅退款(退库存)"
+				}else if(data == 2){
+					return "仅退款(已收货)"
+				}else if(data == 3){
+					return "服务退款"
+				}else{
+					return ""
+				}
+			},
+			handlePrice(price){
+				if(!price) return ["0","00"]
+				let list=String(price).split(".")
+				if(list.length==1){
+					return [list[0],"00"]
+				}else{
+					return[list[0],list[1]]
+				}
+			},
+			duplicate(refundNo){
+				uni.setClipboardData({
+					// data:"HELLO",
+				    data: this.refundInfo.refundNo,
+				    success: function (res) {
+								console.log("复制成功");
+						}
+				});
+			}
 		}
 	}
 </script>

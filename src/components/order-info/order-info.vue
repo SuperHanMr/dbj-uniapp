@@ -4,21 +4,25 @@
 			<view class="header">
 				订单信息
 			</view>
+			
 			<view class="item">
 				<text class="item-header" >订单编号：</text>
 				<view class="item-body">
-					<text style="display: block;margin-right:16rpx;">DDPG2020121400001</text>
-					<view class="copy-style">复制</view>
+					<text style="display: block;margin-right:16rpx;">{{orderNo}}</text>
+				<view class="copy-style" @click="duplicate()">复制</view>
 				</view>
 			</view>
+			
 			<view class="item">
 				<text class="item-header">创建时间：</text>
-				<text class="item-body">2021-01-21   16:58:59</text>
+				<text class="item-body">{{createTime}}</text>
 			</view>
+			
 			<view class="item">
 				<text class="item-header">付款时间：</text>
-				<text class="item-body">2021-01-21   16:58:59</text>
+				<text class="item-body">{{payTime}}</text>
 			</view>
+			
 			<view class="item">
 				<text class="item-header">支付方式：</text>
 				<text class="item-body">微信支付</text>
@@ -29,10 +33,16 @@
 
 <script>
 	export default {
+		name:"order-info",
 		props:{
-			data:{
-				type:Object,
-				// required:true,
+			orderNo:{
+				type:String
+			},
+			createTime:{
+				type:String
+			},
+			payTime:{
+				type:String
 			},
 			marginBottom:{
 				type: Number,
@@ -43,12 +53,23 @@
 				default:16,
 			},
 		},
-		name:"order-info",
+		
 		data() {
 			return {
 				
 			};
-		}
+		},
+		methods:{
+			duplicate(refundNo){
+				uni.setClipboardData({
+					data:"HELLO",
+				    success: function (res) {
+								console.log("复制成功");
+						}
+				});
+			}
+		},
+		
 	}
 </script>
 
@@ -69,6 +90,7 @@
 			line-height: 48rpx;
 			margin-bottom: 16rpx;
 		}
+		
 		.item{
 			font-size: 28rpx;
 			display: flex;
@@ -96,6 +118,7 @@
 			margin-bottom: 0;
 		}
 	}
+	
 	.copy-style{
 		display:block;
 		width:72rpx;
