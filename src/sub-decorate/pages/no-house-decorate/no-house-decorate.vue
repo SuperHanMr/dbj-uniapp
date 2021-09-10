@@ -8,7 +8,8 @@
         </button>
         <view class="decs"><text>打扮家按房子面积计算价格</text></view>
       </view>
-      <my-current-house  v-if="currentHouse && currentHouse.id" :houseData="currentHouse" @changCurrentHouse="changCurrentHouse">
+      <my-current-house v-if="currentHouse && currentHouse.id" :houseData="currentHouse"
+        @changCurrentHouse="changCurrentHouse">
       </my-current-house>
       <service-card :setting="design" class="service-card" @selectAnother="selectAnother('design')" @changeLevel="open">
         <template slot="check">
@@ -77,12 +78,31 @@
           title: "设计服务",
           cardtype: "design",
           checked: true,
-          level: 1
+          level: 1,
+          price: 29.9,
+          insideArea: 88,
+          id: 1054,
+          imageUrl: "https://ali-image-test.dabanjia.com//image/20210313/1615618135579_0296%24pexels-eberhard-grossgasteiger-1428277.jpg",
+          name: "橙色",
+          quantity: 1,
+          serviceName: "设计服务",
+          serviceType: 1,
+          spuName: "韩永辉测试视频无法播放"
         },
         actuary: {
           title: "精算服务",
           cardtype: "actuary",
-          checked: true
+          checked: true,
+          price: 59.9,
+          insideArea: 88,
+          categoryTypeId: 4,
+          id: 38085,
+          imageUrl: "https://ali-image-test.dabanjia.com//image/20210313/1615618135579_0296%24pexels-eberhard-grossgasteiger-1428277.jpg",
+          name: "橙色",
+          quantity: 1,
+          serviceName: "设计服务",
+          serviceType: 1,
+          spuName: "韩永辉测试视频无法播放"
         },
         currentHouse: {},
         selectLevel: 1
@@ -97,15 +117,17 @@
         return num
       },
       countPrice() {
-        let qian = 0.00
-        if (this.design.checked) {
-          qian += Number(this.design.price) * 88
-          console.log()
-        }
-        if (this.actuary.checked) {
-          qian += Number(this.actuary.price) * 88
-        }
-        return qian + "0.00"
+        // let qian = 0.00
+        // if (this.design.checked) {
+        //   qian += parseFloat(this.design.price) * this.currentHouse.insideArea
+        // }
+        // if (this.actuary.checked) {
+        //   qian += parseFloat(this.actuary.price) * this.currentHouse.insideArea
+        // }
+        // return qian + "0.00"
+        let dprice = this.design.price || 29.9
+        let aprice = this.design.price || 59.9
+        return dprice * this.currentHouse.insideArea + aprice * this.currentHouse.insideArea
       }
     },
     onShow() {
@@ -151,7 +173,7 @@
           } = getApp().globalData
           if (!noHouseDesignId) {
             let designData = data.filter(t => t.serviceType === 1)
-            if(designData && designData.length > 0) {
+            if (designData && designData.length > 0) {
               this.design = {
                 ...designData[0],
                 title: "设计服务",
@@ -164,7 +186,7 @@
           }
           if (!noHouseActuaryId) {
             let actuaryData = data.filter(t => t.serviceType === 4)
-            if(actuaryData && actuaryData.length > 0) {
+            if (actuaryData && actuaryData.length > 0) {
               this.actuary = {
                 ...actuaryData[0],
                 title: "精算服务",
@@ -174,6 +196,8 @@
               }
             }
           }
+
+          console.log("默认服务： ", this.design, this.actuary)
         })
       },
       getProductsSkusPage() {
@@ -243,7 +267,7 @@
             this.currentHouse = {}
           }
           console.log("currentHouse", this.currentHouse)
-          
+
           this.getServiceSku();
         })
       },

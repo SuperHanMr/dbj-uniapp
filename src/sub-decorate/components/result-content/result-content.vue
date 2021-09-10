@@ -2,7 +2,7 @@
   <view class="result-content">
     <view class="report-content">
       <view class="report-title">
-        <view> 
+        <view>
           <text class="title">验房报告</text>
           <text class="time">{{checkData.submitReportTime}}</text>
         </view>
@@ -11,44 +11,53 @@
         <uniEcCanvas class="uni-ec-canvas" id="uni-ec-canvas" ref="canvas" canvas-id="uni-ec-canvas" :ec="ec">
         </uniEcCanvas>
       </view>
-      <text class="report-text">{{checkData.summaryDescription}}</text>
+      <text class="report-text">那拉氏父女{{checkData.summaryDescription}}</text>
       <view class="img-list">
         <image v-for="item of checkData.imageUrlList" :key='item' :src="item"></image>
       </view>
     </view>
     <view class="sticky" v-if="isActive&&!isReport">
-      <view class="item" :class="{'item-active':!isReport&&currentItem==='top'}" @click="toItem('top')">重大隐患({{data[2].value}})</view>
-      <view class="item" :class="{'item-active':!isReport&&currentItem==='hazardTop'}" @click="toItem('hazardTop')">隐患({{data[1].value}})</view>
-      <view class="item" :class="{'item-active':!isReport&&currentItem==='conformTop'}" @click="toItem('conformTop')">符合项({{data[0].value}})</view>
+      <view class="item" :class="{'item-active':!isReport&&currentItem==='top'}" @click="toItem('top')">
+        重大隐患({{data[2].value}})</view>
+      <view class="item" :class="{'item-active':!isReport&&currentItem==='hazardTop'}" @click="toItem('hazardTop')">
+        隐患({{data[1].value}})</view>
+      <view class="item" :class="{'item-active':!isReport&&currentItem==='conformTop'}" @click="toItem('conformTop')">
+        符合项({{data[0].value}})</view>
     </view>
     <view class="sticky report-list" v-if="isActive&&isReport">
-      <view class="report-item" :class="{'report-item-active':isReport&&currentItem==='top'}" @click="toItem('top')">重大隐患</view>
-      <view class="report-item"  :class="{'report-item-active':isReport&&currentItem==='hazardTop'}" @click="toItem('hazardTop')">隐患</view>
-      <view class="report-item" :class="{'report-item-active':isReport&&currentItem==='conformTop'}" @click="toItem('conformTop')">符合项</view>
+      <view class="report-item" :class="{'report-item-active':isReport&&currentItem==='top'}" @click="toItem('top')">
+        重大隐患</view>
+      <view class="report-item" :class="{'report-item-active':isReport&&currentItem==='hazardTop'}"
+        @click="toItem('hazardTop')">隐患</view>
+      <view class="report-item" :class="{'report-item-active':isReport&&currentItem==='conformTop'}"
+        @click="toItem('conformTop')">符合项</view>
     </view>
-    <deliverCard class="major-hazard" color="#CA3737" title="重大隐患" :data='data[2]'></deliverCard>
-    <deliverCard class="hazard" color="#F6A93B" title="隐患" :data='data[1]'></deliverCard>
-    <deliverCard class="conform" color="#348BE2" title="符合项" :data='data[0]'></deliverCard>
+    <deliverCard id="major-hazard" color="#CA3737" title="重大隐患" :data='data[2]'></deliverCard>
+    <deliverCard id="hazard" color="#F6A93B" title="隐患" :data='data[1]'></deliverCard>
+    <deliverCard id="conform" color="#348BE2" title="符合项" :data='data[0]'></deliverCard>
     <text class="bottom-text">我是有底线的~</text>
     <bottom-btn style="width: 100%;" :showDefaultBtn="false">
       <button class="add-btn" @click="submit">确认验房结果</button>
-    </bottom-btn>  
+    </bottom-btn>
   </view>
 </template>
 <script>
   import uniEcCanvas from '../../components/uni-ec-canvas/uni-ec-canvas.vue'
   import * as echarts from '../../components/uni-ec-canvas/echarts'
   import deliverCard from '../delivery-card/delivery-card.vue'
-  import {getCheckResultDetail , confirmCheckResult} from '../../../api/decorate.js'
-  let chart = null 
+  import {
+    getCheckResultDetail,
+    confirmCheckResult
+  } from '../../../api/decorate.js'
+  let chart = null
   export default {
     components: {
       uniEcCanvas,
-      deliverCard, 
+      deliverCard,
     },
-    props:{
-      isReport:false,
-      scrollTop:0
+    props: {
+      isReport: false,
+      scrollTop: 0
     },
     data() {
       return {
@@ -129,7 +138,7 @@
             itemStyle: {
               color: '#348BE2'
             },
-            arr:[]
+            arr: []
           },
           {
             value: 12,
@@ -137,7 +146,7 @@
             itemStyle: {
               color: '#F6A93B'
             },
-            arr:[]
+            arr: []
           },
           {
             value: 8,
@@ -145,45 +154,36 @@
             itemStyle: {
               color: '#CA3737'
             },
-            arr:[]
+            arr: []
           },
         ],
-        top:'',
-        hazardTop:'',
-        conformTop:'',
-        isActive:false,
-        checkData:{},
-        currentItem:'top'
+        top: '',
+        hazardTop: '',
+        conformTop: '',
+        isActive: false,
+        checkData: {},
+        currentItem: 'top'
       }
     },
-    mounted() {
+    onReady() {
       this.getData();
-      let query = uni.createSelectorQuery().in(this)
-      query.select(".major-hazard").boundingClientRect((res)=>{
-            this.top = res.top;
-      }).exec()
-      query.select(".hazard").boundingClientRect((res)=>{
-            this.hazardTop = res.top;
-      }).exec()
-      query.select(".conform").boundingClientRect((res)=>{
-            this.conformTop = res.top;
-      }).exec()
     },
-    watch:{
-      scrollTop(){
-        console.log(this.scrollTop)
-        if(this.scrollTop>this.top){
+    watch: {
+      scrollTop() {
+        if (this.scrollTop > this.top) {
           this.isActive = true
           this.currentItem = 'top'
-          this.currentItem = this.scrollTop>this.conformTop?'conformTop':this.scrollTop>this.hazardTop?'hazardTop':'top'
-        }else{ 
+          this.currentItem = this.scrollTop > this.conformTop ? 'conformTop' : this.scrollTop > this.hazardTop ?
+            'hazardTop' : 'top'
+        } else {
           this.isActive = false
         }
-      }
+      },
+      checkData() {}
     },
     methods: {
-      getData(){
-        getCheckResultDetail(30).then(res=>{
+      getData() {
+        getCheckResultDetail(30).then(res => {
           this.checkData = res
           this.data[0].arr = res.normalList
           this.data[0].value = res.normalList.length
@@ -193,18 +193,37 @@
           this.data[2].value = res.seriousProblemList.length
           this.$refs.canvas.init(this.initChart)
           this.drawImage()
-        }) 
+          this.getTop()
+        })
       },
-      toItem(id){
+      getTop() {
+        this.$nextTick(function() {
+          let query = uni.createSelectorQuery().in(this)
+          query.select("#major-hazard").boundingClientRect((res) => {
+            this.top = res.top;
+          })
+          query.select("#hazard").boundingClientRect((res) => {
+            this.hazardTop = res.top;
+          })
+          query.select("#conform").boundingClientRect((res) => {
+            this.conformTop = res.top;
+          })
+          query.exec(function(res) {
+            res[0].top // #the-id节点的上边界坐标
+            res[1].scrollTop // 显示区域的竖直滚动位置
+          })
+        })
+      },
+      toItem(id) {
         this.currentItem = id
-        let location = this[id]+16
-        if(this.isReport){
+        let location = this[id] + 16
+        if (this.isReport) {
           location = location - 44
         }
         uni.pageScrollTo({
-        　　　　duration: 100,// 过渡时间
-        　　　　scrollTop: this[id]+16,// 滚动的实际距离
-        　　}) 
+          duration: 100, // 过渡时间
+          scrollTop: this[id] + 16, // 滚动的实际距离
+        })
       },
       drawImage() {
         this.option.series[0].data = this.data
@@ -215,7 +234,7 @@
             return item.name === name
           })
           return `${name}  {legend2|${this.data[i].value}}`
-        } 
+        }
       },
       initChart(canvas, width, height, canvasDpr) {
         chart = echarts.init(canvas, null, {
@@ -225,12 +244,12 @@
         })
         canvas.setChart(chart)
         chart.setOption(this.option)
-        return chart 
+        return chart
       },
-      submit(){
+      submit() {
         // console.log(1231)
-        confirmCheckResult(30).then(res=>{
-          uni.navigateBack({}) 
+        confirmCheckResult(30).then(res => {
+          uni.navigateBack({})
         })
       }
     }
@@ -244,6 +263,7 @@
     flex-wrap: wrap;
     // padding: 0 24rpx;
   }
+
   .report-content {
     // width: 638rpx;
     padding: 32rpx 32rpx 40rpx;
@@ -253,12 +273,14 @@
     opacity: 1;
     background: #ffffff;
     border-radius: 24rpx;
-    .report-title{
+
+    .report-title {
       height: 162rpx;
       display: flex;
       align-items: center;
       border-bottom: 1px solid #efefef;
-      .title{
+
+      .title {
         color: #333333;
         font-size: 40rpx;
         font-weight: 500;
@@ -266,24 +288,28 @@
         // margin-bottom: 8rpx;
         display: block;
       }
-      .time{
+
+      .time {
         font-weight: 400;
         font-size: 24rpx;
         color: #666666;
       }
     }
-    .report-text{
+
+    .report-text {
       color: #333;
       font-size: 26rpx;
       font-weight: 400;
       letter-spacing: 1px;
     }
-    .img-list{
+
+    .img-list {
       display: flex;
       flex-wrap: wrap;
       // justify-content: space-between;
       margin-top: 40rpx;
-      image{
+
+      image {
         width: 208rpx;
         height: 208rpx;
         opacity: 1;
@@ -298,17 +324,20 @@
   .charts {
     height: 350rpx;
     width: 100%;
+
     .uni-ec-canvas {
       height: 100%;
       width: 100%;
       display: block;
     }
   }
-  .report-list{
+
+  .report-list {
     padding: 0 32rpx;
     top: 88rpx !important;
   }
-  .sticky{
+
+  .sticky {
     position: sticky;
     top: 0;
     width: 100%;
@@ -316,18 +345,21 @@
     background-color: #fff;
     display: flex;
     flex-wrap: wrap;
-    view{
+
+    view {
       line-height: 96rpx;
       text-align: center;
       color: #999;
       font-size: 28rpx;
     }
-    .item{
+
+    .item {
       position: relative;
-      
+
       width: 33.3%;
     }
-    .report-item{
+
+    .report-item {
       width: 144rpx;
       margin-right: 16rpx;
       height: 58rpx;
@@ -335,20 +367,22 @@
       border: 1px solid #ececec;
       border-radius: 8rpx;
     }
-    .report-item-active{
-      background: rgba(0,191,182,0.07);
+
+    .report-item-active {
+      background: rgba(0, 191, 182, 0.07);
       border: 1px solid #00bfb6;
       color: #00BFB6;
       font-size: 26rpx;
       font-weight: 400;
     }
-    .item-active::after{
+
+    .item-active::after {
       content: "";
       display: inline-block;
       width: 68rpx;
       height: 6rpx;
       opacity: 1;
-      background: linear-gradient(135deg,#00c2b2, #00c2bf);
+      background: linear-gradient(135deg, #00c2b2, #00c2bf);
       border-radius: 100px 100px 0px 0px;
       position: absolute;
       bottom: 0;
@@ -357,7 +391,8 @@
       margin: auto;
     }
   }
-  .bottom-text{
+
+  .bottom-text {
     display: block;
     margin-top: 80rpx;
     text-align: center;
@@ -366,15 +401,16 @@
     color: #999;
     padding-bottom: 190rpx;
   }
+
   .add-btn {
-  	// margin-top: 20rpx;
-  	height: 88rpx;
-  	background: linear-gradient(135deg, #53d5cc, #4fc9c9);
-  	border-radius: 12rpx;
-  	width: 686rpx;
-  	line-height: 88rpx;
-  	text-align: center;
-  	color: #ffffff;
-  	font-size: 32rpx;
+    // margin-top: 20rpx;
+    height: 88rpx;
+    background: linear-gradient(135deg, #53d5cc, #4fc9c9);
+    border-radius: 12rpx;
+    width: 686rpx;
+    line-height: 88rpx;
+    text-align: center;
+    color: #ffffff;
+    font-size: 32rpx;
   }
 </style>
