@@ -2,17 +2,18 @@
   <text-element 
     v-if="message.type === TIM.TYPES.MSG_TEXT" 
     :message="message" 
-    :is-new="isNew"
+  />
+  <sound-element
+    v-else-if="message.type === TIM.TYPES.MSG_AUDIO"
+    :message="message"
   />
   <image-element 
     v-else-if="message.type === TIM.TYPES.MSG_CUSTOM && payloadData.type === 'img_message'"
     :message="message" 
-    :payload-data="payloadData"
   />
   <video-element
     v-else-if="message.type === TIM.TYPES.MSG_CUSTOM && payloadData.type === 'video_message'"
-    :message="message" 
-    :payload-data="payloadData"
+    :message="message"
   />
 </template>
 
@@ -21,6 +22,7 @@
   import TextElement from "./text-element.vue";
   import ImageElement from "./image-element.vue";
   import VideoElement from "./video-element.vue";
+  import SoundElement from "./sound-element.vue";
   export default {
     name: "MessageItem",
     props: {
@@ -35,7 +37,8 @@
     components: {
       TextElement,
       ImageElement,
-      VideoElement
+      VideoElement,
+      SoundElement
     },
     data() {
       return {
@@ -43,22 +46,9 @@
       }
     },
     computed: {
-      payload() {
-        if (!this.message) {
-          return {};
-        }
-        return this.message.payload;
-      },
       payloadData() {
-        if (this.message.type === TIM.TYPES.MSG_CUSTOM) {
-          try {
-            return JSON.parse(this.payload.data);
-          } catch (e) {
-            console.error(e);
-          }
-        }
-        return {};
-      }
+        return this.message.payloadData || {};
+      },
     }
   }
 </script>

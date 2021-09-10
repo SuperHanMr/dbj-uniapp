@@ -1,15 +1,26 @@
 <template>
   <view class="message-send-box">
     <view class="message-send-box-body">
-      <view class="icon-audio"></view>
+      <view class="icon-audio" @click="showRecordBtn = !showRecordBtn"></view>
       <textarea
+        v-if="!showRecordBtn"
         v-model="messageContent"
         id="messageInput"
         :focus="inputFocus"
         auto-height
         class="message-send-input" 
         placeholder-class="message-send-input-placeholder" 
-        placeholder="聊点什么吧"/>
+        placeholder="聊点什么吧"
+        @focus="handleInputFocus"
+      />
+      <view
+        v-else
+        class="audio-record-btn"
+        @touchstart="handleRecordStart"
+        @touchend="handleRecordEnd"
+      >
+        {{ recordStart ? '松开&nbsp;&nbsp;发送' : '按住&nbsp;&nbsp;说话' }}
+      </view>
       <view 
         class="icon-face" 
         @click="showEmojiChooser = !showEmojiChooser"
@@ -67,6 +78,7 @@
           :src="emojiMap[emoji]" 
           :alt="emoji"
           class="emoji"
+          @click="handleChooseEmoji(emoji)"
         />
       </view>
     </view>
@@ -86,6 +98,8 @@
         inputFocus: false,
         showFileChooser: false,
         showEmojiChooser: false,
+        showRecordBtn: false,
+        recordStart: false,
         emojiName: emojiName,
         emojiMap: emojiMap
       }
@@ -100,13 +114,23 @@
         }
         return this.currentConversation.conversationID.replace(this.currentConversation.type, '');
       },
-      showFooter() {
-        return this.showFileChooser || this.showEmojiChooser;
+      showFooter: {
+        get() {
+          return this.showFileChooser || this.showEmojiChooser;
+        },
+        set(val) {
+          if (!val) {
+            this.showFileChooser = false;
+            this.showEmojiChooser = false;
+          }
+        }
       }
     },
     watch: {
       showFooter(val) {
-        
+        if (val) {
+          uni.$emit("scroll-to-bottom");
+        }
       },
       showFileChooser(val) {
         if (val) {
@@ -118,11 +142,31 @@
           this.showFileChooser = false;
         }
       },
+      showRecordBtn(val) {
+        let self = this;
+        if (val) {
+          uni.authorize({
+            scope: 'scope.record',
+            success() {
+              self.recorderManager = self.creatRecorderManager();
+            },
+            fail() {
+              self.showRecordBtn = false;
+            }
+          })
+        } else {
+          this.recorderManager = null;
+        }
+      }
     },
     mounted() {
-      const query = uni.createSelectorQuery().in(this);
-      this.messageInputNodesRef = query.select("#messageInput");
-      
+      const showFooter = () => {
+        this.showFooter = false;
+      };
+      uni.$on("message-list-click", showFooter);
+      this.$once("hook:beforeDestroy", () => {
+        uni.$off("message-list-click", showFooter);
+      });
     },
     methods: {
       sendTextMessage() {
@@ -139,6 +183,159 @@
         }).catch(() => {
           
         })
+      },
+      sendImageMessage(tempFile) {
+        let self = this;
+        const {size: fileSize,path: filePath} = tempFile;
+        uni.getImageInfo({
+          src: filePath, 
+          complete(info) {
+            const { width = 0, height = 0 } = info;
+            console.log("file path:", filePath, "file info:", info, 111111);
+            let fileName = filePath.split('/').pop();
+            let data = {
+              type: "img_message",
+              fileName: fileName,
+              fileSize: fileSize,
+              fileUrl: filePath,
+              width: width,
+              height: height
+            }
+            const message = getTim().createCustomMessage({
+              to: self.toAccount,
+              conversationType: self.currentConversation.type,
+              payload: {
+                data: JSON.stringify(data),
+              },
+            });
+            self.$store.commit("pushCurrentMessageList", message);
+            upload({
+              filePath: filePath,
+              fileType: "image",
+              success: (res) => {
+                console.log("upload success", res);
+                let url = res.url;
+                let payload = message.payload;
+                let data = payload.data;
+                let extObj = JSON.parse(data);
+                extObj.fileUrl = url;
+                let newData = JSON.stringify(extObj);
+                message.payload.data = newData;
+                getTim().sendMessage(message).then((res) => {
+                  console.log("send Image success", res);
+                });
+              },
+              fail: (res) => {
+                console.log("upload fail", res);
+              },
+              progess: (res) => {
+                console.log("upload progess:", res);
+              }
+            })
+          }
+        })
+      },
+      sendVideoMessage(tempFile) {
+        let self = this;
+        const {size: fileSize, path: filePath, thumbPath: thumbFilePath, duration, width, height } = tempFile;
+        let fileName = filePath.split('/').pop();
+        let data = {
+          type: "video_message",
+          fileName: fileName,
+          fileSize: fileSize,
+          videoDuration: Math.round(duration),
+          width: width,
+          height: height,
+          fileUrl: filePath,
+          thumbnailUrl: thumbFilePath,
+        }
+        const message = getTim().createCustomMessage({
+          to: self.toAccount,
+          conversationType: self.currentConversation.type,
+          payload: {
+            data: JSON.stringify(data),
+          },
+        });
+        self.$store.commit("pushCurrentMessageList", message);
+        let thumbReady = false;
+        let videoReady = false;
+        const sendMessage = () => {
+          // 缩略图和视频都上传成功后再发消息
+          if (thumbReady && videoReady) {
+            getTim().sendMessage(message).then((res) => {
+              console.log("send Image success", res);
+            });
+          }
+        }
+        upload({
+          filePath: thumbFilePath,
+          fileType: "image",
+          success: (res) => {
+            console.log("upload success", res);
+            let url = res.url;
+            let payload = message.payload;
+            let data = payload.data;
+            let extObj = JSON.parse(data);
+            extObj.thumbnailUrl = url;
+            let newData = JSON.stringify(extObj);
+            message.payload.data = newData;
+            thumbReady = true;
+            sendMessage();
+          },
+          fail: (res) => {
+            console.log("upload fail", res);
+          },
+          progess: (res) => {
+            console.log("upload progess:", res);
+          }
+        })
+        upload({
+          filePath: filePath,
+          fileType: "video",
+          success: (res) => {
+            console.log("upload success", res);
+            let url = res.url;
+            let payload = message.payload;
+            let data = payload.data;
+            let extObj = JSON.parse(data);
+            extObj.fileUrl = url;
+            let newData = JSON.stringify(extObj);
+            message.payload.data = newData;
+            videoReady = true;
+            sendMessage();
+          },
+          fail: (res) => {
+            console.log("upload fail", res);
+          },
+          progess: (res) => {
+            console.log("upload progess:", res);
+          }
+        })
+      },
+      sendAudioMessage(res) {
+        // 1. 创建消息实例，接口返回的实例可以上屏
+        const message = getTim().createAudioMessage({
+          to: this.toAccount,
+          conversationType: this.currentConversation.type,
+          // 消息优先级，用于群聊（v2.4.2起支持）。如果某个群的消息超过了频率限制，后台会优先下发高优先级的消息，详细请参考：https://cloud.tencent.com/document/product/269/3663#.E6.B6.88.E6.81.AF.E4.BC.98.E5.85.88.E7.BA.A7.E4.B8.8E.E9.A2.91.E7.8E.87.E6.8E.A7.E5.88.B6)
+          // 支持的枚举值：TIM.TYPES.MSG_PRIORITY_HIGH, TIM.TYPES.MSG_PRIORITY_NORMAL（默认）, TIM.TYPES.MSG_PRIORITY_LOW, TIM.TYPES.MSG_PRIORITY_LOWEST
+          // priority: TIM.TYPES.MSG_PRIORITY_NORMAL,
+          payload: {
+            file: res
+          },
+          // 消息自定义数据（云端保存，会发送到对端，程序卸载重装后还能拉取到，v2.10.2起支持）
+          // cloudCustomData: 'your cloud custom data'
+        });
+                
+        // 2. 发送消息
+        let promise = getTim().sendMessage(message);
+        promise.then(function(imResponse) {
+          // 发送成功
+          console.log(imResponse);
+        }).catch(function(imError) {
+          // 发送失败
+          console.warn('sendMessage error:', imError);
+        });
       },
       handleFileChoose(type) {
         let self = this;
@@ -216,128 +413,59 @@
             break;
         }
       },
-      sendImageMessage(tempFile) {
+      handleChooseEmoji(emoji) {
         let self = this;
-        const {size: fileSize,path: filePath} = tempFile;
-        uni.getImageInfo({
-          src: filePath, 
-          complete(info) {
-            const { width = 0, height = 0 } = info;
-            console.log("file path:", filePath, "file info:", info, 111111);
-            let fileName = filePath.split('/').pop();
-            let data = {
-              type: "img_message",
-              fileName: fileName,
-              fileSize: fileSize,
-              fileUrl: filePath,
-              width: width,
-              height: height
-            }
-            const message = getTim().createCustomMessage({
-              to: self.toAccount,
-              conversationType: self.currentConversation.type,
-              payload: {
-                data: JSON.stringify(data),
-              },
-            });
-            self.$store.commit("pushCurrentMessageList", message);
-            upload({
-              filePath: filePath,
-              fileType: "image",
-              success: (res) => {
-                console.log("upload success", res);
-                let url = res.url;
-                let payload = message.payload;
-                let data = payload.data;
-                let extObj = JSON.parse(data);
-                extObj.fileUrl = url;
-                let newData = JSON.stringify(extObj);
-                message.payload.data = newData;
-                getTim().sendMessage(message).then((res) => {
-                  console.log("send Image success", res);
-                });
-              },
-              fail: (res) => {
-                console.log("upload fail", res);
-              },
-              progess: (res) => {
-                console.log("upload progess:", res);
+        this.inputFocus = true;
+        this.$nextTick(() => {
+          uni.getSelectedTextRange({
+            complete(res) {
+              console.log("cursor complete:", res);
+              const { start, end, errMsg } = res;
+              if (!/ok/i.test(errMsg)) {
+                self.messageContent += emoji;
+              } else {
+                self.messageContent =
+                  self.messageContent.slice(0, start) +
+                  emoji +
+                  self.messageContent.slice(end);
               }
-            })
-          }
+              self.inputFocus = true;
+            },
+          })
         })
       },
-      sendVideoMessage(tempFile) {
+      creatRecorderManager() {
         let self = this;
-        const {size: fileSize, path: filePath, thumbPath: thumbFilePath, duration, width, height } = tempFile;
-        let fileName = filePath.split('/').pop();
-        let data = {
-          type: "video_message",
-          fileName: fileName,
-          fileSize: fileSize,
-          videoDuration: Math.round(duration),
-          width: width,
-          height: height,
-          fileUrl: filePath,
-          thumbnailUrl: thumbFilePath,
-        }
-        const message = getTim().createCustomMessage({
-          to: self.toAccount,
-          conversationType: self.currentConversation.type,
-          payload: {
-            data: JSON.stringify(data),
-          },
+        const recorderManager = uni.getRecorderManager();
+        // 1 监听录音错误事件
+        recorderManager.onError(function(errMsg) {
+          console.warn('recorder error:', errMsg);
         });
-        self.$store.commit("pushCurrentMessageList", message);
-        upload({
-          filePath: thumbFilePath,
-          fileType: "image",
-          success: (res) => {
-            console.log("upload success", res);
-            let url = res.url;
-            let payload = message.payload;
-            let data = payload.data;
-            let extObj = JSON.parse(data);
-            extObj.thumbnailUrl = url;
-            let newData = JSON.stringify(extObj);
-            message.payload.data = newData;
-            // getTim().sendMessage(message).then((res) => {
-            //   console.log("send Image success", res);
-            // });
-          },
-          fail: (res) => {
-            console.log("upload fail", res);
-          },
-          progess: (res) => {
-            console.log("upload progess:", res);
-          }
-        })
-        upload({
-          filePath: filePath,
-          fileType: "video",
-          success: (res) => {
-            console.log("upload success", res);
-            let url = res.url;
-            let payload = message.payload;
-            let data = payload.data;
-            let extObj = JSON.parse(data);
-            extObj.fileUrl = url;
-            let newData = JSON.stringify(extObj);
-            message.payload.data = newData;
-            getTim().sendMessage(message).then((res) => {
-              console.log("send Video success", res);
-            });
-          },
-          fail: (res) => {
-            console.log("upload fail", res);
-          },
-          progess: (res) => {
-            console.log("upload progess:", res);
-          }
-        })
+        // 2 监听录音结束事件，录音结束后，调用 createAudioMessage 创建音频消息实例
+        recorderManager.onStop(function(res) {
+          console.log('recorder stop', res);
+          self.sendAudioMessage(res);
+        });
+        return recorderManager;
       },
-      sendFileMessage() {
-        
+      handleRecordStart() {
+        const recordOptions = {
+          duration: 60000, // 录音的时长，单位 ms，最大值 600000（10 分钟）
+          sampleRate: 44100, // 采样率
+          numberOfChannels: 1, // 录音通道数
+          encodeBitRate: 192000, // 编码码率
+          format: 'aac' // 音频格式，选择此格式创建的音频消息，可以在即时通信 IM 全平台（Android、iOS、微信小程序和Web）互通
+        };
+        this.recordStart = true;
+        // 开始录音
+        this.recorderManager.start(recordOptions);
+      },
+      handleRecordEnd() {
+        this.recordStart = false;
+        this.recorderManager.stop();
+      },
+      handleInputFocus() {
+        uni.$emit("scroll-to-bottom");
       }
     }
   }
@@ -368,8 +496,8 @@
   .message-send-box-body .icon-plus-circle {
     margin-left: 8rpx;
   }
-  .message-send-input {
-    padding-top: 19rpx;
+  .message-send-input,
+  .audio-record-btn {
     box-sizing: content-box;
     background: #f5f5f5;
     flex: 1;
@@ -382,6 +510,13 @@
   .message-send-input-placeholder {
     color: #999;
     font-size: 16px;
+  }
+  .audio-record-btn {
+    text-align: center;
+    height: 40px;
+    box-sizing: border-box;
+    line-height: 40px;
+    padding: 0rpx 32rpx;
   }
   .message-send-btn {
     font-size: 12px;
@@ -431,14 +566,14 @@
     box-sizing: border-box;
     display: flex;
     flex-flow: row wrap;
-    padding: 32rpx 12rpx 12rpx 32rpx;
+    padding: 22rpx;
   }
   
   .emoji-choose-container .emoji {
     width: 24px;
     height: 24px;
     flex: none;
-    margin-right: 20rpx;
-    margin-bottom: 20rpx;
+    box-sizing: content-box;
+    padding: 10rpx;
   }
 </style>
