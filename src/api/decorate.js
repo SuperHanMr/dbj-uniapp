@@ -76,7 +76,7 @@ export function deleteFriends(params) {
 
 //SKU商品表格
 export function getProductsSkusPage(params) {
-	return request.get("/product/web/products/skus/page", params)
+	return request.get("/product/app/products/skus/page", params)
 }
 
 //获取服务类默认商品
