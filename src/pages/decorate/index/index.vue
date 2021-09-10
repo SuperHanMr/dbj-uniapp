@@ -148,7 +148,9 @@
 <script>
   import {
     queryEstates,
-    friendListByEstateId
+    friendListByEstateId,
+    getToken,
+    getMqtt
   } from "../../../api/decorate.js";
   import {
     getEstateProjectInfoList
@@ -162,6 +164,7 @@
     DECTORE_DICT,
     SERVICE_TYPE
   } from "../../../utils/dict.js"
+  import { v4 as uuidv4 } from 'uuid';
   import GuideCard from "../../../components/guide-card/guide-card.vue"
   import PictureBtn from "../../../components/picture-btn/picture-btn.vue"
 
@@ -209,13 +212,41 @@
         currentEstateId: null,
         friendList: [],
         DECTORE_DICT,
+        
+        deviceId:'',
+        accessKeyId:'LTAI5tKwuhb948v9oakqnbTf',
+        instanceId:'post-cn-tl32ajx3u0l',
+        groupId:'GID_dabanjia',
+        token:'',
       };
     },
     mounted() {
       uni.showTabBar()
       // this.getMyHouseList();
       this.getEstateProjectInfoList();
+      this.deviceId = uni.getStorageSync('uuDeviceId')
+      if(!this.deviceId){
+        this.deviceId = uuidv4()
+        uni.setStorageSync('uuDeviceId', this.deviceId);
+      }
+      this.getToken()
+      this.getMqtt()
     },
+    computed: {
+          username() {
+            return `Token|${this.accessKeyId}|${this.instanceId}`
+          },
+          //token和设备id关联，需要后端接口提供
+          password() {
+            return `R|${this.token}|W|${this.token}`
+          },
+          clientId() {
+            return `${this.groupId}@@@${this.deviceId}`
+          },
+          msgTopic() {
+                return `dabanjia_pull_special_msg_${this.currentHouse.projectId}`;
+              },
+        },
     methods: {
       scroll: function(e) {
         // console.log(e)
@@ -388,7 +419,24 @@
             SERVICE_TYPE[
               type]
         })
-      }
+      },
+      getToken(){
+        let data = {
+          topics:[this.msgTopic],
+          deviceId:this.deviceId
+        }
+        getToken(data).then(res=>{
+          console.log(res)
+        })
+      },
+      getMqtt(){
+        getMqtt().then(res=>{
+          this.accessKeyId = res.accessKey
+          this.url = 'wxs://'+res.endPoint
+          this.groupId = res.groupId
+          this.instanceId = res.instanceId
+        })
+      },
     },
   };
 </script>
