@@ -217,7 +217,7 @@
 				currentShopIndex:0,
 				currentGoodsIndex:0,
 				showMask:false,
-				serviceChecked:false,
+				serviceChecked:true,
 				entityChecked:false,
 				serviceList:[],
 				entityList:[],
