@@ -8,7 +8,8 @@
         </button>
         <view class="decs"><text>打扮家按房子面积计算价格</text></view>
       </view>
-      <my-current-house  v-if="currentHouse && currentHouse.id" :houseData="currentHouse" @changCurrentHouse="changCurrentHouse">
+      <my-current-house v-if="currentHouse && currentHouse.id" :houseData="currentHouse"
+        @changCurrentHouse="changCurrentHouse">
       </my-current-house>
       <service-card :setting="design" class="service-card" @selectAnother="selectAnother('design')" @changeLevel="open">
         <template slot="check">
@@ -151,7 +152,7 @@
           } = getApp().globalData
           if (!noHouseDesignId) {
             let designData = data.filter(t => t.serviceType === 1)
-            if(designData && designData.length > 0) {
+            if (designData && designData.length > 0) {
               this.design = {
                 ...designData[0],
                 title: "设计服务",
@@ -164,7 +165,7 @@
           }
           if (!noHouseActuaryId) {
             let actuaryData = data.filter(t => t.serviceType === 4)
-            if(actuaryData && actuaryData.length > 0) {
+            if (actuaryData && actuaryData.length > 0) {
               this.actuary = {
                 ...actuaryData[0],
                 title: "精算服务",
@@ -174,6 +175,8 @@
               }
             }
           }
+
+          console.log("默认服务： ", this.design, this.actuary)
         })
       },
       getProductsSkusPage() {
@@ -243,7 +246,7 @@
             this.currentHouse = {}
           }
           console.log("currentHouse", this.currentHouse)
-          
+
           this.getServiceSku();
         })
       },

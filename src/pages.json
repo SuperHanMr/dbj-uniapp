@@ -624,20 +624,6 @@
           }
         },
         {
-          "path": "pages/graphic-model/graphic-model",
-          "style": {
-            "navigationBarTitleText": "三维图交付",
-            "enablePullDownRefresh": false
-          }
-        },
-        {
-          "path": "pages/construction-plans/construction-plans",
-          "style": {
-            "navigationBarTitleText": "施工图验交付",
-            "enablePullDownRefresh": false
-          }
-        },
-        {
           "path": "pages/design-online-disclosure/design-online-disclosure",
           "style": {
             "navigationBarTitleText": "设计线上交底",
@@ -647,7 +633,7 @@
         {
           "path": "pages/design-report/design-report",
           "style": {
-            "navigationBarTitleText": "设计报告",
+            "navigationBarTitleText": "确认设计报告",
             "enablePullDownRefresh": false
           }
         },

@@ -13,14 +13,14 @@
 </template>
 
 <script>
-  import ConstructionPlans from "../construction-plans/construction-plans.vue"
-  import GraphicModel from "../graphic-model/graphic-model.vue"
-  import PlanCheck from "../plan-check/plan-check.vue"
+  import ConstructionPlans from "./construction-plans.vue"
+  import GraphicModel from "./graphic-model.vue"
+  import PlanCheck from "./plan-check.vue"
   export default {
     components: {ConstructionPlans, GraphicModel, PlanCheck},
     data() {
       return {
-        message: getApp().globalData.message
+        message: getApp().globalData.message || { title: "未拿到装修消息"}
       }
     },
     onShow() {
