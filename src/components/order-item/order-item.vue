@@ -26,7 +26,7 @@
 					</view>
 					<view class="attr">
 						<text style="margin-right: 24rpx;">{{dataList.saleProperties}}</text>
-						<text>2.0m/根</text>
+						<!-- <text>2.0m/根</text> -->
 					</view>						
 				</view>
 				

@@ -36,7 +36,7 @@
         >
           <view class="swiper-item" >
 
-            <view  v-if=" orderList.length>0 "  class="order-container"  v-for="item in orderList" :key="item.id">
+            <view  v-if=" orderList.length > 0 "  class="order-container"  v-for="item in orderList" :key="item.id">
               <view class="header">
                 <view class="store-name" @click="gotoShop">
                   <text>{{item.orderName?item.orderName:item.storeName}}</text>
@@ -73,8 +73,8 @@
 								      style="width: 100%; white-space: nowrap;"
 								    >
 								      <image
-											v-for="(item,index) in 6" :key="index"
-								        src="../../../static/images/message/ic_interaction@2x.png"
+												v-for="item2 in handleImage(item.details)" :key="item2"
+								        :src="item2"
 								        mode=""
 								      ></image>
 								    </scroll-view>
@@ -82,12 +82,13 @@
 								  <view class="total-price">
 								    <view class="product-price">
 								      <text style="font-size:22rpx;">￥</text>
-								      <text style="font-weight: 400;">1111128</text>
-								      <text style="font-size:22rpx;">.00</text>
+								      <text style="font-weight: 400;">{{handlePrice(item.orderTotalAmount)[0]}}.</text>
+								      <text style="font-size:22rpx;">{{handlePrice(item.orderTotalAmount)[1]}}</text>
 								    </view>
-								    <view>共1件</view>
+								    <view>共{{item.goodsNumber}}件</view>
 								  </view>
 								</view>
+								
 								 <!-- 非套餐 -->
 								 <view v-else   v-for="item2 in item.details" :key="item2.id">
 										<order-item :dataList="item2" @handleDetail="goToDetail(item)" />	
@@ -655,7 +656,17 @@ export default {
         this.triggered = false;
       }, 1000);
     },
-		
+		handlePrice(price){
+			let list=String(price).split(".")
+			if(list.length==1){
+				return [list[0],"00"]
+			}else{
+				return[list[0],list[1]]
+			}
+		},
+		handleImage(list){
+			return list.map(item=>item.imgUrl)
+		}
   },
 };
 </script>
