@@ -10,10 +10,10 @@
         当前花销
       </view>
    </view>
-    
     <swiper :current="tabIndex" style="flex: 1;height: 100%" :duration="300" @change="ontabchange">
       <swiper-item class="swiper-item" v-for="(tab,index1) in dataList" :key="index1">
         <keep-alive>
+          
         </keep-alive>
       </swiper-item>
     </swiper>

@@ -1,8 +1,5 @@
 <template>
   <view class="text-scroll">
-   <!-- <transition name="slide" mode="out-in">
-      
-    </transition> -->
     <view class="text-scroll-item">
       <image class="icon-l"></image>
       <view class="line"></view>

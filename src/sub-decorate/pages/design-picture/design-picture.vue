@@ -1,12 +1,6 @@
 <template>
 	<view>
-		<view class="tabs">
-			<view class="item" v-for="(item, index) in designArr" @click="changeItem(item)" :key="index"
-				:class="{active: item === currentItem}">
-				<view class="name">{{item}}</view>
-				<image class="bt" src="http://iph.href.lu/48x6?fg=00ed7d"></image>
-			</view>
-		</view>
+		<tabs :items="designArr" :current="currentItem" @changeItem="changeItem"></tabs>
 		<!-- 原始户型图 -->
 		<view class="original">
 			<view class="subtitle">
@@ -32,7 +26,11 @@
 
 <script>
   import { getDesignList } from "../../../api/decorate.js"
+  import Tabs from "../../components/tabs/tabs.vue"
 	export default {
+    components: {
+      Tabs
+    },
 		data() {
 			return {
 				measureImgList: [
@@ -76,52 +74,7 @@
 </script>
 
 <style scoped lang="scss">
-	.tabs {
-		display: flex;
-		align-items: flex-start;
-		justify-content: flex-start;
-		flex-direction: row;
-		padding: 28rpx 0 0 48rpx;
-		border-bottom: 2rpx solid #EFEFEF;
-		margin-bottom: 40rpx;
-		box-sizing: border-box;
-		margin-bottom: 40rpx;
-
-		.item {
-			display: flex;
-			align-items: center;
-			justify-content: flex-start;
-			flex-direction: column;
-			margin-right: 24rpx;
-
-			.name {
-				margin-bottom: 14rpx;
-				width: 56rpx;
-				height: 40rpx;
-				font-size: 28rpx;
-				font-family: PingFangSC, PingFangSC-Medium;
-				font-weight: 700;
-				text-align: center;
-				color: #333333;
-				line-height: 40rpx;
-			}
-
-			.bt {
-				transition: all 0.2s;
-				display: none;
-			}
-		}
-
-		.active {
-			.bt {
-				transition: all 0.2s;
-				display: block;
-				width: 48rpx;
-				height: 6rpx;
-				border-radius: 200rpx 200rpx 0rpx 0rpx;
-			}
-		}
-	}
+	
 
 	.original {
 		padding: 0 32rpx;

@@ -1,5 +1,5 @@
 <template>
-  <message-bubble :message="message" :payload-data="payloadData" class="video-message">
+  <message-bubble :message="message" class="video-message">
     <image class="video-element" :src="url" />
   </message-bubble>
 </template>
@@ -17,14 +17,13 @@ export default {
       type: Object,
       required: true,
     },
-    payloadData: {
-      type: Object,
-      required: true,
-    }
   },
   computed: {
     isMine() {
       return this.message.flow === "out";
+    },
+    payloadData() {
+      return this.message.payloadData;
     },
     url() {
       let url = this.payloadData.thumbnailUrl;
