@@ -116,4 +116,22 @@ export function getDesignList(params) {
   const str = objectToUrlString(params)
 	return request.get("/pm/app/serve/design/listByQuery?" + str )
 }
-// /pm/app/serve/design/listByQuery
+
+//申请阶段交付 OK
+export function applyStageDeliver(data) {
+	return request.post("/pm/web/serve/serveCard/applyStageDeliver", data)
+}
+
+//根据条件查询设计图阶段交付文件列表
+export function designListByQuery(serveCardId) {
+	return request.get(`/pm/app/serve/design/listByQuery/${serveCardId}`)
+}
+
+//C端 确认阶段交付 
+export function confirmStageDeliver(serveCardId) {
+	return request.get(`/pm/app/serve/design/confirmStageDeliver/${serveCardId}`)
+}
+// C端 业主要求修改设计图 
+export function reviseStageDeliver(serveCardId) {
+	return request.get(`/pm/app/serve/design/reviseStageDeliver/${serveCardId}`)
+}
