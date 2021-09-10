@@ -5,8 +5,8 @@
       <scroll-view class="item-list" scroll-y="true">
         <view
           class="notice-item"
-          @click="to(2)"
-        >
+          @click="to(1)"
+        > 
           <view class="item-top">
             <view class="item-top-left">
               <image
@@ -42,7 +42,7 @@ import {
   } from "../../api/decorate.js";
 export default {
   name: "decorate-notice",
-  props:{
+  props:{ 
     current:{
       type:Number,
       default:()=>{

@@ -30,6 +30,16 @@ export function setDefault(params) {
 	return request.put("/customer/app/estate/setDefaultEstate/"+params )
 }
 
+//获取mqtt信息
+export function getMqtt(params){
+	return request.get("/app/live/mqtt/mqttProperties" )  
+}
+
+//获取mqtt鉴权token
+export function getToken(params){
+	return request.post("/app/live/mqtt/applyToken",params )  
+}
+
 //获取装修消息列表
 export function getMsgList(params) {
 	return request.get("/pm/app/specialMsg/all?projectId="+params )
@@ -42,16 +52,37 @@ export function getGrabDetail(params) {
 
 //确认抢单人员
 export function sureGrab(params) {
-	return request.post("/pm/app/snatch/confirm",params )
+	return request.post("/pm/app/snatch/server/confirm",params )
 }
 
 //更换抢单人员
 export function replaceGrab(params) {
 	return request.post("/pm/app/snatch/server/change",params )
 }
-//获取验房交付详情
+
+//获取量房交付报告
+export function getAmountDetail(params) {
+	return request.get("/pm/app/measure/measurePictures/"+params )
+}
+
+//驳回量房交付报告
+export function replaceAmount(params) {
+	return request.post("/pm/app/measure/modifyMeasurePlan",params )
+}
+
+//确认量房交付报告
+export function sureAmount(params) {
+	return request.post("/pm/app/measure/agreeMeasurePlan",params )
+}
+
+//获取验房交付报告
 export function getCheckResultDetail(params) {
 	return request.get("/pm/app/user/inspectEstate/report/"+params )
+}
+
+//确认验房验房交付
+export function confirmCheckResult(params) {
+	return request.post("/pm/app/user/inspectEstate/confirmReport/"+params )
 }
 
 //获取亲友团列表-房屋下的
@@ -71,7 +102,7 @@ export function deleteFriends(params) {
 
 //SKU商品表格
 export function getProductsSkusPage(params) {
-	return request.get("/product/web/products/skus/page", params)
+	return request.get("/product/app/products/skus/page", params)
 }
 
 //获取服务类默认商品
@@ -85,4 +116,22 @@ export function getDesignList(params) {
   const str = objectToUrlString(params)
 	return request.get("/pm/app/serve/design/listByQuery?" + str )
 }
-// /pm/app/serve/design/listByQuery
+
+//申请阶段交付 OK
+export function applyStageDeliver(data) {
+	return request.post("/pm/web/serve/serveCard/applyStageDeliver", data)
+}
+
+//根据条件查询设计图阶段交付文件列表
+export function designListByQuery(serveCardId) {
+	return request.get(`/pm/app/serve/design/listByQuery/${serveCardId}`)
+}
+
+//C端 确认阶段交付 
+export function confirmStageDeliver(serveCardId) {
+	return request.get(`/pm/app/serve/design/confirmStageDeliver/${serveCardId}`)
+}
+// C端 业主要求修改设计图 
+export function reviseStageDeliver(serveCardId) {
+	return request.get(`/pm/app/serve/design/reviseStageDeliver/${serveCardId}`)
+}

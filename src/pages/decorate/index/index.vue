@@ -29,22 +29,22 @@
               <image class="img"></image>
               <view class="text">工地保险</view>
             </view>
-
-            <view class="uni-title">{{ currentHouse.housingEstate }}{{currentHouse.address}}</view>
+            <view class="uni-title">{{ currentProject.housingEstate }}{{currentProject.address}}</view>
           </view>
           <view class="picture-btn-wrap">
             <picture-btn class="p-i-t" text="设计图" @gotoPage="goDesignPicture"></picture-btn>
             <picture-btn class="p-i-t" text="精算单" @gotoPage="goDesignPicture"></picture-btn>
             <picture-btn class="p-i-t" text="工地视频" @gotoPage="goDesignPicture"></picture-btn>
-            <picture-btn text="施工" @gotoPage="goDesignPicture"></picture-btn>
+            <picture-btn text="施工" @gotoPage="goConstrction"></picture-btn>
           </view>
         </view>
-
       </view>
 
       <view class="scroll-view flex-1">
         <scroll-view :scroll-top="scrollTop" scroll-y="true" class="scroll-Y" @scroll="scroll"
           scroll-with-animation="true" :style="{height: viewHieght + 'rpx'}">
+          <!-- 每日播报 -->
+          <text-scroll></text-scroll>
           <!-- 我的仓库 -->
           <view class="my-decorate-service-wrap">
             <image mode="aspectFit" class="top-bg"
@@ -102,32 +102,32 @@
             <view class="tips">
               购买相关服务 即刻开启装修
             </view>
-            <guide-card cardType="service" imageUrl="http://iph.href.lu/702x160?text=702x160&fg=EB7662&bg=FFE2DD"
-              @buyNow="buyServiceNow">
+            <guide-card v-if="availGuides.includes('design')" cardType="service"
+              imageUrl="http://iph.href.lu/702x160?text=702x160&fg=EB7662&bg=FFE2DD" @buyNow="buyServiceNow">
             </guide-card>
-            <guide-card cardType="actuary" imageUrl="http://iph.href.lu/702x160?text=702x160&fg=4173c8&bg=d0e0fa"
-              @buyNow="buyServiceNow">
+            <guide-card v-if="availGuides.includes('actuary')" cardType="actuary"
+              imageUrl="http://iph.href.lu/702x160?text=702x160&fg=4173c8&bg=d0e0fa" @buyNow="buyServiceNow">
             </guide-card>
           </view>
           <no-service words="暂无进行中服务"></no-service>
           <!-- 切换房屋弹窗 -->
           <uni-popup ref="sw">
-            <house-switch class="margintop" :datalist="projectList" :current="currentHouse.estateId"
+            <house-switch class="margintop" :datalist="projectList" :current="currentProject.estateId"
               @goAddHouse="addHouse" @checkHouse="checkHouse"></house-switch>
           </uni-popup>
-          <decorate-notice @touchmove.stop.prevent="()=>false" v-if="noticeActive" :current='current' @closeNotice='closeNotice'
-            class="decorate-notice"></decorate-notice>
+          <decorate-notice @touchmove.stop.prevent="()=>false" v-if="noticeActive" :current='current'
+            @closeNotice='closeNotice' class="decorate-notice"></decorate-notice>
           <view class="link">
-            <button @click="confirm1">平面图交付</button>
-            <button @click="gonohouse">无房屋无服入口</button>
-            <button @click="gonohousedecatore">无房屋无服务装修</button>
-            <button @click="gonohousecheck">无房屋无服务验房</button>
-            <button @click="checkHouseRemind">验房提醒</button>
-            <button @click="confirm2">三维设计图交付</button>
-            <button @click="confirm3">施工图交付</button>
-            <button @click="confirm4">线上交底</button>
-            <button @click="hcaa">管家竣工验收申请</button>
-            <button @click="housekeeperrefuse">管家竣工拒绝</button>
+            <view @click="gonohouse">无房屋无服入口</view>
+            <view @click="gonohousedecatore">无房屋无服务装修</view>
+            <view @click="gonohousecheck">无房屋无服务验房</view>
+            <view @click="checkHouseRemind">验房提醒</view>
+            <view @click="confirm1">设计交付</view>
+            <view @click="confirm4">线上交底</view>
+            <view @click="dsport">设计报告交付</view>
+            <view @click="hcaa">管家竣工验收申请</view>
+            <view @click="housekeeperrefuse">管家竣工拒绝</view>
+            <view @click="workerCapplication">工人阶段验收申请</view>
           </view>
         </scroll-view>
       </view>
@@ -146,10 +146,13 @@
 <script>
   import {
     queryEstates,
-    friendListByEstateId
+    friendListByEstateId,
+    getToken,
+    getMqtt
   } from "../../../api/decorate.js";
   import {
-    getEstateProjectInfoList
+    getEstateProjectInfoList,
+    availableService
   } from "../../../api/project.js";
   import {
     HouseSwitch
@@ -160,10 +163,14 @@
     DECTORE_DICT,
     SERVICE_TYPE
   } from "../../../utils/dict.js"
+  import {
+    v4 as uuidv4
+  } from 'uuid';
   import GuideCard from "../../../components/guide-card/guide-card.vue"
   import PictureBtn from "../../../components/picture-btn/picture-btn.vue"
 
   import MwarehouseBtn from "../../../components/mwarehouse-btn/mwarehouse-btn.vue"
+  import TextScroll from "../../../components/text-scroll/text-scroll.vue"
   export default {
     components: {
       HouseSwitch,
@@ -171,7 +178,8 @@
       GuideCard,
       NoService,
       PictureBtn,
-      MwarehouseBtn
+      MwarehouseBtn,
+      TextScroll,
     },
     onLoad() {
       let _this = this
@@ -181,48 +189,87 @@
           _this.viewHieght = res.windowHeight * 2 - 416
         }
       })
-
     },
     onShow() {
-      uni.showTabBar() 
-      if (this.houses && this.houses.length < 1) {
-        this.getHouses();
+      uni.showTabBar()
+      if (this.estateList && this.estateList.length < 1) {
+        this.getEstateList();
       }
     },
     data() {
       return {
         scrollTop: 416,
-        old: {
-          scrollTop: 416
-        },
         viewHieght: "",
         style: "",
         noticeActive: false,
-        houses: getApp().globalData.houses,
-        currentHouse: {},
-        myHouseList: [],
+        currentProject: {},
         projectList: [],
         current: null,
-        currentEstateId: null,
+        currentEstate: null,
+        defaultEstate: null,
+        estateList: [],
         friendList: [],
+        purchasedServiceList: [],
+        availableServiceList: [],
+        availGuides: [],
         DECTORE_DICT,
+
+        deviceId: '',
+        accessKeyId: 'LTAI5tKwuhb948v9oakqnbTf',
+        instanceId: 'post-cn-tl32ajx3u0l',
+        groupId: 'GID_dabanjia',
+        token: '',
       };
     },
     mounted() {
       uni.showTabBar()
-      // this.getMyHouseList();
-      this.getEstateProjectInfoList();
+      this.deviceId = uni.getStorageSync('uuDeviceId')
+      if (!this.deviceId) {
+        this.deviceId = uuidv4()
+        uni.setStorageSync('uuDeviceId', this.deviceId);
+      }
+      this.getToken()
+      this.getMqtt()
+    },
+    computed: {
+      username() {
+        return `Token|${this.accessKeyId}|${this.instanceId}`
+      },
+      //token和设备id关联，需要后端接口提供
+      password() {
+        return `R|${this.token}|W|${this.token}`
+      },
+      clientId() {
+        return `${this.groupId}@@@${this.deviceId}`
+      },
+      msgTopic() {
+        return `dabanjia_pull_special_msg_${this.currentProject.projectId}`;
+      },
     },
     methods: {
-      scroll: function(e) {
-        // console.log(e)
-        this.old.scrollTop = e.detail.scrollTop
+      scroll(e) {},
+      getAvailableService() {
+        availableService({
+          projectId: this.currentProject.projectId
+        }).then(data => {
+          const {
+            purchasedServiceList,
+            availableServiceList
+          } = data
+          this.purchasedServiceList = purchasedServiceList
+          this.availableServiceList = availableServiceList
+          this.checkDesignAnd()
+        })
       },
-      goTop: function(e) {
-        this.scrollTop = this.old.scrollTop
-        this.$nextTick(() => {
-          this.scrollTop = 0
-        });
+      checkDesignAnd() {
+        this.availableServiceList.forEach(t => {
+          if (t.nodeType === 1) {
+            this.availGuides.push("design")
+          }
+          if (t.nodeType === 4) {
+            this.availGuides.push("actuary")
+          }
+        })
       },
       checkHouseRemind() {
         uni.navigateTo({
@@ -234,14 +281,9 @@
           url: "/sub-decorate/pages/design-deliver/design-deliver"
         })
       },
-      confirm2() {
+      dsport() {
         uni.navigateTo({
-          url: "/sub-decorate/pages/graphic-model/graphic-model"
-        })
-      },
-      confirm3() {
-        uni.navigateTo({
-          url: "/sub-decorate/pages/construction-plans/construction-plans"
+          url: "/sub-decorate/pages/design-report/design-report"
         })
       },
       confirm4() {
@@ -259,15 +301,20 @@
           url: "/sub-decorate/pages/housekeeper-refuse/housekeeper-refuse"
         })
       },
+      workerCapplication() {
+        uni.navigateTo({
+          url: "/sub-decorate/pages/worker-c-application/worker-c-application"
+        })
+      },
       async getFriendsList() {
         let list = await friendListByEstateId({
-          estateId: this.currentHouse.estateId
+          estateId: this.currentProject.estateId
         });
         this.friendList = list.length > 2 ? list.slice(0, 2) : list
       },
       toFriends() {
         uni.navigateTo({
-          url: "/sub-decorate/pages/friends/friends?id=" + this.currentHouse.estateId,
+          url: "/sub-decorate/pages/friends/friends?id=" + this.currentProject.estateId,
         });
       },
       addHouse() {
@@ -276,7 +323,7 @@
         })
       },
       checkHouse(item) {
-        this.currentHouse = item
+        this.currentProject = item
         this.$refs.sw.close()
       },
       getMyHouseList() {
@@ -286,23 +333,35 @@
           console.log(data)
         })
       },
-      getEstateProjectInfoList() {
+      getProjectList() {
         getEstateProjectInfoList({
           isNeedRelative: true
         }).then(data => {
-          this.projectList = data
-          const arr = data.filter(t => t.defaultEstate)
-          this.currentHouse = arr[0]
-          if (this.currentHouse.estateId) {
-            this.getFriendsList()
+          // 有房屋有服务，初始化当前的默认房屋
+          if (data && data.length > 0) {
+            this.projectList = data
+            const arr = data.filter(t => t.defaultEstate)
+            this.currentProject = arr[0]
+            this.currentEstate = this.estateList.filter(t => t.id === arr[0].estateId)[0]
+            if (this.currentProject.estateId) {
+              this.getAvailableService()
+              this.getFriendsList()
+            }
+          } else {
+            // TODO 有房屋无服务处理逻辑
           }
         })
       },
       bindChange(e) {
-        console.log(e)
+        console.log(e);
       },
       switchVisible() {
         this.$refs.sw.open('top')
+      },
+      goConstrction() {
+        uni.navigateTo({
+          url: "/sub-decorate/pages/construction/construction"
+        })
       },
       goDesignPicture() {
         uni.navigateTo({
@@ -362,30 +421,44 @@
           })
         }
       },
-      getHouses() {
+      getEstateList() {
         queryEstates({
           isNeedRelative: true,
         }).then((data) => {
-          //    if (data.length < 1) {
-          //      uni.navigateTo({
-          //        url: "/pages/decorate/no-house/no-house",
-          //      });
-          //    } else {
-          //      getApp().globalData.houses = data;
-          // uni.navigateTo({
-          //   url: "",
-          // });
-          //    }
-          getApp().globalData.houses = data;
+          if (data.length < 1) {
+            uni.navigateTo({
+              url: "/pages/decorate/no-house/no-house",
+            });
+          } else {
+            const temp = data.filter(t => t.defaultEstate)
+            this.defaultEstate = temp && temp.length > 0 ? temp[0] : null
+            this.estateList = data;
+            this.getProjectList();
+          }
         });
       },
       buyServiceNow(type) {
         uni.navigateTo({
-          url: "/sub-decorate/pages/design-service-list/design-service-list?categoryTypeId=" +
-            SERVICE_TYPE[
-              type]
+          url: "/sub-decorate/pages/design-service-list/design-service-list?categoryTypeId=" + SERVICE_TYPE[type]
         })
-      }
+      },
+      getToken() {
+        let data = {
+          topics: [this.msgTopic],
+          deviceId: this.deviceId
+        }
+        getToken(data).then(res => {
+          console.log(res)
+        })
+      },
+      getMqtt() {
+        getMqtt().then(res => {
+          this.accessKeyId = res.accessKey
+          this.url = 'wxs://' + res.endPoint
+          this.groupId = res.groupId
+          this.instanceId = res.instanceId
+        })
+      },
     },
   };
 </script>
@@ -688,20 +761,22 @@
   }
 
   .link {
-    display: flex;
-    justify-content: flex-start;
-    align-items: center;
-    flex-wrap: wrap;
+    // display: flex;
+    // justify-content: flex-start;
+    // align-items: center;
+    // flex-wrap: wrap;
+    height: 400rpx;
 
-    button {
+    view {
       display: inline-block;
       line-height: 1;
-      padding: 10rpx 6rpx;
+      // padding: 10rpx 6rpx;
       border: 2rpx solid green;
       color: #fff;
       background-color: #000088;
-      margin: 10rpx;
+      margin: 0 10rpx;
       font-size: 24rpx;
+      height: 36rpx;
     }
   }
 
