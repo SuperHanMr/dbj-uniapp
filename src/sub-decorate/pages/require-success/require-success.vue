@@ -1,6 +1,6 @@
 <template>
 	<view class="container">
-		<custom-navbar :opacity="scrollTop/100" :showBack="false">
+		<custom-navbar opacity="0" :showBack="true">
 		</custom-navbar>
 
 		<view class="basic-info"
@@ -28,14 +28,14 @@
 			return {};
 		},
 		methods: {
-			toDecorate(){
+			toDecorate() {
 				uni.switchTab({
-				    url: '/pages/decorate/index/index'
+					url: '/pages/decorate/index/index'
 				});
 			},
-			toDetail(){
+			toDetail() {
 				uni.redirectTo({
-					url:'../require-detail/require-detail'
+					url: '../require-detail/require-detail'
 				})
 			}
 		},

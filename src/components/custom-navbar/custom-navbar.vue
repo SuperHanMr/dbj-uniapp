@@ -6,10 +6,9 @@
 			<view>
 				{{title}}
 			</view>
-
 		</view>
 		<view class="navi-back" :style="{top:backTop,height:backHeight}">
-			<slot>
+			<slot name="back">
 			</slot>
 		</view>
 	</view>
