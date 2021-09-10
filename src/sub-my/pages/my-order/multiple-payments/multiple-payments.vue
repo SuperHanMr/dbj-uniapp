@@ -24,7 +24,7 @@
 				</view>
 			</view>
 			<view class="right">
-				<view class="button">
+				<view class="button" @click="gotoPay">
 					去付款
 				</view>
 			</view>
@@ -61,6 +61,7 @@
 </template>
 
 <script>
+	import {querySplitPayList,splitPay} from "@/api/order.js"
 	export default {
 		props: {
 			num: 0,
@@ -68,6 +69,9 @@
 		},
 		data() {
 			return {
+				orderId:"",
+				list:[],
+				
 				systemBottom: "",
 				systemHeight: "",
 			};
@@ -78,7 +82,30 @@
 			this.systemHeight = menuButtonInfo.bottom + this.num + "rpx";
 			console.log(this.systemBottom);
 		},
+		
+		onLoad(e) {
+			this.orderId =Number(e.orderId) 
+			this.requestSplitPayList()
+		},
 		methods: {
+			requestSplitPayList(){
+				querySplitPayList({orderId:this.orderId}).then(data=>{
+					this.list = data
+				})
+			},
+			gotoPay(){
+				
+				console.log("去付款");
+				let params={
+					orderId:this.orderId,
+					payType:1,//支付类型  1微信支付"
+					orderSplitPayId:this.orderSplitPayId,
+					openid:"",//微信openid 小程序支付用 app支付不传或传空"
+				}
+				splitPay(params).then(e=>{
+					console.log("去支付")
+				})
+			}
 			
 		},
 	};

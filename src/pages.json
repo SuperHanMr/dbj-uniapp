@@ -283,6 +283,14 @@
 					}
 				},
 				{
+					"path":"pages/my-order/order-wait-pay/order-wait-pay",
+					"style":{
+						"navigationBarTitleText": "",
+						"navigationBarBackgroundColor": "#FFB344",
+						"enablePullDownRefresh": false
+					}
+				},
+				{
 					"path": "pages/my-order/success/success",
 					"style": {
 						"navigationBarTitleText": "",
@@ -329,6 +337,14 @@
 					"path": "pages/refund-list/refund-list",
 					"style": {
 						"navigationBarTitleText": "退款",
+						"enablePullDownRefresh": false
+					}
+				},
+				{
+					"path":"pages/refund-list/refunding-detail/refunding-detail",
+					"style":{
+						"navigationBarTitleText": "",
+						"navigationBarBackgroundColor": "#FFB344",
 						"enablePullDownRefresh": false
 					}
 				},
@@ -385,7 +401,7 @@
 						"navigationBarTitleText": "确认订单"
 					}
 				}
-			]
+      ]
 		},
 		{
 			"root": "sub-classify", //商城模块分包

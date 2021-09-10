@@ -1,7 +1,7 @@
 <template>
   <view class="container">
     <!-- 退款详情 --退款关闭   退款取消与商家拒接 两个页面-->
-    <view class="order-container" v-if="type =='refund' ">
+		<view class="order-container" v-if="type =='refund'" :style="{paddingBottom:systemBottom}">
 			<view class="order-status" >
 				<view class="backgroundStyle" />
 				<view class="status">
@@ -35,12 +35,8 @@
 		
 		
 		
-		
-		
-		
-
-    <!-- 订单详情  已关闭页面 -->
-    <view class="order-container" v-if="type == 'close'"  >
+		<!-- 订单详情  已关闭页面 -->
+		<view class="order-container" v-if="type =='close'"  :style="{paddingBottom:systemBottom}">
       <view class="order-status">
 				<view class="backgroundStyle" />
         <view class="status">
@@ -52,7 +48,7 @@
         </view>
       </view>
 
-     <order-user-base-info :data="orderInfo.estateVO"></order-user-base-info>
+     <order-user-base-info :data="orderInfo"></order-user-base-info>
 
       <view class="body2"  v-for="(item,index) in orderInfo.details" :key="index">
         <view class="header">
@@ -62,7 +58,11 @@
             mode=""
           ></image>
         </view>
-         <order-item :dataList="item.details"></order-item>
+				
+				<view v-for="item2 in item.details" :key="item2.id">
+					<order-item  :dataList="item2"></order-item>
+				</view>
+				
       </view>
 			<order-price
 				:totalAmount="orderInfo.totalAmount"
@@ -96,11 +96,17 @@
 			
 			refundInfo:{},
 			orderInfo:{},
+			
+			systemBottom: "",
 		};
   },
-	// watch:{
-	// 	type(){}
-	// },
+	
+	mounted(e) {
+		const menuButtonInfo = uni.getMenuButtonBoundingClientRect();
+		this.systemBottom = menuButtonInfo.bottom + "rpx";
+		console.log(this.systemBottom);
+	},
+	
 	onLoad(e){
 		this.type = e.type,
 		this.id = Number(e.id),
@@ -108,7 +114,7 @@
 		if(this.type == 'refund'){//退款成功页面
 			this.refundDetail()
 		}
-		if(this.type == 'complete'){//订单关闭页面
+		if(this.type == 'close'){//订单关闭页面
 			this.orderDetail()
 		}
 	},
@@ -139,11 +145,11 @@
 
 <style lang="scss" scoped>
 .container {
+  .order-container {
   width: 100%;
   height: 100%;
   overflow: auto;
-  padding-bottom: 100rpx;
-  .order-container {
+  
     .order-status {
       width: 100%;
       height: 140rpx;
