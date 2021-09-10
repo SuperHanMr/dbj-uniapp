@@ -30,6 +30,16 @@ export function setDefault(params) {
 	return request.put("/customer/app/estate/setDefaultEstate/"+params )
 }
 
+//获取mqtt信息
+export function getMqtt(params){
+	return request.get("/app/live/mqtt/mqttProperties" )  
+}
+
+//获取mqtt鉴权token
+export function getToken(params){
+	return request.post("/app/live/mqtt/applyToken",params )  
+}
+
 //获取装修消息列表
 export function getMsgList(params) {
 	return request.get("/pm/app/specialMsg/all?projectId="+params )
@@ -49,6 +59,22 @@ export function sureGrab(params) {
 export function replaceGrab(params) {
 	return request.post("/pm/app/snatch/server/change",params )
 }
+
+//获取量房交付报告
+export function getAmountDetail(params) {
+	return request.get("/pm/app/measure/measurePictures/"+params )
+}
+
+//驳回量房交付报告
+export function replaceAmount(params) {
+	return request.post("/pm/app/measure/modifyMeasurePlan",params )
+}
+
+//确认量房交付报告
+export function sureAmount(params) {
+	return request.post("/pm/app/measure/agreeMeasurePlan",params )
+}
+
 //获取验房交付报告
 export function getCheckResultDetail(params) {
 	return request.get("/pm/app/user/inspectEstate/report/"+params )

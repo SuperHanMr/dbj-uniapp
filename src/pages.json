@@ -686,19 +686,22 @@
             "navigationBarTitleText": "要货申请",
             "enablePullDownRefresh": false
           }
-        }, {
+        },
+        {
           "path": "pages/time-line/time-line",
           "style": {
             "navigationBarTitleText": "",
             "enablePullDownRefresh": false
           }
-        }, {
+        },
+        {
           "path": "pages/construction/construction",
           "style": {
             "navigationBarTitleText": "施工",
             "enablePullDownRefresh": false
           }
-        }, {
+        },
+        {
           "path": "pages/worker-c-application/worker-c-application",
           "style": {
             "navigationBarTitleText": "拆除服务阶段验收申请",

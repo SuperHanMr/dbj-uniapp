@@ -102,11 +102,11 @@
             <view class="tips">
               购买相关服务 即刻开启装修
             </view>
-            <guide-card v-if="availGuides.includes('design')" cardType="service" imageUrl="http://iph.href.lu/702x160?text=702x160&fg=EB7662&bg=FFE2DD"
-              @buyNow="buyServiceNow">
+            <guide-card v-if="availGuides.includes('design')" cardType="service"
+              imageUrl="http://iph.href.lu/702x160?text=702x160&fg=EB7662&bg=FFE2DD" @buyNow="buyServiceNow">
             </guide-card>
-            <guide-card v-if="availGuides.includes('actuary')" cardType="actuary" imageUrl="http://iph.href.lu/702x160?text=702x160&fg=4173c8&bg=d0e0fa"
-              @buyNow="buyServiceNow">
+            <guide-card v-if="availGuides.includes('actuary')" cardType="actuary"
+              imageUrl="http://iph.href.lu/702x160?text=702x160&fg=4173c8&bg=d0e0fa" @buyNow="buyServiceNow">
             </guide-card>
           </view>
           <no-service words="暂无进行中服务"></no-service>
@@ -147,7 +147,9 @@
 <script>
   import {
     queryEstates,
-    friendListByEstateId
+    friendListByEstateId,
+    getToken,
+    getMqtt
   } from "../../../api/decorate.js";
   import {
     getEstateProjectInfoList,
@@ -162,6 +164,9 @@
     DECTORE_DICT,
     SERVICE_TYPE
   } from "../../../utils/dict.js"
+  import {
+    v4 as uuidv4
+  } from 'uuid';
   import GuideCard from "../../../components/guide-card/guide-card.vue"
   import PictureBtn from "../../../components/picture-btn/picture-btn.vue"
 
@@ -209,10 +214,38 @@
         availableServiceList: [],
         availGuides: [],
         DECTORE_DICT,
+
+        deviceId: '',
+        accessKeyId: 'LTAI5tKwuhb948v9oakqnbTf',
+        instanceId: 'post-cn-tl32ajx3u0l',
+        groupId: 'GID_dabanjia',
+        token: '',
       };
     },
     mounted() {
       uni.showTabBar()
+      this.deviceId = uni.getStorageSync('uuDeviceId')
+      if (!this.deviceId) {
+        this.deviceId = uuidv4()
+        uni.setStorageSync('uuDeviceId', this.deviceId);
+      }
+      this.getToken()
+      this.getMqtt()
+    },
+    computed: {
+      username() {
+        return `Token|${this.accessKeyId}|${this.instanceId}`
+      },
+      //token和设备id关联，需要后端接口提供
+      password() {
+        return `R|${this.token}|W|${this.token}`
+      },
+      clientId() {
+        return `${this.groupId}@@@${this.deviceId}`
+      },
+      msgTopic() {
+        return `dabanjia_pull_special_msg_${this.currentProject.projectId}`;
+      },
     },
     methods: {
       scroll(e) {},
@@ -414,7 +447,24 @@
         uni.navigateTo({
           url: "/sub-decorate/pages/design-service-list/design-service-list?categoryTypeId=" + SERVICE_TYPE[type]
         })
-      }
+      },
+      getToken() {
+        let data = {
+          topics: [this.msgTopic],
+          deviceId: this.deviceId
+        }
+        getToken(data).then(res => {
+          console.log(res)
+        })
+      },
+      getMqtt() {
+        getMqtt().then(res => {
+          this.accessKeyId = res.accessKey
+          this.url = 'wxs://' + res.endPoint
+          this.groupId = res.groupId
+          this.instanceId = res.instanceId
+        })
+      },
     },
   };
 </script>

@@ -5,7 +5,7 @@
       <scroll-view class="item-list" scroll-y="true">
         <view
           class="notice-item"
-          @click="to(0)"
+          @click="to(1)"
         > 
           <view class="item-top">
             <view class="item-top-left">
