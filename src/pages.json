@@ -178,6 +178,11 @@
 				"name": "lyb", //模式名称
 				"path": "/sub-decorate/pages/time-line/time-line", //启动页面，必选
 				"query": "" //启动参数，在页面的onLoad函数里面得到
+			},
+			{
+				"name": "cn", //模式名称
+				"path": "/sub-home/pages/decorate-scene/decorate-scene", //启动页面，必选
+				"query": "" //启动参数，在页面的onLoad函数里面得到
 			}
 		]
 	},
@@ -194,6 +199,27 @@
 					"path": "pages/select-city/select-city",
 					"style": {
 						"navigationBarTitleText": "",
+						"enablePullDownRefresh": false
+					}
+				},
+				{
+					"path": "pages/decorate-scene/decorate-scene",
+					"style": {
+						"navigationBarTitleText": "用户的家",
+						"enablePullDownRefresh": false
+					}
+				},
+				{
+					"path": "pages/decorate-scene/video-site",
+					"style": {
+						"navigationBarTitleText": "工地视频",
+						"enablePullDownRefresh": false
+					}
+				},
+				{
+					"path": "pages/decorate-scene/construction-drawings",
+					"style": {
+						"navigationBarTitleText": "施工图纸",
 						"enablePullDownRefresh": false
 					}
 				}
