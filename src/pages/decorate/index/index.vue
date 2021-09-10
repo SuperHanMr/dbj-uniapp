@@ -252,7 +252,7 @@
       scroll(e) {},
       getAvailableService() {
         availableService({
-          projectId: this.currentProject.projectId
+          projectId: this.currentProject.projectId || 0
         }).then(data => {
           const {
             purchasedServiceList,
