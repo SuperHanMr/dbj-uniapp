@@ -32,6 +32,7 @@
 		getProductsSkusPage,
     getServiceSku
 	} from "../../../api/decorate.js"
+  import { createOrder } from "../../../api/order-center.js"
 	export default {
 		components: {
 			ServiceCard,
@@ -138,9 +139,10 @@
 			gotopay() {
 				// TODO去结算页面
 				if (this.currentHouse && this.currentHouse.id) {
-					uni.redirectTo({
-						url: ""
-					})
+					// uni.redirectTo({
+					// 	url: ""
+					// })
+          
 				} else {
 					uni.showToast({
 						title: "请您先添加房屋信息",
@@ -149,6 +151,11 @@
 					})
 				}
 			},
+      createOrder(obj) {
+        createOrder(obj).then(data => {
+          
+        })
+      },
 			change(id, value) {
 				if (id === "checkHouse") {
 					this.checkHouse.checked = value;
