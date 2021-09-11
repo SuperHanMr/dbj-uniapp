@@ -21,6 +21,9 @@
 </template>
 
 <script>
+	import {
+		goodsApply
+	} from "../../../api/decorate.js"
 	export default {
 		data() {
 			return {
@@ -55,10 +58,16 @@
 
 			};
 		},
+		onLoad(e) {
+			
+		},
 		methods: {
 			submit() {
+				goodsApply().then(e => {
+
+				})
 				uni.redirectTo({
-					url:'../require-success/require-success'
+					url: '../require-success/require-success'
 				})
 			}
 		}

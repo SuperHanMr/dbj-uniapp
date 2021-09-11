@@ -117,3 +117,37 @@ export function getDesignList(params) {
 	return request.get("/pm/app/serve/design/listByQuery?" + str )
 }
 // /pm/app/serve/design/listByQuery
+
+
+//---------------------业主要货相关-----------------------
+
+//要货明细列表
+export function inventoryList(params){
+	return request.get(`/order-center/app/goods/stock/inventoryDetails/list`,{params})
+}
+
+//APP-申请退库存
+export function goodsBack(params) {
+	return request.post("/order-center/app/goods/return/create",params )
+}
+
+
+//c端APP-仓库-已收货申请退款
+export function goodsRefund(params) {
+	return request.post("/order-center/app/goods/stock/overall/applyRefund",params )
+}
+
+//要货左侧品类列表
+export function categoryList(params) {
+	return request.get("/order-center/app/goods/stock/category/list",params )
+}
+
+//要货左侧品类列表对应商品
+export function inventoryDetails(params) {
+	return request.get("/order-center/app/goods/stock/inventoryDetails/list",params )
+}
+
+//APP-要货-申请要货
+export function goodsApply(params) {
+	return request.post("/order-center/app/goods/require/create",params )
+}
