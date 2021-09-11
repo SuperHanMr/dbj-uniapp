@@ -120,14 +120,11 @@
 					return[list[0],list[1]]
 				}
 			},
-			
-			
-			
 			orderStatus(){
 				console.log("打印数据")
 			},
 			goToDetail(data){
-				console.log("去详情页面",type,"data",data.status)
+				console.log("去详情页面","data",data.status)
 				if(data.status == 0 || data.status == 1 ){
 					uni.navigateTo({
 						url:`../my-order/order-in-progress/order-in-progress?type=refund&orderNo=${data.id}`
@@ -141,13 +138,6 @@
 						url:`../my-order/order-failed/order-failed?type=refund&id=${data.id}&status=${data.status}`
 					})
 				}
-				
-				
-				// uni.navigateTo({
-				// 	url:`../my-order/order-success/order-success?type=refund&id=${data.id}`
-				// 	// url:"../my-order/success/success?type=refund&id=${data.id}"
-					
-				// })
 			},
 			getList(){
 				console.log("获取退款列表数据")
@@ -171,11 +161,19 @@
 				// 调用申请退款的接口
 				// 成功就关闭弹框
 				cancelRefund({id:this.itemId}).then(e=>{
-					console.log("e=",e)
-				})
+					if(e.code==1){
 					this.$refs.popup.close()
-					this.goToDetail(this.refundItem)
-					console.log("点击了确认按钮")
+					uni.showToast({
+					    title: '申请退款成功',
+					    duration: 2000
+					});
+					setTimeout(()=>{
+					  this.goToDetail(this.refundItem)
+					}, 1000);
+					
+					}
+				})
+				
 			},
 			
 		}

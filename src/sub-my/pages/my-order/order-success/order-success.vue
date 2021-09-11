@@ -2,7 +2,7 @@
   <view class="container">
     <!-- 订单完成/确认收货 -->
     <!-- 退款成功 -->
-    <view class="order-container" v-if="type=='refund'">
+    <view class="order-container" v-if="type=='refund'"  :style="{paddingBottom:systemBottom}">
       <view class="order-status">
         <view class="backgroundStyle" />
         <view class="status">
@@ -47,7 +47,7 @@
 		
 		
 		<!-- 订单完成页面 -->
-    <view class="order-container" v-if="type == 'complete'">
+    <view class="order-container" v-if="type == 'complete'"  :style="{paddingBottom:systemBottom}">
       <view class="order-status">
         <view class="backgroundStyle" />
         <view class="status">
@@ -60,9 +60,9 @@
         
       </view>
 
-      <order-user-base-info :data="orderInfo.estateVO"></order-user-base-info>
+      <order-user-base-info :data="orderInfo"></order-user-base-info>
 
-      <view class="body2">
+      <view class="body2" >
         <view class="part1" v-for="(item,index) in orderInfo.details" :key="index">
           <view class="header">
             <text>{{itme.storeName}}</text>
@@ -71,7 +71,11 @@
               mode=""
             ></image>
           </view>
-          <order-item :dataList="item.details"></order-item>
+					
+					<view  v-for="item2 in item.details" :key="item2.id" class="orederItem">
+						<order-item :dataList="item2" :orderStatus="3" @toApplayForRefund="applyForReFund"></order-item>
+					</view>
+         
 					
           <view class="price-special" v-if="item.stockType==0 && item.showRefundBtn">
 						<view class="button" @click="applyForReFund">
@@ -104,7 +108,7 @@
 </template>
 
 <script>
-	import {getRefundDetail,getOrderDetail} from "@/api/order.js"
+	import {getRefundDetail,getOrderDetail,} from "@/api/order.js"
 	export default {
 		data() {
 			return {
@@ -115,7 +119,14 @@
 				refundInfo:{},
 				orderInfo:{},
 				
+				systemBottom: "",
 			};
+		},
+		
+		mounted(e) {
+			const menuButtonInfo = uni.getMenuButtonBoundingClientRect();
+			this.systemBottom = menuButtonInfo.bottom + "rpx";
+			console.log(this.systemBottom);
 		},
 	
 		onLoad(e){
@@ -134,7 +145,7 @@
 	
 		methods: {
 			orderDetail(){
-				console.log("订单完成页面")
+				console.log("订单完成页面",this.id)
 				getOrderDetail({id:this.id}).then(e=>{
 					this.orderInfo = e
 					console.log("获取详情数据data=",this.orderInfo)

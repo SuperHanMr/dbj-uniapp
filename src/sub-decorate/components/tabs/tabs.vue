@@ -32,9 +32,10 @@
     align-items: flex-start;
     justify-content: flex-start;
     flex-direction: row;
-    padding: 28rpx 0 0 48rpx;
+    // padding: 28rpx 0 0 48rpx;
+    padding: 28rpx 32rpx 0;
     border-bottom: 2rpx solid #EFEFEF;
-    margin-bottom: 24rpx;
+    // margin-bottom: 24rpx;
     box-sizing: border-box;
     background-color: #fff;
 
@@ -47,7 +48,7 @@
 
       .name {
         margin-bottom: 14rpx;
-        width: 56rpx;
+        // width: 56rpx;
         height: 40rpx;
         font-size: 28rpx;
         font-family: PingFangSC, PingFangSC-Medium;
