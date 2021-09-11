@@ -2,26 +2,24 @@
 	<view class="store">
 		<view class="store-info">
 			<view class="store-name">
-				店铺名字
-			</view>
-			<view class="store-icon">
-				//TODO icon
+				{{item.storeName}}
 			</view>
 			<view class="store-sub">
-				剩余2次免运费额度
+				剩余{{item.remainingShipments}}次免运费额度
 			</view>
 		</view>
-		<view v-for="(item,index) in list" :key="item.id" class="goods-list">
+		<view v-for="(goodItem,index) in item.stockAppVOS" :key="index" class="goods-list">
 			<view class="good-detail">
-				<view class="img">
-				</view>
+				
+				<image class="img" :src="goodItem.imgUrl">
+				</image>
 				<view class="goods-info">
 					<view class="name">
 						<view class="tip">
 							物品
 						</view>
 						<view class="text">
-							白色绿色油漆颜色简约
+							{{goodItem.fullName}}
 
 						</view>
 						<view style="flex:1">
@@ -34,16 +32,16 @@
 					</view>
 					<view class="spec">
 						<view class="spec-item">
-							绿色
+							{{goodItem.scaleProperties}}
 						</view>
 						<view class="spec-item">
-							2.0m/根
+							{{goodItem.price}}/{{goodItem.unit}}
 						</view>
 						<view style="flex:1">
 
 						</view>
 						<view class="spec-item">
-							共1件
+							共{{number}}件
 						</view>
 					</view>
 				</view>
@@ -111,7 +109,7 @@
 		},
 		data() {
 			return {
-				list: [1, 2]
+				list: []
 			};
 		},
 		methods: {
@@ -170,6 +168,7 @@
 				height: 136rpx;
 				border: 1rpx solid #f4f4f4;
 				border-radius: 8rpx;
+				flex-shrink: 0;
 			}
 
 			.goods-info {
