@@ -18,12 +18,12 @@
 				<text class="item-body">{{createTime}}</text>
 			</view>
 			
-			<view class="item">
+			<view class="item" v-if="showPayTime">
 				<text class="item-header">付款时间：</text>
 				<text class="item-body">{{payTime}}</text>
 			</view>
 			
-			<view class="item">
+			<view class="item" v-if="showPayType">
 				<text class="item-header">支付方式：</text>
 				<text class="item-body">微信支付</text>
 			</view>
@@ -36,13 +36,15 @@
 		name:"order-info",
 		props:{
 			orderNo:{
-				type:String
+				type:String,
+				required:true,
 			},
 			createTime:{
-				type:String
+				type:String,
+				required:true,
 			},
 			payTime:{
-				type:String
+				type:String,
 			},
 			marginBottom:{
 				type: Number,
@@ -52,6 +54,14 @@
 				type: Number,
 				default:16,
 			},
+			showPayTime:{
+				type:Boolean,
+				default:true,
+			},
+			showPayType:{
+				type:Boolean,
+				default:true,
+			}
 		},
 		
 		data() {

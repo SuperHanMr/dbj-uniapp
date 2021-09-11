@@ -2,22 +2,23 @@ import request from '../utils/request';
 
 //我的-订单列表
 export function getOrderList(params) {
-	return request.get(`/order-center/app/order/list`, {
-		params
-	});
-}
-//我的-订单-订单详情
-export function getOrderDetail(params) {
-	return request.get(`/order-center/app/order/detail`, {
-		params
-	});
+	return request.get(`/order-center/app/order/list`, { params });
 }
 
-//我的订单-取消订单 
+//我的-订单-订单详情
+export function getOrderDetail(params) {
+	return request.get(`/order-center/app/order/detail`, { params });
+}
+
+//我的-订单-取消订单
 export function cancelOrder(params) {
 	return request.put(`/order-center/app/order/cancelOrder`, params)
 }
 
+//我的-订单-确认收货
+export function confirmReceiptOrder(params) {
+	return request.put(`/order-center/app/order/receive`, params)
+}
 
 
 
@@ -25,11 +26,6 @@ export function cancelOrder(params) {
 export function orderPay(params) {
 	return request.post(`/order-center/app/order/payOrder`, params);
 }
-
-
-
-
-
 
 
 // 我的-订单-退款-退款列表
@@ -48,6 +44,16 @@ export function getRefundDetail(params) {
 //我的-订单-退款-取消退款
 export function cancelRefund(params) {
 	return request.put(`/order-center/app/order/cancelRefund`, params)
+}
+
+//我的-订单-分次支付列表
+export function querySplitPayList(params) {
+	return request.get(`/order-center/app/order/querySplitPayList`, { params })
+}
+
+//我的-订单-分次支付接口
+export function splitPay(params) {
+	return request.post(`/order-center/app/order/splitPayOrder`, params);
 }
 
 
@@ -77,4 +83,3 @@ export function refundDetail(params) {
 	return request.get(`/order-center/app/order/refundDetail`, {
 		params
 	})
-}

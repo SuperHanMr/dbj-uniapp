@@ -2,19 +2,18 @@
 	<view class="sceneContainer">
 		<view class="header">
 			<view class="houseInfo">
-				<view class="location">金茂府1栋2单元106</view>
+				<view class="location">{{projectInfo.estateAddress.split("区")[1]}}</view>
 				<view class="focus">
 					<view class="browse">浏览 1300</view>
 					<view class="attention">关注 120</view>
 				</view>
 				<view class="itself">
 					<view class="type">
-						<view class="typeInner">5室3厅3卫</view>
+						<view class="typeInner">{{projectInfo.estateUnitsType}}</view>
 						<view class="tag">户型</view>
 					</view>
-					<view class="line"></view>
 					<view class="area">
-						<view class="areaInner">368平米</view>
+						<view class="areaInner">{{projectInfo.estateArea}}平米</view>
 						<view class="tag">面积</view>
 					</view>
 				</view>
@@ -190,13 +189,18 @@
 </template>
 
 <script>
+	import {getDecorateProcess} from "../../../api/real-case.js"
 	export default {
 		data(){
 			return {
 				showWorkType: false,
 				showComments: false,
 				isSelected: false,
+				projectInfo: {}
 			}
+		},
+		created(){
+			this.requestPage()
 		},
 		methods:{
 			toVideoSite(){
@@ -206,7 +210,22 @@
 			},
 			toConstruction(){
 				uni.navigateTo({
-					url:"./construction-drawings"
+					url:"./construction-drawings",
+					success:res => {
+						res.eventChannel.emit('acceptDataFromOpenerPage', 2)
+					}
+				})
+			},
+			requestPage(){
+				let params = {
+					projectId: 1
+				}
+				getDecorateProcess(params).then(data => {
+					if(data){
+						let {projectInfo,nodes} = data
+						console.log(projectInfo,nodes)
+						this.projectInfo = projectInfo
+					}
 				})
 			}
 		}
@@ -440,7 +459,8 @@
 		padding-top: 56rpx;
 	}
 	.location{
-		width: 406rpx;
+		width: fit-content;
+		max-width: 406rpx;
 		height: 56rpx;
 		font-size: 40rpx;
 		font-weight: 500;
@@ -479,7 +499,8 @@
 		background: rgba(255,255,255,0.10);
 	}
 	.type{
-		margin-left: 58rpx;
+		margin-left: 40rpx;
+		margin-right: 40rpx;
 	}
 	.type view{
 		height: 34rpx;
@@ -488,7 +509,8 @@
 		line-height: 34rpx;
 	}
 	.typeInner{
-		width: 116rpx;
+		width: fit-content;
+		max-width: 148rpx;
 		margin-top: 14rpx;
 	}
 	.type .tag{
@@ -507,7 +529,8 @@
 		width: 48rpx;
 	}
 	.areaInner{
-		width: 92rpx;
+		width: fit-content;
+		max-width: 148rpx;
 		margin-top: 14rpx;
 	}
 	

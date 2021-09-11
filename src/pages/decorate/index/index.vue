@@ -118,15 +118,13 @@
           <decorate-notice @touchmove.stop.prevent="()=>false" v-if="noticeActive" :current='current'
             @closeNotice='closeNotice' class="decorate-notice"></decorate-notice>
           <view class="link">
-            <view @click="dsport">平面图交付</view>
-            <view @click="dsport">设计报告</view>
             <view @click="gonohouse">无房屋无服入口</view>
             <view @click="gonohousedecatore">无房屋无服务装修</view>
             <view @click="gonohousecheck">无房屋无服务验房</view>
             <view @click="checkHouseRemind">验房提醒</view>
-            <view @click="confirm2">三维设计图交付</view>
-            <view @click="confirm3">施工图交付</view>
+            <view @click="confirm1">设计交付</view>
             <view @click="confirm4">线上交底</view>
+            <view @click="dsport">设计报告交付</view>
             <view @click="hcaa">管家竣工验收申请</view>
             <view @click="housekeeperrefuse">管家竣工拒绝</view>
             <view @click="workerCapplication">工人阶段验收申请</view>
@@ -252,7 +250,7 @@
       scroll(e) {},
       getAvailableService() {
         availableService({
-          projectId: this.currentProject.projectId || 0
+          projectId: this.currentProject.projectId
         }).then(data => {
           const {
             purchasedServiceList,
@@ -286,16 +284,6 @@
       dsport() {
         uni.navigateTo({
           url: "/sub-decorate/pages/design-report/design-report"
-        })
-      },
-      confirm2() {
-        uni.navigateTo({
-          url: "/sub-decorate/pages/graphic-model/graphic-model"
-        })
-      },
-      confirm3() {
-        uni.navigateTo({
-          url: "/sub-decorate/pages/construction-plans/construction-plans"
         })
       },
       confirm4() {

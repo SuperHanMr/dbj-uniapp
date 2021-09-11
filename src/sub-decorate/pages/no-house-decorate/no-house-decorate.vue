@@ -110,7 +110,7 @@
     },
     computed: {
       isAllChecked() {
-        return this.design.checked && this.actuary.checked
+        return this.design.checked || this.actuary.checked
       },
       pieces() {
         let num = this.design.checked + this.actuary.checked;
@@ -129,6 +129,12 @@
         let aprice = this.design.price || 59.9
         return dprice * this.currentHouse.insideArea + aprice * this.currentHouse.insideArea
       }
+    },
+    onLoad() {
+      uni.$on("selectedHouse", (data) => {
+        console.log("selectedHouse:", data)
+        this.currentHouse = data
+      })
     },
     onShow() {
       this.getMyHouseList();
@@ -172,7 +178,7 @@
             noHouseDesignId
           } = getApp().globalData
           if (!noHouseDesignId) {
-            let designData = data.filter(t => t.serviceType === 1)
+            let designData = data.filter(t => t.serviceType === 1 && t.categoryTypeId === 6)
             if (designData && designData.length > 0) {
               this.design = {
                 ...designData[0],

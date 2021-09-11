@@ -6,11 +6,11 @@
     ></image>
     <view class="basic-info">
       <view style="font-weight: 500;">
-        <text>{{data.contactName}}</text>
-        <text style="margin-left: 24rpx;">{{data.contactPhone}}</text>
+        <text>{{data.customerName}}</text>
+        <text style="margin-left: 24rpx;">{{data.customerPhone}}</text>
       </view>
       <view class="address">
-        {{data.area}}{{data.cityName}}{{data.address}}{{data.housingEstate}}
+        {{data.estateInfo}}
       </view>
     </view>
   </view>
@@ -19,10 +19,18 @@
 <script>
 export default {
   name: "order-user-base-info",
-  props: ["data"],
+  props:{
+		data:{
+			type:Object,
+			required:true
+		}
+	},
   data() {
     return {};
   },
+	mounted() {
+		console.log("this.data=",this.data)
+	}
 };
 </script>
 
@@ -31,7 +39,7 @@ export default {
   margin-bottom: 16rpx;
   padding: 32rpx;
   background: #ffffff;
-  border-radius: 20rpx;
+  border-radius: 20rpx ;
   color: #333333;
   box-sizing: border-box;
   display: flex;
