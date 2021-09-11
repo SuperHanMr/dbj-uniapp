@@ -168,3 +168,4 @@ export function inventoryDetails(params) {
 //APP-要货-申请要货
 export function goodsApply(params) {
 	return request.post("/order-center/app/goods/require/create", params)
+}
