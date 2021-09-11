@@ -2,19 +2,18 @@
 	<view class="sceneContainer">
 		<view class="header">
 			<view class="houseInfo">
-				<view class="location">金茂府1栋2单元106</view>
+				<view class="location">{{projectInfo.estateAddress.split("区")[1]}}</view>
 				<view class="focus">
 					<view class="browse">浏览 1300</view>
 					<view class="attention">关注 120</view>
 				</view>
 				<view class="itself">
 					<view class="type">
-						<view class="typeInner">5室3厅3卫</view>
+						<view class="typeInner">{{projectInfo.estateUnitsType}}</view>
 						<view class="tag">户型</view>
 					</view>
-					<view class="line"></view>
 					<view class="area">
-						<view class="areaInner">368平米</view>
+						<view class="areaInner">{{projectInfo.estateArea}}平米</view>
 						<view class="tag">面积</view>
 					</view>
 				</view>
@@ -22,7 +21,7 @@
 			<!-- <image class="houseImg" src=""></image> -->
 		</view>
 		<view class="navBar">
-			<view class="construction">
+			<view class="construction" @click="toConstruction">
 				<image class="toConstruction" src="../../static/ic_construction_drawings@2x.png"></image>
 				<view>施工图纸</view>
 			</view>
@@ -34,7 +33,7 @@
 				<image class="toDecorate" src="../../static/ic_decorate_calendar@2x.png"></image>
 				<view>装修日历</view>
 			</view>
-			<view class="video">
+			<view class="video" @click="toVideoSite">
 				<image class="toVideoSite" src="../../static/ic_video_site@2x.png"></image>
 				<view>工地视频</view>
 			</view>
@@ -137,7 +136,7 @@
 			</view>
 		</view>
 		<view class="mask" v-if="showWorkType">
-			<view class="popupSelect">
+			<view class="popupSelects">
 				<view class="selArea">
 					<view class="cancel" @click="showWorkType=false">取消</view>
 					<view class="confirm">确定</view>
@@ -160,8 +159,28 @@
 				</view>
 				<view class="commentList">
 					<view class="commentItem">
-						<view class="mainContent"></view>
-						<view class="reply"></view>
+						<view class="mainContent">
+							<image class="avatar" src="../../static/avatar@2x(1).png"></image>
+							<view class="commentInfo">
+								<view class="info">
+									<view class="userName">王红</view>
+									<view class="role">业主</view>
+									<view class="date">2021-09-12</view>
+								</view>
+								<view class="text">尊敬的业主，您好！打扮家管家-姜文为您新家质量保驾护航，今日巡查房屋情况：今天停工</view>
+							</view>
+						</view>
+						<view class="reply">
+							<image class="avatar" src="../../static/avatar@2x.png"></image>
+							<view class="replyInfo">
+								<view class="info">
+									<view class="userName">姜文</view>
+									<view class="role">管家</view>
+									<view class="date">2021-09-12</view>
+								</view>
+								<view class="text">尊敬的业主，您好！打扮家管家-姜文为您新家质量保驾护航，今日巡查房屋情况：今天停工</view>
+							</view>
+						</view>
 					</view>
 				</view>
 			</view>
@@ -170,12 +189,44 @@
 </template>
 
 <script>
+	import {getDecorateProcess} from "../../../api/real-case.js"
 	export default {
 		data(){
 			return {
 				showWorkType: false,
 				showComments: false,
 				isSelected: false,
+				projectInfo: {}
+			}
+		},
+		created(){
+			this.requestPage()
+		},
+		methods:{
+			toVideoSite(){
+				uni.navigateTo({
+					url:"./video-site"
+				})
+			},
+			toConstruction(){
+				uni.navigateTo({
+					url:"./construction-drawings",
+					success:res => {
+						res.eventChannel.emit('acceptDataFromOpenerPage', 2)
+					}
+				})
+			},
+			requestPage(){
+				let params = {
+					projectId: 1
+				}
+				getDecorateProcess(params).then(data => {
+					if(data){
+						let {projectInfo,nodes} = data
+						console.log(projectInfo,nodes)
+						this.projectInfo = projectInfo
+					}
+				})
 			}
 		}
 	}
@@ -225,7 +276,107 @@
 		display: block;
 		margin-right: 20rpx;
 	}
-	.popupSelect{
+	.commentItem:first-child .mainContent{
+		margin-top: 24rpx;
+	}
+	.commentItem{
+		width: 686rpx;
+		margin-left: 32rpx;
+		border-bottom: 2rpx solid #efefef;
+	}
+	.commentItem .mainContent{
+		width: 100%;
+		height: 132rpx;
+		margin-top: 32rpx;
+		display: flex;
+	}
+	.commentItem .mainContent .avatar{
+		width: 72rpx;
+		height: 72rpx;
+		margin-right: 16rpx;
+		display: block;
+	}
+	.commentItem .mainContent .commentInfo{
+		width: 598rpx;
+		height: 36rpx;
+	}
+	.commentInfo .info{
+		display: flex;
+		align-items: center;
+		margin-top: 8rpx;
+		margin-bottom: 8rpx;
+	}
+	.commentInfo .text{
+		width: 598rpx;
+		height: 80rpx;
+		font-size: 26rpx;
+		color: #333333;
+		line-height: 40rpx;
+	}
+	.info .userName{
+		width: 52rpx;
+		height: 36rpx;
+		margin-right: 8rpx;
+		font-size: 26rpx;
+		color: #999999;
+	}
+	.info .role{
+		width: 56rpx;
+		height: 28rpx;
+		font-size: 20rpx;
+		line-height: 28rpx;
+		text-align: center;
+		color: #fff;
+		background: linear-gradient(45deg,#f2af1a, #ffd698);
+		border-radius: 6rpx;
+	}
+	.info .date{
+		width: 146rpx;
+		height: 36rpx;
+		font-size: 26rpx;
+		color: #999999;
+		line-height: 36rpx;
+		margin-left: 336rpx;
+	}
+	.commentItem .reply{
+		width: 100%;
+		height: 150rpx;
+		margin-top: 24rpx;
+		margin-left: 80rpx;
+		display: flex;
+	}
+	.commentItem .reply .avatar{
+		width: 40rpx;
+		height: 40rpx;
+		margin-right: 16rpx;
+		display: block;
+	}
+	.commentItem .reply .replyInfo{
+		width: 550rpx;
+		height: 120rpx;
+	}
+	.replyInfo .info{
+		width: 550rpx;
+		height: 36rpx;
+		display: flex;
+		align-items: center;
+		margin-top: 2rpx;
+		margin-top: 8rpx;
+	}
+	.replyInfo .info .date{
+		margin-left: 288rpx;
+	}
+	.replyInfo .info .role{
+		background: linear-gradient(45deg,#6d95ef, #84b9fc);
+	}
+	.replyInfo .text{
+		width: 550rpx;
+		height: 120rpx;
+		font-size: 26rpx;
+		color: #333333;
+		line-height: 40rpx;
+	}
+	.popupSelects{
 		width: 100%;
 		height: 670rpx;
 		padding-bottom: 40rpx;
@@ -236,7 +387,7 @@
 		bottom: 0;
 		z-index: 999;
 	}
-	.popupSelect .selArea{
+	.popupSelects .selArea{
 		width: 100%;
 		height: 120rpx;
 		display: flex;
@@ -288,9 +439,9 @@
 	.sceneContainer>.header{
 		width: 100%;
 		height: 400rpx;
-		background-color: pink;
-		/* background-repeat: no-repeat;
-		background-image: url('../../static/bg@2x.png'); */
+		/* background-color: pink; */
+		background-repeat: no-repeat;
+		background-image: url('http://dbj.dragonn.top/static/mp/dabanjia/images/home/bg%402x.png');
 	}
 	.sceneContainer>.footer{
 		width: 100%;
@@ -308,7 +459,8 @@
 		padding-top: 56rpx;
 	}
 	.location{
-		width: 406rpx;
+		width: fit-content;
+		max-width: 406rpx;
 		height: 56rpx;
 		font-size: 40rpx;
 		font-weight: 500;
@@ -347,7 +499,8 @@
 		background: rgba(255,255,255,0.10);
 	}
 	.type{
-		margin-left: 58rpx;
+		margin-left: 40rpx;
+		margin-right: 40rpx;
 	}
 	.type view{
 		height: 34rpx;
@@ -356,7 +509,8 @@
 		line-height: 34rpx;
 	}
 	.typeInner{
-		width: 116rpx;
+		width: fit-content;
+		max-width: 148rpx;
 		margin-top: 14rpx;
 	}
 	.type .tag{
@@ -375,7 +529,8 @@
 		width: 48rpx;
 	}
 	.areaInner{
-		width: 92rpx;
+		width: fit-content;
+		max-width: 148rpx;
 		margin-top: 14rpx;
 	}
 	

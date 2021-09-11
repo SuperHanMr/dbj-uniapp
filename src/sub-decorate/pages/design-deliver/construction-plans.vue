@@ -4,28 +4,16 @@
       <image class="edit"></image>
       <view>申请修改</view>
     </view>
-    <view class="tabs">
-    	<view class="item" v-for="(item, index) in designArr" @click="changeItem(item)" :key="index"
-    		:class="{active: item === currentItem}">
-    		<view class="title">效果图</view>
-    		<image class="bt" src="http://iph.href.lu/48x6?fg=00ed7d"></image>
-    	</view>
+    <view class="title">
+      施工图
     </view>
-    <view class="title" style="margin-top: 68rpx;">{{currentItem}}</view>
     <view class="picture flex-row">
       <view class="imgs" v-for="(item, index) in measureImgList" :key="index">
         <image :src="item" @click="clickImg(measureImgList)"></image>
-        <view class="sub-title">业主的小房间平面图</view>
+        <view class="sub-title">业主的小房间施工图</view>
       </view>
     </view>
-    <view class="title">全景图</view>
-    <view class="picture flex-row">
-      <view class="imgs" v-for="(item, index) in measureImgList" :key="index">
-        <image :src="item" @click="clickImg(measureImgList)"></image>
-        <view class="sub-title">业主的小房间平面图</view>
-      </view>
-    </view>
-    <button class="btn" @click="confirm">确认三维图</button>
+    <button class="btn" @click="confirm">确认施工图</button>
   </view>
 </template>
 
@@ -34,15 +22,13 @@
     data() {
       return {
         measureImgList: [
-          "http://iph.href.lu/328x216?text=三维图交付&fg=EB7662&bg=FFE2DD",
-          "http://iph.href.lu/328x216?text=三维图交付&fg=EB7662&bg=FFE2DD",
-          "http://iph.href.lu/328x216?text=三维图交付&fg=EB7662&bg=FFE2DD",
-          "http://iph.href.lu/328x216?text=三维图交付&fg=EB7662&bg=FFE2DD",
-          "http://iph.href.lu/328x216?text=三维图交付&fg=EB7662&bg=FFE2DD",
-          "http://iph.href.lu/328x216?text=三维图交付&fg=EB7662&bg=FFE2DD"
-        ],
-        currentItem: "效果图",
-        designArr: ["效果图", "全景图"]
+          "http://iph.href.lu/328x216?text=施工图交付&fg=EB7662&bg=FFE2DD",
+          "http://iph.href.lu/328x216?text=施工图交付&fg=EB7662&bg=FFE2DD",
+          "http://iph.href.lu/328x216?text=施工图交付&fg=EB7662&bg=FFE2DD",
+          "http://iph.href.lu/328x216?text=施工图交付&fg=EB7662&bg=FFE2DD",
+          "http://iph.href.lu/328x216?text=施工图交付&fg=EB7662&bg=FFE2DD",
+          "http://iph.href.lu/328x216?text=施工图交付&fg=EB7662&bg=FFE2DD"
+        ]
       }
     },
     methods: {
@@ -63,7 +49,7 @@
       confirm() {
         uni.showModal({
           title: "",
-          content: "是否确认该三维设计图?",
+          content: "是否确认该施工图?",
           confirmText: "确定",
           success: (res) => {
             if (res.confirm) {
@@ -87,16 +73,11 @@
             }
           }
         })
-      },
-      changeItem(item) {
-      	if (this.currentItem !== item) {
-      		this.currentItem = item
-      	}
       }
     }
   }
 </script>
 
 <style scoped lang="scss">
-  @import "../design-deliver/design-picture.scss";
+  @import "./design-picture.scss"
 </style>

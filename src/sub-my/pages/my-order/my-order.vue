@@ -24,6 +24,7 @@
         v-for="(item,tabindex) in tabList"
         :key="tabindex"
       >
+			<view class="line"/>
         <scroll-view
 					class="scroll-view"
           :scroll-y="true"
@@ -33,19 +34,11 @@
 					refresher-enabled="true"
           @scrolltolower="onLoadMore"
         >
-				<!-- @refresherrefresh  自定义下拉刷新被触发
-						@scrolltolower
-				-->
-          <view class="swiper-item">
+          <view class="swiper-item" >
 
-            <view
-              class="order-container"
-              v-if="currentIndex == 3"
-              v-for="item in orderList2"
-              :key="item.id"
-            >
+            <view  v-if=" orderList.length > 0 "  class="order-container"  v-for="item in orderList" :key="item.id">
               <view class="header">
-                <view class="store-name">
+                <view class="store-name" @click="gotoShop">
                   <text>{{item.orderName?item.orderName:item.storeName}}</text>
                   <image
 										v-if="!item.orderName"
@@ -73,15 +66,15 @@
 
               <view class="body">
 								<!-- 套餐 -->
-								<view class="product-info" v-if="item.orderName">
+								<view class="product-info" v-if="item.orderName" @click="goToDetail(item)">
 								  <view class="product-img">
 								    <scroll-view
 								      scroll-x
 								      style="width: 100%; white-space: nowrap;"
 								    >
 								      <image
-											v-for="(item,index) in 6" :key="index"
-								        src="../../../static/images/message/ic_interaction@2x.png"
+												v-for="item2 in handleImage(item.details)" :key="item2"
+								        :src="item2"
 								        mode=""
 								      ></image>
 								    </scroll-view>
@@ -89,14 +82,17 @@
 								  <view class="total-price">
 								    <view class="product-price">
 								      <text style="font-size:22rpx;">￥</text>
-								      <text style="font-weight: 400;">1111128</text>
-								      <text style="font-size:22rpx;">.00</text>
+								      <text style="font-weight: 400;">{{handlePrice(item.orderTotalAmount)[0]}}.</text>
+								      <text style="font-size:22rpx;">{{handlePrice(item.orderTotalAmount)[1]}}</text>
 								    </view>
-								    <view>共1件</view>
+								    <view>共{{item.goodsNumber}}件</view>
 								  </view>
 								</view>
+								
 								 <!-- 非套餐 -->
-								 <order-item :dataList="item.details"  v-else></order-item>					 
+								 <view v-else   v-for="item2 in item.details" :key="item2.id">
+										<order-item :dataList="item2" @handleDetail="goToDetail(item)" />	
+								 </view>	
               </view>
 							
 							<view class="price">
@@ -132,31 +128,22 @@
 								</view>
 							</view>
 							
-							
-							
-
-              <view class="line" v-if="item.orderStatus===0&&(item.showCancelOrderTime || item.showCancelBtn || item.showToPayBtn)"/>
+							<view class="line" v-if="item.orderStatus===0&&(item.showCancelOrderTime || item.showCancelBtn || item.showToPayBtn)"/>
 
               <view class="footer" v-if="item.orderStatus===0&&(item.showCancelOrderTime || item.showCancelBtn || item.showToPayBtn)" :class="{buttonContainer:!item.showCancelOrderTime}">
            
                 <view v-if="item.showCancelOrderTime" class="set-interval">
                   <image  src="../../static/ic_time@2x.png" mode=""></image>
-                  <view class="time-text">
-                    <text style="margin-right: 12rpx;height: 36rpx;line-height: 36rpx;">剩余支付时间</text>
-                    <text class="time-style1">01</text>
-                    <text style="color:#FF3347; margin: 0 6rpx;">:</text>
-                    <text class="time-style1">59</text>
-                    <text style="color:#FF3347; margin: 0 6rpx;">:</text>
-                    <text class="time-style1">59</text>
-                  </view>
-                  <!-- view class="time-text">
-							      <text style="margin-right: 12rpx;height: 36rpx;line-height: 36rpx;">剩余支付时间</text>
-							      <text class="time-style2">01</text>
-							      <text style="margin: 0 6rpx;">:</text>
-							      <text class="time-style2">59</text>
-							      <text style="margin: 0 6rpx;">:</text>
-							      <text class="time-style2">59</text>
-							    </view> -->
+									<!-- <view class="time-text">
+										<text style="margin-right: 12rpx;height: 36rpx;line-height: 36rpx;">剩余支付时间</text>
+										<uni-countdown color="#FF3347" background-color="#FFEFF1"  :showDay="false"  :hour="1" :minute="12" :second="40"></uni-countdown>
+									</view> -->
+									
+									<view class="time-text">
+										<text style="margin-right: 12rpx;height: 36rpx;line-height: 36rpx;">剩余支付时间</text>
+										<uni-countdown color="#333333" background-color="#E4E6E6" :showDay="false"  :hour="formatTime(item.remainTime)[0]" :minute="formatTime(item.remainTime)[1]" :second="formatTime(item.remainTime)[2]"></uni-countdown>
+									</view>
+                
                 </view>
 
                 <view  v-if="item.showToPayBtn || item.showCancelBtn" class="button">
@@ -173,43 +160,27 @@
                     size="mini"
                     class="go-to-pay"
                   >去付款</button>
+									
                 </view>
+								
+								
               </view>
+							
             
 						</view>
 						
+						<view v-else class="empty-page">
+							<view class="line"/>
+							
+							<view class="content ">
+								<image src="../../static/empty_page@2x.png" mode=""></image>
+								<text>暂无相关订单~</text>
+							</view>
+							
+					</view>
 						
-						
-						
-						
-						
-						
-						
-						
-						
-						
-						
-						
-						
-						
-						
-						
-						
-						
-						
-						
-						
-						
-						
-						
-						
-						
-						
-						
-						
-						
-
-            <view class="order-container" @click="goMultiplePay" >
+					
+            <!-- <view class="order-container" @click="goMultiplePay" >
               <view class="header">
                 <view class="store-name">
                   <text>不知道叫什么名字的店铺nizhidaomahahahahahahaha</text>
@@ -254,7 +225,7 @@
 
               <view class="line" />
 
-              <!-- <view class="footer" >
+              <view class="footer" >
 								<view class="set-interval">
 									<image src="../../../static/order/ic／time@2x.png" mode=""></image>
 									<text>
@@ -287,7 +258,7 @@
 										class="go-to-pay"
 									>去付款</button>
 								</view>
-							</view> -->
+							</view>
 
               <view class="confirm-receipt">
                 <button
@@ -298,9 +269,9 @@
                 </button>
               </view>
 
-            </view>
+            </view> -->
 
-            <view class="order-container">
+            <!-- <view class="order-container">
               <view class="header">
                 <view class="store-name">
                   <text>不知道叫什么名字的店铺nizhidaomahahahahahahaha</text>
@@ -333,8 +304,6 @@
                   <text style="font-size:18rpx;">00</text>
                 </view>
                 <view class="need-pay">
-                  <!-- <text>需付款</text>
-                  <text>需付款(含搬运费)</text> -->
                   <text>需付款(含运费、搬运费)</text>
                   <text style="color:#FF3347;margin-left: 8rpx;">
                     <text style="font-size:18rpx;">￥</text>
@@ -353,14 +322,7 @@
                     src="../../../static/order/ic_more@2x.png"
                     mode=""
                   ></image>
-                  <!-- <text>
-										<text style="margin-right: 12rpx;">剩余支付时间</text>
-										<text class="time-style1">01</text>
-										<text style="color:#FF3347; margin: 0 6rpx;">:</text>
-										<text class="time-style1">59</text>
-										<text style="color:#FF3347; margin: 0 6rpx;">:</text>
-										<text class="time-style1">59</text>
-									</text> -->
+                  
                   <text>
                     <text style="margin-right: 12rpx;">剩余支付时间</text>
                     <text class="time-style2">01</text>
@@ -385,18 +347,18 @@
                 </view>
               </view>
 
-              <!-- <view class="confirm-receipt" >
+              <view class="confirm-receipt" >
 								<button
 									type="default"
 									size="mini"
 									class="confirm"
 								>确认收货
 								</button>
-							</view> -->
+							</view>
 
             </view>
-
-            <view class="order-container" @click="toDetail()">
+ -->
+            <!-- <view class="order-container" @click="toDetail()">
               <view class="header">
                 <view class="store-name">
                   <text>多店铺同时下单的标题样式真复杂</text>
@@ -444,8 +406,6 @@
                   <text style="font-size:18rpx;">00</text>
                 </view>
                 <view class="need-pay">
-                  <!-- <text>需付款</text>
-                  <text>需付款(含搬运费)</text> -->
 									<text>需付款(含运费、搬运费)</text>
                   <text style="color:#FF3347;margin-left: 8rpx;">
                     <text style="font-size:18rpx;">￥</text>
@@ -469,14 +429,14 @@
                     <text style="color:#FF3347; margin: 0 6rpx;">:</text>
                     <text class="time-style1">59</text>
                   </text>
-                  <!-- 	<text>
+                  	<text>
 										<text style="margin-right: 12rpx;">剩余支付时间</text>
 										<text class="time-style2">01</text>
 										<text style="margin: 0 6rpx;">:</text>
 										<text class="time-style2">59</text>
 										<text style="margin: 0 6rpx;">:</text>
 										<text class="time-style2">59</text>
-									</text> -->
+									</text>
                 </view>
 
                 <view class="button">
@@ -485,6 +445,7 @@
                     size="mini"
                     class="cancel-order"
                   >取消订单</button>
+									
                   <button
                     type="default"
                     size="mini"
@@ -494,9 +455,13 @@
 
               </view>
             </view>
-          </view>
-        </scroll-view>
+         -->
+					</view>
+        
+				</scroll-view>
+				
       </swiper-item>
+			
     </swiper>
   </view>
 </template>
@@ -509,32 +474,55 @@ export default {
       tabList: ["全部", "待付款", "进行中", "已完成", "已关闭"],
       triggered: false, //控制刷新显示字段
       isActive: true,
-      currentIndex: 0,
-      query: {},
+			
+      currentIndex: 1,
       orderStatus: -1, //订单状态（-1全部,0待付款，1进行中，2已完成 3已关闭）
       rows: 15,
-      lastId: -1,
-      customerId: 3907,
-      orderList99: [],
+			
+			lastId:[-1,-1,-1,-1,-1],
       orderList0: [],
       orderList1: [],
       orderList2: [],
       orderList3: [],
+      orderList4: [],
     };
   },
   
   computed: {
-		currentList() {
-			this.orderStatus = this.currentIndex -1
-			this.getOrderList()
-    },
+		orderList() {
+			// 通过判断currentIndex 返回不同的数组
+			if(this.currentIndex ==0){
+				console.log("this.orderList=",this.orderList0);
+				return this.orderList0
+			}else if(this.currentIndex ==1){
+				console.log("this.orderList=",this.orderList1);
+				return this.orderList1
+			}else if(this.currentIndex ==2){
+				console.log("this.orderList=",this.orderList2);
+				return this.orderList2
+			}else if(this.currentIndex ==3){
+				console.log("this.orderList=",this.orderList3);
+				return this.orderList3
+			}else{
+				console.log("this.orderList=",this.orderList4);
+				return this.orderList4
+			}
+		}
+  },
+	onLoad(e){
+		console.log("e=",e)
+		if(e.index){
+			if(e.index ==99){
+				this.currentIndex=0
+			}else{
+				this.currentIndex =Number(e.index) 
+			}
+		}
 		
-  },
-  watch: {
-    orderList(val,oldVal) {
-			console.log("val=",val,"oldVal",oldVal)
-		},
-  },
+		this.orderStatus = this.currentIndex -1
+		
+		this.getOrderList()
+	},
 
   methods: {
 		
@@ -546,68 +534,121 @@ export default {
 				return[list[0],list[1]]
 			}
 		},
+		
 		goMultiplePay(){
 			uni.navigateTo({
 				url:"order-success/order-success"
 			})
 		},
-    
-		toDetail(item) {
-      console.log(item);
-      uni.navigateTo({
-				url:"order-failed/order-failed?type=close"
-        // url: "order-in-progress/order-in-progress?orderNo=" + item.id,
-      });
-    },
+    //跳转到详情页面
+		goToDetail(data) {
+			console.log("data1111=",data)
+			if(data.orderStatus == 0){//（0待付款，1进行中，2已完成 3已关闭）
+				uni.navigateTo({
+					url:`order-wait-pay/order-wait-pay?orderNo=${data.id}`
+				});
+			}else if(data.orderStatus ==1){
+				uni.navigateTo({
+					url: `order-in-progress/order-in-progress?orderNo=${data.id}`
+				});
+			}else if(data.orderStatus ==2){
+				uni.navigateTo({
+					url:`order-success/order-success?type=complete&id=${data.id}`
+				});
+			}else{
+				uni.navigateTo({
+					url:`order-failed/order-failed?type=close&id=${data.id}`
+				});
+			}
+		},
 
     swiperChange(e) {
       let index = e.target.current || e.detail.current;
       this.currentIndex = index;
-    },
+			//index对应的list数据是否为空 为空的话请求数据 有数据的话就不请求了
+			switch(this.currentIndex){
+				case 0:
+					if(this.orderList0.length < 1 )	 this.getOrderList()
+					break;
+				case 1:
+					if(this.orderList1.length < 1 )	 this.getOrderList()
+					break;
+				case 2:
+					if(this.orderList2.length < 1 )	 this.getOrderList()
+					break;
+				case 3:
+					if(this.orderList3.length < 1 )	 this.getOrderList()
+					break;
+				case 4:
+					if(this.orderList4.length < 1 )	 this.getOrderList()
+					break;
+			}
+		},
+		
+		formatTime(msTime) {
+			let time = msTime /1000;
+			let hour = Math.floor(time /60 /60) %24;
+			if(!hour){
+				hour = 0
+			}
+			let minute = Math.floor(time /60) %60;
+			if(!minute){
+				minute =0
+			}
+			let second = Math.floor(time) %60;
+			return [hour,minute,second]
+		},
+		
+		gotoShop(){
+			console.log("去店铺首页！！！！店铺首页在第二期诶，暂时跳不了")
+		},
+		
 
     async getOrderList() {
       this.loading = true;
       let orderItem = await getOrderList({
-        orderStatus: this.orderStatus,
-        lastId: this.lastId,
+        orderStatus: this.currentIndex - 1,
+        lastId: this.lastId[this.currentIndex],
         rows: this.rows,
-        // customerId: this.customerId,
       });
-      console.log(orderItem, "caseItem");
-			switch(this.orderStatus){
-				case -1 :
-					this.orderList99 =this.orderList99.concat(orderItem)
-					// this.lastId = this.orderList99[this.orderList99.length-1].id
-					break;
-				case 0:
-					this.orderList0 =this.orderList0.concat(orderItem)
-					break;
-				case 1:
-					this.orderList1 =this.orderList1.concat(orderItem)
-					break;
-				case 2 :
-					this.orderList2 =orderItem.concat( this.orderList2)
-					break;
-				case 3 :
-					this.orderList3 =this.orderList3.concat(orderItem)
-					break;
+      console.log( "caseItem=",orderItem);
+			
+			let lastId = orderItem.length > 0 ? orderItem[orderItem.length-1].id :-1
+			
+			if(this.currentIndex ==0){
+				this.lastId[0]=lastId
+				this.orderList0 =this.orderList0.concat(orderItem)
+				
+			}else if(this.currentIndex ==1){
+				this.lastId[1]=lastId
+				this.orderList1 =this.orderList1.concat(orderItem)
+				
 			}
-      // this.totalPage = orderItem.totalPage;
-      this.loading = false;
+			else if(this.currentIndex ==2){
+				this.lastId[2]=lastId
+				this.orderList2 =this.orderList2.concat(orderItem)
+				
+			}
+			else if(this.currentIndex ==3){
+				this.lastId[3]=lastId
+				this.orderList3=this.orderList3.concat(orderItem)
+				
+			}else {
+				this.lastId[4]=lastId
+				this.orderList4 =this.orderList4.concat(orderItem)
+				
+			}
+			this.loading = false;
     },
 
     onLoadMore() {
       console.log("onLoadMore!!!!!!!!!!!!!!");
-      if (this.loading || this.page >= this.totalPage) {
-        return;
-      }
-      this.page++;
+      if(this.loading) return 
       this.getOrderList();
     },
 
 
-
-    onRefresh(e) {
+		onRefresh(e) {
       console.log("刷新!!!!!");
       this.triggered = true;
       setTimeout(() => {
@@ -615,6 +656,17 @@ export default {
         this.triggered = false;
       }, 1000);
     },
+		handlePrice(price){
+			let list=String(price).split(".")
+			if(list.length==1){
+				return [list[0],"00"]
+			}else{
+				return[list[0],list[1]]
+			}
+		},
+		handleImage(list){
+			return list.map(item=>item.imgUrl)
+		}
   },
 };
 </script>
@@ -819,23 +871,10 @@ export default {
       margin-right: 4rpx;
     }
     .time-text {
-      .time-style1 {
-        width: 36rpx;
-        height: 36rpx;
-        line-height: 36rpx;
-        border-radius: 4rpx;
-        background: rgba($color: #ff3347, $alpha: 0.08);
-        text-align: center;
-        color: #ff3347;
-      }
-      .time-style2 {
-        width: 36rpx;
-        height: 36rpx;
-        line-height: 36rpx;
-        background: #e4e6e6;
-        border-radius: 4rpx;
-        text-align: center;
-      }
+			display: flex;
+			flex-flow: row nowrap;
+			align-items: center;
+      
     }
   }
 
@@ -890,17 +929,49 @@ export default {
   }
 }
 
+.changeBgc{
+	background-color: #FFFFFF !important;
+}
 .swiper {
   flex: 1;
   display: flex;
   flex-direction: column;
-  background-color: skyblue;
+  background-color: #F2F2F2;
   swiper-item {
     height: 100%;
     overflow: auto;
+		
     // scroll-view {
     //   padding-bottom: 100rpx;
     // }
+		.empty-page{
+			.line{
+				height: 1rpx solid #F2F2F2;
+			}
+			.content{
+				margin: 388rpx 254rpx 0 256rpx ;
+				width: 240rpx;
+				display: flex;
+				flex-flow: column nowrap;
+				align-items: center;
+				color: #999999;
+				image{
+					width: 240rpx;
+					height: 240rpx;
+					object-fit: cover;
+					margin-bottom: 24rpx;
+				}
+				text{
+					height: 40rpx;
+					line-height: 40rpx;
+					font-size: 28rpx;
+					font-weight: 400;
+					color: #999999;
+				}
+			}
+			
+			
+		}
   }
 }
 
@@ -916,4 +987,14 @@ button::after {
 .active {
   color: #808080 !important;
 }
+
+
+
+::v-deep .uni-countdown__number{
+	width: 36rpx !important;
+	height: 36rpx !important;
+}
+::v-deep .uni-countdown__splitor.data-v-02c75d70 {
+  line-height: 36rpx !important;
+	}
 </style>

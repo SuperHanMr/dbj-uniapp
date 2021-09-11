@@ -1,0 +1,553 @@
+<template>
+  <view class="container">
+   <view class="order-container"  :style="{paddingBottom:112+containerBottom+'rpx'}">
+			<view class="order-status">
+				<view class="backgroundStyle" />
+				
+				<view class="status">
+						<image
+							src="../../../static/ic_status_wait_pay@2x.png"
+							mode="scaleToFill"
+						></image>
+						<text>待付款</text>
+					</view>
+			
+					<view class="time">
+						<text style="margin-right: 16rpx;">剩余支付时间</text>
+						<uni-countdown 
+						color="#FFFFFF" 
+						background-color="#FAAB3B" 
+						:showDay="false"   
+						:hour="formatTime(orderInfo.remainTime)[0]" 
+						:minute="formatTime(orderInfo.remainTime)[1]" 
+						:second="formatTime(orderInfo.remainTime)[2]"
+						/>
+					</view>
+			 
+			</view>
+			
+			<order-user-base-info :data="orderInfo"></order-user-base-info>
+			
+			<view class="store-container" v-for="(item,index) in orderInfo.details" :key="index">
+				<view class="storeItem" :class="{paddingBottom: item.freeShipCount || item.fullExemptionAmount  }">
+					<view class="header">
+						<text>{{item.storeName}}</text>
+						<image
+							src="@/static/order/ic_more@2x.png"
+							mode=""
+						></image>
+					</view>
+					<view v-for="item2 in item.details" :key="item2.id">
+						
+						<order-item :orderStatus="1" :dataList="item2"></order-item>
+					</view>
+					
+					<view class="discount-container" v-if="item.showFreight">
+						<view class="left">
+							<view class="item">
+								<text>运费</text>
+								<text>￥{{item.freight}}</text>
+							</view>
+							<view class="item" v-if="item.platformDiscount">
+							<text>平台优惠</text>
+							<text>￥{{item.platformDiscount}}</text>
+						</view>
+						</view>
+						<view class="line1" v-if="item.handlingFees || item.storeDiscount" />
+						<view class="line2" v-else/>
+						<view class="right">
+							<view class="item">
+								<text>搬运费</text>
+								<text>{{item.handlingFees?`￥${item.handlingFees}`:"--"}}</text>
+							</view>
+							<view class="item" v-if="item.storeDiscount">
+								<text>商家优惠</text>
+								<text>￥{{item.storeDiscount}}</text>
+							</view>
+						</view>
+					</view>
+					
+					
+					
+					
+					<view class="tips" v-if="item.freeShipCount || item.fullExemptionAmount">
+						<text>本次支付</text>
+						<text style="color: #333333;">满{{item.fullExemptionAmount}}元</text>
+						<text>，可获得</text>
+						<text style="color: #333333;">{{item.freeShipCount}}次免邮费额度，</text>
+						<text>搬运费需要根据实际要货时进行核算</text>
+					</view>
+					
+					<!-- <view class="tips">
+						<text>搬运费需要根据实际要货时进行核算</text>
+					</view> -->
+					
+				</view>
+				
+				<view class="split-line" />
+				
+			</view> 
+			
+
+			<order-price
+				:totalAmount="orderInfo.totalAmount"
+				:freight="orderInfo.freight"
+				:handlingFees="orderInfo.handlingFees"
+				:depositTotalAmount="orderInfo.depositTotalAmount"
+				:platformDiscount="orderInfo.platformDiscount"
+				:storeDiscount="orderInfo.storeDiscount"
+				:totalActualIncomeAmount="orderInfo.totalActualIncomeAmount"
+			/>
+
+			<view class="payment-method">
+				<text>支付方式</text>
+				<view class="method">
+					<image
+						src="@/static/order/ic_order_wechat@2x.png"
+						mode=""
+					></image>
+					<text>微信支付</text>
+				</view>
+			</view>
+
+			<order-info  :showPayTime="false" :showPayType="false"></order-info>
+
+			
+			
+		<!-- 底部按钮 -->
+			<view :class="{noCancelBtn:true}" class="waitPayBottom"  :style="{paddingBottom:systemBottom,height:systemHeight}">
+			
+				<view class="canclePay" @click="handleCancelOrder">
+					取消订单
+				</view>
+				<view class="gotoPay" @click="toPay()">
+					去付款
+				 </view>
+			</view>
+			
+		</view>
+  
+	 
+		<uni-popup  ref="cancleOrder"  type="dialog">
+			<uni-popup-dialog
+				mode="base"
+				title="您确定要取消该订单吗？"
+				:before-close="true"
+				@close="cancelOrderClose"
+				@confirm="cancleConfirm"
+			/>
+		</uni-popup>
+		
+	</view>
+</template>
+
+<script>
+import { getOrderDetail, orderPay, cancelOrder,confirmReceiptOrder } from "../../../../api/order.js";
+export default {
+  data() {
+    return {
+      orderNo: "",
+			
+			type:"inprogress",
+			orderInfo:{},
+			
+			systemBottom: "",
+			systemHeight: "",
+			containerBottom:"",
+    };
+  },
+	
+	mounted(e) {
+		const menuButtonInfo = uni.getMenuButtonBoundingClientRect();
+		this.containerBottom = menuButtonInfo.bottom
+		this.systemBottom = menuButtonInfo.bottom + "rpx";
+		this.systemHeight = menuButtonInfo.bottom + this.num + "rpx";
+		console.log(this.systemBottom);
+	},
+	
+  onLoad(e) {
+    if (e && e.orderNo) {
+      this.orderNo = e.orderNo;
+      // this.getOrderDetail();
+    }
+		this.orderDetail()
+		
+		
+	},
+	
+  methods: {
+		orderDetail(){
+			getOrderDetail({id:this.orderNo}).then(e=>{
+				console.log(e);
+					this.orderInfo =e
+					console.log("this.orderInfo=",this.orderInfo)
+			})
+		},
+		
+		formatTime(msTime) {
+			let time = msTime /1000;
+			let hour = Math.floor(time /60 /60) %24;
+			if(!hour){
+				hour = 0
+			}
+			let minute = Math.floor(time /60) %60;
+			if(!minute){
+				minute =0
+			}
+			let second = Math.floor(time) %60;
+			return [hour,minute,second]
+		},
+
+		toApplayForRefund() {
+      uni.navigateTo({
+        url: "/sub-my/pages/apply-for-refund/apply-for-refund",
+      });
+    },
+		
+  
+		// 取消订单
+		handleCancelOrder(){
+			this.$refs.cancleOrder.open();
+		},
+		cancelOrderClose(){
+			this.$refs.cancleOrder.close();
+		},
+		cancleConfirm(){
+			console.log("取消订单按钮成功！")
+			// 调用取消订单的接口  
+			cancelOrder({id:this.orderNo}).then(e=>{
+				if(e.code==1){
+					
+					this.$refs.cancleOrder.close();
+					this.toCancelPage()
+				}
+			})
+		},
+		//跳转到订单取消页面
+		toCancelPage(){
+			uni.navigateTo({
+				url:`../order-failed/order-failed?type=complete&id=${this.orderNo}`
+			})
+		},
+		
+		//去支付
+		toPay() {
+			// 先判断是否支付超额拆单了
+			// 拆单之后直接跳转到拆单页面
+			// 未拆单 直接支付 
+			console.log(this.orderInfo,"orderInfo.orderId=",this.orderInfo.orderId)
+				
+			if(this.orderInfo.isSplitPay){
+				// orderId 是订单id
+				uni.navigateTo({
+					url:`../multiple-payments/multiple-payments?orderId=${this.orderNo}`
+				})
+				
+			}else{
+				let openId = uni.getStorageSync("openId");
+				orderPay({
+					// orderId: this.orderNo,
+					orderId: this.orderNo,
+					payType: 1,//支付类型  1微信支付",
+					openid: openId,
+				}).then((e) => {
+					const payInfo = e.wechatPayJsapi;
+					uni.requestPayment({
+						provider: "wxpay",
+						...payInfo,
+						success(res) {
+							console.log("@@@@@@@");
+							console.log(res);
+							// 支付成功后跳转到哪个页面
+						},
+						fail(e) {
+							console.log(e);
+							// 支付失败时候跳转到哪个页面
+						},
+					});
+				});
+			}
+			
+			
+		
+		
+		},
+  },
+};
+</script>
+
+<style lang="scss" scoped>
+
+
+
+.container {
+
+  // background-color: skyblue;
+  .order-container {
+		height: 100%;
+		overflow: auto;
+    .order-status {
+      width: 100%;
+      height: 140rpx;
+      color: #ffffff;
+      background-size: 100% 172rpx;
+      display: flex;
+      flex-flow: column nowrap;
+      align-items: center;
+      position: relative;
+      .backgroundStyle {
+        position: absolute;
+        z-index: -1;
+        width: 100%;
+        height: 172rpx;
+        background-color: #ffb245;
+      }
+      .status {
+        display: flex;
+        flex-flow: row nowrap;
+        align-items: center;
+        margin-bottom: 8rpx;
+        image {
+          width: 64rpx;
+          height: 64rpx;
+          object-fit: cover;
+          margin-right: 12rpx;
+        }
+        text {
+          font-size: 48rpx;
+          font-weight: 500;
+          color: #ffffff;
+        }
+      }
+
+      .time {
+        color: #ffffff;
+        height: 40rpx;
+        line-height: 40rpx;
+        font-size: 24rpx;
+        font-weight: 400;
+        display: flex;
+        align-items: center;
+				display: flex;
+				flex-flow: row nowrap;
+				align-items: center;
+      }
+    }
+		
+    
+		.store-container{
+			
+			.storeItem{
+				padding: 32rpx 32rpx 0;
+				background: #ffffff;
+				border-radius: 24rpx 24rpx 0 0;
+				.header {
+				  margin-bottom: 32rpx;
+				  box-sizing: border-box;
+				  display: flex;
+				  align-items: center;
+				  text {
+				    font-weight: 1000;
+				    max-width: 476rpx;
+				    font-size: 28rpx;
+				    overflow: hidden;
+				    text-overflow: ellipsis;
+				    white-space: nowrap;
+				  }
+				  image {
+				    width: 34rpx;
+				    height: 34rpx;
+				    object-fit: cover;
+				  }
+				}
+				
+				.tips {
+				  background: #f7f7f7;
+				  border-radius: 16rpx;
+				  color: #999999;
+				  font-size: 22rpx;
+				  padding: 16rpx 24rpx;
+				  box-sizing: border-box;
+				}
+				
+				.discount-container{
+					padding-bottom: 32rpx;
+					display: flex;
+					flex-flow: row nowrap;
+					flex: 1;
+					align-items: center;
+					justify-content: flex-end;
+					font-size: 22rpx;
+					color: #999999;
+					.left,
+					.right {
+						.item {
+							width: 302rpx;
+							height: 32rpx;
+							line-height: 32rpx;
+							display: flex;
+							flex: 1;
+							flex-flow: row nowrap;
+							justify-content: space-between;
+							margin-bottom: 8rpx;
+						}
+						.item:nth-last-child(1) {
+							margin-bottom: 0;
+						}
+					}
+					.line1 {
+						width: 2rpx;
+						height: 40rpx;
+						background: #ebebeb;
+						margin: 16rpx 40rpx;
+					}
+					.line2 {
+						width: 2rpx;
+						height: 20rpx;
+						background: #ebebeb;
+						margin: 6rpx 40rpx;
+					}
+				}
+				
+				.discount-container2 {
+					margin-bottom: 24rpx;
+					display: flex;
+					flex-flow: row nowrap;
+					flex: 1;
+					align-items: flex-start;
+					justify-content: flex-end;
+					font-size: 22rpx;
+					color: #999999;
+					.left,
+					.right {
+						.item {
+							width: 302rpx;
+							height: 32rpx;
+							line-height: 32rpx;
+							display: flex;
+							flex: 1;
+							flex-flow: row nowrap;
+							justify-content: space-between;
+							margin-bottom: 8rpx;
+						}
+						.item:nth-last-child(1) {
+							margin-bottom: 0;
+						}
+					}
+					.line {
+						width: 2rpx;
+						height: 80rpx;
+						background: #ebebeb;
+						margin: 16rpx 40rpx;
+					}
+				}
+				
+				
+			}
+			
+			.paddingBottom{
+				padding-bottom: 32rpx !important;
+			}
+		}
+    
+
+    .payment-method {
+      display: flex;
+      flex-flow: row nowrap;
+      align-items: center;
+      justify-content: space-between;
+      background-color: #ffffff;
+      height: 112rpx;
+      color: #333333;
+      font-size: 30rpx;
+      font-weight: 500;
+      padding: 32rpx;
+      margin-bottom: 16rpx;
+      border-radius: 24rpx;
+      box-sizing: border-box;
+      .method {
+        display: flex;
+        align-items: center;
+        image {
+          width: 32rpx;
+          height: 32rpx;
+          object-fit: cover;
+          margin-right: 16rpx;
+        }
+        text {
+          font-size: 28rpx;
+        }
+      }
+    }
+
+  }
+}
+
+// 底部 取消支付按钮样式 确认收货 及申请退款按钮
+.waitPayBottom{
+	width: 686rpx;
+	background-color: #FFFFFF;
+	display: flex;
+	flex-flow: row nowrap;
+	align-items: center;
+	justify-content: space-between;
+	padding: 12rpx 32rpx;
+	position: fixed;
+	bottom: 0;
+	.gotoPay {
+	  width: 248rpx;
+	  height: 88rpx;
+	  line-height: 88rpx;
+	  font-size: 32rpx;
+	  text-align: center;
+	  color: #ffffff;
+	  background: linear-gradient(135deg, #36d9cd 0%, #28c6c6 100%);
+	  border-radius: 12rpx;
+	}
+}
+
+
+//头部倒计时样式
+::v-deep .uni-countdown__number{
+	width: 36rpx !important;
+	height: 36rpx !important;
+}
+::v-deep .uni-countdown__splitor.data-v-02c75d70 {
+  line-height: 36rpx !important;
+	color: #FFFFFF !important;
+	}	
+
+		
+// 弹框样式
+::v-deep .uni-popup-dialog {
+  width: 560rpx !important;
+  border-radius: 24rpx !important;
+  background-color: #fff !important;
+}
+::v-deep .uni-dialog-title-text {
+  color: #111111 !important;
+  font-size: 32rpx !important;
+  font-weight: 550 !important;
+}
+::v-deep .uni-dialog-title {
+  padding: 48rpx 0 !important;
+}
+::v-deep .uni-dialog-content {
+  display: none !important;
+}
+::v-deep .uni-dialog-button-group {
+  border-top: 2rpx solid #f5f5f5;
+}
+::v-deep .uni-dialog-button {
+  height: 82rpx !important;
+}
+::v-deep .uni-button-color {
+  color: #ff3347 !important;
+  font-size: 30rpx !important;
+  font-weight: 500;
+}
+::v-deep .uni-dialog-button-text {
+  font-size: 30rpx !important;
+}
+</style>
+

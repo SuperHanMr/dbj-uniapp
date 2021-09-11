@@ -11,7 +11,7 @@
 				</view>
 			</view>
 			
-			<view class="price-item">
+			<view class="price-item" v-if="freight">
 				<view class="title">
 					<text style="margin-right: 8rpx;">运费</text>
 					<text class="icon">?</text>
@@ -22,7 +22,7 @@
 				</view>
 			</view>
 				
-			<view class="price-item">
+			<view class="price-item" v-if="handlingFees">
 				<view class="title">
 					<text style="margin-right: 8rpx;">搬运费</text>
 					<text class="icon">?</text>
@@ -32,8 +32,19 @@
 					<text style="font-size:28rpx;">{{handlePrice(handlingFees)[0]}}.{{handlePrice(handlingFees)[1]}}</text>
 				</view>
 			</view>
+			
+			<view class="price-item" v-if="depositTotalAmount">
+				<view class="title">
+					<text style="margin-right: 8rpx;">总押金</text>
+					<text class="icon">?</text>
+				</view>
+				<view>
+					<text>￥</text>
+					<text style="font-size:28rpx;">{{handlePrice(depositTotalAmount)[0]}}.{{handlePrice(depositTotalAmount)[1]}}</text>
+				</view>
+			</view>
 				
-			<view class="price-item">
+			<view class="price-item" v-if="storeDiscount">
 				<view>商家优惠</view>
 				<view>
 					<text>￥</text>
@@ -41,7 +52,7 @@
 				</view>
 			</view>
 				
-			<view class="price-item">
+			<view class="price-item" v-if="platformDiscount">
 				<view>平台优惠</view>
 				<view>
 					<text>￥</text>
@@ -68,6 +79,16 @@
 	export default {
 		name:"order-price",
 		props:{
+			totalAmount:{ //商品总额(不包含押金)
+				type:Number,
+				default:0,
+			},
+			freight:{//运费
+				default:0,
+			},
+			handlingFees:{//搬运费
+				default:0,
+			},
 			platformDiscount:{//平台优惠
 				type:Number,
 				default:0,
@@ -76,23 +97,16 @@
 				type:Number,
 				default:0,
 			},
-			freight:{//运费
-				type:Number,
-				default:0,
-			},
-			handlingFees:{//搬运费
-				type:Number,
+			depositTotalAmount:{//总押金
 				default:0,
 			},
 			totalActualIncomeAmount:{ //总实收金额
 				type:Number,
 				default:0,
 			},
-			totalAmount:{ //商品总额(不包含押金)
-				type:Number,
-				default:0,
-			}
+		
 		},
+		
 		data() {
 			return {
 				

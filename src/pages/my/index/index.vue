@@ -180,7 +180,9 @@ export default {
     handlerTotalOrder() {
       console.log("点击我的订单全部按钮");
       uni.navigateTo({
-				url:"../../../sub-my/pages/my-order/my-order"
+				// url:"../../../sub-my/pages/my-order/my-order?index=99"//勿删 
+				url:`../../../sub-my/pages/my-order/order-wait-pay/order-wait-pay`
+				// url:"../../../sub-my/pages/my-order/order-in-progress/order-in-progress"
       });
     },
     handlerOrder(item) {

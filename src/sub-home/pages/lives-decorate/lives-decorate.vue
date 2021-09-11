@@ -211,6 +211,9 @@
 		display: flex;
 		justify-content: center;
 		align-items: center;
+		margin-left: 42rpx;
+		padding: 24rpx 25rpx 40rpx 0;
+		border-left: 1rpx #2fcfc9 dashed;
 	}
 
 	.player {
@@ -222,7 +225,7 @@
 
 	.h-row {
 		display: flex;
-		padding: 24rpx 32rpx;
+		padding: 0 32rpx;
 		align-items: center;
 
 		.tip {
