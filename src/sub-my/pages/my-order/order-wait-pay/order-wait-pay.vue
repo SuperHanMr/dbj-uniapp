@@ -120,7 +120,7 @@
 				<view class="canclePay" @click="handleCancelOrder">
 					取消订单
 				</view>
-				<view class="gotoPay" @click="toPay()">
+				<view class="gotoPay" @click="toPay">
 					去付款
 				 </view>
 			</view>
@@ -197,6 +197,15 @@ export default {
 			let second = Math.floor(time) %60;
 			return [hour,minute,second]
 		},
+		
+		handlePrice(price){
+			let list=String(price).split(".")
+			if(list.length==1){
+				return [list[0],"00"]
+			}else{
+				return[list[0],list[1]]
+			}
+		},
 
 		toApplayForRefund() {
       uni.navigateTo({
@@ -214,7 +223,7 @@ export default {
 		},
 		cancleConfirm(){
 			console.log("取消订单按钮成功！")
-			// 调用取消订单的接口  
+			//点击确定后订单会被取消且该订单会被移入已关闭订单中
 			cancelOrder({id:this.orderNo}).then(e=>{
 				if(e.code==1){
 					
@@ -226,7 +235,7 @@ export default {
 		//跳转到订单取消页面
 		toCancelPage(){
 			uni.navigateTo({
-				url:`../order-failed/order-failed?type=complete&id=${this.orderNo}`
+				url:`../order-failed/order-failed?type=close&id=${this.orderNo}`
 			})
 		},
 		
