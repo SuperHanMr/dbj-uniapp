@@ -14,7 +14,7 @@
 				<scroll-view class="scroll-view" :enable-back-to-top="true" scroll-y="true" lower-threshold="10"
 					refresher-background="#FFF" refresher-enabled="true" @scroll="onScroll"
 					:refresher-triggered="triggered" @refresherrefresh="onRefresh" @scrolltolower="onLoadMore">
-					<warehouse-item v-for="(item,index) in currentList"  :item="item" :key="item.id" @detail="toDetail"
+					<warehouse-item v-for="(item,index) in currentList"  :showBtns="currentIndex==1"  :item="item" :key="item.id" @detail="toDetail"
 						@refund="toRefund"></warehouse-item>
 				</scroll-view>
 			</swiper-item>
@@ -37,7 +37,7 @@
 				list1: [],
 				list2: [],
 				list3: [],
-				tabList: ["待发货", "待收款", "已收货", "退款"],
+				tabList: ["待发货", "待收货", "已收货", "退款"],
 				lastId: ['', '', '', ''],
 				triggered: false, //控制刷新显示字段
 				currentIndex: 0,
@@ -60,14 +60,21 @@
 			if (e && e.projectId) {
 				this.projectId = e.projectId;
 			}
+			
+				this.getList(true);
 		},
 		onShow() {
-			this.getList(true);
 		},
 		methods: {
 			toDetail(e) {
+				let id;
+				if(this.currentIndex==0){
+					id=e.orderId;
+				}else{
+					id=e.id
+				}
 				uni.navigateTo({
-					url: "/sub-decorate/pages/warehouse-refund-detail/warehouse-refund-detail",
+					url: `/sub-decorate/pages/warehouse-refund-detail/warehouse-refund-detail?type=${this.currentIndex}&id=${id}`,
 				});
 			},
 			toRequire() {

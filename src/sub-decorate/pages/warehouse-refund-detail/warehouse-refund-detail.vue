@@ -1,6 +1,8 @@
 <template>
 	<view>
-		<warehouse-item :showBtns="false"></warehouse-item>
+		<warehouse-item :showBtns="false" :showSubtitle="false" :item="res">
+
+		</warehouse-item>
 		<view class="detail-price">
 			<view class="detail-price-row">
 				<view class="detail-price-row-font">
@@ -13,7 +15,7 @@
 					¥
 				</view>
 				<view class="detail-price-row-num">
-					230.00
+					{{res.totalAmount}}
 				</view>
 
 			</view>
@@ -29,7 +31,7 @@
 					¥
 				</view>
 				<view class="detail-price-row-num">
-					230.00
+					{{res.freight}}
 				</view>
 
 			</view>
@@ -44,7 +46,7 @@
 					¥
 				</view>
 				<view class="detail-price-row-num">
-					60.00
+					{{res.handlingFees}}
 				</view>
 
 			</view>
@@ -59,7 +61,7 @@
 					¥
 				</view>
 				<view class="detail-price-row-num">
-					20.00
+					{{res.storeDiscount}}
 				</view>
 
 			</view>
@@ -68,14 +70,11 @@
 					实付款
 				</view>
 				<view class="total-pay-amount">
-
 					<text class="totoal-pay-num">￥</text>
 					<text class="totoal-pay-num-z">600</text>
 					<text class="totoal-pay-num">.00</text>
 				</view>
-
 			</view>
-
 		</view>
 
 
@@ -88,7 +87,7 @@
 					订单编号:
 				</view>
 				<view class="order-info-row-con">
-					DDPG2020121400001
+					{{res.orderId}}
 				</view>
 				<view class="copy" @click="copy">
 					复制
@@ -99,8 +98,7 @@
 					创建时间:
 				</view>
 				<view class="order-info-row-con">
-					2021-01-12 16:58:26
-
+					{{res.createTime |formatDate}}
 				</view>
 			</view>
 			<view class="order-info-row">
@@ -108,24 +106,66 @@
 					付款时间:
 				</view>
 				<view class="order-info-row-con">
-					2021-01-12 16:58:26
+					{{res.pay_time |formatDate}}
 				</view>
 			</view>
 		</view>
-		
+
 		<bottom-btn btnContent="确认收货"></bottom-btn>
 	</view>
 </template>
 
 <script>
+	import {
+		formatDate
+	} from '../../../utils/common.js'
+	import {
+		deliveredDetail,
+		receivedDetail,
+		refundDetail
+	} from "../../../api/order.js"
 	export default {
+
+		filters: {
+			formatDate
+		},
 		data() {
 			return {
+				pay_time: '1631515894',
+				res: {
+
+				}
 			}
 		},
-		onLoad() {
+		onLoad(e) {
+			let type = e.type;
+			let id = e.id;
+			console.log(type, id, '!!!!!!!!!!');
+			this.loadData(type, id);
 		},
 		methods: {
+			loadData(type, id) {
+				if (type == 0) {
+					deliveredDetail({
+						orderId: id
+					}).then(e => {
+						this.res = e;
+					})
+				} else if (type == 1 || type == 2) {
+					receivedDetail({
+						id
+					}).then(e => {
+						this.res = e;
+					})
+				} else if (type == 3) {
+					refundDetail({
+						id
+					}).then(e => {
+						this.res = e;
+					})
+				}
+
+			},
 			copy() {
 				uni.setClipboardData({
 					data: 'hello',
@@ -228,5 +268,4 @@
 			}
 		}
 	}
-	
 </style>

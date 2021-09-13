@@ -71,12 +71,20 @@ export function reimburseList(params) {
 		params
 	})
 }
+//c端APP-仓库-待收货-已收货
+export function receivedDetail(params) {
+	return request.get(`/order-center/app/goods/stock/toBeReceived/detail`, {
+		params
+	})
+}
+
 //c端APP-仓库-待发货查询详情
 export function deliveredDetail(params) {
 	return request.get(`/order-center/app/goods/stock/toBeDelivered/details`, {
 		params
 	})
 }
+
 
 //C端APP-我的-订单-退款-退款详情
 export function refundDetail(params) {

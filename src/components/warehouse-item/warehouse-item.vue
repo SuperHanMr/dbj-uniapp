@@ -4,13 +4,13 @@
 			<view class="store-name">
 				{{item.storeName}}
 			</view>
-			<view class="store-sub">
+			<view v-if="showSubtitle" class="store-sub">
 				剩余{{item.remainingShipments}}次免运费额度
 			</view>
 		</view>
-		<view v-for="(goodItem,index) in item.stockAppVOS" :key="index" class="goods-list">
+		<view v-for="(goodItem,index) in item.stockAppVOS" :key="index" class="goods-list" @click="toDetail">
 			<view class="good-detail">
-				
+
 				<image class="img" :src="goodItem.imgUrl">
 				</image>
 				<view class="goods-info">
@@ -102,6 +102,10 @@
 				type: Boolean,
 				default: true
 			},
+			showSubtitle: {
+				type: Boolean,
+				default: true
+			},
 			isEdit: {
 				type: Boolean,
 				default: false
@@ -114,11 +118,11 @@
 		},
 		methods: {
 			toDetail() {
-				this.$emit('detail');
+				this.$emit('detail', this.item);
 			},
 
 			toRefund() {
-				this.$emit('refund');
+				this.$emit('refund', this.item);
 			}
 		}
 	}
