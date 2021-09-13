@@ -13,28 +13,45 @@
 			>{{item.severName}}</view>
 		</view>
 		<view v-if="navIndex===0" class="underline"></view>
+		<view class="designer">
+			<view class="designerInfo">
+				<image class="avatar" src="../../static/avatar@2x(1).png"></image>
+				<view>
+					<view class="designerName">李易峰</view>
+					<view class="role">设计</view>
+				</view>
+			</view>
+			<view class="select" @click="switchC">
+				<view>切换设计师</view>
+				<image class="switch" src="../../static/ic_switch@2x.png"></image>
+			</view>
+		</view>
 		<view v-if="navIndex===0" class="content">
 			<view class="category" v-for="category in drawings" :key="category.categoryName">
 				<view class="title">{{category.categoryName}}</view>
 				<view class="itemWrap">
 					<view class="drawing" v-for="imgItem in category.imageFileList" :key="imgItem.createTime">
-						<!-- <image class="img" :src="imgItem.fileUrl"></image> -->
-						<img :src="imgItem.fileUrl" class="img">
+						<image class="img" :src="imgItem.fileUrl"></image>
 						<view class="name">{{imgItem.fileName}}</view>
 					</view>
-					<!-- <view class="drawing">
-						<image class="img" src="http://dbj.dragonn.top/static/mp/dabanjia/images/home/bg%402x.png"></image>
-						<view class="name">量房图item</view>
-					</view>
-					<view class="drawing">
-						<image class="img" src="http://dbj.dragonn.top/static/mp/dabanjia/images/home/bg%402x.png"></image>
-						<view class="name">量房图item</view>
-					</view>
-					<view class="drawing">
-						<image class="img" src="http://dbj.dragonn.top/static/mp/dabanjia/images/home/bg%402x.png"></image>
-						<view class="name">量房图item</view>
-					</view> -->
 				</view>
+			</view>
+		</view>
+		<view class="mask" v-if="showSwitchDesigner">
+			<view class="popupSwitch">
+				<view class="topArea">
+					<view class="mainTit">切换设计师</view>
+					<image class="close" @click="showSwitchDesigner=false" src="../../static/ic_closed_black@2x.png"></image>
+				</view>
+				<ul class="options">
+					<li>
+						<view class="designerInfo">
+							<image class="avatar" src="../../static/avatar@2x(1).png"></image>
+							<view class="designerName">李易峰</view>
+							<view class="role">设计</view>
+						</view>
+					</li>
+				</ul>
 			</view>
 		</view>
 		<view v-if="navIndex===1" class="content">平面图list</view>
@@ -53,7 +70,8 @@
 				navIndex: 0,
 				serveTypes: [],
 				serverList: [],
-				drawings: []
+				drawings: [],
+				showSwitchDesigner: false
 			}
 		},
 		onLoad(option) {
@@ -66,6 +84,9 @@
 			this.requestPage()
 		},
 		methods:{
+			switchC(){
+				this.showSwitchDesigner = true
+			},
 			checkIndex(index,type){
 				console.log(index)
 				this.navIndex = index
@@ -94,6 +115,86 @@
 </script>
 
 <style scoped>
+	.mask {
+	  width: 100%;
+	  height: 100%;
+	  background: rgba(0, 0, 0, 0.3);
+	  position: fixed;
+	  left: 0;
+	  top: 0;
+	  right: 0;
+	  bottom: 0;
+	  z-index: 998;
+	}
+	.popupSwitch{
+		width: 100%;
+		height: 840rpx;
+		padding-bottom: 40rpx;
+		background: #ffffff;
+		border-radius: 32rpx 32rpx 0rpx 0rpx;
+		position: fixed;
+		left: 0;
+		bottom: 0;
+		z-index: 999;
+	}
+	.popupSwitch .options{
+		width: 100%;
+		height: 786rpx;
+		overflow: auto;
+	}
+	.options li{
+		display: flex;
+		width: 100%;
+		height: 120rpx;
+		background: #ffffff;
+		border-top: 2rpx solid #f2f2f2;
+	}
+	.options .designerInfo{
+		display: flex;
+		width: 302rpx;
+		height: 76rpx;
+		margin: 22rpx 32rpx;
+	}
+	.options .designerInfo .designerName{
+		width: 90rpx;
+		height: 42rpx;
+		margin: 18rpx 8rpx 16rpx;
+		font-size: 30rpx;
+		font-weight: 500;
+		color: #333333;
+	}
+	.options .designerInfo .role{
+		width: 76rpx;
+		height: 28rpx;
+		margin: 24rpx 0;
+		background: linear-gradient(45deg,#6d95ef, #84b9fc);
+		border-radius: 6rpx;
+		font-size: 20rpx;
+		text-align: center;
+		color: #ffffff;
+		line-height: 28rpx;
+	}
+	.popupSwitch .topArea{
+		height: 120rpx;
+		border-radius: 32rpx 32rpx 0rpx 0rpx;
+		display: flex;
+		align-items: center;
+	}
+	.topArea .mainTit{
+		width: 160rpx;
+		height: 40rpx;
+		margin-left: 296rpx;
+		margin-right: 208rpx;
+		font-size: 32rpx;
+		font-weight: 500;
+		color: #333333;
+	}
+	.topArea .close{
+		width: 64rpx;
+		height: 64rpx;
+		display: block;
+		margin-right: 20rpx;
+	}
 	.constructionWrap{
 		position: relative;
 		width: 100%;
@@ -129,6 +230,58 @@
 		width: 48rpx;
 		height: 6rpx;
 		background: linear-gradient(129deg,#00cdec 0%, #00ed7d 92%);
+	}
+	.designer{
+		width: 702rpx;
+		height: 176rpx;
+		background: #f7f7f7;
+		border-radius: 24rpx;
+		margin: 24rpx 24rpx 40rpx;
+		display: flex;
+	}
+	.designer .select{
+		display: flex;
+		margin: 72rpx 0 68rpx 274rpx;
+	}
+	.select>view{
+		width: 130rpx;
+		height: 36rpx;
+		font-size: 26rpx;
+		color: #666666;
+	}
+	.select .switch{
+		width: 24rpx;
+		height: 24rpx;
+		display: block;
+		margin: 6rpx 22rpx 6rpx 10rpx;
+	}
+	.designer .designerInfo{
+		display: flex;
+		margin: 36rpx 0 36rpx 32rpx;
+	}
+	.designerInfo .avatar{
+		width: 104rpx;
+		height: 104rpx;
+		margin-right: 16rpx;
+		display: block;
+	}
+	.designerInfo>view .designerName{
+		width: 90rpx;
+		height: 42rpx;
+		margin: 8rpx 0;
+		font-size: 30rpx;
+		font-weight: 500;
+		color: #333333;
+	}
+	.designerInfo>view .role{
+		width: 76rpx;
+		height: 28rpx;
+		background: linear-gradient(45deg,#6d95ef, #84b9fc);
+		border-radius: 6rpx;
+		font-size: 20rpx;
+		text-align: center;
+		color: #ffffff;
+		line-height: 28rpx;
 	}
   .content{
 		width: 686rpx;
