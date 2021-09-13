@@ -13,6 +13,7 @@
 <script>
 const url = require("@/pages/login/imgs/Lark20210823-152715.png");
 import { oauthGomeInfo } from "../../api/login.js";
+import { createTim } from "@/utils/tim.js"
 export default {
   data() {
     return {
@@ -79,6 +80,11 @@ export default {
           clientType: "3",
         }).then((data) => {
           getApp().globalData.userInfo = data;
+          getApp().tim = createTim(data.appId);
+          this.$store.dispatch("loginIM", {
+            userId: data.tid,
+            userSig: data.userSign
+          });
           uni.switchTab({
             url: "/pages/home/index/index",
           });

@@ -20,7 +20,7 @@
 									<text class="defalut" v-if="item.defaultEstate">默认</text>
 									<text class="province">{{item.housingEstate}}</text>
 								</view>
-								<text class="address">{{item.locationName}}</text>
+								<text class="address">{{item.locationName+item.address}}</text>
 								<view class="item">
 									<text class="name">{{item.contactName}}</text>
 									<text class="phone">{{item.contactPhone}}</text>

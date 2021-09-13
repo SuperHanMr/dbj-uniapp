@@ -1,27 +1,25 @@
 <template>
 	<view class="store">
-		<view class="store-info">
+		<view v-if="item.storeName" class="store-info">
 			<view class="store-name">
-				店铺名字
+				{{item.storeName}}
 			</view>
-			<view class="store-icon">
-				//TODO icon
-			</view>
-			<view class="store-sub">
-				剩余2次免运费额度
+			<view v-if="showSubtitle" class="store-sub">
+				剩余{{item.remainingShipments}}次免运费额度
 			</view>
 		</view>
-		<view v-for="(item,index) in list" :key="item.id" class="goods-list">
+		<view v-for="(goodItem,index) in item.stockAppVOS" :key="index" class="goods-list" @click="toDetail">
 			<view class="good-detail">
-				<view class="img">
-				</view>
+
+				<image class="img" :src="goodItem.imgUrl">
+				</image>
 				<view class="goods-info">
 					<view class="name">
 						<view class="tip">
 							物品
 						</view>
 						<view class="text">
-							白色绿色油漆颜色简约
+							{{goodItem.fullName}}
 
 						</view>
 						<view style="flex:1">
@@ -34,32 +32,37 @@
 					</view>
 					<view class="spec">
 						<view class="spec-item">
-							绿色
+							{{goodItem.scaleProperties}}
 						</view>
 						<view class="spec-item">
-							2.0m/根
+							{{goodItem.price}}/{{goodItem.unit}}
 						</view>
 						<view style="flex:1">
-
 						</view>
 						<view class="spec-item">
-							共1件
+							共{{number}}件
+						</view>
+					</view>
+
+					<view class="spec">
+						<view class="spec-item">
+							退款金额: 320
 						</view>
 					</view>
 				</view>
 			</view>
-			<view v-if="showBtns">
+			<view>
 				<view class="btn-row">
-					<view class="btn-back" @click="toRefund">
+					<view v-if="showBack" class="btn-back" @click="toRefund">
 						退库存
 					</view>
-					<view class="btn-con">
+					<view v-if="showRecived" class="btn-con">
 						确认收货
 					</view>
 				</view>
 				<view class="back-view">
-					<view class="back-item">
-						<view class="back-title">
+					<view v-if="showBacking" class="back-item">
+						<view v-if="showBacking" class="back-title">
 							退款中
 						</view>
 						<view class="back-price">
@@ -69,11 +72,10 @@
 						</view>
 					</view>
 					<view class="back-row">
-						<view class="back-row-item">
+						<view v-if="showCancelApply" class="back-row-item">
 							取消申请
 						</view>
-
-						<view class="back-row-item" @click="toDetail">
+						<view v-if="showDetail" class="back-row-item" @click="toDetail">
 							查看详情
 						</view>
 					</view>
@@ -100,27 +102,47 @@
 
 				}
 			},
-			showBtns: {
+			showSubtitle: {
 				type: Boolean,
 				default: true
 			},
 			isEdit: {
 				type: Boolean,
 				default: false
+			},
+			showBack: {
+				type: Boolean,
+				default: false
+			},
+			showRecived: {
+				type: Boolean,
+				default: false
+			},
+			showBacking: {
+				type: Boolean,
+				default: false
+			},
+			showCancelApply: {
+				type: Boolean,
+				default: false
+			},
+			showDetail: {
+				type: Boolean,
+				default: false
 			}
 		},
 		data() {
 			return {
-				list: [1, 2]
+				list: []
 			};
 		},
 		methods: {
 			toDetail() {
-				this.$emit('detail');
+				this.$emit('detail', this.item);
 			},
 
 			toRefund() {
-				this.$emit('refund');
+				this.$emit('refund', this.item);
 			}
 		}
 	}
@@ -170,6 +192,7 @@
 				height: 136rpx;
 				border: 1rpx solid #f4f4f4;
 				border-radius: 8rpx;
+				flex-shrink: 0;
 			}
 
 			.goods-info {
@@ -181,10 +204,9 @@
 				align-items: center;
 
 				.name {
-
 					display: flex;
 					flex-direction: row;
-					align-items: center;
+					align-items: flex-start;
 					width: 100%;
 					height: 34rpx;
 
@@ -270,6 +292,7 @@
 
 	.back-view {
 		.back-item {
+			margin-top: 30rpx;
 			width: 686rpx;
 			height: 80rpx;
 			line-height: 80rpx;

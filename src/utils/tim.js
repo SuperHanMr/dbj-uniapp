@@ -35,14 +35,15 @@ function createTim(sdkAppId) {
   _registerEvents(tim);
   _tim = tim;
   
-  uni.$tim = tim;
-
   return tim;
 }
 
 function _onSdkReady() {
   _sdkReady = true;
-  _tim.off(TIM.EVENT.SDK_READY, _onSdkReady);
+}
+
+function _onSdkNotReady() {
+  _sdkReady = false;
 }
 
 function _registerEvents(tim) {
@@ -59,7 +60,8 @@ function _registerEvents(tim) {
       })
     })
   });
-  tim.on(TIM.EVENT.SDK_READY, _onSdkReady)
+  tim.on(TIM.EVENT.SDK_READY, _onSdkReady);
+  tim.on(TIM.EVENT.SDK_NOT_READY, _onSdkNotReady);
 }
 
 function getTim() {
@@ -125,6 +127,11 @@ function removeAllListeners(eventName) {
   }
   _EVNET_HANDLERS[eventName] = [];
 }
+function cleanListeners() {
+  _EVENT_NAMES.forEach(function(eName) {
+    _EVNET_HANDLERS[eName].splice(0, _EVNET_HANDLERS[eName].length);
+  });
+}
 
 export {
   createTim,
@@ -134,5 +141,6 @@ export {
   logout,
   addListener,
   removeListener,
-  removeAllListeners
+  removeAllListeners,
+  cleanListeners
 };

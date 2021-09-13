@@ -3,39 +3,32 @@
 		<view class="flex-row-bet">
 			<view class="item-name flex-row-start">
 				<image src="http://dbj.dragonn.top/static/mp/dabanjia/images/decorate/ic_mer.svg"></image>
-				<text>{{itemName}}</text>
+				<text>{{serviceData.nodeName}}</text>
 			</view>
-			<view class="status-name flex-row-start" :class="{
-				robbing: status == '抢单中',
-				shouldsure: status == '待确认',
-				inservice: status == '服务中',
-				uncheck: status == '待验收',
-				completed: status == '完成',
-				mr: status =='完成' || status =='服务中'
-			}">
-				<view>{{statusName}}</view>
-				<image @click="openProcsss" :class="{open: open}" v-if="status =='完成' || status =='服务中'" src="http://dbj.dragonn.top/static/mp/dabanjia/images/decorate/ic_triangle_up.svg"></image>
+			<view class="status-name mr inservice flex-row-start">
+				<view>{{ serviceData | filterStatusName }}</view>
+				<image @click="openProcsss" :class="{open: open}" v-if="serviceData.status >= 2 || (serviceData.status == 0 && serviceData.grepOrderStatus === 3)" src="http://dbj.dragonn.top/static/mp/dabanjia/images/decorate/ic_triangle_up.svg"></image>
 			</view>
 		</view>
-		<view class="gc" v-if="(status =='完成' || status =='服务中') && open">
+		<view class="gc" v-if="(serviceData.status >= 2 || (serviceData.status == 0 && serviceData.grepOrderStatus === 3)) && open">
 			<view class="procsss flex-row-bet">
-				<view class="s0">量房员</view>
+				<view class="s0">{{serviceData.nodeType}}员</view>
 				<view class="s1 flex-row-start">
-					<view>奥特曼</view>
+					<view>{{serviceData.serveName}}</view>
 					<image src="http://dbj.dragonn.top/static/mp/dabanjia/images/decorate/ic_more.svg"></image>
 				</view>
 			</view>
 			<view class="procsss flex-row-bet">
 				<view class="s0">进度</view>
 				<view class="s1 flex-row-start">
-					<view>0/1</view>
+					<view>{{serviceData.processNumerator}}/{{serviceData.processDenominator}}</view>
 					<image src="http://dbj.dragonn.top/static/mp/dabanjia/images/decorate/ic_more.svg"></image>
 				</view>
 			</view>
-      <view class="procsss flex-row-bet" v-if="itemName === '管家服务'">
+      <view class="procsss flex-row-bet" v-if="['管家', '拆除', '水电', '泥工', '木工', '油漆'].includes(serviceData.nodeName)">
       	<view class="s0">工序支付</view>
       	<view class="s1 flex-row-start">
-      		<view>部分支付</view>
+      		<view>{{serviceData.payStatus | filterPayStatus}}</view>
       		<image src="http://dbj.dragonn.top/static/mp/dabanjia/images/decorate/ic_more.svg"></image>
       	</view>
       </view>
@@ -48,29 +41,38 @@
 	export default {
 		name: "ServiceItem",
 		props: {
-			status: {
-				style: String,
+      serviceData:  {
+				style: Object,
 				required: true
 			},
-			itemName: {
-				style: String,
-				required: true
-			},
-			statusName: {
-				style: String,
-				required: true
-			}
 		},
-		filters: {},
 		data() {
 			return {
-				open: true
+				open: true,
 			}
 		},
 		methods:{
 			openProcsss() {
 				this.open = !this.open
 			}
-		}
+		},
+    filters:{
+      filterStatusName(data) {
+        if(data.status === 0) {
+          return data.grepOrderStatusName
+        } else {
+          return data.statusName
+        }
+      },
+      filterPayStatus(payStatus) {
+        if(payStatus == 0) {
+          return "未支付"
+        } else if(payStatus == 1) {
+          return "部分支付"
+        } else if(payStatus == 2) {
+          return "全部支付"
+        }
+      }
+    }
 	}
 </script>

@@ -1,6 +1,8 @@
 <template>
 	<view>
-		<warehouse-item :showBtns="false"></warehouse-item>
+		<warehouse-item :showBtns="false" :showSubtitle="false" :item="res">
+
+		</warehouse-item>
 		<view class="detail-price">
 			<view class="detail-price-row">
 				<view class="detail-price-row-font">
@@ -13,11 +15,9 @@
 					¥
 				</view>
 				<view class="detail-price-row-num">
-					230.00
+					{{res.totalAmount}}
 				</view>
-
 			</view>
-
 			<view class="detail-price-row">
 				<view class="detail-price-row-font">
 					运费
@@ -29,7 +29,7 @@
 					¥
 				</view>
 				<view class="detail-price-row-num">
-					230.00
+					{{res.freight}}
 				</view>
 
 			</view>
@@ -44,7 +44,7 @@
 					¥
 				</view>
 				<view class="detail-price-row-num">
-					60.00
+					{{res.handlingFees}}
 				</view>
 
 			</view>
@@ -59,7 +59,7 @@
 					¥
 				</view>
 				<view class="detail-price-row-num">
-					20.00
+					{{res.storeDiscount}}
 				</view>
 
 			</view>
@@ -68,14 +68,11 @@
 					实付款
 				</view>
 				<view class="total-pay-amount">
-
 					<text class="totoal-pay-num">￥</text>
 					<text class="totoal-pay-num-z">600</text>
 					<text class="totoal-pay-num">.00</text>
 				</view>
-
 			</view>
-
 		</view>
 
 
@@ -88,7 +85,7 @@
 					订单编号:
 				</view>
 				<view class="order-info-row-con">
-					DDPG2020121400001
+					{{res.orderId}}
 				</view>
 				<view class="copy" @click="copy">
 					复制
@@ -99,8 +96,7 @@
 					创建时间:
 				</view>
 				<view class="order-info-row-con">
-					2021-01-12 16:58:26
-
+					{{res.createTime |formatDate('ss')}}
 				</view>
 			</view>
 			<view class="order-info-row">
@@ -108,24 +104,125 @@
 					付款时间:
 				</view>
 				<view class="order-info-row-con">
-					2021-01-12 16:58:26
+					{{res.pay_time |formatDate}}
+				</view>
+			</view>
+			<view class="order-info-row">
+				<view class="order-info-row-pre">
+					支付方式:
+				</view>
+				<view class="order-info-row-con">
+					{{payType(res.stockStatus)}}
 				</view>
 			</view>
 		</view>
-		
-		<bottom-btn btnContent="确认收货"></bottom-btn>
+		<view class="bottom-btn">
+			<view v-if="type==0" class="refund-btn">
+				退库存
+			</view>
+			<view v-if="type==0" class="big-btn">
+				要货
+			</view>
+			<view v-if="type==1" class="confirm-btn" @click="onConfirmGoods">
+				确认收货
+			</view>
+			<view v-if="type==2" class="apply-refund" @click="applyRefund">
+				申请退款
+			</view>
+
+		</view>
 	</view>
 </template>
 
 <script>
+	import {
+		formatDate
+	} from '../../../utils/common.js'
+	import {
+		deliveredDetail,
+		receivedDetail,
+		refundDetail
+	} from "../../../api/order.js"
 	export default {
+
+		filters: {
+			formatDate
+		},
 		data() {
 			return {
+				pay_time: '1631515894',
+				res: {
+
+				},
+				type: -1,
+				id: ''
 			}
 		},
-		onLoad() {
+		onLoad(e) {
+			let type = e.type;
+			this.type = type
+			let id = e.id;
+			this.id = id
+			console.log(type, id, '!!!!!!!!!!');
+			this.loadData(type, id);
 		},
 		methods: {
+			applyRefund(){
+				let vm=this
+				uni.showActionSheet({
+				    itemList: ['仅退款(已收货)','仅退款(退库存)'],
+				    success: function (res) {
+							uni.navigateTo({
+								url:`../warehouse-refund/warehouse-refund?type=${res.tapIndex}&id=${vm.id}`
+							})
+				    },
+				    fail: function (res) {
+				    }
+				});
+			},
+			onConfirmGoods(){
+				uni.showModal({
+				    title: '是否确认收货?',
+				    success: function (res) {
+				        if (res.confirm) {
+				            console.log('用户点击确定');
+				        } else if (res.cancel) {
+				            console.log('用户点击取消');
+				        }
+				    }
+				});
+			},
+			payType(type) {
+				if (type == 2) {
+					return '支付宝支付'
+				} else if (type == 1) {
+					return '微信支付'
+				} else {
+					return '其他'
+				}
+			},
+			loadData(type, id) {
+				if (type == 0) {
+					deliveredDetail({
+						orderId: id
+					}).then(e => {
+						this.res = e;
+					})
+				} else if (type == 1 || type == 2) {
+					receivedDetail({
+						id
+					}).then(e => {
+						this.res = e;
+					})
+				} else if (type == 3) {
+					refundDetail({
+						id
+					}).then(e => {
+						this.res = e;
+					})
+				}
+
+			},
 			copy() {
 				uni.setClipboardData({
 					data: 'hello',
@@ -139,6 +236,75 @@
 </script>
 
 <style lang="scss" scoped>
+	.bottom-btn {
+		position: fixed;
+		bottom: 0;
+		left: 0;
+		right: 0;
+		width: 100%;
+		height: 136rpx;
+		display: flex;
+		justify-content: flex-end;
+		align-items: center;
+		padding-bottom: 30rpx;
+		background: #fefffe;
+
+		.confirm-btn {
+			width: 248rpx;
+			height: 88rpx;
+			line-height: 88rpx;
+			text-align: center;
+			opacity: 1;
+			background: linear-gradient(135deg, #36d9cd, #28c6c6);
+			border-radius: 12rpx;
+			margin-right: 32rpx;
+			color: #ffffff;
+			font-size: 32rpx;
+		}
+
+		.refund-btn {
+			width: 188rpx;
+			height: 88rpx;
+			opacity: 1;
+			border: 1rpx solid #cccccc;
+			border-radius: 16rpx;
+			margin-right: 32rpx;
+			text-align: center;
+			line-height: 88rpx;
+			font-size: 30rpx;
+			color: #666666;
+		}
+
+		.big-btn {
+			width: 466rpx;
+			height: 88rpx;
+			line-height: 88rpx;
+			opacity: 1;
+			background: linear-gradient(135deg, #00bfaf, #00bfbc);
+			border-radius: 16rpx;
+			margin-right: 32rpx;
+			font-weight: 500;
+			font-size: 30rpx;
+			color: #ffffff;
+			text-align: center;
+		}
+
+		.apply-refund {
+			width: 160rpx;
+			height: 56rpx;
+			line-height: 56rpx;
+			text-align: center;
+			opacity: 1;
+			background: #ffffff;
+			border: 1rpx solid #eaeaea;
+			border-radius: 16rpx;
+			font-size: 24rpx;
+			color: #111111;
+			margin-right: 32rpx;
+		}
+
+	}
+
 	.copy {
 		width: 72rpx;
 		height: 40rpx;
@@ -228,5 +394,4 @@
 			}
 		}
 	}
-	
 </style>

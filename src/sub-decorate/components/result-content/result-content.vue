@@ -24,21 +24,13 @@
       <view class="item" :class="{'item-active':!isReport&&currentItem==='conformTop'}" @click="toItem('conformTop')">
         符合项({{data[0].value}})</view>
     </view>
-    <view class="sticky report-list" v-if="isActive&&isReport">
-      <view class="report-item" :class="{'report-item-active':isReport&&currentItem==='top'}" @click="toItem('top')">
-        重大隐患</view>
-      <view class="report-item" :class="{'report-item-active':isReport&&currentItem==='hazardTop'}"
-        @click="toItem('hazardTop')">隐患</view>
-      <view class="report-item" :class="{'report-item-active':isReport&&currentItem==='conformTop'}"
-        @click="toItem('conformTop')">符合项</view>
+    <view class="text-content">
+      <deliverCard id="major-hazard" color="#CA3737" title="重大隐患" :data='data[2]'></deliverCard>
+      <deliverCard id="hazard" color="#F6A93B" title="隐患" :data='data[1]'></deliverCard>
+      <deliverCard id="conform" color="#348BE2" title="符合项" :data='data[0]'></deliverCard>
     </view>
-    <deliverCard id="major-hazard" color="#CA3737" title="重大隐患" :data='data[2]'></deliverCard>
-    <deliverCard id="hazard" color="#F6A93B" title="隐患" :data='data[1]'></deliverCard>
-    <deliverCard id="conform" color="#348BE2" title="符合项" :data='data[0]'></deliverCard>
     <text class="bottom-text">我是有底线的~</text>
-    <bottom-btn style="width: 100%;" :showDefaultBtn="false">
-      <button class="add-btn" @click="submit">确认验房结果</button>
-    </bottom-btn>
+
   </view>
 </template>
 <script>
@@ -212,7 +204,17 @@
             res[0].top // #the-id节点的上边界坐标
             res[1].scrollTop // 显示区域的竖直滚动位置
           })
+          
         })
+      },
+      getHeight(){
+        let data = {
+          top:this.top,
+          hazardTop:this.hazardTop,
+          conformTop:this.conformTop,
+        }
+        console.log(data)
+        this.$emit('getData',data)
       },
       toItem(id) {
         this.currentItem = id
@@ -246,12 +248,7 @@
         chart.setOption(this.option)
         return chart
       },
-      submit() {
-        // console.log(1231)
-        confirmCheckResult(30).then(res => {
-          uni.navigateBack({})
-        })
-      }
+      
     }
   }
 </script>
@@ -261,9 +258,11 @@
     display: flex;
     justify-content: center;
     flex-wrap: wrap;
-    // padding: 0 24rpx;
+    
   }
-
+  .text-content{
+    padding: 0 24rpx;
+  }
   .report-content {
     // width: 638rpx;
     padding: 32rpx 32rpx 40rpx;
@@ -402,15 +401,5 @@
     padding-bottom: 190rpx;
   }
 
-  .add-btn {
-    // margin-top: 20rpx;
-    height: 88rpx;
-    background: linear-gradient(135deg, #53d5cc, #4fc9c9);
-    border-radius: 12rpx;
-    width: 686rpx;
-    line-height: 88rpx;
-    text-align: center;
-    color: #ffffff;
-    font-size: 32rpx;
-  }
+
 </style>

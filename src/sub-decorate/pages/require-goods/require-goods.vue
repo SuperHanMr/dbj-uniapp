@@ -13,8 +13,8 @@
 				<view class="left-title-block">
 					<view class="nav-left-item"
 						:class="{'active': index2==categoryActive, 'preNode': index2==categoryActive -1, 'nextNode': index2==categoryActive +1}"
-						v-for="(menu2,index2) in leftList" :key="index2" @click="categoryClickMain(index2)">
-						{{menu2}}
+						v-for="(menu2,index2) in leftList" :key="index2" @click="categoryClickMain(menu2,index2)">
+						{{menu2.categoryName}}
 					</view>
 				</view>
 				<view :style="{height:Number(menuBottom) +Number(104)+'rpx'}">
@@ -74,6 +74,10 @@
 	import {
 		getClassifyList
 	} from "../../../api/classify.js";
+	import {
+		categoryList,
+		inventoryDetails
+	} from "../../../api/decorate.js"
 
 	export default {
 		components: {
@@ -81,6 +85,7 @@
 		},
 		data() {
 			return {
+				projectId: '',
 				cartList: [],
 				navBarHeight: 0,
 				dataList: [],
@@ -88,7 +93,7 @@
 				cacheTab: [],
 				tabIndex: 0,
 				scrollInto: "",
-				leftList: [1, 2, 3, 4, 5, 6, 7, 8, 9, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 'hcl'],
+				leftList: [],
 				categoryActive: 0,
 				goodsList: [{
 					name: '京东自营',
@@ -98,58 +103,11 @@
 						sub: '已购买2袋 剩余1000袋',
 						count: 0,
 						id: 1
-					}, {
-						imgSrc: '',
-						title: '测试2',
-						sub: '已购买2袋 剩余1000袋',
-						count: 0,
-						id: 2
-					}, {
-						imgSrc: '',
-						title: '测试3',
-						sub: '已购买2袋 剩余1000袋',
-						count: 0,
-						id: 3
-					}, {
-						imgSrc: '',
-						title: '测试3',
-						sub: '已购买2袋 剩余1000袋',
-						count: 0,
-						id: 4
-					}, {
-						imgSrc: '',
-						title: '测试3',
-						sub: '已购买2袋 剩余1000袋',
-						count: 0,
-						id: 5
-					}, {
-						imgSrc: '',
-						title: '测试3',
-						sub: '已购买2袋 剩余1000袋',
-						count: 0,
-						id: 6
-					}, {
-						imgSrc: '',
-						title: '测试3',
-						sub: '已购买2袋 剩余1000袋',
-						count: 0,
-						id: 7
-					}, {
-						imgSrc: '',
-						title: '测试3',
-						sub: '已购买2袋 剩余1000袋',
-						count: 0,
-						id: 8
-					}, {
-						imgSrc: '',
-						title: '测试3',
-						sub: '已购买2袋 剩余1000袋',
-						count: 0,
-						id: 9
-					}, ]
+					}]
 				}],
 				systemBottom: 0,
-				menuBottom: 0
+				menuBottom: 0,
+				lastId: ''
 			}
 		},
 		onShow() {},
@@ -172,12 +130,37 @@
 				deep: true
 			}
 		},
-		onLoad() {
+		onLoad(e) {
 			const menuButtonInfo = uni.getMenuButtonBoundingClientRect();
 			this.systemBottom = menuButtonInfo.bottom + 'rpx';
-			this.menuBottom = menuButtonInfo.bottom
+			this.menuBottom = menuButtonInfo.bottom;
+			if (e && e.projectId) {
+				this.projectId = projectId;
+			}
+			this.getLeftList();
 		},
 		methods: {
+			getLeftList() {
+				categoryList({
+					projectId: this.projectId,
+					workType: 0
+				}).then(e => {
+					this.leftList = e;
+				})
+			},
+			getRightItems() {
+				let params = {};
+				if (this.lastId) {
+					params.lastId = this.lastId;
+				}
+				params.workType = 0;
+				params.rows = 10;
+				params.projectId=this.projectId;
+				params.categoryId=this.currentCategoryId;
+				inventoryDetails(params).then(e => {
+					this.goodsList = e
+				});
+			},
 			toApply() {
 				uni.navigateTo({
 					url: '/sub-decorate/pages/require-goods-apply/require-goods-apply'
@@ -195,13 +178,14 @@
 				this.$refs.popup.close();
 
 			},
-			categoryClickMain(index) {
+			categoryClickMain(item, index) {
+				this.currentCategoryId = item.categoryId;
 				this.categoryActive = index;
 			},
 			changeFromCart(item, index) {
 				console.log(item);
 				// this.cartList[index] = item;
-				this.$set(this.cartList,index,item);
+				this.$set(this.cartList, index, item);
 			},
 			onChange(item) {
 				let haveItem = false;

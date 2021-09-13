@@ -2,19 +2,18 @@
 	<view class="sceneContainer">
 		<view class="header">
 			<view class="houseInfo">
-				<view class="location">金茂府1栋2单元106</view>
+				<view class="location">{{projectInfo.estateNeighbourhood}}</view>
 				<view class="focus">
 					<view class="browse">浏览 1300</view>
 					<view class="attention">关注 120</view>
 				</view>
 				<view class="itself">
 					<view class="type">
-						<view class="typeInner">5室3厅3卫</view>
+						<view class="typeInner">{{projectInfo.estateUnitsType}}</view>
 						<view class="tag">户型</view>
 					</view>
-					<view class="line"></view>
 					<view class="area">
-						<view class="areaInner">368平米</view>
+						<view class="areaInner">{{projectInfo.estateArea}}平米</view>
 						<view class="tag">面积</view>
 					</view>
 				</view>
@@ -44,39 +43,31 @@
 			<view class="content">
 				<image class="startWork" src="../../static/start_work@2x.png"></image>
 				<view class="mainWrap">
+					
 					<view class="workType">
-						<view>设计</view>
-						<view>设计</view>
-						<view>设计</view>
+						<view v-for="(item,index) in nodeTypes" :key="index">{{item.name}}</view>
 					</view>
 					<view class="progressBar">
 						<view class="connectStartLine"></view>
-						<view class="tl-steps">
-							<view class="tl-dot tl-green"></view>
-							<view class="tl-line" :class="lineShow ? 'tl-line-green' : ''"></view>
-							<view class="tl-dot tl-gray" :class="lineShow ? 'tl-green' : ''"></view>
-							<view class="tl-line" :class="show3 ? 'tl-line-green' : ''"></view>
-							<view class="tl-dot tl-gray" :class="show3 ? 'tl-green' : ''"></view>
+						<view class="steps">
+							<view class="dot"
+								:class="{'done':item.nodeStatus===4||item.nodeStatus===3,
+								'doing':item.nodeStatus===2,'unpaid':item.nodeStatus===1}"
+								v-for="(item,index) in nodesInfo" :key="index"
+							>
+								<view class="connectLine" :class="{'line-green':item.nodeStatus===3||item.nodeStatus===4,'line-gray':item.nodeStatus===1||item.nodeStatus===2}"></view>
+							</view>
 						</view>
-						<view class="connectEndLine"></view>
 					</view>
 					<view class="column">
-						<view></view>
-						<view></view>
-						<view></view>
+						<view
+							:class="{'active':item.nodeStatus===2||item.nodeStatus===3}"
+							v-for="(item,index) in nodesInfo" :key="index"></view>
 					</view>
 					<view class="worker">
-						<view>
-							<image class="avatar" src="../../static/avatar@2x.png"></image>
-							<view>张三</view>
-						</view>
-						<view>
-							<image class="avatar" src="../../static/avatar@2x.png"></image>
-							<view>张三</view>
-						</view>
-						<view>
-							<image class="avatar" src="../../static/avatar@2x.png"></image>
-							<view>张三</view>
+						<view v-for="(item,index) in workers" :key="item.id">
+							<image class="avatar" :src="item.avatar"></image>
+							<view>{{item.name}}</view>
 						</view>
 					</view>
 				</view>
@@ -86,27 +77,26 @@
 		<view class="dynamic">
 			<view class="top">
 				<view class="title">装修动态</view>
-				<view class="filter" @click="showWorkType=true">
+				<view class="filter" @click="selectC">
 					<view class="text">筛选</view>
-					<view class="icon"></view>
-					<!-- <image  src="../../static/ic_arraw_down@2x.png"></image> -->
+					<image class="icon" src="../../static/ic_filtrate@2x.png"></image>
 				</view>
 			</view>
 			<view class="list">
-				<view class="item">
-					<image class="avatar" src="../../static/avatar@2x(1).png"></image>
+				<view class="item" v-for="item in dynamics" :key="item.id">
+					<image class="avatar" :src="item.avatar"></image>
 					<view class="acitonInfo">
 						<view class="header">
 							<view>
-								<view class="workerName">姜文</view>
-								<view class="role">管家</view>
+								<view class="workerName">{{item.userName}}</view>
+								<view class="role">{{item.nodeName}}</view>
 							</view>
-							<view class="date">2021-06-12</view>
+							<view class="date">{{Date.now()|formatDate}}</view>
 						</view>
 						<view class="report">尊敬的业主，您好！打扮家管家-姜文为您新家质量保驾护航，今日巡查房屋情况如下：今天停工</view>
 						<view class="evidence"></view>
 						<view class="footer">
-							<view class="actionType">开工签到</view>
+							<view class="actionType">{{item.content}}</view>
 							<view class="right">
 								<view class="like">
 									<image @click="likeClick" src="../../static/ic_like@2x.png"></image>
@@ -139,16 +129,17 @@
 		<view class="mask" v-if="showWorkType">
 			<view class="popupSelects">
 				<view class="selArea">
-					<view class="cancel" @click="showWorkType=false">取消</view>
-					<view class="confirm">确定</view>
+					<view class="cancel" @click="cancelC">取消</view>
+					<view class="confirm" @click="confirmC">确定</view>
 				</view>
 				<ul class="options">
-					<li @click="isSelected=true" :class="{'active':isSelected}">全部</li>
-					<li>管家</li>
-					<li>管家</li>
-					<li>管家</li>
-					<li>管家</li>
-					<li>管家</li>
+					<li :class="{'active':selectedIndex===-1}">全部</li>
+					<li
+						:class="{'active':selectedIndex===index}"
+						@click="switchC(index,item.type)"
+						v-for="(item,index) in nodeTypes"
+						:key="index"
+					>{{item.name}}</li>
 				</ul>
 			</view>
 		</view>
@@ -190,15 +181,44 @@
 </template>
 
 <script>
+	import {getDecorateProcess,getDecorateDynamic} from "../../../api/real-case.js"
+	import {formatDate} from "../../../utils/common.js"
 	export default {
+		filters:{
+			formatDate
+		},
 		data(){
 			return {
 				showWorkType: false,
 				showComments: false,
-				isSelected: false,
+				selectedIndex: -1,
+				selectedType: 0,
+				projectInfo: {},
+				nodeTypes: [],
+				nodesInfo: [],
+				workers: [],
+				dynamics: []
 			}
 		},
+		created(){
+			this.requestPage()
+			this.requestDynamic()
+		},
 		methods:{
+			selectC(){
+				this.showWorkType=true
+			},
+			cancelC(){
+				this.showWorkType=false
+			},
+			confirmC(){
+				this.showWorkType=false
+				this.requestDynamic(this.selectedType)
+			},
+			switchC(index,type){
+				this.selectedIndex = index
+				this.selectedType = type
+			},
 			toVideoSite(){
 				uni.navigateTo({
 					url:"./video-site"
@@ -206,7 +226,60 @@
 			},
 			toConstruction(){
 				uni.navigateTo({
-					url:"./construction-drawings"
+					url:"./construction-drawings",
+					success:res => {
+						res.eventChannel.emit('acceptDataFromOpenerPage', 2)
+					}
+				})
+			},
+			requestDynamic(type){
+				let params
+				params = type? {
+					projectId: 1,
+					nodeType: type,
+					userTypes: [2,3]
+				} : {
+					projectId: 1,
+					userTypes: [2,3]
+				}
+				getDecorateDynamic(params).then(data => {
+					if(data){
+						console.log(data)
+						let {list,page,rows,totalRows,start,end} = data
+						this.dynamics = list
+					}
+				})
+			},
+			requestPage(){
+				let params = {
+					projectId: 1
+				}
+				getDecorateProcess(params).then(data => {
+					if(data){
+						let {projectInfo,nodes} = data
+						this.projectInfo = projectInfo
+						nodes.map((item,index) => {
+							this.nodeTypes.push({
+								name: item.nodeName,
+								type: item.nodeType
+							})
+							this.nodesInfo.push({
+								id: item.id,
+								nodeStatus: item.nodeStatus,
+								nextNodeId: item.nextNodeId
+							})
+							this.workers.push({
+								id: item.serveId,
+								name: item.serveName,
+								avatar: item.serveAvatar
+							})
+							return item 
+						})
+						for (let i = 0;i < this.nodesInfo.length - 1 ; i++) {
+							this.nodesInfo[i].nextNodeStatus = this.nodesInfo[i+1].nodeStatus
+						}
+						console.log(this.nodesInfo)
+					}
 				})
 			}
 		}
@@ -396,6 +469,8 @@
 	}
 	.options{
 		width: 100%;
+		height: 550rpx;
+		overflow: auto;
 		list-style: none;
 	}
 	.options li{
@@ -440,7 +515,8 @@
 		padding-top: 56rpx;
 	}
 	.location{
-		width: 406rpx;
+		width: fit-content;
+		max-width: 406rpx;
 		height: 56rpx;
 		font-size: 40rpx;
 		font-weight: 500;
@@ -479,7 +555,8 @@
 		background: rgba(255,255,255,0.10);
 	}
 	.type{
-		margin-left: 58rpx;
+		margin-left: 40rpx;
+		margin-right: 40rpx;
 	}
 	.type view{
 		height: 34rpx;
@@ -488,7 +565,8 @@
 		line-height: 34rpx;
 	}
 	.typeInner{
-		width: 116rpx;
+		/* width: fit-content; */
+		width: 150rpx;
 		margin-top: 14rpx;
 	}
 	.type .tag{
@@ -507,7 +585,8 @@
 		width: 48rpx;
 	}
 	.areaInner{
-		width: 92rpx;
+		/* width: fit-content; */
+		width: 148rpx;
 		margin-top: 14rpx;
 	}
 	
@@ -572,9 +651,11 @@
 		margin-left: 0;
 		margin-right: 32rpx;
 	}
+	.content .mainWrap{
+		width: 606rpx;
+	}
 	.workType{
 		margin: 0 8rpx 16rpx;
-		width: 500rpx;
 		display: flex;
 		justify-content: space-between;
 	}
@@ -599,44 +680,56 @@
 		height: 2rpx;
 		background: #C2C2C2;
 	}
-	.tl-steps{
+	.steps{
+		width: 562rpx;
+		height: 16rpx;
 	  display: flex;
-	  justify-content: center;
+	  justify-content: space-between;
 	  align-items: center;
-	}          
+	}
 	
-	.tl-dot{
+	.dot{
 	  width: 16rpx;
 	  height: 16rpx;
-	  border-radius: 50%;  
+	  border-radius: 50%;
 	}
-	.tl-line{
-	  width: 250rpx;
-	  height: 2rpx;
-	  background: #C2C2C2;  
-	}
-	.tl-line-green{
-	  width: 250rpx;
-	  height: 2rpx;
-	  background: #01C2C3;  
-	}
-	.tl-green{
+	.done{
 	  background: #01C2C3 !important;
 	}
-	.tl-gray{
-	  background: #DCDCDC;;
-	}    
+	.doing{
+		background: #ffffff;
+		border: 2rpx solid #35c4c4;
+	}
+	.unpaid{
+	  background: #ffffff;
+	  border: 2rpx solid #c2c2c2;
+	} 
+	.connectLine{
+	  width: 44rpx;
+	  height: 2rpx;
+		margin-top: 8rpx;
+		margin-left: 16rpx;
+	}
+	.line-gray{
+		background: #C2C2C2; 
+	}
+	.line-green{
+	  background: #01C2C3;  
+	}
+	
 	.column{
-		width: 500rpx;
 		height: 24rpx;
-		margin-left: 29rpx;
+		margin: 0 29rpx;
 		display: flex;
 		justify-content: space-between;
 	}
 	.column>view{
-		width: 2rpx;
+		width: 1rpx;
 		height: 24rpx;
-		background: #01c2c3;
+		border-right: 1rpx dotted #c2c2c2;
+	}
+	.column>view:active{
+		border-right: 1rpx dotted #01c2c3;
 	}
 	.worker{
 		margin: 0 8rpx;
@@ -707,11 +800,10 @@
 		color: #333333;
 	}
 	.top .filter .icon{
+		display: block;
 		width: 14rpx;
 		height: 8rpx;
 		margin-left: 5rpx;
-		background-color: #999999;
-		background: url(../../static/ic_arraw_down@2x.png) no-repeat;
 	}
 	.list{
 		width: 100%;
