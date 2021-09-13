@@ -1,5 +1,5 @@
 {
-	"pages": [ //pages数组中第一项表示应用启动页，参考：https://uniapp.dcloud.io/collocation/pages
+	"pages": [ 
 		{
 			"path": "pages/home/index/index",
 			"style": {
@@ -116,7 +116,7 @@
 	"easycom": {
 		"autoscan": true,
 		"custom": {
-			// uni-ui 规则如下配置
+			
 			"^uni-(.*)": "@dcloudio/uni-ui/lib/uni-$1/uni-$1.vue"
 		}
 	},
@@ -158,39 +158,39 @@
 			}
 		]
 	},
-	"condition": { //模式配置，仅开发期间生效
-		"current": 0, //当前激活的模式(list 的索引项)
+	"condition": { 
+		"current": 0, 
 		"list": [
 			{
-				"name": "default", //模式名称
-				"path": "pages/home/index/index", //启动页面，必选
-				"query": "" //启动参数，在页面的onLoad函数里面得到
+				"name": "default", 
+				"path": "pages/home/index/index", 
+				"query": "" 
 			},
 			{
-				"name": "wby", //模式名称
-				"path": "/sub-classify/pages/pay-order/index", //启动页面，必选
-				"query": "" //启动参数，在页面的onLoad函数里面得到
+				"name": "wby",
+				"path": "/sub-classify/pages/pay-order/index",
+				"query": ""
 			},
 			{
-				"name": "hcl", //模式名称
-				"path": "/sub-decorate/pages/warehouse-refund-state/warehouse-refund-state", //启动页面，必选
-				"query": "" //启动参数，在页面的onLoad函数里面得到
+				"name": "hcl", 
+				"path": "/sub-decorate/pages/warehouse-refund-state/warehouse-refund-state", 
+				"query": "" 
 			},
 			{
-				"name": "lyb", //模式名称
-				"path": "/sub-decorate/pages/checkResult/checkResult", //启动页面，必选
-				"query": "" //启动参数，在页面的onLoad函数里面得到
+				"name": "lyb", 
+				"path": "/sub-decorate/pages/my-decorate/my-decorate", 
+				"query": "" 
 			},
 			{
-				"name": "cn", //模式名称
-				"path": "/sub-home/pages/decorate-scene/decorate-scene", //启动页面，必选
-				"query": "" //启动参数，在页面的onLoad函数里面得到
+				"name": "cn", 
+				"path": "/sub-home/pages/decorate-scene/decorate-scene", 
+				"query": "" 
 			}
 		]
 	},
 	"subPackages": [
 		{
-			"root": "sub-home", //首页模块分包
+			"root": "sub-home", 
 			"pages": [
 				{
 					"path": "pages/lives-room/lives-room",
@@ -237,11 +237,11 @@
 			]
 		},
 		{
-			"root": "sub-message", //消息模块分包
+			"root": "sub-message",
 			"pages": []
 		},
 		{
-			"root": "sub-my", //我的模块分包
+			"root": "sub-my", 
 			"pages": [
 				{
 					"path": "pages/apply-for-refund/apply-for-refund",
@@ -438,7 +438,7 @@
 			]
 		},
 		{
-			"root": "sub-classify", //商城模块分包
+			"root": "sub-classify", 
 			"pages": [
 				{
 					"path": "pages/search/index",
@@ -463,13 +463,7 @@
 						"navigationStyle": "custom"
 					}
 				},
-				// {
-				// 	"path": "pages/search/index",
-				// 	"style": {
-				// 		"navigationBarTitleText": "",
-				// 		"enablePullDownRefresh": false
-				// 	}
-				// },
+
 				{
 					"path": "pages/pay-order/index",
 					"style": {
@@ -480,7 +474,7 @@
 			]
 		},
 		{
-			"root": "sub-decorate", //装修模块分包
+			"root": "sub-decorate", 
 			"pages": [
 				{
 					"path": "pages/design-service-list/design-service-list",

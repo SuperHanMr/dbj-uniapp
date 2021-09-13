@@ -26,6 +26,8 @@
         <amount-house id="amount" v-if="tab.nodeType==='amount'"></amount-house>
         <resultContent ref='result' id="result" v-if="tab.nodeType==='result'" @getData='getData' :scrollTop='scrollTop'
           :isReport='true'></resultContent>
+        <serviceActuarial  v-if="tab.nodeType==='actuarial'"></serviceActuarial>
+        <serviceDismantle v-if="tab.nodeType==='dismantle'"></serviceDismantle>
       </swiper-item>
     </swiper>
   </view>
@@ -34,10 +36,15 @@
 <script>
   import resultContent from '../../components/result-content/result-content.vue'
   import serviceHunman from '../../components/service-hunman/service-hunman.vue'
+  import serviceActuarial from '../../components/service-actuarial/service-actuarial.vue'
+  import serviceDismantle from '../../components/service-dismantle/service-dismantle.vue'
+  import {getDesignServeMenu,getMyService} from '../../../api/decorate.js'
   export default {
     components: {
       resultContent,
-      serviceHunman
+      serviceHunman,
+      serviceActuarial,
+      serviceDismantle
     },
     data() {
       return {
@@ -52,6 +59,34 @@
           {
             nodeName: '设计',
             nodeType: 'desgin'
+          },
+          {
+            nodeName: '精算',
+            nodeType: 'actuarial'
+          },
+          {
+            nodeName: '管家',
+            nodeType: 'steward'
+          },
+          {
+            nodeName: '拆除',
+            nodeType: 'dismantle'
+          },
+          {
+            nodeName: '水电',
+            nodeType: 'hydroelectric'
+          },
+          {
+            nodeName: '泥工',
+            nodeType: 'tiler'
+          },
+          {
+            nodeName: '木工',
+            nodeType: 'woodworking'
+          },
+          {
+            nodeName: '油漆',
+            nodeType: 'paint'
           },
         ],
         tabIndex: 0,
@@ -88,6 +123,8 @@
           });
         })
       }, 1000)
+      this.getDesignServeMenu()
+      this.getMyService()
     },
     methods: {
       toCost() {
@@ -107,7 +144,6 @@
         this.$nextTick(function(){
           this.$refs.result[0].getHeight()
         })
-        
       },
       toItem(id) {
         this.currentItem = id
@@ -135,12 +171,26 @@
             }
           });
         })
+      },
+      getDesignServeMenu(){
+        getDesignServeMenu(2).then(res=>{
+          console.log(res)
+        })
+      },
+      getMyService(){
+        let data = {
+          projectId:6,
+          processId:1
+        }
+        getMyService(data).then(res=>{
+          console.log(res)
+        })
       }
     }
   }
 </script>
 
-<style lang="scss">
+<style lang="scss" scoped>
   .my-decorate {
     height: 100%;
   }
