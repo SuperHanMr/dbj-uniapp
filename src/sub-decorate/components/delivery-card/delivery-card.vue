@@ -75,7 +75,7 @@
 
       border-bottom: 1px solid #efefef;
       // height: 228rpx;
-      padding: 32rpx;
+      padding: 32rpx 0;
       .item-left {
         width: 600rpx;
         margin-right: 24rpx;

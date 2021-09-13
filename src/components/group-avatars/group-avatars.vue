@@ -8,6 +8,7 @@
       v-for="(ava, avaIdx) in avatarList"
       :key="avaIdx"
       :src="ava"
+      mode="aspectFill"
       class="avatar"
       shape
     />

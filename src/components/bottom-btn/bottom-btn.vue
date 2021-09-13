@@ -1,7 +1,7 @@
 <template>
 	<view class="bottom-btn" :style="{paddingBottom:systemBottom,backgroundColor:bgcolor}">
 		<button v-if="showDefaultBtn" class="add-btn" @click="submit">{{btnContent}}</button>
-		<slot v-else></slot>
+		<slot  ></slot>
 	</view>
 </template>
 
@@ -9,8 +9,10 @@
 	export default {
 		name: "bottom-btn",
 		props: {
-			num: 0,
-			btnContent: "提交",
+			btnContent:{
+				type:String,
+				default:'提交'
+			},
 			bgcolor: {
         type:String,
         default:"#fff"
@@ -26,12 +28,8 @@
 				systemHeight: "",
 			};
 		},
-		mounted(e) {
-			// const menuButtonInfo = uni.getMenuButtonBoundingClientRect();
-			// let isFill = plus.navigator.hasNotchInScreen()
-			// console.log(isFill);
+		onLoad(e) {
 			this.systemBottom = 20 + "rpx";
-			// this.systemHeight = menuButtonInfo.bottom + this.num + "rpx";
 			console.log(this.systemBottom);
 		},
 		methods: {

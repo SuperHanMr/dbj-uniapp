@@ -1,52 +1,34 @@
 <template>
   <view class="time-line">
-    <view class="item">
+    <view class="item" v-for="item of list" :key='item.operateTime'>
       <view class="rightContent">
-        <view class="text">竣工验收</view>
-        <view class="time">2021-08-19 20:00:00</view>
+        <view class="text">{{item.name}}</view>
+        <view class="time">{{item.operateTime}}</view>
       </view>
       <view class="line">
-        <view class="out" :style="{background: color == '' ? '' : color}">
+        <view class="out">
         </view>
       </view>
     </view>
-    <view class="item">
-      <view class="rightContent">
-        <view class="text">竣工验收</view>
-        <view class="time">2021-08-19 20:00:00</view>
-      </view>
-      <view class="line">
-        <view class="out" :style="{background: color == '' ? '' : color}">
-        </view>
-      </view>
-    </view>
-    <view class="item">
-      <view class="rightContent">
-        <view class="text">竣工验收</view>
-        <view class="time">2021-08-19 20:00:00</view>
-      </view>
-      <view class="line">
-        <view class="out" :style="{background: color == '' ? '' : color}">
-        </view>
-      </view>
-    </view>
-    
   </view>
 </template>
 
 <script>
+  import {getLogs} from '../../../api/decorate.js'
   export default {
     data() {
-      return {
+      return { 
         list: {}
       }
     },
     onLoad(e) {
-
+      this.getData()
     },
     methods: {
       getData() {
-
+        getLogs(34).then(res=>{
+          this.list = res
+        })
       }
     }
   }

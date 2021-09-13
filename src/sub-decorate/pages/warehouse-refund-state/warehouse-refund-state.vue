@@ -103,7 +103,7 @@
 
 		</view>
 		<view class="bottom-btn">
-			<view class="btn">
+			<view class="btn" @click="cancelRefund">
 				取消退款
 			</view>
 		</view>
@@ -111,15 +111,19 @@
 </template>
 
 <script>
+	import {
+		refundDetail
+	} from "../../../api/order.js"
 	export default {
 		data() {
 			return {
 				bgImg: 'http://dbj.dragonn.top/static/mp/dabanjia/images/decorate/order_bg_green.png',
 				navBarHeight: '',
-				currentList: [1]
+				currentList: [1],
+				detail: {}
 			}
 		},
-		onLoad() {
+		onLoad(e) {
 			const systemInfo = uni.getSystemInfoSync();
 			let tophight = systemInfo.statusBarHeight;
 
@@ -127,12 +131,45 @@
 			this.navBarHeight = (menuButtonInfo.top - systemInfo.statusBarHeight) * 2 +
 				menuButtonInfo.height + tophight +
 				"px";
+			if (e && e.id) {
+				this.getDetail(e.id);
+			}
 		},
 		methods: {
-			back() {
-				uni.navigateBack({
-
+			cancelRefund() {
+				uni.showModal({
+					content: '确定要取消本次退款申请？',
+					success: function(res) {
+						if (res.confirm) {
+							console.log('用户点击确定');
+						} else if (res.cancel) {
+							console.log('用户点击取消');
+						}
+					}
+				});
+			},
+			getDetail(id) {
+				refundDetail({
+					id
+				}).then(e => {
+					this.detail = e;
+					if (e.status == 1) {
+						//退款中
+						this.bgImg =
+							'http://dbj.dragonn.top/static/mp/dabanjia/images/decorate/order_bg_orange.png'
+					} else if (e.status == 2) {
+						//退款完成
+						this.bgImg =
+							'http://dbj.dragonn.top/static/mp/dabanjia/images/decorate/order_bg_green.png'
+					} else if (e.status == 3 || e.status == 4) {
+						//退款完成
+						this.bgImg =
+							'http://dbj.dragonn.top/static/mp/dabanjia/images/decorate/order_bg_green.png'
+					}
 				})
+			},
+			back() {
+				uni.navigateBack({})
 			}
 		}
 	}
@@ -218,7 +255,6 @@
 				color: #333333;
 			}
 		}
-
 	}
 
 	.header-content {
