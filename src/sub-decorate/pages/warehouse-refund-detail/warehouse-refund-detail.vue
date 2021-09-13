@@ -17,9 +17,7 @@
 				<view class="detail-price-row-num">
 					{{res.totalAmount}}
 				</view>
-
 			</view>
-
 			<view class="detail-price-row">
 				<view class="detail-price-row-font">
 					运费
@@ -109,9 +107,23 @@
 					{{res.pay_time |formatDate}}
 				</view>
 			</view>
+			<view class="order-info-row">
+				<view class="order-info-row-pre">
+					支付方式:
+				</view>
+				<view class="order-info-row-con">
+					{{payType(res.stockStatus)}}
+				</view>
+			</view>
 		</view>
-
-		<bottom-btn btnContent="确认收货"></bottom-btn>
+		<view class="bottom-btn">
+			<view v-if="type==0" class="refund-btn">
+				退库存
+			</view>
+			<view v-if="type==0" class="big-btn">
+				退库存
+			</view>
+		</view>
 	</view>
 </template>
 
@@ -134,16 +146,29 @@
 				pay_time: '1631515894',
 				res: {
 
-				}
+				},
+				type: -1,
+				id: ''
 			}
 		},
 		onLoad(e) {
 			let type = e.type;
+			this.type = type
 			let id = e.id;
+			this.id = id
 			console.log(type, id, '!!!!!!!!!!');
 			this.loadData(type, id);
 		},
 		methods: {
+			payType(type) {
+				if (type == 2) {
+					return '支付宝支付'
+				} else if (type == 1) {
+					return '微信支付'
+				} else {
+					return '其他'
+				}
+			},
 			loadData(type, id) {
 				if (type == 0) {
 					deliveredDetail({
@@ -179,6 +204,57 @@
 </script>
 
 <style lang="scss" scoped>
+	.bottom-btn {
+		position: fixed;
+		bottom: 0;
+		left: 0;
+		right: 0;
+		width: 100%;
+		height: 136rpx;
+		display: flex;
+		justify-content: flex-end;
+		align-items: center;
+		padding-bottom: 20rpx;
+
+		.refund-btn {
+			width: 188rpx;
+			height: 88rpx;
+			opacity: 1;
+			border: 1rpx solid #cccccc;
+			border-radius: 16rpx;
+			margin-right: 32rpx;
+			text-align: center;
+			line-height: 88rpx;
+			font-size: 30rpx;
+			color: #666666;
+		}
+
+		.big-btn {
+			width: 466rpx;
+			height: 88rpx;
+			line-height: 88rpx;
+			opacity: 1;
+			background: linear-gradient(135deg, #00bfaf, #00bfbc);
+			border-radius: 16rpx;
+			margin-right: 32rpx;
+			font-weight: 500;
+			font-size: 30rpx;
+			color: #ffffff;
+			text-align: center;
+		}
+
+		.apply-refund {
+			width: 160rpx;
+			height: 56rpx;
+			line-height: 56rpx;
+			opacity: 1;
+			background: #ffffff;
+			border: 1rpx solid #eaeaea;
+			border-radius: 16rpx;
+		}
+
+	}
+
 	.copy {
 		width: 72rpx;
 		height: 40rpx;
