@@ -91,7 +91,7 @@
 								<view class="workerName">{{item.userName}}</view>
 								<view class="role">{{item.nodeName}}</view>
 							</view>
-							<view class="date">{{Date.now()}}</view>
+							<view class="date">{{Date.now()|formatDate}}</view>
 						</view>
 						<view class="report">尊敬的业主，您好！打扮家管家-姜文为您新家质量保驾护航，今日巡查房屋情况如下：今天停工</view>
 						<view class="evidence"></view>
@@ -182,8 +182,11 @@
 
 <script>
 	import {getDecorateProcess,getDecorateDynamic} from "../../../api/real-case.js"
-	// import {formatDate} from "../../../utils"
+	import {formatDate} from "../../../utils/common.js"
 	export default {
+		filters:{
+			formatDate
+		},
 		data(){
 			return {
 				showWorkType: false,
