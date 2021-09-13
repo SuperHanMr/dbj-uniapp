@@ -1,6 +1,6 @@
 <template>
 	<view class="store">
-		<view  v-if="item.storeName" class="store-info">
+		<view v-if="item.storeName" class="store-info">
 			<view class="store-name">
 				{{item.storeName}}
 			</view>
@@ -43,20 +43,26 @@
 							共{{number}}件
 						</view>
 					</view>
+
+					<view class="spec">
+						<view class="spec-item">
+							退款金额: 320
+						</view>
+					</view>
 				</view>
 			</view>
-			<view v-if="showBtns">
+			<view>
 				<view class="btn-row">
-					<view class="btn-back" @click="toRefund">
+					<view v-if="showBack" class="btn-back" @click="toRefund">
 						退库存
 					</view>
-					<view class="btn-con">
+					<view v-if="showRecived" class="btn-con">
 						确认收货
 					</view>
 				</view>
 				<view class="back-view">
-					<view class="back-item">
-						<view class="back-title">
+					<view v-if="showBacking" class="back-item">
+						<view v-if="showBacking" class="back-title">
 							退款中
 						</view>
 						<view class="back-price">
@@ -66,11 +72,10 @@
 						</view>
 					</view>
 					<view class="back-row">
-						<view class="back-row-item">
+						<view v-if="showCancelApply" class="back-row-item">
 							取消申请
 						</view>
-
-						<view class="back-row-item" @click="toDetail">
+						<view v-if="showDetail" class="back-row-item" @click="toDetail">
 							查看详情
 						</view>
 					</view>
@@ -97,15 +102,31 @@
 
 				}
 			},
-			showBtns: {
-				type: Boolean,
-				default: true
-			},
 			showSubtitle: {
 				type: Boolean,
 				default: true
 			},
 			isEdit: {
+				type: Boolean,
+				default: false
+			},
+			showBack: {
+				type: Boolean,
+				default: false
+			},
+			showRecived: {
+				type: Boolean,
+				default: false
+			},
+			showBacking: {
+				type: Boolean,
+				default: false
+			},
+			showCancelApply: {
+				type: Boolean,
+				default: false
+			},
+			showDetail: {
 				type: Boolean,
 				default: false
 			}
@@ -183,10 +204,9 @@
 				align-items: center;
 
 				.name {
-
 					display: flex;
 					flex-direction: row;
-					align-items: center;
+					align-items: flex-start;
 					width: 100%;
 					height: 34rpx;
 
@@ -272,6 +292,7 @@
 
 	.back-view {
 		.back-item {
+			margin-top: 30rpx;
 			width: 686rpx;
 			height: 80rpx;
 			line-height: 80rpx;

@@ -1,158 +1,152 @@
 <template>
-  <view class="refund">
-    <warehouse-item
-      :showBtns="false"
-      :isEdit="true"
-    ></warehouse-item>
-    <view class="back">
-      <view class="back-res">
-        <view class="back-res-row">
-          <view class="res-pre">
-            *退款原因
-          </view>
-          <view style="flex:1">
-          </view>
-          <view
-            class=""
-            @click="selectRes"
-          >
-            请选择原因
-          </view>
-          <view class="">
-            <!-- //todo down -->
+	<view class="refund">
+		<warehouse-item :showBtns="false" :isEdit="true"></warehouse-item>
+		<view class="back">
+			<view class="back-res">
+				<view class="back-res-row">
+					<view class="res-pre">
+						*退款原因
+					</view>
+					<view style="flex:1">
+					</view>
+					<view class="" @click="selectRes">
+						请选择原因
+					</view>
+					<view class="">
+						<!-- //todo down -->
 
-          </view>
-        </view>
-      </view>
+					</view>
+				</view>
+			</view>
 
-      <view class="back-res">
-        <view class="back-res-row">
-          <view class="res-pre">
-            *退款金额
-          </view>
-          <view style="flex:1">
-          </view>
-          <view class="">
-            <input
-              style="color: #FF3347;font-size: 38rpx;width: 200rpx;text-align: end;"
-              type="number"
-              placeholder="请输入金额"
-              :value="num"
-            />
-          </view>
-        </view>
-      </view>
-    </view>
+			<view class="back-res">
+				<view class="back-res-row">
+					<view class="res-pre">
+						*退款金额
+					</view>
+					<view style="flex:1">
+					</view>
+					<view class="">
+						<input style="color: #FF3347;font-size: 38rpx;width: 200rpx;text-align: end;" type="number"
+							placeholder="请输入金额" :value="num" />
+					</view>
+				</view>
+			</view>
+		</view>
 
-    <view class="textarea">
-      <view class="flex-row-between">
-        <view class="text-area-title">
-          备注说明
+		<view class="textarea">
+			<view class="flex-row-between">
+				<view class="text-area-title">
+					备注说明
 
-        </view>
-        <view class="text-area-count">
-          {{remarks.length}}/200
-        </view>
-      </view>
+				</view>
+				<view class="text-area-count">
+					{{remarks.length}}/200
+				</view>
+			</view>
 
-      <textarea
-        v-model="remarks"
-        maxlength="200"
-        style="font-size: 28rpx"
-        placeholder="可以填写一些与客服沟通过的备注信息"
-      />
-    </view>
-    <view class="remark-tip">
-      建议与商家沟通后再发起退款
-    </view>
-    <view style="height: 300rpx;">
+			<textarea v-model="remarks" maxlength="200" style="font-size: 28rpx" placeholder="可以填写一些与客服沟通过的备注信息" />
+		</view>
+		<view class="remark-tip">
+			建议与商家沟通后再发起退款
+		</view>
+		<view style="height: 300rpx;">
 
-    </view>
-    <bottom-btn btnContent="提交申请"></bottom-btn>
+		</view>
+		<bottom-btn btnContent="提交申请"></bottom-btn>
 
-  </view>
+	</view>
 </template>
 
 <script>
-export default {
-  data() {
-    return {
-      reason: "",
-      num: "",
-      remarks: "",
-    };
-  },
-  onLoad(e) {
-    uni.setNavigationBarTitle({
-      title: "退款",
-    });
-  },
-  methods: {
-    selectRes() {
-      uni.showActionSheet({
-        itemList: ["A", "B", "C"],
-        success: function (res) {
-          console.log("选中了第" + (res.tapIndex + 1) + "个按钮");
-        },
-        fail: function (res) {
-          console.log(res.errMsg);
-        },
-      });
-    },
-  },
-};
+	export default {
+		data() {
+			return {
+				reason: "",
+				num: "",
+				remarks: "",
+				type:0
+			};
+		},
+		onLoad(e) {
+			let title;
+			this.type=e.type;
+			if (e.type == 0) {
+				title = '仅退款(已收货)'
+			} else {
+				title = '仅退款(退库存)'
+			}
+			uni.setNavigationBarTitle({
+				title: title,
+			});
+		},
+		methods: {
+			selectRes() {
+				uni.showActionSheet({
+					itemList: ["A", "B", "C"],
+					success: function(res) {
+						console.log("选中了第" + (res.tapIndex + 1) + "个按钮");
+					},
+					fail: function(res) {
+						console.log(res.errMsg);
+					},
+				});
+			},
+		},
+	};
 </script>
 
 
 <style lang="scss" scoped>
-.textarea {
-  background-color: #fff;
-  padding: 32rpx;
-  margin-top: 16rpx;
+	.textarea {
+		background-color: #fff;
+		padding: 32rpx;
+		margin-top: 16rpx;
 
-  .flex-row-between {
-    display: flex;
-    flex-direction: row;
-    justify-content: space-between;
-    align-items: center;
-    margin-top: 36rpx;
-    margin-bottom: 13rpx;
+		.flex-row-between {
+			display: flex;
+			flex-direction: row;
+			justify-content: space-between;
+			align-items: center;
+			margin-top: 36rpx;
+			margin-bottom: 13rpx;
 
-    .text-area-title {
-      color: #666666;
-      font-size: 28rpx;
-    }
+			.text-area-title {
+				color: #666666;
+				font-size: 28rpx;
+			}
 
-    .text-area-count {
-      color: #666666;
-      font-size: 26rpx;
-    }
-  }
-}
+			.text-area-count {
+				color: #666666;
+				font-size: 26rpx;
+			}
+		}
+	}
 
-.remark-tip {
-  color: #808080;
-  font-size: 24rpx;
-  margin: 16rpx 32rpx;
-}
+	.remark-tip {
+		color: #808080;
+		font-size: 24rpx;
+		margin: 16rpx 32rpx;
+	}
 
-.back {
-  background-color: #fff;
-  padding: 0 32rpx;
-}
+	.back {
+		background-color: #fff;
+		padding: 0 32rpx;
+	}
 
-.back-res {
-  padding: 32rpx 0;
-  font-size: 28rpx;
-  border-bottom: 1rpx solid #f4f4f4;
-  &-row {
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-  }
-}
+	.back-res {
+		padding: 32rpx 0;
+		font-size: 28rpx;
+		border-bottom: 1rpx solid #f4f4f4;
 
-.res-pre {
-  color: #666666;
-}
+		&-row {
+			display: flex;
+			flex-direction: row;
+			align-items: center;
+		}
+	}
+
+	.res-pre {
+		color: #666666;
+	}
 </style>

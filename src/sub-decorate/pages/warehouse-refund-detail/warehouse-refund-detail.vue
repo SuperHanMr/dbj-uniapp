@@ -96,7 +96,7 @@
 					创建时间:
 				</view>
 				<view class="order-info-row-con">
-					{{res.createTime |formatDate}}
+					{{res.createTime |formatDate('ss')}}
 				</view>
 			</view>
 			<view class="order-info-row">
@@ -121,8 +121,15 @@
 				退库存
 			</view>
 			<view v-if="type==0" class="big-btn">
-				退库存
+				要货
 			</view>
+			<view v-if="type==1" class="confirm-btn" @click="onConfirmGoods">
+				确认收货
+			</view>
+			<view v-if="type==2" class="apply-refund" @click="applyRefund">
+				申请退款
+			</view>
+
 		</view>
 	</view>
 </template>
@@ -160,6 +167,31 @@
 			this.loadData(type, id);
 		},
 		methods: {
+			applyRefund(){
+				let vm=this
+				uni.showActionSheet({
+				    itemList: ['仅退款(已收货)','仅退款(退库存)'],
+				    success: function (res) {
+							uni.navigateTo({
+								url:`../warehouse-refund/warehouse-refund?type=${res.tapIndex}&id=${vm.id}`
+							})
+				    },
+				    fail: function (res) {
+				    }
+				});
+			},
+			onConfirmGoods(){
+				uni.showModal({
+				    title: '是否确认收货?',
+				    success: function (res) {
+				        if (res.confirm) {
+				            console.log('用户点击确定');
+				        } else if (res.cancel) {
+				            console.log('用户点击取消');
+				        }
+				    }
+				});
+			},
 			payType(type) {
 				if (type == 2) {
 					return '支付宝支付'
@@ -214,7 +246,21 @@
 		display: flex;
 		justify-content: flex-end;
 		align-items: center;
-		padding-bottom: 20rpx;
+		padding-bottom: 30rpx;
+		background: #fefffe;
+
+		.confirm-btn {
+			width: 248rpx;
+			height: 88rpx;
+			line-height: 88rpx;
+			text-align: center;
+			opacity: 1;
+			background: linear-gradient(135deg, #36d9cd, #28c6c6);
+			border-radius: 12rpx;
+			margin-right: 32rpx;
+			color: #ffffff;
+			font-size: 32rpx;
+		}
 
 		.refund-btn {
 			width: 188rpx;
@@ -247,10 +293,14 @@
 			width: 160rpx;
 			height: 56rpx;
 			line-height: 56rpx;
+			text-align: center;
 			opacity: 1;
 			background: #ffffff;
 			border: 1rpx solid #eaeaea;
 			border-radius: 16rpx;
+			font-size: 24rpx;
+			color: #111111;
+			margin-right: 32rpx;
 		}
 
 	}

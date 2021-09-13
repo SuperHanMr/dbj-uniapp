@@ -92,3 +92,11 @@ export function refundDetail(params) {
 		params
 	})
 }
+
+//C端APP-我的-订单-退款-退款详情
+export function receivedList(params) {
+	return request.get(`/order-center/app/goods/stock/toBeReceived/list`, {
+		params
+	})
+}
+
