@@ -30,15 +30,35 @@ export function setDefault(params) {
 	return request.put("/customer/app/estate/setDefaultEstate/" + params)
 }
 
-//获取mqtt信息
-export function getMqtt(params) {
-	return request.get("/app/live/mqtt/mqttProperties")
+//获取服务卡操作记录
+export function getLogs(params) {
+	return request.get("/pm/app/serve/log/" + params)
 }
 
-//获取mqtt鉴权token
-export function getToken(params) {
-	return request.post("/app/live/mqtt/applyToken", params)
+//获取我的装修服务设计图内容
+export function getMyDesignServe(params) {
+	return request.get("/pm/app/serve/design/myDesignServe?severId=" + params)
 }
+
+//获取我的装修服务设计类型
+export function getDesignServeMenu(params) {
+	return request.get("/pm/app/serve/design/designServeMenu/" + params)
+}
+
+//获取我的装修服务设计类型
+export function getMyService(params) {
+	return request.get("/pm/app/project/myService?projectId=" + params.projectId + "&processId=" + params.processId)
+}
+
+// //获取mqtt信息
+// export function getMqtt(params){
+// 	return request.get("/app/live/mqtt/mqttProperties" )
+// }
+
+// //获取mqtt鉴权token
+// export function getToken(params){
+// 	return request.post("/app/live/mqtt/applyToken",params )
+// }
 
 //获取装修消息列表
 export function getMsgList(params) {

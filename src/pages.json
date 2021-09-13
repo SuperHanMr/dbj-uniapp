@@ -1,5 +1,5 @@
 {
-	"pages": [ //pages数组中第一项表示应用启动页，参考：https://uniapp.dcloud.io/collocation/pages
+	"pages": [
 		{
 			"path": "pages/home/index/index",
 			"style": {
@@ -745,6 +745,14 @@
 				},
 				{
 					"path": "pages/warehouse-refund-state/warehouse-refund-state",
+					"style": {
+						"navigationBarTitleText": "",
+						"enablePullDownRefresh": false,
+						"navigationStyle": "custom"
+					}
+				},
+				{
+					"path": "pages/actuary-bill/actuary-bill",
 					"style": {
 						"navigationBarTitleText": "",
 						"enablePullDownRefresh": false,

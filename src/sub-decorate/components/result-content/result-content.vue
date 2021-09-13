@@ -29,7 +29,6 @@
       <deliverCard id="hazard" color="#F6A93B" title="隐患" :data='data[1]'></deliverCard>
       <deliverCard id="conform" color="#348BE2" title="符合项" :data='data[0]'></deliverCard>
     </view>
-    
     <text class="bottom-text">我是有底线的~</text>
 
   </view>

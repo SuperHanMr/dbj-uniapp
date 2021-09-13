@@ -8,7 +8,7 @@
     }"
   >
     <view class="message-bubble-avatar">
-      <image class="avatar" :src="avatar" mode=""></image>
+      <image class="avatar" :src="avatar" mode="aspectFill"></image>
     </view>
     <view class="message-bubble-main">
       <view class="message-bubble-header">

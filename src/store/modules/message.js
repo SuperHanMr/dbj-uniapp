@@ -1,12 +1,14 @@
-//测试使用，接口提供后修改为从后端获取签名
-import {
-  genTestUserSig
-} from "@/utils/debug/GenerateTestUserSig.js"
+
 import TIM from 'tim-wx-sdk'
 import {
   getTim,
-  getSafeTim
+  getSafeTim,
+  addListener,
+  cleanListeners
 } from "@/utils/tim.js"
+import {
+  getGroupList
+} from "@/api/message.js";
 
 // 解析自定义消息，并把payload.data字符串值解析后放到message的payloadData属性上
 const parseCustomMessage = (msg) => {
@@ -42,7 +44,9 @@ const message = {
     isIMlogin: false,
     currentIMUserId: '',
     currentIMUserSig: '',
-    conversationList: [],
+    conversationList: [], //腾讯会话列表
+    chatGroupList: [], //后台返回的群列表
+    groupMembersMap: {}, //按照群id缓存群成员信息
     currentConversation: {},
     currentMessageList: [],
     isAppendMessageList: false, //是否消息后面拼接新消息
@@ -54,6 +58,8 @@ const message = {
     currentSoundUrl: '', //正在播放的语音url
     soundPlayStatus: 'stop', //语音播放状态，可用值有 stop playing pause
     innerAudioContext: null, //音频播放器
+    showVideoPlayer: false, //显示视频播放器
+    currentVideoUrl: '', //当前播放的视频地址
   },
   mutations: {
     resetConversation(state) {
@@ -137,38 +143,81 @@ const message = {
         state.currentSoundUrl = "";
         state.soundPlayStatus = "stop";
       }
+    },
+    showMessageVideoPlayer(state, url) {
+      state.currentVideoUrl = url;
+      state.showVideoPlayer = true;
+    },
+    closeMessageVideoPlayer(state, url) {
+      state.showVideoPlayer = false;
+    },
+    setChatGroupList(state, list) {
+      state.chatGroupList = list || [];
     }
   },
   actions: {
-    requestIMSig(context, userId) {
-      return new Promise((resolve, reject) => {        
-        let {
-          userSig
-        } = genTestUserSig(userId);
-        resolve({userSig});
-      });
-    },
-    loginIM(context, userId) {
-      return context.dispatch("requestIMSig", userId).then(res => {
-        let userSig = res.userSig;
-        context.state.currentIMUserId = userId;
-        context.state.currentIMUserSig = userSig;
-        return getTim().login({
-          userID: userId,
-          userSig: userSig
-        })
+    loginIM(context, payload) {
+      const {
+        userId,
+        userSig
+      } = payload;
+      context.state.currentIMUserId = userId;
+      context.state.currentIMUserSig = userSig;
+      return getTim().login({
+        userID: userId,
+        userSig: userSig
       }).then(res => {
         context.state.isIMlogin = true;
+        addListener("CONVERSATION_LIST_UPDATED", (event) => {
+          let conversationList = event.data || [];
+          context.commit("updateConversationList", conversationList);
+        });
+        context.dispatch("requestConversationList");
+        context.dispatch("requestDBGroupList");
       }).catch(err => {
         context.state.isIMlogin = false;
         console.error("IM login error.", err);
       });
     },
+    logoutIM(context) {
+      return getTim().logout().then(() => {
+        cleanListeners();
+        context.state.isIMlogin = false;
+      });
+    },
     requestConversationList(context) {
-      getSafeTim().then(tim => tim.getConversationList()).then(res => {
+      return getSafeTim().then(tim => tim.getConversationList()).then(res => {
         if (res.code === 0) {
           context.commit("updateConversationList", res.data.conversationList || []);
         }
+      });
+    },
+    /**
+     * 从后台获取群列表
+     * @param {Object} context
+     */
+    requestDBGroupList(context) {
+      getGroupList().then(data => {
+        const groupList = data.chatGroupBusinessDTOList || [];
+        groupList.forEach(group => {
+          context.dispatch("requestGroupMemberList", group.imGroupId);
+        })
+        context.commit("setChatGroupList", groupList);
+      });
+    },
+    /**
+     * 从腾讯获取群成员信息
+     */
+    requestGroupMemberList(context, groupId) {
+      return getSafeTim().then(tim => tim.getGroupMemberList({ 
+        groupID: groupId, 
+        count: 30,
+        offset:0 ,
+      })).then(imResponse => {
+        console.log("get member list:", imResponse);
+        const memberList = imResponse.data.memberList || [];
+        context.state.groupMembersMap[groupId] = memberList;
+        return memberList;
       });
     },
     /**
@@ -246,6 +295,10 @@ const message = {
         context.state.innerAudioContext.play();
       }
     },
+    playMessageVideo(context, payload) {
+      const { url } = payload;
+      context.commit("showMessageVideoPlayer", url);
+    },
     preivewMessageImage(context, payload) {
       const { url } = payload;
       let urls = [];
@@ -260,7 +313,7 @@ const message = {
         current: idx >= 0 ? idx : 0,
         indicator: 'number'
       });
-    }
+    },
   }
 }
 
