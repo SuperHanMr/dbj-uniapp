@@ -46,9 +46,6 @@
     watch: {
     },
     mounted() {
-      uni.setNavigationBarTitle({
-      　　title: this.name
-      });
       const query = uni.createSelectorQuery().in(this);
       this.messageListNodesRef = query.select("#messageListNoti");
       this.messageListNodesRef.boundingClientRect((options) => {
@@ -56,6 +53,9 @@
       }).exec();
     },
     onLoad(options) {
+      uni.setNavigationBarTitle({
+      　　title: options.name
+      });
       // this.$store.dispatch("checkoutConversation", options.id);
     },
     onUnload() {

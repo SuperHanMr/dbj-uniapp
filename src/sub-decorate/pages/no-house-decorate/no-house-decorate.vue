@@ -11,15 +11,24 @@
       <my-current-house v-if="currentHouse && currentHouse.id" :houseData="currentHouse"
         @changCurrentHouse="changCurrentHouse">
       </my-current-house>
-      <service-card :setting="design" class="service-card" @selectAnother="selectAnother('design')" @changeLevel="open">
+      <service-card v-if="sssType == 'decorate' || sssType == 'design'" :setting="design" class="service-card"
+        @selectAnother="selectAnother('design')" @changeLevel="open">
         <template slot="check">
           <check-box :checked="design.checked" @change="(value)=> {change(design.cardtype, value)}">
           </check-box>
         </template>
       </service-card>
-      <service-card :setting="actuary" class="service-card" @selectAnother="selectAnother('actuary')">
+      <service-card v-if="sssType == 'decorate' || sssType == 'actuary'" :setting="actuary" class="service-card"
+        @selectAnother="selectAnother('actuary')">
         <template slot="check">
           <check-box :checked="actuary.checked" @change="(value)=> {change(actuary.cardtype, value)}">
+          </check-box>
+        </template>
+      </service-card>
+      <service-card v-if="sssType == 'checkHouse'" :setting="checkHouse" class="service-card"
+        @selectAnother="selectAnother('checkHouse')">
+        <template slot="check">
+          <check-box :checked="checkHouse.checked" @change="(value)=> {change(checkHouse.cardtype, value)}">
           </check-box>
         </template>
       </service-card>
@@ -63,6 +72,10 @@
     getProductsSkusPage,
     getServiceSku
   } from "../../../api/decorate.js"
+
+  import {
+    createOrder
+  } from "../../../api/order-center.js"
   export default {
     components: {
       ServiceCard,
@@ -77,10 +90,10 @@
         design: {
           title: "设计服务",
           cardtype: "design",
-          checked: true,
+          checked: false,
           level: 1,
-          price: 29.9,
-          insideArea: 88,
+          price: 1,
+          insideArea: 0.1,
           id: 1054,
           imageUrl: "https://ali-image-test.dabanjia.com//image/20210313/1615618135579_0296%24pexels-eberhard-grossgasteiger-1428277.jpg",
           name: "橙色",
@@ -92,9 +105,24 @@
         actuary: {
           title: "精算服务",
           cardtype: "actuary",
-          checked: true,
-          price: 59.9,
-          insideArea: 88,
+          checked: false,
+          price: 1,
+          insideArea: 0.1,
+          categoryTypeId: 4,
+          id: 38085,
+          imageUrl: "https://ali-image-test.dabanjia.com//image/20210313/1615618135579_0296%24pexels-eberhard-grossgasteiger-1428277.jpg",
+          name: "橙色",
+          quantity: 1,
+          serviceName: "设计服务",
+          serviceType: 1,
+          spuName: "韩永辉测试视频无法播放"
+        },
+        checkHouse: {
+          title: "验房服务",
+          cardtype: "checkHouse",
+          checked: false,
+          price: 1,
+          insideArea: 0.1,
           categoryTypeId: 4,
           id: 38085,
           imageUrl: "https://ali-image-test.dabanjia.com//image/20210313/1615618135579_0296%24pexels-eberhard-grossgasteiger-1428277.jpg",
@@ -105,15 +133,16 @@
           spuName: "韩永辉测试视频无法播放"
         },
         currentHouse: {},
-        selectLevel: 1
+        selectLevel: 1,
+        sssType: ""
       }
     },
     computed: {
       isAllChecked() {
-        return this.design.checked || this.actuary.checked
+        return this.design.checked || this.actuary.checked || this.checkHouse.checked
       },
       pieces() {
-        let num = this.design.checked + this.actuary.checked;
+        let num = this.design.checked + this.actuary.checked + this.checkHouse.checked;
         return num
       },
       countPrice() {
@@ -125,18 +154,48 @@
         //   qian += parseFloat(this.actuary.price) * this.currentHouse.insideArea
         // }
         // return qian + "0.00"
-        let dprice = this.design.price || 29.9
-        let aprice = this.design.price || 59.9
-        return dprice * this.currentHouse.insideArea + aprice * this.currentHouse.insideArea
+        let dprice = 0
+        let aprice = 0
+        let chprice = 0
+        if (this.design.checked) {
+          dprice = this.design.price || 29.9
+        }
+        if (this.actuary.checked) {
+          aprice = this.actuary.price || 59.9
+        }
+        if (this.checkHouse.checked) {
+          chprice = this.checkHouse.price || 59.9
+        }
+        let temp = dprice * this.currentHouse.insideArea + aprice * this.currentHouse.insideArea + chprice * this
+          .currentHouse.insideArea
+        return temp
       }
     },
-    onLoad() {
+    onLoad(option) {
       uni.$on("selectedHouse", (data) => {
         console.log("selectedHouse:", data)
         this.currentHouse = data
       })
+      // console.log("option", option)
+      const {
+        type
+      } = option
+      this.sssType = type
     },
     onShow() {
+      if (this.sssType == "decorate") {
+        this.design.checked = true
+        this.actuary.checked = true
+      }
+      if (this.sssType == "design") {
+        this.design.checked = true
+      }
+      if (this.sssType == "actuary") {
+        this.actuary.checked = true
+      }
+      if (this.sssType == "checkHouse") {
+        this.checkHouse.checked = true
+      }
       this.getMyHouseList();
       const {
         noHouseActuaryId,
@@ -167,15 +226,16 @@
       getServiceSku() {
         console.log(getApp().globalData)
         getServiceSku({
-          codeKey: "decoration_default_service",
+          // codeKey: "decoration_default_service",
           province_id: 1,
           city_id: 1,
           area_id: 1,
-          serveTypes: [1, 4]
+          serveTypes: [1, 2, 4]
         }).then(data => {
           const {
             noHouseActuaryId,
-            noHouseDesignId
+            noHouseDesignId,
+            noHouseCheckId
           } = getApp().globalData
           if (!noHouseDesignId) {
             let designData = data.filter(t => t.serviceType === 1 && t.categoryTypeId === 6)
@@ -184,7 +244,7 @@
                 ...designData[0],
                 title: "设计服务",
                 cardtype: "design",
-                checked: true,
+                checked: this.sssType == "decorate" || this.sssType == "design",
                 level: 1,
                 insideArea: this.currentHouse.insideArea
               }
@@ -197,13 +257,24 @@
                 ...actuaryData[0],
                 title: "精算服务",
                 cardtype: "actuary",
-                checked: true,
+                checked: this.sssType == "decorate" || this.sssType == "actuary",
                 insideArea: this.currentHouse.insideArea
               }
             }
           }
-
-          console.log("默认服务： ", this.design, this.actuary)
+          if (!noHouseCheckId) {
+            let checkHouseData = data.filter(t => t.serviceType === 2)
+            if (checkHouseData && checkHouseData.length > 0) {
+              this.checkHouse = {
+                ...actuaryData[0],
+                title: "验房服务",
+                cardtype: "checkHouse",
+                checked: this.sssType == "checkhouse",
+                insideArea: this.currentHouse.insideArea
+              }
+            }
+          }
+          console.log("默认服务： ", this.design, this.actuary, this.checkHouse)
         })
       },
       getProductsSkusPage() {
@@ -248,12 +319,17 @@
       selectAnother(pp) {
         if (pp === "design") {
           uni.navigateTo({
-            url: '/sub-decorate/pages/design-service-list/design-service-list?id=6'
+            url: '/sub-decorate/pages/design-service-list/design-service-list?id=1'
           })
         }
         if (pp === "actuary") {
           uni.navigateTo({
-            url: '/sub-decorate/pages/design-service-list/design-service-list?id=5'
+            url: '/sub-decorate/pages/design-service-list/design-service-list?id=4'
+          })
+        }
+        if (pp === "checkHouse") {
+          uni.navigateTo({
+            url: '/sub-decorate/pages/design-service-list/design-service-list?id=2'
           })
         }
       },
@@ -280,9 +356,71 @@
       gotopay() {
         // TODO去结算页面
         if (this.currentHouse && this.currentHouse.id) {
-          uni.redirectTo({
-            url: ""
-          })
+          // uni.redirectTo({
+          //   url: ""
+          // })
+          let params = {
+            payType: 1, //"int //支付方式  1微信支付",
+            openid: uni.getStorageSync("openId"), //"string //微信openid 小程序支付用 app支付不传或传空",
+            projectId: 0, //"long //项目id  非必须 默认0",
+            customerId: 0, //"long //业主id  非必须 默认0",
+            estateId: this.currentHouse.id, //"long //房产id   非必须 默认0",
+            total: this.countPrice * 100, //"int //总计",
+            remarks: "", //"string //备注",
+            orderName: "", //"string //订单名称",
+            details: []
+            // details: [{
+            //   relationId: this.design.id, //"long //实体id",
+            //   type: 2, //"int //实体类型   1材料  2服务   3专项付款",
+            //   businessType: this.design.categoryTypeId, //"int //业务类型",
+            //   workType: -2, //"int //工种类型",
+            //   level: 0, //"int //等级  0中级  1高级 2特级  3钻石",
+            //   storeId: 0, //"long //店铺id",
+            //   storeType: 0, //"int //店铺类型 0普通 1设计师",
+            //   number: 1, //"double //购买数量",
+            //   params: "", //string //与订单无关的参数 如上门时间 doorTime"
+            // }]
+          }
+          if(this.design.checked) {
+            params.details.push({
+              relationId: this.design.id, //"long //实体id",
+              type: 2, //"int //实体类型   1材料  2服务   3专项付款",
+              businessType: this.design.categoryTypeId, //"int //业务类型",
+              workType: -2, //"int //工种类型",
+              level: 0, //"int //等级  0中级  1高级 2特级  3钻石",
+              storeId: 0, //"long //店铺id",
+              storeType: 0, //"int //店铺类型 0普通 1设计师",
+              number: 1, //"double //购买数量",
+              params: "", //string //与订单无关的参数 如上门时间 doorTime"
+            })
+          }
+          if(this.actuary.checked) {
+            params.details.push({
+              relationId: this.actuary.id, //"long //实体id",
+              type: 2, //"int //实体类型   1材料  2服务   3专项付款",
+              businessType: this.actuary.categoryTypeId, //"int //业务类型",
+              workType: -2, //"int //工种类型",
+              // level: 0, //"int //等级  0中级  1高级 2特级  3钻石",
+              storeId: 0, //"long //店铺id",
+              storeType: 0, //"int //店铺类型 0普通 1设计师",
+              number: 1, //"double //购买数量",
+              params: "", //string //与订单无关的参数 如上门时间 doorTime"
+            })
+          }
+          if(this.checkHouse.checked) {
+            params.details.push({
+              relationId: this.checkHouse.id, //"long //实体id",
+              type: 2, //"int //实体类型   1材料  2服务   3专项付款",
+              businessType: this.checkHouse.categoryTypeId, //"int //业务类型",
+              workType: -2, //"int //工种类型",
+              // level: 0, //"int //等级  0中级  1高级 2特级  3钻石",
+              storeId: 0, //"long //店铺id",
+              storeType: 0, //"int //店铺类型 0普通 1设计师",
+              number: 1, //"double //购买数量",
+              params: "", //string //与订单无关的参数 如上门时间 doorTime"
+            })
+          }
+          this.createOrder(params)
         } else {
           uni.showToast({
             title: "请您先添加房屋信息",
@@ -291,11 +429,33 @@
           })
         }
       },
+      createOrder(obj) {
+        createOrder(obj).then(data => {
+          const {
+            wechatPayJsapi
+          } = data
+          uni.requestPayment({
+            provider: "wxpay",
+            ...wechatPayJsapi,
+            success(res) {
+              console.log("付款成功", res)
+              uni.redirectTo({
+                url: "/pages/decorate/index/index"
+              })
+            },
+            fail(e) {
+              console.log(e);
+            },
+          });
+        })
+      },
       change(id, value) {
         if (id === "design") {
           this.design.checked = value;
         } else if (id === "actuary") {
           this.actuary.checked = value;
+        } else if (id === "checkHouse") {
+          this.checkHouse.checked = value;
         }
       },
       goAddHouse() {

@@ -218,7 +218,6 @@
 				color: #333333;
 			}
 		}
-
 	}
 
 	.header-content {
