@@ -12,4 +12,7 @@ export function getServeTypes(projectId){
 export function getDrawings(params){
   return request.get(`/pm/app/serve/design/designServeTypeInfo`,{params});
 }
+export function getDecorateDynamic(params){
+  return request.post(`/pm/app/decorate/calendar/getListByPageQuery`,params);
+}
 
