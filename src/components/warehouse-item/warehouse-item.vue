@@ -1,6 +1,6 @@
 <template>
 	<view class="store">
-		<view class="store-info">
+		<view  v-if="item.storeName" class="store-info">
 			<view class="store-name">
 				{{item.storeName}}
 			</view>
@@ -38,7 +38,6 @@
 							{{goodItem.price}}/{{goodItem.unit}}
 						</view>
 						<view style="flex:1">
-
 						</view>
 						<view class="spec-item">
 							共{{number}}件
