@@ -22,6 +22,11 @@
       </template>
     </scroll-view>
     <message-send-box></message-send-box>
+    <view v-if="showVideoPlayer" class="video-player-wrapper">
+      <video class="video-player" :src="currentVideoUrl" autoplay>
+        <cover-view class="icon-face video-close-btn" @click="handleCloseVideo"></cover-view>
+      </video>
+    </view>
   </view>
 </template>
 
@@ -53,17 +58,10 @@
         currentMessageList: (state) => state.message.currentMessageList,
         isCompleted: (state) => state.message.isCompleted,
         isRequesting: (state) => state.message.isRequesting,
-        isAppendMessageList: (state) => state.message.isAppendMessageList
+        isAppendMessageList: (state) => state.message.isAppendMessageList,
+        showVideoPlayer: (state) => state.message.showVideoPlayer,
+        currentVideoUrl: (state) => state.message.currentVideoUrl,
       }),
-      name() {
-        if (this.currentConversation.type === TIM.TYPES.CONV_C2C) {
-          return this.currentConversation.userProfile.nick || this.currentConversation.userProfile.userID;
-        }
-        if (this.currentConversation.type === TIM.TYPES.CONV_GROUP) {
-          return this.currentConversation.groupProfile.name || this.currentConversation.groupProfile.groupID;
-        }
-        return this.currentConversation.conversationID;
-      },
     },
     watch: {
       currentMessageList(list, oldList) {
@@ -114,14 +112,14 @@
       this.messageListNodesRef = null;
     },
     onLoad(options) {
-      this.$store.dispatch("checkoutConversation", options.id).then(() => {
-        uni.setNavigationBarTitle({
-        　　title: this.name
-        });
+      uni.setNavigationBarTitle({
+      　　title: options.name
       });
+      this.$store.dispatch("checkoutConversation", options.id);
     },
     onUnload() {
       this.$store.commit("resetConversation");
+      this.$store.commit("closeMessageVideoPlayer");
     },
     methods: {
       showTimeTag(message, prevMessage) {
@@ -225,6 +223,9 @@
       },
       handleMessageListClick() {
         uni.$emit("message-list-click");
+      },
+      handleCloseVideo() {
+        this.$store.commit("closeMessageVideoPlayer");
       }
     }
   }
@@ -234,8 +235,10 @@
   .conversation-container {
     display: flex;
     flex-flow: column nowrap;
+    width: 100%;
     height: 100%;
     overflow: hidden;
+    position: relative;
   }
   .message-list {
     flex: 1;
@@ -246,5 +249,27 @@
     font-size: 12px;
     color: #999;
     padding: 40rpx 0;
+  }
+  
+  .video-player-wrapper {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+  }
+  .video-player {
+    width: 100%;
+    height: 100%;
+  }
+  .video-close-btn{
+    position: absolute;
+    z-index: 1;
+    right: 40rpx;
+    top: 24rpx;
+    color: #fff;
+    width: 28px;
+    height: 28px;
   }
 </style>
