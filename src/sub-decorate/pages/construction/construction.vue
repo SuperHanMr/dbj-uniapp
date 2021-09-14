@@ -16,6 +16,7 @@
 </template>
 
 <script>
+  // import { }
   import Tabs from "../../components/tabs/tabs.vue"
   import UserDescPict from "../../components/user-desc-pict/user-desc-pict.vue"
   import SubTitle from "../../components/user-desc-pict/sub-title.vue"
@@ -51,7 +52,7 @@
   .construction {}
   .s-g-list {
     .s-g-item {
-      margin: 0 24rpx 24rpx;
+      margin: 24rpx;
     }
   }
 </style>

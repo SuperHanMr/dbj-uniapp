@@ -6,6 +6,6 @@ export function getEstateProjectInfoList(data) {
 	return request.post("/pm/app/worker/construction/getCompletionLog", data)
 }
 //根据id获取完工验收申请详情
-export function availableService(params) {
-	return request.get(`/pm/app/worker/construction/getCompletionLogById/${params.id}`)
+export function availableService(id) {
+	return request.get(`/pm/app/worker/construction/getCompletionLogById/${id}`)
 }

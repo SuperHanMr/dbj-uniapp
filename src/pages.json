@@ -748,8 +748,14 @@
           "path": "pages/actuary-bill/actuary-bill",
           "style": {
             "navigationBarTitleText": "",
-            "enablePullDownRefresh": false,
-            "navigationStyle": "custom"
+            "enablePullDownRefresh": false
+          }
+        },
+        {
+          "path": "pages/gj-process-cost/gj-process-cost",
+          "style": {
+            "navigationBarTitleText": "管家工序费",
+            "enablePullDownRefresh": false
           }
         }
       ]

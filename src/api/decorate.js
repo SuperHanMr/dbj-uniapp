@@ -169,3 +169,8 @@ export function inventoryDetails(params) {
 export function goodsApply(params) {
 	return request.post("/order-center/app/goods/require/create", params)
 }
+
+// 获取工序费用
+export function sellList(params) {
+	return request.get(`/pm/app/actuary/sell/list/${params.serveId}/${params.type}`)
+}
