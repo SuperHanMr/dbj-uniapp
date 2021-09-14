@@ -3,17 +3,19 @@
 		<view class="img-box">
 			<image :src="params.imageUrl" mode="widthFix" @load="emitHeight" @error="emitHeight"></image>
 			<view class="comment-like">
-				<view class="comment" v-if="params.commentCount">
+				<!-- <view class="comment" v-if="params.commentCount"> -->
+				<view class="comment">
 					<view class="comment-icon">
-						
+						<image src="/static/images/real-case/liuyan.png" mode=""></image>
 					</view>
 					<view class="comment-count">
 						{{params.commentCount}}
 					</view>
 				</view>
-				<view class="like" v-if="params.isLike">
+				<!-- <view class="like" v-if="params.isLike"> -->
+				<view class="like">
 					<view class="comment-icon">
-						
+						<image src="/static/images/real-case/xihuan.png" mode=""></image>
 					</view>
 					<view class="comment-count">
 						{{params.likeCount}}
@@ -33,7 +35,8 @@
 					</view>
 				</view>
 				<view class="collection-box">
-					<image src="/static/images/collection-no.png" mode=""></image>
+					<image src="/static/images/real-case/collection-no.png" v-if="!params.isCollection" mode=""></image>
+					<image src="/static/images/real-case/collection.png" v-if="params.isCollection" mode=""></image>
 					<view class="collection-number">
 						{{params.likeCount}}
 					</view>
@@ -106,16 +109,21 @@
 			left: 16rpx;
 			display: flex;
 			align-items: center;
-			.comment{
+			z-index: 100;
+			.comment, .like{
 				display: flex;
 				align-items: center;
 				margin-right: 16rpx;
 				.comment-icon{
 					width: 20rpx;
 					height: 20rpx;
+					line-height: 20rpx;
 					opacity: 1;
-					border: 1px solid #ffffff;
 					margin-right: 4rpx;
+					image{
+						width: 100%;
+						height: 100%;
+					}
 				}
 				.comment-count{
 					font-size: 22rpx;
@@ -124,10 +132,6 @@
 					text-align: left;
 					color: #ffffff;
 				}
-			}
-			.like{
-				display: flex;
-				align-items: center;
 			}
 		}
 	}

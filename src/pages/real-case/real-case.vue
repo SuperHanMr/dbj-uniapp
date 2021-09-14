@@ -26,7 +26,7 @@
 				</swiper>
 			</view>
 		</view>
-		<view class="load-txt">{{pagState.loadTxt}}</view>
+		<!-- <view class="load-txt">{{pagState.loadTxt}}</view> -->
 	</view>
 </template>
 
@@ -34,7 +34,8 @@
 	import DesignCase from "./component/design-case.vue";
 	import Decorate from "./component/decorate.vue";
 	import {
-		getCaseList
+		getCaseList,
+		getDecorateist
 	} from "../../api/real-case.js";
 	import {
 		debounce
@@ -100,11 +101,12 @@
 				this.active = val;
 			},
 			changeTabs(i) {
+				console.log(i, 'asdadsadasdadasd')
 				this.currentVal = i;
 				this.selectStatus = i;
 			},
 			bindscrolltolower() {
-				console.log("aaaaaaaaaaaaaaaaaa>>>>>>>>>>>>>");
+				console.log("aaaaaaaaaaaaaaaaaa>>>>>>>>>>>>>", this.pagState.page, this.pagState.totalPage);
 				if (this.pagState.page <= this.pagState.totalPage) {
 					debounce(this.getList(), 1000);
 				}
@@ -157,73 +159,35 @@
 					console.log(this.rightList);
 					this.onJump(this.rightList, index ,true);
 				}
-				// let direction = {
-				// 	left: "左",
-				// 	right: "右",
-				// };
-				// uni.showToast({
-				// 	title: `${direction[tag]}侧列表第${index + 1}个被点击`,
-				// 	icon: "none",
-				// });
 			},
 			// 获取数据
 			getList() {
-				/*
-					无真实数据，当前由 setTimeout 模拟异步请求、
-					自行替换 请求方法将数据 传入 addList() 方法中
-					自行解决数据格式，自行修改组件内布局和内容绑定
-				*/
-				getCaseList({
-					page: this.pagState.page,
-					rows: this.pagState.rows,
-				}).then((res) => {
-					if (res && res.list) {
-						this.addList(res.list);
-						this.pagState.page = res.page + 1;
-						this.pagState.totalPage = res.totalPage;
-						this.pagState.totalRows = res.totalRows;
-					}
-					console.log(res, this.pagState.page, 'asd>>>>>>>>>>>>>>>>');
-				})
-				// if (!this.ajax.load) {
-				// 	return;
-				// }
-				// this.ajax.load = false;
-				// this.ajax.loadTxt = "加载中";
-
-				// setTimeout(() => {
-				// 	// 生成随机数方法
-				// 	let random = (min = 0, max) => {
-				// 		return Math.floor(Math.random() * max) + min;
-				// 	};
-				// 	// 待选的图片数据
-				// 	let imgs = [];
-				// 	// 待选的标题数据
-				// 	let titles = [
-				// 		"桃花坞里桃花庵，桃花庵里桃花仙；",
-				// 		"桃花仙人种桃树，又摘桃花卖酒钱。",
-				// 		"酒醒只在花前坐，酒醉还来花下眠；半醒半醉日复日，花落花开年复年。",
-				// 		"但愿老死花酒间，不愿鞠躬车马前；",
-				// 		"车尘马足富者趣，酒盏花枝贫者缘。若将富贵比贫贱，",
-				// 		"一在平地一在天；若将贫贱比车马，他得驱驰我得闲。",
-				// 		"别人笑我太疯癫，我笑他人看不穿；不见五陵豪杰墓，无花无酒锄作田。",
-				// 	];
-
-				// 	let res = [];
-				// 	for (let i = 0; i < 10; i++) {
-				// 		res.push({
-				// 			url: `/uni_modules/helang-waterfall/static/waterfall/${random(
-				//           0,
-				//           3
-				//         )}.jpg`,
-				// 			title: titles[random(0, titles.length)],
-				// 			money: random(9, 9999),
-				// 			label: "官方自营",
-				// 			shop: "唐诗三百首旗舰店",
-				// 		});
-				// 	}
-				// 	this.addList(res);
-				// }, 1000);
+				const params = {
+					pageIndex: this.pagState.page,
+					pageSize: this.pagState.rows,
+				}
+				if (this.currentVal == 0) {
+					getCaseList(params).then((res) => {
+						if (res && res.list) {
+							this.addList(res.list);
+							this.pagState.page = res.page + 1;
+							this.pagState.totalPage = res.totalPage;
+							this.pagState.totalRows = res.totalRows;
+						}
+					})
+				} else {
+					getDecorateist(params).then((res) => {
+						if (res && res.list) {
+							this.addList(res.list);
+							this.pagState.page = res.page + 1;
+							this.pagState.totalPage = res.totalPage;
+							this.pagState.totalRows = res.totalRows;
+						}
+						console.log(res, this.pagState.page, 'asd>>>>>>>>>>>>>>>>');
+					})
+				}
+				
+				
 			},
 			addList(res) {
 				// 获取到的数据，请注意数据结构
