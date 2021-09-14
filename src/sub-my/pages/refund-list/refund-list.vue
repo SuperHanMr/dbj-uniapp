@@ -10,8 +10,7 @@
 		      ></image>
 		    </view>
 		    <view class="order-status">
-					<text> {{item.type==0?"仅退款(未发货)":item.type==1 ? "仅退款(退库存)":item.type==2 ? "仅退款(已收货)":item.type==3?"服务退款":""}}</text>
-				
+					<text> {{item.type==0?"仅退款(未发货)":item.type==1 ? "仅退款(退库存)":item.type==2 ? "仅退款(已收货)":item.type==3?"服务退款":""}}</text>				
 		    </view>
 		  </view>
 			
@@ -28,8 +27,6 @@
 							</view>
 							<view class="attr">
 								<text>{{item2.scaleProperties}}</text>
-								<!-- <text style="margin-right: 24rpx;">白色</text>
-								<text>2.0m/{{item2.unit}}</text> -->
 							</view>
 							<view class="refund-price">
 								<text style="margin-right:8rpx ;">退款金额</text>
@@ -40,9 +37,6 @@
 								</text>
 							</view>
 						</view>
-						<!-- <view class="common-price">
-							<view style="color: #999999;">共1件</view>
-						</view>	 -->
 					</view>
 				</view>		
 			</view>
@@ -62,7 +56,7 @@
 			<view class="footer">
 					<view class="button-container">
 						<button
-							v-if="item.type == 0"
+							v-if="item.status ==0 ||item.status == 1"
 								type="default"
 								size="mini"
 								@click="open(item)"
@@ -100,18 +94,52 @@
 		data() {
 			return {
 				query:{
-					// lastId:-1,
+					lastId:-1,
 					rows:15,
 				},
 				dataList:[],
+				dataListLength:"",
 				itemId:"",
 			}
 		},
-		onShow() {
+		onLoad() {
 		  this.getList();
 		},
+		//下拉刷新
+		onPullDownRefresh() {
+			console.log('refresh');
+			setTimeout(function () {
+					uni.stopPullDownRefresh();
+			}, 1000);
+		},
+	
+		 //页面上拉触底事件的处理函数
+		  onReachBottom(e) {
+		    console.log("底部")// 滚动到页面执行该方法 
+		    wx.showToast({
+		      title: '加载中...',
+		      icon: 'loading',
+		      duration: 2000
+		    })
+				if(this.query.lastId > 0 && this.dataListLength <1) return 
+			  this.getList();
+				
+		  },
+		  
 		
 		methods: {
+			getList(){
+				console.log("获取退款列表数据")
+				let params=this.query
+				getRefundList(params).then(data=>{
+					let refundList=data;
+					this.dataListLength=refundList.length
+					this.query.lastId =refundList[refundList.length-1].id
+					console.log("this.lastId=",this.lastId,)
+					this.dataList =this.dataList.concat(refundList)
+				})
+			},
+			
 			handlePrice(price){
 				let list=String(price).split(".")
 				if(list.length==1){
@@ -120,9 +148,8 @@
 					return[list[0],list[1]]
 				}
 			},
-			orderStatus(){
-				console.log("打印数据")
-			},
+		
+		
 			goToDetail(data){
 				console.log("去详情页面","data",data.status)
 				if(data.status == 0 || data.status == 1 ){
@@ -139,14 +166,7 @@
 					})
 				}
 			},
-			getList(){
-				console.log("获取退款列表数据")
-				let params=this.query
-				getRefundList(params).then(data=>{
-					this.dataList=data;
-					console.log(data,"Data")
-				})
-			},
+			
 			
 			
 			open(data) {
@@ -167,10 +187,10 @@
 					    title: '申请退款成功',
 					    duration: 2000
 					});
-					setTimeout(()=>{
-					  this.goToDetail(this.refundItem)
-					}, 1000);
-					
+					// setTimeout(()=>{
+					//   this.goToDetail(this.refundItem)
+					// }, 1000);
+					this.getList()
 					}
 				})
 				
@@ -183,10 +203,7 @@
 <style lang="scss" scoped>
 
 	.container{
-		width: 100%;
-		height: 100%;
-		overflow: auto;
-		background-color: skyblue;
+		
 		.order-container{
 			background-color: #FFFFFF;
 		}

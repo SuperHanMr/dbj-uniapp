@@ -16,6 +16,7 @@
     </view>
     <swiper
       class="swiper"
+			:class="{empty:orderListLength<=0}"
       :current="currentIndex"
       :duration="200"
       @change="swiperChange"
@@ -33,10 +34,9 @@
           @refresherrefresh="onRefresh"
 					refresher-enabled="true"
           @scrolltolower="onLoadMore"
-        >
-          <view class="swiper-item" >
-
-            <view  v-if=" orderList.length > 0 "  class="order-container"  v-for="item in orderList" :key="item.id">
+				>
+          <view class="swiper-item" v-if=" orderList.length > 0 ">
+						<view  class="order-container"  v-for="item in orderList" :key="item.id">
               <view class="header">
                 <view class="store-name" @click="gotoShop">
                   <text>{{item.orderName?item.orderName:item.storeName}}</text>
@@ -66,7 +66,7 @@
 
               <view class="body">
 								<!-- 套餐 -->
-								<view class="product-info" v-if="item.orderName" @click="goToDetail(item)">
+								<view class="product-info" v-if="item.details.length>1" @click="goToDetail(item)">
 								  <view class="product-img">
 								    <scroll-view
 								      scroll-x
@@ -162,300 +162,19 @@
                   >去付款</button>
 									
                 </view>
-								
-								
-              </view>
-							
-            
+							</view>
 						</view>
-						
-						<view v-else class="empty-page">
+					</view>
+					
+					<view class="swiper-item empty-container" v-else>
+						<view class="empty-page">
 							<view class="line"/>
-							
 							<view class="content ">
 								<image src="../../static/empty_page@2x.png" mode=""></image>
 								<text>暂无相关订单~</text>
 							</view>
-							
-					</view>
+						</view>
 						
-					
-            <!-- <view class="order-container" @click="goMultiplePay" >
-              <view class="header">
-                <view class="store-name">
-                  <text>不知道叫什么名字的店铺nizhidaomahahahahahahaha</text>
-                  <image
-                    src="../../../static/order/ic_more@2x.png"
-                    mode=""
-                  ></image>
-                </view>
-                <view
-                  class="order-status"
-                  :class="{active:isActive}"
-                >
-                  代付款
-                </view>
-              </view>
-
-              <view class="body">
-                <order-item></order-item>
-                <order-item></order-item>
-              </view>
-
-              <view class="price">
-                <view class="total-pay">
-                  <text>总价</text>
-                  <text style="font-size:18rpx;">￥</text>
-                  <text>320.</text>
-                  <text style="font-size:18rpx;">00</text>
-                  <text style="margin-left: 18rpx;">优惠</text>
-                  <text style="font-size:18rpx;">￥</text>
-                  <text>99.</text>
-                  <text style="font-size:18rpx;">00</text>
-                </view>
-                <view class="need-pay">
-                  <text>需付款(含搬运费)</text>
-                  <text style="color:#FF3347;margin-left: 8rpx;">
-                    <text style="font-size:18rpx;">￥</text>
-                    <text style="font-size: 32rpx;">8888.</text>
-                    <text style="font-size:18rpx;">00</text>
-                  </text>
-                </view>
-              </view>
-
-              <view class="line" />
-
-              <view class="footer" >
-								<view class="set-interval">
-									<image src="../../../static/order/ic／time@2x.png" mode=""></image>
-									<text>
-										<text style="margin-right: 12rpx;">剩余支付时间</text>
-										<text class="time-style1">01</text>
-										<text style="color:#FF3347; margin: 0 6rpx;">:</text>
-										<text class="time-style1">59</text>
-										<text style="color:#FF3347; margin: 0 6rpx;">:</text>
-										<text class="time-style1">59</text>
-									</text>
-									<text>
-										<text style="margin-right: 12rpx;">剩余支付时间</text>
-										<text class="time-style2">01</text>
-										<text style="margin: 0 6rpx;">:</text>
-										<text class="time-style2">59</text>
-										<text style="margin: 0 6rpx;">:</text>
-										<text class="time-style2">59</text>
-									</text>
-								</view>
-
-								<view class="button">
-									<button
-										type="default"
-										size="mini"
-										class="cancel-order"
-									>取消订单</button>
-									<button
-										type="default"
-										size="mini"
-										class="go-to-pay"
-									>去付款</button>
-								</view>
-							</view>
-
-              <view class="confirm-receipt">
-                <button
-                  type="default"
-                  size="mini"
-                  class="confirm"
-                >确认收货
-                </button>
-              </view>
-
-            </view> -->
-
-            <!-- <view class="order-container">
-              <view class="header">
-                <view class="store-name">
-                  <text>不知道叫什么名字的店铺nizhidaomahahahahahahaha</text>
-                  <image
-                    src="../../../static/order/ic_more@2x.png"
-                    mode=""
-                  ></image>
-                </view>
-                <view
-                  class="order-status"
-                  :class="{active:isActive}"
-                >
-                  代付款
-                </view>
-              </view>
-
-              <view class="body">
-                <order-item></order-item>
-              </view>
-
-              <view class="price">
-                <view class="total-pay">
-                  <text>总价</text>
-                  <text style="font-size:18rpx;">￥</text>
-                  <text>320.</text>
-                  <text style="font-size:18rpx;">00</text>
-                  <text style="margin-left: 18rpx;">优惠</text>
-                  <text style="font-size:18rpx;">￥</text>
-                  <text>99.</text>
-                  <text style="font-size:18rpx;">00</text>
-                </view>
-                <view class="need-pay">
-                  <text>需付款(含运费、搬运费)</text>
-                  <text style="color:#FF3347;margin-left: 8rpx;">
-                    <text style="font-size:18rpx;">￥</text>
-                    <text style="font-size: 32rpx;">8888.</text>
-                    <text style="font-size:18rpx;">00</text>
-                  </text>
-                </view>
-              </view>
-
-              <view class="line" />
-
-              <view class="footer">
-
-                <view class="set-interval">
-                  <image
-                    src="../../../static/order/ic_more@2x.png"
-                    mode=""
-                  ></image>
-                  
-                  <text>
-                    <text style="margin-right: 12rpx;">剩余支付时间</text>
-                    <text class="time-style2">01</text>
-                    <text style="margin: 0 6rpx;">:</text>
-                    <text class="time-style2">59</text>
-                    <text style="margin: 0 6rpx;">:</text>
-                    <text class="time-style2">59</text>
-                  </text>
-                </view>
-
-                <view class="button">
-                  <button
-                    type="default"
-                    size="mini"
-                    class="cancel-order"
-                  >取消订单</button>
-                  <button
-                    type="default"
-                    size="mini"
-                    class="go-to-pay"
-                  >去付款</button>
-                </view>
-              </view>
-
-              <view class="confirm-receipt" >
-								<button
-									type="default"
-									size="mini"
-									class="confirm"
-								>确认收货
-								</button>
-							</view>
-
-            </view>
- -->
-            <!-- <view class="order-container" @click="toDetail()">
-              <view class="header">
-                <view class="store-name">
-                  <text>多店铺同时下单的标题样式真复杂</text>
-                </view>
-                <view class="order-status">
-                  代付款
-                </view>
-              </view>
-              <view class="body">
-                <view class="product-info">
-                  <view class="product-img">
-                    <scroll-view
-                      scroll-x
-                      style="width: 100%; white-space: nowrap;"
-                    >
-                      <image
-												v-for="(item,index) in 6" :key="index"
-                        src="../../../static/images/message/ic_interaction@2x.png"
-                        mode=""
-                      >
-                    </scroll-view>
-                  </view>
-                  <view class="total-price">
-                    <view class="product-price">
-                      <text style="font-size:22rpx;">￥</text>
-                      <text style="font-weight: 400;">1111128</text>
-                      <text style="font-size:22rpx;">.00</text>
-                    </view>
-                    <view>共1件</view>
-                  </view>
-                </view>
-              
-							
-							
-							</view>
-              <view class="price">
-                <view class="total-pay">
-                  <text>总价</text>
-                  <text style="font-size:18rpx;">￥</text>
-                  <text>320.</text>
-                  <text style="font-size:18rpx;">00</text>
-                  <text style="margin-left: 18rpx;">优惠</text>
-                  <text style="font-size:18rpx;">￥</text>
-                  <text>99.</text>
-                  <text style="font-size:18rpx;">00</text>
-                </view>
-                <view class="need-pay">
-									<text>需付款(含运费、搬运费)</text>
-                  <text style="color:#FF3347;margin-left: 8rpx;">
-                    <text style="font-size:18rpx;">￥</text>
-                    <text style="font-size: 32rpx;">99.</text>
-                    <text style="font-size:18rpx;">00</text>
-                  </text>
-                </view>
-              </view>
-              <view class="line" />
-              <view class="footer">
-                <view class="set-interval">
-                  <image
-                    src="../../../static/order/ic_time@2x.png"
-                    mode=""
-                  ></image>
-                  <text>
-                    <text style="margin-right: 12rpx;">剩余支付时间</text>
-                    <text class="time-style1">01</text>
-                    <text style="color:#FF3347; margin: 0 6rpx;">:</text>
-                    <text class="time-style1">59</text>
-                    <text style="color:#FF3347; margin: 0 6rpx;">:</text>
-                    <text class="time-style1">59</text>
-                  </text>
-                  	<text>
-										<text style="margin-right: 12rpx;">剩余支付时间</text>
-										<text class="time-style2">01</text>
-										<text style="margin: 0 6rpx;">:</text>
-										<text class="time-style2">59</text>
-										<text style="margin: 0 6rpx;">:</text>
-										<text class="time-style2">59</text>
-									</text>
-                </view>
-
-                <view class="button">
-                  <button
-                    type="default"
-                    size="mini"
-                    class="cancel-order"
-                  >取消订单</button>
-									
-                  <button
-                    type="default"
-                    size="mini"
-                    class="go-to-pay"
-                  >去付款</button>
-                </view>
-
-              </view>
-            </view>
-         -->
 					</view>
         
 				</scroll-view>
@@ -485,6 +204,9 @@ export default {
       orderList2: [],
       orderList3: [],
       orderList4: [],
+			
+			requestedDataLength:-1,
+			orderListLength:1,
     };
   },
   
@@ -492,19 +214,19 @@ export default {
 		orderList() {
 			// 通过判断currentIndex 返回不同的数组
 			if(this.currentIndex ==0){
-				console.log("this.orderList=",this.orderList0);
+				this.orderListLength = this.orderList0.length
 				return this.orderList0
 			}else if(this.currentIndex ==1){
-				console.log("this.orderList=",this.orderList1);
+				this.orderListLength = this.orderList1.length
 				return this.orderList1
 			}else if(this.currentIndex ==2){
-				console.log("this.orderList=",this.orderList2);
+				this.orderListLength = this.orderList2.length
 				return this.orderList2
 			}else if(this.currentIndex ==3){
-				console.log("this.orderList=",this.orderList3);
+				this.orderListLength = this.orderList3.length
 				return this.orderList3
 			}else{
-				console.log("this.orderList=",this.orderList4);
+				this.orderListLength = this.orderList4.length
 				return this.orderList4
 			}
 		}
@@ -611,30 +333,31 @@ export default {
         lastId: this.lastId[this.currentIndex],
         rows: this.rows,
       });
-      console.log( "caseItem=",orderItem);
 			
-			let lastId = orderItem.length > 0 ? orderItem[orderItem.length-1].id :-1
+      console.log( "orderItem=",orderItem);
+			// let lastId = orderItem.length > 0 ? orderItem[orderItem.length-1].id :-1
+			if(!orderItem.length) return 
 			
 			if(this.currentIndex ==0){
-				this.lastId[0]=lastId
+				this.lastId[0]= orderItem[orderItem.length-1].id
 				this.orderList0 =this.orderList0.concat(orderItem)
 				
 			}else if(this.currentIndex ==1){
-				this.lastId[1]=lastId
+				this.lastId[1]=orderItem[orderItem.length-1].id
 				this.orderList1 =this.orderList1.concat(orderItem)
 				
 			}
 			else if(this.currentIndex ==2){
-				this.lastId[2]=lastId
+				this.lastId[2]=orderItem[orderItem.length-1].id
 				this.orderList2 =this.orderList2.concat(orderItem)
 				
 			}
 			else if(this.currentIndex ==3){
-				this.lastId[3]=lastId
+				this.lastId[3]=orderItem[orderItem.length-1].id
 				this.orderList3=this.orderList3.concat(orderItem)
 				
 			}else {
-				this.lastId[4]=lastId
+				this.lastId[4]=orderItem[orderItem.length-1].id
 				this.orderList4 =this.orderList4.concat(orderItem)
 				
 			}
@@ -644,6 +367,8 @@ export default {
     onLoadMore() {
       console.log("onLoadMore!!!!!!!!!!!!!!");
       if(this.loading) return 
+			// 这个是排除请求回来没有数据的情况
+			if(!this.requestedDataLength && this.lastId[this.currentIndex] >0 ) return 
       this.getOrderList();
     },
 
@@ -932,11 +657,12 @@ export default {
 .changeBgc{
 	background-color: #FFFFFF !important;
 }
+	
 .swiper {
   flex: 1;
   display: flex;
   flex-direction: column;
-  background-color: #F2F2F2;
+	background: #F2F2F2;
   swiper-item {
     height: 100%;
     overflow: auto;
@@ -975,6 +701,9 @@ export default {
   }
 }
 
+.empty{
+	background-color: #FFFFFF;
+}
 .scroll-view {
   flex: 1;
   height: 100%;
