@@ -9,11 +9,11 @@
     </view>
     <view class="service-content">
       <view class="msg">
-        <image class="avatar"></image>
+        <image class="avatar" :src="tab.avatar"></image>
         <view class="name-msg">
           <view>
-            <view class="name">李易峰</view>
-            <view class="text">精算</view>
+            <view class="name">{{tab.name}}</view>
+            <view class="text">{{tab.nodeName}}</view>
           </view>
         </view>
       </view>
@@ -28,7 +28,8 @@
 <script>
   export default{
     props:{
-      isDesign:false
+      isDesign:false,
+      tab:{}
     },
     methods:{
       toTimeLine(item){

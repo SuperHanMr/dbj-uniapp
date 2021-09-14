@@ -62,8 +62,8 @@
         margin-top: 24rpx;
         
         image{
-          width: 220rpx;
-          height: 220rpx;
+          width: 212rpx;
+          height: 212rpx;
           opacity: 1;
           border-radius: 4px;
           background-color: #eee;
