@@ -135,6 +135,7 @@
 			},
 			onJump(list, index ,isDecorate) {
 				console.log(list[index].parentType, 'asdasdas');
+				// parentType 1 全景图 0  短视频  2 图文
 				if (list[index].parentType === 1) {
 					const listUrl = list[index].videoUrl
 					uni.navigateTo({

@@ -22,6 +22,11 @@
 					</view>
 				</view>
 			</view>
+			<view class="position-icon">
+				<image src="/static/images/real-case/video_ic.png" mode="" v-if="params.parentType == 0"></image>
+				<image src="/static/images/real-case/ic_vr.png" mode="" v-if="params.parentType == 1"></image>
+				<image src="/static/images/real-case/img_ic.png" mode="" v-if="params.parentType == 2"></image>
+			</view>
 		</view>
 		<!-- <video v-if="params.parentType !== 0" id="myVideo" :src="params.videoUrl"
 		                    @error="videoErrorCallback" :danmu-list="danmuList" enable-danmu danmu-btn controls></video> -->
@@ -132,6 +137,15 @@
 					text-align: left;
 					color: #ffffff;
 				}
+			}
+		}
+		.position-icon{
+			position: absolute;
+			right: 16rpx;
+			top: 16rpx;
+			image{
+				width: 44rpx;
+				height: 44rpx;
 			}
 		}
 	}
