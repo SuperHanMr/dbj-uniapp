@@ -37,7 +37,7 @@ export function getLogs(params) {
 
 //获取我的装修服务设计图内容
 export function getMyDesignServe(params) {
-	return request.get("/pm/app/serve/design/myDesignServe?severId=" + params)
+	return request.get("/pm/app/serve/design/myDesignServe/" + params)
 }
 
 //获取我的装修服务设计类型
