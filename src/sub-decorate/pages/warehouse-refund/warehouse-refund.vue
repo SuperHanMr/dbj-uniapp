@@ -10,7 +10,7 @@
 					<view style="flex:1">
 					</view>
 					<view class="" @click="selectRes">
-						请选择原因
+						{{reasonName!=''?reasonName:'请选择原因'}}
 					</view>
 					<view class="">
 						<!-- //todo down -->
@@ -63,6 +63,9 @@
 		goodsBack,
 		goodsRefund
 	} from "../../../api/decorate.js"
+	import {
+		refundReason
+	} from '../../../api/order.js'
 	export default {
 		data() {
 			return {
@@ -71,11 +74,15 @@
 				remark: "",
 				type: 0,
 				projectId: '',
-				data:{}
+				data: {},
+				refundReasonList: [], //退款原因
+				reasonList: [],
+				reasonValue: "",
+				reasonName: "",
 			};
 		},
 		onShow() {
-			this.data=getApp().globalData.naviData;
+			this.data = getApp().globalData.naviData;
 			console.log(this.data)
 		},
 		onLoad(e) {
@@ -90,11 +97,22 @@
 			uni.setNavigationBarTitle({
 				title: title,
 			});
-		
+
+			this.getRefundReasonList()
 		},
 		methods: {
-			onNumChange(e){
+			onNumChange(e) {
 				console.log(e);
+			},
+			getRefundReasonList() {
+				refundReason({
+					codeKey: "refund_reason"
+				}).then(list => {
+					this.refundReasonList = list
+					this.reasonList = list.map(item => {
+						return item.itermName
+					})
+				})
 			},
 			submitRefund() {
 				let params = {}
@@ -108,14 +126,17 @@
 			},
 			selectRes() {
 				uni.showActionSheet({
-					itemList: ["A", "B", "C"],
-					success: function(res) {
-						console.log("选中了第" + (res.tapIndex + 1) + "个按钮");
+					itemList: this.reasonList,
+					success: (res) => {
+						this.reasonName = this.reasonList[res.tapIndex]
+						this.reasonValue = this.refundReasonList.filter(item => {
+							return item.itermName == this.reasonList[res.tapIndex]
+						})[0].itermValue
 					},
-					fail: function(res) {
+					fail: (res) => {
 						console.log(res.errMsg);
-					},
-				});
+					}
+				})
 			},
 		},
 	};

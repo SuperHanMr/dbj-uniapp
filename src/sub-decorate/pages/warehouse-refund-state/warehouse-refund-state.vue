@@ -17,7 +17,6 @@
 					{{detail.refundTime | formatDate}}
 				</view>
 				<view class="placehold">
-
 				</view>
 			</view>
 			<view class="header-content">

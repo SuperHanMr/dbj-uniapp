@@ -21,7 +21,6 @@
 					});
 				}, 0);
 			} else {
-
 				let token = uni.getStorageSync("scn");
 				this.globalData.token = token;
 				oauthGomeInfo({
