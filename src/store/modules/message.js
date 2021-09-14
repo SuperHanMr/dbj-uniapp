@@ -77,6 +77,15 @@ const message = {
     updateConversationList(state, conversationList) {
       state.conversationList = conversationList.filter(conv => {
         if (conv.type === TIM.TYPES.CONV_GROUP) {
+          // 如果是客服群
+          if (/_2_13$/.test(conv.conversationID)) {
+            state.cstServConv = {
+              ...conv,
+              ...state.cstServConv,
+              conversationID: conv.conversationID
+            };
+            return false;
+          }
           return true;
         }
         if (conv.type === TIM.TYPES.CONV_C2C) {
@@ -104,6 +113,7 @@ const message = {
       } else if (data.conversationID === state.currentConversation.conversationID) {
         list = [data];
       }
+      
       state.newMessageMap = list.reduce((obj, msg) => {
         obj[msg.ID] = true;
         return obj;
@@ -119,11 +129,27 @@ const message = {
      * @param {Object} payload
      */
     prependCurrentMessageList(state, payload) {
-      const {
+      let {
         nextReqMessageID,
         isCompleted,
         messageList = [],
       } = payload;
+      // XXX: 伪造消息
+      messageList = messageList.concat([{
+        ID: "GROUPgroup_3176_1099_1_1-4-test",
+        avatar: "https://ali-image-test.dabanjia.com/image/20210107/1609984385396_8922%242.jpg",
+        conversationID: "GROUPgroup_3176_1099_1_1",
+        conversationType: "GROUP",
+        flow: "out",
+        from: "zeus_452",
+        nick: "赵文浩1",
+        time: 1631351202,
+        payload: {
+          data: '{"type":"group_questionnaire_message","template":"card","name":"张三","test": "hello"}'
+        },
+        type: "TIMCustomElem"
+      }])
+      // XXX end
       messageList.forEach(parseCustomMessage);
       // 更新messageID，续拉时要用到
       state.nextReqMessageID = nextReqMessageID
@@ -152,7 +178,18 @@ const message = {
       state.showVideoPlayer = false;
     },
     setChatGroupList(state, list) {
-      state.chatGroupList = list || [];
+      state.chatGroupList = (list || []).filter(grp => {
+        //在线客服群
+        if (grp.businessType ===  2 && grp.type === 13) {
+          state.cstServConv = {
+            ...state.cstServConv,
+            conversationID: "GROUP" + grp.imGroupId,
+            groupDB: grp,
+          }
+          return false;
+        }
+        return true;
+      });
     }
   },
   actions: {
