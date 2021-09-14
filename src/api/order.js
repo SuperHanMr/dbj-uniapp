@@ -42,17 +42,17 @@ export function getRefundDetail(params) {
 }
 
 //我的-订单-整个订单申请退款
-export function wholeOrderApplyForRefund(params){
-	return request.post(`/order-center/app/order/overall/applyRefund`,{params})
+export function wholeOrderApplyForRefund(params) {
+	return request.post(`/order-center/app/order/overall/applyRefund`, { params })
 }
 //我的-订单-部分商品申请退款
-export function particalOrderApplyForRefund(params){
-	return request.post(`/order-center/app/order/overall/applyRefund`,{params})
+export function particalOrderApplyForRefund(params) {
+	return request.post(`/order-center/app/order/overall/applyRefund`, { params })
 }
 
 //我的-订单-申请退款-申请退款原因
-export function refundReason(params){
-	return request.get(`/web/codeIterm/getItermsByCodeKey`,{params})
+export function refundReason(params) {
+	return request.get(`/web/codeIterm/getItermsByCodeKey`, { params })
 }
 
 
@@ -75,18 +75,34 @@ export function splitPay(params) {
 	return request.post(`/order-center/app/order/splitPayOrder`, params);
 }
 
-//我的-订单-分次支付接口
-export function splitPay(params){
-    return request.post(`/order-center/app/order/splitPayOrder`,params);
-}
+
 
 
 
 
 // 我的-评价-评价列表
-export function getEvationList(params){
-    return request.get(`/pm/app/serve/completeList`,params);
+export function getEvationList(params) {
+	return request.get(`/pm/app/serve/completeList`, params);
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 // --------------------------仓库管家------------------------
 
