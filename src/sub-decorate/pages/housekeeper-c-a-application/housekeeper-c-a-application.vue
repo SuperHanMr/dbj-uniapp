@@ -4,7 +4,7 @@
       管家发起竣工验收申请，系统将在72:00:00后自动确认验收
     </view>
     <view class="content">
-      <user-desc-pict :pictList="pictList"></user-desc-pict>
+      <user-desc-pict-butler :detail="detail"></user-desc-pict-butler>
     </view>
     <view class="bt-btn-wrap flex-row">
       <view class="btn-l" @click="refuse">拒绝通过</view>
@@ -14,22 +14,26 @@
 </template>
 
 <script>
-  import UserDescPict from "../../components/user-desc-pict/user-desc-pict.vue"
+  import {
+    completionDetail,
+    ownerCompletionAudit
+  } from "../../../api/construction.js"
+  import UserDescPictButler from "../../components/user-desc-pict/user-desc-pict-butler.vue"
+
   export default {
     components: {
-      UserDescPict
+      UserDescPictButler
+    },
+    onLoad(option) {
+      this.projectId = option.projectId
+    },
+    onShow() {
+      this.queryCompletionDetail()
     },
     data() {
       return {
-        pictList: [
-          "http://iph.href.lu/328x216?text=三维图交付&fg=EB7662&bg=FFE2DD",
-          "http://iph.href.lu/328x216?text=三维图交付&fg=EB7662&bg=FFE2DD",
-          "http://iph.href.lu/328x216?text=三维图交付&fg=EB7662&bg=FFE2DD",
-          "http://iph.href.lu/328x216?text=三维图交付&fg=EB7662&bg=FFE2DD",
-          "http://iph.href.lu/328x216?text=三维图交付&fg=EB7662&bg=FFE2DD",
-          "http://iph.href.lu/328x216?text=三维图交付&fg=EB7662&bg=FFE2DD"
-        ],
-        shigong: true
+        detail: {},
+        projectId: null
       }
     },
     methods: {
@@ -41,6 +45,15 @@
           success: (res) => {
             if (res.confirm) {
               console.log("点击了确认")
+              ownerCompletionAudit({
+                id: this.detail.id,
+                status: 2
+              }).then(data => {
+                console.log(data)
+                uni.showToast({
+                  title: "已提交验收"
+                })
+              })
             } else {
               console.log("点击了取消")
             }
@@ -49,9 +62,18 @@
       },
       refuse() {
         uni.navigateTo({
-          url: "/sub-decorate/pages/housekeeper-refuse/housekeeper-refuse"
+          url: `/sub-decorate/pages/housekeeper-refuse/housekeeper-refuse?id=${this.detail.id}`
         })
-      }
+      },
+      queryCompletionDetail() {
+        completionDetail(1).then(data => {
+          this.detail = data
+        })
+      },
+      ownerInsertAudit() {
+
+      },
+
     }
   }
 </script>

@@ -40,7 +40,8 @@
             <picture-btn v-if="aServiceData.showActuaryFlag" class="p-i-t" text="精算单" @gotoPage="goActuary">
             </picture-btn>
             <picture-btn v-if="aServiceData.showVideoFlag" class="p-i-t" text="工地视频" @gotoPage="goVideo"></picture-btn>
-            <picture-btn v-if="aServiceData.constructionFlag" text="施工" @gotoPage="goConstrction"></picture-btn>
+            <!-- <picture-btn v-if="aServiceData.constructionFlag" text="施工" @gotoPage="goConstrction"></picture-btn> -->
+            <picture-btn text="施工" @gotoPage="goConstrction"></picture-btn>
           </view>
         </view>
       </view>
@@ -116,7 +117,7 @@
           </uni-popup>
           <decorate-notice @touchmove.stop.prevent="()=>false" v-if="noticeActive" :current='current'
             @closeNotice='closeNotice' class="decorate-notice"></decorate-notice>
-          <!-- <view class="link">
+          <view class="link">
             <view @click="gonohouse">无房屋无服入口</view>
             <view @click="gonohousedecatore('decorate')">无房屋无服务装修</view>
             <view @click="gonohousedecatore('checkhouse')">无房屋无服务验房</view>
@@ -125,10 +126,10 @@
             <view @click="confirm4">线上交底</view>
             <view @click="dsport">设计报告交付</view>
             <view @click="hcaa">管家竣工验收申请</view>
-            <view @click="housekeeperrefuse">管家竣工拒绝</view>
+            <!-- <view @click="housekeeperrefuse">管家竣工拒绝</view> -->
             <view @click="workerCapplication">工人阶段验收申请</view>
             <view @click="gjgxf">管家工序费</view>
-          </view> -->
+          </view>
         </scroll-view>
       </view>
       <drag-button-follow :style.sync="style" @btnClick='openNotice' :follow='`left,right`' className="drag-button"
@@ -342,7 +343,7 @@
       },
       hcaa() {
         uni.navigateTo({
-          url: "/sub-decorate/pages/housekeeper-c-a-application/housekeeper-c-a-application"
+          url: `/sub-decorate/pages/housekeeper-c-a-application/housekeeper-c-a-application?projectId=${this.currentProject.projectId}`
         })
       },
       housekeeperrefuse() {

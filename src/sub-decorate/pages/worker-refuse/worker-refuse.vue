@@ -12,7 +12,7 @@
 
 <script>
   import {
-    ownerCompletionAudit
+    ownerInsertAudit
   } from "../../../api/construction.js"
   export default {
     onLoad(option) {
@@ -28,21 +28,20 @@
       bindTextAreaBlur: function(e) {
         console.log(e.detail.value)
       },
-      confirm() {
-        ownerCompletionAudit({
-          id: Number(this.id),
-          status: 1,
-          ownerDescription: this.reason
-        }).then(data => {
-          console.log(data)
-          uni.showToast({
-            title: "已提交申请",
-            icon: null
-          })
-        })
-      },
       onInput(e) {
         this.reason = e.target.value
+      },
+      confirm() {
+        ownerInsertAudit({
+          applyId: this.id,
+          auditResult: this.reason,
+          status: 4
+        }).then(data => {
+          uni.showToast({
+            title: "已提交申请",
+            icon: false
+          })
+        })
       }
     },
     watch: {

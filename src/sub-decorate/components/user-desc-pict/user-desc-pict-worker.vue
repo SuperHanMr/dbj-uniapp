@@ -4,19 +4,27 @@
     <view class="content-wrap">
       <view class="avtor-wrap flex-row-bet">
         <view class="flex-row-start">
-          <image class="avtor" :src="butlerData.avatar"></image>
+          <image class="avtor" :src="workerData.avatar"></image>
           <view class="tigs">
-            <view class="username">{{butlerData.name}}</view>
-            <view class="role">{{butlerData.nodeName}}</view>
+            <view class="username">{{workerData.name}}</view>
+            <view class="role">{{workerData.nodeName}}</view>
           </view>
         </view>
-        <view class="date">{{butlerData.createTime}}</view>
+        <view class="date">{{workerData.createTime}}</view>
       </view>
-      <view class="desc">{{butlerData.content}}</view>
+      <view class="desc">{{workerData.content}}</view>
       <view class="picture flex-row">
-        <view class="imgs" v-for="(item, index) in butlerData.fileUrls" :key="index" v-if="index < 6">
-          <image :src="item" @click="clickImg(butlerData.fileUrls)"></image>
-          <view class="zz" v-if="index === 5" @click="clickImg(butlerData.fileUrls)">+{{butlerData.fileUrls.length - 6}}
+        <view class="imgs" v-for="(item, index) in workerData.fileUrls" :key="index" v-if="index < 6">
+          <image :src="item" @click="clickImg(workerData.fileUrls)"></image>
+          <view class="zz" v-if="index === 5" @click="clickImg(workerData.fileUrls)">+{{workerData.fileUrls.length - 6}}</view>
+        </view>
+      </view>
+      <view v-for="(t,index) in workerData.workerItems">
+        <view class="worker-title">{{t.workItemName}}</view>
+        <view class="picture flex-row">
+          <view class="imgs" v-for="(it, index) in t.fileUrls" :key="index" v-if="index < 3">
+            <image :src="it" @click="clickImg(t.fileUrls)"></image>
+            <view class="zz" v-if="index === 2" @click="clickImg(t.fileUrls)">+{{t.fileUrls.length - 3}}</view>
           </view>
         </view>
       </view>
@@ -27,7 +35,7 @@
 <script>
   export default {
     props: {
-      butlerData: {
+      workerData: {
         type: Object,
         default: () => {}
       }
@@ -65,13 +73,11 @@
     bottom: 64rpx;
     justify-content: space-between;
   }
-
   .content-wrap {
     background-color: #fff;
     padding: 24rpx;
     border-radius: 16rpx;
   }
-
   .avtor-wrap {
     // padding-top: 112rpx;
     margin-bottom: 23rpx;

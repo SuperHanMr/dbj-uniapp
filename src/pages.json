@@ -7,8 +7,7 @@
         "transparentTitle": "auto",
         "navigationStyle": "custom"
       }
-    },
-    {
+    }, {
       "path": "pages/decorate/index/index",
       "style": {
         "navigationBarTitleText": "装修",
@@ -734,6 +733,13 @@
           "path": "pages/worker-c-application/worker-c-application",
           "style": {
             "navigationBarTitleText": "拆除服务阶段验收申请",
+            "enablePullDownRefresh": false
+          }
+        },
+        {
+          "path": "pages/worker-refuse/worker-refuse",
+          "style": {
+            "navigationBarTitleText": "发起拒绝通过",
             "enablePullDownRefresh": false
           }
         },
