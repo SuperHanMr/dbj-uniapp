@@ -13,11 +13,11 @@
       @click="handleMessageListClick"
      >
       <template v-for="(msg, idx) in currentMessageList">
-        <div
+        <view
           v-if="showTimeTag(msg, currentMessageList[idx - 1])"
           :key="msg.ID"
           class="message-tags-time"
-        >{{ formatMessageTime(msg.time) }}</div>
+        >{{ formatMessageTime(msg.time) }}</view>
         <message-item  :message="msg"></message-item>
       </template>
     </scroll-view>

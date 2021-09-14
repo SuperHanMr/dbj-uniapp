@@ -1,0 +1,18 @@
+{
+  "group_questionnaire_message": {
+    "template": "card",
+    "icon": "https://ali-image.dabanjia.com/static/mp/dabanjia/images/message/ic_customer_service@2x.png",
+    "title": "装修需求问卷",
+    "tip": "温馨提示：你好，${name}，为了更好的了解您的需求",
+    "buttons": [
+      {
+        "title": "查看详情1",
+        "href": ""
+      },
+      {
+        "title": "确认完成",
+        "href": ""
+      }
+    ]
+  }
+}
