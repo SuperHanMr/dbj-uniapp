@@ -24,5 +24,22 @@ export function caseList(params) {
 //获取（省市）城市树
 export function getProvinceCityTree() {
 	const zeusUrl = process.env.VUE_APP_ZEUS;
-	return request.get(`api/area/list_tree_exclude_qg`, { baseURL: zeusUrl });
+	return request.get(`api/area/list_tree_exclude_qg`, {
+		baseURL: zeusUrl
+	});
+}
+
+//-----------------------------工地直播------------------------------
+//已绑定列表
+export function bindVideoList(params) {
+	return request.get(`/pm/app/equipmentBind/list/type/bind`, {
+		params
+	});
+}
+
+//工地速看列表
+export function workVideo(params) {
+	return request.get(`/pm/app/equipmentBind/list/workVideo`, {
+		params
+	});
 }

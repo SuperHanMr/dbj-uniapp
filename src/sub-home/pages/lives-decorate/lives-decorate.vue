@@ -1,17 +1,16 @@
 <template>
-	<view>
+	<view class="fill">
 		<live-player :class="{ player:!isFill,'player-fill':isFill}" :src="livePreview" autoplay
 			@statechange="statechange" @error="error" :muted="muted" :orientation="isFill?'horizontal':'vertical'">
-
 			<cover-view v-if="!isFill" class="video-bottom">
-
 				<cover-image class="video-voice" @click="changeMuted"
 					src="http://dbj.dragonn.top/static/mp/dabanjia/images/home/player-vioce.png">
 				</cover-image>
-				<cover-view style="flex:1"></cover-view>
-
-
-				<cover-view style="flex:1"></cover-view>
+				<cover-view  class="center-icon-row">
+					<cover-image  v-for="(item,index) in liveList" class="video-list-icon" @click="videoFill"
+						src="http://dbj.dragonn.top/static/mp/dabanjia/images/home/indicator_Selected.png">
+					</cover-image>
+				</cover-view>
 				<cover-image class="video-voice" @click="videoFill"
 					src="http://dbj.dragonn.top/static/mp/dabanjia/images/home/player-big.png">
 				</cover-image>
@@ -34,41 +33,44 @@
 			</cover-view>
 
 		</live-player>
-		<view class="header">
+		<view v-if="!isFill" class="header">
 			直播速看
 		</view>
-		<view v-for="(item,index) in list" :key="index">
-			<view class="h-row">
-				<view class="tip">
+		<scroll-view v-if="!isFill" scroll-y="true" class="scroll-view">
+			
+			<view v-for="(item,index) in list" :key="index">
+				<view class="h-row">
+					<view class="tip">
+					</view>
+					<view class="time">
+						2021-06-22 周二
+					</view>
+					<view class="flex1">
+					</view>
 				</view>
-				<view class="time">
-					2021-06-22 周二
-				</view>
-				<view class="flex1">
-				</view>
-				<view class="subtext">
-					水电阶段
+				<view class="video-row">
+					<video class="video" :src="videoSrc">
+						<cover-view class="cover-video" @click.stop="toDetail"></cover-view>
+					</video>
 				</view>
 			</view>
-			<view class="video-row">
-				<video class="video" :src="videoSrc">
-					<cover-view class="cover-video" @click.stop="toDetail"></cover-view>
+			<view style="height: 100rpx;">
+			</view>
+			<view class="preview-full" v-if="currentVideoSrc">
+				<video class="preview-full" :autoplay="true" :src="currentVideoSrc" :show-fullscreen-btn="false">
+					<cover-view class="preview-full-close" @click="previewVideoClose"> ×
+					</cover-view>
 				</video>
 			</view>
-		</view>
-		<view style="height: 100rpx;">
-		</view>
-		<view class="preview-full" v-if="currentVideoSrc">
-			<video class="preview-full" :autoplay="true" :src="currentVideoSrc" :show-fullscreen-btn="false">
-				<cover-view class="preview-full-close" @click="previewVideoClose"> ×
-				</cover-view>
-			</video>
-		</view>
-
+		</scroll-view>
 	</view>
 </template>
 
 <script>
+	import {
+		workVideo,
+		bindVideoList
+	} from '../../../api/home.js'
 	export default {
 		data() {
 			return {
@@ -77,8 +79,25 @@
 				isFill: false,
 				list: [1, 2, 3],
 				videoSrc: 'http://qiniu.hydrant.ink/1631176569963742.mp4',
-				currentVideoSrc: ''
+				currentVideoSrc: '',
+				liveList:[1,2,3,4,5,6,7,8,9,0]
 			}
+		},
+		onLoad(e) {
+			let projectId = e.projectId
+			workVideo({
+				page: 1,
+				rows: 999,
+				projectId: 0
+			}).then(e => {
+				this.list=e.list;
+			})
+			// bindVideoList({projectId:0}).then(e=>{
+			// 	if(e.length){
+			// 		this.livePreview=e[0].hls
+			// 		this.liveList=e
+			// 	}
+			// })
 		},
 		methods: {
 			changeMuted() {
@@ -140,6 +159,32 @@
 </script>
 
 <style lang="scss" scoped>
+	.fill{
+		width: 100%;
+		height: 100%;
+		display: flex;
+		flex-direction: column;
+	}
+	.center-icon-row{
+		flex: 1;
+		display: flex;
+		flex-direction: row;
+		justify-content: center;
+		align-items: center;
+		overflow: auto;
+		margin: 0 40rpx;
+		.video-list-icon{
+			flex-shrink: 0;
+			width: 40rpx;
+			height: 40rpx;
+			margin: 21rpx;
+		}
+	}
+	.scroll-view{
+		width: 100%;
+		flex: 1;
+		overflow: auto;
+	}
 	.video-icon {
 		position: absolute;
 		left: 0;

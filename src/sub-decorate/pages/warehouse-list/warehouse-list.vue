@@ -65,6 +65,7 @@
 			if (e && e.projectId) {
 				this.projectId = e.projectId;
 			}
+			console.log(e)
 			this.getList(true);
 		},
 		onShow() {},
