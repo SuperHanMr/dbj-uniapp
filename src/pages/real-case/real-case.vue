@@ -138,8 +138,7 @@
 					uni.navigateTo({
 						url: `./component/panorama/panorama?url=${listUrl}`
 					})
-				}
-				if(isDecorate){
+				} else if(isDecorate){
 					uni.navigateTo({
 						url: `../../sub-home/pages/decorate-scene/decorate-scene`
 					})
@@ -149,7 +148,7 @@
 			onClick(index, tag) {
 				console.log(index, tag);
 				// 对应的数据
-				if (tag == "left") {
+				if (tag == "0") {
 					this.onJump(this.leftList, index ,false);
 
 				} else {
