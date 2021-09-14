@@ -1,24 +1,27 @@
 <template>
 	<view class="content">
-		<view class="row" v-for="(item ,index) in list " :key="index" @click="toDetail">
+		<view class="row" v-for="(item ,index) in list " :key="index" @click="toDetail(item)">
 			<view>
-				<view class="title">{{item.title}}</view>
+				<view class="title">{{item.creatorName}}申请要货</view>
 				<view class="time">
-					{{item.time}}
+					{{item.createTime |formatDate}}
 				</view>
 			</view>
 			<view class="state">
-				<view v-if="item.state==1" style="color: #FE9000">
-					等待发货
+				<view v-if="item.status==0" style="color: #FE9000">
+					{{item.statusName}}
 				</view>
-				<view v-if="item.state==2" style="color: #FF3347">
-					供应商驳回
+				<view v-if="item.status==1" style="color: #FE9000">
+					{{item.statusName}}
 				</view>
-				<view v-if="item.state==3" style="color: #00BFB6">
-					待收货
+				<view v-if="item.status==2" style="color: #FF3347">
+					{{item.statusName}}
 				</view>
-				<view v-if="item.state==4" style="color: #BFBFBF">
-					已收货
+				<view v-if="item.status==3" style="color: #00BFB6">
+					{{item.statusName}}
+				</view>
+				<view v-if="item.status==4" style="color: #BFBFBF">
+					{{item.statusName}}
 				</view>
 			</view>
 
@@ -28,38 +31,40 @@
 </template>
 
 <script>
+	import {
+		requireList
+	} from '../../../api/decorate.js'
+	import {
+		formatDate
+	} from '../../../utils/common.js'
 	export default {
-
+		filters: {
+			formatDate
+		},
 		data() {
 			return {
-				list: [{
-						title: '刘晋宏要货申请',
-						time: '2021-07-23 12:33',
-						state: 1
-					},
-					{
-						title: '刘晋宏要货申请',
-						time: '2021-07-23 12:33',
-						state: 2
-					},
-					{
-						title: '刘晋宏要货申请',
-						time: '2021-07-23 12:33',
-						state: 3
-					},
-					{
-						title: '刘晋宏要货申请',
-						time: '2021-07-23 12:33',
-						state: 4
-					}
+				projectId: '',
+				list: [
 				]
 
 			}
 		},
+		onLoad(e) {
+			this.projectId = e.projectId
+		},
 		methods: {
-			toDetail() {
+			getList() {
+				let params = {
+					rows: 9999,
+					projectId: this.projectId
+				};
+				requireList(params).then(e => {
+					this.list = e
+				})
+			},
+			toDetail(item) {
 				uni.navigateTo({
-					url:'../require-detail/require-detail'
+					url: `../require-detail/require-detail?id=${item.id}`
 				})
 			}
 		}

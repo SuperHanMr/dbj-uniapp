@@ -1,6 +1,6 @@
 <template>
 	<view class="refund">
-		<warehouse-item :showBtns="false" :isEdit="true"></warehouse-item>
+		<warehouse-item :showBtns="false" :item="data" :isEdit="true" @numChange="onNumChange"></warehouse-item>
 		<view class="back">
 			<view class="back-res">
 				<view class="back-res-row">
@@ -41,11 +41,11 @@
 
 				</view>
 				<view class="text-area-count">
-					{{remarks.length}}/200
+					{{remark.length}}/200
 				</view>
 			</view>
 
-			<textarea v-model="remarks" maxlength="200" style="font-size: 28rpx" placeholder="可以填写一些与客服沟通过的备注信息" />
+			<textarea v-model="remark" maxlength="200" style="font-size: 28rpx" placeholder="可以填写一些与客服沟通过的备注信息" />
 		</view>
 		<view class="remark-tip">
 			建议与商家沟通后再发起退款
@@ -53,34 +53,59 @@
 		<view style="height: 300rpx;">
 
 		</view>
-		<bottom-btn btnContent="提交申请"></bottom-btn>
+		<bottom-btn btnContent="提交申请" @submit="submitRefund"></bottom-btn>
 
 	</view>
 </template>
 
 <script>
+	import {
+		goodsBack,
+		goodsRefund
+	} from "../../../api/decorate.js"
 	export default {
 		data() {
 			return {
 				reason: "",
 				num: "",
-				remarks: "",
-				type:0
+				remark: "",
+				type: 0,
+				projectId: '',
+				data:{}
 			};
+		},
+		onShow() {
+			this.data=getApp().globalData.naviData;
+			console.log(this.data)
 		},
 		onLoad(e) {
 			let title;
-			this.type=e.type;
+			this.type = e.type;
 			if (e.type == 0) {
 				title = '仅退款(已收货)'
 			} else {
 				title = '仅退款(退库存)'
 			}
+			this.projectId = e.projectId;
 			uni.setNavigationBarTitle({
 				title: title,
 			});
+		
 		},
 		methods: {
+			onNumChange(e){
+				console.log(e);
+			},
+			submitRefund() {
+				let params = {}
+				params.refundAmount = this.num * 100
+				params.remark = this.remark
+				if (this.type == 1) {
+					goodsBack()
+				} else {
+					goodsRefund()
+				}
+			},
 			selectRes() {
 				uni.showActionSheet({
 					itemList: ["A", "B", "C"],

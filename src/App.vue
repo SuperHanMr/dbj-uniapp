@@ -10,7 +10,8 @@
       tim: null,
 			noHouseActuaryId: null,
 			noHouseDesignId: null,
-			noHouseCheckId: null
+			noHouseCheckId: null,
+			naviData:null
 		},
 		onLaunch: function() {
 			if (!uni.getStorageSync("userId")) {

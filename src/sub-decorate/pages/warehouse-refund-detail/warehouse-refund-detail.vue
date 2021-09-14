@@ -9,7 +9,6 @@
 					商品总价
 				</view>
 				<view style="flex:1">
-
 				</view>
 				<view class="detail-price-row-font">
 					¥
@@ -38,7 +37,6 @@
 					搬运费
 				</view>
 				<view style="flex:1">
-
 				</view>
 				<view class="detail-price-row-font">
 					¥
@@ -117,7 +115,7 @@
 			</view>
 		</view>
 		<view class="bottom-btn">
-			<view v-if="type==0" class="refund-btn">
+			<view v-if="type==0" class="refund-btn" @click="toBack">
 				退库存
 			</view>
 			<view v-if="type==0" class="big-btn">
@@ -143,17 +141,17 @@
 		receivedDetail,
 		refundDetail
 	} from "../../../api/order.js"
+	import {
+		confirmGoods
+	} from '../../../api/decorate.js'
 	export default {
-
 		filters: {
 			formatDate
 		},
 		data() {
 			return {
 				pay_time: '1631515894',
-				res: {
-
-				},
+				res: {},
 				type: -1,
 				id: ''
 			}
@@ -163,33 +161,46 @@
 			this.type = type
 			let id = e.id;
 			this.id = id
-			console.log(type, id, '!!!!!!!!!!');
 			this.loadData(type, id);
 		},
 		methods: {
-			applyRefund(){
-				let vm=this
+			toBack() {
+				getApp().globalData.naviData = this.res;
+				uni.navigateTo({
+					url: '../warehouse-refund/warehouse-refund',
+				})
+			},
+			applyRefund() {
+				let vm = this
 				uni.showActionSheet({
-				    itemList: ['仅退款(已收货)','仅退款(退库存)'],
-				    success: function (res) {
-							uni.navigateTo({
-								url:`../warehouse-refund/warehouse-refund?type=${res.tapIndex}&id=${vm.id}`
-							})
-				    },
-				    fail: function (res) {
-				    }
+					itemList: ['仅退款(已收货)', '仅退款(退库存)'],
+					success: function(res) {
+						uni.navigateTo({
+							url: `../warehouse-refund/warehouse-refund?type=${res.tapIndex}&id=${vm.id}`
+						})
+					},
+					fail: function(res) {}
 				});
 			},
-			onConfirmGoods(){
+			onConfirmGoods() {
+				let vm = this;
 				uni.showModal({
-				    title: '是否确认收货?',
-				    success: function (res) {
-				        if (res.confirm) {
-				            console.log('用户点击确定');
-				        } else if (res.cancel) {
-				            console.log('用户点击取消');
-				        }
-				    }
+					title: '是否确认收货?',
+					success: function(res) {
+						if (res.confirm) {
+							confirmGoods({
+								id: vm.id
+							}).then(e => {
+								uni.showToast({
+									title: '确认收货成功',
+									icon: 'none'
+								})
+								uni.navigateBack({})
+							})
+						} else if (res.cancel) {
+							console.log('用户点击取消');
+						}
+					}
 				});
 			},
 			payType(type) {
@@ -224,8 +235,10 @@
 
 			},
 			copy() {
+				let orderId = this.res.orderId;
+				console.log(orderId);
 				uni.setClipboardData({
-					data: 'hello',
+					data: orderId.toString(),
 					success: function() {
 						console.log('success');
 					}
@@ -314,6 +327,7 @@
 		border-radius: 8rpx;
 		color: #111111;
 		font-size: 20rpx;
+		margin-left: 20rpx;
 	}
 
 	.detail-price {

@@ -115,7 +115,8 @@
 		formatDate
 	} from '../../../utils/common.js'
 	import {
-		refundDetail
+		refundDetail,
+		cancelRefund
 	} from "../../../api/order.js"
 	export default {
 		filters: {
@@ -159,11 +160,16 @@
 				return res;
 			},
 			cancelRefund() {
+				let vm = this
 				uni.showModal({
 					content: '确定要取消本次退款申请？',
 					success: function(res) {
 						if (res.confirm) {
-							console.log('用户点击确定');
+							cancelRefund({
+								id: vm.id
+							}).then(e => {
+								uni.navigateBack({})
+							})
 						} else if (res.cancel) {
 							console.log('用户点击取消');
 						}

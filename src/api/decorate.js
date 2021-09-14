@@ -189,3 +189,15 @@ export function inventoryDetails(params) {
 export function goodsApply(params) {
 	return request.post("/order-center/app/goods/require/create", params)
 }
+//c端APP-仓库-待收货-确认收货
+export function confirmGoods(params) {
+	return request.put("/order-center/app/goods/stock/confirm/goods", params)
+}
+//APP-要货-要货记录列表
+export function requireList(params) {
+	return request.get("/order-center/app/goods/require/list", params)
+}
+//APP-要货-要货记录详情
+export function requireListDetail(params) {
+	return request.get("/order-center/app/goods/require/detail", params)
+}
