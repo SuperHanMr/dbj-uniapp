@@ -2,7 +2,7 @@
   <view class="service-hunman">
     <view class="design-top" v-if="isDesign">
       <view class="design-name">全案设计</view>
-      <view class="design-change">
+      <view class="design-change" @click="openPopup">
         <text>更换设计类型</text>
         <image></image>
       </view>
@@ -36,6 +36,10 @@
           url:'/sub-decorate/pages/time-line/time-line?id='+item.id
         })
       },
+      openPopup(){
+        console.log(123312)
+        this.$emit('openPopup')
+      }
     }
   }
 </script>
