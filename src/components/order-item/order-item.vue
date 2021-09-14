@@ -47,7 +47,7 @@
 			</view>
 		</view>
 		
-		<view class="warehouse-container" v-if="dataList.stockType == 2 && dataList.type == 1 && orderStatus==2">
+		<view class="warehouse-container" v-if="dataList.type == 1 && orderStatus==2 && dataList.stockType && dataList.stockType == 2">
 			<view class="left">
 				<text class="text1">我的仓库</text>
 				<text class="text2">{{dataList.stockNumber}}</text>
@@ -70,7 +70,7 @@
 		</view>
 		
 		<view  class="apply-refund-container" v-if="dataList.showRefundBtn && (orderStatus==2 || orderStatus == 3)">
-			<view class="button" @click="applyforRefund">
+			<view class="button" @click="particalRefund">
 				申请退款
 			</view>
 		</view>
@@ -120,7 +120,7 @@
 		},
 		mounted() {
 			console.log("paddingBottom1=",this.paddingBottom)
-			if((this.dataList.stockType == 2 && this.dataList.type == 1&& this.orderStatus==2) || (this. dataList.showRefundBtn &&this. orderStatus==2)){
+			if( (this.dataList.stockTyp && this.dataList.stockType == 2 && this.dataList.type == 1&& this.orderStatus==2) || (this. dataList.showRefundBtn &&this. orderStatus==2)){
 				this.paddingBottom=0
 			}
 			console.log("paddingBottom2=",this.paddingBottom)
@@ -140,7 +140,7 @@
 				}
 			},
 			
-			applyforRefund(){
+			particalRefund(){
 				console.log("11111")
 				
 				this.$emit('toApplayForRefund')

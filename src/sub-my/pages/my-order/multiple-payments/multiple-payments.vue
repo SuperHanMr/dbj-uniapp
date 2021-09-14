@@ -1,30 +1,17 @@
 <template>
 	<view class="container">
-		<view class="payItem">
+		<view class="payItem" v-for="(item,index) in list" :key="index">
 			<view class="left">
-				<text>第一笔支付金额：</text>
+				<text>第{{index==1?"一":index==2?"二":index==3?"三":index==4?"四":index==5?"五":""}}笔支付金额：</text>
 				<view class="price">
 					<text>￥</text>
-					<text style="font-size: 40rpx;font-weight: 500;">300.</text>
-					<text>00</text>
+					<text style="font-size: 40rpx;font-weight: 500;">{{handlePrice(item.amount)[0]}}.</text>
+					<text>{{handlePrice(item.amount)[1]}}</text>
 				</view>
 			</view>
 			<view class="right">
-				<text>已付款</text>
-			</view>
-		</view>
-		
-		<view class="payItem">
-			<view class="left">
-				<text>第一笔支付金额：</text>
-				<view class="price">
-					<text>￥</text>
-					<text style="font-size: 40rpx;font-weight: 500;">300.</text>
-					<text>00</text>
-				</view>
-			</view>
-			<view class="right">
-				<view class="button" @click="gotoPay">
+				<text v-if="item.status==1">已付款</text>
+				<view v-if="item.status==0" class="button" @click="gotoPay(item.id)">
 					去付款
 				</view>
 			</view>
@@ -36,22 +23,22 @@
 		
 		
 		<view :class="{noCancelBtn:true}" class="bottom-btn"  :style="{paddingBottom:systemBottom,height:systemHeight}">
-		<!-- 	<view class="cancel-btn">
+			<view class="cancel-btn" v-if="showCancelOrderBtn">
 				取消订单
-			</view> -->
+			</view>
 		  <view class="total-price">
 		  	<view class="total">
 		  		<text>总计</text>
 		  		<text style="margin-left: 12rpx;">￥</text>
-		  		<text style="font-size: 40rpx; font-weight: 500;">100000.</text>
-		  		<text>00</text>
+		  		<text style="font-size: 40rpx; font-weight: 500;">{{handlePrice(list.orderReceivableAmount)[0]}}.</text>
+		  		<text>{{handlePrice(list.orderReceivableAmount)[1]}}</text>
 		  	</view>
 				
 				<view class="has-pay">
 					<text>已支付</text>
 					<text style="margin-left: 12rpx;">￥</text>
-					<text style="font-size: 40rpx; font-weight: 500;">0.</text>
-					<text>00</text>
+					<text style="font-size: 40rpx; font-weight: 500;">{{handlePrice(list.totalActualIncomeAmount)[0]}}.</text>
+					<text>{{handlePrice(list.totalActualIncomeAmount)[1]}}</text>
 				</view>
 				
 		  </view>
@@ -71,6 +58,7 @@
 			return {
 				orderId:"",
 				list:[],
+				showCancelOrderBtn:false,
 				
 				systemBottom: "",
 				systemHeight: "",
@@ -91,22 +79,49 @@
 			requestSplitPayList(){
 				querySplitPayList({orderId:this.orderId}).then(data=>{
 					this.list = data
+					this.showCancelOrderBtn =this.list.every(item=>{
+						item.status==0
+					})
 				})
 			},
-			gotoPay(){
-				
+			gotoPay(id){
 				console.log("去付款");
 				let params={
 					orderId:this.orderId,
 					payType:1,//支付类型  1微信支付"
-					orderSplitPayId:this.orderSplitPayId,
+					orderSplitPayId:id,
 					openid:"",//微信openid 小程序支付用 app支付不传或传空"
 				}
 				splitPay(params).then(e=>{
 					console.log("去支付")
+					const payInfo = e.wechatPayJsapi;
+					uni.requestPayment({
+						provider: "wxpay",
+						...payInfo,
+						success(res) {
+							console.log("@@@@@@@");
+							console.log(res);
+							// 支付成功后跳转到哪个页面
+						},
+						fail(e) {
+							console.log(e);
+							// 支付失败时候跳转到哪个页面
+						},
+					});
 				})
-			}
+			},
 			
+			
+			
+			
+			handlePrice(price){
+				let list=String(price).split(".")
+				if(list.length==1){
+					return [list[0],"00"]
+				}else{
+					return[list[0],list[1]]
+				}
+			},
 		},
 	};
 </script>

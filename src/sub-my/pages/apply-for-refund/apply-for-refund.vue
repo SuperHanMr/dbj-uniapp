@@ -1,16 +1,19 @@
 <template>
   <view>
     <view class="container">
-      <view class="product-container">
-        <order-item :paddingBottom="0"></order-item>
-        <view class="deposit">
-          <view class="item">
-            <text>押金</text>
-            <text style="color:#333333 ;">￥10.00</text>
+      <view   class="product-container">
+        <view
+					v-if="type == 'whole'"
+          v-for="(item,index) in refundInfo.details" :key="index">
+          <view v-for="item2 in item.details" :key="item2.id"
+          >
+            <order-item :dataList="item2"></order-item>
           </view>
         </view>
 
-        <order-item :paddingBottom="32"></order-item>
+        <view v-if="type == 'partical'">
+          <order-item :dataList="refundInfo"></order-item>
+        </view>
 
         <view class="price-container">
           <view class="price-item">
@@ -21,7 +24,8 @@
               <text style="margin-right: 8rpx;">运费</text>
               <view class="icon">?</view>
             </view>
-            <text>￥10.00</text>
+            <text>￥{{handlePrice(refundInfo.freight)[0]}}.{{handlePrice(refundInfo.freight)[1]}}</text>
+
           </view>
 
           <view class="price-item">
@@ -29,11 +33,17 @@
               <text style="margin-right: 8rpx;">搬运费</text>
               <view class="icon">?</view>
             </view>
-            <text>￥10.00</text>
+            <text>￥{{handlePrice(refundInfo.handlingFees)[0]}}.{{handlePrice(refundInfo.handlingFees)[1]}}</text>
+
           </view>
         </view>
 
       </view>
+
+
+
+
+
 
       <view class="refund-container">
 
@@ -44,75 +54,93 @@
             </view>
             <text>退款原因</text>
           </view>
-          <view class="right">
+					
+         <view class="reason" v-if="!reasonName">
             <text style="color:#C7C7C7;">请选择</text>
             <image
-              src="../static/ic_arraw_down@2x.png"
+              src="../../static/ic_arraw_down@2x.png"
               mode=""
               @click="openPopup()"
             ></image>
           </view>
+					
+					<view class="reason" v-else >
+					  <text style="margin-right: 16rpx;" @click="openPopup()">{{reasonName}}</text>
+					</view>
         </view>
-        <view class="line" />
+				
+				<view class="line" />
+				
+				<view class="refund-price" v-if="type == 'whole'">
+					<view
+					  class="edit-price"
+					>
+						<view class="left">
+							<view class="icon">
+								*
+							</view>
+							<text>退款金额</text>
+						</view>
+						<view class="right" >
+						  <text >￥{{handlePrice(refundInfo.totalActualIncomeAmount)[1]}}.{{handlePrice(refundInfo.totalActualIncomeAmount)[0]}}</text>
+						</view>
+					</view>
+					<view class="tip-text">
+						商品未发货，商家同意后将会全额退还。
+					</view>
+				</view>
 
-        <view class="refund-price">
-          <view
-            class="edit-price"
-            v-if="showEditInput==true"
-          >
-            <view class="left">
-              <view class="icon">
-                *
-              </view>
-              <text>退款金额</text>
-            </view>
-            <view class="right">
-              <!-- <text>￥1000.00</text> -->
-              <view class="eidt-style">
-                <text>￥</text>
-                <input
-                  type="number"
-                  :value="inputValue"
-                  class="input-style"
-                  :focus="isFocus"
-                  @input="onKeyInput"
-                  @focus="onKeyFocus"
-                  @blur="onKeyBlur"
-                  :style="{width:inputWidth + 'rpx'}"
-                />
-              </view>
-            </view>
-          </view>
+     
+				<view class="refund-price" v-if="type == 'partical'">
+					<view	v-if="showEditInput==true"	class="edit-price">
+						<view class="left">
+							<view class="icon">
+								*
+							</view>
+							<text>退款金额</text>
+						</view>
+						<view class="right1">
+							<view class="eidt-style">
+								<text>￥</text>
+								<input
+									type="number"
+									:value="inputValue"
+									class="input-style"
+									:focus="isFocus"
+									@input="onKeyInput"
+									@focus="onKeyFocus"
+									@blur="onKeyBlur"
+									:style="{width:inputWidth + 'rpx'}"
+								/>
+							</view>
+						</view>
+					</view>
+	
+					<view v-else class="show-price">
+						<view class="left">
+							<view class="icon">
+								*
+							</view>
+							<text>退款金额</text>
+						</view>
+						<view class="right2">
+							<text style="color:#FF3347;font-size: 40rpx;">￥{{inputValue==0?"0.00":inputValue}}</text>
+							<image
+								src="../../static/ic_mine_edit_gray@2x.png"
+								mode=""
+								@click="showEditInput=true"
+							></image>
+						</view>
+					</view>
 
-          <view
-            class="show-price"
-            v-else
-          >
-            <view class="left">
-              <view class="icon">
-                *
-              </view>
-              <text>退款金额</text>
-            </view>
-            <view class="right">
-              <text style="color:#FF3347;font-size: 40rpx;">￥{{inputValue==0?"0.00":inputValue}}</text>
-              <image
-                src="../static/ic_mine_edit_gray@2x.png"
-                mode=""
-                @click="showEditInput=true"
-              ></image>
-            </view>
-          </view>
-
-          <view class="tip-text">
-            商品未发货，商家同意后将会全额退还。
-          </view>
-
-          <!-- <view class="tip-text">
-					最多可以填写x，也可申请部分金额，以您与商家沟通协商的结果为准
-				</view> -->
+					<view class="tip-text" >
+						最多可以填写￥{{handlePrice(refundInfo.totalActualIncomeAmount)[1]}}.{{handlePrice(refundInfo.totalActualIncomeAmount)[0]}}，也可申请部分金额，以您与商家沟通协商的结果为准
+					</view>
         </view>
-      </view>
+     
+			
+			
+			</view>
 
       <view class="remark-container">
         <view class="header">
@@ -130,30 +158,47 @@
       </view>
       <view class="proposal">建议与商家沟通后再发起退款</view>
 
-      <view class="sumbit-button">
+      <!-- <view class="sumbit-button">
         <view class="buttons">
           <text>提交申请</text>
         </view>
+      </view> -->
+      <view
+        class="sumbit-button"
+        :style="{paddingBottom:systemBottom}"
+      >
+        <view
+          class="buttons"
+          @click="submitApplication"
+        >
+          提交申请
+        </view>
+
       </view>
+
     </view>
 
     <uni-popup
       ref="popup"
       :mask-click="false"
-			style="background-color: #00ED7D;"
+      style="background-color: #00ED7D;"
     >
-			 <view class="reason-item" v-for="item in 10" :key="item" >
-				 <text>可滚动内容 {{ item }}</text>
-				 <view class="reason-line"/>
-			 </view>
-				<button @click="close">取消</button>
-		</uni-popup>
+      <view
+        class="reason-item"
+        v-for="item in 10"
+        :key="item"
+      >
+        <text>可滚动内容 {{ item }}</text>
+        <view class="reason-line" />
+      </view>
+      <button @click="close">取消</button>
+    </uni-popup>
   </view>
 
 </template>
 
 <script>
-	import {getOrderDetail} from "@/api/order.js"
+import { getOrderDetail,refundReason } from "@/api/order.js";
 export default {
   data() {
     return {
@@ -165,19 +210,42 @@ export default {
       inputWidth: 4,
       textAreaLength: 0,
       isFocus: false,
+
+      type: "", //partical部分退款  whole整个退款
+      refundInfo: {},
+			
+			refundReasonList:[],//退款原因
+			reasonList:[],
+			reasonValue:"",
+			reasonName:"",
+			
+      systemBottom: "",
     };
   },
+  mounted(e) {
+    const menuButtonInfo = uni.getMenuButtonBoundingClientRect();
+    this.containerBottom = menuButtonInfo.bottom;
+    this.systemBottom = menuButtonInfo.bottom + "rpx";
+    this.systemHeight = menuButtonInfo.bottom + this.num + "rpx";
+    console.log(this.systemBottom);
+  },
+
+  onLoad(e) {
+    this.type = e.type;
+    console.log("this.type=", this.type);
+    if (this.type == "partical") {
+      this.refundInfo = JSON.parse(
+        wx.getStorageSync("particalRefundOrderInfo")
+      );
+      console.log("this.refundInfo=", this.refundInfo, typeof this.refundInfo);
+    } else {
+      this.refundInfo = JSON.parse(wx.getStorageSync("wholeRefundOrderInfo"));
+      console.log("this.refundInfo=", this.refundInfo, typeof this.refundInfo);
+    }
+		this.getRefundReasonList()
+  },
+
   watch: {
-		// 获取订单详情
-		orderDetail(){
-			console.log("订单完成页面")
-			getOrderDetail({id:this.id}).then(e=>{
-				this.orderInfo = e
-				console.log("获取详情数据data=",this.orderInfo)
-			})
-		},
-		
-		
     showEditInput(newVal, oldVal) {
       if (newVal) {
         this.onKeyFocus();
@@ -189,6 +257,30 @@ export default {
     textAreaLength(newVal, oldVal) {},
   },
   methods: {
+    // 获取订单详情
+    // orderDetail() {
+    //   console.log("订单完成页面");
+    //   getOrderDetail({ id: this.id }).then((e) => {
+    //     this.orderInfo = e;
+       
+    //   });
+    // },
+		
+		// 获取退款原因列表
+		getRefundReasonList(){
+			refundReason({codeKey:"refund_reason"}).then(list=>{
+				this.refundReasonList = list
+				this.reasonList = list.map(item=>{
+					return item.itermName
+				})
+			})
+		},
+		
+		
+		submitApplication() {
+      console.log("申请退款");
+    },
+
     onKeyInput(event) {
       this.inputValue = event.target.value;
       this.inputWidth = event.target.value.length * 24;
@@ -209,12 +301,36 @@ export default {
     onTextAreaInput(event) {
       this.textAreaLength = event.target.value.length;
     },
+		// 请选择原因
     openPopup() {
-      this.$refs.popup.open("bottom");
-			console.log("下拉箭头")
+      // this.$refs.popup.open("bottom");
+      console.log("下拉箭头");
+			uni.showActionSheet({
+				itemList: this.reasonList,
+				success: (res)=>{
+					this.reasonName=this.reasonList[res.tapIndex]
+					this.reasonValue= this.refundReasonList.filter(item=>{
+						return 	item.itermName == this.reasonList[res.tapIndex]
+					})[0].itermValue
+					console.log("this.reasonValue=",this.reasonValue)
+				},
+				fail:(res)=>{
+						console.log(res.errMsg);
+				}
+			})
     },
-    close() {
-      this.$refs.popup.close();
+		
+    // close() {
+    //   this.$refs.popup.close();
+    // },
+
+    handlePrice(price) {
+      let list = String(price).split(".");
+      if (list.length == 1) {
+        return [list[0], "00"];
+      } else {
+        return [list[0], list[1]];
+      }
     },
   },
 };
@@ -300,7 +416,7 @@ export default {
           height: 28rpx;
         }
       }
-      .right {
+      .reason {
         display: flex;
         flex-flow: row nowrap;
         align-items: center;
@@ -341,7 +457,7 @@ export default {
             height: 28rpx;
           }
         }
-        .right {
+        .right2 {
           display: flex;
           flex-flow: row nowrap;
           align-items: center;
@@ -372,7 +488,7 @@ export default {
             height: 28rpx;
           }
         }
-        .right {
+        .right1 {
           color: #ff3347;
           font-size: 40rpx;
           line-height: 40rpx;
@@ -430,10 +546,11 @@ export default {
   }
 
   .sumbit-button {
-    height: 136rpx;
+    position: fixed;
+    bottom: 0;
+    width: 686rpx;
+    background-color: #ffffff;
     padding: 24rpx 34rpx;
-    background-color: #fefefe;
-    box-sizing: border-box;
     .buttons {
       height: 88rpx;
       line-height: 88rpx;
@@ -446,25 +563,25 @@ export default {
   }
 }
 
-.reason-item{
-	display: flex;
-	flex-flow: column nowrap; 
-	align-items: center;
-	text{
-		width: 750rpx;
-		height: 24rpx;
-		line-height: 24rpx;
-		background: #FFFFFF;
-		padding: 40rpx 0;
-		text-align: center;
-	}
-	.reason-line{
-		width: 750rpx;
-		height:1rpx;
-		background-color: #999999;
-	}
+.reason-item {
+  display: flex;
+  flex-flow: column nowrap;
+  align-items: center;
+  text {
+    width: 750rpx;
+    height: 24rpx;
+    line-height: 24rpx;
+    background: #ffffff;
+    padding: 40rpx 0;
+    text-align: center;
+  }
+  .reason-line {
+    width: 750rpx;
+    height: 1rpx;
+    background-color: #999999;
+  }
 }
-.reason-item:nth-child(1){
-	border-radius:24rpx 24rpx 0 0  ;
+.reason-item:nth-child(1) {
+  border-radius: 24rpx 24rpx 0 0;
 }
 </style>
