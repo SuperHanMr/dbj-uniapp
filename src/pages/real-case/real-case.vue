@@ -101,12 +101,10 @@
 				this.active = val;
 			},
 			changeTabs(i) {
-				console.log(i, 'asdadsadasdadasd')
 				this.currentVal = i;
 				this.selectStatus = i;
 			},
 			bindscrolltolower() {
-				console.log("aaaaaaaaaaaaaaaaaa>>>>>>>>>>>>>", this.pagState.page, this.pagState.totalPage);
 				if (this.pagState.page <= this.pagState.totalPage) {
 					debounce(this.getList(), 1000);
 				}
@@ -134,7 +132,6 @@
 				}
 			},
 			onJump(list, index ,isDecorate) {
-				console.log(list[index].parentType, 'asdasdas');
 				// parentType 1 全景图 0  短视频  2 图文
 				if (list[index].parentType === 1) {
 					const listUrl = list[index].videoUrl
@@ -153,11 +150,9 @@
 				console.log(index, tag);
 				// 对应的数据
 				if (tag == "left") {
-					console.log(this.leftList);
 					this.onJump(this.leftList, index ,false);
 
 				} else {
-					console.log(this.rightList);
 					this.onJump(this.rightList, index ,true);
 				}
 			},
@@ -184,7 +179,6 @@
 							this.pagState.totalPage = res.totalPage;
 							this.pagState.totalRows = res.totalRows;
 						}
-						console.log(res, this.pagState.page, 'asd>>>>>>>>>>>>>>>>');
 					})
 				}
 				
@@ -192,8 +186,6 @@
 			},
 			addList(res) {
 				// 获取到的数据，请注意数据结构
-				console.log(res);
-
 				if (!res || res.length < 1) {
 					this.pagState.loadTxt = "没有更多了";
 					return;
