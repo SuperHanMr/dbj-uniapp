@@ -1,16 +1,16 @@
 <template>
 	<view class="store">
-		<view class="store-info">
+		<view v-if="item.storeName" class="store-info">
 			<view class="store-name">
 				{{item.storeName}}
 			</view>
-			<view class="store-sub">
+			<view v-if="showSubtitle" class="store-sub">
 				剩余{{item.remainingShipments}}次免运费额度
 			</view>
 		</view>
-		<view v-for="(goodItem,index) in item.stockAppVOS" :key="index" class="goods-list">
-			<view class="good-detail">
-				
+		<view v-for="(goodItem,index) in item.stockAppVOS" :key="index" class="goods-list" >
+			<view class="good-detail" @click="toDetail">
+
 				<image class="img" :src="goodItem.imgUrl">
 				</image>
 				<view class="goods-info">
@@ -38,26 +38,31 @@
 							{{goodItem.price}}/{{goodItem.unit}}
 						</view>
 						<view style="flex:1">
-
 						</view>
 						<view class="spec-item">
 							共{{number}}件
 						</view>
 					</view>
+
+					<view class="spec">
+						<view class="spec-item">
+							退款金额: 320
+						</view>
+					</view>
 				</view>
 			</view>
-			<view v-if="showBtns">
+			<view>
 				<view class="btn-row">
-					<view class="btn-back" @click="toRefund">
+					<view v-if="showBack" class="btn-back" @click="toRefund">
 						退库存
 					</view>
-					<view class="btn-con">
+					<view v-if="showRecived" class="btn-con" @click="confirmGoods">
 						确认收货
 					</view>
 				</view>
 				<view class="back-view">
-					<view class="back-item">
-						<view class="back-title">
+					<view v-if="showBacking" class="back-item">
+						<view v-if="showBacking" class="back-title">
 							退款中
 						</view>
 						<view class="back-price">
@@ -67,18 +72,18 @@
 						</view>
 					</view>
 					<view class="back-row">
-						<view class="back-row-item">
+						<view v-if="showCancelApply" class="back-row-item">
 							取消申请
 						</view>
-
-						<view class="back-row-item" @click="toDetail">
+						<view v-if="showDetail" class="back-row-item" @click="toDetail">
 							查看详情
 						</view>
 					</view>
 				</view>
 			</view>
 			<view v-if="isEdit" class="edit">
-				<custom-number-box></custom-number-box>
+				<custom-number-box @change="onChange($event,goodItem)" :min="minInput" :max="maxInput">
+				</custom-number-box>
 				<view class="edit-tip">
 					库存剩余80，最多可退80
 				</view>
@@ -98,13 +103,41 @@
 
 				}
 			},
-			showBtns: {
+			showSubtitle: {
 				type: Boolean,
 				default: true
 			},
 			isEdit: {
 				type: Boolean,
 				default: false
+			},
+			showBack: {
+				type: Boolean,
+				default: false
+			},
+			showRecived: {
+				type: Boolean,
+				default: false
+			},
+			showBacking: {
+				type: Boolean,
+				default: false
+			},
+			showCancelApply: {
+				type: Boolean,
+				default: false
+			},
+			showDetail: {
+				type: Boolean,
+				default: false
+			},
+			minInput: {
+				type: Number,
+				default: 0
+			},
+			maxInput: {
+				type: Number,
+				default: 999999
 			}
 		},
 		data() {
@@ -113,12 +146,21 @@
 			};
 		},
 		methods: {
+			confirmGoods(e){
+				this.$emit('confirmGoods',this.item);
+			},
+			onChange(e, item) {
+				this.$emit('numChange', {
+					num: e,
+					item
+				})
+			},
 			toDetail() {
-				this.$emit('detail');
+				this.$emit('detail', this.item);
 			},
 
 			toRefund() {
-				this.$emit('refund');
+				this.$emit('refund', this.item);
 			}
 		}
 	}
@@ -180,10 +222,9 @@
 				align-items: center;
 
 				.name {
-
 					display: flex;
 					flex-direction: row;
-					align-items: center;
+					align-items: flex-start;
 					width: 100%;
 					height: 34rpx;
 
@@ -269,6 +310,7 @@
 
 	.back-view {
 		.back-item {
+			margin-top: 30rpx;
 			width: 686rpx;
 			height: 80rpx;
 			line-height: 80rpx;

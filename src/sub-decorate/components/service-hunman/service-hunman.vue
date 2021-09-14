@@ -1,14 +1,23 @@
 <template>
   <view class="service-hunman">
+    <view class="design-top" v-if="isDesign">
+      <view class="design-name">全案设计</view>
+      <view class="design-change" @click="openPopup">
+        <text>更换设计类型</text>
+        <image></image>
+      </view>
+    </view>
     <view class="service-content">
       <view class="msg">
-        <image class="avatar"></image>
+        <image class="avatar" :src="tab.avatar"></image>
         <view class="name-msg">
-          <text class="name">李易峰</text>
-          <text class="text">精算</text>
+          <view>
+            <view class="name">{{tab.name}}</view>
+            <view class="text">{{tab.nodeName}}</view>
+          </view>
         </view>
       </view>
-      <view class="service-progress">
+      <view class="service-progress" @click="toTimeLine">
         <text>服务进度</text>
         <image></image>
       </view>
@@ -19,23 +28,18 @@
 <script>
   export default{
     props:{
-      scrollTop:0,
-      list:{
-        type:Array,
-        default:()=>{
-          return {
-            
-          }
-        }
-      },
-      num:0
+      isDesign:false,
+      tab:{}
     },
     methods:{
-      toItem(distance){
-        uni.pageScrollTo({
-          duration: 100, // 过渡时间
-          scrollTop: distance + this.num, // 滚动的实际距离
+      toTimeLine(item){
+        uni.navigateTo({
+          url:'/sub-decorate/pages/time-line/time-line?id='+item.id
         })
+      },
+      openPopup(){
+        console.log(123312)
+        this.$emit('openPopup')
       }
     }
   }
@@ -46,6 +50,31 @@
     padding: 0 16rpx 0 32rpx;
     background-color: #fff;
     margin: 24rpx;
+    border-radius: 12px;
+  }
+  .design-top{
+    height: 92rpx;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1px solid #F0F0F0;
+    .design-name{
+      color: #333333;
+      font-size: 32rpx;
+    }
+    .design-change{
+      display: flex;
+      align-items: center;
+      text{
+        font-size: 26rpx;
+        color: #666;
+      }
+      image{
+        width: 24rpx;
+        height: 24rpx;
+        margin-left: 10rpx;
+      }
+    }
   }
   .service-content{
     height: 176rpx;
@@ -61,7 +90,12 @@
         border-radius: 50%;
         margin-right: 16rpx;
       }
+      .name-msg{
+        display: flex;
+        align-items: center;
+      }
       .name{
+        width: 100%;
         font-size: 30rpx;
         color: #333;
         font-weight: 500;

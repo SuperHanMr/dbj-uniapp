@@ -1,12 +1,15 @@
 <template>
 	<view class="tabs">
-		<view class="search">
+		<!-- 		<view class="search">
 			<view class="uni-searchbar" @click="searchClick">
 				<view class="uni-searchbar__box-icon-search">
 					<uni-icons color="#999999" size="18" type="search" />
 					<text class="uni-searchbar__text-placeholder">请输入搜索内容</text>
 				</view>
 			</view>
+		</view> -->
+		<view class="history" @click="toHistory">
+			要货记录
 		</view>
 		<view class="page-body-goods">
 			<scroll-view class="nav-left" scroll-y :scroll-top="scrollLeftTop" scroll-with-animation>
@@ -107,13 +110,12 @@
 				}],
 				systemBottom: 0,
 				menuBottom: 0,
-				lastId: ''
+				lastId: '',
 			}
 		},
 		onShow() {},
 		computed: {
 			cartCount() {
-				console.log(this.cartList);
 				let count = 0;
 				this.cartList.map(e => {
 					count += e.count;
@@ -124,8 +126,6 @@
 		watch: {
 			cartList: {
 				handler(now, pre) {
-					console.log('!!!!!!!!1');
-					console.log(now);
 				},
 				deep: true
 			}
@@ -140,12 +140,21 @@
 			this.getLeftList();
 		},
 		methods: {
+			toHistory(){
+				uni.navigateTo({
+					url:'../require-history/require-history'
+				})
+			},
 			getLeftList() {
 				categoryList({
 					projectId: this.projectId,
 					workType: 0
 				}).then(e => {
 					this.leftList = e;
+					if(this.leftList.length){
+						this.currentCategoryId=this.leftList[0].categoryId
+					}
+					this.getRightItems()
 				})
 			},
 			getRightItems() {
@@ -154,9 +163,9 @@
 					params.lastId = this.lastId;
 				}
 				params.workType = 0;
-				params.rows = 10;
-				params.projectId=this.projectId;
-				params.categoryId=this.currentCategoryId;
+				params.rows = 1000;
+				params.projectId = this.projectId;
+				params.categoryId = this.currentCategoryId;
 				inventoryDetails(params).then(e => {
 					this.goodsList = e
 				});
@@ -206,6 +215,17 @@
 </script>
 
 <style lang="scss" scoped>
+	.history {
+		height: 80rpx;
+		line-height: 80rpx;
+		margin: 0 32rpx;
+		text-align: end;
+		opacity: 1;
+		background: #ffffff;
+		color: #333333;
+		font-size: 28rpx;
+	}
+
 	.cart-header {
 		width: 100%;
 		height: 104rpx;

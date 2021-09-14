@@ -1,6 +1,6 @@
 <template>
 	<view>
-		<web-view :src="url"></web-view>
+		<web-view :src="url" @message='messageValue'></web-view>
 		<!-- 打扮家装修隐私协议 -->
 	</view>
 </template>
@@ -9,11 +9,13 @@
 	export default {
 		data() {
 			return {
-				url: `${process.env.VUE_APP_BASE_API}/app-pages/privacy-agreement/index.html`
+				url: `https://local.meiwu365.com/app-pages/actuarial/actuarial-details/index.html`
 			}
 		},
 		methods: {
-			
+			messageValue(e){
+				console.log(e, ':LLLLLLLLLLLLLLLLLLLssssssssssssssssssssssssss')
+			}
 		}
 	}
 </script>

@@ -1,14 +1,17 @@
 <script>
 	import {oauthGomeInfo} from "api/login.js"
+  import { createTim } from "utils/tim.js"
 	export default {
 		globalData: {
 			userInfo: {},
 			token: "",
 			city: "",
 			houses: [],
+      tim: null,
 			noHouseActuaryId: null,
 			noHouseDesignId: null,
-			noHouseCheckId: null
+			noHouseCheckId: null,
+			naviData:null
 		},
 		onLaunch: function() {
 			if (!uni.getStorageSync("userId")) {
@@ -25,7 +28,12 @@
 					clientType: "3",
 				}).then(data => {
 					getApp().globalData.userInfo = data;
-				})
+          getApp().tim = createTim(data.appId);
+          this.$store.dispatch("loginIM", {
+            userId: data.tid,
+            userSig: data.userSign
+          });
+				});
 			}
 		},
 		onShow: function() {

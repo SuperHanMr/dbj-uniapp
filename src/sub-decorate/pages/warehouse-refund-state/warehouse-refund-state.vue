@@ -11,10 +11,10 @@
 				<view :style="{height:navBarHeight}">
 				</view>
 				<view class="info">
-					<view class="header1">退款失败</view>
+					<view class="header1">{{headerTime}}</view>
 				</view>
 				<view class="header2">
-					2021-01-12 16:58:26
+					{{detail.refundTime | formatDate}}
 				</view>
 				<view class="placehold">
 
@@ -25,7 +25,7 @@
 					<i class="icon-icon_order_tips"></i>
 				</view>
 				<view class="alert" style="flex:1">
-					您已取消了本次退款，如有问题未解决，您可以重新申请
+					{{tips}}
 				</view>
 			</view>
 		</view>
@@ -40,7 +40,7 @@
 					退款原因：
 				</view>
 				<view class="text">
-					退款原因退款原因退款原因退款
+					{{detail.reason}}
 				</view>
 			</view>
 
@@ -50,7 +50,7 @@
 
 				</view>
 				<view class="text">
-					仅退款 (已收货)
+					{{refuntType(detail.type)}}
 
 				</view>
 
@@ -62,7 +62,7 @@
 
 				</view>
 				<view class="text">
-					￥320.00
+					￥{{detail.refundAmount}}
 				</view>
 			</view>
 
@@ -71,7 +71,7 @@
 					申请时间：
 				</view>
 				<view class="text">
-					2021-01-12 16:58:26
+					{{detail.createTime | formatDate}}
 				</view>
 			</view>
 
@@ -81,7 +81,7 @@
 
 				</view>
 				<view class="text">
-					DDPG2020121400001
+					{{detail.refundNo}}
 				</view>
 			</view>
 
@@ -91,7 +91,7 @@
 					备注信息：
 				</view>
 				<view class="text">
-					退款原因退款原因退款原因退款退款原因退款原因退款原因退款退款原因退款原因退款原因退款退款原因退款原因退款原因退款退款原因退款原因退款原因退款退款原因退款原因退款原因退款退款原因退款原因退款原因退款
+					{{detail.remark}}
 				</view>
 			</view>
 		</view>
@@ -103,7 +103,7 @@
 
 		</view>
 		<view class="bottom-btn">
-			<view class="btn">
+			<view class="btn" @click="cancelRefund">
 				取消退款
 			</view>
 		</view>
@@ -111,28 +111,107 @@
 </template>
 
 <script>
+	import {
+		formatDate
+	} from '../../../utils/common.js'
+	import {
+		refundDetail,
+		cancelRefund
+	} from "../../../api/order.js"
 	export default {
+		filters: {
+			formatDate
+		},
 		data() {
 			return {
 				bgImg: 'http://dbj.dragonn.top/static/mp/dabanjia/images/decorate/order_bg_green.png',
 				navBarHeight: '',
-				currentList: [1]
+				currentList: [1],
+				detail: {},
+				headerTitle: '',
+				headerTime: '',
+				tips: ''
 			}
 		},
-		onLoad() {
-			const systemInfo = uni.getSystemInfoSync();
-			let tophight = systemInfo.statusBarHeight;
-
-			const menuButtonInfo = uni.getMenuButtonBoundingClientRect();
-			this.navBarHeight = (menuButtonInfo.top - systemInfo.statusBarHeight) * 2 +
-				menuButtonInfo.height + tophight +
-				"px";
+		onLoad(e) {
+			if (e && e.id) {
+				this.getDetail(e.id);
+			}
 		},
 		methods: {
-			back() {
-				uni.navigateBack({
-
+			refuntType(type) {
+				let res = '';
+				switch (type) {
+					case 0:
+						res = '仅退款（未发货）'
+						break;
+					case 1:
+						res = '仅退款（退库存）'
+						break;
+					case 2:
+						res = '仅退款（已收货）'
+						break;
+					case 3:
+						res = '服务退款'
+						break;
+					default:
+						break;
+				}
+				return res;
+			},
+			cancelRefund() {
+				let vm = this
+				uni.showModal({
+					content: '确定要取消本次退款申请？',
+					success: function(res) {
+						if (res.confirm) {
+							cancelRefund({
+								id: vm.id
+							}).then(e => {
+								uni.navigateBack({})
+							})
+						} else if (res.cancel) {
+							console.log('用户点击取消');
+						}
+					}
+				});
+			},
+			getDetail(id) {
+				refundDetail({
+					id
+				}).then(e => {
+					this.detail = e;
+					if ([0, 1].includes(e.status)) {
+						//退款中
+						this.headerTitle = '退款中'
+						this.bgImg =
+							'http://dbj.dragonn.top/static/mp/dabanjia/images/decorate/order_bg_orange.png'
+					} else if (e.status == 2) {
+						//退款完成
+						this.headerTitle = '退款成功'
+						this.bgImg =
+							'http://dbj.dragonn.top/static/mp/dabanjia/images/decorate/order_bg_green.png'
+					} else if ([3, 4, 5].includes(e.status)) {
+						//退款完成
+						if (e.status == 3) {
+							this.headerTitle = '退款失败'
+							this.tips = '商家拒绝了您的申请,如有问题未解决,您可重新申请'
+						}
+						if (e.status == 4) {
+							this.headerTitle = '退款关闭'
+							this.tips = '您已取消了本次退款，如有问题未解决，您可以重新申请'
+						}
+						if (e.status == 5) {
+							this.headerTitle = '退款失败'
+							this.tips = '您已取消了本次退款，如有问题未解决，您可以重新申请'
+						}
+						this.bgImg =
+							'http://dbj.dragonn.top/static/mp/dabanjia/images/decorate/order_bg_green.png'
+					}
 				})
+			},
+			back() {
+				uni.navigateBack({})
 			}
 		}
 	}

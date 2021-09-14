@@ -4,13 +4,13 @@
 		<view class="res">
 			<view class="res-title">要货状态</view>
 			<view class="res-content">
-				供应商驳回
+				{{res.statusName}}
 			</view>
 		</view>
 		<view class="res">
 			<view class="res-title">驳回原因</view>
 			<view class="res-content">
-				退款原因退款原因退原因退款原因退款原因退款原因退款原因退款原因退款原因退款原因
+				{{res.refuseReason}}
 			</view>
 		</view>
 		<view class="res">
@@ -22,16 +22,16 @@
 		<view class="res">
 			<view class="res-title">要货单号</view>
 			<view class="res-content">
-				DJ020202020202
+				{{res.requireNo}}
 			</view>
 		</view>
 		<view class="res">
 			<view class="res-title">要货时间</view>
 			<view class="res-content">
-				2021-08-01 12:33
+				{{res.createTime |formatDate}}
 			</view>
 		</view>
-	
+
 
 		<view v-for="(item,index) in list" :key="index" class="store">
 			<view class="header">
@@ -53,42 +53,35 @@
 </template>
 
 <script>
+	import {
+		requireListDetail
+	} from '../../../api/decorate.js'
+	import {
+		formatDate
+	} from '../../../utils/common.js'
 	export default {
+		filters: {
+			formatDate
+		},
 		data() {
 			return {
-				list: [{
-					title: '京东',
-					children: [{
-							img: '',
-							title: '开工保护（开工后对各区域进行的全方位保护全方位保护位保护位保护位保护位）…',
-							sub: '本次要货：1卷'
-						},
-						{
-							img: '',
-							title: '开工保护（开工后对各区域进行的全方位保护位保护位保护位保护位）…',
-							sub: '本次要货：1卷'
-						}
-
-					]
-				}, {
-					title: '天猫',
-					children: [{
-							img: '',
-							title: '开工保护（开工后对各区域进行的全方位保护位保护位保护位保护位）…',
-							sub: '本次要货：1卷'
-						},
-						{
-							img: '',
-							title: '开工保护（开工后对各区域进行的全方位保护位保护位保护位保护位）…',
-							sub: '本次要货：1卷'
-						}
-					]
-				}, ]
-
+				id: '',
+				list: [],
+				res: {}
 			};
 		},
+		onLoad(e) {
+			this.id = e.id
+			this.getDetail()
+		},
 		methods: {
-
+			getDetail() {
+				requireListDetail({
+					id: this.id
+				}).then(e => {
+					this.res = e
+				})
+			}
 		}
 	}
 </script>
@@ -106,7 +99,7 @@
 		}
 
 		.res-content {
-			flex:1;
+			flex: 1;
 			color: #333333;
 			font-size: 28rpx;
 		}

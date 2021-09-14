@@ -1,20 +1,19 @@
 <template>
 	<view class="evaluate-container">
-		<view class="evaluate-item">
-			
+		<view class="evaluate-item" v-for="item in evaluateList" :key="item.id">
 			<view class="header">
 			  <view class="store-name">
 			    <text>不知道叫什么名字的店铺nizhidaomahahahahahahaha</text>
 			  </view>
-			  <view class="order-status">
+			  <view class="order-status" v-if="item.commentStatus == 0">
 					待评价
 			  </view>
-				<!-- <view class="order-status">
+				<view class="order-status" v-if="item.commentStatus == 1">
 					已评价
-				</view> -->
+				</view>
 			</view>
-			<view class="body">
-				<order-item></order-item>
+			<view class="body" v-for="item2 in item.details">
+				<order-item :dataList="item2"></order-item>
 			</view>
 			<view class="line" />
 			
@@ -33,13 +32,52 @@
 </template>
 
 <script>
+	import {getEvationList} from "@/api/order.js"
 	export default {
 		data() {
 			return {
-				
+				query:{
+					page:1,
+					rows:15,
+					position:""
+				},
+				loading:false,
+				totalPage: '',
+				totalRows: '',
+				evaluateList:[],
 			}
 		},
+		onLoad() {
+			this.getList()
+		},
+		//下拉刷新
+		onPullDownRefresh() {
+			console.log('refresh');
+			setTimeout(function () {
+					uni.stopPullDownRefresh();
+			}, 1000);
+		}, 
+		//页面上拉触底事件的处理函数
+		onReachBottom() {
+			if (this.loading || this.page >= this.totalPage) return
+			this.getList();
+
+					
+				
+		},
 		methods: {
+			getList(){
+				this.loading=true
+				getEvationList(this.query).then(data=>{
+					let list = data.list
+					this.evaluateList = this.evaluateList.concat(list)
+					this.loading=false
+					this.query.page = data.page + 1;
+					this.totalPage = data.totalPage;
+					this.totalRows = data.totalRows;
+				})
+			},
+	
 			immediateEvalute(){
 				console.log("立即评价");
 				uni.navigateTo({
@@ -52,10 +90,10 @@
 
 <style lang="scss" scoped>
 	.evaluate-container{
-		width: 100%;
-		height: 100%;
-		background-color: skyblue;
-		overflow-y: auto;
+		// width: 100%;
+		// height: 100%;
+		// background-color: skyblue;
+		// overflow-y: auto;
 		.evaluate-item{
 			background-color: #FFFFFF;
 		}

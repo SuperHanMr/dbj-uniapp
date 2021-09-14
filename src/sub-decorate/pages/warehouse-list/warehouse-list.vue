@@ -12,10 +12,11 @@
 		<swiper class="swiper" :current="currentIndex" :duration="200" @change="swiperChange">
 			<swiper-item v-for="(item,tabindex) in tabList" :key="item">
 				<scroll-view class="scroll-view" :enable-back-to-top="true" scroll-y="true" lower-threshold="10"
-					refresher-background="#FFF" refresher-enabled="true" @scroll="onScroll"
-					:refresher-triggered="triggered" @refresherrefresh="onRefresh" @scrolltolower="onLoadMore">
-					<warehouse-item v-for="(item,index) in currentList"  :item="item" :key="item.id" @detail="toDetail"
-						@refund="toRefund"></warehouse-item>
+					refresher-background="#FFF" refresher-enabled="true" :refresher-triggered="triggered"
+					@scroll="onScroll" @refresherrefresh="onRefresh" @scrolltolower="onLoadMore">
+					<warehouse-item v-for="(item,index) in currentList" :item="item" :key="item.id" @detail="toDetail"
+						@refund="toRefund" @confirmGoods="onConfirmGoods" :showRecived="currentIndex==1"
+						:showBacking="currentIndex==3" :showDetail="currentIndex==3"></warehouse-item>
 				</scroll-view>
 			</swiper-item>
 		</swiper>
@@ -26,8 +27,12 @@
 <script>
 	import {
 		deliveredList,
-		reimburseList
+		reimburseList,
+		receivedList
 	} from "../../../api/order.js"
+	import {
+		confirmGoods
+	} from '../../../api/decorate.js'
 	export default {
 		data() {
 			return {
@@ -37,7 +42,7 @@
 				list1: [],
 				list2: [],
 				list3: [],
-				tabList: ["待发货", "待收款", "已收货", "退款"],
+				tabList: ["待发货", "待收货", "已收货", "退款"],
 				lastId: ['', '', '', ''],
 				triggered: false, //控制刷新显示字段
 				currentIndex: 0,
@@ -60,15 +65,49 @@
 			if (e && e.projectId) {
 				this.projectId = e.projectId;
 			}
-		},
-		onShow() {
 			this.getList(true);
 		},
+		onShow() {},
 		methods: {
-			toDetail(e) {
-				uni.navigateTo({
-					url: "/sub-decorate/pages/warehouse-refund-detail/warehouse-refund-detail",
+			onConfirmGoods(item) {
+				let vm = this;
+				uni.showModal({
+					title: '是否确认收货?',
+					success: function(res) {
+						if (res.confirm) {
+							confirmGoods({
+								id: item.id
+							}).then(e => {
+								uni.showToast({
+									title: '确认收货成功',
+									icon: 'none'
+								})
+								vm.onRefresh()
+							})
+						} else if (res.cancel) {
+							console.log('用户点击取消');
+						}
+					}
 				});
+			},
+			toDetail(e) {
+				let id;
+				if (this.currentIndex == 0) {
+					id = e.orderId;
+				} else {
+					id = e.id
+				}
+				console.log(id);
+				if (this.currentIndex != 3) {
+					uni.navigateTo({
+						url: `/sub-decorate/pages/warehouse-refund-detail/warehouse-refund-detail?type=${this.currentIndex}&id=${id}`,
+					});
+				} else {
+					uni.navigateTo({
+						url: `/sub-decorate/pages/warehouse-refund-state/warehouse-refund-state?type=${this.currentIndex}&id=${id}`,
+					});
+				}
+
 			},
 			toRequire() {
 				uni.navigateTo({
@@ -99,35 +138,53 @@
 				this.getList(false)
 			},
 			getList(isRefresh) {
+				if (this.lastId[this.currentIndex] == '-1') {
+					return;
+				}
 				let params = {};
 				params.projectId = this.projectId;
 				params.rows = 10;
 				if (this.lastId[this.currentIndex]) {
 					params.lastId = this.lastId[this.currentIndex];
 				}
-				if ([0, 1, 2].includes(this.currentIndex)) {
-					if ([1, 2].includes(this.currentIndex)) {
-						params.status = this.currentIndex + 1;
-					}
+				if (this.currentIndex == 0) {
+
 					deliveredList(params).then(e => {
 						if (isRefresh) {
 							this.triggered = false;
 						}
 						if (e.length) {
 							this.lastId[this.currentIndex] = e[e.length - 1].id;
-							if (this.currentIndex == 0) {
-								console.log('?????????')
-								this.list0=this.list0.concat(e);
-								console.log(this.list0)
+
+							this.list0 = this.list0.concat(e);
+						} else {
+							if (this.lastId[this.currentIndex]) {
+								this.lastId[this.currentIndex] = '-1';
 							}
+						}
+					}).catch(e => {
+						if (isRefresh) {
+							this.triggered = false;
+						}
+					})
+				} else if ([1, 2].includes(this.currentIndex)) {
+					params.status = this.currentIndex + 1;
+					receivedList(params).then(e => {
+						if (isRefresh) {
+							this.triggered = false;
+						}
+						if (e.length) {
+							this.lastId[this.currentIndex] = e[e.length - 1].id;
 							if (this.currentIndex == 1) {
-								this.list1=this.list1.concat(e);
+								this.list1 = this.list1.concat(e);
 							}
 							if (this.currentIndex == 2) {
-								this.list2=this.list2.concat(e);
+								this.list2 = this.list2.concat(e);
 							}
 						} else {
-							this.lastId[this.currentIndex] = '';
+							if (this.lastId[this.currentIndex]) {
+								this.lastId[this.currentIndex] = '-1';
+							}
 						}
 					}).catch(e => {
 						if (isRefresh) {
@@ -140,9 +197,11 @@
 							this.triggered = false;
 						}
 						if (e.length) {
-							this.list3=this.list3.concat(e);
+							this.list3 = this.list3.concat(e);
 						} else {
-							this.lastId[this.currentIndex] = '';
+							if (this.lastId[this.currentIndex]) {
+								this.lastId[this.currentIndex] = '-1';
+							}
 						}
 					}).catch(e => {
 						if (isRefresh) {
@@ -154,7 +213,7 @@
 			onLoadMore() {
 				this.getList(false)
 			},
-			onRefresh(e) {
+			onRefresh() {
 				this.triggered = true;
 				this.lastId[this.currentIndex] = '';
 				if (this.currentIndex == 0) {

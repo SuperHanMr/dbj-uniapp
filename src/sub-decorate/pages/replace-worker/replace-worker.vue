@@ -16,9 +16,9 @@
         <text class="text-area-warning" v-if="!otherReason">（必填）</text>
         <text class="text-area-info" v-if="otherReason">{{otherReason.length}}/500</text>
       </view>
-      <view class="upload-tip">上传照片<text>（{{num}}/6）</text></view>
-      <uni-file-picker v-model="imageValue" fileMediatype="image" mode="grid" :limit="6" @select="select"
-        @progress="progress" @success="success" @fail="fail">
+      <view class="upload-tip">上传照片<text>（{{imageValue.length}}/6）</text></view>
+      <uni-file-picker :auto-upload='false'  v-model="imageValue" fileMediatype="image" mode="grid" :limit="6" @select="select"
+        @progress="progress" @success="success" @delete="deleteImg" @fail="fail">
         <view class="upload-contet">
           <view>
             <image src="../../../static/shopping-cart/details_pop_add_normal@2x.png"></image>
@@ -37,6 +37,7 @@
   import {
     replaceGrab
   } from "../../../api/decorate.js";
+  import upload from '../../../utils/upload.js'
   export default {
     data() {
       return {
@@ -73,13 +74,19 @@
       },
       // 获取上传状态
       select(e) {
-        console.log("选择文件：", e);
+        const {
+          tempFilePaths,
+          tempFiles
+        } = e;
+        console.log("choose image1:", e);
+        tempFiles.forEach(this.upload);
+        
       },
       // 获取上传进度
       progress(e) {
         console.log("上传进度：", e);
       },
-
+      
       // 上传成功
       success(e) {
         console.log("上传成功");
@@ -89,6 +96,36 @@
       // 上传失败
       fail(e) {
         console.log("上传失败：", e);
+      },
+      deleteImg(e){
+        let index = this.imageValue.findIndex(item=>{
+          return item.name === e.tempFilePath
+        })
+        this.imageValue.splice(index,1)
+        console.log(this.imageValue)
+      },
+      upload(item){
+        console.log(item)
+        const {size: fileSize,path: filePath} = item;
+        upload({
+          filePath: filePath,
+          fileType: "image",
+          success: (res) => {
+            console.log("upload success", res);
+            let url = res.url;
+            this.imageValue.push({
+              name:url,
+              extname:'image',
+              url:url
+            })
+          },
+          fail: (res) => {
+            console.log("upload fail", res);
+          },
+          progess: (res) => {
+            console.log("upload progess:", res);
+          }
+        })
       },
       submit() {
         if (!this.currentId) {
@@ -114,6 +151,9 @@
           remark: this.currentId,
           imageUrls: []
         }
+        this.imageValue.forEach(item=>{
+          data.imageUrls.push(item.url)
+        })
         replaceGrab(data).then(res => {
           uni.showToast({
             title: '已提交申请',

@@ -1,6 +1,5 @@
 {
-  "pages": [
-    {
+  "pages": [{
       "path": "pages/home/index/index",
       "style": {
         "navigationBarTitleText": "首页",
@@ -56,7 +55,8 @@
     {
       "path": "pages/my/index/index",
       "style": {
-        "navigationBarTitleText": "我的"
+        "navigationBarTitleText": "我的",
+        "navigationStyle": "custom"
       }
     },
     {
@@ -176,7 +176,7 @@
       },
       {
         "name": "lyb", //模式名称
-        "path": "/sub-decorate/pages/checkResult/checkResult", //启动页面，必选
+        "path": "/pages/decorate/index/index", //启动页面，必选
         "query": "" //启动参数，在页面的onLoad函数里面得到
       },
       {
@@ -366,7 +366,8 @@
           "path": "pages/refund-list/refund-list",
           "style": {
             "navigationBarTitleText": "退款",
-            "enablePullDownRefresh": false
+            "enablePullDownRefresh": true,
+            "onReachBottomDistance": 10
           }
         },
         {
@@ -748,7 +749,8 @@
           "path": "pages/actuary-bill/actuary-bill",
           "style": {
             "navigationBarTitleText": "",
-            "enablePullDownRefresh": false
+            "enablePullDownRefresh": false,
+            "navigationStyle": "custom"
           }
         },
         {

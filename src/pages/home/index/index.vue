@@ -1,11 +1,11 @@
 <template>
 	<view>
 		<custom-navbar title="首页" :opacity="scrollTop/100" :showBack="false">
-			<slot-one>
+			<template v-slot:back>
 				<view @click="toCity">
 					{{citydata}}
 				</view>
-			</slot-one>
+			</template>
 		</custom-navbar>
 		<scroll-view class="content" scroll-y="true" @scroll="onScroll" @scrolltolower="onLoadMore">
 			<view style="margin-top: 300rpx;" class="" @click="toFriends">
@@ -137,7 +137,6 @@
 			},
 			async toFriends() {
 				let list = await queryEstates();
-				console.log(list);
 				this.roomId = list[0].id;
 				uni.navigateTo({
 					url: "/sub-decorate/pages/friends/friends?id=" + this.roomId,

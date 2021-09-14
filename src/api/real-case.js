@@ -1,5 +1,8 @@
 import request from '../utils/request';
 
+export function getDecorateist(params){
+  return request.get(`/pm/app/project/list`,{params});
+}
 export function getCaseList(params){
   return request.get(`/app/case/v2/list`,{params});
 }
@@ -11,5 +14,8 @@ export function getServeTypes(projectId){
 }
 export function getDrawings(params){
   return request.get(`/pm/app/serve/design/designServeTypeInfo`,{params});
+}
+export function getDecorateDynamic(params){
+  return request.post(`/pm/app/decorate/calendar/getListByPageQuery`,params);
 }
 

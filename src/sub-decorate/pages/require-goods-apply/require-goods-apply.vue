@@ -63,6 +63,7 @@
 		},
 		methods: {
 			submit() {
+				let params={creatorType:0}
 				goodsApply().then(e => {
 
 				})

@@ -14,7 +14,7 @@
       </view>
     </view>
     <view class="im-message-info">
-      <view class="im-message-time">
+      <view v-if="message" class="im-message-time">
         {{ time }}
       </view>
       <view v-if="conversation.unreadCount > 0" class="unread-count">
@@ -28,6 +28,7 @@
   import TIM from 'tim-wx-sdk'
   import { calendarFormat } from "@/utils/date.js"
   import GroupAvatars from "@/components/group-avatars/group-avatars.vue"
+  import { mapState } from "vuex"
   export default {
     name: "ConversationItem",
     props: ["conversation"],
@@ -35,6 +36,12 @@
       GroupAvatars
     },
     computed: {
+      ...mapState({
+        groupMembersMap: (state) => state.message.groupMembersMap
+      }),
+      toAccount() {
+        return this.conversation.conversationID.replace(this.conversation.type, '');
+      },
       name() {
         if (this.conversation.type === "NOTIFICATION") {
           return this.conversation.name;
@@ -43,15 +50,20 @@
           return this.conversation.userProfile.nick || this.conversation.userProfile.userID;
         }
         if (this.conversation.type === TIM.TYPES.CONV_GROUP) {
-          return this.conversation.groupProfile.name || this.conversation.groupProfile.groupID;
+          return this.conversation.groupDB.name || this.conversation.groupProfile.name || this.conversation.groupProfile.groupID;
         }
-        return this.conversation.toAccount;
+        return this.toAccount;
       },
       avatar() {
         if (this.conversation.type === TIM.TYPES.CONV_C2C) {
           return [this.conversation.userProfile.avatar];
         }
-        return ["http://iph.href.lu/100x100", "http://iph.href.lu/100x100"];
+        if (this.conversation.type === TIM.TYPES.CONV_GROUP) {
+          const memberList = this.groupMembersMap[this.toAccount];
+          console.log("memberList:", this.toAccount, this.groupMembersMap, memberList, 333333)
+          return (memberList || []).map(m => m.avatar);
+        }
+        return [];
       },
       message() {
         if (this.conversation.lastMessage) {
@@ -93,11 +105,11 @@
         let convId = this.conversation.conversationID;
         if (this.conversation.type === "NOTIFICATION") {
           uni.navigateTo({
-            url: "/pages/message/conversation/conversation-noti?id=" + convId,
+            url: "/pages/message/conversation/conversation-noti?id=" + convId + "&name=" + this.name,
           });
         } else {
           uni.navigateTo({
-            url: "/pages/message/conversation/conversation?id=" + convId,
+            url: "/pages/message/conversation/conversation?id=" + convId + "&name=" + this.name,
           });
         }
       }
