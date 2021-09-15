@@ -145,7 +145,8 @@
           id: "",
           content: "",
           value: null
-        }
+        },
+        selectHouseData: {}
       }
     },
     computed: {
@@ -177,7 +178,7 @@
     onLoad(option) {
       uni.$on("selectedHouse", (data) => {
         console.log("selectedHouse:", data)
-        this.currentHouse = data
+        this.selectHouseData = data
       })
       // console.log("option", option)
       const {
@@ -199,7 +200,12 @@
       if (this.sssType == "checkHouse") {
         this.checkHouse.checked = true
       }
-      this.getMyHouseList();
+      if(!this.selectHouseData.id) {
+        this.getMyHouseList();
+      } else {
+        this.currentHouse = this.selectHouseData
+      }
+      
       const {
         noHouseActuaryId,
         noHouseDesignId,
