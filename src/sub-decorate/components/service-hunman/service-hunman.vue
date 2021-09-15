@@ -2,18 +2,18 @@
   <view class="service-hunman">
     <view class="design-top" v-if="isDesign">
       <view class="design-name">全案设计</view>
-      <view class="design-change">
+      <view class="design-change" @click="openPopup">
         <text>更换设计类型</text>
         <image></image>
       </view>
     </view>
     <view class="service-content">
       <view class="msg">
-        <image class="avatar"></image>
+        <image class="avatar" :src="isDesign&&designData.designServerVO.avatar||tab.avatar"></image>
         <view class="name-msg">
           <view>
-            <view class="name">李易峰</view>
-            <view class="text">精算</view>
+            <view class="name">{{isDesign&&designData.designServerVO.userName||tab.name}}</view>
+            <view class="text">{{tab.nodeName}}</view>
           </view>
         </view>
       </view>
@@ -28,14 +28,20 @@
 <script>
   export default{
     props:{
-      isDesign:false
+      isDesign:false,
+      tab:{},
+      designData:{}
     },
     methods:{
       toTimeLine(item){
         uni.navigateTo({
-          url:'/sub-decorate/pages/time-line/time-line?id='+item.id
+          url:'/sub-decorate/pages/time-line/time-line?id='+this.isDesign&&this.designData.designServerVO.serverId||this.tab.serverId
         })
       },
+      openPopup(){
+        console.log(123312)
+        this.$emit('openPopup')
+      }
     }
   }
 </script>

@@ -1,5 +1,8 @@
 import request from '../utils/request';
 
+export function getDecorateist(params){
+  return request.get(`/pm/app/project/list`,{params});
+}
 export function getCaseList(params){
   return request.get(`/app/case/v2/list`,{params});
 }

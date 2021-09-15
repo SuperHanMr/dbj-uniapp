@@ -1,17 +1,17 @@
 <template>
 	<view class="waterfall-item" @tap="onTap">
-		<image :src="params.imageUrl" mode="widthFix" @load="emitHeight" @error="emitHeight"></image>
+		<image :src="params.estateIconUrl" mode="widthFix" @load="emitHeight" @error="emitHeight"></image>
 		<view class="decorate-state">
-			已竣工
+			{{params.projectStatus == 1 ? "已开启" : params.projectStatus == 2 ? '装修中' : params.projectStatus == 3 ? "已竣工" : "已结束"}}
 		</view>
 		<view class="content">
-			<view class="title">{{params.title}}</view>
+			<view class="title">{{params.estateAddress}}</view>
 			<view class="decorate-info">
 				<view class="size">
-					120.00m²
+					{{estateArea}}m²
 				</view>
 				<view class="phase">
-					设计阶段
+					{{progressRate}}
 				</view>
 			</view>
 		</view>

@@ -32,6 +32,7 @@
 </template>
 
 <script>
+	// import {formatData} from "@/utils/common.js"
 	export default {
 		name:"order-info",
 		props:{
@@ -63,6 +64,9 @@
 				default:true,
 			}
 		},
+		// filters:{
+		// 	formatDate
+		// },
 		
 		data() {
 			return {

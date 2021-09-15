@@ -73,12 +73,12 @@
           </view>
 					
 					<view  v-for="item2 in item.details" :key="item2.id" class="orederItem">
-						<order-item :dataList="item2" :orderStatus="3" @toApplayForRefund="applyForReFund"></order-item>
+						<order-item :dataList="item2" :orderStatus="3" @toApplayForRefund="applyForReFund(item2,1)"></order-item>
 					</view>
          
 					
           <view class="price-special" v-if="item.stockType==0 && item.showRefundBtn">
-						<view class="button" @click="applyForReFund">
+						<view class="button" @click="applyForReFund(orderInfo,2)">
 							申请退款
 						</view>
 						
@@ -157,11 +157,25 @@
 					console.log("获取详情数据data=",this.refundInfo)
 				})
 			},
-			applyForReFund(){
-				console.log("申请退款")
-				uni.navigateTo({
-					url:`../../apply-for-refund/apply-for-refund?id=${this.id}`
-				})
+			applyForReFund(data,type){
+				// console.log("申请退款")
+				// uni.navigateTo({
+				// 	url:`../../apply-for-refund/apply-for-refund?id=${this.id}`
+				// })
+				console.log("in-progress-data=", data);
+				if (type == 1) {
+				  //type 1部分退款
+				  wx.setStorageSync("particalRefundOrderInfo", JSON.stringify(data));
+				  uni.navigateTo({
+				    url: `/sub-my/pages/apply-for-refund/apply-for-refund?id=${this.orderNo}&type=partical`,
+				  });
+				} else {
+				  //type 2 整体退款
+				  wx.setStorageSync("wholeRefundOrderInfo", JSON.stringify(data));
+				  uni.navigateTo({
+				    url: `/sub-my/pages/apply-for-refund/apply-for-refund?id=${this.orderNo}&type=whole`,
+				  });
+				}
 			},
 		}
 	

@@ -1,5 +1,8 @@
 <template>
   <view class="my-decorate" :style="{height:contentHeight}">
+    <uni-popup ref="popup">
+      <serviceDesignChange @chooseItem='chooseItem' :list='designList' :currentId="serverId"></serviceDesignChange>
+    </uni-popup>
     <view class="my-decorate-top">
       <scroll-view id="tab-bar" class="scroll-h" scroll-x="true" :show-scrollbar="false">
         <view v-for="(tab,index) in dataList" class="item" :key="index" :data-current="index"
@@ -12,7 +15,7 @@
         当前花销
       </view>
     </view>
-   <view class="sticky report-list" v-if="tabName==='result'&&isActive">
+   <view class="sticky report-list" v-if="tabName==='d2'&&isActive">
       <view class="report-item" :class="{'report-item-active':currentItem==='top'}" @click="toItem('top')">
         重大隐患</view>
       <view class="report-item" :class="{'report-item-active':currentItem==='hazardTop'}"
@@ -20,16 +23,19 @@
       <view class="report-item" :class="{'report-item-active':currentItem==='conformTop'}"
         @click="toItem('conformTop')">符合项</view>
     </view>
-    <swiper :current="tabIndex" style="flex: 1" :style="{height:contentHeight}" :duration="300" @change="ontabchange">
+    <swiper :current="tabIndex" style="flex: 1;min-height: 600px;" :style="{height:contentHeight}" :duration="300" @change="ontabchange">
       <swiper-item class="swiper-item" v-for="(tab,index1) in dataList" :key="index1">
-        <service-hunman></service-hunman>
-        <amount-house id="amount" v-if="tab.nodeType==='amount'"></amount-house>
-        <resultContent ref='result' id="result" v-if="tab.nodeType==='result'" @getData='getData' :scrollTop='scrollTop'
+        <service-hunman :isDesign="tab.nodeType===1" :tab='tab' :designData='designData' @openPopup='openPopup'></service-hunman>
+        <amount-house id="d3" v-if="tab.nodeType===3"></amount-house>
+        <resultContent ref='result' id="d2" v-if="tab.nodeType===2" @getData='getData' :scrollTop='scrollTop'
           :isReport='true'></resultContent>
-        <serviceActuarial  v-if="tab.nodeType==='actuarial'"></serviceActuarial>
-        <serviceDismantle v-if="tab.nodeType==='dismantle'"></serviceDismantle>
+        <serviceDesign id="d1" v-if="tab.nodeType===1" @changeDesign='changeDesign' :serverId='serverId'></serviceDesign>
+        <serviceActuarial id="d4" v-if="tab.nodeType===4"></serviceActuarial>
+        <serviceSteward id="d5" v-if="tab.nodeType===5"></serviceSteward>
+        <serviceDismantle id="d6" v-if="tab.nodeType>5"></serviceDismantle>
       </swiper-item>
     </swiper>
+    
   </view>
 </template>
 
@@ -38,68 +44,77 @@
   import serviceHunman from '../../components/service-hunman/service-hunman.vue'
   import serviceActuarial from '../../components/service-actuarial/service-actuarial.vue'
   import serviceDismantle from '../../components/service-dismantle/service-dismantle.vue'
+  import serviceDesign from '../../components/service-design/service-design.vue'
+  import serviceSteward from '../../components/service-steward/service-steward.vue'
+  import serviceDesignChange from '../../components/service-design-change/service-design-change.vue'
   import {getDesignServeMenu,getMyService} from '../../../api/decorate.js'
   export default {
     components: {
       resultContent,
       serviceHunman,
       serviceActuarial,
-      serviceDismantle
+      serviceDismantle,
+      serviceDesign,
+      serviceDesignChange,
+      serviceSteward
     },
     data() {
       return {
-        dataList: [{
+        dataList: [
+          {
             nodeName: '量房',
-            nodeType: 'amount'
+            nodeType: '3'
           },
           {
             nodeName: '验房',
-            nodeType: 'result'
+            nodeType: '2'
           },
           {
             nodeName: '设计',
-            nodeType: 'desgin'
+            nodeType: '1'
           },
           {
             nodeName: '精算',
-            nodeType: 'actuarial'
+            nodeType: '4'
           },
           {
             nodeName: '管家',
-            nodeType: 'steward'
+            nodeType: '5'
           },
           {
             nodeName: '拆除',
-            nodeType: 'dismantle'
+            nodeType: '6'
           },
           {
             nodeName: '水电',
-            nodeType: 'hydroelectric'
+            nodeType: '7'
           },
           {
             nodeName: '泥工',
-            nodeType: 'tiler'
+            nodeType: '8'
           },
           {
             nodeName: '木工',
-            nodeType: 'woodworking'
+            nodeType: '9'
           },
           {
             nodeName: '油漆',
-            nodeType: 'paint'
+            nodeType: '10'
           },
         ],
         tabIndex: 0,
-        tabName: 'amount',
+        tabName: '',
         scrollTop: 0,
-        contentHeight: 0,
+        contentHeight: '600px',
         isActive:false,
         currentItem:'top',
         result:{},
+        designList:[],
+        serverId:56,
+        designData:{}
       };
     },
     onPageScroll(scrollTop) {
-      console.log(scrollTop.scrollTop,this.result)
       this.scrollTop = scrollTop.scrollTop+92
       if (this.scrollTop > this.result.top) {
         this.isActive = true
@@ -111,18 +126,6 @@
       }
     },
     mounted() {
-      setTimeout(() => {
-        this.$nextTick(function() {
-          let query = uni.createSelectorQuery()
-          query.select('#' + this.tabName).boundingClientRect();
-          query.exec((res) => {
-            if (res && res[0]) {
-              this.contentHeight = res[0].height + 'px';
-              
-            }
-          });
-        })
-      }, 1000)
       this.getDesignServeMenu()
       this.getMyService()
     },
@@ -134,16 +137,20 @@
       },
       ontabtap(item, index) {
         this.tabIndex = index
-        this.tabName = item.nodeType
+        this.tabName = 'd'+item.nodeType
       },
       ontabchange(e) {
         let current = e.detail.current
         this.tabIndex = current
-        this.tabName = this.dataList[current].nodeType
+        this.tabName = 'd'+this.dataList[current].nodeType
+        this.serverId = this.dataList[current].serverId
         this.changeHeight()
         this.$nextTick(function(){
           this.$refs.result[0].getHeight()
         })
+      },
+      openPopup(){
+        this.$refs.popup.open('bottom')
       },
       toItem(id) {
         this.currentItem = id
@@ -159,22 +166,31 @@
       getData(e) {
         this.result = e
       },
+      changeDesign(e){
+        this.designData = e
+      },
       changeHeight() {
-        this.$nextTick(function() {
+        setTimeout(()=>{
           let query = uni.createSelectorQuery()
           query.select('#' + this.tabName).boundingClientRect();
           query.exec((res) => {
             console.log(res)
             if (res && res[0]) {
-              
-              this.contentHeight = res[0].height + 'px';
+              this.contentHeight =  res[0].height+150+ 'px';
             }
           });
-        })
+        },500)
+          
+        
+      },
+      chooseItem(e){
+        this.serverId= e.severId
+        this.$refs.popup.close()
       },
       getDesignServeMenu(){
         getDesignServeMenu(2).then(res=>{
-          console.log(res)
+          this.designList = res
+          
         })
       },
       getMyService(){
@@ -184,6 +200,9 @@
         }
         getMyService(data).then(res=>{
           console.log(res)
+          this.dataList = res
+          this.tabName = 'd'+this.dataList[0].nodeType
+          this.changeHeight()
         })
       }
     }
@@ -203,7 +222,7 @@
     background-color: #fff;
     position: sticky;
     top: 0;
-    z-index: 1000;
+    z-index: 10;
     .cost {
       padding-top: 28rpx;
       width: 104rpx;

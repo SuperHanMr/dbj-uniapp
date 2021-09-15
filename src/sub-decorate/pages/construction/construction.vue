@@ -2,39 +2,40 @@
   <view class="construction">
     <tabs :current="current" :items="items" @changeItem="changeItem"></tabs>
     <view class="s-g-list">
-      <view class="s-g-item">
-        <user-desc-pict :pictList="pictList">
+      <view class="s-g-item" v-for="(item,index) in dataList">
+        <user-desc-pict :butlerData="item.butlerDecorationTrendLogVO">
           <template slot="subtitle">
             <sub-title text="拆除阶段完工申请"></sub-title>
           </template>
         </user-desc-pict>
-        <user-desc-pict :pictList="pictList" :isWorker="true">
-        </user-desc-pict>
+        <user-desc-pict-worker :workerData="item.workerDecorationTrendLogVO">
+        </user-desc-pict-worker>
       </view>
     </view>
   </view>
 </template>
 
 <script>
+  import {
+    getCompletionLog
+  } from "../../../api/construction.js"
   import Tabs from "../../components/tabs/tabs.vue"
   import UserDescPict from "../../components/user-desc-pict/user-desc-pict.vue"
+  import UserDescPictWorker from "../../components/user-desc-pict/user-desc-pict-worker.vue"
   import SubTitle from "../../components/user-desc-pict/sub-title.vue"
   export default {
     components: {
       Tabs,
       UserDescPict,
+      UserDescPictWorker,
       SubTitle
+    },
+    onShow() {
+      this.getCompletionLog()
     },
     data() {
       return {
-        pictList: [
-          "http://iph.href.lu/328x216?text=picture&fg=EB7662&bg=FFE2DD",
-          "http://iph.href.lu/328x216?text=picture&fg=EB7662&bg=FFE2DD",
-          "http://iph.href.lu/328x216?text=picture&fg=EB7662&bg=FFE2DD",
-          "http://iph.href.lu/328x216?text=picture&fg=EB7662&bg=FFE2DD",
-          "http://iph.href.lu/328x216?text=picture&fg=EB7662&bg=FFE2DD",
-          "http://iph.href.lu/328x216?text=picture&fg=EB7662&bg=FFE2DD"
-        ],
+        dataList: [],
         current: "拆除",
         items: ["拆除", "水电", "泥工", "木工", "油工"]
       }
@@ -42,6 +43,18 @@
     methods: {
       changeItem(item) {
         this.current = item;
+        this.getCompletionLog()
+      },
+      getCompletionLog() {
+        getCompletionLog({
+          page: 1,
+          // position: ,
+          rows: 1000,
+          nodeType: this.items.indexOf(this.current) + 6,
+          projectId: 1
+        }).then(data => {
+          this.dataList = data.list
+        })
       }
     }
   }
@@ -49,9 +62,10 @@
 
 <style lang="scss" scoped>
   .construction {}
+
   .s-g-list {
     .s-g-item {
-      margin: 0 24rpx 24rpx;
+      margin: 24rpx;
     }
   }
 </style>

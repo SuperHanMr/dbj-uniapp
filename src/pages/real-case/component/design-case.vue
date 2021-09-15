@@ -9,7 +9,7 @@
 					tag="left"
 					:index="index"
 					@height="onHeight"
-					@click="onClick(index, 'left')"
+					@click="onClick(index, '0')"
 				></waterfall>
 			</view>
 			<view>
@@ -18,7 +18,7 @@
 					:key="index" 
 					:params="item" 
 					@height="onHeight"
-					@click="onClick(index, 'right')"
+					@click="onClick(index, '0')"
 					tag="right"
 					:index="index"
 				></waterfall>
