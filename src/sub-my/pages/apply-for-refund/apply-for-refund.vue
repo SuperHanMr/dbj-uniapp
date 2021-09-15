@@ -41,13 +41,8 @@
       </view>
 
 
-
-
-
-
-      <view class="refund-container">
-
-        <view class="refund-reason">
+			<view class="refund-container">
+				<view class="refund-reason">
           <view class="left">
             <view class="icon">
               *
@@ -81,8 +76,8 @@
 							</view>
 							<text>退款金额</text>
 						</view>
-						<view class="right" >
-						  <text >￥{{handlePrice(refundInfo.totalActualIncomeAmount)[1]}}.{{handlePrice(refundInfo.totalActualIncomeAmount)[0]}}</text>
+						<view class="right1" >
+						  <text >￥{{handlePrice(refundInfo.totalActualIncomeAmount)[0]}}.{{handlePrice(refundInfo.totalActualIncomeAmount)[1]}}</text>
 						</view>
 					</view>
 					<view class="tip-text">
@@ -134,7 +129,7 @@
 					</view>
 
 					<view class="tip-text" >
-						最多可以填写￥{{handlePrice(refundInfo.totalActualIncomeAmount)[1]}}.{{handlePrice(refundInfo.totalActualIncomeAmount)[0]}}，也可申请部分金额，以您与商家沟通协商的结果为准
+						最多可以填写￥{{handlePrice(refundInfo.totalActualIncomeAmount)[0]}}.{{handlePrice(refundInfo.totalActualIncomeAmount)[1]}}，也可申请部分金额，以您与商家沟通协商的结果为准
 					</view>
         </view>
      
@@ -145,65 +140,48 @@
       <view class="remark-container">
         <view class="header">
           <text>备注说明</text>
-          <text style="color: #999999;font-size: 26rpx;">{{textAreaLength}}/200</text>
+          <text style="color: #999999;font-size: 26rpx;">{{textAreaLength}}/500</text>
         </view>
         <textarea
           v-model="query.remarks"
           placeholder="可以填写一些与客服沟通过的备注信息"
           placeholder-style="color:#AAAAAA;font-size:28rpx;padding-top:12rpx;"
-          maxlength="200"
+          maxlength="500"
           class="remark"
           @input="onTextAreaInput"
         />
       </view>
       <view class="proposal">建议与商家沟通后再发起退款</view>
 
-      <!-- <view class="sumbit-button">
-        <view class="buttons">
-          <text>提交申请</text>
-        </view>
-      </view> -->
+
       <view
         class="sumbit-button"
         :style="{paddingBottom:systemBottom}"
       >
-        <view
+			<view class="buttons1" v-if="!reasonName">
+				提交申请
+			</view>
+        <view v-else
           class="buttons"
           @click="submitApplication"
         >
           提交申请
         </view>
+			</view>
+		</view>
 
-      </view>
-
-    </view>
-
-    <uni-popup
-      ref="popup"
-      :mask-click="false"
-      style="background-color: #00ED7D;"
-    >
-      <view
-        class="reason-item"
-        v-for="item in 10"
-        :key="item"
-      >
-        <text>可滚动内容 {{ item }}</text>
-        <view class="reason-line" />
-      </view>
-      <button @click="close">取消</button>
-    </uni-popup>
   </view>
 
 </template>
 
 <script>
-import { getOrderDetail,refundReason } from "@/api/order.js";
+import { getOrderDetail,refundReason,wholeOrderApplyForRefund,particalOrderApplyForRefund} from "@/api/order.js";
 export default {
   data() {
     return {
       query: {
         remarks: "",
+				status:"",
       },
       showEditInput: false,
       inputValue: 0,
@@ -216,8 +194,14 @@ export default {
 			
 			refundReasonList:[],//退款原因
 			reasonList:[],
+			
 			reasonValue:"",
 			reasonName:"",
+			
+			returnMoney:"",
+			
+			
+			
 			
       systemBottom: "",
     };
@@ -232,15 +216,19 @@ export default {
 
   onLoad(e) {
     this.type = e.type;
+		this.query.orderId=Number(e.id)
+		this.query.status=Number(e.status);//订单状态1进行中 2已完成
     console.log("this.type=", this.type);
     if (this.type == "partical") {
       this.refundInfo = JSON.parse(
         wx.getStorageSync("particalRefundOrderInfo")
       );
+			this.inputValue =  this.refundInfo.totalActualIncomeAmount
       console.log("this.refundInfo=", this.refundInfo, typeof this.refundInfo);
+			
     } else {
       this.refundInfo = JSON.parse(wx.getStorageSync("wholeRefundOrderInfo"));
-      console.log("this.refundInfo=", this.refundInfo, typeof this.refundInfo);
+			this.returnMoney =  this.refundInfo.totalActualIncomeAmount
     }
 		this.getRefundReasonList()
   },
@@ -279,11 +267,26 @@ export default {
 		
 		submitApplication() {
       console.log("申请退款");
+			let params={
+				orderId:this.query.orderId,//订单明Id字段
+				returnMoney:this.returnMoney,//申请退货钱数(分)
+				reason:this.reasonName, //退款原因
+				reasonId:this.reasonValue,//退款原因id
+				remark:this.query.remarks, //备注
+				status:this.query.status, //订单状态1进行中 2已完成
+}
+			wholeOrderApplyForRefund(params).then(res=>{
+				if(res.code==1){
+					uni.navigateTo({
+						url:`../my-order/success/success?type=applyForRefund`
+					})
+				}
+			})
     },
 
     onKeyInput(event) {
       this.inputValue = event.target.value;
-      this.inputWidth = event.target.value.length * 24;
+			this.inputWidth = event.target.value.length * 24;
     },
     onKeyFocus() {
       this.isFocus = true;
@@ -297,14 +300,12 @@ export default {
       this.inputValue = Number(this.inputValue).toFixed(2);
       // console.log("this.inputValue=",this.inputValue,Number(this.inputValue).toFixed(2))
     },
-
-    onTextAreaInput(event) {
+		onTextAreaInput(event) {
       this.textAreaLength = event.target.value.length;
     },
+		
 		// 请选择原因
     openPopup() {
-      // this.$refs.popup.open("bottom");
-      console.log("下拉箭头");
 			uni.showActionSheet({
 				itemList: this.reasonList,
 				success: (res)=>{
@@ -319,10 +320,6 @@ export default {
 				}
 			})
     },
-		
-    // close() {
-    //   this.$refs.popup.close();
-    // },
 
     handlePrice(price) {
       let list = String(price).split(".");
@@ -560,28 +557,18 @@ export default {
       font-size: 32rpx;
       color: #ffffff;
     }
+		.buttons1 {
+		  height: 88rpx;
+		  line-height: 88rpx;
+		  text-align: center;
+		  border-radius: 12rpx;
+		  background: linear-gradient(135deg, #53D5CC 0%, #4FC9C9 100%);
+			opacity: 0.5;
+		  font-size: 32rpx;
+		  color: #ffffff;
+		}
   }
 }
 
-.reason-item {
-  display: flex;
-  flex-flow: column nowrap;
-  align-items: center;
-  text {
-    width: 750rpx;
-    height: 24rpx;
-    line-height: 24rpx;
-    background: #ffffff;
-    padding: 40rpx 0;
-    text-align: center;
-  }
-  .reason-line {
-    width: 750rpx;
-    height: 1rpx;
-    background-color: #999999;
-  }
-}
-.reason-item:nth-child(1) {
-  border-radius: 24rpx 24rpx 0 0;
-}
+
 </style>

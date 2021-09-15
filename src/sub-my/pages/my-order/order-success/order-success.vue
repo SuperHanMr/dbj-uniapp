@@ -73,16 +73,15 @@
           </view>
 					
 					<view  v-for="item2 in item.details" :key="item2.id" class="orederItem">
-						<order-item :dataList="item2" :orderStatus="3" @toApplayForRefund="applyForReFund(item2,1)"></order-item>
+						<order-item :dataList="item2" :orderStatus="3"></order-item>
 					</view>
          
-					
+				<!-- 		
           <view class="price-special" v-if="item.stockType==0 && item.showRefundBtn">
 						<view class="button" @click="applyForReFund(orderInfo,2)">
 							申请退款
 						</view>
-						
-					</view>
+					</view> -->
 					
         </view>
 			</view>
@@ -101,6 +100,21 @@
 				:createTime="orderInfo.createTime"
 				:payTime="orderInfo.payTime"
 			/>
+			
+			<view
+			  class="applyforRefund-container"
+			  :style="{paddingBottom:systemBottom,height:systemHeight}"
+			>
+			  <view
+			    class="applyforRefund"
+			    @click="toApplayForRefund(orderInfo,2)"
+			    v-if="orderInfo.showRefundBtn"
+			  >
+			    申请退款
+			  </view>
+			  
+			</view>
+			
 			
     </view>
 
@@ -144,6 +158,7 @@
 		},
 	
 		methods: {
+			
 			orderDetail(){
 				console.log("订单完成页面",this.id)
 				getOrderDetail({id:this.id}).then(e=>{
@@ -151,32 +166,21 @@
 					console.log("获取详情数据data=",this.orderInfo)
 				})
 			},
+			
 			refundDetail(){
 				getRefundDetail({id:this.id}).then(e=>{
 					this.refundInfo = e
 					console.log("获取详情数据data=",this.refundInfo)
 				})
 			},
-			applyForReFund(data,type){
-				// console.log("申请退款")
-				// uni.navigateTo({
-				// 	url:`../../apply-for-refund/apply-for-refund?id=${this.id}`
-				// })
-				console.log("in-progress-data=", data);
-				if (type == 1) {
-				  //type 1部分退款
-				  wx.setStorageSync("particalRefundOrderInfo", JSON.stringify(data));
-				  uni.navigateTo({
-				    url: `/sub-my/pages/apply-for-refund/apply-for-refund?id=${this.orderNo}&type=partical`,
-				  });
-				} else {
-				  //type 2 整体退款
-				  wx.setStorageSync("wholeRefundOrderInfo", JSON.stringify(data));
-				  uni.navigateTo({
-				    url: `/sub-my/pages/apply-for-refund/apply-for-refund?id=${this.orderNo}&type=whole`,
-				  });
-				}
+			// 申请退款
+			toApplayForRefund(data,type){
+				wx.setStorageSync("wholeRefundOrderInfo", JSON.stringify(data));
+				uni.navigateTo({
+					url: `/sub-my/pages/apply-for-refund/apply-for-refund?id=${this.orderNo}&type=whole`,
+				});
 			},
+			
 		}
 	
 };
@@ -364,5 +368,72 @@
   border: 2rpx solid #eaeaea;
   font-size: 20rpx;
   color: #111111;
+}
+
+
+
+
+
+
+
+
+
+// 底部 确认收货 及申请退款按钮
+.applyforRefund-container {
+  position: fixed;
+  bottom: 0;
+  width: 686rpx;
+  background-color: #ffffff;
+  display: flex;
+  flex-flow: row nowrap;
+  align-items: center;
+  justify-content: flex-end;
+  padding: 12rpx 32rpx;
+ 
+  .applyforRefund {
+    margin: 18rpx 0;
+    box-sizing: border-box;
+    width: 160rpx;
+    height: 56rpx;
+    line-height: 56rpx;
+    text-align: center;
+    background: #ffffff;
+    border-radius: 16rpx;
+    color: #111111;
+    font-size: 24rpx;
+    border: 2rpx solid #eaeaea;
+  }
+}
+
+// 弹框样式
+::v-deep .uni-popup-dialog {
+  width: 560rpx !important;
+  border-radius: 24rpx !important;
+  background-color: #fff !important;
+}
+::v-deep .uni-dialog-title-text {
+  color: #111111 !important;
+  font-size: 32rpx !important;
+  font-weight: 550 !important;
+}
+::v-deep .uni-dialog-title {
+  padding: 48rpx 0 !important;
+}
+::v-deep .uni-dialog-content {
+  display: none !important;
+}
+::v-deep .uni-dialog-button-group {
+  border-top: 2rpx solid #f5f5f5;
+}
+::v-deep .uni-dialog-button {
+  height: 82rpx !important;
+}
+::v-deep .uni-button-color {
+  color: #ff3347 !important;
+  font-size: 30rpx !important;
+  font-weight: 500;
+}
+::v-deep .uni-dialog-button-text {
+  font-size: 30rpx !important;
 }
 </style>

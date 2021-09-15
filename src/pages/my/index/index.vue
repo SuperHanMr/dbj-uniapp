@@ -37,7 +37,7 @@
         <view class="order">我的订单</view>
         <view
           class="total"
-          @click="handlerTotalOrder()"
+          @click="handlerViewAll()"
         >
 					<text>查看全部</text>
 					<image src="../../../static/order/images/arraw_right@2x.png"	mode=""></image>
@@ -194,12 +194,10 @@ export default {
         url: item.url,
       });
     },
-    handlerTotalOrder() {
+    handlerViewAll() {
       console.log("点击我的订单全部按钮");
       uni.navigateTo({
-				// url:"../../../sub-my/pages/my-order/my-order?index=99"//勿删 
-				url:`../../../sub-my/pages/my-order/order-wait-pay/order-wait-pay`
-				// url:"../../../sub-my/pages/my-order/order-in-progress/order-in-progress"
+				url:"../../../sub-my/pages/my-order/my-order?index=99"
       });
     },
     handlerOrder(item) {
