@@ -39,7 +39,8 @@
 						<view  class="order-container"  v-for="item in orderList" :key="item.id">
               <view class="header">
                 <view class="store-name" @click="gotoShop">
-                  <text>{{item.orderName?item.orderName:item.storeName}}</text>
+                  <text v-if="item.orderStatus == 0 ">{{item.orderName?item.orderName:item.storeName}}</text>
+                  <text v-else>{{item.storeName}}</text>
                   <image
 										v-if="!item.orderName"
                     src="../../../static/order/ic_more@2x.png"
@@ -48,25 +49,23 @@
                 </view>
                 <view
                   class="order-status"
-                  :class="{active: item.orderStatus ==2 || item.orderStatus==3}"
-                >
-                  {{
-										item.orderStatus === 0
+                  :class="{active: item.orderStatus == 2 || item.orderStatus == 3}"
+                >{{item.orderStatusName}}
+                  <!-- {{
+										item.orderStatus == 0
 										?"代付款"
-										:item.orderStatus === 1
-										?(item.shipmentStatus == 1?"待发货":"已发货")//发货状态（1待发货，2已发货）
+										:item.orderStatus == 1
+										?(item.shipmentStatus == 1?"待发货":item.shipmentStatus == 2? "已发货" :"已签收")//发货状态（1待发货，2已发货）
 										:item.orderStatus === 2
 										?"已完成"
-										:item.orderStatus === 3
-										?"交易关闭"
-										:"1111"
-									}}
+										:"交易关闭"
+									}} --> 
                 </view>
               </view>
 
               <view class="body">
 								<!-- 套餐 -->
-								<view class="product-info" v-if="item.details.length>1" @click="goToDetail(item)">
+								<view class="product-info" v-if="item.orderStatus == 0 && item.orderName && item.details.length>1" @click="goToDetail(item)">
 								  <view class="product-img">
 								    <scroll-view
 								      scroll-x
@@ -82,8 +81,8 @@
 								  <view class="total-price">
 								    <view class="product-price">
 								      <text style="font-size:22rpx;">￥</text>
-								      <text style="font-weight: 400;">{{handlePrice(item.orderTotalAmount)[0]}}.</text>
-								      <text style="font-size:22rpx;">{{handlePrice(item.orderTotalAmount)[1]}}</text>
+								      <text style="font-weight: 400;">{{handlePrice(item.totalAmount)[0]}}.</text>
+								      <text style="font-size:22rpx;">{{handlePrice(item.totalAmount)[1]}}</text>
 								    </view>
 								    <view>共{{item.goodsNumber}}件</view>
 								  </view>
@@ -91,21 +90,26 @@
 								
 								 <!-- 非套餐 -->
 								 <view v-else   v-for="item2 in item.details" :key="item2.id">
-										<order-item :dataList="item2" @handleDetail="goToDetail(item)" />	
+										<order-item :dataList="item2" @handleDetail="goToDetail(item)" :showPrice="true"/>	
 								 </view>	
               </view>
 							
 							<view class="price">
+								
 							  <view class="total-pay">
+									
 							    <text>总价</text>
 							    <text style="font-size:18rpx;">￥</text>
 							    <text>{{handlePrice(item.orderTotalAmount)[0]}}.</text>
 							    <text style="font-size:18rpx;">{{handlePrice(item.orderTotalAmount)[1]}}</text>
+									
 							    <text style="margin-left: 18rpx;">优惠</text>
 							    <text style="font-size:18rpx;">￥</text>
 							    <text>{{handlePrice(item.discount)[0]}}.</text>
 							    <text style="font-size:18rpx;">{{handlePrice(item.discount)[1]}}</text>
+									
 							  </view>
+								
 							  <view class="need-pay" v-if="item.orderStatus !== 0">
 									<text>实付</text>
 							    <text style="color:#FF3347;margin-left: 8rpx;">
@@ -114,30 +118,29 @@
 							      <text style="font-size:18rpx;">{{handlePrice(item.totalActualIncomeAmount)[1]}}</text>
 							    </text>
 							  </view>
+								
 								<view class="need-pay" v-if="item.orderStatus == 0">
 									<text v-if="item.freight && item.handlingFees">需付款(含运费、搬运费)</text>
 								  <text v-if="item.freight">需付款(含运费)</text>
 								  <text v-if="item.handlingFees">需付款(含搬运费)</text>
 									<text v-if="!item.freight && !item.handlingFees">需付款</text>
-									
-								  <text style="color:#FF3347;margin-left: 8rpx;">
+									<text style="color:#FF3347;margin-left: 8rpx;">
 								    <text style="font-size:18rpx;">￥</text>
-								    <text style="font-size: 32rpx;">{{handlePrice(item.orderReceivableAmount)[0]}}.</text>
-								    <text style="font-size:18rpx;">{{handlePrice(item.orderReceivableAmount)[1]}}</text>
+								    <text style="font-size: 32rpx;">{{handlePrice(item.payAmount)[0]}}.</text>
+								    <text style="font-size:18rpx;">{{handlePrice(item.payAmount)[1]}}</text>
 								  </text>
 								</view>
 							</view>
 							
-							<view class="line" v-if="item.orderStatus===0&&(item.showCancelOrderTime || item.showCancelBtn || item.showToPayBtn)"/>
+							<view class="line" v-if="item.orderStatus == 0 && (item.showCancelOrderTime || item.showCancelBtn || item.showToPayBtn)"/>
 
-              <view class="footer" v-if="item.orderStatus===0&&(item.showCancelOrderTime || item.showCancelBtn || item.showToPayBtn)" :class="{buttonContainer:!item.showCancelOrderTime}">
+              <view class="footer" 
+								v-if="item.orderStatus == 0 && (item.showCancelOrderTime || item.showCancelBtn || item.showToPayBtn)" 
+								:class="{buttonContainer:!item.showCancelOrderTime}">
            
                 <view v-if="item.showCancelOrderTime" class="set-interval">
                   <image  src="../../static/ic_time@2x.png" mode=""></image>
-									<!-- <view class="time-text">
-										<text style="margin-right: 12rpx;height: 36rpx;line-height: 36rpx;">剩余支付时间</text>
-										<uni-countdown color="#FF3347" background-color="#FFEFF1"  :showDay="false"  :hour="1" :minute="12" :second="40"></uni-countdown>
-									</view> -->
+									
 									
 									<view class="time-text">
 										<text style="margin-right: 12rpx;height: 36rpx;line-height: 36rpx;">剩余支付时间</text>
@@ -152,6 +155,7 @@
                     type="default"
                     size="mini"
                     class="cancel-order"
+										@click="handleCancelOrder(item.id)"
                   >取消订单</button>
 									
                   <button
@@ -159,13 +163,26 @@
                     type="default"
                     size="mini"
                     class="go-to-pay"
+										@click="toPay(item)"
                   >去付款</button>
 									
                 </view>
 							</view>
+							<view class="line" v-if="item.orderStatus == 1 && item.shipmentStatus == 2"/>
+							<view class="footer buttonContainer " v-if="item.orderStatus == 1 && item.shipmentStatus == 2">
+								<view class="button">
+									<button
+										v-if="item.showToPayBtn"
+										type="default"
+										size="mini"
+										class="go-to-pay"
+										@click="handleConfirmReceipt(item)"
+									>确认收货</button>
+								</view>
+							</view>
 						</view>
 					</view>
-					
+				
 					<view class="swiper-item empty-container" v-else>
 						<view class="empty-page">
 							<view class="line"/>
@@ -182,11 +199,38 @@
       </swiper-item>
 			
     </swiper>
+		
+		<!-- 取消订单的弹框 -->
+		<uni-popup  ref="cancleOrder"  type="dialog">
+			<uni-popup-dialog
+				mode="base"
+				title="您确定要取消该订单吗？"
+				:before-close="true"
+				@close="cancelOrderClose"
+				@confirm="cancleConfirm"
+			/>
+		</uni-popup>
+		
+		<!-- 确认收货的弹框 -->
+		<uni-popup
+		  ref="confirmReceipt"
+		  type="dialog"
+		>
+		  <uni-popup-dialog
+		    mode="base"
+		    title="确定要确认收货？"
+		    :before-close="true"
+		    @close="confirmReceiptClose"
+		    @confirm="receiptConfirm"
+		  />
+		</uni-popup>
+		
+		
   </view>
 </template>
 
 <script>
-import { getOrderList } from "@/api/order.js";
+import { getOrderList ,orderPay,cancelOrder,confirmReceiptOrder} from "@/api/order.js";
 export default {
   data() {
     return {
@@ -194,7 +238,7 @@ export default {
       triggered: false, //控制刷新显示字段
       isActive: true,
 			
-      currentIndex: 1,
+      currentIndex: 4,
       orderStatus: -1, //订单状态（-1全部,0待付款，1进行中，2已完成 3已关闭）
       rows: 15,
 			
@@ -207,6 +251,8 @@ export default {
 			
 			requestedDataLength:-1,
 			orderListLength:1,
+			
+			id:-1,
     };
   },
   
@@ -232,22 +278,21 @@ export default {
 		}
   },
 	onLoad(e){
-		console.log("e=",e)
 		if(e.index){
-			if(e.index ==99){
-				this.currentIndex=0
+			if(e.index == '99'){
+				console.log("e=",e)
+				this.currentIndex = 0
 			}else{
-				this.currentIndex =Number(e.index) 
+				console.log("e=",e)
+				this.currentIndex =Number(e.index)
 			}
 		}
-		
 		this.orderStatus = this.currentIndex -1
 		
-		this.getOrderList()
+		// this.getOrderList()
 	},
 
   methods: {
-		
 		handlePrice(price){
 			let list=String(price).split(".")
 			if(list.length==1){
@@ -307,20 +352,6 @@ export default {
 			}
 		},
 		
-		formatTime(msTime) {
-			let time = msTime /1000;
-			let hour = Math.floor(time /60 /60) %24;
-			if(!hour){
-				hour = 0
-			}
-			let minute = Math.floor(time /60) %60;
-			if(!minute){
-				minute =0
-			}
-			let second = Math.floor(time) %60;
-			return [hour,minute,second]
-		},
-		
 		gotoShop(){
 			console.log("去店铺首页！！！！店铺首页在第二期诶，暂时跳不了")
 		},
@@ -334,8 +365,6 @@ export default {
         rows: this.rows,
       });
 			
-      console.log( "orderItem=",orderItem);
-			// let lastId = orderItem.length > 0 ? orderItem[orderItem.length-1].id :-1
 			if(!orderItem.length) return 
 			
 			if(this.currentIndex ==0){
@@ -372,15 +401,113 @@ export default {
       this.getOrderList();
     },
 
-
 		onRefresh(e) {
-      console.log("刷新!!!!!");
       this.triggered = true;
       setTimeout(() => {
-        console.log("????!!!!");
         this.triggered = false;
       }, 1000);
     },
+		
+		// 取消订单
+		handleCancelOrder(id){
+			this.id = id
+			this.$refs.cancleOrder.open();
+		},
+		cancelOrderClose(){
+			this.$refs.cancleOrder.close();
+		},
+		cancleConfirm(){
+			console.log("取消订单按钮成功！")
+			//点击确定后订单会被取消且该订单会被移入已关闭订单中
+			cancelOrder({id:this.id}).then(e=>{
+				if(e.code==1){
+					
+					this.$refs.cancleOrder.close();
+					this.toCancelPage()
+				}
+			})
+		},
+		
+		//跳转到订单取消页面
+		toCancelPage(){
+			uni.navigateTo({
+				url:`../order-failed/order-failed?type=close&id=${this.id}`
+			})
+		},
+		
+		
+		//去支付
+		toPay(item) {
+			// 先判断是否支付超额拆单了
+			// 未拆单 直接支付 
+			// 拆单之后直接跳转到拆单页面
+			console.log(item,"item.id=",item.id, typeof item.id)
+				
+			if(item.isSplitPay){
+				//item.id  是订单id
+				uni.navigateTo({
+					url:`multiple-payments/multiple-payments?orderId=${item.id}&remainTime=${item.remainTime}`
+				})
+			}else{
+				let openId = uni.getStorageSync("openId");
+				orderPay({
+					orderId: item.id,
+					payType: 1,//支付类型  1微信支付",
+					openid: openId,
+				}).then((e) => {
+					const payInfo = e.wechatPayJsapi;
+					uni.requestPayment({
+						provider: "wxpay",
+						...payInfo,
+						success(res) {
+							console.log(res);
+							//支付成功之后刷新页面
+							this.getOrderList()
+						},
+						fail(e) {
+							console.log(e);
+							// 支付失败时候跳转到哪个页面
+						},
+					});
+				});
+			}
+			
+			
+		
+		
+		},
+		
+		// 确认收货
+		handleConfirmReceipt(item) {
+			this.id  =item.id
+		  this.$refs.confirmReceipt.open();
+		},
+		
+		confirmReceiptClose() {
+		  this.$refs.confirmReceipt.close();
+		},
+		
+		receiptConfirm(value) {
+		  // 调用申请退款的接口
+		  console.log("点击了确认按钮11");
+		  //goodIsd 商品id(不传代表整个订单收货)"
+		  confirmReceiptOrder({ id: this.id, goodIsd: "" }).then((e) => {
+		    if (res.code == 1) {
+		      // 成功就关闭弹框
+		      console.log("成功就关闭弹框");
+		      this.$refs.confirmReceipt.close();
+		      uni.navigateTo({
+		        // url:"../success/success?type=confirmReceipt"
+		        url: "../my-order?index=0",
+		      });
+		    }else{
+					this.$refs.confirmReceipt.close();
+				}
+		  });
+		},
+		  
+			
+		//处理页面展示的相关函数
 		handlePrice(price){
 			let list=String(price).split(".")
 			if(list.length==1){
@@ -391,7 +518,20 @@ export default {
 		},
 		handleImage(list){
 			return list.map(item=>item.imgUrl)
-		}
+		},
+		formatTime(msTime) {
+			let time = msTime /1000;
+			let hour = Math.floor(time /60 /60) %24;
+			if(!hour){
+				hour = 0
+			}
+			let minute = Math.floor(time /60) %60;
+			if(!minute){
+				minute =0
+			}
+			let second = Math.floor(time) %60;
+			return [hour,minute,second]
+		},
   },
 };
 </script>
@@ -627,6 +767,7 @@ export default {
       background: linear-gradient(135deg, #36d9cd 0%, #28c6c6 100%);
       border-radius: 32rpx;
       color: #ffffff;
+			padding: 0;
     }
   }
 }
@@ -725,5 +866,42 @@ button::after {
 }
 ::v-deep .uni-countdown__splitor.data-v-02c75d70 {
   line-height: 36rpx !important;
+	}
+	
+	
+	
+	
+	
+	
+	// 弹框样式
+	::v-deep .uni-popup-dialog {
+	  width: 560rpx !important;
+	  border-radius: 24rpx !important;
+	  background-color: #fff !important;
+	}
+	::v-deep .uni-dialog-title-text {
+	  color: #111111 !important;
+	  font-size: 32rpx !important;
+	  font-weight: 550 !important;
+	}
+	::v-deep .uni-dialog-title {
+	  padding: 48rpx 0 !important;
+	}
+	::v-deep .uni-dialog-content {
+	  display: none !important;
+	}
+	::v-deep .uni-dialog-button-group {
+	  border-top: 2rpx solid #f5f5f5;
+	}
+	::v-deep .uni-dialog-button {
+	  height: 82rpx !important;
+	}
+	::v-deep .uni-button-color {
+	  color: #ff3347 !important;
+	  font-size: 30rpx !important;
+	  font-weight: 500;
+	}
+	::v-deep .uni-dialog-button-text {
+	  font-size: 30rpx !important;
 	}
 </style>

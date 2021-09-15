@@ -1,8 +1,22 @@
 <template>
 	<view class="container">
-		<view class="payItem" v-for="(item,index) in list" :key="index">
+		<view class="remainTime-container" v-if="showCancelOrderBtn">
+			<image  src="../../../static/ic_time@2x.png" mode=""></image>
+			<text>剩余支付时间</text>
+			<uni-countdown 
+				color="#FF3347" 
+				background-color="#FFEFF1" 
+				:showDay="false"   
+				:hour="formatTime(remainTime)[0]" 
+				:minute="formatTime(remainTime)[1]" 
+				:second="formatTime(remainTime)[2]"
+			/>
+		</view>
+		
+		
+		<view class="payItem" v-for="(item,index) in list.details" :key="index">
 			<view class="left">
-				<text>第{{index==1?"一":index==2?"二":index==3?"三":index==4?"四":index==5?"五":""}}笔支付金额：</text>
+				<text>第{{priceList[index]}}笔支付金额：</text>
 				<view class="price">
 					<text>￥</text>
 					<text style="font-size: 40rpx;font-weight: 500;">{{handlePrice(item.amount)[0]}}.</text>
@@ -22,28 +36,37 @@
 		</view>
 		
 		
-		<view :class="{noCancelBtn:true}" class="bottom-btn"  :style="{paddingBottom:systemBottom,height:systemHeight}">
-			<view class="cancel-btn" v-if="showCancelOrderBtn">
+		<view :class="{noCancelBtn:!showCancelOrderBtn}" class="bottom-btn"  :style="{paddingBottom:systemBottom,height:systemHeight}">
+			<view class="cancel-btn" v-if="showCancelOrderBtn" @click="handleCancelOrder()">
 				取消订单
 			</view>
 		  <view class="total-price">
 		  	<view class="total">
 		  		<text>总计</text>
 		  		<text style="margin-left: 12rpx;">￥</text>
-		  		<text style="font-size: 40rpx; font-weight: 500;">{{handlePrice(list.orderReceivableAmount)[0]}}.</text>
+		  		<text class="price-style" >{{handlePrice(list.orderReceivableAmount)[0]}}.</text>
 		  		<text>{{handlePrice(list.orderReceivableAmount)[1]}}</text>
 		  	</view>
 				
 				<view class="has-pay">
 					<text>已支付</text>
 					<text style="margin-left: 12rpx;">￥</text>
-					<text style="font-size: 40rpx; font-weight: 500;">{{handlePrice(list.totalActualIncomeAmount)[0]}}.</text>
+					<text class="price-style" >{{handlePrice(list.totalActualIncomeAmount)[0]}}.</text>
 					<text>{{handlePrice(list.totalActualIncomeAmount)[1]}}</text>
 				</view>
-				
-		  </view>
-		 
+			</view>
 		</view>
+		
+		<!-- 取消订单的弹框 -->
+		<uni-popup  ref="cancleOrder"  type="dialog">
+			<uni-popup-dialog
+				mode="base"
+				title="您确定要取消该订单吗？"
+				:before-close="true"
+				@close="cancelOrderClose"
+				@confirm="cancleConfirm"
+			/>
+		</uni-popup>
 	</view>
 </template>
 
@@ -57,7 +80,10 @@
 		data() {
 			return {
 				orderId:"",
+				remainTime:"",
+				
 				list:[],
+				priceList:["一","二","三","四","五","六","七","八","九","十"],
 				showCancelOrderBtn:false,
 				
 				systemBottom: "",
@@ -73,17 +99,20 @@
 		
 		onLoad(e) {
 			this.orderId =Number(e.orderId) 
+			this.remainTime = e.remainTime
 			this.requestSplitPayList()
 		},
 		methods: {
 			requestSplitPayList(){
 				querySplitPayList({orderId:this.orderId}).then(data=>{
 					this.list = data
-					this.showCancelOrderBtn =this.list.every(item=>{
-						item.status==0
+					this.showCancelOrderBtn =this.list.details.every(item=>{
+						return	item.status==0
 					})
+					console.log("this.showCancelOrderBtn=",this.showCancelOrderBtn)
 				})
 			},
+			// 去付款
 			gotoPay(id){
 				console.log("去付款");
 				let params={
@@ -111,6 +140,28 @@
 				})
 			},
 			
+			cancelOrder(){
+				console.log("取消订单")
+			},
+			
+			// 取消订单
+			handleCancelOrder(){
+				this.$refs.cancleOrder.open();
+			},
+			cancelOrderClose(){
+				this.$refs.cancleOrder.close();
+			},
+			cancleConfirm(){
+				console.log("取消订单按钮成功！")
+				//点击确定后订单会被取消且该订单会被移入已关闭订单中
+				cancelOrder({id:this.orderId}).then(e=>{
+					if(e.code==1){
+						
+						this.$refs.cancleOrder.close();
+						this.toCancelPage()
+					}
+				})
+			},
 			
 			
 			
@@ -122,6 +173,19 @@
 					return[list[0],list[1]]
 				}
 			},
+			formatTime(msTime) {
+				let time = msTime /1000;
+				let hour = Math.floor(time /60 /60) %24;
+				if(!hour){
+					hour = 0
+				}
+				let minute = Math.floor(time /60) %60;
+				if(!minute){
+					minute =0
+				}
+				let second = Math.floor(time) %60;
+				return [hour,minute,second]
+			},
 		},
 	};
 </script>
@@ -131,6 +195,27 @@
 		height: 100%;
 		overflow-y: auto;
 		background-color: #F2F2F2;
+		.remainTime-container{
+			height: 60rpx;
+			padding: 0 204rpx 0 206rpx;
+			background-color: #FFFFFF;
+			display: flex;
+			flex-flow: row nowrap;
+			align-items: center;
+			
+			font-size: 24rpx;
+			color: #333333;
+			text{
+				margin-left: 8rpx;
+				margin-right: 12rpx;
+			}
+			image {
+			  width: 36rpx;
+			  height: 36rpx;
+			  object-fit: cover;
+			}
+		}
+		
 		.payItem{
 			margin-top: 16rpx;
 			display: flex;
@@ -211,6 +296,54 @@
 		.noCancelBtn{
 			justify-content: flex-end !important;
 		}
+		.price-style{
+			font-size: 40rpx; font-weight: 500;
+		}
+	}
+	
+	//头部倒计时样式
+	::v-deep .uni-countdown__number{
+		width: 36rpx !important;
+		height: 36rpx !important;
+		margin: 0 !important;
+	}
+	::v-deep .uni-countdown__splitor {
+	  line-height: 36rpx !important;
+		color: #FF3347 !important;
+		padding: 0 6rpx 0 4rpx !important;
+	}	
+	
+	
+	// 弹框样式
+	::v-deep .uni-popup-dialog {
+	  width: 560rpx !important;
+	  border-radius: 24rpx !important;
+	  background-color: #fff !important;
+	}
+	::v-deep .uni-dialog-title-text {
+	  color: #111111 !important;
+	  font-size: 32rpx !important;
+	  font-weight: 550 !important;
+	}
+	::v-deep .uni-dialog-title {
+	  padding: 48rpx 0 !important;
+	}
+	::v-deep .uni-dialog-content {
+	  display: none !important;
+	}
+	::v-deep .uni-dialog-button-group {
+	  border-top: 2rpx solid #f5f5f5;
+	}
+	::v-deep .uni-dialog-button {
+	  height: 82rpx !important;
+	}
+	::v-deep .uni-button-color {
+	  color: #ff3347 !important;
+	  font-size: 30rpx !important;
+	  font-weight: 500;
+	}
+	::v-deep .uni-dialog-button-text {
+	  font-size: 30rpx !important;
 	}
 
 </style>
