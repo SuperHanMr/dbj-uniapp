@@ -1,6 +1,6 @@
 <template>
   <view class="good-toast">
-   <uni-popup ref="noBuyToast" type="bottom">
+   <uni-popup ref="noBuyToast" type="bottom" :mask-click="false">
         <view class="toast-content">
           <view class="good-tip">
             <view>

@@ -425,6 +425,13 @@
             "enablePullDownRefresh": false
         }
         
+        },    {
+            "path" : "pages/pay-order/agreement",
+            "style" : {
+                "navigationBarTitleText" : "",
+                "enablePullDownRefresh" : false,
+                "navigationBarBackgroundColor" : "#ffffff"
+            }
         }
             ]
 },

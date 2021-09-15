@@ -1,6 +1,6 @@
 <template>
   <view>
-    
+    协议
   </view>
 </template>
 

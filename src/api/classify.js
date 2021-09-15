@@ -11,5 +11,9 @@ export function getAddressInfo(houseId) {
 }
 export function getDetailInfo(params) {
   // return request.post('/app/purchase/check', params);
-  return axios.post('http://rap2api.taobao.org/app/mock/290704/test', params);
+  return axios.post('http://rap2api.taobao.org/app/mock/290704/test-good', params);
 }
+// export function getDetailInfo(params) {
+//   // return request.post('/app/purchase/check', params);
+//   return axios.post('http://rap2api.taobao.org/app/mock/290704/test', params);
+// }

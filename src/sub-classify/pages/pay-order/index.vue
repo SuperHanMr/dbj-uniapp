@@ -43,10 +43,11 @@
           </view>
           <view class="shop-reduce no-send-tip" v-if="!shopItem.deliveryFee && !shopItem.freeDeliveryCount && prototype === 1">
              <view class="item-reduce-box">
-                <text>当前地址无法配送该商品，请更换地址</text>
+                <text v-if="toastType === 1">该地址未购买精算服务，请先购买精算服务</text>
+                <text v-else>当前地址无法配送该商品，请更换地址</text>
              </view>
           </view>
-          <view class="choose-time" v-if="productType === 2">
+          <view class="choose-time" v-if="productType === 2 && shopItem.skuInfos.appointmentRequired">
              <view class="time-bar" @click='chooseTime'>
                <text v-if="!time">请选择上门时间</text>
                <text v-else>{{time}}</text>
@@ -92,7 +93,9 @@
     </view>
     <view class="pay-way">
       <text>支付方式</text>
-      <text>微信支付</text>
+      <view>
+        <view class="wechat_icon"></view><text>微信支付</text>
+      </view>
     </view>
     <view class='remarks'>
       <text>备注</text>
@@ -103,7 +106,7 @@
     <view class="bottom">
      <view>
         购买即代表您已阅读并同意
-        <text class="agreement">《打扮家服务用户协议》</text>
+        <text class="agreement" @click="goAgreement">《打扮家服务用户协议》</text>
      </view>
       <view class="second-part">
         <view class="total-price-info">
@@ -122,10 +125,10 @@
     <order-toast ref='orderToast' :houseId="houseId" :noStoreInfos="noStoreInfos"></order-toast>
     <uni-popup ref="cancelDialog" :mask-click="false">
       <view class="popup-item">
-        <view class="popup-title">该服务需精算师指导下完成</view>
+        <view class="popup-title">{{toastText}}</view>
         <view class="popup-button">
-          <view class="popup-ok" @click='cancel'>取消</view>
-          <view class="popup-cancel" @click='goBuy'>去购买</view>
+          <view class="popup-ok" @click='cancelGoodPop'>取消</view>
+          <view class="popup-cancel" @click='confirmGoodPop'>去购买</view>
         </view>
       </view>
     </uni-popup>
@@ -140,7 +143,7 @@
 		data(){
 			return {
         time: '',
-        originFrom: "shopCart",
+        originFrom: "",
         addressInfo: {},
         orderInfo: {},
 				canStoreInfos:{},
@@ -154,7 +157,9 @@
         storeId: 0,
         unit: '',
         estateId: 0,
-        productType: 1
+        productType: 1,
+        toastText: '',
+        toastType: 0
 			}
 		},
 		created(){
@@ -164,6 +169,8 @@
       // console.log(e, 'eee')
       // this.houseId = e.houseId
       this.houseId = 1084
+      // this.originFrom = e.from
+      this.originFrom = "h5GoodDetail"
       this.buyCount = e.buyCount
       this.skuId = e.skuId
       this.storeId = e.storeId
@@ -176,6 +183,11 @@
       }
     },
     methods:{
+      goAgreement() {
+        uni.navigateTo({
+           url: "/sub-classify/pages/pay-order/agreement"
+        })
+      },
       getTime(val) {
         this.time = val[0] + '年' + val[1] + '月' + val[2] + '日' + val[3] + '时' + val[4] + '分'
       },
@@ -223,27 +235,38 @@
              
             storeItem.skuInfos.map((skuItem, skuK) => {
               this.productType = skuItem.productType
-              if(skuItem.addingJobName) {
+              if(skuItem.addingJobName) {// 头部补人工数据
                 this.addUser.push({
                   addingJobName: skuItem.addingJobName,
                   addingUserName: skuItem.addingUserName,
                   addingUserId: skuItem.addingUserId
                 })
               }
-              if(skuItem.canBuy === false || skuItem.canDeliver === false) {
+              if(skuItem.canBuy === false || skuItem.canDeliver === false) {// 购物车结算可配送和不可配送数据
                 noStoreItem.skuInfos.push(skuItem)
                 this.hasNoSendItem = true // 判断所有数据中有没有不可配送数据
               }else {
                 canStoreItem.skuInfos.push(skuItem)
               }
+              if(this.originFrom === 'h5GoodDetail') { // 商品详情结算弹窗判断
+              console.log(skuItem, skuItem.frontendServe)
+                if(skuItem.frontendServe === '精算'){
+                  this.toastText = '该服务需精算师指导下完成'
+                  this.toastType = 1
+                  this.$refs.cancelDialog.open()
+                } else if(skuItem.canBuy === false && skuItem.frontendServe !== '精算'){
+                  this.toastText = '请从结算单购买'
+                  this.toastType = 2
+                  this.$refs.cancelDialog.open()
+                }
+              }
             })
           })
           if(this.originFrom === "shopCart") {
               this.orderInfo = this.canStoreInfos  
-              console.log(this.orderInfo, 'canStoreInfos')
-          }
-          if(this.hasNoSendItem){
-            this.$refs.orderToast.showPupop()
+              if(this.hasNoSendItem){
+                this.$refs.orderToast.showPupop()
+              }
           }
         })
       },
@@ -252,12 +275,21 @@
       },
       noSend() {
         this.$refs.orderToast.showPupop()
-        // this.$refs.cancelDialog.open()
       },
-      cancel() {
+      cancelGoodPop() {
         this.$refs.cancelDialog.close()
       },
-      goBuy() {}
+      confirmGoodPop() {
+        if(this.toastType === 1) {
+          uni.navigateTo({
+            url: "/sub-classify/pages/search-result/search-result?searchText=" + "精算"
+          })
+        }else if(this.toastType === 2) {
+          uni.navigateTo({
+            url: "/sub-classify/pages/search-result/search-result?searchText=" + "精算"
+          })
+        }
+      }
     }
 	}
 </script>
@@ -466,7 +498,16 @@
     justify-content: space-between;
     align-items: center;
     height: 104rpx;
-    line-height: 104rep;
+    line-height: 104rpx;
+  }
+  .pay-way .wechat_icon{
+    vertical-align: sub;
+    display: inline-block;
+    width: 32rpx;
+    height: 32rpx;
+    background-image: url("../../static/image/wechat_icon.png");
+    background-size: contain;
+    margin-right: 12rpx;
   }
   .remarks text{
     width: 180rpx;
