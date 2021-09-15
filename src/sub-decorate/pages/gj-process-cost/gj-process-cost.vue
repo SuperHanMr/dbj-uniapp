@@ -2,7 +2,7 @@
   <view class="process-cost">
     <view class="artificial">
       <view class="title">
-        <view>人工费用（中级）</view>
+        <view>人工费用（{{levels[artificialLevel].label }}）</view>
         <view class="change-level" @click="openPopUp">更换等级</view>
       </view>
       <view class="process-cost-list">
@@ -25,7 +25,7 @@
       <payment @gotopay="gotopay" :pieces="pieces" :countPrice="countPrice" :isAllChecked="isAllChecked"></payment>
     </view>
     <uni-popup ref="level">
-      <change-level @changeLevel="changeLevel"></change-level>
+      <change-level @changeLevel="setLevel" @close="close"></change-level>
     </uni-popup>
   </view>
 </template>
@@ -64,7 +64,20 @@
         countPrice: 0,
         estateId: null,
         artificialLevel: 0,
-        roleType: null
+        roleType: null,
+        levels: [{
+          label: "中级",
+          value: 0
+        }, {
+          label: "高级",
+          value: 1
+        }, {
+          label: "特高级",
+          value: 2
+        }, {
+          label: "钻石",
+          value: 3
+        }],
       }
     },
     computed: {
@@ -214,9 +227,13 @@
           });
         })
       },
-      changeLevel(value) {
+      setLevel(value) {
         this.artificialLevel = value
         console.log(value)
+        this.close()
+      },
+      close() {
+        this.$refs.level.close()
       }
     }
   }

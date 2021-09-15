@@ -172,7 +172,7 @@
 
   import MwarehouseBtn from "../../../components/mwarehouse-btn/mwarehouse-btn.vue"
   import TextScroll from "../../../components/text-scroll/text-scroll.vue"
-  import monidata from "./monidata.js"
+  // import monidata from "./monidata.js"
   let timer = null;
   export default {
     components: {
@@ -279,7 +279,7 @@
       getAvailableService() {
         console.log("this.currentProject", this.currentProject)
         availableService({
-          projectId: this.currentProject.projectId || 37
+          projectId: this.currentProject.projectId
         }).then(data => {
           const {
             purchasedServiceList,
