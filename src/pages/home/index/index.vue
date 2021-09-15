@@ -135,13 +135,6 @@
 					url: "../../common/webview/webview?url=" + encodeURIComponent(url),
 				});
 			},
-			async toFriends() {
-				let list = await queryEstates();
-				this.roomId = list[0].id;
-				uni.navigateTo({
-					url: "/sub-decorate/pages/friends/friends?id=" + this.roomId,
-				});
-			},
 			changeCity() {
 				console.log("切换城市");
 			},

@@ -8,8 +8,8 @@
 				剩余{{item.remainingShipments}}次免运费额度
 			</view>
 		</view>
-		<view v-for="(goodItem,index) in item.stockAppVOS" :key="index" class="goods-list" @click="toDetail">
-			<view class="good-detail">
+		<view v-for="(goodItem,index) in item.stockAppVOS" :key="index" class="goods-list" >
+			<view class="good-detail" @click="toDetail">
 
 				<image class="img" :src="goodItem.imgUrl">
 				</image>
@@ -56,7 +56,7 @@
 					<view v-if="showBack" class="btn-back" @click="toRefund">
 						退库存
 					</view>
-					<view v-if="showRecived" class="btn-con">
+					<view v-if="showRecived" class="btn-con" @click="confirmGoods">
 						确认收货
 					</view>
 				</view>
@@ -82,7 +82,8 @@
 				</view>
 			</view>
 			<view v-if="isEdit" class="edit">
-				<custom-number-box></custom-number-box>
+				<custom-number-box @change="onChange($event,goodItem)" :min="minInput" :max="maxInput">
+				</custom-number-box>
 				<view class="edit-tip">
 					库存剩余80，最多可退80
 				</view>
@@ -129,6 +130,14 @@
 			showDetail: {
 				type: Boolean,
 				default: false
+			},
+			minInput: {
+				type: Number,
+				default: 0
+			},
+			maxInput: {
+				type: Number,
+				default: 999999
 			}
 		},
 		data() {
@@ -137,6 +146,15 @@
 			};
 		},
 		methods: {
+			confirmGoods(e){
+				this.$emit('confirmGoods',this.item);
+			},
+			onChange(e, item) {
+				this.$emit('numChange', {
+					num: e,
+					item
+				})
+			},
 			toDetail() {
 				this.$emit('detail', this.item);
 			},

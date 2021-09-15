@@ -1,5 +1,7 @@
 import request from '../utils/request';
-import { objectToUrlString } from "../utils/params.js";
+import {
+	objectToUrlString
+} from "../utils/params.js";
 
 //获取设计图列表
 export function designList(params) {
@@ -112,7 +114,9 @@ export function confirmCheckResult(params) {
 
 //获取亲友团列表-房屋下的
 export function friendListByEstateId(params) {
-	return request.get("/customer/app/relative/listByEstateId", { params })
+	return request.get("/customer/app/relative/listByEstateId", {
+		params
+	})
 }
 
 //添加亲友团
@@ -166,7 +170,9 @@ export function reviseStageDeliver(serveCardId) {
 
 //要货明细列表
 export function inventoryList(params) {
-	return request.get(`/order-center/app/goods/stock/inventoryDetails/list`, { params })
+	return request.get(`/order-center/app/goods/stock/inventoryDetails/list`, {
+		params
+	})
 }
 
 //APP-申请退库存
@@ -193,4 +199,21 @@ export function inventoryDetails(params) {
 //APP-要货-申请要货
 export function goodsApply(params) {
 	return request.post("/order-center/app/goods/require/create", params)
+}
+
+// 获取工序费用
+export function sellList(params) {
+	return request.get(`/pm/app/actuary/sell/list/${params.serveId}/${params.type}`)
+}
+//c端APP-仓库-待收货-确认收货
+export function confirmGoods(params) {
+	return request.put("/order-center/app/goods/stock/confirm/goods", params)
+}
+//APP-要货-要货记录列表
+export function requireList(params) {
+	return request.get("/order-center/app/goods/require/list", params)
+}
+//APP-要货-要货记录详情
+export function requireListDetail(params) {
+	return request.get("/order-center/app/goods/require/detail", params)
 }

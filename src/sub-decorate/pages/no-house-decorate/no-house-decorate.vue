@@ -439,7 +439,7 @@
             ...wechatPayJsapi,
             success(res) {
               console.log("付款成功", res)
-              uni.redirectTo({
+              uni.switchTab({
                 url: "/pages/decorate/index/index"
               })
             },

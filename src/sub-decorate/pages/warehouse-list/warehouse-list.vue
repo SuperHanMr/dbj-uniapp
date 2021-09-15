@@ -15,8 +15,8 @@
 					refresher-background="#FFF" refresher-enabled="true" :refresher-triggered="triggered"
 					@scroll="onScroll" @refresherrefresh="onRefresh" @scrolltolower="onLoadMore">
 					<warehouse-item v-for="(item,index) in currentList" :item="item" :key="item.id" @detail="toDetail"
-						@refund="toRefund" :showRecived="currentIndex==1" :showBacking="currentIndex==3"
-						:showDetail="currentIndex==3"></warehouse-item>
+						@refund="toRefund" @confirmGoods="onConfirmGoods" :showRecived="currentIndex==1"
+						:showBacking="currentIndex==3" :showDetail="currentIndex==3"></warehouse-item>
 				</scroll-view>
 			</swiper-item>
 		</swiper>
@@ -30,6 +30,9 @@
 		reimburseList,
 		receivedList
 	} from "../../../api/order.js"
+	import {
+		confirmGoods
+	} from '../../../api/decorate.js'
 	export default {
 		data() {
 			return {
@@ -54,7 +57,7 @@
 				} else if (this.currentIndex == 2) {
 					return this.list2;
 				} else {
-					return this.list2;
+					return this.list3;
 				}
 			},
 		},
@@ -62,10 +65,32 @@
 			if (e && e.projectId) {
 				this.projectId = e.projectId;
 			}
+			console.log(e)
 			this.getList(true);
 		},
 		onShow() {},
 		methods: {
+			onConfirmGoods(item) {
+				let vm = this;
+				uni.showModal({
+					title: '是否确认收货?',
+					success: function(res) {
+						if (res.confirm) {
+							confirmGoods({
+								id: item.id
+							}).then(e => {
+								uni.showToast({
+									title: '确认收货成功',
+									icon: 'none'
+								})
+								vm.onRefresh()
+							})
+						} else if (res.cancel) {
+							console.log('用户点击取消');
+						}
+					}
+				});
+			},
 			toDetail(e) {
 				let id;
 				if (this.currentIndex == 0) {
@@ -114,7 +139,7 @@
 				this.getList(false)
 			},
 			getList(isRefresh) {
-				if(this.lastId[this.currentIndex] == '-1'){
+				if (this.lastId[this.currentIndex] == '-1') {
 					return;
 				}
 				let params = {};
@@ -189,7 +214,7 @@
 			onLoadMore() {
 				this.getList(false)
 			},
-			onRefresh(e) {
+			onRefresh() {
 				this.triggered = true;
 				this.lastId[this.currentIndex] = '';
 				if (this.currentIndex == 0) {

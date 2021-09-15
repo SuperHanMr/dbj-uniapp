@@ -10,7 +10,8 @@
       tim: null,
 			noHouseActuaryId: null,
 			noHouseDesignId: null,
-			noHouseCheckId: null
+			noHouseCheckId: null,
+			naviData:null
 		},
 		onLaunch: function() {
 			if (!uni.getStorageSync("userId")) {
@@ -20,7 +21,6 @@
 					});
 				}, 0);
 			} else {
-
 				let token = uni.getStorageSync("scn");
 				this.globalData.token = token;
 				oauthGomeInfo({
