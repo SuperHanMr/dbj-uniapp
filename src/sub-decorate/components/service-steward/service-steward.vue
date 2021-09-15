@@ -11,7 +11,7 @@
           <!-- <view class="img-list">
             <image v-for="(el,index) of item.imageList" @click="previewImage(item.imageList,index)" :key='el' :src="el"></image>
           </view> -->
-          <imagePreview :list='item.imageList' :row='1'></imagePreview>
+          <imagePreview :list='item.imageList' :row='2'></imagePreview>
         </view>
       </view>
     </view>
@@ -20,7 +20,7 @@
 
 <script>
   import {getStewardService} from '../../../api/decorate.js'
-  import imagePreview from '../image-preview/image-preview.vue'
+  import imagePreview from '../../../components/image-preview/image-preview.vue'
   export default{
     components:{
       imagePreview
