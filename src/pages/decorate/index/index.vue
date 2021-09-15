@@ -6,7 +6,7 @@
       <view class="house-firend">
         <view class="title">
           <view class="house" @click="switchVisible">
-            <text>我的家</text>
+            <text>{{who}}的家</text>
             <image class="ic-triangle" src="http://dbj.dragonn.top/static/mp/dabanjia/images/decorate/ic_triangle.svg">
             </image>
           </view>
@@ -40,7 +40,8 @@
             <picture-btn v-if="aServiceData.showActuaryFlag" class="p-i-t" text="精算单" @gotoPage="goActuary">
             </picture-btn>
             <picture-btn v-if="aServiceData.showVideoFlag" class="p-i-t" text="工地视频" @gotoPage="goVideo"></picture-btn>
-            <picture-btn v-if="aServiceData.constructionFlag" text="施工" @gotoPage="goConstrction"></picture-btn>
+            <!-- <picture-btn v-if="aServiceData.constructionFlag" text="施工" @gotoPage="goConstrction"></picture-btn> -->
+            <picture-btn text="施工" @gotoPage="goConstrction"></picture-btn>
           </view>
         </view>
       </view>
@@ -116,7 +117,7 @@
           </uni-popup>
           <decorate-notice @touchmove.stop.prevent="()=>false" v-if="noticeActive" :current='current'
             @closeNotice='closeNotice' class="decorate-notice"></decorate-notice>
-          <!-- <view class="link">
+          <view class="link">
             <view @click="gonohouse">无房屋无服入口</view>
             <view @click="gonohousedecatore('decorate')">无房屋无服务装修</view>
             <view @click="gonohousedecatore('checkhouse')">无房屋无服务验房</view>
@@ -125,10 +126,10 @@
             <view @click="confirm4">线上交底</view>
             <view @click="dsport">设计报告交付</view>
             <view @click="hcaa">管家竣工验收申请</view>
-            <view @click="housekeeperrefuse">管家竣工拒绝</view>
+            <!-- <view @click="housekeeperrefuse">管家竣工拒绝</view> -->
             <view @click="workerCapplication">工人阶段验收申请</view>
             <view @click="gjgxf">管家工序费</view>
-          </view> -->
+          </view>
         </scroll-view>
       </view>
       <drag-button-follow :style.sync="style" @btnClick='openNotice' :follow='`left,right`' className="drag-button"
@@ -171,7 +172,7 @@
 
   import MwarehouseBtn from "../../../components/mwarehouse-btn/mwarehouse-btn.vue"
   import TextScroll from "../../../components/text-scroll/text-scroll.vue"
-  import monidata from "./monidata.js"
+  // import monidata from "./monidata.js"
   let timer = null;
   export default {
     components: {
@@ -224,7 +225,9 @@
 
         aServiceData: {},
         isShowMyDecorateAll: false,
-        haveWarehouse: false
+        haveWarehouse: false,
+
+        who: "我"
       };
     },
     mounted() {
@@ -278,16 +281,28 @@
       getAvailableService() {
         console.log("this.currentProject", this.currentProject)
         availableService({
-          projectId: this.currentProject.projectId || 37
+          projectId: this.currentProject.projectId
         }).then(data => {
           const {
             purchasedServiceList,
             availableServiceList,
-            defaultServices
+            defaultServices,
+            constructionFlag,
+            insuranceStatus,
+            showActuaryFlag,
+            showDesignFlag,
+            showVideoFlag,
           } = data
           this.purchasedServiceList = purchasedServiceList || []
           this.availableServiceList = availableServiceList || []
           this.defaultServices = defaultServices || []
+          this.aServiceData = {
+            constructionFlag,
+            insuranceStatus,
+            showActuaryFlag,
+            showDesignFlag,
+            showVideoFlag
+          }
           timer = setTimeout(() => {
             this.addServiceCard(this.defaultServices, "serviceType")
             this.addServiceCard(this.availableServiceList, "nodeType")
@@ -296,18 +311,7 @@
             3) || t.status >= 2)
           this.haveWarehouse = this.purchasedServiceList.filter(t => t.nodeType >= 5).length > 0
         }).catch(err => {
-          // this.aServiceData = monidata.data
-          // const {
-          //   purchasedServiceList,
-          //   availableServiceList,
-          //   defaultServices
-          // } = this.aServiceData
-          // this.purchasedServiceList = purchasedServiceList
-          // this.availableServiceList = availableServiceList
-          // this.defaultServices = defaultServices
-          // this.isShowMyDecorateAll = this.purchasedServiceList.filter(t => (t.status == 0 && t.grepOrderStatus ==
-          //   3) || t.status >= 2)
-          // this.checkDesignAnd()
+          console.log(err)
         })
       },
       addServiceCard(arr, key) {
@@ -322,7 +326,7 @@
       },
       checkHouseRemind() {
         uni.navigateTo({
-          url: "/sub-decorate/pages/check-house-remind/check-house-remind"
+          url: "/sub-decorate/pages/check-house-remind/check-house-remind?serverCardId=36"
         })
       },
       confirm1() {
@@ -337,12 +341,12 @@
       },
       confirm4() {
         uni.navigateTo({
-          url: "/sub-decorate/pages/design-online-disclosure/design-online-disclosure"
+          url: `/sub-decorate/pages/design-online-disclosure/design-online-disclosure?serverId=34`
         })
       },
       hcaa() {
         uni.navigateTo({
-          url: "/sub-decorate/pages/housekeeper-c-a-application/housekeeper-c-a-application"
+          url: `/sub-decorate/pages/housekeeper-c-a-application/housekeeper-c-a-application?projectId=${this.currentProject.projectId}`
         })
       },
       housekeeperrefuse() {
@@ -400,6 +404,7 @@
       },
       // 根据查询出来的项目信息处理
       initData(obj) {
+        this.who = this.currentProject.relegationType == 2 ? "亲友" : "我"
         this.currentEstate = this.estateList.filter(t => t.id === obj.estateId)[0]
         if (this.currentProject.estateId) {
           this.getAvailableService()
