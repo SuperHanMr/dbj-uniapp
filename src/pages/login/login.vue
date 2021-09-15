@@ -85,9 +85,13 @@ export default {
             userId: data.tid,
             userSig: data.userSign
           });
-          uni.switchTab({
-            url: "/pages/home/index/index",
-          });
+					
+					//可以改成back
+					uni.navigateBack({
+					})
+          // uni.switchTab({
+          //   url: "/pages/home/index/index",
+          // });
         });
       }
     },

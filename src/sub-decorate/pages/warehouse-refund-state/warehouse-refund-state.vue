@@ -5,7 +5,7 @@
 				<i class="icon-ic_cancel_white back-icon" @click="back"></i>
 			</template>
 		</custom-navbar>
-		<view>
+	
 
 			<view class="basic-info" :style="{backgroundImage:`url(${bgImg})`,backgroundSize: '100% 100%'}">
 				<view :style="{height:navBarHeight}">
@@ -19,7 +19,7 @@
 				<view class="placehold">
 				</view>
 			</view>
-			<view class="header-content">
+			<view  class="header-content">
 				<view class="icon">
 					<i class="icon-icon_order_tips"></i>
 				</view>
@@ -27,8 +27,8 @@
 					{{tips}}
 				</view>
 			</view>
-		</view>
-		<warehouse-item v-for="(item,index) in currentList" :key="item.id" @detail="toDetail" @refund="toRefund">
+		
+		<warehouse-item :item="detail" :key="item.id" :showTitle="false" @detail="toDetail" @refund="toRefund">
 		</warehouse-item>
 		<view class="info-content">
 			<view class="title">
@@ -128,11 +128,19 @@
 				currentList: [1],
 				detail: {},
 				headerTitle: '',
-				headerTime: '',
+				headerTime: '退款失败??',
 				tips: ''
 			}
 		},
 		onLoad(e) {
+			const systemInfo = uni.getSystemInfoSync();
+			let tophight = systemInfo.statusBarHeight;
+
+			const menuButtonInfo = uni.getMenuButtonBoundingClientRect();
+			this.navBarHeight = (menuButtonInfo.top - systemInfo.statusBarHeight) * 2 +
+				menuButtonInfo.height + tophight +
+				"px";
+
 			if (e && e.id) {
 				this.getDetail(e.id);
 			}
@@ -179,6 +187,8 @@
 				refundDetail({
 					id
 				}).then(e => {
+					e.stockAppVOS = e.detailAppVOS
+					e.detailAppVOS = ''
 					this.detail = e;
 					if ([0, 1].includes(e.status)) {
 						//退款中

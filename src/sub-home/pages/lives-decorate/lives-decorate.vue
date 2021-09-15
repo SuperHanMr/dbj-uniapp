@@ -1,19 +1,27 @@
 <template>
 	<view class="fill">
-		<live-player :class="{ player:!isFill,'player-fill':isFill}" :src="livePreview" autoplay
+		<live-player v-if="liveList.length"  :class="{ player:!isFill,'player-fill':isFill}" :src="livePreview" autoplay
 			@statechange="statechange" @error="error" :muted="muted" :orientation="isFill?'horizontal':'vertical'">
 			<cover-view v-if="!isFill" class="video-bottom">
 				<cover-image class="video-voice" @click="changeMuted"
 					src="http://dbj.dragonn.top/static/mp/dabanjia/images/home/player-vioce.png">
 				</cover-image>
-				<cover-view  class="center-icon-row">
-					<cover-image  v-for="(item,index) in liveList" class="video-list-icon" @click="videoFill"
+				<cover-view class="center-icon-row">
+					<cover-image class="video-list-icon" @click="changePage"
+						src="http://dbj.dragonn.top/static/mp/dabanjia/images/home/lives-left.png">
+					</cover-image>
+					<cover-image v-for="(item,index) in liveList" :key="index" class="video-list-icon"
+						@click="videoFill"
 						src="http://dbj.dragonn.top/static/mp/dabanjia/images/home/indicator_Selected.png">
+					</cover-image>
+					<cover-image class="video-list-icon" @click="changePage"
+						src="http://dbj.dragonn.top/static/mp/dabanjia/images/home/lives-right.png">
 					</cover-image>
 				</cover-view>
 				<cover-image class="video-voice" @click="videoFill"
 					src="http://dbj.dragonn.top/static/mp/dabanjia/images/home/player-big.png">
 				</cover-image>
+
 			</cover-view>
 			<cover-view v-else class="video-left">
 
@@ -37,7 +45,7 @@
 			直播速看
 		</view>
 		<scroll-view v-if="!isFill" scroll-y="true" class="scroll-view">
-			
+
 			<view v-for="(item,index) in list" :key="index">
 				<view class="h-row">
 					<view class="tip">
@@ -80,7 +88,7 @@
 				list: [1, 2, 3],
 				videoSrc: 'http://qiniu.hydrant.ink/1631176569963742.mp4',
 				currentVideoSrc: '',
-				liveList:[1,2,3,4,5,6,7,8,9,0]
+				liveList: []
 			}
 		},
 		onLoad(e) {
@@ -90,14 +98,18 @@
 				rows: 999,
 				projectId: 0
 			}).then(e => {
-				this.list=e.list;
+				this.list = e.list;
 			})
-			// bindVideoList({projectId:0}).then(e=>{
-			// 	if(e.length){
-			// 		this.livePreview=e[0].hls
-			// 		this.liveList=e
-			// 	}
-			// })
+			bindVideoList({projectId:0}).then(e=>{
+				if(e.length){
+					this.liveList=e.filter(e=>{
+						return e.hls != ''&&e.hls!=null
+					})
+					if(this.liveList.length){
+						this.livePreview=this.liveList[0].hls
+					}
+				}
+			})
 		},
 		methods: {
 			changeMuted() {
@@ -159,13 +171,14 @@
 </script>
 
 <style lang="scss" scoped>
-	.fill{
+	.fill {
 		width: 100%;
 		height: 100%;
 		display: flex;
 		flex-direction: column;
 	}
-	.center-icon-row{
+
+	.center-icon-row {
 		flex: 1;
 		display: flex;
 		flex-direction: row;
@@ -173,18 +186,21 @@
 		align-items: center;
 		overflow: auto;
 		margin: 0 40rpx;
-		.video-list-icon{
+
+		.video-list-icon {
 			flex-shrink: 0;
 			width: 40rpx;
 			height: 40rpx;
 			margin: 21rpx;
 		}
 	}
-	.scroll-view{
+
+	.scroll-view {
 		width: 100%;
 		flex: 1;
 		overflow: auto;
 	}
+
 	.video-icon {
 		position: absolute;
 		left: 0;
