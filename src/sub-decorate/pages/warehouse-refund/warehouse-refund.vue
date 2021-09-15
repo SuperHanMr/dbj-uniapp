@@ -1,6 +1,6 @@
 <template>
 	<view class="refund">
-		<warehouse-item :showBtns="false" :item="data" :isEdit="true" @numChange="onNumChange"></warehouse-item>
+		<warehouse-item  :showSubtitle="false" :showBtns="false" :item="data" :isEdit="true" @numChange="onNumChange"></warehouse-item>
 		<view class="back">
 			<view class="back-res">
 				<view class="back-res-row">
@@ -10,11 +10,11 @@
 					<view style="flex:1">
 					</view>
 					<view class="" @click="selectRes">
-						{{reasonName!=''?reasonName:'请选择原因'}}
+						<text v-if="reasonName" >{{reasonName}}</text>
+						<text v-else style="color: #C7C7C7;">请选择原因</text>
 					</view>
 					<view class="">
 						<!-- //todo down -->
-
 					</view>
 				</view>
 			</view>
