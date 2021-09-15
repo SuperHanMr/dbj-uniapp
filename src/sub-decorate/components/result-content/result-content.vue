@@ -13,7 +13,8 @@
       </view>
       <text class="report-text">那拉氏父女{{checkData.summaryDescription}}</text>
       <view class="img-list">
-        <image v-for="item of checkData.imageUrlList" :key='item' :src="item"></image>
+        <imagePreview :list='checkData.imageUrlList' :row='2'></imagePreview>
+        <!-- <image v-for="item of checkData.imageUrlList" :key='item' :src="item"></image> -->
       </view>
     </view>
     <view class="sticky" v-if="isActive&&!isReport">
@@ -37,6 +38,8 @@
   import uniEcCanvas from '../../components/uni-ec-canvas/uni-ec-canvas.vue'
   import * as echarts from '../../components/uni-ec-canvas/echarts'
   import deliverCard from '../delivery-card/delivery-card.vue'
+  import imagePreview from '../../../components/image-preview/image-preview.vue'
+  
   import {
     getCheckResultDetail,
     confirmCheckResult
@@ -46,6 +49,7 @@
     components: {
       uniEcCanvas,
       deliverCard,
+      imagePreview
     },
     props: {
       isReport: false,

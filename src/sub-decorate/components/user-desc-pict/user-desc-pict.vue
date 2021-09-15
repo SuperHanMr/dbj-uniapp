@@ -4,27 +4,19 @@
     <view class="content-wrap">
       <view class="avtor-wrap flex-row-bet">
         <view class="flex-row-start">
-          <image class="avtor"></image>
+          <image class="avtor" :src="butlerData.avatar"></image>
           <view class="tigs">
-            <view class="username">李易峰</view>
-            <view class="role">{{isWorker ? '工人' : '管家'}}</view>
+            <view class="username">{{butlerData.name}}</view>
+            <view class="role">{{butlerData.nodeName}}</view>
           </view>
         </view>
-        <view class="date">2020-09-09 09:00:00</view>
+        <view class="date">{{butlerData.createTime}}</view>
       </view>
-      <view class="desc">尊敬的业主您好，拆除已全部完工，墙体拆除无漏项，拆除口整齐美观，先查过无垃圾，整洁干净</view>
+      <view class="desc">{{butlerData.content}}</view>
       <view class="picture flex-row">
-        <view class="imgs" v-for="(item, index) in pictList" :key="index" v-if="index < 6">
-          <image :src="item" @click="clickImg(pictList)"></image>
-          <view class="zz" v-if="index === 5" @click="clickImg(pictList)">+{{pictList.length - 6}}</view>
-        </view>
-      </view>
-      <view v-if="isWorker">
-        <view class="worker-title"> 泥工砌墙（轻体墙，24墙）</view>
-        <view class="picture flex-row">
-          <view class="imgs" v-for="(item, index) in pictList" :key="index" v-if="index < 3">
-            <image :src="item" @click="clickImg(pictList)"></image>
-            <view class="zz" v-if="index === 2" @click="clickImg(pictList)">+{{pictList.length - 3}}</view>
+        <view class="imgs" v-for="(item, index) in butlerData.fileUrls" :key="index" v-if="index < 6">
+          <image :src="item" @click="clickImg(butlerData.fileUrls)"></image>
+          <view class="zz" v-if="index === 5" @click="clickImg(butlerData.fileUrls)">+{{butlerData.fileUrls.length - 6}}
           </view>
         </view>
       </view>
@@ -35,22 +27,9 @@
 <script>
   export default {
     props: {
-      pictList: {
-        type: Array,
-        default: () => {
-          return [
-            "http://iph.href.lu/328x216?text=picture&fg=EB7662&bg=FFE2DD",
-            "http://iph.href.lu/328x216?text=picture&fg=EB7662&bg=FFE2DD",
-            "http://iph.href.lu/328x216?text=picture&fg=EB7662&bg=FFE2DD",
-            "http://iph.href.lu/328x216?text=picture&fg=EB7662&bg=FFE2DD",
-            "http://iph.href.lu/328x216?text=picture&fg=EB7662&bg=FFE2DD",
-            "http://iph.href.lu/328x216?text=picture&fg=EB7662&bg=FFE2DD"
-          ]
-        }
-      },
-      isWorker: {
-        type: Boolean,
-        default: false
+      butlerData: {
+        type: Object,
+        default: () => {}
       }
     },
     methods: {
@@ -86,11 +65,13 @@
     bottom: 64rpx;
     justify-content: space-between;
   }
+
   .content-wrap {
     background-color: #fff;
     padding: 24rpx;
     border-radius: 16rpx;
   }
+
   .avtor-wrap {
     // padding-top: 112rpx;
     margin-bottom: 23rpx;

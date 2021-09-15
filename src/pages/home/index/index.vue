@@ -8,9 +8,10 @@
 			</template>
 		</custom-navbar>
 		<scroll-view class="content" scroll-y="true" @scroll="onScroll" @scrolltolower="onLoadMore">
-			<view style="margin-top: 300rpx;" class="" @click="toFriends">
-				去亲友团
+			<view style="margin-top: 300rpx;" class="">
 			</view>
+			<button type="default" open-type="getPhoneNumber" @getphonenumber="decryptPhoneNumber">获取手机号</button>
+
 			<button style="width: 50%;margin-top: 20rpx;" type="default" @click="toNextPage">去封装好的列表页</button>
 			<button style="width: 50%;margin-top: 20rpx;" type="default" @click="toCalebdar">去日历</button>
 			<button style="width: 50%;margin-top: 20rpx;" type="default" @click="toLiveDecorate">去装修现场</button>
@@ -68,6 +69,17 @@
 			};
 		},
 		onLoad() {
+			wx.login({
+				success: (res) => {
+					if (res.code) { //微信登录成功 已拿到code  
+						// ...doSomething
+							console.log('!!!!!!');
+						console.log(res);
+					} else {
+						console.log('登录失败！' + res.errMsg)
+					}
+				}
+			})
 			let defaultHouse = {
 				name: "北京市朝阳区",
 				provinceId: 1,
@@ -87,6 +99,10 @@
 			this.reloadData();
 		},
 		methods: {
+			decryptPhoneNumber(e) {
+				console.log('???????')
+				console.log(e)
+			},
 			toLiveDecorate() {
 				uni.navigateTo({
 					url: "/sub-home/pages/lives-decorate/lives-decorate",
@@ -133,13 +149,6 @@
 				}
 				uni.navigateTo({
 					url: "../../common/webview/webview?url=" + encodeURIComponent(url),
-				});
-			},
-			async toFriends() {
-				let list = await queryEstates();
-				this.roomId = list[0].id;
-				uni.navigateTo({
-					url: "/sub-decorate/pages/friends/friends?id=" + this.roomId,
 				});
 			},
 			changeCity() {

@@ -25,14 +25,14 @@
     </view>
     <swiper :current="tabIndex" style="flex: 1;min-height: 600px;" :style="{height:contentHeight}" :duration="300" @change="ontabchange">
       <swiper-item class="swiper-item" v-for="(tab,index1) in dataList" :key="index1">
-        <service-hunman :isDesign="tab.nodeType===1" @openPopup='openPopup'></service-hunman>
+        <service-hunman :isDesign="tab.nodeType===1" :tab='tab' :designData='designData' @openPopup='openPopup'></service-hunman>
         <amount-house id="d3" v-if="tab.nodeType===3"></amount-house>
         <resultContent ref='result' id="d2" v-if="tab.nodeType===2" @getData='getData' :scrollTop='scrollTop'
           :isReport='true'></resultContent>
-        <serviceDesign id="d1" v-if="tab.nodeType===1"></serviceDesign>
+        <serviceDesign id="d1" v-if="tab.nodeType===1" @changeDesign='changeDesign' :serverId='serverId'></serviceDesign>
         <serviceActuarial id="d4" v-if="tab.nodeType===4"></serviceActuarial>
         <serviceSteward id="d5" v-if="tab.nodeType===5"></serviceSteward>
-        <serviceDismantle id="d6" v-if="tab.nodeType===6"></serviceDismantle>
+        <serviceDismantle id="d6" v-if="tab.nodeType>5"></serviceDismantle>
       </swiper-item>
     </swiper>
     
@@ -60,7 +60,8 @@
     },
     data() {
       return {
-        dataList: [{
+        dataList: [
+          {
             nodeName: '量房',
             nodeType: '3'
           },
@@ -110,6 +111,7 @@
         result:{},
         designList:[],
         serverId:56,
+        designData:{}
       };
     },
     onPageScroll(scrollTop) {
@@ -141,6 +143,7 @@
         let current = e.detail.current
         this.tabIndex = current
         this.tabName = 'd'+this.dataList[current].nodeType
+        this.serverId = this.dataList[current].serverId
         this.changeHeight()
         this.$nextTick(function(){
           this.$refs.result[0].getHeight()
@@ -163,17 +166,22 @@
       getData(e) {
         this.result = e
       },
+      changeDesign(e){
+        this.designData = e
+      },
       changeHeight() {
-        this.$nextTick(function() {
+        setTimeout(()=>{
           let query = uni.createSelectorQuery()
           query.select('#' + this.tabName).boundingClientRect();
           query.exec((res) => {
             console.log(res)
             if (res && res[0]) {
-              this.contentHeight =  res[0].height+122+ 'px';
+              this.contentHeight =  res[0].height+150+ 'px';
             }
           });
-        })
+        },500)
+          
+        
       },
       chooseItem(e){
         this.serverId= e.severId

@@ -9,8 +9,8 @@
           src="../../login/imgs/Lark20210823-152715.png"
           class="avatar"
         />
-        <view class="user-name">
-					<text class="name"> 用户名称</text>
+        <view class="user-name" >
+					<text class="name" @click="toLogin">{{userName}} </text>
          
           <view
             class="edit-info"
@@ -99,6 +99,8 @@ export default {
   components: { uniBadge },
   data() {
     return {
+			isLogin:false,
+			userName:'用户名称',
       list: [
         {
           key: "1",
@@ -168,8 +170,23 @@ export default {
       ],
     };
   },
+	onShow() {
+	if (!uni.getStorageSync("userId")) {
+		this.userName="点击登录";
+		this.isLogin=false;
+	}else{
+		this.isLogin=true
+		this.userName="用户名称";
+	}
+	},
   methods: {
-    
+    toLogin(){
+			if(!this.isLogin){
+				uni.navigateTo({
+					url:'../../login/login'
+				})
+			}
+		},
     handlerToSetUp() {
       console.log("点击了设置");
       uni.navigateTo({

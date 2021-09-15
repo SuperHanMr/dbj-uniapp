@@ -1,8 +1,8 @@
 <template>
   <view class="wrap">
     <view class="text-area-wrap">
-      <textarea @input="onInput" @blur="bindTextAreaBlur" :value="reason" maxlength="500" class="tx" placeholder-style="color: #999999"
-        placeholder="请填写拒绝通过的原因，可以让服务者更快速的解决问题～" />
+      <textarea @input="onInput" @blur="bindTextAreaBlur" :value="reason" maxlength="500" class="tx"
+        placeholder-style="color: #999999" placeholder="请填写拒绝通过的原因，可以让服务者更快速的解决问题～" />
       <view class="maxlength">{{reason.length}}/500</view>
     </view>
     <view class="tips">建议与服务者沟通后再拒绝通过</view>
@@ -11,15 +11,35 @@
 </template>
 
 <script>
+  import {
+    ownerCompletionAudit
+  } from "../../../api/construction.js"
   export default {
+    onLoad(option) {
+      this.id = option.id
+    },
     data() {
       return {
-        reason: ""
+        reason: "",
+        id: null
       }
     },
     methods: {
       bindTextAreaBlur: function(e) {
         console.log(e.detail.value)
+      },
+      confirm() {
+        ownerCompletionAudit({
+          id: Number(this.id),
+          status: 1,
+          ownerDescription: this.reason
+        }).then(data => {
+          console.log(data)
+          uni.showToast({
+            title: "已提交申请",
+            icon: null
+          })
+        })
       },
       onInput(e) {
         this.reason = e.target.value

@@ -6,7 +6,7 @@
       <view class="house-firend">
         <view class="title">
           <view class="house" @click="switchVisible">
-            <text>我的家</text>
+            <text>{{who}}的家</text>
             <image class="ic-triangle" src="http://dbj.dragonn.top/static/mp/dabanjia/images/decorate/ic_triangle.svg">
             </image>
           </view>
@@ -24,11 +24,11 @@
         </view>
 
         <view class="uni-padding-wrap">
-          <view class="insurance-house" @click="consultingService">
+          <view class="insurance-house">
             <view :class="{'payed':aServiceData.insuranceStatus}" class="insurance">
               <!-- <image class="img"></image>
               <view class="text">工地保险</view> -->
-              <image
+              <image @click="consultingService"
                 :src="aServiceData.insuranceStatus ? 'http://dbj.dragonn.top/static/mp/dabanjia/images/decorate/insurance-pay.jpeg': 'http://dbj.dragonn.top/static/mp/dabanjia/images/decorate/insurance-unpay.jpeg'">
               </image>
             </view>
@@ -40,7 +40,8 @@
             <picture-btn v-if="aServiceData.showActuaryFlag" class="p-i-t" text="精算单" @gotoPage="goActuary">
             </picture-btn>
             <picture-btn v-if="aServiceData.showVideoFlag" class="p-i-t" text="工地视频" @gotoPage="goVideo"></picture-btn>
-            <picture-btn v-if="aServiceData.constructionFlag" text="施工" @gotoPage="goConstrction"></picture-btn>
+            <!-- <picture-btn v-if="aServiceData.constructionFlag" text="施工" @gotoPage="goConstrction"></picture-btn> -->
+            <picture-btn text="施工" @gotoPage="goConstrction"></picture-btn>
           </view>
         </view>
       </view>
@@ -51,7 +52,7 @@
           <!-- 每日播报 -->
           <text-scroll></text-scroll>
           <!-- 我的仓库 -->
-          <view class="my-decorate-service-wrap">
+          <view v-if="haveWarehouse" class="my-decorate-service-wrap">
             <image mode="aspectFit" class="top-bg"
               src="http://dbj.dragonn.top/static/mp/dabanjia/images/decorate/service-card-top.svg">
             </image>
@@ -96,7 +97,7 @@
             </view>
           </view>
           <view class="tips-design-actuary">
-            <view class="tips">
+            <view v-if="availGuides.length > 0" class="tips">
               购买相关服务 即刻开启装修
             </view>
             <guide-card v-if="availGuides.includes('design')" cardType="service"
@@ -125,8 +126,9 @@
             <view @click="confirm4">线上交底</view>
             <view @click="dsport">设计报告交付</view>
             <view @click="hcaa">管家竣工验收申请</view>
-            <view @click="housekeeperrefuse">管家竣工拒绝</view>
+            <!-- <view @click="housekeeperrefuse">管家竣工拒绝</view> -->
             <view @click="workerCapplication">工人阶段验收申请</view>
+            <view @click="gjgxf">管家工序费</view>
           </view>
         </scroll-view>
       </view>
@@ -158,10 +160,10 @@
   } from "../../../components/house-switch/house-switch.vue"
   import ServiceItem from "../../../components/service-item/service-item.vue"
   import NoService from "../../../components/no-service/no-service.vue"
-  import {
-    DECTORE_DICT,
-    SERVICE_TYPE
-  } from "../../../utils/dict.js"
+  // import {
+  //   DECTORE_DICT,
+  //   SERVICE_TYPE
+  // } from "../../../utils/dict.js"
   import {
     v4 as uuidv4
   } from 'uuid';
@@ -170,7 +172,8 @@
 
   import MwarehouseBtn from "../../../components/mwarehouse-btn/mwarehouse-btn.vue"
   import TextScroll from "../../../components/text-scroll/text-scroll.vue"
-  import monidata from "./monidata.js"
+  // import monidata from "./monidata.js"
+  let timer = null;
   export default {
     components: {
       HouseSwitch,
@@ -213,7 +216,6 @@
         availableServiceList: [],
         defaultServices: [],
         availGuides: [],
-        DECTORE_DICT,
 
         deviceId: '',
         accessKeyId: 'LTAI5tKwuhb948v9oakqnbTf',
@@ -223,6 +225,9 @@
 
         aServiceData: {},
         isShowMyDecorateAll: false,
+        haveWarehouse: false,
+
+        who: "我"
       };
     },
     mounted() {
@@ -250,6 +255,10 @@
         return `dabanjia_pull_special_msg_${this.currentProject.projectId}`;
       },
     },
+    destory() {
+      clearTimeout(timer)
+      timer = null
+    },
     methods: {
       consultingService() {
         if (this.aServiceData.insuranceStatus === 1) {
@@ -270,49 +279,54 @@
       },
       scroll(e) {},
       getAvailableService() {
-        // debugger
+        console.log("this.currentProject", this.currentProject)
         availableService({
-          projectId: this.currentProject.projectId || null
+          projectId: this.currentProject.projectId
         }).then(data => {
           const {
             purchasedServiceList,
             availableServiceList,
-            defaultServices
+            defaultServices,
+            constructionFlag,
+            insuranceStatus,
+            showActuaryFlag,
+            showDesignFlag,
+            showVideoFlag,
           } = data
-          this.purchasedServiceList = purchasedServiceList
-          this.availableServiceList = availableServiceList
-          this.defaultServices = defaultServices
-          this.checkDesignAnd()
+          this.purchasedServiceList = purchasedServiceList || []
+          this.availableServiceList = availableServiceList || []
+          this.defaultServices = defaultServices || []
+          this.aServiceData = {
+            constructionFlag,
+            insuranceStatus,
+            showActuaryFlag,
+            showDesignFlag,
+            showVideoFlag
+          }
+          timer = setTimeout(() => {
+            this.addServiceCard(this.defaultServices, "serviceType")
+            this.addServiceCard(this.availableServiceList, "nodeType")
+          }, 0)
           this.isShowMyDecorateAll = this.purchasedServiceList.filter(t => (t.status == 0 && t.grepOrderStatus ==
             3) || t.status >= 2)
+          this.haveWarehouse = this.purchasedServiceList.filter(t => t.nodeType >= 5).length > 0
         }).catch(err => {
-          this.aServiceData = monidata.data
-          const {
-            purchasedServiceList,
-            availableServiceList,
-            defaultServices
-          } = this.aServiceData
-          this.purchasedServiceList = purchasedServiceList
-          this.availableServiceList = availableServiceList
-          this.defaultServices = defaultServices
-          this.isShowMyDecorateAll = this.purchasedServiceList.filter(t => (t.status == 0 && t.grepOrderStatus ==
-            3) || t.status >= 2)
-          this.checkDesignAnd()
+          console.log(err)
         })
       },
-      checkDesignAnd() {
-        this.defaultServices.forEach(t => {
-          if (t.serviceType === 1) {
+      addServiceCard(arr, key) {
+        arr.forEach(t => {
+          if (t[key] === 1) {
             this.availGuides.push("design")
           }
-          if (t.serviceType === 4) {
+          if (t[key] === 4) {
             this.availGuides.push("actuary")
           }
         })
       },
       checkHouseRemind() {
         uni.navigateTo({
-          url: "/sub-decorate/pages/check-house-remind/check-house-remind"
+          url: "/sub-decorate/pages/check-house-remind/check-house-remind?serverCardId=36"
         })
       },
       confirm1() {
@@ -327,12 +341,12 @@
       },
       confirm4() {
         uni.navigateTo({
-          url: "/sub-decorate/pages/design-online-disclosure/design-online-disclosure"
+          url: `/sub-decorate/pages/design-online-disclosure/design-online-disclosure?serverId=34`
         })
       },
       hcaa() {
         uni.navigateTo({
-          url: "/sub-decorate/pages/housekeeper-c-a-application/housekeeper-c-a-application"
+          url: `/sub-decorate/pages/housekeeper-c-a-application/housekeeper-c-a-application?projectId=${this.currentProject.projectId}`
         })
       },
       housekeeperrefuse() {
@@ -363,6 +377,7 @@
       },
       checkHouse(item) {
         this.currentProject = item
+        this.initData(item)
         this.$refs.sw.close()
       },
       getMyHouseList() {
@@ -381,15 +396,20 @@
             this.projectList = data
             const arr = data.filter(t => t.defaultEstate)
             this.currentProject = arr[0]
-            this.currentEstate = this.estateList.filter(t => t.id === arr[0].estateId)[0]
-            if (this.currentProject.estateId) {
-              this.getAvailableService()
-              this.getFriendsList()
-            }
+            this.initData(arr[0])
           } else {
             // TODO 有房屋无服务处理逻辑
           }
         })
+      },
+      // 根据查询出来的项目信息处理
+      initData(obj) {
+        this.who = this.currentProject.relegationType == 2 ? "亲友" : "我"
+        this.currentEstate = this.estateList.filter(t => t.id === obj.estateId)[0]
+        if (this.currentProject.estateId) {
+          this.getAvailableService()
+          this.getFriendsList()
+        }
       },
       bindChange(e) {
         console.log(e);
@@ -420,6 +440,11 @@
       gonohousedecatore(type) {
         uni.navigateTo({
           url: "/sub-decorate/pages/no-house-decorate/no-house-decorate?type=" + type
+        })
+      },
+      gjgxf() {
+        uni.navigateTo({
+          url: `/sub-decorate/pages/gj-process-cost/gj-process-cost?projectId=${this.currentProject.projectId}&estateId=${this.currentProject.estateId}&roleType=10`
         })
       },
       gonohouse() {
@@ -480,11 +505,6 @@
             this.getProjectList();
           }
         });
-      },
-      buyServiceNow(type) {
-        uni.navigateTo({
-          url: "/sub-decorate/pages/design-service-list/design-service-list?categoryTypeId=" + SERVICE_TYPE[type]
-        })
       },
       getToken() {
         let data = {
