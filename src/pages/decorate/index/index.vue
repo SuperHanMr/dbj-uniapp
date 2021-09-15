@@ -326,7 +326,7 @@
       },
       checkHouseRemind() {
         uni.navigateTo({
-          url: "/sub-decorate/pages/check-house-remind/check-house-remind"
+          url: "/sub-decorate/pages/check-house-remind/check-house-remind?serverCardId=36"
         })
       },
       confirm1() {

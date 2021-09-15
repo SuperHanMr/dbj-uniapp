@@ -157,14 +157,6 @@
         return num
       },
       countPrice() {
-        // let qian = 0.00
-        // if (this.design.checked) {
-        //   qian += parseFloat(this.design.price) * this.currentHouse.insideArea
-        // }
-        // if (this.actuary.checked) {
-        //   qian += parseFloat(this.actuary.price) * this.currentHouse.insideArea
-        // }
-        // return qian + "0.00"
         let dprice = 0
         let aprice = 0
         let chprice = 0
@@ -210,9 +202,10 @@
       this.getMyHouseList();
       const {
         noHouseActuaryId,
-        noHouseDesignId
+        noHouseDesignId,
+        noHouseCheckId
       } = getApp().globalData;
-      // if (noHouseActuaryId || noHouseDesignId) {
+      // if (noHouseActuaryId || noHouseDesignId || noHouseCheckId) {
       // this.getProductsSkusPage();
       // }
     },
@@ -248,7 +241,7 @@
             noHouseCheckId
           } = getApp().globalData
           if (!noHouseDesignId) {
-            let designData = data.filter(t => t.serviceType === 1 && t.categoryTypeId === 6)
+            let designData = data.filter(t => t.serviceType === 1) //&& t.categoryTypeId === 6)
             if (designData && designData.length > 0) {
               this.design = {
                 ...designData[0],
@@ -294,7 +287,8 @@
           this.dataList = data.list
           const {
             noHouseActuaryId,
-            noHouseDesignId
+            noHouseDesignId,
+            noHouseCheckId
           } = getApp().globalData
           // if( noHouseActuaryId ) {
 

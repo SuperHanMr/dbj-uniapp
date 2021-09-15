@@ -497,13 +497,6 @@
           }
         },
         {
-          "path": "pages/check/check",
-          "style": {
-            "navigationBarTitleText": "验房服务",
-            "enablePullDownRefresh": true
-          }
-        },
-        {
           "path": "pages/design-picture/design-picture",
           "style": {
             "navigationBarTitleText": ""
