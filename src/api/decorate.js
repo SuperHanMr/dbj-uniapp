@@ -217,3 +217,7 @@ export function requireList(params) {
 export function requireListDetail(params) {
 	return request.get("/order-center/app/goods/require/detail", params)
 }
+// 查看线上交底
+export function serverInfo(serveId) {
+	return request.get(`/pm/app/serve/design/serverInfo/${serveId}`)
+}

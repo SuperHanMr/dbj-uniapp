@@ -6,7 +6,7 @@
       <view class="house-firend">
         <view class="title">
           <view class="house" @click="switchVisible">
-            <text>我的家</text>
+            <text>{{who}}的家</text>
             <image class="ic-triangle" src="http://dbj.dragonn.top/static/mp/dabanjia/images/decorate/ic_triangle.svg">
             </image>
           </view>
@@ -225,7 +225,9 @@
 
         aServiceData: {},
         isShowMyDecorateAll: false,
-        haveWarehouse: false
+        haveWarehouse: false,
+
+        who: "我"
       };
     },
     mounted() {
@@ -284,11 +286,23 @@
           const {
             purchasedServiceList,
             availableServiceList,
-            defaultServices
+            defaultServices,
+            constructionFlag,
+            insuranceStatus,
+            showActuaryFlag,
+            showDesignFlag,
+            showVideoFlag,
           } = data
           this.purchasedServiceList = purchasedServiceList || []
           this.availableServiceList = availableServiceList || []
           this.defaultServices = defaultServices || []
+          this.aServiceData = {
+            constructionFlag,
+            insuranceStatus,
+            showActuaryFlag,
+            showDesignFlag,
+            showVideoFlag
+          }
           timer = setTimeout(() => {
             this.addServiceCard(this.defaultServices, "serviceType")
             this.addServiceCard(this.availableServiceList, "nodeType")
@@ -297,18 +311,7 @@
             3) || t.status >= 2)
           this.haveWarehouse = this.purchasedServiceList.filter(t => t.nodeType >= 5).length > 0
         }).catch(err => {
-          // this.aServiceData = monidata.data
-          // const {
-          //   purchasedServiceList,
-          //   availableServiceList,
-          //   defaultServices
-          // } = this.aServiceData
-          // this.purchasedServiceList = purchasedServiceList
-          // this.availableServiceList = availableServiceList
-          // this.defaultServices = defaultServices
-          // this.isShowMyDecorateAll = this.purchasedServiceList.filter(t => (t.status == 0 && t.grepOrderStatus ==
-          //   3) || t.status >= 2)
-          // this.checkDesignAnd()
+          console.log(err)
         })
       },
       addServiceCard(arr, key) {
@@ -338,7 +341,7 @@
       },
       confirm4() {
         uni.navigateTo({
-          url: "/sub-decorate/pages/design-online-disclosure/design-online-disclosure"
+          url: `/sub-decorate/pages/design-online-disclosure/design-online-disclosure?serverId=34`
         })
       },
       hcaa() {
@@ -401,6 +404,7 @@
       },
       // 根据查询出来的项目信息处理
       initData(obj) {
+        this.who = this.currentProject.relegationType == 2 ? "亲友" : "我"
         this.currentEstate = this.estateList.filter(t => t.id === obj.estateId)[0]
         if (this.currentProject.estateId) {
           this.getAvailableService()
