@@ -1,21 +1,17 @@
 <template>
   <view class="service-steward">
     <view class="steward-list">
-      <view class="list-item">
+      <view class="list-item" v-for="item of list" :key='item.createTime'>
         <view class="item-top">
-          <view class="title">拆除阶段完工申请</view>
-          <view class="time">2021-08-19 20:20:00</view>
+          <view class="title">{{item.title}}</view>
+          <view class="time">{{item.createTime}}</view>
         </view>
         <view class="item-content">
-          <text>这个工人做的很好记得给他发奖金,谁能尽快给你发个都开始发那拉氏奶粉离开纽芬兰省你发来的思念疯狂了呢</text>
-          <view class="img-list">
-            <image></image>
-            <image></image>
-            <image></image>
-            <image></image>
-            <image></image>
-            <image></image>
-          </view>
+          <text>{{item.content}}</text>
+          <!-- <view class="img-list">
+            <image v-for="(el,index) of item.imageList" @click="previewImage(item.imageList,index)" :key='el' :src="el"></image>
+          </view> -->
+          <imagePreview :list='item.imageList' :row='1'></imagePreview>
         </view>
       </view>
     </view>
@@ -23,6 +19,39 @@
 </template>
 
 <script>
+  import {getStewardService} from '../../../api/decorate.js'
+  import imagePreview from '../image-preview/image-preview.vue'
+  export default{
+    components:{
+      imagePreview
+    },
+    data(){
+      return{
+        list:[],
+      }
+    },
+    mounted(){
+      this.getStewardService()
+    },
+    methods:{
+      getStewardService(){
+        getStewardService(40).then(res=>{
+          console.log(res)
+          this.list = res.progressList
+        })
+      },
+      // previewImage(list,index){
+      //   let urls = []
+      //   list.forEach(item=>{
+      //     urls.push(item.url||item)
+      //   })
+      //   uni.previewImage({
+      //   	urls: urls,
+      //   	current: index
+      //   });
+      // },
+    }
+  }
 </script>
 
 <style lang="scss" scoped>
@@ -60,7 +89,7 @@
         flex-wrap: wrap;
         max-height: 430rpx;
         margin-top: 24rpx;
-        
+        overflow: hidden;
         image{
           width: 212rpx;
           height: 212rpx;
