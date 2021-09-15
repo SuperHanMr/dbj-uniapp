@@ -45,9 +45,14 @@ export function getDesignServeMenu(params) {
 	return request.get("/pm/app/serve/design/designServeMenu/" + params)
 }
 
-//获取我的装修服务设计类型
+//获取我的装修服务进度
 export function getMyService(params) {
 	return request.get("/pm/app/project/myService?projectId=" + params.projectId + "&processId=" + params.processId)
+}
+
+//获取我的装修服务管家数据
+export function getStewardService(params) {
+	return request.get("/pm/app/butler/getByProjectId/" + params)
 }
 
 // //获取mqtt信息

@@ -22,19 +22,28 @@
 <script>
   import {getMyDesignServe} from '../../../api/decorate.js'
   export default{
+    props:{
+      serverId:0,
+    },
     data(){
       return{
-        list:[]
+        list:[],
       }
     },
     mounted(){
       this.getMyDesignServe()
     },
+    watch:{
+      serverId(){
+        this.getMyDesignServe()
+      }
+    },
     methods:{
       getMyDesignServe(){
-        getMyDesignServe(34).then(res=>{
+        getMyDesignServe(this.serverId).then(res=>{
           console.log(res)
           this.list = res.fileListVO
+          this.$emit('changeDesign',res)
         })
       }
     }

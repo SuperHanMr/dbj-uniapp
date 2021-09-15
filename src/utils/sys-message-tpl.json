@@ -1,0 +1,14 @@
+{
+  "sys_snatch_order_success":{
+    "url":"/sub-decorate/pages/grab/grab",
+    "name":"抢单"
+  },
+  "inspect_estate_service_time":{
+    "url":"/sub-decorate/pages/check-house-remind/check-house-remind",
+    "name":"验房服务提醒"
+  },
+  "inspect_estate_report_reminder":{
+    "url":"pages/checkResult/checkResult",
+    "name":"验房交付"
+  }
+}
