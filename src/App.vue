@@ -1,16 +1,44 @@
 <script>
 	import {oauthGomeInfo} from "api/login.js"
+  import { v4 as uuidv4 } from 'uuid';
 	export default {
 		globalData: {
 			userInfo: {},
 			token: "",
-			city: "",
+			currentHouse: {},
 			houses: [],
 			noHouseActuaryId: null,
 			noHouseDesignId: null,
-			noHouseCheckId: null
+			noHouseCheckId: null,
+      deviceId:""
 		},
+    data(){
+      return{
+        client:{}
+      }
+    },
+    // computed: {
+    //       username() {
+    //         return `Token|${this.accessKeyId}|${this.instanceId}`
+    //       },
+    //       //token和设备id关联，需要后端接口提供
+    //       password() {
+    //         return `R|${this.token}|W|${this.token}`
+    //       },
+    //       clientId() {
+    //         return `${this.groupId}@@@${this.deviceId}`
+    //       }
+    //     },
+
 		onLaunch: function() {
+      var mqtt = require('mqtt/dist/mqtt.js')
+      const url = 'wxs://post-cn-tl32ajx3u0l.mqtt.aliyuncs.com';
+      // const client = mqtt.connect(url,{
+      //   clientId: this.clientId,
+      //   username:this.username,
+      //   password:this.password,
+      // })
+      // this.client = client
 			if (!uni.getStorageSync("userId")) {
 				setTimeout(() => {
 					uni.redirectTo({
@@ -18,7 +46,6 @@
 					});
 				}, 0);
 			} else {
-
 				let token = uni.getStorageSync("scn");
 				this.globalData.token = token;
 				oauthGomeInfo({
@@ -29,11 +56,16 @@
 			}
 		},
 		onShow: function() {
+      
 			console.log("App Show");
 		},
 		onHide: function() {
+      
 			console.log("App Hide");
 		},
+    methods:{
+      
+    }
 	};
 </script>
 

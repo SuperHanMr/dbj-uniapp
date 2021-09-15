@@ -1,6 +1,6 @@
 <template>
   <view class="decorate-index">
-    <image class="bg" mode="aspectFit" src="http://dbj.dragonn.top/static/mp/dabanjia/images/decorate/bg@2x.png">
+    <image class="bg-index" mode="aspectFit" src="http://dbj.dragonn.top/static/mp/dabanjia/images/decorate/bg@2x.png">
     </image>
     <view class="content flex-column">
       <view class="house-firend">
@@ -24,8 +24,20 @@
         </view>
 
         <view class="uni-padding-wrap">
-          <view class="uni-title">{{ currentHouse.housingEstate }}{{currentHouse.address}}</view>
-          <picture-btn text="设计图" @gotoPage="goDesignPicture"></picture-btn>
+          <view class="insurance-house">
+            <view class="insurance">
+              <image class="img"></image>
+              <view class="text">工地保险</view>
+            </view>
+
+            <view class="uni-title">{{ currentHouse.housingEstate }}{{currentHouse.address}}</view>
+          </view>
+          <view class="picture-btn-wrap">
+            <picture-btn class="p-i-t" text="设计图" @gotoPage="goDesignPicture"></picture-btn>
+            <picture-btn class="p-i-t" text="精算单" @gotoPage="goDesignPicture"></picture-btn>
+            <picture-btn class="p-i-t" text="工地视频" @gotoPage="goDesignPicture"></picture-btn>
+            <picture-btn text="施工" @gotoPage="goDesignPicture"></picture-btn>
+          </view>
         </view>
 
       </view>
@@ -39,19 +51,23 @@
               src="http://dbj.dragonn.top/static/mp/dabanjia/images/decorate/service-card-top.svg">
             </image>
             <view class="my-decorate-service">
-              <view class="service-title flex-space-between-row" @click="goToMyDecorate">
+              <view class="service-title flex-space-between-row">
                 <text class="t">我的仓库</text>
-                <view class="r flex-start-row">
+                <view class="r flex-start-row" @click="goToMyWarehouse">
                   <text>查看全部</text>
                   <image src="http://dbj.dragonn.top/static/mp/dabanjia/images/decorate/ic_more.svg">
                   </image>
                 </view>
               </view>
               <view class="my-warehouse">
-                <mwarehouse-btn :iconStyle="{'width': '52rpx','height': '62rpx'}" name="待发货"></mwarehouse-btn>
-                <mwarehouse-btn :iconStyle="{'width': '58rpx','height': '58rpx'}" name="待收货"></mwarehouse-btn>
-                <mwarehouse-btn :iconStyle="{'width': '50rpx','height': '60rpx'}" name="已收货"></mwarehouse-btn>
-                <mwarehouse-btn :iconStyle="{'width': '54rpx','height': '44rpx'}" name="退款"></mwarehouse-btn>
+                <mwarehouse-btn :iconStyle="{'width': '52rpx','height': '62rpx'}" @gotoPage="gotoPage('待发货')"
+                  name="待发货"></mwarehouse-btn>
+                <mwarehouse-btn :iconStyle="{'width': '58rpx','height': '58rpx'}" @gotoPage="gotoPage('待收货')"
+                  name="待收货"></mwarehouse-btn>
+                <mwarehouse-btn :iconStyle="{'width': '50rpx','height': '60rpx'}" @gotoPage="gotoPage('已收货')"
+                  name="已收货"></mwarehouse-btn>
+                <mwarehouse-btn :iconStyle="{'width': '54rpx','height': '44rpx'}" @gotoPage="gotoPage('退款')" name="退款">
+                </mwarehouse-btn>
               </view>
             </view>
           </view>
@@ -61,9 +77,9 @@
               src="http://dbj.dragonn.top/static/mp/dabanjia/images/decorate/service-card-top.svg">
             </image>
             <view class="my-decorate-service">
-              <view class="service-title flex-space-between-row" @click="goToMyDecorate">
+              <view class="service-title flex-space-between-row">
                 <text class="t">我的装修服务</text>
-                <view class="r flex-start-row">
+                <view class="r flex-start-row" @click="goToMyDecorate">
                   <text>查看全部</text>
                   <image src="http://dbj.dragonn.top/static/mp/dabanjia/images/decorate/ic_more.svg">
                   </image>
@@ -78,32 +94,40 @@
               </service-item>
               <service-item :status="DECTORE_DICT.uncheck" itemName="精算服务" statusName="待确认精算师">
               </service-item>
+              <service-item :status="DECTORE_DICT.inservice" itemName="管家服务" statusName="服务中">
+              </service-item>
             </view>
           </view>
           <view class="tips-design-actuary">
             <view class="tips">
               购买相关服务 即刻开启装修
             </view>
-            <guide-card cardType="service" imageUrl="http://iph.href.lu/702x160?text=设计服务&fg=EB7662&bg=FFE2DD"
+            <guide-card cardType="service" imageUrl="http://iph.href.lu/702x160?text=702x160&fg=EB7662&bg=FFE2DD"
               @buyNow="buyServiceNow">
             </guide-card>
-            <guide-card cardType="actuary" imageUrl="http://iph.href.lu/702x160?text=精算服务&fg=4173c8&bg=d0e0fa"
+            <guide-card cardType="actuary" imageUrl="http://iph.href.lu/702x160?text=702x160&fg=4173c8&bg=d0e0fa"
               @buyNow="buyServiceNow">
             </guide-card>
           </view>
           <no-service words="暂无进行中服务"></no-service>
           <!-- 切换房屋弹窗 -->
           <uni-popup ref="sw">
-            <house-switch class="margintop" :datalist="myHouseList" :current="current" @goAddHouse="addHouse"
-              @checkHouse="checkHouse"></house-switch>
+            <house-switch class="margintop" :datalist="projectList" :current="currentHouse.estateId"
+              @goAddHouse="addHouse" @checkHouse="checkHouse"></house-switch>
           </uni-popup>
-          <decorate-notice @touchmove.stop.prevent="()=>false" v-if="noticeActive" @closeNotice='closeNotice'
+          <decorate-notice @touchmove.stop.prevent="()=>false" v-if="noticeActive" :current='current' @closeNotice='closeNotice'
             class="decorate-notice"></decorate-notice>
           <!-- <view class="link">
             <button @click="gonohouse">无房屋无服入口</button>
             <button @click="gonohousedecatore">无房屋无服务装修</button>
             <button @click="gonohousecheck">无房屋无服务验房</button>
             <button @click="checkHouseRemind">验房提醒</button>
+            <button @click="confirm1">平面图交付</button>
+            <button @click="confirm2">三维设计图交付</button>
+            <button @click="confirm3">施工图交付</button>
+            <button @click="confirm4">线上交底</button>
+            <button @click="hcaa">管家竣工验收申请</button>
+            <button @click="housekeeperrefuse">管家竣工拒绝</button>
           </view> -->
         </scroll-view>
       </view>
@@ -124,6 +148,9 @@
     queryEstates,
     friendListByEstateId
   } from "../../../api/decorate.js";
+  import {
+    getEstateProjectInfoList
+  } from "../../../api/project.js";
   import {
     HouseSwitch
   } from "../../../components/house-switch/house-switch.vue"
@@ -157,6 +184,7 @@
 
     },
     onShow() {
+      uni.showTabBar() 
       if (this.houses && this.houses.length < 1) {
         this.getHouses();
       }
@@ -171,34 +199,19 @@
         style: "",
         noticeActive: false,
         houses: getApp().globalData.houses,
-        accessKeyId: 'LTAI5tKwuhb948v9oakqnbTf',
-        instanceId: 'post-cn-tl32ajx3u0l',
-        groupId: 'GID_dabanjia',
-        deviceId: `mqttjs_${Math.random().toString(16).substr(2, 8)}`,
-        token: '',
-        client: {},
         currentHouse: {},
         myHouseList: [],
+        projectList: [],
         current: null,
+        currentEstateId: null,
         friendList: [],
         DECTORE_DICT,
       };
     },
     mounted() {
       uni.showTabBar()
-      this.getMyHouseList();
-    },
-    computed: {
-      username() {
-        return `Token|${this.accessKeyId}|${this.instanceId}`
-      },
-      //token和设备id关联，需要后端接口提供
-      password() {
-        return `R|LzMT+XLFl5s/YWJ/MlDz4t/Lq5HC1iGU1P28HAMaxYzmBSHQsWXgdISJ1ZJ+2cxaamjCkkdmS/XOGd160KYNICpRDnjsfBujbJGYgJWUr5piesdvDY0i8S48f1y+kDSyD1qZq3RLscnvooOIjF1CZUnSLi/oIC4juK1MZ8qVI7uIdBoQzt4TbiQgoJWL8b3AQUS1QPxDA2oGf+JBKuN0DyYW6d7mIYhAqXTpVbQw5nNCvKP80Xo0WQLnbM+hoyCSPOmGbPwAsaS1bd9VJjqDoJlCt6GFmJgm2JFY7PJwf/7OOSmUYIYFs5o/PuPpoTMF+hcVXMs+0yDukIMTOzG9m1KmYYo48q4Eb41jz5zvCIjTrIiblxfX1Q==|W|LzMT+XLFl5s/YWJ/MlDz4t/Lq5HC1iGU1P28HAMaxYzmBSHQsWXgdISJ1ZJ+2cxaamjCkkdmS/XOGd160KYNICpRDnjsfBujbJGYgJWUr5piesdvDY0i8S48f1y+kDSyD1qZq3RLscnvooOIjF1CZUnSLi/oIC4juK1MZ8qVI7uIdBoQzt4TbiQgoJWL8b3AQUS1QPxDA2oGf+JBKuN0DyYW6d7mIYhAqXTpVbQw5nNCvKP80Xo0WQLnbM+hoyCSPOmGbPwAsaS1bd9VJjqDoJlCt6GFmJgm2JFY7PJwf/7OOSmUYIYFs5o/PuPpoTMF+hcVXMs+0yDukIMTOzG9m1KmYYo48q4Eb41jz5zvCIjTrIiblxfX1Q==`
-      },
-      clientId() {
-        return `${this.groupId}@@@1234`
-      }
+      // this.getMyHouseList();
+      this.getEstateProjectInfoList();
     },
     methods: {
       scroll: function(e) {
@@ -216,15 +229,45 @@
           url: "/sub-decorate/pages/check-house-remind/check-house-remind"
         })
       },
+      confirm1() {
+        uni.navigateTo({
+          url: "/sub-decorate/pages/plan-check/plan-check"
+        })
+      },
+      confirm2() {
+        uni.navigateTo({
+          url: "/sub-decorate/pages/graphic-model/graphic-model"
+        })
+      },
+      confirm3() {
+        uni.navigateTo({
+          url: "/sub-decorate/pages/construction-plans/construction-plans"
+        })
+      },
+      confirm4() {
+        uni.navigateTo({
+          url: "/sub-decorate/pages/design-online-disclosure/design-online-disclosure"
+        })
+      },
+      hcaa() {
+        uni.navigateTo({
+          url: "/sub-decorate/pages/housekeeper-c-a-application/housekeeper-c-a-application"
+        })
+      },
+      housekeeperrefuse() {
+        uni.navigateTo({
+          url: "/sub-decorate/pages/housekeeper-refuse/housekeeper-refuse"
+        })
+      },
       async getFriendsList() {
         let list = await friendListByEstateId({
-          estateId: this.currentHouse.id
+          estateId: this.currentHouse.estateId
         });
         this.friendList = list.length > 2 ? list.slice(0, 2) : list
       },
       toFriends() {
         uni.navigateTo({
-          url: "/sub-decorate/pages/friends/friends?id=" + this.currentHouse.id,
+          url: "/sub-decorate/pages/friends/friends?id=" + this.currentHouse.estateId,
         });
       },
       addHouse() {
@@ -233,7 +276,6 @@
         })
       },
       checkHouse(item) {
-        this.current = item.id
         this.currentHouse = item
         this.$refs.sw.close()
       },
@@ -241,29 +283,17 @@
         queryEstates({
           isNeedRelative: true
         }).then(data => {
-          let i = 1;
-          let names = ["设计阶段", "未开工", "已竣工"]
-          for (let item of data) {
-            item.statusName = names[i - 1]
-            item.status = i++
-          }
-          data[1].ext = "第二次装修"
-          data[2].friend = true
-          data[2].ext = "首次装修"
-          this.myHouseList = data
+          console.log(data)
+        })
+      },
+      getEstateProjectInfoList() {
+        getEstateProjectInfoList({
+          isNeedRelative: true
+        }).then(data => {
+          this.projectList = data
           const arr = data.filter(t => t.defaultEstate)
-          // let temp = null;
-          // if(arr.length > 0) {
-          // 	temp = arr[0]
-          // } else {
-          // 	data[0].defaultEstate = true
-          // 	temp = data[0]
-          // }
-          // this.currentHouse = temp
-          // this.current = temp.id
           this.currentHouse = arr[0]
-          this.current = arr[0].id
-          if (arr[0].id) {
+          if (this.currentHouse.estateId) {
             this.getFriendsList()
           }
         })
@@ -287,11 +317,6 @@
       gonohousecheck() {
         uni.navigateTo({
           url: "/sub-decorate/pages/no-house-checkhouse/no-house-checkhouse"
-        })
-      },
-      gonohavehouse() {
-        uni.navigateTo({
-          url: "/sub-decorate/pages/have-house-no-service/have-house-no-service"
         })
       },
       gonohouse() {
@@ -321,6 +346,22 @@
           url: "/sub-decorate/pages/my-decorate/my-decorate",
         });
       },
+      goToMyWarehouse() {
+        uni.navigateTo({
+          url: "/sub-decorate/pages/warehouse-list/warehouse-list",
+        });
+      },
+      gotoPage(value) {
+        if (value === '退款') {
+          uni.navigateTo({
+            url: "/sub-decorate/pages/warehouse-refund/warehouse-refund"
+          })
+        } else {
+          uni.navigateTo({
+            url: "/sub-decorate/pages/warehouse-list/warehouse-list"
+          })
+        }
+      },
       getHouses() {
         queryEstates({
           isNeedRelative: true,
@@ -332,7 +373,7 @@
           //    } else {
           //      getApp().globalData.houses = data;
           // uni.navigateTo({
-          //   url: "/pages/decorate/have-house-no-service/have-house-no-service",
+          //   url: "",
           // });
           //    }
           getApp().globalData.houses = data;
@@ -352,9 +393,16 @@
 <style lang="scss" scoped>
   .decorate-index {
     position: relative;
+    padding-top: 176rpx;
+    height: 100%;
+    overflow: hidden;
+    box-sizing: border-box;
 
-    .bg {
+    .bg-index {
+      top: 0;
       width: 100%;
+      height: 480rpx;
+      position: fixed;
     }
   }
 
@@ -362,7 +410,8 @@
     width: 100%;
     height: 100%;
     position: relative;
-    margin-top: -304rpx;
+    // margin-top: 176rpx;
+    z-index: 9;
     height: 100%;
   }
 
@@ -497,6 +546,44 @@
       margin-left: 40rpx;
       height: 182rpx;
 
+      .insurance-house {
+        display: flex;
+        justify-content: flex-start;
+        align-items: center;
+        flex-direction: row;
+        margin-bottom: 40rpx;
+      }
+
+      .insurance {
+        padding: 0 8rpx;
+        height: 36rpx;
+        background: linear-gradient(135deg, #36d9cd, #28c6c6);
+        border-radius: 6rpx;
+        margin-right: 16rpx;
+        display: flex;
+        justify-content: flex-start;
+        align-items: center;
+        flex-direction: row;
+
+        image {
+          width: 18rpx;
+          height: 22rpx;
+          margin-right: 6rpx;
+          border: 2rpx solid #fff6;
+          border-radius: 25rpx;
+        }
+
+        .text {
+          height: 28rpx;
+          font-size: 20rpx;
+          font-family: PingFangSC, PingFangSC-Medium;
+          font-weight: 500;
+          text-align: left;
+          color: #ffffff;
+          line-height: 28rpx;
+        }
+      }
+
       .uni-title {
         height: 34rpx;
         font-size: 24rpx;
@@ -505,7 +592,6 @@
         text-align: left;
         color: #999999;
         line-height: 34rpx;
-        margin-bottom: 40rpx;
       }
     }
   }
@@ -633,6 +719,17 @@
       letter-spacing: 2rpx;
       padding-top: 34rpx;
       margin-bottom: 24rpx;
+    }
+  }
+
+  .picture-btn-wrap {
+    display: flex;
+    justify-content: flex-start;
+    flex-direction: row;
+    justify-items: center;
+
+    .p-i-t {
+      margin-right: 24rpx;
     }
   }
 </style>

@@ -1,20 +1,20 @@
 <template>
   <view class="good-toast">
-   <uni-popup ref="noBuyToast" type="bottom" :mask-click='false'>
+   <uni-popup ref="noBuyToast" type="bottom">
         <view class="toast-content">
           <view class="good-tip">
             <view>
               <text class="tip-word">部分商品在当前地址下暂时不支持购买，点击确认后会将该商品移回至购物车，其他商品可继续进行结算</text>
             </view>
           </view>
-          <address-picker></address-picker>
+          <address-picker form="orderToast" :houseId="houseId"></address-picker>
           <scroll-view scroll-y="true" class="shop-scroll">
             <view class="content">
-              <view class="shop-item" v-for="(shopItem, index) in shopList" :key='index'>
-                <view class="shop-name">李哥工作室</view>
-                <view class="goodsItem" @click="toDetails(goodsItem.id)" v-for="(goodsItem, index) in goodsList" :key="index">
-                  <!-- <image :src="goodsItem.imageUrl" class="goodsItemImg"></image> -->
-                  <image src="https://ali-image-test.dabanjia.com/image/20210816/11/1629087052820_2600%241626858792066_0436s4.png" class="goodsItemImg"></image>
+              <view class="shop-item" v-for="(shopItem, index) in noStoreInfos.storeInfos" :key='index'>
+                <view class="shop-name">{{shopItem.storeName}}</view>
+                <view class="goodsItem" @click="toDetails(goodsItem.id)" v-for="(goodsItem, index) in shopItem.skuInfos" :key="index">
+                  <image :src="goodsItem.imageUrl" class="goodsItemImg"></image>
+                  <!-- <image src="https://ali-image-test.dabanjia.com/image/20210816/11/1629087052820_2600%241626858792066_0436s4.png" class="goodsItemImg"></image> -->
                   <view class="goodsInfo">
                     <view class="goodsDesc">
                       <text class="goodsType">{{goodsItem.productType=== 1?"服务":"物品"}}</text>
@@ -23,13 +23,12 @@
                     <view class='tag'>tag type</view>
                     <!-- <view class="totalNum">共1件</view> -->
                     <view class="goodsSpec">
-                          <view class="goods-money">
-                            ￥
-                            <text class="integer-price">{{goodsItem.convertedPrice?goodsItem.convertedPrice.split(".")[0]: 0}}</text>
-                            <text>.{{goodsItem.convertedPrice?goodsItem.convertedPrice.split(".")[1]: 0}}</text>
-                            <!-- <text>/{{goodsItem.unitName}}</text> -->
-                            <text>/把</text>
-                          </view>
+                       <view class="goods-money" v-if='goodsItem.price'>
+                         ￥
+                         <text class="integer-price">{{String.prototype.split.call(goodsItem["price"], ".")[0]}}</text>
+                         <text>.{{String.prototype.split.call(goodsItem["price"], ".")[1]}}</text>
+                         <text>/{{goodsItem.unit}}</text>
+                       </view>
                     </view>
                   </view>
                 </view>	
@@ -52,10 +51,14 @@
 
 <script>
   export default {
+    props: {
+      houseId: 0,
+      noStoreInfos: {}
+    },
     data() {
       return {
-        goodsList:[1,2],
-        shopList:[1,2]
+        goodsList:[1],
+        shopList:[1]
       }
     },
     methods: {
@@ -64,12 +67,20 @@
       },
       confirm(){
         this.$refs.noBuyToast.close()
-        uni.navigateTo({
-          url: '/sub-classify/pages/pay-order/pay-success',
-        });
+        // uni.navigateTo({
+        //   url: '/sub-classify/pages/pay-order/pay-success',
+        // });
       },
       backShopCart(){
         this.$refs.noBuyToast.close()
+      }
+    },
+    watch:{
+      noStoreInfos :{
+        handler(v) {
+          console.log(v, 'noSend')
+        },
+        deep: true
       }
     }
   }
@@ -78,6 +89,7 @@
 <style scoped>
   .toast-content{
     background-color: #f5f6f7;
+    border-radius: 16px 16px 0px 0px;
   }
   .good-toast .good-tip{
     height: 121rpx;
@@ -85,7 +97,7 @@
     border-radius: 16px 16px 0px 0px;
   }
   .good-tip view{
-    height: 121rpx;
+    height: 140rpx;
     border-radius: 16px 16px 0px 0px;
     background-color: rgba(254,144,0,0.05);
     padding: 20rpx 32rpx;
@@ -96,7 +108,7 @@
     
   }
   .shop-scroll{
-    height: 750rpx;
+    height: 600rpx;
   }
   .shop-item{
     margin-top: 25rpx;

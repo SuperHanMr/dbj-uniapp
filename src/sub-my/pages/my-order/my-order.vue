@@ -25,18 +25,23 @@
         :key="tabindex"
       >
         <scroll-view
+					class="scroll-view"
           :scroll-y="true"
           refresher-background="#FFF"
           :refresher-triggered="triggered"
           @refresherrefresh="onRefresh"
+					refresher-enabled="true"
           @scrolltolower="onLoadMore"
         >
+				<!-- @refresherrefresh  自定义下拉刷新被触发
+						@scrolltolower
+				-->
           <view class="swiper-item">
 
             <view
               class="order-container"
-              v-if="currentIndex==1"
-              v-for="item in orderList"
+              v-if="currentIndex == 3"
+              v-for="item in orderList2"
               :key="item.id"
             >
               <view class="header">
@@ -50,9 +55,8 @@
                 </view>
                 <view
                   class="order-status"
-                  :class="{active:false}"
+                  :class="{active: item.orderStatus ==2 || item.orderStatus==3}"
                 >
-                  <!-- 代付款 -->
                   {{
 										item.orderStatus === 0
 										?"代付款"
@@ -61,13 +65,14 @@
 										:item.orderStatus === 2
 										?"已完成"
 										:item.orderStatus === 3
-										?"已关闭"
+										?"交易关闭"
 										:"1111"
 									}}
                 </view>
               </view>
 
               <view class="body">
+								<!-- 套餐 -->
 								<view class="product-info" v-if="item.orderName">
 								  <view class="product-img">
 								    <scroll-view
@@ -75,26 +80,7 @@
 								      style="width: 100%; white-space: nowrap;"
 								    >
 								      <image
-								        src="../../../static/images/message/ic_interaction@2x.png"
-								        mode=""
-								      ></image>
-								      <image
-								        src="../../../static/images/message/ic_interaction@2x.png"
-								        mode=""
-								      ></image>
-								      <image
-								        src="../../../static/images/message/ic_interaction@2x.png"
-								        mode=""
-								      ></image>
-								      <image
-								        src="../../../static/images/message/ic_interaction@2x.png"
-								        mode=""
-								      ></image>
-								      <image
-								        src="../../../static/images/message/ic_interaction@2x.png"
-								        mode=""
-								      ></image>
-								      <image
+											v-for="(item,index) in 6" :key="index"
 								        src="../../../static/images/message/ic_interaction@2x.png"
 								        mode=""
 								      ></image>
@@ -109,8 +95,8 @@
 								    <view>共1件</view>
 								  </view>
 								</view>
-								 
-								 <order-item v-else></order-item>					 
+								 <!-- 非套餐 -->
+								 <order-item :dataList="item.details"  v-else></order-item>					 
               </view>
 							
 							<view class="price">
@@ -121,24 +107,37 @@
 							    <text style="font-size:18rpx;">{{handlePrice(item.orderTotalAmount)[1]}}</text>
 							    <text style="margin-left: 18rpx;">优惠</text>
 							    <text style="font-size:18rpx;">￥</text>
-							    <text>99.</text>
-							    <text style="font-size:18rpx;">00</text>
+							    <text>{{handlePrice(item.discount)[0]}}.</text>
+							    <text style="font-size:18rpx;">{{handlePrice(item.discount)[1]}}</text>
 							  </view>
-							  <view class="need-pay">
-							    <text>需付款(含搬运费)</text>
-									<!-- <text>实付</text>
-									<text>需付款</text> -->
+							  <view class="need-pay" v-if="item.orderStatus !== 0">
+									<text>实付</text>
 							    <text style="color:#FF3347;margin-left: 8rpx;">
 							      <text style="font-size:18rpx;">￥</text>
-							      <text style="font-size: 32rpx;">{{handlePrice(item.orderReceivableAmount)[0]}}.</text>
-							      <text style="font-size:18rpx;">{{handlePrice(item.orderReceivableAmount)[1]}}</text>
+							      <text style="font-size: 32rpx;">{{handlePrice(item.totalActualIncomeAmount)[0]}}.</text>
+							      <text style="font-size:18rpx;">{{handlePrice(item.totalActualIncomeAmount)[1]}}</text>
 							    </text>
 							  </view>
+								<view class="need-pay" v-if="item.orderStatus == 0">
+									<text v-if="item.freight && item.handlingFees">需付款(含运费、搬运费)</text>
+								  <text v-if="item.freight">需付款(含运费)</text>
+								  <text v-if="item.handlingFees">需付款(含搬运费)</text>
+									<text v-if="!item.freight && !item.handlingFees">需付款</text>
+									
+								  <text style="color:#FF3347;margin-left: 8rpx;">
+								    <text style="font-size:18rpx;">￥</text>
+								    <text style="font-size: 32rpx;">{{handlePrice(item.orderReceivableAmount)[0]}}.</text>
+								    <text style="font-size:18rpx;">{{handlePrice(item.orderReceivableAmount)[1]}}</text>
+								  </text>
+								</view>
 							</view>
+							
+							
+							
 
-              <view class="line" v-if="item.showCancelOrderTime || item.showCancelBtn || item.showToPayBtn"/>
+              <view class="line" v-if="item.orderStatus===0&&(item.showCancelOrderTime || item.showCancelBtn || item.showToPayBtn)"/>
 
-              <view class="footer" v-if="item.showCancelOrderTime || item.showCancelBtn || item.showToPayBtn" :class="{buttonContainer:!item.showCancelOrderTime}">
+              <view class="footer" v-if="item.orderStatus===0&&(item.showCancelOrderTime || item.showCancelBtn || item.showToPayBtn)" :class="{buttonContainer:!item.showCancelOrderTime}">
            
                 <view v-if="item.showCancelOrderTime" class="set-interval">
                   <image  src="../../static/ic_time@2x.png" mode=""></image>
@@ -188,8 +187,29 @@
 						
 						
 						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
 
-            <view class="order-container">
+            <view class="order-container" >
               <view class="header">
                 <view class="store-name">
                   <text>不知道叫什么名字的店铺nizhidaomahahahahahahaha</text>
@@ -313,7 +333,9 @@
                   <text style="font-size:18rpx;">00</text>
                 </view>
                 <view class="need-pay">
-                  <text>需付款(含搬运费)</text>
+                  <!-- <text>需付款</text>
+                  <text>需付款(含搬运费)</text> -->
+                  <text>需付款(含运费、搬运费)</text>
                   <text style="color:#FF3347;margin-left: 8rpx;">
                     <text style="font-size:18rpx;">￥</text>
                     <text style="font-size: 32rpx;">8888.</text>
@@ -374,7 +396,7 @@
 
             </view>
 
-            <view class="order-container">
+            <view class="order-container" @click="toDetail()">
               <view class="header">
                 <view class="store-name">
                   <text>多店铺同时下单的标题样式真复杂</text>
@@ -391,29 +413,10 @@
                       style="width: 100%; white-space: nowrap;"
                     >
                       <image
+												v-for="(item,index) in 6" :key="index"
                         src="../../../static/images/message/ic_interaction@2x.png"
                         mode=""
-                      ></image>
-                      <image
-                        src="../../../static/images/message/ic_interaction@2x.png"
-                        mode=""
-                      ></image>
-                      <image
-                        src="../../../static/images/message/ic_interaction@2x.png"
-                        mode=""
-                      ></image>
-                      <image
-                        src="../../../static/images/message/ic_interaction@2x.png"
-                        mode=""
-                      ></image>
-                      <image
-                        src="../../../static/images/message/ic_interaction@2x.png"
-                        mode=""
-                      ></image>
-                      <image
-                        src="../../../static/images/message/ic_interaction@2x.png"
-                        mode=""
-                      ></image>
+                      >
                     </scroll-view>
                   </view>
                   <view class="total-price">
@@ -441,8 +444,9 @@
                   <text style="font-size:18rpx;">00</text>
                 </view>
                 <view class="need-pay">
-                  <text>需付款(含搬运费)</text>
-									
+                  <!-- <text>需付款</text>
+                  <text>需付款(含搬运费)</text> -->
+									<text>需付款(含运费、搬运费)</text>
                   <text style="color:#FF3347;margin-left: 8rpx;">
                     <text style="font-size:18rpx;">￥</text>
                     <text style="font-size: 32rpx;">99.</text>
@@ -505,50 +509,31 @@ export default {
       tabList: ["全部", "待付款", "进行中", "已完成", "已关闭"],
       triggered: false, //控制刷新显示字段
       isActive: true,
-      currentIndex: 1,
+      currentIndex: 0,
       query: {},
-      orderStatus: 0, //订单状态（-1全部,0待付款，1进行中，2已完成 3已关闭）
+      orderStatus: -1, //订单状态（-1全部,0待付款，1进行中，2已完成 3已关闭）
       rows: 15,
       lastId: -1,
       customerId: 3907,
-      orderList: [],
+      orderList99: [],
+      orderList0: [],
+      orderList1: [],
+      orderList2: [],
+      orderList3: [],
     };
   },
-  onShow() {
-    this.getOrderList();
-  },
+  
   computed: {
-	
-		
-		
-		
-    currentList() {
-      if (this.currentIndex == 0) {
-        //全部
-        this.orderStatus = -1;
-        return this.list;
-      } else if (this.currentIndex == 1) {
-        //代付款
-        this.orderStatus = 0;
-        return this.list;
-      } else if (this.currentIndex == 2) {
-        // 进行中
-        this.orderStatus = 1;
-        return this.list;
-      } else if (this.currentIndex == 3) {
-        // 已完成
-        this.orderStatus = 2;
-        return this.list;
-      } else {
-        //已关闭
-        this.orderStatus = 3;
-        return this.list;
-      }
+		currentList() {
+			this.orderStatus = this.currentIndex -1
+			this.getOrderList()
     },
 		
   },
   watch: {
-    orderList() {},
+    orderList(val,oldVal) {
+			console.log("val=",val,"oldVal",oldVal)
+		},
   },
 
   methods: {
@@ -563,7 +548,8 @@ export default {
     toDetail(item) {
       console.log(item);
       uni.navigateTo({
-        url: "order-in-progress/order-in-progress?orderNo=" + item.id,
+				url:"order-failed/order-failed?type=close"
+        // url: "order-in-progress/order-in-progress?orderNo=" + item.id,
       });
     },
 
@@ -574,15 +560,32 @@ export default {
 
     async getOrderList() {
       this.loading = true;
-      let caseItem = await getOrderList({
+      let orderItem = await getOrderList({
         orderStatus: this.orderStatus,
         lastId: this.lastId,
         rows: this.rows,
-        customerId: this.customerId,
+        // customerId: this.customerId,
       });
-      console.log(caseItem, "caseItem");
-      this.orderList = this.orderList.concat(caseItem);
-      this.totalPage = caseItem.totalPage;
+      console.log(orderItem, "caseItem");
+			switch(this.orderStatus){
+				case -1 :
+					this.orderList99 =this.orderList99.concat(orderItem)
+					// this.lastId = this.orderList99[this.orderList99.length-1].id
+					break;
+				case 0:
+					this.orderList0 =this.orderList0.concat(orderItem)
+					break;
+				case 1:
+					this.orderList1 =this.orderList1.concat(orderItem)
+					break;
+				case 2 :
+					this.orderList2 =orderItem.concat( this.orderList2)
+					break;
+				case 3 :
+					this.orderList3 =this.orderList3.concat(orderItem)
+					break;
+			}
+      // this.totalPage = orderItem.totalPage;
       this.loading = false;
     },
 
@@ -744,11 +747,12 @@ export default {
       align-items: flex-end;
       color: #999;
       font-size: 22rpx;
-      margin-left: 24rpx;
+			font-weight: 500;
+			margin-left: 24rpx;
       .product-price {
         height: 32rpx;
         font-size: 32rpx;
-        margin-bottom: 8rpx;
+        margin-bottom: 16rpx;
         color: #333333;
       }
     }
@@ -894,7 +898,6 @@ export default {
 .scroll-view {
   flex: 1;
   height: 100%;
-  background-color: green;
 }
 
 button::after {

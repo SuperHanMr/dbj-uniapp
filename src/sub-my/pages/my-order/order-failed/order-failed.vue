@@ -1,8 +1,9 @@
 <template>
   <view class="container">
     <!-- 退款详情 --退款关闭   退款取消与商家拒接 两个页面-->
-    <!-- <view class="order-container">
-			<view class="order-status" :style="{backgroundImage:`url(${bgImg})`,backgroundSize: '100% 172rpx'}">
+    <view class="order-container" v-if="type =='refund' ">
+			<view class="order-status" >
+				<view class="backgroundStyle" />
 				<view class="status">
 					<image src="@/static/order/ic_order_failed@2x.png" mode=""></image>
 					<text>退款关闭</text>
@@ -12,8 +13,11 @@
 
 			<view class="order-header">
 				<image src="@/static/order/ic_failed@2x.png" mode=""></image>
-				<view class="cancel-text">
+			<!-- 	<view class="cancel-text">
 					您已取消了本次退款，如有问题未解决，您可以重新申请
+				</view> -->
+				<view class="cancel-text">
+					商家拒绝了您的申请，如有问题未解决，您可以重新申请
 				</view>
 			</view>
 
@@ -27,11 +31,12 @@
 				联系客服
 			</view>
 
-		</view> -->
+		</view>
 
     <!-- 订单详情  已关闭页面 -->
-    <view class="order-container">
+    <view class="order-container" v-if="type == 'close'"  >
       <view class="order-status">
+				<view class="backgroundStyle" />
         <view class="status">
           <image
             src="@/static/order/ic_order_failed@2x.png"
@@ -64,11 +69,38 @@
 </template>
 
 <script>
-export default {
+	import {getRefundDetail} from "@/api/order.js"
+	export default {
+	
   data() {
-    return {};
+    return {
+			type:"",//type:refund退款详情   close是订单关闭
+			id:"",
+			data:[]
+		};
   },
-  methods: {},
+	watch:{
+		type(){}
+	},
+	onLoad(options){
+		this.type = options.type,
+		this.id = Number(options.id),
+		console.log("this.id=",this.id, "typeof this.id=",typeof this.id)
+		this.getDetailData()
+	},
+	
+  methods: {
+		getDetailData(){
+			console.log("获取详情数据")
+			
+			getRefundDetail({id:this.id}).then(data=>{
+				this.data=data;
+				console.log(data,"Data")
+			})
+		},
+		
+	},
+	
 };
 </script>
 
@@ -78,17 +110,22 @@ export default {
   height: 100%;
   overflow: auto;
   padding-bottom: 100rpx;
-  background-color: skyblue;
   .order-container {
     .order-status {
       width: 100%;
       height: 140rpx;
       color: #ffffff;
-      background-color: pink;
       background-size: 100% 172rpx;
       display: flex;
       flex-flow: column nowrap;
       align-items: center;
+			.backgroundStyle {
+			  position: absolute;
+			  z-index: -1;
+			  width: 100%;
+			  height: 172rpx;
+			  background-color:#C6C6C6;
+			}
       .status {
         display: flex;
         flex-flow: row nowrap;

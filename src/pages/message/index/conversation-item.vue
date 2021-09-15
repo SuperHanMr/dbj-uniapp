@@ -55,6 +55,20 @@
       },
       message() {
         if (this.conversation.lastMessage) {
+          let message = this.conversation.lastMessage;
+          if (message && message.type === TIM.TYPES.MSG_CUSTOM) {
+            try {
+              let payloadData = JSON.parse(message.payload.data);
+              if (payloadData.type === "img_message") {
+                return "[图片]"
+              }
+              if (payloadData.type === "video_message") {
+                return "[视频]"
+              }
+            } catch (e) {
+              console.error(e);
+            }
+          }
           return this.conversation.lastMessage.messageForShow;
         }
         return "";
@@ -76,9 +90,16 @@
     },
     methods: {
       handleClick() {
-        uni.navigateTo({
-          url: "/pages/message/conversation/conversation?id=" + this.conversation.conversationID,
-        });
+        let convId = this.conversation.conversationID;
+        if (this.conversation.type === "NOTIFICATION") {
+          uni.navigateTo({
+            url: "/pages/message/conversation/conversation-noti?id=" + convId,
+          });
+        } else {
+          uni.navigateTo({
+            url: "/pages/message/conversation/conversation?id=" + convId,
+          });
+        }
       }
     }
   }
@@ -112,18 +133,25 @@
     height: 100rpx;
     box-sizing: border-box;
     padding-top: 12rpx;
+    overflow: hidden;
   }
   
   .im-message-name {
     line-height: 44rpx;
     font-size: 16px;
     color: #111;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
   }
   
   .im-message-msg {
     margin-top: 4rpx;
     font-size: 12px;
     color: #999;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
   }
   
   .im-message-info {

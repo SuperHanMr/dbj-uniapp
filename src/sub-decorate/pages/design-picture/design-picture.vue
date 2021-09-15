@@ -31,6 +31,7 @@
 </template>
 
 <script>
+  import { getDesignList } from "../../../api/decorate.js"
 	export default {
 		data() {
 			return {
@@ -66,7 +67,10 @@
 				if (this.currentItem !== item) {
 					this.currentItem = item
 				}
-			}
+			},
+      getDesignList() {
+        
+      }
 		}
 	}
 </script>
@@ -78,7 +82,7 @@
 		justify-content: flex-start;
 		flex-direction: row;
 		padding: 28rpx 0 0 48rpx;
-		border: 2rpx solid #EFEFEF;
+		border-bottom: 2rpx solid #EFEFEF;
 		margin-bottom: 40rpx;
 		box-sizing: border-box;
 		margin-bottom: 40rpx;

@@ -1,88 +1,98 @@
 /**
- * @author liuyubo
- * @desc:选中房屋的id会作为houseListChooseId字段放在storage里面，使用者获取后需要清空该字段。
- * 从我的里面进来没有选中功能
- **/
+* @author liuyubo
+* @desc:选中房屋的id会作为houseListChooseId字段放在storage里面，使用者获取后需要清空该字段。
+* 从我的里面进来没有选中功能
+**/
 
 <template>
-  <view class="my-house">
-    <view class="box" :style="{marginBottom:systemHeight}">
-      <view class="touch-item" v-for="(item,index) in listData" :class="item.isTouchMove == true?'touch-move-active':''" :key='item.id' @touchstart="touchstart" @touchmove="touchmove" :data-index='index'>
-        <view class="list-count">
-          <view class="list-item" @click="toChoose(item)">
-            <view class="item-message">
-              <image src="http://dbj.dragonn.top/static/mp/dabanjia/images/decorate/choose.svg" v-if="item.id===chooseId" class="choose-icon edit-icon"></image>
-              <view class="message-right">
-                <view class="item">
-                  <text class="defalut" v-if="item.defaultEstate">默认</text>
-                  <text class="province">{{item.housingEstate}}</text>
-                </view>
-                <text class="address">{{item.locationName}}</text>
-                <view class="item">
-                  <text class="name" >{{item.contactName}}</text>
-                  <text class="phone">{{item.contactPhone}}</text>
-                </view>
-              </view>
-            </view> 
-            <view class="edit" @click="edit(item)"><image src="../../../static/images/edit.svg" class="edit-icon"></image></view>
-          </view>
-          <view class="dle-btn centerboth" @click.stop="delThis(item,index)">
-            <view class="del-icon centerboth">
-              <text class="defalut-text">设为默认</text>
-            </view>
-          </view>
-        </view>
-      </view>
-      <view class="bottom" :style="{paddingBottom:systemBottom,height:systemHeight}">
-        <view class="add-btn" @click="toAddHouse">
-          新建房屋地址
-        </view>
-      </view>
-    </view>
-  </view>
+	<view class="my-house">
+		<view class="box" :style="{marginBottom:systemHeight}">
+			<view class="touch-item" v-for="(item,index) in listData"
+				:class="item.isTouchMove == true?'touch-move-active':''" :key='item.id' @touchstart="touchstart"
+				@touchmove="touchmove" :data-index='index'>
+				<view class="list-count">
+					<view class="list-item" @click="toChoose(item)">
+						<view class="item-message">
+							<image src="http://dbj.dragonn.top/static/mp/dabanjia/images/decorate/choose.svg"
+								v-if="item.id===chooseId" class="choose-icon edit-icon"></image>
+							<view class="message-right">
+								<view class="item">
+									<text class="defalut" v-if="item.defaultEstate">默认</text>
+									<text class="province">{{item.housingEstate}}</text>
+								</view>
+								<text class="address">{{item.locationName}}</text>
+								<view class="item">
+									<text class="name">{{item.contactName}}</text>
+									<text class="phone">{{item.contactPhone}}</text>
+								</view>
+							</view>
+						</view>
+						<view class="edit" @click="edit(item)">
+							<image src="../../../static/images/edit.svg" class="edit-icon"></image>
+						</view>
+					</view>
+					<view class="dle-btn centerboth" @click.stop="delThis(item,index)">
+						<view class="del-icon centerboth">
+							<text class="defalut-text">设为默认</text>
+						</view>
+					</view>
+				</view>
+			</view>
+			<view class="bottom" :style="{paddingBottom:systemBottom,height:systemHeight}">
+				<view class="add-btn" @click="toAddHouse">
+					新建房屋地址
+				</view>
+			</view>
+		</view>
+	</view>
 </template>
 <script>
-  import { queryEstates, setDefault } from "../../../api/decorate.js";
+	import {
+		queryEstates,
+		setDefault
+	} from "../../../api/decorate.js";
 	export default {
 
 		data() {
 			return {
 				startX: 0, //开始坐标
 				startY: 0,
-        listData:[], 
-        systemBottom:'',
-        systemHeight:'',
-        chooseId:''
+				listData: [],
+				systemBottom: '',
+				systemHeight: '',
+				chooseId: '',
+				delta: 1
 			};
 		},
 		mounted() {
-			
+
 		},
 		created() {
 
 		},
 		computed: {
-			
-		},
-    onShow(){
-      this.getHouseList()
-    },
-    
-    onLoad(e) {
-      if (e && e.id) {
-        this.chooseId = e.id;
-      }
-      this.isMy = e.isMy||false
 
-      const menuButtonInfo = uni.getMenuButtonBoundingClientRect();
-      this.systemBottom = menuButtonInfo.bottom + 'rpx'; 
-      this.systemHeight = menuButtonInfo.bottom + 136 +'rpx'
-    },
+		},
+		onShow() {
+			this.getHouseList()
+		},
+
+		onLoad(e) {
+			if (e && e.id) {
+				this.chooseId = e.id;
+			}
+			this.delta = e.delta || 1
+			this.isMy = e.isMy || false
+
+			const menuButtonInfo = uni.getMenuButtonBoundingClientRect();
+			this.systemBottom = menuButtonInfo.bottom + 'rpx';
+			this.systemHeight = menuButtonInfo.bottom + 136 + 'rpx'
+		},
 		methods: {
-			delThis:function(item,index){
-				setDefault(item.id).then(res=>{
-          this.getHouseList()
-        })
+			delThis: function(item, index) {
+				setDefault(item.id).then(res => {
+					this.getHouseList()
+				})
 			},
 			touchstart: function(e) {
 				var that = this;
@@ -118,18 +128,18 @@
 					v.isTouchMove = false
 					//滑动超过30度角 return
 					if (Math.abs(angle) > 30) return;
-          //如果已经是默认则不滑动
-          if(v.defaultEstate)return
+					//如果已经是默认则不滑动
+					if (v.defaultEstate) return
 					if (i == index) {
 						if (touchMoveX > startX) //右滑
 							v.isTouchMove = false
 						else //左滑
-							v.isTouchMove = true 
-              // console.log(that.listData)
-					} 
+							v.isTouchMove = true
+						// console.log(that.listData)
+					}
 				})
 				//更新数据
-				
+
 			},
 			angle: function(start, end) {
 				var _X = end.X - start.X,
@@ -137,73 +147,90 @@
 				//返回角度 /Math.atan()返回数字的反正切值
 				return 360 * Math.atan(_Y / _X) / (2 * Math.PI);
 			},
-      getHouseList(){
-        queryEstates({
-          isNeedRelative: true,
-        }).then(res=>{
-          this.listData = res||[]
-          this.listData.forEach(function(v,i){
-            v.isTouchMove = false
-          }) 
-          console.log(this.listData)
-        })
-      },
-      edit(item){
-        // console.log(item)
-        uni.navigateTo({
-          url:'/sub-decorate/pages/add-house/add-house?id='+item.id
-        })
-      }, 
-      toAddHouse(){
-        uni.navigateTo({ 
-          url:'/sub-decorate/pages/add-house/add-house'
-        })
-      },
-      toChoose(item){
-        // console.log(this.isMy)
-        if(this.isMy)return
-        this.chooseId = item.id
-        this.currentId = item.id
-      },
+			getHouseList() {
+				queryEstates({
+					isNeedRelative: true,
+				}).then(res => {
+					this.listData = res || []
+					this.listData.forEach(function(v, i) {
+						v.isTouchMove = false
+					})
+					console.log(this.listData)
+				})
+			},
+			edit(item) {
+				// console.log(item)
+				uni.navigateTo({
+					url: '/sub-decorate/pages/add-house/add-house?id=' + item.id
+				})
+			},
+			toAddHouse() {
+				uni.navigateTo({
+					url: '/sub-decorate/pages/add-house/add-house?delta=' + this.delta
+				})
+			},
+			toChoose(item) {
+				// console.log(this.isMy)
+				if (this.isMy) return
+				this.chooseId = item.id
+				this.currentId = item.id
+				uni.$emit('selectedHouse', item);
+         
+        uni.setStorageSync(
+        	'houseListChooseId',
+        	this.chooseId,
+        );
+				uni.navigateBack({
+
+				})
+			},
 		},
-    onUnload(){
-      if(this.isMy)return
-      uni.setStorageSync(
-          'houseListChooseId',
-          this.chooseId,
-      );
+		onUnload() {
+			// if (this.isMy) return
+   //    uni.setStorageSync(
+   //    	'houseListChooseId',
+   //    	this.chooseId,
+   //    );
+			
       
-      // uni.getStorageSync({
-      //     key: 'houseListChooseId',
-      //     success: function (res) {
-      //         console.log(res.data);
-      //     }
-      // });
-      // EventChannel.emit('getHouse',123)
-      // uni.navigateBack()
-      // wx.reLaunch({
-      //       url: '../logs/logs'
-      //     })
-    }
-	} 
+			// uni.getStorageSync({
+			//     key: 'houseListChooseId',
+			//     success: function (res) {
+			//         console.log(res.data);
+			//     }
+			// });
+			// EventChannel.emit('getHouse',123)
+			// uni.navigateBack()
+			// wx.reLaunch({
+			//       url: '../logs/logs'
+			//     })
+		}
+	}
 </script>
 
 <style lang="scss" scoped>
-	view,textarea,input,text,button{ 
-	  padding: 0; 
-	  margin: 0; 
-	  box-sizing:border-box;
-	  font-size: 28rpx;
-	  font-family: "微软雅黑";
+	view,
+	textarea,
+	input,
+	text,
+	button {
+		padding: 0;
+		margin: 0;
+		box-sizing: border-box;
+		font-size: 28rpx;
+		font-family: "微软雅黑";
 	}
-  .my-house{
-    height: 100%;
-    // display: flex;
-    // flex-direction: column;
-  }
-	.uni-checkbox-input{
+
+	.my-house {
+		height: 100%;
+		// display: flex;
+		// flex-direction: column;
+	}
+
+	.uni-checkbox-input {
 		border-radius: 50% !important;
 	}
+
 	.container {
 		height: 100%;
 		display: flex;
@@ -214,38 +241,43 @@
 		background: #f5f5f5;
 		overflow: hidden;
 	}
+
 	.centerboth {
-		display:flex;
+		display: flex;
 		display: -webkit-flex;
-		align-items:center;
-		-webkit-align-items:center;
+		align-items: center;
+		-webkit-align-items: center;
 		justify-content: center;
 		-webkit-justify-content: center;
 	}
+
 	.clearfix:after {
-	    content: "";
-	    display: block;
-	    visibility: hidden;
-	    height: 0;
-	    clear: both;
+		content: "";
+		display: block;
+		visibility: hidden;
+		height: 0;
+		clear: both;
 	}
-	
+
 	.clearfix {
-	    zoom: 1;
+		zoom: 1;
 	}
-	image{
-	  padding: 0;
-	  margin: 0;
+
+	image {
+		padding: 0;
+		margin: 0;
 	}
-	.box{
-		width: 100%; 
-    background-color: #242424; 
+
+	.box {
+		width: 100%;
+		background-color: #242424;
 		overflow: hidden;
-    margin-bottom: 200rpx;  
+		margin-bottom: 200rpx;
 	}
+
 	.list-count {
 		width: 100%;
-    height: 206rpx;
+		height: 206rpx;
 		position: relative;
 		-webkit-transition: all 0.4s;
 		transition: all 0.4s;
@@ -253,14 +285,16 @@
 		transform: translateX(70px);
 		margin-left: -70px;
 		background: #fff;
-		
+
 	}
-	.list-box .count{
+
+	.list-box .count {
 		font-size: 32rpx;
 	}
+
 	.dle-btn {
 		position: absolute;
-    background-color: #242424;
+		background-color: #242424;
 		right: -140rpx;
 		top: 0;
 		width: 140rpx;
@@ -276,107 +310,123 @@
 		transform: translateX(80px);
 		border-radius: 10rpx;
 	}
-  .list-item{
-    /* background-color: #111; */
-    height: 100%; 
-    margin: 0 24rpx 0 32rpx;
-    padding: 32rpx 0;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    border-bottom: 1px solid #F5F5F5;
-    .item{
-      margin-bottom: 6rpx;
-      height: 43rpx;
-      line-height: 42rpx;
-      .defalut{
-        display: inline-block;
-        width: 60rpx;
-        height: 32rpx;
-        color: #fff;
-        background: linear-gradient(135deg,#36d9cd, #28c6c6);
-        border-radius: 4rpx; 
-        font-size: 20rpx;
-        margin-right: 8rpx;
-        line-height: 32rpx;
-        text-align: center; 
-        // vertical-align: middle;
-      }
-      .province{ 
-        display: inline-block;
-        color: #999999;
-        font-size: 26rpx; 
-        line-height: 42rpx;
-      } 
-      .name,.phone{
-        color: #999;
-        display: inline-block;
-        margin-right: 16rpx;
-        font-size: 24rpx;
-      }
-    }
-    .choose-icon{
-      display: inline-block;
-      vertical-align: middle;
-      margin-right: 24rpx;
-    }
-    .edit-icon{
-      width: 36rpx;
-      height: 36rpx;
-    }
-    .address{
-      color: #111;
-      font-size: 28rpx;
-      font-weight: 500;
-    }
-   
-  }
-  .message-right{
-    display: inline-block;
-    vertical-align: middle;
-    // margin-left: 24rpx;
-  }
-  .defalut-text{
-    color: #fff;
-    width: 50%;
-  }
-	.dle-btn .iconfont{
+
+	.list-item {
+		/* background-color: #111; */
+		height: 100%;
+		margin: 0 24rpx 0 32rpx;
+		padding: 32rpx 0;
+		display: flex;
+		justify-content: space-between;
+		align-items: center;
+		border-bottom: 1px solid #F5F5F5;
+
+		.item {
+			margin-bottom: 6rpx;
+			height: 43rpx;
+			line-height: 42rpx;
+
+			.defalut {
+				display: inline-block;
+				width: 60rpx;
+				height: 32rpx;
+				color: #fff;
+				background: linear-gradient(135deg, #36d9cd, #28c6c6);
+				border-radius: 4rpx;
+				font-size: 20rpx;
+				margin-right: 8rpx;
+				line-height: 32rpx;
+				text-align: center;
+				// vertical-align: middle;
+			}
+
+			.province {
+				display: inline-block;
+				color: #999999;
+				font-size: 26rpx;
+				line-height: 42rpx;
+			}
+
+			.name,
+			.phone {
+				color: #999;
+				display: inline-block;
+				margin-right: 16rpx;
+				font-size: 24rpx;
+			}
+		}
+
+		.choose-icon {
+			display: inline-block;
+			vertical-align: middle;
+			margin-right: 24rpx;
+		}
+
+		.edit-icon {
+			width: 36rpx;
+			height: 36rpx;
+		}
+
+		.address {
+			color: #111;
+			font-size: 28rpx;
+			font-weight: 500;
+		}
+
+	}
+
+	.message-right {
+		display: inline-block;
+		vertical-align: middle;
+		// margin-left: 24rpx;
+	}
+
+	.defalut-text {
+		color: #fff;
+		width: 50%;
+	}
+
+	.dle-btn .iconfont {
 		font-size: 40rpx;
-		
-	}	
+
+	}
+
 	.touch-move-active .list-count,
 	.touch-move-active .dle-btn {
 		-webkit-transform: translateX(0);
 		transform: translateX(0);
 	}
-	 
+
 	.touch-move-active .dleBtn {
 		right: -140rpx;
 	}
-	.dle-btn image{
+
+	.dle-btn image {
 		width: 51rpx;
 		height: 55rpx;
 	}
-  .bottom{
-    width: 100%;
-    position: fixed;
-    bottom: 0;
-    height: 136rpx;
-    background-color: #fff;
-    display: flex;
-    flex-direction: row; 
-    justify-content: center;  
-    align-items: center;
-    .add-btn {
-      // margin-top: 20rpx;
-      height: 88rpx;
-      background: linear-gradient(135deg, #53d5cc, #4fc9c9);
-      border-radius: 12rpx;
-      width: 686rpx;
-      line-height: 88rpx;
-      text-align: center;
-      color: #FFFFFF;
-      font-size: 32rpx;
-    }
-  }
+
+	.bottom {
+		width: 100%;
+		position: fixed;
+		bottom: 0;
+		height: 136rpx;
+		background-color: #fff;
+		display: flex;
+		flex-direction: row;
+		justify-content: center;
+		align-items: center;
+
+		.add-btn {
+			// margin-top: 20rpx;
+			height: 88rpx;
+			background: linear-gradient(135deg, #53d5cc, #4fc9c9);
+			border-radius: 12rpx;
+			width: 686rpx;
+			line-height: 88rpx;
+			text-align: center;
+			color: #FFFFFF;
+			font-size: 32rpx;
+		}
+	}
 </style>

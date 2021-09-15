@@ -2,7 +2,9 @@
     <view>
       <uni-popup ref="datePicker" type="bottom">
         <view class="uni-padding-wrap">
-            <view class="uni-title">日期：{{year}}年{{month}}月{{day}}日</view>
+            <view @click="cancel">取消</view>
+            <view @click="confirm">确定</view>
+            <!-- <view class="uni-title">日期：{{year}}年{{month}}月{{day}}日</view> -->
         </view>
         <picker-view v-if="visible" :indicator-class='indicatorClass' :value="pickTime" @change="bindChange" class="picker-view">
             <picker-view-column>
@@ -70,6 +72,19 @@
           }
         },
         methods: {
+          showDatePicker(){
+            this.$refs.datePicker.open()
+          },
+          cancel(){
+            this.$refs.datePicker.close()
+          },
+          confirm() {
+            let time = [this.yearArr[this.pickTime[0]], this.monthArr[this.pickTime[1]],
+                        this.dayArr[this.pickTime[2]], this.hoursArr[this.pickTime[3]], 
+                        this.minutesArr[this.pickTime[4]]]
+             this.$emit('getTime', time)
+             this.$refs.datePicker.close()
+          },
             renewDate(pickVal) {
               // 每次点击picker，收集年月日时分变化的新数据以及选中日期对应的新索引
               let currentDate = new Date()
@@ -172,8 +187,6 @@
                   })
                 }
               }
-              
-              console.log(newMinutesArr)
               this.hoursArr = newHoursArr
               this.monthArr = newMonthArr
               this.dayArr = newDayArr
@@ -182,9 +195,6 @@
                  this.pickTime = [newYearIndex, newMonthIndex, newDayIndex, newHoursIndex, newMinutesIndex]
                  this.$set(this.pickTime, 3, newHoursIndex)
                })
-            },
-            showDatePicker(){
-              this.$refs.datePicker.open()
             },
             getCurrentMonthDay(year, month) {
               return new Date(year, month, 0).getDate()
@@ -205,10 +215,18 @@
     }
 </script>
 <style>
+  .uni-padding-wrap{
+    padding: 0 26rpx;
+    height: 120rpx;
+    background: #f9fafb;
+    border-radius:  32rpx 32rpx 0rpx 0rpx;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
     .picker-view {
         width: 750rpx;
         height: 600rpx;
-        margin-top: 20rpx;
         background-color: #ffffff;
     }
    .item {

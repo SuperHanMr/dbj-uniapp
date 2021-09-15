@@ -1,5 +1,12 @@
 <template>
-  <view class="message-bubble" :class="{'message-send': isMine, new: isNew}">
+  <view 
+    class="message-bubble" 
+    :class="{
+      'message-send': isMine, 
+      'no-padding': noPadding,
+      new: isNew
+    }"
+  >
     <view class="message-bubble-avatar">
       <image class="avatar" :src="avatar" mode=""></image>
     </view>
@@ -7,7 +14,7 @@
       <view class="message-bubble-header">
         <text class="message-username">{{name}}</text>
       </view>
-      <view class="message-bubble-body">
+      <view class="message-bubble-body" :style="bodyStyle">
         <slot></slot>
       </view>
     </view>
@@ -16,14 +23,19 @@
 
 <script>
 import { mapState } from "vuex";
+const IMG_MAX_HEIGHT = 140;
+const IMG_MAX_WIDTH = 140;
 export default {
   name: "MessageBubble",
   props: {
-    
     message: {
       type: Object,
       required: true,
     },
+    payloadData: {
+      type: Object,
+      required: false,
+    }
   },
   computed: {
     ...mapState({
@@ -40,6 +52,40 @@ export default {
     },
     name() {
       return this.message.nick || this.message.from;
+    },
+    noPadding() {
+      if (!this.payloadData) {
+        return false;
+      }
+      return this.payloadData.type === "img_message" ||
+        this.payloadData.type === "video_message";
+    },
+    bodyStyle() {
+      if (!this.payloadData) {
+        return "";
+      }
+      if (
+        this.payloadData.type === "img_message"||
+        this.payloadData.type === "video_message"
+      ) {
+        let { width = 0, height = 0 } = this.payloadData;
+        if (width/height > IMG_MAX_WIDTH/IMG_MAX_HEIGHT) {
+          if (width > IMG_MAX_WIDTH) {
+            height = height/width * IMG_MAX_WIDTH;
+            width = IMG_MAX_WIDTH;
+          }
+        } else {
+          if (height > IMG_MAX_HEIGHT) {
+            width = width/height * IMG_MAX_HEIGHT;
+            height = IMG_MAX_HEIGHT;
+          }
+        }
+        return [
+          `width: ${Math.round(width)}px`,
+          `height: ${Math.round(height)}px`
+        ].join(";") + ";";
+      }
+      return "";
     }
   }
 };
@@ -114,6 +160,12 @@ export default {
       transform-origin: top right;
       animation: bounce 500ms linear both;
     }
+  }
+
+  &.no-padding .message-bubble-body {
+    padding: 0;
+    border-radius: 8px;
+    font-size: 0;
   }
 }
   

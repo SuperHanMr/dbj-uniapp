@@ -1,84 +1,84 @@
 <template>
 	<view class="orderContainer">
-    <address-picker></address-picker>
+    <address-picker :houseId="houseId" :productType="productType" @emitInfo="emitInfo"></address-picker>
 		<view class="content">
-      <view class="shop-item" v-for="(shopItem, index) in shopList" :key='index'>
-        <view class="shop-name">李哥工作室</view>
-        <view class="goodsItem" @click="toDetails(goodsItem.id)" v-for="(goodsItem, index) in goodsList" :key="index">
-          <!-- <image :src="goodsItem.imageUrl" class="goodsItemImg"></image> -->
-          <image src="https://ali-image-test.dabanjia.com/image/20210816/11/1629087052820_2600%241626858792066_0436s4.png" class="goodsItemImg"></image>
+      <view class="shop-item" v-for="(shopItem, index) in orderInfo.storeInfos" :key="index">
+        <view class="shop-name">{{shopItem.storeName}}</view>
+        <view class="goodsItem"  v-for="(goodsItem, index) in shopItem.skuInfos" :key="index">
+          <image :src="goodsItem.imageUrl" class="goodsItemImg"></image>
+          <!-- <image src="https://ali-image-test.dabanjia.com/image/20210816/11/1629087052820_2600%241626858792066_0436s4.png" class="goodsItemImg"></image> -->
           <view class="goodsInfo">
             <view class="goodsDesc">
               <text class="goodsType">{{goodsItem.productType=== 1?"服务":"物品"}}</text>
               {{goodsItem.spuName}}
             </view>
-            <view class='tag'>tag type</view>
-            <view class="totalNum">共1件</view>
+            <view class='tag'>{{goodsItem.skuName}}</view>
+            <view class="totalNum">共{{goodsItem.buyCount}}件</view>
             <view class="goodsSpec">
-                  <view class="goods-money">
+                  <view class="goods-money" v-if='goodsItem.price'>
                     ￥
-                    <text class="integer-price">{{goodsItem.convertedPrice?goodsItem.convertedPrice.split(".")[0]: 0}}</text>
-                    <text>.{{goodsItem.convertedPrice?goodsItem.convertedPrice.split(".")[1]: 0}}</text>
-                    <!-- <text>/{{goodsItem.unitName}}</text> -->
-                    <text>/把</text>
+                    <text class="integer-price">{{String.prototype.split.call(goodsItem["price"], ".")[0]}}</text>
+                    <text>.{{String.prototype.split.call(goodsItem["price"], ".")[1]}}</text>
+                    <text>/{{goodsItem.unit}}</text>
                   </view>
             </view>
           </view>
         </view>	
-<!--      <view class="cost-detail">
+        <view class="cost-detail" v-if="shopItem.deliveryFee && prototype === 1">
           <view>
             <text>运费</text>
-            <text>¥30.00</text>
+            <text>¥{{shopItem.deliveryFee}}</text>
           </view>
-          <view>
+          <view v-if="shopItem.totalHandlingFee">
             <text>搬运费</text>
-            <text>¥30.00</text>
+            <text>¥{{shopItem.totalHandlingFee}}</text>
           </view>
-        </view> -->
-<!--      <view class="shop-reduce">
-          <view class="item-reduce-box">
-             <text class="question-box">本订单已获得了该店铺5次免运费权益
-               <text class="question-icon"></text>
-             </text>
           </view>
-        </view> -->
-        <view class="shop-reduce no-send-tip">
-           <view class="item-reduce-box">
-              <text>当前地址无法配送该商品，请更换地址</text>
-           </view>
-        </view>
-        <view class="choose-time">
-           <view class="time-bar" @click='chooseTime'>
-             <text>请选择上门时间</text>
-             <image class="chooseIcon" src="../../../static/images/ic_more_black@2x.png"></image>
-           </view>
-        </view>
+          <view class="shop-reduce" v-if="shopItem.freeDeliveryCount && prototype === 1">
+            <view class="item-reduce-box">
+               <text class="question-box">本订单已获得了该店铺{{shopItem.freeDeliveryCount}}次免运费权益
+                 <text class="question-icon"></text>
+               </text>
+            </view>
+          </view>
+          <view class="shop-reduce no-send-tip" v-if="!shopItem.deliveryFee && !shopItem.freeDeliveryCount && prototype === 1">
+             <view class="item-reduce-box">
+                <text>当前地址无法配送该商品，请更换地址</text>
+             </view>
+          </view>
+          <view class="choose-time" v-if="productType === 2">
+             <view class="time-bar" @click='chooseTime'>
+               <text v-if="!time">请选择上门时间</text>
+               <text v-else>{{time}}</text>
+               <image class="chooseIcon" src="../../../static/images/ic_more_black@2x.png"></image>
+             </view>
+          </view>
       </view>
-		</view>
-		<view class="good-store-account">
+    </view>     
+		<view class="good-store-account" v-if="orderInfo.totalDeliveryFee">
       <view>
         <text>商品总价</text>
-        <text>¥30.00</text>
+        <text>¥{{orderInfo.totalPrice}}</text>
       </view>
      <view>
         <text class="question-box">
           运费
           <text class="question-icon"></text>
         </text>
-        <text>¥30.00</text>
+        <text>¥{{orderInfo.totalDeliveryFee}}</text>
       </view>
-      <view>
+      <view v-if="orderInfo.totalHandlingFee">
         <text class="question-box">
           搬运费
           <text class="question-icon"></text>
         </text>
-        <text>¥30.00</text>
+        <text>¥{{orderInfo.totalHandlingFee}}</text>
       </view>
     </view>
-    <view class="good-store-account is-store">
+    <view class="good-store-account is-store" v-if="!orderInfo.totalDeliveryFee">
       <view>
         <text>商品总价</text>
-        <text>¥30.00</text>
+        <text>¥{{orderInfo.totalPrice}}</text>
       </view>
       <view class="store-read">
         <text>
@@ -86,9 +86,9 @@
         </text>
       </view>
     </view>
-    <view class="pledge">
+    <view class="pledge" v-if="orderInfo.totalDeposit">
       <text>押金</text>
-      <text>¥200.00</text>
+      <text>¥{{orderInfo.totalDeposit}}</text>
     </view>
     <view class="pay-way">
       <text>支付方式</text>
@@ -118,8 +118,8 @@
         <button class="pay-button" @click="noSend" ref="test">立即支付</button>
       </view>
     </view>
-    <date-picker ref='datePicker'></date-picker>
-    <order-toast ref='orderToast'></order-toast>
+    <date-picker ref='datePicker' @getTime="getTime"></date-picker>
+    <order-toast ref='orderToast' :houseId="houseId" :noStoreInfos="noStoreInfos"></order-toast>
     <uni-popup ref="cancelDialog" :mask-click="false">
       <view class="popup-item">
         <view class="popup-title">该服务需精算师指导下完成</view>
@@ -131,24 +131,122 @@
     </uni-popup>
   </view>
 </template>
-
 <script>
+  import {getAddWorker, getDetailInfo} from '../../../api/classify.js'
   import orderToast from "./order-toast.vue"
   import datePicker from "./date-picker.vue"
 	export default{
     components:{orderToast, datePicker},
 		data(){
 			return {
-				goodsList:[1,2],
-				shopList:[1,2]
+        time: '',
+        originFrom: "shopCart",
+        addressInfo: {},
+        orderInfo: {},
+				canStoreInfos:{},
+        noStoreInfos: {},
+        hasNoSendItem: false,
+        houseId: 0,
+        addUser: [],
+        goodDetailId: 0,
+        buyCount: 0,
+        skuId: 0,
+        storeId: 0,
+        unit: '',
+        estateId: 0,
+        productType: 1
 			}
 		},
 		created(){
 			
 		},
-		onLoad(option) {
+		onLoad(e) {
+      // console.log(e, 'eee')
+      // this.houseId = e.houseId
+      this.houseId = 1084
+      this.buyCount = e.buyCount
+      this.skuId = e.skuId
+      this.storeId = e.storeId
+      this.unit = e.unitName
+      this.goodDetailId = uni.getStorageSync('goodId')
 		},
+    onShow() {
+      if(uni.getStorageSync('houseListChooseId')) {
+        this.houseId = uni.getStorageSync('houseListChooseId')
+      }
+    },
     methods:{
+      getTime(val) {
+        this.time = val[0] + '年' + val[1] + '月' + val[2] + '日' + val[3] + '时' + val[4] + '分'
+      },
+      emitInfo(val) {
+        this.addressInfo = val
+        this.estateId = val.housingEstateId
+        // let params = {
+        //   skuInfos:[{
+        //   		skuId:this.skuId,
+        //   		storeId:this.storeId,
+        //   		buyCount:this.buyCount,
+        //   		unit: this.unit,
+        //       level: 0
+        //   	}],
+        //   	estateId:this.estateId
+        // }
+        let params = {
+          estateId: 1050, 
+          skuInfos: [{
+            skuId: 38085, 
+            storeId: 2, 
+            buyCount: 1.00, 
+            unit: '个', 
+            level: 0,
+            }]}
+        getDetailInfo(params).then((data) => {
+          // let dataInfo = data
+          let dataInfo = data.data.data
+          this.orderInfo = dataInfo
+          console.log(dataInfo, 'dataInfo')
+          this.noStoreInfos = JSON.parse(JSON.stringify(dataInfo))
+          this.noStoreInfos.storeInfos = []
+          this.canStoreInfos = JSON.parse(JSON.stringify(dataInfo))
+          this.canStoreInfos.storeInfos = []
+          
+          
+          dataInfo.storeInfos.map((storeItem, storeK) => {
+            let noStoreItem = JSON.parse(JSON.stringify(storeItem))
+            noStoreItem.skuInfos = []
+            let canStoreItem = JSON.parse(JSON.stringify(storeItem))
+            canStoreItem.skuInfos = []
+             this.noStoreInfos.storeInfos.push(noStoreItem)
+             this.canStoreInfos.storeInfos.push(canStoreItem)
+             
+             
+            storeItem.skuInfos.map((skuItem, skuK) => {
+              this.productType = skuItem.productType
+              if(skuItem.addingJobName) {
+                this.addUser.push({
+                  addingJobName: skuItem.addingJobName,
+                  addingUserName: skuItem.addingUserName,
+                  addingUserId: skuItem.addingUserId
+                })
+              }
+              if(skuItem.canBuy === false || skuItem.canDeliver === false) {
+                noStoreItem.skuInfos.push(skuItem)
+                this.hasNoSendItem = true // 判断所有数据中有没有不可配送数据
+              }else {
+                canStoreItem.skuInfos.push(skuItem)
+              }
+            })
+          })
+          if(this.originFrom === "shopCart") {
+              this.orderInfo = this.canStoreInfos  
+              console.log(this.orderInfo, 'canStoreInfos')
+          }
+          if(this.hasNoSendItem){
+            this.$refs.orderToast.showPupop()
+          }
+        })
+      },
       chooseTime() {
          this.$refs.datePicker.showDatePicker()
       },
@@ -172,7 +270,7 @@
 		background: #f5f6f7;
     color: #333333;
 	}
-  // 问好图标模型布局
+  // 问号图标模型布局
   .question-box{
     position: relative;
   }

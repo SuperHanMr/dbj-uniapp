@@ -1,37 +1,86 @@
 <template>
   <view class="">
-    <view class="header-address">
-      <image src="../../static/images/ic_location@2x.png" class="locationIcon"></image>
-      <view class="address">
-      	<view class="way">
-      		<text class="default">默认</text>
-      		<text class="txt">北京市北京市石景山区双元路</text>
-      	</view>
-      	<view class="community">点石商务公园8号楼8层101</view>
-      	<view class="userInfo">
-      		<text class="userName">刘先生</text>
-      		<text class="userPhone">123456789</text>
-      	</view>
-      </view>
-      <image class="switchSite" src="../../static/images/ic_more_black@2x.png"></image>
+    <view v-if='houseId'>
+      <view class="header-address">
+         <image src="../../static/images/ic_location@2x.png" class="locationIcon"></image>
+         <view class="address" @click="checkAddress">
+         	<view class="way">
+         		<text class="default" v-if="addressInfo.defaultEstate">默认</text>
+         		<text class="txt">{{addressInfo.housingEstate}}</text>
+         	</view>
+         	<view class="community">{{addressInfo.locationName}}</view>
+         	<view class="userInfo">
+         		<text class="userName">{{addressInfo.contactName}}</text>
+         		<text class="userPhone">{{addressInfo.contactPhone}}</text>
+         	</view>
+         </view>
+         <image class="switchSite" src="../../static/images/ic_more_black@2x.png"></image>
+        </view>
+        <view class="header-operator"  v-for="(item, index) in addUser" :key="index" v-if="productType === 2 && item.frontendServe">
+          <image src="../../static/images/ic_location@2x.png" class="locationIcon"></image>
+          <view class="address">
+          	<view class="community">{{item.addingJobName}}:{{item.addingUserName}}</view>
+          </view>
+        </view>
     </view>
-   <view class="header-operator">
-      <image src="../../static/images/ic_location@2x.png" class="locationIcon"></image>
-      <view class="address">
-      	<view class="community">拆除：张德福</view>
-      </view>
+   <view v-else>
+     <view class="header-operator" @click="checkAddress">
+       <image src="../../static/images/ic_location@2x.png" class="locationIcon"></image>
+       <view class="address check-address">
+       	<view class="community">请选择地址</view>
+       </view>
+       <image class="switchSite" src="../../static/images/ic_more_black@2x.png"></image>
+     </view>
+ 
     </view>
     <image class="addressLine" src="../../static/images/address_line@2x.png"></image>
   </view>
 </template>
 
 <script>
+  import {getAddressInfo, getAddWorker} from '../../api/classify.js'
   export default {
     name:"address-picker",
+    props: {
+      from: {
+        dafult: ''
+      },
+      houseId: {
+        default: 0
+      },
+      productType: {
+        default: 1
+      },
+      addUser: {
+        default: [{
+          addingJobName: '',
+          addingUserName: '',
+          addingUserId: ''
+        }]
+      }
+    },
     data() {
       return {
-        
+        addressInfo: {},
+        estateId: 0
       };
+    },
+    methods: {
+      checkAddress() {
+        uni.navigateTo({
+           url: "/sub-my/pages/my-house/my-house"
+        })
+      }
+    },
+    watch:{
+      houseId(v) {
+        if(this.from !== "addressToast") {
+          getAddressInfo(v).then((data) => {
+            this.addressInfo = data
+            this.$emit('emitInfo', this.addressInfo)
+          })
+        }
+      }
     }
   }
 </script>
@@ -116,5 +165,8 @@
   .header-operator .address{
     flex: 1;
     border-top: 1rpx solid #f2f2f2;
+  }
+  .header-operator .check-address{
+    border-top: 0;
   }
 </style>
