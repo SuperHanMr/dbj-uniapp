@@ -118,8 +118,8 @@
           imageUrl: "https://ali-image-test.dabanjia.com//image/20210313/1615618135579_0296%24pexels-eberhard-grossgasteiger-1428277.jpg",
           name: "橙色",
           quantity: 1,
-          serviceName: "设计服务",
-          serviceType: 1,
+          serviceName: "精算服务",
+          serviceType: 4,
           spuName: "韩永辉测试视频无法播放"
         },
         checkHouse: {
@@ -133,9 +133,9 @@
           imageUrl: "https://ali-image-test.dabanjia.com//image/20210313/1615618135579_0296%24pexels-eberhard-grossgasteiger-1428277.jpg",
           name: "橙色",
           quantity: 1,
-          serviceName: "设计服务",
-          serviceType: 1,
-          spuName: "韩永辉测试视频无法播放"
+          serviceName: "验房服务",
+          serviceType: 2,
+          spuName: "加的"
         },
         currentHouse: {},
         selectLevel: 1,
