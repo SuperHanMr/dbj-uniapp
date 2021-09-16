@@ -1,14 +1,74 @@
 {
   "sys_snatch_order_success":{
     "url":"/sub-decorate/pages/grab/grab",
-    "name":"抢单"
+    "name":"抢单",
+    "variable":"jobName",
+    "msg":"有${jobName}接单啦，请确认"
+  },
+  "sys_measure_estate_structure_diagram_report_msg":{
+    "url":"/sub-decorate/pages/amoutDelivery/amoutDelivery",
+    "name":"确认量房",
+    "msg":"您有原始结构尺寸图待验收"
+  },
+  "sys_serve_record_comment_invitation":{
+    "url":"/sub-my/pages/evaluate/immediate-evaluate/immediate-evaluate",
+    "name":"待评价",
+    "variable":"serverName",
+    "msg":"您有一个${type}服务待评价"
+  },
+  "sys_available_purchase_service":{
+    "url":"/sub-decorate/pages/gj-process-cost/gj-process-cost",
+    "name":"待购买",
+    "variable":"serverName",
+    "msg":"您有一个${type}服务待购买"
   },
   "inspect_estate_service_time":{
     "url":"/sub-decorate/pages/check-house-remind/check-house-remind",
-    "name":"验房服务提醒"
+    "name":"验房服务提醒",
+    "msg":"验房员上门时间提醒"
   },
   "inspect_estate_report_reminder":{
-    "url":"pages/checkResult/checkResult",
-    "name":"验房交付"
+    "url":"/sub-decorate/pages/checkResult/checkResult",
+    "name":"验房交付",
+    "msg":"您有验收报告待验收"
+  },
+  "sys_design_stage_report_msg":{
+    "url":"/sub-decorate/pages/design-deliver/design-deliver",
+    "name":"设计图交付",
+    "variable":"serverName",
+    "msg":"您有${name}待验收"
+  },
+  "sys_butler_project_completion_to_owner":{
+    "url":"/sub-decorate/pages/housekeeper-c-a-application/housekeeper-c-a-application",
+    "name":"竣工交付",
+    "msg":"您有一个竣工验收待确认"
+  },
+  "sys_freight_handling_fee_confirmation":{
+    "url":"/sub-decorate/pages/require-pay/require-pay",
+    "name":"要货申请",
+    "msg":"您有一个要货申请待确认"
+  },
+  "sys_butler_stage_audit_pass_to_owner":{
+    "url":"/sub-decorate/pages/worker-c-application/worker-c-application",
+    "name":"施工阶段验收",
+    "variable":"serverName",
+    "msg":"${name}服务阶段完工，请验收"
+  },
+  "sys_replenish_apply_to_owner_pay":{
+    "url":"/sub-my/pages/my-order/order-wait-pay/order-wait-pay",
+    "name":"补差价",
+    "variable":"serverName",
+    "msg":"${name}服务申请补人工，请支付差价"
+  },
+  "sys_butler_node_audit_pass_to_owner":{
+    "url":"/sub-decorate/pages/worker-c-application/worker-c-application",
+    "name":"施工整体验收",
+    "variable":"serverName",
+    "msg":"${name}服务整体完工，请验收"
+  },
+  "sys_actuary_publish":{
+    "url":"/my-decorate/pages/curent-cost/curent-cost",
+    "name":"精算验收",
+    "msg":"精算师已经交付了精算单，请确认"
   }
 }

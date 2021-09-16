@@ -1,5 +1,6 @@
 <template>
   <view class="result-content">
+    <view class="report-time" v-if="!isReport">{{checkData.time}}后将会自动确认验房结果</view>
     <view class="report-content">
       <view class="report-title">
         <view>
@@ -11,7 +12,7 @@
         <uniEcCanvas class="uni-ec-canvas" id="uni-ec-canvas" ref="canvas" canvas-id="uni-ec-canvas" :ec="ec">
         </uniEcCanvas>
       </view>
-      <text class="report-text">那拉氏父女{{checkData.summaryDescription}}</text>
+      <text class="report-text">{{checkData.summaryDescription}}</text>
       <view class="img-list">
         <imagePreview :list='checkData.imageUrlList' :row='2'></imagePreview>
         <!-- <image v-for="item of checkData.imageUrlList" :key='item' :src="item"></image> -->
@@ -44,6 +45,8 @@
     getCheckResultDetail,
     confirmCheckResult
   } from '../../../api/decorate.js'
+  import { formatDate } from '../../../utils/common.js'
+  
   let chart = null
   export default {
     components: {
@@ -54,6 +57,9 @@
     props: {
       isReport: false,
       scrollTop: 0
+    },
+    filters:{
+      formatDate
     },
     data() {
       return {
@@ -157,11 +163,13 @@
         hazardTop: '',
         conformTop: '',
         isActive: false,
-        checkData: {},
+        checkData: {
+          time:''
+        },
         currentItem: 'top'
       }
     },
-    onReady() {
+    mounted() {
       this.getData();
     },
     watch: {
@@ -179,7 +187,7 @@
     },
     methods: {
       getData() {
-        getCheckResultDetail(30).then(res => {
+        getCheckResultDetail(36).then(res => {
           this.checkData = res
           this.data[0].arr = res.normalList
           this.data[0].value = res.normalList.length
@@ -190,7 +198,22 @@
           this.$refs.canvas.init(this.initChart)
           this.drawImage()
           this.getTop()
+          let id = setInterval(()=>{
+            if(this.checkData.autoSubmitTime===0){
+              clearInterval(id)
+            }
+            this.checkData.autoSubmitTime = this.checkData.autoSubmitTime-1000
+            this.checkData.time = this.toHHmmss(this.checkData.autoSubmitTime-1000).split('.')[0]
+          },1000)
         })
+      },
+      toHHmmss(date){
+        let time;
+        let hours = parseInt((date%(1000*60*60*24))/(1000*60*60))
+        let minutes = parseInt((date%(1000*60*60))/(1000*60))
+        let seconds = (date%(1000*60))/1000
+        time = (hours<10?('0'+hours):hours)+':'+(minutes<10?('0'+minutes):minutes) +':'+ (seconds<10?('0'+seconds):seconds)
+        return time
       },
       getTop() {
         this.$nextTick(function() {
@@ -258,11 +281,20 @@
 </script>
 
 <style lang="scss" scoped>
+  .report-time{
+    width: 100%;
+    height: 56rpx;
+    background-color: #fff5de;
+    color: #a28645;
+    font-size: 24rpx;
+    text-align: center;
+    line-height: 56rpx;
+    margin-bottom: 24rpx;
+  }
   .result-content {
     display: flex;
     justify-content: center;
     flex-wrap: wrap;
-    
   }
   .text-content{
     padding: 0 24rpx;

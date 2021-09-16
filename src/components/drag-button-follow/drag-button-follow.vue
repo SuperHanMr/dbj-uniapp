@@ -22,7 +22,7 @@
       <view class="gray-circle">
         <view class="black-circle">
           <text class="image-icon"></text>
-          <text class="tip">8</text>
+          <text class="tip">888</text>
         </view>
       </view>
     </view>
@@ -237,7 +237,6 @@
           height: 36rpx;
           background-color: #fff;
         }
-
         .tip {
           position: absolute;
           width: 24rpx;

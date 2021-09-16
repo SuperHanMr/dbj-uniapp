@@ -2,26 +2,48 @@
   <view class="notice" catchtouchmove=“true” :style="{height:systemHeight}">
     <view class="notice-mask"></view>
     <view class="notice-view">
-      <scroll-view class="item-list" scroll-y="true">
-        <view
-          class="notice-item"
-          @click="to(0)"
-        > 
-          <view class="item-top">
-            <view class="item-top-left">
-              <image
-                src="../../static/home_owner.png"
-                mode=""
-              ></image>
-              <text class="item-title">量房服务</text>
+      <scroll-view class="item-list" :style="{height:scrollHeight}" scroll-y="true">
+        <view class="item">
+          <view
+            class="notice-item"
+            @click="to(3)"
+          > 
+            <view class="item-top">
+              <view class="item-top-left">
+                <image
+                  src="../../static/home_owner.png"
+                  mode=""
+                ></image>
+                <text class="item-title">量房服务</text>
+              </view>
+              <text class="item-top-right">2021-08-21 13:00:00</text>
             </view>
-            <text class="item-top-right">2021-08-21 13:00:00</text>
+            <view class="item-content">
+              <text>有量房员接单啦，请确认</text>
+              <image src="../../static/images/ic_more_black.svg"></image>
+            </view>
           </view>
-          <view class="item-content">
-            <text>有量房员接单啦，请确认</text>
-            <image src="../../static/images/ic_more_black.svg"></image>
+        <view
+            class="notice-item"
+            @click="to(3)"
+          > 
+            <view class="item-top">
+              <view class="item-top-left">
+                <image
+                  src="../../static/home_owner.png"
+                  mode=""
+                ></image>
+                <text class="item-title">量房服务2</text>
+              </view>
+              <text class="item-top-right">2021-08-21 13:00:00</text>
+            </view>
+            <view class="item-content">
+              <text>有量房员接单啦，请确认</text>
+              <image src="../../static/images/ic_more_black.svg"></image>
+            </view>
           </view>
         </view>
+        
         </scroll-view>
         <view
           class="close-icon"
@@ -57,9 +79,11 @@ export default {
         "/sub-decorate/pages/grab/grab",
         "/sub-decorate/pages/amoutDelivery/amoutDelivery",
         "/sub-decorate/pages/checkResult/checkResult",
+        "/sub-decorate/pages/current-cost/current-cost",
       ],
       systemHeight:'',
-      list:[]
+      list:[],
+      scrollHeight:''
     };
   },
   mounted(){
@@ -83,13 +107,12 @@ export default {
       this.close();
     }, 
     getMsg(){
-      getMsgList(2||this.current).then(res=>{
+      getMsgList(this.current).then(res=>{
         res.map(item=>{
-          
-          console.log(JSON.parse(item.msgBody))
           let data = JSON.parse(item.msgBody)
           getApp().globalData.decorateMsg = data
         })
+        this.scrollHeight = res.length*116*2+'rpx'
       })
     }
   },
@@ -111,11 +134,22 @@ export default {
     position: absolute;
     width: 100%;
     bottom: 206rpx;
-    height: 1000rpx;
+    max-height: 1160rpx;
     // padding: 24rpx;
     z-index: 101;
     
   }
+  // .item{
+  //   position: absolute;
+  //   // flex-direction:column-reverse;
+  //   overflow: auto;
+  //   width: 100%;
+  //   // bottom: 0;
+  //   bottom: 206rpx;
+  //   max-height: 10rpx;
+  //   // padding: 24rpx;
+  //   z-index: 101;
+  // }
   .close-icon {
     position: absolute;
     bottom: 30rpx;
