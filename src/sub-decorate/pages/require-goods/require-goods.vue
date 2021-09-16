@@ -166,14 +166,17 @@
 				})
 			},
 			openCart() {
+				if(!this.cartCount){
+					return
+				}
 				this.$refs.popup.open();
 			},
 			removeAll() {
 				this.cartList.splice(0, this.cartList.length);
-				this.goodsList[0].children[0].count = 0;
-				let goodsList = this.goodsList;
-				this.goodsList = [];
-				this.goodsList = goodsList;
+				// this.goodsList[0].children[0].count = 0;
+				// let goodsList = this.goodsList;
+				// this.goodsList = [];
+				// this.goodsList = goodsList;
 				this.$refs.popup.close();
 
 			},

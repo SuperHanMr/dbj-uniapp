@@ -221,3 +221,13 @@ export function requireListDetail(params) {
 export function serverInfo(serveId) {
 	return request.get(`/pm/app/serve/design/serverInfo/${serveId}`)
 }
+// C端APP-要货-用户确认
+export function requireConfirm(params) {
+	return request.put(`/order-center/app/goods/require/confirm`,params)
+}
+
+// app支付运费/搬运费
+export function payFreight(params) {
+	return request.put(`/order-center/app/order/payFreight`,params)
+}
+

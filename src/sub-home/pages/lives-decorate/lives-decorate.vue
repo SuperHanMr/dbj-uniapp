@@ -1,22 +1,27 @@
 <template>
 	<view class="fill">
-		<live-player v-if="liveList.length"  :class="{ player:!isFill,'player-fill':isFill}" :src="livePreview" autoplay
+		<live-player v-if="liveList.length" :class="{ player:!isFill,'player-fill':isFill}" :src="livePreview" autoplay
 			@statechange="statechange" @error="error" :muted="muted" :orientation="isFill?'horizontal':'vertical'">
 			<cover-view v-if="!isFill" class="video-bottom">
 				<cover-image class="video-voice" @click="changeMuted"
 					src="http://dbj.dragonn.top/static/mp/dabanjia/images/home/player-vioce.png">
 				</cover-image>
 				<cover-view class="center-icon-row">
-					<cover-image class="video-list-icon" @click="changePage"
-						src="http://dbj.dragonn.top/static/mp/dabanjia/images/home/lives-left.png">
-					</cover-image>
-					<cover-image v-for="(item,index) in liveList" :key="index" class="video-list-icon"
+					<cover-view class="video-list-icon">
+						<cover-image v-show="showLiveLeft" @click="this.currentPage--"
+							src="http://dbj.dragonn.top/static/mp/dabanjia/images/home/live-left.png">
+						</cover-image>
+					</cover-view>
+					<cover-image v-for="(item,index) in currentList" :key="index" class="video-list-icon"
 						@click="videoFill"
 						src="http://dbj.dragonn.top/static/mp/dabanjia/images/home/indicator_Selected.png">
 					</cover-image>
-					<cover-image class="video-list-icon" @click="changePage"
-						src="http://dbj.dragonn.top/static/mp/dabanjia/images/home/lives-right.png">
-					</cover-image>
+
+					<cover-view class="video-list-icon">
+						<cover-image v-show="showLiveRight" @click="this.currentPage++"
+							src="http://dbj.dragonn.top/static/mp/dabanjia/images/home/live-right.png">
+						</cover-image>
+					</cover-view>
 				</cover-view>
 				<cover-image class="video-voice" @click="videoFill"
 					src="http://dbj.dragonn.top/static/mp/dabanjia/images/home/player-big.png">
@@ -88,28 +93,50 @@
 				list: [1, 2, 3],
 				videoSrc: 'http://qiniu.hydrant.ink/1631176569963742.mp4',
 				currentVideoSrc: '',
-				liveList: []
+				liveList: [1, 2, 3,4,5,6,7,8,9],
+				currentPage: 0,
+				totalPage: 5
+			}
+		},
+		computed: {
+			currentList() {
+				console.log('!!!!')
+				return this.liveList.slice((this.currentPage*3),(this.currentPage*3)+3)
+			},
+			showLiveLeft() {
+				if (this.currentPage == 0) {
+					return false
+				} else {
+					return true
+				}
+			},
+			showLiveRight() {
+				if (this.currentPage < this.totalPage) {
+					return true
+				} else {
+					return false
+				}
 			}
 		},
 		onLoad(e) {
 			let projectId = e.projectId
-			workVideo({
-				page: 1,
-				rows: 999,
-				projectId: 0
-			}).then(e => {
-				this.list = e.list;
-			})
-			bindVideoList({projectId:0}).then(e=>{
-				if(e.length){
-					this.liveList=e.filter(e=>{
-						return e.hls != ''&&e.hls!=null
-					})
-					if(this.liveList.length){
-						this.livePreview=this.liveList[0].hls
-					}
-				}
-			})
+			// workVideo({
+			// 	page: 1,
+			// 	rows: 999,
+			// 	projectId: 0
+			// }).then(e => {
+			// 	this.list = e.list;
+			// })
+			// bindVideoList({projectId:0}).then(e=>{
+			// 	if(e.length){
+			// 		this.liveList=e.filter(e=>{
+			// 			return e.hls != ''&&e.hls!=null
+			// 		})
+			// 		if(this.liveList.length){
+			// 			this.livePreview=this.liveList[0].hls
+			// 		}
+			// 	}
+			// })
 		},
 		methods: {
 			changeMuted() {

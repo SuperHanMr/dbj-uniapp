@@ -1,5 +1,20 @@
 <template>
 	<view>
+		<view class="house" @click="changeHouse">
+
+			<image class="img" src="http://dbj.dragonn.top/static/mp/dabanjia/images/decorate/ic_location.png"></image>
+			<view class="content">
+				<view class="city">
+					{{currentHouse.locationName}}
+				</view>
+				<view class="address">
+			{{currentHouse.housingEstate}}	 	{{currentHouse.address}}
+				</view>
+				<view class="owenr">
+					业主 {{currentHouse.contactName}}
+				</view>
+			</view>
+		</view>
 		<view v-for="(item,index) in list" :key="index" class="store">
 			<view class="header">
 				{{item.title}}
@@ -16,6 +31,9 @@
 				</view>
 			</view>
 		</view>
+		<view style="height: 200rpx;">
+			
+		</view>
 		<bottom-btn btnContent="确认要货" @submit="submit"></bottom-btn>
 	</view>
 </template>
@@ -24,6 +42,9 @@
 	import {
 		goodsApply
 	} from "../../../api/decorate.js"
+	import {
+		queryEstates
+	} from "../../../api/decorate.js";
 	export default {
 		data() {
 			return {
@@ -54,16 +75,44 @@
 							sub: '本次要货：1卷'
 						}
 					]
-				}, ]
-
+				}, ],
+				currentHouse: {}
 			};
 		},
+		onShow() {
+			uni.$once("selectedHouse", (item) => {
+				this.currentHouse = item;
+			});
+		},
 		onLoad(e) {
-			
+			this.getCurrentHouse();
 		},
 		methods: {
+			changeHouse() {
+				uni.navigateTo({
+					url: "/sub-my/pages/my-house/my-house",
+				});
+			},
+			async getCurrentHouse() {
+				let houseList = await queryEstates();
+				let house = null;
+				let defaultHouse;
+				if (houseList && houseList.length) {
+					defaultHouse = houseList.find((e) => {
+						return e.defaultEstate == true;
+					});
+				}
+				if (defaultHouse) {
+					house = defaultHouse;
+				} else if (houseList.length) {
+					house = houseList[0];
+				}
+				this.currentHouse = house
+			},
 			submit() {
-				let params={creatorType:0}
+				let params = {
+					creatorType: 0
+				}
 				goodsApply().then(e => {
 
 				})
@@ -76,6 +125,49 @@
 </script>
 
 <style lang="scss" scoped>
+	.house {
+		background-color: #FFF;
+		padding: 32rpx;
+		display: flex;
+		flex-direction: row;
+		justify-content: start;
+		align-items: flex-start;
+
+		.img {
+			padding: 2rpx;
+			width: 46rpx;
+			height: 46rpx;
+			margin-right: 8rpx;
+		}
+
+		.content {
+			flex: 1;
+
+			.city {
+				line-height: 48rpx;
+				color: #999;
+				font-size: 26rpx;
+			}
+
+			.address {
+				margin-top: 6rpx;
+				font-size: 28rpx;
+				font-weight: 500;
+				color: #333333;
+				line-height: 42rpx;
+			}
+
+			.owenr {
+				margin-top: 8rpx;
+				font-size: 24rpx;
+				font-weight: 400;
+				text-align: left;
+				color: #999999;
+				line-height: 40rpx;
+			}
+		}
+	}
+
 	.store {
 		padding: 0 32rpx;
 		background-color: #FFF;
