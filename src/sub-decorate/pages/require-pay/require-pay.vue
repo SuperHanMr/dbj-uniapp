@@ -1,27 +1,27 @@
 <template>
 	<view>
-		<view v-for="(item,index) in list" :key="index" class="store">
+		<view class="store">
 			<view class="header">
-				{{item.title}}
+				{{detail.storeName}}
 			</view>
-			<view class="items" v-for="(sub,subIndex) in item.children" :key="subIndex">
-				<image class="img" src="" mode=""></image>
+			<view class="items" v-for="(sub,subIndex) in item.details" :key="subIndex">
+				<image class="img" :src="sub.imgUrl" mode=""></image>
 				<view class="content">
 					<view class="title">
 						<text class="tip"></text>
-						{{sub.title}}
+						{{sub.fullName}}
 					</view>
 					<view>
 						<view class="spec">
-							管径DN25 3.5 绿
+							{{sub.scaleProperties}}
 						</view>
 					</view>
 
 					<view class="sub-title">
-						{{sub.sub}}
+						本次要货{{sub.requireNumber}}{{sub.unit}}
 					</view>
 					<view class="price">
-						99.88/根
+						{{sub.price}}/{{sub.unit}}
 					</view>
 				</view>
 			</view>
@@ -31,7 +31,7 @@
 					运费
 				</view>
 				<view class="amount">
-					0.00
+					{{detail.freight}}
 				</view>
 			</view>
 
@@ -40,7 +40,7 @@
 					搬运费
 				</view>
 				<view class="amount">
-					0.00
+					{{detail.handlingFees}}
 				</view>
 			</view>
 		</view>
@@ -49,14 +49,14 @@
 		</view>
 		<bottom-btn :showDefaultBtn="false" bgcolor="#FFF">
 			<template v-slot:default>
-				<view class="reject-btn">
+				<view class="reject-btn" @click="onReject">
 					拒绝申请
 				</view>
 				<view style="flex: 1;">
 
 				</view>
-				<view class="agree-btn">
-					同意并支付 ¥ 460.00
+				<view class="agree-btn" @click="onConform">
+					同意 并支付 ¥ 460.00
 				</view>
 			</template>
 
@@ -65,46 +65,78 @@
 </template>
 
 <script>
+	import {
+		requireListDetail,
+		requireConfirm,
+		payFreight
+	} from '../../../api/decorate.js'
 	export default {
 		data() {
 			return {
-				list: [{
-					title: '京东',
-					children: [{
-							img: '',
-							title: '开工保护（开工后对各区域进行的全方位保护全方位保护位保护位保护位保护位）…',
-							sub: '本次要货：1卷'
-						},
-						{
-							img: '',
-							title: '开工保护（开工后对各区域进行的全方位保护位保护位保护位保护位）…',
-							sub: '本次要货：1卷'
-						}
-
-					]
-				}, {
-					title: '天猫',
-					children: [{
-							img: '',
-							title: '开工保护（开工后对各区域进行的全方位保护位保护位保护位保护位）…',
-							sub: '本次要货：1卷'
-						},
-						{
-							img: '',
-							title: '开工保护（开工后对各区域进行的全方位保护位保护位保护位保护位）…',
-							sub: '本次要货：1卷'
-						}
-					]
-				}, ]
-
+				id: '',
+				list: [],
+				detail: {}
 			};
 		},
+		computed: {
+			totalPrice() {
+				return this.detail.handlingFees + this.detail.freight
+			}
+		},
 		methods: {
+			onReject() {
+				requireConfirm({
+					requireId: this.id,
+					status: 4
+				}).then(e => {
+
+				})
+			},
+			onConform() {
+				if (!this.totalPrice) {
+					requireConfirm({
+						requireId: this.id,
+						status: 2
+					}).then(e => {
+
+					})
+				} else {
+					let openid = uni.getStorageSync("openId");
+					payFreight({
+						orderId: this.detail.orderId,
+						goodsRequireId: this.id,
+						payType: 1,
+						openid
+					}).then(e => {
+						const payInfo = e.wechatPayJsapi;
+						uni.requestPayment({
+							provider: "wxpay",
+							...payInfo,
+							success(res) {},
+							fail(e) {
+								console.log(e);
+							},
+						});
+					})
+				}
+
+			},
+			getDetail() {
+				requireListDetail({
+					id: this.id
+				}).then(e => {
+					this.detail = e
+				})
+			},
 			submit() {
 				uni.redirectTo({
 					url: '../require-success/require-success'
 				})
 			}
+		},
+		onLoad(e) {
+			this.id = getApp().globalData.decorateMsg.id
+			this.getDetail()
 		}
 	}
 </script>

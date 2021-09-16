@@ -62,26 +62,7 @@
 				
 		</view>
 		
-		<view class="footer1" v-if="waitPay">
-			<view class="has-pay">
-				<text style="margin-right: 12rpx;">已付款</text>
-				<text >
-					<text>￥</text>
-					<text style="font-size: 40rpx;" >{{handlePrice(totalActualIncomeAmount)[0]}}.</text>
-					<text>{{handlePrice(totalActualIncomeAmount)[1]}}</text>
-				</text>	
-			</view>
-			<view>
-				<text>需付款</text>
-				<text style="color: #FF3347;">
-					<text>￥</text>
-					<text style="font-size: 40rpx;" >{{handlePrice(totalActualIncomeAmount)[0]}}.</text>
-					<text>{{handlePrice(totalActualIncomeAmount)[1]}}</text>
-				</text>	
-			</view>
-		</view>
-		
-		<view class="footer" v-else>
+		<view class="footer">
 			<text style="margin-right: 12rpx;">实付</text>
 			<text style="color: #FF3347;">
 				<text>￥</text>
@@ -89,7 +70,6 @@
 				<text>{{handlePrice(totalActualIncomeAmount)[1]}}</text>
 			</text>	
 		</view>
-		
 	
 	</view>
 	
@@ -124,10 +104,6 @@
 				type:Number,
 				default:0,
 			},
-			waitPay:{
-				type:Boolean,
-				default:false
-			}
 		
 		},
 		
@@ -198,18 +174,6 @@
 			color: #333333;
 			font-size: 26rpx;
 			text-align: right;
-		}
-		.footer1{
-			padding: 24rpx 32rpx;
-			display: flex;
-			flex-flow: row nowrap;
-			align-items: center;
-			justify-content: flex-end;
-			font-size: 26rpx;
-			.has-pay{
-				color: #999999;
-				margin-right: 40rpx;
-			}
 		}
 	}
 </style>

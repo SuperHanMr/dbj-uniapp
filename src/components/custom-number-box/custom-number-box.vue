@@ -62,12 +62,13 @@
 			};
 		},
 		watch: {
-			value(val) {
+			value(val,pre) {
+				
 				this.inputValue = +val;
 			},
 			modelValue(val) {
 				this.inputValue = +val;
-			}
+			},
 		},
 		created() {
 			if (this.value === 1) {
@@ -122,11 +123,9 @@
 				return scale;
 			},
 			_onBlur(event) {
-				
-				this.$emit('blur', event)
 				let value = event.detail.value;
-				if (!value) {
-					// this.inputValue = 0;
+				if (!value||isNaN(value)) {
+					this.inputValue = this.max;
 					return;
 				}
 				value = +value;
@@ -137,6 +136,14 @@
 				}
 				const scale = this._getDecimalScale();
 				this.inputValue = value.toFixed(String(scale).length - 1);
+				if(this.inputValue>this.max){
+					this.inputValue=this.max;
+				}
+				if(this.inputValue<this.min){
+					this.inputValue=this.min
+				}
+				console.log(this.inputValue)
+				
 				this.$emit("change", +this.inputValue);
 				this.$emit("input", +this.inputValue);
 			},

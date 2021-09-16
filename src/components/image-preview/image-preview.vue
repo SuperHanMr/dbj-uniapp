@@ -63,7 +63,7 @@
     },
     computed:{
       maxHeight(){
-        return this.imgHeight*this.row+this.lineSpace*(this.row-1)+'rpx'
+        return this.imgHeight*this.row+this.lineSpace*this.row+'rpx'
       }
     },
     methods:{

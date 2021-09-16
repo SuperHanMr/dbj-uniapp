@@ -1,47 +1,24 @@
 <template>
   <view class="current-cost">
-
-    <view class="charts-image"></view>
-    <view class="cost-list">
-      <view class="cost-item">
-        <view class="item-top">
-          <view class="item-top-left">
-            <image class="icon"></image>
-            <text class="title">量房</text>
-            <text class="tip">占比20%</text>
-          </view>
-          <view class="item-top-right">
-            <text>¥</text>66.00
-          </view>
-        </view>
-        <view class="item-content">
-          <view class="item-content-left">
-            <text class="line"></text>
-            <text class="text">人工(中级)</text>
-          </view>
-          <view class="item-content-right">
-            ¥
-            <text>66.00</text>
-          </view>
-        </view>
-      </view>
-    </view>
+    
+    <web-view :src="url"></web-view>
   </view>
 </template>
 
 <script>
-  import currentCostItem from '../../components/current-costitem/current-costitem.vue'
   export default {
-    comments: {
-      currentCostItem
-    },
     data() {
       return {
-
+        url:'/app-pages/actuarial/index.html?serveId='
       }
     },
+    onLoad(e){
+      let id = e.id || getApp().globalData.decorateMsg.reportId
+      let cost = e.isCost||false
+      this.url = process.env.VUE_APP_BASE_H5+this.url + id + '&isCost=' + e.isCost +'&token='+getApp().globalData.token
+    },
     methods: {
-
+      
     }
   }
 </script>

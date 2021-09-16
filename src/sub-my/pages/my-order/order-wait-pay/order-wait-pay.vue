@@ -3,6 +3,7 @@
    <view class="order-container"  :style="{paddingBottom:112+containerBottom+'rpx'}">
 			<view class="order-status">
 				<view class="backgroundStyle" />
+				
 				<view class="status">
 						<image
 							src="../../../static/ic_status_wait_pay@2x.png"
@@ -14,12 +15,12 @@
 					<view class="time">
 						<text style="margin-right: 16rpx;">剩余支付时间</text>
 						<uni-countdown 
-							color="#FFFFFF" 
-							background-color="#FAAB3B" 
-							:showDay="false"   
-							:hour="formatTime(orderInfo.remainTime)[0]" 
-							:minute="formatTime(orderInfo.remainTime)[1]" 
-							:second="formatTime(orderInfo.remainTime)[2]"
+						color="#FFFFFF" 
+						background-color="#FAAB3B" 
+						:showDay="false"   
+						:hour="formatTime(orderInfo.remainTime)[0]" 
+						:minute="formatTime(orderInfo.remainTime)[1]" 
+						:second="formatTime(orderInfo.remainTime)[2]"
 						/>
 					</view>
 			 
@@ -335,6 +336,8 @@ export default {
         font-size: 24rpx;
         font-weight: 400;
         display: flex;
+        align-items: center;
+				display: flex;
 				flex-flow: row nowrap;
 				align-items: center;
       }

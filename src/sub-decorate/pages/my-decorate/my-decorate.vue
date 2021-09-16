@@ -35,7 +35,6 @@
         <serviceDismantle id="d6" v-if="tab.nodeType>5"></serviceDismantle>
       </swiper-item>
     </swiper>
-    
   </view>
 </template>
 

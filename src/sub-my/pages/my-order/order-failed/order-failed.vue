@@ -6,55 +6,30 @@
 				<view class="backgroundStyle" />
 				<view class="status">
 					<image src="@/static/order/ic_order_failed@2x.png" mode=""></image>
-					<text v-if="status == 3 || status == 4">退款关闭</text>
-					<text v-if="status == 5">退款失败</text>
+					<text>退款关闭</text>
 				</view>
-				<text class="time">{{refundInfo.createTime | formaDate}}</text>
+				<text class="time">{{refundInfo.createTime}}</text>
 			</view>
 
 			<view class="order-header">
 				<image src="@/static/order/ic_failed@2x.png" mode=""></image>
-				<view class="cancel-text" v-if="status == 3">
-					商家拒绝了您的申请，如有问题未解决，您可以重新申请
-				</view>
-				
 				<view class="cancel-text" v-if="status == 4">
 					您已取消了本次退款，如有问题未解决，您可以重新申请
 				</view>
-				
-				<view class="cancel-text failed-text" v-if="status == 5">
-					您的退款账户存在异常，您可联系客服或者重新发起申请
+				<view class="cancel-text" v-if="status == 3">
+					商家拒绝了您的申请，如有问题未解决，您可以重新申请
 				</view>
 			</view>
 
-			<view class="body1" v-for="item in refundInfo.detailAppVOS" :key="item.id">
-					<order-item :dataList="item"></order-item>
+			<view class="body1">
+					<order-item :dataList="refundInfo.detailAppVOS"></order-item>
 			</view>
 
 			<order-refund-info :refundInfo="refundInfo"></order-refund-info>
-			
-			
-			
-			<view
-			  class="contact-customer-Reapply"
-			  :style="{paddingBottom:systemBottom,height:systemHeight}"
-			>
-			  <view
-					v-if="status == 3 || status == 5 "
-			    class="contact-customer"
-			    @click="contactCustomer()"
-			  >
-			    联系客服
-			  </view>
-			  <view
-			    class="Reapply"
-			    @click="toApplayForRefund(refundInfo)"
-			  >
-			    重新申请
-			  </view>
+
+			<view class="contact-service" v-if="status == 3">
+				联系客服
 			</view>
-			
-			
 
 		</view>
 		
@@ -101,8 +76,7 @@
 			<order-info 
 				:orderNo="orderInfo.orderNo"
 				:createTime="orderInfo.createTime"
-				:cancelTime="orderInfo.cancelTime"
-				:showCancelTime="true"
+				:payTime="orderInfo.payTime"
 			/>
 
     </view>
@@ -111,73 +85,62 @@
 </template>
 
 <script>
-	import {formaDate} from "@/utils/common.js"
 	import {getRefundDetail,getOrderDetail} from "@/api/order.js"
 	export default {
-		
-		filters:{
-			formaDate
-		},
-		data() {
-			return {
-				type:"close",//type:refund退款详情   close是订单关闭
-				id:-1,
-				status:"",
-				
-				refundInfo:{},
-				orderInfo:{},
-				
-				systemBottom: "",
-			};
-		},
 	
-		mounted(e) {
-			const menuButtonInfo = uni.getMenuButtonBoundingClientRect();
-			this.systemBottom = menuButtonInfo.bottom + "rpx";
-			console.log(this.systemBottom);
-		},
-	
-		onLoad(e){
-			this.type = e.type,
-			this.id = Number(e.id),
-			this.status =Number(e.status)
-			if(this.type == 'refund'){//退款成功页面
-				this.refundDetail()
-			}
-			if(this.type == 'close'){//订单关闭页面
-				this.orderDetail()
-			}
-		},
-	
-		methods: {
-			orderDetail(){
-				console.log("订单完成页面")
-				getOrderDetail({id:this.id}).then(e=>{
-					this.orderInfo = e
-					console.log("获取详情数据data=",this.orderInfo)
-				})
-			},
-			refundDetail(){
-				getRefundDetail({id:this.id}).then(e=>{
-					this.refundInfo = e
-					console.log("获取详情数据data=",this.refundInfo,)
-				})
-				
-			},
+  data() {
+    return {
+			type:"close",//type:refund退款详情   close是订单关闭
+			id:-1,
+			status:"",
 			
-			// 申请退款
-			toApplayForRefund(data) {
-				wx.setStorageSync("wholeRefundOrderInfo", JSON.stringify(data));
-				uni.navigateTo({
-					url: `/sub-my/pages/apply-for-refund/apply-for-refund?id=${this.id}&type=whole&status=1`,
-				});
-			},
-			// 联系客服
-			contactCustomer(){
-				console.log("联系客服")
-			}
+			refundInfo:{},
+			orderInfo:{},
+			
+			systemBottom: "",
+		};
+  },
+	
+	mounted(e) {
+		const menuButtonInfo = uni.getMenuButtonBoundingClientRect();
+		this.systemBottom = menuButtonInfo.bottom + "rpx";
+		console.log(this.systemBottom);
+	},
+	
+	onLoad(e){
+		this.type = e.type,
+		this.id = Number(e.id),
+		this.status =Number(e.status)
+		if(this.type == 'refund'){//退款成功页面
+			this.refundDetail()
 		}
-	};
+		if(this.type == 'close'){//订单关闭页面
+			this.orderDetail()
+		}
+	},
+	
+  methods: {
+		orderDetail(){
+			console.log("订单完成页面")
+			getOrderDetail({id:this.id}).then(e=>{
+				this.orderInfo = e
+				console.log("获取详情数据data=",this.orderInfo)
+			})
+		},
+		refundDetail(){
+			getRefundDetail({id:this.id}).then(e=>{
+				this.refundInfo = e
+				console.log("获取详情数据data=",this.refundInfo,)
+			})
+			
+		},
+		
+			
+		
+		
+	},
+	
+};
 </script>
 
 <style lang="scss" scoped>
@@ -252,9 +215,6 @@
         word-wrap: break-word;
         word-break: break-all;
       }
-			.failed-text{
-				color: #FF3347 !important;
-			}
     }
 
     .body1 {
@@ -301,45 +261,6 @@
       text-align: center;
       box-sizing: border-box;
     }
-  }
-}
-
-// 底部 联系客服 及重新申请按钮
-.contact-customer-Reapply {
-  position: fixed;
-  bottom: 0;
-  width: 686rpx;
-  background-color: #ffffff;
-  display: flex;
-  flex-flow: row nowrap;
-  align-items: center;
-  justify-content: flex-end;
-  padding: 12rpx 32rpx;
-  .Reapply {
-		margin-left: 32rpx;
-    width: 140rpx;
-    height: 56rpx;
-    line-height: 56rpx;
-    box-sizing: border-box;
-    background: linear-gradient(135deg, #36d9cd 0%, #28c6c6 100%);
-    border-radius: 8rpx;
-    font-size: 24rpx;
-    text-align: center;
-    font-weight: 400;
-    color: #ffffff;
-  }
-  .contact-customer {
-    margin: 18rpx 0;
-    width: 140rpx;
-		height: 56rpx;
-		line-height: 56rpx;
-    box-sizing: border-box;
-    text-align: center;
-    background: #ffffff;
-    border-radius: 8rpx;
-    color: #111111;
-    font-size: 24rpx;
-    border: 2rpx solid #eaeaea;
   }
 }
 </style>
