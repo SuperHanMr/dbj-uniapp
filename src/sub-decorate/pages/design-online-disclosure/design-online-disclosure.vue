@@ -22,16 +22,21 @@
     serverInfo,
     confirmStageDeliver
   } from "../../../api/decorate.js"
-  import { calendarFormat } from "../../../utils/date.js"
+  import {
+    calendarFormat
+  } from "../../../utils/date.js"
   export default {
     data() {
       return {
         dataDetail: {},
-        serverId: null
+        serveId: null
       }
     },
     onLoad(option) {
-      this.serverId = option.serverId
+      const {
+        serveId
+      } = getApp().globalData.decorateMsg
+      this.serveId = option.serveId
     },
     onShow() {
       this.queryServerInfo()
@@ -40,7 +45,7 @@
       dateFilter(v) {
         return calendarFormat(v, "YYYY-MM-DD HH:mm:ss")
       }
-      
+
     },
     methods: {
       confirm() {
@@ -50,7 +55,7 @@
           confirmText: "确定",
           success: (res) => {
             if (res.confirm) {
-              confirmStageDeliver(this.serverId).then(data => {
+              confirmStageDeliver(this.serveId).then(data => {
                 console.log(data)
                 wx.showToast({
                   title: "已提交确认"
@@ -63,7 +68,7 @@
         })
       },
       queryServerInfo() {
-        serverInfo(this.serverId).then(data => {
+        serverInfo(this.serveId).then(data => {
           this.dataDetail = data
         })
       }
