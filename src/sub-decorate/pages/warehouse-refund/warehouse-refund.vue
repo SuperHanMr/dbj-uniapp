@@ -1,6 +1,6 @@
 <template>
 	<view class="refund">
-		<warehouse-item  :showSubtitle="false" :showBtns="false" :item="data" :isEdit="true" @numChange="onNumChange"></warehouse-item>
+		<warehouse-item minInput="0.01" :showSubtitle="false" :showBtns="false" :item="data" :isEdit="type!=0" @numChange="onNumChange"></warehouse-item>
 		<view class="back">
 			<view class="back-res">
 				<view class="back-res-row">
@@ -27,7 +27,7 @@
 					<view style="flex:1">
 					</view>
 					<view class="">
-						<input style="color: #FF3347;font-size: 38rpx;width: 200rpx;text-align: end;" type="number"
+						<input style="color: #FF3347;width: 200rpx;text-align: end;" type="number"
 							placeholder="请输入金额" :value="num" />
 					</view>
 				</view>
@@ -79,6 +79,8 @@
 				reasonList: [],
 				reasonValue: "",
 				reasonName: "",
+				refundList:[],
+				refundType:0
 			};
 		},
 		onShow() {
@@ -89,6 +91,8 @@
 			let title;
 			this.type = e.type;
 			if (e.type == 0) {
+				this.refundType=e.refundType;
+				console.log(this.refundType)
 				title = '仅退款(已收货)'
 			} else {
 				title = '仅退款(退库存)'
@@ -102,6 +106,11 @@
 		},
 		methods: {
 			onNumChange(e) {
+				let item={}
+				item.returnNumber=e.num;
+				
+				this.refundList.push(item);
+				
 				console.log(e);
 			},
 			getRefundReasonList() {
@@ -115,14 +124,15 @@
 				})
 			},
 			submitRefund() {
-				let params = {}
-				params.refundAmount = this.num * 100
-				params.remark = this.remark
-				if (this.type == 1) {
-					goodsBack()
-				} else {
-					goodsRefund()
-				}
+				console.log(this.refundList);
+				// let params = {}
+				// params.refundAmount = this.num * 100
+				// params.remark = this.remark
+				// if (this.type == 1) {
+				// 	goodsBack()
+				// } else {
+				// 	goodsRefund()
+				// }
 			},
 			selectRes() {
 				uni.showActionSheet({

@@ -169,7 +169,7 @@
 				}
 				getApp().globalData.naviData = params;
 				uni.navigateTo({
-					url: '../warehouse-refund/warehouse-refund?type=0',
+					url: '../warehouse-refund/warehouse-refund?type=0&refundType=2',
 				})
 			},
 			toBackGoodItem(item) {
@@ -189,17 +189,12 @@
 			},
 			applyRefund() {
 				let vm = this
-				uni.showActionSheet({
-					itemList: ['仅退款(已收货)', '仅退款(退库存)'],
-					success: function(res) {
 
-						getApp().globalData.naviData = vm.res;
-						uni.navigateTo({
-							url: `../warehouse-refund/warehouse-refund?type=${res.tapIndex}&id=${vm.id}`
-						})
-					},
-					fail: function(res) {}
-				});
+				getApp().globalData.naviData = vm.res;
+				uni.navigateTo({
+					url: `../warehouse-refund/warehouse-refund?type=0&refundType=1`
+				})
+
 			},
 			onConfirmGoods() {
 				let vm = this;

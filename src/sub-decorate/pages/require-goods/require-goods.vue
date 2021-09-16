@@ -26,9 +26,9 @@
 			</scroll-view>
 			<scroll-view class="nav-right" scroll-y="true">
 				<view class="right-view" v-for="(menu3, index3) in goodsList" :key="index3">
-					<text class="menu3-title">{{menu3.name}}</text>
+					<text class="menu3-title">{{menu3.supplierName}}</text>
 					<scroll-view class="right-card" scroll-y="true">
-						<view v-for="(detail, detailK) in menu3['children']" :key="detailK">
+						<view v-for="(detail, detailK) in menu3['stockAppVOS']" :key="detailK">
 							<goods-item :cartList="cartList" :item="detail" @change="onChange"></goods-item>
 						</view>
 					</scroll-view>
@@ -98,16 +98,7 @@
 				scrollInto: "",
 				leftList: [],
 				categoryActive: 0,
-				goodsList: [{
-					name: '京东自营',
-					children: [{
-						imgSrc: '',
-						title: '奥术大师大所大所奥术大师大所大所奥术大师大所大所奥术大师大所',
-						sub: '已购买2袋 剩余1000袋',
-						count: 0,
-						id: 1
-					}]
-				}],
+				goodsList: [],
 				systemBottom: 0,
 				menuBottom: 0,
 				lastId: '',
@@ -125,8 +116,7 @@
 		},
 		watch: {
 			cartList: {
-				handler(now, pre) {
-				},
+				handler(now, pre) {},
 				deep: true
 			}
 		},
@@ -140,9 +130,9 @@
 			this.getLeftList();
 		},
 		methods: {
-			toHistory(){
+			toHistory() {
 				uni.navigateTo({
-					url:'../require-history/require-history'
+					url: '../require-history/require-history'
 				})
 			},
 			getLeftList() {
@@ -151,8 +141,8 @@
 					workType: 0
 				}).then(e => {
 					this.leftList = e;
-					if(this.leftList.length){
-						this.currentCategoryId=this.leftList[0].categoryId
+					if (this.leftList.length) {
+						this.currentCategoryId = this.leftList[0].categoryId
 					}
 					this.getRightItems()
 				})
@@ -190,6 +180,7 @@
 			categoryClickMain(item, index) {
 				this.currentCategoryId = item.categoryId;
 				this.categoryActive = index;
+				this.getRightItems()
 			},
 			changeFromCart(item, index) {
 				console.log(item);
