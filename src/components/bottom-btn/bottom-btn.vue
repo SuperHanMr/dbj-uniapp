@@ -1,62 +1,65 @@
 <template>
-  <view
-    class="bottom-btn"
-    :style="{paddingBottom:systemBottom,height:systemHeight}"
-  >
-    <button
-      class="add-btn"
-      @click="submit"
-    >{{btnContent}}</button>
-  </view>
+	<view class="bottom-btn" :style="{paddingBottom:systemBottom,backgroundColor:bgcolor}">
+		<button v-if="showDefaultBtn" class="add-btn" @click="submit">{{btnContent}}</button>
+		<slot  ></slot>
+	</view>
 </template>
 
 <script>
-export default {
-  name: "bottom-btn",
-  props: {
-    num: 0,
-    btnContent: "",
-  },
-  data() {
-    return {
-      systemBottom: "",
-      systemHeight: "",
-    };
-  },
-  mounted(e) {
-    const menuButtonInfo = uni.getMenuButtonBoundingClientRect();
-    this.systemBottom = menuButtonInfo.bottom + "rpx";
-    this.systemHeight = menuButtonInfo.bottom + this.num + "rpx";
-    console.log(this.systemBottom);
-  },
-  methods: {
-    submit() {
-      this.$emit("submit");
-    },
-  },
-};
+	export default {
+		name: "bottom-btn",
+		props: {
+			btnContent:{
+				type:String,
+				default:'提交'
+			},
+			bgcolor: {
+        type:String,
+        default:"#fff"
+      },
+			showDefaultBtn: {
+				type: Boolean,
+				default: true
+			}
+		},
+		data() {
+			return {
+				systemBottom: "",
+				systemHeight: "",
+			};
+		},
+		onLoad(e) {
+			this.systemBottom = 20 + "rpx";
+			console.log(this.systemBottom);
+		},
+		methods: {
+			submit() {
+				this.$emit("submit");
+			},
+		},
+	};
 </script>
 
 <style lang="scss">
-.bottom-btn {
-  width: 100%;
-  position: fixed;
-  bottom: 0;
-  height: 136rpx;
-  display: flex;
-  flex-direction: row;
-  justify-content: center;
-  align-items: center;
-  .add-btn {
-    // margin-top: 20rpx;
-    height: 88rpx;
-    background: linear-gradient(135deg, #53d5cc, #4fc9c9);
-    border-radius: 12rpx;
-    width: 686rpx;
-    line-height: 88rpx;
-    text-align: center;
-    color: #ffffff;
-    font-size: 32rpx;
-  }
-}
+	.bottom-btn {
+		width: 100%;
+		position: fixed;
+		bottom: 0;
+		height: 136rpx; 
+		display: flex;
+		flex-direction: row;
+		justify-content: center;
+		align-items: center;
+		.add-btn {
+			// margin-top: 20rpx;
+			height: 88rpx;
+			background: linear-gradient(135deg, #53d5cc, #4fc9c9);
+			border-radius: 12rpx;
+			width: 686rpx;
+			line-height: 88rpx;
+			text-align: center;
+			color: #ffffff;
+			font-size: 32rpx;
+		}
+	}
 </style>

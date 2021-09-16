@@ -1,6 +1,6 @@
 <template>
 	<view class="decorate">
-		<view class="waterfall-box h-flex-x h-flex-2">
+		<view class="waterfall-box h-flex-x h-flex-2" v-if="!leftList.length == 0 && !rightList.length == 0">
 			<view>
 				<waterfall 
 					v-for="(item,index) in leftList" 
@@ -9,7 +9,7 @@
 					tag="left"
 					:index="index"
 					@height="onHeight"
-					@click="onClick(index, 'left')"
+					@click="onClick(index, '1')"
 				></waterfall>
 			</view>
 			<view>
@@ -18,10 +18,16 @@
 					:key="index" 
 					:params="item" 
 					@height="onHeight"
-					@click="onClick(index, 'right')"
+					@click="onClick(index, '1')"
 					tag="right"
 					:index="index"
 				></waterfall>
+			</view>
+		</view>
+		<view class="no-info" v-if="leftList.length == 0 && rightList.length == 0">
+			<image src="/static/images/real-case/pic_empty.png" mode=""></image>
+			<view class="text">
+				敬请期待，装修案例即将呈现
 			</view>
 		</view>
 	</view>
@@ -97,5 +103,21 @@
 		text-align: center;
 		color: #999;
 		font-size: 24rpx;
+	}
+	
+	.no-info{
+		width: 100%;
+		image{
+			width: 100%;
+			height: 640rpx;
+		}
+		.text{
+			margin-top: 24rpx;
+			text-align: center;
+			font-size: 28rpx;
+			font-family: PingFangSC, PingFangSC-Regular;
+			font-weight: 400;
+			color: #999999;
+		}
 	}
 </style>

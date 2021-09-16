@@ -7,25 +7,25 @@
       <conversation-item
         :conversation="cstServConv">
         <template #avatar>
-          <image class="im-avatar-image" src="../../../static/images/message/ic_customer_service@2x.png"></image>
+          <image class="im-avatar-image" src="https://ali-image.dabanjia.com/static/mp/dabanjia/images/message/ic_customer_service@2x.png"></image>
         </template>
        </conversation-item>
        <conversation-item
          :conversation="sysConv">
          <template #avatar>
-           <image class="im-avatar-image" src="../../../static/images/message/ic_system@2x.png"></image>
+           <image class="im-avatar-image" src="https://ali-image.dabanjia.com/static/mp/dabanjia/images/message/ic_system@2x.png"></image>
          </template>
         </conversation-item>
         <conversation-item
           :conversation="itaConv">
           <template #avatar>
-            <image class="im-avatar-image" src="../../../static/images/message/ic_interaction@2x.png"></image>
+            <image class="im-avatar-image" src="https://ali-image.dabanjia.com/static/mp/dabanjia/images/message/ic_interaction@2x.png"></image>
           </template>
          </conversation-item>
     </view>
     <view class="im-chat-message-list">
       <conversation-item 
-        v-for="(conv,index) in conversationList" 
+        v-for="(conv,index) in allConvList" 
         :key="conv.conversationID" 
         :conversation="conv"
         >
@@ -35,7 +35,7 @@
 </template>
 
 <script>
-  import { addListener, removeListener } from "@/utils/tim.js"
+  import TIM from 'tim-wx-sdk'
   import ConversationItem from "./conversation-item.vue";
   import { mapState, mapGetters } from "vuex";
   export default {
@@ -52,22 +52,35 @@
         sysConv: (state) => state.message.sysConv,
         itaConv: (state) => state.message.itaConv,
         conversationList: (state) => state.message.conversationList,
+        chatGroupList: (state) => state.message.chatGroupList,
       }),
+      allConvList() {
+        let convIdMap = {};
+        let groupMap = this.chatGroupList.reduce((map, group) => {
+          let convId = "GROUP" + group.imGroupId;
+          map[convId] = group;
+          return map;
+        }, {});
+        let list = this.conversationList.map(conv => {
+          convIdMap[conv.conversationID] = true;
+          return {
+            ...conv,
+            groupDB: groupMap[conv.conversationID]
+          }
+        })
+        let list2 = this.chatGroupList.filter(group => !convIdMap["GROUP"+group.imGroupId]).map((group) => {
+          return {
+            type: TIM.TYPES.CONV_GROUP,
+            conversationID: "GROUP" + group.imGroupId,
+            groupDB: group,
+          }
+        })
+        return list.concat(list2);
+      }
     },
     mounted() {
-      let userId = "user1";
-      this.$store.dispatch("loginIM", userId);
-      this.$store.dispatch("requestConversationList");
-      addListener("CONVERSATION_LIST_UPDATED", this.onUpdateConversationList);
-      this.$once("hook:beforeDestroy", () => {
-        removeListener("CONVERSATION_LIST_UPDATED", this.onUpdateConversationList);
-      })
     },
     methods: {
-      onUpdateConversationList(event) {
-        let conversationList = event.data || [];
-        this.$store.commit("updateConversationList", conversationList);
-      }
     }
   }
 </script>

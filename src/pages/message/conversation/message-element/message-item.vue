@@ -2,25 +2,34 @@
   <text-element 
     v-if="message.type === TIM.TYPES.MSG_TEXT" 
     :message="message" 
-    :is-new="isNew"
+  />
+  <sound-element
+    v-else-if="message.type === TIM.TYPES.MSG_AUDIO"
+    :message="message"
   />
   <image-element 
     v-else-if="message.type === TIM.TYPES.MSG_CUSTOM && payloadData.type === 'img_message'"
     :message="message" 
-    :payload-data="payloadData"
   />
   <video-element
     v-else-if="message.type === TIM.TYPES.MSG_CUSTOM && payloadData.type === 'video_message'"
-    :message="message" 
-    :payload-data="payloadData"
+    :message="message"
+  />
+  <card-template 
+    v-else-if="message.type === TIM.TYPES.MSG_CUSTOM && template.template === 'card'"
+    :template="template"
+    :message="message"
   />
 </template>
 
 <script>
+  import MessageTemplate from "@/utils/message-template.json";
   import TIM from "tim-wx-sdk";
   import TextElement from "./text-element.vue";
   import ImageElement from "./image-element.vue";
   import VideoElement from "./video-element.vue";
+  import SoundElement from "./sound-element.vue";
+  import CardTemplate from "./template/card-tpl.vue"
   export default {
     name: "MessageItem",
     props: {
@@ -35,29 +44,19 @@
     components: {
       TextElement,
       ImageElement,
-      VideoElement
-    },
-    data() {
-      return {
-        TIM: TIM
-      }
+      VideoElement,
+      SoundElement,
+      CardTemplate
     },
     computed: {
-      payload() {
-        if (!this.message) {
-          return {};
-        }
-        return this.message.payload;
+      TIM() {
+        return TIM;
       },
       payloadData() {
-        if (this.message.type === TIM.TYPES.MSG_CUSTOM) {
-          try {
-            return JSON.parse(this.payload.data);
-          } catch (e) {
-            console.error(e);
-          }
-        }
-        return {};
+        return this.message.payloadData || {};
+      },
+      template() {
+        return MessageTemplate[this.payloadData.type] || {};
       }
     }
   }

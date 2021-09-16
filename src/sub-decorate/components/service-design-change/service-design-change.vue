@@ -1,0 +1,106 @@
+<template>
+  <view class="service-design-change">
+    <view class="card-top">
+      <view class="title">
+        更换设计类型
+      </view>
+      <image></image>
+    </view>
+    <view class="card-list">
+      <scroll-view id="tab-bar" class="scroll-h" scroll-y="true" :show-scrollbar="false">
+        <view class="card-item" v-for="item of list" :key='item.severId' @click="chooseItem(item)">
+          <view class="card-item-left">
+            <image src="" mode=""></image>
+            <view :class="{isActive:currentId===item.severId}">{{item.serveName}}（{{item.userName}}）{{currentId}}</view>
+          </view>
+          <image class="choose-icon" v-if="currentId===item.severId"></image>
+        </view>
+      </scroll-view>
+    </view>
+  </view>
+</template>
+
+<script>
+  export default{
+    props:{
+      currentId:0,
+      list:[]
+    },
+    data(){
+      return{
+        
+      }
+    },
+    methods:{
+      chooseItem(e){
+        this.$emit('chooseItem',e)
+      }
+    }
+  }
+</script>
+
+<style lang="scss" scoped>
+  .service-design-change{
+    height: 666rpx;
+    background: #ffffff;
+    border-radius: 16px 16px 0px 0px;
+    
+    .card-top{
+      height: 104rpx;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      // padding: 0 16rpx;
+      border: 1px solid #f2f2f2;
+      position: relative;
+      border-radius: 16px 16px 0px 0px;
+      .title{
+        font-size: 32rpx;
+        color: #333;
+        font-weight: 500;
+      }
+      image{
+        width: 80rpx;
+        height: 80rpx;
+        position: absolute;
+        right: 16rpx;
+        background-color: #eee;
+      }
+    }
+    .card-list{
+      padding: 0 32rpx;
+    }
+    .scroll-h{
+      height: 526rpx;
+    }
+    .card-item{
+      height: 102rpx;
+      border-bottom: 1px solid #F4F4F4;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      .card-item-left{
+        display: flex;
+        image{
+          width: 32rpx;
+          height: 32rpx;
+          margin-right: 16rpx;
+          background-color: #eee;
+        }
+        view{
+          font-size: 28rpx;
+          font-weight: 400;
+          color: #333;
+        }
+        .isActive{
+          color: #00BFB6;
+        }
+      }
+      .choose-icon{
+        width: 48rpx;
+        height: 48rpx;
+        background-color: #eee;
+      }
+    }
+  }
+</style>

@@ -1,6 +1,6 @@
 <template>
-  <message-bubble :message="message" :payload-data="payloadData" class="image-message">
-    <image class="image-element" :src="url" />
+  <message-bubble :message="message" class="image-message">
+    <image class="image-element" :src="url" @click="handlePreview" />
   </message-bubble>
 </template>
 
@@ -17,14 +17,13 @@ export default {
       type: Object,
       required: true,
     },
-    payloadData: {
-      type: Object,
-      required: true,
-    }
   },
   computed: {
     isMine() {
       return this.message.flow === "out";
+    },
+    payloadData() {
+      return this.message.payloadData;
     },
     url() {
       let url = this.payloadData.fileUrl;
@@ -35,6 +34,9 @@ export default {
     },
   },
   methods: {
+    handlePreview() {
+      this.$store.dispatch("preivewMessageImage", { url: this.payloadData.fileUrl });
+    }
   },
 };
 </script>

@@ -1,21 +1,19 @@
 <template>
 	<view>
 		<custom-navbar title="首页" :opacity="scrollTop/100" :showBack="false">
-			<slot-one>
+			<template v-slot:back>
 				<view @click="toCity">
 					{{citydata}}
 				</view>
-			</slot-one>
+			</template>
 		</custom-navbar>
 		<scroll-view class="content" scroll-y="true" @scroll="onScroll" @scrolltolower="onLoadMore">
-			<view style="margin-top: 300rpx;" class="" @click="toPay">
-				调起支付
-			</view>
 			<view style="margin-top: 300rpx;" class="" @click="toFriends">
 				去亲友团
 			</view>
 			<button style="width: 50%;margin-top: 20rpx;" type="default" @click="toNextPage">去封装好的列表页</button>
 			<button style="width: 50%;margin-top: 20rpx;" type="default" @click="toCalebdar">去日历</button>
+			<button style="width: 50%;margin-top: 20rpx;" type="default" @click="toLiveDecorate">去装修现场</button>
 			<swiper class="banner-content" :indicator-dots="true" :autoplay="true" interval="2000" duration="500"
 				:circular="true">
 				<swiper-item v-for="(item,index) in bannerList" :key="index">
@@ -50,7 +48,7 @@
 	} from "../../../api/decorate.js";
 	import {
 		getAdcodeFromAreaId
-	} from '../../../utils/cityData.js'
+	} from "../../../utils/cityData.js";
 	export default {
 		data() {
 			return {
@@ -71,50 +69,46 @@
 		},
 		onLoad() {
 			let defaultHouse = {
-				name: '北京市朝阳区',
+				name: "北京市朝阳区",
 				provinceId: 1,
 				cityId: 36,
 				areaId: 41,
 			};
-			uni.setStorageSync(
-				'currentHouse',
-				JSON.stringify(defaultHouse)
-			);
+			uni.setStorageSync("currentHouse", JSON.stringify(defaultHouse));
 			this.citydata = defaultHouse.name;
 
 			this.getHomeList();
 		},
 		onShow() {
-			uni.$once('selectedHouse', (item) => {
-				this.citydata = item.locationName;
-				uni.setStorageSync(
-					'currentHouse',
-					JSON.stringify(item)
-				);
+			uni.$once("selectedHouse", (item) => {
+				this.citydata = item.cityName + item.areaName;
+				uni.setStorageSync("currentHouse", JSON.stringify(item));
 			});
 			this.reloadData();
 		},
 		methods: {
+			toLiveDecorate() {
+				uni.navigateTo({
+					url: "/sub-home/pages/lives-decorate/lives-decorate",
+				});
+			},
 			toPay() {
-				let openId = uni.getStorageSync('openId');
+				let openId = uni.getStorageSync("openId");
 				orderPay({
 					orderId: 109,
 					payType: 1,
-					openid: openId
-				}).then(e => {
+					openid: openId,
+				}).then((e) => {
 					const payInfo = e.wechatPayJsapi;
 					uni.requestPayment({
-						"provider": "wxpay",
-						"orderInfo": payInfo,
-						success(res) {
-							console.log('@@@@@@@');
-							console.log(res);
-						},
+						provider: "wxpay",
+						...payInfo,
+						success(res) {},
 						fail(e) {
 							console.log(e);
-						}
-					})
-				})
+						},
+					});
+				});
 			},
 			toCalebdar() {
 				uni.navigateTo({
@@ -141,20 +135,12 @@
 					url: "../../common/webview/webview?url=" + encodeURIComponent(url),
 				});
 			},
-			async toFriends() {
-				let list = await queryEstates();
-				console.log(list);
-				this.roomId = list[0].id;
-				uni.navigateTo({
-					url: "/sub-decorate/pages/friends/friends?id=" + this.roomId,
-				});
-			},
 			changeCity() {
 				console.log("切换城市");
 			},
 			toCity() {
 				uni.navigateTo({
-					url: '/sub-my/pages/my-house/my-house'
+					url: "/sub-my/pages/my-house/my-house",
 				});
 			},
 			getAuthorizeInfo() {
@@ -192,17 +178,10 @@
 								latitude +
 								"&key=4d1476e82ce1ca125c7452c625e6d541&radius=1000&extensions=all",
 							success(re) {
-								console.log(re);
 								if (re.statusCode === 200) {
 									console.log(re.data);
 									let addressComponent = re.data.regeocode.addressComponent;
-									let areaInfo = getAdcodeFromAreaId(addressComponent.adcode);
-									console.log(areaInfo);
-									vm.citydata = areaInfo.name;
-									uni.setStorageSync(
-										'currentHouse',
-										JSON.stringify(areaInfo)
-									);
+									vm.getAreaId(addressComponent.adcode)
 								} else {
 									console.log("获取信息失败，请重试！");
 								}
@@ -210,6 +189,11 @@
 						});
 					},
 				});
+			},
+			async getAreaId(adcode) {
+				let areaInfo = await getAdcodeFromAreaId(adcode);
+				this.citydata = areaInfo.name;
+				uni.setStorageSync("currentHouse", JSON.stringify(areaInfo));
 			},
 			// 再次获取授权
 			// 当用户第一次拒绝后再次请求授权
@@ -262,20 +246,20 @@
 				if (uni.getStorageSync("userId")) {
 					let houseList = await queryEstates();
 					let house = null;
-					let [defaultHouse] = houseList.filter(e => {
-						return e.defaultEstate == true;
-					})
+					let defaultHouse;
+					if (houseList && houseList.length) {
+						defaultHouse = houseList.find((e) => {
+							return e.defaultEstate == true;
+						});
+					}
 					if (defaultHouse) {
-						house = defaultHouse
+						house = defaultHouse;
 					} else if (houseList.length) {
-						house = houseList[0]
+						house = houseList[0];
 					}
 					if (house) {
-						uni.setStorageSync(
-							'currentHouse',
-							JSON.stringify(house)
-						);
-						this.citydata = house.locationName
+						uni.setStorageSync("currentHouse", JSON.stringify(house));
+						this.citydata = house.cityName + house.areaName;
 					}
 				} else {
 					this.getAuthorizeInfo();

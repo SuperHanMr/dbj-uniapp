@@ -53,7 +53,7 @@
             >
               <image
                 class="image1"
-                src="../../../../static/images/message/ic_interaction@2x.png"
+                src="https://ali-image.dabanjia.com/static/mp/dabanjia/images/message/ic_interaction@2x.png"
                 mode=""
               ></image>
               <image
@@ -226,7 +226,7 @@ export default {
           object-fit: cover;
           top: -18rpx;
           right: 18rpx;
-					background-color: skyblue;
+          background-color: skyblue;
         }
       }
       .image-container:nth-child(4n) .image1 {

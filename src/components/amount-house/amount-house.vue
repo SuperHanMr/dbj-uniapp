@@ -2,30 +2,49 @@
   <view class="amount-house">
     <view class="image-title">
       <text class="title">原始结构尺寸图</text>
-      <text class="time">2021-08-19 20:20:00</text>
+      <text class="time">{{imageData.measureStructImagesDate}}</text>
     </view>
     <view class="image-list">
-      <image></image>
-      <image></image>
-      <image></image>
+      <imagePreview :list='imageData.measureStructImages' :imgWidth='328' :imgHeight="108*2" :lineSpace='32' :colSpace="30" :hasHeight="false"></imagePreview>
+      <!-- <image v-for="item of imageData.measureStructImages" :key='item.id':src="item.fileUrl"></image> -->
     </view>
     <view class="image-title">
       <text class="title">量房图片</text>
-      <text class="time">2021-08-19 20:20:00</text>
+      <text class="time">{{imageData.measureImagesDate}}</text>
     </view>
     <view class="image-list">
-      <image></image>
+      <imagePreview :list='imageData.measureImages' :imgWidth='328' :imgHeight="108*2" :lineSpace='32' :colSpace="30" :hasHeight="false"></imagePreview>
+      <!-- <image v-for="item of imageData.measureImages" :key='item.id':src="item.fileUrl"></image> -->
     </view>
   </view>
 </template>
 
 <script>
+  import {getAmountDetail} from '../../api/decorate.js';
+  import imagePreview from '../image-preview/image-preview.vue'
   export default {
     name:"amount-house",
+    components:{
+      imagePreview
+    },
+    props:{
+      serveId:33
+    }, 
     data() {
       return {
-        
+        imageData:{}
       };
+    },
+    mounted(){
+      this.getData() 
+    },
+    methods:{
+      getData(){
+        console.log(this.serveId)
+        getAmountDetail(31).then(res=>{
+          this.imageData = res
+        })
+      }
     }
   }
 </script>
@@ -54,14 +73,15 @@
     display: flex;
     justify-content: space-between;
     flex-wrap: wrap;
+    margin-top: 32rpx
     image{
-      width: 328rpx;
-      height: 216rpx;
-      opacity: 1;
+      // width: 328rpx;
+      // height: 216rpx;
+      // opacity: 1;
       background: #ffffff;
-      border: 1px solid #f5f6f6;
-      border-radius: 12rpx;
-      margin-top: 32rpx;
+      // border: 1px solid #f5f6f6;
+      // border-radius: 12rpx;
+      // margin-top: 32rpx;
     }
   }
 }

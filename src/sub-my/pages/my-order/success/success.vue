@@ -14,25 +14,32 @@
         src="../../../static/complete.png"
         mode=""
       ></image>
-      <!-- <view class="info">
+			
+			<!-- 确认收货成功显示的页面 -->
+      <view class="info" v-if="type=='confirmReceipt'">
 				<view class="header1">交易完成</view>
 				<view class="header2">感谢您的支持～</view>
-			</view> -->
+			</view>
+			
+			<!-- 订单取消成功显示的页面 -->
       <view class="info">
         <view class="header1">订单取消成功</view>
         <view class="header2">您已取消该订单，欢迎再次购买～</view>
       </view>
-      <!-- 	<view class="info">
+			
+			<!-- 申请退款成功显示的页面 -->
+      <view class="info">
 				<view class="header1">提交成功</view>
 				<view class="header2">退款申请已提交，感谢您的支持～</view>
-			</view> -->
+			</view>
+			
     </view>
 
     <view class="button-container">
-      <view class="complete-button">
+      <view class="complete-button" @click="handleComplete">
         完成
       </view>
-      <view class="detail-button">
+      <view class="detail-button" @click="goToDetail">
         查看详情
       </view>
     </view>
@@ -42,9 +49,27 @@
 <script>
 export default {
   data() {
-    return {};
+    return {
+			type:"",
+		};
   },
-  methods: {},
+	onLoad(e) {
+		this.type=e.type
+	},
+  methods: {
+		handleComplete(){
+			//确认收货  点击完成需要跳转的页面
+			if(this.type == "confirmReceipt"){
+				
+			}
+		},
+		goToDetail(){
+			//确认收货  点击完成需要跳转的页面
+			if(this.type == "confirmReceipt"){
+				
+			}
+		}
+	},
 };
 </script>
 

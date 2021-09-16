@@ -39,24 +39,10 @@
 			
 		},
 		onLoad(option) {
-			
 			const eventChannel = this.getOpenerEventChannel();
 			eventChannel.on('acceptDataFromOpenerPage',( data )=> {
 				console.log(data)
-				this.goodsList = data
-				// for(let i = 0;i < this.goodsList.length;i++ ) {
-				// 	for(let j = i + 1;j < this.goodsList.length;j++ ){
-				// 		if(this.goodsList[i].storeId === this.goodsList[j].storeId){
-				// 			this.shopList.push({
-				// 				storeId: this.goodsList[i].storeId,
-				// 				storeName: this.goodsList[i].storeName,
-				// 				skuList:[this.goodsList[i],this.goodsList[j]]
-				// 			})
-				// 		}
-				// 	}
-				// }
-				// console.log(this.shopList)
-			})  
+			})
 		}
 	}
 </script>

@@ -37,19 +37,19 @@
 		methods: {
 			goNoHouseDecorate() {
 				uni.navigateTo({
-					url: "/sub-decorate/pages/no-house-decorate/no-house-decorate",
+					url: "/sub-decorate/pages/no-house-decorate/no-house-decorate?type=decorate",
 				});
 			},
 
 			goAddHouse() {
 				uni.navigateTo({
-					url: "/sub-decorate/pages/add-house/add-house",
+					url: "/sub-decorate/pages/add-house/add-house?type=decorate",
 				});
 			},
 
 			goCheckService() {
 				uni.navigateTo({
-					url: "/sub-decorate/pages/no-house-checkhouse/no-house-checkhouse",
+					url: "/sub-decorate/pages/no-house-checkhouse/no-house-checkhouse?type=checkhouse",
 				});
 			},
 			gobackHome() {

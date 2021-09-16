@@ -1,6 +1,9 @@
 <template>
-  <message-bubble :message="message" :payload-data="payloadData" class="video-message">
-    <image class="video-element" :src="url" />
+  <message-bubble :message="message" class="video-message">
+    <view class="video-element" @click="handlePlayVideo">
+      <image class="video-thumb-img" :src="url" />
+      <image class="play-icon" src="https://ali-image.dabanjia.com/static/mp/dabanjia/images/message/ic_play%402x.png" />
+    </view>
   </message-bubble>
 </template>
 
@@ -17,14 +20,13 @@ export default {
       type: Object,
       required: true,
     },
-    payloadData: {
-      type: Object,
-      required: true,
-    }
   },
   computed: {
     isMine() {
       return this.message.flow === "out";
+    },
+    payloadData() {
+      return this.message.payloadData;
     },
     url() {
       let url = this.payloadData.thumbnailUrl;
@@ -35,6 +37,9 @@ export default {
     },
   },
   methods: {
+    handlePlayVideo() {
+      this.$store.dispatch("playMessageVideo", { url : this.payloadData.fileUrl });
+    }
   },
 };
 </script>
@@ -44,6 +49,21 @@ export default {
   height: 100%;
   width: 100%;
   border-radius: 8px;
+  position: relative;
+}
+.video-thumb-img {
+  width: 100%;
+  height: 100%;
   object-fit: contain;
+  border-radius: 8px;
+}
+.play-icon {
+  position: absolute;
+  width: 48rpx;
+  height: 48rpx;
+  top: 50%;
+  left: 50%;
+  margin-top: -24rpx;
+  margin-left: -24rpx;
 }
 </style>

@@ -11,8 +11,9 @@
 </template>
 
 <script>
-const url = require("@/pages/login/imgs/Lark20210823-152715.png");
+// const url = require("@/pages/login/imgs/Lark20210823-152715.png");
 import { oauthGomeInfo } from "../../api/login.js";
+import { createTim } from "@/utils/tim.js"
 export default {
   data() {
     return {
@@ -24,9 +25,9 @@ export default {
     // 测试环境小程序appletId=B7E436F6DEF6E37296AADD3BC9F35165
     // 生产环境appletId=E370C3ABB4F1EEC5A3946F23BCB15C29
     let loginInit = {};
-    loginInit.imgUrl = url; // 登录logo
-    loginInit.imgWidth = 420; // logo的宽度
-    loginInit.imgHeight = 240; // logo的高度
+    loginInit.imgUrl = "http://dbj.dragonn.top/static/mp/dabanjia/images/decorate/logo.0ccb88de.png"; // 登录logo
+    loginInit.imgWidth = 660; // logo的宽度
+    loginInit.imgHeight = 360; // logo的高度
     loginInit.ctx = "app-guomeijia|ver-v8.2.2|plt-wxApp|cmpid-"; //登录ctx
     loginInit.sharerUserId = uni.getStorageSync("sharerUserId") || ""; //邀请人userId
     loginInit.sharerUnionId = uni.getStorageSync("sharerUnionId") || "";
@@ -79,6 +80,11 @@ export default {
           clientType: "3",
         }).then((data) => {
           getApp().globalData.userInfo = data;
+          getApp().tim = createTim(data.appId);
+          this.$store.dispatch("loginIM", {
+            userId: data.tid,
+            userSig: data.userSign
+          });
           uni.switchTab({
             url: "/pages/home/index/index",
           });

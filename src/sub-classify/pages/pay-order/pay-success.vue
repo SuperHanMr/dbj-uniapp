@@ -11,8 +11,8 @@
       </view>
     </view>
     <view class="bottom">
-      <button class="button1">返回订单</button>
-      <button class="button2">查看详情</button>
+      <button class="button1" @click="backHome">返回首页</button>
+      <button class="button2" @click="toOrderDetail">查看订单</button>
     </view>
   </view>
 </template>
@@ -21,11 +21,23 @@
   export default {
     data() {
       return {
-        
+        orderId: 0
       }
     },
+    onLoad(val){
+      this.orderId = val.id
+    },
     methods: {
-      
+      backHome(){
+        uni.switchTab({
+          url: "pages/home/index/index"
+        })
+      },
+      toOrderDetail() {
+        uni.navigateTo({
+          url: '/sub-my/pages/my-order/order-success/order-success?type=complete&id=' + this.orderId
+        })
+      }
     }
   }
 </script>

@@ -7,45 +7,56 @@
 				<view>总价</view>
 				<view>
 					<text>￥</text>
-					<text style="font-size:28rpx;">8888.00</text>
+					<text style="font-size:28rpx;">{{handlePrice(totalAmount)[0]}}.{{handlePrice(totalAmount)[1]}}</text>
 				</view>
 			</view>
 			
-			<view class="price-item">
+			<view class="price-item" v-if="freight">
 				<view class="title">
 					<text style="margin-right: 8rpx;">运费</text>
 					<text class="icon">?</text>
 				</view>
 				<view>
 					<text>￥</text>
-					<text style="font-size:28rpx;">8888.00</text>
+					<text style="font-size:28rpx;">{{handlePrice(freight)[0]}}.{{handlePrice(freight)[1]}}</text>
 				</view>
 			</view>
 				
-			<view class="price-item">
+			<view class="price-item" v-if="handlingFees">
 				<view class="title">
 					<text style="margin-right: 8rpx;">搬运费</text>
 					<text class="icon">?</text>
 				</view>
 				<view>
 					<text>￥</text>
-					<text style="font-size:28rpx;">8888.00</text>
+					<text style="font-size:28rpx;">{{handlePrice(handlingFees)[0]}}.{{handlePrice(handlingFees)[1]}}</text>
+				</view>
+			</view>
+			
+			<view class="price-item" v-if="depositTotalAmount">
+				<view class="title">
+					<text style="margin-right: 8rpx;">总押金</text>
+					<text class="icon">?</text>
+				</view>
+				<view>
+					<text>￥</text>
+					<text style="font-size:28rpx;">{{handlePrice(depositTotalAmount)[0]}}.{{handlePrice(depositTotalAmount)[1]}}</text>
 				</view>
 			</view>
 				
-			<view class="price-item">
+			<view class="price-item" v-if="storeDiscount">
 				<view>商家优惠</view>
 				<view>
 					<text>￥</text>
-					<text style="font-size:28rpx;">8888.00</text>
+					<text style="font-size:28rpx;">{{handlePrice(storeDiscount)[0]}}.{{handlePrice(storeDiscount)[1]}}</text>
 				</view>
 			</view>
 				
-			<view class="price-item">
+			<view class="price-item" v-if="platformDiscount">
 				<view>平台优惠</view>
 				<view>
 					<text>￥</text>
-					<text style="font-size:28rpx;">8888.00</text>
+					<text style="font-size:28rpx;">{{handlePrice(platformDiscount)[0]}}.{{handlePrice(platformDiscount)[1]}}</text>
 				</view>
 			</view>
 				
@@ -55,8 +66,8 @@
 			<text style="margin-right: 12rpx;">实付</text>
 			<text style="color: #FF3347;">
 				<text>￥</text>
-				<text style="font-size: 40rpx;" >300.</text>
-				<text>00</text>
+				<text style="font-size: 40rpx;" >{{handlePrice(totalActualIncomeAmount)[0]}}.</text>
+				<text>{{handlePrice(totalActualIncomeAmount)[1]}}</text>
 			</text>	
 		</view>
 	
@@ -67,11 +78,51 @@
 <script>
 	export default {
 		name:"order-price",
+		props:{
+			totalAmount:{ //商品总额(不包含押金)
+				type:Number,
+				default:0,
+			},
+			freight:{//运费
+				default:0,
+			},
+			handlingFees:{//搬运费
+				default:0,
+			},
+			platformDiscount:{//平台优惠
+				type:Number,
+				default:0,
+			},
+			storeDiscount:{ //商家优惠
+				type:Number,
+				default:0,
+			},
+			depositTotalAmount:{//总押金
+				default:0,
+			},
+			totalActualIncomeAmount:{ //总实收金额
+				type:Number,
+				default:0,
+			},
+		
+		},
+		
 		data() {
 			return {
 				
 			};
+		},
+		methods:{
+			handlePrice(price){
+				let list=String(price).split(".")
+				if(list.length==1){
+					return [list[0],"00"]
+				}else{
+					return[list[0],list[1]]
+				}
+			},
 		}
+		
 	}
 </script>
 

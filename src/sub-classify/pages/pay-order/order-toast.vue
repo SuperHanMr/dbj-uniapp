@@ -12,31 +12,36 @@
             <view class="content">
               <view class="shop-item" v-for="(shopItem, index) in noStoreInfos.storeInfos" :key='index'>
                 <view class="shop-name">{{shopItem.storeName}}</view>
-                <view class="goodsItem" @click="toDetails(goodsItem.id)" v-for="(goodsItem, index) in shopItem.skuInfos" :key="index">
-                  <image :src="goodsItem.imageUrl" class="goodsItemImg"></image>
-                  <!-- <image src="https://ali-image-test.dabanjia.com/image/20210816/11/1629087052820_2600%241626858792066_0436s4.png" class="goodsItemImg"></image> -->
-                  <view class="goodsInfo">
-                    <view class="goodsDesc">
-                      <text class="goodsType">{{goodsItem.productType=== 1?"服务":"物品"}}</text>
-                      {{goodsItem.spuName}}
-                    </view>
-                    <view class='tag'>tag type</view>
-                    <!-- <view class="totalNum">共1件</view> -->
-                    <view class="goodsSpec">
-                       <view class="goods-money" v-if='goodsItem.price'>
-                         ￥
-                         <text class="integer-price">{{String.prototype.split.call(goodsItem["price"], ".")[0]}}</text>
-                         <text>.{{String.prototype.split.call(goodsItem["price"], ".")[1]}}</text>
-                         <text>/{{goodsItem.unit}}</text>
-                       </view>
+                <view class="goods-item" @click="toDetails(goodsItem.id)" v-for="(goodsItem, index) in shopItem.skuInfos" :key="index">
+                  <view class="goods-item-content">
+                    <image :src="goodsItem.imageUrl" class="goodsItemImg"></image>
+                    <!-- <image src="https://ali-image-test.dabanjia.com/image/20210816/11/1629087052820_2600%241626858792066_0436s4.png" class="goodsItemImg"></image> -->
+                    <view class="goods-info">
+                      <view class="goods-desc">
+                        <text class="goods-type">{{goodsItem.productType=== 1?"服务":"物品"}}</text>
+                        {{goodsItem.spuName}}
+                      </view>
+                      <view class='tag'>tag type</view>
+                      <!-- <view class="totalNum">共1件</view> -->
+                      <view class="goods-spec">
+                         <view class="goods-money" v-if='goodsItem.price'>
+                           ￥
+                           <text class="integer-price">{{String.prototype.split.call(goodsItem["price"], ".")[0]}}</text>
+                           <text>.{{String.prototype.split.call(goodsItem["price"], ".")[1]}}</text>
+                           <text>/{{goodsItem.unit}}</text>
+                         </view>
+                      </view>
                     </view>
                   </view>
+                  <view class="no-send-tip">
+                     <view class="item-reduce-box" v-if="goodsItem.prototype === 1">
+                        <text>当前地址无法配送该商品，请更换地址</text>
+                     </view>
+                     <view class="item-reduce-box" v-else>
+                        <text>请先购买{{goodsItem.frontendServe}}服务</text>
+                     </view>
+                  </view>
                 </view>	
-                <view class="no-send-tip">
-                   <view class="item-reduce-box">
-                      <text>当前地址无法配送该商品，请更换地址</text>
-                   </view>
-                </view>
               </view>
             </view>
           </scroll-view>
@@ -67,12 +72,12 @@
       },
       confirm(){
         this.$refs.noBuyToast.close()
-        // uni.navigateTo({
-        //   url: '/sub-classify/pages/pay-order/pay-success',
-        // });
       },
       backShopCart(){
         this.$refs.noBuyToast.close()
+        uni.navigateTo({
+          url: '/sub-my/pages/shopping-cart/shopping-cart',
+        });
       }
     },
     watch:{
@@ -119,32 +124,35 @@
     height: 106rpx;
     line-height: 106rpx;
   }
-  .goodsItem{
+  .goods-item{
+    margin-bottom: 20rpx;
+  }
+  .goods-item-content{
   	width: 100%;
   	display: flex;
   	align-items: center;
-  	padding-bottom: 40rpx;
+  	padding-bottom: 25rpx;
   }
-  .goodsItem .goodsItemImg{
+  .goods-item-content .goodsItemImg{
   	width: 192rpx;
   	height: 192rpx;
   	display: block;
   	margin-right: 24rpx;
   	border-radius: 8rpx;
   }
-  .goodsItem .goodsInfo{
+  .goods-item-content .goods-info{
   	height: 192rpx;
     position: relative;
     flex: 1;
   }
-  .goodsInfo .goodsDesc{
+  .goods-info .goods-desc{
   	width: 420rpx;
   	font-size: 28rpx;
   	color: #333333;
   	line-height: 40rpx;
   	text-overflow: ellipsis;
   }
-  .goodsInfo .goodsDesc .goodsType{
+  .goods-info .goods-desc .goods-type{
   	width: 60rpx;
   	height: 30rpx;
   	padding: 2rpx 10rpx 2rpx 10rpx;
@@ -157,7 +165,7 @@
   	line-height: 28rpx;
   	text-align:center;
   }
-  .goodsInfo .goodsSpec{
+  .goods-info .goods-spec{
   	width: fit-content;
   	text-overflow: ellipsis;
   	padding: 4rpx;
@@ -165,7 +173,7 @@
   	font-size: 22rpx;
   	display: flex;
   }
-  .goodsInfo .tag{
+  .goods-info .tag{
     margin-top: 8rpx;
     font-size: 22rpx;
     color: #999999;
@@ -177,7 +185,7 @@
     border: 2rpx solid #f0f0f0;
     border-radius: 6rpx;
   }
-  .goodsInfo .totalNum{
+  .goods-info .totalNum{
     top:50%;
     right: 0;
     font-size: 28rpx;
@@ -200,9 +208,9 @@
     height: 56rpx;
   }
   .item-reduce-box{
-    height: 56rpx;
+    height: 50rpx;
     width: 666rpx;
-    line-height: 56rpx;
+    line-height: 50rpx;
     background-color: #fff6f7;
     border-radius: 8rpx;
     padding-left: 20rpx;

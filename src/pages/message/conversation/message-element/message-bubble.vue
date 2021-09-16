@@ -8,13 +8,13 @@
     }"
   >
     <view class="message-bubble-avatar">
-      <image class="avatar" :src="avatar" mode=""></image>
+      <image class="avatar" :src="avatar" mode="aspectFill"></image>
     </view>
     <view class="message-bubble-main">
       <view class="message-bubble-header">
         <text class="message-username">{{name}}</text>
       </view>
-      <view class="message-bubble-body" :style="bodyStyle">
+      <view class="message-bubble-body" :style="bodyStyle" @click="$emit('body-click')">
         <slot></slot>
       </view>
     </view>
@@ -31,10 +31,6 @@ export default {
     message: {
       type: Object,
       required: true,
-    },
-    payloadData: {
-      type: Object,
-      required: false,
     }
   },
   computed: {
@@ -52,6 +48,9 @@ export default {
     },
     name() {
       return this.message.nick || this.message.from;
+    },
+    payloadData() {
+      return this.message.payloadData || {};
     },
     noPadding() {
       if (!this.payloadData) {
