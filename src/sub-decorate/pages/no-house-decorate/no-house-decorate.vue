@@ -136,7 +136,8 @@
           content: "",
           value: null
         },
-        selectHouseData: {}
+        selectHouseData: {},
+        selectedServer: {}
       }
     },
     computed: {
@@ -175,35 +176,7 @@
           categoryTypeId,
           values
         } = data
-        if (categoryTypeId == 1) {
-          this.design = {
-            title: "设计服务",
-            cardtype: "design",
-            checked: true,
-            level: 1,
-            insideArea: this.currentHouse.insideArea,
-            ...values
-          }
-        }
-        if (categoryTypeId == 2) {
-          this.checkHouse = {
-            title: "验房服务",
-            cardtype: "checkHouse",
-            checked: true,
-            insideArea: this.currentHouse.insideArea,
-            ...values
-          }
-        }
-        if (categoryTypeId == 4) {
-          this.actuary = {
-            title: "精算服务",
-            cardtype: "actuary",
-            checked: true,
-            insideArea: this.currentHouse.insideArea,
-            ...values
-          }
-        }
-        
+        this.selectedServer = data
       })
       const {
         type
@@ -231,6 +204,7 @@
         this.getMyHouseList();
       } else {
         this.currentHouse = this.selectHouseData
+        this.getServiceSku()
       }
 
       const {
@@ -263,7 +237,6 @@
       //   this.design.level = Number(this.selectLevel)
       // },
       getServiceSku() {
-        console.log(getApp().globalData)
         getServiceSku({
           province_id: 1,
           city_id: 1,
@@ -271,11 +244,20 @@
           serveTypes: [1, 2, 4]
         }).then(data => {
           const {
-            noHouseActuaryId,
-            noHouseDesignId,
-            noHouseCheckId
-          } = getApp().globalData
-          if (!noHouseDesignId) {
+            categoryTypeId,
+            values
+          } = this.selectedServer
+          
+          if (categoryTypeId == 1) {
+            this.design = {
+              title: "设计服务",
+              cardtype: "design",
+              checked: true,
+              level: 0,
+              insideArea: this.currentHouse.insideArea,
+              ...values
+            }
+          } else {
             let designData = data.filter(t => t.serviceType === 1) //&& t.categoryTypeId === 6)
             if (designData && designData.length > 0) {
               this.design = {
@@ -283,24 +265,20 @@
                 title: "设计服务",
                 cardtype: "design",
                 checked: this.sssType == "decorate" || this.sssType == "design",
-                level: 1,
+                level: 0,
                 insideArea: this.currentHouse.insideArea
               }
             }
           }
-          if (!noHouseActuaryId) {
-            let actuaryData = data.filter(t => t.serviceType === 4)
-            if (actuaryData && actuaryData.length > 0) {
-              this.actuary = {
-                ...actuaryData[0],
-                title: "精算服务",
-                cardtype: "actuary",
-                checked: this.sssType == "decorate" || this.sssType == "actuary",
-                insideArea: this.currentHouse.insideArea
-              }
+          if (categoryTypeId == 2) {
+            this.checkHouse = {
+              title: "验房服务",
+              cardtype: "checkHouse",
+              checked: true,
+              insideArea: this.currentHouse.insideArea,
+              ...values
             }
-          }
-          if (!noHouseCheckId) {
+          } else {
             let checkHouseData = data.filter(t => t.serviceType === 2)
             if (checkHouseData && checkHouseData.length > 0) {
               this.checkHouse = {
@@ -312,6 +290,35 @@
               }
             }
           }
+          if (categoryTypeId == 4) {
+            this.actuary = {
+              title: "精算服务",
+              cardtype: "actuary",
+              checked: true,
+              insideArea: this.currentHouse.insideArea,
+              ...values
+            }
+          } else {
+            let actuaryData = data.filter(t => t.serviceType === 4)
+            if (actuaryData && actuaryData.length > 0) {
+              this.actuary = {
+                ...actuaryData[0],
+                title: "精算服务",
+                cardtype: "actuary",
+                checked: this.sssType == "decorate" || this.sssType == "actuary",
+                insideArea: this.currentHouse.insideArea
+              }
+            }
+          }
+          // if (!noHouseDesignId) {
+            
+          // }
+          // if (!noHouseActuaryId) {
+            
+          // }
+          // if (!noHouseCheckId) {
+            
+          // }
           console.log("默认服务： ", this.design, this.actuary, this.checkHouse)
         })
       },
@@ -389,7 +396,6 @@
             this.currentHouse = {}
           }
           console.log("currentHouse", this.currentHouse)
-
           this.getServiceSku();
         })
       },

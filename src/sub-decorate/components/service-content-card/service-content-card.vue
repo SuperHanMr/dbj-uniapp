@@ -6,7 +6,7 @@
 			<view class="subtitle">{{content.fullName}}</view>
 			<view class="desc-area">
 				<text>按平方米计价</text>
-				<text>x {{content.area || 88}}m²</text>
+				<text>x{{insideArea}}m²</text>
 			</view>
 			<view class="price">
 				<text class="t1">￥</text><text class="t2">{{content.price}}</text><text class="t3">/m²</text>
@@ -22,6 +22,9 @@
 				type: Object,
 				required: true
 			},
+      insideArea: {
+				type: Number
+      }
 		}
 	}
 </script>
