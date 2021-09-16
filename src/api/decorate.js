@@ -220,7 +220,7 @@ export function requireList(params) {
 }
 //APP-要货-要货记录详情
 export function requireListDetail(params) {
-	return request.get("/order-center/app/goods/require/detail", params)
+	return request.get("/order-center/app/goods/require/detail", {params})
 }
 // 查看线上交底
 export function serverInfo(serveId) {
@@ -233,6 +233,6 @@ export function requireConfirm(params) {
 
 // app支付运费/搬运费
 export function payFreight(params) {
-	return request.put(`/order-center/app/order/payFreight`, params)
+	return request.post(`/order-center/app/order/payFreight`, params)
 }
 

@@ -39,6 +39,11 @@
         type="default"
         @click="toShop"
       >去商家入驻</button>
+			<button
+			  style="width: 50%;margin-top: 20rpx;"
+			  type="default"
+			  @click="toGoodsApply"
+			>去要货申请</button>
       <swiper
         class="banner-content"
         :indicator-dots="true"
@@ -136,6 +141,11 @@ export default {
         url: "/sub-home/pages/lives-decorate/lives-decorate",
       });
     },
+		toGoodsApply(){
+			uni.navigateTo({
+				url:'../../../sub-decorate/pages/require-pay/require-pay'
+			})
+		},
     toPay() {
       let openId = uni.getStorageSync("openId");
       orderPay({

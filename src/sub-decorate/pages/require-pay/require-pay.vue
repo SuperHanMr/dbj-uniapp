@@ -4,7 +4,7 @@
 			<view class="header">
 				{{detail.storeName}}
 			</view>
-			<view class="items" v-for="(sub,subIndex) in item.details" :key="subIndex">
+			<view class="items" v-for="(sub,subIndex) in detail.details" :key="subIndex">
 				<image class="img" :src="sub.imgUrl" mode=""></image>
 				<view class="content">
 					<view class="title">
@@ -21,7 +21,7 @@
 						本次要货{{sub.requireNumber}}{{sub.unit}}
 					</view>
 					<view class="price">
-						{{sub.price}}/{{sub.unit}}
+						<text class="unit">¥</text> <text class="price-font">{{sub.price}}</text> /{{sub.unit}}
 					</view>
 				</view>
 			</view>
@@ -31,7 +31,7 @@
 					运费
 				</view>
 				<view class="amount">
-					{{detail.freight}}
+					<text class="unit">¥ </text> {{detail.freight}}
 				</view>
 			</view>
 
@@ -40,7 +40,7 @@
 					搬运费
 				</view>
 				<view class="amount">
-					{{detail.handlingFees}}
+					<text class="unit">¥ </text> {{detail.handlingFees}}
 				</view>
 			</view>
 		</view>
@@ -56,7 +56,8 @@
 
 				</view>
 				<view class="agree-btn" @click="onConform">
-					同意 并支付 ¥ 460.00
+
+					同意 <text v-if="totalPrice">并支付¥ {{totalPrice}}</text>
 				</view>
 			</template>
 
@@ -73,7 +74,7 @@
 	export default {
 		data() {
 			return {
-				id: '',
+				id: '18',
 				list: [],
 				detail: {}
 			};
@@ -135,13 +136,22 @@
 			}
 		},
 		onLoad(e) {
-			this.id = getApp().globalData.decorateMsg.id
+			// this.id = getApp().globalData.decorateMsg.id
 			this.getDetail()
 		}
 	}
 </script>
 
 <style lang="scss" scoped>
+	.price-font {
+		font-size: 28rpx;
+		font-weight: 500;
+	}
+
+	.price-uit {
+		font-size: 22rpx;
+	}
+
 	.tip {
 		display: inline-block;
 	}
@@ -256,6 +266,10 @@
 		.amount {
 			font-size: 26rpx;
 			color: #333333;
+
+			.unit {
+				font-size: 22rpx;
+			}
 		}
 
 	}
