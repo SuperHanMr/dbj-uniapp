@@ -72,6 +72,11 @@ export function getMsgList(params) {
 	return request.get("/pm/app/specialMsg/all?projectId=" + params)
 }
 
+//获取装修消息数量
+export function getMsgNum(params) {
+	return request.get("/pm/app/specialMsg/count?projectId=" + params)
+}
+
 //获取抢单审核详情
 export function getGrabDetail(params) {
 	return request.get("/pm/app/snatch/server/" + params)

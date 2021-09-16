@@ -16,8 +16,14 @@
     "variable":"serverName",
     "msg":"您有一个${type}服务待评价"
   },
-  "sys_available_purchase_service":{
+  "sys_available_worker_service":{
     "url":"/sub-decorate/pages/gj-process-cost/gj-process-cost",
+    "name":"待购买",
+    "variable":"serverName",
+    "msg":"您有一个${type}服务待购买"
+  },
+  "sys_available_purchase_service":{
+    "url":"/sub-decorate/pages/no-house-decorate/no-house-decorate",
     "name":"待购买",
     "variable":"serverName",
     "msg":"您有一个${type}服务待购买"

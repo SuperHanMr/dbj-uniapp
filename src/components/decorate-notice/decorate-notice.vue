@@ -4,7 +4,7 @@
     <view class="notice-view">
       <scroll-view class="item-list" :style="{height:scrollHeight}" scroll-y="true">
         <view class="item">
-          <view
+<!--          <view
             class="notice-item"
             @click="to(3)"
           > 
@@ -22,10 +22,12 @@
               <text>有量房员接单啦，请确认</text>
               <image src="../../static/images/ic_more_black.svg"></image>
             </view>
-          </view>
+          </view> -->
         <view
             class="notice-item"
-            @click="to(3)"
+            @click="to(item)"
+            v-for="item of list"
+            :key='item.id'
           > 
             <view class="item-top">
               <view class="item-top-left">
@@ -33,12 +35,12 @@
                   src="../../static/home_owner.png"
                   mode=""
                 ></image>
-                <text class="item-title">量房服务2</text>
+                <text class="item-title">{{item.pushTitle}}</text>
               </view>
-              <text class="item-top-right">2021-08-21 13:00:00</text>
+              <text class="item-top-right">{{item.createTime}}</text>
             </view>
             <view class="item-content">
-              <text>有量房员接单啦，请确认</text>
+              <text>{{item.pushContent}}</text>
               <image src="../../static/images/ic_more_black.svg"></image>
             </view>
           </view>
@@ -62,7 +64,7 @@
 import {
     getMsgList,
   } from "../../api/decorate.js";
-
+import sysMessage from "@/utils/sys-message-tpl.json"
 export default {
   name: "decorate-notice",
   props:{ 
@@ -71,16 +73,11 @@ export default {
       default:()=>{
         return 1
       }
-    }
+    },
+    num:0
   },
   data() {
     return {
-      urlList: [
-        "/sub-decorate/pages/grab/grab",
-        "/sub-decorate/pages/amoutDelivery/amoutDelivery",
-        "/sub-decorate/pages/checkResult/checkResult",
-        "/sub-decorate/pages/current-cost/current-cost",
-      ],
       systemHeight:'',
       list:[],
       scrollHeight:''
@@ -101,18 +98,22 @@ export default {
       this.$emit("closeNotice");
     },
     to(param) {
+      getApp().globalData.decorateMsg = {...param.data,...param}
+      console.log(getApp().globalData.decorateMsg )
       uni.navigateTo({
-        url: this.urlList[param]+'?id='+param.id
+        url: param.url
       });
       this.close();
     }, 
     getMsg(){
       getMsgList(this.current).then(res=>{
         res.map(item=>{
-          let data = JSON.parse(item.msgBody)
-          getApp().globalData.decorateMsg = data
+          item.data = JSON.parse(item.msgBody)
+          
+          item.url = sysMessage[item.msgType].url
         })
-        this.scrollHeight = res.length*116*2+'rpx'
+        this.list = res
+        this.scrollHeight = res.length*140*2+'rpx'
       })
     }
   },

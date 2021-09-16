@@ -115,7 +115,7 @@
             <house-switch class="margintop" :datalist="projectList" :current="currentProject.estateId"
               @goAddHouse="addHouse" @checkHouse="checkHouse"></house-switch>
           </uni-popup>
-          <decorate-notice @touchmove.stop.prevent="()=>false" v-if="noticeActive" :current='current'
+          <decorate-notice @touchmove.stop.prevent="()=>false" v-if="noticeActive" :num='msgNum' :current='currentProject.projectId'
             @closeNotice='closeNotice' class="decorate-notice"></decorate-notice>
           <view class="link">
             <view @click="gonohouse">无房屋无服入口</view>
@@ -132,7 +132,7 @@
           </view>
         </scroll-view>
       </view>
-      <drag-button-follow :style.sync="style" @btnClick='openNotice' :follow='`left,right`' className="drag-button"
+      <drag-button-follow v-if="msgNum>0" :num='msgNum' :style.sync="style" @btnClick='openNotice' :follow='`left,right`' className="drag-button"
         class="drag-button">
         <view>
           <text>消息</text>
@@ -149,7 +149,8 @@
     queryEstates,
     friendListByEstateId,
     getToken,
-    getMqtt
+    getMqtt,
+    getMsgNum
   } from "../../../api/decorate.js";
   import {
     getEstateProjectInfoList,
@@ -222,7 +223,7 @@
         instanceId: 'post-cn-tl32ajx3u0l',
         groupId: 'GID_dabanjia',
         token: '',
-
+        msgNum:0,
         aServiceData: {},
         isShowMyDecorateAll: false,
         haveWarehouse: false
@@ -394,6 +395,7 @@
             const arr = data.filter(t => t.defaultEstate)
             this.currentProject = arr[0]
             this.initData(arr[0])
+            this.getMsgNum()
           } else {
             // TODO 有房屋无服务处理逻辑
           }
@@ -499,6 +501,7 @@
             this.defaultEstate = temp && temp.length > 0 ? temp[0] : null
             this.estateList = data;
             this.getProjectList();
+            
           }
         });
       },
@@ -519,6 +522,12 @@
           this.instanceId = res.instanceId
         })
       },
+      getMsgNum(){
+        getMsgNum(this.currentProject.projectId).then(res=>{
+          this.msgNum = res.count
+          
+        })
+      }
     },
   };
 </script>
