@@ -101,24 +101,37 @@ instance.interceptors.response.use(
 		uni.hideLoading();
 		if (error.response && error.response.status === 401) {
 			//刷新token
-			refrishToken();
-			return new Promise((resolve, reject) => {
-				failRequestList.push({
-					config: error.config,
-					resolve: resolve,
-					reject: reject
+			if (!uni.getStorageSync("userId")) {
+				uni.showModal({
+					title: '提示',
+					content: '用户信息已过期,请重新登录',
+					success: function (res) {
+						uni.navigateTo({
+							url: "/pages/login/login",
+						});
+					}
 				});
-				//重新请求接口
-				retryAllFailRequest();
-			})
+
+			} else {
+				refrishToken();
+			}
+			// return new Promise((resolve, reject) => {
+			// 	failRequestList.push({
+			// 		config: error.config,
+			// 		resolve: resolve,
+			// 		reject: reject
+			// 	});
+			// 	//重新请求接口
+			// 	retryAllFailRequest();
+			// })
 		} else if (error.response && error.response.status === 3504) {
 			uni.showModal({
 				title: '提示',
 				content: '用户信息已过期,请重新登录',
 				success: function (res) {
 					uni.navigateTo({
-						url: "/src/pages/login/login.vue"
-					})
+						url: "/pages/login/login",
+					});
 				}
 			});
 		}
