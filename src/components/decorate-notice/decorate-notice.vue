@@ -4,7 +4,7 @@
     <view class="notice-view">
       <scroll-view class="item-list" :style="{height:scrollHeight}" scroll-y="true">
         <view class="item">
-<!--          <view
+          <!--          <view
             class="notice-item"
             @click="to(3)"
           > 
@@ -23,21 +23,13 @@
               <image src="../../static/images/ic_more_black.svg"></image>
             </view>
           </view> -->
-        <view
-            class="notice-item"
-            @click="to(item)"
-            v-for="item of list"
-            :key='item.id'
-          > 
+          <view class="notice-item" @click="to(item)" v-for="item of list" :key='item.id'>
             <view class="item-top">
               <view class="item-top-left">
-                <image
-                  src="../../static/home_owner.png"
-                  mode=""
-                ></image>
+                <image src="../../static/home_owner.png" mode=""></image>
                 <text class="item-title">{{item.pushTitle}}</text>
               </view>
-              <text class="item-top-right">{{item.createTime}}</text>
+              <text class="item-top-right">{{item.createTime|formatDate}}</text>
             </view>
             <view class="item-content">
               <text>{{item.pushContent}}</text>
@@ -45,190 +37,208 @@
             </view>
           </view>
         </view>
-        
-        </scroll-view>
-        <view
-          class="close-icon"
-        >
-          <image
-            src="http://dbj.dragonn.top/static/mp/dabanjia/images/decorate/ic_triangle.svg"
-            mode=""
-            @click="close()"
-          ></image>
-        </view>
+
+      </scroll-view>
+      <view class="close-icon">
+        <image src="http://dbj.dragonn.top/static/mp/dabanjia/images/decorate/ic_triangle.svg" mode="" @click="close()">
+        </image>
+      </view>
     </view>
   </view>
 </template>
 
 <script>
-import {
+  import {
     getMsgList,
   } from "../../api/decorate.js";
-import sysMessage from "@/utils/sys-message-tpl.json"
-export default {
-  name: "decorate-notice",
-  props:{ 
-    current:{
-      type:Number,
-      default:()=>{
-        return 1
+  import sysMessage from "@/utils/sys-message-tpl.json"
+  import {
+    formatDate
+  } from '@/utils/common.js'
+
+  export default {
+    name: "decorate-notice",
+    props: {
+      current: {
+        type: Number,
+        default: () => {
+          return 1
+        }
+      },
+      num: 0
+    },
+    filters: {
+      formatDate
+    },
+    data() {
+      return {
+        systemHeight: '',
+        list: [],
+        scrollHeight: ''
+      };
+    },
+    mounted() {
+      this.systemHeight = wx.getSystemInfoSync().windowHeight + 'px'
+      this.getMsg()
+    },
+    watch: {
+      current(newVal) {
+        this.getMsg()
       }
     },
-    num:0
-  },
-  data() {
-    return {
-      systemHeight:'',
-      list:[],
-      scrollHeight:''
-    };
-  },
-  mounted(){
-    this.systemHeight = wx.getSystemInfoSync().windowHeight + 'px'
-    this.getMsg()
-  },
-  watch:{
-    current(newVal){
-      this.getMsg()
-    }
-  },
-  methods: {
-    close() {
-      // console.log(123)
-      this.$emit("closeNotice");
-    },
-    to(param) {
-      getApp().globalData.decorateMsg = {...param.data,...param}
-      console.log(getApp().globalData.decorateMsg )
-      uni.navigateTo({
-        url: param.url
-      });
-      this.close();
-    }, 
-    getMsg(){
-      getMsgList(this.current).then(res=>{
-        res.map(item=>{
-          item.data = JSON.parse(item.msgBody)
-          
-          item.url = sysMessage[item.msgType].url
+    methods: {
+      close() {
+        // console.log(123)
+        this.$emit("closeNotice");
+      },
+      to(param) {
+        getApp().globalData.decorateMsg = {
+          ...param.data,
+          ...param
+        }
+        console.log(getApp().globalData.decorateMsg)
+        uni.navigateTo({
+          url: param.url
+        });
+        this.close();
+      },
+      getMsg() {
+        getMsgList(this.current).then(res => {
+          res.map(item => {
+            item.data = JSON.parse(item.msgBody)
+
+            item.url = sysMessage[item.msgType].url
+          })
+          this.list = res
+          this.scrollHeight = res.length * 140 * 2 + 'rpx'
         })
-        this.list = res
-        this.scrollHeight = res.length*140*2+'rpx'
-      })
-    }
-  },
-};
+      }
+    },
+  };
 </script>
 
 <style lang="scss" scoped>
-.notice {
-  position: fixed;
-  top: 0;
-  width: 100%;
-  height: 100vh;
-  z-index: 100;
-  .notice-view{
-    position: relative;
-    height: 100%;
-  }
-  .item-list {
-    position: absolute;
-    width: 100%;
-    bottom: 206rpx;
-    max-height: 1160rpx;
-    // padding: 24rpx;
-    z-index: 101;
-    
-  }
-  // .item{
-  //   position: absolute;
-  //   // flex-direction:column-reverse;
-  //   overflow: auto;
-  //   width: 100%;
-  //   // bottom: 0;
-  //   bottom: 206rpx;
-  //   max-height: 10rpx;
-  //   // padding: 24rpx;
-  //   z-index: 101;
-  // }
-  .close-icon {
-    position: absolute;
-    bottom: 30rpx;
-    // margin-top: 88rpx ;
-    text-align: center;
-    width: 100%;
-    z-index: 111;
-    image {
-      width: 50rpx;
-      height: 50rpx;
-    }
-  }
-  .notice-item {
-    background-color: #fff;
-    margin: 24rpx;
-    // width: 351px;
-    height: 168rpx;
-    opacity: 1;
-    background: #ffffff;
-    border-radius: 12px;
-    padding: 32rpx 24rpx;
-    // z-index: 11;
-    .item-top {
-      display: flex;
-      justify-content: space-between;
-      padding: 0 8rpx;
-      .item-top-left {
-        image {
-          // font-size: 26rpx;
-          width: 32rpx;
-          height: 32rpx;
-          margin-right: 16rpx;
-          vertical-align: middle;
-        }
-        text {
-          color: #333;
-          font-size: 28rpx;
-          font-weight: 400;
-          vertical-align: middle;
-        }
-      }
-      .item-top-right {
-        font-size: 24rpx;
-        color: #999;
-      }
-    }
-    .item-content {
-      height: 104rpx;
-      line-height: 104rpx;
-      background: #fbfbfb;
-      border-radius: 20rpx;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      padding: 0 16rpx 0 24rpx;
-      margin-top: 24rpx;
-      text {
-        color: #333;
-        font-size: 30rpx;
-        font-weight: 500;
-      }
-      image {
-        width: 24rpx;
-        height: 24rpx;
-      }
-    }
-  }
-  .notice-mask {
-    position: absolute;
+  .notice {
+    position: fixed;
+    top: 0;
     width: 100%;
     height: 100vh;
-    // top: -304rpx;
-    // background-color: #000;
-    // opacity: 0.8;
     z-index: 100;
-    // filter: blur(10rpx);
-    background: rgba(0, 0, 0, 0.5);
-    backdrop-filter: blur(16rpx);
+
+    .notice-view {
+      position: relative;
+      height: 100%;
+    }
+
+    .item-list {
+      position: absolute;
+      width: 100%;
+      bottom: 206rpx;
+      max-height: 1160rpx;
+      // padding: 24rpx;
+      z-index: 101;
+
+    }
+
+    // .item{
+    //   position: absolute;
+    //   // flex-direction:column-reverse;
+    //   overflow: auto;
+    //   width: 100%;
+    //   // bottom: 0;
+    //   bottom: 206rpx;
+    //   max-height: 10rpx;
+    //   // padding: 24rpx;
+    //   z-index: 101;
+    // }
+    .close-icon {
+      position: absolute;
+      bottom: 30rpx;
+      // margin-top: 88rpx ;
+      text-align: center;
+      width: 100%;
+      z-index: 111;
+
+      image {
+        width: 50rpx;
+        height: 50rpx;
+      }
+    }
+
+    .notice-item {
+      background-color: #fff;
+      margin: 24rpx;
+      // width: 351px;
+      height: 168rpx;
+      opacity: 1;
+      background: #ffffff;
+      border-radius: 12px;
+      padding: 32rpx 24rpx;
+
+      // z-index: 11;
+      .item-top {
+        display: flex;
+        justify-content: space-between;
+        padding: 0 8rpx;
+
+        .item-top-left {
+          image {
+            // font-size: 26rpx;
+            width: 32rpx;
+            height: 32rpx;
+            margin-right: 16rpx;
+            vertical-align: middle;
+          }
+
+          text {
+            color: #333;
+            font-size: 28rpx;
+            font-weight: 400;
+            vertical-align: middle;
+          }
+        }
+
+        .item-top-right {
+          font-size: 24rpx;
+          color: #999;
+        }
+      }
+
+      .item-content {
+        height: 104rpx;
+        line-height: 104rpx;
+        background: #fbfbfb;
+        border-radius: 20rpx;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 0 16rpx 0 24rpx;
+        margin-top: 24rpx;
+
+        text {
+          color: #333;
+          font-size: 30rpx;
+          font-weight: 500;
+        }
+
+        image {
+          width: 24rpx;
+          height: 24rpx;
+        }
+      }
+    }
+
+    .notice-mask {
+      position: absolute;
+      width: 100%;
+      height: 100vh;
+      // top: -304rpx;
+      // background-color: #000;
+      // opacity: 0.8;
+      z-index: 100;
+      // filter: blur(10rpx);
+      background: rgba(0, 0, 0, 0.5);
+      backdrop-filter: blur(16rpx);
+    }
   }
-}
 </style>
