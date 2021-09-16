@@ -11,17 +11,29 @@
       @scroll="handleMessageListScroll"
       @refresherrefresh="handlePulling"
       @click="handleMessageListClick"
-     >
-      <template v-for="(msg, idx) in currentMessageList">
-        <view
-          v-if="showTimeTag(msg, currentMessageList[idx - 1])"
-          :key="msg.ID"
-          class="message-tags-time"
-        >{{ formatMessageTime(msg.time) }}</view>
-        <message-item  :message="msg"></message-item>
-      </template>
+    >
+      <view v-if="type === CONV_TYPES.COMMON || type === CONV_TYPES.CUSTOMER" class="message-list-body">
+        <template v-for="(msg, idx) in currentMessageList">
+          <view
+            v-if="showTimeTag(msg, currentMessageList[idx - 1])"
+            :key="msg.ID"
+            class="message-tags-time"
+          >{{ formatMessageTime(msg.time) }}</view>
+          <message-item :key="msg.ID" :message="msg"></message-item>
+        </template>
+      </view>
+      <view v-else-if="type === CONV_TYPES.SYSTEM" class="message-list-body" style="padding-bottom: 48rpx">
+        <template v-for="(msg, idx) in currentMessageList">
+          <view
+            :key="msg.ID"
+            class="message-tags-time"
+            style="padding-bottom: 0;"
+          >{{ formatMessageTime(msg.time) }}</view>
+          <message-item-system :key="msg.ID" :message="msg"></message-item-system>
+        </template>
+      </view>
     </scroll-view>
-    <message-send-box></message-send-box>
+    <message-send-box v-if="type === CONV_TYPES.COMMON || type === CONV_TYPES.CUSTOMER"></message-send-box>
     <view v-if="showVideoPlayer" class="video-player-wrapper">
       <video class="video-player" :src="currentVideoUrl" autoplay>
         <cover-view class="icon-face video-close-btn" @click="handleCloseVideo"></cover-view>
@@ -34,13 +46,16 @@
   import { getTim, addListener, removeListener } from "@/utils/tim.js"
   import MessageSendBox from "./message-send-box.vue"
   import MessageItem from "./message-element/message-item.vue"
+  import MessageItemSystem from "./message-element/message-item-system.vue"
   import { mapState } from "vuex";
   import { calendarFormat } from "@/utils/date.js"
   import TIM from 'tim-wx-sdk'
+
   export default {
     components: {
       MessageSendBox,
       MessageItem,
+      MessageItemSystem,
     },
     data() {
       return {
@@ -54,6 +69,7 @@
     },
     computed: {
       ...mapState({
+        CONV_TYPES: (state) => state.message.CONV_TYPES,
         currentConversation: (state) => state.message.currentConversation,
         currentMessageList: (state) => state.message.currentMessageList,
         isCompleted: (state) => state.message.isCompleted,
@@ -62,6 +78,9 @@
         showVideoPlayer: (state) => state.message.showVideoPlayer,
         currentVideoUrl: (state) => state.message.currentVideoUrl,
       }),
+      type() {
+        return this.currentConversation.systemType || this.CONV_TYPES.COMMON;
+      },
     },
     watch: {
       currentMessageList(list, oldList) {
@@ -115,7 +134,11 @@
       uni.setNavigationBarTitle({
       　　title: options.name
       });
-      this.$store.dispatch("checkoutConversation", options.id);
+      if (options.id === "CUSTOMER") {
+        
+      } else {
+        this.$store.dispatch("checkoutConversation", options.id);
+      }
     },
     onUnload() {
       this.$store.commit("resetConversation");

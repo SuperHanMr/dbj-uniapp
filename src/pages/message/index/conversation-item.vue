@@ -26,6 +26,7 @@
 
 <script>
   import TIM from 'tim-wx-sdk'
+  import MessageTemplate from "@/utils/message-template.json";
   import { calendarFormat } from "@/utils/date.js"
   import GroupAvatars from "@/components/group-avatars/group-avatars.vue"
   import { mapState } from "vuex"
@@ -43,7 +44,7 @@
         return this.conversation.conversationID.replace(this.conversation.type, '');
       },
       name() {
-        if (this.conversation.type === "NOTIFICATION") {
+        if (this.conversation.systemType) {
           return this.conversation.name;
         }
         if (this.conversation.type === TIM.TYPES.CONV_C2C) {
@@ -55,19 +56,21 @@
         return this.toAccount;
       },
       avatar() {
+        if (this.conversation.systemType) {
+          return [];
+        }
         if (this.conversation.type === TIM.TYPES.CONV_C2C) {
           return [this.conversation.userProfile.avatar];
         }
         if (this.conversation.type === TIM.TYPES.CONV_GROUP) {
           const memberList = this.groupMembersMap[this.toAccount];
-          console.log("memberList:", this.toAccount, this.groupMembersMap, memberList, 333333)
           return (memberList || []).map(m => m.avatar);
         }
         return [];
       },
       message() {
-        if (this.conversation.lastMessage) {
-          let message = this.conversation.lastMessage;
+        let message = this.conversation.lastMessage;
+        if (message) {
           if (message && message.type === TIM.TYPES.MSG_CUSTOM) {
             try {
               let payloadData = JSON.parse(message.payload.data);
@@ -77,11 +80,16 @@
               if (payloadData.type === "video_message") {
                 return "[视频]"
               }
+              let template = MessageTemplate[payloadData.type];
+              if (template && template.title) {
+                return "[" + template.title + "]"
+              }
+              return "[不支持的消息类型]"
             } catch (e) {
               console.error(e);
             }
           }
-          return this.conversation.lastMessage.messageForShow;
+          return message.messageForShow;
         }
         return "";
       },
@@ -103,15 +111,9 @@
     methods: {
       handleClick() {
         let convId = this.conversation.conversationID;
-        if (this.conversation.type === "NOTIFICATION") {
-          uni.navigateTo({
-            url: "/pages/message/conversation/conversation-noti?id=" + convId + "&name=" + this.name,
-          });
-        } else {
-          uni.navigateTo({
-            url: "/pages/message/conversation/conversation?id=" + convId + "&name=" + this.name,
-          });
-        }
+        uni.navigateTo({
+          url: "/pages/message/conversation/conversation?id=" + convId + "&name=" + this.name,
+        });
       }
     }
   }
@@ -147,7 +149,7 @@
     padding-top: 12rpx;
     overflow: hidden;
   }
-  
+
   .im-message-name {
     line-height: 44rpx;
     font-size: 16px;
