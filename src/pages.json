@@ -476,9 +476,9 @@
     {
       "root": "sub-decorate", //装修模块分包
       "pages": [{
-          "path": "pages/design-service-list/design-service-list",
+          "path": "pages/service-list/service-list",
           "style": {
-            "navigationBarTitleText": "设计服务",
+            "navigationBarTitleText": "",
             "enablePullDownRefresh": true
           }
         },

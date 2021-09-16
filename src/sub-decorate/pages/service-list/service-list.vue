@@ -28,14 +28,24 @@
 			return {
 				dataList: [],
 				checkedId: "",
-				categoryTypeId: null
+        title: null,
+        categoryTypeId: null,
+        insideArea: null
 			}
 		},
 		onLoad(option) {
-			this.categoryTypeId = option.id
-			console.log(this.categoryTypeId)
+      const {
+        insideArea, id, categoryTypeId, name
+      } = option
+			this.checkedId = id
+			this.title = name
+			this.categoryTypeId = categoryTypeId
+			this.insideArea =insideArea
 		},
 		onShow() {
+      uni.setNavigationBarTitle({
+        title: this.title
+      })
 			this.getProductsSkusPage();
 		},
 		methods: {
@@ -48,13 +58,18 @@
 			},
 			radioChange(obj) {
 				this.checkedId = obj.value
-				if (this.categoryTypeId == 6) {
-					getApp().globalData.noHouseDesignId = obj.value
-				} else if (this.categoryTypeId == 5){
-					getApp().globalData.noHouseActuaryId = obj.value
-				} else if (this.categoryTypeId == 4) {
-					getApp().globalData.noHouseCheckId = obj.value
-				}
+        
+				// if (this.categoryTypeId == 1) {
+				// 	getApp().globalData.noHouseDesignId = obj.value
+				// } else if (this.categoryTypeId == 4){
+				// 	getApp().globalData.noHouseActuaryId = obj.value
+				// } else if (this.categoryTypeId == 2) {
+				// 	getApp().globalData.noHouseCheckId = obj.value
+				// }
+        uni.$emit('selectedServer', {
+          categoryTypeId: this.categoryTypeId,
+          values: obj
+        });
 				setTimeout(() => {
 					console.log(getApp().globalData)
 				}, 0)

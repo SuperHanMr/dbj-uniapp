@@ -32,7 +32,7 @@
 		justify-content: center;
 		align-items: center;
 		padding: 40rpx 32rpx 40rpx 24rpx;
-		background: #f5f6f6;
+		background: #FFF;
 		border-radius: 16rpx;
 
 		image {

@@ -120,7 +120,7 @@
           <view class="link">
             <view @click="gonohouse">无房屋无服入口</view>
             <view @click="gonohousedecatore('decorate')">无房屋无服务装修</view>
-            <view @click="gonohousedecatore('checkhouse')">无房屋无服务验房</view>
+            <view @click="gonohousedecatore('checkHouse')">无房屋无服务验房</view>
             <view @click="checkHouseRemind">验房提醒</view>
             <view @click="confirm1">设计交付</view>
             <view @click="confirm4">线上交底</view>
