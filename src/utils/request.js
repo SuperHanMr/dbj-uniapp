@@ -26,6 +26,7 @@ let failRequestList = [];
 let retryMap = new Map();
 
 function retryAllFailRequest() {
+	console.log('retry!!!!!!!!!!!!!!!!!!!!');
 	failRequestList.forEach(info => {
 		//每个请求最多重试3次
 		let requestKey = getRequestKey(info.config);
@@ -110,7 +111,7 @@ instance.interceptors.response.use(
 						});
 					}
 				});
-		
+
 			} else {
 				refrishToken();
 			}
@@ -128,9 +129,9 @@ instance.interceptors.response.use(
 				title: '提示',
 				content: '用户信息已过期,请重新登录',
 				success: function (res) {
-				uni.navigateTo({
-					url: "/pages/login/login",
-				});
+					uni.navigateTo({
+						url: "/pages/login/login",
+					});
 				}
 			});
 		}

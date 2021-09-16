@@ -22,7 +22,6 @@
         class=""
       >
       </view>
-   
 
       <button
         style="width: 50%;margin-top: 20rpx;"
@@ -35,11 +34,11 @@
         type="default"
         @click="toLiveDecorate"
       >去装修现场</button>
-			<button
-			  style="width: 50%;margin-top: 20rpx;"
-			  type="default"
-			  @click="toShop"
-			>去商家入驻</button>
+      <button
+        style="width: 50%;margin-top: 20rpx;"
+        type="default"
+        @click="toShop"
+      >去商家入驻</button>
       <swiper
         class="banner-content"
         :indicator-dots="true"
@@ -109,7 +108,6 @@ export default {
     };
   },
   onLoad() {
- 
     let defaultHouse = {
       name: "北京市朝阳区",
       provinceId: 1,
@@ -128,12 +126,11 @@ export default {
     this.reloadData();
   },
   methods: {
-   
-		toShop(){
-			uni.navigateTo({
-			  url: "/sub-other/pages/merchant-entry/merchant-entry",
-			});
-		},
+    toShop() {
+      uni.navigateTo({
+        url: "/sub-other/pages/merchant-entry/merchant-entry",
+      });
+    },
     toLiveDecorate() {
       uni.navigateTo({
         url: "/sub-home/pages/lives-decorate/lives-decorate",

@@ -15,16 +15,12 @@
 			
 			<view class="item">
 				<text class="item-header">创建时间：</text>
-				<text class="item-body">{{createTime | formatDate}}</text>
+				<text class="item-body">{{createTime}}</text>
 			</view>
 			
 			<view class="item" v-if="showPayTime">
 				<text class="item-header">付款时间：</text>
-				<text class="item-body">{{payTime | formatDate }}</text>
-			</view>
-			<view class="item" v-if="showCancelTime">
-				<text class="item-header">取消时间：</text>
-				<text class="item-body">{{cancelTime | formatDate }}</text>
+				<text class="item-body">{{payTime}}</text>
 			</view>
 			
 			<view class="item" v-if="showPayType">
@@ -36,11 +32,8 @@
 </template>
 
 <script>
-	import {formatDate} from "@/utils/common.js"
+	// import {formatData} from "@/utils/common.js"
 	export default {
-		filters:{
-			formatDate
-		},
 		name:"order-info",
 		props:{
 			orderNo:{
@@ -50,9 +43,6 @@
 			createTime:{
 				type:String,
 				required:true,
-			},
-			cancelTime:{
-				type:String,
 			},
 			payTime:{
 				type:String,
@@ -67,15 +57,11 @@
 			},
 			showPayTime:{
 				type:Boolean,
-				default:false,
-			},
-			showCancelTime:{
-				type:Boolean,
-				default:false,
+				default:true,
 			},
 			showPayType:{
 				type:Boolean,
-				default:false,
+				default:true,
 			}
 		},
 		// filters:{

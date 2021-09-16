@@ -20,35 +20,28 @@
 			<view class="basic-info">
 				<view class="name-attr">
 					<view class="text">
-						<text class="icon">{{dataList.type == 2?'服务':'物品'}}</text>
+						<!-- <text class="icon">物品</text> -->
+						<text class="icon">{{dataList.goodsType==1?'服务':'物品'}}</text>
 						<text class="name">{{dataList.fullName}}</text>					
 					</view>
 					<view class="attr">
-						<text style="margin-right: 24rpx;">{{dataList.salesProperties}}</text>
+						<text style="margin-right: 24rpx;">{{dataList.saleProperties}}</text>
+						<!-- <text>2.0m/根</text> -->
 					</view>						
 				</view>
 				
 				<view class="common-price">
-					<!-- 商品价格 -->
-					<view class="product-price" v-if="showPrice">
-						<text style="font-size:22rpx;">￥</text>
-						<text>{{handlePrice(dataList.price)[0]}}.</text>
-						<text style="font-size:22rpx;">{{handlePrice(dataList.price)[1]}}</text>
-					</view>
-					<!-- 实付 -->
-					<view class="product-price" v-else>
+					<view class="product-price">
 						<text style="margin-right: 8rpx;font-size: 22rpx;">实付</text>
 						<text style="font-size:22rpx;">￥</text>
 						<text>{{handlePrice(dataList.actualIncomeAmount)[0]}}.</text>
-						<text style="font-size:22rpx;">{{handlePrice(dataList.actualIncomeAmount)[1]}}</text>
+						<text style="font-size:22rpx;">{{handlePrice(dataList.actualIncomeAmount)[0]}}</text>
 					</view>
-					<!-- 商品价格 -->
-					<view  class="product-price" style="color: #999999;" v-if="showOriginPrice" >
+					<view  class="product-price" style="color: #999999;">
 						<text style="font-size:22rpx;">￥</text>
 						<text>{{handlePrice(dataList.price)[0]}}.</text>
 						<text style="font-size:22rpx;">{{handlePrice(dataList.price)[1]}}</text>
 					</view>
-					
 					<view style="color: #999999;">共{{dataList.number}}件</view>
 				</view>	
 			</view>
@@ -118,14 +111,6 @@
 			},
 			orderStatus:{//1 待付款 2 进行中 3 已完成
 				type:Number,
-			},
-			showPrice:{
-				type:Boolean,
-				default:false
-			},
-			showOriginPrice:{
-				type:Boolean,
-				default:false
 			}
 		},
 		data() {
@@ -134,9 +119,11 @@
 			};
 		},
 		mounted() {
+			console.log("paddingBottom1=",this.paddingBottom)
 			if( (this.dataList.stockTyp && this.dataList.stockType == 2 && this.dataList.type == 1&& this.orderStatus==2) || (this. dataList.showRefundBtn &&this. orderStatus==2)){
 				this.paddingBottom=0
 			}
+			console.log("paddingBottom2=",this.paddingBottom)
 		},
 		
 		methods:{
@@ -154,6 +141,8 @@
 			},
 			
 			particalRefund(){
+				console.log("11111")
+				
 				this.$emit('toApplayForRefund')
 			}
 		}

@@ -12,7 +12,7 @@
 		</view>
 		<view class="gc" v-if="(serviceData.status >= 2 || (serviceData.status == 0 && serviceData.grepOrderStatus === 3)) && open">
 			<view class="procsss flex-row-bet">
-				<view class="s0">{{serviceData.serveRoleName || "后端没返回字段bit it"}}</view>
+				<view class="s0">{{serviceData.nodeType}}员</view>
 				<view class="s1 flex-row-start">
 					<view>{{serviceData.serveName}}</view>
 					<image src="http://dbj.dragonn.top/static/mp/dabanjia/images/decorate/ic_more.svg"></image>

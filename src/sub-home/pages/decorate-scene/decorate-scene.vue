@@ -4,8 +4,8 @@
 			<view class="houseInfo">
 				<view class="location">{{projectInfo.estateNeighbourhood}}</view>
 				<view class="focus">
-					<view class="browse">浏览 {{estateViewCount}}</view>
-					<view class="attention">关注 {{estateFocusOnCount}}</view>
+					<view class="browse">浏览 1300</view>
+					<view class="attention">关注 120</view>
 				</view>
 				<view class="itself">
 					<view class="type">
@@ -91,23 +91,20 @@
 								<view class="workerName">{{item.userName}}</view>
 								<view class="role">{{item.nodeName}}</view>
 							</view>
-							<view class="date">{{item.normDateStr}}</view>
+							<view class="date">{{Date.now()|formatDate}}</view>
 						</view>
-						<view class="report">{{item.content}}</view>
-						<view class="evidence">
-							<image class="img" :src="url" v-for="(url,index) in item.imagesList.slice(0,6)" :key="index"></image>
-						</view>
+						<view class="report">尊敬的业主，您好！打扮家管家-姜文为您新家质量保驾护航，今日巡查房屋情况如下：今天停工</view>
+						<view class="evidence"></view>
 						<view class="footer">
-							<view class="actionType">{{item.recordName}}</view>
+							<view class="actionType">{{item.content}}</view>
 							<view class="right">
 								<view class="like">
-									<image v-if="!item.selfLike" @click="likeClick" src="../../static/ic_like@2x.png"></image>
-									<image v-else @click="likeClick" src="../../static/ic_liked@2x.png"></image>
-									<view class="text">{{item.likeCount}}</view>
+									<image @click="likeClick" src="../../static/ic_like@2x.png"></image>
+									<view class="text">56</view>
 								</view>
 								<view class="comments">
 									<image @click="showComments=true" src="../../static/ic_comments@2x.png"></image>
-									<view class="text">{{item.commentCount}}</view>
+									<view class="text">56</view>
 								</view>
 							</view>
 						</view>
@@ -115,7 +112,6 @@
 				</view>
 			</view>
 		</view>
-		<view class="bottomBox"></view>
 		<view class="footer">
 			<view class="consult">
 				<image src="../../static/consult@2x.png" mode=""></image>
@@ -125,12 +121,12 @@
 				<image src="../../static/decorate@2x.png" mode=""></image>
 				<view>我要装修</view>
 			</view>
-			<view class="focusOn" @click="focusC">
+			<view class="focusOn">
 				<image class="add" src="../../static/ic_add_focus@2x.png"></image>
-				<view>{{isFocus?'已关注':'关注'}}</view>
+				<view>关注</view>
 			</view>
 		</view>
-		<view class="mask" v-if="showNodeType">
+		<view class="mask" v-if="showWorkType">
 			<view class="popupSelects">
 				<view class="selArea">
 					<view class="cancel" @click="cancelC">取消</view>
@@ -140,10 +136,10 @@
 					<li :class="{'active':selectedIndex===-1}">全部</li>
 					<li
 						:class="{'active':selectedIndex===index}"
-						@click="switchC(index,item.nodeType)"
-						v-for="(item,index) in selectNodeTypes"
+						@click="switchC(index,item.type)"
+						v-for="(item,index) in nodeTypes"
 						:key="index"
-					>{{item.nodeName}}</li>
+					>{{item.name}}</li>
 				</ul>
 			</view>
 		</view>
@@ -177,14 +173,6 @@
 								<view class="text">尊敬的业主，您好！打扮家管家-姜文为您新家质量保驾护航，今日巡查房屋情况：今天停工</view>
 							</view>
 						</view>
-						<view class="expand">
-							<view class="test">展开1条回复</view>
-							<image class="img" src="../../static/ic_expand@2x.png"></image>
-						</view>
-						<view class="packUp">
-							<view class="test">收起</view>
-							<image class="img" src="../../static/ic_packUp@2x.png"></image>
-						</view>
 					</view>
 				</view>
 			</view>
@@ -193,7 +181,7 @@
 </template>
 
 <script>
-	import {getDecorateProcess,getDecorateDynamic,getSelectOptions,setAttentions,getFocusBrowse} from "../../../api/real-case.js"
+	import {getDecorateProcess,getDecorateDynamic} from "../../../api/real-case.js"
 	import {formatDate} from "../../../utils/common.js"
 	export default {
 		filters:{
@@ -201,7 +189,7 @@
 		},
 		data(){
 			return {
-				showNodeType: false,
+				showWorkType: false,
 				showComments: false,
 				selectedIndex: -1,
 				selectedType: 0,
@@ -209,55 +197,22 @@
 				nodeTypes: [],
 				nodesInfo: [],
 				workers: [],
-				dynamics: [],
-				selectNodeTypes: [],
-				processId: 0,
-				isFocus: false,
-				estateFocusOnCount: 0,
-				estateViewCount: 0
+				dynamics: []
 			}
 		},
 		created(){
-			// this.userId = uni.getStorageSync("userId")
-			this.userId = 6388
-			this.requestDecorateSteps()
+			this.requestPage()
 			this.requestDynamic()
-			
 		},
 		methods:{
-			focusC(){
-				let deviceId = 0
-				uni.getSystemInfo({
-					success:res => {
-						deviceId = res.deviceId
-					}
-				})
-				let params = {
-					routeId: 3001,
-					relationId: this.projectInfo.id,
-					authorId: this.projectInfo.estateId,
-					equipmentId: deviceId,
-					userId: this.userId,
-					type: 3,
-					bizType: 4,
-					subBizType: this.projectInfo.estateCityId
-				}
-				setAttentions(params).then( data => {
-					if(data){
-						console.log(data)
-						this.isFocus = !this.isFocus
-					}
-				})
-			},
 			selectC(){
-				this.showNodeType=true
-				this.requestSelectOptions()
+				this.showWorkType=true
 			},
 			cancelC(){
-				this.showNodeType=false
+				this.showWorkType=false
 			},
 			confirmC(){
-				this.showNodeType=false
+				this.showWorkType=false
 				this.requestDynamic(this.selectedType)
 			},
 			switchC(index,type){
@@ -271,48 +226,20 @@
 			},
 			toConstruction(){
 				uni.navigateTo({
-					url:"/sub-home/pages/decorate-scene/construction-drawings",
+					url:"./construction-drawings",
 					success:res => {
 						res.eventChannel.emit('acceptDataFromOpenerPage', 2)
-					}
-				})
-			},
-			requestSelectOptions(){
-				let params = {
-					projectId: 39,
-					processId: 1,
-					allNodesFlag: false
-				}
-				getSelectOptions(params).then(data => {
-					if(data&&data.length){
-						this.selectNodeTypes = data
-					}
-				})
-			},
-			getFocus(){
-				let params = {
-					userId: this.userId,
-					relationId: this.projectInfo.id,
-					subBizType: this.projectInfo.estateCityId,
-				}
-				getFocusBrowse(params).then(data => {
-					if(data){
-						this.estateFocusOnCount = data.estateFocusOnCount
-						this.estateViewCount = data.estateViewCount
-						this.isFocus = data.isSelfFocusOn
-						
-						console.log(data)
 					}
 				})
 			},
 			requestDynamic(type){
 				let params
 				params = type? {
-					projectId: 40,
+					projectId: 1,
 					nodeType: type,
 					userTypes: [2,3]
 				} : {
-					projectId: 40,
+					projectId: 1,
 					userTypes: [2,3]
 				}
 				getDecorateDynamic(params).then(data => {
@@ -323,7 +250,7 @@
 					}
 				})
 			},
-			requestDecorateSteps(){
+			requestPage(){
 				let params = {
 					projectId: 1
 				}
@@ -331,8 +258,6 @@
 					if(data){
 						let {projectInfo,nodes} = data
 						this.projectInfo = projectInfo
-						this.processId = nodes[0].processId
-						this.getFocus()
 						nodes.map((item,index) => {
 							this.nodeTypes.push({
 								name: item.nodeName,
@@ -353,6 +278,7 @@
 						for (let i = 0;i < this.nodesInfo.length - 1 ; i++) {
 							this.nodesInfo[i].nextNodeStatus = this.nodesInfo[i+1].nodeStatus
 						}
+						console.log(this.nodesInfo)
 					}
 				})
 			}
@@ -361,11 +287,6 @@
 </script>
 
 <style scoped>
-	.bottomBox{
-		width: 100%;
-		height: 136rpx;
-		padding-bottom: 40rpx;
-	}
 	.mask {
 	  width: 100%;
 	  height: 100%;
@@ -426,7 +347,6 @@
 	.commentItem .mainContent .avatar{
 		width: 72rpx;
 		height: 72rpx;
-		border-radius: 50%;
 		margin-right: 16rpx;
 		display: block;
 	}
@@ -482,7 +402,6 @@
 	.commentItem .reply .avatar{
 		width: 40rpx;
 		height: 40rpx;
-		border-radius: 50%;
 		margin-right: 16rpx;
 		display: block;
 	}
@@ -510,40 +429,6 @@
 		font-size: 26rpx;
 		color: #333333;
 		line-height: 40rpx;
-	}
-	.expand{
-		width: 164rpx;
-		height: 36rpx;
-		margin-left: 136rpx;
-		margin-bottom: 32rpx;
-		font-size: 26rpx;
-		font-weight: 500;
-		color: #00c2b8;
-		display: flex;
-		align-items: center;
-	}
-	.expand .img{
-		width: 14rpx;
-		height: 8rpx;
-		display: block;
-		margin-left: 8rpx;
-	}
-	.packUp{
-		width: 74rpx;
-		height: 36rpx;
-		margin-left: 136rpx;
-		margin-bottom: 32rpx;
-		font-size: 26rpx;
-		font-weight: 500;
-		color: #00c2b8;
-		display: flex;
-		align-items: center;
-	}
-	.packUp .img{
-		width: 14rpx;
-		height: 8rpx;
-		display: block;
-		margin-left: 8rpx;
 	}
 	.popupSelects{
 		width: 100%;
@@ -617,6 +502,7 @@
 	.sceneContainer>.footer{
 		width: 100%;
 		height: 136rpx;
+		margin-top: 60rpx;
 		padding-bottom: 40rpx;
 		background: #ffffff;
 		display: flex;
@@ -868,17 +754,15 @@
 	.worker .avatar{
 		width: 28rpx;
 		height: 28rpx;
-		border-radius: 50%;
 		display: block;
 		margin: 2rpx 6rpx 0;
 	}
 	
 	.dynamic{
 		width: 100%;
-		height: 1200rpx;
-		overflow: auto;
+		height: 1000rpx;
 		margin-top: 24rpx;
-		margin-bottom: 80rpx;
+		overflow: auto;
 		background: #ffffff;
 		border-radius: 40rpx;
 	}
@@ -923,8 +807,6 @@
 	}
 	.list{
 		width: 100%;
-		height: 1200rpx;
-		overflow: auto;
 	}
 	.item{
 		width: 100%;
@@ -933,7 +815,6 @@
 	.item .avatar{
 		width: 74rpx;
 		height: 74rpx;
-		border-radius: 50%;
 		display: block;
 		margin-top: 39rpx;
 		margin-left: 31rpx;
@@ -943,9 +824,6 @@
 		margin: 48rpx 32rpx 0 16rpx;
 		padding-bottom: 36rpx;
 		border-bottom: 2rpx solid #efefef;
-	}
-	.item:last-child .acitonInfo{
-		border-bottom: 0rpx;
 	}
 	.acitonInfo .header{
 		width: 100%;
@@ -964,22 +842,14 @@
 	}
 	.acitonInfo .evidence{
 		width: 100%;
-		height: 394rpx;
-		margin: 16rpx 0;
-		display: flex;
-		justify-content: space-between;
-		flex-wrap:wrap
-	}
-	.evidence .img{
-		width: 192rpx;
 		height: 192rpx;
-		display: block;
-		margin-bottom: 10rpx;
-		border-radius: 12rpx;
+		margin: 16rpx 0 26rpx;
+		background: #3366FF;
 	}
 	.acitonInfo .footer{
 		width: 100%;
 		height: 34rpx;
+		
 		display: flex;
 		justify-content: space-between;
 	}
@@ -988,8 +858,7 @@
 		align-items: center;
 	}
 	.acitonInfo .header .workerName{
-		width: fit-content;
-		/* width: 60rpx; */
+		width: 60rpx;
 		height: 42rpx;
 		margin-right: 8rpx;
 		font-size: 30rpx;
@@ -1015,8 +884,7 @@
 		line-height: 34rpx;
 	}
 	.acitonInfo .footer .actionType{
-		width: fit-content;
-		/* width: 104rpx; */
+		width: 104rpx;
 		height: 32rpx;
 		background: #f5f6f6;
 		border-radius: 6rpx;
@@ -1098,10 +966,11 @@
 		margin-right: 8rpx;
 	}
 	.focusOn view{
-		width: 96rpx;
+		width: 64rpx;
 		height: 32rpx;
 		font-size: 32rpx;
 		font-weight: 500;
+		text-align: center;
 		color: #ffffff;
 		line-height: 32rpx;
 	}

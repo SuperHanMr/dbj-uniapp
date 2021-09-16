@@ -28,21 +28,10 @@
       }"
       :class="{ fixed: navConfig.navFixed }"
     >
-      <view
-        class="my_left_box"
-        :style="{ height: btnHeight }"
-      >
+      <view class="my_left_box" :style="{ height: btnHeight }">
         <!-- 左侧单图标 + text -->
-        <view
-          class="my_left_icon"
-          @tap="onLeftHome"
-          :style="{ height: btnHeight, paddingLeft: navBarLeft }"
-          v-if="isHome"
-        >
-          <image
-            class="nv_icon"
-            :src="navConfig.homeIconPath || homeIconPath"
-          />
+        <view class="my_left_icon" @tap="onLeftHome" :style="{ height: btnHeight, paddingLeft: navBarLeft }" v-if="isHome">
+          <image class="nv_icon" :src="navConfig.homeIconPath || homeIconPath" />
         </view>
         <view
           class="my_left_icon"
@@ -50,35 +39,29 @@
           v-if="navConfig.btnType !== 'type2' && !isHome"
           :style="{ height: btnHeight, paddingLeft: navBarLeft }"
         >
-          <image
-            class="nv_icon"
-            :src="navConfig.leftIconPath || backIconPath"
-          />
+          <image class="nv_icon" :src="navConfig.leftIconPath || backIconPath" />
           <view
             class="leftText"
             :style="{ height: btnHeight }"
             v-if="!!navConfig.leftText && navConfig.btnType !== 'type2'"
           >
-            <text :style="{
+            <text
+              :style="{
                 color: navConfig.leftText.color,
                 fontSize: navConfig.leftText.fontSize,
                 fontWeight: navConfig.leftText.fontWeight,
-              }">{{ navConfig.leftText.text }}</text>
+              }"
+              >{{ navConfig.leftText.text }}</text
+            >
           </view>
         </view>
       </view>
       <!-- 左slot -->
-      <view
-        class="my_left_custom"
-        :style="{ height: btnHeight }"
-      >
+      <view class="my_left_custom" :style="{ height: btnHeight }">
         <slot name="left"></slot>
       </view>
 
-      <view
-        class="btn_type"
-        :style="{ height: btnHeight }"
-      >
+      <view class="btn_type" :style="{ height: btnHeight }">
         <view
           class="btn_box nav_btn_t1"
           :style="{
@@ -89,10 +72,7 @@
           }"
           v-if="navConfig.btnType == 'type2' && !isHome"
         >
-          <view
-            class="btn_back"
-            @tap="onLeftClick"
-          >
+          <view class="btn_back" @tap="onLeftClick">
             <image
               class="nv_icon"
               :src="navConfig.type2Config.leftPath"
@@ -101,10 +81,7 @@
             />
           </view>
           <view class="line"></view>
-          <view
-            class="btn_home"
-            @tap="onLeftHome"
-          >
+          <view class="btn_home" @tap="onLeftHome">
             <image
               class="nv_icon"
               :src="navConfig.type2Config.rightPath"
@@ -114,10 +91,7 @@
           </view>
         </view>
         <!-- 中间slot -->
-        <view
-          class="my_custom_box"
-          :style="{ height: btnHeight }"
-        >
+        <view class="my_custom_box" :style="{ height: btnHeight }">
           <!-- 搜索框 -->
           <view
             class="nv_search_box"
@@ -129,11 +103,7 @@
               marginLeft: navConfig.searchConfig.marginLeft,
             }"
           >
-            <image
-              class="nv_icon"
-              :src="`/static/searchB.png`"
-              mode="aspectFit"
-            />
+            <image class="nv_icon" :src="`/static/searchB.png`" mode="aspectFit" />
             <input
               type="text"
               :value="navConfig.searchConfig.value"
@@ -146,11 +116,7 @@
               :placeholder-style="navConfig.searchConfig.placeholderStyle || ''"
               class="nv_input"
             />
-            <view
-              class="close"
-              @tap="clearInput"
-              :style="{ height: inputHeight }"
-            >
+            <view class="close" @tap="clearInput" :style="{ height: inputHeight }">
               <image
                 v-if="navConfig.searchConfig.value !== ''"
                 class="nv_icon"
@@ -163,11 +129,7 @@
         </view>
       </view>
       <!-- 标题 -->
-      <view
-        class="title_container"
-        v-if="!navConfig.searchConfig"
-        :style="{ top: navBarTop, height: btnHeight }"
-      >
+      <view class="title_container" v-if="!navConfig.searchConfig" :style="{ top: navBarTop, height: btnHeight }">
         <text
           class="title_text"
           v-if="!!navConfig.navTitle"
@@ -176,20 +138,13 @@
             fontSize: navConfig.navTitle.fontSize,
             fontWeight: navConfig.navTitle.fontWeight,
           }"
-        >{{ navConfig.navTitle.text }}</text>
+          >{{ navConfig.navTitle.text }}</text
+        >
         <slot name="center2"></slot>
       </view>
       <!-- 右边slot -->
-      <view
-        class="my_right_icon"
-        :style="{ height: btnHeight }"
-      >
-        <image
-          v-if="navConfig.rightIconPath"
-          @tap="onRightClick"
-          class="nv_icon"
-          :src="navConfig.rightIconPath"
-        />
+      <view class="my_right_icon" :style="{ height: btnHeight }">
+        <image v-if="navConfig.rightIconPath" @tap="onRightClick" class="nv_icon" :src="navConfig.rightIconPath" />
         <slot name="right"></slot>
       </view>
     </view>
@@ -315,14 +270,10 @@ export default {
       this.navBarTop = uni.getSystemInfoSync().statusBarHeight + "px";
       if (!this.navConfig.opacity) {
         this.opacity = 1;
-        !this.navConfig.isOpacity
-          ? (this.opacity = 1)
-          : ((this.navConfig.navFixed = true), (this.opacity = 0));
+        !this.navConfig.isOpacity ? (this.opacity = 1) : ((this.navConfig.navFixed = true), (this.opacity = 0));
       } else {
         this.opacity = this.navConfig.opacity;
-        !this.navConfig.isOpacity
-          ? ""
-          : ((this.navConfig.navFixed = true), (this.opacity = 0));
+        !this.navConfig.isOpacity ? "" : ((this.navConfig.navFixed = true), (this.opacity = 0));
       }
 
       // #ifdef MP
@@ -346,17 +297,14 @@ export default {
       this.navBarTop = rect.top + "px";
       this.navBarLeft = gS.screenWidth - rect.right + "px";
       this.navBarRight = gS.screenWidth - rect.right + rect.width + "px";
-      this.navBarHeight =
-        gS.statusBarHeight +
-        rectHeight +
-        (rect.top - gS.statusBarHeight) * 2 +
-        "px";
+      this.navBarHeight = gS.statusBarHeight + rectHeight + (rect.top - gS.statusBarHeight) * 2 + "px";
     },
     /* 点击左侧 */
     onLeftClick() {
       if (this.navConfig.isCustomFn) {
         this.$emit("onLeftClick");
       } else {
+        console.log("back");
         uni.navigateBack();
       }
     },
@@ -368,6 +316,7 @@ export default {
     },
     /* 点击右侧 */
     onRightClick() {
+      console.log("onRightClick");
       uni.showToast({
         title: "onRightClick",
         duration: 1000,
@@ -566,7 +515,7 @@ export default {
   lines: 1;
   /* #endif */
 }
-/*
+/* 
 左边自定义
  */
 .my_left_box {
@@ -607,7 +556,7 @@ export default {
   padding-left: 4upx;
   font-size: 15px;
 }
-/*
+/* 
 中间
  */
 .my_custom_box {
@@ -620,7 +569,7 @@ export default {
   flex: 1;
 }
 /*
-搜索框
+搜索框 
  */
 .nv_search_box {
   /* #ifndef APP-PLUS-NVUE */
@@ -658,7 +607,7 @@ export default {
   /* #endif */
 }
 
-/*
+/* 
 右边 自定义
  */
 .my_right_icon {

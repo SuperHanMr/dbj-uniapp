@@ -507,6 +507,13 @@
           }
         },
         {
+          "path": "pages/check/check",
+          "style": {
+            "navigationBarTitleText": "验房服务",
+            "enablePullDownRefresh": true
+          }
+        },
+        {
           "path": "pages/design-picture/design-picture",
           "style": {
             "navigationBarTitleText": ""
@@ -588,8 +595,7 @@
           "path": "pages/warehouse-list/warehouse-list",
           "style": {
             "navigationBarTitleText": "我的仓库",
-            "enablePullDownRefresh": false,
-						"disableScroll":true
+            "enablePullDownRefresh": false
           }
         },
         {

@@ -9,6 +9,7 @@ function objectToUrlString(obj) {
       temp += `${keys[j]}=${obj[keys[j]]}` 
     }
   }
+  console.log(temp)
   return temp
 }
 export {

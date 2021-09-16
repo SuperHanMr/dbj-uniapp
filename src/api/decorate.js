@@ -72,6 +72,11 @@ export function getMsgList(params) {
 	return request.get("/pm/app/specialMsg/all?projectId=" + params)
 }
 
+//获取装修消息数量
+export function getMsgNum(params) {
+	return request.get("/pm/app/specialMsg/count?projectId=" + params)
+}
+
 //获取抢单审核详情
 export function getGrabDetail(params) {
 	return request.get("/pm/app/snatch/server/" + params)
@@ -223,11 +228,11 @@ export function serverInfo(serveId) {
 }
 // C端APP-要货-用户确认
 export function requireConfirm(params) {
-	return request.put(`/order-center/app/goods/require/confirm`,params)
+	return request.put(`/order-center/app/goods/require/confirm`, params)
 }
 
 // app支付运费/搬运费
 export function payFreight(params) {
-	return request.put(`/order-center/app/order/payFreight`,params)
+	return request.put(`/order-center/app/order/payFreight`, params)
 }
 

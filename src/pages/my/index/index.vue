@@ -9,8 +9,8 @@
           src="../../login/imgs/Lark20210823-152715.png"
           class="avatar"
         />
-        <view class="user-name" >
-					<text class="name" @click="toLogin">{{userName}} </text>
+        <view class="user-name">
+					<text class="name"> 用户名称</text>
          
           <view
             class="edit-info"
@@ -37,7 +37,7 @@
         <view class="order">我的订单</view>
         <view
           class="total"
-          @click="handlerViewAll()"
+          @click="handlerTotalOrder()"
         >
 					<text>查看全部</text>
 					<image src="../../../static/order/images/arraw_right@2x.png"	mode=""></image>
@@ -99,8 +99,6 @@ export default {
   components: { uniBadge },
   data() {
     return {
-			isLogin:false,
-			userName:'用户名称',
       list: [
         {
           key: "1",
@@ -170,23 +168,8 @@ export default {
       ],
     };
   },
-	onShow() {
-	if (!uni.getStorageSync("userId")) {
-		this.userName="点击登录";
-		this.isLogin=false;
-	}else{
-		this.isLogin=true
-		this.userName="用户名称";
-	}
-	},
   methods: {
-    toLogin(){
-			if(!this.isLogin){
-				uni.navigateTo({
-					url:'../../login/login'
-				})
-			}
-		},
+    
     handlerToSetUp() {
       console.log("点击了设置");
       uni.navigateTo({
@@ -211,10 +194,12 @@ export default {
         url: item.url,
       });
     },
-    handlerViewAll() {
+    handlerTotalOrder() {
       console.log("点击我的订单全部按钮");
       uni.navigateTo({
-				url:"../../../sub-my/pages/my-order/my-order?index=99"
+				// url:"../../../sub-my/pages/my-order/my-order?index=99"//勿删 
+				url:`../../../sub-my/pages/my-order/order-wait-pay/order-wait-pay`
+				// url:"../../../sub-my/pages/my-order/order-in-progress/order-in-progress"
       });
     },
     handlerOrder(item) {

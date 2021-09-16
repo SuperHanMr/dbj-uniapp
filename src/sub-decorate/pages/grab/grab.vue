@@ -5,7 +5,7 @@
 			<view class="grab-header-name">
 				<view class="grab-header-name-top">
 					<text class="name">{{personData.name}}</text>
-					<text class="icon">量房</text>
+					<text class="icon"></text>
 				</view>
 				<view class="grab-header-name-bottom">
 					<button class="btn">发消息</button>
@@ -43,6 +43,9 @@
       this.id = getApp().globalData.decorateMsg.serveId
       this.personId = getApp().globalData.decorateMsg.serverId
       this.getGrabDetail()
+      this.setNavigationBarTitle({
+        title:'确认'+getApp().globalData.decorateMsg.jobName
+      })
       const menuButtonInfo = uni.getMenuButtonBoundingClientRect();
       this.systemBottom = menuButtonInfo.bottom + 'rpx'; 
       this.systemHeight = menuButtonInfo.bottom + 136 +'rpx'
