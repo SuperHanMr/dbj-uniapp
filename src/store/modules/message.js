@@ -10,6 +10,13 @@ import {
   getGroupList
 } from "@/api/message.js";
 
+const CONV_TYPES = {
+  CUSTOMER: 1, //客服会话
+  SYSTEM: 2, //系统消息会话
+  INTERACTION: 3, //互动消息会话
+  COMMON: 99  //普通会话
+}
+
 // 解析自定义消息，并把payload.data字符串值解析后放到message的payloadData属性上
 const parseCustomMessage = (msg) => {
   if (msg.type === TIM.TYPES.MSG_CUSTOM) {
@@ -26,19 +33,24 @@ const parseCustomMessage = (msg) => {
 
 const message = {
   state: {
+    CONV_TYPES: CONV_TYPES,
     cstServConv: {
-      conversationID: "NOTIFICATION-cstServ",
-      type: "NOTIFICATION",
+      conversationID: "CUSTOMER",
+      type: TIM.TYPES.CONV_GROUP,
+      systemType: CONV_TYPES.CUSTOMER,
+      isAvailable: false,
       name: "在线客服"
     },
     sysConv: {
-      conversationID: "NOTIFICATION-sys",
-      type: "NOTIFICATION",
+      conversationID: "C2Cadministrator",
+      type: TIM.TYPES.CONV_C2C,
+      systemType: CONV_TYPES.SYSTEM,
       name: "系统消息",
     },
     itaConv: {
-      conversationID: "NOTIFICATION-ita",
-      type: "NOTIFICATION",
+      conversationID: "C2CcommentAndReply",
+      type: TIM.TYPES.CONV_C2C,
+      systemType: CONV_TYPES.INTERACTION,
       name: "互动消息",
     },
     isIMlogin: false,
@@ -49,6 +61,7 @@ const message = {
     groupMembersMap: {}, //按照群id缓存群成员信息
     currentConversation: {},
     currentMessageList: [],
+    customerMessageList: [], //客服消息列表，前端存一份
     isAppendMessageList: false, //是否消息后面拼接新消息
     newMessageMap: {},
     messagePageSize: 15,
@@ -60,6 +73,12 @@ const message = {
     innerAudioContext: null, //音频播放器
     showVideoPlayer: false, //显示视频播放器
     currentVideoUrl: '', //当前播放的视频地址
+  },
+  getters: {
+    //系统消息未读个数，可以监听该数据变化，判断是否有系统消息
+    systemUnreadCount(state) {
+      return state.sysConv.unreadCount || 0;
+    }
   },
   mutations: {
     resetConversation(state) {
@@ -89,6 +108,22 @@ const message = {
           return true;
         }
         if (conv.type === TIM.TYPES.CONV_C2C) {
+          // 如果是系统消息
+          if (conv.conversationID === "C2Cadministrator") {
+            state.sysConv = {
+              ...conv,
+              ...state.sysConv
+            };
+            return false;
+          }
+          //如果是互动消息
+          if (conv.conversationID === "C2CcommentAndReply") {
+            state.itaConv = {
+              ...conv,
+              ...state.itaConv
+            };
+            return false;
+          }
           return true;
         }
         return false;
@@ -134,22 +169,6 @@ const message = {
         isCompleted,
         messageList = [],
       } = payload;
-      // XXX: 伪造消息
-      messageList = messageList.concat([{
-        ID: "GROUPgroup_3176_1099_1_1-4-test",
-        avatar: "https://ali-image-test.dabanjia.com/image/20210107/1609984385396_8922%242.jpg",
-        conversationID: "GROUPgroup_3176_1099_1_1",
-        conversationType: "GROUP",
-        flow: "out",
-        from: "zeus_452",
-        nick: "赵文浩1",
-        time: 1631351202,
-        payload: {
-          data: '{"type":"group_questionnaire_message","template":"card","name":"张三","test": "hello"}'
-        },
-        type: "TIMCustomElem"
-      }])
-      // XXX end
       messageList.forEach(parseCustomMessage);
       // 更新messageID，续拉时要用到
       state.nextReqMessageID = nextReqMessageID
@@ -190,6 +209,18 @@ const message = {
         }
         return true;
       });
+    },
+    setCustomerAvailable(state, available) {
+      state.cstServConv = {
+        ...state.cstServConv,
+        isAvailable: available
+      };
+    },
+    setCustomerLastMessage(state, lastMessage) {
+      state.cstServConv = {
+        ...state.cstServConv,
+        lastMessage: lastMessage
+      };
     }
   },
   actions: {
@@ -236,10 +267,10 @@ const message = {
     requestDBGroupList(context) {
       getGroupList().then(data => {
         const groupList = data.chatGroupBusinessDTOList || [];
-        groupList.forEach(group => {
+        context.commit("setChatGroupList", groupList);
+        context.state.chatGroupList.forEach(group => {
           context.dispatch("requestGroupMemberList", group.imGroupId);
         })
-        context.commit("setChatGroupList", groupList);
       });
     },
     /**
@@ -255,7 +286,9 @@ const message = {
         const memberList = imResponse.data.memberList || [];
         context.state.groupMembersMap[groupId] = memberList;
         return memberList;
-      });
+      }).catch(err => {
+        console.error("get member list error:", groupId, err);
+      })
     },
     /**
      * 获取消息列表
@@ -273,7 +306,40 @@ const message = {
       return getTim().getMessageList({ conversationID, nextReqMessageID, count: messagePageSize }).then(imReponse => {
         context.state.isRequesting = false;
         context.commit("prependCurrentMessageList", imReponse.data);
+      }).catch(err => {
+        console.error("获取消息列表出错：", err);
       })
+    },
+    /**
+     * 添加问题列表消息
+     * 目前仅支持添加到在线客服会话中
+     * @param {Object} state
+     */
+    pushQuestionsMessageList(context) {
+      const currentTime = Math.round(new Date().getTime()/1000);
+      const payloadData = {
+        type: "questions_message"
+      };
+      const messageList = [
+        {
+          ID: "SMART-CUSTMER-" + currentTime,
+          nick: "智能客服",
+          avatar: "http://iph.href.lu/100x100",
+          flow: "in",
+          time: currentTime,
+          from: "SMART-CUSTMER",
+          conversationType: TIM.TYPES.CONV_GROUP,
+          conversationID: context.state.cstServConv.conversationID,
+          type: TIM.TYPES.MSG_CUSTOM,
+          payload: {
+            data: JSON.stringify(payloadData)
+          },
+          payloadData: payloadData
+        }
+      ];
+      context.state.isAppendMessageList = true;
+      context.state.newMessageMap = {[messageList[0].ID]: true};
+      context.state.currentMessageList = context.state.currentMessageList.concat(messageList);
     },
     /**
      * 切换会话
@@ -282,25 +348,25 @@ const message = {
      * @param {String} conversationID
      */
     checkoutConversation(context, conversationID) {
-      console.log("check conversation:", conversationID, 'prev conversation:', context.state.currentConversation.conversationID);
-      // 1.切换会话前，将切换前的会话进行已读上报
-      if (context.state.currentConversation.conversationID) {
-        const prevConversationID = context.state.currentConversation.conversationID
-        getTim().setMessageRead({ conversationID: prevConversationID }).catch(e => { })
-        //切换会话时，清空消息
-        if (prevConversationID !== conversationID) {
-          context.commit("resetConversation");
-        }
-      }
+      console.log("check conversation:", conversationID);
       // 2.待切换的会话也进行已读上报
       getTim().setMessageRead({ conversationID }).catch(e => { })
       // 3. 获取会话信息
-      return getTim().getConversationProfile(conversationID).then(({ data }) => {
+      return getTim().getConversationProfile(conversationID).then(({data}) => {
+        const conversation = data.conversation;
+        console.log("conversation  data:", conversation);
         // 3.1 更新当前会话
-        context.state.currentConversation = data.conversation;
+        context.state.currentConversation = conversation;
+        if (conversation.systemType === CONV_TYPES.CUSTOMER) {
+          return context.dispatch("requestMessageList", conversationID).then(() => {
+            context.dispatch("pushQuestionsMessageList");
+          });
+        }
         // 3.2 获取消息列表
         return context.dispatch('requestMessageList', conversationID);
-      });
+      }).catch(err => {
+        console.error("获取会话信息出错：", err);
+      })
     },
     playMessageSound(context, payload) {
       if (!context.state.innerAudioContext) {
@@ -351,6 +417,16 @@ const message = {
         indicator: 'number'
       });
     },
+    /**
+     * 打开在线客服会话
+     * @param {Object} context
+     */
+    openCustomerConversation(context) {
+      let { conversationID, name } = context.state.cstServConv;
+      uni.navigateTo({
+        url: "/pages/message/conversation/conversation?id=" + conversationID + "&name=" + name,
+      });
+    }
   }
 }
 

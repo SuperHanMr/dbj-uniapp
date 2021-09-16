@@ -45,13 +45,6 @@
       }
     },
     {
-      "path": "pages/message/conversation/conversation-noti",
-      "style": {
-        "navigationBarTitleText": "",
-        "navigationBarBackgroundColor": "#ffffff"
-      }
-    },
-    {
       "path": "pages/my/index/index",
       "style": {
         "navigationBarTitleText": "我的",
