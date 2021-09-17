@@ -105,7 +105,7 @@
             id
         );
         uni.navigateTo({
-          url: "/sub-classify/pages/goods-detail/goods-detail"
+          url: "/sub-classify/pages/goods-detail/goods-detail" 
         })
       }
     }
