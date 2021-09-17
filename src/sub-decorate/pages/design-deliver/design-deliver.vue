@@ -6,7 +6,7 @@
     </view>
     <tabs :items="items" :current="current"  @changeItem="changeItem"></tabs>
     <pictures :imgList="imgList"></pictures>
-    <button class="btn" @click="confirm">确认{{message.title}}</button>
+    <button class="btn" @click="confirm">确认{{message.stageName}}</button>
   </view>
 </template>
 

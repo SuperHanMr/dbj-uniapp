@@ -47,8 +47,21 @@
       ChangeLevel
     },
     onLoad(option) {
-      this.estateId = option.estateId
-      this.roleType = option.roleType // 7工人，10管家
+      const {
+        projectId,
+        serveCardId,
+        serviceName,
+        serviceType,
+        serveType,
+        serveTypeName,
+        estateId,
+        roleType,
+        customerId
+      } = getApp().globalData.decorateMsg
+      this.estateId = estateId || option.estateId
+      this.serviceType = serviceType || option.serviceType 
+      this.projectId = projectId || 0
+      this.customerId = customerId || 0
     },
     onShow() {
       this.getDataList()
@@ -161,18 +174,21 @@
           let params = {
             payType: 1, //"int //支付方式  1微信支付",
             openid: uni.getStorageSync("openId"), //"string //微信openid 小程序支付用 app支付不传或传空",
-            projectId: 0, //"long //项目id  非必须 默认0",
-            customerId: 0, //"long //业主id  非必须 默认0",
+            projectId: this.projectId, //"long //项目id  非必须 默认0",
+            customerId: this.customerId, //"long //业主id  非必须 默认0",
             estateId: this.estateId, //"long //房产id   非必须 默认0",
             total: this.countPrice * 100, //"int //总计",
             remarks: "", //"string //备注",
             orderName: "管家工序费", //"string //订单名称",
             details: []
           }
+          // roleType 7工人，10管家
+          let roleType = this.serviceType == 5 ? 10 : 7
+          
           this.shopping.artificial.forEach(it => {
             params.details.push({
               supplierType: it.supplierType,
-              roleType: this.roleType,
+              roleType,
               relationId: it.productId, //"long //实体id",
               type: 2, //"int //实体类型   1材料  2服务   3专项付款",
               businessType: it.categoryTypeId, //"int //业务类型",

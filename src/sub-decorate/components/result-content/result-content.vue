@@ -217,6 +217,9 @@
               this.checkData.time = this.toHHmmss(this.checkData.autoSubmitTime-1000).split('.')[0]
             },1000)
           }
+        }).catch(err=>{
+          console.log(err)
+          this.$emit('isEmpty')
         })
       },
       toHHmmss(date){

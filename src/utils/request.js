@@ -8,7 +8,7 @@ import axios from '@/js_sdk/gangdiedao-uni-axios'
  */
 const toLogin = () => {
 	const pages = getCurrentPages();
-	const currentPage = pages?. [(pages?.length ?? 1) - 1];
+	const currentPage = pages?.[(pages?.length ?? 1) - 1];
 	uni.redirectTo({
 		url: `/pages/home/index?redirect=${encodeURIComponent(`/${currentPage?.route ?? ''}`)}`,
 	});
@@ -62,37 +62,35 @@ instance.defaults.headers.post['Content-Type'] = 'application/x-www-form-urlenco
  */
 instance.interceptors.request.use(
 	async (config) => {
-			uni.showLoading({
-				title: '加载中...',
-				mask: true
-			});
-			const token = getApp().globalData.token;
+		uni.showLoading({
+			title: '加载中...',
+			mask: true
+		});
+		const token = getApp().globalData.token;
 
-			if (token) {
-				config.headers = {
-					...(config.headers ?? {}),
-					accessToken: `${token}`,
-				};
-			}
-			console.log(config);
-			return config;
-		},
-		(error) => Promise.reject(error),
+		if (token) {
+			config.headers = {
+				...(config.headers ?? {}),
+				accessToken: `${token}`,
+			};
+		}
+		console.log(config);
+		return config;
+	},
+	(error) => Promise.reject(error),
 );
 
 // 响应拦截器
 instance.interceptors.response.use(
 	// 请求成功
 	async (res) => {
-			uni.hideLoading();
+		uni.hideLoading();
 
-			if (res.data.code !== 1) {
-				return Promise.reject(res)
-			} else {
-				if (res.data && res.data.data) {
-					return res.data.data;
-				}
-				return res.data;
+		if (res.data.code !== 1) {
+			return Promise.reject(res)
+		} else {
+			if (res.data && res.data.data) {
+				return res.data.data;
 			}
 		},
 		// 请求失败
@@ -104,7 +102,7 @@ instance.interceptors.response.use(
 					uni.showModal({
 						title: '提示',
 						content: '用户信息已过期,请重新登录',
-						success: function(res) {
+						success: function (res) {
 							uni.navigateTo({
 								url: "/pages/login/login",
 							});
@@ -126,17 +124,20 @@ instance.interceptors.response.use(
 			} else if (error.response && error.response.status === 3504) {
 				uni.showModal({
 					title: '提示',
-					content: '您未登录或者登录已超时,请先登录！',
-					success: function(res) {
+					content: '用户信息已过期,请重新登录',
+					success: function (res) {
 						uni.navigateTo({
 							url: "/pages/login/login",
 						});
 					}
 				});
+
+			} else {
+				refrishToken();
 			}
 			if (error.response.status != 401 && error.response && error.response.data && error.response.data
 				.message) {
-					
+
 				uni.showToast({
 					title: error.response.data.message,
 					icon: 'none'
