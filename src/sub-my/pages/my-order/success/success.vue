@@ -28,7 +28,7 @@
       </view>
 			
 			<!-- 申请退款成功显示的页面 -->
-      <view class="info">
+      <view class="info" v-if="type=='applyForRefund'">
 				<view class="header1">提交成功</view>
 				<view class="header2">退款申请已提交，感谢您的支持～</view>
 			</view>

@@ -457,7 +457,7 @@
       },
       goToMyDecorate() {
         uni.navigateTo({
-          url: "/sub-decorate/pages/my-decorate/my-decorate",
+          url: "/sub-decorate/pages/my-decorate/my-decorate?processId="+this.currentProject.processId+'&projectId='+this.currentProject.projectId,
         });
       },
       goToMyWarehouse() {
