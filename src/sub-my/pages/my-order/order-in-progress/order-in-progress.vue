@@ -28,7 +28,7 @@
           class="item"
         >
           <view class="header">
-            <text>{{item.freight}}</text>
+            <text>{{item.storeName}}</text>
             <image
               src="@/static/order/ic_more@2x.png"
               mode=""
@@ -43,6 +43,7 @@
             <order-item
               :dataList="item2"
               :orderStatus="2"
+							:showOriginPrice="orderInfo.discount && item.details.length"
               @toApplayForRefund="toApplayForRefund(item2,1)"
             ></order-item>
           </view>
@@ -50,13 +51,7 @@
         </view>
 
         <order-price
-          :totalAmount="orderInfo.totalAmount"
-          :freight="orderInfo.freight"
-          :handlingFees="orderInfo.handlingFees"
-          :depositTotalAmount="orderInfo.depositTotalAmount"
-          :platformDiscount="orderInfo.platformDiscount"
-          :storeDiscount="orderInfo.storeDiscount"
-          :totalActualIncomeAmount="orderInfo.totalActualIncomeAmount"
+          :data="orderInfo"
         />
 
       </view>
@@ -114,6 +109,7 @@ export default {
     return {
       orderNo: "",
       orderInfo: {},
+			type:"",
 
       systemBottom: "",
       systemHeight: "",
@@ -212,9 +208,8 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-page {
-  background-color: #f2f2f2 !important;
-}
+	
+	
 .header {
   margin-bottom: 32rpx;
   box-sizing: border-box;

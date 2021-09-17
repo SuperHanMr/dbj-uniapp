@@ -22,7 +22,7 @@
 			</view>
 			
 			<!-- 订单取消成功显示的页面 -->
-      <view class="info">
+      <view class="info" v-if="type== 'cancelOrder'">
         <view class="header1">订单取消成功</view>
         <view class="header2">您已取消该订单，欢迎再次购买～</view>
       </view>

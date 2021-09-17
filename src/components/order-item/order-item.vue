@@ -47,9 +47,10 @@
 						<text style="font-size:22rpx;">￥</text>
 						<text>{{handlePrice(dataList.price)[0]}}.</text>
 						<text style="font-size:22rpx;">{{handlePrice(dataList.price)[1]}}</text>
-					</view>
+					</view> 
 					
-					<view style="color: #999999;">共{{dataList.number}}件</view>
+					<view style="color: #999999;" v-if="refundType">共{{dataList.refundNumber}}件</view>
+					<view style="color: #999999;" v-else >共{{dataList.number}}件</view>
 				</view>	
 			</view>
 		</view>
@@ -126,6 +127,10 @@
 			showOriginPrice:{
 				type:Boolean,
 				default:false
+			},
+			refundType:{
+				type:Boolean,
+				default:false,
 			}
 		},
 		data() {

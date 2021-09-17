@@ -65,7 +65,7 @@
       <view class="body2" >
         <view class="part1" v-for="(item,index) in orderInfo.details" :key="index">
           <view class="header">
-            <text>{{itme.storeName}}</text>
+            <text>{{item.storeName}}</text>
             <image
               src="../../../../static/order/ic_more@2x.png"
               mode=""
@@ -75,30 +75,19 @@
 					<view  v-for="item2 in item.details" :key="item2.id" class="orederItem">
 						<order-item :dataList="item2" :orderStatus="3"></order-item>
 					</view>
-         
-				<!-- 		
-          <view class="price-special" v-if="item.stockType==0 && item.showRefundBtn">
-						<view class="button" @click="applyForReFund(orderInfo,2)">
-							申请退款
-						</view>
-					</view> -->
-					
         </view>
 			</view>
 			
       <order-price 
-				:totalAmount="orderInfo.totalAmount"
-				:freight="orderInfo.freight"
-				:handlingFees="orderInfo.handlingFees"
-				:storeDiscount="orderInfo.storeDiscount"
-				:platformDiscount="orderInfo.platformDiscount"
-				:totalActualIncomeAmount="orderInfo.totalActualIncomeAmount"
+				:data="orderInfo"
 			/>
 
       <order-info 
 				:orderNo="orderInfo.orderNo"
 				:createTime="orderInfo.createTime"
+				:showPayTime="true"
 				:payTime="orderInfo.payTime"
+				:showPayType="true"
 			/>
 			
 			<view
@@ -112,13 +101,9 @@
 			  >
 			    申请退款
 			  </view>
-			  
 			</view>
-			
-			
-    </view>
-
-  </view>
+		</view>
+	</view>
 </template>
 
 <script>
@@ -177,7 +162,7 @@
 			toApplayForRefund(data,type){
 				wx.setStorageSync("wholeRefundOrderInfo", JSON.stringify(data));
 				uni.navigateTo({
-					url: `/sub-my/pages/apply-for-refund/apply-for-refund?id=${this.orderNo}&type=whole`,
+					url: `/sub-my/pages/apply-for-refund/apply-for-refund?id=${this.id}&type=whole&status=2`,
 				});
 			},
 			

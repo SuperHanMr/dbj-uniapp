@@ -74,32 +74,32 @@
 			
 		  
 			<view class="footer">
-					<view class="button-container">
+				<view class="button-container">
+					<button
+						v-if="item.status ==0 ||item.status == 1"
+							type="default"
+							size="mini"
+							@click="open(item)"
+						>取消申请</button>
 						<button
-							v-if="item.status ==0 ||item.status == 1"
-								type="default"
-								size="mini"
-								@click="open(item)"
-							>取消申请</button>
-							<button
-								type="default"
-								size="mini"
-								style="margin-left: 24rpx;"
-								@click="goToDetail(item)"
-							>查看详情</button>
-						</view>
+							type="default"
+							size="mini"
+							style="margin-left: 24rpx;"
+							@click="goToDetail(item)"
+						>查看详情</button>
+					</view>
 		  </view>
 		</view>
 		
 		<uni-popup ref="popup" type="dialog">
-		    <uni-popup-dialog
-					mode="base"
-					message="成功消息"
-					title="确定要取消本次退款申请？"
-					:before-close="true" 
-					@close="close" 
-					@confirm="confirm">
-				</uni-popup-dialog>
+			<uni-popup-dialog
+				mode="base"
+				message="成功消息"
+				title="确定要取消本次退款申请？"
+				:before-close="true" 
+				@close="close" 
+				@confirm="confirm">
+			</uni-popup-dialog>
 		</uni-popup>
 	
 		
@@ -122,7 +122,7 @@
 				itemId:"",
 			}
 		},
-		onLoad() {
+		onShow() {
 		  this.getList();
 		},
 		//下拉刷新
@@ -133,18 +133,18 @@
 			}, 1000);
 		},
 	
-		 //页面上拉触底事件的处理函数
-		  onReachBottom(e) {
-		    console.log("底部")// 滚动到页面执行该方法 
-		    wx.showToast({
-		      title: '加载中...',
-		      icon: 'loading',
-		      duration: 2000
-		    })
-				if(this.query.lastId > 0 && this.dataListLength <1) return 
-			  this.getList();
-				
-		  },
+	 //页面上拉触底事件的处理函数
+		onReachBottom(e) {
+			console.log("底部")// 滚动到页面执行该方法 
+			// wx.showToast({
+			// 	title: '加载中...',
+			// 	icon: 'loading',
+			// 	duration: 2000
+			// })
+			if(this.query.lastId > 0 && this.dataListLength <1) return 
+			this.getList();
+			
+		},
 		  
 		
 		methods: {
@@ -154,8 +154,10 @@
 				getRefundList(params).then(data=>{
 					let refundList=data;
 					this.dataListLength=refundList.length
-					this.query.lastId =refundList[refundList.length-1].id
-					console.log("this.lastId=",this.lastId,)
+					if(refundList.length>1){
+						this.query.lastId = refundList[refundList.length-1].id
+					}
+					console.log("this.lastId=",this.query.lastId,)
 					this.dataList =this.dataList.concat(refundList)
 				})
 			},
@@ -174,7 +176,7 @@
 				console.log("去详情页面","data",data.status)
 				if(data.status == 0 || data.status == 1 ){
 					uni.navigateTo({
-						url:`../my-order/order-in-progress/order-in-progress?type=refund&orderNo=${data.id}`
+						url:`refunding-detail/refunding-detail?orderId=${data.id}`
 					})
 				}else if(data.statis == 2){
 					uni.navigateTo({
@@ -186,8 +188,6 @@
 					})
 				}
 			},
-			
-			
 			
 			open(data) {
 				this.refundItem  =data
@@ -203,13 +203,8 @@
 				cancelRefund({id:this.itemId}).then(e=>{
 					if(e.code==1){
 					this.$refs.popup.close()
-					uni.showToast({
-					    title: '申请退款成功',
-					    duration: 2000
-					});
-					// setTimeout(()=>{
-					//   this.goToDetail(this.refundItem)
-					// }, 1000);
+					this.dataList=[]
+					this.query.lastId = -1
 					this.getList()
 					}
 				})

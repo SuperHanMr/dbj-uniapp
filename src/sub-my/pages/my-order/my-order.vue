@@ -474,6 +474,7 @@ export default {
     handleCancelOrder(id) {
       this.id = id;
       this.$refs.cancleOrder.open();
+			this.getOrderList()
     },
     cancelOrderClose() {
       this.$refs.cancleOrder.close();
@@ -506,7 +507,7 @@ export default {
       if (item.isSplitPay) {
         //item.id  是订单id
         uni.navigateTo({
-          url: `multiple-payments/multiple-payments?orderId=${item.id}&remainTime=${item.remainTime}`,
+          url: `multiple-payments/multiple-payments?orderId=${item.id}&remainTime=${item.remainTime}&type=list`,
         });
       } else {
         let openId = uni.getStorageSync("openId");

@@ -16,6 +16,7 @@
 			<view class="item">
 				<text class="item-header">创建时间：</text>
 				<text class="item-body">{{createTime | formatDate}}</text>
+				
 			</view>
 			
 			<view class="item" v-if="showPayTime">
@@ -36,7 +37,7 @@
 </template>
 
 <script>
-	import {formatDate} from "@/utils/common.js"
+	import {formatDate} from "../../utils/common.js"
 	export default {
 		filters:{
 			formatDate
@@ -48,7 +49,6 @@
 				required:true,
 			},
 			createTime:{
-				type:String,
 				required:true,
 			},
 			cancelTime:{
@@ -78,10 +78,7 @@
 				default:false,
 			}
 		},
-		// filters:{
-		// 	formatDate
-		// },
-		
+	
 		data() {
 			return {
 				
@@ -90,13 +87,14 @@
 		methods:{
 			duplicate(refundNo){
 				uni.setClipboardData({
-					data:"HELLO",
+					data:`${this.orderNo}`,
 				    success: function (res) {
 								console.log("复制成功");
 						}
 				});
 			}
 		},
+		
 		
 	}
 </script>

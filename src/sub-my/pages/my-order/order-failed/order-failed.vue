@@ -9,11 +9,12 @@
 					<text v-if="status == 3 || status == 4">退款关闭</text>
 					<text v-if="status == 5">退款失败</text>
 				</view>
-				<text class="time">{{refundInfo.createTime | formaDate}}</text>
+				<text class="time">{{refundInfo.refundTime | formaDate}}</text>
 			</view>
 
 			<view class="order-header">
-				<image src="@/static/order/ic_failed@2x.png" mode=""></image>
+				<image v-if="status == 5 " src="../../../static/ic_order_refund_failed@2x.png" mode=""></image>
+				<image v-else src="@/static/order/ic_failed@2x.png" mode=""></image>
 				<view class="cancel-text" v-if="status == 3">
 					商家拒绝了您的申请，如有问题未解决，您可以重新申请
 				</view>
@@ -28,7 +29,7 @@
 			</view>
 
 			<view class="body1" v-for="item in refundInfo.detailAppVOS" :key="item.id">
-					<order-item :dataList="item"></order-item>
+					<order-item :dataList="item" :refundType="true"></order-item>
 			</view>
 
 			<order-refund-info :refundInfo="refundInfo"></order-refund-info>
@@ -77,7 +78,7 @@
 
       <view class="body2"  v-for="(item,index) in orderInfo.details" :key="index">
         <view class="header">
-         <text>{{itme.storeName}}</text>
+         <text>{{item.storeName}}</text>
           <image
             src="@/static/order/ic_more@2x.png"
             mode=""
@@ -90,12 +91,8 @@
 				
       </view>
 			<order-price
-				:totalAmount="orderInfo.totalAmount"
-				:freight="orderInfo.freight"
-				:handlingFees="orderInfo.handlingFees"
-				:storeDiscount="orderInfo.storeDiscount"
-				:platformDiscount="orderInfo.platformDiscount"
-				:totalActualIncomeAmount="orderInfo.totalActualIncomeAmount"
+				:data="orderInfo"
+				:waitPay="true"
 			/>
 			
 			<order-info 
@@ -111,7 +108,7 @@
 </template>
 
 <script>
-	import {formaDate} from "@/utils/common.js"
+	import {formaDate} from "../../../../utils/common.js"
 	import {getRefundDetail,getOrderDetail} from "@/api/order.js"
 	export default {
 		
@@ -147,6 +144,13 @@
 			if(this.type == 'close'){//订单关闭页面
 				this.orderDetail()
 			}
+			
+			
+			
+		},
+		
+		onShow() {
+		
 		},
 	
 		methods: {
@@ -174,6 +178,7 @@
 			},
 			// 联系客服
 			contactCustomer(){
+				//跳转到客服的页面
 				console.log("联系客服")
 			}
 		}

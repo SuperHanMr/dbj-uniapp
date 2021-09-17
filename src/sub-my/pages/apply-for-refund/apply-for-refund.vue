@@ -266,6 +266,7 @@ export default {
 		
 		
 		submitApplication() {
+			// 提交申请后该订单会进入到退款页面，状态显示退款中；并直接跳转到该订单退款详情页
       console.log("申请退款");
 			let params={
 				orderId:this.query.orderId,//订单明Id字段
@@ -277,7 +278,7 @@ export default {
 }
 			wholeOrderApplyForRefund(params).then(res=>{
 				if(res.code==1){
-					uni.navigateTo({
+					uni.redirectTo({
 						url:`../my-order/success/success?type=applyForRefund`
 					})
 				}

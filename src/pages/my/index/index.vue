@@ -5,8 +5,9 @@
 		<view class="backgroundStyle"/>
     <view class="my-header">
       <view class="avatar-img">
+          
         <image
-          src="../../login/imgs/Lark20210823-152715.png"
+					:src="UserInfo.avatar"
           class="avatar"
         />
         <view class="user-name" >
@@ -101,6 +102,8 @@ export default {
     return {
 			isLogin:false,
 			userName:'用户名称',
+			UserInfo:{},
+			
       list: [
         {
           key: "1",
@@ -170,13 +173,18 @@ export default {
       ],
     };
   },
+	
+	
 	onShow() {
 	if (!uni.getStorageSync("userId")) {
 		this.userName="点击登录";
 		this.isLogin=false;
 	}else{
 		this.isLogin=true
-		this.userName="用户名称";
+		
+		this.UserInfo  =getApp().globalData.userInfo
+		console.log("UserInfo=",this.UserInfo)
+		this.userName=this.UserInfo.name;
 	}
 	},
   methods: {

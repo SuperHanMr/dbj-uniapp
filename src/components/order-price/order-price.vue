@@ -3,90 +3,96 @@
 		<view class="line"></view>
 	
 		<view class="body">
+			<!-- 总价 -->
 			<view class="price-item">
 				<view>总价</view>
 				<view>
 					<text>￥</text>
-					<text style="font-size:28rpx;">{{handlePrice(totalAmount)[0]}}.{{handlePrice(totalAmount)[1]}}</text>
+					<text class="price-style">{{handlePrice(data.totalAmount)[0]}}.{{handlePrice(data.totalAmount)[1]}}</text>
 				</view>
 			</view>
-			
-			<view class="price-item" v-if="freight">
+			<!-- 运费  有仓库默认显示  无仓库必显示-->
+			<view class="price-item" v-if="data.showFreight && data.stockType == 0" >
 				<view class="title">
 					<text style="margin-right: 8rpx;">运费</text>
 					<text class="icon">?</text>
 				</view>
 				<view>
 					<text>￥</text>
-					<text style="font-size:28rpx;">{{handlePrice(freight)[0]}}.{{handlePrice(freight)[1]}}</text>
+					<text class="price-style">{{handlePrice(data.freight)[0]}}.{{handlePrice(data.freight)[1]}}</text>
 				</view>
 			</view>
-				
-			<view class="price-item" v-if="handlingFees">
+			
+			<!-- 搬运费  有仓库默认显示  无仓库必显示-->
+			<view class="price-item" v-if="data.showFreight && data.stockType == 0 ">
 				<view class="title">
 					<text style="margin-right: 8rpx;">搬运费</text>
 					<text class="icon">?</text>
 				</view>
 				<view>
 					<text>￥</text>
-					<text style="font-size:28rpx;">{{handlePrice(handlingFees)[0]}}.{{handlePrice(handlingFees)[1]}}</text>
+					<text class="price-style">{{handlePrice(data.handlingFees)[0]}}.{{handlePrice(data.handlingFees)[1]}}</text>
 				</view>
 			</view>
 			
-			<view class="price-item" v-if="depositTotalAmount">
+			<!-- 有押金就显示 -->
+			<view class="price-item" v-if="data.depositTotalAmount">
 				<view class="title">
 					<text style="margin-right: 8rpx;">总押金</text>
 					<text class="icon">?</text>
 				</view>
 				<view>
 					<text>￥</text>
-					<text style="font-size:28rpx;">{{handlePrice(depositTotalAmount)[0]}}.{{handlePrice(depositTotalAmount)[1]}}</text>
+					<text class="price-style">{{handlePrice(data.depositTotalAmount)[0]}}.{{handlePrice(data.depositTotalAmount)[1]}}</text>
 				</view>
 			</view>
-				
-			<view class="price-item" v-if="storeDiscount">
+			
+			<!-- 有商家优惠就显示 -->
+			<view class="price-item" v-if="data.storeDiscount">
 				<view>商家优惠</view>
 				<view>
 					<text>￥</text>
-					<text style="font-size:28rpx;">{{handlePrice(storeDiscount)[0]}}.{{handlePrice(storeDiscount)[1]}}</text>
+					<text class="price-style">{{handlePrice(data.storeDiscount)[0]}}.{{handlePrice(data.storeDiscount)[1]}}</text>
 				</view>
 			</view>
-				
-			<view class="price-item" v-if="platformDiscount">
+			
+			<!-- 有平台优惠就显示 -->	
+			<view class="price-item" v-if="data.platformDiscount">
 				<view>平台优惠</view>
 				<view>
 					<text>￥</text>
-					<text style="font-size:28rpx;">{{handlePrice(platformDiscount)[0]}}.{{handlePrice(platformDiscount)[1]}}</text>
+					<text class="price-style">{{handlePrice(data.platformDiscount)[0]}}.{{handlePrice(data.platformDiscount)[1]}}</text>
 				</view>
 			</view>
 				
 		</view>
-		
+		<!-- 待付款 -->
 		<view class="footer1" v-if="waitPay">
-			<view class="has-pay">
+			<view class="has-pay" v-if="data.totalActualIncomeAmount">
 				<text style="margin-right: 12rpx;">已付款</text>
 				<text >
 					<text>￥</text>
-					<text style="font-size: 40rpx;" >{{handlePrice(totalActualIncomeAmount)[0]}}.</text>
-					<text>{{handlePrice(totalActualIncomeAmount)[1]}}</text>
+					<text style="font-size: 40rpx;" >{{handlePrice(data.totalActualIncomeAmount)[0]}}.</text>
+					<text>{{handlePrice(data.totalActualIncomeAmount)[1]}}</text>
 				</text>	
 			</view>
 			<view>
-				<text>需付款</text>
+				<text style="margin-right: 12rpx;">需付款</text>
 				<text style="color: #FF3347;">
 					<text>￥</text>
-					<text style="font-size: 40rpx;" >{{handlePrice(totalActualIncomeAmount)[0]}}.</text>
-					<text>{{handlePrice(totalActualIncomeAmount)[1]}}</text>
+					<text style="font-size: 40rpx;" >{{handlePrice(data.orderReceivableAmount)[0]}}.</text>
+					<text>{{handlePrice(data.orderReceivableAmount)[1]}}</text>
 				</text>	
 			</view>
 		</view>
 		
+		<!-- 其他情况 -->
 		<view class="footer" v-else>
 			<text style="margin-right: 12rpx;">实付</text>
 			<text style="color: #FF3347;">
 				<text>￥</text>
-				<text style="font-size: 40rpx;" >{{handlePrice(totalActualIncomeAmount)[0]}}.</text>
-				<text>{{handlePrice(totalActualIncomeAmount)[1]}}</text>
+				<text style="font-size: 40rpx;" >{{handlePrice(data.actuallyPayAmount)[0]}}.</text>
+				<text>{{handlePrice(data.actuallyPayAmount)[1]}}</text>
 			</text>	
 		</view>
 		
@@ -99,36 +105,15 @@
 	export default {
 		name:"order-price",
 		props:{
-			totalAmount:{ //商品总额(不包含押金)
-				type:Number,
-				default:0,
+			data:{
+				// required:true,
+				type:Object,
 			},
-			freight:{//运费
-				default:0,
-			},
-			handlingFees:{//搬运费
-				default:0,
-			},
-			platformDiscount:{//平台优惠
-				type:Number,
-				default:0,
-			},
-			storeDiscount:{ //商家优惠
-				type:Number,
-				default:0,
-			},
-			depositTotalAmount:{//总押金
-				default:0,
-			},
-			totalActualIncomeAmount:{ //总实收金额
-				type:Number,
-				default:0,
-			},
+			// 是否是待付款
 			waitPay:{
 				type:Boolean,
 				default:false
-			}
-		
+			},
 		},
 		
 		data() {
@@ -211,5 +196,8 @@
 				margin-right: 40rpx;
 			}
 		}
+	}
+	.price-style{
+		font-size: 28rpx;
 	}
 </style>

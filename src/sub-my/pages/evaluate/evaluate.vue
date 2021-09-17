@@ -3,7 +3,7 @@
 		<view class="evaluate-item" v-for="item in evaluateList" :key="item.id">
 			<view class="header">
 			  <view class="store-name">
-			    <text>不知道叫什么名字的店铺nizhidaomahahahahahahaha</text>
+			    <text>{{item.typeName}}</text>
 			  </view>
 			  <view class="order-status" v-if="item.commentStatus == 0">
 					待评价
@@ -69,6 +69,7 @@
 			getList(){
 				this.loading=true
 				getEvationList(this.query).then(data=>{
+					console.log("data=",data)
 					let list = data.list
 					this.evaluateList = this.evaluateList.concat(list)
 					this.loading=false

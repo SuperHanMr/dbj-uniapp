@@ -89,13 +89,8 @@
 			
 
 			<order-price
-				:totalAmount="orderInfo.totalAmount"
-				:freight="orderInfo.freight"
-				:handlingFees="orderInfo.handlingFees"
-				:depositTotalAmount="orderInfo.depositTotalAmount"
-				:platformDiscount="orderInfo.platformDiscount"
-				:storeDiscount="orderInfo.storeDiscount"
-				:totalActualIncomeAmount="orderInfo.totalActualIncomeAmount"
+				:data="orderInfo"
+				:waitPay="true"
 			/>
 
 			<view class="payment-method">
@@ -109,7 +104,10 @@
 				</view>
 			</view>
 
-			<order-info  :showPayTime="false" :showPayType="false"></order-info>
+			<order-info  
+			:orderNo="orderInfo.orderNo"
+			:createTime="orderInfo.createTime"
+			></order-info>
 
 			
 			
@@ -233,7 +231,7 @@ export default {
 		},
 		//跳转到订单取消页面
 		toCancelPage(){
-			uni.navigateTo({
+			uni.redirectTo({
 				url:`../order-failed/order-failed?type=close&id=${this.orderNo}`
 			})
 		},
@@ -248,13 +246,12 @@ export default {
 			if(this.orderInfo.isSplitPay){
 				// orderId 是订单id
 				uni.navigateTo({
-					url:`../multiple-payments/multiple-payments?orderId=${this.orderNo}`
+					url:`../multiple-payments/multiple-payments?orderId=${this.orderNo}&type=detail`
 				})
 				
 			}else{
 				let openId = uni.getStorageSync("openId");
 				orderPay({
-					// orderId: this.orderNo,
 					orderId: this.orderNo,
 					payType: 1,//支付类型  1微信支付",
 					openid: openId,
@@ -264,13 +261,15 @@ export default {
 						provider: "wxpay",
 						...payInfo,
 						success(res) {
-							console.log("@@@@@@@");
-							console.log(res);
-							// 支付成功后跳转到哪个页面
+							uni.redirectTo({
+								url:`../order-success/order-success?type=complete&id=${this.orderNo}`
+							})
 						},
 						fail(e) {
-							console.log(e);
-							// 支付失败时候跳转到哪个页面
+							// uni.showToast({
+							//     title: '支付失败',
+							//     duration: 2000
+							// });
 						},
 					});
 				});
