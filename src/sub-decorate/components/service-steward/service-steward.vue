@@ -28,6 +28,9 @@
     components:{
       imagePreview
     },
+    props:{
+      serverId:0
+    },
     data(){
       return{
         list:[],
@@ -36,12 +39,17 @@
     filters:{
       formatDate
     },
-    mounted(){
-      this.getStewardService()
+    // mounted(){
+    //   this.getStewardService()
+    // },
+    watch:{
+      serverId(){
+        this.getStewardService()
+      }
     },
     methods:{
       getStewardService(){
-        getStewardService(40).then(res=>{
+        getStewardService(this.serverId).then(res=>{
           console.log(res)
           this.list = res.progressList
         })

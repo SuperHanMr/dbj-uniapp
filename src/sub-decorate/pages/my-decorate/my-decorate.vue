@@ -33,7 +33,7 @@
         <serviceActuarial id="d4" v-if="tab.nodeType===4" @isEmpty='isEmpty' :serverId='serverId'></serviceActuarial>
         <serviceSteward id="d5" v-if="tab.nodeType===5" @isEmpty='isEmpty' :serverId='serverId'></serviceSteward>
         <serviceDismantle id="d6" v-if="tab.nodeType>5" @isEmpty='isEmpty' :serverId='serverId'></serviceDismantle>
-        <no-service v-if="currentEmpty" words="暂无进行中服务"></no-service>
+        <no-service v-if="tab.nodeType===currentEmpty" words="暂无进行中服务"></no-service>
       </swiper-item>
     </swiper>
   </view>
@@ -70,9 +70,10 @@
         currentItem:'top',
         result:{},
         designList:[],
-        serverId:56,
+        projectId:0,
+        serverId:0,
         designData:{},
-        currentEmpty:false,
+        currentEmpty:0,
       };
     },
     onPageScroll(scrollTop) {
@@ -86,8 +87,11 @@
         this.isActive = false
       }
     },
+    onLoad(e){
+      this.projectId = e.projectId
+    },
     mounted() {
-      this.getDesignServeMenu()
+      
       this.getMyService()
     },
     methods: {
@@ -105,6 +109,7 @@
         this.tabIndex = current
         this.tabName = 'd'+(this.dataList[current].nodeType>6?6:this.dataList[current].nodeType)
         this.serverId = this.dataList[current].serverId
+        this.currentEmpty = 0
         this.changeHeight()
         this.$nextTick(function(){
           this.$refs.result[0].getHeight()
@@ -127,8 +132,8 @@
       getData(e) {
         this.result = e
       },
-      isEmpty(){
-        this.currentEmpty = true
+      isEmpty(item){
+        this.currentEmpty = item
       },
       changeDesign(e){
         this.designData = e
@@ -153,9 +158,8 @@
         this.$refs.popup.close()
       },
       getDesignServeMenu(){
-        getDesignServeMenu(2).then(res=>{
+        getDesignServeMenu(this.serverId).then(res=>{
           this.designList = res
-          
         })
       },
       getMyService(){
@@ -167,6 +171,7 @@
           console.log(res)
           this.dataList = res
           this.tabName = 'd'+(this.dataList[0].nodeType>6?6:this.dataList[0].nodeType)
+          this.getDesignServeMenu()
           this.changeHeight()
         })
       }

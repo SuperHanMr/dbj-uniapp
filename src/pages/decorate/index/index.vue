@@ -511,9 +511,11 @@
         })
       },
       getMsgNum() {
-        getMsgNum(this.currentProject.projectId).then(res => {
-          this.msgNum = res.count
-        })
+        if(this.currentProject.projectId){
+          getMsgNum(this.currentProject.projectId).then(res => {
+            this.msgNum = res.count
+          })
+        }
       }
     },
   };
