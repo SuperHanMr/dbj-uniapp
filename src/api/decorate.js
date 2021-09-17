@@ -174,7 +174,7 @@ export function designListByQuery(serveCardId) {
 
 //C端 确认阶段交付
 export function confirmStageDeliver(serveCardId) {
-	return request.get(`/pm/app/serve/design/confirmStageDeliver/${serveCardId}`)
+	return request.post(`/pm/app/serve/design/confirmStageDeliver/${serveCardId}`)
 }
 // C端 业主要求修改设计图
 export function reviseStageDeliver(serveCardId) {

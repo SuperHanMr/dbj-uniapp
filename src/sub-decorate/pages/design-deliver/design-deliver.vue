@@ -64,6 +64,9 @@
             if (res.confirm) {
               confirmStageDeliver(this.message.serveId).then(data => {
                 console.log(data)
+                uni.navigateTo({
+                  url: "/pages/decorate/index/index"
+                })
               })
             } else {
               console.log("点击了取消")

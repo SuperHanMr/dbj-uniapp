@@ -143,8 +143,8 @@
   import {
     queryEstates,
     friendListByEstateId,
-    getToken,
-    getMqtt,
+    // getToken,
+    // getMqtt,
     getMsgNum
   } from "../../../api/decorate.js";
   import {
@@ -229,8 +229,8 @@
         this.deviceId = uuidv4()
         uni.setStorageSync('uuDeviceId', this.deviceId);
       }
-      this.getToken()
-      this.getMqtt()
+      // this.getToken()
+      // this.getMqtt()
     },
     computed: {
       username() {
@@ -493,23 +493,23 @@
           }
         });
       },
-      getToken() {
-        let data = {
-          topics: [this.msgTopic],
-          deviceId: this.deviceId
-        }
-        getToken(data).then(res => {
-          console.log(res)
-        })
-      },
-      getMqtt() {
-        getMqtt().then(res => {
-          this.accessKeyId = res.accessKey
-          this.url = 'wxs://' + res.endPoint
-          this.groupId = res.groupId
-          this.instanceId = res.instanceId
-        })
-      },
+      // getToken() {
+      //   let data = {
+      //     topics: [this.msgTopic],
+      //     deviceId: this.deviceId
+      //   }
+      //   getToken(data).then(res => {
+      //     console.log(res)
+      //   })
+      // },
+      // getMqtt() {
+      //   getMqtt().then(res => {
+      //     this.accessKeyId = res.accessKey
+      //     this.url = 'wxs://' + res.endPoint
+      //     this.groupId = res.groupId
+      //     this.instanceId = res.instanceId
+      //   })
+      // },
       getMsgNum() {
         if(this.currentProject.projectId){
           getMsgNum(this.currentProject.projectId).then(res => {
