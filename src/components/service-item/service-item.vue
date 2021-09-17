@@ -59,6 +59,16 @@
         uni.navigateTo({
           url: `/sub-decorate/pages/time-line/time-line?id=${this.serviceData.serveCardId}`
         })
+      },
+      goProcessCost() {
+        uni.navigateTo({
+          url: `/sub-decorate/pages/gj-process-cost/gj-process-cost?serveCardId&=${this.serviceData.serveCardId}&estateId=${this.serviceData.estateId}&serviceType=${this.serviceData.serviceType}&projectId=${this.serviceData.projectId}&customerId=${this.serviceData.customerId}`
+        })
+        // this.serveCardId = serveCardId || option.serveCardId
+      // this.estateId = estateId || option.estateId
+      // this.serviceType = serviceType || option.serviceType 
+      // this.projectId = projectId || option.projectId 
+      // this.customerId = customerId || option.customerId 
       }
 		},
     filters:{

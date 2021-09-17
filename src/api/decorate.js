@@ -247,3 +247,7 @@ export function payFreight(params) {
 	return request.post(`/order-center/app/order/payFreight`, params)
 }
 
+// 确认设计报告 
+export function confirmDesignReport(serveCardId) {
+	return request.POST(`/pm/app/serve/design/confirmDesignReport/${serveCardId}`)
+}

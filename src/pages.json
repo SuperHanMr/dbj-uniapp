@@ -7,7 +7,8 @@
 				"transparentTitle": "auto",
 				"navigationStyle": "custom"
 			}
-		}, {
+		},
+		{
 			"path": "pages/decorate/index/index",
 			"style": {
 				"navigationBarTitleText": "装修",
@@ -466,13 +467,13 @@
 						"enablePullDownRefresh": false,
 						"navigationBarBackgroundColor": "#ffffff"
 					}
-				}, {
+				},
+				{
 					"path": "pages/pay-order/pay-success",
 					"style": {
 						"navigationBarTitleText": "",
 						"enablePullDownRefresh": false
 					}
-
 				},
 				{
 					"path": "pages/pay-order/agreement",
@@ -487,19 +488,20 @@
 		{
 			"root": "sub-other", //其他页面
 			"pages": [{
-				"path": "pages/merchant-entry/merchant-entry",
-				"style": {
-					"navigationBarTitleText": "商家入驻",
-					"enablePullDownRefresh": false
+					"path": "pages/merchant-entry/merchant-entry",
+					"style": {
+						"navigationBarTitleText": "商家入驻",
+						"enablePullDownRefresh": false
+					}
+				},
+				{
+					"path": "pages/test/test",
+					"style": {
+						"navigationBarTitleText": "",
+						"enablePullDownRefresh": false
+					}
 				}
-			}, {
-				"path": "pages/test/test",
-				"style": {
-					"navigationBarTitleText": "",
-					"enablePullDownRefresh": false
-				}
-
-			}]
+			]
 		},
 		{
 			"root": "sub-decorate", //装修模块分包
@@ -784,6 +786,20 @@
 					"path": "pages/gj-process-cost/gj-process-cost",
 					"style": {
 						"navigationBarTitleText": "管家工序费",
+						"enablePullDownRefresh": false
+					}
+				},
+				{
+					"path": "pages/beatiful-report/beatiful-report",
+					"style": {
+						"navigationBarTitleText": "颜值报告",
+						"enablePullDownRefresh": false
+					}
+				},
+				{
+					"path": "pages/custom-report/custom-report",
+					"style": {
+						"navigationBarTitleText": "自定义报告",
 						"enablePullDownRefresh": false
 					}
 				}

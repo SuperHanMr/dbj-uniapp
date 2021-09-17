@@ -99,7 +99,7 @@
     methods: {
       toCost() {
         uni.navigateTo({
-          url: '/sub-decorate/pages/current-cost/current-cost?id='+this.serverId+'&isCost=true'
+          url: '/sub-decorate/pages/current-cost/current-cost?id='+this.serverId+'&isCost=1'
         })
       },
       ontabtap(item, index) {
@@ -160,7 +160,7 @@
         this.$refs.popup.close()
       },
       getDesignServeMenu(){
-        getDesignServeMenu(this.serverId).then(res=>{
+        getDesignServeMenu(this.projectId).then(res=>{
           this.designList = res
         })
       },
