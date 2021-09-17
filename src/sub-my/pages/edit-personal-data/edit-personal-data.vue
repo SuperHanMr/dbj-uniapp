@@ -5,27 +5,25 @@
         <uni-list-item
           title="头像"
           link
-          to=""
           @click="onClick($event,1)"
         >
           <template slot="footer">
             <image
               class="slot-image"
-              src="../../../static/c1.png"
+              :src="UserInfo.avatar"
             ></image>
           </template>
         </uni-list-item>
         <uni-list-item
           title="昵称"
-          rightText="仙女儿事儿少管"
+          :rightText="UserInfo.name"
           link
-          to=""
           @click="onClick($event,1)"
         >
         </uni-list-item>
         <uni-list-item
           title="手机号"
-          rightText="就不告诉你我的手机号"
+          :rightText="UserInfo.phone"
         ></uni-list-item>
       </uni-list>
     </view>
@@ -35,8 +33,15 @@
 <script>
 export default {
   data() {
-    return {};
+    return {
+			UserInfo:{},
+		};
   },
+	onShow() {
+		this.UserInfo  =getApp().globalData.userInfo
+		console.log("UserInfo=",this.UserInfo)
+		this.userName=this.UserInfo.name;
+	},
   methods: {
     onClick() {
       console.log("打印数据，哈哈哈");

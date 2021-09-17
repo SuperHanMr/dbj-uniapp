@@ -23,7 +23,7 @@
       >
       </view>
 
-      <button
+   <!--   <button
         style="width: 50%;margin-top: 20rpx;"
         type="default"
         @click="toNextPage"
@@ -43,7 +43,7 @@
 			  style="width: 50%;margin-top: 20rpx;"
 			  type="default"
 			  @click="toGoodsApply"
-			>去要货申请</button>
+			>去要货申请</button> -->
       <swiper
         class="banner-content"
         :indicator-dots="true"
@@ -255,11 +255,11 @@ export default {
           if (res.confirm) {
             uni.openSetting(); // 打开地图权限设置
           } else if (res.cancel) {
-            uni.showToast({
-              title: "你拒绝了授权，无法获得周边信息",
-              icon: "none",
-              duration: 1000,
-            });
+            // uni.showToast({
+            //   title: "你拒绝了授权，无法获得周边信息",
+            //   icon: "none",
+            //   duration: 1000,
+            // });
           }
         },
       });
