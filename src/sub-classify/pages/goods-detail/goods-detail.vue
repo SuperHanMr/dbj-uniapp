@@ -1,6 +1,6 @@
 <template>
   <view>
-       <web-view :src="'https://design-h5-stage.meiwu365.com/app-pages/goods-detail/index.html#wx-goodsId='+ 38050 + '&&wx-houseId='
+       <web-view :src="baseUrl + '/app-pages/goods-detail/index.html#wx-goodsId='+ 38050 + '&&wx-houseId='
         + houseId + '&&wx-defaultHouseInfo=' + goodDefaultAddress + '&&wx-token=' + token + '&&wx-userId' + userId + '&&wx-deviceId' + deviceId">
        </web-view>
   </view>
@@ -10,6 +10,7 @@
   export default {
     data() {
       return {
+        baseUrl: '',
         deviceId: 0,
         userId: 0,
         goodId: '',
@@ -19,7 +20,8 @@
         token: getApp().globalData.token
       }
     },
-    onShow() { 
+    onShow() {
+      this.baseUrl = this.ENV.VUE_APP_BASE_H5
       this.goodId = uni.getStorageSync('goodId')
       this.userId = uni.getStorageSync('userId')
       this.defaultHouseInfo = uni.getStorageSync('currentHouse')
