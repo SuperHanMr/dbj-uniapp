@@ -21,10 +21,13 @@
   } from '../../../api/decorate.js'
   export default {
     data() {
-      return {};
+      return {
+        chenckData:{}
+      };
     },
     mounted() {
-
+      let {serverId,type}  = getApp().globalData.decorateMsg
+      this.chenckData = {serverId,type}
     },
     methods: {
       submit() {
@@ -50,22 +53,14 @@
         });
       },
       sureAmount() {
-        let data = {
-          serveId:31,
-          type:11
-        }
-        sureAmount(data).then(res => {
+        sureAmount(this.checkData).then(res => {
           uni.switchTab({
             url: "/pages/decorate/index/index",
           });
         })
       },
       changeAmount(){
-        let data = {
-          serveId:31,
-          type:11 
-        }
-        replaceAmount(data).then(res=>{
+        replaceAmount(this.checkData).then(res=>{
           uni.switchTab({
             url: "/pages/decorate/index/index",
           });

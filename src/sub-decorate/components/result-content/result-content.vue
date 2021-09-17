@@ -59,7 +59,8 @@
     },
     props: {
       isReport: false,
-      scrollTop: 0
+      scrollTop: 0,
+      serverId:0
     },
     filters:{
       formatDate
@@ -194,7 +195,7 @@
     },
     methods: {
       getData() {
-        getCheckResultDetail(36).then(res => {
+        getCheckResultDetail(this.serverId).then(res => {
           this.checkData = res
           this.checkData.time = '00:00:00'
           this.data[0].arr = res.normalList

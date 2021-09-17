@@ -22,6 +22,11 @@ export function getHouse(params) {
 	return request.get("/customer/app/estate/queryEstateDetail/" + params)
 }
 
+//获取房屋
+export function getHouseStep(params) {
+	return request.get("/pm/app/project/getPurchasedFlag?nodeType=4&estateId=" + params)
+}
+
 //编辑房屋
 export function editHouse(params) {
 	return request.put("/customer/app/estate/updateEstate", params)
@@ -110,6 +115,11 @@ export function sureAmount(params) {
 //获取验房交付报告
 export function getCheckResultDetail(params) {
 	return request.get("/pm/app/user/inspectEstate/report/" + params)
+}
+
+//获取施工交付内容
+export function getComplateDetail(params) {
+	return request.get(`/pm/app/worker/decoration/trend/getCompletionLogById/${params.projectId}/${params.serveId}`)
 }
 
 //确认验房验房交付
