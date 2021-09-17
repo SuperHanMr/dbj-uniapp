@@ -26,7 +26,7 @@
     <swiper :current="tabIndex" style="flex: 1;min-height: 600px;" :style="{height:contentHeight}" :duration="300" @change="ontabchange">
       <swiper-item class="swiper-item" v-for="(tab,index1) in dataList" :key="index1">
         <service-hunman :isDesign="tab.nodeType===1" :tab='tab' :designData='designData' @openPopup='openPopup'></service-hunman>
-        <amount-house :serverId='serverId' id="d3" v-if="tab.nodeType===3"></amount-house>
+        <amount-house :serverId='serverId' id="d3" @isEmpty='isEmpty' v-if="tab.nodeType===3"></amount-house>
         <resultContent ref='result' id="d2" @isEmpty='isEmpty' :serverId='serverId' v-if="tab.nodeType===2" @getData='getData' :scrollTop='scrollTop'
           :isReport='true'></resultContent>
         <serviceDesign id="d1" v-if="tab.nodeType===1" @isEmpty='isEmpty' @changeDesign='changeDesign' :serverId='serverId'></serviceDesign>
@@ -71,6 +71,7 @@
         result:{},
         designList:[],
         projectId:0,
+        processId:0,
         serverId:0,
         designData:{},
         currentEmpty:0,
@@ -89,6 +90,7 @@
     },
     onLoad(e){
       this.projectId = e.projectId
+      this.processId = e.processId
     },
     mounted() {
       
@@ -164,11 +166,11 @@
       },
       getMyService(){
         let data = {
-          projectId:6,
-          processId:1
+          projectId:this.projectId,
+          processId:this.processId
         }
         getMyService(data).then(res=>{
-          console.log(res)
+          
           this.dataList = res
           this.tabName = 'd'+(this.dataList[0].nodeType>6?6:this.dataList[0].nodeType)
           this.getDesignServeMenu()
