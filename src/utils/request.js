@@ -92,12 +92,9 @@ instance.interceptors.response.use(
 
 			if (res.data && res.data.data) {
 				return res.data.data;
-			} else if (res.data && !res.data.hasOwnProperty('data')) {
-				console.log('???????')
-				return []
 			}
 
-			return res.data;
+			return null;
 		}
 	},
 	// 请求失败
