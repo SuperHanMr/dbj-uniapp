@@ -92,36 +92,16 @@ instance.interceptors.response.use(
 			if (res.data && res.data.data) {
 				return res.data.data;
 			}
-		},
-		// 请求失败
-		(error) => {
-			uni.hideLoading();
-			if (error.response && error.response.status === 401) {
-				//刷新token
-				if (!uni.getStorageSync("userId")) {
-					uni.showModal({
-						title: '提示',
-						content: '用户信息已过期,请重新登录',
-						success: function (res) {
-							uni.navigateTo({
-								url: "/pages/login/login",
-							});
-						}
-					});
-
-				} else {
-					// refrishToken();
-				}
-				// return new Promise((resolve, reject) => {
-				// 	failRequestList.push({
-				// 		config: error.config,
-				// 		resolve: resolve,
-				// 		reject: reject
-				// 	});
-				// 	//重新请求接口
-				// 	retryAllFailRequest();
-				// })
-			} else if (error.response && error.response.status === 3504) {
+			res.data.data = null;
+			return res.data;
+		}
+	},
+	// 请求失败
+	(error) => {
+		uni.hideLoading();
+		if (error.response && error.response.status === 401) {
+			//刷新token
+			if (!uni.getStorageSync("userId")) {
 				uni.showModal({
 					title: '提示',
 					content: '用户信息已过期,请重新登录',
@@ -133,19 +113,38 @@ instance.interceptors.response.use(
 				});
 
 			} else {
-				refrishToken();
+				// refrishToken();
 			}
-			if (error.response.status != 401 && error.response && error.response.data && error.response.data
-				.message) {
-
-				uni.showToast({
-					title: error.response.data.message,
-					icon: 'none'
-				})
-			}
-			console.error("------response-error-----", error);
-			return Promise.reject(error.response);
-		},
+			// return new Promise((resolve, reject) => {
+			// 	failRequestList.push({
+			// 		config: error.config,
+			// 		resolve: resolve,
+			// 		reject: reject
+			// 	});
+			// 	//重新请求接口
+			// 	retryAllFailRequest();
+			// })
+		} else if (error.response && error.response.status === 3504) {
+			uni.showModal({
+				title: '提示',
+				content: '您未登录或者登录已超时,请先登录！',
+				success: function (res) {
+					uni.navigateTo({
+						url: "/pages/login/login",
+					});
+				}
+			});
+		}
+		if (error.response.status != 401 && error.response && error.response.data && error.response.data
+			.message) {
+			uni.showToast({
+				title: error.response.data.message,
+				icon: 'none'
+			})
+		}
+		console.error("------response-error-----", error);
+		return Promise.reject(error.response);
+	},
 );
 async function refrishToken() {
 	let res = await instance.post('/app/oauth/gome/login', {
