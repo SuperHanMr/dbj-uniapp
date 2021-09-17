@@ -1,10 +1,19 @@
 <template>
   <view class="service-design">
     <view class="design-report">
-      <view class="title">设计报告详情</view>
-      <view class="check">
-        <text>立即查看</text>
-        <image></image>
+      <view class="report-item">
+        <view class="title">设计报告详情</view>
+        <view class="check" @click="toDetail">
+          <text>立即查看</text>
+          <image></image>
+        </view>
+      </view>
+      <view class="report-item">
+        <view class="title">设计报告详情</view>
+        <view class="check" @click="toDetail">
+          <text>立即查看</text>
+          <image></image>
+        </view>
       </view>
     </view>
     <view class="design-list" v-for="item of list" :key='item.categoryName'>
@@ -54,14 +63,22 @@
   .service-design{
     margin: 24rpx;
     .design-report{
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      height: 100rpx;
+      
+      
       padding: 0 20rpx 0 32rpx;
       background-color: #fff;
       border-radius: 24rpx;
       margin-bottom: 48rpx;
+      .report-item{
+        height: 100rpx;
+        border-bottom: 1px solid #F4F4F4;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+      }
+      .report-item:last-child{
+        border: none;
+      }
       .title{
         font-size: 28rpx;
         font-weight: 500;

@@ -53,6 +53,7 @@
           src="http://dbj.dragonn.top/static/mp/dabanjia/images/home/player-big.png"
         >
         </cover-image>
+
       </cover-view>
       <cover-view
         v-else
@@ -155,17 +156,16 @@ export default {
       muted: false,
       livePreview: "",
       isFill: false,
-      list: [1, 2, 3],
+      list: [],
       videoSrc: "http://qiniu.hydrant.ink/1631176569963742.mp4",
       currentVideoSrc: "",
-      liveList: [1, 2, 3, 4, 5, 6, 7, 8, 9],
+      liveList: [],
       currentPage: 0,
       totalPage: 5,
     };
   },
   computed: {
     currentList() {
-      console.log("!!!!");
       return this.liveList.slice(
         this.currentPage * 3,
         this.currentPage * 3 + 3
@@ -188,23 +188,23 @@ export default {
   },
   onLoad(e) {
     let projectId = e.projectId;
-    // workVideo({
-    // 	page: 1,
-    // 	rows: 999,
-    // 	projectId: 0
-    // }).then(e => {
-    // 	this.list = e.list;
-    // })
-    // bindVideoList({projectId:0}).then(e=>{
-    // 	if(e.length){
-    // 		this.liveList=e.filter(e=>{
-    // 			return e.hls != ''&&e.hls!=null
-    // 		})
-    // 		if(this.liveList.length){
-    // 			this.livePreview=this.liveList[0].hls
-    // 		}
-    // 	}
-    // })
+    workVideo({
+    	page: 1,
+    	rows: 999,
+    	projectId: 0
+    }).then(e => {
+    	this.list = e.list;
+    })
+    bindVideoList({projectId:0}).then(e=>{
+    	if(e.length){
+    		this.liveList=e.filter(e=>{
+    			return e.hls != ''&&e.hls!=null
+    		})
+    		if(this.liveList.length){
+    			this.livePreview=this.liveList[0].hls
+    		}
+    	}
+    })
   },
   methods: {
     changeMuted() {
@@ -270,6 +270,7 @@ export default {
   display: flex;
   flex-direction: column;
 }
+
 .center-icon-row {
   flex: 1;
   display: flex;
@@ -278,6 +279,7 @@ export default {
   align-items: center;
   overflow: auto;
   margin: 0 40rpx;
+
   .video-list-icon {
     flex-shrink: 0;
     width: 40rpx;
@@ -285,11 +287,13 @@ export default {
     margin: 21rpx;
   }
 }
+
 .scroll-view {
   width: 100%;
   flex: 1;
   overflow: auto;
 }
+
 .video-icon {
   position: absolute;
   left: 0;
