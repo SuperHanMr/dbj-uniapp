@@ -93,7 +93,6 @@ instance.interceptors.response.use(
 			if (res.data && res.data.data) {
 				return res.data.data;
 			}
-
 			return null;
 		}
 	},
