@@ -41,8 +41,10 @@
     methods:{
       getData(){
         console.log(this.serveId)
-        getAmountDetail(31).then(res=>{
+        getAmountDetail(this.serveId).then(res=>{
           this.imageData = res
+        }).catch(err=>{
+          this.$emit('isEmpty',3)
         })
       }
     }

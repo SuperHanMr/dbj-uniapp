@@ -457,7 +457,7 @@
       },
       goToMyDecorate() {
         uni.navigateTo({
-          url: "/sub-decorate/pages/my-decorate/my-decorate",
+          url: "/sub-decorate/pages/my-decorate/my-decorate?processId="+this.currentProject.processId+'&projectId='+this.currentProject.projectId,
         });
       },
       goToMyWarehouse() {
@@ -511,9 +511,11 @@
         })
       },
       getMsgNum() {
-        getMsgNum(this.currentProject.projectId).then(res => {
-          this.msgNum = res.count
-        })
+        if(this.currentProject.projectId){
+          getMsgNum(this.currentProject.projectId).then(res => {
+            this.msgNum = res.count
+          })
+        }
       }
     },
   };

@@ -12,7 +12,7 @@
 					已评价
 				</view>
 			</view>
-			<view class="body" v-for="item2 in item.details">
+			<view class="body" v-for="item2 in item.details" :key="item2.id">
 				<order-item :dataList="item2"></order-item>
 			</view>
 			<view class="line" />

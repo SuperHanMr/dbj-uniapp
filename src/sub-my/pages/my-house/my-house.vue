@@ -7,7 +7,7 @@
 <template>
 	<view class="my-house">
 		<view class="box" :style="{marginBottom:systemHeight}">
-			<view class="touch-item" v-for="(item,index) in listData"
+			<view class="touch-item" v-if="listData.length>0" v-for="(item,index) in listData"
 				:class="item.isTouchMove == true?'touch-move-active':''" :key='item.id' @touchstart="touchstart"
 				@touchmove="touchmove" :data-index='index'>
 				<view class="list-count">
@@ -27,7 +27,7 @@
 								</view>
 							</view>
 						</view>
-						<view class="edit" @click="edit(item)">
+						<view class="edit" @click.stop="edit(item)">
 							<image src="../../../static/images/edit.svg" class="edit-icon"></image>
 						</view>
 					</view>
@@ -159,7 +159,7 @@
 				})
 			},
 			edit(item) {
-				// console.log(item)
+				console.log('/sub-decorate/pages/add-house/add-house?id='+item.id)
 				uni.navigateTo({
 					url: '/sub-decorate/pages/add-house/add-house?id=' + item.id
 				})

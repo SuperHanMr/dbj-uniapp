@@ -13,8 +13,9 @@
               大管家
             </view>
           </view>
-          <view class="right">
-            <view class="checked" />
+          <view class="right" @click="check">
+            <image v-if="isAnonymous"  src="../../../static/ic_mine_anonymous@2x.png" mode=""></image>
+            <image v-else src="../../../static/ic_mine_anonymous_2@2x.png" mode=""></image>
             <text>匿名评价</text>
           </view>
         </view>
@@ -70,19 +71,7 @@
 			</view>
 		</view>
 		
-		
-		<view class='uploader-img  flex justify-content-start' v-if="pics">
-			<view class='uploader-list' v-for="item in pics" :key="item">
-				 <image :src="item"  mode="scaleToFill" bindtap='previewImg1'/>
-				 <image class='delete'  src='../../../static/ic_mine_edit_gray@2x.png' mode="widthFix" bindtap='deleteImg'/>
-			</view>
-		</view>
-		<view class='upAdd' bindtap='chooseImg'>
-			<image src='../../../static/ic_order_refund_failed@2x.png' mode="widthFix"/>
-		</view>
-		
-		
-		
+	
   </view>
 </template>
 
@@ -93,6 +82,7 @@ export default {
       query: {
         remarks: "",
         stars: "",
+				isAnonymous:false,
       },
       textAreaLength: 0,
 			
@@ -119,88 +109,7 @@ export default {
 		
 		
 		
-		 /**
-		   * 图片放大查看
-		   */
-		  previewImg(e) {
-		    
-		    var index = e.target.dataset.index;//当前图片地址
-		    var imgArr = e.target.dataset.list;//所有要预览的图片的地址集合 数组形式
-		    console.log(index, imgArr)
-		    wx.previewImage({
-		      current: imgArr[index],
-		      urls: imgArr,
-		    })
-		  },
-		  /**
-		   * 图片上传
-		   * 
-		   */
-		
-		
-		
-		 //上传图片开始
-		  chooseImg: function (e) {
-		    var that = this, pics = this.data.pics;
-		    console.log(pics);
-		    if (pics.length < 3) {
-		      wx.chooseImage({
-		        count: 3, // 最多可以选择的图片张数，默认9
-		        sizeType: ['original', 'compressed'], // original 原图，compressed 压缩图，默认二者都有
-		        sourceType: ['album', 'camera'], // album 从相册选图，camera 使用相机，默认二者都有
-		        success: function (res) {
-		          // 返回选定照片的本地文件路径列表，tempFilePath可以作为img标签的src属性显示图片
-		          var tempFilePaths = res.tempFilePaths;
-		          // wx.showToast({
-		          //   title: '正在上传...',
-		          //   icon: 'loading',
-		          //   mask: true,
-		          //   duration: 10000
-		          // });
-		          for (var i = 0; i < tempFilePaths.length;i++){
-		            pics.push(tempFilePaths[i]);
-		          }
-		          console.log(pics);
-		          that.setData({
-		            pics: pics
-		          })
-		        },
-		      });
-		    } else {
-		      wx.showToast({
-		        title: '最多上传3张图片',
-		        icon: 'none',
-		        duration: 3000
-		      });
-		
-		    }
-		  },
-		
-		
-		// 删除图片
-		  deleteImg(e) {
-		    var that = this;
-		    var pics = this.data.pics;
-		    var index = e.currentTarget.dataset.index;
-		    pics.splice(index, 1);
-		    console.log(pics)
-		    this.setData({
-		      pics: pics,
-		    })
-		  },
-		  // 预览图片
-		  previewImg1(e) {
-		    //获取当前图片的下标
-		    var index = e.currentTarget.dataset.index;
-		    //所有图片
-		    var pics = this.data.pics;
-		    wx.previewImage({
-		      //当前显示图片
-		      current: pics[index],
-		      //所有图片
-		      urls: pics
-		    })
-		  },
+		 
 		
 		
 		
@@ -255,21 +164,24 @@ export default {
       }
       .right {
         height: 36rpx;
-				width: 80rpx;
-        line-height: 36rpx;
-        font-size: 24rpx;
-        color: #333333;
+				width: 136rpx;
         display: flex;
         flex-flow: row nowrap;
         align-items: center;
-        .checked {
-          width: 32px;
+				justify-content: space-between;
+				image {
+          width: 32rpx;
           height: 32rpx;
-          background: #ffffff;
-          border: 2rpx solid #e5e5e5;
-          border-radius: 50%;
-          margin-right: 16rpx;
+					object-fit: cover;
         }
+				text{
+					width: 96rpx;
+					height: 34rpx;
+					line-height: 34rpx;
+					font-size: 24rpx;
+					font-weight: 400;
+					color: #333333;
+				}
       }
     }
 

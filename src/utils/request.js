@@ -92,6 +92,7 @@ instance.interceptors.response.use(
 			if (res.data && res.data.data) {
 				return res.data.data;
 			}
+			res.data.data = null;
 			return res.data;
 		}
 	},
@@ -112,7 +113,7 @@ instance.interceptors.response.use(
 				});
 
 			} else {
-				refrishToken();
+				// refrishToken();
 			}
 			// return new Promise((resolve, reject) => {
 			// 	failRequestList.push({
