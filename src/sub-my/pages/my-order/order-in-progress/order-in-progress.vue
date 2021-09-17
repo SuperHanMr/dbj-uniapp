@@ -43,14 +43,16 @@
             <order-item
               :dataList="item2"
               :orderStatus="2"
-              :showOriginPrice="orderInfo.discount && item.details.length"
+							:showOriginPrice="orderInfo.discount && item.details.length"
               @toApplayForRefund="toApplayForRefund(item2,1)"
             ></order-item>
           </view>
 
         </view>
 
-        <order-price :data="orderInfo" />
+        <order-price
+          :data="orderInfo"
+        />
 
       </view>
 
@@ -61,7 +63,6 @@
       />
 
       <view
-        :class="{noCancelBtn:true}"
         class="applyforRefund-confirmReceipt"
         :style="{paddingBottom:systemBottom,height:systemHeight}"
       >
@@ -108,7 +109,7 @@ export default {
     return {
       orderNo: "",
       orderInfo: {},
-      type: "",
+			type:"",
 
       systemBottom: "",
       systemHeight: "",
@@ -155,7 +156,7 @@ export default {
     },
 
     orderDetail() {
-      getOrderDetail({ id: 66 }).then((e) => {
+      getOrderDetail({ id: this.orderNo }).then((e) => {
         console.log(e);
         this.orderInfo = e;
         console.log("this.orderInfo=", this.orderInfo);
@@ -168,13 +169,13 @@ export default {
         //type 1部分退款
         wx.setStorageSync("particalRefundOrderInfo", JSON.stringify(data));
         uni.navigateTo({
-          url: `/sub-my/pages/apply-for-refund/apply-for-refund?id=${this.orderNo}&type=partical`,
+          url: `/sub-my/pages/apply-for-refund/apply-for-refund?id=${this.orderNo}&type=partical&status=1`,
         });
       } else {
         //type 2 整体退款
         wx.setStorageSync("wholeRefundOrderInfo", JSON.stringify(data));
         uni.navigateTo({
-          url: `/sub-my/pages/apply-for-refund/apply-for-refund?id=${this.orderNo}&type=whole`,
+          url: `/sub-my/pages/apply-for-refund/apply-for-refund?id=${this.orderNo}&type=whole&status=1`,
         });
       }
     },
@@ -190,10 +191,7 @@ export default {
       // 调用申请退款的接口
       console.log("点击了确认按钮11");
       //goodIsd 商品id(不传代表整个订单收货)"
-      confirmReceiptOrder(
-        JSON.stringify({ id: this.orderNo, goodIsd: "" })
-        // {id:66,goodIsd:""}
-      ).then((e) => {
+      confirmReceiptOrder({ id: this.orderNo, goodIsd: "" }).then((e) => {
         if (res.code == 1) {
           // 成功就关闭弹框
           console.log("成功就关闭弹框");
@@ -210,6 +208,8 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+	
+	
 .header {
   margin-bottom: 32rpx;
   box-sizing: border-box;
