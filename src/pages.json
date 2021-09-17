@@ -425,46 +425,60 @@
         }
       ]
     },
-    {
-      "root": "sub-classify", //商城模块分包
-      "pages": [{
-          "path": "pages/search/index",
-          "style": {
-            "navigationBarTitleText": "",
-            "enablePullDownRefresh": false
-          }
+ {
+    "root" : "sub-classify", //商城模块分包
+    "pages" : [
+        {
+            "path" : "pages/search/index",
+            "style" : {
+                "navigationBarTitleText" : "",
+                "enablePullDownRefresh" : false,
+                "navigationBarBackgroundColor" : "#ffffff"
+            }
         },
         {
-          "path": "pages/search-result/search-result",
-          "style": {
-            "navigationBarTitleText": "",
-            "enablePullDownRefresh": false,
-            "navigationBarBackgroundColor": "#FFFFFF"
-          }
+            "path" : "pages/search-result/search-result",
+            "style" : {
+                "navigationBarTitleText" : "",
+                "enablePullDownRefresh" : false,
+                "navigationBarBackgroundColor" : "#FFFFFF"
+            }
         },
         {
-          "path": "pages/goods-detail/goods-detail",
-          "style": {
-            "navigationBarTitleText": "商品详情",
-            "enablePullDownRefresh": false,
-            "navigationStyle": "custom"
-          }
+            "path" : "pages/goods-detail/goods-detail",
+            "style" : {
+                "navigationBarTitleText" : "商品详情",
+                "enablePullDownRefresh" : false,
+                "navigationStyle" : "custom",
+                "navigationBarBackgroundColor" : "#ffffff"
+            }
         },
-        // {
-        // 	"path": "pages/search/index",
-        // 	"style": {
-        // 		"navigationBarTitleText": "",
-        // 		"enablePullDownRefresh": false
-        // 	}
-        // },
         {
-          "path": "pages/pay-order/index",
-          "style": {
-            "navigationBarTitleText": "",
-            "enablePullDownRefresh": false
-          }
+            "path" : "pages/pay-order/index",
+            "style" : {
+                "navigationBarTitleText" : "确认订单",
+                "enablePullDownRefresh" : false,
+                "navigationBarBackgroundColor" : "#ffffff"
+            }
         }
-      ]
+        ,{
+            "path" : "pages/pay-order/pay-success",
+            "style" :                                                                                    
+        {
+            "navigationBarTitleText": "",
+            "enablePullDownRefresh": false
+        }
+        
+        },
+        {
+            "path" : "pages/pay-order/agreement",
+            "style" : {
+                "navigationBarTitleText" : "",
+                "enablePullDownRefresh" : false,
+                "navigationBarBackgroundColor" : "#ffffff"
+            }
+        }
+        ]
     },
 		{
 			"root": "sub-other", //其他页面
