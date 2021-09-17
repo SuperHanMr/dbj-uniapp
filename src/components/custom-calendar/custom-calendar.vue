@@ -36,7 +36,7 @@
 								></image>
 						</view>
 					</view>
-					<view class="memo">
+					<view class="memo" @click="toMemo">
 						<image class="ic_memo" src="../../sub-home/static/ic_memo@2x.png"></image>
 						<view class="text">备忘录</view>
 					</view>
@@ -223,6 +223,11 @@
 			// this.setDay
 		},
 		methods: {
+			toMemo(){
+				uni.navigateTo({
+					url: "/sub-home/pages/decorate-scene/memo"
+				})
+			},
 			// 取消穿透
 			clean() {},
 			bindDateChange(e) {
