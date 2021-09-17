@@ -36,7 +36,7 @@
       const {
         serveId
       } = getApp().globalData.decorateMsg
-      this.serveId = option.serveId
+      this.serveId = serveId || option.serveId
     },
     onShow() {
       this.queryServerInfo()

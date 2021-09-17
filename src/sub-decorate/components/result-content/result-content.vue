@@ -180,6 +180,11 @@
     mounted() {
       this.getData();
     },
+    watch:{
+      serverId(){
+        this.getData()
+      }
+    },
     watch: {
       scrollTop() {
         if (this.scrollTop > this.top) {
@@ -217,6 +222,8 @@
               this.checkData.time = this.toHHmmss(this.checkData.autoSubmitTime-1000).split('.')[0]
             },1000)
           }
+        }).catch(err=>{
+          this.$emit('isEmpty',2)
         })
       },
       toHHmmss(date){

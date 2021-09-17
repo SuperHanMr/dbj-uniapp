@@ -76,9 +76,9 @@
           this.detail = data
         })
       },
-      ownerInsertAudit() {
+      // ownerInsertAudit() {
 
-      },
+      // },
 
     }
   }
