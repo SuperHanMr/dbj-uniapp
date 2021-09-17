@@ -32,12 +32,14 @@
     filters:{
       formatDate
     },
-    mounted(){
-      this.getComplateDetail()
+    watch:{
+      serveId(){
+        this.getComplateDetail()
+      }
     },
     methods:{
       getComplateDetail(){
-        getComplateDetail({serveId:5665||this.serveId,projectId:40||this.projectId}).then(res=>{
+        getComplateDetail({serveId:this.serveId,projectId:this.projectId}).then(res=>{
           console.log(res)
           this.list = res
         })

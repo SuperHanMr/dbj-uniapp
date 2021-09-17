@@ -89,10 +89,11 @@ instance.interceptors.response.use(
 		if (res.data.code !== 1) {
 			return Promise.reject(res)
 		} else {
+
 			if (res.data && res.data.data) {
 				return res.data.data;
 			}
-			return res.data;
+			return null;
 		}
 	},
 	// 请求失败
@@ -112,7 +113,7 @@ instance.interceptors.response.use(
 				});
 
 			} else {
-				refrishToken();
+				// refrishToken();
 			}
 			// return new Promise((resolve, reject) => {
 			// 	failRequestList.push({

@@ -48,7 +48,6 @@
       >
         <view class="title">
           <text style="margin-right: 8rpx;">总押金</text>
-          <text class="icon">?</text>
         </view>
         <view>
           <text>￥</text>
