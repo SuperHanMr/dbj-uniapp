@@ -1,7 +1,7 @@
 <template>
   <view class="container">
     <!-- 退款详情 -->
-    <view v-if="type == 'refund'"  class="order-container">
+    <view   class="order-container">
 			<view class="order-status">
 				<view class="backgroundStyle" />
 
@@ -14,11 +14,11 @@
 				</view>
 			</view>
 
-			<view class="refund-product-info">
-				<order-item :dataList="refundInfo.detailAppVOS"></order-item>
+			<view class="refund-product-info" v-for="item in refundInfo.detailAppVOS" :key="item.id">
+				<order-item :dataList="item" :refundType="true"></order-item>
 			</view>
 
-			<order-refund-info :refundInfo="refundInfo"></order-refund-info>
+			<order-refund-info :refundInfo="refundInfo" ></order-refund-info>
 
 			
 		</view>
@@ -44,46 +44,16 @@
       />
     </uni-popup>
 
-    <!-- 确认收货的弹框 -->
-    <uni-popup  ref="confirmReceipt"  type="dialog">
-      <uni-popup-dialog
-        mode="base"
-        title="确定要确认收货？"
-        :before-close="true"
-        @close="confirmReceiptClose"
-        @confirm="receiptConfirm"
-      />
-    </uni-popup>
-		
-		<!-- 取消订单 -->
-		<uni-popup  ref="cancleOrder"  type="dialog">
-			<uni-popup-dialog
-				mode="base"
-				title="您确定要取消该订单吗？"
-				:before-close="true"
-				@close="cancelOrderClose"
-				@confirm="cancleConfirm"
-			/>
-		</uni-popup>
-		
 	</view>
 </template>
 
 <script>
-import { getOrderDetail, orderPay, getRefundDetail,cancelOrder,confirmReceiptOrder } from "../../../../api/order.js";
+import {  getRefundDetail,cancelRefund,confirmReceiptOrder } from "../../../../api/order.js";
 export default {
   data() {
     return {
-      orderNo: "",
-			stockType:1,//"stockType":"int //库存类型  0无仓库  1有仓库",
-			showRefundBtn:false,//"showRefundBtn":"boolean //是否显示退款按钮"
-			
-			
-			
-			
-			type:"inprogress",
+      orderId: "",
 			refundInfo:{},
-			orderInfo:{},
 			
 			systemBottom: "",
 			systemHeight: "",
@@ -100,22 +70,8 @@ export default {
 	},
 	
   onLoad(e) {
-    if (e && e.orderNo) {
-      this.orderNo = e.orderNo;
-      // this.getOrderDetail();
-    }
-		if(e && e.type){
-			this.type =e.type
-		}
-		if(this.type == 'refund'){
-			this.refundDetail()
-		}
-		// 进行中或者是代付款
-		if(this.type == 'inprogress' || this.type == 'waitPay'){
-			this.orderDetail()
-		}
-		
-		
+		this.orderId =Number(e.orderId);
+		this.refundDetail()
 	},
 	
   methods: {
@@ -132,40 +88,16 @@ export default {
 			let second = Math.floor(time) %60;
 			return [hour,minute,second]
 		},
-		
-		cancelRefund(){
-			console.log("取消退款啊啊啊啊啊啊")
-		},
-    
-		
-		
+
 		refundDetail(){
-			getRefundDetail({ id: this.orderNo }).then(e=>{
+			getRefundDetail({ id: this.orderId }).then(e=>{
 			console.log("打印请求回来的数据=",e,"e")
 				this.refundInfo = e
 			})
 		},
-		orderDetail(){
-			getOrderDetail({id:66}).then(e=>{
-				console.log(e);
-					this.orderInfo =e
-					console.log("this.orderInfo=",this.orderInfo)
-			})
-		},
 		
-		
-    toApplayForRefund() {
-      uni.navigateTo({
-        url: "/sub-my/pages/apply-for-refund/apply-for-refund",
-      });
-    },
-		
-  
-
-
-
-
-    cancelToPay() {
+		// 
+		 cancelToPay() {
       this.$refs.cancelRefund.open();
     },
     cancelToPayClose() {
@@ -173,13 +105,15 @@ export default {
     },
     confirmCancelToPay(value) {
       // 调用申请退款的接口、
-			cancelOrder({id:this.orderNo }).then(e=>{
+			cancelRefund({id:this.orderId }).then(e=>{
 				console.log(e)
-      // 成功就关闭弹框
-      this.$refs.cancelRefund.close();
+				// 成功就关闭弹框
 				// 跳转到退款关闭页面  退款取消页面
+				this.$refs.cancelRefund.close();
+				uni.redirectTo({
+					url:`../../my-order/order-failed/order-failed?type=refund&id=${this.orderId}&status=4`
+				})
 			})
-      console.log("点击了取消退款按钮");
     },
 
 
@@ -219,49 +153,7 @@ export default {
 			// 成功后关闭弹框并跳转到订单取消页面
 			this.$refs.cancleOrder.close();
 		},
-		//去支付
-		toPay() {
-			// 先判断是否支付超额拆单了
-			// 拆单之后直接跳转到拆单页面
-			// 未拆单 直接支付 
-			console.log(this.orderInfo,"orderInfo.orderId=",this.orderInfo.orderId)
-				
-			if(this.orderInfo.isSplitPay){
-				// orderId 是订单id
-				uni.navigateTo({
-					url:`../multiple-payments/multiple-payments?orderId=${this.orderNo}`
-				})
-				
-			}else{
-				let openId = uni.getStorageSync("openId");
-				orderPay({
-					// orderId: this.orderNo,
-					orderId: 109,
-					payType: 1,//支付类型  1微信支付",
-					openid: openId,
-				}).then((e) => {
-					const payInfo = e.wechatPayJsapi;
-					uni.requestPayment({
-						provider: "wxpay",
-						...payInfo,
-						success(res) {
-							console.log("@@@@@@@");
-							console.log(res);
-							// 支付成功后跳转到哪个页面
-						},
-						fail(e) {
-							console.log(e);
-							// 支付失败时候跳转到哪个页面
-						},
-					});
-				});
-			}
-			
-			
-		
-		
-		},
-  },
+	},
 };
 </script>
 

@@ -14,11 +14,11 @@
 		</view>
 		<view class="item">
 			<text class="item-header">退款金额：</text>
-			<!-- <text class="item-body">￥{{handlePrice(refundInfo.refundAmount)[0]}}.{{handlePrice(refundInfo.refundAmount)[1]}}</text> -->
+			<text class="item-body">￥{{handlePrice(refundInfo.refundAmount)[0]}}.{{handlePrice(refundInfo.refundAmount)[1]}}</text>
 		</view>
 		<view class="item">
 			<text class="item-header">申请时间：</text>
-			<text class="item-body">{{refundInfo.createTime}}</text>
+			<text class="item-body">{{refundInfo.createTime | formatDate}}</text>
 		</view>
 		<view class="item">
 			<text class="item-header" >退款编号：</text>
@@ -36,15 +36,18 @@
 </template>
 
 <script>
+	import {formatDate} from "../../utils/common.js"
 	export default {
+		filters:{
+			formatDate
+		},
 		name:"order-refund-info",
-		props:["refundInfo"],
-		// props:{
-		// 	refundInfo:{
-		// 		type:Object,
-		// 		// required:true,
-		// 	}
-		// },
+		props:{
+			refundInfo:{
+				type:Object,
+				required:true,
+			}
+		},
 		data() {
 			return {
 				

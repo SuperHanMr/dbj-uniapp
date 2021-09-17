@@ -1,11 +1,15 @@
 <template>
   <view>
     <view class="container">
-      <view   class="product-container">
+      <view class="product-container">
         <view
-					v-if="type == 'whole'"
-          v-for="(item,index) in refundInfo.details" :key="index">
-          <view v-for="item2 in item.details" :key="item2.id"
+          v-if="type == 'whole'"
+          v-for="(item,index) in refundInfo.details"
+          :key="index"
+        >
+          <view
+            v-for="item2 in item.details"
+            :key="item2.id"
           >
             <order-item :dataList="item2"></order-item>
           </view>
@@ -40,11 +44,6 @@
 
       </view>
 
-
-
-
-
-
       <view class="refund-container">
 
         <view class="refund-reason">
@@ -54,8 +53,11 @@
             </view>
             <text>退款原因</text>
           </view>
-					
-         <view class="reason" v-if="!reasonName">
+
+          <view
+            class="reason"
+            v-if="!reasonName"
+          >
             <text style="color:#C7C7C7;">请选择</text>
             <image
               src="../../static/ic_arraw_down@2x.png"
@@ -63,84 +65,97 @@
               @click="openPopup()"
             ></image>
           </view>
-					
-					<view class="reason" v-else >
-					  <text style="margin-right: 16rpx;" @click="openPopup()">{{reasonName}}</text>
-					</view>
-        </view>
-				
-				<view class="line" />
-				
-				<view class="refund-price" v-if="type == 'whole'">
-					<view
-					  class="edit-price"
-					>
-						<view class="left">
-							<view class="icon">
-								*
-							</view>
-							<text>退款金额</text>
-						</view>
-						<view class="right" >
-						  <text >￥{{handlePrice(refundInfo.totalActualIncomeAmount)[1]}}.{{handlePrice(refundInfo.totalActualIncomeAmount)[0]}}</text>
-						</view>
-					</view>
-					<view class="tip-text">
-						商品未发货，商家同意后将会全额退还。
-					</view>
-				</view>
 
-     
-				<view class="refund-price" v-if="type == 'partical'">
-					<view	v-if="showEditInput==true"	class="edit-price">
-						<view class="left">
-							<view class="icon">
-								*
-							</view>
-							<text>退款金额</text>
-						</view>
-						<view class="right1">
-							<view class="eidt-style">
-								<text>￥</text>
-								<input
-									type="number"
-									:value="inputValue"
-									class="input-style"
-									:focus="isFocus"
-									@input="onKeyInput"
-									@focus="onKeyFocus"
-									@blur="onKeyBlur"
-									:style="{width:inputWidth + 'rpx'}"
-								/>
-							</view>
-						</view>
-					</view>
-	
-					<view v-else class="show-price">
-						<view class="left">
-							<view class="icon">
-								*
-							</view>
-							<text>退款金额</text>
-						</view>
-						<view class="right2">
-							<text style="color:#FF3347;font-size: 40rpx;">￥{{inputValue==0?"0.00":inputValue}}</text>
-							<image
-								src="../../static/ic_mine_edit_gray@2x.png"
-								mode=""
-								@click="showEditInput=true"
-							></image>
-						</view>
-					</view>
-
-					<view class="tip-text" >
-						最多可以填写￥{{handlePrice(refundInfo.totalActualIncomeAmount)[1]}}.{{handlePrice(refundInfo.totalActualIncomeAmount)[0]}}，也可申请部分金额，以您与商家沟通协商的结果为准
-					</view>
+          <view
+            class="reason"
+            v-else
+          >
+            <text
+              style="margin-right: 16rpx;"
+              @click="openPopup()"
+            >{{reasonName}}</text>
+          </view>
         </view>
-     
-			
-			
-			</view>
+
+        <view class="line" />
+
+        <view
+          class="refund-price"
+          v-if="type == 'whole'"
+        >
+          <view class="edit-price">
+            <view class="left">
+              <view class="icon">
+                *
+              </view>
+              <text>退款金额</text>
+            </view>
+            <view class="right">
+              <text>￥{{handlePrice(refundInfo.totalActualIncomeAmount)[1]}}.{{handlePrice(refundInfo.totalActualIncomeAmount)[0]}}</text>
+            </view>
+          </view>
+          <view class="tip-text">
+            商品未发货，商家同意后将会全额退还。
+          </view>
+        </view>
+
+        <view
+          class="refund-price"
+          v-if="type == 'partical'"
+        >
+          <view
+            v-if="showEditInput==true"
+            class="edit-price"
+          >
+            <view class="left">
+              <view class="icon">
+                *
+              </view>
+              <text>退款金额</text>
+            </view>
+            <view class="right1">
+              <view class="eidt-style">
+                <text>￥</text>
+                <input
+                  type="number"
+                  :value="inputValue"
+                  class="input-style"
+                  :focus="isFocus"
+                  @input="onKeyInput"
+                  @focus="onKeyFocus"
+                  @blur="onKeyBlur"
+                  :style="{width:inputWidth + 'rpx'}"
+                />
+              </view>
+            </view>
+          </view>
+
+          <view
+            v-else
+            class="show-price"
+          >
+            <view class="left">
+              <view class="icon">
+                *
+              </view>
+              <text>退款金额</text>
+            </view>
+            <view class="right2">
+              <text style="color:#FF3347;font-size: 40rpx;">￥{{inputValue==0?"0.00":inputValue}}</text>
+              <image
+                src="../../static/ic_mine_edit_gray@2x.png"
+                mode=""
+                @click="showEditInput=true"
+              ></image>
+            </view>
+          </view>
+
+          <view class="tip-text">
+            最多可以填写￥{{handlePrice(refundInfo.totalActualIncomeAmount)[1]}}.{{handlePrice(refundInfo.totalActualIncomeAmount)[0]}}，也可申请部分金额，以您与商家沟通协商的结果为准
+          </view>
+        </view>
+
+      </view>
 
       <view class="remark-container">
         <view class="header">
@@ -198,7 +213,7 @@
 </template>
 
 <script>
-import { getOrderDetail,refundReason } from "@/api/order.js";
+import { getOrderDetail, refundReason } from "@/api/order.js";
 export default {
   data() {
     return {
@@ -213,12 +228,12 @@ export default {
 
       type: "", //partical部分退款  whole整个退款
       refundInfo: {},
-			
-			refundReasonList:[],//退款原因
-			reasonList:[],
-			reasonValue:"",
-			reasonName:"",
-			
+
+      refundReasonList: [], //退款原因
+      reasonList: [],
+      reasonValue: "",
+      reasonName: "",
+
       systemBottom: "",
     };
   },
@@ -242,7 +257,7 @@ export default {
       this.refundInfo = JSON.parse(wx.getStorageSync("wholeRefundOrderInfo"));
       console.log("this.refundInfo=", this.refundInfo, typeof this.refundInfo);
     }
-		this.getRefundReasonList()
+    this.getRefundReasonList();
   },
 
   watch: {
@@ -262,23 +277,38 @@ export default {
     //   console.log("订单完成页面");
     //   getOrderDetail({ id: this.id }).then((e) => {
     //     this.orderInfo = e;
-       
+
     //   });
     // },
-		
-		// 获取退款原因列表
-		getRefundReasonList(){
-			refundReason({codeKey:"refund_reason"}).then(list=>{
-				this.refundReasonList = list
-				this.reasonList = list.map(item=>{
-					return item.itermName
-				})
-			})
-		},
-		
-		
-		submitApplication() {
+
+    // 获取退款原因列表
+    getRefundReasonList() {
+      refundReason({ codeKey: "refund_reason" }).then((list) => {
+        this.refundReasonList = list;
+        this.reasonList = list.map((item) => {
+          return item.itermName;
+        });
+      });
+    },
+
+    submitApplication() {
+      // 提交申请后该订单会进入到退款页面，状态显示退款中；并直接跳转到该订单退款详情页
       console.log("申请退款");
+      let params = {
+        orderId: this.query.orderId, //订单明Id字段
+        returnMoney: this.returnMoney, //申请退货钱数(分)
+        reason: this.reasonName, //退款原因
+        reasonId: this.reasonValue, //退款原因id
+        remark: this.query.remarks, //备注
+        status: this.query.status, //订单状态1进行中 2已完成
+      };
+      wholeOrderApplyForRefund(params).then((res) => {
+        if (res.code == 1) {
+          uni.redirectTo({
+            url: `../my-order/success/success?type=applyForRefund`,
+          });
+        }
+      });
     },
 
     onKeyInput(event) {
@@ -301,25 +331,25 @@ export default {
     onTextAreaInput(event) {
       this.textAreaLength = event.target.value.length;
     },
-		// 请选择原因
+    // 请选择原因
     openPopup() {
       // this.$refs.popup.open("bottom");
       console.log("下拉箭头");
-			uni.showActionSheet({
-				itemList: this.reasonList,
-				success: (res)=>{
-					this.reasonName=this.reasonList[res.tapIndex]
-					this.reasonValue= this.refundReasonList.filter(item=>{
-						return 	item.itermName == this.reasonList[res.tapIndex]
-					})[0].itermValue
-					console.log("this.reasonValue=",this.reasonValue)
-				},
-				fail:(res)=>{
-						console.log(res.errMsg);
-				}
-			})
+      uni.showActionSheet({
+        itemList: this.reasonList,
+        success: (res) => {
+          this.reasonName = this.reasonList[res.tapIndex];
+          this.reasonValue = this.refundReasonList.filter((item) => {
+            return item.itermName == this.reasonList[res.tapIndex];
+          })[0].itermValue;
+          console.log("this.reasonValue=", this.reasonValue);
+        },
+        fail: (res) => {
+          console.log(res.errMsg);
+        },
+      });
     },
-		
+
     // close() {
     //   this.$refs.popup.close();
     // },

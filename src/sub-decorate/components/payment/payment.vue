@@ -7,7 +7,7 @@
 			<!-- <text class="price">{{__countPrice[0]}}</text> -->
 			<!-- <text class="flot">.{{__countPrice[1]}}</text> -->
 		</view>
-		<view class="btn" :disabled="!isAllChecked" :class="{ disabled: !isAllChecked }" @click="gotopay">去结算</view>
+		<button class="btn" :disabled="!isAllChecked" :class="{ disabled: !isAllChecked }" @click="gotopay">去结算</button>
 	</view>
 </template>
 
@@ -21,7 +21,7 @@
 			},
 			countPrice: {
 				type: String,
-				// default: "1000.00"
+				default: "0"
 			},
 			isAllChecked: {
 				type: Boolean,
