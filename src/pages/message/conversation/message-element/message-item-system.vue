@@ -18,6 +18,7 @@
 <script>
   import MessageTemplate from "@/utils/message-template.json";
   import TIM from "tim-wx-sdk";
+  import UnsupportedElement from "./unsupported-element.vue"
   import CardTemplate from "./template/card-tpl.vue"
   import FormTemplate from "./template/form-tpl.vue"
   export default {
@@ -29,6 +30,7 @@
       },
     },
     components: {
+      UnsupportedElement,
       CardTemplate,
       FormTemplate
     },

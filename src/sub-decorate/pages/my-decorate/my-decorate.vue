@@ -26,13 +26,14 @@
     <swiper :current="tabIndex" style="flex: 1;min-height: 600px;" :style="{height:contentHeight}" :duration="300" @change="ontabchange">
       <swiper-item class="swiper-item" v-for="(tab,index1) in dataList" :key="index1">
         <service-hunman :isDesign="tab.nodeType===1" :tab='tab' :designData='designData' @openPopup='openPopup'></service-hunman>
-        <amount-house :serverId='serverId' id="d3" v-if="tab.nodeType===3"></amount-house>
-        <resultContent ref='result' id="d2" :serverId='serverId' v-if="tab.nodeType===2" @getData='getData' :scrollTop='scrollTop'
+        <amount-house :serverId='serverId' id="d3" @isEmpty='isEmpty' v-if="tab.nodeType===3"></amount-house>
+        <resultContent ref='result' id="d2" @isEmpty='isEmpty' :serverId='serverId' v-if="tab.nodeType===2" @getData='getData' :scrollTop='scrollTop'
           :isReport='true'></resultContent>
-        <serviceDesign id="d1" v-if="tab.nodeType===1" @changeDesign='changeDesign' :serverId='serverId'></serviceDesign>
-        <serviceActuarial id="d4" v-if="tab.nodeType===4" :serverId='serverId'></serviceActuarial>
-        <serviceSteward id="d5" v-if="tab.nodeType===5" :serverId='serverId'></serviceSteward>
-        <serviceDismantle id="d6" v-if="tab.nodeType>5" :serverId='serverId'></serviceDismantle>
+        <serviceDesign id="d1" v-if="tab.nodeType===1" @isEmpty='isEmpty' @changeDesign='changeDesign' :serverId='serverId'></serviceDesign>
+        <serviceActuarial id="d4" v-if="tab.nodeType===4" @isEmpty='isEmpty' :serverId='serverId'></serviceActuarial>
+        <serviceSteward id="d5" v-if="tab.nodeType===5" @isEmpty='isEmpty' :serverId='serverId'></serviceSteward>
+        <serviceDismantle id="d6" v-if="tab.nodeType>5" @isEmpty='isEmpty' :serverId='serverId'></serviceDismantle>
+        <no-service v-if="tab.nodeType===currentEmpty" words="暂无进行中服务"></no-service>
       </swiper-item>
     </swiper>
   </view>
@@ -69,8 +70,11 @@
         currentItem:'top',
         result:{},
         designList:[],
-        serverId:56,
-        designData:{}
+        projectId:0,
+        processId:0,
+        serverId:0,
+        designData:{},
+        currentEmpty:0,
       };
     },
     onPageScroll(scrollTop) {
@@ -84,8 +88,12 @@
         this.isActive = false
       }
     },
+    onLoad(e){
+      this.projectId = e.projectId
+      this.processId = e.processId
+    },
     mounted() {
-      this.getDesignServeMenu()
+      
       this.getMyService()
     },
     methods: {
@@ -103,6 +111,7 @@
         this.tabIndex = current
         this.tabName = 'd'+(this.dataList[current].nodeType>6?6:this.dataList[current].nodeType)
         this.serverId = this.dataList[current].serverId
+        this.currentEmpty = 0
         this.changeHeight()
         this.$nextTick(function(){
           this.$refs.result[0].getHeight()
@@ -124,6 +133,9 @@
       },
       getData(e) {
         this.result = e
+      },
+      isEmpty(item){
+        this.currentEmpty = item
       },
       changeDesign(e){
         this.designData = e
@@ -148,20 +160,20 @@
         this.$refs.popup.close()
       },
       getDesignServeMenu(){
-        getDesignServeMenu(2).then(res=>{
+        getDesignServeMenu(this.serverId).then(res=>{
           this.designList = res
-          
         })
       },
       getMyService(){
         let data = {
-          projectId:6,
-          processId:1
+          projectId:this.projectId,
+          processId:this.processId
         }
         getMyService(data).then(res=>{
-          console.log(res)
+          
           this.dataList = res
           this.tabName = 'd'+(this.dataList[0].nodeType>6?6:this.dataList[0].nodeType)
+          this.getDesignServeMenu()
           this.changeHeight()
         })
       }

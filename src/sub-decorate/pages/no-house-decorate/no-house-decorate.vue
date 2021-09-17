@@ -1,7 +1,7 @@
 <template>
   <view class="no-house-decorate">
     <view class="content">
-      <view class="addhouse-decs" v-if="!currentHouse && !currentHouse.id">
+      <view class="addhouse-decs" v-if="!currentHouse.id">
         <button class="addhouse" @click="goAddHouse">
           <image src="http://dbj.dragonn.top/static/mp/dabanjia/images/decorate/ic_add_house_info.svg"></image>
           <text>添加房屋信息</text>
@@ -11,21 +11,21 @@
       <my-current-house v-if="currentHouse && currentHouse.id" :houseData="currentHouse"
         @changCurrentHouse="changCurrentHouse">
       </my-current-house>
-      <service-card v-if="sssType == 'decorate' || sssType == 'design'" :setting="design" class="service-card"
-        @selectAnother="selectAnother('design')" @changeLevel="open">
+      <service-card v-if="(sssType == 'decorate' || sssType == 'design') && design.id" :setting="design"
+        class="service-card" @selectAnother="selectAnother('design')" @changeLevel="open">
         <template slot="check">
           <check-box :checked="design.checked" @change="(value)=> {change(design.cardtype, value)}">
           </check-box>
         </template>
       </service-card>
-      <service-card v-if="sssType == 'decorate' || sssType == 'actuary'" :setting="actuary" class="service-card"
-        @selectAnother="selectAnother('actuary')">
+      <service-card v-if="(sssType == 'decorate' || sssType == 'actuary') && actuary.id" :setting="actuary"
+        class="service-card" @selectAnother="selectAnother('actuary')">
         <template slot="check">
           <check-box :checked="actuary.checked" @change="(value)=> {change(actuary.cardtype, value)}">
           </check-box>
         </template>
       </service-card>
-      <service-card v-if="sssType == 'checkHouse'" :setting="checkHouse" class="service-card"
+      <service-card v-if="sssType == 'checkHouse' && checkHouse.id" :setting="checkHouse" class="service-card"
         @selectAnother="selectAnother('checkHouse')">
         <template slot="check">
           <check-box :checked="checkHouse.checked" @change="(value)=> {change(checkHouse.cardtype, value)}">
@@ -61,14 +61,14 @@
   import {
     createOrder
   } from "../../../api/order-center.js"
-  
+
   const TYPE = {
     decorate: "装修服务",
     design: "设计服务",
     actuary: "精算服务",
     checkHouse: "验房服务",
   }
-  
+
   export default {
     components: {
       ServiceCard,
@@ -82,51 +82,9 @@
     data() {
       return {
         dataList: [],
-        design: {
-          title: "设计服务",
-          cardtype: "design",
-          checked: false,
-          level: 0,
-          price: 1,
-          insideArea: 0.1,
-          id: 1054,
-          imageUrl: "https://ali-image-test.dabanjia.com//image/20210313/1615618135579_0296%24pexels-eberhard-grossgasteiger-1428277.jpg",
-          name: "橙色",
-          quantity: 1,
-          serviceName: "设计服务",
-          serviceType: 1,
-          spuName: "韩永辉测试视频无法播放"
-        },
-        actuary: {
-          title: "精算服务",
-          cardtype: "actuary",
-          checked: false,
-          price: 1,
-          insideArea: 0.1,
-          categoryTypeId: 4,
-          id: 38085,
-          imageUrl: "https://ali-image-test.dabanjia.com//image/20210313/1615618135579_0296%24pexels-eberhard-grossgasteiger-1428277.jpg",
-          name: "橙色",
-          quantity: 1,
-          serviceName: "精算服务",
-          serviceType: 4,
-          spuName: "韩永辉测试视频无法播放"
-        },
-        checkHouse: {
-          title: "验房服务",
-          cardtype: "checkHouse",
-          checked: false,
-          price: 1,
-          insideArea: 0.1,
-          categoryTypeId: 4,
-          id: 38085,
-          imageUrl: "https://ali-image-test.dabanjia.com//image/20210313/1615618135579_0296%24pexels-eberhard-grossgasteiger-1428277.jpg",
-          name: "橙色",
-          quantity: 1,
-          serviceName: "验房服务",
-          serviceType: 2,
-          spuName: "假数据"
-        },
+        design: {},
+        actuary: {},
+        checkHouse: {},
         currentHouse: {},
         selectLevel: 1,
         sssType: "",
@@ -137,7 +95,15 @@
           value: null
         },
         selectHouseData: {},
-        selectedServer: {}
+        selectedServer: {},
+
+        projectId: null,
+        serveType: null,
+        estateId: null,
+        customerId: null,
+        provinceId: null, //省id
+        cityId: null, //市id
+        areaId: null, //区id
       }
     },
     computed: {
@@ -153,13 +119,13 @@
         let aprice = 0
         let chprice = 0
         if (this.design.checked) {
-          dprice = this.design.price || 29.9
+          dprice = this.design.price / 100 || 0
         }
         if (this.actuary.checked) {
-          aprice = this.actuary.price || 59.9
+          aprice = this.actuary.price / 100 || 0
         }
         if (this.checkHouse.checked) {
-          chprice = this.checkHouse.price || 59.9
+          chprice = this.checkHouse.price / 100 || 0
         }
         let temp = dprice * this.currentHouse.insideArea + aprice * this.currentHouse.insideArea + chprice * this
           .currentHouse.insideArea
@@ -179,9 +145,30 @@
         this.selectedServer = data
       })
       const {
+        projectId,
+        serveCardId,
+        serviceName,
+        serviceType,
+        serveType,
+        serveTypeName,
+        estateId,
+        roleType,
+        customerId,
+        provinceId, //省id
+        cityId, //市id
+        areaId, //区id
+      } = getApp().globalData.decorateMsg
+      const {
         type
       } = option
-      this.sssType = type
+      this.sssType = type || getType(serviceType)
+      this.projectId = projectId
+      this.serveType = serveType
+      this.estateId = estateId
+      this.customerId = customerId
+      this.provinceId = provinceId //省id
+      this.cityId = cityId //市id
+      this.areaId = areaId
       uni.setNavigationBarTitle({
         title: TYPE[type]
       })
@@ -214,6 +201,17 @@
       } = getApp().globalData;
     },
     methods: {
+      getType(num) {
+        if (num == 1) {
+          return "design"
+        }
+        if (num == 2) {
+          return "checkHouse"
+        }
+        if (num == 4) {
+          return "actuary"
+        }
+      },
       radioChange(obj) {
         this.selectLevel = obj.value
       },
@@ -228,26 +226,22 @@
       close() {
         this.$refs.level.close()
       },
-      // confirm(value) {
-      //   // 输入框的值
-      //   console.log(value)
-      //   // TODO 做一些其他的事情，手动执行 close 才会关闭对话框
-      //   // ...
-      //   this.$refs.popup.close()
-      //   this.design.level = Number(this.selectLevel)
-      // },
       getServiceSku() {
+        let defaultHouse = JSON.parse(uni.getStorageSync("currentHouse"))
+        // console.log("defaultHouse", defaultHouse)
         getServiceSku({
-          province_id: 1,
-          city_id: 1,
-          area_id: 1,
-          serveTypes: [1, 2, 4]
+          province_id: this.currentHouse.provinceId || defaultHouse.provinceId,
+          city_id: this.currentHouse.cityId || defaultHouse.cityId,
+          area_id: this.currentHouse.areaId || defaultHouse.areaId,
+          // serveTypes: [1, 2, 4]
         }).then(data => {
           const {
             categoryTypeId,
             values
           } = this.selectedServer
-          
+          this.design = {}
+          this.checkHouse = {}
+          this.actuary = {}
           if (categoryTypeId == 1) {
             this.design = {
               title: "设计服务",
@@ -282,7 +276,7 @@
             let checkHouseData = data.filter(t => t.serviceType === 2)
             if (checkHouseData && checkHouseData.length > 0) {
               this.checkHouse = {
-                ...actuaryData[0],
+                ...checkHouseData[0],
                 title: "验房服务",
                 cardtype: "checkHouse",
                 checked: this.sssType == "checkHouse",
@@ -310,15 +304,6 @@
               }
             }
           }
-          // if (!noHouseDesignId) {
-            
-          // }
-          // if (!noHouseActuaryId) {
-            
-          // }
-          // if (!noHouseCheckId) {
-            
-          // }
           console.log("默认服务： ", this.design, this.actuary, this.checkHouse)
         })
       },
@@ -332,20 +317,6 @@
             noHouseDesignId,
             noHouseCheckId
           } = getApp().globalData
-          // if( noHouseActuaryId ) {
-
-          // } else {
-
-          // }
-          // data.list.forEach((item, idx) => {
-          // 	if() {
-          // 		this.actuary = {
-          // 			...item,
-          // 			cardtype: "actuary",
-          // 			checked: true
-          // 		}
-          // 	}
-          // })
           const {} =
           this.actuary = {
             ...data.list[0],
@@ -389,27 +360,34 @@
         queryEstates({
           isNeedRelative: true
         }).then(data => {
-          let flt = data.filter(t => t.defaultEstate);
-          if (flt && flt.length > 0) {
-            this.currentHouse = flt[0]
-          } else {
+          if (!data || (typeof data == "array" && data.length < 1)) {
             this.currentHouse = {}
+          } else {
+            if (this.estateId) {
+              let flt = data.filter(t => t.estateId == this.estateId);
+            } else {
+              let flt = data.filter(t => t.defaultEstate);
+            }
+            let flt = data.filter(t => t.defaultEstate);
+            if (flt && flt.length > 0) {
+              this.currentHouse = flt[0]
+            } else {
+              this.currentHouse = {}
+            }
+            console.log("currentHouse", this.currentHouse)
           }
-          console.log("currentHouse", this.currentHouse)
+
           this.getServiceSku();
         })
       },
       gotopay() {
         // TODO去结算页面
         if (this.currentHouse && this.currentHouse.id) {
-          // uni.redirectTo({
-          //   url: ""
-          // })
           let params = {
             payType: 1, //"int //支付方式  1微信支付",
             openid: uni.getStorageSync("openId"), //"string //微信openid 小程序支付用 app支付不传或传空",
-            projectId: 0, //"long //项目id  非必须 默认0",
-            customerId: 0, //"long //业主id  非必须 默认0",
+            projectId: this.projectId || 0, //"long //项目id  非必须 默认0",
+            customerId: this.customerId || 0, //"long //业主id  非必须 默认0",
             estateId: this.currentHouse.id, //"long //房产id   非必须 默认0",
             total: this.countPrice * 100, //"int //总计",
             remarks: "", //"string //备注",
@@ -423,9 +401,9 @@
               businessType: this.design.categoryTypeId, //"int //业务类型",
               workType: -2, //"int //工种类型",
               level: 0, //"int //等级  0中级  1高级 2特级  3钻石",
-              storeId: 0, //"long //店铺id",
+              storeId: this.design.storeId || 0, //"long //店铺id",
               storeType: 0, //"int //店铺类型 0普通 1设计师",
-              number: 1, //"double //购买数量",
+              number: this.currentHouse.insideArea, //"double //购买数量",
               params: "", //string //与订单无关的参数 如上门时间 doorTime"
             })
           }
@@ -436,9 +414,9 @@
               businessType: this.actuary.categoryTypeId, //"int //业务类型",
               workType: -2, //"int //工种类型",
               // level: 0, //"int //等级  0中级  1高级 2特级  3钻石",
-              storeId: 0, //"long //店铺id",
+              storeId: this.actuary.storeId || 0, //"long //店铺id",
               storeType: 0, //"int //店铺类型 0普通 1设计师",
-              number: 1, //"double //购买数量",
+              number: this.currentHouse.insideArea, //"double //购买数量",
               params: "", //string //与订单无关的参数 如上门时间 doorTime"
             })
           }
@@ -449,9 +427,9 @@
               businessType: this.checkHouse.categoryTypeId, //"int //业务类型",
               workType: -2, //"int //工种类型",
               // level: 0, //"int //等级  0中级  1高级 2特级  3钻石",
-              storeId: 0, //"long //店铺id",
+              storeId: this.checkHouse.storeId || 0, //"long //店铺id",
               storeType: 0, //"int //店铺类型 0普通 1设计师",
-              number: 1, //"double //购买数量",
+              number: this.currentHouse.insideArea, //"double //购买数量",
               params: "", //string //与订单无关的参数 如上门时间 doorTime"
             })
           }

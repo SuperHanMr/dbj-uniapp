@@ -26,8 +26,6 @@
         <view class="uni-padding-wrap">
           <view class="insurance-house">
             <view :class="{'payed':aServiceData.insuranceStatus}" class="insurance">
-              <!-- <image class="img"></image>
-              <view class="text">工地保险</view> -->
               <image @click="consultingService"
                 :src="aServiceData.insuranceStatus ? 'http://dbj.dragonn.top/static/mp/dabanjia/images/decorate/insurance-pay.jpeg': 'http://dbj.dragonn.top/static/mp/dabanjia/images/decorate/insurance-unpay.jpeg'">
               </image>
@@ -35,13 +33,11 @@
             <view class="uni-title">{{ currentProject.housingEstate }}{{currentProject.address}}</view>
           </view>
           <view class="picture-btn-wrap">
-            <picture-btn v-if="aServiceData.showDesignFlag" class="p-i-t" text="设计图" @gotoPage="goDesignPicture">
-            </picture-btn>
-            <picture-btn v-if="aServiceData.showActuaryFlag" class="p-i-t" text="精算单" @gotoPage="goActuary">
-            </picture-btn>
+            <picture-btn v-if="aServiceData.showDesignFlag" class="p-i-t" text="设计图" @gotoPage="goDesignPicture"></picture-btn>
+            <picture-btn v-if="aServiceData.showActuaryFlag" class="p-i-t" text="精算单" @gotoPage="goActuary"></picture-btn>
             <picture-btn v-if="aServiceData.showVideoFlag" class="p-i-t" text="工地视频" @gotoPage="goVideo"></picture-btn>
-            <!-- <picture-btn v-if="aServiceData.constructionFlag" text="施工" @gotoPage="goConstrction"></picture-btn> -->
-            <picture-btn text="施工" @gotoPage="goConstrction"></picture-btn>
+            <picture-btn v-if="aServiceData.constructionFlag" text="施工" @gotoPage="goConstrction"></picture-btn>
+            <!-- <picture-btn text="施工" @gotoPage="goConstrction"></picture-btn> -->
           </view>
         </view>
       </view>
@@ -85,7 +81,7 @@
             <view class="my-decorate-service">
               <view class="service-title flex-space-between-row">
                 <text class="t">我的装修服务</text>
-                <view class="r flex-start-row" @click="goToMyDecorate">
+                <view class="r flex-start-row" v-if="isShowMyDecorateAll" @click="goToMyDecorate">
                   <text>查看全部</text>
                   <image src="http://dbj.dragonn.top/static/mp/dabanjia/images/decorate/ic_more.svg">
                   </image>
@@ -126,7 +122,6 @@
             <view @click="confirm4">线上交底</view>
             <view @click="dsport">设计报告交付</view>
             <view @click="hcaa">管家竣工验收申请</view>
-            <!-- <view @click="housekeeperrefuse">管家竣工拒绝</view> -->
             <view @click="workerCapplication">工人阶段验收申请</view>
             <view @click="gjgxf">管家工序费</view>
           </view>
@@ -161,10 +156,6 @@
   } from "../../../components/house-switch/house-switch.vue"
   import ServiceItem from "../../../components/service-item/service-item.vue"
   import NoService from "../../../components/no-service/no-service.vue"
-  // import {
-  //   DECTORE_DICT,
-  //   SERVICE_TYPE
-  // } from "../../../utils/dict.js"
   import {
     v4 as uuidv4
   } from 'uuid';
@@ -309,7 +300,7 @@
             this.addServiceCard(this.availableServiceList, "nodeType")
           }, 0)
           this.isShowMyDecorateAll = this.purchasedServiceList.filter(t => (t.status == 0 && t.grepOrderStatus ==
-            3) || t.status >= 2)
+            3) || t.status >= 2).length > 0
           this.haveWarehouse = this.purchasedServiceList.filter(t => t.nodeType >= 5).length > 0
         }).catch(err => {
           console.log(err)
@@ -381,13 +372,6 @@
         this.initData(item)
         this.$refs.sw.close()
       },
-      getMyHouseList() {
-        queryEstates({
-          isNeedRelative: true
-        }).then(data => {
-          console.log(data)
-        })
-      },
       getProjectList() {
         getEstateProjectInfoList({
           isNeedRelative: true
@@ -446,7 +430,7 @@
       },
       gjgxf() {
         uni.navigateTo({
-          url: `/sub-decorate/pages/gj-process-cost/gj-process-cost?projectId=${this.currentProject.projectId}&estateId=${this.currentProject.estateId}&roleType=10`
+          url: `/sub-decorate/pages/gj-process-cost/gj-process-cost?projectId=${this.currentProject.projectId}&estateId=${this.currentProject.estateId}&roleType=10&serviceType=5`
         })
       },
       gonohouse() {
@@ -473,7 +457,7 @@
       },
       goToMyDecorate() {
         uni.navigateTo({
-          url: "/sub-decorate/pages/my-decorate/my-decorate",
+          url: "/sub-decorate/pages/my-decorate/my-decorate?processId="+this.currentProject.processId+'&projectId='+this.currentProject.projectId,
         });
       },
       goToMyWarehouse() {
@@ -495,10 +479,11 @@
       getEstateList() {
         queryEstates({
           isNeedRelative: true,
-        }).then((data) => {
-          if (data.length < 1) {
+        }).then(data => {
+          console.log(data)
+          if (!data || (typeof data == "array" && data.length < 1) ) {
             uni.navigateTo({
-              url: "/pages/decorate/no-house/no-house",
+              url: "/sub-decorate/pages/no-house/no-house",
             });
           } else {
             const temp = data.filter(t => t.defaultEstate)
@@ -526,9 +511,11 @@
         })
       },
       getMsgNum() {
-        getMsgNum(this.currentProject.projectId).then(res => {
-          this.msgNum = res.count
-        })
+        if(this.currentProject.projectId){
+          getMsgNum(this.currentProject.projectId).then(res => {
+            this.msgNum = res.count
+          })
+        }
       }
     },
   };

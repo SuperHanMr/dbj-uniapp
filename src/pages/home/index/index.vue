@@ -23,7 +23,7 @@
       >
       </view>
 
-   <!--   <button
+      <!--   <button
         style="width: 50%;margin-top: 20rpx;"
         type="default"
         @click="toNextPage"
@@ -141,11 +141,11 @@ export default {
         url: "/sub-home/pages/lives-decorate/lives-decorate",
       });
     },
-		toGoodsApply(){
-			uni.navigateTo({
-				url:'../../../sub-decorate/pages/require-pay/require-pay'
-			})
-		},
+    toGoodsApply() {
+      uni.navigateTo({
+        url: "../../../sub-decorate/pages/require-pay/require-pay",
+      });
+    },
     toPay() {
       let openId = uni.getStorageSync("openId");
       orderPay({
@@ -214,23 +214,23 @@ export default {
         type: "gcj02",
         success(res) {
           let that = vm;
-          const latitude = res.latitude;
-          const longitude = res.longitude;
+          // const latitude = res.latitude;
+          // const longitude = res.longitude;
           uni.request({
             header: {
               "Content-Type": "application/text",
             },
             //注意:这里的key值需要高德地图的 web服务生成的key  只有web服务才有逆地理编码
             url:
-              "https://restapi.amap.com/v3/geocode/regeo?output=JSON&location=" +
-              longitude +
+              "https://api.map.baidu.com/reverse_geocoding/v3/?ak=s0deCKPpT7GZBxtBLGs9gMkGTs80uuyD&output=json&coordtype=gcj02ll&location=" +
+              res.latitude +
               "," +
-              latitude +
-              "&key=4d1476e82ce1ca125c7452c625e6d541&radius=1000&extensions=all",
+              res.longitude,
             success(re) {
               if (re.statusCode === 200) {
-                console.log(re.data);
-                let addressComponent = re.data.regeocode.addressComponent;
+                console.log("???????");
+                console.log(re);
+                let addressComponent = re.data.result.addressComponent;
                 vm.getAreaId(addressComponent.adcode);
               } else {
                 console.log("获取信息失败，请重试！");
