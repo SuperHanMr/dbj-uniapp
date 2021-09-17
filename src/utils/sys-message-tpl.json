@@ -73,7 +73,7 @@
     "msg":"${name}服务整体完工，请验收"
   },
   "sys_actuary_publish":{
-    "url":"/sub-decorate/pages/curent-cost/curent-cost",
+    "url":"/sub-decorate/pages/current-cost/current-cost",
     "name":"精算验收",
     "msg":"精算师已经交付了精算单，请确认"
   },
