@@ -221,6 +221,13 @@
             "navigationBarTitleText": "施工图纸",
             "enablePullDownRefresh": false
           }
+        },
+        {
+          "path": "pages/decorate-scene/decorate-calendar",
+          "style": {
+            "navigationBarTitleText": "装修日历",
+            "enablePullDownRefresh": false
+          }
         }
       ]
     },
