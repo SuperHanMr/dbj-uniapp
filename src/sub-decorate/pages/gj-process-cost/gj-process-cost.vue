@@ -58,11 +58,11 @@
         roleType,
         customerId
       } = getApp().globalData.decorateMsg
-      this.serveCardId = serveCardId
+      this.serveCardId = serveCardId || option.serveCardId
       this.estateId = estateId || option.estateId
       this.serviceType = serviceType || option.serviceType 
-      this.projectId = projectId || 0
-      this.customerId = customerId || 0
+      this.projectId = projectId || option.projectId 
+      this.customerId = customerId || option.customerId 
     },
     onShow() {
       this.getDataList()
