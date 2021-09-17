@@ -7,9 +7,6 @@ export function getcollection(params) {
   return request.post(`/app/base/interactive/add`, params);
 }
 export function getCaseList(params) {
-  return request.get(`/app/case/v2/list`, { params });
-}
-export function getCaseList(params) {
   return request.get(`/app/case/v2/list`, {
     params
   });
