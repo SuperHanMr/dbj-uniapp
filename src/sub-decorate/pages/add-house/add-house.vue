@@ -20,7 +20,7 @@
 				</view>
 				<view class="form-item">
 					<label class="item-label">小区</label>
-					<input class="uni-input" placeholder-class="placeholder" :disabled="!hasPoint&&roomId&&!isEdit" name="input"
+					<input class="uni-input" placeholder-class="placeholder" :disabled="!hasPoint||roomId&&!isEdit" name="input"
 						v-model="addData.housingEstate" placeholder="房屋所在小区" />
 				</view>
 			</view>
