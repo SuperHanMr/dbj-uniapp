@@ -45,13 +45,6 @@
       }
     },
     {
-      "path": "pages/message/conversation/conversation-noti",
-      "style": {
-        "navigationBarTitleText": "",
-        "navigationBarBackgroundColor": "#ffffff"
-      }
-    },
-    {
       "path": "pages/my/index/index",
       "style": {
         "navigationBarTitleText": "我的",
@@ -105,7 +98,7 @@
         "enablePullDownRefresh": false
       }
     }
-  ],
+    ],
   "globalStyle": {
     "navigationBarTextStyle": "black",
     "navigationBarTitleText": "",
@@ -487,12 +480,22 @@
         }
         ]
     },
+		{
+			"root": "sub-other", //其他页面
+			"pages": [{
+				"path": "pages/merchant-entry/merchant-entry",
+				"style": {
+					"navigationBarTitleText": "商家入驻",
+					"enablePullDownRefresh": false
+				}
+			}]
+		},
     {
       "root": "sub-decorate", //装修模块分包
       "pages": [{
-          "path": "pages/design-service-list/design-service-list",
+          "path": "pages/service-list/service-list",
           "style": {
-            "navigationBarTitleText": "设计服务",
+            "navigationBarTitleText": "",
             "enablePullDownRefresh": true
           }
         },
@@ -507,13 +510,6 @@
           "path": "pages/no-house-decorate/no-house-decorate",
           "style": {
             "navigationBarTitleText": "装修服务",
-            "enablePullDownRefresh": true
-          }
-        },
-        {
-          "path": "pages/check/check",
-          "style": {
-            "navigationBarTitleText": "验房服务",
             "enablePullDownRefresh": true
           }
         },

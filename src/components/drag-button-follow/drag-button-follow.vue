@@ -22,7 +22,7 @@
       <view class="gray-circle">
         <view class="black-circle">
           <text class="image-icon"></text>
-          <text class="tip">8</text>
+          <text class="tip">{{num}}</text>
         </view>
       </view>
     </view>
@@ -58,7 +58,8 @@
       followNum: {
         type: Number,
         default: 0
-      }
+      },
+      num:0
     },
     safeArea: {},
     data() {
@@ -237,7 +238,6 @@
           height: 36rpx;
           background-color: #fff;
         }
-
         .tip {
           position: absolute;
           width: 24rpx;

@@ -3,15 +3,16 @@
     <view class="steward-list">
       <view class="list-item" v-for="item of list" :key='item.createTime'>
         <view class="item-top">
+          <view>
           <view class="title">{{item.title}}</view>
-          <view class="time">{{item.createTime}}</view>
+          <view class="time">{{item.createTime | formatDate}}</view>
+          </view>
         </view>
         <view class="item-content">
           <text>{{item.content}}</text>
-          <!-- <view class="img-list">
-            <image v-for="(el,index) of item.imageList" @click="previewImage(item.imageList,index)" :key='el' :src="el"></image>
-          </view> -->
-          <imagePreview :list='item.imageList' :row='2'></imagePreview>
+          <view class="img-list">
+            <imagePreview :list='item.imageList' :row='2'></imagePreview>
+          </view>
         </view>
       </view>
     </view>
@@ -21,6 +22,8 @@
 <script>
   import {getStewardService} from '../../../api/decorate.js'
   import imagePreview from '../../../components/image-preview/image-preview.vue'
+  import { formatDate } from '../../../utils/common.js'
+  
   export default{
     components:{
       imagePreview
@@ -29,6 +32,9 @@
       return{
         list:[],
       }
+    },
+    filters:{
+      formatDate
     },
     mounted(){
       this.getStewardService()
@@ -62,6 +68,7 @@
     padding: 24rpx;
     background: #ffffff;
     border-radius: 12px;
+    margin-top: 24rpx;
     .item-top{
       height: 130rpx;
       border-bottom: 1px solid #F4F4F4;
@@ -79,6 +86,7 @@
         font-weight: 400;
         color: #999;
         width: 100%;
+        text-align: right;
       }
     }
     .item-content{

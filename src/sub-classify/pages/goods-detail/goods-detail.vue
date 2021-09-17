@@ -1,6 +1,6 @@
 <template>
   <view>
-       <web-view :src="'https://local.meiwu365.com/app-pages/goods-detail/index.html#wx-goodsId='+ 38050 + '&&wx-houseId='
+       <web-view :src="'https://design-h5-stage.meiwu365.com/app-pages/goods-detail/index.html#wx-goodsId='+ 38050 + '&&wx-houseId='
         + houseId + '&&wx-defaultHouseInfo=' + goodDefaultAddress + '&&wx-token=' + token + '&&wx-userId' + userId + '&&wx-deviceId' + deviceId">
        </web-view>
   </view>

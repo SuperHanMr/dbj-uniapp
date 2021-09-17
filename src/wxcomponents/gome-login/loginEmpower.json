@@ -3,7 +3,6 @@
   "usingComponents": {
     "logincall": "components/index0123273a/index",
     "newUserReg": "components/index427e302c/index",
-    "oldUserReg": "components/index6190bb7a/index",
-    "loginQuick": "components/index06dd1325/index"
+    "oldUserReg": "components/index6190bb7a/index"
   }
 }

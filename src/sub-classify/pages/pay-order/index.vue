@@ -169,6 +169,7 @@
       return {
         isShow: true,
         time: '',
+        orderCheckParams: {},
         originFrom: '',
         addressInfo: {},
         orderInfo: {},
@@ -213,13 +214,20 @@
       // }
     },
     onLoad(e) {
+      // 购物车数据
+      const eventChannel = this.getOpenerEventChannel();
+      eventChannel.on('acceptDataFromOpenerPage',( data )=> {
+      	this.orderCheckParams = data
+        this.originFrom = data.originFrom
+      }) 
+      // 小程序数据
       // console.log(e, 'eee')
-      // this.houseId = e.houseId
+      this.houseId = e.houseId
       // this.houseId = 1084
-      // if(e.from) {
-      //   this.originFrom = e.from
-      // }
-      this.originFrom = "h5GoodDetail"
+      if(e.from) {
+        this.originFrom = e.from
+      }
+      // this.originFrom = "h5GoodDetail"
       // this.originFrom = "shopCart"
       this.buyCount = e.buyCount
       this.skuId = e.skuId
@@ -268,6 +276,22 @@
       emitInfo(val) {
         this.addressInfo = val
         this.estateId = val.housingEstateId
+         let params = {}
+        if(this.originFrom === 'h5GoodDetail') {
+          params = {
+            skuInfos:[{
+            		skuId:this.skuId,
+            		storeId:this.storeId,
+            		buyCount:this.buyCount,
+            		unit: this.unit,
+                level: 0
+            	}],
+            	estateId:this.estateId
+          }
+        }else if(this.originFrom === 'shopCart'){
+          this.orderCheckParams.estateId = this.estateId
+          params = this.orderCheckParams
+        }
         // let params = {
         //   skuInfos:[{
         //   		skuId:this.skuId,
@@ -278,16 +302,16 @@
         //   	}],
         //   	estateId:this.estateId
         // }
-        let params = {
-          estateId: 1050,
-          skuInfos: [{
-            skuId: 38085,
-            storeId: 2,
-            buyCount: 1.00,
-            unit: '个',
-            level: 0,
-          }]
-        }
+        // let params = {
+        //   estateId: 1050,
+        //   skuInfos: [{
+        //     skuId: 38085,
+        //     storeId: 2,
+        //     buyCount: 1.00,
+        //     unit: '个',
+        //     level: 0,
+        //   }]
+        // }
         getDetailInfo(params).then((data) => {
           // let dataInfo = data
           let dataInfo = data.data.data
@@ -362,8 +386,9 @@
                     this.toastType = 1
                     this.frontendServe = skuItem.frontendServe
                     this.toastText = `请先购买${skuItem.frontendServe}服务`
-                    console.log(this.toastText,999)
-                    this.$refs.cancelDialog.open()
+                    if(this.$refs.cancelDialog.open){
+                      this.$refs.cancelDialog.open()
+                    }
                 }else {
                   this.canPay = true
                 }

@@ -11,8 +11,10 @@
 			noHouseActuaryId: null,
 			noHouseDesignId: null,
 			noHouseCheckId: null,
-			naviData:null
+			naviData:null,
+      decorateMsg:{}
 		},
+    
 		onLaunch: function() {
 			if (!uni.getStorageSync("userId")) {
 				setTimeout(() => {

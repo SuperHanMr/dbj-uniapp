@@ -35,28 +35,11 @@
     </view>
     <payment class="payment" @gotopay="gotopay" :pieces="pieces" :countPrice="countPrice" :isAllChecked="isAllChecked">
     </payment>
-    <uni-popup ref="popup" type="dialog" :mask-click="false">
-      <uni-popup-dialog mode="base" type="info" title="请选择您想要更换人工的等级" :duration="2000" :before-close="true"
-        @close="close" @confirm="confirm">
-        <view class="radio-wrap">
-          <view class="radio-item">
-            <dbj-radio value="1" :checked="selectLevel == 1" @change="radioChange"></dbj-radio>
-            <text>中级</text>
-          </view>
-          <view class="radio-item">
-            <dbj-radio value="2" :checked="selectLevel == 2" @change="radioChange"></dbj-radio>
-            <text>高级</text>
-          </view>
-          <view class="radio-item">
-            <dbj-radio value="3" :checked="selectLevel == 3" @change="radioChange"></dbj-radio>
-            <text>特级</text>
-          </view>
-          <view class="radio-item">
-            <dbj-radio value="4" :checked="selectLevel == 4" @change="radioChange"></dbj-radio>
-            <text>钻级</text>
-          </view>
-        </view>
-      </uni-popup-dialog>
+    <uni-popup ref="level">
+      <change-level @changeLevel="setLevel" @close="close"></change-level>
+    </uni-popup>
+    <uni-popup ref="tips">
+      <cancel-tip :tips="tips" @result="setCardChecked" @close="tipsClose"></cancel-tip>
     </uni-popup>
   </view>
 </template>
@@ -66,7 +49,9 @@
   import Payment from "../../components/payment/payment.vue";
   import CheckBox from "../../components/check-box/check-box.vue";
   import DbjRadio from "../../components/dbj-radio/dbj-radio.vue";
-  import MyCurrentHouse from "../../components/my-current-house/my-current-house.vue"
+  import MyCurrentHouse from "../../components/my-current-house/my-current-house.vue";
+  import CancelTip from "./cancel-tip.vue"
+  import ChangeLevel from "../../components/change-level/change-level.vue"
   import {
     queryEstates,
     getProductsSkusPage,
@@ -76,13 +61,23 @@
   import {
     createOrder
   } from "../../../api/order-center.js"
+  
+  const TYPE = {
+    decorate: "装修服务",
+    design: "设计服务",
+    actuary: "精算服务",
+    checkHouse: "验房服务",
+  }
+  
   export default {
     components: {
       ServiceCard,
       Payment,
       CheckBox,
       DbjRadio,
-      MyCurrentHouse
+      MyCurrentHouse,
+      CancelTip,
+      ChangeLevel
     },
     data() {
       return {
@@ -91,7 +86,7 @@
           title: "设计服务",
           cardtype: "design",
           checked: false,
-          level: 1,
+          level: 0,
           price: 1,
           insideArea: 0.1,
           id: 1054,
@@ -113,8 +108,8 @@
           imageUrl: "https://ali-image-test.dabanjia.com//image/20210313/1615618135579_0296%24pexels-eberhard-grossgasteiger-1428277.jpg",
           name: "橙色",
           quantity: 1,
-          serviceName: "设计服务",
-          serviceType: 1,
+          serviceName: "精算服务",
+          serviceType: 4,
           spuName: "韩永辉测试视频无法播放"
         },
         checkHouse: {
@@ -128,13 +123,21 @@
           imageUrl: "https://ali-image-test.dabanjia.com//image/20210313/1615618135579_0296%24pexels-eberhard-grossgasteiger-1428277.jpg",
           name: "橙色",
           quantity: 1,
-          serviceName: "设计服务",
-          serviceType: 1,
-          spuName: "韩永辉测试视频无法播放"
+          serviceName: "验房服务",
+          serviceType: 2,
+          spuName: "假数据"
         },
         currentHouse: {},
         selectLevel: 1,
-        sssType: ""
+        sssType: "",
+
+        tips: {
+          id: "",
+          content: "",
+          value: null
+        },
+        selectHouseData: {},
+        selectedServer: {}
       }
     },
     computed: {
@@ -146,14 +149,6 @@
         return num
       },
       countPrice() {
-        // let qian = 0.00
-        // if (this.design.checked) {
-        //   qian += parseFloat(this.design.price) * this.currentHouse.insideArea
-        // }
-        // if (this.actuary.checked) {
-        //   qian += parseFloat(this.actuary.price) * this.currentHouse.insideArea
-        // }
-        // return qian + "0.00"
         let dprice = 0
         let aprice = 0
         let chprice = 0
@@ -174,13 +169,22 @@
     onLoad(option) {
       uni.$on("selectedHouse", (data) => {
         console.log("selectedHouse:", data)
-        this.currentHouse = data
+        this.selectHouseData = data
       })
-      // console.log("option", option)
+      uni.$on("selectedServer", (data) => {
+        const {
+          categoryTypeId,
+          values
+        } = data
+        this.selectedServer = data
+      })
       const {
         type
       } = option
       this.sssType = type
+      uni.setNavigationBarTitle({
+        title: TYPE[type]
+      })
     },
     onShow() {
       if (this.sssType == "decorate") {
@@ -196,61 +200,105 @@
       if (this.sssType == "checkHouse") {
         this.checkHouse.checked = true
       }
-      this.getMyHouseList();
+      if (!this.selectHouseData.id) {
+        this.getMyHouseList();
+      } else {
+        this.currentHouse = this.selectHouseData
+        this.getServiceSku()
+      }
+
       const {
         noHouseActuaryId,
-        noHouseDesignId
+        noHouseDesignId,
+        noHouseCheckId
       } = getApp().globalData;
-      // if (noHouseActuaryId || noHouseDesignId) {
-      // this.getProductsSkusPage();
-      // }
     },
     methods: {
       radioChange(obj) {
         this.selectLevel = obj.value
       },
       open() {
-        this.$refs.popup.open('dialog')
+        this.$refs.level.open('bottom')
+      },
+      setLevel(value) {
+        this.design.level = value
+        console.log(this.design.level)
+        this.close()
       },
       close() {
-        this.$refs.popup.close();
+        this.$refs.level.close()
       },
-      confirm(value) {
-        // 输入框的值
-        console.log(value)
-        // TODO 做一些其他的事情，手动执行 close 才会关闭对话框
-        // ...
-        this.$refs.popup.close()
-        this.design.level = Number(this.selectLevel)
-      },
+      // confirm(value) {
+      //   // 输入框的值
+      //   console.log(value)
+      //   // TODO 做一些其他的事情，手动执行 close 才会关闭对话框
+      //   // ...
+      //   this.$refs.popup.close()
+      //   this.design.level = Number(this.selectLevel)
+      // },
       getServiceSku() {
-        console.log(getApp().globalData)
         getServiceSku({
-          // codeKey: "decoration_default_service",
           province_id: 1,
           city_id: 1,
           area_id: 1,
           serveTypes: [1, 2, 4]
         }).then(data => {
           const {
-            noHouseActuaryId,
-            noHouseDesignId,
-            noHouseCheckId
-          } = getApp().globalData
-          if (!noHouseDesignId) {
-            let designData = data.filter(t => t.serviceType === 1 && t.categoryTypeId === 6)
+            categoryTypeId,
+            values
+          } = this.selectedServer
+          
+          if (categoryTypeId == 1) {
+            this.design = {
+              title: "设计服务",
+              cardtype: "design",
+              checked: true,
+              level: 0,
+              insideArea: this.currentHouse.insideArea,
+              ...values
+            }
+          } else {
+            let designData = data.filter(t => t.serviceType === 1) //&& t.categoryTypeId === 6)
             if (designData && designData.length > 0) {
               this.design = {
                 ...designData[0],
                 title: "设计服务",
                 cardtype: "design",
                 checked: this.sssType == "decorate" || this.sssType == "design",
-                level: 1,
+                level: 0,
                 insideArea: this.currentHouse.insideArea
               }
             }
           }
-          if (!noHouseActuaryId) {
+          if (categoryTypeId == 2) {
+            this.checkHouse = {
+              title: "验房服务",
+              cardtype: "checkHouse",
+              checked: true,
+              insideArea: this.currentHouse.insideArea,
+              ...values
+            }
+          } else {
+            let checkHouseData = data.filter(t => t.serviceType === 2)
+            if (checkHouseData && checkHouseData.length > 0) {
+              this.checkHouse = {
+                ...actuaryData[0],
+                title: "验房服务",
+                cardtype: "checkHouse",
+                checked: this.sssType == "checkHouse",
+                insideArea: this.currentHouse.insideArea
+              }
+            }
+          }
+          if (categoryTypeId == 4) {
+            this.actuary = {
+              title: "精算服务",
+              cardtype: "actuary",
+              checked: true,
+              insideArea: this.currentHouse.insideArea,
+              ...values
+            }
+          } else {
             let actuaryData = data.filter(t => t.serviceType === 4)
             if (actuaryData && actuaryData.length > 0) {
               this.actuary = {
@@ -262,18 +310,15 @@
               }
             }
           }
-          if (!noHouseCheckId) {
-            let checkHouseData = data.filter(t => t.serviceType === 2)
-            if (checkHouseData && checkHouseData.length > 0) {
-              this.checkHouse = {
-                ...actuaryData[0],
-                title: "验房服务",
-                cardtype: "checkHouse",
-                checked: this.sssType == "checkhouse",
-                insideArea: this.currentHouse.insideArea
-              }
-            }
-          }
+          // if (!noHouseDesignId) {
+            
+          // }
+          // if (!noHouseActuaryId) {
+            
+          // }
+          // if (!noHouseCheckId) {
+            
+          // }
           console.log("默认服务： ", this.design, this.actuary, this.checkHouse)
         })
       },
@@ -284,7 +329,8 @@
           this.dataList = data.list
           const {
             noHouseActuaryId,
-            noHouseDesignId
+            noHouseDesignId,
+            noHouseCheckId
           } = getApp().globalData
           // if( noHouseActuaryId ) {
 
@@ -317,21 +363,22 @@
         })
       },
       selectAnother(pp) {
+        let str = ""
         if (pp === "design") {
-          uni.navigateTo({
-            url: '/sub-decorate/pages/design-service-list/design-service-list?id=1'
-          })
-        }
-        if (pp === "actuary") {
-          uni.navigateTo({
-            url: '/sub-decorate/pages/design-service-list/design-service-list?id=4'
-          })
+          str =
+            `/sub-decorate/pages/service-list/service-list?name=设计服务&categoryTypeId=1&insideArea=${this.currentHouse.insideArea}&id=${this.design.id}`
         }
         if (pp === "checkHouse") {
-          uni.navigateTo({
-            url: '/sub-decorate/pages/design-service-list/design-service-list?id=2'
-          })
+          str =
+            `/sub-decorate/pages/service-list/service-list?name=验房服务&categoryTypeId=2&insideArea=${this.currentHouse.insideArea}&id=${this.checkHouse.id}`
         }
+        if (pp === "actuary") {
+          str =
+            `/sub-decorate/pages/service-list/service-list?name=精算服务&categoryTypeId=4&insideArea=${this.currentHouse.insideArea}&id=${this.actuary.id}`
+        }
+        uni.navigateTo({
+          url: str
+        })
       },
       changCurrentHouse() {
         uni.navigateTo({
@@ -349,7 +396,6 @@
             this.currentHouse = {}
           }
           console.log("currentHouse", this.currentHouse)
-
           this.getServiceSku();
         })
       },
@@ -369,19 +415,8 @@
             remarks: "", //"string //备注",
             orderName: "", //"string //订单名称",
             details: []
-            // details: [{
-            //   relationId: this.design.id, //"long //实体id",
-            //   type: 2, //"int //实体类型   1材料  2服务   3专项付款",
-            //   businessType: this.design.categoryTypeId, //"int //业务类型",
-            //   workType: -2, //"int //工种类型",
-            //   level: 0, //"int //等级  0中级  1高级 2特级  3钻石",
-            //   storeId: 0, //"long //店铺id",
-            //   storeType: 0, //"int //店铺类型 0普通 1设计师",
-            //   number: 1, //"double //购买数量",
-            //   params: "", //string //与订单无关的参数 如上门时间 doorTime"
-            // }]
           }
-          if(this.design.checked) {
+          if (this.design.checked) {
             params.details.push({
               relationId: this.design.id, //"long //实体id",
               type: 2, //"int //实体类型   1材料  2服务   3专项付款",
@@ -394,7 +429,7 @@
               params: "", //string //与订单无关的参数 如上门时间 doorTime"
             })
           }
-          if(this.actuary.checked) {
+          if (this.actuary.checked) {
             params.details.push({
               relationId: this.actuary.id, //"long //实体id",
               type: 2, //"int //实体类型   1材料  2服务   3专项付款",
@@ -407,7 +442,7 @@
               params: "", //string //与订单无关的参数 如上门时间 doorTime"
             })
           }
-          if(this.checkHouse.checked) {
+          if (this.checkHouse.checked) {
             params.details.push({
               relationId: this.checkHouse.id, //"long //实体id",
               type: 2, //"int //实体类型   1材料  2服务   3专项付款",
@@ -451,12 +486,38 @@
       },
       change(id, value) {
         if (id === "design") {
+          if (!value) {
+            this.checkServiceCardIsSlected("design")
+          }
           this.design.checked = value;
+
         } else if (id === "actuary") {
+          if (!value) {
+            this.checkServiceCardIsSlected("actuary")
+          }
           this.actuary.checked = value;
         } else if (id === "checkHouse") {
+          if (!value) {
+            this.checkServiceCardIsSlected("checkHouse")
+          }
           this.checkHouse.checked = value;
         }
+      },
+      checkServiceCardIsSlected(type) {
+        this.tips = {
+          id: type,
+          checked: true,
+          content: "精算是将您的设计图内容转化为商品或服务消费的过程，是打扮家装修平台的特色服务；您也可以单独验房设计服务，之后再选择是否继续验房精算以及施工服务。"
+        }
+        this.$refs.tips.open("bottom")
+      },
+      setCardChecked(obj) {
+        this[obj.id].checked = obj.checked
+        // console.log(this[obj.id], obj.id)
+        this.$refs.tips.close()
+      },
+      tipsClose() {
+        this.$refs.tips.close()
       },
       goAddHouse() {
         uni.navigateTo({

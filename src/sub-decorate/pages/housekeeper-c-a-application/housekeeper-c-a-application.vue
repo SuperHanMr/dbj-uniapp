@@ -25,7 +25,13 @@
       UserDescPictButler
     },
     onLoad(option) {
-      this.projectId = option.projectId
+      const {
+        id,
+        serveId,
+        serveType,
+        serveTypeName
+      } = getApp().globalData.decorateMsg
+      this.id = id
     },
     onShow() {
       this.queryCompletionDetail()
@@ -33,7 +39,7 @@
     data() {
       return {
         detail: {},
-        projectId: null
+        id: null
       }
     },
     methods: {
@@ -66,7 +72,7 @@
         })
       },
       queryCompletionDetail() {
-        completionDetail(1).then(data => {
+        completionDetail(this.id).then(data => {
           this.detail = data
         })
       },
