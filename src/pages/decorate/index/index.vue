@@ -187,9 +187,9 @@
     },
     onShow() {
       uni.showTabBar()
-      if (this.estateList && this.estateList.length < 1) {
+      // if (this.estateList && this.estateList.length < 1) {
         this.getEstateList();
-      }
+      // }
     },
     data() {
       return {

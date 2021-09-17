@@ -64,7 +64,7 @@
             if (res.confirm) {
               confirmStageDeliver(this.message.serveId).then(data => {
                 console.log(data)
-                uni.navigateTo({
+                uni.switchTab({
                   url: "/pages/decorate/index/index"
                 })
               })
@@ -83,6 +83,9 @@
             if (res.confirm) {
               reviseStageDeliver(this.message.serveId).then(data => {
                 console.log(data)
+                uni.switchTab({
+                  url: "/pages/decorate/index/index"
+                })
               })
             } else {
               console.log("点击了取消")
