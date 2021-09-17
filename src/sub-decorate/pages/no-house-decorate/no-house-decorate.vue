@@ -1,7 +1,7 @@
 <template>
   <view class="no-house-decorate">
     <view class="content">
-      <view class="addhouse-decs" v-if="!currentHouse && !currentHouse.id">
+      <view class="addhouse-decs" v-if="!currentHouse.id">
         <button class="addhouse" @click="goAddHouse">
           <image src="http://dbj.dragonn.top/static/mp/dabanjia/images/decorate/ic_add_house_info.svg"></image>
           <text>添加房屋信息</text>
@@ -137,7 +137,15 @@
           value: null
         },
         selectHouseData: {},
-        selectedServer: {}
+        selectedServer: {},
+        
+        projectId: null,
+        serveType: null,
+        estateId: null,
+        customerId: null,
+        provinceId:null, //省id
+        cityId:null, //市id
+        areaId:null, //区id
       }
     },
     computed: {
@@ -153,13 +161,13 @@
         let aprice = 0
         let chprice = 0
         if (this.design.checked) {
-          dprice = this.design.price || 29.9
+          dprice = this.design.price
         }
         if (this.actuary.checked) {
-          aprice = this.actuary.price || 59.9
+          aprice = this.actuary.price
         }
         if (this.checkHouse.checked) {
-          chprice = this.checkHouse.price || 59.9
+          chprice = this.checkHouse.price
         }
         let temp = dprice * this.currentHouse.insideArea + aprice * this.currentHouse.insideArea + chprice * this
           .currentHouse.insideArea
@@ -178,10 +186,31 @@
         } = data
         this.selectedServer = data
       })
+      const { 
+        projectId,
+        serveCardId,
+        serviceName,
+        serviceType,
+        serveType,
+        serveTypeName,
+        estateId,
+        roleType,
+        customerId,
+        provinceId, //省id
+        cityId, //市id
+        areaId, //区id
+      } = getApp().globalData.decorateMsg
       const {
         type
       } = option
-      this.sssType = type
+      this.sssType = type || getType(serviceType)
+      this.projectId = projectId
+      this.serveType = serveType
+      this.estateId = estateId
+      this.customerId = customerId
+      this.provinceId = provinceId//省id
+      this.cityId = cityId//市id
+      this.areaId = areaId
       uni.setNavigationBarTitle({
         title: TYPE[type]
       })
@@ -214,6 +243,17 @@
       } = getApp().globalData;
     },
     methods: {
+      getType(num) {
+        if(num == 1) {
+          return "design"
+        }
+        if(num == 2) {
+          return "checkHouse"
+        }
+        if(num == 4) {
+          return "actuary"
+        }
+      },
       radioChange(obj) {
         this.selectLevel = obj.value
       },
@@ -228,14 +268,6 @@
       close() {
         this.$refs.level.close()
       },
-      // confirm(value) {
-      //   // 输入框的值
-      //   console.log(value)
-      //   // TODO 做一些其他的事情，手动执行 close 才会关闭对话框
-      //   // ...
-      //   this.$refs.popup.close()
-      //   this.design.level = Number(this.selectLevel)
-      // },
       getServiceSku() {
         getServiceSku({
           province_id: 1,
@@ -310,15 +342,6 @@
               }
             }
           }
-          // if (!noHouseDesignId) {
-            
-          // }
-          // if (!noHouseActuaryId) {
-            
-          // }
-          // if (!noHouseCheckId) {
-            
-          // }
           console.log("默认服务： ", this.design, this.actuary, this.checkHouse)
         })
       },
@@ -332,20 +355,6 @@
             noHouseDesignId,
             noHouseCheckId
           } = getApp().globalData
-          // if( noHouseActuaryId ) {
-
-          // } else {
-
-          // }
-          // data.list.forEach((item, idx) => {
-          // 	if() {
-          // 		this.actuary = {
-          // 			...item,
-          // 			cardtype: "actuary",
-          // 			checked: true
-          // 		}
-          // 	}
-          // })
           const {} =
           this.actuary = {
             ...data.list[0],
@@ -389,27 +398,34 @@
         queryEstates({
           isNeedRelative: true
         }).then(data => {
-          let flt = data.filter(t => t.defaultEstate);
-          if (flt && flt.length > 0) {
-            this.currentHouse = flt[0]
-          } else {
+          if(!data || (typeof data == "array" && data.length < 1)) {
             this.currentHouse = {}
+          } else {
+            if(this.estateId) {
+              let flt = data.filter(t => t.estateId == this.estateId); 
+            } else {
+              let flt = data.filter(t => t.defaultEstate); 
+            }
+            let flt = data.filter(t => t.defaultEstate);
+            if (flt && flt.length > 0) {
+              this.currentHouse = flt[0]
+            } else {
+              this.currentHouse = {}
+            }
+            console.log("currentHouse", this.currentHouse)
           }
-          console.log("currentHouse", this.currentHouse)
+          
           this.getServiceSku();
         })
       },
       gotopay() {
         // TODO去结算页面
         if (this.currentHouse && this.currentHouse.id) {
-          // uni.redirectTo({
-          //   url: ""
-          // })
           let params = {
             payType: 1, //"int //支付方式  1微信支付",
             openid: uni.getStorageSync("openId"), //"string //微信openid 小程序支付用 app支付不传或传空",
-            projectId: 0, //"long //项目id  非必须 默认0",
-            customerId: 0, //"long //业主id  非必须 默认0",
+            projectId: this.projectId || 0, //"long //项目id  非必须 默认0",
+            customerId: this.customerId || 0, //"long //业主id  非必须 默认0",
             estateId: this.currentHouse.id, //"long //房产id   非必须 默认0",
             total: this.countPrice * 100, //"int //总计",
             remarks: "", //"string //备注",

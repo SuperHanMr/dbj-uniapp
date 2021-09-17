@@ -92,7 +92,10 @@ instance.interceptors.response.use(
 		} else {
 			if (res.data && res.data.data) {
 				return res.data.data;
-			}
+			} else {
+        res.data.data = null
+				return res.data.data;
+      }
 			return res.data;
 		}
 	},
