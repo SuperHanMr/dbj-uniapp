@@ -106,7 +106,7 @@
 									<image v-else @click="likeC(index)" src="../../static/ic_liked@2x.png"></image>
 									<view class="text">{{item.likeCount}}</view>
 								</view>
-								<view class="comments">
+								<view class="comment">
 									<image @click="commentC(item.id)" src="../../static/ic_comments@2x.png"></image>
 									<view class="text">{{item.commentCount}}</view>
 								</view>
@@ -154,28 +154,32 @@
 					<view class="mainTit">评论</view>
 					<image @click="showComments=false" class="close" src="../../static/ic_closed_black@2x.png"></image>
 				</view>
-				<view class="commentList">
-					<view class="commentItem" >
+				<view class="noComment" v-if="!comments.length">
+					<image class="noCommentImg" src="http://dbj.dragonn.top/static/mp/dabanjia/images/decorate/pic_empty%402x.png"></image>
+					<view class="noCommentText">暂无评论~</view>
+				</view>
+				<view class="commentList" v-if="comments.length">
+					<view class="commentItem" v-for="item in comments" :key="item.commentId">
 						<view class="mainContent">
-							<image class="avatar" src="../../static/avatar@2x(1).png"></image>
+							<image class="avatar" :src="item.avatar"></image>
 							<view class="commentInfo">
 								<view class="info">
-									<view class="userName">王红</view>
-									<view class="role">业主</view>
-									<view class="date">2021-09-12</view>
+									<view class="userName">{{item.nickname}}</view>
+									<view class="role">{{item.labelName}}</view>
+									<view class="date">{{item.time | formatDate}}</view>
 								</view>
-								<view class="text">尊敬的业主，您好！打扮家管家-姜文为您新家质量保驾护航，今日巡查房屋情况：今天停工</view>
+								<view class="text">{{item.content}}</view>
 							</view>
 						</view>
-						<view class="reply" @click="replyC">
-							<image class="avatar" src="../../static/avatar@2x.png"></image>
+						<view class="reply" @click="replyC(replyItem.toNickname)" v-for="replyItem in item.secondComments" :key="replyItem.commentId">
+							<image class="avatar" :src="replyItem.avatar"></image>
 							<view class="replyInfo">
 								<view class="info">
-									<view class="userName">姜文</view>
-									<view class="role">管家</view>
-									<view class="date">2021-09-12</view>
+									<view class="userName">{{replyItem.replyItem}}</view>
+									<view class="role">{{replyItem.labelName}}</view>
+									<view class="date">{{replyItem.time | formatDate}}</view>
 								</view>
-								<view class="text">尊敬的业主，您好！打扮家管家-姜文为您新家质量保驾护航，今日巡查房屋情况：今天停工</view>
+								<view class="text">{{replyItem.content}}</view>
 							</view>
 						</view>
 						<view class="expand">
@@ -191,7 +195,7 @@
 				<view class="bottomInput" v-if="showInput">
 					<input v-model="value"
 						:cursor-spacing="10"
-						:placeholder="isInputFocus?`回复@`:'说点什么吧'"
+						:placeholder="isInputFocus?`回复@${inputName}`:'说点什么吧'"
 						class="easyInput" :class="{'focusInput':isInputFocus}" @focus="inputFocus"
 						/>
 					<view class="send" :class="{'themeColor':isInputFocus}">发送</view>
@@ -223,13 +227,15 @@
 				nodesInfo: [],
 				workers: [],
 				dynamics: [],
+				comments: [],
 				selectNodeTypes: [],
 				processId: 0,
 				isSelfFocusOn: false,
 				estateFocusOnCount: 0,
 				estateViewCount: 0,
 				isInputFocus: false,
-				showInput: false
+				showInput: false,
+				inputName: ""
 			}
 		},
 		created(){
@@ -244,7 +250,12 @@
 				this.isInputFocus = true
 			},
 			likeC(index,isAdd){
-				
+				let deviceId = 0
+				uni.getSystemInfo({
+					success:res => {
+						deviceId = res.deviceId
+					}
+				})
 				let params = {
 					routeId: 3001,
 					relationId: this.projectInfo.id,
@@ -274,11 +285,14 @@
 				getComments(params).then(data => {
 					if(data){
 						console.log(data)
+						let {page,rows,totalPage,totalRows,list} = data
+						this.comments = list
 					}
 				})
 			},
-			replyC(){
+			replyC(name){
 				this.showInput = true
+				this.inputName = name
 			},
 			focusC(){
 				let deviceId = 0
@@ -491,6 +505,22 @@
 		left: 0;
 		bottom: 0;
 		z-index: 999;
+	}
+	.popupComments .noComment{
+		width: 100%;
+		height: 542rpx;
+	}
+	.popupComments .noCommentText{
+		width: 118rpx;
+		height: 36rpx;
+		margin: 24rpx 316rpx;
+		font-size: 26rpx;
+		color: #999999;
+	}
+	.popupComments .noCommentImg{
+		width: 750rpx;
+		height: 492rpx;
+		display: block;
 	}
 	.popupComments .topArea{
 		height: 120rpx;
@@ -1154,7 +1184,7 @@
 		display: block;
 		margin-right: 8rpx;
 	}
-	.acitonInfo .footer .comments image{
+	.acitonInfo .footer .comment image{
 		width: 24rpx;
 		height: 24rpx;
 		display: block;
