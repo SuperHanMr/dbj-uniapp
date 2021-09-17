@@ -82,51 +82,9 @@
     data() {
       return {
         dataList: [],
-        design: {
-          // title: "设计服务",
-          // cardtype: "design",
-          // checked: false,
-          // level: 0,
-          // price: 1,
-          // insideArea: 0.1,
-          // id: 1054,
-          // imageUrl: "https://ali-image-test.dabanjia.com//image/20210313/1615618135579_0296%24pexels-eberhard-grossgasteiger-1428277.jpg",
-          // name: "橙色",
-          // quantity: 1,
-          // serviceName: "设计服务",
-          // serviceType: 1,
-          // spuName: "韩永辉测试视频无法播放"
-        },
-        actuary: {
-          // title: "精算服务",
-          // cardtype: "actuary",
-          // checked: false,
-          // price: 1,
-          // insideArea: 0.1,
-          // categoryTypeId: 4,
-          // id: 38085,
-          // imageUrl: "https://ali-image-test.dabanjia.com//image/20210313/1615618135579_0296%24pexels-eberhard-grossgasteiger-1428277.jpg",
-          // name: "橙色",
-          // quantity: 1,
-          // serviceName: "精算服务",
-          // serviceType: 4,
-          // spuName: "韩永辉测试视频无法播放"
-        },
-        checkHouse: {
-          // title: "验房服务",
-          // cardtype: "checkHouse",
-          // checked: false,
-          // price: 1,
-          // insideArea: 0.1,
-          // categoryTypeId: 4,
-          // id: 38085,
-          // imageUrl: "https://ali-image-test.dabanjia.com//image/20210313/1615618135579_0296%24pexels-eberhard-grossgasteiger-1428277.jpg",
-          // name: "橙色",
-          // quantity: 1,
-          // serviceName: "验房服务",
-          // serviceType: 2,
-          // spuName: "假数据"
-        },
+        design: {},
+        actuary: {},
+        checkHouse: {},
         currentHouse: {},
         selectLevel: 1,
         sssType: "",
@@ -161,13 +119,13 @@
         let aprice = 0
         let chprice = 0
         if (this.design.checked) {
-          dprice = this.design.price || 0
+          dprice = this.design.price / 100 || 0
         }
         if (this.actuary.checked) {
-          aprice = this.actuary.price || 0
+          aprice = this.actuary.price / 100 || 0
         }
         if (this.checkHouse.checked) {
-          chprice = this.checkHouse.price || 0
+          chprice = this.checkHouse.price / 100 || 0
         }
         let temp = dprice * this.currentHouse.insideArea + aprice * this.currentHouse.insideArea + chprice * this
           .currentHouse.insideArea

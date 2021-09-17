@@ -205,7 +205,7 @@
               supplierType: it.supplierType,
               relationId: it.productId, //"long //实体id",
               type: 1, //"int //实体类型   1材料  2服务   3专项付款",
-              businessType: it.categoryTypeId, //"int //业务类型",
+              businessType: 1,//it.categoryTypeId, //"int //业务类型",辅材的businessType固定为1
               workType: it.workType, //"int //工种类型",
               level: 0, //"int //等级  0中级  1高级 2特级  3钻石",
               storeId: it.storeId, //"long //店铺id",
