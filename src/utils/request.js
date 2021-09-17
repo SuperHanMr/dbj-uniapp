@@ -89,10 +89,14 @@ instance.interceptors.response.use(
 		if (res.data.code !== 1) {
 			return Promise.reject(res)
 		} else {
+
 			if (res.data && res.data.data) {
 				return res.data.data;
+			} else if (res.data && !res.data.hasOwnProperty('data')) {
+				console.log('???????')
+				return []
 			}
-			res.data.data = null;
+
 			return res.data;
 		}
 	},
