@@ -112,7 +112,7 @@ instance.interceptors.response.use(
 					});
 
 				} else {
-					refrishToken();
+					// refrishToken();
 				}
 				// return new Promise((resolve, reject) => {
 				// 	failRequestList.push({
@@ -136,6 +136,7 @@ instance.interceptors.response.use(
 			}
 			if (error.response.status != 401 && error.response && error.response.data && error.response.data
 				.message) {
+					
 				uni.showToast({
 					title: error.response.data.message,
 					icon: 'none'
