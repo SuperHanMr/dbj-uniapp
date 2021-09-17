@@ -23,7 +23,7 @@
     methods:{
       toCost(){
         uni.navigateTo({
-          url:'/sub-decorate/pages/actuary-bill/actuary-bill?serveId='+this.serviceId
+          url:'/sub-decorate/pages/current-cost/current-cost?serviceId='+this.serviceId+'&isCost=false'
         })
       }
     }

@@ -1,6 +1,5 @@
 <template>
   <view class="current-cost">
-    
     <web-view :src="url"></web-view>
   </view>
 </template>

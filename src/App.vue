@@ -24,6 +24,7 @@ export default {
         clientType: "3",
       }).then((data) => {
         getApp().globalData.userInfo = data;
+        uni.setStorageSync("userId", data.id);
         getApp().tim = createTim(data.appId);
         this.$store.dispatch("loginIM", {
           userId: data.tid,

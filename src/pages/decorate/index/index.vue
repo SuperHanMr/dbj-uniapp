@@ -143,8 +143,8 @@
   import {
     queryEstates,
     friendListByEstateId,
-    getToken,
-    getMqtt,
+    // getToken,
+    // getMqtt,
     getMsgNum
   } from "../../../api/decorate.js";
   import {
@@ -164,6 +164,7 @@
 
   import MwarehouseBtn from "../../../components/mwarehouse-btn/mwarehouse-btn.vue"
   import TextScroll from "../../../components/text-scroll/text-scroll.vue"
+  import { mapGetters } from "vuex";
   // import monidata from "./monidata.js"
   let timer = null;
   export default {
@@ -183,13 +184,24 @@
           console.log(res)
           _this.viewHieght = res.windowHeight * 2 - 416
         }
-      })
+      })      
+    },
+    computed: {
+        ...mapGetters([
+          'systemUnreadCount'
+        ]),
+      },
+    watch:{
+      systemUnreadCount:function(newVal,oldVal){
+        console.log(newVal)
+        this.getMsgNum()
+      }
     },
     onShow() {
       uni.showTabBar()
-      if (this.estateList && this.estateList.length < 1) {
+      // if (this.estateList && this.estateList.length < 1) {
         this.getEstateList();
-      }
+      // }
     },
     data() {
       return {
@@ -229,23 +241,8 @@
         this.deviceId = uuidv4()
         uni.setStorageSync('uuDeviceId', this.deviceId);
       }
-      this.getToken()
-      this.getMqtt()
-    },
-    computed: {
-      username() {
-        return `Token|${this.accessKeyId}|${this.instanceId}`
-      },
-      //token和设备id关联，需要后端接口提供
-      password() {
-        return `R|${this.token}|W|${this.token}`
-      },
-      clientId() {
-        return `${this.groupId}@@@${this.deviceId}`
-      },
-      msgTopic() {
-        return `dabanjia_pull_special_msg_${this.currentProject.projectId}`;
-      },
+      // this.getToken()
+      // this.getMqtt()
     },
     destory() {
       clearTimeout(timer)
@@ -493,23 +490,23 @@
           }
         });
       },
-      getToken() {
-        let data = {
-          topics: [this.msgTopic],
-          deviceId: this.deviceId
-        }
-        getToken(data).then(res => {
-          console.log(res)
-        })
-      },
-      getMqtt() {
-        getMqtt().then(res => {
-          this.accessKeyId = res.accessKey
-          this.url = 'wxs://' + res.endPoint
-          this.groupId = res.groupId
-          this.instanceId = res.instanceId
-        })
-      },
+      // getToken() {
+      //   let data = {
+      //     topics: [this.msgTopic],
+      //     deviceId: this.deviceId
+      //   }
+      //   getToken(data).then(res => {
+      //     console.log(res)
+      //   })
+      // },
+      // getMqtt() {
+      //   getMqtt().then(res => {
+      //     this.accessKeyId = res.accessKey
+      //     this.url = 'wxs://' + res.endPoint
+      //     this.groupId = res.groupId
+      //     this.instanceId = res.instanceId
+      //   })
+      // },
       getMsgNum() {
         if(this.currentProject.projectId){
           getMsgNum(this.currentProject.projectId).then(res => {

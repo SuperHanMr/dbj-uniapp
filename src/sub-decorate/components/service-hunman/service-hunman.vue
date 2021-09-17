@@ -28,14 +28,18 @@
 <script>
   export default{
     props:{
-      isDesign:false,
+      isDesign:{
+        type:Boolean,
+        default:false
+      },
       tab:{},
       designData:{}
     },
     methods:{
       toTimeLine(item){
+        
         uni.navigateTo({
-          url:'/sub-decorate/pages/time-line/time-line?id='+this.isDesign&&this.designData.designServerVO.serverId||this.tab.serverId
+          url:'/sub-decorate/pages/time-line/time-line?id='+(this.isDesign&&this.designData.designServerVO.serverId||this.tab.serveCardId)
         })
       },
       openPopup(){
