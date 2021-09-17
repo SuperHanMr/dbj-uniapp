@@ -9,13 +9,14 @@
   export default {
     data() {
       return {
-        url:'/app-pages/actuarial/index.html?serveId='
+        url:'app-pages/beauty-report/?themeId=2&id=3'
       }
     },
     onLoad(e){
-      let id = e.id || getApp().globalData.decorateMsg.reportId
-      let cost = e.isCost||0
-      this.url = process.env.VUE_APP_BASE_H5+this.url + id +'&isMessage='+(e.id?2:1) + '&isActuarial=' + e.isCost +'&token='+getApp().globalData.token
+      let themeId = e.themeId
+      let id = e.id
+      
+      this.url = process.env.VUE_APP_BASE_H5+this.url + themeId + '&id=' + id +'&token='+getApp().globalData.token
     },
     methods: {
       
