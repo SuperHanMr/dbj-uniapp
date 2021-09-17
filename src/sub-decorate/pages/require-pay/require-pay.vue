@@ -6,7 +6,7 @@
       </view>
       <view
         class="items"
-        v-for="(sub,subIndex) in item.details"
+        v-for="(sub,subIndex) in detail.details"
         :key="subIndex"
       >
         <image
@@ -29,7 +29,7 @@
             本次要货{{sub.requireNumber}}{{sub.unit}}
           </view>
           <view class="price">
-            {{sub.price}}/{{sub.unit}}
+            <text class="unit">¥</text> <text class="price-font">{{sub.price}}</text> /{{sub.unit}}
           </view>
         </view>
       </view>
@@ -39,7 +39,7 @@
           运费
         </view>
         <view class="amount">
-          {{detail.freight}}
+          <text class="unit">¥ </text> {{detail.freight}}
         </view>
       </view>
 
@@ -48,7 +48,7 @@
           搬运费
         </view>
         <view class="amount">
-          {{detail.handlingFees}}
+          <text class="unit">¥ </text> {{detail.handlingFees}}
         </view>
       </view>
     </view>
@@ -73,7 +73,8 @@
           class="agree-btn"
           @click="onConform"
         >
-          同意 并支付 ¥ 460.00
+
+          同意 <text v-if="totalPrice">并支付¥ {{totalPrice}}</text>
         </view>
       </template>
 
@@ -90,7 +91,7 @@ import {
 export default {
   data() {
     return {
-      id: "",
+      id: "18",
       list: [],
       detail: {},
     };
@@ -147,17 +148,40 @@ export default {
     },
   },
   onLoad(e) {
-    this.id = getApp().globalData.decorateMsg.id;
+    // this.id = getApp().globalData.decorateMsg.id
     this.getDetail();
   },
 };
 </script>
 
 <style lang="scss" scoped>
+.price-font {
+  font-size: 28rpx;
+  font-weight: 500;
+}
+
+.price-uit {
+  font-size: 22rpx;
+}
+
 .tip {
   display: inline-block;
 }
 
+.spec {
+  display: inline-block;
+  background: #fafafa;
+  border: 1rpx solid #f0f0f0;
+  border-radius: 6rpx;
+  padding: 6rpx 12rpx;
+  font-size: 22rpx;
+  color: #999999;
+}
+
+.price {
+  color: #333333;
+  font-size: 24rpx;
+}
 .spec {
   display: inline-block;
   background: #fafafa;
@@ -258,9 +282,13 @@ export default {
   justify-content: space-between;
   align-items: center;
 
-  .title {
+  .amount {
     font-size: 26rpx;
-    color: #999999;
+    color: #333333;
+
+    .unit {
+      font-size: 22rpx;
+    }
   }
 
   .amount {

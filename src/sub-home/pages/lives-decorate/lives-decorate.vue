@@ -156,17 +156,16 @@ export default {
       muted: false,
       livePreview: "",
       isFill: false,
-      list: [1, 2, 3],
+      list: [],
       videoSrc: "http://qiniu.hydrant.ink/1631176569963742.mp4",
       currentVideoSrc: "",
-      liveList: [1, 2, 3, 4, 5, 6, 7, 8, 9],
+      liveList: [],
       currentPage: 0,
       totalPage: 5,
     };
   },
   computed: {
     currentList() {
-      console.log("!!!!");
       return this.liveList.slice(
         this.currentPage * 3,
         this.currentPage * 3 + 3
@@ -189,23 +188,23 @@ export default {
   },
   onLoad(e) {
     let projectId = e.projectId;
-    // workVideo({
-    // 	page: 1,
-    // 	rows: 999,
-    // 	projectId: 0
-    // }).then(e => {
-    // 	this.list = e.list;
-    // })
-    // bindVideoList({projectId:0}).then(e=>{
-    // 	if(e.length){
-    // 		this.liveList=e.filter(e=>{
-    // 			return e.hls != ''&&e.hls!=null
-    // 		})
-    // 		if(this.liveList.length){
-    // 			this.livePreview=this.liveList[0].hls
-    // 		}
-    // 	}
-    // })
+    workVideo({
+    	page: 1,
+    	rows: 999,
+    	projectId: 0
+    }).then(e => {
+    	this.list = e.list;
+    })
+    bindVideoList({projectId:0}).then(e=>{
+    	if(e.length){
+    		this.liveList=e.filter(e=>{
+    			return e.hls != ''&&e.hls!=null
+    		})
+    		if(this.liveList.length){
+    			this.livePreview=this.liveList[0].hls
+    		}
+    	}
+    })
   },
   methods: {
     changeMuted() {
