@@ -73,12 +73,12 @@
     "msg":"${name}服务整体完工，请验收"
   },
   "sys_actuary_publish":{
-    "url":"/my-decorate/pages/curent-cost/curent-cost",
+    "url":"/sub-decorate/pages/current-cost/current-cost",
     "name":"精算验收",
     "msg":"精算师已经交付了精算单，请确认"
   },
   "sys_actuary_publish123":{
-    "url":"/my-decorate/pages/design-report/design-report",
+    "url":"/sub-decorate/pages/design-report/design-report",
     "name":"设计报告交付",
     "msg":"设计师已经交付了设计报告，请确认"
   }
