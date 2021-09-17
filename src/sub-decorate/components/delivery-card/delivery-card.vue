@@ -4,13 +4,14 @@
       <text>({{data.value}}项)</text>
     </view> 
     <view class="list">
-      <view class="list-item" v-for="item of data.arr" :key="item.title" @click="toDetail(item)">
+      <view class="list-item"  v-for="item of data.arr" :key="item.title" @click="toDetail(item)">
         <view class="item-left">
           <text class="item-title">{{item.ruleName||item.inspectName}}</text>
           <text class="item-body">{{item.problemDetails||''}}</text>
         </view>
         <image src="http://dbj.dragonn.top/static/mp/dabanjia/images/decorate/ic_triangle.svg" mode=""></image>
       </view>
+      <view v-if="data.arr===0">暂无内容</view>
     </view>
   </view>
 </template>
