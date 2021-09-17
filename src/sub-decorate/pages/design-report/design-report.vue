@@ -25,8 +25,13 @@
   export default {
     data() {
       return {
-        
+        serveId: null
       }
+    },
+    onLoad() {
+      const {
+        serveId
+      } = getApp().globalData.decorateMsg
     },
     methods: {
       confirm() {

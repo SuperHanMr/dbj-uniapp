@@ -17,6 +17,12 @@
   export default {
     onLoad(option) {
       this.id = option.id
+      // this.serveTypeName = option.serveTypeName 
+    },
+    onShow() {
+      // uni.setNavigationBarTitle({
+      //   title: this.serveTypeName
+      // })
     },
     data() {
       return {

@@ -20,6 +20,14 @@
     :template="template"
     :message="message"
   />
+  <questions-element
+    v-else-if="message.type === TIM.TYPES.MSG_CUSTOM && payloadData.type === 'questions_message'"
+    :message="message" 
+  />
+  <unsupported-element
+    v-else
+    :message="message"
+  />
 </template>
 
 <script>
@@ -29,13 +37,12 @@
   import ImageElement from "./image-element.vue";
   import VideoElement from "./video-element.vue";
   import SoundElement from "./sound-element.vue";
+  import QuestionsElement from "./questions-element.vue";
+  import UnsupportedElement from "./unsupported-element.vue";
   import CardTemplate from "./template/card-tpl.vue"
   export default {
     name: "MessageItem",
     props: {
-      isNew: {
-        type: Boolean,
-      },
       message: {
         type: Object,
         required: true,
@@ -46,6 +53,8 @@
       ImageElement,
       VideoElement,
       SoundElement,
+      QuestionsElement,
+      UnsupportedElement,
       CardTemplate
     },
     computed: {

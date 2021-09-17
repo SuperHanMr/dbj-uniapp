@@ -1,5 +1,6 @@
 import TIM from 'tim-wx-sdk'
 import TIMUploadPlugin from 'tim-upload-plugin'
+import timEnhance from './tim-enhance.js'
 
 var _tim = null;
 var _EVENT_NAMES = [
@@ -35,6 +36,8 @@ function createTim(sdkAppId) {
   _registerEvents(tim);
   _tim = tim;
   
+  //增强tim，引入业务逻辑
+  timEnhance(tim);
   return tim;
 }
 

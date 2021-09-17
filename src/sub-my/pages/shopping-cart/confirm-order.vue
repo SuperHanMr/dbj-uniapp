@@ -42,7 +42,8 @@
 			const eventChannel = this.getOpenerEventChannel();
 			eventChannel.on('acceptDataFromOpenerPage',( data )=> {
 				console.log(data)
-			})
+				this.goodsList = data
+			})  
 		}
 	}
 </script>

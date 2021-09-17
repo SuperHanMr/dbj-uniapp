@@ -1,7 +1,7 @@
 <template>
 	<view>
-		<warehouse-item :showBtns="false" :showSubtitle="false" :item="res">
-
+		<warehouse-item :showBtns="false" :showSubtitle="false" :showBack="type==0" :itemBtn="type==2" :item="res"
+			@backGoodItem="toBackGoodItem" @applyBackItem="applyBackItem">
 		</warehouse-item>
 		<view class="detail-price">
 			<view class="detail-price-row">
@@ -22,7 +22,6 @@
 					运费
 				</view>
 				<view style="flex:1">
-
 				</view>
 				<view class="detail-price-row-font">
 					¥
@@ -164,6 +163,24 @@
 			this.loadData(type, id);
 		},
 		methods: {
+			applyBackItem(item) {
+				let params = {
+					stockAppVOS: [item]
+				}
+				getApp().globalData.naviData = params;
+				uni.navigateTo({
+					url: '../warehouse-refund/warehouse-refund?type=0&refundType=2',
+				})
+			},
+			toBackGoodItem(item) {
+				let params = {
+					stockAppVOS: [item]
+				}
+				getApp().globalData.naviData = params;
+				uni.navigateTo({
+					url: '../warehouse-refund/warehouse-refund?type=1',
+				})
+			},
 			toBack() {
 				getApp().globalData.naviData = this.res;
 				uni.navigateTo({
@@ -172,15 +189,12 @@
 			},
 			applyRefund() {
 				let vm = this
-				uni.showActionSheet({
-					itemList: ['仅退款(已收货)', '仅退款(退库存)'],
-					success: function(res) {
-						uni.navigateTo({
-							url: `../warehouse-refund/warehouse-refund?type=${res.tapIndex}&id=${vm.id}`
-						})
-					},
-					fail: function(res) {}
-				});
+
+				getApp().globalData.naviData = vm.res;
+				uni.navigateTo({
+					url: `../warehouse-refund/warehouse-refund?type=0&refundType=1`
+				})
+
 			},
 			onConfirmGoods() {
 				let vm = this;
@@ -217,6 +231,12 @@
 					deliveredDetail({
 						orderId: id
 					}).then(e => {
+						if (e.stockAppVOS && e.stockAppVOS.length) {
+							e.stockAppVOS.forEach(sub => {
+								sub.number = sub.stockNumber;
+							})
+
+						}
 						this.res = e;
 					})
 				} else if (type == 1 || type == 2) {
