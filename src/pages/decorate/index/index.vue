@@ -164,6 +164,7 @@
 
   import MwarehouseBtn from "../../../components/mwarehouse-btn/mwarehouse-btn.vue"
   import TextScroll from "../../../components/text-scroll/text-scroll.vue"
+  import { mapGetters } from "vuex";
   // import monidata from "./monidata.js"
   let timer = null;
   export default {
@@ -183,7 +184,18 @@
           console.log(res)
           _this.viewHieght = res.windowHeight * 2 - 416
         }
-      })
+      })      
+    },
+    computed: {
+        ...mapGetters([
+          'systemUnreadCount'
+        ]),
+      },
+    watch:{
+      systemUnreadCount:function(newVal,oldVal){
+        console.log(newVal)
+        this.getMsgNum()
+      }
     },
     onShow() {
       uni.showTabBar()
@@ -231,21 +243,6 @@
       }
       this.getToken()
       this.getMqtt()
-    },
-    computed: {
-      username() {
-        return `Token|${this.accessKeyId}|${this.instanceId}`
-      },
-      //token和设备id关联，需要后端接口提供
-      password() {
-        return `R|${this.token}|W|${this.token}`
-      },
-      clientId() {
-        return `${this.groupId}@@@${this.deviceId}`
-      },
-      msgTopic() {
-        return `dabanjia_pull_special_msg_${this.currentProject.projectId}`;
-      },
     },
     destory() {
       clearTimeout(timer)

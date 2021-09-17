@@ -25,7 +25,7 @@
     </view>
     <swiper :current="tabIndex" style="flex: 1;min-height: 600px;" :style="{height:contentHeight}" :duration="300" @change="ontabchange">
       <swiper-item class="swiper-item" v-for="(tab,index1) in dataList" :key="index1">
-        <service-hunman :isDesign="tab.nodeType===1" :tab='tab' :designData='designData' @openPopup='openPopup'></service-hunman>
+        <service-hunman :isDesign="tab.nodeType===1" :serverId='serverId' :tab='tab' :designData='designData' @openPopup='openPopup'></service-hunman>
         <amount-house :serverId='serverId' id="d3" @isEmpty='isEmpty' v-if="tab.nodeType===3"></amount-house>
         <resultContent ref='result' id="d2" @isEmpty='isEmpty' :serverId='serverId' v-if="tab.nodeType===2" @getData='getData' :scrollTop='scrollTop'
           :isReport='true'></resultContent>
@@ -110,7 +110,7 @@
         let current = e.detail.current
         this.tabIndex = current
         this.tabName = 'd'+(this.dataList[current].nodeType>6?6:this.dataList[current].nodeType)
-        this.serverId = this.dataList[current].serverId
+        this.serverId = this.dataList[current].serveCardId
         this.currentEmpty = 0
         this.changeHeight()
         this.$nextTick(function(){
@@ -172,6 +172,7 @@
         getMyService(data).then(res=>{
           
           this.dataList = res
+          this.serverId = this.dataList[0].serveCardId
           this.tabName = 'd'+(this.dataList[0].nodeType>6?6:this.dataList[0].nodeType)
           this.getDesignServeMenu()
           this.changeHeight()

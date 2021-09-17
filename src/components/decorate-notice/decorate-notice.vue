@@ -107,6 +107,9 @@
           res.map(item => {
             item.data = JSON.parse(item.msgBody)
             item.url = sysMessage[item.msgType].url
+            if(item.msgType==='sys_design_stage_report_msg'&&item.data.isOnline){
+              item.url = '/sub-decorate/pages/design-online-disclosure/design-online-disclosure'
+            }
           })
           this.list = res
           this.scrollHeight = res.length * 140 * 2 + 'rpx'
