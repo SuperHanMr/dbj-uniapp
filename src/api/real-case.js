@@ -30,4 +30,7 @@ export function setAttentions(params){
 export function getFocusBrowse(params){
   return request.get(`/app/base/interactive/project/count/detail`,{params});
 }
+export function getComments(params){
+  return request.get(`/app/generalComment/list`,{params});
+}
 

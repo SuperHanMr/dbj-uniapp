@@ -29,7 +29,7 @@
 				<image class="toCost" src="../../static/ic_cost_statistics@2x.png"></image>
 				<view>花销统计</view>
 			</view>
-			<view class="decorate">
+			<view class="decorate" @click="toDecorate">
 				<image class="toDecorate" src="../../static/ic_decorate_calendar@2x.png"></image>
 				<view>装修日历</view>
 			</view>
@@ -83,7 +83,7 @@
 				</view>
 			</view>
 			<view class="list">
-				<view class="item" v-for="item in dynamics" :key="item.id">
+				<view class="item" v-for="(item,index) in dynamics" :key="item.id">
 					<image class="avatar" :src="item.avatar"></image>
 					<view class="acitonInfo">
 						<view class="header">
@@ -95,18 +95,19 @@
 						</view>
 						<view class="report">{{item.content}}</view>
 						<view class="evidence">
-							<image class="img" :src="url" v-for="(url,index) in item.imagesList.slice(0,6)" :key="index"></image>
+							<!-- <image class="img" :src="url" v-for="(url,index) in item.imagesList.slice(0,6)" :key="index"></image> -->
+							<imagePreview :list='item.imagesList' :imgWidth='192' :imgHeight="192" :lineSpace='10' :colSpace="11" :row="2"></imagePreview>
 						</view>
 						<view class="footer">
 							<view class="actionType">{{item.recordName}}</view>
 							<view class="right">
 								<view class="like">
-									<image v-if="!item.selfLike" @click="likeClick" src="../../static/ic_like@2x.png"></image>
-									<image v-else @click="likeClick" src="../../static/ic_liked@2x.png"></image>
+									<image v-if="!item.selfLike" @click="likeC(index,true)" src="../../static/ic_like@2x.png"></image>
+									<image v-else @click="likeC(index)" src="../../static/ic_liked@2x.png"></image>
 									<view class="text">{{item.likeCount}}</view>
 								</view>
 								<view class="comments">
-									<image @click="showComments=true" src="../../static/ic_comments@2x.png"></image>
+									<image @click="commentC(item.id)" src="../../static/ic_comments@2x.png"></image>
 									<view class="text">{{item.commentCount}}</view>
 								</view>
 							</view>
@@ -127,7 +128,7 @@
 			</view>
 			<view class="focusOn" @click="focusC">
 				<image class="add" src="../../static/ic_add_focus@2x.png"></image>
-				<view>{{isFocus?'已关注':'关注'}}</view>
+				<view>{{isSelfFocusOn?'已关注':'关注'}}</view>
 			</view>
 		</view>
 		<view class="mask" v-if="showNodeType">
@@ -154,7 +155,7 @@
 					<image @click="showComments=false" class="close" src="../../static/ic_closed_black@2x.png"></image>
 				</view>
 				<view class="commentList">
-					<view class="commentItem">
+					<view class="commentItem" >
 						<view class="mainContent">
 							<image class="avatar" src="../../static/avatar@2x(1).png"></image>
 							<view class="commentInfo">
@@ -166,7 +167,7 @@
 								<view class="text">尊敬的业主，您好！打扮家管家-姜文为您新家质量保驾护航，今日巡查房屋情况：今天停工</view>
 							</view>
 						</view>
-						<view class="reply">
+						<view class="reply" @click="replyC">
 							<image class="avatar" src="../../static/avatar@2x.png"></image>
 							<view class="replyInfo">
 								<view class="info">
@@ -187,17 +188,29 @@
 						</view>
 					</view>
 				</view>
+				<view class="bottomInput" v-if="showInput">
+					<input v-model="value"
+						:cursor-spacing="10"
+						:placeholder="isInputFocus?`回复@`:'说点什么吧'"
+						class="easyInput" :class="{'focusInput':isInputFocus}" @focus="inputFocus"
+						/>
+					<view class="send" :class="{'themeColor':isInputFocus}">发送</view>
+				</view>
 			</view>
 		</view>
 	</view>
 </template>
 
 <script>
-	import {getDecorateProcess,getDecorateDynamic,getSelectOptions,setAttentions,getFocusBrowse} from "../../../api/real-case.js"
+	import {getDecorateProcess,getDecorateDynamic,getSelectOptions,setAttentions,getFocusBrowse,getComments} from "../../../api/real-case.js"
 	import {formatDate} from "../../../utils/common.js"
+	import imagePreview from "../../../components/image-preview/image-preview.vue"
 	export default {
 		filters:{
 			formatDate
+		},
+		components:{
+			imagePreview
 		},
 		data(){
 			return {
@@ -212,9 +225,11 @@
 				dynamics: [],
 				selectNodeTypes: [],
 				processId: 0,
-				isFocus: false,
+				isSelfFocusOn: false,
 				estateFocusOnCount: 0,
-				estateViewCount: 0
+				estateViewCount: 0,
+				isInputFocus: false,
+				showInput: false
 			}
 		},
 		created(){
@@ -225,6 +240,46 @@
 			
 		},
 		methods:{
+			inputFocus(){
+				this.isInputFocus = true
+			},
+			likeC(index,isAdd){
+				
+				let params = {
+					routeId: 3001,
+					relationId: this.projectInfo.id,
+					authorId: this.projectInfo.estateId,
+					equipmentId: deviceId,
+					userId: this.userId,
+					type: 0,
+					bizType: 6,
+					subBizType: this.projectInfo.estateCityId,
+				}
+				setAttentions(params).then( data => {
+					if(data){
+						console.log(data)
+						this.dynamics[index].selfLike = !this.dynamics[index].selfLike
+						isAdd ? ++this.dynamics[index].likeCount : --this.dynamics[index].likeCount
+					}
+				})
+			},
+			commentC(id){
+				this.showComments = true
+				let params = {
+					page: 1,
+					rows: 10,
+					businessId: id,
+					businessType: 2
+				}
+				getComments(params).then(data => {
+					if(data){
+						console.log(data)
+					}
+				})
+			},
+			replyC(){
+				this.showInput = true
+			},
 			focusC(){
 				let deviceId = 0
 				uni.getSystemInfo({
@@ -232,6 +287,11 @@
 						deviceId = res.deviceId
 					}
 				})
+				// let obj = {
+				// 	estateOwnerId: ,
+				// 	estateOwnerName: ,
+					
+				// }
 				let params = {
 					routeId: 3001,
 					relationId: this.projectInfo.id,
@@ -240,12 +300,13 @@
 					userId: this.userId,
 					type: 3,
 					bizType: 4,
-					subBizType: this.projectInfo.estateCityId
+					subBizType: this.projectInfo.estateCityId,
+					// ifhh: JSON.stringify(obj)
 				}
 				setAttentions(params).then( data => {
 					if(data){
 						console.log(data)
-						this.isFocus = !this.isFocus
+						this.isSelfFocusOn = !this.isSelfFocusOn
 					}
 				})
 			},
@@ -263,6 +324,11 @@
 			switchC(index,type){
 				this.selectedIndex = index
 				this.selectedType = type
+			},
+			toDecorate(){
+				uni.navigateTo({
+					url:"./decorate-calendar"
+				})
 			},
 			toVideoSite(){
 				uni.navigateTo({
@@ -291,15 +357,15 @@
 			},
 			getFocus(){
 				let params = {
-					userId: this.userId,
-					relationId: this.projectInfo.id,
-					subBizType: this.projectInfo.estateCityId,
+					userId: 6388 || this.userId,
+					relationId: 10021002 || this.projectInfo.id,
+					subBizType: 3 || this.projectInfo.estateCityId,
 				}
 				getFocusBrowse(params).then(data => {
 					if(data){
 						this.estateFocusOnCount = data.estateFocusOnCount
 						this.estateViewCount = data.estateViewCount
-						this.isFocus = data.isSelfFocusOn
+						this.isSelfFocusOn = data.isSelfFocusOn
 						
 						console.log(data)
 					}
@@ -366,6 +432,43 @@
 		height: 136rpx;
 		padding-bottom: 40rpx;
 	}
+	.bottomInput{
+		width: 100%;
+		height: 120rpx;
+		padding-bottom: 40rpx;
+		border-top: 2rpx solid #efefef;
+		position: fixed;
+		left: 0rpx;
+		bottom: 0rpx;
+		z-index: 999;
+		display: flex;
+	}
+	.focusInput{
+		caret-color: #00C2B8;
+	}
+	
+	.bottomInput .easyInput{
+		width: 586rpx;
+		height: 80rpx;
+		margin: 20rpx 32rpx;
+		margin-right: 0;
+		padding-left: 24rpx;
+		color: #999999;
+		font-size: 28rpx;
+		background: #f5f6f6;
+		border-radius: 12rpx;
+	}
+	.bottomInput .send{
+		width: 52rpx;
+		height: 26rpx;
+		margin: 47rpx 32rpx 47rpx 24rpx;
+		font-size: 26rpx;
+		font-weight: 500;
+		color: #999999;
+	}
+	.bottomInput .themeColor{
+		color: #00C2B8;
+	}
 	.mask {
 	  width: 100%;
 	  height: 100%;
@@ -378,6 +481,7 @@
 	  z-index: 998;
 	}
 	.popupComments{
+		position: relative;
 		width: 100%;
 		height: 840rpx;
 		padding-bottom: 40rpx;
