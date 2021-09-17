@@ -6,7 +6,7 @@
       <view class="house-firend">
         <view class="title">
           <view class="house" @click="switchVisible">
-            <text>我的家</text>
+            <text>{{who}}的家</text>
             <image class="ic-triangle" src="http://dbj.dragonn.top/static/mp/dabanjia/images/decorate/ic_triangle.svg">
             </image>
           </view>
@@ -115,12 +115,12 @@
             <house-switch class="margintop" :datalist="projectList" :current="currentProject.estateId"
               @goAddHouse="addHouse" @checkHouse="checkHouse"></house-switch>
           </uni-popup>
-          <decorate-notice @touchmove.stop.prevent="()=>false" v-if="noticeActive" :num='msgNum' :current='currentProject.projectId'
-            @closeNotice='closeNotice' class="decorate-notice"></decorate-notice>
+          <decorate-notice @touchmove.stop.prevent="()=>false" v-if="noticeActive" :num='msgNum'
+            :current='currentProject.projectId' @closeNotice='closeNotice' class="decorate-notice"></decorate-notice>
           <view class="link">
             <view @click="gonohouse">无房屋无服入口</view>
             <view @click="gonohousedecatore('decorate')">无房屋无服务装修</view>
-            <view @click="gonohousedecatore('checkhouse')">无房屋无服务验房</view>
+            <view @click="gonohousedecatore('checkHouse')">无房屋无服务验房</view>
             <view @click="checkHouseRemind">验房提醒</view>
             <view @click="confirm1">设计交付</view>
             <view @click="confirm4">线上交底</view>
@@ -132,8 +132,8 @@
           </view>
         </scroll-view>
       </view>
-      <drag-button-follow v-if="msgNum>0" :num='msgNum' :style.sync="style" @btnClick='openNotice' :follow='`left,right`' className="drag-button"
-        class="drag-button">
+      <drag-button-follow v-if="msgNum>0" :num='msgNum' :style.sync="style" @btnClick='openNotice'
+        :follow='`left,right`' className="drag-button" class="drag-button">
         <view>
           <text>消息</text>
           <text style="color: red;">2</text>
@@ -173,7 +173,7 @@
 
   import MwarehouseBtn from "../../../components/mwarehouse-btn/mwarehouse-btn.vue"
   import TextScroll from "../../../components/text-scroll/text-scroll.vue"
-  import monidata from "./monidata.js"
+  // import monidata from "./monidata.js"
   let timer = null;
   export default {
     components: {
@@ -223,10 +223,12 @@
         instanceId: 'post-cn-tl32ajx3u0l',
         groupId: 'GID_dabanjia',
         token: '',
-        msgNum:0,
+        msgNum: 0,
         aServiceData: {},
         isShowMyDecorateAll: false,
-        haveWarehouse: false
+        haveWarehouse: false,
+
+        who: "我",
       };
     },
     mounted() {
@@ -280,16 +282,28 @@
       getAvailableService() {
         console.log("this.currentProject", this.currentProject)
         availableService({
-          projectId: this.currentProject.projectId || 37
+          projectId: this.currentProject.projectId
         }).then(data => {
           const {
             purchasedServiceList,
             availableServiceList,
-            defaultServices
+            defaultServices,
+            constructionFlag,
+            insuranceStatus,
+            showActuaryFlag,
+            showDesignFlag,
+            showVideoFlag,
           } = data
           this.purchasedServiceList = purchasedServiceList || []
           this.availableServiceList = availableServiceList || []
           this.defaultServices = defaultServices || []
+          this.aServiceData = {
+            constructionFlag,
+            insuranceStatus,
+            showActuaryFlag,
+            showDesignFlag,
+            showVideoFlag
+          }
           timer = setTimeout(() => {
             this.addServiceCard(this.defaultServices, "serviceType")
             this.addServiceCard(this.availableServiceList, "nodeType")
@@ -298,18 +312,7 @@
             3) || t.status >= 2)
           this.haveWarehouse = this.purchasedServiceList.filter(t => t.nodeType >= 5).length > 0
         }).catch(err => {
-          // this.aServiceData = monidata.data
-          // const {
-          //   purchasedServiceList,
-          //   availableServiceList,
-          //   defaultServices
-          // } = this.aServiceData
-          // this.purchasedServiceList = purchasedServiceList
-          // this.availableServiceList = availableServiceList
-          // this.defaultServices = defaultServices
-          // this.isShowMyDecorateAll = this.purchasedServiceList.filter(t => (t.status == 0 && t.grepOrderStatus ==
-          //   3) || t.status >= 2)
-          // this.checkDesignAnd()
+          console.log(err)
         })
       },
       addServiceCard(arr, key) {
@@ -324,7 +327,7 @@
       },
       checkHouseRemind() {
         uni.navigateTo({
-          url: "/sub-decorate/pages/check-house-remind/check-house-remind"
+          url: "/sub-decorate/pages/check-house-remind/check-house-remind?serverCardId=36"
         })
       },
       confirm1() {
@@ -339,7 +342,7 @@
       },
       confirm4() {
         uni.navigateTo({
-          url: "/sub-decorate/pages/design-online-disclosure/design-online-disclosure"
+          url: `/sub-decorate/pages/design-online-disclosure/design-online-disclosure?serverId=34`
         })
       },
       hcaa() {
@@ -395,7 +398,6 @@
             const arr = data.filter(t => t.defaultEstate)
             this.currentProject = arr[0]
             this.initData(arr[0])
-            this.getMsgNum()
           } else {
             // TODO 有房屋无服务处理逻辑
           }
@@ -403,6 +405,8 @@
       },
       // 根据查询出来的项目信息处理
       initData(obj) {
+        this.getMsgNum()
+        this.who = this.currentProject.relegationType == 2 ? "亲友" : "我"
         this.currentEstate = this.estateList.filter(t => t.id === obj.estateId)[0]
         if (this.currentProject.estateId) {
           this.getAvailableService()
@@ -501,7 +505,6 @@
             this.defaultEstate = temp && temp.length > 0 ? temp[0] : null
             this.estateList = data;
             this.getProjectList();
-            
           }
         });
       },
@@ -522,13 +525,10 @@
           this.instanceId = res.instanceId
         })
       },
-      getMsgNum(){
-        if(this.currentProject.projectId){
-          getMsgNum(this.currentProject.projectId).then(res=>{
-            this.msgNum = res.count
-          })
-        }
-        
+      getMsgNum() {
+        getMsgNum(this.currentProject.projectId).then(res => {
+          this.msgNum = res.count
+        })
       }
     },
   };

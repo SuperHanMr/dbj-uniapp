@@ -180,8 +180,8 @@
         getTim().sendMessage(message).then(() => {
           this.messageContent = "";
           this.inputFocus = true;
-        }).catch(() => {
-          
+        }).catch((err) => {
+          console.error("发送消息失败：", err);
         })
       },
       sendImageMessage(tempFile) {

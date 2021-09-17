@@ -46,11 +46,11 @@
 				projectId: '',
 				list: [
 				]
-
 			}
 		},
 		onLoad(e) {
-			this.projectId = e.projectId
+			this.projectId = e.projectId;
+			this.getList();
 		},
 		methods: {
 			getList() {

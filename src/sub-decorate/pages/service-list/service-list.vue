@@ -1,6 +1,6 @@
 <template>
 	<view class="design-list">
-		<service-content-card class="card-item" v-for="(item, index) in dataList" :key="item.id" :content="item">
+		<service-content-card class="card-item" v-for="(item, index) in dataList" :key="item.id" :insideArea="insideArea" :content="item">
 			<template slot="radio">
 				<dbj-radio class="card-radio" :value="item.id + ''" :checked="checkedId === item.id + ''"
 					@change="radioChange"></dbj-radio>
@@ -28,14 +28,24 @@
 			return {
 				dataList: [],
 				checkedId: "",
-				categoryTypeId: null
+        title: null,
+        categoryTypeId: null,
+        insideArea: null
 			}
 		},
 		onLoad(option) {
-			this.categoryTypeId = option.id
-			console.log(this.categoryTypeId)
+      const {
+        insideArea, id, categoryTypeId, name
+      } = option
+			this.checkedId = id + ""
+			this.title = name
+			this.categoryTypeId = categoryTypeId
+			this.insideArea = insideArea
 		},
 		onShow() {
+      uni.setNavigationBarTitle({
+        title: this.title
+      })
 			this.getProductsSkusPage();
 		},
 		methods: {
@@ -48,13 +58,20 @@
 			},
 			radioChange(obj) {
 				this.checkedId = obj.value
-				if (this.categoryTypeId == 6) {
-					getApp().globalData.noHouseDesignId = obj.value
-				} else if (this.categoryTypeId == 5){
-					getApp().globalData.noHouseActuaryId = obj.value
-				} else if (this.categoryTypeId == 4) {
-					getApp().globalData.noHouseCheckId = obj.value
-				}
+        
+				// if (this.categoryTypeId == 1) {
+				// 	getApp().globalData.noHouseDesignId = obj.value
+				// } else if (this.categoryTypeId == 4){
+				// 	getApp().globalData.noHouseActuaryId = obj.value
+				// } else if (this.categoryTypeId == 2) {
+				// 	getApp().globalData.noHouseCheckId = obj.value
+				// }
+        // debugger
+        let tmp = this.dataList.filter(t => t.id == Number(obj.value))[0]
+        uni.$emit('selectedServer', {
+          categoryTypeId: this.categoryTypeId,
+          values: tmp
+        });
 				setTimeout(() => {
 					console.log(getApp().globalData)
 				}, 0)

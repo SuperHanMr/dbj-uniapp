@@ -146,7 +146,8 @@ export function deleteFriends(params) {
 
 //SKU商品表格
 export function getProductsSkusPage(params) {
-	return request.get("/product/app/products/skus/page", params)
+	const str = objectToUrlString(params)
+	return request.get("/product/app/products/skus/page?" + str)
 }
 
 //获取服务类默认商品
@@ -230,5 +231,19 @@ export function requireList(params) {
 }
 //APP-要货-要货记录详情
 export function requireListDetail(params) {
-	return request.get("/order-center/app/goods/require/detail", params)
+	return request.get("/order-center/app/goods/require/detail", { params })
 }
+// 查看线上交底
+export function serverInfo(serveId) {
+	return request.get(`/pm/app/serve/design/serverInfo/${serveId}`)
+}
+// C端APP-要货-用户确认
+export function requireConfirm(params) {
+	return request.put(`/order-center/app/goods/require/confirm`, params)
+}
+
+// app支付运费/搬运费
+export function payFreight(params) {
+	return request.post(`/order-center/app/order/payFreight`, params)
+}
+

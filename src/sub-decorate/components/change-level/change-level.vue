@@ -8,7 +8,7 @@
       </view>
       <view class="right left">
         <view>什么是人工等级</view>
-        <image src="http://dbj.dragonn.top/static/mp/dabanjia/images/decorate/ic_why.svg"></image>
+        <image @click="lookdesc" src="http://dbj.dragonn.top/static/mp/dabanjia/images/decorate/ic_why.svg"></image>
       </view>
     </view>
     <view class="r-d-g">
@@ -17,9 +17,23 @@
     <view class="line"></view>
     <view class="price-count">所有人工费用总和：¥1000.00</view>
     <view class="btn-wrap">
-      <view class="cancel">取消</view>
-      <view class="submit">确定更改</view>
+      <view class="cancel" @click="cancel">取消</view>
+      <view class="submit" @click="ok">确定更改</view>
     </view>
+    <uni-popup ref="levelDesc">
+      <view class="level-desc-wrap">
+        <view class="title-wrap">
+          <view class="d-title"><text>等级说明规则</text></view>
+          <view class="close" @click="close">+</view>
+        </view>
+        <view class="desc">
+          这是等级说明，但是说明写些什么我也不知道，具体还是看产品同学给的文案吧。或者业务同学
+        </view>
+        <view class="desc">
+          这是等级说明，但是说明写些什么我也不知道，具体还是看产品同学给的文案吧。或者业务同学
+        </view>
+      </view>
+    </uni-popup>
   </view>
 </template>
 
@@ -50,7 +64,19 @@
     methods: {
       change(value) {
         this.radioValue = value
-        this.$emit("changeLevel", value)
+        // this.$emit("changeLevel", value)
+      },
+      lookdesc() {
+        this.$refs.levelDesc.open("bottom")
+      },
+      close() {
+        this.$refs.levelDesc.close()
+      },
+      cancel() {
+        this.$emit("close")
+      },
+      ok() {
+        this.$emit("changeLevel", this.radioValue)
       }
     }
   }
@@ -66,6 +92,7 @@
     border-radius: 32rpx 32rpx 2rpx 2rpx;
     padding: 40rpx 32rpx 0;
     box-sizing: border-box;
+    z-index: 9;
   }
 
   .top-bg {
@@ -74,6 +101,7 @@
     position: absolute;
     top: 0;
     left: 0;
+    z-index: -1;
   }
 
   .title {
@@ -105,6 +133,7 @@
         line-height: 44rpx;
       }
     }
+
     .right {
       view {
         height: 32rpx;
@@ -115,21 +144,25 @@
         color: #c5a58d;
         line-height: 32rpx;
       }
-      image{
+
+      image {
         width: 26rpx;
         height: 26rpx;
       }
     }
   }
+
   .r-d-g {
     margin-bottom: 62rpx;
     height: 98rpx;
     z-index: 9;
   }
+
   .line {
     height: 2rpx;
     background-color: #F0F0F0;
   }
+
   .price-count {
     text-align: center;
     height: 40rpx;
@@ -141,6 +174,7 @@
     line-height: 40rpx;
     padding: 42rpx 0 58rpx;
   }
+
   .btn-wrap {
     display: flex;
     justify-content: space-between;
@@ -148,6 +182,7 @@
     align-items: center;
     height: 136rpx;
     background: #fefffe;
+
     .cancel {
       width: 326rpx;
       height: 88rpx;
@@ -161,11 +196,12 @@
       color: #00bfb6;
       line-height: 88rpx;
     }
+
     .submit {
       width: 326rpx;
       height: 88rpx;
       opacity: 1;
-      background: linear-gradient(135deg,#00bfaf, #00bfbc);
+      background: linear-gradient(135deg, #00bfaf, #00bfbc);
       border-radius: 16rpx;
       font-size: 30rpx;
       font-family: PingFangSC, PingFangSC-Medium;
@@ -174,5 +210,58 @@
       color: #ffffff;
       line-height: 88rpx;
     }
+  }
+
+  .level-desc-wrap {
+    background-color: #fff;
+    border-radius: 32rpx 32rpx 0rpx 0rpx;
+    padding-bottom: 48rpx;
+    height: 75vh;
+
+    .title-wrap {
+      height: 103rpx;
+      display: flex;
+      justify-content: space-between;
+      flex-direction: row;
+      align-items: center;
+      // padding: 16rpx;
+      border-bottom: 2rpx solid #f2f2f2;
+      margin-bottom: 48rpx;
+      box-sizing: border-box;
+
+      .d-title {
+        flex: 1;
+        height: 40rpx;
+        font-size: 32rpx;
+        font-family: PingFangSC, PingFangSC-Medium;
+        font-weight: 700;
+        text-align: center;
+        color: #333333;
+        margin: 0 32rpx;
+        // padding: 16rpx;
+      }
+
+      .close {
+        width: 80rpx;
+        height: 80rpx;
+        margin-right: 16rpx;
+        transform: rotate(45deg) scale(0.64, 0.64);
+        font-size: 100rpx;
+        line-height: 51rpx;
+        font-weight: lighter;
+      }
+    }
+  }
+
+  .desc {
+    margin: 0 32rpx 32rpx;
+    font-size: 28rpx;
+    font-family: PingFangSC, PingFangSC-Regular;
+    font-weight: 400;
+    text-align: left;
+    color: #333333;
+    line-height: 44rpx;
+    letter-spacing: 0rpx;
+    margin-bottom: 24rpx;
   }
 </style>

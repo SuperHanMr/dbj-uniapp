@@ -1,234 +1,303 @@
 <template>
-	<view>
-		<view v-for="(item,index) in list" :key="index" class="store">
-			<view class="header">
-				{{item.title}}
-			</view>
-			<view class="items" v-for="(sub,subIndex) in item.children" :key="subIndex">
-				<image class="img" src="" mode=""></image>
-				<view class="content">
-					<view class="title">
-						<text class="tip"></text>
-						{{sub.title}}
-					</view>
-					<view>
-						<view class="spec">
-							管径DN25 3.5 绿
-						</view>
-					</view>
+  <view>
+    <view class="store">
+      <view class="header">
+        {{detail.storeName}}
+      </view>
+      <view
+        class="items"
+        v-for="(sub,subIndex) in detail.details"
+        :key="subIndex"
+      >
+        <image
+          class="img"
+          :src="sub.imgUrl"
+          mode=""
+        ></image>
+        <view class="content">
+          <view class="title">
+            <text class="tip"></text>
+            {{sub.fullName}}
+          </view>
+          <view>
+            <view class="spec">
+              {{sub.scaleProperties}}
+            </view>
+          </view>
 
-					<view class="sub-title">
-						{{sub.sub}}
-					</view>
-					<view class="price">
-						99.88/根
-					</view>
-				</view>
-			</view>
+          <view class="sub-title">
+            本次要货{{sub.requireNumber}}{{sub.unit}}
+          </view>
+          <view class="price">
+            <text class="unit">¥</text> <text class="price-font">{{sub.price}}</text> /{{sub.unit}}
+          </view>
+        </view>
+      </view>
 
-			<view class="other-pay border-top">
-				<view class="title">
-					运费
-				</view>
-				<view class="amount">
-					0.00
-				</view>
-			</view>
+      <view class="other-pay border-top">
+        <view class="title">
+          运费
+        </view>
+        <view class="amount">
+          <text class="unit">¥ </text> {{detail.freight}}
+        </view>
+      </view>
 
-			<view class="other-pay ">
-				<view class="title">
-					搬运费
-				</view>
-				<view class="amount">
-					0.00
-				</view>
-			</view>
-		</view>
-		<view style="height: 200rpx;">
+      <view class="other-pay ">
+        <view class="title">
+          搬运费
+        </view>
+        <view class="amount">
+          <text class="unit">¥ </text> {{detail.handlingFees}}
+        </view>
+      </view>
+    </view>
+    <view style="height: 200rpx;">
 
-		</view>
-		<bottom-btn :showDefaultBtn="false" bgcolor="#FFF">
-			<template v-slot:default>
-				<view class="reject-btn">
-					拒绝申请
-				</view>
-				<view style="flex: 1;">
+    </view>
+    <bottom-btn
+      :showDefaultBtn="false"
+      bgcolor="#FFF"
+    >
+      <template v-slot:default>
+        <view
+          class="reject-btn"
+          @click="onReject"
+        >
+          拒绝申请
+        </view>
+        <view style="flex: 1;">
 
-				</view>
-				<view class="agree-btn">
-					同意并支付 ¥ 460.00
-				</view>
-			</template>
+        </view>
+        <view
+          class="agree-btn"
+          @click="onConform"
+        >
 
-		</bottom-btn>
-	</view>
+          同意 <text v-if="totalPrice">并支付¥ {{totalPrice}}</text>
+        </view>
+      </template>
+
+    </bottom-btn>
+  </view>
 </template>
 
 <script>
-	export default {
-		data() {
-			return {
-				list: [{
-					title: '京东',
-					children: [{
-							img: '',
-							title: '开工保护（开工后对各区域进行的全方位保护全方位保护位保护位保护位保护位）…',
-							sub: '本次要货：1卷'
-						},
-						{
-							img: '',
-							title: '开工保护（开工后对各区域进行的全方位保护位保护位保护位保护位）…',
-							sub: '本次要货：1卷'
-						}
-
-					]
-				}, {
-					title: '天猫',
-					children: [{
-							img: '',
-							title: '开工保护（开工后对各区域进行的全方位保护位保护位保护位保护位）…',
-							sub: '本次要货：1卷'
-						},
-						{
-							img: '',
-							title: '开工保护（开工后对各区域进行的全方位保护位保护位保护位保护位）…',
-							sub: '本次要货：1卷'
-						}
-					]
-				}, ]
-
-			};
-		},
-		methods: {
-			submit() {
-				uni.redirectTo({
-					url: '../require-success/require-success'
-				})
-			}
-		}
-	}
+import {
+  requireListDetail,
+  requireConfirm,
+  payFreight,
+} from "../../../api/decorate.js";
+export default {
+  data() {
+    return {
+      id: "18",
+      list: [],
+      detail: {},
+    };
+  },
+  computed: {
+    totalPrice() {
+      return this.detail.handlingFees + this.detail.freight;
+    },
+  },
+  methods: {
+    onReject() {
+      requireConfirm({
+        requireId: this.id,
+        status: 4,
+      }).then((e) => {});
+    },
+    onConform() {
+      if (!this.totalPrice) {
+        requireConfirm({
+          requireId: this.id,
+          status: 2,
+        }).then((e) => {});
+      } else {
+        let openid = uni.getStorageSync("openId");
+        payFreight({
+          orderId: this.detail.orderId,
+          goodsRequireId: this.id,
+          payType: 1,
+          openid,
+        }).then((e) => {
+          const payInfo = e.wechatPayJsapi;
+          uni.requestPayment({
+            provider: "wxpay",
+            ...payInfo,
+            success(res) {},
+            fail(e) {
+              console.log(e);
+            },
+          });
+        });
+      }
+    },
+    getDetail() {
+      requireListDetail({
+        id: this.id,
+      }).then((e) => {
+        this.detail = e;
+      });
+    },
+    submit() {
+      uni.redirectTo({
+        url: "../require-success/require-success",
+      });
+    },
+  },
+  onLoad(e) {
+    // this.id = getApp().globalData.decorateMsg.id
+    this.getDetail();
+  },
+};
 </script>
 
 <style lang="scss" scoped>
-	.tip {
-		display: inline-block;
-	}
+.price-font {
+  font-size: 28rpx;
+  font-weight: 500;
+}
 
-	.spec {
-		display: inline-block;
-		background: #fafafa;
-		border: 1rpx solid #f0f0f0;
-		border-radius: 6rpx;
-		padding: 6rpx 12rpx;
-		font-size: 22rpx;
-		color: #999999;
+.price-uit {
+  font-size: 22rpx;
+}
 
-	}
+.tip {
+  display: inline-block;
+}
 
-	.price {
-		color: #333333;
-		font-size: 24rpx;
+.spec {
+  display: inline-block;
+  background: #fafafa;
+  border: 1rpx solid #f0f0f0;
+  border-radius: 6rpx;
+  padding: 6rpx 12rpx;
+  font-size: 22rpx;
+  color: #999999;
+}
 
-	}
+.price {
+  color: #333333;
+  font-size: 24rpx;
+}
+.spec {
+  display: inline-block;
+  background: #fafafa;
+  border: 1rpx solid #f0f0f0;
+  border-radius: 6rpx;
+  padding: 6rpx 12rpx;
+  font-size: 22rpx;
+  color: #999999;
+}
 
-	.reject-btn {
-		width: 188rpx;
-		height: 88rpx;
-		line-height: 88rpx;
-		opacity: 1;
-		border: 1rpx solid #cccccc;
-		border-radius: 16rpx;
-		text-align: center;
-		color: #666666;
-		font-size: 30rpx;
-		margin-left: 32rpx;
-	}
+.price {
+  color: #333333;
+  font-size: 24rpx;
+}
 
-	.agree-btn {
-		width: 466rpx;
-		height: 88rpx;
-		line-height: 88rpx;
-		text-align: center;
-		color: #ffffff;
-		font-size: 30rpx;
-		background: linear-gradient(135deg, #00bfaf, #00bfbc);
-		border-radius: 16rpx;
-		margin-right: 32rpx;
-	}
+.reject-btn {
+  width: 188rpx;
+  height: 88rpx;
+  line-height: 88rpx;
+  opacity: 1;
+  border: 1rpx solid #cccccc;
+  border-radius: 16rpx;
+  text-align: center;
+  color: #666666;
+  font-size: 30rpx;
+  margin-left: 32rpx;
+}
 
-	.store {
-		padding: 0 32rpx;
-		background-color: #FFF;
-		margin-bottom: 16rpx;
+.agree-btn {
+  width: 466rpx;
+  height: 88rpx;
+  line-height: 88rpx;
+  text-align: center;
+  color: #ffffff;
+  font-size: 30rpx;
+  background: linear-gradient(135deg, #00bfaf, #00bfbc);
+  border-radius: 16rpx;
+  margin-right: 32rpx;
+}
 
-		.items {
-			display: flex;
-			padding: 0 0 32rpx 0;
+.store {
+  padding: 0 32rpx;
+  background-color: #fff;
+  margin-bottom: 16rpx;
 
-			.img {
-				width: 192rpx;
-				height: 192rpx;
-				border: 1rpx solid #f4f4f4;
-				border-radius: 8rpx;
-				background-color: yellow;
-			}
+  .items {
+    display: flex;
+    padding: 0 0 32rpx 0;
 
-			.content {
-				flex: 1;
-				margin-left: 24rpx;
+    .img {
+      width: 192rpx;
+      height: 192rpx;
+      border: 1rpx solid #f4f4f4;
+      border-radius: 8rpx;
+      background-color: yellow;
+    }
 
-				.title {
-					color: #333333;
-					font-size: 28rpx;
-					white-space: normal;
-					display: -webkit-box;
-					-webkit-box-orient: vertical;
-					overflow: hidden;
-					text-overflow: ellipsis;
-					-webkit-line-clamp: 1;
-				}
+    .content {
+      flex: 1;
+      margin-left: 24rpx;
 
-				.sub-title {
-					margin-top: 16rpx;
-					font-size: 22rpx;
-					color: #999999;
-					text-align: end;
-				}
-			}
-		}
+      .title {
+        color: #333333;
+        font-size: 28rpx;
+        white-space: normal;
+        display: -webkit-box;
+        -webkit-box-orient: vertical;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        -webkit-line-clamp: 1;
+      }
 
-		.header {
-			width: 100%;
-			height: 74rpx;
-			display: flex;
-			align-items: flex-end;
-			color: #333333;
-			font-size: 28rpx;
-			font-weight: 500;
-			margin-bottom: 32rpx;
-		}
-	}
+      .sub-title {
+        margin-top: 16rpx;
+        font-size: 22rpx;
+        color: #999999;
+        text-align: end;
+      }
+    }
+  }
 
-	.other-pay {
-		height: 70rpx;
-		display: flex;
-		flex-direction: row;
-		justify-content: space-between;
-		align-items: center;
+  .header {
+    width: 100%;
+    height: 74rpx;
+    display: flex;
+    align-items: flex-end;
+    color: #333333;
+    font-size: 28rpx;
+    font-weight: 500;
+    margin-bottom: 32rpx;
+  }
+}
 
-		.title {
-			font-size: 26rpx;
-			color: #999999;
-		}
+.other-pay {
+  height: 70rpx;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
 
-		.amount {
-			font-size: 26rpx;
-			color: #333333;
-		}
+  .amount {
+    font-size: 26rpx;
+    color: #333333;
 
-	}
+    .unit {
+      font-size: 22rpx;
+    }
+  }
 
-	.border-top {
-		border-top: 1rpx solid #f4f4f4;
-	}
+  .amount {
+    font-size: 26rpx;
+    color: #333333;
+  }
+}
+
+.border-top {
+  border-top: 1rpx solid #f4f4f4;
+}
 </style>

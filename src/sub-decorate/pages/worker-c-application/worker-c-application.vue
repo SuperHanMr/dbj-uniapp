@@ -24,13 +24,27 @@
     components: {
       UserDescPictWorker
     },
+    onLoad(option) {
+      const {
+        id,
+        serveId,
+        serveType,
+        serveTypeName
+      } = getApp().globalData.decorateMsg
+      this.id = id
+      this.serveTypeName = serveTypeName
+    },
     onShow() {
+      uni.setNavigationBarTitle({
+        title: this.serveTypeName
+      })
       this.getCompletionLogById()
     },
     data() {
       return {
         workerData: {},
-        id: null
+        id: null,
+        serveTypeName: ""
       }
     },
     methods: {
@@ -59,7 +73,7 @@
       },
       refuse() {
         uni.navigateTo({
-          url: `/sub-decorate/pages/worker-refuse/worker-refuse?id=${this.id}`
+          url: `/sub-decorate/pages/worker-refuse/worker-refuse?id=${this.id}&serveTypeName=${this.serveTypeName}`
         })
       },
       getCompletionLogById() {

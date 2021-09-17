@@ -3,7 +3,7 @@
     <view v-for="(item,index) in items" :key="item.value" class="radio" :class="{active: item.value === value}"
       @click="change(item.value)">
       <view class="top"></view>
-      {{item.label}}
+      <view>{{item.label}}</view>
     </view>
   </view>
 </template>
@@ -55,7 +55,7 @@
         box-sizing: border-box;
         height: 8rpx;
         background: #f0f0f0;
-        // border-radius: 8rpx 8rpx 0rpx 0rpx;
+        border-radius: 8rpx 8rpx 0rpx 0rpx;
       }
     }
 
