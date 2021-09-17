@@ -735,7 +735,7 @@
         {
           "path": "pages/time-line/time-line",
           "style": {
-            "navigationBarTitleText": "",
+            "navigationBarTitleText": "服务进度",
             "enablePullDownRefresh": false
           }
         },
