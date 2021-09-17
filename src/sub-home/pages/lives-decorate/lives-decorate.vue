@@ -53,6 +53,7 @@
           src="http://dbj.dragonn.top/static/mp/dabanjia/images/home/player-big.png"
         >
         </cover-image>
+
       </cover-view>
       <cover-view
         v-else
@@ -270,6 +271,7 @@ export default {
   display: flex;
   flex-direction: column;
 }
+
 .center-icon-row {
   flex: 1;
   display: flex;
@@ -278,6 +280,7 @@ export default {
   align-items: center;
   overflow: auto;
   margin: 0 40rpx;
+
   .video-list-icon {
     flex-shrink: 0;
     width: 40rpx;
@@ -285,11 +288,13 @@ export default {
     margin: 21rpx;
   }
 }
+
 .scroll-view {
   width: 100%;
   flex: 1;
   overflow: auto;
 }
+
 .video-icon {
   position: absolute;
   left: 0;
