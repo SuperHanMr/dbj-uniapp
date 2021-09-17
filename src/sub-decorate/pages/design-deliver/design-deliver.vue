@@ -1,7 +1,7 @@
 <template>
   <view class="design-deliver">
     <view class="opt flex-row" @click="goEdit">
-      <image class="edit"></image>
+      <image src="http://dbj.dragonn.top/static/mp/dabanjia/images/decorate/ic_edit_2.svg" class="edit"></image>
       <view>申请修改</view>
     </view>
     <tabs :items="items" :current="current"  @changeItem="changeItem"></tabs>
@@ -64,6 +64,9 @@
             if (res.confirm) {
               confirmStageDeliver(this.message.serveId).then(data => {
                 console.log(data)
+                uni.switchTab({
+                  url: "/pages/decorate/index/index"
+                })
               })
             } else {
               console.log("点击了取消")
@@ -80,6 +83,9 @@
             if (res.confirm) {
               reviseStageDeliver(this.message.serveId).then(data => {
                 console.log(data)
+                uni.switchTab({
+                  url: "/pages/decorate/index/index"
+                })
               })
             } else {
               console.log("点击了取消")

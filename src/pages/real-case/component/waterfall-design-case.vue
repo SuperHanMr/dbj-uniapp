@@ -3,8 +3,7 @@
 		<view class="img-box">
 			<image :src="params.imageUrl" mode="widthFix" @load="emitHeight" @error="emitHeight"></image>
 			<view class="comment-like">
-				<!-- <view class="comment" v-if="params.commentCount"> -->
-				<view class="comment">
+				<view class="comment" v-if="params.commentCount">
 					<view class="comment-icon">
 						<image src="/static/images/real-case/liuyan.png" mode=""></image>
 					</view>
@@ -12,8 +11,7 @@
 						{{params.commentCount}}
 					</view>
 				</view>
-				<!-- <view class="like" v-if="params.isLike"> -->
-				<view class="like">
+				<view class="like" v-if="params.isLike">
 					<view class="comment-icon">
 						<image src="/static/images/real-case/xihuan.png" mode=""></image>
 					</view>
