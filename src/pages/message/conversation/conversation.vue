@@ -79,6 +79,9 @@
         currentVideoUrl: (state) => state.message.currentVideoUrl,
       }),
       type() {
+        if (!this.currentConversation.conversationID) {
+          return '';
+        }
         return this.currentConversation.systemType || this.CONV_TYPES.COMMON;
       },
     },

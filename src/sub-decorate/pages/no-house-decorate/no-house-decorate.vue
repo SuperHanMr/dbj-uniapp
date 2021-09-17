@@ -11,21 +11,21 @@
       <my-current-house v-if="currentHouse && currentHouse.id" :houseData="currentHouse"
         @changCurrentHouse="changCurrentHouse">
       </my-current-house>
-      <service-card v-if="sssType == 'decorate' || sssType == 'design'" :setting="design" class="service-card"
-        @selectAnother="selectAnother('design')" @changeLevel="open">
+      <service-card v-if="(sssType == 'decorate' || sssType == 'design') && design.id" :setting="design"
+        class="service-card" @selectAnother="selectAnother('design')" @changeLevel="open">
         <template slot="check">
           <check-box :checked="design.checked" @change="(value)=> {change(design.cardtype, value)}">
           </check-box>
         </template>
       </service-card>
-      <service-card v-if="sssType == 'decorate' || sssType == 'actuary'" :setting="actuary" class="service-card"
-        @selectAnother="selectAnother('actuary')">
+      <service-card v-if="(sssType == 'decorate' || sssType == 'actuary') && actuary.id" :setting="actuary"
+        class="service-card" @selectAnother="selectAnother('actuary')">
         <template slot="check">
           <check-box :checked="actuary.checked" @change="(value)=> {change(actuary.cardtype, value)}">
           </check-box>
         </template>
       </service-card>
-      <service-card v-if="sssType == 'checkHouse'" :setting="checkHouse" class="service-card"
+      <service-card v-if="sssType == 'checkHouse' && checkHouse.id" :setting="checkHouse" class="service-card"
         @selectAnother="selectAnother('checkHouse')">
         <template slot="check">
           <check-box :checked="checkHouse.checked" @change="(value)=> {change(checkHouse.cardtype, value)}">
@@ -61,14 +61,14 @@
   import {
     createOrder
   } from "../../../api/order-center.js"
-  
+
   const TYPE = {
     decorate: "装修服务",
     design: "设计服务",
     actuary: "精算服务",
     checkHouse: "验房服务",
   }
-  
+
   export default {
     components: {
       ServiceCard,
@@ -83,49 +83,49 @@
       return {
         dataList: [],
         design: {
-          title: "设计服务",
-          cardtype: "design",
-          checked: false,
-          level: 0,
-          price: 1,
-          insideArea: 0.1,
-          id: 1054,
-          imageUrl: "https://ali-image-test.dabanjia.com//image/20210313/1615618135579_0296%24pexels-eberhard-grossgasteiger-1428277.jpg",
-          name: "橙色",
-          quantity: 1,
-          serviceName: "设计服务",
-          serviceType: 1,
-          spuName: "韩永辉测试视频无法播放"
+          // title: "设计服务",
+          // cardtype: "design",
+          // checked: false,
+          // level: 0,
+          // price: 1,
+          // insideArea: 0.1,
+          // id: 1054,
+          // imageUrl: "https://ali-image-test.dabanjia.com//image/20210313/1615618135579_0296%24pexels-eberhard-grossgasteiger-1428277.jpg",
+          // name: "橙色",
+          // quantity: 1,
+          // serviceName: "设计服务",
+          // serviceType: 1,
+          // spuName: "韩永辉测试视频无法播放"
         },
         actuary: {
-          title: "精算服务",
-          cardtype: "actuary",
-          checked: false,
-          price: 1,
-          insideArea: 0.1,
-          categoryTypeId: 4,
-          id: 38085,
-          imageUrl: "https://ali-image-test.dabanjia.com//image/20210313/1615618135579_0296%24pexels-eberhard-grossgasteiger-1428277.jpg",
-          name: "橙色",
-          quantity: 1,
-          serviceName: "精算服务",
-          serviceType: 4,
-          spuName: "韩永辉测试视频无法播放"
+          // title: "精算服务",
+          // cardtype: "actuary",
+          // checked: false,
+          // price: 1,
+          // insideArea: 0.1,
+          // categoryTypeId: 4,
+          // id: 38085,
+          // imageUrl: "https://ali-image-test.dabanjia.com//image/20210313/1615618135579_0296%24pexels-eberhard-grossgasteiger-1428277.jpg",
+          // name: "橙色",
+          // quantity: 1,
+          // serviceName: "精算服务",
+          // serviceType: 4,
+          // spuName: "韩永辉测试视频无法播放"
         },
         checkHouse: {
-          title: "验房服务",
-          cardtype: "checkHouse",
-          checked: false,
-          price: 1,
-          insideArea: 0.1,
-          categoryTypeId: 4,
-          id: 38085,
-          imageUrl: "https://ali-image-test.dabanjia.com//image/20210313/1615618135579_0296%24pexels-eberhard-grossgasteiger-1428277.jpg",
-          name: "橙色",
-          quantity: 1,
-          serviceName: "验房服务",
-          serviceType: 2,
-          spuName: "假数据"
+          // title: "验房服务",
+          // cardtype: "checkHouse",
+          // checked: false,
+          // price: 1,
+          // insideArea: 0.1,
+          // categoryTypeId: 4,
+          // id: 38085,
+          // imageUrl: "https://ali-image-test.dabanjia.com//image/20210313/1615618135579_0296%24pexels-eberhard-grossgasteiger-1428277.jpg",
+          // name: "橙色",
+          // quantity: 1,
+          // serviceName: "验房服务",
+          // serviceType: 2,
+          // spuName: "假数据"
         },
         currentHouse: {},
         selectLevel: 1,
@@ -138,14 +138,14 @@
         },
         selectHouseData: {},
         selectedServer: {},
-        
+
         projectId: null,
         serveType: null,
         estateId: null,
         customerId: null,
-        provinceId:null, //省id
-        cityId:null, //市id
-        areaId:null, //区id
+        provinceId: null, //省id
+        cityId: null, //市id
+        areaId: null, //区id
       }
     },
     computed: {
@@ -161,13 +161,13 @@
         let aprice = 0
         let chprice = 0
         if (this.design.checked) {
-          dprice = this.design.price
+          dprice = this.design.price || 0
         }
         if (this.actuary.checked) {
-          aprice = this.actuary.price
+          aprice = this.actuary.price || 0
         }
         if (this.checkHouse.checked) {
-          chprice = this.checkHouse.price
+          chprice = this.checkHouse.price || 0
         }
         let temp = dprice * this.currentHouse.insideArea + aprice * this.currentHouse.insideArea + chprice * this
           .currentHouse.insideArea
@@ -186,7 +186,7 @@
         } = data
         this.selectedServer = data
       })
-      const { 
+      const {
         projectId,
         serveCardId,
         serviceName,
@@ -208,8 +208,8 @@
       this.serveType = serveType
       this.estateId = estateId
       this.customerId = customerId
-      this.provinceId = provinceId//省id
-      this.cityId = cityId//市id
+      this.provinceId = provinceId //省id
+      this.cityId = cityId //市id
       this.areaId = areaId
       uni.setNavigationBarTitle({
         title: TYPE[type]
@@ -244,13 +244,13 @@
     },
     methods: {
       getType(num) {
-        if(num == 1) {
+        if (num == 1) {
           return "design"
         }
-        if(num == 2) {
+        if (num == 2) {
           return "checkHouse"
         }
-        if(num == 4) {
+        if (num == 4) {
           return "actuary"
         }
       },
@@ -279,7 +279,9 @@
             categoryTypeId,
             values
           } = this.selectedServer
-          
+          this.design = {}
+          this.checkHouse = {}
+          this.actuary = {}
           if (categoryTypeId == 1) {
             this.design = {
               title: "设计服务",
@@ -314,7 +316,7 @@
             let checkHouseData = data.filter(t => t.serviceType === 2)
             if (checkHouseData && checkHouseData.length > 0) {
               this.checkHouse = {
-                ...actuaryData[0],
+                ...checkHouseData[0],
                 title: "验房服务",
                 cardtype: "checkHouse",
                 checked: this.sssType == "checkHouse",
@@ -398,13 +400,13 @@
         queryEstates({
           isNeedRelative: true
         }).then(data => {
-          if(!data || (typeof data == "array" && data.length < 1)) {
+          if (!data || (typeof data == "array" && data.length < 1)) {
             this.currentHouse = {}
           } else {
-            if(this.estateId) {
-              let flt = data.filter(t => t.estateId == this.estateId); 
+            if (this.estateId) {
+              let flt = data.filter(t => t.estateId == this.estateId);
             } else {
-              let flt = data.filter(t => t.defaultEstate); 
+              let flt = data.filter(t => t.defaultEstate);
             }
             let flt = data.filter(t => t.defaultEstate);
             if (flt && flt.length > 0) {
@@ -414,7 +416,7 @@
             }
             console.log("currentHouse", this.currentHouse)
           }
-          
+
           this.getServiceSku();
         })
       },
@@ -439,7 +441,7 @@
               businessType: this.design.categoryTypeId, //"int //业务类型",
               workType: -2, //"int //工种类型",
               level: 0, //"int //等级  0中级  1高级 2特级  3钻石",
-              storeId: 0, //"long //店铺id",
+              storeId: this.design.storeId || 0, //"long //店铺id",
               storeType: 0, //"int //店铺类型 0普通 1设计师",
               number: 1, //"double //购买数量",
               params: "", //string //与订单无关的参数 如上门时间 doorTime"
@@ -452,7 +454,7 @@
               businessType: this.actuary.categoryTypeId, //"int //业务类型",
               workType: -2, //"int //工种类型",
               // level: 0, //"int //等级  0中级  1高级 2特级  3钻石",
-              storeId: 0, //"long //店铺id",
+              storeId: this.actuary.storeId || 0, //"long //店铺id",
               storeType: 0, //"int //店铺类型 0普通 1设计师",
               number: 1, //"double //购买数量",
               params: "", //string //与订单无关的参数 如上门时间 doorTime"
@@ -465,7 +467,7 @@
               businessType: this.checkHouse.categoryTypeId, //"int //业务类型",
               workType: -2, //"int //工种类型",
               // level: 0, //"int //等级  0中级  1高级 2特级  3钻石",
-              storeId: 0, //"long //店铺id",
+              storeId: this.checkHouse.storeId || 0, //"long //店铺id",
               storeType: 0, //"int //店铺类型 0普通 1设计师",
               number: 1, //"double //购买数量",
               params: "", //string //与订单无关的参数 如上门时间 doorTime"

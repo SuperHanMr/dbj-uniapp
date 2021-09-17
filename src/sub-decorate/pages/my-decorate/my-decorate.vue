@@ -26,13 +26,13 @@
     <swiper :current="tabIndex" style="flex: 1;min-height: 600px;" :style="{height:contentHeight}" :duration="300" @change="ontabchange">
       <swiper-item class="swiper-item" v-for="(tab,index1) in dataList" :key="index1">
         <service-hunman :isDesign="tab.nodeType===1" :tab='tab' :designData='designData' @openPopup='openPopup'></service-hunman>
-        <amount-house id="d3" v-if="tab.nodeType===3"></amount-house>
-        <resultContent ref='result' id="d2" v-if="tab.nodeType===2" @getData='getData' :scrollTop='scrollTop'
+        <amount-house :serverId='serverId' id="d3" v-if="tab.nodeType===3"></amount-house>
+        <resultContent ref='result' id="d2" :serverId='serverId' v-if="tab.nodeType===2" @getData='getData' :scrollTop='scrollTop'
           :isReport='true'></resultContent>
         <serviceDesign id="d1" v-if="tab.nodeType===1" @changeDesign='changeDesign' :serverId='serverId'></serviceDesign>
-        <serviceActuarial id="d4" v-if="tab.nodeType===4"></serviceActuarial>
-        <serviceSteward id="d5" v-if="tab.nodeType===5"></serviceSteward>
-        <serviceDismantle id="d6" v-if="tab.nodeType>5"></serviceDismantle>
+        <serviceActuarial id="d4" v-if="tab.nodeType===4" :serverId='serverId'></serviceActuarial>
+        <serviceSteward id="d5" v-if="tab.nodeType===5" :serverId='serverId'></serviceSteward>
+        <serviceDismantle id="d6" v-if="tab.nodeType>5" :serverId='serverId'></serviceDismantle>
       </swiper-item>
     </swiper>
   </view>
@@ -60,46 +60,6 @@
     data() {
       return {
         dataList: [
-          {
-            nodeName: '量房',
-            nodeType: '3'
-          },
-          {
-            nodeName: '验房',
-            nodeType: '2'
-          },
-          {
-            nodeName: '设计',
-            nodeType: '1'
-          },
-          {
-            nodeName: '精算',
-            nodeType: '4'
-          },
-          {
-            nodeName: '管家',
-            nodeType: '5'
-          },
-          {
-            nodeName: '拆除',
-            nodeType: '6'
-          },
-          {
-            nodeName: '水电',
-            nodeType: '7'
-          },
-          {
-            nodeName: '泥工',
-            nodeType: '8'
-          },
-          {
-            nodeName: '木工',
-            nodeType: '9'
-          },
-          {
-            nodeName: '油漆',
-            nodeType: '10'
-          },
         ],
         tabIndex: 0,
         tabName: '',
@@ -131,17 +91,17 @@
     methods: {
       toCost() {
         uni.navigateTo({
-          url: '/sub-decorate/pages/current-cost/current-cost'
+          url: '/sub-decorate/pages/current-cost/current-cost?id='+this.serverId+'&isCost=true'
         })
       },
       ontabtap(item, index) {
         this.tabIndex = index
-        this.tabName = 'd'+item.nodeType
+        this.tabName = 'd'+(item.nodeType>6?6:item.nodeType)
       },
       ontabchange(e) {
         let current = e.detail.current
         this.tabIndex = current
-        this.tabName = 'd'+this.dataList[current].nodeType
+        this.tabName = 'd'+(this.dataList[current].nodeType>6?6:this.dataList[current].nodeType)
         this.serverId = this.dataList[current].serverId
         this.changeHeight()
         this.$nextTick(function(){
@@ -171,9 +131,10 @@
       changeHeight() {
         setTimeout(()=>{
           let query = uni.createSelectorQuery()
+          
           query.select('#' + this.tabName).boundingClientRect();
           query.exec((res) => {
-            console.log(res)
+            
             if (res && res[0]) {
               this.contentHeight =  res[0].height+150+ 'px';
             }
@@ -200,7 +161,7 @@
         getMyService(data).then(res=>{
           console.log(res)
           this.dataList = res
-          this.tabName = 'd'+this.dataList[0].nodeType
+          this.tabName = 'd'+(this.dataList[0].nodeType>6?6:this.dataList[0].nodeType)
           this.changeHeight()
         })
       }

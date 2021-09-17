@@ -106,7 +106,6 @@
         getMsgList(this.current).then(res => {
           res.map(item => {
             item.data = JSON.parse(item.msgBody)
-
             item.url = sysMessage[item.msgType].url
           })
           this.list = res

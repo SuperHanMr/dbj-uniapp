@@ -175,19 +175,24 @@
 				this.chooseId = item.id
 				this.currentId = item.id
 				uni.$emit('selectedHouse', item);
-
+         
+        uni.setStorageSync(
+        	'houseListChooseId',
+        	this.chooseId,
+        );
 				uni.navigateBack({
 
 				})
 			},
 		},
 		onUnload() {
-			if (this.isMy) return
-			uni.setStorageSync(
-				'houseListChooseId',
-				this.chooseId,
-			);
-
+			// if (this.isMy) return
+   //    uni.setStorageSync(
+   //    	'houseListChooseId',
+   //    	this.chooseId,
+   //    );
+			
+      
 			// uni.getStorageSync({
 			//     key: 'houseListChooseId',
 			//     success: function (res) {

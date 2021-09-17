@@ -1,7 +1,8 @@
 <template>
   <view>
-     <web-view :src="'https://local.meiwu365.com/app-pages/goods-detail/index.html?goodsId='
-        + goodId + '&&houseId=' + houseId" @message='h5Message'></web-view>
+       <web-view :src="'https://design-h5-stage.meiwu365.com/app-pages/goods-detail/index.html#wx-goodsId='+ 38050 + '&&wx-houseId='
+        + houseId + '&&wx-defaultHouseInfo=' + goodDefaultAddress + '&&wx-token=' + token + '&&wx-userId' + userId + '&&wx-deviceId' + deviceId">
+       </web-view>
   </view>
 </template>
 
@@ -9,24 +10,45 @@
   export default {
     data() {
       return {
+        deviceId: 0,
+        userId: 0,
         goodId: '',
+        defaultHouseId: '',
         houseId: '',
-        webViewSrc: ''
+        goodDefaultAddress: '',
+        token: getApp().globalData.token
       }
     },
-    onShow() {
-      this.houseId = uni.getStorageSync('houseListChooseId')
+    onShow() { 
       this.goodId = uni.getStorageSync('goodId')
-      uni.removeStorageSync('fromH5')
+      this.userId = uni.getStorageSync('userId')
+      this.defaultHouseInfo = uni.getStorageSync('currentHouse')
+      this.goodDefaultAddress = JSON.stringify({
+        id:  uni.getStorageSync('currentHouse').id,
+        provinceId: uni.getStorageSync('currentHouse').provinceId,
+        cityId: uni.getStorageSync('currentHouse').cityId,
+        areaId: uni.getStorageSync('currentHouse').areaId,
+        locationName: uni.getStorageSync('currentHouse').locationName,
+        housingEstate: uni.getStorageSync('currentHouse').housingEstate,
+        housingEstateId: uni.getStorageSync('currentHouse').housingEstateId
+      })
+        uni.getSystemInfo({
+          success:res => {
+            this.deviceId = res.deviceId
+          }
+        })
+        // 获取房屋信息
+        if(uni.getStorageSync('houseListChooseId')) {
+          this.houseId = uni.getStorageSync('houseListChooseId')
+        }else {
+          if(JSON.parse(this.defaultHouseInfo).id) {
+            this.houseId = JSON.parse(this.defaultHouseInfo).id
+          }else {
+            this.defaultHouseInfo =  uni.getStorageSync('currentHouse')
+          }
+        }
     },
     methods: {
-      h5Message(ms) {
-        console.log(ms)
-        uni.setStorageSync(
-            'fromH5',
-            ms.detail.data[0].action
-        );
-      }
     }
   }
 </script>

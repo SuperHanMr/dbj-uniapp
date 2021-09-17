@@ -2,7 +2,7 @@
   <view class="service-actuarial">
     <view class="content">
       <text class="name">我的精算单</text>
-      <view class="click-check">
+      <view class="click-check" @click="toCost">
         <text>点击查看</text>
         <image src="" mode=""></image>
       </view>
@@ -11,6 +11,23 @@
 </template>
 
 <script>
+  export default{
+    props:{
+      serviceId:0
+    },
+    data(){
+      return{
+        
+      }
+    },
+    methods:{
+      toCost(){
+        uni.navigateTo({
+          url:'/sub-decorate/pages/current-cost/current-cost?serviceId='+this.serviceId+'&isCost=false'
+        })
+      }
+    }
+  }
 </script>
 
 <style lang="scss" scoped>
