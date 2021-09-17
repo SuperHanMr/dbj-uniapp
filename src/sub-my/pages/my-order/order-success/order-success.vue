@@ -2,7 +2,11 @@
   <view class="container">
     <!-- 订单完成/确认收货 -->
     <!-- 退款成功 -->
-    <view class="order-container" v-if="type=='refund'"  :style="{paddingBottom:systemBottom}">
+    <view
+      class="order-container"
+      v-if="type=='refund'"
+      :style="{paddingBottom:systemBottom}"
+    >
       <view class="order-status">
         <view class="backgroundStyle" />
         <view class="status">
@@ -12,7 +16,7 @@
           ></image>
           <text>退款成功</text>
         </view>
-       <text class="time">{{refundInfo.createTime}}</text>
+        <text class="time">{{refundInfo.createTime}}</text>
       </view>
 
       <view class="order-header1">
@@ -33,21 +37,20 @@
           </view>
         </view>
       </view>
-			
-			<view class="body1">
-					<order-item :dataList="refundInfo.detailAppVOS"></order-item>
-			</view>
-			
-			<order-refund-info :refundInfo="refundInfo"></order-refund-info>
+
+      <view class="body1">
+        <order-item :dataList="refundInfo.detailAppVOS"></order-item>
+      </view>
+
+      <order-refund-info :refundInfo="refundInfo"></order-refund-info>
     </view>
-		
-		
-		
-		
-		
-		
-		<!-- 订单完成页面 -->
-    <view class="order-container" v-if="type == 'complete'"  :style="{paddingBottom:systemBottom}">
+
+    <!-- 订单完成页面 -->
+    <view
+      class="order-container"
+      v-if="type == 'complete'"
+      :style="{paddingBottom:systemBottom}"
+    >
       <view class="order-status">
         <view class="backgroundStyle" />
         <view class="status">
@@ -57,13 +60,17 @@
           ></image>
           <text>已完成</text>
         </view>
-        
+
       </view>
 
       <order-user-base-info :data="orderInfo"></order-user-base-info>
 
-      <view class="body2" >
-        <view class="part1" v-for="(item,index) in orderInfo.details" :key="index">
+      <view class="body2">
+        <view
+          class="part1"
+          v-for="(item,index) in orderInfo.details"
+          :key="index"
+        >
           <view class="header">
             <text>{{item.storeName}}</text>
             <image
@@ -71,103 +78,107 @@
               mode=""
             ></image>
           </view>
-					
-					<view  v-for="item2 in item.details" :key="item2.id" class="orederItem">
-						<order-item :dataList="item2" :orderStatus="3"></order-item>
-					</view>
-        </view>
-			</view>
-			
-      <order-price 
-				:data="orderInfo"
-			/>
 
-      <order-info 
-				:orderNo="orderInfo.orderNo"
-				:createTime="orderInfo.createTime"
-				:showPayTime="true"
-				:payTime="orderInfo.payTime"
-				:showPayType="true"
-			/>
-			
-			<view
-			  class="applyforRefund-container"
-			  :style="{paddingBottom:systemBottom,height:systemHeight}"
-			>
-			  <view
-			    class="applyforRefund"
-			    @click="toApplayForRefund(orderInfo,2)"
-			    v-if="orderInfo.showRefundBtn"
-			  >
-			    申请退款
-			  </view>
-			</view>
-		</view>
-	</view>
+          <view
+            v-for="item2 in item.details"
+            :key="item2.id"
+            class="orederItem"
+          >
+            <order-item
+              :dataList="item2"
+              :orderStatus="3"
+              @toApplayForRefund="applyForReFund(item2,1)"
+            ></order-item>
+          </view>
+        </view>
+      </view>
+
+      <order-price :data="orderInfo" />
+
+      <order-info
+        :orderNo="orderInfo.orderNo"
+        :createTime="orderInfo.createTime"
+        :showPayTime="true"
+        :payTime="orderInfo.payTime"
+        :showPayType="true"
+      />
+
+      <view
+        class="applyforRefund-container"
+        :style="{paddingBottom:systemBottom,height:systemHeight}"
+      >
+        <view
+          class="applyforRefund"
+          @click="toApplayForRefund(orderInfo,2)"
+          v-if="orderInfo.showRefundBtn"
+        >
+          申请退款
+        </view>
+      </view>
+    </view>
+  </view>
 </template>
 
 <script>
-	import {getRefundDetail,getOrderDetail,} from "@/api/order.js"
-	export default {
-		data() {
-			return {
-				type:"complete",//type:refund退款详情   complete是订单完成
-				id:-1,
-				status:"",
-				
-				refundInfo:{},
-				orderInfo:{},
-				
-				systemBottom: "",
-			};
-		},
-		
-		mounted(e) {
-			const menuButtonInfo = uni.getMenuButtonBoundingClientRect();
-			this.systemBottom = menuButtonInfo.bottom + "rpx";
-			console.log(this.systemBottom);
-		},
-	
-		onLoad(e){
-			this.type = e.type
-			this.id = Number(e.id)
-			this.status =Number(e.status)
-			
-			if(this.type == 'complete'){//订单完成页面
-				this.orderDetail()
-			}
-			
-			if(this.type == 'refund'){//退款成功页面
-				this.refundDetail()
-			}
-		},
-	
-		methods: {
-			
-			orderDetail(){
-				console.log("订单完成页面",this.id)
-				getOrderDetail({id:this.id}).then(e=>{
-					this.orderInfo = e
-					console.log("获取详情数据data=",this.orderInfo)
-				})
-			},
-			
-			refundDetail(){
-				getRefundDetail({id:this.id}).then(e=>{
-					this.refundInfo = e
-					console.log("获取详情数据data=",this.refundInfo)
-				})
-			},
-			// 申请退款
-			toApplayForRefund(data,type){
-				wx.setStorageSync("wholeRefundOrderInfo", JSON.stringify(data));
-				uni.navigateTo({
-					url: `/sub-my/pages/apply-for-refund/apply-for-refund?id=${this.id}&type=whole&status=2`,
-				});
-			},
-			
-		}
-	
+import { getRefundDetail, getOrderDetail } from "@/api/order.js";
+export default {
+  data() {
+    return {
+      type: "complete", //type:refund退款详情   complete是订单完成
+      id: -1,
+      status: "",
+
+      refundInfo: {},
+      orderInfo: {},
+
+      systemBottom: "",
+    };
+  },
+
+  mounted(e) {
+    const menuButtonInfo = uni.getMenuButtonBoundingClientRect();
+    this.systemBottom = menuButtonInfo.bottom + "rpx";
+    console.log(this.systemBottom);
+  },
+
+  onLoad(e) {
+    this.type = e.type;
+    this.id = Number(e.id);
+    this.status = Number(e.status);
+
+    if (this.type == "complete") {
+      //订单完成页面
+      this.orderDetail();
+    }
+
+    if (this.type == "refund") {
+      //退款成功页面
+      this.refundDetail();
+    }
+  },
+
+  methods: {
+    orderDetail() {
+      console.log("订单完成页面", this.id);
+      getOrderDetail({ id: this.id }).then((e) => {
+        this.orderInfo = e;
+        console.log("获取详情数据data=", this.orderInfo);
+      });
+    },
+    refundDetail() {
+      getRefundDetail({ id: this.id }).then((e) => {
+        this.refundInfo = e;
+        console.log("获取详情数据data=", this.refundInfo);
+      });
+    },
+    // 申请退款
+    toApplayForRefund(data, type) {
+      wx.setStorageSync("wholeRefundOrderInfo", JSON.stringify(data));
+      uni.navigateTo({
+        url: `/sub-my/pages/apply-for-refund/apply-for-refund?id=${this.id}&type=whole&status=2`,
+      });
+    },
+  },
 };
 </script>
 
@@ -278,27 +289,25 @@
             object-fit: cover;
           }
         }
-				
-				
-				.price-special{
-					padding: 16rpx 0 34rpx;
-					display: flex;
-					flex-flow: row nowrap;
-					justify-content: flex-end;
-					.button{
-						width: 160rpx;
-						height: 56rpx;
-						line-height: 56rpx;
-						text-align:center;
-						background: #FFFFFF;
-						color:#111111 ;
-						font-size: 24rpx;
-						border-radius: 16rpx;
-						border: 2rpx solid #EAEAEA;
-					}
-				}
-			
-			}
+
+        .price-special {
+          padding: 16rpx 0 34rpx;
+          display: flex;
+          flex-flow: row nowrap;
+          justify-content: flex-end;
+          .button {
+            width: 160rpx;
+            height: 56rpx;
+            line-height: 56rpx;
+            text-align: center;
+            background: #ffffff;
+            color: #111111;
+            font-size: 24rpx;
+            border-radius: 16rpx;
+            border: 2rpx solid #eaeaea;
+          }
+        }
+      }
     }
 
     .refund-info {
@@ -353,72 +362,5 @@
   border: 2rpx solid #eaeaea;
   font-size: 20rpx;
   color: #111111;
-}
-
-
-
-
-
-
-
-
-
-// 底部 确认收货 及申请退款按钮
-.applyforRefund-container {
-  position: fixed;
-  bottom: 0;
-  width: 686rpx;
-  background-color: #ffffff;
-  display: flex;
-  flex-flow: row nowrap;
-  align-items: center;
-  justify-content: flex-end;
-  padding: 12rpx 32rpx;
- 
-  .applyforRefund {
-    margin: 18rpx 0;
-    box-sizing: border-box;
-    width: 160rpx;
-    height: 56rpx;
-    line-height: 56rpx;
-    text-align: center;
-    background: #ffffff;
-    border-radius: 16rpx;
-    color: #111111;
-    font-size: 24rpx;
-    border: 2rpx solid #eaeaea;
-  }
-}
-
-// 弹框样式
-::v-deep .uni-popup-dialog {
-  width: 560rpx !important;
-  border-radius: 24rpx !important;
-  background-color: #fff !important;
-}
-::v-deep .uni-dialog-title-text {
-  color: #111111 !important;
-  font-size: 32rpx !important;
-  font-weight: 550 !important;
-}
-::v-deep .uni-dialog-title {
-  padding: 48rpx 0 !important;
-}
-::v-deep .uni-dialog-content {
-  display: none !important;
-}
-::v-deep .uni-dialog-button-group {
-  border-top: 2rpx solid #f5f5f5;
-}
-::v-deep .uni-dialog-button {
-  height: 82rpx !important;
-}
-::v-deep .uni-button-color {
-  color: #ff3347 !important;
-  font-size: 30rpx !important;
-  font-weight: 500;
-}
-::v-deep .uni-dialog-button-text {
-  font-size: 30rpx !important;
 }
 </style>

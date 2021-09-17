@@ -1,19 +1,19 @@
 <template>
-  <view>
+  <view class="wrap">
     <temp :title="isLogin"></temp>
-    <gome-login
-      v-if="isLogin"
-      :loginInit="loginInit"
-      @suceess="loginSuccess"
-      @fail="loginFail"
-    ></gome-login>
+    <gome-login v-if="isLogin" :loginInit="loginInit" @suceess="loginSuccess" @fail="loginFail"></gome-login>
+    <button @click="goHome" class="go-home">去首页</button>
   </view>
 </template>
 
 <script>
 // const url = require("@/pages/login/imgs/Lark20210823-152715.png");
-import { oauthGomeInfo } from "../../api/login.js";
-import { createTim } from "@/utils/tim.js"
+import {
+  oauthGomeInfo
+} from "../../api/login.js";
+import {
+  createTim
+} from "@/utils/tim.js"
 export default {
   data() {
     return {
@@ -59,7 +59,10 @@ export default {
       // 登录，注册，绑定成功都在此函数回调内处理返回参数为
       // data：{ SCN 登录凭证，userId 用户id，gomeNickName 国美用户昵称，gomeHeadImgUrl 国美用户头像，loginName 登录昵称，gradeNO 会员等级，gradeName 会员等级昵称}
       // type 类型  login为登录， register为注册，bindMobile为绑定手机
-      let { data, type } = e.detail;
+      let {
+        data,
+        type
+      } = e.detail;
 
       // let userInfo = uni.getStorageSync("userInfo");
       uni.setStorageSync("scn", data.SCN);
@@ -85,10 +88,9 @@ export default {
             userId: data.tid,
             userSig: data.userSign
           });
-					
-					//可以改成back
-					uni.navigateBack({
-					})
+
+          //可以改成back
+          uni.navigateBack({})
           // uni.switchTab({
           //   url: "/pages/home/index/index",
           // });
@@ -101,6 +103,11 @@ export default {
         title: `登录请求失败`,
       });
     },
+    goHome() {
+      uni.switchTab({
+        url: "/pages/home/index/index",
+      });
+    }
   },
   mounted() {
     console.log("ddddd");
@@ -129,5 +136,31 @@ export default {
 .title {
   font-size: 36rpx;
   color: #8f8f94;
+}
+
+.wrap {
+  position: relative;
+  height: 100%;
+  overflow: hidden;
+}
+
+.go-home {
+  position: absolute;
+  top: 714rpx;
+  left: 80rpx;
+
+  width: 590rpx;
+  line-height: 88rpx;
+  border-radius: 55rpx;
+  color: #fff;
+  font-size: 32rpx;
+  text-align: center;
+  background-image: linear-gradient(90deg, #62c1c0, #62c1c0);
+  background-color: #62c1c0;
+
+  border-top-style: none;
+  border-right-style: none;
+  border-bottom-style: none;
+  border-left-style: none;
 }
 </style>

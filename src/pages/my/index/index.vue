@@ -1,18 +1,21 @@
 <template>
   <view class="my-container">
-		<custom-navbar opacity="0" :showBack="true">
-		</custom-navbar>
-		<view class="backgroundStyle"/>
+    <custom-navbar
+      opacity="0"
+      :showBack="true"
+    >
+    </custom-navbar>
+    <view class="backgroundStyle" />
     <view class="my-header">
       <view class="avatar-img">
-          
+
         <image
-					:src="UserInfo.avatar"
+          :src="UserInfo.avatar"
           class="avatar"
         />
-        <view class="user-name" >
-					<text class="name" @click="toLogin">{{userName}} </text>
-         
+        <view class="user-name">
+          <text class="name"> 用户名称</text>
+
           <view
             class="edit-info"
             @click="handlerPersonalData()"
@@ -29,22 +32,28 @@
         class="set-up"
         @click="handleSetUp"
       >
-        <image src="../../../static/order/images/setting@2x.png" mode=""></image>
+        <image
+          src="../../../static/order/images/setting@2x.png"
+          mode=""
+        ></image>
       </view>
     </view>
-		
-		<view class="my-order">
+
+    <view class="my-order">
       <view class="order-header">
         <view class="order">我的订单</view>
         <view
           class="total"
-          @click="handlerViewAll()"
+          @click="handlerTotalOrder()"
         >
-					<text>查看全部</text>
-					<image src="../../../static/order/images/arraw_right@2x.png"	mode=""></image>
+          <text>查看全部</text>
+          <image
+            src="../../../static/order/images/arraw_right@2x.png"
+            mode=""
+          ></image>
         </view>
       </view>
-			<view class="order-line"/>
+      <view class="order-line" />
       <view class="order-body">
         <view
           class="item"
@@ -52,44 +61,52 @@
           :key="item.key"
           @click="handlerOrder(item)"
         >
-				<image :src="item.image" mode=""></image>
-				{{item.value}}
+          <image
+            :src="item.image"
+            mode=""
+          ></image>
+          {{item.value}}
         </view>
-			</view>
+      </view>
     </view>
-    
-		<view class="my-tools">
+
+    <view class="my-tools">
       <view class="header">
         我的工具
       </view>
-			
-			<view class="tool-line"/>
-			
+
+      <view class="tool-line" />
+
       <view class="tool-body">
-				
-				<view class="tool-item" v-for="item2 in list" :key="item2.key">
-					<view class="left">
-						<image :src="item2.image" mode=""></image>
-						
-						<text>{{item2.value}}</text>
-					</view>
-					<view class="right" @click="handlePersonalItem(item2)">
-						<image
-						   src="../../../static/order/images/arraw_right@2x.png"
-						   mode=""
-						 ></image>
-					</view>
-				</view>
-			</view>
-		</view>
-   
-		
-		
-		
-		
+
+        <view
+          class="tool-item"
+          v-for="item2 in list"
+          :key="item2.key"
+        >
+          <view class="left">
+            <image
+              :src="item2.image"
+              mode=""
+            ></image>
+
+            <text>{{item2.value}}</text>
+          </view>
+          <view
+            class="right"
+            @click="handlePersonalItem(item2)"
+          >
+            <image
+              src="../../../static/order/images/arraw_right@2x.png"
+              mode=""
+            ></image>
+          </view>
+        </view>
+      </view>
+    </view>
+
     <view @click="handlerToSetUp">真实案例</view>
-    
-   
+
   </view>
 
 </template>
@@ -100,101 +117,93 @@ export default {
   components: { uniBadge },
   data() {
     return {
-			isLogin:false,
-			userName:'用户名称',
-			UserInfo:{},
-			
+      isLogin: false,
+      userName: "用户名称",
+      UserInfo: {},
+
       list: [
         {
           key: "1",
-					image:"../../../static/order/images/shopping_Cart@2x.png",
+          image: "../../../static/order/images/shopping_Cart@2x.png",
           value: "购物车",
-          url:"../../../sub-my/pages/shopping-cart/shopping-cart",
+          url: "../../../sub-my/pages/shopping-cart/shopping-cart",
         },
         {
           key: "2",
-					image:"../../../static/order/images/collection_@2x.png",
+          image: "../../../static/order/images/collection_@2x.png",
           value: "我的收藏",
-					url:"../../../sub-my/pages/personal-center/my-collection/my-collection"
+          url: "../../../sub-my/pages/personal-center/my-collection/my-collection",
         },
         {
           key: "3",
-					image:"../../../static/order/images/attention@2x.png",
+          image: "../../../static/order/images/attention@2x.png",
           value: "我的关注",
-					url:"../../../sub-my/pages/personal-center/my-attention/my-attention",
+          url: "../../../sub-my/pages/personal-center/my-attention/my-attention",
         },
         {
           key: "4",
-					image:"../../../static/order/images/housemGgr_@2x.png",
+          image: "../../../static/order/images/housemGgr_@2x.png",
           value: "房屋管理",
-					url:"../../../sub-my/pages/my-house/my-house?isMy=true"
+          url: "../../../sub-my/pages/my-house/my-house?isMy=true",
           // url:"../../../sub-my/pages/personal-center/my-wallet/my-wallet",
         },
-     //    {
-     //      key: "5",
-     //      value: "投诉与建议",
-					// url:"../../../sub-my/pages/personal-center/complaints-and-suggestions/complaints-and-suggestions",
-     //    },
+        //    {
+        //      key: "5",
+        //      value: "投诉与建议",
+        // url:"../../../sub-my/pages/personal-center/complaints-and-suggestions/complaints-and-suggestions",
+        //    },
       ],
-			
+
       orderStatusList: [
         {
           key: "1",
-					image:"../../../static/order/images/wait_pay@2x.png",
+          image: "../../../static/order/images/wait_pay@2x.png",
           value: "待付款",
-					url:"../../../sub-my/pages/my-order/my-order?index=1",
+          url: "../../../sub-my/pages/my-order/my-order?index=1",
         },
         {
           key: "2",
-					image:"../../../static/order/images/inprogress@2x.png",
+          image: "../../../static/order/images/inprogress@2x.png",
           value: "进行中",
-					url:"../../../sub-my/pages/my-order/my-order?index=2",
+          url: "../../../sub-my/pages/my-order/my-order?index=2",
         },
         {
           key: "3",
-					image:"../../../static/order/images/order_done@2x.png",
+          image: "../../../static/order/images/order_done@2x.png",
           value: "已完成",
-					url:"../../../sub-my/pages/my-order/my-order?index=3",
+          url: "../../../sub-my/pages/my-order/my-order?index=3",
         },
         {
           key: "4",
-					image:"../../../static/order/images/evaluate_@2x.png",
+          image: "../../../static/order/images/evaluate_@2x.png",
           value: "评价",
-					url:"../../../sub-my/pages/evaluate/evaluate",
+          url: "../../../sub-my/pages/evaluate/evaluate",
         },
         {
           key: "5",
-					image:"../../../static/order/images/refund_@2x.png",
-          value: "退款",//退款列表
-          url:"../../../sub-my/pages/refund-list/refund-list",
-					// url:"../../../sub-my/pages/my-order/success/success",//订单操作成功的页面
+          image: "../../../static/order/images/refund_@2x.png",
+          value: "退款", //退款列表
+          url: "../../../sub-my/pages/refund-list/refund-list",
+          // url:"../../../sub-my/pages/my-order/success/success",//订单操作成功的页面
           // url:"../../../sub-my/pages/apply-for-refund/apply-for-refund",//申请退款
         },
       ],
     };
   },
-	
-	
-	onShow() {
-	if (!uni.getStorageSync("userId")) {
-		this.userName="点击登录";
-		this.isLogin=false;
-	}else{
-		this.isLogin=true
-		
-		this.UserInfo  =getApp().globalData.userInfo
-		console.log("UserInfo=",this.UserInfo)
-		this.userName=this.UserInfo.name;
-	}
-	},
+
+  onShow() {
+    if (!uni.getStorageSync("userId")) {
+      this.userName = "点击登录";
+      this.isLogin = false;
+    } else {
+      this.isLogin = true;
+
+      this.UserInfo = getApp().globalData.userInfo;
+      console.log("UserInfo=", this.UserInfo);
+      this.userName = this.UserInfo.name;
+    }
+  },
   methods: {
-    toLogin(){
-			if(!this.isLogin){
-				uni.navigateTo({
-					url:'../../login/login'
-				})
-			}
-		},
     handlerToSetUp() {
       console.log("点击了设置");
       uni.navigateTo({
@@ -204,13 +213,13 @@ export default {
     handleSetUp() {
       console.log("点击设置");
       uni.navigateTo({
-				url:"../../../sub-my/pages/set-up/set-up"
+        url: "../../../sub-my/pages/set-up/set-up",
       });
     },
     handlerPersonalData() {
       console.log("编辑个人资料");
       uni.navigateTo({
-				url:"../../../sub-my/pages/edit-personal-data/edit-personal-data"
+        url: "../../../sub-my/pages/edit-personal-data/edit-personal-data",
       });
     },
     handlePersonalItem(item) {
@@ -219,10 +228,12 @@ export default {
         url: item.url,
       });
     },
-    handlerViewAll() {
+    handlerTotalOrder() {
       console.log("点击我的订单全部按钮");
       uni.navigateTo({
-				url:"../../../sub-my/pages/my-order/my-order?index=99"
+        // url:"../../../sub-my/pages/my-order/my-order?index=99"//勿删
+        url: `../../../sub-my/pages/my-order/order-wait-pay/order-wait-pay`,
+        // url:"../../../sub-my/pages/my-order/order-in-progress/order-in-progress"
       });
     },
     handlerOrder(item) {
@@ -231,7 +242,6 @@ export default {
         url: item.url,
       });
     },
-   
   },
 };
 </script>
@@ -240,57 +250,57 @@ export default {
 .my-container {
   display: flex;
   flex-direction: column;
-	position: relative;
-	.backgroundStyle{
-		position: absolute;
-		width: 750rpx;
-		z-index: -1;
-		height: 524rpx;
-		opacity: 0.3;
-		background: #111111;
-	}
-  
-	.my-header {
-		margin-top: 190rpx;
+  position: relative;
+  .backgroundStyle {
+    position: absolute;
+    width: 750rpx;
+    z-index: -1;
+    height: 524rpx;
+    opacity: 0.3;
+    background: #111111;
+  }
+
+  .my-header {
+    margin-top: 190rpx;
     display: flex;
     flex-flow: row nowrap;
     justify-content: space-between;
     align-items: center;
-    padding:0 24rpx 32rpx 32rpx ;
+    padding: 0 24rpx 32rpx 32rpx;
     .avatar-img {
       display: flex;
       flex-flow: row nowrap;
       align-items: center;
       .avatar {
         width: 128rpx;
-        height:128rpx;
+        height: 128rpx;
         border-radius: 50%;
-				border: 4rpx solid #ffffff;
-				box-sizing: border-box;
-				object-fit: cover;
-				opacity: 1;
+        border: 4rpx solid #ffffff;
+        box-sizing: border-box;
+        object-fit: cover;
+        opacity: 1;
         margin-right: 8rpx;
       }
     }
-		.user-name {
-			.name{
-				height: 44rpx;
-				line-height: 44rpx;
-				font-size: 36rpx;
-				font-weight: 500;
-				color: #ffffff;
-			}
-			
+    .user-name {
+      .name {
+        height: 44rpx;
+        line-height: 44rpx;
+        font-size: 36rpx;
+        font-weight: 500;
+        color: #ffffff;
+      }
+
       .edit-info {
-				margin-top: 8rpx;
+        margin-top: 8rpx;
         display: flex;
-				flex-flow: row nowrap;
+        flex-flow: row nowrap;
         align-items: center;
-				height:26rpx;
-				line-height: 26rpx;
-				opacity: 1;
-				font-size: 22rpx;
-				color: rgba(255,255,255,0.80);
+        height: 26rpx;
+        line-height: 26rpx;
+        opacity: 1;
+        font-size: 22rpx;
+        color: rgba(255, 255, 255, 0.8);
         image {
           width: 32rpx;
           height: 32rpx;
@@ -299,11 +309,11 @@ export default {
       }
     }
     .set-up {
-			image{
-				width:60rpx ;
-				height: 60rpx;
-				object-fit: cover;
-			}
+      image {
+        width: 60rpx;
+        height: 60rpx;
+        object-fit: cover;
+      }
     }
   }
 
@@ -313,55 +323,55 @@ export default {
     display: flex;
     background-color: #fff;
     flex-flow: column nowrap;
-		border-radius:24rpx;
+    border-radius: 24rpx;
     .order-header {
       display: flex;
       flex-wrap: row nowrap;
       justify-content: space-between;
       align-items: center;
       padding: 32rpx;
-			.order {
+      .order {
         font-weight: bold;
-				font-size:36rpx;
-				color: #111111;
+        font-size: 36rpx;
+        color: #111111;
       }
       .total {
         display: flex;
         align-items: center;
         font-size: 26rpx;
-				color: #999999;
-				
+        color: #999999;
+
         image {
-					margin-left: 8rpx;
+          margin-left: 8rpx;
           width: 24rpx;
           height: 24rpx;
           object-fit: cover;
         }
       }
     }
-		.order-line{
-			height: 1rpx;
-			background: #f4f4f4;
-			padding: 0 32rpx;
-		}
+    .order-line {
+      height: 1rpx;
+      background: #f4f4f4;
+      padding: 0 32rpx;
+    }
     .order-body {
       display: flex;
       flex-flow: row nowrap;
-			padding:32rpx 40rpx 48rpx;
-			justify-content: space-between;
+      padding: 32rpx 40rpx 48rpx;
+      justify-content: space-between;
       .item {
-				display: flex;
-				flex-flow: column nowrap;
-				align-items: center;
+        display: flex;
+        flex-flow: column nowrap;
+        align-items: center;
         font-size: 22rpx;
-				color: #111111;
-				font-weight: 400;
-				image{
-					width: 64rpx;
-					height: 64rpx;
-					object-fit: cover;
-					margin-bottom: 12rpx;
-				}
+        color: #111111;
+        font-weight: 400;
+        image {
+          width: 64rpx;
+          height: 64rpx;
+          object-fit: cover;
+          margin-bottom: 12rpx;
+        }
       }
       .item:nth-last-child(1) {
         margin-right: 0;
@@ -369,50 +379,49 @@ export default {
     }
   }
 
-	.my-tools{
-		margin: 0 22rpx 0 24rpx;
-		border-radius: 24rpx;
+  .my-tools {
+    margin: 0 22rpx 0 24rpx;
+    border-radius: 24rpx;
     background-color: #ffffff;
-    .header{
+    .header {
       padding: 32rpx;
-			font-size: 36rpx;
-			font-weight: 600;
+      font-size: 36rpx;
+      font-weight: 600;
     }
-		.tool-line{
-			height: 1rpx;
-			background: #f4f4f4;
-			padding: 0 32rpx;
-		}
+    .tool-line {
+      height: 1rpx;
+      background: #f4f4f4;
+      padding: 0 32rpx;
+    }
     .tool-body {
-			.tool-item{
-				display: flex;
-				flex-flow: row nowrap;
-				align-items: center;
-				justify-content: space-between;
-				padding: 26rpx 32rpx;
-				.left{
-					display: flex;
-					flex-flow: row nowrap;
-					align-items: center;
-					font-size: 28rpx;
-					font-weight: 400;
-					color: #333333;
-					image{
-						width: 48rpx;
-						height: 48rpx;
-						object-fit: cover;
-						margin-right: 20rpx;
-					}
-				}
-				.right{
-					image{
-						width: 24rpx;
-						height: 24rpx;
-						object-fit: cover;
-					}
-				}
-			}
-      
+      .tool-item {
+        display: flex;
+        flex-flow: row nowrap;
+        align-items: center;
+        justify-content: space-between;
+        padding: 26rpx 32rpx;
+        .left {
+          display: flex;
+          flex-flow: row nowrap;
+          align-items: center;
+          font-size: 28rpx;
+          font-weight: 400;
+          color: #333333;
+          image {
+            width: 48rpx;
+            height: 48rpx;
+            object-fit: cover;
+            margin-right: 20rpx;
+          }
+        }
+        .right {
+          image {
+            width: 24rpx;
+            height: 24rpx;
+            object-fit: cover;
+          }
+        }
+      }
     }
   }
 }

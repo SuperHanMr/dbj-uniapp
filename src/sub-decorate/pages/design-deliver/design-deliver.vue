@@ -1,8 +1,5 @@
 <template>
   <view class="design-deliver">
-    <!-- <graphic-model v-if="message.title === '三维图'"> </graphic-model>
-    <plan-check v-if="message.title === '平面图'"> </plan-check>
-    <construction-plans v-if="message.title === '施工图'"> </construction-plans> -->
     <view class="opt flex-row" @click="goEdit">
       <image class="edit"></image>
       <view>申请修改</view>
@@ -14,9 +11,6 @@
 </template>
 
 <script>
-  // import ConstructionPlans from "./construction-plans.vue"
-  // import GraphicModel from "./graphic-model.vue"
-  // import PlanCheck from "./plan-check.vue"
   import Tabs from "../../components/tabs/tabs.vue"
   import Pictures from "./pictures.vue"
   import { confirmStageDeliver, reviseStageDeliver, designListByQuery } from "../../../api/decorate.js"
@@ -24,7 +18,7 @@
     components: {Tabs, Pictures},
     data() {
       return {
-        message: getApp().globalData.message || { title: "施工图", serveCardId: 34},
+        message: getApp().globalData.decorateMsg,
         imgList: [],
         items: ["平面图", "施工图", "全景图", "效果图"],
         current: "平面图",
@@ -33,15 +27,15 @@
     },
     onShow() {
       uni.setNavigationBarTitle({
-          title: this.message.title
+          title: this.message.stageName
       });
       this.getDataList()
     },
     methods: {
       getDataList() {
-        designListByQuery(this.message.serveCardId).then(data => {
+        designListByQuery(this.message.serveId).then(data => {
           this.originList = data
-          this.filterImgList(this.message.title)
+          this.filterImgList(this.message.stageName)
         })
       },
       filterImgList(title) {
@@ -64,11 +58,11 @@
       confirm() {
         uni.showModal({
           title: "",
-          content: "是否确认该三维设计图?",
+          content: `是否确认该${this.message.stageName}图?`,
           confirmText: "确定",
           success: (res) => {
             if (res.confirm) {
-              confirmStageDeliver(this.message.serveCardId).then(data => {
+              confirmStageDeliver(this.message.serveId).then(data => {
                 console.log(data)
               })
             } else {
@@ -84,7 +78,7 @@
           content: "提交修改反馈前，请先与设计师沟通需要修改的内容",
           success: (res) => {
             if (res.confirm) {
-              reviseStageDeliver(this.message.serveCardId).then(data => {
+              reviseStageDeliver(this.message.serveId).then(data => {
                 console.log(data)
               })
             } else {

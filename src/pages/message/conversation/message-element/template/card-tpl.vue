@@ -41,13 +41,12 @@ export default {
   },
   computed: {
     data() {
-      return this.message.payloadData || {};
+      return this.message.payloadData.params || {};
     },
     icon() {
       return this.template.icon;
     },
     title() {
-      console.log(this.template, this.data, 6666)
       return compile(this.template.title)(this.data);
     },
     tip() {

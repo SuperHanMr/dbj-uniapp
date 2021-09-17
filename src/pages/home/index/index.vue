@@ -22,27 +22,28 @@
         class=""
       >
       </view>
-      <button
-        type="default"
-        open-type="getPhoneNumber"
-        @getphonenumber="decryptPhoneNumber"
-      >获取手机号</button>
 
       <button
         style="width: 50%;margin-top: 20rpx;"
         type="default"
         @click="toNextPage"
       >去封装好的列表页</button>
-      <button
-        style="width: 50%;margin-top: 20rpx;"
-        type="default"
-        @click="toCalebdar"
-      >去日历</button>
+
       <button
         style="width: 50%;margin-top: 20rpx;"
         type="default"
         @click="toLiveDecorate"
       >去装修现场</button>
+      <button
+        style="width: 50%;margin-top: 20rpx;"
+        type="default"
+        @click="toShop"
+      >去商家入驻</button>
+			<button
+			  style="width: 50%;margin-top: 20rpx;"
+			  type="default"
+			  @click="toGoodsApply"
+			>去要货申请</button>
       <swiper
         class="banner-content"
         :indicator-dots="true"
@@ -112,17 +113,6 @@ export default {
     };
   },
   onLoad() {
-    wx.login({
-      success: (res) => {
-        if (res.code) {
-          //微信登录成功 已拿到code
-          // ...doSomething
-          console.log(res);
-        } else {
-          console.log("登录失败！" + res.errMsg);
-        }
-      },
-    });
     let defaultHouse = {
       name: "北京市朝阳区",
       provinceId: 1,
@@ -131,7 +121,6 @@ export default {
     };
     uni.setStorageSync("currentHouse", JSON.stringify(defaultHouse));
     this.citydata = defaultHouse.name;
-
     this.getHomeList();
   },
   onShow() {
@@ -142,14 +131,21 @@ export default {
     this.reloadData();
   },
   methods: {
-    decryptPhoneNumber(e) {
-      console.log(e);
+    toShop() {
+      uni.navigateTo({
+        url: "/sub-other/pages/merchant-entry/merchant-entry",
+      });
     },
     toLiveDecorate() {
       uni.navigateTo({
         url: "/sub-home/pages/lives-decorate/lives-decorate",
       });
     },
+		toGoodsApply(){
+			uni.navigateTo({
+				url:'../../../sub-decorate/pages/require-pay/require-pay'
+			})
+		},
     toPay() {
       let openId = uni.getStorageSync("openId");
       orderPay({
@@ -166,11 +162,6 @@ export default {
             console.log(e);
           },
         });
-      });
-    },
-    toCalebdar() {
-      uni.navigateTo({
-        url: "/sub-decorate/pages/calendar/calendar",
       });
     },
     onLoadMore() {

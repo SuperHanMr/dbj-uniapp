@@ -22,6 +22,11 @@ export function getHouse(params) {
 	return request.get("/customer/app/estate/queryEstateDetail/" + params)
 }
 
+//获取房屋
+export function getHouseStep(params) {
+	return request.get("/pm/app/project/getPurchasedFlag?nodeType=4&estateId=" + params)
+}
+
 //编辑房屋
 export function editHouse(params) {
 	return request.put("/customer/app/estate/updateEstate", params)
@@ -72,6 +77,11 @@ export function getMsgList(params) {
 	return request.get("/pm/app/specialMsg/all?projectId=" + params)
 }
 
+//获取装修消息数量
+export function getMsgNum(params) {
+	return request.get("/pm/app/specialMsg/count?projectId=" + params)
+}
+
 //获取抢单审核详情
 export function getGrabDetail(params) {
 	return request.get("/pm/app/snatch/server/" + params)
@@ -107,6 +117,11 @@ export function getCheckResultDetail(params) {
 	return request.get("/pm/app/user/inspectEstate/report/" + params)
 }
 
+//获取施工交付内容
+export function getComplateDetail(params) {
+	return request.get(`/pm/app/worker/decoration/trend/getCompletionLogById/${params.projectId}/${params.serveId}`)
+}
+
 //确认验房验房交付
 export function confirmCheckResult(params) {
 	return request.post("/pm/app/user/inspectEstate/confirmReport/" + params)
@@ -131,7 +146,8 @@ export function deleteFriends(params) {
 
 //SKU商品表格
 export function getProductsSkusPage(params) {
-	return request.get("/product/app/products/skus/page", params)
+	const str = objectToUrlString(params)
+	return request.get("/product/app/products/skus/page?" + str)
 }
 
 //获取服务类默认商品
@@ -215,9 +231,19 @@ export function requireList(params) {
 }
 //APP-要货-要货记录详情
 export function requireListDetail(params) {
-	return request.get("/order-center/app/goods/require/detail", params)
+	return request.get("/order-center/app/goods/require/detail", { params })
 }
 // 查看线上交底
 export function serverInfo(serveId) {
 	return request.get(`/pm/app/serve/design/serverInfo/${serveId}`)
 }
+// C端APP-要货-用户确认
+export function requireConfirm(params) {
+	return request.put(`/order-center/app/goods/require/confirm`, params)
+}
+
+// app支付运费/搬运费
+export function payFreight(params) {
+	return request.post(`/order-center/app/order/payFreight`, params)
+}
+

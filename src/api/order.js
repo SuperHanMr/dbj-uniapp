@@ -43,11 +43,11 @@ export function getRefundDetail(params) {
 
 //我的-订单-整个订单申请退款
 export function wholeOrderApplyForRefund(params) {
-	return request.post(`/order-center/app/order/overall/applyRefund`, params)
+	return request.post(`/order-center/app/order/overall/applyRefund`, { params })
 }
 //我的-订单-部分商品申请退款
 export function particalOrderApplyForRefund(params) {
-	return request.post(`/order-center/app/order/overall/applyRefund`, params )
+	return request.post(`/order-center/app/order/overall/applyRefund`, { params })
 }
 
 //我的-订单-申请退款-申请退款原因

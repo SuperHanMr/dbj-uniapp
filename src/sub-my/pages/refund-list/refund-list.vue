@@ -41,37 +41,17 @@
 				</view>		
 			</view>
 			
-		
-			<view class="refund-status refundInProgress" v-if="item.status == 0 || item.status == 1 ">
-				<text style="margin-right: 16rpx;">退款中</text>
-				<text>
+			<view class="refund-status" :class="{refundInProgress:item.status == 0 || item.status == 1 ,'refund-success':item.status == 2,'refund-close':item.status == 3 || item.status == 4}">
+				<text v-if="item.status == 0 || item.status == 1" style="margin-right: 16rpx;">退款中</text>
+				<text v-if="item.status == 2" style="margin-right: 16rpx;">退款成功</text>
+				<text v-if="item.status == 0 || item.status == 1 || item.status == 2">
 					<text style="font-size:26rpx;">￥</text>
 					<text style="font-size:40rpx;">{{handlePrice(item.refundAmount)[0]}}.</text>
 					<text style="font-size:26rpx;">{{handlePrice(item.refundAmount)[1]}}</text>
 				</text>
+				<text v-if="item.status == 3 || item.status == 4" style="margin-right: 16rpx;">退款关闭</text>
+				<text v-if="item.status == 3 || item.status == 4" style="color: #333333; font-weight: 1000">退款已关闭</text>
 			</view>
-			
-			<view class="refund-status refund-success" v-if="item.status == 2">
-				<text  style="margin-right: 16rpx;">退款成功</text>
-				<text>
-					<text style="font-size:26rpx;">￥</text>
-					<text style="font-size:40rpx;">{{handlePrice(item.refundAmount)[0]}}.</text>
-					<text style="font-size:26rpx;">{{handlePrice(item.refundAmount)[1]}}</text>
-				</text>
-			</view>
-			
-			<view class="refund-status refund-close" v-if="item.status == 3 || item.status == 4">
-				<text style="margin-right: 16rpx;">退款关闭</text>
-				<text  style="color: #333333; font-weight: 1000">退款已关闭</text>
-			</view>
-			
-			<view class="refund-status refund-fail" v-if="item.status == 5">
-				<text style="margin-right: 16rpx;">退款失败</text>
-				<text  style="font-weight: 1000">退款账户异常</text>
-			</view>
-			
-			
-			
 		  
 			<view class="footer">
 				<view class="button-container">
@@ -353,13 +333,6 @@
 		background: #F7F7F7;
 		color: #808080;
 		padding: 20rpx 24rpx;
-		line-height: 40rpx;
-	}
-	.refund-fail{
-		background: #FEF7F8;
-		color: #FF3347;
-		border: 2rpx solid #FFD4D8;
-		padding: 20rpx 24rpx ;
 		line-height: 40rpx;
 	}
 	

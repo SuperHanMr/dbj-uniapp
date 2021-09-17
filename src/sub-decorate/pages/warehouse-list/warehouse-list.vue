@@ -16,11 +16,7 @@
 					@scroll="onScroll" @refresherrefresh="onRefresh" @scrolltolower="onLoadMore">
 					<warehouse-item v-for="(item,index) in currentList" :item="item" :key="item.id" @detail="toDetail"
 						@refund="toRefund" @confirmGoods="onConfirmGoods" :showRecived="currentIndex==1"
-						:showBacking="currentIndex==3" :showSubCount="currentIndex!=3" :showDetail="currentIndex==3"
-						:showSubPrice="currentIndex!=3"></warehouse-item>
-					<view style="height: 150rpx;">
-
-					</view>
+						:showBacking="currentIndex==3" :showDetail="currentIndex==3"></warehouse-item>
 				</scroll-view>
 			</swiper-item>
 		</swiper>
@@ -146,14 +142,6 @@
 				if (this.lastId[this.currentIndex] == '-1') {
 					return;
 				}
-				if (isRefresh && this.triggered) {
-					return;
-				}
-				if (isRefresh) {
-					this.triggered = true
-				} else {
-					this.triggered = false;
-				}
 				let params = {};
 				params.projectId = this.projectId;
 				params.rows = 10;
@@ -167,16 +155,8 @@
 							this.triggered = false;
 						}
 						if (e.length) {
-							this.lastId[this.currentIndex] = e[e.length - 1].orderId;
-							e.forEach(item => {
-								if (item.stockAppVOS && item.stockAppVOS.length) {
-									item.stockAppVOS.forEach(sub=>{
-										sub.number=sub.stockNumber;
-									})
+							this.lastId[this.currentIndex] = e[e.length - 1].id;
 
-								}
-							})
-							console.log(e)
 							this.list0 = this.list0.concat(e);
 						} else {
 							if (this.lastId[this.currentIndex]) {
@@ -184,10 +164,9 @@
 							}
 						}
 					}).catch(e => {
-						console.log('!!!!!!!!!!~~~~~~~~~~~~~');
-						console.log('!!!!!!!!!!');
+						if (isRefresh) {
 							this.triggered = false;
-						
+						}
 					})
 				} else if ([1, 2].includes(this.currentIndex)) {
 					params.status = this.currentIndex + 1;
@@ -219,12 +198,7 @@
 							this.triggered = false;
 						}
 						if (e.length) {
-							e.forEach(e => {
-								e.stockAppVOS = e.detailAppVOS
-								e.detailAppVOS = ''
-							})
 							this.list3 = this.list3.concat(e);
-							console.log(this.list3)
 						} else {
 							if (this.lastId[this.currentIndex]) {
 								this.lastId[this.currentIndex] = '-1';
@@ -241,8 +215,7 @@
 				this.getList(false)
 			},
 			onRefresh() {
-				// this.triggered = true;
-
+				this.triggered = true;
 				this.lastId[this.currentIndex] = '';
 				if (this.currentIndex == 0) {
 					this.list0 = [];
@@ -265,8 +238,7 @@
 <style lang="scss" scoped>
 	.fill {
 		width: 100%;
-		height: 100%;
-		overflow: hidden;
+		min-height: 100%;
 		display: flex;
 		flex-direction: column;
 	}
@@ -327,7 +299,6 @@
 
 	.swiper {
 		flex: 1;
-		height: 100%;
 		display: flex;
 		flex-direction: column;
 	}

@@ -42,8 +42,8 @@
     },
     onLoad(option) {
       // const { serverCardId } = getApp().globalData.decorateMsg
-      this.serverCardId = option.serverCardId || getApp().globalData.decorateMsg.serverCardId
-      console.log(">>>>>>>>>>>>", option)
+      this.serverCardId = option.serverCardId || getApp().globalData.decorateMsg.serveId
+      // console.log(">>>>>>>>>>>>", option)
     },
     onShow() {
       this.getServiceTimeMsg()

@@ -78,7 +78,7 @@
       // width: 328rpx;
       // height: 216rpx;
       // opacity: 1;
-      background: #ffffff;
+      // background: #ffffff;
       // border: 1px solid #f5f6f6;
       // border-radius: 12rpx;
       // margin-top: 32rpx;

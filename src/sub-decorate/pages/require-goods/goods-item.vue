@@ -1,15 +1,14 @@
 <template>
 	<view>
 		<view class="goods-row">
-			<image class="img" src="item.src" mode=""></image>
+			<image class="img" :src="item.imgUrl" mode=""></image>
 			<view class="content">
 				<view class="title">
-					{{item.title}}
-
+					{{item.fullName}}
 				</view>
 				<view class="sub">
-					{{item.sub}}
-				</view>
+				已购买	{{item.number}} 剩余{{item.stockNumber}}
+ 				</view>
 				<view class="num-input">
 					<custom-number-box @change="onChange" :onlyShowAdd="true" :value="value"></custom-number-box>
 				</view>

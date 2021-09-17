@@ -1,9 +1,9 @@
 {
   "group_questionnaire_message": {
     "template": "card",
-    "icon": "https://ali-image.dabanjia.com/static/mp/dabanjia/images/message/ic_customer_service@2x.png",
     "title": "装修需求问卷",
     "tip": "温馨提示：你好，${name}，为了更好的了解您的需求",
+    "icon": "https://ali-image.dabanjia.com/static/mp/dabanjia/images/message/ic_customer_service@2x.png",
     "buttons": [
       {
         "title": "查看详情1",
@@ -14,5 +14,25 @@
         "href": ""
       }
     ]
+  },
+  "sys_serve_record_new": {
+    "template": "form",
+    "title": "新的服务订单？",
+    "tip": "xxxxxxxxx",
+    "formItems": [
+      {
+        "label": "用户姓名",
+        "content": "${customerNickName}${customerGender}"
+      },
+      {
+        "label": "用户地址",
+        "content": "${estate}"
+      },
+      {
+        "label": "服务名称",
+        "content": "${serveTypeName}"
+      }
+    ],
+    "buttons": []
   }
 }

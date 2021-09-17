@@ -26,6 +26,7 @@ let failRequestList = [];
 let retryMap = new Map();
 
 function retryAllFailRequest() {
+	console.log('retry!!!!!!!!!!!!!!!!!!!!');
 	failRequestList.forEach(info => {
 		//每个请求最多重试3次
 		let requestKey = getRequestKey(info.config);
@@ -101,9 +102,16 @@ instance.interceptors.response.use(
 		if (error.response && error.response.status === 401) {
 			//刷新token
 			if (!uni.getStorageSync("userId")) {
-				uni.navigateTo({
-					url: "/pages/login/login",
+				uni.showModal({
+					title: '提示',
+					content: '用户信息已过期,请重新登录',
+					success: function (res) {
+						uni.navigateTo({
+							url: "/pages/login/login",
+						});
+					}
 				});
+
 			} else {
 				refrishToken();
 			}
@@ -122,8 +130,8 @@ instance.interceptors.response.use(
 				content: '用户信息已过期,请重新登录',
 				success: function (res) {
 					uni.navigateTo({
-						url: "/src/pages/login/login.vue"
-					})
+						url: "/pages/login/login",
+					});
 				}
 			});
 		}
