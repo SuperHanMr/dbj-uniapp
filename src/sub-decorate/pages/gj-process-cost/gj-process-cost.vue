@@ -119,7 +119,7 @@
         this.dataOrigin.artificial.categoryList.forEach((item, i) => {
           item.itemList.forEach((it, j) => {
             this.shopping.artificial.push(it)
-            this.countPrice += it.price
+            this.countPrice += it.price / 100
           })
         })
         // 再计算辅材费用
@@ -127,7 +127,7 @@
           item.itemList.forEach((it, j) => {
             if (this.checkedIds.includes(it.productId)) {
               this.shopping.material.push(it)
-              this.countPrice += it.price
+              this.countPrice += it.price / 100
             }
           })
         })
