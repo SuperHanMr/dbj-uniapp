@@ -1,6 +1,6 @@
 <template>
   <view class="check-result">
-    <result-content :scrollTop='scrollTop'></result-content>
+    <result-content :scrollTop='scrollTop' :serverId='serverId'></result-content>
     <bottom-btn style="width: 100%;" :showDefaultBtn="false">
       <button class="add-btn" @click="submit">确认验房结果</button>
     </bottom-btn>
@@ -19,15 +19,19 @@
     },
     data(){
       return{
-        scrollTop:0
+        scrollTop:0,
+        serverId:0
       }
+    },
+    mounted(){
+      this.serverId = getApp().globalData.decorateMsg.serverId
     },
     onPageScroll(scrollTop){
       this.scrollTop = scrollTop.scrollTop   
     },
     submit() {
       // console.log(1231)
-      confirmCheckResult(30).then(res => {
+      confirmCheckResult(this.serverId).then(res => {
         uni.navigateBack({})
       })
     }

@@ -1,38 +1,47 @@
 <template>
   <view class="service-dismantle">
-    <view class="item">
+    <view class="item" v-for="item of list">
       <view class="item-top">
-        <text class="name">工艺项名称</text>
-        <text class="time">2021-08-19 20:20:00</text>
+        <text class="name">{{item.workItemName}}</text>
+        <text class="time">{{item.completionTime|formatDate}}</text>
       </view>
       <view class="image-list">
+        <imagePreview :list="item.fileUrls" :row="1"></imagePreview>
       </view>
     </view>
   </view>
 </template>
 
 <script>
+  import {getComplateDetail} from '../../../api/decorate.js'
   import imagePreview from '../../../components/image-preview/image-preview.vue'
+  import { formatDate } from '../../../utils/common.js'
   export default{
     components:{
       imagePreview
     },
+    props:{
+      serveId:0,
+      projectId:0
+    },
     data(){
       return{
-        
+        list:[]
       }
     },
+    filters:{
+      formatDate
+    },
+    mounted(){
+      this.getComplateDetail()
+    },
     methods:{
-      previewImage(url,index){
-        let urls = []
-        this.list.forEach(item=>{
-          urls.push(item.url)
+      getComplateDetail(){
+        getComplateDetail({serveId:5665||this.serveId,projectId:40||this.projectId}).then(res=>{
+          console.log(res)
+          this.list = res
         })
-        uni.previewImage({
-        	urls: urls,
-        	current: index
-        });
-      },
+      }
     }
   }
 </script>
