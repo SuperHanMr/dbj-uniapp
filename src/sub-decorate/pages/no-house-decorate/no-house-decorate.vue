@@ -269,11 +269,13 @@
         this.$refs.level.close()
       },
       getServiceSku() {
+        let defaultHouse = JSON.parse(uni.getStorageSync("currentHouse"))
+        // console.log("defaultHouse", defaultHouse)
         getServiceSku({
-          province_id: 1,
-          city_id: 1,
-          area_id: 1,
-          serveTypes: [1, 2, 4]
+          province_id: this.currentHouse.provinceId || defaultHouse.provinceId,
+          city_id: this.currentHouse.cityId || defaultHouse.cityId,
+          area_id: this.currentHouse.areaId || defaultHouse.areaId,
+          // serveTypes: [1, 2, 4]
         }).then(data => {
           const {
             categoryTypeId,
