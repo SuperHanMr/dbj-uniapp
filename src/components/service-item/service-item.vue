@@ -12,15 +12,15 @@
 		</view>
 		<view class="gc" v-if="(serviceData.status >= 2 || (serviceData.status == 0 && serviceData.grepOrderStatus === 3)) && open">
 			<view class="procsss flex-row-bet">
-				<view class="s0">{{serviceData.serveRoleName || "后端没返回字段bit it"}}</view>
+				<view class="s0">{{serviceData.serveRoleName || "后端没返回字段"}}</view>
 				<view class="s1 flex-row-start">
-					<view>{{serviceData.serveName}}</view>
+					<view>{{serviceData.serveName || "后端没返回字段"}}</view>
 					<image src="http://dbj.dragonn.top/static/mp/dabanjia/images/decorate/ic_more.svg"></image>
 				</view>
 			</view>
 			<view class="procsss flex-row-bet">
 				<view class="s0">进度</view>
-				<view class="s1 flex-row-start">
+				<view class="s1 flex-row-start" @click="goTimeLine">
 					<view>{{serviceData.processNumerator}}/{{serviceData.processDenominator}}</view>
 					<image src="http://dbj.dragonn.top/static/mp/dabanjia/images/decorate/ic_more.svg"></image>
 				</view>
@@ -54,7 +54,22 @@
 		methods:{
 			openProcsss() {
 				this.open = !this.open
-			}
+			},
+      goTimeLine() {
+        uni.navigateTo({
+          url: `/sub-decorate/pages/time-line/time-line?id=${this.serviceData.serveCardId}`
+        })
+      },
+      goProcessCost() {
+        uni.navigateTo({
+          url: `/sub-decorate/pages/gj-process-cost/gj-process-cost?serveCardId&=${this.serviceData.serveCardId}&estateId=${this.serviceData.estateId}&serviceType=${this.serviceData.serviceType}&projectId=${this.serviceData.projectId}&customerId=${this.serviceData.customerId}`
+        })
+        // this.serveCardId = serveCardId || option.serveCardId
+      // this.estateId = estateId || option.estateId
+      // this.serviceType = serviceType || option.serviceType 
+      // this.projectId = projectId || option.projectId 
+      // this.customerId = customerId || option.customerId 
+      }
 		},
     filters:{
       filterStatusName(data) {

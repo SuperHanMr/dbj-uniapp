@@ -1,9 +1,9 @@
 <template>
   <view class="time-line">
-    <view class="item" v-for="item of list" :key='item.operateTime'>
+    <view class="item" v-if="list.length>0" v-for="item of list" :key='item.operateTime'>
       <view class="rightContent">
         <view class="text">{{item.name}}</view>
-        <view class="time">{{item.operateTime}}</view>
+        <view class="time">{{item.operateTime |formatDate}}</view>
       </view>
       <view class="line">
         <view class="out">
@@ -15,6 +15,7 @@
 
 <script>
   import {getLogs} from '../../../api/decorate.js'
+  import { formatDate } from '@/utils/common.js'
   export default {
     data() {
       return { 
@@ -22,11 +23,15 @@
       }
     },
     onLoad(e) {
-      this.getData()
+      this.getData(e.id)
+    },
+    filters:{
+      formatDate
     },
     methods: {
-      getData() {
-        getLogs(34).then(res=>{
+      getData(id) {
+        getLogs(id).then(res=>{
+          
           this.list = res
         })
       }

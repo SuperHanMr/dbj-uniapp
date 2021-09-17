@@ -735,7 +735,7 @@
         {
           "path": "pages/time-line/time-line",
           "style": {
-            "navigationBarTitleText": "",
+            "navigationBarTitleText": "服务进度",
             "enablePullDownRefresh": false
           }
         },
@@ -780,6 +780,20 @@
           "path": "pages/gj-process-cost/gj-process-cost",
           "style": {
             "navigationBarTitleText": "管家工序费",
+            "enablePullDownRefresh": false
+          }
+        },
+        {
+          "path": "pages/beatiful-report/beatiful-report",
+          "style": {
+            "navigationBarTitleText": "颜值报告",
+            "enablePullDownRefresh": false
+          }
+        },
+        {
+          "path": "pages/custom-report/custom-report",
+          "style": {
+            "navigationBarTitleText": "自定义报告",
             "enablePullDownRefresh": false
           }
         }
