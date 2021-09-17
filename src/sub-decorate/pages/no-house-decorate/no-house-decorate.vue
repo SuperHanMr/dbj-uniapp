@@ -403,7 +403,7 @@
               level: 0, //"int //等级  0中级  1高级 2特级  3钻石",
               storeId: this.design.storeId || 0, //"long //店铺id",
               storeType: 0, //"int //店铺类型 0普通 1设计师",
-              number: 1, //"double //购买数量",
+              number: this.currentHouse.insideArea, //"double //购买数量",
               params: "", //string //与订单无关的参数 如上门时间 doorTime"
             })
           }
@@ -416,7 +416,7 @@
               // level: 0, //"int //等级  0中级  1高级 2特级  3钻石",
               storeId: this.actuary.storeId || 0, //"long //店铺id",
               storeType: 0, //"int //店铺类型 0普通 1设计师",
-              number: 1, //"double //购买数量",
+              number: this.currentHouse.insideArea, //"double //购买数量",
               params: "", //string //与订单无关的参数 如上门时间 doorTime"
             })
           }
@@ -429,7 +429,7 @@
               // level: 0, //"int //等级  0中级  1高级 2特级  3钻石",
               storeId: this.checkHouse.storeId || 0, //"long //店铺id",
               storeType: 0, //"int //店铺类型 0普通 1设计师",
-              number: 1, //"double //购买数量",
+              number: this.currentHouse.insideArea, //"double //购买数量",
               params: "", //string //与订单无关的参数 如上门时间 doorTime"
             })
           }

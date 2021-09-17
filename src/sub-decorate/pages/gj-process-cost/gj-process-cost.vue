@@ -58,6 +58,7 @@
         roleType,
         customerId
       } = getApp().globalData.decorateMsg
+      this.serveCardId = serveCardId
       this.estateId = estateId || option.estateId
       this.serviceType = serviceType || option.serviceType 
       this.projectId = projectId || 0
@@ -68,6 +69,8 @@
     },
     data() {
       return {
+        serveCardId: null,
+        serviceType: null,
         dataOrigin: {},
         checkedIds: [],
         shopping: {
@@ -134,8 +137,8 @@
       },
       getDataList() {
         sellList({
-          serveId: 1,
-          type: 1
+          serveId: this.serveCardId,
+          type: this.serviceType,
         }).then(data => {
           this.dataOrigin = data
           this.dataOrigin.artificial.categoryList.forEach(t => {
