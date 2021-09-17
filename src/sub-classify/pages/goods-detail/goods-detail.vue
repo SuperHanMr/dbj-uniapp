@@ -4,8 +4,8 @@
         + houseId + '&&wx-defaultHouseId=' + goodDefaultAddress.id  + '&&wx-defaultProvinceId=' + goodDefaultAddress.provinceId
         + '&&wx-defaultCityId=' + goodDefaultAddress.cityId + '&&wx-defaultAreaId=' + goodDefaultAddress.areaId 
         + '&&wx-defaultLocationName=' + goodDefaultAddress.locationName + '&&wx-defaultHousingEstate=' + goodDefaultAddress.housingEstate
-        + '&&wx-defaultHousingEstateId=' + goodDefaultAddress.housingEstateId
-        + '&&wx-token=' + token + '&&wx-userId' + userId + '&&wx-deviceId' + deviceId">
+        + '&&wx-defaultHousingEstateId=' + goodDefaultAddress.housingEstateId + '&&wx-isDisabled=' + isDisabled
+        + '&&wx-token=' + token + '&&wx-userId=' + userId + '&&wx-deviceId=' + deviceId">
        </web-view>
   </view>
 </template>
@@ -21,14 +21,19 @@
         defaultHouseId: '',
         houseId: '',
         goodDefaultAddress: '',
+        isDisabled: false,
         token: getApp().globalData.token
       }
     },
     onShow() {
-      this.baseUrl = this.ENV.VUE_APP_BASE_H5
-      // this.baseUrl = "https://local.meiwu365.com"
-      this.goodId = uni.getStorageSync('goodId')
-      console.log(this.goodId, 888)
+      // this.baseUrl = this.ENV.VUE_APP_BASE_H5
+      this.baseUrl = "https://local.meiwu365.com" 
+      if(uni.getStorageSync('goodId')) {
+        this.goodId = uni.getStorageSync('goodId')
+      }else if( uni.getStorageSync('fromShopCart')) {
+         this.goodId = JSON.parse(uni.getStorageSync('fromShopCart')).skuId
+         this.isDisabled = JSON.parse(uni.getStorageSync('fromShopCart')).isDisabled
+      }
       this.userId = uni.getStorageSync('userId')
       this.defaultHouseInfo = uni.getStorageSync('currentHouse')
       
@@ -41,7 +46,6 @@
         housingEstate: JSON.parse(this.defaultHouseInfo).housingEstate,
         housingEstateId: JSON.parse(this.defaultHouseInfo).housingEstateId
       }
-      console.log(this.goodDefaultAddress, 999)
         uni.getSystemInfo({
           success:res => {
             this.deviceId = res.deviceId
