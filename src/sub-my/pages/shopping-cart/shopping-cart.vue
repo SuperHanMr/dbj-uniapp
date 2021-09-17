@@ -1,11 +1,11 @@
 <template>
 	<view class="cartContainer">
 		<view class="noGoods" v-if="!shopList.length&&!disabledSkuList.length">
-			<image src="../../../static/shopping-cart/blank_ic@2x.png" class="noGoodsImg"></image>
+			<image src="http://dbj.dragonn.top/static/mp/dabanjia/images/my/blank_ic%402x.png" class="noGoodsImg"></image>
 			<view class="noGoodsText">
 				购物车空空如也，快去逛逛吧～
 			</view>
-			<button type="primary" class="goShopping">
+			<button type="primary" class="goShopping" @click="toShoppingMall">
 				<text class="text">去逛逛</text>
 			</button>
 		</view>
@@ -24,7 +24,7 @@
 			  >
 				</uni-popup-dialog>    
 			</uni-popup>
-			<view class="header">
+			<view class="header" v-if="shopList.length">
 				<view class="left"></view>
 				<view class="manage" @click="isManage=!isManage">{{isManage?"管理":"完成"}}</view>
 			</view>
@@ -226,8 +226,8 @@
 			}
 		},
 		mounted(){
-			// this.userId = uni.getStorageSync("userId")
-			this.userId = 123
+			this.userId = uni.getStorageSync("userId")
+			// this.userId = 123
 			this.requestPage()
 		},
 		computed:{
@@ -296,16 +296,19 @@
 					this.selectedIndex = data.skuAndProperties.findIndex(item => item.propValueIds === this.defaultSpecIds)
 				})
 			},
+			toShoppingMall(){
+				uni.navigateTo({
+					url: '/sub-classify/pages/classify/index/index'
+				})
+			},
 			toShopDetail(){
 				console.log('跳转到店铺详情页')
 			},
 			toGoodsDetail(skuId,isDisabled){
-				// uni.navigateTo({
-				// 	url: '/sub-classify/pages/goods-detail/goods-detail',
-				// 	success: (res) => {
-				// 		isDisabled?res.eventChannel.emit('acceptDataFromOpenerPage',{skuId,isDisabled:true}):res.eventChannel.emit('acceptDataFromOpenerPage',{skuId,isDisabled:false})
-				// 	}
-				// })
+				isDisabled ? uni.setStorageSync( 'fromShopCart', {skuId,isDisabled:true} ): uni.setStorageSync( 'fromShopCart', {skuId,isDisabled:false} )
+				uni.navigateTo({
+					url: '/sub-classify/pages/goods-detail/goods-detail'
+				})
 			},
 			requestPage(){
 				getShoppingCartInfo(this.userId).then(data => {

@@ -24,7 +24,7 @@
           <view class="price-count">
             <view class="price">
               <text>￥</text>
-              <text>{{item.price}}</text>
+              <text>{{item.price / 100}}</text>
             </view>
             <view class="count">共{{item.count}}件</view>
           </view>

@@ -9,7 +9,7 @@
 				<text>x {{content.insideArea}}m²</text>
 			</view>
 			<view class="price">
-				<text class="t1">￥</text><text class="t2">{{content.price}}</text><text class="t3">/m²</text>
+				<text class="t1">￥</text><text class="t2">{{content.price/100}}</text><text class="t3">/m²</text>
 			</view>
 		</view>
 	</view>

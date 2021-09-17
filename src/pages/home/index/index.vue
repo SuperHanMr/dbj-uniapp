@@ -228,8 +228,9 @@ export default {
               res.longitude,
             success(re) {
               if (re.statusCode === 200) {
-                console.log(re.data);
-                let addressComponent = re.data.regeocode.addressComponent;
+                console.log("???????");
+                console.log(re);
+                let addressComponent = re.data.result.addressComponent;
                 vm.getAreaId(addressComponent.adcode);
               } else {
                 console.log("获取信息失败，请重试！");
