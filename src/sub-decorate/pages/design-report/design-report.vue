@@ -16,6 +16,9 @@
         <view>立即查看</view>
         <image src="http://dbj.dragonn.top/static/mp/dabanjia/images/decorate/ic_more.svg"></image>
       </view>
+    </view>
+    <view class="card flex-row-bet">
+      <view class="t">设计报告详情</view>
       <view class="lookDetail flex-row-start" @click="goDetail">
         <view>立即查看</view>
         <image src="http://dbj.dragonn.top/static/mp/dabanjia/images/decorate/ic_more.svg"></image>
@@ -58,11 +61,11 @@
           success: (res) => {
             if (res.confirm) {
               console.log("点击了确认")
-              // confirmDesignReport(this.decorateMsg.serveId).then(data => {
-              //   uni.navigateTo({
-              //     url: `/sub-dec`
-              //   })
-              // })
+              confirmDesignReport(this.decorateMsg.serveId).then(data => {
+                uni.navigateTo({
+                  url: `/pages/decorate/index/index`
+                })
+              })
             } else {
               console.log("点击了取消")
             }
@@ -166,6 +169,7 @@
     background: #f7f7f7;
     border-radius: 24rpx;
     padding: 30rpx 16rpx 30rpx 36rpx;
+    margin-bottom: 24rpx;
   }
 
   .t {
