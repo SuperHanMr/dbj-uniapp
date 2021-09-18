@@ -44,9 +44,13 @@
       this.getMyDesignServe()
     },
     watch:{
-      serverId(){
-        this.getMyDesignServe()
-      }
+        serverId:{
+          handler:function(){
+            this.getMyDesignServe()
+          },
+          immediate: true
+        }
+      
     },
     methods:{
       getMyDesignServe(){
