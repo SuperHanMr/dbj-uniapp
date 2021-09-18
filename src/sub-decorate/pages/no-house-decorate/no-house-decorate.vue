@@ -54,7 +54,7 @@
   import ChangeLevel from "../../components/change-level/change-level.vue"
   import {
     queryEstates,
-    getProductsSkusPage,
+    // getProductsSkusPage,
     getServiceSku
   } from "../../../api/decorate.js"
 
@@ -82,51 +82,9 @@
     data() {
       return {
         dataList: [],
-        design: {
-          // title: "设计服务",
-          // cardtype: "design",
-          // checked: false,
-          // level: 0,
-          // price: 1,
-          // insideArea: 0.1,
-          // id: 1054,
-          // imageUrl: "https://ali-image-test.dabanjia.com//image/20210313/1615618135579_0296%24pexels-eberhard-grossgasteiger-1428277.jpg",
-          // name: "橙色",
-          // quantity: 1,
-          // serviceName: "设计服务",
-          // serviceType: 1,
-          // spuName: "韩永辉测试视频无法播放"
-        },
-        actuary: {
-          // title: "精算服务",
-          // cardtype: "actuary",
-          // checked: false,
-          // price: 1,
-          // insideArea: 0.1,
-          // categoryTypeId: 4,
-          // id: 38085,
-          // imageUrl: "https://ali-image-test.dabanjia.com//image/20210313/1615618135579_0296%24pexels-eberhard-grossgasteiger-1428277.jpg",
-          // name: "橙色",
-          // quantity: 1,
-          // serviceName: "精算服务",
-          // serviceType: 4,
-          // spuName: "韩永辉测试视频无法播放"
-        },
-        checkHouse: {
-          // title: "验房服务",
-          // cardtype: "checkHouse",
-          // checked: false,
-          // price: 1,
-          // insideArea: 0.1,
-          // categoryTypeId: 4,
-          // id: 38085,
-          // imageUrl: "https://ali-image-test.dabanjia.com//image/20210313/1615618135579_0296%24pexels-eberhard-grossgasteiger-1428277.jpg",
-          // name: "橙色",
-          // quantity: 1,
-          // serviceName: "验房服务",
-          // serviceType: 2,
-          // spuName: "假数据"
-        },
+        design: {},
+        actuary: {},
+        checkHouse: {},
         currentHouse: {},
         selectLevel: 1,
         sssType: "",
@@ -146,6 +104,7 @@
         provinceId: null, //省id
         cityId: null, //市id
         areaId: null, //区id
+        // pieces: 0
       }
     },
     computed: {
@@ -154,6 +113,7 @@
       },
       pieces() {
         let num = this.design.checked + this.actuary.checked + this.checkHouse.checked;
+        console.log(num)
         return num
       },
       countPrice() {
@@ -161,13 +121,13 @@
         let aprice = 0
         let chprice = 0
         if (this.design.checked) {
-          dprice = this.design.price || 0
+          dprice = this.design.price / 100 || 0
         }
         if (this.actuary.checked) {
-          aprice = this.actuary.price || 0
+          aprice = this.actuary.price / 100 || 0
         }
         if (this.checkHouse.checked) {
-          chprice = this.checkHouse.price || 0
+          chprice = this.checkHouse.price / 100 || 0
         }
         let temp = dprice * this.currentHouse.insideArea + aprice * this.currentHouse.insideArea + chprice * this
           .currentHouse.insideArea
@@ -201,12 +161,18 @@
         areaId, //区id
       } = getApp().globalData.decorateMsg
       const {
-        type
+        type,
       } = option
       this.sssType = type || getType(serviceType)
-      this.projectId = projectId
+        
+      if(option.isDecorate) {
+        this.projectId = Number(option.projectId)
+      }else {
+        this.projectId = projectId
+      }
+
       this.serveType = serveType
-      this.estateId = estateId
+      this.estateId = Number(estateId) || Number(option.estateId)
       this.customerId = customerId
       this.provinceId = provinceId //省id
       this.cityId = cityId //市id
@@ -271,12 +237,16 @@
       getServiceSku() {
         let defaultHouse = JSON.parse(uni.getStorageSync("currentHouse"))
         // console.log("defaultHouse", defaultHouse)
-        getServiceSku({
+        let params = {
           province_id: this.currentHouse.provinceId || defaultHouse.provinceId,
           city_id: this.currentHouse.cityId || defaultHouse.cityId,
           area_id: this.currentHouse.areaId || defaultHouse.areaId,
           // serveTypes: [1, 2, 4]
-        }).then(data => {
+        }
+        if(this.sssType == "checkHouse") {
+          params.serveTypes = [2]
+        }
+        getServiceSku(params).then(data => {
           const {
             categoryTypeId,
             values
@@ -349,32 +319,7 @@
           console.log("默认服务： ", this.design, this.actuary, this.checkHouse)
         })
       },
-      getProductsSkusPage() {
-        getProductsSkusPage({
-          categoryTypeId: [5, 6]
-        }).then(data => {
-          this.dataList = data.list
-          const {
-            noHouseActuaryId,
-            noHouseDesignId,
-            noHouseCheckId
-          } = getApp().globalData
-          const {} =
-          this.actuary = {
-            ...data.list[0],
-            title: "精算服务",
-            cardtype: "actuary",
-            checked: true,
-          }
-          this.design = {
-            ...data.list[1],
-            title: "设计服务",
-            cardtype: "design",
-            checked: true,
-            level: 2
-          }
-        })
-      },
+
       selectAnother(pp) {
         let str = ""
         if (pp === "design") {
@@ -405,12 +350,12 @@
           if (!data || (typeof data == "array" && data.length < 1)) {
             this.currentHouse = {}
           } else {
+            let flt = null
             if (this.estateId) {
-              let flt = data.filter(t => t.estateId == this.estateId);
+              flt = data.filter(t => t.id == this.estateId);
             } else {
-              let flt = data.filter(t => t.defaultEstate);
+              flt = data.filter(t => t.defaultEstate);
             }
-            let flt = data.filter(t => t.defaultEstate);
             if (flt && flt.length > 0) {
               this.currentHouse = flt[0]
             } else {
@@ -445,7 +390,7 @@
               level: 0, //"int //等级  0中级  1高级 2特级  3钻石",
               storeId: this.design.storeId || 0, //"long //店铺id",
               storeType: 0, //"int //店铺类型 0普通 1设计师",
-              number: 1, //"double //购买数量",
+              number: this.currentHouse.insideArea, //"double //购买数量",
               params: "", //string //与订单无关的参数 如上门时间 doorTime"
             })
           }
@@ -458,7 +403,7 @@
               // level: 0, //"int //等级  0中级  1高级 2特级  3钻石",
               storeId: this.actuary.storeId || 0, //"long //店铺id",
               storeType: 0, //"int //店铺类型 0普通 1设计师",
-              number: 1, //"double //购买数量",
+              number: this.currentHouse.insideArea, //"double //购买数量",
               params: "", //string //与订单无关的参数 如上门时间 doorTime"
             })
           }
@@ -471,7 +416,7 @@
               // level: 0, //"int //等级  0中级  1高级 2特级  3钻石",
               storeId: this.checkHouse.storeId || 0, //"long //店铺id",
               storeType: 0, //"int //店铺类型 0普通 1设计师",
-              number: 1, //"double //购买数量",
+              number: this.currentHouse.insideArea, //"double //购买数量",
               params: "", //string //与订单无关的参数 如上门时间 doorTime"
             })
           }
@@ -494,8 +439,11 @@
             ...wechatPayJsapi,
             success(res) {
               console.log("付款成功", res)
-              uni.switchTab({
-                url: "/pages/decorate/index/index"
+              // uni.switchTab({
+              //   url: "/pages/decorate/index/index"
+              // })
+              uni.navigateBack({
+
               })
             },
             fail(e) {
@@ -522,7 +470,9 @@
           }
           this.checkHouse.checked = value;
         }
+
       },
+
       checkServiceCardIsSlected(type) {
         this.tips = {
           id: type,

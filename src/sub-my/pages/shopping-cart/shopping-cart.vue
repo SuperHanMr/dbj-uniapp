@@ -1,11 +1,11 @@
 <template>
 	<view class="cartContainer">
 		<view class="noGoods" v-if="!shopList.length&&!disabledSkuList.length">
-			<image src="../../../static/shopping-cart/blank_ic@2x.png" class="noGoodsImg"></image>
+			<image src="http://dbj.dragonn.top/static/mp/dabanjia/images/my/blank_ic%402x.png" class="noGoodsImg"></image>
 			<view class="noGoodsText">
 				购物车空空如也，快去逛逛吧～
 			</view>
-			<button type="primary" class="goShopping">
+			<button type="primary" class="goShopping" @click="toShoppingMall">
 				<text class="text">去逛逛</text>
 			</button>
 		</view>
@@ -24,7 +24,7 @@
 			  >
 				</uni-popup-dialog>    
 			</uni-popup>
-			<view class="header">
+			<view class="header" v-if="shopList.length">
 				<view class="left"></view>
 				<view class="manage" @click="isManage=!isManage">{{isManage?"管理":"完成"}}</view>
 			</view>
@@ -226,8 +226,8 @@
 			}
 		},
 		mounted(){
-			// this.userId = uni.getStorageSync("userId")
-			this.userId = 123
+			this.userId = uni.getStorageSync("userId")
+			// this.userId = 123
 			this.requestPage()
 		},
 		computed:{
@@ -296,16 +296,19 @@
 					this.selectedIndex = data.skuAndProperties.findIndex(item => item.propValueIds === this.defaultSpecIds)
 				})
 			},
+			toShoppingMall(){
+				uni.navigateTo({
+					url: '/sub-classify/pages/classify/index/index'
+				})
+			},
 			toShopDetail(){
 				console.log('跳转到店铺详情页')
 			},
 			toGoodsDetail(skuId,isDisabled){
-				// uni.navigateTo({
-				// 	url: '/sub-classify/pages/goods-detail/goods-detail',
-				// 	success: (res) => {
-				// 		isDisabled?res.eventChannel.emit('acceptDataFromOpenerPage',{skuId,isDisabled:true}):res.eventChannel.emit('acceptDataFromOpenerPage',{skuId,isDisabled:false})
-				// 	}
-				// })
+				isDisabled ? uni.setStorageSync( 'fromShopCart', {skuId,isDisabled:true} ): uni.setStorageSync( 'fromShopCart', {skuId,isDisabled:false} )
+				uni.navigateTo({
+					url: '/sub-classify/pages/goods-detail/goods-detail'
+				})
 			},
 			requestPage(){
 				getShoppingCartInfo(this.userId).then(data => {
@@ -501,9 +504,12 @@
 				if(this.serviceChecked || this.entityChecked){
 					let checkedList = this.serviceChecked?this.serviceList:this.entityList
 					uni.navigateTo({
-						url:"./confirm-order",
+						url:"/sub-classify/pages/pay-order/index",
 						success: (res) => {
-							res.eventChannel.emit('acceptDataFromOpenerPage',checkedList)
+							res.eventChannel.emit('acceptDataFromOpenerPage',{
+								skuInfos: checkedList,
+								originFrom: "shopCart",
+							})
 						}
 					})
 				}else{
@@ -532,12 +538,28 @@
 								if(ele.storeId === item.storeId){
 									ele.storeName = item.storeName
 								}
-								checkedList.push(ele)
+								checkedList.push({
+									skuId: ele.skuId,
+									storeId: ele.storeId,
+									buyCount: ele.buyCount,
+									unit: ele.unitName,
+									level: 0
+								})
 								//根据productType商品类型划分为服务类和实物类
 								if(ele.productType === 1){
-									this.serviceList.push(ele)
+									this.serviceList.push({
+										storeId: ele.storeId,
+										buyCount: ele.buyCount,
+										unit: ele.unitName,
+										level: 0
+									})
 								}else{
-									this.entityList.push(ele)
+									this.entityList.push({
+										storeId: ele.storeId,
+										buyCount: ele.buyCount,
+										unit: ele.unitName,
+										level: 0
+									})
 								}
 							}
 						})
@@ -557,9 +579,12 @@
 					this.showMask = true
 				}else{
 					uni.navigateTo({
-						url:"./confirm-order",
+						url:"/sub-classify/pages/pay-order/index",
 						success: (res) => {
-							res.eventChannel.emit('acceptDataFromOpenerPage',checkedList)
+							res.eventChannel.emit('acceptDataFromOpenerPage',{
+								skuInfos: checkedList,
+								originFrom: "shopCart",
+							})
 						}
 					})
 				}

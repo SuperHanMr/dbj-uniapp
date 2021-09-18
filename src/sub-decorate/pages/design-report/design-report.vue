@@ -2,36 +2,49 @@
   <view class="wrap">
     <view class="avtor-wrap flex-row-bet">
       <view class="flex-row-start">
-        <image class="avtor"></image>
+        <image class="avtor" :src="detail.designServerVO.avatar"></image>
         <view class="tigs">
-          <view class="username">李易峰</view>
+          <view class="username">{{detail.designServerVO.userName}}</view>
           <view class="role">设计</view>
         </view>
       </view>
-      <view class="date">2020-09-09 09:00:00</view>
+      <view class="date">{{detail.designServerVO.updateTime}}</view>
     </view>
-    <view class="card flex-row-bet">
+    <view class="card flex-row-bet" v-for="(item,index) in detail.designReport">
       <view class="t">设计报告详情</view>
-      <view class="lookDetail flex-row-start" @click="goDetail"> 
+      <view class="lookDetail flex-row-start" @click="goDetail">
         <view>立即查看</view>
         <image src="http://dbj.dragonn.top/static/mp/dabanjia/images/decorate/ic_more.svg"></image>
       </view>
     </view>
+    <!-- <view class="card flex-row-bet">
+      <view class="t">设计报告详情</view>
+      <view class="lookDetail flex-row-start" @click="goDetail">
+        <view>立即查看</view>
+        <image src="http://dbj.dragonn.top/static/mp/dabanjia/images/decorate/ic_more.svg"></image>
+      </view>
+    </view> -->
     <button class="btn" @click="confirm">确认设计报告</button>
   </view>
 </template>
 
 <script>
+  import {
+    confirmDesignReport,
+    serverReports
+  } from "../../../api/decorate.js"
   export default {
     data() {
       return {
-        serveId: null
+        decorateMsg: {},
+        detail: {}
       }
     },
     onLoad() {
-      const {
-        serveId
-      } = getApp().globalData.decorateMsg
+      this.decorateMsg = getApp().globalData.decorateMsg
+    },
+    onShow() {
+      this.getPorts()
     },
     methods: {
       confirm() {
@@ -42,6 +55,11 @@
           success: (res) => {
             if (res.confirm) {
               console.log("点击了确认")
+              confirmDesignReport(this.decorateMsg.serveId).then(data => {
+                uni.navigateTo({
+                  url: `/pages/decorate/index/index`
+                })
+              })
             } else {
               console.log("点击了取消")
             }
@@ -50,6 +68,11 @@
       },
       goDetail() {
         
+      },
+      getPorts() {
+        serverReports(this.decorateMsg.serveId).then(data => {
+          this.detail = data
+        })
       }
     }
   }
@@ -61,6 +84,7 @@
     background: #ffffff;
     height: 100%;
   }
+
   .avtor-wrap {
     margin-bottom: 33rpx;
     border-bottom: 2rpx solid #f4f4f4;
@@ -138,12 +162,15 @@
     text-align: center;
     color: #ffffff;
   }
+
   .card {
     height: 100rpx;
     background: #f7f7f7;
     border-radius: 24rpx;
     padding: 30rpx 16rpx 30rpx 36rpx;
+    margin-bottom: 24rpx;
   }
+
   .t {
     height: 40rpx;
     font-size: 28rpx;
@@ -153,6 +180,7 @@
     color: #333333;
     line-height: 40rpx;
   }
+
   .lookDetail {
     view {
       height: 36rpx;
@@ -163,6 +191,7 @@
       color: #666666;
       line-height: 36rpx;
     }
+
     image {
       width: 24rpx;
       height: 24rpx;

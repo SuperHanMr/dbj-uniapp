@@ -106,7 +106,7 @@
 									<image v-else @click="likeC(index)" src="../../static/ic_liked@2x.png"></image>
 									<view class="text">{{item.likeCount}}</view>
 								</view>
-								<view class="comments">
+								<view class="comment">
 									<image @click="commentC(item.id)" src="../../static/ic_comments@2x.png"></image>
 									<view class="text">{{item.commentCount}}</view>
 								</view>
@@ -154,44 +154,51 @@
 					<view class="mainTit">评论</view>
 					<image @click="showComments=false" class="close" src="../../static/ic_closed_black@2x.png"></image>
 				</view>
-				<view class="commentList">
-					<view class="commentItem" >
+				<view class="noComment" v-if="!comments.length">
+					<image class="noCommentImg" src="http://dbj.dragonn.top/static/mp/dabanjia/images/decorate/pic_empty%402x.png"></image>
+					<view class="noCommentText">暂无评论~</view>
+				</view>
+				<view class="commentList" v-if="comments.length">
+					<view class="commentItem" v-for="(item,index) in comments" :key="item.commentId">
 						<view class="mainContent">
-							<image class="avatar" src="../../static/avatar@2x(1).png"></image>
+							<image class="avatar" :src="item.avatar"></image>
 							<view class="commentInfo">
 								<view class="info">
-									<view class="userName">王红</view>
-									<view class="role">业主</view>
-									<view class="date">2021-09-12</view>
+									<view class="userName">{{item.nickname}}</view>
+									<view class="role">{{item.labelName}}</view>
+									<view class="date">{{item.time}}</view>
 								</view>
-								<view class="text">尊敬的业主，您好！打扮家管家-姜文为您新家质量保驾护航，今日巡查房屋情况：今天停工</view>
+								<view class="text">{{item.content}}</view>
 							</view>
 						</view>
-						<view class="reply" @click="replyC">
-							<image class="avatar" src="../../static/avatar@2x.png"></image>
+						<view class="reply" @click="replyC(replyItem.toNickname)" v-for="replyItem in item.secondComments" :key="replyItem.commentId">
+							<image class="avatar" :src="replyItem.avatar"></image>
 							<view class="replyInfo">
 								<view class="info">
-									<view class="userName">姜文</view>
-									<view class="role">管家</view>
-									<view class="date">2021-09-12</view>
+									<view class="userName">{{replyItem.nickname}}</view>
+									<view class="role">{{replyItem.labelName}}</view>
+									<view class="date">{{replyItem.time}}</view>
 								</view>
-								<view class="text">尊敬的业主，您好！打扮家管家-姜文为您新家质量保驾护航，今日巡查房屋情况：今天停工</view>
+								<view class="text">{{replyItem.content}}</view>
 							</view>
 						</view>
-						<view class="expand">
-							<view class="test">展开1条回复</view>
-							<image class="img" src="../../static/ic_expand@2x.png"></image>
-						</view>
-						<view class="packUp">
-							<view class="test">收起</view>
-							<image class="img" src="../../static/ic_packUp@2x.png"></image>
+						<view class="replyFooter"  v-if="item.secondCount>=1">
+							<view class="expand" v-if="!isExpanded" @click="expandC(item.commentId,index)">
+								<view class="test">展开{{item.secondCount}}条回复</view>
+								<image class="img" src="../../static/ic_expand@2x.png"></image>
+							</view>
+							<view class="packUp" v-if="isExpanded" @click="packUpC(item.commentId,index)">
+								<view class="test">收起</view>
+								<image class="img" src="../../static/ic_packUp@2x.png"></image>
+							</view>
 						</view>
 					</view>
 				</view>
+				<view class="bottomComments" v-if="showInput"></view>
 				<view class="bottomInput" v-if="showInput">
 					<input v-model="value"
 						:cursor-spacing="10"
-						:placeholder="isInputFocus?`回复@`:'说点什么吧'"
+						:placeholder="isInputFocus?`回复@${inputName}`:'说点什么吧'"
 						class="easyInput" :class="{'focusInput':isInputFocus}" @focus="inputFocus"
 						/>
 					<view class="send" :class="{'themeColor':isInputFocus}">发送</view>
@@ -202,7 +209,7 @@
 </template>
 
 <script>
-	import {getDecorateProcess,getDecorateDynamic,getSelectOptions,setAttentions,getFocusBrowse,getComments} from "../../../api/real-case.js"
+	import {getDecorateProcess,getDecorateDynamic,getSelectOptions,setAttentions,getFocusBrowse,getComments,expandReplies} from "../../../api/real-case.js"
 	import {formatDate} from "../../../utils/common.js"
 	import imagePreview from "../../../components/image-preview/image-preview.vue"
 	export default {
@@ -223,13 +230,16 @@
 				nodesInfo: [],
 				workers: [],
 				dynamics: [],
+				comments: [],
 				selectNodeTypes: [],
 				processId: 0,
 				isSelfFocusOn: false,
 				estateFocusOnCount: 0,
 				estateViewCount: 0,
 				isInputFocus: false,
-				showInput: false
+				showInput: false,
+				inputName: "",
+				isExpanded: false
 			}
 		},
 		created(){
@@ -243,8 +253,31 @@
 			inputFocus(){
 				this.isInputFocus = true
 			},
+			expandC(id,index){
+				this.isExpanded = true
+				let params = {
+					page: 1,
+					rows: 10,
+					parentId: id
+				}
+				expandReplies(params).then(data => {
+					if(data){
+						console.log(data.list)
+						this.comments[index].secondComments = data.list
+					}
+				})
+			},
+			packUpC(id,index){
+				this.isExpanded = false
+				this.comments[index].secondComments.splice(2)
+			},
 			likeC(index,isAdd){
-				
+				let deviceId = 0
+				uni.getSystemInfo({
+					success:res => {
+						deviceId = res.deviceId
+					}
+				})
 				let params = {
 					routeId: 3001,
 					relationId: this.projectInfo.id,
@@ -274,11 +307,14 @@
 				getComments(params).then(data => {
 					if(data){
 						console.log(data)
+						let {page,rows,totalPage,totalRows,list} = data
+						this.comments = list
 					}
 				})
 			},
-			replyC(){
+			replyC(name){
 				this.showInput = true
+				this.inputName = name
 			},
 			focusC(){
 				let deviceId = 0
@@ -436,11 +472,11 @@
 		width: 100%;
 		height: 120rpx;
 		padding-bottom: 40rpx;
-		border-top: 2rpx solid #efefef;
+		background: #ffffff;
+		/* border-top: 2rpx solid #efefef; */
 		position: fixed;
 		left: 0rpx;
 		bottom: 0rpx;
-		z-index: 999;
 		display: flex;
 	}
 	.focusInput{
@@ -484,6 +520,7 @@
 		position: relative;
 		width: 100%;
 		height: 840rpx;
+		overflow: auto;
 		padding-bottom: 40rpx;
 		background: #ffffff;
 		border-radius: 32rpx 32rpx 0rpx 0rpx;
@@ -491,6 +528,30 @@
 		left: 0;
 		bottom: 0;
 		z-index: 999;
+	}
+	.bottomComments{
+		width: 100%;
+		height: 120rpx;
+		padding-bottom: 40rpx;
+		position: fixed;
+		left: 0rpx;
+		bottom: 0rpx;
+	}
+	.popupComments .noComment{
+		width: 100%;
+		height: 542rpx;
+	}
+	.popupComments .noCommentText{
+		width: 118rpx;
+		height: 36rpx;
+		margin: 24rpx 316rpx;
+		font-size: 26rpx;
+		color: #999999;
+	}
+	.popupComments .noCommentImg{
+		width: 750rpx;
+		height: 492rpx;
+		display: block;
 	}
 	.popupComments .topArea{
 		height: 120rpx;
@@ -512,6 +573,12 @@
 		height: 64rpx;
 		display: block;
 		margin-right: 20rpx;
+	}
+	.commentList{
+		width: 100%;
+		height: 700rpx;
+		/* height: fit-content; */
+		overflow: auto;
 	}
 	.commentItem:first-child .mainContent{
 		margin-top: 24rpx;
@@ -578,7 +645,8 @@
 	}
 	.commentItem .reply{
 		width: 100%;
-		height: 150rpx;
+		/* height: 150rpx; */
+		height: fit-content;
 		margin-top: 24rpx;
 		margin-left: 80rpx;
 		display: flex;
@@ -592,7 +660,8 @@
 	}
 	.commentItem .reply .replyInfo{
 		width: 550rpx;
-		height: 120rpx;
+		/* height: 120rpx; */
+		height: fit-content;
 	}
 	.replyInfo .info{
 		width: 550rpx;
@@ -610,16 +679,24 @@
 	}
 	.replyInfo .text{
 		width: 550rpx;
-		height: 120rpx;
+		/* height: 120rpx; */
+		height: fit-content;
 		font-size: 26rpx;
 		color: #333333;
 		line-height: 40rpx;
 	}
+	.replyFooter{
+		width: 164rpx;
+		height: 32rpx;
+		margin-top: 16rpx;
+		margin-bottom: 32rpx;
+		margin-left: 136rpx;
+	}
 	.expand{
 		width: 164rpx;
 		height: 36rpx;
-		margin-left: 136rpx;
-		margin-bottom: 32rpx;
+		
+		
 		font-size: 26rpx;
 		font-weight: 500;
 		color: #00c2b8;
@@ -635,8 +712,8 @@
 	.packUp{
 		width: 74rpx;
 		height: 36rpx;
-		margin-left: 136rpx;
-		margin-bottom: 32rpx;
+		
+		
 		font-size: 26rpx;
 		font-weight: 500;
 		color: #00c2b8;
@@ -912,7 +989,8 @@
 	  border-radius: 50%;
 	}
 	.done{
-	  background: #01C2C3 !important;
+	  background: #01C2C3;
+		border: 2rpx solid #01C2C3;
 	}
 	.doing{
 		background: #ffffff;
@@ -1154,7 +1232,7 @@
 		display: block;
 		margin-right: 8rpx;
 	}
-	.acitonInfo .footer .comments image{
+	.acitonInfo .footer .comment image{
 		width: 24rpx;
 		height: 24rpx;
 		display: block;

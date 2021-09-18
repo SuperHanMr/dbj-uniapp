@@ -28,12 +28,12 @@
     "variable":"serverName",
     "msg":"您有一个${type}服务待购买"
   },
-  "inspect_estate_service_time":{
+  "sys_inspect_estate_service_time":{
     "url":"/sub-decorate/pages/check-house-remind/check-house-remind",
     "name":"验房服务提醒",
     "msg":"验房员上门时间提醒"
   },
-  "inspect_estate_report_reminder":{
+  "sys_inspect_estate_report_reminder":{
     "url":"/sub-decorate/pages/checkResult/checkResult",
     "name":"验房交付",
     "msg":"您有验收报告待验收"
@@ -73,8 +73,13 @@
     "msg":"${name}服务整体完工，请验收"
   },
   "sys_actuary_publish":{
-    "url":"/my-decorate/pages/curent-cost/curent-cost",
+    "url":"/sub-decorate/pages/current-cost/current-cost",
     "name":"精算验收",
     "msg":"精算师已经交付了精算单，请确认"
+  },
+  "sys_design_report_msg":{
+    "url":"/sub-decorate/pages/design-report/design-report",
+    "name":"设计报告交付",
+    "msg":"设计师已经交付了设计报告，请确认"
   }
 }

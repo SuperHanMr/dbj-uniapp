@@ -1,5 +1,5 @@
 <template>
-  <view class="decorate-index">
+  <view class="decorate-index" v-if="estateList.length > 0">
     <image class="bg-index" mode="aspectFit" src="http://dbj.dragonn.top/static/mp/dabanjia/images/decorate/bg@2x.png">
     </image>
     <view class="content flex-column">
@@ -33,8 +33,10 @@
             <view class="uni-title">{{ currentProject.housingEstate }}{{currentProject.address}}</view>
           </view>
           <view class="picture-btn-wrap">
-            <picture-btn v-if="aServiceData.showDesignFlag" class="p-i-t" text="设计图" @gotoPage="goDesignPicture"></picture-btn>
-            <picture-btn v-if="aServiceData.showActuaryFlag" class="p-i-t" text="精算单" @gotoPage="goActuary"></picture-btn>
+            <picture-btn v-if="aServiceData.showDesignFlag" class="p-i-t" text="设计图" @gotoPage="goDesignPicture">
+            </picture-btn>
+            <picture-btn v-if="aServiceData.showActuaryFlag" class="p-i-t" text="精算单" @gotoPage="goActuary">
+            </picture-btn>
             <picture-btn v-if="aServiceData.showVideoFlag" class="p-i-t" text="工地视频" @gotoPage="goVideo"></picture-btn>
             <picture-btn v-if="aServiceData.constructionFlag" text="施工" @gotoPage="goConstrction"></picture-btn>
             <!-- <picture-btn text="施工" @gotoPage="goConstrction"></picture-btn> -->
@@ -62,13 +64,13 @@
                 </view>
               </view>
               <view class="my-warehouse">
-                <mwarehouse-btn :iconStyle="{'width': '52rpx','height': '62rpx'}" @gotoPage="gotoPage('待发货')"
+                <mwarehouse-btn :iconStyle="{'width': '52rpx','height': '62rpx'}" @gotoPage="gotoPage('0')"
                   name="待发货"></mwarehouse-btn>
-                <mwarehouse-btn :iconStyle="{'width': '58rpx','height': '58rpx'}" @gotoPage="gotoPage('待收货')"
+                <mwarehouse-btn :iconStyle="{'width': '58rpx','height': '58rpx'}" @gotoPage="gotoPage('1')"
                   name="待收货"></mwarehouse-btn>
-                <mwarehouse-btn :iconStyle="{'width': '50rpx','height': '60rpx'}" @gotoPage="gotoPage('已收货')"
+                <mwarehouse-btn :iconStyle="{'width': '50rpx','height': '60rpx'}" @gotoPage="gotoPage('2')"
                   name="已收货"></mwarehouse-btn>
-                <mwarehouse-btn :iconStyle="{'width': '54rpx','height': '44rpx'}" @gotoPage="gotoPage('退款')" name="退款">
+                <mwarehouse-btn :iconStyle="{'width': '54rpx','height': '44rpx'}" @gotoPage="gotoPage('3')" name="退款">
                 </mwarehouse-btn>
               </view>
             </view>
@@ -97,11 +99,11 @@
               购买相关服务 即刻开启装修
             </view>
             <guide-card v-if="availGuides.includes('design')" cardType="service"
-              imageUrl="http://iph.href.lu/702x160?text=702x160&fg=EB7662&bg=FFE2DD"
+              imageUrl="http://iph.href.lu/702x160?text=设计服务702x160&fg=EB7662&bg=FFE2DD"
               @buyNow="gonohousedecatore('design')">
             </guide-card>
             <guide-card v-if="availGuides.includes('actuary')" cardType="actuary"
-              imageUrl="http://iph.href.lu/702x160?text=702x160&fg=4173c8&bg=d0e0fa"
+              imageUrl="http://iph.href.lu/702x160?text=精算服务702x160&fg=4173c8&bg=d0e0fa"
               @buyNow="gonohousedecatore('actuary')">
             </guide-card>
           </view>
@@ -124,6 +126,8 @@
             <view @click="hcaa">管家竣工验收申请</view>
             <view @click="workerCapplication">工人阶段验收申请</view>
             <view @click="gjgxf">管家工序费</view>
+            <view @click="payGuanGuanJia">生成买管家消息</view>
+            <view @click="payRenGong">生成买人工消息</view>
           </view>
         </scroll-view>
       </view>
@@ -143,8 +147,8 @@
   import {
     queryEstates,
     friendListByEstateId,
-    getToken,
-    getMqtt,
+    // getToken,
+    // getMqtt,
     getMsgNum
   } from "../../../api/decorate.js";
   import {
@@ -164,6 +168,9 @@
 
   import MwarehouseBtn from "../../../components/mwarehouse-btn/mwarehouse-btn.vue"
   import TextScroll from "../../../components/text-scroll/text-scroll.vue"
+  import {
+    mapGetters
+  } from "vuex";
   // import monidata from "./monidata.js"
   let timer = null;
   export default {
@@ -185,11 +192,22 @@
         }
       })
     },
+    computed: {
+      ...mapGetters([
+        'systemUnreadCount'
+      ]),
+    },
+    watch: {
+      systemUnreadCount: function(newVal, oldVal) {
+        console.log(newVal)
+        this.getMsgNum()
+      }
+    },
     onShow() {
       uni.showTabBar()
-      if (this.estateList && this.estateList.length < 1) {
-        this.getEstateList();
-      }
+      // if (this.estateList && this.estateList.length < 1) {
+      this.getEstateList();
+      // }
     },
     data() {
       return {
@@ -229,23 +247,8 @@
         this.deviceId = uuidv4()
         uni.setStorageSync('uuDeviceId', this.deviceId);
       }
-      this.getToken()
-      this.getMqtt()
-    },
-    computed: {
-      username() {
-        return `Token|${this.accessKeyId}|${this.instanceId}`
-      },
-      //token和设备id关联，需要后端接口提供
-      password() {
-        return `R|${this.token}|W|${this.token}`
-      },
-      clientId() {
-        return `${this.groupId}@@@${this.deviceId}`
-      },
-      msgTopic() {
-        return `dabanjia_pull_special_msg_${this.currentProject.projectId}`;
-      },
+      // this.getToken()
+      // this.getMqtt()
     },
     destory() {
       clearTimeout(timer)
@@ -271,10 +274,13 @@
       },
       scroll(e) {},
       getAvailableService() {
-        console.log("this.currentProject", this.currentProject)
-        availableService({
-          projectId: this.currentProject.projectId
-        }).then(data => {
+        // console.log("this.currentProject", this.currentProject)
+        // const params = {}
+        // if(this.currentProject.projectId) {
+        //   params.projectId = this.currentProject.projectId
+        // }F
+        // const id = this.currentProject.projectId || -1
+        availableService(this.currentProject.projectId).then(data => {
           const {
             purchasedServiceList,
             availableServiceList,
@@ -315,6 +321,7 @@
             this.availGuides.push("actuary")
           }
         })
+        console.log(this.availGuides)
       },
       checkHouseRemind() {
         uni.navigateTo({
@@ -424,14 +431,33 @@
         })
       },
       gonohousedecatore(type) {
-        uni.navigateTo({
-          url: "/sub-decorate/pages/no-house-decorate/no-house-decorate?type=" + type
-        })
+        if (this.currentEstate && this.currentEstate.id) {
+          let url = null
+          if(this.currentProject && this.currentProject.projectId) {
+            url = `/sub-decorate/pages/no-house-decorate/no-house-decorate?type=${type}&estateId=${this.currentEstate.id}&projectId=${this.currentProject.projectId}&isDecorate=1`
+          } else {
+            url = `/sub-decorate/pages/no-house-decorate/no-house-decorate?type=${type}&estateId=${this.currentEstate.id}&isDecorate=1`
+          }
+          uni.navigateTo({
+            url
+          })
+        } else {
+          uni.navigateTo({
+            url: `/sub-decorate/pages/no-house-decorate/no-house-decorate?type=${type}&isDecorate=1`
+          })
+        }
+
       },
       gjgxf() {
         uni.navigateTo({
           url: `/sub-decorate/pages/gj-process-cost/gj-process-cost?projectId=${this.currentProject.projectId}&estateId=${this.currentProject.estateId}&roleType=10&serviceType=5`
         })
+      },
+      payGuanGuanJia() {
+
+      },
+      payRenGong() {
+
       },
       gonohouse() {
         uni.navigateTo({
@@ -457,31 +483,26 @@
       },
       goToMyDecorate() {
         uni.navigateTo({
-          url: "/sub-decorate/pages/my-decorate/my-decorate",
+          url: "/sub-decorate/pages/my-decorate/my-decorate?processId=" + this.currentProject.processId +
+            '&projectId=' + this.currentProject.projectId,
         });
       },
       goToMyWarehouse() {
         uni.navigateTo({
-          url: "/sub-decorate/pages/warehouse-list/warehouse-list",
+          url: `/sub-decorate/pages/warehouse-list/warehouse-list?projectId=${this.currentProject.projectId}`,
         });
       },
       gotoPage(value) {
-        if (value === '退款') {
-          uni.navigateTo({
-            url: "/sub-decorate/pages/warehouse-refund/warehouse-refund"
-          })
-        } else {
-          uni.navigateTo({
-            url: "/sub-decorate/pages/warehouse-list/warehouse-list"
-          })
-        }
+        uni.navigateTo({
+          url: `/sub-decorate/pages/warehouse-list/warehouse-list?projectId=${this.currentProject.projectId}&type=${value}`,
+        });
       },
       getEstateList() {
         queryEstates({
           isNeedRelative: true,
         }).then(data => {
           console.log(data)
-          if (!data || (typeof data == "array" && data.length < 1) ) {
+          if (!data || (typeof data == "array" && data.length < 1)) {
             uni.navigateTo({
               url: "/sub-decorate/pages/no-house/no-house",
             });
@@ -493,25 +514,25 @@
           }
         });
       },
-      getToken() {
-        let data = {
-          topics: [this.msgTopic],
-          deviceId: this.deviceId
-        }
-        getToken(data).then(res => {
-          console.log(res)
-        })
-      },
-      getMqtt() {
-        getMqtt().then(res => {
-          this.accessKeyId = res.accessKey
-          this.url = 'wxs://' + res.endPoint
-          this.groupId = res.groupId
-          this.instanceId = res.instanceId
-        })
-      },
+      // getToken() {
+      //   let data = {
+      //     topics: [this.msgTopic],
+      //     deviceId: this.deviceId
+      //   }
+      //   getToken(data).then(res => {
+      //     console.log(res)
+      //   })
+      // },
+      // getMqtt() {
+      //   getMqtt().then(res => {
+      //     this.accessKeyId = res.accessKey
+      //     this.url = 'wxs://' + res.endPoint
+      //     this.groupId = res.groupId
+      //     this.instanceId = res.instanceId
+      //   })
+      // },
       getMsgNum() {
-        if(this.currentProject.projectId){
+        if (this.currentProject.projectId) {
           getMsgNum(this.currentProject.projectId).then(res => {
             this.msgNum = res.count
           })

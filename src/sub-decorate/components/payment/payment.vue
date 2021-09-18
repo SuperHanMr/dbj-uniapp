@@ -3,9 +3,9 @@
 		<view class="pieces-price-unit">
 			<text class="pieces">共{{pieces}}件，</text>
 			<text class="unit">总计：￥</text>
-      <text class="price">{{countPrice}}</text>
-			<!-- <text class="price">{{__countPrice[0]}}</text> -->
-			<!-- <text class="flot">.{{__countPrice[1]}}</text> -->
+      <!-- <text class="price">{{countPrice}}</text> -->
+			<text class="price">{{__countPrice[0]}}</text>
+			<text class="flot">.{{__countPrice[1]}}</text>
 		</view>
 		<button class="btn" :disabled="!isAllChecked" :class="{ disabled: !isAllChecked }" @click="gotopay">去结算</button>
 	</view>
@@ -17,11 +17,11 @@
 		props: {
 			pieces: {
 				type: Number,
-				default: 2
+				default: 0
 			},
 			countPrice: {
 				type: String,
-				default: "0"
+				default: "0.00"
 			},
 			isAllChecked: {
 				type: Boolean,
@@ -30,6 +30,9 @@
 		},
 		computed: {
 			__countPrice() {
+        if(this.countPrice == 0) {
+          return ["0","00"]
+        }
 				return this.countPrice.split(".")
 			}
 		},
@@ -40,7 +43,12 @@
 			gotopay() {
 				this.$emit("gotopay")
 			}
-		}
+		},
+    watch: {
+      pieces(val) {
+        console.log(val)
+      }
+    }
 	}
 </script>
 

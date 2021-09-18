@@ -25,14 +25,15 @@
     </view>
     <swiper :current="tabIndex" style="flex: 1;min-height: 600px;" :style="{height:contentHeight}" :duration="300" @change="ontabchange">
       <swiper-item class="swiper-item" v-for="(tab,index1) in dataList" :key="index1">
-        <service-hunman :isDesign="tab.nodeType===1" :tab='tab' :designData='designData' @openPopup='openPopup'></service-hunman>
-        <amount-house :serverId='serverId' id="d3" v-if="tab.nodeType===3"></amount-house>
-        <resultContent ref='result' id="d2" @isEmpty='isEmpty' :serverId='serverId' v-if="tab.nodeType===2" @getData='getData' :scrollTop='scrollTop'
+        
+        <service-hunman :isDesign="tab.nodeType===1" :serverId='serverId' :tab='tab' :designData='designData' @openPopup='openPopup'></service-hunman>
+        <amount-house :checkData='checkData' id="d3" @isEmpty='isEmpty' v-if="tab.nodeType===3&&currentEmpty===0"></amount-house>
+        <resultContent ref='result' id="d2" @isEmpty='isEmpty' :serverId='tab.serveCardId' v-if="tab.nodeType===2&&currentEmpty===0" @getData='getData' :scrollTop='scrollTop'
           :isReport='true'></resultContent>
-        <serviceDesign id="d1" v-if="tab.nodeType===1" @isEmpty='isEmpty' @changeDesign='changeDesign' :serverId='serverId'></serviceDesign>
-        <serviceActuarial id="d4" v-if="tab.nodeType===4" @isEmpty='isEmpty' :serverId='serverId'></serviceActuarial>
-        <serviceSteward id="d5" v-if="tab.nodeType===5" @isEmpty='isEmpty' :serverId='serverId'></serviceSteward>
-        <serviceDismantle id="d6" v-if="tab.nodeType>5" @isEmpty='isEmpty' :serverId='serverId'></serviceDismantle>
+        <serviceDesign id="d1" v-if="tab.nodeType===1&&currentEmpty===0" @isEmpty='isEmpty' @changeDesign='changeDesign' :serverId='tab.serveCardId'></serviceDesign>
+        <serviceActuarial id="d4" v-if="tab.nodeType===4&&currentEmpty===0" @isEmpty='isEmpty' :serverId='tab.serveCardId'></serviceActuarial>
+        <serviceSteward id="d5" v-if="tab.nodeType===5&&currentEmpty===0" @isEmpty='isEmpty' :serverId='tab.serveCardId'></serviceSteward>
+        <serviceDismantle id="d6" v-if="tab.nodeType>5&&currentEmpty===0" :tab='tab' @isEmpty='isEmpty' :serverId='tab.serveCardId'></serviceDismantle>
         <no-service v-if="tab.nodeType===currentEmpty" words="暂无进行中服务"></no-service>
       </swiper-item>
     </swiper>
@@ -71,9 +72,14 @@
         result:{},
         designList:[],
         projectId:0,
+        processId:0,
         serverId:0,
         designData:{},
         currentEmpty:0,
+        checkData:{
+          serverId:0,
+          type:0
+        },
       };
     },
     onPageScroll(scrollTop) {
@@ -89,6 +95,7 @@
     },
     onLoad(e){
       this.projectId = e.projectId
+      this.processId = e.processId
     },
     mounted() {
       
@@ -97,7 +104,7 @@
     methods: {
       toCost() {
         uni.navigateTo({
-          url: '/sub-decorate/pages/current-cost/current-cost?id='+this.serverId+'&isCost=true'
+          url: '/sub-decorate/pages/current-cost/current-cost?id='+this.projectId+'&isCost=0'
         })
       },
       ontabtap(item, index) {
@@ -108,12 +115,13 @@
         let current = e.detail.current
         this.tabIndex = current
         this.tabName = 'd'+(this.dataList[current].nodeType>6?6:this.dataList[current].nodeType)
-        this.serverId = this.dataList[current].serverId
+        this.serverId = this.dataList[current].serveCardId
         this.currentEmpty = 0
+        console.log(this.currentEmpty)
         this.changeHeight()
-        this.$nextTick(function(){
-          this.$refs.result[0].getHeight()
-        })
+        // this.$nextTick(function(){
+        //   this.$refs.result[0].getHeight()
+        // })
       },
       openPopup(){
         this.$refs.popup.open('bottom')
@@ -158,20 +166,31 @@
         this.$refs.popup.close()
       },
       getDesignServeMenu(){
-        getDesignServeMenu(this.serverId).then(res=>{
+        getDesignServeMenu(this.projectId).then(res=>{
           this.designList = res
         })
       },
       getMyService(){
         let data = {
-          projectId:6,
-          processId:1
+          projectId:this.projectId,
+          processId:this.processId
         }
         getMyService(data).then(res=>{
-          console.log(res)
+          
           this.dataList = res
+          this.serverId = this.dataList[0].serveCardId
           this.tabName = 'd'+(this.dataList[0].nodeType>6?6:this.dataList[0].nodeType)
-          this.getDesignServeMenu()
+          this.checkData = {
+            serveId:this.dataList[0].serveCardId,
+            type:this.dataList[0].serveType
+          }
+          console.log(this.checkData)
+          if(this.dataList.findIndex(item=>{
+            return item.nodeType === 1
+          })!==-1){
+            this.getDesignServeMenu()
+          }
+          
           this.changeHeight()
         })
       }

@@ -60,7 +60,10 @@
     props: {
       isReport: false,
       scrollTop: 0,
-      serverId:0
+      serverId:{
+        type:Number,
+        default:0
+      }
     },
     filters:{
       formatDate
@@ -177,15 +180,13 @@
         
       }
     },
-    mounted() {
-      this.getData();
-    },
-    watch:{
-      serverId(){
-        this.getData()
-      }
-    },
     watch: {
+      serverId:{
+        handler:function(){
+          this.getData()
+        },
+        immediate: true
+      },
       scrollTop() {
         if (this.scrollTop > this.top) {
           this.isActive = true

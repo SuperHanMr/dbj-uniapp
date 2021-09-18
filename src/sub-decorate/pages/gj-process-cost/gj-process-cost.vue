@@ -58,16 +58,19 @@
         roleType,
         customerId
       } = getApp().globalData.decorateMsg
+      this.serveCardId = serveCardId || option.serveCardId
       this.estateId = estateId || option.estateId
       this.serviceType = serviceType || option.serviceType 
-      this.projectId = projectId || 0
-      this.customerId = customerId || 0
+      this.projectId = projectId || option.projectId 
+      this.customerId = customerId || option.customerId 
     },
     onShow() {
       this.getDataList()
     },
     data() {
       return {
+        serveCardId: null,
+        serviceType: null,
         dataOrigin: {},
         checkedIds: [],
         shopping: {
@@ -116,15 +119,16 @@
         this.dataOrigin.artificial.categoryList.forEach((item, i) => {
           item.itemList.forEach((it, j) => {
             this.shopping.artificial.push(it)
-            this.countPrice += it.price
+            this.countPrice += it.price * it.count / 100
           })
         })
+        // debugger
         // 再计算辅材费用
         this.dataOrigin.material.categoryList.forEach((item, i) => {
           item.itemList.forEach((it, j) => {
             if (this.checkedIds.includes(it.productId)) {
               this.shopping.material.push(it)
-              this.countPrice += it.price
+              this.countPrice += it.price * it.count / 100
             }
           })
         })
@@ -134,11 +138,16 @@
       },
       getDataList() {
         sellList({
-          serveId: 1,
-          type: 1
+          serveId: this.serveCardId,
+          type: this.serviceType,
         }).then(data => {
           this.dataOrigin = data
           this.dataOrigin.artificial.categoryList.forEach(t => {
+            t.itemList.forEach(it => {
+              this.checkedIds.push(it.productId)
+            })
+          })
+          this.dataOrigin.material.categoryList.forEach(t => {
             t.itemList.forEach(it => {
               this.checkedIds.push(it.productId)
             })
@@ -205,7 +214,7 @@
               supplierType: it.supplierType,
               relationId: it.productId, //"long //实体id",
               type: 1, //"int //实体类型   1材料  2服务   3专项付款",
-              businessType: it.categoryTypeId, //"int //业务类型",
+              businessType: 1,//it.categoryTypeId, //"int //业务类型",辅材的businessType固定为1
               workType: it.workType, //"int //工种类型",
               level: 0, //"int //等级  0中级  1高级 2特级  3钻石",
               storeId: it.storeId, //"long //店铺id",

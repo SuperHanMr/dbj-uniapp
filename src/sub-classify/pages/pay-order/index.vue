@@ -169,7 +169,7 @@
       return {
         isShow: true,
         time: '',
-        orderCheckParams: {},
+        orderCartParams: {},
         originFrom: '',
         addressInfo: {},
         orderInfo: {},
@@ -197,35 +197,24 @@
         canPay: true
       }
     },
-    created() {
-      // 结算所需参数
-      // let params = {
-      //   "skuInfos":[{
-      //     "skuId":"long //商品id",
-      //     "storeId":"long //店铺id",
-      //     "buyCount":"double //购买数量",
-      //     "unit":"string //单位",
-      //     "level":"int //等级",
-          
-      //     "roleType":"int //角色类型  7工人  10管家  购买工人和管家时参数必传",
-      //     "workType":"int //工种类型 购买工人时参数必传",
-      //   }],
-      //   "estateId":"long //小区id"
-      // }
-    },
     onLoad(e) {
       // 购物车数据
       const eventChannel = this.getOpenerEventChannel();
       eventChannel.on('acceptDataFromOpenerPage',( data )=> {
-      	this.orderCheckParams = data
+        console.log(data, 'cartData')
+      	this.orderCartParams = data
         this.originFrom = data.originFrom
       }) 
       // 小程序数据
       // console.log(e, 'eee')
-      this.houseId = e.houseId
       // this.houseId = 1084
       if(e.from) {
         this.originFrom = e.from
+      }
+      if(this.originFrom === "h5GoodDetail") {
+        this.houseId = e.houseId
+      }else if(this.originFrom === "shopCart"){
+        this.houseId = JSON.parse(uni.getStorageSync('currentHouse')).id
       }
       // this.originFrom = "h5GoodDetail"
       // this.originFrom = "shopCart"
@@ -234,7 +223,9 @@
       this.storeId = e.storeId
       this.unit = e.unitName
       this.goodDetailId = uni.getStorageSync('goodId')
+      console.log(this.houseId, 'h1')
       if(!this.houseId){
+        console.log(this.houseId, 'h2')
         this.isShow = false
         setTimeout(() => {
           if(this.$refs.houseDialog.open){
@@ -244,7 +235,9 @@
       }
     },
     onShow() {
+      console.log(this.houseId, 'h3')
       if (uni.getStorageSync('houseListChooseId')) {
+        console.log(this.houseId, 'h4')
         this.houseId = uni.getStorageSync('houseListChooseId')
         this.isShow = true
         if(this.$refs.houseDialog.close) {
@@ -275,7 +268,7 @@
       },
       emitInfo(val) {
         this.addressInfo = val
-        this.estateId = val.housingEstateId
+        this.estateId = val.id ? val.id: 0
          let params = {}
         if(this.originFrom === 'h5GoodDetail') {
           params = {
@@ -283,14 +276,16 @@
             		skuId:this.skuId,
             		storeId:this.storeId,
             		buyCount:this.buyCount,
-            		unit: this.unit,
+            		unit: this.unit? this.unit:"",
                 level: 0
             	}],
             	estateId:this.estateId
           }
         }else if(this.originFrom === 'shopCart'){
-          this.orderCheckParams.estateId = this.estateId
-          params = this.orderCheckParams
+          params = {
+            skuInfos: this.orderCartParams.skuInfos,
+            estateId: this.estateId
+          }
         }
         // let params = {
         //   skuInfos:[{
@@ -354,8 +349,8 @@
                       "relationId":skuItem.skuId, //实体id,
                   		"type":skuItem.productType,   //1材料  2服务   3专项付款,
                   		"businessType":skuItem.categoryTypeId, //业务类型,
-                  		"roleType":0, //角色类型  7工人  10管家  购买工人和管家时参数必传,
-                  		"workType":-2,//工种类型 购买工人时参数必传,
+                  		"roleType":skuItem.roleType? Number(skuItem.roleType): 0, //角色类型  7工人  10管家  购买工人和管家时参数必传,
+                  		"workType":skuItem.workType? Number(skuItem.workType): -2,//工种类型 购买工人时参数必传,
                   		"level":0, //等级  0中级  1高级 2特级  3钻石",
                   		"storeId":skuItem.storeId, //店铺id,
                   		"storeType": 0, //店铺类型 0普通 1设计师",
