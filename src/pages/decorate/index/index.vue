@@ -279,8 +279,8 @@
         // if(this.currentProject.projectId) {
         //   params.projectId = this.currentProject.projectId
         // }F
-        const id = this.currentProject.projectId || -1
-        availableService(id).then(data => {
+        // const id = this.currentProject.projectId || -1
+        availableService(this.currentProject.projectId).then(data => {
           const {
             purchasedServiceList,
             availableServiceList,
