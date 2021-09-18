@@ -217,6 +217,7 @@
       // 购物车数据
       const eventChannel = this.getOpenerEventChannel();
       eventChannel.on('acceptDataFromOpenerPage',( data )=> {
+        console.log(data, 'cartData')
       	this.orderCheckParams = data
         this.originFrom = data.originFrom
       }) 
@@ -275,7 +276,7 @@
       },
       emitInfo(val) {
         this.addressInfo = val
-        this.estateId = val.housingEstateId
+        this.estateId = val.id
          let params = {}
         if(this.originFrom === 'h5GoodDetail') {
           params = {
@@ -283,7 +284,7 @@
             		skuId:this.skuId,
             		storeId:this.storeId,
             		buyCount:this.buyCount,
-            		unit: this.unit,
+            		unit: this.unit? this.unit:"",
                 level: 0
             	}],
             	estateId:this.estateId
