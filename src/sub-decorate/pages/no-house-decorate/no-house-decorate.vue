@@ -453,8 +453,11 @@
             ...wechatPayJsapi,
             success(res) {
               console.log("付款成功", res)
-              uni.switchTab({
-                url: "/pages/decorate/index/index"
+              // uni.switchTab({
+              //   url: "/pages/decorate/index/index"
+              // })
+              uni.navigateBack({
+                
               })
             },
             fail(e) {

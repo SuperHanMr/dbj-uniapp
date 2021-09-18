@@ -21,7 +21,7 @@
 			},
 			countPrice: {
 				type: String,
-				default: "0"
+				default: "0.00"
 			},
 			isAllChecked: {
 				type: Boolean,
@@ -30,6 +30,9 @@
 		},
 		computed: {
 			__countPrice() {
+        if(this.countPrice == 0) {
+          return ["0","00"]
+        }
 				return this.countPrice.split(".")
 			}
 		},

@@ -119,15 +119,16 @@
         this.dataOrigin.artificial.categoryList.forEach((item, i) => {
           item.itemList.forEach((it, j) => {
             this.shopping.artificial.push(it)
-            this.countPrice += it.price / 100
+            this.countPrice += it.price * it.count / 100
           })
         })
+        // debugger
         // 再计算辅材费用
         this.dataOrigin.material.categoryList.forEach((item, i) => {
           item.itemList.forEach((it, j) => {
             if (this.checkedIds.includes(it.productId)) {
               this.shopping.material.push(it)
-              this.countPrice += it.price / 100
+              this.countPrice += it.price * it.count / 100
             }
           })
         })
@@ -142,6 +143,11 @@
         }).then(data => {
           this.dataOrigin = data
           this.dataOrigin.artificial.categoryList.forEach(t => {
+            t.itemList.forEach(it => {
+              this.checkedIds.push(it.productId)
+            })
+          })
+          this.dataOrigin.material.categoryList.forEach(t => {
             t.itemList.forEach(it => {
               this.checkedIds.push(it.productId)
             })
