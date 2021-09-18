@@ -52,6 +52,9 @@
         getStewardService(this.serverId).then(res=>{
           console.log(res)
           this.list = res.progressList
+          if(this.list.length===0){
+            this.$emit('isEmpty',5)
+          }
         })
       },
       // previewImage(list,index){
