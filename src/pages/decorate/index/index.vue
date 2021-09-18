@@ -321,6 +321,7 @@
             this.availGuides.push("actuary")
           }
         })
+        console.log(this.availGuides)
       },
       checkHouseRemind() {
         uni.navigateTo({
@@ -430,9 +431,16 @@
         })
       },
       gonohousedecatore(type) {
-        uni.navigateTo({
-          url: `/sub-decorate/pages/no-house-decorate/no-house-decorate?type=${type}&estateId=${this.currentEstate.id}`
-        })
+        if (this.currentEstate && this.currentEstate.id) {
+          uni.navigateTo({
+            url: `/sub-decorate/pages/no-house-decorate/no-house-decorate?type=${type}&estateId=${this.currentEstate.id}`
+          })
+        } else {
+          uni.navigateTo({
+            url: `/sub-decorate/pages/no-house-decorate/no-house-decorate?type=${type}`
+          })
+        }
+
       },
       gjgxf() {
         uni.navigateTo({
@@ -440,10 +448,10 @@
         })
       },
       payGuanGuanJia() {
-        
+
       },
       payRenGong() {
-        
+
       },
       gonohouse() {
         uni.navigateTo({

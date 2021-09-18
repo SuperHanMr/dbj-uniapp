@@ -104,6 +104,7 @@
         provinceId: null, //省id
         cityId: null, //市id
         areaId: null, //区id
+        // pieces: 0
       }
     },
     computed: {
@@ -112,6 +113,7 @@
       },
       pieces() {
         let num = this.design.checked + this.actuary.checked + this.checkHouse.checked;
+        console.log(num)
         return num
       },
       countPrice() {
@@ -169,7 +171,6 @@
       this.provinceId = provinceId //省id
       this.cityId = cityId //市id
       this.areaId = areaId
-      console.log(option, ">>>>>>>>>>>>>>>>")
       uni.setNavigationBarTitle({
         title: TYPE[type]
       })
@@ -230,12 +231,16 @@
       getServiceSku() {
         let defaultHouse = JSON.parse(uni.getStorageSync("currentHouse"))
         // console.log("defaultHouse", defaultHouse)
-        getServiceSku({
+        let params = {
           province_id: this.currentHouse.provinceId || defaultHouse.provinceId,
           city_id: this.currentHouse.cityId || defaultHouse.cityId,
           area_id: this.currentHouse.areaId || defaultHouse.areaId,
           // serveTypes: [1, 2, 4]
-        }).then(data => {
+        }
+        if(this.sssType == "checkHouse") {
+          params.serveTypes = [2]
+        }
+        getServiceSku(params).then(data => {
           const {
             categoryTypeId,
             values
@@ -308,32 +313,7 @@
           console.log("默认服务： ", this.design, this.actuary, this.checkHouse)
         })
       },
-      // getProductsSkusPage() {
-      //   getProductsSkusPage({
-      //     categoryTypeId: [5, 6]
-      //   }).then(data => {
-      //     this.dataList = data.list
-      //     const {
-      //       noHouseActuaryId,
-      //       noHouseDesignId,
-      //       noHouseCheckId
-      //     } = getApp().globalData
-      //     const {} =
-      //     this.actuary = {
-      //       ...data.list[0],
-      //       title: "精算服务",
-      //       cardtype: "actuary",
-      //       checked: true,
-      //     }
-      //     this.design = {
-      //       ...data.list[1],
-      //       title: "设计服务",
-      //       cardtype: "design",
-      //       checked: true,
-      //       level: 2
-      //     }
-      //   })
-      // },
+
       selectAnother(pp) {
         let str = ""
         if (pp === "design") {
@@ -457,7 +437,7 @@
               //   url: "/pages/decorate/index/index"
               // })
               uni.navigateBack({
-                
+
               })
             },
             fail(e) {
@@ -484,7 +464,9 @@
           }
           this.checkHouse.checked = value;
         }
+
       },
+
       checkServiceCardIsSlected(type) {
         this.tips = {
           id: type,
