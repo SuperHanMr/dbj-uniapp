@@ -12,7 +12,7 @@
       </view>
     </view>
     <view class="r-d-g">
-      <group-radio-me :items="radioItems" :defaultV="0" @change="change"></group-radio-me>
+      <group-radio-me :items="radioItems" :defaultV="1" @change="change"></group-radio-me>
     </view>
     <view class="line"></view>
     <view class="price-count">所有人工费用总和：¥1000.00</view>
@@ -47,16 +47,16 @@
       return {
         radioItems: [{
           label: "中级",
-          value: 0
-        }, {
-          label: "高级",
           value: 1
         }, {
-          label: "特高级",
+          label: "高级",
           value: 2
         }, {
-          label: "钻石",
+          label: "特高级",
           value: 3
+        }, {
+          label: "钻石",
+          value: 4
         }, ],
         radioValue: null
       }

@@ -79,20 +79,20 @@
         },
         countPrice: 0,
         estateId: null,
-        artificialLevel: 0,
+        artificialLevel: 1,
         roleType: null,
         levels: [{
           label: "中级",
-          value: 0
-        }, {
-          label: "高级",
           value: 1
         }, {
-          label: "特高级",
+          label: "高级",
           value: 2
         }, {
-          label: "钻石",
+          label: "特高级",
           value: 3
+        }, {
+          label: "钻石",
+          value: 4
         }],
       }
     },
@@ -111,10 +111,10 @@
       computePriceAndShopping() {
         // 先清空
         this.shopping = {
-          artificial: [],
-          material: []
-        },
-        this.countPrice = 0
+            artificial: [],
+            material: []
+          },
+          this.countPrice = 0
         // 先计算人工费用
         this.dataOrigin.artificial.categoryList.forEach((item, i) => {
           item.itemList.forEach((it, j) => {
@@ -156,25 +156,29 @@
         })
       },
       selectWp(obj) {
-        console.log(obj)
-        const {
-          val,
-          productIds
-        } = obj
-        if (val) {
-          for (let i = 0; i < productIds.length; i++) {
-            if (!this.checkedIds.includes(productIds[i])) {
-              this.checkedIds.push(productIds[i])
+        this.$nextTick(function() {
+          console.log(obj)
+          const {
+            val,
+            productIds
+          } = obj
+          console.log("productIds", productIds)
+          if (val) {
+            for (let i = 0; i < productIds.length; i++) {
+              if (!this.checkedIds.includes(productIds[i])) {
+                this.checkedIds.push(productIds[i])
+              }
+            }
+          } else {
+            for (let i = 0; i < productIds.length; i++) {
+              if (this.checkedIds.includes(productIds[i])) {
+                this.checkedIds.splice(i, 1)
+              }
             }
           }
-        } else {
-          for (let i = 0; i < productIds.length; i++) {
-            if (this.checkedIds.includes(productIds[i])) {
-              this.checkedIds.splice(i, 1)
-            }
-          }
-        }
-        this.computePriceAndShopping()
+          this.computePriceAndShopping()
+        })
+
         // console.log(this.checkedIds)
       },
       gotopay() {
@@ -216,7 +220,7 @@
               type: 1, //"int //实体类型   1材料  2服务   3专项付款",
               businessType: 1, //it.categoryTypeId, //"int //业务类型",辅材的businessType固定为1
               workType: it.workType, //"int //工种类型",
-              level: 0, //"int //等级  0中级  1高级 2特级  3钻石",
+              level: 1, //"int //等级  0中级  1高级 2特级  3钻石",
               storeId: it.storeId, //"long //店铺id",
               storeType: 0, //"int //店铺类型 0普通 1设计师",
               number: it.count, //"double //购买数量",
