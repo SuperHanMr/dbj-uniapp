@@ -97,11 +97,11 @@
               购买相关服务 即刻开启装修
             </view>
             <guide-card v-if="availGuides.includes('design')" cardType="service"
-              imageUrl="http://iph.href.lu/702x160?text=702x160&fg=EB7662&bg=FFE2DD"
+              imageUrl="http://iph.href.lu/702x160?text=设计服务702x160&fg=EB7662&bg=FFE2DD"
               @buyNow="gonohousedecatore('design')">
             </guide-card>
             <guide-card v-if="availGuides.includes('actuary')" cardType="actuary"
-              imageUrl="http://iph.href.lu/702x160?text=702x160&fg=4173c8&bg=d0e0fa"
+              imageUrl="http://iph.href.lu/702x160?text=精算服务702x160&fg=4173c8&bg=d0e0fa"
               @buyNow="gonohousedecatore('actuary')">
             </guide-card>
           </view>
@@ -268,10 +268,12 @@
       },
       scroll(e) {},
       getAvailableService() {
-        console.log("this.currentProject", this.currentProject)
-        availableService({
-          projectId: this.currentProject.projectId
-        }).then(data => {
+        // console.log("this.currentProject", this.currentProject)
+        // const params = {}
+        // if(this.currentProject.projectId) {
+        //   params.projectId = this.currentProject.projectId
+        // }
+        availableService(this.currentProject.projectId).then(data => {
           const {
             purchasedServiceList,
             availableServiceList,
@@ -422,7 +424,7 @@
       },
       gonohousedecatore(type) {
         uni.navigateTo({
-          url: "/sub-decorate/pages/no-house-decorate/no-house-decorate?type=" + type
+          url: `/sub-decorate/pages/no-house-decorate/no-house-decorate?type=${type}&estateId=${this.currentEstate.id}` 
         })
       },
       gjgxf() {

@@ -54,7 +54,7 @@
   import ChangeLevel from "../../components/change-level/change-level.vue"
   import {
     queryEstates,
-    getProductsSkusPage,
+    // getProductsSkusPage,
     getServiceSku
   } from "../../../api/decorate.js"
 
@@ -159,16 +159,17 @@
         areaId, //区id
       } = getApp().globalData.decorateMsg
       const {
-        type
+        type,
       } = option
       this.sssType = type || getType(serviceType)
       this.projectId = projectId
       this.serveType = serveType
-      this.estateId = estateId
+      this.estateId = Number(estateId) || Number(option.estateId)
       this.customerId = customerId
       this.provinceId = provinceId //省id
       this.cityId = cityId //市id
       this.areaId = areaId
+      console.log(option, ">>>>>>>>>>>>>>>>")
       uni.setNavigationBarTitle({
         title: TYPE[type]
       })
@@ -307,32 +308,32 @@
           console.log("默认服务： ", this.design, this.actuary, this.checkHouse)
         })
       },
-      getProductsSkusPage() {
-        getProductsSkusPage({
-          categoryTypeId: [5, 6]
-        }).then(data => {
-          this.dataList = data.list
-          const {
-            noHouseActuaryId,
-            noHouseDesignId,
-            noHouseCheckId
-          } = getApp().globalData
-          const {} =
-          this.actuary = {
-            ...data.list[0],
-            title: "精算服务",
-            cardtype: "actuary",
-            checked: true,
-          }
-          this.design = {
-            ...data.list[1],
-            title: "设计服务",
-            cardtype: "design",
-            checked: true,
-            level: 2
-          }
-        })
-      },
+      // getProductsSkusPage() {
+      //   getProductsSkusPage({
+      //     categoryTypeId: [5, 6]
+      //   }).then(data => {
+      //     this.dataList = data.list
+      //     const {
+      //       noHouseActuaryId,
+      //       noHouseDesignId,
+      //       noHouseCheckId
+      //     } = getApp().globalData
+      //     const {} =
+      //     this.actuary = {
+      //       ...data.list[0],
+      //       title: "精算服务",
+      //       cardtype: "actuary",
+      //       checked: true,
+      //     }
+      //     this.design = {
+      //       ...data.list[1],
+      //       title: "设计服务",
+      //       cardtype: "design",
+      //       checked: true,
+      //       level: 2
+      //     }
+      //   })
+      // },
       selectAnother(pp) {
         let str = ""
         if (pp === "design") {
@@ -363,12 +364,12 @@
           if (!data || (typeof data == "array" && data.length < 1)) {
             this.currentHouse = {}
           } else {
+            let flt = null
             if (this.estateId) {
-              let flt = data.filter(t => t.estateId == this.estateId);
+              flt = data.filter(t => t.id == this.estateId);
             } else {
-              let flt = data.filter(t => t.defaultEstate);
+              flt = data.filter(t => t.defaultEstate);
             }
-            let flt = data.filter(t => t.defaultEstate);
             if (flt && flt.length > 0) {
               this.currentHouse = flt[0]
             } else {
