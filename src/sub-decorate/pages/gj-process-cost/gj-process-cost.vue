@@ -170,11 +170,14 @@
               }
             }
           } else {
+            let arr = []
             for (let i = 0; i < productIds.length; i++) {
-              if (this.checkedIds.includes(productIds[i])) {
-                this.checkedIds.splice(i, 1)
+              if (!this.checkedIds.includes(productIds[i])) {
+                // this.checkedIds.splice(i, 1)
+                arr.push(productIds[i])
               }
             }
+            this.checkedIds = arr
           }
           this.computePriceAndShopping()
         })
