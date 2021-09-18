@@ -504,9 +504,12 @@
 				if(this.serviceChecked || this.entityChecked){
 					let checkedList = this.serviceChecked?this.serviceList:this.entityList
 					uni.navigateTo({
-						url:"./confirm-order",
+						url:"/sub-classify/pages/pay-order/index",
 						success: (res) => {
-							res.eventChannel.emit('acceptDataFromOpenerPage',checkedList)
+							res.eventChannel.emit('acceptDataFromOpenerPage',{
+								skuInfos: checkedList,
+								originFrom: "shopCart",
+							})
 						}
 					})
 				}else{
@@ -535,12 +538,28 @@
 								if(ele.storeId === item.storeId){
 									ele.storeName = item.storeName
 								}
-								checkedList.push(ele)
+								checkedList.push({
+									skuId: ele.skuId,
+									storeId: ele.storeId,
+									buyCount: ele.buyCount,
+									unit: ele.unitName,
+									level: 0
+								})
 								//根据productType商品类型划分为服务类和实物类
 								if(ele.productType === 1){
-									this.serviceList.push(ele)
+									this.serviceList.push({
+										storeId: ele.storeId,
+										buyCount: ele.buyCount,
+										unit: ele.unitName,
+										level: 0
+									})
 								}else{
-									this.entityList.push(ele)
+									this.entityList.push({
+										storeId: ele.storeId,
+										buyCount: ele.buyCount,
+										unit: ele.unitName,
+										level: 0
+									})
 								}
 							}
 						})
@@ -560,9 +579,12 @@
 					this.showMask = true
 				}else{
 					uni.navigateTo({
-						url:"./confirm-order",
+						url:"/sub-classify/pages/pay-order/index",
 						success: (res) => {
-							res.eventChannel.emit('acceptDataFromOpenerPage',checkedList)
+							res.eventChannel.emit('acceptDataFromOpenerPage',{
+								skuInfos: checkedList,
+								originFrom: "shopCart",
+							})
 						}
 					})
 				}

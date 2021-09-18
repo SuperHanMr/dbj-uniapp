@@ -90,7 +90,6 @@
 							userId: data.tid,
 							userSig: data.userSign
 						});
-
 						//可以改成back
 						uni.navigateBack({})
 						// uni.switchTab({
