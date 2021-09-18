@@ -434,16 +434,16 @@
         if (this.currentEstate && this.currentEstate.id) {
           let url = null
           if(this.currentProject && this.currentProject.id) {
-            url = `/sub-decorate/pages/no-house-decorate/no-house-decorate?type=${type}&estateId=${this.currentEstate.id}&currentProject=${this.currentProject.projectId}`
+            url = `/sub-decorate/pages/no-house-decorate/no-house-decorate?type=${type}&estateId=${this.currentEstate.id}&currentProject=${this.currentProject.projectId}&isDecorate=1`
           } else {
-            url = `/sub-decorate/pages/no-house-decorate/no-house-decorate?type=${type}&estateId=${this.currentEstate.id}`
+            url = `/sub-decorate/pages/no-house-decorate/no-house-decorate?type=${type}&estateId=${this.currentEstate.id}&isDecorate=1`
           }
           uni.navigateTo({
             url
           })
         } else {
           uni.navigateTo({
-            url: `/sub-decorate/pages/no-house-decorate/no-house-decorate?type=${type}`
+            url: `/sub-decorate/pages/no-house-decorate/no-house-decorate?type=${type}&isDecorate=1`
           })
         }
 

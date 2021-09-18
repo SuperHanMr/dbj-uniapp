@@ -164,7 +164,13 @@
         type,
       } = option
       this.sssType = type || getType(serviceType)
-      this.projectId = projectId || Number(option.projectId)
+        
+      if(option.isDecorate) {
+        this.projectId = Number(option.projectId)
+      }else {
+        this.projectId = projectId
+      }
+      
       this.serveType = serveType
       this.estateId = Number(estateId) || Number(option.estateId)
       this.customerId = customerId
