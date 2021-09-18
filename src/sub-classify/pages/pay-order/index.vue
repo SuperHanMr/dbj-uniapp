@@ -169,7 +169,7 @@
       return {
         isShow: true,
         time: '',
-        orderCheckParams: {},
+        orderCartParams: {},
         originFrom: '',
         addressInfo: {},
         orderInfo: {},
@@ -218,12 +218,13 @@
       const eventChannel = this.getOpenerEventChannel();
       eventChannel.on('acceptDataFromOpenerPage',( data )=> {
         console.log(data, 'cartData')
-      	this.orderCheckParams = data
+      	this.orderCartParams = data
         this.originFrom = data.originFrom
       }) 
       // 小程序数据
       // console.log(e, 'eee')
       this.houseId = e.houseId
+      console.log(this.houseId, 'houseId')
       // this.houseId = 1084
       if(e.from) {
         this.originFrom = e.from
@@ -290,9 +291,12 @@
             	estateId:this.estateId
           }
         }else if(this.originFrom === 'shopCart'){
-          this.orderCheckParams.estateId = this.estateId
-          params = this.orderCheckParams
+          params = {
+            skuInfos: this.orderCartParams.skuInfos,
+            estateId: this.estateId
+          }
         }
+        console.log(params, 'orderPar')
         // let params = {
         //   skuInfos:[{
         //   		skuId:this.skuId,
