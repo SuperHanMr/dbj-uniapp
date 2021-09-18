@@ -69,8 +69,9 @@
 				this.currentIndex = Number(e.type)
 			}
 
-			console.log(e)
-			this.getList(true);
+			if (this.currentIndex == 0) {
+				this.getList(true);
+			}
 		},
 		onShow() {},
 		methods: {
@@ -143,6 +144,7 @@
 				this.getList(false)
 			},
 			getList(isRefresh) {
+				console.log('!@@@!@!@!@!@!@@!');
 				if (this.lastId[this.currentIndex] == '-1') {
 					return;
 				}
