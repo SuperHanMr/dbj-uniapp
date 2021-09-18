@@ -504,7 +504,7 @@
 				if(this.serviceChecked || this.entityChecked){
 					let checkedList = this.serviceChecked?this.serviceList:this.entityList
 					uni.navigateTo({
-						url:"./confirm-order",
+						url:"/sub-classify/pages/pay-order/index",
 						success: (res) => {
 							res.eventChannel.emit('acceptDataFromOpenerPage',{
 								skuInfos: checkedList,
@@ -579,7 +579,7 @@
 					this.showMask = true
 				}else{
 					uni.navigateTo({
-						url:"./confirm-order",
+						url:"/sub-classify/pages/pay-order/index",
 						success: (res) => {
 							res.eventChannel.emit('acceptDataFromOpenerPage',{
 								skuInfos: checkedList,
