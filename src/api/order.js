@@ -79,12 +79,16 @@ export function splitPay(params) {
 // 我的-评价-评价列表
 export function getEvationList(params) {
 	return request.get(`/pm/app/serve/completeList`, params);
+} 
+
+//我的-业主-立即评价
+export function immediateEvaluate(params) {
+	return request.post(`/pm/app/commentSetting/comment`, params);
 }
-
-
-
-
-
+//获取服务单下面的评价
+export function evaluateDetail(params) {
+	return request.get(`/pm/app/commentSetting/getById`,{params})
+}
 
 
 

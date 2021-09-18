@@ -2,17 +2,20 @@
   <view class="my-container">
 		<custom-navbar opacity="0" :showBack="true">
 		</custom-navbar>
-		<view class="backgroundStyle"/>
+		<view class="backgroundStyle" :style="{backgroundImage:`url(${UserInfo.avatar})`,backgroundSize: '100% 100%'}">
+			<view class="mask" />
+			<!-- <image :src="UserInfo.avatar"  mode=""></image> -->
+		</view>
     <view class="my-header">
       <view class="avatar-img">
-          
+
         <image
 					:src="UserInfo.avatar"
           class="avatar"
         />
         <view class="user-name" >
 					<text class="name" @click="toLogin">{{userName}} </text>
-         
+
           <view
             class="edit-info"
             @click="handlerPersonalData()"
@@ -32,7 +35,7 @@
         <image src="../../../static/order/images/setting@2x.png" mode=""></image>
       </view>
     </view>
-		
+
 		<view class="my-order">
       <view class="order-header">
         <view class="order">我的订单</view>
@@ -41,7 +44,7 @@
           @click="handlerViewAll()"
         >
 					<text>查看全部</text>
-					<image src="../../../static/order/images/arraw_right@2x.png"	mode=""></image>
+					<image src="../../../static/order/images/arraw_right_@2x.png"	mode=""></image>
         </view>
       </view>
 			<view class="order-line"/>
@@ -57,39 +60,39 @@
         </view>
 			</view>
     </view>
-    
+
 		<view class="my-tools">
       <view class="header">
-        我的工具
+        更多功能
       </view>
-			
+
 			<view class="tool-line"/>
-			
+
       <view class="tool-body">
-				
-				<view class="tool-item" v-for="item2 in list" :key="item2.key">
+
+				<view class="tool-item" v-for="item2 in list" :key="item2.key" @click="handlePersonalItem(item2)">
 					<view class="left">
 						<image :src="item2.image" mode=""></image>
-						
+
 						<text>{{item2.value}}</text>
 					</view>
-					<view class="right" @click="handlePersonalItem(item2)">
+					<view class="right" >
 						<image
-						   src="../../../static/order/images/arraw_right@2x.png"
+						   src="../../../static/order/images/arraw_right_@2x.png"
 						   mode=""
 						 ></image>
 					</view>
 				</view>
 			</view>
 		</view>
-   
-		
-		
-		
-		
+
+
+
+
+
     <view @click="handlerToSetUp">真实案例</view>
-    
-   
+
+
   </view>
 
 </template>
@@ -103,7 +106,7 @@ export default {
 			isLogin:false,
 			userName:'用户名称',
 			UserInfo:{},
-			
+
       list: [
         {
           key: "1",
@@ -119,7 +122,7 @@ export default {
         },
         {
           key: "3",
-					image:"../../../static/order/images/attention@2x.png",
+					image:"../../../static/order/images/attention_@2x.png",
           value: "我的关注",
 					url:"../../../sub-my/pages/personal-center/my-attention/my-attention",
         },
@@ -128,15 +131,9 @@ export default {
 					image:"../../../static/order/images/housemGgr_@2x.png",
           value: "房屋管理",
 					url:"../../../sub-my/pages/my-house/my-house?isMy=true"
-          // url:"../../../sub-my/pages/personal-center/my-wallet/my-wallet",
         },
-     //    {
-     //      key: "5",
-     //      value: "投诉与建议",
-					// url:"../../../sub-my/pages/personal-center/complaints-and-suggestions/complaints-and-suggestions",
-     //    },
       ],
-			
+
       orderStatusList: [
         {
           key: "1",
@@ -167,22 +164,19 @@ export default {
 					image:"../../../static/order/images/refund_@2x.png",
           value: "退款",//退款列表
           url:"../../../sub-my/pages/refund-list/refund-list",
-					// url:"../../../sub-my/pages/my-order/success/success",//订单操作成功的页面
-          // url:"../../../sub-my/pages/apply-for-refund/apply-for-refund",//申请退款
         },
       ],
     };
   },
-	
-	
+
+
 	onShow() {
 	if (!uni.getStorageSync("userId")) {
 		this.userName="点击登录";
 		this.isLogin=false;
 	}else{
 		this.isLogin=true
-		
-		this.UserInfo  =getApp().globalData.userInfo
+		this.UserInfo = getApp().globalData.userInfo
 		console.log("UserInfo=",this.UserInfo)
 		this.userName=this.UserInfo.name;
 	}
@@ -231,7 +225,7 @@ export default {
         url: item.url,
       });
     },
-   
+
   },
 };
 </script>
@@ -246,10 +240,19 @@ export default {
 		width: 750rpx;
 		z-index: -1;
 		height: 524rpx;
-		opacity: 0.3;
-		background: #111111;
+		image{
+			width: 100%;
+			// height: 100%;
+		}
+		.mask{
+				width: 100%;
+				height: 100%;
+				opacity: 0.3;
+				z-index: -1;
+				background-color: #111;
+			}
 	}
-  
+
 	.my-header {
 		margin-top: 190rpx;
     display: flex;
@@ -280,7 +283,7 @@ export default {
 				font-weight: 500;
 				color: #ffffff;
 			}
-			
+
       .edit-info {
 				margin-top: 8rpx;
         display: flex;
@@ -330,7 +333,7 @@ export default {
         align-items: center;
         font-size: 26rpx;
 				color: #999999;
-				
+
         image {
 					margin-left: 8rpx;
           width: 24rpx;
@@ -412,7 +415,7 @@ export default {
 					}
 				}
 			}
-      
+
     }
   }
 }
