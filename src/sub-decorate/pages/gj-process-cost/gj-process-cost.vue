@@ -60,9 +60,9 @@
       } = getApp().globalData.decorateMsg
       this.serveCardId = serveCardId || option.serveCardId
       this.estateId = estateId || option.estateId
-      this.serviceType = serviceType || option.serviceType 
-      this.projectId = projectId || option.projectId 
-      this.customerId = customerId || option.customerId 
+      this.serviceType = serviceType || option.serviceType
+      this.projectId = projectId || option.projectId
+      this.customerId = customerId || option.customerId
     },
     onShow() {
       this.getDataList()
@@ -98,10 +98,10 @@
     },
     computed: {
       isAllChecked() {
-        return this.checkedIds.length > 0
+        return this.shopping.artificial.length > 0 || this.shopping.material.length > 0
       },
       pieces() {
-        return this.checkedIds.length
+        return this.shopping.artificial.length + this.shopping.material.length
       },
     },
     methods: {
@@ -111,10 +111,10 @@
       computePriceAndShopping() {
         // 先清空
         this.shopping = {
-            artificial: [],
-            material: []
-          },
-          this.countPrice = 0
+          artificial: [],
+          material: []
+        },
+        this.countPrice = 0
         // 先计算人工费用
         this.dataOrigin.artificial.categoryList.forEach((item, i) => {
           item.itemList.forEach((it, j) => {
@@ -175,11 +175,11 @@
           }
         }
         this.computePriceAndShopping()
-        console.log(this.checkedIds)
+        // console.log(this.checkedIds)
       },
       gotopay() {
         // TODO去结算页面
-        if (this.checkedIds.length > 0) {
+        if (this.shopping.artificial.length > 0 || this.shopping.material.length > 0) {
           let params = {
             payType: 1, //"int //支付方式  1微信支付",
             openid: uni.getStorageSync("openId"), //"string //微信openid 小程序支付用 app支付不传或传空",
@@ -193,7 +193,7 @@
           }
           // roleType 7工人，10管家
           let roleType = this.serviceType == 5 ? 10 : 7
-          
+
           this.shopping.artificial.forEach(it => {
             params.details.push({
               supplierType: it.supplierType,
@@ -214,7 +214,7 @@
               supplierType: it.supplierType,
               relationId: it.productId, //"long //实体id",
               type: 1, //"int //实体类型   1材料  2服务   3专项付款",
-              businessType: 1,//it.categoryTypeId, //"int //业务类型",辅材的businessType固定为1
+              businessType: 1, //it.categoryTypeId, //"int //业务类型",辅材的businessType固定为1
               workType: it.workType, //"int //工种类型",
               level: 0, //"int //等级  0中级  1高级 2特级  3钻石",
               storeId: it.storeId, //"long //店铺id",
@@ -226,7 +226,7 @@
           this.createOrder(params)
         } else {
           uni.showToast({
-            title: "请您先添加房屋信息",
+            title: "请您先选择人工",
             icon: "none",
             duration: 3000
           })
