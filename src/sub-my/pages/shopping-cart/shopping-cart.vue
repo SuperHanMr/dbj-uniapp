@@ -581,7 +581,10 @@
 					uni.navigateTo({
 						url:"./confirm-order",
 						success: (res) => {
-							res.eventChannel.emit('acceptDataFromOpenerPage',checkedList)
+							res.eventChannel.emit('acceptDataFromOpenerPage',{
+								skuInfos: checkedList,
+								originFrom: "shopCart",
+							})
 						}
 					})
 				}
