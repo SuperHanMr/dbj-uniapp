@@ -197,22 +197,6 @@
         canPay: true
       }
     },
-    created() {
-      // 结算所需参数
-      // let params = {
-      //   "skuInfos":[{
-      //     "skuId":"long //商品id",
-      //     "storeId":"long //店铺id",
-      //     "buyCount":"double //购买数量",
-      //     "unit":"string //单位",
-      //     "level":"int //等级",
-          
-      //     "roleType":"int //角色类型  7工人  10管家  购买工人和管家时参数必传",
-      //     "workType":"int //工种类型 购买工人时参数必传",
-      //   }],
-      //   "estateId":"long //小区id"
-      // }
-    },
     onLoad(e) {
       // 购物车数据
       const eventChannel = this.getOpenerEventChannel();
@@ -239,7 +223,9 @@
       this.storeId = e.storeId
       this.unit = e.unitName
       this.goodDetailId = uni.getStorageSync('goodId')
+      console.log(this.houseId, 'h1')
       if(!this.houseId){
+        console.log(this.houseId, 'h2')
         this.isShow = false
         setTimeout(() => {
           if(this.$refs.houseDialog.open){
@@ -249,7 +235,9 @@
       }
     },
     onShow() {
+      console.log(this.houseId, 'h3')
       if (uni.getStorageSync('houseListChooseId')) {
+        console.log(this.houseId, 'h4')
         this.houseId = uni.getStorageSync('houseListChooseId')
         this.isShow = true
         if(this.$refs.houseDialog.close) {
@@ -299,7 +287,6 @@
             estateId: this.estateId
           }
         }
-        console.log(params, 'orderPar')
         // let params = {
         //   skuInfos:[{
         //   		skuId:this.skuId,
@@ -362,8 +349,8 @@
                       "relationId":skuItem.skuId, //实体id,
                   		"type":skuItem.productType,   //1材料  2服务   3专项付款,
                   		"businessType":skuItem.categoryTypeId, //业务类型,
-                  		"roleType":0, //角色类型  7工人  10管家  购买工人和管家时参数必传,
-                  		"workType":-2,//工种类型 购买工人时参数必传,
+                  		"roleType":skuItem.roleType? Number(skuItem.roleType): 0, //角色类型  7工人  10管家  购买工人和管家时参数必传,
+                  		"workType":skuItem.workType? Number(skuItem.workType): -2,//工种类型 购买工人时参数必传,
                   		"level":0, //等级  0中级  1高级 2特级  3钻石",
                   		"storeId":skuItem.storeId, //店铺id,
                   		"storeType": 0, //店铺类型 0普通 1设计师",
