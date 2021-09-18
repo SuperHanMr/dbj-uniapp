@@ -159,7 +159,7 @@
 					<view class="noCommentText">暂无评论~</view>
 				</view>
 				<view class="commentList" v-if="comments.length">
-					<view class="commentItem" v-for="item in comments" :key="item.commentId">
+					<view class="commentItem" v-for="(item,index) in comments" :key="item.commentId">
 						<view class="mainContent">
 							<image class="avatar" :src="item.avatar"></image>
 							<view class="commentInfo">
@@ -171,18 +171,7 @@
 								<view class="text">{{item.content}}</view>
 							</view>
 						</view>
-						<view class="reply" v-if="!isExpanded" @click="replyC(replyItem.toNickname)" v-for="replyItem in item.secondComments" :key="replyItem.commentId">
-							<image class="avatar" :src="replyItem.avatar"></image>
-							<view class="replyInfo">
-								<view class="info">
-									<view class="userName">{{replyItem.nickname}}</view>
-									<view class="role">{{replyItem.labelName}}</view>
-									<view class="date">{{replyItem.time}}</view>
-								</view>
-								<view class="text">{{replyItem.content}}</view>
-							</view>
-						</view>
-						<view class="reply" v-if="isExpanded" @click="replyC(replyItem.toNickname)" v-for="replyItem in replies" :key="replyItem.commentId">
+						<view class="reply" @click="replyC(replyItem.toNickname)" v-for="replyItem in item.secondComments" :key="replyItem.commentId">
 							<image class="avatar" :src="replyItem.avatar"></image>
 							<view class="replyInfo">
 								<view class="info">
@@ -194,11 +183,11 @@
 							</view>
 						</view>
 						<view class="replyFooter"  v-if="item.secondCount>=1">
-							<view class="expand" v-if="!isExpanded" @click="expandC(item.commentId)">
+							<view class="expand" v-if="!isExpanded" @click="expandC(item.commentId,index)">
 								<view class="test">展开{{item.secondCount}}条回复</view>
 								<image class="img" src="../../static/ic_expand@2x.png"></image>
 							</view>
-							<view class="packUp" v-if="isExpanded" @click="isExpanded=false">
+							<view class="packUp" v-if="isExpanded" @click="packUpC(item.commentId,index)">
 								<view class="test">收起</view>
 								<image class="img" src="../../static/ic_packUp@2x.png"></image>
 							</view>
@@ -241,7 +230,6 @@
 				workers: [],
 				dynamics: [],
 				comments: [],
-				replies: [],
 				selectNodeTypes: [],
 				processId: 0,
 				isSelfFocusOn: false,
@@ -264,7 +252,7 @@
 			inputFocus(){
 				this.isInputFocus = true
 			},
-			expandC(id){
+			expandC(id,index){
 				this.isExpanded = true
 				let params = {
 					page: 1,
@@ -273,10 +261,14 @@
 				}
 				expandReplies(params).then(data => {
 					if(data){
-						console.log(data)
-						this.replies = data.list
+						console.log(data.list)
+						this.comments[index].secondComments = data.list
 					}
 				})
+			},
+			packUpC(id,index){
+				this.isExpanded = false
+				this.comments[index].secondComments.splice(2)
 			},
 			likeC(index,isAdd){
 				let deviceId = 0
@@ -986,7 +978,8 @@
 	  border-radius: 50%;
 	}
 	.done{
-	  background: #01C2C3 !important;
+	  background: #01C2C3;
+		border: 2rpx solid #01C2C3;
 	}
 	.doing{
 		background: #ffffff;
