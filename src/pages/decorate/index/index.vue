@@ -126,6 +126,8 @@
             <view @click="hcaa">管家竣工验收申请</view>
             <view @click="workerCapplication">工人阶段验收申请</view>
             <view @click="gjgxf">管家工序费</view>
+            <view @click="payGuanGuanJia">生成买管家消息</view>
+            <view @click="payRenGong">生成买人工消息</view>
           </view>
         </scroll-view>
       </view>
@@ -277,6 +279,7 @@
         // if(this.currentProject.projectId) {
         //   params.projectId = this.currentProject.projectId
         // }F
+        // const id = this.currentProject.projectId || -1
         availableService(this.currentProject.projectId).then(data => {
           const {
             purchasedServiceList,
@@ -435,6 +438,12 @@
         uni.navigateTo({
           url: `/sub-decorate/pages/gj-process-cost/gj-process-cost?projectId=${this.currentProject.projectId}&estateId=${this.currentProject.estateId}&roleType=10&serviceType=5`
         })
+      },
+      payGuanGuanJia() {
+        
+      },
+      payRenGong() {
+        
       },
       gonohouse() {
         uni.navigateTo({

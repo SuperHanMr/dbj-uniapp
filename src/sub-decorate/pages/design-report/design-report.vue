@@ -2,56 +2,65 @@
   <view class="wrap">
     <view class="avtor-wrap flex-row-bet">
       <view class="flex-row-start">
-        <image class="avtor"></image>
+        <image class="avtor" :src="detail.designServerVO.avatar"></image>
         <view class="tigs">
-          <view class="username">{{this.decorateMsg.customerName}}</view>
+          <view class="username">{{detail.designServerVO.userName}}</view>
           <view class="role">设计</view>
         </view>
       </view>
-      <view class="date">{{this.decorateMsg.serviceTime}}</view>
+      <view class="date">{{detail.designServerVO.updateTime}}</view>
     </view>
-    <view class="card flex-row-bet">
+    <view class="card flex-row-bet" v-for="(item,index) in detail.designReport">
       <view class="t">设计报告详情</view>
       <view class="lookDetail flex-row-start" @click="goDetail">
         <view>立即查看</view>
         <image src="http://dbj.dragonn.top/static/mp/dabanjia/images/decorate/ic_more.svg"></image>
       </view>
     </view>
-    <view class="card flex-row-bet">
+    <!-- <view class="card flex-row-bet">
       <view class="t">设计报告详情</view>
       <view class="lookDetail flex-row-start" @click="goDetail">
         <view>立即查看</view>
         <image src="http://dbj.dragonn.top/static/mp/dabanjia/images/decorate/ic_more.svg"></image>
       </view>
-    </view>
+    </view> -->
     <button class="btn" @click="confirm">确认设计报告</button>
   </view>
 </template>
 
 <script>
-  import { confirmDesignReport } from "../../../api/decorate.js"
+  import {
+    confirmDesignReport,
+    serverReports
+  } from "../../../api/decorate.js"
   export default {
     data() {
       return {
-        decorateMsg: getApp().globalData.decorateMsg || {
-          "serveId": 1, //服务卡id
-          "projectId": 1, //项目id
-          "customerId": 1, //客户id
-          "customerName": "王先生", //客户id
-          "serveType": 1, // 服务类型
-          "serveTypeName": "全案设计", //类型名称
-          "stageId": 10, //阶段id
-          "stageName": "平面布局", //阶段id
-          "fullName": "纯设计|全案设计", //SPU + SKU
-          "provinceName": "山西省", //房产省名称
-          "cityName": "太原市", //房产市名称
-          "housingEstate": "龙城小区", //小区名称
-          "estateArea": "100平", //房产面积
-          "serviceTime": "发布时间" //设计师发布报告时间
-        }
+        decorateMsg: {},
+        detail: {}
       }
     },
-    onLoad() {},
+    onLoad() {
+      this.decorateMsg = getApp().globalData.decorateMsg || {
+        "serveId": 20013, //服务卡id
+        "projectId": 1, //项目id
+        "customerId": 1, //客户id
+        "customerName": "王先生", //客户id
+        "serveType": 1, // 服务类型
+        "serveTypeName": "全案设计", //类型名称
+        "stageId": 10, //阶段id
+        "stageName": "平面布局", //阶段id
+        "fullName": "纯设计|全案设计", //SPU + SKU
+        "provinceName": "山西省", //房产省名称
+        "cityName": "太原市", //房产市名称
+        "housingEstate": "龙城小区", //小区名称
+        "estateArea": "100平", //房产面积
+        "serviceTime": "发布时间" //设计师发布报告时间
+      }
+    },
+    onShow() {
+      this.getPorts()
+    },
     methods: {
       confirm() {
         uni.showModal({
@@ -73,7 +82,12 @@
         })
       },
       goDetail() {
-
+        
+      },
+      getPorts() {
+        serverReports(this.decorateMsg.serveId).then(data => {
+          this.detail = data
+        })
       }
     }
   }
