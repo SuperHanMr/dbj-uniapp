@@ -17,7 +17,7 @@
 		props: {
 			pieces: {
 				type: Number,
-				default: 2
+				default: 0
 			},
 			countPrice: {
 				type: String,
@@ -43,7 +43,12 @@
 			gotopay() {
 				this.$emit("gotopay")
 			}
-		}
+		},
+    watch: {
+      pieces(val) {
+        console.log(val)
+      }
+    }
 	}
 </script>
 

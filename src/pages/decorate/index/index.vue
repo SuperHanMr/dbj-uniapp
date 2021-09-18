@@ -64,13 +64,13 @@
                 </view>
               </view>
               <view class="my-warehouse">
-                <mwarehouse-btn :iconStyle="{'width': '52rpx','height': '62rpx'}" @gotoPage="gotoPage('待发货')"
+                <mwarehouse-btn :iconStyle="{'width': '52rpx','height': '62rpx'}" @gotoPage="gotoPage('0')"
                   name="待发货"></mwarehouse-btn>
-                <mwarehouse-btn :iconStyle="{'width': '58rpx','height': '58rpx'}" @gotoPage="gotoPage('待收货')"
+                <mwarehouse-btn :iconStyle="{'width': '58rpx','height': '58rpx'}" @gotoPage="gotoPage('1')"
                   name="待收货"></mwarehouse-btn>
-                <mwarehouse-btn :iconStyle="{'width': '50rpx','height': '60rpx'}" @gotoPage="gotoPage('已收货')"
+                <mwarehouse-btn :iconStyle="{'width': '50rpx','height': '60rpx'}" @gotoPage="gotoPage('2')"
                   name="已收货"></mwarehouse-btn>
-                <mwarehouse-btn :iconStyle="{'width': '54rpx','height': '44rpx'}" @gotoPage="gotoPage('退款')" name="退款">
+                <mwarehouse-btn :iconStyle="{'width': '54rpx','height': '44rpx'}" @gotoPage="gotoPage('3')" name="退款">
                 </mwarehouse-btn>
               </view>
             </view>
@@ -321,6 +321,7 @@
             this.availGuides.push("actuary")
           }
         })
+        console.log(this.availGuides)
       },
       checkHouseRemind() {
         uni.navigateTo({
@@ -430,9 +431,22 @@
         })
       },
       gonohousedecatore(type) {
-        uni.navigateTo({
-          url: `/sub-decorate/pages/no-house-decorate/no-house-decorate?type=${type}&estateId=${this.currentEstate.id}`
-        })
+        if (this.currentEstate && this.currentEstate.id) {
+          let url = null
+          if(this.currentProject && this.currentProject.id) {
+            url = `/sub-decorate/pages/no-house-decorate/no-house-decorate?type=${type}&estateId=${this.currentEstate.id}&currentProject=${this.currentProject.projectId}`
+          } else {
+            url = `/sub-decorate/pages/no-house-decorate/no-house-decorate?type=${type}&estateId=${this.currentEstate.id}`
+          }
+          uni.navigateTo({
+            url
+          })
+        } else {
+          uni.navigateTo({
+            url: `/sub-decorate/pages/no-house-decorate/no-house-decorate?type=${type}`
+          })
+        }
+
       },
       gjgxf() {
         uni.navigateTo({
@@ -440,10 +454,10 @@
         })
       },
       payGuanGuanJia() {
-        
+
       },
       payRenGong() {
-        
+
       },
       gonohouse() {
         uni.navigateTo({
@@ -475,19 +489,13 @@
       },
       goToMyWarehouse() {
         uni.navigateTo({
-          url: "/sub-decorate/pages/warehouse-list/warehouse-list",
+          url: `/sub-decorate/pages/warehouse-list/warehouse-list?projectId=${this.currentProject.projectId}`,
         });
       },
       gotoPage(value) {
-        if (value === '退款') {
-          uni.navigateTo({
-            url: "/sub-decorate/pages/warehouse-refund/warehouse-refund"
-          })
-        } else {
-          uni.navigateTo({
-            url: "/sub-decorate/pages/warehouse-list/warehouse-list"
-          })
-        }
+        uni.navigateTo({
+          url: `/sub-decorate/pages/warehouse-list/warehouse-list?projectId=${this.currentProject.projectId}&type=${value}`,
+        });
       },
       getEstateList() {
         queryEstates({

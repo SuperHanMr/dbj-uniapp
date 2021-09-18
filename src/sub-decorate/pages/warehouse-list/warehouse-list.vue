@@ -65,8 +65,13 @@
 			if (e && e.projectId) {
 				this.projectId = e.projectId;
 			}
-			console.log(e)
-			this.getList(true);
+			if (e && e.type) {
+				this.currentIndex = Number(e.type)
+			}
+
+			if (this.currentIndex == 0) {
+				this.getList(true);
+			}
 		},
 		onShow() {},
 		methods: {
@@ -101,23 +106,23 @@
 				console.log(id);
 				if (this.currentIndex != 3) {
 					uni.navigateTo({
-						url: `/sub-decorate/pages/warehouse-refund-detail/warehouse-refund-detail?type=${this.currentIndex}&id=${id}`,
+						url: `/sub-decorate/pages/warehouse-refund-detail/warehouse-refund-detail?type=${this.currentIndex}&id=${id}&projectId=${this.projectId}`,
 					});
 				} else {
 					uni.navigateTo({
-						url: `/sub-decorate/pages/warehouse-refund-state/warehouse-refund-state?type=${this.currentIndex}&id=${id}`,
+						url: `/sub-decorate/pages/warehouse-refund-state/warehouse-refund-state?type=${this.currentIndex}&id=${id}&projectId=${this.projectId}`,
 					});
 				}
 
 			},
 			toRequire() {
 				uni.navigateTo({
-					url: "/sub-decorate/pages/require-goods/require-goods",
+					url: "/sub-decorate/pages/require-goods/require-goods?projectId=${this.projectId}",
 				});
 			},
 			toRefund() {
 				uni.navigateTo({
-					url: "/sub-decorate/pages/warehouse-refund/warehouse-refund",
+					url: "/sub-decorate/pages/warehouse-refund/warehouse-refund?projectId=${this.projectId}",
 				});
 			},
 			onScroll(e) {},
@@ -139,6 +144,7 @@
 				this.getList(false)
 			},
 			getList(isRefresh) {
+				console.log('!@@@!@!@!@!@!@@!');
 				if (this.lastId[this.currentIndex] == '-1') {
 					return;
 				}
