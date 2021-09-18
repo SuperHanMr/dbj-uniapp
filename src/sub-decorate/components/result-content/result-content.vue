@@ -177,15 +177,10 @@
         
       }
     },
-    mounted() {
-      this.getData();
-    },
-    watch:{
+    watch: {
       serverId(){
         this.getData()
-      }
-    },
-    watch: {
+      },
       scrollTop() {
         if (this.scrollTop > this.top) {
           this.isActive = true

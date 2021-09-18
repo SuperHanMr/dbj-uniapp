@@ -77,7 +77,7 @@
     "name":"精算验收",
     "msg":"精算师已经交付了精算单，请确认"
   },
-  "sys_actuary_publish123":{
+  "sys_design_report_msg":{
     "url":"/sub-decorate/pages/design-report/design-report",
     "name":"设计报告交付",
     "msg":"设计师已经交付了设计报告，请确认"

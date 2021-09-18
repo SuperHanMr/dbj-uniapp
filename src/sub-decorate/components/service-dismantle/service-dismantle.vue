@@ -22,7 +22,8 @@
     },
     props:{
       serveId:0,
-      projectId:0
+      projectId:0,
+      tab:{}
     },
     data(){
       return{
@@ -42,6 +43,9 @@
         getComplateDetail({serveId:this.serveId,projectId:this.projectId}).then(res=>{
           console.log(res)
           this.list = res
+          if(res.length===0){
+            this.$emit('isEmpty',this.tab.nodeType)
+          }
         })
       }
     }

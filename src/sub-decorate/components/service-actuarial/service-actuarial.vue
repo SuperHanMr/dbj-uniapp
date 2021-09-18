@@ -13,7 +13,7 @@
 <script>
   export default{
     props:{
-      serviceId:0
+      serverId:0
     },
     data(){
       return{
@@ -23,7 +23,7 @@
     methods:{
       toCost(){
         uni.navigateTo({
-          url:'/sub-decorate/pages/current-cost/current-cost?serviceId='+this.serviceId+'&isCost=false'
+          url:'/sub-decorate/pages/current-cost/current-cost?serverId='+this.serviceId+'&isCost=1'
         })
       }
     }

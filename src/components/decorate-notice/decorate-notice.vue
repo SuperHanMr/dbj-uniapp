@@ -171,7 +171,7 @@
       background-color: #fff;
       margin: 24rpx;
       // width: 351px;
-      height: 168rpx;
+      // height: 168rpx;
       opacity: 1;
       background: #ffffff;
       border-radius: 12px;
