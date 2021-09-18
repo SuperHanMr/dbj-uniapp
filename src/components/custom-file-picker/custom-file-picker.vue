@@ -271,18 +271,18 @@
 					this.setEmit()
 				})
 			},
-			/**
-			 * 公开用户使用，继续上传
-			 */
-			upload() {
-				let files = []
-				this.files.forEach((v, index) => {
-					if (v.status === 'ready' || v.status === 'error') {
-						files.push(Object.assign({}, v))
-					}
-				})
-				this.uploadFiles(files)
-			},
+			// /**
+			//  * 公开用户使用，继续上传
+			//  */
+			// upload() {
+			// 	let files = []
+			// 	this.files.forEach((v, index) => {
+			// 		if (v.status === 'ready' || v.status === 'error') {
+			// 			files.push(Object.assign({}, v))
+			// 		}
+			// 	})
+			// 	this.uploadFiles(files)
+			// },
 			async setValue(newVal, oldVal) {
 				const newData = async (v) => {
 					const reg = /cloud:\/\/([\w.]+\/?)\S*/
