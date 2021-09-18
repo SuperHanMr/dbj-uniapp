@@ -246,6 +246,10 @@ export function requireConfirm(params) {
 export function payFreight(params) {
 	return request.post(`/order-center/app/order/payFreight`, params)
 }
+// 查看设计报告 
+export function serverReports(serveCardId) {
+	return request.get(`/pm/app/serve/design/serverReports/${serveCardId}`)
+}
 
 // 确认设计报告 
 export function confirmDesignReport(serveCardId) {
