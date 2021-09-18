@@ -432,8 +432,14 @@
       },
       gonohousedecatore(type) {
         if (this.currentEstate && this.currentEstate.id) {
+          let url = null
+          if(this.currentProject && this.currentProject.id) {
+            url = `/sub-decorate/pages/no-house-decorate/no-house-decorate?type=${type}&estateId=${this.currentEstate.id}&currentProject=${this.currentProject.projectId}`
+          } else {
+            url = `/sub-decorate/pages/no-house-decorate/no-house-decorate?type=${type}&estateId=${this.currentEstate.id}`
+          }
           uni.navigateTo({
-            url: `/sub-decorate/pages/no-house-decorate/no-house-decorate?type=${type}&estateId=${this.currentEstate.id}`
+            url
           })
         } else {
           uni.navigateTo({

@@ -164,7 +164,7 @@
         type,
       } = option
       this.sssType = type || getType(serviceType)
-      this.projectId = projectId
+      this.projectId = projectId || Number(option.projectId)
       this.serveType = serveType
       this.estateId = Number(estateId) || Number(option.estateId)
       this.customerId = customerId
