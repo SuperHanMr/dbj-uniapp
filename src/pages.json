@@ -240,14 +240,22 @@
         {
           "path": "pages/edit-personal-data/edit-personal-data",
           "style": {
-            "navigationBarTitleText": "编辑个人资料"
+            "navigationBarTitleText": "个人资料"
           }
         },
+				{
+					"path" : "pages/edit-personal-data/edit-nick-name/edit-nick-name",
+					"style" :{
+						"navigationBarTitleText": "编辑昵称",
+						"enablePullDownRefresh": false
+					}
+				},
         {
           "path": "pages/evaluate/evaluate",
           "style": {
             "navigationBarTitleText": "我的评价",
-            "enablePullDownRefresh": false,
+            "enablePullDownRefresh": true,
+            "onReachBottomDistance": 10,
             "navigationBarBackgroundColor": "#FFFFFF"
           }
         },
@@ -258,6 +266,13 @@
             "enablePullDownRefresh": false
           }
         },
+				{
+						"path" : "pages/evaluate/evaluate-detail/evaluate-detail",
+						"style" : {
+								"navigationBarTitleText": "评价详情",
+								"enablePullDownRefresh": false
+						}
+				},
         {
           "path": "pages/my-house/my-house",
           "style": {
