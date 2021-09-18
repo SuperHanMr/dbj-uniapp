@@ -1,11 +1,16 @@
 <template>
 	<view class="uni-file-picker__container">
+		
 		<view v-if="filesList.length < limit && !readonly" class="file-picker__box" :style="boxStyle">
 			<view class="file-picker__box-content is-add" :style="borderStyle" @click="choose">
-				<slot>
+				<view class="">
+					
+				<!-- <view>
 					<view class="icon-add"></view>
 					<view class="icon-add rotate"></view>
-				</slot>
+				</view> -->
+				点击上传
+				</view>
 			</view>
 		</view>
 		<view class="file-picker__box" v-for="(item,index) in filesList" :key="index" :style="boxStyle">
@@ -15,10 +20,10 @@
 					<view class="icon-del"></view>
 					<view class="icon-del rotate"></view>
 				</view>
-				<view v-if="(item.progress && item.progress !== 100) ||item.progress===0 " class="file-picker__progress">
+			<!-- 	<view v-if="(item.progress && item.progress !== 100) ||item.progress===0 " class="file-picker__progress">
 					<progress class="file-picker__progress-item" :percent="item.progress === -1?0:item.progress" stroke-width="4"
 					 :backgroundColor="item.errMsg?'#ff5a5f':'#EBEBEB'" />
-				</view>
+				</view> -->
 				<view v-if="item.errMsg" class="file-picker__mask" @click.stop="uploadFiles(item,index)">
 					点击重试
 				</view>
@@ -55,9 +60,9 @@
 				type: Object,
 				default () {
 					return {
-						width: 'auto',
-						height: 'auto',
-						border: {}
+						width: '160rpx',
+						height: '160rpx',
+						border: {broder:'1px solid #ECECEC'}
 					}
 				}
 			},
@@ -101,7 +106,7 @@
 					if (height !== 'auto') {
 						obj.width = this.value2px(height)
 					} else {
-						obj.width = '33.3%'
+						obj.width = '25%'
 					}
 				} else {
 					obj.width = this.value2px(width)
@@ -111,6 +116,8 @@
 				for(let i in obj){
 					classles+= `${i}:${obj[i]};`
 				}
+				console.log('!!!!!!!')
+				console.log(classles);
 				return classles
 			},
 			borderStyle() {
@@ -194,9 +201,7 @@
 		width: 33.3%;
 		height: 0;
 		padding-top: 33.33%;
-		/* #ifndef APP-NVUE */
-		box-sizing: border-box;
-		/* #endif */
+		margin-top: 16rpx;
 	}
 
 	.file-picker__box-content {
@@ -206,18 +211,17 @@
 		bottom: 0;
 		left: 0;
 		margin: 5px;
-		border: 1px #eee solid;
+		// border: 1px #eee solid;
 		border-radius: 8px;
-		overflow: hidden;
 	}
 
 	.file-picker__progress {
-		position: absolute;
-		bottom: 0;
-		left: 0;
-		right: 0;
-		/* border: 1px red solid; */
-		z-index: 2;
+		// position: absolute;
+		// bottom: 0;
+		// left: 0;
+		// right: 0;
+		// /* border: 1px red solid; */
+		// z-index: 2;
 	}
 
 	.file-picker__progress-item {
@@ -272,10 +276,10 @@
 		align-items: center;
 		justify-content: center;
 		position: absolute;
-		top: 5px;
-		right: 5px;
-		height: 26px;
-		width: 26px;
+		top: -16rpx;
+		right: -16rpx;
+		height: 32rpx;
+		width: 32rpx;
 		border-radius: 50%;
 		background-color: rgba(0, 0, 0, 0.5);
 		z-index: 2;
