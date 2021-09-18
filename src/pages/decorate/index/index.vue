@@ -483,19 +483,13 @@
       },
       goToMyWarehouse() {
         uni.navigateTo({
-          url: "/sub-decorate/pages/warehouse-list/warehouse-list",
+          url: `/sub-decorate/pages/warehouse-list/warehouse-list?projectId=${this.currentProject.projectId}`,
         });
       },
       gotoPage(value) {
-        if (value === '退款') {
-          uni.navigateTo({
-            url: "/sub-decorate/pages/warehouse-refund/warehouse-refund"
-          })
-        } else {
-          uni.navigateTo({
-            url: "/sub-decorate/pages/warehouse-list/warehouse-list"
-          })
-        }
+        uni.navigateTo({
+          url: `/sub-decorate/pages/warehouse-list/warehouse-list?projectId=${this.currentProject.projectId}&type=${value}`,
+        });
       },
       getEstateList() {
         queryEstates({
