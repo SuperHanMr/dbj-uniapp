@@ -229,7 +229,35 @@
 						"navigationBarTitleText": "装修日历",
 						"enablePullDownRefresh": false
 					}
-				}
+				},
+        {
+          "path": "pages/decorate-scene/memo",
+          "style": {
+            "navigationBarTitleText": "备忘录",
+            "enablePullDownRefresh": false
+          }
+        },
+        {
+          "path": "pages/decorate-scene/memo-detail",
+          "style": {
+            "navigationBarTitleText": "备忘录详情",
+            "enablePullDownRefresh": false
+          }
+        },
+        {
+          "path": "pages/decorate-scene/new-memo",
+          "style": {
+            "navigationBarTitleText": "新建备忘录",
+            "enablePullDownRefresh": false
+          }
+        },
+        {
+          "path": "pages/decorate-scene/choose-remind",
+          "style": {
+            "navigationBarTitleText": "选择需要提醒的人",
+            "enablePullDownRefresh": false
+          }
+        }
 			]
 		},
 		{

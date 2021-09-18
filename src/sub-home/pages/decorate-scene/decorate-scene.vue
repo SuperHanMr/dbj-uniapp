@@ -159,14 +159,14 @@
 					<view class="noCommentText">暂无评论~</view>
 				</view>
 				<view class="commentList" v-if="comments.length">
-					<view class="commentItem" v-for="item in comments" :key="item.commentId">
+					<view class="commentItem" v-for="(item,index) in comments" :key="item.commentId">
 						<view class="mainContent">
 							<image class="avatar" :src="item.avatar"></image>
 							<view class="commentInfo">
 								<view class="info">
 									<view class="userName">{{item.nickname}}</view>
 									<view class="role">{{item.labelName}}</view>
-									<view class="date">{{item.time | formatDate}}</view>
+									<view class="date">{{item.time}}</view>
 								</view>
 								<view class="text">{{item.content}}</view>
 							</view>
@@ -175,20 +175,22 @@
 							<image class="avatar" :src="replyItem.avatar"></image>
 							<view class="replyInfo">
 								<view class="info">
-									<view class="userName">{{replyItem.replyItem}}</view>
+									<view class="userName">{{replyItem.nickname}}</view>
 									<view class="role">{{replyItem.labelName}}</view>
-									<view class="date">{{replyItem.time | formatDate}}</view>
+									<view class="date">{{replyItem.time}}</view>
 								</view>
 								<view class="text">{{replyItem.content}}</view>
 							</view>
 						</view>
-						<view class="expand">
-							<view class="test">展开1条回复</view>
-							<image class="img" src="../../static/ic_expand@2x.png"></image>
-						</view>
-						<view class="packUp">
-							<view class="test">收起</view>
-							<image class="img" src="../../static/ic_packUp@2x.png"></image>
+						<view class="replyFooter"  v-if="item.secondCount>=1">
+							<view class="expand" v-if="!isExpanded" @click="expandC(item.commentId,index)">
+								<view class="test">展开{{item.secondCount}}条回复</view>
+								<image class="img" src="../../static/ic_expand@2x.png"></image>
+							</view>
+							<view class="packUp" v-if="isExpanded" @click="packUpC(item.commentId,index)">
+								<view class="test">收起</view>
+								<image class="img" src="../../static/ic_packUp@2x.png"></image>
+							</view>
 						</view>
 					</view>
 				</view>
@@ -206,7 +208,7 @@
 </template>
 
 <script>
-	import {getDecorateProcess,getDecorateDynamic,getSelectOptions,setAttentions,getFocusBrowse,getComments} from "../../../api/real-case.js"
+	import {getDecorateProcess,getDecorateDynamic,getSelectOptions,setAttentions,getFocusBrowse,getComments,expandReplies} from "../../../api/real-case.js"
 	import {formatDate} from "../../../utils/common.js"
 	import imagePreview from "../../../components/image-preview/image-preview.vue"
 	export default {
@@ -235,7 +237,8 @@
 				estateViewCount: 0,
 				isInputFocus: false,
 				showInput: false,
-				inputName: ""
+				inputName: "",
+				isExpanded: false
 			}
 		},
 		created(){
@@ -248,6 +251,24 @@
 		methods:{
 			inputFocus(){
 				this.isInputFocus = true
+			},
+			expandC(id,index){
+				this.isExpanded = true
+				let params = {
+					page: 1,
+					rows: 10,
+					parentId: id
+				}
+				expandReplies(params).then(data => {
+					if(data){
+						console.log(data.list)
+						this.comments[index].secondComments = data.list
+					}
+				})
+			},
+			packUpC(id,index){
+				this.isExpanded = false
+				this.comments[index].secondComments.splice(2)
 			},
 			likeC(index,isAdd){
 				let deviceId = 0
@@ -543,6 +564,11 @@
 		display: block;
 		margin-right: 20rpx;
 	}
+	.commentList{
+		width: 100%;
+		height: 700rpx;
+		overflow: auto;
+	}
 	.commentItem:first-child .mainContent{
 		margin-top: 24rpx;
 	}
@@ -608,7 +634,8 @@
 	}
 	.commentItem .reply{
 		width: 100%;
-		height: 150rpx;
+		/* height: 150rpx; */
+		height: fit-content;
 		margin-top: 24rpx;
 		margin-left: 80rpx;
 		display: flex;
@@ -622,7 +649,8 @@
 	}
 	.commentItem .reply .replyInfo{
 		width: 550rpx;
-		height: 120rpx;
+		/* height: 120rpx; */
+		height: fit-content;
 	}
 	.replyInfo .info{
 		width: 550rpx;
@@ -640,16 +668,24 @@
 	}
 	.replyInfo .text{
 		width: 550rpx;
-		height: 120rpx;
+		/* height: 120rpx; */
+		height: fit-content;
 		font-size: 26rpx;
 		color: #333333;
 		line-height: 40rpx;
 	}
+	.replyFooter{
+		width: 164rpx;
+		height: 32rpx;
+		margin-top: 16rpx;
+		margin-bottom: 32rpx;
+		margin-left: 136rpx;
+	}
 	.expand{
 		width: 164rpx;
 		height: 36rpx;
-		margin-left: 136rpx;
-		margin-bottom: 32rpx;
+		
+		
 		font-size: 26rpx;
 		font-weight: 500;
 		color: #00c2b8;
@@ -665,8 +701,8 @@
 	.packUp{
 		width: 74rpx;
 		height: 36rpx;
-		margin-left: 136rpx;
-		margin-bottom: 32rpx;
+		
+		
 		font-size: 26rpx;
 		font-weight: 500;
 		color: #00c2b8;
@@ -942,7 +978,8 @@
 	  border-radius: 50%;
 	}
 	.done{
-	  background: #01C2C3 !important;
+	  background: #01C2C3;
+		border: 2rpx solid #01C2C3;
 	}
 	.doing{
 		background: #ffffff;
