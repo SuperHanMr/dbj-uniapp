@@ -433,8 +433,8 @@
       gonohousedecatore(type) {
         if (this.currentEstate && this.currentEstate.id) {
           let url = null
-          if(this.currentProject && this.currentProject.id) {
-            url = `/sub-decorate/pages/no-house-decorate/no-house-decorate?type=${type}&estateId=${this.currentEstate.id}&currentProject=${this.currentProject.projectId}&isDecorate=1`
+          if(this.currentProject && this.currentProject.projectId) {
+            url = `/sub-decorate/pages/no-house-decorate/no-house-decorate?type=${type}&estateId=${this.currentEstate.id}&projectId=${this.currentProject.projectId}&isDecorate=1`
           } else {
             url = `/sub-decorate/pages/no-house-decorate/no-house-decorate?type=${type}&estateId=${this.currentEstate.id}&isDecorate=1`
           }

@@ -170,7 +170,7 @@
       }else {
         this.projectId = projectId
       }
-      
+
       this.serveType = serveType
       this.estateId = Number(estateId) || Number(option.estateId)
       this.customerId = customerId
