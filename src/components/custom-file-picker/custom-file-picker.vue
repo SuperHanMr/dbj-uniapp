@@ -573,6 +573,7 @@
 
 <style>
 	.uni-file-picker {
+		padding: 0 32rpx;
 		/* #ifndef APP-NVUE */
 		box-sizing: border-box;
 		/* overflow: hidden; */

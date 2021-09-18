@@ -1,26 +1,27 @@
 <template>
 	<view class="uni-file-picker__container">
-		
-		<view v-if="filesList.length < limit && !readonly" class="file-picker__box" :style="boxStyle">
+
+		<view v-if="filesList.length < limit && !readonly" class="file-picker__box" >
 			<view class="file-picker__box-content is-add" :style="borderStyle" @click="choose">
 				<view class="">
-					
-				<!-- <view>
+
+					<!-- <view>
 					<view class="icon-add"></view>
 					<view class="icon-add rotate"></view>
 				</view> -->
-				点击上传
+					点击上传
 				</view>
 			</view>
 		</view>
-		<view class="file-picker__box" v-for="(item,index) in filesList" :key="index" :style="boxStyle">
+		<view class="file-picker__box" v-for="(item,index) in filesList" :key="index" >
 			<view class="file-picker__box-content" :style="borderStyle">
-				<image class="file-image" :src="item.url" mode="aspectFill" @click.stop="prviewImage(item,index)"></image>
+				<image class="file-image" :src="item.url" mode="aspectFill" @click.stop="prviewImage(item,index)">
+				</image>
 				<view v-if="delIcon && !readonly" class="icon-del-box" @click.stop="delFile(index)">
 					<view class="icon-del"></view>
 					<view class="icon-del rotate"></view>
 				</view>
-			<!-- 	<view v-if="(item.progress && item.progress !== 100) ||item.progress===0 " class="file-picker__progress">
+				<!-- 	<view v-if="(item.progress && item.progress !== 100) ||item.progress===0 " class="file-picker__progress">
 					<progress class="file-picker__progress-item" :percent="item.progress === -1?0:item.progress" stroke-width="4"
 					 :backgroundColor="item.errMsg?'#ff5a5f':'#EBEBEB'" />
 				</view> -->
@@ -36,7 +37,7 @@
 <script>
 	export default {
 		name: "uploadImage",
-		emits:['uploadFiles','choose','delFile'],
+		emits: ['uploadFiles', 'choose', 'delFile'],
 		props: {
 			filesList: {
 				type: Array,
@@ -44,7 +45,7 @@
 					return []
 				}
 			},
-			disabled:{
+			disabled: {
 				type: Boolean,
 				default: false
 			},
@@ -60,9 +61,11 @@
 				type: Object,
 				default () {
 					return {
-						width: '160rpx',
-						height: '160rpx',
-						border: {broder:'1px solid #ECECEC'}
+						width: '260rpx',
+						height: '260rpx',
+						border: {
+							broder: '10rpx solid red'
+						}
 					}
 				}
 			},
@@ -70,9 +73,15 @@
 				type: Boolean,
 				default: true
 			},
-			readonly:{
-				type:Boolean,
-				default:false
+			readonly: {
+				type: Boolean,
+				default: false
+			}
+		},
+
+		data() {
+			return {
+				imgStyle:'height:160rpx;padding-top:0;width:160rpx;'
 			}
 		},
 		computed: {
@@ -89,6 +98,8 @@
 					width = 'auto',
 						height = 'auto'
 				} = this.styles
+				console.log('~~~~~~~~');
+				console.log(width, height)
 				let obj = {}
 				if (height === 'auto') {
 					if (width !== 'auto') {
@@ -113,9 +124,10 @@
 				}
 
 				let classles = ''
-				for(let i in obj){
-					classles+= `${i}:${obj[i]};`
+				for (let i in obj) {
+					classles += `${i}:${obj[i]};`
 				}
+
 				console.log('!!!!!!!')
 				console.log(classles);
 				return classles
@@ -140,8 +152,8 @@
 					}
 				}
 				let classles = ''
-				for(let i in obj){
-					classles+= `${i}:${obj[i]};`
+				for (let i in obj) {
+					classles += `${i}:${obj[i]};`
 				}
 				return classles
 			}
@@ -158,10 +170,10 @@
 			},
 			prviewImage(img, index) {
 				let urls = []
-				if(Number(this.limit) === 1&&this.disablePreview&&!this.disabled){
+				if (Number(this.limit) === 1 && this.disablePreview && !this.disabled) {
 					this.$emit("choose")
 				}
-				if(this.disablePreview) return
+				if (this.disablePreview) return
 				this.filesList.forEach(i => {
 					urls.push(i.url)
 				})
@@ -198,9 +210,9 @@
 	.file-picker__box {
 		position: relative;
 		// flex: 0 0 33.3%;
-		width: 33.3%;
+		width: 25%;
 		height: 0;
-		padding-top: 33.33%;
+		padding-top: 25%;
 		margin-top: 16rpx;
 	}
 

@@ -1,22 +1,21 @@
 <template>
 	<view>
-		<custom-file-picker  fileMediatype="image" mode="grid" @select="select" @progress="progress" @success="success" @fail="fail" @fileChange="onFileChange"></custom-file-picker>
+		<custom-file-picker fileMediatype="image" mode="grid" @fileChange="onFileChange"></custom-file-picker>
 		<button type="default" @click="logList">获取列表</button>
 	</view>
 </template>
-
 <script>
 	export default {
 		data() {
 			return {
-				imageValue:[]
+				imageValue: []
 			}
 		},
 		methods: {
-			onFileChange(files){
-				this.imageValue=files
+			onFileChange(files) {
+				this.imageValue = files
 			},
-			logList(){
+			logList() {
 				console.log(this.imageValue);
 			},
 			// 获取上传状态
@@ -42,8 +41,7 @@
 </script>
 
 <style>
-	page{
+	page {
 		background: #FFF;
 	}
-
 </style>
