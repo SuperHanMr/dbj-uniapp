@@ -31,7 +31,6 @@
       if(uni.getStorageSync('goodId')) {
         this.goodId = uni.getStorageSync('goodId')
       }else if( uni.getStorageSync('fromShopCart')) {
-        console.log(uni.getStorageSync('fromShopCart'), 'test')
          this.goodId = uni.getStorageSync('fromShopCart').skuId
          this.isDisabled = uni.getStorageSync('fromShopCart').isDisabled
       }

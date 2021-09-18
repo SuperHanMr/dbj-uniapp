@@ -223,11 +223,14 @@
       }) 
       // 小程序数据
       // console.log(e, 'eee')
-      this.houseId = e.houseId
-      console.log(this.houseId, 'houseId')
       // this.houseId = 1084
       if(e.from) {
         this.originFrom = e.from
+      }
+      if(this.originFrom === "h5GoodDetail") {
+        this.houseId = e.houseId
+      }else if(this.originFrom === "shopCart"){
+        this.houseId = JSON.parse(uni.getStorageSync('currentHouse')).id
       }
       // this.originFrom = "h5GoodDetail"
       // this.originFrom = "shopCart"
@@ -277,7 +280,7 @@
       },
       emitInfo(val) {
         this.addressInfo = val
-        this.estateId = val.id
+        this.estateId = val.id ? val.id: 0
          let params = {}
         if(this.originFrom === 'h5GoodDetail') {
           params = {
