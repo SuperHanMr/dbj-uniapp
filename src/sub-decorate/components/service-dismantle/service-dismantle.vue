@@ -34,9 +34,12 @@
       formatDate
     },
     watch:{
-      serveId(){
-        this.getComplateDetail()
-      }
+      serverId:{
+        handler:function(){
+          this.getComplateDetail()
+        },
+        immediate: true
+      },
     },
     methods:{
       getComplateDetail(){

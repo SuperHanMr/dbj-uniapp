@@ -43,9 +43,12 @@
     //   this.getStewardService()
     // },
     watch:{
-      serverId(){
-        this.getStewardService()
-      }
+      serverId:{
+        handler:function(){
+          this.getStewardService()
+        },
+        immediate: true
+      },
     },
     methods:{
       getStewardService(){
