@@ -30,7 +30,7 @@
                 <view class="goods-money" v-if='goodsItem.price'>
                   ￥
                   <text class="integer-price">{{String.prototype.split.call(goodsItem["price"], ".")[0]}}</text>
-                  <text>.{{String.prototype.split.call(goodsItem["price"], ".")[1]}}</text>
+                  <text>.{{String.prototype.split.call(goodsItem["price"], ".")[1]?String.prototype.split.call(goodsItem["price"], ".")[1]: 0}}</text>
                   <text>/{{goodsItem.unit}}</text>
                 </view>
               </view>
@@ -128,7 +128,7 @@
             <view class="total-money">
               ￥
               <text class="mony-text">{{orderInfo.totalPrice?String.prototype.split.call(orderInfo.totalPrice, ".")[0]:0}}</text>
-              <text>.{{orderInfo.totalPrice?String.prototype.split.call(orderInfo.totalPrice, ".")[1]:0}}</text>
+              <text>.{{orderInfo.totalPrice?String.prototype.split.call(orderInfo.totalPrice, ".")[1]?String.prototype.split.call(orderInfo.totalPrice, ".")[1]:0:0}}</text>
             </view>
           </view>
           <button class="pay-button" :class="{'no-pay': !canPay}" @click="pay" ref="test">立即支付</button>
@@ -308,8 +308,8 @@
         //   }]
         // }
         getDetailInfo(params).then((data) => {
-          // let dataInfo = data
-          let dataInfo = data.data.data
+          let dataInfo = data
+          // let dataInfo = data.data.data
           this.orderInfo = dataInfo
           console.log(dataInfo, 'dataInfo')
           this.noStoreInfos = JSON.parse(JSON.stringify(dataInfo))
