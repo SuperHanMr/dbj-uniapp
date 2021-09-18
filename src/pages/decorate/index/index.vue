@@ -1,5 +1,5 @@
 <template>
-  <view class="decorate-index">
+  <view class="decorate-index" v-if="estateList.length > 0">
     <image class="bg-index" mode="aspectFit" src="http://dbj.dragonn.top/static/mp/dabanjia/images/decorate/bg@2x.png">
     </image>
     <view class="content flex-column">
@@ -33,8 +33,10 @@
             <view class="uni-title">{{ currentProject.housingEstate }}{{currentProject.address}}</view>
           </view>
           <view class="picture-btn-wrap">
-            <picture-btn v-if="aServiceData.showDesignFlag" class="p-i-t" text="设计图" @gotoPage="goDesignPicture"></picture-btn>
-            <picture-btn v-if="aServiceData.showActuaryFlag" class="p-i-t" text="精算单" @gotoPage="goActuary"></picture-btn>
+            <picture-btn v-if="aServiceData.showDesignFlag" class="p-i-t" text="设计图" @gotoPage="goDesignPicture">
+            </picture-btn>
+            <picture-btn v-if="aServiceData.showActuaryFlag" class="p-i-t" text="精算单" @gotoPage="goActuary">
+            </picture-btn>
             <picture-btn v-if="aServiceData.showVideoFlag" class="p-i-t" text="工地视频" @gotoPage="goVideo"></picture-btn>
             <picture-btn v-if="aServiceData.constructionFlag" text="施工" @gotoPage="goConstrction"></picture-btn>
             <!-- <picture-btn text="施工" @gotoPage="goConstrction"></picture-btn> -->
@@ -97,11 +99,11 @@
               购买相关服务 即刻开启装修
             </view>
             <guide-card v-if="availGuides.includes('design')" cardType="service"
-              imageUrl="http://iph.href.lu/702x160?text=702x160&fg=EB7662&bg=FFE2DD"
+              imageUrl="http://iph.href.lu/702x160?text=设计服务702x160&fg=EB7662&bg=FFE2DD"
               @buyNow="gonohousedecatore('design')">
             </guide-card>
             <guide-card v-if="availGuides.includes('actuary')" cardType="actuary"
-              imageUrl="http://iph.href.lu/702x160?text=702x160&fg=4173c8&bg=d0e0fa"
+              imageUrl="http://iph.href.lu/702x160?text=精算服务702x160&fg=4173c8&bg=d0e0fa"
               @buyNow="gonohousedecatore('actuary')">
             </guide-card>
           </view>
@@ -124,6 +126,8 @@
             <view @click="hcaa">管家竣工验收申请</view>
             <view @click="workerCapplication">工人阶段验收申请</view>
             <view @click="gjgxf">管家工序费</view>
+            <view @click="payGuanGuanJia">生成买管家消息</view>
+            <view @click="payRenGong">生成买人工消息</view>
           </view>
         </scroll-view>
       </view>
@@ -164,7 +168,9 @@
 
   import MwarehouseBtn from "../../../components/mwarehouse-btn/mwarehouse-btn.vue"
   import TextScroll from "../../../components/text-scroll/text-scroll.vue"
-  import { mapGetters } from "vuex";
+  import {
+    mapGetters
+  } from "vuex";
   // import monidata from "./monidata.js"
   let timer = null;
   export default {
@@ -184,15 +190,15 @@
           console.log(res)
           _this.viewHieght = res.windowHeight * 2 - 416
         }
-      })      
+      })
     },
     computed: {
-        ...mapGetters([
-          'systemUnreadCount'
-        ]),
-      },
-    watch:{
-      systemUnreadCount:function(newVal,oldVal){
+      ...mapGetters([
+        'systemUnreadCount'
+      ]),
+    },
+    watch: {
+      systemUnreadCount: function(newVal, oldVal) {
         console.log(newVal)
         this.getMsgNum()
       }
@@ -200,7 +206,7 @@
     onShow() {
       uni.showTabBar()
       // if (this.estateList && this.estateList.length < 1) {
-        this.getEstateList();
+      this.getEstateList();
       // }
     },
     data() {
@@ -268,10 +274,13 @@
       },
       scroll(e) {},
       getAvailableService() {
-        console.log("this.currentProject", this.currentProject)
-        availableService({
-          projectId: this.currentProject.projectId
-        }).then(data => {
+        // console.log("this.currentProject", this.currentProject)
+        // const params = {}
+        // if(this.currentProject.projectId) {
+        //   params.projectId = this.currentProject.projectId
+        // }F
+        const id = this.currentProject.projectId || -1
+        availableService(id).then(data => {
           const {
             purchasedServiceList,
             availableServiceList,
@@ -422,13 +431,19 @@
       },
       gonohousedecatore(type) {
         uni.navigateTo({
-          url: "/sub-decorate/pages/no-house-decorate/no-house-decorate?type=" + type
+          url: `/sub-decorate/pages/no-house-decorate/no-house-decorate?type=${type}&estateId=${this.currentEstate.id}`
         })
       },
       gjgxf() {
         uni.navigateTo({
           url: `/sub-decorate/pages/gj-process-cost/gj-process-cost?projectId=${this.currentProject.projectId}&estateId=${this.currentProject.estateId}&roleType=10&serviceType=5`
         })
+      },
+      payGuanGuanJia() {
+        
+      },
+      payRenGong() {
+        
       },
       gonohouse() {
         uni.navigateTo({
@@ -454,7 +469,8 @@
       },
       goToMyDecorate() {
         uni.navigateTo({
-          url: "/sub-decorate/pages/my-decorate/my-decorate?processId="+this.currentProject.processId+'&projectId='+this.currentProject.projectId,
+          url: "/sub-decorate/pages/my-decorate/my-decorate?processId=" + this.currentProject.processId +
+            '&projectId=' + this.currentProject.projectId,
         });
       },
       goToMyWarehouse() {
@@ -478,7 +494,7 @@
           isNeedRelative: true,
         }).then(data => {
           console.log(data)
-          if (!data || (typeof data == "array" && data.length < 1) ) {
+          if (!data || (typeof data == "array" && data.length < 1)) {
             uni.navigateTo({
               url: "/sub-decorate/pages/no-house/no-house",
             });
@@ -508,7 +524,7 @@
       //   })
       // },
       getMsgNum() {
-        if(this.currentProject.projectId){
+        if (this.currentProject.projectId) {
           getMsgNum(this.currentProject.projectId).then(res => {
             this.msgNum = res.count
           })

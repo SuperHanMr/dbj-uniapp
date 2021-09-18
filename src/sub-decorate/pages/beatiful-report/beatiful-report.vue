@@ -1,6 +1,5 @@
 <template>
   <view class="current-cost">
-    
     <web-view :src="url"></web-view>
   </view>
 </template>
@@ -15,7 +14,6 @@
     onLoad(e){
       let themeId = e.themeId
       let id = e.id
-      
       this.url = process.env.VUE_APP_BASE_H5+this.url + themeId + '&id=' + id +'&token='+getApp().globalData.token
     },
     methods: {

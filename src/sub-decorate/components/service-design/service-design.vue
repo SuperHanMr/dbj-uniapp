@@ -3,14 +3,14 @@
     <view class="design-report">
       <view class="report-item">
         <view class="title">设计报告详情</view>
-        <view class="check" @click="toDetail">
+        <view class="check" @click="toDesign">
           <text>立即查看</text>
           <image></image>
         </view>
       </view>
       <view class="report-item">
-        <view class="title">设计报告详情</view>
-        <view class="check" @click="toDetail">
+        <view class="title">颜值报告详情</view>
+        <view class="check" @click="toBeatiful">
           <text>立即查看</text>
           <image></image>
         </view>
@@ -37,6 +37,7 @@
     data(){
       return{
         list:[],
+        designData:{}
       }
     },
     mounted(){
@@ -52,7 +53,21 @@
         getMyDesignServe(this.serverId).then(res=>{
           console.log(res)
           this.list = res.fileListVO
+          this.designData = res
           this.$emit('changeDesign',res)
+          if(res.fileListVO.length===0){
+            this.$emit('isEmpty',1)
+          }
+        })
+      },
+      toDesign(){
+        uni.navigateTo({
+          url:'/sub-decorate/pages/custom-report/custom-report'
+        })
+      },
+      toBeatiful(){
+        uni.navigateTo({
+          url:'/sub-decorate/pages/beatiful-report/beatiful-report?themeId='+this.designData.template_id+'&id='+this.designData.id
         })
       }
     }

@@ -1,6 +1,6 @@
 <template>
 	<view>
-		<custom-file-picker v-model="imageValue" fileMediatype="image" mode="grid" @select="select" @progress="progress" @success="success" @fail="fail" @fileChange="onFileChange"></custom-file-picker>
+		<custom-file-picker  fileMediatype="image" mode="grid" @select="select" @progress="progress" @success="success" @fail="fail" @fileChange="onFileChange"></custom-file-picker>
 		<button type="default" @click="logList">获取列表</button>
 	</view>
 </template>
@@ -14,8 +14,7 @@
 		},
 		methods: {
 			onFileChange(files){
-				console.log('!!!!!')
-				console.log(files)
+				this.imageValue=files
 			},
 			logList(){
 				console.log(this.imageValue);

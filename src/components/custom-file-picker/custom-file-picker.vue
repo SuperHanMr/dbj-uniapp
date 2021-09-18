@@ -23,6 +23,7 @@
 </template>
 
 <script>
+	import upload from "@/utils/upload.js"
 	import {
 		chooseAndUploadFile,
 		uploadCloudFiles
@@ -164,8 +165,8 @@
 				type: Object,
 				default () {
 					return {
-						width: 'auto',
-						height: 'auto'
+						width: '160rpx',
+						height: '160rpx'
 					}
 				}
 			},
@@ -215,7 +216,7 @@
 					files.push(v)
 				})
 				files.reverse();
-				this.$emit('fileChange',files);
+				this.$emit('fileChange', files);
 				return files
 			},
 			showType() {
@@ -270,18 +271,18 @@
 					this.setEmit()
 				})
 			},
-			/**
-			 * 公开用户使用，继续上传
-			 */
-			upload() {
-				let files = []
-				this.files.forEach((v, index) => {
-					if (v.status === 'ready' || v.status === 'error') {
-						files.push(Object.assign({}, v))
-					}
-				})
-				this.uploadFiles(files)
-			},
+			// /**
+			//  * 公开用户使用，继续上传
+			//  */
+			// upload() {
+			// 	let files = []
+			// 	this.files.forEach((v, index) => {
+			// 		if (v.status === 'ready' || v.status === 'error') {
+			// 			files.push(Object.assign({}, v))
+			// 		}
+			// 	})
+			// 	this.uploadFiles(files)
+			// },
 			async setValue(newVal, oldVal) {
 				const newData = async (v) => {
 					const reg = /cloud:\/\/([\w.]+\/?)\S*/
@@ -343,24 +344,15 @@
 			chooseFiles() {
 				const _extname = get_extname(this.fileExtname)
 				// 获取后缀
-				uniCloud
-					.chooseAndUploadFile({
+				uni
+					.chooseImage({
 						type: this.fileMediatype,
 						compressed: false,
 						sizeType: this.sizeType,
 						// TODO 如果为空，video 有问题
 						extension: _extname.length > 0 ? _extname : undefined,
 						count: this.limitLength - this.files.length, //默认9
-						onChooseFile: this.chooseFileCallback,
-						onUploadProgress: progressEvent => {
-							this.setProgress(progressEvent, progressEvent.index)
-						}
-					})
-					.then(result => {
-						this.setSuccessAndError(result.tempFiles)
-					})
-					.catch(err => {
-						console.log('选择失败', err)
+						success: this.chooseFileCallback,
 					})
 			},
 
@@ -369,46 +361,21 @@
 			 * @param {Object} res
 			 */
 			async chooseFileCallback(res) {
-				const _extname = get_extname(this.fileExtname)
-				const is_one = (Number(this.limitLength) === 1 &&
-						this.disablePreview &&
-						!this.disabled) ||
-					this.returnType === 'object'
-				// 如果这有一个文件 ，需要清空本地缓存数据
-				if (is_one) {
-					this.files = []
-				}
-
-				let {
-					filePaths,
-					files
-				} = get_files_and_is_max(res, _extname)
-				if (!(_extname && _extname.length > 0)) {
-					filePaths = res.tempFilePaths
-					files = res.tempFiles
-				}
-
-				let currentData = []
-				for (let i = 0; i < files.length; i++) {
-					if (this.limitLength - this.files.length <= 0) break
-					files[i].uuid = Date.now()
-					let filedata = await get_file_data(files[i], this.fileMediatype)
-					filedata.progress = 0
-					filedata.status = 'ready'
-					this.files.push(filedata)
-					currentData.push({
-						...filedata,
-						file: files[i]
+				for (let i = 0; i < res.tempFiles.length; i++) {
+					let item = res.tempFiles[i]
+					upload({
+						filePath: item.path,
+						fileType: "image",
+						success: (res) => {
+							this.files.push(res);
+						},
+						fail: (res) => {
+							console.log("upload fail", res);
+						},
+						progess: (res) => {
+							console.log("upload progess:", res);
+						}
 					})
-				}
-				this.$emit('select', {
-					tempFiles: currentData,
-					tempFilePaths: filePaths
-				})
-				res.tempFiles = files
-				// 停止自动上传
-				if (!this.autoUpload || this.noSpace) {
-					res.tempFiles = []
 				}
 			},
 
@@ -513,6 +480,7 @@
 			 * @param {Object} index
 			 */
 			delFile(index) {
+				index = this.files.length - index - 1;
 				this.$emit('delete', {
 					tempFile: this.files[index],
 					tempFilePath: this.files[index].url
@@ -607,7 +575,7 @@
 	.uni-file-picker {
 		/* #ifndef APP-NVUE */
 		box-sizing: border-box;
-		overflow: hidden;
+		/* overflow: hidden; */
 		/* #endif */
 	}
 

@@ -15,7 +15,7 @@
     onLoad(e){
       let id = e.id || getApp().globalData.decorateMsg.reportId
       let cost = e.isCost||0
-      this.url = process.env.VUE_APP_BASE_H5+this.url + id +'&isMessage='+(e.id?2:1) + '&isActuarial=' + e.isCost +'&token='+getApp().globalData.token
+      this.url = process.env.VUE_APP_BASE_H5+this.url + id +'&isMessage='+(e.id?2:1) + '&isActuarial=' + cost +'&token='+getApp().globalData.token
     },
     methods: {
       

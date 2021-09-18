@@ -26,13 +26,13 @@
     <swiper :current="tabIndex" style="flex: 1;min-height: 600px;" :style="{height:contentHeight}" :duration="300" @change="ontabchange">
       <swiper-item class="swiper-item" v-for="(tab,index1) in dataList" :key="index1">
         <service-hunman :isDesign="tab.nodeType===1" :serverId='serverId' :tab='tab' :designData='designData' @openPopup='openPopup'></service-hunman>
-        <amount-house :serverId='serverId' id="d3" @isEmpty='isEmpty' v-if="tab.nodeType===3"></amount-house>
-        <resultContent ref='result' id="d2" @isEmpty='isEmpty' :serverId='serverId' v-if="tab.nodeType===2" @getData='getData' :scrollTop='scrollTop'
+        <amount-house :serverId='serverId' id="d3" @isEmpty='isEmpty' v-if="tab.nodeType===3&&currentEmpty===0"></amount-house>
+        <resultContent ref='result' id="d2" @isEmpty='isEmpty' :serverId='serverId' v-if="tab.nodeType===2&&currentEmpty===0" @getData='getData' :scrollTop='scrollTop'
           :isReport='true'></resultContent>
-        <serviceDesign id="d1" v-if="tab.nodeType===1" @isEmpty='isEmpty' @changeDesign='changeDesign' :serverId='serverId'></serviceDesign>
-        <serviceActuarial id="d4" v-if="tab.nodeType===4" @isEmpty='isEmpty' :serverId='serverId'></serviceActuarial>
-        <serviceSteward id="d5" v-if="tab.nodeType===5" @isEmpty='isEmpty' :serverId='serverId'></serviceSteward>
-        <serviceDismantle id="d6" v-if="tab.nodeType>5" @isEmpty='isEmpty' :serverId='serverId'></serviceDismantle>
+        <serviceDesign id="d1" v-if="tab.nodeType===1&&currentEmpty===0" @isEmpty='isEmpty' @changeDesign='changeDesign' :serverId='serverId'></serviceDesign>
+        <serviceActuarial id="d4" v-if="tab.nodeType===4&&currentEmpty===0" @isEmpty='isEmpty' :serverId='serverId'></serviceActuarial>
+        <serviceSteward id="d5" v-if="tab.nodeType===5&&currentEmpty===0" @isEmpty='isEmpty' :serverId='serverId'></serviceSteward>
+        <serviceDismantle id="d6" v-if="tab.nodeType>5&&currentEmpty===0" @isEmpty='isEmpty' :serverId='serverId'></serviceDismantle>
         <no-service v-if="tab.nodeType===currentEmpty" words="暂无进行中服务"></no-service>
       </swiper-item>
     </swiper>
