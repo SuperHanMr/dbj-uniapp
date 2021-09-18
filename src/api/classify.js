@@ -10,8 +10,8 @@ export function getAddressInfo(houseId) {
   return request.get(`/customer/app/estate/queryEstateDetail/${houseId}`);
 }
 export function getDetailInfo(params) {
-  return request.post('/app/purchase/check', params);
-  // return axios.post('http://rap2api.taobao.org/app/mock/290704/test-good', params);
+  // return request.post('/app/purchase/check', params);
+  return axios.post('http://rap2api.taobao.org/app/mock/290704/test-good', params);
 }
 export function payOrder(params) {
 	return request.post("/order-center/app/order/createOrder", params)

@@ -194,6 +194,7 @@
 						</view>
 					</view>
 				</view>
+				<view class="bottomComments" v-if="showInput"></view>
 				<view class="bottomInput" v-if="showInput">
 					<input v-model="value"
 						:cursor-spacing="10"
@@ -471,11 +472,11 @@
 		width: 100%;
 		height: 120rpx;
 		padding-bottom: 40rpx;
-		border-top: 2rpx solid #efefef;
+		background: #ffffff;
+		/* border-top: 2rpx solid #efefef; */
 		position: fixed;
 		left: 0rpx;
 		bottom: 0rpx;
-		z-index: 999;
 		display: flex;
 	}
 	.focusInput{
@@ -519,6 +520,7 @@
 		position: relative;
 		width: 100%;
 		height: 840rpx;
+		overflow: auto;
 		padding-bottom: 40rpx;
 		background: #ffffff;
 		border-radius: 32rpx 32rpx 0rpx 0rpx;
@@ -526,6 +528,14 @@
 		left: 0;
 		bottom: 0;
 		z-index: 999;
+	}
+	.bottomComments{
+		width: 100%;
+		height: 120rpx;
+		padding-bottom: 40rpx;
+		position: fixed;
+		left: 0rpx;
+		bottom: 0rpx;
 	}
 	.popupComments .noComment{
 		width: 100%;
@@ -567,6 +577,7 @@
 	.commentList{
 		width: 100%;
 		height: 700rpx;
+		/* height: fit-content; */
 		overflow: auto;
 	}
 	.commentItem:first-child .mainContent{
