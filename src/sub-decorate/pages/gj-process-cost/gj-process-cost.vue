@@ -119,7 +119,7 @@
         this.dataOrigin.artificial.categoryList.forEach((item, i) => {
           item.itemList.forEach((it, j) => {
             this.shopping.artificial.push(it)
-            this.countPrice += it.price / 100
+            this.countPrice += it.price * it.count / 100
           })
         })
         // debugger
@@ -128,7 +128,7 @@
           item.itemList.forEach((it, j) => {
             if (this.checkedIds.includes(it.productId)) {
               this.shopping.material.push(it)
-              this.countPrice += it.price / 100
+              this.countPrice += it.price * it.count / 100
             }
           })
         })
