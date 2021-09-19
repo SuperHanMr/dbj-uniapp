@@ -1,9 +1,16 @@
 <template>
 	<view class="container">
 		<view class="nick-name-input">
-			<input v-model="nickName" class="input-style"  type="text"
-					placeholder-style="font-size: 28rpx;padding-top:6rpx"
-					placeholder="请输入昵称" />
+			<input 
+				v-model="nickName" 
+				class="input-style"  
+				type="text"
+				placeholder-style="font-size: 28rpx;padding-top:6rpx"
+				placeholder="请输入昵称"
+			 />
+			<!-- 	@click="hideTabbar"
+				@focus="hideTabbar" 
+				@blur="showTabbar" -->
 			<image 
 				class="icon" 
 				src="../../../static/mine_input_clear@2x.png"
@@ -16,6 +23,16 @@
 			*限1-12个中文、英文或数字
 		</view>
 		
+		
+		<view class="footer" :style="{bottom:systemBottom}">
+			<view class="button">
+				保存
+			</view>
+		</view>
+		
+		<!-- <view v-if="tabbar">底部悬浮</view> -->
+		
+		
 	</view>
 </template>
 
@@ -24,17 +41,59 @@
 		data() {
 			return {
 				nickName:"",
+				
+				
+				tabbar: true,
+				windowHeight: '',
+				
+				systemBottom: "",
+				systemHeight: "",
+				containerBottom: "",
+				
 			}
 		},
+		mounted(e) {
+		  const menuButtonInfo = uni.getMenuButtonBoundingClientRect();
+		  this.containerBottom = menuButtonInfo.bottom;
+		  this.systemBottom = menuButtonInfo.bottom + "rpx";
+		  this.systemHeight = menuButtonInfo.bottom + this.num + "rpx";
+		  console.log(this.systemBottom);
+		},
+		
 		onLoad(e) {
 			this.nickName  = e.nickName
 			console.log("this.nickName=",this.nickName)
+			
+			uni.getSystemInfo({
+				success: (res)=> {
+						this.windowHeight = res.windowHeight;
+				}
+			});    
+			uni.onWindowResize((res) => {
+					if(res.size.windowHeight < this.windowHeight){
+							this.tabbar = false
+					}else{
+							this.tabbar = true
+					}
+			})
 		},
+			
+			
+		
+		
 		methods: {
 			clearInfo(){
 				this.nickName = ""
+			},
+			
+			
+			showTabbar(){
+				this.tabbar = true;
+			},
+			hideTabbar(){
+				this.tabbar = false;
 			}
-		}
+		},
 	}
 </script>
 
@@ -76,4 +135,25 @@
 		color: #999999;
 	}
 }
+.footer{
+	position: fixed;
+	padding: 24rpx 32rpx;
+	bottom: 0;
+	background-color: #FFFFFF;
+	.button{
+		width: 686rpx;
+		height: 88rpx;
+		line-height: 88rpx;
+		text-align: center;
+		font-size: 32rpx;
+		background: linear-gradient(135deg,#53d5cc, #4fc9c9);
+		border-radius: 16rpx;
+		color: #FFFFFF;
+		
+		
+		
+	}
+}
+
+
 </style>
