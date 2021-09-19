@@ -44,7 +44,7 @@
     //   this.getStewardService()
     // },
     watch:{
-      serverId:{
+      projectId:{
         handler:function(){
           this.getStewardService()
         },
@@ -53,7 +53,7 @@
     },
     methods:{
       getStewardService(){
-        getStewardService(this.serverId).then(res=>{
+        getStewardService(this.projectId).then(res=>{
           console.log(res)
           this.list = res.progressList
           if(this.list.length===0){
