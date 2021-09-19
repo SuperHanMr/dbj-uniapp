@@ -4,7 +4,8 @@
       拆除工人发起阶段服务验收申请，系统将在72:00:00后自动确认验收
     </view>
     <view class="content">
-      <user-desc-pict-worker :workerData="workerData" :isWorker="true"></user-desc-pict-worker>
+      <user-desc-pict-butler :butlerData="butlerData"></user-desc-pict-butler>
+      <user-desc-pict :workerData="workerData"></user-desc-pict>
     </view>
     <view class="bt-btn-wrap flex-row">
       <view class="btn-l" @click="refuse">拒绝通过</view>
@@ -20,9 +21,11 @@
   } from "../../../api/construction.js"
 
   import UserDescPictWorker from "../../components/user-desc-pict/user-desc-pict-worker.vue"
+  import UserDescPict from "../../components/user-desc-pict/user-desc-pict.vue"
   export default {
     components: {
-      UserDescPictWorker
+      UserDescPictWorker,
+      UserDescPict
     },
     onLoad(option) {
       this.msg = getApp().globalData.decorateMsg
@@ -37,6 +40,7 @@
     data() {
       return {
         workerData: {},
+        butlerData: {},
         id: null,
         msg: {}
       }
@@ -74,6 +78,7 @@
       getCompletionLogById() {
         getCompletionLogById(this.msg.data.id).then(data => {
           this.workerData = data.workerDecorationTrendLogVO
+          this.butlerData = data.butlerDecorationTrendLogVO
           // this.id = data.id
         })
       }
