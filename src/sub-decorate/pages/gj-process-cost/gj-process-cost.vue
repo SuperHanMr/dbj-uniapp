@@ -138,7 +138,7 @@
       },
       getDataList() {
         sellList({
-          serveId: this.serveCardId,
+          projectId: this.projectId,
           type: this.serviceType,
         }).then(data => {
           this.dataOrigin = data
