@@ -55,6 +55,9 @@
                 uni.showToast({
                   title: "已提交验收"
                 })
+                uni.navigateBack({
+                  
+                })
               })
             } else {
               console.log("点击了取消")
