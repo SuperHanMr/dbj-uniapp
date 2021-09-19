@@ -54,13 +54,13 @@
 				    :right-options="options"
 				    @click="deleteGoods(goodsItem.skuId,goodsItem.buyCount)"
 				  >
-						<view class="goodsItem" @click="toGoodsDetail(goodsItem.skuId)">
+						<view class="goodsItem">
 							<view style="width: 36rpx;height: 36rpx;">
 								<view class="check" v-if="!goodsItem.goodsChecked" @click="checkGoods(shopItem.storeId,goodsItem.skuId)"></view>
 								<image class="checked" v-else @click="checkGoods(shopItem.storeId,goodsItem.skuId)" src="../../../static/shopping-cart/checked@2x.png" ></image>
 							</view>
-							<image :src="goodsItem.image" class="goodsItemImg"></image>
-							<view class="goodsInfo">
+							<image :src="goodsItem.image" @click="toGoodsDetail(goodsItem.skuId)" class="goodsItemImg"></image>
+							<view class="goodsInfo" @click="toGoodsDetail(goodsItem.skuId)">
 								<view class="goodsDesc">
 									<text class="goodsType">{{goodsItem.productType=== 1?"服务":"物品"}}</text>
 									{{goodsItem.spuName}}
@@ -525,7 +525,11 @@
 				let checkedList = []
 				let isChooseDiff = () => {
 					let flag = false
-					let firstType = this.shopList[0].skuList[0].productType
+					// 第一个勾选的商品
+					let target = {}
+					this.shopList.forEach(item => {
+						target = item.skuList.find(ele => ele.goodsChecked)
+					})
 					//清空上一次勾选的商品
 					this.serviceList = []
 					this.entityList = []
@@ -533,7 +537,7 @@
 						item.skuList.forEach(ele => {
 							if(ele.goodsChecked){
 								//判断用户是否选择了不同类型的商品
-								if(ele.productType !== firstType){
+								if(ele.productType !== target.productType){
 									flag = true
 								}
 								//结算页面展示店铺名
