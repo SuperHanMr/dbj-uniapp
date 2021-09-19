@@ -27,14 +27,14 @@
       <swiper-item class="swiper-item" v-for="(tab,index1) in dataList" :key="index1">
         
         <service-hunman :isDesign="tab.nodeType===1" :serverId='serverId' :tab='tab' :designData='designData' @openPopup='openPopup'></service-hunman>
-        <amount-house :checkData='checkData' id="d3" @isEmpty='isEmpty' v-if="tab.nodeType===3&&currentEmpty===0"></amount-house>
-        <resultContent ref='result' id="d2" @isEmpty='isEmpty' :serverId='tab.serveCardId' v-if="tab.nodeType===2&&currentEmpty===0" @getData='getData' :scrollTop='scrollTop'
+        <amount-house :checkData='checkData' id="d3" @isEmpty='isEmpty' :index='index1' v-if="tab.nodeType===3&&!tab.currentEmpty"></amount-house>
+        <resultContent ref='result' id="d2" @isEmpty='isEmpty' :index='index1' :serverId='tab.serveCardId' v-if="tab.nodeType===2&&!tab.currentEmpty" @getData='getData' :scrollTop='scrollTop'
           :isReport='true'></resultContent>
-        <serviceDesign id="d1" v-if="tab.nodeType===1&&currentEmpty===0" @isEmpty='isEmpty' @changeDesign='changeDesign' :serverId='tab.serveCardId'></serviceDesign>
-        <serviceActuarial id="d4" v-if="tab.nodeType===4&&currentEmpty===0" @isEmpty='isEmpty' :serverId='tab.serveCardId'></serviceActuarial>
-        <serviceSteward id="d5" v-if="tab.nodeType===5&&currentEmpty===0" @isEmpty='isEmpty' :serverId='tab.serveCardId'></serviceSteward>
-        <serviceDismantle id="d6" v-if="tab.nodeType>5&&currentEmpty===0" :tab='tab' @isEmpty='isEmpty' :serverId='tab.serveCardId'></serviceDismantle>
-        <no-service v-if="tab.nodeType===currentEmpty" words="暂无进行中服务"></no-service>
+        <serviceDesign id="d1" v-if="tab.nodeType===1&&!tab.currentEmpty" @isEmpty='isEmpty' :index='index1' @changeDesign='changeDesign' :serverId='tab.serveCardId'></serviceDesign>
+        <serviceActuarial id="d4" v-if="tab.nodeType===4&&!tab.currentEmpty" @isEmpty='isEmpty' :index='index1' :serverId='tab.serveCardId'></serviceActuarial>
+        <serviceSteward id="d5" v-if="tab.nodeType===5&&!tab.currentEmpty" @isEmpty='isEmpty' :index='index1' :serverId='tab.serveCardId'></serviceSteward>
+        <serviceDismantle id="d6" v-if="tab.nodeType>5&&!tab.currentEmpty" :index='index1' @isEmpty='isEmpty' :serverId='tab.serveCardId'></serviceDismantle>
+        <no-service v-if="tab.currentEmpty" words="暂无进行中服务"></no-service>
       </swiper-item>
     </swiper>
   </view>
@@ -117,7 +117,6 @@
         this.tabName = 'd'+(this.dataList[current].nodeType>6?6:this.dataList[current].nodeType)
         this.serverId = this.dataList[current].serveCardId
         this.currentEmpty = 0
-        console.log(this.currentEmpty)
         this.changeHeight()
         // this.$nextTick(function(){
         //   this.$refs.result[0].getHeight()
@@ -141,23 +140,30 @@
         this.result = e
       },
       isEmpty(item){
-        this.currentEmpty = item
+        
+        this.dataList[item].currentEmpty = 1
+        
+        
       },
       changeDesign(e){
         this.designData = e
+        this.changeHeight()
       },
       changeHeight() {
         setTimeout(()=>{
-          let query = uni.createSelectorQuery()
-          
-          query.select('#' + this.tabName).boundingClientRect();
-          query.exec((res) => {
+          this.$nextTick(function(){
+            let query = uni.createSelectorQuery()
             
-            if (res && res[0]) {
-              this.contentHeight =  res[0].height+150+ 'px';
-            }
-          });
-        },500)
+            query.select('#' + this.tabName).boundingClientRect();
+            query.exec((res) => {
+              console.log(res)
+              if (res && res[0]) {
+                this.contentHeight =  res[0].height+150+ 'px';
+              }
+            });
+          })
+          
+        },1000)
           
         
       },

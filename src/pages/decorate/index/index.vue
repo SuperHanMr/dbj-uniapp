@@ -192,17 +192,17 @@
         }
       })
     },
-    computed: {
-      ...mapGetters([
-        'systemUnreadCount'
-      ]),
-    },
-    watch: {
-      systemUnreadCount: function(newVal, oldVal) {
-        console.log(newVal)
-        this.getMsgNum()
-      }
-    },
+    // computed: {
+    //   ...mapGetters([
+    //     'systemUnreadCount'
+    //   ]),
+    // },
+    // watch: {
+    //   systemUnreadCount: function(newVal, oldVal) {
+    //     console.log(newVal)
+    //     this.getMsgNum()
+    //   }
+    // },
     onShow() {
       uni.showTabBar()
       // if (this.estateList && this.estateList.length < 1) {
@@ -247,6 +247,7 @@
         this.deviceId = uuidv4()
         uni.setStorageSync('uuDeviceId', this.deviceId);
       }
+      uni.$on('system-messages',this.watchMsg)
       // this.getToken()
       // this.getMqtt()
     },
@@ -255,6 +256,10 @@
       timer = null
     },
     methods: {
+      watchMsg(){
+        this.getMsgNum();
+        this.getAvailableService()
+      },
       consultingService() {
         if (this.aServiceData.insuranceStatus === 1) {
           return

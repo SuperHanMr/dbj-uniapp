@@ -33,6 +33,7 @@
   export default{
     props:{
       serverId:0,
+      index:0
     },
     data(){
       return{
@@ -60,7 +61,7 @@
           this.designData = res
           this.$emit('changeDesign',res)
           if(res.fileListVO.length===0){
-            this.$emit('isEmpty',1)
+            this.$emit('isEmpty',this.index)
           }
         })
       },

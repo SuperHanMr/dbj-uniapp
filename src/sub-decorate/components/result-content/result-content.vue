@@ -63,7 +63,8 @@
       serverId:{
         type:Number,
         default:0
-      }
+      },
+      index:0
     },
     filters:{
       formatDate
@@ -224,7 +225,7 @@
             },1000)
           }
         }).catch(err=>{
-          this.$emit('isEmpty',2)
+          this.$emit('isEmpty',this.index)
         })
       },
       toHHmmss(date){
