@@ -83,6 +83,7 @@ instance.interceptors.request.use(
 instance.interceptors.response.use(
 	// 请求成功
 	async (res) => {
+		console.log(res, 'sadasd>>>>>>>>>>>>')
 			uni.hideLoading();
 
 			if (res.data.code !== 1) {
@@ -92,7 +93,7 @@ instance.interceptors.response.use(
 				if (res.data && res.data.data) {
 					return res.data.data;
 				}
-				return null;
+				return res;
 			}
 		},
 		// 请求失败

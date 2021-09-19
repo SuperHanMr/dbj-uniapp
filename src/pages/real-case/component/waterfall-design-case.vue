@@ -1,6 +1,6 @@
 <template>
-	<view class="waterfall-item" @tap="onTap">
-		<view class="img-box">
+	<view class="waterfall-item">
+		<view class="img-box" @tap="onTap">
 			<image :src="params.imageUrl" mode="widthFix" @load="emitHeight" @error="emitHeight"></image>
 			<view class="comment-like">
 				<view class="comment" v-if="params.commentCount">
@@ -37,11 +37,11 @@
 						{{params.authorNickname}}
 					</view>
 				</view>
-				<view class="collection-box">
+				<view class="collection-box" @tap="onCollection">
 					<image src="/static/images/real-case/collection-no.png" v-if="!params.isCollection" mode=""></image>
 					<image src="/static/images/real-case/collection.png" v-if="params.isCollection" mode=""></image>
 					<view class="collection-number">
-						{{params.likeCount}}
+						{{params.collectionCount}}
 					</view>
 				</view>
 			</view>
@@ -83,7 +83,12 @@
 				}).exec();
 			},
 			onTap(){
+				console.log("onTap")
 				this.$emit("click",this.$props.index,this.$props.tag);
+			},
+			onCollection() {
+				console.log("收藏")
+				this.$emit("collection",this.$props.index);
 			}
 		}
 	}
