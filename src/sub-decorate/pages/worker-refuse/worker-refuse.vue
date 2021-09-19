@@ -47,6 +47,9 @@
             title: "已提交申请",
             icon: false
           })
+          uni.navigateTo({
+            url: "/pages/decorate/index/index"
+          })
         })
       }
     },
