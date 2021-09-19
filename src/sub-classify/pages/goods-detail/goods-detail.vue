@@ -42,7 +42,7 @@
         provinceId: JSON.parse(this.defaultHouseInfo).provinceId,
         cityId: JSON.parse(this.defaultHouseInfo).cityId,
         areaId: JSON.parse(this.defaultHouseInfo).areaId,
-        locationName: JSON.parse(this.defaultHouseInfo).locationName,
+        locationName: JSON.parse(this.defaultHouseInfo).name,
         housingEstate: JSON.parse(this.defaultHouseInfo).housingEstate,
         housingEstateId: JSON.parse(this.defaultHouseInfo).housingEstateId
       }

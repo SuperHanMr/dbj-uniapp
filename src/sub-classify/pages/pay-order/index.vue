@@ -14,9 +14,9 @@
     <view v-else>
       <address-picker :houseId="houseId" :productType="productType" @emitInfo="emitInfo" :originFrom="originFrom"></address-picker>
       <view class="content">
-        <view class="shop-item" v-for="(shopItem, index) in orderInfo.storeInfos" :key="index">
+        <view class="shop-item" v-for="(shopItem, shopIndex) in orderInfo.storeInfos" :key="shopIndex">
           <view class="shop-name" v-if="shopItem.skuInfos.length">{{shopItem.storeName}}</view>
-          <view class="goods-item item-box" v-for="(goodsItem, index) in shopItem.skuInfos" :key="index">
+          <view class="goods-item item-box" v-for="(goodsItem, goodIndex) in shopItem.skuInfos" :key="goodIndex">
             <view class="goods-item">
               <image :src="goodsItem.imageUrl" class="goodsItemImg"></image>
               <!-- <image src="https://ali-image-test.dabanjia.com/image/20210816/11/1629087052820_2600%241626858792066_0436s4.png" class="goodsItemImg"></image> -->
@@ -44,6 +44,13 @@
                 <text  v-if="!goodsItem.canDeliver && productType === 1">当前地址无法配送该商品，请更换地址</text>
               </view>
             </view>
+            <view class="choose-time" v-if="productType === 2 && shopItem.skuInfos.appointmentRequired">
+              <view class="time-bar" @click='chooseTime(shopIndex, goodIndex)'>
+                <text v-if="!time">请选择上门时间</text>
+                <text v-else>{{time}}</text>
+                <image class="choose-icon" src="../../../static/images/ic_more_black@2x.png"></image>
+              </view>
+            </view>
           </view>
           <view class="cost-detail" v-if="shopItem.deliveryFee && productType === 1">
             <view>
@@ -60,13 +67,6 @@
               <view class="question-box">本订单已获得了该店铺{{shopItem.freeDeliveryCount}}次免运费权益
                 <text class="question-icon" @click="readExpenses(1)"></text>
               </view>
-            </view>
-          </view>
-          <view class="choose-time" v-if="productType === 2 && shopItem.skuInfos.appointmentRequired">
-            <view class="time-bar" @click='chooseTime'>
-              <text v-if="!time">请选择上门时间</text>
-              <text v-else>{{time}}</text>
-              <image class="choose-icon" src="../../../static/images/ic_more_black@2x.png"></image>
             </view>
           </view>
         </view>
@@ -129,8 +129,8 @@
             <view class="info-text2">总计：</view>
             <view class="total-money">
               ￥
-              <text class="mony-text">{{orderInfo.totalPrice?String.prototype.split.call(orderInfo.totalPrice, ".")[0]:0}}</text>
-              <text>.{{orderInfo.totalPrice?String.prototype.split.call(orderInfo.totalPrice, ".")[1]?String.prototype.split.call(orderInfo.totalPrice, ".")[1]:0:0}}</text>
+              <text class="mony-text">{{totalPrice?String.prototype.split.call(totalPrice, ".")[0]:0}}</text>
+              <text>.{{totalPrice?String.prototype.split.call(totalPrice, ".")[1]?String.prototype.split.call(totalPrice, ".")[1]:0:0}}</text>
             </view>
           </view>
           <button class="pay-button" :class="{'no-pay': !canPay || hasNoSendItem}" @click="pay" ref="test">立即支付</button>
@@ -171,6 +171,8 @@
       return {
         isShow: true,
         time: '',
+        shopIndex: 0,
+        goodIndex: 0,
         orderCartParams: {},
         originFrom: '',
         addressInfo: {},
@@ -192,10 +194,11 @@
         toastType: 0,
         toastText:'',
         tipTest: '',
-        remarks: '666',
+        remarks: '',
         orderName: '',
         orderDetails: [],
         totalGoodsNum: 0,
+        totalPrice: '0.00',
         canPay: true
       }
     },
@@ -225,19 +228,15 @@
       this.storeId = e.storeId
       this.unit = e.unitName
       this.goodDetailId = uni.getStorageSync('goodId')
-      console.log(this.houseId, 'h1')
-      if(!this.houseId){
-        console.log(this.houseId, 'h2')
+    },
+    onShow() {
+      if(!uni.getStorageSync('houseListChooseId') && !this.houseId){
+        this.isShow = false
         setTimeout(() => {
           if(this.$refs.houseDialog.open){
             this.$refs.houseDialog.open()
           }
         })
-      }
-    },
-    onShow() {
-      if(!uni.getStorageSync('houseListChooseId') && !this.houseId){
-        this.isShow = false
       }
       if (uni.getStorageSync('houseListChooseId')) {
         this.houseId = uni.getStorageSync('houseListChooseId')
@@ -266,6 +265,8 @@
       },
       getTime(val) {
         this.time = val[0] + '年' + val[1] + '月' + val[2] + '日' + val[3] + '时' + val[4] + '分'
+        this.$set(this.orderInfo.storeInfos[this.shopIndex].skuInfos[this.goodIndex], "time", this.time)
+        console.log(this.orderInfo)
       },
       emitInfo(val) {
         this.addressInfo = val
@@ -309,8 +310,8 @@
         //   }]
         // }
         getDetailInfo(params).then((data) => {
+          this.totalPrice = data.totalPrice + data.totalDeliveryFee + data.totalHandlingFee + data.totalDeposit - data.totalDiscount
           let dataInfo = data
-          // let dataInfo = data.data.data
           this.orderInfo = dataInfo
           this.noStoreInfos = JSON.parse(JSON.stringify(dataInfo))
           this.noStoreInfos.storeInfos = []
@@ -318,7 +319,7 @@
           this.canStoreInfos.storeInfos = []
 
 
-          dataInfo.storeInfos.map((storeItem, storeK) => {
+          this.orderInfo.storeInfos.map((storeItem, storeK) => {
             let noStoreItem = JSON.parse(JSON.stringify(storeItem))
             noStoreItem.skuInfos = []
             let canStoreItem = JSON.parse(JSON.stringify(storeItem))
@@ -337,7 +338,7 @@
                   addingUserId: skuItem.addingUserId
                 })
               }
-              // 购物车结算可配送和不可配送数据
+              // 结算可配送和不可配送数据
               if (skuItem.canBuy === false && skuItem.canDeliver === false) { 
                 noStoreItem.skuInfos.push(skuItem)
                 this.hasNoSendItem = true // 判断所有数据中有没有不可配送数据
@@ -352,13 +353,15 @@
                   		"roleType":skuItem.roleType? Number(skuItem.roleType): 0, //角色类型  7工人  10管家  购买工人和管家时参数必传,
                   		"workType":skuItem.workType? Number(skuItem.workType): -2,//工种类型 购买工人时参数必传,
                   		"level":0, //等级  0中级  1高级 2特级  3钻石",
-                  		"storeId":skuItem.storeId, //店铺id,
+                  		"storeId":storeItem.storeId, //店铺id,
                   		"storeType": 0, //店铺类型 0普通 1设计师",
                   		"number": skuItem.buyCount, //购买数量",
-                  		"params":this.time, //与订单无关的参数 如上门时间 doorTime
+                  		"params": {}, //与订单无关的参数 如上门时间 doorTime
                 }
-                console.log(orderDetailItem, "orderDetailItem")
-                this.orderDetails.push(orderDetailItem)
+                this.orderDetails.push({
+                  orderDetailItem: orderDetailItem,
+                  paramsInfo: skuItem
+                })
               }
               // 商品详情结算弹窗判断
               if (this.originFrom === "h5GoodDetail") { 
@@ -402,23 +405,35 @@
           }
         })
       },
-      chooseTime() {
+      chooseTime(shopIndex, goodIndex) {
+        this.shopIndex = shopIndex
+        this.goodIndex = goodIndex
         this.$refs.datePicker.showDatePicker()
       },
       pay() {
-        if(!this.canPay || this.hasNoSendItem) {
+        if(!this.canPay || this.hasNoSendItem || !this.totalPrice) {
           return
         }
+        let details = []
+        this.orderDetails.map((v, k) => {
+          details.push(v.orderDetailItem)
+          Object.keys(v.paramsInfo).map((item, index) => {
+            if(item === 'time') {
+              v.orderDetailItem.params[item] = v.paramsInfo.time
+            }
+          })
+        })
+        console.log(details, "detail")
         let params = {
             payType: 1, //"int //支付方式  1微信支付",
             openid: uni.getStorageSync("openId"), //"string //微信openid 小程序支付用 app支付不传或传空",
             projectId: 0, //"long //项目id  非必须 默认0",
             customerId: 0, //"long //业主id  非必须 默认0",
             estateId: this.estateId, //"long //房产id   非必须 默认0",
-            total: this.orderInfo.totalPrice, //"int //总计",
+            total: this.totalPrice * 100, //"int //总计",
             remarks: this.remarks, //"string //备注",
             orderName: "", //"string //订单名称 可为空",
-            details: this.orderDetails
+            details: details
           }
         payOrder(params).then(data => {
           const {
@@ -641,8 +656,7 @@
   }
 
   .choose-time {
-    padding: 26rpx 0;
-    border-top: 1rpx solid #f4f4f4;
+    width: 100%;
   }
 
   .time-bar {
