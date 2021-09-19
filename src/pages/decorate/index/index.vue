@@ -39,7 +39,6 @@
             </picture-btn>
             <picture-btn v-if="aServiceData.showVideoFlag" class="p-i-t" text="工地视频" @gotoPage="goVideo"></picture-btn>
             <picture-btn v-if="aServiceData.constructionFlag" text="施工" @gotoPage="goConstrction"></picture-btn>
-            <!-- <picture-btn text="施工" @gotoPage="goConstrction"></picture-btn> -->
           </view>
         </view>
       </view>
@@ -115,7 +114,7 @@
           </uni-popup>
           <decorate-notice @touchmove.stop.prevent="()=>false" v-if="noticeActive" :num='msgNum'
             :current='currentProject.projectId' @closeNotice='closeNotice' class="decorate-notice"></decorate-notice>
-          <view class="link">
+          <!-- <view class="link">
             <view @click="gonohouse">无房屋无服入口</view>
             <view @click="gonohousedecatore('decorate')">无房屋无服务装修</view>
             <view @click="gonohousedecatore('checkHouse')">无房屋无服务验房</view>
@@ -128,7 +127,7 @@
             <view @click="gjgxf">管家工序费</view>
             <view @click="payGuanGuanJia">生成买管家消息</view>
             <view @click="payRenGong">生成买人工消息</view>
-          </view>
+          </view> -->
         </scroll-view>
       </view>
       <drag-button-follow v-if="msgNum>0" :num='msgNum' :style.sync="style" @btnClick='openNotice'
@@ -147,8 +146,6 @@
   import {
     queryEstates,
     friendListByEstateId,
-    // getToken,
-    // getMqtt,
     getMsgNum
   } from "../../../api/decorate.js";
   import {
@@ -171,7 +168,6 @@
   import {
     mapGetters
   } from "vuex";
-  // import monidata from "./monidata.js"
   let timer = null;
   export default {
     components: {
@@ -187,22 +183,11 @@
       let _this = this
       uni.getSystemInfo({
         success(res) {
-          console.log(res)
-          _this.viewHieght = res.windowHeight * 2 - 416
+          // console.log(res)
+          _this.viewHieght = res.windowHeight * 2 - 416 - 156
         }
       })
     },
-    // computed: {
-    //   ...mapGetters([
-    //     'systemUnreadCount'
-    //   ]),
-    // },
-    // watch: {
-    //   systemUnreadCount: function(newVal, oldVal) {
-    //     console.log(newVal)
-    //     this.getMsgNum()
-    //   }
-    // },
     onShow() {
       uni.showTabBar()
       // if (this.estateList && this.estateList.length < 1) {
@@ -248,8 +233,6 @@
         uni.setStorageSync('uuDeviceId', this.deviceId);
       }
       uni.$on('system-messages',this.watchMsg)
-      // this.getToken()
-      // this.getMqtt()
     },
     destory() {
       clearTimeout(timer)
@@ -515,23 +498,6 @@
           }
         });
       },
-      // getToken() {
-      //   let data = {
-      //     topics: [this.msgTopic],
-      //     deviceId: this.deviceId
-      //   }
-      //   getToken(data).then(res => {
-      //     console.log(res)
-      //   })
-      // },
-      // getMqtt() {
-      //   getMqtt().then(res => {
-      //     this.accessKeyId = res.accessKey
-      //     this.url = 'wxs://' + res.endPoint
-      //     this.groupId = res.groupId
-      //     this.instanceId = res.instanceId
-      //   })
-      // },
       getMsgNum() {
         if (this.currentProject.projectId) {
           getMsgNum(this.currentProject.projectId).then(res => {

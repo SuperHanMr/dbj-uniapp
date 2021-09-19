@@ -178,7 +178,7 @@ export function confirmStageDeliver(serveCardId) {
 }
 // C端 业主要求修改设计图
 export function reviseStageDeliver(serveCardId) {
-	return request.get(`/pm/app/serve/design/reviseStageDeliver/${serveCardId}`)
+	return request.post(`/pm/app/serve/design/reviseStageDeliver/${serveCardId}`)
 }
 
 
