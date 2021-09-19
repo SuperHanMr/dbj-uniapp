@@ -554,6 +554,7 @@
 								//根据productType商品类型划分为服务类和实物类
 								if(ele.productType === 1){
 									this.serviceList.push({
+										skuId: ele.skuId,
 										storeId: ele.storeId,
 										buyCount: ele.buyCount,
 										unit: ele.unitName,
@@ -561,6 +562,7 @@
 									})
 								}else{
 									this.entityList.push({
+										skuId: ele.skuId,
 										storeId: ele.storeId,
 										buyCount: ele.buyCount,
 										unit: ele.unitName,

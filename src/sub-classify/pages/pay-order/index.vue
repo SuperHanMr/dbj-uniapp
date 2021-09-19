@@ -28,19 +28,19 @@
                 <view class='tag'>{{goodsItem.skuName}}</view>
                 <view class="total-num">共{{goodsItem.buyCount}}件</view>
                 <view class="goods-spec">
-                  <view class="goods-money" v-if='goodsItem.price'>
-                    ￥
-                    <text class="integer-price">{{String.prototype.split.call(goodsItem["price"], ".")[0]}}</text>
-                    <text>.{{String.prototype.split.call(goodsItem["price"], ".")[1]?String.productType.split.call(goodsItem["price"], ".")[1]: 0}}</text>
-                    <text>/{{goodsItem.unit}}</text>
+                  <view class="goods-money">
+                    ￥  
+                   <text class="integer-price">{{String(goodsItem.price).split(".")[0]?String(goodsItem.price).split(".")[0]:0}}</text>
+                    <text>.{{String(goodsItem.price).split(".")[1]?String(goodsItem.price).split(".")[1]:0}}</text>
+                    <text>/{{goodsItem.unit?goodsItem.unit:""}}</text>
                   </view>
                 </view>
               </view>
             </view>
-            <view class="shop-reduce no-send-tip good-tip" v-if="!goodsItem.canBuy && !goodsItem.canDeliver">
+            <view class="shop-reduce no-send-tip good-tip" v-if="(productType === 2 && !goodsItem.canBuy) ||  (productType === 1 && !goodsItem.canDeliver)">
               <view class="item-reduce-box">
                 <text v-if="goodsItem.frontendServe && productType === 2">请先购买{{frontendServe}}</text>
-                <text v-if="!goodsItem.canBuy && productType === 2">该服务不可购买</text>
+                <text v-if="!goodsItem.canBuy && !goodsItem.frontendServe  && goodsItem.canDeliver && productType === 2">该服务已下架</text>
                 <text  v-if="!goodsItem.canDeliver && productType === 1">当前地址无法配送该商品，请更换地址</text>
               </view>
             </view>
@@ -266,7 +266,6 @@
       getTime(val) {
         this.time = val[0] + '年' + val[1] + '月' + val[2] + '日' + val[3] + '时' + val[4] + '分'
         this.$set(this.orderInfo.storeInfos[this.shopIndex].skuInfos[this.goodIndex], "time", this.time)
-        console.log(this.orderInfo)
       },
       emitInfo(val) {
         this.addressInfo = val
@@ -339,8 +338,16 @@
                 })
               }
               // 结算可配送和不可配送数据
-              if (skuItem.canBuy === false && skuItem.canDeliver === false) { 
+              if (skuItem.canBuy === false) { 
                 noStoreItem.skuInfos.push(skuItem)
+                if(skuItem.frontendServe){
+                    this.toastType = 1
+                    this.frontendServe = skuItem.frontendServe
+                    this.toastText = `请先购买${skuItem.frontendServe}服务`
+                    if(this.$refs.cancelDialog.open){
+                      this.$refs.cancelDialog.open()
+                    }
+                }
                 this.hasNoSendItem = true // 判断所有数据中有没有不可配送数据
               } else {
                 canStoreItem.skuInfos.push(skuItem)
@@ -362,35 +369,6 @@
                   orderDetailItem: orderDetailItem,
                   paramsInfo: skuItem
                 })
-              }
-              // 商品详情结算弹窗判断
-              if (this.originFrom === "h5GoodDetail") { 
-                this.canPay = false
-                // if (skuItem.canBuy === false && skuItem.frontendServe === '精算') {
-                //   this.toastText = '该服务需精算师指导下完成'
-                //   this.toastType = 1
-                //   this.$refs.cancelDialog.open()
-                // } else if(skuItem.canBuy === false && skuItem.frontendServe !== '精算') {
-                //   if(skuItem.categoryTypeId > 5){
-                //     this.tipTest = '当前地址下该工序已完工，无法购买'
-                //   } else{
-                //     this.tipTest = '该房屋下已购买该服务，不可重复购买'
-                //   }
-                // }else if (skuItem.canBuy === true && skuItem.isAdding === false) {
-                //   this.toastText = '请从精算单购买'
-                //   this.toastType = 2
-                //   this.$refs.cancelDialog.open()
-                // }
-                if(skuItem.frontendServe){
-                    this.toastType = 1
-                    this.frontendServe = skuItem.frontendServe
-                    this.toastText = `请先购买${skuItem.frontendServe}服务`
-                    if(this.$refs.cancelDialog.open){
-                      this.$refs.cancelDialog.open()
-                    }
-                }else {
-                  this.canPay = true
-                }
               }
             })
           })
@@ -423,7 +401,6 @@
             }
           })
         })
-        console.log(details, "detail")
         let params = {
             payType: 1, //"int //支付方式  1微信支付",
             openid: uni.getStorageSync("openId"), //"string //微信openid 小程序支付用 app支付不传或传空",

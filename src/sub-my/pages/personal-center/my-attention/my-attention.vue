@@ -110,9 +110,13 @@
               </view>
             </view>
             <view class="right">
-              <view class="button4">
+              <!-- <view class="button4">
                 已优先推荐
-              </view>
+              </view> -->
+							<view class="button3">
+								<image src="../../../static/icon_recommend_@2x.png" mode=""></image>
+							  优先推荐
+							</view>
             </view>
           </view>
 
@@ -124,66 +128,49 @@
 </template>
 
 <script>
-import { caseList } from "../../../../api/home.js";
+import {getConcernList } from "../../../../api/order.js";
 export default {
   data() {
     return {
       triggered: false,
-      list: [
-        1,
-        2,
-        3,
-        4,
-        5,
-        6,
-        7,
-        8,
-        9,
-        0,
-        11,
-        "阿道夫",
-        "刮大风",
-        "部分地方",
-        "不梵蒂冈",
-        "有人特",
-      ],
-      list1: [
-        "sad",
-        "ddw",
-        "sdfsda",
-        "sdfas",
-        "gfds",
-        "zxcv",
-        "bgf",
-        "uytre",
-        "阿道夫",
-        "刮大风",
-        "部分地方",
-        "不梵蒂冈",
-        "有人特",
-      ],
+     
+      
       tabList: ["房子", "工匠", "优先推荐"],
       triggered: false, //控制刷新显示字段
       currentIndex: 0,
       caseList: [],
+			
       loading: false,
+			
       page: 1,
+			rows:10,
+			isReverse:true,//默认ture 该值为true时，获取我关注的、我收藏的列表，
+			routeId:"",//
       totalPage: 1,
+			userId:"",
+			type:3,//(3,"关注") (4,"推荐")
+			bizType:"",//(4,"房屋")  【用户的角色信息】PERSON(3,"人物")
+			
     };
   },
   onShow() {
-    this.getCaseList();
+		this.userId = getApp().globalData.userInfo.id
+		
+		console.log("this.userId=",this.userId)
+		this.getList();
+		
   },
+	
   computed: {
     currentList() {
       if (this.currentIndex == 0) {
-        return this.list;
+        return this.caseList;
       } else if (this.currentIndex == 1) {
-        return this.list1;
+        return this.caseList;
       } else if (this.currentIndex == 2) {
-        return this.list2;
+        return this.caseList;
       } else {
-        return this.list1;
+        return this.caseList;
       }
     },
   },
@@ -192,15 +179,35 @@ export default {
       let index = e.target.current || e.detail.current;
       this.currentIndex = index;
     },
-    async getCaseList() {
+    async getList() {
       this.loading = true;
-      let caseItem = await caseList({
-        page: this.page,
-      });
-      this.totalPage = caseItem.totalPage;
-      this.caseList = this.caseList.concat(caseItem.list);
-      this.loading = false;
+			let params = {
+				
+				isReverse:true,//默认ture 该值为true时，获取我关注的、我收藏的列表，
+				routeId:1002,//
+				userId:this.userId,
+				type:3,//(3,"关注") (4,"推荐")
+				bizType:"",//(4,"房屋")  【用户的角色信息】PERSON(3,"人物")
+			}
+			getConcernList({
+				isReverse:true,//默认ture 该值为true时，获取我关注的、我收藏的列表，
+				routeId:1002,//
+				userId:this.userId,
+				type:3,//(3,"关注") (4,"推荐")
+				bizType:4,//(4,"房屋")  【用户的角色信息】PERSON(3,"人物")
+			}).then(data=>{
+				console.log("data= ",data)
+			})
+			
+    //   let caseItem = await caseList({
+    //     page: this.page,
+				
+    //   });
+    //   this.totalPage = caseItem.totalPage;
+    //   this.caseList = this.caseList.concat(caseItem.list);
+    //   this.loading = false;
     },
+		
     onLoadMore() {
       if (this.loading || this.page >= this.totalPage) {
         return;
@@ -208,6 +215,7 @@ export default {
       this.page++;
       this.getCaseList();
     },
+		
     onRefresh(e) {
       this.triggered = true;
       setTimeout(() => {
@@ -311,6 +319,7 @@ export default {
         line-height: 42rpx;
         color: #333333;
         font-size: 30rpx;
+				font-weight: 550;
         margin-bottom: 8rpx;
         overflow: hidden;
         text-overflow: ellipsis;
@@ -420,6 +429,7 @@ export default {
       }
     }
     .right {
+			
       .button1,
       .button2,
       .button3,
@@ -443,7 +453,8 @@ export default {
       .button3 {
         background: linear-gradient(135deg, #36d9cd, #28c6c6);
         color: #ffffff;
-        padding: 14rpx 30rpx;
+				padding: 14rpx 30rpx;
+        
       }
       .button2,
       .button4 {
@@ -451,6 +462,18 @@ export default {
         border: 2rpx solid #dbdbdb;
         padding: 12rpx 28rpx;
       }
+			
+			.button3{
+				display: flex;
+				flex-flow: row nowrap;
+				align-items: center;
+				image{
+					width: 24rpx;
+					height: 26rpx;
+					object-fit: cover;
+					margin-right: 4rpx;
+				}
+			}
     }
   }
 }

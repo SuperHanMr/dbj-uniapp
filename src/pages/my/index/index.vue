@@ -2,7 +2,7 @@
   <view class="my-container">
 		<custom-navbar opacity="0" :showBack="true">
 		</custom-navbar>
-		<view class="backgroundStyle" :style="{backgroundImage:`url(${UserInfo.avatar})`,backgroundSize: '100% 100%'}">
+		<view class="backgroundStyle" :style="{backgroundImage:`url(${UserInfo.avatar})`,backgroundSize: 'cover'}">
 			<view class="mask" />
 			<!-- <image :src="UserInfo.avatar"  mode=""></image> -->
 		</view>
@@ -171,16 +171,17 @@ export default {
 
 
 	onShow() {
-	if (!uni.getStorageSync("userId")) {
-		this.userName="点击登录";
-		this.isLogin=false;
-	}else{
-		this.isLogin=true
-		this.UserInfo = getApp().globalData.userInfo
-		console.log("UserInfo=",this.UserInfo)
-		this.userName=this.UserInfo.name;
-	}
+		if (!uni.getStorageSync("userId")) {
+			this.userName="点击登录";
+			this.isLogin=false;
+		}else{
+			this.isLogin=true
+			this.UserInfo = getApp().globalData.userInfo
+			console.log("UserInfo=",this.UserInfo)
+			this.userName=this.UserInfo.name;
+		}
 	},
+	
   methods: {
     toLogin(){
 			if(!this.isLogin){

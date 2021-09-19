@@ -101,6 +101,7 @@
 		onLoad(e) {
 			this.orderId =Number(e.orderId) 
 			this.remainTime = e.remainTime
+			console.log("this.remainTime=",this.remainTime)
 			this.type =e.type
 			this.requestSplitPayList()
 		},

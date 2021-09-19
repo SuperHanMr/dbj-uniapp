@@ -762,6 +762,13 @@
 					}
 				},
 				{
+					"path": "pages/current-cost/current-cost-details",
+					"style": {
+						"navigationBarTitleText": "精算详情",
+						"enablePullDownRefresh": false
+					}
+				},
+				{
 					"path": "pages/housekeeper-c-a-application/housekeeper-c-a-application",
 					"style": {
 						"navigationBarTitleText": "管家竣工验收申请",
