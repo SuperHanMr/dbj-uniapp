@@ -28,7 +28,8 @@
       imagePreview
     },
     props:{
-      checkData:{}
+      checkData:{},
+      index:0
     }, 
     data() {
       return {
@@ -55,7 +56,7 @@
           this.imageData = res
           
         }).catch(err=>{
-          this.$emit('isEmpty',3)
+          this.$emit('isEmpty',this.index)
         })
       }
     }

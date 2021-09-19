@@ -329,7 +329,7 @@
 					
 				// }
 				let params = {
-					routeId: 3001,
+					routeId: 1002,
 					relationId: this.projectInfo.id,
 					authorId: this.projectInfo.estateId,
 					equipmentId: deviceId,

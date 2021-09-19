@@ -37,6 +37,9 @@
                      <view class="item-reduce-box" v-if="goodsItem.prototype === 1">
                         <text>当前地址无法配送该商品，请更换地址</text>
                      </view>
+                    <view class="item-reduce-box" v-if="goodsItem.prototype === 2 && !goodsItem.frontendServe">
+                        <text>该服务不可购买</text>
+                     </view>
                      <view class="item-reduce-box" v-else>
                         <text>请先购买{{goodsItem.frontendServe}}服务</text>
                      </view>

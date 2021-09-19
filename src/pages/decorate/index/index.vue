@@ -39,7 +39,6 @@
             </picture-btn>
             <picture-btn v-if="aServiceData.showVideoFlag" class="p-i-t" text="工地视频" @gotoPage="goVideo"></picture-btn>
             <picture-btn v-if="aServiceData.constructionFlag" text="施工" @gotoPage="goConstrction"></picture-btn>
-            <!-- <picture-btn text="施工" @gotoPage="goConstrction"></picture-btn> -->
           </view>
         </view>
       </view>
@@ -89,7 +88,7 @@
                   </image>
                 </view>
               </view>
-              <service-item v-for="(item, index) in purchasedServiceList" :key="item.nodeType" :serviceData="item">
+              <service-item v-for="(item, index) in purchasedServiceList" :key="item.nodeType" :serviceData="item" :currentProject="currentProject">
               </service-item>
               <no-service v-if="purchasedServiceList.length == 0" words="暂无进行中服务"></no-service>
             </view>
@@ -115,7 +114,7 @@
           </uni-popup>
           <decorate-notice @touchmove.stop.prevent="()=>false" v-if="noticeActive" :num='msgNum'
             :current='currentProject.projectId' @closeNotice='closeNotice' class="decorate-notice"></decorate-notice>
-          <view class="link">
+          <!-- <view class="link">
             <view @click="gonohouse">无房屋无服入口</view>
             <view @click="gonohousedecatore('decorate')">无房屋无服务装修</view>
             <view @click="gonohousedecatore('checkHouse')">无房屋无服务验房</view>
@@ -128,7 +127,7 @@
             <view @click="gjgxf">管家工序费</view>
             <view @click="payGuanGuanJia">生成买管家消息</view>
             <view @click="payRenGong">生成买人工消息</view>
-          </view>
+          </view> -->
         </scroll-view>
       </view>
       <drag-button-follow v-if="msgNum>0" :num='msgNum' :style.sync="style" @btnClick='openNotice'
@@ -147,8 +146,6 @@
   import {
     queryEstates,
     friendListByEstateId,
-    // getToken,
-    // getMqtt,
     getMsgNum
   } from "../../../api/decorate.js";
   import {
@@ -171,7 +168,6 @@
   import {
     mapGetters
   } from "vuex";
-  // import monidata from "./monidata.js"
   let timer = null;
   export default {
     components: {
@@ -187,21 +183,10 @@
       let _this = this
       uni.getSystemInfo({
         success(res) {
-          console.log(res)
-          _this.viewHieght = res.windowHeight * 2 - 416
+          // console.log(res)
+          _this.viewHieght = res.windowHeight * 2 - 416 - 156
         }
       })
-    },
-    computed: {
-      ...mapGetters([
-        'systemUnreadCount'
-      ]),
-    },
-    watch: {
-      systemUnreadCount: function(newVal, oldVal) {
-        console.log(newVal)
-        this.getMsgNum()
-      }
     },
     onShow() {
       uni.showTabBar()
@@ -247,14 +232,17 @@
         this.deviceId = uuidv4()
         uni.setStorageSync('uuDeviceId', this.deviceId);
       }
-      // this.getToken()
-      // this.getMqtt()
+      uni.$on('system-messages',this.watchMsg)
     },
     destory() {
       clearTimeout(timer)
       timer = null
     },
     methods: {
+      watchMsg(){
+        this.getMsgNum();
+        this.getAvailableService()
+      },
       consultingService() {
         if (this.aServiceData.insuranceStatus === 1) {
           return
@@ -274,12 +262,7 @@
       },
       scroll(e) {},
       getAvailableService() {
-        // console.log("this.currentProject", this.currentProject)
-        // const params = {}
-        // if(this.currentProject.projectId) {
-        //   params.projectId = this.currentProject.projectId
-        // }F
-        // const id = this.currentProject.projectId || -1
+        this.availGuides = []
         availableService(this.currentProject.projectId).then(data => {
           const {
             purchasedServiceList,
@@ -412,22 +395,23 @@
       },
       goConstrction() {
         uni.navigateTo({
-          url: "/sub-decorate/pages/construction/construction"
+          url: `/sub-decorate/pages/construction/construction`
         })
       },
       goDesignPicture() {
         uni.navigateTo({
-          url: "/sub-home/pages/decorate-scene/construction-drawings"
+          url: `/sub-home/pages/decorate-scene/construction-drawings?projectId=${this.currentProject.projectId}`
         })
       },
       goActuary() {
+        const baseUrl = process.env.VUE_APP_BASE_H5
         uni.navigateTo({
-          url: `/sub-decorate/pages/actuary-bill/actuary-bill?url=https://local.meiwu365.com/app-pages/actuarial/index.html&title=精算单`
+          url: `/sub-decorate/pages/actuary-bill/actuary-bill?url=${baseUrl}/app-pages/actuarial/index.html?projectId=${this.currentProject.projectId}&isActuarial=1&isMessage=2`
         })
       },
       goVideo() {
         uni.navigateTo({
-          url: "/sub-home/pages/lives-decorate/lives-decorate"
+          url: `/sub-home/pages/lives-decorate/lives-decorate?projectId=${this.currentProject.projectId}`
         })
       },
       gonohousedecatore(type) {
@@ -514,23 +498,6 @@
           }
         });
       },
-      // getToken() {
-      //   let data = {
-      //     topics: [this.msgTopic],
-      //     deviceId: this.deviceId
-      //   }
-      //   getToken(data).then(res => {
-      //     console.log(res)
-      //   })
-      // },
-      // getMqtt() {
-      //   getMqtt().then(res => {
-      //     this.accessKeyId = res.accessKey
-      //     this.url = 'wxs://' + res.endPoint
-      //     this.groupId = res.groupId
-      //     this.instanceId = res.instanceId
-      //   })
-      // },
       getMsgNum() {
         if (this.currentProject.projectId) {
           getMsgNum(this.currentProject.projectId).then(res => {
