@@ -219,7 +219,7 @@ export function goodsApply(params) {
 
 // 获取工序费用
 export function sellList(params) {
-	return request.get(`/pm/app/actuary/sell/list/${params.serveId}/${params.type}`)
+	return request.get(`/pm/app/actuary/sell/list/${params.projectId}/${params.type}`)
 }
 //c端APP-仓库-待收货-确认收货
 export function confirmGoods(params) {

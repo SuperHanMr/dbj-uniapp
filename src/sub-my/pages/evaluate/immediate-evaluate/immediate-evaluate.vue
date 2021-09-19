@@ -1,21 +1,21 @@
 <template>
   <view>
-    <view class="container">
+    <view class="container" :style="{paddingBottom:containerBottom}">
       <view class="body">
         <view class="header">
           <view class="left">
             <image
-              src="../../../login/imgs/Lark20210823-152715.png"
+              :src="serviceInfo.serverAvatar"
               mode=""
             ></image>
-            <text>王大力</text>
+            <text>{{serviceInfo.serverName}}</text>
             <view class="icon">
-              大管家
+              {{serviceInfo.roleName}}
             </view>
           </view>
-          <view class="right" @click="check">
-            <image v-if="isAnonymous"  src="../../../static/ic_mine_anonymous@2x.png" mode=""></image>
-            <image v-else src="../../../static/ic_mine_anonymous_2@2x.png" mode=""></image>
+          <view class="right" @click="handleCheck">
+            <image v-if="isAnonymous" src="../../../static/ic_mine_anonymous_2@2x.png" mode=""></image>
+            <image  v-else  src="../../../static/ic_mine_anonymous@2x.png" mode=""></image>
             <text>匿名评价</text>
           </view>
         </view>
@@ -25,12 +25,18 @@
         <view class="main-body">
           <view class="rate-header">
             <text class="text">评分</text>
-            <uni-rate
+            <!-- <uni-rate
               v-model="query.stars"
               margin="5"
               @change="onChange"
-            />
-          </view>
+            /> -->
+						<view class="star-container">
+							<view class="star-item" v-for="item in list" :key="item.id">
+								<image v-if="item.isred"  src="../../../static/ic_blank_star@2x.png" mode=""  @click ="cools(item.id)"></image>
+								<image v-else  src="../../../static/ic_score_star@2x.png" mode=""  @click ="cools(item.id)"></image>
+							</view>
+						</view>
+					</view>
 
           <view class="edit-evaluate">
             <textarea
@@ -46,8 +52,17 @@
             </view>
           </view>
 
+
+
           <view class="imageInfo">
-            <view
+            <!-- <view class="add-image"  @click="upload">
+              <image src="../../../static/ic_upload@2x.png" mode=""></image>
+							<text>点击上传</text>
+            </view> -->
+						
+					    <uni-file-picker  ref="files" :auto-upload="false"/>
+					    
+           <!-- <view
               class="image-container"
               v-for="(item,index) in 9"
               :key="index"
@@ -59,41 +74,111 @@
               ></image>
               <image
                 class="image2"
-                src="../../../../sub-pagesA/static/image_delete@2x.png"
+                src="../../../static/icon_image_delete@2x.png"
                 mode=""
               ></image>
-            </view>
-            <view class="add-image">
-              +
-            </view>
+            </view> -->
           </view>
 				</view>
 			</view>
 		</view>
 		
-	
+		<view class="footer-container"  :style="{paddingBottom:systemBottom,height:systemHeight}">
+			<view class="confirm-btn" @click="confirmEvaluate">
+				确认评价
+			</view>
+		</view>
+		
   </view>
 </template>
 
 <script>
+import {immediateEvaluate,evaluateDetail} from "../../../../api/order.js"
 export default {
   data() {
     return {
+			id:"",
+			type:"",
+			serviceInfo:{},
       query: {
         remarks: "",
         stars: "",
-				isAnonymous:false,
       },
+			isAnonymous:false,
+			
       textAreaLength: 0,
 			
-			detailPics: [], //上传的结果图片集合
-			 
+			list:[
+				{
+					id:1,
+					isred:false
+				},
+				{
+					id:2,
+					isred:false
+				},
+				{
+					id:3,
+					isred:false
+				},
+				{
+					id:4,
+					isred:false
+				},
+				{
+					id:5,
+					isred:false
+				}
+			],
+			
+			
+			imageValue:[],
+			
+				
+				
+				
+			 systemBottom: "",
+			 systemHeight: "",
+			 containerBottom: "",
     };
   },
+	mounted(e) {
+	  const menuButtonInfo = uni.getMenuButtonBoundingClientRect();
+	  this.containerBottom = menuButtonInfo.bottom +176 + 'rpx';
+	  this.systemBottom = menuButtonInfo.bottom + "rpx";
+	  this.systemHeight = menuButtonInfo.bottom + this.num + "rpx";
+	  // console.log(this.systemBottom);
+	},
+	
+	computed:{
+		starNum(){
+		 let arr = 	this.list.filter(item=>{
+				return item.isred == false
+			})
+			this.query.stars = arr.length
+			console.log("this.query.stars=",this.query.stars)
+		}
+	},
+	
   watch: {
     textAreaLength(newVal, oldVal) {},
   },
+	
+	onLoad(e) {
+		this.id =Number(e.id)
+		this.type  =Number(e.type)
+		console.log("this.id=",this.id,"this.type=",this.type)
+		this.getServiceInfo()
+	},
+	
   methods: {
+		getServiceInfo(){
+			evaluateDetail({id:this.id}).then(data=>{
+				console.log("data=",data)
+				this.serviceInfo = data
+			})
+		},
+		
     changeTitle() {
       uni.setNavigationBarTitle({
         title: "新的标题",
@@ -106,10 +191,44 @@ export default {
       this.textAreaLength = event.target.value.length;
     },
 		
+		// 匿名操作
+		handleCheck(){
+			this.isAnonymous = !this.isAnonymous
+		},
 		
+		//星星操作
+		cools(id){
+			this.list.forEach(element => {
+				if(element.id<=id){
+						element.isred = false
+				}else{
+						element.isred = true
+				}
+		 })
+		},
 		
+		// 确认评价按钮
+	confirmEvaluate(){
+		let params={
+			refId:this.id, //关联ID"
+			refType:this.type,//关联类型",
+			anonymous:this.isAnonymous?1:0, //是否匿名 0:非匿名  1:匿名
+			userId:this.serviceInfo.userId, //评价人ID",
+			userName:this.serviceInfo.userName,//评价人名称",
+			rank:this.query.stars, //评级 1不好，2还行，3一般，4满意，5超惊喜",
+			shortComments:"",//快捷评价ids",
+			content:this.query.remarks,//详细评价内容",
+			imgList:[],//图片
+		}
+		immediateEvaluate(params).then(e=>{
+			if(e.code ==1){
+				uni.navigateBack({
+						delta: 1
+				});
+			}
+		})
 		
-		 
+	},
 		
 		
 		
@@ -122,7 +241,7 @@ export default {
 
 <style lang="scss" scoped>
 .container {
-  background: #f2f2f2;
+  background: #F5F6F6;
   padding-top: 16rpx;
   overflow-y: auto;
   .body {
@@ -146,7 +265,6 @@ export default {
           width: 80rpx;
           height: 80rpx;
           object-fit: cover;
-          background-color: pink;
           margin-right: 8rpx;
         }
         .icon {
@@ -196,22 +314,38 @@ export default {
         flex-flow: row nowrap;
         align-items: center;
         padding: 40rpx 32rpx;
-        .text {
-          margin: 0 28rpx 0 16rpx;
+				.text {
+          margin: 0 24rpx 0 16rpx;
           font-weight: 600;
           color: #333333;
           font-size: 28rpx;
         }
-      }
+				.star-container{
+					display: flex;
+					flex-flow: row nowrap;
+					align-items: center;
+					
+					.star-item{
+						image{
+							width: 36rpx;
+							height: 36rpx;
+							object-fit: cover;
+							margin-right: 32rpx;
+						}
+					}
+				}
+			}
 
       .edit-evaluate {
         background-color: #ffffff;
         // min-height: 472rpx;
-        padding: 0 32rpx 40rpx 32rpx;
+        padding: 0 32rpx 52rpx 32rpx;
         position: relative;
         .remark {
           background: #fafafa;
+					width: 686rpx;
           height: 360rpx;
+					box-sizing: border-box;
           border: 2rpx solid #e8e8e8;
           border-radius: 16rpx;
           padding: 16rpx 32rpx;
@@ -233,40 +367,106 @@ export default {
       .image-container {
         position: relative;
         .image1 {
-          width: 144rpx;
-          height: 144rpx;
-          object-fit: cover;
+          width: 156rpx;
+          height: 156rpx;
+					box-sizing: border-box;
+					border: 2rpx solid #ECECEC;
           border-radius: 12rpx;
-          margin-right: 32rpx;
+          object-fit: cover;
+					
+          margin-right: 16rpx;
           margin-bottom: 24rpx;
         }
         .image2 {
           position: absolute;
-          width: 36rpx;
-          height: 36rpx;
+          width: 32rpx;
+          height: 32rpx;
+					border-radius: 50%;
           object-fit: cover;
-          top: -18rpx;
-          right: 18rpx;
-          background-color: skyblue;
+          top: -16rpx;
+          right: 16rpx;
         }
       }
-      .image-container:nth-child(4n) .image1 {
+      .image-container:nth-child(4n+1) .image1 {
         margin-right: 18rpx;
       }
 
       .add-image {
-        width: 144rpx;
-        height: 144rpx;
-        line-height: 144rpx;
-        border-radius: 12rpx;
-        text-align: center;
-        font-size: 60rpx;
-        font-weight: 600;
-        margin-right: 32rpx;
-        margin-bottom: 24rpx;
-        background: #f7f7f7;
+				padding: 24rpx 28rpx;
+				margin-right: 16rpx;
+				width: 160rpx;
+				height: 160rpx;
+				box-sizing: border-box;
+        background: #FFFFFF;
+        border-radius: 16rpx;
+        border: 2rpx solid #E7E8E8;
+				box-sizing: border-box;
+				display: flex;
+				flex-flow: column nowrap;
+				align-items: center;
+				image{
+					width: 64rpx;
+					height: 64rpx;
+					object-fit: cover;
+				}
+				text{
+					width: 104rpx;
+					height: 36rpx;
+					line-height: 36rpx;
+					font-size: 26rpx;
+					color: #999999;
+				}
+				
       }
     }
   }
 }
+// 底部 确认收货 及申请退款按钮
+.footer-container{
+  position: fixed;
+  bottom: 0;
+  width: 686rpx;
+  background-color: #ffffff;
+  display: flex;
+  flex-flow: row nowrap;
+  align-items: center;
+  padding: 24rpx 32rpx;
+  .confirm-btn {
+		width: 686rpx;
+    height: 88rpx;
+    line-height: 88rpx;
+    box-sizing: border-box;
+    background: linear-gradient(135deg, #36d9cd 0%, #28c6c6 100%);
+    border-radius: 12rpx;
+    font-size: 32rpx;
+    text-align: center;
+    font-weight: 400;
+    color: #ffffff;
+  }
+  
+}
+
+// 上传图片的样式
+
+::v-deep .uni-file-picker{
+	max-height: 564rpx;
+	width:  686rpx;
+}
+::v-deep .file-picker__box{
+	width: 160rpx !important;
+	height: 160rpx !important;
+	object-fit: cover;
+	border-radius: 12rpx !important;
+	border: 2rpx solid #ECECEC !important;
+	padding-top: 0 !important;
+	margin:0 8rpx 28rpx  0!important;
+}
+::v-deep .file-picker__box-content{
+	margin: 0 !important;
+}
+
+
+
+
+
 </style>

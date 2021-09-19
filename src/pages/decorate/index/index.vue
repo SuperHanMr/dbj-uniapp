@@ -89,7 +89,7 @@
                   </image>
                 </view>
               </view>
-              <service-item v-for="(item, index) in purchasedServiceList" :key="item.nodeType" :serviceData="item">
+              <service-item v-for="(item, index) in purchasedServiceList" :key="item.nodeType" :serviceData="item" :currentProject="currentProject">
               </service-item>
               <no-service v-if="purchasedServiceList.length == 0" words="暂无进行中服务"></no-service>
             </view>
@@ -192,17 +192,17 @@
         }
       })
     },
-    computed: {
-      ...mapGetters([
-        'systemUnreadCount'
-      ]),
-    },
-    watch: {
-      systemUnreadCount: function(newVal, oldVal) {
-        console.log(newVal)
-        this.getMsgNum()
-      }
-    },
+    // computed: {
+    //   ...mapGetters([
+    //     'systemUnreadCount'
+    //   ]),
+    // },
+    // watch: {
+    //   systemUnreadCount: function(newVal, oldVal) {
+    //     console.log(newVal)
+    //     this.getMsgNum()
+    //   }
+    // },
     onShow() {
       uni.showTabBar()
       // if (this.estateList && this.estateList.length < 1) {
@@ -247,6 +247,7 @@
         this.deviceId = uuidv4()
         uni.setStorageSync('uuDeviceId', this.deviceId);
       }
+      uni.$on('system-messages',this.watchMsg)
       // this.getToken()
       // this.getMqtt()
     },
@@ -255,6 +256,10 @@
       timer = null
     },
     methods: {
+      watchMsg(){
+        this.getMsgNum();
+        this.getAvailableService()
+      },
       consultingService() {
         if (this.aServiceData.insuranceStatus === 1) {
           return
@@ -274,12 +279,7 @@
       },
       scroll(e) {},
       getAvailableService() {
-        // console.log("this.currentProject", this.currentProject)
-        // const params = {}
-        // if(this.currentProject.projectId) {
-        //   params.projectId = this.currentProject.projectId
-        // }F
-        // const id = this.currentProject.projectId || -1
+        this.availGuides = []
         availableService(this.currentProject.projectId).then(data => {
           const {
             purchasedServiceList,
@@ -412,29 +412,30 @@
       },
       goConstrction() {
         uni.navigateTo({
-          url: "/sub-decorate/pages/construction/construction"
+          url: `/sub-decorate/pages/construction/construction`
         })
       },
       goDesignPicture() {
         uni.navigateTo({
-          url: "/sub-home/pages/decorate-scene/construction-drawings"
+          url: `/sub-home/pages/decorate-scene/construction-drawings?projectId=${this.currentProject.projectId}`
         })
       },
       goActuary() {
+        const baseUrl = process.env.VUE_APP_BASE_H5
         uni.navigateTo({
-          url: `/sub-decorate/pages/actuary-bill/actuary-bill?url=https://local.meiwu365.com/app-pages/actuarial/index.html&title=精算单`
+          url: `/sub-decorate/pages/actuary-bill/actuary-bill?url=${baseUrl}/app-pages/actuarial/index.html?projectId=${this.currentProject.projectId}&isActuarial=1&isMessage=2`
         })
       },
       goVideo() {
         uni.navigateTo({
-          url: "/sub-home/pages/lives-decorate/lives-decorate"
+          url: `/sub-home/pages/lives-decorate/lives-decorate?projectId=${this.currentProject.projectId}`
         })
       },
       gonohousedecatore(type) {
         if (this.currentEstate && this.currentEstate.id) {
           let url = null
-          if(this.currentProject && this.currentProject.id) {
-            url = `/sub-decorate/pages/no-house-decorate/no-house-decorate?type=${type}&estateId=${this.currentEstate.id}&currentProject=${this.currentProject.projectId}&isDecorate=1`
+          if(this.currentProject && this.currentProject.projectId) {
+            url = `/sub-decorate/pages/no-house-decorate/no-house-decorate?type=${type}&estateId=${this.currentEstate.id}&projectId=${this.currentProject.projectId}&isDecorate=1`
           } else {
             url = `/sub-decorate/pages/no-house-decorate/no-house-decorate?type=${type}&estateId=${this.currentEstate.id}&isDecorate=1`
           }

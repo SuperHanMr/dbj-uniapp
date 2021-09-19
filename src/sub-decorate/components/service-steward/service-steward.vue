@@ -29,7 +29,8 @@
       imagePreview
     },
     props:{
-      serverId:0
+      serverId:0,
+      index:0
     },
     data(){
       return{
@@ -56,7 +57,7 @@
           console.log(res)
           this.list = res.progressList
           if(this.list.length===0){
-            this.$emit('isEmpty',5)
+            this.$emit('isEmpty',this.index)
           }
         })
       },

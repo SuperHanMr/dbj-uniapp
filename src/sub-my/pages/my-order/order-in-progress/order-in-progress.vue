@@ -76,7 +76,7 @@
         <view
           class="confirmReceipt"
           @click="handleConfirmReceipt"
-          v-if="orderInfo.shipmentStatus == 2"
+          v-if="orderInfo.shipmentStatus == 1"
         >
           确认收货
         </view>

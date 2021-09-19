@@ -240,6 +240,13 @@ const message = {
           let conversationList = event.data || [];
           context.commit("updateConversationList", conversationList);
         });
+        addListener("MESSAGE_RECEIVED", (event) => {
+          let messageList = event.data || [];
+          let systemMessageList = messageList.filter(msg => msg.conversationID === context.state.sysConv.conversationID);
+          if (systemMessageList.length) {
+            uni.$emit("system-messages", systemMessageList);
+          }
+        });
         context.dispatch("requestConversationList");
         context.dispatch("requestDBGroupList");
       }).catch(err => {

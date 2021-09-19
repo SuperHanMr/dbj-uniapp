@@ -1,6 +1,6 @@
 <template>
 	<div class="no-service">
-		<view class="bg"></view>
+		<image class="bg" src="http://dbj.dragonn.top/static/mp/dabanjia/images/decorate/empty.png"></view>
 		<view class="text">{{words}}</view>
 	</div>
 </template>
@@ -22,14 +22,12 @@
 		justify-content: center;
 		align-items: center;
 		flex-direction: column;
+    position: relative;
 	}
 
 	.no-service .bg {
-		width: 200rpx;
-		height: 200rpx;
-		background: #cccdce;
-		border-radius: 50%;
-		margin-bottom: 24rpx;
+		width: 300rpx;
+		height: 300rpx;
 	}
 
 	.no-service .text {
