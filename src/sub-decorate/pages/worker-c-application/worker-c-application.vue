@@ -58,6 +58,7 @@
                   title: "已提交申请",
                   icon: false
                 })
+                uni.navigateBack({})
               })
             } else {
               console.log("点击了取消")
