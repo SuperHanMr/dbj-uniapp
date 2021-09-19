@@ -25,18 +25,12 @@
       UserDescPictWorker
     },
     onLoad(option) {
-      const {
-        id,
-        serveId,
-        serveType,
-        serveTypeName
-      } = getApp().globalData.decorateMsg
-      this.id = id
-      this.serveTypeName = serveTypeName
+      this.msg = getApp().globalData.decorateMsg
+      
     },
     onShow() {
       uni.setNavigationBarTitle({
-        title: this.serveTypeName
+        title: this.msg.nodeName
       })
       this.getCompletionLogById()
     },
@@ -44,7 +38,7 @@
       return {
         workerData: {},
         id: null,
-        serveTypeName: ""
+        msg: {}
       }
     },
     methods: {
@@ -57,7 +51,7 @@
             if (res.confirm) {
               console.log("点击了确认")
               ownerInsertAudit({
-                applyId: this.id,
+                applyId: this.msg.id,
                 status: 5
               }).then(data => {
                 uni.showToast({
@@ -73,11 +67,11 @@
       },
       refuse() {
         uni.navigateTo({
-          url: `/sub-decorate/pages/worker-refuse/worker-refuse?id=${this.id}&serveTypeName=${this.serveTypeName}`
+          url: `/sub-decorate/pages/worker-refuse/worker-refuse?id=${this.msg.id}&serveTypeName=${this.msg.serveTypeName}`
         })
       },
       getCompletionLogById() {
-        getCompletionLogById(5).then(data => {
+        getCompletionLogById().then(data => {
           this.workerData = data.workerDecorationTrendLogVO
           this.id = data.id
         })
