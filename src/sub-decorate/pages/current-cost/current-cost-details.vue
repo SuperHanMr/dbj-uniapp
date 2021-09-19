@@ -9,14 +9,14 @@
   export default {
     data() {
       return {
-        url:'/app-pages/actuarial/index.html?serveId='
+        url:'/app-pages/actuarial/actuarial-details/index.html?'
       }
     },
     onLoad(e){
       let id = e.id || getApp().globalData.decorateMsg.reportId
       let cost = e.isCost||1
       
-      this.url = process.env.VUE_APP_BASE_H5+this.url + id +'&projectId='+(e.id?null:getApp().globalData.decorateMsg.projectId) + '&isActuarial=' + cost +'&token='+getApp().globalData.token
+      this.url = process.env.VUE_APP_BASE_H5+this.url + `&secondClass=${e.secondClass}` +'&index='+(e.index) + '&isActuarial=' + cost +'&token='+getApp().globalData.token
       console.log(this.url)
     },
     methods: {

@@ -30,10 +30,10 @@
         <amount-house :checkData='checkData' id="d3" @isEmpty='isEmpty' :index='index1' v-if="tab.nodeType===3&&!tab.currentEmpty"></amount-house>
         <resultContent ref='result' id="d2" @isEmpty='isEmpty' :index='index1' :serverId='tab.serveCardId' v-if="tab.nodeType===2&&!tab.currentEmpty" @getData='getData' :scrollTop='scrollTop'
           :isReport='true'></resultContent>
-        <serviceDesign id="d1" v-if="tab.nodeType===1&&!tab.currentEmpty" @isEmpty='isEmpty' :index='index1' @changeDesign='changeDesign' :serverId='tab.serveCardId'></serviceDesign>
+        <serviceDesign id="d1" v-if="tab.nodeType===1&&!tab.currentEmpty" :projectId='projectId' @isEmpty='isEmpty' :index='index1' @changeDesign='changeDesign' :serverId='tab.serveCardId'></serviceDesign>
         <serviceActuarial id="d4" v-if="tab.nodeType===4&&!tab.currentEmpty" @isEmpty='isEmpty' :index='index1' :serverId='tab.serveCardId'></serviceActuarial>
-        <serviceSteward id="d5" v-if="tab.nodeType===5&&!tab.currentEmpty" @isEmpty='isEmpty' :index='index1' :serverId='tab.serveCardId'></serviceSteward>
-        <serviceDismantle id="d6" v-if="tab.nodeType>5&&!tab.currentEmpty" :index='index1' @isEmpty='isEmpty' :serverId='tab.serveCardId'></serviceDismantle>
+        <serviceSteward id="d5" v-if="tab.nodeType===5&&!tab.currentEmpty" @isEmpty='isEmpty' :index='index1' :projectId='projectId'></serviceSteward>
+        <serviceDismantle id="d6" v-if="tab.nodeType>5&&!tab.currentEmpty" :index='index1' @isEmpty='isEmpty' :projectId='projectId' :serveId='tab.serveCardId'></serviceDismantle>
         <no-service v-if="tab.currentEmpty" words="暂无进行中服务"></no-service>
       </swiper-item>
     </swiper>
@@ -76,10 +76,7 @@
         serverId:0,
         designData:{},
         currentEmpty:0,
-        checkData:{
-          serverId:0,
-          type:0
-        },
+        checkData:{},
       };
     },
     onPageScroll(scrollTop) {
@@ -117,6 +114,10 @@
         this.tabName = 'd'+(this.dataList[current].nodeType>6?6:this.dataList[current].nodeType)
         this.serverId = this.dataList[current].serveCardId
         this.currentEmpty = 0
+        this.checkData = {
+          serveId:this.dataList[current].serveCardId,
+          type:this.dataList[current].serveType
+        }
         this.changeHeight()
         // this.$nextTick(function(){
         //   this.$refs.result[0].getHeight()
@@ -156,7 +157,6 @@
             
             query.select('#' + this.tabName).boundingClientRect();
             query.exec((res) => {
-              console.log(res)
               if (res && res[0]) {
                 this.contentHeight =  res[0].height+150+ 'px';
               }
@@ -190,7 +190,7 @@
             serveId:this.dataList[0].serveCardId,
             type:this.dataList[0].serveType
           }
-          console.log(this.checkData)
+          
           if(this.dataList.findIndex(item=>{
             return item.nodeType === 1
           })!==-1){
