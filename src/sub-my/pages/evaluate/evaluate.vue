@@ -1,34 +1,46 @@
 <template>
-	<view class="evaluate-container">
-		<view class="evaluate-item" v-for="item in evaluateList" :key="item.id">
-			<view class="header">
-			  <view class="store-name">
-			    <text>{{item.typeName}}</text>
-			  </view>
-			  <view class="order-status" v-if="item.commentStatus == 0">
-					待评价
-			  </view>
-				<view class="order-status" v-if="item.commentStatus == 1">
-					已评价
+	<view >
+		<view class="evaluate-container" v-if="evaluateList.length>3">
+			<view class="evaluate-item" v-for="item in evaluateList" :key="item.id">
+				<view class="header">
+					<view class="store-name">
+						<text>{{item.typeName}}</text>
+					</view>
+					<view class="order-status" v-if="item.commentStatus == 0">
+						待评价
+					</view>
+					<view class="order-status" v-if="item.commentStatus == 1">
+						已评价
+					</view>
 				</view>
-			</view>
-			<view class="body" v-for="item2 in item.details" :key="item2.id">
-				<order-item :dataList="item2"></order-item>
-			</view>
-			<view class="line" />
+				<view class="body" v-for="item2 in item.details" :key="item2.id" @click="gotoDetail(item)">
+					<order-item :dataList="item2"></order-item>
+				</view>
+				<view class="line" />
+				
+				<view class="footer" v-if="item.commentStatus == 0 ">
+					<view class="button-container">
+						<button
+							type="default"
+							size="mini"
+							@click="immediateEvalute(item)"
+						>立即评价</button>
+						
+					</view>
+				</view>
 			
-			<view class="footer">
-				<view class="button-container">
-					<button
-						type="default"
-						size="mini"
-						@click="immediateEvalute()"
-					>立即评价</button>
-				</view>
 			</view>
+		</view>
 		
+		<view class="empty-container" v-else>
+			<view class="empty-page">
+				<image src="../../static/empty_page@2x.png" mode=""></image>
+				<text>暂无相关订单</text>
+			</view>
 		</view>
 	</view>
+	
+
 </template>
 
 <script>
@@ -39,7 +51,6 @@
 				query:{
 					page:1,
 					rows:15,
-					position:""
 				},
 				loading:false,
 				totalPage: '',
@@ -50,6 +61,7 @@
 		onLoad() {
 			this.getList()
 		},
+		
 		//下拉刷新
 		onPullDownRefresh() {
 			console.log('refresh');
@@ -57,44 +69,48 @@
 					uni.stopPullDownRefresh();
 			}, 1000);
 		}, 
+		
 		//页面上拉触底事件的处理函数
-		onReachBottom() {
-			if (this.loading || this.page >= this.totalPage) return
+		onReachBottom(e) {
+			if (this.loading || this.query.page > this.totalPage) return
 			this.getList();
-
-					
-				
 		},
+		
 		methods: {
 			getList(){
-				this.loading=true
-				getEvationList(this.query).then(data=>{
+				this.loading= true
+				getEvationList({page:1,rows:15}).then(data=>{
 					console.log("data=",data)
 					let list = data.list
 					this.evaluateList = this.evaluateList.concat(list)
-					this.loading=false
 					this.query.page = data.page + 1;
 					this.totalPage = data.totalPage;
 					this.totalRows = data.totalRows;
+					this.loading=false
 				})
 			},
 	
-			immediateEvalute(){
+			immediateEvalute(item){
 				console.log("立即评价");
 				uni.navigateTo({
-					url:"immediate-evaluate/immediate-evaluate",
+					url:`immediate-evaluate/immediate-evaluate?id=${item.id}&type=${item.type}`,
 				})
-			}
+			},
+			
+			gotoDetail(item){
+				console.log("查看详情");
+				if(item.commentStatus !== 1) return 
+				uni.navigateTo({
+					url:`evaluate-detail/evaluate-detail?type=${item.id}`
+				})
+			},
 		}
 	}
 </script>
 
 <style lang="scss" scoped>
 	.evaluate-container{
-		// width: 100%;
-		// height: 100%;
-		// background-color: skyblue;
-		// overflow-y: auto;
+		
 		.evaluate-item{
 			background-color: #FFFFFF;
 		}
@@ -166,10 +182,39 @@
 				}
 		}
 	}
+	
 	button{
 		display: none;
 	}
 	button::after {
 	  border: none;
+	}
+	
+	page{
+		background-color: #ffff !important;
+	}
+	.empty-container{
+		width: 100%;
+		height: 100%;
+		background-color: #fff;
+		.empty-page{
+			padding: 484rpx 254rpx 800rpx 256rpx;
+			display: flex;
+			flex-flow: column nowrap;
+			align-items: center;
+			image{
+				width: 240rpx;
+				height: 240rpx;
+				object-fit: cover;
+				margin-bottom: 24rpx;
+			}
+			text{
+				height: 40rpx;
+				line-height: 40rpx;
+				font-size: 28rpx;
+				font-weight: 400;
+				color: #999999;
+			}
+		}
 	}
 </style>
