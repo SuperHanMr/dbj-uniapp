@@ -89,7 +89,7 @@
                   </image>
                 </view>
               </view>
-              <service-item v-for="(item, index) in purchasedServiceList" :key="item.nodeType" :serviceData="item">
+              <service-item v-for="(item, index) in purchasedServiceList" :key="item.nodeType" :serviceData="item" :currentProject="currentProject">
               </service-item>
               <no-service v-if="purchasedServiceList.length == 0" words="暂无进行中服务"></no-service>
             </view>
