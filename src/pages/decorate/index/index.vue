@@ -128,7 +128,6 @@
             <view @click="payGuanGuanJia">生成买管家消息</view>
             <view @click="payRenGong">生成买人工消息</view>
           </view> -->
-          <view class="h"></view>
         </scroll-view>
       </view>
       <drag-button-follow v-if="msgNum>0" :num='msgNum' :style.sync="style" @btnClick='openNotice'
@@ -184,8 +183,8 @@
       let _this = this
       uni.getSystemInfo({
         success(res) {
-          console.log(res)
-          _this.viewHieght = res.windowHeight * 2 - 416
+          // console.log(res)
+          _this.viewHieght = res.windowHeight * 2 - 416 - 156
         }
       })
     },
@@ -876,8 +875,5 @@
     .p-i-t {
       margin-right: 24rpx;
     }
-  }
-  .h {
-    height: 48prx;
   }
 </style>

@@ -15,7 +15,7 @@
 	.no-service {
 		height: 360rpx;
 		margin: 0 24rpx 24rpx 24rpx;
-		background: #fbfbfb;
+		/* background: #fbfbfb; */
 		border-radius: 20rpx;
 		padding: 0 64rpx 0 32rpx;
 		display: flex;
