@@ -30,8 +30,8 @@
                 <view class="goods-spec">
                   <view class="goods-money">
                     ￥  
-                   <text class="integer-price">{{goodsItem.price?String(goodsItem.price).split(".")[0]:0}}</text>
-                    <text>.{{goodsItem.price?String(goodsItem.price).split(".")[1]:0}}</text>
+                   <text class="integer-price">{{String(goodsItem.price).split(".")[0]?String(goodsItem.price).split(".")[0]:0}}</text>
+                    <text>.{{String(goodsItem.price).split(".")[1]?String(goodsItem.price).split(".")[1]:0}}</text>
                     <text>/{{goodsItem.unit}}</text>
                   </view>
                 </view>
