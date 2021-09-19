@@ -33,7 +33,8 @@
   export default{
     props:{
       serverId:0,
-      index:0
+      index:0,
+      projectId:0
     },
     data(){
       return{
@@ -47,6 +48,7 @@
     watch:{
         serverId:{
           handler:function(){
+            console.log(this.projectId)
             this.getMyDesignServe()
           },
           immediate: true
