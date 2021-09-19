@@ -1,13 +1,13 @@
 <template>
   <view class="item">
-    <view class="flex-row-bet">
+    <view class="flex-row-bet" @click="openProcsss">
       <view class="item-name flex-row-start">
         <image src="http://dbj.dragonn.top/static/mp/dabanjia/images/decorate/ic_mer.svg"></image>
-        <text>{{serviceData.nodeName}}</text>
+        <text>{{serviceData.nodeName || "后端没返回字段"}}</text>
       </view>
       <view class="status-name mr inservice flex-row-start">
         <view>{{ serviceData | filterStatusName }}</view>
-        <image @click="openProcsss" :class="{open: open}"
+        <image :class="{open: open}"
           v-if="serviceData.status >= 2 || (serviceData.status == 0 && serviceData.grepOrderStatus === 3)"
           src="http://dbj.dragonn.top/static/mp/dabanjia/images/decorate/ic_triangle_up.svg"></image>
       </view>
