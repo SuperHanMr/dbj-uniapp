@@ -9,7 +9,7 @@
 	export default {
 		data() {
 			return {
-				url: `https://local.meiwu365.com/app-pages/actuarial/actuarial-details/index.html`
+				url: `https://local.meiwu365.com/app-pages/actuarial/actuarial-details/index.html?reportId=1&stage=6&isActuarial=1&index=1&secondClass=0`
 			}
 		},
 		methods: {
