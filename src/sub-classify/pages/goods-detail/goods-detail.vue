@@ -26,8 +26,8 @@
       }
     },
     onShow() {
-      this.baseUrl = this.ENV.VUE_APP_BASE_H5
-      // this.baseUrl = "https://local.meiwu365.com" 
+      // this.baseUrl = this.ENV.VUE_APP_BASE_H5
+      this.baseUrl = "https://local.meiwu365.com" 
       if(uni.getStorageSync('goodId')) {
         this.goodId = uni.getStorageSync('goodId')
       }else if( uni.getStorageSync('fromShopCart')) {
@@ -42,7 +42,7 @@
         provinceId: JSON.parse(this.defaultHouseInfo).provinceId,
         cityId: JSON.parse(this.defaultHouseInfo).cityId,
         areaId: JSON.parse(this.defaultHouseInfo).areaId,
-        locationName: JSON.parse(this.defaultHouseInfo).locationName,
+        locationName: JSON.parse(this.defaultHouseInfo).name,
         housingEstate: JSON.parse(this.defaultHouseInfo).housingEstate,
         housingEstateId: JSON.parse(this.defaultHouseInfo).housingEstateId
       }
