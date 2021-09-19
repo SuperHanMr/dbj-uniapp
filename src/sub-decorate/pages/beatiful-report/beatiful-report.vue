@@ -8,13 +8,14 @@
   export default {
     data() {
       return {
-        url:'app-pages/beauty-report/?themeId=2&id=3'
+        url:'/app-pages/beauty-report/?themeId='
       }
     },
     onLoad(e){
       let themeId = e.themeId
       let id = e.id
       this.url = process.env.VUE_APP_BASE_H5+this.url + themeId + '&id=' + id +'&token='+getApp().globalData.token
+      console.log(this.url)
     },
     methods: {
       
