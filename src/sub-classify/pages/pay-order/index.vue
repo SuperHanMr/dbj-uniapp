@@ -44,8 +44,7 @@
                 <text  v-if="!goodsItem.canDeliver && productType === 1">当前地址无法配送该商品，请更换地址</text>
               </view>
             </view>
-            <!-- v-if="productType === 2 && shopItem.skuInfos.appointmentRequired" -->
-            <view class="choose-time">
+            <view class="choose-time" v-if="productType === 2 && shopItem.skuInfos.appointmentRequired">
               <view class="time-bar" @click='chooseTime(shopIndex, goodIndex)'>
                 <text v-if="!time">请选择上门时间</text>
                 <text v-else>{{time}}</text>
@@ -359,7 +358,10 @@
                   		"number": skuItem.buyCount, //购买数量",
                   		"params": {}, //与订单无关的参数 如上门时间 doorTime
                 }
-                this.orderDetails.push(orderDetailItem)
+                this.orderDetails.push({
+                  orderDetailItem: orderDetailItem,
+                  paramsInfo: skuItem
+                })
               }
               // 商品详情结算弹窗判断
               if (this.originFrom === "h5GoodDetail") { 
@@ -412,14 +414,16 @@
         if(!this.canPay || this.hasNoSendItem || !this.totalPrice) {
           return
         }
-        // this.orderDetails.map((v, k) => {
-        //   Object.keys(v.params).map((item, index) => {
-        //     if(item !== 'time') {
-        //       v.params[item] = ''
-        //     }
-        //   })
-        // })
-        console.log(this.orderDetails, "detail")
+        let details = []
+        this.orderDetails.map((v, k) => {
+          details.push(v.orderDetailItem)
+          Object.keys(v.paramsInfo).map((item, index) => {
+            if(item === 'time') {
+              v.orderDetailItem.params[item] = v.paramsInfo.time
+            }
+          })
+        })
+        console.log(details, "detail")
         let params = {
             payType: 1, //"int //支付方式  1微信支付",
             openid: uni.getStorageSync("openId"), //"string //微信openid 小程序支付用 app支付不传或传空",
@@ -429,7 +433,7 @@
             total: this.totalPrice * 100, //"int //总计",
             remarks: this.remarks, //"string //备注",
             orderName: "", //"string //订单名称 可为空",
-            details: this.orderDetails
+            details: details
           }
         payOrder(params).then(data => {
           const {
