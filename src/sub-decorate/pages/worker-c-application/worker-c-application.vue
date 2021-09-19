@@ -51,7 +51,7 @@
             if (res.confirm) {
               console.log("点击了确认")
               ownerInsertAudit({
-                applyId: this.msg.id,
+                applyId: this.msg.data.id,
                 status: 5
               }).then(data => {
                 uni.showToast({
@@ -67,11 +67,11 @@
       },
       refuse() {
         uni.navigateTo({
-          url: `/sub-decorate/pages/worker-refuse/worker-refuse?id=${this.msg.id}&serveTypeName=${this.msg.serveTypeName}`
+          url: `/sub-decorate/pages/worker-refuse/worker-refuse?id=${this.msg.data.id}&serveTypeName=${this.msg.serveTypeName}`
         })
       },
       getCompletionLogById() {
-        getCompletionLogById(this.msg.id).then(data => {
+        getCompletionLogById(this.msg.data.id).then(data => {
           this.workerData = data.workerDecorationTrendLogVO
           // this.id = data.id
         })
