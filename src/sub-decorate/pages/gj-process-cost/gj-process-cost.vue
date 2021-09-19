@@ -60,9 +60,9 @@
       } = getApp().globalData.decorateMsg
       this.serveCardId = serveCardId || option.serveCardId
       this.estateId = estateId || option.estateId
-      this.serviceType = serviceType || option.serviceType 
-      this.projectId = projectId || option.projectId 
-      this.customerId = customerId || option.customerId 
+      this.serviceType = serviceType || option.serviceType
+      this.projectId = projectId || option.projectId
+      this.customerId = customerId || option.customerId
     },
     onShow() {
       this.getDataList()
@@ -79,29 +79,29 @@
         },
         countPrice: 0,
         estateId: null,
-        artificialLevel: 0,
+        artificialLevel: 1,
         roleType: null,
         levels: [{
           label: "中级",
-          value: 0
-        }, {
-          label: "高级",
           value: 1
         }, {
-          label: "特高级",
+          label: "高级",
           value: 2
         }, {
-          label: "钻石",
+          label: "特高级",
           value: 3
+        }, {
+          label: "钻石",
+          value: 4
         }],
       }
     },
     computed: {
       isAllChecked() {
-        return this.checkedIds.length > 0
+        return this.shopping.artificial.length > 0 || this.shopping.material.length > 0
       },
       pieces() {
-        return this.checkedIds.length
+        return this.shopping.artificial.length + this.shopping.material.length
       },
     },
     methods: {
@@ -119,7 +119,7 @@
         this.dataOrigin.artificial.categoryList.forEach((item, i) => {
           item.itemList.forEach((it, j) => {
             this.shopping.artificial.push(it)
-            this.countPrice += it.price / 100
+            this.countPrice += it.price * it.count / 100
           })
         })
         // debugger
@@ -128,7 +128,7 @@
           item.itemList.forEach((it, j) => {
             if (this.checkedIds.includes(it.productId)) {
               this.shopping.material.push(it)
-              this.countPrice += it.price / 100
+              this.countPrice += it.price * it.count / 100
             }
           })
         })
@@ -138,7 +138,7 @@
       },
       getDataList() {
         sellList({
-          serveId: this.serveCardId,
+          projectId: this.projectId,
           type: this.serviceType,
         }).then(data => {
           this.dataOrigin = data
@@ -156,30 +156,37 @@
         })
       },
       selectWp(obj) {
-        console.log(obj)
-        const {
-          val,
-          productIds
-        } = obj
-        if (val) {
-          for (let i = 0; i < productIds.length; i++) {
-            if (!this.checkedIds.includes(productIds[i])) {
-              this.checkedIds.push(productIds[i])
+        this.$nextTick(function() {
+          console.log(obj)
+          const {
+            val,
+            productIds
+          } = obj
+          console.log("productIds", productIds)
+          if (val) {
+            for (let i = 0; i < productIds.length; i++) {
+              if (!this.checkedIds.includes(productIds[i])) {
+                this.checkedIds.push(productIds[i])
+              }
             }
-          }
-        } else {
-          for (let i = 0; i < productIds.length; i++) {
-            if (this.checkedIds.includes(productIds[i])) {
-              this.checkedIds.splice(i, 1)
+          } else {
+            let arr = []
+            for (let i = 0; i < productIds.length; i++) {
+              if (!this.checkedIds.includes(productIds[i])) {
+                // this.checkedIds.splice(i, 1)
+                arr.push(productIds[i])
+              }
             }
+            this.checkedIds = arr
           }
-        }
-        this.computePriceAndShopping()
-        console.log(this.checkedIds)
+          this.computePriceAndShopping()
+        })
+
+        // console.log(this.checkedIds)
       },
       gotopay() {
         // TODO去结算页面
-        if (this.checkedIds.length > 0) {
+        if (this.shopping.artificial.length > 0 || this.shopping.material.length > 0) {
           let params = {
             payType: 1, //"int //支付方式  1微信支付",
             openid: uni.getStorageSync("openId"), //"string //微信openid 小程序支付用 app支付不传或传空",
@@ -193,7 +200,7 @@
           }
           // roleType 7工人，10管家
           let roleType = this.serviceType == 5 ? 10 : 7
-          
+
           this.shopping.artificial.forEach(it => {
             params.details.push({
               supplierType: it.supplierType,
@@ -214,9 +221,9 @@
               supplierType: it.supplierType,
               relationId: it.productId, //"long //实体id",
               type: 1, //"int //实体类型   1材料  2服务   3专项付款",
-              businessType: 1,//it.categoryTypeId, //"int //业务类型",辅材的businessType固定为1
+              businessType: 1, //it.categoryTypeId, //"int //业务类型",辅材的businessType固定为1
               workType: it.workType, //"int //工种类型",
-              level: 0, //"int //等级  0中级  1高级 2特级  3钻石",
+              level: 1, //"int //等级  0中级  1高级 2特级  3钻石",
               storeId: it.storeId, //"long //店铺id",
               storeType: 0, //"int //店铺类型 0普通 1设计师",
               number: it.count, //"double //购买数量",
@@ -226,7 +233,7 @@
           this.createOrder(params)
         } else {
           uni.showToast({
-            title: "请您先添加房屋信息",
+            title: "请您先选择人工",
             icon: "none",
             duration: 3000
           })

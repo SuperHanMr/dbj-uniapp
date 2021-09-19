@@ -42,7 +42,7 @@
   export default {
     name:"address-picker",
     props: {
-      from: {
+      originFrom: {
         dafult: ''
       },
       houseId: {
@@ -65,13 +65,15 @@
         estateId: 0
       };
     },
-    mounted() {
-      getAddressInfo(this.houseId).then((data) => {
-        this.addressInfo = data
-        this.$emit('emitInfo', this.addressInfo)
-      })
-      console.log(this.houseId, 8899)
-    },
+    // mounted() {
+    //   // if()
+    //   console.log(this.originFrom, 'from')
+    //   getAddressInfo(this.houseId).then((data) => {
+    //     this.addressInfo = data
+    //     this.$emit('emitInfo', this.addressInfo)
+    //   })
+    //   console.log(this.houseId, 8899)
+    // },
     methods: {
       checkAddress() {
         uni.navigateTo({
@@ -81,14 +83,10 @@
     },
     watch:{
       houseId(v) {
-        console.log(123)
-        if(this.from !== "addressToast") {
-          console.log(8800)
-          getAddressInfo(v).then((data) => {
-            this.addressInfo = data
-            this.$emit('emitInfo', this.addressInfo)
-          })
-        }
+        getAddressInfo(v).then((data) => {
+          this.addressInfo = data
+          this.$emit('emitInfo', this.addressInfo)
+        })
       }
     }
   }

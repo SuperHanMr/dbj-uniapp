@@ -10,20 +10,20 @@
       </view>
       <view class="date">{{detail.designServerVO.updateTime}}</view>
     </view>
-    <view class="card flex-row-bet" v-for="(item,index) in detail.designReport">
-      <view class="t">设计报告详情</view>
-      <view class="lookDetail flex-row-start" @click="goDetail">
+    <view class="card flex-row-bet">
+      <view class="t">颜值报告</view>
+      <view class="lookDetail flex-row-start" @click="beatifulReport">
         <view>立即查看</view>
         <image src="http://dbj.dragonn.top/static/mp/dabanjia/images/decorate/ic_more.svg"></image>
       </view>
     </view>
-    <!-- <view class="card flex-row-bet">
-      <view class="t">设计报告详情</view>
-      <view class="lookDetail flex-row-start" @click="goDetail">
+    <view class="card flex-row-bet">
+      <view class="t">自定义报告</view>
+      <view class="lookDetail flex-row-start" @click="customReport">
         <view>立即查看</view>
         <image src="http://dbj.dragonn.top/static/mp/dabanjia/images/decorate/ic_more.svg"></image>
       </view>
-    </view> -->
+    </view>
     <button class="btn" @click="confirm">确认设计报告</button>
   </view>
 </template>
@@ -41,22 +41,7 @@
       }
     },
     onLoad() {
-      this.decorateMsg = getApp().globalData.decorateMsg || {
-        "serveId": 20013, //服务卡id
-        "projectId": 1, //项目id
-        "customerId": 1, //客户id
-        "customerName": "王先生", //客户id
-        "serveType": 1, // 服务类型
-        "serveTypeName": "全案设计", //类型名称
-        "stageId": 10, //阶段id
-        "stageName": "平面布局", //阶段id
-        "fullName": "纯设计|全案设计", //SPU + SKU
-        "provinceName": "山西省", //房产省名称
-        "cityName": "太原市", //房产市名称
-        "housingEstate": "龙城小区", //小区名称
-        "estateArea": "100平", //房产面积
-        "serviceTime": "发布时间" //设计师发布报告时间
-      }
+      this.decorateMsg = getApp().globalData.decorateMsg
     },
     onShow() {
       this.getPorts()
@@ -81,8 +66,21 @@
           }
         })
       },
-      goDetail() {
+      customReport() {
+        const token = uni.getStorageSync("scn")
         
+        const {beautyReport} = this.detail
+        uni.navigateTo({
+          url: `/sub-decorate/pages/custom-report/custom-report?token=${token}&themeId=${beautyReport.templateId}&id=${beautyReport.id}`
+        })
+      },
+      beatifulReport() {
+        const token = uni.getStorageSync("scn")
+        
+        const {customReport} = this.detail
+        uni.navigateTo({
+          url: `/sub-decorate/pages/beatiful-report/beatiful-report?token=${token}&themeId=${customReport.templateId}&id=${customReport.id}`
+        })
       },
       getPorts() {
         serverReports(this.decorateMsg.serveId).then(data => {

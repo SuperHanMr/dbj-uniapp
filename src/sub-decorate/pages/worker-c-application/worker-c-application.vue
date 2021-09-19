@@ -4,7 +4,8 @@
       拆除工人发起阶段服务验收申请，系统将在72:00:00后自动确认验收
     </view>
     <view class="content">
-      <user-desc-pict-worker :workerData="workerData" :isWorker="true"></user-desc-pict-worker>
+      <user-desc-pict-butler :butlerData="butlerData"></user-desc-pict-butler>
+      <user-desc-pict :workerData="workerData"></user-desc-pict>
     </view>
     <view class="bt-btn-wrap flex-row">
       <view class="btn-l" @click="refuse">拒绝通过</view>
@@ -20,31 +21,28 @@
   } from "../../../api/construction.js"
 
   import UserDescPictWorker from "../../components/user-desc-pict/user-desc-pict-worker.vue"
+  import UserDescPict from "../../components/user-desc-pict/user-desc-pict.vue"
   export default {
     components: {
-      UserDescPictWorker
+      UserDescPictWorker,
+      UserDescPict
     },
     onLoad(option) {
-      const {
-        id,
-        serveId,
-        serveType,
-        serveTypeName
-      } = getApp().globalData.decorateMsg
-      this.id = id
-      this.serveTypeName = serveTypeName
+      this.msg = getApp().globalData.decorateMsg
+      
     },
     onShow() {
       uni.setNavigationBarTitle({
-        title: this.serveTypeName
+        title: this.msg.nodeName
       })
       this.getCompletionLogById()
     },
     data() {
       return {
         workerData: {},
+        butlerData: {},
         id: null,
-        serveTypeName: ""
+        msg: {}
       }
     },
     methods: {
@@ -57,13 +55,14 @@
             if (res.confirm) {
               console.log("点击了确认")
               ownerInsertAudit({
-                applyId: this.id,
+                applyId: this.msg.data.id,
                 status: 5
               }).then(data => {
                 uni.showToast({
                   title: "已提交申请",
                   icon: false
                 })
+                uni.navigateBack({})
               })
             } else {
               console.log("点击了取消")
@@ -73,13 +72,14 @@
       },
       refuse() {
         uni.navigateTo({
-          url: `/sub-decorate/pages/worker-refuse/worker-refuse?id=${this.id}&serveTypeName=${this.serveTypeName}`
+          url: `/sub-decorate/pages/worker-refuse/worker-refuse?id=${this.msg.data.id}&serveTypeName=${this.msg.serveTypeName}`
         })
       },
       getCompletionLogById() {
-        getCompletionLogById(5).then(data => {
+        getCompletionLogById(this.msg.data.id).then(data => {
           this.workerData = data.workerDecorationTrendLogVO
-          this.id = data.id
+          this.butlerData = data.butlerDecorationTrendLogVO
+          // this.id = data.id
         })
       }
     }

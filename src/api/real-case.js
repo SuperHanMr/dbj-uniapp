@@ -3,8 +3,8 @@ import request from '../utils/request';
 export function getDecorateist(params) {
   return request.get(`/pm/app/project/list`, { params });
 }
-export function getcollection(params) {
-  return request.post(`/app/base/interactive/add`, params);
+export function getCollection(params) {
+  return request.post(`/app/collection`, params);
 }
 export function getCaseList(params) {
   return request.get(`/app/case/v2/list`, {

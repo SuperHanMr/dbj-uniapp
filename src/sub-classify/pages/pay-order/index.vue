@@ -1,5 +1,5 @@
 <template>
-  <view class="orderContainer">
+  <view class="order-container">
     <view v-if="!isShow">
       <uni-popup ref="houseDialog" :mask-click="false">
         <view class="popup-item">
@@ -12,31 +12,47 @@
       </uni-popup>
     </view>
     <view v-else>
-      <address-picker :houseId="houseId" :productType="productType" @emitInfo="emitInfo"></address-picker>
+      <address-picker :houseId="houseId" :productType="productType" @emitInfo="emitInfo" :originFrom="originFrom"></address-picker>
       <view class="content">
-        <view class="shop-item" v-for="(shopItem, index) in orderInfo.storeInfos" :key="index">
+        <view class="shop-item" v-for="(shopItem, shopIndex) in orderInfo.storeInfos" :key="shopIndex">
           <view class="shop-name" v-if="shopItem.skuInfos.length">{{shopItem.storeName}}</view>
-          <view class="goodsItem" v-for="(goodsItem, index) in shopItem.skuInfos" :key="index">
-            <image :src="goodsItem.imageUrl" class="goodsItemImg"></image>
-            <!-- <image src="https://ali-image-test.dabanjia.com/image/20210816/11/1629087052820_2600%241626858792066_0436s4.png" class="goodsItemImg"></image> -->
-            <view class="goodsInfo">
-              <view class="goodsDesc">
-                <text class="goodsType">{{goodsItem.productType=== 1?"服务":"物品"}}</text>
-                {{goodsItem.spuName}}
-              </view>
-              <view class='tag'>{{goodsItem.skuName}}</view>
-              <view class="totalNum">共{{goodsItem.buyCount}}件</view>
-              <view class="goodsSpec">
-                <view class="goods-money" v-if='goodsItem.price'>
-                  ￥
-                  <text class="integer-price">{{String.prototype.split.call(goodsItem["price"], ".")[0]}}</text>
-                  <text>.{{String.prototype.split.call(goodsItem["price"], ".")[1]}}</text>
-                  <text>/{{goodsItem.unit}}</text>
+          <view class="goods-item item-box" v-for="(goodsItem, goodIndex) in shopItem.skuInfos" :key="goodIndex">
+            <view class="goods-item">
+              <image :src="goodsItem.imageUrl" class="goodsItemImg"></image>
+              <!-- <image src="https://ali-image-test.dabanjia.com/image/20210816/11/1629087052820_2600%241626858792066_0436s4.png" class="goodsItemImg"></image> -->
+              <view class="goods-info">
+                <view class="goods-desc">
+                  <text class="goods-type">{{goodsItem.productType=== 1?"物品":"服务"}}</text>
+                  {{goodsItem.spuName}}
+                </view>
+                <view class='tag'>{{goodsItem.skuName}}</view>
+                <view class="total-num">共{{goodsItem.buyCount}}件</view>
+                <view class="goods-spec">
+                  <view class="goods-money" v-if='goodsItem.price'>
+                    ￥
+                    <text class="integer-price">{{String.prototype.split.call(goodsItem["price"], ".")[0]}}</text>
+                    <text>.{{String.prototype.split.call(goodsItem["price"], ".")[1]?String.productType.split.call(goodsItem["price"], ".")[1]: 0}}</text>
+                    <text>/{{goodsItem.unit}}</text>
+                  </view>
                 </view>
               </view>
             </view>
+            <view class="shop-reduce no-send-tip good-tip" v-if="!goodsItem.canBuy && !goodsItem.canDeliver">
+              <view class="item-reduce-box">
+                <text v-if="goodsItem.frontendServe && productType === 2">请先购买{{frontendServe}}</text>
+                <text v-if="!goodsItem.canBuy && productType === 2">该服务不可购买</text>
+                <text  v-if="!goodsItem.canDeliver && productType === 1">当前地址无法配送该商品，请更换地址</text>
+              </view>
+            </view>
+            <view class="choose-time" v-if="productType === 2 && shopItem.skuInfos.appointmentRequired">
+              <view class="time-bar" @click='chooseTime(shopIndex, goodIndex)'>
+                <text v-if="!time">请选择上门时间</text>
+                <text v-else>{{time}}</text>
+                <image class="choose-icon" src="../../../static/images/ic_more_black@2x.png"></image>
+              </view>
+            </view>
           </view>
-          <view class="cost-detail" v-if="shopItem.deliveryFee && prototype === 1">
+          <view class="cost-detail" v-if="shopItem.deliveryFee && productType === 1">
             <view>
               <text>运费</text>
               <text>¥{{shopItem.deliveryFee}}</text>
@@ -46,25 +62,11 @@
               <text>¥{{shopItem.totalHandlingFee}}</text>
             </view>
           </view>
-          <view class="shop-reduce" v-if="shopItem.freeDeliveryCount && prototype === 1">
+          <view class="shop-reduce" v-if="shopItem.freeDeliveryCount && productType === 1">
             <view class="item-reduce-box">
               <view class="question-box">本订单已获得了该店铺{{shopItem.freeDeliveryCount}}次免运费权益
                 <text class="question-icon" @click="readExpenses(1)"></text>
               </view>
-            </view>
-          </view>
-          <view class="shop-reduce no-send-tip"
-            v-if="!shopItem.deliveryFee && !shopItem.freeDeliveryCount && prototype === 1">
-            <view class="item-reduce-box">
-              <text v-if="toastType === 1">请先购买{{frontendServe}}</text>
-              <text v-else>当前地址无法配送该商品，请更换地址</text>
-            </view>
-          </view>
-          <view class="choose-time" v-if="productType === 2 && shopItem.skuInfos.appointmentRequired">
-            <view class="time-bar" @click='chooseTime'>
-              <text v-if="!time">请选择上门时间</text>
-              <text v-else>{{time}}</text>
-              <image class="chooseIcon" src="../../../static/images/ic_more_black@2x.png"></image>
             </view>
           </view>
         </view>
@@ -127,11 +129,11 @@
             <view class="info-text2">总计：</view>
             <view class="total-money">
               ￥
-              <text class="mony-text">{{orderInfo.totalPrice?String.prototype.split.call(orderInfo.totalPrice, ".")[0]:0}}</text>
-              <text>.{{orderInfo.totalPrice?String.prototype.split.call(orderInfo.totalPrice, ".")[1]:0}}</text>
+              <text class="mony-text">{{totalPrice?String.prototype.split.call(totalPrice, ".")[0]:0}}</text>
+              <text>.{{totalPrice?String.prototype.split.call(totalPrice, ".")[1]?String.prototype.split.call(totalPrice, ".")[1]:0:0}}</text>
             </view>
           </view>
-          <button class="pay-button" :class="{'no-pay': !canPay}" @click="pay" ref="test">立即支付</button>
+          <button class="pay-button" :class="{'no-pay': !canPay || hasNoSendItem}" @click="pay" ref="test">立即支付</button>
         </view>
       </view>
       <expenses-toast ref='expensesToast' :expensesType="expensesType"></expenses-toast>
@@ -169,7 +171,9 @@
       return {
         isShow: true,
         time: '',
-        orderCheckParams: {},
+        shopIndex: 0,
+        goodIndex: 0,
+        orderCartParams: {},
         originFrom: '',
         addressInfo: {},
         orderInfo: {},
@@ -190,42 +194,32 @@
         toastType: 0,
         toastText:'',
         tipTest: '',
-        remarks: '666',
+        remarks: '',
         orderName: '',
         orderDetails: [],
         totalGoodsNum: 0,
+        totalPrice: '0.00',
         canPay: true
       }
-    },
-    created() {
-      // 结算所需参数
-      // let params = {
-      //   "skuInfos":[{
-      //     "skuId":"long //商品id",
-      //     "storeId":"long //店铺id",
-      //     "buyCount":"double //购买数量",
-      //     "unit":"string //单位",
-      //     "level":"int //等级",
-          
-      //     "roleType":"int //角色类型  7工人  10管家  购买工人和管家时参数必传",
-      //     "workType":"int //工种类型 购买工人时参数必传",
-      //   }],
-      //   "estateId":"long //小区id"
-      // }
     },
     onLoad(e) {
       // 购物车数据
       const eventChannel = this.getOpenerEventChannel();
       eventChannel.on('acceptDataFromOpenerPage',( data )=> {
-      	this.orderCheckParams = data
+        console.log(data, 'cartData')
+      	this.orderCartParams = data
         this.originFrom = data.originFrom
       }) 
       // 小程序数据
       // console.log(e, 'eee')
-      this.houseId = e.houseId
       // this.houseId = 1084
       if(e.from) {
         this.originFrom = e.from
+      }
+      if(this.originFrom === "h5GoodDetail") {
+        this.houseId = e.houseId
+      }else if(this.originFrom === "shopCart"){
+        this.houseId = JSON.parse(uni.getStorageSync('currentHouse')).id
       }
       // this.originFrom = "h5GoodDetail"
       // this.originFrom = "shopCart"
@@ -234,7 +228,9 @@
       this.storeId = e.storeId
       this.unit = e.unitName
       this.goodDetailId = uni.getStorageSync('goodId')
-      if(!this.houseId){
+    },
+    onShow() {
+      if(!uni.getStorageSync('houseListChooseId') && !this.houseId){
         this.isShow = false
         setTimeout(() => {
           if(this.$refs.houseDialog.open){
@@ -242,11 +238,8 @@
           }
         })
       }
-    },
-    onShow() {
       if (uni.getStorageSync('houseListChooseId')) {
         this.houseId = uni.getStorageSync('houseListChooseId')
-        this.isShow = true
         if(this.$refs.houseDialog.close) {
           this.$refs.houseDialog.close()
         }
@@ -272,10 +265,12 @@
       },
       getTime(val) {
         this.time = val[0] + '年' + val[1] + '月' + val[2] + '日' + val[3] + '时' + val[4] + '分'
+        this.$set(this.orderInfo.storeInfos[this.shopIndex].skuInfos[this.goodIndex], "time", this.time)
+        console.log(this.orderInfo)
       },
       emitInfo(val) {
         this.addressInfo = val
-        this.estateId = val.housingEstateId
+        this.estateId = val.id ? val.id: 0
          let params = {}
         if(this.originFrom === 'h5GoodDetail') {
           params = {
@@ -283,14 +278,16 @@
             		skuId:this.skuId,
             		storeId:this.storeId,
             		buyCount:this.buyCount,
-            		unit: this.unit,
+            		unit: this.unit? this.unit:"",
                 level: 0
             	}],
             	estateId:this.estateId
           }
         }else if(this.originFrom === 'shopCart'){
-          this.orderCheckParams.estateId = this.estateId
-          params = this.orderCheckParams
+          params = {
+            skuInfos: this.orderCartParams.skuInfos,
+            estateId: this.estateId
+          }
         }
         // let params = {
         //   skuInfos:[{
@@ -313,17 +310,16 @@
         //   }]
         // }
         getDetailInfo(params).then((data) => {
-          // let dataInfo = data
-          let dataInfo = data.data.data
+          this.totalPrice = data.totalPrice + data.totalDeliveryFee + data.totalHandlingFee + data.totalDeposit - data.totalDiscount
+          let dataInfo = data
           this.orderInfo = dataInfo
-          console.log(dataInfo, 'dataInfo')
           this.noStoreInfos = JSON.parse(JSON.stringify(dataInfo))
           this.noStoreInfos.storeInfos = []
           this.canStoreInfos = JSON.parse(JSON.stringify(dataInfo))
           this.canStoreInfos.storeInfos = []
 
 
-          dataInfo.storeInfos.map((storeItem, storeK) => {
+          this.orderInfo.storeInfos.map((storeItem, storeK) => {
             let noStoreItem = JSON.parse(JSON.stringify(storeItem))
             noStoreItem.skuInfos = []
             let canStoreItem = JSON.parse(JSON.stringify(storeItem))
@@ -342,8 +338,8 @@
                   addingUserId: skuItem.addingUserId
                 })
               }
-              // 购物车结算可配送和不可配送数据
-              if (skuItem.canBuy === false || skuItem.canDeliver === false) { 
+              // 结算可配送和不可配送数据
+              if (skuItem.canBuy === false && skuItem.canDeliver === false) { 
                 noStoreItem.skuInfos.push(skuItem)
                 this.hasNoSendItem = true // 判断所有数据中有没有不可配送数据
               } else {
@@ -354,15 +350,18 @@
                       "relationId":skuItem.skuId, //实体id,
                   		"type":skuItem.productType,   //1材料  2服务   3专项付款,
                   		"businessType":skuItem.categoryTypeId, //业务类型,
-                  		"roleType":0, //角色类型  7工人  10管家  购买工人和管家时参数必传,
-                  		"workType":-2,//工种类型 购买工人时参数必传,
+                  		"roleType":skuItem.roleType? Number(skuItem.roleType): 0, //角色类型  7工人  10管家  购买工人和管家时参数必传,
+                  		"workType":skuItem.workType? Number(skuItem.workType): -2,//工种类型 购买工人时参数必传,
                   		"level":0, //等级  0中级  1高级 2特级  3钻石",
-                  		"storeId":skuItem.storeId, //店铺id,
+                  		"storeId":storeItem.storeId, //店铺id,
                   		"storeType": 0, //店铺类型 0普通 1设计师",
                   		"number": skuItem.buyCount, //购买数量",
-                  		"params":this.time, //与订单无关的参数 如上门时间 doorTime
+                  		"params": {}, //与订单无关的参数 如上门时间 doorTime
                 }
-                this.orderDetails.push(orderDetailItem)
+                this.orderDetails.push({
+                  orderDetailItem: orderDetailItem,
+                  paramsInfo: skuItem
+                })
               }
               // 商品详情结算弹窗判断
               if (this.originFrom === "h5GoodDetail") { 
@@ -406,23 +405,35 @@
           }
         })
       },
-      chooseTime() {
+      chooseTime(shopIndex, goodIndex) {
+        this.shopIndex = shopIndex
+        this.goodIndex = goodIndex
         this.$refs.datePicker.showDatePicker()
       },
       pay() {
-        if(!this.canPay) {
+        if(!this.canPay || this.hasNoSendItem || !this.totalPrice) {
           return
         }
+        let details = []
+        this.orderDetails.map((v, k) => {
+          details.push(v.orderDetailItem)
+          Object.keys(v.paramsInfo).map((item, index) => {
+            if(item === 'time') {
+              v.orderDetailItem.params[item] = v.paramsInfo.time
+            }
+          })
+        })
+        console.log(details, "detail")
         let params = {
             payType: 1, //"int //支付方式  1微信支付",
             openid: uni.getStorageSync("openId"), //"string //微信openid 小程序支付用 app支付不传或传空",
             projectId: 0, //"long //项目id  非必须 默认0",
             customerId: 0, //"long //业主id  非必须 默认0",
             estateId: this.estateId, //"long //房产id   非必须 默认0",
-            total: this.orderInfo.totalPrice, //"int //总计",
+            total: this.totalPrice * 100, //"int //总计",
             remarks: this.remarks, //"string //备注",
             orderName: "", //"string //订单名称 可为空",
-            details: this.orderDetails
+            details: details
           }
         payOrder(params).then(data => {
           const {
@@ -465,7 +476,7 @@
 </script>
 
 <style scoped>
-  .orderContainer {
+  .order-container {
     width: 100%;
     height: 100%;
     overflow: auto;
@@ -502,15 +513,22 @@
     height: 106rpx;
     line-height: 106rpx;
   }
-
-  .goodsItem {
+  .item-box{
+    flex-wrap: wrap;
+  }
+  .goods-item {
     width: 100%;
     display: flex;
     align-items: center;
-    padding-bottom: 40rpx;
+    padding-bottom: 20rpx;
   }
-
-  .goodsItem .goodsItemImg {
+  .goods-item .good-tip{
+    width: 100%;
+  }
+  .good-tip .item-reduce-box{
+    bottom: 0;
+  }
+  .goods-item .goodsItemImg {
     width: 192rpx;
     height: 192rpx;
     display: block;
@@ -518,13 +536,13 @@
     border-radius: 8rpx;
   }
 
-  .goodsItem .goodsInfo {
+  .goods-item .goods-info {
     height: 192rpx;
     position: relative;
     flex: 1;
   }
-
-  .goodsInfo .goodsDesc {
+  
+  .goods-info .goods-desc {
     width: 420rpx;
     font-size: 28rpx;
     color: #333333;
@@ -532,7 +550,7 @@
     text-overflow: ellipsis;
   }
 
-  .goodsInfo .goodsDesc .goodsType {
+  .goods-info .goods-desc .goods-type {
     width: 60rpx;
     height: 30rpx;
     padding: 2rpx 10rpx 2rpx 10rpx;
@@ -546,7 +564,7 @@
     text-align: center;
   }
 
-  .goodsInfo .goodsSpec {
+  .goods-info .goods-spec {
     width: fit-content;
     text-overflow: ellipsis;
     padding: 4rpx;
@@ -555,7 +573,7 @@
     display: flex;
   }
 
-  .goodsInfo .tag {
+  .goods-info .tag {
     margin-top: 8rpx;
     font-size: 22rpx;
     color: #999999;
@@ -568,7 +586,7 @@
     border-radius: 6rpx;
   }
 
-  .goodsInfo .totalNum {
+  .goods-info .total-num {
     top: 50%;
     right: 0;
     font-size: 28rpx;
@@ -638,8 +656,7 @@
   }
 
   .choose-time {
-    padding: 26rpx 0;
-    border-top: 1rpx solid #f4f4f4;
+    width: 100%;
   }
 
   .time-bar {
@@ -653,7 +670,7 @@
     color: #333333;
   }
 
-  .chooseIcon {
+  .choose-icon {
     width: 32rpx;
     height: 32rpx;
   }

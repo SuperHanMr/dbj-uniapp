@@ -99,7 +99,7 @@ export function replaceGrab(params) {
 
 //获取量房交付报告
 export function getAmountDetail(params) {
-	return request.get("/pm/app/measure/measurePictures/" + params)
+	return request.get("/pm/app/measure/measurePictures/" + params.serveId+'/'+params.type)
 }
 
 //驳回量房交付报告
@@ -178,7 +178,7 @@ export function confirmStageDeliver(serveCardId) {
 }
 // C端 业主要求修改设计图
 export function reviseStageDeliver(serveCardId) {
-	return request.get(`/pm/app/serve/design/reviseStageDeliver/${serveCardId}`)
+	return request.post(`/pm/app/serve/design/reviseStageDeliver/${serveCardId}`)
 }
 
 
@@ -219,7 +219,7 @@ export function goodsApply(params) {
 
 // 获取工序费用
 export function sellList(params) {
-	return request.get(`/pm/app/actuary/sell/list/${params.serveId}/${params.type}`)
+	return request.get(`/pm/app/actuary/sell/list/${params.projectId}/${params.type}`)
 }
 //c端APP-仓库-待收货-确认收货
 export function confirmGoods(params) {

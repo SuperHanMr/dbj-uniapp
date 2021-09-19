@@ -22,7 +22,8 @@
     },
     props:{
       serveId:0,
-      projectId:0
+      projectId:0,
+      index:0
     },
     data(){
       return{
@@ -33,15 +34,21 @@
       formatDate
     },
     watch:{
-      serveId(){
-        this.getComplateDetail()
-      }
+      serverId:{
+        handler:function(){
+          this.getComplateDetail()
+        },
+        immediate: true
+      },
     },
     methods:{
       getComplateDetail(){
         getComplateDetail({serveId:this.serveId,projectId:this.projectId}).then(res=>{
           console.log(res)
           this.list = res
+          if(res.length===0){
+            this.$emit('isEmpty',this.index)
+          }
         })
       }
     }

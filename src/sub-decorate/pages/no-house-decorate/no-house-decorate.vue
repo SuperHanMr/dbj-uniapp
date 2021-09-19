@@ -104,6 +104,7 @@
         provinceId: null, //省id
         cityId: null, //市id
         areaId: null, //区id
+        // pieces: 0
       }
     },
     computed: {
@@ -112,6 +113,7 @@
       },
       pieces() {
         let num = this.design.checked + this.actuary.checked + this.checkHouse.checked;
+        console.log(num)
         return num
       },
       countPrice() {
@@ -162,14 +164,19 @@
         type,
       } = option
       this.sssType = type || getType(serviceType)
-      this.projectId = projectId
+
+      if (option.isDecorate) {
+        this.projectId = Number(option.projectId)
+      } else {
+        this.projectId = projectId
+      }
+
       this.serveType = serveType
       this.estateId = Number(estateId) || Number(option.estateId)
       this.customerId = customerId
       this.provinceId = provinceId //省id
       this.cityId = cityId //市id
       this.areaId = areaId
-      console.log(option, ">>>>>>>>>>>>>>>>")
       uni.setNavigationBarTitle({
         title: TYPE[type]
       })
@@ -230,19 +237,29 @@
       getServiceSku() {
         let defaultHouse = JSON.parse(uni.getStorageSync("currentHouse"))
         // console.log("defaultHouse", defaultHouse)
-        getServiceSku({
+        let params = {
           province_id: this.currentHouse.provinceId || defaultHouse.provinceId,
           city_id: this.currentHouse.cityId || defaultHouse.cityId,
           area_id: this.currentHouse.areaId || defaultHouse.areaId,
           // serveTypes: [1, 2, 4]
-        }).then(data => {
+        }
+        if (this.sssType == "checkHouse") {
+          params.serveTypes = [2]
+        }
+        getServiceSku(params).then(data => {
           const {
             categoryTypeId,
             values
           } = this.selectedServer
-          this.design = {}
-          this.checkHouse = {}
-          this.actuary = {}
+          this.design = {
+            checked: false,
+          }
+          this.checkHouse = {
+            checked: false,
+          }
+          this.actuary = {
+            checked: false,
+          }
           if (categoryTypeId == 1) {
             this.design = {
               title: "设计服务",
@@ -308,32 +325,7 @@
           console.log("默认服务： ", this.design, this.actuary, this.checkHouse)
         })
       },
-      // getProductsSkusPage() {
-      //   getProductsSkusPage({
-      //     categoryTypeId: [5, 6]
-      //   }).then(data => {
-      //     this.dataList = data.list
-      //     const {
-      //       noHouseActuaryId,
-      //       noHouseDesignId,
-      //       noHouseCheckId
-      //     } = getApp().globalData
-      //     const {} =
-      //     this.actuary = {
-      //       ...data.list[0],
-      //       title: "精算服务",
-      //       cardtype: "actuary",
-      //       checked: true,
-      //     }
-      //     this.design = {
-      //       ...data.list[1],
-      //       title: "设计服务",
-      //       cardtype: "design",
-      //       checked: true,
-      //       level: 2
-      //     }
-      //   })
-      // },
+
       selectAnother(pp) {
         let str = ""
         if (pp === "design") {
@@ -401,7 +393,7 @@
               type: 2, //"int //实体类型   1材料  2服务   3专项付款",
               businessType: this.design.categoryTypeId, //"int //业务类型",
               workType: -2, //"int //工种类型",
-              level: 0, //"int //等级  0中级  1高级 2特级  3钻石",
+              level: 1, //"int //等级  0中级  1高级 2特级  3钻石",
               storeId: this.design.storeId || 0, //"long //店铺id",
               storeType: 0, //"int //店铺类型 0普通 1设计师",
               number: this.currentHouse.insideArea, //"double //购买数量",
@@ -457,7 +449,7 @@
               //   url: "/pages/decorate/index/index"
               // })
               uni.navigateBack({
-                
+
               })
             },
             fail(e) {
@@ -484,7 +476,9 @@
           }
           this.checkHouse.checked = value;
         }
+
       },
+
       checkServiceCardIsSlected(type) {
         this.tips = {
           id: type,

@@ -113,6 +113,7 @@
           })
           this.list = res
           this.scrollHeight = res.length * 140 * 2 + 'rpx'
+          console.log(this.scrollHeight)
         })
       }
     },
@@ -124,22 +125,22 @@
     position: fixed;
     top: 0;
     width: 100%;
-    height: 100vh;
+    // height: 100vh;
     z-index: 100;
 
     .notice-view {
       position: relative;
       height: 100%;
+      padding-top: 114rpx;
     }
 
     .item-list {
       position: absolute;
       width: 100%;
-      bottom: 206rpx;
+      bottom: 106rpx;
       max-height: 1160rpx;
       // padding: 24rpx;
       z-index: 101;
-
     }
 
     // .item{

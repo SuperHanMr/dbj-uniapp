@@ -17,11 +17,11 @@
 		props: {
 			pieces: {
 				type: Number,
-				default: 2
+				default: 0
 			},
 			countPrice: {
-				type: String,
-				default: "0"
+				type: Number,
+				default: 0
 			},
 			isAllChecked: {
 				type: Boolean,
@@ -30,17 +30,34 @@
 		},
 		computed: {
 			__countPrice() {
-				return this.countPrice.split(".")
+        if(this.countPrice == 0) {
+          return ["0","00"]
+        }
+        if(String(this.countPrice).indexOf(".") == -1) {
+          return [this.countPrice, "00"]
+        } else {
+          return String(this.countPrice).split(".")
+        }
+				
 			}
 		},
 		data() {
 			return {}
 		},
 		methods:{
+      checkPrice(value) {
+        var re =  /^[1-9]+[0-9]*]*$/; 
+        return re.test(value)
+      },
 			gotopay() {
 				this.$emit("gotopay")
 			}
-		}
+		},
+    watch: {
+      pieces(val) {
+        console.log(val)
+      }
+    }
 	}
 </script>
 

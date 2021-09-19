@@ -1,14 +1,14 @@
 <template>
   <view class="service-design">
     <view class="design-report">
-      <view class="report-item">
+      <view class="report-item" v-if="designData.customReport">
         <view class="title">设计报告详情</view>
         <view class="check" @click="toDesign">
           <text>立即查看</text>
           <image></image>
         </view>
       </view>
-      <view class="report-item">
+      <view class="report-item" v-if="designData.beautyReport">
         <view class="title">颜值报告详情</view>
         <view class="check" @click="toBeatiful">
           <text>立即查看</text>
@@ -33,6 +33,7 @@
   export default{
     props:{
       serverId:0,
+      index:0
     },
     data(){
       return{
@@ -44,19 +45,22 @@
       this.getMyDesignServe()
     },
     watch:{
-      serverId(){
-        this.getMyDesignServe()
-      }
+        serverId:{
+          handler:function(){
+            this.getMyDesignServe()
+          },
+          immediate: true
+        }
+      
     },
     methods:{
       getMyDesignServe(){
         getMyDesignServe(this.serverId).then(res=>{
-          console.log(res)
           this.list = res.fileListVO
           this.designData = res
           this.$emit('changeDesign',res)
           if(res.fileListVO.length===0){
-            this.$emit('isEmpty',1)
+            this.$emit('isEmpty',this.index)
           }
         })
       },
@@ -67,7 +71,7 @@
       },
       toBeatiful(){
         uni.navigateTo({
-          url:'/sub-decorate/pages/beatiful-report/beatiful-report?themeId='+this.designData.template_id+'&id='+this.designData.id
+          url:'/sub-decorate/pages/beatiful-report/beatiful-report?themeId='+this.designData.beautyReport.templateId+'&id='+this.designData.beautyReport.id
         })
       }
     }

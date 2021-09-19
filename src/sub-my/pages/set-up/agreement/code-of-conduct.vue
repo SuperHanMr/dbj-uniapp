@@ -7,7 +7,7 @@
 	export default {
 		data() {
 			return {
-				url: `https://local.meiwu365.com/app-pages/self-study-decorated/index.html`
+				url: `https://local.meiwu365.com/app-pages/actuarial/index.html?serveId=5659&isMessage=2&isActuarial=undefined&token=dabanjiaeyJhbGciOiJIUzI1NiJ9.eyJhcHBDbGllbnRUeXBlIjoyLCJleHAiOjE2MzE5MzgzOTgsInVzZXJJZCI6NjY2MiwiaWF0IjoxNjMxOTM0Nzk4fQ.v7mICve7D-x6nTivoyJpmRQh_8mNm-kJRICiOpynAQQ`
 			}
 		},
 		methods: {

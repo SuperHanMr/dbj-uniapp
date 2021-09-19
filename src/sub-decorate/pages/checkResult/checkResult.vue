@@ -24,17 +24,20 @@
       }
     },
     mounted(){
-      this.serverId = getApp().globalData.decorateMsg.serverId
+      this.serverId = getApp().globalData.decorateMsg.serveId
     },
     onPageScroll(scrollTop){
       this.scrollTop = scrollTop.scrollTop   
     },
-    submit() {
-      // console.log(1231)
-      confirmCheckResult(this.serverId).then(res => {
-        uni.navigateBack({})
-      })
+    methods:{
+      submit() {
+        // console.log(1231)
+        confirmCheckResult(this.serverId).then(res => {
+          uni.navigateBack({})
+        })
+      }
     }
+    
   }
 </script>
 

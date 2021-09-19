@@ -2,15 +2,14 @@
   <view class="content">
     <view class="title-wrap">
       <view class="title">
-        <check-box v-if="noArtificial" :checked="checked"
-          @change="checkItem"></check-box>
+        <check-box v-if="noArtificial" :checked="checked" @change="checkItem"></check-box>
         <view class="s-4level-name">商品分类（8号螺纹钢筋条）</view>
       </view>
       <view class="edit" v-if="noArtificial">编辑</view>
     </view>
     <view class="index">
       <view class="item-list">
-        <view class="item" v-for="(item,index) in content.itemList">
+        <view class="item" v-for="(item,index) in content.itemList" :key="item.productId">
           <view class="img-name-tag-guige">
             <image class="img" :src="item.imageUrl"></image>
             <view class="tag-name-guige">

@@ -60,7 +60,11 @@
     props: {
       isReport: false,
       scrollTop: 0,
-      serverId:0
+      serverId:{
+        type:Number,
+        default:0
+      },
+      index:0
     },
     filters:{
       formatDate
@@ -177,15 +181,13 @@
         
       }
     },
-    mounted() {
-      this.getData();
-    },
-    watch:{
-      serverId(){
-        this.getData()
-      }
-    },
     watch: {
+      serverId:{
+        handler:function(){
+          this.getData()
+        },
+        immediate: true
+      },
       scrollTop() {
         if (this.scrollTop > this.top) {
           this.isActive = true
@@ -223,7 +225,7 @@
             },1000)
           }
         }).catch(err=>{
-          this.$emit('isEmpty',2)
+          this.$emit('isEmpty',this.index)
         })
       },
       toHHmmss(date){
