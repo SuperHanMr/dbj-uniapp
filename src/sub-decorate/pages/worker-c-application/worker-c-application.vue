@@ -73,7 +73,7 @@
       getCompletionLogById() {
         getCompletionLogById().then(data => {
           this.workerData = data.workerDecorationTrendLogVO
-          this.id = data.id
+          // this.id = data.id
         })
       }
     }
