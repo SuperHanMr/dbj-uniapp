@@ -274,12 +274,7 @@
       },
       scroll(e) {},
       getAvailableService() {
-        // console.log("this.currentProject", this.currentProject)
-        // const params = {}
-        // if(this.currentProject.projectId) {
-        //   params.projectId = this.currentProject.projectId
-        // }F
-        // const id = this.currentProject.projectId || -1
+        this.availGuides = []
         availableService(this.currentProject.projectId).then(data => {
           const {
             purchasedServiceList,
@@ -412,22 +407,23 @@
       },
       goConstrction() {
         uni.navigateTo({
-          url: "/sub-decorate/pages/construction/construction"
+          url: `/sub-decorate/pages/construction/construction`
         })
       },
       goDesignPicture() {
         uni.navigateTo({
-          url: "/sub-home/pages/decorate-scene/construction-drawings"
+          url: `/sub-home/pages/decorate-scene/construction-drawings?projectId=${this.currentProject.projectId}`
         })
       },
       goActuary() {
+        const baseUrl = process.env.VUE_APP_BASE_H5
         uni.navigateTo({
-          url: `/sub-decorate/pages/actuary-bill/actuary-bill?url=https://local.meiwu365.com/app-pages/actuarial/index.html&title=精算单`
+          url: `/sub-decorate/pages/actuary-bill/actuary-bill?url=${baseUrl}/app-pages/actuarial/index.html?projectId=${this.currentProject.projectId}&isActuarial=1&isMessage=2`
         })
       },
       goVideo() {
         uni.navigateTo({
-          url: "/sub-home/pages/lives-decorate/lives-decorate"
+          url: `/sub-home/pages/lives-decorate/lives-decorate?projectId=${this.currentProject.projectId}`
         })
       },
       gonohousedecatore(type) {
