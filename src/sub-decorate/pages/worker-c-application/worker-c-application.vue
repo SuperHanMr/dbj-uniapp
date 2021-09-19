@@ -1,7 +1,7 @@
 <template>
   <view class="wrap">
     <view class="message">
-      管家已验收通过，系统将在72:00:00后自动确认验收
+      管家已验收通过，系统将在{{countdown}}后自动确认验收
     </view>
     <view class="content">
       <user-desc-pict :butlerData="butlerData"></user-desc-pict>
@@ -29,7 +29,7 @@
     },
     onLoad(option) {
       this.msg = getApp().globalData.decorateMsg
-      
+
     },
     onShow() {
       uni.setNavigationBarTitle({
@@ -42,8 +42,15 @@
         workerData: {},
         butlerData: {},
         daojishi: "",
-        msg: {}
+        msg: {},
+        timer: null,
+        countdown: null,
+        updateTime: null
       }
+    },
+    destroyed() {
+      clearInterval(this.timer)
+      this.timer = null
     },
     methods: {
       confirm() {
@@ -75,12 +82,41 @@
           url: `/sub-decorate/pages/worker-refuse/worker-refuse?id=${this.msg.data.id}&serveTypeName=${this.msg.serveTypeName}`
         })
       },
+      countTime() {
+        //获取当前时间
+        var date = new Date();
+        var now = date.getTime();
+        //设置截止时间
+        var endDate = new Date(this.updateTime + 72*24*60*60*1000) ;
+        var end = endDate.getTime();
+
+        //时间差
+        var leftTime = end - now;
+        //定义变量 d,h,m,s保存倒计时的时间
+        var d, h, m, s;
+        if (leftTime >= 0) {
+          d = Math.floor(leftTime / 1000 / 60 / 60 / 24);
+          h = Math.floor(leftTime / 1000 / 60 / 60 % 24);
+          m = Math.floor(leftTime / 1000 / 60 % 60);
+          s = Math.floor(leftTime / 1000 % 60);
+        }
+        //将倒计时赋值到div中
+        this.countdown = d * 24 + h + "小时" + m + "分钟" + s + "秒"
+        //递归每秒调用countTime方法，显示动态时间效果
+        // setTimeout(countTime, 1000);
+
+      },
       getCompletionLogById() {
         getCompletionLogById(this.msg.data.id).then(data => {
           this.workerData = data.workerDecorationTrendLogVO
           this.butlerData = data.butlerDecorationTrendLogVO
-          // this.updateTime = data.updateTime
-          // this.daojishi = parseInt(new Date() + new Data(data.updateTime)) / 1000 / 60
+          this.updateTime = data.updateTime
+          if (this.updateTime) {
+            this.countTime()
+            this.timer = setInterval(this.countTime(), 1000)
+          } else {
+            this.countdown = "72小时0分0秒"
+          }
         })
       }
     }
