@@ -1,5 +1,6 @@
 <template>
   <view class="container">
+		
     <!-- 退款详情 --退款关闭   退款取消与商家拒接 两个页面-->
 		<view class="order-container" v-if="type =='refund'" :style="{paddingBottom:systemBottom}">
 			<view class="order-status" >
@@ -58,7 +59,6 @@
 			
 
 		</view>
-		
 		
 		
 		<!-- 订单详情  已关闭页面 -->
@@ -120,11 +120,13 @@
 				type:"close",//type:refund退款详情   close是订单关闭
 				id:-1,
 				status:"",
+				from:"",
 				
 				refundInfo:{},
 				orderInfo:{},
 				
 				systemBottom: "",
+				title:"",
 			};
 		},
 	
@@ -137,11 +139,24 @@
 		onLoad(e){
 			this.type = e.type,
 			this.id = Number(e.id),
-			this.status =Number(e.status)
+			this.status = Number(e.status)
+			this.from  = e.from
 			if(this.type == 'refund'){//退款成功页面
 				this.refundDetail()
+				switch (this.status){
+					case 3: 
+						this.title="退款关闭"
+						break
+					case 4:
+						this.title="退款关闭"
+						break
+					case 5: 
+						this.title = "退款失败"
+				}
 			}
+			
 			if(this.type == 'close'){//订单关闭页面
+				this.title="退款中"
 				this.orderDetail()
 			}
 			
@@ -149,9 +164,19 @@
 			
 		},
 		
-		onShow() {
-		
+		// 改变返回下一个页面的路径
+		onUnload(){ 
+			if(this.from == 'waitPay'){
+				uni.redirectTo({
+					url:`../my-order?index=1`
+				})
+				// uni.navigateBack({
+				// 		delta:1
+				// })
+				
+			}
 		},
+		
 	
 		methods: {
 			orderDetail(){

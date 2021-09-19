@@ -1,5 +1,5 @@
 <template>
-  <view class="fill">
+  <view class="fill" >
     <view class="top-tab">
       <view
         v-for="(item,index) in tabList"
@@ -17,6 +17,7 @@
     <swiper
       class="swiper"
       :class="{empty:orderListLength<=0}"
+			:style="{paddingBottom:systemBottom}"
       :current="currentIndex"
       :duration="200"
       @change="swiperChange"
@@ -321,8 +322,16 @@ export default {
       orderListLength: 1,
 
       id: -1,
+			systemBottom: "",
     };
   },
+	mounted(e) {
+		const menuButtonInfo = uni.getMenuButtonBoundingClientRect();
+		this.containerBottom = menuButtonInfo.bottom
+		this.systemBottom = menuButtonInfo.bottom + "rpx";
+		this.systemHeight = menuButtonInfo.bottom + this.num + "rpx";
+		console.log(this.systemBottom);
+	},
 
   computed: {
     orderList() {
