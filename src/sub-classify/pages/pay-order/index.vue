@@ -1,5 +1,5 @@
 <template>
-  <view class="orderContainer">
+  <view class="order-container">
     <view v-if="!isShow">
       <uni-popup ref="houseDialog" :mask-click="false">
         <view class="popup-item">
@@ -12,31 +12,40 @@
       </uni-popup>
     </view>
     <view v-else>
-      <address-picker :houseId="houseId" :productType="productType" @emitInfo="emitInfo"></address-picker>
+      <address-picker :houseId="houseId" :productType="productType" @emitInfo="emitInfo" :originFrom="originFrom"></address-picker>
       <view class="content">
         <view class="shop-item" v-for="(shopItem, index) in orderInfo.storeInfos" :key="index">
           <view class="shop-name" v-if="shopItem.skuInfos.length">{{shopItem.storeName}}</view>
-          <view class="goodsItem" v-for="(goodsItem, index) in shopItem.skuInfos" :key="index">
-            <image :src="goodsItem.imageUrl" class="goodsItemImg"></image>
-            <!-- <image src="https://ali-image-test.dabanjia.com/image/20210816/11/1629087052820_2600%241626858792066_0436s4.png" class="goodsItemImg"></image> -->
-            <view class="goodsInfo">
-              <view class="goodsDesc">
-                <text class="goodsType">{{goodsItem.productType=== 1?"服务":"物品"}}</text>
-                {{goodsItem.spuName}}
-              </view>
-              <view class='tag'>{{goodsItem.skuName}}</view>
-              <view class="totalNum">共{{goodsItem.buyCount}}件</view>
-              <view class="goodsSpec">
-                <view class="goods-money" v-if='goodsItem.price'>
-                  ￥
-                  <text class="integer-price">{{String.prototype.split.call(goodsItem["price"], ".")[0]}}</text>
-                  <text>.{{String.prototype.split.call(goodsItem["price"], ".")[1]}}</text>
-                  <text>/{{goodsItem.unit}}</text>
+          <view class="goods-item item-box" v-for="(goodsItem, index) in shopItem.skuInfos" :key="index">
+            <view class="goods-item">
+              <image :src="goodsItem.imageUrl" class="goodsItemImg"></image>
+              <!-- <image src="https://ali-image-test.dabanjia.com/image/20210816/11/1629087052820_2600%241626858792066_0436s4.png" class="goodsItemImg"></image> -->
+              <view class="goods-info">
+                <view class="goods-desc">
+                  <text class="goods-type">{{goodsItem.productType=== 1?"物品":"服务"}}</text>
+                  {{goodsItem.spuName}}
+                </view>
+                <view class='tag'>{{goodsItem.skuName}}</view>
+                <view class="total-num">共{{goodsItem.buyCount}}件</view>
+                <view class="goods-spec">
+                  <view class="goods-money" v-if='goodsItem.price'>
+                    ￥
+                    <text class="integer-price">{{String.prototype.split.call(goodsItem["price"], ".")[0]}}</text>
+                    <text>.{{String.prototype.split.call(goodsItem["price"], ".")[1]?String.productType.split.call(goodsItem["price"], ".")[1]: 0}}</text>
+                    <text>/{{goodsItem.unit}}</text>
+                  </view>
                 </view>
               </view>
             </view>
+            <view class="shop-reduce no-send-tip good-tip" v-if="!goodsItem.canBuy && !goodsItem.canDeliver">
+              <view class="item-reduce-box">
+                <text v-if="goodsItem.frontendServe && productType === 2">请先购买{{frontendServe}}</text>
+                <text v-if="!goodsItem.canBuy && productType === 2">该服务不可购买</text>
+                <text  v-if="!goodsItem.canDeliver && productType === 1">当前地址无法配送该商品，请更换地址</text>
+              </view>
+            </view>
           </view>
-          <view class="cost-detail" v-if="shopItem.deliveryFee && prototype === 1">
+          <view class="cost-detail" v-if="shopItem.deliveryFee && productType === 1">
             <view>
               <text>运费</text>
               <text>¥{{shopItem.deliveryFee}}</text>
@@ -46,25 +55,18 @@
               <text>¥{{shopItem.totalHandlingFee}}</text>
             </view>
           </view>
-          <view class="shop-reduce" v-if="shopItem.freeDeliveryCount && prototype === 1">
+          <view class="shop-reduce" v-if="shopItem.freeDeliveryCount && productType === 1">
             <view class="item-reduce-box">
               <view class="question-box">本订单已获得了该店铺{{shopItem.freeDeliveryCount}}次免运费权益
                 <text class="question-icon" @click="readExpenses(1)"></text>
               </view>
             </view>
           </view>
-          <view class="shop-reduce no-send-tip"
-            v-if="!shopItem.deliveryFee && !shopItem.freeDeliveryCount && prototype === 1">
-            <view class="item-reduce-box">
-              <text v-if="toastType === 1">请先购买{{frontendServe}}</text>
-              <text v-else>当前地址无法配送该商品，请更换地址</text>
-            </view>
-          </view>
           <view class="choose-time" v-if="productType === 2 && shopItem.skuInfos.appointmentRequired">
             <view class="time-bar" @click='chooseTime'>
               <text v-if="!time">请选择上门时间</text>
               <text v-else>{{time}}</text>
-              <image class="chooseIcon" src="../../../static/images/ic_more_black@2x.png"></image>
+              <image class="choose-icon" src="../../../static/images/ic_more_black@2x.png"></image>
             </view>
           </view>
         </view>
@@ -128,10 +130,10 @@
             <view class="total-money">
               ￥
               <text class="mony-text">{{orderInfo.totalPrice?String.prototype.split.call(orderInfo.totalPrice, ".")[0]:0}}</text>
-              <text>.{{orderInfo.totalPrice?String.prototype.split.call(orderInfo.totalPrice, ".")[1]:0}}</text>
+              <text>.{{orderInfo.totalPrice?String.prototype.split.call(orderInfo.totalPrice, ".")[1]?String.prototype.split.call(orderInfo.totalPrice, ".")[1]:0:0}}</text>
             </view>
           </view>
-          <button class="pay-button" :class="{'no-pay': !canPay}" @click="pay" ref="test">立即支付</button>
+          <button class="pay-button" :class="{'no-pay': !canPay || hasNoSendItem}" @click="pay" ref="test">立即支付</button>
         </view>
       </view>
       <expenses-toast ref='expensesToast' :expensesType="expensesType"></expenses-toast>
@@ -226,7 +228,6 @@
       console.log(this.houseId, 'h1')
       if(!this.houseId){
         console.log(this.houseId, 'h2')
-        this.isShow = false
         setTimeout(() => {
           if(this.$refs.houseDialog.open){
             this.$refs.houseDialog.open()
@@ -235,11 +236,11 @@
       }
     },
     onShow() {
-      console.log(this.houseId, 'h3')
+      if(!uni.getStorageSync('houseListChooseId') && !this.houseId){
+        this.isShow = false
+      }
       if (uni.getStorageSync('houseListChooseId')) {
-        console.log(this.houseId, 'h4')
         this.houseId = uni.getStorageSync('houseListChooseId')
-        this.isShow = true
         if(this.$refs.houseDialog.close) {
           this.$refs.houseDialog.close()
         }
@@ -308,10 +309,9 @@
         //   }]
         // }
         getDetailInfo(params).then((data) => {
-          // let dataInfo = data
-          let dataInfo = data.data.data
+          let dataInfo = data
+          // let dataInfo = data.data.data
           this.orderInfo = dataInfo
-          console.log(dataInfo, 'dataInfo')
           this.noStoreInfos = JSON.parse(JSON.stringify(dataInfo))
           this.noStoreInfos.storeInfos = []
           this.canStoreInfos = JSON.parse(JSON.stringify(dataInfo))
@@ -338,7 +338,7 @@
                 })
               }
               // 购物车结算可配送和不可配送数据
-              if (skuItem.canBuy === false || skuItem.canDeliver === false) { 
+              if (skuItem.canBuy === false && skuItem.canDeliver === false) { 
                 noStoreItem.skuInfos.push(skuItem)
                 this.hasNoSendItem = true // 判断所有数据中有没有不可配送数据
               } else {
@@ -357,6 +357,7 @@
                   		"number": skuItem.buyCount, //购买数量",
                   		"params":this.time, //与订单无关的参数 如上门时间 doorTime
                 }
+                console.log(orderDetailItem, "orderDetailItem")
                 this.orderDetails.push(orderDetailItem)
               }
               // 商品详情结算弹窗判断
@@ -405,7 +406,7 @@
         this.$refs.datePicker.showDatePicker()
       },
       pay() {
-        if(!this.canPay) {
+        if(!this.canPay || this.hasNoSendItem) {
           return
         }
         let params = {
@@ -460,7 +461,7 @@
 </script>
 
 <style scoped>
-  .orderContainer {
+  .order-container {
     width: 100%;
     height: 100%;
     overflow: auto;
@@ -497,15 +498,22 @@
     height: 106rpx;
     line-height: 106rpx;
   }
-
-  .goodsItem {
+  .item-box{
+    flex-wrap: wrap;
+  }
+  .goods-item {
     width: 100%;
     display: flex;
     align-items: center;
-    padding-bottom: 40rpx;
+    padding-bottom: 20rpx;
   }
-
-  .goodsItem .goodsItemImg {
+  .goods-item .good-tip{
+    width: 100%;
+  }
+  .good-tip .item-reduce-box{
+    bottom: 0;
+  }
+  .goods-item .goodsItemImg {
     width: 192rpx;
     height: 192rpx;
     display: block;
@@ -513,13 +521,13 @@
     border-radius: 8rpx;
   }
 
-  .goodsItem .goodsInfo {
+  .goods-item .goods-info {
     height: 192rpx;
     position: relative;
     flex: 1;
   }
-
-  .goodsInfo .goodsDesc {
+  
+  .goods-info .goods-desc {
     width: 420rpx;
     font-size: 28rpx;
     color: #333333;
@@ -527,7 +535,7 @@
     text-overflow: ellipsis;
   }
 
-  .goodsInfo .goodsDesc .goodsType {
+  .goods-info .goods-desc .goods-type {
     width: 60rpx;
     height: 30rpx;
     padding: 2rpx 10rpx 2rpx 10rpx;
@@ -541,7 +549,7 @@
     text-align: center;
   }
 
-  .goodsInfo .goodsSpec {
+  .goods-info .goods-spec {
     width: fit-content;
     text-overflow: ellipsis;
     padding: 4rpx;
@@ -550,7 +558,7 @@
     display: flex;
   }
 
-  .goodsInfo .tag {
+  .goods-info .tag {
     margin-top: 8rpx;
     font-size: 22rpx;
     color: #999999;
@@ -563,7 +571,7 @@
     border-radius: 6rpx;
   }
 
-  .goodsInfo .totalNum {
+  .goods-info .total-num {
     top: 50%;
     right: 0;
     font-size: 28rpx;
@@ -648,7 +656,7 @@
     color: #333333;
   }
 
-  .chooseIcon {
+  .choose-icon {
     width: 32rpx;
     height: 32rpx;
   }
