@@ -1,11 +1,11 @@
 <template>
   <view class="wrap">
     <view class="message">
-      拆除工人发起阶段服务验收申请，系统将在72:00:00后自动确认验收
+      管家已验收通过，系统将在72:00:00后自动确认验收
     </view>
     <view class="content">
-      <user-desc-pict-butler :butlerData="butlerData"></user-desc-pict-butler>
-      <user-desc-pict :workerData="workerData"></user-desc-pict>
+      <user-desc-pict :butlerData="butlerData"></user-desc-pict>
+      <user-desc-pict-worker :workerData="workerData"></user-desc-pict-worker>
     </view>
     <view class="bt-btn-wrap flex-row">
       <view class="btn-l" @click="refuse">拒绝通过</view>
@@ -41,7 +41,7 @@
       return {
         workerData: {},
         butlerData: {},
-        id: null,
+        daojishi: "",
         msg: {}
       }
     },
@@ -79,7 +79,8 @@
         getCompletionLogById(this.msg.data.id).then(data => {
           this.workerData = data.workerDecorationTrendLogVO
           this.butlerData = data.butlerDecorationTrendLogVO
-          // this.id = data.id
+          // this.updateTime = data.updateTime
+          // this.daojishi = parseInt(new Date() + new Data(data.updateTime)) / 1000 / 60
         })
       }
     }
