@@ -56,21 +56,27 @@
         serveTypeName,
         estateId,
         roleType,
-        customerId
+        customerId,
+        pushTitle,
       } = getApp().globalData.decorateMsg
       this.serveCardId = serveCardId || option.serveCardId
       this.estateId = estateId || option.estateId
       this.serviceType = serviceType || option.serviceType
       this.projectId = projectId || option.projectId
       this.customerId = customerId || option.customerId
+      this.pushTitle = pushTitle || "工序费购买"
     },
     onShow() {
       this.getDataList()
+      uni.setNavigationBarTitle({
+        title: this.pushTitle
+      })
     },
     data() {
       return {
         serveCardId: null,
         serviceType: null,
+        pushTitle: null,
         dataOrigin: {},
         checkedIds: [],
         shopping: {
