@@ -43,7 +43,7 @@ export function getRefundDetail(params) {
 
 //我的-订单-整个订单申请退款
 export function wholeOrderApplyForRefund(params) {
-	return request.post(`/order-center/app/order/overall/applyRefund`, { params })
+	return request.post(`/order-center/app/order/overall/applyRefund`,  params)
 }
 //我的-订单-部分商品申请退款
 export function particalOrderApplyForRefund(params) {
@@ -90,6 +90,16 @@ export function evaluateDetail(params) {
 	return request.get(`/pm/app/commentSetting/getById`,{params})
 }
 
+
+//我的关注-列表接口
+export function getConcernList(params) {
+	return request.get(`/app/base/interactive/list/all`,{params})
+}
+
+//我的收藏- 列表接口
+export function getCollectionList(params) {
+	return request.get(`/app/base/interactive/list/all`,{params})
+}
 
 
 

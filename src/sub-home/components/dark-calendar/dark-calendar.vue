@@ -1,9 +1,27 @@
 <template>
   <view class="sign-calendar">
     <view class="top-bar">
-      <view @click="turning('prev')">上个月</view>
-      <view>{{ y }}{{ text.year }}{{ m + 1 }}{{ text.month }}</view>
-      <view @click="turning('next')">下个月</view>
+			<view class="switch-month">
+				<view class="pre-month" @click="turning('prev')">
+					<image
+						class="header-btn"
+						src="../../static/ic_month_pre@2x.png"
+						></image>
+				</view>
+				<!-- <view @click="turning('prev')">上个月</view> -->
+				<text>{{ y }}-{{ m + 1 }}</text>
+				<!-- <view @click="turning('next')">下个月</view> -->
+				<view class="next-month" @click="turning('next')">
+					<image
+						class="header-btn"
+						src="../../static/ic_month_next@2x.png"
+						></image>
+				</view>
+			</view>
+			<view class="memo" @click="toMemo">
+				<image class="ic_memo" src="../../static/ic_memo@2x.png"></image>
+				<view class="text">备忘录</view>
+			</view>
     </view>
 
     <view class="week">
@@ -11,7 +29,7 @@
     </view>
 
     <view :class="{ hide: !monthOpen }" class="content" :style="{ height: height }">
-      <view :style="{ top: positionTop + 'upx' }" class="days">
+      <view :style="{ top: positionTop + 'rpx' }" class="days">
         <view class="item" v-for="(item, index) in dates" :key="index">
           <view class="day" @click="selectOne(item, $event)" :class="{ choose: choose == `${item.year}-${item.month + 1}-${item.date}`, nolm: !item.lm }">{{ item.date }}</view>
           <view class="sign" v-if="isSigned(item.year, item.month + 1, item.date)"></view>
@@ -79,7 +97,7 @@ export default {
       return this.text.week.slice(this.weekstart - 1).concat(this.text.week.slice(0, this.weekstart - 1))
     },
     height() {
-      return (this.dates.length / 7) * 80 + 'upx'
+      return (this.dates.length / 7) * 80 + 'rpx'
     }
   },
   methods: {
@@ -193,118 +211,164 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.sign-calendar {
-  color: #fff;
-  font-size: 28upx;
-  text-align: center;
-  background-color: #3d9bf6;
-  padding-bottom: 10upx;
-
-  .top-bar {
-    font-size: 28upx;
-    height: 80upx;
-    line-height: 80upx;
-    border-bottom: 1upx solid rgba(255, 255, 255, 0.3);
-
-    display: flex;
-
-    > view {
-      flex: 1;
-    }
-  }
-
+	.sign-calendar {
+		width: 750rpx;
+		height: 620rpx;
+	  background-color: #f2f5f8;
+	  padding-bottom: 10rpx;
+	
+	}
+	.top-bar{
+		width: 750rpx;
+		height: 96rpx;
+		display: flex;
+		justify-content: space-between;
+		align-items: center;
+	}
+	.switch-month {
+		width: 240rpx;
+		height: 48rpx;
+		margin: 24rpx 32rpx;
+		background: #ffffff;
+		border-radius: 26rpx;
+		position: relative;
+		display: flex;
+		flex-direction: row;
+		justify-content: center;
+		align-items: center;
+	}
+	.switch-month view{
+		width: 32rpx;
+		height: 32rpx;
+		margin: 8rpx;
+		background: #f5f6f6;
+		border-radius: 22rpx;
+		display: flex;
+		justify-content: center;
+		align-items: center;
+	}
+	.switch-month view.pre-month{
+		margin-right: 24rpx;
+	}
+	.switch-month view.next-month{
+		margin-left: 24rpx;
+	}
+	.header-btn {
+		width: 8rpx;
+		height: 14rpx;
+		display: block;
+	}
+	.memo{
+		width: 158rpx;
+		height: 48rpx;
+		margin: 24rpx 32rpx;
+		background: #ffffff;
+		border-radius: 26rpx;
+		display: flex;
+	}
+	.memo .ic_memo{
+		width: 24rpx;
+		height: 26rpx;
+		margin: 12rpx 8rpx 10rpx 24rpx;
+		display: block;
+	}
+	.memo .text{
+		width: 78rpx;
+		height: 36rpx;
+		margin: 6rpx 0;
+		font-size: 26rpx;
+		color: #333333;
+	}
+	
   .week {
     display: flex;
     align-items: center;
-    height: 80upx;
-    line-height: 80upx;
-    border-bottom: 1upx solid rgba(255, 255, 255, 0.2);
-
-    view {
-      flex: 1;
-    }
+		width: 686rpx;
+    height: 88rpx;
+		margin: 0 32rpx;
   }
-
+	.week-day{
+		width: 98rpx;
+		height: 88rpx;
+		font-size: 24rpx;
+		color: #9fa5b4;
+		text-align: center;
+		line-height: 88rpx;
+	}
   .content {
     position: relative;
     overflow: hidden;
     transition: height 0.4s ease;
-
-    .days {
-      transition: top 0.3s;
-      display: flex;
-      align-items: center;
-      flex-wrap: wrap;
-      position: relative;
-
-      .item {
-        position: relative;
-        display: block;
-        height: 80upx;
-        line-height: 80upx;
-        width: calc(100% / 7);
-
-        .day {
-          font-style: normal;
-          display: inline-block;
-          vertical-align: middle;
-          width: 60upx;
-          height: 60upx;
-          line-height: 60upx;
-          overflow: hidden;
-          border-radius: 60upx;
-
-          &.choose {
-            background-color: #9fcdff;
-            color: #0157d8;
-          }
-
-          &.nolm {
-            color: #fff;
-            opacity: 0.3;
-          }
-        }
-
-        .sign {
-          font-style: normal;
-          width: 20upx;
-          height: 20upx;
-          background: #fff;
-          border-radius: 10upx;
-          position: absolute;
-          left: 50%;
-          margin-left: -10upx;
-          bottom: 0;
-          pointer-events: none;
-        }
-
-        .today-text {
-          position: absolute;
-          font-size: 20upx;
-          font-weight: normal;
-          width: 20upx;
-          height: 20upx;
-          line-height: 20upx;
-          right: 0;
-          top: 10upx;
-          color: #fff;
-        }
-      }
-    }
   }
-
+	.days {
+	  transition: top 0.3s;
+	  display: flex;
+	  align-items: center;
+	  flex-wrap: wrap;
+	  position: relative;
+	}
+	.item {
+	  position: relative;
+	  display: block;
+	  height: 80rpx;
+	  line-height: 80rpx;
+	  width: calc(100% / 7);
+	}
+	.day {
+	  font-style: normal;
+	  display: inline-block;
+	  vertical-align: middle;
+	  width: 60rpx;
+	  height: 60rpx;
+	  line-height: 60rpx;
+	  overflow: hidden;
+	  border-radius: 60rpx;
+		
+	  &.choose {
+	    background-color: #9fcdff;
+	    color: #0157d8;
+	  }
+		
+	  &.nolm {
+	    color: #fff;
+	    opacity: 0.3;
+	  }
+	}
+		
+	.sign {
+	  font-style: normal;
+	  width: 20rpx;
+	  height: 20rpx;
+	  background: #fff;
+	  border-radius: 10rpx;
+	  position: absolute;
+	  left: 50%;
+	  margin-left: -10rpx;
+	  bottom: 0;
+	  pointer-events: none;
+	}
+		
+	.today-text {
+	  position: absolute;
+	  font-size: 20rpx;
+	  font-weight: normal;
+	  width: 20rpx;
+	  height: 20rpx;
+	  line-height: 20rpx;
+	  right: 0;
+	  top: 10rpx;
+	  color: #fff;
+	}
   .hide {
-    height: 80upx !important;
+    height: 80rpx !important;
   }
-
   .weektoggel {
-    width: 80upx;
-    height: 40upx;
-    margin: 10upx auto 0;
+    width: 80rpx;
+    height: 40rpx;
+    margin: 10rpx auto 0;
 
     &.down {
       transform: rotate(180deg);
     }
   }
-}
 </style>
