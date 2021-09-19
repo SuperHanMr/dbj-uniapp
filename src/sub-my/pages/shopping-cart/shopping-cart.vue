@@ -1,13 +1,14 @@
 <template>
-	<view class="cartContainer">
+	<view class="cartContainer" :class="{'bg':!shopList.length&&!disabledSkuList.length}">
 		<view class="noGoods" v-if="!shopList.length&&!disabledSkuList.length">
 			<image src="http://dbj.dragonn.top/static/mp/dabanjia/images/my/blank_ic%402x.png" class="noGoodsImg"></image>
 			<view class="noGoodsText">
 				购物车空空如也，快去逛逛吧～
 			</view>
-			<button type="primary" class="goShopping" @click="toShoppingMall">
-				<text class="text">去逛逛</text>
-			</button>
+			<view class="goShopping" @click="toShoppingMall">
+				去逛逛
+				<!-- <text class="text">去逛逛</text> -->
+			</view>
 		</view>
 		<view class="shoppingCart" v-else>
 			<uni-popup
@@ -313,6 +314,7 @@
 			requestPage(){
 				getShoppingCartInfo(this.userId).then(data => {
 						let {storeList,disabledSkuList} = data
+						if(!storeList.length)return
 						storeList.map(item => {
 							let sum = 0
 							item.shopChecked = false
@@ -711,6 +713,9 @@
 		background: #f5f6f7;
 		position: relative;
 	}
+	.cartContainer.bg{
+		background: #fff;
+	}
 	.cartContainer >>> .uni-dialog-title-text.uni-popup__info{
 		color: #333;
 	}
@@ -751,17 +756,14 @@
 	}
 	.noGoods{
 		width: 400rpx;
-		position: absolute;
-		left: 196rpx;
-		right: 0;
-		top: 300rpx;
-		bottom: 0;
+		margin-left: 196rpx;
+		margin-top: 284rpx;
 	}
 	.noGoods .noGoodsImg{
 		width: 248rpx;
 		height: 248rpx;
 		display: block;
-		margin-left: 70rpx;
+		margin-left: 58rpx;
 		margin-bottom: 20rpx;
 	}
 	.noGoods .noGoodsText{
@@ -778,15 +780,12 @@
 		height: 88rpx;
 		background: linear-gradient(135deg,#53d5cc, #4fc9c9);
 		border-radius: 12rpx;
-		margin-top: 48rpx;
-	}
-	.noGoods .goShopping .text{
-		width: 96rpx;
-		height: 32rpx;
+		margin-top: 75rpx;
+		margin-left: 56rpx;
 		font-size: 32rpx;
 		text-align: center;
 		color: #ffffff;
-		line-height: 32rpx;
+		line-height: 88rpx;
 	}
 	.shoppingCart{
 		width: 100%;

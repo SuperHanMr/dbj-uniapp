@@ -32,8 +32,8 @@
           :isReport='true'></resultContent>
         <serviceDesign id="d1" v-if="tab.nodeType===1&&!tab.currentEmpty" @isEmpty='isEmpty' :index='index1' @changeDesign='changeDesign' :serverId='tab.serveCardId'></serviceDesign>
         <serviceActuarial id="d4" v-if="tab.nodeType===4&&!tab.currentEmpty" @isEmpty='isEmpty' :index='index1' :serverId='tab.serveCardId'></serviceActuarial>
-        <serviceSteward id="d5" v-if="tab.nodeType===5&&!tab.currentEmpty" @isEmpty='isEmpty' :index='index1' :serverId='tab.serveCardId'></serviceSteward>
-        <serviceDismantle id="d6" v-if="tab.nodeType>5&&!tab.currentEmpty" :index='index1' @isEmpty='isEmpty' :serverId='tab.serveCardId'></serviceDismantle>
+        <serviceSteward id="d5" v-if="tab.nodeType===5&&!tab.currentEmpty" @isEmpty='isEmpty' :index='index1' :projectId='this.projectId'></serviceSteward>
+        <serviceDismantle id="d6" v-if="tab.nodeType>5&&!tab.currentEmpty" :index='index1' @isEmpty='isEmpty' :projectId='this.projectId' :serveId='tab.serveCardId'></serviceDismantle>
         <no-service v-if="tab.currentEmpty" words="暂无进行中服务"></no-service>
       </swiper-item>
     </swiper>

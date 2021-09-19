@@ -1,6 +1,10 @@
 <template>
-	<view class="memoWrap">
-		<view class="memoItem" @click="toMemoDetail">
+	<view class="memoWrap" :class="{'bg':!memos.length}">
+		<view class="noMemo" v-if="!memos.length">
+			<image class="noMemoImg" src="http://dbj.dragonn.top/static/mp/dabanjia/images/decorate/pic_empty%402x.png"></image>
+			<view class="noMemoText">暂无内容~</view>
+		</view>
+		<view class="memoItem" v-else @click="toMemoDetail(1)">
 			<view class="header">
 				<view class="userInfo">
 					<image class="avatar" src="../../static/avatar@2x(1).png"></image>
@@ -16,7 +20,7 @@
 				<view class="remark">提到了我</view>
 			</view>
 		</view>
-		<view class="memoItem">
+		<view class="memoItem" @click="toMemoDetail(2)">
 			<view class="header">
 				<view class="userInfo">
 					<image class="avatar" src="../../static/avatar@2x(1).png"></image>
@@ -32,27 +36,65 @@
 				<view class="remark">@田管家</view>
 			</view>
 		</view>
+		<view class="new" @click="toNewMemo">
+			新建
+		</view>
 	</view>
 </template>
 
 <script>
 	export default {
+		data(){
+			return {
+				memos: [1]
+			}
+		},
 		methods:{
-			toMemoDetail(){
+			toNewMemo(){
 				uni.navigateTo({
-					url:"/sub-home/pages/decorate-scene/memo-detail"
+					url:"/sub-home/pages/decorate-scene/new-memo"
+				})
+			},
+			toMemoDetail(flag){
+				uni.navigateTo({
+					url:"/sub-home/pages/decorate-scene/memo-detail",
+					success: (res) => {
+						res.eventChannel.emit('acceptDataFromOpenerPage',flag)
+					}
 				})
 			}
 		}
 	}
 </script>
 
-<style>
+<style scoped>
 	.memoWrap{
 		width: 100%;
 		height: 100%;
 		overflow: auto;
 	}
+	.memoWrap.bg{
+		background: #fff;
+	}
+	.noMemo{
+		width: 100%;
+		height: fit-content;
+		margin-top: 184rpx;
+	}
+	.noMemo .noMemoImg{
+		width: 750rpx;
+		height: 580rpx;
+		display: block;
+	}
+	.noMemo .noMemoText{
+		width: fit-content;
+		height: 36rpx;
+		margin-top: 24rpx;
+		margin-left: 324rpx;
+		font-size: 26rpx;
+		color: #999999;
+	}
+	
 	.memoItem{
 		width: 750rpx;
 		height: 328rpx;
