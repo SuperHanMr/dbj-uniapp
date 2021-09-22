@@ -221,6 +221,7 @@
       }else if(this.originFrom === "shopCart"){
         this.houseId = JSON.parse(uni.getStorageSync('currentHouse')).id
       }
+      console.log(this.houseId, "houseId")
       // this.originFrom = "h5GoodDetail"
       // this.originFrom = "shopCart"
       this.buyCount = e.buyCount
@@ -230,16 +231,20 @@
       this.goodDetailId = uni.getStorageSync('goodId')
     },
     onShow() {
-      if(!uni.getStorageSync('houseListChooseId') && !this.houseId){
+      if(!Number(uni.getStorageSync('houseListChooseId')) && !Number(this.houseId)){
         this.isShow = false
         setTimeout(() => {
           if(this.$refs.houseDialog.open){
             this.$refs.houseDialog.open()
           }
         })
+      }else{
+        this.isShow = true
       }
       if (uni.getStorageSync('houseListChooseId')) {
-        this.houseId = uni.getStorageSync('houseListChooseId')
+        this.$nextTick(() => {
+          this.houseId = uni.getStorageSync('houseListChooseId')
+        })
         if(this.$refs.houseDialog.close) {
           this.$refs.houseDialog.close()
         }
