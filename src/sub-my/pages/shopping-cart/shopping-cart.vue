@@ -60,8 +60,8 @@
 								<image class="checked" v-else @click="checkGoods(shopItem.storeId,goodsItem.skuId)" src="../../../static/shopping-cart/checked@2x.png" ></image>
 							</view>
 							<image :src="goodsItem.image" @click="toGoodsDetail(goodsItem.skuId)" class="goodsItemImg"></image>
-							<view class="goodsInfo" @click="toGoodsDetail(goodsItem.skuId)">
-								<view class="goodsDesc">
+							<view class="goodsInfo">
+								<view class="goodsDesc" @click="toGoodsDetail(goodsItem.skuId)">
 									<text class="goodsType">{{goodsItem.productType=== 1?"服务":"物品"}}</text>
 									{{goodsItem.spuName}}
 								</view>
@@ -298,8 +298,8 @@
 				})
 			},
 			toShoppingMall(){
-				uni.navigateTo({
-					url: '/sub-classify/pages/classify/index/index'
+				uni.switchTab({
+					url: '/pages/classify/index/index'
 				})
 			},
 			toShopDetail(){
