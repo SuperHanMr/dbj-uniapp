@@ -79,13 +79,14 @@
 			uni.setStorageSync("currentHouse", JSON.stringify(defaultHouse));
 			this.citydata = defaultHouse.name;
 			this.getHomeList();
+			this.reloadData();
 		},
 		onShow() {
 			uni.$once("selectedHouse", (item) => {
 				this.citydata = item.cityName + item.areaName;
 				uni.setStorageSync("currentHouse", JSON.stringify(item));
 			});
-			this.reloadData();
+			
 		},
 		methods: {
 			toTest(){

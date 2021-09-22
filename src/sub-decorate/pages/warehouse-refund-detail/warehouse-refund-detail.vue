@@ -66,8 +66,8 @@
 				</view>
 				<view class="total-pay-amount">
 					<text class="totoal-pay-num">￥</text>
-					<text class="totoal-pay-num-z">600</text>
-					<text class="totoal-pay-num">.00</text>
+					<text class="totoal-pay-num-z">{{String(res.realPayment).split('.')[0]}}</text>
+					<text class="totoal-pay-num">.{{String(res.realPayment).split('.')[1] || '00'}}</text>
 				</view>
 			</view>
 		</view>
@@ -169,7 +169,7 @@
 				}
 				getApp().globalData.naviData = params;
 				uni.navigateTo({
-					url: '../warehouse-refund/warehouse-refund?type=0&refundType=2',
+					url: `../warehouse-refund/warehouse-refund?type=0&refundType=2&id=${this.id}`,
 				})
 			},
 			toBackGoodItem(item) {
@@ -178,13 +178,13 @@
 				}
 				getApp().globalData.naviData = params;
 				uni.navigateTo({
-					url: '../warehouse-refund/warehouse-refund?type=1',
+					url: `../warehouse-refund/warehouse-refund?type=1&id=${this.id}`,
 				})
 			},
 			toBack() {
 				getApp().globalData.naviData = this.res;
 				uni.navigateTo({
-					url: '../warehouse-refund/warehouse-refund',
+					url: `../warehouse-refund/warehouse-refund?id=${this.id}`,
 				})
 			},
 			applyRefund() {
@@ -192,7 +192,7 @@
 
 				getApp().globalData.naviData = vm.res;
 				uni.navigateTo({
-					url: `../warehouse-refund/warehouse-refund?type=0&refundType=1`
+					url: `../warehouse-refund/warehouse-refund?type=0&refundType=1&id=${this.id}`
 				})
 
 			},
@@ -235,7 +235,6 @@
 							e.stockAppVOS.forEach(sub => {
 								sub.number = sub.stockNumber;
 							})
-
 						}
 						this.res = e;
 					})
@@ -243,12 +242,22 @@
 					receivedDetail({
 						id
 					}).then(e => {
+						if (e.stockAppVOS && e.stockAppVOS.length) {
+							e.stockAppVOS.forEach(sub => {
+								sub.number = sub.stockNumber;
+							})
+						}
 						this.res = e;
 					})
 				} else if (type == 3) {
 					refundDetail({
 						id
 					}).then(e => {
+						if (e.stockAppVOS && e.stockAppVOS.length) {
+							e.stockAppVOS.forEach(sub => {
+								sub.number = sub.stockNumber;
+							})
+						}
 						this.res = e;
 					})
 				}

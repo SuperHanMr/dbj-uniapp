@@ -6,15 +6,18 @@
 			</view>
 			<view style="flex: 1;">
 			</view>
-			<view v-if="showSubtitle" class="store-sub">
+			<view v-if="item.stockStatus==1" class="store-sub">
 				剩余{{item.remainingShipments}}次免运费额度
 			</view>
-			<view v-if="showBackStatus" class="store-sub">
+		<!-- 	<view v-if="showBackStatus" class="store-sub">
 				剩余{{item.remainingShipments}}次免运费额度
+			</view> -->
+			<view v-if="item.stockStatus==4" class="store-sub">
+				{{item.type==0?'仅退款（未发货）':item.type==1?'仅退款（退库存）':'仅退款（已收货) '}}
 			</view>
 		</view>
-		<view v-for="(goodItem,index) in item.stockAppVOS" :key="index"
-			:class="{'bor-bottom':index<item.stockAppVOS.length-1}" class="goods-list">
+		<view v-for="(goodItem,index) in dataList" :key="index"
+			:class="{'bor-bottom':index<dataList.length-1}" class="goods-list">
 			<view class="good-detail" @click="toDetail">
 				<image class="img" :src="goodItem.imgUrl">
 				</image>
@@ -25,14 +28,13 @@
 						</view>
 						<view class="text">
 							{{goodItem.fullName}}
-
 						</view>
 						<view style="flex:1">
 						</view>
-						<view v-if="showSubPrice" class="price">
+						<view v-if="showSubPrice&&item.stockStatus!=4" class="price">
 							<text class="num-x">¥</text>
-							<text class="num-z">320</text>
-							<text class="num-x">.00</text>
+							<text class="num-z">{{String(goodItem.price).split('.')[0]}}</text>
+							<text class="num-x">.{{String(goodItem.price).split('.')[1]||'00'}}</text>
 						</view>
 					</view>
 					<view class="spec">
@@ -44,8 +46,8 @@
 						</view>
 						<view style="flex:1">
 						</view>
-						<view v-if="showSubCount" class="spec-item">
-							共{{goodItem.number}}件
+						<view v-if="showSubCount&&item.stockStatus!=4" class="spec-item">
+							共{{goodItem.number||goodItem.stockNumber}}件
 						</view>
 					</view>
 				</view>
@@ -94,8 +96,8 @@
 				<view v-if="showBacking" class="back-header">
 					<text class="sub">退款金额:</text>
 					<text class="price-s">¥</text>
-					<text class="price-l">32</text>
-					<text class="price-s">.00</text>
+					<text class="price-l">{{String(item.refundAmount).split('.')[0]}}</text>
+					<text class="price-s">.{{String(item.refundAmount).split('.')[1]||'00'}}</text>
 
 				</view>
 				<view v-if="showBacking" class="back-item"
@@ -106,8 +108,8 @@
 					</view>
 					<view v-if="[0,1,2].includes(item.status)" class="back-price">
 						<text class="num-x">¥</text>
-						<text class="num-z">320</text>
-						<text class="num-x">.00</text>
+						<text class="num-z">{{String(item.refundAmount).split('.')[0]}}</text>
+						<text class="num-x">.{{String(item.refundAmount).split('.')[1]||'00'}}</text>
 					</view>
 					<view v-else class="close-text">
 						退款已关闭
@@ -195,6 +197,14 @@
 		computed: {
 			showBottomView() {
 				return this.showDetail || this.showCancelApply || this.showBacking || this.showRecived
+			},
+			dataList(){
+				if(this.item.refundAmount==4){
+					return this.item.detailAppVOS;
+				}else{
+					return this.item.stockAppVOS;
+				}
+				
 			}
 		},
 		data() {
@@ -260,7 +270,6 @@
 		border-radius: 16rpx;
 		color: #111111;
 		font-size: 24rpx;
-
 	}
 
 	.price-s {

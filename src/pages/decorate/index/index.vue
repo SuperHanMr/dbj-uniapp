@@ -63,12 +63,12 @@
                 </view>
               </view>
               <view class="my-warehouse">
-                <mwarehouse-btn :iconStyle="{'width': '52rpx','height': '62rpx'}" @gotoPage="gotoPage('0')"
-                  name="待发货"></mwarehouse-btn>
-                <mwarehouse-btn :iconStyle="{'width': '58rpx','height': '58rpx'}" @gotoPage="gotoPage('1')"
-                  name="待收货"></mwarehouse-btn>
-                <mwarehouse-btn :iconStyle="{'width': '50rpx','height': '60rpx'}" @gotoPage="gotoPage('2')"
-                  name="已收货"></mwarehouse-btn>
+                <mwarehouse-btn :iconStyle="{'width': '52rpx','height': '62rpx'}" @gotoPage="gotoPage('0')" name="待发货">
+                </mwarehouse-btn>
+                <mwarehouse-btn :iconStyle="{'width': '58rpx','height': '58rpx'}" @gotoPage="gotoPage('1')" name="待收货">
+                </mwarehouse-btn>
+                <mwarehouse-btn :iconStyle="{'width': '50rpx','height': '60rpx'}" @gotoPage="gotoPage('2')" name="已收货">
+                </mwarehouse-btn>
                 <mwarehouse-btn :iconStyle="{'width': '54rpx','height': '44rpx'}" @gotoPage="gotoPage('3')" name="退款">
                 </mwarehouse-btn>
               </view>
@@ -81,14 +81,15 @@
             </image>
             <view class="my-decorate-service">
               <view class="service-title flex-space-between-row">
-                <text class="t">我的装修服务</text>
+                <text class="t">{{who}}的装修服务</text>
                 <view class="r flex-start-row" v-if="isShowMyDecorateAll" @click="goToMyDecorate">
                   <text>查看全部</text>
                   <image src="http://dbj.dragonn.top/static/mp/dabanjia/images/decorate/ic_more.svg">
                   </image>
                 </view>
               </view>
-              <service-item v-for="(item, index) in purchasedServiceList" :key="item.nodeType" :serviceData="item" :currentProject="currentProject">
+              <service-item v-for="(item, index) in purchasedServiceList" :key="item.nodeType" :serviceData="item"
+                :currentProject="currentProject">
               </service-item>
               <no-service v-if="purchasedServiceList.length == 0" words="暂无进行中服务"></no-service>
             </view>
@@ -232,14 +233,14 @@
         this.deviceId = uuidv4()
         uni.setStorageSync('uuDeviceId', this.deviceId);
       }
-      uni.$on('system-messages',this.watchMsg)
+      uni.$on('system-messages', this.watchMsg)
     },
     destory() {
       clearTimeout(timer)
       timer = null
     },
     methods: {
-      watchMsg(){
+      watchMsg() {
         this.getMsgNum();
         this.getAvailableService()
       },
@@ -368,12 +369,16 @@
         }).then(data => {
           // 有房屋有服务，初始化当前的默认房屋
           if (data && data.length > 0) {
+            console.log("ProjectList1>: ", data)
             this.projectList = data
             const arr = data.filter(t => t.defaultEstate)
-            this.currentProject = arr[0]
-            this.initData(arr[0])
-          } else {
-            // TODO 有房屋无服务处理逻辑
+            if (arr && arr.length > 0) {
+              this.currentProject = arr[0]
+              this.initData(arr[0])
+            } else {
+              this.currentProject = data[0]
+              this.initData(data[0])
+            }
           }
         })
       },
@@ -417,10 +422,12 @@
       gonohousedecatore(type) {
         if (this.currentEstate && this.currentEstate.id) {
           let url = null
-          if(this.currentProject && this.currentProject.projectId) {
-            url = `/sub-decorate/pages/no-house-decorate/no-house-decorate?type=${type}&estateId=${this.currentEstate.id}&projectId=${this.currentProject.projectId}&isDecorate=1`
+          if (this.currentProject && this.currentProject.projectId) {
+            url =
+              `/sub-decorate/pages/no-house-decorate/no-house-decorate?type=${type}&estateId=${this.currentEstate.id}&projectId=${this.currentProject.projectId}&isDecorate=1`
           } else {
-            url = `/sub-decorate/pages/no-house-decorate/no-house-decorate?type=${type}&estateId=${this.currentEstate.id}&isDecorate=1`
+            url =
+              `/sub-decorate/pages/no-house-decorate/no-house-decorate?type=${type}&estateId=${this.currentEstate.id}&isDecorate=1`
           }
           uni.navigateTo({
             url
@@ -485,12 +492,13 @@
         queryEstates({
           isNeedRelative: true,
         }).then(data => {
-          console.log(data)
-          if (!data || (typeof data == "array" && data.length < 1)) {
+          console.log("EstateList-1>: ", data)
+          if (!data || (data instanceof Array && data.length < 1)) {
             uni.navigateTo({
               url: "/sub-decorate/pages/no-house/no-house",
             });
           } else {
+            console.log("EstateList-2>: ", data)
             const temp = data.filter(t => t.defaultEstate)
             this.defaultEstate = temp && temp.length > 0 ? temp[0] : null
             this.estateList = data;

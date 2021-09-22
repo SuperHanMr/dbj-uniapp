@@ -26,21 +26,24 @@
                       <view class="goods-spec">
                          <view class="goods-money" v-if='goodsItem.price'>
                            ￥
-                           <text class="integer-price">{{String.prototype.split.call(goodsItem["price"], ".")[0]}}</text>
-                           <text>.{{String.prototype.split.call(goodsItem["price"], ".")[1]}}</text>
+                           <text class="integer-price">{{String.productType.split.call(goodsItem["price"], ".")[0]}}</text>
+                           <text>.{{String.productType.split.call(goodsItem["price"], ".")[1]}}</text>
                            <text>/{{goodsItem.unit}}</text>
                          </view>
                       </view>
                     </view>
                   </view>
                   <view class="no-send-tip">
-                     <view class="item-reduce-box" v-if="goodsItem.prototype === 1">
+                     <view class="item-reduce-box" v-if="goodsItem.productType === 1">
                         <text>当前地址无法配送该商品，请更换地址</text>
                      </view>
-                    <view class="item-reduce-box" v-if="goodsItem.prototype === 2 && !goodsItem.frontendServe">
-                        <text>该服务不可购买</text>
+                    <view class="item-reduce-box" v-if="goodsItem.productType === 2 && !goodsItem.frontendServe && goodsItem.canDeliver">
+                        <text>该服务已下架</text>
                      </view>
-                     <view class="item-reduce-box" v-else>
+                     <view class="item-reduce-box" v-if="goodsItem.productType === 2 && !goodsItem.frontendServe && !goodsItem.canDeliver">
+                         <text>不在服务区域</text>
+                      </view>
+                     <view class="item-reduce-box" v-if="goodsItem.frontendServe">
                         <text>请先购买{{goodsItem.frontendServe}}服务</text>
                      </view>
                   </view>

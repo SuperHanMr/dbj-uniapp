@@ -83,6 +83,7 @@
     },
     watch:{
       houseId(v) {
+        console.log("watchHouseID")
         getAddressInfo(v).then((data) => {
           this.addressInfo = data
           this.$emit('emitInfo', this.addressInfo)

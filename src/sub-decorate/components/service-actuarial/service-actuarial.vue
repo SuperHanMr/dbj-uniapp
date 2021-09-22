@@ -16,7 +16,8 @@
       serverId:{
         type:Number,
         default:0
-      }
+      },
+      projectId:0
     },
     data(){
       return{
@@ -26,7 +27,7 @@
     methods:{
       toCost(){
         uni.navigateTo({
-          url:'/sub-decorate/pages/current-cost/current-cost?id='+this.serverId+'&isCost=1'
+          url:'/sub-decorate/pages/current-cost/current-cost?id='+this.serverId+'&isCost=1'+'&projectId='+this.projectId
         })
       }
     }
