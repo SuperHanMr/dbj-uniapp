@@ -372,8 +372,13 @@
             console.log("ProjectList1>: ", data)
             this.projectList = data
             const arr = data.filter(t => t.defaultEstate)
-            this.currentProject = arr[0]
-            this.initData(arr[0])
+            if (arr && arr.length > 0) {
+              this.currentProject = arr[0]
+              this.initData(arr[0])
+            } else {
+              this.currentProject = data[0]
+              this.initData(data[0])
+            }
           }
         })
       },
