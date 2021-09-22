@@ -174,9 +174,11 @@ export default {
 		if (!uni.getStorageSync("userId")) {
 			this.userName="点击登录";
 			this.isLogin=false;
+			this.UserInfo=null;
 		}else{
 			this.isLogin=true
 			this.UserInfo = getApp().globalData.userInfo
+			console.log('!!!!!!!!!!!!!');
 			console.log("UserInfo=",this.UserInfo)
 			this.userName=this.UserInfo.name;
 		}

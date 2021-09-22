@@ -45,6 +45,10 @@
               :orderStatus="2"
 							:showOriginPrice="orderInfo.discount && item.details.length"
               @toApplayForRefund="toApplayForRefund(item2,1)"
+							@refundCancel="refundCancel(item2)"
+							@refundSuccess="refundSuccess(item2)"
+							@refundFailed = "refundFailed(item2,1)"
+							@refundClose = "refundClose(item2)"
             ></order-item>
           </view>
 
@@ -59,6 +63,7 @@
       <order-info
         :orderNo="orderInfo.orderNo"
         :createTime="orderInfo.createTime"
+				:showPayTime="true"
         :payTime="orderInfo.payTime"
       />
 
@@ -97,13 +102,27 @@
         @confirm="receiptConfirm"
       />
     </uni-popup>
-
+		
+		
+		<!-- 取消退款的弹框 -->
+		<uni-popup
+			ref="cancelRefund"
+			type="dialog"
+		>
+      <uni-popup-dialog
+        mode="base"
+        title="确定要取消退款吗？"
+        :before-close="true"
+        @close="cancelRefundClose"
+        @confirm="cancelRefundConfirm"
+      />
+    </uni-popup>
   </view>
 
 </template>
 
 <script>
-import { getOrderDetail, confirmReceiptOrder } from "../../../../api/order.js";
+import { getOrderDetail, confirmReceiptOrder ,cancelRefund} from "../../../../api/order.js";
 export default {
   data() {
     return {
@@ -122,7 +141,6 @@ export default {
     this.containerBottom = menuButtonInfo.bottom;
     this.systemBottom = menuButtonInfo.bottom + "rpx";
     this.systemHeight = menuButtonInfo.bottom + this.num + "rpx";
-    console.log(this.systemBottom);
   },
 
   onLoad(e) {
@@ -134,52 +152,63 @@ export default {
   },
 
   methods: {
-    formatTime(msTime) {
-      let time = msTime / 1000;
-      let hour = Math.floor(time / 60 / 60) % 24;
-      if (!hour) {
-        hour = 0;
-      }
-      let minute = Math.floor(time / 60) % 60;
-      if (!minute) {
-        minute = 0;
-      }
-      let second = Math.floor(time) % 60;
-      return [hour, minute, second];
-    },
+  
 
-    refundDetail() {
-      getRefundDetail({ id: this.orderNo }).then((e) => {
-        console.log("打印请求回来的数据=", e, "e");
-        this.refundInfo = e;
-      });
-    },
 
     orderDetail() {
       getOrderDetail({ id: this.orderNo }).then((e) => {
-        console.log(e);
-        this.orderInfo = e;
-        console.log("this.orderInfo=", this.orderInfo);
+				this.orderInfo = e;
+        // console.log("this.orderInfo=", this.orderInfo);
       });
     },
 
     toApplayForRefund(data, type) {
-      console.log("in-progress-data=", data);
       if (type == 1) {
         //type 1部分退款
+      console.log("部分退款");
         wx.setStorageSync("particalRefundOrderInfo", JSON.stringify(data));
         uni.navigateTo({
           url: `/sub-my/pages/apply-for-refund/apply-for-refund?id=${this.orderNo}&type=partical&status=1`,
         });
       } else {
         //type 2 整体退款
+				console.log("全部退款")
         wx.setStorageSync("wholeRefundOrderInfo", JSON.stringify(data));
         uni.navigateTo({
           url: `/sub-my/pages/apply-for-refund/apply-for-refund?id=${this.orderNo}&type=whole&status=1`,
         });
       }
     },
-
+		refundCancel(){
+			this.$refs.cancelRefund.open()
+		},
+		cancelRefundClose(){
+			this.$refs.cancelRefund.close()
+		},
+		cancelRefundConfirm(){
+			cancelRefund({id:this.itemId}).then(e=>{
+				this.$refs.cancelRefund.close()
+				this.orderDetail()
+			})
+		},	
+		
+	
+		refundSuccess(item){
+		
+			uni.navigateTo({
+				url:`../order-success/order-success?type=refund&id=${item.refundId}`
+			})
+		},
+		refundFailed(item){
+			
+		},
+		refundClose(item){
+			uni.navigateTo({
+				url:`../order-failed/order-failed?type=refund&id=${item.refundId}&status=${item.refundStatus}`
+			})
+		},
+			
+		
     handleConfirmReceipt() {
       this.$refs.confirmReceipt.open();
     },
@@ -189,12 +218,10 @@ export default {
     },
     receiptConfirm(value) {
       // 调用申请退款的接口
-      console.log("点击了确认按钮11");
       //goodIsd 商品id(不传代表整个订单收货)"
       confirmReceiptOrder({ id: this.orderNo, goodIsd: "" }).then((e) => {
         if (res.code == 1) {
           // 成功就关闭弹框
-          console.log("成功就关闭弹框");
           this.$refs.confirmReceipt.close();
           uni.navigateTo({
             // url:"../success/success?type=confirmReceipt"
@@ -203,6 +230,21 @@ export default {
         }
       });
     },
+		
+		
+		formatTime(msTime) {
+		  let time = msTime / 1000;
+		  let hour = Math.floor(time / 60 / 60) % 24;
+		  if (!hour) {
+		    hour = 0;
+		  }
+		  let minute = Math.floor(time / 60) % 60;
+		  if (!minute) {
+		    minute = 0;
+		  }
+		  let second = Math.floor(time) % 60;
+		  return [hour, minute, second];
+		},
   },
 };
 </script>

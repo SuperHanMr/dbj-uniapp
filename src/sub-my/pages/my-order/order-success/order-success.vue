@@ -12,7 +12,7 @@
           ></image>
           <text>退款成功</text>
         </view>
-       <text class="time">{{refundInfo.createTime}}</text>
+       <text class="time">{{refundInfo.createTime | formatDate}}</text>
       </view>
 
       <view class="order-header1">
@@ -20,22 +20,22 @@
           <text>退款总金额</text>
           <view style="color:#FF3347;">
             <text style="font-size:26rpx;">￥</text>
-            <text style="font-size:40rpx;">8888.</text>
-            <text style="font-size:26rpx;">00</text>
+            <text style="font-size:40rpx;">{{handlePrice(refundInfo.refundAmount)[0]}}.</text>
+            <text style="font-size:26rpx;">{{handlePrice(refundInfo.refundAmount)[1]}}</text>
           </view>
         </view>
         <view class="router">
           <text style="color: #999999;font-size: 26rpx;">原路径返回微信</text>
           <view>
             <text style="font-size: 20rpx;">￥</text>
-            <text style="font-size:28rpx;">8888</text>
-            <text style="font-size:20rpx;">.00</text>
+            <text style="font-size:28rpx;">{{handlePrice(refundInfo.refundAmount)[0]}}.</text>
+            <text style="font-size:20rpx;">{{handlePrice(refundInfo.refundAmount)[1]}}</text>
           </view>
         </view>
       </view>
 			
-			<view class="body1">
-					<order-item :dataList="refundInfo.detailAppVOS"></order-item>
+			<view class="body1" v-for="item in refundInfo.detailAppVOS" :key="item.id">
+					<order-item :dataList="item" :refundType="true"></order-item>
 			</view>
 			
 			<order-refund-info :refundInfo="refundInfo"></order-refund-info>
@@ -107,8 +107,12 @@
 </template>
 
 <script>
+	import {formatDate } from "../../../../utils/common.js"
 	import {getRefundDetail,getOrderDetail,} from "@/api/order.js"
 	export default {
+		filters:{
+			formatDate
+		},
 		data() {
 			return {
 				type:"complete",//type:refund退款详情   complete是订单完成
@@ -130,7 +134,9 @@
 	
 		onLoad(e){
 			this.type = e.type
+			console.log("页面显示类型 this.type=",this.type)
 			this.id = Number(e.id)
+			console.log('退款单id=',this.id)
 			this.status =Number(e.status)
 			
 			if(this.type == 'complete'){//订单完成页面
@@ -138,6 +144,7 @@
 			}
 			
 			if(this.type == 'refund'){//退款成功页面
+				console.log("退款成功页面")
 				this.refundDetail()
 			}
 		},
@@ -164,6 +171,15 @@
 				uni.navigateTo({
 					url: `/sub-my/pages/apply-for-refund/apply-for-refund?id=${this.id}&type=whole&status=2`,
 				});
+			},
+			
+			handlePrice(price){
+				let list=String(price).split(".")
+				if(list.length==1){
+					return [list[0],"00"]
+				}else{
+					return[list[0],list[1]]
+				}
 			},
 			
 		}

@@ -372,8 +372,13 @@
             console.log("ProjectList1>: ", data)
             this.projectList = data
             const arr = data.filter(t => t.defaultEstate)
-            this.currentProject = arr[0]
-            this.initData(arr[0])
+            if (arr && arr.length > 0) {
+              this.currentProject = arr[0]
+              this.initData(arr[0])
+            } else {
+              this.currentProject = data[0]
+              this.initData(data[0])
+            }
           }
         })
       },
@@ -487,13 +492,13 @@
         queryEstates({
           isNeedRelative: true,
         }).then(data => {
-          console.log("EstateList1>: ", data)
+          console.log("EstateList-1>: ", data)
           if (!data || (data instanceof Array && data.length < 1)) {
             uni.navigateTo({
               url: "/sub-decorate/pages/no-house/no-house",
             });
           } else {
-            console.log("EstateList2>: ", data)
+            console.log("EstateList-2>: ", data)
             const temp = data.filter(t => t.defaultEstate)
             this.defaultEstate = temp && temp.length > 0 ? temp[0] : null
             this.estateList = data;

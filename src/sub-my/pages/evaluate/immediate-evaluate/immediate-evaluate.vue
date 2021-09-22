@@ -5,12 +5,12 @@
         <view class="header">
           <view class="left">
             <image
-              :src="serviceInfo.serverAvatar"
+              :src="serverAvatar"
               mode=""
             ></image>
-            <text>{{serviceInfo.serverName}}</text>
+            <text>{{serverName}}</text>
             <view class="icon">
-              {{serviceInfo.roleName}}
+              {{serverRoleName}}
             </view>
           </view>
           <view class="right" @click="handleCheck">
@@ -99,7 +99,10 @@ export default {
     return {
 			id:"",
 			type:"",
-			serviceInfo:{},
+			serverName:"" ,
+			serverRoleName:"",
+			serverAvatar:"",
+			// serviceInfo:{},
       query: {
         remarks: "",
         stars: "",
@@ -147,7 +150,6 @@ export default {
 	  this.containerBottom = menuButtonInfo.bottom +176 + 'rpx';
 	  this.systemBottom = menuButtonInfo.bottom + "rpx";
 	  this.systemHeight = menuButtonInfo.bottom + this.num + "rpx";
-	  // console.log(this.systemBottom);
 	},
 	
 	computed:{
@@ -167,17 +169,20 @@ export default {
 	onLoad(e) {
 		this.id =Number(e.id)
 		this.type  =Number(e.type)
+		this.serverName = e.serverName
+		this.serverRoleName = e.serverRoleName
+		this.serverAvatar  =e.serverAvatar
 		console.log("this.id=",this.id,"this.type=",this.type)
-		this.getServiceInfo()
+		// this.getServiceInfo()
 	},
 	
   methods: {
-		getServiceInfo(){
-			evaluateDetail({id:this.id}).then(data=>{
-				console.log("data=",data)
-				this.serviceInfo = data
-			})
-		},
+		// getServiceInfo(){
+		// 	evaluateDetail({id:this.id}).then(data=>{
+		// 		console.log("data=",data)
+		// 		this.serviceInfo = data
+		// 	})
+		// },
 		
     changeTitle() {
       uni.setNavigationBarTitle({
@@ -213,8 +218,10 @@ export default {
 			refId:this.id, //关联ID"
 			refType:this.type,//关联类型",
 			anonymous:this.isAnonymous?1:0, //是否匿名 0:非匿名  1:匿名
-			userId:this.serviceInfo.userId, //评价人ID",
-			userName:this.serviceInfo.userName,//评价人名称",
+			userId:"",
+			userName:"",
+			// userId:this.serviceInfo.userId, //评价人ID",
+			// userName:this.serviceInfo.userName,//评价人名称",
 			rank:this.query.stars, //评级 1不好，2还行，3一般，4满意，5超惊喜",
 			shortComments:"",//快捷评价ids",
 			content:this.query.remarks,//详细评价内容",

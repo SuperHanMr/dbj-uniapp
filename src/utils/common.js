@@ -10,5 +10,6 @@ export function formatDate(timestamp){
 	if(arguments[1]){
 		format=arguments[1]
 	}
+	timestamp=Number(timestamp);
 	return dayjs(timestamp).format(format)
 }
