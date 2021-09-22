@@ -82,14 +82,16 @@
 				reasonName: "",
 				refundList: [],
 				refundType: 0,
-				id:''
+				id: ''
 			};
 		},
 		onShow() {
-			this.data = getApp().globalData.naviData;
-			console.log(this.data);
+		
 		},
 		onLoad(e) {
+			this.data = getApp().globalData.naviData;
+			console.log('~~~~~~~')
+			console.log(this.data);
 			let title;
 			this.type = e.type;
 			if (e.type == 0) {
@@ -103,10 +105,15 @@
 			uni.setNavigationBarTitle({
 				title: title,
 			});
-			this.id=e.id
-			let totalBack = '';
-			this.data.
+			this.id = e.id
+			let totalBack = 0;
 			
+			this.data.stockAppVOS.forEach(e => {
+				totalBack += e.price * e.number
+			})
+			console.log(totalBack)
+			this.num=totalBack
+
 
 			this.getRefundReasonList();
 		},
@@ -142,9 +149,17 @@
 				} else {
 					params.type = this.refundType;
 					if (params.type == 2) {
-						params.goodsId = this.data.stockAppVOS[0].id
+						params.goodsId = this.data.stockAppVOS[0].goodsId
 					}
-					goodsRefund(params)
+					goodsRefund(params).then(e=>{
+						uni.showToast({
+							title:'提交成功',
+							icon:'none'
+						})
+						uni.navigateBack({
+							delta:2
+						})
+					})
 				}
 			},
 			selectRes() {
