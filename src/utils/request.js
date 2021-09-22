@@ -93,7 +93,7 @@ instance.interceptors.response.use(
 				if (res.data && res.data.data) {
 					return res.data.data;
 				}
-				return res;
+				return null;
 			}
 		},
 		// 请求失败

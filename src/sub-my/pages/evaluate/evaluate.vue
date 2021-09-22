@@ -93,7 +93,7 @@
 			immediateEvalute(item){
 				console.log("立即评价");
 				uni.navigateTo({
-					url:`immediate-evaluate/immediate-evaluate?id=${item.id}&type=${item.type}`,
+					url:`immediate-evaluate/immediate-evaluate?id=${item.id}&type=${item.type}&serverName=&{item.serverName}&serverRoleName=${item.serverRoleName}&serverAvatar=${item.serverAvatar}`,
 				})
 			},
 			

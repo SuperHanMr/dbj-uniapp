@@ -209,13 +209,12 @@
 </template>
 
 <script>
-	import {getDecorateProcess,getDecorateDynamic,getSelectOptions,setAttentions,getFocusBrowse,getComments,expandReplies} from "../../../api/real-case.js"
-	import {formatDate} from "../../../utils/common.js"
+	import axios from '@/js_sdk/gangdiedao-uni-axios'
+	import {getDecorateProcess,getDecorateDynamic,getSelectOptions,setAttentions,
+	getFocusBrowse,getComments,expandReplies} from "../../../api/real-case.js"
+	
 	import imagePreview from "../../../components/image-preview/image-preview.vue"
 	export default {
-		filters:{
-			formatDate
-		},
 		components:{
 			imagePreview
 		},
@@ -323,11 +322,13 @@
 						deviceId = res.deviceId
 					}
 				})
-				// let obj = {
-				// 	estateOwnerId: ,
-				// 	estateOwnerName: ,
-					
-				// }
+				let obj = {
+					customerId: this.userId,
+					customerName: uni.getStorageSync("userInfo").nickName,
+					customerAvatar: uni.getStorageSync("userInfo").avatarUrl,
+					estateName: this.projectInfo.estateNeighbourhood,
+					estateAddress: this.projectInfo.estateAddress
+				}
 				let params = {
 					routeId: 1002,
 					relationId: this.projectInfo.id,
@@ -337,9 +338,15 @@
 					type: 3,
 					bizType: 4,
 					subBizType: this.projectInfo.estateCityId,
-					// ifhh: JSON.stringify(obj)
+					jsonContent: JSON.stringify(obj)
 				}
-				setAttentions(params).then( data => {
+				// axios.post("/app/base/interactive/add",params).then(res => {
+				// 	console.log(res)
+				// })
+				// .catch(err => {
+				// 	console.log(err)
+				// })
+				setAttentions(params,{baseUrl:'http://192.168.5.24:8080'}).then( data => {
 					if(data){
 						console.log(data)
 						this.isSelfFocusOn = !this.isSelfFocusOn
@@ -363,7 +370,10 @@
 			},
 			toDecorate(){
 				uni.navigateTo({
-					url:"./decorate-calendar"
+					url:"./decorate-calendar",
+					success: (res) => {
+						res.eventChannel.emit('acceptDataFromOpenerPage',this.projectInfo.id)
+					}
 				})
 			},
 			toVideoSite(){
