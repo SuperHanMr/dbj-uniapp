@@ -47,7 +47,7 @@
         <scroll-view :scroll-top="scrollTop" scroll-y="true" class="scroll-Y" @scroll="scroll"
           scroll-with-animation="true" :style="{height: viewHieght + 'rpx'}">
           <!-- 每日播报 -->
-          <text-scroll></text-scroll>
+          <!-- <text-scroll></text-scroll> -->
           <!-- 我的仓库 -->
           <view v-if="haveWarehouse" class="my-decorate-service-wrap">
             <image mode="aspectFit" class="top-bg"
