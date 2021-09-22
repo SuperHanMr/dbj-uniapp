@@ -23,7 +23,8 @@
 			退出登录
 		</view>
 		<uni-popup ref="popup" type="dialog" class="uni-popup">
-				<uni-popup-dialog class="uni-popup-dialog" mode="base" type="info" title="确定退出当前账号登录吗?" :duration="2000" :before-close="true" @close="close" @confirm="confirm"></uni-popup-dialog>
+			<uni-popup-dialog class="uni-popup-dialog" mode="base" type="info" title="确定退出当前账号登录吗?" :duration="2000"
+				:before-close="true" @close="close" @confirm="confirm"></uni-popup-dialog>
 		</uni-popup>
 	</view>
 </template>
@@ -32,8 +33,7 @@
 	export default {
 		data() {
 			return {
-				listArr: [
-					{
+				listArr: [{
 						title: "打扮家装修服务协议",
 						path: "../../../sub-my/pages/set-up/agreement/service-agreement"
 					},
@@ -60,40 +60,40 @@
 				]
 			};
 		},
-		methods:{
-				
-			onClick(val){
+		methods: {
+
+			onClick(val) {
 				uni.navigateTo({
 					url: this.listArr[val].path
 				})
 				console.log("dadad")
 			},
-			onOpen(){
+			onOpen() {
 				this.$refs.popup.open();
 			},
-			close(){
+			close() {
 				this.$refs.popup.close();
 			},
-			confirm(val){
+			confirm(val) {
 				console.log("退出登录");
-				
+
 				// 清除本地缓存 然后跳转到首页
 				this.$refs.popup.close();
 				uni.clearStorageSync();
-				getApp().globalData.userInfo ={
-    userInfo: {},
-    token: "",
-    city: "",
-    houses: [],
-    tim: null,
-    noHouseActuaryId: null,
-    noHouseDesignId: null,
-    noHouseCheckId: null,
-    naviData: null,
-    decorateMsg: {},
-  }
+				getApp().globalData = {
+					userInfo: {},
+					token: "",
+					city: "",
+					houses: [],
+					tim: null,
+					noHouseActuaryId: null,
+					noHouseDesignId: null,
+					noHouseCheckId: null,
+					naviData: null,
+					decorateMsg: {},
+				}
 				uni.switchTab({
-				   url:"../../../pages/home/index/index"
+					url: "../../../pages/home/index/index"
 				});
 			}
 		}
@@ -101,67 +101,77 @@
 </script>
 
 <style scoped>
+	.container {
+		height: 100%;
+		background: #f5f6f6;
+	}
 
-.container{
-height: 100%;
-	background: #f5f6f6;
-}
-.container .main-body {
-	width: 100%;
-	padding-top: 16rpx;
-}
-.container .main-body .uni-list{
-	background: #ffffff;
-}
-.container .main-body .uni-list .uni-list-item{
-	display: flex;
-	justify-content: space-between;
-	padding: 0 24rpx 0 32rpx;
-	border-bottom: 1px solid #f2f2f2;
-}
-.container .main-body .uni-list .uni-list-item:last-child{
-	border: none;
-}
-.container .main-body .uni-list .uni-list-item .title{
-	padding: 38rpx 0;
-	font-size: 28rpx;
-	font-family: PingFangSC, PingFangSC-Regular;
-	font-weight: 400;
-	text-align: left;
-	color: #333333;
-}
-.container .main-body .uni-list .uni-list-item .icon{
-	padding: 42rpx 0;
-}
-.container .main-body .uni-list .uni-list-item .icon .title-right{
-	height: 32rpx;
-	width: 34rpx;
-}
-.container .logOut{
-	text-align: center;
-	margin-top: 16rpx;
-	padding: 36rpx 0;
-	font-size: 28rpx;
-	font-family: PingFangSC, PingFangSC-Regular;
-	font-weight: 400;
-	color: #111111;
-	background: #ffffff;
-}
-button::after{
-	border:none;
-}
-.container .uni-popup .uni-popup-dialog /deep/ .uni-dialog-button-group .uni-border-left .uni-dialog-button-text{
-	color: rgba(255,51,71,1);
-	font-size: 30rpx;
-	font-family: PingFangSC, PingFangSC-Medium;
-	font-weight: 500;
-	text-align: left;
-}
-.container .uni-popup .uni-popup-dialog /deep/ .uni-dialog-title .uni-dialog-title-text{
-	font-size: 32rpx;
-	font-family: PingFangSC, PingFangSC-Medium;
-	font-weight: 500;
-	text-align: center;
-	color: #111111;
-}
+	.container .main-body {
+		width: 100%;
+		padding-top: 16rpx;
+	}
+
+	.container .main-body .uni-list {
+		background: #ffffff;
+	}
+
+	.container .main-body .uni-list .uni-list-item {
+		display: flex;
+		justify-content: space-between;
+		padding: 0 24rpx 0 32rpx;
+		border-bottom: 1px solid #f2f2f2;
+	}
+
+	.container .main-body .uni-list .uni-list-item:last-child {
+		border: none;
+	}
+
+	.container .main-body .uni-list .uni-list-item .title {
+		padding: 38rpx 0;
+		font-size: 28rpx;
+		font-family: PingFangSC, PingFangSC-Regular;
+		font-weight: 400;
+		text-align: left;
+		color: #333333;
+	}
+
+	.container .main-body .uni-list .uni-list-item .icon {
+		padding: 42rpx 0;
+	}
+
+	.container .main-body .uni-list .uni-list-item .icon .title-right {
+		height: 32rpx;
+		width: 34rpx;
+	}
+
+	.container .logOut {
+		text-align: center;
+		margin-top: 16rpx;
+		padding: 36rpx 0;
+		font-size: 28rpx;
+		font-family: PingFangSC, PingFangSC-Regular;
+		font-weight: 400;
+		color: #111111;
+		background: #ffffff;
+	}
+
+	button::after {
+		border: none;
+	}
+
+	.container .uni-popup .uni-popup-dialog /deep/ .uni-dialog-button-group .uni-border-left .uni-dialog-button-text {
+		color: rgba(255, 51, 71, 1);
+		font-size: 30rpx;
+		font-family: PingFangSC, PingFangSC-Medium;
+		font-weight: 500;
+		text-align: left;
+	}
+
+	.container .uni-popup .uni-popup-dialog /deep/ .uni-dialog-title .uni-dialog-title-text {
+		font-size: 32rpx;
+		font-family: PingFangSC, PingFangSC-Medium;
+		font-weight: 500;
+		text-align: center;
+		color: #111111;
+	}
 </style>
