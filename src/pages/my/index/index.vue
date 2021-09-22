@@ -2,15 +2,15 @@
   <view class="my-container">
 		<custom-navbar opacity="0" :showBack="true">
 		</custom-navbar>
-		<view class="backgroundStyle" :style="{backgroundImage:`url(${UserInfo.avatar})`,backgroundSize: 'cover'}">
+		<view class="backgroundStyle" :style="{backgroundImage:`url(${userInfo.avatar})`,backgroundSize: 'cover'}">
 			<view class="mask" />
-			<!-- <image :src="UserInfo.avatar"  mode=""></image> -->
+			<!-- <image :src="userInfo.avatar"  mode=""></image> -->
 		</view>
     <view class="my-header">
       <view class="avatar-img">
 
         <image
-					:src="UserInfo.avatar"
+					:src="userInfo.avatar"
           class="avatar"
         />
         <view class="user-name" >
@@ -105,7 +105,7 @@ export default {
     return {
 			isLogin:false,
 			userName:'用户名称',
-			UserInfo:{},
+			userInfo:{},
 
       list: [
         {
@@ -174,13 +174,13 @@ export default {
 		if (!uni.getStorageSync("userId")) {
 			this.userName="点击登录";
 			this.isLogin=false;
-			this.UserInfo=null;
+			this.userInfo=null;
 		}else{
 			this.isLogin=true
-			this.UserInfo = getApp().globalData.userInfo
+			this.userInfo = getApp().globalData.userInfo
 			console.log('!!!!!!!!!!!!!');
-			console.log("UserInfo=",this.UserInfo)
-			this.userName=this.UserInfo.name;
+			console.log("userInfo=",this.userInfo)
+			this.userName=this.userInfo.name;
 		}
 	},
 	

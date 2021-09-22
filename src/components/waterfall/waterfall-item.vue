@@ -3,8 +3,10 @@
     class="waterfall-item"
     @click="toDetail(item)"
   >
-    <view class="withdraw-container" />
-    <view class="case-withdraw-text">该内容已下架</view>
+	<!-- 内容下架的样式 -->
+    <!-- <view class="withdraw-container" /> -->
+    <!-- <view class="case-withdraw-text">该内容已下架</view> -->
+		<!-- 左上角的icon -->
     <image
       class="product-check"
       src="../../static/images/product_unChecked.png"
@@ -16,11 +18,26 @@
 			mode=""
 		></image> -->
 
-    <image
+  
+	<!-- 右上角的icon图标 -->
+	 <image
       class="case-type"
-      src="../../static/images/icon_video.png"
+      src="../../sub-my/static/icon_vr_@2x.png"
       mode=""
-    ></image>
+    />
+		
+		<!-- <image
+		  class="case-type"
+		  src="../../static/images/icon_video.png"
+		  mode=""
+		/>
+		
+		<image
+		  class="case-type"
+		  src="../../sub-my/static/icon_img_@2x.png"
+		  mode=""
+		/> -->
+		
 
     <image
       class="product-img"

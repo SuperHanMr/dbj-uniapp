@@ -1,5 +1,21 @@
 import request from '../utils/request';
 
+
+
+// 
+//修改用户资料  (头像 昵称)
+
+export function editUserInfo(params) {
+	return request.put(`/customer/app/mycenter/person`,params);
+}
+
+
+
+
+
+
+
+
 //我的-订单列表
 export function getOrderList(params) {
 	return request.get(`/order-center/app/order/list`, { params });
@@ -100,6 +116,25 @@ export function getConcernList(params) {
 export function getCollectionList(params) {
 	return request.get(`/app/base/interactive/list/all`,{params})
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
