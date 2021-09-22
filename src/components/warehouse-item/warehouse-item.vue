@@ -31,8 +31,8 @@
 						</view>
 						<view v-if="showSubPrice" class="price">
 							<text class="num-x">¥</text>
-							<text class="num-z">320</text>
-							<text class="num-x">.00</text>
+							<text class="num-z">{{String(goodItem.price).split('.')[0]}}</text>
+							<text class="num-x">.{{String(goodItem.price).split('.')[1]||'00'}}</text>
 						</view>
 					</view>
 					<view class="spec">
@@ -45,7 +45,7 @@
 						<view style="flex:1">
 						</view>
 						<view v-if="showSubCount" class="spec-item">
-							共{{goodItem.number}}件
+							共{{goodItem.number||goodItem.stockNumber}}件
 						</view>
 					</view>
 				</view>
@@ -260,7 +260,6 @@
 		border-radius: 16rpx;
 		color: #111111;
 		font-size: 24rpx;
-
 	}
 
 	.price-s {
