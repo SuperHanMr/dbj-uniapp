@@ -96,7 +96,7 @@
           <text>商品总价</text>
           <text>¥{{orderInfo.totalPrice}}</text>
         </view>
-        <view class="store-read">
+        <view class="store-read" v-if="productType === 1">
           <text>
             当前费用不包含运费和搬运费，具体费用会在要货时进行结算
           </text>
@@ -653,8 +653,7 @@
   }
 
   .good-store-account {
-    padding: 5rpx 32rpx;
-    height: 210rpx;
+    padding: 35rpx 32rpx;
     background-color: #FFFFFF;
     margin-top: 25rpx;
     font-size: 28rpx;
@@ -662,7 +661,6 @@
     display: flex;
     flex-wrap: wrap;
     align-content: space-around;
-    height: 220rpx;
   }
 
   .good-store-account view {
