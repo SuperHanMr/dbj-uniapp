@@ -28,8 +28,8 @@
     },
     onShow() {
       this.refreshHash = Math.random()
-      // this.baseUrl = this.ENV.VUE_APP_BASE_H5
-      this.baseUrl = "https://local.meiwu365.com" 
+      this.baseUrl = this.ENV.VUE_APP_BASE_H5
+      // this.baseUrl = "https://local.meiwu365.com" 
       if(uni.getStorageSync('goodId')) {
         this.goodId = uni.getStorageSync('goodId')
       }else if( uni.getStorageSync('fromShopCart')) {
