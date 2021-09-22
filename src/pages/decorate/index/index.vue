@@ -492,13 +492,13 @@
         queryEstates({
           isNeedRelative: true,
         }).then(data => {
-          console.log("EstateList1>: ", data)
+          console.log("EstateList-1>: ", data)
           if (!data || (data instanceof Array && data.length < 1)) {
             uni.navigateTo({
               url: "/sub-decorate/pages/no-house/no-house",
             });
           } else {
-            console.log("EstateList2>: ", data)
+            console.log("EstateList-2>: ", data)
             const temp = data.filter(t => t.defaultEstate)
             this.defaultEstate = temp && temp.length > 0 ? temp[0] : null
             this.estateList = data;
