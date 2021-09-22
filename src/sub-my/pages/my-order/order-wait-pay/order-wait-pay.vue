@@ -28,7 +28,7 @@
 			<order-user-base-info :data="orderInfo"></order-user-base-info>
 			
 			<view class="store-container" v-for="(item,index) in orderInfo.details" :key="index">
-				<view class="storeItem" :class="{paddingBottom: item.freeShipCount || item.fullExemptionAmount  }">
+				<view class="storeItem" :class="{paddingBottom: item.stockType == 1 }">
 					<view class="header">
 						<text>{{item.storeName}}</text>
 						<image
@@ -43,9 +43,9 @@
 					
 					<view class="discount-container" v-if="item.showFreight">
 						<view class="left">
-							<view class="item">
+							<view class="item" v-if="item.type == 1">
 								<text>运费</text>
-								<text>￥{{item.freight}}</text>
+								<text>￥{{item.freight?`￥${item.freight}`:"--"}}</text>
 							</view>
 							<view class="item" v-if="item.platformDiscount">
 							<text>平台优惠</text>
@@ -55,7 +55,7 @@
 						<view class="line1" v-if="item.handlingFees || item.storeDiscount" />
 						<view class="line2" v-else/>
 						<view class="right">
-							<view class="item">
+							<view class="item" v-if="item.type == 1">
 								<text>搬运费</text>
 								<text>{{item.handlingFees?`￥${item.handlingFees}`:"--"}}</text>
 							</view>
@@ -66,20 +66,19 @@
 						</view>
 					</view>
 					
-					
-					
-					
-					<view class="tips" v-if="item.freeShipCount || item.fullExemptionAmount">
-						<text>本次支付</text>
-						<text style="color: #333333;">满{{item.fullExemptionAmount}}元</text>
-						<text>，可获得</text>
-						<text style="color: #333333;">{{item.freeShipCount}}次免邮费额度，</text>
-						<text>搬运费需要根据实际要货时进行核算</text>
+					<view v-if="item.stockType == 1">
+						<view class="tips" v-if="item.freeShipCount || item.fullExemptionAmount ">
+							<text>本次支付</text>
+							<text style="color: #333333;">满{{item.fullExemptionAmount}}元</text>
+							<text>，可获得</text>
+							<text style="color: #333333;">{{item.freeShipCount}}次免邮费额度，</text>
+							<text>搬运费需要根据实际要货时进行核算</text>
+						</view>
+						
+						<view class="tips" v-else>
+							<text>搬运费需要根据实际要货时进行核算</text>
+						</view>
 					</view>
-					
-					<!-- <view class="tips">
-						<text>搬运费需要根据实际要货时进行核算</text>
-					</view> -->
 					
 				</view>
 				
@@ -163,11 +162,8 @@ export default {
 	},
 	
   onLoad(e) {
-    if (e && e.orderNo) {
-      this.orderNo = e.orderNo;
-      // this.getOrderDetail();
-    }
-		this.orderDetail()
+    this.orderNo =Number( e.orderNo)||getApp().globalData.decorateMsg.orderId;
+    this.orderDetail()
 		
 		
 	},
@@ -222,23 +218,17 @@ export default {
 			console.log("取消订单按钮成功！")
 			//点击确定后订单会被取消且该订单会被移入已关闭订单中
 			cancelOrder({id:this.orderNo}).then(e=>{
-				if(e.code==1){
-					
 					this.$refs.cancleOrder.close();
-					this.toCancelPage()
-				}
+					uni.redirectTo({
+						url:`../order-failed/order-failed?type=close&id=${this.orderNo}&from=waitPay`
+					})
 			})
 		},
-		//跳转到订单取消页面
-		toCancelPage(){
-			uni.redirectTo({
-				url:`../order-failed/order-failed?type=close&id=${this.orderNo}`
-			})
-		},
+	
 		
 		//去支付
 		toPay() {
-			// 先判断是否支付超额拆单了
+			// 先判断是否支付超额拆单了     
 			// 拆单之后直接跳转到拆单页面
 			// 未拆单 直接支付 
 			console.log(this.orderInfo,"orderInfo.orderId=",this.orderInfo.orderId)
@@ -246,7 +236,7 @@ export default {
 			if(this.orderInfo.isSplitPay){
 				// orderId 是订单id
 				uni.navigateTo({
-					url:`../multiple-payments/multiple-payments?orderId=${this.orderNo}&type=detail`
+					url:`../multiple-payments/multiple-payments?orderId=${this.orderNo}&type=detail&remainTime=${this.orderInfo.remainTime}`
 				})
 				
 			}else{
@@ -261,15 +251,16 @@ export default {
 						provider: "wxpay",
 						...payInfo,
 						success(res) {
-							uni.redirectTo({
+							uni.navigateTo({
 								url:`../order-success/order-success?type=complete&id=${this.orderNo}`
 							})
 						},
 						fail(e) {
-							// uni.showToast({
-							//     title: '支付失败',
-							//     duration: 2000
-							// });
+							uni.showToast({
+							    title: '支付失败',
+									icon:"none",
+							    duration: 2000
+							});
 						},
 					});
 				});

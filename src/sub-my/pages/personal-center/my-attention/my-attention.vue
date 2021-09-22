@@ -34,88 +34,89 @@
           @scrolltolower="onLoadMore"
         >
           <view class="line" />
-          <view
-            class="house-item"
-            v-if="tabindex==0"
-          >
-            <view class="houseInfo">
-              <view class="header">
-                大兴区康盛园10号楼2单元102
-              </view>
-
-              <view class="area-house">
-                <text>201.2㎡</text>
-                <view class="split-line" />
-                <text>3室2厅1厨</text>
-              </view>
-
-              <view class="cost">
-                装修总花费：¥ 239981.90
-              </view>
-            </view>
-            <image
-              src="../../../../static/images/message/ic_system@2x.png"
-              mode=""
-            ></image>
-          </view>
-
-          <!-- <view class="empty-container">
+          
+          <view class="empty-container" v-if="caseList.length<1">
 						<image src="../../../../static/order/blank_house@2x.png" mode=""></image>
-						<text>您还没有关注房子</text>
-					</view> -->
-          <view
-            class="craftsmanAndRecommend"
-            v-if="tabindex == 1"
-          >
-            <view class="left">
-              <image
-                src="../../../../static/images/message/ic_system@2x.png"
-                mode=""
-              ></image>
-              <view class="baseInfo">
-                <view class="name1">
-                  哈哈哈哈哈哈大王
-                </view>
-                <view class="icon">
-                  大管家
-                </view>
-              </view>
-            </view>
-            <view class="right">
-              <!-- <view class="button1">
-								+关注
-							</view> -->
-              <view class="button2">
-                已关注
-              </view>
-            </view>
-          </view>
-
-          <view
-            class="craftsmanAndRecommend"
-            v-if=" tabindex == 2"
-          >
-            <view class="left">
-              <image
-                src="../../../../static/images/message/ic_system@2x.png"
-                mode=""
-              ></image>
-              <view class="baseInfo">
-                <view class="name2">
-                  打扮家给你意想不到的效果绝对的性价比最高
-                </view>
-                <view class="icon">
-                  大管家
-                </view>
-              </view>
-            </view>
-            <view class="right">
-              <view class="button4">
-                已优先推荐
-              </view>
-            </view>
-          </view>
-
+						<text v-if="tabindex==0">您还没有关注房子</text>
+						<text v-if="tabindex==1">您还没有关注工匠</text>
+						<text v-if="tabindex==2">您还没有关注优先推荐</text>
+					</view>
+					<view  v-else>
+						<view v-if="tabindex==0"  class="house-item">
+						  <view class="houseInfo">
+						    <view class="header">
+						      大兴区康盛园10号楼2单元102
+						    </view>
+						
+						    <view class="area-house">
+						      <text>201.2㎡</text>
+						      <view class="split-line" />
+						      <text>3室2厅1厨</text>
+						    </view>
+						
+						    <view class="cost">
+						      装修总花费：¥ 239981.90
+						    </view>
+						  </view>
+						  <image
+						    src="../../../../static/images/message/ic_system@2x.png"
+						    mode=""
+						  ></image>
+						</view>
+						
+						<view  v-if="tabindex == 1" class="craftsmanAndRecommend">
+						  <view class="left">
+						    <image
+						      src="../../../../static/images/message/ic_system@2x.png"
+						      mode=""
+						    ></image>
+						    <view class="baseInfo">
+						      <view class="name1">
+						        哈哈哈哈哈哈大王
+						      </view>
+						      <view class="icon">
+						        大管家
+						      </view>
+						    </view>
+						  </view>
+						  <view class="right">
+						    <!-- <view class="button1">
+									+关注
+								</view> -->
+						    <view class="button2">
+						      已关注
+						    </view>
+						  </view>
+						</view>
+						
+						<view  v-if=" tabindex == 2"  class="craftsmanAndRecommend">
+						  <view class="left">
+						    <image
+						      src="../../../../static/images/message/ic_system@2x.png"
+						      mode=""
+						    ></image>
+						    <view class="baseInfo">
+						      <view class="name2">
+						        打扮家给你意想不到的效果绝对的性价比最高
+						      </view>
+						      <view class="icon">
+						        大管家
+						      </view>
+						    </view>
+						  </view>
+						  <view class="right">
+						    <!-- <view class="button4">
+						      已优先推荐
+						    </view> -->
+								<view class="button3">
+									<image src="../../../static/icon_recommend_@2x.png" mode=""></image>
+								  优先推荐
+								</view>
+						  </view>
+						</view>
+						
+					</view>
+				
         </scroll-view>
 
       </swiper-item>
@@ -124,66 +125,49 @@
 </template>
 
 <script>
-import { caseList } from "../../../../api/home.js";
+import {getConcernList } from "../../../../api/order.js";
 export default {
   data() {
     return {
       triggered: false,
-      list: [
-        1,
-        2,
-        3,
-        4,
-        5,
-        6,
-        7,
-        8,
-        9,
-        0,
-        11,
-        "阿道夫",
-        "刮大风",
-        "部分地方",
-        "不梵蒂冈",
-        "有人特",
-      ],
-      list1: [
-        "sad",
-        "ddw",
-        "sdfsda",
-        "sdfas",
-        "gfds",
-        "zxcv",
-        "bgf",
-        "uytre",
-        "阿道夫",
-        "刮大风",
-        "部分地方",
-        "不梵蒂冈",
-        "有人特",
-      ],
+     
+      
       tabList: ["房子", "工匠", "优先推荐"],
       triggered: false, //控制刷新显示字段
       currentIndex: 0,
       caseList: [],
+			
       loading: false,
+			
       page: 1,
+			rows:10,
+			isReverse:true,//默认ture 该值为true时，获取我关注的、我收藏的列表，
+			routeId:"",//
       totalPage: 1,
+			userId:"",
+			type:3,//(3,"关注") (4,"推荐")
+			bizType:"",//(4,"房屋")  【用户的角色信息】PERSON(3,"人物")
+			
     };
   },
   onShow() {
-    this.getCaseList();
+		this.userId = getApp().globalData.userInfo.id
+		
+		console.log("this.userId=",this.userId)
+		this.getList();
+		
   },
+	
   computed: {
     currentList() {
       if (this.currentIndex == 0) {
-        return this.list;
+        return this.caseList;
       } else if (this.currentIndex == 1) {
-        return this.list1;
+        return this.caseList;
       } else if (this.currentIndex == 2) {
-        return this.list2;
+        return this.caseList;
       } else {
-        return this.list1;
+        return this.caseList;
       }
     },
   },
@@ -192,15 +176,35 @@ export default {
       let index = e.target.current || e.detail.current;
       this.currentIndex = index;
     },
-    async getCaseList() {
+    async getList() {
       this.loading = true;
-      let caseItem = await caseList({
-        page: this.page,
-      });
-      this.totalPage = caseItem.totalPage;
-      this.caseList = this.caseList.concat(caseItem.list);
-      this.loading = false;
+			let params = {
+				
+				isReverse:true,//默认ture 该值为true时，获取我关注的、我收藏的列表，
+				routeId:1002,//
+				userId:this.userId,
+				type:3,//(3,"关注") (4,"推荐")
+				bizType:"",//(4,"房屋")  【用户的角色信息】PERSON(3,"人物")
+			}
+			getConcernList({
+				isReverse:true,//默认ture 该值为true时，获取我关注的、我收藏的列表，
+				routeId:1002,//
+				userId:this.userId,
+				type:3,//(3,"关注") (4,"推荐")
+				bizType:4,//(4,"房屋")  【用户的角色信息】PERSON(3,"人物")
+			}).then(data=>{
+				console.log("data= ",data)
+			})
+			
+    //   let caseItem = await caseList({
+    //     page: this.page,
+				
+    //   });
+    //   this.totalPage = caseItem.totalPage;
+    //   this.caseList = this.caseList.concat(caseItem.list);
+    //   this.loading = false;
     },
+		
     onLoadMore() {
       if (this.loading || this.page >= this.totalPage) {
         return;
@@ -208,6 +212,7 @@ export default {
       this.page++;
       this.getCaseList();
     },
+		
     onRefresh(e) {
       this.triggered = true;
       setTimeout(() => {
@@ -311,6 +316,7 @@ export default {
         line-height: 42rpx;
         color: #333333;
         font-size: 30rpx;
+				font-weight: 550;
         margin-bottom: 8rpx;
         overflow: hidden;
         text-overflow: ellipsis;
@@ -348,14 +354,14 @@ export default {
   }
 
   .empty-container {
-    padding: 180rpx 250rpx 0 250rpx;
+    padding: 180rpx 240rpx 0 240rpx;
     display: flex;
     flex-flow: column nowrap;
     align-items: center;
     justify-content: space-around;
     image {
       width: 248rpx;
-      height: 258rpx;
+      height: 248rpx;
       object-fit: cover;
       margin-bottom: 22rpx;
     }
@@ -420,6 +426,7 @@ export default {
       }
     }
     .right {
+			
       .button1,
       .button2,
       .button3,
@@ -443,7 +450,8 @@ export default {
       .button3 {
         background: linear-gradient(135deg, #36d9cd, #28c6c6);
         color: #ffffff;
-        padding: 14rpx 30rpx;
+				padding: 14rpx 30rpx;
+        
       }
       .button2,
       .button4 {
@@ -451,6 +459,18 @@ export default {
         border: 2rpx solid #dbdbdb;
         padding: 12rpx 28rpx;
       }
+			
+			.button3{
+				display: flex;
+				flex-flow: row nowrap;
+				align-items: center;
+				image{
+					width: 24rpx;
+					height: 26rpx;
+					object-fit: cover;
+					margin-right: 4rpx;
+				}
+			}
     }
   }
 }

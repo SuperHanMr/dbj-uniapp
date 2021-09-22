@@ -5,16 +5,16 @@
 			class="body-main" 
 			:style="{paddingBottom:paddingBottom +'rpx'}" 
 			@click="handleDetail()" >
-			<view class="pic">
-				<!-- <view class="icon-status1">
-					代发货
+			<view class="pic" >
+				<view class="icon-status1" v-if="orderStatus == 2 && (dataList.shipmentStatus == 0 || dataList.refundStatus == 2 || dataList.refundStatus == 3)">
+					待发货
 				</view> 
-				<view class="icon-status1">
+				<view class="icon-status1" v-if="orderStatus==2 && dataList.refundStatus == 0">
 					退款中
 				</view>
-				<view class="icon-status2">
-					已退货
-				</view> -->
+				<view class="icon-status2" v-if="orderStatus==2 && dataList.refundStatus == 1" >
+					已退款
+				</view>
 				<image :src="dataList.imgUrl" mode=""></image>
 			</view>
 			<view class="basic-info">
@@ -76,15 +76,40 @@
 				</view>
 			</view>
 		</view>
-		
-		<view  class="apply-refund-container" v-if="dataList.showRefundBtn && (orderStatus==2 || orderStatus == 3)">
+		<view  class="apply-refund-container" v-if="dataList.showRefundBtn && orderStatus == 3">
 			<view class="button" @click="particalRefund">
 				申请退款
 			</view>
 		</view>
 		
+		<view  class="apply-refund-container" v-if="dataList.showRefundBtn && orderStatus == 2">
+			<view class="button" @click="particalRefund">
+				申请退款
+			</view>
+		</view>
+
+		<view class="apply-refund-container" :style="{paddingTop:0}"  v-if="!dataList.showRefundBtn && orderStatus==2 && dataList.refundStatus>-1">
+			<view class="button" @click="refundCancel">
+				取消退款
+			</view>
+			
+			<view class="button"  v-if="dataList.refundStatus ==1"  @click="refundSuccess">
+				退款成功
+			</view>
+			
+			<view class="button" v-if="dataList.refundStatus ==2" @click="refundFailed">
+				退款失败
+			</view>
+			
+			<view class="button" v-if="dataList.refundStatus ==3" @click="refundClose">
+				退款关闭
+			</view>
+			
+		</view>
 		
-		<view class="discount-container3" v-if="orderStatus==1">
+		
+		
+		<view class="discount-container3" v-if="orderStatus==1 && dataList.type == 2 && dataList.deposit">
 			<view class="right">
 				<view class="item">
 					<text>押金</text>
@@ -139,7 +164,7 @@
 			};
 		},
 		mounted() {
-			if( (this.dataList.stockTyp && this.dataList.stockType == 2 && this.dataList.type == 1&& this.orderStatus==2) || (this. dataList.showRefundBtn &&this. orderStatus==2)){
+			if( (this.dataList.stockType && this.dataList.stockType == 2 && this.dataList.type == 1&& this.orderStatus==2) || (this. dataList.showRefundBtn &&this. orderStatus==2)){
 				this.paddingBottom=0
 			}
 		},
@@ -160,7 +185,20 @@
 			
 			particalRefund(){
 				this.$emit('toApplayForRefund')
-			}
+			},
+			
+			refundCancel(){
+				this.$emit('refundCancel')
+			},
+			refundSuccess(){
+				this.$emit('refundSuccess')
+			},
+			refundFailed(){
+				this.$emit('refundFailed')
+			},
+			refundClose(){
+				this.$emit('refundClose')
+			},
 		}
 	}
 </script>
@@ -320,7 +358,7 @@
 	    text-align: center;
 	    box-sizing: border-box;
 	    background: #ffffff;
-	    border-radius: 24rpx;
+	    border-radius: 16rpx;
 	    border: 2rpx solid #eaeaea;
 	    font-size: 24rpx;
 	    font-weight: 400;

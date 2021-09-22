@@ -160,12 +160,9 @@
 			<view class="buttons1" v-if="!reasonName">
 				提交申请
 			</view>
-        <view v-else
-          class="buttons"
-          @click="submitApplication"
-        >
-          提交申请
-        </view>
+			<view v-else class="buttons"  @click="submitApplication" >
+				提交申请
+			</view>
 			</view>
 		</view>
 
@@ -269,18 +266,16 @@ export default {
       console.log("申请退款");
 			let params={
 				orderId:this.query.orderId,//订单明Id字段
-				returnMoney:this.returnMoney,//申请退货钱数(分)
+				returnMoney:this.returnMoney * 100,//申请退货钱数(分)
 				reason:this.reasonName, //退款原因
 				reasonId:this.reasonValue,//退款原因id
 				remark:this.query.remarks, //备注
 				status:this.query.status, //订单状态1进行中 2已完成
 }
 			wholeOrderApplyForRefund(params).then(res=>{
-				if(res.code==1){
-					uni.redirectTo({
-						url:`../my-order/success/success?type=applyForRefund`
-					})
-				}
+				uni.navigateTo({
+					url:`../my-order/success/success?type=applyForRefund`
+				})
 			})
     },
 

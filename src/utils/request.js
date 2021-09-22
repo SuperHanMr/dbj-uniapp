@@ -93,7 +93,7 @@ instance.interceptors.response.use(
 				if (res.data && res.data.data) {
 					return res.data.data;
 				}
-				return res;
+				return null;
 			}
 		},
 		// 请求失败
@@ -101,7 +101,6 @@ instance.interceptors.response.use(
 			uni.hideLoading();
 			if (error.response && error.response.status === 401) {
 				//刷新token
-				if (!uni.getStorageSync("userId")) {
 					uni.showModal({
 						title: '提示',
 						content: '用户信息已过期,请重新登录',
@@ -112,9 +111,6 @@ instance.interceptors.response.use(
 						}
 					});
 
-				} else {
-					// refrishToken();
-				}
 				// return new Promise((resolve, reject) => {
 				// 	failRequestList.push({
 				// 		config: error.config,

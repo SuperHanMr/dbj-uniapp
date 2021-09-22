@@ -1,5 +1,5 @@
 <template>
-  <view class="fill">
+  <view class="fill" >
     <view class="top-tab">
       <view
         v-for="(item,index) in tabList"
@@ -17,6 +17,7 @@
     <swiper
       class="swiper"
       :class="{empty:orderListLength<=0}"
+			:style="{paddingBottom:systemBottom}"
       :current="currentIndex"
       :duration="200"
       @change="swiperChange"
@@ -172,10 +173,7 @@
                 :class="{buttonContainer:!item.showCancelOrderTime}"
               >
 
-                <view
-                  v-if="item.showCancelOrderTime"
-                  class="set-interval"
-                >
+                <view  v-if="item.showCancelOrderTime"  class="set-interval">
                   <image
                     src="../../static/ic_time@2x.png"
                     mode=""
@@ -195,10 +193,7 @@
 
                 </view>
 
-                <view
-                  v-if="item.showToPayBtn || item.showCancelBtn"
-                  class="button"
-                >
+                <view  v-if="item.showToPayBtn || item.showCancelBtn"  class="button">
                   <button
                     v-if="item.showCancelBtn"
                     type="default"
@@ -227,8 +222,7 @@
               >
                 <view class="button">
                   <button
-                    v-if="item.showToPayBtn"
-                    type="default"
+                   type="default"
                     size="mini"
                     class="go-to-pay"
                     @click="handleConfirmReceipt(item)"
@@ -321,8 +315,16 @@ export default {
       orderListLength: 1,
 
       id: -1,
+			systemBottom: "",
     };
   },
+	mounted(e) {
+		const menuButtonInfo = uni.getMenuButtonBoundingClientRect();
+		this.containerBottom = menuButtonInfo.bottom
+		this.systemBottom = menuButtonInfo.bottom + "rpx";
+		this.systemHeight = menuButtonInfo.bottom + this.num + "rpx";
+	
+	},
 
   computed: {
     orderList() {
@@ -351,13 +353,10 @@ export default {
         console.log("e=", e);
         this.currentIndex = 0;
       } else {
-        console.log("e=", e);
         this.currentIndex = Number(e.index);
       }
     }
     this.orderStatus = this.currentIndex - 1;
-
-    // this.getOrderList()
   },
 
   methods: {
@@ -377,7 +376,6 @@ export default {
     },
     //跳转到详情页面
     goToDetail(data) {
-      console.log("data1111=", data);
       if (data.orderStatus == 0) {
         //（0待付款，1进行中，2已完成 3已关闭）
         uni.navigateTo({
@@ -545,21 +543,15 @@ export default {
     },
 
     receiptConfirm(value) {
-      // 调用申请退款的接口
+      // 调用确认收货的接口
       console.log("点击了确认按钮11");
       //goodIsd 商品id(不传代表整个订单收货)"
       confirmReceiptOrder({ id: this.id, goodIsd: "" }).then((e) => {
-        if (res.code == 1) {
-          // 成功就关闭弹框
           console.log("成功就关闭弹框");
           this.$refs.confirmReceipt.close();
-          uni.navigateTo({
-            // url:"../success/success?type=confirmReceipt"
-            url: "../my-order?index=0",
-          });
-        } else {
-          this.$refs.confirmReceipt.close();
-        }
+					this.orderList1 = []
+					this.lastId[1]=-1
+					this.getOrderList()
       });
     },
 
