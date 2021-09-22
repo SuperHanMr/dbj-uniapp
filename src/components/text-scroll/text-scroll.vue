@@ -11,7 +11,11 @@
 </template>
 
 <script>
+  import {
+    getCarouselMsg
+  } from "../../api/decorate.js";
   export default {
+    props: ["projectId"],
     data() {
       return {
         list: [{
@@ -135,19 +139,23 @@
       height: 24rpx;
     }
   }
+
   .slide-enter-active {
     transition: all 1.5s ease-in;
     opacity: 1;
   }
+
   .slide-leave-active {
     transition: all 1s ease-out;
     opacity: 0;
   }
+
   .slide-enter {
     transform: translateY(20rpx);
     transition: all 1s ease-in;
     opacity: 0;
   }
+
   .slide-leave-to {
     transform: translateY(-30rpx);
   }
