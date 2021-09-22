@@ -1,11 +1,11 @@
 <template>
   <view>
-       <web-view :src="baseUrl + '/app-pages/goods-detail/index.html#wx-goodsId='+ goodId + '&&wx-houseId='
-        + houseId + '&&wx-defaultHouseId=' + goodDefaultAddress.id  + '&&wx-defaultProvinceId=' + goodDefaultAddress.provinceId
-        + '&&wx-defaultCityId=' + goodDefaultAddress.cityId + '&&wx-defaultAreaId=' + goodDefaultAddress.areaId 
-        + '&&wx-defaultLocationName=' + goodDefaultAddress.locationName + '&&wx-defaultHousingEstate=' + goodDefaultAddress.housingEstate
-        + '&&wx-defaultHousingEstateId=' + goodDefaultAddress.housingEstateId + '&&wx-isDisabled=' + isDisabled
-        + '&&wx-token=' + token + '&&wx-userId=' + userId + '&&wx-deviceId=' + deviceId">
+       <web-view :src="baseUrl + '/app-pages/goods-detail/index.html#wx-goodsId='+ goodId + '&wx-houseId='
+        + houseId + '&wx-defaultHouseId=' + goodDefaultAddress.id  + '&wx-defaultProvinceId=' + goodDefaultAddress.provinceId
+        + '&wx-defaultCityId=' + goodDefaultAddress.cityId + '&wx-defaultAreaId=' + goodDefaultAddress.areaId 
+        + '&wx-defaultLocationName=' + goodDefaultAddress.locationName + '&wx-defaultHousingEstate=' + goodDefaultAddress.housingEstate
+        + '&wx-defaultHousingEstateId=' + goodDefaultAddress.housingEstateId + '&wx-isDisabled=' + isDisabled
+        + '&wx-token=' + token + '&wx-userId=' + userId + '&wx-deviceId=' + deviceId + '&wx-refreshHash=' + refreshHash">
        </web-view>
   </view>
 </template>
@@ -22,10 +22,12 @@
         houseId: '',
         goodDefaultAddress: '',
         isDisabled: false,
+        refreshHash: 0,
         token: getApp().globalData.token
       }
     },
     onShow() {
+      this.refreshHash = Math.random()
       this.baseUrl = this.ENV.VUE_APP_BASE_H5
       // this.baseUrl = "https://local.meiwu365.com" 
       if(uni.getStorageSync('goodId')) {
