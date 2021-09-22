@@ -34,92 +34,89 @@
           @scrolltolower="onLoadMore"
         >
           <view class="line" />
-          <view
-            class="house-item"
-            v-if="tabindex==0"
-          >
-            <view class="houseInfo">
-              <view class="header">
-                大兴区康盛园10号楼2单元102
-              </view>
-
-              <view class="area-house">
-                <text>201.2㎡</text>
-                <view class="split-line" />
-                <text>3室2厅1厨</text>
-              </view>
-
-              <view class="cost">
-                装修总花费：¥ 239981.90
-              </view>
-            </view>
-            <image
-              src="../../../../static/images/message/ic_system@2x.png"
-              mode=""
-            ></image>
-          </view>
-
-          <!-- <view class="empty-container">
+          
+          <view class="empty-container" v-if="caseList.length<1">
 						<image src="../../../../static/order/blank_house@2x.png" mode=""></image>
-						<text>您还没有关注房子</text>
-					</view> -->
-          <view
-            class="craftsmanAndRecommend"
-            v-if="tabindex == 1"
-          >
-            <view class="left">
-              <image
-                src="../../../../static/images/message/ic_system@2x.png"
-                mode=""
-              ></image>
-              <view class="baseInfo">
-                <view class="name1">
-                  哈哈哈哈哈哈大王
-                </view>
-                <view class="icon">
-                  大管家
-                </view>
-              </view>
-            </view>
-            <view class="right">
-              <!-- <view class="button1">
-								+关注
-							</view> -->
-              <view class="button2">
-                已关注
-              </view>
-            </view>
-          </view>
-
-          <view
-            class="craftsmanAndRecommend"
-            v-if=" tabindex == 2"
-          >
-            <view class="left">
-              <image
-                src="../../../../static/images/message/ic_system@2x.png"
-                mode=""
-              ></image>
-              <view class="baseInfo">
-                <view class="name2">
-                  打扮家给你意想不到的效果绝对的性价比最高
-                </view>
-                <view class="icon">
-                  大管家
-                </view>
-              </view>
-            </view>
-            <view class="right">
-              <!-- <view class="button4">
-                已优先推荐
-              </view> -->
-							<view class="button3">
-								<image src="../../../static/icon_recommend_@2x.png" mode=""></image>
-							  优先推荐
-							</view>
-            </view>
-          </view>
-
+						<text v-if="tabindex==0">您还没有关注房子</text>
+						<text v-if="tabindex==1">您还没有关注工匠</text>
+						<text v-if="tabindex==2">您还没有关注优先推荐</text>
+					</view>
+					<view  v-else>
+						<view v-if="tabindex==0"  class="house-item">
+						  <view class="houseInfo">
+						    <view class="header">
+						      大兴区康盛园10号楼2单元102
+						    </view>
+						
+						    <view class="area-house">
+						      <text>201.2㎡</text>
+						      <view class="split-line" />
+						      <text>3室2厅1厨</text>
+						    </view>
+						
+						    <view class="cost">
+						      装修总花费：¥ 239981.90
+						    </view>
+						  </view>
+						  <image
+						    src="../../../../static/images/message/ic_system@2x.png"
+						    mode=""
+						  ></image>
+						</view>
+						
+						<view  v-if="tabindex == 1" class="craftsmanAndRecommend">
+						  <view class="left">
+						    <image
+						      src="../../../../static/images/message/ic_system@2x.png"
+						      mode=""
+						    ></image>
+						    <view class="baseInfo">
+						      <view class="name1">
+						        哈哈哈哈哈哈大王
+						      </view>
+						      <view class="icon">
+						        大管家
+						      </view>
+						    </view>
+						  </view>
+						  <view class="right">
+						    <!-- <view class="button1">
+									+关注
+								</view> -->
+						    <view class="button2">
+						      已关注
+						    </view>
+						  </view>
+						</view>
+						
+						<view  v-if=" tabindex == 2"  class="craftsmanAndRecommend">
+						  <view class="left">
+						    <image
+						      src="../../../../static/images/message/ic_system@2x.png"
+						      mode=""
+						    ></image>
+						    <view class="baseInfo">
+						      <view class="name2">
+						        打扮家给你意想不到的效果绝对的性价比最高
+						      </view>
+						      <view class="icon">
+						        大管家
+						      </view>
+						    </view>
+						  </view>
+						  <view class="right">
+						    <!-- <view class="button4">
+						      已优先推荐
+						    </view> -->
+								<view class="button3">
+									<image src="../../../static/icon_recommend_@2x.png" mode=""></image>
+								  优先推荐
+								</view>
+						  </view>
+						</view>
+						
+					</view>
+				
         </scroll-view>
 
       </swiper-item>
@@ -357,14 +354,14 @@ export default {
   }
 
   .empty-container {
-    padding: 180rpx 250rpx 0 250rpx;
+    padding: 180rpx 240rpx 0 240rpx;
     display: flex;
     flex-flow: column nowrap;
     align-items: center;
     justify-content: space-around;
     image {
       width: 248rpx;
-      height: 258rpx;
+      height: 248rpx;
       object-fit: cover;
       margin-bottom: 22rpx;
     }

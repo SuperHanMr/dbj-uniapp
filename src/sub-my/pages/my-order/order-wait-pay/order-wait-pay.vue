@@ -162,7 +162,7 @@ export default {
 	},
 	
   onLoad(e) {
-    this.orderNo =Number( e.orderNo);
+    this.orderNo =Number( e.orderNo)||getApp().globalData.decorateMsg.orderId;
     this.orderDetail()
 		
 		

@@ -9,7 +9,7 @@
 			    <uni-list-item title="关于打扮家" link to="./about-dabanjia/about-dabanjia" /> 
 			</uni-list> -->
 			<view class="uni-list">
-				<view class="uni-list-item" v-for="(item, index) in listArr" @click="onClick(index)">
+				<view class="uni-list-item" v-for="(item, index) in listArr" :key="item.path" @click="onClick(index)">
 					<view class="title">
 						{{item.title}}
 					</view>
@@ -75,8 +75,14 @@
 				this.$refs.popup.close();
 			},
 			confirm(val){
-				console.log(val, 'asdsada');
+				console.log("退出登录");
+				
 				this.$refs.popup.close();
+				uni.clearStorageSync()
+				// 清除本地缓存 然后跳转到首页
+				uni.switchTab({
+				   url:"../../../pages/my/index/index"
+				});
 			}
 		}
 	}
