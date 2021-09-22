@@ -74,7 +74,7 @@
 			}
 		},
 		onShow() {
-			this.onRefresh()
+			// this.onRefresh()
 		},
 		methods: {
 			onConfirmGoods(item) {

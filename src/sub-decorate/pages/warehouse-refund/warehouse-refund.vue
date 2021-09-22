@@ -82,16 +82,14 @@
 				reasonName: "",
 				refundList: [],
 				refundType: 0,
-				id: ''
+				id: '',
 			};
 		},
 		onShow() {
-		
+
 		},
 		onLoad(e) {
 			this.data = getApp().globalData.naviData;
-			console.log('~~~~~~~')
-			console.log(this.data);
 			let title;
 			this.type = e.type;
 			if (e.type == 0) {
@@ -107,12 +105,12 @@
 			});
 			this.id = e.id
 			let totalBack = 0;
-			
+
 			this.data.stockAppVOS.forEach(e => {
 				totalBack += e.price * e.number
 			})
 			console.log(totalBack)
-			this.num=totalBack
+			this.num = totalBack.toFixed(2);
 
 
 			this.getRefundReasonList();
@@ -123,7 +121,8 @@
 				item.returnNumber = e.num;
 
 				this.refundList.push(item);
-
+				let total = e.num * e.item.price
+				this.num = total.toFixed(2);
 				console.log(e);
 			},
 			getRefundReasonList() {
@@ -141,23 +140,26 @@
 				let params = {}
 				params.id = this.id
 				params.returnMoney = this.num * 100
+				params.refundAmount = this.num * 100
 				params.remark = this.remark
-				params.reasonId = this.reasonValue
+				params.reasonId = this.reasonValue;
+				params.reason = this.reasonName
 				console.log(params)
 				if (this.type == 1) {
+					console.log(this.refundList);
 					goodsBack(params)
 				} else {
 					params.type = this.refundType;
 					if (params.type == 2) {
 						params.goodsId = this.data.stockAppVOS[0].goodsId
 					}
-					goodsRefund(params).then(e=>{
+					goodsRefund(params).then(e => {
 						uni.showToast({
-							title:'提交成功',
-							icon:'none'
+							title: '提交成功',
+							icon: 'none'
 						})
 						uni.navigateBack({
-							delta:2
+							delta: 2
 						})
 					})
 				}
