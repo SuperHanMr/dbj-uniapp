@@ -7,7 +7,7 @@
 	export default {
 		data() {
 			return {
-				url: `https://local.meiwu365.com/app-pages/self-study-decorated/index.html`
+				url: `https://local.meiwu365.com/app-pages/actuarial/index.html?projectId=1&&isActuarial=1&isMessage=2`
 			}
 		},
 		methods: {

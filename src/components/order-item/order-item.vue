@@ -84,7 +84,7 @@
 		</view>
 		
 		
-		<view class="discount-container3" v-if="orderStatus==1">
+		<view class="discount-container3" v-if="orderStatus==1 && dataList.type == 2 && dataList.deposit">
 			<view class="right">
 				<view class="item">
 					<text>押金</text>

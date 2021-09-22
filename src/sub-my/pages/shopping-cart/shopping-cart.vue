@@ -1,13 +1,14 @@
 <template>
-	<view class="cartContainer">
+	<view class="cartContainer" :class="{'bg':!shopList.length&&!disabledSkuList.length}">
 		<view class="noGoods" v-if="!shopList.length&&!disabledSkuList.length">
 			<image src="http://dbj.dragonn.top/static/mp/dabanjia/images/my/blank_ic%402x.png" class="noGoodsImg"></image>
 			<view class="noGoodsText">
 				购物车空空如也，快去逛逛吧～
 			</view>
-			<button type="primary" class="goShopping" @click="toShoppingMall">
-				<text class="text">去逛逛</text>
-			</button>
+			<view class="goShopping" @click="toShoppingMall">
+				去逛逛
+				<!-- <text class="text">去逛逛</text> -->
+			</view>
 		</view>
 		<view class="shoppingCart" v-else>
 			<uni-popup
@@ -53,13 +54,13 @@
 				    :right-options="options"
 				    @click="deleteGoods(goodsItem.skuId,goodsItem.buyCount)"
 				  >
-						<view class="goodsItem" @click="toGoodsDetail(goodsItem.skuId)">
+						<view class="goodsItem">
 							<view style="width: 36rpx;height: 36rpx;">
 								<view class="check" v-if="!goodsItem.goodsChecked" @click="checkGoods(shopItem.storeId,goodsItem.skuId)"></view>
 								<image class="checked" v-else @click="checkGoods(shopItem.storeId,goodsItem.skuId)" src="../../../static/shopping-cart/checked@2x.png" ></image>
 							</view>
-							<image :src="goodsItem.image" class="goodsItemImg"></image>
-							<view class="goodsInfo">
+							<image :src="goodsItem.image" @click="toGoodsDetail(goodsItem.skuId)" class="goodsItemImg"></image>
+							<view class="goodsInfo" @click="toGoodsDetail(goodsItem.skuId)">
 								<view class="goodsDesc">
 									<text class="goodsType">{{goodsItem.productType=== 1?"服务":"物品"}}</text>
 									{{goodsItem.spuName}}
@@ -313,6 +314,7 @@
 			requestPage(){
 				getShoppingCartInfo(this.userId).then(data => {
 						let {storeList,disabledSkuList} = data
+						if(!storeList.length)return
 						storeList.map(item => {
 							let sum = 0
 							item.shopChecked = false
@@ -523,7 +525,11 @@
 				let checkedList = []
 				let isChooseDiff = () => {
 					let flag = false
-					let firstType = this.shopList[0].skuList[0].productType
+					// 第一个勾选的商品
+					let target = {}
+					this.shopList.forEach(item => {
+						target = item.skuList.find(ele => ele.goodsChecked)
+					})
 					//清空上一次勾选的商品
 					this.serviceList = []
 					this.entityList = []
@@ -531,7 +537,7 @@
 						item.skuList.forEach(ele => {
 							if(ele.goodsChecked){
 								//判断用户是否选择了不同类型的商品
-								if(ele.productType !== firstType){
+								if(ele.productType !== target.productType){
 									flag = true
 								}
 								//结算页面展示店铺名
@@ -548,6 +554,7 @@
 								//根据productType商品类型划分为服务类和实物类
 								if(ele.productType === 1){
 									this.serviceList.push({
+										skuId: ele.skuId,
 										storeId: ele.storeId,
 										buyCount: ele.buyCount,
 										unit: ele.unitName,
@@ -555,6 +562,7 @@
 									})
 								}else{
 									this.entityList.push({
+										skuId: ele.skuId,
 										storeId: ele.storeId,
 										buyCount: ele.buyCount,
 										unit: ele.unitName,
@@ -711,6 +719,9 @@
 		background: #f5f6f7;
 		position: relative;
 	}
+	.cartContainer.bg{
+		background: #fff;
+	}
 	.cartContainer >>> .uni-dialog-title-text.uni-popup__info{
 		color: #333;
 	}
@@ -751,17 +762,14 @@
 	}
 	.noGoods{
 		width: 400rpx;
-		position: absolute;
-		left: 196rpx;
-		right: 0;
-		top: 300rpx;
-		bottom: 0;
+		margin-left: 196rpx;
+		margin-top: 284rpx;
 	}
 	.noGoods .noGoodsImg{
 		width: 248rpx;
 		height: 248rpx;
 		display: block;
-		margin-left: 70rpx;
+		margin-left: 58rpx;
 		margin-bottom: 20rpx;
 	}
 	.noGoods .noGoodsText{
@@ -778,15 +786,12 @@
 		height: 88rpx;
 		background: linear-gradient(135deg,#53d5cc, #4fc9c9);
 		border-radius: 12rpx;
-		margin-top: 48rpx;
-	}
-	.noGoods .goShopping .text{
-		width: 96rpx;
-		height: 32rpx;
+		margin-top: 75rpx;
+		margin-left: 56rpx;
 		font-size: 32rpx;
 		text-align: center;
 		color: #ffffff;
-		line-height: 32rpx;
+		line-height: 88rpx;
 	}
 	.shoppingCart{
 		width: 100%;

@@ -35,7 +35,8 @@
 	import Decorate from "./component/decorate.vue";
 	import {
 		getCaseList,
-		getDecorateist
+		getDecorateist,
+		getCollection
 	} from "../../api/real-case.js";
 	import {
 		debounce
@@ -154,6 +155,27 @@
 				} else {
 					this.onJump(this.rightList, index ,true);
 				}
+			},
+			// 收藏事件
+			onCollection(index) {
+				const item = this.leftList[index];
+				console.log(this.leftList[index],"收藏");
+				getCollection({
+					bizType: 0, // 固定内容
+					subBizType: item.parentType, // 内容下的子项   视频 VR  图片
+					relationId: item.id, // 作品ID
+					authorId: item.zeusId, // 作者ID
+				}).then((res) => {
+					if (res.data?.code == 1) {
+						if (this.leftList[index].isCollection == false) {
+							this.leftList[index].collectionCount += 1;
+						} else {
+							this.leftList[index].collectionCount -= 1;
+						}
+						this.leftList[index].isCollection = !this.leftList[index].isCollection;
+						console.log(this.leftList[index], 'asdsada')
+					}
+				});
 			},
 			// 获取数据
 			getList() {

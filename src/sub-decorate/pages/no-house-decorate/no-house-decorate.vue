@@ -164,7 +164,13 @@
         type,
       } = option
       this.sssType = type || getType(serviceType)
-      this.projectId = projectId
+
+      if (option.isDecorate) {
+        this.projectId = Number(option.projectId)
+      } else {
+        this.projectId = projectId
+      }
+
       this.serveType = serveType
       this.estateId = Number(estateId) || Number(option.estateId)
       this.customerId = customerId
@@ -237,7 +243,7 @@
           area_id: this.currentHouse.areaId || defaultHouse.areaId,
           // serveTypes: [1, 2, 4]
         }
-        if(this.sssType == "checkHouse") {
+        if (this.sssType == "checkHouse") {
           params.serveTypes = [2]
         }
         getServiceSku(params).then(data => {
@@ -245,9 +251,15 @@
             categoryTypeId,
             values
           } = this.selectedServer
-          this.design = {}
-          this.checkHouse = {}
-          this.actuary = {}
+          this.design = {
+            checked: false,
+          }
+          this.checkHouse = {
+            checked: false,
+          }
+          this.actuary = {
+            checked: false,
+          }
           if (categoryTypeId == 1) {
             this.design = {
               title: "设计服务",
@@ -381,7 +393,7 @@
               type: 2, //"int //实体类型   1材料  2服务   3专项付款",
               businessType: this.design.categoryTypeId, //"int //业务类型",
               workType: -2, //"int //工种类型",
-              level: 0, //"int //等级  0中级  1高级 2特级  3钻石",
+              level: 1, //"int //等级  0中级  1高级 2特级  3钻石",
               storeId: this.design.storeId || 0, //"long //店铺id",
               storeType: 0, //"int //店铺类型 0普通 1设计师",
               number: this.currentHouse.insideArea, //"double //购买数量",

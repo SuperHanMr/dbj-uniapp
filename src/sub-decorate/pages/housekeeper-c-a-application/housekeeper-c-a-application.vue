@@ -25,12 +25,7 @@
       UserDescPictButler
     },
     onLoad(option) {
-      const {
-        id,
-        serveId,
-        serveType,
-        serveTypeName
-      } = getApp().globalData.decorateMsg
+      this.msg = getApp().globalData.decorateMsg
       this.id = id
     },
     onShow() {
@@ -38,6 +33,7 @@
     },
     data() {
       return {
+        msg: {},
         detail: {},
         id: null
       }
@@ -52,12 +48,15 @@
             if (res.confirm) {
               console.log("点击了确认")
               ownerCompletionAudit({
-                id: this.detail.id,
+                id: this.msg.data.id,
                 status: 2
               }).then(data => {
                 console.log(data)
                 uni.showToast({
                   title: "已提交验收"
+                })
+                uni.navigateBack({
+                  
                 })
               })
             } else {
@@ -68,11 +67,11 @@
       },
       refuse() {
         uni.navigateTo({
-          url: `/sub-decorate/pages/housekeeper-refuse/housekeeper-refuse?id=${this.detail.id}`
+          url: `/sub-decorate/pages/housekeeper-refuse/housekeeper-refuse?id=${this.msg.data.id}`
         })
       },
       queryCompletionDetail() {
-        completionDetail(this.id).then(data => {
+        completionDetail(this.msg.data.id).then(data => {
           this.detail = data
         })
       },

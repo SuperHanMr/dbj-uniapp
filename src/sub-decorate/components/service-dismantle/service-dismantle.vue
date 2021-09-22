@@ -23,7 +23,7 @@
     props:{
       serveId:0,
       projectId:0,
-      tab:{}
+      index:0
     },
     data(){
       return{
@@ -34,9 +34,12 @@
       formatDate
     },
     watch:{
-      serveId(){
-        this.getComplateDetail()
-      }
+      serverId:{
+        handler:function(){
+          this.getComplateDetail()
+        },
+        immediate: true
+      },
     },
     methods:{
       getComplateDetail(){
@@ -44,7 +47,7 @@
           console.log(res)
           this.list = res
           if(res.length===0){
-            this.$emit('isEmpty',this.tab.nodeType)
+            this.$emit('isEmpty',this.index)
           }
         })
       }

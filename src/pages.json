@@ -1,5 +1,6 @@
 {
-	"pages": [{
+	"pages": [
+		{
 			"path": "pages/home/index/index",
 			"style": {
 				"navigationBarTitleText": "首页",
@@ -118,7 +119,8 @@
 		"selectedColor": "#FFA500",
 		"borderStyle": "black",
 		"backgroundColor": "#FFFFFF",
-		"list": [{
+		"list": [
+			{
 				"pagePath": "pages/home/index/index",
 				"iconPath": "static/home_owner.png",
 				"selectedIconPath": "static/home_owner.png",
@@ -152,7 +154,8 @@
 	},
 	"condition": { //模式配置，仅开发期间生效
 		"current": 0, //当前激活的模式(list 的索引项)
-		"list": [{
+		"list": [
+			{
 				"name": "default", //模式名称
 				"path": "pages/home/index/index", //启动页面，必选
 				"query": "" //启动参数，在页面的onLoad函数里面得到
@@ -179,9 +182,11 @@
 			}
 		]
 	},
-	"subPackages": [{
+	"subPackages": [
+		{
 			"root": "sub-home", //首页模块分包
-			"pages": [{
+			"pages": [
+				{
 					"path": "pages/lives-room/lives-room",
 					"style": {
 						"navigationBarTitleText": "",
@@ -230,34 +235,34 @@
 						"enablePullDownRefresh": false
 					}
 				},
-        {
-          "path": "pages/decorate-scene/memo",
-          "style": {
-            "navigationBarTitleText": "备忘录",
-            "enablePullDownRefresh": false
-          }
-        },
-        {
-          "path": "pages/decorate-scene/memo-detail",
-          "style": {
-            "navigationBarTitleText": "备忘录详情",
-            "enablePullDownRefresh": false
-          }
-        },
-        {
-          "path": "pages/decorate-scene/new-memo",
-          "style": {
-            "navigationBarTitleText": "新建备忘录",
-            "enablePullDownRefresh": false
-          }
-        },
-        {
-          "path": "pages/decorate-scene/choose-remind",
-          "style": {
-            "navigationBarTitleText": "选择需要提醒的人",
-            "enablePullDownRefresh": false
-          }
-        }
+				{
+					"path": "pages/decorate-scene/memo",
+					"style": {
+						"navigationBarTitleText": "备忘录",
+						"enablePullDownRefresh": false
+					}
+				},
+				{
+					"path": "pages/decorate-scene/memo-detail",
+					"style": {
+						"navigationBarTitleText": "备忘录详情",
+						"enablePullDownRefresh": false
+					}
+				},
+				{
+					"path": "pages/decorate-scene/new-memo",
+					"style": {
+						"navigationBarTitleText": "新建备忘录",
+						"enablePullDownRefresh": false
+					}
+				},
+				{
+					"path": "pages/decorate-scene/choose-remind",
+					"style": {
+						"navigationBarTitleText": "选择需要提醒的人",
+						"enablePullDownRefresh": false
+					}
+				}
 			]
 		},
 		{
@@ -266,7 +271,8 @@
 		},
 		{
 			"root": "sub-my", //我的模块分包
-			"pages": [{
+			"pages": [
+				{
 					"path": "pages/apply-for-refund/apply-for-refund",
 					"style": {
 						"navigationBarTitleText": "申请退款",
@@ -277,6 +283,13 @@
 					"path": "pages/edit-personal-data/edit-personal-data",
 					"style": {
 						"navigationBarTitleText": "编辑个人资料"
+					}
+				},
+				{
+					"path": "pages/edit-personal-data/edit-nick-name/edit-nick-name",
+					"style": {
+						"navigationBarTitleText": "编辑昵称",
+						"enablePullDownRefresh": false
 					}
 				},
 				{
@@ -463,7 +476,8 @@
 		},
 		{
 			"root": "sub-classify", //商城模块分包
-			"pages": [{
+			"pages": [
+				{
 					"path": "pages/search/index",
 					"style": {
 						"navigationBarTitleText": "",
@@ -515,7 +529,8 @@
 		},
 		{
 			"root": "sub-other", //其他页面
-			"pages": [{
+			"pages": [
+				{
 					"path": "pages/merchant-entry/merchant-entry",
 					"style": {
 						"navigationBarTitleText": "商家入驻",
@@ -533,7 +548,8 @@
 		},
 		{
 			"root": "sub-decorate", //装修模块分包
-			"pages": [{
+			"pages": [
+				{
 					"path": "pages/service-list/service-list",
 					"style": {
 						"navigationBarTitleText": "",
@@ -742,6 +758,13 @@
 					"path": "pages/current-cost/current-cost",
 					"style": {
 						"navigationBarTitleText": "当前花销",
+						"enablePullDownRefresh": false
+					}
+				},
+				{
+					"path": "pages/current-cost/current-cost-details",
+					"style": {
+						"navigationBarTitleText": "精算详情",
 						"enablePullDownRefresh": false
 					}
 				},

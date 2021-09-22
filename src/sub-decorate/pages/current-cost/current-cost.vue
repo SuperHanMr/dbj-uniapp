@@ -16,7 +16,7 @@
       let id = e.id || getApp().globalData.decorateMsg.reportId
       let cost = e.isCost||1
       
-      this.url = process.env.VUE_APP_BASE_H5+this.url + id +'&isMessage='+(e.id?2:1) + '&isActuarial=' + cost +'&token='+getApp().globalData.token
+      this.url = process.env.VUE_APP_BASE_H5+this.url + id +'&projectId='+(e.id?e.projectId:getApp().globalData.decorateMsg.projectId) + '&isActuarial=' + cost +'&token='+getApp().globalData.token
       console.log(this.url)
     },
     methods: {

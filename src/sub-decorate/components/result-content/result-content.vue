@@ -60,7 +60,11 @@
     props: {
       isReport: false,
       scrollTop: 0,
-      serverId:0
+      serverId:{
+        type:Number,
+        default:0
+      },
+      index:0
     },
     filters:{
       formatDate
@@ -178,8 +182,11 @@
       }
     },
     watch: {
-      serverId(){
-        this.getData()
+      serverId:{
+        handler:function(){
+          this.getData()
+        },
+        immediate: true
       },
       scrollTop() {
         if (this.scrollTop > this.top) {
@@ -218,7 +225,7 @@
             },1000)
           }
         }).catch(err=>{
-          this.$emit('isEmpty',2)
+          this.$emit('isEmpty',this.index)
         })
       },
       toHHmmss(date){

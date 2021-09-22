@@ -436,7 +436,6 @@
 		height: 48rpx;
 		margin: 24rpx 32rpx;
 		background: #ffffff;
-		opacity: 0.62;
 		border-radius: 26rpx;
 		position: relative;
 		/* #ifndef APP-NVUE */
@@ -466,7 +465,6 @@
 		width: 158rpx;
 		height: 48rpx;
 		margin: 24rpx 32rpx;
-		opacity: 0.62;
 		background: #ffffff;
 		border-radius: 26rpx;
 		display: flex;
