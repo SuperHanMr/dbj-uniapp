@@ -235,7 +235,6 @@
 							e.stockAppVOS.forEach(sub => {
 								sub.number = sub.stockNumber;
 							})
-
 						}
 						this.res = e;
 					})
@@ -243,12 +242,22 @@
 					receivedDetail({
 						id
 					}).then(e => {
+						if (e.stockAppVOS && e.stockAppVOS.length) {
+							e.stockAppVOS.forEach(sub => {
+								sub.number = sub.stockNumber;
+							})
+						}
 						this.res = e;
 					})
 				} else if (type == 3) {
 					refundDetail({
 						id
 					}).then(e => {
+						if (e.stockAppVOS && e.stockAppVOS.length) {
+							e.stockAppVOS.forEach(sub => {
+								sub.number = sub.stockNumber;
+							})
+						}
 						this.res = e;
 					})
 				}
