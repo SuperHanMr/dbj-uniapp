@@ -77,11 +77,23 @@
 			confirm(val){
 				console.log("退出登录");
 				
-				this.$refs.popup.close();
-				uni.clearStorageSync()
 				// 清除本地缓存 然后跳转到首页
+				this.$refs.popup.close();
+				uni.clearStorageSync();
+				getApp().globalData.userInfo ={
+    userInfo: {},
+    token: "",
+    city: "",
+    houses: [],
+    tim: null,
+    noHouseActuaryId: null,
+    noHouseDesignId: null,
+    noHouseCheckId: null,
+    naviData: null,
+    decorateMsg: {},
+  }
 				uni.switchTab({
-				   url:"../../../pages/my/index/index"
+				   url:"../../../pages/home/index/index"
 				});
 			}
 		}
