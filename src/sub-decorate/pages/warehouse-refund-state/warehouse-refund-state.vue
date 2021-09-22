@@ -101,7 +101,7 @@
 		<view style="height: 200rpx;">
 
 		</view>
-		<view class="bottom-btn">
+		<view v-if="detail.status==1||detail.status==0" class="bottom-btn">
 			<view class="btn" @click="cancelRefund">
 				取消退款
 			</view>
@@ -129,7 +129,8 @@
 				detail: {},
 				headerTitle: '',
 				headerTime: '',
-				tips: ''
+				tips: '',
+				id:''
 			}
 		},
 		onLoad(e) {
@@ -145,6 +146,7 @@
 				menuButtonInfo.height +
 				"px";
 			if (e && e.id) {
+				this.id=e.id
 				this.getDetail(e.id);
 			}
 		},

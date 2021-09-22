@@ -73,7 +73,9 @@
 				this.getList(true);
 			}
 		},
-		onShow() {},
+		onShow() {
+			this.onRefresh()
+		},
 		methods: {
 			onConfirmGoods(item) {
 				let vm = this;
