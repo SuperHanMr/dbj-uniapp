@@ -9,10 +9,11 @@ export function getEstateProjectInfoList(params) {
   return request.get("/pm/app/project/getEstateProjectInfoList?" + str)
 }
 //获取可购买服务
-export function availableService(projectId) {
+export function availableService(params) {
+  const {projectId, relegationType} = params
   if (projectId) {
-    return request.get(`/pm/app/project/availableService?projectId=${projectId}`)
+    return request.get(`/pm/app/project/availableService?projectId=${projectId}&relegationType=${relegationType}`)
   } else {
-    return request.get("/pm/app/project/availableService")
+    return request.get(`/pm/app/project/availableService?relegationType=${relegationType}`)
   }
 }
