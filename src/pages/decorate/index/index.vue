@@ -264,7 +264,7 @@
       scroll(e) {},
       getAvailableService() {
         this.availGuides = []
-        availableService(this.currentProject.projectId).then(data => {
+        availableService({relegationType: this.currentProject.relegationType, projectId:this.currentProject.projectId}).then(data => {
           const {
             purchasedServiceList,
             availableServiceList,
