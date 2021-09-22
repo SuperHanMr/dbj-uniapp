@@ -186,7 +186,7 @@ export default {
     this.systemBottom = menuButtonInfo.bottom + "rpx";
     this.menuBottom = menuButtonInfo.bottom;
     if (e && e.projectId) {
-      this.projectId = projectId;
+      this.projectId = e.projectId;
     }
     this.getLeftList();
   },
