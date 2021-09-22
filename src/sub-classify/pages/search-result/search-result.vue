@@ -16,7 +16,7 @@
       </uni-search-bar>
       <sort-button class="sort-button"></sort-button>
     </view>
-    <scroll-view class="content" scroll-y="true">
+    <scroll-view class="content" scroll-y="true" @scrolltolower="loadMoreList" @scrolltoupper="goBackList">
      <uni-swipe-action v-if="listData.list && listData.list.length>0">
        <uni-swipe-action-item
          v-for="(goodsItem,goodsIndex) in listData.list"
@@ -67,7 +67,8 @@
         listData: {},
         initSearch: true,
         isPageReady: false,
-        isShow: true
+        isShow: true,
+        page: 1
       }
     },
     onShow(){
@@ -87,11 +88,30 @@
     },
     methods: {
       getList() {
-          getGoodsList().then((data) => {
+        let params= {
+          page: this.page
+        }
+          getGoodsList(params).then((data) => {
             this.listData = data
             this.isPageReady = true
             console.log(data, 111)
           })
+      },
+      loadMoreList() {
+        if(this.page < this.listData.totalPage){
+          this.page ++
+        }else {
+          return
+        }
+        this.getList()
+      },
+      goBackList() {
+        if(this.page !== 1) {
+          this.page --
+        }else {
+          return
+        }
+        this.getList()
       },
       clickInitSearch() {
         this.initSearch = false
@@ -189,6 +209,7 @@
     .content{
       background-color: #FFFFFF;
       height: calc(100% - 120rpx);
+      padding-bottom: 20rpx;
       margin-top: 115rpx;
       position: relative;
     }
