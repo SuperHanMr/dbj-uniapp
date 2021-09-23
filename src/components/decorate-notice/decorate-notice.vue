@@ -3,8 +3,8 @@
     <view class="notice-mask"></view>
     <view class="notice-view">
       <scroll-view class="item-list" :style="{height:scrollHeight}" scroll-y="true">
-        <view class="item">
-          <!--          <view
+       <view class="item">
+                   <view
             class="notice-item"
             @click="to(3)"
           > 
@@ -22,7 +22,7 @@
               <text>有量房员接单啦，请确认</text>
               <image src="../../static/images/ic_more_black.svg"></image>
             </view>
-          </view> -->
+          </view>
           <view class="notice-item" @click="to(item)" v-for="item of list" :key='item.id'>
             <view class="item-top">
               <view class="item-top-left">
@@ -98,7 +98,7 @@
         }
         console.log(getApp().globalData.decorateMsg)
         uni.navigateTo({
-          url: param.url
+          url: param.url||'/sub-decorate/pages/grab/grab'
         });
         this.close();
       },

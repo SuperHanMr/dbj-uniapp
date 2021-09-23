@@ -82,7 +82,7 @@
 					订单编号:
 				</view>
 				<view class="order-info-row-con">
-					{{res.orderId}}
+					{{res.orderNo}}
 				</view>
 				<view class="copy" @click="copy">
 					复制
@@ -93,7 +93,7 @@
 					创建时间:
 				</view>
 				<view class="order-info-row-con">
-					{{res.createTime |formatDate('ss')}}
+					{{res.createTime |formatDate}}
 				</view>
 			</view>
 			<view class="order-info-row">
@@ -101,7 +101,7 @@
 					付款时间:
 				</view>
 				<view class="order-info-row-con">
-					{{res.pay_time |formatDate}}
+					{{res.payTime |formatDate}}
 				</view>
 			</view>
 			<view class="order-info-row">
@@ -264,7 +264,7 @@
 
 			},
 			copy() {
-				let orderId = this.res.orderId;
+				let orderId = this.res.orderNo;
 				console.log(orderId);
 				uni.setClipboardData({
 					data: orderId.toString(),

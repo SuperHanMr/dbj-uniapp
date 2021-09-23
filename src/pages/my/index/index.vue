@@ -198,17 +198,29 @@ export default {
         url: "../../real-case/real-case",
       });
     },
+		
     handleSetUp() {
-      console.log("点击设置");
-      uni.navigateTo({
-				url:"../../../sub-my/pages/set-up/set-up"
-      });
+			if(!this.isLogin){
+				uni.navigateTo({
+					url:'../../login/login'
+				})
+			}else{
+				console.log("点击设置");
+				uni.navigateTo({
+					url:"../../../sub-my/pages/set-up/set-up"
+				});
+			}
     },
     handlerPersonalData() {
-      console.log("编辑个人资料");
-      uni.navigateTo({
-				url:"../../../sub-my/pages/edit-personal-data/edit-personal-data"
-      });
+			if(!this.isLogin){
+				uni.navigateTo({
+					url:'../../login/login'
+				})
+			}else{
+				uni.navigateTo({
+					url:"../../../sub-my/pages/edit-personal-data/edit-personal-data"
+				});
+			}
     },
     handlePersonalItem(item) {
       console.log(item.url, "key");

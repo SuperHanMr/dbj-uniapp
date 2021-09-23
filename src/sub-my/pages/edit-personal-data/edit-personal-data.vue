@@ -2,29 +2,34 @@
   <view class="base-info-container">
 		<view class="avatar-container">
 			<view class="container" @click="changeAvatar">
-				<image class="avatar" :src="UserInfo.avatar" mode=""/>
-				<image class="change_avatar" src="../../static/ic_mine_change_avatar@2x.png" mode=""></image>
+				<image class="avatar" :src="userInfo.avatar" mode=""/>
+				<image class="change_avatar" src="../../static/ic_mine_change_avatar@2x.png" mode="" />
 			</view>
-			
-			
 		</view>
 		
-		
-    <view class="main-body">
+		<view class="main-body">
      <view class="nickName-container" @click="changeNickName">
 				<text>昵称</text>
 				<view class="right">
-					<text>{{UserInfo.name}}</text>
+					<text>{{userName}}</text>
 					<image src="../../static/ic_mine_editPersonal_arraw@2x.png" mode=""></image>
 				</view>
      </view>
-		 
+		 <view class="line"/>
+		 <view class="nickName-container" @click="changeNickName">
+				<text>性别</text>
+				<view class="right">
+					<!-- 性别（1男，2女） -->
+					<text>{{this.userInfo.sex ==1?"男":"女"}}</text>
+					<image src="../../static/ic_mine_editPersonal_arraw@2x.png" mode=""></image>
+				</view>
+		 </view>
 		 <view class="line"/>
 		 
 		 <view class="gender-container" @click="showToast">
 				<text>手机号</text>
 				<view class="right" style="margin-right: 8rpx;">
-					<text>{{UserInfo.phone}}</text>
+					<text>{{userInfo.phone}}</text>
 				</view>
 		 </view>
 		 
@@ -33,20 +38,61 @@
 </template>
 
 <script>
+import {editUserInfo} from "../../../api/order.js"
 import upload from "../../../utils/upload.js"
 export default {
   data() {
     return {
-			UserInfo:{},
-			files:"",
+			userInfo:{},
+			userName:"",
+			files:{},
 		};
   },
 	onShow() {
-		this.UserInfo  =getApp().globalData.userInfo
-		console.log("UserInfo=",this.UserInfo)
-		this.userName=this.UserInfo.name;
+		this.userInfo = getApp().globalData.userInfo
+		console.log("userInfo=",this.userInfo)
+		this.userName=this.userInfo.name;
+		this.files.url = 	this.userInfo.avatar 
+		console.log("this.files=",this.files)
+	},
+	watch:{
+		files(newVal,oldVal){
+			this.editAvatar(oldVal);
+			console.log("newVal=",newVal,"oldVal=",oldVal)
+		},
 	},
   methods: {
+		editAvatar(data){
+			let params={
+				// id:this.userInfo.id,
+				// name:this.userInfo.name,
+				// phone:this.userInfo.phone,
+				// backgroundImg:"",
+				// loginStatus:"",
+				// identityState:"",
+				gender:this.userInfo.sex,
+				avatar:this.files.url,
+				nickName:this.userName,
+			}
+			editUserInfo(params).then((e)=>{
+				console.log(e)
+				uni.showToast({
+					title:"修改图片成功",
+					icon:"none",
+					duration: 2000
+				})
+			}).catch(()=>{
+				this.files.url=data.url
+				uni.showToast({
+					title:"修改图片失败",
+					icon:"none",
+					duration: 2000
+				})
+			})
+			
+		},
+		
+		
     onClick() {
       console.log("打印数据，哈哈哈");
     },
@@ -72,7 +118,7 @@ export default {
 					fileType: "image",
 					success: (res) => {
 						this.files=res;
-						this.UserInfo.avatar = this.files.url
+						this.userInfo.avatar = this.files.url
 						console.log("this.files=",this.files)
 					},
 					fail: (res) => {
@@ -88,7 +134,7 @@ export default {
 		//修改昵称
 		changeNickName(){
 			uni.navigateTo({
-				url:`edit-nick-name/edit-nick-name?nickName=${this.UserInfo.name}`
+				url:`edit-nick-name/edit-nick-name?nickName=${this.userInfo.name}`
 			})
 		},
 		
