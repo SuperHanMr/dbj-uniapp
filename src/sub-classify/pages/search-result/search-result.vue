@@ -14,39 +14,38 @@
       <uni-search-bar  @confirm="searchConfirm" clearButton="auto" cancelButton="false" focus="true" v-else>
         <uni-icons slot="searchIcon"/>
       </uni-search-bar>
-      <sort-button class="sort-button"></sort-button>
+      <sort-button class="sort-button" @click="sortList"></sort-button>
     </view>
-    <scroll-view class="content" scroll-y="true" @scrolltolower="loadMoreList" @scrolltoupper="goBackList">
-     <uni-swipe-action v-if="listData.list && listData.list.length>0">
+    <scroll-view class="content" scroll-y="true"  @scrolltolower="loadMoreList"  lower-threshold="5">
+     <uni-swipe-action v-if="listArr.length>0">
        <uni-swipe-action-item
-         v-for="(goodsItem,goodsIndex) in listData.list"
+         v-for="(goodsItem,goodsIndex) in listArr"
          :key="goodsIndex"
          :right-options="options"
        >
         <view class="goodsItem" @click="toDetails(goodsItem.id)">
-          <image :src="goodsItem.imageUrl" class="goodsItemImg"></image>
+          <image :src="goodsItem.product.skuImage" class="goodsItemImg"></image>
           <view class="goodsInfo">
             <view class="goodsDesc">
-              <text class="goodsType">{{goodsItem.productType=== 1?"服务":"物品"}}</text>
-              {{goodsItem.spuName}}
+              <text class="goodsType">{{goodsItem.product.productType=== 1?"服务":"物品"}}</text>
+              {{goodsItem.product.spuName}}
             </view>
             <view class="goodsSpec">
                   <view class="goods-money">
                     ￥
                     <text class="integer-price">{{goodsItem.convertedPrice?goodsItem.convertedPrice.split(".")[0]: 0}}</text>
                     <text>.{{goodsItem.convertedPrice?goodsItem.convertedPrice.split(".")[1]: 0}}</text>
-                    <text>/{{goodsItem.unitName}}</text>
+                    <text>/{{goodsItem.product.priceUnitName?goodsItem.product.priceUnitName:""}}</text>
                   </view>
-            </view>
-            
+            </view>    
             <view class="foot">
-              <view class="goodsBrand">{{goodsItem.brandName}}</view>
+              <view class="goodsBrand">{{goodsItem.product.storeName}}</view>
             </view>
           </view>
         </view>	
       </uni-swipe-action-item>
      </uni-swipe-action>  
-      <view v-if="isPageReady && !(listData.list && listData.list.length > 0)" class="no-goods">
+      <view v-if="isPageReady && !(listArr.length > 0)" class="no-goods">
          <view class="img"></view>
          <view class="text">抱歉，没有找到符合的商品 请换关键词再搜搜看吧～</view>
        </view>
@@ -64,11 +63,14 @@
     },
     data() {
       return {
-        listData: {},
+        totalPage: 0,
+        listArr: [],
         initSearch: true,
         isPageReady: false,
         isShow: true,
-        page: 1
+        page: 1,
+        timer: null,
+        sort: ""
       }
     },
     onShow(){
@@ -88,26 +90,50 @@
     },
     methods: {
       getList() {
-        let params= {
-          page: this.page
-        }
+        // let params= {
+        //   page: this.page,
+        //   rows: 20
+        // }
+        let params = {
+            serviceVersion:0,
+            query:this.searchText,     //查询的关键词
+            categoryId:0,  //搜索范围，在指定的商品分类id的范围内搜索，可不传（表示不限定商品分类）,
+            supplierId:0, //搜索范围，在指定的供应商 id 的范围内搜索，可不传（表示不限定供应商）,
+            storeId:0, //搜索范围，在指定的店铺 id 的范围内搜索，可不传（表示不限定店铺）,
+            areaId:0, //区域编号，会按这个区域进行搜索；      区域的取值，请参考相关需求，好像是：有当前房屋就取当前房屋所在区域，没有当前房屋就取用户选取的位置区域...（具体逻辑比这个还复杂点）,
+            sort:this.sort, //搜索排序方式：      price_asc  表示按价格从低到高排序；      price_desc 表示按价格从高到低排序；,
+            pageIndex:this.page, //页面序号，从 1 开始，不传取 默认值第 1 页；,
+            pageSize:20, //每页数据量大小，不传取默认值 10；,
+            maxErrorSize:0,//容错程度； 0 表示数据不能有问题； -1 表示数据可以有问题；大于 1 的数表示允许问题数量在多少范围内。每条数据都记录了自己在同步时的问题数量。对本参数设置一个容错程度，可以指定问题达到什么程度的数据就不搜出来了。,
+            cache:false, //是否允许缓存数据      如果为 true，则返回数据可能是从缓存中读的（如果缓存被命中的话）,
+            u:0, //设备id（目前没用到，为以后作兼容处理预留的）,
+            p1:"", //平台码（目前没用到，为以后作兼容处理预留的）,
+            v:"" //客户端版本号（目前没用到，为以后作兼容处理预留的）
+          }
+
           getGoodsList(params).then((data) => {
-            this.listData = data
             this.isPageReady = true
-            console.log(data, 111)
+            this.totalPage = data.total
+            if(this.listArr.length){
+              this.listArr = this.listArr.concat(data.page)
+            }else {
+              this.listArr = data.page
+            }
           })
       },
-      loadMoreList() {
-        if(this.page < this.listData.totalPage){
-          this.page ++
-        }else {
-          return
+      sortList () {
+        if(!this.sort){
+          this.sort = "price_asc"
+        }if(this.sort === "price_asc") {
+          this.sort = "price_desc"
+        }if(this.sort === "price_desc"){
+          this.sort = ""
         }
         this.getList()
       },
-      goBackList() {
-        if(this.page !== 1) {
-          this.page --
+      loadMoreList() {
+        if(this.page < this.totalPage){
+          this.page ++
         }else {
           return
         }
