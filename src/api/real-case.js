@@ -1,7 +1,9 @@
 import request from '../utils/request';
 
 export function getDecorateist(params) {
-  return request.get(`/pm/app/project/list`, { params });
+  return request.get(`/pm/app/project/list`, {
+    params
+  });
 }
 export function getCollection(params) {
   return request.post(`/app/collection`, params);
@@ -32,8 +34,8 @@ export function getSelectOptions(params) {
     params
   });
 }
-export function setAttentions(params) {
-  return request.post(`/app/base/interactive/add`, params);
+export function setAttentions(params, config) {
+  return request.post(`/app/base/interactive/add`, params, config);
 }
 export function getFocusBrowse(params) {
   return request.get(`/app/base/interactive/project/count/detail`, {
@@ -49,4 +51,7 @@ export function expandReplies(params) {
   return request.get(`/app/generalComment/secondList`, {
     params
   });
+}
+export function getSigneddates(projectId,month) {
+  return request.get(`/pm/app/decorate/calendar/getClientMonthTotal/${projectId}/${month}`, {});
 }

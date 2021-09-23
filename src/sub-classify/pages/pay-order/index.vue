@@ -96,7 +96,7 @@
           <text>商品总价</text>
           <text>¥{{orderInfo.totalPrice}}</text>
         </view>
-        <view class="store-read">
+        <view class="store-read" v-if="productType === 1">
           <text>
             当前费用不包含运费和搬运费，具体费用会在要货时进行结算
           </text>
@@ -199,7 +199,8 @@
         orderDetails: [],
         totalGoodsNum: 0,
         totalPrice: '0.00',
-        canPay: true
+        canPay: true,
+        projectId: 0
       }
     },
     onLoad(e) {
@@ -221,6 +222,7 @@
       }else if(this.originFrom === "shopCart"){
         this.houseId = JSON.parse(uni.getStorageSync('currentHouse')).id
       }
+      console.log(this.houseId, "houseId")
       // this.originFrom = "h5GoodDetail"
       // this.originFrom = "shopCart"
       this.buyCount = e.buyCount
@@ -230,17 +232,21 @@
       this.goodDetailId = uni.getStorageSync('goodId')
     },
     onShow() {
-      if(!uni.getStorageSync('houseListChooseId') && !this.houseId){
+      if(!Number(uni.getStorageSync('houseListChooseId')) && !Number(this.houseId)){
         this.isShow = false
         setTimeout(() => {
-          if(this.$refs.houseDialog.open){
+          if(this.$refs.houseDialog){
             this.$refs.houseDialog.open()
           }
         })
+      }else{
+        this.isShow = true
       }
       if (uni.getStorageSync('houseListChooseId')) {
-        this.houseId = uni.getStorageSync('houseListChooseId')
-        if(this.$refs.houseDialog.close) {
+        this.$nextTick(() => {
+          this.houseId = uni.getStorageSync('houseListChooseId')
+        })
+        if(this.$refs.houseDialog) {
           this.$refs.houseDialog.close()
         }
       }
@@ -268,6 +274,8 @@
         this.$set(this.orderInfo.storeInfos[this.shopIndex].skuInfos[this.goodIndex], "time", this.time)
       },
       emitInfo(val) {
+        this.projectId = val.projectId
+        this.orderDetails = []
         this.addressInfo = val
         this.estateId = val.id ? val.id: 0
          let params = {}
@@ -369,6 +377,7 @@
                   orderDetailItem: orderDetailItem,
                   paramsInfo: skuItem
                 })
+                console.log(this.orderDetails, "this.orderDetails")
               }
             })
           })
@@ -404,7 +413,7 @@
         let params = {
             payType: 1, //"int //支付方式  1微信支付",
             openid: uni.getStorageSync("openId"), //"string //微信openid 小程序支付用 app支付不传或传空",
-            projectId: 0, //"long //项目id  非必须 默认0",
+            projectId: this.projectId, //"long //项目id  非必须 默认0",
             customerId: 0, //"long //业主id  非必须 默认0",
             estateId: this.estateId, //"long //房产id   非必须 默认0",
             total: this.totalPrice * 100, //"int //总计",
@@ -653,8 +662,7 @@
   }
 
   .good-store-account {
-    padding: 5rpx 32rpx;
-    height: 210rpx;
+    padding: 35rpx 32rpx;
     background-color: #FFFFFF;
     margin-top: 25rpx;
     font-size: 28rpx;
@@ -662,7 +670,6 @@
     display: flex;
     flex-wrap: wrap;
     align-content: space-around;
-    height: 220rpx;
   }
 
   .good-store-account view {

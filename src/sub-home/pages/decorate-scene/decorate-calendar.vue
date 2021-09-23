@@ -10,7 +10,7 @@
 				:showMonth="false"
 			  @change="change"
 			/> -->
-			<dark-calendar></dark-calendar>
+			<dark-calendar :signeddates="signeddates"></dark-calendar>
 		</view>
 		<view class="dynamic">
 			<view class="top">
@@ -50,20 +50,51 @@
 </template>
 
 <script>
+	import {formatDate} from "../../../utils/common.js"
 	import darkCalendar from "../../components/dark-calendar/dark-calendar"
+	import {getSigneddates} from "../../../api/real-case.js"
 	export default {
+		filters:{
+			formatDate
+		},
 		components:{
 			darkCalendar
 		},
 		data() {
 			return {
-				selectedList:[{date: '2021-08-20', info: '签到'}]
+				selectedList:[{date: '2021-08-20', info: '签到'}],
+				signeddates: [{day: '2021-9-20', status: 1}],
+				projectId: 0
 			};
+		},
+		onLoad(option) {
+			const eventChannel = this.getOpenerEventChannel();
+			eventChannel.on('acceptDataFromOpenerPage',( data )=> {
+				// this.projectId = data
+				this.projectId = 46
+			})  
+		},
+		mounted(){
+			this.requestSigns()
 		},
 		methods:{
 			change(e){
 				console.log(e)
+			},
+			requestSigns(){
+				let y = new Date().getFullYear()
+				let m = new Date().getMonth() + 1
+				let mon = m < 10 ? '0'+m : m
+				getSigneddates(this.projectId,y+mon).then(data => {
+					console.log(data)
+					if(!data.length)return
+					this.signeddates = data.map(item => {
+						item.day = formatDate(item.day,'YYYY-MM-DD')
+						return item
+					})
+				})
 			}
+			
 		}
 	}
 </script>
@@ -73,7 +104,7 @@
 		width: 100%;
 		height: 100%;
 		overflow: auto;
-		background: #fff;
+		background: #f2f5f8;
 	}
 	.calendar{
 		width: 100%;

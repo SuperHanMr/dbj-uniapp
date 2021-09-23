@@ -27,8 +27,10 @@
       :current="currentIndex"
       :duration="200"
       @change="swiperChange"
+      :style="{background:tabList.length > 0 ?'none':'#fff'}"
     >
       <swiper-item
+        v-if="tabList.length > 0"
         v-for="(item,tabindex) in tabList"
         :key="tabindex"
       >
@@ -49,6 +51,22 @@
         </scroll-view>
 
       </swiper-item>
+
+      <swiper-item
+        v-else
+        class="empty-container"
+      >
+        <view class="line" />
+        <view class="empty-body">
+          <image
+            src="../../../../static/order/blank_house@2x.png"
+            mode=""
+          ></image>
+          <text v-if="tabindex==0">您还没有收藏商品</text>
+          <text v-if="tabindex==1">您还没有收藏案例</text>
+        </view>
+      </swiper-item>
+
     </swiper>
   </view>
 </template>
@@ -222,5 +240,31 @@ export default {
 .scroll-view {
   flex: 1;
   height: 100%;
+}
+.empty-container {
+  .line {
+    width: 100%;
+    height: 2rpx;
+    background: #f4f4f4;
+  }
+  .empty-body {
+    padding: 180rpx 240rpx 0 240rpx;
+    display: flex;
+    flex-flow: column nowrap;
+    align-items: center;
+    justify-content: space-around;
+    image {
+      width: 248rpx;
+      height: 248rpx;
+      object-fit: cover;
+      margin-bottom: 22rpx;
+    }
+    text {
+      font-size: 26rpx;
+      font-weight: 400;
+      text-align: center;
+      color: #999999;
+    }
+  }
 }
 </style>

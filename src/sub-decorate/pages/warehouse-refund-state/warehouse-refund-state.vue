@@ -11,7 +11,7 @@
 				<view :style="{height:navBarHeight}">
 				</view>
 				<view class="info">
-					<view class="header1">{{headerTime}}</view>
+					<view class="header1">{{headerTitle}}</view>
 				</view>
 				<view class="header2">
 					{{detail.refundTime | formatDate}}
@@ -28,7 +28,7 @@
 				</view>
 			</view>
 		</view>
-		<warehouse-item v-for="(item,index) in currentList" :key="item.id" @detail="toDetail" @refund="toRefund">
+		<warehouse-item :showTitle="false" :item="detail" :key="item.id" @detail="toDetail" @refund="toRefund">
 		</warehouse-item>
 		<view class="info-content">
 			<view class="title">
@@ -101,7 +101,7 @@
 		<view style="height: 200rpx;">
 
 		</view>
-		<view class="bottom-btn">
+		<view v-if="detail.status==1||detail.status==0" class="bottom-btn">
 			<view class="btn" @click="cancelRefund">
 				取消退款
 			</view>
@@ -129,11 +129,24 @@
 				detail: {},
 				headerTitle: '',
 				headerTime: '',
-				tips: ''
+				tips: '',
+				id:''
 			}
 		},
 		onLoad(e) {
+			const systemInfo = uni.getSystemInfoSync();
+			//状态栏高度
+			this.tophight = systemInfo.statusBarHeight + "px";
+			// 获取胶囊按钮的位置
+			const menuButtonInfo = uni.getMenuButtonBoundingClientRect();
+			console.log('**********', this.backHeight);
+			// 导航栏高度 = 状态栏到胶囊的间距（ 胶囊距上距离 - 状态栏高度 ）*2  +  胶囊高度
+			this.navBarHeight =
+				(menuButtonInfo.top - systemInfo.statusBarHeight) * 2 +menuButtonInfo.top+
+				menuButtonInfo.height +
+				"px";
 			if (e && e.id) {
+				this.id=e.id
 				this.getDetail(e.id);
 			}
 		},

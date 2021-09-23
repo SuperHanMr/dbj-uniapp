@@ -28,22 +28,22 @@
 	import {
 		deliveredList,
 		reimburseList,
-		receivedList
-	} from "../../../api/order.js"
+		receivedList,
+	} from "../../../api/order.js";
 	import {
 		confirmGoods
-	} from '../../../api/decorate.js'
+	} from "../../../api/decorate.js";
 	export default {
 		data() {
 			return {
 				triggered: false,
-				projectId: '0',
+				projectId: "0",
 				list0: [],
 				list1: [],
 				list2: [],
 				list3: [],
 				tabList: ["待发货", "待收货", "已收货", "退款"],
-				lastId: ['', '', '', ''],
+				lastId: ["", "", "", ""],
 				triggered: false, //控制刷新显示字段
 				currentIndex: 0,
 			};
@@ -66,34 +66,36 @@
 				this.projectId = e.projectId;
 			}
 			if (e && e.type) {
-				this.currentIndex = Number(e.type)
+				this.currentIndex = Number(e.type);
 			}
 
 			if (this.currentIndex == 0) {
 				this.getList(true);
 			}
 		},
-		onShow() {},
+		onShow() {
+			// this.onRefresh()
+		},
 		methods: {
 			onConfirmGoods(item) {
 				let vm = this;
 				uni.showModal({
-					title: '是否确认收货?',
+					title: "是否确认收货?",
 					success: function(res) {
 						if (res.confirm) {
 							confirmGoods({
-								id: item.id
-							}).then(e => {
+								id: item.id,
+							}).then((e) => {
 								uni.showToast({
-									title: '确认收货成功',
-									icon: 'none'
-								})
-								vm.onRefresh()
-							})
+									title: "确认收货成功",
+									icon: "none",
+								});
+								vm.onRefresh();
+							});
 						} else if (res.cancel) {
-							console.log('用户点击取消');
+							console.log("用户点击取消");
 						}
-					}
+					},
 				});
 			},
 			toDetail(e) {
@@ -101,9 +103,8 @@
 				if (this.currentIndex == 0) {
 					id = e.orderId;
 				} else {
-					id = e.id
+					id = e.id;
 				}
-				console.log(id);
 				if (this.currentIndex != 3) {
 					uni.navigateTo({
 						url: `/sub-decorate/pages/warehouse-refund-detail/warehouse-refund-detail?type=${this.currentIndex}&id=${id}&projectId=${this.projectId}`,
@@ -113,7 +114,6 @@
 						url: `/sub-decorate/pages/warehouse-refund-state/warehouse-refund-state?type=${this.currentIndex}&id=${id}&projectId=${this.projectId}`,
 					});
 				}
-
 			},
 			toRequire() {
 				uni.navigateTo({
@@ -141,11 +141,10 @@
 				if (this.currentIndex == 3 && this.list3.length) {
 					return;
 				}
-				this.getList(false)
+				this.getList(false);
 			},
 			getList(isRefresh) {
-				console.log('!@@@!@!@!@!@!@@!');
-				if (this.lastId[this.currentIndex] == '-1') {
+				if (this.lastId[this.currentIndex] == "-1") {
 					return;
 				}
 				let params = {};
@@ -155,74 +154,79 @@
 					params.lastId = this.lastId[this.currentIndex];
 				}
 				if (this.currentIndex == 0) {
-
-					deliveredList(params).then(e => {
-						if (isRefresh) {
-							this.triggered = false;
-						}
-						if (e.length) {
-							this.lastId[this.currentIndex] = e[e.length - 1].id;
-
-							this.list0 = this.list0.concat(e);
-						} else {
-							if (this.lastId[this.currentIndex]) {
-								this.lastId[this.currentIndex] = '-1';
+					deliveredList(params)
+						.then((e) => {
+							if (isRefresh) {
+								this.triggered = false;
 							}
-						}
-					}).catch(e => {
-						if (isRefresh) {
-							this.triggered = false;
-						}
-					})
+							if (e.length) {
+								this.lastId[this.currentIndex] = e[e.length - 1].id;
+
+								this.list0 = this.list0.concat(e);
+							} else {
+								if (this.lastId[this.currentIndex]) {
+									this.lastId[this.currentIndex] = "-1";
+								}
+							}
+						})
+						.catch((e) => {
+							if (isRefresh) {
+								this.triggered = false;
+							}
+						});
 				} else if ([1, 2].includes(this.currentIndex)) {
 					params.status = this.currentIndex + 1;
-					receivedList(params).then(e => {
-						if (isRefresh) {
-							this.triggered = false;
-						}
-						if (e.length) {
-							this.lastId[this.currentIndex] = e[e.length - 1].id;
-							if (this.currentIndex == 1) {
-								this.list1 = this.list1.concat(e);
+					receivedList(params)
+						.then((e) => {
+							if (isRefresh) {
+								this.triggered = false;
 							}
-							if (this.currentIndex == 2) {
-								this.list2 = this.list2.concat(e);
+							if (e.length) {
+								this.lastId[this.currentIndex] = e[e.length - 1].id;
+								if (this.currentIndex == 1) {
+									this.list1 = this.list1.concat(e);
+								}
+								if (this.currentIndex == 2) {
+									this.list2 = this.list2.concat(e);
+								}
+							} else {
+								if (this.lastId[this.currentIndex]) {
+									this.lastId[this.currentIndex] = "-1";
+								}
 							}
-						} else {
-							if (this.lastId[this.currentIndex]) {
-								this.lastId[this.currentIndex] = '-1';
+						})
+						.catch((e) => {
+							if (isRefresh) {
+								this.triggered = false;
 							}
-						}
-					}).catch(e => {
-						if (isRefresh) {
-							this.triggered = false;
-						}
-					})
+						});
 				} else {
-					reimburseList(params).then(e => {
-						if (isRefresh) {
-							this.triggered = false;
-						}
-						if (e.length) {
-							this.list3 = this.list3.concat(e);
-						} else {
-							if (this.lastId[this.currentIndex]) {
-								this.lastId[this.currentIndex] = '-1';
+					reimburseList(params)
+						.then((e) => {
+							if (isRefresh) {
+								this.triggered = false;
 							}
-						}
-					}).catch(e => {
-						if (isRefresh) {
-							this.triggered = false;
-						}
-					})
+							if (e.length) {
+								this.list3 = this.list3.concat(e);
+							} else {
+								if (this.lastId[this.currentIndex]) {
+									this.lastId[this.currentIndex] = "-1";
+								}
+							}
+						})
+						.catch((e) => {
+							if (isRefresh) {
+								this.triggered = false;
+							}
+						});
 				}
 			},
 			onLoadMore() {
-				this.getList(false)
+				this.getList(false);
 			},
 			onRefresh() {
 				this.triggered = true;
-				this.lastId[this.currentIndex] = '';
+				this.lastId[this.currentIndex] = "";
 				if (this.currentIndex == 0) {
 					this.list0 = [];
 				}

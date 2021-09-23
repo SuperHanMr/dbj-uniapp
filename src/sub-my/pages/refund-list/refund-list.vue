@@ -178,7 +178,7 @@
 					uni.navigateTo({
 						url:`refunding-detail/refunding-detail?orderId=${data.id}`
 					})
-				}else if(data.statis == 2){
+				}else if(data.status == 2){
 					uni.navigateTo({
 						url:`../my-order/order-success/order-success?type=refund$id=${data.id}`
 					})

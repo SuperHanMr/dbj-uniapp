@@ -38,7 +38,7 @@
 </template>
 
 <script>
-  import {getAddressInfo, getAddWorker} from '../../api/classify.js'
+  import {getAddressInfo, getProductID} from '../../api/classify.js'
   export default {
     name:"address-picker",
     props: {
@@ -85,7 +85,13 @@
       houseId(v) {
         getAddressInfo(v).then((data) => {
           this.addressInfo = data
-          this.$emit('emitInfo', this.addressInfo)
+          let params = {
+            estateId: this.houseId
+          }
+          getProductID(params).then((data) => {
+            this.addressInfo.projectId = data
+            this.$emit('emitInfo', this.addressInfo)
+          })
         })
       }
     }

@@ -8,9 +8,7 @@
 						src="../../static/ic_month_pre@2x.png"
 						></image>
 				</view>
-				<!-- <view @click="turning('prev')">上个月</view> -->
-				<text>{{ y }}-{{ m + 1 }}</text>
-				<!-- <view @click="turning('next')">下个月</view> -->
+				<view class="current-month">{{ y }}-{{ m+1 < 10? '0'+(m+1) : m+1 }}</view>
 				<view class="next-month" @click="turning('next')">
 					<image
 						class="header-btn"
@@ -31,14 +29,14 @@
     <view :class="{ hide: !monthOpen }" class="content" :style="{ height: height }">
       <view :style="{ top: positionTop + 'rpx' }" class="days">
         <view class="item" v-for="(item, index) in dates" :key="index">
-          <view class="day" @click="selectOne(item, $event)" :class="{ choose: choose == `${item.year}-${item.month + 1}-${item.date}`, nolm: !item.lm }">{{ item.date }}</view>
+					<view class="today-text" @click="todayC" :class="{'checked': isChecked}" v-if="isToday(item.year, item.month, item.date)">今</view>
+          <view class="day" v-else @click="selectOne(item, $event)" :class="{ choose: choose == `${item.year}-${item.month}-${item.date}`, nolm: !item.lm }">{{ item.date }}</view>
           <view class="sign" v-if="isSigned(item.year, item.month + 1, item.date)"></view>
-          <view class="today-text" v-if="isToday(item.year, item.month, item.date)">今</view>
         </view>
       </view>
     </view>
 
-    <image src="/static/dark-calendar/ico-arrow-up.png" mode="scaleToFill" @click="trgWeek()" class="weektoggel" :class="{ down: !monthOpen }"></image>
+    <image src="../../static/dark-calendar/ico-arrow-up.png" mode="scaleToFill" @click="trgWeek()" class="weektoggel" :class="{ down: !monthOpen }"></image>
   </view>
 </template>
 
@@ -75,7 +73,8 @@ export default {
       dates: [], // 当前月日期集合
       positionTop: 0,
       monthOpen: true,
-      choose: ''
+      choose: '',
+			isChecked: true
     }
   },
   created() {
@@ -85,11 +84,11 @@ export default {
   mounted() {
     let date = new Date()
     let y = date.getFullYear()
-    let m = date.getMonth()
+    let m = date.getMonth()+1
+		let mon = m < 10? '0'+m : m
     let d = date.getDate()
-    this.choose = `${y}-${m + 1}-${d}`
+    this.choose = `${y}-${mon}-${d}`
 
-    console.log(this.choose)
   },
   computed: {
     // 顶部星期栏目
@@ -97,10 +96,14 @@ export default {
       return this.text.week.slice(this.weekstart - 1).concat(this.text.week.slice(0, this.weekstart - 1))
     },
     height() {
-      return (this.dates.length / 7) * 80 + 'rpx'
+      return (this.dates.length / 7) * 90 + 'rpx'
     }
   },
   methods: {
+		todayC(){
+			console.log(this.isChecked,'//')
+			this.isChecked = !this.isChecked
+		},
     // 获取当前月份天数
     monthDay(y, m) {
       let firstDayOfMonth = new Date(y, m, 1).getDay() // 当月第一天星期几
@@ -144,6 +147,13 @@ export default {
           year: m + 1 <= 11 ? y : y + 1
         })
       }
+			dates.map(item => {
+				if(item.month < 10){
+					item.month = '0'+item.month
+				}
+				return item
+			})
+			console.log(dates)
       return dates
     },
     // 已经签到处理
@@ -151,7 +161,7 @@ export default {
       let flag = false
       for (let i = 0; i < this.signeddates.length; i++) {
         let dy = `${y}-${m}-${d}`
-        if (this.signeddates[i] == dy) {
+        if (this.signeddates[i].day == dy) {
           flag = true
           break
         }
@@ -159,8 +169,11 @@ export default {
       return flag
     },
     isToday(y, m, d) {
-      let date = new Date()
-      return y == date.getFullYear() && m == date.getMonth() && d == date.getDate()
+      let year = new Date().getFullYear()
+			let mon = new Date().getMonth() + 1
+			let month = mon < 10 ? '0'+mon : mon
+			let day = new Date().getDate()
+      return y == year && m == month && d == day
     },
     // 切换成周模式
     trgWeek() {
@@ -237,7 +250,14 @@ export default {
 		justify-content: center;
 		align-items: center;
 	}
-	.switch-month view{
+	.switch-month .current-month{
+		width: 114rpx;
+		height: 40rpx;
+		font-size: 28rpx;
+		font-weight: 500;
+		color: #333333;
+	}
+	.switch-month .pre-month,.switch-month .next-month{
 		width: 32rpx;
 		height: 32rpx;
 		margin: 8rpx;
@@ -296,11 +316,16 @@ export default {
 		line-height: 88rpx;
 	}
   .content {
+		width: 750rpx;
+		height: 452rpx;
     position: relative;
     overflow: hidden;
     transition: height 0.4s ease;
   }
 	.days {
+		width: 686rpx;
+		height: 452rpx;
+		margin: 0 32rpx;
 	  transition: top 0.3s;
 	  display: flex;
 	  align-items: center;
@@ -308,56 +333,58 @@ export default {
 	  position: relative;
 	}
 	.item {
-	  position: relative;
-	  display: block;
-	  height: 80rpx;
-	  line-height: 80rpx;
-	  width: calc(100% / 7);
+		width: 98rpx;
+		height: 88rpx;
+	  line-height: 88rpx;
+	  text-align: center;
+		display: flex;
+		justify-content: center;
+		align-items: center;
 	}
 	.day {
-	  font-style: normal;
-	  display: inline-block;
-	  vertical-align: middle;
-	  width: 60rpx;
-	  height: 60rpx;
-	  line-height: 60rpx;
-	  overflow: hidden;
-	  border-radius: 60rpx;
+	  width: 52rpx;
+	  height: 52rpx;
+	  line-height: 52rpx;
+		text-align: center;
+	  border-radius: 20rpx;
 		
 	  &.choose {
-	    background-color: #9fcdff;
-	    color: #0157d8;
+			width: 50rpx;
+			height: 50rpx;
+			line-height: 50rpx;
+			border: 2rpx solid #00bfb6;
 	  }
 		
 	  &.nolm {
-	    color: #fff;
+	    color: #333;
 	    opacity: 0.3;
 	  }
 	}
 		
 	.sign {
-	  font-style: normal;
-	  width: 20rpx;
-	  height: 20rpx;
-	  background: #fff;
-	  border-radius: 10rpx;
+	  width: 8rpx;
+	  height: 8rpx;
+	  background: #00C2B8;
+	  border-radius: 50%;
 	  position: absolute;
 	  left: 50%;
-	  margin-left: -10rpx;
-	  bottom: 0;
-	  pointer-events: none;
+	  margin-left: -4rpx;
+	  bottom: 20rpx;
 	}
 		
 	.today-text {
-	  position: absolute;
-	  font-size: 20rpx;
-	  font-weight: normal;
-	  width: 20rpx;
-	  height: 20rpx;
-	  line-height: 20rpx;
-	  right: 0;
-	  top: 10rpx;
-	  color: #fff;
+		width: 52rpx;
+		height: 52rpx;
+		line-height: 52rpx;
+		text-align: center;
+		font-size: 30rpx;
+		font-weight: 500;
+		color: #fff;
+		background: #9fa5b4;
+		border-radius: 20rpx;
+		&.checked{
+			background: #00c2b8;
+		}
 	}
   .hide {
     height: 80rpx !important;

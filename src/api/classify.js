@@ -4,7 +4,7 @@ export function getClassifyList (params) {
   return request.get('/product/web/prod-categories/front/tree')
 }
 export function getGoodsList (params) {
-  return request.get('/product/web/products/skus/page')
+  return request.get('/product/web/products/skus/page', {params:params})
 }
 export function getAddressInfo(houseId) {
   return request.get(`/customer/app/estate/queryEstateDetail/${houseId}`);
@@ -15,5 +15,8 @@ export function getDetailInfo(params) {
 }
 export function payOrder(params) {
 	return request.post("/order-center/app/order/createOrder", params)
+}
+export function getProductID(params) {
+  return request.get("/pm/web/project/getProjectIdByEstateId", {params});
 }
 

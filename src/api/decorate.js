@@ -255,3 +255,8 @@ export function serverReports(serveCardId) {
 export function confirmDesignReport(serveCardId) {
 	return request.post(`/pm/app/serve/design/confirmDesignReport/${serveCardId}`)
 }
+
+// 查询装修动态 客户端-轮播图
+export function getCarouselMsg(projectId) {
+	return request.get(`/pm/app/decorate/calendar/getCarouselMsg/${projectId}`)
+}

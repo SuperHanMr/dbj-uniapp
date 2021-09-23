@@ -524,7 +524,15 @@
 						"enablePullDownRefresh": false,
 						"navigationBarBackgroundColor": "#ffffff"
 					}
-				}
+				},
+        {
+        	"path": "pages/shops/shops",
+        	"style": {
+        		"navigationBarTitleText": "",
+        		"enablePullDownRefresh": false,
+        		"navigationBarBackgroundColor": "#ffffff"
+        	}
+        }
 			]
 		},
 		{
