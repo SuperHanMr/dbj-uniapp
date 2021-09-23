@@ -414,7 +414,7 @@
               storeId: this.actuary.storeId,//"long //店铺id",
               buyCount: this.currentHouse.insideArea,//"double //购买数量",
               unit: "平米",//"string //单位",
-              // level: this.design.level,//"int //等级"
+              level: 1,//"int //等级"
             })
             // params.details.push({
             //   relationId: this.actuary.id, //"long //实体id",
@@ -433,7 +433,7 @@
               storeId: this.checkHouse.storeId,//"long //店铺id",
               buyCount: this.currentHouse.insideArea,//"double //购买数量",
               unit: "平米",//"string //单位",
-              // level: this.design.level,//"int //等级"
+              level: 1,//"int //等级"
             })
             // params.details.push({
             //   relationId: this.checkHouse.id, //"long //实体id",
