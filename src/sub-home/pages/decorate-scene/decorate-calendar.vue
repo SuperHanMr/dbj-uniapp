@@ -10,37 +10,34 @@
 				:showMonth="false"
 			  @change="change"
 			/> -->
-			<dark-calendar :signeddates="signeddates"></dark-calendar>
+			<dark-calendar :signeddates="signeddates" @filterByDate="filterByDate"></dark-calendar>
 		</view>
 		<view class="dynamic">
 			<view class="top">
 				<view class="title">装修动态</view>
 			</view>
-			<view class="list">
-				<view class="item">
-				<!-- <view class="item" v-for="(item,index) in dynamics" :key="item.id">
-					<image class="avatar" :src="item.avatar"></image> -->
-					<image class="avatar" src="../../static/avatar@2x(1).png"></image>
+			<view class="noDynamics" v-if="!dynamics.length">
+				<image src="http://dbj.dragonn.top/static/mp/dabanjia/images/decorate/pic_empty%402x.png" class="noDynamicsImg"></image>
+				<view class="text">暂无装修动态</view>
+			</view>
+			<view class="list" v-else>
+				<view class="item" v-for="(item,index) in dynamics" :key="item.id">
+					<image class="avatar" :src="item.avatar"></image>
 					<view class="acitonInfo">
 						<view class="header">
 							<view>
-								<view class="workerName">姜文</view>
-								<!-- <view class="workerName">{{item.userName}}</view>
-								<view class="role">{{item.nodeName}}</view> -->
-								<view class="role">大管家</view>
+								<view class="workerName">{{item.userName}}</view>
+								<view class="role">{{item.nodeName}}</view>
 							</view>
-							<!-- <view class="date">{{item.normDateStr}}</view> -->
-							<view class="date">2021-06-12</view>
+							<view class="date">{{item.normDateStr}}</view>
 						</view>
-						<!-- <view class="report">{{item.content}}</view> -->
-						<view class="report">尊敬的业主，您好！打扮家管家-姜文为您新家质量保驾护航，今日巡查房屋情况如下：今天停工</view>
+						<view class="report">{{item.content}}</view>
 						<view class="evidence">
-							<!-- <image class="img" :src="url" v-for="(url,index) in item.imagesList.slice(0,6)" :key="index"></image> -->
+							<image class="img" :src="url" v-for="(url,index) in item.imagesList.slice(0,6)" :key="index"></image>
 							<!-- <imagePreview :list='item.imagesList' :imgWidth='192' :imgHeight="192" :lineSpace='10' :colSpace="11" :row="2"></imagePreview> -->
 						</view>
 						<view class="footer">
-							<!-- <view class="actionType">{{item.recordName}}</view> -->
-							<view class="actionType">开工签到</view>
+							<view class="actionType">{{item.recordName}}</view>
 						</view>
 					</view>
 				</view>
@@ -51,8 +48,10 @@
 
 <script>
 	import {formatDate} from "../../../utils/common.js"
+	import {getSigneddates,getDynamics} from "../../../api/real-case.js"
 	import darkCalendar from "../../components/dark-calendar/dark-calendar"
-	import {getSigneddates} from "../../../api/real-case.js"
+	import imagePreview from "../../../components/image-preview/image-preview.vue"
+	
 	export default {
 		filters:{
 			formatDate
@@ -62,9 +61,10 @@
 		},
 		data() {
 			return {
-				selectedList:[{date: '2021-08-20', info: '签到'}],
-				signeddates: [{day: '2021-9-20', status: 1}],
-				projectId: 0
+				// selectedList:[{date: '2021-08-20', info: '签到'}],
+				signeddates: [],
+				projectId: 0,
+				dynamics: []
 			};
 		},
 		onLoad(option) {
@@ -86,12 +86,26 @@
 				let m = new Date().getMonth() + 1
 				let mon = m < 10 ? '0'+m : m
 				getSigneddates(this.projectId,y+mon).then(data => {
-					console.log(data)
 					if(!data.length)return
 					this.signeddates = data.map(item => {
 						item.day = formatDate(item.day,'YYYY-MM-DD')
 						return item
 					})
+				})
+			},
+			filterByDate(date){
+				console.log('shaixuan')
+				let params = {
+					projectId: this.projectId,
+					userTypes: [2,3],
+					recordDateStr: date
+				}
+				getDynamics(params).then(data => {
+					if(data){
+						let {list} = data
+						this.dynamics = list
+						console.log(data.list)
+					}
 				})
 			}
 			
@@ -157,6 +171,19 @@
 		width: 14rpx;
 		height: 8rpx;
 		margin-left: 5rpx;
+	}
+	.noDynamics .noDynamicsImg{
+		width: 750rpx;
+		height: 580rpx;
+		display: block;
+		margin-top: 40rpx;
+	}
+	.noDynamics .text{
+		width: 156rpx;
+		height: 36rpx;
+		font-size: 26rpx;
+		color: #999999;
+		margin: 24rpx 298rpx;
 	}
 	.list{
 		width: 100%;
