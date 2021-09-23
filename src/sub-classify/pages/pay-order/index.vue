@@ -286,7 +286,7 @@
             		storeId:this.storeId,
             		buyCount:this.buyCount,
             		unit: this.unit? this.unit:"",
-                level: 0
+                level: 1
             	}],
             	estateId:this.estateId
           }
@@ -296,16 +296,6 @@
             estateId: this.estateId
           }
         }
-        // let params = {
-        //   skuInfos:[{
-        //   		skuId:this.skuId,
-        //   		storeId:this.storeId,
-        //   		buyCount:this.buyCount,
-        //   		unit: this.unit,
-        //       level: 0
-        //   	}],
-        //   	estateId:this.estateId
-        // }
         // let params = {
         //   estateId: 1050,
         //   skuInfos: [{
@@ -357,6 +347,7 @@
                     }
                 }
                 this.hasNoSendItem = true // 判断所有数据中有没有不可配送数据
+                console.log(this.noStoreInfos, "nostore")
               } else {
                 canStoreItem.skuInfos.push(skuItem)
                 this.totalGoodsNum += skuItem.buyCount
@@ -377,7 +368,6 @@
                   orderDetailItem: orderDetailItem,
                   paramsInfo: skuItem
                 })
-                console.log(this.orderDetails, "this.orderDetails")
               }
             })
           })

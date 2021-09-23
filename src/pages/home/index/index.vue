@@ -1,36 +1,67 @@
 <template>
-	<view>
-		<custom-navbar title="首页" :opacity="scrollTop/100" :showBack="false">
+	<view style="background-color: #FFF;">
+		<custom-navbar opacity="1" :showBack="false">
 			<template v-slot:back>
-				<view @click="toCity">
-					{{citydata}}
+				<view>
+					Logo
 				</view>
 			</template>
 		</custom-navbar>
-		<scroll-view class="content" scroll-y="true" @scroll="onScroll" @scrolltolower="onLoadMore">
-			<view style="margin-top: 300rpx;" class="">
+		<!-- 		<view :style="{height: navBarHeight}" style="width: 100%;background-color: red;">
+			
+		</view> -->
+		<view class="state-bar" :style="{top:navBarHeight}" @click="toCity">
+			<view class="">
+				{{citydata}}
 			</view>
+			<view class="flex1">
 
-			<button style="width: 50%;margin-top: 20rpx;" type="default" @click="toNextPage">去封装好的列表页</button>
-			<button style="width: 50%;margin-top: 20rpx;" type="default" @click="toTest">测试</button>
-			<button style="width: 50%;margin-top: 20rpx;" type="default" @click="toLiveDecorate">去装修现场</button>
-			<button style="width: 50%;margin-top: 20rpx;" type="default" @click="toShop">去商家入驻</button>
-			<button style="width: 50%;margin-top: 20rpx;" type="default" @click="toGoodsApply">去要货申请</button>
-			<swiper class="banner-content" :indicator-dots="true" :autoplay="true" interval="2000" duration="500"
-				:circular="true">
+			</view>
+			<image class="img" src="http://dbj.dragonn.top/static/mp/dabanjia/images/home/online-server.png" mode="">
+			</image>
+
+		</view>
+		<!-- 占位 -->
+		<view :style="{height:navBarHeight}">
+		</view>
+		<!-- 占位 -->
+		<view style="height: 80rpx;">
+		</view>
+
+		<view class="banner-content">
+			<swiper :autoplay="true" interval="2000" duration="500" :circular="true" @change="swiperChange">
 				<swiper-item v-for="(item,index) in bannerList" :key="index">
 					<image class="banner-img" :src="item.resUrl" mode="aspectFit" @click="toWebview(item.jumpUrl)">
 					</image>
 				</swiper-item>
 			</swiper>
-			<view class="flex-row">
-				<view class="item" v-for="(item,index) in liveList" :key="index" @click="toLiveRoom(item)">
-					<image class="img" :src="item.scaleImg" mode="scaleToFill"></image>
-					{{item.title}}
+			<view class="swiper-tab">
+				<view class="flex1" v-for="(item,index) in bannerList" :key="index"
+					:style="{backgroundColor:index==currentSwiper?'#FFF':''}">
 				</view>
 			</view>
-			<waterfall :list="caseList" @selectedItem="onSelectedItem"></waterfall>
-		</scroll-view>
+		</view>
+
+		<!-- <view class="function-zone">
+			<view class="item" v-for="(item,index) in zoneList" :key="'zone'+index">
+				{{item}}
+			</view>
+
+		</view> -->
+
+		<button style="width: 50%;margin-top: 20rpx;" type="default" @click="toNextPage">去封装好的列表页</button>
+		<button style="width: 50%;margin-top: 20rpx;" type="default" @click="toTest">测试</button>
+		<button style="width: 50%;margin-top: 20rpx;" type="default" @click="toLiveDecorate">去装修现场</button>
+		<button style="width: 50%;margin-top: 20rpx;" type="default" @click="toShop">去商家入驻</button>
+		<button style="width: 50%;margin-top: 20rpx;" type="default" @click="toGoodsApply">去要货申请</button>
+
+		<view class="flex-row">
+			<view class="item" v-for="(item,index) in liveList" :key="index" @click="toLiveRoom(item)">
+				<image class="img" :src="item.scaleImg" mode="scaleToFill"></image>
+				{{item.title}}
+			</view>
+		</view>
+		<waterfall :list="caseList" @selectedItem="onSelectedItem"></waterfall>
 	</view>
 </template>
 
@@ -54,8 +85,8 @@
 	export default {
 		data() {
 			return {
+				zoneList:[1,2,3,4,5,6,7,8,9,0,1,2],
 				tophight: 0,
-				navBarHeight: 0,
 				scrollTop: 0,
 				liveList: [],
 				citydata: "",
@@ -67,6 +98,8 @@
 				loading: false,
 				page: 1,
 				totalPage: 1,
+				navBarHeight: '',
+				currentSwiper: 0
 			};
 		},
 		onLoad() {
@@ -80,16 +113,32 @@
 			this.citydata = defaultHouse.name;
 			this.getHomeList();
 			this.reloadData();
+			const systemInfo = uni.getSystemInfoSync();
+			//状态栏高度
+			this.tophight = systemInfo.statusBarHeight + "px";
+			// 获取胶囊按钮的位置
+			const menuButtonInfo = uni.getMenuButtonBoundingClientRect();
+			// this.backTop = menuButtonInfo.top + 'px';
+			// this.backHeight = menuButtonInfo.height + 'px';
+			console.log('**********', this.backHeight);
+			// 导航栏高度 = 状态栏到胶囊的间距（ 胶囊距上距离 - 状态栏高度 ）*2  +  胶囊高度
+			this.navBarHeight =
+				menuButtonInfo.top + (menuButtonInfo.top - systemInfo.statusBarHeight) +
+				menuButtonInfo.height +
+				"px";
 		},
 		onShow() {
 			uni.$once("selectedHouse", (item) => {
 				this.citydata = item.cityName + item.areaName;
 				uni.setStorageSync("currentHouse", JSON.stringify(item));
 			});
-			
+
 		},
 		methods: {
-			toTest(){
+			swiperChange(e) {
+				this.currentSwiper = e.detail.current;
+			},
+			toTest() {
 				uni.navigateTo({
 					url: "/sub-other/pages/test/test",
 				});
@@ -102,29 +151,6 @@
 			toLiveDecorate() {
 				uni.navigateTo({
 					url: "/sub-home/pages/lives-decorate/lives-decorate",
-				});
-			},
-			toGoodsApply() {
-				uni.navigateTo({
-					url: "../../../sub-decorate/pages/require-pay/require-pay",
-				});
-			},
-			toPay() {
-				let openId = uni.getStorageSync("openId");
-				orderPay({
-					orderId: 109,
-					payType: 1,
-					openid: openId,
-				}).then((e) => {
-					const payInfo = e.wechatPayJsapi;
-					uni.requestPayment({
-						provider: "wxpay",
-						...payInfo,
-						success(res) {},
-						fail(e) {
-							console.log(e);
-						},
-					});
 				});
 			},
 			onLoadMore() {
@@ -146,9 +172,6 @@
 				uni.navigateTo({
 					url: "../../common/webview/webview?url=" + encodeURIComponent(url),
 				});
-			},
-			changeCity() {
-				console.log("切换城市");
 			},
 			toCity() {
 				uni.navigateTo({
@@ -216,13 +239,7 @@
 					success: (res) => {
 						if (res.confirm) {
 							uni.openSetting(); // 打开地图权限设置
-						} else if (res.cancel) {
-							// uni.showToast({
-							//   title: "你拒绝了授权，无法获得周边信息",
-							//   icon: "none",
-							//   duration: 1000,
-							// });
-						}
+						} else if (res.cancel) {}
 					},
 				});
 			},
@@ -289,7 +306,64 @@
 	};
 </script>
 
-<style lang="scss">
+<style lang="scss" scoped>
+	.function-zone {
+		margin: 24rpx;
+		border: 1px solid #E7E8E8;
+		border-radius: 16rpx;
+		width: 702rpx;
+		display: flex;
+		flex-direction: row;
+		flex-wrap: wrap;
+		justify-content: flex-start;
+		.item{
+			height: 126rpx;
+			width: 175rpx;
+			display: flex;
+			justify-content: center;
+			align-items: center;
+		}
+
+	}
+
+	.swiper-tab {
+		position: absolute;
+		bottom: 22rpx;
+		width: 200rpx;
+		height: 4rpx;
+		left: 50%;
+		background: rgba(255, 255, 255, 0.4);
+		transform: translateX(-50%);
+		border-radius: 3rpx;
+		display: flex;
+		flex-direction: row;
+
+	}
+
+	.state-bar {
+		position: fixed;
+		left: 0;
+		right: 0;
+		height: 80rpx;
+		background-color: #FFF;
+		z-index: 999;
+		display: flex;
+		flex-direction: row;
+		align-items: center;
+		padding: 0 24rpx;
+
+		.img {
+			width: 76rpx;
+			height: 74rpx;
+		}
+	}
+
+
+
+	.flex1 {
+		flex: 1;
+	}
+
 	.pubuBox {
 		padding: 22rpx;
 	}
@@ -315,56 +389,17 @@
 		width: 100%;
 	}
 
-	.listtitle {
-		padding-left: 22rpx;
-		font-size: 24rpx;
-		padding-bottom: 22rpx;
-
-		.listtitle1 {
-			line-height: 39rpx;
-			text-overflow: -o-ellipsis-lastline;
-			overflow: hidden;
-			text-overflow: ellipsis;
-			display: -webkit-box;
-			-webkit-line-clamp: 2;
-			line-clamp: 2;
-			-webkit-box-orient: vertical;
-			min-height: 39rpx;
-			max-height: 78rpx;
-		}
-
-		.listtitle2 {
-			color: #ff0000;
-			font-size: 32rpx;
-			line-height: 32rpx;
-			font-weight: bold;
-			padding-top: 22rpx;
-
-			.listtitle2son {
-				font-size: 32rpx;
-			}
-		}
-
-		.listtitle3 {
-			font-size: 28rpx;
-			color: #909399;
-			line-height: 32rpx;
-			padding-top: 22rpx;
-		}
-	}
-
-	.Index {
-		width: 100%;
-		height: 100%;
-	}
-
 	.banner-content {
-		width: 100%;
-		height: 200rpx;
+		position: relative;
+		height: 234rpx;
+		margin: 0 24rpx;
+		margin-top: 8rpx;
+		border-radius: 16rpx;
+		overflow: hidden;
 
 		.banner-img {
 			width: 100%;
-			height: 200rpx;
+			height: 234rpx;
 		}
 	}
 

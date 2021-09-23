@@ -26,8 +26,8 @@
                       <view class="goods-spec">
                          <view class="goods-money" v-if='goodsItem.price'>
                            ￥
-                           <text class="integer-price">{{String.productType.split.call(goodsItem["price"], ".")[0]}}</text>
-                           <text>.{{String.productType.split.call(goodsItem["price"], ".")[1]}}</text>
+                           <text class="integer-price">{{String(goodsItem["price"]).split(".")[0]}}</text>
+                           <text>.{{String(goodsItem["price"]).split(".")[1]}}</text>
                            <text>/{{goodsItem.unit}}</text>
                          </view>
                       </view>
