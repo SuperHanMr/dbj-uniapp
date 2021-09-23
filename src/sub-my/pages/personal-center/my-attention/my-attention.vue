@@ -3,6 +3,7 @@
     <view class="top-tab">
       <view
         v-for="(item,index) in tabList"
+				:key="index"
         class="item"
         :class="{selected:index==currentIndex}"
         @click="currentIndex=index"
@@ -35,12 +36,13 @@
         >
           <view class="line" />
           
-          <view class="empty-container" v-if="caseList.length<1">
+          <view class="empty-container" v-if="caseList.length>1">
 						<image src="../../../../static/order/blank_house@2x.png" mode=""></image>
 						<text v-if="tabindex==0">您还没有关注房子</text>
 						<text v-if="tabindex==1">您还没有关注工匠</text>
 						<text v-if="tabindex==2">您还没有关注优先推荐</text>
 					</view>
+					
 					<view  v-else>
 						<view v-if="tabindex==0"  class="house-item">
 						  <view class="houseInfo">
@@ -89,31 +91,42 @@
 						  </view>
 						</view>
 						
-						<view  v-if=" tabindex == 2"  class="craftsmanAndRecommend">
-						  <view class="left">
-						    <image
-						      src="../../../../static/images/message/ic_system@2x.png"
-						      mode=""
-						    ></image>
-						    <view class="baseInfo">
-						      <view class="name2">
-						        打扮家给你意想不到的效果绝对的性价比最高
-						      </view>
-						      <view class="icon">
-						        大管家
-						      </view>
-						    </view>
-						  </view>
-						  <view class="right">
-						    <!-- <view class="button4">
-						      已优先推荐
-						    </view> -->
-								<view class="button3">
-									<image src="../../../static/icon_recommend_@2x.png" mode=""></image>
-								  优先推荐
-								</view>
-						  </view>
+						<view  v-if=" tabindex == 2"  >
+							<uni-swipe-action v-for="item3 in 10" :key="item3">
+								<uni-swipe-action-item  :right-options="options"  @click="bindClick" @change="swipeChange($event, index)">
+									<view class="craftsmanAndRecommend">
+										<view class="left">
+											<image
+												src="../../../../static/images/message/ic_system@2x.png"
+												mode=""
+											></image>
+											<view class="baseInfo">
+												<view class="name2">
+													打扮家给你意想不到的效果绝对的性价比最高
+												</view>
+												<view class="icon">
+													大管家
+												</view>
+											</view>
+										</view>
+										<view class="right">
+											<!-- <view class="button4">
+												已优先推荐
+											</view> -->
+											<view class="button3">
+												<image src="../../../static/icon_recommend_@2x.png" mode=""></image>
+												优先推荐
+											</view>
+										</view>
+									</view>
+								
+								</uni-swipe-action-item>
+							</uni-swipe-action>
+							
 						</view>
+						
+						
+						
 						
 					</view>
 				
@@ -148,6 +161,22 @@ export default {
 			type:3,//(3,"关注") (4,"推荐")
 			bizType:"",//(4,"房屋")  【用户的角色信息】PERSON(3,"人物")
 			
+			
+			
+			options:[
+				{
+					text: '取消',
+					style: {
+							backgroundColor: '#007aff'
+					}
+				},
+				{
+					text: '确认取消关注',
+					style: {
+							backgroundColor: '#dd524d'
+					}
+				}
+			],
     };
   },
   onShow() {
@@ -219,6 +248,25 @@ export default {
         this.triggered = false;
       }, 1000);
     },
+		
+		
+		
+		
+		
+		
+		bindClick(e){
+			console.log('点击了'+(e.position === 'left' ? '左侧' : '右侧') + e.content.text + '按钮')
+		},
+		swipeChange(e,index){
+			console.log('当前状态：'+ e +'，下标：' + index)
+		},
+		
+		
+		
+		
+		
+		
+		
   },
 };
 </script>

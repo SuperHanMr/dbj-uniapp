@@ -4,9 +4,9 @@
 			"path": "pages/home/index/index",
 			"style": {
 				"navigationBarTitleText": "首页",
-				"enablePullDownRefresh": true,
 				"transparentTitle": "auto",
-				"navigationStyle": "custom"
+				"navigationStyle": "custom",
+				"backgroundColor":"#FFFFFF"
 			}
 		},
 		{
@@ -562,13 +562,6 @@
 					"style": {
 						"navigationBarTitleText": "",
 						"enablePullDownRefresh": true
-					}
-				},
-				{
-					"path": "pages/no-house-checkhouse/no-house-checkhouse",
-					"style": {
-						"navigationBarTitleText": "验房服务",
-						"enablePullDownRefresh": false
 					}
 				},
 				{

@@ -2,15 +2,13 @@
 	<view class="container">
 		<view class="nick-name-input">
 			<input 
-				v-model="nickName" 
+				:value="nickName" 
 				class="input-style"  
-				type="text"
-				placeholder-style="font-size: 28rpx;padding-top:6rpx"
+				@input="onInput"
+				placeholder-style="font-size: 28rpx;padding-top:6rpx;"
 				placeholder="请输入昵称"
 			 />
-			<!-- 	@click="hideTabbar"
-				@focus="hideTabbar" 
-				@blur="showTabbar" -->
+		
 			<image 
 				class="icon" 
 				src="../../../static/mine_input_clear@2x.png"
@@ -30,7 +28,6 @@
 			</view>
 		</view>
 		
-		<!-- <view v-if="tabbar">底部悬浮</view> -->
 		
 		
 	</view>
@@ -54,44 +51,23 @@
 		},
 		mounted(e) {
 		  const menuButtonInfo = uni.getMenuButtonBoundingClientRect();
-		  this.containerBottom = menuButtonInfo.bottom;
 		  this.systemBottom = menuButtonInfo.bottom + "rpx";
-		  this.systemHeight = menuButtonInfo.bottom + this.num + "rpx";
 		  console.log(this.systemBottom);
 		},
 		
 		onLoad(e) {
 			this.nickName  = e.nickName
 			console.log("this.nickName=",this.nickName)
-			
-			uni.getSystemInfo({
-				success: (res)=> {
-						this.windowHeight = res.windowHeight;
-				}
-			});    
-			uni.onWindowResize((res) => {
-					if(res.size.windowHeight < this.windowHeight){
-							this.tabbar = false
-					}else{
-							this.tabbar = true
-					}
-			})
 		},
 			
-			
-		
-		
 		methods: {
 			clearInfo(){
 				this.nickName = ""
 			},
 			
-			
-			showTabbar(){
-				this.tabbar = true;
-			},
-			hideTabbar(){
-				this.tabbar = false;
+			onInput(e){
+				this.nickName=e.detail.value
+				console.log("this.nickName=",this.nickName)
 			}
 		},
 	}
@@ -113,7 +89,7 @@
 			box-sizing: border-box;
 			padding: 32rpx;
 			font-size: 28rpx;
-			color:#111111 ;
+			color:red;
 			caret-color: #35C4C4;
 		}
 		.icon{

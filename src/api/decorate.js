@@ -204,12 +204,12 @@ export function goodsRefund(params) {
 
 //要货左侧品类列表
 export function categoryList(params) {
-	return request.get("/order-center/app/goods/stock/category/list", params)
+	return request.get("/order-center/app/goods/stock/category/list", {params})
 }
 
 //要货左侧品类列表对应商品
 export function inventoryDetails(params) {
-	return request.get("/order-center/app/goods/stock/inventoryDetails/list", params)
+	return request.get("/order-center/app/goods/stock/inventoryDetails/list", {params})
 }
 
 //APP-要货-申请要货
@@ -227,7 +227,7 @@ export function confirmGoods(params) {
 }
 //APP-要货-要货记录列表
 export function requireList(params) {
-	return request.get("/order-center/app/goods/require/list", params)
+	return request.get("/order-center/app/goods/require/list", {params})
 }
 //APP-要货-要货记录详情
 export function requireListDetail(params) {

@@ -16,11 +16,10 @@
 				</view>
      </view>
 		 <view class="line"/>
-		 <view class="nickName-container" @click="changeNickName">
+		 <view class="nickName-container" @click="changeGender">
 				<text>性别</text>
 				<view class="right">
-					<!-- 性别（1男，2女） -->
-					<text>{{this.userInfo.sex ==1?"男":"女"}}</text>
+					<text>{{userInfo.sex == 1?"男":"女"}}</text>
 					<image src="../../static/ic_mine_editPersonal_arraw@2x.png" mode=""></image>
 				</view>
 		 </view>
@@ -34,6 +33,36 @@
 		 </view>
 		 
 		</view>
+		
+		
+		<!-- 修改性别 -->
+		<uni-popup ref="editGender" type="bottom" class="edit-gender-container" >
+			<view class="popup-top">
+				<text>选择您的性别</text>
+				<image src="../../static/icon_popup_closed@2x.png" mode=""  @click="closePopup"></image>
+			</view>
+			<view class="popup-body">
+				<view class="left">
+					<image v-if="gender == 1"  src="../../static/ic_boy_checked@2x.png" mode=""></image>
+					<image v-else src="../../static/ic_boy_unCheck@2x.png" mode="" @click="checkGender(1)"></image>
+					<text>男</text>
+				</view>
+				<view class="right">
+					<image v-if="gender == 2" src="../../static/ic_girl_checked@2x.png" mode="" ></image>
+					<image v-else src="../../static/ic_girl_unCheck@2x.png" mode="" @click="checkGender(2)"></image>
+					<text>女</text>
+				</view>
+			</view>
+			<view class="popup-footer" :style="{paddingBottom:systemBottom}">
+				<view class="button" @click="confirmGender">
+					确定
+				</view>
+			</view>
+		</uni-popup>
+		
+		
+		
+		
   </view>
 </template>
 
@@ -45,15 +74,24 @@ export default {
     return {
 			userInfo:{},
 			userName:"",
+			gender:"",
 			files:{},
+			
+			systemBottom:"",
 		};
   },
 	onShow() {
 		this.userInfo = getApp().globalData.userInfo
 		console.log("userInfo=",this.userInfo)
 		this.userName=this.userInfo.name;
+		this.gender  =this.userInfo.sex
 		this.files.url = 	this.userInfo.avatar 
 		console.log("this.files=",this.files)
+	},
+	mounted(e) {
+	  const menuButtonInfo = uni.getMenuButtonBoundingClientRect();
+	  this.systemBottom = menuButtonInfo.bottom +32 + "rpx";
+	  console.log(this.systemBottom);
 	},
 	watch:{
 		files(newVal,oldVal){
@@ -92,11 +130,9 @@ export default {
 			
 		},
 		
-		
-    onClick() {
+		onClick() {
       console.log("打印数据，哈哈哈");
     },
-		
 		
 		// 更改头像
 		changeAvatar(){
@@ -130,13 +166,49 @@ export default {
 				})
 			}
 		},
-		
 		//修改昵称
 		changeNickName(){
 			uni.navigateTo({
 				url:`edit-nick-name/edit-nick-name?nickName=${this.userInfo.name}`
 			})
 		},
+		
+		//修改性别  性别（1男，2女）
+		changeGender(){
+			 this.$refs.editGender.open()
+		},
+		closePopup(){
+			this.$refs.editGender.close()
+		},
+		confirmGender(){
+			if(this.userInfo.sex == this.gender){
+				this.$refs.editGender.close()
+			}else{
+				let params = {
+					gender:this.gender,
+					avatar:this.files.url,
+					nickName:this.userName,
+				}
+				console.log("params=",params)
+				editUserInfo(params).then(()=>{
+					this.$refs.editGender.close()
+					
+					this.userInfo.sex = this.gender
+					
+				})
+			}
+		},
+		checkGender(type){
+			if(type ==1){
+				this.gender = 1
+			}else{
+				this.gender = 2
+			}
+		},
+		
+		
+		
+		
 		
 		// 手机号
 		showToast(){
@@ -223,7 +295,72 @@ export default {
 			}
 		}
 	}
+	
+	.edit-gender-container{
+		background-color: #FFFFFF !important;
+		.popup-top{
+			height: 98rpx;
+			line-height: 98rpx;
+			text-align: center;
+			background-color: #FFFFFF;
+			font-weight: 500;
+			font-size: 32rpx;
+			position: relative;
+			image{
+				position: absolute;
+				width: 64rpx;
+				height: 64rpx;
+				object-fit: cover;
+				top: 16rpx;
+				right: 12rpx;
+			}
+		}
+		.popup-body{
+			background-color: #FFFFFF;
+			padding: 64rpx 140rpx 56rpx;
+			display: flex;
+			flex-flow: row nowrap;
+			align-items: center;
+			.left,.right{
+				display: flex;
+				flex-flow: column nowrap;
+				align-items: center;
+				image{
+					width: 96rpx;
+					height: 96rpx;
+					margin-bottom: 16rpx;
+				}
+				text{
+					width: 26rpx;
+					height: 32rpx;
+					color: #110100;
+					// color: #00BFB6;
+					font-size: 13px;
+				}
+			} 
+			.left{
+				padding-right: 278rpx;
+			}
+		}
+		.popup-footer{
+			background-color: #FFFFFF;
+			padding:24rpx 32rpx;
+			.button{
+				height: 88rpx;
+				line-height:88rpx;
+				text-align: center;
+				background: linear-gradient(135deg,#00bfaf, #00bfbc);
+				border-radius: 12rpx;
+				color: #FFFFFF;
+				font-weight: 500;
+				font-size: 32rpx;
+			}
+		}
+	
+	}
+	
 }
+
 
 
 </style>
