@@ -10,7 +10,7 @@
 				已购买	{{item.number}} 剩余{{item.stockNumber}}
  				</view>
 				<view class="num-input">
-					<custom-number-box @change="onChange" :onlyShowAdd="true" :value="value"></custom-number-box>
+					<custom-number-box :max="item.stockNumber" @change="onChange" :onlyShowAdd="true" :value="value"></custom-number-box>
 				</view>
 			</view>
 		</view>
@@ -47,7 +47,8 @@
 						this.value = 0;
 					}
 				},
-				deep: true
+				deep: true,
+				immediate:true
 			}
 
 		},

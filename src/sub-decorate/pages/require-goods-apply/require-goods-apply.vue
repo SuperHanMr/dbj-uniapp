@@ -109,6 +109,8 @@ export default {
     });
   },
   onLoad(e) {
+		this.cartList =  getApp().globalData.naviData
+		console.log(this.cartList)
     this.getCurrentHouse();
   },
   methods: {
@@ -134,13 +136,20 @@ export default {
       this.currentHouse = house;
     },
     submit() {
+			let list = [];
+			this.cartList.forEach(e=>{
+				list.push({stockId:e.id,goodsId:e.goodsId,orderId:e.orderId,orderDetailId:e.orderDetailId,requireNumber:e.count})
+			})
       let params = {
         creatorType: 0,
+				details:list
       };
-      goodsApply().then((e) => {});
-      uni.redirectTo({
-        url: "../require-success/require-success",
-      });
+      goodsApply(params).then((e) => {
+				uni.redirectTo({
+				  url: "../require-success/require-success",
+				});
+			});
+     
     },
   },
 };

@@ -104,26 +104,39 @@
 				title: title,
 			});
 			this.id = e.id
-			let totalBack = 0;
-
+			let list = []
 			this.data.stockAppVOS.forEach(e => {
-				totalBack += e.price * e.number
+				list.push({
+					returnNumber: e.stockNumber,
+					stockId: e.id,
+					goodsId: e.goodsId,
+					price: e.price
+				})
 			})
-			console.log(totalBack)
-			this.num = totalBack.toFixed(2);
+			this.refundList = list;
 
 
 			this.getRefundReasonList();
+			this.uploadNum()
 		},
-		methods: {
-			onNumChange(e) {
-				let item = {};
-				item.returnNumber = e.num;
 
-				this.refundList.push(item);
-				let total = e.num * e.item.price
-				this.num = total.toFixed(2);
-				console.log(e);
+		methods: {
+			uploadNum() {
+				let totalBack = 0;
+				this.refundList.forEach(e => {
+					totalBack += e.price * e.returnNumber;
+				})
+				this.num = totalBack.toFixed(2);
+			},
+			onNumChange(e) {
+				this.refundList.forEach(item => {
+					if (item.stockId == e.item.id) {
+						item.returnNumber = e.num;
+					}
+				})
+				console.log(this.refundList);
+
+				this.uploadNum()
 			},
 			getRefundReasonList() {
 				refundReason({
@@ -136,6 +149,20 @@
 				});
 			},
 			submitRefund() {
+				if (!this.reasonName) {
+					uni.showToast({
+						title: '请选择退款原因',
+						icon: 'none'
+					})
+					return
+				}
+				if (!this.num || this.num < 0) {
+					uni.showToast({
+						title: '请输入退款金额',
+						icon: 'none'
+					})
+					return
+				}
 				console.log(this.data);
 				let params = {}
 				params.id = this.id
@@ -146,8 +173,17 @@
 				params.reason = this.reasonName
 				console.log(params)
 				if (this.type == 1) {
+					params.details = this.refundList;
 					console.log(this.refundList);
-					goodsBack(params)
+					goodsBack(params).then(e => {
+						uni.showToast({
+							title: '提交成功',
+							icon: 'none'
+						})
+						uni.navigateBack({
+							delta: 2
+						})
+					})
 				} else {
 					params.type = this.refundType;
 					if (params.type == 2) {
