@@ -286,7 +286,7 @@
             		storeId:this.storeId,
             		buyCount:this.buyCount,
             		unit: this.unit? this.unit:"",
-                level: 0
+                level: 1
             	}],
             	estateId:this.estateId
           }
