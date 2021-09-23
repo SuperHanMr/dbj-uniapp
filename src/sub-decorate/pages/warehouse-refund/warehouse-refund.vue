@@ -82,16 +82,14 @@
 				reasonName: "",
 				refundList: [],
 				refundType: 0,
-				id: ''
+				id: '',
 			};
 		},
 		onShow() {
-		
+
 		},
 		onLoad(e) {
 			this.data = getApp().globalData.naviData;
-			console.log('~~~~~~~')
-			console.log(this.data);
 			let title;
 			this.type = e.type;
 			if (e.type == 0) {
@@ -106,25 +104,39 @@
 				title: title,
 			});
 			this.id = e.id
-			let totalBack = 0;
-			
+			let list = []
 			this.data.stockAppVOS.forEach(e => {
-				totalBack += e.price * e.number
+				list.push({
+					returnNumber: e.stockNumber,
+					stockId: e.id,
+					goodsId: e.goodsId,
+					price: e.price
+				})
 			})
-			console.log(totalBack)
-			this.num=totalBack
+			this.refundList = list;
 
 
 			this.getRefundReasonList();
+			this.uploadNum()
 		},
+
 		methods: {
+			uploadNum() {
+				let totalBack = 0;
+				this.refundList.forEach(e => {
+					totalBack += e.price * e.returnNumber;
+				})
+				this.num = totalBack.toFixed(2);
+			},
 			onNumChange(e) {
-				let item = {};
-				item.returnNumber = e.num;
+				this.refundList.forEach(item => {
+					if (item.stockId == e.item.id) {
+						item.returnNumber = e.num;
+					}
+				})
+				console.log(this.refundList);
 
-				this.refundList.push(item);
-
-				console.log(e);
+				this.uploadNum()
 			},
 			getRefundReasonList() {
 				refundReason({
@@ -137,27 +149,53 @@
 				});
 			},
 			submitRefund() {
+				if (!this.reasonName) {
+					uni.showToast({
+						title: '请选择退款原因',
+						icon: 'none'
+					})
+					return
+				}
+				if (!this.num || this.num < 0) {
+					uni.showToast({
+						title: '请输入退款金额',
+						icon: 'none'
+					})
+					return
+				}
 				console.log(this.data);
 				let params = {}
 				params.id = this.id
 				params.returnMoney = this.num * 100
+				params.refundAmount = this.num * 100
 				params.remark = this.remark
-				params.reasonId = this.reasonValue
+				params.reasonId = this.reasonValue;
+				params.reason = this.reasonName
 				console.log(params)
 				if (this.type == 1) {
-					goodsBack(params)
+					params.details = this.refundList;
+					console.log(this.refundList);
+					goodsBack(params).then(e => {
+						uni.showToast({
+							title: '提交成功',
+							icon: 'none'
+						})
+						uni.navigateBack({
+							delta: 2
+						})
+					})
 				} else {
 					params.type = this.refundType;
 					if (params.type == 2) {
 						params.goodsId = this.data.stockAppVOS[0].goodsId
 					}
-					goodsRefund(params).then(e=>{
+					goodsRefund(params).then(e => {
 						uni.showToast({
-							title:'提交成功',
-							icon:'none'
+							title: '提交成功',
+							icon: 'none'
 						})
 						uni.navigateBack({
-							delta:2
+							delta: 2
 						})
 					})
 				}

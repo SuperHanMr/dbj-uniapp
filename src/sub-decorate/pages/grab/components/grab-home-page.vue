@@ -1,0 +1,132 @@
+<template>
+  <view class="grab-content">
+    <view class="grab-content-top">
+      <view class="grab-content-header">
+        <image src="" mode=""></image>
+        <text class="title">上官海棠</text>
+        <view class="introduce">
+          <text>男</text>
+          <text>|</text>
+          <text>设计师</text>
+          <text>|</text>
+          <text>好评率99%</text>
+        </view>
+      </view>
+      <view class="person-msg-list">
+        <view class="list-item">
+          <text class="num">7</text>
+          <text class="title">获赞</text>
+        </view>
+        <view class="list-item">
+          <text class="num">7</text>
+          <text class="title">粉丝</text>
+        </view>
+        <view class="list-item">
+          <text class="num">7</text>
+          <text class="title">被收藏</text>
+        </view>
+        <view class="list-item">
+          <text class="num">7</text>
+          <text class="title">被推荐</text>
+        </view>
+        <view class="list-item">
+          <text class="num">7</text>
+          <text class="title">总接单</text>
+        </view>
+      </view>
+    </view>
+    <grabHomePageMsg></grabHomePageMsg>
+  </view>
+</template>
+
+<script>
+  import grabHomePageMsg from './grab-home-page-msg.vue'
+  export default{
+    components:{
+      grabHomePageMsg
+    },
+    data(){
+      return{
+        
+      }
+    }
+  }
+</script>
+
+<style lang="scss" scoped>
+  .grab-content{
+    
+    width: 100%;
+    background-color: #fff;
+    border-radius: 48rpx;
+    .grab-content-top{
+      position: relative;
+      border-bottom: 1px solid #F3F3F3;
+      // height: 336rpx;
+      padding-top: 216rpx;
+      .grab-content-header{
+        position: absolute;
+        top: -76rpx;
+        width: 270rpx;
+        left: 50%;
+        margin-left: -135rpx;
+        display: flex;
+        justify-content: center;
+        flex-wrap: wrap;
+        image{
+          width: 152rpx;
+          height: 152rpx;
+          border-radius: 50%;
+          margin-bottom: 12rpx;
+          background-color: #eee;
+        }
+        .title{
+          font-size: 44rpx;
+          font-weight: 500;
+          color: #333;
+          line-height: 60rpx;
+        }
+        .introduce{
+          width: 100%;
+          display: flex;
+          justify-content: space-evenly;
+          text{
+            color: #999;
+            font-size: 22rpx;
+          }
+        }
+      }
+      .person-msg-list{
+        // margin-top: 216rpx;
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: space-evenly;
+        height: 104rpx;
+        align-items: center;
+        margin-bottom: 16rpx;
+        .list-item{
+          // display: flex;
+          // flex-wrap: wrap;
+          // justify-content: center;
+          text{
+            display: block;
+          }
+          .num{
+            color: #333;
+            font-size: 40rpx;
+            font-weight: 400;
+            line-height: 42rpx;
+            text-align: center;
+          }
+          .title{
+            font-size: 24rpx;
+            font-weight: 400;
+            color: #999;
+            background-color: #fff;
+          }
+        }
+      }
+    }
+    
+  }
+</style>

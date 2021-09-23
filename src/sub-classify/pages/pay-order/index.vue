@@ -199,7 +199,8 @@
         orderDetails: [],
         totalGoodsNum: 0,
         totalPrice: '0.00',
-        canPay: true
+        canPay: true,
+        projectId: 0
       }
     },
     onLoad(e) {
@@ -234,7 +235,7 @@
       if(!Number(uni.getStorageSync('houseListChooseId')) && !Number(this.houseId)){
         this.isShow = false
         setTimeout(() => {
-          if(this.$refs.houseDialog.open){
+          if(this.$refs.houseDialog){
             this.$refs.houseDialog.open()
           }
         })
@@ -245,7 +246,7 @@
         this.$nextTick(() => {
           this.houseId = uni.getStorageSync('houseListChooseId')
         })
-        if(this.$refs.houseDialog.close) {
+        if(this.$refs.houseDialog) {
           this.$refs.houseDialog.close()
         }
       }
@@ -273,6 +274,8 @@
         this.$set(this.orderInfo.storeInfos[this.shopIndex].skuInfos[this.goodIndex], "time", this.time)
       },
       emitInfo(val) {
+        this.projectId = val.projectId
+        this.orderDetails = []
         this.addressInfo = val
         this.estateId = val.id ? val.id: 0
          let params = {}
@@ -374,6 +377,7 @@
                   orderDetailItem: orderDetailItem,
                   paramsInfo: skuItem
                 })
+                console.log(this.orderDetails, "this.orderDetails")
               }
             })
           })
@@ -409,7 +413,7 @@
         let params = {
             payType: 1, //"int //支付方式  1微信支付",
             openid: uni.getStorageSync("openId"), //"string //微信openid 小程序支付用 app支付不传或传空",
-            projectId: 0, //"long //项目id  非必须 默认0",
+            projectId: this.projectId, //"long //项目id  非必须 默认0",
             customerId: 0, //"long //业主id  非必须 默认0",
             estateId: this.estateId, //"long //房产id   非必须 默认0",
             total: this.totalPrice * 100, //"int //总计",
