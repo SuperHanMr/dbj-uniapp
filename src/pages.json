@@ -4,9 +4,9 @@
 			"path": "pages/home/index/index",
 			"style": {
 				"navigationBarTitleText": "首页",
-				"enablePullDownRefresh": true,
 				"transparentTitle": "auto",
-				"navigationStyle": "custom"
+				"navigationStyle": "custom",
+				"backgroundColor":"#FFFFFF"
 			}
 		},
 		{
