@@ -24,7 +24,7 @@ export function getHouse(params) {
 
 //获取房屋
 export function getHouseStep(params) {
-	return request.get("/pm/app/project/getPurchasedFlag?nodeType=4&estateId=" + params)
+	return request.get("/pm/app/project/getEstateEditFlag?estateId=" + params)
 }
 
 //编辑房屋
