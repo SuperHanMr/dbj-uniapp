@@ -557,13 +557,6 @@
 					}
 				},
 				{
-					"path": "pages/no-house-checkhouse/no-house-checkhouse",
-					"style": {
-						"navigationBarTitleText": "验房服务",
-						"enablePullDownRefresh": false
-					}
-				},
-				{
 					"path": "pages/no-house-decorate/no-house-decorate",
 					"style": {
 						"navigationBarTitleText": "装修服务",
