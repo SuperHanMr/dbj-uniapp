@@ -172,7 +172,7 @@
 			},
 			{
 				"name": "lyb", //模式名称
-				"path": "/sub-decorate/pages/my-decorate/my-decorate", //启动页面，必选
+				"path": "/sub-decorate/pages/grab/grab", //启动页面，必选
 				"query": "" //启动参数，在页面的onLoad函数里面得到
 			},
 			{
@@ -562,13 +562,6 @@
 					"style": {
 						"navigationBarTitleText": "",
 						"enablePullDownRefresh": true
-					}
-				},
-				{
-					"path": "pages/no-house-checkhouse/no-house-checkhouse",
-					"style": {
-						"navigationBarTitleText": "验房服务",
-						"enablePullDownRefresh": false
 					}
 				},
 				{

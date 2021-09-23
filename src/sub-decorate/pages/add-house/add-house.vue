@@ -54,7 +54,7 @@
 					<choose-btn :btnList='elevatorList' :currentBtn='addData.hasLift' :disabled="roomId&&!isEdit" @chooseBtn="chooseEle">
 					</choose-btn>
 					<input v-if="!addData.hasLift" :disabled="roomId&&!isEdit" placeholder-class="placeholder" class="ele-input" name="input"
-						v-model="addData.floors" placeholder="请输入电梯楼层" />
+						v-model="addData.floors" placeholder="请输入楼层" />
 				</view>
 			</view>
 			<view class="content bottom-switch">
@@ -69,7 +69,7 @@
 				<text class="submit" @click="save">保存</text>
 			</view>
 		</form>
-		<uni-popup ref="popup" @maskClick='pickerCancel' type="bottom">
+		<uni-popup ref="popup" @maskClick='pickerCancel' :mask-click="false" type="bottom">
 			<view class="picker-btn">
 				<text class="btn cancel-btn" @click="pickerCancel">取消</text>
 				<text class="btn sure-btn" @click="pickerSure">确定</text>
@@ -175,6 +175,7 @@
 				});
 				this.getHouse();
         this.getHouseStep()
+        that.hasPoint = true;
 			}
 			this.delta = e.delta;
 		},
@@ -379,7 +380,7 @@
 					});
 					return false;
 				}
-				if (data.insideArea.length < 1 || data.insideArea.length > 10000) {
+				if (data.insideArea < 1 || data.insideArea > 10000) {
 					uni.showToast({
 						title: "房屋面积需输入1-10000以内的数字",
 						duration: 2000,

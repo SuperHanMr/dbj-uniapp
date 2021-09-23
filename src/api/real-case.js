@@ -55,3 +55,6 @@ export function expandReplies(params) {
 export function getSigneddates(projectId,month) {
   return request.get(`/pm/app/decorate/calendar/getClientMonthTotal/${projectId}/${month}`, {});
 }
+export function getDynamics(params) {
+  return request.post(`/pm/app/decorate/calendar/getSimpleListByPageQuery`, params);
+}

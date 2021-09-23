@@ -9,12 +9,12 @@
 		<!-- 左上角的icon -->
     <image
       class="product-check"
-      src="../../static/images/product_unChecked.png"
+      src="../../static/order/images/product_unChecked.png"
       mode=""
     ></image>
-    <!-- <image
+  <!--  <image
 			class="product-check"
-			src="../../static/images/product_checked.png"
+			src="../../static/order/images/product_checked.png"
 			mode=""
 		></image> -->
 
@@ -22,22 +22,22 @@
 	<!-- 右上角的icon图标 -->
 	 <image
       class="case-type"
-      src="../../sub-my/static/icon_vr_@2x.png"
+      src="../../static/order/images/icon_vr_@2x.png"
       mode=""
     />
 		
 		<!-- <image
 		  class="case-type"
-		  src="../../static/images/icon_video.png"
+		  src="../../static/order/images/icon_video.png"
 		  mode=""
 		/>
 		
 		<image
 		  class="case-type"
-		  src="../../sub-my/static/icon_img_@2x.png"
+		  src="../../static/order/images/icon_img_@2x.png"
 		  mode=""
-		/> -->
-		
+		/>
+		 -->
 
     <image
       class="product-img"

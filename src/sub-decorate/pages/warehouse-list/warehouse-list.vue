@@ -74,7 +74,7 @@
 			}
 		},
 		onShow() {
-			this.onRefresh()
+			// this.onRefresh()
 		},
 		methods: {
 			onConfirmGoods(item) {
@@ -117,7 +117,7 @@
 			},
 			toRequire() {
 				uni.navigateTo({
-					url: "/sub-decorate/pages/require-goods/require-goods?projectId=${this.projectId}",
+					url: `/sub-decorate/pages/require-goods/require-goods?projectId=${this.projectId}`,
 				});
 			},
 			toRefund() {
@@ -207,6 +207,7 @@
 								this.triggered = false;
 							}
 							if (e.length) {
+								this.lastId[this.currentIndex] = e[e.length - 1].id;
 								this.list3 = this.list3.concat(e);
 							} else {
 								if (this.lastId[this.currentIndex]) {

@@ -52,7 +52,7 @@
           >
             <view
               v-for="(detail, detailK) in menu3['stockAppVOS']"
-              :key="detailK"
+              :key="detail.id"
             >
               <goods-item
                 :cartList="cartList"
@@ -60,6 +60,8 @@
                 @change="onChange"
               ></goods-item>
             </view>
+					<view :style="{height:Number(menuBottom) +Number(104)+'rpx'}">
+					</view>
           </scroll-view>
         </view>
       </scroll-view>
@@ -186,20 +188,19 @@ export default {
     this.systemBottom = menuButtonInfo.bottom + "rpx";
     this.menuBottom = menuButtonInfo.bottom;
     if (e && e.projectId) {
-      this.projectId = projectId;
+      this.projectId = e.projectId;
     }
     this.getLeftList();
   },
   methods: {
     toHistory() {
       uni.navigateTo({
-        url: "../require-history/require-history",
+        url: `../require-history/require-history?projectId=${this.projectId}`,
       });
     },
     getLeftList() {
       categoryList({
-        projectId: this.projectId,
-        workType: 0,
+        projectId: this.projectId
       }).then((e) => {
         this.leftList = e;
         if (this.leftList.length) {
@@ -213,7 +214,6 @@ export default {
       if (this.lastId) {
         params.lastId = this.lastId;
       }
-      params.workType = 0;
       params.rows = 1000;
       params.projectId = this.projectId;
       params.categoryId = this.currentCategoryId;
@@ -222,6 +222,7 @@ export default {
       });
     },
     toApply() {
+			getApp().globalData.naviData = this.cartList;
       uni.navigateTo({
         url: "/sub-decorate/pages/require-goods-apply/require-goods-apply",
       });
@@ -241,13 +242,13 @@ export default {
       this.$refs.popup.close();
     },
     categoryClickMain(item, index) {
+			console.log(item);
       this.currentCategoryId = item.categoryId;
       this.categoryActive = index;
       this.getRightItems();
     },
     changeFromCart(item, index) {
-      console.log(item);
-      // this.cartList[index] = item;
+			
       this.$set(this.cartList, index, item);
     },
     onChange(item) {
