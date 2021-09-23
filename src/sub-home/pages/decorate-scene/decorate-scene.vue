@@ -340,13 +340,7 @@
 					subBizType: this.projectInfo.estateCityId,
 					jsonContent: JSON.stringify(obj)
 				}
-				// axios.post("/app/base/interactive/add",params).then(res => {
-				// 	console.log(res)
-				// })
-				// .catch(err => {
-				// 	console.log(err)
-				// })
-				setAttentions(params,{baseUrl:'http://192.168.5.24:8080'}).then( data => {
+				setAttentions(params).then( data => {
 					if(data){
 						console.log(data)
 						this.isSelfFocusOn = !this.isSelfFocusOn

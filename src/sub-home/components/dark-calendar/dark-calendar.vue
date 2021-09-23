@@ -31,196 +31,203 @@
         <view class="item" v-for="(item, index) in dates" :key="index">
 					<view class="today-text" @click="todayC" :class="{'checked': isChecked}" v-if="isToday(item.year, item.month, item.date)">今</view>
           <view class="day" v-else @click="selectOne(item, $event)" :class="{ choose: choose == `${item.year}-${item.month}-${item.date}`, nolm: !item.lm }">{{ item.date }}</view>
-          <view class="sign" v-if="isSigned(item.year, item.month + 1, item.date)"></view>
+          <view class="sign" v-if="isSigned(item.year, item.month , item.date)"></view>
         </view>
       </view>
     </view>
 
-    <image src="../../static/dark-calendar/ico-arrow-up.png" mode="scaleToFill" @click="trgWeek()" class="weektoggel" :class="{ down: !monthOpen }"></image>
+    <!-- <image src="../../static/dark-calendar/ico-arrow-up.png" mode="scaleToFill" @click="trgWeek()" class="weektoggel" :class="{ down: !monthOpen }"></image> -->
   </view>
 </template>
 
 <script>
-export default {
-  name: 'dark-calendar',
-  props: {
-    // 第一列星期几
-    weekstart: {
-      type: Number,
-      default: 7
-    },
-    // 已经签到的日期
-    signeddates: {
-      type: Array,
-      default: null
-    },
-    // 是否展开
-    open: {
-      type: Boolean,
-      default: true
-    }
-  },
-  data() {
-    return {
-      text: {
-        year: '年',
-        month: '月',
-        week: ['一', '二', '三', '四', '五', '六', '日'],
-        today: '今'
-      },
-      y: new Date().getFullYear(), // 年
-      m: new Date().getMonth(), // 月
-      dates: [], // 当前月日期集合
-      positionTop: 0,
-      monthOpen: true,
-      choose: '',
-			isChecked: true
-    }
-  },
-  created() {
-    this.dates = this.monthDay(this.y, this.m)
-    !this.open && this.trgWeek()
-  },
-  mounted() {
-    let date = new Date()
-    let y = date.getFullYear()
-    let m = date.getMonth()+1
-		let mon = m < 10? '0'+m : m
-    let d = date.getDate()
-    this.choose = `${y}-${mon}-${d}`
-
-  },
-  computed: {
-    // 顶部星期栏目
-    weekDay() {
-      return this.text.week.slice(this.weekstart - 1).concat(this.text.week.slice(0, this.weekstart - 1))
-    },
-    height() {
-      return (this.dates.length / 7) * 90 + 'rpx'
-    }
-  },
-  methods: {
-		todayC(){
-			console.log(this.isChecked,'//')
-			this.isChecked = !this.isChecked
-		},
-    // 获取当前月份天数
-    monthDay(y, m) {
-      let firstDayOfMonth = new Date(y, m, 1).getDay() // 当月第一天星期几
-      let lastDateOfMonth = new Date(y, m + 1, 0).getDate() // 当月最后一天
-      let lastDayOfLastMonth = new Date(y, m, 0).getDate() // 上一月的最后一天
-      let dates = [] // 所有渲染日历
-      let weekstart = this.weekstart == 7 ? 0 : this.weekstart // 方便进行日期计算，默认星期从0开始
-      let startDay = (() => {
-        // 周初有几天是上个月的
-        if (firstDayOfMonth == weekstart) {
-          return 0
-        } else if (firstDayOfMonth > weekstart) {
-          return firstDayOfMonth - weekstart
-        } else {
-          return 7 - weekstart + firstDayOfMonth
-        }
-      })()
-      let endDay = 7 - ((startDay + lastDateOfMonth) % 7) // 结束还有几天是下个月的
-      for (let i = 1; i <= startDay; i++) {
-        dates.push({
-          date: lastDayOfLastMonth - startDay + i,
-          day: weekstart + i - 1 || 7,
-          month: m - 1 >= 0 ? m - 1 : 12,
-          year: m - 1 >= 0 ? y : y - 1
-        })
-      }
-      for (let j = 1; j <= lastDateOfMonth; j++) {
-        dates.push({
-          date: j,
-          day: (j % 7) + firstDayOfMonth - 1 || 7,
-          month: m,
-          year: y,
-          lm: true
-        })
-      }
-      for (let k = 1; k <= endDay; k++) {
-        dates.push({
-          date: k,
-          day: (lastDateOfMonth + startDay + weekstart + k - 1) % 7 || 7,
-          month: m + 1 <= 11 ? m + 1 : 0,
-          year: m + 1 <= 11 ? y : y + 1
-        })
-      }
-			dates.map(item => {
-				if(item.month < 10){
-					item.month = '0'+item.month
-				}
-				return item
-			})
-			console.log(dates)
-      return dates
-    },
-    // 已经签到处理
-    isSigned(y, m, d) {
-      let flag = false
-      for (let i = 0; i < this.signeddates.length; i++) {
-        let dy = `${y}-${m}-${d}`
-        if (this.signeddates[i].day == dy) {
-          flag = true
-          break
-        }
-      }
-      return flag
-    },
-    isToday(y, m, d) {
-      let year = new Date().getFullYear()
-			let mon = new Date().getMonth() + 1
-			let month = mon < 10 ? '0'+mon : mon
-			let day = new Date().getDate()
-      return y == year && m == month && d == day
-    },
-    // 切换成周模式
-    trgWeek() {
-      this.monthOpen = !this.monthOpen
-      if (this.monthOpen) {
-        this.positionTop = 0
-      } else {
-        let index = -1
-        this.dates.forEach((i, x) => {
-          this.isToday(i.year, i.month, i.date) && (index = x)
-        })
-        this.positionTop = -((Math.ceil((index + 1) / 7) || 1) - 1) * 80
-      }
-    },
-    // 点击回调
-    selectOne(i, event) {
-      let date = `${i.year}-${i.month + 1}-${i.date}`
-      let selectD = new Date(date)
-      if (selectD.getMonth() != this.m) {
-        console.log('不在可选范围内')
-        return false
-      }
-      this.choose = date
-      this.$emit('on-click', date)
-    },
-    // 上个月，下个月
-    turning(_action) {
-      if (_action === 'next') {
-        if (this.m + 1 == 12) {
-          this.m = 0
-          this.y = this.y + 1
-        } else {
-          this.m = this.m + 1
-        }
-      } else {
-        if (this.m + 1 == 1) {
-          this.m = 11
-          this.y = this.y - 1
-        } else {
-          this.m = this.m - 1
-        }
-      }
-
-      this.dates = this.monthDay(this.y, this.m)
-    }
-  }
-}
+	import {getSigneddates,getDynamics} from "../../../api/real-case.js"
+	export default {
+	  name: 'dark-calendar',
+	  props: {
+	    // 第一列星期几
+	    weekstart: {
+	      type: Number,
+	      default: 7
+	    },
+	    // 已经签到的日期
+	    signeddates: {
+	      type: Array,
+	      default: null
+	    },
+	    // 是否展开
+	    open: {
+	      type: Boolean,
+	      default: true
+	    }
+	  },
+	  data() {
+	    return {
+	      text: {
+	        year: '年',
+	        month: '月',
+	        week: ['一', '二', '三', '四', '五', '六', '日'],
+	        today: '今'
+	      },
+	      y: new Date().getFullYear(), // 年
+	      m: new Date().getMonth(), // 月
+	      dates: [], // 当前月日期集合
+	      positionTop: 0,
+	      monthOpen: true,
+	      choose: '',
+				isChecked: true
+	    }
+	  },
+	  created() {
+	    this.dates = this.monthDay(this.y, this.m)
+	    !this.open && this.trgWeek()
+	  },
+	  mounted() {
+	    let date = new Date()
+	    let y = date.getFullYear()
+	    let mon = date.getMonth()+1
+			let m = mon < 10? '0'+mon : mon
+	    let d = date.getDate()
+	    this.choose = `${y}-${m}-${d}`
+			console.log(this.choose)
+			console.log(this.signeddates,'dadian')
+	  },
+	  computed: {
+	    // 顶部星期栏目
+	    weekDay() {
+	      return this.text.week.slice(this.weekstart - 1).concat(this.text.week.slice(0, this.weekstart - 1))
+	    },
+	    height() {
+	      return (this.dates.length / 7) * 90 + 'rpx'
+	    }
+	  },
+	  methods: {
+			todayC(){
+				this.isChecked = !this.isChecked
+			},
+			toMemo(){
+				uni.navigateTo({
+					url:"./memo"
+				})
+			},
+	    // 获取当前月份天数
+	    monthDay(y, m) {
+	      let firstDayOfMonth = new Date(y, m, 1).getDay() // 当月第一天星期几
+	      let lastDateOfMonth = new Date(y, m + 1, 0).getDate() // 当月最后一天
+	      let lastDayOfLastMonth = new Date(y, m, 0).getDate() // 上一月的最后一天
+	      let dates = [] // 所有渲染日历
+	      let weekstart = this.weekstart == 7 ? 0 : this.weekstart // 方便进行日期计算，默认星期从0开始
+	      let startDay = (() => {
+	        // 周初有几天是上个月的
+	        if (firstDayOfMonth == weekstart) {
+	          return 0
+	        } else if (firstDayOfMonth > weekstart) {
+	          return firstDayOfMonth - weekstart
+	        } else {
+	          return 7 - weekstart + firstDayOfMonth
+	        }
+	      })()
+	      let endDay = 7 - ((startDay + lastDateOfMonth) % 7) // 结束还有几天是下个月的
+	      for (let i = 1; i <= startDay; i++) {
+	        dates.push({
+	          date: lastDayOfLastMonth - startDay + i,
+	          day: weekstart + i - 1 || 7,
+	          month: m - 1 >= 0 ? m - 1 : 12,
+	          year: m - 1 >= 0 ? y : y - 1
+	        })
+	      }
+	      for (let j = 1; j <= lastDateOfMonth; j++) {
+	        dates.push({
+	          date: j,
+	          day: (j % 7) + firstDayOfMonth - 1 || 7,
+	          month: m,
+	          year: y,
+	          lm: true
+	        })
+	      }
+	      for (let k = 1; k <= endDay; k++) {
+	        dates.push({
+	          date: k,
+	          day: (lastDateOfMonth + startDay + weekstart + k - 1) % 7 || 7,
+	          month: m + 1 <= 11 ? m + 1 : 0,
+	          year: m + 1 <= 11 ? y : y + 1
+	        })
+	      }
+				dates.map(item => {
+					if(item.month+1 < 10){
+						item.month = '0'+(item.month+1)
+					}
+					return item
+				})
+				console.log(dates)
+	      return dates
+	    },
+	    // 已经签到处理
+	    isSigned(y, m, d) {
+	      let flag = false
+				let day = `${y}-${m}-${d}`
+	      for (let i = 0; i < this.signeddates.length; i++) {
+	        if (this.signeddates[i].day == day) {
+	          flag = true
+	          break
+	        }
+	      }
+	      return flag
+	    },
+	    isToday(y, m, d) {
+	      let year = new Date().getFullYear()
+				let mon = new Date().getMonth()+1
+				let month = mon < 10 ? '0'+mon : mon
+				let day = new Date().getDate()
+	      return y == year && m == month && d == day
+	    },
+	    // 切换成周模式
+	    trgWeek() {
+	      this.monthOpen = !this.monthOpen
+	      if (this.monthOpen) {
+	        this.positionTop = 0
+	      } else {
+	        let index = -1
+	        this.dates.forEach((i, x) => {
+	          this.isToday(i.year, i.month, i.date) && (index = x)
+	        })
+	        this.positionTop = -((Math.ceil((index + 1) / 7) || 1) - 1) * 80
+	      }
+	    },
+	    // 点击回调
+	    selectOne(i, event) {
+	      let date = `${i.year}-${i.month}-${i.date}`
+	      let selectD = new Date(date)
+				console.log(date,selectD.getMonth(),this.m)
+	      if (selectD.getMonth() != this.m) {
+	        console.log('不在可选范围内')
+	        return false
+	      }
+	      this.choose = date
+	      this.$emit('filterByDate', date)
+	    },
+	    // 上个月，下个月
+	    turning(_action) {
+	      if (_action === 'next') {
+	        if (this.m + 1 == 12) {
+	          this.m = 0
+	          this.y = this.y + 1
+	        } else {
+	          this.m = this.m + 1
+	        }
+	      } else {
+	        if (this.m + 1 == 1) {
+	          this.m = 11
+	          this.y = this.y - 1
+	        } else {
+	          this.m = this.m - 1
+	        }
+	      }
+	
+	      this.dates = this.monthDay(this.y, this.m)
+	    }
+	  }
+	}
 </script>
 
 <style lang="scss" scoped>
@@ -244,7 +251,6 @@ export default {
 		margin: 24rpx 32rpx;
 		background: #ffffff;
 		border-radius: 26rpx;
-		position: relative;
 		display: flex;
 		flex-direction: row;
 		justify-content: center;
@@ -318,8 +324,6 @@ export default {
   .content {
 		width: 750rpx;
 		height: 452rpx;
-    position: relative;
-    overflow: hidden;
     transition: height 0.4s ease;
   }
 	.days {
@@ -330,7 +334,7 @@ export default {
 	  display: flex;
 	  align-items: center;
 	  flex-wrap: wrap;
-	  position: relative;
+	  
 	}
 	.item {
 		width: 98rpx;
@@ -340,6 +344,7 @@ export default {
 		display: flex;
 		justify-content: center;
 		align-items: center;
+		position: relative;
 	}
 	.day {
 	  width: 52rpx;
@@ -369,7 +374,7 @@ export default {
 	  position: absolute;
 	  left: 50%;
 	  margin-left: -4rpx;
-	  bottom: 20rpx;
+	  bottom: 6rpx;
 	}
 		
 	.today-text {

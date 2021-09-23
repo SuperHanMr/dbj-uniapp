@@ -28,9 +28,8 @@
 				systemHeight: "",
 			};
 		},
-		onLoad(e) {
-			this.systemBottom = 20 + "rpx";
-			console.log(this.systemBottom);
+		mounted(e) {
+			this.systemBottom =  20 + "rpx";
 		},
 		methods: {
 			submit() {

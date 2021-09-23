@@ -49,7 +49,7 @@
 
 			goCheckService() {
 				uni.navigateTo({
-					url: "/sub-decorate/pages/no-house-checkhouse/no-house-checkhouse?type=checkHouse",
+					url: "/sub-decorate/pages/no-house-decorate/no-house-decorate?type=checkHouse",
 				});
 			},
 			gobackHome() {

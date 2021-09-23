@@ -117,7 +117,7 @@
 			<view v-if="type==0" class="refund-btn" @click="toBack">
 				退库存
 			</view>
-			<view v-if="type==0" class="big-btn">
+			<view v-if="type==0" @click="toRequire" class="big-btn">
 				要货
 			</view>
 			<view v-if="type==1" class="confirm-btn" @click="onConfirmGoods">
@@ -152,17 +152,24 @@
 				pay_time: '1631515894',
 				res: {},
 				type: -1,
-				id: ''
+				id: '',
+				projectId: ''
 			}
 		},
 		onLoad(e) {
 			let type = e.type;
 			this.type = type
+			this.projectId = e.projectId;
 			let id = e.id;
 			this.id = id
 			this.loadData(type, id);
 		},
 		methods: {
+			toRequire() {
+				uni.navigateTo({
+					url: `/sub-decorate/pages/require-goods/require-goods?projectId=${this.projectId}`,
+				});
+			},
 			applyBackItem(item) {
 				let params = {
 					stockAppVOS: [item]
@@ -184,7 +191,7 @@
 			toBack() {
 				getApp().globalData.naviData = this.res;
 				uni.navigateTo({
-					url: `../warehouse-refund/warehouse-refund?id=${this.id}`,
+					url: `../warehouse-refund/warehouse-refund?type=1&id=${this.id}`,
 				})
 			},
 			applyRefund() {
