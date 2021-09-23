@@ -115,7 +115,7 @@
           </uni-popup>
           <decorate-notice @touchmove.stop.prevent="()=>false" v-if="noticeActive" :num='msgNum'
             :current='currentProject.projectId' @closeNotice='closeNotice' class="decorate-notice"></decorate-notice>
-          <view class="link">
+          <!-- <view class="link">
             <view @click="gonohouse">无房屋无服入口</view>
             <view @click="gonohousedecatore('decorate')">无房屋无服务装修</view>
             <view @click="gonohousedecatore('checkHouse')">无房屋无服务验房</view>
@@ -128,7 +128,7 @@
             <view @click="gjgxf">管家工序费</view>
             <view @click="payGuanGuanJia">生成买管家消息</view>
             <view @click="payRenGong">生成买人工消息</view>
-          </view>
+          </view> -->
         </scroll-view>
       </view>
       <drag-button-follow v-if="msgNum>0" :num='msgNum' :style.sync="style" @btnClick='openNotice'
