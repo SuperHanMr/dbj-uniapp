@@ -85,8 +85,8 @@
 			this.isMy = e.isMy || false
 
 			const menuButtonInfo = uni.getMenuButtonBoundingClientRect();
-			this.systemBottom = menuButtonInfo.bottom + 'rpx';
-			this.systemHeight = menuButtonInfo.bottom + 136 + 'rpx'
+			this.systemBottom = 20 + 'rpx';
+			this.systemHeight = 20 + 136 + 'rpx'
 		},
 		methods: {
 			delThis: function(item, index) {

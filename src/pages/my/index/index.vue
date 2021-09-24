@@ -91,7 +91,7 @@
 
 
     <view @click="handlerToSetUp">真实案例</view>
-
+<view @click="handlerToPerson">个人主页</view>
 
   </view>
 
@@ -240,7 +240,11 @@ export default {
         url: item.url,
       });
     },
-
+    handlerToPerson(){
+      uni.navigateTo({
+        url: '/sub-decorate/pages/person-page/person-page',
+      });
+    }
   },
 };
 </script>
