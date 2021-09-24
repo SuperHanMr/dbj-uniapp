@@ -23,7 +23,7 @@
          :key="goodsIndex"
          :right-options="options"
        >
-        <view class="goodsItem" @click="toDetails(goodsItem.id)">
+        <view class="goodsItem" @click="toDetails(goodsItem.product.skuId)">
           <image :src="goodsItem.product.skuImage" class="goodsItemImg"></image>
           <view class="goodsInfo">
             <view class="goodsDesc">
