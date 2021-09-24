@@ -41,6 +41,7 @@
             class="orederItem"
           >
             <order-item
+							@handleDetail="goToDetail"
               :dataList="item2"
               :orderStatus="2"
 							:showOriginPrice="orderInfo.discount && item.details.length"
@@ -192,7 +193,7 @@ export default {
 			})
 		},	
 		
-	
+		// 申请退款成功
 		refundSuccess(item){
 		
 			uni.navigateTo({
@@ -207,8 +208,16 @@ export default {
 				url:`../order-failed/order-failed?type=refund&id=${item.refundId}&status=${item.refundStatus}`
 			})
 		},
+		// 点击商品区域，跳转到商品详情页面
+		goToDetail(){
+			uni.getStorageSync('goodId')     
+			uni.navigateTo({ 
+				url:"../../../../pages/common/goods-detail/goods-detail"
+			})
+		},
 			
 		
+		// 确认收货
     handleConfirmReceipt() {
       this.$refs.confirmReceipt.open();
     },

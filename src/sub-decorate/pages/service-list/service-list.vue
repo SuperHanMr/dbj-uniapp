@@ -30,16 +30,18 @@
 				checkedId: "",
         title: null,
         categoryTypeId: null,
+        serviceType: null,
         insideArea: null
 			}
 		},
 		onLoad(option) {
       const {
-        insideArea, id, categoryTypeId, name
+        insideArea, id, categoryTypeId, name, serviceType
       } = option
 			this.checkedId = id + ""
 			this.title = name
 			this.categoryTypeId = categoryTypeId
+      this.serviceType = serviceType
 			this.insideArea = insideArea
 		},
 		onShow() {
@@ -58,18 +60,9 @@
 			},
 			radioChange(obj) {
 				this.checkedId = obj.value
-        
-				// if (this.categoryTypeId == 1) {
-				// 	getApp().globalData.noHouseDesignId = obj.value
-				// } else if (this.categoryTypeId == 4){
-				// 	getApp().globalData.noHouseActuaryId = obj.value
-				// } else if (this.categoryTypeId == 2) {
-				// 	getApp().globalData.noHouseCheckId = obj.value
-				// }
-        // debugger
         let tmp = this.dataList.filter(t => t.id == Number(obj.value))[0]
         uni.$emit('selectedServer', {
-          categoryTypeId: this.categoryTypeId,
+          serviceType: this.serviceType,
           values: tmp
         });
 				setTimeout(() => {

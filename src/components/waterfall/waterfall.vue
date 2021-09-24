@@ -2,12 +2,12 @@
 	<view class="waterfall">
 		<view class="left">
 			<block v-for="(item, index) in leftList" :key="index">
-				<waterfall-item :item="item" @detail="toDetail" @load="onImageLoad"></waterfall-item>
+				<waterfall-item :item="item" @detail="toDetail" @load="onImageLoad" :showCheckIcon="showCheckIcon" ></waterfall-item>
 			</block>
 		</view>
 		<view class="right">
 			<block v-for="(item, index) in rightList" :key="index">
-				<waterfall-item :item="item" @detail="toDetail" @load="onImageLoad"></waterfall-item>
+				<waterfall-item :item="item" @detail="toDetail" @load="onImageLoad" :showCheckIcon="showCheckIcon" ></waterfall-item>
 			</block>
 		</view>
 	</view>
@@ -21,7 +21,12 @@
 			list: {
 				type: Array,
 				default: []
-			}
+			},
+			showCheckIcon:{
+				type:Boolean,
+				default:false
+			},
+		
 		},
 		components:{waterfallItem},
 		watch: {
@@ -58,6 +63,7 @@
 		},
 		methods: {
 			toDetail(item) {
+				console.log("item=",item)
 				this.$emit('selectedItem', item)
 			},
 			onImageLoad(e) {

@@ -37,17 +37,22 @@
 			</view>
 		</view>
 		<view class="new" @click="toNewMemo">
-			新建
+			<image class="create" src="../../static/ic_create_memo@2x.png"></image>
 		</view>
 	</view>
 </template>
 
 <script>
+	import {getMemos} from "../../../api/real-case.js"
 	export default {
 		data(){
 			return {
 				memos: [1]
 			}
+		},
+		mounted() {
+			this.projectId = 46
+			this.requestPage()
 		},
 		methods:{
 			toNewMemo(){
@@ -62,12 +67,39 @@
 						res.eventChannel.emit('acceptDataFromOpenerPage',flag)
 					}
 				})
+			},
+			requestPage(){
+				getMemos(this.projectId).then(data => {
+					if(data){
+						let {list} = data
+						console.log(list)
+						this.memos = list
+					}
+				})
 			}
 		}
 	}
 </script>
 
 <style scoped>
+	.new{
+		width: 104rpx;
+		height: 104rpx;
+		opacity: 0.9;
+		background: #00c2b8;
+		border-radius: 50%;
+		display: flex;
+		justify-content: center;
+		align-items: center;
+		position: fixed;
+		right: 40rpx;
+		bottom: 20rpx;
+	}
+	.new .create{
+		width: 32rpx;
+		height: 32rpx;
+		display: block;
+	}
 	.memoWrap{
 		width: 100%;
 		height: 100%;

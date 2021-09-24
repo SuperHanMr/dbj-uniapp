@@ -31,6 +31,7 @@
 </template>
 <script>
 	import indexedListItem from './entry-indexed-item.vue'
+	import { mapState, mapGetters } from "vuex";
 	// #ifdef APP-NVUE
 	const dom = weex.requireModule('dom');
 	// #endif
@@ -133,20 +134,49 @@
 				this.loaded = true
 			}, 300);
 		},
+		computed:{
+			...mapState({
+			  cityList: (state) => state.merchantEntry.cityList,
+			}),
+		},
 		methods: {
 			setList() {
 				let index = 0;
 				this.lists = []
+				
 				this.options.forEach((value, index) => {
 					if (value.data.length === 0) {
 						return
 					}
+					const cityCheckArr = [];
+					if (this.cityList.length > 0) {
+						const arr = this.cityList.filter((itemCity) => {
+							return itemCity.key == value.firstLet
+						})
+						arr.forEach((item) => {
+							cityCheckArr.push({
+								"name": item.name,
+								"id": item.id,
+								"parentId": item.parentId,
+								"firstLet": item.key,
+								checked: true
+							})
+						})
+					}
 					let indexBefore = index
 					let items = value.data.map(item => {
+						if (cityCheckArr.length > 0) {
+							const index = cityCheckArr.findIndex((itemCity) => {return itemCity.id == item.id});
+							if (index != -1) {
+								item = cityCheckArr[index]
+							}
+						}
 						let obj = {}
 						obj['key'] = value.firstLet
 						obj['name'] = item.name
 						obj['itemIndex'] = index
+						obj['id'] = item.id
+						obj['parentId'] = item.parentId
 						index++
 						obj.checked = item.checked ? item.checked : false
 						return obj
@@ -155,7 +185,7 @@
 						title: value.firstLet,
 						key: value.firstLet,
 						items: items,
-						itemIndex: indexBefore
+						itemIndex: indexBefore,
 					})
 				})
 				// #ifndef APP-NVUE
@@ -248,6 +278,7 @@
 
 
 			onClick(e) {
+				
 				let {
 					idx,
 					index
@@ -271,9 +302,15 @@
 						})
 					})
 				}
+				let checkedArr = [];
+				this.lists.forEach((item) =>{
+					const arr = item.items.filter((itemChild) => {
+						return itemChild.checked == true;
+					});
+					checkedArr.push(...arr) ;
+				})
 				this.$emit('click', {
-					item: obj,
-					select: select
+					select: checkedArr
 				})
 			}
 		}
@@ -290,6 +327,7 @@
 		display: flex;
 		/* #endif */
 		flex-direction: row;
+		background: #FFFFFF;
 	}
 
 	.uni-indexed-list__scroll {
@@ -297,8 +335,10 @@
 	}
 
 	.uni-indexed-list__menu {
-		width: 24px;
-		background-color: lightgrey;
+		margin-right: 18rpx;
+		width: 19px;
+		border-radius: 10px;
+		background: #F7F7F7;
 		/* #ifndef APP-NVUE */
 		display: flex;
 		/* #endif */
@@ -318,10 +358,14 @@
 	}
 
 	.uni-indexed-list__menu-text {
-		line-height: 20px;
-		font-size: 12px;
+		// line-height: 20px;
+		// font-size: 12px;
 		text-align: center;
-		color: #aaa;
+		// color: #aaa;
+		font-size: 10px;
+		font-family: PingFangSC-Semibold, PingFang SC;
+		font-weight: bold;
+		color: #999999;
 	}
 
 	.uni-indexed-list__menu--active {

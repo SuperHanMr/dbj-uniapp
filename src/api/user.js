@@ -22,5 +22,5 @@ export function setGoodsSku(params){
 	return request.put(`/product/app/products/shoppingCart/changeSku`,params)
 }
 export function createcollection(params){
-	return request.post(`/app/collection/lists`,params)
+	return request.post(`/app/base/interactive/add/list`,params)
 }

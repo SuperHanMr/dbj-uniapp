@@ -3,11 +3,11 @@
     <view class="message">
       管家已验收通过，系统将在{{countdown}}后自动确认验收
     </view>
-    <view class="content">
+    <view class="content" :style="{paddingBottom:containerBottom * 2 + 48 + 88 + 'rpx'}">
       <user-desc-pict :butlerData="butlerData"></user-desc-pict>
       <user-desc-pict-worker :workerData="workerData"></user-desc-pict-worker>
     </view>
-    <view class="bt-btn-wrap flex-row">
+    <view class="bt-btn-wrap flex-row" :style="{paddingBottom:systemBottom,height:systemHeight}">
       <view class="btn-l" @click="refuse">拒绝通过</view>
       <view class="btn-r" @click="confirm">验收通过</view>
     </view>
@@ -45,8 +45,18 @@
         msg: {},
         timer: null,
         countdown: null,
-        updateTime: null
+        updateTime: null,
+
+        containerBottom: null,
+        systemBottom: null,
+        systemHeight: null,
       }
+    },
+    mounted() {
+      const menuButtonInfo = uni.getMenuButtonBoundingClientRect();
+      this.containerBottom = menuButtonInfo.bottom;
+      this.systemBottom = menuButtonInfo.bottom * 2 + "rpx";
+      this.systemHeight = menuButtonInfo.bottom * 2 + 24 + "rpx";
     },
     destroyed() {
       clearInterval(this.timer)
@@ -79,7 +89,7 @@
       },
       refuse() {
         uni.navigateTo({
-          url: `/sub-decorate/pages/worker-refuse/worker-refuse?id=${this.msg.data.id}&serveTypeName=${this.msg.serveTypeName}`
+          url: `/sub-decorate/pages/worker-refuse/worker-refuse?id=${this.msg.data?.id}&serveTypeName=${this.msg?.serveTypeName}`
         })
       },
       countTime() {
@@ -87,7 +97,7 @@
         var date = new Date();
         var now = date.getTime();
         //设置截止时间
-        var endDate = new Date(this.updateTime + 72*24*60*60*1000) ;
+        var endDate = new Date(this.updateTime + 72 * 24 * 60 * 60 * 1000);
         var end = endDate.getTime();
 
         //时间差
@@ -138,18 +148,8 @@
   }
 
   .content {
-    //   background: #ffffff;
-    //   border-radius: 16rpx;
     margin-top: 56rpx;
-    // padding: 24rpx;
   }
-
-  // .content-ext {
-  //   background: #ffffff;
-  //   border-radius: 16rpx;
-  //   margin-top: 56rpx;
-  //   padding: 24rpx;
-  // }
 
   .message {
     position: fixed;
@@ -280,11 +280,10 @@
 
   .bt-btn-wrap {
     background-color: #fff;
+    height: 88rpx;
     width: 100%;
     position: fixed;
-    bottom: 68rpx;
-    // bottom: env(safe-area-insert-bottom);
-    // bottom: 68rpx;
+    bottom: 0;
     left: 0;
     justify-content: space-between;
     box-sizing: border-box;
