@@ -67,9 +67,13 @@
 				</view>
 			</view>
 		</view>
+		<view class="bottom-fiexd">
+			
+		</view>
 		<view class="bottom" @click="topayHandler">
 			<button type="default" class="get-phone" open-type="getPhoneNumber" @getphonenumber="decryptPhoneNumber"
 				v-if="showBottomButtom()"></button>
+				<image class="image-bottom" src="../../static/merchant-entry/merchant-entry-success.biaoqian.png" mode=""></image>
 			<view class="pay-money" :class="showBottomButtom() ? '' : 'pay-money-no'">
 				<view class="money">
 					<text class="icon">￥</text>
@@ -378,7 +382,6 @@
 
 	.container {
 		padding: 24rpx;
-
 		.info {
 			padding-bottom: 1rpx;
 			background-repeat: no-repeat;
@@ -417,6 +420,7 @@
 					margin-bottom: 48rpx;
 					padding: 24rpx 0 24rpx 24rpx;
 					caret-color: #35C4C4
+					
 				}
 
 				image {
@@ -479,12 +483,24 @@
 			}
 		}
 	}
-
+	.bottom-fiexd{
+		padding-bottom: 200rpx;
+	}
 	.bottom {
+		width: 100%;
 		padding: 24rpx 34rpx 16rpx 30rpx;
 		background: #FEFFFE;
-		position: relative;
-
+		position: fixed;
+		bottom: 0;
+		left: 0;
+		.image-bottom{
+			position: absolute;
+			width: 164rpx;
+			height: 62rpx;
+			background: red;
+			left: 200rpx;
+			top: -30rpx;
+		}
 		.get-phone {
 			position: absolute;
 			width: 100%;
@@ -540,7 +556,7 @@
 			display: flex;
 			justify-content: center;
 			align-items: center;
-
+			margin-bottom: 20rpx;
 			text {
 				color: #999999;
 			}
