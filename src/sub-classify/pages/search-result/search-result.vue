@@ -33,7 +33,7 @@
             <view class="goodsSpec">
                   <view class="goods-money">
                     ￥
-                    <text class="integer-price">{{String(goodsItem.product.skuPrice).split(".")[0]}}///{{String(goodsItem.product.skuPrice).split(".")[0]?String(goodsItem.product.skuPrice).split(".")[0]: "0"}}</text>
+                    <text class="integer-price">{{String(goodsItem.product.skuPrice).split(".")[0]?String(goodsItem.product.skuPrice).split(".")[0]: "0"}}</text>
                     <text>.{{String(goodsItem.product.skuPrice).split(".")[1]?String(goodsItem.product.skuPrice).split(".")[1]: "00"}}</text>
                     <text>/{{goodsItem.product.priceUnitName?String(goodsItem.product.skuPrice).priceUnitName:""}}</text>
                     <text class="level" v-if="goodsItem.product.hasBadgeLevel">中级服务</text>
