@@ -766,7 +766,7 @@
 				{
 					"path": "pages/current-cost/current-cost",
 					"style": {
-						"navigationBarTitleText": "精算单交付",
+						"navigationBarTitleText": "",
 						"enablePullDownRefresh": false
 					}
 				},
