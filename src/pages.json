@@ -170,7 +170,7 @@
 			},
 			{
 				"name": "lyb", //模式名称
-				"path": "/sub-decorate/pages/grab/grab", //启动页面，必选
+				"path": "/sub-decorate/pages/person-page/person-page", //启动页面，必选
 				"query": "" //启动参数，在页面的onLoad函数里面得到
 			},
 			{
@@ -544,6 +544,14 @@
 						"navigationBarTitleText": "",
 						"enablePullDownRefresh": false
 					}
+				},
+				{
+					"path": "pages/city-select-entry/city-select-entry",
+					"style": {
+						"navigationBarTitleText": "",
+						"enablePullDownRefresh": false
+					}
+				
 				}
 			]
 		},
@@ -750,7 +758,7 @@
 				{
 					"path": "pages/current-cost/current-cost",
 					"style": {
-						"navigationBarTitleText": "当前花销",
+						"navigationBarTitleText": "精算单交付",
 						"enablePullDownRefresh": false
 					}
 				},
@@ -846,7 +854,16 @@
 						"navigationBarTitleText": "自定义报告",
 						"enablePullDownRefresh": false
 					}
-				}
+				},
+        {
+        	"path": "pages/person-page/person-page",
+        	"style": {
+        		"navigationBarTitleText": "个人主页",
+        		"transparentTitle": "auto",
+        		"navigationStyle": "custom",
+            "enablePullDownRefresh": true
+        	}
+        }
 			]
 		}
 	],

@@ -44,7 +44,7 @@
     },
     onLoad(e){
       this.id = getApp().globalData.decorateMsg.serveId
-      this.personId = getApp().globalData.decorateMsg.serverId
+      this.personId = getApp().globalData.decorateMsg.serverId||6820
       this.getGrabDetail()
       const menuButtonInfo = uni.getMenuButtonBoundingClientRect();
       this.systemBottom = menuButtonInfo.bottom + 'rpx'; 
@@ -52,7 +52,7 @@
     },
 		methods:{
       getGrabDetail(){
-        getGrabDetail(this.id).then(res=>{
+        getGrabDetail(this.personId).then(res=>{
           personData = res
         })
       },

@@ -84,7 +84,7 @@ export function getMsgNum(params) {
 
 //获取抢单审核详情
 export function getGrabDetail(params) {
-	return request.get("/pm/app/snatch/server/" + params)
+	return request.get("/app/employeeInfo/myInfo?zeusId=" + params)
 }
 
 //确认抢单人员
@@ -115,6 +115,16 @@ export function sureAmount(params) {
 //获取验房交付报告
 export function getCheckResultDetail(params) {
 	return request.get("/pm/app/user/inspectEstate/report/" + params)
+}
+
+//获取验房交付报告规则详情
+export function getResultNorm(params) {
+	return request.get("/pm/app/user/inspectEstate/rule/" + params)
+}
+
+//获取验房交付报告问题详情
+export function getResultProblem(params) {
+	return request.get("/pm/app/user/inspectEstate/problem/" + params)
 }
 
 //获取施工交付内容

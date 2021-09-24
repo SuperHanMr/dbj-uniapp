@@ -14,30 +14,30 @@
 				</view>
 				<view class="form-item">
 					<label class="item-label">所在地区</label>
-					<input class="uni-input" placeholder-class="placeholder" :disabled="roomId&&!isEdit" @click="chooseMap" disabled name="input"
+					<input class="uni-input" placeholder-class="placeholder" :disabled="roomId&&isEdit" @click="chooseMap" disabled name="input"
 						v-model="addData.locationName" placeholder="请选择您房屋所在地区" />
 					<image src="../../../static/images/ic_more_black.svg" class="shopIcon"></image>
 				</view>
 				<view class="form-item">
 					<label class="item-label">小区</label>
-					<input class="uni-input" placeholder-class="placeholder" :disabled="!hasPoint||roomId&&!isEdit" name="input"
+					<input class="uni-input" placeholder-class="placeholder" :disabled="!hasPoint||roomId&&isEdit" name="input"
 						v-model="addData.housingEstate" placeholder="房屋所在小区" />
 				</view>
 			</view>
 			<view class="content">
 				<view class="form-item">
 					<label class="item-label">楼栋房号</label>
-					<input class="uni-input" placeholder-class="placeholder" name="input" :disabled="roomId&&!isEdit" v-model="addData.address"
+					<input class="uni-input" placeholder-class="placeholder" name="input" :disabled="roomId&&isEdit" v-model="addData.address"
 						placeholder="例:16号楼5层301" />
 				</view>
 				<view class="form-item special">
 					<label class="item-label">楼型</label>
-					<choose-btn :btnList='floorList' :currentBtn='addData.houseStructure' :disabled="roomId&&!isEdit" @chooseBtn='chooseFloor'>
+					<choose-btn :btnList='floorList' :currentBtn='addData.houseStructure' :disabled="roomId&&isEdit" @chooseBtn='chooseFloor'>
 					</choose-btn>
 				</view>
 				<view class="form-item">
 					<label class="item-label">户型</label>
-					<input type="text" placeholder-class="placeholder" class="uni-input" :disabled="roomId&&!isEdit" disabled v-model="houseType"
+					<input type="text" placeholder-class="placeholder" class="uni-input" :disabled="roomId&&isEdit" v-model="houseType"
 						placeholder="请选择房屋户型" @click="openList" />
 					<image src="../../../static/images/ic_more_black.svg" class="shopIcon"></image>
 				</view>
@@ -46,14 +46,14 @@
 					<!-- <text class="placeholder" v-if="!addData.insideArea">请输入房屋面积</text> -->
 					<view v-if="addData.insideArea" class="uni-input area-text"><text
 							style="visibility: hidden">{{addData.insideArea}}</text>m²</view>
-					<input v-if="!visible" :maxlength="7" class="uni-input house-area" :disabled="roomId&&!isEdit" placeholder-class="placeholder"
+					<input v-if="!visible" :maxlength="7" class="uni-input house-area" :disabled="roomId&&isEdit" placeholder-class="placeholder"
 						placeholder="请输入房屋面积" type="digit" name="input" v-model="addData.insideArea" />
 				</view>
 				<view class="form-item special ele">
 					<label class="item-label">有无电梯</label>
-					<choose-btn :btnList='elevatorList' :currentBtn='addData.hasLift' :disabled="roomId&&!isEdit" @chooseBtn="chooseEle">
+					<choose-btn :btnList='elevatorList' :currentBtn='addData.hasLift' :disabled="roomId&&isEdit" @chooseBtn="chooseEle">
 					</choose-btn>
-					<input v-if="!addData.hasLift" :disabled="roomId&&!isEdit" placeholder-class="placeholder" class="ele-input" name="input"
+					<input v-if="!addData.hasLift" :disabled="roomId&&isEdit" placeholder-class="placeholder" class="ele-input" name="input"
 						v-model="addData.floors" placeholder="请输入楼层" />
 				</view>
 			</view>
@@ -164,7 +164,7 @@
 				indicatorClass: "choose-item",
 				roomId: 0,
 				delta: 1,
-        isEdit:true
+        isEdit:false
 			};
 		},
 		onLoad(e) {
@@ -175,7 +175,7 @@
 				});
 				this.getHouse();
         this.getHouseStep()
-        that.hasPoint = true;
+        this.hasPoint = true;
 			}
 			this.delta = e.delta;
 		},
@@ -272,6 +272,9 @@
 				this.addData.provinceId = provinceId;
 			},
 			openList() {
+        if(this.isEdit){
+          return
+        }
 				this.$refs.popup.open();
 				this.visible = true;
 			},
@@ -306,9 +309,15 @@
 			},
 			chooseFloor(id) {
 				// console.log(id)
+        if(this.isEdit){
+          return
+        }
 				this.addData.houseStructure = id;
 			},
 			chooseEle(id) {
+        if(this.isEdit){
+          return
+        }
 				this.addData.hasLift = id;
 			},
 			switchChange(e) {
@@ -319,7 +328,6 @@
 				if (this.check()) {
 					if (!this.roomId) {
 						addHouse(this.addData).then((res) => {
-							console.log(res);
 							uni.showToast({
 								title: "添加成功",
 								duration: 2000,

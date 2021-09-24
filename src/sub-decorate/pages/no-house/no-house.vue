@@ -53,7 +53,7 @@
       },
       gobackHome() {
         uni.switchTab({
-          url: "/pages/home/index/index",
+          url: "/pages/home/index/index?delta=2",
         });
       }
     }

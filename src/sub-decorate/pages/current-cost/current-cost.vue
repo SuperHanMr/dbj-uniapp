@@ -1,6 +1,5 @@
 <template>
   <view class="current-cost">
-    
     <web-view :src="url"></web-view>
   </view>
 </template>
@@ -15,10 +14,21 @@
     onLoad(e){
       let id = e.id || getApp().globalData.decorateMsg.reportId
       let cost = e.isCost||1
-      
+      // if(e.isCost===0){
+      //   uni.setNavigationBarTitle({
+      //     title:'当前花销'
+      //   })
+      // }else if(e.id){
+      //   uni.setNavigationBarTitle({
+      //     title:'精算单'
+      //   })
+      // }
       this.url = process.env.VUE_APP_BASE_H5+this.url + id +'&projectId='+(e.id?e.projectId:getApp().globalData.decorateMsg.projectId) + '&isActuarial=' + cost +'&token='+getApp().globalData.token
       console.log(this.url)
     },
+    // onReady(){
+    //   if()
+    // },
     methods: {
       
     }
