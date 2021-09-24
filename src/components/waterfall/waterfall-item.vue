@@ -10,36 +10,19 @@
     <image  v-if="showCheckIcon && !isChecked"
       class="product-check"
       src="../../static/order/images/product_unChecked.png"
-      mode=""
-    ></image>
-   <image v-if="showCheckIcon && isChecked"
+      mode=""/>
+			
+		<image v-if="showCheckIcon && isChecked"
 			class="product-check"
 			src="../../static/order/images/product_checked.png"
-			mode=""
-		></image>
+			mode=""/>
 
   
 	<!-- 右上角的icon图标 -->
-	 <image
-      class="case-type"
-      src="../../static/order/images/icon_vr_@2x.png"
-      mode=""
-    />
-		
-		<!-- <image
-		  class="case-type"
-		  src="../../static/order/images/icon_video.png"
-		  mode=""
-		/>
-		
+		<!-- <image  class="case-type" src="../../static/order/images/icon_vr_@2x.png" mode="" />
+		<image class="case-type"  src="../../static/order/images/icon_video.png"  mode="" />
+		<image class="case-type"  src="../../static/order/images/icon_img_@2x.png" mode="" /> -->
 		<image
-		  class="case-type"
-		  src="../../static/order/images/icon_img_@2x.png"
-		  mode=""
-		/>
-		 -->
-
-    <image
       class="product-img"
       :src="item.imageUrl"
       mode="widthFix"
@@ -96,21 +79,24 @@ export default {
   data() {
     return {
       isActive: false,
-			isChecked:false,
+			isChecked:"",
     };
   },
 	onShow() {
-		this.isChecked=item.isChecked
+		this.isChecked=this.item.isChecked
+	},
+	watch: {
+		item(){}
 	},
   methods: {
     onImageLoad(e) {
       this.$emit("load", e);
     },
-    toDetail(e) {
+    toDetail() {
 			if(!this.showCheckIcon) return 
-			this.isChecked=!this.isChecked
-			e.isChecked = this.isChecked
-      this.$emit("detail", e);
+			this.isChecked = !this.isChecked
+			this.item.isChecked = this.isChecked
+      this.$emit("detail", this.item);
     },
   },
 };
