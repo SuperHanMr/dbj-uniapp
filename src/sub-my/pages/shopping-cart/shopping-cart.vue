@@ -133,6 +133,7 @@
 			  :default-select-index="selectedIndex"
 				:spuName="spuName"
 				:productType="productType"
+				:defaultSpec="defaultSpec"
 				:defaultSpecIds="defaultSpecIds"
 			  @close="popupShow=false"
 			  @confirm="handleConfirm"
@@ -201,6 +202,7 @@
 				spuName:"",
 				selectedIndex:0,
 				defaultSpecIds:"",
+				defaultSpec:[],
 				options: [
 				  {
 				    text: "删除",
@@ -265,9 +267,7 @@
 					nowSkuId: curId
 				}
 				setGoodsSku(params).then(data => {
-					if(data){
-						this.requestPage()
-					}
+					this.requestPage()
 				})
 			},
 			openSpec(skuId){
@@ -293,7 +293,7 @@
 					data.defaultProperties.forEach(item => {
 						Ids.push(item.value.id)
 					})
-					
+					this.defaultSpec = data.defaultProperties
 					this.defaultSpecIds = Ids.join(",")
 					this.selectedIndex = data.skuAndProperties.findIndex(item => item.propValueIds === this.defaultSpecIds)
 				})
@@ -423,11 +423,10 @@
 									buyCount: ele.buyCount
 								})
 								list.push({
-									userId: this.userId,
 									equipmentId: deviceId,
 									authorId: ele.storeId,
 									relationId: ele.skuId,
-									bizType: 1,
+									subBizType: ele.productType
 								})
 							}
 						})
@@ -438,11 +437,11 @@
 					}
 					//选中的商品会从购物车中消失，移入收藏夹
 					deleteProduct(params).then(data => {
-						if(data){
-							this.requestPage()
-						}
+						this.requestPage()
 					})
 					let arg = {
+						// userId: this.userId,
+						routeId: 5002,
 						list: list
 					}
 					createcollection(arg).then(data => {
@@ -484,9 +483,7 @@
 										skuList:skuList
 									}
 									deleteProduct(params).then(data => {
-										if(data){
-											this.requestPage()
-										}
+										this.requestPage()
 									})
 						    } else if (res.cancel) {
 									return
@@ -682,9 +679,7 @@
 					}]
 				}
 				deleteProduct(params).then(data => {
-					if(data){
-						this.requestPage()
-					}
+					this.requestPage()
 				})
 			}, 
 			clearDisaledSku(){

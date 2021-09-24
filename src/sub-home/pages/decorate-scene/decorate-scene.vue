@@ -238,7 +238,8 @@
 				isInputFocus: false,
 				showInput: false,
 				inputName: "",
-				isExpanded: false
+				isExpanded: false,
+				houseStructure: 0
 			}
 		},
 		created(){
@@ -336,8 +337,8 @@
 					equipmentId: deviceId,
 					userId: this.userId,
 					type: 3,
-					bizType: 4,
-					subBizType: this.projectInfo.estateCityId,
+					bizType: 5,
+					subBizType: this.houseStructure,
 					jsonContent: JSON.stringify(obj)
 				}
 				setAttentions(params).then( data => {
@@ -397,9 +398,8 @@
 			},
 			getFocus(){
 				let params = {
-					userId: 6388 || this.userId,
-					relationId: 10021002 || this.projectInfo.id,
-					subBizType: 3 || this.projectInfo.estateCityId,
+					relationId: this.projectInfo.id,
+					subBizType: this.projectInfo.estateCityId,
 				}
 				getFocusBrowse(params).then(data => {
 					if(data){
@@ -414,11 +414,11 @@
 			requestDynamic(type){
 				let params
 				params = type? {
-					projectId: 40,
+					projectId: 46,
 					nodeType: type,
 					userTypes: [2,3]
 				} : {
-					projectId: 40,
+					projectId: 46,
 					userTypes: [2,3]
 				}
 				getDecorateDynamic(params).then(data => {
@@ -435,9 +435,10 @@
 				}
 				getDecorateProcess(params).then(data => {
 					if(data){
-						let {projectInfo,nodes} = data
+						let {projectInfo,nodes,estate} = data
 						this.projectInfo = projectInfo
 						this.processId = nodes[0].processId
+						this.houseStructure = estate.houseStructure
 						this.getFocus()
 						nodes.map((item,index) => {
 							this.nodeTypes.push({

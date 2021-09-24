@@ -125,7 +125,7 @@
             <view @click="dsport">设计报告交付</view>
             <view @click="hcaa">管家竣工验收申请</view>
             <view @click="workerCapplication">工人阶段验收申请</view>
-            <view @click="gjgxf">管家工序费</view>
+            <view @click="gjgxf">工序费</view>
             <view @click="payGuanGuanJia">生成买管家消息</view>
             <view @click="payRenGong">生成买人工消息</view>
           </view> -->

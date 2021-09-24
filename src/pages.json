@@ -414,45 +414,19 @@
 						"enablePullDownRefresh": false
 					}
 				},
-				{
-					"path": "pages/set-up/agreement/service-agreement",
-					"style": {
-						"navigationBarTitleText": "",
-						"enablePullDownRefresh": false
-					}
-				},
-				{
-					"path": "pages/set-up/agreement/code-of-conduct",
-					"style": {
-						"navigationBarTitleText": "",
-						"enablePullDownRefresh": false
-					}
-				},
-				{
-					"path": "pages/set-up/agreement/privacy-agreement",
-					"style": {
-						"navigationBarTitleText": "",
-						"enablePullDownRefresh": false
-					}
-				},
-				{
-					"path": "pages/set-up/agreement/property-rights-clause",
-					"style": {
-						"navigationBarTitleText": "",
-						"enablePullDownRefresh": false
-					}
-				},
+				
 				{
 					"path": "pages/set-up/comments-feedback/comments-feedback",
 					"style": {
-						"navigationBarTitleText": "",
+						"navigationBarTitleText": "意见与反馈",
 						"enablePullDownRefresh": false
 					}
 				},
 				{
 					"path": "pages/set-up/about-dabanjia/about-dabanjia",
 					"style": {
-						"navigationBarTitleText": "关于打扮家"
+						"navigationBarTitleText": "关于打扮家",
+							"enablePullDownRefresh": false
 					}
 				},
 				{
@@ -524,7 +498,7 @@
 					"style": {
 						"navigationBarTitleText": "",
 						"enablePullDownRefresh": false,
-						"navigationBarBackgroundColor": "#ffffff"
+						"navigationBarBackgroundColor": "#f5f5f5"
 					}
 				}
 			]
@@ -551,7 +525,21 @@
 						"navigationBarTitleText": "",
 						"enablePullDownRefresh": false
 					}
-				
+
+				}, {
+					"path": "pages/merchant-entry-success/merchant-entry-success",
+					"style": {
+						"navigationBarTitleText": "商家在线入驻",
+						"enablePullDownRefresh": false
+					}
+
+				}, {
+					"path": "pages/merchant-entry-failed/merchant-entry-failed",
+					"style": {
+						"navigationBarTitleText": "提交成功",
+						"enablePullDownRefresh": false
+					}
+
 				}
 			]
 		},
@@ -855,24 +843,16 @@
 						"enablePullDownRefresh": false
 					}
 				},
-        {
-        	"path": "pages/person-page/person-page",
-        	"style": {
-        		"navigationBarTitleText": "个人主页",
-        		"transparentTitle": "auto",
-        		"navigationStyle": "custom",
-            "enablePullDownRefresh": true
-        	}
-        }
+				{
+					"path": "pages/person-page/person-page",
+					"style": {
+						"navigationBarTitleText": "个人主页",
+						"transparentTitle": "auto",
+						"navigationStyle": "custom",
+						"enablePullDownRefresh": true
+					}
+				}
 			]
 		}
-	],
-	"preloadRule": {
-		"sub-my/pages/set-up/agreement/service-agreement": {
-			"network": "all",
-			"packages": [
-				"sub-my"
-			]
-		}
-	}
+	]
 }

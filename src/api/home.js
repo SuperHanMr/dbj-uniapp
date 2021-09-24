@@ -9,7 +9,13 @@ export function getBanner(params) {
 
 //APP 直播+预告+回放列表
 export function queryLive(params) {
-	return request.get(`/app/publicRoom/queryLiveList`, {
+	return request.get(`/app/publicRoom/roomMedia`, {
+		params
+	});
+}
+//首页金刚区
+export function navList(params) {
+	return request.get(`app/home/config/versions/6`, {
 		params
 	});
 }
@@ -43,3 +49,5 @@ export function workVideo(params) {
 		params
 	});
 }
+
+

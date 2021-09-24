@@ -32,7 +32,7 @@
 									color:index===sku.sidx?'#34c4c4':'#333333',
 									backgroundColor: index===sku.sidx?'#e8fafa':'#f5f5f5' 
 								}" 
-								@click="selectSkuCli(speIdx,item.id,index)"
+								@click="selectSkuCli(sku.id,speIdx,item.id,index)"
 							>{{item.value}}</text>
 						</view>
 					</view>
@@ -96,6 +96,9 @@
 			},
 			defaultSpecIds: {
 				type: String,
+			},
+			defaultSpec: {
+				type: Array,
 			}
 		},
 		data() {
@@ -103,11 +106,12 @@
 				selectedIndex: 0,
 				mySpecifications: [],
 				selectSkuInfo: {},
-				skuId:0
+				skuId: 0,
+				handleIds: []
 			}
 		},
 		watch:{
-			specifications(val){
+			defaultSpec(val){
 				this.initSkuData()
 			}
 		},
@@ -134,17 +138,34 @@
 				return this.combinationsProps.unit
 			},
 		},
-		mounted() {
-			console.log(this.defaultSelectIndex)
-			if(this.specifications.length) {
-				this.initSkuData()
-			}
-		},
 		methods: {
 			initSkuData() {
 				this.selectedIndex = this.defaultSelectIndex
 				this.selectSkuInfo = this.combinations[this.selectedIndex]
 				this.skuId = this.selectSkuInfo.id
+				let arr = []
+				this.specifications.forEach(item => {
+					let Ids = []
+					item.values.map(ele => {
+						Ids.push( ele.id )
+						ele.checked = this.defaultSpecIds.indexOf(ele.id)!==-1 ? true : false
+						return ele
+					})
+					arr.push(Ids)
+				})
+				let temp = [];
+				let doExchange = (arr, index) => {
+				  for (var i = 0; i<arr[index].length; i++) {
+				    temp[index] = arr[index][i];
+				    if (index != arr.length - 1) {
+				      doExchange(arr, index + 1)
+				    } else {
+				      this.handleIds.push(temp.join(','))
+				    }  
+				  }  
+				}
+				doExchange(arr, 0);
+				console.log(this.specifications,this.defaultSpecIds,this.handleIds)
 				this.mySpecifications = JSON.parse(JSON.stringify(this.specifications))
 				this.mySpecifications.forEach((item,index) => {
 					//当前规格组合值
@@ -152,8 +173,6 @@
 					const Ids = item[this.speList].map(ele => {
 						return ele.id.toString()
 					})
-					console.log(selects)
-					
 					const sIndex = Ids.indexOf(selects[index])
 					if(sIndex === -1) {
 						uni.showToast({
@@ -166,35 +185,30 @@
 					this.$set(item,'sidx',sIndex)
 				})
 			},
-			selectSkuCli(speIdx,id,index) {
+			selectSkuCli(speId,speIdx,id,index) {
 				this.mySpecifications[speIdx].sidx = index
-				let arr = []
-				this.mySpecifications.forEach(item => {
-					let Ids = []
-					item.values.forEach(ele => {
-						Ids.push( ele.id )
-					})
-					arr.push(Ids)
-				})
-				console.log(arr)
-				let results = [];
-				let temp = [];
-				let doExchange = (arr, index) => {
-				  for (var i = 0; i<arr[index].length; i++) {
-				    temp[index] = arr[index][i];
-				    if (index != arr.length - 1) {
-				      doExchange(arr, index + 1)
-				    } else {
-				      results.push(temp.join(','))
-				    }  
-				  }  
-				}
-				doExchange(arr, 0);
-				console.log( this.mySpecifications,id,index);
 				//找到用户选择的valueIds
-				const selectInfo = results.find(item => item.indexOf(id))
-				console.log(selectInfo)
-				this.selectedIndex = this.combinations.findIndex(item => item[this.cbValue] === selectInfo)
+				let checkedId = 0
+				let targetId = 0
+				this.defaultSpec.forEach(item => {
+					if(item.id !== speId){
+						checkedId = item.value.id
+					}
+					if(item.id === speId){
+						targetId = item.value.id
+					}
+				})
+				let Ids = []
+				let defaultIds = this.defaultSpecIds.split(',')
+				defaultIds.map(item => {
+					if(item === checkedId){
+						Ids.push(item)
+					}
+				})
+				Ids.push(id)
+				let selectIds = Ids.join(',')
+				console.log(selectIds)
+				this.selectedIndex = this.combinations.findIndex(item => item[this.cbValue] === selectIds)
 				this.selectSkuInfo = this.combinations[this.selectedIndex]
 			},
 			closeSkuBox() {

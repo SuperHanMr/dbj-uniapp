@@ -11,7 +11,7 @@
         <image class="ic-triangle-999"
           src="http://dbj.dragonn.top/static/mp/dabanjia/images/decorate/ic_triangle_999.svg" />
       </view> -->
-      <view class="change-service" @click="changeLevel">
+      <view v-if="setting.cardtype == 'design'" class="change-service" @click="changeLevel">
         <text>更换等级</text>
         <image class="ic-triangle-999"
           src="http://dbj.dragonn.top/static/mp/dabanjia/images/decorate/ic_triangle_999.svg" />

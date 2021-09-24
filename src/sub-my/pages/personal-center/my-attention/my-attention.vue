@@ -11,8 +11,7 @@
         <view class="tab-text">
           {{item}}
         </view>
-
-        <view class="bottom-icon" />
+				<view class="bottom-icon" />
       </view>
     </view>
     <swiper
@@ -45,6 +44,10 @@
 					
 					<view  v-else>
 						<view v-if="tabindex==0"  class="house-item">
+							<image
+							  src="../../../../static/order/blank_house@2x.png"
+							  mode=""
+							/>
 						  <view class="houseInfo">
 						    <view class="header">
 						      大兴区康盛园10号楼2单元102
@@ -56,22 +59,17 @@
 						      <text>3室2厅1厨</text>
 						    </view>
 						
-						    <view class="cost">
-						      装修总花费：¥ 239981.90
-						    </view>
+						    
 						  </view>
-						  <image
-						    src="../../../../static/images/message/ic_system@2x.png"
-						    mode=""
-						  ></image>
+						  
 						</view>
 						
 						<view  v-if="tabindex == 1" class="craftsmanAndRecommend">
 						  <view class="left">
 						    <image
-						      src="../../../../static/images/message/ic_system@2x.png"
+						      src="../../../../static/order/blank_house@2x.png"
 						      mode=""
-						    ></image>
+						    />
 						    <view class="baseInfo">
 						      <view class="name1">
 						        哈哈哈哈哈哈大王
@@ -92,37 +90,31 @@
 						</view>
 						
 						<view  v-if=" tabindex == 2"  >
-							<uni-swipe-action v-for="item3 in 10" :key="item3">
-								<uni-swipe-action-item  :right-options="options"  @click="bindClick" @change="swipeChange($event, index)">
-									<view class="craftsmanAndRecommend">
-										<view class="left">
-											<image
-												src="../../../../static/images/message/ic_system@2x.png"
-												mode=""
-											></image>
-											<view class="baseInfo">
-												<view class="name2">
-													打扮家给你意想不到的效果绝对的性价比最高
-												</view>
-												<view class="icon">
-													大管家
-												</view>
-											</view>
+							<view class="craftsmanAndRecommend">
+								<view class="left">
+									<image
+										src="../../../../static/order/blank_house@2x.png"
+										mode=""
+									></image>
+									<view class="baseInfo">
+										<view class="name2">
+											打扮家给你意想不到的效果绝对的性价比最高
 										</view>
-										<view class="right">
-											<!-- <view class="button4">
-												已优先推荐
-											</view> -->
-											<view class="button3">
-												<image src="../../../static/icon_recommend_@2x.png" mode=""></image>
-												优先推荐
-											</view>
+										<view class="icon">
+											大管家
 										</view>
 									</view>
-								
-								</uni-swipe-action-item>
-							</uni-swipe-action>
-							
+								</view>
+								<view class="right">
+									<!-- <view class="button4">
+										已优先推荐
+									</view> -->
+									<view class="button3">
+										<image src="../../../static/icon_recommend_@2x.png" mode=""></image>
+										优先推荐
+									</view>
+								</view>
+							</view>
 						</view>
 						
 						
@@ -138,7 +130,7 @@
 </template>
 
 <script>
-import {getConcernList } from "../../../../api/order.js";
+import {getCraftsmanList, getHouseList, getRecommendList } from "../../../../api/order.js";
 export default {
   data() {
     return {
@@ -148,20 +140,18 @@ export default {
       tabList: ["房子", "工匠", "优先推荐"],
       triggered: false, //控制刷新显示字段
       currentIndex: 0,
-      caseList: [],
-			
+			houselist:[],
+			craftsmanlist:[],
+      recommendlist: [],
+			page:[1,1,1],
+      totalPage: [1,1,1],
       loading: false,
 			
       page: 1,
 			rows:10,
 			isReverse:true,//默认ture 该值为true时，获取我关注的、我收藏的列表，
 			routeId:"",//
-      totalPage: 1,
 			userId:"",
-			type:3,//(3,"关注") (4,"推荐")
-			bizType:"",//(4,"房屋")  【用户的角色信息】PERSON(3,"人物")
-			
-			
 			
 			options:[
 				{
@@ -181,64 +171,93 @@ export default {
   },
   onShow() {
 		this.userId = getApp().globalData.userInfo.id
-		
 		console.log("this.userId=",this.userId)
-		this.getList();
+		this.recommendList();
+	},
+	computed: {
+		currentList() {
+			if (this.currentIndex == 0) {
+				return this.caseList;
+			} else if (this.currentIndex == 1) {
+				return this.caseList;
+			} else if (this.currentIndex == 2) {
+				return this.caseList;
+			} else {
+				return this.caseList;
+			}
+		},
+	},
 		
-  },
-	
-  computed: {
-    currentList() {
+		
+  watch: {
+    currentIndex() {
       if (this.currentIndex == 0) {
-        return this.caseList;
+        this.houseList();
       } else if (this.currentIndex == 1) {
-        return this.caseList;
-      } else if (this.currentIndex == 2) {
-        return this.caseList;
+        this.craftsmanList();
       } else {
-        return this.caseList;
-      }
+         this.recommendList()
+      } 
     },
   },
+	
   methods: {
     swiperChange(e) {
       let index = e.target.current || e.detail.current;
       this.currentIndex = index;
     },
-    async getList() {
-      this.loading = true;
-			let params = {
-				
-				isReverse:true,//默认ture 该值为true时，获取我关注的、我收藏的列表，
+		
+		// 房屋请求
+		houseList(){
+			this.loading = true;
+			getHouseList({
 				routeId:1002,//
-				userId:this.userId,
-				type:3,//(3,"关注") (4,"推荐")
-				bizType:"",//(4,"房屋")  【用户的角色信息】PERSON(3,"人物")
-			}
-			getConcernList({
-				isReverse:true,//默认ture 该值为true时，获取我关注的、我收藏的列表，
-				routeId:1002,//
-				userId:this.userId,
-				type:3,//(3,"关注") (4,"推荐")
-				bizType:4,//(4,"房屋")  【用户的角色信息】PERSON(3,"人物")
 			}).then(data=>{
+				this.houselist = data
+				this.loading = false
 				console.log("data= ",data)
 			})
-			
-    //   let caseItem = await caseList({
-    //     page: this.page,
+		},
+		
+		// 工匠请求
+		craftsmanList(){
+			this.loading = true;
+			getCraftsmanList({
 				
-    //   });
-    //   this.totalPage = caseItem.totalPage;
-    //   this.caseList = this.caseList.concat(caseItem.list);
-    //   this.loading = false;
-    },
+				routeId:1001,
+				
+			}).then(data=>{
+				this.craftsmanlist = data
+				this.loading = false
+				console.log("data= ",data)
+			})
+		},
+		
+		// 优先推荐请求
+    recommendList() {
+      this.loading = true;
+			getRecommendList({
+				
+				routeId:2001,
+			
+			}).then(data=>{
+				this.recommendlist = data
+				this.loading = false
+				console.log("data= ",data)
+			})
+		},
+		
+		
+		
+		
+		 		
+		
 		
     onLoadMore() {
-      if (this.loading || this.page >= this.totalPage) {
+      if (this.loading || this.page[this.currentIndex] >= this.totalPage[this.currentIndex]) {
         return;
       }
-      this.page++;
+      this.page[this.currentIndex]++;
       this.getCaseList();
     },
 		
@@ -254,20 +273,11 @@ export default {
 		
 		
 		
-		bindClick(e){
-			console.log('点击了'+(e.position === 'left' ? '左侧' : '右侧') + e.content.text + '按钮')
-		},
-		swipeChange(e,index){
-			console.log('当前状态：'+ e +'，下标：' + index)
-		},
 		
 		
 		
 		
-		
-		
-		
-  },
+	},
 };
 </script>
 
@@ -346,20 +356,25 @@ export default {
     background: #f4f4f4;
   }
   .house-item {
-    height: 214rpx;
     padding: 32rpx;
     background-color: #ffffff;
     box-sizing: border-box;
     display: flex;
     flex-flow: row nowrap;
-    justify-content: space-between;
-    align-items: flex-start;
+    align-items:center;
+		image {
+		  width: 112rpx;
+		  height: 112rpx;
+		  object-fit: cover;
+			background-color: pink;
+			margin-right: 32rpx;
+		}
     .houseInfo {
       display: flex;
       flex-flow: column nowrap;
       justify-content: flex-start;
       .header {
-        max-width: 488rpx;
+        max-width: 542rpx;
         height: 42rpx;
         line-height: 42rpx;
         color: #333333;
@@ -383,22 +398,9 @@ export default {
           background: #d1d1d1;
         }
       }
-      .cost {
-        margin-top: 26rpx;
-        padding: 0 10rpx 0 12rpx;
-        height: 40rpx;
-        line-height: 40rpx;
-        background: #f7f7f7;
-        color: #ac9d8b;
-        border-radius: 3px;
-        // text-align: center;
-      }
+      
     }
-    image {
-      width: 150rpx;
-      height: 150rpx;
-      object-fit: cover;
-    }
+    
   }
 
   .empty-container {
