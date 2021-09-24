@@ -7,8 +7,12 @@
 			<view v-for="(item, index) in list.items" :key="index" class="uni-indexed-list__item" hover-class="uni-indexed-list__item--hover">
 				<view class="uni-indexed-list__item-container" @click="onClick(idx, index)">
 					<view class="uni-indexed-list__item-border" :class="{'uni-indexed-list__item-border--last':index===list.items.length-1}">
-						<view v-if="showSelect" style="margin-right: 20rpx;">
-							<uni-icons :type="item.checked ? 'checkbox-filled' : 'circle'" :color="item.checked ? '#007aff' : '#aaa'" size="24" />
+						<view v-if="showSelect" style="margin-right: 20rpx;" class="icon-box">
+							<!-- <uni-icons :type="item.checked ? 'checkbox-filled' : 'circle'" :color="item.checked ? '#007aff' : '#aaa'" size="24" /> -->
+							<view class="icon-circle" v-if="!item.checked">
+								
+							</view>
+							<image src="../../../static/merchant-entry/merchant-entry-select.png" mode="" v-if="item.checked"></image>
 						</view>
 						<text class="uni-indexed-list__item-content">{{ item.name }}</text>
 					</view>
@@ -44,6 +48,7 @@
 		},
 		methods: {
 			onClick(idx, index) {
+				console.log(this.list, '>>>>>>>>>>>>>>>>')
 				this.$emit("itemClick", {
 					idx,
 					index
@@ -60,9 +65,9 @@
 		display: flex;
 		/* #endif */
 		flex-direction: column;
-		border-top-style: solid;
-		border-top-width: 1px;
-		border-top-color: $uni-border-color;
+		// border-top-style: solid;
+		// border-top-width: 1px;
+		// border-top-color: $uni-border-color;
 	}
 
 	.uni-indexed-list__item {
@@ -107,7 +112,24 @@
 		padding-left: 0;
 		border-bottom-style: solid;
 		border-bottom-width: 1px;
-		border-bottom-color: $uni-border-color;
+		border-bottom-color: #F4F4F4;
+		.icon-box{
+			display: flex;
+			align-items: center;
+		}
+		.icon-circle{
+			width: 32rpx;
+			height: 32rpx;
+			border-radius: 50%;
+			border: 1px solid #A8A8A8;
+		}
+		image{
+			margin: 0;
+			width: 32rpx;
+			height: 32rpx;
+			border-radius: 50%;
+			border: 1px solid red;
+		}
 	}
 
 	.uni-indexed-list__item-border--last {
@@ -131,12 +153,15 @@
 		display: flex;
 		width: 100%;
 		/* #endif */
-		background-color: #f7f7f7;
+		background: #FFFFFF;
+		border: 0;
 	}
 
 	.uni-indexed-list__title {
-		padding: 6px 12px;
-		line-height: 24px;
-		font-size: $uni-font-size-sm;
+		padding: 18rpx 0 18rpx 32rpx;
+		font-size: 16px;
+		font-family: PingFangSC-Medium, PingFang SC;
+		font-weight: bold;
+		color: #333333;
 	}
 </style>
