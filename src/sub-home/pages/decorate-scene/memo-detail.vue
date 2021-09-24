@@ -23,10 +23,12 @@
 </template>
 
 <script>
+	import {getMemoDetail} from "../../../api/real-case.js"
 	export default {
 		data(){
 			return {
-				flag: 0
+				flag: 0,
+				memoInfo: {}
 			}
 		},
 		onLoad(option) {
@@ -35,6 +37,18 @@
 				console.log(data)
 				this.flag = data
 			})  
+		},
+		mounted() {
+			this.requestPage()
+		},
+		methods: {
+			requestPage(){
+				// getMemoDetail(projectId,memoId).then(data => {
+				// 	if(data){
+				// 		this.memoInfo = data
+				// 	}
+				// })
+			}
 		}
 	}
 </script>
