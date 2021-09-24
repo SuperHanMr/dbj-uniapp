@@ -2,7 +2,6 @@
   <view class="content">
     <view class="title-wrap">
       <view class="title">
-        <check-box v-if="noArtificial" :checked="checked" @change="checkItem"></check-box>
         <view class="s-4level-name">商品分类（8号螺纹钢筋条）</view>
       </view>
       <view class="edit" v-if="noArtificial">编辑</view>
@@ -11,6 +10,7 @@
       <view class="item-list">
         <view class="item" v-for="(item,index) in content.itemList" :key="item.productId">
           <view class="img-name-tag-guige">
+            <check-box v-if="noArtificial" :checked="checked" @change="(val) => {checkItem(val, item)}"></check-box>
             <image class="img" :src="item.imageUrl"></image>
             <view class="tag-name-guige">
               <view class="spu-name">
@@ -56,11 +56,12 @@
       }
     },
     methods: {
-      checkItem(val) {
+      checkItem(val, item) {
         this.checked = !this.checked
         this.$emit("change", {
           val,
-          productIds: this.content.itemList.map(it => it.productId)
+          // productIds: this.content.itemList.map(it => it.productId)
+          productId: item.productId
         })
       }
     }
@@ -127,6 +128,7 @@
       width: 136rpx;
       height: 136rpx;
       margin-right: 16rpx;
+      margin-left: 24rpx;
       border: 1rpx solid #f4f4f4;
       border-radius: 8rpx;
       box-sizing: border-box;

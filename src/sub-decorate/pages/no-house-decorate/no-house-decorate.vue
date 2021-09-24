@@ -376,87 +376,87 @@
       gotopay() {
         // TODO去结算页面
         if (this.currentHouse && this.currentHouse.id) {
-          let skuInfos = []
-          // let params = {
-          //   payType: 1, //"int //支付方式  1微信支付",
-          //   openid: uni.getStorageSync("openId"), //"string //微信openid 小程序支付用 app支付不传或传空",
-          //   projectId: this.projectId || 0, //"long //项目id  非必须 默认0",
-          //   customerId: this.customerId || 0, //"long //业主id  非必须 默认0",
-          //   estateId: this.currentHouse.id, //"long //房产id   非必须 默认0",
-          //   total: this.countPrice * 100, //"int //总计",
-          //   remarks: "", //"string //备注",
-          //   orderName: "", //"string //订单名称",
-          //   details: []
-          // }
+          // let skuInfos = []
+          let params = {
+            payType: 1, //"int //支付方式  1微信支付",
+            openid: uni.getStorageSync("openId"), //"string //微信openid 小程序支付用 app支付不传或传空",
+            projectId: this.projectId || 0, //"long //项目id  非必须 默认0",
+            customerId: this.customerId || 0, //"long //业主id  非必须 默认0",
+            estateId: this.currentHouse.id, //"long //房产id   非必须 默认0",
+            total: this.countPrice * 100, //"int //总计",
+            remarks: "", //"string //备注",
+            orderName: "", //"string //订单名称",
+            details: []
+          }
           if (this.design.checked) {
-            skuInfos.push({
-              skuId: this.design.id,//"long //商品id",
-              storeId: this.design.storeId,//"long //店铺id",
-              buyCount: this.currentHouse.insideArea,//"double //购买数量",
-              unit: "平米",//"string //单位",
-              level: this.design.level,//"int //等级"
-            })
-            // params.details.push({
-            //   relationId: this.design.id, //"long //实体id",
-            //   type: 2, //"int //实体类型   1材料  2服务   3专项付款",
-            //   businessType: this.design.categoryTypeId, //"int //业务类型",
-            //   workType: -2, //"int //工种类型",
-            //   level: this.design.level || 1, //"int //等级  1中级  2高级 3特级  4钻石",
-            //   storeId: this.design.storeId || 0, //"long //店铺id",
-            //   storeType: 0, //"int //店铺类型 0普通 1设计师",
-            //   number: this.currentHouse.insideArea, //"double //购买数量",
-            //   params: "", //string //与订单无关的参数 如上门时间 doorTime"
+            // skuInfos.push({
+            //   skuId: this.design.id,//"long //商品id",
+            //   storeId: this.design.storeId,//"long //店铺id",
+            //   buyCount: this.currentHouse.insideArea,//"double //购买数量",
+            //   unit: "平米",//"string //单位",
+            //   level: this.design.level,//"int //等级"
             // })
+            params.details.push({
+              relationId: this.design.id, //"long //实体id",
+              type: 2, //"int //实体类型   1材料  2服务   3专项付款",
+              businessType: this.design.categoryTypeId, //"int //业务类型",
+              workType: -2, //"int //工种类型",
+              level: this.design.level, //"int //等级  1中级  2高级 3特级  4钻石",
+              storeId: this.design.storeId, //"long //店铺id",
+              storeType: 0, //"int //店铺类型 0普通 1设计师",
+              number: this.currentHouse.insideArea, //"double //购买数量",
+              params: "", //string //与订单无关的参数 如上门时间 doorTime"
+            })
           }
           if (this.actuary.checked) {
-            skuInfos.push({
-              skuId: this.actuary.id,//"long //商品id",
-              storeId: this.actuary.storeId,//"long //店铺id",
-              buyCount: this.currentHouse.insideArea,//"double //购买数量",
-              unit: "平米",//"string //单位",
-              level: 1,//"int //等级"
-            })
-            // params.details.push({
-            //   relationId: this.actuary.id, //"long //实体id",
-            //   type: 2, //"int //实体类型   1材料  2服务   3专项付款",
-            //   businessType: this.actuary.categoryTypeId, //"int //业务类型",
-            //   workType: -2, //"int //工种类型",
-            //   storeId: this.actuary.storeId || 0, //"long //店铺id",
-            //   storeType: 0, //"int //店铺类型 0普通 1设计师",
-            //   number: this.currentHouse.insideArea, //"double //购买数量",
-            //   params: "", //string //与订单无关的参数 如上门时间 doorTime"
+            // skuInfos.push({
+            //   skuId: this.actuary.id,//"long //商品id",
+            //   storeId: this.actuary.storeId,//"long //店铺id",
+            //   buyCount: this.currentHouse.insideArea,//"double //购买数量",
+            //   unit: "平米",//"string //单位",
+            //   level: 1,//"int //等级"
             // })
+            params.details.push({
+              relationId: this.actuary.id, //"long //实体id",
+              type: 2, //"int //实体类型   1材料  2服务   3专项付款",
+              businessType: this.actuary.categoryTypeId, //"int //业务类型",
+              workType: -2, //"int //工种类型",
+              storeId: this.actuary.storeId || 0, //"long //店铺id",
+              storeType: 0, //"int //店铺类型 0普通 1设计师",
+              number: this.currentHouse.insideArea, //"double //购买数量",
+              params: "", //string //与订单无关的参数 如上门时间 doorTime"
+            })
           }
           if (this.checkHouse.checked) {
-            skuInfos.push({
-              skuId: this.checkHouse.id,//"long //商品id",
-              storeId: this.checkHouse.storeId,//"long //店铺id",
-              buyCount: this.currentHouse.insideArea,//"double //购买数量",
-              unit: "平米",//"string //单位",
-              level: 1,//"int //等级"
-            })
-            // params.details.push({
-            //   relationId: this.checkHouse.id, //"long //实体id",
-            //   type: 2, //"int //实体类型   1材料  2服务   3专项付款",
-            //   businessType: this.checkHouse.categoryTypeId, //"int //业务类型",
-            //   workType: -2, //"int //工种类型",
-            //   storeId: this.checkHouse.storeId || 0, //"long //店铺id",
-            //   storeType: 0, //"int //店铺类型 0普通 1设计师",
-            //   number: this.currentHouse.insideArea, //"double //购买数量",
-            //   params: "", //string //与订单无关的参数 如上门时间 doorTime"
+            // skuInfos.push({
+            //   skuId: this.checkHouse.id,//"long //商品id",
+            //   storeId: this.checkHouse.storeId,//"long //店铺id",
+            //   buyCount: this.currentHouse.insideArea,//"double //购买数量",
+            //   unit: "平米",//"string //单位",
+            //   level: 1,//"int //等级"
             // })
+            params.details.push({
+              relationId: this.checkHouse.id, //"long //实体id",
+              type: 2, //"int //实体类型   1材料  2服务   3专项付款",
+              businessType: this.checkHouse.categoryTypeId, //"int //业务类型",
+              workType: -2, //"int //工种类型",
+              storeId: this.checkHouse.storeId || 0, //"long //店铺id",
+              storeType: 0, //"int //店铺类型 0普通 1设计师",
+              number: this.currentHouse.insideArea, //"double //购买数量",
+              params: "", //string //与订单无关的参数 如上门时间 doorTime"
+            })
           }
-          // this.createOrder(params)
-          uni.navigateTo({
-            url: "/sub-classify/pages/pay-order/index",
-            success: (res) => {
-              res.eventChannel.emit('acceptDataFromOpenerPage', {
-                skuInfos,
-                originFrom: "decorate",
-                estateId: this.currentHouse.id
-              })
-            }
-          })
+          this.createOrder(params)
+          // uni.navigateTo({
+          //   url: "/sub-classify/pages/pay-order/index",
+          //   success: (res) => {
+          //     res.eventChannel.emit('acceptDataFromOpenerPage', {
+          //       skuInfos,
+          //       originFrom: "decorate",
+          //       estateId: this.currentHouse.id
+          //     })
+          //   }
+          // })
         } else {
           uni.showToast({
             title: "请您先添加房屋信息",
