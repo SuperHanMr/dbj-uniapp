@@ -48,7 +48,6 @@
 		},
 		methods: {
 			onClick(idx, index) {
-				console.log(this.list, '>>>>>>>>>>>>>>>>')
 				this.$emit("itemClick", {
 					idx,
 					index

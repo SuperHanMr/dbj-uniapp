@@ -31,6 +31,7 @@
       this.refreshHash = Math.random()
       this.baseUrl = this.ENV.VUE_APP_BASE_H5
       // this.baseUrl = "https://local.meiwu365.com" 
+      // this.baseUrl = "https://10.10.11.67" 
       if(uni.getStorageSync('goodId')) { // 商城列表和装修模块的商品id
         this.goodId = uni.getStorageSync('goodId')
       }else if( uni.getStorageSync('fromShopCart')) { // 购物车数据
@@ -50,6 +51,7 @@
         housingEstateId: JSON.parse(this.defaultHouseInfo).housingEstateId
       }
         uni.getSystemInfo({
+					
           success:res => {
             this.deviceId = res.deviceId
           }

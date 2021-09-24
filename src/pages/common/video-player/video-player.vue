@@ -14,7 +14,7 @@
 		},
 		onLoad(e) {
 			if (e && e.url) {
-				this.url = e.url;
+				this.url = decodeURIComponent(e.url);
 			}
 		}
 	}

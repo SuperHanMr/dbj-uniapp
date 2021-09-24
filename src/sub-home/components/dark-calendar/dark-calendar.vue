@@ -36,7 +36,7 @@
       </view>
     </view>
 
-    <!-- <image src="../../static/dark-calendar/ico-arrow-up.png" mode="scaleToFill" @click="trgWeek()" class="weektoggel" :class="{ down: !monthOpen }"></image> -->
+    <image src="../../static/ic_shrink@2x.png" @click="trgWeek()" class="weektoggel" :class="{ down: !monthOpen }"></image>
   </view>
 </template>
 
@@ -193,6 +193,7 @@
 	        })
 	        this.positionTop = -((Math.ceil((index + 1) / 7) || 1) - 1) * 80
 	      }
+				console.log(this.positionTop,'???')
 	    },
 	    // 点击回调
 	    selectOne(i, event) {
@@ -236,7 +237,7 @@
 		height: 620rpx;
 	  background-color: #f2f5f8;
 	  padding-bottom: 10rpx;
-	
+		// position: relative;
 	}
 	.top-bar{
 		width: 750rpx;
@@ -325,6 +326,7 @@
 		width: 750rpx;
 		height: 452rpx;
     transition: height 0.4s ease;
+		position: relative;
   }
 	.days {
 		width: 686rpx;
@@ -334,7 +336,9 @@
 	  display: flex;
 	  align-items: center;
 	  flex-wrap: wrap;
-	  
+	  position: absolute;
+		top: 0;
+		left: 0;
 	}
 	.item {
 		width: 98rpx;
@@ -395,9 +399,9 @@
     height: 80rpx !important;
   }
   .weektoggel {
-    width: 80rpx;
-    height: 40rpx;
-    margin: 10rpx auto 0;
+    width: 32rpx;
+    height: 16rpx;
+    margin: 24rpx 360rpx;
 
     &.down {
       transform: rotate(180deg);
