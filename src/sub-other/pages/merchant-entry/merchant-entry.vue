@@ -21,6 +21,8 @@
 						公司名称
 					</view>
 					<input type="text" :value="companyValue" placeholder="请输入30个字以内" @input="companyHandler($event)" />
+					<image src="../../../static/merchant-entry/live_input_clear.png" mode=""
+						@click="deleteCompanyName()" v-if="companyValue != ''"></image>
 				</view>
 				<view class="service-city">
 					<view class="label">
@@ -196,9 +198,9 @@
 			getCategroyTree().then((res) => {
 				this.categroyTreeList = res
 			})
-			let time=Date.parse(new Date());
-			let lasttime=Date.parse("2021-09-23");
-			let day=parseInt((time-lasttime)/(1000*60*60*24));
+			let time = Date.parse(new Date());
+			let lasttime = Date.parse("2021-09-23");
+			let day = parseInt((time - lasttime) / (1000 * 60 * 60 * 24));
 			this.dayNumber = day;
 		},
 		methods: {
@@ -218,6 +220,9 @@
 				}
 			},
 			toPay() {
+				// uni.navigateTo({
+				// 	url:'../merchant-entry-success/merchant-entry-success'
+				// })
 				const ids = [];
 				this.cityList.forEach((item) => {
 					ids.push(item.id);
@@ -241,25 +246,31 @@
 						provider: "wxpay",
 						...payInfo,
 						success(res) {
-							console.log(res, '>>>>>>>>>>>>>>>')
+							if (res.errMsg == 'requestPayment:ok') {
+								uni.navigateTo({
+									url: '../merchant-entry-success/merchant-entry-success'
+								})
+							}
 						},
 						fail(e) {
 							console.log(e);
+							uni.navigateTo({
+								url: '../merchant-entry-failed/merchant-entry-failed'
+							})
 						},
 					});
 				});
 			},
-			topayHandler() {
-
-			},
 			showBottomButtom() {
-
-				if (this.cityList.length > 0 && this.categroyTreeList.length > 0 && this.companyValue != '') {
+				if (this.cityList.length > 0 && this.businessCategoryList.length > 0 && this.companyValue != '') {
 					return true;
 				} else {
-					console.log('>>>>>>>>>>>>>>>>>>>showBottomButtom')
 					return false;
 				}
+			},
+			// 删除公司名称
+			deleteCompanyName(){
+				this.companyValue = '';
 			},
 			// 删除城市
 			deleteCity(index) {
@@ -335,13 +346,11 @@
 			},
 			// 确认选择品类
 			confirmBusiness(list) {
-				console.log(list, '>>>>>>>>>');
 				this.businessCategoryList = list;
 				this.$refs.popupBusiness.close('bottom')
 			},
 			// 公司名称
 			companyHandler(e) {
-				console.log(e, '>>>>>>>>>>>>>>>')
 				this.companyValue = e.detail.value;
 			}
 		},
@@ -359,7 +368,8 @@
 		width: 100%;
 		height: 312rpx;
 		background-image: url(../../../static/merchant-entry/merchant-entry-ic／bg.png);
-		.info{
+
+		.info {
 			font-size: 28rpx;
 			font-family: HarmonyOS_Sans_Black;
 			// color: #FFFFFF;
@@ -398,12 +408,24 @@
 			}
 
 			.company-name {
+				position: relative;
+
 				input {
 					background: #FBFCFC;
 					border-radius: 6px;
 					border: 1px solid #CBCCCC;
 					margin-bottom: 48rpx;
 					padding: 24rpx 0 24rpx 24rpx;
+					caret-color: #35C4C4
+				}
+
+				image {
+					width: 64rpx;
+					height: 64rpx;
+					position: absolute;
+					right: 40rpx;
+					top: 88rpx;
+					z-index: 10;
 				}
 			}
 

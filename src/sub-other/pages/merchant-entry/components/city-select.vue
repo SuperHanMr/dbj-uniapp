@@ -18,7 +18,6 @@
 		},
 		methods:{
 			bindClick(param){
-				console.log(param, ">>>>>>>>>>>>>>>");
 				this.$emit('click', {
 					select: param.select
 				})

@@ -162,7 +162,6 @@
 								checked: true
 							})
 						})
-						console.log(arr, '>>>>>>>>>>>>>>>>>')
 					}
 					let indexBefore = index
 					let items = value.data.map(item => {
@@ -310,7 +309,6 @@
 					});
 					checkedArr.push(...arr) ;
 				})
-				console.log(checkedArr, '>>>>>>>>>>>>>>>>>')
 				this.$emit('click', {
 					select: checkedArr
 				})
