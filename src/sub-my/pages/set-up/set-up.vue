@@ -1,31 +1,29 @@
 <template>
 	<view class="container">
-		<view class="main-body">
-			<!-- <uni-list class="uni-list" :border="false">
-			    <uni-list-item title="打扮家装修服务协议" link to="./agreement/service-agreement" @click="onClick($event,1)" ></uni-list-item>
-			    <uni-list-item title="打扮家装修隐私协议" link to="./agreement/privacy-agreement" @click="onClick($event,1)" ></uni-list-item>
-			    <uni-list-item title="打扮家用户行为规范" link to="./agreement/code-of-conduct" @click="onClick($event,1)" ></uni-list-item>
-			    <uni-list-item title="打扮家知识产权条款" link to="./agreement/property-rights-clause" @click="onClick($event,1)" ></uni-list-item>
-			    <uni-list-item title="关于打扮家" link to="./about-dabanjia/about-dabanjia" /> 
-			</uni-list> -->
-			<view class="uni-list">
-				<view class="uni-list-item" v-for="(item, index) in listArr" :key="item.path" @click="onClick(index)">
-					<view class="title">
-						{{item.title}}
-					</view>
-					<view class="icon">
-						<image class="title-right" src="/static/images/ic_more_black.png" mode=""></image>
-					</view>
+		<view class="body-container">
+			<view class="item-list" 
+				v-for="(item, index) in listArr" 
+				:key="item.url" 
+				@click="onClick(item,index)"
+			>
+				<view class="item">
+					<text>{{item.title}}</text>
+					<image v-if="index <(listArr.length-1)" src="../../static/icon_setup_more@2x.png" mode=""></image>
+					<text v-else>v 2.0.0</text>
 				</view>
-			</view>
+				<view class="line" v-if="index <(listArr.length-1)" />
+			</view>	
 		</view>
+		
 		<view class="logOut" @click="onOpen">
 			退出登录
 		</view>
+		
 		<uni-popup ref="popup" type="dialog" class="uni-popup">
 			<uni-popup-dialog class="uni-popup-dialog" mode="base" type="info" title="确定退出当前账号登录吗?" :duration="2000"
 				:before-close="true" @close="close" @confirm="confirm"></uni-popup-dialog>
 		</uni-popup>
+		
 	</view>
 </template>
 
@@ -35,38 +33,49 @@
 			return {
 				listArr: [{
 						title: "打扮家装修服务协议",
-						path: "../../../sub-my/pages/set-up/agreement/service-agreement"
+						url: "/app-pages/service-agreement/index.html"
 					},
 					{
 						title: "打扮家装修隐私协议",
-						path: "../../../sub-my/pages/set-up/agreement/privacy-agreement"
+						url: "/app-pages/privacy-agreement/index.html"
 					},
 					{
 						title: "打扮家用户行为规范",
-						path: "../../../sub-my/pages/set-up/agreement/code-of-conduct"
+						url: "/app-pages/user-code-of-conduct/index.html"
 					},
 					{
 						title: "打扮家知识产权条款",
-						path: "../../../sub-my/pages/set-up/agreement/property-rights-clause"
+						url: "/app-pages/intellectual-property-rights/index.html"
 					},
 					{
 						title: "意见与反馈",
-						path: "../../../sub-my/pages/set-up/comments-feedback/comments-feedback"
+						url: "../../../sub-my/pages/set-up/comments-feedback/comments-feedback"
 					},
 					{
 						title: "关于打扮家",
-						path: "../../../sub-my/pages/set-up/about-dabanjia/about-dabanjia"
+						url: "../../../sub-my/pages/set-up/about-dabanjia/about-dabanjia"
+					},
+					{
+						title:"版本号",
+						url:""
 					}
 				]
 			};
 		},
 		methods: {
 
-			onClick(val) {
-				uni.navigateTo({
-					url: this.listArr[val].path
-				})
-				console.log("dadad")
+			onClick(item,index) {
+				if(index <4){
+					let url = this.ENV.VUE_APP_BASE_H5 + item.url
+					uni.navigateTo({
+						url:`../../../pages/common/webview/webview?url=`+ encodeURIComponent(url),
+					})
+				}else{
+					uni.navigateTo({
+						url:item.url
+					})
+				}
+				
 			},
 			onOpen() {
 				this.$refs.popup.open();
@@ -100,66 +109,61 @@
 	}
 </script>
 
-<style scoped>
+<style lang="scss" scoped>
 	.container {
 		height: 100%;
 		background: #f5f6f6;
+		
+		.body-container{
+			background-color: #FFFFFF;
+			margin-top: 16rpx;
+			.item-list{
+				.item{
+					display: flex;
+					flex-flow: row nowrap;
+					align-items: center;
+					justify-content: space-between;
+					padding: 38rpx 24rpx 38rpx 32rpx;
+					image{
+						width: 32rpx;
+						height: 34rpx;
+						object-fit: cover;
+					}
+					text{
+						height: 40rpx;
+						line-height: 40rpx;
+						font-size: 28rpx;
+						font-weight: 500;
+						color: #333333;
+					}
+				}
+				.line{
+					margin: 0 32rpx;
+					height: 2rpx;
+					background: #f2f2f2;
+					border-radius: 2rpx;
+				}
+			}
+		}
+		
+		.logOut {
+			text-align: center;
+			margin-top: 16rpx;
+			padding: 36rpx 0;
+			font-size: 28rpx;
+			font-family: PingFangSC, PingFangSC-Regular;
+			font-weight: 400;
+			color: #111111;
+			background: #ffffff;
+		}
 	}
 
-	.container .main-body {
-		width: 100%;
-		padding-top: 16rpx;
-	}
-
-	.container .main-body .uni-list {
-		background: #ffffff;
-	}
-
-	.container .main-body .uni-list .uni-list-item {
-		display: flex;
-		justify-content: space-between;
-		padding: 0 24rpx 0 32rpx;
-		border-bottom: 1px solid #f2f2f2;
-	}
-
-	.container .main-body .uni-list .uni-list-item:last-child {
-		border: none;
-	}
-
-	.container .main-body .uni-list .uni-list-item .title {
-		padding: 38rpx 0;
-		font-size: 28rpx;
-		font-family: PingFangSC, PingFangSC-Regular;
-		font-weight: 400;
-		text-align: left;
-		color: #333333;
-	}
-
-	.container .main-body .uni-list .uni-list-item .icon {
-		padding: 42rpx 0;
-	}
-
-	.container .main-body .uni-list .uni-list-item .icon .title-right {
-		height: 32rpx;
-		width: 34rpx;
-	}
-
-	.container .logOut {
-		text-align: center;
-		margin-top: 16rpx;
-		padding: 36rpx 0;
-		font-size: 28rpx;
-		font-family: PingFangSC, PingFangSC-Regular;
-		font-weight: 400;
-		color: #111111;
-		background: #ffffff;
-	}
 
 	button::after {
 		border: none;
 	}
 
-	.container .uni-popup .uni-popup-dialog /deep/ .uni-dialog-button-group .uni-border-left .uni-dialog-button-text {
+ ::v-deep .uni-dialog-button-group .uni-border-left .uni-dialog-button-text {
 		color: rgba(255, 51, 71, 1);
 		font-size: 30rpx;
 		font-family: PingFangSC, PingFangSC-Medium;
@@ -167,7 +171,7 @@
 		text-align: left;
 	}
 
-	.container .uni-popup .uni-popup-dialog /deep/ .uni-dialog-title .uni-dialog-title-text {
+ ::v-deep .uni-dialog-title .uni-dialog-title-text {
 		font-size: 32rpx;
 		font-family: PingFangSC, PingFangSC-Medium;
 		font-weight: 500;
