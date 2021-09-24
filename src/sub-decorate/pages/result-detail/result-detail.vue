@@ -1,20 +1,45 @@
 <template>
   <view class="result-detail">
-    <view class="detail-title">满敲墙面，每处空鼓面积≤0.04m²，且每个自然间不多于2处</view>
+    <view class="detail-title">{{item.inspectName}}</view>
     <view class="item">
       <text class="title">检查详情</text>
-      <view class="content">这里展示验房人员在总结中的文字稿，不可隐藏所有的内容都展示。第一个版本可支持语音和视频这里的文字是识别出来的。这里展示验房人员在总结中的文字稿，不可隐藏，所有的内容都展示。第一 所有的内容都展示</view>
+      <view class="content">{{item.problemDetails}}</view>
     </view>
     <view class="item">
       <text class="suggest">重要建议</text>
-      <view class="content suggest-content">这里展示验房人员在总结中的文字稿，不可隐藏所有的内容都展示。第一个版本可支持语音和视频这里的文字是识别出来的。这里展示验房人员在总结中的文字稿，不可隐藏，所有的内容都展示。第一 所有的内容都展示</view>
+      <view class="content suggest-content">{{item.rectificationSuggestions}}</view>
     </view>
   </view>
 </template>
 
 <script>
+  import {getResultProblem,getResultNorm} from '@/api/decorate.js'
   export default{
-    data(){}
+    data(){
+      return{
+        isProblem:false,
+        item:{}
+      }
+    },
+    onLoad(e){
+     console.log(e.ruleId,e.problemId)
+      e.ruleId?this.getResultNorm(e.ruleId):this.getResultProblem(e.problemId)
+    },
+    methods:{
+      getResultProblem(id){
+        console.log(id)
+        getResultProblem(id).then(res=>{
+          this.isProblem = true;
+          this.item = res
+        })
+      },
+      getResultNorm(id){
+        getResultNorm(id).then(res=>{
+          this.item = res
+          this.item.problemDetails = '检查已通过！'
+        })
+      },
+    }
   }
 </script>
 

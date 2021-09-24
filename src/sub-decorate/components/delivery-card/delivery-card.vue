@@ -4,7 +4,8 @@
       <text>({{data.value}}项)</text>
     </view> 
     <view class="list">
-      <view class="list-item"  v-for="item of data.arr" :key="item.title" @click="toDetail(item)">
+      <view class="list-item"  v-for="item of data.arr" :key="item.title" @click="toDetail({ruleId:item.ruleId,problemId:item.problemId})">
+        
         <view class="item-left">
           <text class="item-title">{{item.ruleName||item.inspectName}}</text>
           <text class="item-body">{{item.problemDetails||''}}</text>
@@ -30,10 +31,10 @@
     },
     data() {},
     methods: {
-      toDetail() {
-        console.log(123)
+      toDetail(item) {
+        console.log(item)
         uni.navigateTo({
-          url: '/sub-decorate/pages/result-detail/result-detail'
+          url: '/sub-decorate/pages/result-detail/result-detail?ruleId='+(item.ruleId||'')+'&problemId='+(item.problemId||'')
         })
       }
     }

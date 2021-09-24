@@ -10,6 +10,9 @@
 				url: `https://local.meiwu365.com/app-pages/actuarial/index.html?projectId=1&&isActuarial=1&isMessage=2`
 			}
 		},
+		onLoad(e) {
+			console.log(e, 'asdasda>>>>>>>>>');
+		},
 		methods: {
 			message: (res) =>{
 				console.log(res, ':LLLLLLLLLLLLLLLLLLL')

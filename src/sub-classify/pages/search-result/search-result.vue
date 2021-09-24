@@ -23,7 +23,7 @@
          :key="goodsIndex"
          :right-options="options"
        >
-        <view class="goodsItem" @click="toDetails(goodsItem.id)">
+        <view class="goodsItem" @click="toDetails(goodsItem.product.skuId)">
           <image :src="goodsItem.product.skuImage" class="goodsItemImg"></image>
           <view class="goodsInfo">
             <view class="goodsDesc">
@@ -33,9 +33,10 @@
             <view class="goodsSpec">
                   <view class="goods-money">
                     ￥
-                    <text class="integer-price">{{goodsItem.convertedPrice?goodsItem.convertedPrice.split(".")[0]: 0}}</text>
-                    <text>.{{goodsItem.convertedPrice?goodsItem.convertedPrice.split(".")[1]: 0}}</text>
-                    <text>/{{goodsItem.product.priceUnitName?goodsItem.product.priceUnitName:""}}</text>
+                    <text class="integer-price">{{String(goodsItem.product.skuPrice).split(".")[0]?String(goodsItem.product.skuPrice).split(".")[0]: "0"}}</text>
+                    <text>.{{String(goodsItem.product.skuPrice).split(".")[1]?String(goodsItem.product.skuPrice).split(".")[1]: "00"}}</text>
+                    <text>/{{goodsItem.product.priceUnitName?String(goodsItem.product.skuPrice).priceUnitName:""}}</text>
+                    <text class="level" v-if="goodsItem.product.hasBadgeLevel">中级服务</text>
                   </view>
             </view>    
             <view class="foot">
@@ -139,7 +140,8 @@
         this.initSearch = false
       },
       searchConfirm(resText) {
-        console.log(resText.value)
+        this.searchText = resText.value
+        this.getList()
       },
       toDetails(id){
         uni.setStorageSync(
@@ -329,6 +331,18 @@
     }
     .goods-money .integer-price{
       font-size: 30rpx;
+    }
+    .goods-money .level{
+      width: 80rpx;
+      height: 28rpx;
+      font-size: 20rpx;
+      font-family: PingFangSC, PingFangSC-Medium;
+      font-weight: 500;
+      text-align: center;
+      color: #c5a58d;
+      line-height: 28rpx;
+      border: 2rpx solid #c5a58d;
+      margin-left: 16rpx;
     }
     .goodsInfo .foot{
     	display: flex;
