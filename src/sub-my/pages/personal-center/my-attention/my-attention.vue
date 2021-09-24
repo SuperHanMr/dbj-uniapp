@@ -11,8 +11,7 @@
         <view class="tab-text">
           {{item}}
         </view>
-
-        <view class="bottom-icon" />
+				<view class="bottom-icon" />
       </view>
     </view>
     <swiper
@@ -61,17 +60,17 @@
 						    </view>
 						  </view>
 						  <image
-						    src="../../../../static/images/message/ic_system@2x.png"
+						    src="../../../../static/order/blank_house@2x.png"
 						    mode=""
-						  ></image>
+						  />
 						</view>
 						
 						<view  v-if="tabindex == 1" class="craftsmanAndRecommend">
 						  <view class="left">
 						    <image
-						      src="../../../../static/images/message/ic_system@2x.png"
+						      src="../../../../static/order/blank_house@2x.png"
 						      mode=""
-						    ></image>
+						    />
 						    <view class="baseInfo">
 						      <view class="name1">
 						        哈哈哈哈哈哈大王
@@ -97,7 +96,7 @@
 									<view class="craftsmanAndRecommend">
 										<view class="left">
 											<image
-												src="../../../../static/images/message/ic_system@2x.png"
+												src="../../../../static/order/blank_house@2x.png"
 												mode=""
 											></image>
 											<view class="baseInfo">
@@ -138,7 +137,7 @@
 </template>
 
 <script>
-import {getConcernList } from "../../../../api/order.js";
+import {getCraftsmanList, getHouseList, getRecommendList } from "../../../../api/order.js";
 export default {
   data() {
     return {
@@ -148,7 +147,10 @@ export default {
       tabList: ["房子", "工匠", "优先推荐"],
       triggered: false, //控制刷新显示字段
       currentIndex: 0,
-      caseList: [],
+			houselist:[],
+			craftsmanlist:[],
+      recommendlist: [],
+			currentList:[],
 			
       loading: false,
 			
@@ -158,10 +160,6 @@ export default {
 			routeId:"",//
       totalPage: 1,
 			userId:"",
-			type:3,//(3,"关注") (4,"推荐")
-			bizType:"",//(4,"房屋")  【用户的角色信息】PERSON(3,"人物")
-			
-			
 			
 			options:[
 				{
@@ -181,58 +179,96 @@ export default {
   },
   onShow() {
 		this.userId = getApp().globalData.userInfo.id
-		
 		console.log("this.userId=",this.userId)
-		this.getList();
+		this.recommendList();
+	},
+	computed: {
+		currentList() {
+			if (this.currentIndex == 0) {
+				return this.caseList;
+			} else if (this.currentIndex == 1) {
+				return this.caseList;
+			} else if (this.currentIndex == 2) {
+				return this.caseList;
+			} else {
+				return this.caseList;
+			}
+		},
+	},
 		
-  },
-	
-  computed: {
-    currentList() {
+		
+  watch: {
+    currentIndex() {
       if (this.currentIndex == 0) {
-        return this.caseList;
+        this.houseList();
       } else if (this.currentIndex == 1) {
-        return this.caseList;
-      } else if (this.currentIndex == 2) {
-        return this.caseList;
+        this.craftsmanList();
       } else {
-        return this.caseList;
-      }
+         this.recommendList()
+      } 
     },
   },
+	
   methods: {
     swiperChange(e) {
       let index = e.target.current || e.detail.current;
       this.currentIndex = index;
     },
-    async getList() {
-      this.loading = true;
-			let params = {
-				
-				isReverse:true,//默认ture 该值为true时，获取我关注的、我收藏的列表，
+		
+		// 房屋请求
+		houseList(){
+			this.loading = true;
+			getHouseList({
+				isReverse:true,
 				routeId:1002,//
 				userId:this.userId,
-				type:3,//(3,"关注") (4,"推荐")
-				bizType:"",//(4,"房屋")  【用户的角色信息】PERSON(3,"人物")
-			}
-			getConcernList({
-				isReverse:true,//默认ture 该值为true时，获取我关注的、我收藏的列表，
-				routeId:1002,//
-				userId:this.userId,
-				type:3,//(3,"关注") (4,"推荐")
-				bizType:4,//(4,"房屋")  【用户的角色信息】PERSON(3,"人物")
+				type:3,//(3,"关注")
+				bizType:4,//(4,"房屋") 
 			}).then(data=>{
+				this.houselist = data
+				this.loading = false
 				console.log("data= ",data)
 			})
-			
-    //   let caseItem = await caseList({
-    //     page: this.page,
-				
-    //   });
-    //   this.totalPage = caseItem.totalPage;
-    //   this.caseList = this.caseList.concat(caseItem.list);
-    //   this.loading = false;
-    },
+		},
+		
+		// 工匠请求
+		craftsmanList(){
+			this.loading = true;
+			getCraftsmanList({
+				isReverse:true,
+				routeId:1001,
+				userId:this.userId,
+				type:3,//(3,"关注")
+				bizType:4,//(3,"人物")  【用户的角色信息】PERSON(3,"人物")
+			}).then(data=>{
+				this.craftsmanlist = data
+				this.loading = false
+				console.log("data= ",data)
+			})
+		},
+		
+		// 优先推荐请求
+    recommendList() {
+      this.loading = true;
+			getRecommendList({
+				isReverse:true,
+				routeId:1002,//
+				userId:this.userId,
+				type:4,//(4,"推荐")
+				bizType:3,//(4,"人物")  【用户的角色信息】PERSON(3,"人物")
+			}).then(data=>{
+				this.recommendlist = data
+				this.loading = false
+				console.log("data= ",data)
+			})
+		},
+		
+		
+		
+		
+		
+		
+		
 		
     onLoadMore() {
       if (this.loading || this.page >= this.totalPage) {
@@ -254,6 +290,9 @@ export default {
 		
 		
 		
+		
+		
+		// 处理相关页面
 		bindClick(e){
 			console.log('点击了'+(e.position === 'left' ? '左侧' : '右侧') + e.content.text + '按钮')
 		},
@@ -261,13 +300,7 @@ export default {
 			console.log('当前状态：'+ e +'，下标：' + index)
 		},
 		
-		
-		
-		
-		
-		
-		
-  },
+	},
 };
 </script>
 
