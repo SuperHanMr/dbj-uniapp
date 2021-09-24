@@ -6,9 +6,8 @@
         <view class="change-level" @click="openPopUp">更换等级</view>
       </view>
       <view class="process-cost-list">
-        <process-cost :key="index" :noArtificial="false" v-for="(item,index) in dataOrigin.artificial.categoryList"
-          :content="item">
-        </process-cost>
+        <process-cost-artificial :key="index" v-for="(item,index) in dataOrigin.artificial.categoryList" :content="item">
+        </process-cost-artificial>
       </view>
     </view>
     <view class="material-cost" :style="{paddingBottom:containerBottom * 2 + 48 + 88 + 'rpx'}">
@@ -16,9 +15,9 @@
         <view>辅材费用</view>
       </view>
       <view class="process-cost-list">
-        <process-cost :key="index" v-for="(item,index) in dataOrigin.material.categoryList" :content="item"
+        <process-cost-materials :key="index" v-for="(item,index) in dataOrigin.material.categoryList" :content="item"
           @change="selectWp">
-        </process-cost>
+        </process-cost-materials>
       </view>
     </view>
     <view class="payment-wrap" :style="{paddingBottom:systemBottom,height:systemHeight}">
@@ -31,7 +30,8 @@
 </template>
 
 <script>
-  import ProcessCost from "../../components/process-cost/process-cost.vue"
+  import ProcessCostArtificial from "../../components/process-cost/process-cost-artificial.vue"
+  import ProcessCostMaterials from "../../components/process-cost/process-cost-materials.vue"
   import Payment from "../../components/payment/payment.vue"
   import ChangeLevel from "../../components/change-level/change-level.vue"
   import {
@@ -42,9 +42,10 @@
   } from "../../../api/decorate.js"
   export default {
     components: {
-      ProcessCost,
+      ProcessCostArtificial,
       Payment,
-      ChangeLevel
+      ChangeLevel,
+      ProcessCostMaterials
     },
     onLoad(option) {
       const {
@@ -84,6 +85,7 @@
           material: []
         },
         countPrice: 0,
+        pieces: 0,
         estateId: null,
         artificialLevel: 1,
         roleType: null,
@@ -116,10 +118,10 @@
         // return this.shopping.artificial.length > 0 || this.shopping.material.length > 0
         return this.checkedIds.length > 0
       },
-      pieces() {
-        // return this.shopping.artificial.length + this.shopping.material.length
-        return this.checkedIds.length
-      },
+      // pieces() {
+      //   // return this.shopping.artificial.length + this.shopping.material.length
+      //   return this.checkedIds.length
+      // },
     },
     methods: {
       openPopUp() {
@@ -131,21 +133,24 @@
             artificial: [],
             material: []
           },
-          this.countPrice = 0
+        this.countPrice = 0
+        
+        this.pieces = 0
         // 先计算人工费用
         this.dataOrigin.artificial.categoryList.forEach((item, i) => {
           item.itemList.forEach((it, j) => {
             this.shopping.artificial.push(it)
             this.countPrice += it.price * it.count / 100
+            this.pieces += it.count
           })
         })
-        // debugger
         // 再计算辅材费用
         this.dataOrigin.material.categoryList.forEach((item, i) => {
           item.itemList.forEach((it, j) => {
             if (this.checkedIds.includes(it.productId)) {
               this.shopping.material.push(it)
               this.countPrice += it.price * it.count / 100
+              this.pieces += it.count
             }
           })
         })
@@ -158,7 +163,118 @@
           projectId: this.projectId,
           type: this.serviceType,
         }).then(data => {
+          console.log(11111)
           this.dataOrigin = data
+          this.dataOrigin.artificial.categoryList.forEach(t => {
+            t.itemList.forEach(it => {
+              this.checkedIds.push(it.productId)
+            })
+          })
+          this.dataOrigin.material.categoryList.forEach(t => {
+            t.itemList.forEach(it => {
+              this.checkedIds.push(it.productId)
+            })
+          })
+          this.computePriceAndShopping()
+        }).catch(err => {
+          console.log(22222)
+          this.dataOrigin = {
+            "artificial": {
+              "grade": "等级",
+              "categoryList": [{
+                "categoryName": "服务名称",
+                "categoryType": "分类",
+                "itemList": [{
+                  "id": 11,
+                  "title": "标题",
+                  "productType": "下单参数 type",
+                  "roleType": "下单参数 roleType",
+                  "businessType": "下单参数 businessType",
+                  "categoryType": "分类",
+                  "productId": 1,
+                  "workType": "工种",
+                  "categoryTypeId": "品类类型ID",
+                  "supplierType": "供应商类型",
+                  "storeId": 1,
+                  "imageUrl": "https://ali-image-test.dabanjia.com/image/20210917/14/1631859550720_2452%24a9d3fd1f4134970ae0c4fa7093cad1c8a7865d3e.jpg",
+                  "label": "服务",
+                  "name": "物品名称物品名称名称物品称但是上是多多多",
+                  "price": 1,
+                  "count": 2,
+                  "unit": "件",
+                  "specification": "规格"
+                }, {
+                  "id": 12,
+                  "title": "标题",
+                  "productType": "下单参数 type",
+                  "roleType": "下单参数 roleType",
+                  "businessType": "下单参数 businessType",
+                  "categoryType": "分类",
+                  "productId": 2,
+                  "workType": "工种",
+                  "categoryTypeId": "品类类型ID",
+                  "supplierType": "供应商类型",
+                  "storeId": 1,
+                  "imageUrl": "https://ali-image-test.dabanjia.com/image/20210917/14/1631859550720_2452%24a9d3fd1f4134970ae0c4fa7093cad1c8a7865d3e.jpg",
+                  "label": "服务",
+                  "name": "物品名称物品名称名称物品称但是上是多多多",
+                  "price": 1,
+                  "count": 2,
+                  "unit": "件",
+                  "specification": "规格"
+                }]
+              }]
+            },
+            "material": {
+              "grade": "等级",
+              "categoryList": [{
+                "categoryName": "商品分类（8号螺纹钢筋条）",
+                "categoryType": "分类",
+                "itemList": [{
+                    "id": 22,
+                    "title": "标题",
+                    "productType": "下单参数 type",
+                    "roleType": "下单参数 roleType",
+                    "businessType": "下单参数 businessType",
+                    "categoryType": "分类",
+                    "productId": 3,
+                    "workType": "工种",
+                    "categoryTypeId": "品类类型ID",
+                    "supplierType": "供应商类型",
+                    "storeId": 1,
+                    "imageUrl": "https://ali-image-test.dabanjia.com/image/20210917/14/1631859550720_2452%24a9d3fd1f4134970ae0c4fa7093cad1c8a7865d3e.jpg",
+                    "label": "物品",
+                    "name": "就范德萨范德萨发斯蒂芬的辅导身份水电费水电费水电费方法",
+                    "price": 1,
+                    "count": 3,
+                    "unit": "件",
+                    "specification": "规格"
+                  },
+                  {
+                    "id": 23,
+                    "title": "标题",
+                    "productType": "下单参数 type",
+                    "roleType": "下单参数 roleType",
+                    "businessType": "下单参数 businessType",
+                    "categoryType": "分类",
+                    "productId": 4,
+                    "workType": "工种",
+                    "categoryTypeId": "品类类型ID",
+                    "supplierType": "供应商类型",
+                    "storeId": 1,
+                    "imageUrl": "https://ali-image-test.dabanjia.com/image/20210917/14/1631859550720_2452%24a9d3fd1f4134970ae0c4fa7093cad1c8a7865d3e.jpg",
+                    "label": "物品",
+                    "name": "就范德萨范德萨发斯蒂芬的辅导身份水电费水电费水电费方法",
+                    "price": 1,
+                    "count": 3,
+                    "unit": "件",
+                    "specification": "规格"
+                  }
+                ]
+              }]
+            }
+          }
+
           this.dataOrigin.artificial.categoryList.forEach(t => {
             t.itemList.forEach(it => {
               this.checkedIds.push(it.productId)
@@ -191,14 +307,15 @@
             if (!arr.includes(productId)) {
               arr.push(productId)
             }
-            this.checkedIds = arr
           } else {
+            // let arr = []
             // for (let i = 0; i < productIds.length; i++) {
-            //   if (!this.checkedIds.includes(productIds[i])) {
-            //     // this.checkedIds.splice(i, 1)
+            //   if (!arr.includes(productIds[i])) {
             //     arr.push(productIds[i])
             //   }
             // }
+            // this.checkedIds = arr
+            
             if (arr.includes(productId)) {
               const i = arr.indexOf(productId)
               arr.splice(i, 1)

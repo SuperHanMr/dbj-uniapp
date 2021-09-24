@@ -13,17 +13,32 @@
 </template>
 
 <script>
+	import {createMemo} from "../../../api/real-case.js"
 	export default {
 		data(){
 			return {
 				value: ""
 			}
 		},
+		mounted() {
+			this.requestPage()
+		},
 		methods:{
 			toChooseRemind(){
 				uni.navigateTo({
 					url:"/sub-home/pages/decorate-scene/choose-remind"
 				})
+			},
+			requestPage(){
+				// let params = {
+				// 	projectId:  ,
+				// 	content: ,
+				// 	reminderList: ,
+				// 	remindTime: ,
+				// }
+				// createMemo(params).then(data => {
+					
+				// })
 			}
 		}
 	}
