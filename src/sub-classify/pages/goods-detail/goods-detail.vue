@@ -50,6 +50,7 @@
         housingEstateId: JSON.parse(this.defaultHouseInfo).housingEstateId
       }
         uni.getSystemInfo({
+					
           success:res => {
             this.deviceId = res.deviceId
           }

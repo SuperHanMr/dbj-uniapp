@@ -43,8 +43,11 @@
 		</view>
 
 		<view class="function-zone">
-			<view class="item" v-for="(item,index) in zoneList" :key="'zone'+index">
-				{{item}}
+			<view class="item" v-for="(item,index) in zoneList" :key="item.id" @click="onZoneClick(item)">
+				<image class="icon" :src="item.icon"></image>
+				<view class="name">
+					{{item.name}}
+				</view>
 			</view>
 		</view>
 		<view class="experience">
@@ -83,12 +86,12 @@
 			</view>
 		</view>
 
-	<!-- 	<button style="width: 50%;margin-top: 20rpx;" type="default" @click="toNextPage">去封装好的列表页</button>
+		<!-- 	<button style="width: 50%;margin-top: 20rpx;" type="default" @click="toNextPage">去封装好的列表页</button>
 		<button style="width: 50%;margin-top: 20rpx;" type="default" @click="toLiveDecorate">去装修现场</button>
 		<button style="width: 50%;margin-top: 20rpx;" type="default" @click="toShop">去商家入驻</button>
 		<button style="width: 50%;margin-top: 20rpx;" type="default" @click="toGoodsApply">去要货申请</button>
  -->
-		<view class="flex-row" style="margin-top: 42rpx;">
+		<view class="flex-row-common" style="margin-top: 42rpx;">
 			<view class="title">
 				免费服务
 			</view>
@@ -100,25 +103,55 @@
 			</view>
 
 		</view>
+		<view class="flex-row-common videos">
+			<view v-for="(item,index) in videoTypeList" :style="{color:index==videoType?'#2B2F33':'#999999'}"
+				class="video-title" @click="videoTypeChange(index)">
+				{{item}}
+			</view>
+		</view>
 
 		<view class="player-scroll">
-
-			<view class="item">
-				<view class="top-content">
-					888人正在观看
-
+			<view v-for="(item,index) in liveList" :key="item" class="item" @click="onLiveClick(item)">
+				<image class="img" :src="item.mediaType==1?item.roomLiveMediaVO.scaleImg:item.roomVideoMediaVO.scaleImg"
+					mode=""></image>
+				<view v-if="item.mediaType==1" class="top-content">
+					{{item.roomVideoMediaVO.onLineCount}}人正在观看
+				</view>
+				<view class="name-content">
+					{{item.roomVideoMediaVO.title}}
 				</view>
 			</view>
 		</view>
-		123
-		<!-- 	<view class="flex-row">
-			<view class="item" v-for="(item,index) in liveList" :key="index" @click="toLiveRoom(item)">
-				<image class="img" :src="item.scaleImg" mode="scaleToFill"></image>
-				{{item.title}}
+		<view class="flex-row-common" style="margin-top: 42rpx;">
+			<view class="title">
+				精选推荐
+			</view>
+
+		</view>
+		<view class="goods-list">
+			<view class="item" v-for="(item,index) in goodsList" :key="item.id">
+				<image class="img" :src="item.product.skuImage" mode=""></image>
+				<view class="info">
+					<view class="title">
+						<text class="tip">
+							{{item.product.productType==1?'物品':'服务'}}
+						</text>
+						<text>{{item.product.spuName}}</text>
+					</view>
+					<view class="flex1">
+
+					</view>
+					<view class="price">
+						¥
+						<text class="amount">
+							{{foramtPrice(item)}}
+						</text>
+						<text class="ex">.{{formatCent(item)}}</text>
+						/件
+					</view>
+				</view>
 			</view>
 		</view>
-		<waterfall :list="caseList" @selectedItem="onSelectedItem"></waterfall>
-	</view> -->
 	</view>
 </template>
 
@@ -126,13 +159,12 @@
 	import {
 		getBanner,
 		queryLive,
-		caseList
+		caseList,
+		navList
 	} from "../../../api/home.js";
-
 	import {
-		orderList,
-		orderPay
-	} from "../../../api/order.js";
+		getGoodsList
+	} from "../../../api/classify.js";
 	import {
 		queryEstates
 	} from "../../../api/decorate.js";
@@ -142,7 +174,9 @@
 	export default {
 		data() {
 			return {
-				zoneList: [1, 2, 3, 4, 5, 6, 7, 8, 9, 0, 1, 2],
+				videoType: 0,
+				videoTypeList: ['免费咨询', '设计咨询', '施工咨询', '家居&建材'],
+				zoneList: [],
 				tophight: 0,
 				scrollTop: 0,
 				liveList: [],
@@ -156,18 +190,19 @@
 				page: 1,
 				totalPage: 1,
 				navBarHeight: '',
-				currentSwiper: 0
+				currentSwiper: 0,
+				goodsList: [],
+				areaId: ''
 			};
 		},
+		watch: {
+			areaId() {
+				this.goodsList = [];
+				this.getHomeGoodsList()
+			}
+		},
 		onLoad() {
-			let defaultHouse = {
-				name: "北京市朝阳区",
-				provinceId: 1,
-				cityId: 36,
-				areaId: 41,
-			};
-			uni.setStorageSync("currentHouse", JSON.stringify(defaultHouse));
-			this.citydata = defaultHouse.name;
+
 			this.getHomeList();
 			this.reloadData();
 			const systemInfo = uni.getSystemInfoSync();
@@ -183,15 +218,74 @@
 				menuButtonInfo.top + (menuButtonInfo.top - systemInfo.statusBarHeight) +
 				menuButtonInfo.height +
 				"px";
+			this.getLoadData()
 		},
 		onShow() {
 			uni.$once("selectedHouse", (item) => {
 				this.citydata = item.cityName + item.areaName + item.housingEstate;
+				this.areaId = item.areaId
 				uni.setStorageSync("currentHouse", JSON.stringify(item));
 			});
+		},
 
+		onReachBottom() {
+			this.page++;
+			this.getHomeGoodsList();
 		},
 		methods: {
+			foramtPrice(item) {
+				let price = String(item.product.skuPrice);
+				return price.slice(0, price.length - 2) || '0'
+			},
+			formatCent(item) {
+				let price = String(item.product.skuPrice);
+				return price.slice(price.length - 2, price.length)
+			},
+			onLiveClick(item) {
+				if (item.mediaType == 1) {
+					//直播
+				} else if (item.mediaType == 2) {
+					console.log(item)
+					//回放
+					uni.navigateTo({
+						url: '../../common/video-player/video-player?url=' + encodeURIComponent(item
+							.roomVideoMediaVO.videoUrl)
+					})
+				}
+
+			},
+			getQueryLiveList() {
+				let type = -2;
+				if (this.videoType == 0) {
+					type = -2
+				}
+				if (this.videoType == 1) {
+					type = 0
+				}
+				if (this.videoType == 2) {
+					type = 2
+				}
+				if (this.videoType == 3) {
+					type = 3
+				}
+
+				queryLive({
+					type: type,
+					rows: 15
+				}).then(e => {
+					this.liveList = e.list
+					console.log(e);
+				})
+			},
+			videoTypeChange(e) {
+				this.videoType = e;
+				this.getQueryLiveList();
+			},
+			onZoneClick(item) {
+				if (item.type == 3) {
+					this.toWebview(item.url)
+				}
+			},
 			swiperChange(e) {
 				this.currentSwiper = e.detail.current;
 			},
@@ -204,18 +298,6 @@
 				uni.navigateTo({
 					url: "/sub-home/pages/lives-decorate/lives-decorate",
 				});
-			},
-			onLoadMore() {
-				if (this.loading || this.page >= this.totalPage) {
-					return;
-				}
-				this.page++;
-				this.getCaseList();
-			},
-			onSelectedItem(item) {
-				if (item.shareLinks) {
-					this.toWebview(item.shareLinks);
-				}
 			},
 			toWebview(url) {
 				if (!url) {
@@ -239,6 +321,15 @@
 						that.getLocationInfo();
 					},
 					fail() {
+						let defaultHouse = {
+							name: "北京市朝阳区",
+							provinceId: 1,
+							cityId: 36,
+							areaId: 41,
+						};
+						that.areaId = 41
+						uni.setStorageSync("currentHouse", JSON.stringify(defaultHouse));
+						that.citydata = defaultHouse.name;
 						// 拒绝授权
 						that.openConfirm();
 						console.log("你拒绝了授权，无法获得周边信息");
@@ -273,6 +364,17 @@
 							},
 						});
 					},
+					fail() {
+						let defaultHouse = {
+							name: "北京市朝阳区",
+							provinceId: 1,
+							cityId: 36,
+							areaId: 41,
+						};
+						vm.areaId = 41
+						uni.setStorageSync("currentHouse", JSON.stringify(defaultHouse));
+						vm.citydata = defaultHouse.name;
+					}
 				});
 			},
 			async getAreaId(adcode) {
@@ -307,16 +409,22 @@
 			},
 			reloadData() {
 				this.getBannerList();
-				this.getCaseList();
+				//直播列表
+				this.getQueryLiveList();
+				//金刚区列表
+				navList().then(e => {
+					this.zoneList = e
+				})
+				//首页推荐商品
 			},
-			async getCaseList() {
-				this.loading = true;
-				let caseItem = await caseList({
-					page: this.page,
-				});
-				this.totalPage = caseItem.totalPage;
-				this.caseList = this.caseList.concat(caseItem.list);
-				this.loading = false;
+			getHomeGoodsList() {
+				getGoodsList({
+					pageIndex: this.page,
+					areaId: this.areaId
+				}).then(e => {
+					this.goodsList = this.goodsList.concat(e.page)
+				})
+
 			},
 			async getBannerList() {
 				this.bannerList = await getBanner();
@@ -330,6 +438,8 @@
 						defaultHouse = houseList.find((e) => {
 							return e.defaultEstate == true;
 						});
+					} else {
+						this.getAuthorizeInfo();
 					}
 					if (defaultHouse) {
 						house = defaultHouse;
@@ -338,6 +448,7 @@
 					}
 					if (house) {
 						uni.setStorageSync("currentHouse", JSON.stringify(house));
+						this.areaId = house.areaId;
 						this.citydata = house.cityName + house.areaName;
 					}
 				} else {
@@ -357,6 +468,111 @@
 </script>
 
 <style lang="scss" scoped>
+	.videos {
+		height: 80rpx;
+		align-items: center;
+	}
+
+	.video-title {
+		font-size: 28rpx;
+		font-weight: 400;
+		color: #999999;
+		line-height: 40rpx;
+		margin-right: 48rpx;
+	}
+
+	.goods-list {
+		display: flex;
+		margin-top: 24rpx;
+		width: 100%;
+		flex-direction: row;
+		flex-wrap: wrap;
+		justify-content: flex-start;
+
+		.item {
+			margin-top: 16rpx;
+			flex-shrink: 0;
+			width: 343rpx;
+			height: 520rpx;
+			border-radius: 18rpx;
+			border: 1rpx solid #E6EAED;
+			margin-left: 21.3rpx;
+			position: relative;
+			overflow: hidden;
+
+			.img {
+				width: 100%;
+				height: 343rpx;
+			}
+
+			.price {
+				margin-bottom: 28rpx;
+				font-size: 24rpx;
+				font-weight: 400;
+				color: #939699;
+				line-height: 26rpx;
+
+				.amount {
+					font-size: 40rpx;
+					font-weight: 400;
+					color: #2B2F33;
+					line-height: 42rpx;
+				}
+
+				.ex {
+					font-size: 24rpx;
+					font-weight: 400;
+					color: #2B2F33;
+					line-height: 26rpx;
+				}
+			}
+
+			.info {
+
+				padding: 0 24rpx;
+				display: flex;
+				flex-direction: column;
+				height: 177rpx;
+
+				.title {
+					margin-top: 10rpx;
+					font-size: 28rpx;
+					font-weight: 600;
+					color: #2B2F33;
+					line-height: 40rpx;
+					overflow: hidden;
+					text-overflow: ellipsis;
+					display: -webkit-box;
+					-webkit-line-clamp: 2; //这个代表你要在几行显示省略号
+					-webkit-box-orient: vertical;
+				}
+
+
+				.tip {
+					display: inline-block;
+					height: 30rpx;
+					line-height: 30rpx;
+					margin-right: 10rpx;
+					width: 60rpx;
+					border-radius: 4rpx;
+					border: 1rpx solid #00BFB6;
+					text-align: center;
+					font-weight: 500;
+					color: #00BFB6;
+					font-size: 20rpx;
+				}
+
+				.tip:before,
+				.tip:after {
+					display: inline-block;
+					vertical-align: middle;
+					content: '';
+					height: 100%;
+				}
+			}
+		}
+	}
+
 	.player-scroll {
 		width: 100%;
 		display: flex;
@@ -371,6 +587,29 @@
 			border-radius: 16rpx;
 			margin-left: 24rpx;
 			position: relative;
+			overflow: hidden;
+
+			.img {
+				width: 100%;
+				height: 100%;
+			}
+
+			.name-content {
+				position: absolute;
+				bottom: 24rpx;
+				left: 16rpx;
+				right: 16rpx;
+				font-size: 26rpx;
+				font-weight: 500;
+				color: #FFFFFF;
+				line-height: 36rpx;
+				text-shadow: 0rpx 2rpx 6rpx rgba(0, 0, 0, 0.2);
+				overflow: hidden;
+				text-overflow: ellipsis;
+				display: -webkit-box;
+				-webkit-line-clamp: 1; //这个代表你要在几行显示省略号
+				-webkit-box-orient: vertical;
+			}
 
 			.top-content {
 				position: absolute;
@@ -388,10 +627,11 @@
 		}
 	}
 
-	.flex-row {
+	.flex-row-common {
+		margin: 0 32rpx;
 		display: flex;
 		flex-direction: row;
-		align-items: flex-start;
+		align-items: center;
 		justify-content: flex-start;
 
 		.title {
@@ -399,7 +639,6 @@
 			font-weight: 500;
 			color: #2B2F33;
 			line-height: 50rpx;
-			margin-left: 24rpx;
 		}
 
 		.sub-title {
@@ -407,7 +646,6 @@
 			font-weight: 400;
 			color: #2B2F33;
 			line-height: 40rpx;
-			margin-right: 24rpx;
 		}
 	}
 
@@ -520,8 +758,23 @@
 			height: 126rpx;
 			width: 175rpx;
 			display: flex;
+			flex-direction: column;
 			justify-content: center;
 			align-items: center;
+
+			.name {
+				font-size: 24rpx;
+				font-weight: 400;
+				color: #333333;
+				line-height: 34rpx;
+				margin-top: 2rpx;
+			}
+
+			.icon {
+				display: block;
+				width: 60rpx;
+				height: 60rpx;
+			}
 		}
 
 	}
@@ -609,7 +862,6 @@
 		align-items: flex-start;
 		justify-content: flex-start;
 		overflow: auto;
-		width: 100%;
 
 		.item {
 			flex-shrink: 0;
