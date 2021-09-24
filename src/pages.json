@@ -493,14 +493,14 @@
 						"navigationBarBackgroundColor": "#ffffff"
 					}
 				},
-        {
-        	"path": "pages/shops/shops",
-        	"style": {
-        		"navigationBarTitleText": "",
-        		"enablePullDownRefresh": false,
-        		"navigationBarBackgroundColor": "#f5f5f5"
-        	}
-        }
+				{
+					"path": "pages/shops/shops",
+					"style": {
+						"navigationBarTitleText": "",
+						"enablePullDownRefresh": false,
+						"navigationBarBackgroundColor": "#f5f5f5"
+					}
+				}
 			]
 		},
 		{
@@ -525,7 +525,21 @@
 						"navigationBarTitleText": "",
 						"enablePullDownRefresh": false
 					}
-				
+
+				}, {
+					"path": "pages/merchant-entry-success/merchant-entry-success",
+					"style": {
+						"navigationBarTitleText": "商家在线入驻",
+						"enablePullDownRefresh": false
+					}
+
+				}, {
+					"path": "pages/merchant-entry-failed/merchant-entry-failed",
+					"style": {
+						"navigationBarTitleText": "提交成功",
+						"enablePullDownRefresh": false
+					}
+
 				}
 			]
 		},
@@ -829,15 +843,15 @@
 						"enablePullDownRefresh": false
 					}
 				},
-        {
-        	"path": "pages/person-page/person-page",
-        	"style": {
-        		"navigationBarTitleText": "个人主页",
-        		"transparentTitle": "auto",
-        		"navigationStyle": "custom",
-            "enablePullDownRefresh": true
-        	}
-        }
+				{
+					"path": "pages/person-page/person-page",
+					"style": {
+						"navigationBarTitleText": "个人主页",
+						"transparentTitle": "auto",
+						"navigationStyle": "custom",
+						"enablePullDownRefresh": true
+					}
+				}
 			]
 		}
 	]

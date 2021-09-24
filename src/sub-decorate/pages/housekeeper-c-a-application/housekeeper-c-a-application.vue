@@ -6,7 +6,7 @@
     <view class="content">
       <user-desc-pict-butler :detail="detail"></user-desc-pict-butler>
     </view>
-    <view class="bt-btn-wrap flex-row">
+    <view class="bt-btn-wrap flex-row" :style="{paddingBottom:systemBottom,height:systemHeight}">
       <view class="btn-l" @click="refuse">拒绝通过</view>
       <view class="btn-r" @click="confirm">验收通过</view>
     </view>
@@ -35,8 +35,17 @@
       return {
         msg: {},
         detail: {},
-        id: null
+        id: null,
+        containerBottom: null,
+        systemBottom: null,
+        systemHeight: null
       }
+    },
+    mounted() {
+      const menuButtonInfo = uni.getMenuButtonBoundingClientRect();
+      this.containerBottom = menuButtonInfo.bottom;
+      this.systemBottom = menuButtonInfo.bottom * 2 + "rpx";
+      this.systemHeight = menuButtonInfo.bottom * 2 + 24 + "rpx";
     },
     methods: {
       confirm() {
@@ -56,7 +65,7 @@
                   title: "已提交验收"
                 })
                 uni.navigateBack({
-                  
+
                 })
               })
             } else {
@@ -75,9 +84,6 @@
           this.detail = data
         })
       },
-      // ownerInsertAudit() {
-
-      // },
 
     }
   }
@@ -98,18 +104,8 @@
   }
 
   .content {
-    //   background: #ffffff;
-    //   border-radius: 16rpx;
     margin-top: 56rpx;
-    // padding: 24rpx;
   }
-
-  // .content-ext {
-  //   background: #ffffff;
-  //   border-radius: 16rpx;
-  //   margin-top: 56rpx;
-  //   padding: 24rpx;
-  // }
 
   .message {
     position: fixed;
@@ -242,9 +238,7 @@
     background-color: #fff;
     width: 100%;
     position: fixed;
-    bottom: 68rpx;
-    // bottom: env(safe-area-insert-bottom);
-    // bottom: 68rpx;
+    bottom: 0;
     left: 0;
     justify-content: space-between;
     box-sizing: border-box;

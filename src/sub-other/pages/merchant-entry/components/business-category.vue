@@ -211,6 +211,14 @@
 					return true;
 				}
 			},
+			modifyNumberList(item){
+				const checkedNumber = this.numberList.findIndex((items, index) => {
+					return items.id == item.twoLevelCategoryId;
+				})
+				if (checkedNumber != -1) {
+					this.numberList[checkedNumber].num -= 1;
+				}
+			},
 			showCheckedNumber(item){
 				const checkedNumber = this.numberList.findIndex((items, index) => {return items.id == item.id});
 				if (checkedNumber != -1) {

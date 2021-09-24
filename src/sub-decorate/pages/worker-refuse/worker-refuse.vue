@@ -6,7 +6,9 @@
       <view class="maxlength">{{reason.length}}/500</view>
     </view>
     <view class="tips">建议与服务者沟通后再拒绝通过</view>
-    <button class="btn" @click="confirm">提交</button>
+    <view class="bt-btn-wrap" :style="{paddingBottom:systemBottom,height:systemHeight}">
+      <button class="btn" @click="confirm">提交</button>
+    </view>
   </view>
 </template>
 
@@ -27,8 +29,17 @@
     data() {
       return {
         reason: "",
-        id: null
+        id: null,
+        containerBottom: null,
+        systemBottom: null,
+        systemHeight: null,
       }
+    },
+    mounted() {
+      const menuButtonInfo = uni.getMenuButtonBoundingClientRect();
+      this.containerBottom = menuButtonInfo.bottom;
+      this.systemBottom = menuButtonInfo.bottom * 2 + "rpx";
+      this.systemHeight = menuButtonInfo.bottom * 2 + 24 + "rpx";
     },
     methods: {
       bindTextAreaBlur: function(e) {
@@ -89,10 +100,18 @@
     margin-bottom: 24rpx;
   }
 
-  .btn {
+  .bt-btn-wrap {
     position: fixed;
-    bottom: 64rpx;
-    width: calc(100% - 64rpx);
+    background-color: #fff;
+    height: 88rpx;
+    width: 100%;
+    bottom: 0;
+    left: 0;
+    box-sizing: border-box;
+    padding: 24rpx 32rpx;
+  }
+
+  .btn {
     height: 88rpx;
     line-height: 88rpx;
     background: linear-gradient(135deg, #00c2b2, #00c2bf);
