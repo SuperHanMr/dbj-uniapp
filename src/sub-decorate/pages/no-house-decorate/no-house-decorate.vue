@@ -12,21 +12,21 @@
         @changCurrentHouse="changCurrentHouse">
       </my-current-house>
       <service-card v-if="(sssType == 'decorate' || sssType == 'design') && design.id" :setting="design"
-        class="service-card" @selectAnother="selectAnother('design')" @changeLevel="open">
+        class="service-card" @selectAnother="selectAnotherHandler('design')" @changeLevel="open">
         <template slot="check">
           <check-box :checked="design.checked" @change="(value)=> {change(design.cardtype, value)}">
           </check-box>
         </template>
       </service-card>
       <service-card v-if="(sssType == 'decorate' || sssType == 'actuary') && actuary.id" :setting="actuary"
-        class="service-card" @selectAnother="selectAnother('actuary')">
+        class="service-card" @selectAnother="selectAnotherHandler('actuary')">
         <template slot="check">
           <check-box :checked="actuary.checked" @change="(value)=> {change(actuary.cardtype, value)}">
           </check-box>
         </template>
       </service-card>
       <service-card v-if="sssType == 'checkHouse' && checkHouse.id" :setting="checkHouse" class="service-card"
-        @selectAnother="selectAnother('checkHouse')">
+        @selectAnother="selectAnotherHandler('checkHouse')">
         <template slot="check">
           <check-box :checked="checkHouse.checked" @change="(value)=> {change(checkHouse.cardtype, value)}">
           </check-box>
@@ -141,7 +141,7 @@
       })
       uni.$on("selectedServer", (data) => {
         const {
-          categoryTypeId,
+          serviceType,
           values
         } = data
         this.selectedServer = data
@@ -248,7 +248,7 @@
         }
         getServiceSku(params).then(data => {
           const {
-            categoryTypeId,
+            serviceType,
             values
           } = this.selectedServer
           this.design = {
@@ -260,7 +260,7 @@
           this.actuary = {
             checked: false,
           }
-          if (categoryTypeId == 1) {
+          if (serviceType == 1) {
             this.design = {
               title: "设计服务",
               cardtype: "design",
@@ -270,7 +270,7 @@
               ...values
             }
           } else {
-            let designData = data.filter(t => t.serviceType === 1) //&& t.categoryTypeId === 6)
+            let designData = data.filter(t => t.serviceType === 1)
             if (designData && designData.length > 0) {
               this.design = {
                 ...designData[0],
@@ -282,7 +282,7 @@
               }
             }
           }
-          if (categoryTypeId == 2) {
+          if (serviceType == 2) {
             this.checkHouse = {
               title: "验房服务",
               cardtype: "checkHouse",
@@ -302,7 +302,7 @@
               }
             }
           }
-          if (categoryTypeId == 4) {
+          if (serviceType == 4) {
             this.actuary = {
               title: "精算服务",
               cardtype: "actuary",
@@ -326,19 +326,19 @@
         })
       },
 
-      selectAnother(pp) {
+      selectAnotherHandler(pp) {
         let str = ""
         if (pp === "design") {
           str =
-            `/sub-decorate/pages/service-list/service-list?name=设计服务&categoryTypeId=1&insideArea=${this.currentHouse.insideArea}&id=${this.design.id}`
+            `/sub-decorate/pages/service-list/service-list?name=设计服务&serviceType=1&insideArea=${this.currentHouse.insideArea}&id=${this.design.id}&categoryTypeId=${this.design.categoryTypeId}`
         }
         if (pp === "checkHouse") {
           str =
-            `/sub-decorate/pages/service-list/service-list?name=验房服务&categoryTypeId=2&insideArea=${this.currentHouse.insideArea}&id=${this.checkHouse.id}`
+            `/sub-decorate/pages/service-list/service-list?name=验房服务&serviceType=2&insideArea=${this.currentHouse.insideArea}&id=${this.checkHouse.id}&categoryTypeId=${this.checkHouse.categoryTypeId}`
         }
         if (pp === "actuary") {
           str =
-            `/sub-decorate/pages/service-list/service-list?name=精算服务&categoryTypeId=4&insideArea=${this.currentHouse.insideArea}&id=${this.actuary.id}`
+            `/sub-decorate/pages/service-list/service-list?name=精算服务&serviceType=4&insideArea=${this.currentHouse.insideArea}&id=${this.actuary.id}&categoryTypeId=${this.actuary.categoryTypeId}`
         }
         uni.navigateTo({
           url: str
@@ -539,7 +539,6 @@
     align-items: felx-start;
     box-sizing: border-box;
     height: 100%;
-    // font-size: 20rpx;
   }
 
   .content {
