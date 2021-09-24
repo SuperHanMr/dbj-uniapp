@@ -5,6 +5,7 @@
     <view class="back">
       <image ></image>
     </view>
+    <view class="person-page-content">
     <view class="person-msg">
         <view class="person-msg-top">
           <view class="person-msg-header">
@@ -53,14 +54,48 @@
         </view>
       <personIntroduce></personIntroduce>
     </view>
+    <view class="person-interact">
+      <view class="sticky" >
+        <view class="item" :class="{'item-active':currentItem==='service'}" @click="toItem('top')">
+          服务</view>
+        <view class="item" :class="{'item-active':currentItem==='case'}" @click="toItem('hazardTop')">
+          案例</view>
+          <view class="item" :class="{'item-active':currentItem==='state'}" @click="toItem('conformTop')">
+            动态</view>
+        <view class="item" :class="{'item-active':currentItem==='evaluate'}" @click="toItem('conformTop')">
+          评价<text>16</text></view>
+      </view>
+    </view>
+    </view>
   </view>
 </template>
 
 <script>
   import personIntroduce from './components/person-introduce.vue'
+  import {getCaseList} from '@/api/real-case.js'
   export default{
     components:{
       personIntroduce
+    },
+    data(){
+      return{
+        currentItem:'service'
+      }
+    },
+    onPullDownRefresh(){
+      this.getCaseList()
+    },
+    mounted(){
+      this.getCaseList()
+    },
+    methods:{
+      getCaseList(){
+        getCaseList().then(res=>{
+          
+        })
+      },
+      toItem(){}
+      
     }
   }
 </script>
@@ -72,7 +107,7 @@
     height: 100%;
     overflow: hidden;
     box-sizing: border-box;
-    background-color: #F5F6F6;
+    background-color: #fff;
     .bg-index {
       top: 0;
       width: 100%;
@@ -96,9 +131,11 @@
       }
     }
   }
+  .person-page-content{
+    position: relative;
+    top: 214rpx;
+  }
   .person-msg{
-    position: absolute;
-    top: 312rpx;
     width: calc(100% - 32px);
     background-color: #fff;
     border-radius: 32rpx 32rpx 0px 0px;
@@ -229,5 +266,42 @@
           }
         }
       }
+  }
+  .person-interact{
+    margin-top: 24rpx;
+    // height: 200rpx;
+    // background-color: ;
+    .sticky {
+      position: sticky;
+      top: 0;
+      width: 100%;
+      height: 80rpx;
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-evenly;
+      border-bottom: 1px solid #EFEFEF;
+      view {
+        line-height: 80rpx;
+        text-align: center;
+        color: #999;
+        font-size: 28rpx;
+      }
+      .item {
+        position: relative;
+      }
+      .item-active::after {
+        content: "";
+        display: inline-block;
+        width: 32rpx;
+        height: 4rpx;
+        background: linear-gradient(129deg, #00CDEC 0%, #00ED7D 100%);
+        border-radius: 200rpx 200rpx 0px 0px;
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        margin: auto;
+      }
+    }
   }
 </style>

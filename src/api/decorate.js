@@ -117,6 +117,16 @@ export function getCheckResultDetail(params) {
 	return request.get("/pm/app/user/inspectEstate/report/" + params)
 }
 
+//获取验房交付报告规则详情
+export function getResultNorm(params) {
+	return request.get("/pm/app/user/inspectEstate/rule/" + params)
+}
+
+//获取验房交付报告问题详情
+export function getResultProblem(params) {
+	return request.get("/pm/app/user/inspectEstate/problem/" + params)
+}
+
 //获取施工交付内容
 export function getComplateDetail(params) {
 	return request.get(`/pm/app/worker/decoration/trend/getCompletionLogById/${params.projectId}/${params.serveId}`)
