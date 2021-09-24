@@ -1,5 +1,7 @@
 <template>
-	<entry-indexed :options="cityArr" :showSelect="true" @click="bindClick"></entry-indexed>
+	<view class="city-select">
+		<entry-indexed :options="cityArr" :showSelect="true" @click="bindClick"></entry-indexed>
+	</view>
 </template>
 
 <script>
@@ -13,9 +15,22 @@
 		},
 		components:{
 			entryIndexed
+		},
+		methods:{
+			bindClick(param){
+				console.log(param, ">>>>>>>>>>>>>>>");
+				this.$emit('click', {
+					select: param.select
+				})
+			}
 		}
 	}
 </script>
 
 <style>
+	.city-select{
+		position: relative;
+		width: 100%;
+		height: 1200rpx;
+	}
 </style>
