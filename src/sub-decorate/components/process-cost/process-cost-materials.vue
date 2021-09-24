@@ -4,28 +4,32 @@
       <view class="title">
         <view class="s-4level-name">{{content.categoryName}}</view>
       </view>
-      <view class="edit" v-if="noArtificial">编辑</view>
     </view>
     <view class="index">
       <view class="item-list">
-        <view class="item" v-for="(item,index) in content.itemList" :key="item.productId">
+        <view class="item" v-for="(item,index) in itemList" :key="item.productId">
           <view class="img-name-tag-guige">
-            <check-box v-if="noArtificial" :checked="checked" @change="(val) => {checkItem(val, item)}"></check-box>
+            <check-box :checked="item.checked" @change="(val) => {checkItem(val, item)}"></check-box>
             <image class="img" :src="item.imageUrl"></image>
-            <view class="tag-name-guige">
-              <view class="spu-name">
-                <view class="tag">{{item.label}}</view>
-                <view class="name">{{item.name}}</view>
+            <view class="tag-name-guige-price-edit">
+              <view class="spu-name-gui-ge-count">
+                <view class="spu-name">
+                  <view class="tag">{{item.label}}</view>
+                  <view class="name">{{item.name}}</view>
+                </view>
+                <view class="gui-ge-count">
+                  <view class="gui-ge">{{item.specification}}</view>
+                  <view class="count">共{{item.count}}件</view>
+                </view>
               </view>
-              <view class="gui-ge">{{item.specification}}</view>
+              <view class="price-edit">
+                <view class="price">
+                  <text>￥</text>
+                  <text>{{item.price | filterPrice}}</text>
+                </view>
+                <view class="edit">编辑商品</view>
+              </view>
             </view>
-          </view>
-          <view class="price-count">
-            <view class="price">
-              <text>￥</text>
-              <text>{{item.price / 100}}</text>
-            </view>
-            <view class="count">共{{item.count}}件</view>
           </view>
         </view>
       </view>
@@ -44,24 +48,42 @@
       content: {
         type: Object,
         required: true
-      },
-      noArtificial: {
-        type: Boolean,
-        default: true
       }
     },
     data() {
       return {
-        checked: true
+        itemList: []
+      }
+    },
+    mounted() {
+      this.initItemList()
+    },
+    watch: {
+      content(newVal, oldVal) {
+        this.initItemList()
+      }
+    },
+    filters: {
+      filterPrice(val) {
+        return (val / 100).toFixed()
       }
     },
     methods: {
+      initItemList() {
+        this.itemList = this.content.itemList.map(item => {
+          return {
+            ...item,
+            checked: true
+          }
+        })
+      },
       checkItem(val, item) {
-        this.checked = !this.checked
+        item.checked = val
+        // this.itemList
         this.$emit("change", {
           val,
-          // productIds: this.content.itemList.map(it => it.productId)
           productId: item.productId
+          // productIds: this.content.itemList.map(it => it.productId)
         })
       },
 
@@ -78,7 +100,6 @@
 <style lang="scss" scoped>
   .content {
     border-bottom: 2rpx solid #f4f4f4;
-    padding-bottom: 32rpx;
   }
 
   .s-4level-name {
@@ -107,22 +128,14 @@
     padding: 30rpx 0;
   }
 
-  .edit {
-    height: 34rpx;
-    font-size: 24rpx;
-    font-family: PingFangSC, PingFangSC-Regular;
-    font-weight: 400;
-    text-align: right;
-    color: #999999;
-    line-height: 34rpx;
-    padding: 31rpx 0;
-  }
+
 
   .item {
     display: flex;
     justify-content: space-between;
     flex-direction: row;
     align-items: center;
+    padding-bottom: 32rpx;
 
     .img-name-tag-guige {
       display: flex;
@@ -141,15 +154,17 @@
       box-sizing: border-box;
     }
 
+    .tag-name-guige-price-edit {
+      flex: 1;
+      display: flex;
+      justify-content: space-between;
+      flex-direction: column;
+      align-items: flex-start;
+      height: 136rpx;
+    }
+
     .spu-name {
-      width: 370rpx;
-      height: 64rpx;
-      font-size: 26rpx;
-      font-family: PingFangSC, PingFangSC-Regular;
-      font-weight: 400;
-      text-align: left;
-      color: #333333;
-      line-height: 32rpx;
+      width: 475rpx;
       margin-bottom: 8rpx;
       display: flex;
       justify-content: flex-start;
@@ -160,6 +175,7 @@
     .tag {
       width: 60rpx;
       height: 30rpx;
+      box-sizing: border-box;
       border: 1rpx solid #35c4c4;
       border-radius: 4rpx;
       font-size: 20rpx;
@@ -167,44 +183,62 @@
       font-weight: 400;
       text-align: center;
       color: #35c4c4;
-      line-height: 30rpx;
+      line-height: 27rpx;
       margin-right: 8rpx;
-      display: inline-block;
     }
 
     .name {
-      display: inline-block;
-    }
-
-    .gui-ge {
-      height: 26rpx;
-      font-size: 22rpx;
+      width: 403rpx;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+      font-size: 26rpx;
       font-family: PingFangSC, PingFangSC-Regular;
       font-weight: 400;
       text-align: left;
-      color: #999999;
-      line-height: 26rpx;
+      color: #333333;
+      line-height: 32rpx;
     }
 
-    .price-count {
-      text-align: right;
+    .price-edit {
+      width: 100%;
+      display: flex;
+      justify-content: space-between;
+      flex-direction: row;
+      align-items: center;
 
       .price {
-        height: 32rpx;
         font-size: 32rpx;
         font-family: Unnamed, Unnamed-Regular;
         font-weight: 400;
         text-align: left;
         color: #333333;
-        margin-bottom: 12rpx;
+        line-height: 32rpx;
       }
 
+      .edit {
+        height: 34rpx;
+        font-size: 24rpx;
+        font-family: PingFangSC, PingFangSC-Regular;
+        font-weight: 700;
+        text-align: right;
+        color: #00bfb6;
+        line-height: 34rpx;
+      }
+    }
+
+    .gui-ge-count {
+      display: flex;
+      justify-content: space-between;
+      flex-direction: row;
+      align-items: center;
+
+      .gui-ge,
       .count {
-        height: 26rpx;
         font-size: 22rpx;
         font-family: PingFangSC, PingFangSC-Regular;
         font-weight: 400;
-        text-align: right;
+        text-align: left;
         color: #999999;
         line-height: 26rpx;
       }
