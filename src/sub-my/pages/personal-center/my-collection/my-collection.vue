@@ -16,9 +16,9 @@
           <view class="bottom-icon" />
         </view>
       </view>
-      <view class="edit-btn">
-        <text>管理</text>
-        <!-- <text>完成</text> -->
+      <view class="edit-btn" v-if="currentList.length > 1">
+        <text v-if="ShowMgrBrn" @click="ShowMgrBrn=!ShowMgrBrn">管理</text>
+        <text v-else @click="ShowMgrBrn=!ShowMgrBrn">完成</text>
       </view>
     </view>
 
@@ -46,11 +46,11 @@
           <waterfall
             :list="caseList"
             @selectedItem="onSelectedItem"
+						:showCheckIcon="!ShowMgrBrn"
+						
           ></waterfall>
-
-        </scroll-view>
-
-      </swiper-item>
+				</scroll-view>
+			</swiper-item>
 
       <swiper-item
         v-else
@@ -68,48 +68,42 @@
       </swiper-item>
 
     </swiper>
+		
+		<!-- 底部按钮 -->
+		<view class="footer" v-if=" currentList.length > 1 && !ShowMgrBrn" :style="{paddingBottom:systemBottom}">
+			<view class="left">
+				<image  src="../../../../sub-home/static/checked@2x.png" mode=""></image>
+				<image  src="../../../../static/order/images/product_unChecked.png" mode="" />
+				<text>全选</text>
+			</view>
+			<view class="button" @click="handleCancel" >
+				取消收藏
+			</view>
+		</view>-
+	
+		<!-- 取消收藏弹框 -->
+		<popup-dialog ref="popup" :title="title" @confirm="confirmCancelCollection"></popup-dialog>
+		
+		
+		
   </view>
 </template>
 
 <script>
+import{getGoodsList,getRealCaseList} from "../../../../api/order.js"
 import { caseList } from "../../../../api/home.js";
 export default {
   data() {
     return {
       triggered: false,
       list: [
-        1,
-        2,
-        3,
-        4,
-        5,
-        6,
-        7,
-        8,
-        9,
-        0,
-        11,
         "阿道夫",
         "刮大风",
         "部分地方",
         "不梵蒂冈",
         "有人特",
       ],
-      list1: [
-        "sad",
-        "ddw",
-        "sdfsda",
-        "sdfas",
-        "gfds",
-        "zxcv",
-        "bgf",
-        "uytre",
-        "阿道夫",
-        "刮大风",
-        "部分地方",
-        "不梵蒂冈",
-        "有人特",
-      ],
+      
       tabList: ["商品", "案例"],
       triggered: false, //控制刷新显示字段
       currentIndex: 0,
@@ -117,38 +111,99 @@ export default {
       loading: false,
       page: 1,
       totalPage: 1,
+			
+			
+			
+			userId:"",
+			ShowMgrBrn:true,
+			isChecked:false,
+			title:"",
+			
+			systemBottom:"",
     };
   },
+	
   onShow() {
+		this.userId=getApp().globalData.userInfo.id
+		console.log("this.userId=",this.userId)
     this.getCaseList();
   },
+	mounted(e) {
+		const menuButtonInfo = uni.getMenuButtonBoundingClientRect();
+		this.systemBottom = menuButtonInfo.bottom + 32 + "rpx";
+	},
   computed: {
     currentList() {
       if (this.currentIndex == 0) {
+				this.title="确定要将选中商品取消收藏吗？"
         return this.list;
-      } else if (this.currentIndex == 1) {
-        return this.list1;
-      } else if (this.currentIndex == 2) {
-        return this.list2;
       } else {
-        return this.list1;
-      }
+				this.title="确定要将选中案例取消收藏吗？"
+        return this.list;
+      } 
     },
   },
   methods: {
-    swiperChange(e) {
+		swiperChange(e) {
       let index = e.target.current || e.detail.current;
       this.currentIndex = index;
     },
-    async getCaseList() {
+		async getCaseList() {
       this.loading = true;
+			// let caseItem =await getRealCaseList({
+			// 	isReverse:true,
+			// 	routeId:5001,//【收藏真实案例路由id，记录用户收藏的真实案例】
+			// 	userId:this.userId,
+			// 	type:1,//(1,"收藏")
+			// 	bizType:7,//【真实案例】REAL_CASE(7,"真实案例")
+			// })
       let caseItem = await caseList({
         page: this.page,
       });
       this.totalPage = caseItem.totalPage;
       this.caseList = this.caseList.concat(caseItem.list);
+			
+			this.caseList = this.caseList.map(item=>{
+				item.isChecked = true
+				return item
+			})
+			
       this.loading = false;
     },
+		async getProductList(){
+			this.loading = true;
+			let productItem = await getGoodsList({
+				isReverse:true,
+				routeId:5002,//【收藏商品路由id：记录用户收藏的商品】
+				userId:this.userId,
+				type:1,//(1,"收藏")
+				bizType:1,//(1,"商品")
+			})
+			this.totalPage = caseItem.totalPage;
+			this.caseList = this.caseList.concat(caseItem.list);
+			this.loading = false;
+		},
+		
+		handleCancel(){
+			this.$refs.popup.open()	
+		},
+		
+		
+		
+		
+		
+		onSelectedItem(item){
+			console.log("点击了收藏item")
+		},
+		
+		confirmCancelCollection(){
+			console.log("确认取消")
+		},
+		
+		
+		
+		
+		
     onLoadMore() {
       if (this.loading || this.page >= this.totalPage) {
         return;
@@ -156,7 +211,7 @@ export default {
       this.page++;
       this.getCaseList();
     },
-    onRefresh(e) {
+		onRefresh(e) {
       this.triggered = true;
       setTimeout(() => {
         this.triggered = false;
@@ -266,5 +321,73 @@ export default {
       color: #999999;
     }
   }
+}
+.footer{
+	height: 88rpx;
+	background-color: #FFFFFF;
+	display: flex;
+	flex-flow: row nowrap;
+	align-items: center;
+	justify-content: space-between;
+	padding: 24rpx 32rpx;
+	.left{
+		display: flex;
+		flex-flow: row nowrap;
+		align-items: center;
+		image{
+			width:40rpx ;
+			height: 40rpx;
+			object-fit: cover;
+			margin-right: 10rpx;
+		}
+		text{
+			height: 40rpx;
+			line-height: 40rpx;
+			font-size: 28rpx;
+			font-weight: 400;
+			color: #111111;
+		}
+	}
+	.button{
+		width:400rpx;
+		height: 88rpx;
+		line-height: 88rpx;
+		background: linear-gradient(135deg,#36d9cd, #28c6c6);
+		border-radius: 12rpx;
+		text-align: center;
+		font-size: 32rpx;
+		font-weight: 500;
+		color: #FFFFFF;
+	}
+}
+::v-deep .uni-popup-dialog {
+  width: 560rpx !important;
+  border-radius: 24rpx !important;
+  background-color: #fff !important;
+}
+::v-deep .uni-dialog-title-text {
+  color: #111111 !important;
+  font-size: 32rpx !important;
+  font-weight: 550 !important;
+}
+::v-deep .uni-dialog-title {
+  padding: 48rpx 0 !important;
+}
+::v-deep .uni-dialog-content {
+  display: none !important;
+}
+::v-deep .uni-dialog-button-group {
+  border-top: 2rpx solid #f5f5f5;
+}
+::v-deep .uni-dialog-button {
+  height: 82rpx !important;
+}
+::v-deep .uni-button-color {
+  color: #ff3347 !important;
+  font-size: 30rpx !important;
+  font-weight: 500;
+}
+::v-deep .uni-dialog-button-text {
+  font-size: 30rpx !important;
 }
 </style>

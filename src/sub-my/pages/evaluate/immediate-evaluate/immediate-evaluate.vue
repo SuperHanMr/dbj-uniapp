@@ -25,12 +25,7 @@
         <view class="main-body">
           <view class="rate-header">
             <text class="text">评分</text>
-            <!-- <uni-rate
-              v-model="query.stars"
-              margin="5"
-              @change="onChange"
-            /> -->
-						<view class="star-container">
+            <view class="star-container">
 							<view class="star-item" v-for="item in list" :key="item.id">
 								<image v-if="item.isred"  src="../../../static/ic_blank_star@2x.png" mode=""  @click ="cools(item.id)"></image>
 								<image v-else  src="../../../static/ic_score_star@2x.png" mode=""  @click ="cools(item.id)"></image>
@@ -83,7 +78,7 @@
 			</view>
 		</view>
 		
-		<view class="footer-container"  :style="{paddingBottom:systemBottom,height:systemHeight}">
+		<view class="footer-contain                                                                                                                                                                                                                                       er"  :style="{paddingBottom:systemBottom,height:systemHeight}">
 			<view class="confirm-btn" @click="confirmEvaluate">
 				确认评价
 			</view>

@@ -33,18 +33,18 @@
 		</view>
 
 
-		<view v-for="(item,index) in list" :key="index" class="store">
-			<view class="header">
+		<view v-for="(item,index) in res.details" :key="index" class="store">
+		<!-- 	<view class="header">
 				{{item.title}}
-			</view>
-			<view class="items" v-for="(sub,subIndex) in item.children">
-				<image class="img" src="" mode=""></image>
+			</view> -->
+			<view class="items" >
+				<image class="img" :src="item.imgUrl" ></image>
 				<view class="content">
 					<view class="title">
-						{{sub.title}}
+						{{item.fullName}}
 					</view>
 					<view class="sub-title">
-						{{sub.sub}}
+						本次要货:{{item.requireNumber}}{{item.unit}}
 					</view>
 				</view>
 			</view>

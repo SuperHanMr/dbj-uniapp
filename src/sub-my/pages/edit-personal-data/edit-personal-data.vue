@@ -82,7 +82,7 @@ export default {
   },
 	onShow() {
 		this.userInfo = getApp().globalData.userInfo
-		console.log("userInfo=",this.userInfo)
+		// console.log("userInfo=",this.userInfo)
 		this.userName=this.userInfo.name;
 		this.gender  =this.userInfo.sex
 		this.files.url = 	this.userInfo.avatar 
@@ -91,12 +91,12 @@ export default {
 	mounted(e) {
 	  const menuButtonInfo = uni.getMenuButtonBoundingClientRect();
 	  this.systemBottom = menuButtonInfo.bottom +32 + "rpx";
-	  console.log(this.systemBottom);
+	  // console.log(this.systemBottom);
 	},
 	watch:{
 		files(newVal,oldVal){
 			this.editAvatar(oldVal);
-			console.log("newVal=",newVal,"oldVal=",oldVal)
+			// console.log("newVal=",newVal,"oldVal=",oldVal)
 		},
 	},
   methods: {
@@ -113,7 +113,7 @@ export default {
 				nickName:this.userName,
 			}
 			editUserInfo(params).then((e)=>{
-				console.log(e)
+				// console.log(e)
 				uni.showToast({
 					title:"修改图片成功",
 					icon:"none",
@@ -130,9 +130,6 @@ export default {
 			
 		},
 		
-		onClick() {
-      console.log("打印数据，哈哈哈");
-    },
 		
 		// 更改头像
 		changeAvatar(){
@@ -141,7 +138,7 @@ export default {
 				sizeType: ['original', 'compressed'], //可以指定是原图还是压缩图，默认二者都有
 				sourceType: ['album'], //从相册选择
 				success:(res)=>{
-					console.log("res.tempFilePaths=", res);
+					// console.log("res.tempFilePaths=", res);
 					this.chooseFileCallback(res)
 				}
 			})
@@ -155,7 +152,7 @@ export default {
 					success: (res) => {
 						this.files=res;
 						this.userInfo.avatar = this.files.url
-						console.log("this.files=",this.files)
+						// console.log("this.files=",this.files)
 					},
 					fail: (res) => {
 						console.log("upload fail", res);
@@ -168,6 +165,7 @@ export default {
 		},
 		//修改昵称
 		changeNickName(){
+			console.log("this.files.url=",this.files.url)
 			uni.navigateTo({
 				url:`edit-nick-name/edit-nick-name?nickName=${this.userInfo.name}`
 			})
@@ -192,9 +190,7 @@ export default {
 				console.log("params=",params)
 				editUserInfo(params).then(()=>{
 					this.$refs.editGender.close()
-					
 					this.userInfo.sex = this.gender
-					
 				})
 			}
 		},

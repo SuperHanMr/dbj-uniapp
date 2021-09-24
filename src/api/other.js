@@ -12,3 +12,10 @@ export function getOpenId(params) {
 export function payEntryFee(params) {
 	return request.post(`/order-center/app/order/payEntryFee`, params);
 }
+
+export function getCategroyTree() {
+	const popUrl = process.env.VUE_APP_POP;
+	return request.get(`/web/businessScope/material-category-tree`,{
+		baseURL: popUrl
+	});
+}

@@ -7,16 +7,16 @@
     <!-- <view class="withdraw-container" /> -->
     <!-- <view class="case-withdraw-text">该内容已下架</view> -->
 		<!-- 左上角的icon -->
-    <image
+    <image  v-if="showCheckIcon && !isChecked"
       class="product-check"
       src="../../static/order/images/product_unChecked.png"
       mode=""
     ></image>
-  <!--  <image
+   <image v-if="showCheckIcon && isChecked"
 			class="product-check"
 			src="../../static/order/images/product_checked.png"
 			mode=""
-		></image> -->
+		></image>
 
   
 	<!-- 右上角的icon图标 -->
@@ -87,17 +87,29 @@ export default {
       type: Object,
       default: () => {},
     },
+		showCheckIcon:{
+			type:Boolean,
+			default:false
+		},
+		
   },
   data() {
     return {
       isActive: false,
+			isChecked:false,
     };
   },
+	onShow() {
+		this.isChecked=item.isChecked
+	},
   methods: {
     onImageLoad(e) {
       this.$emit("load", e);
     },
     toDetail(e) {
+			if(!this.showCheckIcon) return 
+			this.isChecked=!this.isChecked
+			e.isChecked = this.isChecked
       this.$emit("detail", e);
     },
   },

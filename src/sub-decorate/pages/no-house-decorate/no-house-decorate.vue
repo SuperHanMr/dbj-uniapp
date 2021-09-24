@@ -12,21 +12,21 @@
         @changCurrentHouse="changCurrentHouse">
       </my-current-house>
       <service-card v-if="(sssType == 'decorate' || sssType == 'design') && design.id" :setting="design"
-        class="service-card" @selectAnother="selectAnother('design')" @changeLevel="open">
+        class="service-card" @selectAnother="selectAnotherHandler('design')" @changeLevel="open">
         <template slot="check">
           <check-box :checked="design.checked" @change="(value)=> {change(design.cardtype, value)}">
           </check-box>
         </template>
       </service-card>
       <service-card v-if="(sssType == 'decorate' || sssType == 'actuary') && actuary.id" :setting="actuary"
-        class="service-card" @selectAnother="selectAnother('actuary')">
+        class="service-card" @selectAnother="selectAnotherHandler('actuary')">
         <template slot="check">
           <check-box :checked="actuary.checked" @change="(value)=> {change(actuary.cardtype, value)}">
           </check-box>
         </template>
       </service-card>
       <service-card v-if="sssType == 'checkHouse' && checkHouse.id" :setting="checkHouse" class="service-card"
-        @selectAnother="selectAnother('checkHouse')">
+        @selectAnother="selectAnotherHandler('checkHouse')">
         <template slot="check">
           <check-box :checked="checkHouse.checked" @change="(value)=> {change(checkHouse.cardtype, value)}">
           </check-box>
@@ -141,7 +141,7 @@
       })
       uni.$on("selectedServer", (data) => {
         const {
-          categoryTypeId,
+          serviceType,
           values
         } = data
         this.selectedServer = data
@@ -248,7 +248,7 @@
         }
         getServiceSku(params).then(data => {
           const {
-            categoryTypeId,
+            serviceType,
             values
           } = this.selectedServer
           this.design = {
@@ -260,7 +260,7 @@
           this.actuary = {
             checked: false,
           }
-          if (categoryTypeId == 1) {
+          if (serviceType == 1) {
             this.design = {
               title: "设计服务",
               cardtype: "design",
@@ -270,7 +270,7 @@
               ...values
             }
           } else {
-            let designData = data.filter(t => t.serviceType === 1) //&& t.categoryTypeId === 6)
+            let designData = data.filter(t => t.serviceType === 1)
             if (designData && designData.length > 0) {
               this.design = {
                 ...designData[0],
@@ -282,7 +282,7 @@
               }
             }
           }
-          if (categoryTypeId == 2) {
+          if (serviceType == 2) {
             this.checkHouse = {
               title: "验房服务",
               cardtype: "checkHouse",
@@ -302,7 +302,7 @@
               }
             }
           }
-          if (categoryTypeId == 4) {
+          if (serviceType == 4) {
             this.actuary = {
               title: "精算服务",
               cardtype: "actuary",
@@ -326,19 +326,19 @@
         })
       },
 
-      selectAnother(pp) {
+      selectAnotherHandler(pp) {
         let str = ""
         if (pp === "design") {
           str =
-            `/sub-decorate/pages/service-list/service-list?name=设计服务&categoryTypeId=1&insideArea=${this.currentHouse.insideArea}&id=${this.design.id}`
+            `/sub-decorate/pages/service-list/service-list?name=设计服务&serviceType=1&insideArea=${this.currentHouse.insideArea}&id=${this.design.id}&categoryTypeId=${this.design.categoryTypeId}`
         }
         if (pp === "checkHouse") {
           str =
-            `/sub-decorate/pages/service-list/service-list?name=验房服务&categoryTypeId=2&insideArea=${this.currentHouse.insideArea}&id=${this.checkHouse.id}`
+            `/sub-decorate/pages/service-list/service-list?name=验房服务&serviceType=2&insideArea=${this.currentHouse.insideArea}&id=${this.checkHouse.id}&categoryTypeId=${this.checkHouse.categoryTypeId}`
         }
         if (pp === "actuary") {
           str =
-            `/sub-decorate/pages/service-list/service-list?name=精算服务&categoryTypeId=4&insideArea=${this.currentHouse.insideArea}&id=${this.actuary.id}`
+            `/sub-decorate/pages/service-list/service-list?name=精算服务&serviceType=4&insideArea=${this.currentHouse.insideArea}&id=${this.actuary.id}&categoryTypeId=${this.actuary.categoryTypeId}`
         }
         uni.navigateTo({
           url: str
@@ -376,87 +376,87 @@
       gotopay() {
         // TODO去结算页面
         if (this.currentHouse && this.currentHouse.id) {
-          let skuInfos = []
-          // let params = {
-          //   payType: 1, //"int //支付方式  1微信支付",
-          //   openid: uni.getStorageSync("openId"), //"string //微信openid 小程序支付用 app支付不传或传空",
-          //   projectId: this.projectId || 0, //"long //项目id  非必须 默认0",
-          //   customerId: this.customerId || 0, //"long //业主id  非必须 默认0",
-          //   estateId: this.currentHouse.id, //"long //房产id   非必须 默认0",
-          //   total: this.countPrice * 100, //"int //总计",
-          //   remarks: "", //"string //备注",
-          //   orderName: "", //"string //订单名称",
-          //   details: []
-          // }
+          // let skuInfos = []
+          let params = {
+            payType: 1, //"int //支付方式  1微信支付",
+            openid: uni.getStorageSync("openId"), //"string //微信openid 小程序支付用 app支付不传或传空",
+            projectId: this.projectId || 0, //"long //项目id  非必须 默认0",
+            customerId: this.customerId || 0, //"long //业主id  非必须 默认0",
+            estateId: this.currentHouse.id, //"long //房产id   非必须 默认0",
+            total: this.countPrice * 100, //"int //总计",
+            remarks: "", //"string //备注",
+            orderName: "", //"string //订单名称",
+            details: []
+          }
           if (this.design.checked) {
-            skuInfos.push({
-              skuId: this.design.id,//"long //商品id",
-              storeId: this.design.storeId,//"long //店铺id",
-              buyCount: this.currentHouse.insideArea,//"double //购买数量",
-              unit: "平米",//"string //单位",
-              level: this.design.level,//"int //等级"
-            })
-            // params.details.push({
-            //   relationId: this.design.id, //"long //实体id",
-            //   type: 2, //"int //实体类型   1材料  2服务   3专项付款",
-            //   businessType: this.design.categoryTypeId, //"int //业务类型",
-            //   workType: -2, //"int //工种类型",
-            //   level: this.design.level || 1, //"int //等级  1中级  2高级 3特级  4钻石",
-            //   storeId: this.design.storeId || 0, //"long //店铺id",
-            //   storeType: 0, //"int //店铺类型 0普通 1设计师",
-            //   number: this.currentHouse.insideArea, //"double //购买数量",
-            //   params: "", //string //与订单无关的参数 如上门时间 doorTime"
+            // skuInfos.push({
+            //   skuId: this.design.id,//"long //商品id",
+            //   storeId: this.design.storeId,//"long //店铺id",
+            //   buyCount: this.currentHouse.insideArea,//"double //购买数量",
+            //   unit: "平米",//"string //单位",
+            //   level: this.design.level,//"int //等级"
             // })
+            params.details.push({
+              relationId: this.design.id, //"long //实体id",
+              type: 2, //"int //实体类型   1材料  2服务   3专项付款",
+              businessType: this.design.categoryTypeId, //"int //业务类型",
+              workType: -2, //"int //工种类型",
+              level: this.design.level, //"int //等级  1中级  2高级 3特级  4钻石",
+              storeId: this.design.storeId, //"long //店铺id",
+              storeType: 0, //"int //店铺类型 0普通 1设计师",
+              number: this.currentHouse.insideArea, //"double //购买数量",
+              params: "", //string //与订单无关的参数 如上门时间 doorTime"
+            })
           }
           if (this.actuary.checked) {
-            skuInfos.push({
-              skuId: this.actuary.id,//"long //商品id",
-              storeId: this.actuary.storeId,//"long //店铺id",
-              buyCount: this.currentHouse.insideArea,//"double //购买数量",
-              unit: "平米",//"string //单位",
-              level: 1,//"int //等级"
-            })
-            // params.details.push({
-            //   relationId: this.actuary.id, //"long //实体id",
-            //   type: 2, //"int //实体类型   1材料  2服务   3专项付款",
-            //   businessType: this.actuary.categoryTypeId, //"int //业务类型",
-            //   workType: -2, //"int //工种类型",
-            //   storeId: this.actuary.storeId || 0, //"long //店铺id",
-            //   storeType: 0, //"int //店铺类型 0普通 1设计师",
-            //   number: this.currentHouse.insideArea, //"double //购买数量",
-            //   params: "", //string //与订单无关的参数 如上门时间 doorTime"
+            // skuInfos.push({
+            //   skuId: this.actuary.id,//"long //商品id",
+            //   storeId: this.actuary.storeId,//"long //店铺id",
+            //   buyCount: this.currentHouse.insideArea,//"double //购买数量",
+            //   unit: "平米",//"string //单位",
+            //   level: 1,//"int //等级"
             // })
+            params.details.push({
+              relationId: this.actuary.id, //"long //实体id",
+              type: 2, //"int //实体类型   1材料  2服务   3专项付款",
+              businessType: this.actuary.categoryTypeId, //"int //业务类型",
+              workType: -2, //"int //工种类型",
+              storeId: this.actuary.storeId || 0, //"long //店铺id",
+              storeType: 0, //"int //店铺类型 0普通 1设计师",
+              number: this.currentHouse.insideArea, //"double //购买数量",
+              params: "", //string //与订单无关的参数 如上门时间 doorTime"
+            })
           }
           if (this.checkHouse.checked) {
-            skuInfos.push({
-              skuId: this.checkHouse.id,//"long //商品id",
-              storeId: this.checkHouse.storeId,//"long //店铺id",
-              buyCount: this.currentHouse.insideArea,//"double //购买数量",
-              unit: "平米",//"string //单位",
-              level: 1,//"int //等级"
-            })
-            // params.details.push({
-            //   relationId: this.checkHouse.id, //"long //实体id",
-            //   type: 2, //"int //实体类型   1材料  2服务   3专项付款",
-            //   businessType: this.checkHouse.categoryTypeId, //"int //业务类型",
-            //   workType: -2, //"int //工种类型",
-            //   storeId: this.checkHouse.storeId || 0, //"long //店铺id",
-            //   storeType: 0, //"int //店铺类型 0普通 1设计师",
-            //   number: this.currentHouse.insideArea, //"double //购买数量",
-            //   params: "", //string //与订单无关的参数 如上门时间 doorTime"
+            // skuInfos.push({
+            //   skuId: this.checkHouse.id,//"long //商品id",
+            //   storeId: this.checkHouse.storeId,//"long //店铺id",
+            //   buyCount: this.currentHouse.insideArea,//"double //购买数量",
+            //   unit: "平米",//"string //单位",
+            //   level: 1,//"int //等级"
             // })
+            params.details.push({
+              relationId: this.checkHouse.id, //"long //实体id",
+              type: 2, //"int //实体类型   1材料  2服务   3专项付款",
+              businessType: this.checkHouse.categoryTypeId, //"int //业务类型",
+              workType: -2, //"int //工种类型",
+              storeId: this.checkHouse.storeId || 0, //"long //店铺id",
+              storeType: 0, //"int //店铺类型 0普通 1设计师",
+              number: this.currentHouse.insideArea, //"double //购买数量",
+              params: "", //string //与订单无关的参数 如上门时间 doorTime"
+            })
           }
-          // this.createOrder(params)
-          uni.navigateTo({
-            url: "/sub-classify/pages/pay-order/index",
-            success: (res) => {
-              res.eventChannel.emit('acceptDataFromOpenerPage', {
-                skuInfos,
-                originFrom: "decorate",
-                estateId: this.currentHouse.id
-              })
-            }
-          })
+          this.createOrder(params)
+          // uni.navigateTo({
+          //   url: "/sub-classify/pages/pay-order/index",
+          //   success: (res) => {
+          //     res.eventChannel.emit('acceptDataFromOpenerPage', {
+          //       skuInfos,
+          //       originFrom: "decorate",
+          //       estateId: this.currentHouse.id
+          //     })
+          //   }
+          // })
         } else {
           uni.showToast({
             title: "请您先添加房屋信息",
@@ -539,7 +539,6 @@
     align-items: felx-start;
     box-sizing: border-box;
     height: 100%;
-    // font-size: 20rpx;
   }
 
   .content {

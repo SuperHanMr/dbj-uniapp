@@ -1,8 +1,8 @@
 <template>
 	<view class="service-content">
 		<slot name="radio"></slot>
-		<image :src="content.imageUrl"></image>
-		<view>
+		<image :src="content.imageUrl" @click="goDetail"></image>
+		<view @click="goDetail">
 			<view class="subtitle">{{content.fullName}}</view>
 			<view class="desc-area">
 				<text>按平方米计价</text>
@@ -25,7 +25,13 @@
       insideArea: {
 				type: Number
       }
-		}
+		},
+    methods: {
+      goDetail() {
+        uni.setStorageSync('goodId', this.content.id)
+        uni.navigateTo({ url: "/sub-classify/pages/goods-detail/goods-detail" })
+      }
+    }
 	}
 </script>
 
