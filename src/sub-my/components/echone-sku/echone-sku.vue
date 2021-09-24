@@ -13,14 +13,14 @@
 							<text class="symbol fs-26">￥</text>
 							<text class="amount fs-38">{{selectSkuInfo[cbPrice]}}/{{selectSkuInfo[cbUnit]}}</text>
 						</view>
-						<view class="fs-24">
+						<!-- <view class="fs-24">
 							已选："{{selectSkuInfo[cbValue]}}"
-						</view>
+						</view> -->
 					</view>
 					<image class="close" src="../../../static/shopping-cart/ic_closed_black@2x.png" @click="closeSkuBox"></image>
 				</view>
 				<scroll-view class="sku-list" scroll-y="true">
-					<view class="sku-item container" v-for="(sku,sIndex) in mySpecifications" :key="sku[speId]">
+					<view class="sku-item container" v-for="(sku,speIdx) in mySpecifications" :key="sku[speId]">
 						<view class="sku-name">{{sku[speName]}}</view>
 						<view class="sku-content">
 							<text 
@@ -32,7 +32,7 @@
 									color:index===sku.sidx?'#34c4c4':'#333333',
 									backgroundColor: index===sku.sidx?'#e8fafa':'#f5f5f5' 
 								}" 
-								@click="selectSkuCli(sIndex,index)"
+								@click="selectSkuCli(speIdx,item.id,index)"
 							>{{item.value}}</text>
 						</view>
 					</view>
@@ -152,7 +152,7 @@
 					const Ids = item[this.speList].map(ele => {
 						return ele.id.toString()
 					})
-					console.log(Ids,selects)
+					console.log(selects)
 					
 					const sIndex = Ids.indexOf(selects[index])
 					if(sIndex === -1) {
@@ -166,18 +166,35 @@
 					this.$set(item,'sidx',sIndex)
 				})
 			},
-			selectSkuCli(sIndex,index) {
-				this.mySpecifications[sIndex].sidx = index
-				const selectInfo = this.mySpecifications.reduce((prev,cur) => {
-					if(prev) {
-						return prev+','+cur[this.speList][cur.sidx]
-					}else {
-						return cur[this.speList][cur.sidx]
-					}
-					console.log(cur[this.speList][cur.sidx])
-				},'')
+			selectSkuCli(speIdx,id,index) {
+				this.mySpecifications[speIdx].sidx = index
+				let arr = []
+				this.mySpecifications.forEach(item => {
+					let Ids = []
+					item.values.forEach(ele => {
+						Ids.push( ele.id )
+					})
+					arr.push(Ids)
+				})
+				console.log(arr)
+				let results = [];
+				let temp = [];
+				let doExchange = (arr, index) => {
+				  for (var i = 0; i<arr[index].length; i++) {
+				    temp[index] = arr[index][i];
+				    if (index != arr.length - 1) {
+				      doExchange(arr, index + 1)
+				    } else {
+				      results.push(temp.join(','))
+				    }  
+				  }  
+				}
+				doExchange(arr, 0);
+				console.log( this.mySpecifications,id,index);
+				//找到用户选择的valueIds
+				const selectInfo = results.find(item => item.indexOf(id))
+				console.log(selectInfo)
 				this.selectedIndex = this.combinations.findIndex(item => item[this.cbValue] === selectInfo)
-				console.log(selectInfo,this.selectedIndex)
 				this.selectSkuInfo = this.combinations[this.selectedIndex]
 			},
 			closeSkuBox() {
@@ -185,6 +202,7 @@
 			},
 			handleConfirm() {
 				this.$emit('confirm',this.skuId, this.selectSkuInfo.id)
+				this.$emit('close')
 			}
 		}
 	}

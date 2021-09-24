@@ -365,7 +365,7 @@
             if (flt && flt.length > 0) {
               this.currentHouse = flt[0]
             } else {
-              this.currentHouse = {}
+              this.currentHouse = data[0]
             }
             console.log("currentHouse", this.currentHouse)
           }
