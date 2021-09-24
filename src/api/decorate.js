@@ -127,6 +127,11 @@ export function getResultProblem(params) {
 	return request.get("/pm/app/user/inspectEstate/problem/" + params)
 }
 
+//获取服务人员关联商品
+export function getSkuList(params) {
+	return request.get("/product/app/products/relation/related/skus/list",params)
+}
+
 //获取施工交付内容
 export function getComplateDetail(params) {
 	return request.get(`/pm/app/worker/decoration/trend/getCompletionLogById/${params.projectId}/${params.serveId}`)
