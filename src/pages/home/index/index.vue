@@ -1,6 +1,6 @@
 <template>
 	<view style="background-color: #FFF;">
-		<custom-navbar opacity="1" :showBack="false">
+		<custom-navbar opacity="1" :showBack="false" bgcolor="#FFF">
 			<template v-slot:back>
 				<view>
 					Logo
@@ -11,7 +11,7 @@
 			
 		</view> -->
 		<view class="state-bar" :style="{top:navBarHeight}" @click="toCity">
-			<view class="">
+			<view class="address">
 				{{citydata}}
 			</view>
 			<view class="flex1">
@@ -42,26 +42,83 @@
 			</view>
 		</view>
 
-		<!-- <view class="function-zone">
+		<view class="function-zone">
 			<view class="item" v-for="(item,index) in zoneList" :key="'zone'+index">
 				{{item}}
 			</view>
+		</view>
+		<view class="experience">
+			<view class="title">
+				9.9元买设计报价
+			</view>
+			<view class="sub-title">
+				准确计算装修价格，让您合理分配预算
+			</view>
+			<view class="btn">
+				立即体验
+			</view>
+		</view>
+		<view class="example-content">
+			<view class="item">
+				<view class="title">
+					#自学装修
+				</view>
+				<view class="sub-title">
+					秒懂!装修知识
+				</view>
+				<view class="tips">
+					自己手动 打扮温馨的家
+				</view>
+			</view>
 
-		</view> -->
+			<view class="item">
+				<view class="title">
+					#真实案例
+				</view>
+				<view class="sub-title">
+					速查!相似案例
+				</view>
+				<view class="tips">
+					借鉴实践 新手变高手 </view>
+			</view>
+		</view>
 
-		<button style="width: 50%;margin-top: 20rpx;" type="default" @click="toNextPage">去封装好的列表页</button>
-		<button style="width: 50%;margin-top: 20rpx;" type="default" @click="toTest">测试</button>
+	<!-- 	<button style="width: 50%;margin-top: 20rpx;" type="default" @click="toNextPage">去封装好的列表页</button>
 		<button style="width: 50%;margin-top: 20rpx;" type="default" @click="toLiveDecorate">去装修现场</button>
 		<button style="width: 50%;margin-top: 20rpx;" type="default" @click="toShop">去商家入驻</button>
 		<button style="width: 50%;margin-top: 20rpx;" type="default" @click="toGoodsApply">去要货申请</button>
+ -->
+		<view class="flex-row" style="margin-top: 42rpx;">
+			<view class="title">
+				免费服务
+			</view>
+			<view class="flex1">
 
-		<view class="flex-row">
+			</view>
+			<view class="sub-title">
+				更多
+			</view>
+
+		</view>
+
+		<view class="player-scroll">
+
+			<view class="item">
+				<view class="top-content">
+					888人正在观看
+
+				</view>
+			</view>
+		</view>
+		123
+		<!-- 	<view class="flex-row">
 			<view class="item" v-for="(item,index) in liveList" :key="index" @click="toLiveRoom(item)">
 				<image class="img" :src="item.scaleImg" mode="scaleToFill"></image>
 				{{item.title}}
 			</view>
 		</view>
 		<waterfall :list="caseList" @selectedItem="onSelectedItem"></waterfall>
+	</view> -->
 	</view>
 </template>
 
@@ -85,7 +142,7 @@
 	export default {
 		data() {
 			return {
-				zoneList:[1,2,3,4,5,6,7,8,9,0,1,2],
+				zoneList: [1, 2, 3, 4, 5, 6, 7, 8, 9, 0, 1, 2],
 				tophight: 0,
 				scrollTop: 0,
 				liveList: [],
@@ -129,7 +186,7 @@
 		},
 		onShow() {
 			uni.$once("selectedHouse", (item) => {
-				this.citydata = item.cityName + item.areaName;
+				this.citydata = item.cityName + item.areaName + item.housingEstate;
 				uni.setStorageSync("currentHouse", JSON.stringify(item));
 			});
 
@@ -137,11 +194,6 @@
 		methods: {
 			swiperChange(e) {
 				this.currentSwiper = e.detail.current;
-			},
-			toTest() {
-				uni.navigateTo({
-					url: "/sub-other/pages/test/test",
-				});
 			},
 			toShop() {
 				uni.navigateTo({
@@ -213,8 +265,6 @@
 								res.longitude,
 							success(re) {
 								if (re.statusCode === 200) {
-									console.log("???????");
-									console.log(re);
 									let addressComponent = re.data.result.addressComponent;
 									vm.getAreaId(addressComponent.adcode);
 								} else {
@@ -307,16 +357,166 @@
 </script>
 
 <style lang="scss" scoped>
+	.player-scroll {
+		width: 100%;
+		display: flex;
+		overflow: auto;
+
+		.item {
+			flex-shrink: 0;
+			width: 248rpx;
+			height: 330rpx;
+			background: linear-gradient(213deg, #DFE4ED 0%, #F3F5F8 56%, #F8FAFA 100%);
+			box-shadow: 0rpx 2rpx 32rpx -4rpx #E8ECED;
+			border-radius: 16rpx;
+			margin-left: 24rpx;
+			position: relative;
+
+			.top-content {
+				position: absolute;
+				top: 24rpx;
+				left: 24rpx;
+				padding: 12rpx;
+				height: 28rpx;
+				background: rgba(0, 0, 0, 0.35);
+				border-radius: 8rpx;
+				font-weight: 400;
+				color: #FFFFFF;
+				line-height: 24rpx;
+				font-size: 20rpx;
+			}
+		}
+	}
+
+	.flex-row {
+		display: flex;
+		flex-direction: row;
+		align-items: flex-start;
+		justify-content: flex-start;
+
+		.title {
+			font-size: 36rpx;
+			font-weight: 500;
+			color: #2B2F33;
+			line-height: 50rpx;
+			margin-left: 24rpx;
+		}
+
+		.sub-title {
+			font-size: 28rpx;
+			font-weight: 400;
+			color: #2B2F33;
+			line-height: 40rpx;
+			margin-right: 24rpx;
+		}
+	}
+
+	.address {
+		max-width: 400rpx;
+		overflow: hidden;
+		text-overflow: ellipsis;
+		display: -webkit-box;
+		-webkit-box-orient: vertical;
+		-webkit-line-clamp: 1;
+
+	}
+
+	.example-content {
+		padding: 0 24rpx;
+		display: flex;
+		flex-direction: row;
+		justify-content: space-between;
+		margin-top: 16rpx;
+
+		.item {
+			width: 296rpx;
+			height: 150rpx;
+			background: #F5FCFC;
+			border-radius: 16rpx;
+			background: url('http://dbj.dragonn.top/static/mp/dabanjia/images/home/experience.png');
+			-moz-background-size: 100% 100%;
+			background-size: 100% 100%;
+			padding: 0 24rpx;
+
+			.title {
+				font-weight: 400;
+				color: #333333;
+				line-height: 28rpx;
+				font-size: 20rpx;
+
+				padding-top: 16rpx;
+
+			}
+
+			.sub-title {
+				font-weight: 600;
+				color: #333333;
+				line-height: 40rpx;
+				padding-top: 8rpx;
+				font-size: 28rpx;
+			}
+
+			.tips {
+				font-size: 24rpx;
+				font-weight: 400;
+				color: #666666;
+				line-height: 34rpx;
+			}
+		}
+
+	}
+
+	.experience {
+		margin: 0 24rpx;
+		height: 198rpx;
+		border-radius: 16rpx;
+		background: url('http://dbj.dragonn.top/static/mp/dabanjia/images/home/experience.png');
+		-moz-background-size: 100% 100%;
+		background-size: 100% 100%;
+		padding: 0 24rpx;
+
+		.title {
+			padding-top: 24rpx;
+			font-size: 32rpx;
+			font-weight: 600;
+			color: #333333;
+			line-height: 44rpx;
+		}
+
+		.sub-title {
+			padding-top: 4rpx;
+			font-size: 24rpx;
+			font-weight: 400;
+			color: #666666;
+			line-height: 44rpx;
+		}
+
+		.btn {
+			margin-top: 20rpx;
+			width: 128rpx;
+			height: 48rpx;
+			background: #35C4C4;
+			border-radius: 8rpx;
+			font-size: 24rpx;
+			font-weight: 600;
+			color: #FFFFFF;
+			line-height: 48rpx;
+			text-align: center;
+		}
+
+	}
+
 	.function-zone {
 		margin: 24rpx;
 		border: 1px solid #E7E8E8;
-		border-radius: 16rpx;
 		width: 702rpx;
 		display: flex;
 		flex-direction: row;
 		flex-wrap: wrap;
 		justify-content: flex-start;
-		.item{
+		border-radius: 16rpx;
+
+		.item {
 			height: 126rpx;
 			width: 175rpx;
 			display: flex;
