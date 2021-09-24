@@ -2,7 +2,7 @@
   <view class="content">
     <view class="title-wrap">
       <view class="title">
-        <view class="s-4level-name">商品分类（8号螺纹钢筋条）</view>
+        <view class="s-4level-name">{{content.categoryName}}</view>
       </view>
       <view class="edit" v-if="noArtificial">编辑</view>
     </view>
@@ -62,6 +62,13 @@
           val,
           // productIds: this.content.itemList.map(it => it.productId)
           productId: item.productId
+        })
+      },
+
+      goDetail(productId) {
+        uni.setStorageSync('goodId', productId)
+        uni.navigateTo({
+          url: "/sub-classify/pages/goods-detail/goods-detail"
         })
       }
     }
