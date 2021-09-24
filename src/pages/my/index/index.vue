@@ -113,6 +113,7 @@
     </view>
 
     <view @click="handlerToSetUp">真实案例</view>
+    <view @click="handlerToPerson">个人主页</view>
 
   </view>
 
@@ -257,6 +258,11 @@ export default {
       console.log(item.value);
       uni.navigateTo({
         url: item.url,
+      });
+    },
+    handlerToPerson() {
+      uni.navigateTo({
+        url: "/sub-decorate/pages/person-page/person-page",
       });
     },
   },

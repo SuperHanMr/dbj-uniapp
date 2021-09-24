@@ -1,10 +1,11 @@
 import request from '../utils/request';
 import axios from 'axios'
 export function getClassifyList (params) {
-  return request.get('/product/web/prod-categories/front/tree')
+  return request.get('/product/app/prod-categories/front/tree')
 }
 export function getGoodsList (params) {
-  return request.get('/product/web/products/skus/page', {params:params})
+  // return request.get('/product/web/products/skus/page', {params:params})
+  return request.post('/product/app/search/query', params)
 }
 export function getAddressInfo(houseId) {
   return request.get(`/customer/app/estate/queryEstateDetail/${houseId}`);

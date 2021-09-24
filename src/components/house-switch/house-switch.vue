@@ -11,11 +11,11 @@
 						<view class="house-address">{{item.housingEstate}}{{item.address}}</view>
 					</view>
 					<view class="status"
-						:class="{status0: item.projectStatus == 0, status1: item.projectStatus == 1,status2: item.projectStatus == 2,status3: item.projectStatus == 3,}">
-						{{item.projectStatus | projectStatusName}}
+						:class="{status0: item.projectStatus == 0, status1: item.projectStatus == 1,status3: item.projectStatus == 3,status4: item.projectStatus == 4,}">
+						{{item.projectStageName}}
 					</view>
 				</view>
-				<view class="ext" v-if="item.frequency">第{{item.frequency}}次装修</view>
+				<view class="ext" v-if="item.frequencyName">{{item.frequencyName}}</view>
 			</view>
 		</view>
 		<view class="go-add-house flex-row">
@@ -55,10 +55,10 @@
           case 1:
             res = "进行中";
             break;
-          case 2:
+          case 3:
             res = "已竣工";
             break;
-          case 3:
+          case 4:
             res = "已结束";
             break;
           default:
@@ -156,12 +156,12 @@
 			background: #35C4C4;
 		}
 
-		.status.status2 {
+		.status.status3 {
 			color: #fff;
 			background: #999999;
 		}
 
-		.status.status3 {
+		.status.status4 {
 			color: #333333;
 			background: #f5f6f6;
 		}

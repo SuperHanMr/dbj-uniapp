@@ -1,36 +1,124 @@
 <template>
-	<view>
-		<custom-navbar title="首页" :opacity="scrollTop/100" :showBack="false">
+	<view style="background-color: #FFF;">
+		<custom-navbar opacity="1" :showBack="false" bgcolor="#FFF">
 			<template v-slot:back>
-				<view @click="toCity">
-					{{citydata}}
+				<view>
+					Logo
 				</view>
 			</template>
 		</custom-navbar>
-		<scroll-view class="content" scroll-y="true" @scroll="onScroll" @scrolltolower="onLoadMore">
-			<view style="margin-top: 300rpx;" class="">
+		<!-- 		<view :style="{height: navBarHeight}" style="width: 100%;background-color: red;">
+			
+		</view> -->
+		<view class="state-bar" :style="{top:navBarHeight}" @click="toCity">
+			<view class="address">
+				{{citydata}}
 			</view>
+			<view class="flex1">
 
-			<button style="width: 50%;margin-top: 20rpx;" type="default" @click="toNextPage">去封装好的列表页</button>
-			<button style="width: 50%;margin-top: 20rpx;" type="default" @click="toTest">测试</button>
-			<button style="width: 50%;margin-top: 20rpx;" type="default" @click="toLiveDecorate">去装修现场</button>
-			<button style="width: 50%;margin-top: 20rpx;" type="default" @click="toShop">去商家入驻</button>
-			<button style="width: 50%;margin-top: 20rpx;" type="default" @click="toGoodsApply">去要货申请</button>
-			<swiper class="banner-content" :indicator-dots="true" :autoplay="true" interval="2000" duration="500"
-				:circular="true">
+			</view>
+			<image class="img" src="http://dbj.dragonn.top/static/mp/dabanjia/images/home/online-server.png" mode="">
+			</image>
+
+		</view>
+		<!-- 占位 -->
+		<view :style="{height:navBarHeight}">
+		</view>
+		<!-- 占位 -->
+		<view style="height: 80rpx;">
+		</view>
+
+		<view class="banner-content">
+			<swiper :autoplay="true" interval="2000" duration="500" :circular="true" @change="swiperChange">
 				<swiper-item v-for="(item,index) in bannerList" :key="index">
 					<image class="banner-img" :src="item.resUrl" mode="aspectFit" @click="toWebview(item.jumpUrl)">
 					</image>
 				</swiper-item>
 			</swiper>
-			<view class="flex-row">
-				<view class="item" v-for="(item,index) in liveList" :key="index" @click="toLiveRoom(item)">
-					<image class="img" :src="item.scaleImg" mode="scaleToFill"></image>
-					{{item.title}}
+			<view class="swiper-tab">
+				<view class="flex1" v-for="(item,index) in bannerList" :key="index"
+					:style="{backgroundColor:index==currentSwiper?'#FFF':''}">
 				</view>
 			</view>
-			<waterfall :list="caseList" @selectedItem="onSelectedItem"></waterfall>
-		</scroll-view>
+		</view>
+
+		<view class="function-zone">
+			<view class="item" v-for="(item,index) in zoneList" :key="'zone'+index">
+				{{item}}
+			</view>
+		</view>
+		<view class="experience">
+			<view class="title">
+				9.9元买设计报价
+			</view>
+			<view class="sub-title">
+				准确计算装修价格，让您合理分配预算
+			</view>
+			<view class="btn">
+				立即体验
+			</view>
+		</view>
+		<view class="example-content">
+			<view class="item">
+				<view class="title">
+					#自学装修
+				</view>
+				<view class="sub-title">
+					秒懂!装修知识
+				</view>
+				<view class="tips">
+					自己手动 打扮温馨的家
+				</view>
+			</view>
+
+			<view class="item">
+				<view class="title">
+					#真实案例
+				</view>
+				<view class="sub-title">
+					速查!相似案例
+				</view>
+				<view class="tips">
+					借鉴实践 新手变高手 </view>
+			</view>
+		</view>
+
+	<!-- 	<button style="width: 50%;margin-top: 20rpx;" type="default" @click="toNextPage">去封装好的列表页</button>
+		<button style="width: 50%;margin-top: 20rpx;" type="default" @click="toLiveDecorate">去装修现场</button>
+		<button style="width: 50%;margin-top: 20rpx;" type="default" @click="toShop">去商家入驻</button>
+		<button style="width: 50%;margin-top: 20rpx;" type="default" @click="toGoodsApply">去要货申请</button>
+ -->
+		<view class="flex-row" style="margin-top: 42rpx;">
+			<view class="title">
+				免费服务
+			</view>
+			<view class="flex1">
+
+			</view>
+			<view class="sub-title">
+				更多
+			</view>
+
+		</view>
+
+		<view class="player-scroll">
+
+			<view class="item">
+				<view class="top-content">
+					888人正在观看
+
+				</view>
+			</view>
+		</view>
+		123
+		<!-- 	<view class="flex-row">
+			<view class="item" v-for="(item,index) in liveList" :key="index" @click="toLiveRoom(item)">
+				<image class="img" :src="item.scaleImg" mode="scaleToFill"></image>
+				{{item.title}}
+			</view>
+		</view>
+		<waterfall :list="caseList" @selectedItem="onSelectedItem"></waterfall>
+	</view> -->
 	</view>
 </template>
 
@@ -54,8 +142,8 @@
 	export default {
 		data() {
 			return {
+				zoneList: [1, 2, 3, 4, 5, 6, 7, 8, 9, 0, 1, 2],
 				tophight: 0,
-				navBarHeight: 0,
 				scrollTop: 0,
 				liveList: [],
 				citydata: "",
@@ -67,6 +155,8 @@
 				loading: false,
 				page: 1,
 				totalPage: 1,
+				navBarHeight: '',
+				currentSwiper: 0
 			};
 		},
 		onLoad() {
@@ -80,19 +170,30 @@
 			this.citydata = defaultHouse.name;
 			this.getHomeList();
 			this.reloadData();
+			const systemInfo = uni.getSystemInfoSync();
+			//状态栏高度
+			this.tophight = systemInfo.statusBarHeight + "px";
+			// 获取胶囊按钮的位置
+			const menuButtonInfo = uni.getMenuButtonBoundingClientRect();
+			// this.backTop = menuButtonInfo.top + 'px';
+			// this.backHeight = menuButtonInfo.height + 'px';
+			console.log('**********', this.backHeight);
+			// 导航栏高度 = 状态栏到胶囊的间距（ 胶囊距上距离 - 状态栏高度 ）*2  +  胶囊高度
+			this.navBarHeight =
+				menuButtonInfo.top + (menuButtonInfo.top - systemInfo.statusBarHeight) +
+				menuButtonInfo.height +
+				"px";
 		},
 		onShow() {
 			uni.$once("selectedHouse", (item) => {
-				this.citydata = item.cityName + item.areaName;
+				this.citydata = item.cityName + item.areaName + item.housingEstate;
 				uni.setStorageSync("currentHouse", JSON.stringify(item));
 			});
-			
+
 		},
 		methods: {
-			toTest(){
-				uni.navigateTo({
-					url: "/sub-other/pages/test/test",
-				});
+			swiperChange(e) {
+				this.currentSwiper = e.detail.current;
 			},
 			toShop() {
 				uni.navigateTo({
@@ -102,29 +203,6 @@
 			toLiveDecorate() {
 				uni.navigateTo({
 					url: "/sub-home/pages/lives-decorate/lives-decorate",
-				});
-			},
-			toGoodsApply() {
-				uni.navigateTo({
-					url: "../../../sub-decorate/pages/require-pay/require-pay",
-				});
-			},
-			toPay() {
-				let openId = uni.getStorageSync("openId");
-				orderPay({
-					orderId: 109,
-					payType: 1,
-					openid: openId,
-				}).then((e) => {
-					const payInfo = e.wechatPayJsapi;
-					uni.requestPayment({
-						provider: "wxpay",
-						...payInfo,
-						success(res) {},
-						fail(e) {
-							console.log(e);
-						},
-					});
 				});
 			},
 			onLoadMore() {
@@ -146,9 +224,6 @@
 				uni.navigateTo({
 					url: "../../common/webview/webview?url=" + encodeURIComponent(url),
 				});
-			},
-			changeCity() {
-				console.log("切换城市");
 			},
 			toCity() {
 				uni.navigateTo({
@@ -190,8 +265,6 @@
 								res.longitude,
 							success(re) {
 								if (re.statusCode === 200) {
-									console.log("???????");
-									console.log(re);
 									let addressComponent = re.data.result.addressComponent;
 									vm.getAreaId(addressComponent.adcode);
 								} else {
@@ -216,13 +289,7 @@
 					success: (res) => {
 						if (res.confirm) {
 							uni.openSetting(); // 打开地图权限设置
-						} else if (res.cancel) {
-							// uni.showToast({
-							//   title: "你拒绝了授权，无法获得周边信息",
-							//   icon: "none",
-							//   duration: 1000,
-							// });
-						}
+						} else if (res.cancel) {}
 					},
 				});
 			},
@@ -289,7 +356,214 @@
 	};
 </script>
 
-<style lang="scss">
+<style lang="scss" scoped>
+	.player-scroll {
+		width: 100%;
+		display: flex;
+		overflow: auto;
+
+		.item {
+			flex-shrink: 0;
+			width: 248rpx;
+			height: 330rpx;
+			background: linear-gradient(213deg, #DFE4ED 0%, #F3F5F8 56%, #F8FAFA 100%);
+			box-shadow: 0rpx 2rpx 32rpx -4rpx #E8ECED;
+			border-radius: 16rpx;
+			margin-left: 24rpx;
+			position: relative;
+
+			.top-content {
+				position: absolute;
+				top: 24rpx;
+				left: 24rpx;
+				padding: 12rpx;
+				height: 28rpx;
+				background: rgba(0, 0, 0, 0.35);
+				border-radius: 8rpx;
+				font-weight: 400;
+				color: #FFFFFF;
+				line-height: 24rpx;
+				font-size: 20rpx;
+			}
+		}
+	}
+
+	.flex-row {
+		display: flex;
+		flex-direction: row;
+		align-items: flex-start;
+		justify-content: flex-start;
+
+		.title {
+			font-size: 36rpx;
+			font-weight: 500;
+			color: #2B2F33;
+			line-height: 50rpx;
+			margin-left: 24rpx;
+		}
+
+		.sub-title {
+			font-size: 28rpx;
+			font-weight: 400;
+			color: #2B2F33;
+			line-height: 40rpx;
+			margin-right: 24rpx;
+		}
+	}
+
+	.address {
+		max-width: 400rpx;
+		overflow: hidden;
+		text-overflow: ellipsis;
+		display: -webkit-box;
+		-webkit-box-orient: vertical;
+		-webkit-line-clamp: 1;
+
+	}
+
+	.example-content {
+		padding: 0 24rpx;
+		display: flex;
+		flex-direction: row;
+		justify-content: space-between;
+		margin-top: 16rpx;
+
+		.item {
+			width: 296rpx;
+			height: 150rpx;
+			background: #F5FCFC;
+			border-radius: 16rpx;
+			background: url('http://dbj.dragonn.top/static/mp/dabanjia/images/home/experience.png');
+			-moz-background-size: 100% 100%;
+			background-size: 100% 100%;
+			padding: 0 24rpx;
+
+			.title {
+				font-weight: 400;
+				color: #333333;
+				line-height: 28rpx;
+				font-size: 20rpx;
+
+				padding-top: 16rpx;
+
+			}
+
+			.sub-title {
+				font-weight: 600;
+				color: #333333;
+				line-height: 40rpx;
+				padding-top: 8rpx;
+				font-size: 28rpx;
+			}
+
+			.tips {
+				font-size: 24rpx;
+				font-weight: 400;
+				color: #666666;
+				line-height: 34rpx;
+			}
+		}
+
+	}
+
+	.experience {
+		margin: 0 24rpx;
+		height: 198rpx;
+		border-radius: 16rpx;
+		background: url('http://dbj.dragonn.top/static/mp/dabanjia/images/home/experience.png');
+		-moz-background-size: 100% 100%;
+		background-size: 100% 100%;
+		padding: 0 24rpx;
+
+		.title {
+			padding-top: 24rpx;
+			font-size: 32rpx;
+			font-weight: 600;
+			color: #333333;
+			line-height: 44rpx;
+		}
+
+		.sub-title {
+			padding-top: 4rpx;
+			font-size: 24rpx;
+			font-weight: 400;
+			color: #666666;
+			line-height: 44rpx;
+		}
+
+		.btn {
+			margin-top: 20rpx;
+			width: 128rpx;
+			height: 48rpx;
+			background: #35C4C4;
+			border-radius: 8rpx;
+			font-size: 24rpx;
+			font-weight: 600;
+			color: #FFFFFF;
+			line-height: 48rpx;
+			text-align: center;
+		}
+
+	}
+
+	.function-zone {
+		margin: 24rpx;
+		border: 1px solid #E7E8E8;
+		width: 702rpx;
+		display: flex;
+		flex-direction: row;
+		flex-wrap: wrap;
+		justify-content: flex-start;
+		border-radius: 16rpx;
+
+		.item {
+			height: 126rpx;
+			width: 175rpx;
+			display: flex;
+			justify-content: center;
+			align-items: center;
+		}
+
+	}
+
+	.swiper-tab {
+		position: absolute;
+		bottom: 22rpx;
+		width: 200rpx;
+		height: 4rpx;
+		left: 50%;
+		background: rgba(255, 255, 255, 0.4);
+		transform: translateX(-50%);
+		border-radius: 3rpx;
+		display: flex;
+		flex-direction: row;
+
+	}
+
+	.state-bar {
+		position: fixed;
+		left: 0;
+		right: 0;
+		height: 80rpx;
+		background-color: #FFF;
+		z-index: 999;
+		display: flex;
+		flex-direction: row;
+		align-items: center;
+		padding: 0 24rpx;
+
+		.img {
+			width: 76rpx;
+			height: 74rpx;
+		}
+	}
+
+
+
+	.flex1 {
+		flex: 1;
+	}
+
 	.pubuBox {
 		padding: 22rpx;
 	}
@@ -315,56 +589,17 @@
 		width: 100%;
 	}
 
-	.listtitle {
-		padding-left: 22rpx;
-		font-size: 24rpx;
-		padding-bottom: 22rpx;
-
-		.listtitle1 {
-			line-height: 39rpx;
-			text-overflow: -o-ellipsis-lastline;
-			overflow: hidden;
-			text-overflow: ellipsis;
-			display: -webkit-box;
-			-webkit-line-clamp: 2;
-			line-clamp: 2;
-			-webkit-box-orient: vertical;
-			min-height: 39rpx;
-			max-height: 78rpx;
-		}
-
-		.listtitle2 {
-			color: #ff0000;
-			font-size: 32rpx;
-			line-height: 32rpx;
-			font-weight: bold;
-			padding-top: 22rpx;
-
-			.listtitle2son {
-				font-size: 32rpx;
-			}
-		}
-
-		.listtitle3 {
-			font-size: 28rpx;
-			color: #909399;
-			line-height: 32rpx;
-			padding-top: 22rpx;
-		}
-	}
-
-	.Index {
-		width: 100%;
-		height: 100%;
-	}
-
 	.banner-content {
-		width: 100%;
-		height: 200rpx;
+		position: relative;
+		height: 234rpx;
+		margin: 0 24rpx;
+		margin-top: 8rpx;
+		border-radius: 16rpx;
+		overflow: hidden;
 
 		.banner-img {
 			width: 100%;
-			height: 200rpx;
+			height: 234rpx;
 		}
 	}
 

@@ -1,6 +1,6 @@
 <template>
 	<view class="cartContainer" :class="{'bg':!shopList.length&&!disabledSkuList.length}">
-		<view class="noGoods" v-if="!shopList.length&&!disabledSkuList.length">
+		<view class="noGoods" v-if="showNoGoods">
 			<image src="http://dbj.dragonn.top/static/mp/dabanjia/images/my/blank_ic%402x.png" class="noGoodsImg"></image>
 			<view class="noGoodsText">
 				购物车空空如也，快去逛逛吧～
@@ -71,7 +71,7 @@
 								</view>
 								
 								<view class="foot">
-									<view class="goodsPrice">¥{{goodsItem.price}}/{{goodsItem.unitName}}</view>
+									<view class="goodsPrice">¥{{goodsItem.price/100}}/{{goodsItem.unitName}}</view>
 									<view class="countCtrl">
 										<image v-if="!goodsItem.isMiniOrder" class="dec" @click="changeCount(false,shopIndex, goodsIndex)" src="../../../static/shopping-cart/details_pop_@2x.png"></image>
 										<image v-else class="dec" @click="changeCount(false,shopIndex, goodsIndex)" src="../../../static/shopping-cart/details_pop_subtract_disabled@2x.png"></image>
@@ -224,6 +224,7 @@
 				entityList:[],
 				serviceListShow:[],
 				entityListShow:[],
+				showNoGoods: false
 			}
 		},
 		mounted(){
@@ -314,6 +315,9 @@
 			requestPage(){
 				getShoppingCartInfo(this.userId).then(data => {
 						let {storeList,disabledSkuList} = data
+						if(!storeList.length&&!disabledSkuList.length){
+							this.showNoGoods = true
+						}
 						if(!storeList.length)return
 						storeList.map(item => {
 							let sum = 0
@@ -537,7 +541,7 @@
 						item.skuList.forEach(ele => {
 							if(ele.goodsChecked){
 								//判断用户是否选择了不同类型的商品
-								if(ele.productType !== target.productType){
+								if(target && ele.productType !== target.productType){
 									flag = true
 								}
 								//结算页面展示店铺名
@@ -958,7 +962,7 @@
 		height: 36rpx;
 		border-radius: 50%;
 		background: #ffffff;
-		border: 2rpx solid #e5e5e5;
+		border: 2rpx solid #CBCCCC;
 	}
 	.shopInfo .checked{
 		width: 36rpx;
