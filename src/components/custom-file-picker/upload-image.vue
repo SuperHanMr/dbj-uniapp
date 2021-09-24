@@ -3,24 +3,25 @@
 
 		<view v-if="filesList.length < limit && !readonly" class="file-picker__box" >
 			<view class="file-picker__box-content is-add" :style="borderStyle" @click="choose">
-				<view class="">
-
-					<!-- <view>
-					<view class="icon-add"></view>
-					<view class="icon-add rotate"></view>
-				</view> -->
-					点击上传
-				</view>
+				<image src="../../static/images/icon_upload@2x.png" mode=""></image>
+				<text>点击上传</text>
+				
 			</view>
 		</view>
 		<view class="file-picker__box" v-for="(item,index) in filesList" :key="index" >
 			<view class="file-picker__box-content" :style="borderStyle">
 				<image class="file-image" :src="item.url" mode="aspectFill" @click.stop="prviewImage(item,index)">
 				</image>
-				<view v-if="delIcon && !readonly" class="icon-del-box" @click.stop="delFile(index)">
+				<!-- <view v-if="delIcon && !readonly" class="icon-del-box" @click.stop="delFile(index)">
 					<view class="icon-del"></view>
 					<view class="icon-del rotate"></view>
+				</view> -->
+				<view v-if="delIcon && !readonly" class="icon-container" @click.stop="delFile(index)">
+					<image src="../../static/images/icon_delete@2x.png" mode=""></image>
 				</view>
+				
+				
+				
 				<!-- 	<view v-if="(item.progress && item.progress !== 100) ||item.progress===0 " class="file-picker__progress">
 					<progress class="file-picker__progress-item" :percent="item.progress === -1?0:item.progress" stroke-width="4"
 					 :backgroundColor="item.errMsg?'#ff5a5f':'#EBEBEB'" />
@@ -262,11 +263,26 @@
 	}
 
 	.is-add {
+		box-sizing: border-box;
 		/* #ifndef APP-NVUE */
 		display: flex;
 		/* #endif */
+		flex-flow: column nowrap;
 		align-items: center;
 		justify-content: center;
+		image{
+			width: 64rpx;
+			height: 64rpx;
+			object-fit: cover;
+			margin-bottom: 8rpx;
+		}
+		text{
+			height: 36rpx;
+			line-height: 36rpx;
+			font-size: 26rpx;
+			font-weight: 400;
+			color: #999999;
+		}
 	}
 
 	.icon-add {
@@ -303,5 +319,18 @@
 		height: 2px;
 		background-color: #fff;
 		border-radius: 2px;
+	}
+	.icon-container{
+		position: absolute;
+		top: -16rpx;
+		right: -16rpx;
+		width: 32rpx;
+		height: 32rpx;
+		image{
+			width: 32rpx;
+			height: 32rpx;
+			object-fit: cover;
+			border-radius: 50%;
+		}
 	}
 </style>

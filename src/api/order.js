@@ -2,9 +2,12 @@ import request from '../utils/request';
 
 
 //修改用户资料  (头像 昵称)
-
 export function editUserInfo(params) {
 	return request.put(`/customer/app/mycenter/person`,params);
+}
+// 意见与反馈  /app/feedback
+export function commentsAndFeedBack(params) {
+	return request.post(`/app/feedback`,params);
 }
 
 
@@ -120,6 +123,8 @@ export function getGoodsList(params) {
 export function getRealCaseList(params) {
 	return request.get(`/app/base/interactive/list/collect/real/case`,{params})
 }
+
+
 
 
 
