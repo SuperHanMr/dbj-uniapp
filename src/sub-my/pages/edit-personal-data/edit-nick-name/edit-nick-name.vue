@@ -23,7 +23,7 @@
 		
 		
 		<view class="footer" :style="{bottom:systemBottom}">
-			<view class="button">
+			<view class="button" @click="saveNickname">
 				保存
 			</view>
 		</view>
@@ -34,11 +34,12 @@
 </template>
 
 <script>
+	import {editUserInfo} from "../../../../api/order.js"
 	export default {
 		data() {
 			return {
 				nickName:"",
-				
+				avatar:"",
 				
 				tabbar: true,
 				windowHeight: '',
@@ -56,7 +57,9 @@
 		},
 		
 		onLoad(e) {
-			this.nickName  = e.nickName
+			this.nickName  = getApp().globalData.userInfo.name
+			this.avatar = getApp().globalData.userInfo.avatar
+			console.log("this.avatar=",this.avatar)
 			console.log("this.nickName=",this.nickName)
 		},
 			
@@ -68,7 +71,45 @@
 			onInput(e){
 				this.nickName=e.detail.value
 				console.log("this.nickName=",this.nickName)
-			}
+			},
+			saveNickname(){
+				console.log("this.nickName.length=",this.nickName.length)
+				if(this.nickName.length < 1 || this.nickName.length > 12) {
+					uni.showToast({
+						title:"昵称不符合长度要求",
+						icon:"none",
+						duration: 1000
+					});
+					return 
+				}
+				if (!(/^[\u4e00-\u9fa5_a-zA-Z0-9]+$/.test(this.nickName))) {
+					uni.showToast({
+						title:"昵称不符合要求",
+						icon:"none",
+						duration: 1000
+					});
+					return 
+				}
+				
+				let params={
+					avatar:this.avatar,
+					nickName:this.nickName,
+				}
+				editUserInfo(params).then(()=>{
+					console.log("修改昵称成功")
+					uni.showToast({
+						title:"修改图片成功",
+						icon:"none",
+						duration: 2000
+					});
+					getApp().globalData.userInfo.name = this.nickName
+					uni.navigateBack({
+							delta: 1
+					});
+				})
+				
+			},
+			
 		},
 	}
 </script>

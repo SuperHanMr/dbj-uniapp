@@ -1,7 +1,15 @@
 <template>
 	<view class="merchant-entry">
 		<view class="head">
-			123123
+			<view class="info">
+				填写入驻信息
+			</view>
+			<view class="info">
+				已有{{dayNumber * 5 + 350}}家企业
+			</view>
+			<view class="info">
+				入驻开店
+			</view>
 		</view>
 		<view class="container">
 			<view class="info">
@@ -12,15 +20,17 @@
 					<view class="label">
 						公司名称
 					</view>
-					<input type="text" value="" placeholder="请输入30个字以内" />
+					<input type="text" :value="companyValue" placeholder="请输入30个字以内" @input="companyHandler($event)" />
+					<image src="../../../static/merchant-entry/live_input_clear.png" mode=""
+						@click="deleteCompanyName()" v-if="companyValue != ''"></image>
 				</view>
 				<view class="service-city">
 					<view class="label">
 						服务城市
 					</view>
-					<view class="value" v-if="seriverCity.length > 0" v-for="(item, index) in seriverCity">
+					<view class="value" v-if="seriverCity.length > 0" v-for="(item, index) in cityList">
 						<view class="text">
-							{{item.text}}
+							{{item.name}}
 						</view>
 						<image src="../../../static/merchant-entry/live_input_clear.png" mode=""
 							@click="deleteCity(index)"></image>
@@ -57,8 +67,14 @@
 				</view>
 			</view>
 		</view>
-		<view class="bottom">
-			<view class="pay-money">
+		<view class="bottom-fiexd">
+			
+		</view>
+		<view class="bottom" @click="topayHandler">
+			<button type="default" class="get-phone" open-type="getPhoneNumber" @getphonenumber="decryptPhoneNumber"
+				v-if="showBottomButtom()"></button>
+				<image class="image-bottom" src="../../static/merchant-entry/merchant-entry-success.biaoqian.png" mode=""></image>
+			<view class="pay-money" :class="showBottomButtom() ? '' : 'pay-money-no'">
 				<view class="money">
 					<text class="icon">￥</text>
 					<text class="year-money">3000/年</text>
@@ -94,11 +110,11 @@
 				</view>
 			</view>
 		</uni-popup>
-		<uni-popup ref="popupCiry" type="bottom">
+		<!-- <uni-popup ref="popupCiry" type="bottom">
 			<view class="city-select-box">
 				<city-select />
 			</view>
-		</uni-popup>
+		</uni-popup> -->
 		<uni-popup ref="deletePopup" type="center">
 			<view class="delete-popup">
 				<view class="info">
@@ -116,11 +132,12 @@
 		</uni-popup>
 		<uni-popup ref="popupBusiness" type="bottom">
 			<view class="business-category-box">
-				<business-category ref='businessCategoryRef' @closeBusinessPopup='closeBusinessPopup' @confirmBusiness='confirmBusiness' :categroyTreeList='categroyTreeList' />
+				<business-category ref='businessCategoryRef' @closeBusinessPopup='closeBusinessPopup'
+					@confirmBusiness='confirmBusiness' :categroyTreeList='categroyTreeList' />
 			</view>
 		</uni-popup>
-		<button type="default" open-type="getPhoneNumber" @getphonenumber="decryptPhoneNumber">获取手机号</button>
-		<button type="default" @click="toPay">去支付</button>
+		<!-- <button type="default" open-type="getPhoneNumber" @getphonenumber="decryptPhoneNumber">获取手机号</button> -->
+		<!-- <button type="default" @click="toPay">去支付</button> -->
 	</view>
 </template>
 
@@ -132,10 +149,17 @@
 	} from "../../../api/other.js";
 	import CitySelect from "./components/city-select.vue";
 	import BusinessCategory from "./components/business-category.vue";
+	import {
+		mapState,
+		mapGetters
+	} from "vuex";
+	import dayjs from "dayjs";
 	export default {
 		data() {
 			return {
 				openId: "",
+				companyValue: '',
+				dayNumber: 0,
 				phoneInfo: {},
 				seriverCity: [{
 						text: '北京',
@@ -169,10 +193,19 @@
 				},
 			});
 		},
+		computed: {
+			...mapState({
+				cityList: (state) => state.merchantEntry.cityList,
+			}),
+		},
 		mounted() {
 			getCategroyTree().then((res) => {
 				this.categroyTreeList = res
 			})
+			let time = Date.parse(new Date());
+			let lasttime = Date.parse("2021-09-23");
+			let day = parseInt((time - lasttime) / (1000 * 60 * 60 * 24));
+			this.dayNumber = day;
 		},
 		methods: {
 			getOpen(code) {
@@ -186,8 +219,18 @@
 			decryptPhoneNumber(e) {
 				console.log(e);
 				this.phoneInfo = e.detail;
+				if (e.detail.cloudID) {
+					this.toPay();
+				}
 			},
 			toPay() {
+				// uni.navigateTo({
+				// 	url:'../merchant-entry-success/merchant-entry-success'
+				// })
+				const ids = [];
+				this.cityList.forEach((item) => {
+					ids.push(item.id);
+				})
 				let params = {
 					payType: 1,
 					amount: 1,
@@ -195,7 +238,10 @@
 					encryptedData: this.phoneInfo.encryptedData,
 					iv: this.phoneInfo.iv,
 					entry: {
-						name: "996icu",
+						name: this.companyValue,
+						phone: '',
+						cityIds: ids,
+						scopes: this.businessCategoryList
 					},
 				};
 				payEntryFee(params).then((e) => {
@@ -203,16 +249,40 @@
 					uni.requestPayment({
 						provider: "wxpay",
 						...payInfo,
-						success(res) {},
+						success(res) {
+							if (res.errMsg == 'requestPayment:ok') {
+								uni.navigateTo({
+									url: '../merchant-entry-success/merchant-entry-success'
+								})
+							}
+						},
 						fail(e) {
 							console.log(e);
+							uni.navigateTo({
+								url: '../merchant-entry-failed/merchant-entry-failed'
+							})
 						},
 					});
 				});
 			},
+			showBottomButtom() {
+				if (this.cityList.length > 0 && this.businessCategoryList.length > 0 && this.companyValue != '') {
+					return true;
+				} else {
+					return false;
+				}
+			},
+			// 删除公司名称
+			deleteCompanyName(){
+				this.companyValue = '';
+			},
 			// 删除城市
 			deleteCity(index) {
-				this.seriverCity.splice(index, 1);
+				this.$refs.deletePopup.open('center')
+				this.deleteStatus = {
+					isBusinessCategory: false,
+					index: index
+				}
 			},
 			// 删除经营品类
 			deleteBusinessCategory(index) {
@@ -224,15 +294,19 @@
 				// this.$refs.businessCategoryRef.showCheckedNumber(this.businessCategoryList[index]);
 				// this.businessCategoryList.splice(index, 1);
 			},
-			noDelete(){
+			noDelete() {
 				this.$refs.deletePopup.close('center')
 			},
-			confirmDelete(){
+			confirmDelete() {
 				if (this.deleteStatus.isBusinessCategory) {
-					this.$refs.businessCategoryRef.showCheckedNumber(this.businessCategoryList[this.deleteStatus.index]);
+					this.$refs.businessCategoryRef.modifyNumberList(this.businessCategoryList[this.deleteStatus.index])
 					this.businessCategoryList.splice(this.deleteStatus.index, 1);
 				} else {
-					this.seriverCity.splice(this.deleteStatus.index, 1);
+					const cityList = JSON.parse(JSON.stringify(this.cityList));
+					cityList.splice(this.deleteStatus.index, 1);
+					this.$store.dispatch('deleteCity', {
+						cityList: cityList
+					})
 				}
 				this.$refs.deletePopup.close('center')
 			},
@@ -250,23 +324,38 @@
 			selectCity(isAll) {
 				this.$refs.popup.close('bottom')
 				if (isAll == 2) {
-					this.$refs.popupCiry.open('bottom')
+					// this.$refs.popupCiry.open('bottom')
+					if (this.cityList.length == 1) {
+						if (this.cityList[0].id == -1) {
+							this.$store.dispatch('setCityList', {
+								cityList: []
+							})
+						}
+					}
+					uni.navigateTo({
+						url: '../city-select-entry/city-select-entry'
+					})
 				} else {
-					this.seriverCity = [{
-						text: '全国范围',
-						type: -1
-					}, ];
+					this.$store.dispatch('setCityList', {
+						cityList: [{
+							name: '全国范围',
+							id: -1
+						}]
+					})
 				}
 			},
 			// 关闭经营品类
-			closeBusinessPopup(){
+			closeBusinessPopup() {
 				this.$refs.popupBusiness.close('bottom')
 			},
 			// 确认选择品类
-			confirmBusiness(list){
-				console.log(list, '>>>>>>>>>');
+			confirmBusiness(list) {
 				this.businessCategoryList = list;
 				this.$refs.popupBusiness.close('bottom')
+			},
+			// 公司名称
+			companyHandler(e) {
+				this.companyValue = e.detail.value;
 			}
 		},
 	};
@@ -282,12 +371,17 @@
 	.merchant-entry>.head {
 		width: 100%;
 		height: 312rpx;
-		background-image: url(../../../static/merchant-entry/icon1.jpg);
+		background-image: url(../../../static/merchant-entry/merchant-entry-ic／bg.png);
+
+		.info {
+			font-size: 28rpx;
+			font-family: HarmonyOS_Sans_Black;
+			// color: #FFFFFF;
+		}
 	}
 
 	.container {
 		padding: 24rpx;
-
 		.info {
 			padding-bottom: 1rpx;
 			background-repeat: no-repeat;
@@ -317,12 +411,25 @@
 			}
 
 			.company-name {
+				position: relative;
+
 				input {
 					background: #FBFCFC;
 					border-radius: 6px;
 					border: 1px solid #CBCCCC;
 					margin-bottom: 48rpx;
 					padding: 24rpx 0 24rpx 24rpx;
+					caret-color: #35C4C4
+					
+				}
+
+				image {
+					width: 64rpx;
+					height: 64rpx;
+					position: absolute;
+					right: 40rpx;
+					top: 88rpx;
+					z-index: 10;
 				}
 			}
 
@@ -376,10 +483,30 @@
 			}
 		}
 	}
-
+	.bottom-fiexd{
+		padding-bottom: 200rpx;
+	}
 	.bottom {
+		width: 100%;
 		padding: 24rpx 34rpx 16rpx 30rpx;
 		background: #FEFFFE;
+		position: fixed;
+		bottom: 0;
+		left: 0;
+		.image-bottom{
+			position: absolute;
+			width: 164rpx;
+			height: 62rpx;
+			background: red;
+			left: 200rpx;
+			top: -30rpx;
+		}
+		.get-phone {
+			position: absolute;
+			width: 100%;
+			height: 100%;
+			opacity: 0;
+		}
 
 		.pay-money {
 			background: linear-gradient(135deg, #00CCBE 0%, #00C2BF 100%);
@@ -416,6 +543,11 @@
 			}
 		}
 
+		.pay-money-no {
+			background: linear-gradient(135deg, #00CCBE 0%, #00C2BF 100%);
+			opacity: .4;
+		}
+
 		.argument {
 			margin-top: 16rpx;
 			font-size: 11px;
@@ -424,7 +556,7 @@
 			display: flex;
 			justify-content: center;
 			align-items: center;
-
+			margin-bottom: 20rpx;
 			text {
 				color: #999999;
 			}
@@ -488,15 +620,18 @@
 		width: 100%;
 		height: 1200rpx;
 	}
-	.business-category-box{
+
+	.business-category-box {
 		width: 100%;
 		height: 1200rpx;
 	}
-	.delete-popup{
+
+	.delete-popup {
 		background: #FFFFFF;
 		border-radius: 16rpx;
 		width: 526rpx;
-		.info{
+
+		.info {
 			padding: 48rpx 0;
 			text-align: center;
 			font-size: 32rpx;
@@ -505,18 +640,21 @@
 			color: #333333;
 			border-bottom: 1px solid #F5F5F5;
 		}
-		.button-box{
+
+		.button-box {
 			display: flex;
 			padding: 24rpx 0;
 			font-size: 32rpx;
 			font-family: PingFangSC-Regular, PingFang SC;
 			font-weight: 400;
 			color: #333333;
-			.no-confirm{
+
+			.no-confirm {
 				flex: 1;
 				text-align: center;
 			}
-			.confirm{
+
+			.confirm {
 				flex: 1;
 				font-weight: 500;
 				color: #35C4C4;

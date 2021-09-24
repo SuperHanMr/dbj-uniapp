@@ -83,11 +83,11 @@
 			</view>
 		</view>
 
-	<!-- 	<button style="width: 50%;margin-top: 20rpx;" type="default" @click="toNextPage">去封装好的列表页</button>
+		<button style="width: 50%;margin-top: 20rpx;" type="default" @click="toNextPage">去封装好的列表页</button>
 		<button style="width: 50%;margin-top: 20rpx;" type="default" @click="toLiveDecorate">去装修现场</button>
 		<button style="width: 50%;margin-top: 20rpx;" type="default" @click="toShop">去商家入驻</button>
 		<button style="width: 50%;margin-top: 20rpx;" type="default" @click="toGoodsApply">去要货申请</button>
- -->
+
 		<view class="flex-row" style="margin-top: 42rpx;">
 			<view class="title">
 				免费服务

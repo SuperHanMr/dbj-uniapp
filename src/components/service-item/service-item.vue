@@ -3,7 +3,7 @@
     <view class="flex-row-bet" @click="openProcsss">
       <view class="item-name flex-row-start">
         <image src="http://dbj.dragonn.top/static/mp/dabanjia/images/decorate/ic_mer.svg"></image>
-        <text>{{serviceData.nodeName || "后端没返回字段"}}</text>
+        <text>{{serviceData.nodeName}}</text>
       </view>
       <view class="status-name mr inservice flex-row-start">
         <view>{{ serviceData | filterStatusName }}</view>
@@ -15,9 +15,9 @@
     <view class="gc"
       v-if="(serviceData.status >= 2 || (serviceData.status == 0 && serviceData.grepOrderStatus === 3)) && open">
       <view class="procsss flex-row-bet">
-        <view class="s0">{{serviceData.serveRoleName || "后端没返回字段"}}</view>
+        <view class="s0">{{serviceData.serveRoleName}}</view>
         <view class="s1 flex-row-start">
-          <view>{{serviceData.serveName || "后端没返回字段"}}</view>
+          <view>{{serviceData.statusName}}</view>
           <image src="http://dbj.dragonn.top/static/mp/dabanjia/images/decorate/ic_more.svg"></image>
         </view>
       </view>
