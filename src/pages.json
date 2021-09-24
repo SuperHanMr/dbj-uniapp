@@ -555,14 +555,14 @@
 				}, {
 					"path": "pages/merchant-entry-success/merchant-entry-success",
 					"style": {
-						"navigationBarTitleText": "",
+						"navigationBarTitleText": "商家在线入驻",
 						"enablePullDownRefresh": false
 					}
 
 				}, {
 					"path": "pages/merchant-entry-failed/merchant-entry-failed",
 					"style": {
-						"navigationBarTitleText": "",
+						"navigationBarTitleText": "提交成功",
 						"enablePullDownRefresh": false
 					}
 
