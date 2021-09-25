@@ -27,7 +27,6 @@
           <view
             :key="msg.ID"
             class="message-tags-time"
-            style="padding-bottom: 0;"
           >{{ formatMessageTime(msg.time) }}</view>
           <message-item-system :key="msg.ID" :message="msg"></message-item-system>
         </template>
@@ -274,7 +273,7 @@
     text-align: center;
     font-size: 12px;
     color: #999;
-    padding: 40rpx 0;
+    padding: 40rpx 0 0;
   }
   
   .video-player-wrapper {

@@ -21,7 +21,7 @@
 			}
 		},
 		mounted() {
-			this.requestPage()
+			this.setMemo()
 		},
 		methods:{
 			toChooseRemind(){
@@ -29,7 +29,7 @@
 					url:"/sub-home/pages/decorate-scene/choose-remind"
 				})
 			},
-			requestPage(){
+			setMemo(){
 				// let params = {
 				// 	projectId:  ,
 				// 	content: ,

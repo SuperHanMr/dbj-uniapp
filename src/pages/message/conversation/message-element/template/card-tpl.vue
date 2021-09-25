@@ -8,14 +8,16 @@
         <view class="title">
           {{ title }}
         </view>
-        <view class="tip">
-          {{ tip }}
-        </view>
+        <template v-if="tips.length">
+          <view v-for="(tip,index) in tips" :key="index" class="tip">
+            {{ tip }}
+          </view>
+        </template>
       </view>
     </view>
-    <view v-if="template.buttons && template.buttons.length" class="card-template__footer">
+    <view v-if="template.body.actions && template.body.actions.length" class="card-template__footer">
       <view 
-        v-for="(btn, index) in template.buttons" 
+        v-for="(btn, index) in template.body.actions" 
         :key="index" 
         class="oper-btn"
       >
@@ -44,13 +46,15 @@ export default {
       return this.message.payloadData.params || {};
     },
     icon() {
-      return this.template.icon;
+      return compile(this.template.body.iconUrl)(this.data);
     },
     title() {
-      return compile(this.template.title)(this.data);
+      return compile(this.template.body.title)(this.data);
     },
-    tip() {
-      return compile(this.template.tip)(this.data);
+    tips() {
+      return (this.template.body.labels || []).map(({label, value}) => {
+        return compile(label)(this.data) + compile(value)(this.data);
+      });
     }
   }
 }

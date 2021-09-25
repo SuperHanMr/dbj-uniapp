@@ -4,7 +4,6 @@ export function getClassifyList (params) {
   return request.get('/product/app/prod-categories/front/tree')
 }
 export function getGoodsList (params) {
-  // return request.get('/product/web/products/skus/page', {params:params})
   return request.post('/product/app/search/query', params)
 }
 export function getAddressInfo(houseId) {
