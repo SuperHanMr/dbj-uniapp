@@ -31,12 +31,12 @@
 		components:{waterfallItem},
 		watch: {
 			list(n, o) {
-				console.log('~~~~~~~~~~~~~')
-				console.log(n);
 				let that = this;
 				let ol = o.length;
 				let nl = n.length;
 				if (nl > ol) {
+				console.log('~~~~~~~~~~~~~')
+				console.log(n);
 					if (this.leftHeight > this.rightHeight) {
 						that.rightList.push(that.list[ol]);
 					} else {
