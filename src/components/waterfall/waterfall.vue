@@ -1,13 +1,13 @@
 <template>
 	<view class="waterfall">
 		<view class="left">
-			<block v-for="(item, index) in leftList" :key="item">
-				<waterfall-item :item="item" @detail="toDetail" @load="onImageLoad" :showCheckIcon="showCheckIcon" ></waterfall-item>
+			<block v-for="item1 in leftList" :key="item1.id">
+				<waterfall-item  :item="item1" @detail="toDetail" @load="onImageLoad" :showCheckIcon="showCheckIcon" :allCheck="allCheck" ></waterfall-item>
 			</block>
 		</view>
 		<view class="right">
-			<block v-for="(item, index) in rightList" :key="item">
-				<waterfall-item :item="item" @detail="toDetail" @load="onImageLoad" :showCheckIcon="showCheckIcon" ></waterfall-item>
+			<block v-for="item2 in rightList" :key="item2.id">
+				<waterfall-item  :item="item2" @detail="toDetail" @load="onImageLoad" :showCheckIcon="showCheckIcon" :allCheck="allCheck" ></waterfall-item>
 			</block>
 		</view>
 	</view>
@@ -26,6 +26,10 @@
 				type:Boolean,
 				default:false
 			},
+			allCheck:{
+				type:Boolean,
+				default:false
+			},
 		
 		},
 		components:{waterfallItem},
@@ -35,8 +39,6 @@
 				let ol = o.length;
 				let nl = n.length;
 				if (nl > ol) {
-				console.log('~~~~~~~~~~~~~')
-				console.log(n);
 					if (this.leftHeight > this.rightHeight) {
 						that.rightList.push(that.list[ol]);
 					} else {
@@ -46,14 +48,7 @@
 				}
 			}
 		},
-		// computed:{
-		// 	checkList(){
-		// 		let itemList = this.list.filter(item=>{
-		// 			return item.isChecked == true
-		// 		})
-		// 		return itemList
-		// 	}
-		// },
+		
 		data() {
 			return {
 				leftList: [],

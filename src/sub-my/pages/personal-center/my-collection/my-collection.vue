@@ -2,10 +2,10 @@
 	<view class="fill">
 		<view class="tab-container">
 			<view class="top-tab">
-				<view v-for="(item,index) in tabList" :key="index" class="item" :class="{selected:index==currentIndex}"
+				<view v-for="(itemTab,index) in tabList" :key="index" class="item" :class="{selected:index==currentIndex}"
 					@click="currentIndex=index">
 					<view class="tab-text">
-						{{item.title}}
+						{{itemTab.title}}
 					</view>
 
 					<view class="bottom-icon" />
@@ -16,48 +16,53 @@
 				<text v-else @click="handleDone">完成</text>
 			</view>
 		</view>
+		
+		<view class="line" />
 
-		<swiper class="swiper" :current="currentIndex" :duration="200" @change="swiperChange"
-			:style="{background:tabList.length > 0 ?'none':'#fff'}">
-			<swiper-item>
-				<scroll-view class="scroll-view" scroll-y="true" refresher-background="#FFF" refresher-enabled="true"
+		<swiper class="swiper" :current="currentIndex" :duration="200" 
+			@change="swiperChange"
+			:style="{backgroundColor:listLength > 0 ?'none':'#ffffff'}"
+		>
+				
+			<swiper-item :class="{emptyContainer:productList.length < 1 ? true : false}">
+				<scroll-view v-if="productList.length > 0" class="scroll-view" scroll-y="true" refresher-background="#FFF" refresher-enabled="true"
 					:refresher-triggered="triggered" @refresherrefresh="onRefresh" @scrolltolower="onLoadMore">
-					<waterfall :key="item.fallKey" :list="productList" @selectedItem="onSelectedItem"
+					<waterfall :key="itemTab.fallKey" :list="productList" @selectedItem="onSelectedItem" :allCheck="allCheck"
 						:showCheckIcon="!ShowMgrBrn"></waterfall>
 				</scroll-view>
-			</swiper-item>
-			<swiper-item>
-				<scroll-view class="scroll-view" scroll-y="true" refresher-background="#FFF" refresher-enabled="true"
-					:refresher-triggered="triggered" @refresherrefresh="onRefresh" @scrolltolower="onLoadMore">
-					<waterfall :key="item.fallKey" :list="caseList" @selectedItem="onSelectedItem"
-						:showCheckIcon="!ShowMgrBrn"></waterfall>
-				</scroll-view>
-			</swiper-item>
-			<!-- 	<swiper-item v-else class="empty-container">
-				<view class="line" />
-				<view class="empty-body">
+				<view v-else class="empty-body">
 					<image src="../../../../static/order/blank_house@2x.png" mode=""></image>
-					<text v-if="tabindex==0">您还没有收藏商品</text>
-					<text v-if="tabindex==1">您还没有收藏案例</text>
+					<text>您还没有收藏商品</text>
 				</view>
-			</swiper-item> -->
-
+			</swiper-item>
+			
+			<swiper-item :class="{emptyContainer:caseList.length < 1 ? true : false}">
+				<scroll-view v-if="caseList.length >0" class="scroll-view" scroll-y="true" refresher-background="#FFF" refresher-enabled="true"
+					:refresher-triggered="triggered" @refresherrefresh="onRefresh" @scrolltolower="onLoadMore">
+					<waterfall :key="itemTab.fallKey" :list="caseList" @selectedItem="onSelectedItem" :allCheck="allCheck"
+						:showCheckIcon="!ShowMgrBrn"></waterfall>
+				</scroll-view>
+				<view v-else class="empty-body">
+					<image src="../../../../static/order/blank_house@2x.png" mode=""></image>
+					<text>您还没有收藏案例</text>
+				</view>
+			</swiper-item>
 		</swiper>
 
 		<!-- 底部按钮 -->
-		<view class="footer" v-if=" currentList.length > 1 && !ShowMgrBrn" :style="{paddingBottom:systemBottom}">
+		<view class="footer" v-if=" currentList.length > 1 && showCalCelBtn" :style="{paddingBottom:systemBottom}">
 			<view class="left">
 				<!-- <image  src="../../../../static/order/images/product_checked.png" mode=""></image> -->
-				<image src="../../../../static/order/images/product_unChecked.png" mode="" />
+				<image src="../../../../static/order/images/product_unChecked.png" mode="" @click="handleAllCheck"/>
 				<text>全选</text>
 			</view>
 			<view class="button" @click="handleCancel">
 				取消收藏
 			</view>
-		</view>-
+		</view>
 
 		<!-- 取消收藏弹框 -->
-		<popup-dialog ref="popup" :title="title" @confirm="confirmCancelCollection"></popup-dialog>
+		<popup-dialog ref="popup" :title="title" @close="closePopDialog" @confirm="confirmCancelCollection"></popup-dialog>
 
 
 
@@ -67,31 +72,39 @@
 <script>
 	import {
 		getGoodsList,
-		getRealCaseList
+		getRealCaseList,
+		batchCancellation
 	} from "../../../../api/order.js"
 	export default {
 		data() {
 			return {
-				tabList: [{
-					title: "商品",
-					scrollKey: 's1',
-					fallKey: 'f1'
-				}, {
-					title: "案例",
-					scrollKey: 's2',
-					fallKey: 'f2'
-				}],
+				tabList: [
+					{
+						title: "商品",
+						scrollKey: 's1',
+						fallKey: 'f1'
+					}, 
+					{
+						title: "案例",
+						scrollKey: 's2',
+						fallKey: 'f2'
+					},
+				],
 				triggered: false, //控制刷新显示字段
 
 				currentIndex: 0,
 
 				productList: [], //商品列表
 				caseList: [], //案例列表
+				checkedItemIds:[],
+				listLength:"",
 				page: [1, 1],
 				totalPage: [1, 1],
 
 				loading: false,
 				ShowMgrBrn: true,
+				showCalCelBtn:false,
+				allCheck:false,
 				title: "",
 
 				systemBottom: "",
@@ -102,24 +115,21 @@
 			const menuButtonInfo = uni.getMenuButtonBoundingClientRect();
 			this.systemBottom = menuButtonInfo.bottom + 32 + "rpx";
 		},
-
-
-
 		onShow() {
 			this.getProductList()
+		},
+		watch:{
+			allCheck(){}
 		},
 
 		computed: {
 			// 通过判断currentIndex 返回不同的数组
 			currentList() {
 				if (this.currentIndex == 0) {
-					console.log("000000")
-					this.title = "确定要将选中商品取消收藏吗？"
+					this.listLength = this.productList.length
 					return this.productList;
 				} else {
-					console.log("1111111111")
-					this.title = "确定要将选中案例取消收藏吗？"
-					console.log("案例列表数据=", this.caseList)
+					this.listLength = this.caseList.length
 					return this.caseList;
 				}
 			},
@@ -129,14 +139,37 @@
 				let index = e.target.current || e.detail.current;
 				this.currentIndex = index;
 				//index对应的list数据是否为空 为空的话请求数据 有数据的话就不请求了
-				if (this.currentIndex == 0) {
-					if (this.productList.length < 1) this.getProductList()
-				} else {
-					if (this.caseList.length < 1) this.getCaseList();
+				switch(this.currentIndex){
+					case 0: 
+						if (this.productList.length < 1) this.getProductList()
+						break
+					case 1: 
+						if (this.caseList.length < 1) this.getCaseList();
+						break
 				}
 			},
 
-			async getCaseList() {
+			// 获取商品列表
+			getProductList() {
+				this.loading = true;
+				let params = {
+					routeId: 5002, //【收藏商品路由id：记录用户收藏的商品】
+					type: 1, //(1,"收藏")
+					bizType: 1, //(1,"商品")
+				}
+				getGoodsList(params).then(data=>{
+					this.productList = this.productList.concat(data);
+					this.productList = this.productList.map(item => {
+						item.isChecked = false
+							item.icon = "product"
+						return item
+					})
+					console.log("this.productList=", this.productList)
+					this.loading = false;
+				})
+			},
+			// 获取案例列表
+			getCaseList() {
 				this.loading = true;
 				let params = {
 					routeId: 5001, //【收藏真实案例路由id，记录用户收藏的真实案例】
@@ -148,51 +181,20 @@
 					console.log("this.caseList-0=", this.caseList)
 					this.caseList = this.caseList.map(item => {
 						item.isChecked = false
+						item.icon = "case"
 						return item
 					})
 					console.log("this.caseList-1=", this.caseList)
 					this.loading = false;
 				})
-
-
-				// let caseItem =await getRealCaseList({
-				// 	routeId:5001,//【收藏真实案例路由id，记录用户收藏的真实案例】
-				// 	type:1,//(1,"收藏")
-				// 	bizType:7,//【真实案例】REAL_CASE(7,"真实案例")
-				// })
-				//   this.caseList = this.caseList.concat(caseItem);
-				// this.caseList = this.caseList.map(item=>{
-				// 	item.isChecked = false
-				// 	return item
-				// })
-				//    this.loading = false;
 			},
+			
 
-			async getProductList() {
-				this.loading = true;
-				let productItem = await getGoodsList({
-					routeId: 5002, //【收藏商品路由id：记录用户收藏的商品】
-					type: 1, //(1,"收藏")
-					bizType: 1, //(1,"商品")
-				})
-				// this.totalPage = productItem.totalPage;
-				this.productList = this.productList.concat(productItem);
-				this.productList = this.productList.map(item => {
-					item.isChecked = false
-					return item
-				})
-				console.log("this.productList=", this.productList)
-				this.loading = false;
-			},
-
-
-
-			handleCancel() {
-				this.$refs.popup.open()
-			},
+			
 			//管理
 			handleMgr() {
 				this.ShowMgrBrn = !this.ShowMgrBrn
+				this.showCalCelBtn = true
 				this.productList = this.productList.map(item => {
 					item.isChecked = false
 					return item
@@ -202,34 +204,88 @@
 			//完成
 			handleDone() {
 				this.ShowMgrBrn = !this.ShowMgrBrn
+				this.showCalCelBtn = false
 				this.productList = this.productList.map(item => {
 					item.isChecked = false
 					return item
 				})
 				console.log("点击完成后的列表=", this.productList)
 			},
-
-			// 点击单个item的操作
+			
+			// 全选
+			handleAllCheck(){
+				console.log("全选")
+				this.allCheck=!this.allCheck
+				if(this.currentIndex == 0){
+					this.productList = this.productList.map(item => {
+						item.isChecked = true
+						return item
+					})
+					console.log(this.productList)
+					console.log("00000000")
+				}else{
+					console.log("1111111111")
+					this.caseList = this.caseList.map(item => {
+						item.isChecked = true
+						return item
+					})
+				}
+			},
+			// 点击单个item的操作获取选中的数据
 			onSelectedItem(data) {
-				const list = data.filter(item => item.isChecked == true).map((item2) => {
-					return {
-						id: item2.id,
-						isChecked: item2.isChecked
-					}
+				this.checkedItemIds = data.filter(item => item.isChecked == true).map((item2) => {
+					// return {
+					// 	id: item2.id,
+					// 	isChecked: item2.isChecked
+					// }
+					return item2.id
 				})
 				this.productList = data
-				console.log("选中的产品=", list)
+				console.log("选中的产品=", this.checkedItemIds)
 				console.log("点击了收藏后的list", data)
 			},
-
+			
+			handleCancel() {
+				// 点击取消收藏按钮
+				this.currentIndex == 0 
+				? this.title = "确定要将选中商品取消收藏吗?" 
+				: this.title = "确定要将选中案例取消收藏吗?"
+				this.$refs.popup.open()
+			},
+			closePopDialog(){
+				this.$refs.popup.close()
+			},
+			// 点击取消收藏弹框的确认按钮
 			confirmCancelCollection() {
 				console.log("确认取消")
+				let params={
+					userId:"", //主动方ID(用户id)",
+					relationIds:[],//关系ID集合(被动的关联ID)",
+					routeId:"", //路由ID",
+					type:"",//主类型",
+					bizType:"", //二级分类",
+					subBizType:"", //三级分类",
+					isAll:"",//是否全部删除：慎用"
+				}
+				batchCancellation(params).then(data=>{
+					// 重新获取列表
+					this.$refs.popup.close()
+					this.allCheck = false
+					uni.showToast({
+						title:"取消收藏成功！",
+						icon:"none",
+						duration: 1000
+					});
+					console.log("刷新列表")
+					setTimeout(()=>{
+						if(this.currentIndex == 0){
+							this.getProductList()
+						}else{
+							this.getCaseList()
+						}
+					},1000)
+				})
 			},
-
-
-
-
-
 			onLoadMore() {
 				// if (this.loading || this.page >= this.totalPage) {
 				//   return;
@@ -239,7 +295,6 @@
 				if (this.currentList.length < 1) {
 					this.currentIndex == 0 ? this.getProductList() : this.getCaseList();
 				}
-
 			},
 			onRefresh(e) {
 				this.triggered = true;
@@ -331,12 +386,12 @@
 		height: 100%;
 	}
 
-	.empty-container {
-		.line {
-			width: 100%;
-			height: 2rpx;
-			background: #f4f4f4;
-		}
+	.line {
+		width: 100%;
+		height: 2rpx;
+		background: #f4f4f4;
+	}
+	.emptyContainer {
 
 		.empty-body {
 			padding: 180rpx 240rpx 0 240rpx;

@@ -14,6 +14,7 @@
 				<view class="bottom-icon" />
       </view>
     </view>
+		 <view class="line" />
     <swiper
       class="swiper"
       :current="currentIndex"
@@ -34,7 +35,7 @@
           @refresherrefresh="onRefresh"
           @scrolltolower="onLoadMore"
 				>
-          <view class="line" />
+         
           
           <view class="empty-container" v-if="currentList.length < 1">
 						<image src="../../../../static/order/blank_house@2x.png" mode=""></image>
@@ -44,29 +45,31 @@
 					</view>
 					
 					<view  v-else >
-						<view v-if="tabindex==0"  class="house-item">
+						<!-- 房屋 -->
+						<view v-if="tabindex==0"  class="house-item" v-for="item in houselist" :key="item.id">
 							<image
-							  src="../../../../static/order/blank_house@2x.png"
+							  :src="item.estateImage"
 							  mode=""
 							/>
 						  <view class="houseInfo">
 						    <view class="header">
-						      大兴区康盛园10号楼2单元102
+						      {{item.address}}
 						    </view>
 						
 						    <view class="area-house">
-						      <text>201.2㎡</text>
+						      <text>{{item.insideArea}}㎡</text>
 						      <view class="split-line" />
-						      <text>3室2厅1厨</text>
+						      <text>{{item.houseStructureName}}</text>
 						    </view>
 							</view>
 						</view>
-						
+						<!-- 工匠 -->
 						<view  v-if="tabindex == 1" class="craftsmanAndRecommend" v-for="item2 in currentList" :key="item2.id">
 						  <view class="left">
 						    <image
 						      :src="item2.avatar"
 						      mode=""
+									@click="goToPersonalHome(item2)"
 						    />
 						    <view class="baseInfo">
 						      <view class="name1">
@@ -86,28 +89,28 @@
 								</view>
 						  </view>
 						</view>
-						
-						<view  v-if=" tabindex == 2"  >
+						<!-- 优先推荐 -->
+						<view  v-if=" tabindex == 2" v-for="item3 in recommendlist" :key="item3.id"  >
 							<view class="craftsmanAndRecommend">
 								<view class="left">
 									<image
-										src="../../../../static/order/blank_house@2x.png"
+										:src="item3.avatar"
 										mode=""
 									></image>
 									<view class="baseInfo">
 										<view class="name2">
-											打扮家给你意想不到的效果绝对的性价比最高
+											{{item3.nickName}}
 										</view>
 										<view class="icon">
-											大管家
+											{{item3.position}}
 										</view>
 									</view>
 								</view>
 								<view class="right">
-									<!-- <view class="button4">
+									<view class="button4" v-if="item3.isRecommend">
 										已优先推荐
-									</view> -->
-									<view class="button3">
+									</view>
+									<view class="button3" v-else>
 										<image src="../../../static/icon_recommend_@2x.png" mode=""></image>
 										优先推荐
 									</view>
@@ -117,8 +120,7 @@
 						
 					</view>
 				</scroll-view>
-
-      </swiper-item>
+			</swiper-item>
     </swiper>
   </view>
 </template>
@@ -206,6 +208,17 @@ export default {
 			})
 		},
 		
+		
+		
+		// 去工匠的个人主页
+		goToPersonalHome(data){
+			uni.redirectTo({
+			  url: "/sub-decorate/pages/person-page/person-page",
+			});
+		},
+		
+		
+		
 		onLoadMore() {
       if (this.loading || this.page[this.currentIndex] >= this.totalPage[this.currentIndex]) {
         return;
@@ -220,15 +233,6 @@ export default {
         this.triggered = false;
       }, 1000);
     },
-		
-		
-		
-		
-		
-		
-		
-		
-		
 		
 	},
 };
@@ -299,15 +303,15 @@ export default {
   flex-direction: column;
 }
 
+.line {
+	height: 2rpx;
+	background: #f4f4f4;
+}
 .scroll-view {
   flex: 1;
   height: 100%;
   background-color: #ffffff;
 
-  .line {
-    height: 2rpx;
-    background: #f4f4f4;
-  }
   .house-item {
     padding: 32rpx;
     background-color: #ffffff;
