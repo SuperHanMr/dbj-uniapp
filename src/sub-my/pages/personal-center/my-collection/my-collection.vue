@@ -17,8 +17,8 @@
         </view>
       </view>
       <view class="edit-btn" v-if="currentList.length > 1">
-        <text v-if="ShowMgrBrn" @click="ShowMgrBrn=!ShowMgrBrn">管理</text>
-        <text v-else @click="ShowMgrBrn=!ShowMgrBrn">完成</text>
+        <text v-if="ShowMgrBrn" @click="handleMgr">管理</text>
+        <text v-else @click="handleDone">完成</text>
       </view>
     </view>
 
@@ -44,7 +44,7 @@
           @scrolltolower="onLoadMore"
         >
           <waterfall
-            :list="caseList"
+            :list="productList"
             @selectedItem="onSelectedItem"
 						:showCheckIcon="!ShowMgrBrn"
 						
@@ -72,7 +72,7 @@
 		<!-- 底部按钮 -->
 		<view class="footer" v-if=" currentList.length > 1 && !ShowMgrBrn" :style="{paddingBottom:systemBottom}">
 			<view class="left">
-				<image  src="../../../../sub-home/static/checked@2x.png" mode=""></image>
+				<!-- <image  src="../../../../static/order/images/product_checked.png" mode=""></image> -->
 				<image  src="../../../../static/order/images/product_unChecked.png" mode="" />
 				<text>全选</text>
 			</view>
@@ -91,23 +91,18 @@
 
 <script>
 import{getGoodsList,getRealCaseList} from "../../../../api/order.js"
-import { caseList } from "../../../../api/home.js";
 export default {
   data() {
     return {
       triggered: false,
-      list: [
-        "阿道夫",
-        "刮大风",
-        "部分地方",
-        "不梵蒂冈",
-        "有人特",
-      ],
-      
       tabList: ["商品", "案例"],
       triggered: false, //控制刷新显示字段
       currentIndex: 0,
-      caseList: [],
+			
+			productList:[],//商品列表
+      caseList: [],//案例列表
+			
+			
       loading: false,
       page: 1,
       totalPage: 1,
@@ -126,20 +121,24 @@ export default {
   onShow() {
 		this.userId=getApp().globalData.userInfo.id
 		console.log("this.userId=",this.userId)
-    this.getCaseList();
+    // this.getCaseList();
+		this.getProductList()
   },
 	mounted(e) {
 		const menuButtonInfo = uni.getMenuButtonBoundingClientRect();
 		this.systemBottom = menuButtonInfo.bottom + 32 + "rpx";
 	},
+	watch:{
+		productList(){}
+	},
   computed: {
     currentList() {
       if (this.currentIndex == 0) {
 				this.title="确定要将选中商品取消收藏吗？"
-        return this.list;
+        return this.productList;
       } else {
 				this.title="确定要将选中案例取消收藏吗？"
-        return this.list;
+        return this.caseList;
       } 
     },
   },
@@ -157,7 +156,7 @@ export default {
 			// 	type:1,//(1,"收藏")
 			// 	bizType:7,//【真实案例】REAL_CASE(7,"真实案例")
 			// })
-      let caseItem = await caseList({
+      let caseItem = await getRealCaseList({
         page: this.page,
       });
       this.totalPage = caseItem.totalPage;
@@ -170,30 +169,55 @@ export default {
 			
       this.loading = false;
     },
+		
 		async getProductList(){
 			this.loading = true;
 			let productItem = await getGoodsList({
-				isReverse:true,
 				routeId:5002,//【收藏商品路由id：记录用户收藏的商品】
-				userId:this.userId,
 				type:1,//(1,"收藏")
 				bizType:1,//(1,"商品")
 			})
-			this.totalPage = caseItem.totalPage;
-			this.caseList = this.caseList.concat(caseItem.list);
+			// this.totalPage = productItem.totalPage;
+			this.productList = this.productList.concat(productItem);
+			
+			this.productList = this.productList.map(item=>{
+				item.isChecked = false
+				return item
+			})
+			console.log("this.productList=",this.productList)
 			this.loading = false;
 		},
+		
+		
 		
 		handleCancel(){
 			this.$refs.popup.open()	
 		},
+		//管理
+		handleMgr(){
+			this.ShowMgrBrn=!this.ShowMgrBrn
+			
+		},
+		//完成
+		handleDone(){
+			this.ShowMgrBrn=!this.ShowMgrBrn
+			this.productList = this.productList.map(item=>{
+				item.isChecked = false
+				return item
+			})
+			console.log("点击完成后的列表=",this.productList)
+		},
 		
-		
-		
-		
-		
-		onSelectedItem(item){
-			console.log("点击了收藏item")
+		// 点击单个item的操作
+		onSelectedItem(data){
+			const list = data.filter(item=>item.isChecked ==true).map((item2)=>{
+				return {
+					id:item2.id,
+					isChecked:item2.isChecked
+				}
+			})
+			console.log("选中的产品=",list)
+			console.log("点击了收藏后的list",data)
 		},
 		
 		confirmCancelCollection(){

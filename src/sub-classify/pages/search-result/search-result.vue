@@ -27,7 +27,7 @@
           <image :src="goodsItem.product.skuImage" class="goodsItemImg"></image>
           <view class="goodsInfo">
             <view class="goodsDesc">
-              <text class="goodsType">{{goodsItem.product.productType=== 1?"服务":"物品"}}</text>
+              <text class="goodsType">{{goodsItem.product.productType === 1?"物品":"服务"}}</text>
               {{goodsItem.product.spuName}}
             </view>
             <view class="goodsSpec">
@@ -71,7 +71,8 @@
         isShow: true,
         page: 1,
         timer: null,
-        sort: ""
+        sort: "",
+        isLoadMore: false,
       }
     },
     onShow(){
@@ -111,7 +112,7 @@
           getGoodsList(params).then((data) => {
             this.isPageReady = true
             this.totalPage = data.total
-            if(this.listArr.length){
+            if(this.isLoadMore){
               this.listArr = this.listArr.concat(data.page)
             }else {
               this.listArr = data.page
@@ -126,6 +127,7 @@
         }if(this.sort === "price_desc"){
           this.sort = ""
         }
+        this.isLoadMore = false
         this.getList()
       },
       loadMoreList() {
@@ -134,12 +136,14 @@
         }else {
           return
         }
+        this.isLoadMore = true
         this.getList()
       },
       clickInitSearch() {
         this.initSearch = false
       },
       searchConfirm(resText) {
+        this.isLoadMore = false
         this.searchText = resText.value
         this.getList()
       },
