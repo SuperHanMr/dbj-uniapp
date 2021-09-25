@@ -62,7 +62,7 @@
 							<image :src="goodsItem.image" @click="toGoodsDetail(goodsItem.skuId)" class="goodsItemImg"></image>
 							<view class="goodsInfo">
 								<view class="goodsDesc" @click="toGoodsDetail(goodsItem.skuId)">
-									<text class="goodsType">{{goodsItem.productType=== 1?"服务":"物品"}}</text>
+									<text class="goodsType">{{goodsItem.productType=== 1?"物品":"服务"}}</text>
 									{{goodsItem.spuName}}
 								</view>
 								<view class="goodsSpec" @click="openSpec(goodsItem.skuId)">
@@ -251,7 +251,7 @@
 				this.shopList.forEach(item=>{
 					item.skuList.forEach(ele=>{
 						if(ele.goodsChecked){
-							sum+=(+ele.buyCount*ele.price)
+							sum+=(+ele.buyCount*ele.price/100)
 						}
 					})
 				})
@@ -559,7 +559,9 @@
 										storeId: ele.storeId,
 										buyCount: ele.buyCount,
 										unit: ele.unitName,
-										level: 0
+										level: 0,
+										image: ele.image,
+										spuName: ele.spuName
 									})
 								}else{
 									this.entityList.push({
@@ -567,7 +569,9 @@
 										storeId: ele.storeId,
 										buyCount: ele.buyCount,
 										unit: ele.unitName,
-										level: 0
+										level: 0,
+										image: ele.image,
+										spuName: ele.spuName
 									})
 								}
 							}
@@ -575,7 +579,7 @@
 					})
 					this.serviceListShow = this.serviceList.length >= 2?this.serviceList.slice(0,2):this.serviceList.slice(0)
 					this.entityListShow = this.entityList.length >= 2?this.entityList.slice(0,2):this.entityList.slice(0)
-					
+					console.log(this.serviceListShow,this.entityListShow)
 					return flag
 				}
 				

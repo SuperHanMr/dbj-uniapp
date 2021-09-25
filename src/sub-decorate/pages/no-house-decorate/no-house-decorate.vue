@@ -201,12 +201,6 @@
         this.currentHouse = this.selectHouseData
         this.getServiceSku()
       }
-
-      const {
-        noHouseActuaryId,
-        noHouseDesignId,
-        noHouseCheckId
-      } = getApp().globalData;
     },
     methods: {
       getType(num) {
