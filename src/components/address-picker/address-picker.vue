@@ -62,7 +62,8 @@
     data() {
       return {
         addressInfo: {},
-        estateId: 0
+        estateId: 0,
+        timer: null
       };
     },
     // mounted() {
@@ -83,6 +84,13 @@
     },
     watch:{
       houseId(v) {
+        if(this.timer){
+          return
+        }
+        this.timer = setTimeout(() => {
+          clearTimeout(this.timer)
+          this.timer = null
+        }, 300)
         getAddressInfo(v).then((data) => {
           this.addressInfo = data
           let params = {

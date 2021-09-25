@@ -212,8 +212,6 @@
         this.originFrom = data.originFrom
       }) 
       // 小程序数据
-      // console.log(e, 'eee')
-      // this.houseId = 1084
       if(e.from) {
         this.originFrom = e.from
       }
@@ -229,7 +227,6 @@
       this.skuId = e.skuId
       this.storeId = e.storeId
       this.unit = e.unit
-      console.log(this.unit, "this.unit")
       this.goodDetailId = uni.getStorageSync('goodId')
     },
     onShow() {
@@ -308,7 +305,7 @@
         //   }]
         // }
         getDetailInfo(params).then((data) => {
-          this.totalPrice = data.totalPrice + data.totalDeliveryFee + data.totalHandlingFee + data.totalDeposit - data.totalDiscount
+          this.totalPrice = (data.totalPrice + data.totalDeliveryFee + data.totalHandlingFee + data.totalDeposit - data.totalDiscount).toFixed(2)
           let dataInfo = data
           this.orderInfo = dataInfo
           this.noStoreInfos = JSON.parse(JSON.stringify(dataInfo))
@@ -348,7 +345,6 @@
                     }
                 }
                 this.hasNoSendItem = true // 判断所有数据中有没有不可配送数据
-                console.log(this.noStoreInfos, "nostore")
               } else {
                 canStoreItem.skuInfos.push(skuItem)
                 this.totalGoodsNum += skuItem.buyCount
