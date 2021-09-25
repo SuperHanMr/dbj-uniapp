@@ -6,11 +6,18 @@
 					<label class="item-label">业主姓名</label>
 					<input class="uni-input" placeholder-class="placeholder" name="input" v-model="addData.contactName"
 						placeholder="请输入业主姓名" />
+            <view class="icon-clear" v-if="addData.contactName" @click.stop="clear('contactName')">
+              <uni-icons color="#c0c4cc" size="15" type="clear" />
+            </view>
+            
 				</view>
 				<view class="form-item">
 					<label class="item-label">手机号</label>
 					<input class="uni-input" placeholder-class="placeholder" type="number" name="input"
 						v-model="addData.contactPhone" placeholder="请输入手机号" />
+            <view class="icon-clear" v-if="addData.contactPhone" @click.stop="clear('contactPhone')">
+              <uni-icons color="#c0c4cc" size="15" type="clear" />
+            </view>
 				</view>
 				<view class="form-item">
 					<label class="item-label">所在地区</label>
@@ -22,6 +29,9 @@
 					<label class="item-label">小区</label>
 					<input class="uni-input" placeholder-class="placeholder" :disabled="!hasPoint||roomId&&isEdit" name="input"
 						v-model="addData.housingEstate" placeholder="房屋所在小区" />
+            <view class="icon-clear" v-if="addData.housingEstate" @click.stop="clear('housingEstate')">
+              <uni-icons color="#c0c4cc" size="15" type="clear" />
+            </view>
 				</view>
 			</view>
 			<view class="content">
@@ -29,6 +39,9 @@
 					<label class="item-label">楼栋房号</label>
 					<input class="uni-input" placeholder-class="placeholder" name="input" :disabled="roomId&&isEdit" v-model="addData.address"
 						placeholder="例:16号楼5层301" />
+            <view class="icon-clear" v-if="addData.address" @click.stop="clear('address')">
+              <uni-icons color="#c0c4cc" size="15" type="clear" />
+            </view>
 				</view>
 				<view class="form-item special">
 					<label class="item-label">楼型</label>
@@ -46,8 +59,12 @@
 					<!-- <text class="placeholder" v-if="!addData.insideArea">请输入房屋面积</text> -->
 					<view v-if="addData.insideArea" class="uni-input area-text"><text
 							style="visibility: hidden">{{addData.insideArea}}</text>m²</view>
+              <view class="icon-clear" v-if="addData.insideArea" @click.stop="clear('insideArea')">
+                <uni-icons color="#c0c4cc" size="15" type="clear" />
+              </view>
 					<input v-if="!visible" :maxlength="7" class="uni-input house-area" :disabled="roomId&&isEdit" placeholder-class="placeholder"
 						placeholder="请输入房屋面积" type="digit" name="input" v-model="addData.insideArea" />
+            
 				</view>
 				<view class="form-item special ele">
 					<label class="item-label">有无电梯</label>
@@ -55,6 +72,9 @@
 					</choose-btn>
 					<input v-if="!addData.hasLift" :disabled="roomId&&isEdit" placeholder-class="placeholder" class="ele-input" name="input"
 						v-model="addData.floors" placeholder="请输入楼层" />
+            <view class="icon-clear-spec"  v-if="!addData.hasLift&&addData.floors" @click.stop="clear('floors')">
+              <uni-icons color="#c0c4cc" size="15" type="clear" />
+            </view>
 				</view>
 			</view>
 			<view class="content bottom-switch">
@@ -351,6 +371,9 @@
           this.isEdit = res
         })
       },
+      clear(item){
+        this.addData[item] = ''
+      },
 			check() {
 				let data = {
 					...this.addData
@@ -444,6 +467,7 @@
 			height: auto;
 
 			.ele-input {
+        display: inline-block;
 				margin-bottom: 38rpx;
 				border: 1px solid #ebebeb;
 				width: 80%;
@@ -461,7 +485,28 @@
 			border-bottom: 1px solid #f2f2f2;
 			position: relative;
 			line-height: 116rpx;
-
+      .icon-clear{
+        display: inline-block;
+        width: 50rpx;
+        height: 50rpx;
+        text-align: center;
+        line-height: 50rpx;
+        position: absolute;
+        right: 0;
+        top: 50%;
+        margin-top: -25rpx;
+      }
+      .icon-clear-spec{
+        display: inline-block;
+        height: 84rpx;
+        line-height: 84rpx;
+        width: 50rpx;
+        margin-top: 0rpx;
+        position: absolute;
+        text-align: center;
+        right: 112rpx;
+        z-index: 10;
+      }
 			.item-label {
 				color: #333333;
 				font-size: 28rpx;
