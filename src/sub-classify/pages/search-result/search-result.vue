@@ -35,7 +35,7 @@
                     ￥
                     <text class="integer-price">{{goodsItem.product.skuPrice?String(goodsItem.product.skuPrice/100).split(".")[0]: "0"}}</text>
                     <text>.{{String(goodsItem.product.skuPrice/100).split(".")[1]?String(goodsItem.product.skuPrice/100).split(".")[1]: "00"}}</text>
-                    <text>/{{goodsItem.product.priceUnitName?String(goodsItem.product.skuPrice).priceUnitName:""}}</text>
+                    <text>/{{goodsItem.product.priceUnitName?goodsItem.product.priceUnitName:""}}</text>
                     <text class="level" v-if="goodsItem.product.hasBadgeLevel">中级服务</text>
                   </view>
             </view>    
