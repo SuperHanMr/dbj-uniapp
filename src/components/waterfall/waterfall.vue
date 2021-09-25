@@ -1,12 +1,12 @@
 <template>
 	<view class="waterfall">
 		<view class="left">
-			<block v-for="(item, index) in leftList" :key="index">
+			<block v-for="(item, index) in leftList" :key="item">
 				<waterfall-item :item="item" @detail="toDetail" @load="onImageLoad" :showCheckIcon="showCheckIcon" ></waterfall-item>
 			</block>
 		</view>
 		<view class="right">
-			<block v-for="(item, index) in rightList" :key="index">
+			<block v-for="(item, index) in rightList" :key="item">
 				<waterfall-item :item="item" @detail="toDetail" @load="onImageLoad" :showCheckIcon="showCheckIcon" ></waterfall-item>
 			</block>
 		</view>
@@ -31,6 +31,8 @@
 		components:{waterfallItem},
 		watch: {
 			list(n, o) {
+				console.log('~~~~~~~~~~~~~')
+				console.log(n);
 				let that = this;
 				let ol = o.length;
 				let nl = n.length;

@@ -32,7 +32,7 @@
       <swiper-item
         v-if="tabList.length > 0"
         v-for="(item,tabindex) in tabList"
-        :key="tabindex"
+        :key="item"
       >
         <scroll-view
           class="scroll-view"
@@ -44,7 +44,7 @@
           @scrolltolower="onLoadMore"
         >
           <waterfall
-            :list="productList"
+            :list="currentList"
             @selectedItem="onSelectedItem"
 						:showCheckIcon="!ShowMgrBrn"
 						
@@ -94,50 +94,46 @@ import{getGoodsList,getRealCaseList} from "../../../../api/order.js"
 export default {
   data() {
     return {
-      triggered: false,
       tabList: ["商品", "案例"],
       triggered: false, //控制刷新显示字段
+			
       currentIndex: 0,
 			
 			productList:[],//商品列表
       caseList: [],//案例列表
-			
+			page:[1,1],
+			totalPage:[1,1],
 			
       loading: false,
-      page: 1,
-      totalPage: 1,
-			
-			
-			
-			userId:"",
 			ShowMgrBrn:true,
-			isChecked:false,
 			title:"",
 			
 			systemBottom:"",
     };
   },
 	
-  onShow() {
-		this.userId=getApp().globalData.userInfo.id
-		console.log("this.userId=",this.userId)
-    // this.getCaseList();
-		this.getProductList()
-  },
 	mounted(e) {
 		const menuButtonInfo = uni.getMenuButtonBoundingClientRect();
 		this.systemBottom = menuButtonInfo.bottom + 32 + "rpx";
 	},
-	watch:{
-		productList(){}
+	
+  
+	
+	onShow() {
+		this.getProductList()
 	},
+	
   computed: {
+		// 通过判断currentIndex 返回不同的数组
     currentList() {
       if (this.currentIndex == 0) {
+				console.log("000000")
 				this.title="确定要将选中商品取消收藏吗？"
         return this.productList;
       } else {
+				console.log("1111111111")
 				this.title="确定要将选中案例取消收藏吗？"
+				console.log("案例列表数据=",this.caseList)
         return this.caseList;
       } 
     },
@@ -146,28 +142,44 @@ export default {
 		swiperChange(e) {
       let index = e.target.current || e.detail.current;
       this.currentIndex = index;
+			//index对应的list数据是否为空 为空的话请求数据 有数据的话就不请求了
+			if(this.currentIndex  ==  0){
+				if(this.productList.length < 1)	this.getProductList()
+			}else{
+				if(this.caseList.length < 1)	this.getCaseList();
+			}
     },
+		
 		async getCaseList() {
       this.loading = true;
+			let params={
+				routeId:5001,//【收藏真实案例路由id，记录用户收藏的真实案例】
+				type:1,//(1,"收藏")
+				bizType:7,//【真实案例】REAL_CASE(7,"真实案例")
+			}
+			getRealCaseList(params).then(data=>{
+				this.caseList = this.caseList.concat(data)
+				console.log("this.caseList-0=",this.caseList)
+				this.caseList = this.caseList.map(item=>{
+					item.isChecked = false
+					return item
+				})
+				console.log("this.caseList-1=",this.caseList)
+				this.loading = false;
+			})
+			
+			
 			// let caseItem =await getRealCaseList({
-			// 	isReverse:true,
 			// 	routeId:5001,//【收藏真实案例路由id，记录用户收藏的真实案例】
-			// 	userId:this.userId,
 			// 	type:1,//(1,"收藏")
 			// 	bizType:7,//【真实案例】REAL_CASE(7,"真实案例")
 			// })
-      let caseItem = await getRealCaseList({
-        page: this.page,
-      });
-      this.totalPage = caseItem.totalPage;
-      this.caseList = this.caseList.concat(caseItem.list);
-			
-			this.caseList = this.caseList.map(item=>{
-				item.isChecked = true
-				return item
-			})
-			
-      this.loading = false;
+			//   this.caseList = this.caseList.concat(caseItem);
+			// this.caseList = this.caseList.map(item=>{
+			// 	item.isChecked = false
+			// 	return item
+			// })
+   //    this.loading = false;
     },
 		
 		async getProductList(){
@@ -179,7 +191,6 @@ export default {
 			})
 			// this.totalPage = productItem.totalPage;
 			this.productList = this.productList.concat(productItem);
-			
 			this.productList = this.productList.map(item=>{
 				item.isChecked = false
 				return item
@@ -196,7 +207,11 @@ export default {
 		//管理
 		handleMgr(){
 			this.ShowMgrBrn=!this.ShowMgrBrn
-			
+			this.productList = this.productList.map(item=>{
+				item.isChecked = false
+				return item
+			})
+			console.log("点击管理后的列表=",this.productList)
 		},
 		//完成
 		handleDone(){
@@ -216,6 +231,7 @@ export default {
 					isChecked:item2.isChecked
 				}
 			})
+			this.productList=data
 			console.log("选中的产品=",list)
 			console.log("点击了收藏后的list",data)
 		},
@@ -229,11 +245,15 @@ export default {
 		
 		
     onLoadMore() {
-      if (this.loading || this.page >= this.totalPage) {
-        return;
-      }
-      this.page++;
-      this.getCaseList();
+      // if (this.loading || this.page >= this.totalPage) {
+      //   return;
+      // }
+      // this.page++;
+			if(this.loading) return 
+			if(this.currentList.length<1){
+				this.currentIndex ==0 ? this.getProductList() : this.getCaseList();
+			}
+      
     },
 		onRefresh(e) {
       this.triggered = true;
