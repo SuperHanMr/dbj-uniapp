@@ -5,10 +5,7 @@
 			<view class="noGoodsText">
 				购物车空空如也，快去逛逛吧～
 			</view>
-			<view class="goShopping" @click="toShoppingMall">
-				去逛逛
-				<!-- <text class="text">去逛逛</text> -->
-			</view>
+			<view class="goShopping" @click="toShoppingMall">去逛逛</view>
 		</view>
 		<view class="shoppingCart" v-else>
 			<uni-popup
@@ -147,7 +144,7 @@
 					<image :src="disabldSkuItem.image" class="disabldSkuImg"></image>
 					<view class="disabledSkuInfo">
 						<view class="disabledSkuDesc">
-							<span class="disabledSkuType">服务</span>
+							<span class="disabledSkuType">{{disabldSkuItem.productType===1?'物品':'服务'}}</span>
 							{{disabldSkuItem.spuName}}
 						</view>
 						<view class="disabledSkuSpec">{{disabldSkuItem.skuName}}</view>
@@ -220,8 +217,8 @@
 				currentShopIndex:0,
 				currentGoodsIndex:0,
 				showMask:false,
-				serviceChecked:true,
-				entityChecked:false,
+				serviceChecked:false,
+				entityChecked:true,
 				serviceList:[],
 				entityList:[],
 				serviceListShow:[],
@@ -307,9 +304,9 @@
 				console.log('跳转到店铺详情页')
 			},
 			toGoodsDetail(skuId,isDisabled){
-				isDisabled ? uni.setStorageSync( 'fromShopCart', {skuId,isDisabled:true} ): uni.setStorageSync( 'fromShopCart', {skuId,isDisabled:false} )
 				uni.navigateTo({
-					url: '/sub-classify/pages/goods-detail/goods-detail'
+					url: isDisabled ? `/sub-classify/pages/goods-detail/goods-detail?goodId=${skuId}&isDisabled=1`:
+					`/sub-classify/pages/goods-detail/goods-detail?goodId=${skuId}&isDisabled=0`
 				})
 			},
 			requestPage(){
@@ -553,7 +550,7 @@
 									level: 0
 								})
 								//根据productType商品类型划分为服务类和实物类
-								if(ele.productType === 1){
+								if(ele.productType === 2){
 									this.serviceList.push({
 										skuId: ele.skuId,
 										storeId: ele.storeId,

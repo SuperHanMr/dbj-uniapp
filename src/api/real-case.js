@@ -52,6 +52,9 @@ export function expandReplies(params) {
     params
   });
 }
+export function createReply(params){
+	return request.post(`/app/generalComment/save`,params)
+}
 export function getSigneddates(projectId,month) {
   return request.get(`/pm/app/decorate/calendar/getClientMonthTotal/${projectId}/${month}`, {});
 }
@@ -66,4 +69,10 @@ export function getMemoDetail(projectId,memoId) {
 }
 export function createMemo(params){
 	return request.post(`/pm/app/memo/save`,params)
+}
+export function getAddressBook(projectId) {
+  return request.get(`/pm/app/addressBook/list/${projectId}`, {});
+}
+export function removeComment(commentId) {
+  return request.delete(`/app/generalComment/${commentId}`, {});
 }

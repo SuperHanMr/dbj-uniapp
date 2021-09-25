@@ -10,7 +10,7 @@
       <view class="form-container">
         <view v-for="(item,index) in formItems" class="form-item">
           <view :key="index" class="form-item__label">
-            {{ item.label }}：
+            {{ item.label }}
           </view>
           <view class="form-item__content">
             {{ item.content }}
@@ -18,9 +18,9 @@
         </view>
       </view>
     </view>
-    <view v-if="template.buttons && template.buttons.length" class="form-template__footer">
+    <view v-if="template.body.actions && template.body.actions.length" class="form-template__footer">
       <view 
-        v-for="(btn, index) in template.buttons" 
+        v-for="(btn, index) in template.body.actions" 
         :key="index" 
         class="oper-btn"
       >
@@ -50,16 +50,16 @@ export default {
       return this.message.payloadData.params || {};
     },
     title() {
-      return compile(this.template.title)(this.data);
+      return compile(this.template.body.title)(this.data);
     },
     tip() {
-      return compile(this.template.tip)(this.data);
+      return compile(this.template.body.subTitle)(this.data);
     },
     formItems() {
-      return (this.template.formItems || []).map(item => {
+      return (this.template.body.labels || []).map(item => {
         return {
           label: item.label,
-          content: compile(item.content)(this.data)
+          content: compile(item.value)(this.data)
         }
       })
     }

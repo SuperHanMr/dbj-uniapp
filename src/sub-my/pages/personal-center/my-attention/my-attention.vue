@@ -14,16 +14,18 @@
 				<view class="bottom-icon" />
       </view>
     </view>
+		 <view class="line" />
     <swiper
       class="swiper"
       :current="currentIndex"
       :duration="200"
       @change="swiperChange"
+			:style="{paddingBottom:systemBottom,backgroundColor:currentList.length < 1?'#ffffff':'#f5f6f6'}"
     >
       <swiper-item
         v-for="(item,tabindex) in tabList"
         :key="item"
-      >
+			>
         <scroll-view
           class="scroll-view"
           scroll-y="true"
@@ -32,84 +34,83 @@
           :refresher-triggered="triggered"
           @refresherrefresh="onRefresh"
           @scrolltolower="onLoadMore"
-        >
-          <view class="line" />
+				>
+         
           
-          <view class="empty-container" v-if="caseList.length>1">
+          <view class="empty-container" v-if="currentList.length < 1">
 						<image src="../../../../static/order/blank_house@2x.png" mode=""></image>
 						<text v-if="tabindex==0">您还没有关注房子</text>
 						<text v-if="tabindex==1">您还没有关注工匠</text>
 						<text v-if="tabindex==2">您还没有关注优先推荐</text>
 					</view>
 					
-					<view  v-else>
-						<view v-if="tabindex==0"  class="house-item">
+					<view  v-else >
+						<!-- 房屋 -->
+						<view v-if="tabindex==0"  class="house-item" v-for="item in houselist" :key="item.id">
 							<image
-							  src="../../../../static/order/blank_house@2x.png"
+							  :src="item.estateImage"
 							  mode=""
 							/>
 						  <view class="houseInfo">
 						    <view class="header">
-						      大兴区康盛园10号楼2单元102
+						      {{item.address}}
 						    </view>
 						
 						    <view class="area-house">
-						      <text>201.2㎡</text>
+						      <text>{{item.insideArea}}㎡</text>
 						      <view class="split-line" />
-						      <text>3室2厅1厨</text>
+						      <text>{{item.houseStructureName}}</text>
 						    </view>
-						
-						    
-						  </view>
-						  
+							</view>
 						</view>
-						
-						<view  v-if="tabindex == 1" class="craftsmanAndRecommend">
+						<!-- 工匠 -->
+						<view  v-if="tabindex == 1" class="craftsmanAndRecommend" v-for="item2 in currentList" :key="item2.id">
 						  <view class="left">
 						    <image
-						      src="../../../../static/order/blank_house@2x.png"
+						      :src="item2.avatar"
 						      mode=""
+									@click="goToPersonalHome(item2)"
 						    />
 						    <view class="baseInfo">
 						      <view class="name1">
-						        哈哈哈哈哈哈大王
+						       {{item2.nickName}}
 						      </view>
 						      <view class="icon">
-						        大管家
+						        {{item2.position}}
 						      </view>
 						    </view>
 						  </view>
 						  <view class="right">
-						    <!-- <view class="button1">
-									+关注
-								</view> -->
-						    <view class="button2">
+						    <view class="button2" v-if="item2.isFocused">
 						      已关注
 						    </view>
+						    <view class="button1" v-else>
+									+关注
+								</view>
 						  </view>
 						</view>
-						
-						<view  v-if=" tabindex == 2"  >
+						<!-- 优先推荐 -->
+						<view  v-if=" tabindex == 2" v-for="item3 in recommendlist" :key="item3.id"  >
 							<view class="craftsmanAndRecommend">
 								<view class="left">
 									<image
-										src="../../../../static/order/blank_house@2x.png"
+										:src="item3.avatar"
 										mode=""
 									></image>
 									<view class="baseInfo">
 										<view class="name2">
-											打扮家给你意想不到的效果绝对的性价比最高
+											{{item3.nickName}}
 										</view>
 										<view class="icon">
-											大管家
+											{{item3.position}}
 										</view>
 									</view>
 								</view>
 								<view class="right">
-									<!-- <view class="button4">
+									<view class="button4" v-if="item3.isRecommend">
 										已优先推荐
-									</view> -->
-									<view class="button3">
+									</view>
+									<view class="button3" v-else>
 										<image src="../../../static/icon_recommend_@2x.png" mode=""></image>
 										优先推荐
 									</view>
@@ -117,14 +118,9 @@
 							</view>
 						</view>
 						
-						
-						
-						
 					</view>
-				
-        </scroll-view>
-
-      </swiper-item>
+				</scroll-view>
+			</swiper-item>
     </swiper>
   </view>
 </template>
@@ -134,10 +130,7 @@ import {getCraftsmanList, getHouseList, getRecommendList } from "../../../../api
 export default {
   data() {
     return {
-      triggered: false,
-     
-      
-      tabList: ["房子", "工匠", "优先推荐"],
+			tabList: ["房子", "工匠", "优先推荐"],
       triggered: false, //控制刷新显示字段
       currentIndex: 0,
 			houselist:[],
@@ -147,100 +140,68 @@ export default {
       totalPage: [1,1,1],
       loading: false,
 			
-      page: 1,
-			rows:10,
-			isReverse:true,//默认ture 该值为true时，获取我关注的、我收藏的列表，
-			routeId:"",//
-			userId:"",
-			
-			options:[
-				{
-					text: '取消',
-					style: {
-							backgroundColor: '#007aff'
-					}
-				},
-				{
-					text: '确认取消关注',
-					style: {
-							backgroundColor: '#dd524d'
-					}
-				}
-			],
-    };
+      routeId:"",
+			systemBottom:"",
+		};
   },
   onShow() {
-		this.userId = getApp().globalData.userInfo.id
-		console.log("this.userId=",this.userId)
-		this.recommendList();
+		this.houseList();
+	},
+	mounted(e) {
+		const menuButtonInfo = uni.getMenuButtonBoundingClientRect();
+		this.systemBottom = menuButtonInfo.bottom + "rpx";
 	},
 	computed: {
 		currentList() {
 			if (this.currentIndex == 0) {
-				return this.caseList;
+				return this.houselist;
 			} else if (this.currentIndex == 1) {
-				return this.caseList;
-			} else if (this.currentIndex == 2) {
-				return this.caseList;
+				return this.craftsmanlist;
 			} else {
-				return this.caseList;
-			}
+				return this.recommendlist;
+			} 
 		},
 	},
 		
-		
-  watch: {
-    currentIndex() {
-      if (this.currentIndex == 0) {
-        this.houseList();
-      } else if (this.currentIndex == 1) {
-        this.craftsmanList();
-      } else {
-         this.recommendList()
-      } 
-    },
-  },
-	
   methods: {
     swiperChange(e) {
       let index = e.target.current || e.detail.current;
       this.currentIndex = index;
-    },
+			switch(this.currentIndex){
+				case 0: 
+					this.houselist.length <1 ? this.houseList() :""
+					break;
+				case 1: 
+					this.craftsmanlist.length <1 ? this.craftsmanList() :""
+					break;
+				case 2:
+					this.recommendlist.length <1 ? this.recommendList() :""
+					break;
+			}
+		},
 		
 		// 房屋请求
 		houseList(){
 			this.loading = true;
-			getHouseList({
-				routeId:1002,//
-			}).then(data=>{
+			getHouseList({routeId:1002}).then(data=>{
 				this.houselist = data
 				this.loading = false
 				console.log("data= ",data)
 			})
 		},
-		
 		// 工匠请求
 		craftsmanList(){
 			this.loading = true;
-			getCraftsmanList({
-				
-				routeId:1001,
-				
-			}).then(data=>{
+			getCraftsmanList({routeId:1001}).then(data=>{
 				this.craftsmanlist = data
 				this.loading = false
 				console.log("data= ",data)
 			})
 		},
-		
 		// 优先推荐请求
     recommendList() {
       this.loading = true;
-			getRecommendList({
-				
-				routeId:2001,
-			
-			}).then(data=>{
+			getRecommendList({routeId:2001}).then(data=>{
 				this.recommendlist = data
 				this.loading = false
 				console.log("data= ",data)
@@ -249,16 +210,21 @@ export default {
 		
 		
 		
+		// 去工匠的个人主页
+		goToPersonalHome(data){
+			uni.redirectTo({
+			  url: "/sub-decorate/pages/person-page/person-page",
+			});
+		},
 		
-		 		
 		
 		
-    onLoadMore() {
+		onLoadMore() {
       if (this.loading || this.page[this.currentIndex] >= this.totalPage[this.currentIndex]) {
         return;
       }
       this.page[this.currentIndex]++;
-      this.getCaseList();
+      // this.getCaseList();
     },
 		
     onRefresh(e) {
@@ -267,15 +233,6 @@ export default {
         this.triggered = false;
       }, 1000);
     },
-		
-		
-		
-		
-		
-		
-		
-		
-		
 		
 	},
 };
@@ -346,15 +303,15 @@ export default {
   flex-direction: column;
 }
 
+.line {
+	height: 2rpx;
+	background: #f4f4f4;
+}
 .scroll-view {
   flex: 1;
   height: 100%;
   background-color: #ffffff;
 
-  .line {
-    height: 2rpx;
-    background: #f4f4f4;
-  }
   .house-item {
     padding: 32rpx;
     background-color: #ffffff;
