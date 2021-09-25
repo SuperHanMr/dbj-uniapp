@@ -78,6 +78,7 @@
       </view>
       <view class="content">
         <personService ></personService>
+        <personEvaluate></personEvaluate>
       </view>
     </view>
   </view>
@@ -86,6 +87,7 @@
 <script>
   import personIntroduce from './components/person-introduce.vue'
   import personService from './components/person-service.vue'
+  import personEvaluate from './components/person-evaluate.vue'
   import {
     getCaseList
   } from '@/api/real-case.js'
@@ -95,7 +97,8 @@
   export default {
     components: {
       personIntroduce,
-      personService
+      personService,
+      personEvaluate
     },
     data() {
       return {
@@ -160,6 +163,7 @@
         }).exec()
       },
       back(){
+        console.log(1111)
         uni.navigateBack({
           
         })
@@ -196,7 +200,7 @@
       display: flex;
       align-items: center;
       justify-content: center;
-
+      z-index: 2;
       image {
         width: 32rpx;
         height: 32rpx;

@@ -6,11 +6,17 @@
     >
     </custom-navbar>
     <view
+      v-if="userInfo && userInfo.avatar"
       class="backgroundStyle"
-      :style="{backgroundImage:`url(${userInfo.avatar})`,backgroundSize: 'cover'}"
+      :style="{backgroundImage:userInfo.avatar?`url(${userInfo.avatar})`:url(),backgroundSize: 'cover'}"
     >
       <view class="mask" />
-      <!-- <image :src="userInfo.avatar"  mode=""></image> -->
+    </view>
+    <view
+      v-else
+      class="backgroundStyle"
+      style="backgroundColor:#cac8c8"
+    >
     </view>
     <view class="my-header">
       <view class="avatar-img">

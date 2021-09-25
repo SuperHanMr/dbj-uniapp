@@ -1,12 +1,12 @@
 <template>
 	<view class="waterfall">
 		<view class="left">
-			<block v-for="(item, index) in leftList" :key="index">
+			<block v-for="(item, index) in leftList" :key="item">
 				<waterfall-item :item="item" @detail="toDetail" @load="onImageLoad" :showCheckIcon="showCheckIcon" ></waterfall-item>
 			</block>
 		</view>
 		<view class="right">
-			<block v-for="(item, index) in rightList" :key="index">
+			<block v-for="(item, index) in rightList" :key="item">
 				<waterfall-item :item="item" @detail="toDetail" @load="onImageLoad" :showCheckIcon="showCheckIcon" ></waterfall-item>
 			</block>
 		</view>
@@ -35,6 +35,8 @@
 				let ol = o.length;
 				let nl = n.length;
 				if (nl > ol) {
+				console.log('~~~~~~~~~~~~~')
+				console.log(n);
 					if (this.leftHeight > this.rightHeight) {
 						that.rightList.push(that.list[ol]);
 					} else {
@@ -44,13 +46,23 @@
 				}
 			}
 		},
+		// computed:{
+		// 	checkList(){
+		// 		let itemList = this.list.filter(item=>{
+		// 			return item.isChecked == true
+		// 		})
+		// 		return itemList
+		// 	}
+		// },
 		data() {
 			return {
 				leftList: [],
 				rightList: [],
 				itemIndex: 0,
 				leftHeight: 0,
-				rightHeight: 0
+				rightHeight: 0,
+				
+				checkedList:[],
 			};
 		},
 		created() {
@@ -58,14 +70,19 @@
 				this.leftList = [this.list[0]]; //第一张图片入栈
 			}
 		},
+		
 		destroyed() {
 			console.log('destroy');
 		},
+		
 		methods: {
-			toDetail(item) {
-				console.log("item=",item)
-				this.$emit('selectedItem', item)
+			toDetail(data) {
+				let index = this.list.findIndex(item=>item.id == data.id)
+				this.list[index].isChecked = data.isChecked
+				this.$emit('selectedItem',this.list)
 			},
+			
+			
 			onImageLoad(e) {
 				if (!e) {
 					console.log('无图片！！！！');

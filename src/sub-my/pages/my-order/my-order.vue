@@ -287,18 +287,13 @@
 </template>
 
 <script>
-import {
-  getOrderList,
-  orderPay,
-  cancelOrder,
-  confirmReceiptOrder,
-} from "@/api/order.js";
+import { getOrderList, orderPay, cancelOrder, confirmReceiptOrder,} from "@/api/order.js";
 export default {
   data() {
     return {
       tabList: ["全部", "待付款", "进行中", "已完成", "已关闭"],
       triggered: false, //控制刷新显示字段
-      isActive: true,
+     
 
       currentIndex: 4,
       orderStatus: -1, //订单状态（-1全部,0待付款，1进行中，2已完成 3已关闭）
@@ -347,7 +342,8 @@ export default {
       }
     },
   },
-  onLoad(e) {
+ 
+	onLoad(e) {
     if (e.index) {
       if (e.index == "99") {
         console.log("e=", e);
@@ -360,15 +356,30 @@ export default {
   },
 
   methods: {
-    handlePrice(price) {
-      let list = String(price).split(".");
-      if (list.length == 1) {
-        return [list[0], "00"];
-      } else {
-        return [list[0], list[1]];
-      }
-    },
-
+		swiperChange(e) {
+		  let index = e.target.current || e.detail.current;
+		  this.currentIndex = index;
+		  //index对应的list数据是否为空 为空的话请求数据 有数据的话就不请求了
+		  switch (this.currentIndex) {
+		    case 0:
+		      if (this.orderList0.length < 1) this.getOrderList();
+		      break;
+		    case 1:
+		      if (this.orderList1.length < 1) this.getOrderList();
+		      break;
+		    case 2:
+		      if (this.orderList2.length < 1) this.getOrderList();
+		      break;
+		    case 3:
+		      if (this.orderList3.length < 1) this.getOrderList();
+		      break;
+		    case 4:
+		      if (this.orderList4.length < 1) this.getOrderList();
+		      break;
+		  }
+		},
+		
+    
     goMultiplePay() {
       uni.navigateTo({
         url: "order-success/order-success",
@@ -396,29 +407,7 @@ export default {
       }
     },
 
-    swiperChange(e) {
-      let index = e.target.current || e.detail.current;
-      this.currentIndex = index;
-      //index对应的list数据是否为空 为空的话请求数据 有数据的话就不请求了
-      switch (this.currentIndex) {
-        case 0:
-          if (this.orderList0.length < 1) this.getOrderList();
-          break;
-        case 1:
-          if (this.orderList1.length < 1) this.getOrderList();
-          break;
-        case 2:
-          if (this.orderList2.length < 1) this.getOrderList();
-          break;
-        case 3:
-          if (this.orderList3.length < 1) this.getOrderList();
-          break;
-        case 4:
-          if (this.orderList4.length < 1) this.getOrderList();
-          break;
-      }
-    },
-
+    
     gotoShop() {
       console.log("去店铺首页！！！！店铺首页在第二期诶，暂时跳不了");
     },
@@ -456,8 +445,7 @@ export default {
       console.log("onLoadMore!!!!!!!!!!!!!!");
       if (this.loading) return;
       // 这个是排除请求回来没有数据的情况
-      if (!this.requestedDataLength && this.lastId[this.currentIndex] > 0)
-        return;
+      if (!this.requestedDataLength && this.lastId[this.currentIndex] > 0) return;
       this.getOrderList();
     },
 

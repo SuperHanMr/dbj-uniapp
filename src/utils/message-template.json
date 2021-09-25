@@ -1,38 +1,2731 @@
 {
-  "group_questionnaire_message": {
+  "version": 1,
+  "group_share_visiting_card": {
+    "type": "group_share_visiting_card",
     "template": "card",
-    "title": "装修需求问卷",
-    "tip": "温馨提示：你好，${name}，为了更好的了解您的需求",
-    "icon": "https://ali-image.dabanjia.com/static/mp/dabanjia/images/message/ic_customer_service@2x.png",
-    "buttons": [
-      {
-        "title": "查看详情1",
-        "href": ""
+    "summary": "名片",
+    "body": {
+      "title": "${name}",
+      "iconUrl": "${avatar}",
+      "isLocalIcon": false,
+      "description": "名片",
+      "labels": [
+        {
+          "label": "",
+          "value": "${jobs}"
+        }
+      ],
+      "actions": [
+        {
+          "title": "查看详情",
+          "type": "native",
+          "userType": 0,
+          "targetRouter": "personal",
+          "params": {
+            "userId": "${zeusId}",
+            "groupId": "personal",
+            "canSendMessage": true
+          }
+        }
+      ]
+    }
+  },
+  "single_share_visiting_card": {
+    "type": "single_share_visiting_card",
+    "template": "card",
+    "summary": "名片",
+    "body": {
+      "title": "${name}",
+      "iconUrl": "${avatar}",
+      "isLocalIcon": false,
+      "description": "名片",
+      "labels": [
+        {
+          "label": "",
+          "value": "${jobs}"
+        }
+      ],
+      "actions": [
+        {
+          "title": "查看详情",
+          "type": "native",
+          "userType": 0,
+          "targetRouter": "personal",
+          "params": {
+            "userId": "${zeusId}",
+            "groupId": "personal",
+            "canSendMessage": true
+          }
+        }
+      ]
+    }
+  },
+  "group_questionnaire_message": {
+    "type": "group_questionnaire_message",
+    "template": "card",
+    "summary": "${name}",
+    "body": {
+      "title": "${name}",
+      "iconUrl": "lib/assets/im/ic_cus_msg_questionnaire.png",
+      "isLocalIcon": true,
+      "labels": [
+        {
+          "label": "温馨提示：",
+          "value": "为了更好的了解您的需求，请完整填写问卷~"
+        }
+      ],
+      "actions": [
+        {
+          "title": "去填写",
+          "type": "custom",
+          "userType": 1,
+          "params": {
+            "questionnaireId": "${questionnaireRecordId}",
+            "showAppBar": true
+          }
+        }
+      ]
+    }
+  },
+  "single_questionnaire_message": {
+    "type": "single_questionnaire_message",
+    "template": "card",
+    "summary": "${name}",
+    "body": {
+      "title": "${name}",
+      "iconUrl": "lib/assets/im/ic_cus_msg_questionnaire.png",
+      "isLocalIcon": true,
+      "labels": [
+        {
+          "label": "温馨提示：",
+          "value": "为了更好的了解您的需求，请完整填写问卷~"
+        }
+      ],
+      "actions": [
+        {
+          "title": "去填写",
+          "type": "custom",
+          "userType": 1,
+          "params": {
+            "questionnaireId": "${questionnaireRecordId}",
+            "showAppBar": true
+          }
+        }
+      ]
+    }
+  },
+  "group_questionnaire_result_message": {
+    "type": "group_questionnaire_result_message",
+    "template": "card",
+    "summary": "${name}已提交",
+    "body": {
+      "title": "${name}",
+      "iconUrl": "lib/assets/im/ic_cus_msg_questionnaire.png",
+      "isLocalIcon": true,
+      "description": "已提交",
+      "actions": [
+        {
+          "title": "查看详情",
+          "type": "custom",
+          "userType": 0,
+          "params": {
+            "questionnaireId": "${questionnaireRecordId}",
+            "answerId": "${answerId}",
+            "showAppBar": true
+          }
+        }
+      ]
+    }
+  },
+  "single_questionnaire_result_message": {
+    "type": "single_questionnaire_result_message",
+    "template": "card",
+    "summary": "${name}已提交",
+    "body": {
+      "title": "${name}",
+      "iconUrl": "lib/assets/im/ic_cus_msg_questionnaire.png",
+      "isLocalIcon": true,
+      "description": "已提交",
+      "actions": [
+        {
+          "title": "查看详情",
+          "type": "custom",
+          "userType": 0,
+          "params": {
+            "questionnaireId": "${questionnaireRecordId}",
+            "answerId": "${answerId}",
+            "showAppBar": true
+          }
+        }
+      ]
+    }
+  },
+  "sys_identity_authentication_success": {
+    "type": "sys_identity_authentication_success",
+    "template": "form",
+    "summary": "身份认证成功",
+    "body": {
+      "title": "认证成功",
+      "subTitle": "您的身份认证已通过，您还需要通过技能认证才能开始为业主服务，请完成您的技能认证。"
+    }
+  },
+  "sys_identity_authentication_failed": {
+    "type": "sys_identity_authentication_failed",
+    "template": "form",
+    "summary": "身份认证失败",
+    "body": {
+      "title": "认证驳回",
+      "subTitle": "您的身份认证未通过，未通过原因：${reason}。请您重新进行认证。"
+    }
+  },
+  "sys_skill_certification_success": {
+    "type": "sys_skill_certification_success",
+    "template": "form",
+    "summary": "技能申请已通过",
+    "body": {
+      "title": "认证成功",
+      "subTitle": "您的技能申请已通过。"
+    }
+  },
+  "sys_skill_certification_failed": {
+    "type": "sys_skill_certification_failed",
+    "template": "form",
+    "summary": "技能申请被驳回",
+    "body": {
+      "title": "认证驳回",
+      "subTitle": "技能认证${jobName}：已驳回。驳回原因：${reason}。"
+    }
+  },
+  "single_quotation_serve_confirm_and_pay": {
+    "type": "single_quotation_serve_confirm_and_pay",
+    "template": "card",
+    "summary": "${quotationName}",
+    "body": {
+      "title": "${quotationName}",
+      "iconUrl": "lib/assets/im/ic_cus_msg_quotation.png",
+      "isLocalIcon": true,
+      "actions": [
+        {
+          "title": "查看详情",
+          "type": "h5",
+          "userType": 0,
+          "targetUrl": "app-pages/quotation/detail.html?quotationId=${quotationId}&type=1",
+          "isNewH5Url": true,
+          "params": {
+            "showAppBar": false
+          }
+        }
+      ]
+    }
+  },
+  "group_serve_record_start_apply": {
+    "type": "group_serve_record_start_apply",
+    "template": "card",
+    "summary": "${servicerNickName}申请服务开始",
+    "body": {
+      "title": "${servicerNickName}申请服务开始",
+      "iconUrl": "lib/assets/im/ic_cus_msg_apply_start.webp",
+      "isLocalIcon": true,
+      "cardAction": {
+        "type": "h5",
+        "userType": 0,
+        "targetUrl": "redirect/service-detail.html?id=${serveId}&type=${serveType}&tabType=3",
+        "params": {
+          "showAppBar": false
+        }
       },
-      {
-        "title": "确认完成",
-        "href": ""
-      }
-    ]
+      "actions": [
+        {
+          "title": "查看详情",
+          "type": "h5",
+          "userType": 1,
+          "targetUrl": "construction-quotation/announcedetail.html?serveId=${serveId}&type=2",
+          "params": {
+            "showAppBar": false
+          }
+        }
+      ]
+    }
+  },
+  "single_serve_record_start_apply": {
+    "type": "single_serve_record_start_apply",
+    "template": "card",
+    "summary": "${servicerNickName}申请开始${orderTypeName}服务",
+    "body": {
+      "title": "${servicerNickName}申请开始${orderTypeName}服务",
+      "iconUrl": "lib/assets/im/ic_cus_msg_apply_start.webp",
+      "isLocalIcon": true,
+      "cardAction": {
+        "type": "h5",
+        "userType": 0,
+        "targetUrl": "redirect/service-detail.html?id=${serveId}&type=${serveType}&tabType=3",
+        "params": {
+          "showAppBar": false
+        }
+      },
+      "actions": [
+        {
+          "title": "查看详情",
+          "type": "h5",
+          "userType": 1,
+          "targetUrl": "construction-quotation/announcedetail.html?serveId=${serveId}&type=2",
+          "params": {
+            "showAppBar": false
+          }
+        }
+      ]
+    }
   },
   "sys_serve_record_new": {
+    "type": "sys_serve_record_new",
     "template": "form",
-    "title": "新的服务订单？",
-    "tip": "xxxxxxxxx",
-    "formItems": [
-      {
-        "label": "用户姓名",
-        "content": "${customerNickName}${customerGender}"
+    "summary": "您收到了一个新的${orderTypeName}服务单",
+    "body": {
+      "title": "新服务单",
+      "subTitle": "您收到了一个新的${orderTypeName}服务单",
+      "labels": [
+        {
+          "label": "商品信息：",
+          "value": "${goodsName}"
+        },
+        {
+          "label": "客户信息：",
+          "value": "${customerNickName} ${customerGender}"
+        },
+        {
+          "label": "房屋信息：",
+          "value": "${estate}"
+        }
+      ],
+      "actions": [
+        {
+          "title": "查看详情",
+          "type": "h5",
+          "userType": 0,
+          "targetUrl": "redirect/service-detail.html?id=${serveId}&type=${serveType}",
+          "params": {
+            "showAppBar": false
+          }
+        }
+      ]
+    }
+  },
+  "sys_serve_record_delivery": {
+    "type": "sys_serve_record_delivery",
+    "template": "form",
+    "summary": "您的${num}件商品已发货",
+    "body": {
+      "title": "发货通知",
+      "subTitle": "您的${num}件商品已发货",
+      "labels": [
+        {
+          "label": "商品信息：",
+          "value": "${goodsName}"
+        },
+        {
+          "label": "物流公司：",
+          "value": "${expressCompany}"
+        },
+        {
+          "label": "物流单号：",
+          "value": "${expressNo}"
+        },
+        {
+          "label": "发货时间：",
+          "value": "${deliveryTime}"
+        },
+        {
+          "label": "发货说明：",
+          "value": "${deliveryRemarks}"
+        },
+        {
+          "label": "房屋信息：",
+          "value": "${estate}"
+        },
+        {
+          "label": "服务人员：",
+          "value": "${servicerRole} ${servicerNickName}"
+        }
+      ],
+      "actions": [
+        {
+          "title": "查看详情",
+          "type": "h5",
+          "userType": 0,
+          "targetUrl": "redirect/service-detail.html?id=${serveId}&type=${serveType}&tabType=3",
+          "params": {
+            "showAppBar": false
+          }
+        }
+      ]
+    }
+  },
+  "group_serve_record_delivery": {
+    "type": "group_serve_record_delivery",
+    "template": "card",
+    "summary": "${num}件商品已发货，请注意查收",
+    "body": {
+      "title": "以下${num}件商品已发货，请注意查收",
+      "iconUrl": "lib/assets/im/ic_cus_msg_deliver_goods.png",
+      "isLocalIcon": true,
+      "labels": [
+        {
+          "label": "",
+          "value": "${goodsName}"
+        }
+      ],
+      "actions": [
+        {
+          "title": "查看详情",
+          "type": "h5",
+          "userType": 0,
+          "targetUrl": "redirect/service-detail.html?id=${serveId}&type=${serveType}&tabType=3",
+          "params": {
+            "showAppBar": false
+          }
+        }
+      ]
+    }
+  },
+  "single_serve_record_delivery": {
+    "type": "single_serve_record_delivery",
+    "template": "card",
+    "summary": "${num}件商品已发货，请注意查收",
+    "body": {
+      "title": "以下${num}件商品已发货，请注意查收",
+      "iconUrl": "lib/assets/im/ic_cus_msg_deliver_goods.png",
+      "isLocalIcon": true,
+      "labels": [
+        {
+          "label": "",
+          "value": "${goodsName}"
+        }
+      ],
+      "actions": [
+        {
+          "title": "查看详情",
+          "type": "h5",
+          "userType": 0,
+          "targetUrl": "redirect/service-detail.html?id=${serveId}&type=${serveType}&tabType=3",
+          "params": {
+            "showAppBar": false
+          }
+        }
+      ]
+    }
+  },
+  "sys_serve_record_receive": {
+    "type": "sys_serve_record_receive",
+    "template": "form",
+    "summary": "您的${num}件商品已确认收货",
+    "body": {
+      "title": "收货通知",
+      "subTitle": "您的${num}件商品已确认收货",
+      "labels": [
+        {
+          "label": "商品信息：",
+          "value": "${goodsName}"
+        },
+        {
+          "label": "收货说明：",
+          "value": "${receiveRemarks}"
+        },
+        {
+          "label": "房屋信息：",
+          "value": "${estate}"
+        },
+        {
+          "label": "服务人员：",
+          "value": "${servicerRole} ${servicerNickName}"
+        }
+      ],
+      "actions": [
+        {
+          "title": "查看详情",
+          "type": "h5",
+          "userType": 0,
+          "targetUrl": "redirect/service-detail.html?id=${serveId}&type=${serveType}&tabType=3",
+          "params": {
+            "showAppBar": false
+          }
+        }
+      ]
+    }
+  },
+  "group_serve_record_receive": {
+    "type": "group_serve_record_receive",
+    "template": "card",
+    "summary": "${num}件商品已确认收货",
+    "body": {
+      "title": "以下${num}件商品已确认收货",
+      "iconUrl": "lib/assets/im/ic_cus_msg_receive_goods.png",
+      "isLocalIcon": true,
+      "labels": [
+        {
+          "label": "",
+          "value": "${goodsName}"
+        }
+      ],
+      "actions": [
+        {
+          "title": "查看详情",
+          "type": "h5",
+          "userType": 0,
+          "targetUrl": "redirect/service-detail.html?id=${serveId}&type=${serveType}&tabType=3",
+          "params": {
+            "showAppBar": false
+          }
+        }
+      ]
+    }
+  },
+  "single_serve_record_receive": {
+    "type": "single_serve_record_receive",
+    "template": "card",
+    "summary": "${num}件商品已确认收货",
+    "body": {
+      "title": "以下${num}件商品已确认收货",
+      "iconUrl": "lib/assets/im/ic_cus_msg_receive_goods.png",
+      "isLocalIcon": true,
+      "labels": [
+        {
+          "label": "",
+          "value": "${goodsName}"
+        }
+      ],
+      "actions": [
+        {
+          "title": "查看详情",
+          "type": "h5",
+          "userType": 0,
+          "targetUrl": "redirect/service-detail.html?id=${serveId}&type=${serveType}&tabType=3",
+          "params": {
+            "showAppBar": false
+          }
+        }
+      ]
+    }
+  },
+  "group_serve_record_apply_stage": {
+    "type": "group_serve_record_apply_stage",
+    "template": "card",
+    "summary": "${stageName}阶段交付申请",
+    "body": {
+      "title": "${stageName}阶段交付申请",
+      "iconUrl": "lib/assets/im/ic_cus_msg_stage.png",
+      "isLocalIcon": true,
+      "labels": [
+        {
+          "label": "温馨提示：",
+          "value": "${stageName}定稿并确认交付后，将进入${nextStageName}阶段"
+        }
+      ],
+      "cardAction": {
+        "type": "h5",
+        "userType": 0,
+        "targetUrl": "redirect/service-detail.html?id=${serveId}&type=${serveType}&tabType=3",
+        "params": {
+          "showAppBar": false
+        }
       },
-      {
-        "label": "用户地址",
-        "content": "${estate}"
+      "actions": [
+        {
+          "title": "确认交付",
+          "type": "custom",
+          "userType": 1,
+          "params": {
+            "serveId": "${serveId}",
+            "sourceStage": "${sourceStage}",
+            "targetStage": "${targetStage}",
+            "stageCode": "${stageCode}"
+          }
+        }
+      ]
+    }
+  },
+  "single_serve_record_apply_stage": {
+    "type": "single_serve_record_apply_stage",
+    "template": "card",
+    "summary": "${stageName}阶段交付申请",
+    "body": {
+      "title": "${stageName}阶段交付申请",
+      "iconUrl": "lib/assets/im/ic_cus_msg_stage.png",
+      "isLocalIcon": true,
+      "labels": [
+        {
+          "label": "温馨提示：",
+          "value": "${stageName}定稿并确认交付后，将进入${nextStageName}阶段"
+        }
+      ],
+      "cardAction": {
+        "type": "h5",
+        "userType": 0,
+        "targetUrl": "redirect/service-detail.html?id=${serveId}&type=${serveType}&tabType=3",
+        "params": {
+          "showAppBar": false
+        }
       },
-      {
-        "label": "服务名称",
-        "content": "${serveTypeName}"
+      "actions": [
+        {
+          "title": "确认交付",
+          "type": "custom",
+          "userType": 1,
+          "params": {
+            "serveId": "${serveId}",
+            "sourceStage": "${sourceStage}",
+            "targetStage": "${targetStage}",
+            "stageCode": "${stageCode}"
+          }
+        }
+      ]
+    }
+  },
+  "group_serve_record_apply_last_stage": {
+    "type": "group_serve_record_apply_last_stage",
+    "template": "card",
+    "summary": "${stageName}阶段交付申请",
+    "body": {
+      "title": "${stageName}阶段交付申请",
+      "iconUrl": "lib/assets/im/ic_cus_msg_stage.png",
+      "isLocalIcon": true,
+      "labels": [
+        {
+          "label": "温馨提示：",
+          "value": "${stageName}定稿并确认交付后，该服务将完成"
+        }
+      ],
+      "cardAction": {
+        "type": "h5",
+        "userType": 0,
+        "targetUrl": "redirect/service-detail.html?id=${serveId}&type=${serveType}&tabType=3",
+        "params": {
+          "showAppBar": false
+        }
+      },
+      "actions": [
+        {
+          "title": "确认交付",
+          "type": "custom",
+          "userType": 1,
+          "params": {
+            "serveId": "${serveId}",
+            "sourceStage": "${sourceStage}",
+            "targetStage": "${targetStage}",
+            "stageCode": "${stageCode}"
+          }
+        }
+      ]
+    }
+  },
+  "single_serve_record_apply_last_stage": {
+    "type": "single_serve_record_apply_last_stage",
+    "template": "card",
+    "summary": "${stageName}阶段交付申请",
+    "body": {
+      "title": "${stageName}阶段交付申请",
+      "iconUrl": "lib/assets/im/ic_cus_msg_stage.png",
+      "isLocalIcon": true,
+      "labels": [
+        {
+          "label": "温馨提示：",
+          "value": "${stageName}定稿并确认交付后，该服务将完成"
+        }
+      ],
+      "cardAction": {
+        "type": "h5",
+        "userType": 0,
+        "targetUrl": "redirect/service-detail.html?id=${serveId}&type=${serveType}&tabType=3",
+        "params": {
+          "showAppBar": false
+        }
+      },
+      "actions": [
+        {
+          "title": "确认交付",
+          "type": "custom",
+          "userType": 1,
+          "params": {
+            "serveId": "${serveId}",
+            "sourceStage": "${sourceStage}",
+            "targetStage": "${targetStage}",
+            "stageCode": "${stageCode}"
+          }
+        }
+      ]
+    }
+  },
+  "sys_serve_record_finish_stage": {
+    "type": "sys_serve_record_finish_stage",
+    "template": "form",
+    "summary": "您的${orderTypeName}服务，${stageName}已完成，已进入${nextStageName}阶段",
+    "body": {
+      "title": "阶段服务完成通知",
+      "subTitle": "您的${orderTypeName}服务，${stageName}已完成，已进入${nextStageName}阶段",
+      "labels": [
+        {
+          "label": "商品信息：",
+          "value": "${goodsName}"
+        },
+        {
+          "label": "房屋信息：",
+          "value": "${estate}"
+        },
+        {
+          "label": "服务人员：",
+          "value": "${servicerRole} ${servicerNickName}"
+        }
+      ],
+      "actions": [
+        {
+          "title": "立即沟通",
+          "type": "native",
+          "userType": 0,
+          "targetRouter": "chat",
+          "params": {
+            "groupId": "${groupId}",
+            "userId": "${customerId}",
+            "name": "${customerNickName}"
+          }
+        },
+        {
+          "title": "查看详情",
+          "type": "h5",
+          "userType": 0,
+          "targetUrl": "redirect/service-detail.html?id=${serveId}&type=${serveType}&tabType=3",
+          "params": {
+            "showAppBar": false
+          }
+        }
+      ]
+    }
+  },
+  "group_serve_record_finish_stage": {
+    "type": "group_serve_record_finish_stage",
+    "template": "tip",
+    "summary": "${stageName}已完成",
+    "body": {
+      "content": "${stageName}已完成，已进入${nextStageName}阶段"
+    }
+  },
+  "single_serve_record_finish_stage": {
+    "type": "single_serve_record_finish_stage",
+    "template": "tip",
+    "summary": "您的${orderTypeName}服务，${stageName}已完成",
+    "body": {
+      "content": "您的${orderTypeName}服务，${stageName}已完成，已进入${nextStageName}阶段"
+    }
+  },
+  "sys_serve_record_change_stage": {
+    "type": "sys_serve_record_change_stage",
+    "template": "form",
+    "summary": "您的${orderTypeName}服务，已进入${stageName}阶段",
+    "body": {
+      "title": "阶段服务完成通知",
+      "subTitle": "您的${orderTypeName}服务，已进入${stageName}阶段",
+      "labels": [
+        {
+          "label": "商品信息：",
+          "value": "${goodsName}"
+        },
+        {
+          "label": "房屋信息：",
+          "value": "${estate}"
+        },
+        {
+          "label": "服务人员：",
+          "value": "${servicerRole} ${servicerNickName}"
+        }
+      ],
+      "actions": [
+        {
+          "title": "立即沟通",
+          "type": "native",
+          "userType": 0,
+          "targetRouter": "chat",
+          "params": {
+            "groupId": "${groupId}",
+            "userId": "${customerId}",
+            "name": "${customerNickName}"
+          }
+        },
+        {
+          "title": "查看详情",
+          "type": "h5",
+          "userType": 0,
+          "targetUrl": "redirect/service-detail.html?id=${serveId}&type=${serveType}&tabType=3",
+          "params": {
+            "showAppBar": false
+          }
+        }
+      ]
+    }
+  },
+  "group_serve_record_change_stage": {
+    "type": "group_serve_record_change_stage",
+    "template": "tip",
+    "summary": "已进入${stageName}阶段",
+    "body": {
+      "content": "已进入${stageName}阶段"
+    }
+  },
+  "single_serve_record_change_stage": {
+    "type": "single_serve_record_change_stage",
+    "template": "tip",
+    "summary": "您的${orderTypeName}服务，已进入${stageName}阶段",
+    "body": {
+      "content": "您的${orderTypeName}服务，已进入${stageName}阶段"
+    }
+  },
+  "sys_serve_record_comment_invitation": {
+    "type": "sys_serve_record_comment_invitation",
+    "template": "form",
+    "summary": "服务评价邀请",
+    "body": {
+      "title": "服务评价邀请",
+      "subTitle": "${servicerRole}邀请您对本次${orderTypeName}服务进行评价",
+      "labels": [
+        {
+          "label": "商品信息：",
+          "value": "${goodsName}"
+        },
+        {
+          "label": "房屋信息：",
+          "value": "${estate}"
+        }
+      ],
+      "actions": [
+        {
+          "title": "去评价",
+          "type": "native_uri",
+          "userType": 1,
+          "targetRouter": "/riki_process_service/service_comment?refId=${serveId}&refType=${serveType}"
+        }
+      ]
+    }
+  },
+  "sys_serve_record_comment_notice": {
+    "type": "sys_serve_record_comment_notice",
+    "template": "form",
+    "summary": "你收到一个${rankName}服务评价",
+    "body": {
+      "title": "服务评价",
+      "subTitle": "你收到了一个来自${customerNickName}的服务评价，${rankName}",
+      "labels": [
+        {
+          "label": "商品信息：",
+          "value": "${goodsName}"
+        },
+        {
+          "label": "房屋信息：",
+          "value": "${estate}"
+        }
+      ],
+      "actions": [
+        {
+          "title": "查看详情",
+          "type": "h5",
+          "userType": 2,
+          "targetUrl": "construction-quotation/server-comment.html?serveId=${serveId}&type=${serveType}&commentId=${commentId}",
+          "params": {
+            "showAppBar": false
+          }
+        }
+      ]
+    }
+  },
+  "group_serve_record_comment_notice": {
+    "type": "group_serve_record_comment_notice",
+    "template": "evaluate",
+    "summary": "服务评价：${rankName}",
+    "body": {
+      "avatar": "${servicerAvatar}",
+      "role": "${servicerRole}",
+      "nickName": "${servicerNickName}",
+      "rank": "${rank}",
+      "time": "${commentTime}",
+      "action": {
+        "title": "查看详情",
+        "type": "h5",
+        "userType": 0,
+        "targetUrl": "construction-quotation/server-comment.html?serveId=${serveId}&type=${serveType}&commentId=${commentId}",
+        "params": {
+          "showAppBar": false
+        }
       }
-    ],
-    "buttons": []
+    }
+  },
+  "single_serve_record_comment_notice": {
+    "type": "single_serve_record_comment_notice",
+    "template": "evaluate",
+    "summary": "服务评价：${rankName}",
+    "body": {
+      "avatar": "${servicerAvatar}",
+      "role": "${servicerRole}",
+      "nickName": "${servicerNickName}",
+      "rank": "${rank}",
+      "time": "${commentTime}",
+      "action": {
+        "title": "查看详情",
+        "type": "h5",
+        "userType": 0,
+        "targetUrl": "construction-quotation/server-comment.html?serveId=${serveId}&type=${serveType}&commentId=${commentId}",
+        "params": {
+          "showAppBar": false
+        }
+      }
+    }
+  },
+  "sys_serve_record_publish_file": {
+    "type": "sys_serve_record_publish_file",
+    "template": "form",
+    "summary": "${operatorNickName}给您的${orderTypeName}服务提交了新的交付文件",
+    "body": {
+      "title": "交付文件通知",
+      "subTitle": "${operatorNickName}给您的${orderTypeName}服务提交了新的交付文件",
+      "labels": [
+        {
+          "label": "商品信息：",
+          "value": "${goodsName}"
+        },
+        {
+          "label": "房屋信息：",
+          "value": "${estate}"
+        }
+      ],
+      "actions": [
+        {
+          "title": "查看详情",
+          "type": "h5",
+          "userType": 0,
+          "targetUrl": "redirect/service-detail.html?id=${serveId}&type=${serveType}&tabType=5",
+          "params": {
+            "showAppBar": false
+          }
+        }
+      ]
+    }
+  },
+  "group_serve_record_publish_file": {
+    "type": "group_serve_record_publish_file",
+    "template": "card",
+    "summary": "${operatorNickName}已发布交付文件",
+    "body": {
+      "title": "${operatorNickName}已发布交付文件",
+      "iconUrl": "lib/assets/im/ic_cus_msg_deliver_file.png",
+      "isLocalIcon": true,
+      "actions": [
+        {
+          "title": "查看详情",
+          "type": "h5",
+          "userType": 0,
+          "targetUrl": "redirect/service-detail.html?id=${serveId}&type=${serveType}&tabType=5",
+          "params": {
+            "showAppBar": false
+          }
+        }
+      ]
+    }
+  },
+  "single_serve_record_publish_file": {
+    "type": "single_serve_record_publish_file",
+    "template": "card",
+    "summary": "${operatorNickName}已发布交付文件",
+    "body": {
+      "title": "${operatorNickName}已发布交付文件",
+      "iconUrl": "lib/assets/im/ic_cus_msg_deliver_file.png",
+      "isLocalIcon": true,
+      "actions": [
+        {
+          "title": "查看详情",
+          "type": "h5",
+          "userType": 0,
+          "targetUrl": "redirect/service-detail.html?id=${serveId}&type=${serveType}&tabType=5",
+          "params": {
+            "showAppBar": false
+          }
+        }
+      ]
+    }
+  },
+  "sys_serve_record_publish_report": {
+    "type": "sys_serve_record_publish_report",
+    "template": "form",
+    "summary": "${operatorNickName}给您的${orderTypeName}服务提交了${reportName}",
+    "body": {
+      "title": "交付报告通知",
+      "subTitle": "${operatorNickName}给您的${orderTypeName}服务提交了${reportName}",
+      "labels": [
+        {
+          "label": "商品信息：",
+          "value": "${goodsName}"
+        },
+        {
+          "label": "房屋信息：",
+          "value": "${estate}"
+        }
+      ],
+      "actions": [
+        {
+          "title": "查看详情",
+          "type": "h5",
+          "userType": 0,
+          "targetUrl": "redirect/service-detail.html?id=${serveId}&type=${serveType}&tabType=4",
+          "params": {
+            "showAppBar": false
+          }
+        }
+      ]
+    }
+  },
+  "group_serve_record_publish_report": {
+    "type": "group_serve_record_publish_report",
+    "template": "card",
+    "summary": "${reportName}",
+    "body": {
+      "title": "${reportName}",
+      "iconUrl": "lib/assets/im/ic_cus_msg_deliver_report.png",
+      "isLocalIcon": true,
+      "actions": [
+        {
+          "title": "查看详情",
+          "type": "h5",
+          "userType": 0,
+          "targetUrl": "redirect/service-detail.html?id=${serveId}&type=${serveType}&tabType=4",
+          "params": {
+            "showAppBar": false
+          }
+        }
+      ]
+    }
+  },
+  "single_serve_record_publish_report": {
+    "type": "single_serve_record_publish_report",
+    "template": "card",
+    "summary": "${reportName}",
+    "body": {
+      "title": "${reportName}",
+      "iconUrl": "lib/assets/im/ic_cus_msg_deliver_report.png",
+      "isLocalIcon": true,
+      "actions": [
+        {
+          "title": "查看详情",
+          "type": "h5",
+          "userType": 0,
+          "targetUrl": "redirect/service-detail.html?id=${serveId}&type=${serveType}&tabType=4",
+          "params": {
+            "showAppBar": false
+          }
+        }
+      ]
+    }
+  },
+  "sys_serve_record_publish_beauty_report": {
+    "type": "sys_serve_record_publish_beauty_report",
+    "template": "form",
+    "summary": "${operatorNickName}给您的${orderTypeName}服务提交了${reportName}",
+    "body": {
+      "title": "颜值报告通知",
+      "subTitle": "${operatorNickName}给您的${orderTypeName}服务提交了${reportName}",
+      "labels": [
+        {
+          "label": "商品信息：",
+          "value": "${goodsName}"
+        },
+        {
+          "label": "房屋信息：",
+          "value": "${estate}"
+        }
+      ],
+      "actions": [
+        {
+          "title": "查看详情",
+          "type": "h5",
+          "userType": 0,
+          "targetUrl": "redirect/service-detail.html?id=${serveId}&type=${serveType}&tabType=4",
+          "params": {
+            "showAppBar": false
+          }
+        }
+      ]
+    }
+  },
+  "group_serve_record_publish_beauty_report": {
+    "type": "group_serve_record_publish_beauty_report",
+    "template": "card",
+    "summary": "${reportName}",
+    "body": {
+      "title": "${reportName}",
+      "iconUrl": "lib/assets/im/ic_cus_msg_deliver_report.png",
+      "isLocalIcon": true,
+      "actions": [
+        {
+          "title": "查看详情",
+          "type": "h5",
+          "userType": 0,
+          "targetUrl": "redirect/service-detail.html?id=${serveId}&type=${serveType}&tabType=4",
+          "params": {
+            "showAppBar": false
+          }
+        }
+      ]
+    }
+  },
+  "single_serve_record_publish_beauty_report": {
+    "type": "single_serve_record_publish_beauty_report",
+    "template": "card",
+    "summary": "${reportName}",
+    "body": {
+      "title": "${reportName}",
+      "iconUrl": "lib/assets/im/ic_cus_msg_deliver_report.png",
+      "isLocalIcon": true,
+      "actions": [
+        {
+          "title": "查看详情",
+          "type": "h5",
+          "userType": 0,
+          "targetUrl": "redirect/service-detail.html?id=${serveId}&type=${serveType}&tabType=4",
+          "params": {
+            "showAppBar": false
+          }
+        }
+      ]
+    }
+  },
+  "sys_serve_record_start_serve": {
+    "type": "sys_serve_record_start_serve",
+    "template": "form",
+    "summary": "您的${orderTypeName}服务已开启",
+    "body": {
+      "title": "服务开启通知",
+      "subTitle": "您的${orderTypeName}服务已开启",
+      "labels": [
+        {
+          "label": "商品信息：",
+          "value": "${goodsName}"
+        },
+        {
+          "label": "房屋信息：",
+          "value": "${estate}"
+        },
+        {
+          "label": "服务人员：",
+          "value": "${servicerRole} ${servicerNickName}"
+        }
+      ],
+      "actions": [
+        {
+          "title": "立即沟通",
+          "type": "native",
+          "userType": 0,
+          "targetRouter": "chat",
+          "params": {
+            "groupId": "${imGroupId}",
+            "userId": "${customerId}",
+            "name": "${customerNickName}"
+          }
+        },
+        {
+          "title": "查看详情",
+          "type": "h5",
+          "userType": 0,
+          "targetUrl": "redirect/service-detail.html?id=${serveId}&type=${serveType}&tabType=3",
+          "params": {
+            "showAppBar": false
+          }
+        }
+      ]
+    }
+  },
+  "group_serve_record_start_serve": {
+    "type": "group_serve_record_start_serve",
+    "template": "tip",
+    "summary": "${orderTypeName}服务已开启",
+    "body": {
+      "content": "${orderTypeName}服务已开启"
+    }
+  },
+  "single_serve_record_start_serve": {
+    "type": "single_serve_record_start_serve",
+    "template": "tip",
+    "summary": "${orderTypeName}服务已开启",
+    "body": {
+      "content": "${orderTypeName}服务已开启"
+    }
+  },
+  "group_serve_record_to_be_confirmed_serve": {
+    "type": "group_serve_record_to_be_confirmed_serve",
+    "template": "card",
+    "summary": "${servicerNickName}申请服务完成",
+    "body": {
+      "title": "${servicerNickName}申请服务完成",
+      "iconUrl": "lib/assets/im/ic_cus_msg_apply_complete.webp",
+      "isLocalIcon": true,
+      "cardAction": {
+        "type": "h5",
+        "userType": 0,
+        "targetUrl": "redirect/service-detail.html?id=${serveId}&type=${serveType}&tabType=3",
+        "params": {
+          "showAppBar": false
+        }
+      },
+      "actions": [
+        {
+          "title": "确认完成",
+          "type": "custom",
+          "userType": 1,
+          "params": {
+            "serveId": "${serveId}"
+          }
+        }
+      ]
+    }
+  },
+  "single_serve_record_to_be_confirmed_serve": {
+    "type": "single_serve_record_to_be_confirmed_serve",
+    "template": "card",
+    "summary": "${servicerNickName}申请完成${orderTypeName}服务",
+    "body": {
+      "title": "${servicerNickName}申请完成${orderTypeName}服务",
+      "iconUrl": "lib/assets/im/ic_cus_msg_apply_complete.webp",
+      "isLocalIcon": true,
+      "cardAction": {
+        "type": "h5",
+        "userType": 0,
+        "targetUrl": "redirect/service-detail.html?id=${serveId}&type=${serveType}&tabType=3",
+        "params": {
+          "showAppBar": false
+        }
+      },
+      "actions": [
+        {
+          "title": "确认完成",
+          "type": "custom",
+          "userType": 1,
+          "params": {
+            "serveId": "${serveId}"
+          }
+        }
+      ]
+    }
+  },
+  "group_serve_record_to_be_confirmed_serve_h5": {
+    "type": "group_serve_record_to_be_confirmed_serve_h5",
+    "template": "card",
+    "summary": "${servicerNickName}申请服务完成",
+    "body": {
+      "title": "${servicerNickName}申请服务完成",
+      "iconUrl": "lib/assets/im/ic_cus_msg_apply_complete.webp",
+      "isLocalIcon": true,
+      "cardAction": {
+        "type": "h5",
+        "userType": 0,
+        "targetUrl": "redirect/service-detail.html?id=${serveId}&type=${serveType}&tabType=3",
+        "params": {
+          "showAppBar": false
+        }
+      },
+      "actions": [
+        {
+          "title": "查看详情",
+          "type": "h5",
+          "userType": 1,
+          "targetUrl": "construction-quotation/announcedetail.html?serveId=${serveId}&type=3",
+          "params": {
+            "showAppBar": false
+          }
+        }
+      ]
+    }
+  },
+  "single_serve_record_to_be_confirmed_serve_h5": {
+    "type": "single_serve_record_to_be_confirmed_serve_h5",
+    "template": "card",
+    "summary": "${servicerNickName}申请完成${orderTypeName}服务",
+    "body": {
+      "title": "${servicerNickName}申请完成${orderTypeName}服务",
+      "iconUrl": "lib/assets/im/ic_cus_msg_apply_complete.webp",
+      "isLocalIcon": true,
+      "cardAction": {
+        "type": "h5",
+        "userType": 0,
+        "targetUrl": "redirect/service-detail.html?id=${serveId}&type=${serveType}&tabType=3",
+        "params": {
+          "showAppBar": false
+        }
+      },
+      "actions": [
+        {
+          "title": "查看详情",
+          "type": "h5",
+          "userType": 1,
+          "targetUrl": "construction-quotation/announcedetail.html?serveId=${serveId}&type=3",
+          "params": {
+            "showAppBar": false
+          }
+        }
+      ]
+    }
+  },
+  "sys_serve_record_cancel_serve": {
+    "type": "sys_serve_record_cancel_serve",
+    "template": "form",
+    "summary": "您的${orderTypeName}服务已取消",
+    "body": {
+      "title": "服务取消通知",
+      "subTitle": "您的${orderTypeName}服务已取消",
+      "labels": [
+        {
+          "label": "取消原因：",
+          "value": "${remarks}"
+        },
+        {
+          "label": "商品信息：",
+          "value": "${goodsName}"
+        },
+        {
+          "label": "房屋信息：",
+          "value": "${estate}"
+        },
+        {
+          "label": "服务人员：",
+          "value": "${servicerRole} ${servicerNickName}"
+        }
+      ],
+      "actions": [
+        {
+          "title": "查看详情",
+          "type": "h5",
+          "userType": 0,
+          "targetUrl": "redirect/service-detail.html?id=${serveId}&type=${serveType}&tabType=3",
+          "params": {
+            "showAppBar": false
+          }
+        }
+      ]
+    }
+  },
+  "group_serve_record_cancel_serve": {
+    "type": "group_serve_record_cancel_serve",
+    "template": "tip",
+    "summary": "${orderTypeName}服务已取消",
+    "body": {
+      "content": "${orderTypeName}服务已取消"
+    }
+  },
+  "single_serve_record_cancel_serve": {
+    "type": "single_serve_record_cancel_serve",
+    "template": "tip",
+    "summary": "${orderTypeName}服务已取消",
+    "body": {
+      "content": "${orderTypeName}服务已取消"
+    }
+  },
+  "sys_serve_record_finish_serve": {
+    "type": "sys_serve_record_finish_serve",
+    "template": "form",
+    "summary": "您的${orderTypeName}服务已完成",
+    "body": {
+      "title": "服务完成通知",
+      "subTitle": "您的${orderTypeName}服务已完成",
+      "labels": [
+        {
+          "label": "商品信息：",
+          "value": "${goodsName}"
+        },
+        {
+          "label": "房屋信息：",
+          "value": "${estate}"
+        },
+        {
+          "label": "服务人员：",
+          "value": "${servicerRole} ${servicerNickName}"
+        }
+      ],
+      "actions": [
+        {
+          "title": "查看详情",
+          "type": "h5",
+          "userType": 0,
+          "targetUrl": "redirect/service-detail.html?id=${serveId}&type=${serveType}&tabType=3",
+          "params": {
+            "showAppBar": false
+          }
+        }
+      ]
+    }
+  },
+  "group_serve_record_finish_serve": {
+    "type": "group_serve_record_finish_serve",
+    "template": "tip",
+    "summary": "${orderTypeName}服务已完成",
+    "body": {
+      "content": "${orderTypeName}服务已完成"
+    }
+  },
+  "single_serve_record_finish_serve": {
+    "type": "single_serve_record_finish_serve",
+    "template": "tip",
+    "summary": "${orderTypeName}服务已完成",
+    "body": {
+      "content": "${orderTypeName}服务已完成"
+    }
+  },
+  "sys_send_acceptance_report": {
+    "type": "sys_send_acceptance_report",
+    "template": "form",
+    "summary": "${servicerNickname}给${customerNickname}的${serviceTypeName}提交了${head}",
+    "body": {
+      "title": "交付报告通知",
+      "subTitle": "${servicerNickname}给${customerNickname}的${serviceTypeName}提交了${head}",
+      "labels": [
+        {
+          "label": "商品信息：",
+          "value": "${goodsName}"
+        },
+        {
+          "label": "房屋信息：",
+          "value": "${estate}"
+        }
+      ],
+      "actions": [
+        {
+          "title": "查看详情",
+          "type": "h5",
+          "userType": 0,
+          "targetUrl": "redirect/check-report.html?id=${reportId}&type=${reportType}",
+          "params": {
+            "showAppBar": false
+          }
+        }
+      ]
+    }
+  },
+  "group_send_acceptance_report": {
+    "type": "group_send_acceptance_report",
+    "template": "card",
+    "summary": "${head}",
+    "body": {
+      "title": "${head}",
+      "iconUrl": "lib/assets/im/ic_cus_msg_deliver_report.png",
+      "isLocalIcon": true,
+      "actions": [
+        {
+          "title": "查看详情",
+          "type": "h5",
+          "userType": 0,
+          "targetUrl": "redirect/check-report.html?id=${reportId}&type=${reportType}",
+          "params": {
+            "showAppBar": false
+          }
+        }
+      ]
+    }
+  },
+  "single_send_acceptance_report": {
+    "type": "single_send_acceptance_report",
+    "template": "card",
+    "summary": "${head}",
+    "body": {
+      "title": "${head}",
+      "iconUrl": "lib/assets/im/ic_cus_msg_deliver_report.png",
+      "isLocalIcon": true,
+      "actions": [
+        {
+          "title": "查看详情",
+          "type": "h5",
+          "userType": 0,
+          "targetUrl": "redirect/check-report.html?id=${reportId}&type=${reportType}",
+          "params": {
+            "showAppBar": false
+          }
+        }
+      ]
+    }
+  },
+  "group_send_construction_broadcast": {
+    "type": "group_send_construction_broadcast",
+    "template": "card",
+    "summary": "施工播报：${content}",
+    "body": {
+      "title": "施工播报",
+      "iconUrl": "lib/assets/im/ic_cus_msg_construction_broadcast.png",
+      "isLocalIcon": true,
+      "labels": [
+        {
+          "label": "",
+          "value": "${content}"
+        }
+      ],
+      "actions": [
+        {
+          "title": "查看详情",
+          "type": "h5",
+          "userType": 0,
+          "targetUrl": "construction-quotation/worker-report.html?id=${id}",
+          "params": {
+            "showAppBar": false
+          }
+        }
+      ]
+    }
+  },
+  "single_send_construction_broadcast": {
+    "type": "single_send_construction_broadcast",
+    "template": "card",
+    "summary": "施工播报：${content}",
+    "body": {
+      "title": "施工播报",
+      "iconUrl": "lib/assets/im/ic_cus_msg_construction_broadcast.png",
+      "isLocalIcon": true,
+      "labels": [
+        {
+          "label": "",
+          "value": "${content}"
+        }
+      ],
+      "actions": [
+        {
+          "title": "查看详情",
+          "type": "h5",
+          "userType": 0,
+          "targetUrl": "construction-quotation/worker-report.html?id=${id}",
+          "params": {
+            "showAppBar": false
+          }
+        }
+      ]
+    }
+  },
+  "sys_equipment_bind": {
+    "type": "sys_equipment_bind",
+    "template": "form",
+    "summary": "您的${name}已绑定成功",
+    "body": {
+      "title": "设备绑定成功",
+      "subTitle": "您的${name}已绑定成功"
+    }
+  },
+  "sys_equipment_unbind": {
+    "type": "sys_equipment_unbind",
+    "template": "form",
+    "summary": "您的${name}已解除绑定",
+    "body": {
+      "title": "设备解绑通知",
+      "subTitle": "您的${name}已解除绑定"
+    }
+  },
+  "sys_equipment_serve_code": {
+    "type": "sys_equipment_serve_code",
+    "template": "form",
+    "summary": "您的摄像头${serialNumber}服务码为：${code}",
+    "body": {
+      "title": "设备服务码",
+      "subTitle": "您的摄像头${serialNumber}服务码为：${code}，请在设备通电后在设备绑定页输入服务码"
+    }
+  },
+  "sys_equipment_on_line": {
+    "type": "sys_equipment_on_line",
+    "template": "form",
+    "summary": "您的摄像头（SN：${sn}）已连接，可以正常查看",
+    "body": {
+      "title": "摄像头在线提醒",
+      "subTitle": "您的摄像头（SN：${sn}）已连接，可以正常查看"
+    }
+  },
+  "sys_equipment_off_line": {
+    "type": "sys_equipment_off_line",
+    "template": "form",
+    "summary": "您的摄像头（SN：${sn}）已离线，请及时检查摄像头，以避免影响您的正常使用",
+    "body": {
+      "title": "摄像头离线提醒",
+      "subTitle": "您的摄像头（SN：${sn}）已离线，请及时检查摄像头，以避免影响您的正常使用"
+    }
+  },
+  "sys_equipment_battery_status": {
+    "type": "sys_equipment_battery_status",
+    "template": "form",
+    "summary": "您的辅助摄像头（SN：${sn}）电量仅剩${batteryStatus}%，请及时进行充电，以避免影响您的正常使用",
+    "body": {
+      "title": "摄像头电量不足提醒",
+      "subTitle": "您的辅助摄像头（SN：${sn}）电量仅剩${batteryStatus}%，请及时进行充电，以避免影响您的正常使用"
+    }
+  },
+  "sys_order_cancel": {
+    "type": "sys_order_cancel",
+    "template": "form",
+    "summary": "您的${orderType}订单已被取消",
+    "body": {
+      "title": "订单取消通知",
+      "subTitle": "您的${orderType}订单已被取消",
+      "labels": [
+        {
+          "label": "商品信息：",
+          "value": "${name}"
+        },
+        {
+          "label": "房屋信息：",
+          "value": "${estate}"
+        },
+        {
+          "label": "订单编号：",
+          "value": "${orderNo}"
+        },
+        {
+          "label": "取消原因：",
+          "value": "${reason}"
+        }
+      ],
+      "actions": [
+        {
+          "title": "查看详情",
+          "type": "native",
+          "userType": 0,
+          "targetRouter": "orderDetail",
+          "params": {
+            "orderId": "${orderId}"
+          }
+        }
+      ]
+    }
+  },
+  "sys_order_auto_cancel": {
+    "type": "sys_order_auto_cancel",
+    "template": "form",
+    "summary": "您的${orderType}订单由于超时未支付，已经被自动取消",
+    "body": {
+      "title": "订单取消通知",
+      "subTitle": "您的${orderType}订单由于超时未支付，已经被自动取消",
+      "labels": [
+        {
+          "label": "商品信息：",
+          "value": "${name}"
+        },
+        {
+          "label": "房屋信息：",
+          "value": "${estate}"
+        },
+        {
+          "label": "订单编号：",
+          "value": "${orderNo}"
+        },
+        {
+          "label": "取消原因：",
+          "value": "${reason}"
+        }
+      ],
+      "actions": [
+        {
+          "title": "查看详情",
+          "type": "native",
+          "userType": 0,
+          "targetRouter": "orderDetail",
+          "params": {
+            "orderId": "${orderId}"
+          }
+        }
+      ]
+    }
+  },
+  "sys_order_refund_apply": {
+    "type": "sys_order_refund_apply",
+    "template": "form",
+    "summary": "${amount}元退款已申请成功，请等待审核",
+    "body": {
+      "title": "退款申请通知",
+      "subTitle": "${amount}元退款已申请成功，请等待审核",
+      "labels": [
+        {
+          "label": "订单编号：",
+          "value": "${orderNo}"
+        },
+        {
+          "label": "下单时间：",
+          "value": "${orderCreateTime}"
+        },
+        {
+          "label": "申请时间：",
+          "value": "${applyRefundTime}"
+        }
+      ]
+    }
+  },
+  "sys_order_refund_success": {
+    "type": "sys_order_refund_success",
+    "template": "form",
+    "summary": "${amount}元退款已退回原支付账户，请注意查收",
+    "body": {
+      "title": "退款成功通知",
+      "subTitle": "${amount}元退款已退回原支付账户，请注意查收",
+      "labels": [
+        {
+          "label": "订单编号：",
+          "value": "${orderNo}"
+        },
+        {
+          "label": "下单时间：",
+          "value": "${orderCreateTime}"
+        },
+        {
+          "label": "申请时间：",
+          "value": "${applyRefundTime}"
+        },
+        {
+          "label": "到账时间：",
+          "value": "${refundTime}"
+        }
+      ]
+    }
+  },
+  "sys_order_refund_fail": {
+    "type": "sys_order_refund_fail",
+    "template": "form",
+    "summary": "${amount}元退款失败，请注意查看沟通消息",
+    "body": {
+      "title": "退款失败通知",
+      "subTitle": "${amount}元退款失败，请注意查看沟通消息",
+      "labels": [
+        {
+          "label": "订单编号：",
+          "value": "${orderNo}"
+        },
+        {
+          "label": "下单时间：",
+          "value": "${orderCreateTime}"
+        },
+        {
+          "label": "申请时间：",
+          "value": "${applyRefundTime}"
+        },
+        {
+          "label": "失败原因：",
+          "value": "${reason}"
+        }
+      ]
+    }
+  },
+  "sys_order_has_debt": {
+    "type": "sys_order_has_debt",
+    "template": "form",
+    "summary": "您的${orderType}订单尚有欠款￥${amount}，请及时支付",
+    "body": {
+      "title": "欠款通知",
+      "subTitle": "您的${orderType}订单尚有欠款￥${amount}，请及时支付",
+      "labels": [
+        {
+          "label": "欠款金额：",
+          "value": "￥${amount}"
+        },
+        {
+          "label": "商品信息：",
+          "value": "${name}"
+        },
+        {
+          "label": "房屋信息：",
+          "value": "${estate}"
+        },
+        {
+          "label": "订单编号：",
+          "value": "${orderNo}"
+        }
+      ],
+      "actions": [
+        {
+          "title": "去支付",
+          "type": "native",
+          "userType": 1,
+          "targetRouter": "orderDetail",
+          "params": {
+            "orderId": "${orderId}"
+          }
+        }
+      ]
+    }
+  },
+  "sys_order_receipts": {
+    "type": "sys_order_receipts",
+    "template": "form",
+    "summary": "您的${orderType}订单，${payType}￥${amount}",
+    "body": {
+      "title": "收款通知",
+      "subTitle": "您的${orderType}订单，${payType}￥${amount}",
+      "labels": [
+        {
+          "label": "付款金额：",
+          "value": "￥${amount}"
+        },
+        {
+          "label": "付款日期：",
+          "value": "${payTime}"
+        },
+        {
+          "label": "付款渠道：",
+          "value": "${payType}"
+        },
+        {
+          "label": "商品信息：",
+          "value": "${name}"
+        },
+        {
+          "label": "房屋信息：",
+          "value": "${estate}"
+        },
+        {
+          "label": "订单编号：",
+          "value": "${orderNo}"
+        }
+      ],
+      "actions": [
+        {
+          "title": "查看详情",
+          "type": "native",
+          "userType": 1,
+          "targetRouter": "orderDetail",
+          "params": {
+            "orderId": "${orderId}"
+          }
+        }
+      ]
+    }
+  },
+  "sys_order_payments": {
+    "type": "sys_order_payments",
+    "template": "form",
+    "summary": "您收到了一笔付款￥${amount}",
+    "body": {
+      "title": "付款通知",
+      "subTitle": "您收到了一笔付款￥${amount}",
+      "labels": [
+        {
+          "label": "付款金额：",
+          "value": "￥${amount}"
+        },
+        {
+          "label": "付款日期：",
+          "value": "${time}"
+        },
+        {
+          "label": "付款说明：",
+          "value": "${remarks}"
+        },
+        {
+          "label": "客户信息：",
+          "value": "${customerNickName} ${customerGender}"
+        },
+        {
+          "label": "房屋信息：",
+          "value": "${estate}"
+        }
+      ]
+    }
+  },
+  "sys_order_notice": {
+    "type": "sys_order_notice",
+    "template": "form",
+    "summary": "${senderNickName}：${content}",
+    "body": {
+      "title": "订单消息",
+      "subTitle": "${senderNickName}：${content}",
+      "labels": [
+        {
+          "label": "订单类型：",
+          "value": "${orderType}"
+        },
+        {
+          "label": "商品信息：",
+          "value": "${name}"
+        },
+        {
+          "label": "房屋信息：",
+          "value": "${estate}"
+        },
+        {
+          "label": "订单编号：",
+          "value": "${orderNo}"
+        }
+      ],
+      "actions": [
+        {
+          "title": "查看详情",
+          "type": "native",
+          "userType": 1,
+          "targetRouter": "orderDetail",
+          "params": {
+            "orderId": "${orderId}"
+          }
+        }
+      ]
+    }
+  },
+  "group_share_order_card": {
+    "type": "group_share_order_card",
+    "template": "order",
+    "summary": "${orderTypeName}订单",
+    "body": {
+      "title": "${orderTypeName}订单",
+      "goodsNum": "${goodsNum}",
+      "goodsAmount": "${goodsAmount}",
+      "depositAmount": "${depositAmount}",
+      "goodsInfoList": "${goodsInfoList}",
+      "orderStatus": "${orderStatus}",
+      "orderStatusName": "${orderStatusName}",
+      "action": {
+        "title": "查看详情",
+        "type": "native",
+        "userType": 1,
+        "targetRouter": "orderDetail",
+        "params": {
+          "orderId": "${orderId}"
+        }
+      }
+    }
+  },
+  "single_share_order_card": {
+    "type": "single_share_order_card",
+    "template": "order",
+    "summary": "${orderTypeName}订单",
+    "body": {
+      "title": "${orderTypeName}订单",
+      "goodsNum": "${goodsNum}",
+      "goodsAmount": "${goodsAmount}",
+      "depositAmount": "${depositAmount}",
+      "goodsInfoList": "${goodsInfoList}",
+      "orderStatus": "${orderStatus}",
+      "orderStatusName": "${orderStatusName}",
+      "action": {
+        "title": "查看详情",
+        "type": "native",
+        "userType": 1,
+        "targetRouter": "orderDetail",
+        "params": {
+          "orderId": "${orderId}"
+        }
+      }
+    }
+  },
+  "single_intention_card": {
+    "type": "single_intention_card",
+    "template": "card",
+    "summary": "意向单",
+    "body": {
+      "title": "意向单",
+      "iconUrl": "lib/assets/im/ic_cus_msg_intention.png",
+      "isLocalIcon": true,
+      "actions": [
+        {
+          "title": "查看详情",
+          "type": "h5",
+          "userType": 0,
+          "targetUrl": "${url}",
+          "params": {
+            "showAppBar": false
+          }
+        }
+      ]
+    }
+  },
+  "group_start_live": {
+    "type": "group_start_live",
+    "template": "tip",
+    "summary": "\"${name}\"发起了视频沟通服务",
+    "body": {
+      "content": "\"${name}\"发起了视频沟通服务"
+    }
+  },
+  "single_start_live": {
+    "type": "single_start_live",
+    "template": "tip",
+    "summary": "\"${name}\"发起了视频沟通服务",
+    "body": {
+      "content": "\"${name}\"发起了视频沟通服务"
+    }
+  },
+  "group_stop_live": {
+    "type": "group_stop_live",
+    "template": "tip",
+    "summary": "视频沟通服务已结束",
+    "body": {
+      "content": "视频沟通服务已结束"
+    }
+  },
+  "single_stop_live": {
+    "type": "single_stop_live",
+    "template": "tip",
+    "summary": "视频沟通服务已结束",
+    "body": {
+      "content": "视频沟通服务已结束"
+    }
+  },
+  "group_room_call_init": {
+    "type": "group_room_call_init",
+    "template": "tip",
+    "summary": "${name}发起了${callTypeName}通话",
+    "body": {
+      "content": "${name}发起了${callTypeName}通话"
+    }
+  },
+  "group_room_call_action": {
+    "type": "group_room_call_action",
+    "template": "tip",
+    "summary": "${callTypeName}通话已结束",
+    "body": {
+      "content": "${callTypeName}通话已结束"
+    }
+  },
+  "sys_invite_into_chat_group": {
+    "type": "sys_invite_into_chat_group",
+    "template": "form",
+    "summary": "您被${inviteOperatorNickName}邀请加入了${customerNickName}的${chatGroupTypeName}服务群：${customerGroupName}",
+    "body": {
+      "title": "进群通知",
+      "subTitle": "您被${inviteOperatorNickName}邀请加入了${customerNickName}的${chatGroupTypeName}服务群：${customerGroupName}",
+      "actions": [
+        {
+          "title": "立即进入",
+          "type": "native",
+          "userType": 2,
+          "targetRouter": "chat",
+          "params": {
+            "groupId": "${imChatGroupId}"
+          }
+        }
+      ]
+    }
+  },
+  "sys_kick_out_chat_group": {
+    "type": "sys_kick_out_chat_group",
+    "template": "form",
+    "summary": "您被${kickOperatorNickName}移出了${customerNickName}的${chatGroupTypeName}服务群：${customerGroupName}",
+    "body": {
+      "title": "退群通知",
+      "subTitle": "您被${kickOperatorNickName}移出了${customerNickName}的${chatGroupTypeName}服务群：${customerGroupName}"
+    }
+  },
+  "sys_intention_user": {
+    "type": "sys_intention_user",
+    "template": "form",
+    "summary": "您添加了一个意向用户",
+    "body": {
+      "title": "意向用户通知",
+      "subTitle": "您添加了一个意向用户",
+      "labels": [
+        {
+          "label": "用户信息：",
+          "value": "${customerInfo}"
+        },
+        {
+          "label": "意向来源：",
+          "value": "${intentionSource}"
+        },
+        {
+          "label": "意向类型：",
+          "value": "${intentionType}"
+        },
+        {
+          "label": "直播主题：",
+          "value": "${liveTheme}"
+        },
+        {
+          "label": "意向备注：",
+          "value": "${intentionRemarks}"
+        }
+      ],
+      "actions": [
+        {
+          "title": "联系业主",
+          "type": "native",
+          "userType": 1,
+          "targetRouter": "chat",
+          "params": {
+            "userId": "${customerId}",
+            "name": "${customerNickName}"
+          }
+        }
+      ]
+    }
+  },
+  "sys_intention_user_forward": {
+    "type": "sys_intention_user_forward",
+    "template": "form",
+    "summary": "${forwardFromName}向您分享了一个意向用户",
+    "body": {
+      "title": "意向用户通知",
+      "subTitle": "${forwardFromName}向您分享了一个意向用户",
+      "labels": [
+        {
+          "label": "用户信息：",
+          "value": "${customerInfo}"
+        },
+        {
+          "label": "意向来源：",
+          "value": "${intentionSource}"
+        },
+        {
+          "label": "意向类型：",
+          "value": "${intentionType}"
+        },
+        {
+          "label": "直播主题：",
+          "value": "${liveTheme}"
+        },
+        {
+          "label": "意向备注：",
+          "value": "${intentionRemarks}"
+        }
+      ],
+      "actions": [
+        {
+          "title": "联系业主",
+          "type": "native",
+          "userType": 2,
+          "targetRouter": "chat",
+          "params": {
+            "userId": "${customerId}",
+            "name": "${customerNickName}"
+          }
+        }
+      ]
+    }
+  },
+  "group_create_serve_chat_group": {
+    "type": "group_create_serve_chat_group",
+    "template": "card",
+    "summary": "您已被邀请加入${customerGroupName}",
+    "body": {
+      "title": "${customerGroupName}",
+      "isLocalIcon": false,
+      "cusIconParams": "${groupMemberAvatarList}",
+      "actions": [
+        {
+          "title": "立即进入",
+          "type": "native",
+          "userType": 0,
+          "targetRouter": "chat",
+          "params": {
+            "groupId": "${imChatGroupId}"
+          }
+        }
+      ]
+    }
+  },
+  "single_create_serve_chat_group": {
+    "type": "single_create_serve_chat_group",
+    "template": "card",
+    "summary": "您已被邀请加入${customerGroupName}",
+    "body": {
+      "title": "${customerGroupName}",
+      "isLocalIcon": false,
+      "cusIconParams": "${groupMemberAvatarList}",
+      "actions": [
+        {
+          "title": "立即进入",
+          "type": "native",
+          "userType": 0,
+          "targetRouter": "chat",
+          "params": {
+            "groupId": "${imChatGroupId}"
+          }
+        }
+      ]
+    }
+  },
+  "group_open_serve_chat_group": {
+    "type": "group_open_serve_chat_group",
+    "template": "tip",
+    "summary": "服务群已开启",
+    "body": {
+      "content": "服务群已开启"
+    }
+  },
+  "group_close_serve_chat_group": {
+    "type": "group_close_serve_chat_group",
+    "template": "tip",
+    "summary": "服务群已关闭",
+    "body": {
+      "content": "服务群已关闭"
+    }
+  },
+  "group_close_butler_chat_group": {
+    "type": "group_close_butler_chat_group",
+    "template": "tip",
+    "summary": "会话已结束，感谢您的来访~",
+    "body": {
+      "content": "会话已结束，感谢您的来访~"
+    }
+  },
+  "sys_order_create": {
+    "type": "sys_order_create",
+    "template": "form",
+    "summary": "${operatorNickName}为您创建了一个${orderType}订单",
+    "body": {
+      "title": "新订单通知",
+      "subTitle": "${operatorNickName}为您创建了一个${orderType}订单",
+      "labels": [
+        {
+          "label": "商品信息：",
+          "value": "${name}"
+        },
+        {
+          "label": "房屋信息：",
+          "value": "${estate}"
+        },
+        {
+          "label": "订单编号：",
+          "value": "${orderNo}"
+        }
+      ],
+      "actions": [
+        {
+          "title": "查看详情",
+          "type": "native",
+          "userType": 1,
+          "targetRouter": "orderDetail",
+          "params": {
+            "orderId": "${orderId}"
+          }
+        }
+      ]
+    }
+  },
+  "group_customer_unwork_tips": {
+    "type": "group_customer_unwork_tips",
+    "template": "tip2",
+    "summary": "${content}",
+    "body": {
+      "content": "${content}"
+    }
+  },
+  "group_no_customer_available": {
+    "type": "group_no_customer_available",
+    "template": "tip2",
+    "summary": "当前咨询群内没有客服，您可以找寻人工客服为您服务",
+    "body": {
+      "content": "当前咨询群内没有客服，您可以找寻人工客服为您服务"
+    }
+  },
+  "group_open_butler_chat_group": {
+    "type": "group_open_butler_chat_group",
+    "template": "tip",
+    "summary": "很高兴为您服务，请问有什么可以帮助您？",
+    "body": {
+      "content": "很高兴为您服务，请问有什么可以帮助您？"
+    }
+  },
+  "group_customer_answer": {
+    "type": "group_customer_answer",
+    "template": "text_bubble",
+    "summary": "${content}",
+    "body": {
+      "content": "${content}"
+    }
+  },
+  "group_customer_queue_up_tips": {
+    "type": "group_customer_queue_up_tips",
+    "template": "tip2",
+    "summary": "${content}",
+    "body": {
+      "content": "${content}"
+    }
+  },
+  "group_product": {
+    "type": "group_product",
+    "template": "product",
+    "summary": "${spuName} | ${skuName}",
+    "body": {
+      "title": "${categoryName}",
+      "imageUrl": "${imageUrl}",
+      "spuName": "${spuName}",
+      "skuName": "${skuName}",
+      "price": "${price}",
+      "unitName": "${unitName}",
+      "deposit": "${deposit}",
+      "skuId": "${skuId}",
+      "cardAction": {
+        "type": "native",
+        "userType": 0,
+        "targetRouter": "product",
+        "params": {
+          "skuId": "${skuId}"
+        }
+      },
+      "action": {
+        "title": "查看详情",
+        "type": "native",
+        "userType": 0,
+        "targetRouter": "product",
+        "params": {
+          "skuId": "${skuId}"
+        }
+      }
+    }
+  },
+  "sys_preliminary_apply_fail": {
+    "type": "sys_preliminary_apply_fail",
+    "template": "form",
+    "summary": "您的设计师入驻申请初审未通过，初审未通过原因：${reason}",
+    "body": {
+      "title": "初审失败通知",
+      "subTitle": "您的设计师入驻申请初审未通过，初审未通过原因：${reason}",
+      "actions": [
+        {
+          "title": "去修改",
+          "type": "native",
+          "userType": 1,
+          "targetRouter": "designerSettle",
+          "params": {
+            "applyId": "${applyId}"
+          }
+        }
+      ]
+    }
+  },
+  "sys_preliminary_apply_success": {
+    "type": "sys_preliminary_apply_success",
+    "template": "form",
+    "summary": "您的设计师入驻申请初审通过",
+    "body": {
+      "title": "初审通过通知",
+      "subTitle": "您的设计师入驻申请初审通过",
+      "actions": [
+        {
+          "title": "查看详情",
+          "type": "native",
+          "userType": 1,
+          "targetRouter": "designerSettle",
+          "params": {
+            "applyId": "${applyId}"
+          }
+        }
+      ]
+    }
+  },
+  "sys_preliminary_apply_cancel": {
+    "type": "sys_preliminary_apply_cancel",
+    "template": "form",
+    "summary": "申请被撤销，申请被撤销原因：${reason}",
+    "body": {
+      "title": "申请被撤销通知",
+      "subTitle": "申请被撤销，申请被撤销原因：${reason}",
+      "actions": [
+        {
+          "title": "去修改",
+          "type": "native",
+          "userType": 1,
+          "targetRouter": "designerSettle",
+          "params": {
+            "applyId": "${applyId}"
+          }
+        }
+      ]
+    }
+  },
+  "sys_interview_success": {
+    "type": "sys_interview_success",
+    "template": "form",
+    "summary": "恭喜您，通过打扮家成为云平台设计师闯关！",
+    "body": {
+      "title": "闯关通过通知",
+      "subTitle": "恭喜您，通过打扮家成为云平台设计师闯关！",
+      "actions": [
+        {
+          "title": "查看详情",
+          "type": "native",
+          "userType": 1,
+          "targetRouter": "designerSettle",
+          "params": {
+            "applyId": "${applyId}"
+          }
+        }
+      ]
+    }
+  },
+  "sys_interview_fail": {
+    "type": "sys_interview_fail",
+    "template": "form",
+    "summary": "很遗憾通知您，未能通过打扮家成为云平台设计师闯关！",
+    "body": {
+      "title": "闯关未通过通知",
+      "subTitle": "很遗憾通知您，未能通过打扮家成为云平台设计师闯关！",
+      "actions": [
+        {
+          "title": "查看详情",
+          "type": "native",
+          "userType": 1,
+          "targetRouter": "designerSettle",
+          "params": {
+            "applyId": "${applyId}"
+          }
+        }
+      ]
+    }
+  },
+  "sys_settle_in_dbj_success": {
+    "type": "sys_settle_in_dbj_success",
+    "template": "form",
+    "summary": "您的设计师入驻申请审核通过，恭喜您入驻成功！系统将为您自动开通设计师服务平台账号",
+    "body": {
+      "title": "入驻成功通知",
+      "subTitle": "您的设计师入驻申请审核通过，恭喜您入驻成功！系统将为您自动开通设计师服务平台账号",
+      "actions": [
+        {
+          "title": "查看详情",
+          "type": "native",
+          "userType": 1,
+          "targetRouter": "designerSettle",
+          "params": {
+            "applyId": "${applyId}"
+          }
+        }
+      ]
+    }
+  },
+  "sys_open_account": {
+    "type": "sys_open_account",
+    "template": "form",
+    "summary": "您的设计师服务工具账号已开通！请点击查看详情",
+    "body": {
+      "title": "账号开通通知",
+      "subTitle": "您的设计师服务工具账号已开通！请点击查看详情",
+      "actions": [
+        {
+          "title": "查看详情",
+          "type": "native",
+          "userType": 1,
+          "targetRouter": "designerSettle",
+          "params": {
+            "applyId": "${applyId}"
+          }
+        }
+      ]
+    }
+  },
+  "sys_service_staff_product_insert": {
+    "type": "sys_service_staff_product_insert",
+    "template": "form",
+    "summary": "您的销售商品库新增了${spuNumber}个商品",
+    "body": {
+      "title": "商品库新增商品通知",
+      "subTitle": "您的销售商品库新增了${spuNumber}个商品",
+      "labels": [
+        {
+          "label": "商品信息：",
+          "value": "${spuNames}"
+        },
+        {
+          "label": "操作人：",
+          "value": "${userName}"
+        },
+        {
+          "label": "操作时间：",
+          "value": "${date}"
+        }
+      ]
+    }
+  },
+  "sys_service_staff_product_remove": {
+    "type": "sys_service_staff_product_remove",
+    "template": "form",
+    "summary": "您的销售商品库减少了${spuNumber}个商品",
+    "body": {
+      "title": "商品库移除商品通知",
+      "subTitle": "您的销售商品库减少了${spuNumber}个商品",
+      "labels": [
+        {
+          "label": "商品信息：",
+          "value": "${spuNames}"
+        },
+        {
+          "label": "操作人：",
+          "value": "${userName}"
+        },
+        {
+          "label": "操作时间：",
+          "value": "${date}"
+        }
+      ]
+    }
+  },
+  "sys_inspect_estate_report_reminder": {
+    "type": "sys_inspect_estate_report_reminder",
+    "template": "form",
+    "summary": "您有验房报告待验收",
+    "body": {
+      "title": "${serveTypeName}",
+      "subTitle": "您有验房报告待验收",
+      "actions": [
+        {
+          "title": "查看详情",
+          "type": "h5",
+          "userType": 1,
+          "targetUrl": "app-pages/confirm-inspection/index.html?id=${serveId}&projectId=${projectId}",
+          "isNewH5Url": true,
+          "isDisplay": false,
+          "params": {
+            "showAppBar": false
+          }
+        }
+      ]
+    }
+  },
+  "sys_inspect_estate_service_time": {
+    "type": "sys_inspect_estate_service_time",
+    "template": "form",
+    "summary": "验房员上门验房时间提醒",
+    "body": {
+      "title": "${serveTypeName}",
+      "subTitle": "验房员上门验房时间提醒",
+      "actions": [
+        {
+          "title": "查看详情",
+          "type": "native_uri",
+          "userType": 1,
+          "isDisplay": false,
+          "targetRouter": "/riki_process_service/inspect_room_reminder?serveId=${serveId}&projectId=${projectId}"
+        }
+      ]
+    }
+  },
+  "sys_snatch_order_success": {
+    "type": "sys_snatch_order_success",
+    "template": "form",
+    "summary": "有${jobName}接单了，请确认",
+    "body": {
+      "title": "${serveTypeName}",
+      "subTitle": "有${jobName}接单了，请确认",
+      "actions": [
+        {
+          "title": "查看详情",
+          "type": "native_uri",
+          "userType": 1,
+          "isDisplay": false,
+          "targetRouter": "/riki_process_service/service_order_approve?serveId=${serveId}&projectId=${projectId}"
+        }
+      ]
+    }
+  },
+  "sys_butler_project_completion_to_owner": {
+    "type": "sys_butler_project_completion_to_owner",
+    "template": "form",
+    "summary": "您有一个竣工验收待确认",
+    "body": {
+      "title": "${serveTypeName}",
+      "subTitle": "您有一个竣工验收待确认",
+      "actions": [
+        {
+          "title": "查看详情",
+          "type": "native_uri",
+          "userType": 1,
+          "isDisplay": false,
+          "targetRouter": "/riki_process_service/completion_apply?id=${id}&projectId=${projectId}"
+        }
+      ]
+    }
+  },
+  "sys_butler_stage_audit_pass_to_owner": {
+    "type": "sys_butler_stage_audit_pass_to_owner",
+    "template": "form",
+    "summary": "${nodeName}阶段完工，请验收",
+    "body": {
+      "title": "${serveTypeName}",
+      "subTitle": "${nodeName}阶段完工，请验收",
+      "actions": [
+        {
+          "title": "查看详情",
+          "type": "native_uri",
+          "userType": 1,
+          "isDisplay": false,
+          "targetRouter": "/riki_process_service/apply_record/result?id=${id}&serveId=${serveId}&projectId=${projectId}"
+        }
+      ]
+    }
+  },
+  "sys_butler_node_audit_pass_to_owner": {
+    "type": "sys_butler_node_audit_pass_to_owner",
+    "template": "form",
+    "summary": "${nodeName}整体完工，请验收",
+    "body": {
+      "title": "${serveTypeName}",
+      "subTitle": "${nodeName}整体完工，请验收",
+      "actions": [
+        {
+          "title": "查看详情",
+          "type": "native_uri",
+          "userType": 1,
+          "isDisplay": false,
+          "targetRouter": "/riki_process_service/apply_record/result?id=${id}&serveId=${serveId}&projectId=${projectId}"
+        }
+      ]
+    }
+  },
+  "sys_available_purchase_service": {
+    "type": "sys_available_purchase_service",
+    "template": "form",
+    "summary": "您有一个${serviceName}待购买",
+    "body": {
+      "title": "${serveTypeName}",
+      "subTitle": "您有一个${serviceName}待购买",
+      "actions": [
+        {
+          "title": "查看详情",
+          "type": "native_uri",
+          "userType": 1,
+          "isDisplay": false,
+          "targetRouter": "/riki_process_service/furnish/buy_service?serviceType=[${serviceType}]&serviceName=${serviceName}&estateId=${estateId}&projectId=${projectId}"
+        }
+      ]
+    }
+  },
+  "sys_available_worker_service": {
+    "type": "sys_available_worker_service",
+    "template": "form",
+    "summary": "您有一个${serviceName}待购买",
+    "body": {
+      "title": "${serveTypeName}",
+      "subTitle": "您有一个${serviceName}待购买",
+      "actions": [
+        {
+          "title": "查看详情",
+          "type": "native_uri",
+          "userType": 1,
+          "isDisplay": false,
+          "targetRouter": "/riki_process_service/butler_work_cost?serveId=${serveCardId}&nodeType=${serviceType}&projectId=${projectId}&estateId=${estateId}"
+        }
+      ]
+    }
+  },
+  "sys_freight_handling_fee_confirmation":{
+    "type": "sys_freight_handling_fee_confirmation",
+    "template": "form",
+    "summary": "您有一个要货申请待确认",
+    "body": {
+      "title": "${serveTypeName}",
+      "subTitle": "您有一个要货申请待确认",
+      "actions": [
+        {
+          "title": "查看详情",
+          "type": "native_uri",
+          "userType": 1,
+          "isDisplay": false,
+          "targetRouter": ""
+        }
+      ]
+    }
+  },
+  "sys_actuary_publish": {
+    "type": "sys_actuary_publish",
+    "template": "form",
+    "summary": "精算师已经交付了精算单，请确认",
+    "body": {
+      "title": "${serveTypeName}",
+      "subTitle": "精算师已经交付了精算单，请确认",
+      "actions": [
+        {
+          "title": "查看详情",
+          "type": "h5",
+          "userType": 1,
+          "isNewH5Url": true,
+          "isDisplay": false,
+          "targetUrl": "app-pages/actuarial/index.html?serveId=${serveId}&&isActuarial=1&projectId=${projectId}&isMessage=1",
+          "params": {
+            "showAppBar": false
+          }
+        }
+      ]
+    }
+  },
+  "sys_replenish_apply_to_owner_pay": {
+    "type": "sys_replenish_apply_to_owner_pay",
+    "template": "form",
+    "summary": "${roleTypeName}申请补人工，请支付差价",
+    "body": {
+      "title": "${serveTypeName}",
+      "subTitle": "${roleTypeName}申请补人工，请支付差价",
+      "actions": [
+        {
+          "title": "查看详情",
+          "type": "native_uri",
+          "userType": 1,
+          "isDisplay": false,
+          "targetRouter": ""
+        }
+      ]
+    }
+  },
+  "sys_measure_estate_structure_diagram_report_msg": {
+    "type": "sys_measure_estate_structure_diagram_report_msg",
+    "template": "form",
+    "summary": "您有原始结构尺寸图待验收",
+    "body": {
+      "title": "${serveTypeName}",
+      "subTitle": "您有原始结构尺寸图待验收",
+      "actions": [
+        {
+          "title": "查看详情",
+          "type": "native_uri",
+          "userType": 1,
+          "isDisplay": false,
+          "targetRouter": "/riki_process_service/amount_room_result?serveId=${serveId}&serveType=${serveType}&projectId=${projectId}"
+        }
+      ]
+    }
+  },
+  "sys_design_stage_report_msg": {
+    "type": "sys_design_stage_report_msg",
+    "template": "form",
+    "summary": "您有${stageName}待验收",
+    "body": {
+      "title": "${serveTypeName}",
+      "subTitle": "您有${stageName}待验收",
+      "actions": [
+        {
+          "title": "查看详情",
+          "type": "native_uri",
+          "userType": 1,
+          "isDisplay": false,
+          "targetRouter": "/riki_process_service/design_result_confirm?serveId=${serveId}&designStageDes=${stageName}&projectId=${projectId}"
+        }
+      ]
+    }
+  },
+  "sys_design_report_msg": {
+    "type": "sys_design_report_msg",
+    "template": "form",
+    "summary": "您有设计报告待验收",
+    "body": {
+      "title": "${serveTypeName}",
+      "subTitle": "您有设计报告待验收",
+      "actions": [
+        {
+          "title": "查看详情",
+          "type": "native_uri",
+          "userType": 1,
+          "isDisplay": false,
+          "targetRouter": "/riki_process_service/furnish/design_report?serveId=${serveId}&projectId=${projectId}"
+        }
+      ]
+    }
+  },
+  "custom_agant_coming": {
+    "type": "custom_agant_coming",
+    "template": "tip2",
+    "summary": "请稍候，正在为您连接人工客服",
+    "body": {
+      "content": "请稍候，正在为您连接人工客服"
+    }
+  },
+  "custom_agant_waiting": {
+    "type": "custom_agant_waiting",
+    "template": "tip2",
+    "summary": "当前客服正忙，您位于第${position}位，请耐心等候",
+    "body": {
+      "content": "当前客服正忙，您位于第${position}位，请耐心等候"
+    }
+  },
+  "custom_agant_close": {
+    "type": "custom_agant_close",
+    "template": "tip2",
+    "summary": "${message}",
+    "body": {
+      "content": "${message}"
+    }
   }
 }
