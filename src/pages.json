@@ -549,9 +549,16 @@
 					"path": "pages/service-list/service-list",
 					"style": {
 						"navigationBarTitleText": "",
-						"enablePullDownRefresh": true
+						"enablePullDownRefresh": false
 					}
 				},
+        {
+          "path": "pages/materials-list/materials-list",
+          "style": {
+          	"navigationBarTitleText": "更换商品",
+          	"enablePullDownRefresh": false
+          }
+        },
 				{
 					"path": "pages/no-house-decorate/no-house-decorate",
 					"style": {
