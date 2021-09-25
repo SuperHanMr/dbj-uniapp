@@ -243,7 +243,7 @@
 		methods: {
 			toGoodsDetail(id) {
 				uni.navigateTo({
-					url: "/sub-classify/pages/goods-detail/goods-detail?id=" + id
+					url: "/sub-classify/pages/goods-detail/goods-detail?goodId=" + id
 				})
 			},
 			foramtPrice(item) {
