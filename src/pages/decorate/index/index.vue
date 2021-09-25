@@ -190,6 +190,7 @@
       })
     },
     onShow() {
+      console.log('showTabBar')
       uni.showTabBar()
       // if (this.estateList && this.estateList.length < 1) {
       this.getEstateList();
@@ -481,15 +482,17 @@
         })
       },
       toSend() {
-        console.log('发送消息')
+        
         this.client.publish('dabanjia/testTopic', 'hello zzz')
       },
       closeNotice() {
         this.noticeActive = false;
+        console.log('showTabBar')
         uni.showTabBar()
       },
       openNotice() {
         this.noticeActive = true
+        console.log('hideTabBar')
         uni.hideTabBar()
       },
       goToAddHouseInfo() {

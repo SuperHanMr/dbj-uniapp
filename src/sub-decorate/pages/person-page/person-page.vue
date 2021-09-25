@@ -160,6 +160,7 @@
         }).exec()
       },
       back(){
+        console.log(1111)
         uni.navigateBack({
           
         })
@@ -196,7 +197,7 @@
       display: flex;
       align-items: center;
       justify-content: center;
-
+      z-index: 2;
       image {
         width: 32rpx;
         height: 32rpx;
