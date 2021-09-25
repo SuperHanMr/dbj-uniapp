@@ -159,7 +159,7 @@
 					<view class="noCommentText">暂无评论~</view>
 				</view>
 				<view class="commentList" v-if="comments.length">
-					<view class="commentItem" v-for="(item,index) in comments" :key="item.commentId">
+					<view class="commentItem" bindlongpress="deleteComment(item.commentId)" @click="commentItemC(item.nickname,item.commentId)" v-for="(item,index) in comments" :key="item.commentId">
 						<view class="mainContent">
 							<image class="avatar" :src="item.avatar"></image>
 							<view class="commentInfo">
@@ -171,7 +171,7 @@
 								<view class="text">{{item.content}}</view>
 							</view>
 						</view>
-						<view class="reply" @click="replyC(replyItem.toNickname)" v-for="replyItem in item.secondComments" :key="replyItem.commentId">
+						<view class="reply" @click="replyItemC(replyItem.toNickname,replyItem.commentId,index)" v-for="replyItem in item.secondComments" :key="replyItem.commentId">
 							<image class="avatar" :src="replyItem.avatar"></image>
 							<view class="replyInfo">
 								<view class="info">
@@ -184,7 +184,7 @@
 						</view>
 						<view class="replyFooter"  v-if="item.secondCount>=1">
 							<view class="expand" v-if="!isExpanded" @click="expandC(item.commentId,index)">
-								<view class="test">展开{{item.secondCount}}条回复</view>
+								<view class="text">展开{{item.secondCount}}条回复</view>
 								<image class="img" src="../../static/ic_expand@2x.png"></image>
 							</view>
 							<view class="packUp" v-if="isExpanded" @click="packUpC(item.commentId,index)">
@@ -196,12 +196,14 @@
 				</view>
 				<view class="bottomComments" v-if="showInput"></view>
 				<view class="bottomInput" v-if="showInput">
-					<input v-model="value"
+					<input v-model="inputValue"
 						:cursor-spacing="10"
 						:placeholder="isInputFocus?`回复@${inputName}`:'说点什么吧'"
-						class="easyInput" :class="{'focusInput':isInputFocus}" @focus="inputFocus"
+						:class="{'focusInput':isInputFocus}" 
+						@focus="inputFocus"
+						class="easyInput" 
 						/>
-					<view class="send" :class="{'themeColor':isInputFocus}">发送</view>
+					<view class="send" :class="{'themeColor':isInputFocus}" @click="setReply">发送</view>
 				</view>
 			</view>
 		</view>
@@ -211,7 +213,7 @@
 <script>
 	import axios from '@/js_sdk/gangdiedao-uni-axios'
 	import {getDecorateProcess,getDecorateDynamic,getSelectOptions,setAttentions,
-	getFocusBrowse,getComments,expandReplies} from "../../../api/real-case.js"
+	getFocusBrowse,getComments,expandReplies,createReply,removeComment} from "../../../api/real-case.js"
 	
 	import imagePreview from "../../../components/image-preview/image-preview.vue"
 	export default {
@@ -235,10 +237,15 @@
 				isSelfFocusOn: false,
 				estateFocusOnCount: 0,
 				estateViewCount: 0,
+				dynamicId: 0,
 				isInputFocus: false,
 				showInput: false,
+				commentId: 0,
+				commentIndex: 0,
 				inputName: "",
+				inputValue: "",
 				isExpanded: false,
+				isReply: false,
 				houseStructure: 0
 			}
 		},
@@ -253,12 +260,31 @@
 			inputFocus(){
 				this.isInputFocus = true
 			},
+			deleteComment(commentId){
+				removeComment(commentId).then(data => {
+					this.commentC(this.dynamicId)
+				})
+			},
+			setReply(isReply){
+				this.showInput = false
+				console.log(this.inputValue,'blur')
+				let params = {
+					businessId: this.dynamicId,//	动态ID
+					businessType: 2,
+					replyId: isReply?this.replyId:this.commentId,
+					content: this.inputValue,
+				}
+				createReply(params).then(data => {
+					this.commentC(this.dynamicId)
+				})
+			},
 			expandC(id,index){
+				this.
 				this.isExpanded = true
 				let params = {
 					page: 1,
 					rows: 10,
-					parentId: id
+					parentId: id//评论ID
 				}
 				expandReplies(params).then(data => {
 					if(data){
@@ -297,11 +323,12 @@
 				})
 			},
 			commentC(id){
+				this.dynamicId = id
 				this.showComments = true
 				let params = {
 					page: 1,
 					rows: 10,
-					businessId: id,
+					businessId: id,//	动态ID
 					businessType: 2
 				}
 				getComments(params).then(data => {
@@ -312,9 +339,17 @@
 					}
 				})
 			},
-			replyC(name){
+			commentItemC(name,commentId){
 				this.showInput = true
 				this.inputName = name
+				this.commentId = commentId
+			},
+			replyItemC(name,replyId,commentIndex){
+				this.isReply = true
+				this.showInput = true
+				this.inputName = name
+				this.replyId = replyId
+				this.commentIndex = commentIndex
 			},
 			focusC(){
 				let deviceId = 0
@@ -620,6 +655,7 @@
 		line-height: 40rpx;
 	}
 	.info .userName{
+		/* width: fit-content; */
 		width: 52rpx;
 		height: 36rpx;
 		margin-right: 8rpx;
@@ -694,15 +730,22 @@
 		margin-left: 136rpx;
 	}
 	.expand{
-		width: 164rpx;
+		width: 190rpx;
+		/* width: fit-content; */
 		height: 36rpx;
-		
-		
 		font-size: 26rpx;
 		font-weight: 500;
 		color: #00c2b8;
 		display: flex;
 		align-items: center;
+	}
+	.expand .text{
+		width: 168rpx;
+		/* width: fit-content; */
+		height: 36rpx;
+		font-size: 26rpx;
+		font-weight: 500;
+		color: #00c2b8;
 	}
 	.expand .img{
 		width: 14rpx;
@@ -713,8 +756,6 @@
 	.packUp{
 		width: 74rpx;
 		height: 36rpx;
-		
-		
 		font-size: 26rpx;
 		font-weight: 500;
 		color: #00c2b8;

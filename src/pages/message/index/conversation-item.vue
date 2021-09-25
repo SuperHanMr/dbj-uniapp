@@ -28,6 +28,7 @@
   import TIM from 'tim-wx-sdk'
   import MessageTemplate from "@/utils/message-template.json";
   import { calendarFormat } from "@/utils/date.js"
+  import { compileTemplateStr as compile } from "@/utils/util.js";
   import GroupAvatars from "@/components/group-avatars/group-avatars.vue"
   import { mapState } from "vuex"
   export default {
@@ -81,8 +82,8 @@
                 return "[视频]"
               }
               let template = MessageTemplate[payloadData.type];
-              if (template && template.title) {
-                return "[" + template.title + "]"
+              if (template && template.summary) {
+                return "[" + compile(template.summary)(payloadData.params || {}) + "]"
               }
               return "[不支持的消息类型]"
             } catch (e) {

@@ -15,14 +15,24 @@
     v-else-if="message.type === TIM.TYPES.MSG_CUSTOM && payloadData.type === 'video_message'"
     :message="message"
   />
-  <card-template 
+  <questions-element
+    v-else-if="message.type === TIM.TYPES.MSG_CUSTOM && payloadData.type === 'questions_message'"
+    :message="message" 
+  />
+  <card-template
     v-else-if="message.type === TIM.TYPES.MSG_CUSTOM && template.template === 'card'"
     :template="template"
     :message="message"
   />
-  <questions-element
-    v-else-if="message.type === TIM.TYPES.MSG_CUSTOM && payloadData.type === 'questions_message'"
-    :message="message" 
+  <tip-template
+    v-else-if="message.type === TIM.TYPES.MSG_CUSTOM && template.template === 'tip'"
+    :template="template"
+    :message="message"
+  />
+  <tip2-template
+    v-else-if="message.type === TIM.TYPES.MSG_CUSTOM && template.template === 'tip2'"
+    :template="template"
+    :message="message"
   />
   <unsupported-element
     v-else
@@ -40,6 +50,8 @@
   import QuestionsElement from "./questions-element.vue";
   import UnsupportedElement from "./unsupported-element.vue";
   import CardTemplate from "./template/card-tpl.vue"
+  import TipTemplate from "./template/tip-tpl.vue"
+  import Tip2Template from "./template/tip2-tpl.vue"
   export default {
     name: "MessageItem",
     props: {
@@ -55,7 +67,9 @@
       SoundElement,
       QuestionsElement,
       UnsupportedElement,
-      CardTemplate
+      CardTemplate,
+      TipTemplate,
+      Tip2Template
     },
     computed: {
       TIM() {

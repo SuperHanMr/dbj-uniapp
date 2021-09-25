@@ -19,11 +19,12 @@
       :current="currentIndex"
       :duration="200"
       @change="swiperChange"
+			:style="{paddingBottom:systemBottom,backgroundColor:currentList.length < 1?'#ffffff':'#f5f6f6'}"
     >
       <swiper-item
         v-for="(item,tabindex) in tabList"
         :key="item"
-      >
+			>
         <scroll-view
           class="scroll-view"
           scroll-y="true"
@@ -32,7 +33,7 @@
           :refresher-triggered="triggered"
           @refresherrefresh="onRefresh"
           @scrolltolower="onLoadMore"
-        >
+				>
           <view class="line" />
           
           <view class="empty-container" v-if="currentList.length < 1">
@@ -42,7 +43,7 @@
 						<text v-if="tabindex==2">您还没有关注优先推荐</text>
 					</view>
 					
-					<view  v-else>
+					<view  v-else >
 						<view v-if="tabindex==0"  class="house-item">
 							<image
 							  src="../../../../static/order/blank_house@2x.png"
@@ -58,10 +59,7 @@
 						      <view class="split-line" />
 						      <text>3室2厅1厨</text>
 						    </view>
-						
-						    
-						  </view>
-						  
+							</view>
 						</view>
 						
 						<view  v-if="tabindex == 1" class="craftsmanAndRecommend" v-for="item2 in currentList" :key="item2.id">
@@ -117,10 +115,8 @@
 							</view>
 						</view>
 						
-						
 					</view>
-				
-        </scroll-view>
+				</scroll-view>
 
       </swiper-item>
     </swiper>
@@ -143,10 +139,15 @@ export default {
       loading: false,
 			
       routeId:"",
+			systemBottom:"",
 		};
   },
   onShow() {
 		this.houseList();
+	},
+	mounted(e) {
+		const menuButtonInfo = uni.getMenuButtonBoundingClientRect();
+		this.systemBottom = menuButtonInfo.bottom + "rpx";
 	},
 	computed: {
 		currentList() {

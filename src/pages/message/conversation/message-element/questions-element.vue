@@ -5,33 +5,14 @@
         猜你想要
       </view>
       <view class="question-list">
-        <view class="question-item">
+        <view 
+          v-for="(q,index) in questions" 
+          :key="q.id" 
+          class="question-item"
+          @click="handleSelectQuestion(q)"
+        >
           <view class="question-item__text">
-            业务问答1（内容暂无）
-          </view>
-          <view class="question-item__icon icon-face"></view>
-        </view>
-        <view class="question-item">
-          <view class="question-item__text">
-            业务问答1（内容暂无）
-          </view>
-          <view class="question-item__icon icon-face"></view>
-        </view>
-        <view class="question-item">
-          <view class="question-item__text">
-            业务问答1（内容暂无）
-          </view>
-          <view class="question-item__icon icon-face"></view>
-        </view>
-        <view class="question-item">
-          <view class="question-item__text">
-            业务问答1（内容暂无）
-          </view>
-          <view class="question-item__icon icon-face"></view>
-        </view>
-        <view class="question-item">
-          <view class="question-item__text">
-            业务问答1（内容暂无）
+            {{ q.question }}
           </view>
           <view class="question-item__icon icon-face"></view>
         </view>
@@ -42,6 +23,7 @@
 
 <script>
 import MessageBubble from "./message-bubble";
+import { getTim } from "@/utils/tim.js"
 
 export default {
   name: "TextElement",
@@ -61,8 +43,18 @@ export default {
       }
       return this.message.payload;
     },
+    questions() {
+      return this.message.payloadData.params.questions || [];
+    },
   },
   methods: {
+    handleSelectQuestion(question) {
+      // this.$store.dispatch("selectSmartQuestion", question);
+      getTim().sendMessage({
+        type: "MSG_QUESTION",
+        payload: question
+      })
+    }
   },
 };
 </script>
