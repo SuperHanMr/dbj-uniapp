@@ -148,12 +148,12 @@
         this.getList()
       },
       toDetails(id){
-        uni.setStorageSync(
-            'goodId',
-            id
-        );
+        // uni.setStorageSync(
+        //     'goodId',
+        //     id
+        // );
         uni.navigateTo({
-          url: "/sub-classify/pages/goods-detail/goods-detail" 
+          url: "/sub-classify/pages/goods-detail/goods-detail?goodId=" + id
         })
       }
     }
