@@ -23,8 +23,8 @@
          :key="goodsIndex"
          :right-options="options"
        >
-        <view class="goodsItem" @click="toDetails(goodsItem.product.skuId)">
-          <image :src="goodsItem.product.skuImage" class="goodsItemImg"></image>
+        <view class="goodsItem">
+          <image :src="goodsItem.product.skuImage" class="goodsItemImg"  @click="toDetails(goodsItem.product.skuId)"></image>
           <view class="goodsInfo">
             <view class="goodsDesc">
               <text class="goodsType">{{goodsItem.product.productType === 1?"物品":"服务"}}</text>
