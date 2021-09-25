@@ -228,7 +228,8 @@
       this.buyCount = e.buyCount
       this.skuId = e.skuId
       this.storeId = e.storeId
-      this.unit = e.unitName
+      this.unit = e.unit
+      console.log(this.unit, "this.unit")
       this.goodDetailId = uni.getStorageSync('goodId')
     },
     onShow() {
