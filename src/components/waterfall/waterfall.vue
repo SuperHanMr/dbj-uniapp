@@ -44,13 +44,23 @@
 				}
 			}
 		},
+		// computed:{
+		// 	checkList(){
+		// 		let itemList = this.list.filter(item=>{
+		// 			return item.isChecked == true
+		// 		})
+		// 		return itemList
+		// 	}
+		// },
 		data() {
 			return {
 				leftList: [],
 				rightList: [],
 				itemIndex: 0,
 				leftHeight: 0,
-				rightHeight: 0
+				rightHeight: 0,
+				
+				checkedList:[],
 			};
 		},
 		created() {
@@ -58,14 +68,19 @@
 				this.leftList = [this.list[0]]; //第一张图片入栈
 			}
 		},
+		
 		destroyed() {
 			console.log('destroy');
 		},
+		
 		methods: {
-			toDetail(item) {
-				console.log("item=",item)
-				this.$emit('selectedItem', item)
+			toDetail(data) {
+				let index = this.list.findIndex(item=>item.id == data.id)
+				this.list[index].isChecked = data.isChecked
+				this.$emit('selectedItem',this.list)
 			},
+			
+			
 			onImageLoad(e) {
 				if (!e) {
 					console.log('无图片！！！！');

@@ -111,7 +111,7 @@
           <!-- 切换房屋弹窗 -->
           <uni-popup ref="sw">
             <house-switch class="margintop" :datalist="projectList" :current="currentProject.estateId"
-              @goAddHouse="addHouse" @checkHouse="checkHouse"></house-switch>
+              @goAddHouse="addHouse" @checkHouse="changeCurrentProject"></house-switch>
           </uni-popup>
           <decorate-notice @touchmove.stop.prevent="()=>false" v-if="noticeActive" :num='msgNum'
             :current='currentProject.projectId' @closeNotice='closeNotice' class="decorate-notice"></decorate-notice>
@@ -264,7 +264,10 @@
       scroll(e) {},
       getAvailableService() {
         this.availGuides = []
-        availableService({relegationType: this.currentProject.relegationType, projectId:this.currentProject.projectId}).then(data => {
+        availableService({
+          relegationType: this.currentProject.relegationType,
+          projectId: this.currentProject.projectId
+        }).then(data => {
           const {
             purchasedServiceList,
             availableServiceList,
@@ -358,7 +361,7 @@
           url: "/sub-decorate/pages/add-house/add-house"
         })
       },
-      checkHouse(item) {
+      changeCurrentProject(item) {
         this.currentProject = item
         this.initData(item)
         this.$refs.sw.close()
@@ -369,8 +372,28 @@
         }).then(data => {
           // 有房屋有服务，初始化当前的默认房屋
           if (data && data.length > 0) {
-            console.log("ProjectList1>: ", data)
+            // console.log("ProjectList1>: ", data)
             this.projectList = data
+
+            // const {
+            //   currentProject
+            // } = getApp().globalData.currentProject
+            // if (currentProject && currentProject.projectId) {
+            //   const arr = data.filter(t => t.projectId == currentProject.projectId)
+            //   if (arr && arr.length > 0) {
+            //     this.currentProject = arr[0]
+            //     this.initData(arr[0])
+            //   }
+            // } else {
+            //   const arr = data.filter(t => t.defaultEstate)
+            //   if (arr && arr.length > 0) {
+            //     this.currentProject = arr[0]
+            //     this.initData(arr[0])
+            //   } else {
+            //     this.currentProject = data[0]
+            //     this.initData(data[0])
+            //   }
+            // }
             const arr = data.filter(t => t.defaultEstate)
             if (arr && arr.length > 0) {
               this.currentProject = arr[0]
@@ -387,6 +410,8 @@
         this.getMsgNum()
         this.who = this.currentProject.relegationType == 2 ? "亲友" : "我"
         this.currentEstate = this.estateList.filter(t => t.id === obj.estateId)[0]
+        getApp().globalData.currentEstate = this.currentEstate
+        getApp().globalData.currentProject = this.currentProject
         if (this.currentProject.estateId) {
           this.getAvailableService()
           this.getFriendsList()

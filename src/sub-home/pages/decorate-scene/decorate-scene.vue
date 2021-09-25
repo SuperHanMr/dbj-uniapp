@@ -333,17 +333,13 @@
 				let params = {
 					routeId: 1002,
 					relationId: this.projectInfo.id,
-					authorId: this.projectInfo.estateId,
+					authorId: this.projectInfo.estateOwnerId,
 					equipmentId: deviceId,
-					userId: this.userId,
-					type: 3,
-					bizType: 5,
 					subBizType: this.houseStructure,
 					jsonContent: JSON.stringify(obj)
 				}
 				setAttentions(params).then( data => {
 					if(data){
-						console.log(data)
 						this.isSelfFocusOn = !this.isSelfFocusOn
 					}
 				})

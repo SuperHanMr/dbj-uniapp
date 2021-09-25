@@ -5,7 +5,7 @@
         <image class="avtor" :src="timeMsg.avatar"></image>
         <view class="tigs">
           <view class="username">{{timeMsg.name}}</view>
-          <view class="role">{{roleName}}</view>
+          <view class="role">{{timeMsg.roleName}}</view>
         </view>
       </view>
       <view class="date">{{timeMsg.appointedServiceMsgTime}}</view>
@@ -19,7 +19,7 @@
     <view class="tips">
       <view class="tips-t">验房前准备</view>
       <view class="tips-c">
-        {{timeMsg.note}}
+        {{timeMsg.note || "无"}}
       </view>
     </view>
     <view class="btn-wrap">
@@ -173,7 +173,7 @@
     font-size: 40rpx;
     font-family: PingFangSC, PingFangSC-Medium;
     font-weight: 700;
-    text-align: left;
+    text-align: center;
     color: #00c2b8;
     line-height: 56rpx;
     margin-bottom: 8rpx;
