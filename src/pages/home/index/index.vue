@@ -63,7 +63,7 @@
 			</view>
 		</view>
 		<view class="example-content">
-			<view class="item">
+			<view class="item" @click="toSelfFitment">
 				<view class="title">
 					#自学装修
 				</view>
@@ -241,6 +241,10 @@
 			this.getHomeGoodsList();
 		},
 		methods: {
+			toSelfFitment() {
+				let url = this.ENV.VUE_APP_BASE_H5 + '/app-pages/self-study-decorated/index.html';
+				this.toWebview(url)
+			},
 			toGoodsDetail(id) {
 				uni.navigateTo({
 					url: "/sub-classify/pages/goods-detail/goods-detail?goodId=" + id
@@ -262,7 +266,8 @@
 					//回放
 					uni.navigateTo({
 						url: "../../common/video-player/video-player?url=" +
-							encodeURIComponent(item.roomVideoMediaVO.videoUrl),
+							encodeURIComponent(item.roomVideoMediaVO.videoUrl) + "&title=" + item.roomVideoMediaVO
+							.title,
 					});
 				}
 			},
