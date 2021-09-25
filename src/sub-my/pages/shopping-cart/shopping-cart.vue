@@ -304,10 +304,9 @@
 				console.log('跳转到店铺详情页')
 			},
 			toGoodsDetail(skuId,isDisabled){
-				// isDisabled ? uni.setStorageSync( 'fromShopCart', {skuId,isDisabled:true} ): uni.setStorageSync( 'fromShopCart', {skuId,isDisabled:false} )
 				uni.navigateTo({
-					url: isDisabled ? `/sub-classify/pages/goods-detail/goods-detail?skuId=${skuId}&isDisabled=1`:
-					`/sub-classify/pages/goods-detail/goods-detail?skuId=${skuId}&isDisabled=0`
+					url: isDisabled ? `/sub-classify/pages/goods-detail/goods-detail?goodId=${skuId}&isDisabled=1`:
+					`/sub-classify/pages/goods-detail/goods-detail?goodId=${skuId}&isDisabled=0`
 				})
 			},
 			requestPage(){
