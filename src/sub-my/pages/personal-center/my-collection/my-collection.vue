@@ -21,7 +21,7 @@
 
 		<swiper class="swiper" :current="currentIndex" :duration="200" 
 			@change="swiperChange"
-			:style="{backgroundColor:listLength > 0 ?'none':'#ffffff'}"
+			:style="{paddingBottom:systemBottom +'rpx',backgroundColor:listLength > 0 ?'none':'#ffffff'}"
 		>
 				
 			<swiper-item :class="{emptyContainer:productList.length < 1 ? true : false}">
@@ -50,7 +50,7 @@
 		</swiper>
 
 		<!-- 底部按钮 -->
-		<view class="footer" v-if=" currentList.length >= 1 && showCalCelBtn" :style="{paddingBottom:systemBottom}">
+		<view class="footer" v-if=" currentList.length >= 1 && showCalCelBtn" :style="{paddingBottom:systemBottom + 24 + 'rpx'}">
 			<view class="left">
 				<image v-if="allCheck"  src="../../../../static/order/images/product_checked.png"  @click="handleAllCheck" mode=""></image>
 				<image v-else src="../../../../static/order/images/product_unChecked.png" mode="" @click="handleAllCheck"/>
@@ -98,6 +98,7 @@
 				caseList: [], //案例列表
 				checkedItemIds:[],//选中的要取消收藏的item的id
 				listLength:"",//返回数据的个数
+				equipmentId:"",
 				page: [1, 1],
 				totalPage: [1, 1],
 
@@ -114,9 +115,14 @@
 
 		mounted(e) {
 			const menuButtonInfo = uni.getMenuButtonBoundingClientRect();
-			this.systemBottom = menuButtonInfo.bottom + 24 + "rpx";
+			this.systemBottom = menuButtonInfo.bottom;
 		},
 		onShow() {
+			uni.getSystemInfo({
+				success:res => {
+					this.equipmentId = res.deviceId
+				}
+			})
 			this.getProductList()
 		},
 		watch:{
@@ -184,9 +190,7 @@
 					this.loading = false;
 				})
 			},
-			
-
-			
+				
 			//管理
 			handleMgr() {
 				this.showMgrBtn = !this.showMgrBtn
@@ -208,14 +212,10 @@
 				}
 			},
 			
-			
-			
-			
-			
 			// 点击单个item的操作获取选中的数据
 			onSelectedItem(data) {
-				this.checkedItemIds = data.filter(item =>   item.isChecked == true).map((item2) => {
-					return item2.id
+				this.checkedItemIds = data.filter(item => item.isChecked == true).map((item2) => {
+					return {relationId:item2.id,authorId:item2.authorId,subBizType:item2.subBizType}
 				})
 				this.productList = data
 				if(this.checkedItemIds.length == this.productList.length){
@@ -232,45 +232,37 @@
 				this.allCheck=!this.allCheck
 				switch(this.currentIndex){
 					case 0:
-						if(this.allCheck){
-							
-							this.productList = this.handleList(this.productList,true)
-							this.checkedItemIds = this.productList.map(item=>{
-								return item.id
-							})
-							console.log("全选porductlist-00000=",this.productList,"this.checkedItemIds",this.checkedItemIds)
-							
-						}else{
-							
-							this.productList = this.handleList(this.productList,false)
-							this.checkedItemIds =[]
-							console.log("全选productlist-00000=",this.productList,"this.checkedItemIds",this.checkedItemIds) 
-							
-						}
+						this.allCheckFunction(this.productList)
 						break;
 					case 1:
-	
-						if(this.allCheck){
-							this.caseList =handleList(this.caseList,true)
-							this.checkedItemIds = this.caseList.map(item=>{
-								return item.id
-							})
-							console.log("全选caselist-1111=",this.caseList,"this.checkedItemIds",this.checkedItemIds)
-							
-						}else{
-							
-							this.caseList = this.handleList(this.caseList,false)
-							this.checkedItemIds =[]
-							console.log("全选caselist-111=",this.caseList,"this.checkedItemIds",this.checkedItemIds) 
-							
-						}
+						this.allCheckFunction(this.caseList)
 						break;
 				}
-				
 			},
-			
-			
-			
+			allCheckFunction(list){
+				if(this.allCheck){
+					list =this.handleList(list,true)
+					this.checkedItemIds = list.map(item=>{
+						return {relationId:item.id,authorId:item.authorId,subBizType:item.subBizType}
+					})
+					console.log("列表list=",list)
+					console.log("this.checkedItemIds=",this.checkedItemIds)
+				}else{
+					list =this.handleList(list,false)
+					this.checkedItemIds =[]
+					console.log("列表list=",list)
+					console.log("this.checkedItemIds=",this.checkedItemIds)
+				}
+			},
+			handleList(list,isChecked,type){
+				return list.map(item=>{
+					item.isChecked = isChecked
+					if(type){
+						item.icon =type
+					}
+					return item
+				})
+			},
 			
 			// 点击取消收藏按钮
 			handleCancel() {
@@ -282,26 +274,30 @@
 			closePopDialog(){
 				this.$refs.popup.close()
 			},
-			// 点击取消收藏弹框的确认按钮
+			//取消收藏
 			confirmCancelCollection() {
 				console.log("确认取消")
 				let params={
-					relationIds:[],//关系ID集合(被动的关联ID)",
-					routeId:"", //路由ID",
-					type:"",//主类型",
-					bizType:"", //二级分类",
-					subBizType:"", //三级分类",
-					isAll:"",//是否全部删除：慎用"
+					equipmentId:this.equipmentId,
+					list:this.checkedItemIds
 				}
+				if(this.currentIndex ==0){
+					params.routeId = 5002
+				}else{
+					params.routeId = 5001
+				}
+				console.log("取消收藏接口的params=",params)
 				batchCancellation(params).then(data=>{
+					console.log("取消收藏")
 					this.$refs.popup.close()
+					this.showMgrBtn = true
+					this.showCalCelBtn = false
 					this.allCheck = false
 					uni.showToast({
 						title:"取消收藏成功！",
 						icon:"none",
 						duration: 1000
 					});
-					console.log("刷新列表")
 					setTimeout(()=>{
 						if(this.currentIndex == 0){
 							this.getProductList()
@@ -309,18 +305,10 @@
 							this.getCaseList()
 						}
 					},1000)
-				})
+				}).catch(()=>{})
 			},
 			
-			handleList(list,isChecked,type){
-				return list.map(item=>{
-					item.isChecked = isChecked
-					if(type){
-						item.icon =type
-					}
-					return item
-				})
-			},
+			
 			onLoadMore() {
 				// if (this.loading || this.page >= this.totalPage) {
 				//   return;
