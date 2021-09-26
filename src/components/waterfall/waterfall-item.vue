@@ -2,7 +2,7 @@
 	<view class="waterfall-item" @click="toDetail(item)">
 		<!-- 案例下架的样式 -->
 		<view v-if="item.icon=='case' && !item.enable" class="withdraw-container" />
-		<view  class="case-withdraw-text">该内容已下架</view>
+		<view  v-if="item.icon=='case' && !item.enable" class="case-withdraw-text">该内容已下架</view>
 		<!-- 左上角的icon -->
 		<image v-if="showCheckIcon && !isChecked" class="product-check"
 			src="../../static/order/images/product_unChecked.png" mode="" />
@@ -18,15 +18,16 @@
 			<image class="case-type"  src="../../static/order/images/icon_img_@2x.png" mode="" /> -->
 		</view>
 		
-		<image class="product-img" :src="item.imageUrl" mode="widthFix" lazy-load @load="onImageLoad"/>
+		<image v-if="item.icon =='product'" class="product-img" :src="item.imageUrl" mode="widthFix" lazy-load @load="onImageLoad"/>
+		<image v-else class="product-img" :src="item.imageUrl" mode="widthFix" lazy-load @load="onImageLoad"/>
 		
 		<!-- 商品的样式 -->
-		<view class="info-container" v-if="item.icon =='product'" :class="{hasDown:isActive}">
-			<view v-if="item.icon=='product' && !item.enabled" class="withdraw-text">
+		<view class="info-container" v-if="item.icon =='product'" :class="{hasDown:!item.enabled}">
+			<view v-if="!item.enabled" class="withdraw-text">
 				商品已下架
 			</view>
 			<view class="flex-row">
-				<text class="icon"  :class="{iconDown:isActive}">{{item.productType==1?'物品':'服务'}}</text>
+				<text class="icon"  :class="{iconDown:!item.enabled}">{{item.productType==1?'物品':'服务'}}</text>
 				<text class="title">
 					{{ item.spuName }}
 				</text>
@@ -41,9 +42,8 @@
 		<!-- 案例的样式 -->
 		<view class="info-container" v-if="item.icon == 'case'">
 			<view class="avatar-name">
-				<image src="https://ali-image.dabanjia.com/static/mp/dabanjia/images/message/ic_interaction@2x.png"
-					mode=""></image>
-				<text>小橘子干啊 小橘子干啊 小橘子干啊 </text>
+				<image :src="item.authorAvatar"	mode="" />
+				<text>{{item.authorNickname}}</text>
 			</view>
 		</view>
 
@@ -67,6 +67,10 @@
 				type:Boolean,
 				default:false
 			},
+			isAllCheck:{
+				type:Boolean,
+				default:false
+			}
 
 		},
 		watch: {
@@ -78,10 +82,18 @@
 				},
 				deep: true
 			},
-			allCheck(){
-				this.isChecked = true
+			allCheck:{
+				handler(newVal,oldVal) {
+					this.showCheckIcon = true
+					if (this.isAllCheck) return
+					if (newVal) {
+						this.isChecked = true
+					}else{
+						this.isChecked = false
+					}
+				},
+				deep: true
 			}
-			
 		},
 		data() {
 			return {
@@ -153,6 +165,7 @@
 			object-fit: cover;
 			left: 14rpx;
 			top: 16rpx;
+			z-index: 99;
 		}
 
 		.case-type {

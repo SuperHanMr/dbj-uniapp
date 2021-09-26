@@ -11,8 +11,8 @@
 					<view class="bottom-icon" />
 				</view>
 			</view>
-			<view class="edit-btn" v-if="currentList.length > 1">
-				<text v-if="ShowMgrBrn" @click="handleMgr">管理</text>
+			<view class="edit-btn" v-if="currentList.length >= 1">
+				<text v-if="showMgrBtn" @click="handleMgr">管理</text>
 				<text v-else @click="handleDone">完成</text>
 			</view>
 		</view>
@@ -28,7 +28,7 @@
 				<scroll-view v-if="productList.length > 0" class="scroll-view" scroll-y="true" refresher-background="#FFF" refresher-enabled="true"
 					:refresher-triggered="triggered" @refresherrefresh="onRefresh" @scrolltolower="onLoadMore">
 					<waterfall :key="itemTab.fallKey" :list="productList" @selectedItem="onSelectedItem" :allCheck="allCheck"
-						:showCheckIcon="!ShowMgrBrn"></waterfall>
+						:showCheckIcon="!showMgrBtn" :isAllCheck="isAllCheck"></waterfall>
 				</scroll-view>
 				<view v-else class="empty-body">
 					<image src="../../../../static/order/blank_house@2x.png" mode=""></image>
@@ -40,7 +40,7 @@
 				<scroll-view v-if="caseList.length >0" class="scroll-view" scroll-y="true" refresher-background="#FFF" refresher-enabled="true"
 					:refresher-triggered="triggered" @refresherrefresh="onRefresh" @scrolltolower="onLoadMore">
 					<waterfall :key="itemTab.fallKey" :list="caseList" @selectedItem="onSelectedItem" :allCheck="allCheck"
-						:showCheckIcon="!ShowMgrBrn"></waterfall>
+						:showCheckIcon="!showMgrBtn" :isAllCheck='isAllCheck'></waterfall>
 				</scroll-view>
 				<view v-else class="empty-body">
 					<image src="../../../../static/order/blank_house@2x.png" mode=""></image>
@@ -50,10 +50,10 @@
 		</swiper>
 
 		<!-- 底部按钮 -->
-		<view class="footer" v-if=" currentList.length > 1 && showCalCelBtn" :style="{paddingBottom:systemBottom}">
+		<view class="footer" v-if=" currentList.length >= 1 && showCalCelBtn" :style="{paddingBottom:systemBottom}">
 			<view class="left">
-				<!-- <image  src="../../../../static/order/images/product_checked.png" mode=""></image> -->
-				<image src="../../../../static/order/images/product_unChecked.png" mode="" @click="handleAllCheck"/>
+				<image v-if="allCheck"  src="../../../../static/order/images/product_checked.png"  @click="handleAllCheck" mode=""></image>
+				<image v-else src="../../../../static/order/images/product_unChecked.png" mode="" @click="handleAllCheck"/>
 				<text>全选</text>
 			</view>
 			<view class="button" @click="handleCancel">
@@ -96,15 +96,16 @@
 
 				productList: [], //商品列表
 				caseList: [], //案例列表
-				checkedItemIds:[],
-				listLength:"",
+				checkedItemIds:[],//选中的要取消收藏的item的id
+				listLength:"",//返回数据的个数
 				page: [1, 1],
 				totalPage: [1, 1],
 
 				loading: false,
-				ShowMgrBrn: true,
+				showMgrBtn: true,
 				showCalCelBtn:false,
 				allCheck:false,
+				isAllCheck:false,
 				title: "",
 
 				systemBottom: "",
@@ -113,7 +114,7 @@
 
 		mounted(e) {
 			const menuButtonInfo = uni.getMenuButtonBoundingClientRect();
-			this.systemBottom = menuButtonInfo.bottom + 32 + "rpx";
+			this.systemBottom = menuButtonInfo.bottom + 24 + "rpx";
 		},
 		onShow() {
 			this.getProductList()
@@ -138,6 +139,9 @@
 			swiperChange(e) {
 				let index = e.target.current || e.detail.current;
 				this.currentIndex = index;
+				this.showMgrBtn = true
+				this.showCalCelBtn =false
+				this.allCheck=false
 				//index对应的list数据是否为空 为空的话请求数据 有数据的话就不请求了
 				switch(this.currentIndex){
 					case 0: 
@@ -159,11 +163,7 @@
 				}
 				getGoodsList(params).then(data=>{
 					this.productList = this.productList.concat(data);
-					this.productList = this.productList.map(item => {
-						item.isChecked = false
-							item.icon = "product"
-						return item
-					})
+					this.productList = this.handleList(this.productList,false,"product")
 					console.log("this.productList=", this.productList)
 					this.loading = false;
 				})
@@ -178,13 +178,9 @@
 				}
 				getRealCaseList(params).then(data => {
 					this.caseList = this.caseList.concat(data)
-					console.log("this.caseList-0=", this.caseList)
-					this.caseList = this.caseList.map(item => {
-						item.isChecked = false
-						item.icon = "case"
-						return item
-					})
-					console.log("this.caseList-1=", this.caseList)
+					this.caseList = this.handleList(this.caseList,false,"case")
+					
+					console.log("this.caseList=", this.caseList)
 					this.loading = false;
 				})
 			},
@@ -193,60 +189,91 @@
 			
 			//管理
 			handleMgr() {
-				this.ShowMgrBrn = !this.ShowMgrBrn
+				this.showMgrBtn = !this.showMgrBtn
 				this.showCalCelBtn = true
-				this.productList = this.productList.map(item => {
-					item.isChecked = false
-					return item
-				})
-				console.log("点击管理后的列表=", this.productList)
 			},
 			//完成
 			handleDone() {
-				this.ShowMgrBrn = !this.ShowMgrBrn
+				this.showMgrBtn = !this.showMgrBtn
 				this.showCalCelBtn = false
-				this.productList = this.productList.map(item => {
-					item.isChecked = false
-					return item
+				this.allCheck = false
+				if(this.currentIndex== 0 ){
+					this.productList = this.handleList(this.productList,false)
+					this.checkedItemIds =[]
+					console.log("点击完成后的列表=", this.productList)
+				}else{
+					this.caseList = this.handleList(this.caseList,false)
+					this.checkedItemIds =[]
+					console.log("点击完成后的列表=", this.caseList)
+				}
+			},
+			
+			
+			
+			
+			
+			// 点击单个item的操作获取选中的数据
+			onSelectedItem(data) {
+				this.checkedItemIds = data.filter(item =>   item.isChecked == true).map((item2) => {
+					return item2.id
 				})
-				console.log("点击完成后的列表=", this.productList)
+				this.productList = data
+				if(this.checkedItemIds.length == this.productList.length){
+					this.allCheck=true;
+					this.isAllCheck=true;
+				}else{
+					this.allCheck=false
+				}
+				console.log("选中的产品=", this.checkedItemIds,"点击了收藏后的list", data)
 			},
 			
 			// 全选
 			handleAllCheck(){
-				console.log("全选")
 				this.allCheck=!this.allCheck
-				if(this.currentIndex == 0){
-					this.productList = this.productList.map(item => {
-						item.isChecked = true
-						return item
-					})
-					console.log(this.productList)
-					console.log("00000000")
-				}else{
-					console.log("1111111111")
-					this.caseList = this.caseList.map(item => {
-						item.isChecked = true
-						return item
-					})
+				switch(this.currentIndex){
+					case 0:
+						if(this.allCheck){
+							
+							this.productList = this.handleList(this.productList,true)
+							this.checkedItemIds = this.productList.map(item=>{
+								return item.id
+							})
+							console.log("全选porductlist-00000=",this.productList,"this.checkedItemIds",this.checkedItemIds)
+							
+						}else{
+							
+							this.productList = this.handleList(this.productList,false)
+							this.checkedItemIds =[]
+							console.log("全选productlist-00000=",this.productList,"this.checkedItemIds",this.checkedItemIds) 
+							
+						}
+						break;
+					case 1:
+	
+						if(this.allCheck){
+							this.caseList =handleList(this.caseList,true)
+							this.checkedItemIds = this.caseList.map(item=>{
+								return item.id
+							})
+							console.log("全选caselist-1111=",this.caseList,"this.checkedItemIds",this.checkedItemIds)
+							
+						}else{
+							
+							this.caseList = this.handleList(this.caseList,false)
+							this.checkedItemIds =[]
+							console.log("全选caselist-111=",this.caseList,"this.checkedItemIds",this.checkedItemIds) 
+							
+						}
+						break;
 				}
-			},
-			// 点击单个item的操作获取选中的数据
-			onSelectedItem(data) {
-				this.checkedItemIds = data.filter(item => item.isChecked == true).map((item2) => {
-					// return {
-					// 	id: item2.id,
-					// 	isChecked: item2.isChecked
-					// }
-					return item2.id
-				})
-				this.productList = data
-				console.log("选中的产品=", this.checkedItemIds)
-				console.log("点击了收藏后的list", data)
+				
 			},
 			
+			
+			
+			
+			// 点击取消收藏按钮
 			handleCancel() {
-				// 点击取消收藏按钮
 				this.currentIndex == 0 
 				? this.title = "确定要将选中商品取消收藏吗?" 
 				: this.title = "确定要将选中案例取消收藏吗?"
@@ -259,7 +286,6 @@
 			confirmCancelCollection() {
 				console.log("确认取消")
 				let params={
-					userId:"", //主动方ID(用户id)",
 					relationIds:[],//关系ID集合(被动的关联ID)",
 					routeId:"", //路由ID",
 					type:"",//主类型",
@@ -268,7 +294,6 @@
 					isAll:"",//是否全部删除：慎用"
 				}
 				batchCancellation(params).then(data=>{
-					// 重新获取列表
 					this.$refs.popup.close()
 					this.allCheck = false
 					uni.showToast({
@@ -284,6 +309,16 @@
 							this.getCaseList()
 						}
 					},1000)
+				})
+			},
+			
+			handleList(list,isChecked,type){
+				return list.map(item=>{
+					item.isChecked = isChecked
+					if(type){
+						item.icon =type
+					}
+					return item
 				})
 			},
 			onLoadMore() {
