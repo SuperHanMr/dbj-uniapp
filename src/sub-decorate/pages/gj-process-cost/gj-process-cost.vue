@@ -390,7 +390,7 @@
             //   level: this.artificialLevel, //"int //等级"
             // })
             params.details.push({
-              supplierType: it.supplierType,
+              // supplierType: it.supplierType,
               roleType,
               relationId: it.productId, //"long //实体id",
               type: 2, //"int //实体类型   1材料  2服务   3专项付款",
@@ -412,7 +412,7 @@
             //   level: 1, //"int //等级"
             // })
             params.details.push({
-              supplierType: it.supplierType,
+              // supplierType: it.supplierType,
               relationId: it.productId, //"long //实体id",
               type: 1, //"int //实体类型   1材料  2服务   3专项付款",
               businessType: 1, //it.categoryTypeId, //"int //业务类型",辅材的businessType固定为1
