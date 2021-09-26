@@ -115,38 +115,38 @@
 		}
 	},
 	"tabBar": {
-		"color": "#000000",
-		"selectedColor": "#FFA500",
+		"color": "#999999",
+		"selectedColor": "#333333",
 		"borderStyle": "black",
 		"backgroundColor": "#FFFFFF",
 		"list": [{
 				"pagePath": "pages/home/index/index",
-				"iconPath": "static/home_owner.png",
-				"selectedIconPath": "static/home_owner.png",
+				"iconPath": "static/tab-bar/home.png",
+				"selectedIconPath": "static/tab-bar/home_s.png",
 				"text": "首页"
 			},
 			{
 				"pagePath": "pages/classify/index/index",
-				"iconPath": "static/home_owner.png",
-				"selectedIconPath": "static/home_owner.png",
+				"iconPath": "static/tab-bar/shop.png",
+				"selectedIconPath": "static/tab-bar/shop_s.png",
 				"text": "分类"
 			},
 			{
 				"pagePath": "pages/decorate/index/index",
-				"iconPath": "static/home_owner.png",
-				"selectedIconPath": "static/home_owner.png",
+				"iconPath": "static/tab-bar/decorate.png",
+				"selectedIconPath": "static/tab-bar/decorate.png",
 				"text": "装修"
 			},
 			{
 				"pagePath": "pages/message/index/index",
-				"iconPath": "static/home_owner.png",
-				"selectedIconPath": "static/home_owner.png",
+				"iconPath": "static/tab-bar/message.png",
+				"selectedIconPath": "static/tab-bar/message_s.png",
 				"text": "消息"
 			},
 			{
 				"pagePath": "pages/my/index/index",
-				"iconPath": "static/home_owner.png",
-				"selectedIconPath": "static/home_owner.png",
+				"iconPath": "static/tab-bar/my.png",
+				"selectedIconPath": "static/tab-bar/my_s.png",
 				"text": "我的"
 			}
 		]
@@ -414,7 +414,7 @@
 						"enablePullDownRefresh": false
 					}
 				},
-				
+
 				{
 					"path": "pages/set-up/comments-feedback/comments-feedback",
 					"style": {
@@ -426,7 +426,7 @@
 					"path": "pages/set-up/about-dabanjia/about-dabanjia",
 					"style": {
 						"navigationBarTitleText": "关于打扮家",
-							"enablePullDownRefresh": false
+						"enablePullDownRefresh": false
 					}
 				},
 				{

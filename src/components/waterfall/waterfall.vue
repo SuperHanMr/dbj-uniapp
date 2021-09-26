@@ -2,12 +2,26 @@
 	<view class="waterfall">
 		<view class="left">
 			<block v-for="item1 in leftList" :key="item1.id">
-				<waterfall-item  :item="item1" @detail="toDetail" @load="onImageLoad" :showCheckIcon="showCheckIcon" :allCheck="allCheck" ></waterfall-item>
+				<waterfall-item 
+					:item="item1" 
+					:showCheckIcon="showCheckIcon" 
+					:allCheck="allCheck" 
+					:isAllCheck="isAllCheck"
+					@detail="toDetail" 
+					@load="onImageLoad" 
+				/>
 			</block>
 		</view>
 		<view class="right">
 			<block v-for="item2 in rightList" :key="item2.id">
-				<waterfall-item  :item="item2" @detail="toDetail" @load="onImageLoad" :showCheckIcon="showCheckIcon" :allCheck="allCheck" ></waterfall-item>
+				<waterfall-item  
+					:item="item2"
+					:showCheckIcon="showCheckIcon" 
+					:allCheck="allCheck" 
+					:isAllCheck="isAllCheck"
+					@detail="toDetail" 
+					@load="onImageLoad" 
+				 />
 			</block>
 		</view>
 	</view>
@@ -17,6 +31,7 @@
 	import waterfallItem from "./waterfall-item.vue"
 	export default {
 		name: 'water-fall',
+		components:{waterfallItem},
 		props: {
 			list: {
 				type: Array,
@@ -30,9 +45,12 @@
 				type:Boolean,
 				default:false
 			},
-		
+			isAllCheck:{
+				type:Boolean,
+				default:false
+			}
 		},
-		components:{waterfallItem},
+		
 		watch: {
 			list(n, o) {
 				let that = this;

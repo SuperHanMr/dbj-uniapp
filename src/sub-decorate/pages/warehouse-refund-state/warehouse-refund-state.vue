@@ -19,7 +19,7 @@
 				<view class="placehold">
 				</view>
 			</view>
-			<view class="header-content">
+			<view v-if="![0, 1].includes(detail.status)" class="header-content">
 				<view class="icon">
 					<i class="icon-icon_order_tips"></i>
 				</view>
@@ -94,7 +94,7 @@
 				</view>
 			</view>
 		</view>
-		<view class="other-btn">联系客服
+		<view class="other-btn" @click="toMessage">联系客服
 		</view>
 
 
@@ -130,7 +130,8 @@
 				headerTitle: '',
 				headerTime: '',
 				tips: '',
-				id:''
+				id:'',
+				stockStatus:''
 			}
 		},
 		onLoad(e) {
@@ -149,8 +150,14 @@
 				this.id=e.id
 				this.getDetail(e.id);
 			}
+			if(e&&e.stockStatus){
+				this.stockStatus=e.stockStatus
+			}
 		},
 		methods: {
+			toMessage() {
+				this.$store.dispatch("openCustomerConversation");
+			},
 			refuntType(type) {
 				let res = '';
 				switch (type) {
@@ -192,6 +199,7 @@
 				refundDetail({
 					id
 				}).then(e => {
+					e.stockStatus=this.stockStatus
 					this.detail = e;
 					if ([0, 1].includes(e.status)) {
 						//退款中
