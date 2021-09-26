@@ -549,14 +549,14 @@
 					"path": "pages/service-list/service-list",
 					"style": {
 						"navigationBarTitleText": "",
-						"enablePullDownRefresh": false
+						"enablePullDownRefresh": true
 					}
 				},
         {
           "path": "pages/materials-list/materials-list",
           "style": {
           	"navigationBarTitleText": "更换商品",
-          	"enablePullDownRefresh": false
+          	"enablePullDownRefresh": true
           }
         },
 				{
