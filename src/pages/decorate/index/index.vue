@@ -44,8 +44,8 @@
       </view>
 
       <view class="scroll-view flex-1">
-        <scroll-view :scroll-top="scrollTop" scroll-y="true" class="scroll-Y" @scroll="scroll"
-          scroll-with-animation="true" :style="{height: viewHieght + 'rpx'}">
+        <!-- <scroll-view :scroll-top="scrollTop" scroll-y="true" class="scroll-Y" @scroll="scroll"
+          scroll-with-animation="true" :style="{height: viewHieght + 'rpx'}"> -->
           <!-- 每日播报 -->
           <text-scroll :dataList="broadcastList" v-if="broadcastList.length > 0" @goDecorateCalendar="goDecorateCalendar"></text-scroll>
           <!-- 我的仓库 -->
@@ -129,7 +129,7 @@
             <view @click="payGuanGuanJia">生成买管家消息</view>
             <view @click="payRenGong">生成买人工消息</view>
           </view> -->
-        </scroll-view>
+        <!-- </scroll-view> -->
       </view>
       <drag-button-follow v-if="msgNum>0" :num='msgNum' :style.sync="style" @btnClick='openNotice'
         :follow='`left,right`' className="drag-button" class="drag-button">
@@ -183,12 +183,12 @@
     },
     onLoad() {
       let _this = this
-      uni.getSystemInfo({
-        success(res) {
-          // console.log(res)
-          _this.viewHieght = res.windowHeight * 2 - 416 - 156
-        }
-      })
+      // uni.getSystemInfo({
+      //   success(res) {
+      //     console.log(">>>>>>>dddddddddd>>>>>", res)
+      //     _this.viewHieght = res.windowHeight * 2 - 416
+      //   }
+      // })
     },
     onShow() {
       console.log('showTabBar')
@@ -200,7 +200,7 @@
     data() {
       return {
         scrollTop: 416,
-        viewHieght: "",
+        // viewHieght: "",
         style: "",
         noticeActive: false,
         currentProject: {},
@@ -600,7 +600,8 @@
 
   .scroll-view {
     // background-color: red;
-    overflow: hidden;
+    overflow-x: hidden;
+    overflow-y: auto;
   }
 
   .house-firend {
