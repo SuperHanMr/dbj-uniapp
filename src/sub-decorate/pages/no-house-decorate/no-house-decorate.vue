@@ -338,15 +338,15 @@
         let areaId = this.currentHouse.areaId || defaultHouse.areaId
         if (pp === "design") {
           str =
-            `/sub-decorate/pages/service-list/service-list?name=设计服务&serviceType=1&areaId=${areaId}&insideArea=${this.currentHouse.insideArea}&id=${this.design.id}&categoryId=${this.design.categoryId}`
+            `/sub-decorate/pages/service-list/service-list?name=设计服务&serviceType=1&areaId=${areaId}&insideArea=${this.currentHouse.insideArea}&id=${this.design.id}&categoryId=${this.design.category4Id}`
         }
         if (pp === "checkHouse") {
           str =
-            `/sub-decorate/pages/service-list/service-list?name=验房服务&serviceType=2&areaId=${areaId}&insideArea=${this.currentHouse.insideArea}&id=${this.checkHouse.id}&categoryId=${this.checkHouse.categoryId}`
+            `/sub-decorate/pages/service-list/service-list?name=验房服务&serviceType=2&areaId=${areaId}&insideArea=${this.currentHouse.insideArea}&id=${this.checkHouse.id}&categoryId=${this.checkHouse.category4Id}`
         }
         if (pp === "actuary") {
           str =
-            `/sub-decorate/pages/service-list/service-list?name=精算服务&serviceType=4&areaId=${areaId}&insideArea=${this.currentHouse.insideArea}&id=${this.actuary.id}&categoryId=${this.actuary.categoryId}`
+            `/sub-decorate/pages/service-list/service-list?name=精算服务&serviceType=4&areaId=${areaId}&insideArea=${this.currentHouse.insideArea}&id=${this.actuary.id}&categoryId=${this.actuary.category4Id}`
         }
         uni.navigateTo({
           url: str
