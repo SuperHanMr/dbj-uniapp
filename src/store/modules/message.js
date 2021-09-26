@@ -7,7 +7,8 @@ import {
   cleanListeners
 } from "@/utils/tim.js"
 import {
-  getGroupList
+  getGroupList,
+  getAgentStatus
 } from "@/api/message.js";
 
 const CONV_TYPES = {
@@ -318,37 +319,6 @@ const message = {
       })
     },
     /**
-     * 添加问题列表消息
-     * 目前仅支持添加到在线客服会话中
-     * @param {Object} state
-     */
-    pushQuestionsMessageList(context) {
-      const currentTime = Math.round(new Date().getTime()/1000);
-      const payloadData = {
-        type: "questions_message"
-      };
-      const messageList = [
-        {
-          ID: "SMART-CUSTMER-" + currentTime,
-          nick: "智能客服",
-          avatar: "http://iph.href.lu/100x100",
-          flow: "in",
-          time: currentTime,
-          from: "SMART-CUSTMER",
-          conversationType: TIM.TYPES.CONV_GROUP,
-          conversationID: context.state.cstServConv.conversationID,
-          type: TIM.TYPES.MSG_CUSTOM,
-          payload: {
-            data: JSON.stringify(payloadData)
-          },
-          payloadData: payloadData
-        }
-      ];
-      context.state.isAppendMessageList = true;
-      context.state.newMessageMap = {[messageList[0].ID]: true};
-      context.state.currentMessageList = context.state.currentMessageList.concat(messageList);
-    },
-    /**
      * 切换会话
      * 调用时机：切换会话时
      * @param {Object} context
@@ -356,17 +326,32 @@ const message = {
      */
     checkoutConversation(context, conversationID) {
       console.log("check conversation:", conversationID);
-      // 2.待切换的会话也进行已读上报
+      // 2.待切换的会话也进行已读上报 
       getTim().setMessageRead({ conversationID }).catch(e => { })
       // 3. 获取会话信息
       return getTim().getConversationProfile(conversationID).then(({data}) => {
         const conversation = data.conversation;
         console.log("conversation  data:", conversation);
-        // 3.1 更新当前会话
+        // 3.1 更新当前会话 
         context.state.currentConversation = conversation;
         if (conversation.systemType === CONV_TYPES.CUSTOMER) {
           return context.dispatch("requestMessageList", conversationID).then(() => {
-            context.dispatch("pushQuestionsMessageList");
+            getAgentStatus(getApp().globalData.userInfo.id).then(res => {
+              let { isGroupButlerExist, queuePosition } = res;
+              if (isGroupButlerExist) {
+                getTim().sendMessage({
+                  type: "AGENT_STATUS",
+                  payload: {
+                    type: queuePosition == 0 ? "custom_agant_coming" : "custom_agant_waiting",
+                    position: queuePosition
+                  }
+                });
+              } else {
+                getTim().sendMessage({
+                  type: "MSG_QUESTION_LIST",
+                });
+              }
+            })
           });
         }
         // 3.2 获取消息列表

@@ -1,7 +1,12 @@
 <template>
   <view class="message-send-box">
+    <view v-if="isCustomerService" class="message-send-box-header">
+      <view class="oper-btn" @click="handleCallAgent">
+        人工客服
+      </view>
+    </view>
     <view class="message-send-box-body">
-      <view class="icon-audio" @click="showRecordBtn = !showRecordBtn"></view>
+      <view v-if="!isCustomerService" class="icon-audio" @click="showRecordBtn = !showRecordBtn"></view>
       <textarea
         v-if="!showRecordBtn"
         v-model="messageContent"
@@ -90,6 +95,7 @@
   import { emojiName, emojiMap } from "@/utils/emoji-map.js"
   import { getTim } from "@/utils/tim.js"
   import { mapState } from "vuex"
+  import { callServiceAgent } from "@/api/message.js"
   export default {
     name: "MessageSendBox",
     data() {
@@ -107,6 +113,7 @@
     computed: {
       ...mapState({
         currentConversation: (state) => state.message.currentConversation,
+        CONV_TYPES: (state) => state.message.CONV_TYPES,
       }),
       toAccount() {
         if (!this.currentConversation || !this.currentConversation.conversationID) {
@@ -124,6 +131,10 @@
             this.showEmojiChooser = false;
           }
         }
+      },
+      // 是否人工客服
+      isCustomerService() {
+        return this.currentConversation.systemType === this.CONV_TYPES.CUSTOMER;
       }
     },
     watch: {
@@ -151,6 +162,11 @@
               self.recorderManager = self.creatRecorderManager();
             },
             fail() {
+              uni.showToast({
+                icon: 'error',
+                title: '未授权录音权限',
+                duration: 2000
+              });
               self.showRecordBtn = false;
             }
           })
@@ -180,6 +196,7 @@
         getTim().sendMessage(message).then(() => {
           this.messageContent = "";
           this.inputFocus = true;
+          uni.$emit("scroll-to-bottom");
         }).catch((err) => {
           console.error("发送消息失败：", err);
         })
@@ -222,6 +239,7 @@
                 let newData = JSON.stringify(extObj);
                 message.payload.data = newData;
                 getTim().sendMessage(message).then((res) => {
+                  uni.$emit("scroll-to-bottom");
                   console.log("send Image success", res);
                 });
               },
@@ -263,6 +281,7 @@
           // 缩略图和视频都上传成功后再发消息
           if (thumbReady && videoReady) {
             getTim().sendMessage(message).then((res) => {
+              uni.$emit("scroll-to-bottom");
               console.log("send Image success", res);
             });
           }
@@ -326,12 +345,12 @@
           // 消息自定义数据（云端保存，会发送到对端，程序卸载重装后还能拉取到，v2.10.2起支持）
           // cloudCustomData: 'your cloud custom data'
         });
-                
+        this.$store.commit("pushCurrentMessageList", message);
         // 2. 发送消息
         let promise = getTim().sendMessage(message);
         promise.then(function(imResponse) {
-          // 发送成功
-          console.log(imResponse);
+          uni.$emit("scroll-to-bottom");
+          console.log("send audio success", imResponse);
         }).catch(function(imError) {
           // 发送失败
           console.warn('sendMessage error:', imError);
@@ -466,6 +485,27 @@
       },
       handleInputFocus() {
         uni.$emit("scroll-to-bottom");
+      },
+      // 找人工客服
+      handleCallAgent() {
+        callServiceAgent().then(res => {
+          getTim().sendMessage({
+            type: "AGENT_STATUS",
+            payload: {
+              type: res == 0 ? "custom_agant_coming" : "custom_agant_waiting",
+              position: res
+            }
+          });
+        }).catch(err => {
+          let message = err.data ? err.data.message : '找人工客服出错了';
+          getTim().sendMessage({
+            type: "AGENT_STATUS",
+            payload: {
+              type: "custom_agant_close",
+              message: message
+            }
+          });
+        })
       }
     }
   }
@@ -475,6 +515,18 @@
   .message-send-box {
     flex: none;
     background: #fff;
+  }
+  .message-send-box-header {
+    padding: 24rpx 20rpx;
+    display: flex;
+    flex-flow: row nowrap;
+    align-items: center;
+  }
+  .message-send-box-header .oper-btn {
+    padding: 14rpx 32rpx;
+    font-size: 12px;
+    background: #f5f5f5;
+    border-radius: 30rpx;
   }
   .message-send-box-body {
     display: flex;

@@ -49,6 +49,7 @@ export default {
 .text-element {
   color: #111;
   font-size: 16px;
+  word-break: break-all;
   
   .emoji {
     width: 24px;

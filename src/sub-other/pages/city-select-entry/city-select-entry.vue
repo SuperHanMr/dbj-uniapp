@@ -1,17 +1,11 @@
 <template>
 	<view class="city-select-entry">
-		<view class="head">
-			<view class="no-confirm">
-				取消
-			</view>
-			<view class="info">
-				请选择服务城市
-			</view>
-			<view class="confirm" @click="onConfirm">
-				确定
+		<CityList @click='onClick'/>
+		<view class="submit-box">
+			<view class="submit" @click="onConfirm">
+				提交
 			</view>
 		</view>
-		<CityList @click='onClick'/>
 	</view>
 </template>
 
@@ -53,6 +47,24 @@
 
 <style lang="scss" scoped>
 .city-select-entry{
+	.submit-box{
+		background: #FEFFFE;
+		width: 100%;
+		position: fixed;
+		bottom: 0;
+		left: 0;
+		.submit{
+			margin: 24rpx 32rpx;
+			padding: 22rpx 0;
+			background: linear-gradient(135deg, #36D9CD 0%, #28C6C6 100%);
+			border-radius: 6px;
+			text-align: center;
+			font-size: 32rpx;
+			font-family: PingFangSC-Medium, PingFang SC;
+			font-weight: bold;
+			color: #FFFFFF;
+		}
+	}
 	.head{
 		background: #F9FAFB;
 		border-radius: 0px 0px 4px 4px;

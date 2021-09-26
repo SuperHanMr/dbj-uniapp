@@ -1,12 +1,11 @@
 <template>
   <view class="design-list">
-    <service-content-card class="card-item" v-for="(item, index) in dataList" :key="item.product.spuId"
-      :insideArea="insideArea" :content="item">
+    <material-content-card class="card-item" v-for="(item, index) in dataList" :key="item.id" :content="item">
       <template slot="radio">
-        <dbj-radio class="card-radio" :value="item.product.spuId + ''" :checked="checkedId === item.product.spuId + ''"
-          @change="radioChange"></dbj-radio>
+        <dbj-radio class="card-radio" :value="item.id + ''" :checked="checkedId === item.id + ''" @change="radioChange">
+        </dbj-radio>
       </template>
-    </service-content-card>
+    </material-content-card>
     <view v-if="isAllDataLoaded">~我也是有底线的</view>
   </view>
 </template>
@@ -15,51 +14,35 @@
   import {
     productList
   } from "../../../api/decorate.js"
-  import {
-    DbjRadio
-  } from "../../components/dbj-radio/dbj-radio.vue"
-  import {
-    ServiceContentCard
-  } from "../../components/service-content-card/service-content-card.vue"
+  import DbjRadio from "../../components/dbj-radio/dbj-radio.vue"
+  import MaterialContentCard from "../../components/material-content-card/material-content-card.vue"
   export default {
     components: {
       DbjRadio,
-      ServiceContentCard
+      MaterialContentCard
     },
     data() {
       return {
         dataList: [],
         checkedId: "",
-        title: null,
         categoryId: null,
-        serviceType: null,
-        insideArea: null,
-        page: 1,
         areaId: null,
+        page: 1,
         total: 0,
         isAllDataLoaded: false
       }
     },
     onLoad(option) {
       const {
-        insideArea,
         id,
         categoryId,
-        name,
-        serviceType,
         areaId
       } = option
       this.checkedId = id + ""
-      this.title = name
       this.categoryId = categoryId
-      this.serviceType = serviceType
-      this.insideArea = insideArea
       this.areaId = areaId
     },
     onShow() {
-      uni.setNavigationBarTitle({
-        title: this.title
-      })
       this.queryProductList();
     },
     onReachBottom() {
@@ -91,13 +74,9 @@
       radioChange(obj) {
         this.checkedId = obj.value
         let tmp = this.dataList.filter(t => t.id == Number(obj.value))[0]
-        uni.$emit('selectedServer', {
-          serviceType: this.serviceType,
-          values: tmp
+        uni.$emit('selectedMaterial', {
+          ...tmp
         });
-        setTimeout(() => {
-          console.log(getApp().globalData)
-        }, 0)
       }
     }
   }

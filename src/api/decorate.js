@@ -235,7 +235,7 @@ export function goodsApply(params) {
 
 // 获取工序费用
 export function sellList(params) {
-	return request.get(`/pm/app/actuary/sell/list/${params.projectId}/${params.type}`)
+	return request.get(`/pm/app/actuary/sell/list/${params.projectId}/${params.type}/${params.obtainType}`)
 }
 //c端APP-仓库-待收货-确认收货
 export function confirmGoods(params) {
@@ -275,4 +275,9 @@ export function confirmDesignReport(serveCardId) {
 // 查询装修动态 客户端-轮播图
 export function getCarouselMsg(projectId) {
 	return request.get(`/pm/app/decorate/calendar/getCarouselMsg/${projectId}`)
+}
+
+// 搜索商品列表（这个是真实接口）
+export function productList(data) {
+	return request.post(`/product/app/search/query`, data)
 }
