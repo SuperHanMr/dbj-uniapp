@@ -35,7 +35,7 @@
 			},
 			toDetail() {
 				uni.redirectTo({
-					url: '../require-detail/require-detail'
+					url: '../require-history/require-history'
 				})
 			}
 		},

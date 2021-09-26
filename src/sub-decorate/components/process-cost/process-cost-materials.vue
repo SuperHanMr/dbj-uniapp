@@ -7,7 +7,7 @@
     </view>
     <view class="index">
       <view class="item-list">
-        <view class="item" v-for="(item,index) in itemList" :key="item.productId">
+        <view class="item" v-for="(item,index) in itemList" :key="item.id">
           <view class="img-name-tag-guige flex-r-l">
             <view v-if="item.isEdit" style="width: 32rpx;height: 32rpx;"></view>
             <check-box v-else :checked="item.checked" @change="(val) => {checkItem(val, item)}"></check-box>
@@ -17,8 +17,8 @@
                 <view class="tag-name-guige-price-edit">
                   <view class="spu-name-gui-ge-count">
                     <view class="spu-name">
-                      <view class="tag">{{item.label}}</view>
-                      <view class="name">{{item.name}}</view>
+                      <view class="tag">{{item.productType | filterProductType}}</view>
+                      <view class="name">{{item.spuName}}</view>
                     </view>
                     <view class="gui-ge-count">
                       <view class="gui-ge">{{item.specification}}</view>
@@ -42,7 +42,7 @@
               <view v-if="item.isEdit" class="b-t-b"></view>
               <view class="number-change-wrap" v-if="item.isEdit">
                 <view class="number-wrap">
-                  <image @click="reduce(item)" v-if="item.count > item.minCount"
+                  <image @click="reduce(item)" v-if="item.count > item.minimumOrderQuantity"
                     src="http://dbj.dragonn.top/static/mp/dabanjia/images/decorate/details_pop_.svg" class="reduce">
                   </image>
                   <image v-else
@@ -100,6 +100,23 @@
     filters: {
       filterPrice(val) {
         return (val / 100).toFixed()
+      },
+      filterProductType(val) {
+        let res = ""
+        switch (val) {
+          case 1:
+            res = "物品"
+            break;
+          case 2:
+            res = "服务"
+            break;
+          case 3:
+            res = "虚拟"
+            break;
+          default:
+            break;
+        }
+        return res
       }
     },
     methods: {
@@ -107,7 +124,7 @@
         this.$nextTick(() => {
           let arr = []
           this.itemList.forEach(t => {
-            if (t.productId === this.currentItemOriginData.productId) {
+            if (t.id === this.currentItemOriginData.id) {
               arr.push({
                 ...this.currentItemOriginData
               })
@@ -124,8 +141,8 @@
       },
       reduce(item) {
         this.$nextTick(() => {
-          if (item.count > item.minCount) {
-            item.count -= item.step
+          if (item.count > item.minimumOrderQuantity) {
+            item.count -= Number(item.stepLength)
           }
           this.submitMaterial(item)
         })
@@ -142,7 +159,7 @@
       },
       goMaterialsList(item) {
         uni.navigateTo({
-          url: `/sub-decorate/pages/materials-list/materials-list?id=${item.productId}&categoryTypeId=${item.categoryTypeId}`
+          url: `/sub-decorate/pages/materials-list/materials-list?id=${item.id}&categoryId=${item.categoryId}`
         })
       },
       selectedMaterialCb(materialDetail) {
@@ -150,10 +167,10 @@
           let item = {}
           for (let i = 0; i < i < this.itemList.length; i++) {
             let t = this.itemList[i]
-            if (t.productId === this.currentItemOriginData.productId) {
-              t.productId = materialDetail.id
+            if (t.id === this.currentItemOriginData.id) {
+              t.id = materialDetail.id
               t.imageUrl = materialDetail.imageUrl
-              t.name = materialDetail.fullName
+              t.spuName = materialDetail.spuName
             }
             item = t
             break;
@@ -190,13 +207,12 @@
         // this.itemList
         this.$emit("change", {
           val,
-          productId: item.productId
-          // productIds: this.content.itemList.map(it => it.productId)
+          id: item.id
         })
       },
 
-      goDetail(productId) {
-        uni.setStorageSync('goodId', productId)
+      goDetail(id) {
+        uni.setStorageSync('goodId', id)
         uni.navigateTo({
           url: "/sub-classify/pages/goods-detail/goods-detail"
         })
@@ -211,14 +227,13 @@
   }
 
   .s-4level-name {
-    height: 36rpx;
-    margin-left: 16rpx;
-    font-size: 26rpx;
+    height: 40rpx;
+    font-size: 28rpx;
     font-family: PingFangSC, PingFangSC-Regular;
     font-weight: 400;
     text-align: left;
     color: #333333;
-    line-height: 36rpx;
+    line-height: 40rpx;
   }
 
   .title-wrap {
