@@ -4,17 +4,16 @@
       <view class="title">
         <view class="s-4level-name">{{content.categoryName}}</view>
       </view>
-      <view class="edit" v-if="noArtificial">编辑</view>
     </view>
     <view class="index">
       <view class="item-list">
-        <view class="item" v-for="(item,index) in content.itemList" :key="item.productId">
+        <view class="item" v-for="(item, index) in content.itemList" :key="item.id">
           <view class="img-name-tag-guige">
             <image class="img" :src="item.imageUrl"></image>
             <view class="tag-name-guige">
               <view class="spu-name">
-                <view class="tag">{{item.label}}</view>
-                <view class="name">{{item.name}}</view>
+                <view class="tag">{{item.productType | filterProductType}}</view>
+                <view class="name">{{item.spuName}}</view>
               </view>
               <view class="gui-ge">{{item.specification}}</view>
             </view>
@@ -45,9 +44,28 @@
         required: true
       },
     },
+    filters: {
+      filterProductType(val) {
+        let res = ""
+        switch (val) {
+          case 1:
+            res = "物品"
+            break;
+          case 2:
+            res = "服务"
+            break;
+          case 3:
+            res = "虚拟"
+            break;
+          default:
+            break;
+        }
+        return res
+      }
+    },
     methods: {
-      goDetail(productId) {
-        uni.setStorageSync('goodId', productId)
+      goDetail(id) {
+        uni.setStorageSync('goodId', id)
         uni.navigateTo({
           url: "/sub-classify/pages/goods-detail/goods-detail"
         })
@@ -62,14 +80,13 @@
   }
 
   .s-4level-name {
-    height: 36rpx;
-    margin-left: 16rpx;
-    font-size: 26rpx;
+    height: 40rpx;
+    font-size: 28rpx;
     font-family: PingFangSC, PingFangSC-Regular;
     font-weight: 400;
     text-align: left;
     color: #333333;
-    line-height: 36rpx;
+    line-height: 40rpx;
   }
 
   .title-wrap {
