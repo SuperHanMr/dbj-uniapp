@@ -30,6 +30,7 @@
 	.city-select{
 		position: relative;
 		width: 100%;
-		height: 1200rpx;
+		height: 1300rpx;
+		background: #FFFFFF;
 	}
 </style>
