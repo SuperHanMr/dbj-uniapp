@@ -47,7 +47,7 @@
         <scroll-view :scroll-top="scrollTop" scroll-y="true" class="scroll-Y" @scroll="scroll"
           scroll-with-animation="true" :style="{height: viewHieght + 'rpx'}">
           <!-- 每日播报 -->
-          <!-- <text-scroll></text-scroll> -->
+          <text-scroll :dataList="broadcastList" v-if="broadcastList.length > 0" @goDecorateCalendar="goDecorateCalendar"></text-scroll>
           <!-- 我的仓库 -->
           <view v-if="haveWarehouse" class="my-decorate-service-wrap">
             <image mode="aspectFit" class="top-bg"
@@ -147,7 +147,8 @@
   import {
     queryEstates,
     friendListByEstateId,
-    getMsgNum
+    getMsgNum,
+    getCarouselMsg
   } from "../../../api/decorate.js";
   import {
     getEstateProjectInfoList,
@@ -225,6 +226,7 @@
         haveWarehouse: false,
 
         who: "我",
+        broadcastList: []
       };
     },
     mounted() {
@@ -241,6 +243,17 @@
       timer = null
     },
     methods: {
+      goDecorateCalendar(date) {
+        console.log("date: ", date)
+        uni.navigateTo({
+          url: `/sub-home/pages/decorate-scene/decorate-calendar?projectId=${this.currentProject.projectId}&date=${date}`
+        })
+      },
+      getCarouselMsg() {
+        getCarouselMsg(this.currentProject.projectId).then(data => {
+          this.broadcastList = data
+        })
+      },
       watchMsg() {
         this.getMsgNum();
         this.getAvailableService()
@@ -414,6 +427,7 @@
         getApp().globalData.currentEstate = this.currentEstate
         getApp().globalData.currentProject = this.currentProject
         if (this.currentProject.estateId) {
+          this.getCarouselMsg()
           this.getAvailableService()
           this.getFriendsList()
         }
@@ -482,7 +496,7 @@
         })
       },
       toSend() {
-        
+
         this.client.publish('dabanjia/testTopic', 'hello zzz')
       },
       closeNotice() {
