@@ -44,6 +44,12 @@
     "variable":"serverName",
     "msg":"您有${name}待验收"
   },
+  "sys_design_online_stage_msg":{
+    "url":"/sub-decorate/pages/design-online-disclosure/design-online-disclosure",
+    "name":"设计图交付",
+    "variable":"serverName",
+    "msg":"您有${name}待验收"
+  },
   "sys_butler_project_completion_to_owner":{
     "url":"/sub-decorate/pages/housekeeper-c-a-application/housekeeper-c-a-application",
     "name":"竣工交付",

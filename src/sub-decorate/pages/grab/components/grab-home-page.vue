@@ -2,46 +2,49 @@
   <view class="grab-content">
     <view class="grab-content-top">
       <view class="grab-content-header">
-        <image src="" mode=""></image>
-        <text class="title">上官海棠</text>
+        <image :src="personData.avatar" mode=""></image>
+        <text class="title">{{personData.nickName}}</text>
         <view class="introduce">
-          <text>男</text>
+          <text>{{personData.genderName}}</text>
           <text>|</text>
-          <text>设计师</text>
+          <text>{{personData.roleName}}</text>
           <text>|</text>
-          <text>好评率99%</text>
+          <text>好评率{{personData.praiseRate||0}}%</text>
         </view>
       </view>
       <view class="person-msg-list">
         <view class="list-item">
-          <text class="num">7</text>
+          <text class="num">{{personData.likeCount||0}}</text>
           <text class="title">获赞</text>
         </view>
         <view class="list-item">
-          <text class="num">7</text>
+          <text class="num">{{personData.fansCount||0}}</text>
           <text class="title">粉丝</text>
         </view>
         <view class="list-item">
-          <text class="num">7</text>
+          <text class="num">{{personData.collectCount||0}}</text>
           <text class="title">被收藏</text>
         </view>
         <view class="list-item">
-          <text class="num">7</text>
+          <text class="num">{{personData.recommendCount||0}}</text>
           <text class="title">被推荐</text>
         </view>
         <view class="list-item">
-          <text class="num">7</text>
+          <text class="num">{{personData.totalNum||0}}</text>
           <text class="title">总接单</text>
         </view>
       </view>
     </view>
-    <grabHomePageMsg></grabHomePageMsg>
+    <grabHomePageMsg :personData='personData'></grabHomePageMsg>
   </view>
 </template>
 
 <script>
   import grabHomePageMsg from './grab-home-page-msg.vue'
   export default{
+    props:{
+      personData:{}
+    },
     components:{
       grabHomePageMsg
     },

@@ -12,7 +12,7 @@
         <uniEcCanvas class="uni-ec-canvas" id="uni-ec-canvas" ref="canvas" canvas-id="uni-ec-canvas" :ec="ec">
         </uniEcCanvas>
       </view>
-      <text class="report-text" :class="{'report-text-hidden':isHidden}">{{checkData.summaryDescription}}看见阿三开afksjlakjfklsa可怜少女风圣诞快乐能否抽空拉升能否都是快乐烦恼撒到了咖啡奈拉蒂考是你疯狂了你都IE撒发呢可是你发教案的饭卡的女克拉女阿克琉斯的那份v发卡量苏丹诺夫蓝坤大厦内费拉达斯你发了肯定是你疯狂思念疯狂拉升能否顺利可能疯了</text>
+      <text class="report-text" :class="{'report-text-hidden':isHidden}">{{checkData.summaryDescription}}</text>
       <view class="openHidden" v-if="showBtn" @click="clickHidden">
         {{hddenText}}
       </view>

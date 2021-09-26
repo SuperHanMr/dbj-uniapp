@@ -127,9 +127,10 @@ export function getResultProblem(params) {
 	return request.get("/pm/app/user/inspectEstate/problem/" + params)
 }
 
-//获取服务人员关联商品
+//获取服务人员挂载商品
 export function getSkuList(params) {
-	return request.get("/product/app/products/relation/related/skus/list",params)
+  const str = objectToUrlString(params)
+	return request.get("/product/app/products/relation/related/skus/list?"+str)
 }
 
 //获取施工交付内容
