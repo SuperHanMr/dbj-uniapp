@@ -23,8 +23,8 @@
          :key="goodsIndex"
          :right-options="options"
        >
-        <view class="goodsItem" @click="toDetails(goodsItem.product.skuId)">
-          <image :src="goodsItem.product.skuImage" class="goodsItemImg"></image>
+        <view class="goodsItem">
+          <image :src="goodsItem.product.skuImage" class="goodsItemImg"  @click="toDetails(goodsItem.product.skuId)"></image>
           <view class="goodsInfo">
             <view class="goodsDesc">
               <text class="goodsType">{{goodsItem.product.productType === 1?"物品":"服务"}}</text>
@@ -35,7 +35,7 @@
                     ￥
                     <text class="integer-price">{{goodsItem.product.skuPrice?String(goodsItem.product.skuPrice/100).split(".")[0]: "0"}}</text>
                     <text>.{{String(goodsItem.product.skuPrice/100).split(".")[1]?String(goodsItem.product.skuPrice/100).split(".")[1]: "00"}}</text>
-                    <text>/{{goodsItem.product.priceUnitName?String(goodsItem.product.skuPrice).priceUnitName:""}}</text>
+                    <text>/{{goodsItem.product.priceUnitName?goodsItem.product.priceUnitName:""}}</text>
                     <text class="level" v-if="goodsItem.product.hasBadgeLevel">中级服务</text>
                   </view>
             </view>    

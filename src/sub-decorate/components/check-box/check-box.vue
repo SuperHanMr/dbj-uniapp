@@ -35,6 +35,7 @@
 
 <style scoped lang="scss">
 	.check-box-e {
+    box-sizing: border-box;
 		border: 1rpx solid #bababa;
 
 		.checked-img {

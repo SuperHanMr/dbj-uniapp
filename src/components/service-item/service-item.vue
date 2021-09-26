@@ -6,7 +6,7 @@
         <text>{{serviceData.nodeName}}</text>
       </view>
       <view class="status-name mr inservice flex-row-start">
-        <view>{{ serviceData | filterStatusName }}</view>
+        <view>{{ serviceData.statusName }}</view>
         <image :class="{open: open}"
           v-if="serviceData.status >= 2 || (serviceData.status == 0 && serviceData.grepOrderStatus === 3)"
           src="http://dbj.dragonn.top/static/mp/dabanjia/images/decorate/ic_triangle_up.svg"></image>

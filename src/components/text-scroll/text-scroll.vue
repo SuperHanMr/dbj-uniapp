@@ -1,10 +1,10 @@
 <template>
   <view class="text-scroll">
-    <view class="text-scroll-item">
+    <view class="text-scroll-item" @click="goDecorateCalendar">
       <image class="icon-l"></image>
       <view class="line"></view>
       <view class="content">{{current.content}}</view>
-      <view class="date">{{current.date}}</view>
+      <view class="date">{{current.recordDate | formatDate}}</view>
       <image class="icon-r" src="http://dbj.dragonn.top/static/mp/dabanjia/images/decorate/ic_more.svg"></image>
     </view>
   </view>
@@ -12,38 +12,12 @@
 
 <script>
   import {
-    getCarouselMsg
-  } from "../../api/decorate.js";
+    formatDate
+  } from "../../utils/common.js"
   export default {
-    props: ["projectId"],
+    props: ["dataList"],
     data() {
       return {
-        list: [{
-            id: 1,
-            content: "业主您好我是您今天的是您今天的是的工反动当局立法机关",
-            date: "8.19"
-          },
-          {
-            id: 2,
-            content: "热舞热退热退热天文台热热刚刚",
-            date: "8.19"
-          },
-          {
-            id: 3,
-            content: "风格豆腐干豆腐干梵蒂冈梵蒂冈梵蒂冈反对法国梵蒂冈梵蒂冈梵蒂冈法国梵蒂冈梵蒂冈",
-            date: "8.19"
-          },
-          {
-            id: 4,
-            content: "热特瑞特瑞特瑞特瑞特让他",
-            date: "8.19"
-          },
-          {
-            id: 5,
-            content: "热望热热我热热舞",
-            date: "8.19"
-          }
-        ],
         timer: null,
         current: {},
         index: 0
@@ -58,12 +32,23 @@
           } else {
             this.index = 0
           }
-          this.current = this.list[this.index]
+          this.current = this.dataList[this.index]
         }, 7000)
+      },
+      goDecorateCalendar() {
+        let yyyymmdd = formatDate(this.current.recordDate).split(" ")[0].split("-")
+        let yyyy = yyyymmdd[0] + ''
+        let mm = yyyymmdd[1] + ''
+        this.$emit("goDecorateCalendar", yyyy + mm)
+      }
+    },
+    filters: {
+      formatDate(val) {
+        return formatDate(val)
       }
     },
     mounted() {
-      this.current = this.list[this.index]
+      this.current = this.dataList[this.index]
       this.setTimer()
     },
     beforeDestroy() {

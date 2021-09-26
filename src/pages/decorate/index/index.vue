@@ -44,10 +44,10 @@
       </view>
 
       <view class="scroll-view flex-1">
-        <scroll-view :scroll-top="scrollTop" scroll-y="true" class="scroll-Y" @scroll="scroll"
-          scroll-with-animation="true" :style="{height: viewHieght + 'rpx'}">
+        <!-- <scroll-view :scroll-top="scrollTop" scroll-y="true" class="scroll-Y" @scroll="scroll"
+          scroll-with-animation="true" :style="{height: viewHieght + 'rpx'}"> -->
           <!-- 每日播报 -->
-          <!-- <text-scroll></text-scroll> -->
+          <text-scroll :dataList="broadcastList" v-if="broadcastList.length > 0" @goDecorateCalendar="goDecorateCalendar"></text-scroll>
           <!-- 我的仓库 -->
           <view v-if="haveWarehouse" class="my-decorate-service-wrap">
             <image mode="aspectFit" class="top-bg"
@@ -129,7 +129,7 @@
             <view @click="payGuanGuanJia">生成买管家消息</view>
             <view @click="payRenGong">生成买人工消息</view>
           </view> -->
-        </scroll-view>
+        <!-- </scroll-view> -->
       </view>
       <drag-button-follow v-if="msgNum>0" :num='msgNum' :style.sync="style" @btnClick='openNotice'
         :follow='`left,right`' className="drag-button" class="drag-button">
@@ -147,7 +147,8 @@
   import {
     queryEstates,
     friendListByEstateId,
-    getMsgNum
+    getMsgNum,
+    getCarouselMsg
   } from "../../../api/decorate.js";
   import {
     getEstateProjectInfoList,
@@ -182,12 +183,12 @@
     },
     onLoad() {
       let _this = this
-      uni.getSystemInfo({
-        success(res) {
-          // console.log(res)
-          _this.viewHieght = res.windowHeight * 2 - 416 - 156
-        }
-      })
+      // uni.getSystemInfo({
+      //   success(res) {
+      //     console.log(">>>>>>>dddddddddd>>>>>", res)
+      //     _this.viewHieght = res.windowHeight * 2 - 416
+      //   }
+      // })
     },
     onShow() {
       console.log('showTabBar')
@@ -199,7 +200,7 @@
     data() {
       return {
         scrollTop: 416,
-        viewHieght: "",
+        // viewHieght: "",
         style: "",
         noticeActive: false,
         currentProject: {},
@@ -225,6 +226,7 @@
         haveWarehouse: false,
 
         who: "我",
+        broadcastList: []
       };
     },
     mounted() {
@@ -241,6 +243,17 @@
       timer = null
     },
     methods: {
+      goDecorateCalendar(date) {
+        console.log("date: ", date)
+        uni.navigateTo({
+          url: `/sub-home/pages/decorate-scene/decorate-calendar?projectId=${this.currentProject.projectId}&date=${date}`
+        })
+      },
+      getCarouselMsg() {
+        getCarouselMsg(this.currentProject.projectId).then(data => {
+          this.broadcastList = data
+        })
+      },
       watchMsg() {
         this.getMsgNum();
         this.getAvailableService()
@@ -414,6 +427,7 @@
         getApp().globalData.currentEstate = this.currentEstate
         getApp().globalData.currentProject = this.currentProject
         if (this.currentProject.estateId) {
+          this.getCarouselMsg()
           this.getAvailableService()
           this.getFriendsList()
         }
@@ -467,7 +481,7 @@
       },
       gjgxf() {
         uni.navigateTo({
-          url: `/sub-decorate/pages/gj-process-cost/gj-process-cost?projectId=${this.currentProject.projectId}&estateId=${this.currentProject.estateId}&roleType=10&serviceType=5`
+          url: `/sub-decorate/pages/gj-process-cost/gj-process-cost?projectId=${this.currentProject.projectId}&estateId=${this.currentProject.estateId}&roleType=10&serviceType=5&obtainType=0`
         })
       },
       payGuanGuanJia() {
@@ -482,7 +496,7 @@
         })
       },
       toSend() {
-        
+
         this.client.publish('dabanjia/testTopic', 'hello zzz')
       },
       closeNotice() {
@@ -586,7 +600,8 @@
 
   .scroll-view {
     // background-color: red;
-    overflow: hidden;
+    overflow-x: hidden;
+    overflow-y: auto;
   }
 
   .house-firend {
