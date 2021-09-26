@@ -10,12 +10,15 @@
 		<!-- 		<view :style="{height: navBarHeight}" style="width: 100%;background-color: red;">
 
 		</view> -->
+
+		<!-- //头部 -->
 		<view class="state-bar" :style="{top:navBarHeight}" @click="toCity">
 			<view class="address flex1" @click="toCity">
-				{{citydata}} 
+				{{citydata}}
 			</view>
-		
-			<image @click="toSearch" class="icon-search" src="http://dbj.dragonn.top/static/mp/dabanjia/images/home/search.png" mode=""></image>
+
+			<image @click="toSearch" class="icon-search"
+				src="http://dbj.dragonn.top/static/mp/dabanjia/images/home/search.png" mode=""></image>
 			<image @click="toMessage" class="img"
 				src="http://dbj.dragonn.top/static/mp/dabanjia/images/home/online-server.png" mode="">
 			</image>
@@ -27,7 +30,7 @@
 		<!-- 占位 -->
 		<view style="height: 80rpx;">
 		</view>
-
+		<!-- banner -->
 		<view class="banner-content">
 			<swiper :autoplay="true" interval="2000" duration="500" :circular="true" @change="swiperChange">
 				<swiper-item v-for="(item,index) in bannerList" :key="index">
@@ -41,10 +44,11 @@
 				</view>
 			</view>
 		</view>
-
+		<!-- 金刚区 -->
 		<view class="function-zone">
 			<view class="item bottom-border" v-for="(item,index) in zoneList"
-				:class="{'border-top-left ':index==0,'border-top':index<4,'border-top-right':index==3}" :key="item.id" @click="onZoneClick(item)">
+				:class="{'border-top-left ':index==0,'border-top':index<4,'border-top-right':index==3}" :key="item.id"
+				@click="onZoneClick(item)">
 				<image class="icon" :src="item.icon"></image>
 				<view class="name">
 					{{item.name}}
@@ -53,6 +57,7 @@
 					src="http://dbj.dragonn.top/%20static/mp/dabanjia/images/home/home-zone-border.png" mode=""></image>
 			</view>
 		</view>
+		<!-- 快捷栏目 -->
 		<view class="experience">
 			<view class="title">
 				9.9元买设计报价
@@ -89,11 +94,12 @@
 			</view>
 		</view>
 
-		<!-- 	<button style="width: 50%;margin-top: 20rpx;" type="default" @click="toNextPage">去封装好的列表页</button>
+			<button style="width: 50%;margin-top: 20rpx;" type="default" @click="toNextPage">去封装好的列表页</button>
 		<button style="width: 50%;margin-top: 20rpx;" type="default" @click="toLiveDecorate">去装修现场</button>
 		<button style="width: 50%;margin-top: 20rpx;" type="default" @click="toShop">去商家入驻</button>
 		<button style="width: 50%;margin-top: 20rpx;" type="default" @click="toGoodsApply">去要货申请</button>
- -->
+
+		<!-- 直播 -->
 		<view class="flex-row-common" style="margin-top: 42rpx;">
 			<view class="title">
 				免费服务
@@ -120,7 +126,8 @@
 				<view v-if="item.mediaType==1" class="top-content">
 					{{item.roomVideoMediaVO.onLineCount}}人正在观看
 				</view>
-				<image v-if="item.mediaType==2" class="top-content-img" src="http://dbj.dragonn.top/%20%20static/mp/dabanjia/images/home/video_review.png">
+				<image v-if="item.mediaType==2" class="top-content-img"
+					src="http://dbj.dragonn.top/%20%20static/mp/dabanjia/images/home/video_review.png">
 					{{item.roomVideoMediaVO.onLineCount}}人正在观看
 				</image>
 				<view class="name-content">
@@ -128,6 +135,7 @@
 				</view>
 			</view>
 		</view>
+		<!-- 推荐 -->
 		<view class="flex-row-common" style="margin-top: 42rpx;">
 			<view class="title">
 				精选推荐
@@ -215,7 +223,7 @@
 		},
 		onLoad() {
 			uni.getSystemInfo({
-				success:e=>{
+				success: e => {
 					console.log('???????/')
 					console.log(e)
 				}
@@ -253,9 +261,9 @@
 			this.getHomeGoodsList();
 		},
 		methods: {
-			toSearch(){
+			toSearch() {
 				uni.navigateTo({
-					url:'../../../sub-classify/pages/search/index'
+					url: '../../../sub-classify/pages/search/index'
 				})
 			},
 			toRealCase() {
@@ -324,6 +332,18 @@
 				this.getQueryLiveList();
 			},
 			onZoneClick(item) {
+				if (item.type == 0) {
+					uni.showModal({
+						title: '敬请期待'
+					})
+				} else if (item.type == 1) {
+					uni.navigateTo({
+						url: item.url
+					})
+				} else if (item.type == 2) {
+					let baseurl = this.ENV.VUE_APP_BASE_H5+'/app-pages/'
+					this.toWebview(baseurl + item.url);
+				}
 				if (item.type == 3) {
 					this.toWebview(item.url);
 				}
@@ -509,12 +529,13 @@
 </script>
 
 <style lang="scss" scoped>
-	.icon-search{
+	.icon-search {
 		width: 48rpx;
 		height: 48rpx;
 		margin-right: 32rpx;
 		margin-left: 40rpx;
 	}
+
 	.bottom-border {
 		border-bottom: 1rpx solid #E7E8E8;
 	}
@@ -673,7 +694,8 @@
 				line-height: 24rpx;
 				font-size: 20rpx;
 			}
-			.top-content-img{
+
+			.top-content-img {
 				position: absolute;
 				top: 12rpx;
 				left: 12rpx;
@@ -805,6 +827,7 @@
 		justify-content: flex-start;
 
 		border-radius: 16rpx;
+
 		.border-top {
 			// border-top: 1px solid #e7e8e8;
 		}
