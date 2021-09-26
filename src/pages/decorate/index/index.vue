@@ -115,7 +115,7 @@
           </uni-popup>
           <decorate-notice @touchmove.stop.prevent="()=>false" v-if="noticeActive" :num='msgNum'
             :current='currentProject.projectId' @closeNotice='closeNotice' class="decorate-notice"></decorate-notice>
-          <!-- <view class="link">
+         <!-- <view class="link">
             <view @click="gonohouse">无房屋无服入口</view>
             <view @click="gonohousedecatore('decorate')">无房屋无服务装修</view>
             <view @click="gonohousedecatore('checkHouse')">无房屋无服务验房</view>

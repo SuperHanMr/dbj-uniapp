@@ -275,3 +275,8 @@ export function confirmDesignReport(serveCardId) {
 export function getCarouselMsg(projectId) {
 	return request.get(`/pm/app/decorate/calendar/getCarouselMsg/${projectId}`)
 }
+
+// 搜索商品列表（这个是真实接口）
+export function productList(data) {
+	return request.post(`/product/app/search/query`, data)
+}
