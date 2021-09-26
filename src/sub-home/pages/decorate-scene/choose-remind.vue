@@ -31,10 +31,25 @@
 </template>
 
 <script>
+	import {getAddressBook} from "../../../api/real-case.js"
 	export default {
 		data(){
 			return {
-				isChecked: false
+				isChecked: false,
+				list: [],
+				projectId: 1
+			}
+		},
+		mounted() {
+			this.requestPage()
+		},
+		methods:{
+			requestPage(){
+				// getAddressBook(this.projectId).then(data => {
+				// 	if(data.length){
+				// 		this.list = data
+				// 	}
+				// })
 			}
 		}
 	}

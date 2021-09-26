@@ -1,13 +1,27 @@
 <template>
 	<view class="waterfall">
 		<view class="left">
-			<block v-for="(item, index) in leftList" :key="item">
-				<waterfall-item :item="item" @detail="toDetail" @load="onImageLoad" :showCheckIcon="showCheckIcon" ></waterfall-item>
+			<block v-for="item1 in leftList" :key="item1.id">
+				<waterfall-item 
+					:item="item1" 
+					:showCheckIcon="showCheckIcon" 
+					:allCheck="allCheck" 
+					:isAllCheck="isAllCheck"
+					@detail="toDetail" 
+					@load="onImageLoad" 
+				/>
 			</block>
 		</view>
 		<view class="right">
-			<block v-for="(item, index) in rightList" :key="item">
-				<waterfall-item :item="item" @detail="toDetail" @load="onImageLoad" :showCheckIcon="showCheckIcon" ></waterfall-item>
+			<block v-for="item2 in rightList" :key="item2.id">
+				<waterfall-item  
+					:item="item2"
+					:showCheckIcon="showCheckIcon" 
+					:allCheck="allCheck" 
+					:isAllCheck="isAllCheck"
+					@detail="toDetail" 
+					@load="onImageLoad" 
+				 />
 			</block>
 		</view>
 	</view>
@@ -17,6 +31,7 @@
 	import waterfallItem from "./waterfall-item.vue"
 	export default {
 		name: 'water-fall',
+		components:{waterfallItem},
 		props: {
 			list: {
 				type: Array,
@@ -26,17 +41,22 @@
 				type:Boolean,
 				default:false
 			},
-		
+			allCheck:{
+				type:Boolean,
+				default:false
+			},
+			isAllCheck:{
+				type:Boolean,
+				default:false
+			}
 		},
-		components:{waterfallItem},
+		
 		watch: {
 			list(n, o) {
 				let that = this;
 				let ol = o.length;
 				let nl = n.length;
 				if (nl > ol) {
-				console.log('~~~~~~~~~~~~~')
-				console.log(n);
 					if (this.leftHeight > this.rightHeight) {
 						that.rightList.push(that.list[ol]);
 					} else {
@@ -46,14 +66,7 @@
 				}
 			}
 		},
-		// computed:{
-		// 	checkList(){
-		// 		let itemList = this.list.filter(item=>{
-		// 			return item.isChecked == true
-		// 		})
-		// 		return itemList
-		// 	}
-		// },
+		
 		data() {
 			return {
 				leftList: [],

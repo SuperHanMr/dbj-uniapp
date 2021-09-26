@@ -78,6 +78,7 @@
       </view>
       <view class="content">
         <personService ></personService>
+        <personEvaluate></personEvaluate>
       </view>
     </view>
   </view>
@@ -86,6 +87,7 @@
 <script>
   import personIntroduce from './components/person-introduce.vue'
   import personService from './components/person-service.vue'
+  import personEvaluate from './components/person-evaluate.vue'
   import {
     getCaseList
   } from '@/api/real-case.js'
@@ -95,7 +97,8 @@
   export default {
     components: {
       personIntroduce,
-      personService
+      personService,
+      personEvaluate
     },
     data() {
       return {

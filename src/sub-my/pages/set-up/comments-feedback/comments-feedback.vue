@@ -83,7 +83,7 @@
 					source:1,// 1：客戶端APP 2：服务端APP
 					type:3,// 1：功能异常 2：优化建议 3：其他反馈
 					content:this.query.remarks,//反馈内容
-					imageUrls:this.query.imageValue,//反馈图片（数组形式）
+					imageUrls:this.query.imageUrls,//反馈图片（数组形式）
 				}
 				commentsAndFeedBack(params).then(()=>{
 					console.log("反馈成功")

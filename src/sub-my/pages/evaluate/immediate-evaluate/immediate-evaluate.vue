@@ -55,7 +55,8 @@
 							<text>点击上传</text>
             </view> -->
 						
-					    <uni-file-picker  ref="files" :auto-upload="false"/>
+					    <custom-file-picker fileMediatype="image" mode="grid" :limit="4" @fileChange="onFileChange"/>
+					    
 					    
            <!-- <view
               class="image-container"
@@ -77,13 +78,13 @@
 				</view>
 			</view>
 		</view>
-		
-		<view class="footer-contain                                                                                                                                                                                                                                       er"  :style="{paddingBottom:systemBottom,height:systemHeight}">
+	
+		<view class="footer-container"  :style="{paddingBottom:systemBottom,height:systemHeight}">
 			<view class="confirm-btn" @click="confirmEvaluate">
 				确认评价
 			</view>
 		</view>
-		
+</view>
   </view>
 </template>
 
@@ -142,9 +143,9 @@ export default {
   },
 	mounted(e) {
 	  const menuButtonInfo = uni.getMenuButtonBoundingClientRect();
-	  this.containerBottom = menuButtonInfo.bottom +176 + 'rpx';
+	  this.containerBottom = menuButtonInfo.bottom + 176 + 'rpx';
 	  this.systemBottom = menuButtonInfo.bottom + "rpx";
-	  this.systemHeight = menuButtonInfo.bottom + this.num + "rpx";
+	  this.systemHeight = menuButtonInfo.bottom + 24+ "rpx";
 	},
 	
 	computed:{
@@ -162,11 +163,12 @@ export default {
   },
 	
 	onLoad(e) {
-		this.id =Number(e.id)
-		this.type  =Number(e.type)
-		this.serverName = e.serverName
-		this.serverRoleName = e.serverRoleName
-		this.serverAvatar  =e.serverAvatar
+    let {serveId,serveType,servicerNickName,servicerRole,servicerAvatar} = getApp().globalData.decorateMsg
+		this.id =Number(e.id) || serveId
+		this.type  =Number(e.type) || serveType
+		this.serverName = e.serverName || servicerNickName
+		this.serverRoleName = e.serverRoleName || servicerRole
+		this.serverAvatar  =e.serverAvatar || servicerAvatar
 		console.log("this.id=",this.id,"this.type=",this.type)
 		// this.getServiceInfo()
 	},
@@ -206,7 +208,12 @@ export default {
 				}
 		 })
 		},
-		
+		onFileChange(files) {
+			this.query.imageUrls = files.map(item=>{
+				return item.url
+			})
+			console.log("this.imageValue=",this.query.imageUrls)
+		},
 		// 确认评价按钮
 	confirmEvaluate(){
 		let params={
@@ -220,14 +227,12 @@ export default {
 			rank:this.query.stars, //评级 1不好，2还行，3一般，4满意，5超惊喜",
 			shortComments:"",//快捷评价ids",
 			content:this.query.remarks,//详细评价内容",
-			imgList:[],//图片
+			imgList:this.query.imageUrls,//图片
 		}
 		immediateEvaluate(params).then(e=>{
-			if(e.code ==1){
-				uni.navigateBack({
-						delta: 1
-				});
-			}
+			uni.navigateBack({
+					delta: 1
+			});
 		})
 		
 	},

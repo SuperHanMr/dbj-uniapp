@@ -1,8 +1,8 @@
 <template>
 	<view class="waterfall-item" @click="toDetail(item)">
-		<!-- 内容下架的样式 -->
-		<!-- <view class="withdraw-container" /> -->
-		<!-- <view class="case-withdraw-text">该内容已下架</view> -->
+		<!-- 案例下架的样式 -->
+		<view v-if="item.icon=='case' && !item.enable" class="withdraw-container" />
+		<view  v-if="item.icon=='case' && !item.enable" class="case-withdraw-text">该内容已下架</view>
 		<!-- 左上角的icon -->
 		<image v-if="showCheckIcon && !isChecked" class="product-check"
 			src="../../static/order/images/product_unChecked.png" mode="" />
@@ -11,40 +11,47 @@
 			src="../../static/order/images/product_checked.png" mode="" />
 
 
-		<!-- 右上角的icon图标 -->
-		<!-- <image  class="case-type" src="../../static/order/images/icon_vr_@2x.png" mode="" />
-		<image class="case-type"  src="../../static/order/images/icon_video.png"  mode="" />
-		<image class="case-type"  src="../../static/order/images/icon_img_@2x.png" mode="" /> -->
-		<image class="product-img" :src="item.imageUrl" mode="widthFix" lazy-load @load="onImageLoad">
-		</image>
-		<view class="info-container" :class="{hasDown:isActive}">
-			<!-- <view class="withdraw-text">
-			商品已下架
-		</view> -->
+		<!-- 案例右上角的icon图标 -->
+		<view v-if="item.icon == 'case'">
+			<!-- <image  class="case-type" src="../../static/order/images/icon_vr_@2x.png" mode="" />
+			<image class="case-type"  src="../../static/order/images/icon_video.png"  mode="" />
+			<image class="case-type"  src="../../static/order/images/icon_img_@2x.png" mode="" /> -->
+		</view>
+		
+		<image v-if="item.icon =='product'" class="product-img" :src="item.imageUrl" mode="widthFix" lazy-load @load="onImageLoad"/>
+		<image v-else class="product-img" :src="item.imageUrl" mode="widthFix" lazy-load @load="onImageLoad"/>
+		
+		<!-- 商品的样式 -->
+		<view class="info-container" v-if="item.icon =='product'" :class="{hasDown:!item.enabled}">
+			<view v-if="!item.enabled" class="withdraw-text">
+				商品已下架
+			</view>
 			<view class="flex-row">
-				<!-- <text class="icon" :class="{iconDown:isActive}">物品</text> -->
+				<text class="icon"  :class="{iconDown:!item.enabled}">{{item.productType==1?'物品':'服务'}}</text>
 				<text class="title">
-					{{ item.name }}
+					{{ item.spuName }}
 				</text>
-
 			</view>
-			<!-- <view class="price">
-			<text>￥</text>
-			<text style="font-size: 34rpx;font-weight: 500;">3000</text>
-			<text>.00 /个</text>
-		</view> -->
+			<view class="price">
+				<text>￥</text>
+				<text style="font-size: 34rpx;font-weight: 500;">{{handlePrice(item.price)[0]}}</text>
+				<text>.{{handlePrice(item.price)[1]}}{{item.unit?` / ${item.unit}`:""}}</text>
+			</view>
+		</view>
+		
+		<!-- 案例的样式 -->
+		<view class="info-container" v-if="item.icon == 'case'">
 			<view class="avatar-name">
-				<image src="https://ali-image.dabanjia.com/static/mp/dabanjia/images/message/ic_interaction@2x.png"
-					mode=""></image>
-				<text>小橘子干啊 小橘子干啊 小橘子干啊 </text>
+				<image :src="item.authorAvatar"	mode="" />
+				<text>{{item.authorNickname}}</text>
 			</view>
-
 		</view>
 
 	</view>
 </template>
 
 <script>
+	
 	export default {
 		name: "water-fall-item",
 		props: {
@@ -56,12 +63,32 @@
 				type: Boolean,
 				default: false
 			},
+			allCheck:{
+				type:Boolean,
+				default:false
+			},
+			isAllCheck:{
+				type:Boolean,
+				default:false
+			}
 
 		},
 		watch: {
 			showCheckIcon: {
 				handler(n) {
 					if (!n) {
+						this.isChecked = false
+					}
+				},
+				deep: true
+			},
+			allCheck:{
+				handler(newVal,oldVal) {
+					this.showCheckIcon = true
+					if (this.isAllCheck) return
+					if (newVal) {
+						this.isChecked = true
+					}else{
 						this.isChecked = false
 					}
 				},
@@ -83,6 +110,14 @@
 				this.isChecked = !this.isChecked
 				this.item.isChecked = this.isChecked
 				this.$emit("detail", this.item);
+			},
+			handlePrice(price) {
+			  let list = String(price).split(".");
+			  if (list.length == 1) {
+			    return [list[0], "00"];
+			  } else {
+			    return [list[0], list[1]];
+			  }
 			},
 		},
 	};
@@ -130,6 +165,7 @@
 			object-fit: cover;
 			left: 14rpx;
 			top: 16rpx;
+			z-index: 99;
 		}
 
 		.case-type {
