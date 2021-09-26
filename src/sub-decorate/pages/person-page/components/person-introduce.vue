@@ -6,26 +6,19 @@
         <view class="title">简介:</view>
       </view>
       <view class="msg-content">
-        <text class="report-text" :class="{'report-text-hidden':isHidden}">看见阿三开afksjlakjfklsa可怜少女风圣诞快乐能否抽空拉升能否都是快乐烦恼撒到了咖啡奈拉蒂考是你疯狂了你都IE撒发呢可是你发教案的饭卡的女克拉女阿克琉斯的那份v发卡量苏丹诺夫蓝坤大厦内费拉达斯你发了肯定是你疯狂思念疯狂拉升能否顺利可能疯了</text>
+        <text class="report-text" :class="{'report-text-hidden':isHidden}">{{personData.intro||'这个人很懒，什么都没写'}}</text>
         <view class="openHidden" v-if="showBtn" @click="clickHidden">
           {{hddenText}}
         </view>
       </view>
     </view>
-    <view class="msg-item">
+    <view class="msg-item" v-if="personData.designTags.length>0">
       <view class="item-title">
         <!-- <view class="line"></view> -->
         <view class="title">擅长:</view>
       </view>
       <view class="msg-content list">
-        <view class="tags">轻奢</view>
-        <view class="tags">平层</view>
-        <view class="tags">老房改造</view>
-        <view class="tags">儿童空间</view>
-        <view class="tags">儿童空间</view>
-        <view class="tags">儿童空间</view>
-        <view class="tags">儿童空间</view>
-        <view class="tags">儿童空间</view>
+        <view class="tags" v-for="item of personData.designTags">{{item}}</view>
       </view>
     </view>
     <view class="msg-item" >
@@ -34,21 +27,13 @@
         <view class="title">徽章:</view>
       </view>
       <view class="msg-content list badge-list">
-        <view class="badge">
-          <image></image>
-          <text>技能认证</text>
+        <view class="badge" v-for="item of personData.personAllBadgeVO.basicBadges">
+          <image :src="item.ico"></image>
+          <text>{{item.name}}</text>
         </view>
-        <view class="badge">
-          <image></image>
-          <text>技能认证·中级</text>
-        </view>
-        <view class="badge">
-          <image></image>
-          <text>技能认证</text>
-        </view>
-        <view class="badge">
-          <image></image>
-          <text>技能认证·中级</text>
+        <view class="badge"  v-for="item of personData.personAllBadgeVO.skillBadges">
+          <image :src="item.ico"></image>
+          <text>{{item.name}}·{{item.levelName}}</text>
         </view>
       </view>
     </view>
@@ -57,6 +42,9 @@
 
 <script>
   export default{
+    props:{
+      personData:{}
+    },
     data(){
       return{
         isHidden:false,
@@ -93,7 +81,7 @@
   .msg-item{
     margin-top: 32rpx;
     display: flex;
-    
+    line-height: 36rpx;
     .item-title{
       margin-bottom: 12rpx;
       display: flex;

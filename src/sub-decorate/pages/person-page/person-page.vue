@@ -10,8 +10,8 @@
         <image class="header-back"></image>
       </view>
       <view class="item nav-header-msg">
-        <image src="" mode=""></image>
-        <text>上官海棠</text>
+        <image :src="personData.avatar" mode=""></image>
+        <text>{{personData.nickName}}</text>
       </view>
       <view class="item"></view>
     </view>
@@ -20,13 +20,14 @@
         <view class="person-msg-top">
           <view class="person-msg-header">
             <view class="person-msg-header-image">
-              <image class="avatar"></image>
-              <image class="icon"></image>
+              <image class="avatar" :src="personData.avatar" ></image>
+              <image class="icon" v-if="personData.gender===1"></image>
+              <image class="icon" v-else></image>
             </view>
-            <text class="name">上官海棠</text>
+            <text class="name">{{personData.nickName}}</text>
             <view class="label">
-              <text class="job">设计师</text>
-              <text class="rate">好评率99%</text>
+              <text class="job">{{personData.roleName}}</text>
+              <text class="rate">好评率{{personData.praiseRate||0}}%</text>
             </view>
           </view>
           <view class="btn">
@@ -41,28 +42,28 @@
           </view>
           <view class="person-msg-list">
             <view class="list-item">
-              <text class="num">7</text>
+              <text class="num">{{personData.likeCount||0}}</text>
               <text class="title">获赞</text>
             </view>
             <view class="list-item">
-              <text class="num">7</text>
+              <text class="num">{{personData.fansCount||0}}</text>
               <text class="title">粉丝</text>
             </view>
             <view class="list-item">
-              <text class="num">7</text>
+              <text class="num">{{personData.collectCount||0}}</text>
               <text class="title">被收藏</text>
             </view>
             <view class="list-item">
-              <text class="num">7</text>
+              <text class="num">{{personData.recommendCount||0}}</text>
               <text class="title">被推荐</text>
             </view>
             <view class="list-item">
-              <text class="num">7</text>
+              <text class="num">{{personData.totalNum||0}}</text>
               <text class="title">总接单</text>
             </view>
           </view>
         </view>
-        <personIntroduce></personIntroduce>
+        <personIntroduce :personData='personData'></personIntroduce>
       </view>
       <view class="person-interact" :class="{'person-interact-active':interactActive === interact}">
         <view class="sticky">
@@ -77,7 +78,8 @@
         </view>
       </view>
       <view class="content">
-        <personService ></personService>
+        <personService :serviceData='serviceData'></personService>
+        <personCase ></personCase>
         <personEvaluate></personEvaluate>
       </view>
     </view>
@@ -88,26 +90,30 @@
   import personIntroduce from './components/person-introduce.vue'
   import personService from './components/person-service.vue'
   import personEvaluate from './components/person-evaluate.vue'
+  import personCase from './components/person-case.vue'
+  
   import {
-    getCaseList
-  } from '@/api/real-case.js'
-  import {
-    getSkuList
+    getSkuList,
+    getGrabDetail
   } from '@/api/decorate.js'
   export default {
     components: {
       personIntroduce,
       personService,
-      personEvaluate
+      personEvaluate,
+      personCase
     },
     data() {
       return {
         opacityNum:0,
+        personData:{},
         currentItem: 'service',
         scrollTop:0,
         interact:0,
         interactActive:false,
         content:0,
+        personId:0,
+        serviceData:[]
         
       }
     },
@@ -121,8 +127,13 @@
     onPullDownRefresh() {
       this.getCaseList()
     },
+    onLoad(e){
+      this.personId = getApp().globalData.decorateMsg.serverId||6820
+      this.getGrabDetail()
+    },
     mounted() {
       this.getCaseList()
+      this.getSkuList()
       this.getNodeHeight()
     },
     onPageScroll(scrollTop) {
@@ -132,10 +143,15 @@
       this.getTopDistance()
     },
     methods: {
-      getCaseList() {
-        getCaseList().then(res => {
-
+      getGrabDetail(){
+        getGrabDetail(this.personId).then(res=>{
+          this.personData = res
         })
+      },
+      getCaseList() {
+        // getCaseList().then(res => {
+        
+        // })
       },
       changeOpacity(num){
         num<10?this.opacityNum = 0:num<40?this.opacityNum=0.2:num<80?this.opacityNum=0.4:num<120?this.opacityNum=0.6:num<160?this.opacityNum=0.8:this.opacityNum=1
@@ -163,14 +179,19 @@
         }).exec()
       },
       back(){
-        console.log(1111)
         uni.navigateBack({
           
         })
       },
       getSkuList(){
-        getSkuList().then(res=>{
-          
+        let data = {
+          relationId:this.personId,
+          relationType:7,
+          page:1,
+          row:10000
+        }
+        getSkuList(data).then(res=>{
+          this.serviceData = res
         })
       }
     }
