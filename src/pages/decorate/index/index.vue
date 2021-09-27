@@ -46,89 +46,90 @@
       <view class="scroll-view flex-1">
         <!-- <scroll-view :scroll-top="scrollTop" scroll-y="true" class="scroll-Y" @scroll="scroll"
           scroll-with-animation="true" :style="{height: viewHieght + 'rpx'}"> -->
-          <!-- 每日播报 -->
-          <text-scroll :dataList="broadcastList" v-if="broadcastList.length > 0 && isConstruction" @goDecorateCalendar="goDecorateCalendar"></text-scroll>
-          <!-- 我的仓库 -->
-          <view v-if="haveWarehouse" class="my-decorate-service-wrap">
-            <image mode="aspectFit" class="top-bg"
-              src="http://dbj.dragonn.top/static/mp/dabanjia/images/decorate/service-card-top.svg">
-            </image>
-            <view class="my-decorate-service">
-              <view class="service-title flex-space-between-row">
-                <text class="t">我的仓库</text>
-                <view class="r flex-start-row" @click="goToMyWarehouse">
-                  <text>查看全部</text>
-                  <image src="http://dbj.dragonn.top/static/mp/dabanjia/images/decorate/ic_more.svg">
-                  </image>
-                </view>
-              </view>
-              <view class="my-warehouse">
-                <mwarehouse-btn :iconStyle="{'width': '52rpx','height': '62rpx'}" @gotoPage="gotoPage('0')" name="待发货">
-                </mwarehouse-btn>
-                <mwarehouse-btn :iconStyle="{'width': '58rpx','height': '58rpx'}" @gotoPage="gotoPage('1')" name="待收货">
-                </mwarehouse-btn>
-                <mwarehouse-btn :iconStyle="{'width': '50rpx','height': '60rpx'}" @gotoPage="gotoPage('2')" name="已收货">
-                </mwarehouse-btn>
-                <mwarehouse-btn :iconStyle="{'width': '54rpx','height': '44rpx'}" @gotoPage="gotoPage('3')" name="退款">
-                </mwarehouse-btn>
+        <!-- 每日播报 -->
+        <text-scroll :dataList="broadcastList" v-if="broadcastList.length > 0 && isConstruction"
+          @goDecorateCalendar="goDecorateCalendar"></text-scroll>
+        <!-- 我的仓库 -->
+        <view v-if="haveWarehouse" class="my-decorate-service-wrap">
+          <image mode="aspectFit" class="top-bg"
+            src="http://dbj.dragonn.top/static/mp/dabanjia/images/decorate/service-card-top.svg">
+          </image>
+          <view class="my-decorate-service">
+            <view class="service-title flex-space-between-row">
+              <text class="t">我的仓库</text>
+              <view class="r flex-start-row" @click="goToMyWarehouse">
+                <text>查看全部</text>
+                <image src="http://dbj.dragonn.top/static/mp/dabanjia/images/decorate/ic_more.svg">
+                </image>
               </view>
             </view>
+            <view class="my-warehouse">
+              <mwarehouse-btn :iconStyle="{'width': '52rpx','height': '62rpx'}" @gotoPage="gotoPage('0')" name="待发货">
+              </mwarehouse-btn>
+              <mwarehouse-btn :iconStyle="{'width': '58rpx','height': '58rpx'}" @gotoPage="gotoPage('1')" name="待收货">
+              </mwarehouse-btn>
+              <mwarehouse-btn :iconStyle="{'width': '50rpx','height': '60rpx'}" @gotoPage="gotoPage('2')" name="已收货">
+              </mwarehouse-btn>
+              <mwarehouse-btn :iconStyle="{'width': '54rpx','height': '44rpx'}" @gotoPage="gotoPage('3')" name="退款">
+              </mwarehouse-btn>
+            </view>
           </view>
-          <!-- 我的装修服务 -->
-          <view class="my-decorate-service-wrap">
-            <image mode="aspectFit" class="top-bg"
-              src="http://dbj.dragonn.top/static/mp/dabanjia/images/decorate/service-card-top.svg">
-            </image>
-            <view class="my-decorate-service">
-              <view class="service-title flex-space-between-row">
-                <text class="t">{{who}}的装修服务</text>
-                <view class="r flex-start-row" v-if="isShowMyDecorateAll" @click="goToMyDecorate">
-                  <text>查看全部</text>
-                  <image src="http://dbj.dragonn.top/static/mp/dabanjia/images/decorate/ic_more.svg">
-                  </image>
-                </view>
+        </view>
+        <!-- 我的装修服务 -->
+        <view class="my-decorate-service-wrap">
+          <image mode="aspectFit" class="top-bg"
+            src="http://dbj.dragonn.top/static/mp/dabanjia/images/decorate/service-card-top.svg">
+          </image>
+          <view class="my-decorate-service">
+            <view class="service-title flex-space-between-row">
+              <text class="t">{{who}}的装修服务</text>
+              <view class="r flex-start-row" v-if="isShowMyDecorateAll" @click="goToMyDecorate">
+                <text>查看全部</text>
+                <image src="http://dbj.dragonn.top/static/mp/dabanjia/images/decorate/ic_more.svg">
+                </image>
               </view>
-              <service-item v-for="(item, index) in purchasedServiceList" :key="item.nodeType" :serviceData="item"
-                :currentProject="currentProject">
-              </service-item>
-              <no-service v-if="purchasedServiceList.length == 0" words="暂无进行中服务"></no-service>
             </view>
+            <service-item v-for="(item, index) in purchasedServiceList" :key="item.nodeType" :serviceData="item"
+              :currentProject="currentProject">
+            </service-item>
+            <no-service v-if="purchasedServiceList.length == 0" words="暂无进行中服务"></no-service>
           </view>
-          <view class="tips-design-actuary">
-            <view v-if="availGuides.length > 0" class="tips">
-              购买相关服务 即刻开启装修
-            </view>
-            <guide-card v-if="availGuides.includes('design')" cardType="service"
-              imageUrl="http://iph.href.lu/702x160?text=设计服务702x160&fg=EB7662&bg=FFE2DD"
-              @buyNow="gonohousedecatore('design')">
-            </guide-card>
-            <guide-card v-if="availGuides.includes('actuary')" cardType="actuary"
-              imageUrl="http://iph.href.lu/702x160?text=精算服务702x160&fg=4173c8&bg=d0e0fa"
-              @buyNow="gonohousedecatore('actuary')">
-            </guide-card>
+        </view>
+        <view class="tips-design-actuary">
+          <view v-if="availGuides.length > 0" class="tips">
+            购买相关服务 即刻开启装修
           </view>
+          <guide-card v-if="availGuides.includes('design')" cardType="service"
+            imageUrl="http://iph.href.lu/702x160?text=设计服务702x160&fg=EB7662&bg=FFE2DD"
+            @buyNow="gonohousedecatore('design')">
+          </guide-card>
+          <guide-card v-if="availGuides.includes('actuary')" cardType="actuary"
+            imageUrl="http://iph.href.lu/702x160?text=精算服务702x160&fg=4173c8&bg=d0e0fa"
+            @buyNow="gonohousedecatore('actuary')">
+          </guide-card>
+        </view>
 
-          <!-- 切换房屋弹窗 -->
-          <uni-popup ref="sw">
-            <house-switch class="margintop" :datalist="projectList" :current="currentProject.estateId"
-              @goAddHouse="addHouse" @checkHouse="changeCurrentProject"></house-switch>
-          </uni-popup>
-          <decorate-notice @touchmove.stop.prevent="()=>false" v-if="noticeActive" :num='msgNum'
-            :current='currentProject.projectId' @closeNotice='closeNotice' class="decorate-notice"></decorate-notice>
-         <!-- <view class="link">
-            <view @click="gonohouse">无房屋无服入口</view>
-            <view @click="gonohousedecatore('decorate')">无房屋无服务装修</view>
-            <view @click="gonohousedecatore('checkHouse')">无房屋无服务验房</view>
-            <view @click="checkHouseRemind">验房提醒</view>
-            <view @click="confirm1">设计交付</view>
-            <view @click="confirm4">线上交底</view>
-            <view @click="dsport">设计报告交付</view>
-            <view @click="hcaa">管家竣工验收申请</view>
-            <view @click="workerCapplication">工人阶段验收申请</view>
-            <view @click="gjgxf">工序费</view>
-            <view @click="payGuanGuanJia">生成买管家消息</view>
-            <view @click="payRenGong">生成买人工消息</view>
-          </view> -->
+        <!-- 切换房屋弹窗 -->
+        <uni-popup ref="sw">
+          <house-switch class="margintop" :datalist="projectList" :current="currentProject.estateId"
+            @goAddHouse="addHouse" @checkHouse="changeCurrentProject"></house-switch>
+        </uni-popup>
+        <decorate-notice @touchmove.stop.prevent="()=>false" v-if="noticeActive" :num='msgNum'
+          :current='currentProject.projectId' @closeNotice='closeNotice' class="decorate-notice"></decorate-notice>
+        <!-- <view class="link">
+          <view @click="gonohouse">无房屋无服入口</view>
+          <view @click="gonohousedecatore('decorate')">无房屋无服务装修</view>
+          <view @click="gonohousedecatore('checkHouse')">无房屋无服务验房</view>
+          <view @click="checkHouseRemind">验房提醒</view>
+          <view @click="confirm1">设计交付</view>
+          <view @click="confirm4">线上交底</view>
+          <view @click="dsport">设计报告交付</view>
+          <view @click="hcaa">管家竣工验收申请</view>
+          <view @click="workerCapplication">工人阶段验收申请</view>
+          <view @click="gjgxf">工序费</view>
+          <view @click="payGuanGuanJia">生成买管家消息</view>
+          <view @click="payRenGong">生成买人工消息</view>
+        </view> -->
         <!-- </scroll-view> -->
       </view>
       <drag-button-follow v-if="msgNum>0" :num='msgNum' :style.sync="style" @btnClick='openNotice'
@@ -251,9 +252,12 @@
         })
       },
       getCarouselMsg() {
-        getCarouselMsg(this.currentProject.projectId).then(data => {
-          this.broadcastList = data
-        })
+        if (this.currentProject.projectId) {
+          getCarouselMsg(this.currentProject.projectId).then(data => {
+            this.broadcastList = data
+          })
+        }
+
       },
       watchMsg() {
         this.getMsgNum();
@@ -313,11 +317,16 @@
             3) || t.status >= 2).length > 0
           this.haveWarehouse = this.purchasedServiceList.filter(t => t.nodeType >= 5).length > 0
 
-          for(let i = 0; i< this.purchasedServiceList.length; i++) {
-            if([6,7,8,9,10].includes(this.purchasedServiceList[i].nodeType) && (this.purchasedServiceList[i].status >= 2 || (this.purchasedServiceList[i].status == 0 && this.purchasedServiceList[i].grepOrderStatus === 3))) {
+          for (let i = 0; i < this.purchasedServiceList.length; i++) {
+            if ([6, 7, 8, 9, 10].includes(this.purchasedServiceList[i].nodeType) && (this.purchasedServiceList[i]
+                .status >= 2 || (this.purchasedServiceList[i].status == 0 && this.purchasedServiceList[i]
+                  .grepOrderStatus === 3))) {
               this.isConstruction = true
               break
             }
+          }
+          if (this.isConstruction) {
+            this.getCarouselMsg()
           }
         }).catch(err => {
           console.log(err)
@@ -437,7 +446,6 @@
         getApp().globalData.currentEstate = this.currentEstate
         getApp().globalData.currentProject = this.currentProject
         if (this.currentProject.estateId) {
-          this.getCarouselMsg()
           this.getAvailableService()
           this.getFriendsList()
         }

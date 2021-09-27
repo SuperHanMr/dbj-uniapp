@@ -6,7 +6,7 @@ export function getDecorateist(params) {
   });
 }
 export function getCollection(params) {
-  return request.post(`/pm/app/base/interactive/add`, params);
+  return request.post(`/app/collection`, params);
 }
 export function getCaseList(params) {
   return request.get(`/app/case/v2/list`, {
@@ -35,7 +35,7 @@ export function getSelectOptions(params) {
   });
 }
 export function setAttentions(params, config) {
-  return request.post(`/app/base/interactive/add`, params, config);
+  return request.post(`/app/base/interactive/view/add`, params, config);
 }
 export function getFocusBrowse(params) {
   return request.get(`/app/base/interactive/project/count/detail`, {

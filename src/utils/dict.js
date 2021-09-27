@@ -1,17 +1,9 @@
-const DECTORE_DICT = {
-	robbing: "抢单中",
-	shouldsure: "待确认",
-	inservice: "服务中",
-	uncheck: "待验收",
-	completed: "完成"
+const LEVEL = {
+  1: "中级",
+  2: "高级",
+  3: "特高级",
+  4: "钻石"
 }
-const SERVICE_TYPE = {
-	check: 4,
-	actuary: 5,
-	service: 6
-}
-
 export {
-	DECTORE_DICT, 
-	SERVICE_TYPE
+  LEVEL
 }

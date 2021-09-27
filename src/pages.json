@@ -21,6 +21,7 @@
 			"path": "pages/login/login",
 			"style": {
 				"navigationBarTitleText": "用户登录",
+				"navigationStyle": "custom",
 				"usingComponents": {
 					"gome-login": "/wxcomponents/gome-login/loginEmpower"
 				}
@@ -552,13 +553,13 @@
 						"enablePullDownRefresh": true
 					}
 				},
-        {
-          "path": "pages/materials-list/materials-list",
-          "style": {
-          	"navigationBarTitleText": "更换商品",
-          	"enablePullDownRefresh": true
-          }
-        },
+				{
+					"path": "pages/materials-list/materials-list",
+					"style": {
+						"navigationBarTitleText": "更换商品",
+						"enablePullDownRefresh": true
+					}
+				},
 				{
 					"path": "pages/no-house-decorate/no-house-decorate",
 					"style": {
