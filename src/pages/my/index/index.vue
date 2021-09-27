@@ -30,7 +30,7 @@
       <view class="order-header">
         <view class="order">我的订单</view>
         <view  class="total"  @click="handlerViewAll()">
-          <text>查看全部</text>
+          <text>全部订单</text>
           <image  src="../../../static/order/images/arraw_right_@2x.png"  mode="" />
         </view>
       </view>
@@ -152,7 +152,7 @@ export default {
     } else {
       this.isLogin = true;
       this.userInfo = getApp().globalData.userInfo;
-      console.log("!!!!!!!!!!!!!");
+      console.log("!!!!!!!!!!!!!", this.userInfo);
       this.userName = this.userInfo.name;
     }
 		queryToBePaidOrderNum().then(data=>{
@@ -233,13 +233,12 @@ export default {
   position: relative;
   .backgroundStyle {
     position: absolute;
-		filter: blur(4rpx);
+		filter: blur(13rpx);
     width: 750rpx;
     z-index: -1;
     height: 524rpx;
     image {
       width: 100%;
-      // height: 100%;
     }
     .mask {
       width: 100%;
@@ -256,20 +255,19 @@ export default {
     flex-flow: row nowrap;
     justify-content: space-between;
     align-items: center;
-    padding: 0 24rpx 32rpx 32rpx;
+    padding: 0 18rpx 0 36rpx;
     .avatar-img {
       display: flex;
       flex-flow: row nowrap;
       align-items: center;
       .avatar {
-        width: 128rpx;
-        height: 128rpx;
+        width: 120rpx;
+        height: 120rpx;
         border-radius: 50%;
-        border: 4rpx solid #ffffff;
-        box-sizing: border-box;
+        border: 2rpx solid #ffffff;
         object-fit: cover;
         opacity: 1;
-        margin-right: 8rpx;
+        margin-right: 24rpx;
       }
     }
     .user-name {
@@ -280,8 +278,7 @@ export default {
         font-weight: 500;
         color: #ffffff;
       }
-
-      .edit-info {
+			.edit-info {
         margin-top: 8rpx;
         display: flex;
         flex-flow: row nowrap;
@@ -300,8 +297,8 @@ export default {
     }
     .set-up {
       image {
-        width: 60rpx;
-        height: 60rpx;
+        width: 72rpx;
+        height: 72rpx;
         object-fit: cover;
       }
     }
@@ -309,7 +306,7 @@ export default {
 
   .my-order {
     height: 300rpx;
-    margin: 64rpx 22rpx 24rpx 24rpx;
+    margin: 68rpx 22rpx 24rpx 24rpx;
     display: flex;
     background-color: #fff;
     flex-flow: column nowrap;
