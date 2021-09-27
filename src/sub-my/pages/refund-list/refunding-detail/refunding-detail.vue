@@ -1,7 +1,7 @@
 <template>
-  <view class="container">
+  <view class="container" >
     <!-- 退款详情 -->
-    <view   class="order-container">
+    <view   class="order-container" :style="{paddingBottom:containerPaddingBottom}" >
 			<view class="order-status">
 				<view class="backgroundStyle" />
 
@@ -15,7 +15,7 @@
 			</view>
 
 			<view class="refund-product-info" v-for="item in refundInfo.detailAppVOS" :key="item.id">
-				<order-item :dataList="item" :refundType="true"></order-item>
+				<order-item :dataList="item" :refundType="true"  @handleDetail="productDetail(item)"  />
 			</view>
 
 			<order-refund-info :refundInfo="refundInfo" ></order-refund-info>
@@ -56,16 +56,16 @@ export default {
 			refundInfo:{},
 			
 			systemBottom: "",
-			systemHeight: "",
 			containerBottom:"",
+			containerPaddingBottom:"",
     };
   },
 	
 	mounted(e) {
 		const menuButtonInfo = uni.getMenuButtonBoundingClientRect();
 		this.containerBottom = menuButtonInfo.bottom
-		this.systemBottom = menuButtonInfo.bottom + "rpx";
-		this.systemHeight = menuButtonInfo.bottom + this.num + "rpx";
+		this.systemBottom = menuButtonInfo.bottom + 24 + "rpx";
+		this.containerPaddingBottom = menuButtonInfo.bottom + 160 + "rpx";
 		console.log(this.systemBottom);
 	},
 	
@@ -93,6 +93,12 @@ export default {
 			getRefundDetail({ id: this.orderId }).then(e=>{
 			console.log("打印请求回来的数据=",e,"e")
 				this.refundInfo = e
+			})
+		},
+		// 跳转到商品详情页面
+		productDetail(item){
+			uni.navigateTo({
+				url:`../../../../sub-classify/pages/goods-detail/goods-detail?goodId=${item.relationId}`
 			})
 		},
 		
@@ -282,9 +288,6 @@ export default {
   width: 100%;
   height: 100%;
   overflow: auto;
-  padding-bottom: 100rpx;
-
-  // background-color: skyblue;
   .order-container {
     .order-status {
       width: 100%;

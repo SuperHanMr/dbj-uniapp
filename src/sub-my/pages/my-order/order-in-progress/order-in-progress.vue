@@ -27,7 +27,7 @@
           :key="item.storeId"
           class="item"
         >
-          <view class="header">
+          <view class="header" @click="gotoShop(item)">
             <text>{{item.storeName}}</text>
             <image
               src="@/static/order/ic_more@2x.png"
@@ -41,7 +41,7 @@
             class="orederItem"
           >
             <order-item
-							@handleDetail="goToDetail"
+							@handleDetail="goToDetail(item2)"
               :dataList="item2"
               :orderStatus="2"
 							:showOriginPrice="orderInfo.discount && item.details.length"
@@ -134,6 +134,7 @@ export default {
       systemBottom: "",
       systemHeight: "",
       containerBottom: "",
+			areaId:"",
     };
   },
 
@@ -150,6 +151,9 @@ export default {
     }
 
     this.orderDetail();
+		const currentHouse =JSON.parse(uni.getStorageSync('currentHouse'))
+		this.areaId =currentHouse.areaId
+		
   },
 
   methods: {
@@ -195,25 +199,30 @@ export default {
 		
 		// 申请退款成功
 		refundSuccess(item){
-		
 			uni.navigateTo({
 				url:`../order-success/order-success?type=refund&id=${item.refundId}`
 			})
 		},
-		refundFailed(item){
-			
-		},
+		refundFailed(item){},
 		refundClose(item){
 			uni.navigateTo({
-				url:`../order-failed/order-failed?type=refund&id=${item.refundId}&status=${item.refundStatus}`
+				url:`../../../../sub-classify/pages/goods-detail/goods-detail?goodId=${item.id}`
 			})
 		},
+		
 		// 点击商品区域，跳转到商品详情页面
-		goToDetail(){
-			uni.getStorageSync('goodId')     
+		goToDetail(item2){   
 			uni.navigateTo({ 
-				url:"../../../../pages/common/goods-detail/goods-detail"
+				url:`../../../../sub-classify/pages/goods-detail/goods-detail?goodId=${item2.id}`
 			})
+		},
+		// 跳转到店铺页面
+		gotoShop(item) {
+		  console.log("去店铺首页！！！！");
+			console.log("this.storeId=",item.storeId,"this.areaId=",this.areaId)
+			uni.navigateTo({
+				url:`../../../../sub-classify/pages/shops/shops?storeId=${item.storeId}&areaId=${this.areaId}`
+			});
 		},
 			
 		
