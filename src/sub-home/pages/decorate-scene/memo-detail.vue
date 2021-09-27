@@ -2,22 +2,18 @@
 	<view class="detailWrap">
 		<view class="topArea">
 			<view class="userInfo">
-				<image class="avatar" src="../../static/avatar@2x(1).png"></image>
-				<view class="userName">{{flag===1?'姜文':'我'}}</view>
-				<view class="role">{{flag===1?'管家':'业主'}}</view>
+				<image class="avatar" :src="userInfo.avatar"></image>
+				<view class="userName">{{userInfo.userName}}</view>
+				<view class="role">{{userInfo.roleName}}</view>
 			</view>
-			<view class="time">2021-08-16 09:12</view>
+			<view class="time">{{memoInfo.createTime}}</view>
 		</view>
 		<view class="content">
-			<view class="remark">{{flag===1?'提到了我':'@田管家'}}</view>
-			<view class="text">
-				尊敬的业主，打扮家管家-姜文为您家管家，为您家装修保驾护航，您家现在的阶段是水电拆改，
-				如果在涂料不够的情况下，可以先把一面墙给涂好面料，以免导致一面墙差生两种颜色。另外可以在不同的居室中使用，
-				减少色差的影响。 墙角的缺口往往最为让人不留意，如果墙角在装修完毕入住时才发现墙角出现缺口该怎么办呢？
-				小编建议，如果是白墙，可以用白水泥或大白粉或石膏粉，兑水后再加点乳白胶，补一下，最好能用白水泥，因为水泥的硬度好，
-				能避免缺口的再次出现。
-
+			<view class="remark">
+				<view class="cueMe" v-if="!memoInfo.publisherFlag">提到了我</view>
+				<view class="cueOthers" v-else v-for="(name,index) in reminderList" :key="index">@{{name}}</view>
 			</view>
+			<view class="text">{{memoInfo.content}}</view>
 		</view>
 	</view>
 </template>
@@ -27,27 +23,28 @@
 	export default {
 		data(){
 			return {
-				flag: 0,
-				memoInfo: {}
+				memoId: 0,
+				memoInfo: {},
+				userInfo: {},
+				reminderList: []
 			}
 		},
 		onLoad(option) {
-			const eventChannel = this.getOpenerEventChannel();
-			eventChannel.on('acceptDataFromOpenerPage',( data )=> {
-				console.log(data)
-				this.flag = data
-			})  
+			this.memoId = option.memoId
 		},
 		mounted() {
 			this.requestPage()
 		},
 		methods: {
 			requestPage(){
-				// getMemoDetail(projectId,memoId).then(data => {
-				// 	if(data){
-				// 		this.memoInfo = data
-				// 	}
-				// })
+				getMemoDetail(this.memoId).then(data => {
+					if(data){
+						let {promulgator,reminderList} = data
+						this.memoInfo = data
+						this.userInfo = promulgator
+						this.reminderList = reminderList
+					}
+				})
 			}
 		}
 	}
@@ -71,7 +68,7 @@
 		border-radius: 16rpx;
 	}
 	.topArea .time{
-		width: 246rpx;
+		width: 284rpx;
 		height: 40rpx;
 		padding-right: 24rpx;
 		color: #999999;
@@ -90,7 +87,7 @@
 		display: block;
 	}
 	.userInfo .userName{
-		width: 56rpx;
+		width: 86rpx;
 		height: 40rpx;
 		margin: 0 16rpx;
 		font-size: 28rpx;
@@ -111,12 +108,20 @@
 		height: fit-content;
 	}
 	.content .remark{
-		width: 112rpx;
+		display: flex;
+		width: fit-content;
 		height: 40rpx;
 		margin-bottom: 16rpx;
 		margin-left: 32rpx;
 		font-size: 28rpx;
 		color: #999999;
+	}
+	.remark .cueMe{
+		width: 112rpx;
+	}
+	.remark .cueOthers{
+		width: 112rpx;
+		margin-right: 40rpx;
 	}
 	.content .text{
 		margin: 0 32rpx 40rpx;

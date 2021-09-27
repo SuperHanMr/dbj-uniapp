@@ -29,7 +29,7 @@
     <view :class="{ hide: !monthOpen }" class="content" :style="{ height: height }">
       <view :style="{ top: positionTop + 'rpx' }" class="days">
         <view class="item" v-for="(item, index) in dates" :key="index">
-					<view class="today-text" @click="todayC" :class="{'checked': isChecked}" v-if="isToday(item.year, item.month, item.date)">今</view>
+					<view class="today-text" @click="todayC(`${item.year}-${item.month}-${item.date}`)" :class="{'checked': isChecked}" v-if="isToday(item.year, item.month, item.date)">今</view>
           <view class="day" v-else @click="selectOne(item, $event)" :class="{ choose: choose == `${item.year}-${item.month}-${item.date}`, nolm: !item.lm }">{{ item.date }}</view>
           <view class="sign" v-if="isSigned(item.year, item.month , item.date)"></view>
         </view>
@@ -59,7 +59,10 @@
 	    open: {
 	      type: Boolean,
 	      default: true
-	    }
+	    },
+			projectId: {
+				type: Number,
+			}
 	  },
 	  data() {
 	    return {
@@ -102,12 +105,13 @@
 	    }
 	  },
 	  methods: {
-			todayC(){
+			todayC(today){
 				this.isChecked = !this.isChecked
+				this.choose = today
 			},
 			toMemo(){
 				uni.navigateTo({
-					url:"./memo"
+					url: `/sub-home/pages/decorate-scene/memo?projectId=${this.projectId}`
 				})
 			},
 	    // 获取当前月份天数
@@ -197,6 +201,7 @@
 	    },
 	    // 点击回调
 	    selectOne(i, event) {
+				this.isChecked = false
 	      let date = `${i.year}-${i.month}-${i.date}`
 	      let selectD = new Date(date)
 				console.log(date,selectD.getMonth(),this.m)
