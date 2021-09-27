@@ -53,7 +53,8 @@
 		<view class="footer" v-if=" currentList.length >= 1 && showCalCelBtn" :style="{paddingBottom:systemBottom + 24 + 'rpx'}">
 			<view class="left">
 				<image v-if="allCheck"  src="../../../../static/order/images/product_checked.png"  @click="handleAllCheck" mode=""></image>
-				<image v-else src="../../../../static/order/images/product_unChecked.png" mode="" @click="handleAllCheck"/>
+				<view class="checkStyle" v-else @click="handleAllCheck"/>
+				<!-- <image v-else src="../../../../static/order/images/product_unChecked.png" mode="" @click="handleAllCheck"/> -->
 				<text>全选</text>
 			</view>
 			<view class="button" @click="handleCancel">
@@ -178,14 +179,16 @@
 			getCaseList() {
 				this.loading = true;
 				let params = {
-					routeId: 5001, //【收藏真实案例路由id，记录用户收藏的真实案例】
-					type: 1, //(1,"收藏")
-					bizType: 7, //【真实案例】REAL_CASE(7,"真实案例")
+					page:1,
+					// routeId: 5001, //【收藏真实案例路由id，记录用户收藏的真实案例】
+					// type: 1, //(1,"收藏")
+					// bizType: 7, //【真实案例】REAL_CASE(7,"真实案例")
 				}
 				getRealCaseList(params).then(data => {
-					this.caseList = this.caseList.concat(data)
+					this.caseList = this.caseList.concat(data.list)
 					this.caseList = this.handleList(this.caseList,false,"case")
-					
+					this.page[1] = data.page
+					this.totalPage[1]= data.totalPage
 					console.log("this.caseList=", this.caseList)
 					this.loading = false;
 				})
@@ -214,17 +217,26 @@
 			
 			// 点击单个item的操作获取选中的数据
 			onSelectedItem(data) {
-				this.checkedItemIds = data.filter(item => item.isChecked == true).map((item2) => {
-					return {relationId:item2.id,authorId:item2.authorId,subBizType:item2.subBizType}
-				})
-				this.productList = data
-				if(this.checkedItemIds.length == this.productList.length){
-					this.allCheck=true;
-					this.isAllCheck=true;
+				if(this.showMgrBtn){
+					console.log("data=",data)
+					if(this.currentIndex ==0){
+						console.log("进入商品详情页，点击收藏")
+					}else{
+						console.log("进入案例详情页，点击收藏")
+					}
 				}else{
-					this.allCheck=false
+					this.checkedItemIds = data.filter(item => item.isChecked == true).map((item2) => {
+						return {relationId:item2.id,authorId:item2.authorId,subBizType:item2.subBizType}
+					})
+					this.productList = data
+					if(this.checkedItemIds.length == this.productList.length){
+						this.allCheck=true;
+						this.isAllCheck=true;
+					}else{
+						this.allCheck=false
+					}
+					console.log("选中的产品=", this.checkedItemIds,"点击了收藏后的list", data)
 				}
-				console.log("选中的产品=", this.checkedItemIds,"点击了收藏后的list", data)
 			},
 			
 			// 全选
@@ -314,10 +326,18 @@
 				//   return;
 				// }
 				// this.page++;
-				if (this.loading) return
-				if (this.currentList.length < 1) {
-					this.currentIndex == 0 ? this.getProductList() : this.getCaseList();
+				if(this.currentIndex==0){
+					if(this.loading) return
+					this.currentList.length < 1?this.getProductList():""
+				}else{
+					if(this.loading || this.page[1] >=this.totalPage[1])return 
+					this.page[1]++
+					this.getCaseList()
 				}
+				// if (this.loading) return
+				// if (this.currentList.length < 1) {
+				// 	this.currentIndex == 0 ? this.getProductList() : this.getCaseList();
+				// }
 			},
 			onRefresh(e) {
 				this.triggered = true;
@@ -452,7 +472,14 @@
 			display: flex;
 			flex-flow: row nowrap;
 			align-items: center;
-
+			.checkStyle{
+				width: 36rpx;
+				height: 36rpx;
+				box-sizing: border-box;
+				border: 4rpx solid #cccccc;
+				border-radius: 50%;
+				margin-right: 10rpx;
+			}
 			image {
 				width: 40rpx;
 				height: 40rpx;

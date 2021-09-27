@@ -5,13 +5,17 @@
 			class="body-main" 
 			:style="{paddingBottom:paddingBottom +'rpx'}" 
 			@click="handleDetail()" >
+			<!-- 标签 -->
 			<view class="pic" >
+				<!-- 当该商品处于待发货标签时，则对应退款、退款关闭、退款失败状态 -->
 				<view class="icon-status1" v-if="orderStatus == 2 && (dataList.shipmentStatus == 0 || dataList.refundStatus == 2 || dataList.refundStatus == 3)">
 					待发货
 				</view> 
+				<!-- 当该商品正在退款中显示退款中标签，则对应取消退款状态 -->
 				<view class="icon-status1" v-if="orderStatus==2 && dataList.refundStatus == 0">
 					退款中
 				</view>
+				<!--  当该商品处于已退款状态时，则对应退款成功状态 -->
 				<view class="icon-status2" v-if="orderStatus==2 && dataList.refundStatus == 1" >
 					已退款
 				</view>

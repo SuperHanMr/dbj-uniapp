@@ -168,7 +168,7 @@
 		onUnload(){ 
 			if(this.from == 'waitPay'){
 				uni.redirectTo({
-					url:`../my-order?index=1`
+					url:`../my-order?index=1&reRefresh=true`
 				})
 				// uni.navigateBack({
 				// 		delta:1

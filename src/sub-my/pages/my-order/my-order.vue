@@ -61,16 +61,13 @@
                 <view
                   class="order-status"
                   :class="{active: item.orderStatus == 2 || item.orderStatus == 3}"
-                >{{item.orderStatusName}}
-                  <!-- {{
-										item.orderStatus == 0
-										?"代付款"
-										:item.orderStatus == 1
-										?(item.shipmentStatus == 1?"待发货":item.shipmentStatus == 2? "已发货" :"已签收")//发货状态（1待发货，2已发货）
-										:item.orderStatus === 2
-										?"已完成"
-										:"交易关闭"
-									}} -->
+                >
+								<!-- {{item.orderStatusName}} -->
+                  {{
+										item.orderStatus == 1
+										?(item.shipmentStatus == 0?"待发货":item.shipmentStatus == 1 ? "已发货" :"已收货")//发货状态（1待发货，2已发货）
+										:item.orderStatusName
+									}}
                 </view>
               </view>
 
@@ -311,6 +308,7 @@ export default {
 
       id: -1,
 			systemBottom: "",
+			reRefresh:false,
     };
   },
 	mounted(e) {
@@ -319,6 +317,36 @@ export default {
 		this.systemBottom = menuButtonInfo.bottom + "rpx";
 		this.systemHeight = menuButtonInfo.bottom + this.num + "rpx";
 	
+	},
+	watch:{
+		reRefresh(newVal,oldVal){
+			console.log("newVal=",newVal,"oldVal=",oldVal)
+			if(newVal){
+				this.lastId[this.currentIndex]=-1
+				switch(this.currentIndex){
+					case 0:
+						this.orderList0=[];
+						this.getOrderList()
+						break;
+					case 1:
+						this.orderList1=[];
+						this.getOrderList()
+						break;
+					case 2:
+						this.orderList2=[];
+						this.getOrderList()
+						break;
+					case 3:
+						this.orderList3=[];
+						this.getOrderList()
+						break;
+					case 4:
+						this.orderList4=[];
+						this.getOrderList()
+						break;
+				}
+			}
+		}
 	},
 
   computed: {
@@ -342,8 +370,14 @@ export default {
       }
     },
   },
+	onShow() {
+		uni.$once("refreshPage",function(data){
+        console.log('监听到事件来自 update ，携带参数 msg 为：' + data.msg);
+    })
+	},
  
 	onLoad(e) {
+		this.reRefresh = e.reRefresh
     if (e.index) {
       if (e.index == "99") {
         console.log("e=", e);
@@ -351,6 +385,7 @@ export default {
       } else {
         this.currentIndex = Number(e.index);
       }
+			
     }
     this.orderStatus = this.currentIndex - 1;
   },
