@@ -32,7 +32,7 @@
 		</view>
 		<!-- banner -->
 		<view class="banner-content">
-			<swiper :autoplay="true" interval="2000" duration="500" :circular="true" @change="swiperChange">
+			<swiper :autoplay="swiperAuto" interval="2000" duration="500" :circular="true" @change="swiperChange">
 				<swiper-item v-for="(item,index) in bannerList" :key="item.id">
 					<image class="banner-img" :src="item.resUrl" mode="aspectFit" @click="toWebview(item.jumpUrl)">
 					</image>
@@ -208,7 +208,8 @@
 				currentSwiper: 0,
 				goodsList: [],
 				areaId: "",
-				token: ""
+				token: "",
+				swiperAuto:false
 			};
 		},
 		watch: {
@@ -253,6 +254,10 @@
 				uni.setStorageSync("currentHouse", JSON.stringify(item));
 			});
 			this.token = getApp().globalData.token;
+			this.swiperAuto=true;
+		},
+		onHide() {
+			this.swiperAuto=false
 		},
 
 		onReachBottom() {
