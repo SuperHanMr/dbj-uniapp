@@ -124,7 +124,7 @@
 		</view>
   
 	 
-		<uni-popup  ref="cancleOrder"  type="dialog">
+		<!-- <uni-popup  ref="cancleOrder"  type="dialog">
 			<uni-popup-dialog
 				mode="base"
 				title="您确定要取消该订单吗？"
@@ -132,8 +132,9 @@
 				@close="cancelOrderClose"
 				@confirm="cancleConfirm"
 			/>
-		</uni-popup>
+		</uni-popup> -->
 		
+		<popup-dialog ref="cancleOrder" :title="title"  @close="cancelOrderClose" @confirm="cancleConfirm"></popup-dialog>
 	</view>
 </template>
 
@@ -150,6 +151,7 @@ export default {
 			systemBottom: "",
 			systemHeight: "",
 			containerBottom:"",
+			title:"您确定要取消该订单吗？",
     };
   },
 	
@@ -163,7 +165,7 @@ export default {
 	
   onLoad(e) {
     this.orderNo =Number( e.orderNo)||getApp().globalData.decorateMsg.orderId;
-    this.orderDetail()
+		this.orderDetail()
 		
 		
 	},
@@ -235,6 +237,13 @@ export default {
 				
 			if(this.orderInfo.isSplitPay){
 				// orderId 是订单id
+				
+				
+				
+				
+				
+				
+				//此处戏传参有问题
 				uni.navigateTo({
 					url:`../multiple-payments/multiple-payments?orderId=${this.orderNo}&type=detail&remainTime=${this.orderInfo.remainTime}`
 				})

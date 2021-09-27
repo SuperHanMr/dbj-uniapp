@@ -1,32 +1,15 @@
 <template>
 	<view class="choose-remind">
-		<view class="remindItem">
+		<view class="remindItem" v-for="item in list" :key="item.userId">
 			<view class="userInfo">
-				<image class="avatar" src="../../static/avatar@2x(1).png"></image>
-				<view class="userName">姜文</view>
-				<view class="role">管家</view>
+				<image class="avatar" :src="item.avatar"></image>
+				<view class="userName">{{item.name}}</view>
+				<view class="role">{{item.role}}</view>
 			</view>
-			<image v-if="!isChecked" @click="isChecked=!isChecked" class="img" src="../../static/check@2x.png"></image>
-			<image v-else @click="isChecked=!isChecked" class="img" src="../../static/checked@2x.png"></image>
+			<image v-if="!item.isChecked" @click="checkC(index)" class="img" src="../../static/check@2x.png"></image>
+			<image v-else @click="checkC(index)" class="img" src="../../static/checked@2x.png"></image>
 		</view>
-		<view class="remindItem">
-			<view class="userInfo">
-				<image class="avatar" src="../../static/avatar@2x(1).png"></image>
-				<view class="userName">姜文</view>
-				<view class="role">管家</view>
-			</view>
-			<image v-if="!isChecked" @click="isChecked=!isChecked" class="img" src="../../static/check@2x.png"></image>
-			<image v-else @click="isChecked=!isChecked" class="img" src="../../static/checked@2x.png"></image>
-		</view>
-		<view class="remindItem">
-			<view class="userInfo">
-				<image class="avatar" src="../../static/avatar@2x(1).png"></image>
-				<view class="userName">姜文</view>
-				<view class="role">管家</view>
-			</view>
-			<image v-if="!isChecked" @click="isChecked=!isChecked" class="img" src="../../static/check@2x.png"></image>
-			<image v-else @click="isChecked=!isChecked" class="img" src="../../static/checked@2x.png"></image>
-		</view>
+		
 	</view>
 </template>
 
@@ -35,21 +18,40 @@
 	export default {
 		data(){
 			return {
-				isChecked: false,
 				list: [],
-				projectId: 1
+				projectId: 0,
+				reminderList: []
 			}
+		},
+		onLoad(option) {
+			this.projectId = option.projectId
 		},
 		mounted() {
 			this.requestPage()
 		},
 		methods:{
+			checkC(index){
+				this.list[index].isChecked=!this.list[index].isChecked
+			},
 			requestPage(){
-				// getAddressBook(this.projectId).then(data => {
-				// 	if(data.length){
-				// 		this.list = data
-				// 	}
-				// })
+				getAddressBook(this.projectId).then(data => {
+					console.log(data)
+					if(data){
+						if(!data.length)return
+						this.list = data.map(item => {
+							this.reminderList.push({
+								userId: item.userId,
+								userName: item.name,
+								userType: item.roleType,
+								phone: item.phone
+							})
+							
+							item.isChecked = false
+							return item
+						})
+						uni.$emit("sendReminders",this.reminderList)
+					}
+				})
 			}
 		}
 	}

@@ -1,6 +1,6 @@
 <template>
 	<view class="decorate">
-		<view class="waterfall-box h-flex-x h-flex-2">
+		<view class="waterfall-box h-flex-x h-flex-2" :class="{'is-person':isPerson}">
 			<view>
 				<waterfall 
 					v-for="(item,index) in leftList" 
@@ -33,7 +33,7 @@
 <script>
 	import waterfall from "./waterfall-design-case.vue"
 	export default {
-		props:["leftList", "rightList", "leftHeight", "rightHeight"],
+		props:["leftList", "rightList", "leftHeight", "rightHeight","isPerson"],
 		components:{
 			waterfall
 		},
@@ -75,11 +75,14 @@
 	.decorate{
 		width: 100%;
 	}
+  view .is-person{
+    padding:0;
+  }
 	.waterfall-box {
 		padding: 24rpx 8rpx 24rpx 24rpx;
 		box-sizing: border-box;
 	}
-
+  
 	.h-flex-x {
 		display: flex;
 		flex-direction: row;

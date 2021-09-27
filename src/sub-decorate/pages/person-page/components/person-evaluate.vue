@@ -8,7 +8,8 @@
       </view>
       <view class="item-content">
         <view class="evaluate-list">
-          <image src="" mode=""></image>
+          <image v-for="el of num"  src="../../../static/ic_score_star@2x.png" mode=""></image>
+          <image v-for="el of 5-num"  src="../../../static/ic_blank_star@2x.png" mode=""></image>
         </view>
         <view class="evaluate-text">设计师太有才了，超喜欢这种设计设计设两行字显示喜欢这种设计设计设两行字设计设计设两行字设计设计设两行字设计设计设两行字设计设计设两行字设计的设…</view>
         <view class="image-list">
@@ -26,6 +27,14 @@
 
 <script>
   import '../style/common.scss'
+  export default{
+    props:{},
+    data(){
+      return{
+        num:3
+      }
+    }
+  }
 </script>
 
 <style lang="scss" scoped>

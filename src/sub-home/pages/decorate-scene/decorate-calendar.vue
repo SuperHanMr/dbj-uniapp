@@ -1,16 +1,7 @@
 <template>
 	<view class="calendarWrap">
 		<view class="calendar">
-			<!-- <custom-calendar
-			  :insert="true"
-			  :lunar="false" 
-			  :start-date="'2019-3-2'"
-			  :end-date="'2019-5-20'"
-				:selected="selectedList"
-				:showMonth="false"
-			  @change="change"
-			/> -->
-			<dark-calendar :signeddates="signeddates" @filterByDate="filterByDate"></dark-calendar>
+			<dark-calendar :signeddates="signeddates" @filterByDate="filterByDate" :projectId="projectId"></dark-calendar>
 		</view>
 		<view class="dynamic">
 			<view class="top">
@@ -61,18 +52,13 @@
 		},
 		data() {
 			return {
-				// selectedList:[{date: '2021-08-20', info: '签到'}],
 				signeddates: [],
-				projectId: 0,
+				projectId: 89,
 				dynamics: []
 			};
 		},
 		onLoad(option) {
-			const eventChannel = this.getOpenerEventChannel();
-			eventChannel.on('acceptDataFromOpenerPage',( data )=> {
-				// this.projectId = data
-				this.projectId = 46
-			})  
+			// this.projectId = option.projectId 
 		},
 		mounted(){
 			this.requestSigns()

@@ -1,14 +1,15 @@
 <template>
   <view class="person-case person-content-item">
     <view class="title">Ta的案例</view>
-    <designCase :leftList="leftList" :rightList="rightList" :leftHeight="leftHeight" :rightHeight="rightHeight" ></designCase>
+    <designCase class="design-case" :isPerson='true' :leftList="leftList" :rightList="rightList" :leftHeight="leftHeight" :rightHeight="rightHeight" ></designCase>
   </view>
 </template>
 
 <script>
   import designCase from '@/components/design-case/design-case.vue'
   import {
-    getCaseList
+    getCaseList,
+    getCollection
   } from '@/api/real-case.js'
   import '../style/common.scss'
   export default{
@@ -36,14 +37,71 @@
         },
       }
     },
+    mounted(){
+      this.getList()
+    },
     methods:{
+      // 监听高度变化
+      onHeight(height, tag) {
+      	if (tag == "left") {
+      		this.leftHeight += height;
+      	} else {
+      		this.rightHeight += height;
+      	}
+      },
+      onJump(list, index ,isDecorate) {
+      	// parentType 1 全景图 0  短视频  2 图文
+      	if (list[index].parentType === 1) {
+      		const listUrl = list[index].videoUrl
+      		uni.navigateTo({
+      			url: `./component/panorama/panorama?url=${listUrl}`
+      		})
+      	} else if(isDecorate){
+      		uni.navigateTo({
+      			url: `../../sub-home/pages/decorate-scene/decorate-scene`
+      		})
+      	}
+      },
+      // 组件点击事件
+      onClick(index, tag) {
+      	console.log(index, tag);
+      	// 对应的数据
+      	if (tag == "0") {
+      		this.onJump(this.leftList, index ,false);
+      
+      	} else {
+      		this.onJump(this.rightList, index ,true);
+      	}
+      },
+      // 收藏事件
+      onCollection(index) {
+      	const item = this.leftList[index];
+      	console.log(this.leftList[index],"收藏");
+      	getCollection({
+      		// bizType: 0, // 固定内容
+      		subBizType: item.parentType, // 内容下的子项   视频 VR  图片
+      		relationId: item.id, // 作品ID
+      		authorId: item.zeusId, // 作者ID
+          routeid:5001,
+      	}).then((res) => {
+      		if (res.data?.code == 1) {
+      			if (this.leftList[index].isCollection == false) {
+      				this.leftList[index].collectionCount += 1;
+      			} else {
+      				this.leftList[index].collectionCount -= 1;
+      			}
+      			this.leftList[index].isCollection = !this.leftList[index].isCollection;
+      			console.log(this.leftList[index], 'asdsada')
+      		}
+      	});
+      },
       // 获取数据
       getList() {
       	const params = {
-      		pageIndex: this.pagState.page,
-      		pageSize: this.pagState.rows,
+      		page: this.pagState.page,
+      		rows: this.pagState.rows,
+          zeusId:6873
       	}
-      	if (this.currentVal == 0) {
       		getCaseList(params).then((res) => {
       			if (res && res.list) {
       				this.addList(res.list);
@@ -52,18 +110,7 @@
       				this.pagState.totalRows = res.totalRows;
       			}
       		})
-      	} else {
-      		getDecorateist(params).then((res) => {
-      			if (res && res.list) {
-      				this.addList(res.list);
-      				this.pagState.page = res.page + 1;
-      				this.pagState.totalPage = res.totalPage;
-      				this.pagState.totalRows = res.totalRows;
-      			}
-      		})
-      	}
-      	
-      	
+ 
       },
       addList(res) {
       	// 获取到的数据，请注意数据结构
@@ -148,4 +195,7 @@
 </script>
 
 <style lang="scss" scoped>
+  // ::v-deep .waterfall-box{
+      
+  //   }
 </style>

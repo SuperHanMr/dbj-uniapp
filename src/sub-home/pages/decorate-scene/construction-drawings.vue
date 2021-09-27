@@ -1,10 +1,6 @@
 <template>
 	<view class="constructionWrap">
 		<view class="topTab">
-			<!-- <view :class="navIndex===0?'active':''" @click="checkIndex(0)">全案设计</view>
-			<view :class="navIndex===1?'active':''" @click="checkIndex(1)">单空间设计</view>
-			<view :class="navIndex===2?'active':''" @click="checkIndex(2)">设计图</view>
-			<view :class="navIndex===3?'active':''" @click="checkIndex(3)">施工图</view> -->
 			<view
 				:class="navIndex===index?'active':''"
 				@click="checkIndex(index,item.type)"
@@ -68,10 +64,6 @@
 				</ul>
 			</view>
 		</view>
-		<!-- <view v-if="navIndex===1" class="content">平面图list</view>
-		<view v-if="navIndex===2" class="content">设计图list</view>
-		<view v-if="navIndex===3" class="content">施工图list</view>
-		<view v-if="navIndex===4" class="content">全景图list</view> -->
 	</view>
 </template>
 
@@ -80,7 +72,7 @@
 	export default {
 		data(){
 			return {
-				projectId: 0,
+				projectId: 2,
 				navIndex: 0,
 				serveTypes: [],
 				serverList: [],
@@ -90,10 +82,7 @@
 			}
 		},
 		onLoad(option) {
-			// const eventChannel = this.getOpenerEventChannel();
-			// eventChannel.on('acceptDataFromOpenerPage',( data )=> {
-			// 	this.projectId = data
-			// })  
+				// this.projectId = option.projectId 
 		},
 		mounted(){
 			this.requestPage()
@@ -123,7 +112,7 @@
 					if(data){
 						this.serveTypes = data
 						let params = {
-							projectId: 2,
+							projectId: this.projectId,
 							severType: type || 1
 						}
 						getDrawings(params).then(data => {

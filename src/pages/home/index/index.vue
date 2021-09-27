@@ -32,8 +32,8 @@
 		</view>
 		<!-- banner -->
 		<view class="banner-content">
-			<swiper :autoplay="true" interval="2000" duration="500" :circular="true" @change="swiperChange">
-				<swiper-item v-for="(item,index) in bannerList" :key="index">
+			<swiper :autoplay="swiperAuto" interval="2000" duration="500" :circular="true" @change="swiperChange">
+				<swiper-item v-for="(item,index) in bannerList" :key="item.id">
 					<image class="banner-img" :src="item.resUrl" mode="aspectFit" @click="toWebview(item.jumpUrl)">
 					</image>
 				</swiper-item>
@@ -94,33 +94,26 @@
 			</view>
 		</view>
 
-			<button style="width: 50%;margin-top: 20rpx;" type="default" @click="toNextPage">去封装好的列表页</button>
-		<button style="width: 50%;margin-top: 20rpx;" type="default" @click="toLiveDecorate">去装修现场</button>
-		<button style="width: 50%;margin-top: 20rpx;" type="default" @click="toShop">去商家入驻</button>
-		<button style="width: 50%;margin-top: 20rpx;" type="default" @click="toGoodsApply">去要货申请</button>
-
 		<!-- 直播 -->
 		<view class="flex-row-common" style="margin-top: 42rpx;">
 			<view class="title">
 				免费服务
 			</view>
 			<view class="flex1">
-
 			</view>
 			<view class="sub-title">
 				更多
 			</view>
-
 		</view>
 		<view class="flex-row-common videos">
-			<view v-for="(item,index) in videoTypeList" :style="{color:index==videoType?'#2B2F33':'#999999'}"
+			<view v-for="(item,index) in videoTypeList" :key="item" :style="{color:index==videoType?'#2B2F33':'#999999'}"
 				class="video-title" @click="videoTypeChange(index)">
 				{{item}}
 			</view>
 		</view>
 
 		<view class="player-scroll">
-			<view v-for="(item,index) in liveList" :key="item" class="item" @click="onLiveClick(item)">
+			<view v-for="(item,index) in liveList" :key="index" class="item" @click="onLiveClick(item)">
 				<image class="img" :src="item.mediaType==1?item.roomLiveMediaVO.scaleImg:item.roomVideoMediaVO.scaleImg"
 					mode=""></image>
 				<view v-if="item.mediaType==1" class="top-content">
@@ -208,7 +201,8 @@
 				currentSwiper: 0,
 				goodsList: [],
 				areaId: "",
-				token: ""
+				token: "",
+				swiperAuto:false
 			};
 		},
 		watch: {
@@ -245,7 +239,6 @@
 				(menuButtonInfo.top - systemInfo.statusBarHeight) +
 				menuButtonInfo.height +
 				"px";
-			this.getLoadData();
 		},
 		onShow() {
 			uni.$once("selectedHouse", (item) => {
@@ -254,6 +247,10 @@
 				uni.setStorageSync("currentHouse", JSON.stringify(item));
 			});
 			this.token = getApp().globalData.token;
+			this.swiperAuto=true;
+		},
+		onHide() {
+			this.swiperAuto=false
 		},
 
 		onReachBottom() {
@@ -350,16 +347,6 @@
 			},
 			swiperChange(e) {
 				this.currentSwiper = e.detail.current;
-			},
-			toShop() {
-				uni.navigateTo({
-					url: "/sub-other/pages/merchant-entry/merchant-entry",
-				});
-			},
-			toLiveDecorate() {
-				uni.navigateTo({
-					url: "/sub-home/pages/lives-decorate/lives-decorate",
-				});
 			},
 			toWebview(url) {
 				if (!url) {
@@ -518,11 +505,6 @@
 			},
 			onScroll(e) {
 				this.scrollTop = e.detail.scrollTop;
-			},
-			toNextPage() {
-				uni.navigateTo({
-					url: "/sub-decorate/pages/warehouse-list/warehouse-list",
-				});
 			},
 		},
 	};
