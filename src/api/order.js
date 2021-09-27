@@ -130,7 +130,7 @@ export function getRealCaseList(params) {
 
 // 批量取消关注或者收藏
 export function batchCancellation(params) {
-	return request.delete(`/app/base/interactive/list/del`,{params})
+	return request.delete(`/app/base/interactive/list/del`,{data:params})
 }
 
 
