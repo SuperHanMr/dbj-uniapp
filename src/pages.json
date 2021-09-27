@@ -500,7 +500,15 @@
 						"enablePullDownRefresh": false,
 						"navigationBarBackgroundColor": "#f5f5f5"
 					}
-				}
+				},
+        {
+        	"path": "pages/shops-detail/shops-detail",
+        	"style": {
+        		"navigationBarTitleText": "",
+        		"enablePullDownRefresh": false,
+        		"navigationBarBackgroundColor": "#f5f5f5"
+        	}
+        }
 			]
 		},
 		{
