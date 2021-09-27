@@ -234,7 +234,9 @@
             t.itemList.forEach(it => {
               it.checked = true
               it.isEdit = false
-              this.checkedIds.push(it.id)
+              if(it.inServiceArea) {
+                this.checkedIds.push(it.id)
+              }
             })
           })
         }

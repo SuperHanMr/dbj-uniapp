@@ -2,14 +2,14 @@
   <view class="content">
     <view class="title-wrap">
       <view class="title">
-        <view class="s-4level-name">{{content.categoryName}}</view>
+        <view class="s-4level-name">{{content.categoryName || "后端没有返回categoryName字段"}}</view>
       </view>
     </view>
     <view class="index">
       <view class="item-list">
         <view class="item" v-for="(item,index) in itemList" :key="item.id">
           <view class="img-name-tag-guige flex-r-l">
-            <view v-if="item.isEdit" style="width: 32rpx;height: 32rpx;"></view>
+            <view v-if="item.isEdit || !item.inServiceArea" style="width: 32rpx;height: 32rpx;"></view>
             <check-box v-else :checked="item.checked" @change="(val) => {checkItem(val, item)}"></check-box>
             <view class="flex-1">
               <view class="flex-r-l">
@@ -21,7 +21,7 @@
                       <view class="name">{{item.spuName}}</view>
                     </view>
                     <view class="gui-ge-count">
-                      <view class="gui-ge">{{item.specification}}</view>
+                      <view class="gui-ge">{{item.name}}</view>
                       <view class="count">共{{item.count}}件</view>
                     </view>
                   </view>
@@ -35,7 +35,7 @@
                       <view class="line"></view>
                       <view class="btr" @click="finishEditing(item)">完成编辑</view>
                     </view>
-                    <view class="edit" v-else @click="edit(item)">编辑商品</view>
+                    <view class="edit" v-if="item.inServiceArea && !item.isEdit" @click="edit(item)">编辑商品</view>
                   </view>
                 </view>
               </view>
@@ -55,9 +55,19 @@
                     src="http://dbj.dragonn.top/static/mp/dabanjia/images/decorate/details_pop_add.svg" class="plus">
                   </image>
                 </view>
-                <view class="change-wrap">
+                <view class="change-wrap"
+                  v-if="item.inServiceArea && !isNaN(content.categoryId) && content.categoryName !== '其他' && content.categoryId != ''">
                   <view @click="goMaterialsList(item)">更换商品</view>
                   <image @click="goMaterialsList(item)"
+                    src="http://dbj.dragonn.top/static/mp/dabanjia/images/decorate/change_material.svg"></image>
+                </view>
+              </view>
+              <view class="no-pay-change" v-if="!item.inServiceArea">
+                <view class="no-pay">商品超出配送范围，请更换可配送商品</view>
+                <view class="change"
+                  v-if="!isNaN(content.categoryId) && content.categoryName !== '其他' && content.categoryId != ''">
+                  <view @click="goMaterialsList2(item)">更换商品</view>
+                  <image @click="goMaterialsList2(item)"
                     src="http://dbj.dragonn.top/static/mp/dabanjia/images/decorate/change_material.svg"></image>
                 </view>
               </view>
@@ -103,7 +113,7 @@
       },
       filterProductType(val) {
         let res = ""
-        switch (val) {
+        switch (Number(val)) {
           case 1:
             res = "物品"
             break;
@@ -162,6 +172,16 @@
           url: `/sub-decorate/pages/materials-list/materials-list?id=${item.id}&categoryId=${item.categoryId}`
         })
       },
+      
+      goMaterialsList2(item) {
+        return uni.showToast({
+          title: "不在服务范围的情况还在开发中，敬请期待......",
+          icon: "none"
+        })
+        uni.navigateTo({
+          url: `/sub-decorate/pages/materials-list/materials-list?id=${item.id}&categoryId=${Number(item.categoryId)}`
+        })
+      },
       selectedMaterialCb(materialDetail) {
         this.$nextTick(() => {
           let item = {}
@@ -204,7 +224,6 @@
       },
       checkItem(val, item) {
         item.checked = val
-        // this.itemList
         this.$emit("change", {
           val,
           id: item.id
@@ -411,6 +430,49 @@
       text-align: right;
       color: #00bfb6;
       line-height: 34rpx;
+    }
+  }
+
+  .no-pay-change {
+    margin-top: 24rpx;
+    padding: 10rpx 0;
+    display: flex;
+    justify-content: space-between;
+    flex-direction: row;
+    align-items: center;
+  }
+
+  .no-pay {
+    height: 34rpx;
+    font-size: 24rpx;
+    font-family: PingFangSC, PingFangSC-Regular;
+    font-weight: 400;
+    text-align: left;
+    color: #999999;
+    line-height: 34rpx;
+    transform: translateX(24rpx);
+  }
+
+  .change {
+    display: flex;
+    justify-content: flex-start;
+    flex-direction: row;
+    align-items: center;
+
+    view {
+      height: 32rpx;
+      padding-right: 4rpx;
+      font-size: 22rpx;
+      font-family: PingFangSC, PingFangSC-Medium;
+      font-weight: 700;
+      text-align: right;
+      color: #00bfb6;
+      line-height: 32rpx;
+    }
+
+    image {
+      width: 20rpx;
+      height: 20rpx;
     }
   }
 
