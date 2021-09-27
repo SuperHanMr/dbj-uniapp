@@ -27,13 +27,13 @@
       }
     },
     onLoad(e) {
+      if(e.isDisabled === '0') {
+        this.isDisabled = false
+      }
       if(e.goodId){
         this.goodId = e.goodId
       }else if(uni.getStorageSync('goodId')) { // 商城列表和装修模块的商品id
         this.goodId = uni.getStorageSync('goodId')
-      }else if( uni.getStorageSync('fromShopCart')) { // 购物车数据
-         this.goodId = uni.getStorageSync('fromShopCart').skuId
-         this.isDisabled = uni.getStorageSync('fromShopCart').isDisabled
       }
     },
     onShow() {

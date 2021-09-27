@@ -282,6 +282,7 @@ export default {
   position: relative;
   .backgroundStyle {
     position: absolute;
+		filter: blur(4rpx);
     width: 750rpx;
     z-index: -1;
     height: 524rpx;

@@ -1,22 +1,22 @@
 <template>
   <view class="person-service person-content-item">
-    <view class="title">
+<!--    <view class="title">
       Ta的服务
-    </view>
+    </view> -->
     <view class="service-list">
-      <view class="service-item">
-        <image src="" mode=""></image>
+      <view class="service-item" v-for="item of serviceData">
+        <image :src="item.imageUrl" mode=""></image>
         <view class="item-msg">
           <view class="item-msg-left">
-            <view class="item-msg-title">小户型爆改咨询服务询刀服发顺丰</view>
-            <view class="pay-num">13人付款</view>
+            <view class="item-msg-title">{{item.name}}</view>
+            <view class="pay-num">{{item.sales}}人付款</view>
             <view class="item-msg-tip">
               <view class="price">¥
-                <text class="integer">199</text>
-                <text class="decimals">.00</text>
-                <text class="unit">/小时</text>
+                <text class="integer">{{convertedPrice}}</text>
+                <text class="decimals">.{{convertedPrice.split('.')[1]}}</text>
+                <text class="unit">/{{item.unitName}}</text>
               </view>
-              <view class="service-tag">中级服务</view>
+              <view class="service-tag" v-if="item.showMiddleServerTitle">中级服务</view>
             </view>
           </view>
           <view class="btn">
@@ -31,6 +31,11 @@
 
 <script>
   import '../style/common.scss'
+  export default{
+    props:{
+      serviceData:[]
+    }
+  }
 </script>
 <style lang="scss" scoped>
   .person-service{

@@ -57,7 +57,9 @@ export default {
         return false;
       }
       return this.payloadData.type === "img_message" ||
-        this.payloadData.type === "video_message";
+        this.payloadData.type === "video_message" ||
+        this.payloadData.type === "file_message"
+        ;
     },
     bodyStyle() {
       if (!this.payloadData) {

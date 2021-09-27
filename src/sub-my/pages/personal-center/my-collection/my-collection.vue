@@ -2,62 +2,68 @@
 	<view class="fill">
 		<view class="tab-container">
 			<view class="top-tab">
-				<view v-for="(item,index) in tabList" :key="index" class="item" :class="{selected:index==currentIndex}"
+				<view v-for="(itemTab,index) in tabList" :key="index" class="item" :class="{selected:index==currentIndex}"
 					@click="currentIndex=index">
 					<view class="tab-text">
-						{{item.title}}
+						{{itemTab.title}}
 					</view>
 
 					<view class="bottom-icon" />
 				</view>
 			</view>
-			<view class="edit-btn" v-if="currentList.length > 1">
-				<text v-if="ShowMgrBrn" @click="handleMgr">管理</text>
+			<view class="edit-btn" v-if="currentList.length >= 1">
+				<text v-if="showMgrBtn" @click="handleMgr">管理</text>
 				<text v-else @click="handleDone">完成</text>
 			</view>
 		</view>
+		
+		<view class="line" />
 
-		<swiper class="swiper" :current="currentIndex" :duration="200" @change="swiperChange"
-			:style="{background:tabList.length > 0 ?'none':'#fff'}">
-			<swiper-item>
-				<scroll-view class="scroll-view" scroll-y="true" refresher-background="#FFF" refresher-enabled="true"
+		<swiper class="swiper" :current="currentIndex" :duration="200" 
+			@change="swiperChange"
+			:style="{paddingBottom:systemBottom +'rpx',backgroundColor:listLength > 0 ?'none':'#ffffff'}"
+		>
+				
+			<swiper-item :class="{emptyContainer:productList.length < 1 ? true : false}">
+				<scroll-view v-if="productList.length > 0" class="scroll-view" scroll-y="true" refresher-background="#FFF" refresher-enabled="true"
 					:refresher-triggered="triggered" @refresherrefresh="onRefresh" @scrolltolower="onLoadMore">
-					<waterfall :key="item.fallKey" :list="productList" @selectedItem="onSelectedItem"
-						:showCheckIcon="!ShowMgrBrn"></waterfall>
+					<waterfall :key="itemTab.fallKey" :list="productList" @selectedItem="onSelectedItem" :allCheck="allCheck"
+						:showCheckIcon="!showMgrBtn" :isAllCheck="isAllCheck"></waterfall>
 				</scroll-view>
-			</swiper-item>
-			<swiper-item>
-				<scroll-view class="scroll-view" scroll-y="true" refresher-background="#FFF" refresher-enabled="true"
-					:refresher-triggered="triggered" @refresherrefresh="onRefresh" @scrolltolower="onLoadMore">
-					<waterfall :key="item.fallKey" :list="caseList" @selectedItem="onSelectedItem"
-						:showCheckIcon="!ShowMgrBrn"></waterfall>
-				</scroll-view>
-			</swiper-item>
-			<!-- 	<swiper-item v-else class="empty-container">
-				<view class="line" />
-				<view class="empty-body">
+				<view v-else class="empty-body">
 					<image src="../../../../static/order/blank_house@2x.png" mode=""></image>
-					<text v-if="tabindex==0">您还没有收藏商品</text>
-					<text v-if="tabindex==1">您还没有收藏案例</text>
+					<text>您还没有收藏商品</text>
 				</view>
-			</swiper-item> -->
-
+			</swiper-item>
+			
+			<swiper-item :class="{emptyContainer:caseList.length < 1 ? true : false}">
+				<scroll-view v-if="caseList.length >0" class="scroll-view" scroll-y="true" refresher-background="#FFF" refresher-enabled="true"
+					:refresher-triggered="triggered" @refresherrefresh="onRefresh" @scrolltolower="onLoadMore">
+					<waterfall :key="itemTab.fallKey" :list="caseList" @selectedItem="onSelectedItem" :allCheck="allCheck"
+						:showCheckIcon="!showMgrBtn" :isAllCheck='isAllCheck'></waterfall>
+				</scroll-view>
+				<view v-else class="empty-body">
+					<image src="../../../../static/order/blank_house@2x.png" mode=""></image>
+					<text>您还没有收藏案例</text>
+				</view>
+			</swiper-item>
 		</swiper>
 
 		<!-- 底部按钮 -->
-		<view class="footer" v-if=" currentList.length > 1 && !ShowMgrBrn" :style="{paddingBottom:systemBottom}">
+		<view class="footer" v-if=" currentList.length >= 1 && showCalCelBtn" :style="{paddingBottom:systemBottom + 24 + 'rpx'}">
 			<view class="left">
-				<!-- <image  src="../../../../static/order/images/product_checked.png" mode=""></image> -->
-				<image src="../../../../static/order/images/product_unChecked.png" mode="" />
+				<image v-if="allCheck"  src="../../../../static/order/images/product_checked.png"  @click="handleAllCheck" mode=""></image>
+				<view class="checkStyle" v-else @click="handleAllCheck"/>
+				<!-- <image v-else src="../../../../static/order/images/product_unChecked.png" mode="" @click="handleAllCheck"/> -->
 				<text>全选</text>
 			</view>
 			<view class="button" @click="handleCancel">
 				取消收藏
 			</view>
-		</view>-
+		</view>
 
 		<!-- 取消收藏弹框 -->
-		<popup-dialog ref="popup" :title="title" @confirm="confirmCancelCollection"></popup-dialog>
+		<popup-dialog ref="popup" :title="title" @close="closePopDialog" @confirm="confirmCancelCollection"></popup-dialog>
 
 
 
@@ -67,31 +73,41 @@
 <script>
 	import {
 		getGoodsList,
-		getRealCaseList
+		getRealCaseList,
+		batchCancellation
 	} from "../../../../api/order.js"
 	export default {
 		data() {
 			return {
-				tabList: [{
-					title: "商品",
-					scrollKey: 's1',
-					fallKey: 'f1'
-				}, {
-					title: "案例",
-					scrollKey: 's2',
-					fallKey: 'f2'
-				}],
+				tabList: [
+					{
+						title: "商品",
+						scrollKey: 's1',
+						fallKey: 'f1'
+					}, 
+					{
+						title: "案例",
+						scrollKey: 's2',
+						fallKey: 'f2'
+					},
+				],
 				triggered: false, //控制刷新显示字段
 
 				currentIndex: 0,
 
 				productList: [], //商品列表
 				caseList: [], //案例列表
+				checkedItemIds:[],//选中的要取消收藏的item的id
+				listLength:"",//返回数据的个数
+				equipmentId:"",
 				page: [1, 1],
 				totalPage: [1, 1],
 
 				loading: false,
-				ShowMgrBrn: true,
+				showMgrBtn: true,
+				showCalCelBtn:false,
+				allCheck:false,
+				isAllCheck:false,
 				title: "",
 
 				systemBottom: "",
@@ -100,26 +116,28 @@
 
 		mounted(e) {
 			const menuButtonInfo = uni.getMenuButtonBoundingClientRect();
-			this.systemBottom = menuButtonInfo.bottom + 32 + "rpx";
+			this.systemBottom = menuButtonInfo.bottom;
 		},
-
-
-
 		onShow() {
+			uni.getSystemInfo({
+				success:res => {
+					this.equipmentId = res.deviceId
+				}
+			})
 			this.getProductList()
+		},
+		watch:{
+			allCheck(){}
 		},
 
 		computed: {
 			// 通过判断currentIndex 返回不同的数组
 			currentList() {
 				if (this.currentIndex == 0) {
-					console.log("000000")
-					this.title = "确定要将选中商品取消收藏吗？"
+					this.listLength = this.productList.length
 					return this.productList;
 				} else {
-					console.log("1111111111")
-					this.title = "确定要将选中案例取消收藏吗？"
-					console.log("案例列表数据=", this.caseList)
+					this.listLength = this.caseList.length
 					return this.caseList;
 				}
 			},
@@ -128,118 +146,198 @@
 			swiperChange(e) {
 				let index = e.target.current || e.detail.current;
 				this.currentIndex = index;
+				this.showMgrBtn = true
+				this.showCalCelBtn =false
+				this.allCheck=false
 				//index对应的list数据是否为空 为空的话请求数据 有数据的话就不请求了
-				if (this.currentIndex == 0) {
-					if (this.productList.length < 1) this.getProductList()
-				} else {
-					if (this.caseList.length < 1) this.getCaseList();
+				switch(this.currentIndex){
+					case 0: 
+						if (this.productList.length < 1) this.getProductList()
+						break
+					case 1: 
+						if (this.caseList.length < 1) this.getCaseList();
+						break
 				}
 			},
 
-			async getCaseList() {
+			// 获取商品列表
+			getProductList() {
 				this.loading = true;
 				let params = {
-					routeId: 5001, //【收藏真实案例路由id，记录用户收藏的真实案例】
-					type: 1, //(1,"收藏")
-					bizType: 7, //【真实案例】REAL_CASE(7,"真实案例")
-				}
-				getRealCaseList(params).then(data => {
-					this.caseList = this.caseList.concat(data)
-					console.log("this.caseList-0=", this.caseList)
-					this.caseList = this.caseList.map(item => {
-						item.isChecked = false
-						return item
-					})
-					console.log("this.caseList-1=", this.caseList)
-					this.loading = false;
-				})
-
-
-				// let caseItem =await getRealCaseList({
-				// 	routeId:5001,//【收藏真实案例路由id，记录用户收藏的真实案例】
-				// 	type:1,//(1,"收藏")
-				// 	bizType:7,//【真实案例】REAL_CASE(7,"真实案例")
-				// })
-				//   this.caseList = this.caseList.concat(caseItem);
-				// this.caseList = this.caseList.map(item=>{
-				// 	item.isChecked = false
-				// 	return item
-				// })
-				//    this.loading = false;
-			},
-
-			async getProductList() {
-				this.loading = true;
-				let productItem = await getGoodsList({
 					routeId: 5002, //【收藏商品路由id：记录用户收藏的商品】
 					type: 1, //(1,"收藏")
 					bizType: 1, //(1,"商品")
+				}
+				getGoodsList(params).then(data=>{
+					this.productList = this.productList.concat(data);
+					this.productList = this.handleList(this.productList,false,"product")
+					console.log("this.productList=", this.productList)
+					this.loading = false;
 				})
-				// this.totalPage = productItem.totalPage;
-				this.productList = this.productList.concat(productItem);
-				this.productList = this.productList.map(item => {
-					item.isChecked = false
-					return item
+			},
+			// 获取案例列表
+			getCaseList() {
+				this.loading = true;
+				let params = {
+					page:1,
+					// routeId: 5001, //【收藏真实案例路由id，记录用户收藏的真实案例】
+					// type: 1, //(1,"收藏")
+					// bizType: 7, //【真实案例】REAL_CASE(7,"真实案例")
+				}
+				getRealCaseList(params).then(data => {
+					this.caseList = this.caseList.concat(data.list)
+					this.caseList = this.handleList(this.caseList,false,"case")
+					this.page[1] = data.page
+					this.totalPage[1]= data.totalPage
+					console.log("this.caseList=", this.caseList)
+					this.loading = false;
 				})
-				console.log("this.productList=", this.productList)
-				this.loading = false;
 			},
-
-
-
-			handleCancel() {
-				this.$refs.popup.open()
-			},
+				
 			//管理
 			handleMgr() {
-				this.ShowMgrBrn = !this.ShowMgrBrn
-				this.productList = this.productList.map(item => {
-					item.isChecked = false
-					return item
-				})
-				console.log("点击管理后的列表=", this.productList)
+				this.showMgrBtn = !this.showMgrBtn
+				this.showCalCelBtn = true
 			},
 			//完成
 			handleDone() {
-				this.ShowMgrBrn = !this.ShowMgrBrn
-				this.productList = this.productList.map(item => {
-					item.isChecked = false
+				this.showMgrBtn = !this.showMgrBtn
+				this.showCalCelBtn = false
+				this.allCheck = false
+				if(this.currentIndex== 0 ){
+					this.productList = this.handleList(this.productList,false)
+					this.checkedItemIds =[]
+					console.log("点击完成后的列表=", this.productList)
+				}else{
+					this.caseList = this.handleList(this.caseList,false)
+					this.checkedItemIds =[]
+					console.log("点击完成后的列表=", this.caseList)
+				}
+			},
+			
+			// 点击单个item的操作获取选中的数据
+			onSelectedItem(data) {
+				if(this.showMgrBtn){
+					console.log("data=",data)
+					if(this.currentIndex ==0){
+						console.log("进入商品详情页，点击收藏")
+					}else{
+						console.log("进入案例详情页，点击收藏")
+					}
+				}else{
+					this.checkedItemIds = data.filter(item => item.isChecked == true).map((item2) => {
+						return {relationId:item2.id,authorId:item2.authorId,subBizType:item2.subBizType}
+					})
+					this.productList = data
+					if(this.checkedItemIds.length == this.productList.length){
+						this.allCheck=true;
+						this.isAllCheck=true;
+					}else{
+						this.allCheck=false
+					}
+					console.log("选中的产品=", this.checkedItemIds,"点击了收藏后的list", data)
+				}
+			},
+			
+			// 全选
+			handleAllCheck(){
+				this.allCheck=!this.allCheck
+				switch(this.currentIndex){
+					case 0:
+						this.allCheckFunction(this.productList)
+						break;
+					case 1:
+						this.allCheckFunction(this.caseList)
+						break;
+				}
+			},
+			allCheckFunction(list){
+				if(this.allCheck){
+					list =this.handleList(list,true)
+					this.checkedItemIds = list.map(item=>{
+						return {relationId:item.id,authorId:item.authorId,subBizType:item.subBizType}
+					})
+					console.log("列表list=",list)
+					console.log("this.checkedItemIds=",this.checkedItemIds)
+				}else{
+					list =this.handleList(list,false)
+					this.checkedItemIds =[]
+					console.log("列表list=",list)
+					console.log("this.checkedItemIds=",this.checkedItemIds)
+				}
+			},
+			handleList(list,isChecked,type){
+				return list.map(item=>{
+					item.isChecked = isChecked
+					if(type){
+						item.icon =type
+					}
 					return item
 				})
-				console.log("点击完成后的列表=", this.productList)
 			},
-
-			// 点击单个item的操作
-			onSelectedItem(data) {
-				const list = data.filter(item => item.isChecked == true).map((item2) => {
-					return {
-						id: item2.id,
-						isChecked: item2.isChecked
-					}
-				})
-				this.productList = data
-				console.log("选中的产品=", list)
-				console.log("点击了收藏后的list", data)
+			
+			// 点击取消收藏按钮
+			handleCancel() {
+				this.currentIndex == 0 
+				? this.title = "确定要将选中商品取消收藏吗?" 
+				: this.title = "确定要将选中案例取消收藏吗?"
+				this.$refs.popup.open()
 			},
-
+			closePopDialog(){
+				this.$refs.popup.close()
+			},
+			//取消收藏
 			confirmCancelCollection() {
 				console.log("确认取消")
+				let params={
+					equipmentId:this.equipmentId,
+					list:this.checkedItemIds
+				}
+				if(this.currentIndex ==0){
+					params.routeId = 5002
+				}else{
+					params.routeId = 5001
+				}
+				console.log("取消收藏接口的params=",params)
+				batchCancellation(params).then(data=>{
+					console.log("取消收藏")
+					this.$refs.popup.close()
+					this.showMgrBtn = true
+					this.showCalCelBtn = false
+					this.allCheck = false
+					uni.showToast({
+						title:"取消收藏成功！",
+						icon:"none",
+						duration: 1000
+					});
+					setTimeout(()=>{
+						if(this.currentIndex == 0){
+							this.getProductList()
+						}else{
+							this.getCaseList()
+						}
+					},1000)
+				}).catch(()=>{})
 			},
-
-
-
-
-
+			
+			
 			onLoadMore() {
 				// if (this.loading || this.page >= this.totalPage) {
 				//   return;
 				// }
 				// this.page++;
-				if (this.loading) return
-				if (this.currentList.length < 1) {
-					this.currentIndex == 0 ? this.getProductList() : this.getCaseList();
+				if(this.currentIndex==0){
+					if(this.loading) return
+					this.currentList.length < 1?this.getProductList():""
+				}else{
+					if(this.loading || this.page[1] >=this.totalPage[1])return 
+					this.page[1]++
+					this.getCaseList()
 				}
-
+				// if (this.loading) return
+				// if (this.currentList.length < 1) {
+				// 	this.currentIndex == 0 ? this.getProductList() : this.getCaseList();
+				// }
 			},
 			onRefresh(e) {
 				this.triggered = true;
@@ -331,12 +429,12 @@
 		height: 100%;
 	}
 
-	.empty-container {
-		.line {
-			width: 100%;
-			height: 2rpx;
-			background: #f4f4f4;
-		}
+	.line {
+		width: 100%;
+		height: 2rpx;
+		background: #f4f4f4;
+	}
+	.emptyContainer {
 
 		.empty-body {
 			padding: 180rpx 240rpx 0 240rpx;
@@ -374,7 +472,14 @@
 			display: flex;
 			flex-flow: row nowrap;
 			align-items: center;
-
+			.checkStyle{
+				width: 36rpx;
+				height: 36rpx;
+				box-sizing: border-box;
+				border: 4rpx solid #cccccc;
+				border-radius: 50%;
+				margin-right: 10rpx;
+			}
 			image {
 				width: 40rpx;
 				height: 40rpx;

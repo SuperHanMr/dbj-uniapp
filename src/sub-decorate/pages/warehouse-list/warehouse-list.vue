@@ -107,11 +107,11 @@
 				}
 				if (this.currentIndex != 3) {
 					uni.navigateTo({
-						url: `/sub-decorate/pages/warehouse-refund-detail/warehouse-refund-detail?type=${this.currentIndex}&id=${id}&projectId=${this.projectId}`,
+						url: `/sub-decorate/pages/warehouse-refund-detail/warehouse-refund-detail?type=${this.currentIndex}&id=${id}&projectId=${this.projectId}&stockStatus=${e.stockStatus}`,
 					});
 				} else {
 					uni.navigateTo({
-						url: `/sub-decorate/pages/warehouse-refund-state/warehouse-refund-state?type=${this.currentIndex}&id=${id}&projectId=${this.projectId}`,
+						url: `/sub-decorate/pages/warehouse-refund-state/warehouse-refund-state?type=${this.currentIndex}&id=${id}&projectId=${this.projectId}&stockStatus=${e.stockStatus}`,
 					});
 				}
 			},

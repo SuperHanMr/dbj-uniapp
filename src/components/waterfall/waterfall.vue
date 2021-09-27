@@ -1,13 +1,27 @@
 <template>
 	<view class="waterfall">
 		<view class="left">
-			<block v-for="(item, index) in leftList" :key="item">
-				<waterfall-item :item="item" @detail="toDetail" @load="onImageLoad" :showCheckIcon="showCheckIcon" ></waterfall-item>
+			<block v-for="item1 in leftList" :key="item1.id">
+				<waterfall-item 
+					:item="item1" 
+					:showCheckIcon="showCheckIcon" 
+					:allCheck="allCheck" 
+					:isAllCheck="isAllCheck"
+					@detail="toDetail" 
+					@load="onImageLoad" 
+				/>
 			</block>
 		</view>
-		<view class="right">
-			<block v-for="(item, index) in rightList" :key="item">
-				<waterfall-item :item="item" @detail="toDetail" @load="onImageLoad" :showCheckIcon="showCheckIcon" ></waterfall-item>
+		<view v-if="rightList.length" class="right">
+			<block v-for="item2 in rightList" :key="item2.id">
+				<waterfall-item  
+					:item="item2"
+					:showCheckIcon="showCheckIcon" 
+					:allCheck="allCheck" 
+					:isAllCheck="isAllCheck"
+					@detail="toDetail" 
+					@load="onImageLoad" 
+				 />
 			</block>
 		</view>
 	</view>
@@ -17,6 +31,7 @@
 	import waterfallItem from "./waterfall-item.vue"
 	export default {
 		name: 'water-fall',
+		components:{waterfallItem},
 		props: {
 			list: {
 				type: Array,
@@ -26,17 +41,25 @@
 				type:Boolean,
 				default:false
 			},
-		
+			allCheck:{
+				type:Boolean,
+				default:false
+			},
+			isAllCheck:{
+				type:Boolean,
+				default:false
+			}
 		},
-		components:{waterfallItem},
+		
 		watch: {
 			list(n, o) {
+				console.log('!!!!!!!!!!!!!!!!');
+				console.log(n)
+				console.log(o)
 				let that = this;
 				let ol = o.length;
 				let nl = n.length;
 				if (nl > ol) {
-				console.log('~~~~~~~~~~~~~')
-				console.log(n);
 					if (this.leftHeight > this.rightHeight) {
 						that.rightList.push(that.list[ol]);
 					} else {
@@ -46,14 +69,8 @@
 				}
 			}
 		},
-		// computed:{
-		// 	checkList(){
-		// 		let itemList = this.list.filter(item=>{
-		// 			return item.isChecked == true
-		// 		})
-		// 		return itemList
-		// 	}
-		// },
+
+		
 		data() {
 			return {
 				leftList: [],
@@ -77,9 +94,13 @@
 		
 		methods: {
 			toDetail(data) {
-				let index = this.list.findIndex(item=>item.id == data.id)
-				this.list[index].isChecked = data.isChecked
-				this.$emit('selectedItem',this.list)
+				if(this.showCheckIcon){
+					let index = this.list.findIndex(item=>item.id == data.id)
+					this.list[index].isChecked = data.isChecked
+					this.$emit('selectedItem',this.list)
+				}else{
+					this.$emit('selectedItem',data)
+				}
 			},
 			
 			
@@ -94,7 +115,9 @@
 				if (that.itemIndex === 0) {
 					that.leftHeight += imgH; //第一张图片高度加到左边
 					that.itemIndex++;
-					that.rightList.push(that.list[that.itemIndex]); //第二张图片先入栈
+					if(!that.list[that.itemIndex]) return 
+					that.rightList.push(that.list[that.itemIndex]); //如果有，那么第二张图片先入栈
+					
 				} else {
 					that.itemIndex++;
 					//再加高度
@@ -105,6 +128,7 @@
 					}
 					if (that.itemIndex < that.list.length) {
 						//下一张图片入栈
+						if(!that.list[that.itemIndex]) return 
 						if (that.leftHeight > that.rightHeight) {
 							that.rightList.push(that.list[that.itemIndex]);
 						} else {

@@ -6,7 +6,7 @@ export function getDecorateist(params) {
   });
 }
 export function getCollection(params) {
-  return request.post(`/app/collection`, params);
+  return request.post(`/pm/app/base/interactive/add`, params);
 }
 export function getCaseList(params) {
   return request.get(`/app/case/v2/list`, {

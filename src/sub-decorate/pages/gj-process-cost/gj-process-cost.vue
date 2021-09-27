@@ -1,24 +1,27 @@
 <template>
   <view class="process-cost">
-    <view class="artificial">
+    <view class="artificial" v-if="obtainType != 2">
       <view class="title">
-        <view>人工费用（{{levels[artificialLevel].label }}）</view>
+        <view>人工费用（{{levels[artificialLevel - 1].label }}）</view>
         <view class="change-level" @click="openPopUp">更换等级</view>
       </view>
       <view class="process-cost-list">
-        <process-cost-artificial :key="index" v-for="(item,index) in dataOrigin.artificial.categoryList" :content="item">
+        <process-cost-artificial :key="index" v-for="(item,index) in dataOrigin.artificial.categoryList"
+          :content="item">
         </process-cost-artificial>
       </view>
+      <no-data v-if="noData" :words="message"></no-data>
     </view>
-    <view class="material-cost" :style="{paddingBottom:containerBottom * 2 + 48 + 88 + 'rpx'}">
+    <view class="material-cost" :style="{paddingBottom:containerBottom * 2 + 48 + 88 + 'rpx'}" v-if="obtainType != 1">
       <view class="title">
         <view>辅材费用</view>
       </view>
       <view class="process-cost-list">
         <process-cost-materials :key="index" v-for="(item,index) in dataOrigin.material.categoryList" :content="item"
-          @change="selectWp">
+          @change="selectWp" @changeMaterial="changeMaterial">
         </process-cost-materials>
       </view>
+      <no-data v-if="noData" :words="message"></no-data>
     </view>
     <view class="payment-wrap" :style="{paddingBottom:systemBottom,height:systemHeight}">
       <payment @gotopay="gotopay" :pieces="pieces" :countPrice="countPrice" :isAllChecked="isAllChecked"></payment>
@@ -34,6 +37,7 @@
   import ProcessCostMaterials from "../../components/process-cost/process-cost-materials.vue"
   import Payment from "../../components/payment/payment.vue"
   import ChangeLevel from "../../components/change-level/change-level.vue"
+  import NoData from "../../components/no-data/no-data.vue"
   import {
     createOrder
   } from "../../../api/order-center.js"
@@ -45,7 +49,8 @@
       ProcessCostArtificial,
       Payment,
       ChangeLevel,
-      ProcessCostMaterials
+      ProcessCostMaterials,
+      NoData
     },
     onLoad(option) {
       const {
@@ -59,6 +64,7 @@
         roleType,
         customerId,
         pushTitle,
+        obtainType,
       } = getApp().globalData.decorateMsg
       this.serveCardId = serveCardId || option.serveCardId
       this.estateId = estateId || option.estateId
@@ -66,6 +72,7 @@
       this.projectId = projectId || option.projectId
       this.customerId = customerId || option.customerId
       this.pushTitle = pushTitle || "工序费购买"
+      this.obtainType = obtainType || option.obtainType
     },
     onShow() {
       this.getDataList()
@@ -77,6 +84,7 @@
       return {
         serveCardId: null,
         serviceType: null,
+        obtainType: null,
         pushTitle: null,
         dataOrigin: {},
         checkedIds: [],
@@ -105,6 +113,8 @@
         containerBottom: null,
         systemBottom: null,
         systemHeight: null,
+        noData: false,
+        message: null
       }
     },
     mounted() {
@@ -115,217 +125,139 @@
     },
     computed: {
       isAllChecked() {
-        // return this.shopping.artificial.length > 0 || this.shopping.material.length > 0
         return this.checkedIds.length > 0
       },
-      // pieces() {
-      //   // return this.shopping.artificial.length + this.shopping.material.length
-      //   return this.checkedIds.length
-      // },
     },
     methods: {
+      changeMaterial(values) {
+        const {
+          categoryType,
+          item
+        } = values
+        this.$nextTick(() => {
+          for (let i = 0; i < this.dataOrigin.material.categoryList.length; i++) {
+            if (this.dataOrigin.material.categoryList[i].categoryType == categoryType) {
+              for (let j = 0; j < this.dataOrigin.material.categoryList[i].itemList.length; j++) {
+                if (this.dataOrigin.material.categoryList[i].itemList[j].id == item.id) {
+                  this.dataOrigin.material.categoryList[i].itemList[j].id = item.id
+                  this.dataOrigin.material.categoryList[i].itemList[j].name = item.name
+                  this.dataOrigin.material.categoryList[i].itemList[j].imgUrl = item.imgUrl
+                  this.dataOrigin.material.categoryList[i].itemList[j].count = item.count
+                  this.dataOrigin.material.categoryList[i].itemList[j].price = item.price
+                  this.dataOrigin.material.categoryList[i].itemList[j].setp = item.setp
+                  this.dataOrigin.material.categoryList[i].itemList[j].isEdit = item.isEdit
+                  this.dataOrigin.material.categoryList[i].itemList[j].checked = item.checked
+                  break
+                }
+              }
+            }
+          }
+        })
+        this.dataOrigin.material.categoryList = JSON.parse(JSON.stringify(this.dataOrigin.material.categoryList))
+        this.computePriceAndShopping()
+      },
       openPopUp() {
         this.$refs.level.open("bottom")
       },
       computePriceAndShopping() {
         // 先清空
         this.shopping = {
-            artificial: [],
-            material: []
-          },
+          artificial: [],
+          material: []
+        }
         this.countPrice = 0
-        
         this.pieces = 0
-        // 先计算人工费用
-        this.dataOrigin.artificial.categoryList.forEach((item, i) => {
-          item.itemList.forEach((it, j) => {
-            this.shopping.artificial.push(it)
-            this.countPrice += it.price * it.count / 100
-            this.pieces += it.count
-          })
-        })
-        // 再计算辅材费用
-        this.dataOrigin.material.categoryList.forEach((item, i) => {
-          item.itemList.forEach((it, j) => {
-            if (this.checkedIds.includes(it.productId)) {
-              this.shopping.material.push(it)
+
+        if (this.obtainType != 2) {
+          // 先计算人工费用
+          this.dataOrigin.artificial.categoryList.forEach((item, i) => {
+            item.itemList.forEach((it, j) => {
+              this.shopping.artificial.push(it)
               this.countPrice += it.price * it.count / 100
               this.pieces += it.count
-            }
+            })
           })
-        })
+        }
+
+        if (this.obtainType != 1) {
+          // 再计算辅材费用
+          this.dataOrigin.material.categoryList.forEach((item, i) => {
+            item.itemList.forEach((it, j) => {
+              if (this.checkedIds.includes(it.id)) {
+                this.shopping.material.push(it)
+                this.countPrice += it.price * it.count / 100
+                this.pieces += it.count
+              }
+            })
+          })
+        }
         // this.countPrice = temp
         console.log(this.shopping, this.countPrice)
         // return temp
       },
       getDataList() {
+        this.noData = false
         sellList({
           projectId: this.projectId,
           type: this.serviceType,
+          obtainType: this.obtainType
         }).then(data => {
           console.log(11111)
-          this.dataOrigin = data
-          this.dataOrigin.artificial.categoryList.forEach(t => {
-            t.itemList.forEach(it => {
-              this.checkedIds.push(it.productId)
-            })
-          })
-          this.dataOrigin.material.categoryList.forEach(t => {
-            t.itemList.forEach(it => {
-              this.checkedIds.push(it.productId)
-            })
-          })
-          this.computePriceAndShopping()
-        }).catch(err => {
-          console.log(22222)
-          this.dataOrigin = {
-            "artificial": {
-              "grade": "等级",
-              "categoryList": [{
-                "categoryName": "服务名称",
-                "categoryType": "分类",
-                "itemList": [{
-                  "id": 11,
-                  "title": "标题",
-                  "productType": "下单参数 type",
-                  "roleType": "下单参数 roleType",
-                  "businessType": "下单参数 businessType",
-                  "categoryType": "分类",
-                  "productId": 1,
-                  "workType": "工种",
-                  "categoryTypeId": "品类类型ID",
-                  "supplierType": "供应商类型",
-                  "storeId": 1,
-                  "imageUrl": "https://ali-image-test.dabanjia.com/image/20210917/14/1631859550720_2452%24a9d3fd1f4134970ae0c4fa7093cad1c8a7865d3e.jpg",
-                  "label": "服务",
-                  "name": "物品名称物品名称名称物品称但是上是多多多",
-                  "price": 1,
-                  "count": 2,
-                  "unit": "件",
-                  "specification": "规格"
-                }, {
-                  "id": 12,
-                  "title": "标题",
-                  "productType": "下单参数 type",
-                  "roleType": "下单参数 roleType",
-                  "businessType": "下单参数 businessType",
-                  "categoryType": "分类",
-                  "productId": 2,
-                  "workType": "工种",
-                  "categoryTypeId": "品类类型ID",
-                  "supplierType": "供应商类型",
-                  "storeId": 1,
-                  "imageUrl": "https://ali-image-test.dabanjia.com/image/20210917/14/1631859550720_2452%24a9d3fd1f4134970ae0c4fa7093cad1c8a7865d3e.jpg",
-                  "label": "服务",
-                  "name": "物品名称物品名称名称物品称但是上是多多多",
-                  "price": 1,
-                  "count": 2,
-                  "unit": "件",
-                  "specification": "规格"
-                }]
-              }]
-            },
-            "material": {
-              "grade": "等级",
-              "categoryList": [{
-                "categoryName": "商品分类（8号螺纹钢筋条）",
-                "categoryType": "分类",
-                "itemList": [{
-                    "id": 22,
-                    "title": "标题",
-                    "productType": "下单参数 type",
-                    "roleType": "下单参数 roleType",
-                    "businessType": "下单参数 businessType",
-                    "categoryType": "分类",
-                    "productId": 3,
-                    "workType": "工种",
-                    "categoryTypeId": "品类类型ID",
-                    "supplierType": "供应商类型",
-                    "storeId": 1,
-                    "imageUrl": "https://ali-image-test.dabanjia.com/image/20210917/14/1631859550720_2452%24a9d3fd1f4134970ae0c4fa7093cad1c8a7865d3e.jpg",
-                    "label": "物品",
-                    "name": "就范德萨范德萨发斯蒂芬的辅导身份水电费水电费水电费方法",
-                    "price": 1,
-                    "count": 3,
-                    "unit": "件",
-                    "specification": "规格"
-                  },
-                  {
-                    "id": 23,
-                    "title": "标题",
-                    "productType": "下单参数 type",
-                    "roleType": "下单参数 roleType",
-                    "businessType": "下单参数 businessType",
-                    "categoryType": "分类",
-                    "productId": 4,
-                    "workType": "工种",
-                    "categoryTypeId": "品类类型ID",
-                    "supplierType": "供应商类型",
-                    "storeId": 1,
-                    "imageUrl": "https://ali-image-test.dabanjia.com/image/20210917/14/1631859550720_2452%24a9d3fd1f4134970ae0c4fa7093cad1c8a7865d3e.jpg",
-                    "label": "物品",
-                    "name": "就范德萨范德萨发斯蒂芬的辅导身份水电费水电费水电费方法",
-                    "price": 1,
-                    "count": 3,
-                    "unit": "件",
-                    "specification": "规格"
-                  }
-                ]
-              }]
-            }
-          }
 
+          this.dataOrigin = data
+          this.initData()
+        }).catch(err => {
+          const {
+            data
+          } = err
+          if (data && data.code !== 1) {
+            this.noData = true
+            this.message = data.message
+          }
+        })
+      },
+      initData() {
+        if (this.obtainType != 2) {
           this.dataOrigin.artificial.categoryList.forEach(t => {
             t.itemList.forEach(it => {
-              this.checkedIds.push(it.productId)
+              this.checkedIds.push(it.id)
             })
           })
+        }
+
+        if (this.obtainType != 1) {
           this.dataOrigin.material.categoryList.forEach(t => {
             t.itemList.forEach(it => {
-              this.checkedIds.push(it.productId)
+              it.checked = true
+              it.isEdit = false
+              this.checkedIds.push(it.id)
             })
           })
-          this.computePriceAndShopping()
-        })
+        }
+
+        this.computePriceAndShopping()
       },
       selectWp(obj) {
         this.$nextTick(function() {
           console.log(obj)
           const {
             val,
-            productId
-            // productIds
+            id
           } = obj
-          // console.log("productIds", productIds)
           let arr = this.checkedIds
           if (val) {
-            // for (let i = 0; i < productIds.length; i++) {
-            //   if (!this.checkedIds.includes(productIds[i])) {
-            //     this.checkedIds.push(productIds[i])
-            //   }
-            // }
-            if (!arr.includes(productId)) {
-              arr.push(productId)
+            if (!arr.includes(id)) {
+              arr.push(id)
             }
           } else {
-            // let arr = []
-            // for (let i = 0; i < productIds.length; i++) {
-            //   if (!arr.includes(productIds[i])) {
-            //     arr.push(productIds[i])
-            //   }
-            // }
-            // this.checkedIds = arr
-            
-            if (arr.includes(productId)) {
-              const i = arr.indexOf(productId)
+            if (arr.includes(id)) {
+              const i = arr.indexOf(id)
               arr.splice(i, 1)
             }
           }
           this.checkedIds = arr
           this.computePriceAndShopping()
         })
-
-        // console.log(this.checkedIds)
       },
       gotopay() {
         // TODO去结算页面
@@ -344,50 +276,53 @@
           }
           // roleType 7工人，10管家
           let roleType = this.serviceType == 5 ? 10 : 7
-
-          this.shopping.artificial.forEach(it => {
-            // skuInfos.push({
-            //   skuId: it.productId, //"long //商品id",
-            //   storeId: it.storeId, //"long //店铺id",
-            //   buyCount: it.count, //"double //购买数量",
-            //   unit: "件", //"string //单位",
-            //   level: this.artificialLevel, //"int //等级"
-            // })
-            params.details.push({
-              supplierType: it.supplierType,
-              roleType,
-              relationId: it.productId, //"long //实体id",
-              type: 2, //"int //实体类型   1材料  2服务   3专项付款",
-              businessType: it.categoryTypeId, //"int //业务类型",
-              workType: it.workType, //"int //工种类型",
-              level: this.artificialLevel, //"int //等级  0中级  1高级 2特级  3钻石",
-              storeId: it.storeId, //"long //店铺id",
-              storeType: 0, //"int //店铺类型 0普通 1设计师",
-              number: it.count, //"double //购买数量",
-              params: "", //string //与订单无关的参数 如上门时间 doorTime"
+          if (this.obtainType != 2) {
+            this.shopping.artificial.forEach(it => {
+              // skuInfos.push({
+              //   skuId: it.id, //"long //商品id",
+              //   storeId: it.storeId, //"long //店铺id",
+              //   buyCount: it.count, //"double //购买数量",
+              //   unit: "件", //"string //单位",
+              //   level: this.artificialLevel, //"int //等级"
+              // })
+              params.details.push({
+                // supplierType: it.supplierType,
+                roleType,
+                relationId: it.id, //"long //实体id",
+                type: 2, //"int //实体类型   1材料  2服务   3专项付款",
+                businessType: it.categoryTypeId, //"int //业务类型",
+                workType: it.workType, //"int //工种类型",
+                level: this.artificialLevel, //"int //等级  0中级  1高级 2特级  3钻石",
+                storeId: it.storeId, //"long //店铺id",
+                storeType: 0, //"int //店铺类型 0普通 1设计师",
+                number: it.count, //"double //购买数量",
+                params: "", //string //与订单无关的参数 如上门时间 doorTime"
+              })
             })
-          })
-          this.shopping.material.forEach(it => {
-            // skuInfos.push({
-            //   skuId: it.productId, //"long //商品id",
-            //   storeId: it.storeId, //"long //店铺id",
-            //   buyCount: it.count, //"double //购买数量",
-            //   unit: "件", //"string //单位",
-            //   level: 1, //"int //等级"
-            // })
-            params.details.push({
-              supplierType: it.supplierType,
-              relationId: it.productId, //"long //实体id",
-              type: 1, //"int //实体类型   1材料  2服务   3专项付款",
-              businessType: 1, //it.categoryTypeId, //"int //业务类型",辅材的businessType固定为1
-              workType: it.workType, //"int //工种类型",
-              level: 1, //"int //等级  0中级  1高级 2特级  3钻石",
-              storeId: it.storeId, //"long //店铺id",
-              storeType: 0, //"int //店铺类型 0普通 1设计师",
-              number: it.count, //"double //购买数量",
-              params: "", //string //与订单无关的参数 如上门时间 doorTime"
+          }
+          if (this.obtainType != 1) {
+            this.shopping.material.forEach(it => {
+              // skuInfos.push({
+              //   skuId: it.id, //"long //商品id",
+              //   storeId: it.storeId, //"long //店铺id",
+              //   buyCount: it.count, //"double //购买数量",
+              //   unit: "件", //"string //单位",
+              //   level: 1, //"int //等级"
+              // })
+              params.details.push({
+                // supplierType: it.supplierType,
+                relationId: it.id, //"long //实体id",
+                type: 1, //"int //实体类型   1材料  2服务   3专项付款",
+                businessType: 1, //it.categoryTypeId, //"int //业务类型",辅材的businessType固定为1
+                workType: it.workType, //"int //工种类型",
+                level: 1, //"int //等级  0中级  1高级 2特级  3钻石",
+                storeId: it.storeId, //"long //店铺id",
+                storeType: 0, //"int //店铺类型 0普通 1设计师",
+                number: it.count, //"double //购买数量",
+                params: "", //string //与订单无关的参数 如上门时间 doorTime"
+              })
             })
-          })
+          }
           // uni.navigateTo({
           //   url: "/sub-classify/pages/pay-order/index",
           //   success: (res) => {

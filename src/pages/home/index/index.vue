@@ -10,14 +10,17 @@
 		<!-- 		<view :style="{height: navBarHeight}" style="width: 100%;background-color: red;">
 
 		</view> -->
+
+		<!-- //头部 -->
 		<view class="state-bar" :style="{top:navBarHeight}" @click="toCity">
-			<view class="address">
+			<view class="address flex1" @click="toCity">
 				{{citydata}}
 			</view>
-			<view class="flex1">
 
-			</view>
-			<image class="img" src="http://dbj.dragonn.top/static/mp/dabanjia/images/home/online-server.png" mode="">
+			<image @click="toSearch" class="icon-search"
+				src="http://dbj.dragonn.top/static/mp/dabanjia/images/home/search.png" mode=""></image>
+			<image @click="toMessage" class="img"
+				src="http://dbj.dragonn.top/static/mp/dabanjia/images/home/online-server.png" mode="">
 			</image>
 
 		</view>
@@ -27,10 +30,10 @@
 		<!-- 占位 -->
 		<view style="height: 80rpx;">
 		</view>
-
+		<!-- banner -->
 		<view class="banner-content">
-			<swiper :autoplay="true" interval="2000" duration="500" :circular="true" @change="swiperChange">
-				<swiper-item v-for="(item,index) in bannerList" :key="index">
+			<swiper :autoplay="swiperAuto" interval="2000" duration="500" :circular="true" @change="swiperChange">
+				<swiper-item v-for="(item,index) in bannerList" :key="item.id">
 					<image class="banner-img" :src="item.resUrl" mode="aspectFit" @click="toWebview(item.jumpUrl)">
 					</image>
 				</swiper-item>
@@ -41,16 +44,20 @@
 				</view>
 			</view>
 		</view>
-
+		<!-- 金刚区 -->
 		<view class="function-zone">
-			<view class="item" v-for="(item,index) in zoneList" :class="{'bottom-border ':index<zoneList.length-4}"
-				:key="item.id" @click="onZoneClick(item)">
+			<view class="item bottom-border" v-for="(item,index) in zoneList"
+				:class="{'border-top-left ':index==0,'border-top':index<4,'border-top-right':index==3}" :key="item.id"
+				@click="onZoneClick(item)">
 				<image class="icon" :src="item.icon"></image>
 				<view class="name">
 					{{item.name}}
 				</view>
+				<image class="border-img"
+					src="http://dbj.dragonn.top/%20static/mp/dabanjia/images/home/home-zone-border.png" mode=""></image>
 			</view>
 		</view>
+		<!-- 快捷栏目 -->
 		<view class="experience">
 			<view class="title">
 				9.9元买设计报价
@@ -75,7 +82,7 @@
 				</view>
 			</view>
 
-			<view class="item">
+			<view class="item" @click="toRealCase">
 				<view class="title">
 					#真实案例
 				</view>
@@ -87,11 +94,12 @@
 			</view>
 		</view>
 
-		<!-- 	<button style="width: 50%;margin-top: 20rpx;" type="default" @click="toNextPage">去封装好的列表页</button>
+			<button style="width: 50%;margin-top: 20rpx;" type="default" @click="toNextPage">去封装好的列表页</button>
 		<button style="width: 50%;margin-top: 20rpx;" type="default" @click="toLiveDecorate">去装修现场</button>
 		<button style="width: 50%;margin-top: 20rpx;" type="default" @click="toShop">去商家入驻</button>
 		<button style="width: 50%;margin-top: 20rpx;" type="default" @click="toGoodsApply">去要货申请</button>
- -->
+
+		<!-- 直播 -->
 		<view class="flex-row-common" style="margin-top: 42rpx;">
 			<view class="title">
 				免费服务
@@ -105,24 +113,29 @@
 
 		</view>
 		<view class="flex-row-common videos">
-			<view v-for="(item,index) in videoTypeList" :style="{color:index==videoType?'#2B2F33':'#999999'}"
+			<view v-for="(item,index) in videoTypeList" :key="item" :style="{color:index==videoType?'#2B2F33':'#999999'}"
 				class="video-title" @click="videoTypeChange(index)">
 				{{item}}
 			</view>
 		</view>
 
 		<view class="player-scroll">
-			<view v-for="(item,index) in liveList" :key="item" class="item" @click="onLiveClick(item)">
+			<view v-for="(item,index) in liveList" :key="index" class="item" @click="onLiveClick(item)">
 				<image class="img" :src="item.mediaType==1?item.roomLiveMediaVO.scaleImg:item.roomVideoMediaVO.scaleImg"
 					mode=""></image>
 				<view v-if="item.mediaType==1" class="top-content">
 					{{item.roomVideoMediaVO.onLineCount}}人正在观看
 				</view>
+				<image v-if="item.mediaType==2" class="top-content-img"
+					src="http://dbj.dragonn.top/%20%20static/mp/dabanjia/images/home/video_review.png">
+					{{item.roomVideoMediaVO.onLineCount}}人正在观看
+				</image>
 				<view class="name-content">
 					{{item.roomVideoMediaVO.title}}
 				</view>
 			</view>
 		</view>
+		<!-- 推荐 -->
 		<view class="flex-row-common" style="margin-top: 42rpx;">
 			<view class="title">
 				精选推荐
@@ -195,7 +208,8 @@
 				currentSwiper: 0,
 				goodsList: [],
 				areaId: "",
-				token: ""
+				token: "",
+				swiperAuto:false
 			};
 		},
 		watch: {
@@ -209,6 +223,13 @@
 
 		},
 		onLoad() {
+			uni.getSystemInfo({
+				success: e => {
+					console.log('???????/')
+					console.log(e)
+				}
+			})
+			// uni.hideShareMenu();
 			this.getHomeList();
 			this.reloadData();
 			const systemInfo = uni.getSystemInfoSync();
@@ -225,7 +246,6 @@
 				(menuButtonInfo.top - systemInfo.statusBarHeight) +
 				menuButtonInfo.height +
 				"px";
-			this.getLoadData();
 		},
 		onShow() {
 			uni.$once("selectedHouse", (item) => {
@@ -234,6 +254,10 @@
 				uni.setStorageSync("currentHouse", JSON.stringify(item));
 			});
 			this.token = getApp().globalData.token;
+			this.swiperAuto=true;
+		},
+		onHide() {
+			this.swiperAuto=false
 		},
 
 		onReachBottom() {
@@ -241,6 +265,19 @@
 			this.getHomeGoodsList();
 		},
 		methods: {
+			toSearch() {
+				uni.navigateTo({
+					url: '../../../sub-classify/pages/search/index'
+				})
+			},
+			toRealCase() {
+				uni.navigateTo({
+					url: '../../real-case/real-case'
+				})
+			},
+			toMessage() {
+				this.$store.dispatch("openCustomerConversation");
+			},
 			toSelfFitment() {
 				let url = this.ENV.VUE_APP_BASE_H5 + '/app-pages/self-study-decorated/index.html';
 				this.toWebview(url)
@@ -299,6 +336,18 @@
 				this.getQueryLiveList();
 			},
 			onZoneClick(item) {
+				if (item.type == 0) {
+					uni.showModal({
+						title: '敬请期待'
+					})
+				} else if (item.type == 1) {
+					uni.navigateTo({
+						url: item.url
+					})
+				} else if (item.type == 2) {
+					let baseurl = this.ENV.VUE_APP_BASE_H5+'/app-pages/'
+					this.toWebview(baseurl + item.url);
+				}
 				if (item.type == 3) {
 					this.toWebview(item.url);
 				}
@@ -484,6 +533,13 @@
 </script>
 
 <style lang="scss" scoped>
+	.icon-search {
+		width: 48rpx;
+		height: 48rpx;
+		margin-right: 32rpx;
+		margin-left: 40rpx;
+	}
+
 	.bottom-border {
 		border-bottom: 1rpx solid #E7E8E8;
 	}
@@ -642,6 +698,14 @@
 				line-height: 24rpx;
 				font-size: 20rpx;
 			}
+
+			.top-content-img {
+				position: absolute;
+				top: 12rpx;
+				left: 12rpx;
+				height: 28rpx;
+				width: 74rpx;
+			}
 		}
 	}
 
@@ -668,7 +732,6 @@
 	}
 
 	.address {
-		max-width: 400rpx;
 		overflow: hidden;
 		text-overflow: ellipsis;
 		display: -webkit-box;
@@ -766,7 +829,21 @@
 		flex-direction: row;
 		flex-wrap: wrap;
 		justify-content: flex-start;
+
 		border-radius: 16rpx;
+
+		.border-top {
+			// border-top: 1px solid #e7e8e8;
+		}
+
+		.border-top-left {
+			// border-top-left-radius: 16rpx;
+			// border-left: 1px solid #e7e8e8;
+		}
+
+		.border-top-right {
+			// border-top-right-radius: 16rpx;
+		}
 
 		.item {
 			height: 126rpx;
@@ -775,6 +852,15 @@
 			flex-direction: column;
 			justify-content: center;
 			align-items: center;
+			position: relative;
+
+			.border-img {
+				position: absolute;
+				right: -16rpx;
+				top: 0;
+				width: 12rpx;
+				height: 100%;
+			}
 
 			.name {
 				font-size: 24rpx;

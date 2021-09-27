@@ -1,7 +1,7 @@
 <template>
 	<view class="grab">
     <view class="content">
-      <grabHomePage class="home-page"></grabHomePage>
+      <grabHomePage class="home-page" :personData='personData'></grabHomePage>
       <view class="msg-btn">
         <view class="content">
           <view class="icon"></view>
@@ -53,7 +53,7 @@
 		methods:{
       getGrabDetail(){
         getGrabDetail(this.personId).then(res=>{
-          personData = res
+          this.personData = res
         })
       },
 			toReplace(){

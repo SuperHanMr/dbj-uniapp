@@ -127,9 +127,10 @@ export function getResultProblem(params) {
 	return request.get("/pm/app/user/inspectEstate/problem/" + params)
 }
 
-//获取服务人员关联商品
+//获取服务人员挂载商品
 export function getSkuList(params) {
-	return request.get("/product/app/products/relation/related/skus/list",params)
+  const str = objectToUrlString(params)
+	return request.get("/product/app/products/relation/related/skus/list?"+str)
 }
 
 //获取施工交付内容
@@ -234,7 +235,7 @@ export function goodsApply(params) {
 
 // 获取工序费用
 export function sellList(params) {
-	return request.get(`/pm/app/actuary/sell/list/${params.projectId}/${params.type}`)
+	return request.get(`/pm/app/actuary/sell/list/${params.projectId}/${params.type}/${params.obtainType}`)
 }
 //c端APP-仓库-待收货-确认收货
 export function confirmGoods(params) {
@@ -274,4 +275,9 @@ export function confirmDesignReport(serveCardId) {
 // 查询装修动态 客户端-轮播图
 export function getCarouselMsg(projectId) {
 	return request.get(`/pm/app/decorate/calendar/getCarouselMsg/${projectId}`)
+}
+
+// 搜索商品列表（这个是真实接口）
+export function productList(data) {
+	return request.post(`/product/app/search/query`, data)
 }

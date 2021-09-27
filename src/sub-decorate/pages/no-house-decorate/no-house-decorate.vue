@@ -54,7 +54,6 @@
   import ChangeLevel from "../../components/change-level/change-level.vue"
   import {
     queryEstates,
-    // getProductsSkusPage,
     getServiceSku
   } from "../../../api/decorate.js"
 
@@ -104,7 +103,6 @@
         provinceId: null, //省id
         cityId: null, //市id
         areaId: null, //区id
-        // pieces: 0
       }
     },
     computed: {
@@ -113,7 +111,6 @@
       },
       pieces() {
         let num = this.design.checked + this.actuary.checked + this.checkHouse.checked;
-        console.log(num)
         return num
       },
       countPrice() {
@@ -228,6 +225,22 @@
       close() {
         this.$refs.level.close()
       },
+      editField(original, source) {
+        // original.appointmentRequired = 可以用原来的吗 //是否需要预约上门时间
+        // original.categoryId =  可以用原来的吗  //品类id
+        // original.categoryTypeId =  可以用原来的吗 //品类类型ID
+        original.deposit =  source.product.sku.deposit
+        original.id =  source.product.spuId
+        original.imageUrl =  source.product.skuImage
+        // original.name =  规格
+        original.price =  source.product.skuPrice
+        original.productType =  source.product.productType
+        // original.quantity =  数量
+        // original.serviceName =  可以用原来的吗
+        // original.serviceType =  可以用原来的吗
+        original.spuName = source.product.spuName
+        original.storeId =  source.product.storeId
+      },
       getServiceSku() {
         let defaultHouse = JSON.parse(uni.getStorageSync("currentHouse"))
         // console.log("defaultHouse", defaultHouse)
@@ -260,9 +273,9 @@
               cardtype: "design",
               checked: true,
               level: 1,
-              insideArea: this.currentHouse.insideArea,
-              ...values
+              insideArea: this.currentHouse.insideArea
             }
+            this.editField(this.design, values)
           } else {
             let designData = data.filter(t => t.serviceType === 1)
             if (designData && designData.length > 0) {
@@ -281,9 +294,9 @@
               title: "验房服务",
               cardtype: "checkHouse",
               checked: true,
-              insideArea: this.currentHouse.insideArea,
-              ...values
+              insideArea: this.currentHouse.insideArea
             }
+            this.editField(this.checkHouse, values)
           } else {
             let checkHouseData = data.filter(t => t.serviceType === 2)
             if (checkHouseData && checkHouseData.length > 0) {
@@ -301,9 +314,9 @@
               title: "精算服务",
               cardtype: "actuary",
               checked: true,
-              insideArea: this.currentHouse.insideArea,
-              ...values
+              insideArea: this.currentHouse.insideArea
             }
+            this.editField(this.currentHouse, values)
           } else {
             let actuaryData = data.filter(t => t.serviceType === 4)
             if (actuaryData && actuaryData.length > 0) {
@@ -322,17 +335,18 @@
 
       selectAnotherHandler(pp) {
         let str = ""
+        let areaId = this.currentHouse.areaId || defaultHouse.areaId
         if (pp === "design") {
           str =
-            `/sub-decorate/pages/service-list/service-list?name=设计服务&serviceType=1&insideArea=${this.currentHouse.insideArea}&id=${this.design.id}&categoryTypeId=${this.design.categoryTypeId}`
+            `/sub-decorate/pages/service-list/service-list?name=设计服务&serviceType=1&areaId=${areaId}&insideArea=${this.currentHouse.insideArea}&id=${this.design.id}&categoryId=${this.design.category4Id}`
         }
         if (pp === "checkHouse") {
           str =
-            `/sub-decorate/pages/service-list/service-list?name=验房服务&serviceType=2&insideArea=${this.currentHouse.insideArea}&id=${this.checkHouse.id}&categoryTypeId=${this.checkHouse.categoryTypeId}`
+            `/sub-decorate/pages/service-list/service-list?name=验房服务&serviceType=2&areaId=${areaId}&insideArea=${this.currentHouse.insideArea}&id=${this.checkHouse.id}&categoryId=${this.checkHouse.category4Id}`
         }
         if (pp === "actuary") {
           str =
-            `/sub-decorate/pages/service-list/service-list?name=精算服务&serviceType=4&insideArea=${this.currentHouse.insideArea}&id=${this.actuary.id}&categoryTypeId=${this.actuary.categoryTypeId}`
+            `/sub-decorate/pages/service-list/service-list?name=精算服务&serviceType=4&areaId=${areaId}&insideArea=${this.currentHouse.insideArea}&id=${this.actuary.id}&categoryId=${this.actuary.category4Id}`
         }
         uni.navigateTo({
           url: str

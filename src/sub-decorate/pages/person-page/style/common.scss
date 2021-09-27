@@ -6,4 +6,18 @@
     color: #111;
     margin-bottom: 32rpx;
   }
+  .click-text{
+    // width: calc(100% - 32rpx);
+    text-align: center;
+    font-size: 26rpx;
+    color: #00BFB6;
+    margin-bottom: 24rpx;
+    image{
+      width: 26rpx;
+      height: 26rpx;
+      margin-left: 10rpx;
+      background-color: #eee;
+      vertical-align: middle;
+    }
+  }
 }
