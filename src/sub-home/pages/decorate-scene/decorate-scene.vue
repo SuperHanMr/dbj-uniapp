@@ -25,11 +25,11 @@
 				<image class="toConstruction" src="../../static/ic_construction_drawings@2x.png"></image>
 				<view>施工图纸</view>
 			</view>
-			<view class="cost">
+			<view class="cost" @click="toCost">
 				<image class="toCost" src="../../static/ic_cost_statistics@2x.png"></image>
 				<view>花销统计</view>
 			</view>
-			<view class="decorate" @click="toDecorate">
+			<view class="decorate" @click="toDecorateCalendar">
 				<image class="toDecorate" src="../../static/ic_decorate_calendar@2x.png"></image>
 				<view>装修日历</view>
 			</view>
@@ -102,8 +102,8 @@
 							<view class="actionType">{{item.recordName}}</view>
 							<view class="right">
 								<view class="like">
-									<image v-if="!item.selfLike" @click="likeC(index,true)" src="../../static/ic_like@2x.png"></image>
-									<image v-else @click="likeC(index)" src="../../static/ic_liked@2x.png"></image>
+									<image v-if="!item.selfLike" @click="likeC(item.recordType,index,true)" src="../../static/ic_like@2x.png"></image>
+									<image v-else @click="likeC(item.recordType,index)" src="../../static/ic_liked@2x.png"></image>
 									<view class="text">{{item.likeCount}}</view>
 								</view>
 								<view class="comment">
@@ -118,11 +118,11 @@
 		</view>
 		<view class="bottomBox"></view>
 		<view class="footer">
-			<view class="consult">
+			<view class="consult" @click="toInlineService">
 				<image src="../../static/consult@2x.png" mode=""></image>
 				<view>咨询客服</view>
 			</view>
-			<view class="userWant">
+			<view class="userWant" @click="toDecorate">
 				<image src="../../static/decorate@2x.png" mode=""></image>
 				<view>我要装修</view>
 			</view>
@@ -171,7 +171,7 @@
 								<view class="text">{{item.content}}</view>
 							</view>
 						</view>
-						<view class="reply" @click="replyItemC(replyItem.toNickname,replyItem.commentId,index)" v-for="replyItem in item.secondComments" :key="replyItem.commentId">
+						<view class="reply" @click="replyItemC(replyItem.nickname,replyItem.commentId,index)" v-for="replyItem in item.secondComments" :key="replyItem.commentId">
 							<image class="avatar" :src="replyItem.avatar"></image>
 							<view class="replyInfo">
 								<view class="info">
@@ -179,7 +179,9 @@
 									<view class="role">{{replyItem.labelName}}</view>
 									<view class="date">{{replyItem.time}}</view>
 								</view>
-								<view class="text">{{replyItem.content}}</view>
+								<view class="text">回复
+									<text>{{replyItem.toNickname}}</text>
+								{{replyItem.content}}</view>
 							</view>
 						</view>
 						<view class="replyFooter"  v-if="item.secondCount>=1">
@@ -246,15 +248,18 @@
 				inputValue: "",
 				isExpanded: false,
 				isReply: false,
-				houseStructure: 0
+				houseStructure: 0,
+				projectId: 0,
+				userId: 0
 			}
 		},
+		onLoad(option) {
+			this.projectId = option.projectId
+			this.userId = uni.getStorageSync("userId")
+		},
 		created(){
-			// this.userId = uni.getStorageSync("userId")
-			this.userId = 6388
 			this.requestDecorateSteps()
 			this.requestDynamic()
-			
 		},
 		methods:{
 			inputFocus(){
@@ -297,7 +302,7 @@
 				this.isExpanded = false
 				this.comments[index].secondComments.splice(2)
 			},
-			likeC(index,isAdd){
+			likeC(recordType,index,isAdd){
 				let deviceId = 0
 				uni.getSystemInfo({
 					success:res => {
@@ -312,7 +317,7 @@
 					userId: this.userId,
 					type: 0,
 					bizType: 6,
-					subBizType: this.projectInfo.estateCityId,
+					subBizType: recordType,
 				}
 				setAttentions(params).then( data => {
 					if(data){
@@ -358,20 +363,21 @@
 						deviceId = res.deviceId
 					}
 				})
-				let obj = {
-					customerId: this.userId,
-					customerName: uni.getStorageSync("userInfo").nickName,
-					customerAvatar: uni.getStorageSync("userInfo").avatarUrl,
-					estateName: this.projectInfo.estateNeighbourhood,
-					estateAddress: this.projectInfo.estateAddress
-				}
+				// let obj = {
+				// 	customerId: this.userId,
+				// 	customerName: uni.getStorageSync("userInfo").nickName,
+				// 	customerAvatar: uni.getStorageSync("userInfo").avatarUrl,
+				// 	estateName: this.projectInfo.estateNeighbourhood,
+				// 	estateAddress: this.projectInfo.estateAddress
+				// }
+				console.log(this.houseStructure,'///')
 				let params = {
 					routeId: 1002,
 					relationId: this.projectInfo.id,
 					authorId: this.projectInfo.estateOwnerId,
 					equipmentId: deviceId,
 					subBizType: this.houseStructure,
-					jsonContent: JSON.stringify(obj)
+					// jsonContent: JSON.stringify(obj)
 				}
 				setAttentions(params).then( data => {
 					if(data){
@@ -395,24 +401,32 @@
 				this.selectedType = type
 			},
 			toDecorate(){
+				console.log('tiaoz')
+				uni.switchTab({
+					url: `/pages/decorate/index/index`
+				})
+			},
+			toInlineService(){
+				this.$store.dispatch("openCustomerConversation")
+			},
+			toDecorateCalendar(){
 				uni.navigateTo({
-					url:"./decorate-calendar",
-					success: (res) => {
-						res.eventChannel.emit('acceptDataFromOpenerPage',this.projectInfo.id)
-					}
+					url: `/sub-home/pages/decorate-scene/decorate-calendar?projectId=${this.projectInfo.id}`
 				})
 			},
 			toVideoSite(){
 				uni.navigateTo({
-					url:"./video-site"
+					url: `/sub-home/pages/lives-decorate/lives-decorate?projectId=${this.projectInfo.id}`
 				})
 			},
 			toConstruction(){
 				uni.navigateTo({
-					url:"/sub-home/pages/decorate-scene/construction-drawings",
-					success:res => {
-						res.eventChannel.emit('acceptDataFromOpenerPage', 2)
-					}
+					url: `/sub-home/pages/decorate-scene/construction-drawings?projectId=${this.projectInfo.id}`
+				})
+			},
+			toCost(){
+				uni.navigateTo({
+				  url:'/sub-decorate/pages/actuary-bill/actuary-bill?projectId='+this.projectInfo.id
 				})
 			},
 			requestSelectOptions(){
@@ -430,7 +444,7 @@
 			getFocus(){
 				let params = {
 					relationId: this.projectInfo.id,
-					subBizType: this.projectInfo.estateCityId,
+					subBizType: this.houseStructure,
 				}
 				getFocusBrowse(params).then(data => {
 					if(data){
@@ -470,6 +484,7 @@
 						this.projectInfo = projectInfo
 						this.processId = nodes[0].processId
 						this.houseStructure = estate.houseStructure
+						console.log(this.houseStructure)
 						this.getFocus()
 						nodes.map((item,index) => {
 							this.nodeTypes.push({
@@ -655,10 +670,11 @@
 		line-height: 40rpx;
 	}
 	.info .userName{
-		/* width: fit-content; */
-		width: 52rpx;
+		width: fit-content;
+		width: 92rpx;
 		height: 36rpx;
 		margin-right: 8rpx;
+		text-overflow: ellipsis;
 		font-size: 26rpx;
 		color: #999999;
 	}
@@ -721,6 +737,9 @@
 		font-size: 26rpx;
 		color: #333333;
 		line-height: 40rpx;
+	}
+	.replyInfo .text text{
+		color: #999999;
 	}
 	.replyFooter{
 		width: 164rpx;

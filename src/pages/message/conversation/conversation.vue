@@ -31,6 +31,13 @@
           <message-item-system :key="msg.ID" :message="msg"></message-item-system>
         </template>
       </view>
+      <view v-else-if="type === CONV_TYPES.INTERACTION" class="message-list-body" style="padding-bottom: 48rpx; background: #fff;">
+        <message-item-interaction
+          v-for="(msg, idx) in currentMessageList"
+          :key="msg.ID" 
+          :message="msg"
+        ></message-item-interaction>
+      </view>
     </scroll-view>
     <message-send-box v-if="type === CONV_TYPES.COMMON || type === CONV_TYPES.CUSTOMER"></message-send-box>
     <view v-if="showVideoPlayer" class="video-player-wrapper">
@@ -46,6 +53,7 @@
   import MessageSendBox from "./message-send-box.vue"
   import MessageItem from "./message-element/message-item.vue"
   import MessageItemSystem from "./message-element/message-item-system.vue"
+  import MessageItemInteraction from "./message-element/message-item-interaction.vue"
   import { mapState } from "vuex";
   import { calendarFormat } from "@/utils/date.js"
   import TIM from 'tim-wx-sdk'
@@ -55,6 +63,7 @@
       MessageSendBox,
       MessageItem,
       MessageItemSystem,
+      MessageItemInteraction,
     },
     data() {
       return {
@@ -136,11 +145,7 @@
       uni.setNavigationBarTitle({
       　　title: options.name
       });
-      if (options.id === "CUSTOMER") {
-        
-      } else {
-        this.$store.dispatch("checkoutConversation", options.id);
-      }
+      this.$store.dispatch("checkoutConversation", options.id);
     },
     onUnload() {
       this.$store.commit("resetConversation");
@@ -264,6 +269,7 @@
     height: 100%;
     overflow: hidden;
     position: relative;
+    border-top: 1px solid #f5f5f5;
   }
   .message-list {
     flex: 1;
