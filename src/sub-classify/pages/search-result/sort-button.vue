@@ -19,7 +19,6 @@
     methods: {
       changeSortState(){      
         this.sortState === 2 ? this.sortState = 0 : this.sortState ++
-        console.log(this.sortState)
       }
     }
   }
