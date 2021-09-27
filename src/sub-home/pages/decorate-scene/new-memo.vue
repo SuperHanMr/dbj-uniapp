@@ -3,7 +3,8 @@
 		<form @submit="formSubmit" @reset="formReset">
 			<textarea class="input" v-model="value" placeholder="请输入备忘录内容" maxlength="3000" required/>
 			<view class="remind" @click="toChooseRemind">
-				<view class="text">提醒谁看</view>
+				<view class="text" :class="{'selected': hasChoose}">提醒谁看</view>
+				<view class="reminder" v-if="reminderList.length" v-for="item in reminderList" :key="item.userId">@{{item.userName}}</view>
 				<image class="icon" src="../../static/ic_filtrate@2x.png"></image>
 			</view>
 			<view class="finish" @click="finishC">完成</view>
@@ -18,7 +19,8 @@
 			return {
 				value: "",
 				projectId: 0,
-				reminderList: []
+				reminderList: [],
+				hasChoose: false
 			}
 		},
 		onLoad(option) {
@@ -26,7 +28,9 @@
 		},
 		onShow() {
 			uni.$once("sendReminders",(reminderList) => {
+				console.log(reminderList)
 				this.reminderList = reminderList
+				this.hasChoose = reminderList.length?true:false
 			})
 		},
 		methods:{
@@ -93,6 +97,13 @@
 		height: 40rpx;
 		color: #333333;
 		font-size: 28rpx;
+	}
+	.remind .text.selected{
+		color: #00C2B8;
+	}
+	.remind .reminder{
+		font-size: 28rpx;
+		color: #333333;
 	}
 	.remind .icon{
 		width: 18rpx;
