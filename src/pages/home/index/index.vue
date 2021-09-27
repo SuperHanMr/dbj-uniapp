@@ -94,23 +94,16 @@
 			</view>
 		</view>
 
-			<button style="width: 50%;margin-top: 20rpx;" type="default" @click="toNextPage">去封装好的列表页</button>
-		<button style="width: 50%;margin-top: 20rpx;" type="default" @click="toLiveDecorate">去装修现场</button>
-		<button style="width: 50%;margin-top: 20rpx;" type="default" @click="toShop">去商家入驻</button>
-		<button style="width: 50%;margin-top: 20rpx;" type="default" @click="toGoodsApply">去要货申请</button>
-
 		<!-- 直播 -->
 		<view class="flex-row-common" style="margin-top: 42rpx;">
 			<view class="title">
 				免费服务
 			</view>
 			<view class="flex1">
-
 			</view>
 			<view class="sub-title">
 				更多
 			</view>
-
 		</view>
 		<view class="flex-row-common videos">
 			<view v-for="(item,index) in videoTypeList" :key="item" :style="{color:index==videoType?'#2B2F33':'#999999'}"
@@ -355,16 +348,6 @@
 			swiperChange(e) {
 				this.currentSwiper = e.detail.current;
 			},
-			toShop() {
-				uni.navigateTo({
-					url: "/sub-other/pages/merchant-entry/merchant-entry",
-				});
-			},
-			toLiveDecorate() {
-				uni.navigateTo({
-					url: "/sub-home/pages/lives-decorate/lives-decorate",
-				});
-			},
 			toWebview(url) {
 				if (!url) {
 					return;
@@ -522,11 +505,6 @@
 			},
 			onScroll(e) {
 				this.scrollTop = e.detail.scrollTop;
-			},
-			toNextPage() {
-				uni.navigateTo({
-					url: "/sub-decorate/pages/warehouse-list/warehouse-list",
-				});
 			},
 		},
 	};

@@ -1,12 +1,12 @@
 <template>
 	<view class="material-content">
 		<slot name="radio"></slot>
-		<image :src="content.imageUrl" @click="goDetail"></image>
+		<image :src="content.product.imageUrl" @click="goDetail"></image>
 		<view @click="goDetail">
-			<view class="subtitle">{{content.fullName}}</view>
+			<view class="subtitle">{{content.product.fullName}}</view>
 			<view class="desc-area">
 				<text>规格</text>
-				<text>1{{content.unitName}}</text>
+				<text>1{{content.product.unitName}}</text>
 			</view>
 			<view class="price">
 				<text class="t1">￥</text><text class="t2">{{content.price * 1 }}</text></text>
@@ -25,7 +25,7 @@
 		},
     methods: {
       goDetail() {
-        uni.setStorageSync('goodId', this.content.id)
+        uni.setStorageSync('goodId', this.content.product.spuId)
         uni.navigateTo({ url: "/sub-classify/pages/goods-detail/goods-detail" })
       }
     }

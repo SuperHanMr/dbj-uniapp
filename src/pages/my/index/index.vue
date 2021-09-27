@@ -1,10 +1,6 @@
 <template>
   <view class="my-container">
-    <custom-navbar
-      opacity="0"
-      :showBack="true"
-    >
-    </custom-navbar>
+    <custom-navbar opacity="0"  :showBack="true" ></custom-navbar>
     <view
       v-if="userInfo && userInfo.avatar"
       class="backgroundStyle"
@@ -12,88 +8,47 @@
     >
       <view class="mask" />
     </view>
-    <view
-      v-else
-      class="backgroundStyle"
-      style="backgroundColor:#cac8c8"
-    >
-    </view>
+    <view v-else  class="backgroundStyle"  style="backgroundColor:#cac8c8"/>
+		
     <view class="my-header">
       <view class="avatar-img">
-
-        <image
-          :src="userInfo.avatar"
-          class="avatar"
-        />
+				<image :src="userInfo.avatar" class="avatar" />
         <view class="user-name">
-          <text
-            class="name"
-            @click="toLogin"
-          >{{userName}} </text>
-
-          <view
-            class="edit-info"
-            @click="handlerPersonalData()"
-          >
-            <image
-              src="../../../static/order/images/mineEdit@2x.png"
-              mode=""
-            ></image>
+          <text class="name"  @click="toLogin" >{{userName}} </text>
+					 <view class="edit-info"  @click="handlerPersonalData()">
+            <image  src="../../../static/order/images/mineEdit@2x.png"  mode=""/>
             <text>编辑个人资料</text>
           </view>
         </view>
       </view>
-      <view
-        class="set-up"
-        @click="handleSetUp"
-      >
-        <image
-          src="../../../static/order/images/setting@2x.png"
-          mode=""
-        ></image>
+      <view  class="set-up" @click="handleSetUp">
+        <image src="../../../static/order/images/setting@2x.png" mode="" />
       </view>
     </view>
 
     <view class="my-order">
       <view class="order-header">
         <view class="order">我的订单</view>
-        <view
-          class="total"
-          @click="handlerViewAll()"
-        >
-          <text>查看全部</text>
-          <image
-            src="../../../static/order/images/arraw_right_@2x.png"
-            mode=""
-          ></image>
+        <view  class="total"  @click="handlerViewAll()">
+          <text>全部订单</text>
+          <image  src="../../../static/order/images/arraw_right_@2x.png"  mode="" />
         </view>
       </view>
       <view class="order-line" />
       <view class="order-body">
-        <view
-          class="item"
-          v-for="item in orderStatusList"
-          :key="item.key"
-          @click="handlerOrder(item)"
-        >
-          <image
-            :src="item.image"
-            mode=""
-          ></image>
-          {{item.value}}
+        <view   class="item"   v-for="(item,index) in orderStatusList"  :key="item.key"
+          @click="handlerOrder(item)">
+					<view class="waitPayIcon" v-if="index == 0" >{{ waitPayOrderNum }}</view>
+          <image :src="item.image" mode="" />
+					 {{item.value}}
         </view>
       </view>
     </view>
 
     <view class="my-tools">
-      <view class="header">
-        更多功能
-      </view>
-
+      <view class="header">  更多功能</view>
       <view class="tool-line" />
-
       <view class="tool-body">
-
         <view
           class="tool-item"
           v-for="item2 in list"
@@ -101,18 +56,11 @@
           @click="handlePersonalItem(item2)"
         >
           <view class="left">
-            <image
-              :src="item2.image"
-              mode=""
-            ></image>
-
-            <text>{{item2.value}}</text>
+            <image :src="item2.image"  mode="" />
+						<text>{{item2.value}}</text>
           </view>
           <view class="right">
-            <image
-              src="../../../static/order/images/arraw_right_@2x.png"
-              mode=""
-            ></image>
+            <image  src="../../../static/order/images/arraw_right_@2x.png"  mode="" />
           </view>
         </view>
       </view>
@@ -122,20 +70,20 @@
     <view @click="handlerToPerson">个人主页</view>
 
   </view>
-
 </template>
 
 <script>
 import { uniBadge } from "@dcloudio/uni-ui";
+import {queryToBePaidOrderNum} from "../../../api/order.js"
 export default {
   components: { uniBadge },
   data() {
     return {
+			waitPayOrderNum:"",
       isLogin: false,
       userName: "用户名称",
       userInfo: {},
-
-      list: [
+			list: [
         {
           key: "1",
           image: "../../../static/order/images/shopping_Cart@2x.png",
@@ -161,8 +109,7 @@ export default {
           url: "../../../sub-my/pages/my-house/my-house?isMy=true",
         },
       ],
-
-      orderStatusList: [
+			orderStatusList: [
         {
           key: "1",
           image: "../../../static/order/images/wait_pay@2x.png",
@@ -171,7 +118,7 @@ export default {
         },
         {
           key: "2",
-          image: "../../../static/order/images/inprogress@2x.png",
+          image: "../../../static/order/images/inprogress_@2x.png",
           value: "进行中",
           url: "../../../sub-my/pages/my-order/my-order?index=2",
         },
@@ -205,9 +152,13 @@ export default {
     } else {
       this.isLogin = true;
       this.userInfo = getApp().globalData.userInfo;
-      console.log("!!!!!!!!!!!!!");
+      console.log("!!!!!!!!!!!!!", this.userInfo);
       this.userName = this.userInfo.name;
     }
+		queryToBePaidOrderNum().then(data=>{
+			this.waitPayOrderNum = data
+		})
+		
   },
 
   methods: {
@@ -282,13 +233,12 @@ export default {
   position: relative;
   .backgroundStyle {
     position: absolute;
-		filter: blur(4rpx);
+		filter: blur(13rpx);
     width: 750rpx;
     z-index: -1;
     height: 524rpx;
     image {
       width: 100%;
-      // height: 100%;
     }
     .mask {
       width: 100%;
@@ -305,20 +255,19 @@ export default {
     flex-flow: row nowrap;
     justify-content: space-between;
     align-items: center;
-    padding: 0 24rpx 32rpx 32rpx;
+    padding: 0 18rpx 0 36rpx;
     .avatar-img {
       display: flex;
       flex-flow: row nowrap;
       align-items: center;
       .avatar {
-        width: 128rpx;
-        height: 128rpx;
+        width: 120rpx;
+        height: 120rpx;
         border-radius: 50%;
-        border: 4rpx solid #ffffff;
-        box-sizing: border-box;
+        border: 2rpx solid #ffffff;
         object-fit: cover;
         opacity: 1;
-        margin-right: 8rpx;
+        margin-right: 24rpx;
       }
     }
     .user-name {
@@ -329,8 +278,7 @@ export default {
         font-weight: 500;
         color: #ffffff;
       }
-
-      .edit-info {
+			.edit-info {
         margin-top: 8rpx;
         display: flex;
         flex-flow: row nowrap;
@@ -349,8 +297,8 @@ export default {
     }
     .set-up {
       image {
-        width: 60rpx;
-        height: 60rpx;
+        width: 72rpx;
+        height: 72rpx;
         object-fit: cover;
       }
     }
@@ -358,7 +306,7 @@ export default {
 
   .my-order {
     height: 300rpx;
-    margin: 64rpx 22rpx 24rpx 24rpx;
+    margin: 68rpx 22rpx 24rpx 24rpx;
     display: flex;
     background-color: #fff;
     flex-flow: column nowrap;
@@ -405,12 +353,28 @@ export default {
         font-size: 22rpx;
         color: #111111;
         font-weight: 400;
+				position: relative;
         image {
           width: 64rpx;
           height: 64rpx;
           object-fit: cover;
           margin-bottom: 12rpx;
         }
+				.waitPayIcon{
+					position: absolute;
+					width: 32rpx;
+					height: 32rpx;
+					line-height: 26rpx;
+					text-align: center;
+					box-sizing: border-box;
+					background: #ff3347;
+					border: 2rpx solid #ffffff;
+					border-radius: 50%;
+					top: 0;
+					right: -8rpx;
+					color: #FFFFFF;
+					font-size: 18rpx;
+				}
       }
       .item:nth-last-child(1) {
         margin-right: 0;

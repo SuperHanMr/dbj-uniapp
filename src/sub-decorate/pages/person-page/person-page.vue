@@ -31,13 +31,13 @@
             </view>
           </view>
           <view class="btn">
-            <view class="recommend">
-              <image></image>
-              优先推荐
+          <view class="recommend" @click="queryAttention(2001)" :class="{'already-recommend':isRecommend}">
+              <image v-if="!isRecommend"></image>
+              {{isRecommend?'已':''}}优先推荐
             </view>
-            <view class="attention">
-              <image></image>
-              关注
+            <view class="attention" @click="queryAttention(1001)" :class="{'already-attention':isAttention}">
+              <image v-if="!isAttention"></image>
+              {{isAttention?'已':''}}关注
             </view>
           </view>
           <view class="person-msg-list">
@@ -80,6 +80,7 @@
       <view class="content">
         <personService :serviceData='serviceData'></personService>
         <personCase ></personCase>
+        <personDynamic></personDynamic>
         <personEvaluate></personEvaluate>
       </view>
     </view>
@@ -91,17 +92,20 @@
   import personService from './components/person-service.vue'
   import personEvaluate from './components/person-evaluate.vue'
   import personCase from './components/person-case.vue'
-  
+  import personDynamic from './components/person-dynamic.vue'
   import {
     getSkuList,
-    getGrabDetail
+    getGrabDetail,
+    queryAttention,
+    getAttention,
   } from '@/api/decorate.js'
   export default {
     components: {
       personIntroduce,
       personService,
       personEvaluate,
-      personCase
+      personCase,
+      personDynamic
     },
     data() {
       return {
@@ -113,8 +117,9 @@
         interactActive:false,
         content:0,
         personId:0,
-        serviceData:[]
-        
+        serviceData:[],
+        isRecommend:false,
+        isAttention:false
       }
     },
     computed:{
@@ -135,17 +140,49 @@
       this.getCaseList()
       this.getSkuList()
       this.getNodeHeight()
+      
     },
     onPageScroll(scrollTop) {
       // console.log(scrollTop.scrollTop)
       this.scrollTop = scrollTop.scrollTop
       this.changeOpacity(scrollTop.scrollTop)
       this.getTopDistance()
+      
     },
     methods: {
+      init(){
+        this.getCaseList()
+        this.getSkuList()
+        this.getNodeHeight()
+        this.getGrabDetail()
+      },
+      getAttention(routeId,type){
+        let data = {
+          subBizType:this.personData.roleId,
+          routeId:routeId,
+          relationId:this.personData.zeusId,
+        }
+        getAttention(data).then(res=>{
+          this[type] = res
+        })
+      },
+      queryAttention(routeId){
+        let data = {
+          subBizType:this.personData.roleId,
+          routeId:routeId,
+          relationId:this.personData.zeusId,
+          authorId:-1,
+          equipmentId:uni.getSystemInfoSync().deviceId
+        }
+        queryAttention(data).then(res=>{
+          this.init()
+        })
+      },
       getGrabDetail(){
         getGrabDetail(this.personId).then(res=>{
           this.personData = res
+          this.getAttention(1001,'isAttention')
+          this.getAttention(2001,'isRecommend')
         })
       },
       getCaseList() {
@@ -333,7 +370,11 @@
         font-size: 28rpx;
         font-size: 400;
       }
-
+      .already-attention{
+        color: #666;
+        background: #F7F7F7;
+        border: none;
+      }
       .recommend {
         width: 146rpx;
         height: 64rpx;
@@ -345,6 +386,10 @@
         font-size: 28rpx;
         color: #fff;
         font-size: 400;
+      }
+      .already-recommend{
+        color: #666;
+        background: #F7F7F7;
       }
     }
 
@@ -476,6 +521,6 @@
     z-index: 1;
   }
   .content{
-    height: 2000rpx;
+    
   }
 </style>
