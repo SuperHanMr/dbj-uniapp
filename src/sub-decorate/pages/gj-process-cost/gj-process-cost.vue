@@ -162,163 +162,79 @@
       computePriceAndShopping() {
         // 先清空
         this.shopping = {
-            artificial: [],
-            material: []
-          },
-          this.countPrice = 0
+          artificial: [],
+          material: []
+        }
+        this.countPrice = 0
         this.pieces = 0
-        // 先计算人工费用
-        this.dataOrigin.artificial.categoryList.forEach((item, i) => {
-          item.itemList.forEach((it, j) => {
-            this.shopping.artificial.push(it)
-            this.countPrice += it.price * it.count / 100
-            this.pieces += it.count
-          })
-        })
-        // 再计算辅材费用
-        this.dataOrigin.material.categoryList.forEach((item, i) => {
-          item.itemList.forEach((it, j) => {
-            if (this.checkedIds.includes(it.id)) {
-              this.shopping.material.push(it)
+
+        if (this.obtainType != 2) {
+          // 先计算人工费用
+          this.dataOrigin.artificial.categoryList.forEach((item, i) => {
+            item.itemList.forEach((it, j) => {
+              this.shopping.artificial.push(it)
               this.countPrice += it.price * it.count / 100
               this.pieces += it.count
-            }
+            })
           })
-        })
+        }
+
+        if (this.obtainType != 1) {
+          // 再计算辅材费用
+          this.dataOrigin.material.categoryList.forEach((item, i) => {
+            item.itemList.forEach((it, j) => {
+              if (this.checkedIds.includes(it.id)) {
+                this.shopping.material.push(it)
+                this.countPrice += it.price * it.count / 100
+                this.pieces += it.count
+              }
+            })
+          })
+        }
         // this.countPrice = temp
         console.log(this.shopping, this.countPrice)
         // return temp
       },
       getDataList() {
+        this.noData = false
         sellList({
           projectId: this.projectId,
           type: this.serviceType,
           obtainType: this.obtainType
         }).then(data => {
           console.log(11111)
-          
-            this.noData = false
+
           this.dataOrigin = data
           this.initData()
         }).catch(err => {
-          const { data } = err
-          if (data.code !== 200) {
+          const {
+            data
+          } = err
+          if (data && data.code !== 1) {
             this.noData = true
             this.message = data.message
           }
-          // this.dataOrigin = {
-          //   "artificial": {
-          //     "grade": "等级",
-          //     "categoryList": [{
-          //       "categoryName": "服务名称",
-          //       "categoryType": 123,
-          //       "itemList": [{
-          //         "title": "标题",
-          //         "productType": "下单参数 type",
-          //         "roleType": "下单参数 roleType",
-          //         "businessType": "下单参数 businessType",
-          //         "categoryType": "分类",
-          //         "id": 1,
-          //         "workType": "工种",
-          //         "categoryTypeId": 1,
-          //         "supplierType": "供应商类型",
-          //         "storeId": 1,
-          //         "imageUrl": "https://ali-image-test.dabanjia.com/image/20210917/14/1631859550720_2452%24a9d3fd1f4134970ae0c4fa7093cad1c8a7865d3e.jpg",
-          //         "productType": 2,
-          //         "spuName": "物品名称物品名称名称物品称但是上是多多多",
-          //         "price": 1,
-          //         "count": 2,
-          //         "unit": "件",
-          //         "name": "规格"
-          //       }, {
-          //         "title": "标题",
-          //         "productType": "下单参数 type",
-          //         "roleType": "下单参数 roleType",
-          //         "businessType": "下单参数 businessType",
-          //         "categoryType": "分类",
-          //         "id": 2,
-          //         "workType": "工种",
-          //         "categoryTypeId": 1,
-          //         "supplierType": "供应商类型",
-          //         "storeId": 1,
-          //         "imageUrl": "https://ali-image-test.dabanjia.com/image/20210917/14/1631859550720_2452%24a9d3fd1f4134970ae0c4fa7093cad1c8a7865d3e.jpg",
-          //         "productType": 2,
-          //         "spuName": "物品名称物品名称名称物品称但是上是多多多",
-          //         "price": 1,
-          //         "count": 2,
-          //         "unit": "件",
-          //         "name": "规格"
-          //       }]
-          //     }]
-          //   },
-          //   "material": {
-          //     "grade": "等级",
-          //     "categoryList": [{
-          //       "categoryName": "商品分类（8号螺纹钢筋条）",
-          //       "categoryType": 124,
-          //       "itemList": [{
-          //           "title": "标题",
-          //           "productType": "下单参数 type",
-          //           "roleType": "下单参数 roleType",
-          //           "businessType": "下单参数 businessType",
-          //           "categoryType": "分类",
-          //           "id": 3,
-          //           "workType": "工种",
-          //           "categoryTypeId": 2,
-          //           "supplierType": "供应商类型",
-          //           "storeId": 1,
-          //           "imageUrl": "https://ali-image-test.dabanjia.com/image/20210917/14/1631859550720_2452%24a9d3fd1f4134970ae0c4fa7093cad1c8a7865d3e.jpg",
-          //           "productType": 1,
-          //           "spuName": "就范德萨范德萨发斯蒂芬的辅导身份水电费水电费水电费方法",
-          //           "price": 1,
-          //           "stepLength": 1,
-          //           "count": 3,
-          //           "minimumOrderQuantity": 1,
-          //           "unit": "件",
-          //           "name": "规格"
-          //         },
-          //         {
-          //           "title": "标题",
-          //           "productType": "下单参数 type",
-          //           "roleType": "下单参数 roleType",
-          //           "businessType": "下单参数 businessType",
-          //           "categoryType": "分类",
-          //           "id": 4,
-          //           "workType": "工种",
-          //           "categoryTypeId": 3,
-          //           "supplierType": "供应商类型",
-          //           "storeId": 1,
-          //           "imageUrl": "https://ali-image-test.dabanjia.com/image/20210917/14/1631859550720_2452%24a9d3fd1f4134970ae0c4fa7093cad1c8a7865d3e.jpg",
-          //           "productType": 1,
-          //           "spuName": "就范德萨范德萨发斯蒂芬的辅导身份水电费水电费水电费方法",
-          //           "price": 1,
-          //           "stepLength": 1,
-          //           "count": 3,
-          //           "minimumOrderQuantity": 1,
-          //           "unit": "件",
-          //           "name": "规格"
-          //         }
-          //       ]
-          //     }]
-          //   }
-          // }
-
-          // this.initData()
         })
       },
       initData() {
-        this.dataOrigin.artificial.categoryList.forEach(t => {
-          t.itemList.forEach(it => {
-            this.checkedIds.push(it.id)
+        if (this.obtainType != 2) {
+          this.dataOrigin.artificial.categoryList.forEach(t => {
+            t.itemList.forEach(it => {
+              this.checkedIds.push(it.id)
+            })
           })
-        })
-        this.dataOrigin.material.categoryList.forEach(t => {
-          t.itemList.forEach(it => {
-            it.checked = true
-            it.isEdit = false
-            this.checkedIds.push(it.id)
+        }
+
+        if (this.obtainType != 1) {
+          this.dataOrigin.material.categoryList.forEach(t => {
+            t.itemList.forEach(it => {
+              it.checked = true
+              it.isEdit = false
+              this.checkedIds.push(it.id)
+            })
           })
-        })
+        }
+
         this.computePriceAndShopping()
       },
       selectWp(obj) {
@@ -360,50 +276,53 @@
           }
           // roleType 7工人，10管家
           let roleType = this.serviceType == 5 ? 10 : 7
-
-          this.shopping.artificial.forEach(it => {
-            // skuInfos.push({
-            //   skuId: it.id, //"long //商品id",
-            //   storeId: it.storeId, //"long //店铺id",
-            //   buyCount: it.count, //"double //购买数量",
-            //   unit: "件", //"string //单位",
-            //   level: this.artificialLevel, //"int //等级"
-            // })
-            params.details.push({
-              // supplierType: it.supplierType,
-              roleType,
-              relationId: it.id, //"long //实体id",
-              type: 2, //"int //实体类型   1材料  2服务   3专项付款",
-              businessType: it.categoryTypeId, //"int //业务类型",
-              workType: it.workType, //"int //工种类型",
-              level: this.artificialLevel, //"int //等级  0中级  1高级 2特级  3钻石",
-              storeId: it.storeId, //"long //店铺id",
-              storeType: 0, //"int //店铺类型 0普通 1设计师",
-              number: it.count, //"double //购买数量",
-              params: "", //string //与订单无关的参数 如上门时间 doorTime"
+          if (this.obtainType != 2) {
+            this.shopping.artificial.forEach(it => {
+              // skuInfos.push({
+              //   skuId: it.id, //"long //商品id",
+              //   storeId: it.storeId, //"long //店铺id",
+              //   buyCount: it.count, //"double //购买数量",
+              //   unit: "件", //"string //单位",
+              //   level: this.artificialLevel, //"int //等级"
+              // })
+              params.details.push({
+                // supplierType: it.supplierType,
+                roleType,
+                relationId: it.id, //"long //实体id",
+                type: 2, //"int //实体类型   1材料  2服务   3专项付款",
+                businessType: it.categoryTypeId, //"int //业务类型",
+                workType: it.workType, //"int //工种类型",
+                level: this.artificialLevel, //"int //等级  0中级  1高级 2特级  3钻石",
+                storeId: it.storeId, //"long //店铺id",
+                storeType: 0, //"int //店铺类型 0普通 1设计师",
+                number: it.count, //"double //购买数量",
+                params: "", //string //与订单无关的参数 如上门时间 doorTime"
+              })
             })
-          })
-          this.shopping.material.forEach(it => {
-            // skuInfos.push({
-            //   skuId: it.id, //"long //商品id",
-            //   storeId: it.storeId, //"long //店铺id",
-            //   buyCount: it.count, //"double //购买数量",
-            //   unit: "件", //"string //单位",
-            //   level: 1, //"int //等级"
-            // })
-            params.details.push({
-              // supplierType: it.supplierType,
-              relationId: it.id, //"long //实体id",
-              type: 1, //"int //实体类型   1材料  2服务   3专项付款",
-              businessType: 1, //it.categoryTypeId, //"int //业务类型",辅材的businessType固定为1
-              workType: it.workType, //"int //工种类型",
-              level: 1, //"int //等级  0中级  1高级 2特级  3钻石",
-              storeId: it.storeId, //"long //店铺id",
-              storeType: 0, //"int //店铺类型 0普通 1设计师",
-              number: it.count, //"double //购买数量",
-              params: "", //string //与订单无关的参数 如上门时间 doorTime"
+          }
+          if (this.obtainType != 1) {
+            this.shopping.material.forEach(it => {
+              // skuInfos.push({
+              //   skuId: it.id, //"long //商品id",
+              //   storeId: it.storeId, //"long //店铺id",
+              //   buyCount: it.count, //"double //购买数量",
+              //   unit: "件", //"string //单位",
+              //   level: 1, //"int //等级"
+              // })
+              params.details.push({
+                // supplierType: it.supplierType,
+                relationId: it.id, //"long //实体id",
+                type: 1, //"int //实体类型   1材料  2服务   3专项付款",
+                businessType: 1, //it.categoryTypeId, //"int //业务类型",辅材的businessType固定为1
+                workType: it.workType, //"int //工种类型",
+                level: 1, //"int //等级  0中级  1高级 2特级  3钻石",
+                storeId: it.storeId, //"long //店铺id",
+                storeType: 0, //"int //店铺类型 0普通 1设计师",
+                number: it.count, //"double //购买数量",
+                params: "", //string //与订单无关的参数 如上门时间 doorTime"
+              })
             })
-          })
+          }
           // uni.navigateTo({
           //   url: "/sub-classify/pages/pay-order/index",
           //   success: (res) => {

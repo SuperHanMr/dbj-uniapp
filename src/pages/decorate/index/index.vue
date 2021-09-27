@@ -47,7 +47,7 @@
         <!-- <scroll-view :scroll-top="scrollTop" scroll-y="true" class="scroll-Y" @scroll="scroll"
           scroll-with-animation="true" :style="{height: viewHieght + 'rpx'}"> -->
           <!-- 每日播报 -->
-          <text-scroll :dataList="broadcastList" v-if="broadcastList.length > 0" @goDecorateCalendar="goDecorateCalendar"></text-scroll>
+          <text-scroll :dataList="broadcastList" v-if="broadcastList.length > 0 && isConstruction" @goDecorateCalendar="goDecorateCalendar"></text-scroll>
           <!-- 我的仓库 -->
           <view v-if="haveWarehouse" class="my-decorate-service-wrap">
             <image mode="aspectFit" class="top-bg"
@@ -115,7 +115,7 @@
           </uni-popup>
           <decorate-notice @touchmove.stop.prevent="()=>false" v-if="noticeActive" :num='msgNum'
             :current='currentProject.projectId' @closeNotice='closeNotice' class="decorate-notice"></decorate-notice>
-         <view class="link">
+         <!-- <view class="link">
             <view @click="gonohouse">无房屋无服入口</view>
             <view @click="gonohousedecatore('decorate')">无房屋无服务装修</view>
             <view @click="gonohousedecatore('checkHouse')">无房屋无服务验房</view>
@@ -128,7 +128,7 @@
             <view @click="gjgxf">工序费</view>
             <view @click="payGuanGuanJia">生成买管家消息</view>
             <view @click="payRenGong">生成买人工消息</view>
-          </view>
+          </view> -->
         <!-- </scroll-view> -->
       </view>
       <drag-button-follow v-if="msgNum>0" :num='msgNum' :style.sync="style" @btnClick='openNotice'
@@ -226,7 +226,8 @@
         haveWarehouse: false,
 
         who: "我",
-        broadcastList: []
+        broadcastList: [],
+        isConstruction: false,
       };
     },
     mounted() {
@@ -279,6 +280,7 @@
       scroll(e) {},
       getAvailableService() {
         this.availGuides = []
+        this.isConstruction = false
         availableService({
           relegationType: this.currentProject.relegationType,
           projectId: this.currentProject.projectId
@@ -310,6 +312,13 @@
           this.isShowMyDecorateAll = this.purchasedServiceList.filter(t => (t.status == 0 && t.grepOrderStatus ==
             3) || t.status >= 2).length > 0
           this.haveWarehouse = this.purchasedServiceList.filter(t => t.nodeType >= 5).length > 0
+
+          for(let i = 0; i< this.purchasedServiceList.length; i++) {
+            if([6,7,8,9,10].includes(this.purchasedServiceList[i].nodeType) && (this.purchasedServiceList[i].status >= 2 || (this.purchasedServiceList[i].status == 0 && this.purchasedServiceList[i].grepOrderStatus === 3))) {
+              this.isConstruction = true
+              break
+            }
+          }
         }).catch(err => {
           console.log(err)
         })

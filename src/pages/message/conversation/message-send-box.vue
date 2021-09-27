@@ -12,6 +12,7 @@
         v-model="messageContent"
         id="messageInput"
         :focus="inputFocus"
+        :show-confirm-bar="false"
         auto-height
         class="message-send-input" 
         placeholder-class="message-send-input-placeholder" 

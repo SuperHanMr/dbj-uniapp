@@ -1,8 +1,9 @@
 <template>
 	<view class="waterfall-item" @click="toDetail(item)">
 		<!-- 案例下架的样式 -->
-		<view v-if="item.icon=='case' && !item.enable" class="withdraw-container" />
-		<view  v-if="item.icon=='case' && !item.enable" class="case-withdraw-text">该内容已下架</view>
+		<view v-if="item.icon =='case' && !item.published" class="withdraw-container" />
+		<view  v-if="item.icon =='case' && !item.published" class="case-withdraw-text">该内容已下架</view>
+		
 		<!-- 左上角的icon -->
 		<image v-if="showCheckIcon && !isChecked" class="product-check"
 			src="../../static/order/images/product_unChecked.png" mode="" />
@@ -13,13 +14,13 @@
 
 		<!-- 案例右上角的icon图标 -->
 		<view v-if="item.icon == 'case'">
-			<!-- <image  class="case-type" src="../../static/order/images/icon_vr_@2x.png" mode="" />
-			<image class="case-type"  src="../../static/order/images/icon_video.png"  mode="" />
-			<image class="case-type"  src="../../static/order/images/icon_img_@2x.png" mode="" /> -->
+			<image  v-if="item.parentType == 0" class="case-type"  src="../../static/order/images/icon_video.png"  mode="" />
+			<image  v-if="item.parentType == 1" class="case-type" src="../../static/order/images/icon_vr_@2x.png" mode="" />
+			<image v-if="item.parentType == 2" class="case-type"  src="../../static/order/images/icon_img_@2x.png" mode="" />
 		</view>
 		
 		<image v-if="item.icon =='product'" class="product-img" :src="item.imageUrl" mode="widthFix" lazy-load @load="onImageLoad"/>
-		<image v-else class="product-img" :src="item.imageUrl" mode="widthFix" lazy-load @load="onImageLoad"/>
+		<image v-if="item.icon =='case'" class="product-img" :src="item.imageUrl" mode="widthFix" lazy-load @load="onImageLoad"/>
 		
 		<!-- 商品的样式 -->
 		<view class="info-container" v-if="item.icon =='product'" :class="{hasDown:!item.enabled}">
@@ -28,11 +29,11 @@
 			</view>
 			<view class="flex-row">
 				<text class="icon"  :class="{iconDown:!item.enabled}">{{item.productType==1?'物品':'服务'}}</text>
-				<text class="title">
+				<text class="title" :class="{hasDown:!item.enabled}">
 					{{ item.spuName }}
 				</text>
 			</view>
-			<view class="price">
+			<view class="price" :class="{hasDown:!item.enabled}">
 				<text>￥</text>
 				<text style="font-size: 34rpx;font-weight: 500;">{{handlePrice(item.price)[0]}}</text>
 				<text>.{{handlePrice(item.price)[1]}}{{item.unit?` / ${item.unit}`:""}}</text>
@@ -40,7 +41,7 @@
 		</view>
 		
 		<!-- 案例的样式 -->
-		<view class="info-container" v-if="item.icon == 'case'">
+		<view class="info-container" v-else>
 			<view class="avatar-name">
 				<image :src="item.authorAvatar"	mode="" />
 				<text>{{item.authorNickname}}</text>
@@ -106,10 +107,12 @@
 				this.$emit("load", e);
 			},
 			toDetail() {
-				if (!this.showCheckIcon) return
-				this.isChecked = !this.isChecked
-				this.item.isChecked = this.isChecked
+				if(this.showCheckIcon){
+					this.isChecked = !this.isChecked
+					this.item.isChecked = this.isChecked
+				}
 				this.$emit("detail", this.item);
+				
 			},
 			handlePrice(price) {
 			  let list = String(price).split(".");
