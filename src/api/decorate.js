@@ -127,9 +127,27 @@ export function getResultProblem(params) {
 	return request.get("/pm/app/user/inspectEstate/problem/" + params)
 }
 
-//获取服务人员关联商品
+//获取服务人员挂载商品
 export function getSkuList(params) {
-	return request.get("/product/app/products/relation/related/skus/list",params)
+  const str = objectToUrlString(params)
+	return request.get("/product/app/products/relation/related/skus/list?"+str)
+}
+
+//个人主页关注推荐
+export function queryAttention(params) {
+	return request.post("/app/base/interactive/add" ,params)
+}
+
+//查询个人主页关注推荐
+export function getAttention(params) {
+  const str = objectToUrlString(params)
+	return request.get("/app/base/interactive/participated?"+str)
+}
+
+//查询个人主页评价
+export function getComments(params) {
+  // const str = objectToUrlString(params)
+	return request.get("/pm/app/commentSetting/getComments",{params})
 }
 
 //获取施工交付内容
@@ -274,4 +292,9 @@ export function confirmDesignReport(serveCardId) {
 // 查询装修动态 客户端-轮播图
 export function getCarouselMsg(projectId) {
 	return request.get(`/pm/app/decorate/calendar/getCarouselMsg/${projectId}`)
+}
+
+// 搜索商品列表（这个是真实接口）
+export function productList(data) {
+	return request.post(`/product/app/search/query`, data)
 }

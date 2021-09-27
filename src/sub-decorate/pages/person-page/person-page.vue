@@ -10,8 +10,8 @@
         <image class="header-back"></image>
       </view>
       <view class="item nav-header-msg">
-        <image src="" mode=""></image>
-        <text>上官海棠</text>
+        <image :src="personData.avatar" mode=""></image>
+        <text>{{personData.nickName}}</text>
       </view>
       <view class="item"></view>
     </view>
@@ -20,49 +20,50 @@
         <view class="person-msg-top">
           <view class="person-msg-header">
             <view class="person-msg-header-image">
-              <image class="avatar"></image>
-              <image class="icon"></image>
+              <image class="avatar" :src="personData.avatar" ></image>
+              <image class="icon" v-if="personData.gender===1"></image>
+              <image class="icon" v-else></image>
             </view>
-            <text class="name">上官海棠</text>
+            <text class="name">{{personData.nickName}}</text>
             <view class="label">
-              <text class="job">设计师</text>
-              <text class="rate">好评率99%</text>
+              <text class="job">{{personData.roleName}}</text>
+              <text class="rate">好评率{{personData.praiseRate||0}}%</text>
             </view>
           </view>
           <view class="btn">
-            <view class="recommend">
-              <image></image>
-              优先推荐
+          <view class="recommend" @click="queryAttention(2001)" :class="{'already-recommend':isRecommend}">
+              <image v-if="!isRecommend"></image>
+              {{isRecommend?'已':''}}优先推荐
             </view>
-            <view class="attention">
-              <image></image>
-              关注
+            <view class="attention" @click="queryAttention(1001)" :class="{'already-attention':isAttention}">
+              <image v-if="!isAttention"></image>
+              {{isAttention?'已':''}}关注
             </view>
           </view>
           <view class="person-msg-list">
             <view class="list-item">
-              <text class="num">7</text>
+              <text class="num">{{personData.likeCount||0}}</text>
               <text class="title">获赞</text>
             </view>
             <view class="list-item">
-              <text class="num">7</text>
+              <text class="num">{{personData.fansCount||0}}</text>
               <text class="title">粉丝</text>
             </view>
             <view class="list-item">
-              <text class="num">7</text>
+              <text class="num">{{personData.collectCount||0}}</text>
               <text class="title">被收藏</text>
             </view>
             <view class="list-item">
-              <text class="num">7</text>
+              <text class="num">{{personData.recommendCount||0}}</text>
               <text class="title">被推荐</text>
             </view>
             <view class="list-item">
-              <text class="num">7</text>
+              <text class="num">{{personData.totalNum||0}}</text>
               <text class="title">总接单</text>
             </view>
           </view>
         </view>
-        <personIntroduce></personIntroduce>
+        <personIntroduce :personData='personData'></personIntroduce>
       </view>
       <view class="person-interact" :class="{'person-interact-active':interactActive === interact}">
         <view class="sticky">
@@ -77,7 +78,9 @@
         </view>
       </view>
       <view class="content">
-        <personService ></personService>
+        <personService :serviceData='serviceData'></personService>
+        <personCase ></personCase>
+        <personDynamic></personDynamic>
         <personEvaluate></personEvaluate>
       </view>
     </view>
@@ -88,27 +91,35 @@
   import personIntroduce from './components/person-introduce.vue'
   import personService from './components/person-service.vue'
   import personEvaluate from './components/person-evaluate.vue'
+  import personCase from './components/person-case.vue'
+  import personDynamic from './components/person-dynamic.vue'
   import {
-    getCaseList
-  } from '@/api/real-case.js'
-  import {
-    getSkuList
+    getSkuList,
+    getGrabDetail,
+    queryAttention,
+    getAttention,
   } from '@/api/decorate.js'
   export default {
     components: {
       personIntroduce,
       personService,
-      personEvaluate
+      personEvaluate,
+      personCase,
+      personDynamic
     },
     data() {
       return {
         opacityNum:0,
+        personData:{},
         currentItem: 'service',
         scrollTop:0,
         interact:0,
         interactActive:false,
         content:0,
-        
+        personId:0,
+        serviceData:[],
+        isRecommend:false,
+        isAttention:false
       }
     },
     computed:{
@@ -121,22 +132,64 @@
     onPullDownRefresh() {
       this.getCaseList()
     },
+    onLoad(e){
+      this.personId = getApp().globalData.decorateMsg.serverId||6820
+      this.getGrabDetail()
+    },
     mounted() {
-      this.getCaseList()
+      // this.getCaseList()
+      this.getSkuList()
       this.getNodeHeight()
+      
     },
     onPageScroll(scrollTop) {
       // console.log(scrollTop.scrollTop)
       this.scrollTop = scrollTop.scrollTop
       this.changeOpacity(scrollTop.scrollTop)
       this.getTopDistance()
+      
     },
     methods: {
-      getCaseList() {
-        getCaseList().then(res => {
-
+      init(){
+        // this.getCaseList()
+        this.getSkuList()
+        this.getNodeHeight()
+        this.getGrabDetail()
+      },
+      getAttention(routeId,type){
+        let data = {
+          subBizType:this.personData.roleId,
+          routeId:routeId,
+          relationId:this.personData.zeusId,
+        }
+        getAttention(data).then(res=>{
+          this[type] = res
         })
       },
+      queryAttention(routeId){
+        let data = {
+          subBizType:this.personData.roleId,
+          routeId:routeId,
+          relationId:this.personData.zeusId,
+          authorId:-1,
+          equipmentId:uni.getSystemInfoSync().deviceId
+        }
+        queryAttention(data).then(res=>{
+          this.init()
+        })
+      },
+      getGrabDetail(){
+        getGrabDetail(this.personId).then(res=>{
+          this.personData = res
+          this.getAttention(1001,'isAttention')
+          this.getAttention(2001,'isRecommend')
+        })
+      },
+      // getCaseList() {
+      //   // getCaseList().then(res => {
+        
+      //   // })
+      // },
       changeOpacity(num){
         num<10?this.opacityNum = 0:num<40?this.opacityNum=0.2:num<80?this.opacityNum=0.4:num<120?this.opacityNum=0.6:num<160?this.opacityNum=0.8:this.opacityNum=1
         // console.log(this.opacityNum)
@@ -163,14 +216,19 @@
         }).exec()
       },
       back(){
-        console.log(1111)
         uni.navigateBack({
           
         })
       },
       getSkuList(){
-        getSkuList().then(res=>{
-          
+        let data = {
+          relationId:this.personId,
+          relationType:7,
+          page:1,
+          row:10000
+        }
+        getSkuList(data).then(res=>{
+          this.serviceData = res
         })
       }
     }
@@ -183,6 +241,7 @@
     padding-top: 98rpx;
     box-sizing: border-box;
     background-color: #fff;
+    padding-bottom: 40rpx;
     .bg-index {
       top: 0;
       width: 100%;
@@ -312,7 +371,11 @@
         font-size: 28rpx;
         font-size: 400;
       }
-
+      .already-attention{
+        color: #666;
+        background: #F7F7F7;
+        border: none;
+      }
       .recommend {
         width: 146rpx;
         height: 64rpx;
@@ -324,6 +387,10 @@
         font-size: 28rpx;
         color: #fff;
         font-size: 400;
+      }
+      .already-recommend{
+        color: #666;
+        background: #F7F7F7;
       }
     }
 
@@ -455,6 +522,6 @@
     z-index: 1;
   }
   .content{
-    height: 2000rpx;
+    
   }
 </style>

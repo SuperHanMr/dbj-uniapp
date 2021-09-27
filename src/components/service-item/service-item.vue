@@ -6,7 +6,7 @@
         <text>{{serviceData.nodeName}}</text>
       </view>
       <view class="status-name mr inservice flex-row-start">
-        <view>{{ serviceData | filterStatusName }}</view>
+        <view>{{ serviceData.statusName }}</view>
         <image :class="{open: open}"
           v-if="serviceData.status >= 2 || (serviceData.status == 0 && serviceData.grepOrderStatus === 3)"
           src="http://dbj.dragonn.top/static/mp/dabanjia/images/decorate/ic_triangle_up.svg"></image>
@@ -70,7 +70,7 @@
       goProcessCost() {
         const customerId = uni.getStorageSync("userId")
         uni.navigateTo({
-          url: `/sub-decorate/pages/gj-process-cost/gj-process-cost?serveCardId&=${this.serviceData.serveCardId}&estateId=${this.currentProject.estateId}&serviceType=${this.serviceData.nodeType}&projectId=${this.currentProject.projectId}&customerId=${customerId}`
+          url: `/sub-decorate/pages/gj-process-cost/gj-process-cost?serveCardId&=${this.serviceData.serveCardId}&estateId=${this.currentProject.estateId}&serviceType=${this.serviceData.nodeType}&projectId=${this.currentProject.projectId}&customerId=${customerId}&obtainType=2`
         })
         // this.serveCardId = serveCardId || option.serveCardId
         // this.estateId = estateId || option.estateId

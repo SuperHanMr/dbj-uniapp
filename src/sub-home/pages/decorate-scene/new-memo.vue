@@ -1,13 +1,13 @@
 <template>
 	<view class="new-memo">
 		<form @submit="formSubmit" @reset="formReset">
-			<textarea class="input" placeholder="必填，请输入备忘录内容" maxlength="3000" required/>
+			<textarea class="input" v-model="value" placeholder="请输入备忘录内容" maxlength="3000" required/>
 			<view class="remind" @click="toChooseRemind">
-				<view class="text">提醒谁看</view>
+				<view class="text" :class="{'selected': hasChoose}">提醒谁看</view>
+				<view class="reminder" v-if="reminderList.length" v-for="item in reminderList" :key="item.userId">@{{item.userName}}</view>
 				<image class="icon" src="../../static/ic_filtrate@2x.png"></image>
 			</view>
-			<view class="finish">完成</view>
-		
+			<view class="finish" @click="finishC">完成</view>
 		</form>
 	</view>
 </template>
@@ -17,28 +17,50 @@
 	export default {
 		data(){
 			return {
-				value: ""
+				value: "",
+				projectId: 0,
+				reminderList: [],
+				hasChoose: false
 			}
 		},
-		mounted() {
-			this.setMemo()
+		onLoad(option) {
+			this.projectId = option.projectId
+		},
+		onShow() {
+			uni.$once("sendReminders",(reminderList) => {
+				console.log(reminderList)
+				this.reminderList = reminderList
+				this.hasChoose = reminderList.length?true:false
+			})
 		},
 		methods:{
+			finishC(){
+				console.log(this.value,'....')
+				if(!this.value.trim()){
+					uni.showToast({
+						title:"请输入备忘录内容",
+						icon:"none"
+					})
+					return
+				}
+				this.setMemo()
+			},
 			toChooseRemind(){
 				uni.navigateTo({
-					url:"/sub-home/pages/decorate-scene/choose-remind"
+					url: `/sub-home/pages/decorate-scene/choose-remind?projectId=${this.projectId}`
 				})
 			},
 			setMemo(){
-				// let params = {
-				// 	projectId:  ,
-				// 	content: ,
-				// 	reminderList: ,
-				// 	remindTime: ,
-				// }
-				// createMemo(params).then(data => {
-					
-				// })
+				let params = {
+					projectId: this.projectId,
+					content: this.value,
+					reminderList: this.reminderList,
+				}
+				createMemo(params).then(data => {
+					uni.navigateTo({
+						url: `/sub-home/pages/decorate-scene/memo?projectId=${this.projectId}`
+					})
+				})
 			}
 		}
 	}
@@ -75,6 +97,13 @@
 		height: 40rpx;
 		color: #333333;
 		font-size: 28rpx;
+	}
+	.remind .text.selected{
+		color: #00C2B8;
+	}
+	.remind .reminder{
+		font-size: 28rpx;
+		color: #333333;
 	}
 	.remind .icon{
 		width: 18rpx;

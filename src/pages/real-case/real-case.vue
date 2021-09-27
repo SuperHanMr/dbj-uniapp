@@ -180,8 +180,8 @@
 			// 获取数据
 			getList() {
 				const params = {
-					pageIndex: this.pagState.page,
-					pageSize: this.pagState.rows,
+					page: this.pagState.page,
+					row: this.pagState.rows,
 				}
 				if (this.currentVal == 0) {
 					getCaseList(params).then((res) => {

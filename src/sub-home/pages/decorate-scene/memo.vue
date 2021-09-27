@@ -1,39 +1,24 @@
 <template>
 	<view class="memoWrap" :class="{'bg':!memos.length}">
-		<view class="noMemo" v-if="!memos.length">
+		<view class="noMemo" v-if="isNoMemo">
 			<image class="noMemoImg" src="http://dbj.dragonn.top/static/mp/dabanjia/images/decorate/pic_empty%402x.png"></image>
 			<view class="noMemoText">暂无内容~</view>
 		</view>
-		<view class="memoItem" v-else @click="toMemoDetail(1)">
+		<view class="memoItem" v-else v-for="item in memos" :key="item.memoId">
 			<view class="header">
 				<view class="userInfo">
-					<image class="avatar" src="../../static/avatar@2x(1).png"></image>
-					<view class="userName">姜文</view>
-					<view class="role">管家</view>
+					<image class="avatar" :src="item.promulgator.avatar"></image>
+					<view class="userName">{{item.promulgator.userName}}</view>
+					<view class="role">{{item.promulgator.roleName}}</view>
 				</view>
-				<view class="time">2021-08-16 09:12</view>
+				<view class="time">{{item.createTime}}</view>
 			</view>
-			<view class="content">
-				<view class="text">
-					尊敬的业主，打扮家管家-姜文为您家管家，为您家装修保驾护航，您家现在的阶段是水电拆改，今…
+			<view class="content" @click="toMemoDetail(item.memoId)">
+				<view class="text">{{item.content}}</view>
+				<view class="remark">
+					<view class="cueMe" v-if="!item.publisherFlag">提到了我</view>
+					<view class="cueOthers" v-else v-for="(name,index) in item.reminderList" :key="index">@{{name}}</view>
 				</view>
-				<view class="remark">提到了我</view>
-			</view>
-		</view>
-		<view class="memoItem" @click="toMemoDetail(2)">
-			<view class="header">
-				<view class="userInfo">
-					<image class="avatar" src="../../static/avatar@2x(1).png"></image>
-					<view class="userName">我</view>
-					<view class="role">业主</view>
-				</view>
-				<view class="time">2021-08-16 09:12</view>
-			</view>
-			<view class="content">
-				<view class="text">
-					管家姜文您好，我发现工地有些脏乱，请您到现场监测一下，是否施工符合工地的规范，请不要在…
-				</view>
-				<view class="remark">@田管家</view>
 			</view>
 		</view>
 		<view class="new" @click="toNewMemo">
@@ -47,33 +32,34 @@
 	export default {
 		data(){
 			return {
-				memos: [1]
+				memos: [],
+				projectId: 2,
+				isNoMemo: false
 			}
 		},
+		onLoad(option) {
+			// this.projectId = option.projectId
+		},
 		mounted() {
-			this.projectId = 46
 			this.requestPage()
 		},
 		methods:{
 			toNewMemo(){
 				uni.navigateTo({
-					url:"/sub-home/pages/decorate-scene/new-memo"
+					url: `/sub-home/pages/decorate-scene/new-memo?projectId=${this.projectId}`
 				})
 			},
-			toMemoDetail(flag){
+			toMemoDetail(id){
 				uni.navigateTo({
-					url:"/sub-home/pages/decorate-scene/memo-detail",
-					success: (res) => {
-						res.eventChannel.emit('acceptDataFromOpenerPage',flag)
-					}
+					url: `/sub-home/pages/decorate-scene/memo-detail?memoId=${id}`
 				})
 			},
 			requestPage(){
 				getMemos(this.projectId).then(data => {
 					if(data){
 						let {list} = data
-						console.log(list)
-						this.memos = list
+						this.memos = list || []
+						this.isNoMemo = !list.length
 					}
 				})
 			}
@@ -143,7 +129,7 @@
 		align-items: center;
 	}
 	.header .time{
-		width: 210rpx;
+		width: 242rpx;
 		height: 34rpx;
 		color: #999999;
 		font-size: 24rpx;
@@ -158,7 +144,7 @@
 		width: 56rpx;
 		height: 56rpx;
 		display: block;
-		
+		border-radius: 50%;
 	}
 	.userInfo .userName{
 		width: 52rpx;
@@ -193,11 +179,19 @@
 		text-overflow: ellipsis;
 	}
 	.content .remark{
-		width: 112rpx;
+		display: flex;
+		width: fit-content;
 		height: 40rpx;
 		margin-top: 16rpx;
 		margin-left: 32rpx;
 		font-size: 28rpx;
 		color: #999999;
+	}
+	.remark .cueMe{
+		width: 112rpx;
+	}
+	.remark .cueOthers{
+		width: 112rpx;
+		margin-right: 40rpx;
 	}
 </style>

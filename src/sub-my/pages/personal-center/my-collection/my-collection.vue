@@ -11,8 +11,8 @@
 					<view class="bottom-icon" />
 				</view>
 			</view>
-			<view class="edit-btn" v-if="currentList.length > 1">
-				<text v-if="ShowMgrBrn" @click="handleMgr">管理</text>
+			<view class="edit-btn" v-if="currentList.length >= 1">
+				<text v-if="showMgrBtn" @click="handleMgr">管理</text>
 				<text v-else @click="handleDone">完成</text>
 			</view>
 		</view>
@@ -21,14 +21,14 @@
 
 		<swiper class="swiper" :current="currentIndex" :duration="200" 
 			@change="swiperChange"
-			:style="{backgroundColor:listLength > 0 ?'none':'#ffffff'}"
+			:style="{paddingBottom:systemBottom +'rpx',backgroundColor:listLength > 0 ?'none':'#ffffff'}"
 		>
 				
 			<swiper-item :class="{emptyContainer:productList.length < 1 ? true : false}">
 				<scroll-view v-if="productList.length > 0" class="scroll-view" scroll-y="true" refresher-background="#FFF" refresher-enabled="true"
 					:refresher-triggered="triggered" @refresherrefresh="onRefresh" @scrolltolower="onLoadMore">
 					<waterfall :key="itemTab.fallKey" :list="productList" @selectedItem="onSelectedItem" :allCheck="allCheck"
-						:showCheckIcon="!ShowMgrBrn"></waterfall>
+						:showCheckIcon="!showMgrBtn" :isAllCheck="isAllCheck"></waterfall>
 				</scroll-view>
 				<view v-else class="empty-body">
 					<image src="../../../../static/order/blank_house@2x.png" mode=""></image>
@@ -40,7 +40,7 @@
 				<scroll-view v-if="caseList.length >0" class="scroll-view" scroll-y="true" refresher-background="#FFF" refresher-enabled="true"
 					:refresher-triggered="triggered" @refresherrefresh="onRefresh" @scrolltolower="onLoadMore">
 					<waterfall :key="itemTab.fallKey" :list="caseList" @selectedItem="onSelectedItem" :allCheck="allCheck"
-						:showCheckIcon="!ShowMgrBrn"></waterfall>
+						:showCheckIcon="!showMgrBtn" :isAllCheck='isAllCheck'></waterfall>
 				</scroll-view>
 				<view v-else class="empty-body">
 					<image src="../../../../static/order/blank_house@2x.png" mode=""></image>
@@ -50,10 +50,11 @@
 		</swiper>
 
 		<!-- 底部按钮 -->
-		<view class="footer" v-if=" currentList.length > 1 && showCalCelBtn" :style="{paddingBottom:systemBottom}">
+		<view class="footer" v-if=" currentList.length >= 1 && showCalCelBtn" :style="{paddingBottom:systemBottom + 24 + 'rpx'}">
 			<view class="left">
-				<!-- <image  src="../../../../static/order/images/product_checked.png" mode=""></image> -->
-				<image src="../../../../static/order/images/product_unChecked.png" mode="" @click="handleAllCheck"/>
+				<image v-if="allCheck"  src="../../../../static/order/images/product_checked.png"  @click="handleAllCheck" mode=""></image>
+				<view class="checkStyle" v-else @click="handleAllCheck"/>
+				<!-- <image v-else src="../../../../static/order/images/product_unChecked.png" mode="" @click="handleAllCheck"/> -->
 				<text>全选</text>
 			</view>
 			<view class="button" @click="handleCancel">
@@ -96,15 +97,17 @@
 
 				productList: [], //商品列表
 				caseList: [], //案例列表
-				checkedItemIds:[],
-				listLength:"",
+				checkedItemIds:[],//选中的要取消收藏的item的id
+				listLength:"",//返回数据的个数
+				equipmentId:"",
 				page: [1, 1],
 				totalPage: [1, 1],
 
 				loading: false,
-				ShowMgrBrn: true,
+				showMgrBtn: true,
 				showCalCelBtn:false,
 				allCheck:false,
+				isAllCheck:false,
 				title: "",
 
 				systemBottom: "",
@@ -113,9 +116,14 @@
 
 		mounted(e) {
 			const menuButtonInfo = uni.getMenuButtonBoundingClientRect();
-			this.systemBottom = menuButtonInfo.bottom + 32 + "rpx";
+			this.systemBottom = menuButtonInfo.bottom;
 		},
 		onShow() {
+			uni.getSystemInfo({
+				success:res => {
+					this.equipmentId = res.deviceId
+				}
+			})
 			this.getProductList()
 		},
 		watch:{
@@ -138,6 +146,9 @@
 			swiperChange(e) {
 				let index = e.target.current || e.detail.current;
 				this.currentIndex = index;
+				this.showMgrBtn = true
+				this.showCalCelBtn =false
+				this.allCheck=false
 				//index对应的list数据是否为空 为空的话请求数据 有数据的话就不请求了
 				switch(this.currentIndex){
 					case 0: 
@@ -159,11 +170,7 @@
 				}
 				getGoodsList(params).then(data=>{
 					this.productList = this.productList.concat(data);
-					this.productList = this.productList.map(item => {
-						item.isChecked = false
-							item.icon = "product"
-						return item
-					})
+					this.productList = this.handleList(this.productList,false,"product")
 					console.log("this.productList=", this.productList)
 					this.loading = false;
 				})
@@ -172,81 +179,105 @@
 			getCaseList() {
 				this.loading = true;
 				let params = {
-					routeId: 5001, //【收藏真实案例路由id，记录用户收藏的真实案例】
-					type: 1, //(1,"收藏")
-					bizType: 7, //【真实案例】REAL_CASE(7,"真实案例")
+					page:1,
+					// routeId: 5001, //【收藏真实案例路由id，记录用户收藏的真实案例】
+					// type: 1, //(1,"收藏")
+					// bizType: 7, //【真实案例】REAL_CASE(7,"真实案例")
 				}
 				getRealCaseList(params).then(data => {
-					this.caseList = this.caseList.concat(data)
-					console.log("this.caseList-0=", this.caseList)
-					this.caseList = this.caseList.map(item => {
-						item.isChecked = false
-						item.icon = "case"
-						return item
-					})
-					console.log("this.caseList-1=", this.caseList)
+					this.caseList = this.caseList.concat(data.list)
+					this.caseList = this.handleList(this.caseList,false,"case")
+					this.page[1] = data.page
+					this.totalPage[1]= data.totalPage
+					console.log("this.caseList=", this.caseList)
 					this.loading = false;
 				})
 			},
-			
-
-			
+				
 			//管理
 			handleMgr() {
-				this.ShowMgrBrn = !this.ShowMgrBrn
+				this.showMgrBtn = !this.showMgrBtn
 				this.showCalCelBtn = true
-				this.productList = this.productList.map(item => {
-					item.isChecked = false
-					return item
-				})
-				console.log("点击管理后的列表=", this.productList)
 			},
 			//完成
 			handleDone() {
-				this.ShowMgrBrn = !this.ShowMgrBrn
+				this.showMgrBtn = !this.showMgrBtn
 				this.showCalCelBtn = false
-				this.productList = this.productList.map(item => {
-					item.isChecked = false
-					return item
-				})
-				console.log("点击完成后的列表=", this.productList)
+				this.allCheck = false
+				if(this.currentIndex== 0 ){
+					this.productList = this.handleList(this.productList,false)
+					this.checkedItemIds =[]
+					console.log("点击完成后的列表=", this.productList)
+				}else{
+					this.caseList = this.handleList(this.caseList,false)
+					this.checkedItemIds =[]
+					console.log("点击完成后的列表=", this.caseList)
+				}
+			},
+			
+			// 点击单个item的操作获取选中的数据
+			onSelectedItem(data) {
+				if(this.showMgrBtn){
+					console.log("data=",data)
+					if(this.currentIndex ==0){
+						console.log("进入商品详情页，点击收藏")
+					}else{
+						console.log("进入案例详情页，点击收藏")
+					}
+				}else{
+					this.checkedItemIds = data.filter(item => item.isChecked == true).map((item2) => {
+						return {relationId:item2.id,authorId:item2.authorId,subBizType:item2.subBizType}
+					})
+					this.productList = data
+					if(this.checkedItemIds.length == this.productList.length){
+						this.allCheck=true;
+						this.isAllCheck=true;
+					}else{
+						this.allCheck=false
+					}
+					console.log("选中的产品=", this.checkedItemIds,"点击了收藏后的list", data)
+				}
 			},
 			
 			// 全选
 			handleAllCheck(){
-				console.log("全选")
 				this.allCheck=!this.allCheck
-				if(this.currentIndex == 0){
-					this.productList = this.productList.map(item => {
-						item.isChecked = true
-						return item
-					})
-					console.log(this.productList)
-					console.log("00000000")
-				}else{
-					console.log("1111111111")
-					this.caseList = this.caseList.map(item => {
-						item.isChecked = true
-						return item
-					})
+				switch(this.currentIndex){
+					case 0:
+						this.allCheckFunction(this.productList)
+						break;
+					case 1:
+						this.allCheckFunction(this.caseList)
+						break;
 				}
 			},
-			// 点击单个item的操作获取选中的数据
-			onSelectedItem(data) {
-				this.checkedItemIds = data.filter(item => item.isChecked == true).map((item2) => {
-					// return {
-					// 	id: item2.id,
-					// 	isChecked: item2.isChecked
-					// }
-					return item2.id
+			allCheckFunction(list){
+				if(this.allCheck){
+					list =this.handleList(list,true)
+					this.checkedItemIds = list.map(item=>{
+						return {relationId:item.id,authorId:item.authorId,subBizType:item.subBizType}
+					})
+					console.log("列表list=",list)
+					console.log("this.checkedItemIds=",this.checkedItemIds)
+				}else{
+					list =this.handleList(list,false)
+					this.checkedItemIds =[]
+					console.log("列表list=",list)
+					console.log("this.checkedItemIds=",this.checkedItemIds)
+				}
+			},
+			handleList(list,isChecked,type){
+				return list.map(item=>{
+					item.isChecked = isChecked
+					if(type){
+						item.icon =type
+					}
+					return item
 				})
-				this.productList = data
-				console.log("选中的产品=", this.checkedItemIds)
-				console.log("点击了收藏后的list", data)
 			},
 			
+			// 点击取消收藏按钮
 			handleCancel() {
-				// 点击取消收藏按钮
 				this.currentIndex == 0 
 				? this.title = "确定要将选中商品取消收藏吗?" 
 				: this.title = "确定要将选中案例取消收藏吗?"
@@ -255,28 +286,30 @@
 			closePopDialog(){
 				this.$refs.popup.close()
 			},
-			// 点击取消收藏弹框的确认按钮
+			//取消收藏
 			confirmCancelCollection() {
 				console.log("确认取消")
 				let params={
-					userId:"", //主动方ID(用户id)",
-					relationIds:[],//关系ID集合(被动的关联ID)",
-					routeId:"", //路由ID",
-					type:"",//主类型",
-					bizType:"", //二级分类",
-					subBizType:"", //三级分类",
-					isAll:"",//是否全部删除：慎用"
+					equipmentId:this.equipmentId,
+					list:this.checkedItemIds
 				}
+				if(this.currentIndex ==0){
+					params.routeId = 5002
+				}else{
+					params.routeId = 5001
+				}
+				console.log("取消收藏接口的params=",params)
 				batchCancellation(params).then(data=>{
-					// 重新获取列表
+					console.log("取消收藏")
 					this.$refs.popup.close()
+					this.showMgrBtn = true
+					this.showCalCelBtn = false
 					this.allCheck = false
 					uni.showToast({
 						title:"取消收藏成功！",
 						icon:"none",
 						duration: 1000
 					});
-					console.log("刷新列表")
 					setTimeout(()=>{
 						if(this.currentIndex == 0){
 							this.getProductList()
@@ -284,17 +317,27 @@
 							this.getCaseList()
 						}
 					},1000)
-				})
+				}).catch(()=>{})
 			},
+			
+			
 			onLoadMore() {
 				// if (this.loading || this.page >= this.totalPage) {
 				//   return;
 				// }
 				// this.page++;
-				if (this.loading) return
-				if (this.currentList.length < 1) {
-					this.currentIndex == 0 ? this.getProductList() : this.getCaseList();
+				if(this.currentIndex==0){
+					if(this.loading) return
+					this.currentList.length < 1?this.getProductList():""
+				}else{
+					if(this.loading || this.page[1] >=this.totalPage[1])return 
+					this.page[1]++
+					this.getCaseList()
 				}
+				// if (this.loading) return
+				// if (this.currentList.length < 1) {
+				// 	this.currentIndex == 0 ? this.getProductList() : this.getCaseList();
+				// }
 			},
 			onRefresh(e) {
 				this.triggered = true;
@@ -429,7 +472,14 @@
 			display: flex;
 			flex-flow: row nowrap;
 			align-items: center;
-
+			.checkStyle{
+				width: 36rpx;
+				height: 36rpx;
+				box-sizing: border-box;
+				border: 4rpx solid #cccccc;
+				border-radius: 50%;
+				margin-right: 10rpx;
+			}
 			image {
 				width: 40rpx;
 				height: 40rpx;

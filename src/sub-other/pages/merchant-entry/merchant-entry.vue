@@ -488,7 +488,7 @@
 	}
 	.bottom {
 		width: 100%;
-		padding: 24rpx 34rpx 16rpx 30rpx;
+		
 		background: #FEFFFE;
 		position: fixed;
 		bottom: 0;
@@ -509,6 +509,7 @@
 		}
 
 		.pay-money {
+			margin: 24rpx 34rpx 16rpx 30rpx;
 			background: linear-gradient(135deg, #00CCBE 0%, #00C2BF 100%);
 			border-radius: 6px;
 			height: 88rpx;

@@ -85,10 +85,7 @@
       class="footer1"
       v-if="waitPay"
     >
-      <view
-        class="has-pay"
-        v-if="data.totalActualIncomeAmount"
-      >
+      <view class="has-pay"  v-if="data.totalActualIncomeAmount">
         <text style="margin-right: 12rpx;">已付款</text>
         <text>
           <text>￥</text>
@@ -96,6 +93,7 @@
           <text>{{handlePrice(data.totalActualIncomeAmount)[1]}}</text>
         </text>
       </view>
+			
       <view>
         <text style="margin-right: 12rpx;">需付款</text>
         <text style="color: #FF3347;">

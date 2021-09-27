@@ -35,7 +35,7 @@ export function getSelectOptions(params) {
   });
 }
 export function setAttentions(params, config) {
-  return request.post(`/app/base/interactive/add`, params, config);
+  return request.post(`/app/base/interactive/view/add`, params, config);
 }
 export function getFocusBrowse(params) {
   return request.get(`/app/base/interactive/project/count/detail`, {
@@ -62,10 +62,10 @@ export function getDynamics(params) {
   return request.post(`/pm/app/decorate/calendar/getSimpleListByPageQuery`, params);
 }
 export function getMemos(projectId) {
-  return request.get(`/pm/app/memo/list/${projectId}`, {});
+  return request.get(`/pm/app/memo/all_list/${projectId}`, {});
 }
-export function getMemoDetail(projectId,memoId) {
-  return request.get(`/pm/app/memo/${projectId}/${memoId}/details`, {});
+export function getMemoDetail(memoId) {
+  return request.get(`/pm/app/memo/${memoId}/details`, {});
 }
 export function createMemo(params){
 	return request.post(`/pm/app/memo/save`,params)

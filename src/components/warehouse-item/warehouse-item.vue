@@ -291,7 +291,9 @@ export default {
       );
     },
     dataList() {
-      if (this.item.refundAmount == 4) {
+			console.log('@@@@@@@@@@@@@@@@');
+			console.log(this.item.refundAmount)
+      if (this.item.stockStatus == 4) {
         return this.item.detailAppVOS;
       } else {
         return this.item.stockAppVOS;
