@@ -1,12 +1,12 @@
 <template>
   <view class="design-list">
-    <material-content-card class="card-item" v-for="(item, index) in dataList" :key="item.id" :content="item">
+    <material-content-card class="card-item" v-for="(item, index) in dataList" :key="item.product.spuId + ''" :content="item">
       <template slot="radio">
-        <dbj-radio class="card-radio" :value="item.id + ''" :checked="checkedId === item.id + ''" @change="radioChange">
+        <dbj-radio class="card-radio" :value="item.product.spuId + ''" :checked="checkedSpuId === item.product.spuId + ''" @change="radioChange">
         </dbj-radio>
       </template>
     </material-content-card>
-    <view v-if="isAllDataLoaded">~我也是有底线的</view>
+    <view v-if="isAllDataLoaded" style="padding: 24rpx;text-align: center;font-size: 26rpx;">~我也是有底线的~</view>
   </view>
 </template>
 
@@ -24,7 +24,7 @@
     data() {
       return {
         dataList: [],
-        checkedId: "",
+        checkedSpuId: null,
         categoryId: null,
         areaId: null,
         page: 1,
@@ -34,11 +34,11 @@
     },
     onLoad(option) {
       const {
-        id,
+        spuId,
         categoryId,
         areaId
       } = option
-      this.checkedId = id + ""
+      this.checkedSpuId = spuId + ''
       this.categoryId = categoryId
       this.areaId = areaId
     },
@@ -72,8 +72,8 @@
         })
       },
       radioChange(obj) {
-        this.checkedId = obj.value
-        let tmp = this.dataList.filter(t => t.id == Number(obj.value))[0]
+        this.checkedSpuId = obj.value + ''
+        let tmp = this.dataList.filter(t => t.product.spuId == Number(obj.value))[0]
         uni.$emit('selectedMaterial', {
           ...tmp
         });
