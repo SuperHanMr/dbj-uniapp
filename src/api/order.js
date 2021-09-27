@@ -10,6 +10,10 @@ export function commentsAndFeedBack(params) {
 	return request.post(`/app/feedback`,params);
 }
 
+// 我的-代付款订单条数  
+export function queryToBePaidOrderNum(params) {
+	return request.get(`/order-center/app/order/queryToBePaidOrderNum`,params);
+}
 
 
 //我的-订单列表
