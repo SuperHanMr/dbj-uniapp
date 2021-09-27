@@ -234,7 +234,7 @@
             t.itemList.forEach(it => {
               it.checked = true
               it.isEdit = false
-              if(it.inServiceArea) {
+              if(it.inServiceArea && !it.selling) {
                 this.checkedIds.push(it.id)
               }
             })
@@ -416,6 +416,7 @@
 
   .process-cost-list {
     padding: 0 32rpx;
+    background-color: #fff;
   }
 
   .payment-wrap {

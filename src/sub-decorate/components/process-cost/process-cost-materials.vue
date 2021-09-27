@@ -9,7 +9,7 @@
       <view class="item-list">
         <view class="item" v-for="(item,index) in itemList" :key="item.id">
           <view class="img-name-tag-guige flex-r-l">
-            <view v-if="item.isEdit || !item.inServiceArea" style="width: 32rpx;height: 32rpx;"></view>
+            <view v-if="item.isEdit || !item.inServiceArea || !it.selling" style="width: 32rpx;height: 32rpx;"></view>
             <check-box v-else :checked="item.checked" @change="(val) => {checkItem(val, item)}"></check-box>
             <view class="flex-1">
               <view class="flex-r-l">
