@@ -160,15 +160,11 @@
 			onCollection(index) {
 				const item = this.leftList[index];
 				console.log(this.leftList[index],"收藏");
-				const openId = uni.getStorageSync('openId')
-				console.log(openId, '>>>>>>>>>')
 				getCollection({
-					// bizType: 0, // 固定内容 不用穿
+					bizType: 0, // 固定内容
 					subBizType: item.parentType, // 内容下的子项   视频 VR  图片
 					relationId: item.id, // 作品ID
 					authorId: item.zeusId, // 作者ID
-					routeId: 5001, //路由ID
-					equipmentId: openId
 				}).then((res) => {
 					if (res.data?.code == 1) {
 						if (this.leftList[index].isCollection == false) {
@@ -184,8 +180,8 @@
 			// 获取数据
 			getList() {
 				const params = {
-					pageIndex: this.pagState.page,
-					pageSize: this.pagState.rows,
+					page: this.pagState.page,
+					row: this.pagState.rows,
 				}
 				if (this.currentVal == 0) {
 					getCaseList(params).then((res) => {
