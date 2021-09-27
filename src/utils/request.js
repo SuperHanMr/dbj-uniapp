@@ -83,7 +83,7 @@ instance.interceptors.request.use(
 instance.interceptors.response.use(
 	// 请求成功
 	async (res) => {
-		console.log(res, 'sadasd>>>>>>>>>>>>')
+			console.log(res, 'sadasd>>>>>>>>>>>>')
 			uni.hideLoading();
 
 			if (res.data.code !== 1) {
@@ -101,15 +101,16 @@ instance.interceptors.response.use(
 			uni.hideLoading();
 			if (error.response && error.response.status === 401) {
 				//刷新token
-					uni.showModal({
-						title: '提示',
-						content: '用户信息已过期,请重新登录',
-						success: function(res) {
-							uni.navigateTo({
-								url: "/pages/login/login",
-							});
-						}
-					});
+				uni.showModal({
+					title: '提示',
+					showCancel: false,
+					content: '用户信息已过期,请重新登录',
+					success: function(res) {
+						uni.navigateTo({
+							url: "/pages/login/login",
+						});
+					}
+				});
 
 				// return new Promise((resolve, reject) => {
 				// 	failRequestList.push({
@@ -123,6 +124,7 @@ instance.interceptors.response.use(
 			} else if (error.response && error.response.status === 3504) {
 				uni.showModal({
 					title: '提示',
+					showCancel: false,
 					content: '您未登录或者登录已超时,请先登录！',
 					success: function(res) {
 						uni.navigateTo({

@@ -3,7 +3,7 @@
     <view class="content">
       <grabHomePage class="home-page" :personData='personData'></grabHomePage>
       <view class="msg-btn">
-        <view class="content">
+        <view class="content" @click="toSend">
           <view class="icon"></view>
           <text>发消息</text>
         </view>
@@ -12,7 +12,7 @@
     
 		<bottom-btn style="width: 100%;" :showDefaultBtn="false">
 		  <view class="btn">
-		    <view class="btn-left" @click="change">
+		    <view class="btn-left" @click="toReplace">
 		      <image src="" mode=""></image>
 		      <text>申请修改</text>
 		    </view>
@@ -61,6 +61,11 @@
 					url:"/sub-decorate/pages/replace-worker/replace-worker?id="+this.id
 				})
 			},
+      toSend(){
+        // uni.navigateTo({
+        // 	url:"/sub-decorate/pages/replace-worker/replace-worker?id="+this.id
+        // })
+      },
 			submit(){
         sureGrab({serveId:this.id}).then(res=>{
           uni.showToast({

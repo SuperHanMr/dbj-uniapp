@@ -1,13 +1,13 @@
 <template>
   <view class="design-list">
-    <service-content-card class="card-item" v-for="(item, index) in dataList" :key="item.product.spuId"
+    <service-content-card class="card-item" v-for="(item, index) in dataList" :key="item.product.spuId + ''"
       :insideArea="insideArea" :content="item">
       <template slot="radio">
-        <dbj-radio class="card-radio" :value="item.product.spuId + ''" :checked="checkedId === item.product.spuId + ''"
+        <dbj-radio class="card-radio" :value="item.product.spuId + ''" :checked="checkedSpuId === item.product.spuId + ''"
           @change="radioChange"></dbj-radio>
       </template>
     </service-content-card>
-    <view v-if="isAllDataLoaded">~我也是有底线的</view>
+    <view v-if="isAllDataLoaded" style="padding: 24rpx;text-align: center;font-size: 26rpx;">~我也是有底线的~</view>
   </view>
 </template>
 
@@ -29,7 +29,7 @@
     data() {
       return {
         dataList: [],
-        checkedId: "",
+        checkedSpuId: "",
         title: null,
         categoryId: null,
         serviceType: null,
@@ -43,13 +43,13 @@
     onLoad(option) {
       const {
         insideArea,
-        id,
+        spuId,
         categoryId,
         name,
         serviceType,
         areaId
       } = option
-      this.checkedId = id + ""
+      this.checkedSpuId = spuId
       this.title = name
       this.categoryId = categoryId
       this.serviceType = serviceType
@@ -89,15 +89,12 @@
         })
       },
       radioChange(obj) {
-        this.checkedId = obj.value
-        let tmp = this.dataList.filter(t => t.id == Number(obj.value))[0]
+        this.checkedSpuId = obj.value + ''
+        let tmp = this.dataList.filter(t => t.product.spuId == Number(obj.value))[0]
         uni.$emit('selectedServer', {
           serviceType: this.serviceType,
           values: tmp
         });
-        setTimeout(() => {
-          console.log(getApp().globalData)
-        }, 0)
       }
     }
   }

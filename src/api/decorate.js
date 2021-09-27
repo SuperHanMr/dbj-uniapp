@@ -133,6 +133,23 @@ export function getSkuList(params) {
 	return request.get("/product/app/products/relation/related/skus/list?"+str)
 }
 
+//个人主页关注推荐
+export function queryAttention(params) {
+	return request.post("/app/base/interactive/add" ,params)
+}
+
+//查询个人主页关注推荐
+export function getAttention(params) {
+  const str = objectToUrlString(params)
+	return request.get("/app/base/interactive/participated?"+str)
+}
+
+//查询个人主页评价
+export function getComments(params) {
+  // const str = objectToUrlString(params)
+	return request.get("/pm/app/commentSetting/getComments",{params})
+}
+
 //获取施工交付内容
 export function getComplateDetail(params) {
 	return request.get(`/pm/app/worker/decoration/trend/getCompletionLogById/${params.projectId}/${params.serveId}`)

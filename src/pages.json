@@ -21,6 +21,7 @@
 			"path": "pages/login/login",
 			"style": {
 				"navigationBarTitleText": "用户登录",
+				"navigationStyle": "custom",
 				"usingComponents": {
 					"gome-login": "/wxcomponents/gome-login/loginEmpower"
 				}
@@ -552,13 +553,13 @@
 						"enablePullDownRefresh": true
 					}
 				},
-        {
-          "path": "pages/materials-list/materials-list",
-          "style": {
-          	"navigationBarTitleText": "更换商品",
-          	"enablePullDownRefresh": true
-          }
-        },
+				{
+					"path": "pages/materials-list/materials-list",
+					"style": {
+						"navigationBarTitleText": "更换商品",
+						"enablePullDownRefresh": true
+					}
+				},
 				{
 					"path": "pages/no-house-decorate/no-house-decorate",
 					"style": {
@@ -858,14 +859,22 @@
 						"navigationStyle": "custom",
 						"enablePullDownRefresh": true
 					}
-				}
+				},
+        {
+        	"path": "pages/person-page/person-dynamic-list",
+        	"style": {
+        		"navigationBarTitleText": "全部动态"
+
+        	}
+        },
+        {
+        	"path": "pages/person-page/person-evaluate-list",
+        	"style": {
+        		"navigationBarTitleText": "全部评价"
+
+        	}
+        }
 			]
 		}
-	],
- "preloadRule": {
-	 "pages/home/index/index": {   //想要实现预加载的页面名称
-      "network": "wifi", //指定网络 all 不限网络   wifi：仅wifi
-      "packages": ["sub-home","sub-decorate","sub-other","sub-classify","sub-my"] //分包的 root 或 name
-    }
- }
+	]
 }

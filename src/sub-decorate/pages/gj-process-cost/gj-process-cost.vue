@@ -71,8 +71,12 @@
       this.serviceType = serviceType || option.serviceType
       this.projectId = projectId || option.projectId
       this.customerId = customerId || option.customerId
-      this.pushTitle = pushTitle || "工序费购买"
-      this.obtainType = obtainType || option.obtainType
+      this.pushTitle = serviceName || "工序费购买"
+      if(obtainType === 0) {
+        this.obtainType = obtainType
+      } else {
+        this.obtainType = obtainType || option.obtainType
+      }
     },
     onShow() {
       this.getDataList()
@@ -230,7 +234,9 @@
             t.itemList.forEach(it => {
               it.checked = true
               it.isEdit = false
-              this.checkedIds.push(it.id)
+              if(it.inServiceArea && !it.selling) {
+                this.checkedIds.push(it.id)
+              }
             })
           })
         }
@@ -410,6 +416,7 @@
 
   .process-cost-list {
     padding: 0 32rpx;
+    background-color: #fff;
   }
 
   .payment-wrap {
