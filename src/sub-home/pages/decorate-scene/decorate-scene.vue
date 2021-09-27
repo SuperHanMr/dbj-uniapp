@@ -159,24 +159,33 @@
 					<view class="noCommentText">暂无评论~</view>
 				</view>
 				<view class="commentList" v-if="comments.length">
-					<view class="commentItem" bindlongpress="deleteComment(item.commentId)" @click="commentItemC(item.nickname,item.commentId)" v-for="(item,index) in comments" :key="item.commentId">
-						<view class="mainContent">
+					<view class="commentItem" v-for="(item,index) in comments" :key="item.commentId">
+						<view class="mainContent"
+							bindlongpress="deleteComment(item.commentId,item.zeusId)"
+							@click="commentItemC(item.nickname,item.commentId)">
 							<image class="avatar" :src="item.avatar"></image>
 							<view class="commentInfo">
 								<view class="info">
-									<view class="userName">{{item.nickname}}</view>
-									<view class="role">{{item.labelName}}</view>
+									<view class="userInfo">
+										<view class="userName">{{item.nickname}}</view>
+										<view class="role">{{item.labelName}}</view>
+									</view>
 									<view class="date">{{item.time}}</view>
 								</view>
 								<view class="text">{{item.content}}</view>
 							</view>
 						</view>
-						<view class="reply" @click="replyItemC(replyItem.nickname,replyItem.commentId,index)" v-for="replyItem in item.secondComments" :key="replyItem.commentId">
+						<view class="reply"
+							bindlongpress="deleteComment(replyItem.commentId,replyItem.zeusId)"
+							@click="replyItemC(replyItem.nickname,replyItem.commentId,index)"
+							v-for="replyItem in item.secondComments" :key="replyItem.commentId">
 							<image class="avatar" :src="replyItem.avatar"></image>
 							<view class="replyInfo">
 								<view class="info">
-									<view class="userName">{{replyItem.nickname}}</view>
-									<view class="role">{{replyItem.labelName}}</view>
+									<view class="userInfo">
+										<view class="userName">{{replyItem.nickname}}</view>
+										<view class="role">{{replyItem.labelName}}</view>
+									</view>
 									<view class="date">{{replyItem.time}}</view>
 								</view>
 								<view class="text">回复
@@ -196,7 +205,14 @@
 						</view>
 					</view>
 				</view>
-				<view class="bottomComments" v-if="showInput"></view>
+				<view class="bottomDelete" v-if="showDelete">
+					<view class="deleteWrap">
+						<image class="img" src="../../static/ic_comment_delete@2x.png"></image>
+						<view class="delete">删除</view>
+					</view>
+					<view class="deleteCancel">取消</view>
+				</view>
+				<view class="bottomInputBox" v-if="showInput"></view>
 				<view class="bottomInput" v-if="showInput">
 					<input v-model="inputValue"
 						:cursor-spacing="10"
@@ -242,6 +258,7 @@
 				dynamicId: 0,
 				isInputFocus: false,
 				showInput: false,
+				showDelete: false,
 				commentId: 0,
 				commentIndex: 0,
 				inputName: "",
@@ -265,9 +282,45 @@
 			inputFocus(){
 				this.isInputFocus = true
 			},
-			deleteComment(commentId){
+			deleteComment(commentId,zeusId){
+				if(this.userId!==zeusId)return
+				this.showDelete = true
 				removeComment(commentId).then(data => {
 					this.commentC(this.dynamicId)
+				})
+			},
+			focusOnView(isFocus){
+				let deviceId = 0
+				uni.getSystemInfo({
+					success:res => {
+						deviceId = res.deviceId
+					}
+				})
+				// let obj = {
+				// 	customerId: this.userId,
+				// 	customerName: uni.getStorageSync("userInfo").nickName,
+				// 	customerAvatar: uni.getStorageSync("userInfo").avatarUrl,
+				// 	estateName: this.projectInfo.estateNeighbourhood,
+				// 	estateAddress: this.projectInfo.estateAddress
+				// }
+				console.log(this.houseStructure,'///')
+				let params = {
+					routeId: isFocus ? 1002:4001,
+					relationId: this.projectInfo.id,
+					authorId: this.projectInfo.estateOwnerId,
+					equipmentId: deviceId,
+					subBizType: this.houseStructure,
+					// jsonContent: JSON.stringify(obj)
+				}
+				setAttentions(params).then( data => {
+					if(data){
+						if(isFocus){
+							this.isSelfFocusOn = !this.isSelfFocusOn
+							this.estateFocusOnCount +=1
+						}else{
+							this.estateViewCount +=1
+						}
+					}
 				})
 			},
 			setReply(isReply){
@@ -345,11 +398,13 @@
 				})
 			},
 			commentItemC(name,commentId){
+				if(this.userId!==this.projectInfo.estateOwnerId)return
 				this.showInput = true
 				this.inputName = name
 				this.commentId = commentId
 			},
 			replyItemC(name,replyId,commentIndex){
+				if(this.userId!==this.projectInfo.estateOwnerId)return
 				this.isReply = true
 				this.showInput = true
 				this.inputName = name
@@ -357,33 +412,7 @@
 				this.commentIndex = commentIndex
 			},
 			focusC(){
-				let deviceId = 0
-				uni.getSystemInfo({
-					success:res => {
-						deviceId = res.deviceId
-					}
-				})
-				// let obj = {
-				// 	customerId: this.userId,
-				// 	customerName: uni.getStorageSync("userInfo").nickName,
-				// 	customerAvatar: uni.getStorageSync("userInfo").avatarUrl,
-				// 	estateName: this.projectInfo.estateNeighbourhood,
-				// 	estateAddress: this.projectInfo.estateAddress
-				// }
-				console.log(this.houseStructure,'///')
-				let params = {
-					routeId: 1002,
-					relationId: this.projectInfo.id,
-					authorId: this.projectInfo.estateOwnerId,
-					equipmentId: deviceId,
-					subBizType: this.houseStructure,
-					// jsonContent: JSON.stringify(obj)
-				}
-				setAttentions(params).then( data => {
-					if(data){
-						this.isSelfFocusOn = !this.isSelfFocusOn
-					}
-				})
+				this.focusOnView(true)
 			},
 			selectC(){
 				this.showNodeType=true
@@ -426,7 +455,7 @@
 			},
 			toCost(){
 				uni.navigateTo({
-				  url:'/sub-decorate/pages/actuary-bill/actuary-bill?projectId='+this.projectInfo.id
+				  url: `/sub-decorate/pages/actuary-bill/actuary-bill?projectId=${this.projectInfo.id}&isActuarial=2`
 				})
 			},
 			requestSelectOptions(){
@@ -451,8 +480,7 @@
 						this.estateFocusOnCount = data.estateFocusOnCount
 						this.estateViewCount = data.estateViewCount
 						this.isSelfFocusOn = data.isSelfFocusOn
-						
-						console.log(data)
+						this.focusOnView(false)
 					}
 				})
 			},
@@ -514,6 +542,44 @@
 </script>
 
 <style scoped>
+	.bottomDelete{
+		width: 100%;
+		height: fit-content;
+		background: #f4f4f4;
+		position: fixed;
+		left: 0;
+		bottom: 0;
+	}
+	.bottomDelete .deleteWrap{
+		width: 750rpx;
+		height: 112rpx;
+		background-color: #fff;
+		display: flex;
+		align-items: center;
+	}
+	.deleteWrap .img{
+		width: 26rpx;
+		height: 30rpx;
+		display: block;
+		margin-left: 40rpx;
+		margin-right: 24rpx;
+	}
+	.deleteWrap .delete{
+		width: 64rpx;
+		font-size: 32rpx;
+		color: #333333;
+	}
+	.bottomDelete .deleteCancel{
+		width: 750rpx;
+		height: 128rpx;
+		background-color: #fff;
+		margin-top: 16rpx;
+		padding-bottom: 30rpx;
+		font-size: 32rpx;
+		color: #333333;
+		text-align: center;
+		line-height: 128rpx;
+	}
 	.bottomBox{
 		width: 100%;
 		height: 136rpx;
@@ -524,7 +590,6 @@
 		height: 120rpx;
 		padding-bottom: 40rpx;
 		background: #ffffff;
-		/* border-top: 2rpx solid #efefef; */
 		position: fixed;
 		left: 0rpx;
 		bottom: 0rpx;
@@ -580,7 +645,7 @@
 		bottom: 0;
 		z-index: 999;
 	}
-	.bottomComments{
+	.bottomInputBox{
 		width: 100%;
 		height: 120rpx;
 		padding-bottom: 40rpx;
@@ -658,6 +723,7 @@
 	}
 	.commentInfo .info{
 		display: flex;
+		justify-content: space-between;
 		align-items: center;
 		margin-top: 8rpx;
 		margin-bottom: 8rpx;
@@ -669,9 +735,13 @@
 		color: #333333;
 		line-height: 40rpx;
 	}
+	.info .userInfo{
+		display: flex;
+		align-items: center;
+	}
 	.info .userName{
 		width: fit-content;
-		width: 92rpx;
+		max-width: 122rpx;
 		height: 36rpx;
 		margin-right: 8rpx;
 		text-overflow: ellipsis;
@@ -694,7 +764,7 @@
 		font-size: 26rpx;
 		color: #999999;
 		line-height: 36rpx;
-		margin-left: 336rpx;
+		/* margin-left: 336rpx; */
 	}
 	.commentItem .reply{
 		width: 100%;
@@ -852,7 +922,6 @@
 	.sceneContainer>.header{
 		width: 100%;
 		height: 400rpx;
-		/* background-color: pink; */
 		background-repeat: no-repeat;
 		background-image: url('http://dbj.dragonn.top/static/mp/dabanjia/images/home/bg%402x.png');
 	}
@@ -1207,7 +1276,8 @@
 	}
 	.acitonInfo .evidence{
 		width: 100%;
-		height: 394rpx;
+		/* height: 394rpx; */
+		height: fit-content;
 		margin: 16rpx 0;
 		display: flex;
 		justify-content: space-between;

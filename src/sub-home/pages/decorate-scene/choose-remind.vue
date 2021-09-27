@@ -1,6 +1,6 @@
 <template>
 	<view class="choose-remind">
-		<view class="remindItem" v-for="item in list" :key="item.userId">
+		<view class="remindItem" v-for="(item,index) in list" :key="item.userId">
 			<view class="userInfo">
 				<image class="avatar" :src="item.avatar"></image>
 				<view class="userName">{{item.name}}</view>
@@ -9,7 +9,7 @@
 			<image v-if="!item.isChecked" @click="checkC(index)" class="img" src="../../static/check@2x.png"></image>
 			<image v-else @click="checkC(index)" class="img" src="../../static/checked@2x.png"></image>
 		</view>
-		
+		<view class="confirm" @click="confirmC">确认</view>
 	</view>
 </template>
 
@@ -33,23 +33,29 @@
 			checkC(index){
 				this.list[index].isChecked=!this.list[index].isChecked
 			},
+			confirmC(){
+				this.list.map(item => {
+					if(!item.isChecked)return
+					this.reminderList.push({
+						userId: item.userId,
+						userName: item.name,
+						userType: item.roleType,
+						phone: item.phone
+					})
+				})
+				uni.$emit("sendReminders",this.reminderList)
+				uni.navigateBack({
+					delta: 1
+				})
+			},
 			requestPage(){
 				getAddressBook(this.projectId).then(data => {
-					console.log(data)
 					if(data){
 						if(!data.length)return
 						this.list = data.map(item => {
-							this.reminderList.push({
-								userId: item.userId,
-								userName: item.name,
-								userType: item.roleType,
-								phone: item.phone
-							})
-							
 							item.isChecked = false
 							return item
 						})
-						uni.$emit("sendReminders",this.reminderList)
 					}
 				})
 			}
@@ -63,6 +69,21 @@
 		height: fit-content;
 		overflow: auto;
 		background: #ffffff;
+	}
+	.confirm{
+		position: fixed;
+		left: 0;
+		bottom: 0;
+		width: 686rpx;
+		height: 88rpx;
+		margin: 24rpx 32rpx 64rpx;
+		background: linear-gradient(135deg,#00c2b2, #00c2bf);
+		border-radius: 12rpx;
+		font-size: 32rpx;
+		font-weight: 500;
+		color: #ffffff;
+		text-align: center;
+		line-height: 88rpx;
 	}
 	.remindItem{
 		width: 686rpx;
@@ -88,6 +109,7 @@
 		width: 88rpx;
 		height: 88rpx;
 		display: block;
+		border-radius: 50%;
 	}
 	.userInfo .userName{
 		width: fit-content;
