@@ -118,14 +118,13 @@
 				<image class="img" :src="item.mediaType==1?item.roomLiveMediaVO.scaleImg:item.roomVideoMediaVO.scaleImg"
 					mode=""></image>
 				<view v-if="item.mediaType==1" class="top-content">
-					{{item.roomVideoMediaVO.onLineCount}}人正在观看
+					{{item.roomLiveMediaVO.onLineCount}}人正在观看
 				</view>
 				<image v-if="item.mediaType==2" class="top-content-img"
 					src="http://dbj.dragonn.top/%20%20static/mp/dabanjia/images/home/video_review.png">
-					{{item.roomVideoMediaVO.onLineCount}}人正在观看
 				</image>
 				<view class="name-content">
-					{{item.roomVideoMediaVO.title}}
+					{{item.mediaType==1?item.roomLiveMediaVO.title:item.roomVideoMediaVO.title}}
 				</view>
 			</view>
 		</view>
@@ -292,6 +291,9 @@
 			onLiveClick(item) {
 				if (item.mediaType == 1) {
 					//直播
+					uni.navigateTo({
+						url:`../../../sub-home/pages/lives-room/lives-room?livePreview=${item.roomLiveMediaVO.livePreview}&roomId=${item.roomLiveMediaVO.roomId}`
+					})
 				} else if (item.mediaType == 2) {
 					console.log(item);
 					//回放
@@ -536,7 +538,6 @@
 	.videos {
 		height: 80rpx;
 		align-items: center;
-		padding: 0 24rpx;
 	}
 
 	.video-title {
@@ -677,8 +678,8 @@
 
 			.top-content {
 				position: absolute;
-				top: 24rpx;
-				left: 24rpx;
+				top: 12rpx;
+				left: 12rpx;
 				padding: 12rpx;
 				height: 28rpx;
 				background: rgba(0, 0, 0, 0.35);

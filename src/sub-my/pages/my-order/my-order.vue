@@ -446,7 +446,6 @@ export default {
     onRefresh(e) {
       this.triggered = true;
 			this.getOrderList()
-  
     },
 
     // 取消订单

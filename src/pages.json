@@ -135,7 +135,7 @@
 			{
 				"pagePath": "pages/decorate/index/index",
 				"iconPath": "static/tab-bar/decorate.png",
-				"selectedIconPath": "static/tab-bar/decorate.png",
+				"selectedIconPath": "static/tab-bar/decorate_s.png",
 				"text": "装修"
 			},
 			{
