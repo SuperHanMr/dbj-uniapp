@@ -2,7 +2,7 @@
   <view class="evaluate-item" :class="{'border-none':last}">
     <view class="item-top">
       <view class="name">{{item.userName}}</view>
-      <view class="time">{{item.createTime}}</view>
+      <view class="time">{{item.createTime | formatDate}}</view>
     </view>
     <view class="item-content">
       <view class="evaluate-list">
@@ -22,10 +22,16 @@
 </template>
 
 <script>
+  import {
+    formatDate
+  } from '@/utils/common.js'
   export default{
     props:{
       item:{},
       last:false,
+    },
+    filters: {
+      formatDate
     },
     methods:{
       toBuy(item){
