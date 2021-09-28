@@ -7,7 +7,7 @@
       <view class="right">综合好评率 {{totalNum*100}}%</view>
     </view>
     <scroll-view :scroll-y="true" style="height:100%" @scrolltolower="bindscrolltolower">
-      <personEvaliateItem :last='index===evaluate.list.length-1' v-for="item in evaluate.list" :item='item'></personEvaliateItem>
+      <personEvaliateItem :last='index===evaluate.list.length-1' v-for="item in evaluate.list" :item='item' :key='item.id'></personEvaliateItem>
     </scroll-view>
   </view>
 </template>
