@@ -1,7 +1,10 @@
 <template>
   <view class="person-case person-content-item">
     <view class="title">Ta的案例</view>
-    <designCase class="design-case" :isPerson='true' :leftList="leftList" :rightList="rightList" :leftHeight="leftHeight" :rightHeight="rightHeight" ></designCase>
+    <designCase v-if="pagState.totalRows" class="design-case" :isPerson='true' :leftList="leftList" :rightList="rightList" :leftHeight="leftHeight" :rightHeight="rightHeight" ></designCase>
+    <view class="empty" v-else>
+      暂无案例
+    </view>
     <view v-if="pagState.totalPage>pagState.page" @click="getList" class="click-text">展开更多案例</view>
   </view>
 </template>
@@ -16,6 +19,9 @@
   export default{
     components:{
       designCase
+    },
+    props:{
+      personId:0
     },
     data(){
       return{
@@ -101,7 +107,7 @@
       	const params = {
       		page: this.pagState.page,
       		rows: this.pagState.rows,
-          zeusId:6873
+          zeusId:this.personId
       	}
       		getCaseList(params).then((res) => {
       			if (res && res.list) {
