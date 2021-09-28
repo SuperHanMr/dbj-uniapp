@@ -14,7 +14,9 @@
       <uni-search-bar  @confirm="searchConfirm" clearButton="auto" cancelButton="false" focus="true" v-else>
         <uni-icons slot="searchIcon"/>
       </uni-search-bar>
-      <sort-button class="sort-button" @click="sortList"></sort-button>
+      <div @click="sortList">
+        <sort-button class="sort-button" ></sort-button>
+      </div>
     </view>
     <scroll-view class="content" scroll-y="true"  @scrolltolower="loadMoreList"  lower-threshold="5">
      <uni-swipe-action v-if="listArr.length>0">
@@ -120,14 +122,14 @@
           })
       },
       sortList () {
+        this.isLoadMore = false
         if(!this.sort){
           this.sort = "price_asc"
-        }if(this.sort === "price_asc") {
+        }else if(this.sort === "price_asc") {
           this.sort = "price_desc"
-        }if(this.sort === "price_desc"){
+        }else if(this.sort === "price_desc"){
           this.sort = ""
         }
-        this.isLoadMore = false
         this.getList()
       },
       loadMoreList() {
