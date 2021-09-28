@@ -14,7 +14,7 @@
               <view class="price">¥
                 <text class="integer">{{item.convertedPrice.split('.')[0]}}</text>
                 <text class="decimals">.{{item.convertedPrice.split('.')[1]}}</text>
-                <text class="unit">/{{item.unitName}}</text>
+                <text class="unit"  v-if="item.unitName">/{{item.unitName}}</text>
               </view>
               <view class="service-tag" v-if="item.showMiddleServerTitle">中级服务</view>
             </view>
@@ -35,7 +35,12 @@
   import '../style/common.scss'
   export default{
     props:{
-      serviceData:[]
+      serviceData:{
+        type:Array,
+        default:()=>{
+          return[]
+        }
+      }
     },
     data(){
       return{
@@ -44,9 +49,13 @@
       }
     },
     watch:{
-      serviceData(){
-        this.serviceList = this.serviceData.slice(0,3);
-        console.log(this.serviceData)
+      serviceData:{
+        handler(){
+          console.log(this.serviceData)
+          this.serviceList = this.serviceData.slice(0,3);
+          console.log(this.serviceData)
+        },
+        immediate:true
       }
     },
     methods:{

@@ -2,7 +2,7 @@
   <view class="person-evaluate person-content-item">
     <view class="title">Ta的评价</view>
     <view class="">
-      <personEvaliateItem class="person-item" :last='index===evaluate.list.length-1' v-for="(item,index) in evaluate.list" :item='item'></personEvaliateItem>
+      <personEvaliateItem class="person-item" :last='index===evaluate.list.length-1' v-for="(item,index) in evaluate.list" :item='item' :key='item.id'></personEvaliateItem>
     </view>
     <view class="click-text" v-if="evaluate.totalPage>1" @click="toEvaluateList">查看全部评价<image src="" mode=""></image></view>
   </view>
