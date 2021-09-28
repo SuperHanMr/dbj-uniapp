@@ -208,7 +208,8 @@
 					"path": "pages/decorate-scene/decorate-scene",
 					"style": {
 						"navigationBarTitleText": "用户的家",
-						"enablePullDownRefresh": false
+						"enablePullDownRefresh": true,
+						"onReachBottomDistance": 100
 					}
 				},
 				{
@@ -229,14 +230,14 @@
 					"path": "pages/decorate-scene/decorate-calendar",
 					"style": {
 						"navigationBarTitleText": "装修日历",
-						"enablePullDownRefresh": false
+						"enablePullDownRefresh": true
 					}
 				},
 				{
 					"path": "pages/decorate-scene/memo",
 					"style": {
 						"navigationBarTitleText": "备忘录",
-						"enablePullDownRefresh": false
+						"enablePullDownRefresh": true
 					}
 				},
 				{

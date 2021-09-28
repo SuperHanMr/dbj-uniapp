@@ -8,10 +8,10 @@
 				<view class="title">装修动态</view>
 			</view>
 			<view class="noDynamics" v-if="!dynamics.length">
-				<image src="http://dbj.dragonn.top/static/mp/dabanjia/images/decorate/pic_empty%402x.png" class="noDynamicsImg"></image>
+				<image class="noDynamicsImg" src="http://dbj.dragonn.top/static/mp/dabanjia/images/decorate/pic_empty%402x.png"></image>
 				<view class="text">暂无装修动态</view>
 			</view>
-			<view class="list" v-else>
+			<scroll-view class="list" v-else>
 				<view class="item" v-for="(item,index) in dynamics" :key="item.id">
 					<image class="avatar" :src="item.avatar"></image>
 					<view class="acitonInfo">
@@ -24,15 +24,21 @@
 						</view>
 						<view class="report">{{item.content}}</view>
 						<view class="evidence">
-							<image class="img" :src="url" v-for="(url,index) in item.imagesList.slice(0,6)" :key="index"></image>
-							<!-- <imagePreview :list='item.imagesList' :imgWidth='192' :imgHeight="192" :lineSpace='10' :colSpace="11" :row="2"></imagePreview> -->
+							<imagePreview
+							  :list='item.imagesList'
+							  :imgWidth='192'
+							  :imgHeight="192"
+							  :lineSpace='10'
+							  :colSpace="11"
+							  :row="2"
+							></imagePreview>
 						</view>
 						<view class="footer">
 							<view class="actionType">{{item.recordName}}</view>
 						</view>
 					</view>
 				</view>
-			</view>
+			</scroll-view>
 		</view>
 	</view>
 </template>
@@ -48,17 +54,24 @@
 			formatDate
 		},
 		components:{
-			darkCalendar
+			darkCalendar,
+			imagePreview
 		},
 		data() {
 			return {
 				signeddates: [],
 				projectId: 89,
-				dynamics: []
+				dynamics: [],
+				dynamicPage: 1,
+				date: ""//选中日期
 			};
 		},
 		onLoad(option) {
 			// this.projectId = option.projectId 
+		},
+		onReachBottom() {
+			this.dynamicPage+=1;
+			this.filterByDate(this.date);
 		},
 		mounted(){
 			this.requestSigns()
@@ -80,17 +93,29 @@
 				})
 			},
 			filterByDate(date){
-				console.log('shaixuan')
+				this.date = date
 				let params = {
+					page: this.dynamicPage,
+					rows: 10,
 					projectId: this.projectId,
 					userTypes: [2,3],
 					recordDateStr: date
 				}
 				getDynamics(params).then(data => {
 					if(data){
-						let {list} = data
-						this.dynamics = list
-						console.log(data.list)
+						let {list,page} = data
+						this.dynamicPage = page
+						if(!list.length){
+							uni.showToast({
+								title:'没有更多数据了',icon:"none",
+							});
+						}
+						if(this.dynamicPage!==1){
+							this.dynamics = this.dynamics.concat(list || [])
+						}else{
+							this.dynamics = list || []
+						}
+						console.log(list)
 					}
 				})
 			}
@@ -103,7 +128,6 @@
 	.calendarWrap{
 		width: 100%;
 		height: 100%;
-		overflow: auto;
 		background: #f2f5f8;
 	}
 	.calendar{
@@ -112,8 +136,7 @@
 	}
 	.dynamic{
 		width: 100%;
-		height: 1200rpx;
-		overflow: auto;
+		height: fit-content;
 		margin-top: 24rpx;
 		margin-bottom: 80rpx;
 		background: #ffffff;
@@ -173,8 +196,7 @@
 	}
 	.list{
 		width: 100%;
-		height: 1200rpx;
-		overflow: auto;
+		height: fit-content;
 	}
 	.item{
 		width: 100%;
@@ -258,7 +280,7 @@
 		line-height: 32rpx;
 	}
 	.acitonInfo .header .date{
-		width: 136rpx;
+		width: 140rpx;
 		height: 34rpx;
 		font-size: 24rpx;
 		color: #999999;

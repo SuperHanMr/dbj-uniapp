@@ -47,7 +47,7 @@ export function getComments(params) {
     params
   });
 }
-export function expandReplies(params) {
+export function getReplies(params) {
   return request.get(`/app/generalComment/secondList`, {
     params
   });
