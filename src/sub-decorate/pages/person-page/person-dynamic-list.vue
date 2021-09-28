@@ -60,7 +60,7 @@
       requestDynamic(){
       	let params = 
       	 {
-      		prjectId: 46,
+      		projectId: 46,
       		userTypes: [2,3],
           page:this.pageInfo.page,
           rows:10

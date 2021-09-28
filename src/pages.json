@@ -135,7 +135,7 @@
 			{
 				"pagePath": "pages/decorate/index/index",
 				"iconPath": "static/tab-bar/decorate.png",
-				"selectedIconPath": "static/tab-bar/decorate.png",
+				"selectedIconPath": "static/tab-bar/decorate_s.png",
 				"text": "装修"
 			},
 			{
@@ -484,7 +484,8 @@
 					"path": "pages/pay-order/pay-success",
 					"style": {
 						"navigationBarTitleText": "",
-						"enablePullDownRefresh": false
+						"enablePullDownRefresh": false,
+            "navigationBarBackgroundColor": "#36d9cd"
 					}
 				},
 				{

@@ -1,8 +1,11 @@
 <template>
   <view class="person-evaluate person-content-item">
     <view class="title">Ta的评价</view>
-    <view class="">
+    <view class="" v-if="evaluate.list>0">
       <personEvaliateItem class="person-item" :last='index===evaluate.list.length-1' v-for="(item,index) in evaluate.list" :item='item' :key='item.id'></personEvaliateItem>
+    </view>
+    <view class="empty" v-else>
+      暂无评价
     </view>
     <view class="click-text" v-if="evaluate.totalPage>1" @click="toEvaluateList">查看全部评价<image src="" mode=""></image></view>
   </view>
@@ -43,6 +46,9 @@
         uni.navigateTo({
           url:'/sub-decorate/pages/person-page/person-evaluate-list?id='+this.personId
         })
+      },
+      getEvaluate(){
+        this.$emit('getEvaluate',this.evaluate.list.length)
       }
     }
   }

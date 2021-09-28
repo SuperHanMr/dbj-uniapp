@@ -74,14 +74,14 @@
           <view class="item" v-if="personData.roleId===3||personData.roleId===4||personData.roleId===5" :class="{'item-active':currentItem==='dynamicTop'}" @click="toItem('dynamicTop')">
             动态</view>
           <view class="item" :class="{'item-active':currentItem==='evaluateTop'}" @click="toItem('evaluateTop')">
-            评价<text>16</text></view>
+            评价<text>{{evaluateNum}}</text></view>
         </view>
       </view>
       <view class="content">
         <personService v-if="personData.roleId===1||personData.roleId===6" :serviceData='serviceData'></personService>
-        <personCase class="person-case" v-if="personData.roleId===1||personData.roleId===2||personData.roleId===6"></personCase>
-        <personDynamic  class="person-dynamic" v-if="personData.roleId===3||personData.roleId===4||personData.roleId===5"></personDynamic>
-        <personEvaluate class="person-evaluate"></personEvaluate>
+        <personCase :personId='personId' class="person-case" v-if="personData.roleId===1||personData.roleId===2||personData.roleId===6"></personCase>
+        <personDynamic :personId='personId' class="person-dynamic" v-if="personData.roleId===3||personData.roleId===4||personData.roleId===5"></personDynamic>
+        <personEvaluate :personId='personId' class="person-evaluate" @getEvaluate='getEvaluate'></personEvaluate>
       </view>
     </view>
   </view>
@@ -128,15 +128,16 @@
     computed:{
       navStyle(){
         return {
-          opacity: this.opacityNum
+          opacity: this.opacityNum,
+          evaluateNum:0
         }
       }
     },
     onPullDownRefresh() {
-      this.getCaseList()
+      this.init()
     },
     onLoad(e){
-      this.personId = getApp().globalData.decorateMsg.serverId||6820
+      this.personId = e.personId||6820
       this.getGrabDetail()
     },
     mounted() {
@@ -196,6 +197,7 @@
       getGrabDetail(){
         getGrabDetail(this.personId).then(res=>{
           this.personData = res
+          this.personData.roleId = 3
           this.getAttention(1001,'isAttention')
           this.getAttention(2001,'isRecommend')
         })
@@ -256,6 +258,9 @@
         getSkuList(data).then(res=>{
           this.serviceData = res
         })
+      },
+      getEvaluate(num){
+        this.evaluateNum = num
       }
     }
   }

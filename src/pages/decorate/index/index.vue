@@ -445,6 +445,7 @@
       },
       // 根据查询出来的项目信息处理
       initData(obj) {
+        console.log(123)
         this.getMsgNum()
         this.who = this.currentProject.relegationType == 2 ? "亲友" : "我"
         this.currentEstate = this.estateList.filter(t => t.id === obj.estateId)[0]
@@ -576,6 +577,8 @@
           getMsgNum(this.currentProject.projectId).then(res => {
             this.msgNum = res.count
           })
+        }else{
+          this.msgNum = 0
         }
       }
     },
