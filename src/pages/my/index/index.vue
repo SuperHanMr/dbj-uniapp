@@ -154,12 +154,11 @@ export default {
       this.isLogin = true;
       this.userInfo = getApp().globalData.userInfo;
       this.userName = this.userInfo.name;
+			queryToBePaidOrderNum().then(e=>{
+				console.log("!!!!!!!!!!!!! data=", e);
+				this.waitPayOrderNum = e ? e : 0
+			})
     }
-		queryToBePaidOrderNum().then(e=>{
-      console.log("!!!!!!!!!!!!! data=", e);
-			
-			this.waitPayOrderNum = e ? e : 0
-		})
 		
   },
 
