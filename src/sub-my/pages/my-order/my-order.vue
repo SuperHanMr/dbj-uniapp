@@ -1,5 +1,5 @@
 <template>
-  <view class="fill" >
+  <view class="fill">
     <view class="top-tab">
       <view
         v-for="(item,index) in tabList"
@@ -13,12 +13,22 @@
       </view>
     </view>
     <view class="line" />
-    <swiper class="swiper" :class="{empty:orderListLength<=0}" :style="{paddingBottom:systemBottom}" :current="currentIndex" :duration="200" @change="swiperChange" >
-      <swiper-item  v-for="(item,tabindex) in tabList":key="item">
+    <swiper
+      class="swiper"
+      :class="{empty:orderListLength<=0}"
+      :style="{paddingBottom:systemBottom}"
+      :current="currentIndex"
+      :duration="200"
+      @change="swiperChange"
+    >
+      <swiper-item
+        v-for="(item,tabindex) in tabList"
+        :key="item"
+      >
         <scroll-view
           class="scroll-view"
-					:enable-back-to-top="true" 
-					lower-threshold="10"
+          :enable-back-to-top="true"
+          lower-threshold="10"
           scroll-y="true"
           refresher-background="#FFF"
           :refresher-triggered="triggered"
@@ -26,18 +36,33 @@
           refresher-enabled="true"
           @scrolltolower="onLoadMore"
         >
-          <view v-if=" orderList.length > 0 "  class="swiper-item">
-            <view  class="order-container" v-for="item in orderList" :key="item.id">
+          <view
+            v-if=" orderList.length > 0 "
+            class="swiper-item"
+          >
+            <view
+              class="order-container"
+              v-for="item in orderList"
+              :key="item.id"
+            >
               <view class="header">
-                <view class="store-name"  @click="gotoShop(item)">
+                <view
+                  class="store-name"
+                  @click="gotoShop(item)"
+                >
                   <text v-if="item.orderStatus == 0 ">{{item.orderName?item.orderName:item.storeName}}</text>
                   <text v-else>{{item.storeName}}</text>
-                  <image v-if="!item.orderName" src="../../../static/order/ic_more@2x.png" mode=" "/>
+                  <image
+                    v-if="!item.orderName"
+                    src="../../../static/order/ic_more@2x.png"
+                    mode=" "
+                  />
                 </view>
                 <view
                   class="order-status"
-                  :class="{active: item.orderStatus == 2 || item.orderStatus == 3}">
-								<!-- {{item.orderStatusName}} -->
+                  :class="{active: item.orderStatus == 2 || item.orderStatus == 3}"
+                >
+                  <!-- {{item.orderStatusName}} -->
                   {{
 										item.orderStatus == 1
 										?(item.shipmentStatus == 0?"待发货":item.shipmentStatus == 1 ? "已发货" :"已收货")//发货状态（1待发货，2已发货）
@@ -48,8 +73,11 @@
 
               <view class="body">
                 <!-- 套餐 -->
-                <view class="product-info" v-if="item.orderStatus == 0 && item.orderName && item.details.length>1"
-                  @click="goToDetail(item)" >
+                <view
+                  class="product-info"
+                  v-if="item.orderStatus == 0 && item.orderName && item.details.length>1"
+                  @click="goToDetail(item)"
+                >
                   <view class="product-img">
                     <scroll-view
                       scroll-x
@@ -74,7 +102,11 @@
                 </view>
 
                 <!-- 非套餐 -->
-                <view v-else v-for="item2 in item.details"  :key="item2.id">
+                <view
+                  v-else
+                  v-for="item2 in item.details"
+                  :key="item2.id"
+                >
                   <order-item
                     :dataList="item2"
                     @handleDetail="goToDetail(item)"
@@ -84,22 +116,25 @@
               </view>
 
               <view class="price">
-								<view class="total-pay">
-									<text>
-										<text>总价</text>
-										<text style="font-size:18rpx;">￥</text>
-										<text>{{handlePrice(item.orderTotalAmount)[0]}}.</text>
-										<text style="font-size:18rpx;">{{handlePrice(item.orderTotalAmount)[1]}}</text>
-									</text>
-									<text v-if="item.discount">
-										<text style="margin-left: 18rpx;">优惠</text>
-										<text style="font-size:18rpx;">￥</text>
-										<text>{{handlePrice(item.discount)[0]}}.</text>
-										<text style="font-size:18rpx;">{{handlePrice(item.discount)[1]}}</text>
-									</text>
-								</view>
-								
-								<view v-if="item.orderStatus == 0" class="need-pay" >
+                <view class="total-pay">
+                  <text>
+                    <text>总价</text>
+                    <text style="font-size:18rpx;">￥</text>
+                    <text>{{handlePrice(item.orderTotalAmount)[0]}}.</text>
+                    <text style="font-size:18rpx;">{{handlePrice(item.orderTotalAmount)[1]}}</text>
+                  </text>
+                  <text v-if="item.discount">
+                    <text style="margin-left: 18rpx;">优惠</text>
+                    <text style="font-size:18rpx;">￥</text>
+                    <text>{{handlePrice(item.discount)[0]}}.</text>
+                    <text style="font-size:18rpx;">{{handlePrice(item.discount)[1]}}</text>
+                  </text>
+                </view>
+
+                <view
+                  v-if="item.orderStatus == 0"
+                  class="need-pay"
+                >
                   <text v-if="item.freight && item.handlingFees">需付款(含运费、搬运费)</text>
                   <text v-if="item.freight && !item.handlingFees">需付款(含运费)</text>
                   <text v-if=" !item.freight && item.handlingFees">需付款(含搬运费)</text>
@@ -109,24 +144,40 @@
                     <text style="font-size: 32rpx;">{{handlePrice(item.payAmount)[0]}}.</text>
                     <text style="font-size:18rpx;">{{handlePrice(item.payAmount)[1]}}</text>
                   </text>
-								</view>
-								
-								<view v-else class="need-pay">
-								  <text>实付</text>
-								  <text style="color:#FF3347;margin-left: 8rpx;">
-								    <text style="font-size:18rpx;">￥</text>
-								    <text style="font-size: 32rpx;">{{handlePrice(item.totalActualIncomeAmount)[0]}}.</text>
-								    <text style="font-size:18rpx;">{{handlePrice(item.totalActualIncomeAmount)[1]}}</text>
-								  </text>
-								</view>
+                </view>
+
+                <view
+                  v-else
+                  class="need-pay"
+                >
+                  <text>实付</text>
+                  <text style="color:#FF3347;margin-left: 8rpx;">
+                    <text style="font-size:18rpx;">￥</text>
+                    <text style="font-size: 32rpx;">{{handlePrice(item.totalActualIncomeAmount)[0]}}.</text>
+                    <text style="font-size:18rpx;">{{handlePrice(item.totalActualIncomeAmount)[1]}}</text>
+                  </text>
+                </view>
               </view>
 
-              <view  class="line"  v-if="item.orderStatus == 0 && (item.showCancelOrderTime || item.showCancelBtn || item.showToPayBtn)" />
-							
-              <view class="footer"  v-if="item.orderStatus == 0 && (item.showCancelOrderTime || item.showCancelBtn || item.showToPayBtn)" :class="{buttonContainer:!item.showCancelOrderTime}">
-								<view  v-if="item.showCancelOrderTime"  class="set-interval">
-                  <image src="../../static/ic_time@2x.png"  mode=""/>
-									
+              <view
+                class="line"
+                v-if="item.orderStatus == 0 && (item.showCancelOrderTime || item.showCancelBtn || item.showToPayBtn)"
+              />
+
+              <view
+                class="footer"
+                v-if="item.orderStatus == 0 && (item.showCancelOrderTime || item.showCancelBtn || item.showToPayBtn)"
+                :class="{buttonContainer:!item.showCancelOrderTime}"
+              >
+                <view
+                  v-if="item.showCancelOrderTime"
+                  class="set-interval"
+                >
+                  <image
+                    src="../../static/ic_time@2x.png"
+                    mode=""
+                  />
+
                   <view class="time-text">
                     <text class="remainPayTime">剩余支付时间</text>
                     <uni-countdown
@@ -140,7 +191,10 @@
                   </view>
 
                 </view>
-								<view  v-if="item.showToPayBtn || item.showCancelBtn"  class="button">
+                <view
+                  v-if="item.showToPayBtn || item.showCancelBtn"
+                  class="button"
+                >
                   <button
                     v-if="item.showCancelBtn"
                     type="default"
@@ -159,11 +213,17 @@
 
                 </view>
               </view>
-              <view  class="line" v-if="item.orderStatus == 1 && item.shipmentStatus == 2" />
-              <view  class="footer buttonContainer " v-if="item.orderStatus == 1 && item.shipmentStatus == 2">
+              <view
+                class="line"
+                v-if="item.orderStatus == 1 && item.shipmentStatus == 2"
+              />
+              <view
+                class="footer buttonContainer "
+                v-if="item.orderStatus == 1 && item.shipmentStatus == 2"
+              >
                 <view class="button">
                   <button
-                   type="default"
+                    type="default"
                     size="mini"
                     class="go-to-pay"
                     @click="handleConfirmReceipt(item)"
@@ -173,7 +233,10 @@
             </view>
           </view>
 
-          <view v-else class="swiper-item empty-container">
+          <view
+            v-else
+            class="swiper-item empty-container"
+          >
             <view class="empty-page">
               <view class="line" />
               <view class="content ">
@@ -184,39 +247,45 @@
                 <text>暂无相关订单~</text>
               </view>
             </view>
-					</view>
-				</scroll-view>
-			</swiper-item>
+          </view>
+        </scroll-view>
+      </swiper-item>
 
     </swiper>
 
     <!-- 取消订单的弹框 -->
-		<popup-dialog 
-			ref="cancleOrder"  
-			:title="title" 
-			@close="cancelOrderClose" 
-			@confirm="cancleConfirm"
-		/>
+    <popup-dialog
+      ref="cancleOrder"
+      :title="title"
+      @close="cancelOrderClose"
+      @confirm="cancleConfirm"
+    />
     <!-- 确认收货的弹框 -->
-		<popup-dialog
-			ref="confirmReceipt"
-			:title="title"
-			@close="confirmReceiptClose"
-			@confirm="receiptConfirm"
-		/>
+    <popup-dialog
+      ref="confirmReceipt"
+      :title="title"
+      @close="confirmReceiptClose"
+      @confirm="receiptConfirm"
+    />
   </view>
 </template>
 
 <script>
-import { getOrderList, orderPay, cancelOrder, confirmReceiptOrder,} from "@/api/order.js";
+import {
+  getOrderList,
+  orderPay,
+  cancelOrder,
+  confirmReceiptOrder,
+} from "@/api/order.js";
 export default {
   data() {
     return {
       tabList: ["全部", "待付款", "进行中", "已完成", "已关闭"],
       triggered: false, //控制刷新显示字段
-			title:"",
+      title: "",
+      firstEntry: false,
 
-      currentIndex: 4,
+      currentIndex: -1,
       orderStatus: -1, //订单状态（-1全部,0待付款，1进行中，2已完成 3已关闭）
       rows: 15,
 
@@ -231,48 +300,36 @@ export default {
       orderListLength: 1,
 
       id: -1,
-			systemBottom: "",
-			reRefresh:false,
-			areaId:"",
+      systemBottom: "",
+      areaId: "",
     };
   },
-	mounted(e) {
-		const menuButtonInfo = uni.getMenuButtonBoundingClientRect();
-		this.containerBottom = menuButtonInfo.bottom
-		this.systemBottom = menuButtonInfo.bottom + "rpx";
-		this.systemHeight = menuButtonInfo.bottom + this.num + "rpx";
-	
-	},
-	watch:{
-		reRefresh(newVal,oldVal){
-			console.log("newVal=",newVal,"oldVal=",oldVal)
-			if(newVal){
-				this.lastId[this.currentIndex]=-1
-				switch(this.currentIndex){
-					case 0:
-						this.orderList0=[];
-						this.getOrderList()
-						break;
-					case 1:
-						this.orderList1=[];
-						this.getOrderList()
-						break;
-					case 2:
-						this.orderList2=[];
-						this.getOrderList()
-						break;
-					case 3:
-						this.orderList3=[];
-						this.getOrderList()
-						break;
-					case 4:
-						this.orderList4=[];
-						this.getOrderList()
-						break;
-				}
-			}
-		}
-	},
+
+  mounted(e) {
+    const menuButtonInfo = uni.getMenuButtonBoundingClientRect();
+    this.systemBottom = menuButtonInfo.bottom + "rpx";
+  },
+
+  onLoad(e) {
+    this.firstEntry = e.firstEntry;
+    if (e.index) {
+      if (e.index == "99") {
+        this.currentIndex = 0;
+      } else {
+        this.currentIndex = Number(e.index);
+      }
+    }
+    this.orderStatus = this.currentIndex - 1;
+    const currentHouse = JSON.parse(uni.getStorageSync("currentHouse"));
+    this.areaId = currentHouse.areaId;
+    this.getOrderList();
+  },
+  onShow() {
+    if (this.firstEntry) return;
+    this.lastId[this.currentIndex] = -1;
+    this.handleReset();
+    this.getOrderList();
+  },
 
   computed: {
     orderList() {
@@ -295,60 +352,61 @@ export default {
       }
     },
   },
-	onShow() {
-		uni.$once("refreshPage",function(data){
-			switch(this.currentIndex){
-				case 0 : 
-				
-			}
-        console.log('监听到事件来自 update ，携带参数 msg 为：' + data.msg);
-    })
-	},
- 
-	onLoad(e) {
-		this.reRefresh = e.reRefresh
-    if (e.index) {
-      if (e.index == "99") {
-        this.currentIndex = 0;
-      } else {
-        this.currentIndex = Number(e.index);
-      }
-    }
-    this.orderStatus = this.currentIndex - 1;
-		const currentHouse =JSON.parse(uni.getStorageSync('currentHouse')) 
-		this.areaId =currentHouse.areaId
-  },
-
   methods: {
-		swiperChange(e) {
-		  let index = e.target.current || e.detail.current;
-		  this.currentIndex = index;
-		  //index对应的list数据是否为空 为空的话请求数据 有数据的话就不请求了
-		  switch (this.currentIndex) {
-		    case 0:
-		      if (this.orderList0.length < 1) this.getOrderList();
-		      break;
-		    case 1:
-		      if (this.orderList1.length < 1) this.getOrderList();
-		      break;
-		    case 2:
-		      if (this.orderList2.length < 1) this.getOrderList();
-		      break;
-		    case 3:
-		      if (this.orderList3.length < 1) this.getOrderList();
-		      break;
-		    case 4:
-		      if (this.orderList4.length < 1) this.getOrderList();
-		      break;
-		  }
-		},
-		
-    
-    goMultiplePay() {
-      uni.navigateTo({
-        url: "order-success/order-success",
+    // 获取列表数据
+    getOrderList() {
+      this.loading = true;
+      getOrderList({
+        orderStatus: this.currentIndex - 1,
+        lastId: this.lastId[this.currentIndex],
+        rows: this.rows,
+      }).then((data) => {
+        this.triggered = false;
+        if (!data.length) return;
+        if (this.currentIndex == 0) {
+          this.lastId[0] = data[data.length - 1].id;
+          this.orderList0 = this.orderList0.concat(data);
+        } else if (this.currentIndex == 1) {
+          this.lastId[1] = data[data.length - 1].id;
+          this.orderList1 = this.orderList1.concat(data);
+        } else if (this.currentIndex == 2) {
+          this.lastId[2] = data[data.length - 1].id;
+          this.orderList2 = this.orderList2.concat(data);
+        } else if (this.currentIndex == 3) {
+          this.lastId[3] = data[data.length - 1].id;
+          this.orderList3 = this.orderList3.concat(data);
+        } else {
+          this.lastId[4] = data[data.length - 1].id;
+          this.orderList4 = this.orderList4.concat(data);
+        }
+        this.loading = false;
+        this.firstEntry = false;
       });
     },
+
+    swiperChange(e) {
+      let index = e.target.current || e.detail.current;
+      this.currentIndex = index;
+      //index对应的list数据是否为空 为空的话请求数据 有数据的话就不请求了
+      switch (this.currentIndex) {
+        case 0:
+          if (this.orderList0.length < 1) this.getOrderList();
+          break;
+        case 1:
+          if (this.orderList1.length < 1) this.getOrderList();
+          break;
+        case 2:
+          if (this.orderList2.length < 1) this.getOrderList();
+          break;
+        case 3:
+          if (this.orderList3.length < 1) this.getOrderList();
+          break;
+        case 4:
+          if (this.orderList4.length < 1) this.getOrderList();
+          break;
+      }
+    },
+
     //跳转到详情页面
     goToDetail(data) {
       if (data.orderStatus == 0) {
@@ -370,90 +428,38 @@ export default {
         });
       }
     },
-		//去店铺首页
+
+    //去店铺首页
     gotoShop(item) {
-			console.log("this.storeId=",item.storeId,"this.areaId=",this.areaId)
-			uni.navigateTo({
-				url:`../../../sub-classify/pages/shops/shops?storeId=${item.storeId}&areaId=${this.areaId}`
-			});
+      console.log("this.storeId=", item.storeId, "this.areaId=", this.areaId);
+      uni.navigateTo({
+        url: `../../../sub-classify/pages/shops/shops?storeId=${item.storeId}&areaId=${this.areaId}`,
+      });
     },
 
-    async getOrderList() {
-      this.loading = true;
-			getOrderList({
-				orderStatus: this.currentIndex - 1,
-				lastId: this.lastId[this.currentIndex],
-				rows: this.rows,
-			}).then(data=>{
-				this.triggered = false;
-				if(!data.length) return 
-				if (this.currentIndex == 0) {
-				  this.lastId[0] = data[data.length - 1].id;
-				  this.orderList0 = this.orderList0.concat(data);
-				} else if (this.currentIndex == 1) {
-				  this.lastId[1] = data[data.length - 1].id;
-				  this.orderList1 = this.orderList1.concat(data);
-				} else if (this.currentIndex == 2) {
-				  this.lastId[2] = data[data.length - 1].id;
-				  this.orderList2 = this.orderList2.concat(data);
-				} else if (this.currentIndex == 3) {
-				  this.lastId[3] = data[data.length - 1].id;
-				  this.orderList3 = this.orderList3.concat(data);
-				} else {
-				  this.lastId[4] = data[data.length - 1].id;
-				  this.orderList4 = this.orderList4.concat(data);
-				}
-				this.loading = false;
-			})
-		 },	
-			
-			// async getOrderList() {
-			//   this.loading = true;
-      // let orderItem = await getOrderList({
-      //   orderStatus: this.currentIndex - 1,
-      //   lastId: this.lastId[this.currentIndex],
-      //   rows: this.rows,
-      // });
-
-      // if (!orderItem.length) return;
-
-      // if (this.currentIndex == 0) {
-      //   this.lastId[0] = orderItem[orderItem.length - 1].id;
-      //   this.orderList0 = this.orderList0.concat(orderItem);
-      // } else if (this.currentIndex == 1) {
-      //   this.lastId[1] = orderItem[orderItem.length - 1].id;
-      //   this.orderList1 = this.orderList1.concat(orderItem);
-      // } else if (this.currentIndex == 2) {
-      //   this.lastId[2] = orderItem[orderItem.length - 1].id;
-      //   this.orderList2 = this.orderList2.concat(orderItem);
-      // } else if (this.currentIndex == 3) {
-      //   this.lastId[3] = orderItem[orderItem.length - 1].id;
-      //   this.orderList3 = this.orderList3.concat(orderItem);
-      // } else {
-      //   this.lastId[4] = orderItem[orderItem.length - 1].id;
-      //   this.orderList4 = this.orderList4.concat(orderItem);
-      // }
-      // this.loading = false;
-			// },
-
-    onLoadMore() {
-      if (this.loading) return;
-      // 这个是排除请求回来没有数据的情况
-      if (!this.requestedDataLength && this.lastId[this.currentIndex] > 0) return;
+    //刷新
+    onRefresh(e) {
+      this.triggered = true;
+      this.lastId[this.currentIndex] = -1;
+      this.handleReset();
       this.getOrderList();
     },
 
-    onRefresh(e) {
-      this.triggered = true;
-			this.getOrderList()
+    // 加载更多
+    onLoadMore() {
+      if (this.loading) return;
+      // 这个是排除请求回来没有数据的情况
+      if (!this.requestedDataLength && this.lastId[this.currentIndex] > 0)
+        return;
+      this.getOrderList();
     },
 
     // 取消订单
     handleCancelOrder(id) {
       this.id = id;
-			this.title= "您确定要取消该订单吗?"
+      this.title = "您确定要取消该订单吗?";
       this.$refs.cancleOrder.open();
-			this.getOrderList()
+      this.getOrderList();
     },
     cancelOrderClose() {
       this.$refs.cancleOrder.close();
@@ -462,22 +468,21 @@ export default {
       console.log("取消订单按钮成功！");
       //点击确定后订单会被取消且该订单会被移入已关闭订单中
       cancelOrder({ id: this.id }).then(() => {
-				this.$refs.cancleOrder.close();
-				uni.showToast({
-					title:"取消订单成功!",
-					icon:"none",
-					duration:1000,
-				})
-				setTimeout(()=>{
-					//跳转到订单取消页面
-					uni.redirectTo({
-						url: `../order-failed/order-failed?type=close&id=${this.id}`,
-					});
-				},1000)
+        this.$refs.cancleOrder.close();
+        uni.showToast({
+          title: "取消订单成功!",
+          icon: "none",
+          duration: 1000,
+        });
+        this.onRefresh();
+        setTimeout(() => {
+          //跳转到订单取消页面
+          uni.redirectTo({
+            url: `../order-failed/order-failed?type=close&id=${this.id}`,
+          });
+        }, 1000);
       });
     },
-
-   
 
     //去支付
     toPay(item) {
@@ -501,24 +506,23 @@ export default {
             ...payInfo,
             success(res) {
               console.log(res);
-							uni.showToast({
-								title:"支付失败！",
-								icon:"none",
-								duration:1000,
-							})
-							setTimeout(()=>{
-								this.getOrderList();
-								
-							},1000)
+              uni.showToast({
+                title: "支付失败！",
+                icon: "none",
+                duration: 1000,
+              });
+              setTimeout(() => {
+                this.getOrderList();
+              }, 1000);
             },
             fail(e) {
               console.log(e);
               // 支付失败时候跳转到哪个页面
-							uni.showToast({
-								title:"支付失败！",
-								icon:"none",
-								duration:1000,
-							})
+              uni.showToast({
+                title: "支付失败！",
+                icon: "none",
+                duration: 1000,
+              });
             },
           });
         });
@@ -528,20 +532,20 @@ export default {
     // 确认收货
     handleConfirmReceipt(item) {
       this.id = item.id;
-			this.title = "确定要确认收货？"
+      this.title = "确定要确认收货？";
       this.$refs.confirmReceipt.open();
     },
-		confirmReceiptClose() {
+    confirmReceiptClose() {
       this.$refs.confirmReceipt.close();
     },
-		receiptConfirm(value) {
+    receiptConfirm(value) {
       // 调用确认收货的接口  //goodIsd 商品id(不传代表整个订单收货)"
-      confirmReceiptOrder({ id: this.id}).then((e) => {
-          console.log("成功就关闭弹框");
-          this.$refs.confirmReceipt.close();
-					this.orderList1 = []
-					this.lastId[1]=-1
-					this.getOrderList()
+      confirmReceiptOrder({ id: this.id }).then((e) => {
+        console.log("成功就关闭弹框");
+        this.$refs.confirmReceipt.close();
+        this.orderList1 = [];
+        this.lastId[1] = -1;
+        this.getOrderList();
       });
     },
 
@@ -569,6 +573,25 @@ export default {
       }
       let second = Math.floor(time) % 60;
       return [hour, minute, second];
+    },
+    handleReset() {
+      switch (this.currentIndex) {
+        case 0:
+          this.orderList0 = [];
+          break;
+        case 1:
+          this.orderList1 = [];
+          break;
+        case 2:
+          this.orderList2 = [];
+          break;
+        case 3:
+          this.orderList3 = [];
+          break;
+        case 4:
+          this.orderList4 = [];
+          break;
+      }
     },
   },
 };
@@ -775,11 +798,11 @@ export default {
       display: flex;
       flex-flow: row nowrap;
       align-items: center;
-			.remainPayTime{
-				margin-right: 12rpx;
-				height: 36rpx;
-				line-height: 36rpx;
-			}
+      .remainPayTime {
+        margin-right: 12rpx;
+        height: 36rpx;
+        line-height: 36rpx;
+      }
     }
   }
 
@@ -796,7 +819,7 @@ export default {
       margin-left: 24rpx;
       padding: 0;
     }
-		.go-to-pay {
+    .go-to-pay {
       width: 140rpx;
       height: 56rpx;
       line-height: 56rpx;
@@ -838,7 +861,7 @@ export default {
   background-color: #ffffff !important;
 }
 .line {
-	height: 1rpx solid #f2f2f2;
+  height: 1rpx solid #f2f2f2;
 }
 .swiper {
   flex: 1;

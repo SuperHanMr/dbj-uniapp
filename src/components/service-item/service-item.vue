@@ -70,7 +70,7 @@
       goProcessCost() {
         const customerId = uni.getStorageSync("userId")
         uni.navigateTo({
-          url: `/sub-decorate/pages/gj-process-cost/gj-process-cost?serveCardId&=${this.serviceData.serveCardId}&estateId=${this.currentProject.estateId}&serviceType=${this.serviceData.nodeType}&projectId=${this.currentProject.projectId}&customerId=${customerId}&obtainType=2`
+          url: `/sub-decorate/pages/gj-process-cost/gj-process-cost?partpay=1&serveCardId=${this.serviceData.serveCardId}&estateId=${this.currentProject.estateId}&serviceType=${this.serviceData.nodeType}&projectId=${this.currentProject.projectId}&customerId=${customerId}&obtainType=2`
         })
         // this.serveCardId = serveCardId || option.serveCardId
         // this.estateId = estateId || option.estateId

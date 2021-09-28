@@ -484,7 +484,8 @@
 					"path": "pages/pay-order/pay-success",
 					"style": {
 						"navigationBarTitleText": "",
-						"enablePullDownRefresh": false
+						"enablePullDownRefresh": false,
+            "navigationBarBackgroundColor": "#36d9cd"
 					}
 				},
 				{

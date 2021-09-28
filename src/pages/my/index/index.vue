@@ -115,19 +115,19 @@ export default {
           key: "1",
           image: "../../../static/order/images/wait_pay@2x.png",
           value: "待付款",
-          url: "../../../sub-my/pages/my-order/my-order?index=1",
+          url: "../../../sub-my/pages/my-order/my-order?index=1&firstEntry=true",
         },
         {
           key: "2",
           image: "../../../static/order/images/inprogress_@2x.png",
           value: "进行中",
-          url: "../../../sub-my/pages/my-order/my-order?index=2",
+          url: "../../../sub-my/pages/my-order/my-order?index=2&firstEntry=true",
         },
         {
           key: "3",
           image: "../../../static/order/images/order_done@2x.png",
           value: "已完成",
-          url: "../../../sub-my/pages/my-order/my-order?index=3",
+          url: "../../../sub-my/pages/my-order/my-order?index=3&firstEntry=true",
         },
         {
           key: "4",
@@ -209,7 +209,7 @@ export default {
     handlerViewAll() {
       console.log("点击我的订单全部按钮");
       uni.navigateTo({
-        url: "../../../sub-my/pages/my-order/my-order?index=99",
+        url: "../../../sub-my/pages/my-order/my-order?index=99&firstEntry=true",
       });
     },
     handlerOrder(item) {

@@ -55,11 +55,8 @@
 
         </view>
 
-        <order-price
-          :data="orderInfo"
-        />
-
-      </view>
+        <order-price :data="orderInfo"/>
+			</view>
 
       <order-info
         :orderNo="orderInfo.orderNo"
@@ -68,21 +65,18 @@
         :payTime="orderInfo.payTime"
       />
 
-      <view
-        class="applyforRefund-confirmReceipt"
-        :style="{paddingBottom:systemBottom,height:systemHeight}"
-      >
+      <view class="applyforRefund-confirmReceipt" :style="{paddingBottom:systemBottom,height:systemHeight}">
         <view
+          v-if="orderInfo.showRefundBtn"
           class="applyforRefund"
           @click="toApplayForRefund(orderInfo,2)"
-          v-if="orderInfo.showRefundBtn"
         >
           申请退款
         </view>
         <view
+          v-if="orderInfo.shipmentStatus == 1"
           class="confirmReceipt"
           @click="handleConfirmReceipt"
-          v-if="orderInfo.shipmentStatus == 1"
         >
           确认收货
         </view>
@@ -91,33 +85,19 @@
     </view>
 
     <!-- 确认收货的弹框 -->
-    <uni-popup
-      ref="confirmReceipt"
-      type="dialog"
-    >
-      <uni-popup-dialog
-        mode="base"
-        title="确定要确认收货？"
-        :before-close="true"
-        @close="confirmReceiptClose"
-        @confirm="receiptConfirm"
-      />
-    </uni-popup>
-		
-		
+		<popup-dialog 
+			ref="confirmReceipt"
+			:title="title"  
+			@close="confirmReceiptClose"
+			@confirm="receiptConfirm"
+		/>
 		<!-- 取消退款的弹框 -->
-		<uni-popup
+		<popup-dialog
 			ref="cancelRefund"
-			type="dialog"
-		>
-      <uni-popup-dialog
-        mode="base"
-        title="确定要取消退款吗？"
-        :before-close="true"
-        @close="cancelRefundClose"
-        @confirm="cancelRefundConfirm"
-      />
-    </uni-popup>
+			:title="title"  
+			@close="cancelRefundClose"
+			@confirm="cancelRefundConfirm"
+		/>
   </view>
 
 </template>
@@ -157,10 +137,7 @@ export default {
   },
 
   methods: {
-  
-
-
-    orderDetail() {
+		orderDetail() {
       getOrderDetail({ id: this.orderNo }).then((e) => {
 				this.orderInfo = e;
         // console.log("this.orderInfo=", this.orderInfo);
@@ -228,6 +205,7 @@ export default {
 		
 		// 确认收货
     handleConfirmReceipt() {
+			this.title = {}
       this.$refs.confirmReceipt.open();
     },
 

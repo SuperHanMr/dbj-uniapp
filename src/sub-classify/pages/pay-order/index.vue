@@ -435,8 +435,9 @@
             ...wechatPayJsapi,
             success(res) {
              console.log("付款成功", res)
+             console.log(data, "dataaaa")
              uni.navigateTo({
-               url: "/sub-classify/pages/pay-order/pay-success"
+               url: "/sub-classify/pages/pay-order/pay-success?orderId=" + data.id
              })
             },
             fail(e) {
