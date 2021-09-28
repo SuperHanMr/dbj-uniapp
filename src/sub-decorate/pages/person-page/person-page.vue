@@ -49,7 +49,7 @@
               <text class="num">{{personData.fansCount||0}}</text>
               <text class="title">粉丝</text>
             </view>
-            <view class="list-item">
+            <view class="list-item" v-if="personData.roleId===1||personData.roleId===2||personData.roleId===6">
               <text class="num">{{personData.collectCount||0}}</text>
               <text class="title">被收藏</text>
             </view>
@@ -67,21 +67,21 @@
       </view>
       <view class="person-interact" :class="{'person-interact-active':interactActive === interact}">
         <view class="sticky">
-          <view class="item" :class="{'item-active':currentItem==='service'}" @click="toItem('top')">
+          <view class="item" v-if="personData.roleId===1||personData.roleId===6" :class="{'item-active':currentItem==='serviceTop'}" @click="toItem('serviceTop')">
             服务</view>
-          <view class="item" :class="{'item-active':currentItem==='case'}" @click="toItem('hazardTop')">
+          <view class="item" v-if="personData.roleId===1||personData.roleId===2||personData.roleId===6" :class="{'item-active':currentItem==='caseTop'}" @click="toItem('caseTop')">
             案例</view>
-          <view class="item" :class="{'item-active':currentItem==='state'}" @click="toItem('conformTop')">
+          <view class="item" v-if="personData.roleId===3||personData.roleId===4||personData.roleId===5" :class="{'item-active':currentItem==='dynamicTop'}" @click="toItem('dynamicTop')">
             动态</view>
-          <view class="item" :class="{'item-active':currentItem==='evaluate'}" @click="toItem('conformTop')">
+          <view class="item" :class="{'item-active':currentItem==='evaluateTop'}" @click="toItem('evaluateTop')">
             评价<text>16</text></view>
         </view>
       </view>
       <view class="content">
-        <personService :serviceData='serviceData'></personService>
-        <personCase ></personCase>
-        <personDynamic></personDynamic>
-        <personEvaluate></personEvaluate>
+        <personService v-if="personData.roleId===1||personData.roleId===6" :serviceData='serviceData'></personService>
+        <personCase class="person-case" v-if="personData.roleId===1||personData.roleId===2||personData.roleId===6"></personCase>
+        <personDynamic  class="person-dynamic" v-if="personData.roleId===3||personData.roleId===4||personData.roleId===5"></personDynamic>
+        <personEvaluate class="person-evaluate"></personEvaluate>
       </view>
     </view>
   </view>
@@ -115,7 +115,10 @@
         scrollTop:0,
         interact:0,
         interactActive:false,
-        content:0,
+        serviceTop:0,
+        caseTop:0,
+        dynamicTop:0,
+        evaluateTop:0,
         personId:0,
         serviceData:[],
         isRecommend:false,
@@ -138,9 +141,9 @@
     },
     mounted() {
       // this.getCaseList()
-      this.getSkuList()
-      this.getNodeHeight()
-      
+      // this.getSkuList()
+      // this.getNodeHeight()
+      this.init()
     },
     onPageScroll(scrollTop) {
       // console.log(scrollTop.scrollTop)
@@ -148,12 +151,24 @@
       this.changeOpacity(scrollTop.scrollTop)
       this.getTopDistance()
       
+      // this.currentItem = this.serviceTop<=130&&(this.caseTop>130||this.caseTop===null)?'serviceTop':this.caseTop<=130&&(this.dynamicTop>130||this.dynamicTop===null)?'caseTop':this.dynamicTop<=130&&this.evaluateTop>130?'dynamicTop':'evaluateTop'
+      if(this.personData.roleId===1||this.personData.roleId===6){
+        this.currentItem = this.serviceTop<=130&&this.caseTop>130?'serviceTop':this.caseTop<=130&&this.evaluateTop>130?'caseTop':''
+      }else if(this.personData.roleId===2){
+        this.currentItem = this.caseTop<=130&&this.evaluateTop>130?'caseTop':''
+      }else{
+        this.currentItem = this.dynamicTop<=130&&this.evaluateTop>130?'dynamicTop':''
+      }
+      if(this.evaluateTop<130){
+        this.currentItem = 'evaluateTop'
+      }
     },
     methods: {
       init(){
         // this.getCaseList()
         this.getSkuList()
         this.getNodeHeight()
+        this.getTopDistance()
         this.getGrabDetail()
       },
       getAttention(routeId,type){
@@ -194,10 +209,11 @@
         num<10?this.opacityNum = 0:num<40?this.opacityNum=0.2:num<80?this.opacityNum=0.4:num<120?this.opacityNum=0.6:num<160?this.opacityNum=0.8:this.opacityNum=1
         // console.log(this.opacityNum)
       },
-      toItem() {
+      toItem(name) {
+        this.currentItem = name
         uni.pageScrollTo({
           duration: 100, // 过渡时间
-          scrollTop: this.content + this.scrollTop -144, // 滚动的实际距离
+          scrollTop: this[name] + this.scrollTop -124, // 滚动的实际距离
         })
       },
       getNodeHeight(){
@@ -209,11 +225,21 @@
       getTopDistance(){
         let query = uni.createSelectorQuery()
         query.select(".person-interact").boundingClientRect((res) => {
-          this.interact = res.top
+          this.interact = res&&res.top
         }).exec()
         query.select(".content").boundingClientRect((res) => {
-          this.content = res.top
+          this.serviceTop = res&&res.top
         }).exec()
+        query.select(".person-case").boundingClientRect((res) => {
+          this.caseTop = res&&res.top
+        }).exec()
+        query.select(".person-dynamic").boundingClientRect((res) => {
+          this.dynamicTop = res&&res.top
+        }).exec()
+        query.select(".person-evaluate").boundingClientRect((res) => {
+          this.evaluateTop = res&&res.top
+        }).exec()
+        
       },
       back(){
         uni.navigateBack({
