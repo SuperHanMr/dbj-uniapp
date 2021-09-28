@@ -208,11 +208,12 @@ export default {
 								icon:"none",
 								duration:1000,
 							})
-							// setTimeout(()=>{
-							// 	uni.navigateTo({
-							// 		url:`../order-success/order-success?type=complete&id=${this.orderNo}`
-							// 	})
-							// },1000)
+							setTimeout(()=>{
+								// 进入云松写的支付成功页面
+								uni.redirectTo({
+									url:`../../../../sub-classify/pages/pay-order/pay-success?id=${this.orderNo}`
+								})
+							},1000)
 						},
 						fail(e) {
 							uni.showToast({
@@ -222,6 +223,7 @@ export default {
 							});
 						},
 					});
+					
 				});
 			}
 			
