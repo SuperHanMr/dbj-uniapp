@@ -215,8 +215,10 @@ export default {
       tabList: ["全部", "待付款", "进行中", "已完成", "已关闭"],
       triggered: false, //控制刷新显示字段
 			title:"",
+			firstEntry:false,
+			
 
-      currentIndex: 4,
+      currentIndex: -1,
       orderStatus: -1, //订单状态（-1全部,0待付款，1进行中，2已完成 3已关闭）
       rows: 15,
 
@@ -229,84 +231,22 @@ export default {
 
       requestedDataLength: -1,
       orderListLength: 1,
-
+			
       id: -1,
 			systemBottom: "",
-			reRefresh:false,
 			areaId:"",
     };
   },
+	
 	mounted(e) {
 		const menuButtonInfo = uni.getMenuButtonBoundingClientRect();
-		this.containerBottom = menuButtonInfo.bottom
 		this.systemBottom = menuButtonInfo.bottom + "rpx";
-		this.systemHeight = menuButtonInfo.bottom + this.num + "rpx";
+	},
 	
-	},
-	watch:{
-		reRefresh(newVal,oldVal){
-			console.log("newVal=",newVal,"oldVal=",oldVal)
-			if(newVal){
-				this.lastId[this.currentIndex]=-1
-				switch(this.currentIndex){
-					case 0:
-						this.orderList0=[];
-						this.getOrderList()
-						break;
-					case 1:
-						this.orderList1=[];
-						this.getOrderList()
-						break;
-					case 2:
-						this.orderList2=[];
-						this.getOrderList()
-						break;
-					case 3:
-						this.orderList3=[];
-						this.getOrderList()
-						break;
-					case 4:
-						this.orderList4=[];
-						this.getOrderList()
-						break;
-				}
-			}
-		}
-	},
-
-  computed: {
-    orderList() {
-      // 通过判断currentIndex 返回不同的数组
-      if (this.currentIndex == 0) {
-        this.orderListLength = this.orderList0.length;
-        return this.orderList0;
-      } else if (this.currentIndex == 1) {
-        this.orderListLength = this.orderList1.length;
-        return this.orderList1;
-      } else if (this.currentIndex == 2) {
-        this.orderListLength = this.orderList2.length;
-        return this.orderList2;
-      } else if (this.currentIndex == 3) {
-        this.orderListLength = this.orderList3.length;
-        return this.orderList3;
-      } else {
-        this.orderListLength = this.orderList4.length;
-        return this.orderList4;
-      }
-    },
-  },
-	onShow() {
-		uni.$once("refreshPage",function(data){
-			switch(this.currentIndex){
-				case 0 : 
-				
-			}
-        console.log('监听到事件来自 update ，携带参数 msg 为：' + data.msg);
-    })
-	},
- 
+  
+	
 	onLoad(e) {
-		this.reRefresh = e.reRefresh
+		this.firstEntry = e.firstEntry
     if (e.index) {
       if (e.index == "99") {
         this.currentIndex = 0;
@@ -317,69 +257,40 @@ export default {
     this.orderStatus = this.currentIndex - 1;
 		const currentHouse =JSON.parse(uni.getStorageSync('currentHouse')) 
 		this.areaId =currentHouse.areaId
+		this.getOrderList()
   },
-
+	onShow() {
+		if(this.firstEntry) return 
+		this.lastId[this.currentIndex]=-1
+		this.handleReset()
+		this.getOrderList()
+	},
+	
+	computed: {
+	  orderList() {
+	    // 通过判断currentIndex 返回不同的数组
+	    if (this.currentIndex == 0) {
+	      this.orderListLength = this.orderList0.length;
+	      return this.orderList0;
+	    } else if (this.currentIndex == 1) {
+	      this.orderListLength = this.orderList1.length;
+	      return this.orderList1;
+	    } else if (this.currentIndex == 2) {
+	      this.orderListLength = this.orderList2.length;
+	      return this.orderList2;
+	    } else if (this.currentIndex == 3) {
+	      this.orderListLength = this.orderList3.length;
+	      return this.orderList3;
+	    } else {
+	      this.orderListLength = this.orderList4.length;
+	      return this.orderList4;
+	    }
+	  },
+	},
   methods: {
-		swiperChange(e) {
-		  let index = e.target.current || e.detail.current;
-		  this.currentIndex = index;
-		  //index对应的list数据是否为空 为空的话请求数据 有数据的话就不请求了
-		  switch (this.currentIndex) {
-		    case 0:
-		      if (this.orderList0.length < 1) this.getOrderList();
-		      break;
-		    case 1:
-		      if (this.orderList1.length < 1) this.getOrderList();
-		      break;
-		    case 2:
-		      if (this.orderList2.length < 1) this.getOrderList();
-		      break;
-		    case 3:
-		      if (this.orderList3.length < 1) this.getOrderList();
-		      break;
-		    case 4:
-		      if (this.orderList4.length < 1) this.getOrderList();
-		      break;
-		  }
-		},
-		
-    
-    goMultiplePay() {
-      uni.navigateTo({
-        url: "order-success/order-success",
-      });
-    },
-    //跳转到详情页面
-    goToDetail(data) {
-      if (data.orderStatus == 0) {
-        //（0待付款，1进行中，2已完成 3已关闭）
-        uni.navigateTo({
-          url: `order-wait-pay/order-wait-pay?orderNo=${data.id}`,
-        });
-      } else if (data.orderStatus == 1) {
-        uni.navigateTo({
-          url: `order-in-progress/order-in-progress?orderNo=${data.id}`,
-        });
-      } else if (data.orderStatus == 2) {
-        uni.navigateTo({
-          url: `order-success/order-success?type=complete&id=${data.id}`,
-        });
-      } else {
-        uni.navigateTo({
-          url: `order-failed/order-failed?type=close&id=${data.id}`,
-        });
-      }
-    },
-		//去店铺首页
-    gotoShop(item) {
-			console.log("this.storeId=",item.storeId,"this.areaId=",this.areaId)
-			uni.navigateTo({
-				url:`../../../sub-classify/pages/shops/shops?storeId=${item.storeId}&areaId=${this.areaId}`
-			});
-    },
-
-    async getOrderList() {
-      this.loading = true;
+		// 获取列表数据
+		getOrderList() {
+		  this.loading = true;
 			getOrderList({
 				orderStatus: this.currentIndex - 1,
 				lastId: this.lastId[this.currentIndex],
@@ -404,38 +315,75 @@ export default {
 				  this.orderList4 = this.orderList4.concat(data);
 				}
 				this.loading = false;
+				this.firstEntry = false;
 			})
 		 },	
-			
-			// async getOrderList() {
-			//   this.loading = true;
-      // let orderItem = await getOrderList({
-      //   orderStatus: this.currentIndex - 1,
-      //   lastId: this.lastId[this.currentIndex],
-      //   rows: this.rows,
-      // });
-
-      // if (!orderItem.length) return;
-
-      // if (this.currentIndex == 0) {
-      //   this.lastId[0] = orderItem[orderItem.length - 1].id;
-      //   this.orderList0 = this.orderList0.concat(orderItem);
-      // } else if (this.currentIndex == 1) {
-      //   this.lastId[1] = orderItem[orderItem.length - 1].id;
-      //   this.orderList1 = this.orderList1.concat(orderItem);
-      // } else if (this.currentIndex == 2) {
-      //   this.lastId[2] = orderItem[orderItem.length - 1].id;
-      //   this.orderList2 = this.orderList2.concat(orderItem);
-      // } else if (this.currentIndex == 3) {
-      //   this.lastId[3] = orderItem[orderItem.length - 1].id;
-      //   this.orderList3 = this.orderList3.concat(orderItem);
-      // } else {
-      //   this.lastId[4] = orderItem[orderItem.length - 1].id;
-      //   this.orderList4 = this.orderList4.concat(orderItem);
-      // }
-      // this.loading = false;
-			// },
-
+		 
+		
+		
+		
+		swiperChange(e) {
+		  let index = e.target.current || e.detail.current;
+		  this.currentIndex = index;
+		  //index对应的list数据是否为空 为空的话请求数据 有数据的话就不请求了
+		  switch (this.currentIndex) {
+		    case 0:
+		      if (this.orderList0.length < 1) this.getOrderList();
+		      break;
+		    case 1:
+		      if (this.orderList1.length < 1) this.getOrderList();
+		      break;
+		    case 2:
+		      if (this.orderList2.length < 1) this.getOrderList();
+		      break;
+		    case 3:
+		      if (this.orderList3.length < 1) this.getOrderList();
+		      break;
+		    case 4:
+		      if (this.orderList4.length < 1) this.getOrderList();
+		      break;
+		  }
+		},
+		
+		//跳转到详情页面
+    goToDetail(data) {
+      if (data.orderStatus == 0) {
+        //（0待付款，1进行中，2已完成 3已关闭）
+        uni.navigateTo({
+          url: `order-wait-pay/order-wait-pay?orderNo=${data.id}`,
+        });
+      } else if (data.orderStatus == 1) {
+        uni.navigateTo({
+          url: `order-in-progress/order-in-progress?orderNo=${data.id}`,
+        });
+      } else if (data.orderStatus == 2) {
+        uni.navigateTo({
+          url: `order-success/order-success?type=complete&id=${data.id}`,
+        });
+      } else {
+        uni.navigateTo({
+          url: `order-failed/order-failed?type=close&id=${data.id}`,
+        });
+      }
+    },
+		
+		//去店铺首页
+    gotoShop(item) {
+			console.log("this.storeId=",item.storeId,"this.areaId=",this.areaId)
+			uni.navigateTo({
+				url:`../../../sub-classify/pages/shops/shops?storeId=${item.storeId}&areaId=${this.areaId}`
+			});
+    },
+		
+		//刷新
+		onRefresh(e) {
+		  this.triggered = true;
+			this.lastId[this.currentIndex]=-1
+			this.handleReset()
+			this.getOrderList()
+		},
+		
+		// 加载更多
     onLoadMore() {
       if (this.loading) return;
       // 这个是排除请求回来没有数据的情况
@@ -443,13 +391,7 @@ export default {
       this.getOrderList();
     },
 
-    onRefresh(e) {
-      this.triggered = true;
-			this.getOrderList()
-  
-    },
-
-    // 取消订单
+		// 取消订单
     handleCancelOrder(id) {
       this.id = id;
 			this.title= "您确定要取消该订单吗?"
@@ -469,6 +411,7 @@ export default {
 					icon:"none",
 					duration:1000,
 				})
+				this.onRefresh()
 				setTimeout(()=>{
 					//跳转到订单取消页面
 					uni.redirectTo({
@@ -477,10 +420,8 @@ export default {
 				},1000)
       });
     },
-
-   
-
-    //去支付
+		
+		//去支付
     toPay(item) {
       // 先判断是否支付超额拆单了  未拆单 直接支付 拆单之后直接跳转到拆单页面
       console.log(item, "item.id=", item.id, typeof item.id);
@@ -571,7 +512,26 @@ export default {
       let second = Math.floor(time) % 60;
       return [hour, minute, second];
     },
-  },
+		handleReset(){
+			switch(this.currentIndex){
+				case 0:
+					this.orderList0=[];
+					break;
+				case 1:
+					this.orderList1=[];
+					break;
+				case 2:
+					this.orderList2=[];
+					break;
+				case 3:
+					this.orderList3=[];
+					break;
+				case 4:
+					this.orderList4=[];
+					break;
+			}
+		}
+	},
 };
 </script>
 
