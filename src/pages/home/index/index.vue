@@ -46,7 +46,8 @@
 		</view>
 		<!-- 金刚区 -->
 		<view class="function-zone">
-			<view class="item " v-for="(item,index) in zoneList" :key="item.id" :class="{'bottom-border':index<zoneList.length-4}" @click="onZoneClick(item)">
+			<view class="item " v-for="(item,index) in zoneList" :key="item.id"
+				:class="{'bottom-border':index<zoneList.length-4}" @click="onZoneClick(item)">
 				<image class="icon" :src="item.icon"></image>
 				<view class="name">
 					{{item.name}}
@@ -535,6 +536,7 @@
 	.videos {
 		height: 80rpx;
 		align-items: center;
+		padding: 0 24rpx;
 	}
 
 	.video-title {

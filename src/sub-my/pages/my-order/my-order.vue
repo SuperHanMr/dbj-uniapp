@@ -8,60 +8,35 @@
         :class="{selected:index==currentIndex}"
         @click="currentIndex=index"
       >
-        <view class="tab-text">
-          {{item}}
-        </view>
+        <view class="tab-text">{{item}}</view>
         <view class="bottom-icon" />
       </view>
     </view>
-    <swiper
-      class="swiper"
-      :class="{empty:orderListLength<=0}"
-			:style="{paddingBottom:systemBottom}"
-      :current="currentIndex"
-      :duration="200"
-      @change="swiperChange"
-    >
-      <swiper-item
-        v-for="(item,tabindex) in tabList"
-        :key="tabindex"
-      >
-        <view class="line" />
+    <view class="line" />
+    <swiper class="swiper" :class="{empty:orderListLength<=0}" :style="{paddingBottom:systemBottom}" :current="currentIndex" :duration="200" @change="swiperChange" >
+      <swiper-item  v-for="(item,tabindex) in tabList":key="item">
         <scroll-view
           class="scroll-view"
-          :scroll-y="true"
+					:enable-back-to-top="true" 
+					lower-threshold="10"
+          scroll-y="true"
           refresher-background="#FFF"
           :refresher-triggered="triggered"
           @refresherrefresh="onRefresh"
           refresher-enabled="true"
           @scrolltolower="onLoadMore"
         >
-          <view
-            class="swiper-item"
-            v-if=" orderList.length > 0 "
-          >
-            <view
-              class="order-container"
-              v-for="item in orderList"
-              :key="item.id"
-            >
+          <view v-if=" orderList.length > 0 "  class="swiper-item">
+            <view  class="order-container" v-for="item in orderList" :key="item.id">
               <view class="header">
-                <view
-                  class="store-name"
-                  @click="gotoShop(item)"
-                >
+                <view class="store-name"  @click="gotoShop(item)">
                   <text v-if="item.orderStatus == 0 ">{{item.orderName?item.orderName:item.storeName}}</text>
                   <text v-else>{{item.storeName}}</text>
-                  <image
-                    v-if="!item.orderName"
-                    src="../../../static/order/ic_more@2x.png"
-                    mode=""
-                  ></image>
+                  <image v-if="!item.orderName" src="../../../static/order/ic_more@2x.png" mode=" "/>
                 </view>
                 <view
                   class="order-status"
-                  :class="{active: item.orderStatus == 2 || item.orderStatus == 3}"
-                >
+                  :class="{active: item.orderStatus == 2 || item.orderStatus == 3}">
 								<!-- {{item.orderStatusName}} -->
                   {{
 										item.orderStatus == 1
@@ -73,11 +48,8 @@
 
               <view class="body">
                 <!-- 套餐 -->
-                <view
-                  class="product-info"
-                  v-if="item.orderStatus == 0 && item.orderName && item.details.length>1"
-                  @click="goToDetail(item)"
-                >
+                <view class="product-info" v-if="item.orderStatus == 0 && item.orderName && item.details.length>1"
+                  @click="goToDetail(item)" >
                   <view class="product-img">
                     <scroll-view
                       scroll-x
@@ -112,37 +84,22 @@
               </view>
 
               <view class="price">
-
-                <view class="total-pay">
-
-                  <text>总价</text>
-                  <text style="font-size:18rpx;">￥</text>
-                  <text>{{handlePrice(item.orderTotalAmount)[0]}}.</text>
-                  <text style="font-size:18rpx;">{{handlePrice(item.orderTotalAmount)[1]}}</text>
-
-                  <text style="margin-left: 18rpx;">优惠</text>
-                  <text style="font-size:18rpx;">￥</text>
-                  <text>{{handlePrice(item.discount)[0]}}.</text>
-                  <text style="font-size:18rpx;">{{handlePrice(item.discount)[1]}}</text>
-
-                </view>
-
-                <view
-                  class="need-pay"
-                  v-if="item.orderStatus !== 0"
-                >
-                  <text>实付</text>
-                  <text style="color:#FF3347;margin-left: 8rpx;">
-                    <text style="font-size:18rpx;">￥</text>
-                    <text style="font-size: 32rpx;">{{handlePrice(item.totalActualIncomeAmount)[0]}}.</text>
-                    <text style="font-size:18rpx;">{{handlePrice(item.totalActualIncomeAmount)[1]}}</text>
-                  </text>
-                </view>
-
-                <view
-                  class="need-pay"
-                  v-if="item.orderStatus == 0"
-                >
+								<view class="total-pay">
+									<text>
+										<text>总价</text>
+										<text style="font-size:18rpx;">￥</text>
+										<text>{{handlePrice(item.orderTotalAmount)[0]}}.</text>
+										<text style="font-size:18rpx;">{{handlePrice(item.orderTotalAmount)[1]}}</text>
+									</text>
+									<text v-if="item.discount">
+										<text style="margin-left: 18rpx;">优惠</text>
+										<text style="font-size:18rpx;">￥</text>
+										<text>{{handlePrice(item.discount)[0]}}.</text>
+										<text style="font-size:18rpx;">{{handlePrice(item.discount)[1]}}</text>
+									</text>
+								</view>
+								
+								<view v-if="item.orderStatus == 0" class="need-pay" >
                   <text v-if="item.freight && item.handlingFees">需付款(含运费、搬运费)</text>
                   <text v-if="item.freight && !item.handlingFees">需付款(含运费)</text>
                   <text v-if=" !item.freight && item.handlingFees">需付款(含搬运费)</text>
@@ -152,28 +109,26 @@
                     <text style="font-size: 32rpx;">{{handlePrice(item.payAmount)[0]}}.</text>
                     <text style="font-size:18rpx;">{{handlePrice(item.payAmount)[1]}}</text>
                   </text>
-                </view>
+								</view>
+								
+								<view v-else class="need-pay">
+								  <text>实付</text>
+								  <text style="color:#FF3347;margin-left: 8rpx;">
+								    <text style="font-size:18rpx;">￥</text>
+								    <text style="font-size: 32rpx;">{{handlePrice(item.totalActualIncomeAmount)[0]}}.</text>
+								    <text style="font-size:18rpx;">{{handlePrice(item.totalActualIncomeAmount)[1]}}</text>
+								  </text>
+								</view>
               </view>
 
-              <view
-                class="line"
-                v-if="item.orderStatus == 0 && (item.showCancelOrderTime || item.showCancelBtn || item.showToPayBtn)"
-              />
-
-              <view
-                class="footer"
-                v-if="item.orderStatus == 0 && (item.showCancelOrderTime || item.showCancelBtn || item.showToPayBtn)"
-                :class="{buttonContainer:!item.showCancelOrderTime}"
-              >
-
-                <view  v-if="item.showCancelOrderTime"  class="set-interval">
-                  <image
-                    src="../../static/ic_time@2x.png"
-                    mode=""
-                  ></image>
-
+              <view  class="line"  v-if="item.orderStatus == 0 && (item.showCancelOrderTime || item.showCancelBtn || item.showToPayBtn)" />
+							
+              <view class="footer"  v-if="item.orderStatus == 0 && (item.showCancelOrderTime || item.showCancelBtn || item.showToPayBtn)" :class="{buttonContainer:!item.showCancelOrderTime}">
+								<view  v-if="item.showCancelOrderTime"  class="set-interval">
+                  <image src="../../static/ic_time@2x.png"  mode=""/>
+									
                   <view class="time-text">
-                    <text style="margin-right: 12rpx;height: 36rpx;line-height: 36rpx;">剩余支付时间</text>
+                    <text class="remainPayTime">剩余支付时间</text>
                     <uni-countdown
                       color="#333333"
                       background-color="#E4E6E6"
@@ -181,12 +136,11 @@
                       :hour="formatTime(item.remainTime)[0]"
                       :minute="formatTime(item.remainTime)[1]"
                       :second="formatTime(item.remainTime)[2]"
-                    ></uni-countdown>
+                    />
                   </view>
 
                 </view>
-
-                <view  v-if="item.showToPayBtn || item.showCancelBtn"  class="button">
+								<view  v-if="item.showToPayBtn || item.showCancelBtn"  class="button">
                   <button
                     v-if="item.showCancelBtn"
                     type="default"
@@ -205,14 +159,8 @@
 
                 </view>
               </view>
-              <view
-                class="line"
-                v-if="item.orderStatus == 1 && item.shipmentStatus == 2"
-              />
-              <view
-                class="footer buttonContainer "
-                v-if="item.orderStatus == 1 && item.shipmentStatus == 2"
-              >
+              <view  class="line" v-if="item.orderStatus == 1 && item.shipmentStatus == 2" />
+              <view  class="footer buttonContainer " v-if="item.orderStatus == 1 && item.shipmentStatus == 2">
                 <view class="button">
                   <button
                    type="default"
@@ -225,10 +173,7 @@
             </view>
           </view>
 
-          <view
-            class="swiper-item empty-container"
-            v-else
-          >
+          <view v-else class="swiper-item empty-container">
             <view class="empty-page">
               <view class="line" />
               <view class="content ">
@@ -239,43 +184,26 @@
                 <text>暂无相关订单~</text>
               </view>
             </view>
-
-          </view>
-
-        </scroll-view>
-
-      </swiper-item>
+					</view>
+				</scroll-view>
+			</swiper-item>
 
     </swiper>
 
     <!-- 取消订单的弹框 -->
-    <uni-popup
-      ref="cancleOrder"
-      type="dialog"
-    >
-      <uni-popup-dialog
-        mode="base"
-        title="您确定要取消该订单吗？"
-        :before-close="true"
-        @close="cancelOrderClose"
-        @confirm="cancleConfirm"
-      />
-    </uni-popup>
-
+		<popup-dialog 
+			ref="cancleOrder"  
+			:title="title" 
+			@close="cancelOrderClose" 
+			@confirm="cancleConfirm"
+		/>
     <!-- 确认收货的弹框 -->
-    <uni-popup
-      ref="confirmReceipt"
-      type="dialog"
-    >
-      <uni-popup-dialog
-        mode="base"
-        title="确定要确认收货？"
-        :before-close="true"
-        @close="confirmReceiptClose"
-        @confirm="receiptConfirm"
-      />
-    </uni-popup>
-
+		<popup-dialog
+			ref="confirmReceipt"
+			:title="title"
+			@close="confirmReceiptClose"
+			@confirm="receiptConfirm"
+		/>
   </view>
 </template>
 
@@ -286,9 +214,11 @@ export default {
     return {
       tabList: ["全部", "待付款", "进行中", "已完成", "已关闭"],
       triggered: false, //控制刷新显示字段
-     
+			title:"",
+			firstEntry:false,
+			
 
-      currentIndex: 4,
+      currentIndex: -1,
       orderStatus: -1, //订单状态（-1全部,0待付款，1进行中，2已完成 3已关闭）
       rows: 15,
 
@@ -301,84 +231,22 @@ export default {
 
       requestedDataLength: -1,
       orderListLength: 1,
-
+			
       id: -1,
 			systemBottom: "",
-			reRefresh:false,
 			areaId:"",
     };
   },
+	
 	mounted(e) {
 		const menuButtonInfo = uni.getMenuButtonBoundingClientRect();
-		this.containerBottom = menuButtonInfo.bottom
 		this.systemBottom = menuButtonInfo.bottom + "rpx";
-		this.systemHeight = menuButtonInfo.bottom + this.num + "rpx";
+	},
 	
-	},
-	watch:{
-		reRefresh(newVal,oldVal){
-			console.log("newVal=",newVal,"oldVal=",oldVal)
-			if(newVal){
-				this.lastId[this.currentIndex]=-1
-				switch(this.currentIndex){
-					case 0:
-						this.orderList0=[];
-						this.getOrderList()
-						break;
-					case 1:
-						this.orderList1=[];
-						this.getOrderList()
-						break;
-					case 2:
-						this.orderList2=[];
-						this.getOrderList()
-						break;
-					case 3:
-						this.orderList3=[];
-						this.getOrderList()
-						break;
-					case 4:
-						this.orderList4=[];
-						this.getOrderList()
-						break;
-				}
-			}
-		}
-	},
-
-  computed: {
-    orderList() {
-      // 通过判断currentIndex 返回不同的数组
-      if (this.currentIndex == 0) {
-        this.orderListLength = this.orderList0.length;
-        return this.orderList0;
-      } else if (this.currentIndex == 1) {
-        this.orderListLength = this.orderList1.length;
-        return this.orderList1;
-      } else if (this.currentIndex == 2) {
-        this.orderListLength = this.orderList2.length;
-        return this.orderList2;
-      } else if (this.currentIndex == 3) {
-        this.orderListLength = this.orderList3.length;
-        return this.orderList3;
-      } else {
-        this.orderListLength = this.orderList4.length;
-        return this.orderList4;
-      }
-    },
-  },
-	onShow() {
-		uni.$once("refreshPage",function(data){
-			switch(this.currentIndex){
-				case 0 : 
-				
-			}
-        console.log('监听到事件来自 update ，携带参数 msg 为：' + data.msg);
-    })
-	},
- 
+  
+	
 	onLoad(e) {
-		this.reRefresh = e.reRefresh
+		this.firstEntry = e.firstEntry
     if (e.index) {
       if (e.index == "99") {
         this.currentIndex = 0;
@@ -389,9 +257,71 @@ export default {
     this.orderStatus = this.currentIndex - 1;
 		const currentHouse =JSON.parse(uni.getStorageSync('currentHouse')) 
 		this.areaId =currentHouse.areaId
+		this.getOrderList()
   },
-
+	onShow() {
+		if(this.firstEntry) return 
+		this.lastId[this.currentIndex]=-1
+		this.handleReset()
+		this.getOrderList()
+	},
+	
+	computed: {
+	  orderList() {
+	    // 通过判断currentIndex 返回不同的数组
+	    if (this.currentIndex == 0) {
+	      this.orderListLength = this.orderList0.length;
+	      return this.orderList0;
+	    } else if (this.currentIndex == 1) {
+	      this.orderListLength = this.orderList1.length;
+	      return this.orderList1;
+	    } else if (this.currentIndex == 2) {
+	      this.orderListLength = this.orderList2.length;
+	      return this.orderList2;
+	    } else if (this.currentIndex == 3) {
+	      this.orderListLength = this.orderList3.length;
+	      return this.orderList3;
+	    } else {
+	      this.orderListLength = this.orderList4.length;
+	      return this.orderList4;
+	    }
+	  },
+	},
   methods: {
+		// 获取列表数据
+		getOrderList() {
+		  this.loading = true;
+			getOrderList({
+				orderStatus: this.currentIndex - 1,
+				lastId: this.lastId[this.currentIndex],
+				rows: this.rows,
+			}).then(data=>{
+				this.triggered = false;
+				if(!data.length) return 
+				if (this.currentIndex == 0) {
+				  this.lastId[0] = data[data.length - 1].id;
+				  this.orderList0 = this.orderList0.concat(data);
+				} else if (this.currentIndex == 1) {
+				  this.lastId[1] = data[data.length - 1].id;
+				  this.orderList1 = this.orderList1.concat(data);
+				} else if (this.currentIndex == 2) {
+				  this.lastId[2] = data[data.length - 1].id;
+				  this.orderList2 = this.orderList2.concat(data);
+				} else if (this.currentIndex == 3) {
+				  this.lastId[3] = data[data.length - 1].id;
+				  this.orderList3 = this.orderList3.concat(data);
+				} else {
+				  this.lastId[4] = data[data.length - 1].id;
+				  this.orderList4 = this.orderList4.concat(data);
+				}
+				this.loading = false;
+				this.firstEntry = false;
+			})
+		 },	
+		 
+		
+		
+		
 		swiperChange(e) {
 		  let index = e.target.current || e.detail.current;
 		  this.currentIndex = index;
@@ -415,13 +345,7 @@ export default {
 		  }
 		},
 		
-    
-    goMultiplePay() {
-      uni.navigateTo({
-        url: "order-success/order-success",
-      });
-    },
-    //跳转到详情页面
+		//跳转到详情页面
     goToDetail(data) {
       if (data.orderStatus == 0) {
         //（0待付款，1进行中，2已完成 3已关闭）
@@ -442,64 +366,35 @@ export default {
         });
       }
     },
-
-    
+		
+		//去店铺首页
     gotoShop(item) {
-      console.log("去店铺首页！！！！");
 			console.log("this.storeId=",item.storeId,"this.areaId=",this.areaId)
 			uni.navigateTo({
 				url:`../../../sub-classify/pages/shops/shops?storeId=${item.storeId}&areaId=${this.areaId}`
 			});
     },
-
-    async getOrderList() {
-      this.loading = true;
-      let orderItem = await getOrderList({
-        orderStatus: this.currentIndex - 1,
-        lastId: this.lastId[this.currentIndex],
-        rows: this.rows,
-      });
-
-      if (!orderItem.length) return;
-
-      if (this.currentIndex == 0) {
-        this.lastId[0] = orderItem[orderItem.length - 1].id;
-        this.orderList0 = this.orderList0.concat(orderItem);
-      } else if (this.currentIndex == 1) {
-        this.lastId[1] = orderItem[orderItem.length - 1].id;
-        this.orderList1 = this.orderList1.concat(orderItem);
-      } else if (this.currentIndex == 2) {
-        this.lastId[2] = orderItem[orderItem.length - 1].id;
-        this.orderList2 = this.orderList2.concat(orderItem);
-      } else if (this.currentIndex == 3) {
-        this.lastId[3] = orderItem[orderItem.length - 1].id;
-        this.orderList3 = this.orderList3.concat(orderItem);
-      } else {
-        this.lastId[4] = orderItem[orderItem.length - 1].id;
-        this.orderList4 = this.orderList4.concat(orderItem);
-      }
-      this.loading = false;
-    },
-
+		
+		//刷新
+		onRefresh(e) {
+		  this.triggered = true;
+			this.lastId[this.currentIndex]=-1
+			this.handleReset()
+			this.getOrderList()
+		},
+		
+		// 加载更多
     onLoadMore() {
-      console.log("onLoadMore!!!!!!!!!!!!!!");
       if (this.loading) return;
       // 这个是排除请求回来没有数据的情况
       if (!this.requestedDataLength && this.lastId[this.currentIndex] > 0) return;
       this.getOrderList();
     },
 
-    onRefresh(e) {
-      this.triggered = true;
-			this.getOrderList()
-      setTimeout(() => {
-        this.triggered = false;
-      }, 1000);
-    },
-
-    // 取消订单
+		// 取消订单
     handleCancelOrder(id) {
       this.id = id;
+			this.title= "您确定要取消该订单吗?"
       this.$refs.cancleOrder.open();
 			this.getOrderList()
     },
@@ -510,25 +405,26 @@ export default {
       console.log("取消订单按钮成功！");
       //点击确定后订单会被取消且该订单会被移入已关闭订单中
       cancelOrder({ id: this.id }).then(() => {
-        this.$refs.cancleOrder.close();
-        this.toCancelPage();
+				this.$refs.cancleOrder.close();
+				uni.showToast({
+					title:"取消订单成功!",
+					icon:"none",
+					duration:1000,
+				})
+				this.onRefresh()
+				setTimeout(()=>{
+					//跳转到订单取消页面
+					uni.redirectTo({
+						url: `../order-failed/order-failed?type=close&id=${this.id}`,
+					});
+				},1000)
       });
     },
-
-    //跳转到订单取消页面
-    toCancelPage() {
-      uni.navigateTo({
-        url: `../order-failed/order-failed?type=close&id=${this.id}`,
-      });
-    },
-
-    //去支付
+		
+		//去支付
     toPay(item) {
-      // 先判断是否支付超额拆单了
-      // 未拆单 直接支付
-      // 拆单之后直接跳转到拆单页面
+      // 先判断是否支付超额拆单了  未拆单 直接支付 拆单之后直接跳转到拆单页面
       console.log(item, "item.id=", item.id, typeof item.id);
-
       if (item.isSplitPay) {
         //item.id  是订单id
         uni.navigateTo({
@@ -547,12 +443,24 @@ export default {
             ...payInfo,
             success(res) {
               console.log(res);
-              //支付成功之后刷新页面
-              this.getOrderList();
+							uni.showToast({
+								title:"支付失败！",
+								icon:"none",
+								duration:1000,
+							})
+							setTimeout(()=>{
+								this.getOrderList();
+								
+							},1000)
             },
             fail(e) {
               console.log(e);
               // 支付失败时候跳转到哪个页面
+							uni.showToast({
+								title:"支付失败！",
+								icon:"none",
+								duration:1000,
+							})
             },
           });
         });
@@ -562,18 +470,15 @@ export default {
     // 确认收货
     handleConfirmReceipt(item) {
       this.id = item.id;
+			this.title = "确定要确认收货？"
       this.$refs.confirmReceipt.open();
     },
-
-    confirmReceiptClose() {
+		confirmReceiptClose() {
       this.$refs.confirmReceipt.close();
     },
-
-    receiptConfirm(value) {
-      // 调用确认收货的接口
-      console.log("点击了确认按钮11");
-      //goodIsd 商品id(不传代表整个订单收货)"
-      confirmReceiptOrder({ id: this.id, goodIsd: "" }).then((e) => {
+		receiptConfirm(value) {
+      // 调用确认收货的接口  //goodIsd 商品id(不传代表整个订单收货)"
+      confirmReceiptOrder({ id: this.id}).then((e) => {
           console.log("成功就关闭弹框");
           this.$refs.confirmReceipt.close();
 					this.orderList1 = []
@@ -607,7 +512,26 @@ export default {
       let second = Math.floor(time) % 60;
       return [hour, minute, second];
     },
-  },
+		handleReset(){
+			switch(this.currentIndex){
+				case 0:
+					this.orderList0=[];
+					break;
+				case 1:
+					this.orderList1=[];
+					break;
+				case 2:
+					this.orderList2=[];
+					break;
+				case 3:
+					this.orderList3=[];
+					break;
+				case 4:
+					this.orderList4=[];
+					break;
+			}
+		}
+	},
 };
 </script>
 
@@ -812,6 +736,11 @@ export default {
       display: flex;
       flex-flow: row nowrap;
       align-items: center;
+			.remainPayTime{
+				margin-right: 12rpx;
+				height: 36rpx;
+				line-height: 36rpx;
+			}
     }
   }
 
@@ -828,8 +757,7 @@ export default {
       margin-left: 24rpx;
       padding: 0;
     }
-
-    .go-to-pay {
+		.go-to-pay {
       width: 140rpx;
       height: 56rpx;
       line-height: 56rpx;
@@ -870,7 +798,9 @@ export default {
 .changeBgc {
   background-color: #ffffff !important;
 }
-
+.line {
+	height: 1rpx solid #f2f2f2;
+}
 .swiper {
   flex: 1;
   display: flex;
@@ -928,6 +858,7 @@ button::after {
   color: #808080 !important;
 }
 
+// 倒计时的样式
 ::v-deep .uni-countdown__number {
   width: 36rpx !important;
   height: 36rpx !important;
@@ -935,7 +866,6 @@ button::after {
 ::v-deep .uni-countdown__splitor.data-v-02c75d70 {
   line-height: 36rpx !important;
 }
-
 // 弹框样式
 ::v-deep .uni-popup-dialog {
   width: 560rpx !important;
