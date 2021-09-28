@@ -172,7 +172,7 @@
           url: `/sub-decorate/pages/materials-list/materials-list?id=${item.id}&categoryId=${item.categoryId}`
         })
       },
-      
+
       goMaterialsList2(item) {
         return uni.showToast({
           title: "不在服务范围的情况还在开发中，敬请期待......",
@@ -188,15 +188,36 @@
           for (let i = 0; i < i < this.itemList.length; i++) {
             let t = this.itemList[i]
             if (t.id === this.currentItemOriginData.id) {
-              t.id = materialDetail.id
-              t.imageUrl = materialDetail.imageUrl
-              t.spuName = materialDetail.spuName
+              this.setCurrentEditMaterialChangData(t, materialDetail)
             }
             item = t
             break;
           }
           this.submitMaterial(item)
         })
+      },
+      setCurrentEditMaterialChangData(origin, source) {
+        // 注释的字段是不允许替换的
+        // origin.originalId = origin.originalId // "原始ID 【下单params附带参数】",
+        origin.id = source.product.id //"long //商品ID 【下单params附带参数】",
+        origin.title = source.title //"string //标题",
+        // origin.productType = origin.productType //"int //下单参数 type\r      标签 1.物品 2.服务 3.虚拟\r ,
+        // origin.roleType = source.roleType // "int //下单参数 roleType",  这里是辅材所以不需要替换
+        // origin.businessType = source.businessType //"int //下单参数 businessType",
+        // origin.categoryId = source.categoryId //"string //分类",
+        // origin.workType = source.workType //"int //工种",
+        origin.categoryTypeId = source.product.categoryTypeId //"int //品类类型ID",
+        origin.storeId = source.product.storeId //"long //店铺ID",
+        origin.imageUrl = source.product.skuImage //"string //图片地址",
+        origin.spuName = source.product.spuName //"string //商品名称",
+        origin.price = source.product.skuPrice //"int //价格",
+        // origin.count = origin.count //"double //数量",
+        origin.minimumOrderQuantity = source.product.sku.minimumOrderQuantity //"string //最小购买数量",
+        origin.stepLength = source.product.sku.stepLength //"string //数量增加步长",
+        origin.unit = source.product.salesUnit.unitName //"string //单位",
+        origin.name = source.product.skuName //"string //规格",
+        // origin.inServiceArea = origin.inServiceArea //"boolean //是否在服务区",
+        // origin.selling = origin.selling //"boolean //是否已购买 false未购买 true已购买"
       },
       submitMaterial(item) {
         this.$emit("changeMaterial", {
