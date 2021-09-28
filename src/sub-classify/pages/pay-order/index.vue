@@ -37,11 +37,14 @@
                 </view>
               </view>
             </view>
-            <view class="shop-reduce no-send-tip good-tip" v-if="(productType === 2 && !goodsItem.canBuy) ||  (productType === 1 && !goodsItem.canDeliver)">
-              <view class="item-reduce-box">
-                <text v-if="goodsItem.frontendServe && productType === 2">请先购买{{frontendServe}}</text>
-                <text v-if="!goodsItem.canBuy && !goodsItem.frontendServe  && goodsItem.canDeliver && productType === 2">该服务已下架</text>
-                <text  v-if="!goodsItem.canDeliver && productType === 1">当前地址无法配送该商品，请更换地址</text>
+            <view class="shop-reduce no-send-tip good-tip" v-if="goodsItem.errorType">
+              <view class="item-reduce-box" v-if="goodsItem.errorType">
+                <text v-if="goodsItem.errorType === 1">不在服务范围</text>
+                <text v-if="goodsItem.errorType === 2">不在配送范围</text>
+                <text v-if="goodsItem.errorType === 3">该房屋下已购买该服务，不可重复购买</text>
+                <text v-if="goodsItem.errorType === 6">您已跳过该工序，不可购买</text>
+                <text v-if="goodsItem.errorType === 7">暂不可购买，请在精算服务结束后于精算单中购买</text>
+                <text v-if="goodsItem.errorType === 9">暂不可购买，请在管家服务结束后于精算单中购买</text>
               </view>
             </view>
             <view class="choose-time" v-if="productType === 2 && shopItem.skuInfos.appointmentRequired">
@@ -133,12 +136,12 @@
               <text>.{{totalPrice?String.prototype.split.call(totalPrice, ".")[1]?String.prototype.split.call(totalPrice, ".")[1]:0:0}}</text>
             </view>
           </view>
-          <button class="pay-button" :class="{'no-pay': !canPay || hasNoSendItem}" @click="pay" ref="test">立即支付</button>
+          <button class="pay-button" :class="{'no-pay': !hasCanBuy || hasNoBuyItem}" @click="pay" ref="test">立即支付</button>
         </view>
       </view>
       <expenses-toast ref='expensesToast' :expensesType="expensesType"></expenses-toast>
       <date-picker ref='datePicker' @getTime="getTime"></date-picker>
-      <order-toast ref='orderToast' :houseId="houseId" :noStoreInfos="noStoreInfos"></order-toast>
+      <order-toast ref='orderToast' :houseId="houseId" :hasCanBuy="hasCanBuy" :noStoreInfos="noStoreInfos"></order-toast>
       <uni-popup ref="cancelDialog" :mask-click="false">
         <view class="popup-item">
           <view class="popup-title">{{toastText}}</view>
@@ -179,7 +182,7 @@
         orderInfo: {},
         canStoreInfos: {},
         noStoreInfos: {},
-        hasNoSendItem: false,
+        hasNoBuyItem: false,
         houseId: 0,
         addUser: [],
         goodDetailId: 0,
@@ -199,7 +202,7 @@
         orderDetails: [],
         totalGoodsNum: 0,
         totalPrice: '0.00',
-        canPay: true,
+        hasCanBuy: true,
         projectId: 0
       }
     },
@@ -272,6 +275,7 @@
         this.$set(this.orderInfo.storeInfos[this.shopIndex].skuInfos[this.goodIndex], "time", this.time)
       },
       emitInfo(val) {
+        this.hasNoBuyItem = false
         this.projectId = val.projectId
         this.orderDetails = []
         this.addressInfo = val
@@ -334,17 +338,30 @@
                 })
               }
               // 结算可配送和不可配送数据
-              if (skuItem.canBuy === false) { 
+              if (skuItem.errorType) { 
                 noStoreItem.skuInfos.push(skuItem)
-                if(skuItem.frontendServe){
-                    this.toastType = 1
-                    this.frontendServe = skuItem.frontendServe
-                    this.toastText = `请先购买${skuItem.frontendServe}服务`
-                    if(this.$refs.cancelDialog.open){
-                      this.$refs.cancelDialog.open()
-                    }
+                if(skuItem.errorType === 4) {
+                  this.toastType = 4
+                  this.toastText = "该服务需精算师指导下完成"
+                  if(this.$refs.cancelDialog.open){
+                    this.$refs.cancelDialog.open()
+                  }
+                } else if (skuItem.errorType === 5) {
+                  this.toastType = 5
+                  this.toastText = "该服务需管家指导下完成"
+                  if(this.$refs.cancelDialog.open){
+                    this.$refs.cancelDialog.open()
+                  }
+                } else if(skuItem.errorType === 8) {
+                  this.toastType = 8
+                  this.toastText = "请从装修页面查询购买"
+                  if(this.$refs.cancelDialog.open){
+                    this.$refs.cancelDialog.open()
+                  }
                 }
-                this.hasNoSendItem = true // 判断所有数据中有没有不可配送数据
+                  
+                
+                this.hasNoBuyItem = true // 判断所有数据中有没有不可配送数据
               } else {
                 canStoreItem.skuInfos.push(skuItem)
                 this.totalGoodsNum += skuItem.buyCount
@@ -368,12 +385,12 @@
               }
             })
           })
-          if (this.originFrom === "shopCart") {
+          if ( this.orderInfo.storeInfos.length >1 || this.orderInfo.storeInfos[0].skuInfos.length > 1) {
             this.orderInfo = this.canStoreInfos
             if(!this.canStoreInfos.storeInfos.length){
-              this.canPay = false
+              this.hasCanBuy = false
             }
-            if (this.hasNoSendItem) {
+            if (this.hasNoBuyItem) {
               this.$refs.orderToast.showPupop()
             }
           }
@@ -385,7 +402,8 @@
         this.$refs.datePicker.showDatePicker()
       },
       pay() {
-        if(!this.canPay || this.hasNoSendItem || !this.totalPrice) {
+        console.log(this.hasCanBuy, this.hasNoBuyItem)
+        if(!this.hasCanBuy || this.hasNoBuyItem || !this.totalPrice) {
           return
         }
         let details = []
@@ -431,18 +449,19 @@
         this.$refs.cancelDialog.close()
       },
       confirmGoodPop() {
-        uni.navigateTo({
-          url: "/sub-classify/pages/search-result/search-result?searchId="
-        })
-        // if (this.toastType === 1) {
-        //   uni.navigateTo({
-        //     url: "/sub-classify/pages/search-result/search-result?searchText=" + "精算"
-        //   })
-        // } else if (this.toastType === 2) {
-        //   uni.navigateTo({
-        //     url: "/sub-decorate/pages/no-house-decorate/no-house-decorate?type=actuary"
-        //   })
-        // }
+        if (this.toastType === 4) {
+          uni.navigateTo({
+            url: "/sub-classify/pages/search-result/search-result?searchText=" + "精算"
+          })
+        } else if (this.toastType === 5) {
+          uni.navigateTo({
+            url: "/sub-classify/pages/search-result/search-result?searchText=" + "管家"
+          })
+        }else if(this.toastType === 8){
+          uni.navigateTo({
+            url: "/pages/decorate/index/index"
+          })
+        }
       }
     }
   }

@@ -7,7 +7,7 @@
 </template>
 
 <script>
-import { getTextFromGroupTipMessage } from "../../util.js";
+import { getTextFromGroupTipMessage } from "@/utils/group-util.js";
 export default {
   name: "GroupTipElement",
   props: {

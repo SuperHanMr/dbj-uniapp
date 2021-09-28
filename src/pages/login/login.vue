@@ -22,6 +22,7 @@
 			};
 		},
 		onLoad() {
+
 			// 测试环境小程序appletId=B7E436F6DEF6E37296AADD3BC9F35165
 			// 生产环境appletId=E370C3ABB4F1EEC5A3946F23BCB15C29
 			let loginInit = {};
@@ -32,7 +33,7 @@
 			loginInit.sharerUserId = uni.getStorageSync("sharerUserId") || ""; //邀请人userId
 			loginInit.sharerUnionId = uni.getStorageSync("sharerUnionId") || "";
 			loginInit.platForm = "wx"; // 小程序平台 微信：wx
-      loginInit.protocol = "http";
+			loginInit.protocol = "http";
 			if (process.env.NODE_ENV === "development") {
 				console.log("开发环境");
 				loginInit.appId = "B7E436F6DEF6E37296AADD3BC9F35165"; //唯一标识
@@ -55,6 +56,9 @@
 			this.isLogin = true;
 			console.log(this.loginInit);
 			console.log(this.isLogin);
+		},
+		onUnload() {
+			console.log('!!!!!~~~~~~?????????');
 		},
 		methods: {
 			// 登录请求成功回调
