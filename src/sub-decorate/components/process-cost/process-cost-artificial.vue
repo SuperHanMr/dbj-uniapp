@@ -15,7 +15,7 @@
                 <view class="tag">{{item.productType | filterProductType}}</view>
                 <view class="name">{{item.spuName}}</view>
               </view>
-              <view class="gui-ge">{{item.specification}}</view>
+              <view class="gui-ge">{{item.name}}</view>
             </view>
           </view>
           <view class="price-count">
@@ -23,7 +23,7 @@
               <text>￥</text>
               <text>{{item.price / 100}}</text>
             </view>
-            <view class="count">共{{item.count}}件</view>
+            <view class="count">共{{item.count}}{{item.unit}}</view>
           </view>
         </view>
       </view>
@@ -47,7 +47,7 @@
     filters: {
       filterProductType(val) {
         let res = ""
-        switch (val) {
+        switch (Number(val)) {
           case 1:
             res = "物品"
             break;

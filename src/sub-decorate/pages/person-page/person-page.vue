@@ -137,7 +137,7 @@
       this.getGrabDetail()
     },
     mounted() {
-      this.getCaseList()
+      // this.getCaseList()
       this.getSkuList()
       this.getNodeHeight()
       
@@ -151,7 +151,7 @@
     },
     methods: {
       init(){
-        this.getCaseList()
+        // this.getCaseList()
         this.getSkuList()
         this.getNodeHeight()
         this.getGrabDetail()
@@ -185,11 +185,11 @@
           this.getAttention(2001,'isRecommend')
         })
       },
-      getCaseList() {
-        // getCaseList().then(res => {
+      // getCaseList() {
+      //   // getCaseList().then(res => {
         
-        // })
-      },
+      //   // })
+      // },
       changeOpacity(num){
         num<10?this.opacityNum = 0:num<40?this.opacityNum=0.2:num<80?this.opacityNum=0.4:num<120?this.opacityNum=0.6:num<160?this.opacityNum=0.8:this.opacityNum=1
         // console.log(this.opacityNum)
@@ -241,6 +241,7 @@
     padding-top: 98rpx;
     box-sizing: border-box;
     background-color: #fff;
+    padding-bottom: 40rpx;
     .bg-index {
       top: 0;
       width: 100%;

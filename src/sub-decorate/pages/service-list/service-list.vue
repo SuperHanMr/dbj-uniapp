@@ -1,6 +1,6 @@
 <template>
   <view class="design-list">
-    <service-content-card class="card-item" v-for="(item, index) in dataList" :key="item.product.spuId + ''"
+    <service-content-card class="card-item" v-for="(item, index) in dataList" :key="item.product.spuId"
       :insideArea="insideArea" :content="item">
       <template slot="radio">
         <dbj-radio class="card-radio" :value="item.product.spuId + ''" :checked="checkedSpuId === item.product.spuId + ''"

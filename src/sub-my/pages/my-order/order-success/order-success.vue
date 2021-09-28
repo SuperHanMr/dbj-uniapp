@@ -35,7 +35,7 @@
       </view>
 			
 			<view class="body1" v-for="item in refundInfo.detailAppVOS" :key="item.id">
-					<order-item :dataList="item" :refundType="true"></order-item>
+					<order-item :dataList="item" :refundType="true"  @handleDetail="productDetail(item,"refund")" />
 			</view>
 			
 			<order-refund-info :refundInfo="refundInfo"></order-refund-info>
@@ -64,7 +64,7 @@
 
       <view class="body2" >
         <view class="part1" v-for="(item,index) in orderInfo.details" :key="index">
-          <view class="header">
+          <view class="header" @click="gotoShop(item)">
             <text>{{item.storeName}}</text>
             <image
               src="../../../../static/order/ic_more@2x.png"
@@ -73,7 +73,7 @@
           </view>
 					
 					<view  v-for="item2 in item.details" :key="item2.id" class="orederItem">
-						<order-item :dataList="item2" :orderStatus="3"></order-item>
+						<order-item :dataList="item2" :orderStatus="3"  @handleDetail="productDetail(item2)"  />
 					</view>
         </view>
 			</view>
@@ -123,6 +123,7 @@
 				orderInfo:{},
 				
 				systemBottom: "",
+				areaId:"",
 			};
 		},
 		
@@ -147,10 +148,11 @@
 				console.log("退款成功页面")
 				this.refundDetail()
 			}
+			const currentHouse =JSON.parse(uni.getStorageSync('currentHouse'))
+			this.areaId =currentHouse.areaId
 		},
 	
 		methods: {
-			
 			orderDetail(){
 				console.log("订单完成页面",this.id)
 				getOrderDetail({id:this.id}).then(e=>{
@@ -182,6 +184,27 @@
 				}
 			},
 			
+			// 跳转到商品详情页面
+			productDetail(item,type){
+				console.log("item=",item,"type=",type)
+				if(type == 'refund'){
+					uni.navigateTo({
+						url:`../../../../sub-classify/pages/goods-detail/goods-detail?goodId=${item.relationId}`
+					})
+				}else{
+					uni.navigateTo({ 
+						url:`../../../../sub-classify/pages/goods-detail/goods-detail?goodId=${item.id}`
+					})
+				}
+			},
+			// 跳转到店铺页面
+			gotoShop(item) {
+			  console.log("去店铺首页！！！！");
+				console.log("this.storeId=",item.storeId,"this.areaId=",this.areaId)
+				uni.navigateTo({
+					url:`../../../../sub-classify/pages/shops/shops?storeId=${item.storeId}&areaId=${this.areaId}`
+				});
+			},
 		}
 	
 };

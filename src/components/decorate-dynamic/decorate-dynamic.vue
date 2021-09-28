@@ -6,7 +6,7 @@
     				<view class="header">
     					<view>
     						<view class="workerName">{{item.userName}}</view>
-    						<view class="role">{{item.nodeName}}</view>
+    						<view class="role">{{item.roleName}}</view>
     					</view>
     					<view class="date">{{item.normDateStr}}</view>
     				</view>
@@ -29,9 +29,9 @@
     						</view>
     					</view>
     				</view>
-            <view class="map-item" v-if="isPerson">
+            <view class="map-item" v-if="isPerson" @click="toDecorate(item)">
               <image></image>
-              <text>谁都快疯了的思念疯狂</text>
+              <text>{{item.estateName}}</text>
             </view>
     			</view>
     		</view>
@@ -57,6 +57,12 @@
       },
       commentC(id){
       	this.$emit('commentC',id)
+      },
+      toDecorate(item){
+        console.log(item.projectId)
+        uni.navigateTo({
+          url:'/sub-home/pages/decorate-scene/decorate-scene?projectId='+item.projectId
+        })
       },
     }
   }
@@ -153,7 +159,7 @@
 		line-height: 32rpx;
 	}
 	.acitonInfo .header .date{
-		width: 136rpx;
+		// width: 136rpx;
 		height: 34rpx;
 		font-size: 24rpx;
 		color: #999999;

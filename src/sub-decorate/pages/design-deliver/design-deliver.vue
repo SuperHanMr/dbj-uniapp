@@ -4,7 +4,7 @@
       <image src="http://dbj.dragonn.top/static/mp/dabanjia/images/decorate/ic_edit_2.svg" class="edit"></image>
       <view>申请修改</view>
     </view>
-    <tabs :items="items" :current="current"  @changeItem="changeItem"></tabs>
+    <tabs :items="items" :current="current" @changeItem="changeItem"></tabs>
     <pictures :imgList="imgList"></pictures>
     <button class="btn" @click="confirm">确认{{message.stageName}}</button>
   </view>
@@ -13,21 +13,28 @@
 <script>
   import Tabs from "../../components/tabs/tabs.vue"
   import Pictures from "./pictures.vue"
-  import { confirmStageDeliver, reviseStageDeliver, designListByQuery } from "../../../api/decorate.js"
+  import {
+    confirmStageDeliver,
+    reviseStageDeliver,
+    designListByQuery
+  } from "../../../api/decorate.js"
   export default {
-    components: {Tabs, Pictures},
+    components: {
+      Tabs,
+      Pictures
+    },
     data() {
       return {
         message: getApp().globalData.decorateMsg,
         imgList: [],
-        items: ["平面图", "施工图", "全景图", "效果图"],
-        current: "平面图",
+        items: [],
+        current: "",
         originList: []
       }
     },
     onShow() {
       uni.setNavigationBarTitle({
-          title: this.message.stageName
+        title: this.message.stageName
       });
       this.getDataList()
     },
@@ -35,25 +42,31 @@
       getDataList() {
         designListByQuery(this.message.serveId).then(data => {
           this.originList = data
-          this.filterImgList(this.message.stageName)
+          this.items = this.originList.map(t => t.categoryName)
+          if (this.items.length > 0) {
+            this.current = this.items[0]
+            this.filterImgList(this.items[0])
+          }
         })
       },
       filterImgList(title) {
-        if (title.includes("三维图")) {
-          this.imgList = this.originList.filter(t => t.categoryName.includes("全景图"))[0].imageFileList
-        }
-        if (title.includes("平面图")) {
-          this.imgList = this.originList.filter(t => t.categoryName.includes("平面图"))[0].imageFileList
-        }
-        if (title.includes("施工图")) {
-          this.imgList = this.originList.filter(t => t.categoryName.includes("施工图"))[0].imageFileList
-        }
-        if (title.includes("全景图")) {
-          this.imgList = this.originList.filter(t => t.categoryName.includes("全景图"))[0].imageFileList
-        }
-        if (title.includes("效果图")) {
-          this.imgList = this.originList.filter(t => t.categoryName.includes("效果图"))[0].imageFileList
-        }
+        this.imgList = []
+        this.imgList = this.originList.filter(t => t.categoryName == title)[0]?.imageFileList
+        // if (title.includes("三维图")) {
+        //   this.imgList = this.originList.filter(t => t.categoryName.includes("全景图"))[0]?.imageFileList
+        // }
+        // if (title.includes("平面图")) {
+        //   this.imgList = this.originList.filter(t => t.categoryName.includes("平面图"))[0]?.imageFileList
+        // }
+        // if (title.includes("施工图")) {
+        //   this.imgList = this.originList.filter(t => t.categoryName.includes("施工图"))[0]?.imageFileList
+        // }
+        // if (title.includes("全景图")) {
+        //   this.imgList = this.originList.filter(t => t.categoryName.includes("全景图"))[0]?.imageFileList
+        // }
+        // if (title.includes("效果图")) {
+        //   this.imgList = this.originList.filter(t => t.categoryName.includes("效果图"))[0]?.imageFileList
+        // }
       },
       confirm() {
         uni.showModal({
