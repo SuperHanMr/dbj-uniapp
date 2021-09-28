@@ -84,12 +84,11 @@
 			<order-info :orderNo="orderInfo.orderNo" :createTime="orderInfo.createTime" />
 			
 		<!-- 底部按钮 -->
-			<view :class="{noCancelBtn:true}" class="waitPayBottom"  :style="{paddingBottom:systemBottom,height:systemHeight}">
-			
-				<view class="canclePay" @click="handleCancelOrder">
+			<view v-if="orderInfo.showCancelBtn || orderInfo.showToPayBtn " :class="{noCancelBtn:true}" class="waitPayBottom"  :style="{paddingBottom:systemBottom,height:systemHeight}">
+				<view class="canclePay" v-if="orderInfo.showCancelBtn" @click="handleCancelOrder">
 					取消订单
 				</view>
-				<view class="gotoPay" @click="toPay">
+				<view class="gotoPay" v-if="orderInfo.showToPayBtn" @click="toPay">
 					去付款
 				 </view>
 			</view>
