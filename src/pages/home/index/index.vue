@@ -12,7 +12,7 @@
 		</view> -->
 
 		<!-- //头部 -->
-		<view class="state-bar" :style="{top:navBarHeight}" @click="toCity">
+		<view class="state-bar" :style="{top:navBarHeight}">
 			<view class="address flex1" @click="toCity">
 				{{citydata}}
 			</view>
@@ -46,15 +46,14 @@
 		</view>
 		<!-- 金刚区 -->
 		<view class="function-zone">
-			<view class="item bottom-border" v-for="(item,index) in zoneList"
-				:class="{'border-top-left ':index==0,'border-top':index<4,'border-top-right':index==3}" :key="item.id"
-				@click="onZoneClick(item)">
+			<view class="item " v-for="(item,index) in zoneList" :key="item.id" :class="{'bottom-border':index<zoneList.length-4}" @click="onZoneClick(item)">
 				<image class="icon" :src="item.icon"></image>
 				<view class="name">
 					{{item.name}}
 				</view>
-				<image class="border-img"
-					src="http://dbj.dragonn.top/%20static/mp/dabanjia/images/home/home-zone-border.png" mode=""></image>
+				<image v-if="(index+1)%4" class="border-img"
+					src="http://dbj.dragonn.top/%20%20static/mp/dabanjia/images/home/home-zone-border1.png" mode="">
+				</image>
 			</view>
 		</view>
 		<!-- 快捷栏目 -->
@@ -106,8 +105,9 @@
 			</view>
 		</view>
 		<view class="flex-row-common videos">
-			<view v-for="(item,index) in videoTypeList" :key="item" :style="{color:index==videoType?'#2B2F33':'#999999'}"
-				class="video-title" @click="videoTypeChange(index)">
+			<view v-for="(item,index) in videoTypeList" :key="item"
+				:style="{color:index==videoType?'#2B2F33':'#999999'}" class="video-title"
+				@click="videoTypeChange(index)">
 				{{item}}
 			</view>
 		</view>
@@ -202,7 +202,7 @@
 				goodsList: [],
 				areaId: "",
 				token: "",
-				swiperAuto:false
+				swiperAuto: false
 			};
 		},
 		watch: {
@@ -247,10 +247,10 @@
 				uni.setStorageSync("currentHouse", JSON.stringify(item));
 			});
 			this.token = getApp().globalData.token;
-			this.swiperAuto=true;
+			this.swiperAuto = true;
 		},
 		onHide() {
-			this.swiperAuto=false
+			this.swiperAuto = false
 		},
 
 		onReachBottom() {
@@ -334,11 +334,21 @@
 						title: '敬请期待'
 					})
 				} else if (item.type == 1) {
-					uni.navigateTo({
-						url: item.url
-					})
+					if (item.url.endsWith('index/index')) {
+						getApp().globalData.naviData = null;
+						if (item.urlParams) {
+							getApp().globalData.naviData = JSON.parse(item.urlParams);
+						}
+						uni.switchTab({
+							url: item.url
+						})
+					} else {
+						uni.navigateTo({
+							url: item.url
+						})
+					}
 				} else if (item.type == 2) {
-					let baseurl = this.ENV.VUE_APP_BASE_H5+'/app-pages/'
+					let baseurl = this.ENV.VUE_APP_BASE_H5 + '/app-pages/'
 					this.toWebview(baseurl + item.url);
 				}
 				if (item.type == 3) {
@@ -802,7 +812,7 @@
 	.function-zone {
 		margin: 24rpx;
 		border: 1px solid #e7e8e8;
-		width: 702rpx;
+		width: 704rpx;
 		display: flex;
 		flex-direction: row;
 		flex-wrap: wrap;
@@ -825,7 +835,7 @@
 
 		.item {
 			height: 126rpx;
-			width: 175.5rpx;
+			width: 176rpx;
 			display: flex;
 			flex-direction: column;
 			justify-content: center;

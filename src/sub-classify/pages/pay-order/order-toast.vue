@@ -34,17 +34,13 @@
                     </view>
                   </view>
                   <view class="no-send-tip">
-                     <view class="item-reduce-box" v-if="goodsItem.productType === 1">
-                        <text>当前地址无法配送该商品，请更换地址</text>
-                     </view>
-                    <view class="item-reduce-box" v-if="goodsItem.productType === 2 && !goodsItem.frontendServe && goodsItem.canDeliver">
-                        <text>该服务已下架</text>
-                     </view>
-                     <view class="item-reduce-box" v-if="goodsItem.productType === 2 && !goodsItem.frontendServe && !goodsItem.canDeliver">
-                         <text>不在服务区域</text>
-                      </view>
-                     <view class="item-reduce-box" v-if="goodsItem.frontendServe">
-                        <text>请先购买{{goodsItem.frontendServe}}服务</text>
+                     <view class="item-reduce-box">
+                       <text v-if="goodsItem.errorType === 1">不在服务范围</text>
+                       <text v-if="goodsItem.errorType === 2">不在配送范围</text>
+                       <text v-if="goodsItem.errorType === 3">该房屋下已购买该服务，不可重复购买</text>
+                       <text v-if="goodsItem.errorType === 6">您已跳过该工序，不可购买</text>
+                       <text v-if="goodsItem.errorType === 7">暂不可购买，请在精算服务结束后于精算单中购买</text>
+                       <text v-if="goodsItem.errorType === 9">暂不可购买，请在管家服务结束后于精算单中购买</text>
                      </view>
                   </view>
                 </view>	
@@ -64,6 +60,7 @@
   export default {
     props: {
       houseId: 0,
+      hasCanBuy: true,
       noStoreInfos: {}
     },
     data() {
@@ -77,6 +74,9 @@
         this.$refs.noBuyToast.open()
       },
       confirm(){
+        if(!hasCanBuy){
+          return
+        }
         this.$refs.noBuyToast.close()
       },
       backShopCart(){
