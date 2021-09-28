@@ -14,10 +14,12 @@
     </view>
     <view class="line" />
     <swiper class="swiper" :class="{empty:orderListLength<=0}" :style="{paddingBottom:systemBottom}" :current="currentIndex" :duration="200" @change="swiperChange" >
-      <swiper-item  v-for="(item,tabindex) in tabList":key="tabindex">
+      <swiper-item  v-for="(item,tabindex) in tabList":key="item">
         <scroll-view
           class="scroll-view"
-          :scroll-y="true"
+					:enable-back-to-top="true" 
+					lower-threshold="10"
+          scroll-y="true"
           refresher-background="#FFF"
           :refresher-triggered="triggered"
           @refresherrefresh="onRefresh"
@@ -383,6 +385,7 @@ export default {
 				lastId: this.lastId[this.currentIndex],
 				rows: this.rows,
 			}).then(data=>{
+				this.triggered = false;
 				if(!data.length) return 
 				if (this.currentIndex == 0) {
 				  this.lastId[0] = data[data.length - 1].id;
@@ -434,7 +437,6 @@ export default {
 			// },
 
     onLoadMore() {
-      console.log("onLoadMore!!!!!!!!!!!!!!");
       if (this.loading) return;
       // 这个是排除请求回来没有数据的情况
       if (!this.requestedDataLength && this.lastId[this.currentIndex] > 0) return;
@@ -444,9 +446,7 @@ export default {
     onRefresh(e) {
       this.triggered = true;
 			this.getOrderList()
-      setTimeout(() => {
-        this.triggered = false;
-      }, 2000);
+  
     },
 
     // 取消订单
