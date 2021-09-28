@@ -1,7 +1,8 @@
 <template>
-  <comment-and-reply-element 
-    v-if="true"
+  <interaction-template 
+    v-if="message.type === TIM.TYPES.MSG_CUSTOM && template.template === 'interaction'"
     :message="message"
+    :template="template"
   />
   <unsupported-element
     v-else
@@ -10,9 +11,9 @@
 </template>
 
 <script>
-  import MessageTemplate from "@/utils/message-template.json";
+  import TemplateMap from "@/utils/interaction_tpl.json";
   import TIM from "tim-wx-sdk";
-  import CommentAndReplyElement from "./comment-and-reply-element.vue"
+  import InteractionTemplate from "./template/interaction-tpl.vue"
   import UnsupportedElement from "./unsupported-element.vue"
   export default {
     name: "MessageItemInteraction",
@@ -23,7 +24,7 @@
       },
     },
     components: {
-      CommentAndReplyElement,
+      InteractionTemplate,
       UnsupportedElement,
     },
     computed: {
@@ -34,7 +35,7 @@
         return this.message.payloadData || {};
       },
       template() {
-        return MessageTemplate[this.payloadData.type] || {};
+        return TemplateMap[this.payloadData.type] || {};
       }
     }
   }

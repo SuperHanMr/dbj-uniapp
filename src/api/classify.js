@@ -1,7 +1,7 @@
 import request from '../utils/request';
 import axios from 'axios'
-export function getClassifyList (params) {
-  return request.get('/product/app/prod-categories/front/tree')
+export function getClassifyList (areaId) {
+  return request.get('/product/app/prod-categories/front/tree/area/' + areaId)
 }
 export function getGoodsList (params) {
   return request.post('/product/app/search/query', params)

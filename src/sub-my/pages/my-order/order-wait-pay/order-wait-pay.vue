@@ -4,25 +4,20 @@
 			<view class="order-status">
 				<view class="backgroundStyle" />
 				<view class="status">
-						<image
-							src="../../../static/ic_status_wait_pay@2x.png"
-							mode="scaleToFill"
-						></image>
-						<text>待付款</text>
-					</view>
-			
-					<view class="time">
-						<text style="margin-right: 16rpx;">剩余支付时间</text>
-						<uni-countdown 
-							color="#FFFFFF" 
-							background-color="#FAAB3B" 
-							:showDay="false"   
-							:hour="formatTime(orderInfo.remainTime)[0]" 
-							:minute="formatTime(orderInfo.remainTime)[1]" 
-							:second="formatTime(orderInfo.remainTime)[2]"
-						/>
-					</view>
-			 
+					<image src="../../../static/ic_status_wait_pay@2x.png" mode="scaleToFill" />
+					<text>待付款</text>
+				</view>
+				<view class="time">
+					<text style="margin-right: 16rpx;">剩余支付时间</text>
+					<uni-countdown 
+						color="#FFFFFF" 
+						background-color="#FAAB3B" 
+						:showDay="false"   
+						:hour="formatTime(orderInfo.remainTime)[0]" 
+						:minute="formatTime(orderInfo.remainTime)[1]" 
+						:second="formatTime(orderInfo.remainTime)[2]"
+					/>
+				</view>
 			</view>
 			
 			<order-user-base-info :data="orderInfo"></order-user-base-info>
@@ -31,37 +26,31 @@
 				<view class="storeItem" :class="{paddingBottom: item.stockType == 1 }">
 					<view class="header" @click="gotoShop(item)">
 						<text>{{item.storeName}}</text>
-						<image
-							src="@/static/order/ic_more@2x.png"
-							mode=""
-						></image>
+						<image src="@/static/order/ic_more@2x.png" mode="" />
 					</view>
 					<view v-for="item2 in item.details" :key="item2.id">
-						
 						<order-item :orderStatus="1" :dataList="item2" @handleDetail="productDetail(item2)" />
 					</view>
 					
 					<view class="discount-container" v-if="item.showFreight">
 						<view class="left">
 							<view class="item" v-if="item.type == 1">
-								<text>运费</text>
-								<text>￥{{item.freight?`￥${item.freight}`:"--"}}</text>
+								<text>运费</text><text>￥{{item.freight?`￥${item.freight}`:"--"}}</text>
 							</view>
 							<view class="item" v-if="item.platformDiscount">
-							<text>平台优惠</text>
-							<text>￥{{item.platformDiscount}}</text>
+							<text>平台优惠</text><text>￥{{item.platformDiscount}}</text>
 						</view>
 						</view>
+						
 						<view class="line1" v-if="item.handlingFees || item.storeDiscount" />
 						<view class="line2" v-else/>
+						
 						<view class="right">
 							<view class="item" v-if="item.type == 1">
-								<text>搬运费</text>
-								<text>{{item.handlingFees?`￥${item.handlingFees}`:"--"}}</text>
+								<text>搬运费</text><text>{{item.handlingFees?`￥${item.handlingFees}`:"--"}}</text>
 							</view>
 							<view class="item" v-if="item.storeDiscount">
-								<text>商家优惠</text>
-								<text>￥{{item.storeDiscount}}</text>
+								<text>商家优惠</text><text>￥{{item.storeDiscount}}</text>
 							</view>
 						</view>
 					</view>
@@ -74,41 +63,25 @@
 							<text style="color: #333333;">{{item.freeShipCount}}次免邮费额度，</text>
 							<text>搬运费需要根据实际要货时进行核算</text>
 						</view>
-						
 						<view class="tips" v-else>
 							<text>搬运费需要根据实际要货时进行核算</text>
 						</view>
 					</view>
-					
 				</view>
-				
 				<view class="split-line" />
-				
 			</view> 
 			
-
-			<order-price
-				:data="orderInfo"
-				:waitPay="true"
-			/>
-
+			<order-price :data="orderInfo" :waitPay="true" />
+			
 			<view class="payment-method">
 				<text>支付方式</text>
 				<view class="method">
-					<image
-						src="@/static/order/ic_order_wechat@2x.png"
-						mode=""
-					></image>
+					<image src="@/static/order/ic_order_wechat@2x.png" mode="" />
 					<text>微信支付</text>
 				</view>
 			</view>
 
-			<order-info  
-			:orderNo="orderInfo.orderNo"
-			:createTime="orderInfo.createTime"
-			></order-info>
-
-			
+			<order-info :orderNo="orderInfo.orderNo" :createTime="orderInfo.createTime" />
 			
 		<!-- 底部按钮 -->
 			<view :class="{noCancelBtn:true}" class="waitPayBottom"  :style="{paddingBottom:systemBottom,height:systemHeight}">
@@ -122,18 +95,7 @@
 			</view>
 			
 		</view>
-  
-	 
-		<!-- <uni-popup  ref="cancleOrder"  type="dialog">
-			<uni-popup-dialog
-				mode="base"
-				title="您确定要取消该订单吗？"
-				:before-close="true"
-				@close="cancelOrderClose"
-				@confirm="cancleConfirm"
-			/>
-		</uni-popup> -->
-		
+		<!-- 取消该订单弹框 -->
 		<popup-dialog ref="cancleOrder" :title="title"  @close="cancelOrderClose" @confirm="cancleConfirm"></popup-dialog>
 	</view>
 </template>
@@ -165,11 +127,12 @@ export default {
 	},
 	
   onLoad(e) {
-    this.orderNo =Number( e.orderNo)||getApp().globalData.decorateMsg.orderId;
-		this.orderDetail()
+    this.orderNo =Number(e.orderNo)||getApp().globalData.decorateMsg.orderId;
 		const currentHouse =JSON.parse(uni.getStorageSync('currentHouse'))
 		this.areaId =currentHouse.areaId
-		
+	},
+	onShow() {
+		this.orderDetail()
 	},
 	
   methods: {
@@ -196,6 +159,79 @@ export default {
 			});
 		},
 		
+		// 去申请退款页面
+		toApplayForRefund() {
+      uni.navigateTo({
+        url: "/sub-my/pages/apply-for-refund/apply-for-refund",
+      });
+    },
+		// 取消订单
+		handleCancelOrder(){
+			this.$refs.cancleOrder.open();
+		},
+		cancelOrderClose(){
+			this.$refs.cancleOrder.close();
+		},
+		cancleConfirm(){
+			//点击确定后订单会被取消且该订单会被移入已关闭订单中
+			cancelOrder({id:this.orderNo}).then(e=>{
+				this.$refs.cancleOrder.close();
+				uni.redirectTo({
+					url:`../order-failed/order-failed?type=close&id=${this.orderNo}&from=waitPay`
+				})
+			})
+		},
+	
+		//去支付
+		toPay() {
+			// 先判断是否支付超额拆单了 // 拆单之后直接跳转到拆单页面	// 未拆单 直接支付 
+			console.log(this.orderInfo,"orderInfo.orderId=",this.orderInfo.orderId)
+			if(this.orderInfo.isSplitPay){
+				// orderId 是订单id
+				uni.navigateTo({
+					url:`../multiple-payments/multiple-payments?orderId=${this.orderNo}&type=detail&remainTime=${this.orderInfo.remainTime}`
+				})
+			}else{
+				let openId = uni.getStorageSync("openId");
+				orderPay({
+					orderId: this.orderNo,
+					payType: 1,//支付类型  1微信支付",
+					openid: openId,
+				}).then((e) => {
+					const payInfo = e.wechatPayJsapi;
+					uni.requestPayment({
+						provider: "wxpay",
+						...payInfo,
+						success(res) {
+							uni.showToast({
+								title:"支付成功！",
+								icon:"none",
+								duration:1000,
+							})
+							setTimeout(()=>{
+								// 进入云松写的支付成功页面
+								uni.redirectTo({
+									url:`../../../../sub-classify/pages/pay-order/pay-success?id=${this.orderNo}`
+								})
+							},1000)
+						},
+						fail(e) {
+							uni.showToast({
+							    title: '支付失败',
+									icon:"none",
+							    duration: 2000
+							});
+						},
+					});
+					
+				});
+			}
+			
+			
+		
+		
+		},
+		
 		formatTime(msTime) {
 			let time = msTime /1000;
 			let hour = Math.floor(time /60 /60) %24;
@@ -209,7 +245,6 @@ export default {
 			let second = Math.floor(time) %60;
 			return [hour,minute,second]
 		},
-		
 		handlePrice(price){
 			let list=String(price).split(".")
 			if(list.length==1){
@@ -218,85 +253,8 @@ export default {
 				return[list[0],list[1]]
 			}
 		},
-
-		toApplayForRefund() {
-      uni.navigateTo({
-        url: "/sub-my/pages/apply-for-refund/apply-for-refund",
-      });
-    },
 		
-  
-		// 取消订单
-		handleCancelOrder(){
-			this.$refs.cancleOrder.open();
-		},
-		cancelOrderClose(){
-			this.$refs.cancleOrder.close();
-		},
-		cancleConfirm(){
-			console.log("取消订单按钮成功！")
-			//点击确定后订单会被取消且该订单会被移入已关闭订单中
-			cancelOrder({id:this.orderNo}).then(e=>{
-					this.$refs.cancleOrder.close();
-					uni.redirectTo({
-						url:`../order-failed/order-failed?type=close&id=${this.orderNo}&from=waitPay`
-					})
-			})
-		},
-	
-		
-		//去支付
-		toPay() {
-			// 先判断是否支付超额拆单了     
-			// 拆单之后直接跳转到拆单页面
-			// 未拆单 直接支付 
-			console.log(this.orderInfo,"orderInfo.orderId=",this.orderInfo.orderId)
-				
-			if(this.orderInfo.isSplitPay){
-				// orderId 是订单id
-				
-				
-				
-				
-				
-				
-				//此处戏传参有问题
-				uni.navigateTo({
-					url:`../multiple-payments/multiple-payments?orderId=${this.orderNo}&type=detail&remainTime=${this.orderInfo.remainTime}`
-				})
-				
-			}else{
-				let openId = uni.getStorageSync("openId");
-				orderPay({
-					orderId: this.orderNo,
-					payType: 1,//支付类型  1微信支付",
-					openid: openId,
-				}).then((e) => {
-					const payInfo = e.wechatPayJsapi;
-					uni.requestPayment({
-						provider: "wxpay",
-						...payInfo,
-						success(res) {
-							uni.navigateTo({
-								url:`../order-success/order-success?type=complete&id=${this.orderNo}`
-							})
-						},
-						fail(e) {
-							uni.showToast({
-							    title: '支付失败',
-									icon:"none",
-							    duration: 2000
-							});
-						},
-					});
-				});
-			}
-			
-			
-		
-		
-		},
-  },
+	},
 };
 </script>
 

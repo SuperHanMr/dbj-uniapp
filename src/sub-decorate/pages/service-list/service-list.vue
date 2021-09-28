@@ -47,7 +47,8 @@
         categoryId,
         name,
         serviceType,
-        areaId
+        areaId,
+        unitId
       } = option
       this.checkedSpuId = spuId
       this.title = name
@@ -55,6 +56,7 @@
       this.serviceType = serviceType
       this.insideArea = insideArea
       this.areaId = areaId
+      this.unitId = unitId
     },
     onShow() {
       uni.setNavigationBarTitle({
@@ -77,7 +79,8 @@
           categoryId: Number(this.categoryId),
           pageSize: 10,
           pageIndex: this.page,
-          areaId: Number(this.areaId)
+          areaId: Number(this.areaId),
+          unitId: Number(this.unitId)
         }).then(data => {
           const {
             total,

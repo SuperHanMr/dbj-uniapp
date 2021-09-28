@@ -1,8 +1,8 @@
 <template>
   <view class="process-cost">
-    <view class="artificial" v-if="obtainType != 2">
+    <view class="artificial" v-if="msg.obtainType != 2">
       <view class="title">
-        <view>人工费用（{{levels[artificialLevel - 1].label }}）</view>
+        <view>人工费用（{{LEVEL[artificialLevel - 1].label }}）</view>
         <view class="change-level" @click="openPopUp">更换等级</view>
       </view>
       <view class="process-cost-list">
@@ -12,7 +12,8 @@
       </view>
       <no-data v-if="noData" :words="message"></no-data>
     </view>
-    <view class="material-cost" :style="{paddingBottom:containerBottom * 2 + 48 + 88 + 'rpx'}" v-if="obtainType != 1">
+    <view class="material-cost" :style="{paddingBottom:containerBottom * 2 + 48 + 88 + 'rpx'}"
+      v-if="msg.obtainType != 1">
       <view class="title">
         <view>辅材费用</view>
       </view>
@@ -27,7 +28,7 @@
       <payment @gotopay="gotopay" :pieces="pieces" :countPrice="countPrice" :isAllChecked="isAllChecked"></payment>
     </view>
     <uni-popup ref="level">
-      <change-level @changeLevel="setLevel" @close="close"></change-level>
+      <change-level @changeLevel="setLevel" @close="close" :dataList="levelList" :current="levelList[0]"></change-level>
     </uni-popup>
   </view>
 </template>
@@ -39,11 +40,18 @@
   import ChangeLevel from "../../components/change-level/change-level.vue"
   import NoData from "../../components/no-data/no-data.vue"
   import {
+    LEVEL
+  } from "../../../utils/dict.js"
+  import {
     createOrder
   } from "../../../api/order-center.js"
   import {
     sellList
   } from "../../../api/decorate.js"
+  import {
+    batchChangeLevel
+  } from "../../../api/level.js"
+
   export default {
     components: {
       ProcessCostArtificial,
@@ -54,42 +62,25 @@
     },
     onLoad(option) {
       const {
-        projectId,
-        serveCardId,
-        serviceName,
-        serviceType,
-        serveType,
-        serveTypeName,
-        estateId,
-        roleType,
-        customerId,
-        pushTitle,
-        obtainType,
-      } = getApp().globalData.decorateMsg
-      this.serveCardId = serveCardId || option.serveCardId
-      this.estateId = estateId || option.estateId
-      this.serviceType = serviceType || option.serviceType
-      this.projectId = projectId || option.projectId
-      this.customerId = customerId || option.customerId
-      this.pushTitle = serviceName || "工序费购买"
-      if (obtainType === 0) {
-        this.obtainType = obtainType
+        partpay
+      } = option
+      if (partpay) {
+        this.msg = {
+          ...option
+        }
       } else {
-        this.obtainType = obtainType || option.obtainType
+        this.msg = getApp().globalData.decorateMsg
       }
     },
     onShow() {
       this.getDataList()
       uni.setNavigationBarTitle({
-        title: this.pushTitle
+        title: this.msg.pushTitle
       })
     },
     data() {
       return {
-        serveCardId: null,
-        serviceType: null,
-        obtainType: null,
-        pushTitle: null,
+        msg: {},
         dataOrigin: {},
         checkedIds: [],
         shopping: {
@@ -98,28 +89,16 @@
         },
         countPrice: 0,
         pieces: 0,
-        estateId: null,
         artificialLevel: 1,
-        roleType: null,
-        levels: [{
-          label: "中级",
-          value: 1
-        }, {
-          label: "高级",
-          value: 2
-        }, {
-          label: "特高级",
-          value: 3
-        }, {
-          label: "钻石",
-          value: 4
-        }],
+        curr_artificial_categoryId: null,
+        levelList: [],
+        workerLevelSkuMapping: {},
         containerBottom: null,
         systemBottom: null,
         systemHeight: null,
         noData: false,
         message: null,
-        skuRelation: []// 精算单更换商品  新旧商品id对照表
+        skuRelation: [] // 精算单更换商品  新旧商品id对照表
       }
     },
     mounted() {
@@ -144,14 +123,20 @@
             if (this.dataOrigin.material.categoryList[i].categoryType == categoryType) {
               for (let j = 0; j < this.dataOrigin.material.categoryList[i].itemList.length; j++) {
                 if (this.dataOrigin.material.categoryList[i].itemList[j].id == item.id) {
-                  this.dataOrigin.material.categoryList[i].itemList[j].id = item.id
-                  this.dataOrigin.material.categoryList[i].itemList[j].name = item.name
-                  this.dataOrigin.material.categoryList[i].itemList[j].imgUrl = item.imgUrl
-                  this.dataOrigin.material.categoryList[i].itemList[j].count = item.count
-                  this.dataOrigin.material.categoryList[i].itemList[j].price = item.price
-                  this.dataOrigin.material.categoryList[i].itemList[j].setp = item.setp
-                  this.dataOrigin.material.categoryList[i].itemList[j].isEdit = item.isEdit
-                  this.dataOrigin.material.categoryList[i].itemList[j].checked = item.checked
+                  this.dataOrigin.material.categoryList[i].itemList[j] = item
+
+                  // 添加新旧id对应关系
+                  const flgArr = this.skuRelation.filter(t => t.originalId == item.originalId)
+                  if (flgArr?.length > 0) {
+                    // 如果是已经存在了新旧id对应关系，则替换新的id
+                    flgArr[0].newSuk = item.id
+                  } else {
+                    // 否则就是第一次替换
+                    this.skuRelation.push({
+                      oldSuk: item.originalId,
+                      newSuk: item.id
+                    })
+                  }
                   break
                 }
               }
@@ -162,6 +147,7 @@
         this.computePriceAndShopping()
       },
       openPopUp() {
+        // this.curr_artificial_categoryId
         this.$refs.level.open("bottom")
       },
       computePriceAndShopping() {
@@ -173,7 +159,7 @@
         this.countPrice = 0
         this.pieces = 0
 
-        if (this.obtainType != 2) {
+        if (this.msg.obtainType != 2) {
           // 先计算人工费用
           this.dataOrigin.artificial.categoryList.forEach((item, i) => {
             item.itemList.forEach((it, j) => {
@@ -184,7 +170,7 @@
           })
         }
 
-        if (this.obtainType != 1) {
+        if (this.msg.obtainType != 1) {
           // 再计算辅材费用
           this.dataOrigin.material.categoryList.forEach((item, i) => {
             item.itemList.forEach((it, j) => {
@@ -200,16 +186,62 @@
         console.log(this.shopping, this.countPrice)
         // return temp
       },
+      batchChangeLevel(cllist) {
+        batchChangeLevel({
+          changeLevelDetailList: cllist
+        }).then(data => {
+          if (data && data.length > 0) {
+            let list = []
+            // 取第一项查询所有等级
+            data[0].changeLevelDetailList.forEach(itm => {
+              list.push({
+                value: itm.level,
+                label: itm.levelName,
+                // price: null,
+              })
+            })
+            data.forEach(workerSku => {
+              // 储存所有工人对应的等级列表和溢价价格
+              this.workerLevelSkuMapping[workerSku.skuId] = workerSku.changeLevelDetailList
+              workerSku.changeLevelDetailList.forEach(itm => {
+                let level = list.filter(l => l.value = itm.level)[0]
+                level.totalPrice += itm.totalPrice / 100
+              })
+            })
+            this.levelList = list
+          }
+        })
+      },
       getDataList() {
         this.noData = false
         sellList({
-          projectId: this.projectId,
-          type: this.serviceType,
-          obtainType: this.obtainType
+          projectId: this.msg.projectId,
+          type: this.msg.serviceType,
+          obtainType: this.msg.obtainType
         }).then(data => {
-          console.log(11111)
-
           this.dataOrigin = data
+          if (this.dataOrigin?.artificial?.categoryList?.length > 0) {
+            let cllist = []
+            this.dataOrigin?.artificial?.categoryList?.forEach(category => {
+              category?.itemList.forEach(t => {
+                let obj = {
+                  skuId: t.id, //"long //商品id【必须】",
+                  cityId: this.dataOrigin.areaId, //"long //市id【必须】",
+                  categoryTypeId: t.categoryTypeId, //"int //商品品类类型id【必须】",
+                  price: t.price, //"int //商品总价格 工艺商品单价个数 单位分【必须】",
+                  count: t.count,
+                  // workerType: t.workType, //"int //工种,品类为工人时（categoryTypeId=7）必传
+                }
+                if (t.categoryTypeId == 7) {
+                  obj.workerType = t.workType
+                }
+                cllist.push(obj)
+              })
+            })
+            if (cllist.length > 0) {
+              this.batchChangeLevel(cllist)
+            }
+          }
           this.initData()
         }).catch(err => {
           const {
@@ -222,7 +254,7 @@
         })
       },
       initData() {
-        if (this.obtainType != 2) {
+        if (this.msg.obtainType != 2) {
           this.dataOrigin.artificial.categoryList.forEach(t => {
             t.itemList.forEach(it => {
               this.checkedIds.push(it.id)
@@ -230,7 +262,7 @@
           })
         }
 
-        if (this.obtainType != 1) {
+        if (this.msg.obtainType != 1) {
           this.dataOrigin.material.categoryList.forEach(t => {
             t.itemList.forEach(it => {
               it.checked = true
@@ -273,25 +305,17 @@
           let params = {
             payType: 1, //"int //支付方式  1微信支付",
             openid: uni.getStorageSync("openId"), //"string //微信openid 小程序支付用 app支付不传或传空",
-            projectId: this.projectId, //"long //项目id  非必须 默认0",
-            customerId: this.customerId, //"long //业主id  非必须 默认0",
-            estateId: this.estateId, //"long //房产id   非必须 默认0",
+            projectId: Number(this.msg.projectId), //"long //项目id  非必须 默认0",
+            customerId: Number(this.msg.customerId), //"long //业主id  非必须 默认0",
+            estateId: Number(this.msg.estateId), //"long //房产id   非必须 默认0",
             total: this.countPrice * 100, //"int //总计",
             remarks: "", //"string //备注",
             orderName: "管家工序费", //"string //订单名称",
-            details: [],
-            skuRelation: [{
-              oldSuk: 1,
-              newSuk: 2
-            }, {
-              oldSuk: 2,
-              newSuk: 3
-            }]
+            details: []
           }
-          skuRelation = this.skuRelation
           // roleType 7工人，10管家
-          let roleType = this.serviceType == 5 ? 10 : 7
-          if (this.obtainType != 2) {
+          let roleType = this.msg.serviceType == 5 ? 10 : 7
+          if (this.msg.obtainType != 2) {
             this.shopping.artificial.forEach(it => {
               // skuInfos.push({
               //   skuId: it.id, //"long //商品id",
@@ -315,7 +339,7 @@
               })
             })
           }
-          if (this.obtainType != 1) {
+          if (this.msg.obtainType != 1) {
             this.shopping.material.forEach(it => {
               // skuInfos.push({
               //   skuId: it.id, //"long //商品id",
@@ -334,7 +358,9 @@
                 storeId: it.storeId, //"long //店铺id",
                 storeType: 0, //"int //店铺类型 0普通 1设计师",
                 number: it.count, //"double //购买数量",
-                params: "", //string //与订单无关的参数 如上门时间 doorTime"
+                params: {
+                  skuRelation: this.skuRelation
+                }, //string //与订单无关的参数 如上门时间 doorTime"
               })
             })
           }
@@ -377,9 +403,12 @@
           });
         })
       },
-      setLevel(value) {
-        this.artificialLevel = value
-        console.log(value)
+      setLevel(levelObj) {
+        this.artificialLevel = levelObj.value
+        this.dataOrigin?.artificial?.categoryList
+        this.workerLevelSkuMapping.forEach(item => {
+          
+        })
         this.close()
       },
       close() {

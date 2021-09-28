@@ -275,6 +275,7 @@
         this.$set(this.orderInfo.storeInfos[this.shopIndex].skuInfos[this.goodIndex], "time", this.time)
       },
       emitInfo(val) {
+        this.hasNoBuyItem = false
         this.projectId = val.projectId
         this.orderDetails = []
         this.addressInfo = val
@@ -401,6 +402,7 @@
         this.$refs.datePicker.showDatePicker()
       },
       pay() {
+        console.log(this.hasCanBuy, this.hasNoBuyItem)
         if(!this.hasCanBuy || this.hasNoBuyItem || !this.totalPrice) {
           return
         }
@@ -433,8 +435,9 @@
             ...wechatPayJsapi,
             success(res) {
              console.log("付款成功", res)
+             console.log(data, "dataaaa")
              uni.navigateTo({
-               url: "/sub-classify/pages/pay-order/pay-success"
+               url: "/sub-classify/pages/pay-order/pay-success?orderId=" + data.id
              })
             },
             fail(e) {

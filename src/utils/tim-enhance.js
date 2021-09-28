@@ -273,6 +273,7 @@ function enhanceGetMessageList(tim) {
     console.log("enhance get message list:", params);
     const { conversationID, nextReqMessageID, count } = params;
     if (conversationID === state.cstServConv.conversationID) {
+      // 在线客服消息，从后台接口获取
       let endTime;
       if (smartNextMsg && smartNextMsg.ID === nextReqMessageID) {
         endTime = smartNextMsg.time * 1000;
