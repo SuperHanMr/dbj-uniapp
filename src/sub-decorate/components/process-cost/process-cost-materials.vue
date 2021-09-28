@@ -188,18 +188,19 @@
           for (let i = 0; i < i < this.itemList.length; i++) {
             let t = this.itemList[i]
             if (t.id === this.currentItemOriginData.id) {
-              this.setCurrentEditMaterialChangData(t, materialDetail)
+              item = {
+                ...t
+              }
+              break;
             }
-            item = t
-            break;
           }
-          this.submitMaterial(item)
+          this.setCurrentEditMaterialChangData(item, materialDetail)
         })
       },
       setCurrentEditMaterialChangData(origin, source) {
         // 注释的字段是不允许替换的
         // origin.originalId = origin.originalId // "原始ID 【下单params附带参数】",
-        origin.id = source.product.id //"long //商品ID 【下单params附带参数】",
+        origin.id = source.product.skuId //"long //商品ID 【下单params附带参数】",
         origin.title = source.title //"string //标题",
         // origin.productType = origin.productType //"int //下单参数 type\r      标签 1.物品 2.服务 3.虚拟\r ,
         // origin.roleType = source.roleType // "int //下单参数 roleType",  这里是辅材所以不需要替换
@@ -218,6 +219,8 @@
         origin.name = source.product.skuName //"string //规格",
         // origin.inServiceArea = origin.inServiceArea //"boolean //是否在服务区",
         // origin.selling = origin.selling //"boolean //是否已购买 false未购买 true已购买"
+
+        this.submitMaterial(origin)
       },
       submitMaterial(item) {
         this.$emit("changeMaterial", {
