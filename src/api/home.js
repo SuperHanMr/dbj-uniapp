@@ -15,7 +15,7 @@ export function queryLive(params) {
 }
 //首页金刚区
 export function navList(params) {
-	return request.get(`app/home/config/versions/6`, {
+	return request.get(`app/home/config/versions/9`, {
 		params
 	});
 }
