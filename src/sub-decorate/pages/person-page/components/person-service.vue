@@ -3,7 +3,7 @@
 <!--    <view class="title">
       Ta的服务
     </view> -->
-    <view class="service-list">
+    <view class="service-list" v-if="serviceList.length>0">
       <view class="service-item" v-for="item of serviceList">
         <image :src="item.imageUrl" mode=""></image>
         <view class="item-msg">
@@ -24,6 +24,9 @@
           </view>
         </view>
       </view>
+    </view>
+    <view class="empty" v-else>
+      暂无服务
     </view>
     <view class="click-text" v-if="serviceData.length>3" @click="open">
     {{isOpen?'收起全部服务':'展开全部服务'}}<image src="" mode=""></image>
