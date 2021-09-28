@@ -52,9 +52,9 @@
   import MyCurrentHouse from "../../components/my-current-house/my-current-house.vue";
   import CancelTip from "./cancel-tip.vue"
   import ChangeLevel from "../../components/change-level/change-level.vue"
-  import {
-    LEVEL
-  } from "../../../utils/dict.js"
+  // import {
+  //   LEVEL
+  // } from "../../../utils/dict.js"
   import {
     queryEstates,
     getServiceSku
@@ -253,16 +253,23 @@
         original.storeId = source.product.storeId
       },
       changeLevel() {
-        changeLevel({
+        let tmp = {
           cityId: this.currentHouse.cityId || defaultHouse.cityId,
           price: this.design.price,
-          categoryTypeId: this.design.categoryTypeId
-        }).then(data => {
+          count: 1,
+          categoryTypeId: this.design.categoryTypeId,
+          skuId: this.design.id
+        }
+        if(this.design.categoryTypeId === 7) {
+          tmp.workerType = this.design.workerType
+        }
+        changeLevel(tmp).then(data => {
           this.levelList = data.map(t => {
             return {
               value: t.level,
-              label: LEVEL[t.level],
-              price: t.price * 100
+              label: t.levelName,
+              totalPrice: t.totalPrice / 100,
+              price: t.price / 100
             }
           })
         })
@@ -344,7 +351,7 @@
               checked: true,
               insideArea: this.currentHouse.insideArea
             }
-            this.editField(this.currentHouse, values)
+            this.editField(this.actuary, values)
           } else {
             let actuaryData = data.filter(t => t.serviceType === 4)
             if (actuaryData && actuaryData.length > 0) {
@@ -366,15 +373,15 @@
         let areaId = this.currentHouse.areaId || defaultHouse.areaId
         if (pp === "design") {
           str =
-            `/sub-decorate/pages/service-list/service-list?name=设计服务&serviceType=1&areaId=${areaId}&insideArea=${this.currentHouse.insideArea}&spuId=${this.design.spuId}&categoryId=${this.design.category4Id}`
+            `/sub-decorate/pages/service-list/service-list?name=设计服务&serviceType=1&areaId=${areaId}&insideArea=${this.currentHouse.insideArea}&spuId=${this.design.spuId}&categoryId=${this.design.category4Id}&unitId=${this.design.unitId}`
         }
         if (pp === "checkHouse") {
           str =
-            `/sub-decorate/pages/service-list/service-list?name=验房服务&serviceType=2&areaId=${areaId}&insideArea=${this.currentHouse.insideArea}&spuId=${this.checkHouse.spuId}&categoryId=${this.checkHouse.category4Id}`
+            `/sub-decorate/pages/service-list/service-list?name=验房服务&serviceType=2&areaId=${areaId}&insideArea=${this.currentHouse.insideArea}&spuId=${this.checkHouse.spuId}&categoryId=${this.checkHouse.category4Id}&unitId=${this.checkHouse.unitId}`
         }
         if (pp === "actuary") {
           str =
-            `/sub-decorate/pages/service-list/service-list?name=精算服务&serviceType=4&areaId=${areaId}&insideArea=${this.currentHouse.insideArea}&spuId=${this.actuary.spuId}&categoryId=${this.actuary.category4Id}`
+            `/sub-decorate/pages/service-list/service-list?name=精算服务&serviceType=4&areaId=${areaId}&insideArea=${this.currentHouse.insideArea}&spuId=${this.actuary.spuId}&categoryId=${this.actuary.category4Id}&unitId=${this.actuary.unitId}`
         }
         uni.navigateTo({
           url: str

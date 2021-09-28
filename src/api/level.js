@@ -6,9 +6,7 @@ export function changeLevel(params) {
     params
   })
 }
-//根据区域cityId和品类categoryTypeId查询可接单最大等级
-export function queryMaxLevel(params) {
-  return request.get(`/app/employeeInfo/queryMaxLevel`, {
-    params
-  })
+//批量更换人工等级
+export function batchChangeLevel(data) {
+  return request.post(`/pm/app/project/batchChangeLevel`, data)
 }

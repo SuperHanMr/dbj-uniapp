@@ -95,6 +95,9 @@
             <no-service v-if="purchasedServiceList.length == 0" words="暂无进行中服务"></no-service>
           </view>
         </view>
+        <view v-if="aServiceData.projectStatus == 3" class="jun-gong-da-ji">
+          竣工大吉
+        </view>
         <view class="tips-design-actuary">
           <view v-if="availGuides.length > 0" class="tips">
             购买相关服务 即刻开启装修
@@ -298,6 +301,7 @@
             showActuaryFlag,
             showDesignFlag,
             showVideoFlag,
+            projectStatus
           } = data
           this.purchasedServiceList = purchasedServiceList || []
           this.availableServiceList = availableServiceList || []
@@ -307,7 +311,8 @@
             insuranceStatus,
             showActuaryFlag,
             showDesignFlag,
-            showVideoFlag
+            showVideoFlag,
+            projectStatus
           }
           timer = setTimeout(() => {
             this.addServiceCard(this.defaultServices, "serviceType")
@@ -499,7 +504,7 @@
       },
       gjgxf() {
         uni.navigateTo({
-          url: `/sub-decorate/pages/gj-process-cost/gj-process-cost?projectId=${this.currentProject.projectId}&estateId=${this.currentProject.estateId}&roleType=10&serviceType=5&obtainType=0`
+          url: `/sub-decorate/pages/gj-process-cost/gj-process-cost?partpay=1&projectId=${this.currentProject.projectId}&estateId=${this.currentProject.estateId}&roleType=10&serviceType=5&obtainType=0`
         })
       },
       payGuanGuanJia() {
@@ -944,5 +949,18 @@
     .p-i-t {
       margin-right: 24rpx;
     }
+  }
+  .jun-gong-da-ji {
+    margin: 16rpx 24rpx;
+    text-align: center;
+    height: 128rpx;
+    font-size: 32rpx;
+    font-family: PingFangSC, PingFangSC-Medium;
+    font-weight: 700;
+    color: #333333;
+    line-height: 128rpx;
+    letter-spacing: 10rpx;
+    background: #ffffff;
+    border-radius: 24rpx;
   }
 </style>
