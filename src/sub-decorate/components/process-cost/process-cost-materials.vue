@@ -2,7 +2,7 @@
   <view class="content">
     <view class="title-wrap">
       <view class="title">
-        <view class="s-4level-name">{{content.categoryName || "后端没有返回categoryName字段"}}</view>
+        <view class="s-4level-name">{{content.categoryName || "其他"}}</view>
       </view>
     </view>
     <view class="index">

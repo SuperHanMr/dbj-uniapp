@@ -8,6 +8,5 @@ export function changeLevel(params) {
 }
 //批量更换人工等级
 export function batchChangeLevel(data) {
-  debugger
   return request.post(`/pm/app/project/batchChangeLevel`, data)
 }

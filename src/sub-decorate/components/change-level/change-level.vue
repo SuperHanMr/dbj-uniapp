@@ -15,7 +15,7 @@
       <group-radio-me :items="dataList" :defaultV="1" @change="change"></group-radio-me>
     </view>
     <view class="line"></view>
-    <view class="price-count">所有人工费用总和：¥{{currentLevel.price / 100}}</view>
+    <view class="price-count">所有人工费用总和：¥{{currentLevel.totalPrice / 100}}</view>
     <view class="btn-wrap">
       <view class="cancel" @click="cancel">取消</view>
       <view class="submit" @click="ok">确定更改</view>

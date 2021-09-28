@@ -90,7 +90,9 @@
         countPrice: 0,
         pieces: 0,
         artificialLevel: 1,
+        curr_artificial_categoryId: null,
         levelList: [],
+        workerLevelSkuMapping: {},
         containerBottom: null,
         systemBottom: null,
         systemHeight: null,
@@ -122,10 +124,10 @@
               for (let j = 0; j < this.dataOrigin.material.categoryList[i].itemList.length; j++) {
                 if (this.dataOrigin.material.categoryList[i].itemList[j].id == item.id) {
                   this.dataOrigin.material.categoryList[i].itemList[j] = item
-                  
+
                   // 添加新旧id对应关系
                   const flgArr = this.skuRelation.filter(t => t.originalId == item.originalId)
-                  if(flgArr?.length > 0) {
+                  if (flgArr?.length > 0) {
                     // 如果是已经存在了新旧id对应关系，则替换新的id
                     flgArr[0].newSuk = item.id
                   } else {
@@ -145,6 +147,7 @@
         this.computePriceAndShopping()
       },
       openPopUp() {
+        // this.curr_artificial_categoryId
         this.$refs.level.open("bottom")
       },
       computePriceAndShopping() {
@@ -185,16 +188,28 @@
       },
       batchChangeLevel(cllist) {
         batchChangeLevel({
-          changeLevelDetailList: cllis
+          changeLevelDetailList: cllist
         }).then(data => {
-          this.levelList = data.map(t => {
-            return {
-              value: t.level,
-              label: LEVEL[t.level],
-              price: t.price * 100
-            }
-          })
-          console.log(">>>>changeLevelDetailList>>>>>")
+          if (data && data.length > 0) {
+            let list = []
+            // 取第一项查询所有等级
+            data[0].changeLevelDetailList.forEach(itm => {
+              list.push({
+                value: itm.level,
+                label: itm.levelName,
+                // price: null,
+              })
+            })
+            data.forEach(workerSku => {
+              // 储存所有工人对应的等级列表和溢价价格
+              this.workerLevelSkuMapping[workerSku.skuId] = workerSku.changeLevelDetailList
+              workerSku.changeLevelDetailList.forEach(itm => {
+                let level = list.filter(l => l.value = itm.level)[0]
+                level.totalPrice += itm.totalPrice / 100
+              })
+            })
+            this.levelList = list
+          }
         })
       },
       getDataList() {
@@ -209,17 +224,22 @@
             let cllist = []
             this.dataOrigin?.artificial?.categoryList?.forEach(category => {
               category?.itemList.forEach(t => {
-                cllist.push({
+                let obj = {
                   skuId: t.id, //"long //商品id【必须】",
-                  cityId: t.id, //"long //市id【必须】",
+                  cityId: this.dataOrigin.areaId, //"long //市id【必须】",
                   categoryTypeId: t.categoryTypeId, //"int //商品品类类型id【必须】",
-                  totalPrice: t.price * t.count, //"int //商品总价格 工艺商品单价个数 单位分【必须】",
-                  workerType: t.workType, //"int //工种,品类为工人时（categoryTypeId=7）必传
-                })
+                  price: t.price, //"int //商品总价格 工艺商品单价个数 单位分【必须】",
+                  count: t.count,
+                  // workerType: t.workType, //"int //工种,品类为工人时（categoryTypeId=7）必传
+                }
+                if (t.categoryTypeId == 7) {
+                  obj.workerType = t.workType
+                }
+                cllist.push(obj)
               })
             })
             if (cllist.length > 0) {
-              // this.batchChangeLevel(cllist)
+              this.batchChangeLevel(cllist)
             }
           }
           this.initData()
@@ -383,9 +403,12 @@
           });
         })
       },
-      setLevel(value) {
-        this.artificialLevel = value
-        console.log(value)
+      setLevel(levelObj) {
+        this.artificialLevel = levelObj.value
+        this.dataOrigin?.artificial?.categoryList
+        this.workerLevelSkuMapping.forEach(item => {
+          
+        })
         this.close()
       },
       close() {
