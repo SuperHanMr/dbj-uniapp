@@ -35,3 +35,8 @@ export function callServiceAgent() {
   return request.post('/app/customer/advisory/lineUp');
 }
 
+// 回复消息
+export function replyMessage(params) {
+  return request.post('/app/generalComment/save', params);
+}
+
