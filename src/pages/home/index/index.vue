@@ -12,7 +12,7 @@
 		</view> -->
 
 		<!-- //头部 -->
-		<view class="state-bar" :style="{top:navBarHeight}" @click="toCity">
+		<view class="state-bar" :style="{top:navBarHeight}" >
 			<view class="address flex1" @click="toCity">
 				{{citydata}}
 			</view>
@@ -106,8 +106,9 @@
 			</view>
 		</view>
 		<view class="flex-row-common videos">
-			<view v-for="(item,index) in videoTypeList" :key="item" :style="{color:index==videoType?'#2B2F33':'#999999'}"
-				class="video-title" @click="videoTypeChange(index)">
+			<view v-for="(item,index) in videoTypeList" :key="item"
+				:style="{color:index==videoType?'#2B2F33':'#999999'}" class="video-title"
+				@click="videoTypeChange(index)">
 				{{item}}
 			</view>
 		</view>
@@ -202,7 +203,7 @@
 				goodsList: [],
 				areaId: "",
 				token: "",
-				swiperAuto:false
+				swiperAuto: false
 			};
 		},
 		watch: {
@@ -247,10 +248,10 @@
 				uni.setStorageSync("currentHouse", JSON.stringify(item));
 			});
 			this.token = getApp().globalData.token;
-			this.swiperAuto=true;
+			this.swiperAuto = true;
 		},
 		onHide() {
-			this.swiperAuto=false
+			this.swiperAuto = false
 		},
 
 		onReachBottom() {
@@ -284,7 +285,7 @@
 				let price = String(item.product.skuPrice);
 				return price.slice(0, price.length - 2) || "0";
 			},
-			formatCent(item) {
+			formatCent(item) { 
 				let price = String(item.product.skuPrice);
 				return price.slice(price.length - 2, price.length);
 			},
@@ -334,11 +335,21 @@
 						title: '敬请期待'
 					})
 				} else if (item.type == 1) {
-					uni.navigateTo({
-						url: item.url
-					})
+					if (item.url.endsWith('index/index')) {
+						getApp().globalData.naviData=null;
+						if(item.urlParams){
+							getApp().globalData.naviData=JSON.parse(item.urlParams);
+						}
+						uni.switchTab({
+							url: item.url
+						})
+					} else {
+						uni.navigateTo({
+							url: item.url
+						})
+					}
 				} else if (item.type == 2) {
-					let baseurl = this.ENV.VUE_APP_BASE_H5+'/app-pages/'
+					let baseurl = this.ENV.VUE_APP_BASE_H5 + '/app-pages/'
 					this.toWebview(baseurl + item.url);
 				}
 				if (item.type == 3) {
