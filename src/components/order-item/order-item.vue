@@ -41,16 +41,18 @@
 					</view>
 					<!-- 实付 -->
 					<view class="product-price" v-else>
-						<text style="margin-right: 8rpx;font-size: 22rpx;">实付</text>
-						<text style="font-size:22rpx;">￥</text>
-						<text>{{handlePrice(dataList.actualIncomeAmount)[0]}}.</text>
-						<text style="font-size:22rpx;">{{handlePrice(dataList.actualIncomeAmount)[1]}}</text>
+						<text>
+							<text style="margin-right: 8rpx;font-size: 22rpx;">实付</text>
+							<text style="font-size:22rpx;">￥</text>
+							<text>{{handlePrice(dataList.discountPrice)[0]}}.</text>
+							<text style="font-size:22rpx;">{{handlePrice(dataList.discountPrice)[1]}}</text>
+						</text>
 					</view>
 					<!-- 商品价格 -->
 					<view  class="product-price" style="color: #999999;" v-if="showOriginPrice" >
-						<text style="font-size:22rpx;">￥</text>
-						<text>{{handlePrice(dataList.price)[0]}}.</text>
-						<text style="font-size:22rpx;">{{handlePrice(dataList.price)[1]}}</text>
+							<text style="font-size:22rpx;">￥</text>
+							<text>{{handlePrice(dataList.price)[0]}}.</text>
+							<text style="font-size:22rpx;">{{handlePrice(dataList.price)[1]}}</text>
 					</view> 
 					
 					<view style="color: #999999;" v-if="refundType">共{{dataList.refundNumber}}件</view>
@@ -74,7 +76,7 @@
 					<text class="text1">已收货</text>
 					<text class="text2">{{dataList.receiveNumber}}</text>
 				</view>
-				<view class="item">
+				<view class="item"> 
 					<text class="text1">已退</text>
 					<text class="text2">{{dataList.returnNumber}}</text>
 				</view>
@@ -93,7 +95,7 @@
 		</view>
 
 		<view class="apply-refund-container" :style="{paddingTop:0}"  v-if="!dataList.showRefundBtn && orderStatus==2 && dataList.refundStatus>-1">
-			<view class="button" @click="refundCancel">
+			<view class="button" v-if="dataList.refundBillStatus == 4"  @click="refundCancel">
 				取消退款
 			</view>
 			
@@ -160,7 +162,7 @@
 			refundType:{
 				type:Boolean,
 				default:false,
-			}
+			},
 		},
 		data() {
 			return {

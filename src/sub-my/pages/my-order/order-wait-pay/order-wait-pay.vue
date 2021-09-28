@@ -7,7 +7,7 @@
 					<image src="../../../static/ic_status_wait_pay@2x.png" mode="scaleToFill" />
 					<text>待付款</text>
 				</view>
-				<view class="time">
+				<view class="time" v-if="orderInfo.showCancelOrderTime" >
 					<text style="margin-right: 16rpx;">剩余支付时间</text>
 					<uni-countdown 
 						color="#FFFFFF" 
