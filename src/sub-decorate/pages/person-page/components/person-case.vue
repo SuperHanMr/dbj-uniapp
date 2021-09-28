@@ -2,6 +2,7 @@
   <view class="person-case person-content-item">
     <view class="title">Ta的案例</view>
     <designCase class="design-case" :isPerson='true' :leftList="leftList" :rightList="rightList" :leftHeight="leftHeight" :rightHeight="rightHeight" ></designCase>
+    <view v-if="pagState.totalPage>pagState.page" @click="getList" class="click-text">展开更多案例</view>
   </view>
 </template>
 

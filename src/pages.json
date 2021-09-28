@@ -501,7 +501,15 @@
 						"enablePullDownRefresh": false,
 						"navigationBarBackgroundColor": "#f5f5f5"
 					}
-				}
+				},
+        {
+        	"path": "pages/shops-detail/shops-detail",
+        	"style": {
+        		"navigationBarTitleText": "",
+        		"enablePullDownRefresh": false,
+        		"navigationBarBackgroundColor": "#f5f5f5"
+        	}
+        }
 			]
 		},
 		{
@@ -859,7 +867,21 @@
 						"navigationStyle": "custom",
 						"enablePullDownRefresh": true
 					}
-				}
+				},
+        {
+        	"path": "pages/person-page/person-dynamic-list",
+        	"style": {
+        		"navigationBarTitleText": "全部动态"
+
+        	}
+        },
+        {
+        	"path": "pages/person-page/person-evaluate-list",
+        	"style": {
+        		"navigationBarTitleText": "全部评价"
+
+        	}
+        }
 			]
 		}
 	]

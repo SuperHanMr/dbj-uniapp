@@ -1,13 +1,12 @@
 <template>
-  <view class="person-dynamic person-content-item">
-    <view class="title">Ta的动态</view>
+  <view class="person-dynamic-list">
+    <scroll-view :scroll-y="true" style="height: 100%" @scrolltolower="bindscrolltolower">
     <decorateDynamic :dynamics='dynamics' :isPerson='true' @likeC='likeC' @commentC='commentC'></decorateDynamic>
-    <view class="click-text" v-if="totalPage>1" @click="toAllDynamics">查看全部动态</view>
+    </scroll-view>
   </view>
 </template>
 
 <script>
-  import '../style/common.scss'
   import decorateDynamic from '@/components/decorate-dynamic/decorate-dynamic.vue'
   import {getDecorateDynamic,setAttentions,
   getFocusBrowse,getComments,expandReplies,createReply,removeComment} from "@/api/real-case.js"
@@ -22,7 +21,10 @@
       return{
         dynamics:[],
         projectInfo:{},
-        totalPage:0
+        pageInfo:{
+          page:1,
+          totalPage:0
+        }
       }
     },
     mounted(){
@@ -55,31 +57,36 @@
         })
       },
       commentC(){},
-      toAllDynamics(){
-        uni.navigateTo({
-          url:'/sub-decorate/pages/person-page/person-dynamic-list'
-        })
-      },
       requestDynamic(){
       	let params = 
       	 {
       		prjectId: 46,
       		userTypes: [2,3],
-          page:1,
-          rows:4
+          page:this.pageInfo.page,
+          rows:10
       	}
       	getDecorateDynamic(params).then(data => {
       		if(data){
       			
-      			this.dynamics = data.list
-            this.totalPage =  data.totalPage
+      			this.dynamics = this.dynamics.concat(data.list)
+            this.pageInfo.totalPage = data.totalPage
       		}
       	})
       },
+      bindscrolltolower(){
+        if(this.pageInfo.totalPage>this.pageInfo.page){
+          this.pageInfo.page++
+          this.requestDynamic()
+        }
+      }
     }
   }
 </script>
 
 <style lang="scss">
-  
+  .person-dynamic-list{
+    background-color: #fff;
+    padding-left: 32rpx;
+    height: 100%;
+  }
 </style>

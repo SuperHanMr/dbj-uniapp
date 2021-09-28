@@ -144,6 +144,12 @@ export function getAttention(params) {
 	return request.get("/app/base/interactive/participated?"+str)
 }
 
+//查询个人主页评价
+export function getComments(params) {
+  // const str = objectToUrlString(params)
+	return request.get("/pm/app/commentSetting/getComments",{params})
+}
+
 //获取施工交付内容
 export function getComplateDetail(params) {
 	return request.get(`/pm/app/worker/decoration/trend/getCompletionLogById/${params.projectId}/${params.serveId}`)

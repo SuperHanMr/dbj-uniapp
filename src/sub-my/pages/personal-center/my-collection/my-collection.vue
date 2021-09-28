@@ -118,14 +118,39 @@
 			const menuButtonInfo = uni.getMenuButtonBoundingClientRect();
 			this.systemBottom = menuButtonInfo.bottom;
 		},
-		onShow() {
+		onLoad() {
 			uni.getSystemInfo({
 				success:res => {
 					this.equipmentId = res.deviceId
 				}
 			})
-			this.getProductList()
+			if(this.currentIndex ==0){
+				this.productList =[]
+				this.page[0]=1
+				this.getProductList()
+			}else{
+				this.caseList =[]
+				this.page[1]=1
+				this.getCaseList()
+			}
 		},
+		
+		// onShow() {
+		// 	uni.getSystemInfo({
+		// 		success:res => {
+		// 			this.equipmentId = res.deviceId
+		// 		}
+		// 	})
+		// 	if(this.currentIndex ==0){
+		// 		this.productList =[]
+		// 		this.page[0]=1
+		// 		this.getProductList()
+		// 	}else{
+		// 		this.caseList =[]
+		// 		this.page[1]=1
+		// 		this.getCaseList()
+		// 	}
+		// },
 		watch:{
 			allCheck(){}
 		},
@@ -163,15 +188,18 @@
 			// 获取商品列表
 			getProductList() {
 				this.loading = true;
-				let params = {
-					routeId: 5002, //【收藏商品路由id：记录用户收藏的商品】
-					type: 1, //(1,"收藏")
-					bizType: 1, //(1,"商品")
+				// let params = {
+				// 	routeId: 5002, //【收藏商品路由id：记录用户收藏的商品】
+				// 	type: 1, //(1,"收藏")
+				// 	bizType: 1, //(1,"商品")
+				// }
+				let params={
+					page:this.page[0]
 				}
 				getGoodsList(params).then(data=>{
 					this.productList = this.productList.concat(data);
 					this.productList = this.handleList(this.productList,false,"product")
-					console.log("this.productList=", this.productList)
+					// console.log("this.productList=", this.productList)
 					this.loading = false;
 				})
 			},
@@ -179,7 +207,7 @@
 			getCaseList() {
 				this.loading = true;
 				let params = {
-					page:1,
+					page:this.page[1],
 					// routeId: 5001, //【收藏真实案例路由id，记录用户收藏的真实案例】
 					// type: 1, //(1,"收藏")
 					// bizType: 7, //【真实案例】REAL_CASE(7,"真实案例")
@@ -189,7 +217,7 @@
 					this.caseList = this.handleList(this.caseList,false,"case")
 					this.page[1] = data.page
 					this.totalPage[1]= data.totalPage
-					console.log("this.caseList=", this.caseList)
+					// console.log("this.caseList=", this.caseList)
 					this.loading = false;
 				})
 			},
@@ -207,22 +235,24 @@
 				if(this.currentIndex== 0 ){
 					this.productList = this.handleList(this.productList,false)
 					this.checkedItemIds =[]
-					console.log("点击完成后的列表=", this.productList)
+					// console.log("点击完成后的列表=", this.productList)
 				}else{
 					this.caseList = this.handleList(this.caseList,false)
 					this.checkedItemIds =[]
-					console.log("点击完成后的列表=", this.caseList)
+					// console.log("点击完成后的列表=", this.caseList)
 				}
 			},
-			
 			// 点击单个item的操作获取选中的数据
 			onSelectedItem(data) {
 				if(this.showMgrBtn){
 					console.log("data=",data)
-					if(this.currentIndex ==0){
-						console.log("进入商品详情页，点击收藏")
+					if(this.currentIndex ==0){    
+						// console.log("进入商品详情页，点击收藏")
+						uni.navigateTo({ 
+							url: `/sub-classify/pages/goods-detail/goods-detail?goodId=${data.id}`
+						 })
 					}else{
-						console.log("进入案例详情页，点击收藏")
+						// console.log("进入案例详情页，点击收藏")
 					}
 				}else{
 					this.checkedItemIds = data.filter(item => item.isChecked == true).map((item2) => {
@@ -235,7 +265,6 @@
 					}else{
 						this.allCheck=false
 					}
-					console.log("选中的产品=", this.checkedItemIds,"点击了收藏后的list", data)
 				}
 			},
 			
@@ -257,13 +286,13 @@
 					this.checkedItemIds = list.map(item=>{
 						return {relationId:item.id,authorId:item.authorId,subBizType:item.subBizType}
 					})
-					console.log("列表list=",list)
-					console.log("this.checkedItemIds=",this.checkedItemIds)
+					// console.log("列表list=",list)
+					// console.log("this.checkedItemIds=",this.checkedItemIds)
 				}else{
 					list =this.handleList(list,false)
 					this.checkedItemIds =[]
-					console.log("列表list=",list)
-					console.log("this.checkedItemIds=",this.checkedItemIds)
+					// console.log("列表list=",list)
+					// console.log("this.checkedItemIds=",this.checkedItemIds)
 				}
 			},
 			handleList(list,isChecked,type){
@@ -288,10 +317,9 @@
 			},
 			//取消收藏
 			confirmCancelCollection() {
-				console.log("确认取消")
 				let params={
+					list:this.checkedItemIds,
 					equipmentId:this.equipmentId,
-					list:this.checkedItemIds
 				}
 				if(this.currentIndex ==0){
 					params.routeId = 5002
@@ -300,23 +328,24 @@
 				}
 				console.log("取消收藏接口的params=",params)
 				batchCancellation(params).then(data=>{
-					console.log("取消收藏")
 					this.$refs.popup.close()
 					this.showMgrBtn = true
 					this.showCalCelBtn = false
 					this.allCheck = false
+					if(this.currentIndex == 0){
+						this.page[0]=1
+						this.productList=[]
+						this.getProductList()
+					}else{
+						this.page[1]=1
+						this.caseList =[]
+						this.getCaseList()
+					}
 					uni.showToast({
 						title:"取消收藏成功！",
 						icon:"none",
 						duration: 1000
 					});
-					setTimeout(()=>{
-						if(this.currentIndex == 0){
-							this.getProductList()
-						}else{
-							this.getCaseList()
-						}
-					},1000)
 				}).catch(()=>{})
 			},
 			
@@ -327,18 +356,15 @@
 				// }
 				// this.page++;
 				if(this.currentIndex==0){
-					if(this.loading) return
-					this.currentList.length < 1?this.getProductList():""
+					if(this.loading || this.page[0] >=this.totalPage[0]) return
+					this.getProductList()
 				}else{
 					if(this.loading || this.page[1] >=this.totalPage[1])return 
 					this.page[1]++
 					this.getCaseList()
 				}
-				// if (this.loading) return
-				// if (this.currentList.length < 1) {
-				// 	this.currentIndex == 0 ? this.getProductList() : this.getCaseList();
-				// }
 			},
+			
 			onRefresh(e) {
 				this.triggered = true;
 				setTimeout(() => {

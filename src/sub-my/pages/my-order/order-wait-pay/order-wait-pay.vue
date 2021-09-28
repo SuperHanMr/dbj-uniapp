@@ -29,7 +29,7 @@
 			
 			<view class="store-container" v-for="(item,index) in orderInfo.details" :key="index">
 				<view class="storeItem" :class="{paddingBottom: item.stockType == 1 }">
-					<view class="header">
+					<view class="header" @click="gotoShop(item)">
 						<text>{{item.storeName}}</text>
 						<image
 							src="@/static/order/ic_more@2x.png"
@@ -38,7 +38,7 @@
 					</view>
 					<view v-for="item2 in item.details" :key="item2.id">
 						
-						<order-item :orderStatus="1" :dataList="item2"></order-item>
+						<order-item :orderStatus="1" :dataList="item2" @handleDetail="productDetail(item2)" />
 					</view>
 					
 					<view class="discount-container" v-if="item.showFreight">
@@ -152,6 +152,7 @@ export default {
 			systemHeight: "",
 			containerBottom:"",
 			title:"您确定要取消该订单吗？",
+			areaId:"",
     };
   },
 	
@@ -166,7 +167,8 @@ export default {
   onLoad(e) {
     this.orderNo =Number( e.orderNo)||getApp().globalData.decorateMsg.orderId;
 		this.orderDetail()
-		
+		const currentHouse =JSON.parse(uni.getStorageSync('currentHouse'))
+		this.areaId =currentHouse.areaId
 		
 	},
 	
@@ -177,6 +179,21 @@ export default {
 					this.orderInfo =e
 					console.log("this.orderInfo=",this.orderInfo)
 			})
+		},
+		
+		// 跳转到商品详情页面
+		productDetail(item){
+			uni.navigateTo({ 
+				url:`../../../../sub-classify/pages/goods-detail/goods-detail?goodId=${item.id}`
+			})
+		},
+		// 跳转到店铺页面
+		gotoShop(item) {
+		  console.log("去店铺首页！！！！");
+			console.log("this.storeId=",item.storeId,"this.areaId=",this.areaId)
+			uni.navigateTo({
+				url:`../../../../sub-classify/pages/shops/shops?storeId=${item.storeId}&areaId=${this.areaId}`
+			});
 		},
 		
 		formatTime(msTime) {

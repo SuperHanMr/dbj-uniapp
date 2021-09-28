@@ -8,7 +8,7 @@
     >
       <view class="mask" />
     </view>
-    <view v-else  class="backgroundStyle"  style="backgroundColor:#cac8c8"/>
+    <view v-else  class="backgroundStyle"  style="backgroundColor:#cac8c8;"/>
 		
     <view class="my-header">
       <view class="avatar-img">
@@ -38,7 +38,8 @@
       <view class="order-body">
         <view   class="item"   v-for="(item,index) in orderStatusList"  :key="item.key"
           @click="handlerOrder(item)">
-					<view class="waitPayIcon" v-if="index == 0" >{{ waitPayOrderNum }}</view>
+					<view class="waitPayIcon" v-if="index == 0 && waitPayOrderNum" 
+					:class="{twoNumber:waitPayOrderNum > 9 && waitPayOrderNum < 100,threeNumber:waitPayOrderNum>=100}" >{{ waitPayOrderNum }}</view>
           <image :src="item.image" mode="" />
 					 {{item.value}}
         </view>
@@ -152,11 +153,12 @@ export default {
     } else {
       this.isLogin = true;
       this.userInfo = getApp().globalData.userInfo;
-      console.log("!!!!!!!!!!!!!", this.userInfo);
       this.userName = this.userInfo.name;
     }
-		queryToBePaidOrderNum().then(data=>{
-			this.waitPayOrderNum = data
+		queryToBePaidOrderNum().then(e=>{
+      console.log("!!!!!!!!!!!!! data=", e);
+			
+			this.waitPayOrderNum = e ? e : 0
 		})
 		
   },
@@ -310,7 +312,7 @@ export default {
     display: flex;
     background-color: #fff;
     flex-flow: column nowrap;
-    border-radius: 24rpx;
+    border-radius: 16rpx;
     .order-header {
       display: flex;
       flex-wrap: row nowrap;
@@ -371,7 +373,7 @@ export default {
 					border: 2rpx solid #ffffff;
 					border-radius: 50%;
 					top: 0;
-					right: -8rpx;
+					left: 40rpx;
 					color: #FFFFFF;
 					font-size: 18rpx;
 				}
@@ -384,7 +386,7 @@ export default {
 
   .my-tools {
     margin: 0 22rpx 0 24rpx;
-    border-radius: 24rpx;
+    border-radius: 16rpx;
     background-color: #ffffff;
     .header {
       padding: 32rpx;
@@ -427,6 +429,15 @@ export default {
       }
     }
   }
+}
+
+.twoNumber{
+	width: 40rpx !important;
+	border-radius: 18rpx !important;
+}
+.threeNumber{
+	width: 50rpx !important;
+	border-radius: 18rpx !important;
 }
 </style>
 
