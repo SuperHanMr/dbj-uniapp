@@ -48,7 +48,7 @@
               <view class="header">
                 <view
                   class="store-name"
-                  @click="gotoShop"
+                  @click="gotoShop(item)"
                 >
                   <text v-if="item.orderStatus == 0 ">{{item.orderName?item.orderName:item.storeName}}</text>
                   <text v-else>{{item.storeName}}</text>
@@ -309,6 +309,7 @@ export default {
       id: -1,
 			systemBottom: "",
 			reRefresh:false,
+			areaId:"",
     };
   },
 	mounted(e) {
@@ -372,6 +373,10 @@ export default {
   },
 	onShow() {
 		uni.$once("refreshPage",function(data){
+			switch(this.currentIndex){
+				case 0 : 
+				
+			}
         console.log('监听到事件来自 update ，携带参数 msg 为：' + data.msg);
     })
 	},
@@ -380,14 +385,14 @@ export default {
 		this.reRefresh = e.reRefresh
     if (e.index) {
       if (e.index == "99") {
-        console.log("e=", e);
         this.currentIndex = 0;
       } else {
         this.currentIndex = Number(e.index);
       }
-			
     }
     this.orderStatus = this.currentIndex - 1;
+		const currentHouse =JSON.parse(uni.getStorageSync('currentHouse')) 
+		this.areaId =currentHouse.areaId
   },
 
   methods: {
@@ -443,8 +448,12 @@ export default {
     },
 
     
-    gotoShop() {
-      console.log("去店铺首页！！！！店铺首页在第二期诶，暂时跳不了");
+    gotoShop(item) {
+      console.log("去店铺首页！！！！");
+			console.log("this.storeId=",item.storeId,"this.areaId=",this.areaId)
+			uni.navigateTo({
+				url:`../../../sub-classify/pages/shops/shops?storeId=${item.storeId}&areaId=${this.areaId}`
+			});
     },
 
     async getOrderList() {
@@ -486,6 +495,7 @@ export default {
 
     onRefresh(e) {
       this.triggered = true;
+			this.getOrderList()
       setTimeout(() => {
         this.triggered = false;
       }, 1000);

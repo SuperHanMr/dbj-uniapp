@@ -2,7 +2,7 @@
   <view class="container">
 		
     <!-- 退款详情 --退款关闭   退款取消与商家拒接 两个页面-->
-		<view class="order-container" v-if="type =='refund'" :style="{paddingBottom:systemBottom}">
+		<view class="order-container" v-if="type =='refund'" :style="{paddingBottom:containerPaddingBottom}">
 			<view class="order-status" >
 				<view class="backgroundStyle" />
 				<view class="status">
@@ -10,7 +10,7 @@
 					<text v-if="status == 3 || status == 4">退款关闭</text>
 					<text v-if="status == 5">退款失败</text>
 				</view>
-				<text class="time">{{refundInfo.refundTime | formaDate}}</text>
+				<text class="time">{{refundInfo.refundTime | formatDate}}</text>
 			</view>
 
 			<view class="order-header">
@@ -19,23 +19,17 @@
 				<view class="cancel-text" v-if="status == 3">
 					商家拒绝了您的申请，如有问题未解决，您可以重新申请
 				</view>
-				
 				<view class="cancel-text" v-if="status == 4">
 					您已取消了本次退款，如有问题未解决，您可以重新申请
 				</view>
-				
 				<view class="cancel-text failed-text" v-if="status == 5">
 					您的退款账户存在异常，您可联系客服或者重新发起申请
 				</view>
 			</view>
-
 			<view class="body1" v-for="item in refundInfo.detailAppVOS" :key="item.id">
-					<order-item :dataList="item" :refundType="true"></order-item>
+					<order-item :dataList="item" :refundType="true" @handleDetail="productDetail(item,'refund')" />
 			</view>
-
 			<order-refund-info :refundInfo="refundInfo"></order-refund-info>
-			
-			
 			
 			<view
 			  class="contact-customer-Reapply"
@@ -55,9 +49,6 @@
 			    重新申请
 			  </view>
 			</view>
-			
-			
-
 		</view>
 		
 		
@@ -77,7 +68,7 @@
      <order-user-base-info :data="orderInfo"></order-user-base-info>
 
       <view class="body2"  v-for="(item,index) in orderInfo.details" :key="index">
-        <view class="header">
+        <view class="header" @click="gotoShop(item)">
          <text>{{item.storeName}}</text>
           <image
             src="@/static/order/ic_more@2x.png"
@@ -86,7 +77,7 @@
         </view>
 				
 				<view v-for="item2 in item.details" :key="item2.id">
-					<order-item  :dataList="item2"></order-item>
+					<order-item  :dataList="item2" @handleDetail="productDetail(item2)" />
 				</view>
 				
       </view>
@@ -108,12 +99,12 @@
 </template>
 
 <script>
-	import {formaDate} from "../../../../utils/common.js"
+	import {formatDate} from "../../../../utils/common.js"
 	import {getRefundDetail,getOrderDetail} from "@/api/order.js"
 	export default {
 		
 		filters:{
-			formaDate
+			formatDate
 		},
 		data() {
 			return {
@@ -126,13 +117,16 @@
 				orderInfo:{},
 				
 				systemBottom: "",
+				containerPaddingBottom:"",
 				title:"",
+				areaId:"",
 			};
 		},
 	
 		mounted(e) {
 			const menuButtonInfo = uni.getMenuButtonBoundingClientRect();
 			this.systemBottom = menuButtonInfo.bottom + "rpx";
+			this.containerPaddingBottom = menuButtonInfo.bottom + 112 +'rpx'
 			console.log(this.systemBottom);
 		},
 	
@@ -159,9 +153,8 @@
 				this.title="退款中"
 				this.orderDetail()
 			}
-			
-			
-			
+			const currentHouse =JSON.parse(uni.getStorageSync('currentHouse'))
+			this.areaId =currentHouse.areaId
 		},
 		
 		// 改变返回下一个页面的路径
@@ -199,6 +192,27 @@
 				wx.setStorageSync("wholeRefundOrderInfo", JSON.stringify(data));
 				uni.navigateTo({
 					url: `/sub-my/pages/apply-for-refund/apply-for-refund?id=${this.id}&type=whole&status=1`,
+				});
+			},
+			// 跳转到商品详情页面
+			productDetail(item,type){
+				console.log("item=",item,"type=",type)
+				if(type == 'refund'){
+					uni.navigateTo({
+						url:`../../../../sub-classify/pages/goods-detail/goods-detail?goodId=${item.relationId}`
+					})
+				}else{
+					uni.navigateTo({ 
+						url:`../../../../sub-classify/pages/goods-detail/goods-detail?goodId=${item.id}`
+					})
+				}
+			},
+			// 跳转到店铺页面
+			gotoShop(item) {
+			  console.log("去店铺首页！！！！");
+				console.log("this.storeId=",item.storeId,"this.areaId=",this.areaId)
+				uni.navigateTo({
+					url:`../../../../sub-classify/pages/shops/shops?storeId=${item.storeId}&areaId=${this.areaId}`
 				});
 			},
 			// 联系客服

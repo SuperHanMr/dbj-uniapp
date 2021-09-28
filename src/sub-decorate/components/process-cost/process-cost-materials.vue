@@ -2,14 +2,14 @@
   <view class="content">
     <view class="title-wrap">
       <view class="title">
-        <view class="s-4level-name">{{content.categoryName}}</view>
+        <view class="s-4level-name">{{content.categoryName || "后端没有返回categoryName字段"}}</view>
       </view>
     </view>
     <view class="index">
       <view class="item-list">
         <view class="item" v-for="(item,index) in itemList" :key="item.id">
           <view class="img-name-tag-guige flex-r-l">
-            <view v-if="item.isEdit" style="width: 32rpx;height: 32rpx;"></view>
+            <view v-if="item.isEdit || !item.inServiceArea || !it.selling" style="width: 32rpx;height: 32rpx;"></view>
             <check-box v-else :checked="item.checked" @change="(val) => {checkItem(val, item)}"></check-box>
             <view class="flex-1">
               <view class="flex-r-l">
@@ -21,7 +21,7 @@
                       <view class="name">{{item.spuName}}</view>
                     </view>
                     <view class="gui-ge-count">
-                      <view class="gui-ge">{{item.specification}}</view>
+                      <view class="gui-ge">{{item.name}}</view>
                       <view class="count">共{{item.count}}件</view>
                     </view>
                   </view>
@@ -35,7 +35,7 @@
                       <view class="line"></view>
                       <view class="btr" @click="finishEditing(item)">完成编辑</view>
                     </view>
-                    <view class="edit" v-else @click="edit(item)">编辑商品</view>
+                    <view class="edit" v-if="item.inServiceArea && !item.isEdit" @click="edit(item)">编辑商品</view>
                   </view>
                 </view>
               </view>
@@ -55,9 +55,19 @@
                     src="http://dbj.dragonn.top/static/mp/dabanjia/images/decorate/details_pop_add.svg" class="plus">
                   </image>
                 </view>
-                <view class="change-wrap">
+                <view class="change-wrap"
+                  v-if="item.inServiceArea && !isNaN(content.categoryId) && content.categoryName !== '其他' && content.categoryId != ''">
                   <view @click="goMaterialsList(item)">更换商品</view>
                   <image @click="goMaterialsList(item)"
+                    src="http://dbj.dragonn.top/static/mp/dabanjia/images/decorate/change_material.svg"></image>
+                </view>
+              </view>
+              <view class="no-pay-change" v-if="!item.inServiceArea">
+                <view class="no-pay">商品超出配送范围，请更换可配送商品</view>
+                <view class="change"
+                  v-if="!isNaN(content.categoryId) && content.categoryName !== '其他' && content.categoryId != ''">
+                  <view @click="goMaterialsList2(item)">更换商品</view>
+                  <image @click="goMaterialsList2(item)"
                     src="http://dbj.dragonn.top/static/mp/dabanjia/images/decorate/change_material.svg"></image>
                 </view>
               </view>
@@ -103,7 +113,7 @@
       },
       filterProductType(val) {
         let res = ""
-        switch (val) {
+        switch (Number(val)) {
           case 1:
             res = "物品"
             break;
@@ -162,21 +172,52 @@
           url: `/sub-decorate/pages/materials-list/materials-list?id=${item.id}&categoryId=${item.categoryId}`
         })
       },
+
+      goMaterialsList2(item) {
+        return uni.showToast({
+          title: "不在服务范围的情况还在开发中，敬请期待......",
+          icon: "none"
+        })
+        uni.navigateTo({
+          url: `/sub-decorate/pages/materials-list/materials-list?id=${item.id}&categoryId=${Number(item.categoryId)}`
+        })
+      },
       selectedMaterialCb(materialDetail) {
         this.$nextTick(() => {
           let item = {}
           for (let i = 0; i < i < this.itemList.length; i++) {
             let t = this.itemList[i]
             if (t.id === this.currentItemOriginData.id) {
-              t.id = materialDetail.id
-              t.imageUrl = materialDetail.imageUrl
-              t.spuName = materialDetail.spuName
+              this.setCurrentEditMaterialChangData(t, materialDetail)
             }
             item = t
             break;
           }
           this.submitMaterial(item)
         })
+      },
+      setCurrentEditMaterialChangData(origin, source) {
+        // 注释的字段是不允许替换的
+        // origin.originalId = origin.originalId // "原始ID 【下单params附带参数】",
+        origin.id = source.product.id //"long //商品ID 【下单params附带参数】",
+        origin.title = source.title //"string //标题",
+        // origin.productType = origin.productType //"int //下单参数 type\r      标签 1.物品 2.服务 3.虚拟\r ,
+        // origin.roleType = source.roleType // "int //下单参数 roleType",  这里是辅材所以不需要替换
+        // origin.businessType = source.businessType //"int //下单参数 businessType",
+        // origin.categoryId = source.categoryId //"string //分类",
+        // origin.workType = source.workType //"int //工种",
+        origin.categoryTypeId = source.product.categoryTypeId //"int //品类类型ID",
+        origin.storeId = source.product.storeId //"long //店铺ID",
+        origin.imageUrl = source.product.skuImage //"string //图片地址",
+        origin.spuName = source.product.spuName //"string //商品名称",
+        origin.price = source.product.skuPrice //"int //价格",
+        // origin.count = origin.count //"double //数量",
+        origin.minimumOrderQuantity = source.product.sku.minimumOrderQuantity //"string //最小购买数量",
+        origin.stepLength = source.product.sku.stepLength //"string //数量增加步长",
+        origin.unit = source.product.salesUnit.unitName //"string //单位",
+        origin.name = source.product.skuName //"string //规格",
+        // origin.inServiceArea = origin.inServiceArea //"boolean //是否在服务区",
+        // origin.selling = origin.selling //"boolean //是否已购买 false未购买 true已购买"
       },
       submitMaterial(item) {
         this.$emit("changeMaterial", {
@@ -204,7 +245,6 @@
       },
       checkItem(val, item) {
         item.checked = val
-        // this.itemList
         this.$emit("change", {
           val,
           id: item.id
@@ -411,6 +451,49 @@
       text-align: right;
       color: #00bfb6;
       line-height: 34rpx;
+    }
+  }
+
+  .no-pay-change {
+    margin-top: 24rpx;
+    padding: 10rpx 0;
+    display: flex;
+    justify-content: space-between;
+    flex-direction: row;
+    align-items: center;
+  }
+
+  .no-pay {
+    height: 34rpx;
+    font-size: 24rpx;
+    font-family: PingFangSC, PingFangSC-Regular;
+    font-weight: 400;
+    text-align: left;
+    color: #999999;
+    line-height: 34rpx;
+    transform: translateX(24rpx);
+  }
+
+  .change {
+    display: flex;
+    justify-content: flex-start;
+    flex-direction: row;
+    align-items: center;
+
+    view {
+      height: 32rpx;
+      padding-right: 4rpx;
+      font-size: 22rpx;
+      font-family: PingFangSC, PingFangSC-Medium;
+      font-weight: 700;
+      text-align: right;
+      color: #00bfb6;
+      line-height: 32rpx;
+    }
+
+    image {
+      width: 20rpx;
+      height: 20rpx;
     }
   }
 

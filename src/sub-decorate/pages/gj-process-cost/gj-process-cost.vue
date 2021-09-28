@@ -71,8 +71,12 @@
       this.serviceType = serviceType || option.serviceType
       this.projectId = projectId || option.projectId
       this.customerId = customerId || option.customerId
-      this.pushTitle = pushTitle || "工序费购买"
-      this.obtainType = obtainType || option.obtainType
+      this.pushTitle = serviceName || "工序费购买"
+      if (obtainType === 0) {
+        this.obtainType = obtainType
+      } else {
+        this.obtainType = obtainType || option.obtainType
+      }
     },
     onShow() {
       this.getDataList()
@@ -114,7 +118,8 @@
         systemBottom: null,
         systemHeight: null,
         noData: false,
-        message: null
+        message: null,
+        skuRelation: []// 精算单更换商品  新旧商品id对照表
       }
     },
     mounted() {
@@ -230,7 +235,9 @@
             t.itemList.forEach(it => {
               it.checked = true
               it.isEdit = false
-              this.checkedIds.push(it.id)
+              if (it.inServiceArea && !it.selling) {
+                this.checkedIds.push(it.id)
+              }
             })
           })
         }
@@ -272,8 +279,16 @@
             total: this.countPrice * 100, //"int //总计",
             remarks: "", //"string //备注",
             orderName: "管家工序费", //"string //订单名称",
-            details: []
+            details: [],
+            skuRelation: [{
+              oldSuk: 1,
+              newSuk: 2
+            }, {
+              oldSuk: 2,
+              newSuk: 3
+            }]
           }
+          skuRelation = this.skuRelation
           // roleType 7工人，10管家
           let roleType = this.serviceType == 5 ? 10 : 7
           if (this.obtainType != 2) {
@@ -410,6 +425,7 @@
 
   .process-cost-list {
     padding: 0 32rpx;
+    background-color: #fff;
   }
 
   .payment-wrap {

@@ -12,10 +12,10 @@
       </view>
     </view>
     <view class="r-d-g">
-      <group-radio-me :items="radioItems" :defaultV="1" @change="change"></group-radio-me>
+      <group-radio-me :items="dataList" :defaultV="1" @change="change"></group-radio-me>
     </view>
     <view class="line"></view>
-    <view class="price-count">所有人工费用总和：¥1000.00</view>
+    <view class="price-count">所有人工费用总和：¥{{currentLevel.price / 100}}</view>
     <view class="btn-wrap">
       <view class="cancel" @click="cancel">取消</view>
       <view class="submit" @click="ok">确定更改</view>
@@ -43,28 +43,25 @@
     components: {
       GroupRadioMe
     },
+    props: ["dataList", "current"],
     data() {
       return {
-        radioItems: [{
-          label: "中级",
-          value: 1
-        }, {
-          label: "高级",
-          value: 2
-        }, {
-          label: "特高级",
-          value: 3
-        }, {
-          label: "钻石",
-          value: 4
-        }, ],
-        radioValue: null
+        radioValue: null,
+        currentLevel: null
+      }
+    },
+    mounted() {
+      this.currentLevel = this.current
+    },
+    watch: {
+      current(value) {
+        this.currentLevel = value
       }
     },
     methods: {
       change(value) {
         this.radioValue = value
-        // this.$emit("changeLevel", value)
+        this.currentLevel = this.dataList.filter(t => t.value == value)[0]
       },
       lookdesc() {
         this.$refs.levelDesc.open("bottom")
@@ -76,7 +73,7 @@
         this.$emit("close")
       },
       ok() {
-        this.$emit("changeLevel", this.radioValue)
+        this.$emit("changeLevel", this.currentLevel)
       }
     }
   }
