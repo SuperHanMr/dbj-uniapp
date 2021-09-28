@@ -252,7 +252,10 @@ export function goodsApply(params) {
 
 // 获取工序费用
 export function sellList(params) {
-	return request.get(`/pm/app/actuary/sell/list/${params.projectId}/${params.type}/${params.obtainType}`)
+  if(params.obtainType) {
+    return request.get(`/pm/app/actuary/sell/list/${params.projectId}/${params.type}/${params.obtainType}`)
+  }
+	return request.get(`/pm/app/actuary/sell/list/${params.projectId}/${params.type}`)
 }
 
 // //部分购买全部购买
