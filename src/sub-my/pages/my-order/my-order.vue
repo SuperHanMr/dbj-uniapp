@@ -102,11 +102,7 @@
                 </view>
 
                 <!-- 非套餐 -->
-                <view
-                  v-else
-                  v-for="item2 in item.details"
-                  :key="item2.id"
-                >
+                <view v-else v-for="item2 in item.details"  :key="item2.id">
                   <order-item
                     :dataList="item2"
                     @handleDetail="goToDetail(item)"
@@ -148,8 +144,8 @@
                   v-if="item.orderStatus == 0"
                 >
                   <text v-if="item.freight && item.handlingFees">需付款(含运费、搬运费)</text>
-                  <text v-if="item.freight">需付款(含运费)</text>
-                  <text v-if="item.handlingFees">需付款(含搬运费)</text>
+                  <text v-if="item.freight && !item.handlingFees">需付款(含运费)</text>
+                  <text v-if=" !item.freight && item.handlingFees">需付款(含搬运费)</text>
                   <text v-if="!item.freight && !item.handlingFees">需付款</text>
                   <text style="color:#FF3347;margin-left: 8rpx;">
                     <text style="font-size:18rpx;">￥</text>
@@ -513,11 +509,9 @@ export default {
     cancleConfirm() {
       console.log("取消订单按钮成功！");
       //点击确定后订单会被取消且该订单会被移入已关闭订单中
-      cancelOrder({ id: this.id }).then((e) => {
-        if (e.code == 1) {
-          this.$refs.cancleOrder.close();
-          this.toCancelPage();
-        }
+      cancelOrder({ id: this.id }).then(() => {
+        this.$refs.cancleOrder.close();
+        this.toCancelPage();
       });
     },
 
