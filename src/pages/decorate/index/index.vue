@@ -76,7 +76,7 @@
           </view>
         </view>
         <!-- 我的装修服务 -->
-        <view class="my-decorate-service-wrap">
+        <view class="my-decorate-service-wrap" v-if="purchasedServiceList.length > 0">
           <image mode="aspectFit" class="top-bg"
             src="http://dbj.dragonn.top/static/mp/dabanjia/images/decorate/service-card-top.svg">
           </image>
@@ -186,13 +186,9 @@
       TextScroll,
     },
     onLoad() {
-      let _this = this
-      // uni.getSystemInfo({
-      //   success(res) {
-      //     console.log(">>>>>>>dddddddddd>>>>>", res)
-      //     _this.viewHieght = res.windowHeight * 2 - 416
-      //   }
-      // })
+      uni.$on("currentHouseChange", (item) => {
+        this.homePageEstate = item
+      })
     },
     onShow() {
       console.log('showTabBar')
@@ -210,6 +206,7 @@
         currentProject: {},
         projectList: [],
         current: null,
+        homePageEstate: null, // 首页选择房屋
         currentEstate: null,
         defaultEstate: null,
         estateList: [],
@@ -248,6 +245,13 @@
       timer = null
     },
     methods: {
+      guid() {
+        return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
+          var r = Math.random() * 16 | 0,
+            v = c == 'x' ? r : (r & 0x3 | 0x8);
+          return v.toString(16);
+        });
+      },
       goDecorateCalendar(date) {
         console.log("date: ", date)
         uni.navigateTo({
@@ -411,6 +415,9 @@
           // 有房屋有服务，初始化当前的默认房屋
           if (data && data.length > 0) {
             // console.log("ProjectList1>: ", data)
+            data.forEach(item => {
+              item.uid = this.guid()
+            })
             this.projectList = data
 
             // const {
@@ -445,7 +452,6 @@
       },
       // 根据查询出来的项目信息处理
       initData(obj) {
-        console.log(123)
         this.getMsgNum()
         this.who = this.currentProject.relegationType == 2 ? "亲友" : "我"
         this.currentEstate = this.estateList.filter(t => t.id === obj.estateId)[0]
@@ -474,8 +480,9 @@
       },
       goActuary() {
         const baseUrl = process.env.VUE_APP_BASE_H5
+        const scn = uni.getStorageSync("scn")
         uni.navigateTo({
-          url: `/sub-decorate/pages/actuary-bill/actuary-bill?url=${baseUrl}/app-pages/actuarial/index.html?projectId=${this.currentProject.projectId}&isActuarial=1&isMessage=2`
+          url: `/sub-decorate/pages/actuary-bill/actuary-bill?url=${baseUrl}/app-pages/actuarial/index.html?projectId=${this.currentProject.projectId}&isActuarial=2&isMessage=2&token=${scn}`
         })
       },
       goVideo() {
@@ -573,11 +580,11 @@
         });
       },
       getMsgNum() {
-        if (this.currentProject&&this.currentProject.projectId) {
+        if (this.currentProject && this.currentProject.projectId) {
           getMsgNum(this.currentProject.projectId).then(res => {
             this.msgNum = res.count
           })
-        }else{
+        } else {
           this.msgNum = 0
         }
       }
@@ -953,6 +960,7 @@
       margin-right: 24rpx;
     }
   }
+
   .jun-gong-da-ji {
     margin: 16rpx 24rpx;
     text-align: center;
