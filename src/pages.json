@@ -558,17 +558,15 @@
 						"enablePullDownRefresh": false
 					}
 
+				}, {
+					"path": "pages/merchant-entry-webview/merchant-entry-webview",
+					"style": {
+						"navigationBarTitleText": "",
+						"enablePullDownRefresh": false
+					}
+
 				}
-			    ,{
-                    "path" : "merchant-entry-webview/merchant-entry-webview",
-                    "style" :                                                                                    
-                {
-                    "navigationBarTitleText": "",
-                    "enablePullDownRefresh": false
-                }
-                
-                }
-            ]
+			]
 		},
 		{
 			"root": "sub-decorate", //装修模块分包
