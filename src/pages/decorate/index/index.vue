@@ -288,7 +288,6 @@
           }
         })
       },
-      scroll(e) {},
       getAvailableService() {
         this.availGuides = []
         this.isConstruction = false
@@ -479,10 +478,9 @@
         })
       },
       goActuary() {
-        const baseUrl = process.env.VUE_APP_BASE_H5
-        const scn = uni.getStorageSync("scn")
+        
         uni.navigateTo({
-          url: `/sub-decorate/pages/actuary-bill/actuary-bill?url=${baseUrl}/app-pages/actuarial/index.html?projectId=${this.currentProject.projectId}&isActuarial=2&isMessage=2&token=${scn}`
+          url: `/sub-decorate/pages/actuary-detail/actuary-detail?projectId=${this.currentProject.projectId}`
         })
       },
       goVideo() {

@@ -36,7 +36,7 @@
 			<view class="price" :class="{hasDown:!item.enabled}">
 				<text>￥</text>
 				<text style="font-size: 34rpx;font-weight: 500;">{{handlePrice(item.price)[0]}}</text>
-				<text>.{{handlePrice(item.price)[1]}}{{item.unit?` / ${item.unit}`:""}}</text>
+				<text>.{{handlePrice(item.price)[1] || 0}}{{item.unit?` / ${item.unit}`:""}}</text>
 			</view>
 		</view>
 		

@@ -25,6 +25,7 @@
 <script>
   import{getGrabDetail, sureGrab} from "../../../api/decorate.js";
   import grabHomePage from "./components/grab-home-page.vue"
+  import {unitChange } from '@/utils/util.js'
 	export default {
     components:{
       grabHomePage
@@ -34,7 +35,13 @@
         systemBottom:'',
         systemHeight:'',
 				id:0,
-        personData:{}
+        personData:{
+          likeCount:'0',
+          fansCount:'0',
+          recommendCount:'0',
+          collectCount:'0',
+          totalNum:'0'
+        }
 			};
 		},
     onReady(){
@@ -54,6 +61,12 @@
       getGrabDetail(){
         getGrabDetail(this.personId).then(res=>{
           this.personData = res
+          this.personData.totalNum = unitChange(this.personData.inServiceCount+this.personData.comServiceCount)
+          // this.personData.totalNum = '1.0'
+          this.personData.likeCount = unitChange(this.personData.likeCount)
+          this.personData.fansCount = unitChange(this.personData.fansCount)
+          this.personData.recommendCount = unitChange(this.personData.recommendCount)
+          this.personData.collectCount = unitChange(this.personData.collectCount)
         })
       },
 			toReplace(){

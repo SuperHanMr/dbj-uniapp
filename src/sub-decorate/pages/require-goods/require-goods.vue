@@ -173,7 +173,7 @@
 
 				getApp().globalData.naviData = this.cartList;
 				uni.navigateTo({
-					url: "/sub-decorate/pages/require-goods-apply/require-goods-apply",
+					url: `/sub-decorate/pages/require-goods-apply/require-goods-apply?projectId=${this.projectId}`,
 				});
 			},
 			openCart() {
