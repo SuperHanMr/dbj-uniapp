@@ -171,7 +171,8 @@
 		navList
 	} from "../../../api/home.js";
 	import {
-		getGoodsList
+		getGoodsList,
+		getClassifyList
 	} from "../../../api/classify.js";
 	import {
 		queryEstates
@@ -222,7 +223,7 @@
 				}
 			})
 			// uni.hideShareMenu();
-			this.getHomeList();
+			// this.getHomeList();
 			this.reloadData();
 			const systemInfo = uni.getSystemInfoSync();
 			//状态栏高度
@@ -243,10 +244,13 @@
 			uni.$once("selectedHouse", (item) => {
 				this.citydata = item.cityName + item.areaName + item.housingEstate;
 				this.areaId = item.areaId;
-				this.currentHouseChange(item)
+				this.currentHouseChange(item);
 				// uni.setStorageSync("currentHouse", JSON.stringify(item));
 			});
-			this.token = getApp().globalData.token;
+			setTimeout(e => {
+				//防止401
+				this.token = getApp().globalData.token;
+			}, 500)
 			this.swiperAuto = true;
 		},
 		onHide() {
@@ -344,13 +348,24 @@
 					})
 				} else if (item.type == 1) {
 					if (item.url.endsWith('index/index')) {
-						getApp().globalData.naviData = null;
-						if (item.urlParams) {
-							getApp().globalData.naviData = JSON.parse(item.urlParams);
-						}
-						uni.switchTab({
-							url: item.url
+
+						console.log(item.urlParams)
+						getClassifyList(this.areaId).then((data) => {
+							if (data.find(e => {
+									e.id == JSON.parse(item.urlParams).id;
+								})) {}
+
 						})
+
+
+						// getApp().globalData.naviData = null;
+						// if (item.urlParams) {
+
+						// 	getApp().globalData.naviData = JSON.parse(item.urlParams);
+						// }
+						// uni.switchTab({
+						// 	url: item.url
+						// })
 					} else {
 						uni.navigateTo({
 							url: item.url
@@ -520,7 +535,7 @@
 						this.currentHouseChange(house)
 						// uni.setStorageSync("currentHouse", JSON.stringify(house));
 						this.areaId = house.areaId;
-						this.citydata = house.cityName + house.areaName;
+						this.citydata = house.cityName + house.areaName + house.housingEstate;
 					}
 				} else {
 					this.getAuthorizeInfo();
