@@ -243,10 +243,10 @@
 				// 	url:'../merchant-entry-success/merchant-entry-success'
 				// })
 				const ids = [];
-				const businessList = JSON.parse(JSON.stringify(this.businessCategoryList));
-				businessList.forEach((item) => {
-					item.threeLevelCategoryId = item.threeLevelCategoryId.split('c')[1];
-				})
+				// const businessList = JSON.parse(JSON.stringify(this.businessCategoryList));
+				// businessList.forEach((item) => {
+				// 	item.threeLevelCategoryId = item.threeLevelCategoryId.split('c')[1];
+				// })
 				// if (businessList.id.join("c")[1] == 'c') {
 				// 	businessList.id = 
 				// }
@@ -263,7 +263,7 @@
 						name: this.companyValue,
 						// phone: '',
 						cityIds: ids,
-						scopes: businessList
+						scopes: this.businessCategoryList
 					},
 				};
 				
