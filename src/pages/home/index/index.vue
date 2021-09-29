@@ -13,8 +13,12 @@
 
 		<!-- //头部 -->
 		<view class="state-bar" :style="{top:navBarHeight}">
-			<view class="address flex1" @click="toCity">
-				{{citydata}}
+			<view class=" header-flex-row flex1" @click="toCity">
+				<view class="address">
+					{{citydata}}
+				</view>
+				<image class="icon_down"  src="http://dbj.dragonn.top/static/mp/dabanjia/images/home/ic_home_down.png" mode=""></image>
+				
 			</view>
 
 			<image @click="toSearch" class="icon-search"
@@ -22,7 +26,6 @@
 			<image @click="toMessage" class="img"
 				src="http://dbj.dragonn.top/static/mp/dabanjia/images/home/online-server.png" mode="">
 			</image>
-
 		</view>
 		<!-- 占位 -->
 		<view :style="{height:navBarHeight}">
@@ -351,21 +354,28 @@
 
 						console.log(item.urlParams)
 						getClassifyList(this.areaId).then((data) => {
+							console.log('!!!!!!!~~~');
+							console.log(JSON.parse(item.urlParams).id);
 							if (data.find(e => {
-									e.id == JSON.parse(item.urlParams).id;
-								})) {}
+									return e.id == JSON.parse(item.urlParams).id;
+								})) {
+								getApp().globalData.naviData = null;
+								if (item.urlParams) {
 
+									getApp().globalData.naviData = JSON.parse(item.urlParams);
+								}
+								uni.switchTab({
+									url: item.url
+								})
+							} else {
+								uni.navigateTo({
+									url: '../../common/result-null/result-null'
+								})
+							}
 						})
 
 
-						// getApp().globalData.naviData = null;
-						// if (item.urlParams) {
 
-						// 	getApp().globalData.naviData = JSON.parse(item.urlParams);
-						// }
-						// uni.switchTab({
-						// 	url: item.url
-						// })
 					} else {
 						uni.navigateTo({
 							url: item.url
@@ -549,6 +559,10 @@
 </script>
 
 <style lang="scss" scoped>
+	.icon_down{
+		width: 28rpx;
+		height: 28rpx;
+	}
 	.icon-search {
 		width: 48rpx;
 		height: 48rpx;
@@ -966,6 +980,10 @@
 			width: 100%;
 			height: 234rpx;
 		}
+	}
+	.header-flex-row{
+		display: flex;
+		align-items: center;
 	}
 
 	.flex-row {

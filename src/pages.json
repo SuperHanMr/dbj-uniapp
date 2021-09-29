@@ -107,6 +107,13 @@
 				"enablePullDownRefresh": false
 			}
 
+		}, {
+			"path": "pages/common/result-null/result-null",
+			"style": {
+				"navigationBarTitleText": "敬请期待",
+				"enablePullDownRefresh": false
+			}
+
 		}
 	],
 	"globalStyle": {
@@ -558,6 +565,13 @@
 						"enablePullDownRefresh": false
 					}
 
+				}, {
+					"path": "pages/merchant-entry-webview/merchant-entry-webview",
+					"style": {
+						"navigationBarTitleText": "",
+						"enablePullDownRefresh": false
+					}
+
 				}
 			]
 		},
@@ -845,6 +859,13 @@
 						"navigationBarTitleText": "",
 						"enablePullDownRefresh": false,
 						"navigationStyle": "custom"
+					}
+				},
+				{
+					"path": "pages/actuary-detail/actuary-detail",
+					"style": {
+						"navigationBarTitleText": "",
+						"enablePullDownRefresh": false
 					}
 				},
 				{

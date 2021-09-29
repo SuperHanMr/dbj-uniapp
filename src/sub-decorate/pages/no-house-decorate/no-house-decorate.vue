@@ -171,7 +171,7 @@
       const {
         type,
       } = option
-      this.sssType = type || getType(serviceType)
+      this.sssType = type || this.getType(serviceType)
 
       if (option.isDecorate) {
         this.projectId = Number(option.projectId)

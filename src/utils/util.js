@@ -136,6 +136,16 @@ function getValueForCompare(item, o) {
   }
   return false;
 }
+/**
+ * @param {Object} num
+ * 单位转换 19999转换成1.9w
+ */
+export function unitChange(num){
+  if(num<10000){
+    return num + ''
+  }
+  return (Math.floor(num/1000)/10).toFixed(1) + ''
+}
 
 /**
  * 获取三目运算符的值
@@ -150,5 +160,6 @@ function getValueForTernary(item, o) {
 }
 
 export {
-  compileTemplateStr
+  compileTemplateStr,
+  
 }

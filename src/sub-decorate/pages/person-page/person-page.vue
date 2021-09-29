@@ -26,8 +26,8 @@
             </view>
             <text class="name">{{personData.nickName}}</text>
             <view class="label">
-              <text class="job">{{personData.roleName}}</text>
-              <text class="rate">好评率{{personData.praiseRate||0}}%</text>
+              <text class="job">{{personData.roleId===3?personData.personAllBadgeVO.skillBadges[0].name:personData.roleName}}</text>
+              <text class="rate">好评率{{personData.praiseRate||0}}</text>
             </view>
           </view>
           <view class="btn">
@@ -42,23 +42,24 @@
           </view>
           <view class="person-msg-list">
             <view class="list-item">
-              <text class="num">{{personData.likeCount||0}}</text>
+              <text class="num">{{personData.likeCount||0}} <text class="unit" v-if="personData.likeCount.split('.')[1]">w</text></text>
               <text class="title">获赞</text>
             </view>
             <view class="list-item">
-              <text class="num">{{personData.fansCount||0}}</text>
+              <text class="num">{{personData.fansCount||0}} <text class="unit" v-if="personData.fansCount.split('.')[1]">w</text></text>
               <text class="title">粉丝</text>
             </view>
             <view class="list-item" v-if="personData.roleId===1||personData.roleId===2||personData.roleId===6">
-              <text class="num">{{personData.collectCount||0}}</text>
+              <text class="num">{{personData.collectCount||0}} <text class="unit" v-if="personData.collectCount.split('.')[1]">w</text></text>
               <text class="title">被收藏</text>
             </view>
             <view class="list-item">
-              <text class="num">{{personData.recommendCount||0}}</text>
+              <text class="num">{{personData.recommendCount||0}} <text class="unit" v-if="personData.recommendCount.split('.')[1]">w</text></text>
               <text class="title">被推荐</text>
             </view>
             <view class="list-item">
-              <text class="num">{{personData.totalNum||0}}</text>
+              <text class="num">{{personData.totalNum||0}} <text class="unit" v-if="personData.totalNum.split('.')[1]">w</text></text>
+             
               <text class="title">总接单</text>
             </view>
           </view>
@@ -97,6 +98,7 @@
   import personEvaluate from './components/person-evaluate.vue'
   import personCase from './components/person-case.vue'
   import personDynamic from './components/person-dynamic.vue'
+  import {unitChange } from '@/utils/util.js'
   import {
     getSkuList,
     getGrabDetail,
@@ -114,7 +116,13 @@
     data() {
       return {
         opacityNum:0,
-        personData:{},
+        personData:{
+          likeCount:'0',
+          fansCount:'0',
+          recommendCount:'0',
+          collectCount:'0',
+          totalNum:'0'
+        },
         currentItem: 'service',
         scrollTop:0,
         interact:0,
@@ -126,14 +134,15 @@
         personId:0,
         serviceData:[],
         isRecommend:false,
-        isAttention:false
+        isAttention:false,
+        evaluateNum:0
       }
     },
     computed:{
       navStyle(){
         return {
           opacity: this.opacityNum,
-          evaluateNum:0
+          
         }
       }
     },
@@ -146,7 +155,7 @@
       
     },
     onLoad(e){
-      this.personId = e.personId||6921
+      this.personId = e.personId||6834
       // this.getGrabDetail()
     },
     mounted() {
@@ -206,8 +215,20 @@
       },
       getGrabDetail(){
         getGrabDetail(this.personId).then(res=>{
-          this.personData = res
+          
           // this.personData.roleId = 3
+          res.totalNum = unitChange(res.inServiceCount+res.comServiceCount)
+          // this.personData.totalNum = '1.0'
+          res.likeCount = unitChange(res.likeCount)
+          res.fansCount = unitChange(res.fansCount)
+          res.recommendCount = unitChange(res.recommendCount)
+          res.collectCount = unitChange(res.collectCount)
+          this.personData = res
+          console.log(this.personData)
+          // this.personData.totalNum = unitChange(19999)
+          // if(this.personData.totalNum>10000){
+          //   this.personData.totalNum = 
+          // }
           this.getAttention(1001,'isAttention')
           this.getAttention(2001,'isRecommend')
           
@@ -271,6 +292,7 @@
         })
       },
       getEvaluate(num){
+        console.log(num)
         this.evaluateNum = num
       }
     }
@@ -477,7 +499,12 @@
           line-height: 42rpx;
           // text-align: ;
         }
-
+        .unit{
+          display: inline-block;
+          font-size: 24rpx;
+          font-weight: 500;
+          color: #333333;
+        }
         .title {
           font-size: 24rpx;
           font-weight: 400;

@@ -9,28 +9,29 @@
           <text>|</text>
           <text>{{personData.roleName}}</text>
           <text>|</text>
-          <text>好评率{{personData.praiseRate||0}}%</text>
+          <text>好评率{{personData.praiseRate||0}}</text>
         </view>
       </view>
       <view class="person-msg-list">
         <view class="list-item">
-          <text class="num">{{personData.likeCount||0}}</text>
+          <text class="num">{{personData.likeCount}} <text class="unit" v-if="personData.likeCount.split('.')[1]">w</text></text>
           <text class="title">获赞</text>
         </view>
         <view class="list-item">
-          <text class="num">{{personData.fansCount||0}}</text>
+          <text class="num">{{personData.fansCount}} <text class="unit" v-if="personData.fansCount.split('.')[1]">w</text></text>
           <text class="title">粉丝</text>
         </view>
-        <view class="list-item">
-          <text class="num">{{personData.collectCount||0}}</text>
+        <view class="list-item" v-if="personData.roleId===1||personData.roleId===2||personData.roleId===6">
+          <text class="num">{{personData.collectCount}} <text class="unit" v-if="personData.collectCount.split('.')[1]">w</text></text>
           <text class="title">被收藏</text>
         </view>
         <view class="list-item">
-          <text class="num">{{personData.recommendCount||0}}</text>
+          <text class="num">{{personData.recommendCount}} <text class="unit" v-if="personData.recommendCount.split('.')[1]">w</text></text>
           <text class="title">被推荐</text>
         </view>
         <view class="list-item">
-          <text class="num">{{personData.totalNum||0}}</text>
+          <text class="num">{{personData.totalNum}} <text class="unit" v-if="personData.totalNum.split('.')[1]">w</text></text>
+         
           <text class="title">总接单</text>
         </view>
       </view>
@@ -121,11 +122,19 @@
             line-height: 42rpx;
             text-align: center;
           }
+          .unit{
+            display: inline-block;
+            font-size: 24rpx;
+            font-weight: 500;
+            color: #333333;
+          }
           .title{
             font-size: 24rpx;
             font-weight: 400;
             color: #999;
             background-color: #fff;
+            width: 100%;
+            text-align: center;
           }
         }
       }

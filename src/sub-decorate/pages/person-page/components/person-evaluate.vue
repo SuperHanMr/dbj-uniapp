@@ -40,6 +40,8 @@
         }
         getComments(data).then(res=>{
           this.evaluate = res
+          
+          this.getEvaluate()
         })
       },
       toEvaluateList(){
@@ -48,7 +50,7 @@
         })
       },
       getEvaluate(){
-        this.$emit('getEvaluate',this.evaluate.list.length)
+        this.$emit('getEvaluate',this.evaluate.totalRows)
       }
     }
   }

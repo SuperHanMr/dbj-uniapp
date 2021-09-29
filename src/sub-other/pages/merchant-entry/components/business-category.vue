@@ -179,10 +179,10 @@
 				let param = {};
 				param.oneLevelCategoryId = this.$props.categroyTreeList[this.firstActive].id;
 				param.twoLevelCategoryId = this.$props.categroyTreeList[this.firstActive].children[this.secondActive].id;
-				param.threeLevelCategoryId = item.id;
+				param.threeLevelCategoryId = item.value;
 				param.label = item.label;
 				const checkedIndex = this.threeActiveList.findIndex((items, index) => {
-					return items.threeLevelCategoryId == item.id
+					return items.threeLevelCategoryId == item.value
 				})
 				const checkedNumber = this.numberList.findIndex((items, index) => {
 					return items.id == item.parent.id;
@@ -204,7 +204,7 @@
 				console.log(this.threeActiveList, ">>>>>>>>>>>>>>>>>>>>>>")
 			},
 			isChecked(item){
-				const checkedIndex = this.threeActiveList.findIndex((items, index) => {return items.threeLevelCategoryId == item.id})
+				const checkedIndex = this.threeActiveList.findIndex((items, index) => {return items.threeLevelCategoryId == item.value})
 				if (checkedIndex == -1) {
 					return false;
 				} else {

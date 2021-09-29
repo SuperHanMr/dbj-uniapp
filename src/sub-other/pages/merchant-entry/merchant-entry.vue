@@ -90,10 +90,11 @@
 			</view>
 			<view class="argument">
 				<view class="img-box" @click="argumentFileHandler">
-					<image v-if="argumentFile" src="../../static/merchant-entry/merchant-entry-select.png" mode=""></image>
+					<image v-if="argumentFile" src="../../static/merchant-entry/merchant-entry-select.png" mode="">
+					</image>
 					<view v-if="!argumentFile" class="circle">
-				</view>
-					
+					</view>
+
 				</view>
 				<view class="box">
 					<text>我已完成阅读并同意</text>
@@ -157,7 +158,8 @@
 	import {
 		getOpenId,
 		payEntryFee,
-		getCategroyTree
+		getCategroyTree,
+		supplierEntry
 	} from "../../../api/other.js";
 	import CitySelect from "./components/city-select.vue";
 	import BusinessCategory from "./components/business-category.vue";
@@ -241,45 +243,73 @@
 				// 	url:'../merchant-entry-success/merchant-entry-success'
 				// })
 				const ids = [];
+				// const businessList = JSON.parse(JSON.stringify(this.businessCategoryList));
+				// businessList.forEach((item) => {
+				// 	item.threeLevelCategoryId = item.threeLevelCategoryId.split('c')[1];
+				// })
 				this.cityList.forEach((item) => {
 					ids.push(item.id);
 				})
 				let params = {
-					payType: 1,
-					amount: 1,
+					// payType: 1,
+					// amount: 1,
 					openid: this.openId,
 					encryptedData: this.phoneInfo.encryptedData,
 					iv: this.phoneInfo.iv,
 					entry: {
 						name: this.companyValue,
-						phone: '',
+						// phone: '',
 						cityIds: ids,
 						scopes: this.businessCategoryList
 					},
 				};
-				payEntryFee(params).then((e) => {
-					const payInfo = e.wechatPayJsapi;
-					uni.requestPayment({
-						provider: "wxpay",
-						...payInfo,
-						success(res) {
-							if (res.errMsg == 'requestPayment:ok') {
-								uni.navigateTo({
-									url: '../merchant-entry-success/merchant-entry-success'
-								})
-							}
-						},
-						fail(e) {
-							console.log(e);
-							uni.navigateTo({
-								url: '../merchant-entry-failed/merchant-entry-failed'
-							})
-						},
-					});
-				});
+				
+				supplierEntry(params).then((res) => {
+					console.log(res, '>>>>>>>')
+					const obj = {
+						supplierId: res.supplierId,
+						phone: res.phone,
+						password: res.password,
+						url: res.url,
+					}
+					this.$store.dispatch('setAccountInfo', {
+						accountInfo: obj
+					})
+					uni.navigateTo({
+						url: '../merchant-entry-success/merchant-entry-success'
+					})
+				}).catch((res) => {
+					// error.response.data.message
+					console.log(res,);
+					// uni.showToast({
+					// 	title: "1",
+					// 	icon: 'none'
+					// })
+				})
+				// payEntryFee(params).then((e) => {
+				// 	const payInfo = e.wechatPayJsapi;
+				// 	uni.requestPayment({
+				// 		provider: "wxpay",
+				// 		...payInfo,
+				// 		success(res) {
+				// 			if (res.errMsg == 'requestPayment:ok') {
+				// 				uni.navigateTo({
+				// 					url: '../merchant-entry-success/merchant-entry-success'
+				// 				})
+				// 			}
+				// 		},
+				// 		fail(e) {
+				// 			console.log(e);
+				// 			uni.navigateTo({
+				// 				url: '../merchant-entry-failed/merchant-entry-failed'
+				// 			})
+				// 		},
+				// 	});
+				// });
 			},
 			showBottomButtom() {
-				if (this.cityList.length > 0 && this.businessCategoryList.length > 0 && this.companyValue != '' && this.argumentFile) {
+				if (this.cityList.length > 0 && this.businessCategoryList.length > 0 && this.companyValue != '' && this
+					.argumentFile) {
 					return true;
 				} else {
 					return false;
@@ -372,22 +402,25 @@
 			},
 			toArguments(e) {
 				e.preventDefault();
+				uni.navigateTo({
+					url: '../merchant-entry-webview/merchant-entry-webview?url=https://ali-res.dabanjia.com/res/20210929/17/163290903769698.pdf'
+				})
 				// uni.downloadFile({
 				// 	url: 'https://ali-res-test.dabanjia.com/res/20210928/21/1632834978647_0398%24%E8%A3%85%E4%BF%AE%E5%B9%B3%E5%8F%B02.0%E6%8E%92%E6%9C%9F%E8%AE%A1%E5%88%921.pdf', //仅为示例，并非真实的资源  
 				// 	success: (res) => {
 				// 		if (res.statusCode === 200) {
 				// 			console.log('下载成功');
-				uni.openDocument({
-					// filePath: res.tempFilePath,
-					filePath: 'https://ali-res.dabanjia.com/res/20210929/14/163289590753573.pdf',
-					fileType: 'pdf',
-					success: (res) => {
-						console.log(res, '>>>>>>>>>>>>>>')
-					},
-					fail: (res) => {
-						console.log(res, '>>>>>>>>>>>>')
-					}
-				})
+				// uni.openDocument({
+				// 	// filePath: res.tempFilePath,
+				// 	filePath: 'https://ali-res.dabanjia.com/res/20210929/14/163289590753573.pdf',
+				// 	fileType: 'pdf',
+				// 	success: (res) => {
+				// 		console.log(res, '>>>>>>>>>>>>>>')
+				// 	},
+				// 	fail: (res) => {
+				// 		console.log(res, '>>>>>>>>>>>>')
+				// 	}
+				// })
 				// 		}
 				// 	}
 				// })
@@ -612,29 +645,34 @@
 			display: flex;
 			justify-content: center;
 			align-items: center;
-			.img-box{
+
+			.img-box {
 				margin-right: 4rpx;
 				display: flex;
 				justify-content: center;
 				align-items: center;
 			}
-			image{
+
+			image {
 				display: block;
 				width: 30rpx;
 				height: 28rpx;
 				background: red;
 			}
-			.circle{
+
+			.circle {
 				width: 30rpx;
 				height: 26rpx;
 				border-radius: 50%;
 				border: 1px solid #A8A8A8;
 			}
-			.box{
+
+			.box {
 				display: flex;
 				justify-content: center;
 				align-items: center;
 			}
+
 			text {
 				color: #999999;
 			}
