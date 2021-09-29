@@ -1,6 +1,9 @@
 const merchantEntry = {
 	state: {
 		cityList: [],
+		accountInfo: {
+			
+		}
 	},
 	getters: {
 		getCityList(state) {
