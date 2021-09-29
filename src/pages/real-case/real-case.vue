@@ -80,17 +80,6 @@
 			};
 		},
 		onReady() {
-			let obj = {
-				a: 10,
-				b: {
-					c: "aaaaa"
-				}
-			}
-			let obj1 = {
-				...obj
-			}
-			obj1.a = 20;
-			obj1.b.c = 100;
 			this.getList();
 		},
 		// // 触底触发
