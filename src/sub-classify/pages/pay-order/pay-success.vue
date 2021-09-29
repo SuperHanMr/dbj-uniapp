@@ -25,17 +25,17 @@
       }
     },
     onLoad(val){
-      this.orderId = val.id
+      this.orderId = val.orderId
     },
     methods: {
-      backHome(){
+      backHome(){     
         uni.switchTab({
-          url: "pages/home/index/index"
-        })
+            url: '/pages/home/index/index'
+        });
       },
       toOrderDetail() {
         uni.navigateTo({
-          url: '/sub-my/pages/my-order/order-success/order-success?type=complete&id=' + this.orderId
+          url: `/sub-my/pages/my-order/order-in-progress/order-in-progress?orderNo=${this.orderId}`
         })
       }
     }

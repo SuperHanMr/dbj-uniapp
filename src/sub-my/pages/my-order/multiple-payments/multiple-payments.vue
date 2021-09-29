@@ -103,6 +103,8 @@
 			this.remainTime = e.remainTime
 			console.log("this.remainTime=",this.remainTime)
 			this.type =e.type
+		},
+		onShow() {
 			this.requestSplitPayList()
 		},
 		methods: {
@@ -131,24 +133,32 @@
 						provider: "wxpay",
 						...payInfo,
 						success(res) {
-							// 支付成功后跳转到哪个页面
-							if(index < list.details-1 ){
+							uni.showToast({
+								title: '支付成功',
+								icon:"none",
+								duration: 1000
+							});
+							setTimeout(()=>{
+								// 支付成功后跳转到哪个页面
+								if(index < list.details-1 ){
+									this.requestSplitPayList()
+								}else{
+									this.toCancelPage()
+								}
 								this.requestSplitPayList()
-							}else{
-								this.toCancelPage()
-							}
+							},1000)
 						},
 						fail(e) {
 							// 支付失败时候跳转到哪个页面
-							// uni.showToast({
-							//     title: '支付失败',
-							//     duration: 500
-							// });
+							uni.showToast({
+								title: '支付失败',
+								icon:"none",
+								duration: 1000
+							});
 						},
 					});
 				})
 			},
-			
 			toCancelPage(){
 				if(this.type == 'detail'){
 					uni.redirectTo({
@@ -168,7 +178,7 @@
 			cancelOrderClose(){
 				this.$refs.cancleOrder.close();
 			},
-			cancleConfirm(){体哦啊
+			cancleConfirm(){
 				console.log("取消订单按钮成功！")
 				//点击确定后订单会被取消且该订单会被移入已关闭订单中
 				cancelOrder({id:this.orderId}).then(e=>{

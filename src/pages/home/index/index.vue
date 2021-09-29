@@ -12,7 +12,7 @@
 		</view> -->
 
 		<!-- //头部 -->
-		<view class="state-bar" :style="{top:navBarHeight}" >
+		<view class="state-bar" :style="{top:navBarHeight}">
 			<view class="address flex1" @click="toCity">
 				{{citydata}}
 			</view>
@@ -46,15 +46,15 @@
 		</view>
 		<!-- 金刚区 -->
 		<view class="function-zone">
-			<view class="item bottom-border" v-for="(item,index) in zoneList"
-				:class="{'border-top-left ':index==0,'border-top':index<4,'border-top-right':index==3}" :key="item.id"
-				@click="onZoneClick(item)">
+			<view class="item " v-for="(item,index) in zoneList" :key="item.id"
+				:class="{'bottom-border':index<zoneList.length-4}" @click="onZoneClick(item)">
 				<image class="icon" :src="item.icon"></image>
 				<view class="name">
 					{{item.name}}
 				</view>
-				<image class="border-img"
-					src="http://dbj.dragonn.top/%20static/mp/dabanjia/images/home/home-zone-border.png" mode=""></image>
+				<image v-if="(index+1)%4" class="border-img"
+					src="http://dbj.dragonn.top/%20%20static/mp/dabanjia/images/home/home-zone-border1.png" mode="">
+				</image>
 			</view>
 		</view>
 		<!-- 快捷栏目 -->
@@ -118,14 +118,13 @@
 				<image class="img" :src="item.mediaType==1?item.roomLiveMediaVO.scaleImg:item.roomVideoMediaVO.scaleImg"
 					mode=""></image>
 				<view v-if="item.mediaType==1" class="top-content">
-					{{item.roomVideoMediaVO.onLineCount}}人正在观看
+					{{item.roomLiveMediaVO.onLineCount}}人正在观看
 				</view>
 				<image v-if="item.mediaType==2" class="top-content-img"
 					src="http://dbj.dragonn.top/%20%20static/mp/dabanjia/images/home/video_review.png">
-					{{item.roomVideoMediaVO.onLineCount}}人正在观看
 				</image>
 				<view class="name-content">
-					{{item.roomVideoMediaVO.title}}
+					{{item.mediaType==1?item.roomLiveMediaVO.title:item.roomVideoMediaVO.title}}
 				</view>
 			</view>
 		</view>
@@ -214,7 +213,6 @@
 			token() {
 				this.getHomeList();
 			},
-
 		},
 		onLoad() {
 			uni.getSystemInfo({
@@ -245,7 +243,8 @@
 			uni.$once("selectedHouse", (item) => {
 				this.citydata = item.cityName + item.areaName + item.housingEstate;
 				this.areaId = item.areaId;
-				uni.setStorageSync("currentHouse", JSON.stringify(item));
+				this.currentHouseChange(item)
+				// uni.setStorageSync("currentHouse", JSON.stringify(item));
 			});
 			this.token = getApp().globalData.token;
 			this.swiperAuto = true;
@@ -259,6 +258,12 @@
 			this.getHomeGoodsList();
 		},
 		methods: {
+			currentHouseChange(item) {
+				uni.$emit('currentHouseChange', item);
+				getApp().globalData.currentHouse = item;
+				// uni.setStorageSync("currentHouse", JSON.stringify(defaultHouse));
+
+			},
 			toSearch() {
 				uni.navigateTo({
 					url: '../../../sub-classify/pages/search/index'
@@ -285,13 +290,16 @@
 				let price = String(item.product.skuPrice);
 				return price.slice(0, price.length - 2) || "0";
 			},
-			formatCent(item) { 
+			formatCent(item) {
 				let price = String(item.product.skuPrice);
 				return price.slice(price.length - 2, price.length);
 			},
 			onLiveClick(item) {
 				if (item.mediaType == 1) {
 					//直播
+					uni.navigateTo({
+						url: `../../../sub-home/pages/lives-room/lives-room?livePreview=${item.roomLiveMediaVO.livePreview}&roomId=${item.roomLiveMediaVO.roomId}`
+					})
 				} else if (item.mediaType == 2) {
 					console.log(item);
 					//回放
@@ -336,9 +344,9 @@
 					})
 				} else if (item.type == 1) {
 					if (item.url.endsWith('index/index')) {
-						getApp().globalData.naviData=null;
-						if(item.urlParams){
-							getApp().globalData.naviData=JSON.parse(item.urlParams);
+						getApp().globalData.naviData = null;
+						if (item.urlParams) {
+							getApp().globalData.naviData = JSON.parse(item.urlParams);
 						}
 						uni.switchTab({
 							url: item.url
@@ -388,7 +396,8 @@
 							areaId: 41,
 						};
 						that.areaId = 41;
-						uni.setStorageSync("currentHouse", JSON.stringify(defaultHouse));
+						that.currentHouseChange(defaultHouse);
+						// uni.setStorageSync("currentHouse", JSON.stringify(defaultHouse));
 						that.citydata = defaultHouse.name;
 						// 拒绝授权
 						that.openConfirm();
@@ -432,7 +441,8 @@
 							areaId: 41,
 						};
 						vm.areaId = 41;
-						uni.setStorageSync("currentHouse", JSON.stringify(defaultHouse));
+						vm.currentHouseChange(defaultHouse)
+						// uni.setStorageSync("currentHouse", JSON.stringify(defaultHouse));
 						vm.citydata = defaultHouse.name;
 					},
 				});
@@ -440,7 +450,8 @@
 			async getAreaId(adcode) {
 				let areaInfo = await getAdcodeFromAreaId(adcode);
 				this.citydata = areaInfo.name;
-				uni.setStorageSync("currentHouse", JSON.stringify(areaInfo));
+				this.currentHouseChange(areaInfo)
+				// uni.setStorageSync("currentHouse", JSON.stringify(areaInfo));
 			},
 			// 再次获取授权
 			// 当用户第一次拒绝后再次请求授权
@@ -506,7 +517,8 @@
 						house = houseList[0];
 					}
 					if (house) {
-						uni.setStorageSync("currentHouse", JSON.stringify(house));
+						this.currentHouseChange(house)
+						// uni.setStorageSync("currentHouse", JSON.stringify(house));
 						this.areaId = house.areaId;
 						this.citydata = house.cityName + house.areaName;
 					}
@@ -676,8 +688,8 @@
 
 			.top-content {
 				position: absolute;
-				top: 24rpx;
-				left: 24rpx;
+				top: 12rpx;
+				left: 12rpx;
 				padding: 12rpx;
 				height: 28rpx;
 				background: rgba(0, 0, 0, 0.35);
@@ -813,7 +825,7 @@
 	.function-zone {
 		margin: 24rpx;
 		border: 1px solid #e7e8e8;
-		width: 702rpx;
+		width: 704rpx;
 		display: flex;
 		flex-direction: row;
 		flex-wrap: wrap;
@@ -836,7 +848,7 @@
 
 		.item {
 			height: 126rpx;
-			width: 175.5rpx;
+			width: 176rpx;
 			display: flex;
 			flex-direction: column;
 			justify-content: center;

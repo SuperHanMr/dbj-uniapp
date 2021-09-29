@@ -1,5 +1,5 @@
 <template>
-  <view class="conversation-container">
+  <view class="conversation-container" :class="{bgWhite: type === CONV_TYPES.INTERACTION}">
     <scroll-view
       :scroll-top="scrollTop"
       :scroll-y="true"
@@ -40,6 +40,7 @@
       </view>
     </scroll-view>
     <message-send-box v-if="type === CONV_TYPES.COMMON || type === CONV_TYPES.CUSTOMER"></message-send-box>
+    <reply-box v-if="type === CONV_TYPES.INTERACTION" />
     <view v-if="showVideoPlayer" class="video-player-wrapper">
       <video class="video-player" :src="currentVideoUrl" autoplay>
         <cover-view class="icon-face video-close-btn" @click="handleCloseVideo"></cover-view>
@@ -51,6 +52,7 @@
 <script>
   import { getTim, addListener, removeListener } from "@/utils/tim.js"
   import MessageSendBox from "./message-send-box.vue"
+  import ReplyBox from "./reply-box.vue"
   import MessageItem from "./message-element/message-item.vue"
   import MessageItemSystem from "./message-element/message-item-system.vue"
   import MessageItemInteraction from "./message-element/message-item-interaction.vue"
@@ -61,6 +63,7 @@
   export default {
     components: {
       MessageSendBox,
+      ReplyBox,
       MessageItem,
       MessageItemSystem,
       MessageItemInteraction,
@@ -123,7 +126,7 @@
       uni.$on("scroll-to-bottom", this.scrollToBottom);
       this.$once("hook:beforeDestroy", () => {
         uni.$off("scroll-to-bottom", this.scrollToBottom);
-      })
+      });
       const query = uni.createSelectorQuery().in(this);
       this.messageListNodesRef = query.select("#messageList");
       this.getMessageListRect((options) => {
@@ -256,7 +259,7 @@
       },
       handleCloseVideo() {
         this.$store.commit("closeMessageVideoPlayer");
-      }
+      },
     }
   }
 </script>
@@ -270,6 +273,9 @@
     overflow: hidden;
     position: relative;
     border-top: 1px solid #f5f5f5;
+  }
+  .bgWhite {
+    background: #fff;
   }
   .message-list {
     flex: 1;

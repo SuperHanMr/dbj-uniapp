@@ -13,6 +13,7 @@
         id="messageInput"
         :focus="inputFocus"
         :show-confirm-bar="false"
+        :cursor-spacing="16"
         auto-height
         class="message-send-input" 
         placeholder-class="message-send-input-placeholder" 

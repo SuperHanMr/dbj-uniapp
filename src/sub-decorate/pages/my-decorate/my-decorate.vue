@@ -34,7 +34,7 @@
         <serviceActuarial id="d4" v-if="tab.nodeType===4&&!tab.currentEmpty" @isEmpty='isEmpty' :index='index1' :projectId='projectId' :serverId='tab.serveCardId'></serviceActuarial>
         <serviceSteward id="d5" v-if="tab.nodeType===5&&!tab.currentEmpty" @isEmpty='isEmpty' :index='index1' :projectId='projectId'></serviceSteward>
         <serviceDismantle id="d6" v-if="tab.nodeType>5&&!tab.currentEmpty" :index='index1' @isEmpty='isEmpty' :projectId='projectId' :serveId='tab.serveCardId'></serviceDismantle>
-        <no-service v-if="tab.currentEmpty" words="暂无进行中服务"></no-service>
+        <no-service v-if="tab.currentEmpty" words="暂无服务相关信息 验收通过后即会呈现"></no-service>
       </swiper-item>
     </swiper>
   </view>
@@ -101,7 +101,7 @@
     methods: {
       toCost() {
         uni.navigateTo({
-          url: '/sub-decorate/pages/current-cost/current-cost?id='+this.projectId+'&isCost=0'
+          url: '/sub-decorate/pages/current-cost/current-cost?id=1&projectId='+this.projectId+'&isCost=0'
         })
       },
       ontabtap(item, index) {

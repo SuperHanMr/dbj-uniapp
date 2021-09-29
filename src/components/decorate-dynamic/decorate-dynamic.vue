@@ -24,7 +24,7 @@
     							<view class="text">{{item.likeCount}}</view>
     						</view>
     						<view class="comment">
-    							<image @click="commentC(item.id)" src="../../static/images/ic_comments@2x.png"></image>
+    							<image @click="commentC(item)" src="../../static/images/ic_comments@2x.png"></image>
     							<view class="text">{{item.commentCount}}</view>
     						</view>
     					</view>
@@ -35,28 +35,41 @@
             </view>
     			</view>
     		</view>
+        <dynamicComments ref='comments' :userId='personId' :houseOwnerId='houseOwnerId' :dynamicId='dynamicId'></dynamicComments>
   </view>
 </template>
 
 <script>
+  import dynamicComments from './dynamic-comments.vue'
   export default {
     name:"decorate-dynamic",
+    components:{
+      dynamicComments
+    },
     props:{
       dynamics:[],
       isPerson:false,
+      personId:0
     },
     data() {
       
       return {
-        
+        dynamicId:0,
+        houseOwnerId:0
       };
     },
     methods:{
       likeC(index,isAdd,item){
       	this.$emit('likeC',index,isAdd,item)
       },
-      commentC(id){
-      	this.$emit('commentC',id)
+      commentC(item){
+        if(this.isPerson){
+          this.$refs.comments.showComments = true
+          this.dynamicId = item.id
+          this.houseOwnerId = item.houseOwnerId
+        }
+      	this.$emit('commentC',item.id)
+        
       },
       toDecorate(item){
         console.log(item.projectId)
