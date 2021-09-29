@@ -3,16 +3,16 @@ import request from '../utils/request';
 
 //修改用户资料  (头像 昵称)
 export function editUserInfo(params) {
-	return request.put(`/customer/app/mycenter/person`,params);
+	return request.put(`/customer/app/mycenter/person`, params);
 }
 // 意见与反馈  /app/feedback
 export function commentsAndFeedBack(params) {
-	return request.post(`/app/feedback`,params);
+	return request.post(`/app/feedback`, params);
 }
 
-// 我的-代付款订单条数  
+// 我的-代付款订单条数
 export function queryToBePaidOrderNum(params) {
-	return request.get(`/order-center/app/order/queryToBePaidOrderNum`,params);
+	return request.get(`/order-center/app/order/queryToBePaidOrderNum`, params);
 }
 
 
@@ -46,25 +46,25 @@ export function orderPay(params) {
 
 // 我的-订单-退款-退款列表
 export function getRefundList(params) {
-	return request.get(`/order-center/app/order/refundList`, {params})
+	return request.get(`/order-center/app/order/refundList`, { params })
 }
 //我的-订单-退款-退款详情
 export function getRefundDetail(params) {
-	return request.get(`/order-center/app/order/refundDetail`, {params})
+	return request.get(`/order-center/app/order/refundDetail`, { params })
 }
 
 //我的-订单-整个订单申请退款
 export function wholeOrderApplyForRefund(params) {
-	return request.post(`/order-center/app/order/overall/applyRefund`,  params)
+	return request.post(`/order-center/app/order/overall/applyRefund`, params)
 }
 //我的-订单-部分商品申请退款
 export function particalOrderApplyForRefund(params) {
-	return request.post(`/order-center/app/order/overall/applyRefund`, { params })
+	return request.post(`/order-center/app/order/products/applyRefund`, params)
 }
 
 //我的-订单-根据退款单id查询退款单详情（重新申请）
 export function getRefundInfo(params) {
-	return request.get(`/order-center/app/order/refundEchoInformation`, {params})
+	return request.get(`/order-center/app/order/refundEchoInformation`, { params })
 }
 
 
@@ -97,7 +97,7 @@ export function splitPay(params) {
 // 我的-评价-评价列表
 export function getEvationList(params) {
 	return request.get(`/pm/app/serve/completeList`, params);
-} 
+}
 
 //我的-业主-立即评价
 export function immediateEvaluate(params) {
@@ -105,38 +105,45 @@ export function immediateEvaluate(params) {
 }
 //获取服务单下面的评价
 export function evaluateDetail(params) {
-	return request.get(`/pm/app/commentSetting/getById`,{params})
+	return request.get(`/pm/app/commentSetting/getById`, { params })
 }
 
 
 
 
 
-//我的关注- 工匠的列表  
+//我的关注- 工匠的列表
 export function getCraftsmanList(params) {
-	return request.get(`/app/base/interactive/list/focus/person`,{params})
+	return request.get(`/app/base/interactive/list/focus/person`, { params })
 }
 //我的关注- 房子的列表
 export function getHouseList(params) {
-	return request.get(`/app/base/interactive/list/focus/project`,{params})
+	return request.get(`/app/base/interactive/list/focus/project`, { params })
 }
 //我的关注-优先推荐
 export function getRecommendList(params) {
-	return request.get(`/app/base/interactive/list/recommend/person`,{params})
+	return request.get(`/app/base/interactive/list/recommend/person`, { params })
 }
+//我的关注-取消关注
+export function cancelAttention(params) {
+	return request.post(`/app/base/interactive/add`, params )
+}
+
+
+
 
 //我的收藏- 商品
 export function getGoodsList(params) {
-	return request.get(`/app/base/interactive/list/collect/goods`,{params})
+	return request.get(`/app/base/interactive/list/collect/goods`, { params })
 }
 //我的收藏- 案例
 export function getRealCaseList(params) {
-	return request.get(`/app/case/collection/list`,{params})
+	return request.get(`/app/case/collection/list`, { params })
 }
 
 // 批量取消关注或者收藏
 export function batchCancellation(params) {
-	return request.delete(`/app/base/interactive/list/del`,{data:params})
+	return request.delete(`/app/base/interactive/list/del`, { data: params })
 }
 
 
