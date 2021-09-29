@@ -255,7 +255,7 @@
       goDecorateCalendar(date) {
         console.log("date: ", date)
         uni.navigateTo({
-          url: `/sub-home/pages/decorate-scene/decorate-calendar?projectId=${this.currentProject.projectId}&date=${date}`
+          url: `/sub-home/pages/decorate-scene/decorate-calendar?projectId=${this.currentProject.projectId}&date=${date}&isDecorate=1`
         })
       },
       getCarouselMsg() {
