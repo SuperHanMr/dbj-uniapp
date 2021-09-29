@@ -2,7 +2,8 @@
   <view class="process-cost">
     <view class="artificial" v-if="msg.obtainType != 2">
       <view class="title">
-        <view>人工费用（{{levelList.length > 0 ? LEVEL[artificialLevel - 1].label : (dataOrigin.artificial.grade || "无等级")}}）</view>
+        <view>人工费用（{{levelList.length > 0 ? LEVEL[artificialLevel - 1].label : (dataOrigin.artificial.grade || "无等级")}}）
+        </view>
         <view class="change-level" @click="openPopUp">更换等级</view>
       </view>
       <view class="process-cost-list">
@@ -128,17 +129,18 @@
                   this.dataOrigin.material.categoryList[i].itemList[j] = item
 
                   // 添加新旧id对应关系
-                  const flgArr = this.skuRelation.filter(t => t.originalId == item.originalId)
-                  if (flgArr?.length > 0) {
-                    // 如果是已经存在了新旧id对应关系，则替换新的id
-                    flgArr[0].newSuk = item.id
-                  } else {
-                    // 否则就是第一次替换
-                    this.skuRelation.push({
-                      oldSuk: item.originalId,
-                      newSuk: item.id
-                    })
-                  }
+                  // const flgArr = this.skuRelation.filter(t => t.originalId == item.originalId)
+                  // if (flgArr?.length > 0) {
+                  //   // 如果是已经存在了新旧id对应关系，则替换新的id
+                  //   flgArr[0].newSuk = item.id
+                  // } else {
+                  //   // 否则就是第一次替换
+                  //   this.skuRelation.push({
+                  //     oldSuk: item.originalId,
+                  //     newSuk: item.id
+                  //   })
+                  // }
+                  this.setSkuRelation(item)
                   break
                 }
               }
@@ -148,8 +150,38 @@
         this.dataOrigin.material.categoryList = JSON.parse(JSON.stringify(this.dataOrigin.material.categoryList))
         this.computePriceAndShopping()
       },
+      setSkuRelation(item) {
+        // 添加新旧id对应关系
+        const flgArr = this.skuRelation.filter(t => t.originalId == item.originalId)
+        if (flgArr?.length > 0) {
+          if (item.checked) {
+            // 如果选择了
+            // 如果是已经存在了新旧id对应关系，则替换新的id
+            flgArr[0].newSuk = item.id
+          } else {
+            let index = null
+            for (let i = 0; i<this.skuRelation.length > 0; i++) {
+              if(this.skuRelation[i].originalId == item.originalId) {
+                index = i
+                break
+              }
+            }
+            this.skuRelation.splice(index, 1)
+          }
+          // 如果是已经存在了新旧id对应关系，则替换新的id
+          flgArr[0].newSuk = item.id
+        } else {
+          if (item.checked) {
+            // 否则就是第一次替换
+            this.skuRelation.push({
+              oldSuk: item.originalId,
+              newSuk: item.id
+            })
+          }
+        }
+      },
       openPopUp() {
-        if(this.levelList.length > 0) {
+        if (this.levelList.length > 0) {
           this.$refs.level.open("bottom")
         } else {
           uni.showToast({
@@ -157,7 +189,7 @@
             title: "无等级可替换"
           })
         }
-        
+
       },
       computePriceAndShopping() {
         // 先清空
@@ -223,7 +255,7 @@
               })
             })
             this.levelList = list
-            
+
           }
         })
       },
@@ -232,9 +264,9 @@
         let params = {
           projectId: this.msg.projectId,
           type: this.msg.serviceType
-        } 
+        }
         console.log()
-        if(!this.partpay) {
+        if (!this.partpay) {
           params.obtainType = this.msg.obtainType
         }
         sellList(params).then(data => {
@@ -289,6 +321,7 @@
               if (it.inServiceArea && !it.selling) {
                 this.checkedIds.push(it.id)
               }
+              this.setSkuRelation(it)
             })
           })
         }
@@ -314,6 +347,8 @@
             }
           }
           this.checkedIds = arr
+
+          this.setSkuRelation(obj)
           this.computePriceAndShopping()
         })
       },
@@ -433,7 +468,7 @@
             }
           })
         })
-        
+
         this.close()
         this.computePriceAndShopping()
       },
