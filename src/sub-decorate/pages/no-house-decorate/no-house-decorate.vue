@@ -26,7 +26,7 @@
         </template>
       </service-card>
       <service-card v-if="sssType == 'checkHouse' && checkHouse.id" :setting="checkHouse" class="service-card"
-        @selectAnother="selectAnotherHandler('checkHouse')">
+        @selectAnother="selectAnotherHandler('checkHouse')" @setDoorTime="openDoorTimePopup">
         <template slot="check">
           <check-box :checked="checkHouse.checked" @change="(value)=> {change(checkHouse.cardtype, value)}">
           </check-box>
@@ -41,6 +41,9 @@
     <uni-popup ref="tips">
       <cancel-tip :tips="tips" @result="setCardChecked" @close="tipsClose"></cancel-tip>
     </uni-popup>
+    <uni-popup ref="doorTime">
+      <door-time-date @getTime="setDoorTime" @close="closeDoorTimePopup"></door-time-date>
+    </uni-popup>
   </view>
 </template>
 
@@ -51,10 +54,8 @@
   import DbjRadio from "../../components/dbj-radio/dbj-radio.vue";
   import MyCurrentHouse from "../../components/my-current-house/my-current-house.vue";
   import CancelTip from "./cancel-tip.vue"
+  import DoorTimeDate from "../../components/door-time-date/door-time-date.vue"
   import ChangeLevel from "../../components/change-level/change-level.vue"
-  // import {
-  //   LEVEL
-  // } from "../../../utils/dict.js"
   import {
     queryEstates,
     getServiceSku
@@ -83,6 +84,7 @@
       DbjRadio,
       MyCurrentHouse,
       CancelTip,
+      DoorTimeDate,
       ChangeLevel
     },
     data() {
@@ -208,6 +210,16 @@
       }
     },
     methods: {
+      setDoorTime(value) {
+        this.checkHouse.doorTime = value
+        this.checkHouse = JSON.parse(JSON.stringify(this.checkHouse))
+      },
+      openDoorTimePopup() {
+        this.$refs.doorTime.open('bottom')
+      },
+      closeDoorTimePopup() {
+        this.$refs.doorTime.close()
+      },
       getType(num) {
         if (num == 1) {
           return "design"
@@ -260,7 +272,7 @@
           categoryTypeId: this.design.categoryTypeId,
           skuId: this.design.id
         }
-        if(this.design.categoryTypeId === 7) {
+        if (this.design.categoryTypeId === 7) {
           tmp.workerType = this.design.workerType
         }
         changeLevel(tmp).then(data => {
@@ -486,7 +498,7 @@
               storeId: this.checkHouse.storeId || 0, //"long //店铺id",
               storeType: 0, //"int //店铺类型 0普通 1设计师",
               number: this.currentHouse.insideArea, //"double //购买数量",
-              params: "", //string //与订单无关的参数 如上门时间 doorTime"
+              params: {doorTime: this.checkHouse.doorTime}, //string //与订单无关的参数 如上门时间 doorTime"
             })
           }
           this.createOrder(params)
