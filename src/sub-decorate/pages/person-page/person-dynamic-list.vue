@@ -14,9 +14,6 @@
     components:{
       decorateDynamic,
     },
-    props:{
-      personId:0
-    },
     data(){
       return{
         dynamics:[],
@@ -24,8 +21,12 @@
         pageInfo:{
           page:1,
           totalPage:0
-        }
+        },
+        personId:0
       }
+    },
+    onLoad(e){
+      this.personId = e.personId
     },
     mounted(){
       this.requestDynamic()
@@ -60,7 +61,7 @@
       requestDynamic(){
       	let params = 
       	 {
-      		projectId: 46,
+      		creatorId: this.personId,
       		userTypes: [2,3],
           page:this.pageInfo.page,
           rows:10

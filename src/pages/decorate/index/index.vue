@@ -573,7 +573,7 @@
         });
       },
       getMsgNum() {
-        if (this.currentProject.projectId) {
+        if (this.currentProject&&this.currentProject.projectId) {
           getMsgNum(this.currentProject.projectId).then(res => {
             this.msgNum = res.count
           })

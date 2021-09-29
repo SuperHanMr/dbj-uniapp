@@ -33,7 +33,7 @@
         </view>
         <view class="badge"  v-for="item of personData.personAllBadgeVO.skillBadges">
           <image :src="item.ico"></image>
-          <text>{{item.name}}·{{item.levelName}}</text>
+          <text>{{item.name}}{{item.level?'·'+item.levelName:''}}</text>
         </view>
       </view>
     </view>

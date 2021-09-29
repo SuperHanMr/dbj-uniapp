@@ -6,7 +6,7 @@
       <image></image>
     </view>
     <view class="nav-header" :style="[navStyle]">
-      <view class="item">
+      <view class="item" @click="back">
         <image class="header-back"></image>
       </view>
       <view class="item nav-header-msg">
@@ -64,6 +64,10 @@
           </view>
         </view>
         <personIntroduce :personData='personData'></personIntroduce>
+        <view class="send-msg">
+          <image src="" mode=""></image>
+          发消息
+        </view>
       </view>
       <view class="person-interact" :class="{'person-interact-active':interactActive === interact}">
         <view class="sticky">
@@ -78,10 +82,10 @@
         </view>
       </view>
       <view class="content">
-        <personService v-if="personData.roleId===1||personData.roleId===6" :serviceData='serviceData'></personService>
-        <personCase :personId='personId' class="person-case" v-if="personData.roleId===1||personData.roleId===2||personData.roleId===6"></personCase>
-        <personDynamic :personId='personId' class="person-dynamic" v-if="personData.roleId===3||personData.roleId===4||personData.roleId===5"></personDynamic>
-        <personEvaluate :personId='personId' class="person-evaluate" @getEvaluate='getEvaluate'></personEvaluate>
+        <personService ref='service' v-if="personData.roleId===1||personData.roleId===6" :serviceData='serviceData'></personService>
+        <personCase ref='case' :personId='personId' class="person-case" v-if="personData.roleId===1||personData.roleId===2||personData.roleId===6"></personCase>
+        <personDynamic ref='dynamic' :personId='personId' class="person-dynamic" v-if="personData.roleId===3||personData.roleId===4||personData.roleId===5"></personDynamic>
+        <personEvaluate ref='evaluate' :personId='personId' class="person-evaluate" @getEvaluate='getEvaluate'></personEvaluate>
       </view>
     </view>
   </view>
@@ -134,11 +138,16 @@
       }
     },
     onPullDownRefresh() {
-      this.init()
+      this.init();
+      this.$refs.case.getList()
+      this.$refs.case.cleanPage()
+      this.$refs.dynamic.requestDynamic()
+      this.$refs.evaluate.getComments()
+      
     },
     onLoad(e){
-      this.personId = e.personId||6820
-      this.getGrabDetail()
+      this.personId = e.personId||6921
+      // this.getGrabDetail()
     },
     mounted() {
       // this.getCaseList()
@@ -171,6 +180,7 @@
         this.getNodeHeight()
         this.getTopDistance()
         this.getGrabDetail()
+        
       },
       getAttention(routeId,type){
         let data = {
@@ -197,9 +207,10 @@
       getGrabDetail(){
         getGrabDetail(this.personId).then(res=>{
           this.personData = res
-          this.personData.roleId = 3
+          // this.personData.roleId = 3
           this.getAttention(1001,'isAttention')
           this.getAttention(2001,'isRecommend')
+          
         })
       },
       // getCaseList() {
@@ -309,7 +320,22 @@
     border-radius: 32rpx 32rpx 0px 0px;
     box-shadow: 0px 26rpx 34rpx 0px rgba(3, 65, 63, 0.03);
     padding: 226rpx 32rpx 0;
-
+    .send-msg{
+      height: 104rpx;
+      background: rgba(0, 191, 182, 0.07);
+      border-radius: 16px;
+      border: 1px solid rgba(0, 191, 182, 0.2);
+      text-align: center;
+      line-height: 104rpx;
+      color: #00BFB6;
+      font-size: 28rpx;
+      font-weight: 500;
+      image{
+        width: 28rpx;
+        height: 28rpx;
+        margin-right: 16rpx;
+      }
+    }
     .person-msg-top {
       border-bottom: 1px solid #F3F3F3;
     }
