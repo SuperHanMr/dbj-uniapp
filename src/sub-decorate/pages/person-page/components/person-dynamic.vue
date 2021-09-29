@@ -1,7 +1,10 @@
 <template>
   <view class="person-dynamic person-content-item">
     <view class="title">Ta的动态</view>
-    <decorateDynamic :dynamics='dynamics' :isPerson='true' @likeC='likeC' @commentC='commentC'></decorateDynamic>
+    <decorateDynamic v-if="dynamics.length>0" :dynamics='dynamics' :personId='personId' :isPerson='true' @likeC='likeC' @commentC='commentC'></decorateDynamic>
+    <view class="empty" v-else>
+      暂无动态
+    </view>
     <view class="click-text" v-if="totalPage>1" @click="toAllDynamics">查看全部动态</view>
   </view>
 </template>
@@ -57,13 +60,13 @@
       commentC(){},
       toAllDynamics(){
         uni.navigateTo({
-          url:'/sub-decorate/pages/person-page/person-dynamic-list'
+          url:'/sub-decorate/pages/person-page/person-dynamic-list?personId='+this.personId
         })
       },
       requestDynamic(){
       	let params = 
       	 {
-      		prjectId: 46,
+      		creatorId: this.personId,
       		userTypes: [2,3],
           page:1,
           rows:4

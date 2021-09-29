@@ -2,7 +2,7 @@
   <view class="process-cost">
     <view class="artificial" v-if="msg.obtainType != 2">
       <view class="title">
-        <view>人工费用（{{LEVEL[artificialLevel - 1].label }}）</view>
+        <view>人工费用（{{levelList.length > 0 ? LEVEL[artificialLevel - 1].label : (dataOrigin.artificial.grade || "无等级")}}）</view>
         <view class="change-level" @click="openPopUp">更换等级</view>
       </view>
       <view class="process-cost-list">
@@ -68,6 +68,7 @@
         this.msg = {
           ...option
         }
+        this.partpay = partpay
       } else {
         this.msg = getApp().globalData.decorateMsg
       }
@@ -80,6 +81,7 @@
     },
     data() {
       return {
+        partpay: null,
         msg: {},
         dataOrigin: {},
         checkedIds: [],
@@ -92,13 +94,13 @@
         artificialLevel: 1,
         curr_artificial_categoryId: null,
         levelList: [],
-        workerLevelSkuMapping: {},
+        workerLevelSkuMapping: [],
         containerBottom: null,
         systemBottom: null,
         systemHeight: null,
         noData: false,
         message: null,
-        skuRelation: [] // 精算单更换商品  新旧商品id对照表
+        skuRelation: [], // 精算单更换商品  新旧商品id对照表
       }
     },
     mounted() {
@@ -147,8 +149,15 @@
         this.computePriceAndShopping()
       },
       openPopUp() {
-        // this.curr_artificial_categoryId
-        this.$refs.level.open("bottom")
+        if(this.levelList.length > 0) {
+          this.$refs.level.open("bottom")
+        } else {
+          uni.showToast({
+            icon: "none",
+            title: "无等级可替换"
+          })
+        }
+        
       },
       computePriceAndShopping() {
         // 先清空
@@ -196,29 +205,39 @@
             data[0].changeLevelDetailList.forEach(itm => {
               list.push({
                 value: itm.level,
-                label: itm.levelName,
-                // price: null,
+                label: itm.levelName
               })
             })
             data.forEach(workerSku => {
               // 储存所有工人对应的等级列表和溢价价格
-              this.workerLevelSkuMapping[workerSku.skuId] = workerSku.changeLevelDetailList
+              workerSku.changeLevelDetailList.forEach(levelItem => {
+                this.workerLevelSkuMapping.push({
+                  ...levelItem,
+                  skuId: workerSku.skuId
+                })
+              })
+
               workerSku.changeLevelDetailList.forEach(itm => {
                 let level = list.filter(l => l.value = itm.level)[0]
                 level.totalPrice += itm.totalPrice / 100
               })
             })
             this.levelList = list
+            
           }
         })
       },
       getDataList() {
         this.noData = false
-        sellList({
+        let params = {
           projectId: this.msg.projectId,
-          type: this.msg.serviceType,
-          obtainType: this.msg.obtainType
-        }).then(data => {
+          type: this.msg.serviceType
+        } 
+        console.log()
+        if(!this.partpay) {
+          params.obtainType = this.msg.obtainType
+        }
+        sellList(params).then(data => {
           this.dataOrigin = data
           if (this.dataOrigin?.artificial?.categoryList?.length > 0) {
             let cllist = []
@@ -405,11 +424,18 @@
       },
       setLevel(levelObj) {
         this.artificialLevel = levelObj.value
-        this.dataOrigin?.artificial?.categoryList
-        this.workerLevelSkuMapping.forEach(item => {
-          
+
+        this.dataOrigin?.artificial?.categoryList?.forEach(category => {
+          category.itemList.forEach(item => {
+            let temp = this.workerLevelSkuMapping.filter(t => t.skuId === item.id && levelObj.value === t.level)
+            if (temp?.length > 0) {
+              item.price = temp[0].price
+            }
+          })
         })
+        
         this.close()
+        this.computePriceAndShopping()
       },
       close() {
         this.$refs.level.close()

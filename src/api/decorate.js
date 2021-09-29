@@ -252,8 +252,17 @@ export function goodsApply(params) {
 
 // 获取工序费用
 export function sellList(params) {
-	return request.get(`/pm/app/actuary/sell/list/${params.projectId}/${params.type}/${params.obtainType}`)
+  if(params.obtainType) {
+    return request.get(`/pm/app/actuary/sell/list/${params.projectId}/${params.type}/${params.obtainType}`)
+  }
+	return request.get(`/pm/app/actuary/sell/list/${params.projectId}/${params.type}`)
 }
+
+// //部分购买全部购买
+// export function sellList(params) {
+// 	return request.get(`/pm/app/actuary/sell/list/${params.projectId}/${params.type}/`)
+// }
+
 //c端APP-仓库-待收货-确认收货
 export function confirmGoods(params) {
 	return request.put("/order-center/app/goods/stock/confirm/goods", params)
