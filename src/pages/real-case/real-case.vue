@@ -88,7 +88,6 @@
 			}
 			obj1.a = 20;
 			obj1.b.c = 100;
-			console.log(obj, obj1, "aaaaaaaaaaaa");
 			this.getList();
 		},
 		// // 触底触发
@@ -147,7 +146,6 @@
 			},
 			// 组件点击事件
 			onClick(index, tag) {
-				console.log(index, tag);
 				this.tag = tag;
 				// 对应的数据
 				if (tag == "0") {
@@ -160,7 +158,6 @@
 			// 收藏事件
 			onCollection(index, tag) {
 				const item = this.leftList[index];
-				console.log(this.leftList[index],index, tag, "收藏");
 				let list = [];
 				if (tag == 0) {
 					list = this.leftList;
@@ -168,19 +165,17 @@
 					list = this.rightList;
 				}
 				getCollection({
-					bizType: 0, // 固定内容
+					routeId: 5001, // 固定内容
 					subBizType: item.parentType, // 内容下的子项   视频 VR  图片
 					relationId: item.id, // 作品ID
 					authorId: item.zeusId, // 作者ID
 				}).then((res) => {
-					console.log(res, '>>>>>>>>>>>>>')
 					if (list[index].isCollection == false) {
 						list[index].collectionCount += 1;
 					} else {
 						list[index].collectionCount -= 1;
 					}
 					list[index].isCollection = !list[index].isCollection;
-					console.log(this.leftList[index], 'asdsada')
 				});
 			},
 			// 获取数据
