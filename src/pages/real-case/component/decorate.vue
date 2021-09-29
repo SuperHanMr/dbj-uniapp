@@ -8,7 +8,6 @@
 					:params="item" 
 					tag="left"
 					:index="index"
-					@height="onHeight"
 					@click="onClick(index, '1')"
 				></waterfall>
 			</view>
@@ -17,7 +16,6 @@
 					v-for="(item,index) in rightList" 
 					:key="index" 
 					:params="item" 
-					@height="onHeight"
 					@click="onClick(index, '1')"
 					tag="right"
 					:index="index"

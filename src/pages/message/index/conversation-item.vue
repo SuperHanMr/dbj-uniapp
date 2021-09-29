@@ -52,7 +52,7 @@
           return this.conversation.userProfile.nick || this.conversation.userProfile.userID;
         }
         if (this.conversation.type === TIM.TYPES.CONV_GROUP) {
-          return this.conversation.groupDB.name || this.conversation.groupProfile.introduction || this.conversation.groupProfile.groupID;
+          return (this.conversation.groupDB || {}).name || this.conversation.groupProfile.introduction || this.conversation.groupProfile.groupID;
         }
         return this.toAccount;
       },

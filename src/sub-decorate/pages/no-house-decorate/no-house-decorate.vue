@@ -26,7 +26,7 @@
         </template>
       </service-card>
       <service-card v-if="sssType == 'checkHouse' && checkHouse.id" :setting="checkHouse" class="service-card"
-        @selectAnother="selectAnotherHandler('checkHouse')">
+        @selectAnother="selectAnotherHandler('checkHouse')" @setDoorTime="openDoorTimePopup">
         <template slot="check">
           <check-box :checked="checkHouse.checked" @change="(value)=> {change(checkHouse.cardtype, value)}">
           </check-box>
@@ -41,6 +41,9 @@
     <uni-popup ref="tips">
       <cancel-tip :tips="tips" @result="setCardChecked" @close="tipsClose"></cancel-tip>
     </uni-popup>
+    <uni-popup ref="doorTime">
+      <door-time-date @getTime="setDoorTime" @close="closeDoorTimePopup"></door-time-date>
+    </uni-popup>
   </view>
 </template>
 
@@ -51,10 +54,8 @@
   import DbjRadio from "../../components/dbj-radio/dbj-radio.vue";
   import MyCurrentHouse from "../../components/my-current-house/my-current-house.vue";
   import CancelTip from "./cancel-tip.vue"
+  import DoorTimeDate from "../../components/door-time-date/door-time-date.vue"
   import ChangeLevel from "../../components/change-level/change-level.vue"
-  // import {
-  //   LEVEL
-  // } from "../../../utils/dict.js"
   import {
     queryEstates,
     getServiceSku
@@ -83,6 +84,7 @@
       DbjRadio,
       MyCurrentHouse,
       CancelTip,
+      DoorTimeDate,
       ChangeLevel
     },
     data() {
@@ -110,7 +112,8 @@
         provinceId: null, //省id
         cityId: null, //市id
         areaId: null, //区id
-        levelList: []
+        levelList: [],
+        defaultHouse: {}
       }
     },
     computed: {
@@ -206,8 +209,19 @@
         this.currentHouse = this.selectHouseData
         this.getServiceSku()
       }
+      this.defaultHouse = JSON.parse(uni.getStorageSync("currentHouse"))
     },
     methods: {
+      setDoorTime(value) {
+        this.checkHouse.doorTime = value
+        this.checkHouse = JSON.parse(JSON.stringify(this.checkHouse))
+      },
+      openDoorTimePopup() {
+        this.$refs.doorTime.open('bottom')
+      },
+      closeDoorTimePopup() {
+        this.$refs.doorTime.close()
+      },
       getType(num) {
         if (num == 1) {
           return "design"
@@ -254,13 +268,13 @@
       },
       changeLevel() {
         let tmp = {
-          cityId: this.currentHouse.cityId || defaultHouse.cityId,
+          cityId: this.currentHouse.cityId || this.defaultHouse.cityId,
           price: this.design.price,
           count: 1,
           categoryTypeId: this.design.categoryTypeId,
           skuId: this.design.id
         }
-        if(this.design.categoryTypeId === 7) {
+        if (this.design.categoryTypeId === 7) {
           tmp.workerType = this.design.workerType
         }
         changeLevel(tmp).then(data => {
@@ -275,12 +289,10 @@
         })
       },
       getServiceSku() {
-        let defaultHouse = JSON.parse(uni.getStorageSync("currentHouse"))
-        // console.log("defaultHouse", defaultHouse)
         let params = {
-          province_id: this.currentHouse.provinceId || defaultHouse.provinceId,
-          city_id: this.currentHouse.cityId || defaultHouse.cityId,
-          area_id: this.currentHouse.areaId || defaultHouse.areaId,
+          province_id: this.currentHouse.provinceId || this.defaultHouse.provinceId,
+          city_id: this.currentHouse.cityId || this.defaultHouse.cityId,
+          area_id: this.currentHouse.areaId || this.defaultHouse.areaId,
           // serveTypes: [1, 2, 4]
         }
         if (this.sssType == "checkHouse") {
@@ -370,7 +382,7 @@
 
       selectAnotherHandler(pp) {
         let str = ""
-        let areaId = this.currentHouse.areaId || defaultHouse.areaId
+        let areaId = this.currentHouse.areaId || this.defaultHouse.areaId
         if (pp === "design") {
           str =
             `/sub-decorate/pages/service-list/service-list?name=设计服务&serviceType=1&areaId=${areaId}&insideArea=${this.currentHouse.insideArea}&spuId=${this.design.spuId}&categoryId=${this.design.category4Id}&unitId=${this.design.unitId}`
@@ -486,7 +498,7 @@
               storeId: this.checkHouse.storeId || 0, //"long //店铺id",
               storeType: 0, //"int //店铺类型 0普通 1设计师",
               number: this.currentHouse.insideArea, //"double //购买数量",
-              params: "", //string //与订单无关的参数 如上门时间 doorTime"
+              params: {doorTime: this.checkHouse.doorTime}, //string //与订单无关的参数 如上门时间 doorTime"
             })
           }
           this.createOrder(params)

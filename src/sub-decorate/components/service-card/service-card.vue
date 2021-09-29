@@ -18,6 +18,11 @@
       </view>
     </view>
     <server-content :content="setting" @selectAnother="selectAnother"></server-content>
+    <view class="door-time-wrap" v-if="setting.serviceType == 2">
+      <view class="door-time"><text class="label">选择期望上门时间</text><text class="value">{{setting.doorTime}}</text>
+      </view>
+      <image @click="selectDoorTime" src="http://dbj.dragonn.top/static/mp/dabanjia/images/decorate/arrow-r-gr.svg" class="change-img"></image>
+    </view>
   </view>
 </template>
 
@@ -47,6 +52,9 @@
       },
       changeLevel() {
         this.$emit("changeLevel")
+      },
+      selectDoorTime() {
+        this.$emit("setDoorTime")
       }
     },
     filters: {
@@ -146,6 +154,44 @@
         width: 8rpx;
         height: 13rpx;
       }
+    }
+  }
+
+  .door-time-wrap {
+    margin: 32rpx 0 0 56rpx;
+    padding: 32rpx 0;
+    border-top: 2rpx solid #efefef;
+    display: flex;
+    justify-content: space-between;
+    flex-direction: row;
+    align-items: center;
+
+    .door-time {
+      .label {
+        height: 40rpx;
+        font-size: 28rpx;
+        font-family: PingFangSC, PingFangSC-Regular;
+        font-weight: 400;
+        text-align: left;
+        color: #333333;
+        line-height: 40rpx;
+      }
+
+      .value {
+        height: 32rpx;
+        font-size: 22rpx;
+        font-family: PingFangSC, PingFangSC-Regular;
+        font-weight: 400;
+        text-align: right;
+        color: #333;
+        line-height: 32rpx;
+        padding-left: 20rpx;
+      }
+    }
+
+    image {
+      width: 24rpx;
+      height: 24rpx;
     }
   }
 </style>

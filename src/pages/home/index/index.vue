@@ -213,7 +213,6 @@
 			token() {
 				this.getHomeList();
 			},
-
 		},
 		onLoad() {
 			uni.getSystemInfo({
@@ -244,7 +243,8 @@
 			uni.$once("selectedHouse", (item) => {
 				this.citydata = item.cityName + item.areaName + item.housingEstate;
 				this.areaId = item.areaId;
-				uni.setStorageSync("currentHouse", JSON.stringify(item));
+				this.currentHouseChange(item)
+				// uni.setStorageSync("currentHouse", JSON.stringify(item));
 			});
 			this.token = getApp().globalData.token;
 			this.swiperAuto = true;
@@ -258,6 +258,12 @@
 			this.getHomeGoodsList();
 		},
 		methods: {
+			currentHouseChange(item) {
+				uni.$emit('currentHouseChange', item);
+				getApp().globalData.currentHouse = item;
+				// uni.setStorageSync("currentHouse", JSON.stringify(defaultHouse));
+
+			},
 			toSearch() {
 				uni.navigateTo({
 					url: '../../../sub-classify/pages/search/index'
@@ -292,7 +298,7 @@
 				if (item.mediaType == 1) {
 					//直播
 					uni.navigateTo({
-						url:`../../../sub-home/pages/lives-room/lives-room?livePreview=${item.roomLiveMediaVO.livePreview}&roomId=${item.roomLiveMediaVO.roomId}`
+						url: `../../../sub-home/pages/lives-room/lives-room?livePreview=${item.roomLiveMediaVO.livePreview}&roomId=${item.roomLiveMediaVO.roomId}`
 					})
 				} else if (item.mediaType == 2) {
 					console.log(item);
@@ -390,7 +396,8 @@
 							areaId: 41,
 						};
 						that.areaId = 41;
-						uni.setStorageSync("currentHouse", JSON.stringify(defaultHouse));
+						that.currentHouseChange(defaultHouse);
+						// uni.setStorageSync("currentHouse", JSON.stringify(defaultHouse));
 						that.citydata = defaultHouse.name;
 						// 拒绝授权
 						that.openConfirm();
@@ -434,7 +441,8 @@
 							areaId: 41,
 						};
 						vm.areaId = 41;
-						uni.setStorageSync("currentHouse", JSON.stringify(defaultHouse));
+						vm.currentHouseChange(defaultHouse)
+						// uni.setStorageSync("currentHouse", JSON.stringify(defaultHouse));
 						vm.citydata = defaultHouse.name;
 					},
 				});
@@ -442,7 +450,8 @@
 			async getAreaId(adcode) {
 				let areaInfo = await getAdcodeFromAreaId(adcode);
 				this.citydata = areaInfo.name;
-				uni.setStorageSync("currentHouse", JSON.stringify(areaInfo));
+				this.currentHouseChange(areaInfo)
+				// uni.setStorageSync("currentHouse", JSON.stringify(areaInfo));
 			},
 			// 再次获取授权
 			// 当用户第一次拒绝后再次请求授权
@@ -508,7 +517,8 @@
 						house = houseList[0];
 					}
 					if (house) {
-						uni.setStorageSync("currentHouse", JSON.stringify(house));
+						this.currentHouseChange(house)
+						// uni.setStorageSync("currentHouse", JSON.stringify(house));
 						this.areaId = house.areaId;
 						this.citydata = house.cityName + house.areaName;
 					}

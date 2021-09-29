@@ -117,7 +117,21 @@
       				this.pagState.totalRows = res.totalRows;
       			}
       		})
- 
+      },
+      cleanPage(){
+        this.pagState = {
+          // 是否可以加载
+          load: true,
+          // 加载中提示文字
+          loadTxt: "",
+          // 每页的请求条件
+          rows: 10,
+          // 页码
+          page: 1,
+          totalPage: '',
+          totalRows: '',
+          end: "",
+        }
       },
       addList(res) {
       	// 获取到的数据，请注意数据结构

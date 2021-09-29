@@ -2,11 +2,18 @@
   <view class="container">
 
     <!-- 退款详情 --退款关闭   退款取消与商家拒接 两个页面-->
-    <view  class="order-container"  v-if="type =='refund'" :style="{paddingBottom:containerPaddingBottom}">
+    <view
+      class="order-container"
+      v-if="type =='refund'"
+      :style="{paddingBottom:containerPaddingBottom}"
+    >
       <view class="order-status">
         <view class="backgroundStyle" />
         <view class="status">
-          <image src="@/static/order/ic_order_failed@2x.png" mode=""/>
+          <image
+            src="@/static/order/ic_order_failed@2x.png"
+            mode=""
+          />
           <text v-if="status == 3 || status == 4">退款关闭</text>
           <text v-if="status == 5">退款失败</text>
         </view>
@@ -14,29 +21,55 @@
       </view>
 
       <view class="order-header">
-        <image v-if="status == 5 " src="../../../static/ic_order_refund_failed@2x.png" mode=""/>
-        <image v-else src="@/static/order/ic_failed@2x.png" mode="" />
-        <view v-if="status == 3" class="cancel-text">
+        <image
+          v-if="status == 5 "
+          src="../../../static/ic_order_refund_failed@2x.png"
+          mode=""
+        />
+        <image
+          v-else
+          src="@/static/order/ic_failed@2x.png"
+          mode=""
+        />
+        <view
+          v-if="status == 3"
+          class="cancel-text"
+        >
           商家拒绝了您的申请，如有问题未解决，您可以重新申请
         </view>
-        <view  v-if="status == 4" class="cancel-text">
+        <view
+          v-if="status == 4"
+          class="cancel-text"
+        >
           您已取消了本次退款，如有问题未解决，您可以重新申请
         </view>
-        <view v-if="status == 5" class="cancel-text failed-text" >
+        <view
+          v-if="status == 5"
+          class="cancel-text failed-text"
+        >
           您的退款账户存在异常，您可联系客服或者重新发起申请
         </view>
       </view>
-			
-      <view class="body1" v-for="item in refundInfo.detailAppVOS"
-        :key="item.id">
+
+      <view
+        class="body1"
+        v-for="item in refundInfo.detailAppVOS"
+        :key="item.id"
+      >
         <order-item
           :dataList="item"
           :refundType="true"
           @handleDetail="productDetail(item,'refund')"
         />
-        <view class="refund-money" v-if="item.freight || item.handlingFees">
+        <view
+          class="refund-money"
+          v-if="item.freight || item.handlingFees"
+        >
           <!--运费 -->
-          <view class="price-item" v-if="item.freight">
+          <view
+            class="price-item"
+            v-if="item.freight"
+          >
             <view class="title">
               <text style="margin-right: 8rpx;">运费</text>
               <text class="icon">?</text>
@@ -48,68 +81,99 @@
           </view>
 
           <!-- 搬运费 -->
-          <view class="price-item" v-if="item.handlingFees">
-              <view class="title">
-                <text style="margin-right: 8rpx;">搬运费</text>
-                <text class="icon">?</text>
-              </view>
-              <view>
-                <text>￥</text>
-                <text class="price-style">{{handlePrice(item.handlingFees)[0]}}.{{handlePrice(item.handlingFees)[1]}}</text>
-              </view>
+          <view
+            class="price-item"
+            v-if="item.handlingFees"
+          >
+            <view class="title">
+              <text style="margin-right: 8rpx;">搬运费</text>
+              <text class="icon">?</text>
+            </view>
+            <view>
+              <text>￥</text>
+              <text class="price-style">{{handlePrice(item.handlingFees)[0]}}.{{handlePrice(item.handlingFees)[1]}}</text>
+            </view>
           </view>
         </view>
-			</view>
-				
-			<order-refund-info :refundInfo="refundInfo"></order-refund-info>
+      </view>
 
-			<view class="contact-customer-Reapply"  :style="{paddingBottom:systemBottom,height:systemHeight}">
-				<view
-					v-if="status == 3 || status == 5 "
-					class="contact-customer"
-					@click="contactCustomer()"
-				>
-					联系客服
-				</view>
-				<view
-					class="Reapply"
-					@click="toApplayForRefund(refundInfo)"
-				>
-					重新申请
-				</view>
-			</view>
-		</view>
-		
-			
-		<!-- 订单详情  已关闭页面 -->
-		<view  class="order-container"  v-if="type =='close'"  :style="{paddingBottom:systemBottom}">
-			<view class="order-status">
-				<view class="backgroundStyle" />
-				<view class="status">
-					<image src="@/static/order/ic_order_failed@2x.png" mode=""/>
-					<text>已关闭</text>
-				</view>
-			</view>
-			<order-user-base-info :data="orderInfo"></order-user-base-info>
-			<view class="body2" v-for="(item,index) in orderInfo.details" :key="index" >
-				<view class="header"  @click="gotoShop(item)">
-					<text>{{item.storeName}}</text>
-					<image src="@/static/order/ic_more@2x.png"  mode="" />
-				</view>
-				<view v-for="item2 in item.details" :key="item2.id">
-					<order-item :dataList="item2" @handleDetail="productDetail(item2)"  />
-				</view>
-			</view>
-			<order-price :data="orderInfo"  :waitPay="true" />
-			<order-info
-				:orderNo="orderInfo.orderNo"
-				:createTime="orderInfo.createTime"
-				:cancelTime="orderInfo.cancelTime"
-				:showCancelTime="true"
-			/>
-		</view>
-	
-	</view>
+      <order-refund-info :refundInfo="refundInfo"></order-refund-info>
+
+      <view
+        class="contact-customer-Reapply"
+        :style="{paddingBottom:systemBottom,height:systemHeight}"
+      >
+        <view
+          v-if="status == 3 || status == 5 "
+          class="contact-customer"
+          @click="contactCustomer()"
+        >
+          联系客服
+        </view>
+        <view
+          class="Reapply"
+          @click="toApplayForRefund(refundInfo)"
+        >
+          重新申请
+        </view>
+      </view>
+    </view>
+
+    <!-- 订单详情  已关闭页面 -->
+    <view
+      class="order-container"
+      v-if="type =='close'"
+      :style="{paddingBottom:systemBottom}"
+    >
+      <view class="order-status">
+        <view class="backgroundStyle" />
+        <view class="status">
+          <image
+            src="@/static/order/ic_order_failed@2x.png"
+            mode=""
+          />
+          <text>已关闭</text>
+        </view>
+      </view>
+      <order-user-base-info :data="orderInfo"></order-user-base-info>
+      <view
+        class="body2"
+        v-for="(item,index) in orderInfo.details"
+        :key="index"
+      >
+        <view
+          class="header"
+          @click="gotoShop(item)"
+        >
+          <text>{{item.storeName}}</text>
+          <image
+            src="@/static/order/ic_more@2x.png"
+            mode=""
+          />
+        </view>
+        <view
+          v-for="item2 in item.details"
+          :key="item2.id"
+        >
+          <order-item
+            :dataList="item2"
+            @handleDetail="productDetail(item2)"
+          />
+        </view>
+      </view>
+      <order-price
+        :data="orderInfo"
+        :waitPay="true"
+      />
+      <order-info
+        :orderNo="orderInfo.orderNo"
+        :createTime="orderInfo.createTime"
+        :cancelTime="orderInfo.cancelTime"
+        :showCancelTime="true"
+      />
+    </view>
+
+  </view>
 </template>
 
 <script>
@@ -327,7 +391,7 @@ export default {
       border-radius: 24rpx;
       margin-bottom: 16rpx;
       .refund-money {
-				padding-bottom: 32rpx;
+        padding-bottom: 32rpx;
         .price-item {
           display: flex;
           flex-flow: row nowrap;

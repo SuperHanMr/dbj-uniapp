@@ -50,17 +50,19 @@
             title: "已提交申请",
             icon: null
           })
+          
+          uni.navigateBack({})
         })
       },
       onInput(e) {
         this.reason = e.target.value
       }
     },
-    watch: {
-      reason(val) {
-        console.log(val)
-      }
-    }
+    // watch: {
+    //   reason(val) {
+    //     console.log(val)
+    //   }
+    // }
   }
 </script>
 
