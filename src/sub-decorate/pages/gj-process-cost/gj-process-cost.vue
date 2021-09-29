@@ -160,13 +160,15 @@
             flgArr[0].newSuk = item.id
           } else {
             let index = null
-            for (let i = 0; i<this.skuRelation.length > 0; i++) {
-              if(this.skuRelation[i].originalId == item.originalId) {
+            for (let i = 0; i < this.skuRelation.length > 0; i++) {
+              if (this.skuRelation[i].originalId == item.originalId) {
                 index = i
                 break
               }
             }
-            this.skuRelation.splice(index, 1)
+            if (index) {
+              this.skuRelation.splice(index, 1)
+            }
           }
           // 如果是已经存在了新旧id对应关系，则替换新的id
           flgArr[0].newSuk = item.id
