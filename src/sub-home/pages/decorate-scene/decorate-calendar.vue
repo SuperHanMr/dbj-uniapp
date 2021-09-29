@@ -61,14 +61,14 @@
 		data() {
 			return {
 				signeddates: [],
-				projectId: 89,
+				projectId: 0,
 				dynamics: [],
 				dynamicPage: 1,
 				date: ""//选中日期
 			};
 		},
 		onLoad(option) {
-			// this.projectId = option.projectId 
+			this.projectId = option.projectId 
 		},
 		onReachBottom() {
 			if(!this.date)return

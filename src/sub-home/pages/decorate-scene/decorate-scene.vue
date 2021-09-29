@@ -142,6 +142,7 @@
 			<view class="noDynamics" v-if="!dynamics.length">
 				<image class="noDynamicsImg" src="http://dbj.dragonn.top/static/mp/dabanjia/images/decorate/pic_empty%402x.png"></image>
 				<view class="text">暂无装修动态</view>
+				<view class="bottom"></view>
 			</view>
       <view class="list" v-else>
         <view
@@ -468,7 +469,7 @@ export default {
 		this.dynamicPage+=1;
 		this.selectedType?this.requestDynamic(this.selectedType):this.requestDynamic();
 	},
-  created() {
+  mounted() {
     this.requestDecorateSteps();
     this.requestDynamic();
   },
@@ -1488,6 +1489,10 @@ export default {
 		font-size: 26rpx;
 		color: #999999;
 		margin: 24rpx 298rpx;
+	}
+	.noDynamics .bottom{
+		width: 750rpx;
+		height: 186rpx;
 	}
 	.list {
 		width: 100%;
