@@ -1,17 +1,34 @@
 <template>
   <view class="my-container">
     <custom-navbar opacity="0"  :showBack="true" ></custom-navbar>
-    <view
-      v-if="userInfo && userInfo.avatar"
-      class="backgroundStyle"
-      :style="{backgroundImage:userInfo.avatar?`url(${userInfo.avatar})`:url(),backgroundSize: 'cover'}"
-    >
-      <view class="mask" />
+    <view v-if="!userId" 
+			class="backgroundStyle" 
+			style="background-image: url(https://ali-image.dabanjia.com/image/20210513/10/162087290165628.png);background-size: cover;">
+      <view class="mask" >
+				<view class="linearStyle" />
+			</view>
     </view>
-    <view v-else  class="backgroundStyle"  style="backgroundColor:#cac8c8;"/>
+		<view  v-else class="backgroundStyle"  :style="{backgroundImage:userInfo.avatar?`url(${userInfo.avatar})`:url(),backgroundSize: 'cover'}">
+		  <view class="mask">
+				<view class="linearStyle"  />
+			</view>
+		</view>
 		
-    <view class="my-header">
-      <view class="avatar-img">
+    <view class="my-header" >
+			<view class="avatar-img" v-if="!userId" @click="handlerPersonalData()">
+				<image src="https://ali-image.dabanjia.com/image/20210513/10/162087290165628.png" class="avatar" />
+			  <view class="user-name">
+					<view class="name"  @click="toLogin" >
+						<text class="name">
+							{{userName}}
+						</text>
+						<image src="../../../static/order/images/icon_to_login.png" mode=""></image>
+					 </view>
+					
+			  </view>
+			</view>
+			
+      <view class="avatar-img" v-else>
 				<image :src="userInfo.avatar" class="avatar" />
         <view class="user-name">
           <text class="name"  @click="toLogin" >{{userName}} </text>
@@ -21,6 +38,7 @@
           </view>
         </view>
       </view>
+			
       <view  class="set-up" @click="handleSetUp">
         <image src="../../../static/order/images/setting@2x.png" mode="" />
       </view>
@@ -84,6 +102,7 @@ export default {
       isLogin: false,
       userName: "用户名称",
       userInfo: {},
+			userId:"",
 			list: [
         {
           key: "1",
@@ -146,7 +165,8 @@ export default {
   },
 
   onShow() {
-    if (!uni.getStorageSync("userId")) {
+		this.userId = uni.getStorageSync("userId")
+    if (!this.userId) {
       this.userName = "点击登录";
       this.isLogin = false;
       this.userInfo = null;
@@ -237,7 +257,7 @@ export default {
 		filter: blur(13rpx);
     width: 750rpx;
     z-index: -1;
-    height: 524rpx;
+    height: 490rpx;
     image {
       width: 100%;
     }
@@ -247,6 +267,15 @@ export default {
       opacity: 0.3;
       z-index: -1;
       background-color: #111;
+			position: relative;
+			.linearStyle{
+				width: 100%;
+				height: 22px;
+				bottom: 0;
+				left: 0;
+				position: absolute;
+				background-image: linear-gradient(rgba(246,246,246,0), rgba(246,246,246,1));
+			}
     }
   }
 
@@ -273,11 +302,20 @@ export default {
     }
     .user-name {
       .name {
+				display: flex;
+				flex-flow: row nowrap;
+				align-items: center;
         height: 44rpx;
         line-height: 44rpx;
         font-size: 36rpx;
         font-weight: 500;
         color: #ffffff;
+				image{
+					width: 24rpx;
+					height: 24rpx;
+					object-fit: cover;
+					margin-left: 8rpx;
+				}
       }
 			.edit-info {
         margin-top: 8rpx;
