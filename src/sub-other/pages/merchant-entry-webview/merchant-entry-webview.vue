@@ -1,7 +1,5 @@
 <template>
-	<view>
 		<web-view :src="url"></web-view>
-	</view>
 </template>
 
 <script>
@@ -11,8 +9,8 @@
 				url: ''
 			}
 		},
-		onLoad(url) {
-			this.url = url;
+		onLoad(props) {
+			this.url = props.url;
 		},
 		methods: {
 			
