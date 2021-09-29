@@ -33,12 +33,12 @@
 		data(){
 			return {
 				memos: [],
-				projectId: 2,
+				projectId: 0,
 				isNoMemo: false
 			}
 		},
 		onLoad(option) {
-			// this.projectId = option.projectId
+			this.projectId = option.projectId
 		},
 		mounted() {
 			this.requestPage()

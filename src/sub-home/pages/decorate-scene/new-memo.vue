@@ -52,7 +52,7 @@
 			},
 			setMemo(){
 				let params = {
-					projectId: this.projectId,
+					projectId: +this.projectId,
 					content: this.value,
 					reminderList: this.reminderList,
 				}
