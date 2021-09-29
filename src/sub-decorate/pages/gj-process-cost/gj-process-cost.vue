@@ -68,6 +68,7 @@
         this.msg = {
           ...option
         }
+        this.partpay = partpay
       } else {
         this.msg = getApp().globalData.decorateMsg
       }
@@ -80,6 +81,7 @@
     },
     data() {
       return {
+        partpay: null,
         msg: {},
         dataOrigin: {},
         checkedIds: [],
@@ -227,11 +229,15 @@
       },
       getDataList() {
         this.noData = false
-        sellList({
+        let params = {
           projectId: this.msg.projectId,
-          type: this.msg.serviceType,
-          obtainType: this.msg.obtainType
-        }).then(data => {
+          type: this.msg.serviceType
+        } 
+        console.log()
+        if(!this.partpay) {
+          params.obtainType = this.msg.obtainType
+        }
+        sellList(params).then(data => {
           this.dataOrigin = data
           if (this.dataOrigin?.artificial?.categoryList?.length > 0) {
             let cllist = []
