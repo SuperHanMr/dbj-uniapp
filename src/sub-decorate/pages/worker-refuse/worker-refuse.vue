@@ -58,17 +58,18 @@
             title: "已提交申请",
             icon: false
           })
-          uni.navigateTo({
-            url: "/pages/decorate/index/index"
-          })
+          // uni.navigateTo({
+          //   url: "/pages/decorate/index/index"
+          // })
+          uni.navigateBack({})
         })
       }
     },
-    watch: {
-      reason(val) {
-        console.log(val)
-      }
-    }
+    // watch: {
+    //   reason(val) {
+    //     console.log(val)
+    //   }
+    // }
   }
 </script>
 
