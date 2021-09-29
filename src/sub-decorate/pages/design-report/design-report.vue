@@ -12,6 +12,7 @@
     </view>
     <view class="card flex-row-bet">
       <view class="t">颜值报告</view>
+      <!-- <view v-if="detail.">未生成颜值报告</view> -->
       <view class="lookDetail flex-row-start" @click="beatifulReport">
         <view>立即查看</view>
         <image src="http://dbj.dragonn.top/static/mp/dabanjia/images/decorate/ic_more.svg"></image>
@@ -56,8 +57,8 @@
             if (res.confirm) {
               console.log("点击了确认")
               confirmDesignReport(this.decorateMsg.serveId).then(data => {
-                uni.navigateTo({
-                  url: `/pages/decorate/index/index`
+                uni.navigateBack({
+                  
                 })
               })
             } else {

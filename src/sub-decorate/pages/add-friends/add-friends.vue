@@ -140,6 +140,7 @@ export default {
         phone: this.phone,
         relationType: Number(this.index) + 1,
         estateId: this.roomId,
+				customerId:getApp().globalData.userInfo.id
       })
         .then((e) => {
           uni.navigateBack({});

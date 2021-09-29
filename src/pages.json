@@ -107,6 +107,13 @@
 				"enablePullDownRefresh": false
 			}
 
+		}, {
+			"path": "pages/common/result-null/result-null",
+			"style": {
+				"navigationBarTitleText": "敬请期待",
+				"enablePullDownRefresh": false
+			}
+
 		}
 	],
 	"globalStyle": {
@@ -555,6 +562,13 @@
 					"path": "pages/merchant-entry-failed/merchant-entry-failed",
 					"style": {
 						"navigationBarTitleText": "提交成功",
+						"enablePullDownRefresh": false
+					}
+
+				}, {
+					"path": "pages/merchant-entry-webview/merchant-entry-webview",
+					"style": {
+						"navigationBarTitleText": "",
 						"enablePullDownRefresh": false
 					}
 
