@@ -565,6 +565,13 @@
 						"enablePullDownRefresh": false
 					}
 
+				}, {
+					"path": "pages/merchant-entry-webview/merchant-entry-webview",
+					"style": {
+						"navigationBarTitleText": "",
+						"enablePullDownRefresh": false
+					}
+
 				}
 			]
 		},

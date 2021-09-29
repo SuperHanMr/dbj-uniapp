@@ -372,22 +372,25 @@
 			},
 			toArguments(e) {
 				e.preventDefault();
+				uni.navigateTo({
+					url: '/sub-other/merchant-entry-webview/merchant-entry-webview?url=https://ali-res.dabanjia.com/res/20210929/14/163289590753573.pdf'
+				})
 				// uni.downloadFile({
 				// 	url: 'https://ali-res-test.dabanjia.com/res/20210928/21/1632834978647_0398%24%E8%A3%85%E4%BF%AE%E5%B9%B3%E5%8F%B02.0%E6%8E%92%E6%9C%9F%E8%AE%A1%E5%88%921.pdf', //仅为示例，并非真实的资源  
 				// 	success: (res) => {
 				// 		if (res.statusCode === 200) {
 				// 			console.log('下载成功');
-				uni.openDocument({
-					// filePath: res.tempFilePath,
-					filePath: 'https://ali-res.dabanjia.com/res/20210929/14/163289590753573.pdf',
-					fileType: 'pdf',
-					success: (res) => {
-						console.log(res, '>>>>>>>>>>>>>>')
-					},
-					fail: (res) => {
-						console.log(res, '>>>>>>>>>>>>')
-					}
-				})
+				// uni.openDocument({
+				// 	// filePath: res.tempFilePath,
+				// 	filePath: 'https://ali-res.dabanjia.com/res/20210929/14/163289590753573.pdf',
+				// 	fileType: 'pdf',
+				// 	success: (res) => {
+				// 		console.log(res, '>>>>>>>>>>>>>>')
+				// 	},
+				// 	fail: (res) => {
+				// 		console.log(res, '>>>>>>>>>>>>')
+				// 	}
+				// })
 				// 		}
 				// 	}
 				// })
