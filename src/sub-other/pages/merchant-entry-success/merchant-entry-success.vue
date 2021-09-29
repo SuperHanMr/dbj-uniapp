@@ -68,7 +68,7 @@
 	height: 100%;
 	background: #FFFFFF;
 	.head{
-		margin-top: 112rpx;
+		padding-top: 112rpx;
 		display: flex;
 		flex-direction: column;
 		justify-content: center;

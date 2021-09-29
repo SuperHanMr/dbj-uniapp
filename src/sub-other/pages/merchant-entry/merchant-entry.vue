@@ -68,12 +68,13 @@
 			</view>
 		</view>
 		<view class="bottom-fiexd">
-			
+
 		</view>
-		<view class="bottom" @click="topayHandler">
+		<view class="bottom">
 			<button type="default" class="get-phone" open-type="getPhoneNumber" @getphonenumber="decryptPhoneNumber"
 				v-if="showBottomButtom()"></button>
-				<image class="image-bottom" src="../../static/merchant-entry/merchant-entry-success.biaoqian.png" mode=""></image>
+			<image class="image-bottom" src="../../static/merchant-entry/merchant-entry-success.biaoqian.png" mode="">
+			</image>
 			<view class="pay-money" :class="showBottomButtom() ? '' : 'pay-money-no'">
 				<view class="money">
 					<text class="icon">￥</text>
@@ -86,7 +87,7 @@
 			</view>
 			<view class="argument">
 				<text>支付即视为同意</text>
-				<a href="">《打扮家商家入驻协议》</a>
+				<a href="" @click="toArguments($event)">《打扮家商家入驻协议》</a>
 			</view>
 		</view>
 		<uni-popup ref="popup" type="bottom">
@@ -273,7 +274,7 @@
 				}
 			},
 			// 删除公司名称
-			deleteCompanyName(){
+			deleteCompanyName() {
 				this.companyValue = '';
 			},
 			// 删除城市
@@ -356,9 +357,31 @@
 			// 公司名称
 			companyHandler(e) {
 				this.companyValue = e.detail.value;
+			},
+			toArguments(e) {
+				e.preventDefault();
+				// uni.downloadFile({
+				// 	url: 'https://ali-res-test.dabanjia.com/res/20210928/21/1632834978647_0398%24%E8%A3%85%E4%BF%AE%E5%B9%B3%E5%8F%B02.0%E6%8E%92%E6%9C%9F%E8%AE%A1%E5%88%921.pdf', //仅为示例，并非真实的资源  
+				// 	success: (res) => {
+				// 		if (res.statusCode === 200) {
+				// 			console.log('下载成功');
+							uni.openDocument({
+								// filePath: res.tempFilePath,
+								filePath: 'https://ali-res-test.dabanjia.com/res/20210928/21/1632834978647_0398%24%E8%A3%85%E4%BF%AE%E5%B9%B3%E5%8F%B02.0%E6%8E%92%E6%9C%9F%E8%AE%A1%E5%88%921.pdf',
+								fileType: 'pdf',
+								success: (res) => {
+									console.log(res, '>>>>>>>>>>>>>>')
+								},
+								fail: (res) => {
+									console.log(res, '>>>>>>>>>>>>')
+								}
+							})
+				// 		}
+				// 	}
+				// })
 			}
 		},
-	};
+	}
 </script>
 
 <style lang="scss" scoped>
@@ -382,6 +405,7 @@
 
 	.container {
 		padding: 24rpx;
+
 		.info {
 			padding-bottom: 1rpx;
 			background-repeat: no-repeat;
@@ -420,7 +444,6 @@
 					margin-bottom: 48rpx;
 					padding: 24rpx 0 24rpx 24rpx;
 					caret-color: #35C4C4
-					
 				}
 
 				image {
@@ -483,17 +506,20 @@
 			}
 		}
 	}
-	.bottom-fiexd{
+
+	.bottom-fiexd {
 		padding-bottom: 200rpx;
 	}
+
 	.bottom {
 		width: 100%;
-		
+
 		background: #FEFFFE;
 		position: fixed;
 		bottom: 0;
 		left: 0;
-		.image-bottom{
+
+		.image-bottom {
 			position: absolute;
 			width: 164rpx;
 			height: 62rpx;
@@ -501,6 +527,7 @@
 			left: 200rpx;
 			top: -30rpx;
 		}
+
 		.get-phone {
 			position: absolute;
 			width: 100%;
@@ -550,14 +577,14 @@
 		}
 
 		.argument {
-			margin-top: 16rpx;
+			margin: 16rpx 0 40rpx 0;
 			font-size: 11px;
 			font-family: PingFangSC-Regular, PingFang SC;
 			font-weight: 400;
 			display: flex;
 			justify-content: center;
 			align-items: center;
-			margin-bottom: 20rpx;
+
 			text {
 				color: #999999;
 			}
