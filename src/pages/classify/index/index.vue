@@ -64,14 +64,14 @@
 				})
 			},
 			getList() {
-        let areaId = JSON.parse(uni.getStorageSync('currentHouse')).areaId
+				let areaId = JSON.parse(uni.getStorageSync('currentHouse')).areaId
 				getClassifyList(areaId).then((data) => {
 					this.dataList = data;
-					if(this.id){
+					if (this.id) {
 						for (let i = 0; i < data.length; i++) {
-						 if(this.id==data[i].id){
-							 this.tabIndex=i;
-						 }	
+							if (this.id == data[i].id) {
+								this.tabIndex = i;
+							}
 						}
 					}
 				})

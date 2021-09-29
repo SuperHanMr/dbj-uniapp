@@ -68,25 +68,37 @@
 			</view>
 		</view>
 		<view class="bottom-fiexd">
-			
+
 		</view>
-		<view class="bottom" @click="topayHandler">
+		<view class="bottom">
 			<button type="default" class="get-phone" open-type="getPhoneNumber" @getphonenumber="decryptPhoneNumber"
 				v-if="showBottomButtom()"></button>
-				<image class="image-bottom" src="../../static/merchant-entry/merchant-entry-success.biaoqian.png" mode=""></image>
+			<!-- <image class="image-bottom" src="../../static/merchant-entry/merchant-entry-success.biaoqian.png" mode=""> -->
+			</image>
 			<view class="pay-money" :class="showBottomButtom() ? '' : 'pay-money-no'">
-				<view class="money">
+				<!-- <view class="money">
 					<text class="icon">￥</text>
 					<text class="year-money">3000/年</text>
 					<text class="pay">立即支付</text>
 				</view>
 				<view class="text">
 					低至8.33元/天，近半年最低价
+				</view> -->
+				<view class="submit-text" @click="submitHandler">
+					提交入驻申请
 				</view>
 			</view>
 			<view class="argument">
-				<text>支付即视为同意</text>
-				<a href="">《打扮家商家入驻协议》</a>
+				<view class="img-box" @click="argumentFileHandler">
+					<image v-if="argumentFile" src="../../static/merchant-entry/merchant-entry-select.png" mode=""></image>
+					<view v-if="!argumentFile" class="circle">
+				</view>
+					
+				</view>
+				<view class="box">
+					<text>我已完成阅读并同意</text>
+					<a href="" @click="toArguments($event)">《打扮家商家入驻协议》</a>
+				</view>
 			</view>
 		</view>
 		<uni-popup ref="popup" type="bottom">
@@ -169,6 +181,7 @@
 						text: '北京'
 					}
 				],
+				argumentFile: true,
 				businessCategoryList: [],
 				categroyTreeList: [],
 				deleteStatus: {}
@@ -266,14 +279,14 @@
 				});
 			},
 			showBottomButtom() {
-				if (this.cityList.length > 0 && this.businessCategoryList.length > 0 && this.companyValue != '') {
+				if (this.cityList.length > 0 && this.businessCategoryList.length > 0 && this.companyValue != '' && this.argumentFile) {
 					return true;
 				} else {
 					return false;
 				}
 			},
 			// 删除公司名称
-			deleteCompanyName(){
+			deleteCompanyName() {
 				this.companyValue = '';
 			},
 			// 删除城市
@@ -356,9 +369,38 @@
 			// 公司名称
 			companyHandler(e) {
 				this.companyValue = e.detail.value;
+			},
+			toArguments(e) {
+				e.preventDefault();
+				// uni.downloadFile({
+				// 	url: 'https://ali-res-test.dabanjia.com/res/20210928/21/1632834978647_0398%24%E8%A3%85%E4%BF%AE%E5%B9%B3%E5%8F%B02.0%E6%8E%92%E6%9C%9F%E8%AE%A1%E5%88%921.pdf', //仅为示例，并非真实的资源  
+				// 	success: (res) => {
+				// 		if (res.statusCode === 200) {
+				// 			console.log('下载成功');
+				uni.openDocument({
+					// filePath: res.tempFilePath,
+					filePath: 'https://ali-res.dabanjia.com/res/20210929/14/163289590753573.pdf',
+					fileType: 'pdf',
+					success: (res) => {
+						console.log(res, '>>>>>>>>>>>>>>')
+					},
+					fail: (res) => {
+						console.log(res, '>>>>>>>>>>>>')
+					}
+				})
+				// 		}
+				// 	}
+				// })
+			},
+			argumentFileHandler() {
+				console.log(123213)
+				this.argumentFile = !this.argumentFile;
+			},
+			submitHandler() {
+				console.log('submitHandler>>>>>>>>>>>')
 			}
 		},
-	};
+	}
 </script>
 
 <style lang="scss" scoped>
@@ -382,6 +424,7 @@
 
 	.container {
 		padding: 24rpx;
+
 		.info {
 			padding-bottom: 1rpx;
 			background-repeat: no-repeat;
@@ -420,7 +463,6 @@
 					margin-bottom: 48rpx;
 					padding: 24rpx 0 24rpx 24rpx;
 					caret-color: #35C4C4
-					
 				}
 
 				image {
@@ -483,17 +525,20 @@
 			}
 		}
 	}
-	.bottom-fiexd{
+
+	.bottom-fiexd {
 		padding-bottom: 200rpx;
 	}
+
 	.bottom {
 		width: 100%;
-		
+
 		background: #FEFFFE;
 		position: fixed;
 		bottom: 0;
 		left: 0;
-		.image-bottom{
+
+		.image-bottom {
 			position: absolute;
 			width: 164rpx;
 			height: 62rpx;
@@ -501,6 +546,7 @@
 			left: 200rpx;
 			top: -30rpx;
 		}
+
 		.get-phone {
 			position: absolute;
 			width: 100%;
@@ -514,6 +560,15 @@
 			border-radius: 6px;
 			height: 88rpx;
 			text-align: center;
+
+			.submit-text {
+				width: 100%;
+				padding: 24rpx 0;
+				font-size: 32rpx;
+				font-family: PingFangSC-Medium, PingFang SC;
+				font-weight: bold;
+				color: #FFFFFF;
+			}
 
 			.money {
 				font-weight: bold;
@@ -550,14 +605,36 @@
 		}
 
 		.argument {
-			margin-top: 16rpx;
+			margin: 16rpx 0 40rpx 0;
 			font-size: 11px;
 			font-family: PingFangSC-Regular, PingFang SC;
 			font-weight: 400;
 			display: flex;
 			justify-content: center;
 			align-items: center;
-			margin-bottom: 20rpx;
+			.img-box{
+				margin-right: 4rpx;
+				display: flex;
+				justify-content: center;
+				align-items: center;
+			}
+			image{
+				display: block;
+				width: 30rpx;
+				height: 28rpx;
+				background: red;
+			}
+			.circle{
+				width: 30rpx;
+				height: 26rpx;
+				border-radius: 50%;
+				border: 1px solid #A8A8A8;
+			}
+			.box{
+				display: flex;
+				justify-content: center;
+				align-items: center;
+			}
 			text {
 				color: #999999;
 			}

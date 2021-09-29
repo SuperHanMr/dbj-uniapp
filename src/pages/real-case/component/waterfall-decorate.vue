@@ -1,17 +1,17 @@
 <template>
 	<view class="waterfall-item" @tap="onTap">
-		<image :src="params.estateIconUrl" mode="widthFix" @load="emitHeight" @error="emitHeight"></image>
-		<view class="decorate-state">
+		<image :src="params.estateIconUrl"></image>
+		<!-- <view class="decorate-state">
 			{{params.projectStatus == 1 ? "已开启" : params.projectStatus == 2 ? '装修中' : params.projectStatus == 3 ? "已竣工" : "已结束"}}
-		</view>
+		</view> -->
 		<view class="content">
 			<view class="title">{{params.estateAddress}}</view>
 			<view class="decorate-info">
 				<view class="size">
-					{{estateArea}}m²
+					{{params.estateArea}}m²
 				</view>
 				<view class="phase">
-					{{progressRate}}
+					{{params.projectStatus == 1 ? "已开启" : params.projectStatus == 2 ? '装修中' : params.projectStatus == 3 ? "已竣工" : "已结束"}}
 				</view>
 			</view>
 		</view>
@@ -82,9 +82,9 @@
 	}
 	image{
 		display: block;
-		width: 100%;
+		width: 344rpx;
 		// 默认设置一个图片的大约值
-		height: 350rpx;
+		height: 344rpx;
 		border-radius: 8px 8px 0px 0px;
 	}
 	

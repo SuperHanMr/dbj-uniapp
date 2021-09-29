@@ -112,7 +112,8 @@
         provinceId: null, //省id
         cityId: null, //市id
         areaId: null, //区id
-        levelList: []
+        levelList: [],
+        defaultHouse: {}
       }
     },
     computed: {
@@ -208,6 +209,7 @@
         this.currentHouse = this.selectHouseData
         this.getServiceSku()
       }
+      this.defaultHouse = JSON.parse(uni.getStorageSync("currentHouse"))
     },
     methods: {
       setDoorTime(value) {
@@ -266,7 +268,7 @@
       },
       changeLevel() {
         let tmp = {
-          cityId: this.currentHouse.cityId || defaultHouse.cityId,
+          cityId: this.currentHouse.cityId || this.defaultHouse.cityId,
           price: this.design.price,
           count: 1,
           categoryTypeId: this.design.categoryTypeId,
@@ -287,12 +289,10 @@
         })
       },
       getServiceSku() {
-        let defaultHouse = JSON.parse(uni.getStorageSync("currentHouse"))
-        // console.log("defaultHouse", defaultHouse)
         let params = {
-          province_id: this.currentHouse.provinceId || defaultHouse.provinceId,
-          city_id: this.currentHouse.cityId || defaultHouse.cityId,
-          area_id: this.currentHouse.areaId || defaultHouse.areaId,
+          province_id: this.currentHouse.provinceId || this.defaultHouse.provinceId,
+          city_id: this.currentHouse.cityId || this.defaultHouse.cityId,
+          area_id: this.currentHouse.areaId || this.defaultHouse.areaId,
           // serveTypes: [1, 2, 4]
         }
         if (this.sssType == "checkHouse") {
@@ -382,7 +382,7 @@
 
       selectAnotherHandler(pp) {
         let str = ""
-        let areaId = this.currentHouse.areaId || defaultHouse.areaId
+        let areaId = this.currentHouse.areaId || this.defaultHouse.areaId
         if (pp === "design") {
           str =
             `/sub-decorate/pages/service-list/service-list?name=设计服务&serviceType=1&areaId=${areaId}&insideArea=${this.currentHouse.insideArea}&spuId=${this.design.spuId}&categoryId=${this.design.category4Id}&unitId=${this.design.unitId}`
