@@ -1,7 +1,7 @@
 <template>
 	<view class="calendarWrap">
 		<view class="calendar">
-			<dark-calendar :signeddates="signeddates" @filterByDate="filterByDate" :projectId="projectId"></dark-calendar>
+			<dark-calendar :signeddates="signeddates" @filterByDate="filterByDate" :projectId="projectId" :showMemo="showMemo"></dark-calendar>
 		</view>
 		<view class="dynamic" :class="{'noDynamics': !dynamics.length}">
 			<view class="top">
@@ -62,13 +62,15 @@
 			return {
 				signeddates: [],
 				projectId: 0,
+				showMemo: false,
 				dynamics: [],
 				dynamicPage: 1,
 				date: ""//选中日期
 			};
 		},
 		onLoad(option) {
-			this.projectId = option.projectId 
+			this.projectId = option.projectId
+			this.showMemo = option.isDecorate?true:false
 		},
 		onReachBottom() {
 			if(!this.date)return
@@ -117,7 +119,6 @@
 						}else{
 							this.dynamics = list || []
 						}
-						console.log(list)
 					}
 				})
 			}

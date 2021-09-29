@@ -16,7 +16,7 @@
 						></image>
 				</view>
 			</view>
-			<view class="memo" @click="toMemo">
+			<view class="memo" @click="toMemo" v-if="showMemo">
 				<image class="ic_memo" src="../../static/ic_memo@2x.png"></image>
 				<view class="text">备忘录</view>
 			</view>
@@ -66,6 +66,9 @@
 			},
 			projectId: {
 				type: Number,
+			},
+			showMemo: {
+				type: Boolean,
 			}
 	  },
 	  data() {
