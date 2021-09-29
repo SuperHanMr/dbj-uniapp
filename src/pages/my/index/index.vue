@@ -114,7 +114,7 @@ export default {
           key: "2",
           image: "../../../static/order/images/collection_@2x.png",
           value: "我的收藏",
-          url: "../../../sub-my/pages/personal-center/my-collection/my-collection",
+          url: "../../../sub-my/pages/personal-center/my-collection/my-collection?firstEntry=true",
         },
         {
           key: "3",
@@ -273,6 +273,7 @@ export default {
 				height: 22px;
 				bottom: 0;
 				left: 0;
+				z-index: 1;
 				position: absolute;
 				background-image: linear-gradient(rgba(246,246,246,0), rgba(246,246,246,1));
 			}

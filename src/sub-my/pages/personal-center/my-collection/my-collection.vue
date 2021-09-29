@@ -111,6 +111,7 @@
 				title: "",
 
 				systemBottom: "",
+				firstEntry: false,
 			};
 		},
 
@@ -118,7 +119,8 @@
 			const menuButtonInfo = uni.getMenuButtonBoundingClientRect();
 			this.systemBottom = menuButtonInfo.bottom;
 		},
-		onLoad() {
+		onLoad(e) {
+			this.firstEntry =e.firstEntry;
 			uni.getSystemInfo({
 				success:res => {
 					this.equipmentId = res.deviceId
@@ -134,23 +136,19 @@
 				this.getCaseList()
 			}
 		},
-		
-		// onShow() {
-		// 	uni.getSystemInfo({
-		// 		success:res => {
-		// 			this.equipmentId = res.deviceId
-		// 		}
-		// 	})
-		// 	if(this.currentIndex ==0){
-		// 		this.productList =[]
-		// 		this.page[0]=1
-		// 		this.getProductList()
-		// 	}else{
-		// 		this.caseList =[]
-		// 		this.page[1]=1
-		// 		this.getCaseList()
-		// 	}
-		// },
+		onShow() {
+			if (this.firstEntry) return;
+			if(this.currentIndex ==0){
+				this.productList =[]
+				this.page[0]=1
+				this.getProductList()
+			}else{
+				this.caseList =[]
+				this.page[1]=1
+				this.getCaseList()
+			}
+		},
+
 		watch:{
 			allCheck(){}
 		},
@@ -201,6 +199,7 @@
 					this.productList = this.handleList(this.productList,false,"product")
 					// console.log("this.productList=", this.productList)
 					this.loading = false;
+					this.firstEntry = false;
 				})
 			},
 			// 获取案例列表
@@ -219,6 +218,7 @@
 					this.totalPage[1]= data.totalPage
 					// console.log("this.caseList=", this.caseList)
 					this.loading = false;
+					this.firstEntry = false;
 				})
 			},
 				
@@ -252,7 +252,15 @@
 							url: `/sub-classify/pages/goods-detail/goods-detail?goodId=${data.id}`
 						 })
 					}else{
+						// 需要跳转案例详情的地址 需要传案例id和当前登录人的token  没登录传0
 						// console.log("进入案例详情页，点击收藏")
+						const token = uni.getStorageSync("scn")
+						console.log("token=",token)
+						const url = this.ENV.VUE_APP_BASE_H5 +`/app-pages/case-detail/case-detail.html?id=${data.id}&token=${token}`
+						console.log("encodeURIComponent(url)=",encodeURIComponent(url))
+						uni.navigateTo({
+							url:`../../../../pages/common/webview/webview?url=`+ encodeURIComponent(url),
+						})
 					}
 				}else{
 					this.checkedItemIds = data.filter(item => item.isChecked == true).map((item2) => {
