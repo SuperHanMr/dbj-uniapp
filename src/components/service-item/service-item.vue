@@ -16,7 +16,7 @@
       v-if="(serviceData.status >= 2 || (serviceData.status == 0 && serviceData.grepOrderStatus === 3)) && open">
       <view class="procsss flex-row-bet">
         <view class="s0">{{serviceData.serveRoleName}}</view>
-        <view class="s1 flex-row-start">
+        <view class="s1 flex-row-start" @click="personPage(serviceData)">
           <view>{{serviceData.statusName}}</view>
           <image src="http://dbj.dragonn.top/static/mp/dabanjia/images/decorate/ic_more.svg"></image>
         </view>
@@ -59,6 +59,11 @@
       }
     },
     methods: {
+      personPage(serviceData) {
+        uni.navigateTo({
+          url: `/sub-decorate/pages/person-page/person-page?personId=${serviceData.serveId}`
+        })
+      },
       openProcsss() {
         this.open = !this.open
       },

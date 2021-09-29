@@ -4,7 +4,7 @@
       Ta的服务
     </view> -->
     <view class="service-list" v-if="serviceList.length>0">
-      <view class="service-item" v-for="item of serviceList">
+      <view class="service-item" v-for="item of serviceList" :key='item.id'>
         <image :src="item.imageUrl" mode=""></image>
         <view class="item-msg">
           <view class="item-msg-left">
@@ -72,7 +72,7 @@
       },
       toBuy(item){
         uni.navigateTo({
-          url:'/sub-classify/pages/goods-detail/goods-detail?goodId='+item.spuId
+          url:'/sub-classify/pages/goods-detail/goods-detail?goodId='+item.id
         })
       }
     }
