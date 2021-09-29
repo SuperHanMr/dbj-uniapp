@@ -107,6 +107,13 @@
 				"enablePullDownRefresh": false
 			}
 
+		}, {
+			"path": "pages/common/result-null/result-null",
+			"style": {
+				"navigationBarTitleText": "敬请期待",
+				"enablePullDownRefresh": false
+			}
+
 		}
 	],
 	"globalStyle": {
