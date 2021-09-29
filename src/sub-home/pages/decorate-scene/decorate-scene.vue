@@ -1532,6 +1532,8 @@ export default {
 		font-size: 28rpx;
 		color: #666666;
 		line-height: 40rpx;
+		text-overflow: ellipsis;
+		overflow: hidden;
 	}
 	.acitonInfo .evidence {
 		width: 100%;

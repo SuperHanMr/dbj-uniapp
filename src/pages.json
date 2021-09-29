@@ -862,6 +862,13 @@
 					}
 				},
 				{
+					"path": "pages/actuary-detail/actuary-detail",
+					"style": {
+						"navigationBarTitleText": "",
+						"enablePullDownRefresh": false
+					}
+				},
+				{
 					"path": "pages/gj-process-cost/gj-process-cost",
 					"style": {
 						"navigationBarTitleText": "管家工序费",

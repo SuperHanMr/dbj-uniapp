@@ -8,9 +8,7 @@
         :class="{selected:index==currentIndex}"
         @click="currentIndex=index"
       >
-        <view class="tab-text">
-          {{item}}
-        </view>
+        <view class="tab-text">{{item}}</view>
 				<view class="bottom-icon" />
       </view>
     </view>
@@ -22,10 +20,7 @@
       @change="swiperChange"
 			:style="{paddingBottom:systemBottom,backgroundColor:currentList.length < 1?'#ffffff':'#f5f6f6'}"
     >
-      <swiper-item
-        v-for="(item,tabindex) in tabList"
-        :key="item"
-			>
+      <swiper-item v-for="(item,tabindex) in tabList" :key="item">
         <scroll-view
           class="scroll-view"
           scroll-y="true"
@@ -35,9 +30,7 @@
           @refresherrefresh="onRefresh"
           @scrolltolower="onLoadMore"
 				>
-         
-          
-          <view class="empty-container" v-if="currentList.length < 1">
+         <view class="empty-container" v-if="currentList.length < 1">
 						<image src="../../../../static/order/blank_house@2x.png" mode=""></image>
 						<text v-if="tabindex==0">您还没有关注房子</text>
 						<text v-if="tabindex==1">您还没有关注工匠</text>
@@ -46,31 +39,32 @@
 					
 					<view  v-else >
 						<!-- 房屋 -->
-						<view v-if="tabindex==0"  class="house-item" v-for="item in houselist" :key="item.id">
+						<view 
+							v-if="tabindex==0"
+							class="house-item" 
+							v-for="item in houselist" 
+							:key="item.id"
+							@click="goToHouse(item)"
+						>
 							<image
 							  :src="item.estateImage"
-							  mode=""
-							/>
+							  mode=""/>
 						  <view class="houseInfo">
 						    <view class="header">
-						      {{item.address}}
+						      {{item.estateAddress || ''}}
 						    </view>
 						
 						    <view class="area-house">
-						      <text>{{item.insideArea}}㎡</text>
+						      <text>{{item.estateArea || 0}}㎡</text>
 						      <view class="split-line" />
-						      <text>{{item.houseStructureName}}</text>
+						      <text>{{item.estateUnitsType || ''}}</text>
 						    </view>
 							</view>
 						</view>
 						<!-- 工匠 -->
-						<view  v-if="tabindex == 1" class="craftsmanAndRecommend" v-for="item2 in currentList" :key="item2.id">
+						<view  v-if="tabindex == 1" class="craftsmanAndRecommend" v-for="item2 in currentList" :key="item2.id"	>
 						  <view class="left">
-						    <image
-						      :src="item2.avatar"
-						      mode=""
-									@click="goToPersonalHome(item2)"
-						    />
+						    <image :src="item2.avatar" mode="" @click="goToPersonalHome(item2)" />
 						    <view class="baseInfo">
 						      <view class="name1">
 						       {{item2.nickName}}
@@ -80,38 +74,31 @@
 						      </view>
 						    </view>
 						  </view>
-						  <view class="right">
+						  <view class="right"  @click.stop="handleCraftsman(item2)">
 						    <view class="button2" v-if="item2.isFocused">
 						      已关注
 						    </view>
-						    <view class="button1" v-else>
+						    <view class="button1" v-else >
 									+关注
 								</view>
 						  </view>
 						</view>
 						<!-- 优先推荐 -->
 						<view  v-if=" tabindex == 2" v-for="item3 in recommendlist" :key="item3.id"  >
-							<view class="craftsmanAndRecommend">
+							<view class="craftsmanAndRecommend" >
 								<view class="left">
-									<image
-										:src="item3.avatar"
-										mode=""
-									></image>
+									<image :src="item3.avatar" mode="" @click="goToPersonalHome(item3)"/>
 									<view class="baseInfo">
-										<view class="name2">
-											{{item3.nickName}}
-										</view>
-										<view class="icon">
-											{{item3.position}}
-										</view>
+										<view class="name2">{{item3.nickName}}</view>
+										<view class="icon">{{item3.position}}</view>
 									</view>
 								</view>
-								<view class="right">
+								<view class="right" @click.stop="handleRecommend(item3)">
 									<view class="button4" v-if="item3.isRecommend">
 										已优先推荐
 									</view>
-									<view class="button3" v-else>
-										<image src="../../../static/icon_recommend_@2x.png" mode=""></image>
+									<view class="button3" v-else  >
+										<image src="../../../static/icon_recommend_@2x.png" mode="" />
 										优先推荐
 									</view>
 								</view>
@@ -126,7 +113,7 @@
 </template>
 
 <script>
-import {getCraftsmanList, getHouseList, getRecommendList } from "../../../../api/order.js";
+import {getCraftsmanList, getHouseList, getRecommendList,cancelAttention } from "../../../../api/order.js";
 export default {
   data() {
     return {
@@ -142,11 +129,20 @@ export default {
 			
       routeId:"",
 			systemBottom:"",
+			equipmentId:"",
 		};
   },
+	onLoad() {
+		uni.getSystemInfo({
+			success:res => {
+				this.equipmentId = res.deviceId
+			}
+		})
+	},
   onShow() {
 		this.houseList();
 	},
+	
 	mounted(e) {
 		const menuButtonInfo = uni.getMenuButtonBoundingClientRect();
 		this.systemBottom = menuButtonInfo.bottom + "rpx";
@@ -186,53 +182,129 @@ export default {
 			getHouseList({routeId:1002}).then(data=>{
 				this.houselist = data
 				this.loading = false
+				this.triggered = false;
 				console.log("data= ",data)
 			})
 		},
+	
 		// 工匠请求
 		craftsmanList(){
 			this.loading = true;
 			getCraftsmanList({routeId:1001}).then(data=>{
 				this.craftsmanlist = data
 				this.loading = false
+				this.triggered = false;
 				console.log("data= ",data)
 			})
 		},
+		handleCraftsman(data){
+			cancelAttention({
+				routeId:1001,
+				relationId:data.id,
+				authorId:data.authorId,
+				subBizType:data.subBizType,
+				equipmentId:this.equipmentId,
+			}).then(()=>{
+				if(data.isFocused){
+					uni.showToast({
+						title:"取消关注成功",
+						icon:"none",
+						duration:100
+					})
+				}else{
+					uni.showToast({
+						title:"关注成功!",
+						icon:"none",
+						duration:1000
+					})
+				}
+				this.craftsmanlist=[]
+				setTimeout(()=>{
+					this.craftsmanList()
+				},1000)
+			}).catch(()=>{})
+		},
+		
+		
 		// 优先推荐请求
     recommendList() {
       this.loading = true;
 			getRecommendList({routeId:2001}).then(data=>{
 				this.recommendlist = data
 				this.loading = false
+				this.triggered = false;
 				console.log("data= ",data)
 			})
 		},
-		
-		
+		handleRecommend(data){
+			cancelAttention({
+				routeId:2001,
+				relationId:data.id,
+				authorId:data.authorId,
+				subBizType:data.subBizType,
+				equipmentId:this.equipmentId,
+			}).then(()=>{
+				if(data.isRecommend){
+					uni.showToast({
+						title:"取消关注成功",
+						icon:"none",
+						duration:100
+					})
+				}else{
+					uni.showToast({
+						title:"关注成功!",
+						icon:"none",
+						duration:1000
+					})
+				}
+				this.recommendList()
+			}).catch(()=>{})
+		},
+		// 去房屋的页面
+		goToHouse(data){
+			uni.navigateTo({
+				url:"../../../../sub-home/pages/decorate-scene/decorate-scene?projectId"
+			})
+			console.log("进入到房子的详情页面")
+			
+		},
 		
 		// 去工匠的个人主页
 		goToPersonalHome(data){
-			uni.redirectTo({
-			  url: "/sub-decorate/pages/person-page/person-page",
+			uni.navigateTo({
+			  url: `/sub-decorate/pages/person-page/person-page?personId=${data.id}`,
 			});
 		},
-		
-		
 		
 		onLoadMore() {
       if (this.loading || this.page[this.currentIndex] >= this.totalPage[this.currentIndex]) {
         return;
       }
       this.page[this.currentIndex]++;
-      // this.getCaseList();
+			switch(this.currentIndex ==0){
+				
+			}
     },
 		
     onRefresh(e) {
       this.triggered = true;
-      setTimeout(() => {
-        this.triggered = false;
-      }, 1000);
+			// this.lastId[this.currentIndex] = -1;
+			this.handleReset();
+			
     },
+		handleReset(){
+			switch(this.currentIndex){
+				case 0 :
+				 this.houseList()
+				 break
+				 case 1:
+				 this.craftsmanList()
+				 break
+				  case 2: 
+					this.recommendList()
+					return 
+			}
+		},
 		
 	},
 };

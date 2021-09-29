@@ -38,7 +38,7 @@ export function setAttentions(params, config) {
   return request.post(`/app/base/interactive/view/add`, params, config);
 }
 export function getFocusBrowse(params) {
-  return request.get(`/app/base/interactive/project/count/detail`, {
+  return request.get(`/app/base/interactive/view/project/count/detail`, {
     params
   });
 }

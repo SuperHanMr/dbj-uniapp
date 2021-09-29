@@ -18,9 +18,9 @@
 			</view>
 			<view class="url-box">
 				<view class="url">
-					https://www.pop.dabanjia.com
+					{{accountInfoObj.url}}
 				</view>
-				<view class="copy">
+				<view class="copy" @click="copyHandler">
 					复制
 				</view>
 			</view>
@@ -33,15 +33,15 @@
 						登录账号
 					</view>
 					<view class="account-info">
-						13883333333
+						{{accountInfoObj.phone}}
 					</view>
 				</view>
 				<view class="password">
 					<view class="account-text">
-						初始密码{{accountInfoObj.a}}
+						初始密码
 					</view>
 					<view class="account-info">
-						Yas11222
+						{{accountInfoObj.password}}
 					</view>
 				</view>
 			</view>
@@ -66,7 +66,14 @@
 			}),
 		},
 		methods: {
-
+			copyHandler(){
+				uni.setClipboardData({
+				    data: this.accountInfoObj.url,
+				    success: function () {
+				        console.log('success');
+				    }
+				});
+			}
 		}
 	}
 </script>

@@ -247,9 +247,6 @@
 				// businessList.forEach((item) => {
 				// 	item.threeLevelCategoryId = item.threeLevelCategoryId.split('c')[1];
 				// })
-				// if (businessList.id.join("c")[1] == 'c') {
-				// 	businessList.id = 
-				// }
 				this.cityList.forEach((item) => {
 					ids.push(item.id);
 				})
@@ -269,6 +266,15 @@
 				
 				supplierEntry(params).then((res) => {
 					console.log(res, '>>>>>>>')
+					const obj = {
+						supplierId: res.supplierId,
+						phone: res.phone,
+						password: res.password,
+						url: res.url,
+					}
+					this.$store.dispatch('setAccountInfo', {
+						accountInfo: obj
+					})
 					uni.navigateTo({
 						url: '../merchant-entry-success/merchant-entry-success'
 					})
