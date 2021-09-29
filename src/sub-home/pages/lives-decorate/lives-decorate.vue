@@ -59,14 +59,14 @@
 						<view class="tip">
 						</view>
 						<view class="time">
-							2021-06-22 周二
+							{{item.submitTime |formatDate}}
 						</view>
 						<view class="flex1">
 						</view>
 					</view>
 					<view class="video-row">
-						<video class="video" :src="videoSrc">
-							<cover-view class="cover-video" @click.stop="toDetail"></cover-view>
+						<video class="video" :src="item.videoUrl">
+							<cover-view class="cover-video" @click.stop="toDetail(item.videoUrl)"></cover-view>
 						</video>
 					</view>
 				</view>
@@ -95,14 +95,15 @@
 		workVideo,
 		bindVideoList
 	} from "../../../api/home.js";
+	import{formatDate} from "../../../utils/common.js"
 	export default {
+		filters:{formatDate},
 		data() {
 			return {
 				muted: false,
 				livePreview: "",
 				isFill: false,
 				list: [],
-				videoSrc: "http://qiniu.hydrant.ink/1631176569963742.mp4",
 				currentVideoSrc: "",
 				liveList: [],
 				currentPage: 0,
@@ -160,8 +161,8 @@
 			previewVideoClose() {
 				this.currentVideoSrc = "";
 			},
-			toDetail() {
-				this.currentVideoSrc = "http://qiniu.hydrant.ink/1631176569963742.mp4";
+			toDetail(url) {
+				this.currentVideoSrc = url;
 			},
 			videoFill() {
 				this.isFill = !this.isFill;
