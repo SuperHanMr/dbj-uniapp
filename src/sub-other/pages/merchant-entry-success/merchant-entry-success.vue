@@ -10,7 +10,7 @@
 			</view>
 		</view>
 		<view class="line">
-			
+
 		</view>
 		<view class="container">
 			<view class="text">
@@ -38,7 +38,7 @@
 				</view>
 				<view class="password">
 					<view class="account-text">
-						初始密码
+						初始密码{{accountInfoObj.a}}
 					</view>
 					<view class="account-info">
 						Yas11222
@@ -50,109 +50,134 @@
 </template>
 
 <script>
+	import {
+		mapState,
+		mapGetters
+	} from "vuex";
 	export default {
 		data() {
 			return {
-				
+
 			}
 		},
+		computed: {
+			...mapState({
+			  accountInfoObj: (state) => state.merchantEntry.accountInfo,
+			}),
+		},
 		methods: {
-			
+
 		}
 	}
 </script>
 
 <style lang="scss" scoped>
-.merchant-entry-success{
-	width: 100%;
-	height: 100%;
-	background: #FFFFFF;
-	.head{
-		padding-top: 112rpx;
-		display: flex;
-		flex-direction: column;
-		justify-content: center;
-		image{
-			width: 148rpx;
-			height: 194rpx;
-			margin: 0 auto;
-		}
-		.text{
-			margin-top: 16rpx;
-			font-size: 32rpx;
-			font-family: PingFangSC-Medium, PingFang SC;
-			font-weight: bold;
-			color: #333333;
-			text-align: center;
-		}
-		.info{
-			padding: 0 32rpx;
-			font-size: 24rpx;
-			font-family: PingFangSC-Regular, PingFang SC;
-			font-weight: 400;
-			color: #999999;
-			margin: 12rpx 0 32rpx;
-			text-align: center;
-		}
-	}
-	.line{
-		height: 16rpx;
-		background: #F5F6F6;
-	}
-	.container{
-		padding: 0 32rpx;
-		.text{
-			padding: 32rpx 0 20rpx 0;
-			font-size: 30rpx;
-			font-family: PingFangSC-Medium, PingFang SC;
-			font-weight: bold;
-			color: #333333;
-		}
-		.url-box{
+	.merchant-entry-success {
+		width: 100%;
+		height: 100%;
+		background: #FFFFFF;
+
+		.head {
+			padding-top: 112rpx;
 			display: flex;
-			align-items: center;
-			margin-bottom: 46rpx;
-			.url{
-				margin-right: 24rpx;
-				font-size: 28rpx;
+			flex-direction: column;
+			justify-content: center;
+
+			image {
+				width: 148rpx;
+				height: 194rpx;
+				margin: 0 auto;
+			}
+
+			.text {
+				margin-top: 16rpx;
+				font-size: 32rpx;
+				font-family: PingFangSC-Medium, PingFang SC;
+				font-weight: bold;
+				color: #333333;
+				text-align: center;
+			}
+
+			.info {
+				padding: 0 32rpx;
+				font-size: 24rpx;
 				font-family: PingFangSC-Regular, PingFang SC;
 				font-weight: 400;
-				color: #111111;
-			}
-			.copy{
-				font-size: 20rpx;
-				font-family: PingFangSC-Regular, PingFang SC;
-				font-weight: 400;
-				color: #35C4C4;
-				padding: 4rpx 8rpx;
-				border-radius: 2px;
-				border: 1px solid #35C4C4;
+				color: #999999;
+				margin: 12rpx 0 32rpx;
+				text-align: center;
 			}
 		}
-		.login-text{
-			font-size: 30rpx;
-			font-family: PingFangSC-Medium, PingFang SC;
-			font-weight: bold;
-			color: #333333;
-			margin-bottom: 24rpx;
+
+		.line {
+			height: 16rpx;
+			background: #F5F6F6;
 		}
-		.account-info{
-			.account, .password{
+
+		.container {
+			padding: 0 32rpx;
+
+			.text {
+				padding: 32rpx 0 20rpx 0;
+				font-size: 30rpx;
+				font-family: PingFangSC-Medium, PingFang SC;
+				font-weight: bold;
+				color: #333333;
+			}
+
+			.url-box {
 				display: flex;
 				align-items: center;
-				font-size: 28rpx;
-				font-family: PingFangSC-Regular, PingFang SC;
-				font-weight: 400;
-				margin-bottom: 24rpx;
-				.account-text{
-					color: #999999;
-					margin-right: 80rpx;
-				}
-				.account-info{
+				margin-bottom: 46rpx;
+
+				.url {
+					margin-right: 24rpx;
+					font-size: 28rpx;
+					font-family: PingFangSC-Regular, PingFang SC;
+					font-weight: 400;
 					color: #111111;
+				}
+
+				.copy {
+					font-size: 20rpx;
+					font-family: PingFangSC-Regular, PingFang SC;
+					font-weight: 400;
+					color: #35C4C4;
+					padding: 4rpx 8rpx;
+					border-radius: 2px;
+					border: 1px solid #35C4C4;
+				}
+			}
+
+			.login-text {
+				font-size: 30rpx;
+				font-family: PingFangSC-Medium, PingFang SC;
+				font-weight: bold;
+				color: #333333;
+				margin-bottom: 24rpx;
+			}
+
+			.account-info {
+
+				.account,
+				.password {
+					display: flex;
+					align-items: center;
+					font-size: 28rpx;
+					font-family: PingFangSC-Regular, PingFang SC;
+					font-weight: 400;
+					margin-bottom: 24rpx;
+
+					.account-text {
+						color: #999999;
+						margin-right: 80rpx;
+					}
+
+					.account-info {
+						color: #111111;
+					}
 				}
 			}
 		}
 	}
-}
 </style>
