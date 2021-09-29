@@ -1,8 +1,8 @@
 <template>
 	<view class="real-case">
-		<view class="22" @click="toRuzhu">
+		<!-- <view class="22" @click="toRuzhu">
 			商家入驻
-		</view>
+		</view> -->
 		<view class="collectWrapper">
 			<view class="tabbar">
 				<view class="tabbar-switch-box">
@@ -103,6 +103,7 @@
 			},
 			// swiper切换此函数被监听
 			swiperChange(e) {
+				console.log(e,123123,)
 				this.selectStatus = e.detail.current;
 				this.pagState.rows = 10;
 				this.pagState.page = 1;
@@ -124,13 +125,14 @@
 				}
 			},
 			onJump(list, index, isDecorate) {
+				console.log(list, index, isDecorate, ">>>>>>>>>>>")
 				// parentType 1 全景图 0  短视频  2 图文
-				if (list[index].parentType === 1) {
+				if (isDecorate == 0) {
 					const listUrl = list[index].videoUrl
 					uni.navigateTo({
-						url: `./component/panorama/panorama?url=${listUrl}`
+						url: `/pages/real-case/real-case-webview/real-case-webview?id=${list[index].id}`
 					})
-				} else if (isDecorate) {
+				} else{
 					uni.navigateTo({
 						url: `/sub-home/pages/decorate-scene/decorate-scene?projectId=${list[index].id}`
 					})
@@ -141,10 +143,10 @@
 				this.tag = tag;
 				// 对应的数据
 				if (tag == "0") {
-					this.onJump(this.leftList, index, false);
+					this.onJump(this.leftList, index, this.selectStatus);
 
 				} else {
-					this.onJump(this.rightList, index, true);
+					this.onJump(this.rightList, index, this.selectStatus);
 				}
 			},
 			// 收藏事件
