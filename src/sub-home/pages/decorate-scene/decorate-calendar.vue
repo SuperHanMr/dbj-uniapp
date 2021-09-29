@@ -1,15 +1,16 @@
 <template>
 	<view class="calendarWrap">
 		<view class="calendar">
-			<dark-calendar :signeddates="signeddates" @filterByDate="filterByDate" :projectId="projectId"></dark-calendar>
+			<dark-calendar :signeddates="signeddates" @filterByDate="filterByDate" :projectId="projectId" :showMemo="showMemo"></dark-calendar>
 		</view>
-		<view class="dynamic">
+		<view class="dynamic" :class="{'noDynamics': !dynamics.length}">
 			<view class="top">
 				<view class="title">装修动态</view>
 			</view>
 			<view class="noDynamics" v-if="!dynamics.length">
 				<image class="noDynamicsImg" src="http://dbj.dragonn.top/static/mp/dabanjia/images/decorate/pic_empty%402x.png"></image>
 				<view class="text">暂无装修动态</view>
+				<view class="bottom"></view>
 			</view>
 			<scroll-view class="list" v-else>
 				<view class="item" v-for="(item,index) in dynamics" :key="item.id">
@@ -18,7 +19,7 @@
 						<view class="header">
 							<view>
 								<view class="workerName">{{item.userName}}</view>
-								<view class="role">{{item.nodeName}}</view>
+								<view class="role">{{item.roleName}}</view>
 							</view>
 							<view class="date">{{item.normDateStr}}</view>
 						</view>
@@ -60,16 +61,19 @@
 		data() {
 			return {
 				signeddates: [],
-				projectId: 89,
+				projectId: 0,
+				showMemo: false,
 				dynamics: [],
 				dynamicPage: 1,
 				date: ""//选中日期
 			};
 		},
 		onLoad(option) {
-			// this.projectId = option.projectId 
+			this.projectId = option.projectId
+			this.showMemo = option.isDecorate?true:false
 		},
 		onReachBottom() {
+			if(!this.date)return
 			this.dynamicPage+=1;
 			this.filterByDate(this.date);
 		},
@@ -115,7 +119,6 @@
 						}else{
 							this.dynamics = list || []
 						}
-						console.log(list)
 					}
 				})
 			}
@@ -132,15 +135,18 @@
 	}
 	.calendar{
 		width: 100%;
-		height: 620rpx;
+		height: fit-content;
 	}
 	.dynamic{
 		width: 100%;
 		height: fit-content;
-		margin-top: 24rpx;
+		margin-top: 12rpx;
 		margin-bottom: 80rpx;
 		background: #ffffff;
 		border-radius: 40rpx;
+	}
+	.dynamic.noDynamics{
+		margin-bottom: 0;
 	}
 	.dynamic .top{
 		width: 100%;
@@ -181,6 +187,10 @@
 		height: 8rpx;
 		margin-left: 5rpx;
 	}
+	.noDynamics {
+		width: 750rpx;
+		height: fit-content;
+	}
 	.noDynamics .noDynamicsImg{
 		width: 750rpx;
 		height: 580rpx;
@@ -193,6 +203,10 @@
 		font-size: 26rpx;
 		color: #999999;
 		margin: 24rpx 298rpx;
+	}
+	.noDynamics .bottom {
+		width: 750rpx;
+		height: 372rpx;
 	}
 	.list{
 		width: 100%;
@@ -236,7 +250,7 @@
 	}
 	.acitonInfo .evidence{
 		width: 100%;
-		height: 394rpx;
+		height: fit-content;
 		margin: 16rpx 0;
 		display: flex;
 		justify-content: space-between;

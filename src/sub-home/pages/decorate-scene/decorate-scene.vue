@@ -18,7 +18,7 @@
           </view>
         </view>
       </view>
-      <!-- <image class="houseImg" src=""></image> -->
+      <image class="houseImg" src="http://dbj.dragonn.top/static/mp/dabanjia/images/decorate/pic_empty%402x.png"></image>
     </view>
     <view class="navBar">
       <view
@@ -102,15 +102,20 @@
             ></view>
           </view>
           <view class="worker">
-            <view
+            <view class="item"
               v-for="(item,index) in workers"
               :key="item.id"
             >
-              <image
-                class="avatar"
-                :src="item.avatar"
-              ></image>
-              <view>{{item.name}}</view>
+              <view v-if="(item.nodeStatus===2&&item.id!==-1)||item.nodeStatus===3">
+								<image
+								  class="avatar"
+								  :src="item.avatar"
+								></image>
+								<view>{{item.name}}</view>
+							</view>
+							<view class="text" v-else-if="item.nodeStatus===2&&item.id===-1">待施工</view>
+							<view class="text" v-else-if="item.nodeStatus===1">未开工</view>
+							<view class="own" v-else-if="item.nodeStatus===4">自带施工</view>
             </view>
           </view>
         </view>
@@ -137,6 +142,7 @@
 			<view class="noDynamics" v-if="!dynamics.length">
 				<image class="noDynamicsImg" src="http://dbj.dragonn.top/static/mp/dabanjia/images/decorate/pic_empty%402x.png"></image>
 				<view class="text">暂无装修动态</view>
+				<view class="bottom"></view>
 			</view>
       <view class="list" v-else>
         <view
@@ -147,6 +153,7 @@
           <image
             class="avatar"
             :src="item.avatar"
+						@click="toPerson(item.userId)"
           ></image>
           <view class="acitonInfo">
             <view class="header">
@@ -460,9 +467,9 @@ export default {
   },
 	onReachBottom() {
 		this.dynamicPage+=1;
-		this.requestDynamic();
+		this.selectedType?this.requestDynamic(this.selectedType):this.requestDynamic();
 	},
-  created() {
+  mounted() {
     this.requestDecorateSteps();
     this.requestDynamic();
   },
@@ -632,8 +639,12 @@ export default {
       this.selectedIndex = index;
       this.selectedType = type;
     },
+		toPerson(userId){
+			uni.navigateTo({
+				url: `sub-decorate/pages/person-page/person-page?personId=${userId}`
+			})
+		},
     toDecorate() {
-      console.log("tiaoz");
       uni.switchTab({
         url: `/pages/decorate/index/index`,
       });
@@ -643,7 +654,7 @@ export default {
     },
     toDecorateCalendar() {
       uni.navigateTo({
-        url: `/sub-home/pages/decorate-scene/decorate-calendar?projectId=${this.projectInfo.id}`,
+        url: `/sub-home/pages/decorate-scene/decorate-calendar?projectId=${this.projectInfo.id}&isDecorate=0`,
       });
     },
     toVideoSite() {
@@ -663,7 +674,7 @@ export default {
     },
     requestSelectOptions() {
       let params = {
-        projectId: 39,
+        projectId: 139,
         processId: 1,
         allNodesFlag: false,
       };
@@ -691,13 +702,13 @@ export default {
       let params;
       params = type
         ? {
-            projectId: 46,
+            projectId: this.projectId,
             nodeType: type,
             userTypes: [2, 3],
           }
         : {
 						page: this.dynamicPage,
-            projectId: 46,
+            projectId: this.projectId,
             userTypes: [2, 3],
           };
       getDecorateDynamic(params).then((data) => {
@@ -720,7 +731,7 @@ export default {
     },
     requestDecorateSteps() {
       let params = {
-        projectId: 1,
+        projectId: this.projectId,
       };
       getDecorateProcess(params).then((data) => {
         if (data) {
@@ -743,6 +754,7 @@ export default {
               id: item.serveId,
               name: item.serveName,
               avatar: item.serveAvatar,
+							nodeStatus: item.nodeStatus,
             });
             return item;
           });
@@ -1138,6 +1150,7 @@ export default {
 		height: 400rpx;
 		background-repeat: no-repeat;
 		background-image: url("http://dbj.dragonn.top/static/mp/dabanjia/images/home/bg%402x.png");
+		display: flex;
 	}
 	.sceneContainer > .footer {
 		width: 100%;
@@ -1148,6 +1161,13 @@ export default {
 		position: fixed;
 		left: 0rpx;
 		bottom: 0rpx;
+	}
+	.houseImg{
+		width: 232rpx;
+		height: 232rpx;
+		margin: 56rpx 32rpx 48rpx 48rpx;
+		border-radius: 20rpx;
+		display: block;
 	}
 	.houseInfo {
 		width: 70%;
@@ -1174,6 +1194,7 @@ export default {
 		margin-top: 8rpx;
 		font-size: 24rpx;
 		color: #ffffff;
+		opacity: 0.3;
 	}
 	.focus .browse {
 		margin-right: 32rpx;
@@ -1210,6 +1231,7 @@ export default {
 	}
 	.type .tag {
 		width: 48rpx;
+		opacity: 0.3;
 	}
 	.area {
 		margin-right: 58rpx;
@@ -1222,6 +1244,7 @@ export default {
 	}
 	.area .tag {
 		width: 48rpx;
+		opacity: 0.3;
 	}
 	.areaInner {
 		/* width: fit-content; */
@@ -1368,7 +1391,7 @@ export default {
 		height: 24rpx;
 		border-right: 1rpx dotted #c2c2c2;
 	}
-	.column > view:active {
+	.column > view.active {
 		border-right: 1rpx dotted #01c2c3;
 	}
 	.worker {
@@ -1376,28 +1399,36 @@ export default {
 		display: flex;
 		justify-content: space-between;
 	}
-	.worker > view {
+	
+	.worker .item {
 		width: 40rpx;
 		height: 128rpx;
 		background: #f5f6f6;
 		border-radius: 20rpx;
 	}
-	.worker > view > view {
-		width: 20rpx;
-		height: 72rpx;
+	.worker .item > view {
+		width: 40rpx;
+		height: 128rpx;
 		margin: 10rpx 10rpx 14rpx;
 		font-size: 20rpx;
 		color: #333333;
 		line-height: 24rpx;
 	}
-	.worker .avatar {
+	.worker .item > view .avatar {
 		width: 28rpx;
 		height: 28rpx;
 		border-radius: 50%;
 		display: block;
-		margin: 2rpx 6rpx 0;
+		margin: 2rpx -2rpx 8rpx;
 	}
-
+	.worker .item .text{
+		margin: 28rpx 10rpx;
+		color: #999999;
+	}
+	.worker .item .own{
+		margin: 16rpx 10rpx;
+	}
+	
 	.dynamic {
 		width: 100%;
 		height: fit-content;
@@ -1457,6 +1488,10 @@ export default {
 		font-size: 26rpx;
 		color: #999999;
 		margin: 24rpx 298rpx;
+	}
+	.noDynamics .bottom{
+		width: 750rpx;
+		height: 186rpx;
 	}
 	.list {
 		width: 100%;

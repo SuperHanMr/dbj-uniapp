@@ -14,7 +14,7 @@ export function getCaseList(params) {
   });
 }
 export function getDecorateProcess(params) {
-  return request.get(`/pm/web/project/detail`, {
+  return request.get(`/pm/web-wol/project/detail`, {
     params
   });
 }
@@ -27,7 +27,7 @@ export function getDrawings(params) {
   });
 }
 export function getDecorateDynamic(params) {
-  return request.post(`/pm/app/decorate/calendar/getListByPageQuery`, params);
+  return request.post(`/pm/app/decorate/calendar/getListByPageQueryNoLogin`, params);
 }
 export function getSelectOptions(params) {
   return request.get(`/pm/app/project/myService`, {

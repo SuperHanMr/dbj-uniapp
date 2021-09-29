@@ -32,14 +32,14 @@
 						<view class="check" v-if="!shopItem.shopChecked" @click="checkShop(shopItem.storeId)"></view>
 						<image class="checked" v-else @click="checkShop(shopItem.storeId)" src="../../../static/shopping-cart/checked@2x.png" ></image>
 					</view>
-					<view class="goShop" @click="toShop">
+					<view class="goShop" @click="toShopHome(shopItem.storeId)">
 						<text class="shopName">{{shopItem.storeName}}</text>
 						<image class="shopIcon" src="../../../static/shopping-cart/goShop_ic@2x.png"></text>
 					</view>
 				</view>	
 				<view class="freeMail">	
 					<view class="text">还差{{shopItem.freeShipping || "0"}}元可获得一次免运费权益</view>
-					<view class="toShop" @click="toShopDetail">
+					<view class="toShop" @click="toShopHome(shopItem.storeId)">
 						<text>去凑单</text>
 						<image class="icon" src="../../../static/shopping-cart/toPostFree@2x.png"></image>
 					</view>
@@ -161,7 +161,7 @@
 				</view>
 				<view class="right">
 					<view class="text">合计：</view>
-					<view class="totalPrice">¥{{totalPrice}}</view>
+					<view class="totalPrice">¥{{totalPrice.toFixed(2)}}</view>
 					<view class="preOrder" @click="pay">结算({{totalCout}})</view>
 				</view>
 			</view>	  							
@@ -300,8 +300,11 @@
 					url: '/pages/classify/index/index'
 				})
 			},
-			toShopDetail(){
-				console.log('跳转到店铺详情页')
+			toShopHome(storeId){
+				let areaId = getApp().globalData.currentProject.areaId
+				uni.navigateTo({
+					url: `/sub-classify/pages/shops/shops?storeId=${storeId}&areaId=${areaId}`
+				})
 			},
 			toGoodsDetail(skuId,isDisabled){
 				uni.navigateTo({

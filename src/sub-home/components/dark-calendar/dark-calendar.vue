@@ -16,7 +16,7 @@
 						></image>
 				</view>
 			</view>
-			<view class="memo" @click="toMemo">
+			<view class="memo" @click="toMemo" v-if="showMemo">
 				<image class="ic_memo" src="../../static/ic_memo@2x.png"></image>
 				<view class="text">备忘录</view>
 			</view>
@@ -35,8 +35,8 @@
         </view>
       </view>
     </view>
-
-    <image src="../../static/ic_shrink@2x.png" @click="trgWeek()" class="weektoggel" :class="{ down: !monthOpen }"></image>
+		<view class="weektoggel" v-if="collapsible" @click="trgWeek()"></view>
+    
   </view>
 </template>
 
@@ -60,8 +60,15 @@
 	      type: Boolean,
 	      default: true
 	    },
+			collapsible: {
+				type: Boolean,
+				default: true
+			},
 			projectId: {
 				type: Number,
+			},
+			showMemo: {
+				type: Boolean,
 			}
 	  },
 	  data() {
@@ -160,6 +167,8 @@
 				dates.map(item => {
 					if(item.month+1 < 10){
 						item.month = '0'+(item.month+1)
+					}else{
+						item.month +=1
 					}
 					return item
 				})
@@ -197,7 +206,6 @@
 	        })
 	        this.positionTop = -((Math.ceil((index + 1) / 7) || 1) - 1) * 80
 	      }
-				console.log(this.positionTop,'???')
 	    },
 	    // 点击回调
 	    selectOne(i, event) {
@@ -239,10 +247,9 @@
 <style lang="scss" scoped>
 	.sign-calendar {
 		width: 750rpx;
-		height: 620rpx;
+		height: fit-content;
 	  background-color: #f2f5f8;
-	  padding-bottom: 10rpx;
-		// position: relative;
+		position: relative;
 	}
 	.top-bar{
 		width: 750rpx;
@@ -337,13 +344,11 @@
 		width: 686rpx;
 		height: 452rpx;
 		margin: 0 32rpx;
+		padding-bottom: 10rpx;
 	  transition: top 0.3s;
 	  display: flex;
 	  align-items: center;
 	  flex-wrap: wrap;
-	  position: absolute;
-		top: 0;
-		left: 0;
 	}
 	.item {
 		width: 98rpx;
@@ -404,12 +409,13 @@
     height: 80rpx !important;
   }
   .weektoggel {
-    width: 32rpx;
-    height: 16rpx;
-    margin: 24rpx 360rpx;
-
-    &.down {
-      transform: rotate(180deg);
-    }
+    width: 64rpx;
+    height: 8rpx;
+    margin: 0 343rpx;
+    background: #e7e8e8;
+    border-radius: 4rpx;
+		position: absolute;
+		left: 0;
+		bottom: -36rpx;
   }
 </style>

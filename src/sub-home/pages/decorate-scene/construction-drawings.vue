@@ -82,7 +82,7 @@
 			}
 		},
 		onLoad(option) {
-				// this.projectId = option.projectId 
+				this.projectId = option.projectId 
 		},
 		mounted(){
 			this.requestPage()

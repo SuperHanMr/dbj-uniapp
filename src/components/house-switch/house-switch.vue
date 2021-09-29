@@ -2,7 +2,7 @@
 	<view class="s-w">
 		<view class="top"></view>
 		<view class="house-list">
-			<view class="item" v-for="(item ,i) in datalist" @click="checkHouse(item)" :key="item.projectId">
+			<view class="item" v-for="(item ,i) in datalist" @click="checkHouse(item)" :key="item.uid">
 				<view class="item-inner flex-row-bet"
 					:class="{default: item.defaultEstate, current: item.estateId == current}">
 					<view class="left flex-row-start">

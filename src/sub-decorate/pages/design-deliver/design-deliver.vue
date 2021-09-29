@@ -77,8 +77,8 @@
             if (res.confirm) {
               confirmStageDeliver(this.message.serveId).then(data => {
                 console.log(data)
-                uni.switchTab({
-                  url: "/pages/decorate/index/index"
+                uni.navigateBack({
+                  
                 })
               })
             } else {

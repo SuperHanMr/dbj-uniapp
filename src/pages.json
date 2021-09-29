@@ -100,6 +100,20 @@
 				"navigationBarTitleText": "",
 				"enablePullDownRefresh": false
 			}
+		}, {
+			"path": "pages/real-case/real-case-webview/real-case-webview",
+			"style": {
+				"navigationBarTitleText": "",
+				"enablePullDownRefresh": false
+			}
+
+		}, {
+			"path": "pages/common/result-null/result-null",
+			"style": {
+				"navigationBarTitleText": "敬请期待",
+				"enablePullDownRefresh": false
+			}
+
 		}
 	],
 	"globalStyle": {
@@ -485,7 +499,7 @@
 					"style": {
 						"navigationBarTitleText": "",
 						"enablePullDownRefresh": false,
-            "navigationBarBackgroundColor": "#36d9cd"
+						"navigationBarBackgroundColor": "#36d9cd"
 					}
 				},
 				{
@@ -504,14 +518,14 @@
 						"navigationBarBackgroundColor": "#f5f5f5"
 					}
 				},
-        {
-        	"path": "pages/shops-detail/shops-detail",
-        	"style": {
-        		"navigationBarTitleText": "",
-        		"enablePullDownRefresh": false,
-        		"navigationBarBackgroundColor": "#f5f5f5"
-        	}
-        }
+				{
+					"path": "pages/shops-detail/shops-detail",
+					"style": {
+						"navigationBarTitleText": "",
+						"enablePullDownRefresh": false,
+						"navigationBarBackgroundColor": "#f5f5f5"
+					}
+				}
 			]
 		},
 		{
@@ -548,6 +562,13 @@
 					"path": "pages/merchant-entry-failed/merchant-entry-failed",
 					"style": {
 						"navigationBarTitleText": "提交成功",
+						"enablePullDownRefresh": false
+					}
+
+				}, {
+					"path": "pages/merchant-entry-webview/merchant-entry-webview",
+					"style": {
+						"navigationBarTitleText": "",
 						"enablePullDownRefresh": false
 					}
 
@@ -870,20 +891,20 @@
 						"enablePullDownRefresh": true
 					}
 				},
-        {
-        	"path": "pages/person-page/person-dynamic-list",
-        	"style": {
-        		"navigationBarTitleText": "全部动态"
+				{
+					"path": "pages/person-page/person-dynamic-list",
+					"style": {
+						"navigationBarTitleText": "全部动态"
 
-        	}
-        },
-        {
-        	"path": "pages/person-page/person-evaluate-list",
-        	"style": {
-        		"navigationBarTitleText": "全部评价"
+					}
+				},
+				{
+					"path": "pages/person-page/person-evaluate-list",
+					"style": {
+						"navigationBarTitleText": "全部评价"
 
-        	}
-        }
+					}
+				}
 			]
 		}
 	]

@@ -1,6 +1,6 @@
 <template>
 	<view>
-		<view class="house" @click="changeHouse">
+		<view class="house">
 
 			<image class="img" src="http://dbj.dragonn.top/static/mp/dabanjia/images/decorate/ic_location.png"></image>
 			<view class="content">
@@ -88,8 +88,7 @@
 		},
 		onLoad(e) {
 			this.cartList = getApp().globalData.naviData
-			console.log(this.cartList)
-			this.getCurrentHouse();
+			this.currentHouse=getApp().globalData.currentEstate;
 		},
 		methods: {
 			changeHouse() {
@@ -97,22 +96,22 @@
 					url: "/sub-my/pages/my-house/my-house",
 				});
 			},
-			async getCurrentHouse() {
-				let houseList = await queryEstates();
-				let house = null;
-				let defaultHouse;
-				if (houseList && houseList.length) {
-					defaultHouse = houseList.find((e) => {
-						return e.defaultEstate == true;
-					});
-				}
-				if (defaultHouse) {
-					house = defaultHouse;
-				} else if (houseList.length) {
-					house = houseList[0];
-				}
-				this.currentHouse = house;
-			},
+			// async getCurrentHouse() {
+			// 	let houseList = await queryEstates();
+			// 	let house = null;
+			// 	let defaultHouse;
+			// 	if (houseList && houseList.length) {
+			// 		defaultHouse = houseList.find((e) => {
+			// 			return e.defaultEstate == true;
+			// 		});
+			// 	}
+			// 	if (defaultHouse) {
+			// 		house = defaultHouse;
+			// 	} else if (houseList.length) {
+			// 		house = houseList[0];
+			// 	}
+			// 	this.currentHouse = house;
+			// },
 			submit() {
 				let list = [];
 				this.cartList.forEach(e => {
