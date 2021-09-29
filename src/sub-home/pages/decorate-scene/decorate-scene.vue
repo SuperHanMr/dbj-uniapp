@@ -645,7 +645,6 @@ export default {
 			})
 		},
     toDecorate() {
-      console.log("tiaoz");
       uni.switchTab({
         url: `/pages/decorate/index/index`,
       });
@@ -655,7 +654,7 @@ export default {
     },
     toDecorateCalendar() {
       uni.navigateTo({
-        url: `/sub-home/pages/decorate-scene/decorate-calendar?projectId=${this.projectInfo.id}`,
+        url: `/sub-home/pages/decorate-scene/decorate-calendar?projectId=${this.projectInfo.id}&isDecorate=0`,
       });
     },
     toVideoSite() {
@@ -1408,8 +1407,8 @@ export default {
 		border-radius: 20rpx;
 	}
 	.worker .item > view {
-		width: 20rpx;
-		height: 72rpx;
+		width: 40rpx;
+		height: 128rpx;
 		margin: 10rpx 10rpx 14rpx;
 		font-size: 20rpx;
 		color: #333333;
@@ -1420,7 +1419,7 @@ export default {
 		height: 28rpx;
 		border-radius: 50%;
 		display: block;
-		margin: 2rpx 6rpx 0;
+		margin: 2rpx -2rpx 8rpx;
 	}
 	.worker .item .text{
 		margin: 28rpx 10rpx;

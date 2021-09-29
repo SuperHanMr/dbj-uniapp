@@ -8,22 +8,23 @@
           <view class="role">设计</view>
         </view>
       </view>
-      <view class="date">{{detail.designServerVO.updateTime}}</view>
+      <view class="date">{{calendarFormat(detail.designServerVO.updateTime)}}</view>
     </view>
     <view class="card flex-row-bet">
       <view class="t">颜值报告</view>
-      <!-- <view v-if="detail.">未生成颜值报告</view> -->
-      <view class="lookDetail flex-row-start" @click="beatifulReport">
+      <view v-if="detail.beautyReport && detail.beautyReport.id && detail.beautyReport.templateId" class="lookDetail flex-row-start" @click="beatifulReport">
         <view>立即查看</view>
         <image src="http://dbj.dragonn.top/static/mp/dabanjia/images/decorate/ic_more.svg"></image>
       </view>
+      <view v-else class="lookDetail">未生成颜值报告</view>
     </view>
     <view class="card flex-row-bet">
       <view class="t">自定义报告</view>
-      <view class="lookDetail flex-row-start" @click="customReport">
+      <view v-if="detail.beautyReport && detail.beautyReport.id && detail.beautyReport.templateId" class="lookDetail flex-row-start" @click="customReport">
         <view>立即查看</view>
         <image src="http://dbj.dragonn.top/static/mp/dabanjia/images/decorate/ic_more.svg"></image>
       </view>
+      <view v-else class="lookDetail">未生成自定义报告</view>
     </view>
     <button class="btn" @click="confirm">确认设计报告</button>
   </view>
@@ -34,6 +35,9 @@
     confirmDesignReport,
     serverReports
   } from "../../../api/decorate.js"
+  import {
+    calendarFormat
+  } from "../../../utils/date.js"
   export default {
     data() {
       return {
@@ -58,7 +62,7 @@
               console.log("点击了确认")
               confirmDesignReport(this.decorateMsg.serveId).then(data => {
                 uni.navigateBack({
-                  
+
                 })
               })
             } else {
@@ -68,19 +72,21 @@
         })
       },
       customReport() {
+        const {
+          customReport
+        } = this.detailF
         const token = uni.getStorageSync("scn")
-        
-        const {beautyReport} = this.detail
         uni.navigateTo({
-          url: `/sub-decorate/pages/custom-report/custom-report?token=${token}&themeId=${beautyReport.templateId}&id=${beautyReport.id}`
+          url: `/sub-decorate/pages/custom-report/custom-report?token=${token}&themeId=${customReport.templateId}&id=${customReport.id}`
         })
       },
       beatifulReport() {
+        const {
+          beautyReport
+        } = this.detail
         const token = uni.getStorageSync("scn")
-        
-        const {customReport} = this.detail
         uni.navigateTo({
-          url: `/sub-decorate/pages/beatiful-report/beatiful-report?token=${token}&themeId=${customReport.templateId}&id=${customReport.id}`
+          url: `/sub-decorate/pages/beatiful-report/beatiful-report?token=${token}&themeId=${beautyReport.templateId}&id=${beautyReport.id}`
         })
       },
       getPorts() {

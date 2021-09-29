@@ -17,7 +17,7 @@
       <view class="procsss flex-row-bet">
         <view class="s0">{{serviceData.serveRoleName}}</view>
         <view class="s1 flex-row-start" @click="personPage(serviceData)">
-          <view>{{serviceData.statusName}}</view>
+          <view>{{serviceData.serveName}}</view>
           <image src="http://dbj.dragonn.top/static/mp/dabanjia/images/decorate/ic_more.svg"></image>
         </view>
       </view>
