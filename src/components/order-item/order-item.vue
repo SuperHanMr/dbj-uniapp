@@ -94,7 +94,7 @@
 			</view>
 		</view>
 
-		<view class="apply-refund-container" :style="{paddingTop:0}"  v-if="!dataList.showRefundBtn && orderStatus==2 && dataList.refundStatus>-1">
+		<view class="apply-refund-container" :style="{paddingTop:0}"  v-if="!dataList.showRefundBtn && orderStatus==2 && dataList.refundStatus > 0">
 			<view class="button" v-if="dataList.refundStatus == 4"  @click="refundCancel">
 				取消退款
 			</view>

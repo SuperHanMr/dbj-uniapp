@@ -1,63 +1,49 @@
 <template>
   <view>
     <view class="container">
-      <view   class="product-container">
-        <view
-					v-if="type == 'whole'"
-          v-for="(item,index) in refundInfo.details" :key="index">
-          <view v-for="item2 in item.details" :key="item2.id">
-            <order-item :dataList="item2"></order-item>
-          </view>
+      <view  class="product-container">
+        <view v-if="type == 'whole'"  v-for="(item,index) in refundInfo.details" :key="index">
+					<view v-if="refundId">
+						<order-item :refundType="true" :dataList="item"></order-item>
+					</view>
+					<view v-else>
+						<view v-for="item2 in item.details" :key="item2.id">
+							<order-item :refundType="true" :dataList="item2"></order-item>
+						</view>
+					</view>
         </view>
 
         <view v-if="type == 'partical'">
           <order-item :dataList="refundInfo"></order-item>
         </view>
-
+				<!-- 运费和搬运费 -->
         <view class="price-container">
           <view class="price-item">
-            <view
-              class="header"
-              style="margin-bottom: 16rpx;"
-            >
-              <text style="margin-right: 8rpx;">运费</text>
-              <view class="icon">?</view>
+            <view  class="header" style="margin-bottom: 16rpx;">
+              <text style="margin-right: 8rpx;">运费</text><view class="icon">?</view>
             </view>
             <text>￥{{handlePrice(refundInfo.freight)[0]}}.{{handlePrice(refundInfo.freight)[1]}}</text>
-
-          </view>
-
+					</view>
           <view class="price-item">
             <view class="header">
-              <text style="margin-right: 8rpx;">搬运费</text>
-              <view class="icon">?</view>
+              <text style="margin-right: 8rpx;">搬运费</text><view class="icon">?</view>
             </view>
             <text>￥{{handlePrice(refundInfo.handlingFees)[0]}}.{{handlePrice(refundInfo.handlingFees)[1]}}</text>
-
-          </view>
+					</view>
         </view>
-
       </view>
 
 
 			<view class="refund-container">
 				<view class="refund-reason">
-          <view class="left">
-            <view class="icon">
-              *
-            </view>
-            <text>退款原因</text>
-          </view>
-					
-         <view class="reason" v-if="!reasonName">
-            <text style="color:#C7C7C7;">请选择</text>
-            <image
-              src="../../static/ic_arraw_down@2x.png"
-              mode=""
-              @click="openPopup()"
-            ></image>
-          </view>
-					
+					<view class="left">
+						<view class="icon">*</view>
+						<text>退款原因</text>
+					</view>
+					<view class="reason" v-if="!reasonName">
+						<text style="color:#C7C7C7;">请选择</text>
+						<image src="../../static/ic_arraw_down@2x.png" mode="" @click="openPopup()"/>
+					</view>
 					<view class="reason" v-else >
 					  <text style="margin-right: 16rpx;" @click="openPopup()">{{reasonName}}</text>
 					</view>
@@ -171,7 +157,7 @@
 </template>
 
 <script>
-import { getOrderDetail,refundReason,wholeOrderApplyForRefund,particalOrderApplyForRefund} from "@/api/order.js";
+import { getRefundInfo,refundReason,wholeOrderApplyForRefund,particalOrderApplyForRefund} from "@/api/order.js";
 export default {
   data() {
     return {
@@ -197,7 +183,7 @@ export default {
 			returnMoney:"",
 			
 			
-			
+			refundId:"",
 			
       systemBottom: "",
     };
@@ -212,20 +198,27 @@ export default {
 
   onLoad(e) {
     this.type = e.type;
-		this.query.orderId=Number(e.id)
-		this.query.status=Number(e.status);//订单状态1进行中 2已完成
-    console.log("this.type=", this.type);
-    if (this.type == "partical") {
-      this.refundInfo = JSON.parse(
-        wx.getStorageSync("particalRefundOrderInfo")
-      );
-			this.inputValue =  this.refundInfo.totalActualIncomeAmount
-      console.log("this.refundInfo=", this.refundInfo, typeof this.refundInfo);
-			
-    } else {
-      this.refundInfo = JSON.parse(wx.getStorageSync("wholeRefundOrderInfo"));
-			this.returnMoney =  this.refundInfo.totalActualIncomeAmount
-    }
+		if(this.type){
+			this.query.orderId=Number(e.id)
+			this.query.status=Number(e.status);//订单状态1进行中 2已完成
+			console.log("this.type=", this.type);
+			if (this.type == "partical") {
+				this.refundInfo = JSON.parse(
+					wx.getStorageSync("particalRefundOrderInfo")
+				);
+				this.inputValue =  this.refundInfo.totalActualIncomeAmount
+				console.log("this.refundInfo=", this.refundInfo, typeof this.refundInfo);
+				
+			} else {
+				this.refundInfo = JSON.parse(wx.getStorageSync("wholeRefundOrderInfo"));
+				this.returnMoney =  this.refundInfo.totalActualIncomeAmount
+			}
+		}else{
+			this.refundId = e.refundId
+			console.log("this.refundId=",this.refundId)
+			this.getReapplyRefundInfo()
+		}
+		// 退款原因
 		this.getRefundReasonList()
   },
 
@@ -241,14 +234,31 @@ export default {
     textAreaLength(newVal, oldVal) {},
   },
   methods: {
-    // 获取订单详情
-    // orderDetail() {
-    //   console.log("订单完成页面");
-    //   getOrderDetail({ id: this.id }).then((e) => {
-    //     this.orderInfo = e;
-       
-    //   });
-    // },
+    // 重新获取退款订单详情
+    getReapplyRefundInfo() {
+      getRefundInfo({ id: this.refundId }).then(data => {
+        console.log("重新获取的订单信息=",data)
+				this.type = data.applyMode==1?'partical':'whole'
+				this.query.remarks = data.remark
+				this.textAreaLength = data.remark.length
+				this.reasonValue = data.reasonId
+				this.reasonName = data.reason
+				this.refundInfo.totalActualIncomeAmount = data.refundAmount
+				this.returnMoney  =data.refundAmount
+				console.log("this.type=",this.type)
+				if(this.type =='partical'){
+					this.refundInfo = data.detailAppVOS
+					console.log("this.refundInfo=",this.refundInfo )
+				}else{
+					this.refundInfo.details = data.detailAppVOS
+					console.log("this.refundInfo.details = ",this.refundInfo.details)
+				}
+				this.query.orderId = data.orderId
+				this.query.status = data.progressed
+				this.refundInfo.freight = data.freight
+				this.refundInfo.handlingFees = data.handlingFees
+      });
+    },
 		
 		// 获取退款原因列表
 		getRefundReasonList(){
@@ -260,7 +270,6 @@ export default {
 			})
 		},
 		
-		
 		submitApplication() {
 			// 提交申请后该订单会进入到退款页面，状态显示退款中；并直接跳转到该订单退款详情页
       console.log("申请退款");
@@ -271,10 +280,11 @@ export default {
 				reasonId:this.reasonValue,//退款原因id
 				remark:this.query.remarks, //备注
 				status:this.query.status, //订单状态1进行中 2已完成
-}
+			}
 			wholeOrderApplyForRefund(params).then(res=>{
-				uni.navigateTo({
-					url:`../my-order/success/success?type=applyForRefund`
+				uni.redirectTo({
+					url:`../refund-list/refunding-detail/refunding-detail?orderId=${this.query.orderId}`
+					// url:`../my-order/success/success?type=applyForRefund`
 				})
 			})
     },
