@@ -1,5 +1,8 @@
 <template>
 	<view class="real-case">
+		<view class="22" @click="toRuzhu">
+			商家入驻
+		</view>
 		<view class="collectWrapper">
 			<view class="tabbar">
 				<view class="tabbar-switch-box">
@@ -140,7 +143,7 @@
 					})
 				} else if (isDecorate) {
 					uni.navigateTo({
-						url: `../../sub-home/pages/decorate-scene/decorate-scene`
+						url: `/sub-home/pages/decorate-scene/decorate-scene?projectId=${list[index].id}`
 					})
 				}
 			},
@@ -284,6 +287,11 @@
 				this.pagState.loadTxt = "上拉加载更多";
 				this.pagState.page++;
 			},
+			toRuzhu(){
+				uni.navigateTo({
+					url:'../../sub-other/pages/merchant-entry/merchant-entry'
+				})
+			}
 		},
 	};
 </script>

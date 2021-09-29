@@ -73,21 +73,32 @@
 		<view class="bottom">
 			<button type="default" class="get-phone" open-type="getPhoneNumber" @getphonenumber="decryptPhoneNumber"
 				v-if="showBottomButtom()"></button>
-			<image class="image-bottom" src="../../static/merchant-entry/merchant-entry-success.biaoqian.png" mode="">
+			<!-- <image class="image-bottom" src="../../static/merchant-entry/merchant-entry-success.biaoqian.png" mode=""> -->
 			</image>
 			<view class="pay-money" :class="showBottomButtom() ? '' : 'pay-money-no'">
-				<view class="money">
+				<!-- <view class="money">
 					<text class="icon">￥</text>
 					<text class="year-money">3000/年</text>
 					<text class="pay">立即支付</text>
 				</view>
 				<view class="text">
 					低至8.33元/天，近半年最低价
+				</view> -->
+				<view class="submit-text" @click="submitHandler">
+					提交入驻申请
 				</view>
 			</view>
 			<view class="argument">
-				<text>支付即视为同意</text>
-				<a href="" @click="toArguments($event)">《打扮家商家入驻协议》</a>
+				<view class="img-box" @click="argumentFileHandler">
+					<image v-if="argumentFile" src="../../static/merchant-entry/merchant-entry-select.png" mode=""></image>
+					<view v-if="!argumentFile" class="circle">
+				</view>
+					
+				</view>
+				<view class="box">
+					<text>我已完成阅读并同意</text>
+					<a href="" @click="toArguments($event)">《打扮家商家入驻协议》</a>
+				</view>
 			</view>
 		</view>
 		<uni-popup ref="popup" type="bottom">
@@ -170,6 +181,7 @@
 						text: '北京'
 					}
 				],
+				argumentFile: true,
 				businessCategoryList: [],
 				categroyTreeList: [],
 				deleteStatus: {}
@@ -267,7 +279,7 @@
 				});
 			},
 			showBottomButtom() {
-				if (this.cityList.length > 0 && this.businessCategoryList.length > 0 && this.companyValue != '') {
+				if (this.cityList.length > 0 && this.businessCategoryList.length > 0 && this.companyValue != '' && this.argumentFile) {
 					return true;
 				} else {
 					return false;
@@ -365,20 +377,27 @@
 				// 	success: (res) => {
 				// 		if (res.statusCode === 200) {
 				// 			console.log('下载成功');
-							uni.openDocument({
-								// filePath: res.tempFilePath,
-								filePath: 'https://ali-res.dabanjia.com/res/20210929/14/163289590753573.pdf',
-								fileType: 'pdf',
-								success: (res) => {
-									console.log(res, '>>>>>>>>>>>>>>')
-								},
-								fail: (res) => {
-									console.log(res, '>>>>>>>>>>>>')
-								}
-							})
+				uni.openDocument({
+					// filePath: res.tempFilePath,
+					filePath: 'https://ali-res.dabanjia.com/res/20210929/14/163289590753573.pdf',
+					fileType: 'pdf',
+					success: (res) => {
+						console.log(res, '>>>>>>>>>>>>>>')
+					},
+					fail: (res) => {
+						console.log(res, '>>>>>>>>>>>>')
+					}
+				})
 				// 		}
 				// 	}
 				// })
+			},
+			argumentFileHandler() {
+				console.log(123213)
+				this.argumentFile = !this.argumentFile;
+			},
+			submitHandler() {
+				console.log('submitHandler>>>>>>>>>>>')
 			}
 		},
 	}
@@ -542,6 +561,15 @@
 			height: 88rpx;
 			text-align: center;
 
+			.submit-text {
+				width: 100%;
+				padding: 24rpx 0;
+				font-size: 32rpx;
+				font-family: PingFangSC-Medium, PingFang SC;
+				font-weight: bold;
+				color: #FFFFFF;
+			}
+
 			.money {
 				font-weight: bold;
 				color: #FFFFFF;
@@ -584,7 +612,29 @@
 			display: flex;
 			justify-content: center;
 			align-items: center;
-
+			.img-box{
+				margin-right: 4rpx;
+				display: flex;
+				justify-content: center;
+				align-items: center;
+			}
+			image{
+				display: block;
+				width: 30rpx;
+				height: 28rpx;
+				background: red;
+			}
+			.circle{
+				width: 30rpx;
+				height: 26rpx;
+				border-radius: 50%;
+				border: 1px solid #A8A8A8;
+			}
+			.box{
+				display: flex;
+				justify-content: center;
+				align-items: center;
+			}
 			text {
 				color: #999999;
 			}
