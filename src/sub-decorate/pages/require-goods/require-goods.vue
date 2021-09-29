@@ -39,6 +39,8 @@
 		</view>
 		<view class="bottom-btns" :style="{paddingBottom:systemBottom}">
 			<view class="shop-icon" @click="openCart">
+				<image class="icon" src="http://dbj.dragonn.top/static/mp/dabanjia/images/home/ic_apply_goods.png"
+					mode=""></image>
 				<view v-if="cartCount" class="num">
 					{{cartCount}}
 				</view>
@@ -63,6 +65,9 @@
 			</view>
 			<view class="bottom-btns-pop" :style="{paddingBottom:systemBottom}">
 				<view class="shop-icon" @click="openCart">
+					<image class="icon" src="http://dbj.dragonn.top/static/mp/dabanjia/images/home/ic_apply_goods.png"
+						mode=""></image>
+
 					<view v-if="cartCount" class="num">
 						{{cartCount}}
 					</view>
@@ -270,8 +275,12 @@
 			width: 76rpx;
 			height: 76rpx;
 			position: relative;
-			background-color: yellow;
 			margin-left: 32rpx;
+
+			.icon {
+				width: 76rpx;
+				height: 76rpx;
+			}
 
 			.num {
 				position: absolute;
@@ -324,8 +333,12 @@
 			width: 76rpx;
 			height: 76rpx;
 			position: relative;
-			background-color: yellow;
 			margin-left: 32rpx;
+
+			.icon {
+				width: 76rpx;
+				height: 76rpx;
+			}
 
 			.num {
 				position: absolute;
