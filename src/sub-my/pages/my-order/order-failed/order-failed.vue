@@ -1,236 +1,256 @@
 <template>
   <view class="container">
-		
-    <!-- 退款详情 --退款关闭   退款取消与商家拒接 两个页面-->
-		<view class="order-container" v-if="type =='refund'" :style="{paddingBottom:containerPaddingBottom}">
-			<view class="order-status" >
-				<view class="backgroundStyle" />
-				<view class="status">
-					<image src="@/static/order/ic_order_failed@2x.png" mode=""></image>
-					<text v-if="status == 3 || status == 4">退款关闭</text>
-					<text v-if="status == 5">退款失败</text>
-				</view>
-				<text class="time">{{refundInfo.refundTime | formatDate}}</text>
-			</view>
 
-			<view class="order-header">
-				<image v-if="status == 5 " src="../../../static/ic_order_refund_failed@2x.png" mode=""></image>
-				<image v-else src="@/static/order/ic_failed@2x.png" mode=""></image>
-				<view class="cancel-text" v-if="status == 3">
-					商家拒绝了您的申请，如有问题未解决，您可以重新申请
-				</view>
-				<view class="cancel-text" v-if="status == 4">
-					您已取消了本次退款，如有问题未解决，您可以重新申请
-				</view>
-				<view class="cancel-text failed-text" v-if="status == 5">
-					您的退款账户存在异常，您可联系客服或者重新发起申请
-				</view>
-			</view>
-			<view class="body1" v-for="item in refundInfo.detailAppVOS" :key="item.id">
-					<order-item :dataList="item" :refundType="true" @handleDetail="productDetail(item,'refund')" />
-			</view>
-			<order-refund-info :refundInfo="refundInfo"></order-refund-info>
+    <!-- 退款详情 --退款关闭   退款取消与商家拒接 两个页面-->
+    <view  class="order-container"  v-if="type =='refund'" :style="{paddingBottom:containerPaddingBottom}">
+      <view class="order-status">
+        <view class="backgroundStyle" />
+        <view class="status">
+          <image src="@/static/order/ic_order_failed@2x.png" mode=""/>
+          <text v-if="status == 3 || status == 4">退款关闭</text>
+          <text v-if="status == 5">退款失败</text>
+        </view>
+        <text class="time">{{refundInfo.refundTime | formatDate}}</text>
+      </view>
+
+      <view class="order-header">
+        <image v-if="status == 5 " src="../../../static/ic_order_refund_failed@2x.png" mode=""/>
+        <image v-else src="@/static/order/ic_failed@2x.png" mode="" />
+        <view v-if="status == 3" class="cancel-text">
+          商家拒绝了您的申请，如有问题未解决，您可以重新申请
+        </view>
+        <view  v-if="status == 4" class="cancel-text">
+          您已取消了本次退款，如有问题未解决，您可以重新申请
+        </view>
+        <view v-if="status == 5" class="cancel-text failed-text" >
+          您的退款账户存在异常，您可联系客服或者重新发起申请
+        </view>
+      </view>
 			
-			<view
-			  class="contact-customer-Reapply"
-			  :style="{paddingBottom:systemBottom,height:systemHeight}"
-			>
-			  <view
+      <view class="body1" v-for="item in refundInfo.detailAppVOS"
+        :key="item.id">
+        <order-item
+          :dataList="item"
+          :refundType="true"
+          @handleDetail="productDetail(item,'refund')"
+        />
+        <view class="refund-money" v-if="item.freight || item.handlingFees">
+          <!--运费 -->
+          <view class="price-item" v-if="item.freight">
+            <view class="title">
+              <text style="margin-right: 8rpx;">运费</text>
+              <text class="icon">?</text>
+            </view>
+            <view>
+              <text>￥</text>
+              <text class="price-style">{{handlePrice(item.freight)[0]}}.{{handlePrice(item.freight)[1]}}</text>
+            </view>
+          </view>
+
+          <!-- 搬运费 -->
+          <view class="price-item" v-if="item.handlingFees">
+              <view class="title">
+                <text style="margin-right: 8rpx;">搬运费</text>
+                <text class="icon">?</text>
+              </view>
+              <view>
+                <text>￥</text>
+                <text class="price-style">{{handlePrice(item.handlingFees)[0]}}.{{handlePrice(item.handlingFees)[1]}}</text>
+              </view>
+          </view>
+        </view>
+			</view>
+				
+			<order-refund-info :refundInfo="refundInfo"></order-refund-info>
+
+			<view class="contact-customer-Reapply"  :style="{paddingBottom:systemBottom,height:systemHeight}">
+				<view
 					v-if="status == 3 || status == 5 "
-			    class="contact-customer"
-			    @click="contactCustomer()"
-			  >
-			    联系客服
-			  </view>
-			  <view
-			    class="Reapply"
-			    @click="toApplayForRefund(refundInfo)"
-			  >
-			    重新申请
-			  </view>
+					class="contact-customer"
+					@click="contactCustomer()"
+				>
+					联系客服
+				</view>
+				<view
+					class="Reapply"
+					@click="toApplayForRefund(refundInfo)"
+				>
+					重新申请
+				</view>
 			</view>
 		</view>
 		
-		
-		<!-- 订单详情  已关闭页面 -->
-		<view class="order-container" v-if="type =='close'"  :style="{paddingBottom:systemBottom}">
-      <view class="order-status">
-				<view class="backgroundStyle" />
-        <view class="status">
-          <image
-            src="@/static/order/ic_order_failed@2x.png"
-            mode=""
-          ></image>
-          <text>已关闭</text>
-        </view>
-      </view>
-
-     <order-user-base-info :data="orderInfo"></order-user-base-info>
-
-      <view class="body2"  v-for="(item,index) in orderInfo.details" :key="index">
-        <view class="header" @click="gotoShop(item)">
-         <text>{{item.storeName}}</text>
-          <image
-            src="@/static/order/ic_more@2x.png"
-            mode=""
-          ></image>
-        </view>
-				
-				<view v-for="item2 in item.details" :key="item2.id">
-					<order-item  :dataList="item2" @handleDetail="productDetail(item2)" />
-				</view>
-				
-      </view>
-			<order-price
-				:data="orderInfo"
-				:waitPay="true"
-			/>
 			
-			<order-info 
+		<!-- 订单详情  已关闭页面 -->
+		<view  class="order-container"  v-if="type =='close'"  :style="{paddingBottom:systemBottom}">
+			<view class="order-status">
+				<view class="backgroundStyle" />
+				<view class="status">
+					<image src="@/static/order/ic_order_failed@2x.png" mode=""/>
+					<text>已关闭</text>
+				</view>
+			</view>
+			<order-user-base-info :data="orderInfo"></order-user-base-info>
+			<view class="body2" v-for="(item,index) in orderInfo.details" :key="index" >
+				<view class="header"  @click="gotoShop(item)">
+					<text>{{item.storeName}}</text>
+					<image src="@/static/order/ic_more@2x.png"  mode="" />
+				</view>
+				<view v-for="item2 in item.details" :key="item2.id">
+					<order-item :dataList="item2" @handleDetail="productDetail(item2)"  />
+				</view>
+			</view>
+			<order-price :data="orderInfo"  :waitPay="true" />
+			<order-info
 				:orderNo="orderInfo.orderNo"
 				:createTime="orderInfo.createTime"
 				:cancelTime="orderInfo.cancelTime"
 				:showCancelTime="true"
 			/>
-
-    </view>
-
-  </view>
+		</view>
+	
+	</view>
 </template>
 
 <script>
-	import {formatDate} from "../../../../utils/common.js"
-	import {getRefundDetail,getOrderDetail} from "@/api/order.js"
-	export default {
-		
-		filters:{
-			formatDate
-		},
-		data() {
-			return {
-				type:"close",//type:refund退款详情   close是订单关闭
-				id:-1,
-				status:"",
-				from:"",
-				
-				refundInfo:{},
-				orderInfo:{},
-				
-				systemBottom: "",
-				containerPaddingBottom:"",
-				title:"",
-				areaId:"",
-			};
-		},
-	
-		mounted(e) {
-			const menuButtonInfo = uni.getMenuButtonBoundingClientRect();
-			this.systemBottom = menuButtonInfo.bottom + "rpx";
-			this.containerPaddingBottom = menuButtonInfo.bottom + 112 +'rpx'
-			console.log(this.systemBottom);
-		},
-	
-		onLoad(e){
-			this.type = e.type,
-			this.id = Number(e.id),
-			this.status = Number(e.status)
-			this.from  = e.from
-			if(this.type == 'refund'){//退款成功页面
-				this.refundDetail()
-				switch (this.status){
-					case 3: 
-						this.title="退款关闭"
-						break
-					case 4:
-						this.title="退款关闭"
-						break
-					case 5: 
-						this.title = "退款失败"
-				}
-			}
-			
-			if(this.type == 'close'){//订单关闭页面
-				this.title="退款中"
-				this.orderDetail()
-			}
-			const currentHouse =JSON.parse(uni.getStorageSync('currentHouse'))
-			this.areaId =currentHouse.areaId
-		},
-		
-		// 改变返回下一个页面的路径
-		onUnload(){ 
-			if(this.from == 'waitPay'){
-				uni.redirectTo({
-					url:`../my-order?index=1`
-				})
-				// uni.navigateBack({
-				// 		delta:1
-				// })
-				
-			}
-		},
-		
-	
-		methods: {
-			orderDetail(){
-				console.log("订单完成页面")
-				getOrderDetail({id:this.id}).then(e=>{
-					this.orderInfo = e
-					console.log("获取详情数据data=",this.orderInfo)
-				})
-			},
-			refundDetail(){
-				getRefundDetail({id:this.id}).then(e=>{
-					this.refundInfo = e
-					console.log("获取详情数据data=",this.refundInfo,)
-				})
-				
-			},
-			
-			// 申请退款
-			toApplayForRefund(data) {
-				wx.setStorageSync("wholeRefundOrderInfo", JSON.stringify(data));
-				uni.navigateTo({
-					url: `/sub-my/pages/apply-for-refund/apply-for-refund?id=${this.id}&type=whole&status=1`,
-				});
-			},
-			// 跳转到商品详情页面
-			productDetail(item,type){
-				console.log("item=",item,"type=",type)
-				if(type == 'refund'){
-					uni.navigateTo({
-						url:`../../../../sub-classify/pages/goods-detail/goods-detail?goodId=${item.relationId}`
-					})
-				}else{
-					uni.navigateTo({ 
-						url:`../../../../sub-classify/pages/goods-detail/goods-detail?goodId=${item.id}`
-					})
-				}
-			},
-			// 跳转到店铺页面
-			gotoShop(item) {
-			  console.log("去店铺首页！！！！");
-				console.log("this.storeId=",item.storeId,"this.areaId=",this.areaId)
-				uni.navigateTo({
-					url:`../../../../sub-classify/pages/shops/shops?storeId=${item.storeId}&areaId=${this.areaId}`
-				});
-			},
-			// 联系客服
-			contactCustomer(){
-				//跳转到客服的页面
-				console.log("联系客服")
-			}
-		}
-	};
+import { formatDate } from "../../../../utils/common.js";
+import { getRefundDetail, getOrderDetail } from "@/api/order.js";
+export default {
+  filters: {
+    formatDate,
+  },
+  data() {
+    return {
+      type: "close", //type:refund退款详情   close是订单关闭
+      id: -1,
+      status: "",
+      from: "",
+
+      refundInfo: {},
+      orderInfo: {},
+
+      systemBottom: "",
+      containerPaddingBottom: "",
+      title: "",
+      areaId: "",
+    };
+  },
+
+  mounted(e) {
+    const menuButtonInfo = uni.getMenuButtonBoundingClientRect();
+    this.systemBottom = menuButtonInfo.bottom + "rpx";
+    this.containerPaddingBottom = menuButtonInfo.bottom + 112 + "rpx";
+    console.log(this.systemBottom);
+  },
+
+  onLoad(e) {
+    (this.type = e.type),
+      (this.id = Number(e.id)),
+      (this.status = Number(e.status));
+    this.from = e.from;
+    if (this.type == "refund") {
+      //退款成功页面
+      this.refundDetail();
+      switch (this.status) {
+        case 3:
+          this.title = "退款关闭";
+          break;
+        case 4:
+          this.title = "退款关闭";
+          break;
+        case 5:
+          this.title = "退款失败";
+      }
+    }
+
+    if (this.type == "close") {
+      //订单关闭页面
+      this.title = "退款中";
+      this.orderDetail();
+    }
+    const currentHouse = JSON.parse(uni.getStorageSync("currentHouse"));
+    this.areaId = currentHouse.areaId;
+  },
+
+  // 改变返回下一个页面的路径
+  onUnload() {
+    if (this.from == "waitPay") {
+      uni.redirectTo({
+        url: `../my-order?index=1`,
+      });
+      // uni.navigateBack({
+      // 		delta:1
+      // })
+    }
+  },
+
+  methods: {
+    orderDetail() {
+      console.log("订单完成页面");
+      getOrderDetail({ id: this.id }).then((e) => {
+        this.orderInfo = e;
+        console.log("获取详情数据data=", this.orderInfo);
+      });
+    },
+    refundDetail() {
+      getRefundDetail({ id: this.id }).then((e) => {
+        this.refundInfo = e;
+        console.log("获取详情数据data=", this.refundInfo);
+      });
+    },
+
+    // 申请退款
+    toApplayForRefund(data) {
+      wx.setStorageSync("wholeRefundOrderInfo", JSON.stringify(data));
+      uni.navigateTo({
+        url: `/sub-my/pages/apply-for-refund/apply-for-refund?refundId=${data.id}`,
+      });
+    },
+    // 跳转到商品详情页面
+    productDetail(item, type) {
+      console.log("item=", item, "type=", type);
+      if (type == "refund") {
+        uni.navigateTo({
+          url: `../../../../sub-classify/pages/goods-detail/goods-detail?goodId=${item.relationId}`,
+        });
+      } else {
+        uni.navigateTo({
+          url: `../../../../sub-classify/pages/goods-detail/goods-detail?goodId=${item.id}`,
+        });
+      }
+    },
+    // 跳转到店铺页面
+    gotoShop(item) {
+      console.log("去店铺首页！！！！");
+      console.log("this.storeId=", item.storeId, "this.areaId=", this.areaId);
+      uni.navigateTo({
+        url: `../../../../sub-classify/pages/shops/shops?storeId=${item.storeId}&areaId=${this.areaId}`,
+      });
+    },
+    // 联系客服
+    contactCustomer() {
+      //跳转到客服的页面
+      console.log("联系客服");
+    },
+    handlePrice(price) {
+      let list = String(price).split(".");
+      if (list.length == 1) {
+        return [list[0], "00"];
+      } else {
+        return [list[0], list[1]];
+      }
+    },
+  },
+};
 </script>
 
 <style lang="scss" scoped>
 .container {
   .order-container {
-  width: 100%;
-  height: 100%;
-  overflow: auto;
-  
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+
     .order-status {
       width: 100%;
       height: 140rpx;
@@ -239,13 +259,13 @@
       display: flex;
       flex-flow: column nowrap;
       align-items: center;
-			.backgroundStyle {
-			  position: absolute;
-			  z-index: -1;
-			  width: 100%;
-			  height: 172rpx;
-			  background-color:#C6C6C6;
-			}
+      .backgroundStyle {
+        position: absolute;
+        z-index: -1;
+        width: 100%;
+        height: 172rpx;
+        background-color: #c6c6c6;
+      }
       .status {
         display: flex;
         flex-flow: row nowrap;
@@ -296,9 +316,9 @@
         word-wrap: break-word;
         word-break: break-all;
       }
-			.failed-text{
-				color: #FF3347 !important;
-			}
+      .failed-text {
+        color: #ff3347 !important;
+      }
     }
 
     .body1 {
@@ -306,6 +326,35 @@
       background: #ffffff;
       border-radius: 24rpx;
       margin-bottom: 16rpx;
+      .refund-money {
+				padding-bottom: 32rpx;
+        .price-item {
+          display: flex;
+          flex-flow: row nowrap;
+          align-items: center;
+          justify-content: space-between;
+          color: #808080;
+          font-size: 24rpx;
+          font-weight: 400;
+          margin-bottom: 16rpx;
+          .title {
+            display: flex;
+            flex-flow: row nowrap;
+            align-items: center;
+            .icon {
+              width: 24rpx;
+              height: 24rpx;
+              border: 2rpx solid #999999;
+              border-radius: 50%;
+              line-height: 24rpx;
+              text-align: center;
+            }
+          }
+        }
+        .price-item:nth-last-child(1) {
+          margin-bottom: 0;
+        }
+      }
     }
     .body2 {
       padding: 32rpx 32rpx 0;
@@ -360,7 +409,7 @@
   justify-content: flex-end;
   padding: 12rpx 32rpx;
   .Reapply {
-		margin-left: 32rpx;
+    margin-left: 32rpx;
     width: 140rpx;
     height: 56rpx;
     line-height: 56rpx;
@@ -375,8 +424,8 @@
   .contact-customer {
     margin: 18rpx 0;
     width: 140rpx;
-		height: 56rpx;
-		line-height: 56rpx;
+    height: 56rpx;
+    line-height: 56rpx;
     box-sizing: border-box;
     text-align: center;
     background: #ffffff;
