@@ -56,50 +56,46 @@
       		this.rightHeight += height;
       	}
       },
-      onJump(list, index ,isDecorate) {
+      onJump(list, index, isDecorate) {
+      	
       	// parentType 1 全景图 0  短视频  2 图文
-      	if (list[index].parentType === 1) {
-      		const listUrl = list[index].videoUrl
-      		uni.navigateTo({
-      			url: `./component/panorama/panorama?url=${listUrl}`
-      		})
-      	} else if(isDecorate){
-      		uni.navigateTo({
-      			url: `../../sub-home/pages/decorate-scene/decorate-scene`
-      		})
-      	}
+      	const listUrl = list[index].videoUrl
+      	uni.navigateTo({
+      		url: `/pages/real-case/real-case-webview/real-case-webview?id=${list[index].id}`
+      	})
       },
       // 组件点击事件
       onClick(index, tag) {
-      	console.log(index, tag);
+      	this.tag = tag;
       	// 对应的数据
       	if (tag == "0") {
-      		this.onJump(this.leftList, index ,false);
+      		this.onJump(this.leftList, index, this.selectStatus);
       
       	} else {
-      		this.onJump(this.rightList, index ,true);
+      		this.onJump(this.rightList, index, this.selectStatus);
       	}
       },
       // 收藏事件
-      onCollection(index) {
+      onCollection(index, tag) {
       	const item = this.leftList[index];
-      	console.log(this.leftList[index],"收藏");
+      	let list = [];
+      	if (tag == 0) {
+      		list = this.leftList;
+      	} else {
+      		list = this.rightList;
+      	}
       	getCollection({
-      		// bizType: 0, // 固定内容
+      		routeId: 5001, // 固定内容
       		subBizType: item.parentType, // 内容下的子项   视频 VR  图片
       		relationId: item.id, // 作品ID
       		authorId: item.zeusId, // 作者ID
-          routeid:5001,
       	}).then((res) => {
-      		if (res.data?.code == 1) {
-      			if (this.leftList[index].isCollection == false) {
-      				this.leftList[index].collectionCount += 1;
-      			} else {
-      				this.leftList[index].collectionCount -= 1;
-      			}
-      			this.leftList[index].isCollection = !this.leftList[index].isCollection;
-      			console.log(this.leftList[index], 'asdsada')
+      		if (list[index].isCollection == false) {
+      			list[index].collectionCount += 1;
+      		} else {
+      			list[index].collectionCount -= 1;
       		}
+      		list[index].isCollection = !list[index].isCollection;
       	});
       },
       // 获取数据

@@ -6,7 +6,7 @@
         :key="index"
         :right-options="options"
         @click="bindClick($event,item)"
-        :disabled="item.type==0"
+        :disabled="item.type==0&&isMyHouse"
       >
         <view class="item">
 
