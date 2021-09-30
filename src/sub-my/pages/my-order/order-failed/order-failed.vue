@@ -2,11 +2,7 @@
   <view class="container">
 
     <!-- 退款详情 --退款关闭   退款取消与商家拒接 两个页面-->
-    <view
-      class="order-container"
-      v-if="type =='refund'"
-      :style="{paddingBottom:containerPaddingBottom}"
-    >
+    <view class="order-container"  v-if="type =='refund'" :style="{paddingBottom:containerPaddingBottom}">
       <view class="order-status">
         <view class="backgroundStyle" />
         <view class="status">
@@ -120,11 +116,7 @@
     </view>
 
     <!-- 订单详情  已关闭页面 -->
-    <view
-      class="order-container"
-      v-if="type =='close'"
-      :style="{paddingBottom:systemBottom}"
-    >
+    <view  class="order-container"  v-if="type =='close'" :style="{paddingBottom:systemBottom}">
       <view class="order-status">
         <view class="backgroundStyle" />
         <view class="status">
@@ -245,7 +237,13 @@ export default {
       // uni.navigateBack({
       // 		delta:1
       // })
-    }
+    }else if(this.from=='inprogress'){
+			uni.redirectTo({
+			  url: `../my-order?index=2`,
+			});
+		}else{
+			console.log("dddd")
+		}
   },
 
   methods: {

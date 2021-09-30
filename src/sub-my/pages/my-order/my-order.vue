@@ -69,7 +69,7 @@
 											<text style="font-weight: 400;">{{handlePrice(item.totalAmount)[0]}}.</text>
 											<text style="font-size:22rpx;">{{handlePrice(item.totalAmount)[1]}}</text>
 										</view>
-										<view>共{{item.goodsNumber}}件</view>
+										<view>共{{item.goodsNumber}}类</view>
 									</view>
 								</view>
 
@@ -513,6 +513,9 @@
 </script>
 
 <style lang="scss" scoped>
+	page{
+		height: 100% !important;
+	}
 	.fill {
 		width: 100%;
 		min-height: 100%;
