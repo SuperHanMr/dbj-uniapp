@@ -294,11 +294,11 @@
 				})
 			},
 			foramtPrice(item) {
-				let price = String(item.product.skuPrice);
+				let price = String(item.product.skuPrice||'0');
 				return price.slice(0, price.length - 2) || "0";
 			},
 			formatCent(item) {
-				let price = String(item.product.skuPrice);
+				let price = String(item.product.skuPrice||'0');
 				return price.slice(price.length - 2, price.length);
 			},
 			onLiveClick(item) {

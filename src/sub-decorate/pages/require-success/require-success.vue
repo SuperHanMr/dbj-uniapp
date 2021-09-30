@@ -26,13 +26,13 @@
 	export default {
 		data() {
 			return {
-				projectId:''
+				projectId: ''
 			};
 		},
 		onLoad(e) {
-					if (e && e.projectId) {
-							this.projectId = e.projectId;
-						}
+			if (e && e.projectId) {
+				this.projectId = e.projectId;
+			}
 		},
 		methods: {
 			toDecorate() {
