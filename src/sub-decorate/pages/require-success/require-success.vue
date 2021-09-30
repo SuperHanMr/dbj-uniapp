@@ -25,7 +25,14 @@
 <script>
 	export default {
 		data() {
-			return {};
+			return {
+				projectId: ''
+			};
+		},
+		onLoad(e) {
+			if (e && e.projectId) {
+				this.projectId = e.projectId;
+			}
 		},
 		methods: {
 			toDecorate() {
@@ -35,7 +42,7 @@
 			},
 			toDetail() {
 				uni.redirectTo({
-					url: '../require-history/require-history'
+					url: `../require-history/require-history?projectId=${this.projectId}`
 				})
 			}
 		},

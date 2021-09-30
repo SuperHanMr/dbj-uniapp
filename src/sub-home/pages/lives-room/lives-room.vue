@@ -1,5 +1,17 @@
 <template>
 	<view class="content">
+		<custom-navbar opacity="1"  title="as??ASDSA"  titleColor="#FFFFFF" bgcolor="#3b3c48">
+		<!-- 	<template v-slot:back>
+				<view style="color: white;">
+					Logo
+				</view>
+			</template> -->
+<!-- 			<template v-slot:title>
+				<view style="color: white;">
+					什么什么????
+				</view>
+			</template> -->
+		</custom-navbar>
 		<live-player class="player" :src="livePreview" autoplay @statechange="statechange" @error="error" />
 	</view>
 </template>
@@ -29,8 +41,15 @@
 		},
 		onShow() {
 			if (uni.getStorageSync("userId")) {
+				addListener("MESSAGE_RECEIVED", (event) => {
+					let messageList = event.data || [];
+					let systemMessageList = messageList.filter(msg => msg.conversationID === context.state.sysConv
+						.conversationID);
+					if (systemMessageList.length) {
+
+					}
+				});
 				getSafeTim().then(tim => {
-					console.log('?????!!!!!');
 					tim.joinGroup({
 						groupID: 'group' + this.roomId,
 						type: TIM.TYPES.GRP_AVCHATROOM
@@ -49,8 +68,6 @@
 								console.log('XXXXXXXXX');
 								console.log(result);
 							}
-							console.log('!!!!!!?????QQQQQ')
-							console.log(data)
 						});
 						console.log('!!!!!!!!!!!');
 						console.log(imResponse.data.status)

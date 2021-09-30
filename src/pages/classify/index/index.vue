@@ -64,7 +64,7 @@
 				})
 			},
 			getList() {
-				let areaId = JSON.parse(uni.getStorageSync('currentHouse')).areaId
+				let areaId = getApp().globalData.currentHouse.areaId
 				getClassifyList(areaId).then((data) => {
 					this.dataList = data;
 					if (this.id) {

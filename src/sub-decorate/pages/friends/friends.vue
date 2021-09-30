@@ -125,8 +125,9 @@ export default {
         estateId: this.roomId,
         deleteType,
       });
-      console.log(res);
-      this.getFriendsList();
+			uni.navigateBack({
+				
+			});
     },
     async getFriendsList() {
       this.list = await friendListByEstateId({
