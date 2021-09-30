@@ -74,7 +74,7 @@
           </view>
         </view>
         <!-- 我的装修服务 -->
-        <view class="my-decorate-service-wrap" v-if="purchasedServiceList.length > 0">
+        <view class="my-decorate-service-wrap" v-if="aServiceData.myServiceFlag">
           <image mode="aspectFit" class="top-bg"
             src="http://dbj.dragonn.top/static/mp/dabanjia/images/decorate/service-card-top.svg">
           </image>
