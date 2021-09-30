@@ -3,7 +3,7 @@
 		<view class="navi-header-state" :style="{height:tophight,backgroundColor:bgcolor,opacity:opacity}">
 		</view>
 		<view class="navi-header" :style="{height:navBarHeight,backgroundColor:bgcolor,opacity:opacity}">
-			<view>
+			<view  :style="{color:titleColor}">
 				{{title}}
 			</view>
 		</view>
@@ -29,6 +29,10 @@
 			bgcolor: {
 				type: String,
 				default: '#F8F8F8'
+			},
+			titleColor: {
+				type: String,
+				default: '#000000'
 			},
 			title: {
 				type: String,

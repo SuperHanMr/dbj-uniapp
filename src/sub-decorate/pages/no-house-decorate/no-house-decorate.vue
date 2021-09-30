@@ -476,7 +476,7 @@
               type: 2, //"int //实体类型   1材料  2服务   3专项付款",
               businessType: this.actuary.categoryTypeId, //"int //业务类型",
               workType: -2, //"int //工种类型",
-              storeId: this.actuary.storeId || 0, //"long //店铺id",
+              storeId: this.actuary.storeId, //"long //店铺id",
               storeType: 0, //"int //店铺类型 0普通 1设计师",
               number: this.currentHouse.insideArea, //"double //购买数量",
               params: "", //string //与订单无关的参数 如上门时间 doorTime"
@@ -495,7 +495,7 @@
               type: 2, //"int //实体类型   1材料  2服务   3专项付款",
               businessType: this.checkHouse.categoryTypeId, //"int //业务类型",
               workType: -2, //"int //工种类型",
-              storeId: this.checkHouse.storeId || 0, //"long //店铺id",
+              storeId: this.checkHouse.storeId, //"long //店铺id",
               storeType: 0, //"int //店铺类型 0普通 1设计师",
               number: this.currentHouse.insideArea, //"double //购买数量",
               params: {doorTime: this.checkHouse.doorTime}, //string //与订单无关的参数 如上门时间 doorTime"

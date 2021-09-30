@@ -2,9 +2,8 @@
 	<view style="background-color: #FFF;">
 		<custom-navbar opacity="1" :showBack="false" bgcolor="#FFF">
 			<template v-slot:back>
-				<view>
-					Logo
-				</view>
+				<image class="icon_logo" src="http://dbj.dragonn.top/static/mp/dabanjia/images/home/home_logo.png"
+					mode=""></image>
 			</template>
 		</custom-navbar>
 		<!-- 		<view :style="{height: navBarHeight}" style="width: 100%;background-color: red;">
@@ -17,8 +16,9 @@
 				<view class="address">
 					{{citydata}}
 				</view>
-				<image class="icon_down"  src="http://dbj.dragonn.top/static/mp/dabanjia/images/home/ic_home_down.png" mode=""></image>
-				
+				<image class="icon_down" src="http://dbj.dragonn.top/static/mp/dabanjia/images/home/ic_home_down.png"
+					mode=""></image>
+
 			</view>
 
 			<image @click="toSearch" class="icon-search"
@@ -73,28 +73,13 @@
 			</view>
 		</view>
 		<view class="example-content">
-			<view class="item" @click="toSelfFitment">
-				<view class="title">
-					#自学装修
-				</view>
-				<view class="sub-title">
-					秒懂!装修知识
-				</view>
-				<view class="tips">
-					自己手动 打扮温馨的家
-				</view>
-			</view>
 
-			<view class="item" @click="toRealCase">
-				<view class="title">
-					#真实案例
-				</view>
-				<view class="sub-title">
-					速查!相似案例
-				</view>
-				<view class="tips">
-					借鉴实践 新手变高手 </view>
-			</view>
+			<image class="item" src="http://dbj.dragonn.top/static/mp/dabanjia/images/home/home_study_self.png" mode=""
+				@click="toSelfFitment"></image>
+
+			<image class="item" src="http://dbj.dragonn.top/static/mp/dabanjia/images/home/home_zsal.png" mode=""
+				@click="toRealCase"></image>
+
 		</view>
 
 		<!-- 直播 -->
@@ -253,6 +238,9 @@
 			setTimeout(e => {
 				//防止401
 				this.token = getApp().globalData.token;
+				if (!this.token && !this.areaId) {
+					this.getHomeList();
+				}
 			}, 500)
 			this.swiperAuto = true;
 		},
@@ -294,11 +282,11 @@
 				})
 			},
 			foramtPrice(item) {
-				let price = String(item.product.skuPrice||'0');
+				let price = String(item.product.skuPrice || '0');
 				return price.slice(0, price.length - 2) || "0";
 			},
 			formatCent(item) {
-				let price = String(item.product.skuPrice||'0');
+				let price = String(item.product.skuPrice || '0');
 				return price.slice(price.length - 2, price.length);
 			},
 			onLiveClick(item) {
@@ -559,10 +547,16 @@
 </script>
 
 <style lang="scss" scoped>
-	.icon_down{
+	.icon_down {
 		width: 28rpx;
 		height: 28rpx;
 	}
+
+	.icon_logo {
+		width: 164rpx;
+		height: 60rpx;
+	}
+
 	.icon-search {
 		width: 48rpx;
 		height: 48rpx;
@@ -777,14 +771,14 @@
 		margin-top: 16rpx;
 
 		.item {
-			width: 296rpx;
+			width: 344rpx;
 			height: 150rpx;
 			background: #f5fcfc;
 			border-radius: 16rpx;
-			background: url("http://dbj.dragonn.top/static/mp/dabanjia/images/home/experience.png");
-			-moz-background-size: 100% 100%;
-			background-size: 100% 100%;
-			padding: 0 24rpx;
+			// background: url("http://dbj.dragonn.top/static/mp/dabanjia/images/home/experience.png");
+			// -moz-background-size: 100% 100%;
+			// background-size: 100% 100%;
+			// padding: 0 24rpx;
 
 			.title {
 				font-weight: 400;
@@ -981,7 +975,8 @@
 			height: 234rpx;
 		}
 	}
-	.header-flex-row{
+
+	.header-flex-row {
 		display: flex;
 		align-items: center;
 	}

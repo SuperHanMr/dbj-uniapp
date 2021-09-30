@@ -23,20 +23,30 @@
 					</view>
 
 					<view v-for="item2 in item.details" :key="item2.id" class="orederItem">
-						<order-item @handleDetail="goToDetail(item2)" :dataList="item2" :orderStatus="2"
+						<order-item 
+							@handleDetail="goToDetail(item2)" 
+							:dataList="item2" 
+							:orderStatus="2"
 							:showOriginPrice="orderInfo.discount && item.details.length"
-							@toApplayForRefund="toApplayForRefund(item2,1)" @refundCancel="refundCancel(item2)"
-							@refundSuccess="refundSuccess(item2)" @refundFailed="refundFailed(item2,1)"
-							@refundClose="refundClose(item2)"></order-item>
+							@toApplayForRefund="toApplayForRefund(item2,1)" 
+							@refundCancel="refundCancel(item2)"
+							@refundSuccess="refundSuccess(item2)" 
+							@refundFailed="refundFailed(item2,1)"
+							@refundClose="refundClose(item2)"
+						/>
 					</view>
-
 				</view>
 
 				<order-price :data="orderInfo" />
+				
 			</view>
 
-			<order-info :orderNo="orderInfo.orderNo" :createTime="orderInfo.createTime" :showPayTime="true"
-				:payTime="orderInfo.payTime" />
+			<order-info 
+				:orderNo="orderInfo.orderNo" 
+				:createTime="orderInfo.createTime" 
+				:showPayTime="true"
+				:payTime="orderInfo.payTime" 
+			/>
 
 			<view class="applyforRefund-confirmReceipt" :style="{paddingBottom:systemBottom,height:systemHeight}">
 				<view v-if="orderInfo.showRefundBtn" class="applyforRefund" @click="toApplayForRefund(orderInfo,2)">
@@ -46,7 +56,7 @@
 					确认收货
 				</view>
 			</view>
-
+			
 		</view>
 
 		<!-- 确认收货的弹框 -->

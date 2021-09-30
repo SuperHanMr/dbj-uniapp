@@ -1,7 +1,7 @@
 <template>
   <view class="wrap">
     <view class="message">
-      管家发起竣工验收申请，系统将在72:00:00后自动确认验收
+      管家发起竣工验收申请，系统将在{{countdown}}后自动确认验收
     </view>
     <view class="content">
       <user-desc-pict-butler :detail="detail"></user-desc-pict-butler>
@@ -38,7 +38,8 @@
         id: null,
         containerBottom: null,
         systemBottom: null,
-        systemHeight: null
+        systemHeight: null,
+        countdown: "72:00:00"
       }
     },
     mounted() {
