@@ -8,7 +8,7 @@
 						src="../../static/ic_month_pre@2x.png"
 						></image>
 				</view>
-				<view class="current-month">{{ y }}-{{ m+1 < 10? '0'+(m+1) : m+1 }}</view>
+				<view class="current-month">{{ y }}-{{ m+1 < 10? `0${m+1}` : m+1 }}</view>
 				<view class="next-month" @click="turning('next')">
 					<image
 						class="header-btn"
@@ -96,7 +96,7 @@
 	    let date = new Date()
 	    let y = date.getFullYear()
 	    let mon = date.getMonth()+1
-			let m = mon < 10? '0'+mon : mon
+			let m = mon < 10? `0${mon}` : mon
 	    let d = date.getDate()
 	    this.choose = `${y}-${m}-${d}`
 			console.log(this.choose)
@@ -166,7 +166,7 @@
 	      }
 				dates.map(item => {
 					if(item.month+1 < 10){
-						item.month = '0'+(item.month+1)
+						item.month = `0${item.month+1}`
 					}else{
 						item.month +=1
 					}
@@ -190,7 +190,7 @@
 	    isToday(y, m, d) {
 	      let year = new Date().getFullYear()
 				let mon = new Date().getMonth()+1
-				let month = mon < 10 ? '0'+mon : mon
+				let month = mon < 10 ? `0${mon}` : mon
 				let day = new Date().getDate()
 	      return y == year && m == month && d == day
 	    },

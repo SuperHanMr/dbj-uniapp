@@ -1,7 +1,7 @@
 <template>
   <view class="wrap">
     <view class="message">
-      管家发起竣工验收申请，系统将在72:00:00后自动确认验收
+      管家发起竣工验收申请，系统将在{{countdown}}后自动确认验收
     </view>
     <view class="content">
       <user-desc-pict-butler :detail="detail"></user-desc-pict-butler>
@@ -38,7 +38,9 @@
         id: null,
         containerBottom: null,
         systemBottom: null,
-        systemHeight: null
+        systemHeight: null,
+        countdown: "72:00:00",
+        updateTime: new Date().getTime(),
       }
     },
     mounted() {
@@ -79,9 +81,29 @@
           url: `/sub-decorate/pages/housekeeper-refuse/housekeeper-refuse?id=${this.msg.data.id}`
         })
       },
+      countTime() {
+        let nowtime = new Date(), //获取当前时间
+          endtime = new Date(this.updateTime + 72*60*60*1000); //定义结束时间
+        let lefttime = endtime.getTime() - nowtime.getTime(), //距离结束时间的毫秒数
+          leftd = Math.floor(lefttime / (1000 * 60 * 60 * 24)), //计算天数
+          lefth = Math.floor(lefttime / (1000 * 60 * 60) % 24), //计算小时数
+          leftm = Math.floor(lefttime / (1000 * 60) % 60), //计算分钟数
+          lefts = Math.floor(lefttime / 1000 % 60); //计算秒数
+        return leftd + "天" + lefth + ":" + leftm + ":" + lefts; //返回倒计时的字符串
+        
+        this.countdown = d * 24 + h + "小时" + m + "分钟" + s + "秒"
+      
+      },
       queryCompletionDetail() {
         completionDetail(this.msg.data.id).then(data => {
           this.detail = data
+          this.updateTime = data.updateTime
+          if (this.updateTime) {
+            this.countTime()
+            this.timer = setInterval(this.countTime(), 1000)
+          } else {
+            this.countdown = "72:00:00"
+          }
         })
       },
 
