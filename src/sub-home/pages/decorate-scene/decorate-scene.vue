@@ -29,7 +29,7 @@
           class="toConstruction"
           src="../../static/ic_construction_drawings@2x.png"
         ></image>
-        <view>施工图纸</view>
+        <view class="text">施工图纸</view>
       </view>
       <view
         class="cost"
@@ -39,7 +39,7 @@
           class="toCost"
           src="../../static/ic_cost_statistics@2x.png"
         ></image>
-        <view>花销统计</view>
+        <view class="text">花销统计</view>
       </view>
       <view
         class="decorate"
@@ -49,7 +49,7 @@
           class="toDecorate"
           src="../../static/ic_decorate_calendar@2x.png"
         ></image>
-        <view>装修日历</view>
+        <view class="text">装修日历</view>
       </view>
       <view
         class="video"
@@ -59,7 +59,7 @@
           class="toVideoSite"
           src="../../static/ic_video_site@2x.png"
         ></image>
-        <view>工地视频</view>
+        <view class="text">工地视频</view>
       </view>
     </view>
     <view class="process">
@@ -1224,9 +1224,8 @@ export default {
 		color: #ffffff;
 		line-height: 34rpx;
 	}
-	.typeInner {
-		/* width: fit-content; */
-		width: 150rpx;
+	.type .typeInner {
+		width: 154rpx;
 		margin-top: 14rpx;
 	}
 	.type .tag {
@@ -1246,9 +1245,8 @@ export default {
 		width: 48rpx;
 		opacity: 0.3;
 	}
-	.areaInner {
-		/* width: fit-content; */
-		width: 148rpx;
+	.area .areaInner {
+		width: 122rpx;
 		margin-top: 14rpx;
 	}
 
@@ -1259,23 +1257,30 @@ export default {
 		background: #ffffff;
 		border-radius: 40rpx;
 		display: flex;
-		justify-content: space-evenly;
+		justify-content: space-between;
 	}
 	.navBar > view {
-		margin-top: 32rpx;
+		margin-top: 36rpx;
 	}
-	.navBar > view > view {
-		margin-bottom: 30rpx;
+	.navBar > view:first-child{
+		margin-left: 76rpx;
+	}
+	.navBar > view:last-child{
+		margin-right: 76rpx;
+	}
+	.navBar > view  .text {
 		width: 96rpx;
 		height: 34rpx;
+		margin-bottom: 30rpx;
 		font-size: 24rpx;
 		text-align: center;
 		color: #333333;
 		line-height: 34rpx;
 	}
 	.navBar image {
-		width: 80rpx;
-		height: 80rpx;
+		width: 72rpx;
+		height: 72rpx;
+		margin: 4rpx;
 		display: block;
 	}
 	.process {
