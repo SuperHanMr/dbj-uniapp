@@ -37,7 +37,7 @@
                     ￥
                     <text class="integer-price">{{goodsItem.product.skuPrice?String(goodsItem.product.skuPrice/100).split(".")[0]: "0"}}</text>
                     <text>.{{String(goodsItem.product.skuPrice/100).split(".")[1]?String(goodsItem.product.skuPrice/100).split(".")[1]: "00"}}</text>
-                    <text>/{{goodsItem.product.priceUnitName?goodsItem.product.priceUnitName:""}}</text>
+                    <text>/{{goodsItem.product.salesUnit.unitName?goodsItem.product.salesUnit.unitName:""}}</text>
                     <text class="level" v-if="goodsItem.product.hasBadgeLevel">中级服务</text>
                   </view>
             </view>    
@@ -100,7 +100,7 @@
             categoryId:0,  //搜索范围，在指定的商品分类id的范围内搜索，可不传（表示不限定商品分类）,
             supplierId:0, //搜索范围，在指定的供应商 id 的范围内搜索，可不传（表示不限定供应商）,
             storeId:0, //搜索范围，在指定的店铺 id 的范围内搜索，可不传（表示不限定店铺）,
-            areaId: JSON.parse(uni.getStorageSync('currentHouse')).areaId, //区域编号，会按这个区域进行搜索；      区域的取值，请参考相关需求，好像是：有当前房屋就取当前房屋所在区域，没有当前房屋就取用户选取的位置区域...（具体逻辑比这个还复杂点）,
+            areaId: getApp().globalData.currentHouse.areaId, //区域编号，会按这个区域进行搜索；      区域的取值，请参考相关需求，好像是：有当前房屋就取当前房屋所在区域，没有当前房屋就取用户选取的位置区域...（具体逻辑比这个还复杂点）,
             sort:this.sort, //搜索排序方式：      price_asc  表示按价格从低到高排序；      price_desc 表示按价格从高到低排序；,
             pageIndex:this.page, //页面序号，从 1 开始，不传取 默认值第 1 页；,
             pageSize:20, //每页数据量大小，不传取默认值 10；,
