@@ -41,8 +41,7 @@
 									@click="goToDetail(item)">
 									<view class="product-img">
 										<scroll-view scroll-x style="width: 100%; white-space: nowrap;">
-											<image v-for="item2 in handleImage(item.details)" :key="item2" :src="item2"
-												mode=""></image>
+											<image v-for="item2 in handleImage(item.details)" :key="item2" :src="item2"mode="" />
 										</scroll-view>
 									</view>
 									<view class="total-price">
@@ -57,7 +56,7 @@
 
 								<!-- 非套餐 -->
 								<view v-else v-for="item2 in item.details" :key="item2.id">
-									<order-item :dataList="item2" @handleDetail="goToDetail(item)" :showPrice="true" />
+									<order-item :dataList="item2"   @handleDetail="goToDetail(item)" :showPrice="true" />
 								</view>
 							</view>
 
@@ -89,14 +88,17 @@
 									</text>
 								</view>
 
-								<view v-else class="need-pay">
+								<view v-else class="need-pay"> 
 									<text>实付</text>
-									<text style="color:#FF3347;margin-left: 8rpx;">
+									<text v-if="item.orderStatus == 3" style="color:#FF3347;margin-left: 8rpx;">
 										<text style="font-size:18rpx;">￥</text>
-										<text
-											style="font-size: 32rpx;">{{handlePrice(item.totalActualIncomeAmount)[0]}}.</text>
-										<text
-											style="font-size:18rpx;">{{handlePrice(item.totalActualIncomeAmount)[1]}}</text>
+										<text	style="font-size: 32rpx;">{{handlePrice(item.orderReceivableAmount)[0]}}.</text>
+										<text style="font-size:18rpx;">{{handlePrice(item.orderReceivableAmount)[1]}}</text>
+									</text>
+									<text  v-else style="color:#FF3347;margin-left: 8rpx;">
+										<text style="font-size:18rpx;">￥</text>
+										<text	style="font-size: 32rpx;">{{handlePrice(item.totalActualIncomeAmount)[0]}}.</text>
+										<text style="font-size:18rpx;">{{handlePrice(item.totalActualIncomeAmount)[1]}}</text>
 									</text>
 								</view>
 							</view>
@@ -157,6 +159,7 @@
 		<popup-dialog ref="cancleOrder" :title="title" @close="cancelOrderClose" @confirm="cancleConfirm" />
 		<!-- 确认收货的弹框 -->
 		<popup-dialog ref="confirmReceipt" :title="title" @close="confirmReceiptClose" @confirm="receiptConfirm" />
+	
 	</view>
 </template>
 
