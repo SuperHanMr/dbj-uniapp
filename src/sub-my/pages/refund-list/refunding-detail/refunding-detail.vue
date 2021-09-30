@@ -117,7 +117,7 @@ export default {
 				// 跳转到退款关闭页面  退款取消页面
 				this.$refs.cancelRefund.close();
 				uni.redirectTo({
-					url:`../../my-order/order-failed/order-failed?type=refund&id=${this.orderId}&status=4`
+					url:`../../my-order/order-failed/order-failed?type=refund&id=${this.orderId}&status=4&from=inprogress`
 				})
 			})
     },

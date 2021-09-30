@@ -1,108 +1,107 @@
 <template>
-	<view class="container">
-		<view class="order-container" v-for="(item,index) in dataList" :key="index" >
-		  <view class="header">
-		    <view class="store-name">
-		      <text>{{item.storeName}}</text>
-		      <image
-		        src="../../../static/order/ic_more@2x.png"
-		        mode=""
-		      ></image>
-		    </view>
-		    <view class="order-status">
-					<text> {{item.type==0?"仅退款(未发货)":item.type==1 ? "仅退款(退库存)":item.type==2 ? "仅退款(已收货)":item.type==3?"服务退款":""}}</text>				
-		    </view>
-		  </view>
-			
-			<view class="body" @click="goToDetail(item)">
-				<view class="body-main" v-for="(item2,index2) in item.detailAppVOS" :key="index2">
-					<view class="pic">
-						<image :src="item2.imgUrl" mode="	scaleToFill"></image>
+		<view class="container" :style="{paddingBottom:systemBottom}" >
+			<view class="order-container" v-for="(item,index) in dataList" :key="index" >
+				<view class="header">
+					<view class="store-name">
+						<text>{{item.storeName}}</text>
+						<image
+							src="../../../static/order/ic_more@2x.png"
+							mode=""
+						></image>
 					</view>
-					<view class="basic-info">
-						<view class="name-attr">
-							<view class="text">
-								<text class="icon">{{item2.type ==1 ?"物品" :"服务"}}</text>
-								<text class="name">{{item2.fullName}}</text>					
-							</view>
-							<view class="attr">
-								<text>{{item2.scaleProperties}}</text>
-							</view>
-							<view class="refund-price">
-								<text style="margin-right:8rpx ;">退款金额</text>
-								<text class="product-price">
-									<text style="font-size:22rpx;">￥</text>
-									<text>{{handlePrice(item.refundAmount)[0]}}.</text>
-									<text style="font-size:22rpx;">{{handlePrice(item.refundAmount)[1]}}</text>
-								</text>
+					<view class="order-status">
+						<text> {{item.type==0?"仅退款(未发货)":item.type==1 ? "仅退款(退库存)":item.type==2 ? "仅退款(已收货)":item.type==3?"服务退款":""}}</text>				
+					</view>
+				</view>
+				
+				<view class="body" @click="goToDetail(item)">
+					<view class="body-main" v-for="(item2,index2) in item.detailAppVOS" :key="index2">
+						<view class="pic">
+							<image :src="item2.imgUrl" mode="	scaleToFill"></image>
+						</view>
+						<view class="basic-info">
+							<view class="name-attr">
+								<view class="text">
+									<text class="icon">{{item2.type ==1 ?"物品" :"服务"}}</text>
+									<text class="name">{{item2.fullName}}</text>					
+								</view>
+								<view class="attr">
+									<text>{{item2.scaleProperties}}</text>
+								</view>
+								<view class="refund-price">
+									<text style="margin-right:8rpx ;">退款金额</text>
+									<text class="product-price">
+										<text style="font-size:22rpx;">￥</text>
+										<text>{{handlePrice(item.refundAmount)[0]}}.</text>
+										<text style="font-size:22rpx;">{{handlePrice(item.refundAmount)[1]}}</text>
+									</text>
+								</view>
 							</view>
 						</view>
-					</view>
-				</view>		
-			</view>
+					</view>		
+				</view>
+				
 			
-		
-			<view class="refund-status refundInProgress" v-if="item.status == 0 || item.status == 1 ">
-				<text style="margin-right: 16rpx;">退款中</text>
-				<text>
-					<text style="font-size:26rpx;">￥</text>
-					<text style="font-size:40rpx;">{{handlePrice(item.refundAmount)[0]}}.</text>
-					<text style="font-size:26rpx;">{{handlePrice(item.refundAmount)[1]}}</text>
-				</text>
-			</view>
+				<view class="refund-status refundInProgress" v-if="item.status == 0 || item.status == 1 ">
+					<text style="margin-right: 16rpx;">退款中</text>
+					<text>
+						<text style="font-size:26rpx;">￥</text>
+						<text style="font-size:40rpx;">{{handlePrice(item.refundAmount)[0]}}.</text>
+						<text style="font-size:26rpx;">{{handlePrice(item.refundAmount)[1]}}</text>
+					</text>
+				</view>
+				
+				<view class="refund-status refund-success" v-if="item.status == 2">
+					<text  style="margin-right: 16rpx;">退款成功</text>
+					<text>
+						<text style="font-size:26rpx;">￥</text>
+						<text style="font-size:40rpx;">{{handlePrice(item.refundAmount)[0]}}.</text>
+						<text style="font-size:26rpx;">{{handlePrice(item.refundAmount)[1]}}</text>
+					</text>
+				</view>
+				
+				<view class="refund-status refund-close" v-if="item.status == 3 || item.status == 4">
+					<text style="margin-right: 16rpx;">退款关闭</text>
+					<text  style="color: #333333; font-weight: 1000">退款已关闭</text>
+				</view>
+				
+				<view class="refund-status refund-fail" v-if="item.status == 5">
+					<text style="margin-right: 16rpx;">退款失败</text>
+					<text  style="font-weight: 1000">退款账户异常</text>
+				</view>
 			
-			<view class="refund-status refund-success" v-if="item.status == 2">
-				<text  style="margin-right: 16rpx;">退款成功</text>
-				<text>
-					<text style="font-size:26rpx;">￥</text>
-					<text style="font-size:40rpx;">{{handlePrice(item.refundAmount)[0]}}.</text>
-					<text style="font-size:26rpx;">{{handlePrice(item.refundAmount)[1]}}</text>
-				</text>
-			</view>
-			
-			<view class="refund-status refund-close" v-if="item.status == 3 || item.status == 4">
-				<text style="margin-right: 16rpx;">退款关闭</text>
-				<text  style="color: #333333; font-weight: 1000">退款已关闭</text>
-			</view>
-			
-			<view class="refund-status refund-fail" v-if="item.status == 5">
-				<text style="margin-right: 16rpx;">退款失败</text>
-				<text  style="font-weight: 1000">退款账户异常</text>
-			</view>
-			
-			
-			
-		  
-			<view class="footer">
-				<view class="button-container">
-					<button
-						v-if="item.status ==0 ||item.status == 1"
-							type="default"
-							size="mini"
-							@click="open(item)"
-						>取消申请</button>
+				<view class="footer">
+					<view class="button-container">
 						<button
-							type="default"
-							size="mini"
-							style="margin-left: 24rpx;"
-							@click="goToDetail(item)"
-						>查看详情</button>
-					</view>
-		  </view>
-			
-			<uni-popup ref="popup" type="dialog">
-				<uni-popup-dialog
-					mode="base"
-					message="成功消息"
-					title="确定要取消本次退款申请？"
-					:before-close="true" 
-					@close="close" 
-					@confirm="confirm()">
-				</uni-popup-dialog>
-			</uni-popup>
+							v-if="item.status ==0 ||item.status == 1"
+								type="default"
+								size="mini"
+								@click="open(item)"
+							>取消申请</button>
+							<button
+								type="default"
+								size="mini"
+								style="margin-left: 24rpx;"
+								@click="goToDetail(item)"
+							>查看详情</button>
+						</view>
+				</view>
+			</view>
+				<popup-dialog ref="popup"  :title="title" @close="close" @confirm="confirm"></popup-dialog>
+				<!-- <uni-popup ref="popup" type="dialog">
+					<uni-popup-dialog
+						mode="base"
+						message="成功消息"
+						title="确定要取消本次退款申请？"
+						:before-close="true" 
+						@close="close" 
+						@confirm="confirm()">
+					</uni-popup-dialog>
+				</uni-popup> -->
+
 		</view>
 
-	</view>
+
 </template>
 
 <script>
@@ -117,6 +116,8 @@
 				dataList:[],
 				dataListLength:"",
 				itemId:"",
+				systemBottom:"",
+				title:"确定要取消本次退款申请？",
 			}
 		},
 		onShow() {
@@ -133,17 +134,15 @@
 	 //页面上拉触底事件的处理函数
 		onReachBottom(e) {
 			console.log("底部")// 滚动到页面执行该方法 
-			// wx.showToast({
-			// 	title: '加载中...',
-			// 	icon: 'loading',
-			// 	duration: 2000
-			// })
 			if(this.query.lastId > 0 && this.dataListLength <1) return 
 			this.getList();
 			
 		},
 		  
-		
+		mounted(e) {
+			const menuButtonInfo = uni.getMenuButtonBoundingClientRect();
+			this.systemBottom = menuButtonInfo.bottom + "rpx";
+		},
 		methods: {
 			getList(){
 				console.log("获取退款列表数据")
@@ -211,9 +210,7 @@
 </script>
 
 <style lang="scss" scoped>
-
 	.container{
-		
 		.order-container{
 			background-color: #FFFFFF;
 		}
