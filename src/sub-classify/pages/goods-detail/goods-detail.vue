@@ -38,8 +38,8 @@
     },
     onShow() {
       this.token = getApp().globalData.token
-      // this.baseUrl = this.ENV.VUE_APP_BASE_H5
-      this.baseUrl = "https://local.meiwu365.com" 
+      this.baseUrl = this.ENV.VUE_APP_BASE_H5
+      // this.baseUrl = "https://local.meiwu365.com" 
       // this.baseUrl = "https://10.10.11.67" 
       this.userId = uni.getStorageSync('userId')
       this.defaultHouseInfo = uni.getStorageSync('currentHouse')
