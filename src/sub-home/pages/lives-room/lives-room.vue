@@ -25,20 +25,37 @@
 		<live-player class="player" :src="livePreview" autoplay @statechange="statechange" @error="error" />
 
 		<view class="bottom-contain">
-			<view class="scorll-chat">
 
-			</view>
+			<!-- 聊天 -->
+			<scroll-view id="scrollview" :scroll-top="scrollTop" class="scorll-chat" scroll-y="true"
+				:scroll-into-view="bottomId">
+				<view class="chat-item-height">
+
+
+					<view class="chat-item" v-for="(item,index) in list" :key="index">
+						{{item}}
+					</view>
+				</view>
+			</scroll-view>
+			<!-- 底部功能栏 -->
 			<view class="bottom-send">
 				<view class="input-text">
 					说点什么...
 				</view>
-				<view class="macphone">
+				<view class="macphone" @click="clickMacphone">
 					<image class="icon_macphone"
 						src="http://dbj.dragonn.top/%20static/mp/dabanjia/images/home/lives_macphone.png" mode="">
 					</image>
-
+					连麦
 				</view>
+				<image class="bottom-icon"
+					src="http://dbj.dragonn.top/%20static/mp/dabanjia/images/home/lives_shopping.png" mode=""></image>
+
+				<image class="bottom-icon"
+					src="http://dbj.dragonn.top/%20static/mp/dabanjia/images/home/lives_agree.png" mode=""></image>
+
 			</view>
+			<!-- 底部占位 -->
 			<view class="bottom-placeholder">
 
 			</view>
@@ -61,7 +78,11 @@
 				livePreview: '',
 				roomId: '',
 				navBarHeight: "",
-				tophight: ""
+				tophight: "",
+				list: [1, 2, 3],
+				scrollTop: 0,
+				count:0
+
 			};
 		},
 		onLoad(e) {
@@ -116,13 +137,26 @@
 								console.log(result);
 							}
 						});
-						console.log('!!!!!!!!!!!');
-						console.log(imResponse.data.status)
 					})
 				})
 			}
 		},
 		methods: {
+			scrollToBottom() {
+				let that = this;
+				let query = uni.createSelectorQuery();
+				query.selectAll('.chat-item-height').boundingClientRect();
+				// query.select('#scrollview').boundingClientRect();
+				query.exec((res) => {
+					if(res[0]&&res[0][0].height){
+						this.scrollTop=res[0][0].height
+					}
+				})
+			},
+			clickMacphone() {
+				this.list = this.list.concat([this.count++]);
+				this.scrollToBottom();
+			},
 			toBack() {
 				uni.navigateBack({
 
@@ -145,7 +179,7 @@
 		bottom: 0;
 		right: 0;
 		left: 0;
-		background-color: white;
+		// background-color: white;
 
 		.bottom-placeholder {
 			height: 68rpx;
@@ -167,6 +201,12 @@
 				border-radius: 28rpx;
 			}
 
+			.bottom-icon {
+				width: 84rpx;
+				height: 72rpx;
+				margin-left: 16rpx;
+			}
+
 			.macphone {
 				width: 140rpx;
 				height: 72rpx;
@@ -177,6 +217,7 @@
 				align-items: center;
 				font-size: 26rpx;
 				color: #ffffff;
+				margin-left: 16rpx;
 
 				.icon_macphone {
 					width: 50rpx;
@@ -187,6 +228,14 @@
 
 		.scorll-chat {
 			max-height: 452rpx;
+
+			.chat-item {
+				margin-left: 24rpx;
+				max-width: 544rpx;
+				background: rgba(0, 0, 0, 0.30);
+				border-radius: 14rpx;
+				color: #FFF;
+			}
 		}
 	}
 
