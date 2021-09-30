@@ -1,18 +1,66 @@
 <template>
 	<view class="content">
-		<custom-navbar opacity="1"  title="as??ASDSA"  titleColor="#FFFFFF" bgcolor="#3b3c48">
-		<!-- 	<template v-slot:back>
-				<view style="color: white;">
-					Logo
+		<custom-navbar opacity="1" title="as??ASDSA" titleColor="#FFFFFF" bgcolor="#3b3c48">
+			<template v-slot:back>
+				<view @click="toBack">
+					<i class="icon-ic_cancel_white" style="color: white;">
+					</i>
 				</view>
-			</template> -->
-<!-- 			<template v-slot:title>
-				<view style="color: white;">
-					什么什么????
-				</view>
-			</template> -->
+			</template>
 		</custom-navbar>
+		<!-- 占位 -->
+		<view :style="{height:navBarHeight}">
+		</view>
+		<!-- 占位 -->
+		<view style="height: 10rpx;">
+		</view>
+		<view class="state-bar">
+			<view class="">
+
+			</view>
+			<view class="">
+				3.23w
+			</view>
+		</view>
 		<live-player class="player" :src="livePreview" autoplay @statechange="statechange" @error="error" />
+
+		<view class="bottom-contain">
+
+			<!-- 聊天 -->
+			<scroll-view id="scrollview" :scroll-top="scrollTop" class="scorll-chat" scroll-y="true"
+				:scroll-into-view="bottomId">
+				<view class="chat-item-height">
+
+
+					<view class="chat-item" v-for="(item,index) in list" :key="index">
+						{{item}}
+					</view>
+				</view>
+			</scroll-view>
+			<!-- 底部功能栏 -->
+			<view class="bottom-send">
+				<view class="input-text">
+					说点什么...
+				</view>
+				<view class="macphone" @click="clickMacphone">
+					<image class="icon_macphone"
+						src="http://dbj.dragonn.top/%20static/mp/dabanjia/images/home/lives_macphone.png" mode="">
+					</image>
+					连麦
+				</view>
+				<image class="bottom-icon"
+					src="http://dbj.dragonn.top/%20static/mp/dabanjia/images/home/lives_shopping.png" mode=""></image>
+
+				<image class="bottom-icon"
+					src="http://dbj.dragonn.top/%20static/mp/dabanjia/images/home/lives_agree.png" mode=""></image>
+
+			</view>
+			<!-- 底部占位 -->
+			<view class="bottom-placeholder">
+
+			</view>
+
+		</view>
 	</view>
 </template>
 
@@ -28,7 +76,13 @@
 		data() {
 			return {
 				livePreview: '',
-				roomId: ''
+				roomId: '',
+				navBarHeight: "",
+				tophight: "",
+				list: [1, 2, 3],
+				scrollTop: 0,
+				count:0
+
 			};
 		},
 		onLoad(e) {
@@ -38,6 +92,20 @@
 			if (e && e.roomId) {
 				this.roomId = e.roomId
 			}
+			const systemInfo = uni.getSystemInfoSync();
+			//状态栏高度
+			this.tophight = systemInfo.statusBarHeight + "px";
+			// 获取胶囊按钮的位置
+			const menuButtonInfo = uni.getMenuButtonBoundingClientRect();
+			// this.backTop = menuButtonInfo.top + 'px';
+			// this.backHeight = menuButtonInfo.height + 'px';
+			console.log("**********", this.backHeight);
+			// 导航栏高度 = 状态栏到胶囊的间距（ 胶囊距上距离 - 状态栏高度 ）*2  +  胶囊高度
+			this.navBarHeight =
+				menuButtonInfo.top +
+				(menuButtonInfo.top - systemInfo.statusBarHeight) +
+				menuButtonInfo.height +
+				"px";
 		},
 		onShow() {
 			if (uni.getStorageSync("userId")) {
@@ -69,13 +137,31 @@
 								console.log(result);
 							}
 						});
-						console.log('!!!!!!!!!!!');
-						console.log(imResponse.data.status)
 					})
 				})
 			}
 		},
 		methods: {
+			scrollToBottom() {
+				let that = this;
+				let query = uni.createSelectorQuery();
+				query.selectAll('.chat-item-height').boundingClientRect();
+				// query.select('#scrollview').boundingClientRect();
+				query.exec((res) => {
+					if(res[0]&&res[0][0].height){
+						this.scrollTop=res[0][0].height
+					}
+				})
+			},
+			clickMacphone() {
+				this.list = this.list.concat([this.count++]);
+				this.scrollToBottom();
+			},
+			toBack() {
+				uni.navigateBack({
+
+				})
+			},
 			statechange(e) {
 				console.log('live-player code:', e.detail.code)
 			},
@@ -88,13 +174,88 @@
 </script>
 
 <style lang="scss">
+	.bottom-contain {
+		position: absolute;
+		bottom: 0;
+		right: 0;
+		left: 0;
+		// background-color: white;
+
+		.bottom-placeholder {
+			height: 68rpx;
+		}
+
+		.bottom-send {
+			height: 96rpx;
+			width: 100%;
+			display: flex;
+			flex-direction: row;
+			align-items: center;
+
+			.input-text {
+				margin-left: 24rpx;
+				width: 346rpx;
+				height: 72rpx;
+				opacity: 0.24;
+				background: #000000;
+				border-radius: 28rpx;
+			}
+
+			.bottom-icon {
+				width: 84rpx;
+				height: 72rpx;
+				margin-left: 16rpx;
+			}
+
+			.macphone {
+				width: 140rpx;
+				height: 72rpx;
+				background: rgba($color: #000000, $alpha: 0.24);
+				border-radius: 28rpx;
+				display: flex;
+				flex-direction: row;
+				align-items: center;
+				font-size: 26rpx;
+				color: #ffffff;
+				margin-left: 16rpx;
+
+				.icon_macphone {
+					width: 50rpx;
+					height: 50rpx;
+				}
+			}
+		}
+
+		.scorll-chat {
+			max-height: 452rpx;
+
+			.chat-item {
+				margin-left: 24rpx;
+				max-width: 544rpx;
+				background: rgba(0, 0, 0, 0.30);
+				border-radius: 14rpx;
+				color: #FFF;
+			}
+		}
+	}
+
+	.state-bar {
+		height: 112rpx;
+		margin: 0 24rpx;
+		display: flex;
+		justify-content: space-between;
+		align-items: center;
+	}
+
 	.content {
 		width: 100vw;
 		height: 100vh;
+		display: flex;
+		flex-direction: column;
 	}
 
 	.player {
-		width: 100%;
-		height: 100%;
+		flex: 1;
+		width: 100vw;
 	}
 </style>

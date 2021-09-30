@@ -81,6 +81,7 @@
     computed: {
       ...mapState({
         CONV_TYPES: (state) => state.message.CONV_TYPES,
+        cstServConv: (state) => state.message.cstServConv,
         currentConversation: (state) => state.message.currentConversation,
         currentMessageList: (state) => state.message.currentMessageList,
         isCompleted: (state) => state.message.isCompleted,
@@ -145,10 +146,30 @@
       this.messageListNodesRef = null;
     },
     onLoad(options) {
-      uni.setNavigationBarTitle({
-      　　title: options.name
-      });
-      this.$store.dispatch("checkoutConversation", options.id);
+      if (options.id === "CUSTOMER") {
+        let conv = this.cstServConv;
+        uni.setNavigationBarTitle({
+        　　title: conv.name
+        });
+        this.$store.dispatch("checkoutConversation", conv.conversationID);
+      } else {
+        uni.setNavigationBarTitle({
+        　　title: options.name || ""
+        });
+        this.$store.dispatch("checkoutConversation", options.id).then(res => {
+          if (!options.name) {
+            if (this.currentConversation.userProfile) {
+              uni.setNavigationBarTitle({
+              　　title: this.currentConversation.userProfile.nick
+              });
+            } else if (this.currentConversation.groupProfile) {
+              uni.setNavigationBarTitle({
+              　　title: this.currentConversation.groupProfile.introduction
+              });
+            }
+          }
+        })
+      }
     },
     onUnload() {
       this.$store.commit("resetConversation");

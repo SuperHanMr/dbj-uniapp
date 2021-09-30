@@ -391,7 +391,9 @@
                 storeId: it.storeId, //"long //店铺id",
                 storeType: 0, //"int //店铺类型 0普通 1设计师",
                 number: it.count, //"double //购买数量",
-                params: "", //string //与订单无关的参数 如上门时间 doorTime"
+                params: {
+                  serviceType: this.msg.serviceType
+                }, //string //与订单无关的参数 如上门时间 doorTime"
               })
             })
           }
@@ -415,7 +417,8 @@
                 storeType: 0, //"int //店铺类型 0普通 1设计师",
                 number: it.count, //"double //购买数量",
                 params: {
-                  skuRelation: this.skuRelation
+                  skuRelation: this.skuRelation,
+                  serviceType: this.msg.serviceType
                 }, //string //与订单无关的参数 如上门时间 doorTime"
               })
             })

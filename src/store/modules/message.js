@@ -8,7 +8,8 @@ import {
 } from "@/utils/tim.js"
 import {
   getGroupList,
-  getAgentStatus
+  getAgentStatus,
+  createC2CChat
 } from "@/api/message.js";
 
 const CONV_TYPES = {
@@ -417,6 +418,26 @@ const message = {
       let { conversationID, name } = context.state.cstServConv;
       uni.navigateTo({
         url: "/pages/message/conversation/conversation?id=" + conversationID + "&name=" + name,
+      });
+    },
+    /**
+     * 打开单聊
+     * @param {Object} context
+     * @param {Object} userId
+     */
+    openC2CConversation(context, userId) {
+      const conversationList = context.state.conversationList;
+      const userIMID = "zeus_" + userId;
+      const convId = TIM.TYPES.CONV_C2C + userIMID;
+      
+      let params = {
+        sourceZeusId: getApp().globalData.userInfo.id,
+        targetZeusId: userId
+      }
+      createC2CChat(params).then(res => {
+        uni.navigateTo({
+          url: "/pages/message/conversation/conversation?id=" + convId,
+        });
       });
     }
   }

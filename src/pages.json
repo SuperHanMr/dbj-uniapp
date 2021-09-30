@@ -103,8 +103,13 @@
 		}, {
 			"path": "pages/real-case/real-case-webview/real-case-webview",
 			"style": {
-				"navigationBarTitleText": "",
-				"enablePullDownRefresh": false
+				"navigationBarTitleText": "123213",
+				"enablePullDownRefresh": false,
+        "transparentTitle": "auto",
+        "navigationStyle": "custom",
+        "titleNView":"false"
+        
+        // "enablePullDownRefresh": true
 			}
 
 		}, {
