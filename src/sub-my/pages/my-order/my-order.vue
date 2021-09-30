@@ -1,19 +1,38 @@
 <template>
 	<view class="fill">
 		<view class="top-tab">
-			<view v-for="(item,index) in tabList" :key="index" class="item" :class="{selected:index==currentIndex}"
-				@click="currentIndex=index">
+			<view 
+				v-for="(item,index) in tabList" 
+				:key="index" 
+				class="item" 
+				:class="{selected:index==currentIndex}"
+				@click="currentIndex=index"
+			>
 				<view class="tab-text">{{item}}</view>
 				<view class="bottom-icon" />
 			</view>
 		</view>
 		<view class="line" />
-		<swiper class="swiper" :class="{empty:orderListLength<=0}" :style="{paddingBottom:systemBottom}"
-			:current="currentIndex" :duration="200" @change="swiperChange">
+		<swiper 
+			class="swiper" 
+			:class="{empty:orderListLength<=0}" 
+			:style="{paddingBottom:systemBottom}"
+			:current="currentIndex" 
+			:duration="200" 
+			@change="swiperChange"
+		>
 			<swiper-item v-for="(item,tabindex) in tabList" :key="item">
-				<scroll-view class="scroll-view" :enable-back-to-top="true" lower-threshold="10" scroll-y="true"
-					refresher-background="#FFF" :refresher-triggered="triggered" @refresherrefresh="onRefresh"
-					refresher-enabled="true" @scrolltolower="onLoadMore">
+				<scroll-view 
+					class="scroll-view" 
+					:enable-back-to-top="true" 
+					lower-threshold="10" 
+					scroll-y="true"
+					refresher-background="#FFF" 
+					:refresher-triggered="triggered"
+					@refresherrefresh="onRefresh"
+					refresher-enabled="true" 
+					@scrolltolower="onLoadMore"
+				>
 					<view v-if=" orderList.length > 0 " class="swiper-item">
 						<view class="order-container" v-for="item in orderList" :key="item.id">
 							<view class="header">
@@ -41,8 +60,7 @@
 									@click="goToDetail(item)">
 									<view class="product-img">
 										<scroll-view scroll-x style="width: 100%; white-space: nowrap;">
-											<image v-for="item2 in handleImage(item.details)" :key="item2" :src="item2"
-												mode=""></image>
+											<image v-for="item2 in handleImage(item.details)" :key="item2" :src="item2"mode="" />
 										</scroll-view>
 									</view>
 									<view class="total-price">
@@ -57,7 +75,7 @@
 
 								<!-- 非套餐 -->
 								<view v-else v-for="item2 in item.details" :key="item2.id">
-									<order-item :dataList="item2" @handleDetail="goToDetail(item)" :showPrice="true" />
+									<order-item :dataList="item2"   @handleDetail="goToDetail(item)" :showPrice="true" />
 								</view>
 							</view>
 
@@ -89,20 +107,23 @@
 									</text>
 								</view>
 
-								<view v-else class="need-pay">
+								<view v-else class="need-pay"> 
 									<text>实付</text>
-									<text style="color:#FF3347;margin-left: 8rpx;">
+									<text v-if="item.orderStatus == 3" style="color:#FF3347;margin-left: 8rpx;">
 										<text style="font-size:18rpx;">￥</text>
-										<text
-											style="font-size: 32rpx;">{{handlePrice(item.totalActualIncomeAmount)[0]}}.</text>
-										<text
-											style="font-size:18rpx;">{{handlePrice(item.totalActualIncomeAmount)[1]}}</text>
+										<text	style="font-size: 32rpx;">{{handlePrice(item.orderReceivableAmount)[0]}}.</text>
+										<text style="font-size:18rpx;">{{handlePrice(item.orderReceivableAmount)[1]}}</text>
+									</text>
+									<text  v-else style="color:#FF3347;margin-left: 8rpx;">
+										<text style="font-size:18rpx;">￥</text>
+										<text	style="font-size: 32rpx;">{{handlePrice(item.totalActualIncomeAmount)[0]}}.</text>
+										<text style="font-size:18rpx;">{{handlePrice(item.totalActualIncomeAmount)[1]}}</text>
 									</text>
 								</view>
 							</view>
 
-							<view class="line"
-								v-if="item.orderStatus == 0 && (item.showCancelOrderTime || item.showCancelBtn || item.showToPayBtn)" />
+							<view class="line" v-if="item.orderStatus == 0 && (item.showCancelOrderTime || item.showCancelBtn || item.showToPayBtn)" />
+							<view class="line" v-if="item.orderStatus == 1 && item.shipmentStatus == 2" />
 
 							<view class="footer"
 								v-if="item.orderStatus == 0 && (item.showCancelOrderTime || item.showCancelBtn || item.showToPayBtn)"
@@ -128,7 +149,6 @@
 
 								</view>
 							</view>
-							<view class="line" v-if="item.orderStatus == 1 && item.shipmentStatus == 2" />
 							<view class="footer buttonContainer "
 								v-if="item.orderStatus == 1 && item.shipmentStatus == 2">
 								<view class="button">
@@ -157,6 +177,7 @@
 		<popup-dialog ref="cancleOrder" :title="title" @close="cancelOrderClose" @confirm="cancleConfirm" />
 		<!-- 确认收货的弹框 -->
 		<popup-dialog ref="confirmReceipt" :title="title" @close="confirmReceiptClose" @confirm="receiptConfirm" />
+	
 	</view>
 </template>
 
@@ -593,25 +614,20 @@
 		display: flex;
 		flex: 1;
 		flex-direction: column;
-
 		.product-info {
-			// margin-top: 32rpx;
 			margin-bottom: 32rpx;
 			display: flex;
 			flex: 1;
 			flex-flow: row nowrap;
 			align-items: center;
-
 			image {
 				width: 136rpx;
 				height: 136rpx;
 				margin-right: 16rpx;
 			}
-
 			.product-img {
 				flex: 1;
 				overflow: hidden;
-
 				scroll-view {
 					image {
 						width: 136rpx;
@@ -621,13 +637,11 @@
 						box-sizing: border-box;
 						margin-right: 24rpx;
 					}
-
 					image:nth-last-child(1) {
 						margin-right: 0;
 					}
 				}
 			}
-
 			.total-price {
 				display: flex;
 				flex-flow: column nowrap;
@@ -636,7 +650,6 @@
 				font-size: 22rpx;
 				font-weight: 500;
 				margin-left: 24rpx;
-
 				.product-price {
 					height: 32rpx;
 					font-size: 32rpx;

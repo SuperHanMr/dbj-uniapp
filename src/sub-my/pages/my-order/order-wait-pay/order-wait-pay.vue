@@ -25,6 +25,7 @@
             :hour="formatTime(orderInfo.remainTime)[0]"
             :minute="formatTime(orderInfo.remainTime)[1]"
             :second="formatTime(orderInfo.remainTime)[2]"
+						@timeup = "goToCancelDetail"
           />
         </view>
       </view>
@@ -135,10 +136,7 @@
       <view class="payment-method">
         <text>支付方式</text>
         <view class="method">
-          <image
-            src="@/static/order/ic_order_wechat@2x.png"
-            mode=""
-          />
+          <image src="@/static/order/ic_order_wechat@2x.png" mode=""/>
           <text>微信支付</text>
         </view>
       </view>
@@ -248,6 +246,12 @@ export default {
         url: `../../../../sub-classify/pages/shops/shops?storeId=${item.storeId}&areaId=${this.areaId}`,
       });
     },
+		// 倒计时间触发到的时间
+		goToCancelDetail(){
+			uni.redirectTo({
+			  url: `../order-failed/order-failed?type=close&id=${this.orderNo}&from=waitPay`,
+			});
+		},
 
     // 去申请退款页面
     toApplayForRefund() {
