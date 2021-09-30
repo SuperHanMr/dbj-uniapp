@@ -89,22 +89,19 @@
 						>查看详情</button>
 					</view>
 		  </view>
+			
+			<uni-popup ref="popup" type="dialog">
+				<uni-popup-dialog
+					mode="base"
+					message="成功消息"
+					title="确定要取消本次退款申请？"
+					:before-close="true" 
+					@close="close" 
+					@confirm="confirm()">
+				</uni-popup-dialog>
+			</uni-popup>
 		</view>
-		
-		<uni-popup ref="popup" type="dialog">
-			<uni-popup-dialog
-				mode="base"
-				message="成功消息"
-				title="确定要取消本次退款申请？"
-				:before-close="true" 
-				@close="close" 
-				@confirm="confirm">
-			</uni-popup-dialog>
-		</uni-popup>
-	
-		
-		
-		
+
 	</view>
 </template>
 
@@ -200,15 +197,13 @@
 			confirm(value) {
 				// 调用申请退款的接口
 				// 成功就关闭弹框
-				cancelRefund({id:this.itemId}).then(e=>{
-					if(e.code==1){
+				console.log("this.itemId=",this.itemId)
+				cancelRefund({id:this.itemId}).then(()=>{
 					this.$refs.popup.close()
 					this.dataList=[]
 					this.query.lastId = -1
 					this.getList()
-					}
 				})
-				
 			},
 			
 		}

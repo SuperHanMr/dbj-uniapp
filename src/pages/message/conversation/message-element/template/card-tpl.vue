@@ -15,7 +15,7 @@
         </template>
       </view>
     </view>
-    <view v-if="template.body.actions && template.body.actions.length" class="card-template__footer">
+    <!-- <view v-if="template.body.actions && template.body.actions.length" class="card-template__footer">
       <view 
         v-for="(btn, index) in template.body.actions" 
         :key="index" 
@@ -23,7 +23,7 @@
       >
         {{ btn.title }}
       </view>
-    </view>
+    </view> -->
   </view>
 </template>
 

@@ -1,6 +1,6 @@
 <template>
 	<view class="memoWrap" :class="{'bg':!memos.length}">
-		<view class="noMemo" v-if="isNoMemo">
+		<view class="noMemo" v-if="!memos.length">
 			<image class="noMemoImg" src="http://dbj.dragonn.top/static/mp/dabanjia/images/decorate/pic_empty%402x.png"></image>
 			<view class="noMemoText">暂无内容~</view>
 		</view>
@@ -34,7 +34,6 @@
 			return {
 				memos: [],
 				projectId: 0,
-				isNoMemo: false
 			}
 		},
 		onLoad(option) {
@@ -59,7 +58,6 @@
 					if(data){
 						let {list} = data
 						this.memos = list || []
-						this.isNoMemo = !list.length
 					}
 				})
 			}

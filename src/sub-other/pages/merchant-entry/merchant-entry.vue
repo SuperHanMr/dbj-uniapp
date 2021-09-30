@@ -243,13 +243,10 @@
 				// 	url:'../merchant-entry-success/merchant-entry-success'
 				// })
 				const ids = [];
-				const businessList = JSON.parse(JSON.stringify(this.businessCategoryList));
-				businessList.forEach((item) => {
-					item.threeLevelCategoryId = item.threeLevelCategoryId.split('c')[1];
-				})
-				// if (businessList.id.join("c")[1] == 'c') {
-				// 	businessList.id = 
-				// }
+				// const businessList = JSON.parse(JSON.stringify(this.businessCategoryList));
+				// businessList.forEach((item) => {
+				// 	item.threeLevelCategoryId = item.threeLevelCategoryId.split('c')[1];
+				// })
 				this.cityList.forEach((item) => {
 					ids.push(item.id);
 				})
@@ -263,12 +260,21 @@
 						name: this.companyValue,
 						// phone: '',
 						cityIds: ids,
-						scopes: businessList
+						scopes: this.businessCategoryList
 					},
 				};
 				
 				supplierEntry(params).then((res) => {
 					console.log(res, '>>>>>>>')
+					const obj = {
+						supplierId: res.supplierId,
+						phone: res.phone,
+						password: res.password,
+						url: res.url,
+					}
+					this.$store.dispatch('setAccountInfo', {
+						accountInfo: obj
+					})
 					uni.navigateTo({
 						url: '../merchant-entry-success/merchant-entry-success'
 					})

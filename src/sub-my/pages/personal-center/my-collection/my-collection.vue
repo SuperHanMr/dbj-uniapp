@@ -16,14 +16,14 @@
 				<text v-else @click="handleDone">完成</text>
 			</view>
 		</view>
-		
+
 		<view class="line" />
 
-		<swiper class="swiper" :current="currentIndex" :duration="200" 
+		<swiper class="swiper" :current="currentIndex" :duration="200"
 			@change="swiperChange"
 			:style="{paddingBottom:systemBottom +'rpx',backgroundColor:listLength > 0 ?'none':'#ffffff'}"
 		>
-				
+
 			<swiper-item :class="{emptyContainer:productList.length < 1 ? true : false}">
 				<scroll-view v-if="productList.length > 0" class="scroll-view" scroll-y="true" refresher-background="#FFF" refresher-enabled="true"
 					:refresher-triggered="triggered" @refresherrefresh="onRefresh" @scrolltolower="onLoadMore">
@@ -35,7 +35,7 @@
 					<text>您还没有收藏商品</text>
 				</view>
 			</swiper-item>
-			
+
 			<swiper-item :class="{emptyContainer:caseList.length < 1 ? true : false}">
 				<scroll-view v-if="caseList.length >0" class="scroll-view" scroll-y="true" refresher-background="#FFF" refresher-enabled="true"
 					:refresher-triggered="triggered" @refresherrefresh="onRefresh" @scrolltolower="onLoadMore">
@@ -84,7 +84,7 @@
 						title: "商品",
 						scrollKey: 's1',
 						fallKey: 'f1'
-					}, 
+					},
 					{
 						title: "案例",
 						scrollKey: 's2',
@@ -174,10 +174,10 @@
 				this.allCheck=false
 				//index对应的list数据是否为空 为空的话请求数据 有数据的话就不请求了
 				switch(this.currentIndex){
-					case 0: 
+					case 0:
 						if (this.productList.length < 1) this.getProductList()
 						break
-					case 1: 
+					case 1:
 						if (this.caseList.length < 1) this.getCaseList();
 						break
 				}
@@ -186,18 +186,12 @@
 			// 获取商品列表
 			getProductList() {
 				this.loading = true;
-				// let params = {
-				// 	routeId: 5002, //【收藏商品路由id：记录用户收藏的商品】
-				// 	type: 1, //(1,"收藏")
-				// 	bizType: 1, //(1,"商品")
-				// }
 				let params={
 					page:this.page[0]
 				}
 				getGoodsList(params).then(data=>{
 					this.productList = this.productList.concat(data);
 					this.productList = this.handleList(this.productList,false,"product")
-					// console.log("this.productList=", this.productList)
 					this.loading = false;
 					this.firstEntry = false;
 				})
@@ -205,13 +199,9 @@
 			// 获取案例列表
 			getCaseList() {
 				this.loading = true;
-				let params = {
-					page:this.page[1],
-					// routeId: 5001, //【收藏真实案例路由id，记录用户收藏的真实案例】
-					// type: 1, //(1,"收藏")
-					// bizType: 7, //【真实案例】REAL_CASE(7,"真实案例")
-				}
-				getRealCaseList(params).then(data => {
+				getRealCaseList({
+					page:this.page[1]
+				}).then(data => {
 					this.caseList = this.caseList.concat(data.list)
 					this.caseList = this.handleList(this.caseList,false,"case")
 					this.page[1] = data.page
@@ -221,7 +211,6 @@
 					this.firstEntry = false;
 				})
 			},
-				
 			//管理
 			handleMgr() {
 				this.showMgrBtn = !this.showMgrBtn
@@ -246,18 +235,13 @@
 			onSelectedItem(data) {
 				if(this.showMgrBtn){
 					console.log("data=",data)
-					if(this.currentIndex ==0){    
-						// console.log("进入商品详情页，点击收藏")
-						uni.navigateTo({ 
+					if(this.currentIndex ==0){
+						uni.navigateTo({
 							url: `/sub-classify/pages/goods-detail/goods-detail?goodId=${data.id}`
 						 })
 					}else{
-						// 需要跳转案例详情的地址 需要传案例id和当前登录人的token  没登录传0
-						// console.log("进入案例详情页，点击收藏")
 						const token = uni.getStorageSync("scn")
-						console.log("token=",token)
 						const url = this.ENV.VUE_APP_BASE_H5 +`/app-pages/case-detail/case-detail.html?id=${data.id}&token=${token}`
-						console.log("encodeURIComponent(url)=",encodeURIComponent(url))
 						uni.navigateTo({
 							url:`../../../../pages/common/webview/webview?url=`+ encodeURIComponent(url),
 						})
@@ -266,6 +250,7 @@
 					this.checkedItemIds = data.filter(item => item.isChecked == true).map((item2) => {
 						return {relationId:item2.id,authorId:item2.authorId,subBizType:item2.subBizType}
 					})
+					console.log("this.checkedItemIds=",this.checkedItemIds)
 					this.productList = data
 					if(this.checkedItemIds.length == this.productList.length){
 						this.allCheck=true;
@@ -275,7 +260,7 @@
 					}
 				}
 			},
-			
+
 			// 全选
 			handleAllCheck(){
 				this.allCheck=!this.allCheck
@@ -295,12 +280,13 @@
 						return {relationId:item.id,authorId:item.authorId,subBizType:item.subBizType}
 					})
 					// console.log("列表list=",list)
-					// console.log("this.checkedItemIds=",this.checkedItemIds)
+					console.log("this.checkedItemIds=",this.checkedItemIds)
 				}else{
 					list =this.handleList(list,false)
 					this.checkedItemIds =[]
+					this.isAllCheck=false;
 					// console.log("列表list=",list)
-					// console.log("this.checkedItemIds=",this.checkedItemIds)
+					console.log("this.checkedItemIds=",this.checkedItemIds)
 				}
 			},
 			handleList(list,isChecked,type){
@@ -312,11 +298,11 @@
 					return item
 				})
 			},
-			
+
 			// 点击取消收藏按钮
 			handleCancel() {
-				this.currentIndex == 0 
-				? this.title = "确定要将选中商品取消收藏吗?" 
+				this.currentIndex == 0
+				? this.title = "确定要将选中商品取消收藏吗?"
 				: this.title = "确定要将选中案例取消收藏吗?"
 				this.$refs.popup.open()
 			},
@@ -356,8 +342,8 @@
 					});
 				}).catch(()=>{})
 			},
-			
-			
+
+
 			onLoadMore() {
 				// if (this.loading || this.page >= this.totalPage) {
 				//   return;
@@ -367,12 +353,12 @@
 					if(this.loading || this.page[0] >=this.totalPage[0]) return
 					this.getProductList()
 				}else{
-					if(this.loading || this.page[1] >=this.totalPage[1])return 
+					if(this.loading || this.page[1] >=this.totalPage[1])return
 					this.page[1]++
 					this.getCaseList()
 				}
 			},
-			
+
 			onRefresh(e) {
 				this.triggered = true;
 				setTimeout(() => {
@@ -387,6 +373,7 @@
 	.fill {
 		width: 100%;
 		min-height: 100%;
+		height: 100%;
 		display: flex;
 		flex-direction: column;
 		background-color: #f4f4f4;
@@ -454,13 +441,15 @@
 
 	.swiper {
 		flex: 1;
+		height: 1000rpx;
 		display: flex;
 		flex-direction: column;
 	}
 
 	.scroll-view {
 		flex: 1;
-		height: 100%;
+		height: 1000rpx;
+		// height: 100%;
 	}
 
 	.line {

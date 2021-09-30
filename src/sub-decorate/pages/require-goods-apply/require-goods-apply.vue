@@ -79,6 +79,7 @@
 					},
 				],
 				currentHouse: {},
+				projectId:''
 			};
 		},
 		onShow() {
@@ -89,6 +90,9 @@
 		onLoad(e) {
 			this.cartList = getApp().globalData.naviData
 			this.currentHouse=getApp().globalData.currentEstate;
+			if (e && e.projectId) {
+				this.projectId = e.projectId;
+			}
 		},
 		methods: {
 			changeHouse() {
@@ -129,7 +133,7 @@
 				};
 				goodsApply(params).then((e) => {
 					uni.redirectTo({
-						url: "../require-success/require-success",
+						url: `../require-success/require-success?projectId=${this.projectId}`,
 					});
 				});
 

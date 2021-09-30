@@ -16,6 +16,9 @@ const merchantEntry = {
 		},
 		deleteCity(context, payload){
 			context.state.cityList = payload.cityList;
+		},
+		setAccountInfo(context, payload){
+			context.state.accountInfo = payload.accountInfo;
 		}
 	}
 }

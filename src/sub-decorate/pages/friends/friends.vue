@@ -6,7 +6,7 @@
         :key="index"
         :right-options="options"
         @click="bindClick($event,item)"
-        :disabled="item.type==0"
+        :disabled="item.type==0&&isMyHouse"
       >
         <view class="item">
 
@@ -125,8 +125,9 @@ export default {
         estateId: this.roomId,
         deleteType,
       });
-      console.log(res);
-      this.getFriendsList();
+			uni.navigateBack({
+				
+			});
     },
     async getFriendsList() {
       this.list = await friendListByEstateId({

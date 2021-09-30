@@ -14,17 +14,22 @@
         </view>
 
         <view v-if="type == 'partical'">
-          <order-item :dataList="refundInfo"></order-item>
+					<view v-if="refundId">
+						<view v-for="item3 in refundInfo" :key="item3.id">
+							<order-item :refundType="true" :dataList="item3"></order-item>
+						</view>
+					</view>
+          <order-item  v-else :dataList="refundInfo"></order-item>
         </view>
 				<!-- 运费和搬运费 -->
-        <view class="price-container">
-          <view class="price-item">
+        <view class="price-container" v-if="">
+          <view class="price-item" v-if="refundInfo.freight">
             <view  class="header" style="margin-bottom: 16rpx;">
               <text style="margin-right: 8rpx;">运费</text><view class="icon">?</view>
             </view>
             <text>￥{{handlePrice(refundInfo.freight)[0]}}.{{handlePrice(refundInfo.freight)[1]}}</text>
 					</view>
-          <view class="price-item">
+          <view class="price-item" v-if="refundInfo.handlingFees">
             <view class="header">
               <text style="margin-right: 8rpx;">搬运费</text><view class="icon">?</view>
             </view>
@@ -184,7 +189,7 @@ export default {
 			
 			
 			refundId:"",
-			
+			orderDetailId:"",
       systemBottom: "",
     };
   },
@@ -243,16 +248,18 @@ export default {
 				this.textAreaLength = data.remark.length
 				this.reasonValue = data.reasonId
 				this.reasonName = data.reason
-				this.refundInfo.totalActualIncomeAmount = data.refundAmount
 				this.returnMoney  =data.refundAmount
+				this.inputValue  = data.refundAmount
 				console.log("this.type=",this.type)
 				if(this.type =='partical'){
 					this.refundInfo = data.detailAppVOS
+					this.orderDetailId = data.detailAppVOS[0].orderDetailId
 					console.log("this.refundInfo=",this.refundInfo )
 				}else{
 					this.refundInfo.details = data.detailAppVOS
 					console.log("this.refundInfo.details = ",this.refundInfo.details)
 				}
+				this.refundInfo.totalActualIncomeAmount = data.maxRefundAmount
 				this.query.orderId = data.orderId
 				this.query.status = data.progressed
 				this.refundInfo.freight = data.freight
@@ -273,20 +280,34 @@ export default {
 		submitApplication() {
 			// 提交申请后该订单会进入到退款页面，状态显示退款中；并直接跳转到该订单退款详情页
       console.log("申请退款");
-			let params={
-				orderId:this.query.orderId,//订单明Id字段
-				returnMoney:this.returnMoney * 100,//申请退货钱数(分)
-				reason:this.reasonName, //退款原因
-				reasonId:this.reasonValue,//退款原因id
-				remark:this.query.remarks, //备注
-				status:this.query.status, //订单状态1进行中 2已完成
-			}
-			wholeOrderApplyForRefund(params).then(res=>{
-				uni.redirectTo({
-					url:`../refund-list/refunding-detail/refunding-detail?orderId=${this.query.orderId}`
-					// url:`../my-order/success/success?type=applyForRefund`
+			if(this.type =='whole'){
+				wholeOrderApplyForRefund({
+					orderId:this.query.orderId,//订单明Id字段
+					returnMoney:this.returnMoney * 100,//申请退货钱数(分)
+					reason:this.reasonName, //退款原因
+					reasonId:this.reasonValue,//退款原因id
+					remark:this.query.remarks, //备注
+					status:this.query.status, //订单状态1进行中 2已完成
+				}).then(()=>{
+					uni.redirectTo({
+						url:`../refund-list/refunding-detail/refunding-detail?orderId=${this.query.orderId}`
+					})
 				})
-			})
+			}else{
+				particalOrderApplyForRefund({
+					orderDetailsId:this.orderDetailId,//订单明Id字段
+					returnMoney:this.returnMoney * 100,//申请退货钱数(分)
+					reason:this.reasonName, //退款原因
+					reasonId:this.reasonValue,//退款原因id
+					remark:this.query.remarks, //备注
+					status:this.query.status, //订单状态1进行中 2已完成
+				}).then(e=>{
+					console.log("打印返回的数据=",e)
+					uni.redirectTo({
+						url:`../refund-list/refunding-detail/refunding-detail?orderId=${this.query.orderId}`
+					})
+				})
+			}
     },
 
     onKeyInput(event) {
@@ -508,7 +529,6 @@ export default {
           }
         }
       }
-
       .tip-text {
         padding: 0 32rpx 40rpx 56rpx;
         color: #aaaaaa;
