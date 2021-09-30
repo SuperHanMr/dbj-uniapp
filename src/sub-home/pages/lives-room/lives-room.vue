@@ -1,11 +1,16 @@
 <template>
 	<view class="content">
-		<custom-navbar opacity="1" :showBack="false" bgcolor="#FFF">
-			<template v-slot:back>
-				<view>
+		<custom-navbar opacity="1"  title="as??ASDSA"  titleColor="#FFFFFF" bgcolor="#3b3c48">
+		<!-- 	<template v-slot:back>
+				<view style="color: white;">
 					Logo
 				</view>
-			</template>
+			</template> -->
+<!-- 			<template v-slot:title>
+				<view style="color: white;">
+					什么什么????
+				</view>
+			</template> -->
 		</custom-navbar>
 		<live-player class="player" :src="livePreview" autoplay @statechange="statechange" @error="error" />
 	</view>
