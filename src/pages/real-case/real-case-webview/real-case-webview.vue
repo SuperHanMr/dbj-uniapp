@@ -10,9 +10,16 @@
 			}
 		},
 		onLoad(props) {
+      let height = 0
 			const token = uni.getStorageSync("scn")
-			this.url = this.ENV.VUE_APP_BASE_H5 + `/app-pages/case-detail/case-detail.html?id=${props.id}&token=${token}`
-      // console.log(var(--status-bar-height))
+      uni.getSystemInfo({
+        success:(res)=>{
+          height = res.windowHeight
+        }
+      })
+      console.log(height)
+			this.url = this.ENV.VUE_APP_BASE_H5 + `/app-pages/case-detail/case-detail.html?id=${props.id}&token=${token}&height=${height}`
+      
 		},
 		mounted() {
 			// uni.$on('isCollect',(data)=>{
