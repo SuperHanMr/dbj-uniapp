@@ -44,7 +44,7 @@
         daojishi: "",
         msg: {},
         timer: null,
-        countdown: null,
+        countdown: "72:00:00",
         updateTime: null,
 
         containerBottom: null,
@@ -93,27 +93,16 @@
         })
       },
       countTime() {
-        //获取当前时间
-        var date = new Date();
-        var now = date.getTime();
-        //设置截止时间
-        var endDate = new Date(this.updateTime + 72 * 24 * 60 * 60 * 1000);
-        var end = endDate.getTime();
-
-        //时间差
-        var leftTime = end - now;
-        //定义变量 d,h,m,s保存倒计时的时间
-        var d, h, m, s;
-        if (leftTime >= 0) {
-          d = Math.floor(leftTime / 1000 / 60 / 60 / 24);
-          h = Math.floor(leftTime / 1000 / 60 / 60 % 24);
-          m = Math.floor(leftTime / 1000 / 60 % 60);
-          s = Math.floor(leftTime / 1000 % 60);
-        }
-        //将倒计时赋值到div中
+        var nowtime = new Date(), //获取当前时间
+          endtime = new Date("2020/8/8"); //定义结束时间
+        var lefttime = endtime.getTime() - nowtime.getTime(), //距离结束时间的毫秒数
+          leftd = Math.floor(lefttime / (1000 * 60 * 60 * 24)), //计算天数
+          lefth = Math.floor(lefttime / (1000 * 60 * 60) % 24), //计算小时数
+          leftm = Math.floor(lefttime / (1000 * 60) % 60), //计算分钟数
+          lefts = Math.floor(lefttime / 1000 % 60); //计算秒数
+        return leftd + "天" + lefth + ":" + leftm + ":" + lefts; //返回倒计时的字符串
+        
         this.countdown = d * 24 + h + "小时" + m + "分钟" + s + "秒"
-        //递归每秒调用countTime方法，显示动态时间效果
-        // setTimeout(countTime, 1000);
 
       },
       getCompletionLogById() {
