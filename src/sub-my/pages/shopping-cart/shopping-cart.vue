@@ -15,7 +15,8 @@
 			  <uni-popup-dialog
 			    mode="input"
 			    title="编辑数量"
-			    :duration="2000" :before-close="true" 
+			    :duration="2000" 
+					:before-close="true" 
 			    placeholder="可输入至小数点后两位"
 					@close="closeDialog"
 			    @confirm="defineCount"
@@ -37,8 +38,9 @@
 						<image class="shopIcon" src="../../../static/shopping-cart/goShop_ic@2x.png"></text>
 					</view>
 				</view>	
-				<view class="freeMail">	
-					<view class="text">还差{{shopItem.freeShipping || "0"}}元可获得一次免运费权益</view>
+				<view class="freeMail">
+					<view class="text" v-if="isDefault" :key="index">每满{{shopItem.freeShippingThreshold/100 || "0"}}元可获得一次免运费权益</view>
+					<view class="text" v-else v-for="(item,index) in freeShippings" :key="index">还差{{item}}元可获得一次免运费权益</view>
 					<view class="toShop" @click="toShopHome(shopItem.storeId)">
 						<text>去凑单</text>
 						<image class="icon" src="../../../static/shopping-cart/toPostFree@2x.png"></image>
@@ -223,7 +225,8 @@
 				entityList:[],
 				serviceListShow:[],
 				entityListShow:[],
-				showNoGoods: false
+				showNoGoods: false,
+				isDefault:true
 			}
 		},
 		mounted(){
@@ -254,6 +257,24 @@
 				})
 				return sum
 			},
+			freeShippings(){
+				let arr = []
+				let sum = 0
+				this.shopList.forEach(item=>{
+					item.skuList.forEach(ele=>{
+						if(ele.goodsChecked){
+							sum+=(+ele.buyCount*ele.price/100)
+						}
+					})
+					if(sum < item.freeShippingThreshold/100){
+						arr.push( (item.freeShippingThreshold/100-sum).toFixed(2))
+					}else if(sum > item.freeShippingThreshold/100){
+						arr.push( (item.freeShippingThreshold/100*2-sum).toFixed(2))
+					}
+				})
+				
+				return arr
+			}
 		},
 		methods:{
 			handleConfirm(preId,curId){
@@ -320,21 +341,15 @@
 						}
 						if(!storeList.length)return
 						storeList.map(item => {
-							let sum = 0
+							
 							item.shopChecked = false
 							item.skuList.map(ele => {
 								ele.goodsChecked = false
 								ele.isMiniOrder = (+ele.buyCount <= +ele.minimumOrderQuantity) ? true:false
-								if(ele.goodsChecked){
-									sum += ele.buyCount * ele.price
-								}	
+									
 								return ele
 							})
-							if(sum < item.freeShippingThreshold){
-								item.freeShipping = Math.round(item.freeShippingThreshold-sum)
-							}else if(sum > item.freeShippingThreshold){
-								item.freeShipping = Math.round(item.freeShippingThreshold*2-sum)
-							}
+							
 							return item
 						})
 						
@@ -355,49 +370,56 @@
 			},
 			defineCount(val) {
 				let target = this.shopList[this.currentShopIndex].skuList[this.currentGoodsIndex]
-				let count = +target.buyCount
-				let step = +target.stepLength || 1
 				let miniOrder = +target.minimumOrderQuantity || 1
-				target.buyCount = val
+				let step = +target.stepLength || 1
+				if(isNaN(parseInt(val))){
+					uni.showToast({
+						title:`商品数量为数字`,
+						icon:"none",
+						duration:2000
+					})
+					return
+				}
 				if(+val < miniOrder) {
 					setTimeout(() => {
 					  uni.showToast({
 					  	title:`商品数量不得低于${miniOrder}件`,
 							icon:"none",
-							duration:3000
+							duration:2000
 					  })
 					}, 100);
+					return
 				}else if(+val % step !== 0) {
 					setTimeout(() => {
 					  uni.showToast({
 					  	title:`当前最小单位为${step}，输入的数量需为${step}的倍数`,
 							icon:"none",
-							duration:3000
-					  })
+							duration:2000
+						})
 					}, 100);
-				}else if(+val >= 99999.99) {
+					return
+				}else if(+val >= 9999.99) {
 					setTimeout(() => {
 						uni.showToast({
 							title:"商品数量超出范围",
 							icon:"none",
-							duration:3000
+							duration:2000
 						});
 					}, 100)
-				}else{
-					let params = {
-						userId:this.userId,
-						skuList:[{
-							skuId:target.skuId,
-							buyCount:target.buyCount
-						}]
-					}
-					setBuyCount(params).then(data => {
-						if(data){
-							this.requestPage()
-						}
-					})
-					this.$refs.popup.close()
+					return
 				}
+				let buyCount = + val
+				let params = {
+					userId:this.userId,
+					skuList:[{
+						skuId:target.skuId,
+						buyCount:buyCount
+					}]
+				}
+				setBuyCount(params).then(data => {
+					this.requestPage()
+				})
+				this.$refs.popup.close()	
 				console.log(val,step,miniOrder,'//');
 			},
 			toCollect(){
@@ -632,6 +654,9 @@
 					})
 					return item
 				})
+				if(this.isCheckedAll){
+					this.isDefault = false
+				}
 			},
 			checkShop(id){
 				this.shopList.map(item=>{
@@ -641,6 +666,9 @@
 							ele.goodsChecked = item.shopChecked
 							return ele
 						})
+						if(item.shopChecked){
+							this.isDefault = false
+						}
 					}
 					return item
 				})
@@ -656,6 +684,9 @@
 						item.skuList.map(ele=>{
 							if(ele.skuId === skuId){
 								ele.goodsChecked = !ele.goodsChecked
+							}
+							if(ele.goodsChecked){
+								this.isDefault = false
 							}
 							return ele
 						})
