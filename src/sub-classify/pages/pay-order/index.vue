@@ -221,7 +221,7 @@
       if(this.originFrom === "h5GoodDetail") {
         this.houseId = e.houseId
       }else if(this.originFrom === "shopCart"){
-        this.houseId = JSON.parse(uni.getStorageSync('currentHouse')).id
+        this.houseId = getApp().globalData.currentHouse.id
       }
       this.buyCount = e.buyCount
       this.skuId = e.skuId
