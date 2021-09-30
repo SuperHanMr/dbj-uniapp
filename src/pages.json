@@ -201,7 +201,9 @@
 					"path": "pages/lives-room/lives-room",
 					"style": {
 						"navigationBarTitleText": "",
-						"enablePullDownRefresh": false
+						"enablePullDownRefresh": false,
+						"navigationStyle": "custom"
+
 					}
 				},
 				{

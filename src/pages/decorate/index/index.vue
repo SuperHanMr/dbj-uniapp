@@ -44,8 +44,6 @@
       </view>
 
       <view class="scroll-view flex-1">
-        <!-- <scroll-view :scroll-top="scrollTop" scroll-y="true" class="scroll-Y" @scroll="scroll"
-          scroll-with-animation="true" :style="{height: viewHieght + 'rpx'}"> -->
         <!-- 每日播报 -->
         <text-scroll :dataList="broadcastList" v-if="broadcastList.length > 0 && isConstruction"
           @goDecorateCalendar="goDecorateCalendar"></text-scroll>
@@ -76,14 +74,14 @@
           </view>
         </view>
         <!-- 我的装修服务 -->
-        <view class="my-decorate-service-wrap" v-if="purchasedServiceList.length > 0">
+        <view class="my-decorate-service-wrap" v-if="aServiceData.myServiceFlag">
           <image mode="aspectFit" class="top-bg"
             src="http://dbj.dragonn.top/static/mp/dabanjia/images/decorate/service-card-top.svg">
           </image>
           <view class="my-decorate-service">
             <view class="service-title flex-space-between-row">
               <text class="t">{{who}}的装修服务</text>
-              <view class="r flex-start-row" v-if="isShowMyDecorateAll" @click="goToMyDecorate">
+              <view class="r flex-start-row" v-if="aServiceData.myServiceFlag" @click="goToMyDecorate">
                 <text>查看全部</text>
                 <image src="http://dbj.dragonn.top/static/mp/dabanjia/images/decorate/ic_more.svg">
                 </image>
@@ -119,7 +117,7 @@
         </uni-popup>
         <decorate-notice @touchmove.stop.prevent="()=>false" v-if="noticeActive" :num='msgNum'
           :current='currentProject.projectId' @closeNotice='closeNotice' class="decorate-notice"></decorate-notice>
-        <!-- <view class="link">
+        <view class="link">
           <view @click="gonohouse">无房屋无服入口</view>
           <view @click="gonohousedecatore('decorate')">无房屋无服务装修</view>
           <view @click="gonohousedecatore('checkHouse')">无房屋无服务验房</view>
@@ -132,8 +130,7 @@
           <view @click="gjgxf">工序费</view>
           <view @click="payGuanGuanJia">生成买管家消息</view>
           <view @click="payRenGong">生成买人工消息</view>
-        </view> -->
-        <!-- </scroll-view> -->
+        </view>
       </view>
       <drag-button-follow v-if="msgNum>0" :num='msgNum' :style.sync="style" @btnClick='openNotice'
         :follow='`left,right`' className="drag-button" class="drag-button">
@@ -193,14 +190,10 @@
     onShow() {
       console.log('showTabBar')
       uni.showTabBar()
-      // if (this.estateList && this.estateList.length < 1) {
-      this.getEstateList();
-      // }
+      this.getEstateList()
     },
     data() {
       return {
-        scrollTop: 416,
-        // viewHieght: "",
         style: "",
         noticeActive: false,
         currentProject: {},
@@ -223,7 +216,6 @@
         token: '',
         msgNum: 0,
         aServiceData: {},
-        isShowMyDecorateAll: false,
         haveWarehouse: false,
 
         who: "我",
@@ -304,7 +296,8 @@
             showActuaryFlag,
             showDesignFlag,
             showVideoFlag,
-            projectStatus
+            projectStatus,
+            myServiceFlag
           } = data
           this.purchasedServiceList = purchasedServiceList || []
           this.availableServiceList = availableServiceList || []
@@ -315,14 +308,15 @@
             showActuaryFlag,
             showDesignFlag,
             showVideoFlag,
-            projectStatus
+            projectStatus,
+            myServiceFlag
           }
           timer = setTimeout(() => {
             this.addServiceCard(this.defaultServices, "serviceType")
             this.addServiceCard(this.availableServiceList, "nodeType")
           }, 0)
-          this.isShowMyDecorateAll = this.purchasedServiceList.filter(t => (t.status == 0 && t.grepOrderStatus ==
-            3) || t.status >= 2).length > 0
+          // this.isShowMyDecorateAll = this.purchasedServiceList.filter(t => (t.status == 0 && t.grepOrderStatus ==
+          //   3) || t.status >= 2).length > 0
           this.haveWarehouse = this.purchasedServiceList.filter(t => t.nodeType >= 5).length > 0
 
           for (let i = 0; i < this.purchasedServiceList.length; i++) {
@@ -413,31 +407,10 @@
         }).then(data => {
           // 有房屋有服务，初始化当前的默认房屋
           if (data && data.length > 0) {
-            // console.log("ProjectList1>: ", data)
             data.forEach(item => {
               item.uid = this.guid()
             })
             this.projectList = data
-
-            // const {
-            //   currentProject
-            // } = getApp().globalData.currentProject
-            // if (currentProject && currentProject.projectId) {
-            //   const arr = data.filter(t => t.projectId == currentProject.projectId)
-            //   if (arr && arr.length > 0) {
-            //     this.currentProject = arr[0]
-            //     this.initData(arr[0])
-            //   }
-            // } else {
-            //   const arr = data.filter(t => t.defaultEstate)
-            //   if (arr && arr.length > 0) {
-            //     this.currentProject = arr[0]
-            //     this.initData(arr[0])
-            //   } else {
-            //     this.currentProject = data[0]
-            //     this.initData(data[0])
-            //   }
-            // }
             const arr = data.filter(t => t.defaultEstate)
             if (arr && arr.length > 0) {
               this.currentProject = arr[0]

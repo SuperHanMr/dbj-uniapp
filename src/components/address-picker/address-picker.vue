@@ -14,7 +14,7 @@
          		<text class="userPhone">{{addressInfo.contactPhone}}</text>
          	</view>
          </view>
-         <image class="switchSite" src="../../static/images/ic_more_black@2x.png"></image>
+         <image class="switchSite" src="../../static/images/ic_more_black.png"></image>
         </view>
         <view class="header-operator"  v-for="(item, index) in addUser" :key="index" v-if="productType === 2 && item.frontendServe">
           <image src="../../static/images/ic_location@2x.png" class="locationIcon"></image>
@@ -29,7 +29,7 @@
        <view class="address check-address">
        	<view class="community">请选择地址</view>
        </view>
-       <image class="switchSite" src="../../static/images/ic_more_black@2x.png"></image>
+       <image class="switchSite" src="../../static/images/ic_more_black.png"></image>
      </view>
  
     </view>
@@ -62,8 +62,7 @@
     data() {
       return {
         addressInfo: {},
-        estateId: 0,
-        timer: null
+        estateId: 0
       };
     },
     // mounted() {
@@ -84,12 +83,12 @@
     },
     watch:{
       houseId(v) {
-        if(this.timer){
+        if(uni.getStorageSync("houseIdChange")){
           return
         }
+        uni.setStorageSync("houseIdChange", "changed")
         this.timer = setTimeout(() => {
-          clearTimeout(this.timer)
-          this.timer = null
+          uni.removeStorageSync("houseIdChange")
         }, 300)
         getAddressInfo(v).then((data) => {
           this.addressInfo = data
