@@ -7,7 +7,6 @@
           v-for="(menu2,index2) in detailData" :key="index2">
           {{menu2.name}}
         </view>
-        <!-- <view class="nav-left-item" :class="categoryActive === detailDatas.length - 1?'nextNode':''"></view> -->
       </view>
     </scroll-view>
     <scroll-view class="nav-right" scroll-y="true">
@@ -15,16 +14,10 @@
         <text class="menu3-title">{{menu3.name}}</text>
         <scroll-view class="right-card" scroll-y="true">
           <view class="right-detail" v-for="(detail, detailK) in menu3['children']" :key="detailK"
-            @click="toGoodsList(detail.name)">
+            @click="toGoodsList(detail.name, detail.id)">
             <image :src="detail.imageUrl"></image>
             <text class="detail-name">{{detail.name}}</text>
           </view>
-          <!--          // 用于测试
-          <view class="right-detail" v-for="(details, detailsK) in imgArr" :key="detailsK" @click="toGoodsList">
-             <image src="https://ali-image-test.dabanjia.com/image/20210830/17/1630316979986_9651%24srchttp___imglf4.nosdn0.126.net_img_dVhwQXpJYitzZ3AwRUV1SDFIZGJncWx2OXU1T1kvNWNqN3lqcUwwSlVPeXpVUFlFcEZIeGdnPT0.jpgreferhttp___imglf4.nosdn0.126.jpg" >
-             </image>
-             <text>test</text>
-           </view> -->
         </scroll-view>
       </view>
     </scroll-view>
@@ -91,18 +84,14 @@
         const query = uni.createSelectorQuery().in(this);
         console.log(query.selectAll('#tabs')[0])
         query.selectAll('#tabs').node(data => {
-          // console.log(data[0].classList)
-          // console.log(data)
-          // console.log("得到布局位置信息" + JSON.stringify(data));
-          // console.log("节点离页面顶部的距离为" + data.top);
         }).exec();
         this.categoryActive = index;
         (this.diff > 0) && (this.scrollLeftTop = Math.round((this.categoryActive * this.diff) / (this.detailData
           .length - 1)));
       },
-      toGoodsList(name) {
+      toGoodsList(name, id) {
         uni.navigateTo({
-          url: "/sub-classify/pages/search-result/search-result?searchText=" + name
+          url: "/sub-classify/pages/search-result/search-result?searchText=" + name + "&categoryId=" + id
         })
       }
     },
