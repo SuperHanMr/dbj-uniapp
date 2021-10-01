@@ -1,6 +1,6 @@
 <template>
   <view class="decorate-index" v-if="estateList.length > 0">
-    <image class="bg-index" mode="aspectFit" src="http://dbj.dragonn.top/static/mp/dabanjia/images/decorate/bg@2x.png">
+    <image class="bg-index" mode="aspectFit" src="http://dbj.dragonn.top/static/mp/dabanjia/images/decorate/bg@2x-2.png">
     </image>
     <view class="content flex-column">
       <view class="house-firend">
@@ -27,7 +27,7 @@
           <view class="insurance-house">
             <view :class="{'payed':aServiceData.insuranceStatus}" class="insurance">
               <image @click="consultingService"
-                :src="aServiceData.insuranceStatus ? 'http://dbj.dragonn.top/static/mp/dabanjia/images/decorate/insurance-pay.jpeg': 'http://dbj.dragonn.top/static/mp/dabanjia/images/decorate/insurance-unpay.jpeg'">
+                :src="aServiceData.insuranceStatus ? 'http://dbj.dragonn.top/static/mp/dabanjia/images/decorate/insurance-pay.svg': 'http://dbj.dragonn.top/static/mp/dabanjia/images/decorate/insurance-unpay.svg'">
               </image>
             </view>
             <view class="uni-title">{{ currentProject.housingEstate }}{{currentProject.address}}</view>

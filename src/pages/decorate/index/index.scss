@@ -177,11 +177,16 @@
       }
 
       .uni-title {
+        flex: 1;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
         height: 34rpx;
         font-size: 24rpx;
         font-family: PingFangSC, PingFangSC-Regular;
         font-weight: 400;
         text-align: left;
+        margin-right: 40rpx;
         color: #333;
         line-height: 34rpx;
       }
