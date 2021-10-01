@@ -133,6 +133,7 @@
         const origin = uni.getStorageSync("currentItemOriginData")
         // 注释的字段是不允许替换的
         // origin.originalId = origin.originalId // "原始ID 【下单params附带参数】",
+        // origin.originalId = origin.originalId // "原始ID 【下单params附带参数】",
         origin.id = item.product.spuId //"long //商品ID 【下单params附带参数】",
         origin.title = item.title //"string //标题",
         // origin.productType = origin.productType //"int //下单参数 type\r      标签 1.物品 2.服务 3.虚拟\r ,
@@ -183,7 +184,7 @@
       },
       setSkuRelation(item) {
         // 添加新旧id对应关系
-        const flgArr = this.skuRelation.filter(t => t.oldSuk == item.originalId)
+        const flgArr = this.skuRelation.filter(t => t.originalId == item.originalId)
         if (flgArr?.length > 0) {
           if (item.checked) {
             // 如果选择了
@@ -192,7 +193,7 @@
           } else {
             let index = null
             for (let i = 0; i < this.skuRelation.length > 0; i++) {
-              if (this.skuRelation[i].oldSuk == item.originalId) {
+              if (this.skuRelation[i].originalId == item.originalId) {
                 index = i
                 break
               }
@@ -205,9 +206,10 @@
           flgArr[0].newSuk = item.id
         } else {
           if (item.checked) {
-            // 否则就是第一次替换
+            // 否则就是初始化
             this.skuRelation.push({
-              oldSuk: item.originalId,
+              originalId: item.originalId,
+              oldSuk: item.oldId || item.id,
               newSuk: item.id
             })
           }
@@ -224,6 +226,29 @@
         }
 
       },
+      initData() {
+        if (this.msg.obtainType != 2) {
+          this.dataOrigin?.artificial?.categoryList?.forEach(t => {
+            t.itemList.forEach(it => {
+              this.checkedIds.push(it.originalId)
+            })
+          })
+        }
+      
+        if (this.msg.obtainType != 1) {
+          this.dataOrigin?.material?.categoryList?.forEach(t => {
+            t.itemList.forEach(it => {
+              it.checked = true
+              it.isEdit = false
+              if (it.inServiceArea && !it.selling) {
+                this.checkedIds.push(it.originalId)
+              }
+              // this.setSkuRelation(it)
+            })
+          })
+        }
+        this.computePriceAndShopping()
+      },
       computePriceAndShopping() {
         // 先清空
         this.shopping = {
@@ -233,9 +258,9 @@
         this.countPrice = 0
         this.pieces = 0
 
-        if (this.msg.obtainType != 2) {
+        if (this.msg?.obtainType != 2) {
           // 先计算人工费用
-          this.dataOrigin.artificial.categoryList.forEach((item, i) => {
+          this.dataOrigin?.artificial?.categoryList?.forEach((item, i) => {
             item.itemList.forEach((it, j) => {
               this.shopping.artificial.push(it)
               this.countPrice += it.price * it.count / 100
@@ -244,9 +269,9 @@
           })
         }
 
-        if (this.msg.obtainType != 1) {
+        if (this.msg?.obtainType != 1) {
           // 再计算辅材费用
-          this.dataOrigin.material.categoryList.forEach((item, i) => {
+          this.dataOrigin?.material?.categoryList?.forEach((item, i) => {
             item.itemList.forEach((it, j) => {
               if (this.checkedIds.includes(it.originalId)) {
                 this.shopping.material.push(it)
@@ -313,11 +338,10 @@
                   cityId: this.dataOrigin.areaId, //"long //市id【必须】",
                   categoryTypeId: t.categoryTypeId, //"int //商品品类类型id【必须】",
                   price: t.price, //"int //商品总价格 工艺商品单价个数 单位分【必须】",
-                  count: t.count,
-                  // workerType: t.workType, //"int //工种,品类为工人时（categoryTypeId=7）必传
+                  count: t.count
                 }
                 if (t.categoryTypeId == 7) {
-                  obj.workerType = t.workType
+                  obj.workerType = t.workType //"int //工种,品类为工人时（categoryTypeId=7）必传
                 }
                 cllist.push(obj)
               })
@@ -343,30 +367,6 @@
             this.message = data.message
           }
         })
-      },
-      initData() {
-        if (this.msg.obtainType != 2) {
-          this.dataOrigin.artificial.categoryList.forEach(t => {
-            t.itemList.forEach(it => {
-              this.checkedIds.push(it.originalId)
-            })
-          })
-        }
-
-        if (this.msg.obtainType != 1) {
-          this.dataOrigin.material.categoryList.forEach(t => {
-            t.itemList.forEach(it => {
-              it.checked = true
-              it.isEdit = false
-              if (it.inServiceArea && !it.selling) {
-                this.checkedIds.push(it.originalId)
-              }
-              this.setSkuRelation(it)
-            })
-          })
-        }
-
-        this.computePriceAndShopping()
       },
       selectWp(obj) {
         this.$nextTick(function() {
@@ -395,7 +395,7 @@
       gotopay() {
         // TODO去结算页面
         // let skuInfos = []
-        if (this.shopping.artificial.length > 0 || this.shopping.material.length > 0) {
+        if (this.shopping?.artificial?.length > 0 || this?.shopping?.material?.length > 0) {
           let params = {
             payType: 1, //"int //支付方式  1微信支付",
             openid: uni.getStorageSync("openId"), //"string //微信openid 小程序支付用 app支付不传或传空",
@@ -410,7 +410,7 @@
           // roleType 7工人，10管家
           let roleType = this.msg.serviceType == 5 ? 10 : 7
           if (this.msg.obtainType != 2) {
-            this.shopping.artificial.forEach(it => {
+            this.shopping?.artificial?.forEach(it => {
               params.details.push({
                 // supplierType: it.supplierType,
                 roleType,
@@ -429,7 +429,7 @@
             })
           }
           if (this.msg.obtainType != 1) {
-            this.shopping.material.forEach(it => {
+            this.shopping?.material?.forEach(it => {
               params.details.push({
                 // supplierType: it.supplierType,
                 relationId: it.id, //"long //实体id",
