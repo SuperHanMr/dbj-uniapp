@@ -40,3 +40,7 @@ export function replyMessage(params) {
   return request.post('/app/generalComment/save', params);
 }
 
+// 创建单聊会话
+export function createC2CChat(params) {
+  return request.post('/app/chatSingle/createChat', params);
+}
