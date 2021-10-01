@@ -1,5 +1,5 @@
 <template>
-	<view class="content">
+	<view class="content" @click="handleLiveRoomClick">
 		<custom-navbar opacity="1" title="as??ASDSA" titleColor="#FFFFFF" bgcolor="#3b3c48">
 			<template v-slot:back>
 				<view @click="toBack">
@@ -39,8 +39,9 @@
 			</scroll-view>
 			<!-- 底部功能栏 -->
 			<view class="bottom-send">
-				<view class="input-text">
+				<view class="input-text" @click.stop="handleShowSendBox">
 					说点什么...
+          <view class="iconfont icon-face" @click.stop="handleChooseImage"></view>
 				</view>
 				<view class="macphone" @click="clickMacphone">
 					<image class="icon_macphone"
@@ -61,6 +62,10 @@
 			</view>
 
 		</view>
+    <message-send-box
+      :group-id="groupId"
+      @add-message="handleAddMessage"
+    ></message-send-box>
 	</view>
 </template>
 
@@ -71,8 +76,13 @@
 		addListener,
 		cleanListeners
 	} from "@/utils/tim.js"
+  import upload from '../../../utils/upload.js'
 	import TIM from 'tim-wx-sdk'
+  import MessageSendBox from './message-send-box.vue'
 	export default {
+    components: {
+      MessageSendBox
+    },
 		data() {
 			return {
 				livePreview: '',
@@ -85,6 +95,11 @@
 
 			};
 		},
+    computed: {
+      groupId() {
+        return 'group' + this.roomId;
+      }
+    },
 		onLoad(e) {
 			if (e && e.livePreview) {
 				this.livePreview = e.livePreview;
@@ -168,7 +183,82 @@
 			error(e) {
 				console.log('~~~~~~~~~');
 				console.log(e);
-			}
+			},
+      handleShowSendBox() {
+        uni.$emit("show-live-send-box");
+      },
+      handleLiveRoomClick() {
+        uni.$emit("live-room-click");
+      },
+      handleAddMessage(message) {
+        console.log('add sadfsadfsd', message);
+        this.list.push(message);
+      },
+      handleChooseImage() {
+        const self = this;
+        uni.chooseImage({
+          sourceType: ["album"],
+          success(res) {
+            const {
+              tempFilePaths,
+              tempFiles
+            } = res;
+            console.log("choose image1:", res);
+            tempFiles.forEach(self.sendImageMessage);
+          }
+        })
+      },
+      sendImageMessage(tempFile) {
+        let self = this;
+        const {size: fileSize,path: filePath} = tempFile;
+        uni.getImageInfo({
+          src: filePath, 
+          complete(info) {
+            const { width = 0, height = 0 } = info;
+            console.log("file path:", filePath, "file info:", info, 111111);
+            let fileName = filePath.split('/').pop();
+            let data = {
+              type: "img_message",
+              fileName: fileName,
+              fileSize: fileSize,
+              fileUrl: filePath,
+              width: width,
+              height: height
+            }
+            const message = getTim().createCustomMessage({
+              to: self.groupId,
+              conversationType: TIM.TYPES.CONV_GROUP,
+              payload: {
+                data: JSON.stringify(data),
+              },
+            });
+            self.handleAddMessage(message);
+            upload({
+              filePath: filePath,
+              fileType: "image",
+              success: (res) => {
+                console.log("upload success", res);
+                let url = res.url;
+                let payload = message.payload;
+                let data = payload.data;
+                let extObj = JSON.parse(data);
+                extObj.fileUrl = url;
+                let newData = JSON.stringify(extObj);
+                message.payload.data = newData;
+                getTim().sendMessage(message).then((res) => {
+                  console.log("send Image success", res);
+                });
+              },
+              fail: (res) => {
+                console.log("upload fail", res);
+              },
+              progess: (res) => {
+                console.log("upload progess:", res);
+              }
+            })
+          }
+        })
+      },
 		}
 	}
 </script>
@@ -197,8 +287,16 @@
 				width: 346rpx;
 				height: 72rpx;
 				opacity: 0.24;
-				background: #000000;
+				background: #fff;
 				border-radius: 28rpx;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 0 12px;
+        
+        .iconfont {
+          font-size: 18px;
+        }
 			}
 
 			.bottom-icon {
