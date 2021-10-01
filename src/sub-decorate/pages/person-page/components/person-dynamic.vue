@@ -6,14 +6,14 @@
       暂无动态
     </view>
     <view class="click-text" v-if="totalPage>1" @click="toAllDynamics">查看全部动态</view>
+    
   </view>
 </template>
 
 <script>
   import '../style/common.scss'
   import decorateDynamic from '@/components/decorate-dynamic/decorate-dynamic.vue'
-  import {getDecorateDynamic,setAttentions,
-  getFocusBrowse,getComments,expandReplies,createReply,removeComment} from "@/api/real-case.js"
+  import {getPersonDynamic,setAttentions} from "@/api/real-case.js"
   export default{
     components:{
       decorateDynamic,
@@ -29,6 +29,7 @@
       }
     },
     mounted(){
+      console.log(1112222)
       this.requestDynamic()
     },
     methods:{
@@ -41,7 +42,7 @@
         })
         let params = {
         	routeId: 3001,
-        	relationId: item.recordId,
+        	relationId: item.id,
         	authorId: this.personId||6842,
         	equipmentId: deviceId,
         	// userId: this.userId,
@@ -71,7 +72,7 @@
           page:1,
           rows:4
       	}
-      	getDecorateDynamic(params).then(data => {
+      	getPersonDynamic(params).then(data => {
       		if(data){
       			
       			this.dynamics = data.list

@@ -5,7 +5,7 @@
         <!-- <view class="line"></view> -->
         <view class="title">简介:</view>
       </view>
-      <view class="msg-content">
+      <view class="msg-content" >
         <text class="report-text" :class="{'report-text-hidden':isHidden}">{{personData.intro||'这个人很懒，什么都没写'}}</text>
         <view class="openHidden" v-if="showBtn" @click="clickHidden">
           {{hddenText}}
@@ -21,7 +21,7 @@
         <view class="tags" v-for="item of personData.designTags">{{item}}</view>
       </view>
     </view>
-    <view class="msg-item" >
+    <view class="msg-item" v-if="personData.roleId<7">
       <view class="item-title">
         <!-- <view class="line"></view> -->
         <view class="title">徽章:</view>

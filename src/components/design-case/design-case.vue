@@ -10,7 +10,7 @@
 					:index="index"
 					@height="onHeight"
 					@click="onClick(index, '0')"
-					@collection="onCollection(index)"
+					@collection="onCollection(index,'0')"
 				></waterfall>
 			</view>
 			<view>
@@ -19,8 +19,8 @@
 					:key="index" 
 					:params="item" 
 					@height="onHeight"
-					@click="onClick(index, '0')"
-					@collection="onCollection(index)"
+					@click="onClick(index, '1')"
+					@collection="onCollection(index,'1')"
 					tag="right"
 					:index="index"
 				></waterfall>
@@ -64,8 +64,8 @@
 				console.log("点击")
 				this.$parent.onClick(index, tag);
 			},
-			onCollection (index) {
-				this.$parent.onCollection(index);
+			onCollection (index,tag) {
+				this.$parent.onCollection(index,tag);
 			}
 		},
 	}

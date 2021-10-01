@@ -29,6 +29,11 @@ export function getDrawings(params) {
 export function getDecorateDynamic(params) {
   return request.post(`/pm/app/decorate/calendar/getListByPageQueryNoLogin`, params);
 }
+
+export function getPersonDynamic(params) {
+  return request.post(`/pm/app/decorate/calendar/getListByPageQuery`, params);
+}
+
 export function getSelectOptions(params) {
   return request.get(`/pm/app/project/myService`, {
     params

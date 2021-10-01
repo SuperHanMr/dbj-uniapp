@@ -31,6 +31,7 @@
     <view class="click-text" v-if="serviceData.length>3" @click="open">
     {{isOpen?'收起全部服务':'展开全部服务'}}<image src="" mode=""></image>
     </view>
+    
   </view>
 </template>
 

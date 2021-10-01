@@ -149,7 +149,7 @@
 			},
 			getHouseList() {
 				queryEstates({
-					isNeedRelative: true,
+					isNeedRelative: false,
 				}).then(res => {
 					this.listData = res || []
 					this.listData.forEach(function(v, i) {
