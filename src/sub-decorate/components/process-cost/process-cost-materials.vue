@@ -66,8 +66,8 @@
                 <view class="no-pay">商品超出配送范围，请更换可配送商品</view>
                 <view class="change"
                   v-if="!isNaN(content.categoryId) && content.categoryName !== '其他' && content.categoryId != ''">
-                  <view @click="goMaterialsList2(item)">更换商品</view>
-                  <image @click="goMaterialsList2(item)"
+                  <view @click="editAndGoMaterialsList(item)">更换商品</view>
+                  <image @click="editAndGoMaterialsList(item)"
                     src="http://dbj.dragonn.top/static/mp/dabanjia/images/decorate/change_material.svg"></image>
                 </view>
               </view>
@@ -88,23 +88,23 @@
     data() {
       return {
         itemList: [],
-        currentItemOriginData: {},
-        currentItemEditData: {},
       }
     },
     props: {
       content: {
         type: Object,
         required: true
+      },
+      areaId: {
+        type: Number
       }
     },
     mounted() {
-      uni.$on("selectedMaterial", this.selectedMaterialCb)
-      this.initItemList()
+      this.initItemList(this.content.itemList)
     },
     watch: {
       content(newVal, oldVal) {
-        this.initItemList()
+        this.initItemList(newVal.itemList)
       }
     },
     filters: {
@@ -134,9 +134,10 @@
         this.$nextTick(() => {
           let arr = []
           this.itemList.forEach(t => {
-            if (t.id === this.currentItemOriginData.id) {
+            const item = uni.getStorageSync("currentItemOriginData")
+            if (t.id === item.id) {
               arr.push({
-                ...this.currentItemOriginData
+                ...item
               })
             } else {
               arr.push({
@@ -146,12 +147,13 @@
           })
           this.itemList = [...arr]
 
-          this.submitMaterial(this.currentItemOriginData)
+          this.submitMaterial(item)
         })
+        uni.clearStorageSync("currentItemOriginData")
       },
       reduce(item) {
         this.$nextTick(() => {
-          if (item.count > item.minimumOrderQuantity) {
+          if (item.count > Number(item.minimumOrderQuantity)) {
             item.count -= Number(item.stepLength)
           }
           this.submitMaterial(item)
@@ -160,91 +162,40 @@
       },
       plus(item) {
         this.$nextTick(() => {
-          item.count += item.step
+          item.count += Number(item.stepLength)
           this.submitMaterial(item)
         })
       },
       finishEditing(item) {
         item.isEdit = false
+        uni.clearStorageSync("currentItemOriginData")
       },
       goMaterialsList(item) {
+        // const temp = getApp().globalData.currentEstate
         uni.navigateTo({
-          url: `/sub-decorate/pages/materials-list/materials-list?id=${item.id}&categoryId=${item.categoryId}`
+          url: `/sub-decorate/pages/materials-list/materials-list?id=${item.id}&categoryId=${item.categoryId}&areaId=${this.areaId}`
         })
       },
 
-      goMaterialsList2(item) {
-        return uni.showToast({
-          title: "不在服务范围的情况还在开发中，敬请期待......",
-          icon: "none"
-        })
-        uni.navigateTo({
-          url: `/sub-decorate/pages/materials-list/materials-list?id=${item.id}&categoryId=${Number(item.categoryId)}`
-        })
+      editAndGoMaterialsList(item) {
+        this.edit(item)
+        this.goMaterialsList(item)
       },
-      selectedMaterialCb(materialDetail) {
-        this.$nextTick(() => {
-          let item = {}
-          for (let i = 0; i < i < this.itemList.length; i++) {
-            let t = this.itemList[i]
-            if (t.id === this.currentItemOriginData.id) {
-              item = {
-                ...t
-              }
-              break;
-            }
-          }
-          this.setCurrentEditMaterialChangData(item, materialDetail)
-        })
-      },
-      setCurrentEditMaterialChangData(origin, source) {
-        // 注释的字段是不允许替换的
-        // origin.originalId = origin.originalId // "原始ID 【下单params附带参数】",
-        origin.id = source.product.skuId //"long //商品ID 【下单params附带参数】",
-        origin.title = source.title //"string //标题",
-        // origin.productType = origin.productType //"int //下单参数 type\r      标签 1.物品 2.服务 3.虚拟\r ,
-        // origin.roleType = source.roleType // "int //下单参数 roleType",  这里是辅材所以不需要替换
-        // origin.businessType = source.businessType //"int //下单参数 businessType",
-        // origin.categoryId = source.categoryId //"string //分类",
-        // origin.workType = source.workType //"int //工种",
-        origin.categoryTypeId = source.product.categoryTypeId //"int //品类类型ID",
-        origin.storeId = source.product.storeId //"long //店铺ID",
-        origin.imageUrl = source.product.skuImage //"string //图片地址",
-        origin.spuName = source.product.spuName //"string //商品名称",
-        origin.price = source.product.skuPrice //"int //价格",
-        // origin.count = origin.count //"double //数量",
-        origin.minimumOrderQuantity = source.product.sku.minimumOrderQuantity //"string //最小购买数量",
-        origin.stepLength = source.product.sku.stepLength //"string //数量增加步长",
-        origin.unit = source.product.salesUnit.unitName //"string //单位",
-        origin.name = source.product.skuName //"string //规格",
-        // origin.inServiceArea = origin.inServiceArea //"boolean //是否在服务区",
-        // origin.selling = origin.selling //"boolean //是否已购买 false未购买 true已购买"
 
-        this.submitMaterial(origin)
-      },
       submitMaterial(item) {
         this.$emit("changeMaterial", {
-          categoryType: this.content.categoryType,
+          categoryId: this.content.categoryId,
           item: {
             ...item
           }
         })
       },
       edit(item) {
-        this.currentItemOriginData = {
-          ...item
-        }
-        this.currentItemEditData = {
-          ...item
-        }
+        uni.setStorageSync("currentItemOriginData", item)
         item.isEdit = true
       },
-      initItemList() {
-        this.itemList = this.content.itemList.map(item => {
-          return {
-            ...item
-          }
-        })
+      initItemList(list) {
+        this.itemList = JSON.parse(JSON.stringify(list))
       },
       checkItem(val, item) {
         item.checked = val

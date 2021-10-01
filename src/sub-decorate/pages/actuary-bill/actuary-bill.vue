@@ -13,7 +13,6 @@
     },
     onLoad(e){
       let id = e.serveId
-      
       this.url = process.env.VUE_APP_BASE_H5+this.url + id  +'&token='+getApp().globalData.token
     },
     methods: {

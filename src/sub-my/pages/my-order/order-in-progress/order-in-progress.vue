@@ -109,8 +109,7 @@
 				getOrderDetail({
 					id: this.orderNo
 				}).then((e) => {
-					this.orderInfo = e;
-					// console.log("this.orderInfo=", this.orderInfo);
+					this.orderInfo = e;;
 				});
 			},
 
@@ -124,7 +123,7 @@
 					});
 				} else {
 					//type 2 整体退款
-					console.log("全部退款");
+					console.log("全部退款data=",data);
 					wx.setStorageSync("wholeRefundOrderInfo", JSON.stringify(data));
 					uni.navigateTo({
 						url: `/sub-my/pages/apply-for-refund/apply-for-refund?id=${this.orderNo}&type=whole&status=1`,
@@ -153,10 +152,12 @@
 				});
 			},
 			refundFailed(item) {},
+			
 			refundClose(item) {
-				uni.navigateTo({
-					url: `../../../../sub-classify/pages/goods-detail/goods-detail?goodId=${item.id}`,
-				});
+				console.log("退款关闭！！！！！")
+				// uni.navigateTo({
+				// 	url: `../../../../sub-classify/pages/goods-detail/goods-detail?goodId=${item.id}`,
+				// });
 			},
 
 			// 点击商品区域，跳转到商品详情页面

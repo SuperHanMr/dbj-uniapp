@@ -65,7 +65,7 @@
           </view>
         </view>
         <personIntroduce :personData='personData'></personIntroduce>
-        <view class="send-msg">
+        <view class="send-msg" @click="sendMsg">
           <image src="" mode=""></image>
           发消息
         </view>
@@ -148,15 +148,19 @@
     },
     onPullDownRefresh() {
       this.init();
-      this.$refs.case.getList()
-      this.$refs.case.cleanPage()
-      this.$refs.dynamic.requestDynamic()
+      this.$refs.case&&this.$refs.case.getList()
+      this.$refs.case&&this.$refs.case.cleanPage()
+      // console.log(this.$refs)
+      this.$refs.dynamic&&this.$refs.dynamic.requestDynamic()
       this.$refs.evaluate.getComments()
       
     },
     onLoad(e){
-      this.personId = e.personId||6834
+      this.personId = e.personId||6477
       // this.getGrabDetail()
+    },
+    onShow(){
+      console.log(111)
     },
     mounted() {
       // this.getCaseList()
@@ -285,7 +289,9 @@
           relationId:this.personId,
           relationType:7,
           page:1,
-          row:10000
+          row:10000,
+          spuIsEnabled:1,
+          skuIsEnabled:1
         }
         getSkuList(data).then(res=>{
           this.serviceData = res
@@ -294,6 +300,10 @@
       getEvaluate(num){
         console.log(num)
         this.evaluateNum = num
+      },
+      sendMsg(){
+        this.$store.dispatch("openC2CConversation", this.personId);
+
       }
     }
   }

@@ -19,8 +19,9 @@
         <view>辅材费用</view>
       </view>
       <view class="process-cost-list">
-        <process-cost-materials :key="index" v-for="(item,index) in dataOrigin.material.categoryList" :content="item"
-          @change="selectWp" @changeMaterial="changeMaterial">
+        <process-cost-materials :areaId="dataOrigin.areaId" :key="index"
+          v-for="(item,index) in dataOrigin.material.categoryList" :content="item" @change="selectWp"
+          @changeMaterial="changeMaterial">
         </process-cost-materials>
       </view>
       <no-data v-if="noData" :words="message"></no-data>
@@ -73,6 +74,7 @@
       } else {
         this.msg = getApp().globalData.decorateMsg
       }
+      uni.$on("selectedMaterial", this.selectedMaterialCb)
     },
     onShow() {
       this.getDataList()
@@ -102,6 +104,7 @@
         noData: false,
         message: null,
         skuRelation: [], // 精算单更换商品  新旧商品id对照表
+        selectedMaterialData: null,
       }
     },
     mounted() {
@@ -116,43 +119,72 @@
       },
     },
     methods: {
+      selectedMaterialCb(values) {
+        this.$nextTick(() => {
+          this.selectedMaterialData = values
+          this.setCurrentEditMaterialChangData()
+        })
+      },
+      setCurrentEditMaterialChangData() {
+        const {
+          categoryId,
+          item
+        } = this.selectedMaterialData
+        const origin = uni.getStorageSync("currentItemOriginData")
+        // 注释的字段是不允许替换的
+        // origin.originalId = origin.originalId // "原始ID 【下单params附带参数】",
+        origin.id = item.product.spuId //"long //商品ID 【下单params附带参数】",
+        origin.title = item.title //"string //标题",
+        // origin.productType = origin.productType //"int //下单参数 type\r      标签 1.物品 2.服务 3.虚拟\r ,
+        // origin.roleType = item.roleType // "int //下单参数 roleType",  这里是辅材所以不需要替换
+        // origin.businessType = item.businessType //"int //下单参数 businessType",
+        // origin.categoryId = item.categoryId //"string //分类",
+        // origin.workType = item.workType //"int //工种",
+        origin.categoryTypeId = item.product.categoryTypeId //"int //品类类型ID",
+        origin.storeId = item.product.storeId //"long //店铺ID",
+        origin.imageUrl = item.product.skuImage //"string //图片地址",
+        origin.spuName = item.product.spuName //"string //商品名称",
+        origin.price = item.product.skuPrice //"int //价格",
+        // origin.count = origin.count //"double //数量",
+        origin.minimumOrderQuantity = item.product.sku.minimumOrderQuantity //"string //最小购买数量",
+        origin.stepLength = item.product.sku.stepLength //"string //数量增加步长",
+        origin.unit = item.product.salesUnit.unitName //"string //单位",
+        origin.name = item.product.skuName //"string //规格",
+        // origin.inServiceArea = origin.inServiceArea //"boolean //是否在服务区",
+        // origin.selling = origin.selling //"boolean //是否已购买 false未购买 true已购买"
+        this.selectedMaterialData = {
+          origin,
+          categoryId
+        }
+      },
       changeMaterial(values) {
         const {
-          categoryType,
+          categoryId,
           item
         } = values
+        this.setMaterial(categoryId, item)
+      },
+      setMaterial(categoryId, item) {
         this.$nextTick(() => {
           for (let i = 0; i < this.dataOrigin.material.categoryList.length; i++) {
-            if (this.dataOrigin.material.categoryList[i].categoryType == categoryType) {
+            if (this.dataOrigin.material.categoryList[i].categoryId == categoryId) {
               for (let j = 0; j < this.dataOrigin.material.categoryList[i].itemList.length; j++) {
-                if (this.dataOrigin.material.categoryList[i].itemList[j].id == item.id) {
+                if (this.dataOrigin.material.categoryList[i].itemList[j].originalId == item.originalId) {
                   this.dataOrigin.material.categoryList[i].itemList[j] = item
-
-                  // 添加新旧id对应关系
-                  // const flgArr = this.skuRelation.filter(t => t.originalId == item.originalId)
-                  // if (flgArr?.length > 0) {
-                  //   // 如果是已经存在了新旧id对应关系，则替换新的id
-                  //   flgArr[0].newSuk = item.id
-                  // } else {
-                  //   // 否则就是第一次替换
-                  //   this.skuRelation.push({
-                  //     oldSuk: item.originalId,
-                  //     newSuk: item.id
-                  //   })
-                  // }
                   this.setSkuRelation(item)
                   break
                 }
               }
             }
           }
+          // debugger
         })
-        this.dataOrigin.material.categoryList = JSON.parse(JSON.stringify(this.dataOrigin.material.categoryList))
+        // this.dataOrigin.material.categoryList = JSON.parse(JSON.stringify(this.dataOrigin.material.categoryList))
         this.computePriceAndShopping()
       },
       setSkuRelation(item) {
         // 添加新旧id对应关系
-        const flgArr = this.skuRelation.filter(t => t.originalId == item.originalId)
+        const flgArr = this.skuRelation.filter(t => t.oldSuk == item.originalId)
         if (flgArr?.length > 0) {
           if (item.checked) {
             // 如果选择了
@@ -161,7 +193,7 @@
           } else {
             let index = null
             for (let i = 0; i < this.skuRelation.length > 0; i++) {
-              if (this.skuRelation[i].originalId == item.originalId) {
+              if (this.skuRelation[i].oldSuk == item.originalId) {
                 index = i
                 break
               }
@@ -295,6 +327,14 @@
               this.batchChangeLevel(cllist)
             }
           }
+          if (this.selectedMaterialData?.categoryId) {
+            const {
+              origin,
+              categoryId
+            } = this.selectedMaterialData
+            this.setMaterial(categoryId, origin)
+            this.selectedMaterialData = null
+          }
           this.initData()
         }).catch(err => {
           const {
@@ -373,13 +413,6 @@
           let roleType = this.msg.serviceType == 5 ? 10 : 7
           if (this.msg.obtainType != 2) {
             this.shopping.artificial.forEach(it => {
-              // skuInfos.push({
-              //   skuId: it.id, //"long //商品id",
-              //   storeId: it.storeId, //"long //店铺id",
-              //   buyCount: it.count, //"double //购买数量",
-              //   unit: "件", //"string //单位",
-              //   level: this.artificialLevel, //"int //等级"
-              // })
               params.details.push({
                 // supplierType: it.supplierType,
                 roleType,
@@ -399,13 +432,6 @@
           }
           if (this.msg.obtainType != 1) {
             this.shopping.material.forEach(it => {
-              // skuInfos.push({
-              //   skuId: it.id, //"long //商品id",
-              //   storeId: it.storeId, //"long //店铺id",
-              //   buyCount: it.count, //"double //购买数量",
-              //   unit: "件", //"string //单位",
-              //   level: 1, //"int //等级"
-              // })
               params.details.push({
                 // supplierType: it.supplierType,
                 relationId: it.id, //"long //实体id",
@@ -423,16 +449,6 @@
               })
             })
           }
-          // uni.navigateTo({
-          //   url: "/sub-classify/pages/pay-order/index",
-          //   success: (res) => {
-          //     res.eventChannel.emit('acceptDataFromOpenerPage', {
-          //       skuInfos,
-          //       originFrom: "processcost",
-          //       estateId: this.estateId
-          //     })
-          //   }
-          // })
           this.createOrder(params)
         } else {
           uni.showToast({

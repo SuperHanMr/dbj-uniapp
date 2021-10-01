@@ -288,9 +288,10 @@ export default {
 					reasonId:this.reasonValue,//退款原因id
 					remark:this.query.remarks, //备注
 					status:this.query.status, //订单状态1进行中 2已完成
-				}).then(()=>{
+				}).then(data=>{
+					console.log("data=",data,"data.id=",data.id)
 					uni.redirectTo({
-						url:`../refund-list/refunding-detail/refunding-detail?orderId=${this.query.orderId}`
+						url:`../refund-list/refunding-detail/refunding-detail?orderId=${data.id}`
 					})
 				})
 			}else{
@@ -301,10 +302,10 @@ export default {
 					reasonId:this.reasonValue,//退款原因id
 					remark:this.query.remarks, //备注
 					status:this.query.status, //订单状态1进行中 2已完成
-				}).then(e=>{
-					console.log("打印返回的数据=",e)
+				}).then(data=>{
+					console.log("打印返回的数据=",data,"data.id=",data.id)
 					uni.redirectTo({
-						url:`../refund-list/refunding-detail/refunding-detail?orderId=${this.query.orderId}`
+						url:`../refund-list/refunding-detail/refunding-detail?orderId=${data.id}`
 					})
 				})
 			}
