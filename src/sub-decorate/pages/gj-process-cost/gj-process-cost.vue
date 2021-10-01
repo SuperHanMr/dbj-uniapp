@@ -172,15 +172,14 @@
                 if (this.dataOrigin.material.categoryList[i].itemList[j].originalId == item.originalId) {
                   this.dataOrigin.material.categoryList[i].itemList[j] = item
                   this.setSkuRelation(item)
+                  this.computePriceAndShopping()
+                  this.selectedMaterialData = null
                   break
                 }
               }
             }
           }
-          // debugger
         })
-        // this.dataOrigin.material.categoryList = JSON.parse(JSON.stringify(this.dataOrigin.material.categoryList))
-        this.computePriceAndShopping()
       },
       setSkuRelation(item) {
         // 添加新旧id对应关系
@@ -249,7 +248,7 @@
           // 再计算辅材费用
           this.dataOrigin.material.categoryList.forEach((item, i) => {
             item.itemList.forEach((it, j) => {
-              if (this.checkedIds.includes(it.id)) {
+              if (this.checkedIds.includes(it.originalId)) {
                 this.shopping.material.push(it)
                 this.countPrice += it.price * it.count / 100
                 this.pieces += it.count
@@ -333,7 +332,6 @@
               categoryId
             } = this.selectedMaterialData
             this.setMaterial(categoryId, origin)
-            this.selectedMaterialData = null
           }
           this.initData()
         }).catch(err => {
@@ -350,7 +348,7 @@
         if (this.msg.obtainType != 2) {
           this.dataOrigin.artificial.categoryList.forEach(t => {
             t.itemList.forEach(it => {
-              this.checkedIds.push(it.id)
+              this.checkedIds.push(it.originalId)
             })
           })
         }
@@ -361,7 +359,7 @@
               it.checked = true
               it.isEdit = false
               if (it.inServiceArea && !it.selling) {
-                this.checkedIds.push(it.id)
+                this.checkedIds.push(it.originalId)
               }
               this.setSkuRelation(it)
             })
@@ -375,16 +373,16 @@
           console.log(obj)
           const {
             val,
-            id
+            originalId
           } = obj
           let arr = this.checkedIds
           if (val) {
-            if (!arr.includes(id)) {
-              arr.push(id)
+            if (!arr.includes(originalId)) {
+              arr.push(originalId)
             }
           } else {
-            if (arr.includes(id)) {
-              const i = arr.indexOf(id)
+            if (arr.includes(originalId)) {
+              const i = arr.indexOf(originalId)
               arr.splice(i, 1)
             }
           }

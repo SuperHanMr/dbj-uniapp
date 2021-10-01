@@ -130,12 +130,16 @@
       }
     },
     methods: {
+      finishEditing(item) {
+        item.isEdit = false
+        // uni.clearStorageSync("currentItemOriginData")
+      },
       restoreDefault() {
         this.$nextTick(() => {
           let arr = []
+          const item = uni.getStorageSync("currentItemOriginData")
           this.itemList.forEach(t => {
-            const item = uni.getStorageSync("currentItemOriginData")
-            if (t.id === item.id) {
+            if (t.originalId === item.originalId) {
               arr.push({
                 ...item
               })
@@ -149,7 +153,7 @@
 
           this.submitMaterial(item)
         })
-        uni.clearStorageSync("currentItemOriginData")
+        // uni.clearStorageSync("currentItemOriginData")
       },
       reduce(item) {
         this.$nextTick(() => {
@@ -165,10 +169,6 @@
           item.count += Number(item.stepLength)
           this.submitMaterial(item)
         })
-      },
-      finishEditing(item) {
-        item.isEdit = false
-        uni.clearStorageSync("currentItemOriginData")
       },
       goMaterialsList(item) {
         // const temp = getApp().globalData.currentEstate
@@ -201,7 +201,7 @@
         item.checked = val
         this.$emit("change", {
           val,
-          id: item.id
+          originalId: item.originalId
         })
       },
 
