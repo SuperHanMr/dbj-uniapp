@@ -1,17 +1,25 @@
 <template>
 	<view class="constructionWrap">
-		<view class="topTab">
+		<view class="noTypes" v-if="!serveTypes.length">
+			<image class="noTypesImg" src="http://dbj.dragonn.top/static/mp/dabanjia/images/decorate/pic_empty%402x.png"></image>
+			<view class="text">暂无装修动态</view>
+		</view>
+		<view class="topTab" v-else>
 			<view
-				:class="navIndex===index?'active':''"
+				:class="{'active':navIndex===index}"
 				@click="checkIndex(index,item.type)"
 				v-for="(item,index) in serveTypes"
 				:key="item.type"
 			>{{item.severName}}</view>
 		</view>
-		<view v-if="navIndex===0" class="underline"></view>
-		<view v-if="navIndex===1" class="underline left_1"></view>
-		<view v-if="navIndex===2" class="underline left_2"></view>
-		<view v-if="navIndex===3" class="underline left_3"></view>
+		<view v-if="serveTypes.length" class="lineWrap">
+			<view v-for="(item,index) in serveTypes" :key="item.type"
+				:class="[{'left_0':navIndex===0},{'left_1':navIndex===1},
+				{'left_2':navIndex===2},{'left_3':navIndex===3}]"
+				class="underline"
+			></view>
+		</view>
+		
 		<view class="designer" v-if="serverList.length>=2">
 			<view class="designerInfo">
 				<image class="avatar" :src="serverList[selectedIndex].avatar"></image>
@@ -25,7 +33,11 @@
 				<image class="switch" src="../../static/ic_switch@2x.png"></image>
 			</view>
 		</view>
-		<view class="contentWrap">
+		<view class="noDrawings" v-if="!drawings.length">
+			<image class="noDrawingsImg" src="http://dbj.dragonn.top/static/mp/dabanjia/images/decorate/pic_empty%402x.png"></image>
+			<view class="text">暂无装修动态</view>
+		</view>
+		<view class="contentWrap" v-else>
 			<view class="content"
 				v-if="navIndex===index"
 				v-for="(item,index) in serveTypes"
@@ -134,6 +146,32 @@
 </script>
 
 <style scoped>
+	.noTypesImg{
+		display: block;
+		width: 750rpx;
+		height: 640rpx;
+		margin: 24rpx 0;
+	}
+	.noTypes .text{
+		width: 168rpx;
+		height: 40rpx;
+		margin: 0 291rpx 692rpx;
+		font-size: 28rpx;
+		color: #999999;
+	}
+	.noDrawingsImg{
+		display: block;
+		width: 750rpx;
+		height: 640rpx;
+		margin: 24rpx 0;
+	}
+	.noDrawings .text{
+		width: 168rpx;
+		height: 40rpx;
+		margin: 0 291rpx 602rpx;
+		font-size: 28rpx;
+		color: #999999;
+	}
 	.mask {
 	  width: 100%;
 	  height: 100%;
@@ -257,21 +295,33 @@
 		color: #333333;
 	  font-weight: 500;
 	}
+	.lineWrap{
+		display: flex;
+		justify-content: space-evenly;
+	}
+	
 	.underline{
+		opacity: 0;
 		position: absolute;
 		top: 96rpx;
 		left: 52rpx;
-		width: 48rpx;
-		height: 6rpx;
+		width: 32rpx;
+		height: 4rpx;
 		background: linear-gradient(129deg,#00cdec 0%, #00ed7d 92%);
 	}
+	.left_0{
+		opacity: 1;
+	}
 	.left_1{
+		opacity: 1;
 		left: 222rpx;
 	}
 	.left_2{
+		opacity: 1;
 		left: 382rpx;
 	}
 	.left_3{
+		opacity: 1;
 		left: 552rpx;
 	}
 	.designer{
