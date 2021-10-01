@@ -29,6 +29,7 @@
 					</view>
 					<view class="attr">
 						<text style="margin-right: 24rpx;">{{dataList.salesProperties}}</text>
+						<text >{{handlePrice(dataList.price)[0]}}.{{handlePrice(dataList.price)[1]}} {{ dataList.unit ? `/${dataList.unit}` :''}}</text>
 					</view>						
 				</view>
 				
@@ -55,8 +56,8 @@
 							<text style="font-size:22rpx;">{{handlePrice(dataList.price)[1]}}</text>
 					</view> 
 					
-					<view style="color: #999999;" v-if="refundType">共{{dataList.refundNumber}}件</view>
-					<view style="color: #999999;" v-else >共{{dataList.number}}件</view>
+					<view style="color: #999999;" v-if="refundType">共{{dataList.refundNumber || 1}}{{dataList.unit || '件'}}</view>
+					<view style="color: #999999;" v-else >共{{dataList.number || 1}}{{dataList.unit || '件'}}</view>
 				</view>	
 			</view>
 		</view>
@@ -83,31 +84,31 @@
 			</view>
 		</view>
 		<view  class="apply-refund-container" v-if="dataList.showRefundBtn && orderStatus == 3">
-			<view class="button" @click="particalRefund">
+			<view class="button" @click.stop="particalRefund">
 				申请退款
 			</view>
 		</view>
 		
 		<view  class="apply-refund-container" v-if="dataList.showRefundBtn && orderStatus == 2">
-			<view class="button" @click="particalRefund">
+			<view class="button" @click.stop="particalRefund">
 				申请退款
 			</view>
 		</view>
 
 		<view class="apply-refund-container" :style="{paddingTop:0}"  v-if="!dataList.showRefundBtn && orderStatus==2 && dataList.refundStatus > 0">
-			<view class="button" v-if="dataList.refundStatus == 4"  @click="refundCancel">
+			<view class="button" v-if="dataList.refundStatus == 4"  @click.stop="refundCancel">
 				取消退款
 			</view>
 			
-			<view class="button"  v-if="dataList.refundStatus ==1"  @click="refundSuccess">
+			<view class="button"  v-if="dataList.refundStatus ==1"  @click.stop="refundSuccess">
 				退款成功
 			</view>
 			
-			<view class="button" v-if="dataList.refundStatus ==2" @click="refundFailed">
+			<view class="button" v-if="dataList.refundStatus ==2" @click.stop="refundFailed">
 				退款失败
 			</view>
 			
-			<view class="button" v-if="dataList.refundStatus ==3" @click="refundClose">
+			<view class="button" v-if="dataList.refundStatus ==3" @click.stop="refundClose">
 				退款关闭
 			</view>
 			

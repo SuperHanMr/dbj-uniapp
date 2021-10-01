@@ -1,15 +1,15 @@
 <template>
 	<view class="material-content">
 		<slot name="radio"></slot>
-		<image :src="content.product.imageUrl" @click="goDetail"></image>
+		<image :src="content.product.skuImage" @click="goDetail"></image>
 		<view @click="goDetail">
-			<view class="subtitle">{{content.product.fullName}}</view>
+			<view class="subtitle">{{content.product.spuName}}</view>
 			<view class="desc-area">
-				<text>规格</text>
-				<text>1{{content.product.unitName}}</text>
+				<text>{{content.product.skuName}}</text>
+				<text>1{{content.product.salesUnit.unitName}}</text>
 			</view>
 			<view class="price">
-				<text class="t1">￥</text><text class="t2">{{content.price * 1 }}</text></text>
+				<text class="t1">￥</text><text class="t2">{{content.product.skuPrice / 100 }}</text></text>
 			</view>
 		</view>
 	</view>

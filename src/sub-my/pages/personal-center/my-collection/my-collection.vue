@@ -28,7 +28,7 @@
 				<scroll-view v-if="productList.length > 0" class="scroll-view" scroll-y="true" refresher-background="#FFF" refresher-enabled="true"
 					:refresher-triggered="triggered" @refresherrefresh="onRefresh" @scrolltolower="onLoadMore">
 					<waterfall :key="itemTab.fallKey" :list="productList" @selectedItem="onSelectedItem" :allCheck="allCheck"
-						:showCheckIcon="!showMgrBtn" :isAllCheck="isAllCheck"></waterfall>
+						:showCheckIcon="!showMgrBtn" :isAllCheck="isAllCheck" :isActive="isActive"></waterfall>
 				</scroll-view>
 				<view v-else class="empty-body">
 					<image src="../../../../static/order/blank_house@2x.png" mode=""></image>
@@ -40,7 +40,7 @@
 				<scroll-view v-if="caseList.length >0" class="scroll-view" scroll-y="true" refresher-background="#FFF" refresher-enabled="true"
 					:refresher-triggered="triggered" @refresherrefresh="onRefresh" @scrolltolower="onLoadMore">
 					<waterfall :key="itemTab.fallKey" :list="caseList" @selectedItem="onSelectedItem" :allCheck="allCheck"
-						:showCheckIcon="!showMgrBtn" :isAllCheck='isAllCheck'></waterfall>
+						:showCheckIcon="!showMgrBtn" :isAllCheck='isAllCheck' :isActive="isActive"></waterfall>
 				</scroll-view>
 				<view v-else class="empty-body">
 					<image src="../../../../static/order/blank_house@2x.png" mode=""></image>
@@ -108,6 +108,7 @@
 				showCalCelBtn:false,
 				allCheck:false,
 				isAllCheck:false,
+				isActive:false,
 				title: "",
 
 				systemBottom: "",
@@ -255,8 +256,11 @@
 					if(this.checkedItemIds.length == this.productList.length){
 						this.allCheck=true;
 						this.isAllCheck=true;
+						// this.isActive = true
 					}else{
 						this.allCheck=false
+						// this.isAllCheck=false;
+						// this.isActive = true
 					}
 				}
 			},
@@ -264,6 +268,9 @@
 			// 全选
 			handleAllCheck(){
 				this.allCheck=!this.allCheck
+				// this.allCheck ? this.isAllCheck=true : this.isAllCheck=false
+				// this.isActive = false
+				// console.log("this.allCheck=",this.allCheck,"this.isAllCheck=",this.isAllCheck)
 				switch(this.currentIndex){
 					case 0:
 						this.allCheckFunction(this.productList)
