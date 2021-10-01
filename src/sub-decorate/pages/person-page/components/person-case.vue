@@ -6,6 +6,7 @@
       暂无案例
     </view>
     <view v-if="pagState.totalPage>pagState.page" @click="getList" class="click-text">展开更多案例</view>
+    
   </view>
 </template>
 
@@ -42,10 +43,21 @@
         	totalRows: '',
         	end: "",
         },
+        activeIndex:0,
+        activeList:0,
       }
     },
     mounted(){
       this.getList()
+      uni.$on('isCollect',(data)=>{
+        console.log('person++++++++++',this.activeList[this.activeIndex])
+        if(data){
+          this.activeList[this.activeIndex].collectionCount += 1
+        }else{
+          this.activeList[this.activeIndex].collectionCount -=1
+        }
+        this.activeList[this.activeIndex].isCollection = !this.activeList[this.activeIndex].isCollection;
+      })
     },
     methods:{
       // 监听高度变化
@@ -60,6 +72,9 @@
       	
       	// parentType 1 全景图 0  短视频  2 图文
       	const listUrl = list[index].videoUrl
+        this.activeIndex = index
+        this.activeList = list
+        console.log(list,index)
       	uni.navigateTo({
       		url: `/pages/real-case/real-case-webview/real-case-webview?id=${list[index].id}`
       	})
@@ -67,6 +82,7 @@
       // 组件点击事件
       onClick(index, tag) {
       	this.tag = tag;
+        console.log(tag)
       	// 对应的数据
       	if (tag == "0") {
       		this.onJump(this.leftList, index, this.selectStatus);
@@ -77,13 +93,15 @@
       },
       // 收藏事件
       onCollection(index, tag) {
-      	const item = this.leftList[index];
+      	
       	let list = [];
+        console.log(tag)
       	if (tag == 0) {
       		list = this.leftList;
       	} else {
       		list = this.rightList;
       	}
+        const item = list[index];
       	getCollection({
       		routeId: 5001, // 固定内容
       		subBizType: item.parentType, // 内容下的子项   视频 VR  图片

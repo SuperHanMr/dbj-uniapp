@@ -103,7 +103,7 @@
 		}, {
 			"path": "pages/real-case/real-case-webview/real-case-webview",
 			"style": {
-				"navigationBarTitleText": "123213",
+				"navigationBarTitleText": "",
 				"enablePullDownRefresh": false,
         "navigationBarBackgroundColor": "#000",
         "navigationBarTextStyle":"white"
