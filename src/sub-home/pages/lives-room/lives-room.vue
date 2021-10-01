@@ -81,7 +81,7 @@
 				tophight: "",
 				list: [1, 2, 3],
 				scrollTop: 0,
-				count:0
+				count: 0
 
 			};
 		},
@@ -148,8 +148,8 @@
 				query.selectAll('.chat-item-height').boundingClientRect();
 				// query.select('#scrollview').boundingClientRect();
 				query.exec((res) => {
-					if(res[0]&&res[0][0].height){
-						this.scrollTop=res[0][0].height
+					if (res[0] && res[0][0].height) {
+						this.scrollTop = res[0][0].height
 					}
 				})
 			},
@@ -179,7 +179,6 @@
 		bottom: 0;
 		right: 0;
 		left: 0;
-		// background-color: white;
 
 		.bottom-placeholder {
 			height: 68rpx;
@@ -235,6 +234,19 @@
 				background: rgba(0, 0, 0, 0.30);
 				border-radius: 14rpx;
 				color: #FFF;
+				padding: 0 16rpx;
+				line-height: 44rpx;
+				color: #FFF;
+				.avater {
+					display: inline-block;
+					width: 32rpx;
+					height: 32rpx;
+					border-radius: 50%;
+				}
+				.name{
+					color: rgba( 255,255,255,0.5);
+				}
+				
 			}
 		}
 	}
