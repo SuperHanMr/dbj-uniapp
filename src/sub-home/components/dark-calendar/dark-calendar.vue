@@ -26,16 +26,17 @@
       <view class="week-day" v-for="(item, index) in weekDay" :key="index">{{ item }}</view>
     </view>
 
-    <view :class="{ hide: !monthOpen }" class="content" :style="{ height: height }">
-      <view :style="{ top: positionTop + 'rpx' }" class="days">
+    <view :style="{ height: height }" :class="{ hide: !monthOpen }" class="content">
+      <view :style="{ top: positionTop + 'rpx' }" :class="{ switchWeek: !monthOpen }" class="days">
         <view class="item" v-for="(item, index) in dates" :key="index">
-					<view class="today-text" @click="todayC(`${item.year}-${item.month}-${item.date}`)" :class="{'checked': isChecked}" v-if="isToday(item.year, item.month, item.date)">今</view>
-          <view class="day" v-else @click="selectOne(item, $event)" :class="{ choose: choose == `${item.year}-${item.month}-${item.date}`, nolm: !item.lm }">{{ item.date }}</view>
+					<view class="today-text" @click="todayC(`${item.year}-${item.month}-${item.date}`)" :class="{'checked': checkToday}" v-if="isToday(item.year, item.month, item.date)">今</view>
+          <view class="day" v-else @click="checkOne(item, $event)" :class="{ choose: choose === `${item.year}-${item.month}-${item.date}`, gray: !item.not }">{{ item.date }}</view>
           <view class="sign" v-if="isSigned(item.year, item.month , item.date)"></view>
         </view>
       </view>
     </view>
-		<view class="weektoggel" v-if="collapsible" @click="trgWeek()"></view>
+		<image v-if="isShrink" @click="switchWeek()" class="shrink" src="../../static/ic_shrink@2x.png"></image>
+		<view v-else @click="switchWeek()" class="grow"></view>
     
   </view>
 </template>
@@ -55,15 +56,6 @@
 	      type: Array,
 	      default: null
 	    },
-	    // 是否展开
-	    open: {
-	      type: Boolean,
-	      default: true
-	    },
-			collapsible: {
-				type: Boolean,
-				default: true
-			},
 			projectId: {
 				type: Number,
 			},
@@ -84,23 +76,26 @@
 	      dates: [], // 当前月日期集合
 	      positionTop: 0,
 	      monthOpen: true,
-	      choose: '',
-				isChecked: true
+	      isShrink: true,
+				checkToday: true,
+				choose: '',
+				choice: {}//点击选中的日期
 	    }
 	  },
 	  created() {
-	    this.dates = this.monthDay(this.y, this.m)
-	    !this.open && this.trgWeek()
+			let date = new Date()
+			let y = date.getFullYear()
+			let mon = date.getMonth()+1
+			let m = mon < 10? `0${mon}` : mon
+			let d = date.getDate()
+			this.choose = `${y}-${m}-${d}`
+			console.log(this.choose,this.signeddates,'dadian')
+			
+			this.dates = this.monthDay(this.y, this.m)
+	    
 	  },
 	  mounted() {
-	    let date = new Date()
-	    let y = date.getFullYear()
-	    let mon = date.getMonth()+1
-			let m = mon < 10? `0${mon}` : mon
-	    let d = date.getDate()
-	    this.choose = `${y}-${m}-${d}`
-			console.log(this.choose)
-			console.log(this.signeddates,'dadian')
+			
 	  },
 	  computed: {
 	    // 顶部星期栏目
@@ -113,7 +108,7 @@
 	  },
 	  methods: {
 			todayC(today){
-				this.isChecked = !this.isChecked
+				this.checkToday = !this.checkToday
 				this.choose = today
 			},
 			toMemo(){
@@ -153,7 +148,7 @@
 	          day: (j % 7) + firstDayOfMonth - 1 || 7,
 	          month: m,
 	          year: y,
-	          lm: true
+	          not: true
 	        })
 	      }
 	      for (let k = 1; k <= endDay; k++) {
@@ -164,23 +159,45 @@
 	          year: m + 1 <= 11 ? y : y + 1
 	        })
 	      }
+				
 				dates.map(item => {
 					if(item.month+1 < 10){
 						item.month = `0${item.month+1}`
 					}else{
 						item.month +=1
 					}
+					if(this.choose === `${item.year}-${item.month}-${item.date}`){
+						this.choice = item
+					}
 					return item
 				})
+				for (let i = 0; i < dates.length; i++) {
+					if(i < 7){
+						dates[i].weekIndex = 0
+					}else if(i >= 7 && i < 14){
+						dates[i].weekIndex = 1
+					}else if(i >= 14 && i < 21){
+						dates[i].weekIndex = 2
+					}else if(i >= 21 && i < 28){
+						dates[i].weekIndex = 3
+					}else if(i >= 28 && i < 35){
+						dates[i].weekIndex = 4
+					}else if(i >= 35){
+						dates[i].weekIndex = 5
+					}
+				}
 				console.log(dates)
 	      return dates
 	    },
 	    // 已经签到处理
 	    isSigned(y, m, d) {
+				if(d < 10){
+					d = `0${d}`
+				}
 	      let flag = false
 				let day = `${y}-${m}-${d}`
 	      for (let i = 0; i < this.signeddates.length; i++) {
-	        if (this.signeddates[i].day == day) {
+	        if (this.signeddates[i].day === day) {
 	          flag = true
 	          break
 	        }
@@ -195,21 +212,30 @@
 	      return y == year && m == month && d == day
 	    },
 	    // 切换成周模式
-	    trgWeek() {
+	    switchWeek() {
+				console.log(this.choice)
+				if(!Object.keys(this.choice).length)return
+				this.isShrink = !this.isShrink
 	      this.monthOpen = !this.monthOpen
 	      if (this.monthOpen) {
 	        this.positionTop = 0
+					//月日历
+					this.dates = this.monthDay(this.y, this.m)
 	      } else {
 	        let index = -1
 	        this.dates.forEach((i, x) => {
 	          this.isToday(i.year, i.month, i.date) && (index = x)
 	        })
 	        this.positionTop = -((Math.ceil((index + 1) / 7) || 1) - 1) * 80
+					//周日历
+					let weekIndex = this.choice.weekIndex
+					this.dates = this.dates.filter(item => item.weekIndex === weekIndex)
 	      }
 	    },
 	    // 点击回调
-	    selectOne(i, event) {
-				this.isChecked = false
+	    checkOne(i) {
+				this.choice = i
+				this.checkToday = false
 	      let date = `${i.year}-${i.month}-${i.date}`
 	      let selectD = new Date(date)
 				console.log(date,selectD.getMonth(),this.m)
@@ -349,6 +375,10 @@
 	  display: flex;
 	  align-items: center;
 	  flex-wrap: wrap;
+		
+		&.switchWeek{
+			height: 98rpx;
+		}
 	}
 	.item {
 		width: 98rpx;
@@ -374,7 +404,7 @@
 			border: 2rpx solid #00bfb6;
 	  }
 		
-	  &.nolm {
+	  &.gray {
 	    color: #333;
 	    opacity: 0.3;
 	  }
@@ -406,9 +436,9 @@
 		}
 	}
   .hide {
-    height: 80rpx !important;
+    height: 80rpx;
   }
-  .weektoggel {
+  .grow {
     width: 64rpx;
     height: 8rpx;
     margin: 0 343rpx;
@@ -418,4 +448,13 @@
 		left: 0;
 		bottom: -36rpx;
   }
+	.shrink{
+		display: block;
+		width: 32rpx;
+		height: 16rpx;
+		margin: 0 360rpx;
+		position: absolute;
+		left: 0;
+		bottom: -42rpx;
+	}
 </style>
