@@ -7,6 +7,7 @@
 					:showCheckIcon="showCheckIcon"
 					:allCheck="allCheck"
 					:isAllCheck="isAllCheck"
+					:isActive="isActive"
 					@detail="toDetail"
 					@load="onImageLoad"
 				/>
@@ -19,6 +20,7 @@
 					:showCheckIcon="showCheckIcon"
 					:allCheck="allCheck"
 					:isAllCheck="isAllCheck"
+					:isActive="isActive"
 					@detail="toDetail"
 					@load="onImageLoad"
 				 />
@@ -46,6 +48,10 @@
 				default:false
 			},
 			isAllCheck:{
+				type:Boolean,
+				default:false
+			},
+			isActive:{
 				type:Boolean,
 				default:false
 			}

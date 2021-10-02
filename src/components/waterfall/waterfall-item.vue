@@ -71,6 +71,10 @@
 			isAllCheck:{
 				type:Boolean,
 				default:false
+			},
+			isActive:{
+				type:Boolean,
+				default:false
 			}
 
 		},
@@ -94,11 +98,22 @@
 					}
 				},
 				deep: true
+			},
+			isAllCheck:{
+				handler(newVal,oldVal){
+					if(this.isActive) return
+					console.log("!!!!!!!!!!!!!!!!!!!!!isAllCheck=",newVal)
+					if(newVal){
+						this.isChecked = true
+					}else{
+						this.isChecked  =false
+					}
+				},
+				deep:true
 			}
 		},
 		data() {
 			return {
-				isActive: false,
 				isChecked: "",
 			};
 		},

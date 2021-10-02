@@ -9,7 +9,9 @@
       <view class="item-list">
         <view class="item" v-for="(item,index) in itemList" :key="item.id">
           <view class="img-name-tag-guige flex-r-l">
-            <view v-if="item.isEdit || !item.inServiceArea || it.selling" style="width: 32rpx;height: 32rpx;"></view>
+            <view v-if="item.isEdit || !item.inServiceArea || item.selling" style="width: 32rpx;height: 32rpx;">
+              <!-- <view v-if="item.selling" style="width: 32rpx;height: 32rpx;font-size: 24rpx;color: #333;">已购买</view> -->
+            </view>
             <check-box v-else :checked="item.checked" @change="(val) => {checkItem(val, item)}"></check-box>
             <view class="flex-1">
               <view class="flex-r-l">
@@ -130,12 +132,15 @@
       }
     },
     methods: {
+      finishEditing(item) {
+        item.isEdit = false
+      },
       restoreDefault() {
         this.$nextTick(() => {
           let arr = []
+          const item = uni.getStorageSync("currentItemOriginData")
           this.itemList.forEach(t => {
-            const item = uni.getStorageSync("currentItemOriginData")
-            if (t.id === item.id) {
+            if (t.originalId === item.originalId) {
               arr.push({
                 ...item
               })
@@ -149,7 +154,6 @@
 
           this.submitMaterial(item)
         })
-        uni.clearStorageSync("currentItemOriginData")
       },
       reduce(item) {
         this.$nextTick(() => {
@@ -166,12 +170,7 @@
           this.submitMaterial(item)
         })
       },
-      finishEditing(item) {
-        item.isEdit = false
-        uni.clearStorageSync("currentItemOriginData")
-      },
       goMaterialsList(item) {
-        // const temp = getApp().globalData.currentEstate
         uni.navigateTo({
           url: `/sub-decorate/pages/materials-list/materials-list?id=${item.id}&categoryId=${item.categoryId}&areaId=${this.areaId}`
         })
@@ -191,7 +190,10 @@
         })
       },
       edit(item) {
-        uni.setStorageSync("currentItemOriginData", item)
+        uni.setStorageSync("currentItemOriginData", {
+          ...item,
+          oldId: item.oldId || item.id
+        })
         item.isEdit = true
       },
       initItemList(list) {
@@ -201,7 +203,7 @@
         item.checked = val
         this.$emit("change", {
           val,
-          id: item.id
+          originalId: item.originalId
         })
       },
 
