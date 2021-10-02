@@ -47,7 +47,7 @@
                 <text v-if="goodsItem.errorType === 9">暂不可购买，请在管家服务结束后于精算单中购买</text>
               </view>
             </view>
-            <view class="choose-time" v-if="productType === 2 && shopItem.skuInfos.appointmentRequired">
+            <view class="choose-time" v-if="productType === 2 && goodsItem.appointmentRequired">
               <view class="time-bar" @click='chooseTime(shopIndex, goodIndex)'>
                 <text v-if="!time">请选择上门时间</text>
                 <text v-else>{{time}}</text>
@@ -55,8 +55,8 @@
               </view>
             </view>
           </view>
-          <view class="cost-detail" v-if="shopItem.deliveryFee && productType === 1">
-            <view>
+          <view class="cost-detail" v-if="(shopItem.deliveryFee || shopItem.totalHandlingFee) && productType === 1">
+            <view v-if="shopItem.deliveryFee">
               <text>运费</text>
               <text>¥{{shopItem.deliveryFee}}</text>
             </view>
