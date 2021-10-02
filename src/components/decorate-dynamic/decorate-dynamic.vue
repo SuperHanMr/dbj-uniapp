@@ -47,12 +47,16 @@
       dynamicComments
     },
     props:{
-      dynamics:[],
+      dynamics:{
+        type:Array,
+        default:()=>{
+          return []
+        }
+      },
       isPerson:false,
       personId:0
     },
     data() {
-      
       return {
         dynamicId:0,
         houseOwnerId:0
@@ -231,7 +235,7 @@
     padding-left: 2rpx;
     display: flex;
     align-items: center;
-    
+    max-width: 362rpx;
     image{
       width: 48rpx;
       height: 48rpx;
@@ -247,6 +251,10 @@
       // white-space: nowrap;
       color: #666;
       font-size: 24rpx;
+      max-width: 296rpx;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
     }
   }
 </style>

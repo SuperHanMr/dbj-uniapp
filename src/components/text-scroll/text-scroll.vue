@@ -1,7 +1,7 @@
 <template>
   <view class="text-scroll">
     <view class="text-scroll-item" @click="goDecorateCalendar">
-      <image class="icon-l"></image>
+      <i class="icon-rili"></i>
       <view class="line"></view>
       <view class="content">{{current.content}}</view>
       <view class="date">{{current.recordDate | formatDate}}</view>
@@ -14,6 +14,9 @@
   import {
     formatDate
   } from "../../utils/common.js"
+  import {
+    calendarFormat
+  } from "../../utils/date.js"
   export default {
     props: ["dataList"],
     data() {
@@ -44,7 +47,7 @@
     },
     filters: {
       formatDate(val) {
-        return formatDate(val)
+        return calendarFormat(val)
       }
     },
     mounted() {
@@ -77,12 +80,14 @@
     width: 100%;
     margin-bottom: 4rpx;
 
-    .icon-l {
-      width: 24rpx;
-      height: 22rpx;
-      border: 2rpx solid;
-      box-sizing: border-box;
-      margin-right: 22rpx;
+    .icon-rili {
+      font-size: 37rpx;
+      // width: 24rpx;
+      // height: 22rpx;
+      // border: 2rpx solid;
+      // box-sizing: border-box;
+      color: #00bfb6;
+      margin-right: 20rpx;
     }
 
     .line {
