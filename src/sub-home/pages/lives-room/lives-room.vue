@@ -218,9 +218,6 @@
 			},
 		},
 		onLoad(e) {
-			// if (e && e.livePreview) {
-			// 	this.livePreview = e.livePreview;
-			// }
 			if (e && e.roomId) {
 				this.roomId = e.roomId;
 			}
@@ -243,7 +240,7 @@
 
 		onShow() {
 			this.getRoomInfo();
-		this.timer=	setInterval(this.getRoomInfo,2000);
+			this.timer = setInterval(this.getRoomInfo, 2000);
 			this.joinType = TIM.TYPES.GRP_TIP_MBR_JOIN;
 			if (uni.getStorageSync("userId")) {
 				this.isLogin = true;
@@ -272,8 +269,6 @@
 												return e.key == "extensionArr";
 											});
 											let result = JSON.parse(res[0].value);
-											console.log("XXXXXXXXX");
-											console.log(result);
 										}
 									});
 							});
@@ -281,8 +276,7 @@
 				}
 			}
 		},
-		onUnload(){
-			console.log('!!!!??????????/')
+		onUnload() {
 			clearInterval(this.timer);
 		},
 		methods: {
@@ -299,10 +293,24 @@
 			},
 			getRoomInfo() {
 				publicRoom(this.roomId).then(e => {
+					if (!this.isLiveing) {
+						this.isLiveing = false
+					}
+					if (e.status == 0) {
+						this.isLiveing = false
+						return
+					} else {
+						this.isLiveing = true
+					}
 					if (!this.livePreview) {
 						this.livePreview = e.liveUrl;
 					}
+					if (!this.title) {
+						this.title = e.title
+					}
 					this.roomInfo = e
+				}).catch(e => {
+					this.isLiveing = false
 				})
 			},
 			messageRecived(event) {
