@@ -64,6 +64,7 @@ export function publicRoom(roomId) {
 export function insertAndGetLikeNum(params) {
 	return request.post(`/app/liveLike/insertAndGetLikeNum`, {
 		...params,
-		hideToast: true
+		hideToast: true,
+		ignoreLogin:true
 	});
 }
