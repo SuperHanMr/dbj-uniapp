@@ -61,7 +61,8 @@
 				systemBottom: '',
 				systemHeight: '',
 				chooseId: '',
-				delta: 1
+				delta: 1,
+				fromHome: false
 			};
 		},
 		mounted() {
@@ -80,6 +81,9 @@
 		onLoad(e) {
 			if (e && e.id) {
 				this.chooseId = e.id;
+			}
+			if (e && e.fromHome) {
+				this.fromHome = true
 			}
 			this.delta = e.delta || 1
 			this.isMy = e.isMy || false
@@ -159,7 +163,7 @@
 				})
 			},
 			edit(item) {
-				console.log('/sub-decorate/pages/add-house/add-house?id='+item.id)
+				console.log('/sub-decorate/pages/add-house/add-house?id=' + item.id)
 				uni.navigateTo({
 					url: '/sub-decorate/pages/add-house/add-house?id=' + item.id
 				})
@@ -174,12 +178,14 @@
 				if (this.isMy) return
 				this.chooseId = item.id
 				this.currentId = item.id
-				uni.$emit('selectedHouse', item);
-         
-        uni.setStorageSync(
-        	'houseListChooseId',
-        	this.chooseId,
-        );
+				if (this.fromHome) {
+					uni.$emit('selectedHouse', item);
+				}
+
+				uni.setStorageSync(
+					'houseListChooseId',
+					this.chooseId,
+				);
 				uni.navigateBack({
 
 				})
@@ -187,12 +193,12 @@
 		},
 		onUnload() {
 			// if (this.isMy) return
-   //    uni.setStorageSync(
-   //    	'houseListChooseId',
-   //    	this.chooseId,
-   //    );
-			
-      
+			//    uni.setStorageSync(
+			//    	'houseListChooseId',
+			//    	this.chooseId,
+			//    );
+
+
 			// uni.getStorageSync({
 			//     key: 'houseListChooseId',
 			//     success: function (res) {

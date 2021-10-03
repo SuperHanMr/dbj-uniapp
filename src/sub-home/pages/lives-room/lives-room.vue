@@ -97,7 +97,7 @@
 						说点什么...
 						<view class="iconfont icon-face" @click.stop="handleChooseImage"></view>
 					</view>
-					<view class="macphone" @click="showDownload=true">>
+					<view class="macphone" @click="showDownload=true">
 						<image class="icon_macphone"
 							src="http://dbj.dragonn.top/%20static/mp/dabanjia/images/home/lives_macphone.png" mode="">
 						</image>
@@ -107,10 +107,14 @@
 						src="http://dbj.dragonn.top/%20static/mp/dabanjia/images/home/lives_shopping.png" mode=""
 						@click="showDownload=true">
 					</image>
-
-					<image class="bottom-icon"
-						src="http://dbj.dragonn.top/%20static/mp/dabanjia/images/home/lives_agree.png" mode=""></image>
-
+					<view class="bottom-icon" @click="clickLike">
+						<image class="img"
+							src="http://dbj.dragonn.top/%20static/mp/dabanjia/images/home/lives_agree.png" mode="">
+						</image>
+						<view class="like-count">
+							{{totoalLick}}
+						</view>
+					</view>
 					<!-- 		<view class="chat-item" v-for="(item,index) in list" :key="index">
 						{{item}}
 					</view> -->
@@ -186,7 +190,8 @@
 	import TIM from "tim-wx-sdk";
 	import MessageSendBox from "./message-send-box.vue";
 	import {
-		publicRoom
+		publicRoom,
+		insertAndGetLikeNum
 	} from '../../../api/home.js'
 	export default {
 		components: {
@@ -209,13 +214,18 @@
 				scrollTop: 0,
 				roomInfo: {},
 				joinType: null,
-				timer: null
+				timer: null,
+				userLikeTotal: 0,
+				likeCount: 0
 			};
 		},
 		computed: {
 			groupId() {
 				return "group" + this.roomId;
 			},
+			totoalLick() {
+				return this.userLikeTotal + this.likeCount
+			}
 		},
 		onLoad(e) {
 			if (e && e.roomId) {
@@ -280,6 +290,9 @@
 			clearInterval(this.timer);
 		},
 		methods: {
+			clickLike() {
+				this.likeCount++;
+			},
 			toGoodsDetail(item) {
 				uni.navigateTo({
 					url: `../../../sub-classify/pages/goods-detail/goods-detail?goodId=${item.skuId}`
@@ -311,6 +324,16 @@
 					this.roomInfo = e
 				}).catch(e => {
 					this.isLiveing = false
+				})
+
+
+				insertAndGetLikeNum({
+					roomId: this.roomId,
+					likeNum: this.likeCount,
+					mediaType: 1
+				}).then(e => {
+					this.userLikeTotal = e.liveLikeTotal;
+					this.likeCount = 0
 				})
 			},
 			messageRecived(event) {
@@ -655,10 +678,11 @@
 			display: flex;
 			flex-direction: row;
 			align-items: center;
+			margin-bottom: 20rpx;
 
 			.input-text {
 				margin-left: 24rpx;
-				width: 346rpx;
+				width: 302rpx;
 				height: 72rpx;
 				opacity: 0.24;
 				background: #fff;
@@ -677,10 +701,32 @@
 				width: 84rpx;
 				height: 72rpx;
 				margin-left: 16rpx;
+				position: relative;
+
+				.img {
+					width: 84rpx;
+					height: 72rpx;
+				}
+
+				.like-count {
+					position: absolute;
+					right: -22rpx;
+					top: -14rpx;
+					width: 44rpx;
+					height: 28rpx;
+					font-size: 22rpx;
+					font-weight: 500;
+					color: #ffffff;
+					text-align: center;
+					line-height: 28rpx;
+					background: rgba(88, 90, 93, 0.35);
+					border-radius: 10rpx 10rpx 10rpx 4rpx;
+					backdrop-filter: blur(2rpx);
+				}
 			}
 
 			.macphone {
-				width: 140rpx;
+				width: 124rpx;
 				height: 72rpx;
 				background: rgba($color: #000000, $alpha: 0.24);
 				border-radius: 28rpx;
