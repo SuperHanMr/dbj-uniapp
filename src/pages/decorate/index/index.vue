@@ -1,6 +1,6 @@
 <template>
   <view class="decorate-index" v-if="estateList.length > 0">
-    <image class="bg-index" mode="aspectFit" src="http://dbj.dragonn.top/static/mp/dabanjia/images/decorate/bg@2x.png">
+    <image class="bg-index" mode="aspectFit" src="http://dbj.dragonn.top/static/mp/dabanjia/images/decorate/bg@2x-2.png">
     </image>
     <view class="content flex-column">
       <view class="house-firend">
@@ -27,7 +27,7 @@
           <view class="insurance-house">
             <view :class="{'payed':aServiceData.insuranceStatus}" class="insurance">
               <image @click="consultingService"
-                :src="aServiceData.insuranceStatus ? 'http://dbj.dragonn.top/static/mp/dabanjia/images/decorate/insurance-pay.jpeg': 'http://dbj.dragonn.top/static/mp/dabanjia/images/decorate/insurance-unpay.jpeg'">
+                :src="aServiceData.insuranceStatus ? 'http://dbj.dragonn.top/static/mp/dabanjia/images/decorate/insurance-pay.svg': 'http://dbj.dragonn.top/static/mp/dabanjia/images/decorate/insurance-unpay.svg'">
               </image>
             </view>
             <view class="uni-title">{{ currentProject.housingEstate }}{{currentProject.address}}</view>
@@ -186,6 +186,7 @@
     onLoad() {
       uni.$on("currentHouseChange", (item) => {
         this.homePageEstate = item
+        getApp().globalData.switchFlag = "home"
       })
     },
     onShow() {
@@ -257,7 +258,6 @@
             this.broadcastList = data
           })
         }
-
       },
       watchMsg() {
         this.getMsgNum();
@@ -397,6 +397,7 @@
       },
       changeCurrentProject(item) {
         this.currentProject = item
+        getApp().globalData.switchFlag = 'decorate'
         this.initData(item)
         this.$refs.sw.close()
       },
@@ -407,10 +408,22 @@
           // 有房屋有服务，初始化当前的默认房屋
           if (data && data.length > 0) {
             data.forEach(item => {
+              // 因为项目列表中的projectId字段没有，所以唯一标识用guid方法生成
               item.uid = this.guid()
             })
             this.projectList = data
-            const arr = data.filter(t => t.defaultEstate)
+            const {currentProject, switchFlag} = getApp().globalData
+            // 设置当前的项目
+            let arr = []
+            if(switchFlag === "home") {
+              console.log(">>>>>>>>>首页选择的当前房屋>>>>>>>>>", this.homePageEstate)
+              arr = data.filter(t => t.estateId === this.homePageEstate?.id)
+            } else {
+              arr = data.filter(t => t.projectId === currentProject?.projectId)
+            }
+            if (arr.length === 0) {
+              arr = data.filter(t => t.defaultEstate)
+            }
             if (arr && arr.length > 0) {
               this.currentProject = arr[0]
               this.initData(arr[0])
@@ -418,6 +431,7 @@
               this.currentProject = data[0]
               this.initData(data[0])
             }
+            // end
           }
         })
       },
@@ -561,7 +575,3 @@
     },
   };
 </script>
-<!-- 
-<style lang="scss" scoped>
-  
-</style> -->

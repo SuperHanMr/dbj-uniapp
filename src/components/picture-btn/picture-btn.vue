@@ -1,6 +1,10 @@
 <template>
   <view class="design" @click="gotoPage">
-    <image class="icon"></image>
+    <!-- <image class="icon"></image> -->
+    <i v-if="text === '设计图'" class="icon-shejitu icon" style="color: #ffb568;"></i>
+    <i v-if="text === '精算单'" class="icon-Bdandanju icon" style="color: #ffb568;"></i>
+    <i v-if="text === '工地视频'" class="icon-zhibo icon" style="color: #ffb568;"></i>
+    <i v-if="text === '施工'" class="icon-shigong icon" style="color: #ffb568;"></i>
     <view class="text">{{text}}</view>
     <image class="gotopage" src="http://dbj.dragonn.top/static/mp/dabanjia/images/decorate/ic_more.svg"></image>
   </view>
@@ -30,12 +34,11 @@
   }
 
   .icon {
-    height: 32rpx;
-    width: 32rpx;
+    font-size: 32rpx;
     margin-right: 8rpx;
     border-radius: 50%;
     box-sizing: border-box;
-    border: 2rpx solid #f2f5f8;
+    /* border: 2rpx solid #f2f5f8; */
   }
 
   view.text {

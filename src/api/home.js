@@ -51,3 +51,10 @@ export function workVideo(params) {
 }
 
 
+//公共直播间 - 查询房间信息
+export function publicRoom(roomId) {
+	return request.get(`/api/publicRoom/${roomId}`, {
+		data: { hideToast: true }
+	});
+}
+

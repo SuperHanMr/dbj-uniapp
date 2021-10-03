@@ -16,7 +16,8 @@
 			currentProject: {},
 			naviData: null,
 			decorateMsg: {},
-			currentHouse: {}
+			currentHouse: {},
+      switchFlag: "home"
 		},
 
 		onLaunch: function() {

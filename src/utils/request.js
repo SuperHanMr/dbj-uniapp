@@ -61,10 +61,16 @@ instance.defaults.headers.post['Content-Type'] = 'application/x-www-form-urlenco
  */
 instance.interceptors.request.use(
 	async (config) => {
-			uni.showLoading({
-				title: '加载中...',
-				mask: true
-			});
+			console.log('~~~~~~~')
+			console.log(config.data);
+			if (!(config.data && config.data.hideToast)) {
+				console.log('!!!!!!!');
+				uni.showLoading({
+					title: '加载中...',
+					mask: true
+				});
+			}
+
 			const token = getApp().globalData.token;
 
 			if (token) {
@@ -135,10 +141,13 @@ instance.interceptors.response.use(
 			}
 			if (error.response.status != 401 && error.response && error.response.data && error.response.data
 				.message) {
-				uni.showToast({
-					title: error.response.data.message,
-					icon: 'none'
-				})
+				if (!(config.data && config.data.hideToast)) {
+					uni.showToast({
+						title: error.response.data.message,
+						icon: 'none'
+					})
+				}
+
 			}
 			console.error("------response-error-----", error);
 			return Promise.reject(error.response);

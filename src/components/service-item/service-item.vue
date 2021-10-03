@@ -84,23 +84,18 @@
       goProcessCost() {
         const customerId = uni.getStorageSync("userId")
         uni.navigateTo({
-          url: `/sub-decorate/pages/gj-process-cost/gj-process-cost?partpay=1&serveCardId=${this.serviceData.serveCardId}&estateId=${this.currentProject.estateId}&serviceType=${this.serviceData.nodeType}&projectId=${this.currentProject.projectId}&customerId=${customerId}&obtainType=2`
+          url: `/sub-decorate/pages/gj-process-cost/gj-process-cost?partpay=1&payStatus=${this.serviceData.payStatus}&serveCardId=${this.serviceData.serveCardId}&estateId=${this.currentProject.estateId}&serviceType=${this.serviceData.nodeType}&projectId=${this.currentProject.projectId}&customerId=${customerId}&obtainType=2`
         })
-        // this.serveCardId = serveCardId || option.serveCardId
-        // this.estateId = estateId || option.estateId
-        // this.serviceType = serviceType || option.serviceType 
-        // this.projectId = projectId || option.projectId 
-        // this.customerId = customerId || option.customerId 
       }
     },
     filters: {
-      filterStatusName(data) {
-        if (data.status === 0) {
-          return data.grepOrderStatusName
-        } else {
-          return data.statusName
-        }
-      },
+      // filterStatusName(data) {
+      //   if (data.status === 0) {
+      //     return data.grepOrderStatusName
+      //   } else {
+      //     return data.statusName
+      //   }
+      // },
       filterPayStatus(payStatus) {
         if (payStatus == 0) {
           return "未支付"
