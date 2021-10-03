@@ -89,7 +89,7 @@ instance.interceptors.request.use(
 instance.interceptors.response.use(
 	// 请求成功
 	async (res) => {
-			
+
 			uni.hideLoading();
 
 			if (res.data.code !== 1) {
@@ -112,9 +112,16 @@ instance.interceptors.response.use(
 				// 	showCancel: false,
 				// 	content: '用户信息已过期,请重新登录',
 				// 	success: function(res) {
-				uni.navigateTo({
-					url: "/pages/login/login",
-				});
+
+				let config = {}
+				if (error.config && error.config.data) {
+					config = JSON.parse(error.config.data)
+				}
+				if (!(config && config.ignoreLogin)) {
+					uni.navigateTo({
+						url: "/pages/login/login",
+					});
+				}
 				// 	}
 				// });
 

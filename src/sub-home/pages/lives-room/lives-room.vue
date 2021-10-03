@@ -17,7 +17,7 @@
 		<view v-if="isLiveing">
 
 			<view class="state-bar">
-				<view v-for="(item,index) in roomInfo.interactionInfo" :key="item.id" class="user">
+				<view v-for="(item,index) in roomInfo.interactionInfo" :key="item.id" class="user" @click="toPersonal(item,index)" >
 					<image class="img" :src="item.userAvatar">
 
 					</image>
@@ -30,17 +30,15 @@
 
 				</view>
 				<view class="state-bar-text">
-					{{roomInfo.hotCount}}
+					{{roomInfo.hotCount||''}}
 				</view>
 			</view>
 			<live-player class="player" :src="livePreview" autoplay @statechange="statechange" @error="error" />
-
 			<view class="bottom-contain">
 				<!-- 聊天 -->
 				<scroll-view id="scrollview" :scroll-top="scrollTop" class="scorll-chat" scroll-y="true"
 					:scroll-into-view="bottomId">
 					<view class="chat-item-height">
-
 						<view v-for="(item,index) in list" :key="item.ID">
 							<view v-if="item.type=='TIMTextElem' || item.type=='TIMImageElem'" class="chat-item">
 
@@ -290,6 +288,13 @@
 			clearInterval(this.timer);
 		},
 		methods: {
+			toPersonal(item,index){
+				if(index==0){
+					uni.navigateTo({
+						url:`../../../sub-decorate/pages/person-page?personId=${item.userId}`
+					})
+				}
+			},
 			clickLike() {
 				this.likeCount++;
 			},
@@ -316,25 +321,28 @@
 						this.isLiveing = true
 					}
 					if (!this.livePreview) {
+
 						this.livePreview = e.liveUrl;
 					}
 					if (!this.title) {
 						this.title = e.title
 					}
 					this.roomInfo = e
+					// if (this.isLogin) {
+					console.log(this.isLogin)
+					insertAndGetLikeNum({
+						roomId: this.roomId,
+						likeNum: this.likeCount,
+						mediaType: 1
+					}).then(e => {
+						this.userLikeTotal = e.liveLikeTotal;
+						this.likeCount = 0
+					})
+					// }
 				}).catch(e => {
 					this.isLiveing = false
 				})
 
-
-				insertAndGetLikeNum({
-					roomId: this.roomId,
-					likeNum: this.likeCount,
-					mediaType: 1
-				}).then(e => {
-					this.userLikeTotal = e.liveLikeTotal;
-					this.likeCount = 0
-				})
 			},
 			messageRecived(event) {
 				let messageList = event.data || [];
