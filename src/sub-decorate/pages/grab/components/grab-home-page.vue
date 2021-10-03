@@ -89,6 +89,8 @@
           font-weight: 500;
           color: #333;
           line-height: 60rpx;
+          width: 100%;
+          text-align: center;
         }
         .introduce{
           width: 100%;

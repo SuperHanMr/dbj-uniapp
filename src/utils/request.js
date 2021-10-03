@@ -83,7 +83,7 @@ instance.interceptors.request.use(
 instance.interceptors.response.use(
 	// 请求成功
 	async (res) => {
-			console.log(res, 'sadasd>>>>>>>>>>>>')
+			
 			uni.hideLoading();
 
 			if (res.data.code !== 1) {

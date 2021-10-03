@@ -16,8 +16,8 @@
       <view class="item"></view>
     </view>
     <view class="person-page-content">
-      <view class="person-msg">
-        <view class="person-msg-top">
+      <view class="person-msg" :class="{'is-self':personData.roleId === 10000}">
+        <view class="person-msg-top" :class="{'is-self':personData.roleId === 10000}">
           <view class="person-msg-header">
             <view class="person-msg-header-image">
               <image class="avatar" :src="personData.avatar" ></image>
@@ -26,7 +26,7 @@
             </view>
             <text class="name">{{personData.nickName}}</text>
             <view class="label">
-              <text class="job">{{personData.roleId===3?personData.personAllBadgeVO.skillBadges[0].name:personData.roleName}}</text>
+              <text class="job" v-if="personData.roleId!==10000">{{personData.roleId===3?personData.personAllBadgeVO.skillBadges[0].name:personData.roleName}}</text>
               <text class="rate" v-if="personData.roleId<7">好评率{{personData.praiseRate||0}}</text>
             </view>
           </view>
@@ -64,7 +64,7 @@
             </view>
           </view>
         </view>
-        <personIntroduce :personData='personData'></personIntroduce>
+        <personIntroduce v-if="personData.roleId!==10000" :personData='personData'></personIntroduce>
         <view class="send-msg" @click="sendMsg" v-if="personData.roleId<7">
           <image src="" mode=""></image>
           发消息
@@ -90,6 +90,10 @@
         <view class="interval"></view>
         <personEvaluate ref='evaluate' :personId='personId' class="person-evaluate" @getEvaluate='getEvaluate'></personEvaluate>
       </view>
+    </view>
+    <view class="person-self" v-if="personData.roleId===10000">
+      <image></image>
+      <text>暂无内容</text>
     </view>
   </view>
 </template>
@@ -123,7 +127,8 @@
           fansCount:'0',
           recommendCount:'0',
           collectCount:'0',
-          totalNum:'0'
+          totalNum:'0',
+          roleId:0
         },
         currentItem: 'service',
         scrollTop:0,
@@ -158,7 +163,7 @@
       
     },
     onLoad(e){
-      this.personId = e.personId||6680
+      this.personId = e.personId||6820
       // this.getGrabDetail()
     },
     onShow(){
@@ -169,6 +174,7 @@
       // this.getCaseList()
       // this.getSkuList()
       // this.getNodeHeight()
+      
       this.init()
     },
     onPageScroll(scrollTop) {
@@ -222,23 +228,26 @@
       },
       getGrabDetail(){
         getGrabDetail(this.personId).then(res=>{
-          
-          // this.personData.roleId = 3
-          res.totalNum = unitChange(res.inServiceCount+res.comServiceCount)
-          // this.personData.totalNum = '1.0'
-          res.likeCount = unitChange(res.likeCount)
-          res.fansCount = unitChange(res.fansCount)
-          res.recommendCount = unitChange(res.recommendCount)
-          res.collectCount = unitChange(res.collectCount)
-          this.personData = res
-          console.log(this.personData)
-          // this.personData.totalNum = unitChange(19999)
-          // if(this.personData.totalNum>10000){
-          //   this.personData.totalNum = 
-          // }
-          this.getAttention(1001,'isAttention')
-          this.getAttention(2001,'isRecommend')
-          
+          if(res){
+            // this.personData.roleId = 3
+            res.totalNum = unitChange(res.inServiceCount+res.comServiceCount)
+            // this.personData.totalNum = '1.0'
+            res.likeCount = unitChange(res.likeCount)
+            res.fansCount = unitChange(res.fansCount)
+            res.recommendCount = unitChange(res.recommendCount)
+            res.collectCount = unitChange(res.collectCount)
+            this.personData = res
+            if(!this.personData.roleId){
+              this.personData.roleId = 10000
+              return
+            }
+            this.getAttention(1001,'isAttention')
+            this.getAttention(2001,'isRecommend')
+          }else{
+            // this.personData = getApp().globalData.userInfo
+            // console.log(this.personData)
+            
+          }
         })
       },
       // getCaseList() {
@@ -319,6 +328,7 @@
     box-sizing: border-box;
     background-color: #fff;
     padding-bottom: 40rpx;
+    height: 100%;
     .bg-index {
       top: 0;
       width: 100%;
@@ -347,8 +357,12 @@
   .person-page-content {
     position: relative;
     top: 28rpx;
+    background: #fff;
   }
-
+  view .is-self{
+    border-bottom: none !important;
+    box-shadow: none;
+  }
   .person-msg {
     // width: calc(100% - 32px);
     background-color: #fff;
@@ -612,6 +626,22 @@
         right: 0;
         margin: auto;
       }
+    }
+  }
+  .person-self{
+    width: 100%;
+    image{
+      width: 100%;
+      height: 640rpx;
+      background-color: #eee;
+      margin-bottom: 20rpx;
+    }
+    text{
+      display: block;
+      width: 100%;
+      text-align: center;
+      font-size: 28rpx;
+      color: #999;
     }
   }
   .person-interact-active{
