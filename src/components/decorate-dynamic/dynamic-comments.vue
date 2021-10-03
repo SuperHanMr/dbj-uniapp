@@ -1,14 +1,14 @@
 <template>
-  <view class="decorate-dynamic">
+  <view class="decorate-dynamic" catchtouchmove="true">
     <view
       class="mask"
       v-if="showComments"
     >
-      <view class="popupComments">
+      <view class="popupComments" :class="{'is-ower':showInput}">
         <view class="topArea">
           <view class="mainTit">评论</view>
           <image
-            @click="showComments=false"
+            @click="showComments=false;inputValue = ''"
             class="close"
             src="../../static/ic_closed_black@2x.png"
           ></image>
@@ -23,9 +23,11 @@
           ></image>
           <view class="noCommentText">暂无评论~</view>
         </view>
-        <view
+        <scroll-view
           class="commentList"
           v-if="comments.length"
+          :scroll-y="true"
+          @scrolltolower="bindscrolltolower"
         >
           <view
             class="commentItem"
@@ -34,7 +36,7 @@
           >
             <view
               class="mainContent"
-              bindlongpress="deleteComment(item.commentId,item.zeusId)"
+              @longpress="deleteComment(item.commentId,item.zeusId)"
               @click="commentItemC(item.nickname,item.commentId)"
             >
               <image
@@ -54,7 +56,7 @@
             </view>
             <view
               class="reply"
-              bindlongpress="deleteComment(replyItem.commentId,replyItem.zeusId)"
+              @longpress="deleteComment(replyItem.commentId,replyItem.zeusId)"
               @click="replyItemC(replyItem.nickname,replyItem.commentId,index)"
               v-for="replyItem in item.secondComments"
               :key="replyItem.commentId"
@@ -105,7 +107,7 @@
               </view>
             </view>
           </view>
-        </view>
+        </scroll-view>
         <view
           class="bottomDelete"
           v-if="showDelete"
@@ -115,9 +117,9 @@
               class="img"
               src="../../static/ic_comment_delete@2x.png"
             ></image>
-            <view class="delete">删除</view>
+            <view class="delete" @click="sureDelete">删除</view>
           </view>
-          <view class="deleteCancel">取消</view>
+          <view class="deleteCancel" @click="showDelete=false;showInput=true">取消</view>
         </view>
         <view
           class="bottomInputBox"
@@ -132,7 +134,7 @@
             :cursor-spacing="10"
             :placeholder="isInputFocus?`回复@${inputName}`:'说点什么吧'"
             :class="{'focusInput':isInputFocus}"
-            @focus="inputFocus"
+            :focus="isOpen"
             class="easyInput"
           />
           <view
@@ -171,20 +173,53 @@
         isExpanded: false,
         isReply: false,
         replyPage:0,
-        comments:[]
+        comments:[],
+        ownId:0,
+        page:1,
+        totalPage:0,
+        isInputFocus:false,
+        isOpen:false,
       }
+    },
+    mounted(){
+      this.ownId = 6537||getApp().globalData.userInfo.id
+    },
+    computed:{
+      // inputText(){
+      //   console.log(this.isInputFocus?`回复@${inputName}`:'说点什么吧')
+      //   return this.
+      // }
     },
     watch:{
       showComments(){
         if(this.showComments=== true){
           this.getComment()
         }
+      },
+      houseOwnerId:{
+        handler:function(){
+          console.log(this.houseOwnerId)
+          if(this.houseOwnerId===this.ownId){
+            this.showInput = true
+          }
+        },
+        immediate:true
+        
       }
     },
     methods:{
+      inputFocus() {
+        this.isInputFocus = true;
+      },
+      bindscrolltolower(){
+        if(this.page<this.totalPage){
+          this.page++
+          this.getComment()
+        }
+      },
       getComment(){
         let params = {
-          page: 1,
+          page: this.page,
           rows: 10,
           businessId: this.dynamicId, //	动态ID
           businessType: 2,
@@ -193,37 +228,54 @@
           if (data) {
             console.log(data);
             let { page, rows, totalPage, totalRows, list } = data;
-            this.comments = list;
+            this.page = page
+            this.totalPage = totalPage
+            this.comments = this.comments.concat(list);
           }
         });
       },
       deleteComment(commentId, zeusId) {
-        if (this.userId !== zeusId) return;
+        // if (this.ownId !== zeusId) return;
         this.showDelete = true;
-        removeComment(commentId).then((data) => {
+        this.showInput = false
+        this.commentId = commentId
+        
+      },
+      sureDelete(){
+        removeComment(this.commentId).then((data) => {
           this.commentC(this.dynamicId);
         });
       },
       commentItemC(name, commentId) {
-        if (this.userId !== this.houseOwnerId) return;
+        // console.log(this.ownId,this.houseOwnerId)
+        if (this.ownId !== this.houseOwnerId) return;
+        this.$nextTick(function(){
+          this.isInputFocus = true
+        })
+        
         this.showInput = true;
+        this.isOpen = true
         this.inputName = name;
         this.commentId = commentId;
+        console.log(this.isInputFocus)
       },
       replyItemC(name, replyId, commentIndex) {
-        if (this.userId !== this.houseOwnerId) return;
+        
+        if (this.ownId !== this.houseOwnerId) return;
+        this.isInputFocus = true
         this.isReply = true;
         this.showInput = true;
+        this.isOpen = true
         this.inputName = name;
         this.replyId = replyId;
         this.commentIndex = commentIndex;
+        
       },
       packUpC(index) {
         this.isExpanded = false;
         this.comments[index].secondComments.splice(2);
       },
       expandC(id, index) {
-        
         let params = {
           page: this.replyPage,
           rows: 10,
@@ -252,16 +304,40 @@
         });
       },
       setReply(isReply) {
-        this.showInput = false;
+        // this.showInput = false;
         console.log(this.inputValue, "blur");
         let params = {
           businessId: this.dynamicId, //	动态ID
           businessType: 2,
-          replyId: isReply ? this.replyId : this.commentId,
+          replyId: this.isReply ? this.replyId : this.commentId,
           content: this.inputValue,
         };
         createReply(params).then((data) => {
           this.commentC(this.dynamicId);
+        });
+      },
+      commentC(id) {
+        this.dynamicId = id;
+        this.showComments = true;
+        this.inputValue = ''
+        this.isOpen = false
+        uni.hideKeyboard()
+        this.isInputFocus = false
+        let params = {
+          page: this.page,
+          rows: 10,
+          businessId: id, //	动态ID
+          businessType: 2,
+        };
+        getComments(params).then((data) => {
+          if (data) {
+            console.log(data);
+            let { page, rows, totalPage, totalRows, list,end,start } = data;
+            this.page = page
+            this.totalPage = totalPage
+           
+            
+          }
         });
       },
     }
@@ -372,6 +448,9 @@
   	bottom: 0;
   	z-index: 999;
   }
+  view .is-ower{
+    padding-bottom: 160rpx;
+  }
   .bottomInputBox {
   	width: 100%;
   	height: 120rpx;
@@ -421,8 +500,9 @@
   .commentList {
   	width: 100%;
   	height: 700rpx;
+    
   	/* height: fit-content; */
-  	overflow: auto;
+  	// overflow: auto;
   }
   .commentItem:first-child .mainContent {
   	margin-top: 24rpx;

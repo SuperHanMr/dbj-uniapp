@@ -163,7 +163,7 @@
       
     },
     onLoad(e){
-      this.personId = e.personId||6820
+      this.personId = e.personId||7050
       // this.getGrabDetail()
     },
     onShow(){
@@ -328,7 +328,7 @@
     box-sizing: border-box;
     background-color: #fff;
     padding-bottom: 40rpx;
-    height: 100%;
+    // height: 100%;
     .bg-index {
       top: 0;
       width: 100%;

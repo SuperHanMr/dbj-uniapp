@@ -1,5 +1,5 @@
 <template>
-  <view class="notice" catchtouchmove=“true” :style="{height:systemHeight}">
+  <view class="notice" catchtouchmove="true" :style="{height:systemHeight}">
     <view class="notice-mask"></view>
     <view class="notice-view">
       <scroll-view class="item-list" :style="{height:scrollHeight}" scroll-y="true">
