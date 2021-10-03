@@ -7,10 +7,10 @@
               <text class="tip-word">部分商品在当前地址下暂时不支持购买，点击确认后会将该商品移回至购物车，其他商品可继续进行结算</text>
             </view>
           </view>
-          <address-picker form="orderToast" :houseId="houseId"></address-picker>
+          <address-picker originFrom="orderToast" :houseId="houseId" @closeToast="closeToast"></address-picker>
           <scroll-view scroll-y="true" class="shop-scroll">
             <view class="content">
-              <view class="shop-item" v-for="(shopItem, index) in noStoreInfos.storeInfos" :key='index'>
+              <view class="shop-item" v-for="(shopItem, index) in noStoreInfos.storeInfos" :key='index' v-if="shopItem.skuInfos.length">
                 <view class="shop-name">{{shopItem.storeName}}</view>
                 <view class="goods-item" @click="toDetails(goodsItem.id)" v-for="(goodsItem, index) in shopItem.skuInfos" :key="index">
                   <view class="goods-item-content">
@@ -74,9 +74,10 @@
         this.$refs.noBuyToast.open()
       },
       confirm(){
-        if(!hasCanBuy){
+        if(!this.hasCanBuy){
           return
         }
+        this.$emit("toastConfirm")
         this.$refs.noBuyToast.close()
       },
       backShopCart(){
@@ -84,6 +85,9 @@
         uni.navigateTo({
           url: '/sub-my/pages/shopping-cart/shopping-cart',
         });
+      },
+      closeToast() {
+        this.$refs.noBuyToast.close()
       }
     },
     watch:{

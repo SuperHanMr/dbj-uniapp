@@ -141,7 +141,7 @@
       </view>
       <expenses-toast ref='expensesToast' :expensesType="expensesType"></expenses-toast>
       <date-picker ref='datePicker' @getTime="getTime"></date-picker>
-      <order-toast ref='orderToast' :houseId="houseId" :hasCanBuy="hasCanBuy" :noStoreInfos="noStoreInfos"></order-toast>
+      <order-toast ref='orderToast' :houseId="houseId" :hasCanBuy="hasCanBuy" :noStoreInfos="noStoreInfos" @toastConfirm="toastConfirm"></order-toast>
       <uni-popup ref="cancelDialog" :mask-click="false">
         <view class="popup-item">
           <view class="popup-title">{{toastText}}</view>
@@ -202,13 +202,12 @@
         orderDetails: [],
         totalClassNum: 0,
         totalPrice: '0.00',
-        hasCanBuy: true,
+        hasCanBuy: false,
         projectId: 0,
         level: 0
       }
     },
     onLoad(e) {
-      console.log("load")
       // 购物车数据
       const eventChannel = this.getOpenerEventChannel();
       eventChannel.on('acceptDataFromOpenerPage',( data )=> {
@@ -230,17 +229,13 @@
     onShow() {
       if (uni.getStorageSync('houseListChooseId')) {
         this.houseId = uni.getStorageSync('houseListChooseId')
-        console.log("isInIf")
+        uni.removeStorageSync('houseListChooseId')
         if(this.$refs.houseDialog) {
           this.$refs.houseDialog.close()
         }
       }
-      console.log(uni.getStorageSync('houseListChooseId'),  "synchouseId")
-      console.log(getApp().globalData.currentHouse.id, "globeHouseId")
-      console.log(this.houseId, "houseId")
       if(!Number(this.houseId)){
         this.isShow = false
-        console.log("test111111")
         setTimeout(() => {
           if(this.$refs.houseDialog){
             this.$refs.houseDialog.open()
@@ -273,6 +268,7 @@
         this.$set(this.orderInfo.storeInfos[this.shopIndex].skuInfos[this.goodIndex], "time", this.time)
       },
       emitInfo(val) {
+        this.hasCanBuy = false
         this.hasNoBuyItem = false
         this.projectId = val.projectId
         this.orderDetails = []
@@ -349,6 +345,7 @@
                 }                
                 this.hasNoBuyItem = true // 判断所有数据中有没有不可配送数据
               } else {
+                this.hasCanBuy = true
                 canStoreItem.skuInfos.push(skuItem)
                 this.totalClassNum += 1
                 // 整理出结算参数
@@ -373,9 +370,6 @@
           })
           if ( this.orderInfo.storeInfos.length >1 || this.orderInfo.storeInfos[0].skuInfos.length > 1) {
             this.orderInfo = this.canStoreInfos
-            if(!this.canStoreInfos.storeInfos.length){
-              this.hasCanBuy = false
-            }
             if (this.hasNoBuyItem) {
               this.$refs.orderToast.showPupop()
             }
@@ -386,6 +380,9 @@
         this.shopIndex = shopIndex
         this.goodIndex = goodIndex
         this.$refs.datePicker.showDatePicker()
+      },
+      toastConfirm() {
+        this.hasNoBuyItem = false
       },
       pay() {
         if(!this.hasCanBuy || this.hasNoBuyItem || !this.totalPrice) {
