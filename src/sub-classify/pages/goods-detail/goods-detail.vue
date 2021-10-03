@@ -43,8 +43,9 @@
           }
         })
         // 获取房屋信息
-        if(uni.getStorageSync('houseListChooseId') !== this.defaultHouseInfo.id) {
+        if(uni.getStorageSync('houseListChooseId') && uni.getStorageSync('houseListChooseId') !== this.defaultHouseInfo.id) {
           this.houseId = uni.getStorageSync('houseListChooseId')
+          uni.removeStorageSync("houseListChooseId")
         }else {
           if(this.defaultHouseInfo.id) {
             this.houseId = this.defaultHouseInfo.id

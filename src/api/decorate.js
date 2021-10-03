@@ -84,7 +84,7 @@ export function getMsgNum(params) {
 
 //获取抢单审核详情
 export function getGrabDetail(params) {
-	return request.get("/app/employeeInfo/myInfo?zeusId=" + params)
+	return request.get("/app/employeeInfo/personInfo?zeusId=" + params)
 }
 
 //确认抢单人员
