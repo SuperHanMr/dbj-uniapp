@@ -68,7 +68,7 @@
           <view class="shop-reduce" v-if="shopItem.freeDeliveryCount && productType === 1">
             <view class="item-reduce-box">
               <view class="question-box">本订单已获得了该店铺{{shopItem.freeDeliveryCount}}次免运费权益
-                <text class="question-icon" @click="readExpenses(1)"></text>
+                <text class="question-icon free-icon" @click="readExpenses(1)"></text>
               </view>
             </view>
           </view>
@@ -176,8 +176,8 @@
         time: '',
         shopIndex: 0,
         goodIndex: 0,
+        originFrom: "",
         orderCartParams: {},
-        originFrom: '',
         addressInfo: {},
         orderInfo: {},
         canStoreInfos: {},
@@ -208,6 +208,7 @@
       }
     },
     onLoad(e) {
+      console.log("load")
       // 购物车数据
       const eventChannel = this.getOpenerEventChannel();
       eventChannel.on('acceptDataFromOpenerPage',( data )=> {
@@ -218,11 +219,7 @@
       if(e.from) {
         this.originFrom = e.from
       }
-      if(this.originFrom === "h5GoodDetail") {
-        this.houseId = e.houseId
-      }else if(this.originFrom === "shopCart"){
-        this.houseId = getApp().globalData.currentHouse.id
-      }
+      this.houseId = e.houseId?e.houseId: getApp().globalData.currentHouse.id
       this.buyCount = e.buyCount
       this.skuId = e.skuId
       this.storeId = e.storeId
@@ -231,7 +228,17 @@
       this.goodDetailId = uni.getStorageSync('goodId')
     },
     onShow() {
-      if(!Number(uni.getStorageSync('houseListChooseId')) && !Number(this.houseId)){
+      if (uni.getStorageSync('houseListChooseId')) {
+        this.houseId = uni.getStorageSync('houseListChooseId')
+        console.log("isInIf")
+        if(this.$refs.houseDialog) {
+          this.$refs.houseDialog.close()
+        }
+      }
+      console.log(uni.getStorageSync('houseListChooseId'),  "synchouseId")
+      console.log(getApp().globalData.currentHouse.id, "globeHouseId")
+      console.log(this.houseId, "houseId")
+      if(!Number(this.houseId)){
         this.isShow = false
         console.log("test111111")
         setTimeout(() => {
@@ -241,14 +248,6 @@
         })
       }else{
         this.isShow = true
-      }
-      if (uni.getStorageSync('houseListChooseId')) {
-        this.$nextTick(() => {
-          this.houseId = uni.getStorageSync('houseListChooseId')
-        })
-        if(this.$refs.houseDialog) {
-          this.$refs.houseDialog.close()
-        }
       }
     },
     methods: {
@@ -482,7 +481,9 @@
     background-image: url('../../static/image/question.png');
     background-size: cover;
   }
-
+  .item-reduce-box .question-box .free-icon{
+    top: 14rpx;
+  }
   // 商品item
   .shop-item {
     margin-top: 25rpx;
