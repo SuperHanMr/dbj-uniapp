@@ -176,7 +176,9 @@
 		/* #endif */
 		flex-wrap: nowrap;
 		text-align: center;
-		width: 18%;
+		width: fit-content;
+    min-width: 16%;
+    margin: 0 1%;
 	}
 
 	.uni-tab-item-title {
