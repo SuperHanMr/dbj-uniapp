@@ -1,5 +1,5 @@
 <template>
-	<view class="content" catchtouchmove=“true”>
+	<view class="content" :catchtouchmove="true" @click="handleLiveRoomClick">
 		<custom-navbar opacity="1" :title="title" titleColor="#FFFFFF" bgcolor="none">
 			<template v-slot:back>
 				<view @click="toBack">
