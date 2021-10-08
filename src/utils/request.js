@@ -61,10 +61,7 @@ instance.defaults.headers.post['Content-Type'] = 'application/x-www-form-urlenco
  */
 instance.interceptors.request.use(
 	async (config) => {
-			console.log('~~~~~~~')
-			console.log(config.data);
 			if (!(config.data && config.data.hideToast)) {
-				console.log('!!!!!!!');
 				uni.showLoading({
 					title: '加载中...',
 					mask: true
@@ -79,7 +76,6 @@ instance.interceptors.request.use(
 					accessToken: `${token}`,
 				};
 			}
-			console.log(config);
 			return config;
 		},
 		(error) => Promise.reject(error),

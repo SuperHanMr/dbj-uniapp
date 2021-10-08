@@ -1,5 +1,5 @@
 <template>
-	<view class="content" catchtouchmove=“true”>
+	<view class="content" :catchtouchmove="true" @click="handleLiveRoomClick">
 		<custom-navbar opacity="1" :title="title" titleColor="#FFFFFF" bgcolor="none">
 			<template v-slot:back>
 				<view @click="toBack">
@@ -47,6 +47,8 @@
 									<image class="img" :src="item.avatar">
 									</image>
 								</view>
+								<image class="anchor" v-if="item.from.startsWith('anchor')"
+									src="http://dbj.dragonn.top/static/mp/dabanjia/images/home/anchor.png"></image>
 
 								<text class="name">{{item.nick}} :</text>
 								<text v-if="item.type=='TIMTextElem'" class="text-info">{{item.payload.text}}</text>
@@ -166,14 +168,10 @@
 					</view>
 					<view class="text-btn" @click="showDownload=false">
 						知道了
-
 					</view>
 				</view>
-
 			</view>
 		</view>
-
-
 		<message-send-box :group-id="groupId" @add-message="handleAddMessage"></message-send-box>
 	</view>
 </template>
@@ -223,14 +221,19 @@
 				return "group" + this.roomId;
 			},
 			totoalLick() {
-				return this.userLikeTotal + this.likeCount
+				return this.userLikeTotal || 0 + this.likeCount
 			}
+		},
+		onHide() {
+			clearInterval(this.timer);
+			removeListener("MESSAGE_RECEIVED", (e) => {
+				this.messageRecived(e)
+			});
 		},
 		onLoad(e) {
 			if (e && e.roomId) {
 				this.roomId = e.roomId;
 			}
-			// this.getRoomInfo();
 			const systemInfo = uni.getSystemInfoSync();
 			//状态栏高度
 			this.tophight = systemInfo.statusBarHeight + "px";
@@ -328,8 +331,6 @@
 						this.title = e.title
 					}
 					this.roomInfo = e
-					// if (this.isLogin) {
-					console.log(this.isLogin)
 					insertAndGetLikeNum({
 						roomId: this.roomId,
 						likeNum: this.likeCount,
@@ -338,7 +339,6 @@
 						this.userLikeTotal = e.liveLikeTotal;
 						this.likeCount = 0
 					})
-					// }
 				}).catch(e => {
 					this.isLiveing = false
 				})
@@ -387,10 +387,7 @@
 			statechange(e) {
 				console.log("live-player code:", e.detail.code);
 			},
-			error(e) {
-				console.log("~~~~~~~~~");
-				console.log(e);
-			},
+			error(e) {},
 			handleShowSendBox() {
 				uni.$emit("show-live-send-box");
 			},
@@ -410,7 +407,6 @@
 							tempFilePaths,
 							tempFiles
 						} = res;
-						console.log("choose image1:", res);
 						tempFiles.forEach(self.sendImageMessage);
 					},
 				});
@@ -427,7 +423,6 @@
 						const {
 							width = 0, height = 0
 						} = info;
-						console.log("file path:", filePath, "file info:", info, 111111);
 						let fileName = filePath.split("/").pop();
 						let data = {
 							type: "img_message",
@@ -781,6 +776,21 @@
 					display: inline-block;
 					width: 200rpx;
 					height: 200rpx;
+				}
+
+				.anchor {
+					width: 52rpx;
+					height: 28rpx;
+					display: inline-block;
+					vertical-align: middle;
+					margin-right: 8rpx;
+				}
+
+				.anchor:after {
+					display: inline-block;
+					vertical-align: middle;
+					content: '';
+					height: 100%;
 				}
 
 				.avater {

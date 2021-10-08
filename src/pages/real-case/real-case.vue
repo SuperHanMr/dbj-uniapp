@@ -79,6 +79,22 @@
 				selectStatus: 0,
 			};
 		},
+		onLoad() {
+			uni.$on('isCollect',(data)=>{
+				let list = [];
+				if (this.tag == '0') {
+					list = this.leftList;
+				} else {
+					list = this.rightList;
+				}
+			  if(data){
+			    list[this.activeIndex].collectionCount += 1
+			  }else{
+			    list[this.activeIndex].collectionCount -=1
+			  }
+			  list[this.activeIndex].isCollection = !list[this.activeIndex].isCollection;
+			})
+		},
 		onReady() {
 			this.getList();
 		},
@@ -128,6 +144,7 @@
 				console.log(list, index, isDecorate, ">>>>>>>>>>>")
 				// parentType 1 全景图 0  短视频  2 图文
 				if (isDecorate == 0) {
+					this.activeIndex = index;
 					const listUrl = list[index].videoUrl
 					uni.navigateTo({
 						url: `/pages/real-case/real-case-webview/real-case-webview?id=${list[index].id}`
