@@ -17,21 +17,25 @@
 		<view v-if="isLiveing">
 
 			<view class="state-bar">
-				<view v-for="(item,index) in roomInfo.interactionInfo" :key="item.id" class="user"
-					@click="toPersonal(item,index)">
-					<image class="img" :src="item.userAvatar">
+				<view v-for="(item,index) in roomInfo.interactionInfo" :key="item.id">
 
-					</image>
-					<view class="name">
-						{{item.userNickName}}
+					<view class="user" @click="toPersonal({index,item})">
+						<image class="img" :src="item.userAvatar">
+
+						</image>
+						<view class="name">
+							{{item.userNickName}}
+						</view>
+
 					</view>
-
 				</view>
 				<view class="flex1">
 
 				</view>
 				<view class="state-bar-text">
-					{{roomInfo.hotCount||''}}
+					<image class="img" src="http://dbj.dragonn.top/static/mp/dabanjia/images/home/ic_gkrs.png" mode="">
+					</image>
+					{{getHotCount(roomInfo.hotCount) }}
 				</view>
 			</view>
 			<live-player class="player" :src="livePreview" autoplay @statechange="statechange" @error="error" />
@@ -83,7 +87,11 @@
 												{{item.formatData.params.skuName}}
 											</view>
 											<view class="price-info">
-												{{item.formatData.params.price/100}}
+												<text class="nomal">¥</text>
+												<text class="big"> {{ foramtPrice(item.formatData.params.price)}}</text>
+												<text class="small">
+													.{{ formatCent(item.formatData.params.price)}}</text>
+
 											</view>
 										</view>
 									</view>
@@ -96,7 +104,9 @@
 				<view class="bottom-send">
 					<view class="input-text" @click.stop="handleShowSendBox">
 						说点什么...
-						<view class="iconfont icon-face" @click.stop="handleChooseImage"></view>
+						<image class="iconfont"
+							src="http://dbj.dragonn.top/static/mp/dabanjia/images/home/ic_live_upload.png"
+							@click.stop="handleChooseImage"></image>
 					</view>
 					<view class="macphone" @click="showDownload=true">
 						<image class="icon_macphone"
@@ -291,10 +301,32 @@
 			});
 		},
 		methods: {
-			toPersonal(item, index) {
+			getHotCount(count) {
+				if (!count) {
+					return 0
+				} else {
+					if (count < 10000) {
+						return count
+					} else {
+						return Number(count / 10000).toFixed(2) + 'w'
+					}
+				}
+			},
+			foramtPrice(item) {
+				let price = String(item || '0');
+				return price.slice(0, price.length - 2) || "0";
+			},
+			formatCent(item) {
+				let price = String(item || '0');
+				return price.slice(price.length - 2, price.length);
+			},
+			toPersonal({
+				index,
+				item
+			}) {
 				if (index == 0) {
 					uni.navigateTo({
-						url: `../../../sub-decorate/pages/person-page?personId=${item.userId}`
+						url: '../../../sub-decorate/pages/person-page/person-page?personId=' + item.userId
 					})
 				}
 			},
@@ -474,44 +506,62 @@
 
 <style lang="scss">
 	.product {
-
-		background-color: #FFF;
+		margin-top: 18rpx;
+		width: 448rpx;
+		background: #FFFFFF;
 		border-radius: 12rpx;
-		width: 444rpx;
 		display: flex;
 		flex-direction: column;
 		padding: 12rpx;
 
 
 		.product-name {
-
-			font-size: 24rpx;
-			color: black;
-			margin-bottom: 12rpx;
+			font-size: 22rpx;
+			color: #13BBBB;
+			line-height: 52rpx;
 		}
 
 		.product-info {
 			display: flex;
 
 			.product-info-img {
-				width: 100rpx;
-				height: 100rpx;
+				width: 96rpx;
+				height: 96rpx;
+				border-radius: 8rpx;
+				border: 1rpx solid #F5F5F5;
 			}
 
 			.product-info-name {
 				color: black;
 				margin-left: 12rpx;
+				display: flex;
+				flex-direction: column;
+				justify-content: space-between;
 
 				.title {
 					line-height: 30rpx;
 					height: 30rpx;
+					color: #111111;
 					font-size: 24rpx;
+					overflow: hidden;
+					text-overflow: ellipsis;
+					display: -webkit-box;
+					-webkit-line-clamp: 1;
+					-webkit-box-orient: vertical;
 				}
 
 				.price-info {
 					line-height: 30rpx;
 					height: 30rpx;
-					font-size: 24rpx;
+					color: #F92A2A;
+
+					.nomal {
+						font-size: 20rpx;
+					}
+
+					.big {
+						font-size: 32rpx;
+					}
 				}
 			}
 
@@ -688,15 +738,17 @@
 				width: 302rpx;
 				height: 72rpx;
 				opacity: 0.24;
-				background: #fff;
+				background: #000000;
 				border-radius: 28rpx;
 				display: flex;
 				align-items: center;
 				justify-content: space-between;
 				padding: 0 12px;
+				color: #FFF;
 
 				.iconfont {
-					font-size: 18px;
+					width: 32rpx;
+					height: 30rpx;
 				}
 			}
 
@@ -713,7 +765,7 @@
 
 				.like-count {
 					position: absolute;
-					right: -22rpx;
+					right: 0;
 					top: -14rpx;
 					width: 44rpx;
 					height: 28rpx;
@@ -867,11 +919,20 @@
 		}
 
 		.state-bar-text {
+			display: flex;
+			justify-content: center;
+			align-items: center;
 			font-size: 28rpx;
 			font-weight: 400;
 			color: #ffffff;
 			line-height: 24rpx;
 			margin-right: 24rpx;
+
+			.img {
+				margin-right: 8rpx;
+				width: 28rpx;
+				height: 28rpx;
+			}
 		}
 	}
 
