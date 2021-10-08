@@ -2,26 +2,29 @@
   <view 
     v-show="replyBoxShow"
     class="message-send-box"
+    :style="{bottom: bottom + 'px'}"
     @click.stop="handleBoxClick"
     >
-    <cover-view class="box-cover" @click.stop="handleBoxClick"></cover-view>
     <textarea
       v-model="replyContent"
       id="replyInput"
       :focus="replyInputFocus"
       :show-confirm-bar="false"
       :cursor-spacing="16"
+      :adjust-position="false"
+      fixed
       auto-height
       class="reply-send-input" 
       placeholder-class="reply-send-input-placeholder" 
       placeholder="说的什么..."
       @keyboardheightchange="handleKeyboardShow"
     />
-    <cover-view
-      class="reply-send-btn"
-      :class="{disabled: replyBtnDisabled}"
-      :style="{bottom: btnBottom + 'px'}"
-      @click="sendTextMessage">发送</cover-view>
+    <cover-view class="btn-wrapper" @click="sendTextMessage">
+      <cover-view
+        class="reply-send-btn"
+        :class="{disabled: replyBtnDisabled}"
+        >发送</cover-view>
+    </cover-view>
   </view>
 </template>
 
@@ -50,8 +53,8 @@ export default {
     replyBtnDisabled() {
       return !this.replyContent.trim();
     },
-    btnBottom() {
-      return this.keyboardHeight + 18;
+    bottom() {
+      return this.keyboardHeight || 0;
     }
   },
   mounted() {
@@ -111,15 +114,11 @@ export default {
     background: #fff;
     padding: 10px 10px 10px 16px;
     align-items: flex-end;
-    position: relative;
-  }
-  .box-cover {
-    position: absolute;
+    position: fixed;
+    bottom: 0;
     left: 0;
-    top: 0;
-    background-color: #fff;
     width: 100%;
-    height: 100%;
+    box-sizing: border-box;
   }
   .reply-send-input {
     flex: 1;
@@ -131,17 +130,19 @@ export default {
     font-size: 14px;
     color: #111;
     max-height: 180rpx;
-    margin-right: 48px;
   }
   .reply-send-input-placeholder {
     color: #ccc;
     font-size: 14px;
   }
+  .btn-wrapper {
+    width: 96rpx;
+    height: 76rpx;
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+  }
   .reply-send-btn {
-    position: absolute;
-    z-index: 2;
-    right: 8px;
-    bottom: 18px;
     flex: none;
     font-size: 12px;
     padding: 0 20rpx;
