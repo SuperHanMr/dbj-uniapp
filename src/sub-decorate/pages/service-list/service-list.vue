@@ -98,6 +98,9 @@
           serviceType: this.serviceType,
           values: tmp
         });
+        uni.navigateBack({
+        
+        })
       }
     }
   }

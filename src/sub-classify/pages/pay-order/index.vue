@@ -68,7 +68,7 @@
           <view class="shop-reduce" v-if="shopItem.freeDeliveryCount && productType === 1">
             <view class="item-reduce-box">
               <view class="question-box">本订单已获得了该店铺{{shopItem.freeDeliveryCount}}次免运费权益
-                <text class="question-icon" @click="readExpenses(1)"></text>
+                <text class="question-icon free-icon" @click="readExpenses(1)"></text>
               </view>
             </view>
           </view>
@@ -141,7 +141,7 @@
       </view>
       <expenses-toast ref='expensesToast' :expensesType="expensesType"></expenses-toast>
       <date-picker ref='datePicker' @getTime="getTime"></date-picker>
-      <order-toast ref='orderToast' :houseId="houseId" :hasCanBuy="hasCanBuy" :noStoreInfos="noStoreInfos"></order-toast>
+      <order-toast ref='orderToast' :houseId="houseId" :hasCanBuy="hasCanBuy" :noStoreInfos="noStoreInfos" @toastConfirm="toastConfirm"></order-toast>
       <uni-popup ref="cancelDialog" :mask-click="false">
         <view class="popup-item">
           <view class="popup-title">{{toastText}}</view>
@@ -176,8 +176,8 @@
         time: '',
         shopIndex: 0,
         goodIndex: 0,
+        originFrom: "",
         orderCartParams: {},
-        originFrom: '',
         addressInfo: {},
         orderInfo: {},
         canStoreInfos: {},
@@ -202,7 +202,7 @@
         orderDetails: [],
         totalClassNum: 0,
         totalPrice: '0.00',
-        hasCanBuy: true,
+        hasCanBuy: false,
         projectId: 0,
         level: 0
       }
@@ -218,11 +218,7 @@
       if(e.from) {
         this.originFrom = e.from
       }
-      if(this.originFrom === "h5GoodDetail") {
-        this.houseId = e.houseId
-      }else if(this.originFrom === "shopCart"){
-        this.houseId = getApp().globalData.currentHouse.id
-      }
+      this.houseId = e.houseId?e.houseId: getApp().globalData.currentHouse.id
       this.buyCount = e.buyCount
       this.skuId = e.skuId
       this.storeId = e.storeId
@@ -231,9 +227,15 @@
       this.goodDetailId = uni.getStorageSync('goodId')
     },
     onShow() {
-      if(!Number(uni.getStorageSync('houseListChooseId')) && !Number(this.houseId)){
+      if (uni.getStorageSync('houseListChooseId')) {
+        this.houseId = uni.getStorageSync('houseListChooseId')
+        uni.removeStorageSync('houseListChooseId')
+        if(this.$refs.houseDialog) {
+          this.$refs.houseDialog.close()
+        }
+      }
+      if(!Number(this.houseId)){
         this.isShow = false
-        console.log("test111111")
         setTimeout(() => {
           if(this.$refs.houseDialog){
             this.$refs.houseDialog.open()
@@ -241,14 +243,6 @@
         })
       }else{
         this.isShow = true
-      }
-      if (uni.getStorageSync('houseListChooseId')) {
-        this.$nextTick(() => {
-          this.houseId = uni.getStorageSync('houseListChooseId')
-        })
-        if(this.$refs.houseDialog) {
-          this.$refs.houseDialog.close()
-        }
       }
     },
     methods: {
@@ -274,6 +268,7 @@
         this.$set(this.orderInfo.storeInfos[this.shopIndex].skuInfos[this.goodIndex], "time", this.time)
       },
       emitInfo(val) {
+        this.hasCanBuy = false
         this.hasNoBuyItem = false
         this.projectId = val.projectId
         this.orderDetails = []
@@ -350,6 +345,7 @@
                 }                
                 this.hasNoBuyItem = true // 判断所有数据中有没有不可配送数据
               } else {
+                this.hasCanBuy = true
                 canStoreItem.skuInfos.push(skuItem)
                 this.totalClassNum += 1
                 // 整理出结算参数
@@ -374,9 +370,6 @@
           })
           if ( this.orderInfo.storeInfos.length >1 || this.orderInfo.storeInfos[0].skuInfos.length > 1) {
             this.orderInfo = this.canStoreInfos
-            if(!this.canStoreInfos.storeInfos.length){
-              this.hasCanBuy = false
-            }
             if (this.hasNoBuyItem) {
               this.$refs.orderToast.showPupop()
             }
@@ -387,6 +380,9 @@
         this.shopIndex = shopIndex
         this.goodIndex = goodIndex
         this.$refs.datePicker.showDatePicker()
+      },
+      toastConfirm() {
+        this.hasNoBuyItem = false
       },
       pay() {
         if(!this.hasCanBuy || this.hasNoBuyItem || !this.totalPrice) {
@@ -482,7 +478,9 @@
     background-image: url('../../static/image/question.png');
     background-size: cover;
   }
-
+  .item-reduce-box .question-box .free-icon{
+    top: 14rpx;
+  }
   // 商品item
   .shop-item {
     margin-top: 25rpx;

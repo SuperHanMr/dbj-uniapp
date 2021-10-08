@@ -121,13 +121,17 @@
 			}
 		},
 		onShow() {
+			this.query.lastId =-1
+			this.dataList = []
 		  this.getList();
 		},
 		//下拉刷新
 		onPullDownRefresh() {
-			console.log('refresh');
-			setTimeout(function () {
-					uni.stopPullDownRefresh();
+			this.query.lastId =-1
+			this.dataList = []
+			this.getList();
+			setTimeout(()=>{
+				uni.stopPullDownRefresh();
 			}, 1000);
 		},
 	

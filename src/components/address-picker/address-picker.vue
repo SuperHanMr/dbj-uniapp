@@ -65,17 +65,23 @@
         estateId: 0
       };
     },
-    // mounted() {
-    //   // if()
-    //   console.log(this.originFrom, 'from')
-    //   getAddressInfo(this.houseId).then((data) => {
-    //     this.addressInfo = data
-    //     this.$emit('emitInfo', this.addressInfo)
-    //   })
-    //   console.log(this.houseId, 8899)
-    // },
+    mounted() {
+      if(this.originFrom === "orderToast") {
+        getAddressInfo(this.houseId).then((data) => {
+          this.addressInfo = data
+          let params = {
+            estateId: this.houseId
+          }
+          getProductID(params).then((data) => {
+            this.addressInfo.projectId = data
+            this.$emit('emitInfo', this.addressInfo)
+          })
+        })
+      }
+    },
     methods: {
       checkAddress() {
+        this.$emit("closeToast")
         uni.navigateTo({
            url: "/sub-my/pages/my-house/my-house"
         })
@@ -93,7 +99,7 @@
         getAddressInfo(v).then((data) => {
           this.addressInfo = data
           let params = {
-            estateId: this.houseId
+            estateId: v
           }
           getProductID(params).then((data) => {
             this.addressInfo.projectId = data

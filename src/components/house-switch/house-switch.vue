@@ -1,13 +1,13 @@
 <template>
 	<view class="s-w">
 		<view class="top"></view>
-		<view class="house-list">
+		<scroll-view :scroll-top="scrollTop" scroll-y="true" class="house-list">
 			<view class="item" v-for="(item ,i) in datalist" @click="checkHouse(item)" :key="item.uid">
 				<view class="item-inner flex-row-bet"
 					:class="{default: item.defaultEstate, current: item.estateId == current}">
 					<view class="left flex-row-start">
 						<view v-if="item.relegationType == 2" class="friend">亲友</view>
-						<view v-if="item.defaultEstate" class="default">默认</view>
+						<view v-if="item.defaultEstate && item.relegationType == 1" class="default">默认</view>
 						<view class="house-address">{{item.housingEstate}}{{item.address}}</view>
 					</view>
 					<view class="status"
@@ -17,7 +17,7 @@
 				</view>
 				<view class="ext" v-if="item.frequencyName">{{item.frequencyName}}</view>
 			</view>
-		</view>
+		</scroll-view>
 		<view class="go-add-house flex-row">
 			<image src="http://dbj.dragonn.top/static/mp/dabanjia/images/decorate/ic_add_house_c.svg" @click="goaddhouse"></image>
 			<text @click="goaddhouse">新增房屋</text>
@@ -37,6 +37,11 @@
 				default: 0
 			},
 		},
+    data() {
+      return {
+        scrollTop: 0
+      }
+    },
 		methods: {
 			goaddhouse() {
 				this.$emit("goAddHouse")
@@ -85,8 +90,8 @@
 	}
 	.house-list {
 		height: 472rpx;
-		overflow-x: hidden;
-		overflow-y: auto;
+		// overflow-x: hidden;
+		// overflow-y: auto;
 	}
 
 	.item {
