@@ -12,9 +12,9 @@
         </view>
       </view>
       <view class="text-area" v-if="currentId === '其他'">
-        <textarea v-model="otherReason" class="replace-text-area" :maxlength='500' placeholder="请输入原因详情" />
+        <textarea v-model="otherReason" :show-confirm-bar='false' class="replace-text-area" :maxlength='500' placeholder="请输入原因详情" />
         <text class="text-area-warning" v-if="!otherReason">（必填）</text>
-        <text class="text-area-info" v-if="otherReason">{{otherReason.length}}/500</text>
+        <text class="text-area-info" v-if="otherReason">{{otherReason.length>500?500:otherReason.length}}/500</text>
       </view>
       <view class="upload-tip">上传照片<text>（{{imageValue.length}}/6）</text></view>
       <uni-file-picker :auto-upload='false'  v-model="imageValue" fileMediatype="image" mode="grid" :limit="6" @select="select"
@@ -148,7 +148,7 @@
       submitQuery() {
         let data = {
           serveId: this.serveId,
-          remark: this.currentId,
+          remark: this.currentId!=='其他'?this.currentId:this.otherReason.substr(0,500),
           imageUrls: []
         }
         this.imageValue.forEach(item=>{
