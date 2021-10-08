@@ -854,7 +854,7 @@
 		height: 36rpx !important;
 	}
 
-	::v-deep .uni-countdown__splitor.data-v-02c75d70 {
+	::v-deep .uni-countdown__splitor {
 		line-height: 36rpx !important;
 	}
 
