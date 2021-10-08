@@ -4,13 +4,13 @@
       <view class="left-title-block">
         <view class="nav-left-item" @click="categoryClickMain(index2)"
           :class="{'active': index2==categoryActive, 'preNode': index2==categoryActive -1, 'nextNode': index2==categoryActive +1}"
-          v-for="(menu2,index2) in detailData" :key="index2">
+          v-for="(menu2,index2) in detailData" :key="index2" v-if="detailData[categoryActive]['children'].length">
           {{menu2.name}}
         </view>
       </view>
     </scroll-view>
     <scroll-view class="nav-right" scroll-y="true">
-      <view class="right-view" v-for="(menu3, index3) in detailData[categoryActive]['children']" :key="index3">
+      <view class="right-view" v-for="(menu3, index3) in detailData[categoryActive]['children']" :key="index3" v-if="menu3['children'].length">
         <text class="menu3-title">{{menu3.name}}</text>
         <scroll-view class="right-card" scroll-y="true">
           <view class="right-detail" v-for="(detail, detailK) in menu3['children']" :key="detailK"

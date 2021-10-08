@@ -16,8 +16,8 @@
       <view class="item"></view>
     </view>
     <view class="person-page-content">
-      <view class="person-msg">
-        <view class="person-msg-top">
+      <view class="person-msg" :class="{'is-self':personData.roleId === 10000}">
+        <view class="person-msg-top" :class="{'is-self':personData.roleId === 10000}">
           <view class="person-msg-header">
             <view class="person-msg-header-image">
               <image class="avatar" :src="personData.avatar" ></image>
@@ -26,11 +26,11 @@
             </view>
             <text class="name">{{personData.nickName}}</text>
             <view class="label">
-              <text class="job">{{personData.roleId===3?personData.personAllBadgeVO.skillBadges[0].name:personData.roleName}}</text>
-              <text class="rate">好评率{{personData.praiseRate||0}}</text>
+              <text class="job" v-if="personData.roleId!==10000">{{personData.roleId===3?personData.personAllBadgeVO.skillBadges[0].name:personData.roleName}}</text>
+              <text class="rate" v-if="personData.roleId<7">好评率{{personData.praiseRate||0}}</text>
             </view>
           </view>
-          <view class="btn">
+          <view class="btn" v-if="personData.roleId<7">
           <view class="recommend" @click="queryAttention(2001)" :class="{'already-recommend':isRecommend}">
               <image v-if="!isRecommend"></image>
               {{isRecommend?'已':''}}优先推荐
@@ -40,7 +40,7 @@
               {{isAttention?'已':''}}关注
             </view>
           </view>
-          <view class="person-msg-list">
+          <view class="person-msg-list" v-if="personData.roleId<7">
             <view class="list-item">
               <text class="num">{{personData.likeCount||0}} <text class="unit" v-if="personData.likeCount.split('.')[1]">w</text></text>
               <text class="title">获赞</text>
@@ -64,13 +64,13 @@
             </view>
           </view>
         </view>
-        <personIntroduce :personData='personData'></personIntroduce>
-        <view class="send-msg" @click="sendMsg">
+        <personIntroduce v-if="personData.roleId!==10000" :personData='personData'></personIntroduce>
+        <view class="send-msg" @click="sendMsg" v-if="personData.roleId<7">
           <image src="" mode=""></image>
           发消息
         </view>
       </view>
-      <view class="person-interact" :class="{'person-interact-active':interactActive === interact}">
+      <view class="person-interact" v-if="personData.roleId<7" :class="{'person-interact-active':interactActive === interact}">
         <view class="sticky">
           <view class="item" v-if="personData.roleId===1||personData.roleId===6" :class="{'item-active':currentItem==='serviceTop'}" @click="toItem('serviceTop')">
             服务</view>
@@ -79,15 +79,21 @@
           <view class="item" v-if="personData.roleId===3||personData.roleId===4||personData.roleId===5" :class="{'item-active':currentItem==='dynamicTop'}" @click="toItem('dynamicTop')">
             动态</view>
           <view class="item" :class="{'item-active':currentItem==='evaluateTop'}" @click="toItem('evaluateTop')">
-            评价<text>{{evaluateNum}}</text></view>
+            评价<text v-if="evaluateNum">{{evaluateNum}}</text></view>
         </view>
       </view>
-      <view class="content">
+      <view class="content" v-if="personData.roleId<7">
         <personService ref='service' v-if="personData.roleId===1||personData.roleId===6" :serviceData='serviceData'></personService>
+        <view class="interval" v-if="personData.roleId===1||personData.roleId===6"></view>
         <personCase ref='case' :personId='personId' class="person-case" v-if="personData.roleId===1||personData.roleId===2||personData.roleId===6"></personCase>
         <personDynamic ref='dynamic' :personId='personId' class="person-dynamic" v-if="personData.roleId===3||personData.roleId===4||personData.roleId===5"></personDynamic>
+        <view class="interval"></view>
         <personEvaluate ref='evaluate' :personId='personId' class="person-evaluate" @getEvaluate='getEvaluate'></personEvaluate>
       </view>
+    </view>
+    <view class="person-self" v-if="personData.roleId===10000">
+      <image></image>
+      <text>暂无内容</text>
     </view>
   </view>
 </template>
@@ -121,7 +127,8 @@
           fansCount:'0',
           recommendCount:'0',
           collectCount:'0',
-          totalNum:'0'
+          totalNum:'0',
+          roleId:0
         },
         currentItem: 'service',
         scrollTop:0,
@@ -156,16 +163,18 @@
       
     },
     onLoad(e){
-      this.personId = e.personId||6477
+      this.personId = e.personId||7050
       // this.getGrabDetail()
     },
     onShow(){
-      console.log(111)
+      // console.log(111)
+      this.$refs.dynamic&&this.$refs.dynamic.requestDynamic()
     },
     mounted() {
       // this.getCaseList()
       // this.getSkuList()
       // this.getNodeHeight()
+      
       this.init()
     },
     onPageScroll(scrollTop) {
@@ -219,23 +228,26 @@
       },
       getGrabDetail(){
         getGrabDetail(this.personId).then(res=>{
-          
-          // this.personData.roleId = 3
-          res.totalNum = unitChange(res.inServiceCount+res.comServiceCount)
-          // this.personData.totalNum = '1.0'
-          res.likeCount = unitChange(res.likeCount)
-          res.fansCount = unitChange(res.fansCount)
-          res.recommendCount = unitChange(res.recommendCount)
-          res.collectCount = unitChange(res.collectCount)
-          this.personData = res
-          console.log(this.personData)
-          // this.personData.totalNum = unitChange(19999)
-          // if(this.personData.totalNum>10000){
-          //   this.personData.totalNum = 
-          // }
-          this.getAttention(1001,'isAttention')
-          this.getAttention(2001,'isRecommend')
-          
+          if(res){
+            // this.personData.roleId = 3
+            res.totalNum = unitChange(res.inServiceCount+res.comServiceCount)
+            // this.personData.totalNum = '1.0'
+            res.likeCount = unitChange(res.likeCount)
+            res.fansCount = unitChange(res.fansCount)
+            res.recommendCount = unitChange(res.recommendCount)
+            res.collectCount = unitChange(res.collectCount)
+            this.personData = res
+            if(!this.personData.roleId){
+              this.personData.roleId = 10000
+              return
+            }
+            this.getAttention(1001,'isAttention')
+            this.getAttention(2001,'isRecommend')
+          }else{
+            // this.personData = getApp().globalData.userInfo
+            // console.log(this.personData)
+            
+          }
         })
       },
       // getCaseList() {
@@ -316,6 +328,7 @@
     box-sizing: border-box;
     background-color: #fff;
     padding-bottom: 40rpx;
+    // height: 100%;
     .bg-index {
       top: 0;
       width: 100%;
@@ -344,8 +357,12 @@
   .person-page-content {
     position: relative;
     top: 28rpx;
+    background: #fff;
   }
-
+  view .is-self{
+    border-bottom: none !important;
+    box-shadow: none;
+  }
   .person-msg {
     // width: calc(100% - 32px);
     background-color: #fff;
@@ -611,11 +628,29 @@
       }
     }
   }
+  .person-self{
+    width: 100%;
+    image{
+      width: 100%;
+      height: 640rpx;
+      background-color: #eee;
+      margin-bottom: 20rpx;
+    }
+    text{
+      display: block;
+      width: 100%;
+      text-align: center;
+      font-size: 28rpx;
+      color: #999;
+    }
+  }
   .person-interact-active{
     background-color: #fff;
     z-index: 1;
   }
-  .content{
-    
+  .interval{
+    width: 100%;
+    height: 16rpx;
+    background: #F5F6F6;
   }
 </style>

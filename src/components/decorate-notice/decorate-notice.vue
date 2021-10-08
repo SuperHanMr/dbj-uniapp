@@ -1,10 +1,10 @@
 <template>
-  <view class="notice" catchtouchmove=“true” :style="{height:systemHeight}">
+  <view class="notice" catchtouchmove="true" :style="{height:systemHeight}">
     <view class="notice-mask"></view>
     <view class="notice-view">
       <scroll-view class="item-list" :style="{height:scrollHeight}" scroll-y="true">
        <view class="item">
-                   <!-- <view
+                   <view
             class="notice-item"
             @click="to(3)"
           > 
@@ -22,7 +22,7 @@
               <text>有量房员接单啦，请确认</text>
               <image src="../../static/images/ic_more_black.svg"></image>
             </view>
-          </view> -->
+          </view>
           <view class="notice-item" @click="to(item)" v-for="item of list" :key='item.id'>
             <view class="item-top">
               <view class="item-top-left">

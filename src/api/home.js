@@ -51,3 +51,20 @@ export function workVideo(params) {
 }
 
 
+//公共直播间 - 查询房间信息
+export function publicRoom(roomId) {
+	return request.get(`/api/publicRoom/${roomId}`, {
+		data: {
+			hideToast: true
+		}
+	});
+}
+
+//点赞并获取点赞总数
+export function insertAndGetLikeNum(params) {
+	return request.post(`/app/liveLike/insertAndGetLikeNum`, {
+		...params,
+		hideToast: true,
+		ignoreLogin:true
+	});
+}

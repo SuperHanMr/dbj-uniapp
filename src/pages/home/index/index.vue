@@ -196,10 +196,9 @@
 		},
 		watch: {
 			areaId() {
-				this.goodsList = [];
-				this.getHomeGoodsList();
+				this.reloadData();
 			},
-			token() {
+			token() { 
 				this.getHomeList();
 			},
 		},
@@ -251,6 +250,9 @@
 		onReachBottom() {
 			this.page++;
 			this.getHomeGoodsList();
+		},
+		onPullDownRefresh(){
+			this.reloadData()
 		},
 		methods: {
 			currentHouseChange(item) {
@@ -390,7 +392,7 @@
 			},
 			toCity() {
 				uni.navigateTo({
-					url: "/sub-my/pages/my-house/my-house",
+					url: "/sub-my/pages/my-house/my-house?fromHome=1",
 				});
 			},
 			getAuthorizeInfo() {
@@ -492,6 +494,7 @@
 				}
 			},
 			reloadData() {
+				// banner
 				this.getBannerList();
 				//直播列表
 				this.getQueryLiveList();
@@ -500,6 +503,8 @@
 					this.zoneList = e;
 				});
 				//首页推荐商品
+				this.goodsList = [];
+				this.getHomeGoodsList();
 			},
 			getHomeGoodsList() {
 				getGoodsList({

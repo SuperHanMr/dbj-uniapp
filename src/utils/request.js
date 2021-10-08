@@ -61,10 +61,13 @@ instance.defaults.headers.post['Content-Type'] = 'application/x-www-form-urlenco
  */
 instance.interceptors.request.use(
 	async (config) => {
-			uni.showLoading({
-				title: '加载中...',
-				mask: true
-			});
+			if (!(config.data && config.data.hideToast)) {
+				uni.showLoading({
+					title: '加载中...',
+					mask: true
+				});
+			}
+
 			const token = getApp().globalData.token;
 
 			if (token) {
@@ -73,7 +76,6 @@ instance.interceptors.request.use(
 					accessToken: `${token}`,
 				};
 			}
-			console.log(config);
 			return config;
 		},
 		(error) => Promise.reject(error),
@@ -83,7 +85,7 @@ instance.interceptors.request.use(
 instance.interceptors.response.use(
 	// 请求成功
 	async (res) => {
-			console.log(res, 'sadasd>>>>>>>>>>>>')
+
 			uni.hideLoading();
 
 			if (res.data.code !== 1) {
@@ -106,9 +108,16 @@ instance.interceptors.response.use(
 				// 	showCancel: false,
 				// 	content: '用户信息已过期,请重新登录',
 				// 	success: function(res) {
-				uni.navigateTo({
-					url: "/pages/login/login",
-				});
+
+				let config = {}
+				if (error.config && error.config.data) {
+					config = JSON.parse(error.config.data)
+				}
+				if (!(config && config.ignoreLogin)) {
+					uni.navigateTo({
+						url: "/pages/login/login",
+					});
+				}
 				// 	}
 				// });
 
@@ -135,10 +144,13 @@ instance.interceptors.response.use(
 			}
 			if (error.response.status != 401 && error.response && error.response.data && error.response.data
 				.message) {
-				uni.showToast({
-					title: error.response.data.message,
-					icon: 'none'
-				})
+				if (!(config.data && config.data.hideToast)) {
+					uni.showToast({
+						title: error.response.data.message,
+						icon: 'none'
+					})
+				}
+
 			}
 			console.error("------response-error-----", error);
 			return Promise.reject(error.response);

@@ -9,7 +9,7 @@ export function designList(params) {
 }
 //获取我的房屋列表
 export function queryEstates(params) {
-	return request.get("/customer/app/estate/queryEstates", params)
+	return request.get("/customer/app/estate/queryEstates", {params})
 }
 
 //添加房屋
@@ -84,7 +84,7 @@ export function getMsgNum(params) {
 
 //获取抢单审核详情
 export function getGrabDetail(params) {
-	return request.get("/app/employeeInfo/myInfo?zeusId=" + params)
+	return request.get("/app/employeeInfo/personInfo?zeusId=" + params)
 }
 
 //确认抢单人员

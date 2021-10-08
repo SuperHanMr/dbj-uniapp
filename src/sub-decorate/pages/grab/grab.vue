@@ -3,7 +3,7 @@
     <view class="content">
       <grabHomePage class="home-page" :personData='personData'></grabHomePage>
       <view class="msg-btn">
-        <view class="content" @click="toSend">
+        <view class="content" @click="sendMsg">
           <view class="icon"></view>
           <text>发消息</text>
         </view>
@@ -74,10 +74,9 @@
 					url:"/sub-decorate/pages/replace-worker/replace-worker?id="+this.id
 				})
 			},
-      toSend(){
-        // uni.navigateTo({
-        // 	url:"/sub-decorate/pages/replace-worker/replace-worker?id="+this.id
-        // })
+      sendMsg(){
+        this.$store.dispatch("openC2CConversation", this.personId);
+      
       },
 			submit(){
         sureGrab({serveId:this.id}).then(res=>{

@@ -1,10 +1,10 @@
 <template>
   <view class="process-cost">
-    <view class="artificial" v-if="msg.obtainType != 2">
+    <view class="artificial" v-if="msg.payStatus == 2 || msg.obtainType != 2">
       <view class="title">
         <view>人工费用（{{levelList.length > 0 ? LEVEL[artificialLevel - 1].label : (dataOrigin.artificial.grade || "无等级")}}）
         </view>
-        <view class="change-level" @click="openPopUp">更换等级</view>
+        <view v-if="msg.payStatus != 2" class="change-level" @click="openPopUp">更换等级</view>
       </view>
       <view class="process-cost-list">
         <process-cost-artificial :key="index" v-for="(item,index) in dataOrigin.artificial.categoryList"
@@ -26,7 +26,7 @@
       </view>
       <no-data v-if="noData" :words="message"></no-data>
     </view>
-    <view class="payment-wrap" :style="{paddingBottom:systemBottom,height:systemHeight}">
+    <view v-if="!msg.payStatus || msg.payStatus != 2" class="payment-wrap" :style="{paddingBottom:systemBottom,height:systemHeight}">
       <payment @gotopay="gotopay" :pieces="pieces" :countPrice="countPrice" :isAllChecked="isAllChecked"></payment>
     </view>
     <uni-popup ref="level">

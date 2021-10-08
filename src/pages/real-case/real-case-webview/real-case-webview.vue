@@ -1,5 +1,11 @@
 <template>
-	<web-view :src="url" @message='message'></web-view>
+  <view class="">
+    <web-view ref='webview' :src="url" @message='message' @load='loadSuccessHandler'></web-view>
+    <view class="" ref='sad'>
+      
+    </view>
+  </view>
+	
 </template>
 
 <script>
@@ -17,26 +23,22 @@
           height = res.windowHeight
         }
       })
-      console.log(height)
 			this.url = this.ENV.VUE_APP_BASE_H5 + `/app-pages/case-detail/case-detail.html?id=${props.id}&token=${token}&height=${height}`
-      
+      console.log(this.url)
+      uni.showLoading({
+          title: '加载中'
+      });
+
 		},
-		mounted() {
-			// uni.$on('isCollect',(data)=>{
-   //      console.log(111)
-   //      console.log(data)
-   //      this.getChange(data)
-   //    })
-		},
+
 		methods: {
-			// getChange(e){
-   //      console.log(111)
-   //    },
+			loadSuccessHandler(e){
+        uni.hideLoading();
+      },
       message(event){
-            console.log('接收到消息',event)
-            console.log('接收到消息',event.detail)
-            uni.$emit('isCollect',event.detail.data[event.detail.data.length])
-        }
+        // console.log(event.detail.data,event.detail.data.length)
+        uni.$emit('isCollect',event.detail.data[event.detail.data.length-1].isCollect)
+      }
 		}
 	}
 </script>
