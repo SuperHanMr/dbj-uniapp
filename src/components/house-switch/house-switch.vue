@@ -7,7 +7,7 @@
 					:class="{default: item.defaultEstate, current: item.estateId == current}">
 					<view class="left flex-row-start">
 						<view v-if="item.relegationType == 2" class="friend">亲友</view>
-						<view v-if="item.defaultEstate" class="default">默认</view>
+						<view v-if="item.defaultEstate && item.relegationType == 1" class="default">默认</view>
 						<view class="house-address">{{item.housingEstate}}{{item.address}}</view>
 					</view>
 					<view class="status"
