@@ -2,7 +2,7 @@
 	<view class="constructionWrap">
 		<view class="noTypes" v-if="!serveTypes.length">
 			<image class="noTypesImg" src="http://dbj.dragonn.top/static/mp/dabanjia/images/decorate/pic_empty%402x.png"></image>
-			<view class="text">暂无装修动态</view>
+			<view class="text">暂无施工图纸</view>
 		</view>
 		<view class="topTab" v-else>
 			<view
@@ -35,7 +35,7 @@
 		</view>
 		<view class="noDrawings" v-if="!drawings.length">
 			<image class="noDrawingsImg" src="http://dbj.dragonn.top/static/mp/dabanjia/images/decorate/pic_empty%402x.png"></image>
-			<view class="text">暂无装修动态</view>
+			<view class="text">暂无施工图纸</view>
 		</view>
 		<view class="contentWrap" v-else>
 			<view class="content"

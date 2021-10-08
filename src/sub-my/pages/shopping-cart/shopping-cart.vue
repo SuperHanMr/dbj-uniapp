@@ -311,9 +311,15 @@
 					data.defaultProperties.forEach(item => {
 						Ids.push(item.value.id)
 					})
+					data.skuAndProperties.map(item => {
+						item.valueIds = item.propValueIds.split(',')
+						return item
+					})
 					this.defaultSpec = data.defaultProperties
-					this.defaultSpecIds = Ids.join(",")
-					this.selectedIndex = data.skuAndProperties.findIndex(item => item.propValueIds === this.defaultSpecIds)
+					this.defaultSpecIds = Ids.sort().toString()
+					this.selectedIndex = data.skuAndProperties.findIndex(item => item.valueIds.sort().toString()
+					 === this.defaultSpecIds)
+					console.log(this.selectedIndex)
 				})
 			},
 			toShoppingMall(){

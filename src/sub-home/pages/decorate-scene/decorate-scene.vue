@@ -414,6 +414,7 @@ import {
   getDecorateProcess,
   getDecorateDynamic,
   getSelectOptions,
+	setViews,
   setAttentions,
   getFocusBrowse,
   getComments,
@@ -484,39 +485,34 @@ export default {
         this.commentC(this.dynamicId);
       });
     },
-    focusOnView(isFocus) {
-      let deviceId = 0;
-      uni.getSystemInfo({
-        success: (res) => {
-          deviceId = res.deviceId;
-        },
-      });
-      // let obj = {
-      // 	customerId: this.userId,
-      // 	customerName: uni.getStorageSync("userInfo").nickName,
-      // 	customerAvatar: uni.getStorageSync("userInfo").avatarUrl,
-      // 	estateName: this.projectInfo.estateNeighbourhood,
-      // 	estateAddress: this.projectInfo.estateAddress
-      // }
-      let params = {
-        routeId: isFocus ? 1002 : 4001,
-        relationId: this.projectInfo.id,
-        authorId: this.projectInfo.estateOwnerId,
-        equipmentId: deviceId,
-        subBizType: this.houseStructure,
-        // jsonContent: JSON.stringify(obj)
-      };
-      setAttentions(params).then((data) => {
-        if (data) {
-          if (isFocus) {
-            this.isSelfFocusOn = !this.isSelfFocusOn;
-            this.estateFocusOnCount += 1;
-          } else {
-            this.estateViewCount += 1;
-          }
-        }
-      });
-    },
+		onView() {
+		  let deviceId = 0;
+		  uni.getSystemInfo({
+		    success: (res) => {
+		      deviceId = res.deviceId;
+		    },
+		  });
+		  // let obj = {
+		  // 	customerId: this.userId,
+		  // 	customerName: uni.getStorageSync("userInfo").nickName,
+		  // 	customerAvatar: uni.getStorageSync("userInfo").avatarUrl,
+		  // 	estateName: this.projectInfo.estateNeighbourhood,
+		  // 	estateAddress: this.projectInfo.estateAddress
+		  // }
+		  let params = {
+		    routeId: 4001,
+		    relationId: this.projectInfo.id,
+		    authorId: this.projectInfo.estateOwnerId,
+		    equipmentId: deviceId,
+		    subBizType: this.houseStructure,
+		    // jsonContent: JSON.stringify(obj)
+		  };
+		  setViews(params).then((data) => {
+		    if (data) {
+		      this.estateViewCount += 1;
+		    }
+		  });
+		},
     setReply(isReply) {
       this.showInput = false;
       console.log(this.inputValue, "blur");
@@ -622,7 +618,38 @@ export default {
       this.commentIndex = commentIndex;
     },
     focusC() {
-      this.focusOnView(true);
+      let deviceId = 0;
+      uni.getSystemInfo({
+        success: (res) => {
+          deviceId = res.deviceId;
+        },
+      });
+      // let obj = {
+      // 	customerId: this.userId,
+      // 	customerName: uni.getStorageSync("userInfo").nickName,
+      // 	customerAvatar: uni.getStorageSync("userInfo").avatarUrl,
+      // 	estateName: this.projectInfo.estateNeighbourhood,
+      // 	estateAddress: this.projectInfo.estateAddress
+      // }
+      let params = {
+        routeId: 1002,
+        relationId: this.projectInfo.id,
+        authorId: this.projectInfo.estateOwnerId,
+        equipmentId: deviceId,
+        subBizType: this.houseStructure,
+        // jsonContent: JSON.stringify(obj)
+      };
+      setAttentions(params).then((data) => {
+        if (data) {
+          this.isSelfFocusOn = !this.isSelfFocusOn;
+					if(this.isSelfFocusOn){
+						this.estateFocusOnCount += 1;
+					}else{
+						this.estateFocusOnCount -= 1;
+					}
+          
+        }
+      });
     },
     selectC() {
       this.showNodeType = true;
@@ -684,7 +711,7 @@ export default {
         }
       });
     },
-    getFocus() {
+    requestFocus() {
       let params = {
         relationId: this.projectInfo.id,
         subBizType: this.houseStructure,
@@ -694,7 +721,7 @@ export default {
           this.estateFocusOnCount = data.estateFocusOnCount;
           this.estateViewCount = data.estateViewCount;
           this.isSelfFocusOn = data.isSelfFocusOn;
-          this.focusOnView(false);
+          this.onView();
         }
       });
     },
@@ -739,7 +766,7 @@ export default {
           this.projectInfo = projectInfo;
           this.processId = nodes[0].processId;
           this.houseStructure = estate.houseStructure;
-          this.getFocus();
+          this.requestFocus();
           nodes.map((item, index) => {
             this.nodeTypes.push({
               name: item.nodeName,

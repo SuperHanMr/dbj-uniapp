@@ -34,8 +34,11 @@ export function getSelectOptions(params) {
     params
   });
 }
-export function setAttentions(params, config) {
+export function setViews(params, config) {
   return request.post(`/app/base/interactive/view/add`, params, config);
+}
+export function setAttentions(params, config) {
+  return request.post(`/app/base/interactive/add`, params, config);
 }
 export function getFocusBrowse(params) {
   return request.get(`/app/base/interactive/view/project/count/detail`, {
