@@ -47,7 +47,7 @@
 									<!-- {{item.orderStatusName}} -->
 									{{
 										item.orderStatus == 1
-										?(item.shipmentStatus == 0?"待发货":item.shipmentStatus == 1 ? "已发货" :"已收货")//发货状态（1待发货，2已发货）
+										?(item.type==2 ? "进行中" : (item.shipmentStatus == 0?"待发货":item.shipmentStatus == 1 ? "已发货" :"已收货"))//发货状态（1待发货，2已发货）
 										:item.orderStatusName
 									}}
 								</view>
@@ -513,12 +513,12 @@
 </script>
 
 <style lang="scss" scoped>
-	page{
-		height: 100% !important;
-	}
+	// page{
+	// 	height: 100% !important;
+	// }
 	.fill {
 		width: 100%;
-		min-height: 100%;
+		height: 100%;
 		display: flex;
 		flex-direction: column;
 		padding-top: 4rpx;
@@ -854,7 +854,7 @@
 		height: 36rpx !important;
 	}
 
-	::v-deep .uni-countdown__splitor.data-v-02c75d70 {
+	::v-deep .uni-countdown__splitor {
 		line-height: 36rpx !important;
 	}
 

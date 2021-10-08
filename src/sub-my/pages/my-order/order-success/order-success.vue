@@ -177,6 +177,7 @@
 				} else {
 					uni.navigateTo({
 						url: `../../../../sub-classify/pages/goods-detail/goods-detail?goodId=${item.id}`,
+						// url: `../../../../sub-classify/pages/goods-detail/goods-detail?goodId=1382`,
 					});
 				}
 			},
