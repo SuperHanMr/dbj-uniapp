@@ -192,8 +192,6 @@ export default {
   data() {
     return {
       orderNo: "",
-
-      type: "inprogress",
       orderInfo: {},
 
       systemBottom: "",
@@ -305,7 +303,7 @@ export default {
                 duration: 1000,
               });
 							uni.redirectTo({
-								url: `../../../../sub-classify/pages/pay-order/pay-success?id=${this.orderNo}`,
+								url: `../../../../sub-classify/pages/pay-order/pay-success?orderId=${this.orderNo}`,
 							});
             },
             fail(e) {
