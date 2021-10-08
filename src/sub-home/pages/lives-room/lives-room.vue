@@ -17,7 +17,8 @@
 		<view v-if="isLiveing">
 
 			<view class="state-bar">
-				<view v-for="(item,index) in roomInfo.interactionInfo" :key="item.id" class="user" @click="toPersonal(item,index)" >
+				<view v-for="(item,index) in roomInfo.interactionInfo" :key="item.id" class="user"
+					@click="toPersonal(item,index)">
 					<image class="img" :src="item.userAvatar">
 
 					</image>
@@ -182,7 +183,7 @@
 		getTim,
 		getSafeTim,
 		addListener,
-		cleanListeners,
+		removeListener,
 	} from "@/utils/tim.js";
 	import upload from "../../../utils/upload.js";
 	import TIM from "tim-wx-sdk";
@@ -235,10 +236,6 @@
 			this.tophight = systemInfo.statusBarHeight + "px";
 			// 获取胶囊按钮的位置
 			const menuButtonInfo = uni.getMenuButtonBoundingClientRect();
-			// this.backTop = menuButtonInfo.top + 'px';
-			// this.backHeight = menuButtonInfo.height + 'px';
-			console.log("**********", this.backHeight);
-			// 导航栏高度 = 状态栏到胶囊的间距（ 胶囊距上距离 - 状态栏高度 ）*2  +  胶囊高度
 			this.navBarHeight =
 				menuButtonInfo.top +
 				(menuButtonInfo.top - systemInfo.statusBarHeight) +
@@ -286,12 +283,15 @@
 		},
 		onUnload() {
 			clearInterval(this.timer);
+			removeListener("MESSAGE_RECEIVED", (e) => {
+				this.messageRecived(e)
+			});
 		},
 		methods: {
-			toPersonal(item,index){
-				if(index==0){
+			toPersonal(item, index) {
+				if (index == 0) {
 					uni.navigateTo({
-						url:`../../../sub-decorate/pages/person-page?personId=${item.userId}`
+						url: `../../../sub-decorate/pages/person-page?personId=${item.userId}`
 					})
 				}
 			},
@@ -868,7 +868,7 @@
 	.content {
 		width: 100vw;
 		height: 100vh;
-		background: url("http://dbj.dragonn.top/static/mp/dabanjia/images/home/live_bg_people_full.png");
+		background: url("http://dbj.dragonn.top/static/mp/dabanjia/images/home/live_bg.png");
 		background-size: 100% 100%;
 		background-repeat: no-repeat;
 		display: flex;
