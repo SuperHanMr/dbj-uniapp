@@ -166,14 +166,10 @@
 					</view>
 					<view class="text-btn" @click="showDownload=false">
 						知道了
-
 					</view>
 				</view>
-
 			</view>
 		</view>
-
-
 		<message-send-box :group-id="groupId" @add-message="handleAddMessage"></message-send-box>
 	</view>
 </template>
