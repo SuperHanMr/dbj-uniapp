@@ -9,7 +9,7 @@ export function designList(params) {
 }
 //获取我的房屋列表
 export function queryEstates(params) {
-	return request.get("/customer/app/estate/queryEstates", params)
+	return request.get("/customer/app/estate/queryEstates", {params})
 }
 
 //添加房屋
