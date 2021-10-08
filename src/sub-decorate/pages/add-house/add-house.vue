@@ -50,9 +50,12 @@
 				</view>
 				<view class="form-item">
 					<label class="item-label">户型</label>
-					<input type="text" placeholder-class="placeholder" class="uni-input" disabled v-model="houseType"
-						placeholder="请选择房屋户型" @click="openList" />
-					<image src="../../../static/images/ic_more_black.svg" class="shopIcon"></image>
+          
+            <input type="text" placeholder-class="placeholder" class="uni-input" disabled v-model="houseType"
+            	placeholder="请选择房屋户型"  @click="openList"/>
+            <image src="../../../static/images/ic_more_black.svg" class="shopIcon"></image>
+          
+					
 				</view>
 				<view class="form-item">
 					<label class="item-label">房屋面积</label>
@@ -476,6 +479,7 @@
 				padding: 0 16rpx;
 				font-size: 28rpx;
 				color: #ccc;
+        width: 70%;
 			}
 		}
 
@@ -542,7 +546,7 @@
 			vertical-align: top;
 			color: #111;
 			font-size: 28rpx;
-			// width: 70%;
+			width: 70%;
 		}
 
 		.placeholder {

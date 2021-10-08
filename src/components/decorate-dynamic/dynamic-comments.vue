@@ -8,7 +8,7 @@
         <view class="topArea">
           <view class="mainTit">评论</view>
           <image
-            @click="showComments=false;inputValue = ''"
+            @click="close"
             class="close"
             src="../../static/ic_closed_black@2x.png"
           ></image>
@@ -208,6 +208,11 @@
       }
     },
     methods:{
+      close(){
+        this.showComments=false;
+        this.inputValue = ''
+        // this.
+      },
       inputFocus() {
         this.isInputFocus = true;
       },
