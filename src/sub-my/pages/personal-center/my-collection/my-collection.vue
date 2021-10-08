@@ -19,13 +19,10 @@
 
 		<view class="line" />
 
-		<swiper class="swiper" :current="currentIndex" :duration="200"
-			@change="swiperChange"
-			:style="{paddingBottom:systemBottom +'rpx',backgroundColor:listLength > 0 ?'none':'#ffffff'}"
-		>
+		<swiper class="swiper" :current="currentIndex" :duration="200"	@change="swiperChange"	:style="{backgroundColor:listLength > 0 ?'none':'#ffffff'}">
 
 			<swiper-item :class="{emptyContainer:productList.length < 1 ? true : false}">
-				<scroll-view v-if="productList.length > 0" class="scroll-view" scroll-y="true" refresher-background="#FFF" refresher-enabled="true"
+				<scroll-view :style="{paddingBottom:systemBottom +'rpx'}"  v-if="productList.length > 0" class="scroll-view" scroll-y="true" refresher-background="#FFF" refresher-enabled="true"
 					:refresher-triggered="triggered" @refresherrefresh="onRefresh" @scrolltolower="onLoadMore">
 					<waterfall :key="itemTab.fallKey" :list="productList" @selectedItem="onSelectedItem" :allCheck="allCheck"
 						:showCheckIcon="!showMgrBtn" :isAllCheck="isAllCheck" :isActive="isActive"></waterfall>
@@ -37,7 +34,7 @@
 			</swiper-item>
 
 			<swiper-item :class="{emptyContainer:caseList.length < 1 ? true : false}">
-				<scroll-view v-if="caseList.length >0" class="scroll-view" scroll-y="true" refresher-background="#FFF" refresher-enabled="true"
+				<scroll-view :style="{paddingBottom:systemBottom +'rpx'}" v-if="caseList.length >0" class="scroll-view" scroll-y="true" refresher-background="#FFF" refresher-enabled="true"
 					:refresher-triggered="triggered" @refresherrefresh="onRefresh" @scrolltolower="onLoadMore">
 					<waterfall :key="itemTab.fallKey" :list="caseList" @selectedItem="onSelectedItem" :allCheck="allCheck"
 						:showCheckIcon="!showMgrBtn" :isAllCheck='isAllCheck' :isActive="isActive"></waterfall>
@@ -403,7 +400,6 @@
 				display: flex;
 				justify-content: flex-start;
 				align-items: center;
-
 				height: 80rpx;
 				color: #999999;
 				font-size: 30rpx;
@@ -440,23 +436,19 @@
 		}
 	}
 
-	.swiper-item {
-		height: 200rpx;
-		width: 100%;
-	}
 
 	.swiper {
 		flex: 1;
-		height: 1000rpx;
 		display: flex;
 		flex-direction: column;
 	}
-
-	.scroll-view {
-		flex: 1;
-		height: 1000rpx;
-		// height: 100%;
+	swiper-item {
+		overflow: auto;
+		// height: 200rpx;
+		// width: 100%;
 	}
+
+	
 
 	.line {
 		width: 100%;
