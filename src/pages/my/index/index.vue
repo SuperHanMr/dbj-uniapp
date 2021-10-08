@@ -175,7 +175,7 @@ export default {
       this.userInfo = getApp().globalData.userInfo;
       this.userName = this.userInfo.name;
 			queryToBePaidOrderNum().then(e=>{
-				console.log("!!!!!!!!!!!!! data=", e);
+				// console.log("!!!!!!!!!!!!! data=", e);
 				this.waitPayOrderNum = e ? e : 0
 			})
     }
