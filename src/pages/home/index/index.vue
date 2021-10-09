@@ -198,7 +198,7 @@
 			areaId() {
 				this.reloadData();
 			},
-			token() { 
+			token() {
 				this.getHomeList();
 			},
 		},
@@ -242,7 +242,7 @@
 				}
 			}, 500)
 			this.swiperAuto = true;
-      getApp().globalData.currentRoute = "/pages/home/index/index"
+			getApp().globalData.currentRoute = "/pages/home/index/index"
 		},
 		onHide() {
 			this.swiperAuto = false
@@ -252,7 +252,7 @@
 			this.page++;
 			this.getHomeGoodsList();
 		},
-		onPullDownRefresh(){
+		onPullDownRefresh() {
 			this.reloadData()
 		},
 		methods: {
@@ -290,7 +290,12 @@
 			},
 			formatCent(item) {
 				let price = String(item.product.skuPrice || '0');
-				return price.slice(price.length - 2, price.length);
+				let fixedNum = Number(price).toFixed(2)
+				if (String(fixedNum).split('.').length>1) {
+					return String(fixedNum).split('.')[1]
+				} else {
+					return ''
+				}
 			},
 			onLiveClick(item) {
 				if (item.mediaType == 1) {
@@ -520,7 +525,9 @@
 			},
 			async getHomeList() {
 				if (uni.getStorageSync("userId")) {
-					let houseList = await queryEstates({isNeedRelative:false});
+					let houseList = await queryEstates({
+						isNeedRelative: false
+					});
 					let house = null;
 					let defaultHouse;
 					if (houseList && houseList.length) {
