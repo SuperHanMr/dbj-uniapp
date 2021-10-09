@@ -29,7 +29,8 @@
 				replyInputFocus: false,
 				replyBoxShow: false,
 				keyboardHeight: 0,
-				onFocus: false
+				onFocus: false,
+				preKeyboardHeight: 0
 			};
 		},
 		computed: {
@@ -63,14 +64,14 @@
 			},
 			handleBoxClick(e) {},
 			handleKeyboardShow(e) {
-				console.log('CCCCCSSSSSSAAAAAAa');
 				const {
 					height
 				} = e.detail || {};
 				this.keyboardHeight = height || 0;
-				if (height > 0) {} else if (this.onFocus) {
+				if (height > 0) {} else if (this.preKeyboardHeight > 0&&this.onFocus) {
 					this.hideReplyBox();
 				}
+				this.preKeyboardHeight = height|| 0;
 			},
 			sendTextMessage() {
 				const message = getTim().createTextMessage({

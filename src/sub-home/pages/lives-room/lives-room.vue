@@ -14,7 +14,7 @@
 		<!-- 占位 -->
 		<view style="height: 10rpx;">
 		</view>
-		<view v-if="isLiveing">
+		<view class="liveing" v-if="isLiveing">
 
 			<view class="state-bar">
 				<view v-for="(item,index) in roomInfo.interactionInfo" :key="item.id">
@@ -68,7 +68,7 @@
 							</view>
 
 							<view
-								v-if="item.type=='TIMCustomElem'&&item.formatData&&item.formatData.type=='group_product'"
+								v-if="item.type=='TIMCustomElem'&&item.formatData&&(item.formatData.type=='group_product'||item.formatData.type=='img_message')"
 								class="chat-item" @click="toGoodsDetail(item.formatData.params)">
 								<view class="avater">
 									<image class="img" :src="item.avatar">
@@ -78,7 +78,10 @@
 									src="http://dbj.dragonn.top/static/mp/dabanjia/images/home/anchor.png"></image>
 
 								<text class="name">{{item.nick}} </text>
-								<view class="product">
+								<image v-if="item.formatData.type=='img_message'" class="img"
+									:src="item.formatData.fileUrl" mode="aspectFit"
+									@click="previewImg(item.formatData.fileUrl)"> </image>
+								<view v-if="item.formatData.type=='group_product'" class="product">
 									<view class="product-name">
 										{{item.formatData.params.spuName}}
 									</view>
@@ -94,7 +97,6 @@
 												<text class="big"> {{ foramtPrice(item.formatData.params.price)}}</text>
 												<text class="small">
 													.{{ formatCent(item.formatData.params.price)}}</text>
-
 											</view>
 										</view>
 									</view>
@@ -392,12 +394,15 @@
 			},
 			messageRecived(event) {
 				let messageList = event.data || [];
+						console.log('????????????');
+						console.log(messageList)
 				let systemMessageList = messageList.filter(
 					(msg) => msg.to === ('group' + this.roomId)
 				);
 				if (systemMessageList.length) {
 					systemMessageList.forEach(e => {
 						if (e.type == 'TIMCustomElem' && e.payload && e.payload.data) {
+					
 							e.formatData = JSON.parse(e.payload.data);
 						}
 					})
@@ -442,6 +447,10 @@
 			},
 			handleAddMessage(message) {
 				console.log("add sadfsadfsd", message);
+				if (message.type == 'TIMCustomElem' && message.payload && message.payload.data) {
+									
+					message.formatData = JSON.parse(message.payload.data);
+				}
 				this.list.push(message);
 			},
 			handleChooseImage() {
@@ -963,5 +972,11 @@
 	.player {
 		flex: 1;
 		width: 100vw;
+	}
+
+	.liveing {
+		flex: 1;
+		display: flex;
+		flex-direction: column;
 	}
 </style>
