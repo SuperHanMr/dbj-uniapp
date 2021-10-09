@@ -1069,7 +1069,7 @@
 		height: 36rpx;
 		border-radius: 50%;
 		background: #ffffff;
-		border: 1rpx solid #e5e5e5;
+		border: 1rpx solid #CBCCCC;
 	}
 	.goodsItem .checked{
 		width: 36rpx;
