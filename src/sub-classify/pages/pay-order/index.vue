@@ -81,14 +81,14 @@
         </view>
         <view>
           <view class="question-box">
-            运费
+            总运费
             <text class="question-icon" @click="readExpenses(1)"></text>
           </view>
           <text>¥{{orderInfo.totalDeliveryFee}}</text>
         </view>
         <view v-if="orderInfo.totalHandlingFee">
           <view class="question-box">
-            搬运费
+            总搬运费
             <text class="question-icon" @click="readExpenses(2)"></text>
           </view>
           <text>¥{{orderInfo.totalHandlingFee}}</text>
@@ -106,7 +106,7 @@
         </view>
       </view>
       <view class="pledge" v-if="orderInfo.totalDeposit">
-        <text>押金</text>
+        <text>总押金</text>
         <text>¥{{orderInfo.totalDeposit}}</text>
       </view>
       <view class="pay-way">
