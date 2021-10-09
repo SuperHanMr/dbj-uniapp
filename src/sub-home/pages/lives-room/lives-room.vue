@@ -57,7 +57,7 @@
 								<text class="name">{{item.nick}} :</text>
 								<text v-if="item.type=='TIMTextElem'" class="text-info">{{item.payload.text}}</text>
 								<image class="img" v-if="item.type=='TIMImageElem'"
-									:src="item.payload.imageInfoArray[0].imageUrl" mode=""
+									:src="item.payload.imageInfoArray[0].imageUrl" mode="aspectFit"
 									@click="previewImg(item.payload.imageInfoArray[0].imageUrl)"> </image>
 							</view>
 
@@ -74,6 +74,9 @@
 									<image class="img" :src="item.avatar">
 									</image>
 								</view>
+								<image class="anchor" v-if="item.from.startsWith('anchor')"
+									src="http://dbj.dragonn.top/static/mp/dabanjia/images/home/anchor.png"></image>
+								
 								<text class="name">{{item.nick}} </text>
 								<view class="product">
 									<view class="product-name">
@@ -231,7 +234,7 @@
 				return "group" + this.roomId;
 			},
 			totoalLick() {
-				return this.userLikeTotal || 0 + this.likeCount
+				return (this.userLikeTotal || 0) + this.likeCount
 			}
 		},
 		onHide() {
@@ -826,8 +829,8 @@
 
 				.img {
 					display: inline-block;
-					width: 200rpx;
-					height: 200rpx;
+					width: 128rpx;
+					height: 128rpx;
 				}
 
 				.anchor {

@@ -519,7 +519,7 @@
 			},
 			async getHomeList() {
 				if (uni.getStorageSync("userId")) {
-					let houseList = await queryEstates();
+					let houseList = await queryEstates({isNeedRelative:false});
 					let house = null;
 					let defaultHouse;
 					if (houseList && houseList.length) {

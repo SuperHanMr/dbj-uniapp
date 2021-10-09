@@ -6,12 +6,12 @@
 					
 					<view class="sku-goods-info">
 						<view class="goodsDesc">
-							<text class="goodsType">{{productType===1?"服务":"物品"}}</text>
+							<text class="goodsType">{{productType===1?"物品":"服务"}}</text>
 							{{spuName}}
 						</view>
 						<view class="money">
 							<text class="symbol fs-26">￥</text>
-							<text class="amount fs-38">{{selectSkuInfo[cbPrice]}}/{{selectSkuInfo[cbUnit]}}</text>
+							<text class="amount fs-38">{{selectSkuInfo[cbPrice]/100}}/{{selectSkuInfo[cbUnit]}}</text>
 						</view>
 						<!-- <view class="fs-24">
 							已选："{{selectSkuInfo[cbValue]}}"
@@ -143,6 +143,7 @@
 				this.selectedIndex = this.defaultSelectIndex
 				this.selectSkuInfo = this.combinations[this.selectedIndex]
 				this.skuId = this.selectSkuInfo.id
+				
 				let arr = []
 				this.specifications.forEach(item => {
 					let Ids = []
@@ -153,19 +154,32 @@
 					})
 					arr.push(Ids)
 				})
-				let temp = [];
-				let doExchange = (arr, index) => {
-				  for (var i = 0; i<arr[index].length; i++) {
-				    temp[index] = arr[index][i];
-				    if (index != arr.length - 1) {
-				      doExchange(arr, index + 1)
-				    } else {
-				      this.handleIds.push(temp.join(','))
-				    }  
-				  }  
+				this.handleIds = arr.reduce((prev, cur) => {
+					const temp = []
+				  prev.forEach(val => {
+				    cur.forEach(item => {
+				      temp.push(`${val},${item}`)
+				    })
+				  })
+				  return temp
+				})    
+				this.handleIds = this.handleIds.map(item => {
+					if(typeof item === 'string'){
+						return item.split(',').sort().toString()
+					}else{
+						return item.toString()
+					}
+				})
+				let selectIds = this.selectSkuInfo.propValueIds
+				
+				console.log(this.handleIds,selectIds)
+				if(this.handleIds.indexOf(selectIds) === -1) {
+					uni.showToast({
+						title:"默认规格值不存在",
+						icon:"none"
+					})
+					return
 				}
-				doExchange(arr, 0);
-				console.log(this.specifications,this.defaultSpecIds,this.handleIds)
 				this.mySpecifications = JSON.parse(JSON.stringify(this.specifications))
 				this.mySpecifications.forEach((item,index) => {
 					//当前规格组合值
@@ -174,13 +188,8 @@
 						return ele.id.toString()
 					})
 					const sIndex = Ids.indexOf(selects[index])
-					if(sIndex === -1) {
-						uni.showToast({
-							title:"默认规格值不存在",
-							icon:"none"
-						})
-						return
-					}
+					if(sIndex === -1)return					
+					
 					//每类规格对应其列表的下标 并记录在属性sidx在mySpecifications的子对象中
 					this.$set(item,'sidx',sIndex)
 				})
@@ -188,27 +197,15 @@
 			selectSkuCli(speId,speIdx,id,index) {
 				this.mySpecifications[speIdx].sidx = index
 				//找到用户选择的valueIds
-				let checkedId = 0
-				let targetId = 0
+				let checkedIds = []
+				checkedIds.push(id)
 				this.defaultSpec.forEach(item => {
 					if(item.id !== speId){
-						checkedId = item.value.id
-					}
-					if(item.id === speId){
-						targetId = item.value.id
+						checkedIds.push( item.value.id)
 					}
 				})
-				let Ids = []
-				let defaultIds = this.defaultSpecIds.split(',')
-				defaultIds.map(item => {
-					if(item === checkedId){
-						Ids.push(item)
-					}
-				})
-				Ids.push(id)
-				let selectIds = Ids.join(',')
-				console.log(selectIds)
-				this.selectedIndex = this.combinations.findIndex(item => item[this.cbValue] === selectIds)
+				let selectedIds = checkedIds.sort().toString()
+				this.selectedIndex = this.combinations.findIndex(item => item.valueIds.sort().toString() === selectedIds)
 				this.selectSkuInfo = this.combinations[this.selectedIndex]
 			},
 			closeSkuBox() {
