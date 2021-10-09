@@ -60,7 +60,8 @@
             {{ waitPayOrderNum }}
           </view>
           <image :src="item.image" mode="" />
-          {{item.value}}
+					<text style="color:#333333">{{item.value}}</text>
+          
         </view>
       </view>
     </view>
@@ -81,8 +82,8 @@
       </view>
     </view>
 
-    <view @click="handlerToSetUp">真实案例</view>
-    <view @click="handlerToPerson">个人主页</view>
+   <!-- <view @click="handlerToSetUp">真实案例</view>
+    <view @click="handlerToPerson">个人主页</view> -->
 
   </view>
 </template>
@@ -289,7 +290,7 @@
     }
 
     .my-header {
-      margin-top: 190rpx;
+      margin-top: 180rpx;
       display: flex;
       flex-flow: row nowrap;
       justify-content: space-between;
@@ -361,7 +362,7 @@
 
     .my-order {
       height: 300rpx;
-      margin: 68rpx 22rpx 24rpx 24rpx;
+      margin: 68rpx 22rpx 16rpx 24rpx;
       display: flex;
       background-color: #fff;
       flex-flow: column nowrap;
@@ -373,10 +374,9 @@
         justify-content: space-between;
         align-items: center;
         padding: 32rpx;
-
         .order {
-          font-weight: bold;
-          font-size: 36rpx;
+          font-weight:bold;
+          font-size: 32rpx;
           color: #111111;
         }
 
@@ -453,7 +453,7 @@
 
       .header {
         padding: 32rpx;
-        font-size: 36rpx;
+        font-size: 32rpx;
         font-weight: 600;
       }
 

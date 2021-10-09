@@ -2,7 +2,8 @@
 	<view v-show="replyBoxShow" class="message-send-box" :style="{bottom: bottom + 'px'}" @click.stop="handleBoxClick">
 		<textarea v-model="replyContent" id="replyInput" :focus="replyInputFocus" :show-confirm-bar="false"
 			:cursor-spacing="16" :adjust-position="false" fixed auto-height class="reply-send-input"
-			placeholder-class="reply-send-input-placeholder" placeholder="说点什么..." @focus="handleKeyboardShow" />
+			placeholder-class="reply-send-input-placeholder" placeholder="说点什么..." @focus="onFocus=true"
+			@blur="onFocus=fasle" @keyboardheightchange="handleKeyboardShow" />
 		<cover-view class="btn-wrapper" @click="sendTextMessage">
 			<cover-view class="reply-send-btn" :class="{disabled: replyBtnDisabled}">发送</cover-view>
 		</cover-view>
@@ -28,6 +29,8 @@
 				replyInputFocus: false,
 				replyBoxShow: false,
 				keyboardHeight: 0,
+				onFocus: false,
+				preKeyboardHeight: 0
 			};
 		},
 		computed: {
@@ -51,9 +54,10 @@
 		methods: {
 			showReplyBox(payload) {
 				this.replyBoxShow = true;
-				this.$nextTick(() => {
+
+				setTimeout(e => {
 					this.replyInputFocus = true;
-				});
+				}, 100)
 			},
 			hideReplyBox() {
 				this.replyInputFocus = false;
@@ -65,9 +69,10 @@
 					height
 				} = e.detail || {};
 				this.keyboardHeight = height || 0;
-				if (height > 0) {} else {
+				if (height > 0) {} else if (this.preKeyboardHeight > 0 && this.onFocus) {
 					this.hideReplyBox();
 				}
+				this.preKeyboardHeight = height || 0;
 			},
 			sendTextMessage() {
 				const message = getTim().createTextMessage({

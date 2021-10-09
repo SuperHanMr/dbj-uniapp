@@ -61,7 +61,7 @@
 							</view>
 						</view>
 						<!-- 工匠 -->
-						<view  v-if="tabindex == 1" class="craftsmanAndRecommend" v-for="item2 in currentList" :key="item2.id"	>
+						<view  v-if="tabindex == 1" class="craftsmanAndRecommend" v-for="(item2,index2) in currentList" :key="item2.id"	>
 						  <view class="left">
 						    <image :src="item2.avatar" mode="" @click="goToPersonalHome(item2)" />
 						    <view class="baseInfo">
@@ -73,7 +73,7 @@
 						      </view>
 						    </view>
 						  </view>
-						  <view class="right"  @click.stop="handleCraftsman(item2)">
+						  <view class="right"  @click.stop="handleCraftsman(item2,index2)">
 						    <view class="button2" v-if="item2.isFocused">
 						      已关注
 						    </view>
@@ -83,7 +83,7 @@
 						  </view>
 						</view>
 						<!-- 优先推荐 -->
-						<view  v-if=" tabindex == 2" v-for="item3 in recommendlist" :key="item3.id"  >
+						<view  v-if=" tabindex == 2" v-for="(item3,index3) in recommendlist" :key="item3.id"  >
 							<view class="craftsmanAndRecommend" >
 								<view class="left">
 									<image :src="item3.avatar" mode="" @click="goToPersonalHome(item3)"/>
@@ -92,7 +92,7 @@
 										<view class="icon">{{item3.position}}</view>
 									</view>
 								</view>
-								<view class="right" @click.stop="handleRecommend(item3)">
+								<view class="right" @click.stop="handleRecommend(item3,index3)">
 									<view class="button4" v-if="item3.isRecommend">
 										已优先推荐
 									</view>
@@ -196,7 +196,7 @@ export default {
 				console.log("data= ",data)
 			})
 		},
-		handleCraftsman(data){
+		handleCraftsman(data,index2){
 			cancelAttention({
 				routeId:1001,
 				relationId:data.id,
@@ -208,18 +208,20 @@ export default {
 					uni.showToast({
 						title:"取消关注成功",
 						icon:"none",
-						duration:100
+						duration:1000
 					})
+					this.currentList[index2].isFocused = false
 				}else{
 					uni.showToast({
 						title:"关注成功!",
 						icon:"none",
 						duration:1000
 					})
+					this.currentList[index2].isFocused = true
 				}
-				this.craftsmanlist=[]
+				// this.craftsmanlist=[]
 				setTimeout(()=>{
-					this.craftsmanList()
+					// this.craftsmanList()
 				},1000)
 			}).catch(()=>{})
 		},
@@ -235,7 +237,7 @@ export default {
 				console.log("data= ",data)
 			})
 		},
-		handleRecommend(data){
+		handleRecommend(data,index3){
 			cancelAttention({
 				routeId:2001,
 				relationId:data.id,
@@ -247,16 +249,18 @@ export default {
 					uni.showToast({
 						title:"取消关注成功",
 						icon:"none",
-						duration:100
+						duration:1000
 					})
+					this.recommendlist[index3].isRecommend = false
 				}else{
 					uni.showToast({
 						title:"关注成功!",
 						icon:"none",
 						duration:1000
 					})
+					this.recommendlist[index3].isRecommend = true
 				}
-				this.recommendList()
+				// this.recommendList()
 			}).catch(()=>{})
 		},
 		// 去房屋的页面

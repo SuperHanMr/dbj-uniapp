@@ -126,6 +126,11 @@ const message = {
             };
             return false;
           }
+          // 如果单聊不是到人的会话，则忽略掉
+          if (!/^C2Czeus_/.test(conv.conversationID)) {
+            console.warn("非法会话，已忽略", conv);
+            return false;
+          }
           return true;
         }
         return false;
