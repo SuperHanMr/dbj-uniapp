@@ -8,7 +8,7 @@
       <imagePreview :list='imageData.measureStructImages' :imgWidth='328' :imgHeight="108*2" :lineSpace='32' :colSpace="30" :hasHeight="false"></imagePreview>
       <!-- <image v-for="item of imageData.measureStructImages" :key='item.id':src="item.fileUrl"></image> -->
     </view>
-    <view class="image-title" v-if="imageData.measureImages">
+    <view class="image-title" v-if="imageData.measureImagesDate.length>0">
       <text class="title">量房图片</text>
       <text class="time">{{imageData.measureImagesDate}}</text>
     </view>

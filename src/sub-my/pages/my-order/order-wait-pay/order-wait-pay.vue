@@ -18,15 +18,16 @@
           v-if="orderInfo.showCancelOrderTime"
         >
           <text style="margin-right: 16rpx;">剩余支付时间</text>
-          <uni-countdown
-            color="#FFFFFF"
-            background-color="#FAAB3B"
-            :showDay="false"
-            :hour="formatTime(orderInfo.remainTime)[0]"
-            :minute="formatTime(orderInfo.remainTime)[1]"
-            :second="formatTime(orderInfo.remainTime)[2]"
-						@timeup = "goToCancelDetail"
-          />
+					<count-down :start="orderInfo.remainTime" @finish="goToCancelDetail"></count-down>
+					<!-- <uni-countdown
+							color="#FFFFFF"
+							background-color="#FAAB3B"
+							:showDay="false"
+							:hour="formatTime(orderInfo.remainTime)[0]"
+							:minute="formatTime(orderInfo.remainTime)[1]"
+							:second="formatTime(orderInfo.remainTime)[2]"
+							@timeup="goToCancelDetail"
+						/> -->
         </view>
       </view>
 
@@ -136,7 +137,10 @@
       <view class="payment-method">
         <text>支付方式</text>
         <view class="method">
-          <image src="@/static/order/ic_order_wechat@2x.png" mode=""/>
+          <image
+            src="@/static/order/ic_order_wechat@2x.png"
+            mode=""
+          />
           <text>微信支付</text>
         </view>
       </view>
@@ -192,8 +196,6 @@ export default {
   data() {
     return {
       orderNo: "",
-
-      type: "inprogress",
       orderInfo: {},
 
       systemBottom: "",
@@ -246,12 +248,12 @@ export default {
         url: `../../../../sub-classify/pages/shops/shops?storeId=${item.storeId}&areaId=${this.areaId}`,
       });
     },
-		// 倒计时间触发到的时间
-		goToCancelDetail(){
-			uni.redirectTo({
-			  url: `../order-failed/order-failed?type=close&id=${this.orderNo}&from=waitPay`,
-			});
-		},
+    // 倒计时间触发到的时间
+    goToCancelDetail() {
+      uni.redirectTo({
+        url: `../order-failed/order-failed?type=close&id=${this.orderNo}&from=waitPay`,
+      });
+    },
 
     // 去申请退款页面
     toApplayForRefund() {
@@ -304,9 +306,9 @@ export default {
                 icon: "none",
                 duration: 1000,
               });
-							uni.redirectTo({
-								url: `../../../../sub-classify/pages/pay-order/pay-success?id=${this.orderNo}`,
-							});
+              uni.redirectTo({
+                url: `../../../../sub-classify/pages/pay-order/pay-success?orderId=${this.orderNo}`,
+              });
             },
             fail(e) {
               uni.showToast({
@@ -322,7 +324,7 @@ export default {
 
     formatTime(msTime) {
       let time = msTime / 1000;
-      let hour = Math.floor(time / 60 / 60) % 24;
+      let hour = Math.floor(time / 60 / 60);
       if (!hour) {
         hour = 0;
       }
@@ -331,8 +333,10 @@ export default {
         minute = 0;
       }
       let second = Math.floor(time) % 60;
+      console.log("hour=", hour, "minute=", minute, "second=", second);
       return [hour, minute, second];
     },
+		
     handlePrice(price) {
       let list = String(price).split(".");
       if (list.length == 1) {
@@ -583,15 +587,15 @@ export default {
 }
 
 //头部倒计时样式
-::v-deep .uni-countdown__number {
-  width: 36rpx !important;
-  height: 36rpx !important;
-}
+// ::v-deep .uni-countdown__number {
+//   width: 36rpx !important;
+//   height: 36rpx !important;
+// }
 
-::v-deep .uni-countdown__splitor.data-v-02c75d70 {
-  line-height: 36rpx !important;
-  color: #ffffff !important;
-}
+// ::v-deep .uni-countdown__splitor {
+//   line-height: 32rpx !important;
+//   color: #ffffff !important;
+// }
 
 // 弹框样式
 ::v-deep .uni-popup-dialog {

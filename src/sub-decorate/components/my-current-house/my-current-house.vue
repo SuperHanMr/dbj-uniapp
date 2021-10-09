@@ -5,7 +5,7 @@
 			<view class="address">{{houseData.housingEstate}}</view>
 			<view class="area">面积：{{houseData.insideArea}}m²</view>
 		</view>
-		<image class="switch-house" src="http://dbj.dragonn.top/static/mp/dabanjia/images/decorate/ic_more.svg" @click="changCurrentHouse"></image>
+		<!-- <image class="switch-house" src="http://dbj.dragonn.top/static/mp/dabanjia/images/decorate/ic_more.svg" @click="changCurrentHouse"></image> -->
 	</view>
 </template>
 

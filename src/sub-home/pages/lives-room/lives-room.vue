@@ -1,5 +1,5 @@
 <template>
-	<view class="content" catchtouchmove=“true”>
+	<view class="content" :catchtouchmove="true" @click="handleLiveRoomClick">
 		<custom-navbar opacity="1" :title="title" titleColor="#FFFFFF" bgcolor="none">
 			<template v-slot:back>
 				<view @click="toBack">
@@ -14,23 +14,28 @@
 		<!-- 占位 -->
 		<view style="height: 10rpx;">
 		</view>
-		<view v-if="isLiveing">
+		<view class="liveing" v-if="isLiveing">
 
 			<view class="state-bar">
-				<view v-for="(item,index) in roomInfo.interactionInfo" :key="item.id" class="user" @click="toPersonal(item,index)" >
-					<image class="img" :src="item.userAvatar">
+				<view v-for="(item,index) in roomInfo.interactionInfo" :key="item.id">
 
-					</image>
-					<view class="name">
-						{{item.userNickName}}
+					<view class="user" @click="toPersonal({index,item})">
+						<image class="img" :src="item.userAvatar">
+
+						</image>
+						<view class="name">
+							{{item.userNickName}}
+						</view>
+
 					</view>
-
 				</view>
 				<view class="flex1">
 
 				</view>
 				<view class="state-bar-text">
-					{{roomInfo.hotCount||''}}
+					<image class="img" src="http://dbj.dragonn.top/static/mp/dabanjia/images/home/ic_gkrs.png" mode="">
+					</image>
+					{{getHotCount(roomInfo.hotCount) }}
 				</view>
 			</view>
 			<live-player class="player" :src="livePreview" autoplay @statechange="statechange" @error="error" />
@@ -46,11 +51,13 @@
 									<image class="img" :src="item.avatar">
 									</image>
 								</view>
+								<image class="anchor" v-if="item.from.startsWith('anchor')"
+									src="http://dbj.dragonn.top/static/mp/dabanjia/images/home/anchor.png"></image>
 
 								<text class="name">{{item.nick}} :</text>
 								<text v-if="item.type=='TIMTextElem'" class="text-info">{{item.payload.text}}</text>
 								<image class="img" v-if="item.type=='TIMImageElem'"
-									:src="item.payload.imageInfoArray[0].imageUrl" mode=""
+									:src="item.payload.imageInfoArray[0].imageUrl" mode="aspectFit"
 									@click="previewImg(item.payload.imageInfoArray[0].imageUrl)"> </image>
 							</view>
 
@@ -61,14 +68,20 @@
 							</view>
 
 							<view
-								v-if="item.type=='TIMCustomElem'&&item.formatData&&item.formatData.type=='group_product'"
+								v-if="item.type=='TIMCustomElem'&&item.formatData&&(item.formatData.type=='group_product'||item.formatData.type=='img_message')"
 								class="chat-item" @click="toGoodsDetail(item.formatData.params)">
 								<view class="avater">
 									<image class="img" :src="item.avatar">
 									</image>
 								</view>
+								<image class="anchor" v-if="item.from.startsWith('anchor')"
+									src="http://dbj.dragonn.top/static/mp/dabanjia/images/home/anchor.png"></image>
+
 								<text class="name">{{item.nick}} </text>
-								<view class="product">
+								<image v-if="item.formatData.type=='img_message'" class="img"
+									:src="item.formatData.fileUrl" mode="aspectFit"
+									@click="previewImg(item.formatData.fileUrl)"> </image>
+								<view v-if="item.formatData.type=='group_product'" class="product">
 									<view class="product-name">
 										{{item.formatData.params.spuName}}
 									</view>
@@ -80,7 +93,10 @@
 												{{item.formatData.params.skuName}}
 											</view>
 											<view class="price-info">
-												{{item.formatData.params.price/100}}
+												<text class="nomal">¥</text>
+												<text class="big"> {{ foramtPrice(item.formatData.params.price)}}</text>
+												<text class="small">
+													.{{ formatCent(item.formatData.params.price)}}</text>
 											</view>
 										</view>
 									</view>
@@ -93,7 +109,9 @@
 				<view class="bottom-send">
 					<view class="input-text" @click.stop="handleShowSendBox">
 						说点什么...
-						<view class="iconfont icon-face" @click.stop="handleChooseImage"></view>
+						<image class="iconfont"
+							src="http://dbj.dragonn.top/static/mp/dabanjia/images/home/ic_live_upload.png"
+							@click.stop="handleChooseImage"></image>
 					</view>
 					<view class="macphone" @click="showDownload=true">
 						<image class="icon_macphone"
@@ -165,14 +183,10 @@
 					</view>
 					<view class="text-btn" @click="showDownload=false">
 						知道了
-
 					</view>
 				</view>
-
 			</view>
 		</view>
-
-
 		<message-send-box :group-id="groupId" @add-message="handleAddMessage"></message-send-box>
 	</view>
 </template>
@@ -182,7 +196,7 @@
 		getTim,
 		getSafeTim,
 		addListener,
-		cleanListeners,
+		removeListener,
 	} from "@/utils/tim.js";
 	import upload from "../../../utils/upload.js";
 	import TIM from "tim-wx-sdk";
@@ -191,6 +205,7 @@
 		publicRoom,
 		insertAndGetLikeNum
 	} from '../../../api/home.js'
+	import urlParse from 'url-parse';
 	export default {
 		components: {
 			MessageSendBox,
@@ -222,23 +237,34 @@
 				return "group" + this.roomId;
 			},
 			totoalLick() {
-				return this.userLikeTotal + this.likeCount
+				return (this.userLikeTotal || 0) + this.likeCount
 			}
+		},
+		onHide() {
+			clearInterval(this.timer);
+			removeListener("MESSAGE_RECEIVED", (e) => {
+				this.messageRecived(e)
+			});
 		},
 		onLoad(e) {
 			if (e && e.roomId) {
 				this.roomId = e.roomId;
 			}
-			// this.getRoomInfo();
+			if (e.q) {
+				//如果是通过二维码分享进来的兼容
+				const qrCodeUrl = decodeURIComponent(e.q);
+				const urlResult = urlParse(qrCodeUrl, true)
+
+				const query = urlResult.query;
+				if (query.roomId) {
+					this.roomId = query.roomId
+				}
+			}
 			const systemInfo = uni.getSystemInfoSync();
 			//状态栏高度
 			this.tophight = systemInfo.statusBarHeight + "px";
 			// 获取胶囊按钮的位置
 			const menuButtonInfo = uni.getMenuButtonBoundingClientRect();
-			// this.backTop = menuButtonInfo.top + 'px';
-			// this.backHeight = menuButtonInfo.height + 'px';
-			console.log("**********", this.backHeight);
-			// 导航栏高度 = 状态栏到胶囊的间距（ 胶囊距上距离 - 状态栏高度 ）*2  +  胶囊高度
 			this.navBarHeight =
 				menuButtonInfo.top +
 				(menuButtonInfo.top - systemInfo.statusBarHeight) +
@@ -286,12 +312,37 @@
 		},
 		onUnload() {
 			clearInterval(this.timer);
+			removeListener("MESSAGE_RECEIVED", (e) => {
+				this.messageRecived(e)
+			});
 		},
 		methods: {
-			toPersonal(item,index){
-				if(index==0){
+			getHotCount(count) {
+				if (!count) {
+					return 0
+				} else {
+					if (count < 10000) {
+						return count
+					} else {
+						return Number(count / 10000).toFixed(2) + 'w'
+					}
+				}
+			},
+			foramtPrice(item) {
+				let price = String(item || '0');
+				return price.slice(0, price.length - 2) || "0";
+			},
+			formatCent(item) {
+				let price = String(item || '0');
+				return price.slice(price.length - 2, price.length);
+			},
+			toPersonal({
+				index,
+				item
+			}) {
+				if (index == 0) {
 					uni.navigateTo({
-						url:`../../../sub-decorate/pages/person-page?personId=${item.userId}`
+						url: '../../../sub-decorate/pages/person-page/person-page?personId=' + item.userId
 					})
 				}
 			},
@@ -328,8 +379,6 @@
 						this.title = e.title
 					}
 					this.roomInfo = e
-					// if (this.isLogin) {
-					console.log(this.isLogin)
 					insertAndGetLikeNum({
 						roomId: this.roomId,
 						likeNum: this.likeCount,
@@ -338,7 +387,6 @@
 						this.userLikeTotal = e.liveLikeTotal;
 						this.likeCount = 0
 					})
-					// }
 				}).catch(e => {
 					this.isLiveing = false
 				})
@@ -346,12 +394,15 @@
 			},
 			messageRecived(event) {
 				let messageList = event.data || [];
+						console.log('????????????');
+						console.log(messageList)
 				let systemMessageList = messageList.filter(
 					(msg) => msg.to === ('group' + this.roomId)
 				);
 				if (systemMessageList.length) {
 					systemMessageList.forEach(e => {
 						if (e.type == 'TIMCustomElem' && e.payload && e.payload.data) {
+					
 							e.formatData = JSON.parse(e.payload.data);
 						}
 					})
@@ -387,10 +438,7 @@
 			statechange(e) {
 				console.log("live-player code:", e.detail.code);
 			},
-			error(e) {
-				console.log("~~~~~~~~~");
-				console.log(e);
-			},
+			error(e) {},
 			handleShowSendBox() {
 				uni.$emit("show-live-send-box");
 			},
@@ -399,6 +447,10 @@
 			},
 			handleAddMessage(message) {
 				console.log("add sadfsadfsd", message);
+				if (message.type == 'TIMCustomElem' && message.payload && message.payload.data) {
+									
+					message.formatData = JSON.parse(message.payload.data);
+				}
 				this.list.push(message);
 			},
 			handleChooseImage() {
@@ -410,7 +462,6 @@
 							tempFilePaths,
 							tempFiles
 						} = res;
-						console.log("choose image1:", res);
 						tempFiles.forEach(self.sendImageMessage);
 					},
 				});
@@ -427,7 +478,6 @@
 						const {
 							width = 0, height = 0
 						} = info;
-						console.log("file path:", filePath, "file info:", info, 111111);
 						let fileName = filePath.split("/").pop();
 						let data = {
 							type: "img_message",
@@ -479,44 +529,62 @@
 
 <style lang="scss">
 	.product {
-
-		background-color: #FFF;
+		margin-top: 18rpx;
+		width: 448rpx;
+		background: #FFFFFF;
 		border-radius: 12rpx;
-		width: 444rpx;
 		display: flex;
 		flex-direction: column;
 		padding: 12rpx;
 
 
 		.product-name {
-
-			font-size: 24rpx;
-			color: black;
-			margin-bottom: 12rpx;
+			font-size: 22rpx;
+			color: #13BBBB;
+			line-height: 52rpx;
 		}
 
 		.product-info {
 			display: flex;
 
 			.product-info-img {
-				width: 100rpx;
-				height: 100rpx;
+				width: 96rpx;
+				height: 96rpx;
+				border-radius: 8rpx;
+				border: 1rpx solid #F5F5F5;
 			}
 
 			.product-info-name {
 				color: black;
 				margin-left: 12rpx;
+				display: flex;
+				flex-direction: column;
+				justify-content: space-between;
 
 				.title {
 					line-height: 30rpx;
 					height: 30rpx;
+					color: #111111;
 					font-size: 24rpx;
+					overflow: hidden;
+					text-overflow: ellipsis;
+					display: -webkit-box;
+					-webkit-line-clamp: 1;
+					-webkit-box-orient: vertical;
 				}
 
 				.price-info {
 					line-height: 30rpx;
 					height: 30rpx;
-					font-size: 24rpx;
+					color: #F92A2A;
+
+					.nomal {
+						font-size: 20rpx;
+					}
+
+					.big {
+						font-size: 32rpx;
+					}
 				}
 			}
 
@@ -693,15 +761,17 @@
 				width: 302rpx;
 				height: 72rpx;
 				opacity: 0.24;
-				background: #fff;
+				background: #000000;
 				border-radius: 28rpx;
 				display: flex;
 				align-items: center;
 				justify-content: space-between;
 				padding: 0 12px;
+				color: #FFF;
 
 				.iconfont {
-					font-size: 18px;
+					width: 32rpx;
+					height: 30rpx;
 				}
 			}
 
@@ -718,7 +788,7 @@
 
 				.like-count {
 					position: absolute;
-					right: -22rpx;
+					right: 0;
 					top: -14rpx;
 					width: 44rpx;
 					height: 28rpx;
@@ -779,8 +849,23 @@
 
 				.img {
 					display: inline-block;
-					width: 200rpx;
-					height: 200rpx;
+					width: 128rpx;
+					height: 128rpx;
+				}
+
+				.anchor {
+					width: 52rpx;
+					height: 28rpx;
+					display: inline-block;
+					vertical-align: middle;
+					margin-right: 8rpx;
+				}
+
+				.anchor:after {
+					display: inline-block;
+					vertical-align: middle;
+					content: '';
+					height: 100%;
 				}
 
 				.avater {
@@ -857,18 +942,27 @@
 		}
 
 		.state-bar-text {
+			display: flex;
+			justify-content: center;
+			align-items: center;
 			font-size: 28rpx;
 			font-weight: 400;
 			color: #ffffff;
 			line-height: 24rpx;
 			margin-right: 24rpx;
+
+			.img {
+				margin-right: 8rpx;
+				width: 28rpx;
+				height: 28rpx;
+			}
 		}
 	}
 
 	.content {
 		width: 100vw;
 		height: 100vh;
-		background: url("http://dbj.dragonn.top/static/mp/dabanjia/images/home/live_bg_people_full.png");
+		background: url("http://dbj.dragonn.top/static/mp/dabanjia/images/home/live_bg.png");
 		background-size: 100% 100%;
 		background-repeat: no-repeat;
 		display: flex;
@@ -878,5 +972,11 @@
 	.player {
 		flex: 1;
 		width: 100vw;
+	}
+
+	.liveing {
+		flex: 1;
+		display: flex;
+		flex-direction: column;
 	}
 </style>

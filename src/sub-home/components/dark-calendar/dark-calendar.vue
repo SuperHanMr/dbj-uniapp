@@ -79,7 +79,7 @@
 	      isShrink: true,
 				checkToday: true,
 				choose: '',
-				choice: {}//点击选中的日期
+				choice: {}//点击日期选中的item
 	    }
 	  },
 	  created() {

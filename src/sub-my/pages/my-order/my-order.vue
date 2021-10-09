@@ -16,12 +16,11 @@
 		<swiper 
 			class="swiper" 
 			:class="{empty:orderListLength<=0}" 
-			:style="{paddingBottom:systemBottom}"
 			:current="currentIndex" 
 			:duration="200" 
 			@change="swiperChange"
 		>
-			<swiper-item v-for="(item,tabindex) in tabList" :key="item">
+			<swiper-item v-for="item in tabList" :key="item">
 				<scroll-view 
 					class="scroll-view" 
 					:enable-back-to-top="true" 
@@ -33,7 +32,7 @@
 					refresher-enabled="true" 
 					@scrolltolower="onLoadMore"
 				>
-					<view v-if=" orderList.length > 0 " class="swiper-item">
+					<view v-if=" orderList.length > 0 " :style="{paddingBottom:systemBottom}" class="swiper-item">
 						<view class="order-container" v-for="item in orderList" :key="item.id">
 							<view class="header">
 								<view class="store-name" @click="gotoShop(item)">
@@ -47,7 +46,7 @@
 									<!-- {{item.orderStatusName}} -->
 									{{
 										item.orderStatus == 1
-										?(item.shipmentStatus == 0?"待发货":item.shipmentStatus == 1 ? "已发货" :"已收货")//发货状态（1待发货，2已发货）
+										?(item.type==2 ? "进行中" : (item.shipmentStatus == 0?"待发货":item.shipmentStatus == 1 ? "已发货" :"已收货"))//发货状态（1待发货，2已发货）
 										:item.orderStatusName
 									}}
 								</view>
@@ -133,10 +132,17 @@
 
 									<view class="time-text">
 										<text class="remainPayTime">剩余支付时间</text>
-										<uni-countdown color="#333333" background-color="#E4E6E6" :showDay="false"
+										<count-down 
+											:start="item.remainTime"
+											:timeBackground="'#E4E6E6'"
+											:timeColor="'#333333'"
+											:separatorColor="'#333333'"
+											@finish="onRefresh(e)"
+										></count-down>
+										<!-- <uni-countdown color="#333333" background-color="#E4E6E6" :showDay="false"
 											:hour="formatTime(item.remainTime)[0]"
 											:minute="formatTime(item.remainTime)[1]"
-											:second="formatTime(item.remainTime)[2]" />
+											:second="formatTime(item.remainTime)[2]" /> -->
 									</view>
 
 								</view>
@@ -218,7 +224,9 @@
 
 		mounted(e) {
 			const menuButtonInfo = uni.getMenuButtonBoundingClientRect();
+			console.log("menuButtonInfo=",menuButtonInfo)
 			this.systemBottom = menuButtonInfo.bottom + "rpx";
+			console.log("this.systemBottom=",this.systemBottom)
 		},
 
 		onLoad(e) {
@@ -513,12 +521,12 @@
 </script>
 
 <style lang="scss" scoped>
-	page{
-		height: 100% !important;
-	}
+	// page{
+	// 	height: 100% !important;
+	// }
 	.fill {
 		width: 100%;
-		min-height: 100%;
+		height: 100%;
 		display: flex;
 		flex-direction: column;
 		padding-top: 4rpx;
@@ -785,12 +793,18 @@
 	.line {
 		height: 1rpx solid #f2f2f2;
 	}
+	
 
 	.swiper {
 		flex: 1;
 		display: flex;
 		flex-direction: column;
 		background: #f2f2f2;
+		// .swiper-item{
+		// 	.order-container:nth-last-child(1){
+		// 		margin-bottom: 16rpx;
+		// 	}
+		// }
 
 		swiper-item {
 			height: 100%;
@@ -854,7 +868,7 @@
 		height: 36rpx !important;
 	}
 
-	::v-deep .uni-countdown__splitor.data-v-02c75d70 {
+	::v-deep .uni-countdown__splitor {
 		line-height: 36rpx !important;
 	}
 

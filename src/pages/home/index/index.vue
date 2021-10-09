@@ -198,7 +198,7 @@
 			areaId() {
 				this.reloadData();
 			},
-			token() { 
+			token() {
 				this.getHomeList();
 			},
 		},
@@ -242,6 +242,7 @@
 				}
 			}, 500)
 			this.swiperAuto = true;
+			getApp().globalData.currentRoute = "/pages/home/index/index"
 		},
 		onHide() {
 			this.swiperAuto = false
@@ -251,7 +252,7 @@
 			this.page++;
 			this.getHomeGoodsList();
 		},
-		onPullDownRefresh(){
+		onPullDownRefresh() {
 			this.reloadData()
 		},
 		methods: {
@@ -289,13 +290,18 @@
 			},
 			formatCent(item) {
 				let price = String(item.product.skuPrice || '0');
-				return price.slice(price.length - 2, price.length);
+				let fixedNum = Number(price).toFixed(2)
+				if (String(fixedNum).split('.').length>1) {
+					return String(fixedNum).split('.')[1]
+				} else {
+					return ''
+				}
 			},
 			onLiveClick(item) {
 				if (item.mediaType == 1) {
 					//直播
 					uni.navigateTo({
-						url: `../../../sub-home/pages/lives-room/lives-room?livePreview=${item.roomLiveMediaVO.livePreview}&roomId=${item.roomLiveMediaVO.roomId}`
+						url: `../../../sub-home/pages/lives-room/lives-room?roomId=${item.roomLiveMediaVO.roomId}`
 					})
 				} else if (item.mediaType == 2) {
 					console.log(item);
@@ -392,7 +398,7 @@
 			},
 			toCity() {
 				uni.navigateTo({
-					url: "/sub-my/pages/my-house/my-house?fromHome=1",
+					url: "/sub-my/pages/my-house/my-house?fromHome=1&&isEdit=0",
 				});
 			},
 			getAuthorizeInfo() {
@@ -519,7 +525,9 @@
 			},
 			async getHomeList() {
 				if (uni.getStorageSync("userId")) {
-					let houseList = await queryEstates();
+					let houseList = await queryEstates({
+						isNeedRelative: false
+					});
 					let house = null;
 					let defaultHouse;
 					if (houseList && houseList.length) {

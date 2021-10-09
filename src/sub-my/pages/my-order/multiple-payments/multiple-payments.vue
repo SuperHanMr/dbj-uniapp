@@ -3,14 +3,15 @@
 		<view class="remainTime-container" v-if="showCancelOrderBtn">
 			<image  src="../../../static/ic_time@2x.png" mode=""></image>
 			<text>剩余支付时间</text>
-			<uni-countdown 
+			<count-down :start="remainTime"></count-down>
+			<!-- <uni-countdown 
 				color="#FF3347" 
 				background-color="#FFEFF1" 
 				:showDay="false"   
 				:hour="formatTime(remainTime)[0]" 
 				:minute="formatTime(remainTime)[1]" 
 				:second="formatTime(remainTime)[2]"
-			/>
+			/> -->
 		</view>
 		
 		

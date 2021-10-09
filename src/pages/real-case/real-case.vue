@@ -79,6 +79,22 @@
 				selectStatus: 0,
 			};
 		},
+		onLoad() {
+			uni.$on('isCollect',(data)=>{
+				let list = [];
+				if (this.tag == '0') {
+					list = this.leftList;
+				} else {
+					list = this.rightList;
+				}
+			  if(data){
+			    list[this.activeIndex].collectionCount += 1
+			  }else{
+			    list[this.activeIndex].collectionCount -=1
+			  }
+			  list[this.activeIndex].isCollection = !list[this.activeIndex].isCollection;
+			})
+		},
 		onReady() {
 			this.getList();
 		},
@@ -128,6 +144,7 @@
 				console.log(list, index, isDecorate, ">>>>>>>>>>>")
 				// parentType 1 全景图 0  短视频  2 图文
 				if (isDecorate == 0) {
+					this.activeIndex = index;
 					const listUrl = list[index].videoUrl
 					uni.navigateTo({
 						url: `/pages/real-case/real-case-webview/real-case-webview?id=${list[index].id}`
@@ -151,13 +168,14 @@
 			},
 			// 收藏事件
 			onCollection(index, tag) {
-				const item = this.leftList[index];
 				let list = [];
 				if (tag == 0) {
 					list = this.leftList;
 				} else {
 					list = this.rightList;
 				}
+				const item = list[index];
+				console.log(item, '>>>>>>>>>>>>>>>')
 				getCollection({
 					routeId: 5001, // 固定内容
 					subBizType: item.parentType, // 内容下的子项   视频 VR  图片
@@ -165,8 +183,16 @@
 					authorId: item.zeusId, // 作者ID
 				}).then((res) => {
 					if (list[index].isCollection == false) {
+						uni.showToast({
+							title:'收藏成功！',
+							icon: "none"
+						})
 						list[index].collectionCount += 1;
 					} else {
+						uni.showToast({
+							title:'取消成功！',
+							icon: "none"
+						})
 						list[index].collectionCount -= 1;
 					}
 					list[index].isCollection = !list[index].isCollection;
@@ -188,7 +214,11 @@
 						}
 					})
 				} else {
-					getDecorateist(params).then((res) => {
+					const decorateistParams = {
+						pageIndex: this.pagState.page,
+						pageSize: this.pagState.rows,
+					}
+					getDecorateist(decorateistParams).then((res) => {
 						if (res && res.list) {
 							this.addList(res.list);
 							this.pagState.page = res.page + 1;

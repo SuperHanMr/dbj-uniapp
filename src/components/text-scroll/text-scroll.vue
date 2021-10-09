@@ -1,7 +1,7 @@
 <template>
   <view class="text-scroll">
     <view class="text-scroll-item" @click="goDecorateCalendar">
-      <i class="icon-rili"></i>
+      <image class="icon-rili" src="http://dbj.dragonn.top/static/mp/dabanjia/images/decorate/ic_rl.svg"></image>
       <view class="line"></view>
       <view class="content">{{current.content}}</view>
       <view class="date">{{current.recordDate | formatDate}}</view>
@@ -81,13 +81,13 @@
     margin-bottom: 4rpx;
 
     .icon-rili {
-      font-size: 37rpx;
-      // width: 24rpx;
-      // height: 22rpx;
+      // font-size: 37rpx;
+      width: 36rpx;
+      height: 36rpx;
       // border: 2rpx solid;
       // box-sizing: border-box;
-      color: #00bfb6;
-      margin-right: 20rpx;
+      // color: #00bfb6;
+      margin-right: 16rpx;
     }
 
     .line {
