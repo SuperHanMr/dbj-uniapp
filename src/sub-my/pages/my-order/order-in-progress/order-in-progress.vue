@@ -154,10 +154,12 @@
 			refundFailed(item) {},
 			
 			refundClose(item) {
-				console.log("退款关闭！！！！！")
-				// uni.navigateTo({
-				// 	url: `../../../../sub-classify/pages/goods-detail/goods-detail?goodId=${item.id}`,
-				// });
+				console.log("item数据=",item)
+				const showReApply= item.shipmentStatus ==1?true:false
+				console.log("showReApply=",showReApply)
+				uni.navigateTo({
+					url:`../order-failed/order-failed?type=refund&id=${item.refundId}&showReApply=${showReApply}&status=${item.refundBillStatus}`
+				})
 			},
 
 			// 点击商品区域，跳转到商品详情页面
