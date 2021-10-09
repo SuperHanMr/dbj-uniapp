@@ -54,9 +54,10 @@
 		methods: {
 			showReplyBox(payload) {
 				this.replyBoxShow = true;
-				this.$nextTick(() => {
+
+				setTimeout(e => {
 					this.replyInputFocus = true;
-				});
+				}, 100)
 			},
 			hideReplyBox() {
 				this.replyInputFocus = false;
@@ -68,10 +69,10 @@
 					height
 				} = e.detail || {};
 				this.keyboardHeight = height || 0;
-				if (height > 0) {} else if (this.preKeyboardHeight > 0&&this.onFocus) {
+				if (height > 0) {} else if (this.preKeyboardHeight > 0 && this.onFocus) {
 					this.hideReplyBox();
 				}
-				this.preKeyboardHeight = height|| 0;
+				this.preKeyboardHeight = height || 0;
 			},
 			sendTextMessage() {
 				const message = getTim().createTextMessage({
