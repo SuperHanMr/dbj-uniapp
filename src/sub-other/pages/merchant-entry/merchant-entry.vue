@@ -183,7 +183,7 @@
 						text: '北京'
 					}
 				],
-				argumentFile: true,
+				argumentFile: false,
 				businessCategoryList: [],
 				categroyTreeList: [],
 				deleteStatus: {}
