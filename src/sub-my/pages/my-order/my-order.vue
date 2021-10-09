@@ -132,10 +132,17 @@
 
 									<view class="time-text">
 										<text class="remainPayTime">剩余支付时间</text>
-										<uni-countdown color="#333333" background-color="#E4E6E6" :showDay="false"
+										<count-down 
+											:start="item.remainTime"
+											:timeBackground="'#E4E6E6'"
+											:timeColor="'#333333'"
+											:separatorColor="'#333333'"
+											@finish="onRefresh(e)"
+										></count-down>
+										<!-- <uni-countdown color="#333333" background-color="#E4E6E6" :showDay="false"
 											:hour="formatTime(item.remainTime)[0]"
 											:minute="formatTime(item.remainTime)[1]"
-											:second="formatTime(item.remainTime)[2]" />
+											:second="formatTime(item.remainTime)[2]" /> -->
 									</view>
 
 								</view>
