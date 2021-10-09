@@ -22,10 +22,26 @@
 		<swiper class="swiper" :current="currentIndex" :duration="200"	@change="swiperChange"	:style="{backgroundColor:listLength > 0 ?'none':'#ffffff'}">
 
 			<swiper-item :class="{emptyContainer:productList.length < 1 ? true : false}">
-				<scroll-view :style="{paddingBottom:systemBottom +'rpx'}"  v-if="productList.length > 0" class="scroll-view" scroll-y="true" refresher-background="#FFF" refresher-enabled="true"
-					:refresher-triggered="triggered" @refresherrefresh="onRefresh" @scrolltolower="onLoadMore">
-					<waterfall :key="itemTab.fallKey" :list="productList" @selectedItem="onSelectedItem" :allCheck="allCheck"
-						:showCheckIcon="!showMgrBtn" :isAllCheck="isAllCheck" :isActive="isActive"></waterfall>
+				<scroll-view 
+					v-if="productList.length > 0" 
+					class="scroll-view" 
+					scroll-y="true" 
+					refresher-background="#FFF" 
+					refresher-enabled="true"
+					:refresher-triggered="triggered" 
+					@refresherrefresh="onRefresh" 
+					@scrolltolower="onLoadMore"
+				>
+					<view :style="{paddingBottom:systemBottom +'rpx'}">
+						<waterfall 
+							:key="itemTab.fallKey" 
+							:list="productList" 
+							@selectedItem="onSelectedItem" 
+							:allCheck="allCheck"
+							:showCheckIcon="!showMgrBtn" 
+							:isAllCheck="isAllCheck" 
+							:isActive="isActive"></waterfall>
+					</view>
 				</scroll-view>
 				<view v-else class="empty-body">
 					<image src="../../../../static/order/blank_house@2x.png" mode=""></image>
@@ -34,10 +50,26 @@
 			</swiper-item>
 
 			<swiper-item :class="{emptyContainer:caseList.length < 1 ? true : false}">
-				<scroll-view :style="{paddingBottom:systemBottom +'rpx'}" v-if="caseList.length >0" class="scroll-view" scroll-y="true" refresher-background="#FFF" refresher-enabled="true"
-					:refresher-triggered="triggered" @refresherrefresh="onRefresh" @scrolltolower="onLoadMore">
-					<waterfall :key="itemTab.fallKey" :list="caseList" @selectedItem="onSelectedItem" :allCheck="allCheck"
-						:showCheckIcon="!showMgrBtn" :isAllCheck='isAllCheck' :isActive="isActive"></waterfall>
+				<scroll-view 
+					v-if="caseList.length >0" 
+					class="scroll-view" 
+					scroll-y="true"
+					refresher-background="#FFF"
+					refresher-enabled="true"
+					:refresher-triggered="triggered" 
+					@refresherrefresh="onRefresh"
+					@scrolltolower="onLoadMore"
+				>
+					<view :style="{paddingBottom:systemBottom +'rpx'}">
+						<waterfall 
+							:key="itemTab.fallKey" 
+							:list="caseList" 
+							@selectedItem="onSelectedItem" 
+							:allCheck="allCheck"
+							:showCheckIcon="!showMgrBtn" 
+							:isAllCheck='isAllCheck' 
+							:isActive="isActive"></waterfall>
+					</view>
 				</scroll-view>
 				<view v-else class="empty-body">
 					<image src="../../../../static/order/blank_house@2x.png" mode=""></image>
@@ -442,13 +474,12 @@
 		display: flex;
 		flex-direction: column;
 	}
+	
 	swiper-item {
+		height: 100%;
 		overflow: auto;
-		// height: 200rpx;
-		// width: 100%;
 	}
 
-	
 
 	.line {
 		width: 100%;
@@ -478,6 +509,10 @@
 				color: #999999;
 			}
 		}
+	}
+	.scroll-view {
+		flex: 1;
+		height: 100%;
 	}
 
 	.footer {
