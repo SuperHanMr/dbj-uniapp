@@ -214,7 +214,11 @@
 						}
 					})
 				} else {
-					getDecorateist(params).then((res) => {
+					const decorateistParams = {
+						pageIndex: this.pagState.page,
+						pageSize: this.pagState.rows,
+					}
+					getDecorateist(decorateistParams).then((res) => {
 						if (res && res.list) {
 							this.addList(res.list);
 							this.pagState.page = res.page + 1;
