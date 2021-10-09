@@ -30,7 +30,7 @@
 		{
 			"path": "pages/classify/index/index",
 			"style": {
-				"navigationBarTitleText": "分类"
+				"navigationBarTitleText": "商城"
 			}
 		},
 		{
@@ -156,7 +156,7 @@
 				"pagePath": "pages/classify/index/index",
 				"iconPath": "static/tab-bar/shop.png",
 				"selectedIconPath": "static/tab-bar/shop_s.png",
-				"text": "分类"
+				"text": "商城"
 			},
 			{
 				"pagePath": "pages/decorate/index/index",
