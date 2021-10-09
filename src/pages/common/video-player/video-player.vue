@@ -3,7 +3,10 @@
     <video
       class="video"
       id="myVideo"
+			:title="title"
+			:autoplay="true"
       :src="url"
+			:vslide-gesture="true"
       @error="videoErrorCallback"
       controls
     ></video>
@@ -15,6 +18,7 @@ export default {
   data() {
     return {
       url: "",
+			title:''
     };
   },
   onLoad(e) {
@@ -22,6 +26,7 @@ export default {
       this.url = decodeURIComponent(e.url);
     }
     if (e && e.title) {
+			this.title=e.title
       uni.setNavigationBarTitle({
         title: e.title,
       });
@@ -34,10 +39,11 @@ export default {
 .content {
   width: 100vw;
   height: 100vh;
+	background-color: black;
 }
 
 .video {
   width: 100%;
-  height: 100%;
+  height: 95%;
 }
 </style>
