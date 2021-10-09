@@ -32,9 +32,6 @@
 
       }
     },
-    onLoad() {
-
-    },
     methods: {
       goNoHouseDecorate() {
         uni.navigateTo({
@@ -52,9 +49,10 @@
         });
       },
       gobackHome() {
+        const { currentRoute } = getApp().globalData
         uni.switchTab({
-          url: "/pages/home/index/index?delta=2",
-        });
+          url: currentRoute,
+        })
       }
     }
   }

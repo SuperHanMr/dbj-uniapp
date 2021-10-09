@@ -242,6 +242,7 @@
 				}
 			}, 500)
 			this.swiperAuto = true;
+      getApp().globalData.currentRoute = "/pages/home/index/index"
 		},
 		onHide() {
 			this.swiperAuto = false
@@ -295,7 +296,7 @@
 				if (item.mediaType == 1) {
 					//直播
 					uni.navigateTo({
-						url: `../../../sub-home/pages/lives-room/lives-room?livePreview=${item.roomLiveMediaVO.livePreview}&roomId=${item.roomLiveMediaVO.roomId}`
+						url: `../../../sub-home/pages/lives-room/lives-room?roomId=${item.roomLiveMediaVO.roomId}`
 					})
 				} else if (item.mediaType == 2) {
 					console.log(item);
@@ -392,7 +393,7 @@
 			},
 			toCity() {
 				uni.navigateTo({
-					url: "/sub-my/pages/my-house/my-house?fromHome=1",
+					url: "/sub-my/pages/my-house/my-house?fromHome=1&&isEdit=0",
 				});
 			},
 			getAuthorizeInfo() {
