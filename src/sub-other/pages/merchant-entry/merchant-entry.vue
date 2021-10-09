@@ -28,7 +28,7 @@
 					<view class="label">
 						服务城市
 					</view>
-					<view class="value" v-if="seriverCity.length > 0" v-for="(item, index) in cityList">
+					<view class="value" v-if="cityList.length > 0" v-for="(item, index) in cityList">
 						<view class="text">
 							{{item.name}}
 						</view>
@@ -207,6 +207,9 @@
 					}
 				},
 			});
+			this.$store.dispatch('setCityList', {
+				cityList: []
+			})
 		},
 		computed: {
 			...mapState({
@@ -276,13 +279,13 @@
 						accountInfo: obj
 					})
 					uni.navigateTo({
-						url: '../merchant-entry-success/merchant-entry-success'
+						url: `sub-other/pages/merchant-entry-success/merchant-entry-success?url=${res.url}&phone=${res.phone}&password=${res.password}&supplierId=${res.supplierId}`
 					})
 				}).catch((res) => {
 					// error.response.data.message
-					console.log(res,);
+					console.log(res,">>>>>>>>>>>>>>>>>>>>>>>>>>>");
 					// uni.showToast({
-					// 	title: "1",
+					// 	title: res.response.data.message,
 					// 	icon: 'none'
 					// })
 				})

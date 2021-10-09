@@ -18,7 +18,7 @@
 			</view>
 			<view class="url-box">
 				<view class="url">
-					{{accountInfoObj.url}}
+					{{obj.url}}
 				</view>
 				<view class="copy" @click="copyHandler">
 					复制
@@ -33,7 +33,7 @@
 						登录账号
 					</view>
 					<view class="account-info">
-						{{accountInfoObj.phone}}
+						{{obj.phone}}
 					</view>
 				</view>
 				<view class="password">
@@ -41,7 +41,7 @@
 						初始密码
 					</view>
 					<view class="account-info">
-						{{accountInfoObj.password}}
+						{{obj.password}}
 					</view>
 				</view>
 			</view>
@@ -57,7 +57,7 @@
 	export default {
 		data() {
 			return {
-
+				obj: {}
 			}
 		},
 		computed: {
@@ -65,10 +65,16 @@
 			  accountInfoObj: (state) => state.merchantEntry.accountInfo,
 			}),
 		},
+		onLoad(props) {
+			this.obj.phone = props.phone;
+			this.obj.password = props.password;
+			this.obj.url = props.url;
+			this.obj.supplierId = props.supplierId;
+		},
 		methods: {
 			copyHandler(){
 				uni.setClipboardData({
-				    data: this.accountInfoObj.url,
+				    data: this.obj.url,
 				    success: function () {
 				        console.log('success');
 				    }
