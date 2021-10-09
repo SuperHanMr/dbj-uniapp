@@ -18,7 +18,7 @@
       :current="currentIndex"
       :duration="200"
       @change="swiperChange"
-			:style="{paddingBottom:systemBottom,backgroundColor:currentList.length < 1?'#ffffff':'#f5f6f6'}"
+			:style="{backgroundColor:currentList.length < 1?'#ffffff':'#f5f6f6'}"
     >
       <swiper-item v-for="(item,tabindex) in tabList" :key="item">
         <scroll-view
@@ -37,7 +37,7 @@
 						<text v-if="tabindex==2">您还没有关注优先推荐</text>
 					</view>
 					
-					<view  v-else >
+					<view  v-else :style="{paddingBottom:systemBottom}" >
 						<!-- 房屋 -->
 						<view 
 							v-if="tabindex==0"
@@ -46,9 +46,8 @@
 							:key="item.id"
 							@click="goToHouse(item)"
 						>
-							<image
-							  :src="item.estateImage"
-							  mode=""/>
+							<image :src="item.estateImage" mode=""/>
+							
 						  <view class="houseInfo">
 						    <view class="header">
 						      {{item.estateAddress || ''}}
@@ -261,9 +260,10 @@ export default {
 			}).catch(()=>{})
 		},
 		// 去房屋的页面
-		goToHouse(data){
+		goToHouse(item){
+			console.log("item=",item,"!!!!!!!!!!!!!!!!!!!!!!!!!")
 			uni.navigateTo({
-				url:"../../../../sub-home/pages/decorate-scene/decorate-scene?projectId"
+				url:`../../../../sub-home/pages/decorate-scene/decorate-scene?projectId=${item.id}`
 			})
 			console.log("进入到房子的详情页面")
 			
@@ -292,6 +292,7 @@ export default {
 			this.handleReset();
 			
     },
+		
 		handleReset(){
 			switch(this.currentIndex){
 				case 0 :
@@ -313,7 +314,7 @@ export default {
 <style lang="scss">
 .fill {
   width: 100%;
-  min-height: 100%;
+  height: 100%;
   display: flex;
   flex-direction: column;
   background-color: #f4f4f4;

@@ -22,7 +22,6 @@
 		>
 			<swiper-item v-for="item in tabList" :key="item">
 				<scroll-view 
-					:style="{paddingBottom:systemBottom}"
 					class="scroll-view" 
 					:enable-back-to-top="true" 
 					lower-threshold="10" 
@@ -33,7 +32,7 @@
 					refresher-enabled="true" 
 					@scrolltolower="onLoadMore"
 				>
-					<view v-if=" orderList.length > 0 " class="swiper-item">
+					<view v-if=" orderList.length > 0 " :style="{paddingBottom:systemBottom}" class="swiper-item">
 						<view class="order-container" v-for="item in orderList" :key="item.id">
 							<view class="header">
 								<view class="store-name" @click="gotoShop(item)">
