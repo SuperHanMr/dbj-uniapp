@@ -113,7 +113,8 @@
 								></image>
 								<view>{{item.name}}</view>
 							</view>
-							<view class="text" v-else-if="item.nodeStatus===2&&item.id===-1">待施工</view>
+							<view class="text" v-else-if="item.nodeStatus===2&&item.id===-1">
+								{{item.nodeType===1||item.nodeType===4||item.nodeType===5?'待服务':'待施工'}}</view>
 							<view class="text" v-else-if="item.nodeStatus===1">未开工</view>
 							<view class="own" v-else-if="item.nodeStatus===4">自带施工</view>
             </view>
@@ -236,6 +237,25 @@
         <view>{{isSelfFocusOn?'已关注':'关注'}}</view>
       </view>
     </view>
+		<view class="mask" v-if="showDecorateMask">
+			<view class="popupDecorate" :class="{'height':hasEstate}">
+				<view class="estateInfo" v-if="!hasEstate" @click="toAddEstate">
+					<image src="../../static/ic_add_estate@2x.png"></image>
+					<view>添加房屋信息</view>
+				</view>
+				<view class="service" :class="{'margin':hasEstate}">
+					<view class="decorate_service" @click="toDecorateService">
+						<image src="../../static/ic_decorate_service@2x.png"></image>
+						<view>进行装修服务</view>
+					</view>
+					<view class="checkRoom_service" @click="toCheckRoomService">
+						<image src="../../static/ic_checkRoom_service@2x.png"></image>
+						<view>进行验房服务</view>
+					</view>
+				</view>
+				<image @click="showDecorateMask=false" class="close" src="../../static/ic_decorate_cancel@2x.png"></image>
+			</view>
+		</view>
     <view
       class="mask"
       v-if="showNodeType"
@@ -422,7 +442,7 @@ import {
   createReply,
   removeComment,
 } from "../../../api/real-case.js";
-
+import {queryEstates} from "../../../api/decorate.js";
 import imagePreview from "../../../components/image-preview/image-preview.vue";
 export default {
   components: {
@@ -430,8 +450,10 @@ export default {
   },
   data() {
     return {
+			hasEstate: false,
       showNodeType: false,
       showComments: false,
+			showDecorateMask: false,
       selectedIndex: -1,
       selectedType: 0,
       projectInfo: {},
@@ -672,13 +694,32 @@ export default {
 			})
 		},
     toDecorate() {
-      uni.switchTab({
-        url: `/pages/decorate/index/index`,
-      });
+			let params = {isNeedRelative:false}
+			queryEstates(params).then(data => {
+				if(data.length){
+					this.hasEstate = true
+				}
+				this.showDecorateMask = true
+			})
     },
     toInlineService() {
       this.$store.dispatch("openCustomerConversation");
     },
+		toAddEstate(){
+			uni.navigateTo({
+			  url: "/sub-decorate/pages/add-house/add-house?type=decorate",
+			});        
+		},
+		toDecorateService(){
+			uni.navigateTo({
+			  url: "/sub-decorate/pages/no-house-decorate/no-house-decorate?type=decorate",
+			});        
+		},
+		toCheckRoomService(){
+			uni.navigateTo({
+			  url: "/sub-decorate/pages/no-house-decorate/no-house-decorate?type=checkHouse",
+			});        
+		},
     toDecorateCalendar() {
       uni.navigateTo({
         url: `/sub-home/pages/decorate-scene/decorate-calendar?projectId=${this.projectInfo.id}&isDecorate=0`,
@@ -701,7 +742,7 @@ export default {
     },
     requestSelectOptions() {
       let params = {
-        projectId: 139,
+        projectId: this.projectId,
         processId: 1,
         allNodesFlag: false,
       };
@@ -782,6 +823,7 @@ export default {
               name: item.serveName,
               avatar: item.serveAvatar,
 							nodeStatus: item.nodeStatus,
+							nodeType: item.nodeType
             });
             return item;
           });
@@ -885,6 +927,74 @@ export default {
 		right: 0;
 		bottom: 0;
 		z-index: 998;
+	}
+	.popupDecorate{
+		width: 100%;
+		height: 644rpx;
+		padding-bottom: 40rpx;
+		background: #ffffff;
+		border-radius: 32rpx 32rpx 0rpx 0rpx;
+		position: fixed;
+		left: 0;
+		bottom: 0;
+		z-index: 999;
+	}
+	.popupDecorate.height{
+		height: 460rpx;
+	}
+	.popupDecorate .estateInfo{
+		width: 622rpx;
+		height: 112rpx;
+		margin: 104rpx 54rpx 72rpx 74rpx;
+		border: 2rpx solid #333333;
+		border-radius: 32rpx;
+		display: flex;
+		align-items: center;
+	}
+	
+	.estateInfo image{
+		width: 28rpx;
+		height: 28rpx;
+		display: block;
+		margin-left: 190rpx;
+		margin-right: 24rpx;
+	}
+	.estateInfo view{
+		width: 192rpx;
+		height: 44rpx;
+		font-size: 32rpx;
+		font-weight: 500;
+		color: #333333;
+	}
+	.popupDecorate .service{
+		width: 100%;
+		height: 188rpx;
+		display: flex;
+		justify-content: space-around;
+	}
+	.popupDecorate .service.margin{
+		margin-top: 104rpx;
+	}
+	.popupDecorate .service image{
+		width: 128rpx;
+		height: 128rpx;
+		display: block;
+		margin: 0 14rpx;
+	}
+	.popupDecorate .service view{
+		width: 156rpx;
+		height: 36rpx;
+		margin-top: 24rpx;
+		font-size: 26rpx;
+		text-align: center;
+		color: #333333;
+	}
+	.popupDecorate .close{
+		width: 24rpx;
+		height: 24rpx;
+		display: block;
+		margin-left: 364rpx;
+		margin-top: 104rpx;
 	}
 	.popupComments {
 		position: relative;
