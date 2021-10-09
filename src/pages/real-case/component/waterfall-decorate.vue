@@ -1,11 +1,11 @@
 <template>
 	<view class="waterfall-item" @tap="onTap">
-		<image :src="params.estateIconUrl"></image>
+		<image :src="params.estateIconUrl" class="waterfall-item-img"></image>
 		<!-- <view class="decorate-state">
 			{{params.projectStatus == 1 ? "已开启" : params.projectStatus == 2 ? '装修中' : params.projectStatus == 3 ? "已竣工" : "已结束"}}
 		</view> -->
 		<view class="content">
-			<view class="title">{{params.estateAddress}}</view>
+			<view class="title">{{params.estateNeighbourhood}}</view>
 			<view class="decorate-info">
 				<view class="size">
 					{{params.estateArea}}m²
@@ -67,6 +67,10 @@
 	background: #ffffff;
 	border: 1px solid #ececec;
 	border-radius: 8px;
+	.waterfall-item-img{
+		width: 344rpx;
+		height: 344rpx;
+	}
 	.decorate-state{
 		padding: 4rpx 16rpx;
 		background: linear-gradient(45deg,rgba(51,51,51,1),rgba(86,86,86,1));

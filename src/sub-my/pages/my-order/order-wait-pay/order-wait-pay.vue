@@ -18,15 +18,16 @@
           v-if="orderInfo.showCancelOrderTime"
         >
           <text style="margin-right: 16rpx;">剩余支付时间</text>
-          <uni-countdown
-            color="#FFFFFF"
-            background-color="#FAAB3B"
-            :showDay="false"
-            :hour="formatTime(orderInfo.remainTime)[0]"
-            :minute="formatTime(orderInfo.remainTime)[1]"
-            :second="formatTime(orderInfo.remainTime)[2]"
-            @timeup="goToCancelDetail"
-          />
+					<count-down :start="orderInfo.remainTime" @finish="goToCancelDetail"></count-down>
+					<!-- <uni-countdown
+							color="#FFFFFF"
+							background-color="#FAAB3B"
+							:showDay="false"
+							:hour="formatTime(orderInfo.remainTime)[0]"
+							:minute="formatTime(orderInfo.remainTime)[1]"
+							:second="formatTime(orderInfo.remainTime)[2]"
+							@timeup="goToCancelDetail"
+						/> -->
         </view>
       </view>
 
@@ -323,7 +324,7 @@ export default {
 
     formatTime(msTime) {
       let time = msTime / 1000;
-      let hour = Math.floor(time / 60 / 60) % 24;
+      let hour = Math.floor(time / 60 / 60);
       if (!hour) {
         hour = 0;
       }
@@ -335,6 +336,7 @@ export default {
       console.log("hour=", hour, "minute=", minute, "second=", second);
       return [hour, minute, second];
     },
+		
     handlePrice(price) {
       let list = String(price).split(".");
       if (list.length == 1) {
@@ -585,15 +587,15 @@ export default {
 }
 
 //头部倒计时样式
-::v-deep .uni-countdown__number {
-  width: 36rpx !important;
-  height: 36rpx !important;
-}
+// ::v-deep .uni-countdown__number {
+//   width: 36rpx !important;
+//   height: 36rpx !important;
+// }
 
-::v-deep .uni-countdown__splitor {
-  line-height: 32rpx !important;
-  color: #ffffff !important;
-}
+// ::v-deep .uni-countdown__splitor {
+//   line-height: 32rpx !important;
+//   color: #ffffff !important;
+// }
 
 // 弹框样式
 ::v-deep .uni-popup-dialog {
