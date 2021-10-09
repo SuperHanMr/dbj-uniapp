@@ -17,7 +17,8 @@
 			naviData: null,
 			decorateMsg: {},
 			currentHouse: {},
-      switchFlag: "home"
+      switchFlag: "home",
+      currentRoute: "/pages/home/index/index"
 		},
 
 		onLaunch: function() {
