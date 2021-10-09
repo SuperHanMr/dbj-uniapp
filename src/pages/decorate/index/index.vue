@@ -1,7 +1,7 @@
 <template>
   <view class="decorate-index" v-if="estateList.length > 0">
     <image class="bg-index" mode="aspectFit"
-      src="http://dbj.dragonn.top/static/mp/dabanjia/images/decorate/bg@2x-2.png">
+      src="http://dbj.dragonn.top/static/mp/dabanjia/images/decorate/bg@2x-3.png">
     </image>
     <view class="content flex-column">
       <view class="house-firend">
@@ -34,12 +34,12 @@
             <view class="uni-title">{{ currentProject.housingEstate }}{{currentProject.address}}</view>
           </view>
           <view class="picture-btn-wrap">
-            <picture-btn v-if="aServiceData.showDesignFlag" class="p-i-t" text="设计图" @gotoPage="goDesignPicture">
+            <picture-btn v-if="aServiceData.showDesignFlag" iconUrl="http://dbj.dragonn.top/static/mp/dabanjia/images/decorate/ic_sgtz.svg" class="p-i-t" text="施工图纸" @gotoPage="goDesignPicture">
             </picture-btn>
-            <picture-btn v-if="aServiceData.showActuaryFlag" class="p-i-t" text="精算单" @gotoPage="goActuary">
+            <picture-btn v-if="aServiceData.showActuaryFlag" iconUrl="http://dbj.dragonn.top/static/mp/dabanjia/images/decorate/ic_jsd.svg" class="p-i-t" text="精算单" @gotoPage="goActuary">
             </picture-btn>
-            <picture-btn v-if="aServiceData.showVideoFlag" class="p-i-t" text="工地视频" @gotoPage="goVideo"></picture-btn>
-            <picture-btn v-if="aServiceData.constructionFlag" text="施工" @gotoPage="goConstrction"></picture-btn>
+            <picture-btn v-if="aServiceData.showVideoFlag" iconUrl="http://dbj.dragonn.top/static/mp/dabanjia/images/decorate/ic_gdsp.svg" class="p-i-t" text="工地视频" @gotoPage="goVideo"></picture-btn>
+            <picture-btn v-if="aServiceData.constructionFlag" iconUrl="http://dbj.dragonn.top/static/mp/dabanjia/images/decorate/ic_sg.svg" text="施工" @gotoPage="goConstrction"></picture-btn>
           </view>
         </view>
       </view>
@@ -63,13 +63,13 @@
               </view>
             </view>
             <view class="my-warehouse">
-              <mwarehouse-btn :iconStyle="{'width': '52rpx','height': '62rpx'}" @gotoPage="gotoPage('0')" name="待发货">
+              <mwarehouse-btn iconUrl="http://dbj.dragonn.top/static/mp/dabanjia/images/decorate/ic_ck_dfh.svg" @gotoPage="gotoPage('0')" name="待发货">
               </mwarehouse-btn>
-              <mwarehouse-btn :iconStyle="{'width': '58rpx','height': '58rpx'}" @gotoPage="gotoPage('1')" name="待收货">
+              <mwarehouse-btn iconUrl="http://dbj.dragonn.top/static/mp/dabanjia/images/decorate/ic_ck_dsh.svg" @gotoPage="gotoPage('1')" name="待收货">
               </mwarehouse-btn>
-              <mwarehouse-btn :iconStyle="{'width': '50rpx','height': '60rpx'}" @gotoPage="gotoPage('2')" name="已收货">
+              <mwarehouse-btn iconUrl="http://dbj.dragonn.top/static/mp/dabanjia/images/decorate/ic_ck_ysh.svg" @gotoPage="gotoPage('2')" name="已收货">
               </mwarehouse-btn>
-              <mwarehouse-btn :iconStyle="{'width': '54rpx','height': '44rpx'}" @gotoPage="gotoPage('3')" name="退款">
+              <mwarehouse-btn iconUrl="http://dbj.dragonn.top/static/mp/dabanjia/images/decorate/ic_ck_tk.svg" @gotoPage="gotoPage('3')" name="退款">
               </mwarehouse-btn>
             </view>
           </view>

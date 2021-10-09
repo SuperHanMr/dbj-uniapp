@@ -1,10 +1,10 @@
 <template>
   <view>
-     <web-view :src="baseUrl + '/app-pages/goods-detail/index.html#wx-goodsId='+ goodId + '&wx-houseId='
+     <web-view :src="baseUrl + '/app-pages/goods-detail/index.html?token=' + searchToken + '#wx-goodsId='+ goodId + '&wx-houseId='
         + houseId + '&wx-defaultHouseId=' + defaultHouseInfo.id  + '&wx-defaultProvinceId=' + defaultHouseInfo.provinceId
         + '&wx-defaultCityId=' + defaultHouseInfo.cityId + '&wx-defaultAreaId=' + defaultHouseInfo.areaId 
         + '&wx-defaultLocationName=' + defaultHouseInfo.name  + '&wx-isDisabled=' + isDisabled
-        + '&wx-token=' + token + '&wx-deviceId=' + deviceId">
+        + '&wx-token=' + hashToken + '&wx-deviceId=' + deviceId">
        </web-view>
   </view>
 </template>
@@ -19,7 +19,8 @@
         defaultHouseId: '',
         houseId: '',
         isDisabled: false,
-        token: '',
+        searchToken: '',
+        hashToken: '',
         defaultHouseInfo: ''
       }
     },
@@ -34,7 +35,11 @@
       }
     },
     onShow() {
-      this.token = getApp().globalData.token
+      if(!this.searchToken) {
+        this.searchToken = getApp().globalData.token
+      }else {
+        this.hashToken = getApp().globalData.token
+      }
       this.baseUrl = this.ENV.VUE_APP_BASE_H5
       this.defaultHouseInfo = getApp().globalData.currentHouse
         uni.getSystemInfo({	

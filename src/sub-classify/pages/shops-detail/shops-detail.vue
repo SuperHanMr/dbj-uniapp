@@ -1,6 +1,6 @@
 <template>
   <view>
-     <web-view :src="baseUrl + '/app-pages/shops-detail/index.html#wx-storeId=' + storeId + '&wx-token=' + token"></web-view>
+     <web-view :src="baseUrl + '/app-pages/shops-detail/index.html?token=' + searchToken + '#wx-storeId=' + storeId + '&wx-token=' + hashToken"></web-view>
   </view>
 </template>
 
@@ -9,7 +9,8 @@
     data() {
       return {
         baseUrl: '',
-        token: getApp().globalData.token,
+        hashToken: '',
+        searchToken: '',
         storeId: 0
       }
     },
@@ -17,6 +18,11 @@
       this.storeId = e.storeId
     },
     onShow() {
+      if(!this.searchToken) {
+        this.searchToken = getApp().globalData.token
+      }else {
+        this.hashToken = getApp().globalData.token
+      }
       this.baseUrl = this.ENV.VUE_APP_BASE_H5
     },
     methods: {
