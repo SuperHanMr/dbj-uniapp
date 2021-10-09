@@ -76,7 +76,7 @@
 								</view>
 								<image class="anchor" v-if="item.from.startsWith('anchor')"
 									src="http://dbj.dragonn.top/static/mp/dabanjia/images/home/anchor.png"></image>
-								
+
 								<text class="name">{{item.nick}} </text>
 								<view class="product">
 									<view class="product-name">
@@ -203,6 +203,7 @@
 		publicRoom,
 		insertAndGetLikeNum
 	} from '../../../api/home.js'
+	import urlParse from 'url-parse';
 	export default {
 		components: {
 			MessageSendBox,
@@ -246,6 +247,16 @@
 		onLoad(e) {
 			if (e && e.roomId) {
 				this.roomId = e.roomId;
+			}
+			if (e.q) {
+				//如果是通过二维码分享进来的兼容
+				const qrCodeUrl = decodeURIComponent(e.q);
+				const urlResult = urlParse(qrCodeUrl, true)
+
+				const query = urlResult.query;
+				if (query.roomId) {
+					this.roomId = query.roomId
+				}
 			}
 			const systemInfo = uni.getSystemInfoSync();
 			//状态栏高度
