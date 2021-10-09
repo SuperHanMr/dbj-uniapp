@@ -22,7 +22,6 @@
 		>
 			<swiper-item v-for="item in tabList" :key="item">
 				<scroll-view 
-					:style="{paddingBottom:systemBottom}"
 					class="scroll-view" 
 					:enable-back-to-top="true" 
 					lower-threshold="10" 
@@ -33,7 +32,7 @@
 					refresher-enabled="true" 
 					@scrolltolower="onLoadMore"
 				>
-					<view v-if=" orderList.length > 0 " class="swiper-item">
+					<view v-if=" orderList.length > 0 " :style="{paddingBottom:systemBottom}" class="swiper-item">
 						<view class="order-container" v-for="item in orderList" :key="item.id">
 							<view class="header">
 								<view class="store-name" @click="gotoShop(item)">
@@ -133,10 +132,17 @@
 
 									<view class="time-text">
 										<text class="remainPayTime">剩余支付时间</text>
-										<uni-countdown color="#333333" background-color="#E4E6E6" :showDay="false"
+										<count-down 
+											:start="item.remainTime"
+											:timeBackground="'#E4E6E6'"
+											:timeColor="'#333333'"
+											:separatorColor="'#333333'"
+											@finish="onRefresh(e)"
+										></count-down>
+										<!-- <uni-countdown color="#333333" background-color="#E4E6E6" :showDay="false"
 											:hour="formatTime(item.remainTime)[0]"
 											:minute="formatTime(item.remainTime)[1]"
-											:second="formatTime(item.remainTime)[2]" />
+											:second="formatTime(item.remainTime)[2]" /> -->
 									</view>
 
 								</view>

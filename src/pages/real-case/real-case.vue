@@ -168,13 +168,14 @@
 			},
 			// 收藏事件
 			onCollection(index, tag) {
-				const item = this.leftList[index];
 				let list = [];
 				if (tag == 0) {
 					list = this.leftList;
 				} else {
 					list = this.rightList;
 				}
+				const item = list[index];
+				console.log(item, '>>>>>>>>>>>>>>>')
 				getCollection({
 					routeId: 5001, // 固定内容
 					subBizType: item.parentType, // 内容下的子项   视频 VR  图片
@@ -182,8 +183,16 @@
 					authorId: item.zeusId, // 作者ID
 				}).then((res) => {
 					if (list[index].isCollection == false) {
+						uni.showToast({
+							title:'收藏成功！',
+							icon: "none"
+						})
 						list[index].collectionCount += 1;
 					} else {
+						uni.showToast({
+							title:'取消成功！',
+							icon: "none"
+						})
 						list[index].collectionCount -= 1;
 					}
 					list[index].isCollection = !list[index].isCollection;
@@ -205,7 +214,11 @@
 						}
 					})
 				} else {
-					getDecorateist(params).then((res) => {
+					const decorateistParams = {
+						pageIndex: this.pagState.page,
+						pageSize: this.pagState.rows,
+					}
+					getDecorateist(decorateistParams).then((res) => {
 						if (res && res.list) {
 							this.addList(res.list);
 							this.pagState.page = res.page + 1;

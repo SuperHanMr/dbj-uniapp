@@ -27,7 +27,7 @@
 								</view>
 							</view>
 						</view>
-						<view class="edit" @click.stop="edit(item)">
+						<view v-if="isEdit" class="edit" @click.stop="edit(item)">
 							<image src="../../../static/images/edit.svg" class="edit-icon"></image>
 						</view>
 					</view>
@@ -62,7 +62,8 @@
 				systemHeight: '',
 				chooseId: '',
 				delta: 1,
-				fromHome: false
+				fromHome: false,
+				isEdit: true
 			};
 		},
 		mounted() {
@@ -84,6 +85,9 @@
 			}
 			if (e && e.fromHome) {
 				this.fromHome = true
+			}
+			if (e && e.isEdit==0) {
+				this.isEdit = false
 			}
 			this.delta = e.delta || 1
 			this.isMy = e.isMy || false

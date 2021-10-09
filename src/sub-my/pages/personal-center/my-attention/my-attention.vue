@@ -18,7 +18,7 @@
       :current="currentIndex"
       :duration="200"
       @change="swiperChange"
-			:style="{paddingBottom:systemBottom,backgroundColor:currentList.length < 1?'#ffffff':'#f5f6f6'}"
+			:style="{backgroundColor:currentList.length < 1?'#ffffff':'#f5f6f6'}"
     >
       <swiper-item v-for="(item,tabindex) in tabList" :key="item">
         <scroll-view
@@ -37,7 +37,7 @@
 						<text v-if="tabindex==2">您还没有关注优先推荐</text>
 					</view>
 					
-					<view  v-else >
+					<view  v-else :style="{paddingBottom:systemBottom}" >
 						<!-- 房屋 -->
 						<view 
 							v-if="tabindex==0"
@@ -46,9 +46,8 @@
 							:key="item.id"
 							@click="goToHouse(item)"
 						>
-							<image
-							  :src="item.estateImage"
-							  mode=""/>
+							<image :src="item.estateImage" mode=""/>
+							
 						  <view class="houseInfo">
 						    <view class="header">
 						      {{item.estateAddress || ''}}
@@ -62,7 +61,7 @@
 							</view>
 						</view>
 						<!-- 工匠 -->
-						<view  v-if="tabindex == 1" class="craftsmanAndRecommend" v-for="item2 in currentList" :key="item2.id"	>
+						<view  v-if="tabindex == 1" class="craftsmanAndRecommend" v-for="(item2,index2) in currentList" :key="item2.id"	>
 						  <view class="left">
 						    <image :src="item2.avatar" mode="" @click="goToPersonalHome(item2)" />
 						    <view class="baseInfo">
@@ -74,7 +73,7 @@
 						      </view>
 						    </view>
 						  </view>
-						  <view class="right"  @click.stop="handleCraftsman(item2)">
+						  <view class="right"  @click.stop="handleCraftsman(item2,index2)">
 						    <view class="button2" v-if="item2.isFocused">
 						      已关注
 						    </view>
@@ -84,7 +83,7 @@
 						  </view>
 						</view>
 						<!-- 优先推荐 -->
-						<view  v-if=" tabindex == 2" v-for="item3 in recommendlist" :key="item3.id"  >
+						<view  v-if=" tabindex == 2" v-for="(item3,index3) in recommendlist" :key="item3.id"  >
 							<view class="craftsmanAndRecommend" >
 								<view class="left">
 									<image :src="item3.avatar" mode="" @click="goToPersonalHome(item3)"/>
@@ -93,7 +92,7 @@
 										<view class="icon">{{item3.position}}</view>
 									</view>
 								</view>
-								<view class="right" @click.stop="handleRecommend(item3)">
+								<view class="right" @click.stop="handleRecommend(item3,index3)">
 									<view class="button4" v-if="item3.isRecommend">
 										已优先推荐
 									</view>
@@ -197,7 +196,7 @@ export default {
 				console.log("data= ",data)
 			})
 		},
-		handleCraftsman(data){
+		handleCraftsman(data,index2){
 			cancelAttention({
 				routeId:1001,
 				relationId:data.id,
@@ -209,18 +208,20 @@ export default {
 					uni.showToast({
 						title:"取消关注成功",
 						icon:"none",
-						duration:100
+						duration:1000
 					})
+					this.currentList[index2].isFocused = false
 				}else{
 					uni.showToast({
 						title:"关注成功!",
 						icon:"none",
 						duration:1000
 					})
+					this.currentList[index2].isFocused = true
 				}
-				this.craftsmanlist=[]
+				// this.craftsmanlist=[]
 				setTimeout(()=>{
-					this.craftsmanList()
+					// this.craftsmanList()
 				},1000)
 			}).catch(()=>{})
 		},
@@ -236,7 +237,7 @@ export default {
 				console.log("data= ",data)
 			})
 		},
-		handleRecommend(data){
+		handleRecommend(data,index3){
 			cancelAttention({
 				routeId:2001,
 				relationId:data.id,
@@ -248,22 +249,25 @@ export default {
 					uni.showToast({
 						title:"取消关注成功",
 						icon:"none",
-						duration:100
+						duration:1000
 					})
+					this.recommendlist[index3].isRecommend = false
 				}else{
 					uni.showToast({
 						title:"关注成功!",
 						icon:"none",
 						duration:1000
 					})
+					this.recommendlist[index3].isRecommend = true
 				}
-				this.recommendList()
+				// this.recommendList()
 			}).catch(()=>{})
 		},
 		// 去房屋的页面
-		goToHouse(data){
+		goToHouse(item){
+			console.log("item=",item,"!!!!!!!!!!!!!!!!!!!!!!!!!")
 			uni.navigateTo({
-				url:"../../../../sub-home/pages/decorate-scene/decorate-scene?projectId"
+				url:`../../../../sub-home/pages/decorate-scene/decorate-scene?projectId=${item.id}`
 			})
 			console.log("进入到房子的详情页面")
 			
@@ -292,6 +296,7 @@ export default {
 			this.handleReset();
 			
     },
+		
 		handleReset(){
 			switch(this.currentIndex){
 				case 0 :
@@ -313,7 +318,7 @@ export default {
 <style lang="scss">
 .fill {
   width: 100%;
-  min-height: 100%;
+  height: 100%;
   display: flex;
   flex-direction: column;
   background-color: #f4f4f4;

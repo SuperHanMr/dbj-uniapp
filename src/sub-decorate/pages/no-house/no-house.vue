@@ -7,13 +7,13 @@
     <view class="decorate-yf">
       <view class="wrap decorate" @click="goNoHouseDecorate">
         <view class="bg">
-          <image src="http://dbj.dragonn.top/static/mp/dabanjia/images/decorate/ic_decorate@2x.png"></image>
+          <image src="http://dbj.dragonn.top/static/mp/dabanjia/images/decorate/ic_decorate.svg"></image>
         </view>
         <text>进行装修服务</text>
       </view>
       <view class="wrap yf" @click="goCheckService">
         <view class="bg">
-          <image src="http://dbj.dragonn.top/static/mp/dabanjia/images/decorate/ic_checkhouse@2x.png"></image>
+          <image src="http://dbj.dragonn.top/static/mp/dabanjia/images/decorate/ic_checkhouse.svg"></image>
         </view>
         <text>进行验房服务</text>
       </view>
@@ -32,9 +32,6 @@
 
       }
     },
-    onLoad() {
-
-    },
     methods: {
       goNoHouseDecorate() {
         uni.navigateTo({
@@ -52,9 +49,10 @@
         });
       },
       gobackHome() {
+        const { currentRoute } = getApp().globalData
         uni.switchTab({
-          url: "/pages/home/index/index?delta=2",
-        });
+          url: currentRoute,
+        })
       }
     }
   }
@@ -67,11 +65,9 @@
     opacity: 1;
     background: rgba(255, 255, 255, 0.60);
     backdrop-filter: blur(16rpx);
-    // padding-top: 61%;
     display: flex;
     justify-content: flex-end;
     flex-direction: column;
-    // align-items: center;
   }
 
   .add-house {
@@ -120,17 +116,17 @@
       .bg {
         width: 128rpx;
         height: 128rpx;
-        opacity: 1;
-        margin: 0 14rpx;
-        border-radius: 52rpx;
-        box-sizing: border-box;
-        display: flex;
-        justify-content: center;
-        align-items: center;
+        // opacity: 1;
+        // margin: 0 14rpx;
+        // border-radius: 52rpx;
+        // box-sizing: border-box;
+        // display: flex;
+        // justify-content: center;
+        // align-items: center;
 
         image {
-          width: 40rpx;
-          height: 40rpx;
+          width: 128rpx;
+          height: 128rpx;
         }
       }
 
@@ -148,17 +144,17 @@
       }
     }
 
-    .decorate {
-      .bg {
-        background: #a591d4;
-      }
-    }
+    // .decorate {
+    //   .bg {
+    //     background: #a591d4;
+    //   }
+    // }
 
-    .yf {
-      .bg {
-        background: #15d3ab;
-      }
-    }
+    // .yf {
+    //   .bg {
+    //     background: #15d3ab;
+    //   }
+    // }
   }
 
   .cancel-wrap {

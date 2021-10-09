@@ -41,6 +41,10 @@ function createTim(sdkAppId) {
   return tim;
 }
 
+function isSDKReady() {
+  return _sdkReady;
+}
+
 function _onSdkReady() {
   _sdkReady = true;
 }
@@ -137,6 +141,7 @@ function cleanListeners() {
 }
 
 export {
+  isSDKReady,
   createTim,
   getTim,
   getSafeTim,
