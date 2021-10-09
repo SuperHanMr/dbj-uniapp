@@ -168,13 +168,14 @@
 			},
 			// 收藏事件
 			onCollection(index, tag) {
-				const item = this.leftList[index];
 				let list = [];
 				if (tag == 0) {
 					list = this.leftList;
 				} else {
 					list = this.rightList;
 				}
+				const item = list[index];
+				console.log(item, '>>>>>>>>>>>>>>>')
 				getCollection({
 					routeId: 5001, // 固定内容
 					subBizType: item.parentType, // 内容下的子项   视频 VR  图片
