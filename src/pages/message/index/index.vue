@@ -42,6 +42,9 @@
     components: {
       ConversationItem,
     },
+    onLoad() {
+      getApp().globalData.currentRoute = "/pages/message/index/index"
+    },
     data() {
       return {
       }
