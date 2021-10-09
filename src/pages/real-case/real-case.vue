@@ -182,8 +182,16 @@
 					authorId: item.zeusId, // 作者ID
 				}).then((res) => {
 					if (list[index].isCollection == false) {
+						uni.showToast({
+							title:'收藏成功！',
+							icon: "none"
+						})
 						list[index].collectionCount += 1;
 					} else {
+						uni.showToast({
+							title:'取消成功！',
+							icon: "none"
+						})
 						list[index].collectionCount -= 1;
 					}
 					list[index].isCollection = !list[index].isCollection;
