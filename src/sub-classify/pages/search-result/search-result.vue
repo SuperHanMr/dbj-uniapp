@@ -67,6 +67,7 @@
     },
     data() {
       return {
+        originFrom: "",
         totalPage: 0,
         listArr: [],
         initSearch: true,
@@ -84,7 +85,8 @@
       uni.removeStorageSync('houseListChooseId')
       uni.removeStorageSync('goodId')   
     },
-    onLoad(){
+    onLoad(e){
+      this.originFrom = e.originFrom
       this.getList()
       // 对上一个页面传值
     // var shequ = getCurrentPages();
@@ -95,10 +97,11 @@
     },
     methods: {
       getList() {
+        console.log(this.originFrom, "this.originFrom")
         let params = {
             serviceVersion:0,
-            query:this.searchText,     //查询的关键词
-            categoryId: Number(this.categoryId),  //搜索范围，在指定的商品分类id的范围内搜索，可不传（表示不限定商品分类）,
+            query: this.originFrom?"":this.searchText,     //查询的关键词
+            categoryId: this.originFrom?Number(this.categoryId): "",  //搜索范围，在指定的商品分类id的范围内搜索，可不传（表示不限定商品分类）,
             supplierId:0, //搜索范围，在指定的供应商 id 的范围内搜索，可不传（表示不限定供应商）,
             storeId:0, //搜索范围，在指定的店铺 id 的范围内搜索，可不传（表示不限定店铺）,
             areaId: getApp().globalData.currentHouse.areaId, //区域编号，会按这个区域进行搜索；      区域的取值，请参考相关需求，好像是：有当前房屋就取当前房屋所在区域，没有当前房屋就取用户选取的位置区域...（具体逻辑比这个还复杂点）,
@@ -146,6 +149,7 @@
         this.initSearch = false
       },
       searchConfirm(resText) {
+        this.originFrom = ""
         this.isLoadMore = false
         this.searchText = resText.value
         this.getList()

@@ -1,6 +1,7 @@
 <template>
   <view class="radio-group">
-    <view v-for="(item,index) in items" :key="item.value" class="radio" :class="{active: item.value === value}"
+    <view v-for="(item,index) in items" :key="item.value" class="radio" :class="{active: item.value === value}" :style="{
+      marginRight: index === items.length - 1 ? '0' : '12rpx'}"
       @click="change(item.value)">
       <view class="top"></view>
       <view>{{item.label}}</view>
@@ -31,7 +32,7 @@
 <style lang="scss" scoped>
   .radio-group {
     display: flex;
-    justify-content: space-between;
+    justify-content: flex-start;
     align-items: center;
     flex-direction: row;
 

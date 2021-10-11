@@ -209,7 +209,7 @@
         this.currentHouse = this.selectHouseData
         this.getServiceSku()
       }
-      this.defaultHouse = JSON.parse(uni.getStorageSync("currentHouse"))
+      this.defaultHouse = getApp().globalData.currentHouse
     },
     methods: {
       setDoorTime(value) {
@@ -282,8 +282,8 @@
             return {
               value: t.level,
               label: t.levelName,
-              totalPrice: t.totalPrice / 100,
-              price: t.price / 100
+              totalPrice: t.totalPrice,
+              price: t.price
             }
           })
         })

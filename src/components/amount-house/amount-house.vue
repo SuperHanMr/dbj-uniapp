@@ -29,7 +29,8 @@
     },
     props:{
       checkData:{},
-      index:0
+      index:0,
+      isReport:true
     }, 
     data() {
       return {
@@ -43,18 +44,25 @@
     watch:{
       checkData:{
         handler:function(){
-          console.log(123332)
+          
           this.getData() 
         },
-        deep:true
+        deep:true,
+        immediate: true
       }
       
     },
     methods:{
       getData(){
+        console.log(this.isReport)
+        if(!this.isReport){
+          this.checkData.status = 1
+        }
         getAmountDetail(this.checkData).then(res=>{
           this.imageData = res
-          
+          if(this.imageData.measureStructImages.length===0){
+            this.$emit('isEmpty',this.index)
+          }
         }).catch(err=>{
           this.$emit('isEmpty',this.index)
         })

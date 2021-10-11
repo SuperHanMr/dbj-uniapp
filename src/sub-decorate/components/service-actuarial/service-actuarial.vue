@@ -1,6 +1,6 @@
 <template>
   <view class="service-actuarial">
-    <view class="content">
+    <view class="content" v-if="hasReport">
       <text class="name">我的精算单</text>
       <view class="click-check" @click="toCost">
         <text>点击查看</text>
@@ -11,20 +11,34 @@
 </template>
 
 <script>
+  import {getActuaryReport} from '../../../api/decorate.js'
   export default{
     props:{
       serverId:{
         type:Number,
         default:0
       },
+      index:0,
       projectId:0
     },
     data(){
       return{
-        
+        hasReport:false
       }
     },
+    mounted(){
+      this.getActuaryReport()
+    },
     methods:{
+      getActuaryReport(){
+        getActuaryReport(this.projectId).then(res=>{
+          this.hasReport = true
+        }).catch(err=>{
+          console.log(err)
+          this.hasReport = false
+          this.$emit('isEmpty',this.index)
+        })
+      },
       toCost(){
         uni.navigateTo({
           url:'/sub-decorate/pages/current-cost/current-cost?id='+this.serverId+'&isCost=1'+'&projectId='+this.projectId

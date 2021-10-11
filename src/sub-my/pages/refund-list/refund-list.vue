@@ -1,5 +1,6 @@
 <template>
-		<view class="container" :style="{paddingBottom:systemBottom}" >
+	<view class="container" :style="{paddingBottom:dataList.length > 0 ? systemBottom : 0,backgroundColor:dataList.length>0 ? '#ffffff':''}" >
+		<view v-if="dataList.length>0">
 			<view class="order-container" v-for="(item,index) in dataList" :key="index" >
 				<view class="header">
 					<view class="store-name">
@@ -87,19 +88,18 @@
 						</view>
 				</view>
 			</view>
-				<popup-dialog ref="popup"  :title="title" @close="close" @confirm="confirm"></popup-dialog>
-				<!-- <uni-popup ref="popup" type="dialog">
-					<uni-popup-dialog
-						mode="base"
-						message="成功消息"
-						title="确定要取消本次退款申请？"
-						:before-close="true" 
-						@close="close" 
-						@confirm="confirm()">
-					</uni-popup-dialog>
-				</uni-popup> -->
-
 		</view>
+		
+		<view class="empty-container" v-else>
+			<view class="line" />
+			<view class="show">
+				<image src="../../static/empty_page@2x.png" mode=""></image>
+				<text>您还没有退款记录</text>
+			</view>
+		</view>
+		
+		<popup-dialog ref="popup"  :title="title" @close="close" @confirm="confirm"></popup-dialog>
+	</view>
 
 
 </template>
@@ -138,7 +138,8 @@
 	 //页面上拉触底事件的处理函数
 		onReachBottom(e) {
 			console.log("底部")// 滚动到页面执行该方法 
-			if(this.query.lastId > 0 && this.dataListLength <1) return 
+			console.log("this.query.lastId",this.query.lastId,"this.dataListLength=",this.dataListLength)
+			if(this.query.lastId > 0 && this.dataListLength == 0) return 
 			this.getList();
 			
 		},
@@ -154,7 +155,7 @@
 				getRefundList(params).then(data=>{
 					let refundList=data;
 					this.dataListLength=refundList.length
-					if(refundList.length>1){
+					if(refundList.length >= 1){
 						this.query.lastId = refundList[refundList.length-1].id
 					}
 					console.log("this.lastId=",this.query.lastId,)
@@ -215,10 +216,12 @@
 
 <style lang="scss" scoped>
 	.container{
+		height: 100%;
 		.order-container{
 			background-color: #FFFFFF;
 		}
 	}
+	
 
 	.header {
 		height: 96rpx;
@@ -398,7 +401,34 @@
 			}
 		}
 	}
-
+	
+	.empty-container{
+		height: 100%;
+		background-color: #FFFFFF;
+		.line{
+			height: 1rpx;
+			background-color: #f4f4f4;
+		}
+		.show{
+			padding-top: 180rpx;
+			display: flex;
+			flex-flow: column nowrap;
+			align-items: center;
+			image{
+				width: 248rpx;
+				height: 248rpx;
+				object-fit: cover;
+				margin-bottom: 22rpx;
+			}
+			text{
+				height:26rpx;
+				line-height: 26rpx;
+				font-size: 26rpx;
+				color: #999999;
+			}
+			
+		}
+	}
 	button{
 		display: none;
 	}

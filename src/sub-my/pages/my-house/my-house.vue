@@ -5,9 +5,9 @@
 **/
 
 <template>
-	<view class="my-house">
-		<view class="box" :style="{marginBottom:systemHeight}">
-			<view class="touch-item" v-if="listData.length>0" v-for="(item,index) in listData"
+	<view class="my-house" >
+		<view class="box" :style="{marginBottom:systemHeight}" v-if="listData.length>0">
+			<view class="touch-item"  v-for="(item,index) in listData"
 				:class="item.isTouchMove == true?'touch-move-active':''" :key='item.id' @touchstart="touchstart"
 				@touchmove="touchmove" :data-index='index'>
 				<view class="list-count">
@@ -44,6 +44,13 @@
 				</view>
 			</view>
 		</view>
+    <view class="no-house" :style="{marginBottom:systemHeight}"  v-else >
+      <image src="http://dbj.dragonn.top/static/mp/dabanjia/images/decorate/empty.png"></image>
+      <text>暂无收货地址</text>
+      <view class="no-add-btn" @click="toAddHouse">
+        添加地址
+      </view>
+    </view>
 	</view>
 </template>
 <script>
@@ -65,15 +72,6 @@
 				fromHome: false,
 				isEdit: true
 			};
-		},
-		mounted() {
-
-		},
-		created() {
-
-		},
-		computed: {
-
 		},
 		onShow() {
 			this.getHouseList()
@@ -159,15 +157,13 @@
 				queryEstates({
 					isNeedRelative: false,
 				}).then(res => {
-					this.listData = res || []
+					this.listData = res|| []
 					this.listData.forEach(function(v, i) {
 						v.isTouchMove = false
 					})
-					console.log(this.listData)
 				})
 			},
 			edit(item) {
-				console.log('/sub-decorate/pages/add-house/add-house?id=' + item.id)
 				uni.navigateTo({
 					url: '/sub-decorate/pages/add-house/add-house?id=' + item.id
 				})
@@ -233,6 +229,7 @@
 
 	.my-house {
 		height: 100%;
+    background-color: #fff;
 		// display: flex;
 		// flex-direction: column;
 	}
@@ -439,4 +436,33 @@
 			font-size: 32rpx;
 		}
 	}
+  .no-house{
+    width: 248rpx;
+    margin: 0 auto;
+    padding-top: 260rpx;
+    // display: flex;
+    image{
+      width: 248rpx;
+      height: 248rpx;
+      margin-bottom: 22rpx;
+    }
+    text{
+      display: block;
+      width: 100%;
+      font-size: 26rpx;
+      color: #999;
+      text-align: center;
+    }
+    .no-add-btn{
+      width: 248rpx;
+      height: 88rpx;
+      background: linear-gradient(135deg,#53d5cc, #4fc9c9);
+      border-radius: 12rpx;
+      line-height: 88rpx;
+      text-align: center;
+      margin-top: 76rpx;
+      color: #fff;
+      font-size: 32rpx;
+    }
+  }
 </style>
