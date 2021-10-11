@@ -104,11 +104,11 @@
             购买相关服务 即刻开启装修
           </view>
           <guide-card v-if="availGuides.includes('design')" cardType="service"
-            imageUrl="http://iph.href.lu/702x160?text=设计服务702x160&fg=EB7662&bg=FFE2DD"
+            imageUrl="http://dbj.dragonn.top/static/mp/dabanjia/images/decorate/ic_myhouse_design%402x.png"
             @buyNow="gonohousedecatore('design')">
           </guide-card>
           <guide-card v-if="availGuides.includes('actuary')" cardType="actuary"
-            imageUrl="http://iph.href.lu/702x160?text=精算服务702x160&fg=4173c8&bg=d0e0fa"
+            imageUrl="http://dbj.dragonn.top/static/mp/dabanjia/images/decorate/ic_myhouse_actuary%402x.png"
             @buyNow="gonohousedecatore('actuary')">
           </guide-card>
         </view>
