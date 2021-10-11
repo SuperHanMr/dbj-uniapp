@@ -61,8 +61,11 @@
 			</view>
 		</view>
 		<!-- 快捷栏目 -->
-		<image v-for="(item,index) in status1List" :key="item.id" @click="onZoneClick(item)" :src="item.icon"
-			class="experience">
+		<view style="padding: 0 24rpx;">
+			<image v-for="(item,index) in status1List" :key="item.id" @click="onZoneClick(item)" :src="item.icon"
+				class="experience">
+		</view>
+	
 
 		</image>
 		<view class="example-content">
@@ -133,7 +136,7 @@
 							{{foramtPrice(item)}}
 						</text>
 						<text class="ex">.{{formatCent(item)}}</text>
-						/件
+						/{{item.product.salesUnit.unitName||''}}
 					</view>
 				</view>
 			</view>
@@ -184,6 +187,7 @@
 				swiperAuto: false,
 				status1List: [],
 				status2List: [],
+				currentAddress: {}
 
 			};
 		},
@@ -248,10 +252,10 @@
 		},
 		methods: {
 			currentHouseChange(item) {
+				this.currentAddress = item;
 				uni.$emit('currentHouseChange', item);
 				getApp().globalData.currentHouse = item;
-				// uni.setStorageSync("currentHouse", JSON.stringify(defaultHouse));
-
+				this.reloadData()
 			},
 			toSearch() {
 				uni.navigateTo({
@@ -266,7 +270,7 @@
 			toMessage() {
 				this.$store.dispatch("openCustomerConversation");
 			},
-		
+
 			toGoodsDetail(id) {
 				uni.navigateTo({
 					url: "/sub-classify/pages/goods-detail/goods-detail?goodId=" + id
@@ -489,7 +493,11 @@
 				//直播列表
 				this.getQueryLiveList();
 				//金刚区列表
-				navList().then((e) => {
+				navList({
+					provinceId: this.currentAddress.provinceId,
+					cityId: this.currentAddress.cityId,
+					areaId: this.currentAddress.areaId
+				}).then((e) => {
 					this.zoneList = [];
 					this.status1List = [];
 					this.status2List = [];
@@ -820,13 +828,9 @@
 	}
 
 	.experience {
-		margin: 0 24rpx;
 		height: 198rpx;
 		border-radius: 16rpx;
-		background: url("http://dbj.dragonn.top/static/mp/dabanjia/images/home/experience.png");
-		-moz-background-size: 100% 100%;
-		background-size: 100% 100%;
-		padding: 0 24rpx;
+		width: 100%;
 
 		.title {
 			padding-top: 24rpx;

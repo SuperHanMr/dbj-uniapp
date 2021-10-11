@@ -18,6 +18,7 @@
         type:Number,
         default:0
       },
+      index:0,
       projectId:0
     },
     data(){
@@ -34,6 +35,8 @@
           this.hasReport = true
         }).catch(err=>{
           console.log(err)
+          this.hasReport = false
+          this.$emit('isEmpty',this.index)
         })
       },
       toCost(){

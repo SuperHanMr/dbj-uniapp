@@ -481,12 +481,17 @@ export default {
       projectId: 0,
       userId: 0,
 			dynamicPage: 1,
-			replyPage: 1
+			replyPage: 1,
+			homePageEstate: {}
     };
   },
   onLoad(option) {
     this.projectId = option.projectId;
     this.userId = uni.getStorageSync("userId");
+		uni.$on("currentHouseChange", (item) => {
+		  this.homePageEstate = item
+		  // getApp().globalData.switchFlag = "home"    
+		})  
   },
 	onReachBottom() {
 		this.dynamicPage+=1;
@@ -712,12 +717,12 @@ export default {
 		},
 		toDecorateService(){
 			uni.navigateTo({
-			  url: "/sub-decorate/pages/no-house-decorate/no-house-decorate?type=decorate",
+			  url: `/sub-decorate/pages/no-house-decorate/no-house-decorate?type=decorate&estateId=${this.homePageEstate.id}`,
 			});        
 		},
 		toCheckRoomService(){
 			uni.navigateTo({
-			  url: "/sub-decorate/pages/no-house-decorate/no-house-decorate?type=checkHouse",
+			  url: `/sub-decorate/pages/no-house-decorate/no-house-decorate?type=checkHouse&estateId=${this.homePageEstate.id}`,
 			});        
 		},
     toDecorateCalendar() {

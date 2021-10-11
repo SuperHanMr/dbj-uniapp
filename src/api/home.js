@@ -20,6 +20,19 @@ export function navList(params) {
 	});
 }
 
+//找设计
+export function findDesign(params) {
+	return request.get(`/product/app/products/classification/tree/1`, {
+		params
+	});
+}
+//关联商品SPU默认SKU表格
+export function defaultSkus(params) {
+	return request.get(`/product/app/products/relation/spus/defaultSkus/list`, {
+		params
+	});
+}
+
 //查询案例列表
 export function caseList(params) {
 	return request.get(`/app/case/v2/list`, {
@@ -65,6 +78,6 @@ export function insertAndGetLikeNum(params) {
 	return request.post(`/app/liveLike/insertAndGetLikeNum`, {
 		...params,
 		hideToast: true,
-		ignoreLogin:true
+		ignoreLogin: true
 	});
 }
