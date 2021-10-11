@@ -204,9 +204,7 @@
 		},
 		// watch:{
 		//   'addData.insideArea':function(){
-		//     console.log(this.addData.insideArea)
-		//     // this.addData.insideArea.
-		//     this.insideArea = ''
+        
 		//   }
 		// },
 		methods: {
@@ -414,6 +412,15 @@
 					});
 					return false;
 				}
+        let rule = /^(\+)?\d+(\.\d+)?$/
+        if(!rule.test(data.insideArea)){
+          uni.showToast({
+          	title: "房屋面积需输入1-10000以内的数字",
+          	duration: 2000,
+          	icon: "none",
+          });
+          return false;
+        }
 				if (data.insideArea < 1 || data.insideArea > 10000) {
 					uni.showToast({
 						title: "房屋面积需输入1-10000以内的数字",
@@ -422,6 +429,7 @@
 					});
 					return false;
 				}
+
 				if (data.hasLift) {
 					delete data.floors;
 				}

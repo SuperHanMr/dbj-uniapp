@@ -99,7 +99,7 @@ export function replaceGrab(params) {
 
 //获取量房交付报告
 export function getAmountDetail(params) {
-	return request.get("/pm/app/measure/measurePictures/" + params.serveId+'/'+params.type)
+	return request.get("/pm/app/measure/measurePictures/" + params.serveId+'/'+params.type+'?status='+params.status||0)
 }
 
 //驳回量房交付报告
@@ -110,6 +110,11 @@ export function replaceAmount(params) {
 //确认量房交付报告
 export function sureAmount(params) {
 	return request.post("/pm/app/measure/agreeMeasurePlan", params)
+}
+
+//查询是否有精算报告
+export function getActuaryReport(params) {
+	return request.get("/pm/web/actuary/list/" + params)
 }
 
 //获取验房交付报告

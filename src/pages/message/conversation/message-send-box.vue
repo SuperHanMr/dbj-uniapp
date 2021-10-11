@@ -195,6 +195,7 @@
           payload: { text: this.messageContent },
         });
         this.$store.commit("pushCurrentMessageList", message);
+        uni.$emit("scroll-to-bottom");
         getTim().sendMessage(message).then(() => {
           this.messageContent = "";
           this.inputFocus = true;
@@ -228,6 +229,15 @@
               },
             });
             self.$store.commit("pushCurrentMessageList", message);
+            uni.$emit("scroll-to-bottom");
+            const sendFail = () => {
+              uni.showToast({
+                icon: "error",
+                title: "消息发送失败"
+              })
+              self.$store.commit("removeMessageFromCurrentList", message);
+              uni.$emit("scroll-to-bottom");
+            };
             upload({
               filePath: filePath,
               fileType: "image",
@@ -247,11 +257,12 @@
               },
               fail: (res) => {
                 console.log("upload fail", res);
+                sendFail();
               },
               progess: (res) => {
                 console.log("upload progess:", res);
               }
-            })
+            }).catch(sendFail);
           }
         })
       },
@@ -277,8 +288,17 @@
           },
         });
         self.$store.commit("pushCurrentMessageList", message);
+        uni.$emit("scroll-to-bottom");
         let thumbReady = false;
         let videoReady = false;
+        const sendFail = () => {
+          uni.showToast({
+            icon: "error",
+            title: "消息发送失败"
+          })
+          self.$store.commit("removeMessageFromCurrentList", message);
+          uni.$emit("scroll-to-bottom");
+        }
         const sendMessage = () => {
           // 缩略图和视频都上传成功后再发消息
           if (thumbReady && videoReady) {
@@ -305,11 +325,12 @@
           },
           fail: (res) => {
             console.log("upload fail", res);
+            sendFail();
           },
           progess: (res) => {
             console.log("upload progess:", res);
           }
-        })
+        }).catch(sendFail);
         upload({
           filePath: filePath,
           fileType: "video",
@@ -327,11 +348,12 @@
           },
           fail: (res) => {
             console.log("upload fail", res);
+            sendFail();
           },
           progess: (res) => {
             console.log("upload progess:", res);
           }
-        })
+        }).catch(sendFail)
       },
       sendAudioMessage(res) {
         // 1. 创建消息实例，接口返回的实例可以上屏
@@ -409,7 +431,14 @@
                 } = res;
                 tempFiles.forEach(tempFile => {
                   if (tempFile.fileType === "image") {
-                    self.sendImageMessage(tempFile)
+                    const {
+                      tempFilePath,
+                      size
+                    } = tempFile;
+                    self.sendImageMessage({
+                      path: tempFilePath,
+                      size: size
+                    });
                   } else if (tempFile.fileType === "video") {
                     const {
                       duration,
@@ -418,7 +447,7 @@
                       size,
                       tempFilePath,
                       thumbTempFilePath,
-                    } = res;
+                    } = tempFile;
                     self.sendVideoMessage({
                       path: tempFilePath,
                       thumbPath: thumbTempFilePath,

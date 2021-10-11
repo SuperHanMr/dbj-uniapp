@@ -50,9 +50,10 @@
           @goDecorateCalendar="goDecorateCalendar"></text-scroll>
         <!-- 我的仓库 -->
         <view v-if="haveWarehouse" class="my-decorate-service-wrap">
-          <image mode="aspectFit" class="top-bg"
+          <!-- <image mode="aspectFit" class="top-bg"
             src="http://dbj.dragonn.top/static/mp/dabanjia/images/decorate/service-card-top.svg">
-          </image>
+          </image> -->
+          <view class="top-bg"></view>
           <view class="my-decorate-service">
             <view class="service-title flex-space-between-row">
               <text class="t">我的仓库</text>
@@ -76,9 +77,10 @@
         </view>
         <!-- 我的装修服务 -->
         <view class="my-decorate-service-wrap" v-if="purchasedServiceList.length > 0 || aServiceData.myServiceFlag">
-          <image mode="aspectFit" class="top-bg"
+          <!-- <image mode="aspectFit" class="top-bg"
             src="http://dbj.dragonn.top/static/mp/dabanjia/images/decorate/service-card-top.svg">
-          </image>
+          </image> -->
+          <view class="top-bg"></view>
           <view class="my-decorate-service">
             <view class="service-title flex-space-between-row">
               <text class="t">{{who}}的装修服务</text>
@@ -102,11 +104,11 @@
             购买相关服务 即刻开启装修
           </view>
           <guide-card v-if="availGuides.includes('design')" cardType="service"
-            imageUrl="http://iph.href.lu/702x160?text=设计服务702x160&fg=EB7662&bg=FFE2DD"
+            imageUrl="http://dbj.dragonn.top/static/mp/dabanjia/images/decorate/ic_myhouse_design%402x.png"
             @buyNow="gonohousedecatore('design')">
           </guide-card>
           <guide-card v-if="availGuides.includes('actuary')" cardType="actuary"
-            imageUrl="http://iph.href.lu/702x160?text=精算服务702x160&fg=4173c8&bg=d0e0fa"
+            imageUrl="http://dbj.dragonn.top/static/mp/dabanjia/images/decorate/ic_myhouse_actuary%402x.png"
             @buyNow="gonohousedecatore('actuary')">
           </guide-card>
         </view>
