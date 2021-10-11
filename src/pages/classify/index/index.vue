@@ -58,6 +58,7 @@
       }
       console.log(naviData);
       this.getList();
+      this.$store.dispatch("updateTabBarBadge");
     },
     methods: {
       searchClick() {
