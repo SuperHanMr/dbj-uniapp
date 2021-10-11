@@ -203,12 +203,10 @@
 			},
 		},
 		onLoad() {
-			uni.getSystemInfo({
-				success: e => {
-					console.log('???????/')
-					console.log(e)
-				}
-			})
+			uni.$on("refrishHouse", (item) => {
+				this.reloadData();
+				// uni.setStorageSync("currentHouse", JSON.stringify(item));
+			});
 			// uni.hideShareMenu();
 			// this.getHomeList();
 			this.reloadData();
@@ -290,10 +288,10 @@
 			},
 			formatCent(item) {
 				let price = String(item.product.skuPrice || '0');
-				let fixedNum = Number(price/100).toFixed(2)
+				let fixedNum = Number(price / 100).toFixed(2)
 				console.log(fixedNum)
 				console.log(String(fixedNum).split('.')[1])
-				if (String(fixedNum).split('.').length>1) {
+				if (String(fixedNum).split('.').length > 1) {
 					return String(fixedNum).split('.')[1]
 				} else {
 					return ''

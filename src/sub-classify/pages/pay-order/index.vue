@@ -219,6 +219,7 @@
         this.originFrom = e.from
       }
       this.houseId = e.houseId?e.houseId: getApp().globalData.currentHouse.id
+      console.log(e.houseId, "e.houseId")
       this.buyCount = e.buyCount
       this.skuId = e.skuId
       this.storeId = e.storeId
@@ -251,7 +252,7 @@
       },
       chooseHouse() {
         uni.navigateTo({
-           url: "/sub-my/pages/my-house/my-house"
+           url: "/sub-my/pages/my-house/my-house?isEdit=0"
         })
       },
       goAgreement() {

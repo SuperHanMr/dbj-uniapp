@@ -19,9 +19,8 @@
 			<view class="state-bar">
 				<view v-for="(item,index) in roomInfo.interactionInfo" :key="item.id">
 
-					<view class="user" @click="toPersonal({index,item})">
+					<view v-if="index==0||item.connectStatus=='connecting'" class="user" @click="toPersonal({index,item})">
 						<image class="img" :src="item.userAvatar">
-
 						</image>
 						<view class="name">
 							{{item.userNickName}}
@@ -394,8 +393,6 @@
 			},
 			messageRecived(event) {
 				let messageList = event.data || [];
-						console.log('????????????');
-						console.log(messageList)
 				let systemMessageList = messageList.filter(
 					(msg) => msg.to === ('group' + this.roomId)
 				);
@@ -408,9 +405,6 @@
 					})
 					this.list = this.list.concat(systemMessageList);
 					this.scrollToBottom();
-					console.log(TIM.TYPES.GRP_TIP_MBR_JOIN)
-					console.log(systemMessageList[0].payload.operationType)
-					console.log(JSON.stringify(systemMessageList));
 				}
 			},
 			toLogin() {
@@ -419,6 +413,7 @@
 				});
 			},
 			toBack() {
+				uni.$emit("refrishHouse")
 				uni.navigateBack({});
 			},
 			scrollToBottom() {
@@ -432,11 +427,7 @@
 					}
 				});
 			},
-			toBack() {
-				uni.navigateBack({});
-			},
 			statechange(e) {
-				console.log("live-player code:", e.detail.code);
 			},
 			error(e) {},
 			handleShowSendBox() {
@@ -446,7 +437,6 @@
 				uni.$emit("live-room-click");
 			},
 			handleAddMessage(message) {
-				console.log("add sadfsadfsd", message);
 				if (message.type == 'TIMCustomElem' && message.payload && message.payload.data) {
 									
 					message.formatData = JSON.parse(message.payload.data);
