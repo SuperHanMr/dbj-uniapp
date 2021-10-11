@@ -415,7 +415,8 @@
             if (this.estateId) {
               flt = data.filter(t => t.id == this.estateId);
             } else {
-              flt = data.filter(t => t.defaultEstate);
+              // flt = this.defaultHouse
+              flt = data.filter(t => t.id == this.defaultHouse.id);
             }
             if (flt && flt.length > 0) {
               this.currentHouse = flt[0]
