@@ -209,7 +209,7 @@
         this.currentHouse = this.selectHouseData
         this.getServiceSku()
       }
-      this.defaultHouse = JSON.parse(uni.getStorageSync("currentHouse"))
+      this.defaultHouse = getApp().globalData.currentHouse
     },
     methods: {
       setDoorTime(value) {
