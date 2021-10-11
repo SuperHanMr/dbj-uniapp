@@ -427,7 +427,7 @@
               arr = data.filter(t => t.projectId === currentProject?.projectId)
             }
             if (arr.length === 0) {
-              arr = data.filter(t => t.defaultEstate)
+              arr = data.filter(t => t.defaultEstate && t.relegationType === 1)
             }
             if (arr && arr.length > 0) {
               this.currentProject = arr[0]
