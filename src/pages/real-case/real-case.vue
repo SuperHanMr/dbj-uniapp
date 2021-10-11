@@ -121,6 +121,7 @@
 			swiperChange(e) {
 				console.log(e,123123,)
 				this.selectStatus = e.detail.current;
+				this.currentVal = e.detail.current;
 				this.pagState.rows = 10;
 				this.pagState.page = 1;
 				this.pagState.totalPage = "";
@@ -184,13 +185,13 @@
 				}).then((res) => {
 					if (list[index].isCollection == false) {
 						uni.showToast({
-							title:'收藏成功！',
+							title:'收藏成功',
 							icon: "none"
 						})
 						list[index].collectionCount += 1;
 					} else {
 						uni.showToast({
-							title:'取消成功！',
+							title:'收藏已取消',
 							icon: "none"
 						})
 						list[index].collectionCount -= 1;
