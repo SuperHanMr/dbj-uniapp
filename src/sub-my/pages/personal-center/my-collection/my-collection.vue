@@ -20,26 +20,26 @@
 		<view class="line" />
 
 		<swiper class="swiper" :current="currentIndex" :duration="200"	@change="swiperChange"	:style="{backgroundColor:listLength > 0 ?'none':'#ffffff'}">
-
+			<!-- 商品 -->
 			<swiper-item :class="{emptyContainer:productList.length < 1 ? true : false}">
-				<scroll-view 
-					v-if="productList.length > 0" 
-					class="scroll-view" 
-					scroll-y="true" 
-					refresher-background="#FFF" 
+				<scroll-view
+					v-if="productList.length > 0"
+					class="scroll-view"
+					scroll-y="true"
+					refresher-background="#FFF"
 					refresher-enabled="true"
-					:refresher-triggered="triggered" 
-					@refresherrefresh="onRefresh" 
+					:refresher-triggered="triggered"
+					@refresherrefresh="onRefresh"
 					@scrolltolower="onLoadMore"
 				>
 					<view :style="{paddingBottom:systemBottom +'rpx'}">
-						<waterfall 
-							:key="itemTab.fallKey" 
-							:list="productList" 
-							@selectedItem="onSelectedItem" 
+						<waterfall
+							:key="itemTab.fallKey"
+							:list="productList"
+							@selectedItem="onSelectedItem"
 							:allCheck="allCheck"
-							:showCheckIcon="!showMgrBtn" 
-							:isAllCheck="isAllCheck" 
+							:showCheckIcon="!showMgrBtn"
+							:isAllCheck="isAllCheck"
 							:isActive="isActive"></waterfall>
 					</view>
 				</scroll-view>
@@ -48,26 +48,26 @@
 					<text>您还没有收藏商品</text>
 				</view>
 			</swiper-item>
-
+			<!-- 案例 -->
 			<swiper-item :class="{emptyContainer:caseList.length < 1 ? true : false}">
-				<scroll-view 
-					v-if="caseList.length >0" 
-					class="scroll-view" 
+				<scroll-view
+					v-if="caseList.length >0"
+					class="scroll-view"
 					scroll-y="true"
 					refresher-background="#FFF"
 					refresher-enabled="true"
-					:refresher-triggered="triggered" 
+					:refresher-triggered="triggered"
 					@refresherrefresh="onRefresh"
 					@scrolltolower="onLoadMore"
 				>
 					<view :style="{paddingBottom:systemBottom +'rpx'}">
-						<waterfall 
-							:key="itemTab.fallKey" 
-							:list="caseList" 
-							@selectedItem="onSelectedItem" 
+						<waterfall
+							:key="itemTab.fallKey"
+							:list="caseList"
+							@selectedItem="onSelectedItem"
 							:allCheck="allCheck"
-							:showCheckIcon="!showMgrBtn" 
-							:isAllCheck='isAllCheck' 
+							:showCheckIcon="!showMgrBtn"
+							:isAllCheck='isAllCheck'
 							:isActive="isActive"></waterfall>
 					</view>
 				</scroll-view>
@@ -82,7 +82,7 @@
 		<view class="footer" v-if=" currentList.length >= 1 && showCalCelBtn" :style="{paddingBottom:systemBottom + 24 + 'rpx'}">
 			<view class="left">
 				<image v-if="allCheck"  src="../../../../static/order/images/product_checked.png"  @click="handleAllCheck" mode=""></image>
-				<view class="checkStyle" v-else @click="handleAllCheck"/>
+				<view v-else  class="checkStyle" @click="handleAllCheck"/>
 				<!-- <image v-else src="../../../../static/order/images/product_unChecked.png" mode="" @click="handleAllCheck"/> -->
 				<text>全选</text>
 			</view>
@@ -92,9 +92,12 @@
 		</view>
 
 		<!-- 取消收藏弹框 -->
-		<popup-dialog ref="popup" :title="title" @close="closePopDialog" @confirm="confirmCancelCollection"></popup-dialog>
-
-
+		<popup-dialog
+			ref="popup"
+			:title="title"
+			@close="closePopDialog"
+			@confirm="confirmCancelCollection"
+		/>
 
 	</view>
 </template>
@@ -246,6 +249,7 @@
 				this.showMgrBtn = !this.showMgrBtn
 				this.showCalCelBtn = true
 			},
+
 			//完成
 			handleDone() {
 				this.showMgrBtn = !this.showMgrBtn
@@ -261,6 +265,7 @@
 					// console.log("点击完成后的列表=", this.caseList)
 				}
 			},
+
 			// 点击单个item的操作获取选中的数据
 			onSelectedItem(data) {
 				if(this.showMgrBtn){
@@ -287,14 +292,14 @@
 					})
 					console.log("this.checkedItemIds=",this.checkedItemIds)
 					this.productList = data
+					console.log("this.productList=",this.productList)
 					if(this.checkedItemIds.length == this.productList.length){
 						this.allCheck=true;
 						this.isAllCheck=true;
-						// this.isActive = true
-					}else{
+					}
+					else{
 						this.allCheck=false
 						// this.isAllCheck=false;
-						// this.isActive = true
 					}
 				}
 			},
@@ -302,9 +307,6 @@
 			// 全选
 			handleAllCheck(){
 				this.allCheck=!this.allCheck
-				// this.allCheck ? this.isAllCheck=true : this.isAllCheck=false
-				// this.isActive = false
-				// console.log("this.allCheck=",this.allCheck,"this.isAllCheck=",this.isAllCheck)
 				switch(this.currentIndex){
 					case 0:
 						this.allCheckFunction(this.productList)
@@ -315,18 +317,17 @@
 				}
 			},
 			allCheckFunction(list){
+				// console.log("列表list=",list)
 				if(this.allCheck){
 					list =this.handleList(list,true)
 					this.checkedItemIds = list.map(item=>{
 						return {relationId:item.id,authorId:item.authorId,subBizType:item.subBizType}
 					})
-					// console.log("列表list=",list)
 					console.log("this.checkedItemIds=",this.checkedItemIds)
 				}else{
 					list =this.handleList(list,false)
 					this.checkedItemIds =[]
 					this.isAllCheck=false;
-					// console.log("列表list=",list)
 					console.log("this.checkedItemIds=",this.checkedItemIds)
 				}
 			},
@@ -350,7 +351,6 @@
 			closePopDialog(){
 				this.$refs.popup.close()
 			},
-			//取消收藏
 			confirmCancelCollection() {
 				let params={
 					list:this.checkedItemIds,
@@ -399,7 +399,6 @@
 					this.getCaseList()
 				}
 			},
-
 			onRefresh(e) {
 				this.triggered = true;
 				setTimeout(() => {
@@ -479,7 +478,7 @@
 		display: flex;
 		flex-direction: column;
 	}
-	
+
 	swiper-item {
 		height: 100%;
 		overflow: auto;
