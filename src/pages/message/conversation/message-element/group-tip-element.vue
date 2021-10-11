@@ -18,6 +18,9 @@ export default {
   },
   computed: {
     text() {
+      if (this.message.from === "administrator") {
+        return this.message.payload.text;
+      }
       return getTextFromGroupTipMessage(this.message);
     },
   },

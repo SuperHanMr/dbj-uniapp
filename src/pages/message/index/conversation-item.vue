@@ -87,6 +87,9 @@
               if (payloadData.type === "video_message") {
                 return "[视频]"
               }
+              if (payloadData.type === "file_message") {
+                return "[文件]"
+              }
               let template = MessageTemplate[payloadData.type];
               if (template && template.summary) {
                 return "[" + compile(template.summary)(payloadData.params || {}) + "]"

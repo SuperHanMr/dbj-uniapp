@@ -196,6 +196,7 @@
       console.log('showTabBar')
       uni.showTabBar()
       this.getEstateList()
+      this.$store.dispatch("updateTabBarBadge");
     },
     data() {
       return {
