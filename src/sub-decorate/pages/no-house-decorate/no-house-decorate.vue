@@ -282,8 +282,8 @@
             return {
               value: t.level,
               label: t.levelName,
-              totalPrice: t.totalPrice / 100,
-              price: t.price / 100
+              totalPrice: t.totalPrice,
+              price: t.price
             }
           })
         })
