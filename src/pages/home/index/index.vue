@@ -136,7 +136,7 @@
 							{{foramtPrice(item)}}
 						</text>
 						<text class="ex">.{{formatCent(item)}}</text>
-						/件
+						/{{item.product.salesUnit.unitName||''}}
 					</view>
 				</view>
 			</view>
