@@ -20,7 +20,7 @@
 					<view class="label">
 						公司名称
 					</view>
-					<input type="text" :value="companyValue" placeholder="请输入30个字以内" @input="companyHandler($event)" />
+					<input type="text" :value="companyValue" maxlength=30 placeholder="请输入30个字以内" @input="companyHandler($event)" />
 					<image src="../../../static/merchant-entry/live_input_clear.png" mode=""
 						@click="deleteCompanyName()" v-if="companyValue != ''"></image>
 				</view>
@@ -51,7 +51,7 @@
 					<view class="value" v-if="businessCategoryList.length > 0"
 						v-for="(item, index) in businessCategoryList">
 						<view class="text">
-							{{item.label}}
+							{{item.oneLevelCategoryName + '-' + item.twoLevelCategoryName + '-' + item.label}}
 						</view>
 						<image src="../../../static/merchant-entry/live_input_clear.png" mode=""
 							@click="deleteBusinessCategory(index)"></image>
@@ -183,7 +183,7 @@
 						text: '北京'
 					}
 				],
-				argumentFile: true,
+				argumentFile: false,
 				businessCategoryList: [],
 				categroyTreeList: [],
 				deleteStatus: {}
@@ -245,6 +245,14 @@
 				// uni.navigateTo({
 				// 	url:'../merchant-entry-success/merchant-entry-success'
 				// })
+				const value = /^(?!(\s+$))/.test(this.companyValue);
+				if (!value) {
+					uni.showToast({
+						title: '公司名称不能全是空格！',
+						icon: 'none'
+					})
+					return ;
+				}
 				const ids = [];
 				// const businessList = JSON.parse(JSON.stringify(this.businessCategoryList));
 				// businessList.forEach((item) => {
@@ -497,7 +505,7 @@
 					border-radius: 6px;
 					border: 1px solid #CBCCCC;
 					margin-bottom: 48rpx;
-					padding: 24rpx 0 24rpx 24rpx;
+					padding: 24rpx 62rpx 24rpx 24rpx;
 					caret-color: #35C4C4
 				}
 

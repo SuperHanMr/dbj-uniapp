@@ -184,7 +184,7 @@
 					})
 				}else{
 					uni.navigateTo({
-						url:`../my-order/order-failed/order-failed?type=refund&id=${data.id}&status=${data.status}`
+						url:`../my-order/order-failed/order-failed?type=refund&id=${data.id}&status=${data.status}&showReApply=true`
 					})
 				}
 			},

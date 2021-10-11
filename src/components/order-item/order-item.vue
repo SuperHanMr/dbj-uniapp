@@ -12,11 +12,11 @@
 					待发货
 				</view> 
 				<!-- 当该商品正在退款中显示退款中标签，则对应取消退款状态 -->
-				<view class="icon-status1" v-if="orderStatus==2 && dataList.refundStatus == 0">
+				<view class="icon-status1" v-if="orderStatus==2 && dataList.refundBillStatus == 1">
 					退款中
 				</view>
 				<!--  当该商品处于已退款状态时，则对应退款成功状态 -->
-				<view class="icon-status2" v-if="orderStatus==2 && dataList.refundStatus == 1" >
+				<view class="icon-status2" v-if="orderStatus==2 && dataList.refundBillStatus == 2" >
 					已退款
 				</view>
 				<image :src="dataList.imgUrl" mode=""></image>

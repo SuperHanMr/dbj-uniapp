@@ -2,7 +2,11 @@
   <view class="container">
 
     <!-- 退款详情 --退款关闭   退款取消与商家拒接 两个页面-->
-    <view class="order-container"  v-if="type =='refund'" :style="{paddingBottom:containerPaddingBottom}">
+    <view
+      class="order-container"
+      v-if="type =='refund'"
+      :style="{paddingBottom:containerPaddingBottom}"
+    >
       <view class="order-status">
         <view class="backgroundStyle" />
         <view class="status">
@@ -96,6 +100,7 @@
       <order-refund-info :refundInfo="refundInfo"></order-refund-info>
 
       <view
+				v-if="status == 3 || status == 5 || showReApply==true "
         class="contact-customer-Reapply"
         :style="{paddingBottom:systemBottom,height:systemHeight}"
       >
@@ -106,17 +111,15 @@
         >
           联系客服
         </view>
-        <view
-          class="Reapply"
-          @click="toApplayForRefund(refundInfo)"
-        >
+				
+        <view v-if="showReApply==true" class="Reapply" @click="toApplayForRefund(refundInfo)" >
           重新申请
         </view>
       </view>
     </view>
 
     <!-- 订单详情  已关闭页面 -->
-    <view  class="order-container"  v-if="type =='close'" :style="{paddingBottom:systemBottom}">
+    <view class="order-container" v-if="type =='close'" :style="{paddingBottom:systemBottom}" >
       <view class="order-status">
         <view class="backgroundStyle" />
         <view class="status">
@@ -128,11 +131,7 @@
         </view>
       </view>
       <order-user-base-info :data="orderInfo"></order-user-base-info>
-      <view
-        class="body2"
-        v-for="(item,index) in orderInfo.details"
-        :key="index"
-      >
+      <view class="body2"  v-for="(item,index) in orderInfo.details" :key="index" >
         <view
           class="header"
           @click="gotoShop(item)"
@@ -181,6 +180,7 @@ export default {
       id: -1,
       status: "",
       from: "",
+			showReApply:true,
 
       refundInfo: {},
       orderInfo: {},
@@ -200,10 +200,12 @@ export default {
   },
 
   onLoad(e) {
-    (this.type = e.type),
-      (this.id = Number(e.id)),
-      (this.status = Number(e.status));
+    this.type = e.type;
+    this.id = Number(e.id);
+    this.status = Number(e.status);
     this.from = e.from;
+		this.showReApply = e.showReApply
+		console.log("this.showReApply=",this.showReApply)
     if (this.type == "refund") {
       //退款成功页面
       this.refundDetail();
@@ -223,9 +225,9 @@ export default {
       //订单关闭页面
       this.title = "退款中";
       this.orderDetail();
+			const currentHouse = JSON.parse(uni.getStorageSync("currentHouse"));
+			this.areaId = currentHouse.areaId;
     }
-    const currentHouse = JSON.parse(uni.getStorageSync("currentHouse"));
-    this.areaId = currentHouse.areaId;
   },
 
   // 改变返回下一个页面的路径
@@ -237,13 +239,13 @@ export default {
       // uni.navigateBack({
       // 		delta:1
       // })
-    }else if(this.from=='inprogress'){
-			uni.redirectTo({
-			  url: `../my-order?index=2`,
-			});
-		}else{
-			console.log("dddd")
-		}
+    } else if (this.from == "inprogress") {
+      uni.redirectTo({
+        url: `../my-order?index=2`,
+      });
+    } else {
+      console.log("dddd");
+    }
   },
 
   methods: {
