@@ -16,7 +16,7 @@
 		<scroll-view class="tab-list" scroll-x="true" @scroll="scroll" scroll-left="120">
 			<view v-for="(item,index) in tabList" :key="item.id" class="tab-item"
 				:class="index==currentTab?'selected-tab':'nomal-tab'" @click="onTab(index)">
-				<image v-if="index==0" class="tab-img"
+				<image v-if="index==0" :class="currentTab==0?'tab-img':'tab-img-un'"
 					:src=" currentTab==0? 'http://dbj.dragonn.top/static/mp/dabanjia/images/home/design_fire.png':'http://dbj.dragonn.top/static/mp/dabanjia/images/home/desigon_unfire.png'"
 					mode=""></image>
 				<text>{{item}}</text>
@@ -79,6 +79,12 @@
 		display: inline-block;
 		width: 32rpx;
 		height: 32rpx;
+	}
+
+	.tab-img-un {
+		display: inline-block;
+		width: 26rpx;
+		height: 26rpx;
 	}
 
 	.nomal-tab {

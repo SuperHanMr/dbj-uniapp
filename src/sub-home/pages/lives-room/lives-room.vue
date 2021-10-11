@@ -19,7 +19,8 @@
 			<view class="state-bar">
 				<view v-for="(item,index) in roomInfo.interactionInfo" :key="item.id">
 
-					<view v-if="index==0||item.connectStatus=='connecting'" class="user" @click="toPersonal({index,item})">
+					<view v-if="index==0||item.connectStatus=='connecting'" class="user"
+						@click="toPersonal({index,item})">
 						<image class="img" :src="item.userAvatar">
 						</image>
 						<view class="name">
@@ -399,7 +400,7 @@
 				if (systemMessageList.length) {
 					systemMessageList.forEach(e => {
 						if (e.type == 'TIMCustomElem' && e.payload && e.payload.data) {
-					
+
 							e.formatData = JSON.parse(e.payload.data);
 						}
 					})
@@ -417,6 +418,7 @@
 				uni.navigateBack({});
 			},
 			scrollToBottom() {
+				console.log('!!!!!!!');
 				let that = this;
 				let query = uni.createSelectorQuery();
 				query.selectAll(".chat-item-height").boundingClientRect();
@@ -427,8 +429,7 @@
 					}
 				});
 			},
-			statechange(e) {
-			},
+			statechange(e) {},
 			error(e) {},
 			handleShowSendBox() {
 				uni.$emit("show-live-send-box");
@@ -438,10 +439,11 @@
 			},
 			handleAddMessage(message) {
 				if (message.type == 'TIMCustomElem' && message.payload && message.payload.data) {
-									
+
 					message.formatData = JSON.parse(message.payload.data);
 				}
 				this.list.push(message);
+				this.scrollToBottom();
 			},
 			handleChooseImage() {
 				const self = this;
@@ -817,7 +819,8 @@
 		}
 
 		.scorll-chat {
-			max-height: 452rpx;
+			// max-height: 50vh;
+			max-height: 30vh;
 
 			.text-center {
 				text-align: center;
@@ -900,6 +903,7 @@
 		height: 112rpx;
 		display: flex;
 		align-items: center;
+		padding-bottom: 24rpx;
 
 		.user {
 			margin-left: 28rpx;
@@ -961,7 +965,7 @@
 	}
 
 	.player {
-		flex: 1;
+		height: 42vh;
 		width: 100vw;
 	}
 
