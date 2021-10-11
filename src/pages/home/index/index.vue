@@ -61,24 +61,17 @@
 			</view>
 		</view>
 		<!-- 快捷栏目 -->
-		<view class="experience">
-			<view class="title">
-				9.9元买设计报价
-			</view>
-			<view class="sub-title">
-				准确计算装修价格，让您合理分配预算
-			</view>
-			<view class="btn">
-				立即体验
-			</view>
+		<view style="padding: 0 24rpx;">
+			<image v-for="(item,index) in status1List" :key="item.id" @click="onZoneClick(item)" :src="item.icon"
+				class="experience">
 		</view>
+	
+
+		</image>
 		<view class="example-content">
 
-			<image class="item" src="http://dbj.dragonn.top/static/mp/dabanjia/images/home/home_study_self.png" mode=""
-				@click="toSelfFitment"></image>
-
-			<image class="item" src="http://dbj.dragonn.top/static/mp/dabanjia/images/home/home_zsal.png" mode=""
-				@click="toRealCase"></image>
+			<image v-for="(item,index) in status2List" :key="item.id" @click="onZoneClick(item)" class="item"
+				:src="item.icon"></image>
 
 		</view>
 
@@ -143,7 +136,7 @@
 							{{foramtPrice(item)}}
 						</text>
 						<text class="ex">.{{formatCent(item)}}</text>
-						/件
+						/{{item.product.salesUnit.unitName||''}}
 					</view>
 				</view>
 			</view>
@@ -191,7 +184,11 @@
 				goodsList: [],
 				areaId: "",
 				token: "",
-				swiperAuto: false
+				swiperAuto: false,
+				status1List: [],
+				status2List: [],
+				currentAddress: {}
+
 			};
 		},
 		watch: {
@@ -255,10 +252,10 @@
 		},
 		methods: {
 			currentHouseChange(item) {
+				this.currentAddress = item;
 				uni.$emit('currentHouseChange', item);
 				getApp().globalData.currentHouse = item;
-				// uni.setStorageSync("currentHouse", JSON.stringify(defaultHouse));
-
+				this.reloadData()
 			},
 			toSearch() {
 				uni.navigateTo({
@@ -273,10 +270,7 @@
 			toMessage() {
 				this.$store.dispatch("openCustomerConversation");
 			},
-			toSelfFitment() {
-				let url = this.ENV.VUE_APP_BASE_H5 + '/app-pages/self-study-decorated/index.html';
-				this.toWebview(url)
-			},
+
 			toGoodsDetail(id) {
 				uni.navigateTo({
 					url: "/sub-classify/pages/goods-detail/goods-detail?goodId=" + id
@@ -289,8 +283,6 @@
 			formatCent(item) {
 				let price = String(item.product.skuPrice || '0');
 				let fixedNum = Number(price / 100).toFixed(2)
-				console.log(fixedNum)
-				console.log(String(fixedNum).split('.')[1])
 				if (String(fixedNum).split('.').length > 1) {
 					return String(fixedNum).split('.')[1]
 				} else {
@@ -347,11 +339,7 @@
 					})
 				} else if (item.type == 1) {
 					if (item.url.endsWith('index/index')) {
-
-						console.log(item.urlParams)
 						getClassifyList(this.areaId).then((data) => {
-							console.log('!!!!!!!~~~');
-							console.log(JSON.parse(item.urlParams).id);
 							if (data.find(e => {
 									return e.id == JSON.parse(item.urlParams).id;
 								})) {
@@ -505,8 +493,28 @@
 				//直播列表
 				this.getQueryLiveList();
 				//金刚区列表
-				navList().then((e) => {
-					this.zoneList = e;
+				navList({
+					provinceId: this.currentAddress.provinceId,
+					cityId: this.currentAddress.cityId,
+					areaId: this.currentAddress.areaId
+				}).then((e) => {
+					this.zoneList = [];
+					this.status1List = [];
+					this.status2List = [];
+					e.forEach(e => {
+						if (e && e.configParams) {
+							let params = JSON.parse(e.configParams)
+							if (params.status && params.status == 1) {
+								this.status1List.push(e)
+							} else if (params.status && params.status == 2) {
+								this.status2List.push(e)
+							} else {
+								this.zoneList.push(e)
+							}
+						} else {
+							this.zoneList.push(e)
+						}
+					})
 				});
 				//首页推荐商品
 				this.goodsList = [];
@@ -820,13 +828,9 @@
 	}
 
 	.experience {
-		margin: 0 24rpx;
 		height: 198rpx;
 		border-radius: 16rpx;
-		background: url("http://dbj.dragonn.top/static/mp/dabanjia/images/home/experience.png");
-		-moz-background-size: 100% 100%;
-		background-size: 100% 100%;
-		padding: 0 24rpx;
+		width: 100%;
 
 		.title {
 			padding-top: 24rpx;

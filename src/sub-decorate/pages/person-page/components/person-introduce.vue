@@ -18,7 +18,7 @@
         <view class="title">擅长:</view>
       </view>
       <view class="msg-content list">
-        <view class="tags" v-for="item of personData.designTags">{{item}}</view>
+        <view class="tags" v-for="item of personData.designTags" :key='item'>{{item}}</view>
       </view>
     </view>
     <view class="msg-item" v-if="personData.roleId<7">
@@ -27,11 +27,11 @@
         <view class="title">徽章:</view>
       </view>
       <view class="msg-content list badge-list">
-        <view class="badge" v-for="item of personData.personAllBadgeVO.basicBadges">
+        <view class="badge" v-for="item of personData.personAllBadgeVO.basicBadges" :key='item.name'>
           <image :src="item.ico"></image>
           <text>{{item.name}}</text>
         </view>
-        <view class="badge"  v-for="item of personData.personAllBadgeVO.skillBadges">
+        <view class="badge"  v-for="item of personData.personAllBadgeVO.skillBadges" :key='item.name'>
           <image :src="item.ico"></image>
           <text>{{item.name}}{{item.level?'·'+item.levelName:''}}</text>
         </view>
@@ -52,18 +52,18 @@
         hddenText:'查看全部',
       }
     },
-    mounted(){
-      let query = uni.createSelectorQuery().in(this)
-      query.select(".report-text").boundingClientRect((res) => {
-        this.isHidden = res.height/20 > 2;
-        this.showBtn = res.height/20 > 2;
-        // console.log(res.height,this.isHidden)
-        
-      }).exec()
-      // query.exec(function(res) {
-      //   res[0].top // #the-id节点的上边界坐标
-      //   res[1].scrollTop // 显示区域的竖直滚动位置
-      // })
+    watch:{
+      personData(){
+        let query = uni.createSelectorQuery().in(this)
+        this.$nextTick(function(){
+          query.select(".report-text").boundingClientRect((res) => {
+            this.isHidden = res.height/20 > 2;
+            this.showBtn = res.height/20 > 2;
+            // console.log(res.height,this.isHidden)
+            
+          }).exec()
+        })
+      }
     },
     methods:{
       clickHidden(){
@@ -146,6 +146,8 @@
       letter-spacing: 1px;
       width: 100%;
       line-height: 42rpx;
+      word-break: break-word;
+      display: inline-block;
     }
     .report-text-hidden{
       overflow : hidden;

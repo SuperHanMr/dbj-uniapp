@@ -1,7 +1,7 @@
 <template>
 	<view class="guide">
-		<image :src="imageUrl"></image>
-		<view class="btn" :class="{service: cardType == 'service', actuary: cardType == 'actuary'}" @click="buyNow">立即购买</view>
+		<image :src="imageUrl" @click="buyNow"></image>
+		<!-- <view class="btn" :class="{service: cardType == 'service', actuary: cardType == 'actuary'}" @click="buyNow">立即购买</view> -->
 	</view>
 </template>
 
@@ -61,7 +61,7 @@
 		}
 
 		image {
-			width: 100%;
+			width: 702rpx;
 			height: 160rpx;
 			border-radius: 24rpx;
 		}

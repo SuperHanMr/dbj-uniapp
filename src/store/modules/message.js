@@ -107,6 +107,9 @@ const message = {
             };
             return false;
           }
+          if (conv.groupProfile && conv.groupProfile.type === TIM.TYPES.GRP_AVCHATROOM) {
+            return false;
+          }
           return true;
         }
         if (conv.type === TIM.TYPES.CONV_C2C) {
@@ -184,6 +187,18 @@ const message = {
       state.currentMessageList = messageList.concat(state.currentMessageList);
       state.isAppendMessageList = false;
     },
+    /**
+     * 从当前消息列表中移除消息
+     * 调用时机：发送消息失败时，将消息从消息列表中移除
+     * @param {Object} state
+     * @param {Message} message
+     */
+    removeMessageFromCurrentList(state, message) {
+      let idx = state.currentMessageList.indexOf(message);
+      if (idx >= 0) {
+        state.currentMessageList.splice(idx, 1);
+      }
+    },
     updateSoundStatus(state, payload) {
       const { status, url } = payload;
       if (status === "playing") {
@@ -246,14 +261,14 @@ const message = {
         addListener("CONVERSATION_LIST_UPDATED", (event) => {
           let conversationList = event.data || [];
           context.commit("updateConversationList", conversationList);
-        });
+        }, "IM-CONVERSATION_LIST_UPDATED");
         addListener("MESSAGE_RECEIVED", (event) => {
           let messageList = event.data || [];
           let systemMessageList = messageList.filter(msg => msg.conversationID === context.state.sysConv.conversationID);
           if (systemMessageList.length) {
             uni.$emit("system-messages", systemMessageList);
           }
-        });
+        }, "IM-MESSAGE_RECEIVED");
         context.dispatch("requestConversationList");
         context.dispatch("requestDBGroupList");
       }).catch(err => {

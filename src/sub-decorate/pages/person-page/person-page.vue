@@ -31,7 +31,7 @@
             </view>
           </view>
           <view class="btn" v-if="personData.roleId<7">
-          <view class="recommend" @click="queryAttention(2001)" :class="{'already-recommend':isRecommend}">
+          <view class="recommend" @click="attentionSure(2001)" :class="{'already-recommend':isRecommend}">
               <image v-if="!isRecommend"></image>
               {{isRecommend?'已':''}}优先推荐
             </view>
@@ -163,7 +163,7 @@
       
     },
     onLoad(e){
-      this.personId = e.personId||7050
+      this.personId = e.personId||6809
       // this.getGrabDetail()
     },
     onShow(){
@@ -211,8 +211,30 @@
           relationId:this.personData.zeusId,
         }
         getAttention(data).then(res=>{
+          
           this[type] = res
+          console.log(res,type)
         })
+      },
+      attentionSure(routeId){
+        
+        if(this.isRecommend){
+          uni.showModal({
+            title:"您确定要取消该优先推荐吗？",
+            content: "取消后您购买服务将不会优先推荐该服务者",
+            confirmText:"确定取消",
+            cancelText:"暂不",
+            success: (res) => {
+              if (res.confirm) {
+                this.queryAttention(routeId)
+                return
+              }
+            },
+          });
+        }else{
+          this.queryAttention(routeId)
+        }
+        
       },
       queryAttention(routeId){
         let data = {
