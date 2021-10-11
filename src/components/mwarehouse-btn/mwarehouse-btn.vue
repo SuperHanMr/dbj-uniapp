@@ -1,6 +1,7 @@
 <template>
   <view class="wrap" @click="gotoPage">
-    <image class="icon" :style="iconStyle"></image>
+    <!-- <image class="icon" :style="iconStyle" :src="iconUrl"></image> -->
+    <image class="icon" :src="iconUrl"></image>
     <view class="name">{{name}}</view>
   </view>
 </template>
@@ -12,11 +13,14 @@
         type: String,
         default: ""
       },
-      iconStyle: {
-        type: Object,
-        default: ""
-      },
+      // iconStyle: {
+      //   type: Object,
+      //   default: ""
+      // },
       name: {
+        type: String
+      },
+      iconUrl: {
         type: String
       }
     },
@@ -38,10 +42,10 @@
   }
   .icon {
     margin-bottom: 8rpx;
-    border: 2rpx solid #666;
-    width: 55rpx;
-    height: 55rpx;
-    border-radius: 25rpx;
+    /* border: 2rpx solid #666; */
+    width: 64rpx;
+    height: 64rpx;
+    /* border-radius: 25rpx; */
   }
   .name {
     width: 72rpx;
