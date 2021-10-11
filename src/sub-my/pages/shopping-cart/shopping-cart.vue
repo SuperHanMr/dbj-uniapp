@@ -40,7 +40,7 @@
 				</view>	
 				<view class="freeMail">
 					<view class="text" v-if="isDefault" :key="index">每满{{shopItem.freeShippingThreshold/100 || "0"}}元可获得一次免运费权益</view>
-					<view class="text" v-else v-for="(item,index) in freeShippings" :key="index">还差{{item}}元可获得一次免运费权益</view>
+					<view class="text" v-else>还差{{shopItem.freeShippings}}元可获得一次免运费权益</view>
 					<view class="toShop" @click="toShopHome(shopItem.storeId)">
 						<text>去凑单</text>
 						<image class="icon" src="../../../static/shopping-cart/toPostFree@2x.png"></image>
@@ -256,27 +256,29 @@
 					})
 				})
 				return sum
-			},
+			}
+			
+		},
+		methods:{
 			freeShippings(){
-				let arr = []
-				let sum = 0
-				this.shopList.forEach(item=>{
+				
+				this.shopList.map(item=>{
+					let sum = 0
 					item.skuList.forEach(ele=>{
 						if(ele.goodsChecked){
-							sum+=(+ele.buyCount*ele.price/100)
+							sum += (+ele.buyCount*ele.price/100)
 						}
 					})
 					if(sum < item.freeShippingThreshold/100){
-						arr.push( (item.freeShippingThreshold/100-sum).toFixed(2))
+						item.freeShippings = (item.freeShippingThreshold/100-sum).toFixed(2)
 					}else if(sum > item.freeShippingThreshold/100){
-						arr.push( (item.freeShippingThreshold/100*2-sum).toFixed(2))
+						item.freeShippings = (item.freeShippingThreshold/100*2-sum).toFixed(2)
 					}
+					return item
 				})
 				
-				return arr
-			}
-		},
-		methods:{
+				
+			},
 			handleConfirm(preId,curId){
 				console.log(preId,curId)
 				let params = {
@@ -663,6 +665,7 @@
 				if(this.isCheckedAll){
 					this.isDefault = false
 				}
+				this.freeShippings()
 			},
 			checkShop(id){
 				this.shopList.map(item=>{
@@ -683,6 +686,7 @@
 				}else{
 					this.isCheckedAll = false
 				}
+				this.freeShippings()
 			},
 			checkGoods(storeId,skuId){
 				this.shopList.map(item=>{
@@ -709,6 +713,7 @@
 				}else{
 					this.isCheckedAll = false
 				}
+				this.freeShippings()
 			},
 		
 			deleteGoods(skuId,buyCount){
@@ -1056,7 +1061,7 @@
 		height: 30rpx;
 		display: block;
 	}
-	//商品
+	/* 商品 */
 	.shopItem .goodsItem{
 		width: 100%;
 		display: flex;

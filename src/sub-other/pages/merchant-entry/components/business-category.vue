@@ -178,7 +178,9 @@
 				this.threeActive = index;
 				let param = {};
 				param.oneLevelCategoryId = this.$props.categroyTreeList[this.firstActive].id;
+				param.oneLevelCategoryName = this.$props.categroyTreeList[this.firstActive].label;
 				param.twoLevelCategoryId = this.$props.categroyTreeList[this.firstActive].children[this.secondActive].id;
+				param.twoLevelCategoryName = this.$props.categroyTreeList[this.firstActive].children[this.secondActive].label;
 				param.threeLevelCategoryId = item.value;
 				param.label = item.label;
 				const checkedIndex = this.threeActiveList.findIndex((items, index) => {
