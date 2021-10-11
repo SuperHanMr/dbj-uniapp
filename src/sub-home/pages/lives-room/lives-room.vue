@@ -19,7 +19,7 @@
 			<view class="state-bar">
 				<view v-for="(item,index) in roomInfo.interactionInfo" :key="item.id">
 
-					<view v-if="item.connectStatus=='connecting'" class="user" @click="toPersonal({index,item})">
+					<view v-if="index==0||item.connectStatus=='connecting'" class="user" @click="toPersonal({index,item})">
 						<image class="img" :src="item.userAvatar">
 						</image>
 						<view class="name">
