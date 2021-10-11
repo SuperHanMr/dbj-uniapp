@@ -39,14 +39,19 @@
 				</view>
 			</view>
 			<live-player class="player" :src="livePreview" autoplay @statechange="statechange" @error="error" />
+			<view class="player-end">
+
+			</view>
 			<view class="bottom-contain">
+				<view class="cover">
+
+				</view>
 				<!-- 聊天 -->
-				<scroll-view id="scrollview" :scroll-top="scrollTop" class="scorll-chat" scroll-y="true"
-					:scroll-into-view="bottomId">
+				<scroll-view id="scrollview" :scroll-top="scrollTop" :style="{maxHeight:chatMax}" class="scorll-chat"
+					scroll-y="true" :scroll-into-view="bottomId">
 					<view class="chat-item-height">
 						<view v-for="(item,index) in list" :key="item.ID">
 							<view v-if="item.type=='TIMTextElem' || item.type=='TIMImageElem'" class="chat-item">
-
 								<view class="avater">
 									<image class="img" :src="item.avatar">
 									</image>
@@ -229,7 +234,8 @@
 				joinType: null,
 				timer: null,
 				userLikeTotal: 0,
-				likeCount: 0
+				likeCount: 0,
+				chatMax: ''
 			};
 		},
 		computed: {
@@ -245,6 +251,19 @@
 			removeListener("MESSAGE_RECEIVED", (e) => {
 				this.messageRecived(e)
 			});
+		},
+		onReady() {
+			let that = this; //windoHeight为窗口高度，主要使用的是这个
+			let chatH = uni.createSelectorQuery().select(".player-end"); //想要获取高度的元素名（class/id）
+			chatH.boundingClientRect(data => {
+				let sendH = uni.createSelectorQuery().select(".bottom-send");
+				sendH.boundingClientRect(bottom => {
+					this.chatMax = bottom.top - data.top + 'px'
+					console.log('~~~~~~~');
+					console.log(this.chatMax);
+				}).exec()
+			}).exec()
+
 		},
 		onLoad(e) {
 			if (e && e.roomId) {
@@ -734,7 +753,6 @@
 		bottom: 0;
 		right: 0;
 		left: 0;
-		// background-color: white;
 
 		.bottom-placeholder {
 			height: 68rpx;
@@ -820,7 +838,7 @@
 
 		.scorll-chat {
 			// max-height: 50vh;
-			max-height: 30vh;
+			// max-height: 30vh;
 
 			.text-center {
 				text-align: center;
@@ -838,8 +856,9 @@
 				line-height: 44rpx;
 				color: #fff;
 				font-size: 28rpx;
-				padding: 12rpx;
+				padding: 12rpx 24rpx;
 				word-break: break-all;
+				display: inline-block;
 
 				.img {
 					display: inline-block;

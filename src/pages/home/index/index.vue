@@ -61,8 +61,11 @@
 			</view>
 		</view>
 		<!-- 快捷栏目 -->
-		<image v-for="(item,index) in status1List" :key="item.id" @click="onZoneClick(item)" :src="item.icon"
-			class="experience">
+		<view style="padding: 0 24rpx;">
+			<image v-for="(item,index) in status1List" :key="item.id" @click="onZoneClick(item)" :src="item.icon"
+				class="experience">
+		</view>
+	
 
 		</image>
 		<view class="example-content">
@@ -825,13 +828,9 @@
 	}
 
 	.experience {
-		margin: 0 24rpx;
 		height: 198rpx;
 		border-radius: 16rpx;
-		background: url("http://dbj.dragonn.top/static/mp/dabanjia/images/home/experience.png");
-		-moz-background-size: 100% 100%;
-		background-size: 100% 100%;
-		padding: 0 24rpx;
+		width: 100%;
 
 		.title {
 			padding-top: 24rpx;
