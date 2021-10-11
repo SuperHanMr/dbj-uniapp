@@ -1056,7 +1056,7 @@
 		height: 30rpx;
 		display: block;
 	}
-	//商品
+	/* 商品 */
 	.shopItem .goodsItem{
 		width: 100%;
 		display: flex;

@@ -183,7 +183,7 @@
 						text: '北京'
 					}
 				],
-				argumentFile: true,
+				argumentFile: false,
 				businessCategoryList: [],
 				categroyTreeList: [],
 				deleteStatus: {}
@@ -497,7 +497,7 @@
 					border-radius: 6px;
 					border: 1px solid #CBCCCC;
 					margin-bottom: 48rpx;
-					padding: 24rpx 0 24rpx 24rpx;
+					padding: 24rpx 40rpx 24rpx 24rpx;
 					caret-color: #35C4C4
 				}
 
