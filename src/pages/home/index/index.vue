@@ -184,6 +184,7 @@
 				swiperAuto: false,
 				status1List: [],
 				status2List: [],
+				currentAddress: {}
 
 			};
 		},
@@ -248,10 +249,10 @@
 		},
 		methods: {
 			currentHouseChange(item) {
+				this.currentAddress = item;
 				uni.$emit('currentHouseChange', item);
 				getApp().globalData.currentHouse = item;
-				// uni.setStorageSync("currentHouse", JSON.stringify(defaultHouse));
-
+				this.reloadData()
 			},
 			toSearch() {
 				uni.navigateTo({
@@ -266,7 +267,7 @@
 			toMessage() {
 				this.$store.dispatch("openCustomerConversation");
 			},
-		
+
 			toGoodsDetail(id) {
 				uni.navigateTo({
 					url: "/sub-classify/pages/goods-detail/goods-detail?goodId=" + id
@@ -489,7 +490,11 @@
 				//直播列表
 				this.getQueryLiveList();
 				//金刚区列表
-				navList().then((e) => {
+				navList({
+					provinceId: this.currentAddress.provinceId,
+					cityId: this.currentAddress.cityId,
+					areaId: this.currentAddress.areaId
+				}).then((e) => {
 					this.zoneList = [];
 					this.status1List = [];
 					this.status2List = [];

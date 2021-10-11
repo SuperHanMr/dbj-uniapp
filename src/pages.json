@@ -291,12 +291,14 @@
 						"navigationBarTitleText": "选择需要提醒的人",
 						"enablePullDownRefresh": false
 					}
-				}, {
+				},
+				{
 					"path": "pages/find-design/find-design",
 					"style": {
 						"navigationBarTitleText": "找设计",
 						"enablePullDownRefresh": false,
-						"navigationStyle": "custom"
+						"navigationStyle": "custom",
+						"backgroundColor": "#FFFFFF"
 					}
 
 				}
