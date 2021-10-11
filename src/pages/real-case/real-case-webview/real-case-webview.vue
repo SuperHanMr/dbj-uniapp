@@ -23,7 +23,7 @@
           height = res.windowHeight
         }
       })
-			this.url = this.ENV.VUE_APP_BASE_H5 + `/app-pages/case-detail/case-detail.html?id=${props.id}&token=${token}&height=${height}`
+			this.url = this.ENV.VUE_APP_BASE_H5 + `/app-pages/case-detail/case-detail.html?id=${props.id}&token=${token ? token : 0}&height=${height}`
       console.log(this.url)
       uni.showLoading({
           title: '加载中'

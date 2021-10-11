@@ -8,7 +8,7 @@
 					:params="item" 
 					tag="left"
 					:index="index"
-					@click="onClick(index, '1')"
+					@click="onClick(index, '0')"
 				></waterfall>
 			</view>
 			<view>

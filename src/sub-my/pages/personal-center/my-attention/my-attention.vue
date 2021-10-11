@@ -164,13 +164,13 @@ export default {
       this.currentIndex = index;
 			switch(this.currentIndex){
 				case 0: 
-					this.houselist.length <1 ? this.houseList() :""
+					this.houselist.length <1 ? this.houseList() :"";
 					break;
 				case 1: 
-					this.craftsmanlist.length <1 ? this.craftsmanList() :""
+					this.craftsmanlist.length <1 ? this.craftsmanList() :"";
 					break;
 				case 2:
-					this.recommendlist.length <1 ? this.recommendList() :""
+					this.recommendlist.length <1 ? this.recommendList() :"";
 					break;
 			}
 		},
@@ -179,8 +179,8 @@ export default {
 		houseList(){
 			this.loading = true;
 			getHouseList({routeId:1002}).then(data=>{
-				this.houselist = data
-				this.loading = false
+				this.houselist = data;
+				this.loading = false;
 				this.triggered = false;
 				console.log("data= ",data)
 			})
@@ -190,8 +190,8 @@ export default {
 		craftsmanList(){
 			this.loading = true;
 			getCraftsmanList({routeId:1001}).then(data=>{
-				this.craftsmanlist = data
-				this.loading = false
+				this.craftsmanlist = data;
+				this.loading = false;
 				this.triggered = false;
 				console.log("data= ",data)
 			})
@@ -210,14 +210,14 @@ export default {
 						icon:"none",
 						duration:1000
 					})
-					this.currentList[index2].isFocused = false
+					this.currentList[index2].isFocused = false;
 				}else{
 					uni.showToast({
 						title:"关注成功!",
 						icon:"none",
 						duration:1000
 					})
-					this.currentList[index2].isFocused = true
+					this.currentList[index2].isFocused = true;
 				}
 				// this.craftsmanlist=[]
 				setTimeout(()=>{
@@ -231,8 +231,8 @@ export default {
     recommendList() {
       this.loading = true;
 			getRecommendList({routeId:2001}).then(data=>{
-				this.recommendlist = data
-				this.loading = false
+				this.recommendlist = data;
+				this.loading = false;
 				this.triggered = false;
 				console.log("data= ",data)
 			})
@@ -251,21 +251,21 @@ export default {
 						icon:"none",
 						duration:1000
 					})
-					this.recommendlist[index3].isRecommend = false
+					this.recommendlist[index3].isRecommend = false;
 				}else{
 					uni.showToast({
 						title:"关注成功!",
 						icon:"none",
 						duration:1000
 					})
-					this.recommendlist[index3].isRecommend = true
+					this.recommendlist[index3].isRecommend = true;
 				}
 				// this.recommendList()
 			}).catch(()=>{})
 		},
 		// 去房屋的页面
 		goToHouse(item){
-			console.log("item=",item,"!!!!!!!!!!!!!!!!!!!!!!!!!")
+			console.log("item=",item,"!!!!!!!!!!!!!!!!!!!!!!!!!");
 			uni.navigateTo({
 				url:`../../../../sub-home/pages/decorate-scene/decorate-scene?projectId=${item.id}`
 			})
