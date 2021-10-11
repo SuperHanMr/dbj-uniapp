@@ -62,27 +62,28 @@
 			</view>
 		</view>
 		
-		<view class="warehouse-container" v-if="dataList.type == 1 && orderStatus==2 && dataList.stockType && dataList.stockType == 2">
+		<view class="warehouse-container" v-if="dataList.type == 1 && orderStatus==2 && dataList.stockType && dataList.stockType == 1">
 			<view class="left">
 				<text class="text1">我的仓库</text>
-				<text class="text2">{{dataList.stockNumber}}</text>
+				<text class="text2">{{dataList.stockNumber || 0}}</text>
 			</view>
 			<view class="line"/>
 			<view class="right">
 				<view class="item">
 					<text class="text1">运送中</text>
-					<text class="text2">{{dataList.frozenNumber}}</text>
+					<text class="text2">{{dataList.frozenNumber || 0}}</text>
 				</view>
 				<view class="item">
 					<text class="text1">已收货</text>
-					<text class="text2">{{dataList.receiveNumber}}</text>
+					<text class="text2">{{dataList.receiveNumber || 0}}</text>
 				</view>
 				<view class="item"> 
 					<text class="text1">已退</text>
-					<text class="text2">{{dataList.returnNumber}}</text>
+					<text class="text2">{{dataList.returnNumber || 0}}</text>
 				</view>
 			</view>
 		</view>
+		
 		<view  class="apply-refund-container" v-if="dataList.showRefundBtn && orderStatus == 3">
 			<view class="button" @click.stop="particalRefund">
 				申请退款
@@ -171,7 +172,7 @@
 			};
 		},
 		mounted() {
-			if( (this.dataList.stockType && this.dataList.stockType == 2 && this.dataList.type == 1&& this.orderStatus==2) || (this. dataList.showRefundBtn &&this. orderStatus==2)){
+			if( (this.dataList.stockType && this.dataList.stockType == 1 && this.dataList.type == 1&& this.orderStatus==2) || (this. dataList.showRefundBtn && this. orderStatus==2)){
 				this.paddingBottom=0
 			}
 		},
