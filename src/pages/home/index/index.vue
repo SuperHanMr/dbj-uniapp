@@ -290,7 +290,9 @@
 			},
 			formatCent(item) {
 				let price = String(item.product.skuPrice || '0');
-				let fixedNum = Number(price).toFixed(2)
+				let fixedNum = Number(price/100).toFixed(2)
+				console.log(fixedNum)
+				console.log(String(fixedNum).split('.')[1])
 				if (String(fixedNum).split('.').length>1) {
 					return String(fixedNum).split('.')[1]
 				} else {

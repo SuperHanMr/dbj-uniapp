@@ -772,6 +772,7 @@
 				.iconfont {
 					width: 32rpx;
 					height: 30rpx;
+					padding: 20rpx;
 				}
 			}
 
