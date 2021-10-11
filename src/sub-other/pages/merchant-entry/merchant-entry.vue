@@ -51,7 +51,7 @@
 					<view class="value" v-if="businessCategoryList.length > 0"
 						v-for="(item, index) in businessCategoryList">
 						<view class="text">
-							{{item.label}}
+							{{item.oneLevelCategoryName + '-' + item.twoLevelCategoryName + '-' + item.label}}
 						</view>
 						<image src="../../../static/merchant-entry/live_input_clear.png" mode=""
 							@click="deleteBusinessCategory(index)"></image>
