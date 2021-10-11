@@ -83,7 +83,7 @@
       checkAddress() {
         this.$emit("closeToast")
         uni.navigateTo({
-           url: "/sub-my/pages/my-house/my-house"
+           url: "/sub-my/pages/my-house/my-house?isEdit=0"
         })
       }
     },
