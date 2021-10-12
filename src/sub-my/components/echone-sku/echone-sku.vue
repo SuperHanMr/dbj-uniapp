@@ -28,9 +28,9 @@
 								v-for="(item,index) in sku[speList]"
 								:key="item.id" 
 								:style="{
-									borderColor: index===sku.sidx? '#35c4c4': '#fff',
-									color:index===sku.sidx?'#34c4c4':'#333333',
-									backgroundColor: index===sku.sidx?'#e8fafa':'#f5f5f5' 
+									borderColor: item.checked? '#35c4c4': '#fff',
+									color: item.checked?'#34c4c4':'#333333',
+									backgroundColor: item.checked?'#e8fafa':'#f5f5f5' 
 								}" 
 								@click="selectSkuCli(sku.id,speIdx,item.id,index)"
 							>{{item.value}}</text>
@@ -144,12 +144,13 @@
 				this.selectSkuInfo = this.combinations[this.selectedIndex]
 				this.skuId = this.selectSkuInfo.id
 				
+				let defaultSpecIds = this.defaultSpecIds.split(',')
 				let arr = []
 				this.specifications.forEach(item => {
 					let Ids = []
 					item.values.map(ele => {
 						Ids.push( ele.id )
-						ele.checked = this.defaultSpecIds.indexOf(ele.id)!==-1 ? true : false
+						ele.checked = defaultSpecIds.indexOf(ele.id.toString())!==-1 ? true : false
 						return ele
 					})
 					arr.push(Ids)
@@ -170,9 +171,8 @@
 						return item.toString()
 					}
 				})
-				let selectIds = this.selectSkuInfo.propValueIds
 				
-				console.log(this.handleIds,selectIds)
+				let selectIds = this.selectSkuInfo.propValueIds
 				if(this.handleIds.indexOf(selectIds) === -1) {
 					uni.showToast({
 						title:"默认规格值不存在",
@@ -181,21 +181,12 @@
 					return
 				}
 				this.mySpecifications = JSON.parse(JSON.stringify(this.specifications))
-				this.mySpecifications.forEach((item,index) => {
-					//当前规格组合值
-					const selects = this.selectSkuInfo[this.cbValue].split(',')
-					const Ids = item[this.speList].map(ele => {
-						return ele.id.toString()
-					})
-					const sIndex = Ids.indexOf(selects[index])
-					if(sIndex === -1)return					
-					
-					//每类规格对应其列表的下标 并记录在属性sidx在mySpecifications的子对象中
-					this.$set(item,'sidx',sIndex)
-				})
 			},
 			selectSkuCli(speId,speIdx,id,index) {
-				this.mySpecifications[speIdx].sidx = index
+				this.mySpecifications[speIdx].values.map(item => {
+					item.checked = (id === item.id)
+					return item
+				})
 				//找到用户选择的valueIds
 				let checkedIds = []
 				checkedIds.push(id)
