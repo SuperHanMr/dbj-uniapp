@@ -115,7 +115,7 @@
 				})
 			},
 			checkIndex(index,type){
-				console.log(index)
+				console.log(index,type)
 				this.navIndex = index
 				this.requestPage(type)
 			},
@@ -125,7 +125,7 @@
 						this.serveTypes = data
 						let params = {
 							projectId: this.projectId,
-							severType: type || 1
+							severType: type
 						}
 						getDrawings(params).then(data => {
 							if(data){
