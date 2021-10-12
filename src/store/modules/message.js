@@ -115,8 +115,8 @@ const message = {
           // 如果是客服群
           if (/_2_13$/.test(conv.conversationID)) {
             state.cstServConv = {
-              ...conv,
               ...state.cstServConv,
+              ...conv,
               conversationID: conv.conversationID
             };
             return false;
@@ -128,18 +128,18 @@ const message = {
         }
         if (conv.type === TIM.TYPES.CONV_C2C) {
           // 如果是系统消息
-          if (conv.conversationID === "C2Cadministrator") {
+          if (conv.conversationID === state.sysConv.conversationID) {
             state.sysConv = {
-              ...conv,
-              ...state.sysConv
+              ...state.sysConv,
+              ...conv
             };
             return false;
           }
           //如果是互动消息
-          if (conv.conversationID === "C2CcommentAndReply") {
+          if (conv.conversationID === state.itaConv.conversationID) {
             state.itaConv = {
-              ...conv,
-              ...state.itaConv
+              ...state.itaConv,
+              ...conv
             };
             return false;
           }
