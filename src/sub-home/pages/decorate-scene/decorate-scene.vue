@@ -229,13 +229,22 @@
       <view
         class="focusOn"
         @click="focusC"
+				v-if="!isSelfFocusOn"
       >
         <image
           class="add"
           src="../../static/ic_add_focus@2x.png"
         ></image>
-        <view>{{isSelfFocusOn?'已关注':'关注'}}</view>
+        <view>关注</view>
       </view>
+			<view
+			  class="focusOn"
+				:class="{'bgColor':isSelfFocusOn}"
+			  @click="focusC"
+				v-else
+			>
+			  <view>已关注</view>
+			</view>
     </view>
 		<view class="mask" v-if="showDecorateMask">
 			<view class="popupDecorate" :class="{'height':hasEstate}">
@@ -1813,6 +1822,9 @@ export default {
 		border-radius: 12rpx;
 		margin: 24rpx 32rpx 24rpx 48rpx;
 	}
+	.sceneContainer .footer .focusOn.bgColor{
+		background: #F5F6F6;
+	}
 	.focusOn .add {
 		width: 18rpx;
 		height: 18rpx;
@@ -1828,4 +1840,5 @@ export default {
 		color: #ffffff;
 		line-height: 32rpx;
 	}
+	
 </style>

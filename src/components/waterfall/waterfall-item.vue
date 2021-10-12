@@ -3,7 +3,7 @@
 		<!-- 案例下架的样式 -->
 		<view v-if="item.icon =='case' && !item.published" class="withdraw-container" />
 		<view  v-if="item.icon =='case' && !item.published" class="case-withdraw-text">该内容已下架</view>
-		
+
 		<!-- 左上角的icon -->
 		<image v-if="showCheckIcon && !isChecked" class="product-check"
 			src="../../static/order/images/product_unChecked.png" mode="" />
@@ -18,10 +18,10 @@
 			<image  v-if="item.parentType == 1" class="case-type" src="../../static/order/images/icon_vr_@2x.png" mode="" />
 			<image v-if="item.parentType == 2" class="case-type"  src="../../static/order/images/icon_img_@2x.png" mode="" />
 		</view>
-		
+
 		<image v-if="item.icon =='product'" class="product-img" :src="item.imageUrl" mode="widthFix" lazy-load @load="onImageLoad"/>
 		<image v-if="item.icon =='case'" class="product-img" :src="item.imageUrl" mode="widthFix" lazy-load @load="onImageLoad"/>
-		
+
 		<!-- 商品的样式 -->
 		<view class="info-container" v-if="item.icon =='product'" :class="{hasDown:!item.enabled}">
 			<view v-if="!item.enabled" class="withdraw-text">
@@ -39,7 +39,7 @@
 				<text>.{{handlePrice(item.price)[1] || 0}}{{item.unit?` / ${item.unit}`:""}}</text>
 			</view>
 		</view>
-		
+
 		<!-- 案例的样式 -->
 		<view class="info-container" v-else>
 			<view class="avatar-name">
@@ -52,7 +52,7 @@
 </template>
 
 <script>
-	
+
 	export default {
 		name: "water-fall-item",
 		props: {
@@ -94,6 +94,7 @@
 					if (newVal) {
 						this.isChecked = true
 					}else{
+						if(this.isActive) return
 						this.isChecked = false
 					}
 				},
@@ -106,6 +107,7 @@
 					if(newVal){
 						this.isChecked = true
 					}else{
+						if(this.isActive) return
 						this.isChecked  =false
 					}
 				},
@@ -127,7 +129,7 @@
 					this.item.isChecked = this.isChecked
 				}
 				this.$emit("detail", this.item);
-				
+
 			},
 			handlePrice(price) {
 			  let list = String(price).split(".");
