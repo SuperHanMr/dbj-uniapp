@@ -75,18 +75,18 @@
         </view>
       </view>
       <view class="good-store-account" v-if="orderInfo.totalDeliveryFee">
-        <view>
+        <view v-if="Number(orderInfo.totalPrice)">
           <text>商品总价</text>
           <text>¥{{orderInfo.totalPrice}}</text>
         </view>
-        <view>
+        <view v-if="Number(orderInfo.totalDeliveryFee)">
           <view class="question-box">
             总运费
             <text class="question-icon" @click="readExpenses(1)"></text>
           </view>
           <text>¥{{orderInfo.totalDeliveryFee}}</text>
         </view>
-        <view v-if="orderInfo.totalHandlingFee">
+        <view v-if="Number(orderInfo.totalHandlingFee)">
           <view class="question-box">
             总搬运费
             <text class="question-icon" @click="readExpenses(2)"></text>
@@ -94,7 +94,7 @@
           <text>¥{{orderInfo.totalHandlingFee}}</text>
         </view>
       </view>
-      <view class="good-store-account is-store" v-if="!orderInfo.totalDeliveryFee">
+      <view class="good-store-account is-store" v-if="Number(orderInfo.totalPrice) && !Number(orderInfo.totalDeliveryFee)">
         <view>
           <text>商品总价</text>
           <text>¥{{orderInfo.totalPrice}}</text>
@@ -105,7 +105,7 @@
           </text>
         </view>
       </view>
-      <view class="pledge" v-if="orderInfo.totalDeposit">
+      <view class="pledge" v-if="Number(orderInfo.totalDeposit)">
         <text>总押金</text>
         <text>¥{{orderInfo.totalDeposit}}</text>
       </view>
