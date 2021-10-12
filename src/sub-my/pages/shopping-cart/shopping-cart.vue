@@ -435,6 +435,7 @@
 					}]
 				}
 				setBuyCount(params).then(data => {
+					this.freeShippings()
 					this.requestPage()
 				})
 				this.showInput = false

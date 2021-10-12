@@ -115,7 +115,7 @@
 				})
 			},
 			checkIndex(index,type){
-				console.log(index)
+				console.log(index,type)
 				this.navIndex = index
 				this.requestPage(type)
 			},
