@@ -54,7 +54,7 @@
       this.title = name
       this.categoryId = categoryId
       this.serviceType = serviceType
-      this.insideArea = insideArea
+      this.insideArea = insideArea ?? 1
       this.areaId = areaId
       this.unitId = unitId
     },
