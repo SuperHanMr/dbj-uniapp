@@ -18,7 +18,6 @@
 				</view>
 				<image class="icon_down" src="http://dbj.dragonn.top/static/mp/dabanjia/images/home/ic_home_down.png"
 					mode=""></image>
-
 			</view>
 
 			<image @click="toSearch" class="icon-search"
@@ -526,7 +525,9 @@
 				this.bannerList = await getBanner();
 			},
 			async getHomeList() {
-				if (uni.getStorageSync("userId")) {
+				const token = getApp().globalData.token;
+				const userId = uni.getStorageSync("userId");
+				if (userId && token) {
 					let houseList = await queryEstates({
 						isNeedRelative: false
 					});
@@ -579,6 +580,7 @@
 	.icon_down {
 		width: 28rpx;
 		height: 28rpx;
+		flex-shrink: 0;
 	}
 
 	.icon_logo {
