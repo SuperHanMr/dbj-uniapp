@@ -131,8 +131,6 @@
           <view @click="hcaa">管家竣工验收申请</view>
           <view @click="workerCapplication">工人阶段验收申请</view>
           <view @click="gjgxf">工序费</view>
-          <view @click="payGuanGuanJia">生成买管家消息</view>
-          <view @click="payRenGong">生成买人工消息</view>
         </view> -->
       </view>
       <drag-button-follow v-if="msgNum>0" :num='msgNum' :style.sync="style" @btnClick='openNotice'
@@ -505,21 +503,14 @@
           url: `/sub-decorate/pages/gj-process-cost/gj-process-cost?partpay=1&projectId=${this.currentProject.projectId}&estateId=${this.currentProject.estateId}&roleType=10&serviceType=5&obtainType=0`
         })
       },
-      payGuanGuanJia() {
-
-      },
-      payRenGong() {
-
-      },
       gonohouse() {
         uni.navigateTo({
           url: "/sub-decorate/pages/no-house/no-house"
         })
       },
-      toSend() {
-
-        this.client.publish('dabanjia/testTopic', 'hello zzz')
-      },
+      // toSend() {
+      //   this.client.publish('dabanjia/testTopic', 'hello zzz')
+      // },
       closeNotice() {
         this.noticeActive = false;
         console.log('showTabBar')
@@ -553,15 +544,13 @@
       },
       getEstateList() {
         queryEstates({
-          isNeedRelative: true,
+          isNeedRelative: false,
         }).then(data => {
-          console.log("EstateList-1>: ", data)
           if (!data || (data instanceof Array && data.length < 1)) {
             uni.navigateTo({
               url: "/sub-decorate/pages/no-house/no-house",
             });
           } else {
-            console.log("EstateList-2>: ", data)
             const temp = data.filter(t => t.defaultEstate)
             this.defaultEstate = temp && temp.length > 0 ? temp[0] : null
             this.estateList = data;

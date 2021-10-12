@@ -244,6 +244,7 @@
 					this.firstEntry = false;
 				})
 			},
+			
 			//管理
 			handleMgr() {
 				this.showMgrBtn = !this.showMgrBtn
@@ -269,7 +270,6 @@
 			// 点击单个item的操作获取选中的数据
 			onSelectedItem(data) {
 				if(this.showMgrBtn){
-					console.log("data=",data)
 					if(this.currentIndex ==0){
 						uni.navigateTo({
 							url: `/sub-classify/pages/goods-detail/goods-detail?goodId=${data.id}`
@@ -280,7 +280,8 @@
 								this.height = res.windowHeight
 							}
 						})
-						const token = uni.getStorageSync("scn")
+						// const token = uni.getStorageSync("scn")
+						const token = getApp().globalData.token
 						const url = this.ENV.VUE_APP_BASE_H5 +`/app-pages/case-detail/case-detail.html?id=${data.id}&token=${token}&height=${this.height}`
 						uni.navigateTo({
 							url:`../../../../pages/common/webview/webview?url=`+ encodeURIComponent(url),
@@ -291,14 +292,20 @@
 						return {relationId:item2.id,authorId:item2.authorId,subBizType:item2.subBizType}
 					})
 					console.log("this.checkedItemIds=",this.checkedItemIds)
-					this.productList = data
-					console.log("this.productList=",this.productList)
-					if(this.checkedItemIds.length == this.productList.length){
-						this.allCheck=true;
-						this.isAllCheck=true;
+					this.currentIndex == 0
+						? this.productList = data
+						: this.caseList = data
+					console.log("单选操作下的this.productList=",this.productList.map(item=>item.isChecked))
+					console.log("单选操作下的this.caseList=",this.caseList.map(item=>item.isChecked))
+
+					if(this.checkedItemIds.length == this.listLength){
+						this.allCheck = true;
+						this.isAllCheck = true;
+						this.isActive = false
 					}
 					else{
-						this.allCheck=false
+						this.isActive = true
+						this.allCheck = false
 						// this.isAllCheck=false;
 					}
 				}
@@ -317,15 +324,24 @@
 				}
 			},
 			allCheckFunction(list){
-				// console.log("列表list=",list)
+				this.isActive = false
 				if(this.allCheck){
-					list =this.handleList(list,true)
+					this.currentIndex==0
+					?this.productList = this.handleList(list,true)
+					:this.caseList = this.handleList(list,true)
+
+					console.log("全选的productList=",this.productList.map(item=>item.isChecked))
+
 					this.checkedItemIds = list.map(item=>{
 						return {relationId:item.id,authorId:item.authorId,subBizType:item.subBizType}
 					})
-					console.log("this.checkedItemIds=",this.checkedItemIds)
 				}else{
-					list =this.handleList(list,false)
+					this.currentIndex==0
+					?this.productList = this.handleList(list,false)
+					:this.caseList = this.handleList(list,false)
+
+					console.log("全不选的productList=",this.productList.map(item=>item.isChecked))
+
 					this.checkedItemIds =[]
 					this.isAllCheck=false;
 					console.log("this.checkedItemIds=",this.checkedItemIds)
