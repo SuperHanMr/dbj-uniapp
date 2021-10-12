@@ -291,12 +291,12 @@
 					this.checkedItemIds = data.filter(item => item.isChecked == true).map((item2) => {
 						return {relationId:item2.id,authorId:item2.authorId,subBizType:item2.subBizType}
 					})
-					console.log("this.checkedItemIds=",this.checkedItemIds)
+					// console.log("this.checkedItemIds=",this.checkedItemIds)
 					this.currentIndex == 0
 						? this.productList = data
 						: this.caseList = data
-					console.log("单选操作下的this.productList=",this.productList.map(item=>item.isChecked))
-					console.log("单选操作下的this.caseList=",this.caseList.map(item=>item.isChecked))
+					// console.log("单选操作下的this.productList=",this.productList.map(item=>item.isChecked))
+					// console.log("单选操作下的this.caseList=",this.caseList.map(item=>item.isChecked))
 
 					if(this.checkedItemIds.length == this.listLength){
 						this.allCheck = true;
@@ -327,21 +327,15 @@
 				this.isActive = false
 				if(this.allCheck){
 					this.currentIndex==0
-					?this.productList = this.handleList(list,true)
-					:this.caseList = this.handleList(list,true)
-
-					console.log("全选的productList=",this.productList.map(item=>item.isChecked))
-
+						? this.productList = this.handleList(list,true)
+						: this.caseList = this.handleList(list,true)
 					this.checkedItemIds = list.map(item=>{
 						return {relationId:item.id,authorId:item.authorId,subBizType:item.subBizType}
 					})
 				}else{
 					this.currentIndex==0
-					?this.productList = this.handleList(list,false)
-					:this.caseList = this.handleList(list,false)
-
-					console.log("全不选的productList=",this.productList.map(item=>item.isChecked))
-
+						? this.productList = this.handleList(list,false)
+						: this.caseList = this.handleList(list,false)
 					this.checkedItemIds =[]
 					this.isAllCheck=false;
 					console.log("this.checkedItemIds=",this.checkedItemIds)
