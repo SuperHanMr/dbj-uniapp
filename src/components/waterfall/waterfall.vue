@@ -100,8 +100,8 @@
 		methods: {
 			toDetail(data) {
 				if(this.showCheckIcon){
-					let index = this.list.findIndex(item=>item.id == data.id)
-					this.list[index].isChecked = data.isChecked
+					let indexA = this.list.findIndex(item=>item.id == data.id)
+					this.list[indexA].isChecked = data.isChecked
 					this.$emit('selectedItem',this.list)
 				}else{
 					this.$emit('selectedItem',data)

@@ -238,6 +238,7 @@
 			}, 500)
 			this.swiperAuto = true;
 			getApp().globalData.currentRoute = "/pages/home/index/index"
+      this.$store.dispatch("updateTabBarBadge");
 		},
 		onHide() {
 			this.swiperAuto = false

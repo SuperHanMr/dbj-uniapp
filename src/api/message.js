@@ -27,7 +27,14 @@ export function getMessageList(params) {
 
 // 查询人工客服状态
 export function getAgentStatus(customerId) {
-  return request.post(`/app/server/chatGroup/${customerId}/afterEnterButlerGroup`);
+  return request.post(
+    `/app/server/chatGroup/${customerId}/afterEnterButlerGroup`,
+    {
+      data: {
+        hideToast: true
+      }
+    }
+  );
 }
 
 // 请求人工客服
