@@ -277,17 +277,8 @@
 				
 				supplierEntry(params).then((res) => {
 					console.log(res, '>>>>>>>')
-					const obj = {
-						supplierId: res.supplierId,
-						phone: res.phone,
-						password: res.password,
-						url: res.url,
-					}
-					this.$store.dispatch('setAccountInfo', {
-						accountInfo: obj
-					})
 					uni.navigateTo({
-						url: `sub-other/pages/merchant-entry-success/merchant-entry-success?url=${res.url}&phone=${res.phone}&password=${res.password}&supplierId=${res.supplierId}`
+						url: `/sub-other/pages/merchant-entry-success/merchant-entry-success?url=${res.url}&phone=${res.phone}&password=${res.password}&supplierId=${res.supplierId}`
 					})
 				}).catch((res) => {
 					// error.response.data.message
