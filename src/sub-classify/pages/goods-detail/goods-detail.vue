@@ -42,6 +42,7 @@
       }
       this.baseUrl = this.ENV.VUE_APP_BASE_H5
       this.defaultHouseInfo = getApp().globalData.currentHouse
+      console.log(this.defaultHouseInfo, "this.defaultHouseInfo")
         uni.getSystemInfo({	
           success:res => {
             this.deviceId = res.deviceId

@@ -225,7 +225,8 @@ export default {
       //订单关闭页面
       this.title = "退款中";
       this.orderDetail();
-			const currentHouse = JSON.parse(uni.getStorageSync("currentHouse"));
+			const currentHouse = getApp().globalData.currentHouse
+			console.log("currentHouse=",currentHouse)
 			this.areaId = currentHouse.areaId;
     }
   },
@@ -236,9 +237,6 @@ export default {
       uni.redirectTo({
         url: `../my-order?index=1`,
       });
-      // uni.navigateBack({
-      // 		delta:1
-      // })
     } else if (this.from == "inprogress") {
       uni.redirectTo({
         url: `../my-order?index=2`,
