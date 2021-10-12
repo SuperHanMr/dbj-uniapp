@@ -13,7 +13,8 @@
 			<view class="pleaholder">
 			</view>
 		</view>
-		<scroll-view class="tab-list" scroll-x="true" @scroll="scroll">
+		<view class="sticky-view" :style="{top:navBarHeight}">
+		<scroll-view class="tab-list"  scroll-x="true" @scroll="scroll">
 			<view v-for="(item,index) in tabList" :key="item.id" class="tab-item"
 				:class="index==currentTab?'selected-tab':'nomal-tab'" @click="onTab(index,item)">
 				<image v-if="index==0" :class="currentTab==0?'tab-img':'tab-img-un'"
@@ -30,6 +31,7 @@
 				<text>{{item.name}}</text>
 			</view>
 		</scroll-view>
+		</view>
 		<view v-if="goodsList.length==0" class="noMemo">
 			<image class="noMemoImg" src="http://dbj.dragonn.top/static/mp/dabanjia/images/decorate/pic_empty%402x.png">
 			</image>
@@ -251,17 +253,24 @@
 			border-radius: 32rpx 32rpx 0rpx 0rpx;
 		}
 
-		.tab-list {
+	
+	}
+	.sticky-view{
+		
+		position: sticky;
+		position: -webkit-sticky;
+		left: 0;
+		right: 0;
+		background-color: white;
+	}
+	.tab-list {
 			height: 64rpx;
 			line-height: 64rpx;
 			width: 100%;
 			overflow: hidden;
 			white-space: nowrap;
-			position: sticky;
-
+			
 		}
-	}
-
 	.goods-list {
 		display: flex;
 		margin-top: 24rpx;
