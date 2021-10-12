@@ -410,7 +410,8 @@
 			background-color: #f4f4f4;
 		}
 		.show{
-			padding-top: 180rpx;
+			// padding-top: 180rpx;
+			padding-top: 50%;
 			display: flex;
 			flex-flow: column nowrap;
 			align-items: center;
