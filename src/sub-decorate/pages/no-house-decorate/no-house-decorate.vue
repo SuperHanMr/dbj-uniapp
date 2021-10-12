@@ -442,7 +442,8 @@
             total: this.countPrice * 100, //"int //总计",
             remarks: "", //"string //备注",
             orderName: "", //"string //订单名称",
-            details: []
+            details: [],
+            scene: 1 // 校验服务是否能重复购买，0不校验，1校验，默认0
           }
           if (this.design.checked) {
             // skuInfos.push({
