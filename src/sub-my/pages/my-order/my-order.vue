@@ -32,6 +32,7 @@
 					refresher-enabled="true" 
 					@scrolltolower="onLoadMore"
 				>
+					<view v-if="loading" class="swiper-item empty-container"/>
 					<view v-if=" orderList.length > 0 " :style="{paddingBottom:systemBottom}" class="swiper-item">
 						<view class="order-container" v-for="item in orderList" :key="item.id">
 							<view class="header">
@@ -164,8 +165,7 @@
 							</view>
 						</view>
 					</view>
-
-					<view v-else class="swiper-item empty-container">
+					<view v-if="orderList.length == 0 && !loading" class="swiper-item empty-container">
 						<view class="empty-page">
 							<view class="line" />
 							<view class="content ">
@@ -174,6 +174,7 @@
 							</view>
 						</view>
 					</view>
+					
 				</scroll-view>
 			</swiper-item>
 
@@ -219,6 +220,7 @@
 				id: -1,
 				systemBottom: "",
 				areaId: "",
+				loading:true
 			};
 		},
 
@@ -281,7 +283,11 @@
 					rows: this.rows,
 				}).then((data) => {
 					this.triggered = false;
-					if (!data.length) return;
+					if (!data.length){
+						this.loading = false;
+						console.log("this.loading=",this.loading)
+						return;
+					}
 					if (this.currentIndex == 0) {
 						this.lastId[0] = data[data.length - 1].id;
 						this.orderList0 = this.orderList0.concat(data);
@@ -299,6 +305,7 @@
 						this.orderList4 = this.orderList4.concat(data);
 					}
 					this.loading = false;
+					console.log("this.loading=",this.loading)
 					this.firstEntry = false;
 				});
 			},
