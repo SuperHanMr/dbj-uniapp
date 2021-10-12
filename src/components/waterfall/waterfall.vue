@@ -58,21 +58,23 @@
 		},
 
 		watch: {
-			list(n, o) {
-				// console.log(n)
-				// console.log(o)
-				let that = this;
-				let ol = o.length;
-				let nl = n.length;
-				if (nl > ol) {
-					if (this.leftHeight > this.rightHeight) {
-						that.rightList.push(that.list[ol]);
-					} else {
-						that.leftList.push(that.list[ol]);
+			list:{
+				handler(n, o) {
+					console.log("组件的newValList=",n.map(item=>item.isChecked))
+					console.log("组件的oldValList=",o.map(item=>item.isChecked))
+					let ol = o.length;
+					let nl = n.length;
+					if (nl > ol) {
+						if (this.leftHeight > this.rightHeight) {
+							this.rightList.push(this.list[ol]);
+						} else {
+							this.leftList.push(this.list[ol]);
+						}
+						this.onImageLoad();
 					}
-					this.onImageLoad();
-				}
-			}
+				},
+				deep: true
+			}	
 		},
 
 
@@ -87,6 +89,7 @@
 				checkedList:[],
 			};
 		},
+		
 		created() {
 			if (this.list.length) {
 				this.leftList = [this.list[0]]; //第一张图片入栈
@@ -100,15 +103,13 @@
 		methods: {
 			toDetail(data) {
 				if(this.showCheckIcon){
-					let index = this.list.findIndex(item=>item.id == data.id)
-					this.list[index].isChecked = data.isChecked
+					let indexA = this.list.findIndex(item=>item.id == data.id)
+					this.list[indexA].isChecked = data.isChecked
 					this.$emit('selectedItem',this.list)
 				}else{
 					this.$emit('selectedItem',data)
 				}
 			},
-
-
 			onImageLoad(e) {
 				if (!e) {
 					console.log('无图片！！！！');

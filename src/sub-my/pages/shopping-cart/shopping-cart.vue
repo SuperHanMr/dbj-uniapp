@@ -8,21 +8,6 @@
 			<view class="goShopping" @click="toShoppingMall">去逛逛</view>
 		</view>
 		<view class="shoppingCart" v-else>
-			<uni-popup
-			  ref="popup"
-			  type="dialog"
-			>
-			  <uni-popup-dialog
-			    mode="input"
-			    title="编辑数量"
-			    :duration="2000" 
-					:before-close="true" 
-			    placeholder="可输入至小数点后两位"
-					@close="closeDialog"
-			    @confirm="defineCount"
-			  >
-				</uni-popup-dialog>    
-			</uni-popup>
 			<view class="header" v-if="shopList.length">
 				<view class="left"></view>
 				<view class="manage" @click="isManage=!isManage">{{isManage?"管理":"完成"}}</view>
@@ -39,8 +24,8 @@
 					</view>
 				</view>	
 				<view class="freeMail">
-					<view class="text" v-if="isDefault" :key="index">每满{{shopItem.freeShippingThreshold/100 || "0"}}元可获得一次免运费权益</view>
-					<view class="text" v-else>还差{{shopItem.freeShippings}}元可获得一次免运费权益</view>
+					<view class="text" v-if="isDefault" :key="index">每满{{shopItem.freeShippingThreshold===0?'0.00':(shopItem.freeShippingThreshold/100).toFixed(2)}}元可获得一次免运费权益</view>
+					<view class="text" v-else>还差{{shopItem.freeShippingThreshold===0?'0.00':shopItem.freeShippings}}元可获得一次免运费权益</view>
 					<view class="toShop" @click="toShopHome(shopItem.storeId)">
 						<text>去凑单</text>
 						<image class="icon" src="../../../static/shopping-cart/toPostFree@2x.png"></image>
@@ -74,7 +59,7 @@
 									<view class="countCtrl">
 										<image v-if="!goodsItem.isMiniOrder" class="dec" @click="changeCount(false,shopIndex, goodsIndex)" src="../../../static/shopping-cart/details_pop_@2x.png"></image>
 										<image v-else class="dec" @click="changeCount(false,shopIndex, goodsIndex)" src="../../../static/shopping-cart/details_pop_subtract_disabled@2x.png"></image>
-										<view class="count" @click="openCount(shopIndex, goodsIndex)"> {{goodsItem.buyCount}} </view>
+										<view class="count" @click="openCount(shopIndex, goodsIndex,goodsItem.minimumOrderQuantity,goodsItem.stepLength,goodsItem.buyCount)"> {{goodsItem.buyCount}} </view>
 											
 										<image class="inc" @click="changeCount(true, shopIndex,goodsIndex)" src="../../../static/shopping-cart/details_pop_add_normal@2x.png"></image>          
 									</view>
@@ -83,6 +68,20 @@
 						</view>	
 					</uni-swipe-action-item>
 				</uni-swipe-action>
+			</view>
+			<view class="mask" v-if="showInput">
+				<view class="popupNum">
+					<view class="header">
+						<view class="title">编辑数量</view>
+						<view class="text">当前最小单位为{{miniOrder}}，输入的数量需为{{step}}的倍数</view>
+					</view>
+					<input type="text" v-model="buyNum" :focus="isFocus" />
+					<view class="button">
+						<view class="cancel" @click="closeDialog">取消</view>
+						<!-- <view class="line"></view> -->
+						<view class="confirm" @click="defineCount">完成</view>
+					</view>
+				</view>
 			</view>
 			<view class="mask" v-if="showMask">
 				<view class="popupClass">
@@ -218,6 +217,7 @@
 				isCheckedAll:false,
 				currentShopIndex:0,
 				currentGoodsIndex:0,
+				showInput:false,
 				showMask:false,
 				serviceChecked:false,
 				entityChecked:true,
@@ -226,7 +226,11 @@
 				serviceListShow:[],
 				entityListShow:[],
 				showNoGoods: false,
-				isDefault:true
+				isDefault:true,
+				step:0,//步长
+				miniOrder:0,
+				buyNum:"",//输入框的值,
+				isFocus:false,
 			}
 		},
 		mounted(){
@@ -261,7 +265,6 @@
 		},
 		methods:{
 			freeShippings(){
-				
 				this.shopList.map(item=>{
 					let sum = 0
 					item.skuList.forEach(ele=>{
@@ -272,12 +275,14 @@
 					if(sum < item.freeShippingThreshold/100){
 						item.freeShippings = (item.freeShippingThreshold/100-sum).toFixed(2)
 					}else if(sum > item.freeShippingThreshold/100){
-						item.freeShippings = (item.freeShippingThreshold/100*2-sum).toFixed(2)
+						let temp = Math.ceil(sum / (item.freeShippingThreshold/100))
+						item.freeShippings = (item.freeShippingThreshold/100*temp-sum).toFixed(2)
+					}
+					if(sum % (item.freeShippingThreshold/100) === 0){
+						item.freeShippings = item.freeShippingThreshold/100
 					}
 					return item
 				})
-				
-				
 			},
 			handleConfirm(preId,curId){
 				console.log(preId,curId)
@@ -320,7 +325,7 @@
 					this.defaultSpec = data.defaultProperties
 					this.defaultSpecIds = Ids.sort().toString()
 					this.selectedIndex = data.skuAndProperties.findIndex(item => item.valueIds.sort().toString()
-					 === this.defaultSpecIds)
+						=== this.defaultSpecIds)
 					console.log(this.selectedIndex)
 				})
 			},
@@ -365,18 +370,23 @@
 						this.disabledSkuList = disabledSkuList || []
 				})
 			},
-			openCount(shopIndex, goodsIndex){
-				this.$refs.popup.open()
+			openCount(shopIndex, goodsIndex,miniOrder,step,buyNum){
+				this.showInput = true
+				this.isFocus = true
+				this.miniOrder = miniOrder
+				this.step = step
+				this.buyNum = buyNum
 				this.currentShopIndex = shopIndex 
 				this.currentGoodsIndex = goodsIndex 
 			},
 			closeDialog() {
-				this.$refs.popup.close()
+				this.showInput = false
 			},
 			goBackCart(){
 				this.showMask = false
 			},
-			defineCount(val) {
+			defineCount() {
+				let val = this.buyNum
 				let target = this.shopList[this.currentShopIndex].skuList[this.currentGoodsIndex]
 				let miniOrder = +target.minimumOrderQuantity || 1
 				let step = +target.stepLength || 1
@@ -425,9 +435,10 @@
 					}]
 				}
 				setBuyCount(params).then(data => {
+					this.freeShippings()
 					this.requestPage()
 				})
-				this.$refs.popup.close()	
+				this.showInput = false
 				console.log(val,step,miniOrder,'//');
 			},
 			toCollect(){
@@ -851,6 +862,75 @@
 	  right: 0;
 	  bottom: 0;
 	  z-index: 998;
+	}
+	.popupNum{
+		width: 100%;
+		height: 338rpx;
+		background: #ffffff;
+		position: fixed;
+		left: 0;
+		bottom: 0;
+		z-index: 999;
+	}
+	.popupNum .header{
+		height: 44rpx;
+		margin: 32rpx 0;
+		display: flex;
+		/* align-items: center; */
+	}
+	.popupNum .header .title{
+		width: 128rpx;
+		height: 44rpx;
+		margin: 0 24rpx;
+		font-size: 32rpx;
+		font-weight: 500;
+		color: #333333;
+	}
+	.popupNum .header .text{
+		width: 460rpx;
+		height: 34rpx;
+		margin: 6rpx 110rpx 4rpx 0;
+		font-size: 24rpx;
+		color: #999999;
+		line-height: 34rpx;
+	}
+	.popupNum input{
+		width: 704rpx;
+		height: 96rpx;
+		margin: 0 23rpx 32rpx;
+		background: #f5f5f5;
+		border: 1rpx solid #e2e2e2;
+		border-radius: 16rpx;
+		font-size: 40rpx;
+		font-weight: 500;
+		text-align: center;
+		color: #111111;
+	}
+	.popupNum .button{
+		width: 100%;
+		height: 102rpx;
+		display: flex;
+		border-top: 2rpx solid #e5e5e5;
+	}
+	.popupNum .button view{
+		width: 60rpx;
+		height: 102rpx;
+		font-size: 30rpx;
+		padding: 0 157rpx;
+		line-height: 102rpx;
+	}
+	.popupNum .button .cancel{
+		border-right: 2rpx solid #e5e5e5;
+		color: #666666;
+	}
+	.popupNum .button .confirm{
+		color: #00bfb6;
+		font-weight: 500;
+	}
+	.popupNum .button .line{
+		width: 2rpx;
+		height: 102rpx;
+		background: #e5e5e5;
 	}
 	.popupClass{
 		width: 100%;

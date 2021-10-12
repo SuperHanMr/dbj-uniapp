@@ -2,7 +2,7 @@
 	<view style="background-color: #FFF;">
 		<custom-navbar opacity="1" :showBack="false" bgcolor="#FFF">
 			<template v-slot:back>
-				<image class="icon_logo" src="http://dbj.dragonn.top/static/mp/dabanjia/images/home/home_logo.png"
+				<image class="icon_logo" src="http://dbj.dragonn.top/static/mp/dabanjia/images/home/dbj_logo.png"
 					mode=""></image>
 			</template>
 		</custom-navbar>
@@ -18,7 +18,6 @@
 				</view>
 				<image class="icon_down" src="http://dbj.dragonn.top/static/mp/dabanjia/images/home/ic_home_down.png"
 					mode=""></image>
-
 			</view>
 
 			<image @click="toSearch" class="icon-search"
@@ -61,8 +60,11 @@
 			</view>
 		</view>
 		<!-- 快捷栏目 -->
-		<image v-for="(item,index) in status1List" :key="item.id" @click="onZoneClick(item)" :src="item.icon"
-			class="experience">
+		<view style="padding: 0 24rpx;">
+			<image v-for="(item,index) in status1List" :key="item.id" @click="onZoneClick(item)" :src="item.icon"
+				class="experience">
+		</view>
+
 
 		</image>
 		<view class="example-content">
@@ -79,8 +81,9 @@
 			</view>
 			<view class="flex1">
 			</view>
-			<view class="sub-title">
+			<view class="sub-title-more">
 				更多
+				<i class="icon-ic_wodejia_genghuan_csn more_icon"></i>
 			</view>
 		</view>
 		<view class="flex-row-common videos">
@@ -133,7 +136,7 @@
 							{{foramtPrice(item)}}
 						</text>
 						<text class="ex">.{{formatCent(item)}}</text>
-						/件
+						/{{item.product.salesUnit.unitName||''}}
 					</view>
 				</view>
 			</view>
@@ -199,18 +202,18 @@
 		onLoad() {
 			uni.$on("refrishHouse", (item) => {
 				this.reloadData();
-				// uni.setStorageSync("currentHouse", JSON.stringify(item));
 			});
-			// uni.hideShareMenu();
-			// this.getHomeList();
+			uni.$on("selectedHouse", (item) => {
+				this.citydata = item.cityName + item.areaName + item.housingEstate;
+				this.areaId = item.areaId;
+				this.currentHouseChange(item);
+			});
 			this.reloadData();
 			const systemInfo = uni.getSystemInfoSync();
 			//状态栏高度
 			this.tophight = systemInfo.statusBarHeight + "px";
 			// 获取胶囊按钮的位置
 			const menuButtonInfo = uni.getMenuButtonBoundingClientRect();
-			// this.backTop = menuButtonInfo.top + 'px';
-			// this.backHeight = menuButtonInfo.height + 'px';
 			console.log("**********", this.backHeight);
 			// 导航栏高度 = 状态栏到胶囊的间距（ 胶囊距上距离 - 状态栏高度 ）*2  +  胶囊高度
 			this.navBarHeight =
@@ -220,21 +223,13 @@
 				"px";
 		},
 		onShow() {
-			uni.$once("selectedHouse", (item) => {
-				this.citydata = item.cityName + item.areaName + item.housingEstate;
-				this.areaId = item.areaId;
-				this.currentHouseChange(item);
-				// uni.setStorageSync("currentHouse", JSON.stringify(item));
-			});
 			setTimeout(e => {
 				//防止401
-				this.token = getApp().globalData.token;
-				if (!this.token && !this.areaId) {
-					this.getHomeList();
-				}
+				this.getHomeList();
 			}, 500)
 			this.swiperAuto = true;
 			getApp().globalData.currentRoute = "/pages/home/index/index"
+			this.$store.dispatch("updateTabBarBadge");
 		},
 		onHide() {
 			this.swiperAuto = false
@@ -484,7 +479,7 @@
 					});
 				}
 			},
-			reloadData() {
+			async reloadData() {
 				// banner
 				this.getBannerList();
 				//直播列表
@@ -512,6 +507,7 @@
 							this.zoneList.push(e)
 						}
 					})
+					uni.stopPullDownRefresh()
 				});
 				//首页推荐商品
 				this.goodsList = [];
@@ -529,7 +525,9 @@
 				this.bannerList = await getBanner();
 			},
 			async getHomeList() {
-				if (uni.getStorageSync("userId")) {
+				const token = getApp().globalData.token;
+				const userId = uni.getStorageSync("userId");
+				if (userId && token) {
 					let houseList = await queryEstates({
 						isNeedRelative: false
 					});
@@ -564,10 +562,25 @@
 	};
 </script>
 
-<style lang="scss" scoped>
+<style lang="scss">
+	scroll-view ::-webkit-scrollbar {
+		display: none;
+		width: 0 !important;
+		height: 0 !important;
+		-webkit-appearance: none;
+		background: transparent;
+	}
+
+	::-webkit-scrollbar {
+		width: 0px;
+		height: 0px;
+		color: transparent;
+	}
+
 	.icon_down {
 		width: 28rpx;
 		height: 28rpx;
+		flex-shrink: 0;
 	}
 
 	.icon_logo {
@@ -773,6 +786,29 @@
 		}
 	}
 
+	.more_icon {
+		display: inline-block;
+		color: #DADFE3;
+		font-size: 16rpx;
+		margin-left: 4rpx;
+	}
+
+	.sub-title-more {
+		width: 92rpx;
+		height: 40rpx;
+		line-height: 40rpx;
+		border-radius: 20rpx;
+		border: 1rpx solid #DADFE3;
+		font-weight: 300;
+		color: #2D3033;
+		font-size: 22rpx;
+		text-align: center;
+		display: flex;
+		flex-direction: row;
+		justify-content: center;
+		align-items: center;
+	}
+
 	.address {
 		overflow: hidden;
 		text-overflow: ellipsis;
@@ -825,13 +861,9 @@
 	}
 
 	.experience {
-		margin: 0 24rpx;
 		height: 198rpx;
 		border-radius: 16rpx;
-		background: url("http://dbj.dragonn.top/static/mp/dabanjia/images/home/experience.png");
-		-moz-background-size: 100% 100%;
-		background-size: 100% 100%;
-		padding: 0 24rpx;
+		width: 100%;
 
 		.title {
 			padding-top: 24rpx;

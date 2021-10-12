@@ -229,13 +229,22 @@
       <view
         class="focusOn"
         @click="focusC"
+				v-if="!isSelfFocusOn"
       >
         <image
           class="add"
           src="../../static/ic_add_focus@2x.png"
         ></image>
-        <view>{{isSelfFocusOn?'已关注':'关注'}}</view>
+        <view>关注</view>
       </view>
+			<view
+			  class="focusOn"
+				:class="{'bgColor':isSelfFocusOn}"
+			  @click="focusC"
+				v-else
+			>
+			  <view>已关注</view>
+			</view>
     </view>
 		<view class="mask" v-if="showDecorateMask">
 			<view class="popupDecorate" :class="{'height':hasEstate}">
@@ -481,12 +490,17 @@ export default {
       projectId: 0,
       userId: 0,
 			dynamicPage: 1,
-			replyPage: 1
+			replyPage: 1,
+			homePageEstate: {}
     };
   },
   onLoad(option) {
     this.projectId = option.projectId;
     this.userId = uni.getStorageSync("userId");
+		uni.$on("currentHouseChange", (item) => {
+		  this.homePageEstate = item
+		  // getApp().globalData.switchFlag = "home"    
+		})  
   },
 	onReachBottom() {
 		this.dynamicPage+=1;
@@ -712,12 +726,12 @@ export default {
 		},
 		toDecorateService(){
 			uni.navigateTo({
-			  url: "/sub-decorate/pages/no-house-decorate/no-house-decorate?type=decorate",
+			  url: `/sub-decorate/pages/no-house-decorate/no-house-decorate?type=decorate&estateId=${this.homePageEstate.id}`,
 			});        
 		},
 		toCheckRoomService(){
 			uni.navigateTo({
-			  url: "/sub-decorate/pages/no-house-decorate/no-house-decorate?type=checkHouse",
+			  url: `/sub-decorate/pages/no-house-decorate/no-house-decorate?type=checkHouse&estateId=${this.homePageEstate.id}`,
 			});        
 		},
     toDecorateCalendar() {
@@ -1808,6 +1822,9 @@ export default {
 		border-radius: 12rpx;
 		margin: 24rpx 32rpx 24rpx 48rpx;
 	}
+	.sceneContainer .footer .focusOn.bgColor{
+		background: #F5F6F6;
+	}
 	.focusOn .add {
 		width: 18rpx;
 		height: 18rpx;
@@ -1823,4 +1840,5 @@ export default {
 		color: #ffffff;
 		line-height: 32rpx;
 	}
+	
 </style>

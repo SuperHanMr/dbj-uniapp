@@ -3,8 +3,8 @@
 		<warehouse-item :showBtns="false" :showSubtitle="false" :showBack="type==0" :itemBtn="type==2" :item="res"
 			@backGoodItem="toBackGoodItem" @applyBackItem="applyBackItem">
 		</warehouse-item>
-		<view class="detail-price">
-			<view class="detail-price-row">
+		<view v-if="type!=0"  class="detail-price">
+		<!-- 	<view class="detail-price-row">
 				<view class="detail-price-row-font">
 					商品总价
 				</view>
@@ -16,7 +16,7 @@
 				<view class="detail-price-row-num">
 					{{res.totalAmount}}
 				</view>
-			</view>
+			</view> -->
 			<view class="detail-price-row">
 				<view class="detail-price-row-font">
 					运费
@@ -45,7 +45,7 @@
 				</view>
 
 			</view>
-			<view class="detail-price-row">
+		<!-- 	<view class="detail-price-row">
 				<view class="detail-price-row-font">
 					商家优惠
 				</view>
@@ -59,7 +59,7 @@
 					{{res.storeDiscount}}
 				</view>
 
-			</view>
+			</view> -->
 			<view class="total-pay">
 				<view class="total-pay-title">
 					实付款
@@ -112,6 +112,22 @@
 					{{payType(res.stockStatus)}}
 				</view>
 			</view>
+			<view v-if="res.requireNo" class="order-info-row">
+				<view class="order-info-row-pre">
+					要货单号:
+				</view>
+				<view class="order-info-row-con">
+					{{res.requireNo}}
+				</view>
+			</view>
+			<view v-if="res.requireTime" class="order-info-row">
+				<view class="order-info-row-pre">
+					要货时间:
+				</view>
+				<view class="order-info-row-con">
+					{{res.requireTime |formatDate}}
+				</view>
+			</view>
 		</view>
 		<view class="bottom-btn">
 			<view v-if="type==0" class="refund-btn" @click="toBack">
@@ -157,6 +173,8 @@
 			}
 		},
 		onLoad(e) {
+			// ["待发货", "待收货", "已收货", "退款"], 0,1,2
+
 			let type = e.type;
 			this.type = type
 			this.projectId = e.projectId;

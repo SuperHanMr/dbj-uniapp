@@ -104,6 +104,7 @@
 				uni.switchTab({
 					url: "../../../pages/home/index/index"
 				});
+        this.$store.dispatch("logoutIM");
 			}
 		}
 	}

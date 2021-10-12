@@ -6,7 +6,7 @@
       <view class="subtitle" @click="goDetail">{{content.spuName}}</view>
       <view class="desc-area" @click="goDetail">
         <text>按平方米计价</text>
-        <text>x {{content.insideArea}}m²</text>
+        <text>x {{content.insideArea || 1}}m²</text>
       </view>
       <view class="price">
         <view class="t1">￥</text><text class="t2">{{content.price/100}}</text><text class="t3">/m²</text></view>
