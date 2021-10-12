@@ -3,6 +3,10 @@
     v-if="message.isRevoked" 
     :message="message"
   />
+  <group-tip-element
+    v-else-if="message.from === 'administrator'"
+    :message="message"
+  />
   <text-element 
     v-else-if="message.type === TIM.TYPES.MSG_TEXT" 
     :message="message" 

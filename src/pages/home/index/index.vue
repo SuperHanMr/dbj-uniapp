@@ -65,7 +65,7 @@
 			<image v-for="(item,index) in status1List" :key="item.id" @click="onZoneClick(item)" :src="item.icon"
 				class="experience">
 		</view>
-	
+
 
 		</image>
 		<view class="example-content">
@@ -202,18 +202,18 @@
 		onLoad() {
 			uni.$on("refrishHouse", (item) => {
 				this.reloadData();
-				// uni.setStorageSync("currentHouse", JSON.stringify(item));
 			});
-			// uni.hideShareMenu();
-			// this.getHomeList();
+			uni.$on("selectedHouse", (item) => {
+				this.citydata = item.cityName + item.areaName + item.housingEstate;
+				this.areaId = item.areaId;
+				this.currentHouseChange(item);
+			});
 			this.reloadData();
 			const systemInfo = uni.getSystemInfoSync();
 			//状态栏高度
 			this.tophight = systemInfo.statusBarHeight + "px";
 			// 获取胶囊按钮的位置
 			const menuButtonInfo = uni.getMenuButtonBoundingClientRect();
-			// this.backTop = menuButtonInfo.top + 'px';
-			// this.backHeight = menuButtonInfo.height + 'px';
 			console.log("**********", this.backHeight);
 			// 导航栏高度 = 状态栏到胶囊的间距（ 胶囊距上距离 - 状态栏高度 ）*2  +  胶囊高度
 			this.navBarHeight =
@@ -223,21 +223,13 @@
 				"px";
 		},
 		onShow() {
-			uni.$once("selectedHouse", (item) => {
-				this.citydata = item.cityName + item.areaName + item.housingEstate;
-				this.areaId = item.areaId;
-				this.currentHouseChange(item);
-				// uni.setStorageSync("currentHouse", JSON.stringify(item));
-			});
 			setTimeout(e => {
 				//防止401
-				this.token = getApp().globalData.token;
-				if (!this.token && !this.areaId) {
-					this.getHomeList();
-				}
+				this.getHomeList();
 			}, 500)
 			this.swiperAuto = true;
 			getApp().globalData.currentRoute = "/pages/home/index/index"
+			this.$store.dispatch("updateTabBarBadge");
 		},
 		onHide() {
 			this.swiperAuto = false
@@ -487,7 +479,7 @@
 					});
 				}
 			},
-			reloadData() {
+			async reloadData() {
 				// banner
 				this.getBannerList();
 				//直播列表

@@ -4,7 +4,8 @@ import {
   getTim,
   getSafeTim,
   addListener,
-  cleanListeners
+  cleanListeners,
+  isSDKReady
 } from "@/utils/tim.js"
 import {
   getGroupList,
@@ -55,7 +56,7 @@ const message = {
       systemType: CONV_TYPES.INTERACTION,
       name: "互动消息",
     },
-    isIMlogin: false,
+    isIMLogin: false,
     currentIMUserId: '',
     currentIMUserSig: '',
     conversationList: [], //腾讯会话列表
@@ -80,6 +81,19 @@ const message = {
     //系统消息未读个数，可以监听该数据变化，判断是否有系统消息
     systemUnreadCount(state) {
       return state.sysConv.unreadCount || 0;
+    },
+    //全部未读数
+    totalUnreadCount(state) {
+      let total = 0;
+      total += state.cstServConv.unreadCount || 0;
+      total += state.sysConv.unreadCount || 0;
+      total += state.itaConv.unreadCount || 0;
+      state.conversationList.forEach(conv => {
+        if (conv.unreadCount) {
+          total += conv.unreadCount;
+        }
+      })
+      return total;
     }
   },
   mutations: {
@@ -243,6 +257,9 @@ const message = {
         ...state.cstServConv,
         lastMessage: lastMessage
       };
+    },
+    setIMLogin(state, isLogin) {
+      state.isIMLogin = isLogin;
     }
   },
   actions: {
@@ -257,10 +274,21 @@ const message = {
         userID: userId,
         userSig: userSig
       }).then(res => {
-        context.state.isIMlogin = true;
+        context.commit("setIMLogin", true);
         addListener("CONVERSATION_LIST_UPDATED", (event) => {
           let conversationList = event.data || [];
           context.commit("updateConversationList", conversationList);
+          let totalCount = context.getters.totalUnreadCount;
+          if (totalCount > 0) {
+            uni.setTabBarBadge({
+              index: 3,
+              text: totalCount > 99 ? "99+" : totalCount + ""
+            })
+          } else {
+            uni.removeTabBarBadge({
+              index: 3
+            })
+          }
         }, "IM-CONVERSATION_LIST_UPDATED");
         addListener("MESSAGE_RECEIVED", (event) => {
           let messageList = event.data || [];
@@ -272,14 +300,14 @@ const message = {
         context.dispatch("requestConversationList");
         context.dispatch("requestDBGroupList");
       }).catch(err => {
-        context.state.isIMlogin = false;
+        context.commit("setIMLogin", false);
         console.error("IM login error.", err);
       });
     },
     logoutIM(context) {
       return getTim().logout().then(() => {
         cleanListeners();
-        context.state.isIMlogin = false;
+        context.commit("setIMLogin", false);
       });
     },
     requestConversationList(context) {
@@ -348,7 +376,13 @@ const message = {
     checkoutConversation(context, conversationID) {
       console.log("check conversation:", conversationID);
       // 2.待切换的会话也进行已读上报 
-      getTim().setMessageRead({ conversationID }).catch(e => { })
+      if (conversationID === 'CUSTOMER' || conversationID === context.state.cstServConv.conversationID) {
+        if (context.state.cstServConv.isAvailable) {
+          getTim().setMessageRead({ conversationID }).catch(e => { })
+        }
+      } else {
+        getTim().setMessageRead({ conversationID }).catch(e => { })
+      }
       // 3. 获取会话信息
       return getTim().getConversationProfile(conversationID).then(({data}) => {
         const conversation = data.conversation;
@@ -372,13 +406,24 @@ const message = {
                   type: "MSG_QUESTION_LIST",
                 });
               }
-            })
+            }).catch(e => {
+              getTim().sendMessage({
+                type: "MSG_QUESTION_LIST",
+              });
+            });
           });
         }
         // 3.2 获取消息列表
         return context.dispatch('requestMessageList', conversationID);
       }).catch(err => {
         console.error("获取会话信息出错：", err);
+        setTimeout(function() {
+          if (!isSDKReady()) {
+            uni.navigateTo({
+              url: "/pages/login/login",
+            });
+          }
+        }, 50);
       })
     },
     playMessageSound(context, payload) {
@@ -435,6 +480,12 @@ const message = {
      * @param {Object} context
      */
     openCustomerConversation(context) {
+      if (!isSDKReady()) {
+        uni.navigateTo({
+          url: "/pages/login/login",
+        });
+        return;
+      }
       let { conversationID, name } = context.state.cstServConv;
       uni.navigateTo({
         url: "/pages/message/conversation/conversation?id=" + conversationID + "&name=" + name,
@@ -446,6 +497,12 @@ const message = {
      * @param {Object} userId
      */
     openC2CConversation(context, userId) {
+      if (!isSDKReady()) {
+        uni.navigateTo({
+          url: "/pages/login/login",
+        });
+        return;
+      }
       const conversationList = context.state.conversationList;
       const userIMID = "zeus_" + userId;
       const convId = TIM.TYPES.CONV_C2C + userIMID;

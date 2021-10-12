@@ -75,18 +75,18 @@
         </view>
       </view>
       <view class="good-store-account" v-if="orderInfo.totalDeliveryFee">
-        <view>
+        <view v-if="Number(orderInfo.totalPrice)">
           <text>商品总价</text>
           <text>¥{{orderInfo.totalPrice}}</text>
         </view>
-        <view>
+        <view v-if="Number(orderInfo.totalDeliveryFee)">
           <view class="question-box">
             总运费
             <text class="question-icon" @click="readExpenses(1)"></text>
           </view>
           <text>¥{{orderInfo.totalDeliveryFee}}</text>
         </view>
-        <view v-if="orderInfo.totalHandlingFee">
+        <view v-if="Number(orderInfo.totalHandlingFee)">
           <view class="question-box">
             总搬运费
             <text class="question-icon" @click="readExpenses(2)"></text>
@@ -94,7 +94,7 @@
           <text>¥{{orderInfo.totalHandlingFee}}</text>
         </view>
       </view>
-      <view class="good-store-account is-store" v-if="!orderInfo.totalDeliveryFee">
+      <view class="good-store-account is-store" v-if="Number(orderInfo.totalPrice) && !Number(orderInfo.totalDeliveryFee)">
         <view>
           <text>商品总价</text>
           <text>¥{{orderInfo.totalPrice}}</text>
@@ -105,7 +105,7 @@
           </text>
         </view>
       </view>
-      <view class="pledge" v-if="orderInfo.totalDeposit">
+      <view class="pledge" v-if="Number(orderInfo.totalDeposit)">
         <text>总押金</text>
         <text>¥{{orderInfo.totalDeposit}}</text>
       </view>
@@ -132,8 +132,8 @@
             <view class="info-text2">总计：</view>
             <view class="total-money">
               ￥
-              <text class="mony-text">{{totalPrice?String.prototype.split.call(totalPrice, ".")[0]:0}}</text>
-              <text>.{{totalPrice?String.prototype.split.call(totalPrice, ".")[1]?String.prototype.split.call(totalPrice, ".")[1]:0:0}}</text>
+              <text class="mony-text">{{totalPrice?String.prototype.split.call(totalPrice, ".")[0]: "-"}}</text>
+              <text>.{{totalPrice?String.prototype.split.call(totalPrice, ".")[1]?String.prototype.split.call(totalPrice, ".")[1]:"-":"-"}}</text>
             </view>
           </view>
           <button class="pay-button" :class="{'no-pay': !hasCanBuy || hasNoBuyItem}" @click="pay" ref="test">立即支付</button>
@@ -301,8 +301,6 @@
           this.noStoreInfos.storeInfos = []
           this.canStoreInfos = JSON.parse(JSON.stringify(dataInfo))
           this.canStoreInfos.storeInfos = []
-
-
           this.orderInfo.storeInfos.map((storeItem, storeK) => {
             let noStoreItem = JSON.parse(JSON.stringify(storeItem))
             noStoreItem.skuInfos = []
@@ -310,8 +308,6 @@
             canStoreItem.skuInfos = []
             this.noStoreInfos.storeInfos.push(noStoreItem)
             this.canStoreInfos.storeInfos.push(canStoreItem)
-
-
             storeItem.skuInfos.map((skuItem, skuK) => {
               this.productType = skuItem.productType
                // 头部补人工数据
@@ -356,7 +352,7 @@
                   		"businessType":skuItem.categoryTypeId, //业务类型,
                   		"roleType":skuItem.roleType? Number(skuItem.roleType): 0, //角色类型  7工人  10管家  购买工人和管家时参数必传,
                   		"workType":skuItem.workType? Number(skuItem.workType): -2,//工种类型 购买工人时参数必传,
-                  		"level":0, //等级  0中级  1高级 2特级  3钻石",
+                  		"level":this.level, //等级  0中级  1高级 2特级  3钻石",
                   		"storeId":storeItem.storeId, //店铺id,
                   		"storeType": 0, //店铺类型 0普通 1设计师",
                   		"number": skuItem.buyCount, //购买数量",
@@ -374,6 +370,9 @@
             if (this.hasNoBuyItem) {
               this.$refs.orderToast.showPupop()
             }
+          }
+          if(this.orderInfo.storeInfos.length === 1) {
+            this.totalClassNum = 1
           }
         })
       },
@@ -425,7 +424,7 @@
             fail(e) {
               console.log(e);
               uni.navigateTo({
-                url:`/sub-my/pages/my-order/order-in-progress/order-in-progress?orderNo=${data.id}`
+                url:`/sub-my/pages/my-order/order-wait-pay/order-wait-pay?orderNo=${data.id}`
               })
             },
           });
