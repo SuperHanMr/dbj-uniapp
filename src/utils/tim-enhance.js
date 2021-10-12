@@ -212,7 +212,7 @@ function enhanceGetConversationProfile(tim) {
   })
   tim.getConversationProfile = function(conversationID) {
     return new Promise((resolve, reject) => {
-      if (conversationID === state.cstServConv.conversationID) {
+      if (conversationID === state.cstServConv.conversationID || conversationID === "CUSTOMER") {
         if (conversationID === "CUSTOMER") {
           commit("setCustomerAvailable", false);
           resolve(response(state.cstServConv));
@@ -272,6 +272,9 @@ function enhanceGetMessageList(tim) {
   tim.getMessageList = function(params) {
     console.log("enhance get message list:", params);
     const { conversationID, nextReqMessageID, count } = params;
+    if (conversationID === "CUSTOMER") {
+      return Promise.resolve(response([], true, ''));
+    }
     if (conversationID === state.cstServConv.conversationID) {
       // 在线客服消息，从后台接口获取
       let endTime;

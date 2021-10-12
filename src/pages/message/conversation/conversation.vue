@@ -274,6 +274,7 @@
         console.log("messageList receive:", messageList);
         this.$store.commit("pushCurrentMessageList", messageList);
         getTim().setMessageRead({ conversationID: this.currentConversation.conversationID });
+        this.scrollToBottom();
       },
       handleMessageListClick() {
         uni.$emit("message-list-click");

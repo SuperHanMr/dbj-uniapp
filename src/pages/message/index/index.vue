@@ -1,5 +1,5 @@
 <template>
-  <view class="im-container">
+  <view v-if="isIMLogin" class="im-container">
     <!-- <view class="im-header">
       消息
     </view> -->
@@ -32,10 +32,12 @@
        </conversation-item>
     </view>
   </view>
+  <unlogin-page v-else />
 </template>
 
 <script>
   import TIM from 'tim-wx-sdk'
+  import { isSDKReady } from '@/utils/tim.js'
   import ConversationItem from "./conversation-item.vue";
   import { mapState, mapGetters } from "vuex";
   export default {
@@ -45,12 +47,18 @@
     onLoad() {
       getApp().globalData.currentRoute = "/pages/message/index/index"
     },
+    onShow() {
+      this.$store.commit("setIMLogin", isSDKReady());
+      this.$store.dispatch("updateTabBarBadge");
+      this.$store.dispatch("requestDBGroupList");
+    },
     data() {
       return {
       }
     },
     computed: {
       ...mapState({
+        isIMLogin: (state) => state.message.isIMLogin,
         cstServConv: (state) => state.message.cstServConv,
         sysConv: (state) => state.message.sysConv,
         itaConv: (state) => state.message.itaConv,
