@@ -63,6 +63,7 @@
         title: this.title
       })
       this.queryProductList();
+      this.dataList = []
     },
     onReachBottom() {
       if (this.page * 10 < this.total) {

@@ -45,6 +45,7 @@
       this.areaId = areaId
     },
     onShow() {
+      this.dataList = []
       this.queryProductList();
     },
     onReachBottom() {

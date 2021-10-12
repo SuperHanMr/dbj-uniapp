@@ -3,7 +3,7 @@
     <view class="title">
       <view class="title-check">
         <slot name="check"></slot>
-        <text class="text">{{setting.title}}{{setting.level | filterLevel(setting.cardtype)}}</text>
+        <text class="text" v-if="setting.insideArea">{{setting.title}}{{setting.level | filterLevel(setting.cardtype)}}</text>
       </view>
       <!-- <view class="change-service change-level" v-if="setting.cardtype == 'design'" @click="changeLevel">更换等级</view> -->
       <!-- <view class="change-service" @click="selectAnother">
