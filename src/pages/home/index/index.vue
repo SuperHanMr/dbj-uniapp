@@ -236,6 +236,7 @@
 					this.getHomeList();
 				}
 			}, 500)
+				 this.getHomeList();
 			this.swiperAuto = true;
 			getApp().globalData.currentRoute = "/pages/home/index/index"
 		},
@@ -487,7 +488,7 @@
 					});
 				}
 			},
-			reloadData() {
+		 async	reloadData() {
 				// banner
 				this.getBannerList();
 				//直播列表

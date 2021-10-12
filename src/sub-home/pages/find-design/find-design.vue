@@ -23,16 +23,20 @@
 			</view>
 		</scroll-view>
 
-		<scroll-view v-if="subChildren.length" style="height: 84rpx;line-height:84rpx" class="tab-list"
-			scroll-x="true" @scroll="scroll">
+		<scroll-view v-if="subChildren.length" style="height: 84rpx;line-height:84rpx" class="tab-list" scroll-x="true"
+			@scroll="scroll">
 			<view v-for="(item,index) in subChildren" :key="item.id" style="line-height:52rpx ;" class="tab-item"
 				:class="index==subIndex?'sub-selected':'sub-unselected'" @click="onSubTab(index,item)">
 				<text>{{item.name}}</text>
 			</view>
 		</scroll-view>
+		<view v-if="goodsList.length==0" class="noMemo">
+			<image class="noMemoImg" src="http://dbj.dragonn.top/static/mp/dabanjia/images/decorate/pic_empty%402x.png">
+			</image>
+			<view class="noMemoText">暂无内容~</view>
+		</view>
 		<view class="goods-list">
-			<view class="item" v-for="(item,index) in goodsList" :key="item.id"
-				@click="toGoodsDetail(item.id)">
+			<view class="item" v-for="(item,index) in goodsList" :key="item.id" @click="toGoodsDetail(item.id)">
 				<image class="img" :src="item.imageUrl" mode=""></image>
 				<view class="info">
 					<view class="title">
@@ -131,7 +135,7 @@
 				this.subIndex = 0;
 				this.subChildren = this.tabList[index].children;
 				let id = item.id
-				if(this.subChildren&&this.this.subChildren.length){
+				if (this.subChildren && this.this.subChildren.length) {
 					id = this.subChildren[0].id
 				}
 				this.getGoods(id);
@@ -145,15 +149,38 @@
 	}
 </script>
 
-<style  lang="scss">
-	page{
+<style lang="scss">
+	page {
 		background: #FFF;
 	}
+
 	.tes1t {
 		width: 100%;
 		height: 10000rpx;
 		background-color: yellow;
 	}
+
+	.noMemo {
+		width: 100%;
+		height: fit-content;
+		margin-top: 184rpx;
+	}
+
+	.noMemo .noMemoImg {
+		width: 750rpx;
+		height: 580rpx;
+		display: block;
+	}
+
+	.noMemo .noMemoText {
+		width: fit-content;
+		height: 36rpx;
+		margin-top: 24rpx;
+		margin-left: 324rpx;
+		font-size: 26rpx;
+		color: #999999;
+	}
+
 
 	.sub-selected {
 		background: linear-gradient(129deg, #00cdec 4%, #00ed7d 100%);
