@@ -18,7 +18,7 @@
       </view>
     </view>
     <server-content :content="setting" @selectAnother="selectAnother"></server-content>
-    <view class="door-time-wrap" v-if="setting.serviceType == 2">
+    <view class="door-time-wrap" v-if="setting.serviceType == 2 || setting.title == '验房服务'">
       <view class="door-time"><text class="label">选择期望上门时间</text><text class="value">{{setting.doorTime}}</text>
       </view>
       <image @click="selectDoorTime" src="http://dbj.dragonn.top/static/mp/dabanjia/images/decorate/arrow-r-gr.svg" class="change-img"></image>
