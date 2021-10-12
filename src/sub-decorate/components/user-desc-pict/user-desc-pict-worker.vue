@@ -177,7 +177,7 @@
   }
 
   .desc {
-    height: 88rpx;
+    min-height: 88rpx;
     font-size: 28rpx;
     font-family: PingFangSC, PingFangSC-Regular;
     font-weight: 400;

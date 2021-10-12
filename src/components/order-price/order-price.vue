@@ -95,7 +95,7 @@
       </view>
 			
       <view>
-        <text style="margin-right: 12rpx;">需付款</text>
+        <text style="margin-right: 12rpx;">已付款</text>
         <text style="color: #FF3347;">
           <text>￥</text>
           <text style="font-size: 40rpx;">{{handlePrice(data.orderReceivableAmount)[0]}}.</text>

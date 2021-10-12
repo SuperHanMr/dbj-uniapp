@@ -27,10 +27,19 @@
           <view class="close" @click="close">+</view>
         </view>
         <view class="desc">
-          这是等级说明，但是说明写些什么我也不知道，具体还是看产品同学给的文案吧。或者业务同学
+          中级工人，在平台服务工地数量20个以上；
         </view>
         <view class="desc">
-          这是等级说明，但是说明写些什么我也不知道，具体还是看产品同学给的文案吧。或者业务同学
+          高级工人，在平台服务工地数量30个以上；
+        </view>
+        <view class="desc">
+          特级工人，在平台服务工地数量40个以上；
+        </view>
+        <view class="desc">
+          钻石级工人，在平台服务工地数量50个以上；
+        </view>
+        <view class="desc">
+          根据工人级别不同，服务费也会有所差异，以购买时实际支付费用为准。
         </view>
       </view>
     </uni-popup>

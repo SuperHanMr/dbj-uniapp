@@ -84,6 +84,7 @@
 				systemHeight: "",
 				containerBottom: "",
 				areaId: "",
+				from:"" ,
 			};
 		},
 
@@ -98,11 +99,21 @@
 			if (e && e.orderNo) {
 				this.orderNo = e.orderNo;
 			}
+			this.from= e.from || ''
 			const currentHouse = getApp().globalData.currentHouse;
 			this.areaId = currentHouse.areaId;
 		},
 		onShow() {
 			this.orderDetail();
+		},
+		
+		// 改变返回下一个页面的路径
+		onUnload() {
+		  if(this.from=="comfirmOrder"){
+				uni.redirectTo({
+					url:"../my-order?firstEntry=true&index=2"
+				})
+			}
 		},
 
 		methods: {

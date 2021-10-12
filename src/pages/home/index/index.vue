@@ -2,7 +2,7 @@
 	<view style="background-color: #FFF;">
 		<custom-navbar opacity="1" :showBack="false" bgcolor="#FFF">
 			<template v-slot:back>
-				<image class="icon_logo" src="http://dbj.dragonn.top/static/mp/dabanjia/images/home/home_logo.png"
+				<image class="icon_logo" src="http://dbj.dragonn.top/static/mp/dabanjia/images/home/dbj_logo.png"
 					mode=""></image>
 			</template>
 		</custom-navbar>
@@ -18,7 +18,6 @@
 				</view>
 				<image class="icon_down" src="http://dbj.dragonn.top/static/mp/dabanjia/images/home/ic_home_down.png"
 					mode=""></image>
-
 			</view>
 
 			<image @click="toSearch" class="icon-search"
@@ -82,8 +81,9 @@
 			</view>
 			<view class="flex1">
 			</view>
-			<view class="sub-title">
+			<view class="sub-title-more">
 				更多
+				<i class="icon-ic_wodejia_genghuan_csn more_icon"></i>
 			</view>
 		</view>
 		<view class="flex-row-common videos">
@@ -507,6 +507,7 @@
 							this.zoneList.push(e)
 						}
 					})
+					uni.stopPullDownRefresh()
 				});
 				//首页推荐商品
 				this.goodsList = [];
@@ -524,7 +525,9 @@
 				this.bannerList = await getBanner();
 			},
 			async getHomeList() {
-				if (uni.getStorageSync("userId")) {
+				const token = getApp().globalData.token;
+				const userId = uni.getStorageSync("userId");
+				if (userId && token) {
 					let houseList = await queryEstates({
 						isNeedRelative: false
 					});
@@ -559,10 +562,25 @@
 	};
 </script>
 
-<style lang="scss" scoped>
+<style lang="scss">
+	scroll-view ::-webkit-scrollbar {
+		display: none;
+		width: 0 !important;
+		height: 0 !important;
+		-webkit-appearance: none;
+		background: transparent;
+	}
+
+	::-webkit-scrollbar {
+		width: 0px;
+		height: 0px;
+		color: transparent;
+	}
+
 	.icon_down {
 		width: 28rpx;
 		height: 28rpx;
+		flex-shrink: 0;
 	}
 
 	.icon_logo {
@@ -766,6 +784,29 @@
 			color: #2b2f33;
 			line-height: 40rpx;
 		}
+	}
+
+	.more_icon {
+		display: inline-block;
+		color: #DADFE3;
+		font-size: 16rpx;
+		margin-left: 4rpx;
+	}
+
+	.sub-title-more {
+		width: 92rpx;
+		height: 40rpx;
+		line-height: 40rpx;
+		border-radius: 20rpx;
+		border: 1rpx solid #DADFE3;
+		font-weight: 300;
+		color: #2D3033;
+		font-size: 22rpx;
+		text-align: center;
+		display: flex;
+		flex-direction: row;
+		justify-content: center;
+		align-items: center;
 	}
 
 	.address {

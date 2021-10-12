@@ -137,7 +137,7 @@
 				this.subIndex = 0;
 				this.subChildren = this.tabList[index].children;
 				let id = item.id
-				if (this.subChildren && this.this.subChildren.length) {
+				if (this.subChildren && this.subChildren.length) {
 					id = this.subChildren[0].id
 				}
 				this.getGoods(id);

@@ -75,7 +75,7 @@
 						<view class="title">编辑数量</view>
 						<view class="text">当前最小单位为{{miniOrder}}，输入的数量需为{{step}}的倍数</view>
 					</view>
-					<input type="text" v-model="buyNum">
+					<input type="text" v-model="buyNum" :focus="isFocus" />
 					<view class="button">
 						<view class="cancel" @click="closeDialog">取消</view>
 						<!-- <view class="line"></view> -->
@@ -229,7 +229,8 @@
 				isDefault:true,
 				step:0,//步长
 				miniOrder:0,
-				buyNum:"",//输入框的值
+				buyNum:"",//输入框的值,
+				isFocus:false,
 			}
 		},
 		mounted(){
@@ -264,7 +265,6 @@
 		},
 		methods:{
 			freeShippings(){
-				
 				this.shopList.map(item=>{
 					let sum = 0
 					item.skuList.forEach(ele=>{
@@ -275,12 +275,14 @@
 					if(sum < item.freeShippingThreshold/100){
 						item.freeShippings = (item.freeShippingThreshold/100-sum).toFixed(2)
 					}else if(sum > item.freeShippingThreshold/100){
-						item.freeShippings = (item.freeShippingThreshold/100*2-sum).toFixed(2)
+						let temp = Math.ceil(sum / (item.freeShippingThreshold/100))
+						item.freeShippings = (item.freeShippingThreshold/100*temp-sum).toFixed(2)
+					}
+					if(sum % (item.freeShippingThreshold/100) === 0){
+						item.freeShippings = item.freeShippingThreshold/100
 					}
 					return item
 				})
-				
-				
 			},
 			handleConfirm(preId,curId){
 				console.log(preId,curId)
@@ -323,7 +325,7 @@
 					this.defaultSpec = data.defaultProperties
 					this.defaultSpecIds = Ids.sort().toString()
 					this.selectedIndex = data.skuAndProperties.findIndex(item => item.valueIds.sort().toString()
-					 === this.defaultSpecIds)
+						=== this.defaultSpecIds)
 					console.log(this.selectedIndex)
 				})
 			},
@@ -370,6 +372,7 @@
 			},
 			openCount(shopIndex, goodsIndex,miniOrder,step,buyNum){
 				this.showInput = true
+				this.isFocus = true
 				this.miniOrder = miniOrder
 				this.step = step
 				this.buyNum = buyNum
@@ -432,6 +435,7 @@
 					}]
 				}
 				setBuyCount(params).then(data => {
+					this.freeShippings()
 					this.requestPage()
 				})
 				this.showInput = false
