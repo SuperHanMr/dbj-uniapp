@@ -323,7 +323,7 @@
 					this.defaultSpec = data.defaultProperties
 					this.defaultSpecIds = Ids.sort().toString()
 					this.selectedIndex = data.skuAndProperties.findIndex(item => item.valueIds.sort().toString()
-					 === this.defaultSpecIds)
+						=== this.defaultSpecIds)
 					console.log(this.selectedIndex)
 				})
 			},
