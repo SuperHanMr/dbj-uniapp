@@ -35,7 +35,7 @@
       },
       toOrderDetail() {
         uni.navigateTo({
-          url: `/sub-my/pages/my-order/order-in-progress/order-in-progress?orderNo=${this.orderId}`
+          url: `/sub-my/pages/my-order/order-in-progress/order-in-progress?orderNo=${this.orderId}&from=comfirmOrder`
         })
       }
     }
