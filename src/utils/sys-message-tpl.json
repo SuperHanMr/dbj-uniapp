@@ -3,7 +3,8 @@
     "url":"/sub-decorate/pages/grab/grab",
     "name":"抢单",
     "variable":"jobName",
-    "msg":"有${jobName}接单啦，请确认"
+    "msg":"有${jobName}接单啦，请确认",
+    "icon":"icon-sheji"
   },
   "sys_measure_estate_structure_diagram_report_msg":{
     "url":"/sub-decorate/pages/amoutDelivery/amoutDelivery",
@@ -87,5 +88,61 @@
     "url":"/sub-decorate/pages/design-report/design-report",
     "name":"设计报告交付",
     "msg":"设计师已经交付了设计报告，请确认"
+  },
+  "11":{
+    "icon":"icon-liangfang",
+    "color":"#43d9e1"
+  },
+  "12":{
+    "icon":"icon-liangfang",
+    "color":"#43d9e1"
+  },
+  "3":{
+    "icon":"icon-yanfang",
+    "color":"#5A99DA"
+  },
+  "1":{
+    "icon":"icon-sheji",
+    "color":"#2bbaf2"
+  },
+  "2":{
+    "icon":"icon-sheji",
+    "color":"#2bbaf2"
+  },
+  "6":{
+    "icon":"icon-sheji",
+    "color":"#2bbaf2"
+  },
+  "7":{
+    "icon":"icon-sheji",
+    "color":"#2bbaf2"
+  },
+  "23":{
+    "icon":"icon-jingsuan",
+    "color":"#1e7bea"
+  },
+  "141":{
+    "icon":"icon-mugong",
+    "color":"#a38af4"
+  },
+  "143":{
+    "icon":"icon-youqi",
+    "color":"#8cd874"
+  },
+  "142":{
+    "icon":"icon-nigong",
+    "color":"#f47f62"
+  },
+  "146":{
+    "icon":"icon-shuidian",
+    "color":"#58a8ff"
+  },
+  "145":{
+    "icon":"icon-chaichu",
+    "color":"#a38af4"
+  },
+  "17":{
+    "icon":"icon-guanjia",
+    "color":"#ffb568"
   }
 }

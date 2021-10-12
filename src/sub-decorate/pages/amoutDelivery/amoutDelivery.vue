@@ -1,6 +1,6 @@
 <template>
   <view class="amount-delivery">
-    <amount-house :checkData="checkData"></amount-house>
+    <amount-house :checkData="checkData" :isReport='true'></amount-house>
     <bottom-btn style="width: 100%;" :showDefaultBtn="false">
       <view class="btn">
         <view class="btn-left" @click="change">

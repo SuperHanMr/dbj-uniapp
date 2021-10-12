@@ -148,7 +148,7 @@
 				},
 
 				roomData: [0, 0, 0, 0],
-				roomList: [1, 2, 3, 4, 5],
+				roomList: [0, 1, 2, 3, 4, 5],
 				houseType: "",
 				currentFloor: 0,
 				floorList: [{
@@ -248,10 +248,10 @@
 						this.addData.floors = null;
 					}
 					this.roomData = [
-						this.addData.roomNum++,
-						this.addData.hallNum++,
-						this.addData.kitchenNum++,
-						this.addData.bathroomNum++,
+						this.addData.roomNum,
+						this.addData.hallNum,
+						this.addData.kitchenNum,
+						this.addData.bathroomNum,
 					];
 					this.changeRoomText();
 				});
@@ -308,12 +308,15 @@
 				this.visible = false;
 			},
 			pickerSure() {
-				this.room = [...this.roomData];
-				this.addData.roomNum = +this.roomData[0] + 1;
-				this.addData.hallNum = +this.roomData[1] + 1;
-				this.addData.kitchenNum = +this.roomData[2] + 1;
-				this.addData.bathroomNum = +this.roomData[3] + 1;
-				this.changeRoomText();
+        if(this.roomData[0]||this.roomData[1]||this.roomData[2]||this.roomData[3]){
+          this.room = [...this.roomData];
+          this.addData.roomNum = +this.roomData[0];
+          this.addData.hallNum = +this.roomData[1];
+          this.addData.kitchenNum = +this.roomData[2];
+          this.addData.bathroomNum = +this.roomData[3];
+          this.changeRoomText();
+        }
+				
 				this.$refs.popup.close();
 				this.visible = false;
 			},
@@ -429,12 +432,26 @@
 					});
 					return false;
 				}
+        if(data.roomNum||data.hallNum||data.kitchenNum||data.bathroomNum){
+          
+        }else{
+          uni.showToast({
+          	title: "请选择户型",
+          	duration: 2000,
+          	icon: "none",
+          });
+          return false;
+        }
 
 				if (data.hasLift) {
 					delete data.floors;
 				}
 				delete data.defaultEstate;
 				delete data.hasLift;
+        delete data.roomNum;
+        delete data.hallNum;
+        delete data.kitchenNum;
+        delete data.bathroomNum;
 				for (let item in data) {
 					console.log(data[item], item);
 					if (!data[item]) {
