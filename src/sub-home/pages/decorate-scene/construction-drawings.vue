@@ -125,7 +125,7 @@
 						this.serveTypes = data
 						let params = {
 							projectId: this.projectId,
-							severType: type || 1
+							severType: type
 						}
 						getDrawings(params).then(data => {
 							if(data){
