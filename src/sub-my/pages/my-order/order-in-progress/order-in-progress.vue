@@ -98,10 +98,11 @@
 			if (e && e.orderNo) {
 				this.orderNo = e.orderNo;
 			}
-
-			this.orderDetail();
 			const currentHouse = getApp().globalData.currentHouse;
 			this.areaId = currentHouse.areaId;
+		},
+		onShow() {
+			this.orderDetail();
 		},
 
 		methods: {

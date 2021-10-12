@@ -58,6 +58,7 @@
       }
       console.log(naviData);
       this.getList();
+      this.$store.dispatch("updateTabBarBadge");
     },
     methods: {
       searchClick() {
@@ -155,21 +156,27 @@
   .uni-tab-item-short2 {
     display: inline-block;
     text-align: center;
-    width: calc(50% - 64rpx);
+    min-width: calc(50% - 64rpx);
+    width: fit-content;
+    margin: 0 1%;
   }
 
   .uni-tab-item-short3 {
     display: inline-block;
     flex-wrap: nowrap;
     text-align: center;
-    width: calc(33.3% - 42.7rpx);
+    min-width: calc(33.3% - 42.7rpx);
+    width: fit-content;
+    margin: 0 1%;
   }
 
   .uni-tab-item-short4 {
     display: inline-block;
     flex-wrap: nowrap;
     text-align: center;
-    width: calc(25% - 32rpx);
+    min-width: calc(25% - 32rpx);
+    width: fit-content;
+    margin: 0 1%;
   }
 
   .uni-tab-item {

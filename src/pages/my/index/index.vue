@@ -180,7 +180,7 @@
           this.waitPayOrderNum = e ? e : 0
         })
       }
-
+      this.$store.dispatch("updateTabBarBadge");
     },
 
     onLoad() {
