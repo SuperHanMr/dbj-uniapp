@@ -83,7 +83,8 @@
 			</view>
 			<view class="sub-title-more">
 				更多
-				<i class="icon-ic_wodejia_genghuan_csn more_icon"></i>
+				<image class="more_icon"
+					src="http://dbj.dragonn.top/%20static/mp/dabanjia/images/home/ic_more_right.png" mode=""></image>
 			</view>
 		</view>
 		<view class="flex-row-common videos">
@@ -98,6 +99,9 @@
 			<view v-for="(item,index) in liveList" :key="index" class="item" @click="onLiveClick(item)">
 				<image class="img" :src="item.mediaType==1?item.roomLiveMediaVO.scaleImg:item.roomVideoMediaVO.scaleImg"
 					mode=""></image>
+				<image v-if="item.mediaType==2" class="top-content-img"
+					src="http://dbj.dragonn.top/static/mp/dabanjia/images/home/ic_liveing.png">
+				</image>
 				<view v-if="item.mediaType==1" class="top-content">
 					{{item.roomLiveMediaVO.onLineCount}}人正在观看
 				</view>
@@ -110,7 +114,7 @@
 			</view>
 		</view>
 		<!-- 推荐 -->
-		<view class="flex-row-common" style="margin-top: 42rpx;">
+		<view class="flex-row-common" style="margin-top: 50rpx;">
 			<view class="title">
 				精选推荐
 			</view>
@@ -119,7 +123,7 @@
 		<view class="goods-list">
 			<view class="item" v-for="(item,index) in goodsList" :key="item.id"
 				@click="toGoodsDetail(item.product.skuId)">
-				<image class="img" :src="item.product.skuImage" mode=""></image>
+				<image class="img" :src="item.product.skuImage" mode="aspectFill"></image>
 				<view class="info">
 					<view class="title">
 						<text class="tip">
@@ -128,7 +132,6 @@
 						<text>{{item.product.spuName}}</text>
 					</view>
 					<view class="flex1">
-
 					</view>
 					<view class="price">
 						¥
@@ -203,11 +206,15 @@
 			uni.$on("refrishHouse", (item) => {
 				this.reloadData();
 			});
+			uni.$on("defaultHouseChange", (item) => {
+				this.getHomeList();
+			});
 			uni.$on("selectedHouse", (item) => {
 				this.citydata = item.cityName + item.areaName + item.housingEstate;
 				this.areaId = item.areaId;
 				this.currentHouseChange(item);
 			});
+			this.getHomeList();
 			this.reloadData();
 			const systemInfo = uni.getSystemInfoSync();
 			//状态栏高度
@@ -223,10 +230,6 @@
 				"px";
 		},
 		onShow() {
-			setTimeout(e => {
-				//防止401
-				this.getHomeList();
-			}, 500)
 			this.swiperAuto = true;
 			getApp().globalData.currentRoute = "/pages/home/index/index"
 			this.$store.dispatch("updateTabBarBadge");
@@ -614,7 +617,7 @@
 
 	.goods-list {
 		display: flex;
-		margin-top: 24rpx;
+		margin-top: 8rpx;
 		width: 100%;
 		flex-direction: row;
 		flex-wrap: wrap;
@@ -642,6 +645,7 @@
 				font-weight: 400;
 				color: #939699;
 				line-height: 26rpx;
+				font-family: Unnamed-Regular, Unnamed;
 
 				.amount {
 					font-size: 40rpx;
@@ -667,7 +671,6 @@
 				.title {
 					margin-top: 10rpx;
 					font-size: 28rpx;
-					font-weight: 600;
 					color: #2b2f33;
 					line-height: 40rpx;
 					overflow: hidden;
@@ -675,20 +678,21 @@
 					display: -webkit-box;
 					-webkit-line-clamp: 2; //这个代表你要在几行显示省略号
 					-webkit-box-orient: vertical;
+					vertical-align: middle;
+					display: inline;
 				}
 
 				.tip {
-					display: inline-block;
-					height: 30rpx;
-					line-height: 30rpx;
-					margin-right: 10rpx;
 					width: 60rpx;
+					height: 30rpx;
+					margin-right: 8rpx;
+					line-height: 30rpx;
 					border-radius: 4rpx;
-					border: 1rpx solid #00bfb6;
-					text-align: center;
-					font-weight: 500;
-					color: #00bfb6;
+					border: 2rpx solid #35c4c4;
+					color: #35c4c4;
 					font-size: 20rpx;
+					text-align: center;
+					display: inline-block;
 				}
 
 				.tip:before,
@@ -706,6 +710,7 @@
 		width: 100%;
 		display: flex;
 		overflow: auto;
+		margin-top: 7rpx;
 
 		.item {
 			flex-shrink: 0;
@@ -725,7 +730,7 @@
 
 			.name-content {
 				position: absolute;
-				bottom: 24rpx;
+				bottom: 12rpx;
 				left: 16rpx;
 				right: 16rpx;
 				font-size: 26rpx;
@@ -743,7 +748,7 @@
 			.top-content {
 				position: absolute;
 				top: 12rpx;
-				left: 12rpx;
+				left: 20rpx;
 				padding: 12rpx;
 				height: 28rpx;
 				background: rgba(0, 0, 0, 0.35);
@@ -787,10 +792,9 @@
 	}
 
 	.more_icon {
-		display: inline-block;
-		color: #DADFE3;
-		font-size: 16rpx;
-		margin-left: 4rpx;
+		display: block;
+		width: 16rpx;
+		height: 16rpx;
 	}
 
 	.sub-title-more {
@@ -815,6 +819,10 @@
 		display: -webkit-box;
 		-webkit-box-orient: vertical;
 		-webkit-line-clamp: 1;
+		font-weight: 500;
+		color: #2B2F33;
+		font-size: 32rpx;
+
 	}
 
 	.example-content {
@@ -829,34 +837,6 @@
 			height: 150rpx;
 			background: #f5fcfc;
 			border-radius: 16rpx;
-			// background: url("http://dbj.dragonn.top/static/mp/dabanjia/images/home/experience.png");
-			// -moz-background-size: 100% 100%;
-			// background-size: 100% 100%;
-			// padding: 0 24rpx;
-
-			.title {
-				font-weight: 400;
-				color: #333333;
-				line-height: 28rpx;
-				font-size: 20rpx;
-
-				padding-top: 16rpx;
-			}
-
-			.sub-title {
-				font-weight: 600;
-				color: #333333;
-				line-height: 40rpx;
-				padding-top: 8rpx;
-				font-size: 28rpx;
-			}
-
-			.tips {
-				font-size: 24rpx;
-				font-weight: 400;
-				color: #666666;
-				line-height: 34rpx;
-			}
 		}
 	}
 
@@ -864,50 +844,21 @@
 		height: 198rpx;
 		border-radius: 16rpx;
 		width: 100%;
-
-		.title {
-			padding-top: 24rpx;
-			font-size: 32rpx;
-			font-weight: 600;
-			color: #333333;
-			line-height: 44rpx;
-		}
-
-		.sub-title {
-			padding-top: 4rpx;
-			font-size: 24rpx;
-			font-weight: 400;
-			color: #666666;
-			line-height: 44rpx;
-		}
-
-		.btn {
-			margin-top: 20rpx;
-			width: 128rpx;
-			height: 48rpx;
-			background: #35c4c4;
-			border-radius: 8rpx;
-			font-size: 24rpx;
-			font-weight: 600;
-			color: #ffffff;
-			line-height: 48rpx;
-			text-align: center;
-		}
+		display: block;
 	}
 
 	.function-zone {
-		margin: 24rpx;
-		border: 1px solid #e7e8e8;
+		margin: 24rpx auto;
+		border: 1rpx solid #e7e8e8;
 		width: 704rpx;
 		display: flex;
 		flex-direction: row;
 		flex-wrap: wrap;
 		justify-content: flex-start;
-
 		border-radius: 16rpx;
 
 		.border-top {
-			// border-top: 1px solid #e7e8e8;
+			// border-top: 1px soli: ;d #e7e8e8;
 		}
 
 		.border-top-left {
@@ -975,7 +926,7 @@
 		display: flex;
 		flex-direction: row;
 		align-items: center;
-		padding: 0 24rpx;
+		padding: 6rpx 24rpx 6rpx 24rpx;
 
 		.img {
 			width: 76rpx;

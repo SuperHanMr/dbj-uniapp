@@ -1,13 +1,14 @@
 <template>
   <view class="person-page">
-    <image class="bg-index" mode="aspectFit" src="http://dbj.dragonn.top/static/mp/dabanjia/images/decorate/bg@2x.png">
+    <image class="bg-index" mode="aspectFit" src="http://dbj.dragonn.top/static/mp/dabanjia/images/decorate/person_bg.png">
     </image>
     <view class="back" @click="back">
-      <image></image>
+      <i class="icon-ic_cancel_white"></i>
     </view>
     <view class="nav-header" :style="[navStyle]">
       <view class="item" @click="back">
-        <image class="header-back"></image>
+        <i class="icon-ic_cancel_white header-back"></i>
+        <!-- <image class="header-back"></image> -->
       </view>
       <view class="item nav-header-msg">
         <image :src="personData.avatar" mode=""></image>
@@ -27,7 +28,7 @@
             <text class="name">{{personData.nickName}}</text>
             <view class="label">
               <text class="job" v-if="personData.roleId!==10000">{{personData.roleId===3?personData.personAllBadgeVO.skillBadges[0].name:personData.roleName}}</text>
-              <text class="rate" v-if="personData.roleId<7">好评率{{personData.praiseRate||0}}</text>
+              <text class="rate" v-if="personData.roleId<7">好评率{{personData.praiseRate||'0%'}}</text>
             </view>
           </view>
           <view class="btn" v-if="personData.roleId<7">
@@ -163,7 +164,7 @@
       
     },
     onLoad(e){
-      this.personId = e.personId||6809
+      this.personId = e.personId||7057
       // this.getGrabDetail()
     },
     onShow(){
@@ -352,7 +353,7 @@
     padding-bottom: 40rpx;
     // height: 100%;
     .bg-index {
-      top: 0;
+      top: -68rpx;
       width: 100%;
       height: 480rpx;
       position: absolute;
@@ -362,16 +363,17 @@
       left: 32rpx;
       width: 64rpx;
       height: 64rpx;
-      background: #000000;
+      // background: #000000;
       border-radius: 26rpx;
-      opacity: 0.2;
+      // opacity: 0.2;
       display: flex;
       align-items: center;
       justify-content: center;
       z-index: 2;
-      image {
+      i {
         width: 32rpx;
         height: 32rpx;
+        color: #fff;
       }
     }
   }
@@ -582,7 +584,10 @@
       .header-back {
         width: 82rpx;
         height: 82rpx;
-        background-color: #eee;
+        // background-color: #eee;
+        color: #000;
+        line-height: 82rpx;
+        text-align: center;
       }
     }
 
