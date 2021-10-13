@@ -28,7 +28,8 @@
 							</view>
 						</view>
 						<view v-if="isEdit" class="edit" @click.stop="edit(item)">
-							<image src="../../../static/images/edit.svg" class="edit-icon"></image>
+              <i class="icon-ic_edit edit-icon"></i>
+							<!-- <image src="../../../static/images/edit.svg" class="edit-icon"></image> -->
 						</view>
 					</view>
 					<view class="dle-btn centerboth" @click.stop="delThis(item,index)">
@@ -372,6 +373,8 @@
 		.edit-icon {
 			width: 36rpx;
 			height: 36rpx;
+      line-height: 36rpx;
+      color: #CCCCCC;
 		}
 
 		.address {
