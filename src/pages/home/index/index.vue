@@ -47,16 +47,41 @@
 			</view>
 		</view>
 		<!-- 金刚区 -->
-		<view class="function-zone">
-			<view class="item " v-for="(item,index) in zoneList" :key="item.id"
-				:class="{'bottom-border':index<zoneList.length-4}" @click="onZoneClick(item)">
-				<image class="icon" :src="item.icon"></image>
-				<view class="name">
-					{{item.name}}
+		<view class="zone-view">
+			<view class="function-zone function-zone-top">
+				<view class="item" v-for="(item,index) in zoneList1" :key="item.id" @click="onZoneClick(item)">
+					<image class="icon" :src="item.icon"></image>
+					<view class="name">
+						{{item.name}}
+					</view>
+					<image v-if="(index+1)%4" class="border-img"
+						src="http://dbj.dragonn.top/%20%20static/mp/dabanjia/images/home/home-zone-border1.png" mode="">
+					</image>
 				</view>
-				<image v-if="(index+1)%4" class="border-img"
-					src="http://dbj.dragonn.top/%20%20static/mp/dabanjia/images/home/home-zone-border1.png" mode="">
-				</image>
+			</view>
+			<!-- 金刚区 -->
+			<view v-if="zoneList2.length" class="function-zone function-zone-center">
+				<view class="item" v-for="(item,index) in zoneList2" :key="item.id" @click="onZoneClick(item)">
+					<image class="icon" :src="item.icon"></image>
+					<view class="name">
+						{{item.name}}
+					</view>
+					<image v-if="(index+1)%4" class="border-img"
+						src="http://dbj.dragonn.top/%20%20static/mp/dabanjia/images/home/home-zone-border1.png" mode="">
+					</image>
+				</view>
+			</view>
+			<!-- 金刚区 -->
+			<view class="function-zone function-zone-bottom">
+				<view class="item" v-for="(item,index) in zoneList3" :key="item.id" @click="onZoneClick(item)">
+					<image class="icon" :src="item.icon"></image>
+					<view class="name">
+						{{item.name}}
+					</view>
+					<image v-if="(index+1)%4" class="border-img"
+						src="http://dbj.dragonn.top/%20%20static/mp/dabanjia/images/home/home-zone-border1.png" mode="">
+					</image>
+				</view>
 			</view>
 		</view>
 		<!-- 快捷栏目 -->
@@ -81,7 +106,7 @@
 			</view>
 			<view class="flex1">
 			</view>
-			<view class="sub-title-more">
+			<view class="sub-title-more" @click="toLiveList">
 				更多
 				<image class="more_icon"
 					src="http://dbj.dragonn.top/%20static/mp/dabanjia/images/home/ic_more_right.png" mode=""></image>
@@ -128,6 +153,7 @@
 					<view class="title">
 						<text class="tip">
 							{{item.product.productType==1?'物品':'服务'}}
+
 						</text>
 						<text>{{item.product.spuName}}</text>
 					</view>
@@ -135,10 +161,10 @@
 					</view>
 					<view class="price">
 						¥
-						<text class="amount">
+						<text class=" price-font amount">
 							{{foramtPrice(item)}}
 						</text>
-						<text class="ex">.{{formatCent(item)}}</text>
+						<text class="price-font ex">.{{formatCent(item)}}</text>
 						/{{item.product.salesUnit.unitName||''}}
 					</view>
 				</view>
@@ -190,7 +216,7 @@
 				swiperAuto: false,
 				status1List: [],
 				status2List: [],
-				currentAddress: {}
+				currentAddress: {},
 
 			};
 		},
@@ -245,7 +271,46 @@
 		onPullDownRefresh() {
 			this.reloadData()
 		},
+		computed: {
+			zoneList1() {
+				let list = []
+				for (let i = 0; i < this.zoneList.length; i++) {
+					if (i < 4) {
+						list.push(this.zoneList[i])
+					}
+				}
+				return list
+			},
+			zoneList2() {
+				if (this.zoneList.length != 12) {
+					return []
+				}
+				let list = []
+				for (let i = 0; i < this.zoneList.length; i++) {
+					if (i >= 4 && i < 8) {
+						list.push(this.zoneList[i])
+					}
+				}
+				return list
+			},
+			zoneList3() {
+				let list = []
+				for (let i = 0; i < this.zoneList.length; i++) {
+					if (this.zoneList.length == 12 && i > 7) {
+						list.push(this.zoneList[i]);
+					} else if (this.zoneList.length == 8 && i > 3) {
+						list.push(this.zoneList[i]);
+					}
+				}
+				return list
+			}
+		},
 		methods: {
+			toLiveList() {
+				uni.navigateTo({
+					url: '../../../sub-home/pages/lives-list/lives-list'
+				})
+			},
 			currentHouseChange(item) {
 				this.currentAddress = item;
 				uni.$emit('currentHouseChange', item);
@@ -688,19 +753,19 @@
 					margin-right: 8rpx;
 					line-height: 30rpx;
 					border-radius: 4rpx;
-					border: 2rpx solid #35c4c4;
 					color: #35c4c4;
 					font-size: 20rpx;
 					text-align: center;
 					display: inline-block;
+					border: 1rpx solid #35c4c4;
+
 				}
 
-				.tip:before,
 				.tip:after {
 					display: inline-block;
 					vertical-align: middle;
 					content: "";
-					height: 100%;
+					height: 120%;
 				}
 			}
 		}
@@ -710,7 +775,7 @@
 		width: 100%;
 		display: flex;
 		overflow: auto;
-		margin-top: 7rpx;
+		margin-top: 14rpx;
 
 		.item {
 			flex-shrink: 0;
@@ -847,15 +912,45 @@
 		display: block;
 	}
 
-	.function-zone {
-		margin: 24rpx auto;
+	.zone-view {
+		display: flex;
+		flex-direction: column;
+		justify-content: center;
+		align-items: center;
+		width: 100%;
+		padding: 24rpx 0;
+
+	}
+
+	.function-zone-top {
 		border: 1rpx solid #e7e8e8;
 		width: 704rpx;
 		display: flex;
 		flex-direction: row;
-		flex-wrap: wrap;
-		justify-content: flex-start;
-		border-radius: 16rpx;
+		border-top-left-radius: 16rpx;
+		border-top-right-radius: 16rpx;
+	}
+
+	.function-zone-bottom {
+		border: 1rpx solid #e7e8e8;
+		border-top: none;
+		width: 704rpx;
+		display: flex;
+		flex-direction: row;
+		border-bottom-left-radius: 16rpx;
+		border-bottom-right-radius: 16rpx;
+	}
+
+	.function-zone-center {
+		border: 1rpx solid #e7e8e8;
+		border-top: none;
+		width: 704rpx;
+		display: flex;
+		flex-direction: row;
+	}
+
+	.function-zone {
+
 
 		.border-top {
 			// border-top: 1px soli: ;d #e7e8e8;
@@ -872,7 +967,7 @@
 
 		.item {
 			height: 126rpx;
-			width: 176rpx;
+			flex: 1;
 			display: flex;
 			flex-direction: column;
 			justify-content: center;
@@ -1002,18 +1097,5 @@
 				height: 200rpx;
 			}
 		}
-	}
-
-	.content {
-		height: 100vh;
-	}
-
-	.banner {
-		height: 2000rpx;
-	}
-
-	.test {
-		height: 2000rpx;
-		width: 750rpx;
 	}
 </style>

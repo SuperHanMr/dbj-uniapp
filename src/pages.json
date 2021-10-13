@@ -301,6 +301,14 @@
 						"backgroundColor": "#FFFFFF"
 					}
 
+				}, {
+					"path": "pages/lives-list/lives-list",
+					"style": {
+						"navigationBarTitleText": "直播",
+						"enablePullDownRefresh": false,
+						"enablePullDownRefresh": false
+					}
+
 				}
 			]
 		},
