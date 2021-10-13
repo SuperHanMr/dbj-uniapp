@@ -501,6 +501,10 @@
 									let addressComponent = re.data.result.addressComponent;
 									vm.getAreaId(addressComponent.adcode);
 								} else {
+									uni.showToast({
+										title:'获取信息失败，请重试！',
+										icon:'none'
+									})
 									console.log("获取信息失败，请重试！");
 								}
 							},
