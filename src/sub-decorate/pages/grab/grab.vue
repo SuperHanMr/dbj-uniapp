@@ -13,7 +13,7 @@
 		<bottom-btn style="width: 100%;" :showDefaultBtn="false">
 		  <view class="btn">
 		    <view class="btn-left" @click="toReplace">
-		      <image src="" mode=""></image>
+		      <i class="icon-ic_wodejia_shenqinggenghuan_csn"></i>
 		      <text>申请修改</text>
 		    </view>
 		    <button class="add-btn" @click="submit">确定</button>
@@ -51,7 +51,7 @@
     },
     onLoad(e){
       this.id = getApp().globalData.decorateMsg.serveId
-      this.personId = getApp().globalData.decorateMsg.serverId||6820
+      this.personId = getApp().globalData.decorateMsg.serverId||7233
       this.getGrabDetail()
       const menuButtonInfo = uni.getMenuButtonBoundingClientRect();
       this.systemBottom = menuButtonInfo.bottom + 'rpx'; 
@@ -136,21 +136,31 @@
   }
   
   .btn-left {
-    margin-right: 17rpx;
+    margin-right: 32rpx;
     display: flex;
-    align-items: flex-end;
+    // align-items: flex-end;
     flex-wrap: wrap;
     justify-content: center;
-  
-    image {
+    align-items: center;
+    width: 200rpx;
+    height: 88rpx;
+    background: #ffffff;
+    border: 1px solid #cbcccc;
+    border-radius: 12rpx;
+    i{
       width: 28rpx;
       height: 28rpx;
+      color: #333;
+      font-size: 16rpx;
+      line-height: 28rpx;
+      text-align: center;
+      color: #333;
     }
   
     text {
       display: block;
-      font-size: 22rpx;
-      color: #666;
+      font-size: 26rpx;
+      color: #333;
   
     }
   }
@@ -159,7 +169,7 @@
     height: 88rpx;
     background: linear-gradient(135deg, #53d5cc, #4fc9c9);
     border-radius: 12rpx;
-    width: 560rpx;
+    width: 454rpx;
     line-height: 88rpx;
     text-align: center;
     color: #ffffff;
