@@ -94,7 +94,7 @@
         </text>
       </view>
 			
-      <view>
+      <view v-else >
         <text style="margin-right: 12rpx;">已付款</text>
         <text style="color: #FF3347;">
           <text>￥</text>
