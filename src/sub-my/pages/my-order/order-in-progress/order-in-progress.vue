@@ -23,14 +23,14 @@
 					</view>
 
 					<view v-for="item2 in item.details" :key="item2.id" class="orederItem">
-						<order-item 
-							@handleDetail="goToDetail(item2)" 
-							:dataList="item2" 
+						<order-item
+							@handleDetail="goToDetail(item2)"
+							:dataList="item2"
 							:orderStatus="2"
 							:showOriginPrice="orderInfo.discount && item.details.length"
-							@toApplayForRefund="toApplayForRefund(item2,1)" 
+							@toApplayForRefund="toApplayForRefund(item2,1)"
 							@refundCancel="refundCancel(item2)"
-							@refundSuccess="refundSuccess(item2)" 
+							@refundSuccess="refundSuccess(item2)"
 							@refundFailed="refundFailed(item2,1)"
 							@refundClose="refundClose(item2)"
 						/>
@@ -38,14 +38,14 @@
 				</view>
 
 				<order-price :data="orderInfo" />
-				
+
 			</view>
 
-			<order-info 
-				:orderNo="orderInfo.orderNo" 
-				:createTime="orderInfo.createTime" 
+			<order-info
+				:orderNo="orderInfo.orderNo"
+				:createTime="orderInfo.createTime"
 				:showPayTime="true"
-				:payTime="orderInfo.payTime" 
+				:payTime="orderInfo.payTime"
 			/>
 
 			<view class="applyforRefund-confirmReceipt" :style="{paddingBottom:systemBottom,height:systemHeight}">
@@ -56,13 +56,24 @@
 					确认收货
 				</view>
 			</view>
-			
+
 		</view>
 
 		<!-- 确认收货的弹框 -->
-		<popup-dialog ref="confirmReceipt" :title="title" @close="confirmReceiptClose" @confirm="receiptConfirm" />
+		<popup-dialog
+			ref="confirmReceipt"
+			:title="title"
+			@close="confirmReceiptClose"
+			@confirm="receiptConfirm"
+		/>
+
 		<!-- 取消退款的弹框 -->
-		<popup-dialog ref="cancelRefund" :title="title" @close="cancelRefundClose" @confirm="cancelRefundConfirm" />
+		<popup-dialog
+			ref="cancelRefund"
+			:title="title"
+			@close="cancelRefundClose"
+			@confirm="cancelRefundConfirm"
+		/>
 	</view>
 
 </template>
@@ -85,6 +96,7 @@
 				containerBottom: "",
 				areaId: "",
 				from:"" ,
+				title:"",
 			};
 		},
 
@@ -106,7 +118,7 @@
 		onShow() {
 			this.orderDetail();
 		},
-		
+
 		// 改变返回下一个页面的路径
 		onUnload() {
 		  if(this.from=="comfirmOrder"){
@@ -126,6 +138,7 @@
 			},
 
 			toApplayForRefund(data, type) {
+				this.title="您确定要取消订单吗?"
 				if (type == 1) {
 					//type 1部分退款
 					console.log("部分退款");
@@ -164,7 +177,7 @@
 				});
 			},
 			refundFailed(item) {},
-			
+
 			refundClose(item) {
 				console.log("item数据=",item)
 				const showReApply= item.shipmentStatus ==1?true:false
@@ -191,7 +204,7 @@
 
 			// 确认收货
 			handleConfirmReceipt() {
-				this.title = {};
+				this.title = "确定要确认收货吗?";
 				this.$refs.confirmReceipt.open();
 			},
 
@@ -199,16 +212,14 @@
 				this.$refs.confirmReceipt.close();
 			},
 			receiptConfirm(value) {
-				// 调用申请退款的接口
-				//goodIsd 商品id(不传代表整个订单收货)"
+				// 确认收货的订单接口
 				confirmReceiptOrder({
-					id: this.orderNo,
-					goodIsd: ""
+					id: this.orderNo
 				}).then((e) => {
 					if (res.code == 1) {
 						// 成功就关闭弹框
 						this.$refs.confirmReceipt.close();
-						uni.navigateTo({
+						uni.redirectTo({
 							// url:"../success/success?type=confirmReceipt"
 							url: "../my-order?index=0",
 						});

@@ -38,7 +38,7 @@
             <view
               class="mainContent"
               @longpress="deleteComment(item.commentId,item.zeusId)"
-              @click="commentItemC(item.nickname,item.commentId)"
+              @click="commentItemC(item.nickname,item.commentId,index)"
             >
               <image
                 class="avatar"
@@ -185,7 +185,7 @@
       }
     },
     mounted(){
-      this.ownId = 6537|| getApp().globalData.userInfo.id 
+      this.ownId = getApp().globalData.userInfo.id ||6537
     },
     computed:{
       // inputText(){
@@ -253,7 +253,7 @@
           this.commentC(this.dynamicId);
         });
       },
-      commentItemC(name, commentId) {
+      commentItemC(name, commentId,commentIndex) {
         console.log(111)
         console.log(this.ownId,this.houseOwnerId)
         if (this.ownId !== this.houseOwnerId) return;
@@ -264,7 +264,9 @@
         this.showInput = true;
         this.isOpen = true
         this.inputName = name;
+        this.isReply = false;
         this.commentId = commentId;
+        this.commentIndex = commentIndex;
         console.log(this.isInputFocus)
       },
       replyItemC(name, replyId, commentIndex) {
@@ -284,6 +286,7 @@
         this.comments[index].secondComments.splice(2);
       },
       expandC(id, index) {
+        console.log(id)
         let params = {
           page: this.replyPage,
           rows: 10,
@@ -292,22 +295,24 @@
         getReplies(params).then((data) => {
           if (data) {
       			let {list,page,totalRows} = data
-            
+            console.log(this.comments,index,this.comments[index])
       			if(this.replyPage!==1){
       				this.comments[index].secondComments =
       					this.comments[index].secondComments.concat(list || []);
       			}else{
       				this.comments[index].secondComments = list || [];
       			}
+      			if(this.isReply){
+              if(this.comments[index].secondComments.length >= totalRows){
+              	uni.showToast({
+              		title:'没有更多数据了',icon:"none",
+              	});
+              	this.isExpanded = true;
+              }
+              
+              this.replyPage = page++
+            }
       			
-      			if(this.comments[index].secondComments.length >= totalRows){
-      				uni.showToast({
-      					title:'没有更多数据了',icon:"none",
-      				});
-      				this.isExpanded = true;
-      			}
-            console.log(list);
-            this.replyPage = page++
           }
         });
       },
@@ -321,7 +326,13 @@
           content: this.inputValue,
         };
         createReply(params).then((data) => {
-          this.commentC(this.dynamicId);
+          if(this.isInputFocus){
+            console.log(this.replyId,this.commentId)
+            this.expandC(this.commentId,this.commentIndex)
+          }else{
+            this.commentC(this.dynamicId,);
+          }
+          this.inputValue = ''
         });
       },
       commentC(id) {
@@ -331,6 +342,7 @@
         this.isOpen = false
         uni.hideKeyboard()
         this.isInputFocus = false
+        this.page=1
         let params = {
           page: this.page,
           rows: 10,
