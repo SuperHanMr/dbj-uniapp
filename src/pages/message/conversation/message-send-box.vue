@@ -6,7 +6,7 @@
       </view>
     </view>
     <view class="message-send-box-body">
-      <view v-if="!isCustomerService" class="icon-audio" @click="showRecordBtn = !showRecordBtn"></view>
+      <view v-if="!isCustomerService" class="iconfont icon-a-icxiaoxidibuyuyin" @click="showRecordBtn = !showRecordBtn"></view>
       <textarea
         v-if="!showRecordBtn"
         v-model="messageContent"
@@ -29,12 +29,12 @@
         {{ recordStart ? '松开&nbsp;&nbsp;发送' : '按住&nbsp;&nbsp;说话' }}
       </view>
       <view 
-        class="icon-face" 
+        class="iconfont icon-a-icxiaoxidibubiaoqing" 
         @click="showEmojiChooser = !showEmojiChooser"
       />
       <view 
         v-if="!messageContent" 
-        class="icon-plus-circle" 
+        class="iconfont icon-a-icxiaoxidibutianjia" 
         @click="showFileChooser = !showFileChooser"
       />
       <view 
@@ -392,7 +392,7 @@
                   tempFilePaths,
                   tempFiles
                 } = res;
-                console.log("choose image1:", res);
+                console.log("choose image:", res);
                 tempFiles.forEach(self.sendImageMessage);
               }
             })
@@ -404,10 +404,11 @@
               success(res) {
                 console.log("choose video:", res);
                 const {
-                  tempFiles = []
+                  tempFiles = [],
+                  type
                 } = res;
                 tempFiles.forEach(tempFile => {
-                  if (tempFile.fileType === "video") {
+                  if (type === "video" || tempFile.fileType === "video") {
                     const {
                       duration,
                       height,
@@ -434,12 +435,13 @@
               mediaType: ["image", "video"],
               sourceType: ["camera"],
               success(res) {
-                console.log(res, 1111);
+                console.log("choose camera:", res);
                 const {
-                  tempFiles
+                  tempFiles,
+                  type
                 } = res;
                 tempFiles.forEach(tempFile => {
-                  if (tempFile.fileType === "image") {
+                  if (type === "image" || tempFile.fileType === "image") {
                     const {
                       tempFilePath,
                       size
@@ -448,7 +450,7 @@
                       path: tempFilePath,
                       size: size
                     });
-                  } else if (tempFile.fileType === "video") {
+                  } else if (type === "video" || tempFile.fileType === "video") {
                     const {
                       duration,
                       height,
@@ -577,19 +579,14 @@
     align-items: flex-end;
     padding: 12rpx 8rpx;
   }
-  .message-send-box-body .icon-audio,
-  .message-send-box-body .icon-face,
-  .message-send-box-body .icon-plus-circle {
-    font-size: 22px;
+  .message-send-box-body .iconfont {
+    font-size: 36px;
     flex: none;
-    margin-bottom: 16rpx;
   }
-  .message-send-box-body .icon-audio {
-    margin-right: 8rpx;
-  }
-  .message-send-box-body .icon-face,
-  .message-send-box-body .icon-plus-circle {
-    margin-left: 8rpx;
+  .message-send-box-body > .iconfont + .message-send-input,
+  .message-send-box-body > .message-send-input + .iconfont,
+  .message-send-box-body > .iconfont + .iconfont {
+    margin-left: 4px;
   }
   .message-send-input,
   .audio-record-btn {
@@ -597,8 +594,9 @@
     background: #f5f5f5;
     flex: 1;
     border-radius: 38rpx;
-    padding: 20rpx 32rpx;
+    padding: 9px 16px;
     font-size: 16px;
+    line-height: 20px;
     color: #111;
     max-height: 180rpx;
   }
