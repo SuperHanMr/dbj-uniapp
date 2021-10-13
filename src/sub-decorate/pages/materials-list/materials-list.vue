@@ -18,6 +18,7 @@
   } from "../../../api/decorate.js"
   import DbjRadio from "../../components/dbj-radio/dbj-radio.vue"
   import MaterialContentCard from "../../components/material-content-card/material-content-card.vue"
+  let timer = null
   export default {
     components: {
       DbjRadio,
@@ -56,6 +57,14 @@
         this.isAllDataLoaded = true
       }
     },
+    onPullDownRefresh() {
+      this.dataList = []
+      this.page = 1;
+      this.isAllDataLoaded = false
+      timer = setTimeout(() => {
+        this.queryProductList();
+      }, 200)
+    },
     methods: {
       queryProductList() {
         productList({
@@ -72,6 +81,7 @@
           this.total = total
           this.dataList = this.dataList.concat(page)
           this.isAllDataLoaded = false
+          uni.stopPullDownRefresh()
         })
       },
       radioChange(obj) {
@@ -81,10 +91,11 @@
           categoryId: Number(this.categoryId),
           item: tmp
         });
-        uni.navigateBack({
-
-        })
+        uni.navigateBack({})
       }
+    },
+    destroyed() {
+      clearTimeout(timer)
     }
   }
 </script>

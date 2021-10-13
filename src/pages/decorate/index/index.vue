@@ -508,9 +508,6 @@
           url: "/sub-decorate/pages/no-house/no-house"
         })
       },
-      // toSend() {
-      //   this.client.publish('dabanjia/testTopic', 'hello zzz')
-      // },
       closeNotice() {
         this.noticeActive = false;
         console.log('showTabBar')

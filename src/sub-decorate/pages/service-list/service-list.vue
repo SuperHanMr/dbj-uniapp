@@ -21,6 +21,7 @@
   import {
     ServiceContentCard
   } from "../../components/service-content-card/service-content-card.vue"
+  let timer = null
   export default {
     components: {
       DbjRadio,
@@ -73,6 +74,14 @@
         this.isAllDataLoaded = true
       }
     },
+    onPullDownRefresh() {
+      this.dataList = []
+      this.page = 1;
+      this.isAllDataLoaded = false
+      timer = setTimeout(() => {
+        this.queryProductList();
+      }, 200)
+    },
     methods: {
       queryProductList() {
         productList({
@@ -90,6 +99,7 @@
           this.total = total
           this.dataList = this.dataList.concat(page)
           this.isAllDataLoaded = false
+          uni.stopPullDownRefresh()
         })
       },
       radioChange(obj) {
@@ -103,6 +113,9 @@
         
         })
       }
+    },
+    destroyed() {
+      clearTimeout(timer)
     }
   }
 </script>
