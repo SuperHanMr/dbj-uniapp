@@ -206,6 +206,8 @@ export default {
     this.from = e.from;
 		this.showReApply = e.showReApply
 		console.log("this.showReApply=",this.showReApply)
+  },
+	onShow() {
     if (this.type == "refund") {
       //退款成功页面
       this.refundDetail();
@@ -229,7 +231,8 @@ export default {
 			console.log("currentHouse=",currentHouse)
 			this.areaId = currentHouse.areaId;
     }
-  },
+	},
+	
 
   // 改变返回下一个页面的路径
   onUnload() {

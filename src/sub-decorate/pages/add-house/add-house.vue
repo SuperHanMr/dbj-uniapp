@@ -74,7 +74,7 @@
 					<choose-btn :btnList='elevatorList' :currentBtn='addData.hasLift' :disabled="roomId&&isEdit" @chooseBtn="chooseEle">
 					</choose-btn>
 					<input v-if="!addData.hasLift" :disabled="roomId&&isEdit" placeholder-class="placeholder" class="ele-input" name="input"
-						v-model="addData.floors" placeholder="请输入楼层" />
+						v-model="addData.floors" placeholder="请输入您所在楼层" />
             <view class="icon-clear-spec"  v-if="!addData.hasLift&&addData.floors" @click.stop="clear('floors')">
               <uni-icons color="#c0c4cc" size="15" type="clear" />
             </view>
@@ -540,14 +540,15 @@
         z-index: 10;
       }
 			.item-label {
-				color: #333333;
+				color: #666;
 				font-size: 28rpx;
 				font-weight: 400;
 				display: inline-block;
-				width: 126rpx;
+				width: 130rpx;
 				margin: 0 46rpx 0 0;
 				text-align: left;
 				vertical-align: top;
+        
 			}
 
 			label.item-label:before {
@@ -555,6 +556,7 @@
 				font-size: 26rpx;
 				width: 14rpx;
 				color: red;
+        margin-right: 4rpx;
 			}
 		}
 

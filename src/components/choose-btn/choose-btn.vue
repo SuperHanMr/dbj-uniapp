@@ -46,6 +46,7 @@
       margin-right: 24rpx;
       border: 0;
       font-size: 26rpx;
+      color: #111;
     }
     .btn:last-child{
       margin-right: 0;

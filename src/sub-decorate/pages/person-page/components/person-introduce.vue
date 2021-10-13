@@ -3,7 +3,7 @@
     <view class="msg-item">
       <view class="item-title">
         <!-- <view class="line"></view> -->
-        <view class="title">简介:</view>
+        <view class="title">简介：</view>
       </view>
       <view class="msg-content" >
         <text class="report-text" :class="{'report-text-hidden':isHidden}">{{personData.intro||'这个人很懒，什么都没写'}}</text>
@@ -15,7 +15,7 @@
     <view class="msg-item" v-if="personData.designTags.length>0">
       <view class="item-title">
         <!-- <view class="line"></view> -->
-        <view class="title">擅长:</view>
+        <view class="title">擅长：</view>
       </view>
       <view class="msg-content list">
         <view class="tags" v-for="item of personData.designTags" :key='item'>{{item}}</view>
@@ -24,7 +24,7 @@
     <view class="msg-item" v-if="personData.roleId<7">
       <view class="item-title">
         <!-- <view class="line"></view> -->
-        <view class="title">徽章:</view>
+        <view class="title">徽章：</view>
       </view>
       <view class="msg-content list badge-list">
         <view class="badge" v-for="item of personData.personAllBadgeVO.basicBadges" :key='item.name'>
@@ -101,10 +101,10 @@
       // justify-content: space-evenly;
     }
     .badge-list{
-      padding-left: 51rpx !important;
+      padding-left: 19rpx !important;
     }
     .msg-content{
-      padding: 0 32rpx;
+      // padding: 0 32rpx;
       .tags{
         height: 38rpx;
         border: 1px solid #e7e7e7;
