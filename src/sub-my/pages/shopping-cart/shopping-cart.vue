@@ -349,7 +349,7 @@
 				})
 			},
 			requestPage(){
-				getShoppingCartInfo(this.userId).then(data => {
+				getShoppingCartInfo().then(data => {
 						let {storeList,disabledSkuList} = data
 						if(!storeList.length&&!disabledSkuList.length){
 							this.showNoGoods = true

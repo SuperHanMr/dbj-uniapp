@@ -70,13 +70,14 @@
           src="../../static/start_work@2x.png"
         ></image>
         <view class="mainWrap">
-
-          <view class="workType">
+          <view class="nodeType">
             <view
+							:class="{'maxWidth':item.nodeType===6||
+							item.nodeType===7||item.nodeType===8}"
               v-for="(item,index) in nodeTypes"
               :key="item.nodeType"
             >{{item.nodeName}}</view>
-          </view>
+					</view>
           <view class="progressBar">
             <view class="connectStartLine"></view>
             <view class="steps">
@@ -89,9 +90,10 @@
               >
                 <view
                   class="connectLine"
-                  :class="{'line-green':item.nodeStatus===3||item.nodeStatus===4,'line-gray':item.nodeStatus===1||item.nodeStatus===2}"
+                  :class="{'line-green':item.nodeStatus===3||item.nodeStatus===4,
+									'line-gray':item.nodeStatus===1||item.nodeStatus===2}"
                 ></view>
-              </view>
+							</view>
             </view>
           </view>
           <view class="column">
@@ -111,7 +113,7 @@
 								  class="avatar"
 								  :src="item.avatar"
 								></image>
-								<view>{{item.name}}</view>
+								<view class="name">{{item.name}}</view>
 							</view>
 							<view class="text" v-else-if="item.nodeStatus===2&&item.id===-1">
 								{{item.nodeType===1||item.nodeType===4||item.nodeType===5?'待服务':'待施工'}}</view>
@@ -1487,20 +1489,22 @@ export default {
 	.content .mainWrap {
 		width: 606rpx;
 	}
-	.workType {
+	.nodeType {
 		margin: 0 8rpx 16rpx;
 		display: flex;
 		justify-content: space-between;
 	}
-	.workType > view {
+	.nodeType > view {
 		width: 44rpx;
 		height: 32rpx;
 		font-size: 22rpx;
 		color: #333333;
 		line-height: 32rpx;
-		/* overflow: hidden;
-		text-overflow: ellipsis;
-		white-space: nowrap; */
+		
+	}
+	.nodeType > view.maxWidth{
+		width: 66rpx;
+		margin: 0 -10rpx;
 	}
 	.progressBar {
 		display: flex;
@@ -1594,6 +1598,11 @@ export default {
 		border-radius: 50%;
 		display: block;
 		margin: 2rpx -2rpx 8rpx;
+	}
+	.worker .item > view .name {
+		text-overflow: ellipsis;
+		/* white-space: nowrap; */
+		overflow: hidden;
 	}
 	.worker .item .text{
 		margin: 28rpx 10rpx;
@@ -1707,6 +1716,7 @@ export default {
 		color: #666666;
 		line-height: 40rpx;
 		text-overflow: ellipsis;
+		/* white-space: nowrap; */
 		overflow: hidden;
 	}
 	.acitonInfo .evidence {
