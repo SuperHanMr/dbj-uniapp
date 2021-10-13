@@ -9,7 +9,8 @@
           <view class="title">
             <view class="house" @click="switchVisible">
               <text>{{who}}的家</text>
-              <image class="ic-triangle" src="http://dbj.dragonn.top/static/mp/dabanjia/images/decorate/ic_triangle.svg">
+              <image class="ic-triangle"
+                src="http://dbj.dragonn.top/static/mp/dabanjia/images/decorate/ic_triangle.svg">
               </image>
             </view>
             <view class="friend">
@@ -24,7 +25,7 @@
               </view>
             </view>
           </view>
-    
+
           <view class="uni-padding-wrap">
             <view class="insurance-house">
               <view :class="{'payed':aServiceData.insuranceStatus}" class="insurance">
@@ -35,16 +36,24 @@
               <view class="uni-title">{{ currentProject.housingEstate }}{{currentProject.address}}</view>
             </view>
             <view class="picture-btn-wrap">
-              <picture-btn v-if="aServiceData.showDesignFlag" iconUrl="http://dbj.dragonn.top/static/mp/dabanjia/images/decorate/ic_sgtz.svg" class="p-i-t" text="施工图纸" @gotoPage="goDesignPicture">
+              <picture-btn v-if="aServiceData.showDesignFlag"
+                iconUrl="http://dbj.dragonn.top/static/mp/dabanjia/images/decorate/ic_sgtz.svg" class="p-i-t"
+                text="施工图纸" @gotoPage="goDesignPicture">
               </picture-btn>
-              <picture-btn v-if="aServiceData.showActuaryFlag" iconUrl="http://dbj.dragonn.top/static/mp/dabanjia/images/decorate/ic_jsd.svg" class="p-i-t" text="精算单" @gotoPage="goActuary">
+              <picture-btn v-if="aServiceData.showActuaryFlag"
+                iconUrl="http://dbj.dragonn.top/static/mp/dabanjia/images/decorate/ic_jsd.svg" class="p-i-t" text="精算单"
+                @gotoPage="goActuary">
               </picture-btn>
-              <picture-btn v-if="aServiceData.showVideoFlag" iconUrl="http://dbj.dragonn.top/static/mp/dabanjia/images/decorate/ic_gdsp.svg" class="p-i-t" text="工地视频" @gotoPage="goVideo"></picture-btn>
-              <picture-btn v-if="aServiceData.constructionFlag" iconUrl="http://dbj.dragonn.top/static/mp/dabanjia/images/decorate/ic_sg.svg" text="施工" @gotoPage="goConstrction"></picture-btn>
+              <picture-btn v-if="aServiceData.showVideoFlag"
+                iconUrl="http://dbj.dragonn.top/static/mp/dabanjia/images/decorate/ic_gdsp.svg" class="p-i-t"
+                text="工地视频" @gotoPage="goVideo"></picture-btn>
+              <picture-btn v-if="aServiceData.constructionFlag"
+                iconUrl="http://dbj.dragonn.top/static/mp/dabanjia/images/decorate/ic_sg.svg" text="施工"
+                @gotoPage="goConstrction"></picture-btn>
             </view>
           </view>
         </view>
-    
+
         <view class="scroll-view flex-1">
           <!-- 每日播报 -->
           <text-scroll :dataList="broadcastList" v-if="broadcastList.length > 0 && isConstruction"
@@ -65,13 +74,17 @@
                 </view>
               </view>
               <view class="my-warehouse">
-                <mwarehouse-btn iconUrl="http://dbj.dragonn.top/static/mp/dabanjia/images/decorate/ic_ck_dfh.svg" @gotoPage="gotoPage('0')" name="待发货">
+                <mwarehouse-btn iconUrl="http://dbj.dragonn.top/static/mp/dabanjia/images/decorate/ic_ck_dfh.svg"
+                  @gotoPage="gotoPage('0')" name="待发货">
                 </mwarehouse-btn>
-                <mwarehouse-btn iconUrl="http://dbj.dragonn.top/static/mp/dabanjia/images/decorate/ic_ck_dsh.svg" @gotoPage="gotoPage('1')" name="待收货">
+                <mwarehouse-btn iconUrl="http://dbj.dragonn.top/static/mp/dabanjia/images/decorate/ic_ck_dsh.svg"
+                  @gotoPage="gotoPage('1')" name="待收货">
                 </mwarehouse-btn>
-                <mwarehouse-btn iconUrl="http://dbj.dragonn.top/static/mp/dabanjia/images/decorate/ic_ck_ysh.svg" @gotoPage="gotoPage('2')" name="已收货">
+                <mwarehouse-btn iconUrl="http://dbj.dragonn.top/static/mp/dabanjia/images/decorate/ic_ck_ysh.svg"
+                  @gotoPage="gotoPage('2')" name="已收货">
                 </mwarehouse-btn>
-                <mwarehouse-btn iconUrl="http://dbj.dragonn.top/static/mp/dabanjia/images/decorate/ic_ck_tk.svg" @gotoPage="gotoPage('3')" name="退款">
+                <mwarehouse-btn iconUrl="http://dbj.dragonn.top/static/mp/dabanjia/images/decorate/ic_ck_tk.svg"
+                  @gotoPage="gotoPage('3')" name="退款">
                 </mwarehouse-btn>
               </view>
             </view>
@@ -113,7 +126,7 @@
               @buyNow="gonohousedecatore('actuary')">
             </guide-card>
           </view>
-    
+
           <!-- 切换房屋弹窗 -->
           <uni-popup ref="sw">
             <house-switch class="margintop" :datalist="projectList" :current="currentProject.estateId"
@@ -143,7 +156,9 @@
         </drag-button-follow>
       </view>
     </view>
-    <no-house :showNoHouse="showNoHouse"></no-house>
+    <!-- <uni-popup ref="nohouse"> -->
+      <no-house :showNoHouse="showNoHouse"></no-house>
+    <!-- </uni-popup> -->
   </view>
 </template>
 
@@ -199,8 +214,17 @@
       console.log('showTabBar')
       this.showNoHouse = false
       uni.showTabBar()
-      this.getEstateList()
-      this.$store.dispatch("updateTabBarBadge");
+      const {
+        currentHouse
+      } = getApp().globalData
+      // debugger
+      if (currentHouse?.id) {
+        this.getEstateList()
+        this.$store.dispatch("updateTabBarBadge");
+      } else {
+        uni.hideTabBar()
+        this.showNoHouse = true
+      }
     },
     data() {
       return {
@@ -237,12 +261,20 @@
     mounted() {
       uni.showTabBar()
       this.showNoHouse = false
-      this.deviceId = uni.getStorageSync('uuDeviceId')
-      if (!this.deviceId) {
-        this.deviceId = uuidv4()
-        uni.setStorageSync('uuDeviceId', this.deviceId);
+      const {
+        currentHouse
+      } = getApp().globalData
+      if (currentHouse?.id) {
+        this.deviceId = uni.getStorageSync('uuDeviceId')
+        if (!this.deviceId) {
+          this.deviceId = uuidv4()
+          uni.setStorageSync('uuDeviceId', this.deviceId);
+        }
+        uni.$on('system-messages', this.watchMsg)
+      } else {
+        uni.hideTabBar()
+        this.showNoHouse = true
       }
-      uni.$on('system-messages', this.watchMsg)
     },
     destory() {
       clearTimeout(timer)
