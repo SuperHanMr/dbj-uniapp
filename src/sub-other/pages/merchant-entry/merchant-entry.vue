@@ -242,9 +242,9 @@
 				}
 			},
 			toPay() {
-				// uni.navigateTo({
-				// 	url:'../merchant-entry-success/merchant-entry-success'
-				// })
+				uni.navigateTo({
+					url:'/sub-other/pages/merchant-entry-success/merchant-entry-success?url=${111}&phone=${222}&password=${333}&supplierId=${444}'
+				})
 				const value = /^(?!(\s+$))/.test(this.companyValue);
 				if (!value) {
 					uni.showToast({
