@@ -1,5 +1,5 @@
 <template>
-  <view class="no-house">
+  <view class="no-house" v-if="showNoHouse">
     <button class="add-house" @click="goAddHouse">
       <image src="http://dbj.dragonn.top/static/mp/dabanjia/images/decorate/ic_add_house.svg"></image>
       <text>添加房屋信息</text>
@@ -27,9 +27,10 @@
 
 <script>
   export default {
-    data() {
-      return {
-
+    props: {
+      showNoHouse: {
+        type: Boolean,
+        default: true
       }
     },
     methods: {

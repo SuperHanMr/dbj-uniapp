@@ -48,6 +48,7 @@
       getApp().globalData.currentRoute = "/pages/message/index/index"
     },
     onShow() {
+      uni.showTabBar()
       this.$store.commit("setIMLogin", isSDKReady());
       this.$store.dispatch("updateTabBarBadge");
       this.$store.dispatch("requestDBGroupList");
@@ -90,6 +91,7 @@
       }
     },
     mounted() {
+      uni.showTabBar()
     },
     methods: {
     }

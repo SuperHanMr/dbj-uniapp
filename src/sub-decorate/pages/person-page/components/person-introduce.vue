@@ -118,24 +118,29 @@
         margin: 0 16rpx 16rpx 0;
       }
       .badge{
-        height: 38rpx;
-        background: #f7f7f7;
-        border-radius: 6rpx;
-        line-height: 38rpx;
-        text-align: right;
-        color: #999;
-        font-size: 24rpx;
-        font-weight: 400;
-        padding: 0 12rpx 0 26rpx;
-        margin: 0 35rpx 16rpx 0;
         position: relative;
+        display: flex;
+        align-items: center;
         image{
-          background-color: #eee;
+          // background-color: #eee;
           position: absolute;
-          width: 38rpx;
-          height: 38rpx;
+          width: 42rpx;
+          height: 42rpx;
           left: -19rpx;
           top: 0;
+        }
+        text{
+          height: 38rpx;
+          background: #F7F7F7;
+          border-radius: 6rpx;
+          line-height: 38rpx;
+          text-align: right;
+          color: #999;
+          font-size: 24rpx;
+          font-weight: 400;
+          padding: 0 12rpx 0 26rpx;
+          margin: 0 35rpx 16rpx 0;
+          border: 1px solid #e6e6e6;
         }
       }
     }

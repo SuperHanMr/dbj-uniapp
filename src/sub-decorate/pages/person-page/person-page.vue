@@ -164,7 +164,7 @@
       
     },
     onLoad(e){
-      this.personId = e.personId||7057
+      this.personId = e.personId||7050
       // this.getGrabDetail()
     },
     onShow(){
@@ -459,16 +459,16 @@
 
         .job {
           color: #FFFFFF;
-          background: linear-gradient(135deg, #40AFF5 0%, #4C95F1 100%);
+          background: linear-gradient(90deg,#40bff5, #53a9ff);
           padding: 0 16rpx;
           border-radius: 6rpx;
         }
 
         .rate {
           padding: 0 8rpx;
-          background: #E8F7EF;
+          background: #EAFCFB;
           border-radius: 6px;
-          color: #21C091;
+          color: #00BFB6;
           border-radius: 6rpx;
         }
       }

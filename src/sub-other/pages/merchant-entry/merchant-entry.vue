@@ -1,14 +1,16 @@
 <template>
 	<view class="merchant-entry">
 		<view class="head">
-			<view class="info">
-				填写入驻信息
-			</view>
-			<view class="info">
-				已有{{dayNumber * 5 + 350}}家企业
-			</view>
-			<view class="info">
-				入驻开店
+			<view class="head-info-box">
+				<view class="info">
+					填写入驻信息
+				</view>
+				<view class="info">
+					已有<text>{{dayNumber * 5 + 350}}</text>家企业
+				</view>
+				<view class="info">
+					入驻开店
+				</view>
 			</view>
 		</view>
 		<view class="container">
@@ -242,9 +244,9 @@
 				}
 			},
 			toPay() {
-				// uni.navigateTo({
-				// 	url:'../merchant-entry-success/merchant-entry-success'
-				// })
+				uni.navigateTo({
+					url:'/sub-other/pages/merchant-entry-success/merchant-entry-success?url=${111}&phone=${222}&password=${333}&supplierId=${444}'
+				})
 				const value = /^(?!(\s+$))/.test(this.companyValue);
 				if (!value) {
 					uni.showToast({
@@ -446,14 +448,32 @@
 	}
 
 	.merchant-entry>.head {
+		position: relative;
 		width: 100%;
 		height: 312rpx;
 		background-image: url(../../../static/merchant-entry/merchant-entry-ic／bg.png);
-
+		.head-info-box{
+			position: absolute;
+			top: 82rpx;
+			left: 32rpx;
+			padding: 36rpx 24rpx;
+			background: blue;
+		}
 		.info {
 			font-size: 28rpx;
-			font-family: HarmonyOS_Sans_Black;
 			// color: #FFFFFF;
+			font-size: 28rpx;
+			font-family: HarmonyOS_Sans_Black;
+			color: #FFFFFF;
+			margin-bottom: 4rpx;
+			line-height: 38rpx;
+			text{
+				font-size: 36rpx;
+				margin: 0 2rpx;
+				font-family: Unnamed-Regular, Unnamed;
+				font-weight: 400;
+				color: #FFFFFF;
+			}
 		}
 	}
 
