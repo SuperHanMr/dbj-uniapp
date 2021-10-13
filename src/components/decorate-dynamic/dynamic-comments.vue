@@ -7,11 +7,12 @@
       <view class="popupComments" :class="{'is-ower':showInput}">
         <view class="topArea">
           <view class="mainTit">评论</view>
-          <image
+<!--          <image
             @click="close"
             class="close"
             src="../../static/ic_closed_black@2x.png"
-          ></image>
+          ></image> -->
+          <i class="icon-ic_zhuangxiuxianchang_danchuangquxiao_csn close" @click="close"></i>
         </view>
         <view
           class="noComment"
@@ -73,9 +74,11 @@
                   </view>
                   <view class="date">{{replyItem.time}}</view>
                 </view>
-                <view class="text">回复
+                <view class="text">
+                  <text>回复</text>
                   <text class="name">{{replyItem.toNickname}}</text>
                   {{replyItem.content}}
+                  
                 </view>
               </view>
             </view>
@@ -182,7 +185,7 @@
       }
     },
     mounted(){
-      this.ownId = getApp().globalData.userInfo.id || 6537
+      this.ownId = 6537|| getApp().globalData.userInfo.id 
     },
     computed:{
       // inputText(){
@@ -202,7 +205,7 @@
             this.showInput = true
           }
         },
-        immediate:true
+        // immediate:true
         
       }
     },
@@ -251,7 +254,8 @@
         });
       },
       commentItemC(name, commentId) {
-        // console.log(this.ownId,this.houseOwnerId)
+        console.log(111)
+        console.log(this.ownId,this.houseOwnerId)
         if (this.ownId !== this.houseOwnerId) return;
         this.$nextTick(function(){
           this.isInputFocus = true
@@ -264,7 +268,7 @@
         console.log(this.isInputFocus)
       },
       replyItemC(name, replyId, commentIndex) {
-        
+        console.log(222)
         if (this.ownId !== this.houseOwnerId) return;
         this.isInputFocus = true
         this.isReply = true;
@@ -309,7 +313,7 @@
       },
       setReply(isReply) {
         // this.showInput = false;
-        console.log(this.inputValue, "blur");
+        console.log(isReply);
         let params = {
           businessId: this.dynamicId, //	动态ID
           businessType: 2,
@@ -339,7 +343,7 @@
             let { page, rows, totalPage, totalRows, list,end,start } = data;
             this.page = page
             this.totalPage = totalPage
-           
+            this.comments = list
             
           }
         });
@@ -499,7 +503,9 @@
   	height: 64rpx;
   	display: block;
   	margin-right: 20rpx;
-    background-color: #eee;
+    text-align: center;
+    line-height: 64rpx;
+    // background-color: #eee;
   }
   .commentList {
   	width: 100%;
@@ -542,7 +548,7 @@
   }
   .commentInfo .text {
   	width: 598rpx;
-  	height: 80rpx;
+  	// height: 80rpx;
   	font-size: 26rpx;
   	color: #333333;
   	line-height: 40rpx;
@@ -582,7 +588,7 @@
   	width: 100%;
   	/* height: 150rpx; */
   	height: fit-content;
-  	margin-top: 24rpx;
+  	margin-bottom: 24rpx;
   	margin-left: 80rpx;
   	display: flex;
   }
@@ -620,6 +626,11 @@
   	font-size: 26rpx;
   	color: #333333;
   	line-height: 40rpx;
+    text{
+      display: inline-block;
+      word-break: break-all;
+      margin-right: 6rpx;
+    }
   }
   .replyInfo .text .name {
   	color: #999999;
