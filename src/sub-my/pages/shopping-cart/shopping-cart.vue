@@ -75,7 +75,7 @@
 						<view class="title">编辑数量</view>
 						<view class="text">当前最小单位为{{miniOrder}}，输入的数量需为{{step}}的倍数</view>
 					</view>
-					<input type="text" v-model="buyNum" focus />
+					<input type="digit" v-model="buyNum" focus />
 					<view class="button">
 						<view class="cancel" @click="closeDialog">取消</view>
 						<!-- <view class="line"></view> -->
@@ -390,14 +390,14 @@
 				let target = this.shopList[this.currentShopIndex].skuList[this.currentGoodsIndex]
 				let miniOrder = +target.minimumOrderQuantity || 1
 				let step = +target.stepLength || 1
-				if(isNaN(parseInt(val))){
-					uni.showToast({
-						title:`商品数量为数字`,
-						icon:"none",
-						duration:2000
-					})
-					return
-				}
+				// if(isNaN(parseInt(val))){
+				// 	uni.showToast({
+				// 		title:`商品数量为数字`,
+				// 		icon:"none",
+				// 		duration:2000
+				// 	})
+				// 	return
+				// }
 				if(+val < miniOrder) {
 					setTimeout(() => {
 					  uni.showToast({
