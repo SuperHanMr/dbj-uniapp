@@ -28,7 +28,7 @@
 		},
     methods: {
       goDetail() {
-        uni.setStorageSync('goodId', this.content.product.spuId)
+        uni.setStorageSync('goodId', this.content.product.skuId)
         uni.navigateTo({ url: "/sub-classify/pages/goods-detail/goods-detail" })
       }
     }
