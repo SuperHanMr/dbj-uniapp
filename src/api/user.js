@@ -6,7 +6,7 @@ export function getUserInfo(params){
 // export function getShoppingCartInfo(userId){
 // 	return request.get(`/product/app/products/shoppingCart/userIds/${userId}`,{})
 // }
-export function getShoppingCartInfo(userId){
+export function getShoppingCartInfo(){
 	return request.get(`/product/app/products/shoppingCart`,{})
 }
 export function deleteProduct(params){

@@ -197,15 +197,20 @@
 				})
 				let selectedIds = checkedIds.sort().toString()
 				this.selectedIndex = this.combinations.findIndex(item => item.valueIds.sort().toString() === selectedIds)
-				if(this.selectedIndex !== -1){
-					this.selectSkuInfo = this.combinations[this.selectedIndex]
-				}
+				this.selectSkuInfo = this.combinations[this.selectedIndex]
 			},
 			closeSkuBox() {
 				this.$emit('close')
 			},
 			handleConfirm() {
 				if(this.selectedIndex === -1){
+					uni.showToast({
+						title: "当前规格暂不可购买",
+						icon: "none",
+						duration: 2000
+					})
+					return
+				}else if(!this.selectSkuInfo.enabled){
 					uni.showToast({
 						title: "当前规格暂不可购买",
 						icon: "none",

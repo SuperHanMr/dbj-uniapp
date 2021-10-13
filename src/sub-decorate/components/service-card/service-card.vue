@@ -5,12 +5,6 @@
         <slot name="check"></slot>
         <text class="text">{{setting.title}}{{setting.level | filterLevel(setting.cardtype)}}</text>
       </view>
-      <!-- <view class="change-service change-level" v-if="setting.cardtype == 'design'" @click="changeLevel">更换等级</view> -->
-      <!-- <view class="change-service" @click="selectAnother">
-        <text>更换</text>
-        <image class="ic-triangle-999"
-          src="http://dbj.dragonn.top/static/mp/dabanjia/images/decorate/ic_triangle_999.svg" />
-      </view> -->
       <view v-if="setting.cardtype == 'design' && setting.insideArea" class="change-service" @click="changeLevel">
         <text>更换等级</text>
         <image class="ic-triangle-999"
