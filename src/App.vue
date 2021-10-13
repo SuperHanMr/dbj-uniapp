@@ -35,6 +35,13 @@ export default {
         });
       });
     }
+		uni.loadFontFace({
+		  family: 'Unnamed-Regular',
+		  source: 'url("https://ali-res.dabanjia.com/static/mp/dabanjia/font/price-font.ttf")',
+		  success() {
+		      console.log('loadFontFace success')
+		  }
+		})
   },
   onShow: function () {
     console.log("App Show");
