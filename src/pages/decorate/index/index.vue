@@ -143,7 +143,7 @@
         </drag-button-follow>
       </view>
     </view>
-    <no-house v-if="estateList.length == 0 && showNoHouse"></no-house>
+    <no-house :showNoHouse="showNoHouse" v-if="showNoHouse && estateList.length == 0"></no-house>
   </view>
 </template>
 
@@ -235,6 +235,7 @@
     },
     mounted() {
       uni.showTabBar()
+      this.showNoHouse = false
       this.deviceId = uni.getStorageSync('uuDeviceId')
       if (!this.deviceId) {
         this.deviceId = uuidv4()

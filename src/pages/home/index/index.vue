@@ -256,10 +256,14 @@
 				"px";
 		},
 		onShow() {
+      uni.showTabBar()
 			this.swiperAuto = true;
 			getApp().globalData.currentRoute = "/pages/home/index/index"
 			this.$store.dispatch("updateTabBarBadge");
 		},
+    mounted() {
+      uni.showTabBar()
+    },
 		onHide() {
 			this.swiperAuto = false
 		},

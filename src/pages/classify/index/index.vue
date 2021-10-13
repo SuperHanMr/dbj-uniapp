@@ -49,7 +49,11 @@
     onLoad() {
       getApp().globalData.currentRoute = "/pages/classify/index/index"
     },
+    mounted() {
+      uni.showTabBar()
+    },
     onShow() {
+      uni.showTabBar()
       //增加首页跳转过来逻辑处理
       let naviData = getApp().globalData.naviData
       if (naviData && naviData.id) {

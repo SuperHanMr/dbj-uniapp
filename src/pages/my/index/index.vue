@@ -164,8 +164,11 @@
         ],
       };
     },
-
+    mounted() {
+      uni.showTabBar()
+    },
     onShow() {
+      uni.showTabBar()
       this.userId = uni.getStorageSync("userId")
       if (!this.userId) {
         this.userName = "点击登录";
