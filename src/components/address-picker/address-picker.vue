@@ -160,7 +160,8 @@
 		line-height: 42rpx;
 	}
 	.address .community{
-		height: 42rpx;
+		/* height: 42rpx; */
+    width: 600rpx;
 		font-size: 28rpx;
 		font-weight: 500;
 		color: #111111;

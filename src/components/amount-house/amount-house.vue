@@ -55,9 +55,8 @@
     methods:{
       getData(){
         console.log(this.isReport)
-        if(!this.isReport){
-          this.checkData.status = 1
-        }
+        this.checkData.status = this.isReport?0:1
+    
         getAmountDetail(this.checkData).then(res=>{
           this.imageData = res
           if(this.imageData.measureStructImages.length===0){

@@ -229,13 +229,22 @@
       <view
         class="focusOn"
         @click="focusC"
+				v-if="!isSelfFocusOn"
       >
         <image
           class="add"
           src="../../static/ic_add_focus@2x.png"
         ></image>
-        <view>{{isSelfFocusOn?'已关注':'关注'}}</view>
+        <view>关注</view>
       </view>
+			<view
+			  class="focusOn"
+				:class="{'bgColor':isSelfFocusOn}"
+			  @click="focusC"
+				v-else
+			>
+			  <view>已关注</view>
+			</view>
     </view>
 		<view class="mask" v-if="showDecorateMask">
 			<view class="popupDecorate" :class="{'height':hasEstate}">
@@ -671,8 +680,16 @@ export default {
           this.isSelfFocusOn = !this.isSelfFocusOn;
 					if(this.isSelfFocusOn){
 						this.estateFocusOnCount += 1;
+						uni.showToast({
+							title:'关注成功',
+							icon:'none'
+						})
 					}else{
 						this.estateFocusOnCount -= 1;
+						uni.showToast({
+							title:'取消关注',
+							icon:'none'
+						})
 					}
           
         }
@@ -1318,6 +1335,9 @@ export default {
 	.location {
 		width: fit-content;
 		max-width: 406rpx;
+		overflow: hidden;
+		text-overflow: ellipsis;
+		white-space: nowrap;
 		height: 56rpx;
 		font-size: 40rpx;
 		font-weight: 500;
@@ -1474,6 +1494,9 @@ export default {
 		font-size: 22rpx;
 		color: #333333;
 		line-height: 32rpx;
+		/* overflow: hidden;
+		text-overflow: ellipsis;
+		white-space: nowrap; */
 	}
 	.progressBar {
 		display: flex;
@@ -1813,6 +1836,13 @@ export default {
 		border-radius: 12rpx;
 		margin: 24rpx 32rpx 24rpx 48rpx;
 	}
+	.sceneContainer .footer .focusOn.bgColor{
+		background: #F5F6F6;
+	}
+	.sceneContainer .footer .focusOn.bgColor view{
+		margin-left: 163rpx;
+		color: #666666;
+	}
 	.focusOn .add {
 		width: 18rpx;
 		height: 18rpx;
@@ -1828,4 +1858,5 @@ export default {
 		color: #ffffff;
 		line-height: 32rpx;
 	}
+	
 </style>

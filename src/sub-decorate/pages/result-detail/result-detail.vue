@@ -3,6 +3,7 @@
     <view class="detail-title">{{item.inspectName}}</view>
     <view class="item">
       <text class="title">检查详情</text>
+      <i :class="{'icon-ic_wodejia_fuhebiaozhun_csn':!isProblem,'icon-ic_wodejia_yinhuan_csn':item.severity===1,'icon-ic_wodejia_zhongdayinhuan_csn':item.severity===2}" :style="{color:!isProblem?'#3875EE':item.severity===1?'#F6A93B':'#E4362D'}"></i>
       <view class="content">{{item.problemDetails}}</view>
     </view>
     <view class="item">
@@ -22,7 +23,7 @@
       }
     },
     onLoad(e){
-     console.log(e.ruleId,e.problemId)
+     
       e.ruleId?this.getResultNorm(e.ruleId):this.getResultProblem(e.problemId)
     },
     methods:{
@@ -55,7 +56,15 @@
   .item{
     margin: 24rpx;
     background-color: #fff;
-    padding: 0 16rpx;
+    padding: 0 32rpx;
+    border-radius: 32rpx;
+    position: relative;
+    i{
+      font-size: 130rpx;
+      position: absolute;
+      top: 24rpx;
+      right: 24rpx;
+    }
     .title{
       display: block;
       border-bottom: 1px solid #efefef;
@@ -76,7 +85,7 @@
       padding-bottom: 14rpx;
     }
     .suggest-content{
-      margin-top: 16rpx;
+      padding: 16rpx 0 32rpx;
     }
   }
 </style>
