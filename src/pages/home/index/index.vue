@@ -257,6 +257,7 @@
 				"px";
 		},
 		onShow() {
+			this.token = getApp().globalData.token;
 			uni.showTabBar()
 			this.swiperAuto = true;
 			getApp().globalData.currentRoute = "/pages/home/index/index"
