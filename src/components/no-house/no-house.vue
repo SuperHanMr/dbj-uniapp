@@ -1,26 +1,28 @@
 <template>
-  <view class="no-house" v-if="showNoHouse">
-    <button class="add-house" @click="goAddHouse">
-      <image src="http://dbj.dragonn.top/static/mp/dabanjia/images/decorate/ic_add_house.svg"></image>
-      <text>添加房屋信息</text>
-    </button>
-    <view class="decorate-yf">
-      <view class="wrap decorate" @click="goNoHouseDecorate">
-        <view class="bg">
-          <image src="http://dbj.dragonn.top/static/mp/dabanjia/images/decorate/ic_decorate.svg"></image>
+  <view ref="nggg" class="no-house" v-if="showNoHouse" :style="{display: showNoHouse ? 'flex' : 'none'}">
+    <view class="nnn">
+      <button class="add-house" @click="goAddHouse">
+        <image src="http://dbj.dragonn.top/static/mp/dabanjia/images/decorate/ic_add_house.svg"></image>
+        <text>添加房屋信息</text>
+      </button>
+      <view class="decorate-yf">
+        <view class="wrap decorate" @click="goNoHouseDecorate">
+          <view class="bg">
+            <image src="http://dbj.dragonn.top/static/mp/dabanjia/images/decorate/ic_decorate.svg"></image>
+          </view>
+          <text>进行装修服务</text>
         </view>
-        <text>进行装修服务</text>
-      </view>
-      <view class="wrap yf" @click="goCheckService">
-        <view class="bg">
-          <image src="http://dbj.dragonn.top/static/mp/dabanjia/images/decorate/ic_checkhouse.svg"></image>
+        <view class="wrap yf" @click="goCheckService">
+          <view class="bg">
+            <image src="http://dbj.dragonn.top/static/mp/dabanjia/images/decorate/ic_checkhouse.svg"></image>
+          </view>
+          <text>进行验房服务</text>
         </view>
-        <text>进行验房服务</text>
       </view>
-    </view>
-    <view class="cancel-wrap">
-      <image class="cancel" src="http://dbj.dragonn.top/static/mp/dabanjia/images/decorate/ic_cancel.svg"
-        @click="gobackHome"></image>
+      <view class="cancel-wrap">
+        <image class="cancel" src="http://dbj.dragonn.top/static/mp/dabanjia/images/decorate/ic_cancel.svg"
+          @click="gobackHome"></image>
+      </view>
     </view>
   </view>
 </template>
@@ -32,6 +34,11 @@
         type: Boolean,
         default: true
       }
+    },
+    mounted() {
+      // setTimeout(() => {
+      //   this.$refs.nggg.style.display = "flex"
+      // }, 200)
     },
     methods: {
       goNoHouseDecorate() {
@@ -50,7 +57,9 @@
         });
       },
       gobackHome() {
-        const { currentRoute } = getApp().globalData
+        const {
+          currentRoute
+        } = getApp().globalData
         uni.switchTab({
           url: currentRoute,
           success() {
@@ -72,6 +81,7 @@
     display: flex;
     justify-content: flex-end;
     flex-direction: column;
+    display: none;
   }
 
   .add-house {
@@ -174,4 +184,29 @@
       opacity: 1;
     }
   }
+  // .nnn {
+  //   animation: sport 1s;
+  //   transform: translateY(0rpx);
+  // }
+  // @keyframes sport {
+  //   0% {
+  //     transform: translateY(160rpx);
+  //     opacity: 1;
+  //   }
+
+  //   25% {
+  //     transform: translateY(100rpx);
+  //     opacity: 1
+  //   }
+
+  //   50% {
+  //     transform: translateY(40rpx);
+  //     opacity: 1
+  //   }
+
+  //   100% {
+  //     transform: translateY(0rpx);
+  //     opacity: 1
+  //   }
+  // }
 </style>
