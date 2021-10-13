@@ -56,35 +56,26 @@
       </view>
 
       <!-- 有商家优惠就显示 -->
-      <view
-        class="price-item"
-        v-if="data.storeDiscount"
-      >
+      <view class="price-item" v-if="data.storeDiscount" >
         <view>商家优惠</view>
         <view>
           <text>￥</text>
-          <text class="price-style">{{handlePrice(data.storeDiscount)[0]}}.{{handlePrice(data.storeDiscount)[1]}}</text>
+          <text class="price-style">{{data.storeDiscount?'-':''}}{{handlePrice(data.storeDiscount)[0]}}.{{handlePrice(data.storeDiscount)[1]}}</text>
         </view>
       </view>
 
       <!-- 有平台优惠就显示 -->
-      <view
-        class="price-item"
-        v-if="data.platformDiscount"
-      >
+      <view  class="price-item" v-if="data.platformDiscount">
         <view>平台优惠</view>
         <view>
           <text>￥</text>
-          <text class="price-style">{{handlePrice(data.platformDiscount)[0]}}.{{handlePrice(data.platformDiscount)[1]}}</text>
+          <text class="price-style">{{data.platformDiscount?'-':''}}{{handlePrice(data.platformDiscount)[0]}}.{{handlePrice(data.platformDiscount)[1]}}</text>
         </view>
       </view>
 
     </view>
     <!-- 待付款 -->
-    <view
-      class="footer1"
-      v-if="waitPay"
-    >
+    <view class="footer1" v-if="waitPay">
       <view class="has-pay"  v-if="data.totalActualIncomeAmount">
         <text style="margin-right: 12rpx;">已付款</text>
         <text>
