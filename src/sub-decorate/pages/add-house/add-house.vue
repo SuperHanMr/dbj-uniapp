@@ -352,6 +352,9 @@
 				if (this.check()) {
 					if (!this.roomId) {
 						addHouse(this.addData).then((res) => {
+							if(this.addData.defaultEstate){
+								uni.$emit('defaultHouseChange');
+							}
 							uni.showToast({
 								title: "添加成功",
 								duration: 2000,

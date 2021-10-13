@@ -18,7 +18,7 @@
         class="message-send-input" 
         placeholder-class="message-send-input-placeholder" 
         placeholder="聊点什么吧"
-        @focus="handleInputFocus"
+        @keyboardheightchange="handleKeyboradHeightChange"
       />
       <view
         v-else
@@ -268,6 +268,7 @@
       },
       sendVideoMessage(tempFile) {
         let self = this;
+        console.log("send video message", tempFile);
         const {size: fileSize, path: filePath, thumbPath: thumbFilePath, duration, width, height } = tempFile;
         let fileName = filePath.split('/').pop();
         let data = {
@@ -397,25 +398,33 @@
             })
             break;
           case "video":
-            uni.chooseVideo({
+            uni.chooseMedia({ //chooseVideo无缩略图
+              mediaType: ["video"],
               sourceType: ["album"],
               success(res) {
                 console.log("choose video:", res);
                 const {
-                  duration,
-                  height,
-                  width,
-                  size,
-                  tempFilePath,
-                  thumbTempFilePath,
+                  tempFiles = []
                 } = res;
-                self.sendVideoMessage({
-                  path: tempFilePath,
-                  thumbPath: thumbTempFilePath,
-                  size: size,
-                  duration: duration,
-                  width: width,
-                  height: height
+                tempFiles.forEach(tempFile => {
+                  if (tempFile.fileType === "video") {
+                    const {
+                      duration,
+                      height,
+                      width,
+                      size,
+                      tempFilePath,
+                      thumbTempFilePath,
+                    } = tempFile;
+                    self.sendVideoMessage({
+                      path: tempFilePath,
+                      thumbPath: thumbTempFilePath,
+                      size: size,
+                      duration: duration,
+                      width: width,
+                      height: height
+                    });
+                  }
                 });
               }
             });
@@ -514,8 +523,11 @@
         this.recordStart = false;
         this.recorderManager.stop();
       },
-      handleInputFocus() {
-        uni.$emit("scroll-to-bottom");
+      handleKeyboradHeightChange(e) {
+        const {
+          height
+        } = e.detail || {};
+        uni.$emit("keyboard-change", height || 0);
       },
       // 找人工客服
       handleCallAgent() {
