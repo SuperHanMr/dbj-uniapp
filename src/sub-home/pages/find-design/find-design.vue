@@ -14,23 +14,26 @@
 			</view>
 		</view>
 		<view class="sticky-view" :style="{top:navBarHeight}">
-		<scroll-view class="tab-list"  scroll-x="true" @scroll="scroll">
-			<view v-for="(item,index) in tabList" :key="item.id" class="tab-item"
-				:class="index==currentTab?'selected-tab':'nomal-tab'" @click="onTab(index,item)">
-				<image v-if="index==0" :class="currentTab==0?'tab-img':'tab-img-un'"
-					:src=" currentTab==0? 'http://dbj.dragonn.top/static/mp/dabanjia/images/home/design_fire.png':'http://dbj.dragonn.top/static/mp/dabanjia/images/home/desigon_unfire.png'"
-					mode=""></image>
-				<text>{{item.name}}</text>
-			</view>
-		</scroll-view>
+			<scroll-view class="tab-list" scroll-x="true" @scroll="scroll">
+				<view v-for="(item,index) in tabList" :key="item.id" class="tab-item"
+					:class="index==currentTab?'selected-tab ':'nomal-tab'" @click="onTab(index,item)">
+					<image v-if="index==0" :class="currentTab==0?'tab-img':'tab-img-un'"
+						:src=" currentTab==0? 'http://dbj.dragonn.top/static/mp/dabanjia/images/home/design_fire.png':'http://dbj.dragonn.top/static/mp/dabanjia/images/home/desigon_unfire.png'"
+						mode=""></image>
+					<text>{{item.name}}</text>
+					<view v-if="index==currentTab" class="current-select">
 
-		<scroll-view v-if="subChildren.length" style="height: 84rpx;line-height:84rpx" class="tab-list" scroll-x="true"
-			@scroll="scroll">
-			<view v-for="(item,index) in subChildren" :key="item.id" style="line-height:52rpx ;" class="tab-item"
-				:class="index==subIndex?'sub-selected':'sub-unselected'" @click="onSubTab(index,item)">
-				<text>{{item.name}}</text>
-			</view>
-		</scroll-view>
+					</view>
+				</view>
+			</scroll-view>
+
+			<scroll-view v-if="subChildren.length" style="height: 84rpx;line-height:84rpx" class="tab-list"
+				scroll-x="true" @scroll="scroll">
+				<view v-for="(item,index) in subChildren" :key="item.id" style="line-height:52rpx ;" class="tab-item"
+					:class="index==subIndex?'sub-selected':'sub-unselected'" @click="onSubTab(index,item)">
+					<text>{{item.name}}</text>
+				</view>
+			</scroll-view>
 		</view>
 		<view v-if="goodsList.length==0" class="noMemo">
 			<image class="noMemoImg" src="http://dbj.dragonn.top/static/mp/dabanjia/images/decorate/pic_empty%402x.png">
@@ -209,6 +212,20 @@
 		padding: 0 20rpx;
 		text-align: center;
 		display: inline-block;
+		position: relative;
+	}
+
+	.current-select {
+		position: absolute;
+		left: 0;
+		right: 0;
+		bottom: 0;
+		width: 32rpx;
+		height: 4rpx;
+		background: linear-gradient(129deg, #00cdec 0%, #00ed7d 92%);
+		border-radius: 200rpx 200rpx 0rpx 0rpx;
+		left: 50%;
+		transform: translate(-50%, -50%);
 	}
 
 	.tab-img {
@@ -253,24 +270,27 @@
 			border-radius: 32rpx 32rpx 0rpx 0rpx;
 		}
 
-	
+
 	}
-	.sticky-view{
-		
+
+	.sticky-view {
+
 		position: sticky;
 		position: -webkit-sticky;
 		left: 0;
 		right: 0;
 		background-color: white;
 	}
+
 	.tab-list {
-			height: 64rpx;
-			line-height: 64rpx;
-			width: 100%;
-			overflow: hidden;
-			white-space: nowrap;
-			
-		}
+		height: 64rpx;
+		line-height: 64rpx;
+		width: 100%;
+		overflow: hidden;
+		white-space: nowrap;
+
+	}
+
 	.goods-list {
 		display: flex;
 		margin-top: 24rpx;
