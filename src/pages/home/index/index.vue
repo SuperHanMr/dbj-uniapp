@@ -16,8 +16,8 @@
 				<view class="address">
 					{{citydata}}
 				</view>
-				<image v-if="citydata" class="icon_down" src="http://dbj.dragonn.top/static/mp/dabanjia/images/home/ic_home_down.png"
-					mode=""></image>
+				<image v-if="citydata" class="icon_down"
+					src="http://dbj.dragonn.top/static/mp/dabanjia/images/home/ic_home_down.png" mode=""></image>
 			</view>
 
 			<image @click="toSearch" class="icon-search"
@@ -151,7 +151,7 @@
 				<image class="img" :src="item.product.skuImage" mode="aspectFill"></image>
 				<view class="info">
 					<view class="title">
-						
+
 						<text class="tip">
 							{{item.product.productType==1?'物品':'服务'}}
 
@@ -514,7 +514,7 @@
 								res.longitude,
 							success(re) {
 								console.log('~~~~~~~~~~`')
-								if (re.statusCode === 200&&re.data&&re.data.result) {
+								if (re.statusCode === 200 && re.data && re.data.result) {
 									let addressComponent = re.data.result.addressComponent;
 									vm.getAreaId(addressComponent.adcode);
 								} else {
@@ -776,15 +776,15 @@
 					text-align: center;
 					display: inline-block;
 					border: 1rpx solid #35c4c4;
-
+					vertical-align: 15%;
 				}
 
-				.tip:after {
-					display: inline-block;
-					vertical-align: middle;
-					content: "";
-					height: 120%;
-				}
+				// .tip:after {
+				// 	display: inline-block;
+				// 	vertical-align: middle;
+				// 	content: "";
+				// 	height: 120%;
+				// }
 			}
 		}
 	}
@@ -952,7 +952,7 @@
 	.function-zone-bottom {
 		border: 1rpx solid #e7e8e8;
 		border-top: none;
-		width: 704rpx;
+		width: 702rpx;
 		display: flex;
 		flex-direction: row;
 		border-bottom-left-radius: 16rpx;
@@ -984,7 +984,7 @@
 		}
 
 		.item {
-			height: 126rpx;
+			height: 134rpx;
 			flex: 1;
 			display: flex;
 			flex-direction: column;
