@@ -74,8 +74,8 @@
           <view class="workType">
             <view
               v-for="(item,index) in nodeTypes"
-              :key="index"
-            >{{item.name}}</view>
+              :key="item.nodeType"
+            >{{item.nodeName}}</view>
           </view>
           <view class="progressBar">
             <view class="connectStartLine"></view>
@@ -85,7 +85,7 @@
                 :class="{'done':item.nodeStatus===4||item.nodeStatus===3,
 								'doing':item.nodeStatus===2,'unpaid':item.nodeStatus===1}"
                 v-for="(item,index) in nodesInfo"
-                :key="index"
+                :key="item.id"
               >
                 <view
                   class="connectLine"
@@ -98,7 +98,7 @@
             <view
               :class="{'active':item.nodeStatus===2||item.nodeStatus===3}"
               v-for="(item,index) in nodesInfo"
-              :key="index"
+              :key="item.id"
             ></view>
           </view>
           <view class="worker">
@@ -831,10 +831,14 @@ export default {
           this.houseStructure = estate.houseStructure;
           this.requestFocus();
           nodes.map((item, index) => {
-            this.nodeTypes.push({
-              name: item.nodeName,
-              type: item.nodeType,
-            });
+						if(item.nodeType === 2 || item.nodeType === 3){
+							return
+						}{
+							this.nodeTypes.push({
+							  nodeName: item.nodeName,
+								nodeType: item.nodeType
+							});
+						}
             this.nodesInfo.push({
               id: item.id,
               nodeStatus: item.nodeStatus,
@@ -1538,7 +1542,7 @@ export default {
 		border: 2rpx solid #c2c2c2;
 	}
 	.connectLine {
-		width: 44rpx;
+		width: 60rpx;
 		height: 2rpx;
 		margin-top: 8rpx;
 		margin-left: 16rpx;

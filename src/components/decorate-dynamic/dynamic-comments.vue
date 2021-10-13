@@ -182,7 +182,7 @@
       }
     },
     mounted(){
-      this.ownId = 6537||getApp().globalData.userInfo.id
+      this.ownId = getApp().globalData.userInfo.id || 6537
     },
     computed:{
       // inputText(){
@@ -198,7 +198,6 @@
       },
       houseOwnerId:{
         handler:function(){
-          console.log(this.houseOwnerId)
           if(this.houseOwnerId===this.ownId){
             this.showInput = true
           }

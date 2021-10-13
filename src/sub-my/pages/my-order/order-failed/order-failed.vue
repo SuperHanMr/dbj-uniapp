@@ -3,10 +3,7 @@
 
     <!-- 退款详情 --退款关闭   退款取消与商家拒接 两个页面-->
     <view
-      class="order-container"
-      v-if="type =='refund'"
-      :style="{paddingBottom:containerPaddingBottom}"
-    >
+      class="order-container" v-if="type =='refund'" :style="{paddingBottom:containerPaddingBottom}" >
       <view class="order-status">
         <view class="backgroundStyle" />
         <view class="status">
@@ -51,25 +48,15 @@
         </view>
       </view>
 
-      <view
-        class="body1"
-        v-for="item in refundInfo.detailAppVOS"
-        :key="item.id"
-      >
+      <view class="body1" v-for="item in refundInfo.detailAppVOS" :key="item.id" >
         <order-item
           :dataList="item"
           :refundType="true"
           @handleDetail="productDetail(item,'refund')"
         />
-        <view
-          class="refund-money"
-          v-if="item.freight || item.handlingFees"
-        >
+        <view class="refund-money" v-if="item.freight || item.handlingFees">
           <!--运费 -->
-          <view
-            class="price-item"
-            v-if="item.freight"
-          >
+          <view class="price-item" v-if="item.freight">
             <view class="title">
               <text style="margin-right: 8rpx;">运费</text>
               <text class="icon">?</text>
@@ -102,8 +89,7 @@
       <view
 				v-if="status == 3 || status == 5 || showReApply==true "
         class="contact-customer-Reapply"
-        :style="{paddingBottom:systemBottom,height:systemHeight}"
-      >
+        :style="{paddingBottom:systemBottom,height:systemHeight}">
         <view
           v-if="status == 3 || status == 5 "
           class="contact-customer"
@@ -206,6 +192,8 @@ export default {
     this.from = e.from;
 		this.showReApply = e.showReApply
 		console.log("this.showReApply=",this.showReApply)
+  },
+	onShow() {
     if (this.type == "refund") {
       //退款成功页面
       this.refundDetail();
@@ -229,7 +217,8 @@ export default {
 			console.log("currentHouse=",currentHouse)
 			this.areaId = currentHouse.areaId;
     }
-  },
+	},
+	
 
   // 改变返回下一个页面的路径
   onUnload() {
