@@ -51,10 +51,10 @@
 						title: "意见与反馈",
 						url: "../../../sub-my/pages/set-up/comments-feedback/comments-feedback"
 					},
-					{
-						title: "关于打扮家",
-						url: "../../../sub-my/pages/set-up/about-dabanjia/about-dabanjia"
-					},
+					// {
+					// 	title: "关于打扮家",
+					// 	url: "../../../sub-my/pages/set-up/about-dabanjia/about-dabanjia"
+					// },
 					{
 						title:"版本号",
 						url:""

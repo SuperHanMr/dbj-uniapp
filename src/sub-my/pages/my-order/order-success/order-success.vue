@@ -69,8 +69,8 @@
 			<order-info :orderNo="orderInfo.orderNo" :createTime="orderInfo.createTime" :showPayTime="true"
 				:payTime="orderInfo.payTime" :showPayType="true" />
 
-			<view class="applyforRefund-container" :style="{paddingBottom:systemBottom,height:systemHeight}">
-				<view class="applyforRefund" @click="toApplayForRefund(orderInfo,2)" v-if="orderInfo.showRefundBtn">
+			<view v-if="orderInfo.showRefundBtn" class="applyforRefund-container" :style="{paddingBottom:systemBottom,height:systemHeight}">
+				<view class="applyforRefund" @click="toApplayForRefund(orderInfo,2)">
 					申请退款
 				</view>
 			</view>
