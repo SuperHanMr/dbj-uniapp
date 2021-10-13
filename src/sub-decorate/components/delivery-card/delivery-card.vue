@@ -10,7 +10,8 @@
           <text class="item-title">{{item.ruleName||item.inspectName}}</text>
           <text class="item-body">{{item.problemDetails||''}}</text>
         </view>
-        <image src="http://dbj.dragonn.top/static/mp/dabanjia/images/decorate/ic_triangle.svg" mode=""></image>
+        <i class="icon-ic_wodejia_genghuandengji_csn"></i>
+        <!-- <image src="http://dbj.dragonn.top/static/mp/dabanjia/images/decorate/ic_triangle.svg" mode=""></image> -->
       </view>
       <view v-if="data.arr===0">暂无内容</view>
     </view>
@@ -103,9 +104,15 @@
         }
       }
 
-      image {
-        width: 16rpx;
-        height: 16rpx;
+      i {
+        width: 32rpx;
+        height: 32rpx;
+        line-height: 32rpx;
+        text-align: center;
+        font-size: 16rpx;
+        border: 1px solid #CCCCCC;
+        border-radius: 50%;
+        color: #666;
       }
     }
 

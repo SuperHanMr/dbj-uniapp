@@ -12,7 +12,7 @@
       @refresherrefresh="handlePulling"
       @click="handleMessageListClick"
     >
-      <view v-if="type === CONV_TYPES.COMMON || type === CONV_TYPES.CUSTOMER" class="message-list-body">
+      <view v-if="type === CONV_TYPES.COMMON || type === CONV_TYPES.CUSTOMER" id="listBody" class="message-list-body">
         <template v-for="(msg, idx) in currentMessageList">
           <view
             v-if="showTimeTag(msg, currentMessageList[idx - 1])"
@@ -22,7 +22,7 @@
           <message-item :key="msg.ID" :message="msg"></message-item>
         </template>
       </view>
-      <view v-else-if="type === CONV_TYPES.SYSTEM" class="message-list-body" style="padding-bottom: 48rpx">
+      <view v-else-if="type === CONV_TYPES.SYSTEM" id="listBody" class="message-list-body" style="padding-bottom: 48rpx">
         <template v-for="(msg, idx) in currentMessageList">
           <view
             :key="msg.ID"
@@ -31,7 +31,7 @@
           <message-item-system :key="msg.ID" :message="msg"></message-item-system>
         </template>
       </view>
-      <view v-else-if="type === CONV_TYPES.INTERACTION" class="message-list-body" style="padding-bottom: 48rpx; background: #fff;">
+      <view v-else-if="type === CONV_TYPES.INTERACTION" id="listBody" class="message-list-body" style="padding-bottom: 48rpx; background: #fff;">
         <message-item-interaction
           v-for="(msg, idx) in currentMessageList"
           :key="msg.ID" 
@@ -116,34 +116,38 @@
       }
     },
     mounted() {
-      this.getMessageListOffsetTask = {
-        executor: null,
-        callback: null
-      };
-      this.getMessageListRectTask = {
-        executor: null,
-        callback: null
-      };
       uni.$on("scroll-to-bottom", this.scrollToBottom);
+      uni.$on("keyboard-change", this.handleKeyboardChange);
       this.$once("hook:beforeDestroy", () => {
         uni.$off("scroll-to-bottom", this.scrollToBottom);
+        uni.$off("keyboard-change", this.handleKeyboardChange);
       });
       const query = uni.createSelectorQuery().in(this);
       this.messageListNodesRef = query.select("#messageList");
-      this.getMessageListRect((options) => {
-        this.clientHeight = options.height;
-      });
+      
+      this.messageListRectTask = this.messageListNodesRef.boundingClientRect();
+      this.messageListOffsetTask = this.messageListNodesRef.scrollOffset();
+      setTimeout(() => {
+        this.listBodyNodesRef = query.select("#listBody");
+        this.listBodyRectTask = this.listBodyNodesRef.boundingClientRect();
+      }, 200);
+      this.messageListRectTask.exec((arr) => {
+        console.log(arr, 11111);
+        let [rectOpt, offsetOpt] = arr;
+        this.clientHeight = rectOpt.height;
+      });;
       addListener("MESSAGE_RECEIVED", this.onReceiveMessage);
       this.$once("hook:beforeDestroy", () => {
         removeListener("MESSAGE_RECEIVED", this.onReceiveMessage);
       })
     },
     beforeDestroy() {
-      this.getMessageListOffsetTask.executor = null;
-      this.getMessageListOffsetTask.callback = null;
-      this.getMessageListRectTask.executor = null;
-      this.getMessageListRectTask.callback = null;
+      this.messageListRectTask = null;
+      this.messageListOffsetTask = null;
       this.messageListNodesRef = null;
+      
+      this.listBodyRectTask = null;
+      this.listBodyNodesRef = null;
     },
     onLoad(options) {
       if (options.id === "CUSTOMER") {
@@ -192,45 +196,26 @@
           sameElse: 'YYYY/MM/DD HH:mm'
         });
       },
-      //封装改方法，是因为每次调用scrollOffset时，会把参数中的函数放到执行队列中，
-      //导致回调函数被执行多次
-      getMessageListOffset(cb) {
-        this.getMessageListOffsetTask.callback = cb;
-        if (!this.getMessageListOffsetTask.executor) {
-          this.getMessageListOffsetTask.executor = this.messageListNodesRef.scrollOffset((options) => {
-            console.log("get offset executor", this.getMessageListOffsetTask.executor);
-            this.getMessageListOffsetTask.callback(options)
-          });
-        }
-        this.getMessageListOffsetTask.executor.exec();
-      },
-      getMessageListRect(cb) {
-        this.getMessageListRectTask.callback = cb;
-        if (!this.getMessageListRectTask.executor) {
-          this.getMessageListRectTask.executor = this.messageListNodesRef.scrollOffset((options) => {
-            this.getMessageListRectTask.callback(options)
-          });
-        }
-        this.getMessageListRectTask.executor.exec();
-      },
       keepOnBottom() {
         // 距离底部20px内强制滚到底部,否则提示有新消息
         if (this.preScrollHeight - this.clientHeight - this.currentScrollTop < 20) {
           this.$nextTick(() => {
-            this.getMessageListOffset((options) => {
-              if (options.scrollHeight === this.scrollTop) {
+            this.messageListOffsetTask.exec((arr) => {
+              let [rectOpt, offsetOpt] = arr;
+              if (offsetOpt.scrollHeight === this.scrollTop) {
                 // 这样处理是因为当scrollTop的值无变化时，就不会触发元素的滚动
-                this.scrollTop = options.scrollHeight + 1;
-                this.currentScrollTop = options.scrollHeight;
+                this.scrollTop = offsetOpt.scrollHeight + 1;
+                this.currentScrollTop = offsetOpt.scrollHeight;
               } else {
-                this.currentScrollTop = this.scrollTop = options.scrollHeight;
+                this.currentScrollTop = this.scrollTop = offsetOpt.scrollHeight;
               }
-              this.preScrollHeight = options.scrollHeight;
+              this.preScrollHeight = offsetOpt.scrollHeight;
             });
           })
         } else {
-          this.getMessageListOffset((options) => {
-            this.preScrollHeight = options.scrollHeight;
+          this.messageListOffsetTask.exec((options) => {
+            let [rectOpt, offsetOpt] = arr;
+            this.preScrollHeight = offsetOpt.scrollHeight;
           });
         }
       },
@@ -238,25 +223,30 @@
       keepCurrentPosition() {
         let prevScrollBottom = this.preScrollHeight - this.currentScrollTop;
         this.$nextTick(() => {
-          this.getMessageListOffset((options) => {
-            this.currentScrollTop = this.scrollTop = options.scrollHeight - prevScrollBottom - 50;
-            this.preScrollHeight = options.scrollHeight;
+          this.messageListOffsetTask.exec((arr) => {
+            let [rectOpt, offsetOpt] = arr;
+            this.currentScrollTop = this.scrollTop = offsetOpt.scrollHeight - prevScrollBottom - 50;
+            this.preScrollHeight = offsetOpt.scrollHeight;
           });
         })
       },
       scrollToBottom() {
         this.$nextTick(() => {
-          this.getMessageListOffset((options) => {
-            if (options.scrollHeight === this.scrollTop) {
+          this.messageListOffsetTask.exec((arr) => {
+            let [rectOpt, offsetOpt] = arr;
+            if (offsetOpt.scrollHeight === this.scrollTop) {
               // 这样处理是因为当scrollTop的值无变化时，就不会触发元素的滚动
-              this.scrollTop = options.scrollHeight + 1;
-              this.currentScrollTop = options.scrollHeight;
+              this.scrollTop = offsetOpt.scrollHeight + 1;
+              this.currentScrollTop = offsetOpt.scrollHeight;
             } else {
-              this.currentScrollTop = this.scrollTop = options.scrollHeight;
+              this.currentScrollTop = this.scrollTop = offsetOpt.scrollHeight;
             }
-            this.preScrollHeight = options.scrollHeight;
+            this.preScrollHeight = offsetOpt.scrollHeight;
           });
         })
+      },
+      handleKeyboardChange(height) {
+        this.scrollToBottom();
       },
       handleMessageListScroll(e) {
         this.currentScrollTop = e.detail.scrollTop;

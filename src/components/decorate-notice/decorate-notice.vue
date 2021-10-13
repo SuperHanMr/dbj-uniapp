@@ -4,7 +4,7 @@
     <view class="notice-view">
       <scroll-view class="item-list" :style="{height:scrollHeight}" scroll-y="true">
        <view class="item">
-                   <view
+  <!--                 <view
             class="notice-item"
             @click="to(3)"
           > 
@@ -22,25 +22,28 @@
               <text>有量房员接单啦，请确认</text>
               <image src="../../static/images/ic_more_black.svg"></image>
             </view>
-          </view>
+          </view> -->
           <view class="notice-item" @click="to(item)" v-for="item of list" :key='item.id'>
             <view class="item-top">
               <view class="item-top-left">
-                <image src="../../static/home_owner.png" mode=""></image>
-                <text class="item-title">{{item.pushTitle}}</text>
+                <!-- <image src="../../static/home_owner.png" mode=""></image> -->
+                <i :class="item.icon" class='icon' :style="{color:item.iconColor}"></i>
+                <text class="item-title">{{item.pushTitle}}服务</text>
               </view>
               <text class="item-top-right">{{item.createTime|formatDate}}</text>
             </view>
             <view class="item-content">
               <text>{{item.pushContent}}</text>
-              <image src="../../static/images/ic_more_black.svg"></image>
+              <i class="icon-ic_zhuangxiuxianchang_jingsuangengduo_csn icon" ></i>
+              <!-- <image src="../../static/images/ic_more_black.svg"></image> -->
             </view>
           </view>
         </view>
 
       </scroll-view>
       <view class="close-icon">
-        <image src="http://dbj.dragonn.top/static/mp/dabanjia/images/decorate/ic_triangle.svg" mode="" @click="close()">
+        <i class="icon-ic_wodejia_danchuang_quxiao_csn" @click="close()"></i>
+      <!--  <image src="http://dbj.dragonn.top/static/mp/dabanjia/images/decorate/ic_triangle.svg" mode="" @click="close()"> -->
         </image>
       </view>
     </view>
@@ -110,6 +113,10 @@
             if(item.msgType==='sys_design_stage_report_msg'&&item.data.isOnline){
               item.url = '/sub-decorate/pages/design-online-disclosure/design-online-disclosure'
             }
+            let name = item.data.serveType == 11?item.data.serveType+item.data.workType:item.data.serveType
+            item.icon = sysMessage[name].icon
+            item.iconColor = sysMessage[name].color
+            
           })
           this.list = res
           this.scrollHeight = res.length * 140 * 2 + 'rpx'
@@ -162,9 +169,9 @@
       width: 100%;
       z-index: 111;
 
-      image {
-        width: 50rpx;
-        height: 50rpx;
+      i {
+        font-size: 24rpx;
+        color: #fff;
       }
     }
 
@@ -177,7 +184,11 @@
       background: #ffffff;
       border-radius: 12px;
       padding: 32rpx 24rpx;
-
+      .icon{
+        display: inline-block;
+        vertical-align: middle;
+        margin-right: 20rpx;
+      }
       // z-index: 11;
       .item-top {
         display: flex;
@@ -224,9 +235,9 @@
           font-weight: 500;
         }
 
-        image {
-          width: 24rpx;
-          height: 24rpx;
+        i {
+          font-size: 16rpx;
+          color: #999;
         }
       }
     }

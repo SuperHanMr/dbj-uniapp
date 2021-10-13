@@ -3,7 +3,7 @@
     <view class="title">
       <view class="title-check">
         <slot name="check"></slot>
-        <text class="text" v-if="setting.insideArea">{{setting.title}}{{setting.level | filterLevel(setting.cardtype)}}</text>
+        <text class="text">{{setting.title}}{{setting.level | filterLevel(setting.cardtype)}}</text>
       </view>
       <!-- <view class="change-service change-level" v-if="setting.cardtype == 'design'" @click="changeLevel">更换等级</view> -->
       <!-- <view class="change-service" @click="selectAnother">
@@ -11,14 +11,14 @@
         <image class="ic-triangle-999"
           src="http://dbj.dragonn.top/static/mp/dabanjia/images/decorate/ic_triangle_999.svg" />
       </view> -->
-      <view v-if="setting.cardtype == 'design'" class="change-service" @click="changeLevel">
+      <view v-if="setting.cardtype == 'design' && setting.insideArea" class="change-service" @click="changeLevel">
         <text>更换等级</text>
         <image class="ic-triangle-999"
           src="http://dbj.dragonn.top/static/mp/dabanjia/images/decorate/ic_triangle_999.svg" />
       </view>
     </view>
     <server-content :content="setting" @selectAnother="selectAnother"></server-content>
-    <view class="door-time-wrap" v-if="setting.serviceType == 2">
+    <view class="door-time-wrap" v-if="setting.serviceType == 2 || setting.title == '验房服务'">
       <view class="door-time"><text class="label">选择期望上门时间</text><text class="value">{{setting.doorTime}}</text>
       </view>
       <image @click="selectDoorTime" src="http://dbj.dragonn.top/static/mp/dabanjia/images/decorate/arrow-r-gr.svg" class="change-img"></image>

@@ -30,12 +30,12 @@
     methods: {
       backHome(){     
         uni.switchTab({
-            url: '/pages/home/index/index'
+            url: '/pages/classify/index/index'
         });
       },
       toOrderDetail() {
         uni.navigateTo({
-          url: `/sub-my/pages/my-order/order-in-progress/order-in-progress?orderNo=${this.orderId}`
+          url: `/sub-my/pages/my-order/order-in-progress/order-in-progress?orderNo=${this.orderId}&from=comfirmOrder`
         })
       }
     }

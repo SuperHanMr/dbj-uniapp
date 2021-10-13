@@ -8,7 +8,7 @@
          		<text class="default" v-if="addressInfo.defaultEstate">默认</text>
          		<text class="txt">{{addressInfo.housingEstate}}</text>
          	</view>
-         	<view class="community">{{addressInfo.locationName}}</view>
+         	<view class="community">{{addressInfo.locationName}}我的人你还打算减肥把手机放到不拿手机和电脑接口苏丹诺夫看就是能否看见撒谁看见都烦你把手机开的</view>
          	<view class="userInfo">
          		<text class="userName">{{addressInfo.contactName}}</text>
          		<text class="userPhone">{{addressInfo.contactPhone}}</text>
@@ -160,7 +160,8 @@
 		line-height: 42rpx;
 	}
 	.address .community{
-		height: 42rpx;
+		/* height: 42rpx; */
+    width: 600rpx;
 		font-size: 28rpx;
 		font-weight: 500;
 		color: #111111;

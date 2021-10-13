@@ -15,6 +15,7 @@
       <text class="report-text" :class="{'report-text-hidden':isHidden}">{{checkData.summaryDescription}}</text>
       <view class="openHidden" v-if="showBtn" @click="clickHidden">
         {{hddenText}}
+        <i :class="{'icon-a-ic_zhuangxiuxianchang_jingsuanzhankai_csn':isHidden,'icon-a-ic_zhuangxiuxianchang_jingsuanshouqi_csn':!isHidden}"></i>
       </view>
       <view class="img-list">
         <imagePreview :list='checkData.imageUrlList' :row='2'></imagePreview>
@@ -249,8 +250,9 @@
             this.conformTop = res.top;
           })
           query.select(".report-text").boundingClientRect((res) => {
-            this.isHidden = res.height/20 > 5;
-            this.showBtn = res.height/20 > 5;
+            
+            this.isHidden = res.height/20 > 6;
+            this.showBtn = res.height/20 > 6;
             // console.log(res.height,this.isHidden)
             
           })
@@ -390,7 +392,12 @@
       text-align: center;
       color: #999999;
       font-size: 24rpx;
-      
+      i{
+        display: inline-block;
+        font-size: 8rpx;
+        margin-left: 8rpx;
+        vertical-align: middle;
+      }
     }
     .img-list {
       display: flex;
