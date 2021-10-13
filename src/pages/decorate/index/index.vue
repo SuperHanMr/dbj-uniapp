@@ -143,7 +143,7 @@
         </drag-button-follow>
       </view>
     </view>
-    <no-house :showNoHouse="showNoHouse" v-if="showNoHouse && estateList.length == 0"></no-house>
+    <no-house :showNoHouse="showNoHouse"></no-house>
   </view>
 </template>
 
@@ -189,6 +189,7 @@
       NoHouse
     },
     onLoad() {
+      this.showNoHouse = false
       uni.$on("currentHouseChange", (item) => {
         this.homePageEstate = item
         getApp().globalData.switchFlag = "home"
@@ -552,9 +553,9 @@
           if (!data || (data instanceof Array && data.length < 1)) {
             uni.hideTabBar()
             this.showNoHouse = true
-            uni.navigateTo({
-              url: "/sub-decorate/pages/no-house/no-house",
-            });
+            // uni.navigateTo({
+            //   url: "/sub-decorate/pages/no-house/no-house",
+            // });
           } else {
             const temp = data.filter(t => t.defaultEstate)
             this.defaultEstate = temp && temp.length > 0 ? temp[0] : null
