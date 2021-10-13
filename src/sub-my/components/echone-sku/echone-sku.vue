@@ -197,12 +197,22 @@
 				})
 				let selectedIds = checkedIds.sort().toString()
 				this.selectedIndex = this.combinations.findIndex(item => item.valueIds.sort().toString() === selectedIds)
-				this.selectSkuInfo = this.combinations[this.selectedIndex]
+				if(this.selectedIndex !== -1){
+					this.selectSkuInfo = this.combinations[this.selectedIndex]
+				}
 			},
 			closeSkuBox() {
 				this.$emit('close')
 			},
 			handleConfirm() {
+				if(this.selectedIndex === -1){
+					uni.showToast({
+						title: "当前规格暂不可购买",
+						icon: "none",
+						duration: 2000
+					})
+					return
+				}
 				this.$emit('confirm',this.skuId, this.selectSkuInfo.id)
 				this.$emit('close')
 			}

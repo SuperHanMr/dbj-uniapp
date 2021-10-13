@@ -154,29 +154,31 @@
 				</view>	
 			</view>
 			<view class="bottom"></view>
-			<view class="shopCheck" v-if="isManage">
-				<view class="left">
-					<view class="check" @click="checkedAll" v-if="!isCheckedAll"></view>
-					<image src="../../../static/shopping-cart/checked@2x.png" class="check" @click="checkedAll" v-else></image>
-					<view class="text">全选</view>
-				</view>
-				<view class="right">
-					<view class="text">合计：</view>
-					<view class="totalPrice">¥{{totalPrice.toFixed(2)}}</view>
-					<view class="preOrder" @click="pay">结算({{totalCout}})</view>
-				</view>
-			</view>	  							
-			<view class="shopCheck" v-else>
-				<view class="left">
-					<view class="check" @click="checkedAll" v-if="!isCheckedAll"></view>
-					<image src="../../../static/shopping-cart/checked@2x.png" class="check" @click="checkedAll" v-else></image>
-					<view class="text">全选</view>
-				</view>
-				<view class="right">
-					<view class="collect" @click="toCollect">移入收藏</view>
-					<view class="delete" @click="deleteChecked">删除</view>
-				</view>
-			</view>	
+			<view v-if="shopList.length">
+				<view class="shopCheck" v-if="isManage">
+					<view class="left">
+						<view class="check" @click="checkedAll" v-if="!isCheckedAll"></view>
+						<image src="../../../static/shopping-cart/checked@2x.png" class="check" @click="checkedAll" v-else></image>
+						<view class="text">全选</view>
+					</view>
+					<view class="right">
+						<view class="text">合计：</view>
+						<view class="totalPrice">¥{{totalPrice.toFixed(2)}}</view>
+						<view class="preOrder" @click="pay">结算({{totalCout}})</view>
+					</view>
+				</view>	  							
+				<view class="shopCheck" v-else>
+					<view class="left">
+						<view class="check" @click="checkedAll" v-if="!isCheckedAll"></view>
+						<image src="../../../static/shopping-cart/checked@2x.png" class="check" @click="checkedAll" v-else></image>
+						<view class="text">全选</view>
+					</view>
+					<view class="right">
+						<view class="collect" @click="toCollect">移入收藏</view>
+						<view class="delete" @click="deleteChecked">删除</view>
+					</view>
+				</view>	
+			</view>
 		</view>					
 	</view>
 </template>
@@ -235,7 +237,6 @@
 		},
 		mounted(){
 			this.userId = uni.getStorageSync("userId")
-			// this.userId = 123
 			this.requestPage()
 		},
 		computed:{
@@ -291,8 +292,9 @@
 					beforeSkuId: preId,
 					nowSkuId: curId
 				}
-				setGoodsSku(params).then(data => {
-					this.requestPage()
+				setGoodsSku(params).then(async(data) => {
+					await this.requestPage()
+					this.freeShippings()
 				})
 			},
 			openSpec(skuId){
@@ -352,22 +354,21 @@
 						if(!storeList.length&&!disabledSkuList.length){
 							this.showNoGoods = true
 						}
-						if(!storeList.length)return
-						storeList.map(item => {
-							
-							item.shopChecked = false
-							item.skuList.map(ele => {
-								ele.goodsChecked = false
-								ele.isMiniOrder = (+ele.buyCount <= +ele.minimumOrderQuantity) ? true:false
-									
-								return ele
+						if(storeList.length){
+							storeList.map(item => {
+								
+								item.shopChecked = false
+								item.skuList.map(ele => {
+									ele.goodsChecked = false
+									ele.isMiniOrder = (+ele.buyCount <= +ele.minimumOrderQuantity) ? true:false
+									return ele
+								})
+								
+								return item
 							})
-							
-							return item
-						})
-						
-						this.shopList = storeList || []
-						this.disabledSkuList = disabledSkuList || []
+						}
+						this.shopList = storeList
+						this.disabledSkuList = disabledSkuList
 				})
 			},
 			openCount(shopIndex, goodsIndex,miniOrder,step,buyNum){
@@ -434,11 +435,12 @@
 						buyCount:buyCount
 					}]
 				}
-				setBuyCount(params).then(data => {
+				setBuyCount(params).then(async(data) => {
+					this.showInput = false
+					await this.requestPage()
 					this.freeShippings()
-					this.requestPage()
 				})
-				this.showInput = false
+				
 				console.log(val,step,miniOrder,'//');
 			},
 			toCollect(){
@@ -751,9 +753,7 @@
 									userId:this.userId,
 								}
 				  			clearDisabled(params).then(data => {
-									if(data){
-										this.requestPage()
-									}
+									this.requestPage()
 								})
 				      } else if (res.cancel) {
 				  			return
