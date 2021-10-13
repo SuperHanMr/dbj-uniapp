@@ -75,7 +75,7 @@
 						<view class="title">编辑数量</view>
 						<view class="text">当前最小单位为{{miniOrder}}，输入的数量需为{{step}}的倍数</view>
 					</view>
-					<input type="text" v-model="buyNum" :focus="isFocus" />
+					<input type="text" v-model="buyNum" focus />
 					<view class="button">
 						<view class="cancel" @click="closeDialog">取消</view>
 						<!-- <view class="line"></view> -->
@@ -230,7 +230,7 @@
 				step:0,//步长
 				miniOrder:0,
 				buyNum:"",//输入框的值,
-				isFocus:false,
+				// isFocus:false,
 			}
 		},
 		mounted(){
@@ -372,7 +372,7 @@
 			},
 			openCount(shopIndex, goodsIndex,miniOrder,step,buyNum){
 				this.showInput = true
-				this.isFocus = true
+				// this.isFocus = true
 				this.miniOrder = miniOrder
 				this.step = step
 				this.buyNum = buyNum

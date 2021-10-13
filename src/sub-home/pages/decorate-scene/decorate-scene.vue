@@ -680,8 +680,16 @@ export default {
           this.isSelfFocusOn = !this.isSelfFocusOn;
 					if(this.isSelfFocusOn){
 						this.estateFocusOnCount += 1;
+						uni.showToast({
+							title:'关注成功',
+							icon:'none'
+						})
 					}else{
 						this.estateFocusOnCount -= 1;
+						uni.showToast({
+							title:'取消关注',
+							icon:'none'
+						})
 					}
           
         }
@@ -1327,6 +1335,9 @@ export default {
 	.location {
 		width: fit-content;
 		max-width: 406rpx;
+		overflow: hidden;
+		text-overflow: ellipsis;
+		white-space: nowrap;
 		height: 56rpx;
 		font-size: 40rpx;
 		font-weight: 500;
@@ -1483,6 +1494,9 @@ export default {
 		font-size: 22rpx;
 		color: #333333;
 		line-height: 32rpx;
+		/* overflow: hidden;
+		text-overflow: ellipsis;
+		white-space: nowrap; */
 	}
 	.progressBar {
 		display: flex;
@@ -1824,6 +1838,10 @@ export default {
 	}
 	.sceneContainer .footer .focusOn.bgColor{
 		background: #F5F6F6;
+	}
+	.sceneContainer .footer .focusOn.bgColor view{
+		margin-left: 163rpx;
+		color: #666666;
 	}
 	.focusOn .add {
 		width: 18rpx;
