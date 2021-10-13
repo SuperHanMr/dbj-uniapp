@@ -16,7 +16,7 @@
 				<view class="address">
 					{{citydata}}
 				</view>
-				<image class="icon_down" src="http://dbj.dragonn.top/static/mp/dabanjia/images/home/ic_home_down.png"
+				<image v-if="citydata" class="icon_down" src="http://dbj.dragonn.top/static/mp/dabanjia/images/home/ic_home_down.png"
 					mode=""></image>
 			</view>
 
@@ -151,6 +151,7 @@
 				<image class="img" :src="item.product.skuImage" mode="aspectFill"></image>
 				<view class="info">
 					<view class="title">
+						
 						<text class="tip">
 							{{item.product.productType==1?'物品':'服务'}}
 
@@ -256,14 +257,14 @@
 				"px";
 		},
 		onShow() {
-      uni.showTabBar()
+			uni.showTabBar()
 			this.swiperAuto = true;
 			getApp().globalData.currentRoute = "/pages/home/index/index"
 			this.$store.dispatch("updateTabBarBadge");
 		},
-    mounted() {
-      uni.showTabBar()
-    },
+		mounted() {
+			uni.showTabBar()
+		},
 		onHide() {
 			this.swiperAuto = false
 		},
@@ -478,6 +479,21 @@
 					},
 				});
 			},
+			getAddressFail() {
+				uni.showToast({
+					title: '获取信息失败，请重试！',
+					icon: 'none'
+				})
+				let defaultHouse = {
+					name: "北京市朝阳区",
+					provinceId: 1,
+					cityId: 36,
+					areaId: 41,
+				};
+				this.areaId = 41;
+				this.currentHouseChange(defaultHouse);
+				this.citydata = defaultHouse.name;
+			},
 			// 获取地理位置
 			getLocationInfo() {
 				let vm = this;
@@ -497,30 +513,24 @@
 								"," +
 								res.longitude,
 							success(re) {
-								if (re.statusCode === 200) {
+								console.log('~~~~~~~~~~`')
+								if (re.statusCode === 200&&re.data&&re.data.result) {
 									let addressComponent = re.data.result.addressComponent;
 									vm.getAreaId(addressComponent.adcode);
 								} else {
-									uni.showToast({
-										title:'获取信息失败，请重试！',
-										icon:'none'
-									})
-									console.log("获取信息失败，请重试！");
+									vm.getAddressFail()
 								}
 							},
+							fail() {
+								console.log('~~~~~~~~~~~~~!!!!!!`')
+
+								vm.getAddressFail()
+							}
 						});
 					},
 					fail() {
-						let defaultHouse = {
-							name: "北京市朝阳区",
-							provinceId: 1,
-							cityId: 36,
-							areaId: 41,
-						};
-						vm.areaId = 41;
-						vm.currentHouseChange(defaultHouse)
-						// uni.setStorageSync("currentHouse", JSON.stringify(defaultHouse));
-						vm.citydata = defaultHouse.name;
+
+						vm.getAddressFail()
 					},
 				});
 			},
