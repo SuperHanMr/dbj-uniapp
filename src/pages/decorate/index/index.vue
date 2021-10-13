@@ -1,147 +1,149 @@
 <template>
-  <view class="decorate-index" v-if="estateList.length > 0">
-    <image class="bg-index" mode="aspectFit"
-      src="http://dbj.dragonn.top/static/mp/dabanjia/images/decorate/bg@2x-3.png">
-    </image>
-    <view class="content flex-column">
-      <view class="house-firend">
-        <view class="title">
-          <view class="house" @click="switchVisible">
-            <text>{{who}}的家</text>
-            <image class="ic-triangle" src="http://dbj.dragonn.top/static/mp/dabanjia/images/decorate/ic_triangle.svg">
-            </image>
-          </view>
-          <view class="friend">
-            <text>亲友团</text>
-            <view class="friend-list">
-              <image class="avtor" v-for="(item, index) in friendList" :key="item.id" :src="item.relativeAvatar"
-                :class="{avtor1: index == 0, avtor1: index == 0,avtor2: index == 1}"></image>
-              <view class="avtor-more" @click="toFriends">
-                <image src="http://dbj.dragonn.top/static/mp/dabanjia/images/decorate/ic_avtor_more.svg">
-                </image>
-              </view>
-            </view>
-          </view>
-        </view>
-
-        <view class="uni-padding-wrap">
-          <view class="insurance-house">
-            <view :class="{'payed':aServiceData.insuranceStatus}" class="insurance">
-              <image @click="consultingService"
-                :src="aServiceData.insuranceStatus ? 'http://dbj.dragonn.top/static/mp/dabanjia/images/decorate/insurance-pay.svg': 'http://dbj.dragonn.top/static/mp/dabanjia/images/decorate/insurance-unpay.svg'">
+  <view>
+    <view class="decorate-index" v-if="estateList.length > 0">
+      <image class="bg-index" mode="aspectFit"
+        src="http://dbj.dragonn.top/static/mp/dabanjia/images/decorate/bg@2x-3.png">
+      </image>
+      <view class="content flex-column">
+        <view class="house-firend">
+          <view class="title">
+            <view class="house" @click="switchVisible">
+              <text>{{who}}的家</text>
+              <image class="ic-triangle" src="http://dbj.dragonn.top/static/mp/dabanjia/images/decorate/ic_triangle.svg">
               </image>
             </view>
-            <view class="uni-title">{{ currentProject.housingEstate }}{{currentProject.address}}</view>
-          </view>
-          <view class="picture-btn-wrap">
-            <picture-btn v-if="aServiceData.showDesignFlag" iconUrl="http://dbj.dragonn.top/static/mp/dabanjia/images/decorate/ic_sgtz.svg" class="p-i-t" text="施工图纸" @gotoPage="goDesignPicture">
-            </picture-btn>
-            <picture-btn v-if="aServiceData.showActuaryFlag" iconUrl="http://dbj.dragonn.top/static/mp/dabanjia/images/decorate/ic_jsd.svg" class="p-i-t" text="精算单" @gotoPage="goActuary">
-            </picture-btn>
-            <picture-btn v-if="aServiceData.showVideoFlag" iconUrl="http://dbj.dragonn.top/static/mp/dabanjia/images/decorate/ic_gdsp.svg" class="p-i-t" text="工地视频" @gotoPage="goVideo"></picture-btn>
-            <picture-btn v-if="aServiceData.constructionFlag" iconUrl="http://dbj.dragonn.top/static/mp/dabanjia/images/decorate/ic_sg.svg" text="施工" @gotoPage="goConstrction"></picture-btn>
-          </view>
-        </view>
-      </view>
-
-      <view class="scroll-view flex-1">
-        <!-- 每日播报 -->
-        <text-scroll :dataList="broadcastList" v-if="broadcastList.length > 0 && isConstruction"
-          @goDecorateCalendar="goDecorateCalendar"></text-scroll>
-        <!-- 我的仓库 -->
-        <view v-if="haveWarehouse" class="my-decorate-service-wrap">
-          <!-- <image mode="aspectFit" class="top-bg"
-            src="http://dbj.dragonn.top/static/mp/dabanjia/images/decorate/service-card-top.svg">
-          </image> -->
-          <view class="top-bg"></view>
-          <view class="my-decorate-service">
-            <view class="service-title flex-space-between-row">
-              <text class="t">我的仓库</text>
-              <view class="r flex-start-row" @click="goToMyWarehouse">
-                <text>查看全部</text>
-                <image src="http://dbj.dragonn.top/static/mp/dabanjia/images/decorate/ic_more.svg">
-                </image>
+            <view class="friend">
+              <text>亲友团</text>
+              <view class="friend-list">
+                <image class="avtor" v-for="(item, index) in friendList" :key="item.id" :src="item.relativeAvatar"
+                  :class="{avtor1: index == 0, avtor1: index == 0,avtor2: index == 1}"></image>
+                <view class="avtor-more" @click="toFriends">
+                  <image src="http://dbj.dragonn.top/static/mp/dabanjia/images/decorate/ic_avtor_more.svg">
+                  </image>
+                </view>
               </view>
             </view>
-            <view class="my-warehouse">
-              <mwarehouse-btn iconUrl="http://dbj.dragonn.top/static/mp/dabanjia/images/decorate/ic_ck_dfh.svg" @gotoPage="gotoPage('0')" name="待发货">
-              </mwarehouse-btn>
-              <mwarehouse-btn iconUrl="http://dbj.dragonn.top/static/mp/dabanjia/images/decorate/ic_ck_dsh.svg" @gotoPage="gotoPage('1')" name="待收货">
-              </mwarehouse-btn>
-              <mwarehouse-btn iconUrl="http://dbj.dragonn.top/static/mp/dabanjia/images/decorate/ic_ck_ysh.svg" @gotoPage="gotoPage('2')" name="已收货">
-              </mwarehouse-btn>
-              <mwarehouse-btn iconUrl="http://dbj.dragonn.top/static/mp/dabanjia/images/decorate/ic_ck_tk.svg" @gotoPage="gotoPage('3')" name="退款">
-              </mwarehouse-btn>
-            </view>
           </view>
-        </view>
-        <!-- 我的装修服务 -->
-        <view class="my-decorate-service-wrap" v-if="purchasedServiceList.length > 0 || aServiceData.myServiceFlag">
-          <!-- <image mode="aspectFit" class="top-bg"
-            src="http://dbj.dragonn.top/static/mp/dabanjia/images/decorate/service-card-top.svg">
-          </image> -->
-          <view class="top-bg"></view>
-          <view class="my-decorate-service">
-            <view class="service-title flex-space-between-row">
-              <text class="t">{{who}}的装修服务</text>
-              <view class="r flex-start-row" v-if="aServiceData.myServiceFlag" @click="goToMyDecorate">
-                <text>查看全部</text>
-                <image src="http://dbj.dragonn.top/static/mp/dabanjia/images/decorate/ic_more.svg">
+    
+          <view class="uni-padding-wrap">
+            <view class="insurance-house">
+              <view :class="{'payed':aServiceData.insuranceStatus}" class="insurance">
+                <image @click="consultingService"
+                  :src="aServiceData.insuranceStatus ? 'http://dbj.dragonn.top/static/mp/dabanjia/images/decorate/insurance-pay.svg': 'http://dbj.dragonn.top/static/mp/dabanjia/images/decorate/insurance-unpay.svg'">
                 </image>
               </view>
+              <view class="uni-title">{{ currentProject.housingEstate }}{{currentProject.address}}</view>
             </view>
-            <service-item v-for="(item, index) in purchasedServiceList" :key="item.nodeType" :serviceData="item"
-              :currentProject="currentProject">
-            </service-item>
-            <no-service v-if="purchasedServiceList.length == 0" words="暂无进行中服务"></no-service>
+            <view class="picture-btn-wrap">
+              <picture-btn v-if="aServiceData.showDesignFlag" iconUrl="http://dbj.dragonn.top/static/mp/dabanjia/images/decorate/ic_sgtz.svg" class="p-i-t" text="施工图纸" @gotoPage="goDesignPicture">
+              </picture-btn>
+              <picture-btn v-if="aServiceData.showActuaryFlag" iconUrl="http://dbj.dragonn.top/static/mp/dabanjia/images/decorate/ic_jsd.svg" class="p-i-t" text="精算单" @gotoPage="goActuary">
+              </picture-btn>
+              <picture-btn v-if="aServiceData.showVideoFlag" iconUrl="http://dbj.dragonn.top/static/mp/dabanjia/images/decorate/ic_gdsp.svg" class="p-i-t" text="工地视频" @gotoPage="goVideo"></picture-btn>
+              <picture-btn v-if="aServiceData.constructionFlag" iconUrl="http://dbj.dragonn.top/static/mp/dabanjia/images/decorate/ic_sg.svg" text="施工" @gotoPage="goConstrction"></picture-btn>
+            </view>
           </view>
         </view>
-        <view v-if="aServiceData.projectStatus == 3" class="jun-gong-da-ji">
-          竣工大吉
-        </view>
-        <view class="tips-design-actuary">
-          <view v-if="availGuides.length > 0" class="tips">
-            购买相关服务 即刻开启装修
+    
+        <view class="scroll-view flex-1">
+          <!-- 每日播报 -->
+          <text-scroll :dataList="broadcastList" v-if="broadcastList.length > 0 && isConstruction"
+            @goDecorateCalendar="goDecorateCalendar"></text-scroll>
+          <!-- 我的仓库 -->
+          <view v-if="haveWarehouse" class="my-decorate-service-wrap">
+            <!-- <image mode="aspectFit" class="top-bg"
+              src="http://dbj.dragonn.top/static/mp/dabanjia/images/decorate/service-card-top.svg">
+            </image> -->
+            <view class="top-bg"></view>
+            <view class="my-decorate-service">
+              <view class="service-title flex-space-between-row">
+                <text class="t">我的仓库</text>
+                <view class="r flex-start-row" @click="goToMyWarehouse">
+                  <text>查看全部</text>
+                  <image src="http://dbj.dragonn.top/static/mp/dabanjia/images/decorate/ic_more.svg">
+                  </image>
+                </view>
+              </view>
+              <view class="my-warehouse">
+                <mwarehouse-btn iconUrl="http://dbj.dragonn.top/static/mp/dabanjia/images/decorate/ic_ck_dfh.svg" @gotoPage="gotoPage('0')" name="待发货">
+                </mwarehouse-btn>
+                <mwarehouse-btn iconUrl="http://dbj.dragonn.top/static/mp/dabanjia/images/decorate/ic_ck_dsh.svg" @gotoPage="gotoPage('1')" name="待收货">
+                </mwarehouse-btn>
+                <mwarehouse-btn iconUrl="http://dbj.dragonn.top/static/mp/dabanjia/images/decorate/ic_ck_ysh.svg" @gotoPage="gotoPage('2')" name="已收货">
+                </mwarehouse-btn>
+                <mwarehouse-btn iconUrl="http://dbj.dragonn.top/static/mp/dabanjia/images/decorate/ic_ck_tk.svg" @gotoPage="gotoPage('3')" name="退款">
+                </mwarehouse-btn>
+              </view>
+            </view>
           </view>
-          <guide-card v-if="availGuides.includes('design')" cardType="service"
-            imageUrl="http://dbj.dragonn.top/static/mp/dabanjia/images/decorate/ic_myhouse_design%402x.png"
-            @buyNow="gonohousedecatore('design')">
-          </guide-card>
-          <guide-card v-if="availGuides.includes('actuary')" cardType="actuary"
-            imageUrl="http://dbj.dragonn.top/static/mp/dabanjia/images/decorate/ic_myhouse_actuary%402x.png"
-            @buyNow="gonohousedecatore('actuary')">
-          </guide-card>
+          <!-- 我的装修服务 -->
+          <view class="my-decorate-service-wrap" v-if="purchasedServiceList.length > 0 || aServiceData.myServiceFlag">
+            <!-- <image mode="aspectFit" class="top-bg"
+              src="http://dbj.dragonn.top/static/mp/dabanjia/images/decorate/service-card-top.svg">
+            </image> -->
+            <view class="top-bg"></view>
+            <view class="my-decorate-service">
+              <view class="service-title flex-space-between-row">
+                <text class="t">{{who}}的装修服务</text>
+                <view class="r flex-start-row" v-if="aServiceData.myServiceFlag" @click="goToMyDecorate">
+                  <text>查看全部</text>
+                  <image src="http://dbj.dragonn.top/static/mp/dabanjia/images/decorate/ic_more.svg">
+                  </image>
+                </view>
+              </view>
+              <service-item v-for="(item, index) in purchasedServiceList" :key="item.nodeType" :serviceData="item"
+                :currentProject="currentProject">
+              </service-item>
+              <no-service v-if="purchasedServiceList.length == 0" words="暂无进行中服务"></no-service>
+            </view>
+          </view>
+          <view v-if="aServiceData.projectStatus == 3" class="jun-gong-da-ji">
+            竣工大吉
+          </view>
+          <view class="tips-design-actuary">
+            <view v-if="availGuides.length > 0" class="tips">
+              购买相关服务 即刻开启装修
+            </view>
+            <guide-card v-if="availGuides.includes('design')" cardType="service"
+              imageUrl="http://dbj.dragonn.top/static/mp/dabanjia/images/decorate/ic_myhouse_design%402x.png"
+              @buyNow="gonohousedecatore('design')">
+            </guide-card>
+            <guide-card v-if="availGuides.includes('actuary')" cardType="actuary"
+              imageUrl="http://dbj.dragonn.top/static/mp/dabanjia/images/decorate/ic_myhouse_actuary%402x.png"
+              @buyNow="gonohousedecatore('actuary')">
+            </guide-card>
+          </view>
+    
+          <!-- 切换房屋弹窗 -->
+          <uni-popup ref="sw">
+            <house-switch class="margintop" :datalist="projectList" :current="currentProject.estateId"
+              @goAddHouse="addHouse" @checkHouse="changeCurrentProject"></house-switch>
+          </uni-popup>
+          <decorate-notice @touchmove.stop.prevent="()=>false" v-if="noticeActive" :num='msgNum'
+            :current='currentProject.projectId' @closeNotice='closeNotice' class="decorate-notice"></decorate-notice>
+          <!-- <view class="link">
+            <view @click="gonohouse">无房屋无服入口</view>
+            <view @click="gonohousedecatore('decorate')">无房屋无服务装修</view>
+            <view @click="gonohousedecatore('checkHouse')">无房屋无服务验房</view>
+            <view @click="checkHouseRemind">验房提醒</view>
+            <view @click="confirm1">设计交付</view>
+            <view @click="confirm4">线上交底</view>
+            <view @click="dsport">设计报告交付</view>
+            <view @click="hcaa">管家竣工验收申请</view>
+            <view @click="workerCapplication">工人阶段验收申请</view>
+            <view @click="gjgxf">工序费</view>
+          </view> -->
         </view>
-
-        <!-- 切换房屋弹窗 -->
-        <uni-popup ref="sw">
-          <house-switch class="margintop" :datalist="projectList" :current="currentProject.estateId"
-            @goAddHouse="addHouse" @checkHouse="changeCurrentProject"></house-switch>
-        </uni-popup>
-        <decorate-notice @touchmove.stop.prevent="()=>false" v-if="noticeActive" :num='msgNum'
-          :current='currentProject.projectId' @closeNotice='closeNotice' class="decorate-notice"></decorate-notice>
-        <!-- <view class="link">
-          <view @click="gonohouse">无房屋无服入口</view>
-          <view @click="gonohousedecatore('decorate')">无房屋无服务装修</view>
-          <view @click="gonohousedecatore('checkHouse')">无房屋无服务验房</view>
-          <view @click="checkHouseRemind">验房提醒</view>
-          <view @click="confirm1">设计交付</view>
-          <view @click="confirm4">线上交底</view>
-          <view @click="dsport">设计报告交付</view>
-          <view @click="hcaa">管家竣工验收申请</view>
-          <view @click="workerCapplication">工人阶段验收申请</view>
-          <view @click="gjgxf">工序费</view>
-        </view> -->
+        <drag-button-follow v-if="msgNum>0" :num='msgNum' :style.sync="style" @btnClick='openNotice'
+          :follow='`left,right`' className="drag-button" class="drag-button">
+          <view>
+            <text>消息</text>
+            <text style="color: red;">2</text>
+          </view>
+        </drag-button-follow>
       </view>
-      <drag-button-follow v-if="msgNum>0" :num='msgNum' :style.sync="style" @btnClick='openNotice'
-        :follow='`left,right`' className="drag-button" class="drag-button">
-        <view>
-          <text>消息</text>
-          <text style="color: red;">2</text>
-        </view>
-      </drag-button-follow>
     </view>
-
+    <no-house v-if="estateList.length == 0 && showNoHouse"></no-house>
   </view>
 </template>
 
@@ -170,6 +172,7 @@
 
   import MwarehouseBtn from "../../../components/mwarehouse-btn/mwarehouse-btn.vue"
   import TextScroll from "../../../components/text-scroll/text-scroll.vue"
+  import NoHouse from "../../../components/no-house/no-house.vue"
   import {
     mapGetters
   } from "vuex";
@@ -183,6 +186,7 @@
       PictureBtn,
       MwarehouseBtn,
       TextScroll,
+      NoHouse
     },
     onLoad() {
       uni.$on("currentHouseChange", (item) => {
@@ -192,6 +196,7 @@
     },
     onShow() {
       console.log('showTabBar')
+      this.showNoHouse = false
       uni.showTabBar()
       this.getEstateList()
       this.$store.dispatch("updateTabBarBadge");
@@ -225,6 +230,7 @@
         who: "我",
         broadcastList: [],
         isConstruction: false,
+        showNoHouse: false
       };
     },
     mounted() {
@@ -468,7 +474,6 @@
         })
       },
       goActuary() {
-
         uni.navigateTo({
           url: `/sub-decorate/pages/actuary-detail/actuary-detail?projectId=${this.currentProject.projectId}`
         })
@@ -508,9 +513,6 @@
           url: "/sub-decorate/pages/no-house/no-house"
         })
       },
-      // toSend() {
-      //   this.client.publish('dabanjia/testTopic', 'hello zzz')
-      // },
       closeNotice() {
         this.noticeActive = false;
         console.log('showTabBar')
@@ -547,6 +549,8 @@
           isNeedRelative: false,
         }).then(data => {
           if (!data || (data instanceof Array && data.length < 1)) {
+            uni.hideTabBar()
+            this.showNoHouse = true
             uni.navigateTo({
               url: "/sub-decorate/pages/no-house/no-house",
             });

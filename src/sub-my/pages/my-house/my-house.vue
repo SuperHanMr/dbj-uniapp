@@ -13,8 +13,9 @@
 				<view class="list-count">
 					<view class="list-item" @click="toChoose(item)">
 						<view class="item-message">
-							<image src="http://dbj.dragonn.top/static/mp/dabanjia/images/decorate/choose.svg"
-								v-if="item.id===chooseId" class="choose-icon edit-icon"></image>
+						<!-- 	<image src="http://dbj.dragonn.top/static/mp/dabanjia/images/decorate/choose.svg"
+								 class="choose-icon edit-icon"></image> -->
+              <i class='icon-ic_wodejia_danxuanzhong_csn choose-icon edit-icon' v-if="item.id===chooseId"></i>
 							<view class="message-right">
 								<view class="item">
 									<text class="defalut" v-if="item.defaultEstate">默认</text>
@@ -328,7 +329,10 @@
 		justify-content: space-between;
 		align-items: center;
 		border-bottom: 1px solid #F5F5F5;
-
+    .item-message{
+      display: flex;
+      align-items: center;
+    }
 		.item {
 			margin-bottom: 6rpx;
 			height: 43rpx;
