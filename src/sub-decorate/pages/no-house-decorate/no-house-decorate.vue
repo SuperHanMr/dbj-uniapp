@@ -416,12 +416,19 @@
               flt = data.filter(t => t.id == this.estateId);
             } else {
               // flt = this.defaultHouse
-              flt = data.filter(t => t.id == this.defaultHouse.id);
+              flt = data.filter(t => t.id == this.defaultHouse?.id);
             }
             if (flt && flt.length > 0) {
               this.currentHouse = flt[0]
             } else {
               this.currentHouse = data[0]
+            }
+            // 如果是从无房屋进来的，那么需要把首页的房产初始化下
+            if(!this.defaultHouse.id) {
+              let item = data.find(t => t.defaultHouse)
+              item = item ?? data[0] 
+              uni.$emit('currentHouseChange', item)
+              getApp().globalData.currentHouse = item;
             }
             console.log("currentHouse", this.currentHouse)
           }
