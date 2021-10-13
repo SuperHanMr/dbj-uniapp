@@ -137,8 +137,8 @@
         if (this.checkHouse.checked) {
           chprice = this.checkHouse.price / 100 || 0
         }
-        let temp = dprice * this.currentHouse.insideArea + aprice * this.currentHouse.insideArea + chprice * this
-          .currentHouse.insideArea
+        let insideArea = this.currentHouse.insideArea || 1
+        let temp = dprice * insideArea + aprice * insideArea + chprice * insideArea
         return temp
       }
     },
