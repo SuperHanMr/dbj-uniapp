@@ -261,7 +261,9 @@
 				"px";
 		},
 		onShow() {
-			this.token = getApp().globalData.token;
+			setTimeout(()=>{
+				this.token = getApp().globalData.token;
+			},500)
 			uni.showTabBar();
 			this.swiperAuto = true;
 			getApp().globalData.currentRoute = "/pages/home/index/index";
@@ -836,7 +838,7 @@
 				left: 12rpx;
 				height: 28rpx;
 				background: rgba(0, 0, 0, 0.35);
-				filter: blur(3rpx);
+				// filter: blur(3rpx);
 				border-radius: 8rpx;
 				color: #ffffff;
 				display: flex;
