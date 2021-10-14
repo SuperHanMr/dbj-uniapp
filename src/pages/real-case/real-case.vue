@@ -382,6 +382,7 @@
 
 	.collectWrapper .uni-padding-wrap .swiper {
 		height: 100%;
+		background: #fff;
 	}
 
 	.collectWrapper .uni-padding-wrap .swiper .swiper-item {
