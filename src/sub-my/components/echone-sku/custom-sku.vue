@@ -1,39 +1,36 @@
-<template>
+<!-- <template>
 	<popup-bottom :show="show" @close="closeSkuBox">
 		<view class="sku-box">
 				<view class="sku-header container">
-					<image class="goods-img" :src="selectSkuInfo[cbImage]"></image>
+					<image class="goods-img" :src="defaultSpu.defaultImageUrl"></image>
 					
 					<view class="sku-goods-info">
 						<view class="goodsDesc">
 							<text class="goodsType">{{productType===1?"物品":"服务"}}</text>
-							{{spuName}}
+							{{defaultSpu.spuName}}
 						</view>
 						<view class="money">
 							<text class="symbol fs-26">￥</text>
-							<text class="amount fs-38">{{selectSkuInfo[cbPrice]/100}}/{{selectSkuInfo[cbUnit]}}</text>
+							<text class="amount fs-38">{{selectSkuInfo.price/100}}/{{selectSkuInfo.unitName}}</text>
 						</view>
-						<!-- <view class="fs-24">
-							已选："{{selectSkuInfo[cbValue]}}"
-						</view> -->
 					</view>
 					<image class="close" src="../../../static/shopping-cart/ic_closed_black@2x.png" @click="closeSkuBox"></image>
 				</view>
 				<scroll-view class="sku-list" scroll-y="true">
-					<view class="sku-item container" v-for="(sku,speIdx) in mySpecifications" :key="sku[speId]">
-						<view class="sku-name">{{sku[speName]}}</view>
+					<view class="sku-item container">
+						<view class="sku-name">规格</view>
 						<view class="sku-content">
 							<text 
 								class="sku-content-item" 
-								v-for="(item,index) in sku[speList]"
-								:key="item.id" 
+								v-for="(sku,index) in skuNames" :key="sku.id"
+								:key="sku.id" 
 								:style="{
-									borderColor: item.checked? '#35c4c4': '#fff',
-									color: item.checked?'#34c4c4':'#333333',
-									backgroundColor: item.checked?'#e8fafa':'#f5f5f5' 
+									borderColor: sku.checked? '#35c4c4': '#fff',
+									color: sku.checked?'#34c4c4':'#333333',
+									backgroundColor: sku.checked?'#e8fafa':'#f5f5f5' 
 								}" 
-								@click="selectSkuCli(sku.id,speIdx,item.id,index)"
-							>{{item.value}}</text>
+								@click="selectSkuCli(sku.id,index)"
+							>{{sku.name}}</text>
 						</view>
 					</view>
 					<view class="bottom-space"></view>
@@ -61,28 +58,21 @@
 				type: Boolean,
 				default: false
 			},
-			themeColor: {
-				type: String,
-				default: '#1ac792'
-			},
 			combinations: {
 				type: Array,
 				default(){
 					return []
 				}
 			},
-			specifications: {
-				type: Array,
-				default(){
-					return []
-				}
-			},
-			defaultSelectIndex: {
+			// specifications: {
+			// 	type: Array,
+			// 	default(){
+			// 		return []
+			// 	}
+			// },
+			selectedIndex: {
 				type: Number,
 				default: 0
-			},
-			spuName: {
-				type: String,
 			},
 			productType: {
 				type: Number,
@@ -97,16 +87,28 @@
 			defaultSpecIds: {
 				type: String,
 			},
-			defaultSpec: {
+			// defaultSpec: {
+			// 	type: Array,
+			// 	default(){
+			// 		return []
+			// 	}
+			// },
+			flag: {
+				type: Number,
+				default: 1
+			},
+			skuNames: {
 				type: Array,
 				default(){
 					return []
 				}
-			}
+			},
+			defaultSku: {
+				type: Object,
+			},
 		},
 		data() {
 			return {
-				selectedIndex: 0,
 				mySpecifications: [],
 				selectSkuInfo: {},
 				skuId: 0,
@@ -114,78 +116,20 @@
 			}
 		},
 		watch:{
-			defaultSpec(val){
+			// defaultSpec(val){
+			// 	this.initSkuData()
+			// }
+			defaultSku(val){
 				this.initSkuData()
 			}
 		},
-		computed: {
-			speId() {
-				return this.specificationsProps.id
-			},
-			speList() {
-				return this.specificationsProps.list
-			},
-			speName() {
-				return this.specificationsProps.name
-			},
-			cbValue() {
-				return this.combinationsProps.valueIds
-			},
-			cbImage() {
-				return this.combinationsProps.image
-			},
-			cbPrice() {
-				return this.combinationsProps.price
-			},
-			cbUnit() {
-				return this.combinationsProps.unit
-			},
-		},
 		methods: {
 			initSkuData() {
-				this.selectedIndex = this.defaultSelectIndex
 				this.selectSkuInfo = this.combinations[this.selectedIndex]
 				this.skuId = this.selectSkuInfo.id
 				
-				let defaultSpecIds = this.defaultSpecIds.split(',')
-				let arr = []
-				this.specifications.forEach(item => {
-					let Ids = []
-					item.values.map(ele => {
-						Ids.push( ele.id )
-						ele.checked = defaultSpecIds.indexOf(ele.id.toString())!==-1 ? true : false
-						return ele
-					})
-					arr.push(Ids)
-				})
-				this.handleIds = arr.reduce((prev, cur) => {
-					const temp = []
-				  prev.forEach(val => {
-				    cur.forEach(item => {
-				      temp.push(`${val},${item}`)
-				    })
-				  })
-				  return temp
-				})    
-				this.handleIds = this.handleIds.map(item => {
-					if(typeof item === 'string'){
-						return item.split(',').sort().toString()
-					}else{
-						return item.toString()
-					}
-				})
-				
-				let selectIds = this.selectSkuInfo.propValueIds
-				if(this.handleIds.indexOf(selectIds) === -1) {
-					uni.showToast({
-						title:"默认规格值不存在",
-						icon:"none"
-					})
-					return
-				}
-				this.mySpecifications = JSON.parse(JSON.stringify(this.specifications))
 			},
-			selectSkuCli(speId,speIdx,id,index) {
+			selectSkuCli(id,index) {
 				this.mySpecifications[speIdx].values.map(item => {
 					item.checked = (id === item.id)
 					return item
@@ -376,3 +320,4 @@
 		opacity: .7;
 	}
 </style>
+ -->
