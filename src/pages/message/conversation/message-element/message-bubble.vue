@@ -44,7 +44,7 @@ export default {
       return this.message.flow === "out";
     },
     avatar() {
-      return this.message.avatar || "http://iph.href.lu/100x100";
+      return this.message.avatar || "https://ali-image.dabanjia.com/static/mp/dabanjia/images/avatar-default.png";
     },
     name() {
       return this.message.nick || this.message.from;

@@ -137,7 +137,7 @@
 					this.orderInfo = e;;
 				});
 			},
-
+			// 申请退款
 			toApplayForRefund(data, type) {
 				this.title="您确定要取消订单吗?"
 				if (type == 1) {

@@ -45,6 +45,7 @@
             @confirmGoods="onConfirmGoods"
             :showRecived="currentIndex==1"
             :showBacking="currentIndex==3"
+            :showSubCount="currentIndex!=3"
             :showDetail="currentIndex==3"
           ></warehouse-item>
         </scroll-view>
@@ -153,6 +154,7 @@ export default {
       });
     },
     toRefund() {
+      getApp().globalData.naviData = {};
       uni.navigateTo({
         url: "/sub-decorate/pages/warehouse-refund/warehouse-refund?projectId=${this.projectId}",
       });

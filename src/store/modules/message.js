@@ -74,8 +74,6 @@ const message = {
     currentSoundUrl: '', //正在播放的语音url
     soundPlayStatus: 'stop', //语音播放状态，可用值有 stop playing pause
     innerAudioContext: null, //音频播放器
-    showVideoPlayer: false, //显示视频播放器
-    currentVideoUrl: '', //当前播放的视频地址
   },
   getters: {
     //系统消息未读个数，可以监听该数据变化，判断是否有系统消息
@@ -224,13 +222,6 @@ const message = {
         state.currentSoundUrl = "";
         state.soundPlayStatus = "stop";
       }
-    },
-    showMessageVideoPlayer(state, url) {
-      state.currentVideoUrl = url;
-      state.showVideoPlayer = true;
-    },
-    closeMessageVideoPlayer(state, url) {
-      state.showVideoPlayer = false;
     },
     setChatGroupList(state, list) {
       state.chatGroupList = (list || []).filter(grp => {
@@ -458,7 +449,10 @@ const message = {
     },
     playMessageVideo(context, payload) {
       const { url } = payload;
-      context.commit("showMessageVideoPlayer", url);
+      uni.navigateTo({
+      	url: "/pages/common/video-player/video-player?url=" +
+          encodeURIComponent(url),
+      });
     },
     preivewMessageImage(context, payload) {
       const { url } = payload;

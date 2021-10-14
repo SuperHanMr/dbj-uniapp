@@ -112,8 +112,10 @@
 								<image
 								  class="avatar"
 								  :src="item.avatar"
+									@click="toPersonalHome(item.id)"
 								></image>
-								<view class="name">{{item.name}}</view>
+								<view class="name" :class="{'minHeight':item.flag}">{{item.name}}</view>
+								<view class="line" v-if="item.flag">...</view>
 							</view>
 							<view class="text" v-else-if="item.nodeStatus===2&&item.id===-1">
 								{{item.nodeType===1||item.nodeType===4||item.nodeType===5?'待服务':'待施工'}}</view>
@@ -156,7 +158,7 @@
           <image
             class="avatar"
             :src="item.avatar"
-						@click="toPerson(item.userId)"
+						@click="toPersonalHome(item.userId)"
           ></image>
           <view class="acitonInfo">
             <view class="header">
@@ -264,7 +266,9 @@
 						<view>进行验房服务</view>
 					</view>
 				</view>
-				<image @click="showDecorateMask=false" class="close" src="../../static/ic_decorate_cancel@2x.png"></image>
+				<view class="close" @click="showDecorateMask=false">
+					<image src="../../static/ic_decorate_cancel@2x.png"></image>
+				</view>
 			</view>
 		</view>
     <view
@@ -281,16 +285,27 @@
             class="confirm"
             @click="confirmC"
           >确定</view>
-        </view>
-        <ul class="options">
-          <li :class="{'active':selectedIndex===-1}">全部</li>
-          <li
-            :class="{'active':selectedIndex===index}"
-            @click="switchC(index,item.nodeType)"
-            v-for="(item,index) in selectNodeTypes"
-            :key="index"
-          >{{item.nodeName}}</li>
-        </ul>
+				</view>
+				<!-- <picker-view v-if="visible" :indicator-style="indicatorStyle" :value="value" @change="bindChange" class="picker-view">
+				  <picker-view-column>
+							<view :class="{'active':selectedIndex===-1}">全部</view>
+				      <view
+								:class="{'active':selectedIndex===index}"
+								@click="switchC(index,item.nodeType)"
+								v-for="(item,index) in selectNodeTypes"
+								:key="index"
+							>{{item.nodeName}}</view>
+				  </picker-view-column>
+				</picker-view> -->
+				<ul class="options">
+					<li :class="{'active':selectedIndex===-1}">全部</li>
+					<li
+						:class="{'active':selectedIndex===index}"
+						@click="switchC(index,item.nodeType)"
+						v-for="(item,index) in selectNodeTypes"
+						:key="index"
+					>{{item.nodeName}}</li>
+				</ul>	
       </view>
     </view>
 		<view
@@ -452,6 +467,7 @@ import {
   getReplies,
   createReply,
   removeComment,
+	checkEquipmentServe
 } from "../../../api/real-case.js";
 import {queryEstates} from "../../../api/decorate.js";
 import imagePreview from "../../../components/image-preview/image-preview.vue";
@@ -493,7 +509,8 @@ export default {
       userId: 0,
 			dynamicPage: 1,
 			replyPage: 1,
-			homePageEstate: {}
+			homePageEstate: {},
+			buyState: false//是否购买摄像头服务
     };
   },
   onLoad(option) {
@@ -501,7 +518,6 @@ export default {
     this.userId = uni.getStorageSync("userId");
 		uni.$on("currentHouseChange", (item) => {
 		  this.homePageEstate = item
-		  // getApp().globalData.switchFlag = "home"    
 		})  
   },
 	onReachBottom() {
@@ -511,8 +527,18 @@ export default {
   mounted() {
     this.requestDecorateSteps();
     this.requestDynamic();
+		this.checkBuyServe()
   },
   methods: {
+		checkBuyServe(){
+			let params = {
+				projectId:  this.projectId
+			}
+			checkEquipmentServe(params).then(data => {
+				this.buyState = data.buyState
+				console.log('///////////////////')
+			})
+		},
     inputFocus() {
       this.isInputFocus = true;
     },
@@ -712,9 +738,9 @@ export default {
       this.selectedIndex = index;
       this.selectedType = type;
     },
-		toPerson(userId){
+		toPersonalHome(userId){
 			uni.navigateTo({
-				url: `sub-decorate/pages/person-page/person-page?personId=${userId}`
+				url: `/sub-decorate/pages/person-page/person-page?personId=${userId}`
 			})
 		},
     toDecorate() {
@@ -750,6 +776,14 @@ export default {
       });
     },
     toVideoSite() {
+			if(!this.buyState){
+				uni.showToast({
+					title: "暂无工地视频～",
+					icon: "none",
+					duration: 2000
+				})
+				return
+			}
       uni.navigateTo({
         url: `/sub-home/pages/lives-decorate/lives-decorate?projectId=${this.projectInfo.id}`,
       });
@@ -794,6 +828,7 @@ export default {
       let params;
       params = type
         ? {
+						page: this.dynamicPage,
             projectId: this.projectId,
             nodeType: type,
             userTypes: [2, 3],
@@ -848,10 +883,11 @@ export default {
             });
             this.workers.push({
               id: item.serveId,
-              name: item.serveName,
+              name: item.serveName.length<=3?item.serveName.slice(0,3):item.serveName.slice(0,2),
               avatar: item.serveAvatar,
 							nodeStatus: item.nodeStatus,
-							nodeType: item.nodeType
+							nodeType: item.nodeType,
+							flag: item.serveName.length>3
             });
             return item;
           });
@@ -1018,6 +1054,10 @@ export default {
 		color: #333333;
 	}
 	.popupDecorate .close{
+		width: 100%;
+		height: 64rpx;
+	}
+	.popupDecorate .close image{
 		width: 24rpx;
 		height: 24rpx;
 		display: block;
@@ -1028,7 +1068,6 @@ export default {
 		position: relative;
 		width: 100%;
 		height: 840rpx;
-		overflow: auto;
 		padding-bottom: 40rpx;
 		background: #ffffff;
 		border-radius: 32rpx 32rpx 0rpx 0rpx;
@@ -1086,7 +1125,6 @@ export default {
 		width: 100%;
 		height: 700rpx;
 		/* height: fit-content; */
-		overflow: auto;
 	}
 	.commentItem:first-child .mainContent {
 		margin-top: 24rpx;
@@ -1286,10 +1324,13 @@ export default {
 		color: #00c2b8;
 		line-height: 42rpx;
 	}
+	.scroll-view{
+		width: 100%;
+		height: 550rpx;
+	}
 	.options {
 		width: 100%;
 		height: 550rpx;
-		overflow: auto;
 		list-style: none;
 	}
 	.options li {
@@ -1600,9 +1641,18 @@ export default {
 		margin: 2rpx -2rpx 8rpx;
 	}
 	.worker .item > view .name {
-		text-overflow: ellipsis;
-		/* white-space: nowrap; */
+		/* text-overflow: ellipsis;
+		white-space: nowrap;
+		overflow: hidden; */
+	}
+	.worker .item > view .name.minHeight {
+		height: 48rpx;
 		overflow: hidden;
+	}
+	.worker .item > view .line{
+		margin-top: 2rpx;
+		margin-left: 8rpx;
+		transform: rotate(90deg);
 	}
 	.worker .item .text{
 		margin: 28rpx 10rpx;
