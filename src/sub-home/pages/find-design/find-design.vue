@@ -168,7 +168,6 @@
 	.noMemo {
 		width: 100%;
 		height: fit-content;
-		margin-top: 184rpx;
 	}
 
 	.noMemo .noMemoImg {

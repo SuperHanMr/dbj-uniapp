@@ -45,10 +45,7 @@
 						<view class="no-select" v-if="!isChecked(item)">
 							
 						</view>
-						<view class="select" v-if="isChecked(item)">
-							
-						</view>
-						<!-- <image class='select' src="../../../static/shopping-cart/checked@2x.png" v-if="threeActive == index" mode=""></image> -->
+						<image class='select' src="https://ali-image.dabanjia.com/static/mp/dabanjia/images/merchant-entry/merchant-entry-select.png" v-if="isChecked(item)" mode=""></image>
 						<view class="text">
 							{{item.label}}
 						</view>
@@ -383,11 +380,10 @@
 						height: 32rpx;
 						margin-right: 24rpx;
 						border-radius: 50%;
-						border: 1px solid red;
 					}
 					.no-select{
-						width: 32rpx;
-						height: 32rpx;
+						width: 28rpx;
+						height: 28rpx;
 						margin-right: 24rpx;
 						border-radius: 50%;
 						border: 1px solid #A8A8A8;

@@ -424,7 +424,7 @@
             fail(e) {
               console.log(e, "取消付款");
               uni.navigateTo({
-                url:`/sub-my/pages/my-order/order-wait-pay/order-wait-pay?orderNo=${data.id}`
+                url:`/sub-my/pages/my-order/order-wait-pay/order-wait-pay?orderNo=${data.id}&from=waitPayOrder"`
               })
             },
           });
