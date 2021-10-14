@@ -4,7 +4,7 @@
       <grabHomePage class="home-page" :personData='personData'></grabHomePage>
       <view class="msg-btn">
         <view class="content" @click="sendMsg">
-          <view class="icon"></view>
+          <i class="icon-gerenzhuye_ic_faxiaoxi icon"></i>
           <text>发消息</text>
         </view>
       </view>
@@ -114,16 +114,18 @@
         margin-top: 26rpx;
         width: 100%;
         .content{
-          .icon{
-            width: 32rpx;
-            height: 28rpx;
-            border: 4rpx solid #00bfb6;
-            border-radius: 6rpx;
-            margin-right: 16rpx;
+          color: #00bfb6;
+          i{
+            font-size: 48rpx;
+            width: 48rpx;
+            height: 48rpx;
+            margin-right: 8rpx;
+            display: inline-block;
+            vertical-align: middle;
           }
           text{
-            font-size: 28rpx;
-            color: #00bfb6;
+            display: inline-block;
+            vertical-align: middle;
           }
         }
         
