@@ -74,9 +74,9 @@
       </view>
       <view class="person-interact" v-if="personData.roleId<7" :class="{'person-interact-active':interactActive === interact}">
         <view class="sticky">
-          <view class="item" v-if="personData.roleId===1||personData.roleId===6" :class="{'item-active':currentItem==='serviceTop'}" @click="toItem('serviceTop')">
+          <view class="item" v-if="personData.roleId===1" :class="{'item-active':currentItem==='serviceTop'}" @click="toItem('serviceTop')">
             服务</view>
-          <view class="item" v-if="personData.roleId===1||personData.roleId===2||personData.roleId===6" :class="{'item-active':currentItem==='caseTop'}" @click="toItem('caseTop')">
+          <view class="item" v-if="personData.roleId===1||personData.roleId===2" :class="{'item-active':currentItem==='caseTop'}" @click="toItem('caseTop')">
             案例</view>
           <view class="item" v-if="personData.roleId===3||personData.roleId===4||personData.roleId===5" :class="{'item-active':currentItem==='dynamicTop'}" @click="toItem('dynamicTop')">
             动态</view>
@@ -85,9 +85,9 @@
         </view>
       </view>
       <view class="content" v-if="personData.roleId<7">
-        <personService ref='service' v-if="personData.roleId===1||personData.roleId===6" :serviceData='serviceData'></personService>
-        <view class="interval" v-if="personData.roleId===1||personData.roleId===6"></view>
-        <personCase ref='case' :personId='personId' class="person-case" v-if="personData.roleId===1||personData.roleId===2||personData.roleId===6"></personCase>
+        <personService ref='service' v-if="personData.roleId===1" :serviceData='serviceData'></personService>
+        <view class="interval" v-if="personData.roleId===1"></view>
+        <personCase ref='case' :personId='personId' class="person-case" v-if="personData.roleId===1||personData.roleId===2"></personCase>
         <personDynamic ref='dynamic' :personId='personId' class="person-dynamic" v-if="personData.roleId===3||personData.roleId===4||personData.roleId===5"></personDynamic>
         <view class="interval"></view>
         <personEvaluate ref='evaluate' :personId='personId' class="person-evaluate" @getEvaluate='getEvaluate'></personEvaluate>
@@ -165,7 +165,7 @@
       
     },
     onLoad(e){
-      this.personId = e.personId||7270
+      this.personId = e.personId||7257
       // this.getGrabDetail()
     },
     onShow(){
@@ -186,7 +186,7 @@
       this.getTopDistance()
       
       // this.currentItem = this.serviceTop<=130&&(this.caseTop>130||this.caseTop===null)?'serviceTop':this.caseTop<=130&&(this.dynamicTop>130||this.dynamicTop===null)?'caseTop':this.dynamicTop<=130&&this.evaluateTop>130?'dynamicTop':'evaluateTop'
-      if(this.personData.roleId===1||this.personData.roleId===6){
+      if(this.personData.roleId===1){
         this.currentItem = this.serviceTop<=130&&this.caseTop>130?'serviceTop':this.caseTop<=130&&this.evaluateTop>130?'caseTop':''
       }else if(this.personData.roleId===2){
         this.currentItem = this.caseTop<=130&&this.evaluateTop>130?'caseTop':''

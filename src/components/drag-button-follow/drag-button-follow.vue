@@ -26,9 +26,9 @@
         </view>
       </view>
     </view>
-    <!--     <view class="white-bg">
-			        <view class="gray-bg"></view>
-			      </view> -->
+        <view class="white-bg">
+			        
+			      </view>
 
   </view>
 </template>
