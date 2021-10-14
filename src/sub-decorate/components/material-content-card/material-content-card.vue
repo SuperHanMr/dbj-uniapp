@@ -9,7 +9,7 @@
 				<text>1{{content.product.salesUnit.unitName}}</text>
 			</view>
 			<view class="price">
-				<text class="t1">￥</text><text class="t2">{{content.product.skuPrice / 100 }}</text></text>
+				<text class="t1">￥</text><text class="t2">{{content | filterShowPrice}}</text></text>
 			</view>
 		</view>
 	</view>
@@ -27,6 +27,12 @@
       goDetail() {
         uni.setStorageSync('goodId', this.content.product.skuId)
         uni.navigateTo({ url: "/sub-classify/pages/goods-detail/goods-detail" })
+      }
+    },
+    filters: {
+      filterShowPrice(content) {
+        let deposit = content.product.sku.deposit ?? 0
+        return (content.product.skuPrice + Number(deposit)) / 100
       }
     }
 	}

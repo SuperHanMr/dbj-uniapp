@@ -130,11 +130,18 @@
           categoryId,
           item
         } = this.selectedMaterialData
-        const origin = uni.getStorageSync("currentItemOriginData")
+        let origin = {}
+        const originMaterialList = uni.getStorageSync("originMaterialList")
+        const category = originMaterialList.find(cg => cg.categoryId == categoryId)
+        
+        if(category) {
+          origin = category?.itemList.find(t => t.originalId == item.originalId)
+        }
+        // const origin = uni.getStorageSync("currentItemOriginData")
         // 注释的字段是不允许替换的
         // origin.originalId = origin.originalId // "原始ID 【下单params附带参数】",
         // origin.originalId = origin.originalId // "原始ID 【下单params附带参数】",
-        origin.id = item.product.spuId //"long //商品ID 【下单params附带参数】",
+        origin.id = item.product.skuId //"long //商品ID 【下单params附带参数】",
         origin.title = item.title //"string //标题",
         // origin.productType = origin.productType //"int //下单参数 type\r      标签 1.物品 2.服务 3.虚拟\r ,
         // origin.roleType = item.roleType // "int //下单参数 roleType",  这里是辅材所以不需要替换
@@ -145,7 +152,8 @@
         origin.storeId = item.product.storeId //"long //店铺ID",
         origin.imageUrl = item.product.skuImage //"string //图片地址",
         origin.spuName = item.product.spuName //"string //商品名称",
-        origin.price = item.product.skuPrice //"int //价格",
+        let deposit = item.product.sku.deposit ?? 0
+        origin.price = item.product.skuPrice + deposit//"int //价格",
         // origin.count = origin.count //"double //数量",
         origin.minimumOrderQuantity = item.product.sku.minimumOrderQuantity //"string //最小购买数量",
         origin.stepLength = item.product.sku.stepLength //"string //数量增加步长",
@@ -306,14 +314,12 @@
                   skuId: workerSku.skuId
                 })
               })
-
               workerSku.changeLevelDetailList.forEach(itm => {
                 let level = list.filter(l => l.value = itm.level)[0]
                 level.totalPrice += itm.totalPrice / 100
               })
             })
             this.levelList = list
-
           }
         })
       },
@@ -323,7 +329,6 @@
           projectId: this.msg.projectId,
           type: this.msg.serviceType
         }
-        console.log()
         if (!this.partpay) {
           params.obtainType = this.msg.obtainType
         }
@@ -357,6 +362,15 @@
             } = this.selectedMaterialData
             this.setMaterial(categoryId, origin)
           }
+          let tempArr = [...data?.material?.categoryList]
+          tempArr.forEach(category => {
+            category.itemList.forEach(it => {
+              it.oldId = it.id
+              it.checked = true
+              it.isEdit = false
+            })
+          })
+          uni.setStorageSync("originMaterialList", tempArr)
           this.initData()
         }).catch(err => {
           const {
