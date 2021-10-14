@@ -1,5 +1,5 @@
 <template>
-  <view class="no-house-decorate">
+  <view class="no-house-decorate" :class="{center: noData === 0}">
     <view class="content" v-if="noData === 1">
       <view class="addhouse-decs" v-if="!currentHouse.id">
         <button class="addhouse" @click="goAddHouse">
@@ -33,7 +33,8 @@
         </template>
       </service-card>
     </view>
-    <payment v-if="noData === 1" class="payment" @gotopay="gotopay" :pieces="pieces" :countPrice="countPrice" :isAllChecked="isAllChecked">
+    <payment v-if="noData === 1" class="payment" @gotopay="gotopay" :pieces="pieces" :countPrice="countPrice"
+      :isAllChecked="isAllChecked">
     </payment>
     <no-data v-if="noData === 0" words="当前城市暂未开通此服务,敬请期待~"></no-data>
     <uni-popup ref="level">
@@ -433,9 +434,9 @@
               this.currentHouse = data[0]
             }
             // 如果是从无房屋进来的，那么需要把首页的房产初始化下
-            if(!this.defaultHouse.id) {
+            if (!this.defaultHouse.id) {
               let item = data.find(t => t.defaultHouse)
-              item = item ?? data[0] 
+              item = item ?? data[0]
               uni.$emit('currentHouseChange', item)
               getApp().globalData.currentHouse = item;
             }
@@ -516,7 +517,9 @@
               storeId: this.checkHouse.storeId, //"long //店铺id",
               storeType: 0, //"int //店铺类型 0普通 1设计师",
               number: this.currentHouse.insideArea, //"double //购买数量",
-              params: {doorTime: this.checkHouse.doorTime}, //string //与订单无关的参数 如上门时间 doorTime"
+              params: {
+                doorTime: this.checkHouse.doorTime
+              }, //string //与订单无关的参数 如上门时间 doorTime"
             })
           }
           this.createOrder(params)
@@ -612,6 +615,11 @@
     align-items: felx-start;
     box-sizing: border-box;
     height: 100%;
+  }
+
+  .no-house-decorate.center {
+    justify-content: center;
+    align-items: center;
   }
 
   .content {
