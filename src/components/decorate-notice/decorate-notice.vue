@@ -116,8 +116,8 @@
             
             let name = item.data.serveType == 14?item.data.serveType+''+item.data.workType:item.data.serveType
             console.log(name,item.data.serveType)
-            item.icon = sysMessage[name].icon
-            item.iconColor = sysMessage[name].color
+            item.icon = sysMessage[name].icon||''
+            item.iconColor = sysMessage[name].color||''
             
           })
           this.list = res
