@@ -113,7 +113,7 @@
             if(item.msgType==='sys_design_stage_report_msg'&&item.data.isOnline){
               item.url = '/sub-decorate/pages/design-online-disclosure/design-online-disclosure'
             }
-            let name = item.data.serveType == 11?item.data.serveType+item.data.workType:item.data.serveType
+            let name = item.data.serveType == 14?item.data.serveType+item.data.workType:item.data.serveType
             item.icon = sysMessage[name].icon
             item.iconColor = sysMessage[name].color
             
