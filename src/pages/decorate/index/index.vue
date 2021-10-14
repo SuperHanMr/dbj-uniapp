@@ -150,9 +150,7 @@
         </drag-button-follow>
       </view>
     </view>
-    <!-- <uni-popup ref="nohouse"> -->
     <no-house :showNoHouse="showNoHouse"></no-house>
-    <!-- </uni-popup> -->
   </view>
 </template>
 
@@ -216,8 +214,8 @@
         this.getEstateList()
         this.$store.dispatch("updateTabBarBadge");
       } else {
-        uni.hideTabBar()
-        this.showNoHouse = true
+        this.getEstateList()
+        // this.showNoHouse = true
       }
     },
     data() {
@@ -266,8 +264,8 @@
         }
         uni.$on('system-messages', this.watchMsg)
       } else {
-        uni.hideTabBar()
-        this.showNoHouse = true
+        // uni.hideTabBar()
+        // this.showNoHouse = true
       }
     },
     destory() {
@@ -453,7 +451,8 @@
             // 设置当前的项目
             let arr = []
             if (switchFlag === "home") {
-              arr = data.filter(t => t.estateId === this.homePageEstate?.id)
+              arr = data.filter(t => t.estateId === this.homePageEstate?.id || t.estateId === getApp().globalData
+                .currentHouse?.id)
             } else {
               arr = data.filter(t => t.projectId === currentProject?.projectId)
             }
@@ -572,14 +571,11 @@
       },
       getEstateList() {
         queryEstates({
-          isNeedRelative: false,
-        }).then(data => {
+          isNeedRelative: false
+        }, true).then(data => {
           if (!data || (data instanceof Array && data.length < 1)) {
             uni.hideTabBar()
             this.showNoHouse = true
-            // uni.navigateTo({
-            //   url: "/sub-decorate/pages/no-house/no-house",
-            // });
           } else {
             const temp = data.filter(t => t.defaultEstate)
             this.defaultEstate = temp && temp.length > 0 ? temp[0] : null
