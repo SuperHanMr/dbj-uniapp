@@ -469,11 +469,11 @@
 			font-weight: 400;
 			color: #333333;
 			text{
-				font-size: 36rpx;
+				font-size: 28rpx;
 				margin: 0 2rpx;
-				font-family: Unnamed-Regular, Unnamed;
+				font-family: PingFangSC-Regular, PingFang SC;
 				font-weight: 400;
-				color: #FFFFFF;
+				color: rgba(255, 83, 66, 1);
 			}
 		}
 	}
