@@ -1,13 +1,13 @@
 <template>
   <popup-bottom
-    :show="show"
+		:show="show"
     @close="closeSkuBox"
   >
     <view class="sku-box">
       <view class="sku-header container">
         <image
           class="goods-img"
-          :src="defaultSpu.defaultImageUrl"
+          :src="selectSkuInfo.imageUrl"
         ></image>
 
         <view class="sku-goods-info">
@@ -38,9 +38,9 @@
               v-for="(sku,index) in skuNames"
               :key="sku.id"
               :style="{
-									borderColor: sku.checked? '#35c4c4': '#fff',
-									color: sku.checked?'#34c4c4':'#333333',
-									backgroundColor: sku.checked?'#e8fafa':'#f5f5f5'
+									borderColor: sku.id===selectSkuInfo.id? '#35c4c4': '#fff',
+									color: sku.id===selectSkuInfo.id?'#34c4c4':'#333333',
+									backgroundColor: sku.id===selectSkuInfo.id?'#e8fafa':'#f5f5f5'
 								}"
               @click="selectSkuCli(sku.id,index)"
             >{{sku.name}}</text>
@@ -70,46 +70,21 @@ export default {
     },
   },
   props: {
-    show: {
-      type: Boolean,
-      default: false,
-    },
+		show: {
+			type: Boolean,
+			default: false
+		},
     combinations: {
       type: Array,
       default() {
         return [];
       },
     },
-    // specifications: {
-    // 	type: Array,
-    // 	default(){
-    // 		return []
-    // 	}
-    // },
     selectedIndex: {
       type: Number,
       default: 0,
     },
     productType: {
-      type: Number,
-      default: 1,
-    },
-    combinationsProps: {
-      type: Object,
-    },
-    specificationsProps: {
-      type: Object,
-    },
-    defaultSpecIds: {
-      type: String,
-    },
-    // defaultSpec: {
-    // 	type: Array,
-    // 	default(){
-    // 		return []
-    // 	}
-    // },
-    flag: {
       type: Number,
       default: 1,
     },
@@ -122,19 +97,17 @@ export default {
     defaultSku: {
       type: Object,
     },
+		defaultSpu: {
+      type: Object,
+    },
   },
   data() {
     return {
-      mySpecifications: [],
       selectSkuInfo: {},
       skuId: 0,
-      handleIds: [],
     };
   },
   watch: {
-    // defaultSpec(val){
-    // 	this.initSkuData()
-    // }
     defaultSku(val) {
       this.initSkuData();
     },
@@ -145,22 +118,7 @@ export default {
       this.skuId = this.selectSkuInfo.id;
     },
     selectSkuCli(id, index) {
-      this.mySpecifications[speIdx].values.map((item) => {
-        item.checked = id === item.id;
-        return item;
-      });
-      //找到用户选择的valueIds
-      let checkedIds = [];
-      checkedIds.push(id);
-      this.defaultSpec.forEach((item) => {
-        if (item.id !== speId) {
-          checkedIds.push(item.value.id);
-        }
-      });
-      let selectedIds = checkedIds.sort().toString();
-      this.selectedIndex = this.combinations.findIndex(
-        (item) => item.valueIds.sort().toString() === selectedIds
-      );
+      this.selectedIndex = this.combinations.findIndex(item => item.id === id);
       this.selectSkuInfo = this.combinations[this.selectedIndex];
     },
     closeSkuBox() {

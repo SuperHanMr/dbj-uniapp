@@ -69,7 +69,7 @@
             <view style="flex:1">
             </view>
             <view
-              v-if="showSubCount&&item.stockStatus!=4"
+              v-if="showSubCount"
               class="spec-item"
             >
               共{{goodItem.number||goodItem.stockNumber}}件

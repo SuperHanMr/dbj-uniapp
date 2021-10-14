@@ -113,9 +113,11 @@
             if(item.msgType==='sys_design_stage_report_msg'&&item.data.isOnline){
               item.url = '/sub-decorate/pages/design-online-disclosure/design-online-disclosure'
             }
-            let name = item.data.serveType == 11?item.data.serveType+item.data.workType:item.data.serveType
-            item.icon = sysMessage[name].icon
-            item.iconColor = sysMessage[name].color
+            
+            let name = item.data.serveType == 14?item.data.serveType+''+item.data.workerType:item.data.serveType
+            
+            item.icon = sysMessage[name]?sysMessage[name].icon:'icon-liangfang'
+            item.iconColor = sysMessage[name]?sysMessage[name].color:'#43d9e1'
             
           })
           this.list = res

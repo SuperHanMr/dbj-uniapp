@@ -436,7 +436,7 @@
                 type: 1, //"int //实体类型   1材料  2服务   3专项付款",
                 businessType: 1, //it.categoryTypeId, //"int //业务类型",辅材的businessType固定为1
                 workType: it.workType, //"int //工种类型",
-                level: 1, //"int //等级  0中级  1高级 2特级  3钻石",
+                // level: 1, //"int //等级  0中级  1高级 2特级  3钻石",
                 storeId: it.storeId, //"long //店铺id",
                 storeType: 0, //"int //店铺类型 0普通 1设计师",
                 number: it.count, //"double //购买数量",

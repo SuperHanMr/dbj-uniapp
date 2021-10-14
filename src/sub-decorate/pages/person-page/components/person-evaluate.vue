@@ -7,7 +7,7 @@
     <view class="empty" v-else>
       暂无评价
     </view>
-    <view class="click-text" v-if="evaluate.totalPage>1" @click="toEvaluateList">查看全部评价<image src="" mode=""></image></view>
+    <view class="click-text" v-if="evaluate.totalPage>1" @click="toEvaluateList"><text>查看全部评价</text><i class="icon-gerenzhuye_pingjiatiaozhuanwu_ic"></i></view>
   </view>
 </template>
 
