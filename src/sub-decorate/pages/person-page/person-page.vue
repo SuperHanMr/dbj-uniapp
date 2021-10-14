@@ -12,7 +12,7 @@
       </view>
       <view class="item nav-header-msg">
         <image :src="personData.avatar" mode=""></image>
-        <text>{{personData.nickName}}</text>
+        <text>{{personData.roleId>=1&&personData.roleId<7?personData.realName:personData.nickName}}</text>
       </view>
       <view class="item"></view>
     </view>
@@ -22,10 +22,10 @@
           <view class="person-msg-header">
             <view class="person-msg-header-image">
               <image class="avatar" :src="personData.avatar" ></image>
-              <image class="icon" v-if="personData.gender===1"></image>
-              <image class="icon" v-else></image>
+              <i class="icon icon-ic_nan" v-if="personData.gender===1"></i>
+              <i class="icon icon-ic_nv" v-else></i>
             </view>
-            <text class="name">{{personData.nickName}}</text>
+            <text class="name">{{personData.roleId>=1&&personData.roleId<7?personData.realName:personData.nickName}}</text>
             <view class="label">
               <text class="job" v-if="personData.roleId!==10000">{{personData.roleId===3?personData.personAllBadgeVO.skillBadges[0].name:personData.roleName}}</text>
               <text class="rate" v-if="personData.roleId<7">好评率{{personData.praiseRate||'0%'}}</text>
@@ -33,11 +33,11 @@
           </view>
           <view class="btn" v-if="personData.roleId<7">
           <view class="recommend" @click="attentionSure(2001)" :class="{'already-recommend':isRecommend}">
-              <image v-if="!isRecommend"></image>
+              <i class="icon-gerenzhuye_youxiantuijianic" v-if="!isRecommend"></i>
               {{isRecommend?'已':''}}优先推荐
             </view>
             <view class="attention" @click="queryAttention(1001)" :class="{'already-attention':isAttention}">
-              <image v-if="!isAttention"></image>
+              <i class="icon-gerenzhuye_guanzhuic" v-if="!isAttention"></i>
               {{isAttention?'已':''}}关注
             </view>
           </view>
@@ -67,8 +67,9 @@
         </view>
         <personIntroduce v-if="personData.roleId!==10000" :personData='personData'></personIntroduce>
         <view class="send-msg" @click="sendMsg" v-if="personData.roleId<7">
-          <image src="" mode=""></image>
-          发消息
+          <i class="icon-gerenzhuye_ic_faxiaoxi"></i>
+          <text>发消息</text>
+          
         </view>
       </view>
       <view class="person-interact" v-if="personData.roleId<7" :class="{'person-interact-active':interactActive === interact}">
@@ -164,7 +165,7 @@
       
     },
     onLoad(e){
-      this.personId = e.personId||7050
+      this.personId = e.personId||7270
       // this.getGrabDetail()
     },
     onShow(){
@@ -403,10 +404,17 @@
       color: #00BFB6;
       font-size: 28rpx;
       font-weight: 500;
-      image{
-        width: 28rpx;
-        height: 28rpx;
-        margin-right: 16rpx;
+      i{
+        font-size: 48rpx;
+        width: 48rpx;
+        height: 48rpx;
+        margin-right: 8rpx;
+        display: inline-block;
+        vertical-align: middle;
+      }
+      text{
+        display: inline-block;
+        vertical-align: middle;
       }
     }
     .person-msg-top {
@@ -431,11 +439,18 @@
 
         .icon {
           position: absolute;
-          width: 32rpx;
-          height: 32rpx;
+          // width: 32rpx;
+          // height: 32rpx;
+          font-size: 32rpx;
           left: 108rpx;
           bottom: 0;
-          background-color: #00C2B2;
+          // background-color: #00C2B2;
+        }
+        .icon-ic_nan{
+          color: #619EE9;
+        }
+        .icon-ic_nv{
+          color: #E96197;
         }
       }
 
@@ -491,7 +506,7 @@
       }
 
       .attention {
-        width: 86rpx;
+        // width: 86rpx;
         height: 64rpx;
         border-radius: 12rpx;
         border: 1px solid #00BFB6;
@@ -500,6 +515,10 @@
         padding: 0 18rpx;
         font-size: 28rpx;
         font-size: 400;
+        i{
+          display: inline-block;
+          margin-right: 8rpx;
+        }
       }
       .already-attention{
         color: #666;
@@ -507,7 +526,7 @@
         border: none;
       }
       .recommend {
-        width: 146rpx;
+        // width: 146rpx;
         height: 64rpx;
         background: linear-gradient(135deg, #00BFAF 0%, #00BFBC 100%);
         border-radius: 12rpx;
@@ -517,6 +536,10 @@
         font-size: 28rpx;
         color: #fff;
         font-size: 400;
+        i{
+          display: inline-block;
+          margin-right: 14rpx;
+        }
       }
       .already-recommend{
         color: #666;

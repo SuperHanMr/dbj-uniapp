@@ -203,6 +203,7 @@ export default {
       containerBottom: "",
       title: "您确定要取消该订单吗？",
       areaId: "",
+			from:"",
     };
   },
 
@@ -215,6 +216,7 @@ export default {
   },
 
   onLoad(e) {
+		this.from= e.from
     this.orderNo = Number(e.orderNo) || getApp().globalData.decorateMsg.orderId;
     const currentHouse = getApp().globalData.currentHouse;
     this.areaId = currentHouse.areaId;
@@ -222,6 +224,14 @@ export default {
   onShow() {
     this.orderDetail();
   },
+	// 改变返回下一个页面的路径
+	onUnload() {
+	  if(this.from=="waitPayOrder"){
+			uni.redirectTo({
+				url:"../my-order?firstEntry=true&index=1"
+			})
+		}
+	},
 
   methods: {
     orderDetail() {
