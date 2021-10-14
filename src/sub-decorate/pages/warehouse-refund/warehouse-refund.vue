@@ -90,6 +90,11 @@
 		},
 		onLoad(e) {
 			this.data = getApp().globalData.naviData;
+			if(this.data.detailAppVOS.length&&!this.data.stockAppVOS){
+				console.log('!!~~~~~')
+				this.data.stockAppVOS=this.data.detailAppVOS
+			}
+			
 			this.reasonName = this.data.reason||'';
 			this.remark=this.data.remark||'';
 			this.reasonValue=this.data.reasonId||''
