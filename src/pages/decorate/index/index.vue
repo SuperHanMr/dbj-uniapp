@@ -60,13 +60,10 @@
             @goDecorateCalendar="goDecorateCalendar"></text-scroll>
           <!-- 我的仓库 -->
           <view v-if="haveWarehouse" class="my-decorate-service-wrap">
-            <!-- <image mode="aspectFit" class="top-bg"
-              src="http://dbj.dragonn.top/static/mp/dabanjia/images/decorate/service-card-top.svg">
-            </image> -->
             <view class="top-bg"></view>
             <view class="my-decorate-service">
               <view class="service-title flex-space-between-row">
-                <text class="t">我的仓库</text>
+                <text class="t">{{who}}的仓库</text>
                 <view class="r flex-start-row" @click="goToMyWarehouse">
                   <text>查看全部</text>
                   <image src="http://dbj.dragonn.top/static/mp/dabanjia/images/decorate/ic_more.svg">
@@ -91,9 +88,6 @@
           </view>
           <!-- 我的装修服务 -->
           <view class="my-decorate-service-wrap" v-if="purchasedServiceList.length > 0 || aServiceData.myServiceFlag">
-            <!-- <image mode="aspectFit" class="top-bg"
-              src="http://dbj.dragonn.top/static/mp/dabanjia/images/decorate/service-card-top.svg">
-            </image> -->
             <view class="top-bg"></view>
             <view class="my-decorate-service">
               <view class="service-title flex-space-between-row">
@@ -157,7 +151,7 @@
       </view>
     </view>
     <!-- <uni-popup ref="nohouse"> -->
-      <no-house :showNoHouse="showNoHouse"></no-house>
+    <no-house :showNoHouse="showNoHouse"></no-house>
     <!-- </uni-popup> -->
   </view>
 </template>
@@ -213,11 +207,11 @@
     onShow() {
       console.log('showTabBar')
       this.showNoHouse = false
+      this.availGuides = []
       uni.showTabBar()
       const {
         currentHouse
       } = getApp().globalData
-      // debugger
       if (currentHouse?.id) {
         this.getEstateList()
         this.$store.dispatch("updateTabBarBadge");
@@ -354,14 +348,12 @@
             projectStatus,
             myServiceFlag
           }
-          timer = setTimeout(() => {
-            this.addServiceCard(this.defaultServices, "serviceType")
-            this.addServiceCard(this.availableServiceList, "nodeType")
-          }, 0)
+          this.availGuides = []
+          this.defaultServices && this.addServiceCard(this.defaultServices, "serviceType")
+          this.availableServiceList && this.addServiceCard(this.availableServiceList, "nodeType")
           this.haveWarehouse = this.purchasedServiceList.filter(t => t.nodeType >= 5).length > 0
-
           for (let i = 0; i < this.purchasedServiceList.length; i++) {
-            if ([6, 7, 8, 9, 10].includes(this.purchasedServiceList[i].nodeType) && (this.purchasedServiceList[i]
+            if ([5, 6, 7, 8, 9, 10].includes(this.purchasedServiceList[i].nodeType) && (this.purchasedServiceList[i]
                 .status >= 2 || (this.purchasedServiceList[i].status == 0 && this.purchasedServiceList[i]
                   .grepOrderStatus === 3))) {
               this.isConstruction = true
