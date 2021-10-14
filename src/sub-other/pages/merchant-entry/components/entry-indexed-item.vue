@@ -12,7 +12,7 @@
 							<view class="icon-circle" v-if="!item.checked">
 								
 							</view>
-							<image src="../../../static/merchant-entry/merchant-entry-select.png" mode="" v-if="item.checked"></image>
+							<image src="https://ali-image.dabanjia.com/static/mp/dabanjia/images/merchant-entry/merchant-entry-select.png" mode="" v-if="item.checked"></image>
 						</view>
 						<text class="uni-indexed-list__item-content">{{ item.name }}</text>
 					</view>
@@ -117,8 +117,8 @@
 			align-items: center;
 		}
 		.icon-circle{
-			width: 32rpx;
-			height: 32rpx;
+			width: 28rpx;
+			height: 28rpx;
 			border-radius: 50%;
 			border: 1px solid #A8A8A8;
 		}
@@ -127,7 +127,6 @@
 			width: 32rpx;
 			height: 32rpx;
 			border-radius: 50%;
-			border: 1px solid red;
 		}
 	}
 
