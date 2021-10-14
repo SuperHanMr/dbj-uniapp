@@ -23,7 +23,7 @@
 						公司名称
 					</view>
 					<input type="text" :value="companyValue" maxlength=30 placeholder="请输入30个字以内" @input="companyHandler($event)" />
-					<image src="../../../static/merchant-entry/live_input_clear.png" mode=""
+					<image src="../../../static/merchant-entry/live_input_clear_merchant-entry.png" mode=""
 						@click="deleteCompanyName()" v-if="companyValue != ''"></image>
 				</view>
 				<view class="service-city">
@@ -34,7 +34,7 @@
 						<view class="text">
 							{{item.name}}
 						</view>
-						<image src="../../../static/merchant-entry/live_input_clear.png" mode=""
+						<image src="../../../static/merchant-entry/live_input_clear_merchant-entry.png" mode=""
 							@click="deleteCity(index)"></image>
 					</view>
 					<view class="add-service-city" @click="openSelectCity">
@@ -55,7 +55,7 @@
 						<view class="text">
 							{{item.oneLevelCategoryName + '-' + item.twoLevelCategoryName + '-' + item.label}}
 						</view>
-						<image src="../../../static/merchant-entry/live_input_clear.png" mode=""
+						<image src="../../../static/merchant-entry/live_input_clear_merchant-entry.png" mode=""
 							@click="deleteBusinessCategory(index)"></image>
 					</view>
 					<view class="add-service-city" @click="openBusinessCategory">
@@ -110,7 +110,7 @@
 					<view class="text">
 						请选择服务城市
 					</view>
-					<image src="../../../static/merchant-entry/live_input_clear.png" mode="" @click="closePopup">
+					<image src="../../../static/merchant-entry/live_input_clear_merchant-entry.png" mode="" @click="closePopup">
 					</image>
 				</view>
 				<view class="select">

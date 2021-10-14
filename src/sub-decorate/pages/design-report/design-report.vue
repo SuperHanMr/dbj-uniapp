@@ -20,7 +20,7 @@
     </view>
     <view class="card flex-row-bet">
       <view class="t">自定义报告</view>
-      <view v-if="detail.beautyReport && detail.beautyReport.id && detail.beautyReport.templateId" class="lookDetail flex-row-start" @click="customReport">
+      <view v-if="detail.customReport && detail.customReport.id" class="lookDetail flex-row-start" @click="customReport">
         <view>立即查看</view>
         <image src="http://dbj.dragonn.top/static/mp/dabanjia/images/decorate/ic_more.svg"></image>
       </view>
@@ -77,7 +77,7 @@
         } = this.detailF
         const token = uni.getStorageSync("scn")
         uni.navigateTo({
-          url: `/sub-decorate/pages/custom-report/custom-report?token=${token}&themeId=${customReport.templateId}&id=${customReport.id}`
+          url: `/sub-decorate/pages/custom-report/custom-report?token=${token}&id=${customReport.id}`
         })
       },
       beatifulReport() {
