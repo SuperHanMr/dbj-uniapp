@@ -209,7 +209,7 @@
           >
             <image
               class="icon_macphone"
-              src="http://dbj.dragonn.top/%20static/mp/dabanjia/images/home/lives_macphone.png"
+              src="http://dbj.dragonn.top/static/mp/dabanjia/images/home/lives_macphone.png"
               mode=""
             >
             </image>
@@ -217,7 +217,7 @@
           </view>
           <image
             class="bottom-icon"
-            src="http://dbj.dragonn.top/%20static/mp/dabanjia/images/home/lives_shopping.png"
+            src="http://dbj.dragonn.top/static/mp/dabanjia/images/home/lives_shopping.png"
             mode=""
             @click="showDownload=true"
           >
@@ -228,7 +228,7 @@
           >
             <image
               class="img"
-              src="http://dbj.dragonn.top/%20static/mp/dabanjia/images/home/lives_agree.png"
+              src="http://dbj.dragonn.top/static/mp/dabanjia/images/home/lives_agree.png"
               mode=""
             >
             </image>

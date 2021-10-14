@@ -136,6 +136,17 @@
 			  @close="popupShow=false"
 			  @confirm="handleConfirm"
 			></echone-sku>
+			<custom-sku
+			  :show="skuShow"
+			  :combinations="combinations"
+			  :skuNames="skuNames"
+			  :selectedIndex="selectedIndex"
+				:productType="productType"
+				:defaultSku="defaultSku"
+				:defaultSpu="defaultSpu"
+			  @close="popupShow=false"
+			  @confirm="handleConfirm"
+			></custom-sku>
 			<view class="disabledSku" v-if="disabledSkuList.length">
 				<view class="top">
 					<view class="title">已失效商品</view>
@@ -186,6 +197,7 @@
 <script>
 	import {clearDisabled,getShoppingCartInfo,deleteProduct,setBuyCount,getGoodsSpec,setGoodsSku,createcollection} from "../../../api/user.js"
 	import echoneSku from '../../components/echone-sku/echone-sku.vue'
+	import customSku from '../../components/echone-sku/custom-sku.vue'
 	export default {
 		components:{
 			echoneSku,
@@ -203,6 +215,9 @@
 				selectedIndex:0,
 				defaultSpecIds:"",
 				defaultSpec:[],
+				skuShow:false,
+				skuNames:[],
+				defaultSku:{},
 				options: [
 				  {
 				    text: "删除",
@@ -298,24 +313,34 @@
 				})
 			},
 			openSpec(skuId){
-				this.popupShow = true
+				
 				getGoodsSpec(skuId).then(data => {
-					this.specifications = data.properties
+					if(data.skuInputType===1){
+						this.popupShow = true
+						this.specifications = data.properties
+						this.defaultSpec = data.defaultProperties
+						this.spuName = data.defaultSpu.spuName
+						this.combinationsProps = {
+							id: 'id',
+							valueIds: 'propValueIds',
+							image: 'imageUrl',
+							price: 'price',
+							unit:'unitName',
+						}
+						this.specificationsProps = {
+							id: 'id',
+							list: 'values',
+							name: 'name'
+						}
+					}else{
+						this.skuShow = true
+						this.skuNames = data.skuNames
+						this.defaultSku = data.defaultSkuName
+					}
+					
 					this.combinations = data.skuAndProperties
-					this.spuName = data.defaultSpu.spuName
 					this.productType = data.productType
-					this.combinationsProps = {
-						id: 'id',
-						valueIds: 'propValueIds',
-						image: 'imageUrl',
-						price: 'price',
-						unit:'unitName',
-					}
-					this.specificationsProps = {
-						id: 'id',
-						list: 'values',
-						name: 'name'
-					}
+					
 					let Ids = []
 					data.defaultProperties.forEach(item => {
 						Ids.push(item.value.id)
@@ -324,7 +349,7 @@
 						item.valueIds = item.propValueIds.split(',')
 						return item
 					})
-					this.defaultSpec = data.defaultProperties
+					
 					this.defaultSpecIds = Ids.sort().toString()
 					this.selectedIndex = data.skuAndProperties.findIndex(item => item.valueIds.sort().toString()
 						=== this.defaultSpecIds)
