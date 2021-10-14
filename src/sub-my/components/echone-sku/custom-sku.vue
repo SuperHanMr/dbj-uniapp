@@ -1,6 +1,6 @@
 <template>
   <popup-bottom
-    :show="show"
+		:show="show"
     @close="closeSkuBox"
   >
     <view class="sku-box">
@@ -70,22 +70,16 @@ export default {
     },
   },
   props: {
-    show: {
-      type: Boolean,
-      default: false,
-    },
+		show: {
+			type: Boolean,
+			default: false
+		},
     combinations: {
       type: Array,
       default() {
         return [];
       },
     },
-    // specifications: {
-    // 	type: Array,
-    // 	default(){
-    // 		return []
-    // 	}
-    // },
     selectedIndex: {
       type: Number,
       default: 0,
@@ -94,21 +88,6 @@ export default {
       type: Number,
       default: 1,
     },
-    combinationsProps: {
-      type: Object,
-    },
-    specificationsProps: {
-      type: Object,
-    },
-    defaultSpecIds: {
-      type: String,
-    },
-    // defaultSpec: {
-    // 	type: Array,
-    // 	default(){
-    // 		return []
-    // 	}
-    // },
     flag: {
       type: Number,
       default: 1,
@@ -120,6 +99,9 @@ export default {
       },
     },
     defaultSku: {
+      type: Object,
+    },
+		defaultSpu: {
       type: Object,
     },
   },

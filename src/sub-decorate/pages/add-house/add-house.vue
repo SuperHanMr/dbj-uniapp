@@ -269,7 +269,7 @@
 							that.addData.longitude = res.longitude;
 							uni.request({
 								//将经纬度转换成adcode，然后用adcode去获取省市区id ak需要更换为公司的ak
-								url: "https://api.map.baidu.com/reverse_geocoding/v3/?ak=s0deCKPpT7GZBxtBLGs9gMkGTs80uuyD&output=json&coordtype=gcj02ll&location=" +
+								url: "https://api.map.baidu.com/reverse_geocoding/v3/?ak=lrRwp5WQK6fyjnyHGbyHBgFIXXczCIWN&output=json&coordtype=gcj02ll&location=" +
 									res.latitude +
 									"," +
 									res.longitude,
