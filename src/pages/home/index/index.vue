@@ -834,9 +834,9 @@
 				position: absolute;
 				top: 12rpx;
 				left: 12rpx;
-				// padding: 12rpx;
 				height: 28rpx;
 				background: rgba(0, 0, 0, 0.35);
+				filter: blur(3rpx);
 				border-radius: 8rpx;
 				color: #ffffff;
 				display: flex;

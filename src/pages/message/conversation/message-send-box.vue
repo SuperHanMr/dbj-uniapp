@@ -46,7 +46,7 @@
       <view v-if="showFileChooser" class="file-choose-container">
         <view class="file-choose-item" @click="handleFileChoose('image')">
           <view class="file-choose-image">
-            <image class="image" src="http://iph.href.lu/100x100" />
+            <image class="image" src="https://ali-image.dabanjia.com/static/mp/dabanjia/images/message/ic_pic%402x.png" />
           </view>
           <view class="file-choose-name">
             图片
@@ -54,7 +54,7 @@
         </view>
         <view class="file-choose-item" @click="handleFileChoose('video')">
           <view class="file-choose-image">
-            <image class="image" src="http://iph.href.lu/100x100" />
+            <image class="image" src="https://ali-image.dabanjia.com/static/mp/dabanjia/images/message/ic_video%402x.png" />
           </view>
           <view class="file-choose-name">
             视频
@@ -62,7 +62,7 @@
         </view>
         <view class="file-choose-item" @click="handleFileChoose('camera')">
           <view class="file-choose-image">
-            <image class="image" src="http://iph.href.lu/100x100" />
+            <image class="image" src="https://ali-image.dabanjia.com/static/mp/dabanjia/images/message/ic_shot%402x.png" />
           </view>
           <view class="file-choose-name">
             拍摄
@@ -71,7 +71,7 @@
         <!-- 小程序不支持选择文件 -->
         <!-- <view class="file-choose-item" @click="handleFileChoose('file')">
           <view class="file-choose-image">
-            <image class="image" src="http://iph.href.lu/100x100" />
+            <image class="image" src="https://ali-image.dabanjia.com/static/mp/dabanjia/images/message/ic_file%402x.png" />
           </view>
           <view class="file-choose-name">
             文件
@@ -644,8 +644,8 @@
     border-radius: 24rpx;
   }
   .file-choose-image .image {
-    width: 48rpx;
-    height: 48rpx;
+    width: 64rpx;
+    height: 64rpx;
   }
   .file-choose-name {
     color: #999;
