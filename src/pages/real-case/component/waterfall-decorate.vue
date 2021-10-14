@@ -8,14 +8,14 @@
 			<view class="title">{{params.estateNeighbourhood}}</view>
 			<view class="decorate-info">
 				<view class="size">
-					{{params.estateArea}}m²
+					{{params.estateArea ? params.estateArea.toFixed(2) : '0.00'}}m²
 				</view>
 				<view class="phase-box">
-					<view class="phase" :class="params.projectStatus == 2 ? 'phase-pending' : ''">
-						{{params.projectStatus == 1 ? "已开启" : params.projectStatus == 2 ? '装修中' : params.projectStatus == 3 ? "已竣工" : "已结束"}}
+					<view class="phase" :class="params.projectStatus != 3 ? 'phase-pending' : ''">
+						{{params.projectStatus == 3 ? "已竣工" :  '装修中' }}
 					</view>
-					<view class="phase-newest-node" v-if="newestNodeName && params.projectStatus == 2">
-						{{newestNodeName}}
+					<view class="phase-newest-node" v-if="params.newestNodeName && params.projectStatus != 3">
+						{{params.newestNodeName}}
 					</view>
 				</view>
 				
@@ -132,7 +132,7 @@
 			}
 			.phase{
 				padding: 0 8rpx;
-				font-size: 22rpx;
+				font-size: 20rpx;
 				font-family: PingFangSC, PingFangSC-Regular;
 				font-weight: 400;
 				text-align: left;
@@ -152,6 +152,7 @@
 				text-align: left;
 				color: #ffa751;
 				border: 1px solid #ffa751;
+				margin-left: -2px;
 			}
 		}
 	}

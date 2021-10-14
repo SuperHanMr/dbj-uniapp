@@ -28,8 +28,9 @@
 						<text class="name">{{dataList.fullName}}</text>					
 					</view>
 					<view class="attr">
-						<text style="margin-right: 24rpx;">{{dataList.salesProperties}}</text>
-						<text >{{handlePrice(dataList.price)[0]}}.{{handlePrice(dataList.price)[1]}} {{ dataList.unit ? `/${dataList.unit}` :''}}</text>
+						<text style="margin-right: 24rpx;" v-if="refundType">{{dataList.scaleProperties}}</text>
+						<text style="margin-right: 24rpx;" v-else>{{dataList.salesProperties}}</text>
+						<!-- <text >{{handlePrice(dataList.price)[0]}}.{{handlePrice(dataList.price)[1]}} {{ dataList.unit ? `/${dataList.unit}` :''}}</text> -->
 					</view>						
 				</view>
 				
