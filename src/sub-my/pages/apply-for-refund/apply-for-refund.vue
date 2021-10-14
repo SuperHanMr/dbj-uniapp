@@ -21,8 +21,9 @@
 					</view>
           <order-item  v-else :dataList="refundInfo"></order-item>
         </view>
+				
 				<!-- 运费和搬运费 -->
-        <view class="price-container" v-if="">
+        <view class="price-container" >
           <view class="price-item" v-if="refundInfo.freight">
             <view  class="header" style="margin-bottom: 16rpx;">
               <text style="margin-right: 8rpx;">运费</text><view class="icon">?</view>
@@ -56,14 +57,10 @@
 				
 				<view class="line" />
 				
-				<view class="refund-price" v-if="type == 'whole'">
-					<view
-					  class="edit-price"
-					>
+				<!-- <view class="refund-price" v-if="type == 'whole'">
+					<view class="edit-price">
 						<view class="left">
-							<view class="icon">
-								*
-							</view>
+							<view class="icon">*</view>
 							<text>退款金额</text>
 						</view>
 						<view class="right1" >
@@ -73,15 +70,11 @@
 					<view class="tip-text">
 						商品未发货，商家同意后将会全额退还。
 					</view>
-				</view>
-
-     
+				</view> 
 				<view class="refund-price" v-if="type == 'partical'">
 					<view	v-if="showEditInput==true"	class="edit-price">
 						<view class="left">
-							<view class="icon">
-								*
-							</view>
+							<view class="icon">*</view>
 							<text>退款金额</text>
 						</view>
 						<view class="right1">
@@ -103,28 +96,34 @@
 	
 					<view v-else class="show-price">
 						<view class="left">
-							<view class="icon">
-								*
-							</view>
+							<view class="icon">*</view>
 							<text>退款金额</text>
 						</view>
 						<view class="right2">
 							<text style="color:#FF3347;font-size: 40rpx;">￥{{inputValue==0?"0.00":inputValue}}</text>
-							<image
-								src="../../static/ic_mine_edit_gray@2x.png"
-								mode=""
-								@click="showEditInput=true"
-							></image>
+							<image src="../../static/ic_mine_edit_gray@2x.png" mode="" @click="showEditInput=true"/>
 						</view>
 					</view>
 
 					<view class="tip-text" >
 						最多可以填写￥{{handlePrice(refundInfo.totalActualIncomeAmount)[0]}}.{{handlePrice(refundInfo.totalActualIncomeAmount)[1]}}，也可申请部分金额，以您与商家沟通协商的结果为准
 					</view>
-        </view>
-     
-			
-			
+        </view> -->
+				
+				<view class="refund-price">
+					<view class="edit-price">
+						<view class="left">
+							<view class="icon">*</view>
+							<text>退款金额</text>
+						</view>
+						<view class="right1" >
+						  <text >￥{{handlePrice(refundInfo.totalActualIncomeAmount)[0]}}.{{handlePrice(refundInfo.totalActualIncomeAmount)[1]}}</text>
+						</view>
+					</view>
+					<view class="tip-text">
+						商品未发货，商家同意后将会全额退还。
+					</view>
+				</view>
 			</view>
 
       <view class="remark-container">
@@ -134,7 +133,7 @@
         </view>
         <textarea
           v-model="query.remarks"
-          placeholder="可以填写一些与客服沟通过的备注信息"
+          placeholder="补充描述信息,有助于商家更好的处理售后问题,此项为非必填项,最多可输入500字"
           placeholder-style="color:#AAAAAA;font-size:28rpx;padding-top:12rpx;"
           maxlength="500"
           class="remark"
@@ -144,17 +143,15 @@
       <view class="proposal">建议与商家沟通后再发起退款</view>
 
 
-      <view
-        class="sumbit-button"
-        :style="{paddingBottom:systemBottom}"
-      >
-			<view class="buttons1" v-if="!reasonName">
-				提交申请
+      <view class="sumbit-button" :style="{paddingBottom:systemBottom}">
+				<view class="buttons1" v-if="!reasonName">
+					提交申请
+				</view>
+				<view v-else class="buttons"  @click="submitApplication" >
+					提交申请
+				</view>
 			</view>
-			<view v-else class="buttons"  @click="submitApplication" >
-				提交申请
-			</view>
-			</view>
+			
 		</view>
 
   </view>
