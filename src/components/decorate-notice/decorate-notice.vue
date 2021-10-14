@@ -114,10 +114,10 @@
               item.url = '/sub-decorate/pages/design-online-disclosure/design-online-disclosure'
             }
             
-            let name = item.data.serveType == 14?item.data.serveType+''+item.data.workType:item.data.serveType
-            console.log(name,item.data.serveType)
-            item.icon = sysMessage[name].icon||''
-            item.iconColor = sysMessage[name].color||''
+            let name = item.data.serveType == 14?item.data.serveType+''+item.data.workerType:item.data.serveType
+            
+            item.icon = sysMessage[name].icon?sysMessage[name].icon:'icon-liangfang'
+            item.iconColor = sysMessage[name].color?sysMessage[name].color:'#43d9e1'
             
           })
           this.list = res
