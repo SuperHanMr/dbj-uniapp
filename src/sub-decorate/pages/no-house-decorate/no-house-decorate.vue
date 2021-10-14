@@ -1,6 +1,6 @@
 <template>
   <view class="no-house-decorate">
-    <view class="content">
+    <view class="content" v-if="noData === 1">
       <view class="addhouse-decs" v-if="!currentHouse.id">
         <button class="addhouse" @click="goAddHouse">
           <image src="http://dbj.dragonn.top/static/mp/dabanjia/images/decorate/ic_add_house_info.svg"></image>
@@ -33,8 +33,9 @@
         </template>
       </service-card>
     </view>
-    <payment class="payment" @gotopay="gotopay" :pieces="pieces" :countPrice="countPrice" :isAllChecked="isAllChecked">
+    <payment v-if="noData === 1" class="payment" @gotopay="gotopay" :pieces="pieces" :countPrice="countPrice" :isAllChecked="isAllChecked">
     </payment>
+    <no-data v-if="noData === 0" words="当前城市暂未开通此服务,敬请期待~"></no-data>
     <uni-popup ref="level">
       <change-level @changeLevel="setLevel" @close="close" :dataList="levelList" :current="levelList[0]"></change-level>
     </uni-popup>
@@ -56,6 +57,7 @@
   import CancelTip from "./cancel-tip.vue"
   import DoorTimeDate from "../../components/door-time-date/door-time-date.vue"
   import ChangeLevel from "../../components/change-level/change-level.vue"
+  import NoData from "../../components/no-data/no-data.vue"
   import {
     queryEstates,
     getServiceSku
@@ -85,7 +87,8 @@
       MyCurrentHouse,
       CancelTip,
       DoorTimeDate,
-      ChangeLevel
+      ChangeLevel,
+      NoData
     },
     data() {
       return {
@@ -113,7 +116,8 @@
         cityId: null, //市id
         areaId: null, //区id
         levelList: [],
-        defaultHouse: {}
+        defaultHouse: {},
+        noData: -1
       }
     },
     computed: {
@@ -375,6 +379,11 @@
                 insideArea: this.currentHouse.insideArea
               }
             }
+          }
+          if (this.design?.id || this.actuary?.id || this.actuary?.id) {
+            this.noData = 1
+          } else {
+            this.noData = 0
           }
           console.log("默认服务： ", this.design, this.actuary, this.checkHouse)
         })
