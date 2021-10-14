@@ -222,6 +222,14 @@ export default {
     toApplayForRefund(data) {
 			if(data.isWarehoused){
 				// 有仓库跳转到成龙的页面
+				getApp().globalData.naviData= data;
+				let type=0;
+				if(data.isReturnInventory){
+					type=1
+				}
+				uni.navigateTo({
+					url:`../warehouse-refund/warehouse-refund?refundType=${data.type}&id=${data.id}&type=${type}`
+				})
 			}else{
 				wx.setStorageSync("wholeRefundOrderInfo", JSON.stringify(data));
 				uni.navigateTo({

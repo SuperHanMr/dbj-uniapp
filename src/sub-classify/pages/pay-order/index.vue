@@ -25,8 +25,10 @@
                   <text class="goods-type">{{goodsItem.productType=== 1?"物品":"服务"}}</text>
                   {{goodsItem.spuName}}
                 </view>
-                <view class='tag'>{{goodsItem.skuName}}</view>
-                <view class="total-num">共{{goodsItem.buyCount}}{{goodsItem.unit?goodsItem.unit:""}}</view>
+                <view class="spu-class">
+                  <view class='tag'>{{goodsItem.skuName}}</view>
+                  <view class="total-num">共{{goodsItem.buyCount}}{{goodsItem.unit?goodsItem.unit:""}}</view>
+                </view>
                 <view class="goods-spec">
                   <view class="goods-money">
                     ￥  
@@ -34,6 +36,7 @@
                     <text>.{{String(goodsItem.price).split(".")[1]?String(goodsItem.price).split(".")[1]:0}}</text>
                     <text>/{{goodsItem.unit?goodsItem.unit:""}}</text>
                   </view>
+                  <view>押金 ¥{{goodsItem.deposit}}</view>
                 </view>
               </view>
             </view>
@@ -51,7 +54,7 @@
               <view class="time-bar" @click='chooseTime(shopIndex, goodIndex)'>
                 <text v-if="!time">请选择上门时间</text>
                 <text v-else>{{time}}</text>
-                <image class="choose-icon" src="../../../static/images/ic_more_black@2x.png"></image>
+                <image class="choose-icon" src="../../../static/images/ic_more_black.png"></image>
               </view>
             </view>
           </view>
@@ -550,8 +553,13 @@
     margin: 12rpx 0 12rpx 0;
     font-size: 22rpx;
     display: flex;
+    position: absolute;
+    bottom: 0;
+    align-items: baseline;
   }
-
+  .goods-info .spu-class{
+    position: relative;
+  }
   .goods-info .tag {
     margin-top: 8rpx;
     font-size: 22rpx;
@@ -566,7 +574,7 @@
   }
 
   .goods-info .total-num {
-    top: 50%;
+    top: 0;
     right: 0;
     font-size: 28rpx;
     color: #999999;
@@ -578,8 +586,7 @@
     color: #333333;
     vertical-align: bottom;
     font-weight: bold;
-    position: absolute;
-    bottom: 0;
+    margin-right: 30rpx;
   }
 
   .goods-money .integer-price {

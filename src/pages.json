@@ -90,6 +90,8 @@
 		{
 			"path": "pages/common/video-player/video-player",
 			"style": {
+        "navigationBarBackgroundColor": "#000",
+        "navigationBarTextStyle": "white",
 				"navigationBarTitleText": "",
 				"enablePullDownRefresh": false
 			}
