@@ -99,6 +99,9 @@
 			},
 			defaultSpec: {
 				type: Array,
+				default(){
+					return []
+				}
 			}
 		},
 		data() {
@@ -203,14 +206,7 @@
 				this.$emit('close')
 			},
 			handleConfirm() {
-				if(this.selectedIndex === -1){
-					uni.showToast({
-						title: "当前规格暂不可购买",
-						icon: "none",
-						duration: 2000
-					})
-					return
-				}else if(!this.selectSkuInfo.enabled){
+				if(this.selectedIndex === -1 || (this.selectedIndex !== -1 && !this.selectSkuInfo.enabled)){
 					uni.showToast({
 						title: "当前规格暂不可购买",
 						icon: "none",

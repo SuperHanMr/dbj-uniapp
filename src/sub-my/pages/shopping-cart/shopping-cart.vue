@@ -83,7 +83,7 @@
 					</view>
 				</view>
 			</view>
-			<view class="mask" v-if="showMask">
+			<view class="mask" v-if="showClass">
 				<view class="popupClass">
 					<view class="header">
 						<text class="tit">所选商品为不同类型商品，请分开结算</text>
@@ -136,6 +136,20 @@
 			  @close="popupShow=false"
 			  @confirm="handleConfirm"
 			></echone-sku>
+			<!-- <view class="mask" v-if="skuShow"> -->
+				<custom-sku
+					:show="skuShow"
+				  :combinations="combinations"
+				  :skuNames="skuNames"
+				  :selectedIndex="selectedIndex"
+					:productType="productType"
+					:defaultSku="defaultSku"
+					:defaultSpu="defaultSpu"
+				  @close="popupShow=false"
+				  @confirm="handleConfirm"
+				></custom-sku>
+			<!-- </view> -->
+			
 			<view class="disabledSku" v-if="disabledSkuList.length">
 				<view class="top">
 					<view class="title">已失效商品</view>
@@ -186,9 +200,11 @@
 <script>
 	import {clearDisabled,getShoppingCartInfo,deleteProduct,setBuyCount,getGoodsSpec,setGoodsSku,createcollection} from "../../../api/user.js"
 	import echoneSku from '../../components/echone-sku/echone-sku.vue'
+	import customSku from '../../components/echone-sku/custom-sku.vue'
 	export default {
 		components:{
 			echoneSku,
+			customSku
 		},
 		data(){
 			return {
@@ -203,6 +219,10 @@
 				selectedIndex:0,
 				defaultSpecIds:"",
 				defaultSpec:[],
+				skuShow:false,
+				skuNames:[],
+				defaultSku:{},
+				defaultSpu:{},
 				options: [
 				  {
 				    text: "删除",
@@ -220,7 +240,7 @@
 				currentShopIndex:0,
 				currentGoodsIndex:0,
 				showInput:false,
-				showMask:false,
+				showClass:false,
 				serviceChecked:false,
 				entityChecked:true,
 				serviceList:[],
@@ -298,36 +318,50 @@
 				})
 			},
 			openSpec(skuId){
-				this.popupShow = true
+				
 				getGoodsSpec(skuId).then(data => {
-					this.specifications = data.properties
+					
+					if(data.skuInputType===1){
+						this.popupShow = true
+						this.specifications = data.properties
+						this.defaultSpec = data.defaultProperties
+						this.spuName = data.defaultSpu.spuName
+						this.combinationsProps = {
+							id: 'id',
+							valueIds: 'propValueIds',
+							image: 'imageUrl',
+							price: 'price',
+							unit:'unitName',
+						}
+						this.specificationsProps = {
+							id: 'id',
+							list: 'values',
+							name: 'name'
+						}
+						let Ids = []
+						data.defaultProperties.forEach(item => {
+							Ids.push(item.value.id)
+						})
+						this.defaultSpecIds = Ids.sort().toString()
+						data.skuAndProperties.map(item => {
+							item.valueIds = item.propValueIds.split(',')
+							return item
+						})
+						this.selectedIndex = data.skuAndProperties.findIndex(item => item.valueIds.sort().toString()
+							=== this.defaultSpecIds)
+					}else if(data.skuInputType===2){
+						this.skuShow = true
+						this.skuNames = data.skuNames
+						this.defaultSku = data.defaultSkuName
+						this.defaultSpu = data.defaultSpu
+						this.selectedIndex = data.skuAndProperties.findIndex(item => item.id
+							=== this.defaultSku.id)
+						console.log(this.skuShow,'..............')
+					}
+					
 					this.combinations = data.skuAndProperties
-					this.spuName = data.defaultSpu.spuName
 					this.productType = data.productType
-					this.combinationsProps = {
-						id: 'id',
-						valueIds: 'propValueIds',
-						image: 'imageUrl',
-						price: 'price',
-						unit:'unitName',
-					}
-					this.specificationsProps = {
-						id: 'id',
-						list: 'values',
-						name: 'name'
-					}
-					let Ids = []
-					data.defaultProperties.forEach(item => {
-						Ids.push(item.value.id)
-					})
-					data.skuAndProperties.map(item => {
-						item.valueIds = item.propValueIds.split(',')
-						return item
-					})
-					this.defaultSpec = data.defaultProperties
-					this.defaultSpecIds = Ids.sort().toString()
-					this.selectedIndex = data.skuAndProperties.findIndex(item => item.valueIds.sort().toString()
-						=== this.defaultSpecIds)
+					
 					console.log(this.selectedIndex)
 				})
 			},
@@ -384,7 +418,7 @@
 				this.showInput = false
 			},
 			goBackCart(){
-				this.showMask = false
+				this.showClass = false
 			},
 			defineCount() {
 				let val = this.buyNum
@@ -632,7 +666,7 @@
 						icon:"none"
 					})
 				}else if(isChooseDiff()){
-					this.showMask = true
+					this.showClass = true
 				}else{
 					uni.navigateTo({
 						url:"/sub-classify/pages/pay-order/index",

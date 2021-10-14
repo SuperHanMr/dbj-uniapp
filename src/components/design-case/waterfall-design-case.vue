@@ -5,7 +5,8 @@
 			<view class="comment-like">
 				<view class="comment">
 					<view class="comment-icon">
-						<image src="/static/images/real-case/liuyan.png" mode=""></image>
+						<!-- <image src="/static/images/real-case/liuyan.png" mode=""></image> -->
+            <i class="icon-gerenzhuye_anli_ic_pinglun"></i>
 					</view>
 					<view class="comment-count">
 						{{params.commentCount}}
@@ -13,7 +14,8 @@
 				</view>
 				<view class="like">
 					<view class="comment-icon">
-						<image src="/static/images/real-case/xihuan.png" mode=""></image>
+						<!-- <image src="/static/images/real-case/xihuan.png" mode=""></image> -->
+            <i class="icon-gerenzhuye_anli_ic_dianzan"></i>
 					</view>
 					<view class="comment-count">
 						{{params.likeCount}}
@@ -128,9 +130,9 @@
 					line-height: 20rpx;
 					opacity: 1;
 					margin-right: 4rpx;
-					image{
-						width: 100%;
-						height: 100%;
+					i{
+						font-size: 18rpx;
+            color: #fff;
 					}
 				}
 				.comment-count{

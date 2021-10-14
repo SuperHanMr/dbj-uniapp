@@ -3,7 +3,7 @@
     <view class="grab-content-top">
       <view class="grab-content-header">
         <image :src="personData.avatar" mode=""></image>
-        <text class="title">{{personData.nickName}}</text>
+        <text class="title">{{personData.realName}}</text>
         <view class="introduce">
           <text>{{personData.genderName}}</text>
           <text>|</text>

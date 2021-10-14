@@ -5,7 +5,7 @@
     <view class="empty" v-else>
       暂无动态
     </view>
-    <view class="click-text" v-if="totalPage>1" @click="toAllDynamics">查看全部动态</view>
+    <view class="click-text" v-if="totalPage>1" @click="toAllDynamics"><text>查看全部动态</text><i class="icon-gerenzhuye_pingjiatiaozhuanwu_ic"></i></view>
     
   </view>
 </template>

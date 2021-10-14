@@ -2,14 +2,11 @@
 	<view class="merchant-entry">
 		<view class="head">
 			<view class="head-info-box">
-				<view class="info">
+				<view class="info-title">
 					填写入驻信息
 				</view>
 				<view class="info">
-					已有<text>{{dayNumber * 5 + 350}}</text>家企业
-				</view>
-				<view class="info">
-					入驻开店
+					已有<text>{{dayNumber * 5 + 350}}</text>家企业入驻开店~
 				</view>
 			</view>
 		</view>
@@ -23,7 +20,7 @@
 						公司名称
 					</view>
 					<input type="text" :value="companyValue" maxlength=30 placeholder="请输入30个字以内" @input="companyHandler($event)" />
-					<image src="../../../static/merchant-entry/live_input_clear.png" mode=""
+					<image src="https://ali-image.dabanjia.com/static/mp/dabanjia/images/merchant-entry/live_input_clear_merchant-entry.png" mode=""
 						@click="deleteCompanyName()" v-if="companyValue != ''"></image>
 				</view>
 				<view class="service-city">
@@ -34,7 +31,7 @@
 						<view class="text">
 							{{item.name}}
 						</view>
-						<image src="../../../static/merchant-entry/live_input_clear.png" mode=""
+						<image src="https://ali-image.dabanjia.com/static/mp/dabanjia/images/merchant-entry/live_input_clear_merchant-entry.png" mode=""
 							@click="deleteCity(index)"></image>
 					</view>
 					<view class="add-service-city" @click="openSelectCity">
@@ -55,7 +52,7 @@
 						<view class="text">
 							{{item.oneLevelCategoryName + '-' + item.twoLevelCategoryName + '-' + item.label}}
 						</view>
-						<image src="../../../static/merchant-entry/live_input_clear.png" mode=""
+						<image src="https://ali-image.dabanjia.com/static/mp/dabanjia/images/merchant-entry/live_input_clear_merchant-entry.png" mode=""
 							@click="deleteBusinessCategory(index)"></image>
 					</view>
 					<view class="add-service-city" @click="openBusinessCategory">
@@ -92,7 +89,7 @@
 			</view>
 			<view class="argument">
 				<view class="img-box" @click="argumentFileHandler">
-					<image v-if="argumentFile" src="../../static/merchant-entry/merchant-entry-select.png" mode="">
+					<image v-if="argumentFile" src="https://ali-image.dabanjia.com/static/mp/dabanjia/images/merchant-entry/merchant-entry-select.png" mode="">
 					</image>
 					<view v-if="!argumentFile" class="circle">
 					</view>
@@ -110,7 +107,7 @@
 					<view class="text">
 						请选择服务城市
 					</view>
-					<image src="../../../static/merchant-entry/live_input_clear.png" mode="" @click="closePopup">
+					<image src="https://ali-image.dabanjia.com/static/mp/dabanjia/images/merchant-entry/live_input_clear_merchant-entry.png" mode="" @click="closePopup">
 					</image>
 				</view>
 				<view class="select">
@@ -444,43 +441,50 @@
 	.merchant-entry {
 		width: 100%;
 		height: 100%;
-
+		position: relative;
 	}
 
 	.merchant-entry>.head {
 		position: relative;
 		width: 100%;
-		height: 312rpx;
-		background-image: url(../../../static/merchant-entry/merchant-entry-ic／bg.png);
+		height: 590rpx;
+		background-size: 100%;
+		background-image: url(https://ali-image.dabanjia.com/static/mp/dabanjia/images/merchant-entry/merchant-entry-ic／bg.png);
 		.head-info-box{
 			position: absolute;
-			top: 82rpx;
-			left: 32rpx;
-			padding: 36rpx 24rpx;
-			background: blue;
+			top: 100rpx;
+			left: 40rpx;
+		}
+		.info-title{
+			font-size: 44rpx;
+			font-family: PingFangSC-Semibold, PingFang SC;
+			font-weight: bold;
+			color: #333333;
+			margin-bottom: 2rpx;
 		}
 		.info {
 			font-size: 28rpx;
 			// color: #FFFFFF;
-			font-size: 28rpx;
-			font-family: HarmonyOS_Sans_Black;
-			color: #FFFFFF;
-			margin-bottom: 4rpx;
-			line-height: 38rpx;
+			font-family: PingFangSC-Regular, PingFang SC;
+			font-weight: 400;
+			color: #333333;
 			text{
-				font-size: 36rpx;
+				font-size: 28rpx;
 				margin: 0 2rpx;
-				font-family: Unnamed-Regular, Unnamed;
+				font-family: PingFangSC-Regular, PingFang SC;
 				font-weight: 400;
-				color: #FFFFFF;
+				color: rgba(255, 83, 66, 1);
 			}
 		}
 	}
 
 	.container {
-		padding: 24rpx;
-
+		position: absolute;
+		left: 0rpx;
+		top: 312rpx;
+		width: 100%;
 		.info {
+			margin: 24rpx;
 			padding-bottom: 1rpx;
 			background-repeat: no-repeat;
 			background-image: url(../../../static/merchant-entry/merchant-entry-container.png);
@@ -676,17 +680,15 @@
 			}
 
 			image {
-				display: block;
 				width: 30rpx;
 				height: 28rpx;
-				background: red;
 			}
 
 			.circle {
-				width: 30rpx;
-				height: 26rpx;
+				width: 26rpx;
+				height: 24rpx;
 				border-radius: 50%;
-				border: 1px solid #A8A8A8;
+				border: 2rpx solid #A8A8A8;
 			}
 
 			.box {
