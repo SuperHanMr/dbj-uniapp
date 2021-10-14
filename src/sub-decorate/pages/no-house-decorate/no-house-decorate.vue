@@ -381,7 +381,7 @@
               }
             }
           }
-          if (this.design?.id || this.actuary?.id || this.actuary?.id) {
+          if (this.design?.id || this.actuary?.id || this.checkHouse?.id) {
             this.noData = 1
           } else {
             this.noData = 0
