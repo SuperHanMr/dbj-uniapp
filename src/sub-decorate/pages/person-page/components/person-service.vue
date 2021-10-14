@@ -28,8 +28,8 @@
     <view class="empty" v-else>
       暂无服务
     </view>
-    <view class="click-text" v-if="serviceData.length>3" @click="open">
-    {{isOpen?'收起全部服务':'展开全部服务'}}<image src="" mode=""></image>
+    <view class="click-text" v-if="serviceList.length>3" @click="open">
+    <text>{{isOpen?'收起全部服务':'展开全部服务'}}</text><i :class="{'icon-gerenzhuye_anlihefuwu_shouqiic':isOpen,'icon-gerenzhuye_anlihefuwu_zhankaiic':!isOpen}"></i>
     </view>
     
   </view>
@@ -158,18 +158,5 @@
       
     }
   }
-  .click-text{
-    width: calc(100% - 32rpx);
-    text-align: center;
-    font-size: 26rpx;
-    color: #00BFB6;
-    margin-bottom: 24rpx;
-    image{
-      width: 26rpx;
-      height: 26rpx;
-      margin-left: 10rpx;
-      background-color: #eee;
-      vertical-align: middle;
-    }
-  }
+
 </style>
