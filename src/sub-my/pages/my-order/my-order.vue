@@ -47,7 +47,7 @@
 									<!-- {{item.orderStatusName}} -->
 									{{
 										item.orderStatus == 1
-										?(item.type==2 ? "进行中" : (item.shipmentStatus == 0?"待发货":item.shipmentStatus == 1 ? "已发货" :"已收货"))//发货状态（1待发货，2已发货）
+										?(item.type==2 ? "进行中" : (item.shipmentStatus == 0?"待发货":item.shipmentStatus == 1 ? "待收货" :"已收货"))//发货状态 （0待发货 1待收货 2已收货）
 										:item.orderStatusName
 									}}
 								</view>
@@ -123,7 +123,7 @@
 							</view>
 
 							<view class="line" v-if="item.orderStatus == 0 && (item.showCancelOrderTime || item.showCancelBtn || item.showToPayBtn)" />
-							<view class="line" v-if="item.orderStatus == 1 && item.shipmentStatus == 2" />
+							<view class="line" v-if="item.orderStatus == 1 && item.shipmentStatus == 1" />
 
 							<view class="footer"
 								v-if="item.orderStatus == 0 && (item.showCancelOrderTime || item.showCancelBtn || item.showToPayBtn)"
@@ -157,7 +157,7 @@
 								</view>
 							</view>
 							<view class="footer buttonContainer "
-								v-if="item.orderStatus == 1 && item.shipmentStatus == 2">
+								v-if="item.orderStatus == 1 && item.shipmentStatus == 1">
 								<view class="button">
 									<button type="default" size="mini" class="go-to-pay"
 										@click="handleConfirmReceipt(item)">确认收货</button>
@@ -435,7 +435,7 @@
 							success(res) {
 								console.log(res);
 								uni.showToast({
-									title: "支付失败！",
+									title: "支付成功！",
 									icon: "none",
 									duration: 1000,
 								});
@@ -473,8 +473,13 @@
 				}).then((e) => {
 					console.log("成功就关闭弹框");
 					this.$refs.confirmReceipt.close();
-					this.orderList1 = [];
-					this.lastId[1] = -1;
+					uni.showToast({
+						title:"确认收货成功！",
+						icon:"none",
+						duration:1000,
+					})
+					this.orderList2 = [];
+					this.lastId[2] = -1;
 					this.getOrderList();
 				});
 			},

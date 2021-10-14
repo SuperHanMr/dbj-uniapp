@@ -1,9 +1,8 @@
 <template>
-  <div class="no-service">
+  <view class="no-service">
     <image class="bg" src="http://dbj.dragonn.top/static/mp/dabanjia/images/decorate/empty.png">
-      </view>
-      <view class="text" v-for="(item,index) in wordscp">{{item}}</view>
-  </div>
+    <view class="text" v-for="(item,index) in wordscp" :key="index">{{item}}</view>
+  </view>
 </template>
 
 <script>

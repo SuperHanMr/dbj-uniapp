@@ -145,7 +145,7 @@
 					:productType="productType"
 					:defaultSku="defaultSku"
 					:defaultSpu="defaultSpu"
-				  @close="popupShow=false"
+				  @close="skuShow=false"
 				  @confirm="handleConfirm"
 				></custom-sku>
 			<!-- </view> -->
@@ -356,7 +356,6 @@
 						this.defaultSpu = data.defaultSpu
 						this.selectedIndex = data.skuAndProperties.findIndex(item => item.id
 							=== this.defaultSku.id)
-						console.log(this.skuShow,'..............')
 					}
 					
 					this.combinations = data.skuAndProperties
@@ -698,6 +697,7 @@
 						})
 					}
 				}
+				this.freeShippings()
 			},	
 			checkedAll(){
 				this.isCheckedAll = !this.isCheckedAll

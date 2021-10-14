@@ -45,6 +45,7 @@
 				:orderNo="orderInfo.orderNo"
 				:createTime="orderInfo.createTime"
 				:showPayTime="true"
+				:showPayType="true"
 				:payTime="orderInfo.payTime"
 			/>
 
@@ -136,7 +137,7 @@
 					this.orderInfo = e;;
 				});
 			},
-
+			// 申请退款
 			toApplayForRefund(data, type) {
 				this.title="您确定要取消订单吗?"
 				if (type == 1) {
@@ -207,7 +208,6 @@
 				this.title = "确定要确认收货吗?";
 				this.$refs.confirmReceipt.open();
 			},
-
 			confirmReceiptClose() {
 				this.$refs.confirmReceipt.close();
 			},
@@ -215,15 +215,11 @@
 				// 确认收货的订单接口
 				confirmReceiptOrder({
 					id: this.orderNo
-				}).then((e) => {
-					if (res.code == 1) {
-						// 成功就关闭弹框
-						this.$refs.confirmReceipt.close();
-						uni.redirectTo({
-							// url:"../success/success?type=confirmReceipt"
-							url: "../my-order?index=0",
-						});
-					}
+				}).then(()=> {
+					this.$refs.confirmReceipt.close();
+					uni.redirectTo({
+						url:`../order-success/order-success?type=complete&id=${this.orderNo}`
+					});
 				});
 			},
 

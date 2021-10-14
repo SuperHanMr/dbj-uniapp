@@ -41,11 +41,6 @@
     </scroll-view>
     <message-send-box v-if="type === CONV_TYPES.COMMON || type === CONV_TYPES.CUSTOMER"></message-send-box>
     <reply-box v-if="type === CONV_TYPES.INTERACTION" />
-    <view v-if="showVideoPlayer" class="video-player-wrapper">
-      <video class="video-player" :src="currentVideoUrl" autoplay>
-        <cover-view class="icon-face video-close-btn" @click="handleCloseVideo"></cover-view>
-      </video>
-    </view>
   </view>
 </template>
 
@@ -87,8 +82,6 @@
         isCompleted: (state) => state.message.isCompleted,
         isRequesting: (state) => state.message.isRequesting,
         isAppendMessageList: (state) => state.message.isAppendMessageList,
-        showVideoPlayer: (state) => state.message.showVideoPlayer,
-        currentVideoUrl: (state) => state.message.currentVideoUrl,
       }),
       type() {
         if (!this.currentConversation.conversationID) {

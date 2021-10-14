@@ -90,6 +90,10 @@
 		},
 		onLoad(e) {
 			this.data = getApp().globalData.naviData;
+			this.reasonName = this.data.reason||'';
+			this.remark=this.data.remark||'';
+			this.reasonValue=this.data.reasonId||''
+				this.num = this.data.refundAmount 
 			let title;
 			this.type = e.type;
 			if (e.type == 0) {
@@ -107,7 +111,7 @@
 			let list = []
 			this.data.stockAppVOS.forEach(e => {
 				list.push({
-					returnNumber: e.stockNumber,
+					returnNumber:e.refundNumber?e.refundNumber: e.stockNumber,
 					stockId: e.id,
 					goodsId: e.goodsId,
 					price: e.price
