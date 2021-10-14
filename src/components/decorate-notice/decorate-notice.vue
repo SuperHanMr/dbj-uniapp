@@ -116,8 +116,8 @@
             
             let name = item.data.serveType == 14?item.data.serveType+''+item.data.workerType:item.data.serveType
             
-            item.icon = sysMessage[name].icon?sysMessage[name].icon:'icon-liangfang'
-            item.iconColor = sysMessage[name].color?sysMessage[name].color:'#43d9e1'
+            item.icon = sysMessage[name]?sysMessage[name].icon:'icon-liangfang'
+            item.iconColor = sysMessage[name]?sysMessage[name].color:'#43d9e1'
             
           })
           this.list = res
