@@ -2,15 +2,11 @@
   <view class="container">
 
     <!-- 退款详情 --退款关闭   退款取消与商家拒接 两个页面-->
-    <view
-      class="order-container" v-if="type =='refund'" :style="{paddingBottom:containerPaddingBottom}" >
+    <view class="order-container" v-if="type =='refund'" :style="{paddingBottom:containerPaddingBottom}" >
       <view class="order-status">
         <view class="backgroundStyle" />
         <view class="status">
-          <image
-            src="@/static/order/ic_order_failed@2x.png"
-            mode=""
-          />
+          <image src="@/static/order/ic_order_failed@2x.png" mode="" />
           <text v-if="status == 3 || status == 4">退款关闭</text>
           <text v-if="status == 5">退款失败</text>
         </view>
@@ -18,32 +14,16 @@
       </view>
 
       <view class="order-header">
-        <image
-          v-if="status == 5 "
-          src="../../../static/ic_order_refund_failed@2x.png"
-          mode=""
-        />
-        <image
-          v-else
-          src="@/static/order/ic_failed@2x.png"
-          mode=""
-        />
-        <view
-          v-if="status == 3"
-          class="cancel-text"
-        >
+        <image v-if="status == 5 " src="../../../static/ic_order_refund_failed@2x.png"  mode=""/>
+        <image v-else src="@/static/order/ic_failed@2x.png" mode=""/>
+				
+        <view v-if="status == 3" class="cancel-text">
           商家拒绝了您的申请，如有问题未解决，您可以重新申请
         </view>
-        <view
-          v-if="status == 4"
-          class="cancel-text"
-        >
+        <view v-if="status == 4" class="cancel-text">
           您已取消了本次退款，如有问题未解决，您可以重新申请
         </view>
-        <view
-          v-if="status == 5"
-          class="cancel-text failed-text"
-        >
+        <view v-if="status == 5" class="cancel-text failed-text">
           您的退款账户存在异常，您可联系客服或者重新发起申请
         </view>
       </view>
@@ -68,10 +48,7 @@
           </view>
 
           <!-- 搬运费 -->
-          <view
-            class="price-item"
-            v-if="item.handlingFees"
-          >
+          <view class="price-item" v-if="item.handlingFees">
             <view class="title">
               <text style="margin-right: 8rpx;">搬运费</text>
               <text class="icon">?</text>
@@ -109,24 +86,15 @@
       <view class="order-status">
         <view class="backgroundStyle" />
         <view class="status">
-          <image
-            src="@/static/order/ic_order_failed@2x.png"
-            mode=""
-          />
+          <image src="@/static/order/ic_order_failed@2x.png" mode=""/>
           <text>已关闭</text>
         </view>
       </view>
       <order-user-base-info :data="orderInfo"></order-user-base-info>
       <view class="body2"  v-for="(item,index) in orderInfo.details" :key="index" >
-        <view
-          class="header"
-          @click="gotoShop(item)"
-        >
+        <view class="header" @click="gotoShop(item)">
           <text>{{item.storeName}}</text>
-          <image
-            src="@/static/order/ic_more@2x.png"
-            mode=""
-          />
+          <image src="@/static/order/ic_more@2x.png" mode="" />
         </view>
         <view
           v-for="item2 in item.details"
@@ -252,10 +220,14 @@ export default {
 
     // 申请退款
     toApplayForRefund(data) {
-      wx.setStorageSync("wholeRefundOrderInfo", JSON.stringify(data));
-      uni.navigateTo({
-        url: `/sub-my/pages/apply-for-refund/apply-for-refund?refundId=${data.id}`,
-      });
+			if(data.isWarehoused){
+				// 有仓库跳转到成龙的页面
+			}else{
+				wx.setStorageSync("wholeRefundOrderInfo", JSON.stringify(data));
+				uni.navigateTo({
+					url: `/sub-my/pages/apply-for-refund/apply-for-refund?refundId=${data.id}`,
+				});
+			}
     },
     // 跳转到商品详情页面
     productDetail(item, type) {
@@ -282,6 +254,7 @@ export default {
     contactCustomer() {
       //跳转到客服的页面
       console.log("联系客服");
+			this.$store.dispatch("openCustomerConversation");
     },
     handlePrice(price) {
       let list = String(price).split(".");
