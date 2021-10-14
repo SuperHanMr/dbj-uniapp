@@ -20,10 +20,21 @@
 import MessageBubble from "./message-bubble";
 
 const FILE_ICON_MAP = {
-  txt: "http://iph.href.lu/100x100",
-  pdf: "http://iph.href.lu/100x100",
-  doc: "http://iph.href.lu/100x100",
-  ppt: "http://iph.href.lu/100x100",
+  txt: "https://ali-image.dabanjia.com/static/mp/dabanjia/images/file-icon/file-txt.png",
+  pdf: "https://ali-image.dabanjia.com/static/mp/dabanjia/images/file-icon/file-pdf.png",
+  doc: "https://ali-image.dabanjia.com/static/mp/dabanjia/images/file-icon/file-word.png",
+  docx: "https://ali-image.dabanjia.com/static/mp/dabanjia/images/file-icon/file-word.png",
+  dot: "https://ali-image.dabanjia.com/static/mp/dabanjia/images/file-icon/file-word.png",
+  dotx: "https://ali-image.dabanjia.com/static/mp/dabanjia/images/file-icon/file-word.png",
+  wps: "https://ali-image.dabanjia.com/static/mp/dabanjia/images/file-icon/file-word.png",
+  ppt: "https://ali-image.dabanjia.com/static/mp/dabanjia/images/file-icon/file-ppt.png",
+  pptx: "https://ali-image.dabanjia.com/static/mp/dabanjia/images/file-icon/file-ppt.png",
+  xls: "https://ali-image.dabanjia.com/static/mp/dabanjia/images/file-icon/file-excel.png",
+  xlsx: "https://ali-image.dabanjia.com/static/mp/dabanjia/images/file-icon/file-excel.png",
+  xlt: "https://ali-image.dabanjia.com/static/mp/dabanjia/images/file-icon/file-excel.png",
+  xlsm: "https://ali-image.dabanjia.com/static/mp/dabanjia/images/file-icon/file-excel.png",
+  zip: "https://ali-image.dabanjia.com/static/mp/dabanjia/images/file-icon/file-zip.png",
+  dwg: "https://ali-image.dabanjia.com/static/mp/dabanjia/images/file-icon/file-cad.png",
 }
 export default {
   name: "FileElement",
@@ -58,7 +69,7 @@ export default {
     },
     fileIcon() {
       let fileType = this.fileName.split('.').pop();
-      return FILE_ICON_MAP[fileType] || "http://iph.href.lu/100x100";
+      return FILE_ICON_MAP[fileType] || "https://ali-image.dabanjia.com/static/mp/dabanjia/images/file-icon/file-unknown.png";
     },
   },
   methods: {
