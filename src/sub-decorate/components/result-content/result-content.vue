@@ -270,7 +270,7 @@
           hazardTop:this.hazardTop,
           conformTop:this.conformTop,
         }
-        console.log(data)
+        
         this.$emit('getData',data)
       },
       toItem(id) {
