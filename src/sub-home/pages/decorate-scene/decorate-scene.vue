@@ -264,7 +264,9 @@
 						<view>进行验房服务</view>
 					</view>
 				</view>
-				<image @click="showDecorateMask=false" class="close" src="../../static/ic_decorate_cancel@2x.png"></image>
+				<view class="close" @click="showDecorateMask=false">
+					<image src="../../static/ic_decorate_cancel@2x.png"></image>
+				</view>
 			</view>
 		</view>
     <view
@@ -1018,6 +1020,10 @@ export default {
 		color: #333333;
 	}
 	.popupDecorate .close{
+		width: 100%;
+		height: 64rpx;
+	}
+	.popupDecorate .close image{
 		width: 24rpx;
 		height: 24rpx;
 		display: block;

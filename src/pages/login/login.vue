@@ -2,7 +2,7 @@
 	<view class="wrap">
 		<temp :title="isLogin"></temp>
 		<gome-login v-if="isLogin" :loginInit="loginInit" @suceess="loginSuccess" @fail="loginFail"></gome-login>
-		<button @click="goHome" class="go-home">去首页</button>
+		<image src="../../static/home_owner.png" @click="goHome" class="go-home"></image>
 	</view>
 </template>
 
@@ -152,7 +152,11 @@
 
 	.go-home {
 		position: absolute;
-		top: 714rpx;
+    width: 64rpx;
+    height: 64rpx;
+    top: 87rpx;
+    left: 24rpx;
+		/* top: 714rpx;
 		left: 80rpx;
 
 		width: 590rpx;
@@ -167,6 +171,6 @@
 		border-top-style: none;
 		border-right-style: none;
 		border-bottom-style: none;
-		border-left-style: none;
+		border-left-style: none; */
 	}
 </style>

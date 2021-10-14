@@ -94,9 +94,10 @@
 				</view>
 			</view>
 		</view>
-		<view class="other-btn" @click="toMessage">联系客服
+		<view  v-if="[4,5].includes(detail.status)" class="other-btn" @click="toMessage">联系客服
 		</view>
-
+		<view v-if="[4,5].includes(detail.status)" class="other-btn" @click="reApply">重新申请
+		</view>
 
 		<view style="height: 200rpx;">
 
@@ -130,8 +131,8 @@
 				headerTitle: '',
 				headerTime: '',
 				tips: '',
-				id:'',
-				stockStatus:''
+				id: '',
+				stockStatus: ''
 			}
 		},
 		onLoad(e) {
@@ -143,20 +144,32 @@
 			console.log('**********', this.backHeight);
 			// 导航栏高度 = 状态栏到胶囊的间距（ 胶囊距上距离 - 状态栏高度 ）*2  +  胶囊高度
 			this.navBarHeight =
-				(menuButtonInfo.top - systemInfo.statusBarHeight) * 2 +menuButtonInfo.top+
+				(menuButtonInfo.top - systemInfo.statusBarHeight) * 2 + menuButtonInfo.top +
 				menuButtonInfo.height +
 				"px";
 			if (e && e.id) {
-				this.id=e.id
+				this.id = e.id
 				this.getDetail(e.id);
 			}
-			if(e&&e.stockStatus){
-				this.stockStatus=e.stockStatus
+			if (e && e.stockStatus) {
+				this.stockStatus = e.stockStatus
 			}
 		},
 		methods: {
 			toMessage() {
 				this.$store.dispatch("openCustomerConversation");
+			},
+			reApply(){
+				//TODO 重新申请
+				getApp().globalData.naviData=this.detail;
+				let type=0;
+				if(this.detail.isReturnInventory){
+					type=1
+				}
+				uni.navigateTo({
+					url:`../warehouse-refund/warehouse-refund?refundType=${this.detail.type}&id=${this.detail.id}&type=${type}`
+				})
+				
 			},
 			refuntType(type) {
 				let res = '';
@@ -199,7 +212,7 @@
 				refundDetail({
 					id
 				}).then(e => {
-					e.stockStatus=this.stockStatus
+					e.stockStatus = this.stockStatus
 					this.detail = e;
 					if ([0, 1].includes(e.status)) {
 						//退款中
