@@ -171,6 +171,7 @@
       uni.showTabBar()
       this.userId = uni.getStorageSync("userId")
       if (!this.userId) {
+				this.waitPayOrderNum = 0
         this.userName = "点击登录";
         this.isLogin = false;
         this.userInfo = null;
