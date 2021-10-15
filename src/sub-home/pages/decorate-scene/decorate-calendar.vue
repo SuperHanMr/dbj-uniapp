@@ -78,18 +78,16 @@
 			this.filterDynamics(this.date);
 		},
 		mounted(){
-			this.requestSigns()
+			//当天日期
 			let y = new Date().getFullYear()
-			let mon = date.getMonth()+1
+			let mon = new Date().getMonth()+1
 			let m = mon < 10? `0${mon}` : mon
-			let d = date.getDate()
+			let d = new Date().getDate()
 			this.date = `${y}-${m}-${d}`
 			this.filterDynamics(this.date);
+			this.requestSigns()
 		},
 		methods:{
-			change(e){
-				console.log(e)
-			},
 			requestSigns(){
 				let y = new Date().getFullYear()
 				let m = new Date().getMonth() + 1
