@@ -12,10 +12,7 @@
         </view>
       </view>
       <!-- 运费  有仓库默认显示  无仓库必显示-->
-      <view
-        class="price-item"
-        v-if="data.showFreight && data.stockType == 0"
-      >
+     <view  class="price-item" v-if="data.showFreight">
         <view class="title">
           <text style="margin-right: 8rpx;">运费</text>
           <text class="icon">?</text>
@@ -26,11 +23,10 @@
         </view>
       </view>
 
+			
+
       <!-- 搬运费  有仓库默认显示  无仓库必显示-->
-      <view
-        class="price-item"
-        v-if="data.showFreight && data.stockType == 0 "
-      >
+      <view class="price-item" v-if="data.showFreight">
         <view class="title">
           <text style="margin-right: 8rpx;">搬运费</text>
           <text class="icon">?</text>
@@ -42,10 +38,7 @@
       </view>
 
       <!-- 有押金就显示 -->
-      <view
-        class="price-item"
-        v-if="data.depositTotalAmount"
-      >
+      <view class="price-item" v-if="data.depositTotalAmount">
         <view class="title">
           <text style="margin-right: 8rpx;">总押金</text>
         </view>
@@ -96,10 +89,7 @@
     </view>
 
     <!-- 其他情况 -->
-    <view
-      class="footer"
-      v-else
-    >
+    <view class="footer" v-else>
       <text style="margin-right: 12rpx;">实付</text>
       <text style="color: #FF3347;">
         <text>￥</text>

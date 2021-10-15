@@ -136,6 +136,7 @@
     methods: {
       finishEditing(item) {
         item.isEdit = false
+        this.submitMaterial(item)
       },
       restoreDefault(item) {
         this.$nextTick(() => {
@@ -199,8 +200,8 @@
         })
       },
       edit(item) {
-        
         item.isEdit = true
+        this.submitMaterial(item)
       },
       initItemList(list) {
         this.itemList = JSON.parse(JSON.stringify(list))

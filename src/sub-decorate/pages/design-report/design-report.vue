@@ -8,7 +8,7 @@
           <view class="role">设计</view>
         </view>
       </view>
-      <view class="date">{{calendarFormat(detail.designServerVO.updateTime)}}</view>
+      <view class="date">{{calendarFormat(detail)}}</view>
     </view>
     <view class="card flex-row-bet">
       <view class="t">颜值报告</view>
@@ -74,7 +74,7 @@
       customReport() {
         const {
           customReport
-        } = this.detailF
+        } = this.detail
         const token = uni.getStorageSync("scn")
         uni.navigateTo({
           url: `/sub-decorate/pages/custom-report/custom-report?token=${token}&id=${customReport.id}`
@@ -93,6 +93,9 @@
         serverReports(this.decorateMsg.serveId).then(data => {
           this.detail = data
         })
+      },
+      calendarFormat(detail) {
+        return calendarFormat(detail?.designServerVO?.updateTime)
       }
     }
   }
