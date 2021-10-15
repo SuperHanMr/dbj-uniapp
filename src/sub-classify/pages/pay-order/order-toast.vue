@@ -7,7 +7,7 @@
               <text class="tip-word">部分商品在当前地址下暂时不支持购买，点击确认后会将该商品移回至购物车，其他商品可继续进行结算</text>
             </view>
           </view>
-          <address-picker originFrom="orderToast" :houseId="houseId" @closeToast="closeToast"></address-picker>
+          <address-picker originFrom="orderToast" :houseId="houseId" @closeToast="closeToast" v-if="addressShow"></address-picker>
           <scroll-view scroll-y="true" class="shop-scroll">
             <view class="content">
               <view class="shop-item" v-for="(shopItem, index) in noStoreInfos.storeInfos" :key='index' v-if="shopItem.skuInfos.length">
@@ -49,7 +49,7 @@
           </scroll-view>
           <view class="bottom">
             <button @click="backShopCart">返回购物车</button>
-            <button @click="confirm">确定</button>
+            <button @click="confirm" :class="{'no-confirm': !this.hasCanBuy}">确定</button>
           </view>
         </view>
     </uni-popup>
@@ -66,12 +66,15 @@
     data() {
       return {
         goodsList:[1],
-        shopList:[1]
+        shopList:[1],
+        addressShow: false
       }
     },
     methods: {
       showPupop() {
         this.$refs.noBuyToast.open()
+        console.log(this.houseId, "houseId")
+        this.addressShow = true
       },
       confirm(){
         if(!this.hasCanBuy){
@@ -253,5 +256,8 @@
   .bottom button:nth-child(2){
     background: linear-gradient(135deg,#00bfaf, #00bfbc);;
     color: #FFFFFF;
+  }
+  .no-confirm{
+    opacity: 0.5;
   }
 </style>

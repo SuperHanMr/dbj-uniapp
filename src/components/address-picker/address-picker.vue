@@ -101,6 +101,7 @@
           let params = {
             estateId: v
           }
+          console.log(v, "estateId")
           getProductID(params).then((data) => {
             this.addressInfo.projectId = data
             this.$emit('emitInfo', this.addressInfo)
