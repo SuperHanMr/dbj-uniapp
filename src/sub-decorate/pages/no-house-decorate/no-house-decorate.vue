@@ -11,7 +11,7 @@
       <my-current-house v-if="currentHouse && currentHouse.id" :houseData="currentHouse"
         @changCurrentHouse="changCurrentHouse">
       </my-current-house>
-      <service-card v-if="(sssType == 'decorate' || sssType == 'design') && design.id" :setting="design"
+      <service-card v-if="(sssType == 'decorate' || sssType == 'design') && design.id" :setting="design" :showLevel="showLevel"
         class="service-card" @selectAnother="selectAnotherHandler('design')" @changeLevel="open">
         <template slot="check">
           <check-box :checked="design.checked" @change="(value)=> {change(design.cardtype, value)}">
@@ -117,6 +117,7 @@
         cityId: null, //市id
         areaId: null, //区id
         levelList: [],
+        showLevel: false,
         defaultHouse: {},
         noData: -1
       }
@@ -303,6 +304,8 @@
           tmp.workerType = this.design.workerType
         }
         changeLevel(tmp).then(data => {
+          this.showLevel = data?.length > 0
+          console.log(this.showLevel)
           this.levelList = data.map(t => {
             return {
               value: t.level,
