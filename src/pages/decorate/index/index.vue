@@ -207,16 +207,18 @@
       this.showNoHouse = false
       this.availGuides = []
       uni.showTabBar()
-      const {
-        currentHouse
-      } = getApp().globalData
-      if (currentHouse?.id) {
-        this.getEstateList()
-        this.$store.dispatch("updateTabBarBadge");
-      } else {
-        this.getEstateList()
-        // this.showNoHouse = true
-      }
+      // const {
+      //   currentHouse
+      // } = getApp().globalData
+      // if (currentHouse?.id) {
+      //   this.getEstateList()
+      //   this.$store.dispatch("updateTabBarBadge");
+      // } else {
+      //   this.getEstateList()
+      //   // this.showNoHouse = true
+      // }
+      this.getEstateList()
+      this.$store.dispatch("updateTabBarBadge")
     },
     data() {
       return {

@@ -117,27 +117,31 @@
 			checkIndex(index,type){
 				console.log(index,type)
 				this.navIndex = index
-				this.requestPage(type)
+				this.requestDrawings(type)
 			},
-			requestPage(type){
+			requestPage(){
 				getServeTypes(this.projectId).then(data => {
 					if(data){
-						this.serveTypes = data
-						let params = {
-							projectId: this.projectId,
-							severType: type
+						this.serveTypes = data || []
+						if(data.length){
+							this.requestDrawings(this.serveTypes[0].type)
 						}
-						getDrawings(params).then(data => {
-							if(data){
-								this.serverList = data.serverVOS.map(item => {
-									item.checked = false
-									return item
-								})
-								this.drawings = data.fileListVO
-								console.log(this.drawings)
-							}
+					}
+				})
+			},
+			requestDrawings(type){
+				let params = {
+					projectId: this.projectId,
+					severType: type
+				}
+				getDrawings(params).then(data => {
+					if(data){
+						this.serverList = data.serverVOS.map(item => {
+							item.checked = false
+							return item
 						})
-						
+						this.drawings = data.fileListVO
+						console.log(this.drawings,'///')
 					}
 				})
 			}
@@ -427,8 +431,11 @@
 		border-radius: 12rpx;
 	}
 	.itemWrap .drawing .name{
-		width: 100%;
+		max-width: 312rpx;
 		height: 36rpx;
+		overflow: hidden;
+		text-overflow: ellipsis;
+		white-space: nowrap;
 		margin-top: 16rpx;
 		font-size: 26rpx;
 		color: #333333;

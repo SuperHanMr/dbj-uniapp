@@ -363,15 +363,17 @@
             } = this.selectedMaterialData
             this.setMaterial(categoryId, origin)
           }
-          let tempArr = [...data?.material?.categoryList]
-          tempArr.forEach(category => {
-            category.itemList.forEach(it => {
-              it.oldId = it.id
-              it.checked = true
-              it.isEdit = false
+          if(data?.material?.categoryList?.length > 0) {
+            let tempArr = [...data?.material?.categoryList]
+            tempArr.forEach(category => {
+              category.itemList.forEach(it => {
+                it.oldId = it.id
+                it.checked = true
+                it.isEdit = false
+              })
             })
-          })
-          uni.setStorageSync("originMaterialList", tempArr)
+            uni.setStorageSync("originMaterialList", tempArr)
+          }
           this.initData()
         }).catch(err => {
           const {
