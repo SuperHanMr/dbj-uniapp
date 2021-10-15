@@ -178,7 +178,7 @@
           for (let i = 0; i < this.dataOrigin.material.categoryList.length; i++) {
             if (this.dataOrigin.material.categoryList[i].categoryId == categoryId) {
               for (let j = 0; j < this.dataOrigin.material.categoryList[i].itemList.length; j++) {
-                if (this.dataOrigin.material.categoryList[i].itemList[j].originalId == item.originalId) {
+                if (this.dataOrigin.material.categoryList[i].itemList[j].originalId === item.originalId) {
                   this.dataOrigin.material.categoryList[i].itemList[j] = item
                   this.setSkuRelation(item)
                   this.computePriceAndShopping()
@@ -291,7 +291,7 @@
           })
         }
         // this.countPrice = temp
-        console.log(this.shopping, this.countPrice)
+        // console.log(this.shopping, this.countPrice)
         // return temp
       },
       batchChangeLevel(cllist) {
