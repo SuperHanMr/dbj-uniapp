@@ -441,6 +441,14 @@
               // 因为项目列表中的projectId字段没有，所以唯一标识用guid方法生成
               item.uid = this.guid()
             })
+            //将默认项目放在首位
+            data.sort((a, b)=> {
+              if(a.defaultEstate && a.relegationType === 1) {
+                return -1
+              }
+              return b.createTime - a.createTime
+            })
+            //end
             this.projectList = data
             const {
               currentProject,
