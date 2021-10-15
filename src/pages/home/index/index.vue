@@ -1051,7 +1051,7 @@
 		z-index: 999;
 		display: flex;
 		flex-direction: row;
-		align-items: center;
+		align-items: center; 
 		padding: 6rpx 24rpx 0 24rpx;
 
 		.img {

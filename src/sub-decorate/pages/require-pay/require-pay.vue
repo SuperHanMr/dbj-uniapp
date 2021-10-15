@@ -81,7 +81,7 @@
 		},
 		computed: {
 			totalPrice() {
-				return this.detail.handlingFees + this.detail.freight;
+				return (this.detail.handlingFees + this.detail.freight).toFixed(2);
 			},
 		},
 		methods: {
