@@ -244,7 +244,7 @@
 	        return false
 	      }
 	      this.choose = date
-	      this.$emit('filterByDate', date)
+	      this.$emit('filterDynamics', date)
 	    },
 	    // 上个月，下个月
 	    turning(_action) {
