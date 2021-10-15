@@ -561,7 +561,10 @@ export default {
     },
     toBack() {
       uni.$emit("refrishHouse");
-      uni.navigateBack({});
+			uni.switchTab({
+			    url: '/pages/home/index/index'
+			});
+      // uni.navigateBack({});
     },
     scrollToBottom() {
       console.log("!!!!!!!");
