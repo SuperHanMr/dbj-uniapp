@@ -102,8 +102,7 @@
 					page: this.dynamicPage,
 					rows: 10,
 					projectId: this.projectId,
-					userTypes: [2,3],
-					recordDateStr: date
+					recordDateStr: this.date
 				}
 				getDynamics(params).then(data => {
 					if(data){

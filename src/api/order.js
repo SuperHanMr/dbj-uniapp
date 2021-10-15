@@ -14,8 +14,10 @@ export function commentsAndFeedBack(params) {
 export function queryToBePaidOrderNum(params) {
 	return request.get(`/order-center/app/order/queryToBePaidOrderNum`, params);
 }
-
-
+//我的-退出登陆 
+export function logout(params) {
+	return request.post(`/app/oauth/gome/logout`, params);
+}
 //我的-订单列表
 export function getOrderList(params) {
 	return request.get(`/order-center/app/order/list`, { params });
