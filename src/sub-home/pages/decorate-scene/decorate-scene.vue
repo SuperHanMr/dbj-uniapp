@@ -510,6 +510,7 @@ export default {
 			replyPage: 1,
 			homePageEstate: {},
 			buyState: false,//是否购买摄像头服务,
+			hasChange: false
     };
   },
   onLoad(option) {
@@ -531,10 +532,7 @@ export default {
   methods: {
 		bindChange(e){
 			this.selectedIndex = e.detail.value - 1
-			if(this.selectedIndex !== -1){
-				this.selectedType = this.selectNodeTypes[this.selectedIndex]
-			}
-			console.log(this.selectNodeTypes)
+			this.hasChange = true
 		},
 		checkBuyServe(){
 			let params = {
@@ -542,7 +540,6 @@ export default {
 			}
 			checkEquipmentServe(params).then(data => {
 				this.buyState = data.buyState
-				console.log(this.buyState,'///////////////////')
 			})
 		},
     inputFocus() {
@@ -738,7 +735,16 @@ export default {
     },
     confirmC() {
       this.showNodeType = false;
-      this.requestDynamic(this.selectedType);
+			if(this.hasChange && this.selectedIndex !== -1){
+				this.selectedType = this.selectNodeTypes[this.selectedIndex].nodeType
+				//nodeType有值
+				this.requestDynamic(this.selectedType)
+			}
+			if(!this.hasChange || this.selectedIndex === -1){
+				this.requestDynamic();
+			}
+			//重置标识位
+			this.hasChange = false
     },
     switchC(index, type) {
       this.selectedIndex = index;
@@ -837,12 +843,10 @@ export default {
 						page: this.dynamicPage,
             projectId: this.projectId,
             nodeType: type,
-            userTypes: [2, 3],
           }
         : {
 						page: this.dynamicPage,
             projectId: this.projectId,
-            userTypes: [2, 3],
           };
       getDecorateDynamic(params).then((data) => {
         if (data) {

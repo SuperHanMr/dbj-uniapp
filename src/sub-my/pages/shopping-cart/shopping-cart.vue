@@ -49,8 +49,8 @@
 									<text class="goodsType">{{goodsItem.productType=== 1?"物品":"服务"}}</text>
 									{{goodsItem.spuName}}
 								</view>
-								<view class="goodsSpec" @click="openSpec(goodsItem.skuId)">
-									{{goodsItem.skuName}}
+								<view class="goodsSpec" @click="openSpec(goodsItem.skuId,goodsItem.goodsChecked)">
+									<view class="text">{{goodsItem.skuName}}</view>
 									<image src="../../../static/shopping-cart/selectOptions@2x.png" class="selectOptions"></image>
 								</view>
 								
@@ -290,16 +290,18 @@
 					let sum = 0
 					item.skuList.forEach(ele=>{
 						if(ele.goodsChecked){
-							sum += (+ele.buyCount*ele.price/100)
+							sum += (+ele.buyCount*(ele.price/100))
 						}
 					})
-					if(sum < item.freeShippingThreshold/100){
+					if(sum < (item.freeShippingThreshold/100)){
 						item.freeShippings = (item.freeShippingThreshold/100-sum).toFixed(2)
-					}else if(sum > item.freeShippingThreshold/100){
+					}else if(sum > (item.freeShippingThreshold/100)){
 						let temp = Math.ceil(sum / (item.freeShippingThreshold/100))
 						item.freeShippings = (item.freeShippingThreshold/100*temp-sum).toFixed(2)
+					}else if(sum === (item.freeShippingThreshold/100)){
+						item.freeShippings = item.freeShippingThreshold/100
 					}
-					if(sum % (item.freeShippingThreshold/100) === 0){
+					if(item.freeShippings === "0.00"){
 						item.freeShippings = item.freeShippingThreshold/100
 					}
 					return item
@@ -317,8 +319,7 @@
 					this.freeShippings()
 				})
 			},
-			openSpec(skuId){
-				
+			openSpec(skuId,goodsChecked){
 				getGoodsSpec(skuId).then(data => {
 					
 					if(data.skuInputType===1){
@@ -679,18 +680,19 @@
 				}
 			},
 			changeCount(isAdd, shopIndex,goodsIndex){
-				let count = +this.shopList[shopIndex].skuList[goodsIndex].buyCount
-				let step = +this.shopList[shopIndex].skuList[goodsIndex].stepLength
-				let miniOrder = +this.shopList[shopIndex].skuList[goodsIndex].minimumOrderQuantity
+				let target = this.shopList[shopIndex].skuList[goodsIndex]
+				let count = +target.buyCount
+				let step = +target.stepLength
+				let miniOrder = +target.minimumOrderQuantity
 				if(isAdd){ // 累加
 					count += step
-					this.shopList[shopIndex].skuList[goodsIndex].buyCount = count.toFixed(2).toString()
+					target.buyCount = count.toFixed(2).toString()
 				}else { // 累减
 					if(count > miniOrder){
 						count -= step
-						this.shopList[shopIndex].skuList[goodsIndex].buyCount = count.toFixed(2).toString()
+						target.buyCount = count.toFixed(2).toString()
 					}else { // 数量为最小步长
-						this.shopList[shopIndex].skuList[goodsIndex].isMiniOrder = true
+						target.isMiniOrder = true
 						uni.showToast({
 							title:"商品数量不能再减少了",
 							icon:"none"
@@ -698,6 +700,14 @@
 					}
 				}
 				this.freeShippings()
+				let params = {
+					userId: this.userId,
+					skuList:[{
+						skuId: target.skuId,
+						buyCount: target.buyCount
+					}]
+				}
+				setBuyCount(params).then(() => {})
 			},	
 			checkedAll(){
 				this.isCheckedAll = !this.isCheckedAll
@@ -1231,15 +1241,20 @@
 	.goodsInfo .goodsSpec{
 		width: fit-content;
 		height: 38rpx;
-		text-overflow: ellipsis;
 		padding: 4rpx;
-		margin: 12rpx 0 12rpx 0;
+		margin: 12rpx 0;
 		background: #fafafa;
 		border:1rpx solid #f0f0f0;
 		border-radius: 4rpx;
 		font-size: 22rpx;
 		color: #999999;
 		display: flex;
+	}
+	.goodsInfo .goodsSpec .text{
+		max-width: 340rpx;
+		overflow: hidden;
+		white-space: nowrap;
+		text-overflow: ellipsis;
 	}
 	.goodsInfo .goodsSpec .selectOptions{
 		width: 28rpx;
