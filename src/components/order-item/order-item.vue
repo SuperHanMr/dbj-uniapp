@@ -6,22 +6,29 @@
 			:style="{paddingBottom:paddingBottom +'rpx'}" 
 			@click="handleDetail()" >
 			<!-- 标签 -->
-			<view class="pic"  >
+			<view class="pic"  v-if="orderStatus==2 && dataList.type == 1 && !dataList.stockType">
 				<!-- 当该商品处于待发货标签时，则对应退款、退款关闭、退款失败状态 -->
-				<view class="icon-status1" v-if="orderStatus == 2 && dataList.type == 1 && !dataList.stockType && (dataList.shipmentStatus == 0 || dataList.refundStatus == 2 || dataList.refundStatus == 3)">
+				<view class="icon-status1" v-if="dataList.showRefundBtn || (dataList.refundBillStatus == 3 || dataList.refundBillStatus == 4 ||dataList.refundBillStatus == 5)|| dataList.shipmentStatus == 0">
 					待发货
 				</view> 
-				<!-- <view class="icon-status1" v-if="orderStatus == 2 && (dataList.shipmentStatus == 1 || dataList.refundStatus == 2 || dataList.refundStatus == 3)">
+				
+				<view class="icon-status1"  v-if="dataList.shipmentStatus == 1">
 					待收货
-				</view> -->
+				</view>
+				
 				<!-- 当该商品正在退款中显示退款中标签，则对应取消退款状态 -->
-				<view class="icon-status1" v-if="orderStatus==2 && dataList.type == 1 && !dataList.stockType && dataList.refundStatus == 0">
+				<view class="icon-status1" v-if="dataList.refundBillStatus == 0 || dataList.refundBillStatus == 1">
 					退款中
 				</view>
+				
 				<!--  当该商品处于已退款状态时，则对应退款成功状态 -->
-				<view class="icon-status2" v-if="orderStatus==2 && dataList.type == 1 && !dataList.stockType && dataList.refundBillStatus == 2" >
+				<view class="icon-status2" v-if="dataList.refundBillStatus == 2" >
 					已退款
 				</view>
+				
+				<image :src="dataList.imgUrl" mode=""></image>
+			</view>
+			<view class="pic" v-else>
 				<image :src="dataList.imgUrl" mode=""></image>
 			</view>
 			
@@ -104,11 +111,10 @@
 		<view 
 			class="apply-refund-container" 
 			:style="{paddingTop:0}" 
-			v-if="!dataList.showRefundBtn && orderStatus==2 && dataList.type == 1
-			&& (dataList.refundBillStatus == 0 || dataList.refundBillStatus == 2  ||dataList.refundBillStatus == 3 ||dataList.refundBillStatus == 4 ||dataList.refundBillStatus == 5)"
+			v-if="!dataList.showRefundBtn && orderStatus==2 && dataList.type == 1 && dataList.stockType==0 && dataList.refundBillStatus >-1"
 		 >
 
-			<view class="button" v-if="dataList.refundBillStatus == 0"  @click.stop="refundCancel">
+			<view class="button" v-if="dataList.refundBillStatus == 0 ||dataList.refundBillStatus == 1"  @click.stop="refundCancel">
 				取消退款
 			</view>
 			
@@ -120,7 +126,7 @@
 				退款失败
 			</view>
 			
-			<view class="button" v-if="dataList.refundBillStatus == 2 || dataList.refundBillStatus == 3" @click.stop="refundClose">
+			<view class="button" v-if="dataList.refundBillStatus == 3 || dataList.refundBillStatus == 4" @click.stop="refundClose">
 				退款关闭
 			</view>
 			

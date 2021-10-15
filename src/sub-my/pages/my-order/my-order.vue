@@ -47,7 +47,15 @@
 									<!-- {{item.orderStatusName}} -->
 									{{
 										item.orderStatus == 1
-										?(item.type==2 ? "进行中" : (item.shipmentStatus == 0?"待发货":item.shipmentStatus == 1 ? "待收货" :"已收货"))//发货状态 （0待发货 1待收货 2已收货）
+										?(item.type == 2 
+											? "进行中" 
+											:item.stockType == 1
+											?"进行中"
+											:(item.shipmentStatus == 0
+												?"待发货"
+												:item.shipmentStatus == 1 
+													? "待收货" 
+													:"已收货"))//发货状态 （0待发货 1待收货 2已收货）
 										:item.orderStatusName
 									}}
 								</view>
