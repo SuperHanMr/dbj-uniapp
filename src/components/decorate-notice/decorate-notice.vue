@@ -139,7 +139,7 @@
 
     .notice-view {
       position: relative;
-      height: 90%;
+      height: 85%;
       padding-top: 164rpx;
     }
 
