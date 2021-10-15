@@ -90,6 +90,11 @@
 		},
 		onLoad(e) {
 			this.data = getApp().globalData.naviData;
+			if(this.data.detailAppVOS&&this.data.detailAppVOS.length&&!this.data.stockAppVOS){
+				console.log('!!~~~~~')
+				this.data.stockAppVOS=this.data.detailAppVOS
+			}
+			
 			this.reasonName = this.data.reason||'';
 			this.remark=this.data.remark||'';
 			this.reasonValue=this.data.reasonId||''
@@ -104,6 +109,7 @@
 				title = "仅退款(退库存)";
 			}
 			this.projectId = e.projectId;
+			this.getRefundReasonList();
 			uni.setNavigationBarTitle({
 				title: title,
 			});
@@ -118,9 +124,6 @@
 				})
 			})
 			this.refundList = list;
-
-
-			this.getRefundReasonList();
 			this.uploadNum()
 		},
 
@@ -144,6 +147,7 @@
 				this.uploadNum()
 			},
 			getRefundReasonList() {
+				console.log('????????')
 				refundReason({
 					codeKey: "refund_reason",
 				}).then((list) => {

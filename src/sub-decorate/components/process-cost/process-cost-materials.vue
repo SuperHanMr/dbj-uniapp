@@ -33,7 +33,7 @@
                       <text>{{item.price / 100}}</text>
                     </view>
                     <view class="editing" v-if="item.isEdit">
-                      <view class="btl" @click="restoreDefault">恢复默认</view>
+                      <view class="btl" @click="restoreDefault(item)">恢复默认</view>
                       <view class="line"></view>
                       <view class="btr" @click="finishEditing(item)">完成编辑</view>
                     </view>
@@ -90,6 +90,7 @@
     data() {
       return {
         itemList: [],
+        currentCategoryItemList: []
       }
     },
     props: {
@@ -103,6 +104,7 @@
     },
     mounted() {
       this.initItemList(this.content.itemList)
+      this.currentCategoryItemList = uni.getStorageSync("originMaterialList")
     },
     watch: {
       content(newVal, oldVal) {
@@ -135,14 +137,19 @@
       finishEditing(item) {
         item.isEdit = false
       },
-      restoreDefault() {
+      restoreDefault(item) {
         this.$nextTick(() => {
-          let arr = []
-          const item = uni.getStorageSync("currentItemOriginData")
+          let arr = [], originItem = {}
+          const originMaterialList = uni.getStorageSync("originMaterialList")
+          const category = originMaterialList.find(category => category.categoryId == this.content.categoryId)
+          if(category) {
+            originItem = category?.itemList.find(t => t.originalId === item.originalId)
+          }
+          //currentItemOriginData
           this.itemList.forEach(t => {
-            if (t.originalId === item.originalId) {
+            if (t.originalId === originItem.originalId) {
               arr.push({
-                ...item
+                ...originItem
               })
             } else {
               arr.push({
@@ -152,7 +159,7 @@
           })
           this.itemList = [...arr]
 
-          this.submitMaterial(item)
+          this.submitMaterial(originItem)
         })
       },
       reduce(item) {
@@ -171,8 +178,10 @@
         })
       },
       goMaterialsList(item) {
+        let allSkuId = this.content.itemList.map(res => res.id).join("-")
+        console.log(allSkuId)
         uni.navigateTo({
-          url: `/sub-decorate/pages/materials-list/materials-list?id=${item.id}&categoryId=${item.categoryId}&areaId=${this.areaId}`
+          url: `/sub-decorate/pages/materials-list/materials-list?id=${item.id}&categoryId=${item.categoryId}&areaId=${this.areaId}&originalId=${item.originalId}&allSkuId=${allSkuId}`
         })
       },
 
@@ -190,10 +199,7 @@
         })
       },
       edit(item) {
-        uni.setStorageSync("currentItemOriginData", {
-          ...item,
-          oldId: item.oldId || item.id
-        })
+        
         item.isEdit = true
       },
       initItemList(list) {

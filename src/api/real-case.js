@@ -84,3 +84,6 @@ export function getAddressBook(projectId) {
 export function removeComment(commentId) {
   return request.delete(`/app/generalComment/${commentId}`, {});
 }
+export function checkEquipmentServe(params) {
+  return request.post(`/pm/app/equipmentBind/checkBuyEquipmentServe`, params);
+}

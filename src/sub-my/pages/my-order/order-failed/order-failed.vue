@@ -2,11 +2,18 @@
   <view class="container">
 
     <!-- 退款详情 --退款关闭   退款取消与商家拒接 两个页面-->
-    <view class="order-container" v-if="type =='refund'" :style="{paddingBottom:containerPaddingBottom}" >
+    <view
+      class="order-container"
+      v-if="type =='refund'"
+      :style="{paddingBottom:containerPaddingBottom}"
+    >
       <view class="order-status">
         <view class="backgroundStyle" />
         <view class="status">
-          <image src="@/static/order/ic_order_failed@2x.png" mode="" />
+          <image
+            src="@/static/order/ic_order_failed@2x.png"
+            mode=""
+          />
           <text v-if="status == 3 || status == 4">退款关闭</text>
           <text v-if="status == 5">退款失败</text>
         </view>
@@ -14,29 +21,56 @@
       </view>
 
       <view class="order-header">
-        <image v-if="status == 5 " src="../../../static/ic_order_refund_failed@2x.png"  mode=""/>
-        <image v-else src="@/static/order/ic_failed@2x.png" mode=""/>
-				
-        <view v-if="status == 3" class="cancel-text">
+        <image
+          v-if="status == 5 "
+          src="../../../static/ic_order_refund_failed@2x.png"
+          mode=""
+        />
+        <image
+          v-else
+          src="@/static/order/ic_failed@2x.png"
+          mode=""
+        />
+
+        <view
+          v-if="status == 3"
+          class="cancel-text"
+        >
           商家拒绝了您的申请，如有问题未解决，您可以重新申请
         </view>
-        <view v-if="status == 4" class="cancel-text">
+        <view
+          v-if="status == 4"
+          class="cancel-text"
+        >
           您已取消了本次退款，如有问题未解决，您可以重新申请
         </view>
-        <view v-if="status == 5" class="cancel-text failed-text">
+        <view
+          v-if="status == 5"
+          class="cancel-text failed-text"
+        >
           您的退款账户存在异常，您可联系客服或者重新发起申请
         </view>
       </view>
 
-      <view class="body1" v-for="item in refundInfo.detailAppVOS" :key="item.id" >
+      <view
+        class="body1"
+        v-for="item in refundInfo.detailAppVOS"
+        :key="item.id"
+      >
         <order-item
           :dataList="item"
           :refundType="true"
           @handleDetail="productDetail(item,'refund')"
         />
-        <view class="refund-money" v-if="item.freight || item.handlingFees">
+        <view
+          class="refund-money"
+          v-if="item.freight || item.handlingFees"
+        >
           <!--运费 -->
-          <view class="price-item" v-if="item.freight">
+          <view
+            class="price-item"
+            v-if="item.freight"
+          >
             <view class="title">
               <text style="margin-right: 8rpx;">运费</text>
               <text class="icon">?</text>
@@ -48,7 +82,10 @@
           </view>
 
           <!-- 搬运费 -->
-          <view class="price-item" v-if="item.handlingFees">
+          <view
+            class="price-item"
+            v-if="item.handlingFees"
+          >
             <view class="title">
               <text style="margin-right: 8rpx;">搬运费</text>
               <text class="icon">?</text>
@@ -64,9 +101,10 @@
       <order-refund-info :refundInfo="refundInfo"></order-refund-info>
 
       <view
-				v-if="status == 3 || status == 5 || showReApply==true "
+        v-if="status == 3 || status == 5 || showReApply==true "
         class="contact-customer-Reapply"
-        :style="{paddingBottom:systemBottom,height:systemHeight}">
+        :style="{paddingBottom:systemBottom,height:systemHeight}"
+      >
         <view
           v-if="status == 3 || status == 5 "
           class="contact-customer"
@@ -74,27 +112,48 @@
         >
           联系客服
         </view>
-				
-        <view v-if="showReApply==true" class="Reapply" @click="toApplayForRefund(refundInfo)" >
+
+        <view
+          v-if="showReApply==true"
+          class="Reapply"
+          @click="toApplayForRefund(refundInfo)"
+        >
           重新申请
         </view>
       </view>
     </view>
 
     <!-- 订单详情  已关闭页面 -->
-    <view class="order-container" v-if="type =='close'" :style="{paddingBottom:systemBottom}" >
+    <view
+      class="order-container"
+      v-if="type =='close'"
+      :style="{paddingBottom:systemBottom}"
+    >
       <view class="order-status">
         <view class="backgroundStyle" />
         <view class="status">
-          <image src="@/static/order/ic_order_failed@2x.png" mode=""/>
+          <image
+            src="@/static/order/ic_order_failed@2x.png"
+            mode=""
+          />
           <text>已关闭</text>
         </view>
       </view>
       <order-user-base-info :data="orderInfo"></order-user-base-info>
-      <view class="body2"  v-for="(item,index) in orderInfo.details" :key="index" >
-        <view class="header" @click="gotoShop(item)">
+      <view
+        class="body2"
+        v-for="(item,index) in orderInfo.details"
+        :key="index"
+      >
+        <view
+          class="header"
+          @click="gotoShop(item)"
+        >
           <text>{{item.storeName}}</text>
-          <image src="@/static/order/ic_more@2x.png" mode="" />
+          <image
+            src="@/static/order/ic_more@2x.png"
+            mode=""
+          />
         </view>
         <view
           v-for="item2 in item.details"
@@ -134,7 +193,7 @@ export default {
       id: -1,
       status: "",
       from: "",
-			showReApply:true,
+      showReApply: true,
 
       refundInfo: {},
       orderInfo: {},
@@ -158,10 +217,10 @@ export default {
     this.id = Number(e.id);
     this.status = Number(e.status);
     this.from = e.from;
-		this.showReApply = e.showReApply
-		console.log("this.showReApply=",this.showReApply)
+    this.showReApply = true;
+    console.log("this.showReApply=", this.showReApply);
   },
-	onShow() {
+  onShow() {
     if (this.type == "refund") {
       //退款成功页面
       this.refundDetail();
@@ -181,12 +240,11 @@ export default {
       //订单关闭页面
       this.title = "退款中";
       this.orderDetail();
-			const currentHouse = getApp().globalData.currentHouse
-			console.log("currentHouse=",currentHouse)
-			this.areaId = currentHouse.areaId;
+      const currentHouse = getApp().globalData.currentHouse;
+      console.log("currentHouse=", currentHouse);
+      this.areaId = currentHouse.areaId;
     }
-	},
-	
+  },
 
   // 改变返回下一个页面的路径
   onUnload() {
@@ -220,22 +278,23 @@ export default {
 
     // 申请退款
     toApplayForRefund(data) {
-			if(data.isWarehoused){
-				// 有仓库跳转到成龙的页面
-				getApp().globalData.naviData= data;
-				let type=0;
-				if(data.isReturnInventory){
-					type=1
-				}
-				uni.navigateTo({
-					url:`../warehouse-refund/warehouse-refund?refundType=${data.type}&id=${data.id}&type=${type}`
-				})
-			}else{
-				wx.setStorageSync("wholeRefundOrderInfo", JSON.stringify(data));
-				uni.navigateTo({
-					url: `/sub-my/pages/apply-for-refund/apply-for-refund?refundId=${data.id}`,
-				});
-			}
+      if (data.isWarehoused) {
+				console.log(data);
+        // 有仓库跳转到成龙的页面
+        getApp().globalData.naviData = data;
+        let type = 0;
+        if (data.isReturnInventory) {
+          type = 1;
+        }
+        uni.navigateTo({
+          url: `/sub-decorate/pages/warehouse-refund/warehouse-refund?refundType=${data.type}&id=${data.id}&type=${type}`,
+        });
+      } else {
+        wx.setStorageSync("wholeRefundOrderInfo", JSON.stringify(data));
+        uni.navigateTo({
+          url: `/sub-my/pages/apply-for-refund/apply-for-refund?refundId=${data.id}`,
+        });
+      }
     },
     // 跳转到商品详情页面
     productDetail(item, type) {
@@ -262,7 +321,7 @@ export default {
     contactCustomer() {
       //跳转到客服的页面
       console.log("联系客服");
-			this.$store.dispatch("openCustomerConversation");
+      this.$store.dispatch("openCustomerConversation");
     },
     handlePrice(price) {
       let list = String(price).split(".");

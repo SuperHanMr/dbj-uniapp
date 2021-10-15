@@ -2,7 +2,7 @@
 	<view style="background-color: #FFF;">
 		<custom-navbar opacity="1" :showBack="false" bgcolor="#FFF">
 			<template v-slot:back>
-				<image class="icon_logo" src="http://dbj.dragonn.top/static/mp/dabanjia/images/home/dbj_logo.png"
+				<image class="icon_logo" src="http://dbj.dragonn.top/static/mp/dabanjia/images/home/dbj_logo_new.png"
 					mode=""></image>
 			</template>
 		</custom-navbar>
@@ -30,13 +30,13 @@
 		<view :style="{height:navBarHeight}">
 		</view>
 		<!-- 占位 -->
-		<view style="height: 80rpx;">
+		<view style="height: 87rpx;">
 		</view>
 		<!-- banner -->
 		<view class="banner-content">
 			<swiper :autoplay="swiperAuto" interval="2000" duration="500" :circular="true" @change="swiperChange">
 				<swiper-item v-for="(item,index) in bannerList" :key="item.id">
-					<image class="banner-img" :src="item.resUrl" mode="aspectFit" @click="toWebview(item.jumpUrl)">
+					<image class="banner-img" :src="item.resUrl" mode="scaleToFill" @click="toWebview(item.jumpUrl)">
 					</image>
 				</swiper-item>
 			</swiper>
@@ -55,7 +55,7 @@
 						{{item.name}}
 					</view>
 					<image v-if="(index+1)%4" class="border-img"
-						src="http://dbj.dragonn.top/static/mp/dabanjia/images/home/home-zone-border1.png" mode="">
+						src="http://dbj.dragonn.top/static/mp/dabanjia/images/home/home-zone-border_new.png" mode="">
 					</image>
 				</view>
 			</view>
@@ -149,7 +149,7 @@
 
 		</view>
 		<view class="goods-list">
-			<view class="item" v-for="(item,index) in goodsList" :key="item.id"
+			<view class="item" v-for="(item,index) in goodsList" :key="item.id" :class="{'margin-left16':index%2!=0,'margin-left24':index%2==0}"
 				@click="toGoodsDetail(item.product.skuId)">
 				<image class="img" :src="item.product.skuImage" mode="aspectFill"></image>
 				<view class="info">
@@ -261,7 +261,9 @@
 				"px";
 		},
 		onShow() {
-			this.token = getApp().globalData.token;
+			setTimeout(() => {
+				this.token = getApp().globalData.token;
+			}, 500)
 			uni.showTabBar();
 			this.swiperAuto = true;
 			getApp().globalData.currentRoute = "/pages/home/index/index";
@@ -665,6 +667,9 @@
 		height: 0px;
 		color: transparent;
 	}
+	page{
+		background: #FFF;
+	}
 
 	.icon_down {
 		width: 28rpx;
@@ -701,6 +706,8 @@
 		margin-right: 48rpx;
 	}
 
+
+
 	.goods-list {
 		display: flex;
 		margin-top: 8rpx;
@@ -709,6 +716,14 @@
 		flex-wrap: wrap;
 		justify-content: flex-start;
 
+		.margin-left16 {
+			margin-left: 16rpx;
+		}
+
+		.margin-left24 {
+			margin-left: 24rpx;
+		}
+
 		.item {
 			margin-top: 16rpx;
 			flex-shrink: 0;
@@ -716,7 +731,6 @@
 			height: 520rpx;
 			border-radius: 18rpx;
 			border: 1rpx solid #e6eaed;
-			margin-left: 21.3rpx;
 			position: relative;
 			overflow: hidden;
 
@@ -836,7 +850,7 @@
 				left: 12rpx;
 				height: 28rpx;
 				background: rgba(0, 0, 0, 0.35);
-				filter: blur(3rpx);
+				// filter: blur(3rpx);
 				border-radius: 8rpx;
 				color: #ffffff;
 				display: flex;
@@ -918,7 +932,7 @@
 		margin-top: 16rpx;
 
 		.item {
-			width: 344rpx;
+			width: 343rpx;
 			height: 150rpx;
 			background: #f5fcfc;
 			border-radius: 16rpx;
@@ -1023,7 +1037,7 @@
 		left: 50%;
 		background: rgba(255, 255, 255, 0.4);
 		transform: translateX(-50%);
-		border-radius: 3rpx;
+		border-radius: 2rpx;
 		display: flex;
 		flex-direction: row;
 	}
@@ -1038,7 +1052,7 @@
 		display: flex;
 		flex-direction: row;
 		align-items: center;
-		padding: 6rpx 24rpx 6rpx 24rpx;
+		padding: 6rpx 24rpx 0 24rpx;
 
 		.img {
 			width: 76rpx;
