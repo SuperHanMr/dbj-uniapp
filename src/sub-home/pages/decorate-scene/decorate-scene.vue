@@ -1399,7 +1399,6 @@ export default {
 		padding-top: 56rpx;
 	}
 	.location {
-		width: fit-content;
 		max-width: 406rpx;
 		overflow: hidden;
 		text-overflow: ellipsis;
