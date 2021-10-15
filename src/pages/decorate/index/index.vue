@@ -253,20 +253,16 @@
     mounted() {
       uni.showTabBar()
       this.showNoHouse = false
-      const {
-        currentHouse
-      } = getApp().globalData
-      if (currentHouse?.id) {
-        this.deviceId = uni.getStorageSync('uuDeviceId')
-        if (!this.deviceId) {
-          this.deviceId = uuidv4()
-          uni.setStorageSync('uuDeviceId', this.deviceId);
-        }
-        uni.$on('system-messages', this.watchMsg)
-      } else {
-        // uni.hideTabBar()
-        // this.showNoHouse = true
+      // const {
+      //   currentHouse
+      // } = getApp().globalData
+      uni.$on('system-messages', this.watchMsg)
+      this.deviceId = uni.getStorageSync('uuDeviceId')
+      if (!this.deviceId) {
+        this.deviceId = uuidv4()
+        uni.setStorageSync('uuDeviceId', this.deviceId);
       }
+      
     },
     destory() {
       clearTimeout(timer)
