@@ -4,7 +4,7 @@
       <view class="title">
         <view>人工费用（{{levelList.length > 0 ? LEVEL[artificialLevel - 1].label : (dataOrigin.artificial.grade || "无等级")}}）
         </view>
-        <view v-if="msg.payStatus != 2" class="change-level" @click="openPopUp">更换等级</view>
+        <view v-if="msg.payStatus != 2 && levelList.length > 0" class="change-level" @click="openPopUp">更换等级</view>
       </view>
       <view class="process-cost-list">
         <process-cost-artificial :key="index" v-for="(item,index) in dataOrigin.artificial.categoryList"
