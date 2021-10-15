@@ -11,8 +11,8 @@
       <my-current-house v-if="currentHouse && currentHouse.id" :houseData="currentHouse"
         @changCurrentHouse="changCurrentHouse">
       </my-current-house>
-      <service-card v-if="(sssType == 'decorate' || sssType == 'design') && design.id" :setting="design" :showLevel="showLevel"
-        class="service-card" @selectAnother="selectAnotherHandler('design')" @changeLevel="open">
+      <service-card v-if="(sssType == 'decorate' || sssType == 'design') && design.id" :setting="design"
+        :showLevel="showLevel" class="service-card" @selectAnother="selectAnotherHandler('design')" @changeLevel="open">
         <template slot="check">
           <check-box :checked="design.checked" @change="(value)=> {change(design.cardtype, value)}">
           </check-box>
@@ -342,18 +342,23 @@
             this.editField(this.design, values)
             this.changeLevel()
           } else {
-            const checked = serviceType == 4 ? this.design.checked : (this.sssType == "decorate" || this.sssType == "design")
-            let designData = data.filter(t => t.serviceType === 1)
+            const checked = serviceType == 4 ? this.design.checked : (this.sssType == "decorate" || this.sssType ==
+              "design")
+            let designData = data.filter(t => t.serviceType === 1 && t.inServiceArea)
             if (designData && designData.length > 0) {
               this.design = {
                 ...designData[0],
                 title: "设计服务",
                 cardtype: "design",
-                checked: checked,//this.sssType == "decorate" || this.sssType == "design",
+                checked: checked, //this.sssType == "decorate" || this.sssType == "design",
                 level: 1,
                 insideArea: this.currentHouse.insideArea
               }
               this.changeLevel()
+            } else {
+              this.design = {
+                checked: false,
+              }
             }
           }
           if (serviceType == 2) {
@@ -368,7 +373,7 @@
             this.checkHouse = {
               checked: false,
             }
-            let checkHouseData = data.filter(t => t.serviceType === 2)
+            let checkHouseData = data.filter(t => t.serviceType === 2 && t.inServiceArea)
             if (checkHouseData && checkHouseData.length > 0) {
               this.checkHouse = {
                 ...checkHouseData[0],
@@ -388,16 +393,21 @@
             }
             this.editField(this.actuary, values)
           } else {
-            const checked = serviceType == 1 ? this.actuary.checked : (this.sssType == "decorate" || this.sssType == "actuary")
-            
-            let actuaryData = data.filter(t => t.serviceType === 4)
+            const checked = serviceType == 1 ? this.actuary.checked : (this.sssType == "decorate" || this.sssType ==
+              "actuary")
+
+            let actuaryData = data.filter(t => t.serviceType === 4 && t.inServiceArea)
             if (actuaryData && actuaryData.length > 0) {
               this.actuary = {
                 ...actuaryData[0],
                 title: "精算服务",
                 cardtype: "actuary",
-                checked: checked,//this.sssType == "decorate" || this.sssType == "actuary",
+                checked: checked, //this.sssType == "decorate" || this.sssType == "actuary",
                 insideArea: this.currentHouse.insideArea
+              }
+            } else {
+              this.actuary = {
+                checked: false,
               }
             }
           }
