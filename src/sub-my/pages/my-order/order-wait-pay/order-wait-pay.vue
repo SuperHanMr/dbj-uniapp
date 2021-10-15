@@ -1,22 +1,13 @@
 <template>
   <view class="container">
-    <view
-      class="order-container"
-      :style="{paddingBottom:112+containerBottom+'rpx'}"
-    >
+    <view class="order-container" :style="{paddingBottom:112+containerBottom+'rpx'}">
       <view class="order-status">
         <view class="backgroundStyle" />
         <view class="status">
-          <image
-            src="../../../static/ic_status_wait_pay@2x.png"
-            mode="scaleToFill"
-          />
+          <image src="../../../static/ic_status_wait_pay@2x.png" mode="scaleToFill"/>
           <text>待付款</text>
         </view>
-        <view
-          class="time"
-          v-if="orderInfo.showCancelOrderTime"
-        >
+        <view class="time" v-if="orderInfo.showCancelOrderTime" >
           <text style="margin-right: 16rpx;">剩余支付时间</text>
 					<count-down :start="orderInfo.remainTime" @finish="goToCancelDetail"></count-down>
 					<!-- <uni-countdown
@@ -33,29 +24,13 @@
 
       <order-user-base-info :data="orderInfo"></order-user-base-info>
 
-      <view
-        class="store-container"
-        v-for="(item,index) in orderInfo.details"
-        :key="index"
-      >
-        <view
-          class="storeItem"
-          :class="{paddingBottom: item.stockType == 1 }"
-        >
-          <view
-            class="header"
-            @click="gotoShop(item)"
-          >
+      <view class="store-container" v-for="(item,index) in orderInfo.details" :key="index">
+        <view class="storeItem" :class="{paddingBottom: item.stockType == 1 }">
+          <view class="header" @click="gotoShop(item)">
             <text>{{item.storeName}}</text>
-            <image
-              src="@/static/order/ic_more@2x.png"
-              mode=""
-            />
+            <image src="@/static/order/ic_more@2x.png" mode=""/>
           </view>
-          <view
-            v-for="item2 in item.details"
-            :key="item2.id"
-          >
+          <view v-for="item2 in item.details" :key="item2.id">
             <order-item
               :orderStatus="1"
               :dataList="item2"
@@ -63,65 +38,38 @@
             />
           </view>
 
-          <view
-            class="discount-container"
-            v-if="item.showFreight"
-          >
+          <view class="discount-container" v-if="item.showFreight" >
             <view class="left">
-              <view
-                class="item"
-                v-if="item.type == 1"
-              >
+              <view class="item" v-if="item.type == 1" >
                 <text>运费</text><text>￥{{item.freight?`￥${item.freight}`:"--"}}</text>
               </view>
-              <view
-                class="item"
-                v-if="item.platformDiscount"
-              >
+              <view class="item" v-if="item.platformDiscount">
                 <text>平台优惠</text><text>￥{{item.platformDiscount}}</text>
               </view>
             </view>
 
-            <view
-              class="line1"
-              v-if="item.handlingFees || item.storeDiscount"
-            />
-            <view
-              class="line2"
-              v-else
-            />
+            <view class="line1" v-if="item.handlingFees || item.storeDiscount" />
+            <view class="line2" v-else/>
 
             <view class="right">
-              <view
-                class="item"
-                v-if="item.type == 1"
-              >
+              <view class="item" v-if="item.type == 1">
                 <text>搬运费</text><text>{{item.handlingFees?`￥${item.handlingFees}`:"--"}}</text>
               </view>
-              <view
-                class="item"
-                v-if="item.storeDiscount"
-              >
+              <view class="item" v-if="item.storeDiscount">
                 <text>商家优惠</text><text>￥{{item.storeDiscount}}</text>
               </view>
             </view>
           </view>
 
           <view v-if="item.stockType == 1">
-            <view
-              class="tips"
-              v-if="item.freeShipCount || item.fullExemptionAmount "
-            >
+            <view class="tips" v-if="item.freeShipCount || item.fullExemptionAmount ">
               <text>本次支付</text>
               <text style="color: #333333;">满{{item.fullExemptionAmount}}元</text>
               <text>，可获得</text>
               <text style="color: #333333;">{{item.freeShipCount}}次免邮费额度，</text>
               <text>搬运费需要根据实际要货时进行核算</text>
             </view>
-            <view
-              class="tips"
-              v-else
-            >
+            <view class="tips"  v-else >
               <text>搬运费需要根据实际要货时进行核算</text>
             </view>
           </view>
@@ -137,10 +85,7 @@
       <view class="payment-method">
         <text>支付方式</text>
         <view class="method">
-          <image
-            src="@/static/order/ic_order_wechat@2x.png"
-            mode=""
-          />
+          <image  src="@/static/order/ic_order_wechat@2x.png" mode="" />
           <text>微信支付</text>
         </view>
       </view>

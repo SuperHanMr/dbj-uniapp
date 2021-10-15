@@ -233,7 +233,6 @@
     onShow() {
       if (uni.getStorageSync('houseListChooseId')) {
         this.houseId = uni.getStorageSync('houseListChooseId')
-        uni.removeStorageSync('houseListChooseId')
         if(this.$refs.houseDialog) {
           this.$refs.houseDialog.close()
         }
@@ -248,6 +247,9 @@
       }else{
         this.isShow = true
       }
+    },
+    onUnload() {
+      uni.removeStorageSync('houseListChooseId')
     },
     methods: {
       backFrom() {

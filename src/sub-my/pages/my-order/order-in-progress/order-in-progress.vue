@@ -181,7 +181,7 @@
 
 			refundClose(item) {
 				console.log("item数据=",item)
-				const showReApply= item.shipmentStatus ==1?true:false
+				const showReApply= item.shipmentStatus !== 2 ? true : false
 				console.log("showReApply=",showReApply)
 				uni.navigateTo({
 					url:`../order-failed/order-failed?type=refund&id=${item.refundId}&showReApply=${showReApply}&status=${item.refundBillStatus}`
