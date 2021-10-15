@@ -667,6 +667,9 @@
 		height: 0px;
 		color: transparent;
 	}
+	page{
+		background: #FFF;
+	}
 
 	.icon_down {
 		width: 28rpx;
@@ -929,7 +932,7 @@
 		margin-top: 16rpx;
 
 		.item {
-			width: 344rpx;
+			width: 343rpx;
 			height: 150rpx;
 			background: #f5fcfc;
 			border-radius: 16rpx;
@@ -1034,7 +1037,7 @@
 		left: 50%;
 		background: rgba(255, 255, 255, 0.4);
 		transform: translateX(-50%);
-		border-radius: 3rpx;
+		border-radius: 2rpx;
 		display: flex;
 		flex-direction: row;
 	}
@@ -1097,7 +1100,6 @@
 		.banner-img {
 			width: 100%;
 			height: 234rpx;
-			border-radius: 16rpx;
 		}
 	}
 
