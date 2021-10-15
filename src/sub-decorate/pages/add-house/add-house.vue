@@ -27,9 +27,9 @@
 				</view>
 				<view class="form-item">
 					<label class="item-label">小区</label>
-					<input class="uni-input" placeholder-class="placeholder" :disabled="!hasPoint||roomId&&isEdit" name="input"
+					<input class="uni-input" placeholder-class="placeholder" :disabled="!hasPoint||(roomId&&isEdit)" name="input"
 						v-model="addData.housingEstate" placeholder="房屋所在小区" />
-            <view class="icon-clear" v-if="addData.housingEstate" @click.stop="clear('housingEstate')">
+            <view class="icon-clear" v-if="addData.housingEstate&&!isEdit" @click.stop="clear('housingEstate')">
               <uni-icons color="#c0c4cc" size="15" type="clear" />
             </view>
 				</view>
@@ -39,7 +39,7 @@
 					<label class="item-label">楼栋房号</label>
 					<input class="uni-input" placeholder-class="placeholder" name="input" :disabled="roomId&&isEdit" v-model="addData.address"
 						placeholder="例:16号楼5层301" />
-            <view class="icon-clear" v-if="addData.address" @click.stop="clear('address')">
+            <view class="icon-clear" v-if="addData.address&&!isEdit" @click.stop="clear('address')">
               <uni-icons color="#c0c4cc" size="15" type="clear" />
             </view>
 				</view>
@@ -62,7 +62,7 @@
 					<!-- <text class="placeholder" v-if="!addData.insideArea">请输入房屋面积</text> -->
 					<view v-if="addData.insideArea" class="uni-input area-text"><text
 							style="visibility: hidden">{{addData.insideArea}}</text>m²</view>
-              <view class="icon-clear" v-if="addData.insideArea" @click.stop="clear('insideArea')">
+              <view class="icon-clear" v-if="addData.insideArea&&!isEdit" @click.stop="clear('insideArea')">
                 <uni-icons color="#c0c4cc" size="15" type="clear" />
               </view>
 					<input v-if="!visible" :maxlength="7" class="uni-input house-area" :disabled="roomId&&isEdit" placeholder-class="placeholder"
@@ -257,6 +257,9 @@
 				});
 			},
 			chooseMap() {
+        if(this.isEdit){
+          return
+        }
 				let that = this;
 				uni.chooseLocation({
 					success: function(res) {
