@@ -1,10 +1,10 @@
 <template>
   <view class="design-list">
-    <material-content-card class="card-item" v-for="(item, index) in dataList" :key="item.product.spuId"
+    <material-content-card class="card-item" v-for="(item, index) in dataList" :key="item.product.skuId" v-if="item.product.skuId == id || !allSkuId.includes(item.product.skuId)"
       :content="item">
       <template slot="radio">
-        <dbj-radio class="card-radio" :value="item.product.spuId + ''"
-          :checked="checkedSpuId === item.product.spuId + ''" @change="radioChange">
+        <dbj-radio class="card-radio" :value="item.product.skuId + ''"
+          :checked="checkedSkuId === item.product.skuId + ''" @change="radioChange">
         </dbj-radio>
       </template>
     </material-content-card>
@@ -27,23 +27,30 @@
     data() {
       return {
         dataList: [],
-        checkedSpuId: null,
+        checkedSkuId: null,
         categoryId: null,
         areaId: null,
         page: 1,
         total: 0,
-        isAllDataLoaded: false
+        isAllDataLoaded: false,
+        allSkuId: [],
+        id: null
       }
     },
     onLoad(option) {
       const {
-        spuId,
+        id,
         categoryId,
-        areaId
+        areaId,
+        originalId,
+        allSkuId
       } = option
-      this.checkedSpuId = spuId + ''
+      this.id = id
+      this.checkedSkuId = id + ''
       this.categoryId = categoryId
       this.areaId = areaId
+      this.originalId = originalId
+      this.allSkuId = allSkuId.split("-").map(t => Number(t))
     },
     onShow() {
       this.dataList = []
@@ -85,11 +92,14 @@
         })
       },
       radioChange(obj) {
-        this.checkedSpuId = obj.value + ''
-        let tmp = this.dataList.filter(t => t.product.spuId == Number(obj.value))[0]
+        this.checkedSkuId = obj.value + ''
+        let tmp = this.dataList.filter(t => t.product.skuId == Number(obj.value))[0]
         uni.$emit('selectedMaterial', {
           categoryId: Number(this.categoryId),
-          item: tmp
+          item: {
+            ...tmp,
+            originalId: this.originalId
+          }
         });
         uni.navigateBack({})
       }

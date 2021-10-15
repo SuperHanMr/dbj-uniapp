@@ -18,17 +18,16 @@
     @touchstart="touchstart"
     @touchend="touchend"
     >
-    <view class="white-circle">
-      <view class="gray-circle">
-        <view class="black-circle">
-          <text class="image-icon"></text>
-          <text class="tip">{{num}}</text>
+    <view class="white-bg" v-if="!moveHidden&&endLeft">
+          
         </view>
-      </view>
+    <view class="white-circle" :class="{'left-style':endLeft}">
+      <image src="http://dbj.dragonn.top/%20static/mp/dabanjia/images/decorate/decorate_msg.png" class="image-icon"></image>
+      <text class="tip">{{num}}</text>
     </view>
-    <!--     <view class="white-bg">
-			        <view class="gray-bg"></view>
-			      </view> -->
+    <view class="white-bg" v-if="!moveHidden&&endRight">
+          
+        </view>
 
   </view>
 </template>
@@ -71,6 +70,14 @@
         left: 0,
         top: 0,
         move: false,
+        moveHidden:false,
+        endLeft:false,
+        endRight:true,
+        leftStyle:{
+          left:'-18px',
+          right:'0',
+          'box-shadow':'26rpx 0rpx 32rpx 0rpx rgba(0, 0, 0, 0.08)'
+        },
         foll: {
 
         }
@@ -132,7 +139,7 @@
           top,
           bottom
         } = this.$options.safeArea
-
+        this.moveHidden = true
         const dot = e.changedTouches[0]
         if (dot.clientX < left + this.width / 2) dot.clientX = left + this.width / 2
         if (dot.clientX > right - this.width / 2) dot.clientX = right - this.width / 2
@@ -161,12 +168,26 @@
           top,
           bottom
         } = this.$options.safeArea
+        this.moveHidden = false
         if (this.foll.isLeft && this.foll.isRight) {
-          if (dot.clientX <= (left + right) / 2) this.offsetX = this.foll.num - this.left
-          if (dot.clientX > (left + right) / 2) this.offsetX = right - this.width - this.foll.num - this.left
+          console.log(111)
+          if (dot.clientX <= (left + right) / 2) {
+            this.endLeft = true
+            this.endRight = false
+            this.offsetX = this.foll.num - this.left
+          }
+          if (dot.clientX > (left + right) / 2){
+            this.endRight = true
+            this.endLeft = false
+            this.offsetX = right - this.width - this.foll.num - this.left
+          } 
         } else if (this.foll.isLeft) {
+          console.log(222)
+          
           this.offsetX = this.foll.num - this.left
         } else if (this.foll.isRight) {
+          console.log(333)
+          
           this.offsetX = right - this.width - this.foll.num - this.left
         }
         if (this.foll.isTop && this.foll.isBottom) {
@@ -192,78 +213,73 @@
 <style lang="scss" scoped>
   /* #ifdef MP-WEIXIN */
   view {
-    height: 100%;
-    width: 100%;
-    display: inherit;
-    justify-content: inherit;
-    align-items: inherit;
+    // height: 100%;
+    // width: 100%;
+    // display: inherit;
+    // justify-content: inherit;
+    // align-items: inherit;
   }
 
   /* #endif */
+  
+  .left-style{
+    left: -38rpx;
+    right: 0;
+    box-shadow: 14rpx 0rpx 32rpx 0rpx rgba(0, 0, 0, 0.08) !important;
+  }
   .white-circle {
-    width: 100rpx;
-    height: 100rpx;
+    width: 80rpx;
+    height: 80rpx;
     opacity: 1;
     background: #fff;
-    // display: inline-block;
+    display: inline-block;
     border-radius: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-
-    // position: absolute;
-    // right: 8px;
-    .gray-circle {
-      width: 80rpx;
-      height: 80rpx;
+    position: relative;
+    right: -38rpx;
+    vertical-align: top;
+    box-shadow: -14rpx 0rpx 32rpx 0rpx rgba(0, 0, 0, 0.08);
+    // display: flex;
+    // align-items: center;
+    // justify-content: center;
+    // left: 28px;
+    .image-icon {
+      width: 60rpx;
+      height: 60rpx;
+      position: absolute;
+      // background-color: #fff;
+      left: 50%;
+      margin-left: -30rpx;
+      top: 50%;
+      margin-top: -30rpx;
+    }
+    .tip {
+      position: absolute;
+      width: 24rpx;
+      height: 24rpx;
       opacity: 1;
-      background: #999;
+      background: #ff3347;
       border-radius: 50%;
-      display: flex;
-      align-items: center;
-      justify-content: center;
+      color: #fff;
+      text-align: center;
+      line-height: 24rpx;
+      font-size: 20rpx;
+      top: 8rpx;
+      right: 0;
+      border: 1px solid #ffffff;
 
-      .black-circle {
-        width: 56rpx;
-        height: 56rpx;
-        opacity: 1;
-        background: #333333;
-        border-radius: 50%;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-
-        .image-icon {
-          width: 36rpx;
-          height: 36rpx;
-          background-color: #fff;
-        }
-        .tip {
-          position: absolute;
-          width: 24rpx;
-          height: 24rpx;
-          opacity: 1;
-          background: #f70000;
-          border-radius: 50%;
-          color: #fff;
-          text-align: center;
-          line-height: 24rpx;
-          font-size: 20rpx;
-          top: 16rpx;
-          right: 16rpx;
-        }
-      }
     }
   }
 
-  // .white-bg{
-  //   width: 28px;
-  //   height: 50px;
-  //   background-color: #fff;
-  //   .gray-bg{
-  //     width: 28px;
-  //     height: 40px;
-  //     background-color: #999999;
-  //   }
-  // }
+  .white-bg{
+    display: inline-block;
+    width: 58rpx;
+    height: 80rpx;
+    background-color: #fff;
+    box-shadow: 0 5rpx 10rpx 0 rgba(0, 0, 0, 0.08);
+    // .gray-bg{
+    //   width: 28px;
+    //   height: 40px;
+    //   background-color: #999999;
+    // }
+  }
 </style>
