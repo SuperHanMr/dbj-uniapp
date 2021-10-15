@@ -195,19 +195,39 @@
       })
     },
     onShow() {
+      const {
+        serviceType
+      } = this.selectedServer
       if (this.sssType == "decorate") {
-        this.design.checked = true
-        this.actuary.checked = true
+        if (serviceType == 1 || serviceType == 4) {
+          // 从更换商品返回的
+        } else {
+          this.design.checked = true
+          this.actuary.checked = true
+        }
       }
       if (this.sssType == "design") {
-        this.design.checked = true
-      }
-      if (this.sssType == "actuary") {
-        this.actuary.checked = true
+        if (serviceType == 1) {
+          // 从更换商品返回的
+        } else {
+          this.design.checked = true
+        }
       }
       if (this.sssType == "checkHouse") {
-        this.checkHouse.checked = true
+        if (serviceType == 2) {
+          // 从更换商品返回的
+        } else {
+          this.checkHouse.checked = true
+        }
       }
+      if (this.sssType == "actuary") {
+        if (serviceType == 4) {
+          // 从更换商品返回的
+        } else {
+          this.actuary.checked = true
+        }
+      }
+
       if (!this.selectHouseData.id) {
         this.getMyHouseList();
       } else {
@@ -308,33 +328,25 @@
             serviceType,
             values
           } = this.selectedServer
-          this.design = {
-            checked: false,
-          }
-          this.checkHouse = {
-            checked: false,
-          }
-          this.actuary = {
-            checked: false,
-          }
           if (serviceType == 1) {
             this.design = {
               title: "设计服务",
               cardtype: "design",
-              checked: true,
+              checked: this.design.checked,
               level: 1,
               insideArea: this.currentHouse.insideArea
             }
             this.editField(this.design, values)
             this.changeLevel()
           } else {
+            const checked = serviceType == 4 ? this.design.checked : (this.sssType == "decorate" || this.sssType == "design")
             let designData = data.filter(t => t.serviceType === 1)
             if (designData && designData.length > 0) {
               this.design = {
                 ...designData[0],
                 title: "设计服务",
                 cardtype: "design",
-                checked: this.sssType == "decorate" || this.sssType == "design",
+                checked: checked,//this.sssType == "decorate" || this.sssType == "design",
                 level: 1,
                 insideArea: this.currentHouse.insideArea
               }
@@ -345,11 +357,14 @@
             this.checkHouse = {
               title: "验房服务",
               cardtype: "checkHouse",
-              checked: true,
+              checked: this.checkHouse.checked,
               insideArea: this.currentHouse.insideArea
             }
             this.editField(this.checkHouse, values)
           } else {
+            this.checkHouse = {
+              checked: false,
+            }
             let checkHouseData = data.filter(t => t.serviceType === 2)
             if (checkHouseData && checkHouseData.length > 0) {
               this.checkHouse = {
@@ -365,18 +380,20 @@
             this.actuary = {
               title: "精算服务",
               cardtype: "actuary",
-              checked: true,
+              checked: this.actuary.checked,
               insideArea: this.currentHouse.insideArea
             }
             this.editField(this.actuary, values)
           } else {
+            const checked = serviceType == 1 ? this.actuary.checked : (this.sssType == "decorate" || this.sssType == "actuary")
+            
             let actuaryData = data.filter(t => t.serviceType === 4)
             if (actuaryData && actuaryData.length > 0) {
               this.actuary = {
                 ...actuaryData[0],
                 title: "精算服务",
                 cardtype: "actuary",
-                checked: this.sssType == "decorate" || this.sssType == "actuary",
+                checked: checked,//this.sssType == "decorate" || this.sssType == "actuary",
                 insideArea: this.currentHouse.insideArea
               }
             }
