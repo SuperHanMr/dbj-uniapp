@@ -185,12 +185,12 @@
                 <view class="like">
                   <image
                     v-if="!item.selfLike"
-                    @click="likeC(item.recordType,index,true)"
+                    @click="likeC(item.recordType,item.id,index,true)"
                     src="../../static/ic_like@2x.png"
                   ></image>
                   <image
                     v-else
-                    @click="likeC(item.recordType,index)"
+                    @click="likeC(item.recordType,item.id,index)"
                     src="../../static/ic_liked@2x.png"
                   ></image>
                   <view class="text">{{item.likeCount}}</view>
@@ -286,18 +286,17 @@
             @click="confirmC"
           >确定</view>
 				</view>
-				<!-- <picker-view v-if="visible" :indicator-style="indicatorStyle" :value="value" @change="bindChange" class="picker-view">
+				<picker-view @change="bindChange" class="picker-view">
 				  <picker-view-column>
-							<view :class="{'active':selectedIndex===-1}">全部</view>
+							<view class="item">全部</view>
 				      <view
-								:class="{'active':selectedIndex===index}"
-								@click="switchC(index,item.nodeType)"
+								class="item"
 								v-for="(item,index) in selectNodeTypes"
-								:key="index"
+								:key="item.nodeType"
 							>{{item.nodeName}}</view>
 				  </picker-view-column>
-				</picker-view> -->
-				<ul class="options">
+				</picker-view>
+				<!-- <ul class="options">
 					<li :class="{'active':selectedIndex===-1}">全部</li>
 					<li
 						:class="{'active':selectedIndex===index}"
@@ -305,7 +304,7 @@
 						v-for="(item,index) in selectNodeTypes"
 						:key="index"
 					>{{item.nodeName}}</li>
-				</ul>	
+				</ul> -->	
       </view>
     </view>
 		<view
@@ -510,7 +509,7 @@ export default {
 			dynamicPage: 1,
 			replyPage: 1,
 			homePageEstate: {},
-			buyState: false//是否购买摄像头服务
+			buyState: false,//是否购买摄像头服务,
     };
   },
   onLoad(option) {
@@ -530,13 +529,20 @@ export default {
 		this.checkBuyServe()
   },
   methods: {
+		bindChange(e){
+			this.selectedIndex = e.detail.value - 1
+			if(this.selectedIndex !== -1){
+				this.selectedType = this.selectNodeTypes[this.selectedIndex]
+			}
+			console.log(this.selectNodeTypes)
+		},
 		checkBuyServe(){
 			let params = {
 				projectId:  this.projectId
 			}
 			checkEquipmentServe(params).then(data => {
 				this.buyState = data.buyState
-				console.log('///////////////////')
+				console.log(this.buyState,'///////////////////')
 			})
 		},
     inputFocus() {
@@ -623,7 +629,7 @@ export default {
       this.isExpanded = false;
       this.comments[index].secondComments.splice(2);
     },
-    likeC(recordType, index, isAdd) {
+    likeC(recordType, id, index, isAdd) {
       let deviceId = 0;
       uni.getSystemInfo({
         success: (res) => {
@@ -632,7 +638,7 @@ export default {
       });
       let params = {
         routeId: 3001,
-        relationId: this.projectInfo.id,
+        relationId: id,
         authorId: this.projectInfo.estateId,
         equipmentId: deviceId,
         userId: this.userId,
@@ -1324,9 +1330,18 @@ export default {
 		color: #00c2b8;
 		line-height: 42rpx;
 	}
-	.scroll-view{
-		width: 100%;
+	.picker-view {
+		width: 750rpx;
 		height: 550rpx;
+	}
+	.picker-view .item{
+		width: 750rpx;
+		height: 110rpx;
+		align-items: center;
+		justify-content: center;
+		line-height: 110rpx;
+		font-size: 32rpx;
+		color: #333;
 	}
 	.options {
 		width: 100%;
