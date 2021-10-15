@@ -238,6 +238,7 @@
         if (this.msg.obtainType != 2) {
           this.dataOrigin?.artificial?.categoryList?.forEach(t => {
             t.itemList.forEach(it => {
+              it.originalId = it.originalId || it.id
               this.checkedIds.push(it.originalId)
             })
           })
