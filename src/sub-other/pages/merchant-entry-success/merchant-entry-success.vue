@@ -3,7 +3,7 @@
 		<view class="head">
 			<image src="../../../static/merchant-entry/merchant-entry-success.png" mode=""></image>
 			<view class="text">
-				支付成功
+				入驻成功
 			</view>
 			<view class="info">
 				恭喜您成为打扮家合作伙伴，我们为您提供电商交易全链路工作台，回归商家经营链路～
