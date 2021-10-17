@@ -231,7 +231,7 @@
 
 <style lang="scss" scoped>
 	.color-red {
-		color: red;
+		color: #FF3B30;
 	}
 
 	.textarea {
