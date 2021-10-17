@@ -13,6 +13,7 @@
 				<view class="manage" @click="isManage=!isManage">{{isManage?"管理":"完成"}}</view>
 			</view>
 			<view class="shopItem" v-for="(shopItem,shopIndex) in shopList" :key="shopItem.storeId">
+				<!-- 店铺 -->
 				<view class="shopInfo">
 					<view style="width: 36rpx;height: 36rpx;">
 						<view class="check" v-if="!shopItem.shopChecked" @click="checkShop(shopItem.storeId)"></view>
@@ -22,7 +23,7 @@
 						<text class="shopName">{{shopItem.storeName}}</text>
 						<image class="shopIcon" src="../../../static/shopping-cart/goShop_ic@2x.png"></text>
 					</view>
-				</view>	
+				</view>
 				<view class="freeMail">
 					<view class="text" v-if="isDefault" :key="index">每满{{shopItem.freeShippingThreshold===0?'0.00':(shopItem.freeShippingThreshold/100).toFixed(2)}}元可获得一次免运费权益</view>
 					<view class="text" v-else>还差{{shopItem.freeShippingThreshold===0?'0.00':shopItem.freeShippings}}元可获得一次免运费权益</view>
@@ -31,6 +32,7 @@
 						<image class="icon" src="../../../static/shopping-cart/toPostFree@2x.png"></image>
 					</view>
 				</view>
+				<!-- 商品 -->
 				<uni-swipe-action>
 				  <uni-swipe-action-item
 				    v-for="(goodsItem,goodsIndex) in shopItem.skuList"
@@ -252,7 +254,7 @@
 				step:0,//步长
 				miniOrder:0,
 				buyNum:"",//输入框的值,
-				// isFocus:false,
+				checkedStoreList:[],
 			}
 		},
 		mounted(){
@@ -299,10 +301,10 @@
 						let temp = Math.ceil(sum / (item.freeShippingThreshold/100))
 						item.freeShippings = (item.freeShippingThreshold/100*temp-sum).toFixed(2)
 					}else if(sum === (item.freeShippingThreshold/100)){
-						item.freeShippings = item.freeShippingThreshold/100
+						item.freeShippings = (item.freeShippingThreshold/100).toFixed(2)
 					}
-					if(item.freeShippings === "0.00"){
-						item.freeShippings = item.freeShippingThreshold/100
+					if(item.freeShippings === '0.00'){
+						item.freeShippings = (item.freeShippingThreshold/100).toFixed(2)
 					}
 					return item
 				})
@@ -315,8 +317,44 @@
 					nowSkuId: curId
 				}
 				setGoodsSku(params).then(async(data) => {
-					await this.requestPage()
+					await this.getPage()
 					this.freeShippings()
+				})
+			},
+			getPage(){
+				getShoppingCartInfo().then(data => {
+					let {storeList,disabledSkuList} = data
+					if(!storeList.length&&!disabledSkuList.length){
+						this.showNoGoods = true
+					}
+					if(storeList.length){
+						storeList.map(item => {
+							item.shopChecked = false
+							this.checkedStoreList.forEach(i => {
+								if(i.storeId===item.storeId&&i.isChecked){
+									item.shopChecked = true
+								}
+							})
+							item.skuList.map(ele => {
+								ele.goodsChecked = false
+								this.checkedStoreList.forEach(i => {
+									if(i.storeId===ele.storeId){
+										i.checkedSkuList.forEach(j => {
+											if(j.skuId===ele.skuId){
+												ele.goodsChecked = true
+											}
+										})
+									}
+								})
+								return ele
+							})
+							
+							return item
+						})
+					}
+					
+					this.shopList = storeList
+					this.disabledSkuList = disabledSkuList
 				})
 			},
 			openSpec(skuId,goodsChecked){
@@ -407,7 +445,6 @@
 			},
 			openCount(shopIndex, goodsIndex,miniOrder,step,buyNum){
 				this.showInput = true
-				// this.isFocus = true
 				this.miniOrder = miniOrder
 				this.step = step
 				this.buyNum = buyNum
@@ -471,7 +508,7 @@
 				}
 				setBuyCount(params).then(async(data) => {
 					this.showInput = false
-					await this.requestPage()
+					await this.getPage()
 					this.freeShippings()
 				})
 				
@@ -711,6 +748,35 @@
 			},	
 			checkedAll(){
 				this.isCheckedAll = !this.isCheckedAll
+				this.shopList.forEach(item=>{
+					if(this.isCheckedAll){
+						this.checkedStoreList.push({
+							storeId: item.storeId,
+							checkedSkuList: [],
+							isChecked: true
+						})
+					}else{
+						this.checkedStoreList = []
+					}
+				})
+				this.shopList.forEach(item=>{
+					item.skuList.forEach(ele=>{
+						if(this.isCheckedAll){
+							this.checkedStoreList.map(i=>{
+								if(i.storeId===ele.storeId){
+									i.checkedSkuList.push({
+										storeId: ele.storeId,
+										skuId: ele.skuId,
+										price: ele.price,
+										buyCount: ele.buyCount,
+									})
+								}
+								return i
+							})
+						}
+					})
+				})
+				//原逻辑
 				this.shopList.map(item=>{
 					item.shopChecked = this.isCheckedAll
 					item.skuList.map(ele=>{
@@ -718,13 +784,43 @@
 						return ele
 					})
 					return item
-				})
+				})				
+	
 				if(this.isCheckedAll){
 					this.isDefault = false
 				}
 				this.freeShippings()
 			},
 			checkShop(id){
+				this.shopList.forEach(item=>{
+					if(item.storeId === id){
+						let targetIndex = this.checkedStoreList.findIndex(item=>item.storeId===id)
+						if(targetIndex===-1){
+							this.checkedStoreList.push({
+								storeId: item.storeId,
+								checkedSkuList: [],
+								isChecked: true
+							})
+						}else{
+							this.checkedStoreList.splice(targetIndex,1)
+						}
+					}
+				})
+				this.shopList.forEach(item=>{
+					item.skuList.forEach(ele=>{
+						this.checkedStoreList.map(i=>{
+							if(i.storeId === ele.storeId){
+								i.checkedSkuList.push({
+									storeId: ele.storeId,
+									skuId: ele.skuId,
+									price: ele.price,
+									buyCount: ele.buyCount,
+								})
+							}
+						})
+					})
+				})
+				//原逻辑
 				this.shopList.map(item=>{
 					if(item.storeId === id){
 						item.shopChecked = !item.shopChecked
@@ -742,10 +838,48 @@
 					this.isCheckedAll = true
 				}else{
 					this.isCheckedAll = false
-				}
+				}				
+
 				this.freeShippings()
 			},
 			checkGoods(storeId,skuId){
+				this.shopList.forEach(item=>{
+					if(item.storeId === storeId){
+						//默认勾选了店铺
+						this.checkedStoreList.push({
+							storeId: item.storeId,
+							checkedSkuList: [],
+							isChecked: true
+						})
+						item.skuList.forEach(ele=>{
+							if(ele.skuId === skuId){
+								this.checkedStoreList.map(i=>{
+									let targetIndex = i.checkedSkuList.findIndex(j=>j.skuId===skuId)
+									if(targetIndex===-1){
+										i.checkedSkuList.push({
+											storeId: ele.storeId,
+											skuId: ele.skuId,
+											price: ele.price,
+											buyCount: ele.buyCount,
+										})
+									}else{
+										i.checkedSkuList.splice(targetIndex,1)
+									}
+									return i
+								})
+							}
+						})
+					}
+				})
+				this.shopList.forEach(item=>{
+					if(item.storeId === storeId){
+						let targetIndex = this.checkedStoreList.findIndex(i=>i.storeId===storeId)
+						if(item.skuList.length !== this.checkedStoreList[targetIndex].checkedSkuList.length){
+							this.checkedStoreList[targetIndex].isChecked = false
+						}
+					}
+				})
+				//原逻辑
 				this.shopList.map(item=>{
 					if(item.storeId === storeId){
 						item.skuList.map(ele=>{
@@ -769,7 +903,8 @@
 					this.isCheckedAll = true
 				}else{
 					this.isCheckedAll = false
-				}
+				}				
+
 				this.freeShippings()
 			},
 		

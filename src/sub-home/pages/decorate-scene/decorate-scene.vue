@@ -108,18 +108,20 @@
               v-for="(item,index) in workers"
               :key="item.id"
             >
-              <view v-if="(item.nodeStatus===2&&item.id!==-1)||item.nodeStatus===3">
+              <view
+								v-if="(item.nodeStatus===2&&item.id!==-1)||item.nodeStatus===3"
+								@click="toPersonalHome(item.id)">
 								<image
 								  class="avatar"
 								  :src="item.avatar"
-									@click="toPersonalHome(item.id)"
+									
 								></image>
 								<view class="name" :class="{'minHeight':item.flag}">{{item.name}}</view>
 								<view class="line" v-if="item.flag">...</view>
 							</view>
 							<view class="text" v-else-if="item.nodeStatus===2&&item.id===-1">
 								{{item.nodeType===1||item.nodeType===4||item.nodeType===5?'待服务':'待施工'}}</view>
-							<view class="text" v-else-if="item.nodeStatus===1">未开工</view>
+							<view class="text" v-else-if="item.nodeStatus===1">待购买</view>
 							<view class="own" v-else-if="item.nodeStatus===4">自带施工</view>
             </view>
           </view>
@@ -1814,8 +1816,10 @@ export default {
 		align-items: center;
 	}
 	.acitonInfo .header .workerName {
-		width: fit-content;
-		/* width: 60rpx; */
+		max-width: 378rpx;
+		overflow: hidden;
+		text-overflow: ellipsis;
+		white-space: nowrap;
 		height: 42rpx;
 		margin-right: 8rpx;
 		font-size: 30rpx;
