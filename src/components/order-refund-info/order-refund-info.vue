@@ -83,9 +83,13 @@
 				uni.setClipboardData({
 					// data:"HELLO",
 				    data: this.refundInfo.refundNo,
-				    success: function (res) {
-								console.log("复制成功");
-						}
+				    success(res){
+				    	uni.showToast({
+				    		title: "退款编号已复制",
+				    		icon: "none",
+				    		duration: 1000,
+				    	});
+				    }
 				});
 			}
 		}

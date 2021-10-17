@@ -10,10 +10,10 @@
       <scroll-view id="tab-bar" class="scroll-h" scroll-y="true" :show-scrollbar="false">
         <view class="card-item" v-for="item of list" :key='item.severId' @click="chooseItem(item)">
           <view class="card-item-left">
-            <image src="" mode=""></image>
-            <view :class="{isActive:currentId===item.severId}">{{item.serveName}}（{{item.userName}}）{{currentId}}</view>
+            <i class="icon-sheji"></i>
+            <view :class="{isActive:currentId===item.severId}">{{item.serveName}}（{{item.userName}}</view>
           </view>
-          <image class="choose-icon" v-if="currentId===item.severId"></image>
+          <i class="icon-ic_wodejia_gouxuan_csn choose-icon" v-if="currentId===item.severId"></i>
         </view>
       </scroll-view>
     </view>
@@ -81,11 +81,12 @@
       justify-content: space-between;
       .card-item-left{
         display: flex;
-        image{
+        align-items: center;
+        i{
           width: 32rpx;
           height: 32rpx;
           margin-right: 16rpx;
-          background-color: #eee;
+          color: #2bbaf2;
         }
         view{
           font-size: 28rpx;
@@ -99,7 +100,7 @@
       .choose-icon{
         width: 48rpx;
         height: 48rpx;
-        background-color: #eee;
+        color: #00BFB6;
       }
     }
   }

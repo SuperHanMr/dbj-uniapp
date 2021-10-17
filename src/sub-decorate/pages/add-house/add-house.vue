@@ -369,6 +369,9 @@
 						});
 					} else {
 						editHouse(this.addData).then((res) => {
+							if(this.addData.defaultEstate){
+								uni.$emit('defaultHouseChange');
+							}
 							uni.navigateBack({
 								delta: this.delta,
 							});

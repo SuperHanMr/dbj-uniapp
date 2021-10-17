@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="29px" height="28px" viewBox="0 0 29 28" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <title>ic/order_wait</title>
+    <g id="订单" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="订单详情-已完成-服务-可退款" transform="translate(-134.000000, -82.000000)">
+            <g id="编组" transform="translate(132.500000, 80.000000)">
+                <circle id="椭圆形" stroke="#FFFFFF" stroke-width="2" cx="16" cy="16" r="13"></circle>
+                <path d="M11.767767,17.7824856 C11.2154822,17.7824856 10.767767,17.3347703 10.767767,16.7824856 L10.767767,11.7824856 C10.767767,11.2302008 11.2154822,10.7824856 11.767767,10.7824856 C12.3200517,10.7824856 12.767767,11.2302008 12.767767,11.7824856 L12.767767,15.7824856 L21.767767,15.7824856 C22.3200517,15.7824856 22.767767,16.2302008 22.767767,16.7824856 C22.767767,17.3347703 22.3200517,17.7824856 21.767767,17.7824856 L11.767767,17.7824856 Z" id="形状结合" fill="#FFFFFF" transform="translate(16.767767, 14.282486) rotate(-45.000000) translate(-16.767767, -14.282486) "></path>
+            </g>
+        </g>
+    </g>
+</svg>

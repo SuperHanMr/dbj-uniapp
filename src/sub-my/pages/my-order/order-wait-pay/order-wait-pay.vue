@@ -1,5 +1,16 @@
 <template>
   <view class="container">
+		<custom-navbar opacity="1" :title="title" titleColor="#ffb245" bgcolor="#ffb245">
+			<template v-slot:back>
+				<view @click="toBack">
+					<i class="icon-ic_cancel_white" style="color: white;">
+					</i>
+				</view>
+			</template>
+		</custom-navbar>
+
+		<view :style="{height:navBarHeight}"></view>
+		
     <view class="order-container" :style="{paddingBottom:112+containerBottom+'rpx'}">
       <view class="order-status">
         <view class="backgroundStyle" />
@@ -149,6 +160,7 @@ export default {
       title: "您确定要取消该订单吗？",
       areaId: "",
 			from:"",
+			navBarHeight: "",
     };
   },
 
@@ -159,31 +171,32 @@ export default {
     this.systemHeight = menuButtonInfo.bottom + this.num + "rpx";
     console.log(this.systemBottom);
   },
-
   onLoad(e) {
 		this.from= e.from
     this.orderNo = Number(e.orderNo) || getApp().globalData.decorateMsg.orderId;
     const currentHouse = getApp().globalData.currentHouse;
     this.areaId = currentHouse.areaId;
-  },
+
+		// 获取胶囊按钮的位置
+		const systemInfo = uni.getSystemInfoSync();
+		const menuButtonInfo = uni.getMenuButtonBoundingClientRect();
+		this.navBarHeight =
+			menuButtonInfo.top +
+			(menuButtonInfo.top - systemInfo.statusBarHeight) +
+			menuButtonInfo.height +
+			"px";
+		uni.setNavigationBarColor({
+			frontColor: '#ffffff',
+			backgroundColor:'#ffb245',
+			animation: {
+				duration: 400,
+				timingFunc: 'easeIn'
+			}
+		})
+	},
   onShow() {
-    console.log(this.from, "show")
     this.orderDetail();
   },
-	// 改变返回下一个页面的路径
-	onUnload() {
-     console.log(this.from, this.from=="waitPayOrder", "fcrocm!!!!!!!!!!!!!!!!!!s")
-	  if(this.from=="waitPayOrder"){
-      console.log("fcrocm!!!!!!!!!!!!!!!!!!s")
-			uni.redirectTo({
-				url:`../my-order?firstEntry=true&index=1`
-			})
-       console.log("fcrocms")
-		}else{
-      console.log("1111111")
-    }
-	},
-
   methods: {
     orderDetail() {
       getOrderDetail({
@@ -194,6 +207,18 @@ export default {
         console.log("this.orderInfo=", this.orderInfo);
       });
     },
+		// 改变返回下一个页面的路径
+		toBack(){
+			if(this.from=="waitPayOrder"){
+				uni.redirectTo({
+					url:"../my-order?firstEntry=true&index=1"
+				})
+			}else{uni.navigateBack({
+				    delta: 1
+				});
+				
+			}
+		},
 
     // 跳转到商品详情页面
     productDetail(item) {

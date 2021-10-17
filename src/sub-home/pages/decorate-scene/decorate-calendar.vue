@@ -1,7 +1,7 @@
 <template>
 	<view class="calendarWrap">
 		<view class="calendar">
-			<dark-calendar :signeddates="signeddates" @filterByDate="filterByDate" :projectId="projectId" :showMemo="showMemo"></dark-calendar>
+			<dark-calendar :signeddates="signeddates" @filterDynamics="filterDynamics" :projectId="projectId" :showMemo="showMemo"></dark-calendar>
 		</view>
 		<view class="dynamic" :class="{'noDynamics': !dynamics.length}">
 			<view class="top">
@@ -75,15 +75,19 @@
 		onReachBottom() {
 			if(!this.date)return
 			this.dynamicPage+=1;
-			this.filterByDate(this.date);
+			this.filterDynamics(this.date);
 		},
 		mounted(){
+			//当天日期
+			let y = new Date().getFullYear()
+			let mon = new Date().getMonth()+1
+			let m = mon < 10? `0${mon}` : mon
+			let d = new Date().getDate()
+			this.date = `${y}-${m}-${d}`
+			this.filterDynamics(this.date);
 			this.requestSigns()
 		},
 		methods:{
-			change(e){
-				console.log(e)
-			},
 			requestSigns(){
 				let y = new Date().getFullYear()
 				let m = new Date().getMonth() + 1
@@ -96,14 +100,13 @@
 					})
 				})
 			},
-			filterByDate(date){
+			filterDynamics(date){
 				this.date = date
 				let params = {
 					page: this.dynamicPage,
 					rows: 10,
 					projectId: this.projectId,
-					userTypes: [2,3],
-					recordDateStr: date
+					recordDateStr: this.date
 				}
 				getDynamics(params).then(data => {
 					if(data){

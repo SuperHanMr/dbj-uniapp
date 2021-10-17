@@ -5,14 +5,14 @@
         <view class="title">设计报告详情</view>
         <view class="check" @click="toDesign">
           <text>立即查看</text>
-          <image></image>
+          <i class="icon-ic_wodejia_beiwanglugengduo_csn"></i>
         </view>
       </view>
       <view class="report-item" v-if="designData.beautyReport">
         <view class="title">颜值报告详情</view>
         <view class="check" @click="toBeatiful">
           <text>立即查看</text>
-          <image></image>
+          <i class="icon-ic_wodejia_beiwanglugengduo_csn"></i>
         </view>
       </view>
     </view>
@@ -112,10 +112,10 @@
           font-size: 26rpx;
           color: #666;
         }
-        image{
+        i{
           width: 24rpx;
           height: 24rpx;
-          background-color: #eee;
+          
           margin-left: 16rpx;
         }
       }

@@ -2,10 +2,10 @@
   <view class="construction">
     <tabs :current="current" :items="items" @changeItem="changeItem"></tabs>
     <view class="s-g-list">
-      <view class="s-g-item" v-for="(item,index) in dataList">
+      <view class="s-g-item" v-for="(item,index) in dataList" :key="item.id">
         <user-desc-pict :butlerData="item.butlerDecorationTrendLogVO">
           <template slot="subtitle">
-            <sub-title text="拆除阶段完工申请"></sub-title>
+            <sub-title :text="setTitle(item.type)"></sub-title>
           </template>
         </user-desc-pict>
         <user-desc-pict-worker :workerData="item.workerDecorationTrendLogVO">
@@ -41,11 +41,23 @@
       }
     },
     methods: {
+      setTitle(type) {
+        let str = ''
+        if(type == 4) {
+          str = '整体'
+        } else if (type == 3) {
+          str = '阶段'
+        } else {
+          str = '未知阶段' + type
+        }
+        return this.current + str + '完工申请'
+      },
       changeItem(item) {
         this.current = item;
         this.getCompletionLog()
       },
       getCompletionLog() {
+        this.dataList = []
         getCompletionLog({
           page: 1,
           // position: ,

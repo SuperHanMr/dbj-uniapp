@@ -247,7 +247,8 @@
           equipmentId:uni.getSystemInfoSync().deviceId
         }
         queryAttention(data).then(res=>{
-          this.init()
+          this.isRecommend = routeId === 2001 ? !this.isRecommend : this.isRecommend
+          this.isAttention = routeId === 1001 ? !this.isAttention : this.isAttention
         })
       },
       getGrabDetail(){
@@ -338,8 +339,9 @@
         this.evaluateNum = num
       },
       sendMsg(){
-        this.$store.dispatch("openC2CConversation", this.personId);
-
+        this.$store.dispatch("openC2CConversation", {
+          id:this.personId,
+        })
       }
     }
   }
