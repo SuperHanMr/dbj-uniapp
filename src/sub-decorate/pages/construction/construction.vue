@@ -5,7 +5,7 @@
       <view class="s-g-item" v-for="(item,index) in dataList" :key="item.id">
         <user-desc-pict :butlerData="item.butlerDecorationTrendLogVO">
           <template slot="subtitle">
-            <sub-title :text="current + item.type == 3 ? '阶段' : item.type == 4 ? '整体' :  '未知阶段' + '完工申请'"></sub-title>
+            <sub-title :text="setTitle(item.type)"></sub-title>
           </template>
         </user-desc-pict>
         <user-desc-pict-worker :workerData="item.workerDecorationTrendLogVO">
@@ -41,6 +41,10 @@
       }
     },
     methods: {
+      setTitle(type) {
+        str = type === 4 ? '整体' : '阶段'
+        return this.current + type + '完工申请'
+      },
       changeItem(item) {
         this.current = item;
         this.getCompletionLog()
