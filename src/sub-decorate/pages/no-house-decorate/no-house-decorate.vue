@@ -318,9 +318,9 @@
       },
       getServiceSku() {
         let params = {
-          province_id: this.currentHouse.provinceId || this.defaultHouse.provinceId,
-          city_id: this.currentHouse.cityId || this.defaultHouse.cityId,
-          area_id: this.currentHouse.areaId || this.defaultHouse.areaId,
+          provinceId: this.currentHouse.provinceId || this.defaultHouse.provinceId,
+          cityId: this.currentHouse.cityId || this.defaultHouse.cityId,
+          areaId: this.currentHouse.areaId || this.defaultHouse.areaId,
           // serveTypes: [1, 2, 4]
         }
         if (this.sssType == "checkHouse") {
