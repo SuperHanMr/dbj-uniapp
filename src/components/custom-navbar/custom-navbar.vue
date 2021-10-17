@@ -76,7 +76,7 @@
 <style lang="scss">
 	.navi-back {
 		position: absolute;
-		left: 12px;
+		left: 24rpx;
 		width: 50%;
 		display: flex;
 		flex-direction: row;

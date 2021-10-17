@@ -1,10 +1,7 @@
 <template>
 	<view  class="container">
 		
-		<view
-			class="body-main" 
-			:style="{paddingBottom:paddingBottom +'rpx'}" 
-			@click="handleDetail()" >
+		<view	class="body-main" :style="{paddingBottom:(dataList.type == 1 && orderStatus==2 && dataList.stockType && dataList.stockType == 1)?'24':paddingBottom +'rpx'}" @click="handleDetail()" >
 			<!-- 标签 -->
 			<view class="pic"  v-if="orderStatus==2 && dataList.type == 1 && !dataList.stockType">
 				<!-- 当该商品处于待发货标签时，则对应退款、退款关闭、退款失败状态 -->
@@ -20,7 +17,6 @@
 				<view class="icon-status1" v-if="dataList.refundBillStatus == 0 || dataList.refundBillStatus == 1">
 					退款中
 				</view>
-				
 				<!--  当该商品处于已退款状态时，则对应退款成功状态 -->
 				<view class="icon-status2" v-if="dataList.refundBillStatus == 2" >
 					已退款
@@ -49,23 +45,23 @@
 					<!-- 商品价格 -->
 					<view class="product-price" v-if="showPrice">
 						<text style="font-size:22rpx;">￥</text>
-						<text>{{handlePrice(dataList.price)[0]}}.</text>
-						<text style="font-size:22rpx;">{{handlePrice(dataList.price)[1]}}</text>
+						<text class="price-font">{{handlePrice(dataList.price)[0]}}.</text>
+						<text style="font-size:22rpx;" class="price-font">{{handlePrice(dataList.price)[1]}}</text>
 					</view>
 					<!-- 实付 -->
 					<view class="product-price" v-else>
 						<text>
 							<text style="margin-right: 8rpx;font-size: 22rpx;">实付</text>
 							<text style="font-size:22rpx;">￥</text>
-							<text>{{handlePrice(dataList.discountPrice)[0]}}.</text>
-							<text style="font-size:22rpx;">{{handlePrice(dataList.discountPrice)[1]}}</text>
+							<text class="price-font">{{handlePrice(dataList.discountPrice)[0]}}.</text>
+							<text style="font-size:22rpx;" class="price-font">{{handlePrice(dataList.discountPrice)[1]}}</text>
 						</text>
 					</view>
 					<!-- 商品价格 -->
 					<view  class="product-price" style="color: #999999;" v-if="showOriginPrice" >
 							<text style="font-size:22rpx;">￥</text>
-							<text>{{handlePrice(dataList.price)[0]}}.</text>
-							<text style="font-size:22rpx;">{{handlePrice(dataList.price)[1]}}</text>
+							<text class="price-font">{{handlePrice(dataList.price)[0]}}.</text>
+							<text style="font-size:22rpx;" class="price-font">{{handlePrice(dataList.price)[1]}}</text>
 					</view> 
 					
 					<view style="color: #999999;" v-if="refundType">共{{dataList.refundNumber || 1}}{{dataList.unit || '件'}}</view>
@@ -74,46 +70,22 @@
 			</view>
 		</view>
 		
-		<view class="warehouse-container" v-if="dataList.type == 1 && orderStatus==2 && dataList.stockType && dataList.stockType == 1">
-			<view class="left">
-				<text class="text1">我的仓库</text>
-				<text class="text2">{{dataList.stockNumber || 0}}</text>
-			</view>
-			<view class="line"/>
-			<view class="right">
-				<view class="item">
-					<text class="text1">运送中</text>
-					<text class="text2">{{dataList.frozenNumber || 0}}</text>
-				</view>
-				<view class="item">
-					<text class="text1">已收货</text>
-					<text class="text2">{{dataList.receiveNumber || 0}}</text>
-				</view>
-				<view class="item"> 
-					<text class="text1">已退</text>
-					<text class="text2">{{dataList.returnNumber || 0}}</text>
-				</view>
-			</view>
-		</view>
 		
-		<!-- <view  class="apply-refund-container" v-if="dataList.showRefundBtn && orderStatus == 3 && dataList.type ==1">
-			<view class="button" @click.stop="particalRefund">
-				申请退款
-			</view>
-		</view> -->
+		
+		
+		
 		
 		<view  class="apply-refund-container" v-if="dataList.showRefundBtn && orderStatus == 2 && dataList.type ==1">
 			<view class="button" @click.stop="particalRefund">
 				申请退款
 			</view>
 		</view>
+		
 		<!-- //退款状态（0待确认 1退款中 2退款完成 3已拒绝 4已取消 5退款失败) -->
-		<view 
-			class="apply-refund-container" 
-			:style="{paddingTop:0}" 
-			v-if="!dataList.showRefundBtn && orderStatus==2 && dataList.type == 1 && dataList.stockType==0 && dataList.refundBillStatus >-1"
+		<view class="apply-refund-container" :style="{paddingTop:0}" 
+			v-if="!dataList.showRefundBtn && orderStatus==2 && dataList.type == 1 && dataList.stockType == 0 && dataList.refundBillStatus >-1"
 		 >
-
+		
 			<view class="button" v-if="dataList.refundBillStatus == 0 ||dataList.refundBillStatus == 1"  @click.stop="refundCancel">
 				取消退款
 			</view>
@@ -129,8 +101,34 @@
 			<view class="button" v-if="dataList.refundBillStatus == 3 || dataList.refundBillStatus == 4" @click.stop="refundClose">
 				退款关闭
 			</view>
-			
 		</view>
+		<view class="warehouse-container" v-if="dataList.type == 1 && orderStatus==2 && dataList.stockType && dataList.stockType == 1">
+			<view class="left">
+				<text class="text1">我的仓库</text>
+				<text class="text2 price-font">{{dataList.stockNumber || 0}}</text>
+			</view>
+			<view class="line"/>
+			<view class="right">
+				<view class="item">
+					<text class="text1">运送中</text>
+					<text class="text2 price-font">{{dataList.frozenNumber || 0}}</text>
+				</view>
+				<view class="item">
+					<text class="text1">已收货</text>
+					<text class="text2 price-font">{{dataList.receiveNumber || 0}}</text>
+				</view>
+				<view class="item"> 
+					<text class="text1">已退</text>
+					<text class="text2 price-font">{{dataList.returnNumber || 0}}</text>
+				</view>
+			</view>
+		</view>
+		
+		<!-- <view  class="apply-refund-container" v-if="dataList.showRefundBtn && orderStatus == 3 && dataList.type ==1">
+			<view class="button" @click.stop="particalRefund">
+				申请退款
+			</view>
+		</view> -->
 		
 		<view class="discount-container3" v-if="orderStatus==1 && dataList.type == 2 && dataList.deposit">
 			<view class="right">
@@ -232,7 +230,7 @@
 		padding-bottom:32rpx;
 		flex-flow: row nowrap;
 		.pic{
-			margin-right: 32rpx;
+			margin-right: 16rpx;
 			position: relative;
 			.icon-status1,.icon-status2{
 				position: absolute;
@@ -280,7 +278,7 @@
 						height: 30rpx;
 						margin-right: 8rpx;
 						line-height: 30rpx;
-						border-radius: 4rpx;
+						border-radius: 2px;
 						border: 2rpx solid #35c4c4;
 						color: #35c4c4;
 						font-size: 20rpx;
@@ -317,8 +315,8 @@
 	}
 	
 	.warehouse-container {
-	  margin: 24rpx 0 40rpx 0;
-		padding:12rpx 0 14rpx 0;
+		margin-bottom: 40rpx;
+		padding:14rpx 0;
 		height: 98rpx;
 		box-sizing: border-box;
 		background: #FAFCFC;

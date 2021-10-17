@@ -33,7 +33,7 @@
                   :src="aServiceData.insuranceStatus ? 'http://dbj.dragonn.top/static/mp/dabanjia/images/decorate/insurance-pay.svg': 'http://dbj.dragonn.top/static/mp/dabanjia/images/decorate/insurance-unpay.svg'">
                 </image>
               </view>
-              <view class="uni-title">{{ currentProject.housingEstate }}{{currentProject.address}}</view>
+              <view class="uni-title">{{ currentProject.housingEstate || '' }}{{currentProject.address || ''}}</view>
             </view>
             <view class="picture-btn-wrap">
               <picture-btn v-if="aServiceData.showDesignFlag"
