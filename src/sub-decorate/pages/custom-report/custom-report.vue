@@ -15,7 +15,7 @@
     onLoad(e){
       let themeId = e.themeId
       let id = e.id
-      this.url = process.env.VUE_APP_BASE_API+this.url +getApp().globalData.token
+      this.url = process.env.VUE_APP_BASE_API+this.url +getApp().globalData.token + "&id=" + id
       console.log(this.url)
       
     },
