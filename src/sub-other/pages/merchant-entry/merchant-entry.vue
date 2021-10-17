@@ -480,6 +480,7 @@
 		left: 0rpx;
 		top: 312rpx;
 		width: 100%;
+		margin-bottom: 200rpx;
 		.info {
 			margin: 24rpx;
 			padding-bottom: 1rpx;

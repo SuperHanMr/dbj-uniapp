@@ -6,7 +6,7 @@
 			<view class="back-res">
 				<view class="back-res-row">
 					<view class="res-pre">
-						*退款原因
+						<text class="color-red">*</text>退款原因
 					</view>
 					<view style="flex:1">
 					</view>
@@ -23,7 +23,7 @@
 			<view class="back-res">
 				<view class="back-res-row">
 					<view class="res-pre">
-						*退款金额
+						<text class="color-red">*</text>退款金额
 					</view>
 					<view style="flex:1">
 					</view>
@@ -90,15 +90,15 @@
 		},
 		onLoad(e) {
 			this.data = getApp().globalData.naviData;
-			if(this.data.detailAppVOS&&this.data.detailAppVOS.length&&!this.data.stockAppVOS){
+			if (this.data.detailAppVOS && this.data.detailAppVOS.length && !this.data.stockAppVOS) {
 				console.log('!!~~~~~')
-				this.data.stockAppVOS=this.data.detailAppVOS
+				this.data.stockAppVOS = this.data.detailAppVOS
 			}
-			
-			this.reasonName = this.data.reason||'';
-			this.remark=this.data.remark||'';
-			this.reasonValue=this.data.reasonId||''
-			this.num = this.data.refundAmount 
+
+			this.reasonName = this.data.reason || '';
+			this.remark = this.data.remark || '';
+			this.reasonValue = this.data.reasonId || ''
+			this.num = this.data.refundAmount
 			let title;
 			this.type = e.type;
 			if (e.type == 0) {
@@ -117,7 +117,8 @@
 			let list = []
 			this.data.stockAppVOS.forEach(e => {
 				list.push({
-					returnNumber:e.refundNumber?e.refundNumber: e.stockNumber?e.stockNumber:e.requireNumber,
+					returnNumber: e.refundNumber ? e.refundNumber : e.stockNumber ? e.stockNumber : e
+						.requireNumber,
 					stockId: e.id,
 					goodsId: e.goodsId,
 					price: e.price
@@ -229,6 +230,10 @@
 
 
 <style lang="scss" scoped>
+	.color-red {
+		color: #FF3B30;
+	}
+
 	.textarea {
 		background-color: #fff;
 		padding: 32rpx;

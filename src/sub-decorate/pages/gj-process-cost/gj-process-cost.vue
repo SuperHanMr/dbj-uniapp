@@ -150,6 +150,7 @@
         // origin.workType = item.workType //"int //工种",
         origin.categoryTypeId = item.product.categoryTypeId //"int //品类类型ID",
         origin.storeId = item.product.storeId //"long //店铺ID",
+        origin.inServiceArea = true // 从商品列表更换来的商品一定是在服务范围内的
         origin.imageUrl = item.product.skuImage //"string //图片地址",
         origin.spuName = item.product.spuName //"string //商品名称",
         let deposit = item.product.sku.deposit ?? 0
@@ -178,7 +179,7 @@
           for (let i = 0; i < this.dataOrigin.material.categoryList.length; i++) {
             if (this.dataOrigin.material.categoryList[i].categoryId == categoryId) {
               for (let j = 0; j < this.dataOrigin.material.categoryList[i].itemList.length; j++) {
-                if (this.dataOrigin.material.categoryList[i].itemList[j].originalId == item.originalId) {
+                if (this.dataOrigin.material.categoryList[i].itemList[j].originalId === item.originalId) {
                   this.dataOrigin.material.categoryList[i].itemList[j] = item
                   this.setSkuRelation(item)
                   this.computePriceAndShopping()
@@ -235,6 +236,7 @@
 
       },
       initData() {
+        this.checkedIds = []
         if (this.msg.obtainType != 2) {
           this.dataOrigin?.artificial?.categoryList?.forEach(t => {
             t.itemList.forEach(it => {
@@ -291,7 +293,7 @@
           })
         }
         // this.countPrice = temp
-        console.log(this.shopping, this.countPrice)
+        // console.log(this.shopping, this.countPrice)
         // return temp
       },
       batchChangeLevel(cllist) {
@@ -363,15 +365,17 @@
             } = this.selectedMaterialData
             this.setMaterial(categoryId, origin)
           }
-          let tempArr = [...data?.material?.categoryList]
-          tempArr.forEach(category => {
-            category.itemList.forEach(it => {
-              it.oldId = it.id
-              it.checked = true
-              it.isEdit = false
+          if(data?.material?.categoryList?.length > 0) {
+            let tempArr = [...data?.material?.categoryList]
+            tempArr.forEach(category => {
+              category.itemList.forEach(it => {
+                it.oldId = it.id
+                it.checked = true
+                it.isEdit = false
+              })
             })
-          })
-          uni.setStorageSync("originMaterialList", tempArr)
+            uni.setStorageSync("originMaterialList", tempArr)
+          }
           this.initData()
         }).catch(err => {
           const {

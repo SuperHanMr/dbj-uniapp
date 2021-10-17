@@ -33,7 +33,7 @@
                   :src="aServiceData.insuranceStatus ? 'http://dbj.dragonn.top/static/mp/dabanjia/images/decorate/insurance-pay.svg': 'http://dbj.dragonn.top/static/mp/dabanjia/images/decorate/insurance-unpay.svg'">
                 </image>
               </view>
-              <view class="uni-title">{{ currentProject.housingEstate }}{{currentProject.address}}</view>
+              <view class="uni-title">{{ currentProject.housingEstate || '' }}{{currentProject.address || ''}}</view>
             </view>
             <view class="picture-btn-wrap">
               <picture-btn v-if="aServiceData.showDesignFlag"
@@ -207,16 +207,18 @@
       this.showNoHouse = false
       this.availGuides = []
       uni.showTabBar()
-      const {
-        currentHouse
-      } = getApp().globalData
-      if (currentHouse?.id) {
-        this.getEstateList()
-        this.$store.dispatch("updateTabBarBadge");
-      } else {
-        this.getEstateList()
-        // this.showNoHouse = true
-      }
+      // const {
+      //   currentHouse
+      // } = getApp().globalData
+      // if (currentHouse?.id) {
+      //   this.getEstateList()
+      //   this.$store.dispatch("updateTabBarBadge");
+      // } else {
+      //   this.getEstateList()
+      //   // this.showNoHouse = true
+      // }
+      this.getEstateList()
+      this.$store.dispatch("updateTabBarBadge")
     },
     data() {
       return {
@@ -253,20 +255,16 @@
     mounted() {
       uni.showTabBar()
       this.showNoHouse = false
-      const {
-        currentHouse
-      } = getApp().globalData
-      if (currentHouse?.id) {
-        this.deviceId = uni.getStorageSync('uuDeviceId')
-        if (!this.deviceId) {
-          this.deviceId = uuidv4()
-          uni.setStorageSync('uuDeviceId', this.deviceId);
-        }
-        uni.$on('system-messages', this.watchMsg)
-      } else {
-        // uni.hideTabBar()
-        // this.showNoHouse = true
+      // const {
+      //   currentHouse
+      // } = getApp().globalData
+      uni.$on('system-messages', this.watchMsg)
+      this.deviceId = uni.getStorageSync('uuDeviceId')
+      if (!this.deviceId) {
+        this.deviceId = uuidv4()
+        uni.setStorageSync('uuDeviceId', this.deviceId);
       }
+      
     },
     destory() {
       clearTimeout(timer)
@@ -443,6 +441,14 @@
               // 因为项目列表中的projectId字段没有，所以唯一标识用guid方法生成
               item.uid = this.guid()
             })
+            //将默认项目放在首位
+            data.sort((a, b)=> {
+              if(a.defaultEstate && a.relegationType === 1) {
+                return -1
+              }
+              return b.createTime - a.createTime
+            })
+            //end
             this.projectList = data
             const {
               currentProject,

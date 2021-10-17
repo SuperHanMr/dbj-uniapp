@@ -75,8 +75,9 @@
 				})
 			},
       sendMsg(){
-        this.$store.dispatch("openC2CConversation", this.personId);
-      
+        this.$store.dispatch("openC2CConversation", {
+          id:this.personId,
+        })
       },
 			submit(){
         sureGrab({serveId:this.id}).then(res=>{
