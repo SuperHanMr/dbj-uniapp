@@ -17,11 +17,10 @@
 					{{citydata}}
 				</view>
 				<image v-if="citydata" class="icon_down"
-					src="http://dbj.dragonn.top/static/mp/dabanjia/images/home/ic_home_down.png" mode=""></image>
+					src="http://dbj.dragonn.top/static/mp/dabanjia/images/home/hone_ic_down.png" mode=""></image>
 			</view>
-
 			<image @click="toSearch" class="icon-search"
-				src="http://dbj.dragonn.top/static/mp/dabanjia/images/home/search.png" mode=""></image>
+				src="http://dbj.dragonn.top/static/mp/dabanjia/images/home/home_ic_search.png" mode=""></image>
 			<image @click="toMessage" class="img"
 				src="http://dbj.dragonn.top/static/mp/dabanjia/images/home/online-server.png" mode="">
 			</image>
@@ -34,7 +33,8 @@
 		</view>
 		<!-- banner -->
 		<view class="banner-content">
-			<swiper :autoplay="swiperAuto" interval="2000" duration="500" :circular="true" @change="swiperChange">
+			<swiper class="banner" :autoplay="swiperAuto" interval="2000" duration="500" :circular="true"
+				@change="swiperChange">
 				<swiper-item v-for="(item,index) in bannerList" :key="item.id">
 					<image class="banner-img" :src="item.resUrl" mode="scaleToFill" @click="toWebview(item.jumpUrl)">
 					</image>
@@ -42,7 +42,7 @@
 			</swiper>
 			<view class="swiper-tab">
 				<view class="flex1" v-for="(item,index) in bannerList" :key="index"
-					:style="{backgroundColor:index==currentSwiper?'#FFF':''}">
+					:style="{backgroundColor:index==currentSwiper?'#FFF':'',borderRadius:index==currentSwiper?'2rpx':''}">
 				</view>
 			</view>
 		</view>
@@ -94,7 +94,7 @@
 		<view class="example-content">
 
 			<image v-for="(item,index) in status2List" :key="item.id" @click="onZoneClick(item)" class="item"
-				:src="item.icon"></image>
+				:class="{'margin-left16':index==1}" :src="item.icon"></image>
 
 		</view>
 
@@ -120,10 +120,10 @@
 		</view>
 
 		<view class="player-scroll">
-			<view v-for="(item,index) in liveList" :key="index" class="item" @click="onLiveClick(item)">
+			<view v-for="(item,index) in liveList" :key="index" class="item" :class="{'margin-left24':index!=0}"
+				@click="onLiveClick(item)">
 				<image class="img" :src="item.mediaType==1?item.roomLiveMediaVO.scaleImg:item.roomVideoMediaVO.scaleImg"
 					mode=""></image>
-
 				</image>
 				<view class="top-content">
 					<image class="top-content-img"
@@ -149,7 +149,8 @@
 
 		</view>
 		<view class="goods-list">
-			<view class="item" v-for="(item,index) in goodsList" :key="item.id" :class="{'margin-left16':index%2!=0,'margin-left24':index%2==0}"
+			<view class="item" v-for="(item,index) in goodsList" :key="item.id"
+				:class="{'margin-left16':index%2!=0,'margin-left24':index%2==0}"
 				@click="toGoodsDetail(item.product.skuId)">
 				<image class="img" :src="item.product.skuImage" mode="aspectFill"></image>
 				<view class="info">
@@ -398,6 +399,11 @@
 					rows: 15,
 				}).then((e) => {
 					this.liveList = e.list;
+					this.liveList = this.liveList.concat(this.liveList);
+					this.liveList = this.liveList.concat(this.liveList);
+					// this.liveList.push(this.liveList)
+					// this.liveList.push(this.liveList)
+					// this.liveList.push(this.liveList)
 					console.log(e);
 				});
 			},
@@ -667,7 +673,8 @@
 		height: 0px;
 		color: transparent;
 	}
-	page{
+
+	page {
 		background: #FFF;
 	}
 
@@ -715,6 +722,7 @@
 		flex-direction: row;
 		flex-wrap: wrap;
 		justify-content: flex-start;
+		margin-bottom: 10rpx;
 
 		.margin-left16 {
 			margin-left: 16rpx;
@@ -806,10 +814,15 @@
 	}
 
 	.player-scroll {
-		width: 100%;
+		// width: 100%;
 		display: flex;
 		overflow: auto;
-		margin-top: 14rpx;
+		// margin-top: 14rpx;
+		margin: 14rpx 24rpx 0rpx 24rpx;
+
+		.margin-left24 {
+			margin-left: 24rpx;
+		}
 
 		.item {
 			flex-shrink: 0;
@@ -818,7 +831,6 @@
 			background: linear-gradient(213deg, #dfe4ed 0%, #f3f5f8 56%, #f8fafa 100%);
 			box-shadow: 0rpx 2rpx 32rpx -4rpx #e8eced;
 			border-radius: 16rpx;
-			margin-left: 24rpx;
 			position: relative;
 			overflow: hidden;
 
@@ -928,7 +940,7 @@
 		padding: 0 24rpx;
 		display: flex;
 		flex-direction: row;
-		justify-content: space-between;
+		justify-content: center;
 		margin-top: 16rpx;
 
 		.item {
@@ -937,6 +949,12 @@
 			background: #f5fcfc;
 			border-radius: 16rpx;
 		}
+
+		.margin-left16 {
+			margin-left: 16rpx;
+		}
+
+		;
 	}
 
 	.experience {
@@ -1051,7 +1069,7 @@
 		z-index: 999;
 		display: flex;
 		flex-direction: row;
-		align-items: center; 
+		align-items: center;
 		padding: 6rpx 24rpx 0 24rpx;
 
 		.img {
@@ -1091,15 +1109,22 @@
 
 	.banner-content {
 		position: relative;
-		height: 234rpx;
 		margin: 0 24rpx;
 		margin-top: 8rpx;
-		border-radius: 16rpx;
-		overflow: hidden;
+
+		.banner {
+			border-radius: 16rpx;
+			overflow: hidden;
+			height: 234rpx;
+			width: 702rpx;
+			z-index: 200;
+			position: relative;
+		}
 
 		.banner-img {
 			width: 100%;
 			height: 234rpx;
+			border-radius: 16rpx;
 		}
 	}
 
