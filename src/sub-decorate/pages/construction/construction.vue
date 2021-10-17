@@ -5,7 +5,7 @@
       <view class="s-g-item" v-for="(item,index) in dataList">
         <user-desc-pict :butlerData="item.butlerDecorationTrendLogVO">
           <template slot="subtitle">
-            <sub-title :text="current + '阶段完工申请'"></sub-title>
+            <sub-title :text="current + item.butlerDecorationTrendLogVO.type === 3 ? '阶段' : '整体' + '完工申请'"></sub-title>
           </template>
         </user-desc-pict>
         <user-desc-pict-worker :workerData="item.workerDecorationTrendLogVO">
