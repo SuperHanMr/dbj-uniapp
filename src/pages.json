@@ -364,8 +364,9 @@
 				{
 					"path": "pages/my-order/my-order",
 					"style": {
-						"navigationBarTitleText": "我的订单",
-						"enablePullDownRefresh": false
+						"navigationBarTitleText": "",
+						"enablePullDownRefresh": false,
+						"navigationStyle": "custom"
 					}
 				},
 				{
@@ -380,7 +381,8 @@
 					"style": {
 						"navigationBarTitleText": "",
 						"navigationBarBackgroundColor": "#FFB344",
-						"enablePullDownRefresh": false
+						"enablePullDownRefresh": false,
+						"navigationStyle": "custom"
 					}
 				},
 				{
@@ -388,7 +390,8 @@
 					"style": {
 						"navigationBarTitleText": "",
 						"navigationBarBackgroundColor": "#23D5C6",
-						"enablePullDownRefresh": false
+						"enablePullDownRefresh": false,
+						"navigationStyle": "custom"
 					}
 				},
 				{
@@ -396,7 +399,8 @@
 					"style": {
 						"navigationBarTitleText": "",
 						"navigationBarBackgroundColor": "#C6C6C6",
-						"enablePullDownRefresh": false
+						"enablePullDownRefresh": false,
+						"navigationStyle": "custom"
 					}
 				},
 				{
@@ -404,7 +408,8 @@
 					"style": {
 						"navigationBarTitleText": "",
 						"navigationBarBackgroundColor": "#FFB344",
-						"enablePullDownRefresh": false
+						"enablePullDownRefresh": false,
+						"navigationStyle": "custom"
 					}
 				},
 				{

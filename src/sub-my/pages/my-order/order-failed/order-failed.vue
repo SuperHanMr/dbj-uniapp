@@ -1,6 +1,16 @@
 <template>
   <view class="container">
-
+		<custom-navbar opacity="1" titleColor="#ffb245" bgcolor=" #c6c6c6">
+			<template v-slot:back>
+				<view @click="toBack">
+					<i class="icon-ic_cancel_white" style="color: white;">
+					</i>
+				</view>
+			</template>
+		</custom-navbar>
+		<!-- 占位 -->
+		<view :style="{height:navBarHeight}"></view>
+		
     <!-- 退款详情 --退款关闭   退款取消与商家拒接 两个页面-->
     <view
       class="order-container"
@@ -10,10 +20,7 @@
       <view class="order-status">
         <view class="backgroundStyle" />
         <view class="status">
-          <image
-            src="@/static/order/ic_order_failed@2x.png"
-            mode=""
-          />
+          <image src="../../../static/ic_order_failed.svg" mode="" />
           <text v-if="status == 3 || status == 4">退款关闭</text>
           <text v-if="status == 5">退款失败</text>
         </view>
@@ -21,78 +28,42 @@
       </view>
 
       <view class="order-header">
-        <image
-          v-if="status == 5 "
-          src="../../../static/ic_order_refund_failed@2x.png"
-          mode=""
-        />
-        <image
-          v-else
-          src="@/static/order/ic_failed@2x.png"
-          mode=""
-        />
+        <image v-if="status == 5 " src="../../../static/ic_order_refund_failed.svg" mode=""/>
+        <image v-else src="../../../static/ic_failed.svg" mode=""/>
 
-        <view
-          v-if="status == 3"
-          class="cancel-text"
-        >
-          商家拒绝了您的申请，如有问题未解决，您可以重新申请
-        </view>
-        <view
-          v-if="status == 4"
-          class="cancel-text"
-        >
-          您已取消了本次退款，如有问题未解决，您可以重新申请
-        </view>
-        <view
-          v-if="status == 5"
-          class="cancel-text failed-text"
-        >
-          您的退款账户存在异常，您可联系客服或者重新发起申请
-        </view>
-      </view>
+        <view v-if="status == 3" class="cancel-text">商家拒绝了您的申请，如有问题未解决，您可以重新申请</view>
+        <view v-if="status == 4" class="cancel-text">您已取消了本次退款，如有问题未解决，您可以重新申请</view>
+        <view v-if="status == 5" class="cancel-text failed-text">您的退款账户存在异常，您可联系客服或者重新发起申请</view>
+			
+			</view>
 
-      <view
-        class="body1"
-        v-for="item in refundInfo.detailAppVOS"
-        :key="item.id"
-      >
+      <view class="body1"v-for="item in refundInfo.detailAppVOS" :key="item.id">
         <order-item
           :dataList="item"
           :refundType="true"
           @handleDetail="productDetail(item,'refund')"
         />
-        <view
-          class="refund-money"
-          v-if="item.freight || item.handlingFees"
-        >
+        <view class="refund-money" v-if="item.freight || item.handlingFees">
           <!--运费 -->
-          <view
-            class="price-item"
-            v-if="item.freight"
-          >
+          <view class="price-item" v-if="item.freight">
             <view class="title">
               <text style="margin-right: 8rpx;">运费</text>
               <text class="icon">?</text>
             </view>
             <view>
               <text>￥</text>
-              <text class="price-style">{{handlePrice(item.freight)[0]}}.{{handlePrice(item.freight)[1]}}</text>
+              <text class="price-style price-font">{{handlePrice(item.freight)[0]}}.{{handlePrice(item.freight)[1]}}</text>
             </view>
           </view>
 
           <!-- 搬运费 -->
-          <view
-            class="price-item"
-            v-if="item.handlingFees"
-          >
+          <view class="price-item" v-if="item.handlingFees">
             <view class="title">
               <text style="margin-right: 8rpx;">搬运费</text>
               <text class="icon">?</text>
             </view>
             <view>
-              <text>￥</text>
-              <text class="price-style">{{handlePrice(item.handlingFees)[0]}}.{{handlePrice(item.handlingFees)[1]}}</text>
+              <text>￥</text><text class="price-style price-font">{{handlePrice(item.handlingFees)[0]}}.{{handlePrice(item.handlingFees)[1]}}</text>
             </view>
           </view>
         </view>
@@ -105,37 +76,22 @@
         class="contact-customer-Reapply"
         :style="{paddingBottom:systemBottom,height:systemHeight}"
       >
-        <view
-          v-if="status == 3 || status == 5 "
-          class="contact-customer"
-          @click="contactCustomer()"
-        >
+        <view v-if="status == 3 || status == 5 " class="contact-customer" @click="contactCustomer()">
           联系客服
         </view>
 
-        <view
-          v-if="showReApply==true"
-          class="Reapply"
-          @click="toApplayForRefund(refundInfo)"
-        >
+        <view v-if="showReApply==true" class="Reapply" @click="toApplayForRefund(refundInfo)" >
           重新申请
         </view>
       </view>
     </view>
 
     <!-- 订单详情  已关闭页面 -->
-    <view
-      class="order-container"
-      v-if="type =='close'"
-      :style="{paddingBottom:systemBottom}"
-    >
+    <view class="order-container" v-if="type =='close'" :style="{paddingBottom:systemBottom}" >
       <view class="order-status">
         <view class="backgroundStyle" />
         <view class="status">
-          <image
-            src="@/static/order/ic_order_failed@2x.png"
-            mode=""
-          />
+          <image src="../../../static/ic_order_failed.svg" mode=""/>
           <text>已关闭</text>
         </view>
       </view>
@@ -145,20 +101,11 @@
         v-for="(item,index) in orderInfo.details"
         :key="index"
       >
-        <view
-          class="header"
-          @click="gotoShop(item)"
-        >
+        <view class="header" @click="gotoShop(item)">
           <text>{{item.storeName}}</text>
-          <image
-            src="@/static/order/ic_more@2x.png"
-            mode=""
-          />
+          <image src="@/static/order/ic_more@2x.png" mode="" />
         </view>
-        <view
-          v-for="item2 in item.details"
-          :key="item2.id"
-        >
+        <view v-for="item2 in item.details" :key="item2.id">
           <order-item
             :dataList="item2"
             @handleDetail="productDetail(item2)"
@@ -202,6 +149,7 @@ export default {
       containerPaddingBottom: "",
       title: "",
       areaId: "",
+			navBarHeight:"",
     };
   },
 
@@ -219,6 +167,22 @@ export default {
     this.from = e.from;
     this.showReApply = true;
     console.log("this.showReApply=", this.showReApply);
+		// 获取胶囊按钮的位置
+		const systemInfo = uni.getSystemInfoSync();
+		const menuButtonInfo = uni.getMenuButtonBoundingClientRect();
+		this.navBarHeight =
+			menuButtonInfo.top +
+			(menuButtonInfo.top - systemInfo.statusBarHeight) +
+			menuButtonInfo.height +
+			"px";
+		uni.setNavigationBarColor({
+			frontColor: '#ffffff',
+			backgroundColor: '#ff0000',
+			animation: {
+					duration: 400,
+					timingFunc: 'easeIn'
+			}
+		})
   },
   onShow() {
     if (this.type == "refund") {
@@ -246,20 +210,6 @@ export default {
     }
   },
 
-  // 改变返回下一个页面的路径
-  onUnload() {
-    if (this.from == "waitPay") {
-      uni.redirectTo({
-        url: `../my-order?index=1`,
-      });
-    } else if (this.from == "inprogress") {
-      uni.redirectTo({
-        url: `../my-order?index=2`,
-      });
-    } else {
-      console.log("dddd");
-    }
-  },
 
   methods: {
     orderDetail() {
@@ -269,6 +219,24 @@ export default {
         console.log("获取详情数据data=", this.orderInfo);
       });
     },
+		
+		// 改变返回下一个页面的路径
+		toBack(){
+			if (this.from == "waitPay") {
+				uni.redirectTo({
+					url: `../my-order?index=1`,
+				});
+			}else if (this.from == "inprogress") {
+				uni.redirectTo({
+					url: `../my-order?index=2`,
+				});
+			}else{
+				uni.navigateBack({
+					delta:1
+				})
+			}
+		},
+		
     refundDetail() {
       getRefundDetail({ id: this.id }).then((e) => {
         this.refundInfo = e;
@@ -394,6 +362,7 @@ export default {
       display: flex;
       flex: 1;
       flex-flow: row nowrap;
+			justify-content: flex-start;
       image {
         width: 32rpx;
         height: 32rpx;
@@ -505,7 +474,7 @@ export default {
     height: 56rpx;
     line-height: 56rpx;
     box-sizing: border-box;
-    background: linear-gradient(135deg, #36d9cd 0%, #28c6c6 100%);
+    background: linear-gradient(99deg, #00CCBE 0%, #00C2BF 100%);
     border-radius: 8rpx;
     font-size: 24rpx;
     text-align: center;
