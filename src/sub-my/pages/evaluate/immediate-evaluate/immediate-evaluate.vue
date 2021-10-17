@@ -163,10 +163,10 @@ export default {
   },
 	
 	onLoad(e) {
-    let {serveId,serveType,servicerNickName,servicerRole,servicerAvatar} = getApp().globalData.decorateMsg
+    let {serveId,serveType,servicerRealName,servicerRole,servicerAvatar} = getApp().globalData.decorateMsg
 		this.id =Number(e.id) || serveId
 		this.type  =Number(e.type) || serveType
-		this.serverName = e.serverName || servicerNickName
+		this.serverName = e.serverName || servicerName
 		this.serverRoleName = e.serverRoleName || servicerRole
 		this.serverAvatar  =e.serverAvatar || servicerAvatar
 		console.log("this.id=",this.id,"this.type=",this.type)
