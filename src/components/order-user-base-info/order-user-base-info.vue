@@ -1,11 +1,11 @@
 <template>
   <view class="container">
     <image
-      src="../../static/order/ic_location@2x.png"
+      src="../../static/order/ic_location.svg"
       mode=""
     ></image>
     <view class="basic-info">
-      <view style="font-weight: 500;">
+      <view style="font-weight: bold;">
         <text>{{data.customerName}}</text>
         <text style="margin-left: 24rpx;">{{data.customerPhone}}</text>
       </view>

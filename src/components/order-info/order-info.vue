@@ -88,8 +88,12 @@
 			duplicate(refundNo){
 				uni.setClipboardData({
 					data:`${this.orderNo}`,
-				    success: function (res) {
-								console.log("复制成功");
+				    success(res){
+							uni.showToast({
+								title: "订单编号已复制",
+								icon: "none",
+								duration: 1000,
+							});
 						}
 				});
 			}
