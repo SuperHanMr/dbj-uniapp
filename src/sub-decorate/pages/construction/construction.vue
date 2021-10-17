@@ -46,6 +46,7 @@
         this.getCompletionLog()
       },
       getCompletionLog() {
+        this.dataList = []
         getCompletionLog({
           page: 1,
           // position: ,
