@@ -42,7 +42,7 @@
     },
     methods: {
       setTitle(type) {
-        str = type === 4 ? '整体' : '阶段'
+        let str = type === 4 ? '整体' : '阶段'
         return this.current + type + '完工申请'
       },
       changeItem(item) {
