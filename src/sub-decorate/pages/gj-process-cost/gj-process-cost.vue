@@ -150,6 +150,7 @@
         // origin.workType = item.workType //"int //工种",
         origin.categoryTypeId = item.product.categoryTypeId //"int //品类类型ID",
         origin.storeId = item.product.storeId //"long //店铺ID",
+        origin.inServiceArea = true // 从商品列表更换来的商品一定是在服务范围内的
         origin.imageUrl = item.product.skuImage //"string //图片地址",
         origin.spuName = item.product.spuName //"string //商品名称",
         let deposit = item.product.sku.deposit ?? 0
@@ -235,6 +236,7 @@
 
       },
       initData() {
+        this.checkedIds = []
         if (this.msg.obtainType != 2) {
           this.dataOrigin?.artificial?.categoryList?.forEach(t => {
             t.itemList.forEach(it => {
