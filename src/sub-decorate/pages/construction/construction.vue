@@ -42,8 +42,15 @@
     },
     methods: {
       setTitle(type) {
-        let str = type === 4 ? '整体' : '阶段'
-        return this.current + type + '完工申请'
+        let str = ''
+        if(type == 4) {
+          str = '整体'
+        } else if (type == 3) {
+          str = '阶段'
+        } else {
+          str = '未知阶段' + type
+        }
+        return this.current + str + '完工申请'
       },
       changeItem(item) {
         this.current = item;
