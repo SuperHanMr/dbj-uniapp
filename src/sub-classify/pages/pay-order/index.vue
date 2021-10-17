@@ -82,7 +82,7 @@
           </view>
         </view>
       </view>
-      <view class="good-store-account" v-if="orderInfo.totalDeliveryFee">
+      <view class="good-store-account" v-if="!orderInfo.hasStock">
         <view v-if="Number(orderInfo.totalPrice)">
           <text>商品总价</text>
           <text>¥{{orderInfo.totalPrice}}</text>
@@ -102,8 +102,7 @@
           <text>¥{{orderInfo.totalHandlingFee}}</text>
         </view>
       </view>
-      <view class="good-store-account is-store"
-        v-if="Number(orderInfo.totalPrice) && !Number(orderInfo.totalDeliveryFee)">
+      <view class="good-store-account is-store" v-else>
         <view>
           <text>商品总价</text>
           <text>¥{{orderInfo.totalPrice}}</text>
