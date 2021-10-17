@@ -809,7 +809,7 @@ export default {
     },
     toCost() {
       uni.navigateTo({
-        url: `/sub-decorate/pages/actuary-bill/actuary-bill?projectId=${this.projectInfo.id}&isActuarial=2`,
+        url: `/sub-decorate/pages/actuary-bill/reference-bill?projectId=${this.projectInfo.id}`,
       });
     },
     requestSelectOptions() {
