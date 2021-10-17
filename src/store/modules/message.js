@@ -500,7 +500,7 @@ const message = {
       const { id, name } = userInfo;
       let userIMID = id;
       if (!isNaN(userIMID)) {
-        userIMID = "zeus_" + userId;
+        userIMID = "zeus_" + userIMID;
       }
       const convId = TIM.TYPES.CONV_C2C + userIMID;
       
