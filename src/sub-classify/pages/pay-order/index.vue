@@ -12,7 +12,8 @@
       </uni-popup>
     </view>
     <view v-else>
-      <address-picker :houseId="houseId" :productType="productType" @emitInfo="emitInfo" :originFrom="originFrom"></address-picker>
+      <address-picker :houseId="houseId" :productType="productType" @emitInfo="emitInfo" :originFrom="originFrom">
+      </address-picker>
       <view class="content">
         <view class="shop-item" v-for="(shopItem, shopIndex) in orderInfo.storeInfos" :key="shopIndex">
           <view class="shop-name" v-if="shopItem.skuInfos.length">{{shopItem.storeName}}</view>
@@ -26,13 +27,14 @@
                   {{goodsItem.spuName}}
                 </view>
                 <view class="spu-class">
-                  <view class='tag'>{{goodsItem.skuName}}</view>
+                  <view class='tag'>{{level}}｜{{goodsItem.skuName}}</view>
                   <view class="total-num">共{{goodsItem.buyCount}}{{goodsItem.unit?goodsItem.unit:""}}</view>
                 </view>
                 <view class="goods-spec">
                   <view class="goods-money">
-                    ￥  
-                   <text class="integer-price">{{String(goodsItem.price).split(".")[0]?String(goodsItem.price).split(".")[0]:0}}</text>
+                    ￥
+                    <text
+                      class="integer-price">{{String(goodsItem.price).split(".")[0]?String(goodsItem.price).split(".")[0]:0}}</text>
                     <text>.{{String(goodsItem.price).split(".")[1]?String(goodsItem.price).split(".")[1]:0}}</text>
                     <text>/{{goodsItem.unit?goodsItem.unit:""}}</text>
                   </view>
@@ -45,8 +47,11 @@
                 <text v-if="goodsItem.errorType === 1">不在服务范围</text>
                 <text v-if="goodsItem.errorType === 2">不在配送范围</text>
                 <text v-if="goodsItem.errorType === 3">该房屋下已购买该服务，不可重复购买</text>
+                <text v-if="goodsItem.errorType === 4 && cancelDialog">该服务需精算师指导下完成</text>
+                <text v-if="goodsItem.errorType === 5 && cancelDialog">该服务需管家指导下完成</text>
                 <text v-if="goodsItem.errorType === 6">您已跳过该工序，不可购买</text>
                 <text v-if="goodsItem.errorType === 7">暂不可购买，请在精算服务结束后于精算单中购买</text>
+                <text v-if="goodsItem.errorType === 8 && cancelDialog">请从装修页面查询购买</text>
                 <text v-if="goodsItem.errorType === 9">暂不可购买，请在管家服务结束后于精算单中购买</text>
               </view>
             </view>
@@ -71,7 +76,7 @@
           <view class="shop-reduce" v-if="shopItem.freeDeliveryCount && productType === 1">
             <view class="item-reduce-box">
               <view class="question-box">本订单已获得了该店铺{{shopItem.freeDeliveryCount}}次免运费权益
-                <text class="question-icon free-icon" @click="readExpenses(1)"></text>
+                <text class="question-icon free-icon" @click="readExpenses(0)"></text>
               </view>
             </view>
           </view>
@@ -97,7 +102,8 @@
           <text>¥{{orderInfo.totalHandlingFee}}</text>
         </view>
       </view>
-      <view class="good-store-account is-store" v-if="Number(orderInfo.totalPrice) && !Number(orderInfo.totalDeliveryFee)">
+      <view class="good-store-account is-store"
+        v-if="Number(orderInfo.totalPrice) && !Number(orderInfo.totalDeliveryFee)">
         <view>
           <text>商品总价</text>
           <text>¥{{orderInfo.totalPrice}}</text>
@@ -133,18 +139,23 @@
           <view class="total-price-info">
             <text class="info-text1">共{{totalClassNum}}类，</text>
             <view class="info-text2">总计：</view>
-            <view class="total-money">
+            <view class="total-money" v-if="Number(totalPrice)">
               ￥
               <text class="mony-text">{{totalPrice?String.prototype.split.call(totalPrice, ".")[0]: "-"}}</text>
               <text>.{{totalPrice?String.prototype.split.call(totalPrice, ".")[1]?String.prototype.split.call(totalPrice, ".")[1]:"-":"-"}}</text>
             </view>
+            <view v-else>
+              ¥ --
+            </view>
           </view>
-          <button class="pay-button" :class="{'no-pay': !hasCanBuy || hasNoBuyItem}" @click="pay" ref="test">立即支付</button>
+          <button class="pay-button" :class="{'no-pay': !hasCanBuy || hasNoBuyItem}" @click="pay"
+            ref="test">立即支付</button>
         </view>
       </view>
       <expenses-toast ref='expensesToast' :expensesType="expensesType"></expenses-toast>
       <date-picker ref='datePicker' @getTime="getTime"></date-picker>
-      <order-toast ref='orderToast' :houseId="houseId" :hasCanBuy="hasCanBuy" :noStoreInfos="noStoreInfos" @toastConfirm="toastConfirm"></order-toast>
+      <order-toast ref='orderToast' :houseId="houseId" :hasCanBuy="hasCanBuy" :noStoreInfos="noStoreInfos"
+        @toastConfirm="toastConfirm"></order-toast>
       <uni-popup ref="cancelDialog" :mask-click="false">
         <view class="popup-item">
           <view class="popup-title">{{toastText}}</view>
@@ -198,7 +209,7 @@
         productType: 1,
         frontendServe: '',
         toastType: 0,
-        toastText:'',
+        toastText: '',
         tipTest: '',
         remarks: '',
         orderName: '',
@@ -207,21 +218,22 @@
         totalPrice: '0.00',
         hasCanBuy: false,
         projectId: 0,
-        level: 0
+        level: 0,
+        cancelDialog: false
       }
     },
     onLoad(e) {
       // 购物车数据
       const eventChannel = this.getOpenerEventChannel();
-      eventChannel.on('acceptDataFromOpenerPage',( data )=> {
-      	this.orderCartParams = data
+      eventChannel.on('acceptDataFromOpenerPage', (data) => {
+        this.orderCartParams = data
         this.originFrom = data.originFrom
-      }) 
+      })
       // 小程序数据
-      if(e.from) {
+      if (e.from) {
         this.originFrom = e.from
       }
-      this.houseId = e.houseId?e.houseId: getApp().globalData.currentHouse.id
+      this.houseId = e.houseId ? e.houseId : getApp().globalData.currentHouse.id
       console.log(e.houseId, "e.houseId")
       this.buyCount = e.buyCount
       this.skuId = e.skuId
@@ -233,18 +245,18 @@
     onShow() {
       if (uni.getStorageSync('houseListChooseId')) {
         this.houseId = uni.getStorageSync('houseListChooseId')
-        if(this.$refs.houseDialog) {
+        if (this.$refs.houseDialog) {
           this.$refs.houseDialog.close()
         }
       }
-      if(!Number(this.houseId)){
+      if (!Number(this.houseId)) {
         this.isShow = false
         setTimeout(() => {
-          if(this.$refs.houseDialog){
+          if (this.$refs.houseDialog) {
             this.$refs.houseDialog.open()
           }
         })
-      }else{
+      } else {
         this.isShow = true
       }
     },
@@ -257,7 +269,7 @@
       },
       chooseHouse() {
         uni.navigateTo({
-           url: "/sub-my/pages/my-house/my-house?isEdit=0"
+          url: "/sub-my/pages/my-house/my-house?isEdit=0"
         })
       },
       goAgreement() {
@@ -279,27 +291,28 @@
         this.projectId = val.projectId
         this.orderDetails = []
         this.addressInfo = val
-        this.estateId = val.id ? val.id: 0
-         let params = {}
-        if(this.originFrom === 'h5GoodDetail') {
+        this.estateId = val.id ? val.id : 0
+        let params = {}
+        if (this.originFrom === 'h5GoodDetail') {
           params = {
-            skuInfos:[{
-            		skuId:this.skuId,
-            		storeId:this.storeId,
-            		buyCount:this.buyCount,
-            		unit: this.unit? this.unit:"",
-                level: this.level
-            	}],
-            	estateId:this.estateId
+            skuInfos: [{
+              skuId: this.skuId,
+              storeId: this.storeId,
+              buyCount: this.buyCount,
+              unit: this.unit ? this.unit : "",
+              level: this.level
+            }],
+            estateId: this.estateId
           }
-        }else if(this.originFrom === 'shopCart'){
+        } else if (this.originFrom === 'shopCart') {
           params = {
             skuInfos: this.orderCartParams.skuInfos,
             estateId: this.estateId
           }
         }
         getDetailInfo(params).then((data) => {
-          this.totalPrice = (data.totalPrice + data.totalDeliveryFee + data.totalHandlingFee + data.totalDeposit - data.totalDiscount).toFixed(2)
+          this.totalPrice = (data.totalPrice + data.totalDeliveryFee + data.totalHandlingFee + data.totalDeposit -
+            data.totalDiscount).toFixed(2)
           let dataInfo = data
           this.orderInfo = dataInfo
           this.noStoreInfos = JSON.parse(JSON.stringify(dataInfo))
@@ -315,7 +328,7 @@
             this.canStoreInfos.storeInfos.push(canStoreItem)
             storeItem.skuInfos.map((skuItem, skuK) => {
               this.productType = skuItem.productType
-               // 头部补人工数据
+              // 头部补人工数据
               if (skuItem.addingJobName) {
                 this.addUser.push({
                   addingJobName: skuItem.addingJobName,
@@ -324,27 +337,27 @@
                 })
               }
               // 结算可配送和不可配送数据
-              if (skuItem.errorType) { 
+              if (skuItem.errorType) {
                 noStoreItem.skuInfos.push(skuItem)
-                if(skuItem.errorType === 4) {
+                if (skuItem.errorType === 4) {
                   this.toastType = 4
                   this.toastText = "该服务需精算师指导下完成"
-                  if(this.$refs.cancelDialog.open){
+                  if (this.$refs.cancelDialog.open) {
                     this.$refs.cancelDialog.open()
                   }
                 } else if (skuItem.errorType === 5) {
                   this.toastType = 5
                   this.toastText = "该服务需管家指导下完成"
-                  if(this.$refs.cancelDialog.open){
+                  if (this.$refs.cancelDialog.open) {
                     this.$refs.cancelDialog.open()
                   }
-                } else if(skuItem.errorType === 8) {
+                } else if (skuItem.errorType === 8) {
                   this.toastType = 8
                   this.toastText = "请从装修页面查询购买"
-                  if(this.$refs.cancelDialog.open){
+                  if (this.$refs.cancelDialog.open) {
                     this.$refs.cancelDialog.open()
                   }
-                }                
+                }
                 this.hasNoBuyItem = true // 判断所有数据中有没有不可配送数据
               } else {
                 this.hasCanBuy = true
@@ -352,16 +365,17 @@
                 this.totalClassNum += 1
                 // 整理出结算参数
                 let orderDetailItem = {
-                      "relationId":skuItem.skuId, //实体id,
-                  		"type":skuItem.productType,   //1材料  2服务   3专项付款,
-                  		"businessType":skuItem.categoryTypeId, //业务类型,
-                  		"roleType":skuItem.roleType? Number(skuItem.roleType): 0, //角色类型  7工人  10管家  购买工人和管家时参数必传,
-                  		"workType":skuItem.workType? Number(skuItem.workType): -2,//工种类型 购买工人时参数必传,
-                  		"level":this.level, //等级  0中级  1高级 2特级  3钻石",
-                  		"storeId":storeItem.storeId, //店铺id,
-                  		"storeType": 0, //店铺类型 0普通 1设计师",
-                  		"number": skuItem.buyCount, //购买数量",
-                  		"params": {}, //与订单无关的参数 如上门时间 doorTime
+                  "relationId": skuItem.skuId, //实体id,
+                  "type": skuItem.productType, //1材料  2服务   3专项付款,
+                  "businessType": skuItem.categoryTypeId, //业务类型,
+                  "roleType": skuItem.roleType ? Number(skuItem.roleType) :
+                  0, //角色类型  7工人  10管家  购买工人和管家时参数必传,
+                  "workType": skuItem.workType ? Number(skuItem.workType) : -2, //工种类型 购买工人时参数必传,
+                  "level": this.level, //等级  0中级  1高级 2特级  3钻石",
+                  "storeId": storeItem.storeId, //店铺id,
+                  "storeType": 0, //店铺类型 0普通 1设计师",
+                  "number": skuItem.buyCount, //购买数量",
+                  "params": {}, //与订单无关的参数 如上门时间 doorTime
                 }
                 this.orderDetails.push({
                   orderDetailItem: orderDetailItem,
@@ -370,13 +384,13 @@
               }
             })
           })
-          if ( this.orderInfo.storeInfos.length >1 || this.orderInfo.storeInfos[0].skuInfos.length > 1) {
+          if (this.orderInfo.storeInfos.length > 1 || this.orderInfo.storeInfos[0].skuInfos.length > 1) {
             this.orderInfo = this.canStoreInfos
             if (this.hasNoBuyItem) {
               this.$refs.orderToast.showPupop()
             }
           }
-          if(this.orderInfo.storeInfos.length === 1) {
+          if (this.orderInfo.storeInfos.length === 1) {
             this.totalClassNum = 1
           }
         })
@@ -390,29 +404,29 @@
         this.hasNoBuyItem = false
       },
       pay() {
-        if(!this.hasCanBuy || this.hasNoBuyItem || !this.totalPrice) {
+        if (!this.hasCanBuy || this.hasNoBuyItem || !this.totalPrice) {
           return
         }
         let details = []
         this.orderDetails.map((v, k) => {
           details.push(v.orderDetailItem)
           Object.keys(v.paramsInfo).map((item, index) => {
-            if(item === 'time') {
+            if (item === 'time') {
               v.orderDetailItem.params[item] = v.paramsInfo.time
             }
           })
         })
         let params = {
-            payType: 1, //"int //支付方式  1微信支付",
-            openid: uni.getStorageSync("openId"), //"string //微信openid 小程序支付用 app支付不传或传空",
-            projectId: this.projectId, //"long //项目id  非必须 默认0",
-            customerId: 0, //"long //业主id  非必须 默认0",
-            estateId: this.estateId, //"long //房产id   非必须 默认0",
-            total: this.totalPrice * 100, //"int //总计",
-            remarks: this.remarks, //"string //备注",
-            orderName: "", //"string //订单名称 可为空",
-            details: details
-          }
+          payType: 1, //"int //支付方式  1微信支付",
+          openid: uni.getStorageSync("openId"), //"string //微信openid 小程序支付用 app支付不传或传空",
+          projectId: this.projectId, //"long //项目id  非必须 默认0",
+          customerId: 0, //"long //业主id  非必须 默认0",
+          estateId: this.estateId, //"long //房产id   非必须 默认0",
+          total: this.totalPrice * 100, //"int //总计",
+          remarks: this.remarks, //"string //备注",
+          orderName: "", //"string //订单名称 可为空",
+          details: details
+        }
         payOrder(params).then(data => {
           const {
             wechatPayJsapi
@@ -421,21 +435,22 @@
             provider: "wxpay",
             ...wechatPayJsapi,
             success(res) {
-             console.log("付款成功", res)
-             uni.navigateTo({
-               url: "/sub-classify/pages/pay-order/pay-success?orderId=" + data.id
-             })
+              console.log("付款成功", res)
+              uni.navigateTo({
+                url: "/sub-classify/pages/pay-order/pay-success?orderId=" + data.id
+              })
             },
             fail(e) {
               console.log(e, "取消付款");
               uni.navigateTo({
-                url:`/sub-my/pages/my-order/order-wait-pay/order-wait-pay?orderNo=${data.id}&from=waitPayOrder"`
+                url: `/sub-my/pages/my-order/order-wait-pay/order-wait-pay?orderNo=${data.id}&from=waitPayOrder`
               })
             },
           });
         })
       },
       cancelGoodPop() {
+        this.cancelDialog = true
         this.$refs.cancelDialog.close()
       },
       confirmGoodPop() {
@@ -447,7 +462,7 @@
           uni.navigateTo({
             url: "/sub-classify/pages/search-result/search-result?searchText=" + "管家"
           })
-        }else if(this.toastType === 8){
+        } else if (this.toastType === 8) {
           uni.navigateTo({
             url: "/pages/decorate/index/index"
           })
@@ -483,9 +498,11 @@
     background-image: url('../../static/image/question.png');
     background-size: cover;
   }
-  .item-reduce-box .question-box .free-icon{
+
+  .item-reduce-box .question-box .free-icon {
     top: 14rpx;
   }
+
   // 商品item
   .shop-item {
     margin-top: 25rpx;
@@ -497,21 +514,26 @@
     height: 106rpx;
     line-height: 106rpx;
   }
-  .item-box{
+
+  .item-box {
     flex-wrap: wrap;
   }
+
   .goods-item {
     width: 100%;
     display: flex;
     align-items: center;
     padding-bottom: 20rpx;
   }
-  .goods-item .good-tip{
+
+  .goods-item .good-tip {
     width: 100%;
   }
-  .good-tip .item-reduce-box{
+
+  .good-tip .item-reduce-box {
     bottom: 0;
   }
+
   .goods-item .goodsItemImg {
     width: 192rpx;
     height: 192rpx;
@@ -525,7 +547,7 @@
     position: relative;
     flex: 1;
   }
-  
+
   .goods-info .goods-desc {
     width: 420rpx;
     font-size: 28rpx;
@@ -559,9 +581,11 @@
     bottom: 0;
     align-items: baseline;
   }
-  .goods-info .spu-class{
+
+  .goods-info .spu-class {
     position: relative;
   }
+
   .goods-info .tag {
     margin-top: 8rpx;
     font-size: 22rpx;
@@ -573,6 +597,13 @@
     background-color: #fafafa;
     border: 2rpx solid #f0f0f0;
     border-radius: 6rpx;
+    text-overflow: -o-ellipsis-lastline;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    line-clamp: 2;
+    -webkit-box-orient: vertical;
   }
 
   .goods-info .total-num {
@@ -749,6 +780,7 @@
     justify-content: space-around;
     align-items: center;
   }
+
   .bottom .total-price-info {
     display: flex;
     justify-content: flex-start;
@@ -792,10 +824,12 @@
     line-height: 88rpx;
     text-align: center;
   }
-  .bottom .no-pay{
+
+  .bottom .no-pay {
     opacity: 0.4;
-    background: linear-gradient(135deg,#00bfaf, #00bfbc);
+    background: linear-gradient(135deg, #00bfaf, #00bfbc);
   }
+
   .popup-item {
     position: fixed;
     top: 0;

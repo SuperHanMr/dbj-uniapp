@@ -30,7 +30,7 @@
     methods: {
       backHome(){     
         uni.switchTab({
-            url: '/pages/classify/index/index'
+            url: '/pages/home/index/index'
         });
       },
       toOrderDetail() {

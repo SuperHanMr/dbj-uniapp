@@ -167,15 +167,21 @@ export default {
     this.areaId = currentHouse.areaId;
   },
   onShow() {
+    console.log(this.from, "show")
     this.orderDetail();
   },
 	// 改变返回下一个页面的路径
 	onUnload() {
+     console.log(this.from, this.from=="waitPayOrder", "fcrocm!!!!!!!!!!!!!!!!!!s")
 	  if(this.from=="waitPayOrder"){
+      console.log("fcrocm!!!!!!!!!!!!!!!!!!s")
 			uni.redirectTo({
-				url:"../my-order?firstEntry=true&index=1"
+				url:`../my-order?firstEntry=true&index=1`
 			})
-		}
+       console.log("fcrocms")
+		}else{
+      console.log("1111111")
+    }
 	},
 
   methods: {

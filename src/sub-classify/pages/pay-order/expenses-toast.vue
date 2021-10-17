@@ -3,6 +3,13 @@
     <uni-popup ref="expensesToast" type="bottom">
       <view class="close" @click="close"></view>
       <view class="toast-content">
+        <view v-if='expensesType === 0'>
+          <view class="text">
+            <p>
+              您已获得  每   送1次免运费权益，该权益仅减免该店铺要货时的运费，要货时商家会根据实际要货情况扣除对应的减免权益次数
+            </p>
+          </view>
+        </view>
         <view v-if='expensesType === 1'>
           <view class="title">运费说明</view>
           <view class="text">
