@@ -120,8 +120,9 @@
 		</view>
 
 		<view class="player-scroll">
-			<view v-for="(item,index) in liveList" :key="index" class="item" :class="{'margin-left24':index!=0}"
-				@click="onLiveClick(item)">
+			<view style="width: 8rpx;height: 1rpx;flex-shrink: 0;">
+			</view>
+			<view v-for="(item,index) in liveList" :key="index" class="item margin-left24" @click="onLiveClick(item)">
 				<image class="img" :src="item.mediaType==1?item.roomLiveMediaVO.scaleImg:item.roomVideoMediaVO.scaleImg"
 					mode=""></image>
 				</image>
@@ -139,6 +140,9 @@
 				<view class="name-content">
 					{{item.mediaType==1?item.roomLiveMediaVO.title:item.roomVideoMediaVO.title}}
 				</view>
+			</view>
+			<view style="width: 24rpx;height: 1rpx;flex-shrink: 0;">
+
 			</view>
 		</view>
 		<!-- 推荐 -->
@@ -175,6 +179,9 @@
 						/{{item.product.salesUnit.unitName||''}}
 					</view>
 				</view>
+			</view>
+			<view style="height: 24rpx;width: 700rpx;">
+
 			</view>
 		</view>
 	</view>
@@ -399,11 +406,6 @@
 					rows: 15,
 				}).then((e) => {
 					this.liveList = e.list;
-					this.liveList = this.liveList.concat(this.liveList);
-					this.liveList = this.liveList.concat(this.liveList);
-					// this.liveList.push(this.liveList)
-					// this.liveList.push(this.liveList)
-					// this.liveList.push(this.liveList)
 					console.log(e);
 				});
 			},
@@ -687,6 +689,7 @@
 	.icon_logo {
 		width: 164rpx;
 		height: 60rpx;
+		margin-left: 8rpx;
 	}
 
 	.icon-search {
@@ -730,6 +733,10 @@
 
 		.margin-left24 {
 			margin-left: 24rpx;
+		}
+
+		.margin-right24 {
+			margin-right: 24rpx;
 		}
 
 		.item {
@@ -818,10 +825,10 @@
 		display: flex;
 		overflow: auto;
 		// margin-top: 14rpx;
-		margin: 14rpx 24rpx 0rpx 24rpx;
+		margin: 14rpx 0 0rpx 0;
 
 		.margin-left24 {
-			margin-left: 24rpx;
+			margin-left: 16rpx;
 		}
 
 		.item {
@@ -1070,7 +1077,7 @@
 		display: flex;
 		flex-direction: row;
 		align-items: center;
-		padding: 6rpx 24rpx 0 24rpx;
+		padding: 6rpx 32rpx 0 32rpx;
 
 		.img {
 			width: 76rpx;
@@ -1124,7 +1131,6 @@
 		.banner-img {
 			width: 100%;
 			height: 234rpx;
-			border-radius: 16rpx;
 		}
 	}
 
