@@ -2,7 +2,7 @@
   <view class="process-cost">
     <view class="artificial" v-if="msg.payStatus == 2 || msg.obtainType != 2">
       <view class="title">
-        <view>人工费用（{{levelList.length > 0 ? LEVEL[artificialLevel - 1].label : (dataOrigin.artificial.grade || "无等级")}}）
+        <view>人工费用{{levelLabel}}
         </view>
         <view v-if="msg.payStatus != 2 && levelList.length > 0" class="change-level" @click="openPopUp">更换等级</view>
       </view>
@@ -95,6 +95,7 @@
         countPrice: 0,
         pieces: 0,
         artificialLevel: 1,
+        levelLabel: "",
         curr_artificial_categoryId: null,
         levelList: [],
         workerLevelSkuMapping: [],
@@ -306,9 +307,11 @@
             data[0].changeLevelDetailList.forEach(itm => {
               list.push({
                 value: itm.level,
-                label: itm.levelName
+                label: itm.levelName,
+                totalPrice: 0,
               })
             })
+            this.levelLabel = "（" + list[0].label + "）"
             data.forEach(workerSku => {
               // 储存所有工人对应的等级列表和溢价价格
               workerSku.changeLevelDetailList.forEach(levelItem => {
@@ -317,12 +320,14 @@
                   skuId: workerSku.skuId
                 })
               })
-              workerSku.changeLevelDetailList.forEach(itm => {
-                let level = list.filter(l => l.value = itm.level)[0]
-                level.totalPrice += itm.totalPrice / 100
+              workerSku.changeLevelDetailList.forEach(it => {
+                let level = list.find(l => l.value == it.level)
+                level.totalPrice += it.totalPrice
               })
             })
             this.levelList = list
+          } else {
+            this.levelList = []
           }
         })
       },
@@ -356,6 +361,8 @@
             })
             if (cllist.length > 0) {
               this.batchChangeLevel(cllist)
+            } else {
+              this.levelLabel = "（中级）"
             }
           }
           if (this.selectedMaterialData?.categoryId) {
@@ -497,6 +504,7 @@
       },
       setLevel(levelObj) {
         this.artificialLevel = levelObj.value
+        this.levelLabel = "（" + levelObj.label + "）"
 
         this.dataOrigin?.artificial?.categoryList?.forEach(category => {
           category.itemList.forEach(item => {
