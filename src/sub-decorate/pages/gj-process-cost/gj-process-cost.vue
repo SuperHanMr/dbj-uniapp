@@ -348,7 +348,7 @@
               category?.itemList.forEach(t => {
                 let obj = {
                   skuId: t.id, //"long //商品id【必须】",
-                  cityId: this.dataOrigin.areaId, //"long //市id【必须】",
+                  cityId: this.dataOrigin.cityId, //"long //市id【必须】",
                   categoryTypeId: t.categoryTypeId, //"int //商品品类类型id【必须】",
                   price: t.price, //"int //商品总价格 工艺商品单价个数 单位分【必须】",
                   count: t.count
