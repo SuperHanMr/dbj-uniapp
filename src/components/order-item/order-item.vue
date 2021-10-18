@@ -1,7 +1,7 @@
 <template>
 	<view  class="container">
 		
-		<view	class="body-main" :style="{paddingBottom:(dataList.type == 1 && orderStatus==2 && dataList.stockType && dataList.stockType == 1)?'24':paddingBottom +'rpx'}" @click="handleDetail()" >
+		<view	class="body-main" :style="{paddingBottom:containerPaddingBottom +'rpx'}" @click="handleDetail()" >
 			<!-- 标签 -->
 			<view class="pic"  v-if="orderStatus==2 && dataList.type == 1 && !dataList.stockType">
 				<!-- 当该商品处于待发货标签时，则对应退款、退款关闭、退款失败状态 -->
@@ -69,11 +69,6 @@
 				</view>	
 			</view>
 		</view>
-		
-		
-		
-		
-		
 		
 		<view  class="apply-refund-container" v-if="dataList.showRefundBtn && orderStatus == 2 && dataList.type ==1">
 			<view class="button" @click.stop="particalRefund">
@@ -178,12 +173,12 @@
 		},
 		data() {
 			return {
-
+				containerPaddingBottom:'32'
 			};
 		},
 		mounted() {
 			if( (this.dataList.stockType && this.dataList.stockType == 1 && this.dataList.type == 1&& this.orderStatus==2) || (this. dataList.showRefundBtn && this. orderStatus==2)){
-				this.paddingBottom=0
+				this.containerPaddingBottom= 0
 			}
 		},
 		
@@ -227,7 +222,7 @@
 		box-sizing: border-box;
 		display: flex;
 		flex: 1;
-		padding-bottom:32rpx;
+		// padding-bottom:32rpx;
 		flex-flow: row nowrap;
 		.pic{
 			margin-right: 16rpx;

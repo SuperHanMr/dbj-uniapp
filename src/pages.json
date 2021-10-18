@@ -473,7 +473,8 @@
 					"style": {
 						"navigationBarTitleText": "",
 						"navigationBarBackgroundColor": "#FFB344",
-						"enablePullDownRefresh": false
+						"enablePullDownRefresh": false,
+						"navigationStyle": "custom"
 					}
 				},
 
