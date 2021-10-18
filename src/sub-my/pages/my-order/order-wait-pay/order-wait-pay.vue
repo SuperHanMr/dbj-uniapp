@@ -405,7 +405,7 @@ export default {
           align-items: center;
 
           text {
-            font-weight: 1000;
+            font-weight: 500;
             max-width: 476rpx;
             font-size: 28rpx;
             overflow: hidden;

@@ -49,8 +49,7 @@
 						<view class="order-container" v-for="item in orderList" :key="item.id">
 							<view class="header">
 								<view class="store-name" @click="gotoShop(item)">
-									<text
-										v-if="item.orderStatus == 0 ">{{item.orderName?item.orderName:item.storeName}}</text>
+									<text v-if="item.orderStatus == 0 ">{{item.orderName?item.orderName:item.storeName}}</text>
 									<text v-else>{{item.storeName}}</text>
 									<image v-if="!item.orderName" src="../../static/ic_more.svg" mode=" " />
 								</view>
@@ -652,9 +651,8 @@
 			display: flex;
 			flex-flow: row nowrap;
 			align-items: center;
-
 			text {
-				font-weight: 1000;
+				font-weight: 500;
 				max-width: 476rpx;
 				font-size: 28rpx;
 				overflow: hidden;

@@ -326,7 +326,7 @@
 						padding-bottom: 32rpx;
 
 						text {
-							font-weight: 1000;
+							font-weight: 500;
 							max-width: 476rpx;
 							font-size: 28rpx;
 							line-height: 40rpx;
