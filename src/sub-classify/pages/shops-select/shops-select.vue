@@ -14,12 +14,14 @@
         hashToken: '',
         searchToken: '',
         storeId: 0,
+        areaId: 0,
         houseId: 0
       }
     },
     onLoad(e){
       console.log(e, "teste")
       this.storeId = e.storeId,
+      this.areaId = e.areaId
       this.houseId = e.houseId
     },
     onShow() {
