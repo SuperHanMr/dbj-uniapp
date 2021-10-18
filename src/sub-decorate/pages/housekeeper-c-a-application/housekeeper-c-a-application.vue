@@ -14,6 +14,7 @@
 </template>
 
 <script>
+  let timer = null
   import {
     completionDetail,
     ownerCompletionAudit
@@ -42,6 +43,10 @@
         countdown: "72:00:00",
         updateTime: new Date().getTime(),
       }
+    },
+    onHide() {
+      clearInterval(timer)
+      timer = null
     },
     mounted() {
       const menuButtonInfo = uni.getMenuButtonBoundingClientRect();
@@ -83,16 +88,17 @@
       },
       countTime() {
         let nowtime = new Date(), //获取当前时间
-          endtime = new Date(this.updateTime + 72*60*60*1000); //定义结束时间
-        let lefttime = endtime.getTime() - nowtime.getTime(), //距离结束时间的毫秒数
-          leftd = Math.floor(lefttime / (1000 * 60 * 60 * 24)), //计算天数
-          lefth = Math.floor(lefttime / (1000 * 60 * 60) % 24), //计算小时数
-          leftm = Math.floor(lefttime / (1000 * 60) % 60), //计算分钟数
-          lefts = Math.floor(lefttime / 1000 % 60); //计算秒数
-        return leftd + "天" + lefth + ":" + leftm + ":" + lefts; //返回倒计时的字符串
-        
-        this.countdown = d * 24 + h + "小时" + m + "分钟" + s + "秒"
-      
+          endtime = new Date(this.updateTime + 604800000)//  7 * 24 * 60 * 60 * 1000); //定义结束时间
+        let lefttime = endtime.getTime() - nowtime.getTime() //距离结束时间的毫秒数
+        // let leftd = Math.floor(lefttime / (1000 * 60 * 60 * 24)) //计算天数
+        let lefth = Math.floor(lefttime / (1000 * 60 * 60)) //计算小时数
+        lefth = lefth > 9 ? lefth : '0' + lefth
+        let leftm = Math.floor(lefttime / (1000 * 60) % 60) //计算分钟数
+        leftm = leftm > 9 ? leftm : '0' + leftm
+        let lefts = Math.floor(lefttime / 1000 % 60); //计算秒数
+        lefts = lefts > 9 ? lefts : '0' + lefts
+        // this.countdown = leftd + "天" + lefth + ":" + leftm + ":" + lefts; //返回倒计时的字符串
+        this.countdown = lefth + ":" + leftm + ":" + lefts; //返回倒计时的字符串
       },
       queryCompletionDetail() {
         completionDetail(this.msg.data.id).then(data => {
@@ -100,14 +106,16 @@
           this.updateTime = data.updateTime
           if (this.updateTime) {
             this.countTime()
-            this.timer = setInterval(this.countTime(), 1000)
+            timer = setInterval(() => {
+              this.countTime()
+            }, 1000)
           } else {
             this.countdown = "72:00:00"
           }
         })
       },
 
-    }
+    },
   }
 </script>
 

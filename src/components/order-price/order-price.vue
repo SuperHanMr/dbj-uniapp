@@ -80,7 +80,7 @@
       </view>
 
       <view v-else >
-        <text style="margin-right: 12rpx;">需付款</text>
+        <text style="margin-right: 12rpx;color:#333333;">需付款</text>
         <text style="color: #FF3347;" class="price-font">
           <text>￥</text>
           <text style="font-size: 40rpx;">{{handlePrice(data.orderReceivableAmount)[0]}}.</text>
@@ -184,7 +184,7 @@ export default {
   }
 
   .footer {
-    padding: 24rpx 32rpx;
+    padding:32rpx;
     color: #333333;
     font-size: 26rpx;
     text-align: right;

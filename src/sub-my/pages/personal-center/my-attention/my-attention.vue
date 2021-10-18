@@ -33,7 +33,7 @@
          <view class="empty-container" v-if="currentList.length < 1">
 						<image src="../../../../static/order/blank_house@2x.png" mode=""></image>
 						<text v-if="tabindex==0">您还没有关注房子</text>
-						<text v-if="tabindex==1">您还没有关注工匠</text>
+						<text v-if="tabindex==1">您还没有关注服务者</text>
 						<text v-if="tabindex==2">您还没有关注优先推荐</text>
 					</view>
 					
@@ -60,7 +60,7 @@
 						    </view>
 							</view>
 						</view>
-						<!-- 工匠 -->
+						<!-- 服务者 -->
 						<view  v-if="tabindex == 1" class="craftsmanAndRecommend" v-for="(item2,index2) in currentList" :key="item2.id"	>
 						  <view class="left">
 						    <image :src="item2.avatar" mode="" @click="goToPersonalHome(item2)" />
@@ -116,7 +116,7 @@ import {getCraftsmanList, getHouseList, getRecommendList,cancelAttention } from 
 export default {
   data() {
     return {
-			tabList: ["房子", "工匠", "优先推荐"],
+			tabList: ["房子", "服务者", "优先推荐"],
       triggered: false, //控制刷新显示字段
       currentIndex: 0,
 			houselist:[],
