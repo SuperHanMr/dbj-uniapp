@@ -99,16 +99,9 @@
 </script>
 
 <style>
-  .webview {
-    height: 200px;
-    width: 100%;
-  }
   .im-container {
     width: 100%;
-    height: 100%;
-    display: flex;
-    flex-flow: column nowrap;
-    overflow-y: auto;
+    min-height: 100%;
     background: #f9f9f9;
   }
 
