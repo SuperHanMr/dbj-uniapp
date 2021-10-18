@@ -60,7 +60,6 @@
         this.id = naviData.id;
         getApp().globalData.naviData = null
       }
-      console.log(naviData);
       this.getList();
       this.$store.dispatch("updateTabBarBadge");
     },
@@ -85,6 +84,7 @@
       },
       ontabtap(e) {
         let index = e.target.dataset.current || e.currentTarget.dataset.current;
+        this.id = 0
         this.switchTab(index);
       },
       ontabchange(e) {
