@@ -1,5 +1,5 @@
 <template>
-	<view class="cartContainer" :class="{'bg':!shopList.length&&!disabledSkuList.length}">
+	<view class="cartContainer" :class="{'bg':showNoGoods}">
 		<view class="noGoods" v-if="showNoGoods">
 			<image src="http://dbj.dragonn.top/static/mp/dabanjia/images/my/blank_ic%402x.png" class="noGoodsImg"></image>
 			<view class="noGoodsText">
@@ -57,9 +57,13 @@
 									<view class="text">{{goodsItem.skuName}}</view>
 									<image src="http://dbj.dragonn.top/static/mp/dabanjia/images/my/selectOptions%402x.png" class="selectOptions"></image>
 								</view>
-								
+								<!-- 商品单价和数量 -->
 								<view class="foot">
-									<view class="goodsPrice">¥{{goodsItem.price/100}}/{{goodsItem.unitName}}</view>
+									<view class="goodsPrice">
+										<text>¥</text>
+										<text class="int">{{(goodsItem.price/100).toFixed(2).split('.')[0]}}</text>
+										<text>.{{(goodsItem.price/100).toFixed(2).split('.')[1]}}/{{goodsItem.unitName}}</text>
+									</view>
 									<view class="countCtrl">
 										<image v-if="!goodsItem.isMiniOrder" class="dec" @click="changeCount(false,shopIndex, goodsIndex)"
 											src="http://dbj.dragonn.top/static/mp/dabanjia/images/my/details_pop_%402x.png"></image>
@@ -177,25 +181,30 @@
 				</view>	
 			</view>
 			<view class="bottom"></view>
+			<!-- 底部区域 -->
 			<view v-if="shopList.length">
-				<view class="shopCheck" v-if="isManage">
-					<view class="left">
-						<view class="check" @click="checkedAll" v-if="!isCheckedAll"></view>
+				<view class="allCheck" v-if="isManage">
+					<view class="left" @click="checkAll">
+						<view class="check" v-if="!isCheckedAll"></view>
 						<image src="http://dbj.dragonn.top/static/mp/dabanjia/images/my/checked%402x.png"
-							class="check" @click="checkedAll" v-else></image>
+							class="check" v-else></image>
 						<view class="text">全选</view>
 					</view>
 					<view class="right">
 						<view class="text">合计：</view>
-						<view class="totalPrice">¥{{totalPrice.toFixed(2)}}</view>
+						<view class="totalPrice">
+							<text>¥</text>
+							<text class="int">{{totalPrice.toFixed(2).split('.')[0]}}</text>
+							<text>.{{totalPrice.toFixed(2).split('.')[1]}}</text>
+						</view>
 						<view class="preOrder" @click="pay">结算({{totalCout}})</view>
 					</view>
-				</view>	  							
-				<view class="shopCheck" v-else>
-					<view class="left">
-						<view class="check" @click="checkedAll" v-if="!isCheckedAll"></view>
+				</view>
+				<view class="allCheck" v-else>
+					<view class="left" @click="checkAll">
+						<view class="check" v-if="!isCheckedAll"></view>
 						<image src="http://dbj.dragonn.top/static/mp/dabanjia/images/my/checked%402x.png"
-							class="check" @click="checkedAll" v-else></image>
+							class="check" v-else></image>
 						<view class="text">全选</view>
 					</view>
 					<view class="right">
@@ -755,7 +764,7 @@
 				}
 				setBuyCount(params).then(() => {})
 			},	
-			checkedAll(){
+			checkAll(){
 				this.isCheckedAll = !this.isCheckedAll
 				this.shopList.forEach(item=>{
 					if(this.isCheckedAll){
@@ -1342,7 +1351,7 @@
 		height: 36rpx;
 		border-radius: 50%;
 		background: #ffffff;
-		border: 1rpx solid #CBCCCC;
+		border: 2rpx solid #CBCCCC;
 	}
 	.goodsItem .checked{
 		width: 36rpx;
@@ -1374,7 +1383,7 @@
 		height: 30rpx;
 		padding: 2rpx 10rpx 2rpx 10rpx;
 		margin-right: 4rpx;
-		border: 2rpx solid #35c4c4;
+		border: 1rpx solid #35c4c4;
 		border-radius: 4rpx;
 		font-size: 20rpx;
 		font-weight: 500;
@@ -1385,24 +1394,25 @@
 	.goodsInfo .goodsSpec{
 		width: fit-content;
 		height: 38rpx;
-		padding: 4rpx;
-		margin: 12rpx 0;
 		background: #fafafa;
-		border:1rpx solid #f0f0f0;
+		border: 1rpx solid #f0f0f0;
 		border-radius: 4rpx;
-		font-size: 22rpx;
-		color: #999999;
+		align-items: center;
 		display: flex;
 	}
 	.goodsInfo .goodsSpec .text{
 		max-width: 340rpx;
+		margin : 6rpx 12rpx;
 		overflow: hidden;
 		white-space: nowrap;
 		text-overflow: ellipsis;
+		font-size: 22rpx;
+		color: #999999;
 	}
 	.goodsInfo .goodsSpec .selectOptions{
 		width: 28rpx;
 		height: 28rpx;
+		margin-right: 8rpx;
 		display: block;
 	}
 	.goodsInfo .foot{
@@ -1417,6 +1427,9 @@
 		font-size: 24rpx;
 		line-height: 36rpx;
 	}
+	.goodsInfo .foot .goodsPrice .int{
+		font-size: 36rpx;
+	}
 	.goodsInfo .foot .countCtrl{
 		display: flex;
 	}
@@ -1428,6 +1441,7 @@
 	.goodsInfo .foot .countCtrl .count{
 		width: 92rpx;
 		height: 48rpx;
+		margin: 0 4rpx;
 		background: #f2f2f2;
 		font-size: 24rpx;
 		font-weight: 500;
@@ -1527,10 +1541,11 @@
 		width: 100%;
 		height: 152rpx;
 	}
-	.shopCheck{
+	.allCheck{
 		width: 100%;
-		height: 104rpx;
+		height: 120rpx;
 	  background: #fff;
+		border-top: 1rpx solid #f4f4f4;
 	  padding-bottom: 68rpx;
 	  display: flex;
 		justify-content: space-between;
@@ -1539,10 +1554,10 @@
 	  bottom: 0rpx; 
 	  left: 0rpx;
 	}
-	.shopCheck .left{
+	.allCheck .left{
 		display: flex;
 	}
-	.shopCheck .check{
+	.allCheck .check{
 		width: 36rpx;
 		height: 36rpx;
 		margin-left: 32rpx;
@@ -1551,17 +1566,17 @@
 		background: #ffffff;
 		border: 2rpx solid #e5e5e5;
 	}
-	.shopCheck .text{
+	.allCheck .text{
 	  width: 56rpx;
 	  height: 40rpx;
 	  color: #333;
 		font-size: 28rpx;
 	  line-height: 40rpx;
 	}
-	.shopCheck .right {
+	.allCheck .right {
 	  display: flex;
+		align-items: center;
 		justify-content: flex-end;
-	  align-items: center;
 	}
 	.right .text{
 	  width: 84rpx;
@@ -1571,12 +1586,16 @@
 	  color: #333;
 	}
 	.totalPrice{
-	  width: 114rpx;
+	  width: 66rpx;
 	  height: 36rpx;
+		margin-bottom: 16rpx;
+		margin-right: 16rpx;
 	  font-size: 24rpx;
 	  color: #ff3347;
 	}
-	
+	.totalPrice .int{
+		font-size: 36rpx;
+	}
 	.preOrder{
 	  width: 248rpx;
 	  height: 88rpx;
