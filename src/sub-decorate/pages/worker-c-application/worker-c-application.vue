@@ -99,11 +99,11 @@
         let lefttime = endtime.getTime() - nowtime.getTime() //距离结束时间的毫秒数
         // let leftd = Math.floor(lefttime / (1000 * 60 * 60 * 24)) //计算天数
         let lefth = Math.floor(lefttime / (1000 * 60 * 60)) //计算小时数
-        lefth = lefth > 10 ? lefth : '0' + lefth
+        lefth = lefth > 9 ? lefth : '0' + lefth
         let leftm = Math.floor(lefttime / (1000 * 60) % 60) //计算分钟数
-        leftm = leftm > 10 ? leftm : '0' + leftm
+        leftm = leftm > 9 ? leftm : '0' + leftm
         let lefts = Math.floor(lefttime / 1000 % 60); //计算秒数
-        lefts = lefts > 10 ? lefts : '0' + lefts
+        lefts = lefts > 9 ? lefts : '0' + lefts
         // this.countdown = leftd + "天" + lefth + ":" + leftm + ":" + lefts; //返回倒计时的字符串
         this.countdown = lefth + ":" + leftm + ":" + lefts; //返回倒计时的字符串
       },
