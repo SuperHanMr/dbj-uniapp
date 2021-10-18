@@ -140,13 +140,13 @@
 						height: 40rpx;
 						line-height: 40rpx;
 						font-size: 28rpx;
-						font-weight: 500;
+						// font-weight: 500;
 						color: #333333;
 					}
 				}
 				.line{
 					margin: 0 32rpx;
-					height: 2rpx;
+					height: 1rpx;
 					background: #f2f2f2;
 					border-radius: 2rpx;
 				}

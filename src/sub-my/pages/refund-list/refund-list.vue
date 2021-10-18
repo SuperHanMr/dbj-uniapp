@@ -26,16 +26,6 @@
 								<view class="attr">
 									<text>{{item2.scaleProperties}}</text>
 								</view>
-								<!-- <view class="refund-price">
-									<text style="margin-right:8rpx;">退款金额</text>
-									<text class="product-price">
-										<text style="font-size:22rpx;">￥</text>
-										<text class="price-font">
-											<text>{{handlePrice(item.refundAmount)[0]}}.</text>
-											<text style="font-size:22rpx;">{{handlePrice(item.refundAmount)[1]}}</text>
-										</text>
-									</text>
-								</view> -->
 							</view>
 						</view>
 					</view>	
@@ -190,7 +180,7 @@
 					})
 				}else if(data.status == 2){
 					uni.navigateTo({
-						url:`../my-order/order-success/order-success?type=refund$id=${data.id}`
+						url:`../my-order/order-success/order-success?type=refund&id=${data.id}`
 					})
 				}else{
 					uni.navigateTo({
