@@ -5,19 +5,19 @@
 				<view class="pre-month" @click="turning('prev')">
 					<image
 						class="header-btn"
-						src="../../static/ic_month_pre@2x.png"
+						src="http://dbj.dragonn.top/static/mp/dabanjia/images/home/ic_month_pre%402x.png"
 						></image>
 				</view>
 				<view class="current-month">{{ y }}-{{ m+1 < 10? `0${m+1}` : m+1 }}</view>
 				<view class="next-month" @click="turning('next')">
 					<image
 						class="header-btn"
-						src="../../static/ic_month_next@2x.png"
+						src="http://dbj.dragonn.top/static/mp/dabanjia/images/home/ic_month_next%402x.png"
 						></image>
 				</view>
 			</view>
 			<view class="memo" @click="toMemo" v-if="showMemo">
-				<image class="ic_memo" src="../../static/ic_memo@2x.png"></image>
+				<image class="ic_memo" src="http://dbj.dragonn.top/static/mp/dabanjia/images/home/ic_memo%402x.png"></image>
 				<view class="text">备忘录</view>
 			</view>
     </view>
@@ -35,7 +35,8 @@
         </view>
       </view>
     </view>
-		<image v-if="isShrink" @click="switchWeek()" class="shrink" src="../../static/ic_shrink@2x.png"></image>
+		<image v-if="isShrink" @click="switchWeek()" class="shrink"
+			src="http://dbj.dragonn.top/static/mp/dabanjia/images/home/ic_shrink%402x.png"></image>
 		<view v-else @click="switchWeek()" class="grow"></view>
     
   </view>

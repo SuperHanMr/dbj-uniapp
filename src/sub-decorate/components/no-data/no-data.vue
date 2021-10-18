@@ -1,6 +1,6 @@
 <template>
   <view class="no-service">
-    <image class="bg" src="http://dbj.dragonn.top/static/mp/dabanjia/images/decorate/empty.png">
+    <image class="bg" src="http://dbj.dragonn.top/static/mp/dabanjia/images/my/blank_ic%402x.png">
     <view class="text" v-for="(item,index) in wordscp" :key="index">{{item}}</view>
   </view>
 </template>
@@ -28,7 +28,7 @@
     height: 360rpx;
     margin: 0 24rpx 24rpx 24rpx;
     border-radius: 20rpx;
-    padding: 0 64rpx 0 32rpx;
+    padding: 0 64rpx;
     display: flex;
     justify-content: center;
     align-items: center;

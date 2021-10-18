@@ -32,7 +32,7 @@
 				<view v-for="item in orderInfo.details" :key="item.storeId" class="item">
 					<view class="header" @click="gotoShop(item)">
 						<view>{{item.storeName}}</view>
-						<image src="@/static/order/ic_more@2x.png" mode=""></image>
+						<image src="../../../static/ic_more.svg" mode=""></image>
 					</view>
 
 					<view v-for="item2 in item.details" :key="item2.id" class="orederItem">
@@ -309,7 +309,7 @@
 		align-items: center;
 
 		view {
-			font-weight: 1000;
+			font-weight: 500;
 			height: 40rpx;
 			line-height: 40rpx;
 			max-width: 476rpx;

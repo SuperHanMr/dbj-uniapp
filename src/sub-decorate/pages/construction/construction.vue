@@ -12,6 +12,9 @@
         </user-desc-pict-worker>
       </view>
     </view>
+    <view v-if="nodata" class="no-data-wrap">
+      <no-data words="暂无改施工数据"></no-data>
+    </view>
   </view>
 </template>
 
@@ -23,12 +26,20 @@
   import UserDescPict from "../../components/user-desc-pict/user-desc-pict.vue"
   import UserDescPictWorker from "../../components/user-desc-pict/user-desc-pict-worker.vue"
   import SubTitle from "../../components/user-desc-pict/sub-title.vue"
+  import NoData from "../../components/no-data/no-data.vue"
   export default {
     components: {
       Tabs,
       UserDescPict,
       UserDescPictWorker,
-      SubTitle
+      SubTitle,
+      NoData
+    },
+    onLoad(option) {
+      const {
+        projectId
+      } = option
+      this.projectId = projectId
     },
     onShow() {
       this.getCompletionLog()
@@ -37,13 +48,16 @@
       return {
         dataList: [],
         current: "拆除",
-        items: ["拆除", "水电", "泥工", "木工", "油工"]
+        items: ["拆除", "水电", "泥工", "木工", "油工"],
+        projectId: null,
+        nodata: false,
+        noDataWords: ""
       }
     },
     methods: {
       setTitle(type) {
         let str = ''
-        if(type == 4) {
+        if (type == 4) {
           str = '整体'
         } else if (type == 3) {
           str = '阶段'
@@ -60,12 +74,18 @@
         this.dataList = []
         getCompletionLog({
           page: 1,
-          // position: ,
           rows: 1000,
           nodeType: this.items.indexOf(this.current) + 6,
-          projectId: 1
+          projectId: this.projectId
         }).then(data => {
-          this.dataList = data.list
+          this.dataList = data.list || []
+          if (this.dataList?.length === 0) {
+            this.nodata = true
+            // this.noDataWords = "暂无改施工数据"
+          } else {
+            this.nodata = false
+            // this.noDataWords = ""
+          }
         })
       }
     }
@@ -73,11 +93,19 @@
 </script>
 
 <style lang="scss" scoped>
-  .construction {}
+  .construction {
+    height: 100vh;
+  }
 
   .s-g-list {
     .s-g-item {
       margin: 24rpx;
     }
+  }
+  .no-data-wrap{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: calc(100vh - 68rpx);
   }
 </style>

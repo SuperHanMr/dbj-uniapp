@@ -367,9 +367,23 @@ const message = {
     checkoutConversation(context, conversationID) {
       console.log("check conversation:", conversationID);
       // 2.待切换的会话也进行已读上报 
-      if (conversationID === 'CUSTOMER' || conversationID === context.state.cstServConv.conversationID) {
-        if (context.state.cstServConv.isAvailable) {
-          getTim().setMessageRead({ conversationID }).catch(e => { })
+      const state = context.state;
+      if (conversationID === 'CUSTOMER') {
+        if (state.cstServConv.unreadCount > 0) {
+          state.cstServConv = {
+            ...state.cstServConv,
+            unreadCount: 0
+          };
+        }
+      } else if (conversationID === context.state.cstServConv.conversationID) {
+        if (state.cstServConv.unreadCount > 0) {
+          getTim().setMessageRead({ conversationID }).catch(e => {
+            console.warn("setMessageRead customer fail!", conversationID);
+            state.cstServConv = {
+              ...state.cstServConv,
+              unreadCount: 0
+            };
+          })
         }
       } else {
         getTim().setMessageRead({ conversationID }).catch(e => { })

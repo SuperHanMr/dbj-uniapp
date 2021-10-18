@@ -254,7 +254,7 @@ export default {
 		background-color: #FFFFFF;
 		.line{
 			margin:0 32rpx;
-			height: 2rpx;
+			height: 1rpx;
 			background: #f2f2f2;
 			border-radius: 2rpx;
 		}
@@ -302,6 +302,7 @@ export default {
 			font-weight: 500;
 			font-size: 32rpx;
 			position: relative;
+			border-radius: 32rpx 32rpx 0 0;
 			image{
 				position: absolute;
 				width: 64rpx;
