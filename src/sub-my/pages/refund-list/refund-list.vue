@@ -80,7 +80,7 @@
 						<view v-if="item.status ==0 ||item.status == 1" class="cancel-apply"  @click="open(item)">
 							取消申请
 						</view>
-						<view v-if="item.status ==0 ||item.status == 1" class="view-detail" style="margin-left: 24rpx;" @click="goToDetail(item)">
+						<view class="view-detail" style="margin-left: 24rpx;" @click="goToDetail(item)">
 							查看详情
 						</view>
 						
