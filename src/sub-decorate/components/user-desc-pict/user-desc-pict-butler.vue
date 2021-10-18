@@ -16,7 +16,7 @@
       <view class="picture flex-row">
         <view class="imgs" v-for="(item, index) in detail.sitePhotoList" :key="index" v-if="index < 6">
           <image :src="item" @click="clickImg(detail.sitePhotoList, index)"></image>
-          <view class="zz" v-if="index > 5" @click="clickImg(detail.sitePhotoList, 6)">+{{detail.sitePhotoList.length - 6}}
+          <view class="zz" v-if="index === 5" @click="clickImg(detail.sitePhotoList, 5)">+{{detail.sitePhotoList.length - 6}}
           </view>
         </view>
       </view>
