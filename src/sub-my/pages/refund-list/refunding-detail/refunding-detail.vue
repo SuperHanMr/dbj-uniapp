@@ -37,10 +37,10 @@
 		  class="cancel-refund-pay"
 		  :style="{paddingBottom:systemBottom,height:systemHeight}"
 		>
-		  <button
-		    class="button"
-		    @click="cancelToPay()"
-		  >取消退款</button>
+		<view class="button"  @click="cancelToPay()">
+			取消退款
+		</view>
+		
 		</view>
 		
 		
@@ -582,7 +582,7 @@ export default {
 	font-size: 26rpx;
 	.button{
 		height: 88rpx;
-		background: linear-gradient(135deg, #53d5cc, #4fc9c9);
+		background: linear-gradient(99deg, #00CCBE 0%, #00C2BF 100%);
 		border-radius: 12rpx;
 		width: 686rpx;
 		line-height: 88rpx;

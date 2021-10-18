@@ -16,15 +16,15 @@
       <view class="picture flex-row">
         <view class="imgs" v-for="(item, index) in workerData.fileUrls" :key="index" v-if="index < 6">
           <image :src="item" @click="clickImg(workerData.fileUrls, index)"></image>
-          <view class="zz" v-if="index > 5" @click="clickImg(workerData.fileUrls, 6)">+{{workerData.fileUrls.length - 6}}</view>
+          <view class="zz" v-if="index === 5" @click="clickImg(workerData.fileUrls, 5)">+{{workerData.fileUrls.length - 6}}</view>
         </view>
       </view>
       <view v-for="(t,index) in workerData.workerItems">
         <view class="worker-title">{{t.workItemName}}</view>
         <view class="picture flex-row">
-          <view class="imgs" v-for="(it, index) in t.fileUrls" :key="index" v-if="index < 3">
-            <image :src="it" @click="clickImg(t.fileUrls, index)"></image>
-            <view class="zz" v-if="index > 2" @click="clickImg(t.fileUrls, 3)">+{{t.fileUrls.length - 3}}</view>
+          <view class="imgs" v-for="(kit, i) in t.fileUrls" :key="i" v-if="i < 3">
+            <image :src="kit" @click="clickImg(t.fileUrls, i)"></image>
+            <view class="zz" v-if="i === 2" @click="clickImg(t.fileUrls, 2)">+{{t.fileUrls.length - 3}}</view>
           </view>
         </view>
       </view>

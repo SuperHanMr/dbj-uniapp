@@ -208,6 +208,7 @@ export default {
     this.type = e.type;
 		if(this.type){
 			this.query.orderId=Number(e.id)
+			console.log("this.query.orderId=",this.query.orderId)
 			this.query.status=Number(e.status);//订单状态1进行中 2已完成
 			console.log("this.type=", this.type);
 			if (this.type == "partical") {
@@ -215,11 +216,13 @@ export default {
 					wx.getStorageSync("particalRefundOrderInfo")
 				);
 				console.log("进行中数据带过来的数据：this.refundInfo=",this.refundInfo)
-				
-				this.inputValue =  this.refundInfo.totalActualIncomeAmount
+				this.orderDetailId = this.refundInfo.orderDetailId
+				this.inputValue =  this.refundInfo.actualIncomeAmount
+				this.returnMoney = this.inputValue
+				console.log("this.inputValue",this.inputValue)
 				console.log("this.refundInfo=", this.refundInfo, typeof this.refundInfo);
-				
 			} else {
+				console.log("进行中数据带过来的数据：this.refundInfo=",this.refundInfo)
 				this.refundInfo = JSON.parse(wx.getStorageSync("wholeRefundOrderInfo"));
 				this.returnMoney =  this.refundInfo.totalActualIncomeAmount
 			}

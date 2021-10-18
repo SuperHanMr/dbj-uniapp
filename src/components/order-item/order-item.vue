@@ -119,12 +119,6 @@
 			</view>
 		</view>
 		
-		<!-- <view  class="apply-refund-container" v-if="dataList.showRefundBtn && orderStatus == 3 && dataList.type ==1">
-			<view class="button" @click.stop="particalRefund">
-				申请退款
-			</view>
-		</view> -->
-		
 		<view class="discount-container3" v-if="orderStatus==1 && dataList.type == 2 && dataList.deposit">
 			<view class="right">
 				<view class="item">

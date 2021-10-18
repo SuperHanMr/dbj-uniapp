@@ -61,7 +61,7 @@
           // uni.navigateTo({
           //   url: "/pages/decorate/index/index"
           // })
-          uni.navigateBack({})
+          uni.navigateBack({delta: 2})
         })
       }
     },

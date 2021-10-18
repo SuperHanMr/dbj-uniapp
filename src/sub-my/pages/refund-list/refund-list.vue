@@ -67,12 +67,12 @@
 				
 				<view class="refund-status refund-close" v-if="item.status == 3 || item.status == 4">
 					<text style="margin-right: 16rpx;">退款关闭</text>
-					<text  style="color: #333333; font-weight: 1000">退款已关闭</text>
+					<text  style="color: #333333; font-weight: 500">退款已关闭</text>
 				</view>
 				
 				<view class="refund-status refund-fail" v-if="item.status == 5">
 					<text style="margin-right: 16rpx;">退款失败</text>
-					<text  style="font-weight: 1000">退款账户异常</text>
+					<text  style="font-weight: 500">退款账户异常</text>
 				</view>
 			
 				<view class="footer">
@@ -346,7 +346,7 @@
 		background: #FCF9F5;
 		border: 1rpx solid #F5D9BC;
 		color: #FC8B19;
-		padding:16rpx 32rpx ;
+		padding:0 32rpx ;
 		line-height: 32rpx;
 	}
 	// 退款成功
@@ -354,7 +354,7 @@
 		background: #F5FCF9;
 		border: 1rpx solid #BCF5D9;
 		color: #0EC270;
-		padding:16rpx 32rpx ;
+		padding:0 32rpx ;
 		line-height: 32rpx;
 	}
 	// 退款关闭
@@ -362,7 +362,7 @@
 		background: #F7F7F7;
 		color: #808080;
 		border: 1rpx solid #EEEEEE;
-		padding: 20rpx 24rpx;
+		padding: 0 24rpx;
 		line-height: 40rpx;
 	}
 	// 退款失败
@@ -370,13 +370,14 @@
 		background: #FEF7F8;
 		color: #FF3347;
 		border: 1rpx solid #FFD4D8;
-		padding: 20rpx 24rpx ;
+		padding: 0 24rpx ;
 		line-height: 40rpx;
 	}
 	
 	.refund-status{
 		width: 686rpx;
 		height: 80rpx;
+		line-height: 78rpx;
 		box-sizing: border-box;
 		margin: 0 32rpx;
 		border-radius: 16rpx;
@@ -389,7 +390,7 @@
 		display: flex;
 		flex-flow: row nowrap;
 		justify-content:  flex-end;
-		padding: 24rpx 32rpx;
+		padding:32rpx;
 		// text-align: right;
 		background-color: #ffffff;
 		

@@ -399,13 +399,14 @@ const message = {
             getAgentStatus(getApp().globalData.userInfo.id).then(res => {
               let { isGroupButlerExist, queuePosition } = res;
               if (isGroupButlerExist) {
-                getTim().sendMessage({
-                  type: "AGENT_STATUS",
-                  payload: {
-                    type: queuePosition == 0 ? "custom_agant_coming" : "custom_agant_waiting",
-                    position: queuePosition
-                  }
-                });
+                // 存在客服时do nothing
+                // getTim().sendMessage({
+                //   type: "AGENT_STATUS",
+                //   payload: {
+                //     type: queuePosition == 0 ? "custom_agant_coming" : "custom_agant_waiting",
+                //     position: queuePosition
+                //   }
+                // });
               } else {
                 getTim().sendMessage({
                   type: "MSG_QUESTION_LIST",

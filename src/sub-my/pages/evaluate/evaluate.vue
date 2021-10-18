@@ -1,6 +1,6 @@
 <template>
 	<view >
-		<view class="evaluate-container" v-if="evaluateList.length>3">
+		<view class="evaluate-container" v-if="evaluateList.length">
 			<view class="evaluate-item" v-for="item in evaluateList" :key="item.id">
 				<view class="header">
 					<view class="store-name">
@@ -13,19 +13,24 @@
 						已评价
 					</view>
 				</view>
-				<view class="body" v-for="item2 in item.details" :key="item2.id" @click="gotoDetail(item)">
+				<view class="body" v-for="item2 in item.details" :key="item2.id">
 					<order-item :dataList="item2"></order-item>
 				</view>
+				
 				<view class="line" />
 				
 				<view class="footer" v-if="item.commentStatus == 0 ">
 					<view class="button-container">
-						<button
-							type="default"
-							size="mini"
-							@click="immediateEvalute(item)"
-						>立即评价</button>
-						
+						<view class="immediate-evaluate" @click="immediateEvalute(item)">
+							立即评价
+						</view>
+					</view>
+				</view>
+				<view class="footer" v-if="item.commentStatus == 1 ">
+					<view class="button-container">
+						<view class="review-detail" @click="gotoDetail(item)">
+							查看详情
+						</view>
 					</view>
 				</view>
 			
@@ -83,6 +88,7 @@
 					console.log("data=",data)
 					let list = data.list
 					this.evaluateList = this.evaluateList.concat(list)
+					console.log("evaluateList=",this.evaluateList)
 					this.query.page = data.page + 1;
 					this.totalPage = data.totalPage;
 					this.totalRows = data.totalRows;
@@ -93,7 +99,7 @@
 			immediateEvalute(item){
 				console.log("立即评价");
 				uni.navigateTo({
-					url:`immediate-evaluate/immediate-evaluate?id=${item.id}&type=${item.type}&serverName=&{item.serverName}&serverRoleName=${item.serverRoleName}&serverAvatar=${item.serverAvatar}`,
+					url:`immediate-evaluate/immediate-evaluate?id=${item.id}&type=${item.type}&serverName=${item.serverName}&serverRoleName=${item.serverRoleName}&serverAvatar=${item.serverAvatar}`,
 				})
 			},
 			
@@ -151,7 +157,7 @@
 	
 	.line {
 		width: 100%;
-		height: 1rpx;
+		height: 0.5px;
 		background-color: #f2f2f2;
 	}
 
@@ -167,19 +173,25 @@
 			display: flex;
 			flex-flow: row nowrap;
 			justify-content:  flex-end;
-				button{
-					width: 140rpx;
-					height: 56rpx;
-					line-height: 56rpx;
-					text-align: center;
-					font-size: 24rpx;
-					display: block;
-					border-radius: 32rpx;
-					// border: 2rpx solid #CCCCCC;
-					color: #FFFFFF;
-					padding: 0;
-					background: linear-gradient(135deg, #36D9CD 0%, #28C6C6 100%);   
-				}
+			.immediate-evaluate,.review-detail{
+				width: 140rpx;
+				height: 56rpx;
+				line-height: 54rpx;
+				box-sizing: border-box;
+				text-align: center;
+				font-size: 24rpx;
+				display: block;
+				border-radius: 32rpx;
+				color: #FFFFFF;
+				padding: 0;
+			}
+			.immediate-evaluate{
+				background: linear-gradient(99deg, #00CCBE 0%, #00C2BF 100%);   	
+			}
+			.review-detail{
+				color: #333333;
+				border: 0.5px solid #CCCCCC;
+			}
 		}
 	}
 	

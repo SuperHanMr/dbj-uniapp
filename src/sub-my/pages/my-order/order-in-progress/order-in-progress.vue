@@ -217,7 +217,9 @@
 					});
 				}
 			},
-			refundCancel() {
+			refundCancel(item) {
+				this.itemId=item.refundId
+				this.title="确定要取消本次申请退款？"
 				this.$refs.cancelRefund.open();
 			},
 			cancelRefundClose() {
@@ -226,7 +228,7 @@
 			cancelRefundConfirm() {
 				cancelRefund({
 					id: this.itemId
-				}).then((e) => {
+				}).then(() => {
 					this.$refs.cancelRefund.close();
 					this.orderDetail();
 				});
