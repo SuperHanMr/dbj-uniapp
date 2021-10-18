@@ -298,15 +298,6 @@
 							>{{item.nodeName}}</view>
 				  </picker-view-column>
 				</picker-view>
-				<!-- <ul class="options">
-					<li :class="{'active':selectedIndex===-1}">全部</li>
-					<li
-						:class="{'active':selectedIndex===index}"
-						@click="switchC(index,item.nodeType)"
-						v-for="(item,index) in selectNodeTypes"
-						:key="index"
-					>{{item.nodeName}}</li>
-				</ul> -->	
       </view>
     </view>
 		<view
@@ -509,6 +500,7 @@ export default {
       projectId: 0,
       userId: 0,
 			dynamicPage: 1,
+			dynamicPageType: 1,
 			replyPage: 1,
 			homePageEstate: {},
 			buyState: false,//是否购买摄像头服务,
@@ -523,8 +515,15 @@ export default {
 		})  
   },
 	onReachBottom() {
-		this.dynamicPage+=1;
-		this.selectedType?this.requestDynamic(this.selectedType):this.requestDynamic();
+		
+		if(this.selectedType){
+			this.dynamicPageType+=1;
+			this.getDynamic(this.selectedType)
+		}else{
+			this.dynamicPage+=1;
+			this.requestDynamic();
+		}
+		
 	},
   mounted() {
     this.requestDecorateSteps();
@@ -561,20 +560,12 @@ export default {
 		      deviceId = res.deviceId;
 		    },
 		  });
-		  // let obj = {
-		  // 	customerId: this.userId,
-		  // 	customerName: uni.getStorageSync("userInfo").nickName,
-		  // 	customerAvatar: uni.getStorageSync("userInfo").avatarUrl,
-		  // 	estateName: this.projectInfo.estateNeighbourhood,
-		  // 	estateAddress: this.projectInfo.estateAddress
-		  // }
 		  let params = {
 		    routeId: 4001,
 		    relationId: this.projectInfo.id,
 		    authorId: this.projectInfo.estateOwnerId,
 		    equipmentId: deviceId,
 		    subBizType: this.houseStructure,
-		    // jsonContent: JSON.stringify(obj)
 		  };
 		  setViews(params).then((data) => {
 		    if (data) {
@@ -693,20 +684,12 @@ export default {
           deviceId = res.deviceId;
         },
       });
-      // let obj = {
-      // 	customerId: this.userId,
-      // 	customerName: uni.getStorageSync("userInfo").nickName,
-      // 	customerAvatar: uni.getStorageSync("userInfo").avatarUrl,
-      // 	estateName: this.projectInfo.estateNeighbourhood,
-      // 	estateAddress: this.projectInfo.estateAddress
-      // }
       let params = {
         routeId: 1002,
         relationId: this.projectInfo.id,
         authorId: this.projectInfo.estateOwnerId,
         equipmentId: deviceId,
         subBizType: this.houseStructure,
-        // jsonContent: JSON.stringify(obj)
       };
       setAttentions(params).then((data) => {
         if (data) {
@@ -738,19 +721,17 @@ export default {
     confirmC() {
       this.showNodeType = false;
 			if(this.hasChange && this.selectedIndex !== -1){
-				this.selectedType = this.selectNodeTypes[this.selectedIndex].nodeType
 				//nodeType有值
-				this.requestDynamic(this.selectedType)
+				this.selectedType = this.selectNodeTypes[this.selectedIndex].nodeType
+				//重置入参page
+				this.dynamicPageType = 1
+				this.getDynamic(this.selectedType)
 			}
 			if(!this.hasChange || this.selectedIndex === -1){
 				this.requestDynamic();
 			}
 			//重置标识位
 			this.hasChange = false
-    },
-    switchC(index, type) {
-      this.selectedIndex = index;
-      this.selectedType = type;
     },
 		toPersonalHome(userId){
 			uni.navigateTo({
@@ -838,26 +819,43 @@ export default {
         }
       });
     },
-    requestDynamic(type) {
-      let params;
-      params = type
-        ? {
-						page: this.dynamicPage,
-            projectId: this.projectId,
-            nodeType: type,
-          }
-        : {
-						page: this.dynamicPage,
-            projectId: this.projectId,
-          };
-      getDecorateDynamic(params).then((data) => {
+		getDynamic(nodeType){
+			let params = {
+				page: this.dynamicPageType,
+				projectId: this.projectId,
+				nodeType: nodeType,
+			}
+			getDecorateDynamic(params).then((data) => {
+			  if (data) {
+			    let { list, page, totalRows } = data;
+			    this.dynamicPageType = page
+					if(!list.length){
+						uni.showToast({
+							title: '没有更多数据了',
+							icon: 'none',
+						});
+					}
+					if(this.dynamicPageType!==1){
+						this.dynamics = this.dynamics.concat(list || [])
+					}else{
+						this.dynamics = list || []
+					}
+			  }
+			});
+		},
+    requestDynamic() {
+      let params = {
+				page: this.dynamicPage,
+				projectId: this.projectId,
+			};
+			getDecorateDynamic(params).then((data) => {
         if (data) {
-          console.log(data);
           let { list, page, totalRows } = data;
           this.dynamicPage = page
 					if(!list.length){
 						uni.showToast({
-							title:'没有更多数据了',icon:"none",
+							title: '没有更多数据了',
+							icon: 'none',
 						});
 					}
 					if(this.dynamicPage!==1){

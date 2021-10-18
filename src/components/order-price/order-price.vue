@@ -8,28 +8,28 @@
         <view>总价</view>
         <view>
           <text>￥</text>
-          <text class="price-style">{{handlePrice(data.totalAmount)[0]}}.{{handlePrice(data.totalAmount)[1]}}</text>
+          <text class="price-style  price-font">{{handlePrice(data.totalAmount)[0]}}.{{handlePrice(data.totalAmount)[1]}}</text>
         </view>
       </view>
       <!-- 运费  有仓库默认显示  无仓库必显示-->
      <view  class="price-item" v-if="data.showFreight">
         <view class="title">
           <text style="margin-right: 8rpx;">运费</text>
-          <text class="icon">?</text>
+					<image class="icon"  src="../../static/price_icon.svg" mode="" @click="readExpenses(1)"/>
         </view>
         <view>
           <text>￥</text>
-          <text class="price-style">{{handlePrice(data.freight)[0]}}.{{handlePrice(data.freight)[1]}}</text>
+          <text class="price-style price-font">{{handlePrice(data.freight)[0]}}.{{handlePrice(data.freight)[1]}}</text>
         </view>
       </view>
 
-			
+
 
       <!-- 搬运费  有仓库默认显示  无仓库必显示-->
       <view class="price-item" v-if="data.showFreight">
         <view class="title">
           <text style="margin-right: 8rpx;">搬运费</text>
-          <text class="icon">?</text>
+					<image class="icon"  src="../../static/price_icon.svg" mode="" @click="readExpenses(2)"/>
         </view>
         <view>
           <text>￥</text>
@@ -67,7 +67,7 @@
       </view>
 
     </view>
-    
+
 		<!-- 待付款 -->
     <view class="footer1" v-if="waitPay">
       <view class="has-pay"  v-if="data.totalActualIncomeAmount">
@@ -78,7 +78,7 @@
           <text class="price-font">{{handlePrice(data.totalActualIncomeAmount)[1]}}</text>
         </text>
       </view>
-			
+
       <view v-else >
         <text style="margin-right: 12rpx;">需付款</text>
         <text style="color: #FF3347;" class="price-font">
@@ -98,7 +98,7 @@
         <text class="price-font">{{handlePrice(data.actuallyPayAmount)[1]}}</text>
       </text>
     </view>
-
+		<expenses-toast ref='expensesToast' :expensesType="expensesType"></expenses-toast>
   </view>
 
 </template>
@@ -119,7 +119,9 @@ export default {
   },
 
   data() {
-    return {};
+    return {
+			expensesType:"",
+		};
   },
   methods: {
     handlePrice(price) {
@@ -130,6 +132,10 @@ export default {
         return [list[0], list[1]];
       }
     },
+		readExpenses(num) {
+		  this.expensesType = num
+		  this.$refs.expensesToast.showPupop()
+		},
   },
 };
 </script>
@@ -163,10 +169,12 @@ export default {
         .icon {
           width: 24rpx;
           height: 24rpx;
-          border: 2rpx solid #999999;
-          border-radius: 50%;
-          line-height: 24rpx;
-          text-align: center;
+					object-fit: cover;
+          // border: 2rpx solid #999999;
+          // border-radius: 50%;
+          // line-height: 24rpx;
+          // text-align: center;
+					// background-image: url('../../static/question.png');
         }
       }
     }
