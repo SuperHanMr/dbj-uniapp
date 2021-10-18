@@ -1,6 +1,6 @@
 <template>
 	<view class="fill">
-		<custom-navbar opacity="1" :title="title" titleColor="#333" bgcolor="#ffffff">
+		<!-- <custom-navbar opacity="1" :title="title" titleColor="#333" bgcolor="#ffffff">
 			<template v-slot:back>
 				<view @click="toBack">
 					<i class="icon-ic_cancel_white" style="color:#333">
@@ -9,7 +9,7 @@
 			</template>
 		</custom-navbar>
 		
-		<view :style="{height:navBarHeight}"></view>
+		<view :style="{height:navBarHeight}"></view> -->
 		
 		
 		<view class="top-tab">
