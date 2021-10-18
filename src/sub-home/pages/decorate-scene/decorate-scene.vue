@@ -27,7 +27,7 @@
       >
         <image
           class="toConstruction"
-          src="../../static/ic_construction_drawings@2x.png"
+          src="http://dbj.dragonn.top/static/mp/dabanjia/images/home/ic_construction_drawings%402x.png"
         ></image>
         <view class="text">施工图纸</view>
       </view>
@@ -37,7 +37,7 @@
       >
         <image
           class="toCost"
-          src="../../static/ic_cost_statistics@2x.png"
+          src="http://dbj.dragonn.top/static/mp/dabanjia/images/home/ic_cost_statistics%402x.png"
         ></image>
         <view class="text">花销统计</view>
       </view>
@@ -47,7 +47,7 @@
       >
         <image
           class="toDecorate"
-          src="../../static/ic_decorate_calendar@2x.png"
+          src="http://dbj.dragonn.top/static/mp/dabanjia/images/home/ic_decorate_calendar%402x.png"
         ></image>
         <view class="text">装修日历</view>
       </view>
@@ -57,7 +57,7 @@
       >
         <image
           class="toVideoSite"
-          src="../../static/ic_video_site@2x.png"
+          src="http://dbj.dragonn.top/static/mp/dabanjia/images/home/ic_video_site%402x.png"
         ></image>
         <view class="text">工地视频</view>
       </view>
@@ -67,7 +67,7 @@
       <view class="content">
         <image
           class="startWork"
-          src="../../static/start_work@2x.png"
+          src="http://dbj.dragonn.top/static/mp/dabanjia/images/home/start_work%402x.png"
         ></image>
         <view class="mainWrap">
           <view class="nodeType">
@@ -110,11 +110,11 @@
             >
               <view
 								v-if="(item.nodeStatus===2&&item.id!==-1)||item.nodeStatus===3"
-								@click="toPersonalHome(item.id)">
+								@click="toPersonalHome(item.id)"
+							>
 								<image
 								  class="avatar"
 								  :src="item.avatar"
-									
 								></image>
 								<view class="name" :class="{'minHeight':item.flag}">{{item.name}}</view>
 								<view class="line" v-if="item.flag">...</view>
@@ -128,7 +128,7 @@
         </view>
         <image
           class="endWork"
-          src="../../static/end_work@2x.png"
+          src="http://dbj.dragonn.top/static/mp/dabanjia/images/home/end_work%402x.png"
         ></image>
       </view>
     </view>
@@ -142,7 +142,7 @@
           <view class="text">筛选</view>
           <image
             class="icon"
-            src="../../static/ic_filtrate@2x.png"
+            src="http://dbj.dragonn.top/static/mp/dabanjia/images/home/ic_filtrate%402x.png"
           ></image>
         </view>
       </view>
@@ -188,19 +188,19 @@
                   <image
                     v-if="!item.selfLike"
                     @click="likeC(item.recordType,item.id,index,true)"
-                    src="../../static/ic_like@2x.png"
+                    src="http://dbj.dragonn.top/static/mp/dabanjia/images/home/ic_like%402x.png"
                   ></image>
                   <image
                     v-else
                     @click="likeC(item.recordType,item.id,index)"
-                    src="../../static/ic_liked@2x.png"
+                    src="http://dbj.dragonn.top/static/mp/dabanjia/images/home/ic_liked%402x.png"
                   ></image>
                   <view class="text">{{item.likeCount}}</view>
                 </view>
                 <view class="comment">
                   <image
                     @click="commentC(item.id)"
-                    src="../../static/ic_comments@2x.png"
+                    src="http://dbj.dragonn.top/static/mp/dabanjia/images/home/ic_comments%402x.png"
                   ></image>
                   <view class="text">{{item.commentCount}}</view>
                 </view>
@@ -217,8 +217,7 @@
         @click="toInlineService"
       >
         <image
-          src="../../static/consult@2x.png"
-          mode=""
+          src="http://dbj.dragonn.top/static/mp/dabanjia/images/home/consult%402x.png"
         ></image>
         <view>咨询客服</view>
       </view>
@@ -227,8 +226,7 @@
         @click="toDecorate"
       >
         <image
-          src="../../static/decorate@2x.png"
-          mode=""
+          src="http://dbj.dragonn.top/static/mp/dabanjia/images/home/decorate%402x.png"
         ></image>
         <view>我要装修</view>
       </view>
@@ -239,7 +237,7 @@
       >
         <image
           class="add"
-          src="../../static/ic_add_focus@2x.png"
+          src="http://dbj.dragonn.top/static/mp/dabanjia/images/home/ic_add_focus%402x.png"
         ></image>
         <view>关注</view>
       </view>
@@ -255,21 +253,21 @@
 		<view class="mask" v-if="showDecorateMask">
 			<view class="popupDecorate" :class="{'height':hasEstate}">
 				<view class="estateInfo" v-if="!hasEstate" @click="toAddEstate">
-					<image src="../../static/ic_add_estate@2x.png"></image>
+					<image src="http://dbj.dragonn.top/static/mp/dabanjia/images/home/ic_add_estate%402x.png"></image>
 					<view>添加房屋信息</view>
 				</view>
 				<view class="service" :class="{'margin':hasEstate}">
 					<view class="decorate_service" @click="toDecorateService">
-						<image src="../../static/ic_decorate_service@2x.png"></image>
+						<image src="http://dbj.dragonn.top/static/mp/dabanjia/images/home/ic_decorate_service%402x.png"></image>
 						<view>进行装修服务</view>
 					</view>
 					<view class="checkRoom_service" @click="toCheckRoomService">
-						<image src="../../static/ic_checkRoom_service@2x.png"></image>
+						<image src="http://dbj.dragonn.top/static/mp/dabanjia/images/home/ic_checkRoom_service%402x.png"></image>
 						<view>进行验房服务</view>
 					</view>
 				</view>
 				<view class="close" @click="showDecorateMask=false">
-					<image src="../../static/ic_decorate_cancel@2x.png"></image>
+					<image src="http://dbj.dragonn.top/static/mp/dabanjia/images/home/ic_decorate_cancel%402x.png"></image>
 				</view>
 			</view>
 		</view>
@@ -310,7 +308,7 @@
           <image
             @click="showComments=false"
             class="close"
-            src="../../static/ic_closed_black@2x.png"
+            src="http://dbj.dragonn.top/static/mp/dabanjia/images/home/ic_closed_black%402x.png"
           ></image>
         </view>
         <view
@@ -389,7 +387,7 @@
                 <view class="text">展开{{item.secondCount}}条回复</view>
                 <image
                   class="img"
-                  src="../../static/ic_expand@2x.png"
+                  src="http://dbj.dragonn.top/static/mp/dabanjia/images/home/ic_expand%402x.png"
                 ></image>
               </view>
               <view
@@ -400,7 +398,7 @@
                 <view class="test">收起</view>
                 <image
                   class="img"
-                  src="../../static/ic_packUp@2x.png"
+                  src="http://dbj.dragonn.top/static/mp/dabanjia/images/home/ic_packUp%402x.png"
                 ></image>
               </view>
             </view>
@@ -413,7 +411,7 @@
           <view class="deleteWrap">
             <image
               class="img"
-              src="../../static/ic_comment_delete@2x.png"
+              src="http://dbj.dragonn.top/static/mp/dabanjia/images/home/ic_comment_delete%402x.png"
             ></image>
             <view class="delete">删除</view>
           </view>
