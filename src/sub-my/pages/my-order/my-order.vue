@@ -52,7 +52,7 @@
 									<text
 										v-if="item.orderStatus == 0 ">{{item.orderName?item.orderName:item.storeName}}</text>
 									<text v-else>{{item.storeName}}</text>
-									<image v-if="!item.orderName" src="../../../static/order/ic_more@2x.png" mode=" " />
+									<image v-if="!item.orderName" src="../../static/ic_more.svg" mode=" " />
 								</view>
 								<view class="order-status"
 									:class="{active: item.orderStatus == 2 || item.orderStatus == 3}">

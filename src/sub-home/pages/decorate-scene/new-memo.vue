@@ -5,7 +5,7 @@
 			<view class="remind" @click="toChooseRemind">
 				<view class="text" :class="{'selected': hasChoose}">提醒谁看</view>
 				<view class="reminder" v-if="reminderList.length" v-for="item in reminderList" :key="item.userId">@{{item.userName}}</view>
-				<image class="icon" src="../../static/ic_filtrate@2x.png"></image>
+				<image class="icon" src="http://dbj.dragonn.top/static/mp/dabanjia/images/home/ic_filtrate%402x.png"></image>
 			</view>
 			<view class="finish" @click="finishC">完成</view>
 		</form>

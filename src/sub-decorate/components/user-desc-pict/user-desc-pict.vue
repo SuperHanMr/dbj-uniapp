@@ -10,7 +10,7 @@
             <view class="role">{{butlerData.nodeName}}</view>
           </view>
         </view>
-        <view class="date">{{butlerData.createTime}}</view>
+        <view class="date">{{butlerData.createTime | calendarFormat}}</view>
       </view>
       <view class="desc">{{butlerData.content}}</view>
       <view class="picture flex-row">
@@ -25,6 +25,9 @@
 </template>
 
 <script>
+  import {
+    calendarFormat
+  } from "../../../utils/date.js"
   export default {
     props: {
       butlerData: {
@@ -46,6 +49,11 @@
           urls: arr,
           // longPressActions:{}
         })
+      }
+    },
+    filters: {
+      calendarFormat(time) {
+        return calendarFormat(time)
       }
     }
   }

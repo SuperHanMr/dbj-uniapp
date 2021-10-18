@@ -252,9 +252,13 @@
 			display: flex;
 			flex: 1;
 			flex-flow: row nowrap;
-			justify-content: space-between;
+			// justify-content: space-between;
 			align-items: center;
 			.name-attr{
+				// max-width: 349rpx;
+				display: flex;
+				flex: 1;
+				flex-flow: column nowrap;
 				margin-right: 24rpx ;
 				.text{
 					display: -webkit-box;
@@ -294,7 +298,7 @@
 			}
 			.common-price{
 				display: flex;
-				flex: 1;
+				// flex: 1;
 				flex-flow: column nowrap;
 				align-items: flex-end;
 				font-size: 22rpx;

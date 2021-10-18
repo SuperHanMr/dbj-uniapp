@@ -64,7 +64,7 @@
 				<view class="part1" v-for="(item,index) in orderInfo.details" :key="index">
 					<view class="header" @click="gotoShop(item)">
 						<text>{{item.storeName}}</text>
-						<image src="../../../../static/order/ic_more@2x.png" mode=""></image>
+						<image src="../../../static/ic_more.svg" mode=""></image>
 					</view>
 
 					<view v-for="item2 in item.details" :key="item2.id" class="orederItem">

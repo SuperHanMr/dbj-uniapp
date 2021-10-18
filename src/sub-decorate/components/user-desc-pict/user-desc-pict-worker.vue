@@ -10,7 +10,7 @@
             <view class="role">{{workerData.nodeName}}</view>
           </view>
         </view>
-        <view class="date">{{workerData.createTime}}</view>
+        <view class="date">{{workerData.createTime | calendarFormat}}</view>
       </view>
       <view class="desc">{{workerData.content}}</view>
       <view class="picture flex-row">
@@ -33,6 +33,9 @@
 </template>
 
 <script>
+  import {
+    calendarFormat
+  } from "../../../utils/date.js"
   export default {
     props: {
       workerData: {
@@ -54,6 +57,11 @@
           urls: arr,
           // longPressActions:{}
         })
+      }
+    },
+    filters: {
+      calendarFormat(time) {
+        return calendarFormat(time)
       }
     }
   }

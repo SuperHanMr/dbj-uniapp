@@ -103,7 +103,7 @@
       >
         <view class="header" @click="gotoShop(item)">
           <text>{{item.storeName}}</text>
-          <image src="@/static/order/ic_more@2x.png" mode="" />
+          <image src="../../../static/ic_more.svg" mode="" />
         </view>
         <view v-for="item2 in item.details" :key="item2.id">
           <order-item
