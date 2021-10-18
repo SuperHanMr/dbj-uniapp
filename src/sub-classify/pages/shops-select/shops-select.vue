@@ -1,6 +1,6 @@
 <template>
   <view>
-     <web-view :src="baseUrl + '/app-pages/shops/index.html?token=' + searchToken + '#wx-storeId='
+   <web-view :src="baseUrl + '/app-pages/shops/shops-select.html?token=' + searchToken + '#wx-storeId='
      + storeId + '&wx-houseId=' + houseId + '&wx-token=' + hashToken">  
      </web-view>
   </view>
@@ -19,9 +19,8 @@
       }
     },
     onLoad(e){
-      console.log(e, "teste")
+      console.log(e, "testselect")
       this.storeId = e.storeId,
-      this.areaId = e.areaId
       this.houseId = e.houseId
     },
     onShow() {
