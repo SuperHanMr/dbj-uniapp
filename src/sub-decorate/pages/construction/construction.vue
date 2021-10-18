@@ -12,7 +12,9 @@
         </user-desc-pict-worker>
       </view>
     </view>
-    <no-data style="padding-top: 120rpx;padding-left: 32rpx;" v-if="nodata" words="暂无改施工数据"></no-data>
+    <view v-if="nodata" class="no-data-wrap">
+      <no-data words="暂无改施工数据"></no-data>
+    </view>
   </view>
 </template>
 
@@ -91,11 +93,19 @@
 </script>
 
 <style lang="scss" scoped>
-  .construction {}
+  .construction {
+    height: 100vh;
+  }
 
   .s-g-list {
     .s-g-item {
       margin: 24rpx;
     }
+  }
+  .no-data-wrap{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: calc(100vh - 68rpx);
   }
 </style>
