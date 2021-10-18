@@ -104,13 +104,13 @@
 									<text>
 										<text>总价</text>
 										<text style="font-size:18rpx;">￥</text>
-										<text class="price-font">{{handlePrice(item.orderTotalAmount)[0]}}.</text>
+										<text class="price-font" style="font-size: 22rpx;">{{handlePrice(item.orderTotalAmount)[0]}}.</text>
 										<text style="font-size:18rpx;" class="price-font">{{handlePrice(item.orderTotalAmount)[1]}}</text>
 									</text>
 									<text v-if="item.discount">
 										<text style="margin-left: 18rpx;">优惠</text>
 										<text style="font-size:18rpx;">￥</text>
-										<text class="price-font">{{handlePrice(item.discount)[0]}}.</text>
+										<text style="font-size: 22rpx;" class="price-font">{{handlePrice(item.discount)[0]}}.</text>
 										<text style="font-size:18rpx;" class="price-font">{{handlePrice(item.discount)[1]}}</text>
 									</text>
 								</view>
@@ -123,7 +123,7 @@
 									<text style="color:#FF3347;margin-left: 8rpx;">
 										<text style="font-size:22rpx;">￥</text>
 										<text style="font-size: 32rpx;" class="price-font">{{handlePrice(item.payAmount)[0]}}.</text>
-										<text style="font-size:18rpx;" class="price-font">{{handlePrice(item.payAmount)[1]}}</text>
+										<text style="font-size:22rpx;" class="price-font">{{handlePrice(item.payAmount)[1]}}</text>
 									</text>
 								</view>
 
@@ -171,7 +171,7 @@
 									<view  v-if="item.showCancelBtn" class="cancel-order" 	@click="handleCancelOrder(item.id)">
 										取消订单
 									</view>
-									<view  v-if="item.showToPayBtn" class="go-to-pay" 	@click="toPay(item)">
+									<view  v-if="item.showToPayBtn" class="go-to-pay" style="font-weight: bold;"	@click="toPay(item)">
 										去付款
 									</view>
 									<!-- <button v-if="item.showCancelBtn" type="default" size="mini" class="cancel-order"
@@ -801,9 +801,9 @@
 			.cancel-order {
 				width: 140rpx;
 				height: 56rpx;
+				line-height: 54rpx;
 				box-sizing: border-box;
-				border: 2rpx solid #cccccc;
-				line-height: 52rpx;
+				border: 0.5px solid #cccccc;
 				border-radius: 32rpx;
 				font-size: 24rpx;
 				text-align: center;
