@@ -171,12 +171,12 @@ export default {
     this.systemHeight = menuButtonInfo.bottom + this.num + "rpx";
     console.log(this.systemBottom);
   },
-
   onLoad(e) {
 		this.from= e.from
     this.orderNo = Number(e.orderNo) || getApp().globalData.decorateMsg.orderId;
     const currentHouse = getApp().globalData.currentHouse;
     this.areaId = currentHouse.areaId;
+
 		// 获取胶囊按钮的位置
 		const systemInfo = uni.getSystemInfoSync();
 		const menuButtonInfo = uni.getMenuButtonBoundingClientRect();
@@ -197,9 +197,6 @@ export default {
   onShow() {
     this.orderDetail();
   },
-
-
-
   methods: {
     orderDetail() {
       getOrderDetail({

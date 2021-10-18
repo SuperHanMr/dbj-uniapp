@@ -33,6 +33,8 @@
       }else if(uni.getStorageSync('goodId')) { // 商城列表和装修模块的商品id
         this.goodId = uni.getStorageSync('goodId')
       }
+      this.houseId = e.houseId
+      console.log(this.houseId, "this.houseId")
     },
     onShow() {
       if(!this.searchToken) {
@@ -42,7 +44,6 @@
       }
       this.baseUrl = this.ENV.VUE_APP_BASE_H5
       this.defaultHouseInfo = getApp().globalData.currentHouse
-      console.log(this.defaultHouseInfo, "this.defaultHouseInfo")
         uni.getSystemInfo({	
           success:res => {
             this.deviceId = res.deviceId

@@ -499,8 +499,11 @@ const message = {
       }
       const { id, name } = userInfo;
       let userIMID = id;
-      if (!isNaN(userIMID)) {
-        userIMID = "zeus_" + userIMID;
+      let userId = id;
+      if (!isNaN(id)) {
+        userIMID = "zeus_" + id;
+      } else {
+        userId = +(id + "").replace(/^zeus_/, "");
       }
       const convId = TIM.TYPES.CONV_C2C + userIMID;
       
