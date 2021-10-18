@@ -309,7 +309,7 @@
 		align-items: center;
 
 		view {
-			font-weight: 1000;
+			font-weight: 500;
 			height: 40rpx;
 			line-height: 40rpx;
 			max-width: 476rpx;

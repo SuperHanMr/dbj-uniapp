@@ -1,7 +1,7 @@
 <template>
 	<view class="orderContainer">
 		<view class="header">
-			<image src="../../../static/shopping-cart/ic_location@2x.png" class="locationIcon"></image>
+			<image src="../../static/ic_location@2x.png" class="locationIcon"></image>
 			<view class="address">
 				<view class="way">
 					<text class="default">默认</text>
@@ -13,9 +13,9 @@
 					<text class="userPhone">123456789</text>
 				</view>
 			</view>
-			<image class="switchSite" src="../../../static/shopping-cart/ic_more_black@2x.png"></image>
+			<image class="switchSite" src="../../static/ic_more_black@2x.png"></image>
 		</view>
-		<image class="addressLine" src="../../../static/shopping-cart/address_line@2x.png"></image>
+		<image class="addressLine" src="../../static/address_line@2x.png"></image>
 		<view class="content">
 			<view v-for="goodsItem in goodsList" :key="goodsItem.skuId">
 				<text>{{goodsItem.storeName}}</text>

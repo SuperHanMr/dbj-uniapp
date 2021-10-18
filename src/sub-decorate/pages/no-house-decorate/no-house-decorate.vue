@@ -36,7 +36,7 @@
     <payment v-if="noData === 1" class="payment" @gotopay="gotopay" :pieces="pieces" :countPrice="countPrice"
       :isAllChecked="isAllChecked">
     </payment>
-    <no-data style="padding-left: 32rpx;" v-if="noData === 0" words="当前城市暂未开通此服务,敬请期待~"></no-data>
+    <no-data v-if="noData === 0" words="当前城市暂未开通此服务,敬请期待~"></no-data>
     <uni-popup ref="level">
       <change-level @changeLevel="setLevel" @close="close" :dataList="levelList" :current="levelList[0]"></change-level>
     </uni-popup>

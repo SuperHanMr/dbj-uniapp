@@ -80,10 +80,9 @@
 
 		<!-- 底部按钮 -->
 		<view class="footer" v-if=" currentList.length >= 1 && showCalCelBtn" :style="{paddingBottom:systemBottom + 24 + 'rpx'}">
-			<view class="left">
-				<image v-if="allCheck"  src="../../../../static/order/images/product_checked.png"  @click="handleAllCheck" mode=""></image>
-				<view v-else  class="checkStyle" @click="handleAllCheck"/>
-				<!-- <image v-else src="../../../../static/order/images/product_unChecked.png" mode="" @click="handleAllCheck"/> -->
+			<view class="left" @click="handleAllCheck">
+				<image v-if="allCheck"  src="../../../static/all_Check.svg"  mode="" />
+				<image v-else src="../../../static/all_Uncheck.svg" mode="" />
 				<text>全选</text>
 			</view>
 			<view class="button" @click="handleCancel">

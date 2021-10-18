@@ -11,7 +11,7 @@
 						{{params.commentCount}}
 					</view>
 				</view>
-				<view class="like" v-if="params.isLike">
+				<view class="like" v-if="params.likeCount">
 					<view class="comment-icon">
 						<image src="/static/images/real-case/xihuan.png" mode=""></image>
 					</view>

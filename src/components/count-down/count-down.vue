@@ -112,6 +112,7 @@
 		.list {
 			width: 36rpx;
 			height: 36rpx;
+			font-weight: 500;
 			line-height: 36rpx;
 			text-align: center;
 			border-radius: 4rpx;
