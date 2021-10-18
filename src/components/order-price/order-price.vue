@@ -8,7 +8,7 @@
         <view>总价</view>
         <view>
           <text>￥</text>
-          <text class="price-style">{{handlePrice(data.totalAmount)[0]}}.{{handlePrice(data.totalAmount)[1]}}</text>
+          <text class="price-style  price-font">{{handlePrice(data.totalAmount)[0]}}.{{handlePrice(data.totalAmount)[1]}}</text>
         </view>
       </view>
       <!-- 运费  有仓库默认显示  无仓库必显示-->
@@ -19,7 +19,7 @@
         </view>
         <view>
           <text>￥</text>
-          <text class="price-style">{{handlePrice(data.freight)[0]}}.{{handlePrice(data.freight)[1]}}</text>
+          <text class="price-style price-font">{{handlePrice(data.freight)[0]}}.{{handlePrice(data.freight)[1]}}</text>
         </view>
       </view>
 
@@ -33,7 +33,7 @@
         </view>
         <view>
           <text>￥</text>
-          <text class="price-style">{{handlePrice(data.handlingFees)[0]}}.{{handlePrice(data.handlingFees)[1]}}</text>
+          <text class="price-style price-font">{{handlePrice(data.handlingFees)[0]}}.{{handlePrice(data.handlingFees)[1]}}</text>
         </view>
       </view>
 
@@ -44,7 +44,7 @@
         </view>
         <view>
           <text>￥</text>
-          <text class="price-style">{{handlePrice(data.depositTotalAmount)[0]}}.{{handlePrice(data.depositTotalAmount)[1]}}</text>
+          <text class="price-style price-font" >{{handlePrice(data.depositTotalAmount)[0]}}.{{handlePrice(data.depositTotalAmount)[1]}}</text>
         </view>
       </view>
 
@@ -53,7 +53,7 @@
         <view>商家优惠</view>
         <view>
           <text>￥</text>
-          <text class="price-style">{{data.storeDiscount?'-':''}}{{handlePrice(data.storeDiscount)[0]}}.{{handlePrice(data.storeDiscount)[1]}}</text>
+          <text class="price-style price-font">{{data.storeDiscount?'-':''}}{{handlePrice(data.storeDiscount)[0]}}.{{handlePrice(data.storeDiscount)[1]}}</text>
         </view>
       </view>
 
@@ -62,25 +62,26 @@
         <view>平台优惠</view>
         <view>
           <text>￥</text>
-          <text class="price-style">{{data.platformDiscount?'-':''}}{{handlePrice(data.platformDiscount)[0]}}.{{handlePrice(data.platformDiscount)[1]}}</text>
+          <text class="price-style price-font">{{data.platformDiscount?'-':''}}{{handlePrice(data.platformDiscount)[0]}}.{{handlePrice(data.platformDiscount)[1]}}</text>
         </view>
       </view>
 
     </view>
-    <!-- 待付款 -->
+    
+		<!-- 待付款 -->
     <view class="footer1" v-if="waitPay">
       <view class="has-pay"  v-if="data.totalActualIncomeAmount">
         <text style="margin-right: 12rpx;">已付款</text>
-        <text>
+        <text class="price-font">
           <text>￥</text>
-          <text style="font-size: 40rpx;">{{handlePrice(data.totalActualIncomeAmount)[0]}}.</text>
-          <text>{{handlePrice(data.totalActualIncomeAmount)[1]}}</text>
+          <text style="font-size: 40rpx; " class="price-font">{{handlePrice(data.totalActualIncomeAmount)[0]}}.</text>
+          <text class="price-font">{{handlePrice(data.totalActualIncomeAmount)[1]}}</text>
         </text>
       </view>
 			
       <view v-else >
-        <text style="margin-right: 12rpx;">已付款</text>
-        <text style="color: #FF3347;">
+        <text style="margin-right: 12rpx;">需付款</text>
+        <text style="color: #FF3347;" class="price-font">
           <text>￥</text>
           <text style="font-size: 40rpx;">{{handlePrice(data.orderReceivableAmount)[0]}}.</text>
           <text>{{handlePrice(data.orderReceivableAmount)[1]}}</text>
@@ -91,10 +92,10 @@
     <!-- 其他情况 -->
     <view class="footer" v-else>
       <text style="margin-right: 12rpx;">实付</text>
-      <text style="color: #FF3347;">
+      <text style="color: #FF3347;" class="price-font">
         <text>￥</text>
-        <text style="font-size: 40rpx;">{{handlePrice(data.actuallyPayAmount)[0]}}.</text>
-        <text>{{handlePrice(data.actuallyPayAmount)[1]}}</text>
+        <text style="font-size: 40rpx;" class="price-font">{{handlePrice(data.actuallyPayAmount)[0]}}.</text>
+        <text class="price-font">{{handlePrice(data.actuallyPayAmount)[1]}}</text>
       </text>
     </view>
 
@@ -140,12 +141,12 @@ export default {
   margin-bottom: 16rpx;
   .line {
     width: 100%;
-    height: 1rpx;
-    background: #f2f2f2;
+    height: 0.5px;
+    background: #f2f3f3;
     border-radius: 2rpx;
   }
   .body {
-    padding: 22rpx 32rpx 0;
+    padding: 32rpx 32rpx 0;
     .price-item {
       display: flex;
       flex-flow: row nowrap;

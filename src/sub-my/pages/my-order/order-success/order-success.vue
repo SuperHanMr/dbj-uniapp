@@ -1,12 +1,22 @@
 <template>
 	<view class="container">
 		<!-- 订单完成/确认收货 -->
+		<custom-navbar opacity="1"  bgcolor="#23d5c6">
+			<template v-slot:back>
+				<view @click="toBack">
+					<i class="icon-ic_cancel_white" style="color: white;">
+					</i>
+				</view>
+			</template>
+		</custom-navbar>
+		<!-- 占位 -->
+		<view :style="{height:navBarHeight}"></view>
 		<!-- 退款成功 -->
 		<view class="order-container" v-if="type=='refund'" :style="{paddingBottom:systemBottom}">
 			<view class="order-status">
 				<view class="backgroundStyle" />
 				<view class="status">
-					<image src="@/static/order/ic_order_success@2x.png" mode=""></image>
+					<image src="../../../static/ic_order_success.svg" mode=""></image>
 					<text>退款成功</text>
 				</view>
 				<text class="time">{{refundInfo.createTime | formatDate}}</text>
@@ -17,22 +27,22 @@
 					<text>退款总金额</text>
 					<view style="color:#FF3347;">
 						<text style="font-size:26rpx;">￥</text>
-						<text style="font-size:40rpx;">{{handlePrice(refundInfo.refundAmount)[0]}}.</text>
-						<text style="font-size:26rpx;">{{handlePrice(refundInfo.refundAmount)[1]}}</text>
+						<text style="font-size:40rpx;" class="price-font">{{handlePrice(refundInfo.refundAmount)[0]}}.</text>
+						<text style="font-size:26rpx;" class="price-font">{{handlePrice(refundInfo.refundAmount)[1]}}</text>
 					</view>
 				</view>
 				<view class="router">
 					<text style="color: #999999;font-size: 26rpx;">原路径返回微信</text>
 					<view>
 						<text style="font-size: 20rpx;">￥</text>
-						<text style="font-size:28rpx;">{{handlePrice(refundInfo.refundAmount)[0]}}.</text>
-						<text style="font-size:20rpx;">{{handlePrice(refundInfo.refundAmount)[1]}}</text>
+						<text style="font-size:28rpx;" class="price-font">{{handlePrice(refundInfo.refundAmount)[0]}}.</text>
+						<text style="font-size:20rpx;" class="price-font">{{handlePrice(refundInfo.refundAmount)[1]}}</text>
 					</view>
 				</view>
 			</view>
 
 			<view class="body1" v-for="item in refundInfo.detailAppVOS" :key="item.id">
-				<order-item :dataList="item" :refundType="true" @handleDetail="productDetail(item," refund")" />
+				<order-item :dataList="item" :refundType="true" @handleDetail="productDetail(item,"refund")" />
 			</view>
 
 			<order-refund-info :refundInfo="refundInfo"></order-refund-info>
@@ -43,10 +53,9 @@
 			<view class="order-status">
 				<view class="backgroundStyle" />
 				<view class="status">
-					<image src="@/static/order/ic_order_success@2x.png" mode=""></image>
+					<image src="../../../static/ic_order_success.svg" mode=""></image>
 					<text>已完成</text>
 				</view>
-
 			</view>
 
 			<order-user-base-info :data="orderInfo"></order-user-base-info>
@@ -101,6 +110,7 @@
 
 				systemBottom: "",
 				areaId: "",
+				navBarHeight:"",
 			};
 		},
 
@@ -129,6 +139,24 @@
 			}
 			const currentHouse = getApp().globalData.currentHouse;
 			this.areaId = currentHouse.areaId;
+			const systemInfo = uni.getSystemInfoSync();
+			//状态栏高度
+			this.tophight = systemInfo.statusBarHeight + "px";
+			// 获取胶囊按钮的位置
+			const menuButtonInfo = uni.getMenuButtonBoundingClientRect();
+			this.navBarHeight =
+				menuButtonInfo.top +
+				(menuButtonInfo.top - systemInfo.statusBarHeight) +
+				menuButtonInfo.height +
+				"px";
+			uni.setNavigationBarColor({
+				frontColor: '#ffffff',
+				backgroundColor:'#23d5c6',
+				animation: {
+					duration: 400,
+					timingFunc: 'easeIn'
+				}
+			})
 		},
 
 		methods: {
@@ -140,6 +168,11 @@
 					this.orderInfo = e;
 					console.log("获取详情数据data=", this.orderInfo);
 				});
+			},
+			toBack(){
+				uni.navigateBack({
+					delta:1
+				})
 			},
 
 			refundDetail() {

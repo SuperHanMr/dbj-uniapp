@@ -266,9 +266,10 @@ function enhanceGetMessageList(tim) {
     } else {
       msg = covertToIMMessage(message, conversationID);
     }
+    msg.seq = message.seq;
+    msg.ID = message.timestamp + "#" + message.seq;
     return msg;
   }
-  let smartNextMsg = null;
   tim.getMessageList = function(params) {
     console.log("enhance get message list:", params);
     const { conversationID, nextReqMessageID, count } = params;
@@ -277,34 +278,30 @@ function enhanceGetMessageList(tim) {
     }
     if (conversationID === state.cstServConv.conversationID) {
       // 在线客服消息，从后台接口获取
-      let endTime;
-      if (smartNextMsg && smartNextMsg.ID === nextReqMessageID) {
-        endTime = smartNextMsg.time * 1000;
-      } else {
-        smartNextMsg = null;
-      }
+      let arr = (nextReqMessageID || "").split("#");
+      let endTime = Number(arr[0]) || undefined;
+      let req = Number(arr[1]) || undefined;
       let query = {
         imChatGroupId: conversationID.replace(/^GROUP/, ''),
-        req: nextReqMessageID || undefined,
+        req: req,
         endTime: endTime,
         msgNum: count,
-        sort: false,
+        sort: true,
         type: 0
       };
       return getMessageList(query).then(res => {
         let list = (res || []).map(msg => convertToIMMessageForSmart(msg, conversationID));
-        let firstMessage = list[0];
+        let nextMessage = list[list.length - 1];
         let isCompleted = true;
-        let nextID = '';
-        if (firstMessage) {
-          isCompleted = firstMessage.seq == 1; //最后一条的seq为1代表数据拉完了
-          nextID = firstMessage.ID;
+        let nextID = 0;
+        if (nextMessage) {
+          isCompleted = nextMessage.seq == 1; //最后一条的seq为1代表数据拉完了
+          nextID = nextMessage.ID;
         }
         if (list.length < count) {
           isCompleted = true;
         }
-        smartNextMsg = firstMessage;
-        return response(list, isCompleted, nextID);
+        return response(list.reverse(), isCompleted, nextID);
       });
     }
     return _getMessageList(params);
