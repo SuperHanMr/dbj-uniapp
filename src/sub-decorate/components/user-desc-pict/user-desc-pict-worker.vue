@@ -15,16 +15,16 @@
       <view class="desc">{{workerData.content}}</view>
       <view class="picture flex-row">
         <view class="imgs" v-for="(item, index) in workerData.fileUrls" :key="index" v-if="index < 6">
-          <image :src="item" @click="clickImg(workerData.fileUrls)"></image>
-          <view class="zz" v-if="index === 5" @click="clickImg(workerData.fileUrls)">+{{workerData.fileUrls.length - 6}}</view>
+          <image :src="item" @click="clickImg(workerData.fileUrls, index)"></image>
+          <view class="zz" v-if="index > 5" @click="clickImg(workerData.fileUrls, 6)">+{{workerData.fileUrls.length - 6}}</view>
         </view>
       </view>
       <view v-for="(t,index) in workerData.workerItems">
         <view class="worker-title">{{t.workItemName}}</view>
         <view class="picture flex-row">
           <view class="imgs" v-for="(it, index) in t.fileUrls" :key="index" v-if="index < 3">
-            <image :src="it" @click="clickImg(t.fileUrls)"></image>
-            <view class="zz" v-if="index === 2" @click="clickImg(t.fileUrls)">+{{t.fileUrls.length - 3}}</view>
+            <image :src="it" @click="clickImg(t.fileUrls, index)"></image>
+            <view class="zz" v-if="index > 2" @click="clickImg(t.fileUrls, 3)">+{{t.fileUrls.length - 3}}</view>
           </view>
         </view>
       </view>
@@ -44,16 +44,16 @@
       }
     },
     methods: {
-      clickImg(url) {
+      clickImg(url, index) {
         let arr = new Array();
         if (url instanceof Array) {
           arr = [...url]
         } else {
           arr.push(url)
         }
-        console.log(arr)
+        console.log(arr, index)
         uni.previewImage({
-          // current: 1,
+          current: index,
           urls: arr,
           // longPressActions:{}
         })

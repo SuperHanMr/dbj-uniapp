@@ -4,18 +4,18 @@
 			<view class="content">
 				<view class="form-item">
 					<label class="item-label">业主姓名</label>
-					<input class="uni-input" placeholder-class="placeholder" name="input" v-model="addData.contactName"
+					<input class="uni-input" placeholder-class="placeholder" name="input" v-model="addData.contactName" @focus='getFocus("contactName")' @blur='changeFocus("contactName")'
 						placeholder="请输入业主姓名" />
-            <view class="icon-clear" v-if="addData.contactName" @click.stop="clear('contactName')">
+            <view class="icon-clear" v-if="addData.contactName&&focus.contactName" @touchstart="clear('contactName')">
               <uni-icons color="#c0c4cc" size="15" type="clear" />
             </view>
-            
+          
 				</view>
 				<view class="form-item">
 					<label class="item-label">手机号</label>
 					<input class="uni-input" placeholder-class="placeholder" type="number" name="input"
-						v-model="addData.contactPhone" placeholder="请输入手机号" />
-            <view class="icon-clear" v-if="addData.contactPhone" @click.stop="clear('contactPhone')">
+						v-model="addData.contactPhone" placeholder="请输入手机号" @focus='getFocus("contactPhone")' @blur='changeFocus("contactPhone")'/>
+            <view class="icon-clear" v-if="addData.contactPhone&&focus.contactPhone" @touchstart="clear('contactPhone')">
               <uni-icons color="#c0c4cc" size="15" type="clear" />
             </view>
 				</view>
@@ -28,8 +28,8 @@
 				<view class="form-item">
 					<label class="item-label">小区</label>
 					<input class="uni-input" placeholder-class="placeholder" :disabled="!hasPoint||(roomId&&isEdit)" name="input"
-						v-model="addData.housingEstate" placeholder="房屋所在小区" />
-            <view class="icon-clear" v-if="addData.housingEstate&&!isEdit" @click.stop="clear('housingEstate')">
+						v-model="addData.housingEstate" placeholder="房屋所在小区" @focus='getFocus("housingEstate")' @blur='changeFocus("housingEstate")'/>
+            <view class="icon-clear" v-if="addData.housingEstate&&!isEdit&&focus.housingEstate" @touchstart="clear('housingEstate')">
               <uni-icons color="#c0c4cc" size="15" type="clear" />
             </view>
 				</view>
@@ -37,9 +37,9 @@
 			<view class="content">
 				<view class="form-item">
 					<label class="item-label">楼栋房号</label>
-					<input class="uni-input" placeholder-class="placeholder" name="input" :disabled="roomId&&isEdit" v-model="addData.address"
+					<input class="uni-input" placeholder-class="placeholder" name="input" :disabled="roomId&&isEdit" v-model="addData.address" @focus='getFocus("address")' @blur='changeFocus("address")'
 						placeholder="例:16号楼5层301" />
-            <view class="icon-clear" v-if="addData.address&&!isEdit" @click.stop="clear('address')">
+            <view class="icon-clear" v-if="addData.address&&!isEdit&&focus.address" @touchstart="clear('address')">
               <uni-icons color="#c0c4cc" size="15" type="clear" />
             </view>
 				</view>
@@ -62,10 +62,10 @@
 					<!-- <text class="placeholder" v-if="!addData.insideArea">请输入房屋面积</text> -->
 					<view v-if="addData.insideArea" class="uni-input area-text"><text
 							style="visibility: hidden">{{addData.insideArea}}</text>m²</view>
-              <view class="icon-clear" v-if="addData.insideArea&&!isEdit" @click.stop="clear('insideArea')">
+              <view class="icon-clear" v-if="addData.insideArea&&!isEdit&&focus.insideArea" @touchstart="clear('insideArea')">
                 <uni-icons color="#c0c4cc" size="15" type="clear" />
               </view>
-					<input v-if="!visible" :maxlength="7" class="uni-input house-area" :disabled="roomId&&isEdit" placeholder-class="placeholder"
+					<input v-if="!visible" :maxlength="7" class="uni-input house-area" :disabled="roomId&&isEdit" placeholder-class="placeholder" @focus='getFocus("insideArea")' @blur='changeFocus("insideArea")'
 						placeholder="请输入房屋面积" type="digit" name="input" v-model="addData.insideArea" />
             
 				</view>
@@ -74,8 +74,8 @@
 					<choose-btn :btnList='elevatorList' :currentBtn='addData.hasLift' :disabled="roomId&&isEdit" @chooseBtn="chooseEle">
 					</choose-btn>
 					<input v-if="!addData.hasLift" :disabled="roomId&&isEdit" placeholder-class="placeholder" class="ele-input" name="input"
-						v-model="addData.floors" placeholder="请输入您所在楼层" />
-            <view class="icon-clear-spec"  v-if="!addData.hasLift&&addData.floors" @click.stop="clear('floors')">
+						v-model="addData.floors" placeholder="请输入房屋所在楼层" />
+            <view class="icon-clear-spec"  v-if="!addData.hasLift&&addData.floors" @touchstart="clear('floors')">
               <uni-icons color="#c0c4cc" size="15" type="clear" />
             </view>
 				</view>
@@ -146,7 +146,7 @@
 					hasLift: true,
 					defaultEstate: false,
 				},
-
+        focus:{},
 				roomData: [0, 0, 0, 0],
 				roomList: [0, 1, 2, 3, 4, 5],
 				houseType: "",
@@ -187,7 +187,8 @@
 				indicatorClass: "choose-item",
 				roomId: 0,
 				delta: 1,
-        isEdit:false
+        isEdit:false,
+        
 			};
 		},
 		onLoad(e) {
@@ -256,6 +257,13 @@
 					this.changeRoomText();
 				});
 			},
+      getFocus(name){
+        // this.focus[name] = true
+        this.$set(this.focus,name,true)
+      },
+      changeFocus(name){
+        this.$set(this.focus,name,false)
+      },
 			chooseMap() {
         if(this.isEdit){
           return
@@ -385,6 +393,8 @@
         })
       },
       clear(item){
+        console.log(111)
+         
         this.addData[item] = ''
       },
 			check() {
@@ -507,20 +517,22 @@
         display: inline-block;
 				margin-bottom: 38rpx;
 				border: 1px solid #ebebeb;
-				width: 80%;
+				// width: 80%;
 				height: 84rpx;
 				line-height: 84rpx;
 				padding: 0 16rpx;
 				font-size: 28rpx;
 				color: #ccc;
-        width: 70%;
+        box-sizing: border-box;
+        width: 100%;
+        border-radius: 12rpx;
 			}
 		}
 
 		.form-item {
 			height: 116rpx;
 			margin: 0 32rpx;
-			border-bottom: 1px solid #f2f2f2;
+			border-bottom: 0.5px solid #f2f2f2;
 			position: relative;
 			line-height: 116rpx;
       .icon-clear{
@@ -533,6 +545,7 @@
         right: 0;
         top: 50%;
         margin-top: -25rpx;
+        z-index: 10;
       }
       .icon-clear-spec{
         display: inline-block;
@@ -658,7 +671,7 @@
 			justify-content: space-between;
 			align-items: center;
 			padding: 0 32rpx;
-
+      margin-bottom: 220rpx;
 			.text {
 				font-size: 26rpx;
 				color: #111;
@@ -672,6 +685,8 @@
 		}
 
 		.submit-bottom {
+      position: fixed;
+      bottom: 0;
 			margin-top: 78rpx;
 			width: 100%;
 			height: 136rpx;
@@ -712,7 +727,7 @@
 			// opacity: 0;
 			position: absolute;
 			left: 172rpx;
-			z-index: 111;
+			z-index: 5;
 		}
 
 		.shopIcon {
