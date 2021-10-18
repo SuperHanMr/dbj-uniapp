@@ -8,7 +8,7 @@
 						<image src="/static/images/real-case/liuyan.png" mode=""></image>
 					</view>
 					<view class="comment-count">
-						{{params.commentCount}}
+						{{((params.commentCount / 10000) > 1 ? ((params.commentCount / 10000).toFixed(1) + "w" ): params.commentCount )|| 0}}
 					</view>
 				</view>
 				<view class="like" v-if="params.likeCount">
@@ -16,7 +16,7 @@
 						<image src="/static/images/real-case/xihuan.png" mode=""></image>
 					</view>
 					<view class="comment-count">
-						{{params.likeCount}}
+						{{((params.likeCount / 10000) > 1 ? ((params.likeCount / 10000).toFixed(1) + "w" ): params.likeCount )|| 0}}
 					</view>
 				</view>
 			</view>
