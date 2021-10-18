@@ -122,7 +122,8 @@
 							<text>退款金额</text>
 						</view>
 						<view class="right1" >
-						  <text >￥{{handlePrice(refundInfo.totalActualIncomeAmount)[0] || 0}}.{{handlePrice(refundInfo.totalActualIncomeAmount)[1]}}</text>
+						  <text v-if="refundInfo.actualIncomeAmount">￥{{handlePrice(refundInfo.actualIncomeAmount)[0] || 0}}.{{handlePrice(refundInfo.actualIncomeAmount)[1]}}</text>
+						  <text v-else>￥{{handlePrice(refundInfo.totalActualIncomeAmount)[0] || 0}}.{{handlePrice(refundInfo.totalActualIncomeAmount)[1]}}</text>
 						</view>
 					</view>
 					<view class="tip-text">
