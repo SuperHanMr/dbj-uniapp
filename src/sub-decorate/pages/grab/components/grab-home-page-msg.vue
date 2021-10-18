@@ -6,7 +6,7 @@
         <view class="title">Ta的简介</view>
       </view>
       <view class="msg-content">
-        <text class="report-text" :class="{'report-text-hidden':isHidden}">{{personData.intro||'这个人很懒，什么都没写'}}</text>
+        <text class="report-text" v-if="personData.intro.length>0"> :class="{'report-text-hidden':isHidden}">{{personData.intro||'这个人很懒，什么都没写'}}</text>
         <view class="openHidden" v-if="showBtn" @click="clickHidden">
           {{hddenText}}
         </view>
