@@ -573,7 +573,15 @@
 						"enablePullDownRefresh": false,
 						"navigationBarBackgroundColor": "#e4eaea"
 					}
-				}
+				},
+        {
+        	"path": "pages/shops-select/shops-select",
+        	"style": {
+        		"navigationBarTitleText": "商品分类",
+        		"enablePullDownRefresh": false,
+        		"navigationBarBackgroundColor": "#F7F7F7"
+        	}
+        }
 			]
 		},
 		{

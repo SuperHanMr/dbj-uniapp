@@ -355,6 +355,7 @@ export default {
 
   .selected {
     color: #333333;
+		font-weight: bold;
 
     .bottom-icon {
       position: absolute;
@@ -381,7 +382,7 @@ export default {
 }
 
 .line {
-	height: 2rpx;
+	height: 0.5px;
 	background: #f4f4f4;
 }
 .scroll-view {
@@ -520,7 +521,7 @@ export default {
         box-sizing: border-box;
         font-size: 28rpx;
         text-align: center;
-        border-radius: 8rpx;
+        border-radius: 12rpx;
       }
       .button1,
       .button2 {
@@ -540,8 +541,9 @@ export default {
       .button2,
       .button4 {
         background: #ffffff;
-        border: 2rpx solid #dbdbdb;
+        border: 0.5px solid #dbdbdb;
         padding: 12rpx 28rpx;
+				color: #666666;
       }
 			
 			.button3{

@@ -16,13 +16,13 @@
       <view class="tips-3">{{timeMsg.serviceTime}}</view>
     </view>
 
-    <view class="tips">
+    <view class="tips" :style="{marginBottom:containerBottom * 2 + 48 + 88 + 'rpx'}">
       <view class="tips-t">验房前准备</view>
       <view class="tips-c">
         {{timeMsg.note || "无"}}
       </view>
     </view>
-    <view class="btn-wrap">
+    <view class="btn-wrap" :style="{paddingBottom:systemBottom,height:systemHeight}">
       <view class="btn" @click="submitConfirmServeTime">我知道了</view>
     </view>
   </view>
@@ -37,8 +37,17 @@
     data() {
       return {
         timeMsg: {},
-        serverCardId: null
+        serverCardId: null,
+        containerBottom: null,
+        systemBottom: null,
+        systemHeight: null,
       }
+    },
+    mounted() {
+      const menuButtonInfo = uni.getMenuButtonBoundingClientRect();
+      this.containerBottom = menuButtonInfo.bottom;
+      this.systemBottom = menuButtonInfo.bottom * 2 + "rpx";
+      this.systemHeight = menuButtonInfo.bottom * 2 + 24 + "rpx";
     },
     onLoad(option) {
       // const { serverCardId } = getApp().globalData.decorateMsg
@@ -192,7 +201,7 @@
   }
 
   .tips-c {
-    height: 200rpx;
+    min-height: 200rpx;
     font-size: 26rpx;
     font-family: PingFangSC, PingFangSC-Regular;
     font-weight: 400;
@@ -203,14 +212,13 @@
   }
 
   .btn-wrap {
-    position: absolute;
-    bottom: 68rpx;
+    position: fixed;
+    bottom: 0;
     left: 0;
-    width: 750rpx;
-    height: 136rpx;
-    background: #fefffe;
-    box-sizing: border-box;
+    width: 100%;
     padding: 24rpx 32rpx;
+    background-color: #fff;
+    box-sizing: border-box;
 
     .btn {
       height: 88rpx;
