@@ -147,7 +147,7 @@
         </view>
       </view>
 			<view class="noDynamics" v-if="!dynamics.length">
-				<image class="noDynamicsImg" src="http://dbj.dragonn.top/static/mp/dabanjia/images/decorate/pic_empty%402x.png"></image>
+				<image class="noDynamicsImg" src="http://dbj.dragonn.top/static/mp/dabanjia/images/home/pic_empty%402x.png"></image>
 				<view class="text">暂无装修动态</view>
 				<view class="bottom"></view>
 			</view>
@@ -788,7 +788,7 @@ export default {
     },
     toCost() {
       uni.navigateTo({
-        url: `/sub-decorate/pages/actuary-bill/reference-bill?projectId=${this.projectInfo.id}`,
+        url: `/sub-decorate/pages/actuary-bill/actuary-bill?projectId=${this.projectInfo.id}`,
       });
     },
     requestSelectOptions() {
@@ -1496,6 +1496,7 @@ export default {
 	.navBar > view  .text {
 		width: 96rpx;
 		height: 34rpx;
+		margin-left: -6rpx;
 		margin-bottom: 30rpx;
 		font-size: 24rpx;
 		text-align: center;
@@ -1740,7 +1741,7 @@ export default {
 	}
 	.noDynamics .bottom{
 		width: 750rpx;
-		height: 186rpx;
+		height: 42rpx;
 	}
 	.list {
 		width: 100%;
@@ -1777,7 +1778,7 @@ export default {
 	}
 	.acitonInfo .report {
 		width: 100%;
-		height: 120rpx;
+		max-height: 120rpx;
 		font-size: 28rpx;
 		color: #666666;
 		line-height: 40rpx;
@@ -1804,6 +1805,7 @@ export default {
 	.acitonInfo .footer {
 		width: 100%;
 		height: 34rpx;
+		padding-top: 12rpx;
 		display: flex;
 		justify-content: space-between;
 	}
