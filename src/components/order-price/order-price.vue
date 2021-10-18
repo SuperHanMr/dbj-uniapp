@@ -8,7 +8,7 @@
         <view>总价</view>
         <view>
           <text>￥</text>
-          <text class="price-style">{{handlePrice(data.totalAmount)[0]}}.{{handlePrice(data.totalAmount)[1]}}</text>
+          <text class="price-style  price-font">{{handlePrice(data.totalAmount)[0]}}.{{handlePrice(data.totalAmount)[1]}}</text>
         </view>
       </view>
       <!-- 运费  有仓库默认显示  无仓库必显示-->
@@ -19,7 +19,7 @@
         </view>
         <view>
           <text>￥</text>
-          <text class="price-style">{{handlePrice(data.freight)[0]}}.{{handlePrice(data.freight)[1]}}</text>
+          <text class="price-style price-font">{{handlePrice(data.freight)[0]}}.{{handlePrice(data.freight)[1]}}</text>
         </view>
       </view>
 
