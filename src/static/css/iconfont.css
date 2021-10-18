@@ -1,8 +1,8 @@
 @font-face {
   font-family: "iconfont"; /* Project id 2785499 */
-  src: url('//at.alicdn.com/t/font_2785499_nwu61tgwn7s.woff2?t=1634537971548') format('woff2'),
-       url('//at.alicdn.com/t/font_2785499_nwu61tgwn7s.woff?t=1634537971548') format('woff'),
-       url('//at.alicdn.com/t/font_2785499_nwu61tgwn7s.ttf?t=1634537971548') format('truetype');
+  src: url('//at.alicdn.com/t/font_2785499_uk245nagswm.woff2?t=1634561277301') format('woff2'),
+       url('//at.alicdn.com/t/font_2785499_uk245nagswm.woff?t=1634561277301') format('woff'),
+       url('//at.alicdn.com/t/font_2785499_uk245nagswm.ttf?t=1634561277301') format('truetype');
 }
 
 .iconfont {
@@ -11,6 +11,10 @@
   font-style: normal;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+}
+
+.icon-xuanzhong:before {
+  content: "\e630";
 }
 
 .icon-xiaochengxu_fangwuguanli_bianji:before {
@@ -63,10 +67,6 @@
 
 .icon-shangpinxiangqing_ic_youshangjiaogouwuche:before {
   content: "\e632";
-}
-
-.icon-xuanzhong1:before {
-  content: "\e630";
 }
 
 .icon-dianpu_ic_fenleizhankaijiantou:before {
