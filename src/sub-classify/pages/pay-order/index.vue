@@ -477,7 +477,7 @@
             url: "/sub-classify/pages/search-result/search-result?searchText=" + "管家"
           })
         } else if (this.toastType === 8) {
-          uni.navigateTo({
+          uni.switchTab({
             url: "/pages/decorate/index/index"
           })
         }
