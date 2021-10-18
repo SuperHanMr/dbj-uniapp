@@ -30,7 +30,7 @@
 			</view>
 			<view class="select" @click="switchC">
 				<view>切换设计师</view>
-				<image class="switch" src="../../static/ic_switch@2x.png"></image>
+				<image class="switch" src="http://dbj.dragonn.top/static/mp/dabanjia/images/home/ic_switch%402x.png"></image>
 			</view>
 		</view>
 		<view class="noDrawings" v-if="!drawings.length">
@@ -58,7 +58,7 @@
 			<view class="popupSwitch">
 				<view class="topArea">
 					<view class="mainTit">切换设计师</view>
-					<image class="close" @click="showSwitchDesigner=false" src="../../static/ic_closed_black@2x.png"></image>
+					<image class="close" @click="showSwitchDesigner=false" src="http://dbj.dragonn.top/static/mp/dabanjia/images/home/ic_closed_black%402x.png"></image>
 				</view>
 				<ul class="options">
 					<li
@@ -71,7 +71,7 @@
 							<view class="designerName">{{item.userName}}</view>
 							<view class="role">{{item.role}}</view>
 						</view>
-						<image class="img" v-if="item.checked" src="../../static/ic_checked@2x.png"></image>
+						<image class="img" v-if="item.checked" src="http://dbj.dragonn.top/static/mp/dabanjia/images/home/ic_checked%402x.png"></image>
 					</li>
 				</ul>
 			</view>

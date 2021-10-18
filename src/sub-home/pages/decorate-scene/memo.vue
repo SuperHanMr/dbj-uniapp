@@ -22,7 +22,7 @@
 			</view>
 		</view>
 		<view class="new" @click="toNewMemo">
-			<image class="create" src="../../static/ic_create_memo@2x.png"></image>
+			<image class="create" src="http://dbj.dragonn.top/static/mp/dabanjia/images/home/ic_create_memo%402x.png"></image>
 		</view>
 	</view>
 </template>
