@@ -10,7 +10,6 @@
         <view class="item" v-for="(item,index) in itemList" :key="item.id">
           <view class="img-name-tag-guige flex-r-l">
             <view v-if="item.isEdit || !item.inServiceArea || item.selling" style="width: 32rpx;height: 32rpx;">
-              <!-- <view v-if="item.selling" style="width: 32rpx;height: 32rpx;font-size: 24rpx;color: #333;">已购买</view> -->
             </view>
             <check-box v-else :checked="item.checked" @change="(val) => {checkItem(val, item)}"></check-box>
             <view class="flex-1">
@@ -210,7 +209,9 @@
         item.checked = val
         this.$emit("change", {
           val,
-          originalId: item.originalId
+          originalId: item.originalId,
+          item,
+          categoryId: this.content.categoryId
         })
       },
 

@@ -8,7 +8,7 @@
           <i class="icon-ic_wodejia_beiwanglugengduo_csn"></i>
         </view>
       </view>
-      <view class="report-item" v-if="designData.beautyReport">
+      <view class="report-item" >
         <view class="title">颜值报告详情</view>
         <view class="check" @click="toBeatiful">
           <text>立即查看</text>
@@ -62,7 +62,7 @@
           this.designData = res
           this.$emit('changeDesign',res)
           if(res.fileListVO.length===0){
-            this.$emit('isEmpty',this.index)
+            // this.$emit('isEmpty',this.index)
           }
         })
       },
@@ -114,8 +114,10 @@
         }
         i{
           width: 24rpx;
-          height: 24rpx;
-          
+          height: 36rpx;
+          font-size: 20rpx;
+          line-height: 36rpx;
+          color: #999;
           margin-left: 16rpx;
         }
       }

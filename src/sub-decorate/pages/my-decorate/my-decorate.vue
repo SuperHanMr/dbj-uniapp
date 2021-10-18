@@ -1,7 +1,7 @@
 <template>
   <view class="my-decorate" :style="{height:contentHeight}">
     <uni-popup ref="popup">
-      <serviceDesignChange @chooseItem='chooseItem' :list='designList' :currentId="serverId"></serviceDesignChange>
+      <serviceDesignChange @chooseItem='chooseItem' @closeDesign="this.$refs.popup.close()" :list='designList' :currentId="serverId"></serviceDesignChange>
     </uni-popup>
     <view class="my-decorate-top">
       <scroll-view id="tab-bar" class="scroll-h" scroll-x="true" :show-scrollbar="false">

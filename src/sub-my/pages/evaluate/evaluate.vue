@@ -1,6 +1,6 @@
 <template>
 	<view >
-		<view class="evaluate-container" v-if="evaluateList.length>3">
+		<view class="evaluate-container" v-if="evaluateList.length">
 			<view class="evaluate-item" v-for="item in evaluateList" :key="item.id">
 				<view class="header">
 					<view class="store-name">
@@ -88,6 +88,7 @@
 					console.log("data=",data)
 					let list = data.list
 					this.evaluateList = this.evaluateList.concat(list)
+					console.log("evaluateList=",this.evaluateList)
 					this.query.page = data.page + 1;
 					this.totalPage = data.totalPage;
 					this.totalRows = data.totalRows;
@@ -175,8 +176,8 @@
 			.immediate-evaluate,.review-detail{
 				width: 140rpx;
 				height: 56rpx;
+				line-height: 54rpx;
 				box-sizing: border-box;
-				line-height: 56rpx;
 				text-align: center;
 				font-size: 24rpx;
 				display: block;
@@ -188,6 +189,7 @@
 				background: linear-gradient(99deg, #00CCBE 0%, #00C2BF 100%);   	
 			}
 			.review-detail{
+				color: #333333;
 				border: 0.5px solid #CCCCCC;
 			}
 		}
