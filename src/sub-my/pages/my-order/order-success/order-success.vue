@@ -1,6 +1,6 @@
 <template>
 	<view class="container">
-		
+		<!-- 订单完成/确认收货 -->
 		<custom-navbar opacity="1"  bgcolor="#23d5c6">
 			<template v-slot:back>
 				<view @click="toBack">
@@ -11,7 +11,6 @@
 		</custom-navbar>
 		<!-- 占位 -->
 		<view :style="{height:navBarHeight}"></view>
-		<!-- 订单完成/确认收货 -->
 		<!-- 退款成功 -->
 		<view class="order-container" v-if="type=='refund'" :style="{paddingBottom:systemBottom}">
 			<view class="order-status">
@@ -43,7 +42,7 @@
 			</view>
 
 			<view class="body1" v-for="item in refundInfo.detailAppVOS" :key="item.id">
-				<order-item :dataList="item" :refundType="true" @handleDetail="productDetail(item," refund")" />
+				<order-item :dataList="item" :refundType="true" @handleDetail="productDetail(item,"refund")" />
 			</view>
 
 			<order-refund-info :refundInfo="refundInfo"></order-refund-info>

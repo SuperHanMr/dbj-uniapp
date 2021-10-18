@@ -1,7 +1,18 @@
 <template>
   <view class="container" >
     <!-- 退款详情 -->
-    <view   class="order-container" :style="{paddingBottom:containerPaddingBottom}" >
+		<custom-navbar opacity="1"  bgcolor="#ffb245">
+			<template v-slot:back>
+				<view @click="toBack">
+					<i class="icon-ic_cancel_white" style="color: white;">
+					</i>
+				</view>
+			</template>
+		</custom-navbar>
+		<!-- 占位 -->
+		<view :style="{height:navBarHeight}"></view>
+		
+		<view class="order-container" :style="{paddingBottom:containerPaddingBottom}" >
 			<view class="order-status">
 				<view class="backgroundStyle" />
 
@@ -58,6 +69,7 @@ export default {
 			systemBottom: "",
 			containerBottom:"",
 			containerPaddingBottom:"",
+			navBarHeight:"",
     };
   },
 	
@@ -72,9 +84,32 @@ export default {
   onLoad(e) {
 		this.orderId =Number(e.orderId);
 		this.refundDetail()
+		const systemInfo = uni.getSystemInfoSync();
+		//状态栏高度
+		this.tophight = systemInfo.statusBarHeight + "px";
+		// 获取胶囊按钮的位置
+		const menuButtonInfo = uni.getMenuButtonBoundingClientRect();
+		this.navBarHeight =
+			menuButtonInfo.top +
+			(menuButtonInfo.top - systemInfo.statusBarHeight) +
+			menuButtonInfo.height +
+			"px";
+		uni.setNavigationBarColor({
+			frontColor: '#ffffff',
+			backgroundColor:'#23d5c6',
+			animation: {
+				duration: 400,
+				timingFunc: 'easeIn'
+			}
+		})
 	},
 	
   methods: {
+		toBack(){
+			uni.navigateBack({
+				delta:1
+			})
+		},
 		formatTime(msTime) {
 			let time = msTime /1000;
 			let hour = Math.floor(time /60 /60) %24;
