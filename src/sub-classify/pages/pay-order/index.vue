@@ -12,7 +12,7 @@
       </uni-popup>
     </view>
     <view v-else>
-      <address-picker :houseId="houseId" :productType="productType" @emitInfo="emitInfo" :originFrom="originFrom">
+      <address-picker :houseId="houseId" :productType="productType" @emitInfo="emitInfo" :originFrom="originFrom" v-if="isShow">
       </address-picker>
       <view class="content">
         <view class="shop-item" v-for="(shopItem, shopIndex) in orderInfo.storeInfos" :key="shopIndex">
