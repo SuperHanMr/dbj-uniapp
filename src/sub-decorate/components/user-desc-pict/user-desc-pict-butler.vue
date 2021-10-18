@@ -10,7 +10,7 @@
             <view class="role">管家</view>
           </view>
         </view>
-        <view class="date">{{detail.createTime}}</view>
+        <view class="date">{{detail.createTime | calendarFormat}}</view>
       </view>
       <view class="desc">{{detail.summaryDescription}}</view>
       <view class="picture flex-row">
@@ -25,6 +25,9 @@
 </template>
 
 <script>
+  import {
+    calendarFormat
+  } from "../../../utils/date.js"
   export default {
     props: {
       detail: {
@@ -46,6 +49,11 @@
           urls: arr,
           // longPressActions:{}
         })
+      }
+    },
+    filters: {
+      calendarFormat(time) {
+        return calendarFormat(time)
       }
     }
   }

@@ -499,7 +499,7 @@
       },
       goConstrction() {
         uni.navigateTo({
-          url: `/sub-decorate/pages/construction/construction`
+          url: `/sub-decorate/pages/construction/construction?projectId=${this.currentProject.projectId}`
         })
       },
       goDesignPicture() {
