@@ -6,7 +6,7 @@
 					<view class="store-name">
 						<text>{{item.storeName}}</text>
 						<image
-							src="../../../static/order/ic_more@2x.png"
+							src="../../static/ic_more.svg"
 							mode=""
 						></image>
 					</view>
