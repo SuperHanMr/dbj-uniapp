@@ -129,16 +129,18 @@
 			}
 			.phase-box{
 				display: flex;
+				align-items: center;
+				border: 1px solid #ffa751;
+				border-radius: 2px
 			}
 			.phase{
-				padding: 0 8rpx;
+				padding: 0 4rpx;
 				font-size: 20rpx;
 				font-family: PingFangSC, PingFangSC-Regular;
 				font-weight: 400;
 				text-align: left;
 				color: #ffffff;
 				background: #35c4c4;
-				border-radius: 3px;
 			}
 			.phase-pending{
 				color: #ffffff;
@@ -146,13 +148,11 @@
 			}
 			.phase-newest-node{
 				padding: 0 4rpx;
-				font-size: 10px;
+				font-size: 20rpx;
 				font-family: PingFangSC, PingFangSC-Regular;
 				font-weight: 400;
 				text-align: left;
 				color: #ffa751;
-				border: 1px solid #ffa751;
-				margin-left: -2px;
 			}
 		}
 	}

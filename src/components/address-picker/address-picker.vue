@@ -89,6 +89,7 @@
     },
     watch:{
       houseId(v) {
+        console.log(999999999)
         if(uni.getStorageSync("houseIdChange")){
           return
         }

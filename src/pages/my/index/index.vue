@@ -28,11 +28,11 @@
         </view>
       </view>
 
-      <view class="avatar-img" v-else>
+      <view class="avatar-img" v-else  @click="handlerPersonalData()">
         <image :src="userInfo.avatar" class="avatar" />
         <view class="user-name">
           <text class="name" @click="toLogin">{{userName}} </text>
-          <view class="edit-info" @click="handlerPersonalData()">
+          <view class="edit-info" >
             <image src="../../../static/order/images/mineEdit@2x.png" mode="" />
             <text>编辑个人资料</text>
           </view>
@@ -40,7 +40,7 @@
       </view>
 
       <view class="set-up" @click="handleSetUp">
-        <image src="../../../static/order/images/setting@2x.png" mode="" />
+        <image src="../../../static/order/images/setting.svg" mode="" />
       </view>
     </view>
 
@@ -82,9 +82,6 @@
       </view>
     </view>
 
-   <!-- <view @click="handlerToSetUp">真实案例</view>
-    <view @click="handlerToPerson">个人主页</view> -->
-
   </view>
 </template>
 
@@ -108,56 +105,56 @@
         userId: "",
         list: [{
             key: "1",
-            image: "../../../static/order/images/shopping_Cart@2x.png",
+            image: "../../../static/order/images/shopping_Cart.svg",
             value: "购物车",
             url: "../../../sub-my/pages/shopping-cart/shopping-cart",
           },
           {
             key: "2",
-            image: "../../../static/order/images/collection_@2x.png",
+            image: "../../../static/order/images/collection.svg",
             value: "我的收藏",
             url: "../../../sub-my/pages/personal-center/my-collection/my-collection?firstEntry=true",
           },
           {
             key: "3",
-            image: "../../../static/order/images/attention_@2x.png",
+            image: "../../../static/order/images/attention.svg",
             value: "我的关注",
             url: "../../../sub-my/pages/personal-center/my-attention/my-attention",
           },
           {
             key: "4",
-            image: "../../../static/order/images/housemGgr_@2x.png",
+            image: "../../../static/order/images/housemGgr.svg",
             value: "房屋管理",
             url: "../../../sub-my/pages/my-house/my-house?isMy=true",
           },
         ],
         orderStatusList: [{
             key: "1",
-            image: "../../../static/order/images/wait_pay@2x.png",
+            image: "../../../static/order/images/wait_pay.svg",
             value: "待付款",
             url: "../../../sub-my/pages/my-order/my-order?index=1&firstEntry=true",
           },
           {
             key: "2",
-            image: "../../../static/order/images/inprogress_@2x.png",
+            image: "../../../static/order/images/inprogress.svg",
             value: "进行中",
             url: "../../../sub-my/pages/my-order/my-order?index=2&firstEntry=true",
           },
           {
             key: "3",
-            image: "../../../static/order/images/order_done@2x.png",
+            image: "../../../static/order/images/order_done.svg",
             value: "已完成",
             url: "../../../sub-my/pages/my-order/my-order?index=3&firstEntry=true",
           },
           {
             key: "4",
-            image: "../../../static/order/images/evaluate_@2x.png",
+            image: "../../../static/order/images/evaluate.svg",
             value: "评价",
             url: "../../../sub-my/pages/evaluate/evaluate",
           },
           {
             key: "5",
-            image: "../../../static/order/images/refund_@2x.png",
+            image: "../../../static/order/images/refund.svg",
             value: "退款", //退款列表
             url: "../../../sub-my/pages/refund-list/refund-list",
           },
@@ -400,9 +397,9 @@
       }
 
       .order-line {
-        height: 1rpx;
+        height: 0.5px;
         background: #f4f4f4;
-        padding: 0 32rpx;
+        margin: 0 32rpx;
       }
 
       .order-body {
@@ -432,10 +429,10 @@
             width: 32rpx;
             height: 32rpx;
             line-height: 26rpx;
+						box-sizing: border-box;
             text-align: center;
-            box-sizing: border-box;
             background: #ff3347;
-            border: 2rpx solid #ffffff;
+            border: 1rpx solid #ffffff;
             border-radius: 50%;
             top: 0;
             left: 40rpx;
@@ -462,9 +459,9 @@
       }
 
       .tool-line {
-        height: 1rpx;
+        height: 0.5px;
         background: #f4f4f4;
-        padding: 0 32rpx;
+        margin: 0 32rpx;
       }
 
       .tool-body {

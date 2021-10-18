@@ -166,6 +166,11 @@
 			},
 			// 收藏事件
 			onCollection(index, tag) {
+				const token = uni.getStorageSync("scn")
+				if (!token) {
+					uni.navigateTo({ url: "/pages/login/login" })
+					return;
+				}
 				let list = [];
 				if (tag == 0) {
 					list = this.leftList;

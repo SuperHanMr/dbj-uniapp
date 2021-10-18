@@ -6,17 +6,17 @@
 
 		<!-- 左上角的icon -->
 		<image v-if="showCheckIcon && !isChecked" class="product-check"
-			src="../../static/order/images/product_unChecked.png" mode="" />
+			src="../../static/order/images/product_unChecked.svg" mode="" />
 
 		<image v-if="showCheckIcon && isChecked" class="product-check"
-			src="../../static/order/images/product_checked.png" mode="" />
+			src="../../static/order/images/product_checked.svg" mode="" />
 
 
 		<!-- 案例右上角的icon图标 -->
 		<view v-if="item.icon == 'case'">
-			<image  v-if="item.parentType == 0" class="case-type"  src="../../static/order/images/icon_video.png"  mode="" />
-			<image  v-if="item.parentType == 1" class="case-type" src="../../static/order/images/icon_vr_@2x.png" mode="" />
-			<image v-if="item.parentType == 2" class="case-type"  src="../../static/order/images/icon_img_@2x.png" mode="" />
+			<image  v-if="item.parentType == 0" class="case-type"  src="../../static/order/images/icon_video.svg"  mode="" />
+			<image  v-if="item.parentType == 1" class="case-type" src="../../static/order/images/icon_vr.svg" mode="" />
+			<image v-if="item.parentType == 2" class="case-type"  src="../../static/order/images/icon_img.svg" mode="" />
 		</view>
 
 		<image v-if="item.icon =='product'" class="product-img" :src="item.imageUrl" mode="widthFix" lazy-load @load="onImageLoad"/>
@@ -35,8 +35,8 @@
 			</view>
 			<view class="price" :class="{hasDown:!item.enabled}">
 				<text>￥</text>
-				<text style="font-size: 34rpx;font-weight: 500;">{{handlePrice(item.price)[0]}}</text>
-				<text>.{{handlePrice(item.price)[1] || 0}}{{item.unit?` / ${item.unit}`:""}}</text>
+				<text style="font-size: 34rpx;font-weight: 500;" class="price-font">{{handlePrice(item.price)[0]}}</text>
+				<text class="price-font">.{{handlePrice(item.price)[1] || 0}}{{item.unit?` / ${item.unit}`:""}}</text>
 			</view>
 		</view>
 
@@ -239,10 +239,12 @@
 					width: 60rpx;
 					height: 30rpx;
 					margin-right: 8rpx;
+					margin-bottom: 4rpx;
 					line-height: 28rpx;
 					border-radius: 4rpx;
-					border: 2rpx solid #35c4c4;
+					border: 0.5px solid #35c4c4;
 					color: #35c4c4;
+					font-weight: 500;
 					font-size: 20rpx;
 					text-align: center;
 					display: inline-block;

@@ -85,7 +85,7 @@
 						<view class="title">编辑数量</view>
 						<view class="text">当前最小单位为{{miniOrder}}，输入的数量需为{{step}}的倍数</view>
 					</view>
-					<input type="digit" v-model="buyNum" focus />
+					<input type="digit" v-model="buyNum" focus :cursor-spacing="102"/>
 					<view class="button">
 						<view class="cancel" @click="closeDialog">取消</view>
 						<!-- <view class="line"></view> -->

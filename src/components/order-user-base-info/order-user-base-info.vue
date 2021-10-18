@@ -5,7 +5,7 @@
       mode=""
     ></image>
     <view class="basic-info">
-      <view style="font-weight: bold;">
+      <view style="font-weight: bold;margin-top: 4rpx;">
         <text>{{data.customerName}}</text>
         <text style="margin-left: 24rpx;">{{data.customerPhone}}</text>
       </view>

@@ -12,11 +12,7 @@
 		<view :style="{height:navBarHeight}"></view>
 		
     <!-- 退款详情 --退款关闭   退款取消与商家拒接 两个页面-->
-    <view
-      class="order-container"
-      v-if="type =='refund'"
-      :style="{paddingBottom:containerPaddingBottom}"
-    >
+    <view class="order-container" v-if="type =='refund'" :style="{paddingBottom:containerPaddingBottom}">
       <view class="order-status">
         <view class="backgroundStyle" />
         <view class="status">
@@ -422,13 +418,13 @@ export default {
       border-radius: 24rpx 24rpx 0 0;
 
       .header {
-        margin-top: 16rpx;
-        margin-bottom: 16rpx;
+        // margin-top: 16rpx;
+        margin-bottom: 32rpx;
         box-sizing: border-box;
         display: flex;
         align-items: center;
         text {
-          font-weight: 500;
+          font-weight: bold;
           max-width: 476rpx;
           font-size: 28rpx;
           overflow: hidden;

@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="30px" height="30px" viewBox="0 0 30 30" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <title>选中</title>
+    <defs>
+        <linearGradient x1="0%" y1="0%" x2="100%" y2="100%" id="linearGradient-1">
+            <stop stop-color="#36D9CD" offset="0%"></stop>
+            <stop stop-color="#28C6C6" offset="100%"></stop>
+        </linearGradient>
+        <circle id="path-2" cx="15" cy="14" r="10"></circle>
+        <filter x="-37.5%" y="-32.5%" width="175.0%" height="175.0%" filterUnits="objectBoundingBox" id="filter-3">
+            <feMorphology radius="1" operator="dilate" in="SourceAlpha" result="shadowSpreadOuter1"></feMorphology>
+            <feOffset dx="0" dy="1" in="shadowSpreadOuter1" result="shadowOffsetOuter1"></feOffset>
+            <feGaussianBlur stdDeviation="2" in="shadowOffsetOuter1" result="shadowBlurOuter1"></feGaussianBlur>
+            <feComposite in="shadowBlurOuter1" in2="SourceAlpha" operator="out" result="shadowBlurOuter1"></feComposite>
+            <feColorMatrix values="0 0 0 0 0   0 0 0 0 0   0 0 0 0 0  0 0 0 0.05 0" type="matrix" in="shadowBlurOuter1"></feColorMatrix>
+        </filter>
+    </defs>
+    <g id="V2.0" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="我的收藏_商品管理_选择" transform="translate(-19.000000, -152.000000)">
+            <g id="选中" transform="translate(19.000000, 152.000000)">
+                <g id="椭圆形">
+                    <use fill="black" fill-opacity="1" filter="url(#filter-3)" xlink:href="#path-2"></use>
+                    <circle stroke="#FFFFFF" stroke-width="1" fill="url(#linearGradient-1)" fill-rule="evenodd" cx="15" cy="14" r="10.5"></circle>
+                </g>
+                <path d="M21.0030483,10.6893398 C21.3935726,11.0798641 21.3935726,11.7130291 21.0030483,12.1035534 L14.6390873,18.4675144 L14.6390873,18.4675144 C14.4888856,18.6177161 14.3027904,18.7101479 14.108412,18.7448098 L13.9910119,18.7586745 L13.9910119,18.7586745 L13.8729491,18.7586745 C13.6370445,18.7448098 13.4051157,18.6477564 13.2248737,18.4675144 L9.68933983,14.9319805 C9.29881554,14.5414562 9.29881554,13.9082912 9.68933983,13.517767 C10.0798641,13.1272427 10.7130291,13.1272427 11.1035534,13.517767 L13.9314466,16.3454466 L19.5888348,10.6893398 C19.9793591,10.2988155 20.612524,10.2988155 21.0030483,10.6893398 Z" id="形状结合" fill="#FFFFFF"></path>
+            </g>
+        </g>
+    </g>
+</svg>
