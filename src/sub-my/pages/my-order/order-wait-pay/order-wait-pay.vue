@@ -10,7 +10,7 @@
 		</custom-navbar>
 
 		<view :style="{height:navBarHeight}"></view>
-		
+
     <view class="order-container" :style="{paddingBottom:112+containerBottom+'rpx'}">
       <view class="order-status">
         <view class="backgroundStyle" />
@@ -36,7 +36,7 @@
       <order-user-base-info :data="orderInfo"></order-user-base-info>
 
       <view class="store-container" v-for="(item,index) in orderInfo.details" :key="index">
-        <view class="storeItem" :class="{paddingBottom: item.stockType == 1 }">
+        <view class="storeItem" :class="{paddingBottom: item.stockType == 1 }" :style="{borderRadius:index >= 1 ? '0' :'24rpx 24rpx 0 0'}">
           <view class="header" @click="gotoShop(item)">
             <text>{{item.storeName}}</text>
             <image src="../../../static/ic_more.svg" mode=""/>
@@ -216,7 +216,7 @@ export default {
 			}else{uni.navigateBack({
 				    delta: 1
 				});
-				
+
 			}
 		},
 
@@ -322,7 +322,7 @@ export default {
       console.log("hour=", hour, "minute=", minute, "second=", second);
       return [hour, minute, second];
     },
-		
+
     handlePrice(price) {
       let list = String(price).split(".");
       if (list.length == 1) {
@@ -403,7 +403,6 @@ export default {
           box-sizing: border-box;
           display: flex;
           align-items: center;
-
           text {
             font-weight: 500;
             max-width: 476rpx;
@@ -567,7 +566,7 @@ export default {
     font-size: 32rpx;
     text-align: center;
     color: #ffffff;
-    background: linear-gradient(135deg, #36d9cd 0%, #28c6c6 100%);
+    background: linear-gradient(99deg, #00CCBE 0%, #00C2BF 100%);
     border-radius: 12rpx;
   }
 }

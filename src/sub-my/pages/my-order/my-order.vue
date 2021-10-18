@@ -170,27 +170,27 @@
 									<view  v-if="item.showCancelBtn" class="cancel-order" 	@click="handleCancelOrder(item.id)">
 										取消订单
 									</view>
-									<view  v-if="item.showToPayBtn" class="go-to-pay" style="font-weight: bold;"	@click="toPay(item)">
+									<view  v-if="item.showToPayBtn" class="go-to-pay" @click="toPay(item)">
 										去付款
 									</view>
-									<!-- <button v-if="item.showCancelBtn" type="default" size="mini" class="cancel-order"
-										@click="handleCancelOrder(item.id)">取消订单</button>
-
-									<button v-if="item.showToPayBtn" type="default" size="mini" class="go-to-pay"
-										@click="toPay(item)">去付款</button> -->
-
 								</view>
 							</view>
-							<view class="footer buttonContainer "
-								v-if="item.orderStatus == 1 && item.stockType == 0 && item.shipmentStatus == 1">
+							<view 
+								class="footer buttonContainer"
+								v-if="item.orderStatus == 1 && item.stockType == 0 && item.shipmentStatus == 1"
+							>
 								<view class="button">
-									<button type="default" size="mini" class="go-to-pay"
-										@click="handleConfirmReceipt(item)">确认收货</button>
+									<view class="go-to-pay" @click="handleConfirmReceipt(item)">
+										确认收货
+									</view>
 								</view>
 							</view>
 						</view>
 					</view>
-					<view v-if="orderList.length == 0 && !loading" class="swiper-item empty-container">
+					<view 
+						v-if="orderList.length == 0 && !loading" 
+						class="swiper-item empty-container"
+					>
 						<view class="empty-page">
 							<view class="line" />
 							<view class="content ">
@@ -812,6 +812,7 @@
 			.go-to-pay {
 				width: 140rpx;
 				height: 56rpx;
+				font-weight: bold;
 				line-height: 56rpx;
 				text-align: center;
 				font-size: 24rpx;
@@ -855,7 +856,19 @@
 		height: 1rpx solid #f2f2f2;
 	}
 	
-
+	.go-to-pay {
+		width: 140rpx;
+		height: 56rpx;
+		font-weight: bold;
+		line-height: 56rpx;
+		text-align: center;
+		font-size: 24rpx;
+		margin-left: 24rpx;
+		background: linear-gradient(99deg, #00CCBE 0%, #00C2BF 100%);
+		border-radius: 32rpx;
+		color: #ffffff;
+		padding: 0;
+	}
 	.swiper {
 		flex: 1;
 		display: flex;

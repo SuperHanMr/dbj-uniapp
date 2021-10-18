@@ -4,7 +4,7 @@
       <view class="design-name">全案设计</view>
       <view class="design-change" @click="openPopup">
         <text>更换设计类型</text>
-        <i class=""></i>
+        <i class="icon-a-ic_zhuangxiuxianchang_jingsuanzhankai_csn"></i>
       </view>
     </view>
     <view class="service-content">
@@ -19,7 +19,7 @@
       </view>
       <view class="service-progress" @click="toTimeLine">
         <text>服务进度</text>
-        <image></image>
+        <i class="icon-ic_zhuangxiuxianchang_jingsuangengduo_csn"></i>
       </view>
     </view>
   </view>
@@ -56,6 +56,11 @@
     background-color: #fff;
     margin: 24rpx;
     border-radius: 12px;
+    i{
+      font-size: 20rpx;
+      color: #999;
+      margin-left: 10rpx;
+    }
   }
   .design-top{
     height: 92rpx;
@@ -123,6 +128,7 @@
     .service-progress{
       display: flex;
       flex-wrap: wrap;
+      align-items: center;
       text{
         font-size: 26rpx;
         color: #666;

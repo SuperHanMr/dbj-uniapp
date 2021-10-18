@@ -234,7 +234,7 @@
         this.originFrom = e.from
       }
       this.houseId = e.houseId ? e.houseId : getApp().globalData.currentHouse.id
-      console.log(e.houseId, "e.houseId")
+      console.log(getApp().globalData.currentHouse.id, "e.houseId")
       this.buyCount = e.buyCount
       this.skuId = e.skuId
       this.storeId = e.storeId
@@ -259,6 +259,7 @@
     onShow() {
       if (uni.getStorageSync('houseListChooseId')) {
         this.houseId = uni.getStorageSync('houseListChooseId')
+        console.log(this.houseId, "this.houseId")
         if (this.$refs.houseDialog) {
           this.$refs.houseDialog.close()
         }
@@ -385,7 +386,7 @@
                   "roleType": skuItem.roleType ? Number(skuItem.roleType) :
                   0, //角色类型  7工人  10管家  购买工人和管家时参数必传,
                   "workType": skuItem.workType ? Number(skuItem.workType) : -2, //工种类型 购买工人时参数必传,
-                  "level": this.level, //等级  0中级  1高级 2特级  3钻石",
+                  "level": skuItem.level, //等级  0中级  1高级 2特级  3钻石",
                   "storeId": storeItem.storeId, //店铺id,
                   "storeType": 0, //店铺类型 0普通 1设计师",
                   "number": skuItem.buyCount, //购买数量",

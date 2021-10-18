@@ -5,7 +5,7 @@
         更换设计类型
       </view>
       <!-- <image></image> -->
-      <i class="icon-xiaochengxu_youshangjiaodankuangguanbi_ic"></i>
+      <i class="icon-xiaochengxu_youshangjiaodankuangguanbi_ic" @click="close"></i>
     </view>
     <view class="card-list">
       <scroll-view id="tab-bar" class="scroll-h" scroll-y="true" :show-scrollbar="false">
@@ -35,7 +35,10 @@
     methods:{
       chooseItem(e){
         this.$emit('chooseItem',e)
-      }
+      },
+      close(){
+        this.$emit('closeDesign',)
+      },
     }
   }
 </script>
@@ -65,6 +68,8 @@
         height: 80rpx;
         position: absolute;
         right: 16rpx;
+        line-height: 80rpx;
+            text-align: center;
         // background-color: #eee;
       }
     }

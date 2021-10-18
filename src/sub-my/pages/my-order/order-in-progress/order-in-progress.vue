@@ -463,7 +463,7 @@
 			height: 88rpx;
 			line-height: 88rpx;
 			box-sizing: border-box;
-			background: linear-gradient(135deg, #36d9cd 0%, #28c6c6 100%);
+			background: linear-gradient(99deg, #00CCBE 0%, #00C2BF 100%);
 			border-radius: 12rpx;
 			font-size: 32rpx;
 			text-align: center;
