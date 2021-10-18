@@ -206,7 +206,10 @@
       console.log('showTabBar')
       this.showNoHouse = false
       this.availGuides = []
-      uni.showTabBar()
+      if(!this.noticeActive){
+        uni.showTabBar()
+      }
+      
       // const {
       //   currentHouse
       // } = getApp().globalData
