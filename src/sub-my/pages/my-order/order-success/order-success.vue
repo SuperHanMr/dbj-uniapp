@@ -64,7 +64,7 @@
 				<view class="part1" v-for="(item,index) in orderInfo.details" :key="index">
 					<view class="header" @click="gotoShop(item)">
 						<text>{{item.storeName}}</text>
-						<image src="../../../../static/order/ic_more@2x.png" mode=""></image>
+						<image src="../../../static/ic_more.svg" mode=""></image>
 					</view>
 
 					<view v-for="item2 in item.details" :key="item2.id" class="orederItem">
@@ -326,7 +326,7 @@
 						padding-bottom: 32rpx;
 
 						text {
-							font-weight: 1000;
+							font-weight: 500;
 							max-width: 476rpx;
 							font-size: 28rpx;
 							line-height: 40rpx;
