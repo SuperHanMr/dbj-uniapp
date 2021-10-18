@@ -3,7 +3,7 @@
 		<view class="img-box" @tap="onTap">
 			<image :src="params.imageUrl" mode="widthFix" @load="emitHeight" @error="emitHeight"></image>
 			<view class="comment-like">
-				<view class="comment" v-if="params.commentCount">
+				<view class="comment">
 					<view class="comment-icon">
 						<view class=".icon-gerenzhuye_anli_ic_pinglun icon_view">
 							
@@ -13,7 +13,7 @@
 						{{((params.commentCount / 10000) > 1 ? ((params.commentCount / 10000).toFixed(1) + "w" ): params.commentCount )|| 0}}
 					</view>
 				</view>
-				<view class="like" v-if="params.likeCount">
+				<view class="like">
 					<view class="comment-icon">
 						<view class=".icon-gerenzhuye_anli_ic_dianzan icon_view">
 							
