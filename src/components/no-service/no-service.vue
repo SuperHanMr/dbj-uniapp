@@ -1,6 +1,6 @@
 <template>
   <div class="no-service">
-    <image class="bg" src="http://dbj.dragonn.top/static/mp/dabanjia/images/decorate/empty.png">
+    <image class="bg" src="http://dbj.dragonn.top/static/mp/dabanjia/images/my/blank_ic%402x.png">
       </view>
       <view class="text">{{words}}</view>
   </div>
@@ -18,7 +18,7 @@
     margin: 0 24rpx 24rpx 24rpx;
     /* background: #fbfbfb; */
     border-radius: 20rpx;
-    padding: 0 64rpx 0 32rpx;
+    padding: 0 64rpx;
     display: flex;
     justify-content: center;
     align-items: center;

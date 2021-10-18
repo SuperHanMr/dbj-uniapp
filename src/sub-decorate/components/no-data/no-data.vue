@@ -28,7 +28,7 @@
     height: 360rpx;
     margin: 0 24rpx 24rpx 24rpx;
     border-radius: 20rpx;
-    padding: 0 64rpx 0 32rpx;
+    padding: 0 64rpx;
     display: flex;
     justify-content: center;
     align-items: center;
