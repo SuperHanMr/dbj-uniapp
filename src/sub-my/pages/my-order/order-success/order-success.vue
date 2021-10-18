@@ -11,6 +11,7 @@
 		</custom-navbar>
 		<!-- 占位 -->
 		<view :style="{height:navBarHeight}"></view>
+		
 		<!-- 退款成功 -->
 		<view class="order-container" v-if="type=='refund'" :style="{paddingBottom:systemBottom}">
 			<view class="order-status">
@@ -41,8 +42,12 @@
 				</view>
 			</view>
 
-			<view class="body1" v-for="item in refundInfo.detailAppVOS" :key="item.id">
-				<order-item :dataList="item" :refundType="true" @handleDetail="productDetail(item,"refund")" />
+			<view class="body1" v-for="item1 in refundInfo.detailAppVOS" :key="item1.id">
+				<order-item 
+					:dataList="item1" 
+					:refundType="true" 
+					@handleDetail="productDetail(item1,'refund')"
+				></order-item>
 			</view>
 
 			<order-refund-info :refundInfo="refundInfo"></order-refund-info>
@@ -61,14 +66,18 @@
 			<order-user-base-info :data="orderInfo"></order-user-base-info>
 
 			<view class="body2">
-				<view class="part1" v-for="(item,index) in orderInfo.details" :key="index">
-					<view class="header" @click="gotoShop(item)">
-						<text>{{item.storeName}}</text>
+				<view class="part1" v-for="(item2,index2) in orderInfo.details" :key="index2">
+					<view class="header" @click="gotoShop(item2)">
+						<text>{{item2.storeName}}</text>
 						<image src="../../../static/ic_more.svg" mode=""></image>
 					</view>
 
 					<view v-for="item2 in item.details" :key="item2.id" class="orederItem">
-						<order-item :dataList="item2" :orderStatus="3" @handleDetail="productDetail(item2)" />
+						<order-item 
+							:dataList="item2" 
+							:orderStatus="3" 
+							@handleDetail="productDetail(item2)"
+						></order-item>
 					</view>
 				</view>
 			</view>
@@ -84,6 +93,7 @@
 				</view>
 			</view>
 		</view>
+	
 	</view>
 </template>
 
@@ -125,7 +135,7 @@
 			console.log("页面显示类型 this.type=", this.type);
 			this.id = Number(e.id);
 			console.log("退款单id=", this.id);
-			this.status = Number(e.status);
+			// this.status = e.status?Number(e.status):"";
 
 			if (this.type == "complete") {
 				//订单完成页面

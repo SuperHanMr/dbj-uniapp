@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="32px" height="32px" viewBox="0 0 32 32" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <title>ic/待付款</title>
+    <defs>
+        <linearGradient x1="0%" y1="8.31758034%" x2="100%" y2="91.6824197%" id="linearGradient-1">
+            <stop stop-color="#54D1CD" offset="0%"></stop>
+            <stop stop-color="#00BFB5" offset="100%"></stop>
+        </linearGradient>
+    </defs>
+    <g id="V2.0" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="我的" transform="translate(-32.000000, -240.000000)">
+            <g id="-mockplus-" transform="translate(32.000000, 240.000000)">
+                <g id="编组-11" transform="translate(5.000000, 6.000000)">
+                    <path d="M20,0 C21.6568542,-3.04359188e-16 23,1.34314575 23,3 L23,6.5 L14.5,6.5 C12.0857267,6.5 10.1155109,8.40123652 10.004898,10.7881643 L10,11 C10,13.4852814 12.0147186,15.5 14.5,15.5 L14.5,15.5 L23,15.5 L23,18 C23,19.6568542 21.6568542,21 20,21 L3,21 C1.34314575,21 2.02906125e-16,19.6568542 0,18 L0,3 C-2.02906125e-16,1.34314575 1.34314575,3.04359188e-16 3,0 L20,0 Z M23,7.8 L23,14.2 L14.5,14.2 L14.3184134,14.1949344 C12.6355862,14.100796 11.3,12.7063694 11.3,11 L11.3,11 L11.3050656,10.8184134 C11.399204,9.13558623 12.7936306,7.8 14.5,7.8 L14.5,7.8 L23,7.8 Z" id="形状结合" fill="url(#linearGradient-1)"></path>
+                    <circle id="椭圆形" fill="#FFFFFF" cx="16" cy="11" r="1"></circle>
+                </g>
+            </g>
+        </g>
+    </g>
+</svg>

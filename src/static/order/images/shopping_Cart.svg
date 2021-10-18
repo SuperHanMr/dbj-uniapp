@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="24px" height="24px" viewBox="0 0 24 24" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <title>购物车ic</title>
+    <g id="V2.0" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="我的" transform="translate(-28.000000, -390.000000)">
+            <g id="编组-6" transform="translate(12.000000, 377.000000)">
+                <g id="ic/购物车" transform="translate(16.000000, 13.000000)">
+                    <rect id="矩形" opacity="0" x="0" y="0" width="24" height="24"></rect>
+                    <g id="编组备份" transform="translate(3.500000, 5.000000)">
+                        <path d="M0.198915503,0.378486636 L2.35254942,0.378486636 C2.61243205,0.378486636 2.828987,0.577577662 2.85078716,0.836544333 L3.62924034,10.0838846 C3.67284064,10.6018179 4.10595055,11 4.62571581,11 L12.9658894,11 C13.4403089,11 13.8494322,10.6666528 13.9452719,10.2020147 L15.2314601,3.96647662 C15.3430298,3.4255786 14.9949903,2.89664907 14.4540923,2.78507945 C14.3876281,2.77137005 14.319941,2.76446194 14.2520776,2.76446194 L3.70636013,2.76446194 L3.70636013,2.76446194" id="路径-7" stroke="#333333" stroke-width="1.3" stroke-linecap="round"></path>
+                        <circle id="椭圆形备份" fill="#333333" cx="12" cy="14" r="1"></circle>
+                        <circle id="椭圆形备份-2" fill="#333333" cx="6" cy="14" r="1"></circle>
+                    </g>
+                </g>
+            </g>
+        </g>
+    </g>
+</svg>
