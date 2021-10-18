@@ -264,7 +264,7 @@
         this.deviceId = uuidv4()
         uni.setStorageSync('uuDeviceId', this.deviceId);
       }
-      
+
     },
     destory() {
       clearTimeout(timer)
@@ -374,41 +374,41 @@
         })
         console.log(this.availGuides)
       },
-      checkHouseRemind() {
-        uni.navigateTo({
-          url: "/sub-decorate/pages/check-house-remind/check-house-remind?serverCardId=36"
-        })
-      },
-      confirm1() {
-        uni.navigateTo({
-          url: "/sub-decorate/pages/design-deliver/design-deliver"
-        })
-      },
-      dsport() {
-        uni.navigateTo({
-          url: "/sub-decorate/pages/design-report/design-report"
-        })
-      },
-      confirm4() {
-        uni.navigateTo({
-          url: `/sub-decorate/pages/design-online-disclosure/design-online-disclosure?serverId=34`
-        })
-      },
-      hcaa() {
-        uni.navigateTo({
-          url: `/sub-decorate/pages/housekeeper-c-a-application/housekeeper-c-a-application?projectId=${this.currentProject.projectId}`
-        })
-      },
+      // checkHouseRemind() {
+      //   uni.navigateTo({
+      //     url: "/sub-decorate/pages/check-house-remind/check-house-remind?serverCardId=36"
+      //   })
+      // },
+      // confirm1() {
+      //   uni.navigateTo({
+      //     url: "/sub-decorate/pages/design-deliver/design-deliver"
+      //   })
+      // },
+      // dsport() {
+      //   uni.navigateTo({
+      //     url: "/sub-decorate/pages/design-report/design-report"
+      //   })
+      // },
+      // confirm4() {
+      //   uni.navigateTo({
+      //     url: `/sub-decorate/pages/design-online-disclosure/design-online-disclosure?serverId=34`
+      //   })
+      // },
+      // hcaa() {
+      //   uni.navigateTo({
+      //     url: `/sub-decorate/pages/housekeeper-c-a-application/housekeeper-c-a-application?projectId=${this.currentProject.projectId}`
+      //   })
+      // },
       housekeeperrefuse() {
         uni.navigateTo({
           url: "/sub-decorate/pages/housekeeper-refuse/housekeeper-refuse"
         })
       },
-      workerCapplication() {
-        uni.navigateTo({
-          url: "/sub-decorate/pages/worker-c-application/worker-c-application"
-        })
-      },
+      // workerCapplication() {
+      //   uni.navigateTo({
+      //     url: "/sub-decorate/pages/worker-c-application/worker-c-application"
+      //   })
+      // },
       async getFriendsList() {
         let list = await friendListByEstateId({
           estateId: this.currentProject.estateId
@@ -442,8 +442,8 @@
               item.uid = this.guid()
             })
             //将默认项目放在首位
-            data.sort((a, b)=> {
-              if(a.defaultEstate && a.relegationType === 1) {
+            data.sort((a, b) => {
+              if (a.defaultEstate && a.relegationType === 1) {
                 return -1
               }
               return b.createTime - a.createTime
@@ -459,6 +459,9 @@
             if (switchFlag === "home") {
               arr = data.filter(t => t.estateId === this.homePageEstate?.id || t.estateId === getApp().globalData
                 .currentHouse?.id)
+              if(arr.length > 1) {
+                arr = arr.filter(t => t.projectStatus !== 3 && t.projectStatus !== 4)
+              }
             } else {
               arr = data.filter(t => t.projectId === currentProject?.projectId)
             }
@@ -534,16 +537,16 @@
         }
 
       },
-      gjgxf() {
-        uni.navigateTo({
-          url: `/sub-decorate/pages/gj-process-cost/gj-process-cost?partpay=1&projectId=${this.currentProject.projectId}&estateId=${this.currentProject.estateId}&roleType=10&serviceType=5&obtainType=0`
-        })
-      },
-      gonohouse() {
-        uni.navigateTo({
-          url: "/sub-decorate/pages/no-house/no-house"
-        })
-      },
+      // gjgxf() {
+      //   uni.navigateTo({
+      //     url: `/sub-decorate/pages/gj-process-cost/gj-process-cost?partpay=1&projectId=${this.currentProject.projectId}&estateId=${this.currentProject.estateId}&roleType=10&serviceType=5&obtainType=0`
+      //   })
+      // },
+      // gonohouse() {
+      //   uni.navigateTo({
+      //     url: "/sub-decorate/pages/no-house/no-house"
+      //   })
+      // },
       closeNotice() {
         this.noticeActive = false;
         console.log('showTabBar')
