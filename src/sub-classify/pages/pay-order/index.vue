@@ -27,7 +27,7 @@
                   {{goodsItem.spuName}}
                 </view>
                 <view class="spu-class">
-                  <view class='tag'>{{level}}｜{{goodsItem.skuName}}</view>
+                  <view class='tag'>{{levelName}}{{levelName?'|':''}}{{goodsItem.skuName}}</view>
                   <view class="total-num">共{{goodsItem.buyCount}}{{goodsItem.unit?goodsItem.unit:""}}</view>
                 </view>
                 <view class="goods-spec">
@@ -218,6 +218,7 @@
         hasCanBuy: false,
         projectId: 0,
         level: 0,
+        levelName: "",
         cancelDialog: false
       }
     },
@@ -239,6 +240,20 @@
       this.storeId = e.storeId
       this.unit = e.unit
       this.level = e.level
+      switch (this.level) {
+        case 1:
+          this.levelName = '中级'
+          break;
+        case 2:
+          this.levelName = '高级'
+          break;
+        case 3:
+          this.levelName = '特高级'
+          break;
+        case 4:
+          this.levelName = '钻石级'
+          break;
+      }
       this.goodDetailId = uni.getStorageSync('goodId')
     },
     onShow() {
@@ -603,6 +618,8 @@
     -webkit-line-clamp: 2;
     line-clamp: 2;
     -webkit-box-orient: vertical;
+    max-width: 360rpx;
+    text-align: left;
   }
 
   .goods-info .total-num {

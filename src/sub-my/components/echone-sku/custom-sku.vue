@@ -22,7 +22,7 @@
         </view>
         <image
           class="close"
-          src="../../../static/shopping-cart/ic_closed_black@2x.png"
+          src="../../static/ic_closed_black@2x.png"
           @click="closeSkuBox"
         ></image>
       </view>
@@ -252,7 +252,11 @@ $page-bg-color-grey: #f5f5f5;
       flex-wrap: wrap;
       @extend .flex-center;
       .sku-content-item {
-        padding: 16rpx 32rpx 16rpx 32rpx;
+				max-width: 610rpx;
+				overflow: hidden;
+				white-space: nowrap;
+				text-overflow: ellipsis;
+        padding: 16rpx 32rpx;
         border-radius: 8rpx;
         margin-right: 12rpx;
         border: 2rpx solid transparent;
