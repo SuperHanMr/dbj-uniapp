@@ -1,6 +1,6 @@
 <template>
   <view class="no-service">
-    <image class="bg" src="http://dbj.dragonn.top/static/mp/dabanjia/images/decorate/empty.png">
+    <image class="bg" src="http://dbj.dragonn.top/static/mp/dabanjia/images/my/blank_ic%402x.png">
     <view class="text" v-for="(item,index) in wordscp" :key="index">{{item}}</view>
   </view>
 </template>
