@@ -165,7 +165,7 @@
       
     },
     onLoad(e){
-      this.personId = e.personId||7476
+      this.personId = e.personId||7249
       // this.getGrabDetail()
     },
     onShow(){
@@ -634,6 +634,10 @@
         font-size: 28rpx;
         display: inline-block;
         vertical-align: top;
+        max-width: 136rpx;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
       }
     }
 
