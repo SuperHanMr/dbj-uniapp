@@ -72,7 +72,7 @@
           
         </view>
       </view>
-      <view class="person-interact" v-if="personData.roleId<7" :class="{'person-interact-active':interactActive === interact}">
+      <view class="person-interact" v-if="personData.roleId<7&&personData.roleId!=6" :class="{'person-interact-active':interactActive === interact}">
         <view class="sticky">
           <view class="item" v-if="personData.roleId===1" :class="{'item-active':currentItem==='serviceTop'}" @click="toItem('serviceTop')">
             服务</view>
@@ -165,7 +165,7 @@
       
     },
     onLoad(e){
-      this.personId = e.personId||7248
+      this.personId = e.personId||7595
       // this.getGrabDetail()
     },
     onShow(){
@@ -412,6 +412,8 @@
       color: #00BFB6;
       font-size: 28rpx;
       font-weight: 500;
+      margin-bottom: 24rpx;
+
       i{
         font-size: 48rpx;
         width: 48rpx;
