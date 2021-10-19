@@ -5,7 +5,7 @@
 **/
 
 <template>
-	<view class="my-house" >
+	<view class="my-house" v-if="isLoading">
 		<view class="box" :style="{marginBottom:systemHeight}" v-if="listData.length>0">
 			<view class="touch-item"  v-for="(item,index) in listData"
 				:class="item.isTouchMove == true?'touch-move-active':''" :key='item.id' @touchstart="touchstart"
@@ -15,7 +15,7 @@
 						<view class="item-message">
 						<!-- 	<image src="http://dbj.dragonn.top/static/mp/dabanjia/images/decorate/choose.svg"
 								 class="choose-icon edit-icon"></image> -->
-              <i class='icon-ic_wodejia_danxuanzhong_csn choose-icon edit-icon' v-if="item.id===chooseId"></i>
+              <i class='icon-ic_wodejia_danxuanzhong_csn choose-icon edit-icon' v-if="item.id==chooseId"></i>
 							<view class="message-right">
 								<view class="item">
 									<text class="defalut" v-if="item.defaultEstate">默认</text>
@@ -72,7 +72,8 @@
 				chooseId: '',
 				delta: 1,
 				fromHome: false,
-				isEdit: true
+				isEdit: true,
+        isLoading:false
 			};
 		},
 		onShow() {
@@ -156,9 +157,11 @@
 				return 360 * Math.atan(_Y / _X) / (2 * Math.PI);
 			},
 			getHouseList() {
+        this.isLoading = false
 				queryEstates({
 					isNeedRelative: false,
 				}).then(res => {
+          this.isLoading = true
 					this.listData = res|| []
 					this.listData.forEach(function(v, i) {
 						v.isTouchMove = false
