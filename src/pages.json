@@ -364,6 +364,13 @@
 					}
 				},
 				{
+					"path": "pages/evaluate/evaluate-detail/evaluate-detail",
+					"style": {
+						"navigationBarTitleText": "评价详情",
+						"enablePullDownRefresh": false
+					}
+				},
+				{
 					"path": "pages/my-house/my-house",
 					"style": {
 						"navigationBarTitleText": "房屋管理",
@@ -374,7 +381,8 @@
 					"path": "pages/my-order/my-order",
 					"style": {
 						"navigationBarTitleText": "我的订单",
-						"enablePullDownRefresh": false
+						"enablePullDownRefresh": false,
+						"navigationStyle": "custom"
 					}
 				},
 				{

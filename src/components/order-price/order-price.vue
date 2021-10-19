@@ -8,7 +8,9 @@
         <view>总价</view>
         <view>
           <text>￥</text>
-          <text class="price-style  price-font">{{handlePrice(data.totalAmount)[0]}}.{{handlePrice(data.totalAmount)[1]}}</text>
+          <text class="price-style  price-font">
+					{{handlePrice(data.totalAmount)[0]}}.{{handlePrice(data.totalAmount)[1] || ''}}
+					</text>
         </view>
       </view>
       <!-- 运费  有仓库默认显示  无仓库必显示-->
@@ -125,7 +127,9 @@ export default {
   },
   methods: {
     handlePrice(price) {
+			if(!price) return ['0','00']
       let list = String(price).split(".");
+			// return [list[0], list[1]]
       if (list.length == 1) {
         return [list[0], "00"];
       } else {

@@ -108,9 +108,12 @@ export default {
     };
   },
   watch: {
-    defaultSku(val) {
-      this.initSkuData();
-    },
+    // defaultSku(val) {
+    //   this.initSkuData();
+    // },
+		show(val){
+			this.initSkuData()
+		}
   },
   methods: {
     initSkuData() {

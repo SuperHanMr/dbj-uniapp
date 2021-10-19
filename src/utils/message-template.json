@@ -229,6 +229,7 @@
       "cardAction": {
         "type": "h5",
         "userType": 0,
+        "isDisplay": false,
         "targetUrl": "redirect/service-detail.html?id=${serveId}&type=${serveType}&tabType=3",
         "params": {
           "showAppBar": false
@@ -239,6 +240,7 @@
           "title": "查看详情",
           "type": "h5",
           "userType": 1,
+          "isDisplay": false,
           "targetUrl": "construction-quotation/announcedetail.html?serveId=${serveId}&type=2",
           "params": {
             "showAppBar": false
@@ -258,6 +260,7 @@
       "cardAction": {
         "type": "h5",
         "userType": 0,
+        "isDisplay": false,
         "targetUrl": "redirect/service-detail.html?id=${serveId}&type=${serveType}&tabType=3",
         "params": {
           "showAppBar": false
@@ -268,6 +271,7 @@
           "title": "查看详情",
           "type": "h5",
           "userType": 1,
+          "isDisplay": false,
           "targetUrl": "construction-quotation/announcedetail.html?serveId=${serveId}&type=2",
           "params": {
             "showAppBar": false
@@ -379,6 +383,7 @@
           "title": "查看详情",
           "type": "h5",
           "userType": 0,
+          "isDisplay": false,
           "targetUrl": "redirect/service-detail.html?id=${serveId}&type=${serveType}&tabType=3",
           "params": {
             "showAppBar": false
@@ -406,6 +411,7 @@
           "title": "查看详情",
           "type": "h5",
           "userType": 0,
+          "isDisplay": false,
           "targetUrl": "redirect/service-detail.html?id=${serveId}&type=${serveType}&tabType=3",
           "params": {
             "showAppBar": false
@@ -471,6 +477,7 @@
           "title": "查看详情",
           "type": "h5",
           "userType": 0,
+          "isDisplay": false,
           "targetUrl": "redirect/service-detail.html?id=${serveId}&type=${serveType}&tabType=3",
           "params": {
             "showAppBar": false
@@ -498,6 +505,7 @@
           "title": "查看详情",
           "type": "h5",
           "userType": 0,
+          "isDisplay": false,
           "targetUrl": "redirect/service-detail.html?id=${serveId}&type=${serveType}&tabType=3",
           "params": {
             "showAppBar": false
@@ -523,6 +531,7 @@
       "cardAction": {
         "type": "h5",
         "userType": 0,
+        "isDisplay": false,
         "targetUrl": "redirect/service-detail.html?id=${serveId}&type=${serveType}&tabType=3",
         "params": {
           "showAppBar": false
@@ -533,6 +542,7 @@
           "title": "确认交付",
           "type": "custom",
           "userType": 1,
+          "isDisplay": false,
           "params": {
             "serveId": "${serveId}",
             "sourceStage": "${sourceStage}",
@@ -560,6 +570,7 @@
       "cardAction": {
         "type": "h5",
         "userType": 0,
+        "isDisplay": false,
         "targetUrl": "redirect/service-detail.html?id=${serveId}&type=${serveType}&tabType=3",
         "params": {
           "showAppBar": false
@@ -570,6 +581,7 @@
           "title": "确认交付",
           "type": "custom",
           "userType": 1,
+          "isDisplay": false,
           "params": {
             "serveId": "${serveId}",
             "sourceStage": "${sourceStage}",
@@ -597,6 +609,7 @@
       "cardAction": {
         "type": "h5",
         "userType": 0,
+        "isDisplay": false,
         "targetUrl": "redirect/service-detail.html?id=${serveId}&type=${serveType}&tabType=3",
         "params": {
           "showAppBar": false
@@ -607,6 +620,7 @@
           "title": "确认交付",
           "type": "custom",
           "userType": 1,
+          "isDisplay": false,
           "params": {
             "serveId": "${serveId}",
             "sourceStage": "${sourceStage}",
@@ -634,6 +648,7 @@
       "cardAction": {
         "type": "h5",
         "userType": 0,
+        "isDisplay": false,
         "targetUrl": "redirect/service-detail.html?id=${serveId}&type=${serveType}&tabType=3",
         "params": {
           "showAppBar": false
@@ -644,6 +659,7 @@
           "title": "确认交付",
           "type": "custom",
           "userType": 1,
+          "isDisplay": false,
           "params": {
             "serveId": "${serveId}",
             "sourceStage": "${sourceStage}",
@@ -779,7 +795,7 @@
   "sys_serve_record_comment_invitation": {
     "type": "sys_serve_record_comment_invitation",
     "template": "form",
-    "summary": "服务评价邀请",
+    "summary": "${servicerRole}邀请您对本次${orderTypeName}服务进行评价",
     "body": {
       "title": "服务评价邀请",
       "subTitle": "${servicerRole}邀请您对本次${orderTypeName}服务进行评价",
@@ -798,7 +814,7 @@
           "title": "去评价",
           "type": "native_uri",
           "userType": 1,
-          "targetRouter": "/riki_process_service/service_comment?refId=${serveId}&refType=${serveType}"
+          "targetRouter": "/riki_process_service/service_comment?refId=${serveId}&refType=${serveType}&projectId=${projectId}&serveTypeName=${serveTypeName}"
         }
       ]
     }
@@ -822,13 +838,10 @@
       ],
       "actions": [
         {
-          "title": "查看详情",
-          "type": "h5",
-          "userType": 2,
-          "targetUrl": "construction-quotation/server-comment.html?serveId=${serveId}&type=${serveType}&commentId=${commentId}",
-          "params": {
-            "showAppBar": false
-          }
+          "title": "去评价",
+          "type": "native_uri",
+          "userType": 1,
+          "targetRouter": "/riki_process_service/service_comment?refId=${serveId}&refType=${serveType}&projectId=${projectId}&serveTypeName=${serveTypeName}"
         }
       ]
     }
@@ -842,16 +855,7 @@
       "role": "${servicerRole}",
       "nickName": "${servicerNickName}",
       "rank": "${rank}",
-      "time": "${commentTime}",
-      "action": {
-        "title": "查看详情",
-        "type": "h5",
-        "userType": 0,
-        "targetUrl": "construction-quotation/server-comment.html?serveId=${serveId}&type=${serveType}&commentId=${commentId}",
-        "params": {
-          "showAppBar": false
-        }
-      }
+      "time": "${commentTime}"
     }
   },
   "single_serve_record_comment_notice": {
@@ -863,16 +867,7 @@
       "role": "${servicerRole}",
       "nickName": "${servicerNickName}",
       "rank": "${rank}",
-      "time": "${commentTime}",
-      "action": {
-        "title": "查看详情",
-        "type": "h5",
-        "userType": 0,
-        "targetUrl": "construction-quotation/server-comment.html?serveId=${serveId}&type=${serveType}&commentId=${commentId}",
-        "params": {
-          "showAppBar": false
-        }
-      }
+      "time": "${commentTime}"
     }
   },
   "sys_serve_record_publish_file": {
@@ -918,6 +913,7 @@
           "title": "查看详情",
           "type": "h5",
           "userType": 0,
+          "isDisplay": false,
           "targetUrl": "redirect/service-detail.html?id=${serveId}&type=${serveType}&tabType=5",
           "params": {
             "showAppBar": false
@@ -939,6 +935,7 @@
           "title": "查看详情",
           "type": "h5",
           "userType": 0,
+          "isDisplay": false,
           "targetUrl": "redirect/service-detail.html?id=${serveId}&type=${serveType}&tabType=5",
           "params": {
             "showAppBar": false
@@ -990,6 +987,7 @@
           "title": "查看详情",
           "type": "h5",
           "userType": 0,
+          "isDisplay": false,
           "targetUrl": "redirect/service-detail.html?id=${serveId}&type=${serveType}&tabType=4",
           "params": {
             "showAppBar": false
@@ -1011,6 +1009,7 @@
           "title": "查看详情",
           "type": "h5",
           "userType": 0,
+          "isDisplay": false,
           "targetUrl": "redirect/service-detail.html?id=${serveId}&type=${serveType}&tabType=4",
           "params": {
             "showAppBar": false
@@ -1062,6 +1061,7 @@
           "title": "查看详情",
           "type": "h5",
           "userType": 0,
+          "isDisplay": false,
           "targetUrl": "redirect/service-detail.html?id=${serveId}&type=${serveType}&tabType=4",
           "params": {
             "showAppBar": false
@@ -1083,6 +1083,7 @@
           "title": "查看详情",
           "type": "h5",
           "userType": 0,
+          "isDisplay": false,
           "targetUrl": "redirect/service-detail.html?id=${serveId}&type=${serveType}&tabType=4",
           "params": {
             "showAppBar": false
@@ -1163,6 +1164,7 @@
       "cardAction": {
         "type": "h5",
         "userType": 0,
+        "isDisplay": false,
         "targetUrl": "redirect/service-detail.html?id=${serveId}&type=${serveType}&tabType=3",
         "params": {
           "showAppBar": false
@@ -1173,6 +1175,7 @@
           "title": "确认完成",
           "type": "custom",
           "userType": 1,
+          "isDisplay": false,
           "params": {
             "serveId": "${serveId}"
           }
@@ -1191,6 +1194,7 @@
       "cardAction": {
         "type": "h5",
         "userType": 0,
+        "isDisplay": false,
         "targetUrl": "redirect/service-detail.html?id=${serveId}&type=${serveType}&tabType=3",
         "params": {
           "showAppBar": false
@@ -1201,6 +1205,7 @@
           "title": "确认完成",
           "type": "custom",
           "userType": 1,
+          "isDisplay": false,
           "params": {
             "serveId": "${serveId}"
           }
@@ -1219,6 +1224,7 @@
       "cardAction": {
         "type": "h5",
         "userType": 0,
+        "isDisplay": false,
         "targetUrl": "redirect/service-detail.html?id=${serveId}&type=${serveType}&tabType=3",
         "params": {
           "showAppBar": false
@@ -1229,6 +1235,7 @@
           "title": "查看详情",
           "type": "h5",
           "userType": 1,
+          "isDisplay": false,
           "targetUrl": "construction-quotation/announcedetail.html?serveId=${serveId}&type=3",
           "params": {
             "showAppBar": false
@@ -1248,6 +1255,7 @@
       "cardAction": {
         "type": "h5",
         "userType": 0,
+        "isDisplay": false,
         "targetUrl": "redirect/service-detail.html?id=${serveId}&type=${serveType}&tabType=3",
         "params": {
           "showAppBar": false
@@ -1258,6 +1266,7 @@
           "title": "查看详情",
           "type": "h5",
           "userType": 1,
+          "isDisplay": false,
           "targetUrl": "construction-quotation/announcedetail.html?serveId=${serveId}&type=3",
           "params": {
             "showAppBar": false
@@ -2469,10 +2478,10 @@
   "sys_inspect_estate_service_time": {
     "type": "sys_inspect_estate_service_time",
     "template": "form",
-    "summary": "验房员上门验房时间提醒",
+    "summary": "[${roleName}]于[${serviceTime}]上门验房，请知悉",
     "body": {
       "title": "${serveTypeName}",
-      "subTitle": "验房员上门验房时间提醒",
+      "subTitle": "[${roleName}]于[${serviceTime}]上门验房，请知悉",
       "actions": [
         {
           "title": "查看详情",
@@ -2497,7 +2506,7 @@
           "type": "native_uri",
           "userType": 1,
           "isDisplay": false,
-          "targetRouter": "/riki_process_service/service_order_approve?serveId=${serveId}&projectId=${projectId}"
+          "targetRouter": "/riki_process_service/service_order_approve?serveId=${serveId}&projectId=${projectId}&serverId=${serverId}&serveType=${serveType}"
         }
       ]
     }
@@ -2525,7 +2534,7 @@
     "template": "form",
     "summary": "${nodeName}阶段完工，请验收",
     "body": {
-      "title": "${serveTypeName}",
+      "title": "${nodeName}",
       "subTitle": "${nodeName}阶段完工，请验收",
       "actions": [
         {
@@ -2543,7 +2552,7 @@
     "template": "form",
     "summary": "${nodeName}整体完工，请验收",
     "body": {
-      "title": "${serveTypeName}",
+      "title": "${nodeName}",
       "subTitle": "${nodeName}整体完工，请验收",
       "actions": [
         {
@@ -2559,17 +2568,17 @@
   "sys_available_purchase_service": {
     "type": "sys_available_purchase_service",
     "template": "form",
-    "summary": "您有一个${serviceName}待购买",
+    "summary": "您有一个${nodeName}待购买",
     "body": {
-      "title": "${serveTypeName}",
-      "subTitle": "您有一个${serviceName}待购买",
+      "title": "${nodeName}",
+      "subTitle": "您有一个${nodeName}待购买",
       "actions": [
         {
           "title": "查看详情",
           "type": "native_uri",
           "userType": 1,
           "isDisplay": false,
-          "targetRouter": "/riki_process_service/furnish/buy_service?serviceType=[${serviceType}]&serviceName=${serviceName}&estateId=${estateId}&projectId=${projectId}"
+          "targetRouter": "/riki_process_service/furnish/buy_service?serviceType=[${serviceType}]&serviceName=${nodeName}&estateId=${estateId}&projectId=${projectId}"
         }
       ]
     }
@@ -2577,27 +2586,27 @@
   "sys_available_worker_service": {
     "type": "sys_available_worker_service",
     "template": "form",
-    "summary": "您有一个${serviceName}待购买",
+    "summary": "您有一个${nodeName}待购买",
     "body": {
-      "title": "${serveTypeName}",
-      "subTitle": "您有一个${serviceName}待购买",
+      "title": "${nodeName}",
+      "subTitle": "您有一个${nodeName}待购买",
       "actions": [
         {
           "title": "查看详情",
           "type": "native_uri",
           "userType": 1,
           "isDisplay": false,
-          "targetRouter": "/riki_process_service/butler_work_cost?serveId=${serveCardId}&nodeType=${serviceType}&projectId=${projectId}&estateId=${estateId}"
+          "targetRouter": "/riki_process_service/butler_work_cost?serveId=${serveCardId}&nodeType=${serviceType}&projectId=${projectId}&estateId=${estateId}&obtainType=${obtainType}&areaId=${areaId}"
         }
       ]
     }
   },
-  "sys_freight_handling_fee_confirmation":{
+  "sys_freight_handling_fee_confirmation": {
     "type": "sys_freight_handling_fee_confirmation",
     "template": "form",
     "summary": "您有一个要货申请待确认",
     "body": {
-      "title": "${serveTypeName}",
+      "title": "${roleTypeName}",
       "subTitle": "您有一个要货申请待确认",
       "actions": [
         {
@@ -2605,7 +2614,7 @@
           "type": "native_uri",
           "userType": 1,
           "isDisplay": false,
-          "targetRouter": ""
+          "targetRouter": "/riki_process_service/goods_require_customer_handle_page?id=${requireId}&projectId=${projectId}"
         }
       ]
     }
@@ -2624,8 +2633,9 @@
           "userType": 1,
           "isNewH5Url": true,
           "isDisplay": false,
-          "targetUrl": "app-pages/actuarial/index.html?serveId=${serveId}&&isActuarial=1&projectId=${projectId}&isMessage=1",
+          "targetUrl": "app-pages/actuarial/index.html?serveId=${serveId}&&isActuarial=1&projectId=${projectId}&isMessage=1&estateId=${estateId}",
           "params": {
+            "title": "确认精算单",
             "showAppBar": false
           }
         }
@@ -2635,17 +2645,17 @@
   "sys_replenish_apply_to_owner_pay": {
     "type": "sys_replenish_apply_to_owner_pay",
     "template": "form",
-    "summary": "${roleTypeName}申请补人工，请支付差价",
+    "summary": "${workerTypeName}申请补人工，请支付差价",
     "body": {
       "title": "${serveTypeName}",
-      "subTitle": "${roleTypeName}申请补人工，请支付差价",
+      "subTitle": "${workerTypeName}申请补人工，请支付差价",
       "actions": [
         {
           "title": "查看详情",
           "type": "native_uri",
           "userType": 1,
           "isDisplay": false,
-          "targetRouter": ""
+          "targetRouter": "/riki_order/detail?id=${orderId}"
         }
       ]
     }
@@ -2704,6 +2714,60 @@
       ]
     }
   },
+  "sys_design_online_stage_msg": {
+    "type": "sys_design_online_stage_msg",
+    "template": "form",
+    "summary": "设计师已线上交底，请确认",
+    "body": {
+      "title": "${serveTypeName}",
+      "subTitle": "设计师已线上交底，请确认",
+      "actions": [
+        {
+          "title": "查看详情",
+          "type": "native_uri",
+          "userType": 1,
+          "isDisplay": false,
+          "targetRouter": "/riki_process_service/online_disclosure?serveId=${serveId}&projectId=${projectId}"
+        }
+      ]
+    }
+  },
+  "sys_memo_send_remind_msg": {
+    "type": "sys_memo_send_remind_msg",
+    "template": "form",
+    "summary": "有重要的信息，快去看看吧",
+    "body": {
+      "title": "备忘录提醒",
+      "subTitle": "有重要的信息，快去看看吧",
+      "actions": [
+        {
+          "title": "去查看",
+          "type": "native_uri",
+          "userType": 1,
+          "isDisplay": false,
+          "targetRouter": "/riki_process_service/memorandum_details?memoId=${memoId}"
+        }
+      ]
+    }
+  },
+  "sys_memo_delay_send_remind_msg": {
+    "type": "sys_memo_delay_send_remind_msg",
+    "template": "form",
+    "summary": "有重要的信息，快去看看吧",
+    "body": {
+      "title": "备忘录提醒",
+      "subTitle": "有重要的信息，快去看看吧",
+      "actions": [
+        {
+          "title": "去查看",
+          "type": "native_uri",
+          "userType": 1,
+          "isDisplay": false,
+          "targetRouter": "/riki_process_service/memorandum_details?memoId=${memoId}"
+        }
+      ]
+    }
+  },
   "custom_agant_coming": {
     "type": "custom_agant_coming",
     "template": "tip2",
@@ -2724,6 +2788,14 @@
     "type": "custom_agant_close",
     "template": "tip2",
     "summary": "${message}",
+    "body": {
+      "content": "${message}"
+    }
+  },
+  "single_room_call_action": {
+    "type": "single_room_call_action",
+    "template": "call",
+    "summary": "[${callTypeName}通话]",
     "body": {
       "content": "${message}"
     }

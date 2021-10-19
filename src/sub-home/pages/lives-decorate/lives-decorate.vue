@@ -16,7 +16,7 @@
 							</cover-image>
 						</cover-view>
 						<cover-image v-for="(item,index) in currentList" :key="index" class="video-list-icon"
-							@click="videoFill"
+							@click="changeLive(item)"
 							src="http://dbj.dragonn.top/static/mp/dabanjia/images/home/indicator_Selected.png">
 						</cover-image>
 
@@ -66,18 +66,18 @@
 					</view>
 					<view class="video-row">
 						<video class="video" :src="item.videoUrl">
-							<cover-view class="cover-video" @click.stop="toDetail(item.videoUrl)"></cover-view>
+							<!-- <cover-view class="cover-video" @click.stop="toDetail(item.videoUrl)"></cover-view> -->
 						</video>
 					</view>
 				</view>
 				<view style="height: 100rpx;">
 				</view>
-				<view class="preview-full" v-if="currentVideoSrc">
+			<!-- 	<view class="preview-full" v-if="currentVideoSrc">
 					<video class="preview-full" :autoplay="true" :src="currentVideoSrc" :show-fullscreen-btn="false">
 						<cover-view class="preview-full-close" @click="previewVideoClose"> ×
 						</cover-view>
 					</video>
-				</view>
+				</view> -->
 			</scroll-view>
 		</view>
 		<view v-else>
@@ -107,7 +107,6 @@
 				currentVideoSrc: "",
 				liveList: [],
 				currentPage: 0,
-				totalPage: 5,
 			};
 		},
 		computed: {
@@ -125,7 +124,7 @@
 				}
 			},
 			showLiveRight() {
-				if (this.currentPage < this.totalPage) {
+				if (this.currentPage < Math.floor(this.liveList.length/3)) {
 					return true;
 				} else {
 					return false;
@@ -137,16 +136,16 @@
 			workVideo({
 				page: 1,
 				rows: 999,
-				projectId: 0
+				projectId: projectId
 			}).then(e => {
 				this.list = e.list;
 			})
 			bindVideoList({
-				projectId: 0
+				projectId: projectId
 			}).then(e => {
 				if (e.length) {
 					this.liveList = e.filter(e => {
-						return e.hls != '' && e.hls != null
+						return e.hls != '' && e.hls != null&&e.status==1
 					})
 					if (this.liveList.length) {
 						this.livePreview = this.liveList[0].hls
@@ -155,6 +154,9 @@
 			})
 		},
 		methods: {
+			changeLive(item){
+				this.livePreview=item.hls;
+			},
 			changeMuted() {
 				this.muted = !this.muted;
 			},

@@ -14,8 +14,8 @@
             </view>
           </view>
           <view class="right" @click="handleCheck">
-            <image v-if="isAnonymous" src="../../../static/ic_mine_anonymous_2@2x.png" mode=""></image>
-            <image  v-else  src="../../../static/ic_mine_anonymous@2x.png" mode=""></image>
+            <image v-if="isAnonymous" src="../../../static/anonymous_check.svg" mode=""></image>
+            <image  v-else  src="../../../static/anonymous_unCheck.svg" mode=""></image>
             <text>匿名评价</text>
           </view>
         </view>
@@ -55,7 +55,7 @@
 							<text>点击上传</text>
             </view> -->
 						
-					    <custom-file-picker fileMediatype="image" mode="grid" :limit="4" @fileChange="onFileChange"/>
+					    <custom-file-picker fileMediatype="image" mode="grid" :limit="9" @fileChange="onFileChange"/>
 					    
 					    
            <!-- <view

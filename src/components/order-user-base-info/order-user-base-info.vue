@@ -10,7 +10,7 @@
         <text style="margin-left: 24rpx;">{{data.customerPhone}}</text>
       </view>
       <view class="address">
-        {{data.estateInfo}}
+        {{data.estateInfo?data.estateInfo:''}}
       </view>
     </view>
   </view>

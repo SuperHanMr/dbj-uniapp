@@ -72,7 +72,7 @@
             </view>
           </view>
 
-          <view v-if="item.stockType == 1">
+          <view v-if="orderInfo.stockType == 1">
             <view class="tips" v-if="item.freeShipCount || item.fullExemptionAmount ">
               <text>本次支付</text>
               <text style="color: #333333;">满{{item.fullExemptionAmount}}元</text>
@@ -210,7 +210,7 @@ export default {
 		// 改变返回下一个页面的路径
 		toBack(){
 			if(this.from=="waitPayOrder"){
-				uni.reLaunch({
+				uni.redirectTo({
 					url:"../my-order?firstEntry=true&index=1"
 				})
 			}else{

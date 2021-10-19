@@ -1,6 +1,6 @@
 <template>
 	<view class="fill">
-		<!-- <custom-navbar opacity="1" :title="title" titleColor="#333" bgcolor="#ffffff">
+		<custom-navbar opacity="1" :title="title" titleColor="#333" bgcolor="#ffffff">
 			<template v-slot:back>
 				<view @click="toBack">
 					<i class="icon-ic_cancel_white" style="color:#333">
@@ -8,15 +8,15 @@
 				</view>
 			</template>
 		</custom-navbar>
-		
-		<view :style="{height:navBarHeight}"></view> -->
-		
-		
+
+		<view :style="{height:navBarHeight}"></view>
+
+
 		<view class="top-tab">
-			<view 
-				v-for="(item,index) in tabList" 
-				:key="index" 
-				class="item" 
+			<view
+				v-for="(item,index) in tabList"
+				:key="index"
+				class="item"
 				:class="{selected:index==currentIndex}"
 				@click="currentIndex=index"
 			>
@@ -25,23 +25,23 @@
 			</view>
 		</view>
 		<view class="line" />
-		<swiper 
-			class="swiper" 
-			:class="{empty:orderListLength<=0}" 
-			:current="currentIndex" 
-			:duration="200" 
+		<swiper
+			class="swiper"
+			:class="{empty:orderListLength<=0}"
+			:current="currentIndex"
+			:duration="200"
 			@change="swiperChange"
 		>
 			<swiper-item v-for="item in tabList" :key="item">
-				<scroll-view 
-					class="scroll-view" 
-					:enable-back-to-top="true" 
-					lower-threshold="10" 
+				<scroll-view
+					class="scroll-view"
+					:enable-back-to-top="true"
+					lower-threshold="10"
 					scroll-y="true"
-					refresher-background="#FFF" 
+					refresher-background="#FFF"
 					:refresher-triggered="triggered"
 					@refresherrefresh="onRefresh"
-					refresher-enabled="true" 
+					refresher-enabled="true"
 					@scrolltolower="onLoadMore"
 				>
 					<view v-if="loading" class="swiper-item empty-container"/>
@@ -58,14 +58,14 @@
 									<!-- {{item.orderStatusName}} -->
 									{{
 										item.orderStatus == 1
-										?(item.type == 2 
-											? "进行中" 
+										?(item.type == 2
+											? "进行中"
 											:item.stockType == 1
 											?"进行中"
 											:(item.shipmentStatus == 0
 												?"待发货"
-												:item.shipmentStatus == 1 
-													? "待收货" 
+												:item.shipmentStatus == 1
+													? "待收货"
 													:"已收货"))//发货状态 （0待发货 1待收货 2已收货）
 										:item.orderStatusName
 									}}
@@ -126,7 +126,7 @@
 									</text>
 								</view>
 
-								<view v-else class="need-pay"> 
+								<view v-else class="need-pay">
 									<text>实付</text>
 									<text v-if="item.orderStatus == 3" style="color:#FF3347;margin-left: 8rpx;">
 										<text style="font-size:18rpx;">￥</text>
@@ -152,7 +152,7 @@
 
 									<view class="time-text">
 										<text class="remainPayTime">剩余支付时间</text>
-										<count-down 
+										<count-down
 											:start="item.remainTime"
 											:timeBackground="'#E4E6E6'"
 											:timeColor="'#333333'"
@@ -175,7 +175,7 @@
 									</view>
 								</view>
 							</view>
-							<view 
+							<view
 								class="footer buttonContainer"
 								v-if="item.orderStatus == 1 && item.stockType == 0 && item.shipmentStatus == 1"
 							>
@@ -187,8 +187,8 @@
 							</view>
 						</view>
 					</view>
-					<view 
-						v-if="orderList.length == 0 && !loading" 
+					<view
+						v-if="orderList.length == 0 && !loading"
 						class="swiper-item empty-container"
 					>
 						<view class="empty-page">
@@ -199,7 +199,7 @@
 							</view>
 						</view>
 					</view>
-					
+
 				</scroll-view>
 			</swiper-item>
 
@@ -209,7 +209,7 @@
 		<popup-dialog ref="cancleOrder" :title="title" @close="cancelOrderClose" @confirm="cancleConfirm" />
 		<!-- 确认收货的弹框 -->
 		<popup-dialog ref="confirmReceipt" :title="title" @close="confirmReceiptClose" @confirm="receiptConfirm" />
-	
+
 	</view>
 </template>
 
@@ -281,6 +281,7 @@
 				"px";
 		},
 		onShow() {
+			this.title= "我的订单"
 			if (this.firstEntry) return;
 			this.lastId[this.currentIndex] = -1;
 			this.handleReset();
@@ -367,10 +368,10 @@
 						break;
 				}
 			},
-			
+
 			toBack(){
-				uni.navigateBack({
-					delta:1	
+				uni.switchTab({
+					url:"/pages/my/index/index"
 				})
 			},
 
@@ -464,8 +465,9 @@
 					});
 				} else {
 					let openId = uni.getStorageSync("openId");
+					console.log("openId=",this.openId)
 					orderPay({
-						orderId: item.id,
+						orderId:Number(item.id),
 						payType: 1, //支付类型  1微信支付",
 						openid: openId,
 					}).then((e) => {
@@ -485,8 +487,7 @@
 								}, 1000);
 							},
 							fail(e) {
-								console.log(e);
-								// 支付失败时候跳转到哪个页面
+
 								uni.showToast({
 									title: "支付失败！",
 									icon: "none",
@@ -855,7 +856,7 @@
 	.line {
 		height: 1rpx solid #f2f2f2;
 	}
-	
+
 	.go-to-pay {
 		width: 140rpx;
 		height: 56rpx;

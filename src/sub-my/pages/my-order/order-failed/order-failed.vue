@@ -463,32 +463,33 @@ export default {
   flex-flow: row nowrap;
   align-items: center;
   justify-content: flex-end;
-  padding: 12rpx 32rpx;
+  padding: 20rpx 32rpx;
   .Reapply {
     margin-left: 32rpx;
-    width: 140rpx;
-    height: 56rpx;
-    line-height: 56rpx;
+    width: 184rpx;
+    height: 72rpx;
+    line-height: 72rpx;
     box-sizing: border-box;
     background: linear-gradient(99deg, #00CCBE 0%, #00C2BF 100%);
-    border-radius: 8rpx;
-    font-size: 24rpx;
+    border-radius: 12rpx;
+    font-size: 28 rpx;
+		font-weight: 500;
     text-align: center;
-    font-weight: 400;
     color: #ffffff;
   }
   .contact-customer {
-    margin: 18rpx 0;
-    width: 140rpx;
-    height: 56rpx;
-    line-height: 56rpx;
+    margin: 20rpx 0;
+    width: 184rpx;
+    height: 72rpx;
+		line-height: 72rpx;
     box-sizing: border-box;
     text-align: center;
     background: #ffffff;
-    border-radius: 8rpx;
+    border-radius: 12rpx;
     color: #111111;
-    font-size: 24rpx;
-    border: 2rpx solid #eaeaea;
+    font-size: 28 rpx;
+		font-weight: 500;
+    border: 0.5rpx solid #eaeaea;
   }
 }
 </style>
