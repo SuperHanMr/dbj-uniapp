@@ -51,7 +51,7 @@
             icon: null
           })
           
-          uni.navigateBack({})
+          uni.navigateBack({delta: 2})
         })
       },
       onInput(e) {

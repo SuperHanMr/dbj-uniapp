@@ -49,7 +49,7 @@
           </scroll-view>
           <view class="bottom">
             <button @click="backShopCart">返回购物车</button>
-            <button @click="confirm" :class="{'no-confirm': !this.hasCanBuy}">确定</button>
+            <button @click="confirm" :class="{'no-confirm': !hasCanBuy}">确定</button>
           </view>
         </view>
     </uni-popup>
@@ -96,7 +96,7 @@
     watch:{
       noStoreInfos :{
         handler(v) {
-          console.log(v, 'noSend')
+          console.log(this.hasCanBuy, 'noSend')
         },
         deep: true
       }

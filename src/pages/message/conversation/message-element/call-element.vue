@@ -1,12 +1,20 @@
 <template>
-  <view class="call-element">
-    {{ text }}
-  </view>
+  <message-bubble :message="message" class="call-message">
+    <view
+      class="call-element" 
+      :class="{'call-element-send': isMine}"
+      >{{ text }}</view>
+  </message-bubble>
 </template>
 
 <script>
+import MessageBubble from "./message-bubble";
+
 export default {
   name: "CallElement",
+  components: {
+    MessageBubble,
+  },
   props: {
     message: {
       type: Object,
@@ -14,19 +22,14 @@ export default {
     },
   },
   computed: {
+    isMine() {
+      return this.message.flow === "out";
+    },
     data() {
       return this.message.payloadData.params || {};
     },
     text() {
-      switch(this.data.action) {
-        case 1:
-          return `【${this.message.nick || ""}】已取消`;
-        case 2:
-          return `【${this.message.nick || ""}】通话超时`;
-        case 3:
-          return `【${this.message.nick || ""}】加入通话`;
-      }
-      return "通话消息";
+      return "语音通话";
     },
   },
   methods: {
@@ -34,13 +37,12 @@ export default {
 };
 </script>
 
-<style>
-.call-element {
-  color: #808080;
-  font-size: 12px;
-  line-height: 16px;
-  text-align: center;
-  padding: 24rpx;
+<style lang="scss">
+.call-element.call-element-send {
+  color: #fff;
 }
-
+.call-element {
+  color: #111;
+  font-size: 16px;
+}
 </style>

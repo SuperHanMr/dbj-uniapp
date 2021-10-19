@@ -1,5 +1,6 @@
 {
-	"pages": [{
+	"pages": [
+		{
 			"path": "pages/home/index/index",
 			"style": {
 				"navigationBarTitleText": "首页",
@@ -90,8 +91,8 @@
 		{
 			"path": "pages/common/video-player/video-player",
 			"style": {
-        "navigationBarBackgroundColor": "#000",
-        "navigationBarTextStyle": "white",
+				"navigationBarBackgroundColor": "#000",
+				"navigationBarTextStyle": "white",
 				"navigationBarTitleText": "",
 				"enablePullDownRefresh": false
 			}
@@ -102,7 +103,8 @@
 				"navigationBarTitleText": "",
 				"enablePullDownRefresh": false
 			}
-		}, {
+		},
+		{
 			"path": "pages/real-case/real-case-webview/real-case-webview",
 			"style": {
 				"navigationBarTitleText": "",
@@ -111,21 +113,20 @@
 				"navigationBarTextStyle": "white"
 				// "enablePullDownRefresh": true
 			}
-
-		}, {
+		},
+		{
 			"path": "pages/common/result-null/result-null",
 			"style": {
 				"navigationBarTitleText": "敬请期待",
 				"enablePullDownRefresh": false
 			}
-
-		}, {
+		},
+		{
 			"path": "pages/video-play/video-play",
 			"style": {
 				"navigationBarTitleText": "",
 				"enablePullDownRefresh": false
 			}
-
 		}
 	],
 	"globalStyle": {
@@ -144,9 +145,10 @@
 	"tabBar": {
 		"color": "#999999",
 		"selectedColor": "#333333",
-		"borderStyle":"white",
+		"borderStyle": "white",
 		"backgroundColor": "#FFFFFF",
-		"list": [{
+		"list": [
+			{
 				"pagePath": "pages/home/index/index",
 				"iconPath": "static/tab-bar/home.png",
 				"selectedIconPath": "static/tab-bar/home_s.png",
@@ -180,7 +182,8 @@
 	},
 	"condition": { //模式配置，仅开发期间生效
 		"current": 0, //当前激活的模式(list 的索引项)
-		"list": [{
+		"list": [
+			{
 				"name": "default", //模式名称
 				"path": "pages/home/index/index", //启动页面，必选
 				"query": "" //启动参数，在页面的onLoad函数里面得到
@@ -195,11 +198,11 @@
 				"path": "/sub-classify/pages/pay-order/index", //启动页面，必选
 				"query": "" //启动参数，在页面的onLoad函数里面得到
 			},
-      {
-      	"name": "success", //模式名称
-      	"path": "/sub-classify/pages/pay-order/pay-success", //启动页面，必选
-      	"query": "" //启动参数，在页面的onLoad函数里面得到
-      },
+			{
+				"name": "success", //模式名称
+				"path": "/sub-classify/pages/pay-order/pay-success", //启动页面，必选
+				"query": "" //启动参数，在页面的onLoad函数里面得到
+			},
 			{
 				"name": "hcl", //模式名称
 				"path": "/sub-decorate/pages/warehouse-refund-state/warehouse-refund-state", //启动页面，必选
@@ -217,15 +220,16 @@
 			}
 		]
 	},
-	"subPackages": [{
+	"subPackages": [
+		{
 			"root": "sub-home", //首页模块分包
-			"pages": [{
+			"pages": [
+				{
 					"path": "pages/lives-room/lives-room",
 					"style": {
 						"navigationBarTitleText": "",
 						"enablePullDownRefresh": false,
 						"navigationStyle": "custom"
-
 					}
 				},
 				{
@@ -307,14 +311,13 @@
 						"navigationStyle": "custom",
 						"backgroundColor": "#FFFFFF"
 					}
-
-				}, {
+				},
+				{
 					"path": "pages/lives-list/lives-list",
 					"style": {
 						"navigationBarTitleText": "直播",
 						"enablePullDownRefresh": true
 					}
-
 				}
 			]
 		},
@@ -324,7 +327,8 @@
 		},
 		{
 			"root": "sub-my", //我的模块分包
-			"pages": [{
+			"pages": [
+				{
 					"path": "pages/apply-for-refund/apply-for-refund",
 					"style": {
 						"navigationBarTitleText": "申请退款",
@@ -369,9 +373,8 @@
 				{
 					"path": "pages/my-order/my-order",
 					"style": {
-						"navigationBarTitleText": "",
-						"enablePullDownRefresh": false,
-						"navigationStyle": "custom"
+						"navigationBarTitleText": "我的订单",
+						"enablePullDownRefresh": false
 					}
 				},
 				{
@@ -477,7 +480,6 @@
 						"navigationStyle": "custom"
 					}
 				},
-
 				{
 					"path": "pages/set-up/comments-feedback/comments-feedback",
 					"style": {
@@ -508,7 +510,8 @@
 		},
 		{
 			"root": "sub-classify", //商城模块分包
-			"pages": [{
+			"pages": [
+				{
 					"path": "pages/search/index",
 					"style": {
 						"navigationBarTitleText": "",
@@ -546,7 +549,7 @@
 					"style": {
 						"navigationBarTitleText": "",
 						"enablePullDownRefresh": false,
-            "navigationStyle": "custom",
+						"navigationStyle": "custom",
 						"navigationBarBackgroundColor": "#36d9cd"
 					}
 				},
@@ -574,19 +577,20 @@
 						"navigationBarBackgroundColor": "#e4eaea"
 					}
 				},
-        {
-        	"path": "pages/shops-select/shops-select",
-        	"style": {
-        		"navigationBarTitleText": "商品分类",
-        		"enablePullDownRefresh": false,
-        		"navigationBarBackgroundColor": "#F7F7F7"
-        	}
-        }
+				{
+					"path": "pages/shops-select/shops-select",
+					"style": {
+						"navigationBarTitleText": "商品分类",
+						"enablePullDownRefresh": false,
+						"navigationBarBackgroundColor": "#F7F7F7"
+					}
+				}
 			]
 		},
 		{
 			"root": "sub-other", //其他页面
-			"pages": [{
+			"pages": [
+				{
 					"path": "pages/merchant-entry/merchant-entry",
 					"style": {
 						"navigationBarTitleText": "商家入驻",
@@ -606,34 +610,34 @@
 						"navigationBarTitleText": "",
 						"enablePullDownRefresh": false
 					}
-
-				}, {
+				},
+				{
 					"path": "pages/merchant-entry-success/merchant-entry-success",
 					"style": {
 						"navigationBarTitleText": "商家在线入驻",
 						"enablePullDownRefresh": false
 					}
-
-				}, {
+				},
+				{
 					"path": "pages/merchant-entry-failed/merchant-entry-failed",
 					"style": {
 						"navigationBarTitleText": "提交成功",
 						"enablePullDownRefresh": false
 					}
-
-				}, {
+				},
+				{
 					"path": "pages/merchant-entry-webview/merchant-entry-webview",
 					"style": {
 						"navigationBarTitleText": "",
 						"enablePullDownRefresh": false
 					}
-
 				}
 			]
 		},
 		{
 			"root": "sub-decorate", //装修模块分包
-			"pages": [{
+			"pages": [
+				{
 					"path": "pages/service-list/service-list",
 					"style": {
 						"navigationBarTitleText": "",
@@ -958,14 +962,12 @@
 					"path": "pages/person-page/person-dynamic-list",
 					"style": {
 						"navigationBarTitleText": "全部动态"
-
 					}
 				},
 				{
 					"path": "pages/person-page/person-evaluate-list",
 					"style": {
 						"navigationBarTitleText": "全部评价"
-
 					}
 				}
 			]

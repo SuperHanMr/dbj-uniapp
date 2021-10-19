@@ -250,12 +250,12 @@ export default {
         if (data.isReturnInventory) {
           type = 1;
         }
-        uni.navigateTo({
+        uni.redirectTo({
           url: `/sub-decorate/pages/warehouse-refund/warehouse-refund?refundType=${data.type}&id=${data.id}&type=${type}`,
         });
       } else {
         wx.setStorageSync("wholeRefundOrderInfo", JSON.stringify(data));
-        uni.navigateTo({
+        uni.redirectTo({
           url: `/sub-my/pages/apply-for-refund/apply-for-refund?refundId=${data.id}`,
         });
       }

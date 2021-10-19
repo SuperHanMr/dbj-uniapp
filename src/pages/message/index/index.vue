@@ -102,7 +102,7 @@
   .im-container {
     width: 100%;
     min-height: 100%;
-    background: #f9f9f9;
+    background: #fff;
   }
 
   .im-common-message-list,
@@ -114,7 +114,7 @@
   }
 
   .im-chat-message-list {
-    margin-top: 32rpx;
+    border-top: 8rpx solid #f9f9f9;
   }
   
   .im-avatar-image {

@@ -12,26 +12,36 @@
 	export default {
 		data() {
 			return {
-				url: ''
+				url: '',
+				id: ''
 			}
 		},
+		onBackPress() {
+			console.log(123123)
+		},
+		onShow(props){
+			console.log('onShow', props, this.url, '>>>>>>>>>>>>>>>')
+			this.goH5()
+		},
 		onLoad(props) {
-      let height = 0
-			const token = uni.getStorageSync("scn")
-      uni.getSystemInfo({
-        success:(res)=>{
-          height = res.windowHeight
-        }
-      })
-			this.url = this.ENV.VUE_APP_BASE_H5 + `/app-pages/case-detail/case-detail.html?id=${props.id}&token=${token ? token : 0}&height=${height}`
-      console.log(this.url)
-      uni.showLoading({
-          title: '加载中'
-      });
-
+			this.id = props.id;
 		},
 
 		methods: {
+			goH5(){
+				let height = 0
+				const token = uni.getStorageSync("scn")
+				uni.getSystemInfo({
+				  success:(res)=>{
+				    height = res.windowHeight
+				  }
+				})
+				this.url = this.ENV.VUE_APP_BASE_H5 + `/app-pages/case-detail/case-detail.html?id=${this.id}&token=${token ? token : 0}&height=${height}`
+				console.log(this.url)
+				uni.showLoading({
+				    title: '加载中'
+				});
+			},
 			loadSuccessHandler(e){
         uni.hideLoading();
       },

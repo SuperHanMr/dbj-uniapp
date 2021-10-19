@@ -39,6 +39,7 @@
     },
     computed: {
       ...mapState({
+        CONV_TYPES: (state) => state.message.CONV_TYPES,
         groupMembersMap: (state) => state.message.groupMembersMap
       }),
       toAccount() {
@@ -101,6 +102,15 @@
           }
           return message.messageForShow;
         }
+        if (this.conversation.systemType === this.CONV_TYPES.CUSTOMER) {
+          return "您有问题可在此咨询在线客服";
+        }
+        if (this.conversation.systemType === this.CONV_TYPES.SYSTEM) {
+          return "暂无服务通知";
+        }
+        if (this.conversation.systemType === this.CONV_TYPES.INTERACTION) {
+          return "暂无互动消息";
+        }
         return "";
       },
       time() {
@@ -139,7 +149,9 @@
     box-sizing: border-box;
     position: relative;
   }
-  
+  .im-message-item:active {
+    background-color: #fafafa;
+  }
   .im-message-avatar,
   .im-message-avatar .avatar-image {
     width: 100rpx;
