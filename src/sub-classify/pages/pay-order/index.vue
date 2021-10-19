@@ -12,7 +12,8 @@
       </uni-popup>
     </view>
     <view v-else>
-      <address-picker :houseId="houseId" :productType="productType" @emitInfo="emitInfo" :originFrom="originFrom" v-if="isShow">
+      <address-picker :houseId="houseId" :productType="productType" @emitInfo="emitInfo" :originFrom="originFrom"
+        v-if="isShow">
       </address-picker>
       <view class="content">
         <view class="shop-item" v-for="(shopItem, shopIndex) in orderInfo.storeInfos" :key="shopIndex">
@@ -240,20 +241,6 @@
       this.storeId = e.storeId
       this.unit = e.unit
       this.level = e.level
-      switch (this.level) {
-        case 1:
-          this.levelName = '中级'
-          break;
-        case 2:
-          this.levelName = '高级'
-          break;
-        case 3:
-          this.levelName = '特高级'
-          break;
-        case 4:
-          this.levelName = '钻石级'
-          break;
-      }
       this.goodDetailId = uni.getStorageSync('goodId')
     },
     onShow() {
@@ -342,6 +329,20 @@
             this.noStoreInfos.storeInfos.push(noStoreItem)
             this.canStoreInfos.storeInfos.push(canStoreItem)
             storeItem.skuInfos.map((skuItem, skuK) => {
+              switch (skuItem.level) {
+                case 1:
+                  this.levelName = '中级'
+                  break;
+                case 2:
+                  this.levelName = '高级'
+                  break;
+                case 3:
+                  this.levelName = '特高级'
+                  break;
+                case 4:
+                  this.levelName = '钻石级'
+                  break;
+              }
               this.productType = skuItem.productType
               // 头部补人工数据
               if (skuItem.addingJobName) {
