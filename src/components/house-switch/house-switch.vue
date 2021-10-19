@@ -4,7 +4,7 @@
 		<scroll-view :scroll-top="scrollTop" scroll-y="true" class="house-list">
 			<view class="item" v-for="(item ,i) in datalist" @click="checkHouse(item)" :key="item.uid">
 				<view class="item-inner flex-row-bet"
-					:class="{default: item.defaultEstate, current: item.estateId == current}">
+					:class="{default: item.defaultEstate, current: item.uid == current}">
 					<view class="left flex-row-start">
 						<view v-if="item.relegationType == 2" class="friend">亲友</view>
 						<view v-if="item.defaultEstate && item.relegationType == 1" class="default">默认</view>
@@ -33,8 +33,7 @@
 				default: () => []
 			},
 			current: {
-				type: Number,
-				default: 0
+				type: String
 			},
 		},
     data() {
