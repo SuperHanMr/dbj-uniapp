@@ -276,7 +276,7 @@
 						margin-right: 8rpx;
 						line-height: 30rpx;
 						border-radius: 2px;
-						border: 2rpx solid #35c4c4;
+						border: 0.5px solid #35c4c4;
 						color: #35c4c4;
 						font-size: 20rpx;
 						text-align: center;

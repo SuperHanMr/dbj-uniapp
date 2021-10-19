@@ -36,6 +36,10 @@
       uni.setNavigationBarTitle({
         title: this.msg.nodeName
       })
+      // this.getCompletionLogById()
+    },
+    
+    mounted() {
       this.getCompletionLogById()
     },
     data() {
