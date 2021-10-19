@@ -603,9 +603,6 @@ export default {
 					}
 					
 					if(this.comments[index].secondComments.length >= totalRows){
-						uni.showToast({
-							title:'没有更多数据了',icon:"none",
-						});
 						this.isExpanded = true;
 					}
           console.log(list);
@@ -827,12 +824,6 @@ export default {
 			  if (data) {
 			    let { list, page, totalRows } = data;
 			    this.dynamicPageType = page
-					if(!list.length){
-						uni.showToast({
-							title: '没有更多数据了',
-							icon: 'none',
-						});
-					}
 					if(this.dynamicPageType!==1){
 						this.dynamics = this.dynamics.concat(list || [])
 					}else{
@@ -850,12 +841,6 @@ export default {
         if (data) {
           let { list, page, totalRows } = data;
           this.dynamicPage = page
-					if(!list.length){
-						uni.showToast({
-							title: '没有更多数据了',
-							icon: 'none',
-						});
-					}
 					if(this.dynamicPage!==1){
 						this.dynamics = this.dynamics.concat(list || [])
 					}else{
