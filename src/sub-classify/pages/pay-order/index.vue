@@ -298,7 +298,7 @@
       },
       getTime(val) {
         this.time = val[0] + '年' + val[1] + '月' + val[2] + '日' + val[3] + '时' + val[4] + '分'
-        this.$set(this.orderInfo.storeInfos[this.shopIndex].skuInfos[this.goodIndex], "time", this.time)
+        this.$set(this.orderInfo.storeInfos[this.shopIndex].skuInfos[this.goodIndex], "doorTime", this.time)
       },
       emitInfo(val) {
         this.hasCanBuy = false
@@ -426,8 +426,8 @@
         this.orderDetails.map((v, k) => {
           details.push(v.orderDetailItem)
           Object.keys(v.paramsInfo).map((item, index) => {
-            if (item === 'time') {
-              v.orderDetailItem.params[item] = v.paramsInfo.time
+            if (item === 'doorTime') {
+              v.orderDetailItem.params[item] = v.paramsInfo.doorTime
             }
           })
         })
