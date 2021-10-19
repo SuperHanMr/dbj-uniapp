@@ -1,6 +1,6 @@
 <template>
 	<view class="">
-		<web-view ref='webview' :src="url" @message='message' @load='loadSuccessHandler'></web-view>
+		<web-view ref='webview' :src="url" @message='message' ></web-view>
 		<view class="" ref='sad'>
 
 		</view>
@@ -26,13 +26,13 @@
 			const token = getApp().globalData.token;
 			this.hashToken = token ? token : 0;
 			this.goH5()
-			loadSuccessHandler();
+			// loadSuccessHandler();
 		},
 		onLoad(props) {
 			this.id = props.id;
-			uni.showLoading({
-				title: '加载中'
-			});
+			// uni.showLoading({
+			// 	title: '加载中'
+			// });
 		},
 
 		methods: {

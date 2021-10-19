@@ -4,14 +4,14 @@
     "name":"抢单",
     "variable":"jobName",
     "msg":"有${jobName}接单啦，请确认",
-    "icon":"icon-ic_zhuangxiuxianchang_qita_csn",
+    "icon":"icon-icwodejia_qita_csn",
     "color":"#94A4B1"
   },
   "sys_measure_estate_structure_diagram_report_msg":{
     "url":"/sub-decorate/pages/amoutDelivery/amoutDelivery",
     "name":"确认量房",
     "msg":"您有原始结构尺寸图待验收",
-    "icon":"icon-ic_zhuangxiuxianchang_qita_csn",
+    "icon":"icon-icwodejia_qita_csn",
     "color":"#94A4B1"
   },
   "sys_serve_record_comment_invitation":{
@@ -19,7 +19,7 @@
     "name":"待评价",
     "variable":"serverName",
     "msg":"您有一个${type}服务待评价",
-    "icon":"icon-ic_zhuangxiuxianchang_qita_csn",
+    "icon":"icon-icwodejia_qita_csn",
     "color":"#94A4B1"
   },
   "sys_available_worker_service":{
@@ -27,7 +27,7 @@
     "name":"待购买",
     "variable":"serverName",
     "msg":"您有一个${type}服务待购买",
-    "icon":"icon-ic_zhuangxiuxianchang_qita_csn",
+    "icon":"icon-icwodejia_qita_csn",
     "color":"#94A4B1"
   },
   "sys_available_purchase_service":{
@@ -35,21 +35,21 @@
     "name":"待购买",
     "variable":"serverName",
     "msg":"您有一个${type}服务待购买",
-    "icon":"icon-ic_zhuangxiuxianchang_qita_csn",
+    "icon":"icon-icwodejia_qita_csn",
     "color":"#94A4B1"
   },
   "sys_inspect_estate_service_time":{
     "url":"/sub-decorate/pages/check-house-remind/check-house-remind",
     "name":"验房服务提醒",
     "msg":"验房员上门时间提醒",
-    "icon":"icon-ic_zhuangxiuxianchang_qita_csn",
+    "icon":"icon-icwodejia_qita_csn",
     "color":"#94A4B1"
   },
   "sys_inspect_estate_report_reminder":{
     "url":"/sub-decorate/pages/checkResult/checkResult",
     "name":"验房交付",
     "msg":"您有验收报告待验收",
-    "icon":"icon-ic_zhuangxiuxianchang_qita_csn",
+    "icon":"icon-icwodejia_qita_csn",
     "color":"#94A4B1"
   },
   "sys_design_stage_report_msg":{
@@ -57,7 +57,7 @@
     "name":"设计图交付",
     "variable":"serverName",
     "msg":"您有${name}待验收",
-    "icon":"icon-ic_zhuangxiuxianchang_qita_csn",
+    "icon":"icon-icwodejia_qita_csn",
     "color":"#94A4B1"
   },
   "sys_design_online_stage_msg":{
@@ -65,21 +65,21 @@
     "name":"设计图交付",
     "variable":"serverName",
     "msg":"您有${name}待验收",
-    "icon":"icon-ic_zhuangxiuxianchang_qita_csn",
+    "icon":"icon-icwodejia_qita_csn",
     "color":"#94A4B1"
   },
   "sys_butler_project_completion_to_owner":{
     "url":"/sub-decorate/pages/housekeeper-c-a-application/housekeeper-c-a-application",
     "name":"竣工交付",
     "msg":"您有一个竣工验收待确认",
-    "icon":"icon-ic_zhuangxiuxianchang_qita_csn",
+    "icon":"icon-icwodejia_qita_csn",
     "color":"#94A4B1"
   },
   "sys_freight_handling_fee_confirmation":{
     "url":"/sub-decorate/pages/require-pay/require-pay",
     "name":"要货申请",
     "msg":"您有一个要货申请待确认",
-    "icon":"icon-ic_zhuangxiuxianchang_qita_csn",
+    "icon":"icon-icwodejia_qita_csn",
     "color":"#94A4B1"
   },
   "sys_butler_stage_audit_pass_to_owner":{
@@ -87,7 +87,7 @@
     "name":"施工阶段验收",
     "variable":"serverName",
     "msg":"${name}服务阶段完工，请验收",
-    "icon":"icon-ic_zhuangxiuxianchang_qita_csn",
+    "icon":"icon-icwodejia_qita_csn",
     "color":"#94A4B1"
   },
   "sys_replenish_apply_to_owner_pay":{
@@ -95,7 +95,7 @@
     "name":"补差价",
     "variable":"serverName",
     "msg":"${name}服务申请补人工，请支付差价",
-    "icon":"icon-ic_zhuangxiuxianchang_qita_csn",
+    "icon":"icon-icwodejia_qita_csn",
     "color":"#94A4B1"
   },
   "sys_butler_node_audit_pass_to_owner":{
@@ -103,77 +103,77 @@
     "name":"施工整体验收",
     "variable":"serverName",
     "msg":"${name}服务整体完工，请验收",
-    "icon":"icon-ic_zhuangxiuxianchang_qita_csn",
+    "icon":"icon-icwodejia_qita_csn",
     "color":"#94A4B1"
   },
   "sys_actuary_publish":{
     "url":"/sub-decorate/pages/current-cost/current-cost",
     "name":"精算验收",
     "msg":"精算师已经交付了精算单，请确认",
-    "icon":"icon-ic_zhuangxiuxianchang_qita_csn",
+    "icon":"icon-icwodejia_qita_csn",
     "color":"#94A4B1"
   },
   "sys_design_report_msg":{
     "url":"/sub-decorate/pages/design-report/design-report",
     "name":"设计报告交付",
     "msg":"设计师已经交付了设计报告，请确认",
-    "icon":"icon-ic_zhuangxiuxianchang_qita_csn",
+    "icon":"icon-icwodejia_qita_csn",
     "color":"#94A4B1"
   },
   "11":{
-    "icon":"iicon-ic_zhuangxiuxianchang_liangfang",
+    "icon":"icon-ic_wodejia_liangfangfuwu_csn1",
     "color":"#43d9e1"
   },
   "12":{
-    "icon":"icon-ic_zhuangxiuxianchang_liangfang",
+    "icon":"icon-ic_wodejia_liangfangfuwu_csn1",
     "color":"#43d9e1"
   },
   "3":{
-    "icon":"icon-ic_zhuangxiuxianchang_yanfang",
+    "icon":"icon-ic_wodejia_yanfangfuwu_csn1",
     "color":"#5A99DA"
   },
   "1":{
-    "icon":"icon-ic_zhuangxiuxianchang_sheji",
+    "icon":"icon-ic_wodejia_shejifuwu_csn1",
     "color":"#2bbaf2"
   },
   "2":{
-    "icon":"icon-ic_zhuangxiuxianchang_sheji",
+    "icon":"icon-ic_wodejia_shejifuwu_csn1",
     "color":"#2bbaf2"
   },
   "6":{
-    "icon":"icon-ic_zhuangxiuxianchang_sheji",
+    "icon":"icon-ic_wodejia_shejifuwu_csn1",
     "color":"#2bbaf2"
   },
   "7":{
-    "icon":"icon-ic_zhuangxiuxianchang_sheji",
+    "icon":"icon-ic_wodejia_shejifuwu_csn1",
     "color":"#2bbaf2"
   },
   "23":{
-    "icon":"icon-ic_zhuangxiuxianchang_jingsuan",
+    "icon":"icon-ic_wodejia_jingsuanfuwu_csn1",
     "color":"#1e7bea"
   },
   "141":{
-    "icon":"icon-ic_zhuangxiuxianchang_mugong_csn",
+    "icon":"icon-ic_zhuangxiuxianchang_mugong_csn1",
     "color":"#a38af4"
   },
   "143":{
-    "icon":"icon-ic_zhuangxiuxianchang_youqi_csn",
+    "icon":"icon-ic_zhuangxiuxianchang_youqi_csn1",
     "color":"#8cd874"
   },
   "142":{
-    "icon":"icon-ic_zhuangxiuxianchang_nigong_csn",
+    "icon":"icon-ic_zhuangxiuxianchang_nigong_csn1",
     "color":"#f47f62"
   },
   "146":{
-    "icon":"icon-ic_zhuangxiuxianchang_shuidian_csn",
+    "icon":"icon-ic_zhuangxiuxianchang_shuidian_csn1",
     "color":"#58a8ff"
   },
   "145":{
-    "icon":"icon-ic_zhuangxiuxianchang_chaichu_csn",
+    "icon":"icon-ic_zhuangxiuxianchang_chaichu_csn1",
     "color":"#a38af4"
   },
   "17":{
-    "icon":"icon-ic_zhuangxiuxianchang_guanjia_csn",
+    "icon":"icon-ic_wodejia_guanjia_csn",
     "color":"#ffb568"
   }
 }
