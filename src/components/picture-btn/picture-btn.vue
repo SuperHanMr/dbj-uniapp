@@ -25,6 +25,7 @@
     align-items: center;
     padding: 0 14rpx 0 8rpx;
     height: 48rpx;
+    border: 1rpx solid #f5f6f6;
     background: #ffffff;
     border-radius: 25rpx;
   }
@@ -49,7 +50,7 @@
   }
 
   image.gotopage {
-    height: 12rpx;
-    width: 16rpx;
+    height: 18rpx;
+    width: 24rpx;
   }
 </style>
