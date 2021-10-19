@@ -93,13 +93,14 @@
 		</image>
 		<view class="example-content">
 
-			<image v-for="(item,index) in status2List" :key="item.id" @click="onZoneClick(item)" class="item"
-				:class="{'margin-left16':index==1}" :src="item.icon"></image>
-
+			<image @click="onZoneClick(status2List[0])" class="item" :src="status2List[0].icon"></image>
+			<view class="holder-item">
+			</view>
+			<image @click="onZoneClick(status2List[1])" class="item" :src="status2List[1].icon"></image>
 		</view>
 
 		<!-- 直播 -->
-		<view class="flex-row-common" style="margin-top: 42rpx;">
+		<view class="flex-row-common" style="margin-top: 44rpx;">
 			<view class="title">
 				免费服务
 			</view>
@@ -850,7 +851,7 @@
 				left: 16rpx;
 				right: 16rpx;
 				font-size: 26rpx;
-				font-weight: 500;
+				font-weight: bold;
 				color: #ffffff;
 				line-height: 36rpx;
 				text-shadow: 0rpx 2rpx 6rpx rgba(0, 0, 0, 0.2);
@@ -895,7 +896,7 @@
 
 		.title {
 			font-size: 36rpx;
-			font-weight: 500;
+			font-weight: bold;
 			color: #2b2f33;
 			line-height: 50rpx;
 		}
@@ -919,7 +920,7 @@
 		height: 40rpx;
 		line-height: 40rpx;
 		border-radius: 20rpx;
-		border: 1rpx solid #dadfe3;
+		border: 0.3px solid #DADFDF;
 		font-weight: 300;
 		color: #2d3033;
 		font-size: 22rpx;
@@ -936,7 +937,7 @@
 		display: -webkit-box;
 		-webkit-box-orient: vertical;
 		-webkit-line-clamp: 1;
-		font-weight: 500;
+		font-weight: bold;
 		color: #2b2f33;
 		font-size: 32rpx;
 	}
@@ -945,18 +946,17 @@
 		padding: 0 24rpx;
 		display: flex;
 		flex-direction: row;
-		justify-content: center;
 		margin-top: 16rpx;
 
 		.item {
-			width: 343rpx;
+			flex: 1;
 			height: 150rpx;
 			background: #f5fcfc;
 			border-radius: 16rpx;
 		}
 
-		.margin-left16 {
-			margin-left: 16rpx;
+		.holder-item {
+			width: 16rpx;
 		}
 	}
 
@@ -977,7 +977,7 @@
 	}
 
 	.function-zone-top {
-		border: 1rpx solid #e7e8e8;
+		border: 0.3px solid #e7e8e8;
 		width: 704rpx;
 		display: flex;
 		flex-direction: row;
@@ -986,7 +986,7 @@
 	}
 
 	.function-zone-bottom {
-		border: 1rpx solid #e7e8e8;
+		border: 0.3px solid #e7e8e8;
 		border-top: none;
 		width: 704rpx;
 		display: flex;
@@ -996,7 +996,7 @@
 	}
 
 	.function-zone-center {
-		border: 1rpx solid #e7e8e8;
+		border: 0.3px solid #e7e8e8;
 		border-top: none;
 		width: 704rpx;
 		display: flex;
