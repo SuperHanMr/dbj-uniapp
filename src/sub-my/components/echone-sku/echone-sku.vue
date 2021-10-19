@@ -215,7 +215,7 @@
 					})
 					return
 				}
-				this.$emit('confirm',this.skuId, this.selectSkuInfo.id)
+				this.$emit('confirm',this.skuId, this.selectSkuInfo.id,this.selectSkuInfo.storeId)
 				this.$emit('close')
 			}
 		}
