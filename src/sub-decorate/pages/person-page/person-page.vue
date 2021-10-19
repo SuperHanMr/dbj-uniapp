@@ -165,7 +165,7 @@
       
     },
     onLoad(e){
-      this.personId = e.personId||7249
+      this.personId = e.personId||7248
       // this.getGrabDetail()
     },
     onShow(){
@@ -249,6 +249,12 @@
         queryAttention(data).then(res=>{
           this.isRecommend = routeId === 2001 ? !this.isRecommend : this.isRecommend
           this.isAttention = routeId === 1001 ? !this.isAttention : this.isAttention
+          if(routeId === 2001&&this.isRecommend){
+            uni.showToast({
+              title:"购买服务后，将为您优先推荐该服务者",
+              icon:"none"
+            })
+          }
         })
       },
       getGrabDetail(){
