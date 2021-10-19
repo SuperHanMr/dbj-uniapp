@@ -14,7 +14,7 @@
 		<view :style="{height:navBarHeight}"></view>
 		<!-- 占位 -->
 		<!-- <view style="height: 10rpx;"></view> -->
-		
+
 		<view class="order-container" :style="{paddingBottom:112+containerBottom+'rpx'}">
 			<view class="order-status">
 				<view class="backgroundStyle" />
@@ -40,7 +40,6 @@
 							:orderStatus="2"
 							:paddingBottom="24"
 							:dataList="item2"
-							:showOriginPrice="orderInfo.discount && item.details.length"
 							@handleDetail="goToDetail(item2)"
 							@toApplayForRefund="toApplayForRefund(item2,1)"
 							@refundCancel="refundCancel(item2)"
@@ -63,21 +62,21 @@
 				:payTime="orderInfo.payTime"
 			/>
 
-			<view 
-				class="applyforRefund-confirmReceipt" 
+			<view
+				class="applyforRefund-confirmReceipt"
 				:style="{paddingBottom:systemBottom,height:systemHeight}"
 				v-if="orderInfo.showRefundBtn || (orderInfo.stockType==0 &&orderInfo.shipmentStatus == 1)"
 			>
-				<view 
-					v-if="orderInfo.showRefundBtn" 
-					class="applyforRefund" 
+				<view
+					v-if="orderInfo.showRefundBtn"
+					class="applyforRefund"
 					@click="toApplayForRefund(orderInfo,2)"
 				>
 					申请退款
 				</view>
-				<view 
-					v-if="orderInfo.stockType==0 && orderInfo.shipmentStatus == 1" 
-					class="confirmReceipt" 
+				<view
+					v-if="orderInfo.stockType==0 && orderInfo.shipmentStatus == 1"
+					class="confirmReceipt"
 					@click="handleConfirmReceipt"
 				>
 					确认收货
@@ -207,7 +206,7 @@
 					uni.navigateTo({
 						url: `/sub-my/pages/apply-for-refund/apply-for-refund?id=${this.orderNo}&type=partical&status=1`,
 					});
-					
+
 				} else {
 					//type 2 整体退款
 					console.log("全部退款data=",data);
