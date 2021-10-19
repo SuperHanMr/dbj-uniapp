@@ -399,7 +399,9 @@
           console.log(obj)
           const {
             val,
-            originalId
+            originalId,
+            categoryId,
+            item
           } = obj
           let arr = this.checkedIds
           if (val) {
@@ -416,6 +418,7 @@
 
           this.setSkuRelation(obj)
           this.computePriceAndShopping()
+          this.setMaterial(categoryId, item)
         })
       },
       gotopay() {
