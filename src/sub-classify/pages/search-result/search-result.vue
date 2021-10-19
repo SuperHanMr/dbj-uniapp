@@ -29,7 +29,7 @@
           <image :src="goodsItem.product.skuImage" class="goodsItemImg"></image>
           <view class="goodsInfo">
             <view class="goodsDesc">
-              <text class="goodsType">{{goodsItem.product.productType === 1?"物品":"服务"}}</text>
+              <text class="goodsType">{{goodsItem.product.productTypeId === 1?"物品":"服务"}}</text>
               {{goodsItem.product.spuName}}
             </view>
             <view class="goodsSpec">
