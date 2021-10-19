@@ -405,7 +405,7 @@
     .send-msg{
       height: 104rpx;
       background: rgba(0, 191, 182, 0.07);
-      border-radius: 16px;
+      border-radius: 16rpx;
       border: 0.5px solid rgba(0, 191, 182, 0.2);
       text-align: center;
       line-height: 104rpx;
