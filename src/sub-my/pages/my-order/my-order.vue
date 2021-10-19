@@ -94,7 +94,7 @@
 
 								<!-- 非套餐 -->
 								<view v-else v-for="item2 in item.details" :key="item2.id">
-									<order-item :dataList="item2"   @handleDetail="goToDetail(item)" :showPrice="true" />
+									<order-item :dataList="item2" @handleDetail="goToDetail(item)" />
 								</view>
 							</view>
 
