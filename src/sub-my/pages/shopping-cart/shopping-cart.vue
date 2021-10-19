@@ -335,11 +335,11 @@
 					nowSkuId: curId
 				}
 				setGoodsSku(params).then(async(data) => {
-					await this.getPage()
+					await this.getPage(curId)
 					this.freeShippings()
 				})
 			},
-			getPage(){
+			getPage(targetId){
 				getShoppingCartInfo().then(data => {
 					let {storeList,disabledSkuList} = data
 					if(!storeList.length && !disabledSkuList.length){
@@ -348,14 +348,17 @@
 					if(storeList.length){
 						storeList.map(item => {
 							item.skuList.map(ele => {
-								ele.goodsChecked = false
 								ele.isMiniOrder = (+ele.buyCount <= +ele.minimumOrderQuantity) ? true:false
-								this.checkedSkuList.forEach(i => {
-									if(i.skuId === ele.skuId){
-										ele.goodsChecked = true
-									}
-								})
 								
+								let index = this.checkedSkuList.findIndex(i => i.skuId === ele.skuId)
+								if(index !== -1){
+									ele.goodsChecked = true
+								}else{
+									ele.goodsChecked = false
+								}
+								if(ele.skuId === targetId){
+									ele.goodsChecked = true
+								}
 								return ele
 							})
 							if(item.skuList.every(ele=>ele.goodsChecked)){
@@ -365,9 +368,8 @@
 							}
 							return item
 						})
-						
 					}
-					
+					console.log(storeList,'....')
 					this.shopList = storeList
 					this.disabledSkuList = disabledSkuList
 				})
@@ -523,7 +525,7 @@
 				}
 				setBuyCount(params).then(async(data) => {
 					this.showInput = false
-					await this.getPage()
+					await this.getPage(target.skuId)
 					this.freeShippings()
 				})
 				
