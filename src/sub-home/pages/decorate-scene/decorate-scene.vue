@@ -1178,16 +1178,17 @@ export default {
 		align-items: center;
 	}
 	.info .userName {
-		width: fit-content;
-		max-width: 122rpx;
+		max-width: 378rpx;
+		text-overflow: ellipsis;
+		overflow: hidden;
+		white-space: nowrap;
 		height: 36rpx;
 		margin-right: 8rpx;
-		text-overflow: ellipsis;
 		font-size: 26rpx;
 		color: #999999;
 	}
 	.info .role {
-		width: 56rpx;
+		width: 60rpx;
 		height: 28rpx;
 		font-size: 20rpx;
 		line-height: 28rpx;
