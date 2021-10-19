@@ -170,7 +170,6 @@
     },
     onUnload() {
       this.$store.commit("resetConversation");
-      this.$store.commit("closeMessageVideoPlayer");
     },
     methods: {
       showTimeTag(message, prevMessage) {
@@ -206,7 +205,7 @@
             });
           })
         } else {
-          this.messageListOffsetTask.exec((options) => {
+          this.messageListOffsetTask.exec((arr) => {
             let [rectOpt, offsetOpt] = arr;
             this.preScrollHeight = offsetOpt.scrollHeight;
           });
@@ -261,9 +260,6 @@
       },
       handleMessageListClick() {
         uni.$emit("message-list-click");
-      },
-      handleCloseVideo() {
-        this.$store.commit("closeMessageVideoPlayer");
       },
     }
   }

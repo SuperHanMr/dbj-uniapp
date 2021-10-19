@@ -27,9 +27,19 @@
   "sys_receive_focus_on_person_msg": {
     "type": "sys_receive_focus_on_person_msg",
     "template": "interaction",
-    "summary": "${customerName}关注了您的项目【${title}】",
+    "summary": "${customerName}关注了您",
     "body": {
-      "content": "关注了您的项目【${title}】",
+      "content": "关注了您",
+      "userName": "${customerName}",
+      "userAvatar": "${customerAvatar}"
+    }
+  },
+  "sys_receive_focus_on_project_msg": {
+    "type": "sys_receive_focus_on_project_msg",
+    "template": "interaction",
+    "summary": "${customerName}关注了您的房子【${title}】",
+    "body": {
+      "content": "关注了您的房子【${title}】",
       "userName": "${customerName}",
       "userAvatar": "${customerAvatar}"
     }
@@ -37,9 +47,9 @@
   "sys_case_comment": {
     "type": "sys_case_comment",
     "template": "interaction",
-    "summary": "${nickname}${commentType==0?'回复了你的评论':'评论了你的动态'}",
+    "summary": "${nickname}：${content}",
     "body": {
-      "content": "${commentType==0?'回复了你的评论':'评论了你的动态'}",
+      "content": "${commentType==0?'回复了您的评论':'评论了您的动态'}",
       "userName": "${nickname}",
       "userAvatar": "${avatar}",
       "thumbnail": "${caseImgUrl}",

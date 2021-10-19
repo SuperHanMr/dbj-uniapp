@@ -510,7 +510,13 @@
               })
             },
             fail(e) {
-              console.log(e);
+              const { errMsg } = e
+              if(errMsg.indexOf("cancel") !==-1) {
+                uni.navigateTo({
+                  url: `/sub-my/pages/my-order/my-order?index=1&firstEntry=true`
+                })
+              }
+              // console.log(e, ">>>>>>>>>>fail>>>>>>>>>>>>");
             },
           });
         })

@@ -376,14 +376,12 @@ const message = {
           };
         }
       } else if (conversationID === context.state.cstServConv.conversationID) {
+        getTim().setMessageRead({ conversationID }).catch(e => {})
         if (state.cstServConv.unreadCount > 0) {
-          getTim().setMessageRead({ conversationID }).catch(e => {
-            console.warn("setMessageRead customer fail!", conversationID);
-            state.cstServConv = {
-              ...state.cstServConv,
-              unreadCount: 0
-            };
-          })
+          state.cstServConv = {
+            ...state.cstServConv,
+            unreadCount: 0
+          };
         }
       } else {
         getTim().setMessageRead({ conversationID }).catch(e => { })
