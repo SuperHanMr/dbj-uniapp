@@ -9,9 +9,7 @@
           <view class="title">
             <view class="house" @click="switchVisible">
               <text>{{who}}的家</text>
-              <image class="ic-triangle"
-                src="http://dbj.dragonn.top/static/mp/dabanjia/images/decorate/ic_triangle.svg">
-              </image>
+              <i class="icon-shaixuan"></i>
             </view>
             <view class="friend">
               <text>亲友团</text>
@@ -123,7 +121,7 @@
 
           <!-- 切换房屋弹窗 -->
           <uni-popup ref="sw">
-            <house-switch class="margintop" :datalist="projectList" :current="currentProject.estateId"
+            <house-switch class="margintop" :datalist="projectList" :current="currentProject.uid"
               @goAddHouse="addHouse" @checkHouse="changeCurrentProject"></house-switch>
           </uni-popup>
           <decorate-notice @touchmove.stop.prevent="()=>false" v-if="noticeActive" :num='msgNum'
@@ -384,6 +382,7 @@
               // 因为项目列表中的projectId字段没有，所以唯一标识用guid方法生成
               item.uid = this.guid()
             })
+            console.log(">>>>>>>>data", data)
             //将默认项目放在首位
             data.sort((a, b) => {
               if (a.defaultEstate && a.relegationType === 1) {

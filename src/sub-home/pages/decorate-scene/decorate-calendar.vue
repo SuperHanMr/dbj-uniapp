@@ -277,8 +277,10 @@
 		align-items: center;
 	}
 	.acitonInfo .header .workerName{
-		width: fit-content;
-		/* width: 60rpx; */
+		max-width: 330rpx;
+		overflow: hidden;
+		text-overflow: ellipsis;
+		white-space: nowrap;
 		height: 42rpx;
 		margin-right: 8rpx;
 		font-size: 30rpx;
@@ -307,6 +309,7 @@
 		width: fit-content;
 		/* width: 104rpx; */
 		height: 32rpx;
+		padding: 0 8rpx;
 		background: #f5f6f6;
 		border-radius: 6rpx;
 		font-size: 22rpx;
