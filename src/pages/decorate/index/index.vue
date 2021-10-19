@@ -123,7 +123,7 @@
 
           <!-- 切换房屋弹窗 -->
           <uni-popup ref="sw">
-            <house-switch class="margintop" :datalist="projectList" :current="currentProject.estateId"
+            <house-switch class="margintop" :datalist="projectList" :current="currentProject.uid"
               @goAddHouse="addHouse" @checkHouse="changeCurrentProject"></house-switch>
           </uni-popup>
           <decorate-notice @touchmove.stop.prevent="()=>false" v-if="noticeActive" :num='msgNum'
@@ -384,6 +384,7 @@
               // 因为项目列表中的projectId字段没有，所以唯一标识用guid方法生成
               item.uid = this.guid()
             })
+            console.log(">>>>>>>>data", data)
             //将默认项目放在首位
             data.sort((a, b) => {
               if (a.defaultEstate && a.relegationType === 1) {
