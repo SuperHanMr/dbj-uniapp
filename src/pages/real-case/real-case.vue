@@ -334,7 +334,6 @@
 
 	.selectStatus {
 		padding: 10rpx 112rpx;
-		margin: 4rpx 0 4rpx 4rpx;
 		font-size: 28rpx;
 		font-family: PingFangSC, PingFangSC-Medium;
 		font-weight: bold;
@@ -351,8 +350,6 @@
 	}
 
 	.collectWrapper .tabbar {
-		width: 100%;
-		height: 96rpx;
 		position: fixed;
 		z-index: 100;
 		background-color: #ffffff;
@@ -363,11 +360,11 @@
 		background: #f5f6f6;
 		border-radius: 8px;
 		margin: 20rpx 32rpx 8rpx 32rpx;
+		padding: 4rpx;
 	}
 
 	.tabbar-switch-box .tabbar-switch {
 		padding: 10rpx 112rpx;
-		margin: 4rpx 4rpx 4rpx 0;
 		text-align: center;
 		font-size: 28rpx;
 		font-family: PingFangSC, PingFangSC-Regular;
