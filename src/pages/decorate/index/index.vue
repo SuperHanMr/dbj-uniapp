@@ -9,9 +9,7 @@
           <view class="title">
             <view class="house" @click="switchVisible">
               <text>{{who}}的家</text>
-              <image class="ic-triangle"
-                src="http://dbj.dragonn.top/static/mp/dabanjia/images/decorate/ic_triangle.svg">
-              </image>
+              <i class="icon-shaixuan"></i>
             </view>
             <view class="friend">
               <text>亲友团</text>
