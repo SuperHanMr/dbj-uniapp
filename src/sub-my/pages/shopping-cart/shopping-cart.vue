@@ -277,7 +277,7 @@
 		},
 		mounted(){
 			this.userId = uni.getStorageSync("userId")
-			this.requestPage()
+			this.requestPage(true)
 		},
 		computed:{
 			totalCout(){
@@ -446,27 +446,30 @@
 					`/sub-classify/pages/goods-detail/goods-detail?goodId=${skuId}&isDisabled=0`
 				})
 			},
-			requestPage(){
+			requestPage(isFirst){
 				getShoppingCartInfo().then(data => {
-						let {storeList,disabledSkuList} = data
-						if(!storeList.length&&!disabledSkuList.length){
-							this.showNoGoods = true
-						}
-						if(storeList.length){
-							storeList.map(item => {
-								
-								item.shopChecked = false
-								item.skuList.map(ele => {
-									ele.goodsChecked = false
-									ele.isMiniOrder = (+ele.buyCount <= +ele.minimumOrderQuantity) ? true:false
-									return ele
-								})
-								
-								return item
+					let {storeList,disabledSkuList} = data
+					if(!storeList.length&&!disabledSkuList.length){
+						this.showNoGoods = true
+					}
+					if(storeList.length){
+						storeList.map(item => {
+							
+							item.shopChecked = false
+							item.skuList.map(ele => {
+								ele.goodsChecked = false
+								ele.isMiniOrder = (+ele.buyCount <= +ele.minimumOrderQuantity) ? true:false
+								return ele
 							})
-						}
-						this.shopList = storeList
-						this.disabledSkuList = disabledSkuList
+							
+							return item
+						})
+					}
+					this.shopList = storeList
+					this.disabledSkuList = disabledSkuList
+					if(!isFirst){
+						this.freeShippings()
+					}	
 				})
 			},
 			openCount(shopIndex, goodsIndex,miniOrder,step,buyNum){
