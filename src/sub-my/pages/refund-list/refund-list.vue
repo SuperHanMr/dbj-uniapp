@@ -4,7 +4,7 @@
 			<view class="order-container" v-for="(item,index) in dataList" :key="index" >
 				<view class="header">
 					<view class="store-name">
-						<text>{{item.storeName}}</text>
+						<text style="color: #333333;">{{item.storeName}}</text>
 						<image src="../../static/ic_more.svg" mode="" />
 					</view>
 					<view class="order-status">
@@ -29,7 +29,7 @@
 							</view>
 						</view>
 					</view>	
-						<view class="line"></view>
+					<view class="line"></view>
 				</view>
 				<view class="refund-price">
 					<text style="margin-right:8rpx;">退款金额</text>
@@ -300,7 +300,7 @@
 							margin-right: 8rpx;
 							line-height: 30rpx;
 							border-radius: 4rpx;
-							border: 2rpx solid #35c4c4;
+							border: 0.5px solid #35c4c4;
 							color: #35c4c4;
 							font-size: 20rpx;
 							text-align: center;
@@ -322,7 +322,7 @@
 			}
 		}
 		.line{
-			height: 2rpx;
+			height: 0.5px;
 			background: #F4F4F4;
 		}
 	}
@@ -359,7 +359,7 @@
 	}
 	// 退款关闭
 	.refund-close{
-		background: #F7F7F7;
+		background: #FAFBFC;
 		color: #808080;
 		border: 1rpx solid #EEEEEE;
 		padding: 0 24rpx;

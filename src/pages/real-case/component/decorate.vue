@@ -73,19 +73,14 @@
 
 <style lang="scss" scoped>
 	.waterfall-box {
-		padding: 20rpx 10rpx;
-		box-sizing: border-box;
-
-		>view {
-			padding: 0 10rpx;
-		}
+		padding: 20rpx 0rpx 20rpx 14rpx;
 	}
 
 	.h-flex-x {
 		display: flex;
 		flex-direction: row;
 		flex-wrap: nowrap;
-		justify-content: flex-start;
+		justify-content: space-around;
 		align-items: flex-start;
 		align-content: flex-start;
 

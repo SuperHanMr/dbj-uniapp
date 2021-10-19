@@ -81,6 +81,7 @@
     flex-direction: row;
     align-items: flex-end;
     margin-bottom: 16rpx;
+    font-family: Unnamed, Unnamed-Regular;
 
     .pieces {
       letter-spacing: 0;
@@ -95,7 +96,7 @@
       letter-spacing: 0;
       font-size: 28rpx;
       font-family: PingFangSC, PingFangSC-Medium;
-      font-weight: 500;
+      font-weight: 700;
       text-align: left;
       color: #333333;
     }
@@ -127,8 +128,9 @@
     box-sizing: border-box;
     width: 248rpx;
     height: 88rpx;
-    background: linear-gradient(135deg, #53d5cc, #4fc9c9);
+    background: linear-gradient(135deg,#00c2b2, #00c2bf);
     border-radius: 12rpx;
+    border: 1rpx solid transparentize;
     font-size: 32rpx;
     font-family: PingFangSC, PingFangSC-Regular;
     font-weight: 400;

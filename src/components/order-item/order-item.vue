@@ -43,26 +43,18 @@
 				
 				<view class="common-price">
 					<!-- 商品价格 -->
-					<view class="product-price" v-if="showPrice">
+					<view class="product-price" >
 						<text style="font-size:22rpx;">￥</text>
 						<text class="price-font">{{handlePrice(dataList.price)[0]}}.</text>
 						<text style="font-size:22rpx;" class="price-font">{{handlePrice(dataList.price)[1]}}</text>
 					</view>
-					<!-- 实付 -->
-					<view class="product-price" v-else>
-						<text>
-							<text style="margin-right: 8rpx;font-size: 22rpx;">实付</text>
-							<text style="font-size:22rpx;">￥</text>
-							<text class="price-font">{{handlePrice(dataList.discountPrice)[0]}}.</text>
-							<text style="font-size:22rpx;" class="price-font">{{handlePrice(dataList.discountPrice)[1]}}</text>
-						</text>
-					</view>
+					
 					<!-- 商品价格 -->
-					<view  class="product-price" style="color: #999999;" v-if="showOriginPrice" >
+					<!-- <view  class="product-price" style="color: #999999;" v-if="showOriginPrice" >
 							<text style="font-size:22rpx;">￥</text>
 							<text class="price-font">{{handlePrice(dataList.price)[0]}}.</text>
 							<text style="font-size:22rpx;" class="price-font">{{handlePrice(dataList.price)[1]}}</text>
-					</view> 
+					</view> --> 
 					
 					<view style="color: #999999;" v-if="refundType">共{{dataList.refundNumber || 1}}{{dataList.unit || '件'}}</view>
 					<view style="color: #999999;" v-else >共{{dataList.number || 1}}{{dataList.unit || '件'}}</view>
@@ -156,14 +148,14 @@
 			orderStatus:{//1 待付款 2 进行中 3 已完成
 				type:Number,
 			},
-			showPrice:{
-				type:Boolean,
-				default:false
-			},
-			showOriginPrice:{
-				type:Boolean,
-				default:false
-			},
+			// showPrice:{
+			// 	type:Boolean,
+			// 	default:false
+			// },
+			// showOriginPrice:{
+			// 	type:Boolean,
+			// 	default:false
+			// },
 			refundType:{
 				type:Boolean,
 				default:false,
@@ -276,7 +268,7 @@
 						margin-right: 8rpx;
 						line-height: 30rpx;
 						border-radius: 2px;
-						border: 2rpx solid #35c4c4;
+						border: 0.5px solid #35c4c4;
 						color: #35c4c4;
 						font-size: 20rpx;
 						text-align: center;

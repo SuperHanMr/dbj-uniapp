@@ -85,8 +85,8 @@
     methods: {
       queryProductList() {
         productList({
-          categoryStatus: 0,
-          categoryId: Number(this.categoryId),
+          // categoryStatus: 0,
+          categoryTypeId: Number(this.categoryId),
           pageSize: 10,
           pageIndex: this.page,
           areaId: Number(this.areaId),

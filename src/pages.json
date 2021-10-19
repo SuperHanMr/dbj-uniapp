@@ -381,8 +381,8 @@
 					"path": "pages/my-order/my-order",
 					"style": {
 						"navigationBarTitleText": "我的订单",
-						"enablePullDownRefresh": false,
-						"navigationStyle": "custom"
+						"enablePullDownRefresh": false
+						// "navigationStyle": "custom"
 					}
 				},
 				{

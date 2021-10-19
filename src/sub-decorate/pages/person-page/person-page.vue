@@ -401,7 +401,8 @@
     background-color: #fff;
     border-radius: 32rpx 32rpx 0px 0px;
     box-shadow: 0px 26rpx 34rpx 0px rgba(3, 65, 63, 0.03);
-    padding: 226rpx 32rpx 0;
+    padding: 226rpx 32rpx 24rpx;
+    
     .send-msg{
       height: 104rpx;
       background: rgba(0, 191, 182, 0.07);
@@ -412,7 +413,7 @@
       color: #00BFB6;
       font-size: 28rpx;
       font-weight: 500;
-      margin-bottom: 24rpx;
+      
 
       i{
         font-size: 48rpx;
