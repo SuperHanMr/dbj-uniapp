@@ -148,7 +148,7 @@
     width: 200rpx;
     height: 88rpx;
     background: #ffffff;
-    border: 1px solid #cbcccc;
+    border: 0.5px solid #cbcccc;
     border-radius: 12rpx;
     i{
       width: 28rpx;

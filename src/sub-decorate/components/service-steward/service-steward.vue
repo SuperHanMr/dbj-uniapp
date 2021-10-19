@@ -86,7 +86,7 @@
     margin-top: 24rpx;
     .item-top{
       height: 130rpx;
-      border-bottom: 1px solid #F4F4F4;
+      border-bottom: 0.5px solid #F4F4F4;
       display: flex;
       align-items: center;
       .title{

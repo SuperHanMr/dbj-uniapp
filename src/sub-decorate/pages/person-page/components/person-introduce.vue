@@ -107,7 +107,7 @@
       // padding: 0 32rpx;
       .tags{
         height: 38rpx;
-        border: 1px solid #e7e7e7;
+        border: 0.5px solid #e7e7e7;
         border-radius: 6rpx;
         line-height: 38rpx;
         text-align: center;
@@ -140,7 +140,7 @@
           font-weight: 400;
           padding: 0 12rpx 0 26rpx;
           margin: 0 35rpx 16rpx 0;
-          border: 1px solid #e6e6e6;
+          border: 0.5px solid #e6e6e6;
         }
       }
     }
@@ -165,7 +165,7 @@
       width: 148rpx;
       height: 44rpx;
       opacity: 1;
-      border: 1px solid #cccccc;
+      border: 0.5px solid #cccccc;
       border-radius: 12px;
       margin: 24rpx auto;
       line-height: 44rpx;

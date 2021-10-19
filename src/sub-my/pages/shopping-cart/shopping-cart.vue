@@ -285,7 +285,7 @@
 				this.shopList.forEach(item=>{
 					item.skuList.forEach(ele=>{
 						if(ele.goodsChecked){
-							count+=(+ele.buyCount)
+							count+=1
 						}
 					})
 				})
@@ -1546,7 +1546,7 @@
 	  color: #333;
 	}
 	.totalPrice{
-	  width: 66rpx;
+	  max-width: 118rpx;
 	  height: 36rpx;
 		margin-bottom: 16rpx;
 		margin-right: 16rpx;
