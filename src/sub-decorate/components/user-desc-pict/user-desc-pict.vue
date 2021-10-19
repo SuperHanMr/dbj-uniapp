@@ -10,13 +10,13 @@
             <view class="role">{{butlerData.nodeName}}</view>
           </view>
         </view>
-        <view class="date">{{butlerData.createTime}}</view>
+        <view class="date">{{butlerData.createTime | calendarFormat}}</view>
       </view>
       <view class="desc">{{butlerData.content}}</view>
       <view class="picture flex-row">
         <view class="imgs" v-for="(item, index) in butlerData.fileUrls" :key="index" v-if="index < 6">
-          <image :src="item" @click="clickImg(butlerData.fileUrls)"></image>
-          <view class="zz" v-if="index === 5" @click="clickImg(butlerData.fileUrls)">+{{butlerData.fileUrls.length - 6}}
+          <image :src="item" @click="clickImg(butlerData.fileUrls, index)"></image>
+          <view class="zz" v-if="index === 5" @click="clickImg(butlerData.fileUrls, 5)">+{{butlerData.fileUrls.length - 6}}
           </view>
         </view>
       </view>
@@ -25,6 +25,9 @@
 </template>
 
 <script>
+  import {
+    calendarFormat
+  } from "../../../utils/date.js"
   export default {
     props: {
       butlerData: {
@@ -33,19 +36,24 @@
       }
     },
     methods: {
-      clickImg(url) {
+      clickImg(url, index) {
         let arr = new Array();
         if (url instanceof Array) {
           arr = [...url]
         } else {
           arr.push(url)
         }
-        console.log(arr)
+        console.log(arr, index)
         uni.previewImage({
-          // current: 1,
+          current: index,
           urls: arr,
           // longPressActions:{}
         })
+      }
+    },
+    filters: {
+      calendarFormat(time) {
+        return calendarFormat(time)
       }
     }
   }

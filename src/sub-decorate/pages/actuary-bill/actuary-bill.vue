@@ -8,12 +8,12 @@
   export default {
     data() {
       return {
-        url:'/app-pages/actuarial/actuarial-tourists/index.html?serveId='
+        url:'/app-pages/actuarial/actuarial-tourists/index.html?projectId='
       }
     },
     onLoad(e){
-      let id = e.serveId
-      this.url = process.env.VUE_APP_BASE_H5+this.url + id  +'&token='+getApp().globalData.token
+			let Id = e.projectId
+      this.url = process.env.VUE_APP_BASE_H5+this.url + Id +'&isActuarial=2'+'&token='+getApp().globalData.token
     },
     methods: {
       

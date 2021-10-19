@@ -3,20 +3,24 @@
 		<view class="img-box" @tap="onTap">
 			<image :src="params.imageUrl" mode="widthFix" @load="emitHeight" @error="emitHeight"></image>
 			<view class="comment-like">
-				<view class="comment" v-if="params.commentCount">
+				<view class="comment">
 					<view class="comment-icon">
-						<image src="/static/images/real-case/liuyan.png" mode=""></image>
+						<view class=".icon-gerenzhuye_anli_ic_pinglun icon_view">
+							
+						</view>
 					</view>
 					<view class="comment-count">
-						{{params.commentCount}}
+						{{((params.commentCount / 10000) > 1 ? ((params.commentCount / 10000).toFixed(1) + "w" ): params.commentCount )|| 0}}
 					</view>
 				</view>
-				<view class="like" v-if="params.isLike">
+				<view class="like">
 					<view class="comment-icon">
-						<image src="/static/images/real-case/xihuan.png" mode=""></image>
+						<view class=".icon-gerenzhuye_anli_ic_dianzan icon_view">
+							
+						</view>
 					</view>
 					<view class="comment-count">
-						{{params.likeCount}}
+						{{((params.likeCount / 10000) > 1 ? ((params.likeCount / 10000).toFixed(1) + "w" ): params.likeCount )|| 0}}
 					</view>
 				</view>
 			</view>
@@ -128,9 +132,11 @@
 					line-height: 20rpx;
 					opacity: 1;
 					margin-right: 4rpx;
-					image{
+					.icon_view{
 						width: 100%;
 						height: 100%;
+						font-size: 20rpx;
+						color: #ffffff;
 					}
 				}
 				.comment-count{

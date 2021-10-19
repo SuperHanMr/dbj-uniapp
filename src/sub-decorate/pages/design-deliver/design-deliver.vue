@@ -6,7 +6,10 @@
     </view>
     <tabs :items="items" :current="current" @changeItem="changeItem"></tabs>
     <pictures :imgList="imgList"></pictures>
-    <button class="btn" @click="confirm">确认{{message.stageName}}</button>
+    <view :style="{height: containerBottom * 2 + 48 + 88 + 'rpx'}"></view>
+    <view class="btn-wrap" :style="{paddingBottom:systemBottom,height:systemHeight}">
+      <button class="btn" @click="confirm">确认{{message.stageName}}</button>
+    </view>
   </view>
 </template>
 
@@ -29,8 +32,17 @@
         imgList: [],
         items: [],
         current: "",
-        originList: []
+        originList: [],
+        containerBottom: null,
+        systemBottom: null,
+        systemHeight: null,
       }
+    },
+    mounted() {
+      const menuButtonInfo = uni.getMenuButtonBoundingClientRect();
+      this.containerBottom = menuButtonInfo.bottom;
+      this.systemBottom = menuButtonInfo.bottom * 2 + "rpx";
+      this.systemHeight = menuButtonInfo.bottom * 2 + 24 + "rpx";
     },
     onShow() {
       uni.setNavigationBarTitle({
@@ -52,21 +64,6 @@
       filterImgList(title) {
         this.imgList = []
         this.imgList = this.originList.filter(t => t.categoryName == title)[0]?.imageFileList
-        // if (title.includes("三维图")) {
-        //   this.imgList = this.originList.filter(t => t.categoryName.includes("全景图"))[0]?.imageFileList
-        // }
-        // if (title.includes("平面图")) {
-        //   this.imgList = this.originList.filter(t => t.categoryName.includes("平面图"))[0]?.imageFileList
-        // }
-        // if (title.includes("施工图")) {
-        //   this.imgList = this.originList.filter(t => t.categoryName.includes("施工图"))[0]?.imageFileList
-        // }
-        // if (title.includes("全景图")) {
-        //   this.imgList = this.originList.filter(t => t.categoryName.includes("全景图"))[0]?.imageFileList
-        // }
-        // if (title.includes("效果图")) {
-        //   this.imgList = this.originList.filter(t => t.categoryName.includes("效果图"))[0]?.imageFileList
-        // }
       },
       confirm() {
         uni.showModal({

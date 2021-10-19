@@ -1,5 +1,5 @@
 <template>
-	<view class="cartContainer" :class="{'bg':!shopList.length&&!disabledSkuList.length}">
+	<view class="cartContainer" :class="{'bg':showNoGoods}">
 		<view class="noGoods" v-if="showNoGoods">
 			<image src="http://dbj.dragonn.top/static/mp/dabanjia/images/my/blank_ic%402x.png" class="noGoodsImg"></image>
 			<view class="noGoodsText">
@@ -13,24 +13,27 @@
 				<view class="manage" @click="isManage=!isManage">{{isManage?"管理":"完成"}}</view>
 			</view>
 			<view class="shopItem" v-for="(shopItem,shopIndex) in shopList" :key="shopItem.storeId">
+				<!-- 店铺 -->
 				<view class="shopInfo">
 					<view style="width: 36rpx;height: 36rpx;">
 						<view class="check" v-if="!shopItem.shopChecked" @click="checkShop(shopItem.storeId)"></view>
-						<image class="checked" v-else @click="checkShop(shopItem.storeId)" src="../../../static/shopping-cart/checked@2x.png" ></image>
+						<image class="checked" v-else @click="checkShop(shopItem.storeId)" src="http://dbj.dragonn.top/static/mp/dabanjia/images/my/checked%402x.png" ></image>
 					</view>
 					<view class="goShop" @click="toShopHome(shopItem.storeId)">
 						<text class="shopName">{{shopItem.storeName}}</text>
-						<image class="shopIcon" src="../../../static/shopping-cart/goShop_ic@2x.png"></text>
+						<image class="shopIcon" src="http://dbj.dragonn.top/static/mp/dabanjia/images/my/goShop_ic%402x.png"></text>
 					</view>
-				</view>	
+				</view>
 				<view class="freeMail">
-					<view class="text" v-if="isDefault" :key="index">每满{{shopItem.freeShippingThreshold===0?'0.00':(shopItem.freeShippingThreshold/100).toFixed(2)}}元可获得一次免运费权益</view>
+					<view class="text" v-if="isDefault" :key="index">每满{{shopItem.freeShippingThreshold===0?'0.00'
+						:(shopItem.freeShippingThreshold/100).toFixed(2)}}元可获得一次免运费权益</view>
 					<view class="text" v-else>还差{{shopItem.freeShippingThreshold===0?'0.00':shopItem.freeShippings}}元可获得一次免运费权益</view>
 					<view class="toShop" @click="toShopHome(shopItem.storeId)">
 						<text>去凑单</text>
-						<image class="icon" src="../../../static/shopping-cart/toPostFree@2x.png"></image>
+						<image class="icon" src="http://dbj.dragonn.top/static/mp/dabanjia/images/my/toPostFree%402x.png"></image>
 					</view>
 				</view>
+				<!-- 商品 -->
 				<uni-swipe-action>
 				  <uni-swipe-action-item
 				    v-for="(goodsItem,goodsIndex) in shopItem.skuList"
@@ -41,7 +44,8 @@
 						<view class="goodsItem">
 							<view style="width: 36rpx;height: 36rpx;">
 								<view class="check" v-if="!goodsItem.goodsChecked" @click="checkGoods(shopItem.storeId,goodsItem.skuId)"></view>
-								<image class="checked" v-else @click="checkGoods(shopItem.storeId,goodsItem.skuId)" src="../../../static/shopping-cart/checked@2x.png" ></image>
+								<image class="checked" v-else @click="checkGoods(shopItem.storeId,goodsItem.skuId)"
+									src="http://dbj.dragonn.top/static/mp/dabanjia/images/my/checked%402x.png" ></image>
 							</view>
 							<image :src="goodsItem.image" @click="toGoodsDetail(goodsItem.skuId)" class="goodsItemImg"></image>
 							<view class="goodsInfo">
@@ -51,17 +55,23 @@
 								</view>
 								<view class="goodsSpec" @click="openSpec(goodsItem.skuId,goodsItem.goodsChecked)">
 									<view class="text">{{goodsItem.skuName}}</view>
-									<image src="../../../static/shopping-cart/selectOptions@2x.png" class="selectOptions"></image>
+									<image src="http://dbj.dragonn.top/static/mp/dabanjia/images/my/selectOptions%402x.png" class="selectOptions"></image>
 								</view>
-								
+								<!-- 商品单价和数量 -->
 								<view class="foot">
-									<view class="goodsPrice">¥{{goodsItem.price/100}}/{{goodsItem.unitName}}</view>
+									<view class="goodsPrice">
+										<text>¥</text>
+										<text class="int">{{(goodsItem.price/100).toFixed(2).split('.')[0]}}</text>
+										<text>.{{(goodsItem.price/100).toFixed(2).split('.')[1]}}/{{goodsItem.unitName}}</text>
+									</view>
 									<view class="countCtrl">
-										<image v-if="!goodsItem.isMiniOrder" class="dec" @click="changeCount(false,shopIndex, goodsIndex)" src="../../../static/shopping-cart/details_pop_@2x.png"></image>
-										<image v-else class="dec" @click="changeCount(false,shopIndex, goodsIndex)" src="../../../static/shopping-cart/details_pop_subtract_disabled@2x.png"></image>
+										<image v-if="!goodsItem.isMiniOrder" class="dec" @click="changeCount(false,shopIndex, goodsIndex)"
+											src="http://dbj.dragonn.top/static/mp/dabanjia/images/my/details_pop_%402x.png"></image>
+										<image v-else class="dec" @click="changeCount(false,shopIndex, goodsIndex)"
+											src="http://dbj.dragonn.top/static/mp/dabanjia/images/my/details_pop_subtract_disabled%402x.png"></image>
 										<view class="count" @click="openCount(shopIndex, goodsIndex,goodsItem.minimumOrderQuantity,goodsItem.stepLength,goodsItem.buyCount)"> {{goodsItem.buyCount}} </view>
 											
-										<image class="inc" @click="changeCount(true, shopIndex,goodsIndex)" src="../../../static/shopping-cart/details_pop_add_normal@2x.png"></image>          
+										<image class="inc" @click="changeCount(true, shopIndex,goodsIndex)" src="http://dbj.dragonn.top/static/mp/dabanjia/images/my/details_pop_add_normal%402x.png"></image>          
 									</view>
 								</view>
 							</view>
@@ -75,7 +85,7 @@
 						<view class="title">编辑数量</view>
 						<view class="text">当前最小单位为{{miniOrder}}，输入的数量需为{{step}}的倍数</view>
 					</view>
-					<input type="digit" v-model="buyNum" focus />
+					<input class="uni-input" type="digit" v-model="buyNum" focus :cursor-spacing="102"/>
 					<view class="button">
 						<view class="cancel" @click="closeDialog">取消</view>
 						<!-- <view class="line"></view> -->
@@ -87,7 +97,8 @@
 				<view class="popupClass">
 					<view class="header">
 						<text class="tit">所选商品为不同类型商品，请分开结算</text>
-						<image class="closedIcon" @click="goBackCart" src="../../../static/shopping-cart/ic_closed_black@2x.png"></image>
+						<image class="closedIcon" @click="goBackCart"
+							src="http://dbj.dragonn.top/static/mp/dabanjia/images/my/ic_closed_black%402x.png"></image>
 					</view>
 					<view class="line"></view>
 					<view class="service" :class="{'activeBorder':serviceChecked}">
@@ -97,7 +108,8 @@
 								<view class="popupCount" :class="{'activeColor':serviceChecked}">{{serviceList.length}}件</view>
 							</view>
 							<view class="check" v-if="!serviceChecked" @click="checkSame(true)"></view>
-							<image class="checked" v-else @click="checkSame(true)" src="../../../static/shopping-cart/checked@2x.png"></image>
+							<image class="checked" v-else @click="checkSame(true)"
+								src="http://dbj.dragonn.top/static/mp/dabanjia/images/my/checked%402x.png"></image>
 						</view>
 						<view class="goods" v-for="item in serviceListShow" :key="item.skuId">
 							<image :src="item.image" class="img"></image>
@@ -111,7 +123,8 @@
 								<view class="popupCount" :class="{'activeColor':entityChecked}">{{entityList.length}}件</view>
 							</view>
 							<view class="check" v-if="!entityChecked" @click="checkSame(false)"></view>
-							<image class="checked" v-else @click="checkSame(false)" src="../../../static/shopping-cart/checked@2x.png"></image>
+							<image class="checked" v-else @click="checkSame(false)"
+								src="http://dbj.dragonn.top/static/mp/dabanjia/images/my/checked%402x.png"></image>
 						</view>
 						<view class="goods" v-for="item in entityListShow" :key="item.skuId">
 							<image :src="item.image" class="img"></image>
@@ -168,23 +181,30 @@
 				</view>	
 			</view>
 			<view class="bottom"></view>
+			<!-- 底部区域 -->
 			<view v-if="shopList.length">
-				<view class="shopCheck" v-if="isManage">
-					<view class="left">
-						<view class="check" @click="checkedAll" v-if="!isCheckedAll"></view>
-						<image src="../../../static/shopping-cart/checked@2x.png" class="check" @click="checkedAll" v-else></image>
+				<view class="allCheck" v-if="isManage">
+					<view class="left" @click="checkAll">
+						<view class="check" v-if="!isCheckedAll"></view>
+						<image src="http://dbj.dragonn.top/static/mp/dabanjia/images/my/checked%402x.png"
+							class="check" v-else></image>
 						<view class="text">全选</view>
 					</view>
 					<view class="right">
 						<view class="text">合计：</view>
-						<view class="totalPrice">¥{{totalPrice.toFixed(2)}}</view>
+						<view class="totalPrice">
+							<text>¥</text>
+							<text class="int">{{totalPrice.toFixed(2).split('.')[0]}}</text>
+							<text>.{{totalPrice.toFixed(2).split('.')[1]}}</text>
+						</view>
 						<view class="preOrder" @click="pay">结算({{totalCout}})</view>
 					</view>
-				</view>	  							
-				<view class="shopCheck" v-else>
-					<view class="left">
-						<view class="check" @click="checkedAll" v-if="!isCheckedAll"></view>
-						<image src="../../../static/shopping-cart/checked@2x.png" class="check" @click="checkedAll" v-else></image>
+				</view>
+				<view class="allCheck" v-else>
+					<view class="left" @click="checkAll">
+						<view class="check" v-if="!isCheckedAll"></view>
+						<image src="http://dbj.dragonn.top/static/mp/dabanjia/images/my/checked%402x.png"
+							class="check" v-else></image>
 						<view class="text">全选</view>
 					</view>
 					<view class="right">
@@ -252,7 +272,7 @@
 				step:0,//步长
 				miniOrder:0,
 				buyNum:"",//输入框的值,
-				// isFocus:false,
+				checkedSkuList:[],
 			}
 		},
 		mounted(){
@@ -299,10 +319,10 @@
 						let temp = Math.ceil(sum / (item.freeShippingThreshold/100))
 						item.freeShippings = (item.freeShippingThreshold/100*temp-sum).toFixed(2)
 					}else if(sum === (item.freeShippingThreshold/100)){
-						item.freeShippings = item.freeShippingThreshold/100
+						item.freeShippings = (item.freeShippingThreshold/100).toFixed(2)
 					}
-					if(item.freeShippings === "0.00"){
-						item.freeShippings = item.freeShippingThreshold/100
+					if(item.freeShippings === '0.00'){
+						item.freeShippings = (item.freeShippingThreshold/100).toFixed(2)
 					}
 					return item
 				})
@@ -315,8 +335,43 @@
 					nowSkuId: curId
 				}
 				setGoodsSku(params).then(async(data) => {
-					await this.requestPage()
+					await this.getPage(curId)
 					this.freeShippings()
+				})
+			},
+			getPage(targetId){
+				getShoppingCartInfo().then(data => {
+					let {storeList,disabledSkuList} = data
+					if(!storeList.length && !disabledSkuList.length){
+						this.showNoGoods = true
+					}
+					if(storeList.length){
+						storeList.map(item => {
+							item.skuList.map(ele => {
+								ele.isMiniOrder = (+ele.buyCount <= +ele.minimumOrderQuantity) ? true:false
+								
+								let index = this.checkedSkuList.findIndex(i => i.skuId === ele.skuId)
+								if(index !== -1){
+									ele.goodsChecked = true
+								}else{
+									ele.goodsChecked = false
+								}
+								if(ele.skuId === targetId){
+									ele.goodsChecked = true
+								}
+								return ele
+							})
+							if(item.skuList.every(ele=>ele.goodsChecked)){
+								item.shopChecked = true
+							}else{
+								item.shopChecked = false
+							}
+							return item
+						})
+					}
+					console.log(storeList,'....')
+					this.shopList = storeList
+					this.disabledSkuList = disabledSkuList
 				})
 			},
 			openSpec(skuId,goodsChecked){
@@ -407,7 +462,6 @@
 			},
 			openCount(shopIndex, goodsIndex,miniOrder,step,buyNum){
 				this.showInput = true
-				// this.isFocus = true
 				this.miniOrder = miniOrder
 				this.step = step
 				this.buyNum = buyNum
@@ -471,7 +525,7 @@
 				}
 				setBuyCount(params).then(async(data) => {
 					this.showInput = false
-					await this.requestPage()
+					await this.getPage(target.skuId)
 					this.freeShippings()
 				})
 				
@@ -709,7 +763,8 @@
 				}
 				setBuyCount(params).then(() => {})
 			},	
-			checkedAll(){
+			checkAll(){
+				//原逻辑
 				this.isCheckedAll = !this.isCheckedAll
 				this.shopList.map(item=>{
 					item.shopChecked = this.isCheckedAll
@@ -718,13 +773,30 @@
 						return ele
 					})
 					return item
-				})
+				})				
 				if(this.isCheckedAll){
 					this.isDefault = false
 				}
+				
 				this.freeShippings()
+				//
+				this.shopList.forEach(item=>{
+					item.skuList.forEach(ele=>{
+						if(this.isCheckedAll){
+							this.checkedSkuList.push({
+								storeId: ele.storeId,
+								skuId: ele.skuId,
+							})
+						}
+					})
+				})
+				if(!this.isCheckedAll){
+					this.checkedSkuList = []
+				}
+				console.log(this.checkedSkuList,'///')
 			},
 			checkShop(id){
+				//原逻辑
 				this.shopList.map(item=>{
 					if(item.storeId === id){
 						item.shopChecked = !item.shopChecked
@@ -742,10 +814,31 @@
 					this.isCheckedAll = true
 				}else{
 					this.isCheckedAll = false
-				}
+				}				
+
 				this.freeShippings()
+				//
+				this.shopList.forEach(item=>{
+					if(item.storeId === id){
+						item.skuList.forEach(ele=>{
+							if(ele.goodsChecked){
+								this.checkedSkuList.push({
+									storeId: ele.storeId,
+									skuId: ele.skuId,
+								})
+							}else{
+								let index = this.checkedSkuList.findIndex(i=>i.skuId===ele.skuId)
+								if(index!==-1){
+									this.checkedSkuList.splice(index,1)
+								}
+							}
+						})
+					}
+				})
+				console.log(this.checkedSkuList,'///')
 			},
 			checkGoods(storeId,skuId){
+				//原逻辑
 				this.shopList.map(item=>{
 					if(item.storeId === storeId){
 						item.skuList.map(ele=>{
@@ -769,8 +862,30 @@
 					this.isCheckedAll = true
 				}else{
 					this.isCheckedAll = false
-				}
+				}				
+
 				this.freeShippings()
+				//
+				this.shopList.forEach(item=>{
+					if(item.storeId === storeId){
+						item.skuList.forEach(ele=>{
+							if(ele.skuId === skuId){
+								if(ele.goodsChecked){
+									this.checkedSkuList.push({
+										storeId: ele.storeId,
+										skuId: ele.skuId
+									})
+								}else{
+									let index = this.checkedSkuList.findIndex(i=>i.skuId===skuId)
+									if(index!==-1){
+										this.checkedSkuList.splice(index,1)
+									}
+								}
+							}
+						})
+					}
+				})
+				console.log(this.checkedSkuList,'///')
 			},
 		
 			deleteGoods(skuId,buyCount){
@@ -1198,7 +1313,7 @@
 		height: 36rpx;
 		border-radius: 50%;
 		background: #ffffff;
-		border: 1rpx solid #CBCCCC;
+		border: 2rpx solid #CBCCCC;
 	}
 	.goodsItem .checked{
 		width: 36rpx;
@@ -1230,7 +1345,7 @@
 		height: 30rpx;
 		padding: 2rpx 10rpx 2rpx 10rpx;
 		margin-right: 4rpx;
-		border: 2rpx solid #35c4c4;
+		border: 1rpx solid #35c4c4;
 		border-radius: 4rpx;
 		font-size: 20rpx;
 		font-weight: 500;
@@ -1241,24 +1356,25 @@
 	.goodsInfo .goodsSpec{
 		width: fit-content;
 		height: 38rpx;
-		padding: 4rpx;
-		margin: 12rpx 0;
 		background: #fafafa;
-		border:1rpx solid #f0f0f0;
+		border: 1rpx solid #f0f0f0;
 		border-radius: 4rpx;
-		font-size: 22rpx;
-		color: #999999;
+		align-items: center;
 		display: flex;
 	}
 	.goodsInfo .goodsSpec .text{
 		max-width: 340rpx;
+		margin : 6rpx 12rpx;
 		overflow: hidden;
 		white-space: nowrap;
 		text-overflow: ellipsis;
+		font-size: 22rpx;
+		color: #999999;
 	}
 	.goodsInfo .goodsSpec .selectOptions{
 		width: 28rpx;
 		height: 28rpx;
+		margin-right: 8rpx;
 		display: block;
 	}
 	.goodsInfo .foot{
@@ -1273,6 +1389,9 @@
 		font-size: 24rpx;
 		line-height: 36rpx;
 	}
+	.goodsInfo .foot .goodsPrice .int{
+		font-size: 36rpx;
+	}
 	.goodsInfo .foot .countCtrl{
 		display: flex;
 	}
@@ -1284,6 +1403,7 @@
 	.goodsInfo .foot .countCtrl .count{
 		width: 92rpx;
 		height: 48rpx;
+		margin: 0 4rpx;
 		background: #f2f2f2;
 		font-size: 24rpx;
 		font-weight: 500;
@@ -1296,7 +1416,7 @@
 		height: 48rpx;
 		display: block;
 	} 
-	//已失效商品
+	/* 已失效商品 */
 	.disabledSku{
 		margin: 24rpx 22rpx 48rpx 24rpx;
 		padding: 24rpx 28rpx 32rpx 24rpx;
@@ -1383,10 +1503,11 @@
 		width: 100%;
 		height: 152rpx;
 	}
-	.shopCheck{
+	.allCheck{
 		width: 100%;
-		height: 104rpx;
+		height: 120rpx;
 	  background: #fff;
+		border-top: 1rpx solid #f4f4f4;
 	  padding-bottom: 68rpx;
 	  display: flex;
 		justify-content: space-between;
@@ -1395,10 +1516,10 @@
 	  bottom: 0rpx; 
 	  left: 0rpx;
 	}
-	.shopCheck .left{
+	.allCheck .left{
 		display: flex;
 	}
-	.shopCheck .check{
+	.allCheck .check{
 		width: 36rpx;
 		height: 36rpx;
 		margin-left: 32rpx;
@@ -1407,17 +1528,17 @@
 		background: #ffffff;
 		border: 2rpx solid #e5e5e5;
 	}
-	.shopCheck .text{
+	.allCheck .text{
 	  width: 56rpx;
 	  height: 40rpx;
 	  color: #333;
 		font-size: 28rpx;
 	  line-height: 40rpx;
 	}
-	.shopCheck .right {
+	.allCheck .right {
 	  display: flex;
+		align-items: center;
 		justify-content: flex-end;
-	  align-items: center;
 	}
 	.right .text{
 	  width: 84rpx;
@@ -1427,12 +1548,16 @@
 	  color: #333;
 	}
 	.totalPrice{
-	  width: 114rpx;
+	  width: 66rpx;
 	  height: 36rpx;
+		margin-bottom: 16rpx;
+		margin-right: 16rpx;
 	  font-size: 24rpx;
 	  color: #ff3347;
 	}
-	
+	.totalPrice .int{
+		font-size: 36rpx;
+	}
 	.preOrder{
 	  width: 248rpx;
 	  height: 88rpx;

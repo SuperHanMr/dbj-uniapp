@@ -10,21 +10,21 @@
             <view class="role">{{workerData.nodeName}}</view>
           </view>
         </view>
-        <view class="date">{{workerData.createTime}}</view>
+        <view class="date">{{workerData.createTime | calendarFormat}}</view>
       </view>
       <view class="desc">{{workerData.content}}</view>
       <view class="picture flex-row">
         <view class="imgs" v-for="(item, index) in workerData.fileUrls" :key="index" v-if="index < 6">
-          <image :src="item" @click="clickImg(workerData.fileUrls)"></image>
-          <view class="zz" v-if="index === 5" @click="clickImg(workerData.fileUrls)">+{{workerData.fileUrls.length - 6}}</view>
+          <image :src="item" @click="clickImg(workerData.fileUrls, index)"></image>
+          <view class="zz" v-if="index === 5" @click="clickImg(workerData.fileUrls, 5)">+{{workerData.fileUrls.length - 6}}</view>
         </view>
       </view>
       <view v-for="(t,index) in workerData.workerItems">
         <view class="worker-title">{{t.workItemName}}</view>
         <view class="picture flex-row">
-          <view class="imgs" v-for="(it, index) in t.fileUrls" :key="index" v-if="index < 3">
-            <image :src="it" @click="clickImg(t.fileUrls)"></image>
-            <view class="zz" v-if="index === 2" @click="clickImg(t.fileUrls)">+{{t.fileUrls.length - 3}}</view>
+          <view class="imgs" v-for="(kit, i) in t.fileUrls" :key="i" v-if="i < 3">
+            <image :src="kit" @click="clickImg(t.fileUrls, i)"></image>
+            <view class="zz" v-if="i === 2" @click="clickImg(t.fileUrls, 2)">+{{t.fileUrls.length - 3}}</view>
           </view>
         </view>
       </view>
@@ -33,6 +33,9 @@
 </template>
 
 <script>
+  import {
+    calendarFormat
+  } from "../../../utils/date.js"
   export default {
     props: {
       workerData: {
@@ -41,19 +44,24 @@
       }
     },
     methods: {
-      clickImg(url) {
+      clickImg(url, index) {
         let arr = new Array();
         if (url instanceof Array) {
           arr = [...url]
         } else {
           arr.push(url)
         }
-        console.log(arr)
+        console.log(arr, index)
         uni.previewImage({
-          // current: 1,
+          current: index,
           urls: arr,
           // longPressActions:{}
         })
+      }
+    },
+    filters: {
+      calendarFormat(time) {
+        return calendarFormat(time)
       }
     }
   }

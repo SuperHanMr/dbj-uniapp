@@ -1,5 +1,16 @@
 <template>
   <view class="container">
+		<custom-navbar opacity="1" :title="title" titleColor="#ffb245" bgcolor="#ffb245">
+			<template v-slot:back>
+				<view @click="toBack">
+					<i class="icon-ic_cancel_white" style="color: white;">
+					</i>
+				</view>
+			</template>
+		</custom-navbar>
+
+		<view :style="{height:navBarHeight}"></view>
+
     <view class="order-container" :style="{paddingBottom:112+containerBottom+'rpx'}">
       <view class="order-status">
         <view class="backgroundStyle" />
@@ -25,10 +36,10 @@
       <order-user-base-info :data="orderInfo"></order-user-base-info>
 
       <view class="store-container" v-for="(item,index) in orderInfo.details" :key="index">
-        <view class="storeItem" :class="{paddingBottom: item.stockType == 1 }">
+        <view class="storeItem" :class="{paddingBottom: item.stockType == 1 }" :style="{borderRadius:index >= 1 ? '0' :'24rpx 24rpx 0 0'}">
           <view class="header" @click="gotoShop(item)">
             <text>{{item.storeName}}</text>
-            <image src="@/static/order/ic_more@2x.png" mode=""/>
+            <image src="../../../static/ic_more.svg" mode=""/>
           </view>
           <view v-for="item2 in item.details" :key="item2.id">
             <order-item
@@ -149,6 +160,7 @@ export default {
       title: "您确定要取消该订单吗？",
       areaId: "",
 			from:"",
+			navBarHeight: "",
     };
   },
 
@@ -159,25 +171,32 @@ export default {
     this.systemHeight = menuButtonInfo.bottom + this.num + "rpx";
     console.log(this.systemBottom);
   },
-
   onLoad(e) {
 		this.from= e.from
     this.orderNo = Number(e.orderNo) || getApp().globalData.decorateMsg.orderId;
     const currentHouse = getApp().globalData.currentHouse;
     this.areaId = currentHouse.areaId;
-  },
+
+		// 获取胶囊按钮的位置
+		const systemInfo = uni.getSystemInfoSync();
+		const menuButtonInfo = uni.getMenuButtonBoundingClientRect();
+		this.navBarHeight =
+			menuButtonInfo.top +
+			(menuButtonInfo.top - systemInfo.statusBarHeight) +
+			menuButtonInfo.height +
+			"px";
+		uni.setNavigationBarColor({
+			frontColor: '#ffffff',
+			backgroundColor:'#ffb245',
+			animation: {
+				duration: 400,
+				timingFunc: 'easeIn'
+			}
+		})
+	},
   onShow() {
     this.orderDetail();
   },
-	// 改变返回下一个页面的路径
-	onUnload() {
-	  if(this.from=="waitPayOrder"){
-			uni.redirectTo({
-				url:"../my-order?firstEntry=true&index=1"
-			})
-		}
-	},
-
   methods: {
     orderDetail() {
       getOrderDetail({
@@ -188,6 +207,18 @@ export default {
         console.log("this.orderInfo=", this.orderInfo);
       });
     },
+		// 改变返回下一个页面的路径
+		toBack(){
+			if(this.from=="waitPayOrder"){
+				uni.redirectTo({
+					url:"../my-order?firstEntry=true&index=1"
+				})
+			}else{uni.navigateBack({
+				    delta: 1
+				});
+
+			}
+		},
 
     // 跳转到商品详情页面
     productDetail(item) {
@@ -291,7 +322,7 @@ export default {
       console.log("hour=", hour, "minute=", minute, "second=", second);
       return [hour, minute, second];
     },
-		
+
     handlePrice(price) {
       let list = String(price).split(".");
       if (list.length == 1) {
@@ -372,9 +403,8 @@ export default {
           box-sizing: border-box;
           display: flex;
           align-items: center;
-
           text {
-            font-weight: 1000;
+            font-weight: 500;
             max-width: 476rpx;
             font-size: 28rpx;
             overflow: hidden;
@@ -536,7 +566,7 @@ export default {
     font-size: 32rpx;
     text-align: center;
     color: #ffffff;
-    background: linear-gradient(135deg, #36d9cd 0%, #28c6c6 100%);
+    background: linear-gradient(99deg, #00CCBE 0%, #00C2BF 100%);
     border-radius: 12rpx;
   }
 }

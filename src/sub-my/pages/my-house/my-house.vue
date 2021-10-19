@@ -19,9 +19,9 @@
 							<view class="message-right">
 								<view class="item">
 									<text class="defalut" v-if="item.defaultEstate">默认</text>
-									<text class="province">{{item.housingEstate}}</text>
+									<text class="province">{{item.locationName}}</text>
 								</view>
-								<text class="address">{{item.locationName+item.address}}</text>
+								<text class="address">{{item.housingEstate+item.address}}</text>
 								<view class="item">
 									<text class="name">{{item.contactName}}</text>
 									<text class="phone">{{item.contactPhone}}</text>
@@ -29,7 +29,7 @@
 							</view>
 						</view>
 						<view v-if="isEdit" class="edit" @click.stop="edit(item)">
-              <i class="icon-ic_edit edit-icon"></i>
+              <i class="icon-xiaochengxu_fangwuguanli_bianji edit-icon"></i>
 							<!-- <image src="../../../static/images/edit.svg" class="edit-icon"></image> -->
 						</view>
 					</view>
@@ -286,7 +286,7 @@
 
 	.list-count {
 		width: 100%;
-		height: 206rpx;
+		// height: 206rpx;
 		position: relative;
 		-webkit-transition: all 0.4s;
 		transition: all 0.4s;
@@ -373,6 +373,9 @@
 			vertical-align: middle;
 			margin-right: 24rpx;
 		}
+    .icon-xiaochengxu_fangwuguanli_bianji{
+      font-size: 26rpx;
+    }
 
 		.edit-icon {
 			width: 36rpx;

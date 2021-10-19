@@ -10,6 +10,7 @@
 			 />
 		
 			<image 
+				v-if="nickName"
 				class="icon" 
 				src="../../../static/mine_input_clear@2x.png"
 				mode=""
@@ -130,7 +131,8 @@
 			box-sizing: border-box;
 			padding: 32rpx;
 			font-size: 28rpx;
-			color:red;
+			color:#111111;
+			font-weight: 500;
 			caret-color: #35C4C4;
 		}
 		.icon{
@@ -139,7 +141,7 @@
 			height: 48rpx;
 			z-index: 999;
 			border-radius: 50%;
-			top: 28rpx;
+			top: 24rpx;
 			right:16rpx;
 		}
 	}

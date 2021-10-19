@@ -584,7 +584,7 @@
 	}
 
 	.bottom-fiexd {
-		padding-bottom: 200rpx;
+		padding-bottom: 230rpx;
 	}
 
 	.bottom {
@@ -612,7 +612,7 @@
 		}
 
 		.pay-money {
-			margin: 24rpx 34rpx 16rpx 30rpx;
+			margin: 24rpx 34rpx 0 30rpx;
 			background: linear-gradient(135deg, #00CCBE 0%, #00C2BF 100%);
 			border-radius: 6px;
 			height: 88rpx;
@@ -662,7 +662,7 @@
 		}
 
 		.argument {
-			margin: 16rpx 0 40rpx 0;
+			padding: 16rpx 0 70rpx 0;
 			font-size: 11px;
 			font-family: PingFangSC-Regular, PingFang SC;
 			font-weight: 400;

@@ -1,8 +1,5 @@
 <template>
 	<view class="real-case">
-		<view class="22" @click="toRuzhu">
-			商家入驻
-		</view>
 		<view class="collectWrapper">
 			<view class="tabbar">
 				<view class="tabbar-switch-box">
@@ -169,6 +166,11 @@
 			},
 			// 收藏事件
 			onCollection(index, tag) {
+				const token = uni.getStorageSync("scn")
+				if (!token) {
+					uni.navigateTo({ url: "/pages/login/login" })
+					return;
+				}
 				let list = [];
 				if (tag == 0) {
 					list = this.leftList;

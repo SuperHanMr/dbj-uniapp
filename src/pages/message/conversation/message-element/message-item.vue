@@ -35,6 +35,10 @@
     v-else-if="message.type === TIM.TYPES.MSG_CUSTOM && payloadData.type === 'questions_message'"
     :message="message" 
   />
+  <call-element
+    v-else-if="message.type === TIM.TYPES.MSG_CUSTOM && (payloadData.type === 'single_room_call_action' || payloadData.type === 'group_room_call_action')"
+    :message="message" 
+  />
   <card-template
     v-else-if="message.type === TIM.TYPES.MSG_CUSTOM && template.template === 'card'"
     :template="template"
@@ -67,6 +71,7 @@
   import GroupTipElement from "./group-tip-element.vue"
   import QuestionsElement from "./questions-element.vue";
   import RevokeElement from "./revoke-element.vue";
+  import CallElement from "./call-element.vue"
   import UnsupportedElement from "./unsupported-element.vue";
   import CardTemplate from "./template/card-tpl.vue"
   import TipTemplate from "./template/tip-tpl.vue"
@@ -88,6 +93,7 @@
       GroupTipElement,
       QuestionsElement,
       RevokeElement,
+      CallElement,
       UnsupportedElement,
       CardTemplate,
       TipTemplate,

@@ -28,13 +28,13 @@
             <view  class="header" style="margin-bottom: 16rpx;">
               <text style="margin-right: 8rpx;">运费</text><view class="icon">?</view>
             </view>
-            <text>￥{{handlePrice(refundInfo.freight)[0]}}.{{handlePrice(refundInfo.freight)[1]}}</text>
+            <text class="price-font">￥{{handlePrice(refundInfo.freight)[0]}}.{{handlePrice(refundInfo.freight)[1]}}</text>
 					</view>
           <view class="price-item" v-if="refundInfo.handlingFees">
             <view class="header">
               <text style="margin-right: 8rpx;">搬运费</text><view class="icon">?</view>
             </view>
-            <text>￥{{handlePrice(refundInfo.handlingFees)[0]}}.{{handlePrice(refundInfo.handlingFees)[1]}}</text>
+            <text class="price-font">￥{{handlePrice(refundInfo.handlingFees)[0]}}.{{handlePrice(refundInfo.handlingFees)[1]}}</text>
 					</view>
         </view>
       </view>
@@ -46,12 +46,17 @@
 						<view class="icon">*</view>
 						<text>退款原因</text>
 					</view>
-					<view class="reason" v-if="!reasonName">
+					<!-- <view class="reason" v-if="!reasonName">
 						<text style="color:#C7C7C7;">请选择</text>
 						<image src="../../static/ic_arraw_down@2x.png" mode="" @click="openPopup()"/>
 					</view>
 					<view class="reason" v-else >
 					  <text style="margin-right: 16rpx;" @click="openPopup()">{{reasonName}}</text>
+					</view> -->
+					<view class="reason" >
+						<text v-if="!reasonName" style="color:#C7C7C7;" @click="openPopup()">请选择</text>
+						<text v-else style="margin-right: 16rpx;" @click="openPopup()">{{reasonName}}</text>
+						<image src="../../static/ic_arraw_down@2x.png" mode="" @click="openPopup()"/>
 					</view>
         </view>
 				
@@ -117,7 +122,8 @@
 							<text>退款金额</text>
 						</view>
 						<view class="right1" >
-						  <text >￥{{handlePrice(refundInfo.totalActualIncomeAmount)[0] || 0}}.{{handlePrice(refundInfo.totalActualIncomeAmount)[1]}}</text>
+						  <text v-if="refundInfo.actualIncomeAmount">￥{{handlePrice(refundInfo.actualIncomeAmount)[0] || 0}}.{{handlePrice(refundInfo.actualIncomeAmount)[1]}}</text>
+						  <text v-else>￥{{handlePrice(refundInfo.totalActualIncomeAmount)[0] || 0}}.{{handlePrice(refundInfo.totalActualIncomeAmount)[1]}}</text>
 						</view>
 					</view>
 					<view class="tip-text">
@@ -202,16 +208,21 @@ export default {
     this.type = e.type;
 		if(this.type){
 			this.query.orderId=Number(e.id)
+			console.log("this.query.orderId=",this.query.orderId)
 			this.query.status=Number(e.status);//订单状态1进行中 2已完成
 			console.log("this.type=", this.type);
 			if (this.type == "partical") {
 				this.refundInfo = JSON.parse(
 					wx.getStorageSync("particalRefundOrderInfo")
 				);
-				this.inputValue =  this.refundInfo.totalActualIncomeAmount
+				console.log("进行中数据带过来的数据：this.refundInfo=",this.refundInfo)
+				this.orderDetailId = this.refundInfo.orderDetailId
+				this.inputValue =  this.refundInfo.actualIncomeAmount
+				this.returnMoney = this.inputValue
+				console.log("this.inputValue",this.inputValue)
 				console.log("this.refundInfo=", this.refundInfo, typeof this.refundInfo);
-				
 			} else {
+				console.log("进行中数据带过来的数据：this.refundInfo=",this.refundInfo)
 				this.refundInfo = JSON.parse(wx.getStorageSync("wholeRefundOrderInfo"));
 				this.returnMoney =  this.refundInfo.totalActualIncomeAmount
 			}
@@ -362,7 +373,7 @@ export default {
   width: 100%;
   height: 100%;
   overflow-y: auto;
-  background-color: #f2f2f2;
+  background-color: #f2f3f3;
   padding-bottom: 400rpx;
   .product-container {
     margin-top: 16rpx;
@@ -452,9 +463,9 @@ export default {
     }
 
     .line {
-      height: 2rpx;
+      height: 0.5px;
       margin-left: 56rpx;
-      background: #f4f4f4;
+      background: #f2f3f3;
     }
 
     .refund-price {
@@ -576,7 +587,8 @@ export default {
       line-height: 88rpx;
       text-align: center;
       border-radius: 12rpx;
-      background: linear-gradient(135deg, #53d5cc 0%, #4fc9c9 100%);
+			font-weight: bold ;
+      background: linear-gradient(99deg, #00CCBE 0%, #00C2BF 100%);
       font-size: 32rpx;
       color: #ffffff;
     }
@@ -584,8 +596,9 @@ export default {
 		  height: 88rpx;
 		  line-height: 88rpx;
 		  text-align: center;
+			font-weight: bold ;
 		  border-radius: 12rpx;
-		  background: linear-gradient(135deg, #53D5CC 0%, #4FC9C9 100%);
+		  background: linear-gradient(99deg, #00CCBE 0%, #00C2BF 100%);
 			opacity: 0.5;
 		  font-size: 32rpx;
 		  color: #ffffff;

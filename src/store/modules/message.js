@@ -367,9 +367,23 @@ const message = {
     checkoutConversation(context, conversationID) {
       console.log("check conversation:", conversationID);
       // 2.待切换的会话也进行已读上报 
-      if (conversationID === 'CUSTOMER' || conversationID === context.state.cstServConv.conversationID) {
-        if (context.state.cstServConv.isAvailable) {
-          getTim().setMessageRead({ conversationID }).catch(e => { })
+      const state = context.state;
+      if (conversationID === 'CUSTOMER') {
+        if (state.cstServConv.unreadCount > 0) {
+          state.cstServConv = {
+            ...state.cstServConv,
+            unreadCount: 0
+          };
+        }
+      } else if (conversationID === context.state.cstServConv.conversationID) {
+        if (state.cstServConv.unreadCount > 0) {
+          getTim().setMessageRead({ conversationID }).catch(e => {
+            console.warn("setMessageRead customer fail!", conversationID);
+            state.cstServConv = {
+              ...state.cstServConv,
+              unreadCount: 0
+            };
+          })
         }
       } else {
         getTim().setMessageRead({ conversationID }).catch(e => { })
@@ -385,13 +399,14 @@ const message = {
             getAgentStatus(getApp().globalData.userInfo.id).then(res => {
               let { isGroupButlerExist, queuePosition } = res;
               if (isGroupButlerExist) {
-                getTim().sendMessage({
-                  type: "AGENT_STATUS",
-                  payload: {
-                    type: queuePosition == 0 ? "custom_agant_coming" : "custom_agant_waiting",
-                    position: queuePosition
-                  }
-                });
+                // 存在客服时do nothing
+                // getTim().sendMessage({
+                //   type: "AGENT_STATUS",
+                //   payload: {
+                //     type: queuePosition == 0 ? "custom_agant_coming" : "custom_agant_waiting",
+                //     position: queuePosition
+                //   }
+                // });
               } else {
                 getTim().sendMessage({
                   type: "MSG_QUESTION_LIST",
@@ -499,8 +514,11 @@ const message = {
       }
       const { id, name } = userInfo;
       let userIMID = id;
-      if (!isNaN(userIMID)) {
-        userIMID = "zeus_" + userIMID;
+      let userId = id;
+      if (!isNaN(id)) {
+        userIMID = "zeus_" + id;
+      } else {
+        userId = +(id + "").replace(/^zeus_/, "");
       }
       const convId = TIM.TYPES.CONV_C2C + userIMID;
       

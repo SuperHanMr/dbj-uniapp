@@ -56,7 +56,7 @@
     }
     .active{
       background-color: #e8fafa;
-      border: 1px solid #35C4C4;
+      border: 0.5px solid #35C4C4;
       color: #24bdbd;
     }
 </style>

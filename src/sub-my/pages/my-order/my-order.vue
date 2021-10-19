@@ -1,5 +1,17 @@
 <template>
 	<view class="fill">
+		<!-- <custom-navbar opacity="1" :title="title" titleColor="#333" bgcolor="#ffffff">
+			<template v-slot:back>
+				<view @click="toBack">
+					<i class="icon-ic_cancel_white" style="color:#333">
+					</i>
+				</view>
+			</template>
+		</custom-navbar>
+		
+		<view :style="{height:navBarHeight}"></view> -->
+		
+		
 		<view class="top-tab">
 			<view 
 				v-for="(item,index) in tabList" 
@@ -37,10 +49,9 @@
 						<view class="order-container" v-for="item in orderList" :key="item.id">
 							<view class="header">
 								<view class="store-name" @click="gotoShop(item)">
-									<text
-										v-if="item.orderStatus == 0 ">{{item.orderName?item.orderName:item.storeName}}</text>
+									<text v-if="item.orderStatus == 0 ">{{item.orderName?item.orderName:item.storeName}}</text>
 									<text v-else>{{item.storeName}}</text>
-									<image v-if="!item.orderName" src="../../../static/order/ic_more@2x.png" mode=" " />
+									<image v-if="!item.orderName" src="../../static/ic_more.svg" mode=" " />
 								</view>
 								<view class="order-status"
 									:class="{active: item.orderStatus == 2 || item.orderStatus == 3}">
@@ -74,8 +85,8 @@
 									<view class="total-price">
 										<view class="product-price">
 											<text style="font-size:22rpx;">￥</text>
-											<text style="font-weight: 400;">{{handlePrice(item.totalAmount)[0]}}.</text>
-											<text style="font-size:22rpx;">{{handlePrice(item.totalAmount)[1]}}</text>
+											<text style="font-weight: 400;" class="price-font">{{handlePrice(item.totalAmount)[0]}}.</text>
+											<text style="font-size:22rpx;" class="price-font">{{handlePrice(item.totalAmount)[1]}}</text>
 										</view>
 										<view>共{{item.goodsNumber}}类</view>
 									</view>
@@ -92,14 +103,14 @@
 									<text>
 										<text>总价</text>
 										<text style="font-size:18rpx;">￥</text>
-										<text>{{handlePrice(item.orderTotalAmount)[0]}}.</text>
-										<text style="font-size:18rpx;">{{handlePrice(item.orderTotalAmount)[1]}}</text>
+										<text class="price-font" style="font-size: 22rpx;">{{handlePrice(item.orderTotalAmount)[0]}}.</text>
+										<text style="font-size:18rpx;" class="price-font">{{handlePrice(item.orderTotalAmount)[1]}}</text>
 									</text>
 									<text v-if="item.discount">
 										<text style="margin-left: 18rpx;">优惠</text>
 										<text style="font-size:18rpx;">￥</text>
-										<text>{{handlePrice(item.discount)[0]}}.</text>
-										<text style="font-size:18rpx;">{{handlePrice(item.discount)[1]}}</text>
+										<text style="font-size: 22rpx;" class="price-font">{{handlePrice(item.discount)[0]}}.</text>
+										<text style="font-size:18rpx;" class="price-font">{{handlePrice(item.discount)[1]}}</text>
 									</text>
 								</view>
 
@@ -109,9 +120,9 @@
 									<text v-if=" !item.freight && item.handlingFees">需付款(含搬运费)</text>
 									<text v-if="!item.freight && !item.handlingFees">需付款</text>
 									<text style="color:#FF3347;margin-left: 8rpx;">
-										<text style="font-size:18rpx;">￥</text>
-										<text style="font-size: 32rpx;">{{handlePrice(item.payAmount)[0]}}.</text>
-										<text style="font-size:18rpx;">{{handlePrice(item.payAmount)[1]}}</text>
+										<text style="font-size:22rpx;">￥</text>
+										<text style="font-size: 32rpx;" class="price-font">{{handlePrice(item.payAmount)[0]}}.</text>
+										<text style="font-size:22rpx;" class="price-font">{{handlePrice(item.payAmount)[1]}}</text>
 									</text>
 								</view>
 
@@ -119,13 +130,13 @@
 									<text>实付</text>
 									<text v-if="item.orderStatus == 3" style="color:#FF3347;margin-left: 8rpx;">
 										<text style="font-size:18rpx;">￥</text>
-										<text	style="font-size: 32rpx;">{{handlePrice(item.orderReceivableAmount)[0]}}.</text>
-										<text style="font-size:18rpx;">{{handlePrice(item.orderReceivableAmount)[1]}}</text>
+										<text	style="font-size: 32rpx;" class="price-font">{{handlePrice(item.orderReceivableAmount)[0]}}.</text>
+										<text style="font-size:18rpx;" class="price-font">{{handlePrice(item.orderReceivableAmount)[1]}}</text>
 									</text>
 									<text  v-else style="color:#FF3347;margin-left: 8rpx;">
 										<text style="font-size:18rpx;">￥</text>
-										<text	style="font-size: 32rpx;">{{handlePrice(item.totalActualIncomeAmount)[0]}}.</text>
-										<text style="font-size:18rpx;">{{handlePrice(item.totalActualIncomeAmount)[1]}}</text>
+										<text	style="font-size: 32rpx;" class="price-font">{{handlePrice(item.totalActualIncomeAmount)[0]}}.</text>
+										<text style="font-size:18rpx;" class="price-font">{{handlePrice(item.totalActualIncomeAmount)[1]}}</text>
 									</text>
 								</view>
 							</view>
@@ -155,25 +166,31 @@
 									</view>
 
 								</view>
-								<view v-if="item.showToPayBtn || item.showCancelBtn" class="button">
-									<button v-if="item.showCancelBtn" type="default" size="mini" class="cancel-order"
-										@click="handleCancelOrder(item.id)">取消订单</button>
-
-									<button v-if="item.showToPayBtn" type="default" size="mini" class="go-to-pay"
-										@click="toPay(item)">去付款</button>
-
+								<view v-if="item.showToPayBtn || item.showCancelBtn" class="waitPayBottom">
+									<view  v-if="item.showCancelBtn" class="cancel-order" 	@click="handleCancelOrder(item.id)">
+										取消订单
+									</view>
+									<view  v-if="item.showToPayBtn" class="go-to-pay" @click="toPay(item)">
+										去付款
+									</view>
 								</view>
 							</view>
-							<view class="footer buttonContainer "
-								v-if="item.orderStatus == 1 && item.shipmentStatus == 1">
+							<view 
+								class="footer buttonContainer"
+								v-if="item.orderStatus == 1 && item.stockType == 0 && item.shipmentStatus == 1"
+							>
 								<view class="button">
-									<button type="default" size="mini" class="go-to-pay"
-										@click="handleConfirmReceipt(item)">确认收货</button>
+									<view class="go-to-pay" @click="handleConfirmReceipt(item)">
+										确认收货
+									</view>
 								</view>
 							</view>
 						</view>
 					</view>
-					<view v-if="orderList.length == 0 && !loading" class="swiper-item empty-container">
+					<view 
+						v-if="orderList.length == 0 && !loading" 
+						class="swiper-item empty-container"
+					>
 						<view class="empty-page">
 							<view class="line" />
 							<view class="content ">
@@ -228,7 +245,9 @@
 				id: -1,
 				systemBottom: "",
 				areaId: "",
-				loading:true
+				loading:true,
+				navBarHeight: "",
+				title:"我的订单",
 			};
 		},
 
@@ -252,6 +271,14 @@
 			const currentHouse = getApp().globalData.currentHouse;
 			this.areaId = currentHouse.areaId;
 			this.getOrderList();
+			// 获取胶囊按钮的位置
+			const systemInfo = uni.getSystemInfoSync();
+			const menuButtonInfo = uni.getMenuButtonBoundingClientRect();
+			this.navBarHeight =
+				menuButtonInfo.top +
+				(menuButtonInfo.top - systemInfo.statusBarHeight) +
+				menuButtonInfo.height +
+				"px";
 		},
 		onShow() {
 			if (this.firstEntry) return;
@@ -339,6 +366,12 @@
 						if (this.orderList4.length < 1) this.getOrderList();
 						break;
 				}
+			},
+			
+			toBack(){
+				uni.navigateBack({
+					delta:1	
+				})
 			},
 
 			//跳转到详情页面
@@ -541,6 +574,10 @@
 </script>
 
 <style lang="scss" scoped>
+	::v-deep .navi-header view{
+			font-size: 32rpx !important;
+			font-weight: bold !important;
+	}
 	// page{
 	// 	height: 100% !important;
 	// }
@@ -560,6 +597,7 @@
 		.tab-text {
 			width: 150rpx;
 			height: 96rpx;
+			font-size: 14.5px;
 			line-height: 96rpx;
 			text-align: center;
 		}
@@ -585,7 +623,7 @@
 
 		.selected {
 			color: black;
-			font-weight: 1000;
+			font-weight: bold;
 
 			.bottom-icon {
 				position: absolute;
@@ -613,9 +651,8 @@
 			display: flex;
 			flex-flow: row nowrap;
 			align-items: center;
-
 			text {
-				font-weight: 1000;
+				font-weight: 500;
 				max-width: 476rpx;
 				font-size: 28rpx;
 				overflow: hidden;
@@ -714,7 +751,7 @@
 
 	.line {
 		width: 100%;
-		height: 1rpx;
+		height: 0.5px;
 		background-color: #f2f2f2;
 	}
 
@@ -754,13 +791,17 @@
 			}
 		}
 
-		.button {
+		.waitPayBottom {
+			display: flex;
+			flex-flow: row nowrap;
+			align-items: center;
+			justify-content: flex-end;
 			.cancel-order {
 				width: 140rpx;
 				height: 56rpx;
-				box-sizing: border;
-				border: 2rpx solid #cccccc;
-				line-height: 52rpx;
+				line-height: 54rpx;
+				box-sizing: border-box;
+				border: 0.5px solid #cccccc;
 				border-radius: 32rpx;
 				font-size: 24rpx;
 				text-align: center;
@@ -771,11 +812,12 @@
 			.go-to-pay {
 				width: 140rpx;
 				height: 56rpx;
+				font-weight: bold;
 				line-height: 56rpx;
 				text-align: center;
 				font-size: 24rpx;
 				margin-left: 24rpx;
-				background: linear-gradient(135deg, #36d9cd 0%, #28c6c6 100%);
+				background: linear-gradient(99deg, #00CCBE 0%, #00C2BF 100%);
 				border-radius: 32rpx;
 				color: #ffffff;
 				padding: 0;
@@ -814,7 +856,19 @@
 		height: 1rpx solid #f2f2f2;
 	}
 	
-
+	.go-to-pay {
+		width: 140rpx;
+		height: 56rpx;
+		font-weight: bold;
+		line-height: 56rpx;
+		text-align: center;
+		font-size: 24rpx;
+		margin-left: 24rpx;
+		background: linear-gradient(99deg, #00CCBE 0%, #00C2BF 100%);
+		border-radius: 32rpx;
+		color: #ffffff;
+		padding: 0;
+	}
 	.swiper {
 		flex: 1;
 		display: flex;

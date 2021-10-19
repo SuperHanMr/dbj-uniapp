@@ -10,13 +10,13 @@
             <view class="role">管家</view>
           </view>
         </view>
-        <view class="date">{{detail.createTime}}</view>
+        <view class="date">{{detail.createTime | calendarFormat}}</view>
       </view>
       <view class="desc">{{detail.summaryDescription}}</view>
       <view class="picture flex-row">
         <view class="imgs" v-for="(item, index) in detail.sitePhotoList" :key="index" v-if="index < 6">
-          <image :src="item" @click="clickImg(detail.sitePhotoList)"></image>
-          <view class="zz" v-if="index === 5" @click="clickImg(detail.sitePhotoList)">+{{detail.sitePhotoList.length - 6}}
+          <image :src="item" @click="clickImg(detail.sitePhotoList, index)"></image>
+          <view class="zz" v-if="index === 5" @click="clickImg(detail.sitePhotoList, 5)">+{{detail.sitePhotoList.length - 6}}
           </view>
         </view>
       </view>
@@ -25,6 +25,9 @@
 </template>
 
 <script>
+  import {
+    calendarFormat
+  } from "../../../utils/date.js"
   export default {
     props: {
       detail: {
@@ -33,19 +36,24 @@
       }
     },
     methods: {
-      clickImg(url) {
+      clickImg(url, index) {
         let arr = new Array();
         if (url instanceof Array) {
           arr = [...url]
         } else {
           arr.push(url)
         }
-        console.log(arr)
+        console.log(arr, index)
         uni.previewImage({
-          // current: 1,
+          current: index,
           urls: arr,
           // longPressActions:{}
         })
+      }
+    },
+    filters: {
+      calendarFormat(time) {
+        return calendarFormat(time)
       }
     }
   }

@@ -17,7 +17,8 @@
 							已选："{{selectSkuInfo[cbValue]}}"
 						</view> -->
 					</view>
-					<image class="close" src="../../../static/shopping-cart/ic_closed_black@2x.png" @click="closeSkuBox"></image>
+					<image class="close" @click="closeSkuBox"
+						src="http://dbj.dragonn.top/static/mp/dabanjia/images/my/ic_closed_black%402x.png"></image>
 				</view>
 				<scroll-view class="sku-list" scroll-y="true">
 					<view class="sku-item container" v-for="(sku,speIdx) in mySpecifications" :key="sku[speId]">

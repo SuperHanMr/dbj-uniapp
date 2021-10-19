@@ -5,10 +5,7 @@
 				<view class="header">
 					<view class="store-name">
 						<text>{{item.storeName}}</text>
-						<image
-							src="../../../static/order/ic_more@2x.png"
-							mode=""
-						></image>
+						<image src="../../static/ic_more.svg" mode="" />
 					</view>
 					<view class="order-status">
 						<text> {{item.type==0?"仅退款(未发货)":item.type==1 ? "仅退款(退库存)":item.type==2 ? "仅退款(已收货)":item.type==3?"服务退款":""}}</text>				
@@ -29,26 +26,31 @@
 								<view class="attr">
 									<text>{{item2.scaleProperties}}</text>
 								</view>
-								<view class="refund-price">
-									<text style="margin-right:8rpx ;">退款金额</text>
-									<text class="product-price">
-										<text style="font-size:22rpx;">￥</text>
-										<text>{{handlePrice(item.refundAmount)[0]}}.</text>
-										<text style="font-size:22rpx;">{{handlePrice(item.refundAmount)[1]}}</text>
-									</text>
-								</view>
 							</view>
 						</view>
-					</view>		
+					</view>	
+						<view class="line"></view>
+				</view>
+				<view class="refund-price">
+					<text style="margin-right:8rpx;">退款金额</text>
+					<text class="product-price">
+						<text style="font-size:22rpx;">￥</text>
+						<text class="price-font">
+							<text>{{handlePrice(item.refundAmount)[0]}}.</text>
+							<text style="font-size:22rpx;">{{handlePrice(item.refundAmount)[1]}}</text>
+						</text>
+					</text>
 				</view>
 				
-			
+				
 				<view class="refund-status refundInProgress" v-if="item.status == 0 || item.status == 1 ">
 					<text style="margin-right: 16rpx;">退款中</text>
 					<text>
 						<text style="font-size:26rpx;">￥</text>
-						<text style="font-size:40rpx;">{{handlePrice(item.refundAmount)[0]}}.</text>
-						<text style="font-size:26rpx;">{{handlePrice(item.refundAmount)[1]}}</text>
+						<text class="price-font">
+							<text style="font-size:40rpx;">{{handlePrice(item.refundAmount)[0]}}.</text>
+							<text style="font-size:26rpx;">{{handlePrice(item.refundAmount)[1]}}</text>
+						</text>
 					</text>
 				</view>
 				
@@ -56,35 +58,32 @@
 					<text  style="margin-right: 16rpx;">退款成功</text>
 					<text>
 						<text style="font-size:26rpx;">￥</text>
-						<text style="font-size:40rpx;">{{handlePrice(item.refundAmount)[0]}}.</text>
-						<text style="font-size:26rpx;">{{handlePrice(item.refundAmount)[1]}}</text>
+						<text class="price-font">
+							<text style="font-size:40rpx;">{{handlePrice(item.refundAmount)[0]}}.</text>
+							<text style="font-size:26rpx;">{{handlePrice(item.refundAmount)[1]}}</text>
+						</text>
 					</text>
 				</view>
 				
 				<view class="refund-status refund-close" v-if="item.status == 3 || item.status == 4">
 					<text style="margin-right: 16rpx;">退款关闭</text>
-					<text  style="color: #333333; font-weight: 1000">退款已关闭</text>
+					<text  style="color: #333333; font-weight: 500">退款已关闭</text>
 				</view>
 				
 				<view class="refund-status refund-fail" v-if="item.status == 5">
 					<text style="margin-right: 16rpx;">退款失败</text>
-					<text  style="font-weight: 1000">退款账户异常</text>
+					<text  style="font-weight: 500">退款账户异常</text>
 				</view>
 			
 				<view class="footer">
 					<view class="button-container">
-						<button
-							v-if="item.status ==0 ||item.status == 1"
-								type="default"
-								size="mini"
-								@click="open(item)"
-							>取消申请</button>
-							<button
-								type="default"
-								size="mini"
-								style="margin-left: 24rpx;"
-								@click="goToDetail(item)"
-							>查看详情</button>
+						<view v-if="item.status ==0 ||item.status == 1" class="cancel-apply"  @click="open(item)">
+							取消申请
+						</view>
+						<view class="view-detail" style="margin-left: 24rpx;" @click="goToDetail(item)">
+							查看详情
+						</view>
+						
 						</view>
 				</view>
 			</view>
@@ -181,7 +180,7 @@
 					})
 				}else if(data.status == 2){
 					uni.navigateTo({
-						url:`../my-order/order-success/order-success?type=refund$id=${data.id}`
+						url:`../my-order/order-success/order-success?type=refund&id=${data.id}`
 					})
 				}else{
 					uni.navigateTo({
@@ -222,7 +221,6 @@
 		}
 	}
 	
-
 	.header {
 		height: 96rpx;
 		margin-top: 16rpx;
@@ -237,7 +235,7 @@
 			flex-flow: row nowrap;
 			align-items: center;
 			text {
-				font-weight: 1000;
+				font-weight: 500;
 				max-width: 476rpx;
 				font-size: 28rpx;
 				overflow: hidden;
@@ -265,14 +263,16 @@
 			box-sizing: border-box;
 			display: flex;
 			flex: 1;
-			padding-bottom:32rpx;
+			padding-bottom:24rpx;
 			flex-flow: row nowrap;
 			.pic{
 				margin-right: 16rpx;
 				image{
 					width: 136rpx;
 					height: 136rpx;
-					background-color: skyblue;
+					border-radius: 8rpx;
+					box-sizing: border-box;
+					border: 2rpx solid #F4F4F4;
 				}
 			}
 			.basic-info{
@@ -317,54 +317,67 @@
 						font-size: 22rpx;
 						color: #999999;
 					}
-					.refund-price{
-						color: #999999;
-						line-height: 26rpx;
-						font-size: 22rpx;
-						margin-top: 16rpx ;
-						.product-price {
-							color: #333333;
-							height: 32rpx;
-							font-size: 32rpx;
-							margin-bottom: 8rpx;
-						}
-					}
+					
 				}
 			}
 		}
+		.line{
+			height: 2rpx;
+			background: #F4F4F4;
+		}
 	}
-	
+	.refund-price{
+		padding: 26rpx 32rpx;
+		height: 78rpx;
+		box-sizing: border-box;
+		text-align: right;
+		color: #999999;
+		line-height: 26rpx;
+		font-size: 22rpx;
+		.product-price {
+			color: #333333;
+			height: 32rpx;
+			font-size: 32rpx;
+			margin-bottom: 8rpx;
+		}
+	}
+	//退款中
 	.refundInProgress{
 		background: #FCF9F5;
-		border: 2rpx solid #F5D9BC;
+		border: 1rpx solid #F5D9BC;
 		color: #FC8B19;
-		padding:16rpx 32rpx ;
+		padding:0 32rpx ;
 		line-height: 32rpx;
 	}
+	// 退款成功
 	.refund-success{
 		background: #F5FCF9;
-		border: 2rpx solid #BCF5D9;
+		border: 1rpx solid #BCF5D9;
 		color: #0EC270;
-		padding:16rpx 32rpx ;
+		padding:0 32rpx ;
 		line-height: 32rpx;
 	}
+	// 退款关闭
 	.refund-close{
 		background: #F7F7F7;
 		color: #808080;
-		padding: 20rpx 24rpx;
+		border: 1rpx solid #EEEEEE;
+		padding: 0 24rpx;
 		line-height: 40rpx;
 	}
+	// 退款失败
 	.refund-fail{
 		background: #FEF7F8;
 		color: #FF3347;
-		border: 2rpx solid #FFD4D8;
-		padding: 20rpx 24rpx ;
+		border: 1rpx solid #FFD4D8;
+		padding: 0 24rpx ;
 		line-height: 40rpx;
 	}
 	
 	.refund-status{
 		width: 686rpx;
 		height: 80rpx;
+		line-height: 78rpx;
 		box-sizing: border-box;
 		margin: 0 32rpx;
 		border-radius: 16rpx;
@@ -377,7 +390,7 @@
 		display: flex;
 		flex-flow: row nowrap;
 		justify-content:  flex-end;
-		padding: 24rpx 32rpx;
+		padding:32rpx;
 		// text-align: right;
 		background-color: #ffffff;
 		
@@ -386,6 +399,17 @@
 			flex-flow: row nowrap;
 			justify-content:  flex-end;
 			z-index: 99;
+			.cancel-apply,.view-detail{
+				width: 140rpx;
+				height: 56rpx;
+				text-align: center;
+				line-height: 54rpx;
+				box-sizing: border-box;
+				border: 1rpx solid #CCCCCC;
+				color: #111111;
+				border-radius: 32rpx;
+				font-size: 24rpx;
+			}
 			button{
 				width: 140rpx;
 				height: 56rpx;
@@ -410,7 +434,6 @@
 			background-color: #f4f4f4;
 		}
 		.show{
-			// padding-top: 180rpx;
 			padding-top: 50%;
 			display: flex;
 			flex-flow: column nowrap;
@@ -430,13 +453,7 @@
 			
 		}
 	}
-	button{
-		display: none;
-	}
-	button::after {
-	  border: none;
-	}
-	
+
 	// 弹框样式
 	::v-deep .uni-popup-dialog{
 		width: 560rpx !important;
