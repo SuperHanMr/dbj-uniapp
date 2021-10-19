@@ -174,10 +174,10 @@
       i {
         font-size: 24rpx;
         color: #fff;
-            width: 64px;
+            width: 128rpx;
             margin: 0 auto;
-            height: 64px;
-            line-height: 64px;
+            height: 128rpx;
+            line-height: 128rpx;
       }
     }
 
