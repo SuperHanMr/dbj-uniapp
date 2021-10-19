@@ -129,6 +129,7 @@
       text-align: center;
       color: #999999;
       line-height: 34rpx;
+      margin-right: 8rpx;
     }
 
     .icon-r {
