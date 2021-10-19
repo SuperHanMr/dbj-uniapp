@@ -6,11 +6,11 @@
     @body-click="handlePlaySound">
     <view 
       class="sound-element" 
-      :class="{playing: isPlaying}" 
+      :class="{playing: isPlaying, 'sound-element-send': isMine}" 
       :style="{width: elementWidth + 'px'}"
       >
       <text class="sound-duration">{{ duration }}″</text>
-      <view class="icon-audio"></view>
+      <view class="sound-icon icon-audio"></view>
      </view>
   </message-bubble>
 </template>
@@ -34,6 +34,9 @@ export default {
       currentSoundUrl: (state) => state.message.currentSoundUrl,
       soundPlayStatus: (state) => state.message.soundPlayStatus
     }),
+    isMine() {
+      return this.message.flow === "out";
+    },
     payload() {
       return this.message.payload || {};
     },
@@ -73,6 +76,12 @@ export default {
   }
   &.playing {
     background-color: #f00;
+  }
+  &.sound-element-send {
+    color: #fff;
+    .sound-icon {
+      order: 1;
+    }
   }
 }
 </style>

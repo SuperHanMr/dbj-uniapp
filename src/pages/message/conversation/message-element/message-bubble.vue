@@ -133,11 +133,11 @@ export default {
     border-radius: 2px 8px 8px 8px;
   }
   
-  &.new .message-bubble-body {
-    transform: scale(0);
-    transform-origin: top left;
-    animation: bounce 500ms linear both;
-  }
+  // &.new .message-bubble-body {
+  //   transform: scale(0);
+  //   transform-origin: top left;
+  //   animation: bounce 500ms linear both;
+  // }
   
   &.message-send {
     padding: 24rpx 32rpx 24rpx 128rpx;
@@ -156,11 +156,11 @@ export default {
       border-radius: 8px 2px 8px 8px;
       background: $uni-color-primary;
     }
-    &.new .message-bubble-body {
-      transform: scale(0);
-      transform-origin: top right;
-      animation: bounce 500ms linear both;
-    }
+    // &.new .message-bubble-body {
+    //   transform: scale(0);
+    //   transform-origin: top right;
+    //   animation: bounce 500ms linear both;
+    // }
   }
 
   &.no-padding .message-bubble-body {

@@ -198,7 +198,7 @@
         uni.$emit("scroll-to-bottom");
         getTim().sendMessage(message).then(() => {
           this.messageContent = "";
-          this.inputFocus = true;
+          // this.inputFocus = true;
           uni.$emit("scroll-to-bottom");
         }).catch((err) => {
           console.error("发送消息失败：", err);
