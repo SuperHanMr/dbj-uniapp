@@ -165,7 +165,7 @@
       
     },
     onLoad(e){
-      this.personId = e.personId||7476
+      this.personId = e.personId||7249
       // this.getGrabDetail()
     },
     onShow(){
@@ -619,7 +619,7 @@
     .nav-header-msg {
       height: 48rpx;
       line-height: 48rpx;
-      
+      max-width: 324rpx;
       image {
         width: 48rpx;
         height: 48rpx;
@@ -634,6 +634,10 @@
         font-size: 28rpx;
         display: inline-block;
         vertical-align: top;
+        
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
       }
     }
 

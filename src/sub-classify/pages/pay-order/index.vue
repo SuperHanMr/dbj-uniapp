@@ -38,7 +38,7 @@
                     <text>.{{String(goodsItem.price).split(".")[1]?String(goodsItem.price).split(".")[1]:0}}</text>
                     <text>/{{goodsItem.unit?goodsItem.unit:""}}</text>
                   </view>
-                  <view>押金 ¥{{goodsItem.deposit}}</view>
+                  <view v-if="Number(goodsItem.deposit)">押金 ¥{{goodsItem.deposit}}</view>
                 </view>
               </view>
             </view>

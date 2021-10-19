@@ -128,18 +128,6 @@
           </uni-popup>
           <decorate-notice @touchmove.stop.prevent="()=>false" v-if="noticeActive" :num='msgNum'
             :current='currentProject.projectId' @closeNotice='closeNotice' class="decorate-notice"></decorate-notice>
-          <!-- <view class="link">
-            <view @click="gonohouse">无房屋无服入口</view>
-            <view @click="gonohousedecatore('decorate')">无房屋无服务装修</view>
-            <view @click="gonohousedecatore('checkHouse')">无房屋无服务验房</view>
-            <view @click="checkHouseRemind">验房提醒</view>
-            <view @click="confirm1">设计交付</view>
-            <view @click="confirm4">线上交底</view>
-            <view @click="dsport">设计报告交付</view>
-            <view @click="hcaa">管家竣工验收申请</view>
-            <view @click="workerCapplication">工人阶段验收申请</view>
-            <view @click="gjgxf">工序费</view>
-          </view> -->
         </view>
         <drag-button-follow v-if="msgNum>0" :num='msgNum' :style.sync="style" @btnClick='openNotice'
           :follow='`left,right`' className="drag-button" class="drag-button">
@@ -210,16 +198,6 @@
         uni.showTabBar()
       }
       
-      // const {
-      //   currentHouse
-      // } = getApp().globalData
-      // if (currentHouse?.id) {
-      //   this.getEstateList()
-      //   this.$store.dispatch("updateTabBarBadge");
-      // } else {
-      //   this.getEstateList()
-      //   // this.showNoHouse = true
-      // }
       this.getEstateList()
       this.$store.dispatch("updateTabBarBadge")
     },
@@ -258,9 +236,6 @@
     mounted() {
       uni.showTabBar()
       this.showNoHouse = false
-      // const {
-      //   currentHouse
-      // } = getApp().globalData
       uni.$on('system-messages', this.watchMsg)
       this.deviceId = uni.getStorageSync('uuDeviceId')
       if (!this.deviceId) {
@@ -377,41 +352,6 @@
         })
         console.log(this.availGuides)
       },
-      // checkHouseRemind() {
-      //   uni.navigateTo({
-      //     url: "/sub-decorate/pages/check-house-remind/check-house-remind?serverCardId=36"
-      //   })
-      // },
-      // confirm1() {
-      //   uni.navigateTo({
-      //     url: "/sub-decorate/pages/design-deliver/design-deliver"
-      //   })
-      // },
-      // dsport() {
-      //   uni.navigateTo({
-      //     url: "/sub-decorate/pages/design-report/design-report"
-      //   })
-      // },
-      // confirm4() {
-      //   uni.navigateTo({
-      //     url: `/sub-decorate/pages/design-online-disclosure/design-online-disclosure?serverId=34`
-      //   })
-      // },
-      // hcaa() {
-      //   uni.navigateTo({
-      //     url: `/sub-decorate/pages/housekeeper-c-a-application/housekeeper-c-a-application?projectId=${this.currentProject.projectId}`
-      //   })
-      // },
-      housekeeperrefuse() {
-        uni.navigateTo({
-          url: "/sub-decorate/pages/housekeeper-refuse/housekeeper-refuse"
-        })
-      },
-      // workerCapplication() {
-      //   uni.navigateTo({
-      //     url: "/sub-decorate/pages/worker-c-application/worker-c-application"
-      //   })
-      // },
       async getFriendsList() {
         let list = await friendListByEstateId({
           estateId: this.currentProject.estateId
@@ -540,16 +480,6 @@
         }
 
       },
-      // gjgxf() {
-      //   uni.navigateTo({
-      //     url: `/sub-decorate/pages/gj-process-cost/gj-process-cost?partpay=1&projectId=${this.currentProject.projectId}&estateId=${this.currentProject.estateId}&roleType=10&serviceType=5&obtainType=0`
-      //   })
-      // },
-      // gonohouse() {
-      //   uni.navigateTo({
-      //     url: "/sub-decorate/pages/no-house/no-house"
-      //   })
-      // },
       closeNotice() {
         this.noticeActive = false;
         console.log('showTabBar')
