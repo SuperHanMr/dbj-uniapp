@@ -30,6 +30,9 @@
       this.id = id
     },
     onShow() {
+      // this.queryCompletionDetail()
+    },
+    mounted() {
       this.queryCompletionDetail()
     },
     data() {

@@ -8,7 +8,7 @@
 					<view class="left flex-row-start">
 						<view v-if="item.relegationType == 2" class="friend">亲友</view>
 						<view v-if="item.defaultEstate && item.relegationType == 1" class="default">默认</view>
-						<view class="house-address">{{item.housingEstate}}{{item.address}}</view>
+						<view class="house-address" :class="{'width-ext': item.relegationType == 2 || (item.defaultEstate && item.relegationType == 1)}">{{item.housingEstate}}{{item.address}}</view>
 					</view>
 					<view class="status"
 						:class="{status0: item.projectStatus == 0, status1: item.projectStatus == 1,status3: item.projectStatus == 3,status4: item.projectStatus == 4,}">
@@ -127,7 +127,7 @@
 
 			.house-address {
 				box-sizing: border-box;
-				max-width: 468rpx;
+				max-width: 532rpx;
 				min-height: 40rpx;
 				font-size: 28rpx;
 				font-family: PingFangSC, PingFangSC-Regular;
@@ -135,6 +135,7 @@
 				text-align: left;
 				color: #333333;
 				line-height: 40rpx;
+        word-break: break-all;
 				// overflow: hidden;
 				// text-overflow: ellipsis;
 				// white-space: nowrap;
@@ -142,6 +143,9 @@
         // -webkit-line-clamp: 2;
         // -webkit-box-orient: vertical;
 			}
+      .house-address.width-ext {
+        max-width: 468rpx;
+      }
 		}
 
 		.status {
