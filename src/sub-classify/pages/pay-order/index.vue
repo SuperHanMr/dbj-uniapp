@@ -12,7 +12,7 @@
       </uni-popup>
     </view>
     <view v-else>
-      <address-picker :houseId="houseId" :productType="productType" @emitInfo="emitInfo" :originFrom="originFrom"
+      <address-picker :houseId="houseId" :productType="productType" @emitInfo="emitInfo" :originFrom="originFrom" :addUser="addUser"
         v-if="isShow">
       </address-picker>
       <view class="content">
@@ -235,7 +235,6 @@
         this.originFrom = e.from
       }
       this.houseId = e.houseId ? e.houseId : getApp().globalData.currentHouse.id
-      console.log(getApp().globalData.currentHouse.id, "e.houseId")
       this.buyCount = e.buyCount
       this.skuId = e.skuId
       this.storeId = e.storeId
@@ -409,6 +408,7 @@
           if (this.orderInfo.storeInfos.length === 1) {
             this.totalClassNum = 1
           }
+        console.log(this.addUser, "this.addUser")
         })
       },
       chooseTime(shopIndex, goodIndex) {
