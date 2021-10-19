@@ -61,6 +61,7 @@
       getGrabDetail(){
         getGrabDetail(this.personId).then(res=>{
           this.personData = res
+          
           this.personData.totalNum = unitChange(this.personData.inServiceCount+this.personData.comServiceCount)
           // this.personData.totalNum = '1.0'
           this.personData.likeCount = unitChange(this.personData.likeCount)

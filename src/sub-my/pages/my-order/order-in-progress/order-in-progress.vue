@@ -31,7 +31,7 @@
 			<view class="storeContainer">
 				<view v-for="item in orderInfo.details" :key="item.storeId" class="item">
 					<view class="header" @click="gotoShop(item)">
-						<view>{{item.storeName}}</view>
+						<view style="color: #333333;">{{item.storeName}}</view>
 						<image src="../../../static/ic_more.svg" mode=""></image>
 					</view>
 

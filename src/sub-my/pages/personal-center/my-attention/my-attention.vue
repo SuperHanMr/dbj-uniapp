@@ -46,7 +46,7 @@
 							:key="item.id"
 							@click="goToHouse(item)"
 						>
-							<image :src="item.estateImage" mode=""/>
+							<image  :src="item.estateImage" mode=""/>
 							
 						  <view class="houseInfo">
 						    <view class="header">
@@ -403,6 +403,7 @@ export default {
 		  object-fit: cover;
 			background-color: pink;
 			margin-right: 32rpx;
+			border-radius: 12rpx;
 		}
     .houseInfo {
       display: flex;
@@ -478,6 +479,7 @@ export default {
         height: 96rpx;
         object-fit: cover;
         margin-right: 24rpx;
+				border-radius: 12rpx;
       }
       .baseInfo {
         .name1,

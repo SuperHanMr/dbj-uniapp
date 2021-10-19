@@ -115,8 +115,13 @@
 			}
 		},
 		watch:{
-			defaultSpec(val){
-				this.initSkuData()
+			// defaultSpec(val){
+			// 	this.initSkuData()
+			// }
+			show(val){
+				if(val){
+					this.initSkuData()
+				}
 			}
 		},
 		computed: {

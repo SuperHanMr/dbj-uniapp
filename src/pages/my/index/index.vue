@@ -60,7 +60,7 @@
             {{ waitPayOrderNum }}
           </view>
           <image :src="item.image" mode="" />
-					<text style="color:#333333">{{item.value}}</text>
+					<text style="color:#333333;font-size: 24rpx;">{{item.value}}</text>
           
         </view>
       </view>
@@ -378,7 +378,7 @@
         .order {
           font-weight:bold;
           font-size: 32rpx;
-          color: #111111;
+          color: #333333;
         }
 
         .total {
@@ -453,6 +453,7 @@
       background-color: #ffffff;
 
       .header {
+				color: #333333;
         padding: 32rpx;
         font-size: 32rpx;
         font-weight: 600;

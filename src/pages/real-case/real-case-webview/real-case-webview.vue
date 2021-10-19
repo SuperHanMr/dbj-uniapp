@@ -26,9 +26,13 @@
 			const token = getApp().globalData.token;
 			this.hashToken = token ? token : 0;
 			this.goH5()
+			loadSuccessHandler();
 		},
 		onLoad(props) {
 			this.id = props.id;
+			uni.showLoading({
+				title: '加载中'
+			});
 		},
 
 		methods: {
@@ -43,9 +47,6 @@
 				this.url = this.ENV.VUE_APP_BASE_H5 +
 					`/app-pages/case-detail/case-detail.html?id=${this.id}&height=${height}#${this.hashToken}`
 				console.log(this.url)
-				uni.showLoading({
-					title: '加载中'
-				});
 			},
 			loadSuccessHandler(e) {
 				uni.hideLoading();

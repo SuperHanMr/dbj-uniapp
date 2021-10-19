@@ -1,11 +1,11 @@
 <template>
   <view>
     <view class="uni-padding-wrap">
-      <view @click="cancel">取消</view>
-      <view @click="confirm">确定</view>
-      <!-- <view class="uni-title">日期：{{year}}年{{month}}月{{day}}日</view> -->
+      <view class="cancel" @click="cancel">取消</view>
+      <view class="ok" @click="confirm">确定</view>
     </view>
-    <picker-view :indicator-class='indicatorClass' :value="pickTime" @change="bindChange" class="picker-view">
+    <picker-view :indicator-style="indicatorStyle" :indicator-class="indicatorClass" :value="pickTime"
+      @change="bindChange" class="picker-view">
       <picker-view-column>
         <view class="item" v-for="(item,index) in yearArr" :key="index">{{item}}年</view>
       </picker-view-column>
@@ -40,7 +40,8 @@
         minutesArr: [],
         pickTime: [0, 0, 0, 0, 0],
         timer: null,
-        indicatorClass: 'date-item'
+        indicatorClass: 'date-item',
+        indicatorStyle: 'color: #333'
       }
     },
     created() {
@@ -73,10 +74,14 @@
       },
       confirm() {
         const year = this.yearArr[this.pickTime[0]]
-        const month = this.monthArr[this.pickTime[1]] > 10 ? this.monthArr[this.pickTime[1]] : ('0' + this.monthArr[this.pickTime[1]])
-        const day = this.dayArr[this.pickTime[2]] > 10 ? this.dayArr[this.pickTime[2]] : ('0' + this.dayArr[this.pickTime[2]])
-        const hour = this.hoursArr[this.pickTime[3]] > 10 ? this.hoursArr[this.pickTime[3]] : ('0' + this.hoursArr[this.pickTime[3]])
-        const minutes = this.minutesArr[this.pickTime[4]] > 10 ? this.minutesArr[this.pickTime[4]] : ('0' + this.minutesArr[this.pickTime[4]])
+        const month = this.monthArr[this.pickTime[1]] > 10 ? this.monthArr[this.pickTime[1]] : ('0' + this.monthArr[this
+          .pickTime[1]])
+        const day = this.dayArr[this.pickTime[2]] > 10 ? this.dayArr[this.pickTime[2]] : ('0' + this.dayArr[this
+          .pickTime[2]])
+        const hour = this.hoursArr[this.pickTime[3]] > 10 ? this.hoursArr[this.pickTime[3]] : ('0' + this.hoursArr[this
+          .pickTime[3]])
+        const minutes = this.minutesArr[this.pickTime[4]] > 10 ? this.minutesArr[this.pickTime[4]] : ('0' + this
+          .minutesArr[this.pickTime[4]])
         let time = `${year}-${month}-${day} ${hour}:${minutes}:00`
         this.$emit('getTime', time)
         this.$emit('close')
@@ -213,10 +218,10 @@
     }
   }
 </script>
-<style>
+<style scoped>
   .uni-padding-wrap {
-    padding: 0 26rpx;
-    height: 120rpx;
+    padding: 40rpx;
+    /* height: 120rpx; */
     background: #f9fafb;
     border-radius: 32rpx 32rpx 0rpx 0rpx;
     display: flex;
@@ -240,5 +245,23 @@
 
   .date-item {
     height: 100rpx;
+  }
+
+  /deep/ .picker-view .item {
+    color: #333;
+  }
+  .cancel,
+  .ok {
+    width: 60rpx;
+    height: 42rpx;
+    font-size: 30rpx;
+    font-family: PingFangSC, PingFangSC-Medium;
+    font-weight: 700;
+    text-align: center;
+    color: #989898;
+    line-height: 42rpx;
+  }
+  .ok {
+    color: #00c2b8;
   }
 </style>
