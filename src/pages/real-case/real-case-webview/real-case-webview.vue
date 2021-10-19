@@ -41,7 +41,7 @@
 					}
 				})
 				this.url = this.ENV.VUE_APP_BASE_H5 +
-					`/app-pages/case-detail/case-detail.html?id=${this.id}&height=${height}#token=${this.searchToken}`
+					`/app-pages/case-detail/case-detail.html?id=${this.id}&height=${height}#${this.hashToken}`
 				console.log(this.url)
 				uni.showLoading({
 					title: '加载中'
