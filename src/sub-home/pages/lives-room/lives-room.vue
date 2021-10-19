@@ -628,6 +628,8 @@
 			width: 640rpx;
 			height: 716rpx;
 			background-color: #fff;
+			border-radius: 24rpx;
+			overflow: hidden;
 
 			.img {
 				width: 640rpx;
@@ -635,6 +637,8 @@
 				background: url("http://dbj.dragonn.top/static/mp/dabanjia/images/home/lives_download.png");
 				background-size: contain;
 				position: relative;
+				border-top-right-radius: 24rpx;
+				border-top-left-radius: 24rpx;
 
 				.close {
 					float: right;
@@ -777,6 +781,7 @@
 			flex-direction: row;
 			align-items: center;
 			margin-bottom: 20rpx;
+			margin-top: 40rpx;
 
 			.input-text {
 				margin-left: 24rpx;
@@ -858,7 +863,7 @@
 			}
 
 			.chat-item {
-				margin-top: 16rpx;
+				margin-top: 12rpx;
 				margin-left: 24rpx;
 				max-width: 544rpx;
 				background: rgba(0, 0, 0, 0.3);

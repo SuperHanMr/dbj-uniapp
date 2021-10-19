@@ -14,6 +14,7 @@
         class="input"
         type="number"
         v-model="phone"
+				:style="{color:phone?'#333333':'#cca459'}"
         placeholder="输入亲友手机号"
       />
       <view
@@ -262,7 +263,7 @@ page {
         justify-content: center;
         align-items: center;
         border-radius: 12rpx;
-        border: 1px solid #e5e5e5;
+        border: 0.5rpx solid #e5e5e5;
         font-size: 28rpx;
       }
 
@@ -274,6 +275,7 @@ page {
       .add {
         background: linear-gradient(135deg, #36d9cd, #28c6c6);
         color: #ffffff;
+				border: none;
       }
     }
   }

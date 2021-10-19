@@ -165,7 +165,7 @@
       
     },
     onLoad(e){
-      this.personId = e.personId||7257
+      this.personId = e.personId||7476
       // this.getGrabDetail()
     },
     onShow(){
@@ -400,7 +400,7 @@
       height: 104rpx;
       background: rgba(0, 191, 182, 0.07);
       border-radius: 16px;
-      border: 1px solid rgba(0, 191, 182, 0.2);
+      border: 0.5px solid rgba(0, 191, 182, 0.2);
       text-align: center;
       line-height: 104rpx;
       color: #00BFB6;
@@ -420,7 +420,7 @@
       }
     }
     .person-msg-top {
-      border-bottom: 1px solid #F3F3F3;
+      border-bottom: 0.5px solid #F3F3F3;
     }
 
     .person-msg-header {
@@ -511,7 +511,7 @@
         // width: 86rpx;
         height: 64rpx;
         border-radius: 12rpx;
-        border: 1px solid #00BFB6;
+        border: 0.5px solid #00BFB6;
         color: #00BFB6;
         line-height: 64rpx;
         padding: 0 18rpx;
@@ -652,7 +652,7 @@
       display: flex;
       flex-wrap: wrap;
       justify-content: space-evenly;
-      border-bottom: 1px solid #EFEFEF;
+      border-bottom: 0.5px solid #EFEFEF;
 
       view {
         line-height: 80rpx;

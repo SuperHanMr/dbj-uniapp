@@ -46,7 +46,7 @@
 			return {
 				roomId: "",
 				options: [{
-					text: "删除",
+					text: "移除",
 					style: {
 						backgroundColor: "#FF3347",
 					},
@@ -179,8 +179,8 @@
 
 			.home_owner {
 				position: absolute;
-				bottom: -16rpx;
-				right: -16rpx;
+				bottom: -10rpx;
+				right: -10rpx;
 				width: 32rpx;
 				height: 32rpx;
 			}
@@ -220,7 +220,7 @@
 
 		.add-btn {
 			height: 88rpx;
-			background: linear-gradient(135deg, #53d5cc, #4fc9c9);
+			background: linear-gradient(135deg, #00BFAF, #00BFBC);
 			border-radius: 12rpx;
 			width: 686rpx;
 			line-height: 88rpx;

@@ -70,18 +70,18 @@
       };
     },
     mounted() {
-      if (this.originFrom === "orderToast") {
-        getAddressInfo(this.houseId).then((data) => {
-          this.addressInfo = data
-          let params = {
-            estateId: this.houseId
-          }
-          getProductID(params).then((data) => {
-            this.addressInfo.projectId = data
-            this.$emit('emitInfo', this.addressInfo)
-          })
-        })
-      }
+      // if (this.originFrom === "orderToast") {
+      //   getAddressInfo(this.houseId).then((data) => {
+      //     this.addressInfo = data
+      //     let params = {
+      //       estateId: this.houseId
+      //     }
+      //     getProductID(params).then((data) => {
+      //       this.addressInfo.projectId = data
+      //       this.$emit('emitInfo', this.addressInfo)
+      //     })
+      //   })
+      // }
     },
     methods: {
       checkAddress() {
@@ -94,23 +94,25 @@
     watch: {
       houseId: {
         handler(v) {
-          if (uni.getStorageSync("houseIdChange")) {
-            return
-          }
-          uni.setStorageSync("houseIdChange", "changed")
-          this.timer = setTimeout(() => {
-            uni.removeStorageSync("houseIdChange")
-          }, 300)
-          getAddressInfo(v).then((data) => {
-            this.addressInfo = data
-            let params = {
-              estateId: v
-            }
-            getProductID(params).then((data) => {
-              this.addressInfo.projectId = data
-              this.$emit('emitInfo', this.addressInfo)
+          // if (uni.getStorageSync("houseIdChange")) {
+          //   return
+          // }
+          // uni.setStorageSync("houseIdChange", "changed")
+          // this.timer = setTimeout(() => {
+          //   uni.removeStorageSync("houseIdChange")
+          // }, 300)
+          if(v) {
+            getAddressInfo(v).then((data) => {
+              this.addressInfo = data
+              let params = {
+                estateId: v
+              }
+              getProductID(params).then((data) => {
+                this.addressInfo.projectId = data
+                this.$emit('emitInfo', this.addressInfo)
+              })
             })
-          })
+          }
         },
         immediate: true
       }

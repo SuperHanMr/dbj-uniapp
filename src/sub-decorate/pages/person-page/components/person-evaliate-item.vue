@@ -46,7 +46,7 @@
 <style lang="scss" scoped>
   .evaluate-item{
     padding: 32rpx 0;
-    border-bottom: 1px solid #F4F4F4;
+    border-bottom: 0.5px solid #F4F4F4;
   }
   .border-none{
     border-bottom:none
@@ -94,7 +94,7 @@
       // display: flex;
       // align-items: center;
       background-color: #F5F6F6;
-      border: 1px solid #edf0f0;
+      border: 0.5px solid #edf0f0;
       border-radius: 6rpx;
       padding-left: 2rpx;
       display: flex;

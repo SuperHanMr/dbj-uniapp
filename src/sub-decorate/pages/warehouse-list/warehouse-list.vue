@@ -69,7 +69,6 @@ import { confirmGoods } from "../../../api/decorate.js";
 export default {
   data() {
     return {
-      triggered: false,
       projectId: "0",
       list0: [],
       list1: [],

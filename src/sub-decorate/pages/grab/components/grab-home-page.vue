@@ -65,7 +65,7 @@
     border-radius: 48rpx;
     .grab-content-top{
       position: relative;
-      border-bottom: 1px solid #F3F3F3;
+      border-bottom: 0.5px solid #F3F3F3;
       // height: 336rpx;
       padding-top: 216rpx;
       .grab-content-header{
