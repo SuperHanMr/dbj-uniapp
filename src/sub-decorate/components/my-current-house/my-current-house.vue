@@ -1,6 +1,6 @@
 <template>
 	<view class="my-current-house">
-		<image class="ic-location" src="http://dbj.dragonn.top/static/mp/dabanjia/images/decorate/ic_location.svg"></image>
+		<image class="ic-location" src="http://dbj.dragonn.top/%20static/mp/dabanjia/images/decorate/ic_location.svg"></image>
 		<view class="house-info">
 			<view class="address">{{houseData.housingEstate}}</view>
 			<view class="area">面积：{{houseData.insideArea}}m²</view>
@@ -47,7 +47,7 @@
 		width: 32rpx;
 		height: 32rpx;
 		margin-right: 16rpx;
-		margin-top: 8rpx;
+		margin-top: 10rpx;
 	}
 
 	.switch-house {

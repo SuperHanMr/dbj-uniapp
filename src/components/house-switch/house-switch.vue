@@ -96,12 +96,12 @@
 	.item {
 		box-sizing: border-box;
 		padding-top: 32rpx;
-		height: 104rpx;
+		min-height: 104rpx;
 	}
 
 	.item-inner {
 		box-sizing: border-box;
-		height: 40rpx;
+		min-height: 40rpx;
 
 		.left {
 			margin-right: 32rpx;
@@ -111,6 +111,7 @@
 			.default {
 				box-sizing: border-box;
 				width: 60rpx;
+        margin-top: 4rpx;
 				height: 32rpx;
 				background: #ffffff;
 				border: 1rpx solid #cccccc;
@@ -127,16 +128,19 @@
 			.house-address {
 				box-sizing: border-box;
 				max-width: 468rpx;
-				height: 40rpx;
+				min-height: 40rpx;
 				font-size: 28rpx;
 				font-family: PingFangSC, PingFangSC-Regular;
 				font-weight: 400;
 				text-align: left;
 				color: #333333;
 				line-height: 40rpx;
-				overflow: hidden;
-				text-overflow: ellipsis;
-				white-space: nowrap;
+				// overflow: hidden;
+				// text-overflow: ellipsis;
+				// white-space: nowrap;
+        // display: -webkit-box;
+        // -webkit-line-clamp: 2;
+        // -webkit-box-orient: vertical;
 			}
 		}
 
@@ -235,6 +239,6 @@
 		display: flex;
 		flex-direction: row;
 		justify-content: flex-start;
-		align-items: center;
+		align-items: flex-start;
 	}
 </style>
