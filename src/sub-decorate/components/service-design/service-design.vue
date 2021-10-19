@@ -92,7 +92,7 @@
       margin-bottom: 48rpx;
       .report-item{
         height: 100rpx;
-        border-bottom: 1px solid #F4F4F4;
+        border-bottom: 0.5px solid #F4F4F4;
         display: flex;
         justify-content: space-between;
         align-items: center;
@@ -142,7 +142,7 @@
           width: 328rpx;
           height: 216rpx;
           opacity: 1;
-          border: 1px solid #f5f6f6;
+          border: 0.5px solid #f5f6f6;
           border-radius: 12rpx;
           margin-bottom: 16rpx;
           background-color: #eee;

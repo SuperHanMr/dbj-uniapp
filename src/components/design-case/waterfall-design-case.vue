@@ -102,7 +102,7 @@
 	font-size: 28rpx;
 	margin-bottom: 20rpx;
 	background: #ffffff;
-	border: 1px solid #ececec;
+	border: 0.5px solid #ececec;
 	border-radius: 8px;
 	.img-box{
 		position: relative;
