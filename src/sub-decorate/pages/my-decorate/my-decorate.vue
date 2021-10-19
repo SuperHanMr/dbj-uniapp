@@ -293,13 +293,13 @@
       margin-right: 16rpx;
       height: 58rpx;
       line-height: 58rpx;
-      border: 1px solid #ececec;
+      border: 0.5px solid #ececec;
       border-radius: 8rpx;
     }
   
     .report-item-active {
       background: rgba(0, 191, 182, 0.07);
-      border: 1px solid #00bfb6;
+      border: 0.5px solid #00bfb6;
       color: #00BFB6;
       font-size: 26rpx;
       font-weight: 400;

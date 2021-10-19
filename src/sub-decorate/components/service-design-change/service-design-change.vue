@@ -55,7 +55,7 @@
       align-items: center;
       justify-content: center;
       // padding: 0 16rpx;
-      border: 1px solid #f2f2f2;
+      border: 0.5px solid #f2f2f2;
       position: relative;
       border-radius: 16px 16px 0px 0px;
       .title{
@@ -81,7 +81,7 @@
     }
     .card-item{
       height: 102rpx;
-      border-bottom: 1px solid #F4F4F4;
+      border-bottom: 0.5px solid #F4F4F4;
       display: flex;
       align-items: center;
       justify-content: space-between;

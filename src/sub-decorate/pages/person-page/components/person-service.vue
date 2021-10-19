@@ -102,7 +102,7 @@
       padding-bottom: 24rpx;
       padding-right: 32rpx;
       width: calc(100% - 176rpx);
-      border-bottom: 1px solid #F4F4F4;
+      border-bottom: 0.5px solid #F4F4F4;
       .item-msg-left{
         .item-msg-title{
           width: 364rpx;
@@ -137,7 +137,7 @@
           width: 94rpx;
           height: 30rpx;
           border-radius: 6rpx;
-          border: 1px solid rgba(197, 165, 141, 0.3);
+          border: 0.5px solid rgba(197, 165, 141, 0.3);
           font-size: 20rpx;
           color: #C5A58D;
           text-align: center;
