@@ -111,6 +111,7 @@
 			todayC(today){
 				this.checkToday = !this.checkToday
 				this.choose = today
+				this.$emit('filterDynamics', today)
 			},
 			toMemo(){
 				uni.navigateTo({

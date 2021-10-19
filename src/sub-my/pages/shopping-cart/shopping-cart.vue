@@ -327,18 +327,28 @@
 					return item
 				})
 			},
-			handleConfirm(preId,curId){
+			handleConfirm(preId,curId,storeId){
 				// console.log(preId,curId)
+				let goodsChecked = false
+				this.shopList.forEach(item => {
+					if(item.storeId === storeId){
+						item.skuList.forEach(ele => {
+							if(ele.skuId === preId){
+								goodsChecked = ele.goodsChecked
+							}
+						})
+					}
+				})
 				let params = {
 					userId: this.userId,
 					beforeSkuId: preId,
 					nowSkuId: curId
 				}
 				setGoodsSku(params).then((data) => {
-					this.getPage(curId)
+					this.getPage(curId,goodsChecked)
 				})
 			},
-			getPage(targetId){
+			getPage(targetId,goodsChecked){
 				getShoppingCartInfo().then(data => {
 					let {storeList,disabledSkuList} = data
 					if(!storeList.length && !disabledSkuList.length){
@@ -356,7 +366,7 @@
 									ele.goodsChecked = false
 								}
 								if(ele.skuId === targetId){
-									ele.goodsChecked = true
+									ele.goodsChecked = goodsChecked
 								}
 								return ele
 							})
@@ -524,7 +534,7 @@
 				}
 				setBuyCount(params).then((data) => {
 					this.showInput = false
-					this.getPage(target.skuId)
+					this.getPage(target.skuId,target.goodsChecked)
 				})
 				
 				// console.log(val,step,miniOrder);
