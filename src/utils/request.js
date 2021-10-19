@@ -114,6 +114,7 @@ instance.interceptors.response.use(
 				config = JSON.parse(error.config.data)
 			}
 			if (!(config && config.ignoreLogin)) {
+        console.warn("goto login page", error.config);
 				uni.navigateTo({
 					url: "/pages/login/login",
 				});

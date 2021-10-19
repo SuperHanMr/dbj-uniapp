@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="16px" height="16px" viewBox="0 0 16 16" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <title>ic/check box/selected not</title>
+    <g id="ic/check-box/selected-not" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="check-box_selected" stroke="#CBCCCC" stroke-width="0.5">
+            <rect id="矩形" x="0.25" y="0.25" width="15.5" height="15.5" rx="7.75"></rect>
+        </g>
+    </g>
+</svg>

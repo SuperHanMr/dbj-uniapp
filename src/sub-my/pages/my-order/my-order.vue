@@ -1,6 +1,6 @@
 <template>
 	<view class="fill">
-		<!-- <custom-navbar opacity="1" :title="title" titleColor="#333" bgcolor="#ffffff">
+		<custom-navbar opacity="1" :title="title" titleColor="#333" bgcolor="#ffffff">
 			<template v-slot:back>
 				<view @click="toBack">
 					<i class="icon-ic_cancel_white" style="color:#333">
@@ -9,7 +9,7 @@
 			</template>
 		</custom-navbar>
 		
-		<view :style="{height:navBarHeight}"></view> -->
+		<view :style="{height:navBarHeight}"></view>
 		
 		
 		<view class="top-tab">
@@ -281,6 +281,7 @@
 				"px";
 		},
 		onShow() {
+			this.title= "我的订单"
 			if (this.firstEntry) return;
 			this.lastId[this.currentIndex] = -1;
 			this.handleReset();
@@ -369,8 +370,8 @@
 			},
 			
 			toBack(){
-				uni.navigateBack({
-					delta:1	
+				uni.switchTab({
+					url:"/pages/my/index/index"
 				})
 			},
 

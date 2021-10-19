@@ -3,7 +3,10 @@
     <view
       class="call-element" 
       :class="{'call-element-send': isMine}"
-      >{{ text }}</view>
+      >{{ text }}
+      <view v-if="isVideo" class="call-type-icon icon-call-video"></view>
+      <view v-else class="call-type-icon icon-call-audio"></view>
+    </view>
   </message-bubble>
 </template>
 
@@ -29,8 +32,15 @@ export default {
       return this.message.payloadData.params || {};
     },
     text() {
-      return "语音通话";
+      let text = this.data.actionName;
+      if (this.data.duration) {
+        text += " " + this.data.duration;
+      }
+      return text;
     },
+    isVideo() {
+      return this.data.callType == 2;
+    }
   },
   methods: {
   },
@@ -38,11 +48,24 @@ export default {
 </script>
 
 <style lang="scss">
-.call-element.call-element-send {
-  color: #fff;
-}
 .call-element {
   color: #111;
   font-size: 16px;
+  display: flex;
+  flex-flow: row nowrap;
+  align-items: center;
+}
+.call-type-icon {
+  order: -1;
+  margin-right: 12px;
+  font-size: 20px;
+}
+.call-element.call-element-send {
+  color: #fff;
+  .call-type-icon {
+    order: 1;
+    margin-right: 0;
+    margin-left: 12px;
+  }
 }
 </style>

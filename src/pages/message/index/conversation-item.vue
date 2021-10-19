@@ -27,6 +27,7 @@
 <script>
   import TIM from 'tim-wx-sdk'
   import MessageTemplate from "@/utils/message-template.json";
+  import InteractionTemplate from "@/utils/interaction_tpl.json";
   import { calendarFormat } from "@/utils/date.js"
   import { compileTemplateStr as compile } from "@/utils/util.js";
   import GroupAvatars from "@/components/group-avatars/group-avatars.vue"
@@ -91,9 +92,9 @@
               if (payloadData.type === "file_message") {
                 return "[文件]"
               }
-              let template = MessageTemplate[payloadData.type];
+              let template = MessageTemplate[payloadData.type] || InteractionTemplate[payloadData.type];
               if (template && template.summary) {
-                return "[" + compile(template.summary)(payloadData.params || {}) + "]"
+                return compile(template.summary)(payloadData.params || {});
               }
               return "[不支持的消息类型]"
             } catch (e) {
