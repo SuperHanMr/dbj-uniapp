@@ -1,6 +1,6 @@
 <template>
 	<view class="fill">
-		<custom-navbar opacity="1" :title="title" titleColor="#333" bgcolor="#ffffff">
+		<!-- <custom-navbar opacity="1" :title="title" titleColor="#333" bgcolor="#ffffff">
 			<template v-slot:back>
 				<view @click="toBack">
 					<i class="icon-ic_cancel_white" style="color:#333">
@@ -9,7 +9,7 @@
 			</template>
 		</custom-navbar>
 
-		<view :style="{height:navBarHeight}"></view>
+		<view :style="{height:navBarHeight}"></view> -->
 
 
 		<view class="top-tab">
@@ -103,14 +103,14 @@
 									<text>
 										<text>总价</text>
 										<text style="font-size:18rpx;">￥</text>
-										<text class="price-font" style="font-size: 22rpx;">{{handlePrice(item.orderTotalAmount)[0]}}.</text>
-										<text style="font-size:18rpx;" class="price-font">{{handlePrice(item.orderTotalAmount)[1]}}</text>
+										<text style="font-size: 22rpx;">{{handlePrice(item.orderTotalAmount)[0]}}.</text>
+										<text style="font-size:18rpx;" >{{handlePrice(item.orderTotalAmount)[1]}}</text>
 									</text>
 									<text v-if="item.discount">
 										<text style="margin-left: 18rpx;">优惠</text>
 										<text style="font-size:18rpx;">￥</text>
-										<text style="font-size: 22rpx;" class="price-font">{{handlePrice(item.discount)[0]}}.</text>
-										<text style="font-size:18rpx;" class="price-font">{{handlePrice(item.discount)[1]}}</text>
+										<text style="font-size: 22rpx;">{{handlePrice(item.discount)[0]}}.</text>
+										<text style="font-size:18rpx;" >{{handlePrice(item.discount)[1]}}</text>
 									</text>
 								</view>
 
@@ -128,12 +128,12 @@
 
 								<view v-else class="need-pay">
 									<text>实付</text>
-									<text v-if="item.orderStatus == 3" style="color:#FF3347;margin-left: 8rpx;">
+									<text v-if="item.orderStatus == 3" style="color:#333333;margin-left: 8rpx;">
 										<text style="font-size:18rpx;">￥</text>
 										<text	style="font-size: 32rpx;" class="price-font">{{handlePrice(item.orderReceivableAmount)[0]}}.</text>
 										<text style="font-size:18rpx;" class="price-font">{{handlePrice(item.orderReceivableAmount)[1]}}</text>
 									</text>
-									<text  v-else style="color:#FF3347;margin-left: 8rpx;">
+									<text  v-else style="color:#333333;margin-left: 8rpx;">
 										<text style="font-size:18rpx;">￥</text>
 										<text	style="font-size: 32rpx;" class="price-font">{{handlePrice(item.totalActualIncomeAmount)[0]}}.</text>
 										<text style="font-size:18rpx;" class="price-font">{{handlePrice(item.totalActualIncomeAmount)[1]}}</text>
@@ -286,6 +286,11 @@
 			this.lastId[this.currentIndex] = -1;
 			this.handleReset();
 			this.getOrderList();
+		},
+		onUnload() {
+			uni.switchTab({
+				url:"/pages/my/index/index"
+			})
 		},
 
 		computed: {

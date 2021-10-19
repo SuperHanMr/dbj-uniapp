@@ -34,11 +34,12 @@
       </view>
 
       <order-user-base-info :data="orderInfo"></order-user-base-info>
-
+			
       <view class="store-container" v-for="(item,index) in orderInfo.details" :key="index">
+				<view v-if="index > 0" style="height:0.5px;margin: 0 32rpx;background-color: #EBEBEB;" />
         <view class="storeItem" :class="{paddingBottom: item.stockType == 1 }" :style="{borderRadius:index >= 1 ? '0' :'24rpx 24rpx 0 0'}">
           <view class="header" @click="gotoShop(item)">
-            <text>{{item.storeName}}</text>
+            <text style="color: #333333;">{{item.storeName}}</text>
             <image src="../../../static/ic_more.svg" mode=""/>
           </view>
           <view v-for="item2 in item.details" :key="item2.id">
@@ -111,7 +112,7 @@
         v-if="orderInfo.showCancelBtn || orderInfo.showToPayBtn "
         :class="{noCancelBtn:true}"
         class="waitPayBottom"
-        :style="{paddingBottom:systemBottom,height:systemHeight}"
+        :style="{paddingBottom:systemBottom,height:systemHeight,justifyContent:bottomStyle }"
       >
         <view
           class="canclePay"
@@ -161,6 +162,7 @@ export default {
       areaId: "",
 			from:"",
 			navBarHeight: "",
+			bottomStyle:"",
     };
   },
 
@@ -204,6 +206,7 @@ export default {
       }).then((e) => {
         console.log(e);
         this.orderInfo = e;
+				this.bottomStyle= this.orderInfo.showCancelBtn?'space-between':'flex-end'
         console.log("this.orderInfo=", this.orderInfo);
       });
     },
