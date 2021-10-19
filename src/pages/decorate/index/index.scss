@@ -60,7 +60,6 @@
       }
 
       text {
-        // width: 126rpx;
         height: 56rpx;
         font-size: 40rpx;
         font-family: PingFangSC, PingFangSC-Medium;
@@ -282,26 +281,6 @@
     // display: flex;
     // align-items: center;
     // justify-content: center;
-  }
-
-  .link {
-    // display: flex;
-    // justify-content: flex-start;
-    // align-items: center;
-    // flex-wrap: wrap;
-    height: 400rpx;
-
-    view {
-      display: inline-block;
-      line-height: 1;
-      // padding: 10rpx 6rpx;
-      border: 2rpx solid green;
-      color: #fff;
-      background-color: #000088;
-      margin: 0 10rpx;
-      font-size: 24rpx;
-      height: 36rpx;
-    }
   }
 
   .tips-design-actuary {

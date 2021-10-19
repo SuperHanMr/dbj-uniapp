@@ -1,11 +1,12 @@
 <template>
-	<view v-show="replyBoxShow" class="message-send-box" :style="{bottom: bottom + 'px'}" @click.stop="handleBoxClick">
-		<textarea v-model="replyContent" id="replyInput" :focus="replyInputFocus" :show-confirm-bar="false"
-			:cursor-spacing="16" :adjust-position="false" fixed auto-height class="reply-send-input"
-			placeholder-class="reply-send-input-placeholder" placeholder="说点什么..." @focus="onFocus=true"
-			@blur="onFocus=fasle" @keyboardheightchange="handleKeyboardShow" />
-		<cover-view class="btn-wrapper" @click="sendTextMessage">
-			<cover-view class="reply-send-btn" :class="{disabled: replyBtnDisabled}">发送</cover-view>
+	<view v-show="replyBoxShow" class="message-send-box-live" :style="{bottom: bottom + 'px'}"
+		@click.stop="handleBoxClick">
+		<textarea v-model="replyContent" style="height: 80rpx;" id="replyInput" :focus="replyInputFocus"
+			:show-confirm-bar="false" :cursor-spacing="16" :adjust-position="false" fixed auto-height
+			class="reply-send-input-live" placeholder-class="reply-send-input-placeholder-live" placeholder="说点什么..."
+			@focus="onFocus=true" @blur="onFocus=fasle" @keyboardheightchange="handleKeyboardShow" />
+		<cover-view class="btn-wrapper-live" @click="sendTextMessage">
+			<cover-view :class="{disabled: replyBtnDisabled,'reply-send-btn-select-live': replyContent.length>0,'reply-send-btn-live': replyContent.length==0}">发送</cover-view>
 		</cover-view>
 	</view>
 </template>
@@ -98,7 +99,7 @@
 </script>
 
 <style>
-	.message-send-box {
+	.message-send-box-live {
 		display: flex;
 		flex-flow: row nowrap;
 		background: #fff;
@@ -111,43 +112,55 @@
 		box-sizing: border-box;
 	}
 
-	.reply-send-input {
+	.reply-send-input-live {
 		flex: 1;
 		box-sizing: content-box;
 		background: #f5f5f5;
 		flex: 1;
-		border-radius: 38rpx;
+		border-radius: 12rpx;
 		padding: 20rpx 32rpx;
 		font-size: 14px;
 		color: #111;
+		height: 80rpx;
 		max-height: 180rpx;
 	}
 
-	.reply-send-input-placeholder {
+	.reply-send-input-placeholder-live {
 		color: #ccc;
 		font-size: 14px;
 	}
 
-	.btn-wrapper {
+	.btn-wrapper-live {
 		width: 96rpx;
-		height: 76rpx;
+		height: 100rpx;
 		display: flex;
 		align-items: center;
 		justify-content: flex-end;
 	}
 
-	.reply-send-btn {
+	.reply-send-btn-live {
 		flex: none;
 		font-size: 12px;
 		padding: 0 20rpx;
 		height: 22px;
 		line-height: 22px;
-		background: #35c4c4;
-		color: #fff;
+		font-weight: 400;
+		color: #999999;
 		border-radius: 11px;
 	}
 
-	.reply-send-btn.disabled {
+	.reply-send-btn-select-live {
+		flex: none;
+		font-size: 12px;
+		padding: 0 20rpx;
+		height: 22px;
+		line-height: 22px;
+		font-weight: 500;
+		color: #00C2B8;
+		border-radius: 11px;
+	}
+
+	.reply-send-btn.disabled-live {
 		color: #999;
 		background: #fff;
 	}
