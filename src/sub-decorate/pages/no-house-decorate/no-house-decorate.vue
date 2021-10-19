@@ -33,9 +33,12 @@
         </template>
       </service-card>
     </view>
-    <payment v-if="noData === 1" class="payment" @gotopay="gotopay" :pieces="pieces" :countPrice="countPrice"
-      :isAllChecked="isAllChecked">
-    </payment>
+    <view v-if="noData === 1" class="payment-wrap" :style="{paddingBottom:systemBottom,height:systemHeight}">
+      <payment @gotopay="gotopay" :pieces="pieces" :countPrice="countPrice"
+        :isAllChecked="isAllChecked">
+      </payment>
+    </view>
+    
     <no-data v-if="noData === 0" words="当前城市暂未开通此服务,敬请期待~"></no-data>
     <uni-popup ref="level">
       <change-level @changeLevel="setLevel" @close="close" :dataList="levelList" :current="levelList[0]"></change-level>
@@ -119,8 +122,17 @@
         levelList: [],
         showLevel: false,
         defaultHouse: {},
-        noData: -1
+        noData: -1,
+        containerBottom: null,
+        systemBottom: null,
+        systemHeight: null,
       }
+    },
+    mounted() {
+      const menuButtonInfo = uni.getMenuButtonBoundingClientRect();
+      this.containerBottom = menuButtonInfo.bottom;
+      this.systemBottom = menuButtonInfo.bottom * 2 + "rpx";
+      this.systemHeight = menuButtonInfo.bottom * 2 + 24 + "rpx";
     },
     computed: {
       isAllChecked() {
@@ -425,15 +437,15 @@
         let areaId = this.currentHouse.areaId || this.defaultHouse.areaId
         if (pp === "design") {
           str =
-            `/sub-decorate/pages/service-list/service-list?name=设计服务&serviceType=1&areaId=${areaId}&insideArea=${this.currentHouse.insideArea}&spuId=${this.design.spuId}&categoryId=${this.design.category4Id}&unitId=${this.design.unitId}`
+            `/sub-decorate/pages/service-list/service-list?name=设计服务&serviceType=1&areaId=${areaId}&insideArea=${this.currentHouse.insideArea}&spuId=${this.design.spuId}&categoryId=${this.design.categoryTypeId}&unitId=${this.design.unitId}`
         }
         if (pp === "checkHouse") {
           str =
-            `/sub-decorate/pages/service-list/service-list?name=验房服务&serviceType=2&areaId=${areaId}&insideArea=${this.currentHouse.insideArea}&spuId=${this.checkHouse.spuId}&categoryId=${this.checkHouse.category4Id}&unitId=${this.checkHouse.unitId}`
+            `/sub-decorate/pages/service-list/service-list?name=验房服务&serviceType=2&areaId=${areaId}&insideArea=${this.currentHouse.insideArea}&spuId=${this.checkHouse.spuId}&categoryId=${this.checkHouse.categoryTypeId}&unitId=${this.checkHouse.unitId}`
         }
         if (pp === "actuary") {
           str =
-            `/sub-decorate/pages/service-list/service-list?name=精算服务&serviceType=4&areaId=${areaId}&insideArea=${this.currentHouse.insideArea}&spuId=${this.actuary.spuId}&categoryId=${this.actuary.category4Id}&unitId=${this.actuary.unitId}`
+            `/sub-decorate/pages/service-list/service-list?name=精算服务&serviceType=4&areaId=${areaId}&insideArea=${this.currentHouse.insideArea}&spuId=${this.actuary.spuId}&categoryId=${this.actuary.categoryTypeId}&unitId=${this.actuary.unitId}`
         }
         uni.navigateTo({
           url: str
@@ -666,8 +678,14 @@
     height: calc(100% - 250rpx);
   }
 
-  .payment {
-    padding: 24px 32rpx 92rpx;
+  .payment-wrap {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    padding: 24rpx 32rpx;
+    background-color: #fff;
+    box-sizing: border-box;
   }
 
   .addhouse-decs {
