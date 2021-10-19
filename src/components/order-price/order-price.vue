@@ -129,12 +129,12 @@ export default {
     handlePrice(price) {
 			if(!price) return ['0','00']
       let list = String(price).split(".");
-			return [list[0], list[1]]
-      // if (list.length == 1) {
-      //   return [list[0], "00"];
-      // } else {
-      //   return [list[0], list[1]];
-      // }
+			// return [list[0], list[1]]
+      if (list.length == 1) {
+        return [list[0], "00"];
+      } else {
+        return [list[0], list[1]];
+      }
     },
 		readExpenses(num) {
 		  this.expensesType = num

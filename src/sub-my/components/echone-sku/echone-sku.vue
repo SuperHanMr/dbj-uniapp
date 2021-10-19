@@ -115,7 +115,10 @@
 			}
 		},
 		watch:{
-			defaultSpec(val){
+			// defaultSpec(val){
+			// 	this.initSkuData()
+			// }
+			show(val){
 				this.initSkuData()
 			}
 		},

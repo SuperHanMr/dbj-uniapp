@@ -6,7 +6,7 @@
         <view class="title">Ta的简介</view>
       </view>
       <view class="msg-content">
-        <text class="report-text" > :class="{'report-text-hidden':isHidden}">{{personData.intro}}</text>
+        <text class="report-text" :class="{'report-text-hidden':isHidden}">{{personData.intro}}</text>
         <view class="openHidden" v-if="showBtn" @click="clickHidden">
           {{hddenText}}
         </view>

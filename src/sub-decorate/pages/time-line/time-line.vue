@@ -41,6 +41,7 @@
 
 <style lang="scss" scoped>
   .time-line {
+    height: 100%;
     padding: 80rpx 32rpx;
     background-color: #fff;
   }
@@ -53,12 +54,14 @@
   }
 
   .line {
+    box-sizing: border-box;
     width: 4rpx;
     background: #00C2B8;
     position: relative;
     height: 144rpx;
 
     .out {
+      box-sizing: border-box;
       position: absolute;
       top: 0;
       left: 50%;
@@ -80,7 +83,8 @@
   }
  
   .rightContent {
-    width: 606rpx;
+    box-sizing: border-box;
+    width: 638rpx;
     margin-left: 34rpx;
     padding: 0 24rpx;
     display: -webkit-box;
@@ -94,7 +98,8 @@
     background-color: #F5F6F6;
     height: 96rpx;
     margin-top: 36rpx;
-
+    
+    border-radius: 12rpx;
     .text {
       color: #333;
       font-weight: 500;

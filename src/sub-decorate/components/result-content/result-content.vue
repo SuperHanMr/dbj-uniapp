@@ -1,5 +1,5 @@
 <template>
-  <view class="result-content" v-if="isLoading">
+  <view class="result-content" >
     <view class="report-time" v-if="!isReport">{{checkData.time}}后将会自动确认验房结果</view>
     <view class="report-content">
       <view class="report-title">
@@ -22,7 +22,7 @@
         <!-- <image v-for="item of checkData.imageUrlList" :key='item' :src="item"></image> -->
       </view>
     </view>
-    <view class="sticky" v-if="isActive&&!isReport">
+    <view class="sticky" v-if="isActive&&!isReport&&isLoading">
       <view class="item" :class="{'item-active':!isReport&&currentItem==='top'}" @click="toItem('top')">
         重大隐患({{data[2].value}})</view>
       <view class="item" :class="{'item-active':!isReport&&currentItem==='hazardTop'}" @click="toItem('hazardTop')">
@@ -30,7 +30,7 @@
       <view class="item" :class="{'item-active':!isReport&&currentItem==='conformTop'}" @click="toItem('conformTop')">
         符合项({{data[0].value}})</view>
     </view>
-    <view class="text-content">
+    <view class="text-content" v-if="isLoading">
       <deliverCard id="major-hazard" color="#CA3737" title="重大隐患" :data='data[2]'></deliverCard>
       <deliverCard id="hazard" color="#F6A93B" title="隐患" :data='data[1]'></deliverCard>
       <deliverCard id="conform" color="#348BE2" title="符合项" :data='data[0]'></deliverCard>
@@ -75,8 +75,8 @@
         ec: {
           lazyLoad: true
         },
+        isLoading:true,
         option: {
-          isLoading:true,
           tooltip: {
             trigger: 'item'
           },
@@ -205,6 +205,9 @@
     methods: {
       getData() {
         this.isLoading = false
+        if(this.serverId === 0){
+          return
+        }
         getCheckResultDetail(this.serverId).then(res => {
           this.isLoading = true
           this.checkData = res

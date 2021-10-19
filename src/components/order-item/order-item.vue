@@ -70,7 +70,7 @@
 			</view>
 		</view>
 		
-		<view  class="apply-refund-container" v-if="dataList.showRefundBtn && orderStatus == 2 && dataList.type ==1">
+		<view  class="apply-refund-container" :style="{paddingTop:0}" v-if="dataList.showRefundBtn && orderStatus == 2 && dataList.type ==1">
 			<view class="button" @click.stop="particalRefund">
 				申请退款
 			</view>
@@ -97,7 +97,11 @@
 				退款关闭
 			</view>
 		</view>
-		<view class="warehouse-container" v-if="dataList.type == 1 && orderStatus==2 && dataList.stockType && dataList.stockType == 1">
+		<view
+		 class="warehouse-container" 
+		 v-if="dataList.type == 1 && orderStatus==2 && dataList.stockType && dataList.stockType == 1"
+		 :style="{marginTop:(!dataList.showRefundBtn && orderStatus==2 && dataList.type == 1 && dataList.stockType == 0 && dataList.refundBillStatus >-1)?'0':'20rpx'}"
+		 >
 			<view class="left">
 				<text class="text1">我的仓库</text>
 				<text class="text2 price-font">{{dataList.stockNumber || 0}}</text>
@@ -309,7 +313,7 @@
 	
 	.warehouse-container {
 		margin-bottom: 40rpx;
-		padding:14rpx 0;
+		padding:18rpx 0;
 		height: 98rpx;
 		box-sizing: border-box;
 		background: #FAFCFC;
