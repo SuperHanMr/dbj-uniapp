@@ -165,7 +165,7 @@
     // }
     .close-icon {
       position: absolute;
-      bottom: -40rpx;
+      bottom: -30rpx;
       // margin-top: 88rpx ;
       text-align: center;
       width: 100%;
@@ -174,10 +174,10 @@
       i {
         font-size: 24rpx;
         color: #fff;
-            width: 160rpx;
+            width: 128rpx;
             margin: 0 auto;
-            height: 160rpx;
-            line-height: 160rpx;
+            height: 128rpx;
+            line-height: 128rpx;
       }
     }
 
