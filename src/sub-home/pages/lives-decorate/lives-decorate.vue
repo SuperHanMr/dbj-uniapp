@@ -1,7 +1,6 @@
 <template>
 	<view class="fill">
 		<view v-if="liveList.length||list.length">
-
 			<live-player v-if="liveList.length" :class="{ player:!isFill,'player-fill':isFill}" :src="livePreview"
 				autoplay @statechange="statechange" @error="error" :muted="muted"
 				:orientation="isFill?'horizontal':'vertical'">
