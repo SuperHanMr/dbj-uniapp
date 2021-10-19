@@ -210,13 +210,13 @@ export default {
 		// 改变返回下一个页面的路径
 		toBack(){
 			if(this.from=="waitPayOrder"){
-				uni.redirectTo({
+				uni.reLaunch({
 					url:"../my-order?firstEntry=true&index=1"
 				})
-			}else{uni.navigateBack({
+			}else{
+				uni.navigateBack({
 				    delta: 1
 				});
-
 			}
 		},
 
