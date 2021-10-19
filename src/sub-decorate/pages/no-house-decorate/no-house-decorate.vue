@@ -437,15 +437,15 @@
         let areaId = this.currentHouse.areaId || this.defaultHouse.areaId
         if (pp === "design") {
           str =
-            `/sub-decorate/pages/service-list/service-list?name=设计服务&serviceType=1&areaId=${areaId}&insideArea=${this.currentHouse.insideArea}&spuId=${this.design.spuId}&categoryId=${this.design.category4Id}&unitId=${this.design.unitId}`
+            `/sub-decorate/pages/service-list/service-list?name=设计服务&serviceType=1&areaId=${areaId}&insideArea=${this.currentHouse.insideArea}&spuId=${this.design.spuId}&categoryId=${this.design.categoryTypeId}&unitId=${this.design.unitId}`
         }
         if (pp === "checkHouse") {
           str =
-            `/sub-decorate/pages/service-list/service-list?name=验房服务&serviceType=2&areaId=${areaId}&insideArea=${this.currentHouse.insideArea}&spuId=${this.checkHouse.spuId}&categoryId=${this.checkHouse.category4Id}&unitId=${this.checkHouse.unitId}`
+            `/sub-decorate/pages/service-list/service-list?name=验房服务&serviceType=2&areaId=${areaId}&insideArea=${this.currentHouse.insideArea}&spuId=${this.checkHouse.spuId}&categoryId=${this.checkHouse.categoryTypeId}&unitId=${this.checkHouse.unitId}`
         }
         if (pp === "actuary") {
           str =
-            `/sub-decorate/pages/service-list/service-list?name=精算服务&serviceType=4&areaId=${areaId}&insideArea=${this.currentHouse.insideArea}&spuId=${this.actuary.spuId}&categoryId=${this.actuary.category4Id}&unitId=${this.actuary.unitId}`
+            `/sub-decorate/pages/service-list/service-list?name=精算服务&serviceType=4&areaId=${areaId}&insideArea=${this.currentHouse.insideArea}&spuId=${this.actuary.spuId}&categoryId=${this.actuary.categoryTypeId}&unitId=${this.actuary.unitId}`
         }
         uni.navigateTo({
           url: str
