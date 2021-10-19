@@ -67,7 +67,7 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
-    border-bottom: 1px solid #F0F0F0;
+    border-bottom: 0.5px solid #F0F0F0;
     .design-name{
       color: #333333;
       font-size: 32rpx;

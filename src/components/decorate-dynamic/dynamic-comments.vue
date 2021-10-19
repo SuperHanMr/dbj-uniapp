@@ -213,6 +213,7 @@
       close(){
         this.showComments=false;
         this.inputValue = ''
+        this.comments = []
         // this.
       },
       inputFocus() {
