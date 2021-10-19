@@ -148,7 +148,8 @@
         // }
         
         // 取当前的数量
-        const categoryOld = this.dataOrigin.material.find(cg => cg.categoryId == categoryId)
+        const categoryOld = this.dataOrigin?.material?.categoryList?.find(cg => cg.categoryId == categoryId)
+
         if(categoryOld) {
           origin = categoryOld?.itemList.find(t => t.originalId == item.originalId)
         }
