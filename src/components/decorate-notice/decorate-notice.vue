@@ -165,7 +165,7 @@
     // }
     .close-icon {
       position: absolute;
-      bottom: 30rpx;
+      bottom: -30rpx;
       // margin-top: 88rpx ;
       text-align: center;
       width: 100%;
@@ -174,6 +174,10 @@
       i {
         font-size: 24rpx;
         color: #fff;
+            width: 64px;
+            margin: 0 auto;
+            height: 64px;
+            line-height: 64px;
       }
     }
 
@@ -189,17 +193,19 @@
       .icon{
         display: inline-block;
         vertical-align: middle;
-        margin-right: 20rpx;
+        
+        
       }
       // z-index: 11;
       .item-top {
         display: flex;
         justify-content: space-between;
-        padding: 0 8rpx;
+        padding: 0 16rpx 0 8rpx;
 
         .item-top-left {
-          image {
+          i {
             // font-size: 26rpx;
+            // font-size: 32rpx;
             width: 32rpx;
             height: 32rpx;
             margin-right: 16rpx;

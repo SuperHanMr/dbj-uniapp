@@ -1081,6 +1081,8 @@
 		flex-direction: row;
 		align-items: center;
 		padding: 6rpx 32rpx 0 32rpx;
+		border-bottom-left-radius: 32rpx;
+		border-bottom-right-radius: 32rpx;
 
 		.img {
 			width: 76rpx;

@@ -42,6 +42,13 @@
       this.projectId = projectId
     },
     onShow() {
+      // if(getApp().globalData.previewimageStatus) {
+      //   getApp().globalData.previewimageStatus = false
+      // } else {
+      //   this.getCompletionLog()
+      // }
+    },
+    mounted() {
       this.getCompletionLog()
     },
     data() {

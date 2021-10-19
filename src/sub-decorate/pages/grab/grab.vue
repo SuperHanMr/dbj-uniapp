@@ -14,7 +14,7 @@
 		  <view class="btn">
 		    <view class="btn-left" @click="toReplace">
 		      <i class="icon-ic_wodejia_shenqinggenghuan_csn"></i>
-		      <text>申请修改</text>
+		      <text>申请更换</text>
 		    </view>
 		    <button class="add-btn" @click="submit">确定</button>
 		  </view>
@@ -61,6 +61,7 @@
       getGrabDetail(){
         getGrabDetail(this.personId).then(res=>{
           this.personData = res
+          
           this.personData.totalNum = unitChange(this.personData.inServiceCount+this.personData.comServiceCount)
           // this.personData.totalNum = '1.0'
           this.personData.likeCount = unitChange(this.personData.likeCount)

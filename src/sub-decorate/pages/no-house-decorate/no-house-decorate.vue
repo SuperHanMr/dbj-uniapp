@@ -592,6 +592,10 @@
                 uni.navigateTo({
                   url: `/sub-my/pages/my-order/my-order?index=1&firstEntry=true`
                 })
+              } else {
+                uni.showToast({
+                  title: "掉起微信支付失败"
+                })
               }
             },
           });

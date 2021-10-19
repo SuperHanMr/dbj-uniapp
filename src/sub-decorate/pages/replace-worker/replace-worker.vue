@@ -21,7 +21,9 @@
         @progress="progress" @success="success" @delete="deleteImg" @fail="fail">
         <view class="upload-contet">
           <view>
-            <image src="../../../static/shopping-cart/details_pop_add_normal@2x.png"></image>
+            <!-- <image src="../../../static/shopping-cart/details_pop_add_normal@2x.png"></image>
+             -->
+             <i class="icon-ic_wodejia_shangchuanzhaopian_csn"></i>
             <text>点击上传</text>
           </view>
         </view>
@@ -275,11 +277,14 @@
       justify-content: center;
       align-items: center;
 
-      image {
+      i {
         width: 56rpx;
         height: 56rpx;
         margin: 0 auto;
         display: block;
+        color: #B1B1B1;
+        text-align: center;
+        line-height: 56rpx;
       }
 
       text {

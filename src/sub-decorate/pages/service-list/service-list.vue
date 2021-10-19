@@ -3,8 +3,8 @@
     <service-content-card class="card-item" v-for="(item, index) in dataList" :key="item.product.spuId"
       :insideArea="insideArea" :content="item">
       <template slot="radio">
-        <dbj-radio class="card-radio" :value="item.product.spuId + ''" :checked="checkedSpuId === item.product.spuId + ''"
-          @change="radioChange"></dbj-radio>
+        <btn-radio :value="item.product.spuId + ''" :checked="checkedSpuId === item.product.spuId + ''"
+          @change="radioChange"></btn-radio>
       </template>
     </service-content-card>
     <view v-if="isAllDataLoaded" style="padding: 24rpx;text-align: center;font-size: 26rpx;">~我也是有底线的~</view>
@@ -16,15 +16,15 @@
     productList
   } from "../../../api/decorate.js"
   import {
-    DbjRadio
-  } from "../../components/dbj-radio/dbj-radio.vue"
+    BtnRadio
+  } from "../../components/btn-radio/btn-radio.vue"
   import {
     ServiceContentCard
   } from "../../components/service-content-card/service-content-card.vue"
   let timer = null
   export default {
     components: {
-      DbjRadio,
+      BtnRadio,
       ServiceContentCard
     },
     data() {
