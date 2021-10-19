@@ -70,8 +70,8 @@
         let query = uni.createSelectorQuery().in(this)
         this.$nextTick(function(){
           query.select(".report-text").boundingClientRect((res) => {
-            this.isHidden = res.height/20 > 2;
-            this.showBtn = res.height/20 > 2;
+            this.isHidden = res.height/20 >= 3;
+            this.showBtn = res.height/20 >= 3;
             // console.log(res.height,this.isHidden)
             
           }).exec()

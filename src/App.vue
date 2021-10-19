@@ -19,6 +19,7 @@
 			currentHouse: {},
 			switchFlag: "home",
 			currentRoute: "/pages/home/index/index",
+      previewimageStatus: false
 		},
 
 		onLaunch: function() {

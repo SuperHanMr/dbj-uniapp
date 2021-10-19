@@ -164,6 +164,10 @@
 		font-weight: 500;
 		color: #333333;
 		line-height: 42rpx;
+    max-width: 378rpx;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
 	}
 	.acitonInfo .header .role{
 		width: 82rpx;
@@ -176,7 +180,7 @@
 		line-height: 32rpx;
 	}
 	.acitonInfo .header .date{
-		// width: 136rpx;
+		width: 136rpx;
 		height: 34rpx;
 		font-size: 24rpx;
 		color: #999999;

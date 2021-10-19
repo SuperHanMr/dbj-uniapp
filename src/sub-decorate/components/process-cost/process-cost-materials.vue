@@ -179,7 +179,6 @@
       },
       goMaterialsList(item) {
         let allSkuId = this.content.itemList.map(res => res.id).join("-")
-        console.log(allSkuId)
         uni.navigateTo({
           url: `/sub-decorate/pages/materials-list/materials-list?id=${item.id}&categoryId=${item.categoryId}&areaId=${this.areaId}&originalId=${item.originalId}&allSkuId=${allSkuId}`
         })
