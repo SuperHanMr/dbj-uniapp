@@ -47,7 +47,7 @@
 						</view> -->
 						
 						
-						<image class="imgItem" v-for="item4 in imgList" :key="item4" :src="item4" mode="" />
+						<image class="imgItem" v-for="item4 in imgList" :key="item4" :src="item4" mode="" @click="previewImg(item4)" />
 					</view>
         </view>
 				
@@ -101,6 +101,12 @@ export default {
 				console.log(typeof this.imgList)
 				console.log("this.imgList=",this.imgList)
 			})
+		},
+		previewImg(url) {
+			uni.previewImage({
+				urls: [url],
+				current: 0,
+			});
 		},
 	}
 };
