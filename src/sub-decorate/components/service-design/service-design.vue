@@ -8,7 +8,7 @@
           <i class="icon-ic_wodejia_beiwanglugengduo_csn"></i>
         </view>
       </view>
-      <view class="report-item" >
+      <view class="report-item" v-if="designData.beautyReport">
         <view class="title">颜值报告详情</view>
         <view class="check" @click="toBeatiful">
           <text>立即查看</text>
@@ -62,7 +62,7 @@
           this.designData = res
           this.$emit('changeDesign',res)
           if(res.fileListVO.length===0){
-            // this.$emit('isEmpty',this.index)
+            this.$emit('isEmpty',this.index)
           }
         })
       },
