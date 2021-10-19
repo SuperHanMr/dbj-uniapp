@@ -161,7 +161,7 @@
 					<view class="title">
 
 						<text class="tip">
-							{{item.product.productType==1?'物品':'服务'}}
+							{{item.product.productTypeId==1?'物品':'服务'}}
 
 						</text>
 						<text>{{item.product.spuName}}</text>
@@ -271,7 +271,7 @@
 		onShow() {
 			setTimeout(() => {
 				this.token = getApp().globalData.token;
-			}, 500)
+			}, 500);
 			uni.showTabBar();
 			this.swiperAuto = true;
 			getApp().globalData.currentRoute = "/pages/home/index/index";
@@ -677,7 +677,7 @@
 	}
 
 	page {
-		background: #FFF;
+		background: #fff;
 	}
 
 	.icon_down {
@@ -715,8 +715,6 @@
 		line-height: 40rpx;
 		margin-right: 48rpx;
 	}
-
-
 
 	.goods-list {
 		display: flex;
@@ -960,8 +958,6 @@
 		.margin-left16 {
 			margin-left: 16rpx;
 		}
-
-		;
 	}
 
 	.experience {

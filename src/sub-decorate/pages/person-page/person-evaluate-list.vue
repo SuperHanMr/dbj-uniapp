@@ -78,7 +78,7 @@
       justify-content: space-between;
       box-shadow: 0px 0px 20px 0px rgba(0, 0, 0, 0.03);
       border-radius: 12px;
-      border: 1px solid #E5E5E5;
+      border: 0.5px solid #E5E5E5;
       padding: 0 32rpx;
       margin-bottom: 40rpx;
       .left{

@@ -272,9 +272,9 @@
 				uni.chooseLocation({
 					success: function(res) {
 						if (res.address) {
-							// console.log(res)
+							console.log(res)
 							that.hasPoint = true;
-							that.addData.locationName = res.address;
+							
 							that.addData.housingEstate = res.name;
 							that.addData.latitude = res.latitude;
 							that.addData.longitude = res.longitude;
@@ -285,7 +285,11 @@
 									"," +
 									res.longitude,
 								success: (res) => {
-									let adcode = res.data.result.addressComponent.adcode;
+                  console.log(res)
+                  let address = res.data.result.addressComponent
+									let adcode = address.adcode;
+                  
+                  that.addData.locationName = address.province === address.city ? address.province + '-' + address.district : address.province + '-' + address.city + '-' + address.district;
 									that.getAreaId(adcode);
 								},
 							});
