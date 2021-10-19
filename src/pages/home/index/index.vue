@@ -685,6 +685,7 @@
 		width: 28rpx;
 		height: 28rpx;
 		flex-shrink: 0;
+		margin-bottom: 6rpx;
 	}
 
 	.icon_logo {
@@ -806,7 +807,7 @@
 					text-align: center;
 					display: inline-block;
 					border: 1rpx solid #35c4c4;
-					vertical-align: 15%;
+					vertical-align: 13%;
 				}
 
 				// .tip:after {
@@ -824,7 +825,7 @@
 		display: flex;
 		overflow: auto;
 		// margin-top: 14rpx;
-		margin: 14rpx 0 0rpx 0;
+		margin: 14rpx 0 4rpx 0;
 
 		.margin-left24 {
 			margin-left: 16rpx;
@@ -940,6 +941,7 @@
 		font-weight: bold;
 		color: #2b2f33;
 		font-size: 32rpx;
+		margin-bottom: 12rpx;
 	}
 
 	.example-content {
@@ -1025,7 +1027,7 @@
 		}
 
 		.item {
-			height: 134rpx;
+			height: 126rpx;
 			flex: 1;
 			display: flex;
 			flex-direction: column;
