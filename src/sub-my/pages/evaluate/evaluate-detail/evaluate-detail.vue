@@ -33,16 +33,21 @@
 				</view>
 
         <view class="line" />
-				<view class="auto-evaluate" v-if="serviceInfo.content || serviceInfo.imgList.length">
+				<view class="auto-evaluate" v-if="serviceInfo.anonymous == 1">
 					系统自动评价
 				</view>
 
         <view class="comment-content" v-else>
         	<view class="comment">
-        		这个服务总体来说还是不错的，挺好的符合我这个服务总体来说还是不错的，挺好的符合我这个服务总体来说还是不错的，挺好的符合我这个服务总体来说还是不错的，挺好的符合我
-        	</view>
+						{{serviceInfo.content}}
+					</view>
 					<view class="img-container" v-if="serviceInfo.imgList">
-						<image class="imgItem" v-for="item in serviceInfo.imgList" :key="item" :src="item" mode=""></image>
+						<!-- <view class="imgItem"  v-for="item4 in imgList" :key="item4">
+							{{item4}}
+						</view> -->
+						
+						
+						<image class="imgItem" v-for="item4 in imgList" :key="item4" :src="item4" mode="" />
 					</view>
         </view>
 				
@@ -67,11 +72,10 @@ export default {
 			serviceInfo:{},
 			blankStar:"",
      
-				
-				
 			 systemBottom: "",
 			 systemHeight: "",
 			 containerBottom: "",
+			 imgList:[],
     };
   },
 	mounted(e) {
@@ -84,7 +88,7 @@ export default {
 	
 	onLoad(e) {
 		this.id =Number(e.id)
-		
+		console.log("this.id=",this.id)
 		this.getServiceInfo()
 	},
 	
@@ -93,6 +97,9 @@ export default {
 			evaluateDetail({id:this.id}).then(data=>{
 				this.serviceInfo = data
 				this.blankStar = 5 - data.rank
+				this.imgList =JSON.parse(this.serviceInfo.imgList)  
+				console.log(typeof this.imgList)
+				console.log("this.imgList=",this.imgList)
 			})
 		},
 	}

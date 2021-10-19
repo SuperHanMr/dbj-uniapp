@@ -11,7 +11,7 @@
 		</custom-navbar>
 		<!-- 占位 -->
 		<view :style="{height:navBarHeight}"></view>
-		
+
 		<!-- 退款成功 -->
 		<view class="order-container" v-if="type=='refund'" :style="{paddingBottom:systemBottom}">
 			<view class="order-status">
@@ -43,9 +43,9 @@
 			</view>
 
 			<view class="body1" v-for="item1 in refundInfo.detailAppVOS" :key="item1.id">
-				<order-item 
-					:dataList="item1" 
-					:refundType="true" 
+				<order-item
+					:dataList="item1"
+					:refundType="true"
 					@handleDetail="productDetail(item1,'refund')"
 				></order-item>
 			</view>
@@ -66,17 +66,17 @@
 			<order-user-base-info :data="orderInfo"></order-user-base-info>
 
 			<view class="body2">
-				<view class="part1" v-for="(item2,index2) in orderInfo.details" :key="index2">
+				<view class="part1" v-for="item2 in orderInfo.details" :key="item2.id">
 					<view class="header" @click="gotoShop(item2)">
 						<text>{{item2.storeName}}</text>
 						<image src="../../../static/ic_more.svg" mode=""></image>
 					</view>
 
-					<view v-for="item2 in item.details" :key="item2.id" class="orederItem">
-						<order-item 
-							:dataList="item2" 
-							:orderStatus="3" 
-							@handleDetail="productDetail(item2)"
+					<view v-for="item3 in item2.details" :key="item3.id" class="orederItem">
+						<order-item
+							:dataList="item3"
+							:orderStatus="3"
+							@handleDetail="productDetail(item3)"
 						></order-item>
 					</view>
 				</view>
@@ -93,7 +93,7 @@
 				</view>
 			</view>
 		</view>
-	
+
 	</view>
 </template>
 

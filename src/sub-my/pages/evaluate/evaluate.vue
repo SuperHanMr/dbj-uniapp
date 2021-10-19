@@ -63,7 +63,8 @@
 				evaluateList:[],
 			}
 		},
-		onLoad() {
+		onShow() {
+			this.evaluateList=[];
 			this.getList()
 		},
 		
@@ -104,11 +105,11 @@
 			},
 			
 			gotoDetail(item){
-				console.log("查看详情");
-				if(item.commentStatus !== 1) return 
+				console.log("item.id=",item.id)
 				uni.navigateTo({
-					url:`evaluate-detail/evaluate-detail?type=${item.id}`
+					url:`evaluate-detail/evaluate-detail?id=${item.id}`
 				})
+				console.log("hhhhhhhh")
 			},
 		}
 	}

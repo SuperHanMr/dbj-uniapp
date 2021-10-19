@@ -188,11 +188,11 @@
 			},
 			toBack(){
 				if(this.from=="comfirmOrder"){
-					uni.reLaunch({
+					uni.redirectTo({
 						url:"../my-order?firstEntry=true&index=2"
 					})
 				}else{
-					uni.reLaunch({
+					uni.redirectTo({
 						url:"../my-order?firstEntry=true&index=2"
 					})
 				}

@@ -107,7 +107,7 @@ export function immediateEvaluate(params) {
 }
 //获取服务单下面的评价
 export function evaluateDetail(params) {
-	return request.get(`/pm/app/commentSetting/getById`, { params })
+	return request.get(`/pm/app/commentSetting/getByServeId`, { params })
 }
 
 
