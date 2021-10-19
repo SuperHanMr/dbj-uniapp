@@ -112,7 +112,9 @@ export default {
     //   this.initSkuData();
     // },
 		show(val){
-			this.initSkuData()
+			if(val){
+				this.initSkuData()
+			}
 		}
   },
   methods: {

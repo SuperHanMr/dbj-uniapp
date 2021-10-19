@@ -96,6 +96,7 @@
 							userSig: data.userSign
 						});
 						//可以改成back
+						uni.$emit('defaultHouseChange')
 						uni.navigateBack({})
 						// uni.switchTab({
 						//   url: "/pages/home/index/index",
