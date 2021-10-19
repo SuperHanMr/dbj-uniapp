@@ -77,10 +77,18 @@
       uni.$on("selectedMaterial", this.selectedMaterialCb)
     },
     onShow() {
-      this.getDataList()
-      uni.setNavigationBarTitle({
-        title: this.msg.pushTitle
-      })
+      if (this.selectedMaterialData?.categoryId) {
+        const {
+          origin,
+          categoryId
+        } = this.selectedMaterialData
+        this.setMaterial(categoryId, origin)
+      } else {
+        this.getDataList()
+        uni.setNavigationBarTitle({
+          title: this.msg.pushTitle
+        })
+      }
     },
     data() {
       return {
@@ -132,13 +140,19 @@
           item
         } = this.selectedMaterialData
         let origin = {}
-        const originMaterialList = uni.getStorageSync("originMaterialList")
-        const category = originMaterialList.find(cg => cg.categoryId == categoryId)
+        // 缓存里的旧存储的原始的辅材列表数据
+        // const originMaterialList = uni.getStorageSync("originMaterialList")
+        // const categoryStorage = originMaterialList.find(cg => cg.categoryId == categoryId)
+        // if(categoryStorage) {
+        //   originStorage = categoryStorage?.itemList.find(t => t.originalId == item.originalId)
+        // }
         
-        if(category) {
-          origin = category?.itemList.find(t => t.originalId == item.originalId)
+        // 取当前的数量
+        const categoryOld = this.dataOrigin?.material?.categoryList?.find(cg => cg.categoryId == categoryId)
+
+        if(categoryOld) {
+          origin = categoryOld?.itemList.find(t => t.originalId == item.originalId)
         }
-        // const origin = uni.getStorageSync("currentItemOriginData")
         // 注释的字段是不允许替换的
         // origin.originalId = origin.originalId // "原始ID 【下单params附带参数】",
         // origin.originalId = origin.originalId // "原始ID 【下单params附带参数】",
@@ -255,7 +269,6 @@
               if (it.inServiceArea && !it.selling) {
                 this.checkedIds.push(it.originalId)
               }
-              // this.setSkuRelation(it)
             })
           })
         }
@@ -293,9 +306,6 @@
             })
           })
         }
-        // this.countPrice = temp
-        // console.log(this.shopping, this.countPrice)
-        // return temp
       },
       batchChangeLevel(cllist) {
         batchChangeLevel({
@@ -365,13 +375,13 @@
               this.levelLabel = "（中级）"
             }
           }
-          if (this.selectedMaterialData?.categoryId) {
-            const {
-              origin,
-              categoryId
-            } = this.selectedMaterialData
-            this.setMaterial(categoryId, origin)
-          }
+          // if (this.selectedMaterialData?.categoryId) {
+          //   const {
+          //     origin,
+          //     categoryId
+          //   } = this.selectedMaterialData
+          //   this.setMaterial(categoryId, origin)
+          // }
           if(data?.material?.categoryList?.length > 0) {
             let tempArr = [...data?.material?.categoryList]
             tempArr.forEach(category => {

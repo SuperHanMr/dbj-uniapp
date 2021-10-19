@@ -188,19 +188,19 @@
                   <image
                     v-if="!item.selfLike"
                     @click="likeC(item.recordType,item.id,index,true)"
-                    src="http://dbj.dragonn.top/static/mp/dabanjia/images/home/ic_like%402x.png"
+                    src="http://dbj.dragonn.top/static/mp/dabanjia/images/home/ic_like_pre%402x.png"
                   ></image>
                   <image
                     v-else
                     @click="likeC(item.recordType,item.id,index)"
-                    src="http://dbj.dragonn.top/static/mp/dabanjia/images/home/ic_liked%402x.png"
+                    src="http://dbj.dragonn.top/static/mp/dabanjia/images/home/ic_red_hand%402x.png"
                   ></image>
                   <view class="text">{{item.likeCount}}</view>
                 </view>
                 <view class="comment">
                   <image
                     @click="commentC(item.id)"
-                    src="http://dbj.dragonn.top/static/mp/dabanjia/images/home/ic_comments%402x.png"
+                    src="http://dbj.dragonn.top/static/mp/dabanjia/images/home/ic_discuss%402x.png"
                   ></image>
                   <view class="text">{{item.commentCount}}</view>
                 </view>
@@ -1178,16 +1178,17 @@ export default {
 		align-items: center;
 	}
 	.info .userName {
-		width: fit-content;
-		max-width: 122rpx;
+		max-width: 330rpx;
+		text-overflow: ellipsis;
+		overflow: hidden;
+		white-space: nowrap;
 		height: 36rpx;
 		margin-right: 8rpx;
-		text-overflow: ellipsis;
 		font-size: 26rpx;
 		color: #999999;
 	}
 	.info .role {
-		width: 56rpx;
+		width: 60rpx;
 		height: 28rpx;
 		font-size: 20rpx;
 		line-height: 28rpx;
@@ -1814,7 +1815,7 @@ export default {
 		align-items: center;
 	}
 	.acitonInfo .header .workerName {
-		max-width: 378rpx;
+		max-width: 330rpx;
 		overflow: hidden;
 		text-overflow: ellipsis;
 		white-space: nowrap;
@@ -1846,6 +1847,7 @@ export default {
 		width: fit-content;
 		/* width: 104rpx; */
 		height: 32rpx;
+		padding: 0 8rpx;
 		background: #f5f6f6;
 		border-radius: 6rpx;
 		font-size: 22rpx;
@@ -1873,16 +1875,16 @@ export default {
 		margin-right: 32rpx;
 	}
 	.acitonInfo .footer .like image {
-		width: 26rpx;
-		height: 26rpx;
+		width: 34rpx;
+		height: 34rpx;
 		display: block;
-		margin-right: 8rpx;
+		margin-right: 4rpx;
 	}
 	.acitonInfo .footer .comment image {
-		width: 24rpx;
-		height: 24rpx;
+		width: 34rpx;
+		height: 34rpx;
 		display: block;
-		margin-right: 8rpx;
+		margin-right: 4rpx;
 	}
 	.sceneContainer .footer .consult {
 		width: 88rpx;

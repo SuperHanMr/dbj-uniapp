@@ -43,7 +43,7 @@
       getComments(){
       	let params = 
       	 {
-      		userId:6862,
+      		userId:this.personId,
           page:this.pageInfo.page,
           rows:10
       	}
@@ -56,7 +56,7 @@
       	})
       },
       bindscrolltolower(){
-        console.log(this.pageInfo.totalPage>this.pageInfo.page)
+        // console.log(this.pageInfo.totalPage>this.pageInfo.page)
         if(this.pageInfo.totalPage>this.pageInfo.page){
           this.pageInfo.page++
           this.getComments()

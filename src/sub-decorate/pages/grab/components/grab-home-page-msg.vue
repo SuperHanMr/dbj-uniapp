@@ -1,12 +1,12 @@
 <template>
   <view class="grab-content-msg">
-    <view class="msg-item">
+    <view class="msg-item" v-if="personData.intro.length>0">
       <view class="item-title">
         <view class="line"></view>
         <view class="title">Ta的简介</view>
       </view>
       <view class="msg-content">
-        <text class="report-text" v-if="personData.intro.length>0"> :class="{'report-text-hidden':isHidden}">{{personData.intro}}</text>
+        <text class="report-text" > :class="{'report-text-hidden':isHidden}">{{personData.intro}}</text>
         <view class="openHidden" v-if="showBtn" @click="clickHidden">
           {{hddenText}}
         </view>
@@ -70,8 +70,8 @@
         let query = uni.createSelectorQuery().in(this)
         this.$nextTick(function(){
           query.select(".report-text").boundingClientRect((res) => {
-            this.isHidden = res.height/20 > 2;
-            this.showBtn = res.height/20 > 2;
+            this.isHidden = res.height/20 >= 3;
+            this.showBtn = res.height/20 >= 3;
             // console.log(res.height,this.isHidden)
             
           }).exec()
