@@ -43,6 +43,9 @@
         }, 7000);
       },
       goDecorateCalendar() {
+        // if(!this.current?.recordDate) {
+        //   return
+        // }
         let yyyymmdd = formatDate(this.current.recordDate)
           .split(" ")[0]
           .split("-");
@@ -57,14 +60,19 @@
     },
     filters: {
       formatDate(val) {
-        return calendarFormat(val, {
-          sameDay: "[今天]",
-          nextDay: "[明天]",
-          lastDay: "[昨天]",
-          last2Day: "[前天]",
-          sameYear: "MM-DD",
-          sameElse: "YYYY-MM-DD",
-        });
+        if(val) {
+          return calendarFormat(val, {
+            sameDay: "[今天]",
+            nextDay: "[明天]",
+            lastDay: "[昨天]",
+            last2Day: "[前天]",
+            sameYear: "MM-DD",
+            sameElse: "YYYY-MM-DD",
+          });
+        } else {
+          return ""
+        }
+        
       },
     },
     mounted() {

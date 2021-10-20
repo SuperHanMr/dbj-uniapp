@@ -63,6 +63,14 @@
 			}
 		},
 		{
+			"path": "pages/home/lives-room/lives-room",
+			"style": {
+				"navigationBarTitleText": "",
+				"enablePullDownRefresh": false,
+				"navigationStyle": "custom"
+			}
+		},
+		{
 			"path": "pages/common/goods-detail/goods-detail",
 			"style": {
 				"navigationBarTitleText": "商品详情"

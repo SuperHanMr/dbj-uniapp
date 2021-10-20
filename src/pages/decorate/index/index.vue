@@ -54,7 +54,7 @@
 
         <view class="scroll-view flex-1">
           <!-- 每日播报 -->
-          <text-scroll :show="showScroll" :dataList="broadcastList" v-if="broadcastList.length > 0 && isConstruction"
+          <text-scroll :show="showScroll" :dataList="broadcastList" v-if="isConstruction"
             @goDecorateCalendar="goDecorateCalendar"></text-scroll>
           <!-- 我的仓库 -->
           <view v-if="haveWarehouse" class="my-decorate-service-wrap">
@@ -264,6 +264,9 @@
         if (this.currentProject.projectId) {
           getCarouselMsg(this.currentProject.projectId).then(data => {
             this.broadcastList = data
+            if(this.broadcastList?.length < 1) {
+              this.broadcastList = [{content: "暂无施工消息"}]
+            }
           })
         }
       },
@@ -333,11 +336,10 @@
           //     break
           //   }
           // }
-          this.isConstruction = this.currentProject.showBroadcast ?? false 
+          console.log(this.currentProject)
+          this.isConstruction = this.currentProject.showBroadcast || false 
           if (this.isConstruction) {
             this.getCarouselMsg()
-          } else {
-            // this.broadcastList = [{content: "暂无施工消息"}]
           }
         }).catch(err => {
           console.log(err)
