@@ -45,7 +45,7 @@
 					}
 				})
 				this.url = this.ENV.VUE_APP_BASE_H5 +
-					`/app-pages/case-detail/case-detail.html?id=${this.id}&token=${this.hashToken ? this.hashToken : 0}&height=${height}#${this.hashToken}`
+					`/app-pages/case-detail/case-detail.html?id=${this.id}&token=${this.hashToken}&height=${height}#${this.hashToken}`
 				console.log(this.url)
 			},
 			loadSuccessHandler(e) {
