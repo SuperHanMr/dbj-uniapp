@@ -43,7 +43,7 @@
 					}
 				})
 				this.url = this.ENV.VUE_APP_BASE_H5 +
-					`/app-pages/case-detail/case-detail.html?id=${this.id}&token=${token ? token : 0}&height=${height}#${token ? token : 0}`
+					`/app-pages/case-detail/case-detail.html?id=${this.id}&height=${height}#${token ? token : 0}`
 				console.log(this.url)
 			},
 			loadSuccessHandler(e) {

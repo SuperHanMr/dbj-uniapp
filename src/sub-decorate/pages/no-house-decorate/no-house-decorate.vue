@@ -301,6 +301,8 @@
         // original.quantity =  数量
         // original.serviceName =  可以用原来的吗
         // original.serviceType =  可以用原来的吗
+        // original.unitId = source.product.unitId
+        original.unitId = source.product.salesUnit.unitId
         original.spuName = source.product.spuName
         original.storeId = source.product.storeId
       },

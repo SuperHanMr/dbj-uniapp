@@ -284,13 +284,13 @@
       },
       toItem(id) {
         this.currentItem = id
-        let location = this[id] + 16
+        let location = this[id] 
         if (this.isReport) {
           location = location - 44
         }
         uni.pageScrollTo({
           duration: 100, // 过渡时间
-          scrollTop: this[id] + 16, // 滚动的实际距离
+          scrollTop: location, // 滚动的实际距离
         })
       },
       clickHidden(){
@@ -450,7 +450,7 @@
     position: sticky;
     top: 0;
     width: 100%;
-    height: 96rpx;
+    height: 98rpx;
     background-color: #fff;
     display: flex;
     flex-wrap: wrap;

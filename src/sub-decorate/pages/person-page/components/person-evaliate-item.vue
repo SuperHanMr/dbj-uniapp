@@ -99,7 +99,7 @@
       padding-left: 2rpx;
       display: flex;
       align-items: center;
-      max-width: 380rpx;
+      width: fit-content;
       image{
         width: 48rpx;
         height: 48rpx;

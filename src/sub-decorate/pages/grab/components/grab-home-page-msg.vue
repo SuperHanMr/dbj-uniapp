@@ -22,7 +22,7 @@
       </view>
     </view>
     <view class="msg-item" >
-      <view class="item-title">
+      <view class="item-title" v-if="personData.roleId<6">
         <view class="line"></view>
         <view class="title">Ta的徽章</view>
       </view>

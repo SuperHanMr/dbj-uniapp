@@ -163,6 +163,7 @@
       userId:0,
       houseOwnerId:0,
       dynamicId:0,
+      activeIndex:0,
     },
     data(){
       return{
@@ -182,10 +183,13 @@
         totalPage:0,
         isInputFocus:false,
         isOpen:false,
+        totalRows:0,
       }
     },
     mounted(){
-      this.ownId = getApp().globalData.userInfo.id ||6537
+      
+      this.ownId = getApp().globalData.userInfo.id 
+      // this.ownId = 6459
     },
     computed:{
       // inputText(){
@@ -214,6 +218,7 @@
         this.showComments=false;
         this.inputValue = ''
         this.comments = []
+        this.$emit('change',this.totalRows,this.activeIndex)
         // this.
       },
       inputFocus() {
@@ -238,6 +243,7 @@
             let { page, rows, totalPage, totalRows, list } = data;
             this.page = page
             this.totalPage = totalPage
+            this.totalRows = totalRows
             this.comments = this.comments.concat(list);
           }
         });
@@ -334,6 +340,7 @@
             this.commentC(this.dynamicId,);
           }
           this.inputValue = ''
+          this.totalRows++
         });
       },
       commentC(id) {

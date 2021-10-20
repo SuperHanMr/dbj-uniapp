@@ -1,7 +1,7 @@
 <template>
   <view class="decorate-dynamic">
-    		<view class="item" v-for="(item,index) in dynamics" :key="item.id">
-    			<image class="avatar" :class="{'avatar-person':isPerson}" :src="item.avatar"></image>
+    		<view class="item" v-for="(item,index) in dynamicsArr" :key="item.id">
+    			<view class="avatar" :class="{'avatar-person':isPerson}" :style="{backgroundImage:`url(${item.avatar})`}" :src="item.avatar"></view>
     			<view class="acitonInfo" :class="{'acitonInfo-person':isPerson}">
     				<view class="header">
     					<view>
@@ -24,18 +24,18 @@
     							<view class="text">{{item.likeCount}}</view>
     						</view>
     						<view class="comment">
-    							<image @click="commentC(item)" src="../../static/images/ic_comments@2x.png"></image>
+    							<image @click="commentC(item,index)" src="../../static/images/ic_comments@2x.png"></image>
     							<view class="text">{{item.commentCount}}</view>
     						</view>
     					</view>
     				</view>
             <view class="map-item" v-if="isPerson" @click="toDecorate(item)">
-              <image></image>
+              <image src="http://dbj.dragonn.top/%20static/mp/dabanjia/images/decorate/houseAddress.png"></image>
               <text>{{item.estateName}}</text>
             </view>
     			</view>
     		</view>
-        <dynamicComments ref='comments' :userId='personId' :houseOwnerId='houseOwnerId' :dynamicId='dynamicId'></dynamicComments>
+        <dynamicComments ref='comments' :index="activeIndex" @change="changeComments" :userId='personId' :houseOwnerId='houseOwnerId' :dynamicId='dynamicId'></dynamicComments>
   </view>
 </template>
 
@@ -59,21 +59,37 @@
     data() {
       return {
         dynamicId:0,
-        houseOwnerId:0
+        houseOwnerId:0,
+        activeIndex:0,
+        dynamicsArr:[]
       };
+    },
+    watch:{
+      dynamics:{
+        handler:function(){
+          
+          this.dynamicsArr = [...this.dynamics]
+        },
+        immediate:true
+        
+      }
     },
     methods:{
       likeC(index,isAdd,item){
       	this.$emit('likeC',index,isAdd,item)
       },
-      commentC(item){
+      commentC(item,index){
         if(this.isPerson){
           this.$refs.comments.showComments = true
           this.dynamicId = item.id
+          this.activeIndex = index
           this.houseOwnerId = item.houseOwnerId
         }
       	this.$emit('commentC',item.id)
         
+      },
+      changeComments(item,index){
+        this.dynamicsArr[index].commentCount = item
       },
       toDecorate(item){
         console.log(item.projectId)
@@ -97,6 +113,7 @@
 		display: block;
 		margin-top: 39rpx;
 		margin-left: 31rpx;
+    background-size: contain;
 	}
   view .item{
     .avatar-person{
@@ -196,6 +213,7 @@
 		color: #333333;
 		text-align: center;
 		line-height: 32rpx;
+    padding: 0 8rpx;
 	}
 	.acitonInfo .footer .right{
 		width: 166rpx;
@@ -239,7 +257,7 @@
     padding-left: 2rpx;
     display: flex;
     align-items: center;
-    max-width: 362rpx;
+    width: fit-content;
     image{
       width: 48rpx;
       height: 48rpx;
