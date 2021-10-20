@@ -170,6 +170,10 @@ export default {
 		this.serverAvatar  =e.serverAvatar || servicerAvatar
 		console.log("this.id=",this.id,"this.type=",this.type)
 		// this.getServiceInfo()
+		if (!e.title) return 
+		uni.setNavigationBarTitle({
+				title: e.title
+		});
 	},
 	
   methods: {

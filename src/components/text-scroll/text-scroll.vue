@@ -43,12 +43,17 @@
         }, 7000);
       },
       goDecorateCalendar() {
-        let yyyymmdd = formatDate(this.current.recordDate)
-          .split(" ")[0]
-          .split("-");
-        let yyyy = yyyymmdd[0] + "";
-        let mm = yyyymmdd[1] + "";
-        this.$emit("goDecorateCalendar", yyyy + mm);
+        // if(!this.current?.recordDate) {
+        //   this.$emit("goDecorateCalendar", yyyy + mm);
+        // } else {
+          
+        // }
+        // let yyyymmdd = formatDate(this.current.recordDate)
+        //   .split(" ")[0]
+        //   .split("-");
+        // let yyyy = yyyymmdd[0] + "";
+        // let mm = yyyymmdd[1] + "";
+        this.$emit("goDecorateCalendar");
       },
       clearTimer() {
         clearInterval(this.timer);
@@ -57,14 +62,19 @@
     },
     filters: {
       formatDate(val) {
-        return calendarFormat(val, {
-          sameDay: "[今天]",
-          nextDay: "[明天]",
-          lastDay: "[昨天]",
-          last2Day: "[前天]",
-          sameYear: "MM-DD",
-          sameElse: "YYYY-MM-DD",
-        });
+        if(val) {
+          return calendarFormat(val, {
+            sameDay: "[今天]",
+            nextDay: "[明天]",
+            lastDay: "[昨天]",
+            last2Day: "[前天]",
+            sameYear: "MM-DD",
+            sameElse: "YYYY-MM-DD",
+          });
+        } else {
+          return ""
+        }
+        
       },
     },
     mounted() {

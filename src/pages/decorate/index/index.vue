@@ -54,7 +54,7 @@
 
         <view class="scroll-view flex-1">
           <!-- 每日播报 -->
-          <text-scroll :show="showScroll" :dataList="broadcastList" v-if="broadcastList.length > 0 && isConstruction"
+          <text-scroll :show="showScroll" :dataList="broadcastList" v-if="isConstruction"
             @goDecorateCalendar="goDecorateCalendar"></text-scroll>
           <!-- 我的仓库 -->
           <view v-if="haveWarehouse" class="my-decorate-service-wrap">
@@ -202,6 +202,9 @@
     },
     onHide() {
       this.showScroll = false
+      if(this.$refs.sw) {
+        this.$refs.sw.close()
+      }
     },
     data() {
       return {
@@ -254,16 +257,21 @@
           return v.toString(16);
         });
       },
-      goDecorateCalendar(date) {
-        console.log("date: ", date)
+      goDecorateCalendar() {
+        // console.log("date: ", date)
         uni.navigateTo({
-          url: `/sub-home/pages/decorate-scene/decorate-calendar?projectId=${this.currentProject.projectId}&date=${date}&isDecorate=1`
+          url: `/sub-home/pages/decorate-scene/decorate-calendar?projectId=${this.currentProject.projectId}&isDecorate=1`
         })
       },
       getCarouselMsg() {
         if (this.currentProject.projectId) {
           getCarouselMsg(this.currentProject.projectId).then(data => {
             this.broadcastList = data
+            if(this.broadcastList?.length < 1) {
+              this.broadcastList = [{content: "暂无施工消息"}]
+            }
+            
+            this.isConstruction = this.currentProject.showBroadcast || false 
           })
         }
       },
@@ -333,12 +341,7 @@
           //     break
           //   }
           // }
-          this.isConstruction = this.currentProject.showBroadcast ?? false 
-          if (this.isConstruction) {
-            this.getCarouselMsg()
-          } else {
-            // this.broadcastList = [{content: "暂无施工消息"}]
-          }
+          
         }).catch(err => {
           console.log(err)
         })
@@ -373,6 +376,9 @@
       changeCurrentProject(item) {
         this.currentProject = item
         getApp().globalData.switchFlag = 'decorate'
+        if (this.currentProject?.showBroadcast) {
+          this.getCarouselMsg()
+        }
         this.initData(item)
         this.$refs.sw.close()
       },
@@ -420,6 +426,9 @@
             } else {
               this.currentProject = data[0]
               this.initData(data[0])
+            }
+            if (this.currentProject?.showBroadcast) {
+              this.getCarouselMsg()
             }
             // end
           }

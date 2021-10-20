@@ -1,10 +1,9 @@
 <template>
   <view class="container">
-		<custom-navbar opacity="1"  bgcolor="">
+		<custom-navbar :opacity="scrollTop/100" :title="headerTitle">
 			<template v-slot:back>
-				<view @click="toBack">
-					<i class="icon-ic_cancel_white" style="color: white;"></i>
-				</view>
+				<i class="icon-ic_cancel_white back-icon" :style="{color: (scrollTop/100>1)?'black':'white'}"
+					@click="toBack"></i>
 			</template>
 		</custom-navbar>
 
@@ -65,7 +64,6 @@
           </view>
         </view>
       </view>
-
       <order-refund-info :refundInfo="refundInfo"></order-refund-info>
 
       <view
@@ -150,6 +148,8 @@ export default {
       title: "",
       areaId: "",
 			navBarHeight:"",
+			scrollTop: 0,
+			headerTitle:"",
 			bgImg :'http://dbj.dragonn.top/static/mp/dabanjia/images/decorate/order_bg_gray.png',
     };
   },
@@ -160,7 +160,9 @@ export default {
     this.containerPaddingBottom = menuButtonInfo.bottom + 112 + "rpx";
     console.log(this.systemBottom);
   },
-
+	onPageScroll(scrollTop) {
+		this.scrollTop = scrollTop.scrollTop
+	},
   onLoad(e) {
     this.type = e.type;
     this.id = Number(e.id);
@@ -189,21 +191,22 @@ export default {
     if (this.type == "refund") {
       //退款成功页面
       this.refundDetail();
+			console.log("this.status=",this.status)
       switch (this.status) {
         case 3:
-          this.title = "退款关闭";
+          this.headerTitle = "退款关闭";
           break;
         case 4:
-          this.title = "退款关闭";
+          this.headerTitle = "退款关闭";
           break;
         case 5:
-          this.title = "退款失败";
+          this.headerTitle = "退款失败";
       }
     }
 
     if (this.type == "close") {
       //订单关闭页面
-      this.title = "退款中";
+      this.headerTitle = "订单详情";
       this.orderDetail();
       const currentHouse = getApp().globalData.currentHouse;
       console.log("currentHouse=", currentHouse);
@@ -306,13 +309,20 @@ export default {
 };
 </script>
 
-<style lang="scss" scoped.bgcStyle{
-			width: 100%; 
-			height: 32rpx;
-			position: absolute;
-			bottom: -32rpx;
-			z-index: -1;
-		}>
+<style lang="scss" scoped>
+	.bgcStyle{
+		width: 100%; 
+		height: 32rpx;
+		position: absolute;
+		bottom: -32rpx;
+		z-index: -1;
+	}
+	.back-icon {
+		color: white;
+		font-size: 40rpx;
+		padding: 20rpx;
+	}
+	
 .container {
   .order-container {
     width: 100%;

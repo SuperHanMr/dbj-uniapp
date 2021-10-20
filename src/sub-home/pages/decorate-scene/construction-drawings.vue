@@ -4,24 +4,19 @@
 			<image class="noTypesImg" src="http://dbj.dragonn.top/static/mp/dabanjia/images/decorate/pic_empty%402x.png"></image>
 			<view class="text">暂无施工图纸</view>
 		</view>
-		<scroll-view :scroll-x="true" class="tabWrap" v-else>
+		<scroll-view :scroll-x="true" :enable-flex="true" class="tabWrap" v-else>
 			<view
 				class="tab"
-				:class="{'active':navIndex===index}"
 				@click="checkIndex(index,item.type)"
 				v-for="(item,index) in serveTypes"
 				:key="item.type"
 			>
-			{{item.severName}}</view>
-			<view v-if="serveTypes.length" class="lineWrap">
-				<view v-for="(item,index) in serveTypes" :key="item.type"
-					:class="[{'left_0':navIndex===0},{'left_1':navIndex===1},
-					{'left_2':navIndex===2},{'left_3':navIndex===3}]"
-					class="underline"
-				></view>
+				<view class="text" :class="{'color':navIndex===index}">{{item.severName}}</view>
+				<view class="lineWrap">
+					<view class="underline" :class="{'active':navIndex===index}"></view>
+				</view>
 			</view>
 		</scroll-view>
-		
 		
 		<view class="designer" v-if="serverList.length>=2">
 			<view class="designerInfo">
@@ -282,54 +277,51 @@
 	}
   .tabWrap{
 		display: flex;
+		justify-content: space-between;
 		align-items: center;
-    max-width: 750rpx;
-		height: 100rpx;
 		white-space: nowrap;
+    max-width: 750rpx;
+		height: fit-content;
 		border-bottom: 2rpx solid #efefef;
   }
 	.tabWrap .tab{
-		max-width: 120rpx;
-		height: 44rpx;
-		margin: 28rpx 48rpx 10rpx 0;
+		width: fit-content;
+		margin-right: 48rpx;
+	}
+	.tabWrap .tab .text{
+		max-width: 140rpx;
+		text-overflow: ellipsis;
+		overflow: hidden;
+		white-space: nowrap;
+		height: 40rpx;
+		margin-top: 58rpx;
 		color: #999999;
 		font-size: 28rpx;
 	}
 	.tabWrap .tab:first-child{
 		margin-left: 32rpx;
 	}
-	.tabWrap .tab.active{
+	.tabWrap .tab:last-child{
+		margin-right: 32rpx;
+	}
+	.tabWrap .tab .text.color{
 		color: #333333;
 	  font-weight: 500;
 	}
 	.lineWrap{
+		width: 100%;
 		display: flex;
-		justify-content: space-evenly;
+		justify-content: center;
 	}
-	
-	.underline{
+	.lineWrap .underline{
 		opacity: 0;
-		position: absolute;
-		top: 96rpx;
-		left: 52rpx;
 		width: 32rpx;
 		height: 4rpx;
+		margin-top: 12rpx;
 		background: linear-gradient(129deg,#00cdec 0%, #00ed7d 92%);
 	}
-	.left_0{
+	.lineWrap .underline.active{
 		opacity: 1;
-	}
-	.left_1{
-		opacity: 1;
-		left: 222rpx;
-	}
-	.left_2{
-		opacity: 1;
-		left: 382rpx;
-	}
-	.left_3{
-		opacity: 1;
-		left: 552rpx;
 	}
 	.designer{
 		width: 702rpx;
