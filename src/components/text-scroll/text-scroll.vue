@@ -94,21 +94,14 @@ export default {
   width: 100%;
   margin-bottom: 4rpx;
 
-    .date {
-      height: 34rpx;
-      font-size: 24rpx;
-      font-family: PingFangSC, PingFangSC-Regular;
-      font-weight: 400;
-      text-align: center;
-      color: #999999;
-      line-height: 34rpx;
-      margin-right: 8rpx;
-    }
-
-    .icon-r {
-      width: 24rpx;
-      height: 24rpx;
-    }
+  .icon-rili {
+    // font-size: 37rpx;
+    width: 36rpx;
+    height: 36rpx;
+    // border: 2rpx solid;
+    // box-sizing: border-box;
+    // color: #00bfb6;
+    margin-right: 16rpx;
   }
 
   .line {
@@ -143,6 +136,7 @@ export default {
     text-align: center;
     color: #999999;
     line-height: 34rpx;
+    margin-right: 8rpx;
   }
 
   .icon-r {
