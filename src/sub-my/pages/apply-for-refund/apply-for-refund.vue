@@ -26,14 +26,20 @@
         <view class="price-container" >
           <view class="price-item" v-if="refundInfo.freight">
             <view  class="header" style="margin-bottom: 16rpx;">
-              <text style="margin-right: 8rpx;">运费</text><view class="icon">?</view>
-            </view>
-            <text class="price-font">￥{{handlePrice(refundInfo.freight)[0]}}.{{handlePrice(refundInfo.freight)[1]}}</text>
+              <text style="margin-right: 8rpx;">运费</text>
+							<!-- <view class="icon">?</view>-->
+							<image class="icon" src="../../../static/price_icon.svg" mode="" @click="readExpenses(1)"></image>
+            
+						</view>
+            <text style="font-size: 28rpx;" class="price-font">￥{{handlePrice(refundInfo.freight)[0]}}.{{handlePrice(refundInfo.freight)[1]}}</text>
 					</view>
           <view class="price-item" v-if="refundInfo.handlingFees">
             <view class="header">
-              <text style="margin-right: 8rpx;">搬运费</text><view class="icon">?</view>
-            </view>
+              <text style="margin-right: 8rpx;">搬运费</text>
+							<!-- <view class="icon">?</view> -->
+							<image class="icon" src="../../../static/price_icon.svg" @click="readExpenses(2)" mode=""></image>
+            
+						</view>
             <text class="price-font">￥{{handlePrice(refundInfo.handlingFees)[0]}}.{{handlePrice(refundInfo.handlingFees)[1]}}</text>
 					</view>
         </view>
@@ -56,7 +62,7 @@
 					<view class="reason" >
 						<text v-if="!reasonName" style="color:#C7C7C7;" @click="openPopup()">请选择</text>
 						<text v-else style="margin-right: 16rpx;" @click="openPopup()">{{reasonName}}</text>
-						<image src="../../static/ic_arraw_down@2x.png" mode="" @click="openPopup()"/>
+						<image src="../../static/ic_arraw_down.svg" mode="" @click="openPopup()"/>
 					</view>
         </view>
 				
@@ -122,8 +128,8 @@
 							<text>退款金额</text>
 						</view>
 						<view class="right1" >
-						  <text v-if="refundInfo.actualIncomeAmount">￥{{handlePrice(refundInfo.actualIncomeAmount)[0] || 0}}.{{handlePrice(refundInfo.actualIncomeAmount)[1]}}</text>
-						  <text v-else>￥{{handlePrice(refundInfo.totalActualIncomeAmount)[0] || 0}}.{{handlePrice(refundInfo.totalActualIncomeAmount)[1]}}</text>
+						  <text v-if="refundInfo.actualIncomeAmount" class="price-font">￥{{handlePrice(refundInfo.actualIncomeAmount)[0] || 0}}.{{handlePrice(refundInfo.actualIncomeAmount)[1]}}</text>
+						  <text v-else class="price-font">￥{{handlePrice(refundInfo.totalActualIncomeAmount)[0] || 0}}.{{handlePrice(refundInfo.totalActualIncomeAmount)[1]}}</text>
 						</view>
 					</view>
 					<view class="tip-text">
@@ -135,16 +141,19 @@
       <view class="remark-container">
         <view class="header">
           <text>备注说明</text>
-          <text style="color: #999999;font-size: 26rpx;">{{textAreaLength}}/500</text>
+         
         </view>
-        <textarea
-          v-model="query.remarks"
-          placeholder="补充描述信息,有助于商家更好的处理售后问题,此项为非必填项,最多可输入500字"
-          placeholder-style="color:#AAAAAA;font-size:28rpx;padding-top:12rpx;"
-          maxlength="500"
-          class="remark"
-          @input="onTextAreaInput"
-        />
+				<view class="body">
+					<textarea
+						v-model="query.remarks"
+						placeholder="可以填写与客服沟通过的备注信息"
+						placeholder-style="color:#AAAAAA;font-size:28rpx;padding-top:12rpx;"
+						maxlength="200"
+						class="remark"
+						@input="onTextAreaInput"
+					/>
+					<text class="fontNum" style="color: #999999;font-size: 26rpx;">{{textAreaLength}}/200</text>
+				</view>
       </view>
       <view class="proposal">建议与商家沟通后再发起退款</view>
 
@@ -159,7 +168,7 @@
 			</view>
 			
 		</view>
-
+		<expenses-toast  ref='expensesToast' :expensesType="expensesType"></expenses-toast>
   </view>
 
 </template>
@@ -194,6 +203,8 @@ export default {
 			refundId:"",
 			orderDetailId:"",
       systemBottom: "",
+			
+			expensesType:"",
     };
   },
   mounted(e) {
@@ -283,6 +294,10 @@ export default {
 					return item.itermName
 				})
 			})
+		},
+		readExpenses(num) {
+		  this.expensesType = num
+		  this.$refs.expensesToast.showPupop()
 		},
 		
 		submitApplication() {
@@ -411,11 +426,11 @@ export default {
           .icon {
             width: 24rpx;
             height: 24rpx;
-            border-radius: 50%;
+            // border-radius: 50%;
             line-height: 24rpx;
             text-align: center;
-            color: #999999;
-            border: 2rpx solid #999999;
+            // color: #999999;
+            // border: 2rpx solid #999999;
           }
         }
       }
@@ -458,6 +473,7 @@ export default {
           height: 64rpx;
           object-fit: cover;
           margin-left: 16rpx;
+					margin-bottom: 8rpx;
         }
       }
     }
@@ -551,7 +567,6 @@ export default {
   .remark-container {
     margin-top: 16rpx;
     background-color: #ffffff;
-    height: 472rpx;
     padding: 40rpx 32rpx;
     border-radius: 16rpx;
     .header {
@@ -559,15 +574,27 @@ export default {
       flex-flow: row nowrap;
       justify-content: space-between;
       align-items: center;
-      margin-bottom: 12rpx;
+      margin-bottom: 24rpx;
       font-size: 28rpx;
       color: #666666;
     }
-    .remark {
-      // background-color: pink;
-      width: 686rpx;
-      height: 420rpx;
-    }
+		.body{
+			position: relative;
+			.remark {
+				background-color: #FAFBFC;
+				width: 686rpx;
+				height: 388rpx;
+				box-sizing: border-box;
+				border-radius: 16rpx;
+				padding: 24rpx;
+				border: 0.5px solid #EEEEEE;
+			}
+			.fontNum{
+				position: absolute;
+				bottom: 20rpx;
+				right: 20rpx;
+			}
+		}
   }
   .proposal {
     padding: 24rpx 32rpx;
