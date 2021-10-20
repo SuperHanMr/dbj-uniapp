@@ -165,7 +165,7 @@
       
     },
     onLoad(e){
-      this.personId = e.personId||7249
+      this.personId = e.personId||7405
       // this.getGrabDetail()
     },
     onShow(){
@@ -363,7 +363,7 @@
     padding-bottom: 40rpx;
     // height: 100%;
     .bg-index {
-      top: -68rpx;
+      top: -70rpx;
       width: 100%;
       height: 480rpx;
       position: absolute;

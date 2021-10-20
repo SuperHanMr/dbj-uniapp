@@ -1,8 +1,8 @@
 <template>
   <view class="service-hunman">
     <view class="design-top" v-if="isDesign">
-      <view class="design-name">全案设计</view>
-      <view class="design-change" @click="openPopup">
+      <view class="design-name">{{designData.severName||designName[0].serveName}}</view>
+      <view class="design-change" @click="openPopup" v-if="designName.length>1">
         <text>更换设计类型</text>
         <i class="icon-a-ic_zhuangxiuxianchang_jingsuanzhankai_csn"></i>
       </view>
@@ -33,6 +33,7 @@
         default:false
       },
       tab:{},
+      designName:[],
       designData:{}
     },
     methods:{
@@ -43,7 +44,7 @@
         })
       },
       toPerson(item){
-        console.log(this.tab)
+        // console.log(this.tab)
         uni.navigateTo({
           url:'/sub-decorate/pages/person-page/person-page?personId='+this.tab.zeusId
         })
