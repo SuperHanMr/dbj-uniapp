@@ -1,17 +1,16 @@
 <template>
 	<view class="container">
-		<custom-navbar opacity="1"  bgcolor="">
+		<custom-navbar :opacity="scrollTop/100" :title="headerTitle">
 			<template v-slot:back>
-				<view @click="toBack">
-					<i class="icon-ic_cancel_white" style="color: white;">
-					</i>
-				</view>
+				<i class="icon-ic_cancel_white back-icon" :style="{color: (scrollTop/100>1)?'black':'white'}"
+					@click="toBack"></i>
 			</template>
 		</custom-navbar>
 		
 		<!-- 退款成功 -->
 		<view class="order-container" v-if="type=='refund'" :style="{paddingBottom:systemBottom}">
-			<view :style="{backgroundImage:`url(${bgImg})`,backgroundSize: '100% 100%'}">
+			<view style="position: relative;" :style="{backgroundImage:`url(${bgImg})`,backgroundSize: '100% 100%'}">
+				<view class="bgcStyle" :style="{backgroundImage:`url(${bgImg})`,backgroundSize: '100% 100%'}"/>
 				<view :style="{height:navBarHeight}"></view>
 				<view class="order-status">
 					<view class="status">
@@ -55,8 +54,9 @@
 
 		<!-- 订单完成页面 -->
 		<view class="order-container" v-if="type == 'complete'" :style="{paddingBottom:systemBottom}">
-			<view :style="{backgroundImage:`url(${bgImg})`,backgroundSize: '100% 100%'}">
+			<view style="position: relative;" :style="{backgroundImage:`url(${bgImg})`,backgroundSize: '100% 100%'}">
 				<!-- 占位 -->
+				<view class="bgcStyle" :style="{backgroundImage:`url(${bgImg})`,backgroundSize: '100% 100%'}"/>
 				<view :style="{height:navBarHeight}"></view>
 				<view class="order-status">
 					<view class="status">
@@ -124,8 +124,9 @@
 				systemBottom: "",
 				areaId: "",
 				navBarHeight:"",
-				bgImg :
-					'http://dbj.dragonn.top/static/mp/dabanjia/images/decorate/order_bg_green.png',
+				scrollTop: 0,
+				headerTitle:"",
+				bgImg:'http://dbj.dragonn.top/static/mp/dabanjia/images/decorate/order_bg_green.png',
 			};
 		},
 
@@ -135,6 +136,10 @@
 			console.log(this.systemBottom);
 		},
 
+		onPageScroll(scrollTop) {
+			this.scrollTop = scrollTop.scrollTop
+		},
+		
 		onLoad(e) {
 			this.type = e.type;
 			console.log("页面显示类型 this.type=", this.type);
@@ -144,11 +149,13 @@
 
 			if (this.type == "complete") {
 				//订单完成页面
+				this.headerTitle="订单详情"
 				this.orderDetail();
 			}
 
 			if (this.type == "refund") {
 				//退款成功页面
+				this.headerTitle = "退款详情"
 				console.log("退款成功页面");
 				this.refundDetail();
 			}
@@ -243,12 +250,23 @@
 
 <style lang="scss" scoped>
 	.container {
-		width: 100%;
-		height: 100%;
-		overflow: auto;
-		padding-bottom: 100rpx;
-
+		
+		.back-icon {
+			color: white;
+			font-size: 40rpx;
+			padding: 20rpx;
+		}
+		.bgcStyle{
+			width: 100%; 
+			height: 32rpx;
+			position: absolute;
+			bottom: -32rpx;
+			z-index: -1;
+		}
 		.order-container {
+			width: 100%;
+			height: 100%;
+			overflow: auto;
 			.order-status {
 				width: 100%;
 				height: 140rpx;
@@ -257,14 +275,6 @@
 				display: flex;
 				flex-flow: column nowrap;
 				align-items: center;
-
-				.backgroundStyle {
-					position: absolute;
-					z-index: -1;
-					width: 100%;
-					height: 172rpx;
-					background-color: #23d5c6;
-				}
 
 				.status {
 					display: flex;
