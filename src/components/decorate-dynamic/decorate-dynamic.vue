@@ -35,7 +35,7 @@
             </view>
     			</view>
     		</view>
-        <dynamicComments ref='comments' :index="activeIndex" @change="changeComments" :userId='personId' :houseOwnerId='houseOwnerId' :dynamicId='dynamicId'></dynamicComments>
+        <dynamicComments ref='comments' :index="activeIndex" :totalRows='activeTotalRows' @change="changeComments" :userId='personId' :houseOwnerId='houseOwnerId' :dynamicId='dynamicId'></dynamicComments>
   </view>
 </template>
 
@@ -61,7 +61,8 @@
         dynamicId:0,
         houseOwnerId:0,
         activeIndex:0,
-        dynamicsArr:[]
+        dynamicsArr:[],
+        activeTotalRows:0,
       };
     },
     watch:{
@@ -83,12 +84,15 @@
           this.$refs.comments.showComments = true
           this.dynamicId = item.id
           this.activeIndex = index
+          this.activeTotalRows = item.commentCount
+          console.log(this.activeIndex)
           this.houseOwnerId = item.houseOwnerId
         }
       	this.$emit('commentC',item.id)
         
       },
       changeComments(item,index){
+        console.log(index)
         this.dynamicsArr[index].commentCount = item
       },
       toDecorate(item){

@@ -163,7 +163,8 @@
       userId:0,
       houseOwnerId:0,
       dynamicId:0,
-      activeIndex:0,
+      index:0,
+      totalRows:0,
     },
     data(){
       return{
@@ -183,7 +184,7 @@
         totalPage:0,
         isInputFocus:false,
         isOpen:false,
-        totalRows:0,
+        
       }
     },
     mounted(){
@@ -218,7 +219,7 @@
         this.showComments=false;
         this.inputValue = ''
         this.comments = []
-        this.$emit('change',this.totalRows,this.activeIndex)
+        this.$emit('change',this.totalRows,this.index)
         // this.
       },
       inputFocus() {
@@ -243,7 +244,6 @@
             let { page, rows, totalPage, totalRows, list } = data;
             this.page = page
             this.totalPage = totalPage
-            this.totalRows = totalRows
             this.comments = this.comments.concat(list);
           }
         });
