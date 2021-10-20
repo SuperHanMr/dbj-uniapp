@@ -1,8 +1,9 @@
 <template>
 	<view>
-		<custom-navbar opacity="0">
+		<custom-navbar :opacity="scrollTop/100" :title="headerTitle">
 			<template v-slot:back>
-				<i class="icon-ic_cancel_white back-icon" @click="back"></i>
+				<i class="icon-ic_cancel_white back-icon" :style="{color: (scrollTop/100>1)?'black':'white'}"
+					@click="back"></i>
 			</template>
 		</custom-navbar>
 		<view>
@@ -23,12 +24,13 @@
 				<view class="icon">
 					<i class="icon-icon_order_tips"></i>
 				</view>
-				<view class="alert" style="flex:1">
+				<view class="alert" :style="{color:detail.status==5?'#FF3347':'#333333'}" style="flex:1">
 					{{tips}}
 				</view>
 			</view>
 		</view>
-		<warehouse-item :showTitle="false" :item="detail" :key="item.id" @detail="toDetail" @refund="toRefund">
+		<warehouse-item :showTitle="false" :showPayPrice="true" :item="detail" :key="item.id" @detail="toDetail"
+			@refund="toRefund">
 		</warehouse-item>
 		<view class="info-content">
 			<view class="title">
@@ -81,6 +83,8 @@
 				</view>
 				<view class="text">
 					{{detail.refundNo}}
+					<text class="tip" @click="copy(detail.refundNo)">
+						复制</text>
 				</view>
 			</view>
 
@@ -94,7 +98,7 @@
 				</view>
 			</view>
 		</view>
-		<view  v-if="[4,5].includes(detail.status)" class="other-btn" @click="toMessage">联系客服
+		<view v-if="[4,5].includes(detail.status)" class="other-btn" @click="toMessage">联系客服
 		</view>
 		<view v-if="[4,5].includes(detail.status)" class="other-btn" @click="reApply">重新申请
 		</view>
@@ -132,8 +136,12 @@
 				headerTime: '',
 				tips: '',
 				id: '',
-				stockStatus: ''
+				stockStatus: '',
+				scrollTop: 0
 			}
+		},
+		onPageScroll(scrollTop) {
+			this.scrollTop = scrollTop.scrollTop
 		},
 		onLoad(e) {
 			const systemInfo = uni.getSystemInfoSync();
@@ -156,20 +164,28 @@
 			}
 		},
 		methods: {
+			copy(data) {
+				uni.setClipboardData({
+					data: data.toString(),
+					success: function() {
+						console.log('success');
+					}
+				});
+			},
 			toMessage() {
 				this.$store.dispatch("openCustomerConversation");
 			},
-			reApply(){
+			reApply() {
 				//TODO 重新申请
-				getApp().globalData.naviData=this.detail;
-				let type=0;
-				if(this.detail.isReturnInventory){
-					type=1
+				getApp().globalData.naviData = this.detail;
+				let type = 0;
+				if (this.detail.isReturnInventory) {
+					type = 1
 				}
 				uni.navigateTo({
-					url:`../warehouse-refund/warehouse-refund?refundType=${this.detail.type}&id=${this.detail.id}&type=${type}`
+					url: `../warehouse-refund/warehouse-refund?refundType=${this.detail.type}&id=${this.detail.id}&type=${type}`
 				})
-				
+
 			},
 			refuntType(type) {
 				let res = '';
@@ -236,7 +252,7 @@
 						}
 						if (e.status == 5) {
 							this.headerTitle = '退款失败'
-							this.tips = '您已取消了本次退款，如有问题未解决，您可以重新申请'
+							this.tips = '您的退款账户存在异常，您可联系客服或重新发起申请'
 						}
 						this.bgImg =
 							'http://dbj.dragonn.top/static/mp/dabanjia/images/decorate/order_bg_green.png'
@@ -251,6 +267,20 @@
 </script>
 
 <style lang="scss" scoped>
+	.tip {
+		width: 60rpx;
+		height: 30rpx;
+		margin-left: 8rpx;
+		line-height: 30rpx;
+		border-radius: 4rpx;
+		color: #35c4c4;
+		font-size: 20rpx;
+		text-align: center;
+		display: inline-block;
+		border: 1rpx solid #35c4c4;
+		vertical-align: 13%;
+	}
+
 	.other-btn {
 		width: 100%;
 		height: 112rpx;
