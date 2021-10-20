@@ -76,7 +76,7 @@
       		if(data){
       			
       			this.dynamics = data.list
-            this.totalPage =  data.totalPage
+            this.totalPage =  data.totalPage||0
       		}
       	})
       },

@@ -24,7 +24,7 @@
 								</image>
 
 								<view v-if="item.mediaType==1" class="top-content">
-									<image class="top-content-img"
+									<image class="top-content-img-living"
 										src="http://dbj.dragonn.top/static/mp/dabanjia/images/home/ic_liveing.png">
 									</image>
 									{{item.roomLiveMediaVO.onLineCount}}人在看
@@ -40,11 +40,10 @@
 									<image class="avatar"
 										:src="item.mediaType==1?item.roomLiveMediaVO.anchor.avatar:item.roomVideoMediaVO.anchor.avatar"
 										mode=""></image>
-									<view class="name">
+									<view class="name-live">
 										{{item.mediaType==1?item.roomLiveMediaVO.anchor.nickName:item.roomVideoMediaVO.anchor.nickName}}
 									</view>
 								</view>
-
 							</view>
 							<view class="name">
 								{{item.mediaType==1?item.roomLiveMediaVO.title:item.roomVideoMediaVO.title}}
@@ -77,6 +76,9 @@
 		},
 		onLoad() {
 			this.getList();
+		},
+		onShow() {
+			this.onRefresh();
 		},
 		// onReachBottom() {
 		// 	this.page++;
@@ -120,7 +122,7 @@
 						url: "/pages/common/video-player/video-player?url=" +
 							encodeURIComponent(item.roomVideoMediaVO.videoUrl) +
 							"&title=" +
-							item.roomVideoMediaVO.title,
+							item.roomVideoMediaVO.title + '&id=' + item.roomVideoMediaVO.id,
 					});
 				}
 			},
@@ -239,7 +241,8 @@
 						border-radius: 16rpx;
 					}
 
-					.name {
+					.name-live {
+						margin-left: 12rpx;
 						text-overflow: ellipsis;
 						display: -webkit-box;
 						-webkit-line-clamp: 1; //这个代表你要在几行显示省略号
@@ -269,6 +272,12 @@
 						margin-right: 8rpx;
 						height: 28rpx;
 						width: 74rpx;
+					}
+
+					.top-content-img-living {
+						margin-right: 8rpx;
+						height: 28rpx;
+						width: 28rpx;
 					}
 				}
 			}

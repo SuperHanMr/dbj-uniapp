@@ -10,12 +10,11 @@
 					</view>
 					<view style="flex:1">
 					</view>
-					<view class="" @click="selectRes">
-						{{reasonName!=''?reasonName:'请选择原因'}}
+					<view :class="{'have-reason':reasonName!='','no-reason':reasonName==''}" @click="selectRes">
+						{{reasonName!=''?reasonName:'请选择'}}
 					</view>
 					<view class="">
-						<!-- //todo down -->
-
+						<i class="icon-size icon-dianpu_ic_fenleishouqijiantou "></i>
 					</view>
 				</view>
 			</view>
@@ -30,6 +29,9 @@
 					<view class="">
 						<input style="color: #FF3347;width: 200rpx;text-align: end;" type="number" placeholder="请输入金额"
 							v-model="num" />
+					</view>
+					<view class="">
+						<i class="icon-xiaochengxu_fangwuguanli_bianji icon-size"></i>
 					</view>
 				</view>
 			</view>
@@ -234,8 +236,22 @@
 
 
 <style lang="scss" scoped>
+	.icon-size{
+		font-size: 32rpx;
+		color: #c7c7c7;
+	}
+	.have-reason{
+		color: black;
+		font-size: 28rpx;
+	}
+	.no-reason{
+		color: #c7c7c7;
+		font-size: 28rpx;
+
+	}
 	.color-red {
 		color: #FF3B30;
+		margin-right: 12rpx;
 	}
 
 	.textarea {

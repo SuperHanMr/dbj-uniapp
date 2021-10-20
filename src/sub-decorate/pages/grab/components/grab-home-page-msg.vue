@@ -1,6 +1,6 @@
 <template>
   <view class="grab-content-msg">
-    <view class="msg-item" v-if="personData.intro.length>0">
+    <view class="msg-item " v-if="personData.intro.length>0">
       <view class="item-title">
         <view class="line"></view>
         <view class="title">Ta的简介</view>
@@ -21,8 +21,8 @@
         <view class="tags" v-for="item of personData.designTags">{{item}}</view>
       </view>
     </view>
-    <view class="msg-item" >
-      <view class="item-title">
+    <view class="msg-item" v-if="personData.roleId<7">
+      <view class="item-title" >
         <view class="line"></view>
         <view class="title">Ta的徽章</view>
       </view>
@@ -91,6 +91,7 @@
   .grab-content-msg{
     padding-bottom: 40rpx;
   }
+
   .msg-item{
     margin-top: 32rpx;
     .item-title{

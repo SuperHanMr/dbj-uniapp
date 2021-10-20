@@ -1,11 +1,11 @@
 <template>
   <view class="grab-content-msg">
-    <view class="msg-item">
-      <view class="item-title">
+    <view class="msg-item introudc-msg">
+      <view class="item-introudce item-title">
         <!-- <view class="line"></view> -->
         <view class="title">简介：</view>
       </view>
-      <view class="msg-content" >
+      <view class="msg-content introudc-msg" >
         <text class="report-text" :class="{'report-text-hidden':isHidden}">{{personData.intro||'这个人很懒，什么都没写'}}</text>
         <view class="openHidden" v-if="showBtn" @click="clickHidden">
           {{hddenText}}
@@ -13,7 +13,7 @@
       </view>
     </view>
     <view class="msg-item" v-if="personData.designTags.length>0">
-      <view class="item-title">
+      <view class="item-introudce item-title">
         <!-- <view class="line"></view> -->
         <view class="title">擅长：</view>
       </view>
@@ -21,7 +21,7 @@
         <view class="tags" v-for="item of personData.designTags" :key='item'>{{item}}</view>
       </view>
     </view>
-    <view class="msg-item" v-if="personData.roleId<7">
+    <view class="msg-item" v-if="personData.roleId<6">
       <view class="item-title">
         <!-- <view class="line"></view> -->
         <view class="title">徽章：</view>
@@ -79,13 +79,22 @@
   .grab-content-msg{
     padding-bottom: 40rpx;
   }
+  .introudc-msg{
+    align-items: center;
+  }
   .msg-item{
     margin-top: 32rpx;
     display: flex;
     line-height: 36rpx;
-    .item-title{
-      margin-bottom: 12rpx;
+    margin-bottom: 12rpx;
+    .item-introudce{
       display: flex;
+      align-items: center;
+    }
+    .item-title{
+      
+      // display: flex;
+      // align-items: center;
       display: inline-block;
       .title{
         font-size: 26rpx;
@@ -128,7 +137,7 @@
           width: 42rpx;
           height: 42rpx;
           left: -19rpx;
-          top: 0;
+          top: 0px;
         }
         text{
           height: 38rpx;
