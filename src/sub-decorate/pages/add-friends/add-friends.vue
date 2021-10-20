@@ -249,9 +249,9 @@ page {
       flex-direction: row;
       height: 88rpx;
       margin: 0 39rpx;
-      width: 556rpx;
-      justify-content: space-between;
+      justify-content: center;
       align-items: center;
+			
       margin-top: 100rpx;
       margin-bottom: 40rpx;
 
@@ -276,6 +276,7 @@ page {
         background: linear-gradient(135deg, #36d9cd, #28c6c6);
         color: #ffffff;
 				border: none;
+				margin-left: 33rpx;
       }
     }
   }
