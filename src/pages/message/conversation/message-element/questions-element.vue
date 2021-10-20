@@ -14,7 +14,7 @@
           <view class="question-item__text">
             {{ q.question }}
           </view>
-          <view class="question-item__icon icon-face"></view>
+          <view class="question-item__icon icon-kefuxiaoxi_ic"></view>
         </view>
       </view>
     </view>

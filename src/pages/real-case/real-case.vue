@@ -84,11 +84,13 @@
 				} else {
 					list = this.rightList;
 				}
-			  if(data){
+			  if(data.isCollection){
 			    list[this.activeIndex].collectionCount += 1
 			  }else{
 			    list[this.activeIndex].collectionCount -=1
 			  }
+				list[this.activeIndex].commentCount = data.commentCount;
+				list[this.activeIndex].likeCount = data.likeCount;
 			  list[this.activeIndex].isCollection = !list[this.activeIndex].isCollection;
 			})
 		},

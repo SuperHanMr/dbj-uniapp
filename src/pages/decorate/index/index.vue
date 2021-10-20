@@ -54,12 +54,12 @@
 
         <view class="scroll-view flex-1">
           <!-- 每日播报 -->
-          <text-scroll :dataList="broadcastList" v-if="broadcastList.length > 0 && isConstruction"
+          <text-scroll :show="showScroll" :dataList="broadcastList" v-if="broadcastList.length > 0 && isConstruction"
             @goDecorateCalendar="goDecorateCalendar"></text-scroll>
           <!-- 我的仓库 -->
           <view v-if="haveWarehouse" class="my-decorate-service-wrap">
-            <view class="top-bg"></view>
-            <view class="my-decorate-service">
+            <!-- <view class="top-bg"></view> -->
+            <view class="my-decorate-service ck">
               <view class="service-title flex-space-between-row">
                 <text class="t">{{who}}的仓库</text>
                 <view class="r flex-start-row" @click="goToMyWarehouse">
@@ -86,7 +86,7 @@
           </view>
           <!-- 我的装修服务 -->
           <view class="my-decorate-service-wrap" v-if="purchasedServiceList.length > 0 || aServiceData.myServiceFlag">
-            <view class="top-bg"></view>
+            <!-- <view class="top-bg"></view> -->
             <view class="my-decorate-service">
               <view class="service-title flex-space-between-row">
                 <text class="t">{{who}}的装修服务</text>
@@ -110,11 +110,11 @@
               购买相关服务 即刻开启装修
             </view>
             <guide-card v-if="availGuides.includes('design')" cardType="service"
-              imageUrl="http://dbj.dragonn.top/static/mp/dabanjia/images/decorate/ic_myhouse_design%402x.png"
+              imageUrl="http://dbj.dragonn.top/static/mp/dabanjia/images/decorate/ic_myhouse_design.webp"
               @buyNow="gonohousedecatore('design')">
             </guide-card>
             <guide-card v-if="availGuides.includes('actuary')" cardType="actuary"
-              imageUrl="http://dbj.dragonn.top/static/mp/dabanjia/images/decorate/ic_myhouse_actuary%402x.png"
+              imageUrl="http://dbj.dragonn.top/static/mp/dabanjia/images/decorate/ic_myhouse_actuary.webp"
               @buyNow="gonohousedecatore('actuary')">
             </guide-card>
           </view>
@@ -169,7 +169,7 @@
   import {
     mapGetters
   } from "vuex";
-  let timer = null;
+  // let timer = null;
   export default {
     components: {
       HouseSwitch,
@@ -198,6 +198,10 @@
       
       this.getEstateList()
       this.$store.dispatch("updateTabBarBadge")
+      this.showScroll = true
+    },
+    onHide() {
+      this.showScroll = false
     },
     data() {
       return {
@@ -228,7 +232,8 @@
         who: "我",
         broadcastList: [],
         isConstruction: false,
-        showNoHouse: false
+        showNoHouse: false,
+        showScroll: false
       };
     },
     mounted() {
@@ -240,11 +245,6 @@
         this.deviceId = uuidv4()
         uni.setStorageSync('uuDeviceId', this.deviceId);
       }
-
-    },
-    destory() {
-      clearTimeout(timer)
-      timer = null
     },
     methods: {
       guid() {
@@ -306,7 +306,8 @@
             showDesignFlag,
             showVideoFlag,
             projectStatus,
-            myServiceFlag
+            myServiceFlag,
+            existWarehouse
           } = data
           this.purchasedServiceList = purchasedServiceList || []
           this.availableServiceList = availableServiceList || []
@@ -318,12 +319,13 @@
             showDesignFlag,
             showVideoFlag,
             projectStatus,
-            myServiceFlag
+            myServiceFlag,
+            existWarehouse
           }
           this.availGuides = []
           this.defaultServices && this.addServiceCard(this.defaultServices, "serviceType")
           this.availableServiceList && this.addServiceCard(this.availableServiceList, "nodeType")
-          this.haveWarehouse = this.purchasedServiceList.filter(t => t.nodeType >= 5).length > 0
+          this.haveWarehouse = existWarehouse || false//this.purchasedServiceList.filter(t => t.nodeType >= 5).length > 0
           for (let i = 0; i < this.purchasedServiceList.length; i++) {
             if ([5, 6, 7, 8, 9, 10].includes(this.purchasedServiceList[i].nodeType) && (this.purchasedServiceList[i]
                 .status >= 2 || (this.purchasedServiceList[i].status == 0 && this.purchasedServiceList[i]

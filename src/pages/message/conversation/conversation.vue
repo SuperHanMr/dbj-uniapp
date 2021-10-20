@@ -12,31 +12,39 @@
       @refresherrefresh="handlePulling"
       @click="handleMessageListClick"
     >
-      <view v-if="type === CONV_TYPES.COMMON || type === CONV_TYPES.CUSTOMER" id="listBody" class="message-list-body">
-        <template v-for="(msg, idx) in currentMessageList">
-          <view
-            v-if="showTimeTag(msg, currentMessageList[idx - 1])"
-            :key="msg.ID"
-            class="message-tags-time"
-          >{{ formatMessageTime(msg.time) }}</view>
-          <message-item :key="msg.ID" :message="msg"></message-item>
-        </template>
-      </view>
-      <view v-else-if="type === CONV_TYPES.SYSTEM" id="listBody" class="message-list-body" style="padding-bottom: 48rpx">
-        <template v-for="(msg, idx) in currentMessageList">
-          <view
-            :key="msg.ID"
-            class="message-tags-time"
-          >{{ formatMessageTime(msg.time) }}</view>
-          <message-item-system :key="msg.ID" :message="msg"></message-item-system>
-        </template>
-      </view>
-      <view v-else-if="type === CONV_TYPES.INTERACTION" id="listBody" class="message-list-body" style="padding-bottom: 48rpx; background: #fff;">
-        <message-item-interaction
-          v-for="(msg, idx) in currentMessageList"
-          :key="msg.ID" 
-          :message="msg"
-        ></message-item-interaction>
+      <template v-if="currentMessageList.length">
+        <view v-if="type === CONV_TYPES.COMMON || type === CONV_TYPES.CUSTOMER" id="listBody" class="message-list-body">
+          <template v-for="(msg, idx) in currentMessageList">
+            <view
+              v-if="showTimeTag(msg, currentMessageList[idx - 1])"
+              :key="msg.ID"
+              class="message-tags-time"
+            >{{ formatMessageTime(msg.time) }}</view>
+            <message-item :key="msg.ID" :message="msg"></message-item>
+          </template>
+        </view>
+        <view v-else-if="type === CONV_TYPES.SYSTEM" id="listBody" class="message-list-body" style="padding-bottom: 48rpx">
+          <template v-for="(msg, idx) in currentMessageList">
+            <view
+              :key="msg.ID"
+              class="message-tags-time"
+            >{{ formatMessageTime(msg.time) }}</view>
+            <message-item-system :key="msg.ID" :message="msg"></message-item-system>
+          </template>
+        </view>
+        <view v-else-if="type === CONV_TYPES.INTERACTION" id="listBody" class="message-list-body" style="padding-bottom: 48rpx; background: #fff;">
+          <message-item-interaction
+            v-for="(msg, idx) in currentMessageList"
+            :key="msg.ID" 
+            :message="msg"
+          ></message-item-interaction>
+        </view>
+      </template>
+      <view v-else-if="loaded" class="empty-container">
+        <image class="empty-img" src="https://ali-image.dabanjia.com/static/mp/dabanjia/images/empty.png"></image>
+        <view class="empty-tip">
+          {{ emptyTip }}
+        </view>
       </view>
     </scroll-view>
     <message-send-box v-if="type === CONV_TYPES.COMMON || type === CONV_TYPES.CUSTOMER"></message-send-box>
@@ -71,6 +79,7 @@
         currentScrollTop: 0,
         refresherEnabled: true,
         refresherTriggered: false,
+        loaded: false
       }
     },
     computed: {
@@ -89,6 +98,14 @@
         }
         return this.currentConversation.systemType || this.CONV_TYPES.COMMON;
       },
+      emptyTip() {
+        return ({
+          [this.CONV_TYPES.CUSTOMER]: "暂无消息",
+          [this.CONV_TYPES.SYSTEM]: "暂无系统消息",
+          [this.CONV_TYPES.INTERACTION]: "暂无互动消息",
+          [this.CONV_TYPES.COMMON]: "暂无消息",
+        })[this.type] || "暂无消息";
+      }
     },
     watch: {
       currentMessageList(list, oldList) {
@@ -148,12 +165,15 @@
         uni.setNavigationBarTitle({
         　　title: conv.name
         });
-        this.$store.dispatch("checkoutConversation", conv.conversationID);
+        this.$store.dispatch("checkoutConversation", conv.conversationID).then(res => {
+          this.loaded = true;
+        })
       } else {
         uni.setNavigationBarTitle({
         　　title: options.name || ""
         });
         this.$store.dispatch("checkoutConversation", options.id).then(res => {
+          this.loaded = true;
           if (!options.name) {
             if (this.currentConversation.userProfile) {
               uni.setNavigationBarTitle({
@@ -273,7 +293,18 @@
     height: 100%;
     overflow: hidden;
     position: relative;
-    border-top: 1px solid #f5f5f5;
+  }
+  .conversation-container::before {
+    content: " ";
+    display: block;
+    position: absolute;
+    z-index: 1;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 1px;
+    background-color: #f4f4f4;
+    transform: scaleY(0.5);
   }
   .bgWhite {
     background: #fff;
@@ -309,5 +340,22 @@
     color: #fff;
     width: 28px;
     height: 28px;
+  }
+  
+  .empty-container {
+    display: flex;
+    flex-flow: column nowrap;
+    align-items: center;
+    width: 100%;
+  }
+  .empty-img {
+    margin-top: 268rpx;
+    width: 248rpx;
+    height: 248rpx;
+  }
+  .empty-tip {
+    color: #999;
+    margin-top: 24rpx;
+    font-size: 13px;
   }
 </style>

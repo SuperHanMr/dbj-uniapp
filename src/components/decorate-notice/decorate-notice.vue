@@ -1,7 +1,7 @@
 <template>
   <view class="notice" catchtouchmove="true" :style="{height:systemHeight}">
     <view class="notice-mask"></view>
-    <view class="notice-view">
+    <view class="notice-view" >
       <scroll-view class="item-list" :style="{height:scrollHeight}" scroll-y="true">
        <view class="item">
   <!--                 <view
@@ -77,11 +77,15 @@
       return {
         systemHeight: '',
         list: [],
-        scrollHeight: ''
+        scrollHeight: '',
+        
       };
     },
-    mounted() {
+    created(){
       this.systemHeight = wx.getSystemInfoSync().windowHeight + 'px'
+      
+    },
+    mounted() {
       this.getMsg()
     },
     watch: {
@@ -106,7 +110,9 @@
         this.close();
       },
       getMsg() {
+        
         getMsgList(this.current).then(res => {
+          
           res.map(item => {
             item.data = JSON.parse(item.msgBody)
             item.url = sysMessage[item.msgType].url
@@ -122,6 +128,7 @@
           })
           this.list = res
           this.scrollHeight = res.length * 140 * 2 + 'rpx'
+          
           console.log(this.scrollHeight)
         })
       }
@@ -174,10 +181,10 @@
       i {
         font-size: 24rpx;
         color: #fff;
-            width: 64px;
+            width: 128rpx;
             margin: 0 auto;
-            height: 64px;
-            line-height: 64px;
+            height: 128rpx;
+            line-height: 128rpx;
       }
     }
 

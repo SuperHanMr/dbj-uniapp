@@ -46,7 +46,7 @@
 		},
     onReady(){
       uni.setNavigationBarTitle({
-        title:'确认'+(getApp().globalData.decorateMsg.jobName||'设计师')
+        title:'确认服务者'
       })
     },
     onLoad(e){

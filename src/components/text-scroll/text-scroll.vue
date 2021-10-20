@@ -13,59 +13,78 @@
 <script>
   import {
     formatDate
-  } from "../../utils/common.js"
+  } from "../../utils/common.js";
   import {
     calendarFormat
-  } from "../../utils/date.js"
+  } from "../../utils/date.js";
   export default {
-    props: ["dataList"],
+    props: ["dataList", "show"],
     data() {
       return {
         timer: null,
         current: {},
-        index: 0
-      }
+        index: 0,
+      };
     },
     methods: {
       setTimer() {
-        clearInterval(this.timer)
+        clearInterval(this.timer);
+        if (this.dataList.length <= 1) {
+          return
+        }
         this.timer = setInterval(() => {
-          if (this.index < 4) {
-            this.index++
+          if (this.index < 4 && this.index < this.dataList.length - 1) {
+            this.index++;
           } else {
-            this.index = 0
+            this.index = 0;
           }
-          this.current = this.dataList[this.index]
-        }, 7000)
+          console.log(this.index)
+          this.current = this.dataList[this.index];
+        }, 7000);
       },
       goDecorateCalendar() {
-        let yyyymmdd = formatDate(this.current.recordDate).split(" ")[0].split("-")
-        let yyyy = yyyymmdd[0] + ''
-        let mm = yyyymmdd[1] + ''
-        this.$emit("goDecorateCalendar", yyyy + mm)
+        let yyyymmdd = formatDate(this.current.recordDate)
+          .split(" ")[0]
+          .split("-");
+        let yyyy = yyyymmdd[0] + "";
+        let mm = yyyymmdd[1] + "";
+        this.$emit("goDecorateCalendar", yyyy + mm);
+      },
+      clearTimer() {
+        clearInterval(this.timer);
+        this.timer = null;
       }
     },
     filters: {
       formatDate(val) {
         return calendarFormat(val, {
-          sameDay: '[今天]',
-          nextDay: '[明天]',
-          lastDay: '[昨天]',
-          last2Day: '[前天]',
-          sameYear: 'MM-DD',
-          sameElse: 'YYYY-MM-DD'
-        })
-      }
+          sameDay: "[今天]",
+          nextDay: "[明天]",
+          lastDay: "[昨天]",
+          last2Day: "[前天]",
+          sameYear: "MM-DD",
+          sameElse: "YYYY-MM-DD",
+        });
+      },
     },
     mounted() {
-      this.current = this.dataList[this.index]
-      this.setTimer()
+      this.current = this.dataList[this.index];
+      this.setTimer();
     },
     beforeDestroy() {
-      clearInterval(this.timer)
+      clearInterval(this.timer);
       this.timer = null;
+    },
+    watch: {
+      show(val) {
+        if (!val) {
+          this.clearTimer()
+        } else {
+          this.setTimer()
+        }
+      }
     }
-  }
+  };
 </script>
 
 <style scoped lang="scss">
@@ -129,6 +148,7 @@
       text-align: center;
       color: #999999;
       line-height: 34rpx;
+      margin-right: 8rpx;
     }
 
     .icon-r {

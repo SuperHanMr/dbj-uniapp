@@ -86,7 +86,7 @@
         } = this.detail
         const token = uni.getStorageSync("scn")
         uni.navigateTo({
-          url: `/sub-decorate/pages/beatiful-report/beatiful-report?token=${token}&themeId=${beautyReport.templateId}&id=${beautyReport.id}`
+          url: `/sub-decorate/pages/beatiful-report/beatiful-report?token=${token}&serveId=${beautyReport.serveId}&themeId=${beautyReport.templateId}&id=${beautyReport.id}`
         })
       },
       getPorts() {

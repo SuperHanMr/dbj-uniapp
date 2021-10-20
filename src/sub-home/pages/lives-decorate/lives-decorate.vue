@@ -1,7 +1,7 @@
 <template>
 	<view class="fill">
-		<view v-if="liveList.length||list.length">
-			<live-player v-if="liveList.length" :class="{ player:!isFill,'player-fill':isFill}" :src="livePreview"
+		<view v-if="list.length">
+			<!-- <live-player v-if="liveList.length" :class="{ player:!isFill,'player-fill':isFill}" :src="livePreview"
 				autoplay @statechange="statechange" @error="error" :muted="muted"
 				:orientation="isFill?'horizontal':'vertical'">
 				<cover-view v-if="!isFill" class="video-bottom">
@@ -47,12 +47,11 @@
 					</cover-image>
 				</cover-view>
 
-			</live-player>
-			<view v-if="!isFill" class="header">
+			</live-player> -->
+			<view class="header" @click="showDownload=true">
 				直播速看
 			</view>
-			<scroll-view v-if="!isFill" scroll-y="true" class="scroll-view">
-
+			<scroll-view scroll-y="true" class="scroll-view">
 				<view v-for="(item,index) in list" :key="index">
 					<view class="h-row">
 						<view class="tip">
@@ -71,7 +70,7 @@
 				</view>
 				<view style="height: 100rpx;">
 				</view>
-			<!-- 	<view class="preview-full" v-if="currentVideoSrc">
+				<!-- 	<view class="preview-full" v-if="currentVideoSrc">
 					<video class="preview-full" :autoplay="true" :src="currentVideoSrc" :show-fullscreen-btn="false">
 						<cover-view class="preview-full-close" @click="previewVideoClose"> ×
 						</cover-view>
@@ -82,10 +81,36 @@
 		<view v-else>
 			<image class="placehold-img" src="http://dbj.dragonn.top/static/mp/dabanjia/images/home/pic_empty.png"
 				mode=""></image>
-				<view class="placehold-text">
-					暂无工地视频
-				</view>
+			<view class="placehold-text">
+				暂无工地视频
+			</view>
 		</view>
+
+		<view v-if="showDownload" class="alert-app">
+			<view class="content">
+				<view class="img">
+					<view class="close" @click="showDownload=false">
+
+					</view>
+
+				</view>
+				<view class="text-content">
+					<view class="text-title">
+						请下载APP使用
+					</view>
+					<view class="text-tips text-top">
+						咨询家装问题，去手机应用市场搜索
+					</view>
+					<view class="text-tips">
+						【打扮家】APP与主播进行交流吧
+					</view>
+					<view class="text-btn" @click="showDownload=false">
+						知道了
+					</view>
+				</view>
+			</view>
+		</view>
+
 	</view>
 </template>
 
@@ -94,9 +119,13 @@
 		workVideo,
 		bindVideoList
 	} from "../../../api/home.js";
-	import{formatDate} from "../../../utils/common.js"
+	import {
+		formatDate
+	} from "../../../utils/common.js"
 	export default {
-		filters:{formatDate},
+		filters: {
+			formatDate
+		},
 		data() {
 			return {
 				muted: false,
@@ -106,6 +135,7 @@
 				currentVideoSrc: "",
 				liveList: [],
 				currentPage: 0,
+				showDownload: false
 			};
 		},
 		computed: {
@@ -123,7 +153,7 @@
 				}
 			},
 			showLiveRight() {
-				if (this.currentPage < Math.floor(this.liveList.length/3)) {
+				if (this.currentPage < Math.floor(this.liveList.length / 3)) {
 					return true;
 				} else {
 					return false;
@@ -144,7 +174,7 @@
 			}).then(e => {
 				if (e.length) {
 					this.liveList = e.filter(e => {
-						return e.hls != '' && e.hls != null&&e.status==1
+						return e.hls != '' && e.hls != null && e.status == 1
 					})
 					if (this.liveList.length) {
 						this.livePreview = this.liveList[0].hls
@@ -153,8 +183,8 @@
 			})
 		},
 		methods: {
-			changeLive(item){
-				this.livePreview=item.hls;
+			changeLive(item) {
+				this.livePreview = item.hls;
 			},
 			changeMuted() {
 				this.muted = !this.muted;
@@ -215,6 +245,88 @@
 </script>
 
 <style lang="scss" scoped>
+	.alert-app {
+		position: fixed;
+		width: 100vw;
+		height: 100vh;
+		display: flex;
+		flex-direction: column;
+		justify-content: center;
+		align-items: center;
+		background: rgba(0, 0, 0, 0.5);
+
+		.content {
+			width: 640rpx;
+			height: 716rpx;
+			background-color: #fff;
+			border-radius: 24rpx;
+			overflow: hidden;
+
+			.img {
+				width: 640rpx;
+				height: 350rpx;
+				background: url("http://dbj.dragonn.top/static/mp/dabanjia/images/home/lives_download.png");
+				background-size: contain;
+				position: relative;
+				border-top-right-radius: 24rpx;
+				border-top-left-radius: 24rpx;
+
+				.close {
+					float: right;
+					width: 64rpx;
+					height: 64rpx;
+					margin-right: 24rpx;
+					margin-top: 24rpx;
+					background: url("http://dbj.dragonn.top/static/mp/dabanjia/images/home/ic_closed_black.png");
+					background-size: contain;
+				}
+			}
+
+			.text-content {
+				background-color: #fff;
+				width: 640rpx;
+				height: 366rpx;
+				border-bottom-right-radius: 24rpx;
+				border-bottom-left-radius: 24rpx;
+				display: flex;
+				flex-direction: column;
+				align-items: center;
+
+				.text-title {
+					font-size: 36rpx;
+					font-weight: 500;
+					color: #333333;
+					line-height: 50rpx;
+					margin-top: 40rpx;
+				}
+
+				.text-tips {
+					font-size: 28rpx;
+					color: #999999;
+					line-height: 42rpx;
+				}
+
+				.text-top {
+					margin-top: 8rpx;
+				}
+
+				.text-btn {
+					width: 266rpx;
+					height: 88rpx;
+					line-height: 88rpx;
+					background: linear-gradient(135deg, #00bfaf, #00bfbc);
+					border-radius: 12rpx;
+					text-align: center;
+					font-size: 28rpx;
+					font-weight: 500;
+					color: #ffffff;
+					margin-top: 48rpx;
+				}
+			}
+		}
+	}
+
+
 	.fill {
 		width: 100%;
 		height: 100%;
