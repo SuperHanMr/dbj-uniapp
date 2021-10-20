@@ -57,9 +57,10 @@
             if (res.confirm) {
               confirmStageDeliver(this.serveId).then(data => {
                 console.log(data)
-                wx.showToast({
-                  title: "已提交确认"
-                })
+                // wx.showToast({
+                //   title: "已提交确认"
+                // })
+                uni.navigateBack({})
               })
             } else {
               console.log("点击了取消")

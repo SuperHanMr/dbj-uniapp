@@ -98,7 +98,7 @@
 			this.reasonName = this.data.reason || '';
 			this.remark = this.data.remark || '';
 			this.reasonValue = this.data.reasonId || ''
-			this.num = this.data.refundAmount
+			this.num = this.data.refundAmount || 0
 			let title;
 			this.type = e.type;
 			if (e.type == 0) {
@@ -135,7 +135,11 @@
 					console.log(e.returnNumber)
 					totalBack += e.price * e.returnNumber;
 				})
-				this.num = totalBack.toFixed(2);
+				if (totalBack) {
+					this.num = totalBack.toFixed(2);
+				} else {
+					this.num = 0
+				}
 			},
 			onNumChange(e) {
 				this.refundList.forEach(item => {

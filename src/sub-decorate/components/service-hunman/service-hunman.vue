@@ -1,15 +1,15 @@
 <template>
   <view class="service-hunman">
     <view class="design-top" v-if="isDesign">
-      <view class="design-name">全案设计</view>
-      <view class="design-change" @click="openPopup">
+      <view class="design-name">{{designData.severName||designName[0].serveName}}</view>
+      <view class="design-change" @click="openPopup" v-if="designName.length>1">
         <text>更换设计类型</text>
         <i class="icon-a-ic_zhuangxiuxianchang_jingsuanzhankai_csn"></i>
       </view>
     </view>
     <view class="service-content">
       <view class="msg">
-        <image class="avatar" :src="isDesign&&designData.designServerVO.avatar||tab.avatar"></image>
+        <image class="avatar" @click="toPerson" :src="isDesign&&designData.designServerVO.avatar||tab.avatar"></image>
         <view class="name-msg">
           <view>
             <view class="name">{{isDesign&&designData.designServerVO.userName||tab.name}}</view>
@@ -33,6 +33,7 @@
         default:false
       },
       tab:{},
+      designName:[],
       designData:{}
     },
     methods:{
@@ -40,6 +41,12 @@
         
         uni.navigateTo({
           url:'/sub-decorate/pages/time-line/time-line?id='+(this.isDesign&&this.designData.designServerVO.serverId||this.tab.serveCardId)
+        })
+      },
+      toPerson(item){
+        // console.log(this.tab)
+        uni.navigateTo({
+          url:'/sub-decorate/pages/person-page/person-page?personId='+this.tab.zeusId
         })
       },
       openPopup(){

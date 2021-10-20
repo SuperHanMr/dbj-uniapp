@@ -26,7 +26,7 @@
     <swiper :current="tabIndex" style="flex: 1;min-height: 600px;" :style="{height:contentHeight}" :duration="300" @change="ontabchange">
       <swiper-item class="swiper-item" v-for="(tab,index1) in dataList" :key="index1">
         
-        <service-hunman :isDesign="tab.nodeType===1" :serverId='serverId' :tab='tab' :designData='designData' @openPopup='openPopup'></service-hunman>
+        <service-hunman :isDesign="tab.nodeType===1" :serverId='serverId' :tab='tab' :designName='designList' :designData='designData' @openPopup='openPopup'></service-hunman>
         <amount-house :checkData='checkData' :isReport='false' id="d3" @isEmpty='isEmpty' :index='index1' v-if="tab.nodeType===3&&!tab.currentEmpty"></amount-house>
         <resultContent ref='result' id="d2" @isEmpty='isEmpty' :index='index1' :serverId='tab.serveCardId' v-if="tab.nodeType===2&&!tab.currentEmpty" @getData='getData' :scrollTop='scrollTop'
           :isReport='true'></resultContent>
@@ -113,11 +113,13 @@
         this.tabIndex = current
         this.tabName = 'd'+(this.dataList[current].nodeType>6?6:this.dataList[current].nodeType)
         this.serverId = this.dataList[current].serveCardId
-        this.currentEmpty = 0
+        
+        this.dataList[current].currentEmpty = 0
         this.checkData = {
           serveId:this.dataList[current].serveCardId,
           type:this.dataList[current].serveType
         }
+        console.log(this.checkData)
         this.changeHeight()
         // this.$nextTick(function(){
         //   this.$refs.result[0].getHeight()
@@ -148,6 +150,7 @@
       },
       changeDesign(e){
         this.designData = e
+        console.log(e)
         this.changeHeight()
       },
       changeHeight() {
@@ -168,12 +171,14 @@
         
       },
       chooseItem(e){
-        this.serverId= e.severId
+        this.dataList[this.tabIndex].serveCardId= e.severId
+        this.serverId = e.severId
         this.$refs.popup.close()
       },
       getDesignServeMenu(){
         getDesignServeMenu(this.projectId).then(res=>{
           this.designList = res
+          console.log(res)
         })
       },
       getMyService(){

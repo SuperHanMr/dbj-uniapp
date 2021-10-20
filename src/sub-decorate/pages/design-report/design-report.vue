@@ -5,26 +5,26 @@
         <image class="avtor" :src="detail.designServerVO.avatar"></image>
         <view class="tigs">
           <view class="username">{{detail.designServerVO.userName}}</view>
-          <view class="role">设计</view>
+          <view class="role">设计师</view>
         </view>
       </view>
       <view class="date">{{calendarFormat(detail)}}</view>
     </view>
-    <view class="card flex-row-bet">
-      <view class="t">颜值报告</view>
-      <view v-if="detail.beautyReport && detail.beautyReport.id && detail.beautyReport.templateId" class="lookDetail flex-row-start" @click="beatifulReport">
+    <view v-if="detail.beautyReport && detail.beautyReport.id && detail.beautyReport.templateId" class="card flex-row-bet">
+      <view class="t">{{detail.beautyReport.title}}</view>
+      <view class="lookDetail flex-row-start" @click="beatifulReport">
         <view>立即查看</view>
         <image src="http://dbj.dragonn.top/static/mp/dabanjia/images/decorate/ic_more.svg"></image>
       </view>
-      <view v-else class="lookDetail">未生成颜值报告</view>
+      <!-- <view v-else class="lookDetail">未生成颜值报告</view> -->
     </view>
-    <view class="card flex-row-bet">
-      <view class="t">自定义报告</view>
-      <view v-if="detail.customReport && detail.customReport.id" class="lookDetail flex-row-start" @click="customReport">
+    <view v-if="detail.customReport && detail.customReport.id" class="card flex-row-bet">
+      <view class="t">{{detail.customReport.title}}</view>
+      <view class="lookDetail flex-row-start" @click="customReport">
         <view>立即查看</view>
         <image src="http://dbj.dragonn.top/static/mp/dabanjia/images/decorate/ic_more.svg"></image>
       </view>
-      <view v-else class="lookDetail">未生成自定义报告</view>
+      <!-- <view v-else class="lookDetail">未生成自定义报告</view> -->
     </view>
     <button class="btn" @click="confirm">确认设计报告</button>
   </view>
@@ -86,7 +86,7 @@
         } = this.detail
         const token = uni.getStorageSync("scn")
         uni.navigateTo({
-          url: `/sub-decorate/pages/beatiful-report/beatiful-report?token=${token}&themeId=${beautyReport.templateId}&id=${beautyReport.id}`
+          url: `/sub-decorate/pages/beatiful-report/beatiful-report?token=${token}&serveId=${beautyReport.serveId}&themeId=${beautyReport.templateId}&id=${beautyReport.id}`
         })
       },
       getPorts() {
@@ -116,7 +116,6 @@
     .avtor {
       width: 104rpx;
       height: 104rpx;
-      border: 2rpx solid #000;
       border-radius: 50%;
       margin-right: 33rpx;
     }

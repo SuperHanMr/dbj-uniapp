@@ -11,7 +11,7 @@
 				
 				<view class="icon-status1"  v-if="dataList.shipmentStatus == 1">
 					待收货
-				</view>
+				</view> 
 				
 				<!-- 当该商品正在退款中显示退款中标签，则对应取消退款状态 -->
 				<view class="icon-status1" v-if="dataList.refundBillStatus == 0 || dataList.refundBillStatus == 1">
@@ -265,8 +265,8 @@
 					.icon{
 						width: 60rpx;
 						height: 30rpx;
+						line-height: 28rpx;
 						margin-right: 8rpx;
-						line-height: 30rpx;
 						border-radius: 2px;
 						border: 0.5px solid #35c4c4;
 						color: #35c4c4;

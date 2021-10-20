@@ -7,12 +7,12 @@
 			<view class="top">
 				<view class="title">装修动态</view>
 			</view>
-			<view class="noDynamics" v-if="!dynamics.length">
+			<view class="noDynamics" v-if="showNoDynamics">
 				<image class="noDynamicsImg" src="http://dbj.dragonn.top/static/mp/dabanjia/images/decorate/pic_empty%402x.png"></image>
 				<view class="text">暂无装修动态</view>
 				<view class="bottom"></view>
 			</view>
-			<scroll-view class="list" v-else>
+			<scroll-view :scroll-y="true" class="list" v-else>
 				<view class="item" v-for="(item,index) in dynamics" :key="item.id">
 					<image class="avatar" :src="item.avatar"></image>
 					<view class="acitonInfo">
@@ -40,6 +40,9 @@
 					</view>
 				</view>
 			</scroll-view>
+			<view class="bottom">
+				<view class="text">暂时没有更多数据~</view>
+			</view>
 		</view>
 	</view>
 </template>
@@ -65,12 +68,13 @@
 				showMemo: false,
 				dynamics: [],
 				dynamicPage: 1,
-				date: ""//选中日期
+				date: "",//选中日期,
+				showNoDynamics: false
 			};
 		},
 		onLoad(option) {
 			this.projectId = option.projectId
-			this.showMemo = option.isDecorate?true:false
+			this.showMemo = option.isDecorate === "0" ? false : true
 		},
 		onReachBottom() {
 			if(!this.date)return
@@ -100,10 +104,10 @@
 					})
 				})
 			},
-			filterDynamics(date){
+			filterDynamics(date,isClick){
 				this.date = date
 				let params = {
-					page: this.dynamicPage,
+					page: isClick ? 1 : this.dynamicPage,
 					rows: 10,
 					projectId: this.projectId,
 					recordDateStr: this.date
@@ -112,15 +116,13 @@
 					if(data){
 						let {list,page} = data
 						this.dynamicPage = page
-						if(!list.length){
-							uni.showToast({
-								title:'没有更多数据了',icon:"none",
-							});
-						}
 						if(this.dynamicPage!==1){
 							this.dynamics = this.dynamics.concat(list || [])
 						}else{
 							this.dynamics = list || []
+						}
+						if(!this.dynamics.length){
+							this.showNoDynamics = true
 						}
 					}
 				})
@@ -144,13 +146,13 @@
 		width: 100%;
 		height: fit-content;
 		margin-top: 12rpx;
-		margin-bottom: 80rpx;
 		background: #ffffff;
 		border-radius: 40rpx;
 	}
 	.dynamic.noDynamics{
 		margin-bottom: 0;
 	}
+	
 	.dynamic .top{
 		width: 100%;
 		height: 78rpx;
@@ -211,6 +213,20 @@
 		width: 750rpx;
 		height: 372rpx;
 	}
+	.dynamic .bottom{
+		width: 100%;
+		height: 126rpx;
+		background: #f5f6f6;
+	}
+	.dynamic .bottom .text{
+		width: 222rpx;
+		height: 26rpx;
+		background: #f5f6f6;
+		margin: 0 264rpx 80rpx 264rpx;
+		padding-top: 60rpx;
+		font-size: 26rpx;
+		color: #999999;
+	}
 	.list{
 		width: 100%;
 		height: fit-content;
@@ -246,10 +262,13 @@
 	}
 	.acitonInfo .report{
 		width: 100%;
-		height: 120rpx;
+		max-height: 120rpx;
 		font-size: 28rpx;
 		color: #666666;
 		line-height: 40rpx;
+		text-overflow: ellipsis;
+		/* white-space: nowrap; */
+		overflow: hidden;
 	}
 	.acitonInfo .evidence{
 		width: 100%;
