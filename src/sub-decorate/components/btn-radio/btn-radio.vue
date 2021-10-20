@@ -40,7 +40,7 @@
 		box-sizing: border-box;
     width: 100rpx;
     height: 50rpx;
-    line-height: 50rpx;
+    line-height: 48rpx;
     font-size: 26rpx;
     font-family: PingFangSC, PingFangSC-Regular;
     font-weight: 400;

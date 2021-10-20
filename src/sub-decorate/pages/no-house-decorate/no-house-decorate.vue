@@ -147,13 +147,13 @@
         let aprice = 0
         let chprice = 0
         if (this.design.checked) {
-          dprice = this.design.price / 100 || 0
+          dprice = this.design.price || 0
         }
         if (this.actuary.checked) {
-          aprice = this.actuary.price / 100 || 0
+          aprice = this.actuary.price || 0
         }
         if (this.checkHouse.checked) {
-          chprice = this.checkHouse.price / 100 || 0
+          chprice = this.checkHouse.price || 0
         }
         let insideArea = this.currentHouse.insideArea || 1
         let temp = dprice * insideArea + aprice * insideArea + chprice * insideArea
@@ -498,7 +498,7 @@
             projectId: this.projectId || 0, //"long //项目id  非必须 默认0",
             customerId: this.customerId || 0, //"long //业主id  非必须 默认0",
             estateId: this.currentHouse.id, //"long //房产id   非必须 默认0",
-            total: this.countPrice * 100, //"int //总计",
+            total: this.countPrice, //"int //总计",
             remarks: "", //"string //备注",
             orderName: "", //"string //订单名称",
             details: [],

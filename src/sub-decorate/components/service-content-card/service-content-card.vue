@@ -1,7 +1,7 @@
 <template>
   <view class="service-content">
     <image :src="content.product.skuImage" @click="goDetail"></image>
-    <view>
+    <view class="con">
       <view class="subtitle" @click="goDetail">{{content.product.spuName}}</view>
       <view class="desc-area" @click="goDetail">
         <text>按平方米计价</text>
@@ -42,12 +42,13 @@
 
 <style lang="scss" scoped>
   .service-content {
+    width: 100%;
     display: flex;
     justify-content: center;
     align-items: center;
-    padding: 40rpx 32rpx 40rpx 24rpx;
+    padding: 40rpx 32rpx;
     background: #FFF;
-    border-radius: 16rpx;
+    // border-radius: 16rpx;
 
     image {
       width: 176rpx;
@@ -55,7 +56,11 @@
       opacity: 1;
       border-radius: 12rpx;
       margin-right: 16rpx;
-      margin-left: 16rpx;
+      // margin-left: 16rpx;
+    }
+      
+    .con {
+      flex: 1;
     }
 
     .subtitle {
