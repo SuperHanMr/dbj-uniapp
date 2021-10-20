@@ -165,7 +165,7 @@
       
     },
     onLoad(e){
-      this.personId = e.personId||7405
+      this.personId = e.personId||7249
       // this.getGrabDetail()
     },
     onShow(){
@@ -201,8 +201,9 @@
       init(){
         // this.getCaseList()
         this.getSkuList()
-        this.getNodeHeight()
-        this.getTopDistance()
+          
+        
+        
         this.getGrabDetail()
         
       },
@@ -274,6 +275,10 @@
             }
             this.getAttention(1001,'isAttention')
             this.getAttention(2001,'isRecommend')
+            setTimeout(()=>{
+              this.getNodeHeight()
+              this.getTopDistance()
+            },1000)
           }else{
             // this.personData = getApp().globalData.userInfo
             // console.log(this.personData)
@@ -292,13 +297,14 @@
       },
       toItem(name) {
         this.currentItem = name
+        console.log(this[name] + this.scrollTop,name)
         uni.pageScrollTo({
           duration: 100, // 过渡时间
           scrollTop: this[name] + this.scrollTop -124, // 滚动的实际距离
         })
       },
       getNodeHeight(){
-        let query = uni.createSelectorQuery()
+        let query = uni.createSelectorQuery() 
         query.select(".nav-header").boundingClientRect((data) => {
           this.interactActive = data.height
         }).exec()
@@ -307,7 +313,7 @@
         let query = uni.createSelectorQuery()
         query.select(".person-interact").boundingClientRect((res) => {
           this.interact = res&&res.top
-          console.log(this.interact,this.interactActive)
+          
         }).exec()
         query.select(".content").boundingClientRect((res) => {
           this.serviceTop = res&&res.top
@@ -319,6 +325,7 @@
           this.dynamicTop = res&&res.top
         }).exec()
         query.select(".person-evaluate").boundingClientRect((res) => {
+          console.log(this.evaluateTop)
           this.evaluateTop = res&&res.top
         }).exec()
         

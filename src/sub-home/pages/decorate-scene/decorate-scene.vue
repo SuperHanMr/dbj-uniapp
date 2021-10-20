@@ -151,8 +151,8 @@
 				<view class="text">暂无装修动态</view>
 				<view class="bottom"></view>
 			</view>
-      <view class="list" v-else>
-        <view
+			<scroll-view :scroll-y="true" class="list" v-else>
+				<view
           class="item"
           v-for="(item,index) in dynamics"
           :key="item.id"
@@ -206,9 +206,9 @@
                 </view>
               </view>
             </view>
-          </view>
+					</view>
 				</view>
-      </view>
+			</scroll-view>
 			<view class="bottom">
 				<view class="text">暂时没有更多数据~</view>
 			</view>
@@ -324,7 +324,8 @@
           ></image>
           <view class="noCommentText">暂无评论~</view>
         </view>
-        <view
+				<scroll-view
+					:scroll-y="true"
           class="commentList"
           v-if="comments.length"
         >
@@ -407,7 +408,7 @@
             </view>
           </view>
 					<view class="bottomText">没有更多了~</view>
-        </view>
+				</scroll-view>
         <view
           class="bottomDelete"
           v-if="showDelete"
@@ -1120,7 +1121,7 @@ export default {
 	}
 	.commentList {
 		width: 100%;
-		height: 700rpx;
+		max-height: 700rpx;
 		/* height: fit-content; */
 	}
 	.commentList .bottomText{
