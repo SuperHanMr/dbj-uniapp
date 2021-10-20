@@ -48,6 +48,13 @@
 				"navigationBarBackgroundColor": "#ffffff"
 			}
 		},
+    {
+    	"path": "pages/message/conversation/conversation-interaction",
+    	"style": {
+    		"navigationBarTitleText": "互动消息",
+    		"navigationBarBackgroundColor": "#ffffff"
+    	}
+    },
 		{
 			"path": "pages/my/index/index",
 			"style": {
