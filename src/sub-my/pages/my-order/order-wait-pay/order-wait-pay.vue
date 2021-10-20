@@ -1,6 +1,6 @@
 <template>
   <view class="container">
-		<custom-navbar opacity="1" :title="title" titleColor="#ffb245" bgcolor="#ffb245">
+		<custom-navbar opacity="1" bgcolor="">
 			<template v-slot:back>
 				<view @click="toBack">
 					<i class="icon-ic_cancel_white" style="color: white;">
@@ -9,31 +9,23 @@
 			</template>
 		</custom-navbar>
 
-		<view :style="{height:navBarHeight}"></view>
 
     <view class="order-container" :style="{paddingBottom:112+containerBottom+'rpx'}">
-      <view class="order-status">
-        <view class="backgroundStyle" />
-        <view class="status">
-          <image src="../../../static/ic_status_wait_pay@2x.png" mode="scaleToFill"/>
-          <text>待付款</text>
-        </view>
-        <view class="time" v-if="orderInfo.showCancelOrderTime" >
-          <text style="margin-right: 16rpx;">剩余支付时间</text>
-					<count-down :start="orderInfo.remainTime" @finish="goToCancelDetail"></count-down>
-					<!-- <uni-countdown
-							color="#FFFFFF"
-							background-color="#FAAB3B"
-							:showDay="false"
-							:hour="formatTime(orderInfo.remainTime)[0]"
-							:minute="formatTime(orderInfo.remainTime)[1]"
-							:second="formatTime(orderInfo.remainTime)[2]"
-							@timeup="goToCancelDetail"
-						/> -->
-        </view>
-      </view>
+			<view :style="{backgroundImage:`url(${bgImg})`,backgroundSize: '100% 100%'}">
+				<view :style="{height:navBarHeight}"></view>
+				<view class="order-status">
+					<view class="status">
+						<image src="../../../static/ic_status_wait_pay.svg" mode="scaleToFill"/>
+						<text>待付款</text>
+					</view>
+					<view class="time" v-if="orderInfo.showCancelOrderTime" >
+						<text style="margin-right: 16rpx;">剩余支付时间</text>
+						<count-down :start="orderInfo.remainTime" @finish="goToCancelDetail"></count-down>
+					</view>
+				</view>
+			</view> 
 
-      <order-user-base-info :data="orderInfo"></order-user-base-info>
+			<order-user-base-info :data="orderInfo"></order-user-base-info>
 			
       <view class="store-container" v-for="(item,index) in orderInfo.details" :key="index">
 				<view v-if="index > 0" style="height:0.5px;margin: 0 32rpx;background-color: #EBEBEB;" />
@@ -163,6 +155,7 @@ export default {
 			from:"",
 			navBarHeight: "",
 			bottomStyle:"",
+			bgImg:'http://dbj.dragonn.top/static/mp/dabanjia/images/decorate/order_bg_orange.png'
     };
   },
 
@@ -355,13 +348,13 @@ export default {
       align-items: center;
       position: relative;
 
-      .backgroundStyle {
-        position: absolute;
-        z-index: -1;
-        width: 100%;
-        height: 172rpx;
-        background-color: #ffb245;
-      }
+      // .backgroundStyle {
+      //   position: absolute;
+      //   z-index: -1;
+      //   width: 100%;
+      //   height: 172rpx;
+      //   // background-color: #ffb245;
+      // }
 
       .status {
         display: flex;

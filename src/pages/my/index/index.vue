@@ -228,27 +228,41 @@
 			},
 			handlePersonalItem(item) {
 				console.log(item.url, "key");
-				uni.navigateTo({
-					url: item.url,
-				});
+				if (!this.isLogin) {
+					uni.navigateTo({
+						url: "../../login/login",
+					});
+				}else{
+					uni.navigateTo({
+						url: item.url,
+					});
+				}
 			},
 			handlerViewAll() {
 				console.log("点击我的订单全部按钮");
-				uni.navigateTo({
-					url: "../../../sub-my/pages/my-order/my-order?index=99&firstEntry=true",
-				});
+				if (!this.isLogin) {
+					uni.navigateTo({
+						url: "../../login/login",
+					});
+				}else{
+					uni.navigateTo({
+						url: "../../../sub-my/pages/my-order/my-order?index=99&firstEntry=true",
+					});
+				}
 			},
 			handlerOrder(item) {
 				console.log(item.value);
-				uni.navigateTo({
-					url: item.url,
-				});
+				if (!this.isLogin) {
+					uni.navigateTo({
+						url: "../../login/login",
+					});
+				}else{
+					uni.navigateTo({
+						url: item.url,
+					});					
+				}
 			},
-			handlerToPerson() {
-				uni.navigateTo({
-					url: "/sub-decorate/pages/person-page/person-page",
-				});
-			},
+			
 		},
 	};
 </script>

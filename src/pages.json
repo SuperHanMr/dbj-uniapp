@@ -382,7 +382,6 @@
 					"style": {
 						"navigationBarTitleText": "我的订单",
 						"enablePullDownRefresh": false
-						// "navigationStyle": "custom"
 					}
 				},
 				{
@@ -396,7 +395,6 @@
 					"path": "pages/my-order/order-in-progress/order-in-progress",
 					"style": {
 						"navigationBarTitleText": "",
-						"navigationBarBackgroundColor": "#FFB344",
 						"enablePullDownRefresh": false,
 						"navigationStyle": "custom"
 					}
@@ -405,7 +403,6 @@
 					"path": "pages/my-order/order-success/order-success",
 					"style": {
 						"navigationBarTitleText": "",
-						"navigationBarBackgroundColor": "#23D5C6",
 						"enablePullDownRefresh": false,
 						"navigationStyle": "custom"
 					}
@@ -414,7 +411,6 @@
 					"path": "pages/my-order/order-failed/order-failed",
 					"style": {
 						"navigationBarTitleText": "",
-						"navigationBarBackgroundColor": "#C6C6C6",
 						"enablePullDownRefresh": false,
 						"navigationStyle": "custom"
 					}
@@ -423,7 +419,6 @@
 					"path": "pages/my-order/order-wait-pay/order-wait-pay",
 					"style": {
 						"navigationBarTitleText": "",
-						"navigationBarBackgroundColor": "#FFB344",
 						"enablePullDownRefresh": false,
 						"navigationStyle": "custom"
 					}
@@ -593,14 +588,14 @@
 						"navigationBarBackgroundColor": "#F7F7F7"
 					}
 				},
-        {
-        	"path": "pages/shops-select-result/shops-select-result",
-        	"style": {
-        		"navigationBarTitleText": "",
-        		"enablePullDownRefresh": false,
-        		"navigationBarBackgroundColor": "#ffffff"
-        	}
-        }
+				{
+					"path": "pages/shops-select-result/shops-select-result",
+					"style": {
+						"navigationBarTitleText": "",
+						"enablePullDownRefresh": false,
+						"navigationBarBackgroundColor": "#ffffff"
+					}
+				}
 			]
 		},
 		{
