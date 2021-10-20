@@ -24,7 +24,7 @@
 		onShow(props) {
 			console.log('onShow', props, this.url, '>>>>>>>>>>>>>>>')
 			this.goH5()
-			loadSuccessHandler();
+			this.loadSuccessHandler();
 		},
 		onLoad(props) {
 			this.id = props.id;
