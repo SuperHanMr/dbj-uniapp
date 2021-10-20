@@ -4,7 +4,9 @@
       <image src="http://dbj.dragonn.top/static/mp/dabanjia/images/decorate/ic_edit_2.svg" class="edit"></image>
       <view>申请修改</view>
     </view>
-    <tabs :items="items" :current="current" @changeItem="changeItem"></tabs>
+    <view class="tabs-wrap">
+      <tabs :items="items" :current="current" @changeItem="changeItem"></tabs>
+    </view>
     <pictures :imgList="imgList"></pictures>
     <view :style="{height: containerBottom * 2 + 48 + 88 + 'rpx'}"></view>
     <view class="btn-wrap" :style="{paddingBottom:systemBottom,height:systemHeight}">
@@ -75,7 +77,7 @@
               confirmStageDeliver(this.message.serveId).then(data => {
                 console.log(data)
                 uni.navigateBack({
-                  
+
                 })
               })
             } else {
