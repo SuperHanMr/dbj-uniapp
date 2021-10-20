@@ -110,11 +110,11 @@
               购买相关服务 即刻开启装修
             </view>
             <guide-card v-if="availGuides.includes('design')" cardType="service"
-              imageUrl="http://dbj.dragonn.top/static/mp/dabanjia/images/decorate/ic_myhouse_design%402x.png"
+              imageUrl="http://dbj.dragonn.top/static/mp/dabanjia/images/decorate/ic_myhouse_design.webp"
               @buyNow="gonohousedecatore('design')">
             </guide-card>
             <guide-card v-if="availGuides.includes('actuary')" cardType="actuary"
-              imageUrl="http://dbj.dragonn.top/static/mp/dabanjia/images/decorate/ic_myhouse_actuary%402x.png"
+              imageUrl="http://dbj.dragonn.top/static/mp/dabanjia/images/decorate/ic_myhouse_actuary.webp"
               @buyNow="gonohousedecatore('actuary')">
             </guide-card>
           </view>
