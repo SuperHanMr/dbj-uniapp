@@ -812,9 +812,17 @@
       "actions": [
         {
           "title": "去评价",
-          "type": "native_uri",
+          "type": "native",
           "userType": 1,
-          "targetRouter": "/riki_process_service/service_comment?refId=${serveId}&refType=${serveType}&projectId=${projectId}&serveTypeName=${serveTypeName}"
+          "isDisplay": true,
+          "targetRouter": "evalute",
+          "params": {
+            "serviceId": "${serveId}",
+            "serviceType": "${serveType}",
+            "serverName": "${servicerName}",
+            "serverRoleName": "${servicerRole}",
+            "serverAvatar": "${servicerAvatar}"
+          }
         }
       ]
     }
