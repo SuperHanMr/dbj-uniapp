@@ -26,7 +26,7 @@
           {{ comment }}
         </view>
         <view class="reply-btn" @click.stop="handleReply">
-          <view class="icon-face reply-btn-icon"></view>
+          <view class="icon-huifuic reply-btn-icon"></view>
           回复
         </view>
       </view>
