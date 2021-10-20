@@ -50,29 +50,27 @@
 
 
           <view class="imageInfo">
+						
+					  <custom-file-picker 
+							fileMediatype="image" 
+							mode="grid" 
+							:limit="9" 
+							@fileChange="onFileChange"
+						/>
+					    
             <!-- <view class="add-image"  @click="upload">
               <image src="../../../static/ic_upload@2x.png" mode=""></image>
 							<text>点击上传</text>
-            </view> -->
-						
-					    <custom-file-picker fileMediatype="image" mode="grid" :limit="9" @fileChange="onFileChange"/>
-					    
-					    
-           <!-- <view
-              class="image-container"
-              v-for="(item,index) in 9"
-              :key="index"
-            >
+            </view>
+						<view class="image-container" v-for="(item,index) in 9" :key="index">
               <image
                 class="image1"
                 src="https://ali-image.dabanjia.com/static/mp/dabanjia/images/message/ic_interaction@2x.png"
-                mode=""
-              ></image>
+                mode="" />
               <image
                 class="image2"
                 src="../../../static/icon_image_delete@2x.png"
-                mode=""
-              ></image>
+                mode="" />
             </view> -->
           </view>
 				</view>
@@ -277,7 +275,7 @@ export default {
         .icon {
           width: 82rpx;
           height: 32rpx;
-          line-height: 32rpx;
+          line-height: 30rpx;
           background: linear-gradient(100deg, #7bbff2 0%, #60a8e8 100%);
           border-radius: 6rpx;
           font-size: 22rpx;
@@ -311,8 +309,8 @@ export default {
     }
 
     .line {
-      height: 1rpx;
-      background-color: #f2f2f2;
+      height: 0.5px;
+      background-color: #f2f3f3;
     }
 
     .main-body {
@@ -345,88 +343,92 @@ export default {
 
       .edit-evaluate {
         background-color: #ffffff;
-        // min-height: 472rpx;
-        padding: 0 32rpx 52rpx 32rpx;
+        padding: 0 32rpx 48rpx 32rpx;  
         position: relative;
         .remark {
-          background: #fafafa;
+          background: #FAFBFC;
+					padding: 24rpx 24rpx 58rpx;
 					width: 686rpx;
           height: 360rpx;
 					box-sizing: border-box;
-          border: 2rpx solid #e8e8e8;
+          border: 0.5px solid #EEEEEE;
           border-radius: 16rpx;
-          padding: 16rpx 32rpx;
         }
         .word-limit {
           position: absolute;
-          right: 81rpx;
-          bottom: 56rpx;
+          right: 66rpx;
+          bottom: 76rpx;
           color: #999999;
           font-size: 26rpx;
           overflow-y: auto;
         }
       }
     }
-    .imageInfo {
-      padding: 0 28rpx 36rpx 32rpx;
-      display: flex;
-      flex-flow: row wrap;
-      .image-container {
-        position: relative;
-        .image1 {
-          width: 156rpx;
-          height: 156rpx;
-					box-sizing: border-box;
-					border: 2rpx solid #ECECEC;
-          border-radius: 12rpx;
-          object-fit: cover;
+		.imageInfo {
+		  padding-bottom: 44rpx;
+		}
+		
+	//   .imageInfo {
+  //     padding: 0 28rpx 36rpx 8rpx;
+  //     display: flex;
+  //     flex-flow: row wrap;
+  //     .image-container {
+  //       position: relative;
+  //       .image1 {
+  //         width: 156rpx;
+  //         height: 156rpx;
+		// 			box-sizing: border-box;
+		// 			border: 0.5px solid #ECECEC;
+  //         border-radius: 12rpx;
+  //         object-fit: cover;
 					
-          margin-right: 16rpx;
-          margin-bottom: 24rpx;
-        }
-        .image2 {
-          position: absolute;
-          width: 32rpx;
-          height: 32rpx;
-					border-radius: 50%;
-          object-fit: cover;
-          top: -16rpx;
-          right: 16rpx;
-        }
-      }
-      .image-container:nth-child(4n+1) .image1 {
-        margin-right: 18rpx;
-      }
+  //         margin-right: 16rpx;
+  //         margin-bottom: 24rpx;
+  //       }
+  //       .image2 {
+  //         position: absolute;
+  //         width: 32rpx;
+  //         height: 32rpx;
+		// 			border-radius: 50%;
+  //         object-fit: cover;
+  //         top: -16rpx;
+  //         right: 16rpx;
+  //       }
+  //     }
+  //     .image-container:nth-child(4n+1) .image1 {
+  //       margin-right: 18rpx;
+  //     }
 
-      .add-image {
-				padding: 24rpx 28rpx;
-				margin-right: 16rpx;
-				width: 160rpx;
-				height: 160rpx;
-				box-sizing: border-box;
-        background: #FFFFFF;
-        border-radius: 16rpx;
-        border: 2rpx solid #E7E8E8;
-				box-sizing: border-box;
-				display: flex;
-				flex-flow: column nowrap;
-				align-items: center;
-				image{
-					width: 64rpx;
-					height: 64rpx;
-					object-fit: cover;
-				}
-				text{
-					width: 104rpx;
-					height: 36rpx;
-					line-height: 36rpx;
-					font-size: 26rpx;
-					color: #999999;
-				}
+  //     .add-image {
+		// 		padding: 24rpx 28rpx;
+		// 		margin-right: 16rpx;
+		// 		width: 160rpx;
+		// 		height: 160rpx;
+		// 		box-sizing: border-box;
+  //       background: #FFFFFF;
+  //       border-radius: 16rpx;
+  //       border: 2rpx solid #E7E8E8;
+		// 		box-sizing: border-box;
+		// 		display: flex;
+		// 		flex-flow: column nowrap;
+		// 		align-items: center;
+		// 		image{
+		// 			width: 64rpx;
+		// 			height: 64rpx;
+		// 			object-fit: cover;
+		// 		}
+		// 		text{
+		// 			width: 104rpx;
+		// 			height: 36rpx;
+		// 			line-height: 36rpx;
+		// 			font-size: 26rpx;
+		// 			color: #999999;
+		// 		}
 				
-      }
-    }
-  }
+  //     }
+  //   }
+  
+	}
 }
 // 底部 确认收货 及申请退款按钮
 .footer-container{
@@ -443,7 +445,8 @@ export default {
     height: 88rpx;
     line-height: 88rpx;
     box-sizing: border-box;
-    background: linear-gradient(135deg, #36d9cd 0%, #28c6c6 100%);
+		font-weight: 500;
+		background: linear-gradient(99deg, #00CCBE 0%, #00C2BF 100%);
     border-radius: 12rpx;
     font-size: 32rpx;
     text-align: center;
@@ -455,22 +458,25 @@ export default {
 
 // 上传图片的样式
 
-::v-deep .uni-file-picker{
-	max-height: 564rpx;
-	width:  686rpx;
-}
-::v-deep .file-picker__box{
-	width: 160rpx !important;
-	height: 160rpx !important;
-	object-fit: cover;
-	border-radius: 12rpx !important;
-	border: 2rpx solid #ECECEC !important;
-	padding-top: 0 !important;
-	margin:0 8rpx 28rpx  0!important;
-}
-::v-deep .file-picker__box-content{
-	margin: 0 !important;
-}
+// ::v-deep .uni-file-picker{
+// 	max-height: 564rpx;
+// 	width:  686rpx;
+// }
+// ::v-deeep .file-picker__box-content, .is-add{
+// 	border: 0.5px solid #ECECEC !important;
+// }
+// ::v-deep .file-picker__box{
+// 	width: 160rpx !important;
+// 	height: 160rpx !important;
+// 	object-fit: cover;
+// 	border-radius: 12rpx !important;
+// 	border: 0.5px solid #ECECEC !important;
+// 	padding-top: 0 !important;
+// 	margin:0 8rpx 28rpx  0!important;
+// }
+// ::v-deep .file-picker__box-content{
+// 	margin: 0 !important;
+// }
 
 
 

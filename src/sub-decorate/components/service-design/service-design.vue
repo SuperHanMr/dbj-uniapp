@@ -68,7 +68,7 @@
       },
       toDesign(){
         uni.navigateTo({
-          url:`/sub-decorate/pages/custom-report/custom-report?id=${this.customReport.id}+&serveId=${this.serverId}`
+          url:`/sub-decorate/pages/custom-report/custom-report?id=${this.designData.customReport.id}&serveId=${this.serverId}`
         })
       },
       toBeatiful(){
