@@ -53,7 +53,8 @@
 			},
 			message(event) {
 				// console.log(event.detail.data,event.detail.data.length)
-				uni.$emit('isCollect', event.detail.data[event.detail.data.length - 1].isCollect)
+				console.log(event, '>>>>>>>>>>>>')
+				uni.$emit('isCollect', event.detail.data[event.detail.data.length - 1])
 			}
 		}
 	}
