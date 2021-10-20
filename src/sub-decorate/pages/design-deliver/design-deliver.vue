@@ -50,6 +50,7 @@
       uni.setNavigationBarTitle({
         title: this.message.stageName
       });
+      // if(getApp().globalData.)
       this.getDataList()
     },
     methods: {
