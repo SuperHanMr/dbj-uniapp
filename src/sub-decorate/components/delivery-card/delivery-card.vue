@@ -13,7 +13,7 @@
         <i class="icon-ic_wodejia_genghuandengji_csn"></i>
         <!-- <image src="http://dbj.dragonn.top/static/mp/dabanjia/images/decorate/ic_triangle.svg" mode=""></image> -->
       </view>
-      <view v-if="data.arr===0">暂无内容</view>
+      <view v-if="data.arr.length===0" class="list-item no-content">暂无内容</view>
     </view>
   </view>
 </template>
@@ -46,7 +46,7 @@
   .view-item {
     margin-top: 32rpx;
     background-color: #fff;
-    border-radius: 12px 12px 0px 0px;
+    border-radius: 8px 8px 8px 8px;
 
     .title {
       // width: 351px;
@@ -54,9 +54,9 @@
       height: 80rpx;
       opacity: 1;
       line-height: 80rpx;
-      border-radius: 12px 12px 0px 0px;
+      border-radius: 8px 8px 0px 0px;
       font-size: 30rpx;
-      font-size: 500;
+      font-weight: 500;
       color: #fff;
 
       text {
@@ -115,7 +115,10 @@
         color: #666;
       }
     }
-
+    .no-content{
+      color: #666;
+      font-size: 26rpx;
+    }
     .list-item:last-child {
       border: none;
     }

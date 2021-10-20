@@ -90,9 +90,12 @@
             orient: 'vertical',
             textStyle: {
               rich: {
-                legend: {
-                  width: 40,
-                  color: "#666"
+                // legend: {
+                //   width: 40,
+                //   color: "#fff"
+                // },
+                name:{
+                  fontSize:13,
                 },
                 legend2: {
                   color: "#333333",
@@ -110,7 +113,7 @@
           series: [{
             name: '检查问题',
             type: 'pie',
-            radius: ['50%', '70%'],
+            radius: ['60%', '80%'],
             avoidLabelOverlap: false,
             center: ["90px", "center"],
             label: {
@@ -302,7 +305,7 @@
           let i = this.data.findIndex(item => {
             return item.name === name
           })
-          return `${name}  {legend2|${this.data[i].value}}`
+          return `{name|${name}}  {legend2|${this.data[i].value}}`
         }
       },
       initChart(canvas, width, height, canvasDpr) {
@@ -330,6 +333,9 @@
     text-align: center;
     line-height: 56rpx;
     margin-bottom: 24rpx;
+    // position: sticky;
+    // top: 0;
+    // z-index: 100;
   }
   .result-content {
     display: flex;
@@ -350,10 +356,11 @@
     border-radius: 24rpx;
 
     .report-title {
-      height: 162rpx;
+      // height: 162rpx;
       display: flex;
-      align-items: center;
+      // align-items: center;
       border-bottom: 0.5px solid #efefef;
+      padding-bottom: 32rpx;
 
       .title {
         color: #333333;
@@ -409,7 +416,7 @@
       display: flex;
       flex-wrap: wrap;
       // justify-content: space-between;
-      margin-top: 40rpx;
+      margin-top: 32rpx;
 
       image {
         width: 208rpx;
@@ -477,7 +484,10 @@
       font-size: 26rpx;
       font-weight: 400;
     }
-
+    .item-active{
+      font-weight: 500;
+      color: #333;
+    }
     .item-active::after {
       content: "";
       display: inline-block;

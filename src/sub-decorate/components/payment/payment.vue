@@ -30,14 +30,15 @@
     },
     computed: {
       __countPrice() {
-        if (this.countPrice == 0) {
-          return ["0", "00"]
-        }
-        if (String(this.countPrice).indexOf(".") == -1) {
-          return [this.countPrice, "00"]
-        } else {
-          return String(this.countPrice).split(".")
-        }
+        return (this.countPrice / 100).toFixed(2).split(".")
+        // if (this.countPrice == 0) {
+        //   return ["0", "00"]
+        // }
+        // if (String(this.countPrice).indexOf(".") == -1) {
+        //   return [this.countPrice, "00"]
+        // } else {
+        //   return String(this.countPrice).split(".")
+        // }
 
       }
     },
