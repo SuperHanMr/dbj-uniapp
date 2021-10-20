@@ -153,6 +153,7 @@
     text-align: center;
     color: #a28645;
     background: #fff5de;
+    z-index: 999;
   }
 
   .flex-row {
