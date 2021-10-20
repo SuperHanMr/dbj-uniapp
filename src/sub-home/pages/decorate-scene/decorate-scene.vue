@@ -209,7 +209,10 @@
           </view>
 				</view>
       </view>
-    </view>
+			<view class="bottom">
+				<view class="text">暂时没有更多数据~</view>
+			</view>
+		</view>
     <view class="bottomBox"></view>
     <view class="footer">
       <view
@@ -403,6 +406,7 @@
               </view>
             </view>
           </view>
+					<view class="bottomText">没有更多了~</view>
         </view>
         <view
           class="bottomDelete"
@@ -1119,13 +1123,24 @@ export default {
 		height: 700rpx;
 		/* height: fit-content; */
 	}
-	.commentItem:first-child .mainContent {
-		margin-top: 24rpx;
+	.commentList .bottomText{
+		width: 144rpx;
+		height: 26rpx;
+		margin: 60rpx 0;
+		margin-left: 303rpx;
+		font-size: 26rpx;
+		color: #999999;
 	}
 	.commentItem {
 		width: 686rpx;
 		margin-left: 32rpx;
 		border-bottom: 2rpx solid #efefef;
+	}
+	.commentItem:last-child {
+		border: none;
+	}
+	.commentItem:first-child .mainContent {
+		margin-top: 24rpx;
 	}
 	.commentItem .mainContent {
 		width: 100%;
@@ -1188,7 +1203,6 @@ export default {
 		font-size: 26rpx;
 		color: #999999;
 		line-height: 36rpx;
-		/* margin-left: 336rpx; */
 	}
 	.commentItem .reply {
 		width: 100%;
@@ -1214,12 +1228,10 @@ export default {
 		width: 550rpx;
 		height: 36rpx;
 		display: flex;
+		justify-content: space-between;
 		align-items: center;
 		margin-top: 2rpx;
 		margin-top: 8rpx;
-	}
-	.replyInfo .info .date {
-		margin-left: 288rpx;
 	}
 	.replyInfo .info .role {
 		background: linear-gradient(45deg, #6d95ef, #84b9fc);
@@ -1482,7 +1494,7 @@ export default {
 	.navBar > view  .text {
 		width: 96rpx;
 		height: 34rpx;
-		margin-left: -6rpx;
+		margin-left: -8rpx;
 		margin-bottom: 30rpx;
 		font-size: 24rpx;
 		text-align: center;
@@ -1669,9 +1681,22 @@ export default {
 		width: 100%;
 		height: fit-content;
 		margin-top: 24rpx;
-		margin-bottom: 80rpx;
 		background: #ffffff;
 		border-radius: 40rpx;
+	}
+	.dynamic .bottom{
+		width: 100%;
+		height: 126rpx;
+		background: #f5f6f6;
+	}
+	.dynamic .bottom .text{
+		width: 222rpx;
+		height: 26rpx;
+		background: #f5f6f6;
+		margin: 0 264rpx 40rpx 264rpx;
+		padding-top: 60rpx;
+		font-size: 26rpx;
+		color: #999999;
 	}
 	.dynamic .top {
 		width: 100%;

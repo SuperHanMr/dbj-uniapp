@@ -12,7 +12,7 @@
         <i v-if="serviceData.nodeType == 8" class="icon-nigong" style="color: #f47f62;font-size: 30rpx;margin-right: 16rpx;"></i>
         <i v-if="serviceData.nodeType == 9" class="icon-mugong" style="color: #a38af4;font-size: 30rpx;margin-right: 16rpx;"></i>
         <i v-if="serviceData.nodeType == 10" class="icon-youqi" style="color: #8cd874;font-size: 30rpx;margin-right: 16rpx;"></i>
-        <text>{{serviceData.nodeName}}</text>
+        <view>{{serviceData.nodeName}}</view>
       </view>
       <view class="status-name mr inservice flex-row-start">
         <view>{{ serviceData.statusName }}</view>

@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="32px" height="32px" viewBox="0 0 32 32" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <title>ic/下拉箭头</title>
+    <g id="ic/下拉箭头" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <path d="M13.18,12 C13.3567311,12 13.5,12.1432689 13.5,12.32 L13.5,18.499 L19.68,18.5 C19.8567311,18.5 20,18.6432689 20,18.82 L20,19.68 C20,19.8567311 19.8567311,20 19.68,20 L13.1882755,19.9998951 C13.1855255,19.9999649 13.1827668,20 13.18,20 L12.32,20 C12.1432689,20 12,19.8567311 12,19.68 L12,12.32 C12,12.1432689 12.1432689,12 12.32,12 L13.18,12 Z" id="下拉箭头_ic" fill="#B6B6B6" transform="translate(16.000000, 16.000000) rotate(-45.000000) translate(-16.000000, -16.000000) "></path>
+    </g>
+</svg>

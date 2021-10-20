@@ -40,6 +40,9 @@
 					</view>
 				</view>
 			</scroll-view>
+			<view class="bottom">
+				<view class="text">暂时没有更多数据~</view>
+			</view>
 		</view>
 	</view>
 </template>
@@ -70,7 +73,7 @@
 		},
 		onLoad(option) {
 			this.projectId = option.projectId
-			this.showMemo = option.isDecorate?true:false
+			this.showMemo = option.isDecorate === "0" ? false : true
 		},
 		onReachBottom() {
 			if(!this.date)return
@@ -112,11 +115,6 @@
 					if(data){
 						let {list,page} = data
 						this.dynamicPage = page
-						if(!list.length){
-							uni.showToast({
-								title:'没有更多数据了',icon:"none",
-							});
-						}
 						if(this.dynamicPage!==1){
 							this.dynamics = this.dynamics.concat(list || [])
 						}else{
@@ -144,12 +142,25 @@
 		width: 100%;
 		height: fit-content;
 		margin-top: 12rpx;
-		margin-bottom: 80rpx;
 		background: #ffffff;
 		border-radius: 40rpx;
 	}
 	.dynamic.noDynamics{
 		margin-bottom: 0;
+	}
+	.dynamic .bottom{
+		width: 100%;
+		height: 126rpx;
+		background: #f5f6f6;
+	}
+	.dynamic .bottom .text{
+		width: 222rpx;
+		height: 26rpx;
+		background: #f5f6f6;
+		margin: 0 264rpx 40rpx 264rpx;
+		padding-top: 60rpx;
+		font-size: 26rpx;
+		color: #999999;
 	}
 	.dynamic .top{
 		width: 100%;
@@ -246,10 +257,13 @@
 	}
 	.acitonInfo .report{
 		width: 100%;
-		height: 120rpx;
+		max-height: 120rpx;
 		font-size: 28rpx;
 		color: #666666;
 		line-height: 40rpx;
+		text-overflow: ellipsis;
+		/* white-space: nowrap; */
+		overflow: hidden;
 	}
 	.acitonInfo .evidence{
 		width: 100%;
