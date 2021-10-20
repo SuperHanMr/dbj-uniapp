@@ -12,6 +12,7 @@
             <view class="icon">
               {{serverRoleName}}
             </view>
+						
           </view>
           <view class="right" @click="handleCheck">
             <image v-if="isAnonymous" src="../../../static/anonymous_check.svg" mode=""></image>
@@ -272,10 +273,13 @@ export default {
           object-fit: cover;
           margin-right: 8rpx;
         }
+				text{
+					color: #333333;
+				}
         .icon {
-          width: 82rpx;
-          height: 32rpx;
-          line-height: 30rpx;
+					width: 90rpx;
+					height: 36rpx;
+					line-height: 36rpx;
           background: linear-gradient(100deg, #7bbff2 0%, #60a8e8 100%);
           border-radius: 6rpx;
           font-size: 22rpx;
@@ -321,7 +325,7 @@ export default {
         padding: 40rpx 32rpx;
 				.text {
           margin: 0 24rpx 0 16rpx;
-          font-weight: 600;
+          font-weight: 500;
           color: #333333;
           font-size: 28rpx;
         }
@@ -349,10 +353,13 @@ export default {
           background: #FAFBFC;
 					padding: 24rpx 24rpx 58rpx;
 					width: 686rpx;
-          height: 360rpx;
+					font-size: 28rpx;
+					height: 360rpx;
+					color: #333333;
+					line-height: 44rpx;
 					box-sizing: border-box;
-          border: 0.5px solid #EEEEEE;
-          border-radius: 16rpx;
+					border: 0.5px solid #EEEEEE;
+					border-radius: 16rpx;
         }
         .word-limit {
           position: absolute;

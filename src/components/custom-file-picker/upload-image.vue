@@ -331,7 +331,7 @@
 			height: 32rpx;
 			object-fit: cover;
 			border-radius: 50%;
-			box-shadow: 0 2rpx 2rpx 0 #fafbfc;
+			box-shadow: 0 2rpx 8rpx -2rpx #999;
 		}
 	}
 </style>
