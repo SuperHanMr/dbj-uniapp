@@ -132,7 +132,7 @@
         ></image>
       </view>
     </view>
-    <view class="dynamic">
+    <view class="dynamic" :class="{'mg':!dynamics.length}">
       <view class="top">
         <view class="title">装修动态</view>
         <view
@@ -209,7 +209,7 @@
 					</view>
 				</view>
 			</scroll-view>
-			<view class="bottom">
+			<view class="bottom" v-if="dynamics.length">
 				<view class="text">暂时没有更多数据~</view>
 			</view>
 		</view>
@@ -1657,9 +1657,7 @@ export default {
 		margin: 2rpx -2rpx 8rpx;
 	}
 	.worker .item > view .name {
-		/* text-overflow: ellipsis;
-		white-space: nowrap;
-		overflow: hidden; */
+		
 	}
 	.worker .item > view .name.minHeight {
 		height: 48rpx;
@@ -1684,6 +1682,9 @@ export default {
 		margin-top: 24rpx;
 		background: #ffffff;
 		border-radius: 40rpx;
+	}
+	.dynamic.mg{
+		margin-bottom: 60rpx;
 	}
 	.dynamic .bottom{
 		width: 100%;
