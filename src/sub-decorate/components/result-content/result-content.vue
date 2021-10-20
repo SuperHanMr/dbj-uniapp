@@ -1,6 +1,6 @@
 <template>
   <view class="result-content" >
-    <view class="report-time" v-if="!isReport">{{checkData.time}}后将会自动确认验房结果</view>
+    <view class="report-time" v-if="!isReport&&checkData.time">{{checkData.time}}后将会自动确认验房结果</view>
     <view class="report-content">
       <view class="report-title">
         <view>

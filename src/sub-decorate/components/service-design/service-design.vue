@@ -68,12 +68,12 @@
       },
       toDesign(){
         uni.navigateTo({
-          url:'/sub-decorate/pages/custom-report/custom-report'
+          url:`/sub-decorate/pages/custom-report/custom-report?id=${this.customReport.id}+&serveId=${this.serverId}`
         })
       },
       toBeatiful(){
         uni.navigateTo({
-          url:'/sub-decorate/pages/beatiful-report/beatiful-report?themeId='+this.designData.beautyReport.templateId+'&id='+this.designData.beautyReport.id
+          url:'/sub-decorate/pages/beatiful-report/beatiful-report?themeId='+this.designData.beautyReport.templateId+'&id='+this.designData.beautyReport.id +'&serveId='+this.serverId
         })
       }
     }

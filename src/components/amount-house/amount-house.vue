@@ -44,7 +44,7 @@
     watch:{
       checkData:{
         handler:function(){
-          
+          console.log(111)
           this.getData() 
         },
         deep:true,

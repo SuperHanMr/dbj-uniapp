@@ -8,17 +8,18 @@
   export default {
     data() {
       return {
-        url:'/app-pages/beauty-report/?themeId='
+        url: '/app-pages/beauty-report/?themeId='
       }
     },
-    onLoad(e){
-      let themeId = e.themeId
-      let id = e.id
-      this.url = process.env.VUE_APP_BASE_H5+this.url + themeId + '&id=' + id +'&token='+getApp().globalData.token
+    onLoad(e) {
+      const {
+        id,
+        themeId,
+        serveId
+      } = e
+      this.url = process.env.VUE_APP_BASE_H5 + this.url + themeId + '&id=' + serveId + '&token=' + getApp().globalData
+        .token + "&source_type=small_program"
       console.log(this.url)
-    },
-    methods: {
-      
     }
   }
 </script>
@@ -83,13 +84,15 @@
       justify-content: space-between;
       align-items: center;
       color: #666;
-      .line{
+
+      .line {
         display: inline-block;
         width: 12rpx;
         border-bottom: 1px solid #c7c7c7;
         // height: 52rpx;
         vertical-align: middle;
       }
+
       .text {
         font-size: 26rpx;
         font-weight: 500;
@@ -99,6 +102,7 @@
 
       .item-content-right {
         font-size: 20rpx;
+
         text {
           font-size: 32rpx;
         }

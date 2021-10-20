@@ -72,7 +72,7 @@
           
         </view>
       </view>
-      <view class="person-interact" v-if="personData.roleId<7&&personData.roleId!=6" :class="{'person-interact-active':interactActive === interact}">
+      <view class="person-interact" v-if="personData.roleId<7&&personData.roleId!=6" :class="{'person-interact-active':interactActive+10 >  interact }">
         <view class="sticky">
           <view class="item" v-if="personData.roleId===1" :class="{'item-active':currentItem==='serviceTop'}" @click="toItem('serviceTop')">
             服务</view>
@@ -165,7 +165,7 @@
       
     },
     onLoad(e){
-      this.personId = e.personId||7595
+      this.personId = e.personId||7249
       // this.getGrabDetail()
     },
     onShow(){
@@ -307,6 +307,7 @@
         let query = uni.createSelectorQuery()
         query.select(".person-interact").boundingClientRect((res) => {
           this.interact = res&&res.top
+          console.log(this.interact,this.interactActive)
         }).exec()
         query.select(".content").boundingClientRect((res) => {
           this.serviceTop = res&&res.top

@@ -9,7 +9,7 @@
     </view>
     <view class="service-content">
       <view class="msg">
-        <image class="avatar" :src="isDesign&&designData.designServerVO.avatar||tab.avatar"></image>
+        <image class="avatar" @click="toPerson" :src="isDesign&&designData.designServerVO.avatar||tab.avatar"></image>
         <view class="name-msg">
           <view>
             <view class="name">{{isDesign&&designData.designServerVO.userName||tab.name}}</view>
@@ -40,6 +40,12 @@
         
         uni.navigateTo({
           url:'/sub-decorate/pages/time-line/time-line?id='+(this.isDesign&&this.designData.designServerVO.serverId||this.tab.serveCardId)
+        })
+      },
+      toPerson(item){
+        console.log(this.tab)
+        uni.navigateTo({
+          url:'/sub-decorate/pages/person-page/person-page?personId='+this.tab.zeusId
         })
       },
       openPopup(){

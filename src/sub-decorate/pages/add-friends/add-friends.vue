@@ -54,11 +54,14 @@
       </picker>
       <view class="btn-list">
         <view
-          class="cancel btns "
+          class="cancel btns border "
           @click="goBack"
         >
           取消
         </view>
+				<view style="width: 33rpx;height: 10rpx;">
+					
+				</view>
         <view
           class="add btns "
           @click="addFriend"
@@ -160,9 +163,12 @@ export default {
 };
 </script>
 
-<style lang="scss">
+<style scoped lang="scss">
 page {
   background: #f9fafa;
+}
+.border{
+	border: 1px solid #e5e5e5;
 }
 
 .content {
@@ -247,23 +253,20 @@ page {
     .btn-list {
       display: flex;
       flex-direction: row;
-      height: 88rpx;
-      margin: 0 39rpx;
+      height: 90rpx;
       justify-content: center;
       align-items: center;
-			
+			width: 100%;
       margin-top: 100rpx;
       margin-bottom: 40rpx;
 
       .btns {
         width: 262rpx;
         height: 88rpx;
-        line-height: 88rpx;
         display: flex;
         justify-content: center;
         align-items: center;
         border-radius: 12rpx;
-        border: 0.5rpx solid #e5e5e5;
         font-size: 28rpx;
       }
 
@@ -276,7 +279,6 @@ page {
         background: linear-gradient(135deg, #36d9cd, #28c6c6);
         color: #ffffff;
 				border: none;
-				margin-left: 33rpx;
       }
     }
   }
