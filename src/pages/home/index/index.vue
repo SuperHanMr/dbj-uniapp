@@ -465,8 +465,10 @@
 				});
 			},
 			toCity() {
+				let house =   getApp().globalData.currentHouse 
+				let id=house.id||''
 				uni.navigateTo({
-					url: "/sub-my/pages/my-house/my-house?fromHome=1&&isEdit=0",
+					url: `/sub-my/pages/my-house/my-house?fromHome=1&&isEdit=0&&id=${id}`,
 				});
 			},
 			getAuthorizeInfo() {
@@ -1025,7 +1027,7 @@
 		}
 
 		.item {
-			height: 126rpx;
+			height: 128rpx;
 			flex: 1;
 			display: flex;
 			flex-direction: column;
@@ -1068,6 +1070,7 @@
 		border-radius: 2rpx;
 		display: flex;
 		flex-direction: row;
+		z-index: 500;
 	}
 
 	.state-bar {
@@ -1128,7 +1131,7 @@
 			border-radius: 16rpx;
 			overflow: hidden;
 			height: 234rpx;
-			width: 702rpx;
+			width: 704rpx;
 			z-index: 200;
 			position: relative;
 		}
