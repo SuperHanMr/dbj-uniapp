@@ -1,7 +1,6 @@
 <template>
 	<view class="container">
-		<!-- 订单完成/确认收货 -->
-		<custom-navbar opacity="1"  bgcolor="#23d5c6">
+		<custom-navbar opacity="1"  bgcolor="">
 			<template v-slot:back>
 				<view @click="toBack">
 					<i class="icon-ic_cancel_white" style="color: white;">
@@ -9,19 +8,20 @@
 				</view>
 			</template>
 		</custom-navbar>
-		<!-- 占位 -->
-		<view :style="{height:navBarHeight}"></view>
-
+		
 		<!-- 退款成功 -->
 		<view class="order-container" v-if="type=='refund'" :style="{paddingBottom:systemBottom}">
-			<view class="order-status">
-				<view class="backgroundStyle" />
-				<view class="status">
-					<image src="../../../static/ic_order_success.svg" mode=""></image>
-					<text>退款成功</text>
-				</view>
-				<text class="time">{{refundInfo.createTime | formatDate}}</text>
+			<view :style="{backgroundImage:`url(${bgImg})`,backgroundSize: '100% 100%'}">
+				<view :style="{height:navBarHeight}"></view>
+				<view class="order-status">
+					<view class="status">
+						<image src="../../../static/ic_order_success.svg" mode=""></image>
+						<text>退款成功</text>
+					</view>
+					<text class="time">{{refundInfo.createTime | formatDate}}</text>
+				</view>			
 			</view>
+			
 
 			<view class="order-header1">
 				<view class="refund-price">
@@ -55,12 +55,15 @@
 
 		<!-- 订单完成页面 -->
 		<view class="order-container" v-if="type == 'complete'" :style="{paddingBottom:systemBottom}">
-			<view class="order-status">
-				<view class="backgroundStyle" />
-				<view class="status">
-					<image src="../../../static/ic_order_success.svg" mode=""></image>
-					<text>已完成</text>
-				</view>
+			<view :style="{backgroundImage:`url(${bgImg})`,backgroundSize: '100% 100%'}">
+				<!-- 占位 -->
+				<view :style="{height:navBarHeight}"></view>
+				<view class="order-status">
+					<view class="status">
+						<image src="../../../static/ic_order_success.svg" mode=""></image>
+						<text>已完成</text>
+					</view>
+				</view>				
 			</view>
 
 			<order-user-base-info :data="orderInfo"></order-user-base-info>
@@ -121,6 +124,8 @@
 				systemBottom: "",
 				areaId: "",
 				navBarHeight:"",
+				bgImg :
+					'http://dbj.dragonn.top/static/mp/dabanjia/images/decorate/order_bg_green.png',
 			};
 		},
 

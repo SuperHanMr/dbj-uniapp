@@ -313,13 +313,13 @@
 
   .picture-btn-wrap {
     display: flex;
-    justify-content: space-between;
+    justify-content: flex-start;
     flex-direction: row;
     justify-items: center;
     padding-right: 40rpx;
 
     .p-i-t {
-      // margin-right: 24rpx;
+      margin-right: 24rpx;
     }
   }
 
