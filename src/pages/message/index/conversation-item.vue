@@ -131,10 +131,16 @@
     },
     methods: {
       handleClick() {
-        let convId = this.conversation.conversationID;
-        uni.navigateTo({
-          url: "/pages/message/conversation/conversation?id=" + convId + "&name=" + this.name,
-        });
+        if (this.conversation.systemType === this.CONV_TYPES.INTERACTION) {
+          uni.navigateTo({
+            url: "/pages/message/conversation/conversation-interaction"
+          });
+        } else {
+          let convId = this.conversation.conversationID;
+          uni.navigateTo({
+            url: "/pages/message/conversation/conversation?id=" + convId + "&name=" + this.name,
+          });
+        }
       }
     }
   }

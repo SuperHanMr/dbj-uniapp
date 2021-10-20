@@ -2486,10 +2486,10 @@
   "sys_inspect_estate_service_time": {
     "type": "sys_inspect_estate_service_time",
     "template": "form",
-    "summary": "[${roleName}]于[${serviceTime}]上门验房，请知悉",
+    "summary": "验房师于${serviceTime}上门验房，请知悉",
     "body": {
       "title": "${serveTypeName}",
-      "subTitle": "[${roleName}]于[${serviceTime}]上门验房，请知悉",
+      "subTitle": "验房师于${serviceTime}上门验房，请知悉",
       "actions": [
         {
           "title": "查看详情",

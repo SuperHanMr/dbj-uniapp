@@ -58,7 +58,7 @@
             </view>
             <view class="choose-time" v-if="productType === 2 && goodsItem.appointmentRequired">
               <view class="time-bar" @click='chooseTime(shopIndex, goodIndex)'>
-                <text v-if="!time">请选择上门时间</text>
+                <view v-if="!time"><text style="color: #FF3347">* </text> 请选择上门时间</view>
                 <text v-else>{{time}}</text>
                 <image class="choose-icon" src="../../../static/images/ic_more_black.png"></image>
               </view>
@@ -84,9 +84,10 @@
         </view>
       </view>
       <view class="good-store-account" v-if="!orderInfo.hasStock">
-        <view v-if="Number(orderInfo.totalPrice)">
+        <view>
           <text>商品总价</text>
-          <text>¥{{orderInfo.totalPrice}}</text>
+          <text v-if="Number(orderInfo.totalPrice)">¥{{orderInfo.totalPrice}}</text>
+          <text v-else>¥- -</text>
         </view>
         <view v-if="Number(orderInfo.totalDeliveryFee)">
           <view class="question-box">
@@ -165,6 +166,14 @@
           </view>
         </view>
       </uni-popup>
+      <uni-popup ref="timeDialog" :mask-click="false">
+        <view class="popup-item">
+          <view class="popup-title">请选择期望上门时间</view>
+          <view class="popup-button">
+            <view class="popup-cancel" @click='confirmTimePop'>确定</view>
+          </view>
+        </view>
+      </uni-popup>
     </view>
 
   </view>
@@ -187,6 +196,7 @@
     data() {
       return {
         isShow: true,
+        hasTime: false,
         time: '',
         shopIndex: 0,
         goodIndex: 0,
@@ -260,6 +270,7 @@
       } else {
         this.isShow = true
       }
+      this.addUser = []
     },
     onUnload() {
       uni.removeStorageSync('houseListChooseId')
@@ -351,6 +362,9 @@
                   addingUserId: skuItem.addingUserId
                 })
               }
+              if(skuItem.appointmentRequired){
+                this.hasTime = true
+              }
               // 结算可配送和不可配送数据
               if (skuItem.errorType) {
                 noStoreItem.skuInfos.push(skuItem)
@@ -420,6 +434,10 @@
         this.hasNoBuyItem = false
       },
       pay() {
+        if(this.hasTime && !this.time) {
+          this.$refs.timeDialog.open()
+          return
+        }
         if (!this.hasCanBuy || this.hasNoBuyItem || !this.totalPrice) {
           return
         }
@@ -475,14 +493,17 @@
             url: "/sub-classify/pages/search-result/search-result?searchText=" + "精算"
           })
         } else if (this.toastType === 5) {
-          uni.navigateTo({
-            url: "/sub-classify/pages/search-result/search-result?searchText=" + "管家"
+          uni.switchTab({
+            url: "/pages/decorate/index/index"
           })
         } else if (this.toastType === 8) {
           uni.switchTab({
             url: "/pages/decorate/index/index"
           })
         }
+      },
+      confirmTimePop() {
+        this.$refs.timeDialog.close()
       }
     }
   }
@@ -569,7 +590,13 @@
     font-size: 28rpx;
     color: #333333;
     line-height: 40rpx;
+    text-overflow: -o-ellipsis-lastline;
+    overflow: hidden;
     text-overflow: ellipsis;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    line-clamp: 2;
+    -webkit-box-orient: vertical;
   }
 
   .goods-info .goods-desc .goods-type {

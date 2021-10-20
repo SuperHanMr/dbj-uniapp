@@ -1,53 +1,9 @@
 <template>
 	<view class="fill">
+		<image class="to-app-img" src="http://dbj.dragonn.top/static/mp/dabanjia/images/home/lives-decorate.jpg" mode="aspectFill" @click="showDownload=true">
+			
+		</image>
 		<view v-if="list.length">
-			<!-- <live-player v-if="liveList.length" :class="{ player:!isFill,'player-fill':isFill}" :src="livePreview"
-				autoplay @statechange="statechange" @error="error" :muted="muted"
-				:orientation="isFill?'horizontal':'vertical'">
-				<cover-view v-if="!isFill" class="video-bottom">
-					<cover-image class="video-voice" @click="changeMuted"
-						src="http://dbj.dragonn.top/static/mp/dabanjia/images/home/player-vioce.png">
-					</cover-image>
-					<cover-view class="center-icon-row">
-						<cover-view class="video-list-icon">
-							<cover-image v-show="showLiveLeft" @click="this.currentPage--"
-								src="http://dbj.dragonn.top/static/mp/dabanjia/images/home/live-left.png">
-							</cover-image>
-						</cover-view>
-						<cover-image v-for="(item,index) in currentList" :key="index" class="video-list-icon"
-							@click="changeLive(item)"
-							src="http://dbj.dragonn.top/static/mp/dabanjia/images/home/indicator_Selected.png">
-						</cover-image>
-
-						<cover-view class="video-list-icon">
-							<cover-image v-show="showLiveRight" @click="this.currentPage++"
-								src="http://dbj.dragonn.top/static/mp/dabanjia/images/home/live-right.png">
-							</cover-image>
-						</cover-view>
-					</cover-view>
-					<cover-image class="video-voice" @click="videoFill"
-						src="http://dbj.dragonn.top/static/mp/dabanjia/images/home/player-big.png">
-					</cover-image>
-
-				</cover-view>
-				<cover-view v-else class="video-left">
-
-					<cover-image class="video-voice translate90" @click="changeMuted"
-						src="http://dbj.dragonn.top/static/mp/dabanjia/images/home/player-vioce.png">
-					</cover-image>
-					<cover-view style="flex:1"></cover-view>
-					<cover-image class="video-voice translate90" @click="videoFill"
-						src="http://dbj.dragonn.top/static/mp/dabanjia/images/home/player-small.png">
-					</cover-image>
-				</cover-view>
-
-				<cover-view v-if="isFill" class="video-back">
-					<cover-image class="video-voice translate90" @click="videoFill"
-						src="http://dbj.dragonn.top/static/mp/dabanjia/images/home/ic_cancel_white.png">
-					</cover-image>
-				</cover-view>
-
-			</live-player> -->
 			<view class="header" @click="showDownload=true">
 				直播速看
 			</view>
@@ -245,6 +201,11 @@
 </script>
 
 <style lang="scss" scoped>
+	.to-app-img{
+		width: 100%;
+		height: 422rpx;
+		flex-shrink: 0;
+	}
 	.alert-app {
 		position: fixed;
 		width: 100vw;
