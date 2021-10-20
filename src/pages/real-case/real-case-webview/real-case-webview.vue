@@ -52,8 +52,6 @@
 				uni.hideLoading();
 			},
 			message(event) {
-				// console.log(event.detail.data,event.detail.data.length)
-				console.log(event, '>>>>>>>>>>>>')
 				uni.$emit('isCollect', event.detail.data[event.detail.data.length - 1])
 			}
 		}
