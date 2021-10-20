@@ -29,7 +29,7 @@
 				<view class="footer" v-if="item.commentStatus == 1 ">
 					<view class="button-container">
 						<view class="review-detail" @click="gotoDetail(item)">
-							查看详情
+							查看评价
 						</view>
 					</view>
 				</view>
@@ -136,7 +136,8 @@
 			flex-flow: row nowrap;
 			align-items: center;
 			text {
-				font-weight: 1000;
+				font-weight: 500;
+				color: #333333;
 				max-width: 476rpx;
 				font-size: 28rpx;
 				overflow: hidden;
@@ -166,7 +167,7 @@
 		display: flex;
 		flex-flow: row nowrap;
 		justify-content:  flex-end;
-		padding: 24rpx 32rpx;
+		padding: 32rpx;
 		// text-align: right;
 		background-color: #ffffff;
 		

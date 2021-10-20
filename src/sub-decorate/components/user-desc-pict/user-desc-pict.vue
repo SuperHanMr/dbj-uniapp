@@ -89,7 +89,7 @@
     .avtor {
       width: 104rpx;
       height: 104rpx;
-      border: 2rpx solid #000;
+      // border: 2rpx solid #000;
       border-radius: 50%;
       margin-right: 16rpx;
     }

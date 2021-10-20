@@ -201,11 +201,7 @@
       init(){
         // this.getCaseList()
         this.getSkuList()
-          
-        
-        
         this.getGrabDetail()
-        
       },
       getAttention(routeId,type){
         let data = {
