@@ -1025,7 +1025,7 @@
 		}
 
 		.item {
-			height: 126rpx;
+			height: 128rpx;
 			flex: 1;
 			display: flex;
 			flex-direction: column;
