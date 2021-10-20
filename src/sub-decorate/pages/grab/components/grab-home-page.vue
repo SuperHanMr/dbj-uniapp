@@ -6,10 +6,10 @@
         <text class="title">{{personData.realName}}</text>
         <view class="introduce">
           <text>{{personData.genderName}}</text>
-<!--          <text>|</text>
-          <text>{{personData.roleName}}</text>
+<!--         <text>|</text>
+          <text>{{personData.roleName}}</text> -->
           <text>|</text>
-          <text>好评率{{personData.praiseRate||0}}</text> -->
+          <text>好评率{{personData.praiseRate||0}}</text>
         </view>
       </view>
       <view class="person-msg-list">
