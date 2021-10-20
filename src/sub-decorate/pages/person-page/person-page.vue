@@ -6,22 +6,22 @@
       <i class="icon-ic_cancel_white"></i>
     </view>
     <view class="nav-header" :style="[navStyle]">
-      <view class="item" @click="back">
+      <view class="item special-item" @click="back">
         <i class="icon-ic_cancel_white header-back"></i>
         <!-- <image class="header-back"></image> -->
       </view>
       <view class="item nav-header-msg">
-        <image :src="personData.avatar" mode=""></image>
+        <view class="avatar" :style="{backgroundImage: `url(${personData.avatar})`}"  mode=""></view>
         <text>{{personData.roleId>=1&&personData.roleId<7?personData.realName:personData.nickName}}</text>
       </view>
-      <view class="item"></view>
+      <view class="item "></view>
     </view>
     <view class="person-page-content">
       <view class="person-msg" :class="{'is-self':personData.roleId === 10000}">
         <view class="person-msg-top" :class="{'is-self':personData.roleId === 10000}">
           <view class="person-msg-header">
             <view class="person-msg-header-image">
-              <image class="avatar" :src="personData.avatar" ></image>
+              <view class="avatar" :style="{backgroundImage:`url(${personData.avatar})`}" ></view>
               <i class="icon icon-ic_nan" v-if="personData.gender===1"></i>
               <i class="icon icon-ic_nv" v-else></i>
             </view>
@@ -132,7 +132,7 @@
           totalNum:'0',
           roleId:0
         },
-        currentItem: 'service',
+        currentItem: 'serviceTop',
         scrollTop:0,
         interact:0,
         interactActive:false,
@@ -165,7 +165,7 @@
       
     },
     onLoad(e){
-      this.personId = e.personId||7249
+      this.personId = e.personId||7345
       // this.getGrabDetail()
     },
     onShow(){
@@ -180,28 +180,41 @@
       this.init()
     },
     onPageScroll(scrollTop) {
-      // console.log(scrollTop.scrollTop)
-      this.scrollTop = scrollTop.scrollTop
-      this.changeOpacity(scrollTop.scrollTop)
-      this.getTopDistance()
       
-      // this.currentItem = this.serviceTop<=130&&(this.caseTop>130||this.caseTop===null)?'serviceTop':this.caseTop<=130&&(this.dynamicTop>130||this.dynamicTop===null)?'caseTop':this.dynamicTop<=130&&this.evaluateTop>130?'dynamicTop':'evaluateTop'
-      if(this.personData.roleId===1){
-        this.currentItem = this.serviceTop<=130&&this.caseTop>130?'serviceTop':this.caseTop<=130&&this.evaluateTop>130?'caseTop':''
-      }else if(this.personData.roleId===2){
-        this.currentItem = this.caseTop<=130&&this.evaluateTop>130?'caseTop':''
-      }else{
-        this.currentItem = this.dynamicTop<=130&&this.evaluateTop>130?'dynamicTop':''
-      }
-      if(this.evaluateTop<130){
-        this.currentItem = 'evaluateTop'
-      }
+      this.pageScroll(scrollTop.scrollTop)
     },
     methods: {
       init(){
         // this.getCaseList()
         this.getSkuList()
         this.getGrabDetail()
+        
+      },
+      pageScroll(scrollTop){
+        this.scrollTop = scrollTop
+        this.changeOpacity(this.scrollTop)
+        this.getTopDistance()
+        if(this.personData.roleId===1){
+          
+          this.currentItem = this.serviceTop<=130&&this.caseTop>130?'serviceTop':this.caseTop<=130&&this.evaluateTop>130?'caseTop':''
+          if(this.interact>88||this.interact === 0){
+            this.currentItem = 'serviceTop'
+          }
+        }else if(this.personData.roleId===2){
+          this.currentItem = this.caseTop<=130&&this.evaluateTop>130?'caseTop':''
+          if(this.interact>88||this.interact === 0){
+            this.currentItem = 'caseTop'
+          }
+        }else{
+          this.currentItem = this.dynamicTop<=130&&this.evaluateTop>130?'dynamicTop':''
+          if(this.interact>88||this.interact === 0){
+            this.currentItem = 'dynamicTop'
+          }
+        }
+        // console.log(this.interact,this.evaluateTop)
+        if(this.interact!==0&&this.evaluateTop<130){
+          this.currentItem = 'evaluateTop'
+        }
       },
       getAttention(routeId,type){
         let data = {
@@ -274,6 +287,7 @@
             setTimeout(()=>{
               this.getNodeHeight()
               this.getTopDistance()
+              this.pageScroll(0)
             },1000)
           }else{
             // this.personData = getApp().globalData.userInfo
@@ -293,7 +307,7 @@
       },
       toItem(name) {
         this.currentItem = name
-        console.log(this[name] + this.scrollTop,name)
+        
         uni.pageScrollTo({
           duration: 100, // 过渡时间
           scrollTop: this[name] + this.scrollTop -124, // 滚动的实际距离
@@ -321,7 +335,7 @@
           this.dynamicTop = res&&res.top
         }).exec()
         query.select(".person-evaluate").boundingClientRect((res) => {
-          console.log(this.evaluateTop)
+          
           this.evaluateTop = res&&res.top
         }).exec()
         
@@ -345,7 +359,7 @@
         })
       },
       getEvaluate(num){
-        console.log(num)
+        
         this.evaluateNum = num
       },
       sendMsg(){
@@ -442,14 +456,14 @@
 
       .person-msg-header-image {
         position: relative;
-        height: 140rpx;
+        // height: 140rpx;
 
         .avatar {
           width: 140rpx;
           height: 140rpx;
           border-radius: 50%;
-          background-color: #eee;
-
+          // background-color: #eee;
+          background-size: contain;
         }
 
         .icon {
@@ -615,10 +629,13 @@
     background-color: #fff;
     opacity: 0;
     z-index: 1;
+    .special-item{
+      width: 33%;
+    }
     .item {
-      flex: 1;
-      display: flex;
-      align-items: center;
+      // flex: 1;
+      // display: flex;
+      // align-items: center;
       .header-back {
         width: 82rpx;
         height: 82rpx;
@@ -633,24 +650,30 @@
       height: 48rpx;
       line-height: 48rpx;
       max-width: 324rpx;
-      image {
+      flex: 1;
+      .avatar {
         width: 48rpx;
         height: 48rpx;
         border-radius: 50%;
-        background-color: #00BFAF;
+        // background-color: #00BFAF;
         margin-right: 24rpx;
+        background-size: contain;
+        display: inline-block;
+        vertical-align: top;
       }
 
       text {
+        width: 242rpx;
         font-weight: 500;
         color: #111111;
         font-size: 28rpx;
         display: inline-block;
         vertical-align: top;
-        
         overflow: hidden;
         text-overflow: ellipsis;
         white-space: nowrap;
+        display: inline-block;
+        vertical-align: top;
       }
     }
 

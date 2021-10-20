@@ -4,21 +4,24 @@
 			<image class="noTypesImg" src="http://dbj.dragonn.top/static/mp/dabanjia/images/decorate/pic_empty%402x.png"></image>
 			<view class="text">暂无施工图纸</view>
 		</view>
-		<view class="topTab" v-else>
+		<scroll-view :scroll-x="true" class="tabWrap" v-else>
 			<view
+				class="tab"
 				:class="{'active':navIndex===index}"
 				@click="checkIndex(index,item.type)"
 				v-for="(item,index) in serveTypes"
 				:key="item.type"
-			>{{item.severName}}</view>
-		</view>
-		<view v-if="serveTypes.length" class="lineWrap">
-			<view v-for="(item,index) in serveTypes" :key="item.type"
-				:class="[{'left_0':navIndex===0},{'left_1':navIndex===1},
-				{'left_2':navIndex===2},{'left_3':navIndex===3}]"
-				class="underline"
-			></view>
-		</view>
+			>
+			{{item.severName}}</view>
+			<view v-if="serveTypes.length" class="lineWrap">
+				<view v-for="(item,index) in serveTypes" :key="item.type"
+					:class="[{'left_0':navIndex===0},{'left_1':navIndex===1},
+					{'left_2':navIndex===2},{'left_3':navIndex===3}]"
+					class="underline"
+				></view>
+			</view>
+		</scroll-view>
+		
 		
 		<view class="designer" v-if="serverList.length>=2">
 			<view class="designerInfo">
@@ -37,7 +40,7 @@
 			<image class="noDrawingsImg" src="http://dbj.dragonn.top/static/mp/dabanjia/images/decorate/pic_empty%402x.png"></image>
 			<view class="text">暂无施工图纸</view>
 		</view>
-		<view class="contentWrap" v-else>
+		<scroll-view :scroll-y="true" class="contentWrap" v-else>
 			<view class="content"
 				v-if="navIndex===index"
 				v-for="(item,index) in serveTypes"
@@ -53,7 +56,7 @@
 					</view>
 				</view>
 			</view>
-		</view>
+		</scroll-view>
 		<view class="mask" v-if="showSwitchDesigner">
 			<view class="popupSwitch">
 				<view class="topArea">
@@ -274,28 +277,28 @@
 	.constructionWrap{
 		position: relative;
 		width: 100%;
-		height: 100%;
-		overflow: auto;
+		height: fit-content;
 		background: #ffffff;
 	}
-  .topTab{
-    width: 100%;
+  .tabWrap{
+		display: flex;
+		align-items: center;
+    max-width: 750rpx;
 		height: 100rpx;
+		white-space: nowrap;
 		border-bottom: 2rpx solid #efefef;
-    display: flex;
-    align-items: center;
   }
-	.topTab>view{
-		width: fit-content;
+	.tabWrap .tab{
+		max-width: 120rpx;
 		height: 44rpx;
 		margin: 28rpx 48rpx 10rpx 0;
 		color: #999999;
 		font-size: 28rpx;
 	}
-	.topTab>view:first-child{
+	.tabWrap .tab:first-child{
 		margin-left: 32rpx;
 	}
-	.topTab .active{
+	.tabWrap .tab.active{
 		color: #333333;
 	  font-weight: 500;
 	}
@@ -385,22 +388,21 @@
 	}
 	.contentWrap{
 		width: 100%;
-		height: fit-content;
-		/* height: 1528rpx; */
-		overflow: auto;
+		max-height: 1528rpx;
 	}
   .content{
 		width: 686rpx;
-		height: fit-content;
-		/* height: 1528rpx; */
+		max-height: 1528rpx;
 		margin: 0 32rpx;
 	}
 	.content .category{
 		
 	}
 	.category .title{
-		width: fit-content;
-		/* width: 84rpx; */
+		max-width: 84rpx;
+		text-overflow: ellipsis;
+		white-space: nowrap;
+		overflow: hidden;
 		height: 40rpx;
 		margin-top: 40rpx;
 		font-weight: 500;

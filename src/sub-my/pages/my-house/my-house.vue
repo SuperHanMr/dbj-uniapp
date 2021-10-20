@@ -375,6 +375,7 @@
 			display: inline-block;
 			vertical-align: middle;
 			margin-right: 24rpx;
+      color: #00C2B8;
 		}
     .icon-xiaochengxu_fangwuguanli_bianji{
       font-size: 26rpx;

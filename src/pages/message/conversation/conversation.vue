@@ -3,13 +3,15 @@
     <scroll-view
       :scroll-top="scrollTop"
       :scroll-y="true"
-      :refresher-enabled="refresherEnabled"
-      :refresher-triggered="refresherTriggered"
+      :refresher-enabled="false"
+      :refresher-triggered="false"
       :scroll-with-animation="false"
+      :scroll-anchoring="true"
+      :refresher-threshold="10"
       id="messageList"
       class="message-list"
       @scroll="handleMessageListScroll"
-      @refresherrefresh="handlePulling"
+      @scrolltoupper="handlePulling"
       @click="handleMessageListClick"
     >
       <template v-if="currentMessageList.length">
@@ -40,7 +42,7 @@
           ></message-item-interaction>
         </view>
       </template>
-      <view v-else-if="loaded" class="empty-container">
+      <view v-else-if="type === CONV_TYPES.SYSTEM && loaded" class="empty-container">
         <image class="empty-img" src="https://ali-image.dabanjia.com/static/mp/dabanjia/images/empty.png"></image>
         <view class="empty-tip">
           {{ emptyTip }}
@@ -77,8 +79,6 @@
         preScrollHeight: 0,
         scrollTop: 0,
         currentScrollTop: 0,
-        refresherEnabled: true,
-        refresherTriggered: false,
         loaded: false
       }
     },
@@ -121,9 +121,6 @@
           }
         }
       },
-      isCompleted(val) {
-        this.refresherEnabled = !val;
-      }
     },
     mounted() {
       uni.$on("scroll-to-bottom", this.scrollToBottom);
@@ -264,12 +261,10 @@
         this.currentScrollTop = e.detail.scrollTop;
       },
       handlePulling() {
-        if (this.isRequesting) {
+        if (this.isRequesting || this.isCompleted) {
           return;
         }
-        this.$store.dispatch("requestMessageList", this.currentConversation.conversationID).then(() => {
-          this.refresherTriggered = true;
-        })
+        this.$store.dispatch("requestMessageList", this.currentConversation.conversationID);
       },
       onReceiveMessage(event) {
         let messageList = event.data || [];
