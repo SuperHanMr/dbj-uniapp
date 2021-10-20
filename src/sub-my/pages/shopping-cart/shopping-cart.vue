@@ -21,7 +21,7 @@
 					</view>
 					<view class="goShop" @click="toShopHome(shopItem.storeId)">
 						<text class="shopName">{{shopItem.storeName}}</text>
-						<image class="shopIcon" src="http://dbj.dragonn.top/static/mp/dabanjia/images/my/goShop_ic%402x.png"></text>
+						<image class="shopIcon" src="http://dbj.dragonn.top/static/mp/dabanjia/images/my/ic_jumpToShop%402x.png"></text>
 					</view>
 				</view>
 				<view class="freeMail">
@@ -49,17 +49,19 @@
 							</view>
 							<image :src="goodsItem.image" @click="toGoodsDetail(goodsItem.skuId)" class="goodsItemImg"></image>
 							<view class="goodsInfo">
-								<view class="goodsDesc" @click="toGoodsDetail(goodsItem.skuId)">
-									<text class="goodsType">{{goodsItem.productType=== 1?"物品":"服务"}}</text>
-									{{goodsItem.spuName}}
-								</view>
-								<view class="goodsSpec" @click="openSpec(goodsItem.skuId,goodsItem.goodsChecked)">
-									<view class="text">{{goodsItem.skuName}}</view>
-									<image src="http://dbj.dragonn.top/static/mp/dabanjia/images/my/selectOptions%402x.png" class="selectOptions"></image>
+								<view>
+									<view class="goodsDesc" @click="toGoodsDetail(goodsItem.skuId)">
+										<text class="goodsType">{{goodsItem.productType=== 1?"物品":"服务"}}</text>
+										{{goodsItem.spuName}}
+									</view>
+									<view class="goodsSpec" @click="openSpec(goodsItem.skuId,goodsItem.goodsChecked)">
+										<view class="text">{{goodsItem.skuName}}</view>
+										<image src="http://dbj.dragonn.top/static/mp/dabanjia/images/my/selectOptions%402x.png" class="selectOptions"></image>
+									</view>
 								</view>
 								<!-- 商品单价和数量 -->
 								<view class="foot">
-									<view class="goodsPrice">
+									<view class="goodsPrice price-font">
 										<text>¥</text>
 										<text class="int">{{(goodsItem.price/100).toFixed(2).split('.')[0]}}</text>
 										<text>.{{(goodsItem.price/100).toFixed(2).split('.')[1]}}/{{goodsItem.unitName}}</text>
@@ -192,7 +194,7 @@
 					</view>
 					<view class="right">
 						<view class="text">合计：</view>
-						<view class="totalPrice">
+						<view class="totalPrice price-font">
 							<text>¥</text>
 							<text class="int">{{totalPrice.toFixed(2).split('.')[0]}}</text>
 							<text>.{{totalPrice.toFixed(2).split('.')[1]}}</text>
@@ -247,7 +249,7 @@
 				  {
 				    text: "删除",
 				    style: {
-				      backgroundColor: "#dd524d",
+				      backgroundColor: "#FF3347",
 				    },
 				  },
 				],
@@ -751,7 +753,16 @@
 				let miniOrder = +target.minimumOrderQuantity
 				if(isAdd){ // 累加
 					count += step
-					target.buyCount = count.toFixed(2).toString()
+					if(count > 9999.99){
+						uni.showToast({
+							title:"已达到商品数量添加上限",
+							icon:"none",
+							duration:1000
+						})
+						return
+					}
+					target.buyCount = count.toFixed(2).toString()	
+					
 				}else { // 累减
 					if(count > miniOrder){
 						count -= step
@@ -760,7 +771,8 @@
 						target.isMiniOrder = true
 						uni.showToast({
 							title:"商品数量不能再减少了",
-							icon:"none"
+							icon:"none",
+							duration:1000
 						})
 					}
 				}
@@ -1243,14 +1255,14 @@
 		border-radius: 16rpx;
 	}
 	.shopInfo{
-		height: 106rpx;
+		height: 94rpx;
 		margin-left: 24rpx;
 		display: flex;
 		align-items: center;
 	}
 	.shopInfo .check{
-		width: 36rpx;
-		height: 36rpx;
+		width: 32rpx;
+		height: 32rpx;
 		border-radius: 50%;
 		background: #ffffff;
 		border: 2rpx solid #CBCCCC;
@@ -1261,7 +1273,7 @@
 		display: block;
 	}
 	.shopInfo .goShop{
-		height: 100%;
+		height: 94rpx;
 		display: flex;
 		align-items: center;
 	}
@@ -1271,7 +1283,7 @@
 		font-size: 28rpx;
 		font-weight: 500;
 		color: #333333;
-		margin-left:24rpx;
+		margin-left: 16rpx;
 		margin-right: 12rpx;
 	}
 	.shopInfo .shopIcon{
@@ -1280,7 +1292,7 @@
 		display: block;
 	}
 	.freeMail{
-		width: 604rpx;
+		width: 603rpx;
 		height: 60rpx;
 		margin-left: 76rpx;
 		margin-bottom: 24rpx;
@@ -1291,7 +1303,10 @@
 		border-radius: 6rpx;
 	}
 	.freeMail .text{
-		width: 392rpx;
+		max-width: 400rpx;
+		overflow: hidden;
+		text-overflow: ellipsis;
+		white-space: nowrap;
 		height: 34rpx;
 		margin-left: 24rpx;
 		font-size: 24rpx;
@@ -1301,10 +1316,12 @@
 	.freeMail .toShop{
 		width: 102rpx;
 		height: 34rpx;
+		margin-right: 4rpx;
 		font-size: 24rpx;
 		color: #fe9000;
 		line-height: 34rpx;
 		display: flex;
+		align-items: center;
 	}
 	.freeMail .toShop .icon{
 		width: 30rpx;
@@ -1320,8 +1337,8 @@
 		padding-bottom: 24rpx;
 	}
 	.goodsItem .check{
-		width: 36rpx;
-		height: 36rpx;
+		width: 32rpx;
+		height: 32rpx;
 		border-radius: 50%;
 		background: #ffffff;
 		border: 2rpx solid #CBCCCC;
@@ -1335,38 +1352,46 @@
 		width: 192rpx;
 		height: 192rpx;
 		display: block;
-		margin-left: 12rpx;
+		margin-left: 16rpx;
 		margin-right: 20rpx;
 		border-radius: 8rpx;
 	}
 	.goodsItem .goodsInfo{
-		height: 100%;
+		height: 192rpx;
 		margin-right: 20rpx;
+		display: flex;
+		flex-direction: column;
+		justify-content: space-between;
 	}
 	.goodsInfo .goodsDesc{
-		width: 380rpx;
-		height: 80rpx;
+		max-width: 380rpx;
+		max-height: 80rpx;
 		font-size: 28rpx;
 		color: #333333;
 		line-height: 40rpx;
+		display: -webkit-box;
+		-webkit-line-clamp: 2;
+		-webkit-box-orient: vertical;
+		overflow: hidden;
 		text-overflow: ellipsis;
 	}
 	.goodsInfo .goodsDesc .goodsType{
 		width: 60rpx;
 		height: 30rpx;
-		padding: 2rpx 10rpx 2rpx 10rpx;
+		padding: 0 10rpx;
 		margin-right: 4rpx;
 		border: 1rpx solid #35c4c4;
 		border-radius: 4rpx;
 		font-size: 20rpx;
 		font-weight: 500;
 		color: #35c4c4;
-		line-height: 28rpx;
+		line-height: 30rpx;
 		text-align:center;
 	}
 	.goodsInfo .goodsSpec{
 		width: fit-content;
 		height: 38rpx;
+		margin-top: 8rpx;
 		background: #fafafa;
 		border: 1rpx solid #f0f0f0;
 		border-radius: 4rpx;
@@ -1389,6 +1414,7 @@
 		display: block;
 	}
 	.goodsInfo .foot{
+		width: 388rpx;
 		display: flex;
 		justify-content: space-between;
 		align-items: flex-end;
@@ -1412,7 +1438,7 @@
 		display: block;
 	} 
 	.goodsInfo .foot .countCtrl .count{
-		width: 92rpx;
+		width: 104rpx;
 		height: 48rpx;
 		margin: 0 4rpx;
 		background: #f2f2f2;
@@ -1561,7 +1587,7 @@
 	.totalPrice{
 	  max-width: 118rpx;
 	  height: 36rpx;
-		margin-bottom: 16rpx;
+		margin-bottom: -2rpx;
 		margin-right: 16rpx;
 	  font-size: 24rpx;
 	  color: #ff3347;
