@@ -260,6 +260,7 @@
       } else {
         this.isShow = true
       }
+      this.addUser = []
     },
     onUnload() {
       uni.removeStorageSync('houseListChooseId')
