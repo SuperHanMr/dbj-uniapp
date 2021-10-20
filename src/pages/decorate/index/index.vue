@@ -254,10 +254,10 @@
           return v.toString(16);
         });
       },
-      goDecorateCalendar(date) {
-        console.log("date: ", date)
+      goDecorateCalendar() {
+        // console.log("date: ", date)
         uni.navigateTo({
-          url: `/sub-home/pages/decorate-scene/decorate-calendar?projectId=${this.currentProject.projectId}&date=${date}&isDecorate=1`
+          url: `/sub-home/pages/decorate-scene/decorate-calendar?projectId=${this.currentProject.projectId}&isDecorate=1`
         })
       },
       getCarouselMsg() {
@@ -267,6 +267,8 @@
             if(this.broadcastList?.length < 1) {
               this.broadcastList = [{content: "暂无施工消息"}]
             }
+            
+            this.isConstruction = this.currentProject.showBroadcast || false 
           })
         }
       },
@@ -337,8 +339,7 @@
           //   }
           // }
           console.log(this.currentProject)
-          this.isConstruction = this.currentProject.showBroadcast || false 
-          if (this.isConstruction) {
+          if (this.currentProject?.showBroadcast) {
             this.getCarouselMsg()
           }
         }).catch(err => {

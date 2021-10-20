@@ -44,14 +44,16 @@
       },
       goDecorateCalendar() {
         // if(!this.current?.recordDate) {
-        //   return
+        //   this.$emit("goDecorateCalendar", yyyy + mm);
+        // } else {
+          
         // }
-        let yyyymmdd = formatDate(this.current.recordDate)
-          .split(" ")[0]
-          .split("-");
-        let yyyy = yyyymmdd[0] + "";
-        let mm = yyyymmdd[1] + "";
-        this.$emit("goDecorateCalendar", yyyy + mm);
+        // let yyyymmdd = formatDate(this.current.recordDate)
+        //   .split(" ")[0]
+        //   .split("-");
+        // let yyyy = yyyymmdd[0] + "";
+        // let mm = yyyymmdd[1] + "";
+        this.$emit("goDecorateCalendar");
       },
       clearTimer() {
         clearInterval(this.timer);
