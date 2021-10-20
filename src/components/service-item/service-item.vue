@@ -2,16 +2,16 @@
   <view class="item">
     <view class="flex-row-bet" @click="openProcsss">
       <view class="item-name flex-row-start">
-        <i v-if="serviceData.nodeType == 1" class="icon-ic_wodejia_shejifuwu_csn1" style="color: #2bbaf2;font-size: 32rpx;margin-right: 16rpx;"></i>
-        <i v-if="serviceData.nodeType == 2" class="icon-ic_wodejia_yanfangfuwu_csn1" style="color: #5A99DA;font-size: 32rpx;margin-right: 16rpx;"></i>
-        <i v-if="serviceData.nodeType == 3" class="icon-ic_wodejia_liangfangfuwu_csn1" style="color: #43d9e1;font-size: 32rpx;margin-right: 16rpx;"></i>
-        <i v-if="serviceData.nodeType == 4" class="icon-ic_wodejia_jingsuanfuwu_csn1" style="color: #1E7BEA;font-size: 32rpx;margin-right: 16rpx;"></i>
-        <i v-if="serviceData.nodeType == 5" class="icon-ic_wodejia_guanjia_csn" style="color: #ffb568;font-size: 32rpx;margin-right: 16rpx;"></i>
-        <i v-if="serviceData.nodeType == 6" class="icon-ic_zhuangxiuxianchang_chaichu_csn1" style="color: #a38af4;font-size: 32rpx;margin-right: 16rpx;"></i>
-        <i v-if="serviceData.nodeType == 7" class="icon-ic_zhuangxiuxianchang_shuidian_csn1" style="color: #58a8ff;font-size: 32rpx;margin-right: 16rpx;"></i>
-        <i v-if="serviceData.nodeType == 8" class="icon-ic_zhuangxiuxianchang_nigong_csn1" style="color: #f47f62;font-size: 32rpx;margin-right: 16rpx;"></i>
-        <i v-if="serviceData.nodeType == 9" class="icon-ic_zhuangxiuxianchang_mugong_csn1" style="color: #a38af4;font-size: 32rpx;margin-right: 16rpx;"></i>
-        <i v-if="serviceData.nodeType == 10" class="icon-ic_zhuangxiuxianchang_youqi_csn1" style="color: #8cd874;font-size: 32rpx;margin-right: 16rpx;"></i>
+        <i v-if="serviceData.nodeType == 1" class="icon-zx icon-ic_wodejia_shejifuwu_csn1"></i>
+        <i v-if="serviceData.nodeType == 2" class="icon-zx icon-ic_wodejia_yanfangfuwu_csn1"></i>
+        <i v-if="serviceData.nodeType == 3" class="icon-zx icon-ic_wodejia_liangfangfuwu_csn1"></i>
+        <i v-if="serviceData.nodeType == 4" class="icon-zx icon-ic_wodejia_jingsuanfuwu_csn1"></i>
+        <i v-if="serviceData.nodeType == 5" class="icon-zx icon-ic_wodejia_guanjia_csn"></i>
+        <i v-if="serviceData.nodeType == 6" class="icon-zx icon-ic_zhuangxiuxianchang_chaichu_csn1"></i>
+        <i v-if="serviceData.nodeType == 7" class="icon-zx icon-zx icon-ic_zhuangxiuxianchang_shuidian_csn1"></i>
+        <i v-if="serviceData.nodeType == 8" class="icon-zx icon-ic_zhuangxiuxianchang_nigong_csn1"></i>
+        <i v-if="serviceData.nodeType == 9" class="icon-zx icon-ic_zhuangxiuxianchang_mugong_csn1"></i>
+        <i v-if="serviceData.nodeType == 10" class="icon-zx icon-ic_zhuangxiuxianchang_youqi_csn1"></i>
         <view>{{serviceData.serviceName}}</view>
       </view>
       <view class="status-name mr inservice flex-row-start">
