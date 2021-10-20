@@ -113,11 +113,13 @@
         this.tabIndex = current
         this.tabName = 'd'+(this.dataList[current].nodeType>6?6:this.dataList[current].nodeType)
         this.serverId = this.dataList[current].serveCardId
-        this.currentEmpty = 0
+        
+        this.dataList[current].currentEmpty = 0
         this.checkData = {
           serveId:this.dataList[current].serveCardId,
           type:this.dataList[current].serveType
         }
+        console.log(this.checkData)
         this.changeHeight()
         // this.$nextTick(function(){
         //   this.$refs.result[0].getHeight()
