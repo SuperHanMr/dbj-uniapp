@@ -81,6 +81,9 @@
         </view>
       </view>
     </view>
+		<view class="DDDD" @click="immediate()">
+		 立即评价
+		</view>
 
   </view>
 </template>
@@ -189,6 +192,11 @@
     },
 
     methods: {
+			immediate(){
+				uni.navigateTo({
+					url:"../../../sub-my/pages/evaluate/immediate-evaluate/immediate-evaluate"
+				})
+			},
       toLogin() {
         if (!this.isLogin) {
           uni.navigateTo({
