@@ -16,6 +16,7 @@
 				id: '',
 				searchToken: '',
 				hashToken: '',
+				height: 0
 			}
 		},
 		onBackPress() {
@@ -35,15 +36,17 @@
 
 		methods: {
 			goH5() {
-				let height = 0
 				const token = getApp().globalData.token;
-				uni.getSystemInfo({
-					success: (res) => {
-						height = res.windowHeight
-					}
-				})
+				if (!this.height) {
+					uni.getSystemInfo({
+						success: (res) => {
+							this.height = res.windowHeight
+						}
+					})
+				}
+				
 				this.url = this.ENV.VUE_APP_BASE_H5 +
-					`/app-pages/case-detail/case-detail.html?id=${this.id}&height=${height}#${token ? token : 0}`
+					`/app-pages/case-detail/case-detail.html?id=${this.id}&height=${this.height}#${token ? token : 0}`
 				console.log(this.url)
 			},
 			loadSuccessHandler(e) {
