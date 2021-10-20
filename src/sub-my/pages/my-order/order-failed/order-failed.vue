@@ -236,7 +236,9 @@ export default {
     refundDetail() {
       getRefundDetail({ id: this.id }).then((e) => {
         this.refundInfo = e;
+				this.showReApply=this.refundInfo.reapplyed
         console.log("获取详情数据data=", this.refundInfo);
+				console.log("this.showReApply = ",this.showReApply)
       });
     },
 
