@@ -18,21 +18,23 @@
         </view>
       </view>
     </view>
-    <!-- <view v-if="template.body.actions && template.body.actions.length" class="form-template__footer">
+    <view v-if="actions && actions.length" class="form-template__footer">
       <view 
-        v-for="(btn, index) in template.body.actions" 
+        v-for="(btn, index) in actions" 
         :key="index" 
         class="oper-btn"
+        @click="handleClick(btn)"
       >
         {{ btn.title }}
       </view>
-    </view> -->
+    </view>
   </view>
 </template>
 
 
 <script>
 import { compileTemplateStr as compile } from "@/utils/util.js";
+import { evaluateDetail } from "@/api/order.js"
 export default {
   name: "FormTemplate",
   props: {
@@ -62,6 +64,37 @@ export default {
           content: compile(item.value)(this.data)
         }
       })
+    },
+    actions() {
+      return (this.template.body.actions || [])
+        .filter(action => (action.type === "native" && action.isDisplay))
+    }
+  },
+  methods: {
+    handleClick(btn) {
+      if (btn.targetRouter === "evalute") {
+        let params = btn.params;
+        let serviceId = compile(params.serviceId)(this.data);
+        let serviceType = compile(params.serviceType)(this.data);
+        let serverName = compile(params.serverName)(this.data);
+        let serverRoleName = compile(params.serverRoleName)(this.data);
+        let serverAvatar = compile(params.serverAvatar)(this.data);
+        evaluateDetail({id: serviceId}).then(data => {
+          if (data.commentStatus === 1) { //已评价
+            uni.navigateTo({
+            	url:`/sub-my/pages/evaluate/evaluate-detail/evaluate-detail?id=${serviceId}`
+            })
+          } else {
+            uni.navigateTo({
+              url:`/sub-my/pages/evaluate/immediate-evaluate/immediate-evaluate?id=${serviceId}&type=${serviceType}&serverName=${serverName}&serverRoleName=${serverRoleName}&serverAvatar=${serverAvatar}`,
+            })
+          }
+        }).catch(e => {
+          uni.navigateTo({
+            url:`/sub-my/pages/evaluate/immediate-evaluate/immediate-evaluate?id=${serviceId}&type=${serviceType}&serverName=${serverName}&serverRoleName=${serverRoleName}&serverAvatar=${serverAvatar}`,
+          })
+        });
+      }
     }
   }
 }

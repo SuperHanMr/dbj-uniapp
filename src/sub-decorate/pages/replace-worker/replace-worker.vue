@@ -194,7 +194,7 @@
       display: flex;
       align-items: center;
       justify-content: space-between;
-      border-bottom: 1px solid #efefef;
+      border-bottom: 0.5px solid #efefef;
 
       .text {
         font-size: 28rpx;
@@ -206,14 +206,14 @@
         width: 32rpx;
         height: 32rpx;
         border-radius: 50%;
-        border: 1px solid #bababa;
+        border: 0.5px solid #bababa;
         display: flex;
         align-items: center;
         justify-content: center;
       }
 
       .isActive {
-        border: 1px solid #35c4c4;
+        border: 0.5px solid #35c4c4;
 
         view {
           width: 16rpx;
