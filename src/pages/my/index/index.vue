@@ -18,7 +18,7 @@
 			<view class="avatar-img" v-if="!userId" @click="handlerPersonalData()">
 				<image src="https://ali-image.dabanjia.com/image/20210513/10/162087290165628.png" class="avatar" />
 				<view class="user-name">
-					<view class="name" @click="toLogin">
+					<view class="name" >
 						<text class="name">
 							{{userName}}
 						</text>
@@ -31,7 +31,7 @@
 			<view class="avatar-img" v-else @click="handlerPersonalData()">
 				<image :src="userInfo.avatar" class="avatar" />
 				<view class="user-name">
-					<text class="name" @click="toLogin">{{userName}} </text>
+					<text class="name" >{{userName}} </text>
 					<view class="edit-info">
 						<image src="../../../static/order/images/mineEdit@2x.png" mode="" />
 						<text>编辑个人资料</text>
@@ -191,6 +191,7 @@
 		methods: {
 			toLogin() {
 				if (!this.isLogin) {
+					console.log('toLogin~~~~~~~~~~~~~~~');
 					uni.navigateTo({
 						url: "../../login/login",
 					});
