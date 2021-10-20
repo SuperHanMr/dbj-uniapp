@@ -985,7 +985,7 @@
 				{
 					"path": "pages/person-page/person-evaluate-list",
 					"style": {
-						"navigationBarTitleText": "全部评价"
+						"navigationBarTitleText": "用户评价"
 					}
 				}
 			]

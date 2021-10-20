@@ -38,9 +38,9 @@
     },
     methods:{
       toTimeLine(item){
-        
+        console.log(this.tab)
         uni.navigateTo({
-          url:'/sub-decorate/pages/time-line/time-line?id='+(this.isDesign&&this.designData.designServerVO.serverId||this.tab.serveCardId)
+          url:'/sub-decorate/pages/time-line/time-line?id='+(this.isDesign&&this.designData.designServerVO.serverId||this.tab.serveCardId+'&name='+this.tab.nodeName)
         })
       },
       toPerson(item){

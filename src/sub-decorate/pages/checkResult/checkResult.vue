@@ -2,7 +2,7 @@
   <view class="check-result">
     <result-content :scrollTop='scrollTop' :serverId='serverId'></result-content>
     <bottom-btn style="width: 100%;" :showDefaultBtn="false">
-      <button class="add-btn" @click="submit">确认验房结果</button>
+      <view class="add-btn" @click="submit">确认验房结果</view>
     </bottom-btn>
   </view>
 </template>

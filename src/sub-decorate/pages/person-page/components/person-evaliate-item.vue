@@ -1,7 +1,7 @@
 <template>
   <view class="evaluate-item" :class="{'border-none':last}">
     <view class="item-top">
-      <view class="name">{{item.userName}}</view>
+      <view class="name">{{item.anonymous?'匿名':item.userName}}</view>
       <view class="time">{{item.createTime | formatDate}}</view>
     </view>
     <view class="item-content">
@@ -9,7 +9,10 @@
         <image v-for="el of item.rank"  src="../../../static/ic_score_star@2x.png" mode=""></image>
         <image v-for="el of 5-item.rank"  src="../../../static/ic_blank_star@2x.png" mode=""></image>
       </view>
-      <view class="evaluate-text">{{item.content}}</view>
+      <view class="evaluate-text" :class="{'report-text-hidden':isHidden}">{{item.content}}</view>
+      <view class="openHidden" v-if="showBtn" @click="clickHidden">
+        {{hddenText}}<i :class="{'icon-a-ic_zhuangxiuxianchang_jingsuanzhankai_csn':isHidden,'icon-a-ic_zhuangxiuxianchang_jingsuanshouqi_csn':!isHidden}"></i>
+      </view>
       <view class="image-list">
         <image-preview :list='JSON.parse(item.imgList)' :row='3'></image-preview>
       </view>
@@ -30,15 +33,46 @@
       item:{},
       last:false,
     },
+    data(){
+      return{
+        isHidden:false,
+        showBtn:false,
+        hddenText:'展开',
+      }
+    },
     filters: {
       formatDate
+    },
+    mounted(){
+      this.check()
+    },
+    watch:{
+      item(){
+        this.check()
+      }
     },
     methods:{
       toBuy(item){
         uni.navigateTo({
           url:'/sub-classify/pages/goods-detail/goods-detail?goodId='+item
         })
-      }
+      },
+      check(){
+        let query = uni.createSelectorQuery().in(this)
+        this.$nextTick(function(){
+          query.select(".evaluate-text").boundingClientRect((res) => {
+            
+            this.isHidden = res.height/20 >= 6;
+            this.showBtn = res.height/20 >= 6;
+            console.log(res.height,this.isHidden)
+            
+          }).exec()
+        })
+      },
+      clickHidden(){
+        this.isHidden = !this.isHidden
+        this.hddenText = this.isHidden?'展开':'收起'
+      },
     }
   }
 </script>
@@ -85,8 +119,35 @@
       overflow : hidden;
       text-overflow: ellipsis;
       display: -webkit-box;
+      // -webkit-line-clamp: 6;
+      // -webkit-box-orient: vertical;
+    }
+    .report-text-hidden{
+      overflow : hidden;
+      text-overflow: ellipsis;
+      display: -webkit-box;
       -webkit-line-clamp: 6;
       -webkit-box-orient: vertical;
+    }
+    .openHidden{
+      // width: 148rpx;
+      // height: 44rpx;
+      // opacity: 1;
+      // border: 0.5px solid #cccccc;
+      // border-radius: 12px;
+      // margin: 24rpx auto;
+      // line-height: 44rpx;
+      font-weight: 400;
+      text-align: center;
+      color: #21C091;
+      font-size: 24rpx;
+      display: flex;
+      align-items: center;
+      
+      i{
+        margin-left: 10rpx;
+        font-size: 18rpx;
+      }
     }
     .case-item{
       margin-top: 16rpx;
@@ -100,6 +161,7 @@
       display: flex;
       align-items: center;
       width: fit-content;
+      padding: 0 16rpx;
       image{
         width: 48rpx;
         height: 48rpx;
