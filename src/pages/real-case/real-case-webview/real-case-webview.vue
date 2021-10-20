@@ -1,6 +1,6 @@
 <template>
 	<view class="">
-		<web-view ref='webview' :src="url" @message='message' ></web-view>
+		<web-view ref='webview' :src="url" @message='message'></web-view>
 		<view class="" ref='sad'>
 
 		</view>
@@ -23,10 +23,8 @@
 		},
 		onShow(props) {
 			console.log('onShow', props, this.url, '>>>>>>>>>>>>>>>')
-			const token = getApp().globalData.token;
-			this.hashToken = token ? token : 0;
 			this.goH5()
-			// loadSuccessHandler();
+			this.loadSuccessHandler();
 		},
 		onLoad(props) {
 			this.id = props.id;
@@ -38,14 +36,14 @@
 		methods: {
 			goH5() {
 				let height = 0
-
+				const token = getApp().globalData.token;
 				uni.getSystemInfo({
 					success: (res) => {
 						height = res.windowHeight
 					}
 				})
 				this.url = this.ENV.VUE_APP_BASE_H5 +
-					`/app-pages/case-detail/case-detail.html?id=${this.id}&token=${this.hashToken ? this.hashToken : 0}&height=${height}#${this.hashToken}`
+					`/app-pages/case-detail/case-detail.html?id=${this.id}&token=${token ? token : 0}&height=${height}#${token ? token : 0}`
 				console.log(this.url)
 			},
 			loadSuccessHandler(e) {
