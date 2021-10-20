@@ -2,26 +2,24 @@
 
 	<view class="container">
 		<!-- 进行中 -->
-		<custom-navbar opacity="1" bgcolor="">
+		<custom-navbar :opacity="scrollTop/100" :title="headerTitle">
 			<template v-slot:back>
-				<view @click="toBack">
-					<i class="icon-ic_cancel_white" style="color: white;">
-					</i>
-				</view>
+				<i class="icon-ic_cancel_white back-icon" :style="{color: (scrollTop/100>1)?'black':'white'}"
+					@click="toBack"></i>
 			</template>
 		</custom-navbar>
 
-			<view style="position: relative;" :style="{backgroundImage:`url(${bgImg})`,backgroundSize: '100% 100%'}">
-				<!-- 占位 -->
-				<view class="bgcStyle" :style="{backgroundImage:`url(${bgImg})`,backgroundSize: '100% 100%'}"/>
-				<view :style="{height:navBarHeight}"></view>
-				<view class="order-status">
-					<view class="status">
-						<image src="../../../static/ic_status_inprogress.svg" mode="scaleToFill"></image>
-						<view>进行中</view>
-					</view>
+		<view style="position: relative;" :style="{backgroundImage:`url(${bgImg})`,backgroundSize: '100% 100%'}">
+			<!-- 占位 -->
+			<view class="bgcStyle" :style="{backgroundImage:`url(${bgImg})`,backgroundSize: '100% 100%'}"/>
+			<view :style="{height:navBarHeight}"></view>
+			<view class="order-status">
+				<view class="status">
+					<image src="../../../static/ic_status_inprogress.svg" mode="scaleToFill"></image>
+					<view>进行中</view>
 				</view>
 			</view>
+		</view>
 		<view class="order-container" :style="{paddingBottom:112+containerBottom+'rpx'}">
 
 			<order-user-base-info :data="orderInfo"></order-user-base-info>
@@ -122,6 +120,8 @@
 				from:"" ,
 				title:"",
 				navBarHeight: "",
+				scrollTop: 0,
+				headerTitle:"",
 				bgImg:'http://dbj.dragonn.top/static/mp/dabanjia/images/decorate/order_bg_orange.png'
 			};
 		},
@@ -132,7 +132,9 @@
 			this.systemBottom = menuButtonInfo.bottom + "rpx";
 			this.systemHeight = menuButtonInfo.bottom + this.num + "rpx";
 		},
-
+		onPageScroll(scrollTop) {
+			this.scrollTop = scrollTop.scrollTop
+		},
 		onLoad(e) {
 			if (e && e.orderNo) {
 				this.orderNo = e.orderNo;
@@ -160,6 +162,7 @@
 			})
 		},
 		onShow() {
+			this.headerTitle ="订单详情"
 			this.orderDetail();
 		},
 
@@ -325,12 +328,16 @@
 			object-fit: cover;
 		}
 	}
-
+	.back-icon {
+		color: white;
+		font-size: 40rpx;
+		padding: 20rpx;
+	}
 	.container {
-		width: 100%;
-		height: 100%;
-		overflow: auto;
-		padding-bottom: 100rpx;
+		// width: 100%;
+		// height: 100%;
+		// overflow: auto;
+		// padding-bottom: 100rpx;
 		
 		.bgcStyle{
 			width: 100%; 
@@ -371,7 +378,9 @@
 		}
 		
 		.order-container {
-			
+			width: 100%;
+			height: 100%;
+			overflow: auto;
 			.storeContainer {
 				.item {
 					padding: 32rpx 32rpx 2rpx;
