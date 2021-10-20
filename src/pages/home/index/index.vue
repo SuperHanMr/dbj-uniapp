@@ -685,13 +685,12 @@
 		width: 28rpx;
 		height: 28rpx;
 		flex-shrink: 0;
-		margin-bottom: 6rpx;
 	}
 
 	.icon_logo {
 		width: 164rpx;
 		height: 60rpx;
-		margin-left: 8rpx;
+		margin-left: 10rpx;
 	}
 
 	.icon-search {
@@ -941,7 +940,6 @@
 		font-weight: bold;
 		color: #2b2f33;
 		font-size: 32rpx;
-		margin-bottom: 12rpx;
 	}
 
 	.example-content {
@@ -1082,7 +1080,7 @@
 		display: flex;
 		flex-direction: row;
 		align-items: center;
-		padding: 6rpx 32rpx 0 32rpx;
+		padding: 6rpx 32rpx 6rpx 32rpx;
 		border-bottom-left-radius: 32rpx;
 		border-bottom-right-radius: 32rpx;
 
