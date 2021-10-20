@@ -108,8 +108,8 @@
 									</text>
 									<text v-if="item.discount">
 										<text style="margin-left: 18rpx;">优惠</text>
-										<text style="font-size:18rpx;">￥</text>
-											<text style="font-size: 22rpx;">-{{handlePrice(item.discount)[0]}}.</text>
+										<text style="font-size:18rpx;">-￥</text>
+											<text style="font-size: 22rpx;">{{handlePrice(item.discount)[0]}}.</text>
 											<text style="font-size:18rpx;" >{{handlePrice(item.discount)[1]}}</text>
 										</text>
 									</text>

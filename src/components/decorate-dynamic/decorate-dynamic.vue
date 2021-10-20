@@ -189,6 +189,7 @@
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
+    padding: 0 16rpx;
 	}
 	.acitonInfo .header .role{
 		width: 82rpx;

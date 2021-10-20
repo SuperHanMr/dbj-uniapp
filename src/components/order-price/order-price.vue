@@ -54,8 +54,8 @@
       <view class="price-item" v-if="data.storeDiscount" >
         <view>商家优惠</view>
         <view>
-          <text>￥</text>
-          <text class="price-style price-font">{{data.storeDiscount?'-':''}}{{handlePrice(data.storeDiscount)[0]}}.{{handlePrice(data.storeDiscount)[1]}}</text>
+          <text>-￥</text>
+          <text class="price-style price-font">{{handlePrice(data.storeDiscount)[0]}}.{{handlePrice(data.storeDiscount)[1]}}</text>
         </view>
       </view>
 
@@ -63,8 +63,8 @@
       <view  class="price-item" v-if="data.platformDiscount">
         <view>平台优惠</view>
         <view>
-          <text>￥</text>
-          <text class="price-style price-font">{{data.platformDiscount?'-':''}}{{handlePrice(data.platformDiscount)[0]}}.{{handlePrice(data.platformDiscount)[1]}}</text>
+          <text>-￥</text>
+          <text class="price-style price-font">{{handlePrice(data.platformDiscount)[0]}}.{{handlePrice(data.platformDiscount)[1]}}</text>
         </view>
       </view>
 

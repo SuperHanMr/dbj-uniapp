@@ -202,6 +202,9 @@
     },
     onHide() {
       this.showScroll = false
+      if(this.$refs.sw) {
+        this.$refs.sw.close()
+      }
     },
     data() {
       return {
@@ -254,10 +257,10 @@
           return v.toString(16);
         });
       },
-      goDecorateCalendar(date) {
-        console.log("date: ", date)
+      goDecorateCalendar() {
+        // console.log("date: ", date)
         uni.navigateTo({
-          url: `/sub-home/pages/decorate-scene/decorate-calendar?projectId=${this.currentProject.projectId}&date=${date}&isDecorate=1`
+          url: `/sub-home/pages/decorate-scene/decorate-calendar?projectId=${this.currentProject.projectId}&isDecorate=1`
         })
       },
       getCarouselMsg() {
@@ -267,6 +270,8 @@
             if(this.broadcastList?.length < 1) {
               this.broadcastList = [{content: "暂无施工消息"}]
             }
+            
+            this.isConstruction = this.currentProject.showBroadcast || false 
           })
         }
       },
@@ -336,11 +341,7 @@
           //     break
           //   }
           // }
-          console.log(this.currentProject)
-          this.isConstruction = this.currentProject.showBroadcast || false 
-          if (this.isConstruction) {
-            this.getCarouselMsg()
-          }
+          
         }).catch(err => {
           console.log(err)
         })
@@ -375,6 +376,9 @@
       changeCurrentProject(item) {
         this.currentProject = item
         getApp().globalData.switchFlag = 'decorate'
+        if (this.currentProject?.showBroadcast) {
+          this.getCarouselMsg()
+        }
         this.initData(item)
         this.$refs.sw.close()
       },
@@ -422,6 +426,9 @@
             } else {
               this.currentProject = data[0]
               this.initData(data[0])
+            }
+            if (this.currentProject?.showBroadcast) {
+              this.getCarouselMsg()
             }
             // end
           }
