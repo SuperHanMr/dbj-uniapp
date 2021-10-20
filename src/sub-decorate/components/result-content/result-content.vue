@@ -113,7 +113,7 @@
           series: [{
             name: '检查问题',
             type: 'pie',
-            radius: ['50%', '70%'],
+            radius: ['60%', '80%'],
             avoidLabelOverlap: false,
             center: ["90px", "center"],
             label: {
