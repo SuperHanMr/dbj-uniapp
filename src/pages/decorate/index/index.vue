@@ -34,18 +34,18 @@
               <view class="uni-title">{{ currentProject.housingEstate || '' }}{{currentProject.address || ''}}</view>
             </view>
             <view class="picture-btn-wrap">
-              <picture-btn v-if="aServiceData.showDesignFlag"
+              <picture-btn 
                 iconUrl="http://dbj.dragonn.top/static/mp/dabanjia/images/decorate/ic_sgtz.svg" class="p-i-t"
                 text="施工图纸" @gotoPage="goDesignPicture">
               </picture-btn>
-              <picture-btn v-if="aServiceData.showActuaryFlag"
+              <picture-btn 
                 iconUrl="http://dbj.dragonn.top/static/mp/dabanjia/images/decorate/ic_jsd.svg" class="p-i-t" text="精算单"
                 @gotoPage="goActuary">
               </picture-btn>
-              <picture-btn v-if="aServiceData.showVideoFlag"
+              <picture-btn 
                 iconUrl="http://dbj.dragonn.top/static/mp/dabanjia/images/decorate/ic_gdsp.svg" class="p-i-t"
                 text="工地视频" @gotoPage="goVideo"></picture-btn>
-              <picture-btn v-if="aServiceData.constructionFlag"
+              <picture-btn 
                 iconUrl="http://dbj.dragonn.top/static/mp/dabanjia/images/decorate/ic_sg.svg" text="施工"
                 @gotoPage="goConstrction"></picture-btn>
             </view>
