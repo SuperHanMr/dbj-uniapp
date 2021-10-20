@@ -1,26 +1,27 @@
 <template>
   <view class="container">
-		<custom-navbar opacity="1" titleColor="#ffb245" bgcolor=" #c6c6c6">
+		<custom-navbar opacity="1"  bgcolor="">
 			<template v-slot:back>
 				<view @click="toBack">
-					<i class="icon-ic_cancel_white" style="color: white;">
-					</i>
+					<i class="icon-ic_cancel_white" style="color: white;"></i>
 				</view>
 			</template>
 		</custom-navbar>
-		<!-- 占位 -->
-		<view :style="{height:navBarHeight}"></view>
-		
+
+
     <!-- 退款详情 --退款关闭   退款取消与商家拒接 两个页面-->
     <view class="order-container" v-if="type =='refund'" :style="{paddingBottom:containerPaddingBottom}">
-      <view class="order-status">
-        <view class="backgroundStyle" />
-        <view class="status">
-          <image src="../../../static/ic_order_failed.svg" mode="" />
-          <text v-if="status == 3 || status == 4">退款关闭</text>
-          <text v-if="status == 5">退款失败</text>
-        </view>
-        <text class="time">{{refundInfo.refundTime | formatDate}}</text>
+      <view style="position: relative;" :style="{backgroundImage:`url(${bgImg})`,backgroundSize: '100% 100%'}">
+				<view class="bgcStyle" :style="{backgroundImage:`url(${bgImg})`,backgroundSize: '100% 100%'}"/>
+      	<view :style="{height:navBarHeight}"></view>
+				<view class="order-status">
+					<view class="status">
+						<image src="../../../static/ic_order_failed.svg" mode="" />
+						<text v-if="status == 3 || status == 4">退款关闭</text>
+						<text v-if="status == 5">退款失败</text>
+					</view>
+					<text class="time">{{refundInfo.refundTime | formatDate}}</text>
+				</view>
       </view>
 
       <view class="order-header">
@@ -30,10 +31,10 @@
         <view v-if="status == 3" class="cancel-text">商家拒绝了您的申请，如有问题未解决，您可以重新申请</view>
         <view v-if="status == 4" class="cancel-text">您已取消了本次退款，如有问题未解决，您可以重新申请</view>
         <view v-if="status == 5" class="cancel-text failed-text">您的退款账户存在异常，您可联系客服或者重新发起申请</view>
-			
+
 			</view>
 
-      <view class="body1"v-for="item in refundInfo.detailAppVOS" :key="item.id">
+      <view class="body1" v-for="item in refundInfo.detailAppVOS" :key="item.id">
         <order-item
           :dataList="item"
           :refundType="true"
@@ -84,13 +85,16 @@
 
     <!-- 订单详情  已关闭页面 -->
     <view class="order-container" v-if="type =='close'" :style="{paddingBottom:systemBottom}" >
-      <view class="order-status">
-        <view class="backgroundStyle" />
-        <view class="status">
-          <image src="../../../static/ic_order_failed.svg" mode=""/>
-          <text>已关闭</text>
-        </view>
-      </view>
+			<view style="position: relative;" :style="{backgroundImage:`url(${bgImg})`,backgroundSize: '100% 100%'}">
+				<view class="bgcStyle" :style="{backgroundImage:`url(${bgImg})`,backgroundSize: '100% 100%'}"/>
+				<view :style="{height:navBarHeight}"></view>
+				<view class="order-status">
+					<view class="status">
+						<image src="../../../static/ic_order_failed.svg" mode=""/>
+						<text>已关闭</text>
+					</view>
+				</view>
+			</view>
       <order-user-base-info :data="orderInfo"></order-user-base-info>
       <view
         class="body2"
@@ -146,6 +150,7 @@ export default {
       title: "",
       areaId: "",
 			navBarHeight:"",
+			bgImg :'http://dbj.dragonn.top/static/mp/dabanjia/images/decorate/order_bg_gray.png',
     };
   },
 
@@ -215,7 +220,7 @@ export default {
         console.log("获取详情数据data=", this.orderInfo);
       });
     },
-		
+
 		// 改变返回下一个页面的路径
 		toBack(){
 			if (this.from == "waitPay") {
@@ -232,7 +237,7 @@ export default {
 				})
 			}
 		},
-		
+
     refundDetail() {
       getRefundDetail({ id: this.id }).then((e) => {
         this.refundInfo = e;
@@ -301,13 +306,19 @@ export default {
 };
 </script>
 
-<style lang="scss" scoped>
+<style lang="scss" scoped.bgcStyle{
+			width: 100%; 
+			height: 32rpx;
+			position: absolute;
+			bottom: -32rpx;
+			z-index: -1;
+		}>
 .container {
   .order-container {
     width: 100%;
     height: 100%;
     overflow: auto;
-
+		
     .order-status {
       width: 100%;
       height: 140rpx;

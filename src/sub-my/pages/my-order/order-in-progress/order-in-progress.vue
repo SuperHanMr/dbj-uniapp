@@ -2,7 +2,7 @@
 
 	<view class="container">
 		<!-- 进行中 -->
-		<custom-navbar opacity="1" :title="title" titleColor="#ffb245" bgcolor="#ffb245">
+		<custom-navbar opacity="1" bgcolor="">
 			<template v-slot:back>
 				<view @click="toBack">
 					<i class="icon-ic_cancel_white" style="color: white;">
@@ -10,21 +10,19 @@
 				</view>
 			</template>
 		</custom-navbar>
-		<!-- 占位 -->
-		<view :style="{height:navBarHeight}"></view>
-		<!-- 占位 -->
-		<!-- <view style="height: 10rpx;"></view> -->
 
-		<view class="order-container" :style="{paddingBottom:112+containerBottom+'rpx'}">
-			<view class="order-status">
-				<view class="backgroundStyle" />
-
-				<view class="status">
-					<image src="../../../static/ic_status_inprogress.svg" mode="scaleToFill"></image>
-					<view>进行中</view>
+			<view style="position: relative;" :style="{backgroundImage:`url(${bgImg})`,backgroundSize: '100% 100%'}">
+				<!-- 占位 -->
+				<view class="bgcStyle" :style="{backgroundImage:`url(${bgImg})`,backgroundSize: '100% 100%'}"/>
+				<view :style="{height:navBarHeight}"></view>
+				<view class="order-status">
+					<view class="status">
+						<image src="../../../static/ic_status_inprogress.svg" mode="scaleToFill"></image>
+						<view>进行中</view>
+					</view>
 				</view>
-
 			</view>
+		<view class="order-container" :style="{paddingBottom:112+containerBottom+'rpx'}">
 
 			<order-user-base-info :data="orderInfo"></order-user-base-info>
 
@@ -124,6 +122,7 @@
 				from:"" ,
 				title:"",
 				navBarHeight: "",
+				bgImg:'http://dbj.dragonn.top/static/mp/dabanjia/images/decorate/order_bg_orange.png'
 			};
 		},
 
@@ -332,47 +331,47 @@
 		height: 100%;
 		overflow: auto;
 		padding-bottom: 100rpx;
-
-		.order-container {
-			.order-status {
-				width: 100%;
-				height: 140rpx;
-				color: #ffffff;
-				background-size: 100% 172rpx;
+		
+		.bgcStyle{
+			width: 100%; 
+			height: 32rpx;
+			position: absolute;
+			bottom: -32rpx;
+			z-index: -1;
+		}
+		.order-status {
+			width: 100%;
+			height: 140rpx;
+			color: #ffffff;
+			background-size: 100% 172rpx;
+			display: flex;
+			flex-flow: column nowrap;
+			align-items: center;
+			position: relative;
+		
+			.status {
 				display: flex;
-				flex-flow: column nowrap;
+				flex-flow: row nowrap;
 				align-items: center;
-				position: relative;
-
-				.backgroundStyle {
-					position: absolute;
-					z-index: -1;
-					width: 100%;
-					height: 172rpx;
-					background-color: #ffb245;
+				margin-bottom: 8rpx;
+		
+				image {
+					width: 64rpx;
+					height: 64rpx;
+					object-fit: cover;
+					margin-right: 12rpx;
 				}
-
-				.status {
-					display: flex;
-					flex-flow: row nowrap;
-					align-items: center;
-					margin-bottom: 8rpx;
-
-					image {
-						width: 64rpx;
-						height: 64rpx;
-						object-fit: cover;
-						margin-right: 12rpx;
-					}
-
-					view {
-						font-size: 48rpx;
-						font-weight: 500;
-						color: #ffffff;
-					}
+		
+				view {
+					font-size: 48rpx;
+					font-weight: 500;
+					color: #ffffff;
 				}
 			}
-
+		}
+		
+		.order-container {
+			
 			.storeContainer {
 				.item {
 					padding: 32rpx 32rpx 2rpx;

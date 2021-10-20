@@ -6,7 +6,7 @@
       <i class="icon-ic_cancel_white"></i>
     </view>
     <view class="nav-header" :style="[navStyle]">
-      <view class="item" @click="back">
+      <view class="item special-item" @click="back">
         <i class="icon-ic_cancel_white header-back"></i>
         <!-- <image class="header-back"></image> -->
       </view>
@@ -14,7 +14,7 @@
         <view class="avatar" :style="{backgroundImage: `url(${personData.avatar})`}"  mode=""></view>
         <text>{{personData.roleId>=1&&personData.roleId<7?personData.realName:personData.nickName}}</text>
       </view>
-      <view class="item"></view>
+      <view class="item "></view>
     </view>
     <view class="person-page-content">
       <view class="person-msg" :class="{'is-self':personData.roleId === 10000}">
@@ -165,7 +165,7 @@
       
     },
     onLoad(e){
-      this.personId = e.personId||6932
+      this.personId = e.personId||7345
       // this.getGrabDetail()
     },
     onShow(){
@@ -211,7 +211,7 @@
             this.currentItem = 'dynamicTop'
           }
         }
-        console.log(this.interact,this.evaluateTop)
+        // console.log(this.interact,this.evaluateTop)
         if(this.interact!==0&&this.evaluateTop<130){
           this.currentItem = 'evaluateTop'
         }
@@ -629,8 +629,11 @@
     background-color: #fff;
     opacity: 0;
     z-index: 1;
+    .special-item{
+      width: 33%;
+    }
     .item {
-      flex: 1;
+      // flex: 1;
       // display: flex;
       // align-items: center;
       .header-back {
@@ -647,7 +650,7 @@
       height: 48rpx;
       line-height: 48rpx;
       max-width: 324rpx;
-      flex: 2;
+      flex: 1;
       .avatar {
         width: 48rpx;
         height: 48rpx;

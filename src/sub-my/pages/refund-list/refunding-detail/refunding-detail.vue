@@ -1,7 +1,7 @@
 <template>
   <view class="container" >
     <!-- 退款详情 -->
-		<custom-navbar opacity="1"  bgcolor="#ffb245">
+		<custom-navbar opacity="1"  bgcolor="">
 			<template v-slot:back>
 				<view @click="toBack">
 					<i class="icon-ic_cancel_white" style="color: white;">
@@ -9,19 +9,17 @@
 				</view>
 			</template>
 		</custom-navbar>
-		<!-- 占位 -->
-		<view :style="{height:navBarHeight}"></view>
 		
 		<view class="order-container" :style="{paddingBottom:containerPaddingBottom}" >
-			<view class="order-status">
-				<view class="backgroundStyle" />
-
-				<view class="status">
-					<image
-						src="../../../static/ic_status_inprogress@2x.png"
-						mode="scaleToFill"
-					></image>
-					<text>退款中</text>
+			<view :style="{backgroundImage:`url(${bgImg})`,backgroundSize: '100% 100%'}">
+				<!-- 占位 -->
+				<view :style="{height:navBarHeight}"></view>
+				<view class="order-status">
+					<view class="status">
+						<image
+							src="../../../static/ic_status_inprogress.svg" mode=""/>
+						<text>退款中</text>
+					</view>
 				</view>
 			</view>
 
@@ -70,6 +68,7 @@ export default {
 			containerBottom:"",
 			containerPaddingBottom:"",
 			navBarHeight:"",
+			bgImg:'http://dbj.dragonn.top/static/mp/dabanjia/images/decorate/order_bg_orange.png'
     };
   },
 	
