@@ -24,7 +24,7 @@
         <view>立即查看</view>
         <image src="http://dbj.dragonn.top/static/mp/dabanjia/images/decorate/ic_more.svg"></image>
       </view>
-      <view v-else class="lookDetail">未生成自定义报告</view>
+      <!-- <view v-else class="lookDetail">未生成自定义报告</view> -->
     </view>
     <button class="btn" @click="confirm">确认设计报告</button>
   </view>
