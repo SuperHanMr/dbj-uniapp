@@ -383,7 +383,7 @@
 						url: "../../common/video-player/video-player?url=" +
 							encodeURIComponent(item.roomVideoMediaVO.videoUrl) +
 							"&title=" +
-							item.roomVideoMediaVO.title,
+							item.roomVideoMediaVO.title+'&id=' + item.roomVideoMediaVO.id,
 					});
 				}
 			},

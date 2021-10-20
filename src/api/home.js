@@ -13,6 +13,11 @@ export function queryLive(params) {
 		params
 	});
 }
+//APP 看回放增加热度
+export function updateViewCount(id) {
+	return request.put(`app/roomCase/${id}/updateViewCount`, );
+}
+
 //首页金刚区
 export function navList(params) {
 	return request.get(`app/home/config/versions/9`, {

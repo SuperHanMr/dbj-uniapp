@@ -195,7 +195,7 @@
             退款已关闭
           </view>
         </view>
-        <view class="back-row">
+        <view v-if="showCancelApply||showDetail" class="back-row">
           <view
             v-if="showCancelApply"
             class="back-row-item"
