@@ -34,18 +34,18 @@
               <view class="uni-title">{{ currentProject.housingEstate || '' }}{{currentProject.address || ''}}</view>
             </view>
             <view class="picture-btn-wrap">
-              <picture-btn 
+              <picture-btn v-if="aServiceData.showDesignFlag"
                 iconUrl="http://dbj.dragonn.top/static/mp/dabanjia/images/decorate/ic_sgtz.svg" class="p-i-t"
                 text="施工图纸" @gotoPage="goDesignPicture">
               </picture-btn>
-              <picture-btn 
+              <picture-btn v-if="aServiceData.showActuaryFlag"
                 iconUrl="http://dbj.dragonn.top/static/mp/dabanjia/images/decorate/ic_jsd.svg" class="p-i-t" text="精算单"
                 @gotoPage="goActuary">
               </picture-btn>
-              <picture-btn 
+              <picture-btn v-if="aServiceData.showVideoFlag"
                 iconUrl="http://dbj.dragonn.top/static/mp/dabanjia/images/decorate/ic_gdsp.svg" class="p-i-t"
                 text="工地视频" @gotoPage="goVideo"></picture-btn>
-              <picture-btn 
+              <picture-btn v-if="aServiceData.constructionFlag"
                 iconUrl="http://dbj.dragonn.top/static/mp/dabanjia/images/decorate/ic_sg.svg" text="施工"
                 @gotoPage="goConstrction"></picture-btn>
             </view>
@@ -54,7 +54,7 @@
 
         <view class="scroll-view flex-1">
           <!-- 每日播报 -->
-          <text-scroll :show="showScroll" :dataList="broadcastList" v-if="broadcastList.length > 0 && isConstruction"
+          <text-scroll :show="showScroll" :dataList="broadcastList" v-if="isConstruction"
             @goDecorateCalendar="goDecorateCalendar"></text-scroll>
           <!-- 我的仓库 -->
           <view v-if="haveWarehouse" class="my-decorate-service-wrap">
@@ -121,8 +121,8 @@
 
           <!-- 切换房屋弹窗 -->
           <uni-popup ref="sw">
-            <house-switch class="margintop" :datalist="projectList" :current="currentProject.uid"
-              @goAddHouse="addHouse" @checkHouse="changeCurrentProject"></house-switch>
+            <house-switch class="margintop" :datalist="projectList" :current="currentProject.uid" @goAddHouse="addHouse"
+              @checkHouse="changeCurrentProject"></house-switch>
           </uni-popup>
           <decorate-notice @touchmove.stop.prevent="()=>false" v-if="noticeActive" :num='msgNum'
             :current='currentProject.projectId' @closeNotice='closeNotice' class="decorate-notice"></decorate-notice>
@@ -192,10 +192,10 @@
       console.log('showTabBar')
       this.showNoHouse = false
       this.availGuides = []
-      if(!this.noticeActive){
+      if (!this.noticeActive) {
         uni.showTabBar()
       }
-      
+
       this.getEstateList()
       this.$store.dispatch("updateTabBarBadge")
       this.showScroll = true
@@ -264,6 +264,9 @@
         if (this.currentProject.projectId) {
           getCarouselMsg(this.currentProject.projectId).then(data => {
             this.broadcastList = data
+            if(this.broadcastList?.length < 1) {
+              this.broadcastList = [{content: "暂无施工消息"}]
+            }
           })
         }
       },
@@ -323,15 +326,18 @@
           this.availGuides = []
           this.defaultServices && this.addServiceCard(this.defaultServices, "serviceType")
           this.availableServiceList && this.addServiceCard(this.availableServiceList, "nodeType")
-          this.haveWarehouse = this.currentProject.existWarehouse || false//this.purchasedServiceList.filter(t => t.nodeType >= 5).length > 0
-          for (let i = 0; i < this.purchasedServiceList.length; i++) {
-            if ([5, 6, 7, 8, 9, 10].includes(this.purchasedServiceList[i].nodeType) && (this.purchasedServiceList[i]
-                .status >= 2 || (this.purchasedServiceList[i].status == 0 && this.purchasedServiceList[i]
-                  .grepOrderStatus === 3))) {
-              this.isConstruction = true
-              break
-            }
-          }
+          this.haveWarehouse = this.currentProject.existWarehouse || false 
+          //this.haveWarehouse = this.purchasedServiceList.filter(t => t.nodeType >= 5).length > 0
+          // for (let i = 0; i < this.purchasedServiceList.length; i++) {
+          //   if ([5, 6, 7, 8, 9, 10].includes(this.purchasedServiceList[i].nodeType) && (this.purchasedServiceList[i]
+          //       .status >= 2 || (this.purchasedServiceList[i].status == 0 && this.purchasedServiceList[i]
+          //         .grepOrderStatus === 3))) {
+          //     this.isConstruction = true
+          //     break
+          //   }
+          // }
+          console.log(this.currentProject)
+          this.isConstruction = this.currentProject.showBroadcast || false 
           if (this.isConstruction) {
             this.getCarouselMsg()
           }
@@ -401,7 +407,7 @@
             if (switchFlag === "home") {
               arr = data.filter(t => t.estateId === this.homePageEstate?.id || t.estateId === getApp().globalData
                 .currentHouse?.id)
-              if(arr.length > 1) {
+              if (arr.length > 1) {
                 arr = arr.filter(t => t.projectStatus !== 3 && t.projectStatus !== 4)
               }
             } else {

@@ -374,7 +374,7 @@
 				if (item.mediaType == 1) {
 					//直播
 					uni.navigateTo({
-						url: `../../../sub-home/pages/lives-room/lives-room?roomId=${item.roomLiveMediaVO.roomId}`,
+						url: `/pages/home/lives-room/lives-room?roomId=${item.roomLiveMediaVO.roomId}`,
 					});
 				} else if (item.mediaType == 2) {
 					console.log(item);

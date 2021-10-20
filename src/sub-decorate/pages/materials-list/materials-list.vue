@@ -3,9 +3,9 @@
     <material-content-card class="card-item" v-for="(item, index) in dataList" :key="item.product.skuId" v-if="item.product.skuId == id || !allSkuId.includes(item.product.skuId)"
       :content="item">
       <template slot="radio">
-        <dbj-radio class="card-radio" :value="item.product.skuId + ''"
+        <btn-radio :value="item.product.skuId + ''"
           :checked="checkedSkuId === item.product.skuId + ''" @change="radioChange">
-        </dbj-radio>
+        </btn-radio>
       </template>
     </material-content-card>
     <view v-if="isAllDataLoaded" style="padding: 24rpx;text-align: center;font-size: 26rpx;">~我也是有底线的~</view>
@@ -16,12 +16,12 @@
   import {
     productList
   } from "../../../api/decorate.js"
-  import DbjRadio from "../../components/dbj-radio/dbj-radio.vue"
+  import BtnRadio from "../../components/btn-radio/btn-radio.vue"
   import MaterialContentCard from "../../components/material-content-card/material-content-card.vue"
   let timer = null
   export default {
     components: {
-      DbjRadio,
+      BtnRadio,
       MaterialContentCard
     },
     data() {

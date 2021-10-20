@@ -40,10 +40,10 @@
 						title: "打扮家装修隐私协议",
 						url: "/app-pages/privacy-agreement/index.html"
 					},
-					{
-						title: "打扮家用户行为规范",
-						url: "/app-pages/user-code-of-conduct/index.html"
-					},
+					// {
+					// 	title: "打扮家用户行为规范",
+					// 	url: "/app-pages/user-code-of-conduct/index.html"
+					// },
 					{
 						title: "打扮家知识产权条款",
 						url: "/app-pages/intellectual-property-rights/index.html"

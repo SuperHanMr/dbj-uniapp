@@ -2,7 +2,7 @@
   <view class="design" @click="gotoPage">
     <image class="icon" :src="iconUrl"></image>
     <view class="text">{{text}}</view>
-    <image class="gotopage" src="http://dbj.dragonn.top/static/mp/dabanjia/images/decorate/ic_more.svg"></image>
+    <view class="gotopage icon-shangpinxiangqing_ic_guigepeisongxuanzejiantou"></view>
   </view>
 </template>
 
@@ -23,7 +23,7 @@
     justify-content: center;
     flex-direction: row;
     align-items: center;
-    padding: 0 14rpx 0 8rpx;
+    padding: 0 8rpx;
     height: 48rpx;
     border: 1rpx solid #f5f6f6;
     background: #ffffff;
@@ -46,11 +46,12 @@
     text-align: left;
     color: #333333;
     line-height: 32rpx;
-    margin-right: 6rpx;
+    /* margin-right: 2rpx; */
   }
 
-  image.gotopage {
-    height: 18rpx;
-    width: 24rpx;
+  .gotopage {
+    color: #333;
+    font-size: 18rpx;
+    margin-top: 2rpx;
   }
 </style>

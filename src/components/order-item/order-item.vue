@@ -34,7 +34,10 @@
 						<text class="icon">{{dataList.type == 2?'服务':'物品'}}</text>
 						<text class="name">{{dataList.fullName}}</text>					
 					</view>
-					<view class="attr">
+					<view class="attr" v-if="isEvaluate">
+						<text style="margin-right: 24rpx;">{{isEvaluate}}</text>
+					</view>
+					<view class="attr" v-else>
 						<text style="margin-right: 24rpx;" v-if="refundType">{{dataList.scaleProperties}}</text>
 						<text style="margin-right: 24rpx;" v-else>{{dataList.salesProperties}}</text>
 					</view>						
@@ -143,6 +146,10 @@
 			dataList:{
 				type:Object,
 				default:{},
+			},
+			isEvaluate:{
+				type:String,
+				default:''
 			},
 			orderStatus:{//1 待付款 2 进行中 3 已完成
 				type:Number,
@@ -272,6 +279,7 @@
 						font-size: 20rpx;
 						text-align: center;
 						display: inline-block;
+						vertical-align: 16%;
 					}
 					.name{
 						font-size: 26rpx;

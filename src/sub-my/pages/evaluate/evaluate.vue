@@ -6,7 +6,7 @@
 					<view class="store-name">
 						<text>{{item.typeName}}</text>
 					</view>
-					<view class="order-status" v-if="item.commentStatus == 0">
+					<view class="order-status" v-if="item.commentStatus == 0" style="color: #fc8b19;">
 						待评价
 					</view>
 					<view class="order-status" v-if="item.commentStatus == 1">
@@ -14,7 +14,7 @@
 					</view>
 				</view>
 				<view class="body" v-for="item2 in item.details" :key="item2.id">
-					<order-item :dataList="item2"></order-item>
+					<order-item :dataList="item2" :isEvaluate="item.levelName"></order-item>
 				</view>
 				
 				<view class="line" />
@@ -61,6 +61,7 @@
 				totalPage: '',
 				totalRows: '',
 				evaluateList:[],
+				isEvaluate:true
 			}
 		},
 		onShow() {

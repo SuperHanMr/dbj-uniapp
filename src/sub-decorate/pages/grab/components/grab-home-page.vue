@@ -2,7 +2,7 @@
   <view class="grab-content">
     <view class="grab-content-top">
       <view class="grab-content-header">
-        <image :src="personData.avatar" mode=""></image>
+        <view class="avatar" :style="{backgroundImage: `url(${personData.avatar})`}"  mode=""></view>
         <text class="title">{{personData.realName}}</text>
         <view class="introduce">
           <text>{{personData.genderName}}</text>
@@ -77,12 +77,13 @@
         display: flex;
         justify-content: center;
         flex-wrap: wrap;
-        image{
+        .avatar{
           width: 152rpx;
           height: 152rpx;
           border-radius: 50%;
           margin-bottom: 12rpx;
           background-color: #eee;
+          background-size: contain;
         }
         .title{
           font-size: 44rpx;
