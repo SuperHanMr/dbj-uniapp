@@ -12,15 +12,14 @@
       }
     },
     onLoad(e) {
-      let themeId = e.themeId
-      let id = e.id
-      let serveId = e.serveId
-      this.url = process.env.VUE_APP_BASE_H5 + this.url + themeId + '&id=' + id + '&token=' + getApp().globalData
-        .token + "&serveId=" + serveId + "&source_type=small_program"
+      const {
+        id,
+        themeId,
+        serveId
+      } = e
+      this.url = process.env.VUE_APP_BASE_H5 + this.url + themeId + '&id=' + serveId + '&token=' + getApp().globalData
+        .token + "&source_type=small_program"
       console.log(this.url)
-    },
-    methods: {
-
     }
   }
 </script>
