@@ -45,7 +45,7 @@
 					}
 				})
 				this.url = this.ENV.VUE_APP_BASE_H5 +
-					`/app-pages/case-detail/case-detail.html?id=${this.id}&height=${height}#${this.hashToken}`
+					`/app-pages/case-detail/case-detail.html?id=${this.id}&token=${this.hashToken}&height=${height}#${this.hashToken}`
 				console.log(this.url)
 			},
 			loadSuccessHandler(e) {
@@ -53,7 +53,8 @@
 			},
 			message(event) {
 				// console.log(event.detail.data,event.detail.data.length)
-				uni.$emit('isCollect', event.detail.data[event.detail.data.length - 1].isCollect)
+				console.log(event, '>>>>>>>>>>>>')
+				uni.$emit('isCollect', event.detail.data[event.detail.data.length - 1])
 			}
 		}
 	}
