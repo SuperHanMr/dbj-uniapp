@@ -761,6 +761,7 @@
 			background-color: #07bfb1;
 			color: white;
 			font-size: 28rpx;
+			border-radius: 12rpx;
 		}
 	}
 
