@@ -34,6 +34,7 @@
     },
     methods:{
       chooseItem(e){
+        console.log(e)
         this.$emit('chooseItem',e)
       },
       close(){

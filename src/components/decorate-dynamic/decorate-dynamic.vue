@@ -13,7 +13,7 @@
     				<view class="report">{{item.content}}</view>
     				<view class="evidence">
     					<!-- <image class="img" :src="url" v-for="(url,index) in item.imagesList.slice(0,6)" :key="index"></image> -->
-    					<image-preview :list='item.imagesList' :imgWidth='192' :imgHeight="192" :lineSpace='10' :colSpace="11" :row="2"></image-preview>
+    					<image-preview :list='item.imagesList' :imgWidth='192' :imgHeight="192" :lineSpace='12' :colSpace="12" :row="2"></image-preview>
     				</view>
     				<view class="footer">
     					<view class="actionType">{{item.recordName}}</view>

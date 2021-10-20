@@ -128,7 +128,9 @@
       },
       touchstart(e) {
         if (!this.drag) return
+        
         this.move = true
+        this.moveHidden = true
       },
       touchmove(e) {
         if (!this.drag) return
@@ -139,8 +141,11 @@
           top,
           bottom
         } = this.$options.safeArea
-        this.moveHidden = true
+        
+        
         const dot = e.changedTouches[0]
+        
+        // console.log(uni.getSystemInfoSync().windowBottom)
         if (dot.clientX < left + this.width / 2) dot.clientX = left + this.width / 2
         if (dot.clientX > right - this.width / 2) dot.clientX = right - this.width / 2
         if (dot.clientY < top + this.height / 2) dot.clientY = top + this.height / 2
@@ -170,7 +175,13 @@
         } = this.$options.safeArea
         this.moveHidden = false
         if (this.foll.isLeft && this.foll.isRight) {
-          console.log(111)
+          console.log(dot.clientY)
+          if(dot.clientY<88){
+             dot.clientY = 88+20
+          }else if(dot.clientY>uni.getSystemInfoSync().windowHeight){
+             dot.clientY = uni.getSystemInfoSync().windowHeight-20
+          }
+          this.offsetY = dot.clientY - this.top - this.height / 2
           if (dot.clientX <= (left + right) / 2) {
             this.endLeft = true
             this.endRight = false
@@ -194,8 +205,10 @@
           if (dot.clientY <= (top + bottom) / 2) this.offsetY = this.foll.num - this.top
           if (dot.clientY > (top + bottom) / 2) this.offsetY = bottom - this.height - this.foll.num - this.top
         } else if (this.foll.isTop) {
+          console.log(444)
           this.offsetY = this.foll.num - this.top
         } else if (this.foll.isBottom) {
+          console.log(555)
           this.offsetY = bottom - this.height - this.foll.num - this.top
         }
         // #ifdef MP-WEIXIN

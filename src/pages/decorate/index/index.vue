@@ -306,8 +306,7 @@
             showDesignFlag,
             showVideoFlag,
             projectStatus,
-            myServiceFlag,
-            existWarehouse
+            myServiceFlag
           } = data
           this.purchasedServiceList = purchasedServiceList || []
           this.availableServiceList = availableServiceList || []
@@ -319,13 +318,12 @@
             showDesignFlag,
             showVideoFlag,
             projectStatus,
-            myServiceFlag,
-            existWarehouse
+            myServiceFlag
           }
           this.availGuides = []
           this.defaultServices && this.addServiceCard(this.defaultServices, "serviceType")
           this.availableServiceList && this.addServiceCard(this.availableServiceList, "nodeType")
-          this.haveWarehouse = existWarehouse || false//this.purchasedServiceList.filter(t => t.nodeType >= 5).length > 0
+          this.haveWarehouse = this.currentProject.existWarehouse || false//this.purchasedServiceList.filter(t => t.nodeType >= 5).length > 0
           for (let i = 0; i < this.purchasedServiceList.length; i++) {
             if ([5, 6, 7, 8, 9, 10].includes(this.purchasedServiceList[i].nodeType) && (this.purchasedServiceList[i]
                 .status >= 2 || (this.purchasedServiceList[i].status == 0 && this.purchasedServiceList[i]

@@ -111,7 +111,7 @@
 			todayC(today){
 				this.checkToday = !this.checkToday
 				this.choose = today
-				this.$emit('filterDynamics', today)
+				this.$emit('filterDynamics', today,true)
 			},
 			toMemo(){
 				uni.navigateTo({
@@ -246,7 +246,7 @@
 	        return false
 	      }
 	      this.choose = date
-	      this.$emit('filterDynamics', date)
+	      this.$emit('filterDynamics', date,true)
 	    },
 	    // 上个月，下个月
 	    turning(_action) {

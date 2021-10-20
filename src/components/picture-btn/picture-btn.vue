@@ -46,7 +46,7 @@
     text-align: left;
     color: #333333;
     line-height: 32rpx;
-    margin-right: 8rpx;
+    margin-right: 6rpx;
   }
 
   image.gotopage {
