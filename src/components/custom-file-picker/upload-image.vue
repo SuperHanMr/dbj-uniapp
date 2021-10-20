@@ -214,7 +214,7 @@
 		width: 25%;
 		height: 0;
 		padding-top: 25%;
-		margin-top: 16rpx;
+		margin-top: 4rpx;
 	}
 
 	.file-picker__box-content {
@@ -331,6 +331,7 @@
 			height: 32rpx;
 			object-fit: cover;
 			border-radius: 50%;
+			box-shadow: 0 2rpx 2rpx 0 #fafbfc;
 		}
 	}
 </style>

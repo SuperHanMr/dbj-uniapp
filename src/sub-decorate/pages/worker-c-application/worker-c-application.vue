@@ -36,11 +36,11 @@
       uni.setNavigationBarTitle({
         title: this.msg.nodeName
       })
-      // this.getCompletionLogById()
+      this.getCompletionLogById()
     },
     
     mounted() {
-      this.getCompletionLogById()
+      // this.getCompletionLogById()
     },
     data() {
       return {
@@ -71,7 +71,7 @@
       confirm() {
         uni.showModal({
           title: "",
-          content: "是否通过竣工验收?",
+          content: "是否确定该阶段已验收通过?",
           confirmText: "确定",
           success: (res) => {
             if (res.confirm) {
@@ -161,6 +161,7 @@
     text-align: center;
     color: #a28645;
     background: #fff5de;
+    z-index: 999;
   }
 
   .flex-row {

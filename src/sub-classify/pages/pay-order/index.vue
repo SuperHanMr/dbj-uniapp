@@ -475,8 +475,8 @@
             url: "/sub-classify/pages/search-result/search-result?searchText=" + "精算"
           })
         } else if (this.toastType === 5) {
-          uni.navigateTo({
-            url: "/sub-classify/pages/search-result/search-result?searchText=" + "管家"
+          uni.switchTab({
+            url: "/pages/decorate/index/index"
           })
         } else if (this.toastType === 8) {
           uni.switchTab({
@@ -569,7 +569,13 @@
     font-size: 28rpx;
     color: #333333;
     line-height: 40rpx;
+    text-overflow: -o-ellipsis-lastline;
+    overflow: hidden;
     text-overflow: ellipsis;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    line-clamp: 2;
+    -webkit-box-orient: vertical;
   }
 
   .goods-info .goods-desc .goods-type {

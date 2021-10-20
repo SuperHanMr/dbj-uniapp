@@ -4,9 +4,17 @@
 			<text class="file-title">{{ title }}</text>
 			<text class="file-count">{{ filesList.length }}/{{ limitLength }}</text>
 		</view>
-		<upload-image v-if="fileMediatype === 'image' && showType === 'grid'" :readonly="readonly"
-			:image-styles="imageStyles" :files-list="filesList" :limit="limitLength" :disablePreview="disablePreview"
-			:delIcon="delIcon" @uploadFiles="uploadFiles" @choose="choose" @delFile="delFile">
+		<upload-image v-if="fileMediatype === 'image' && showType === 'grid'" 
+			:readonly="readonly"
+			:image-styles="imageStyles" 
+			:files-list="filesList" 
+			:limit="limitLength" 
+			:disablePreview="disablePreview"
+			:delIcon="delIcon" 
+			@uploadFiles="uploadFiles" 
+			@choose="choose" 
+			@delFile="delFile"
+		>
 			<slot>
 				<view class="is-add">
 					<view class="icon-add"></view>

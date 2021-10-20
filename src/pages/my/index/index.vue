@@ -18,7 +18,7 @@
 			<view class="avatar-img" v-if="!userId" @click="handlerPersonalData()">
 				<image src="https://ali-image.dabanjia.com/image/20210513/10/162087290165628.png" class="avatar" />
 				<view class="user-name">
-					<view class="name" @click="toLogin">
+					<view class="name">
 						<text class="name">
 							{{userName}}
 						</text>
@@ -31,7 +31,7 @@
 			<view class="avatar-img" v-else @click="handlerPersonalData()">
 				<image :src="userInfo.avatar" class="avatar" />
 				<view class="user-name">
-					<text class="name" @click="toLogin">{{userName}} </text>
+					<text class="name">{{userName}} </text>
 					<view class="edit-info">
 						<image src="../../../static/order/images/mineEdit@2x.png" mode="" />
 						<text>编辑个人资料</text>
@@ -91,10 +91,10 @@
 	} from "@dcloudio/uni-ui";
 	import {
 		queryToBePaidOrderNum
-	} from "../../../api/order.js"
+	} from "../../../api/order.js";
 	export default {
 		components: {
-			uniBadge
+			uniBadge,
 		},
 		data() {
 			return {
@@ -162,13 +162,13 @@
 			};
 		},
 		mounted() {
-			uni.showTabBar()
+			uni.showTabBar();
 		},
 		onShow() {
-			uni.showTabBar()
+			uni.showTabBar();
 			this.userId = getApp().globalData.token;
 			if (!this.userId) {
-				this.waitPayOrderNum = 0
+				this.waitPayOrderNum = 0;
 				this.userName = "点击登录";
 				this.isLogin = false;
 				this.userInfo = null;
@@ -176,16 +176,16 @@
 				this.isLogin = true;
 				this.userInfo = getApp().globalData.userInfo;
 				this.userName = this.userInfo.name;
-				queryToBePaidOrderNum().then(e => {
+				queryToBePaidOrderNum().then((e) => {
 					// console.log("!!!!!!!!!!!!! data=", e);
-					this.waitPayOrderNum = e ? e : 0
-				})
+					this.waitPayOrderNum = e ? e : 0;
+				});
 			}
 			this.$store.dispatch("updateTabBarBadge");
 		},
 
 		onLoad() {
-			getApp().globalData.currentRoute = "/pages/my/index/index"
+			getApp().globalData.currentRoute = "/pages/my/index/index";
 		},
 
 		methods: {
@@ -285,7 +285,8 @@
 					left: 0;
 					z-index: 1;
 					position: absolute;
-					background-image: linear-gradient(rgba(246, 246, 246, 0), rgba(246, 246, 246, 1));
+					background-image: linear-gradient(rgba(246, 246, 246, 0),
+							rgba(246, 246, 246, 1));
 				}
 			}
 		}
@@ -437,7 +438,7 @@
 						border-radius: 50%;
 						top: 0;
 						left: 40rpx;
-						color: #FFFFFF;
+						color: #ffffff;
 						font-size: 18rpx;
 					}
 				}

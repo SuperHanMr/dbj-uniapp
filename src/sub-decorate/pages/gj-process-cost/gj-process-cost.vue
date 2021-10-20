@@ -288,7 +288,7 @@
           this.dataOrigin?.artificial?.categoryList?.forEach((item, i) => {
             item.itemList.forEach((it, j) => {
               this.shopping.artificial.push(it)
-              this.countPrice += it.price * it.count / 100
+              this.countPrice += it.price * it.count
               this.pieces += it.count
             })
           })
@@ -300,7 +300,7 @@
             item.itemList.forEach((it, j) => {
               if (this.checkedIds.includes(it.originalId)) {
                 this.shopping.material.push(it)
-                this.countPrice += it.price * it.count / 100
+                this.countPrice += it.price * it.count
                 this.pieces += it.count
               }
             })
@@ -441,7 +441,7 @@
             projectId: Number(this.msg.projectId), //"long //项目id  非必须 默认0",
             customerId: Number(this.msg.customerId), //"long //业主id  非必须 默认0",
             estateId: Number(this.msg.estateId), //"long //房产id   非必须 默认0",
-            total: this.countPrice * 100, //"int //总计",
+            total: this.countPrice, //"int //总计",
             remarks: "", //"string //备注",
             orderName: "管家工序费", //"string //订单名称",
             details: []
