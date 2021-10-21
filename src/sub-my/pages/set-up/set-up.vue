@@ -35,12 +35,14 @@
 				listArr: [{
 						title: "打扮家装修服务协议",
 						// url: "/app-pages/service-agreement/index.html"
-						url: "/protocol/service-agreement.html"
+						// url: "/protocol/service-agreement.html"
+						url:'/static/dbj-protocol/protocol.html'
 					},
 					{
 						title: "打扮家装修隐私协议",
 						// url: "/app-pages/privacy-agreement/index.html"
-						url: "/protocol/private-policy.html"
+						// url: "/protocol/private-policy.html"
+						url:'/static/dbj-protocol/privacy-policy.html'
 					},
 					// {
 					// 	title: "打扮家用户行为规范",
@@ -68,7 +70,9 @@
 
 			onClick(item,index) {
 				if(index <3){
-					let url = this.ENV.VUE_APP_BASE_H5 + item.url
+					console.log("this.ENV.VUE_APP_BASE_API=",this.ENV.VUE_APP_BASE_API)
+					
+					let url = this.ENV.VUE_APP_BASE_API + item.url
 					uni.navigateTo({
 						url:`../../../pages/common/webview/webview?url=`+ encodeURIComponent(url),
 					})

@@ -19,7 +19,15 @@
           <text style="margin-right: 8rpx;">运费</text>
 					<image class="icon"  src="../../static/price_icon.svg" mode="" @click="readExpenses(1)"/>
         </view>
-        <view>
+				<view v-if="waitPay">
+					<text v-if="data.stockType==1">--</text>
+					<text v-else>
+						<text>￥</text>
+						  <text class="price-style price-font">{{handlePrice(data.freight)[0]}}.{{handlePrice(data.freight)[1]}}</text>
+						
+					</text>
+				</view>
+        <view v-else>
           <text>￥</text>
           <text class="price-style price-font">{{handlePrice(data.freight)[0]}}.{{handlePrice(data.freight)[1]}}</text>
         </view>
@@ -33,7 +41,14 @@
           <text style="margin-right: 8rpx;">搬运费</text>
 					<image class="icon"  src="../../static/price_icon.svg" mode="" @click="readExpenses(2)"/>
         </view>
-        <view>
+				<view  v-if="waitPay">
+					<text v-if="data.stockType==1">--</text>
+					<text v-else>
+						<text>￥</text>
+						<text class="price-style price-font">{{handlePrice(data.handlingFees)[0]}}.{{handlePrice(data.handlingFees)[1]}}</text>
+					</text>
+				</view>
+        <view v-else > 
           <text>￥</text>
           <text class="price-style price-font">{{handlePrice(data.handlingFees)[0]}}.{{handlePrice(data.handlingFees)[1]}}</text>
         </view>
@@ -53,6 +68,7 @@
       <!-- 有商家优惠就显示 -->
       <view class="price-item" v-if="data.storeDiscount" >
         <view>商家优惠</view>
+				
         <view>
           <text>-￥</text>
           <text class="price-style price-font">{{handlePrice(data.storeDiscount)[0]}}.{{handlePrice(data.storeDiscount)[1]}}</text>
