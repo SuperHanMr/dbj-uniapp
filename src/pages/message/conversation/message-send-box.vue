@@ -1,5 +1,5 @@
 <template>
-  <view class="message-send-box">
+  <view class="message-send-box" :class="{iphone: isIphone}">
     <view v-if="isCustomerService" class="message-send-box-header">
       <view class="oper-btn" @click="handleCallAgent">
         人工客服
@@ -8,20 +8,20 @@
     <view class="message-send-box-body">
       <view v-if="!isCustomerService" class="iconfont icon-a-icxiaoxidibuyuyin" @click="showRecordBtn = !showRecordBtn"></view>
       <textarea
-        v-if="!showRecordBtn"
+        v-show="!showRecordBtn"
         v-model="messageContent"
         id="messageInput"
         :focus="inputFocus"
         :show-confirm-bar="false"
         :cursor-spacing="16"
         auto-height
-        class="message-send-input" 
+        class="message-send-input"
         placeholder-class="message-send-input-placeholder" 
         placeholder="聊点什么吧"
         @keyboardheightchange="handleKeyboradHeightChange"
       />
       <view
-        v-else
+        v-if="showRecordBtn"
         class="audio-record-btn"
         @touchstart="handleRecordStart"
         @touchend="handleRecordEnd"
@@ -109,7 +109,8 @@
         showRecordBtn: false,
         recordStart: false,
         emojiName: emojiName,
-        emojiMap: emojiMap
+        emojiMap: emojiMap,
+        isIphone: false
       }
     },
     computed: {
@@ -185,6 +186,10 @@
       this.$once("hook:beforeDestroy", () => {
         uni.$off("message-list-click", showFooter);
       });
+      let info = uni.getSystemInfoSync();
+      if (/ios/i.test(info.platform)) {
+        this.isIphone = true;
+      }
     },
     methods: {
       sendTextMessage() {
@@ -561,6 +566,7 @@
     flex: none;
     background: #fff;
   }
+  
   .message-send-box-header {
     padding: 24rpx 20rpx;
     display: flex;
@@ -604,11 +610,18 @@
     color: #999;
     font-size: 16px;
   }
+  .message-send-box.iphone {
+    padding-bottom: 20px;
+  }
+  .message-send-box.iphone .message-send-input {
+    padding: 1px 16px;
+  }
+  
   .audio-record-btn {
     text-align: center;
-    height: 40px;
+    height: 38px;
     box-sizing: border-box;
-    line-height: 40px;
+    line-height: 38px;
     padding: 0rpx 32rpx;
   }
   .message-send-btn {
