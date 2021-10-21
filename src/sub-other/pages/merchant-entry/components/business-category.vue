@@ -381,6 +381,7 @@
 						font-size: 32rpx;
 						margin-right: 24rpx;
 						border-radius: 50%;
+						color: #35c4c4;
 					}
 					.no-select{
 						width: 28rpx;

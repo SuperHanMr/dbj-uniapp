@@ -120,7 +120,7 @@ export function sureAmount(params) {
 
 //查询是否有精算报告
 export function getActuaryReport(params) {
-  return request.get("/pm/web/actuary/list/" + params)
+  return request.get("/pm/app/actuary/list/" + params)
 }
 
 //获取验房交付报告

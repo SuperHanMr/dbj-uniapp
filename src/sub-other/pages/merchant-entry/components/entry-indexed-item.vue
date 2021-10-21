@@ -127,6 +127,7 @@
 		.select{
 			margin: 0;
 			font-size: 32rpx;
+			color: #35c4c4;
 			border-radius: 50%;
 		}
 	}
