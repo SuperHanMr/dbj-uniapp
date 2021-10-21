@@ -27,19 +27,18 @@
     },
     onLoad(option) {
       this.msg = getApp().globalData.decorateMsg
-      this.id = id
+      console.log(">>>>>>this.msg>>>>>>>", this.msg)
     },
     onShow() {
-      // this.queryCompletionDetail()
+      this.queryCompletionDetail()
     },
     mounted() {
-      this.queryCompletionDetail()
+      // this.queryCompletionDetail()
     },
     data() {
       return {
         msg: {},
         detail: {},
-        id: null,
         containerBottom: null,
         systemBottom: null,
         systemHeight: null,
