@@ -2,8 +2,8 @@
   <view class="wrap">
     <view class="picture flex-row">
       <view class="imgs" v-for="(item, index) in imgList" :key="index">
-        <image :src="item.fileUrl" @click="clickImg(imgList, index)"></image>
-        <view class="sub-title">业主的小房间施工图</view>
+        <image mode="aspectFill" :src="item.fileUrl" @click="clickImg(imgList, index)"></image>
+        <view class="sub-title">{{item.fileName}}</view>
       </view>
     </view>
   </view>
