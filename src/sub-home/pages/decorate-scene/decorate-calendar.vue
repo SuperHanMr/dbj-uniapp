@@ -274,8 +274,10 @@
 		color: #666666;
 		line-height: 40rpx;
 		text-overflow: ellipsis;
-		/* white-space: nowrap; */
 		overflow: hidden;
+		display: -webkit-box;
+		-webkit-box-orient: vertical;
+		-webkit-line-clamp: 3;
 	}
 	.acitonInfo .evidence{
 		width: 100%;

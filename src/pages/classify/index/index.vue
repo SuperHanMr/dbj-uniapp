@@ -155,6 +155,7 @@
     height: 80rpx;
     text-align: center;
     white-space: nowrap;
+    padding-right: 16rpx;
   }
 
   .uni-tab-item-short2 {
@@ -190,8 +191,7 @@
     flex-wrap: nowrap;
     text-align: center;
     width: fit-content;
-    min-width: 16%;
-    margin: 0 1%;
+    padding: 0 26rpx;
   }
 
   .uni-tab-item-title {
