@@ -4,10 +4,7 @@
       <view class="body">
         <view class="header">
           <view class="left">
-            <image
-              :src="serviceInfo.serverAvatar"
-              mode=""
-            ></image>
+            <image :src="serviceInfo.serverAvatar" mode=""/>
             <text>{{serviceInfo.serverName}}</text>
             <view class="icon">
               {{serviceInfo.roleName}}
