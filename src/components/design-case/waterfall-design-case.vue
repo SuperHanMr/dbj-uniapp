@@ -36,7 +36,7 @@
 				<view class="info-img">
 					<image :src="params.authorAvatar" alt="">
 					<view class="info-text">
-						{{params.authorNickname}}
+						{{params.authorName}}
 					</view>
 				</view>
 				<view class="collection-box" @tap="onCollection">
