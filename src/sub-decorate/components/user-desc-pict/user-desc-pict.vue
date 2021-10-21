@@ -14,7 +14,7 @@
       </view>
       <view class="desc">{{butlerData.content}}</view>
       <view class="picture flex-row">
-        <view class="imgs" v-for="(item, index) in butlerData.fileUrls" :key="index" v-if="index < 6">
+        <view class="imgs" :class="{'img3': index % 3 == 2}" v-for="(item, index) in butlerData.fileUrls" :key="index" v-if="index < 6">
           <image mode="aspectFill" :src="item" @click="clickImg(butlerData.fileUrls, index)"></image>
           <view class="zz" v-if="index === 5" @click="clickImg(butlerData.fileUrls, 5)">+{{butlerData.fileUrls.length - 6}}
           </view>
@@ -146,11 +146,16 @@
   }
 
   .picture {
-    justify-content: space-between;
+    justify-content: flex-start;
     flex-wrap: wrap;
 
+    .img3.imgs {
+      margin-right: 0;
+    }
+    
     .imgs {
       margin-bottom: 8rpx;
+      margin-right: 8rpx;
       width: 32%;
       position: relative;
 
