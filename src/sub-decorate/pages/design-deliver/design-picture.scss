@@ -1,11 +1,21 @@
-.flex-row {
-    display: flex;
-    justify-content: flex-end;
-    flex-direction: row;
-    align-items: center;
+  .design-deliver {
+    position: relative;
+  }
+  .tabs-wrap {
+    width: 100%;
+    position: absolute;
+    top: 0;
+    left: 0;
+  }
+  .flex-row {
+      display: flex;
+      justify-content: flex-end;
+      flex-direction: row;
+      align-items: center;
   }
 
   .wrap {
+    margin-top: 94rpx;
     position: relative;
     padding: 32rpx;
     background: #fff;

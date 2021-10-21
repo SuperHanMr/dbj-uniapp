@@ -1,6 +1,9 @@
 <template>
 	<view class="add-house">
 		<form>
+      <view class="main">
+        
+      
 			<view class="content">
 				<view class="form-item">
 					<label class="item-label">业主姓名</label>
@@ -88,6 +91,7 @@
 				<switch color="#24BDBD" :checked='addData.defaultEstate' @change="switchChange"
 					style="transform:scale(0.9)"></switch>
 			</view>
+      </view>
 			<view class="submit-bottom">
 				<text class="submit" @click="save">保存</text>
 			</view>
@@ -496,7 +500,9 @@
 <style lang="scss">
 	.add-house {
 		padding-top: 16rpx;
-
+    .main{
+      padding-bottom: 220rpx;
+    }
 		view .special {
 			height: 180rpx;
 			// line-height: 200rpx;
@@ -675,7 +681,7 @@
 			justify-content: space-between;
 			align-items: center;
 			padding: 0 32rpx;
-      margin-bottom: 220rpx;
+      // margin-bottom: 220rpx;
 			.text {
 				font-size: 26rpx;
 				color: #111;

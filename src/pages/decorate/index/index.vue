@@ -202,6 +202,9 @@
     },
     onHide() {
       this.showScroll = false
+      if(this.$refs.sw) {
+        this.$refs.sw.close()
+      }
     },
     data() {
       return {
@@ -338,10 +341,7 @@
           //     break
           //   }
           // }
-          console.log(this.currentProject)
-          if (this.currentProject?.showBroadcast) {
-            this.getCarouselMsg()
-          }
+          
         }).catch(err => {
           console.log(err)
         })
@@ -376,6 +376,9 @@
       changeCurrentProject(item) {
         this.currentProject = item
         getApp().globalData.switchFlag = 'decorate'
+        if (this.currentProject?.showBroadcast) {
+          this.getCarouselMsg()
+        }
         this.initData(item)
         this.$refs.sw.close()
       },
@@ -423,6 +426,9 @@
             } else {
               this.currentProject = data[0]
               this.initData(data[0])
+            }
+            if (this.currentProject?.showBroadcast) {
+              this.getCarouselMsg()
             }
             // end
           }

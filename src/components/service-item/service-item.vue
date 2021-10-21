@@ -78,7 +78,7 @@
       },
       goTimeLine() {
         uni.navigateTo({
-          url: `/sub-decorate/pages/time-line/time-line?id=${this.serviceData.serveCardId}`
+          url: `/sub-decorate/pages/time-line/time-line?id=${this.serviceData.serveCardId}&name=${this.serviceData.nodeName}`
         })
       },
       goProcessCost() {

@@ -23,7 +23,7 @@
       //     title:'精算单'
       //   })
       // }
-      this.url = process.env.VUE_APP_BASE_H5+this.url + id +'&projectId='+(e.id?e.projectId:getApp().globalData.decorateMsg.projectId) + '&isActuarial=' + cost +'&token='+getApp().globalData.token
+      this.url = process.env.VUE_APP_BASE_H5+this.url + id +'&projectId='+(e.id?e.projectId:getApp().globalData.decorateMsg.projectId)+'&isClient=1' + '&isActuarial=' + cost +'&token='+getApp().globalData.token
       console.log(this.url)
     },
     // onReady(){
