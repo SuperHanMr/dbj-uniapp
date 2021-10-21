@@ -4,7 +4,7 @@
     <view class="content-wrap">
       <view class="avtor-wrap flex-row-bet">
         <view class="flex-row-start">
-          <image class="avtor" :src="detail.avatar"></image>
+          <image mode="aspectFill" class="avtor" :src="detail.avatar"></image>
           <view class="tigs">
             <view class="username">{{detail.userName}}</view>
             <view class="role">管家</view>
@@ -15,7 +15,7 @@
       <view class="desc">{{detail.summaryDescription}}</view>
       <view class="picture flex-row">
         <view class="imgs" v-for="(item, index) in detail.sitePhotoList" :key="index" v-if="index < 6">
-          <image :src="item" @click="clickImg(detail.sitePhotoList, index)"></image>
+          <image  mode="aspectFill" :src="item" @click="clickImg(detail.sitePhotoList, index)"></image>
           <view class="zz" v-if="index === 5" @click="clickImg(detail.sitePhotoList, 5)">+{{detail.sitePhotoList.length - 6}}
           </view>
         </view>
