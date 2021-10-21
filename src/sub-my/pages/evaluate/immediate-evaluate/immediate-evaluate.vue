@@ -184,11 +184,12 @@ export default {
 		// 	})
 		// },
 		
-    changeTitle() {
-      uni.setNavigationBarTitle({
-        title: "新的标题",
-      });
-    },
+    // changeTitle() {
+    //   uni.setNavigationBarTitle({
+    //     title: "新的标题",
+    //   });
+    // },
+		
     onChange(e) {
       console.log("rate发生改变:" + JSON.stringify(e));
     },
