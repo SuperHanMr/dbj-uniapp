@@ -54,8 +54,8 @@
 		<view style="height: 300rpx;">
 
 		</view>
-		<bottom-btn btnContent="提交申请" style="opacity: 0.5;" @submit="submitRefund"></bottom-btn>
-
+		<bottom-btn btnContent="提交申请" :class="{'opacity-1':canSubmit,'opacity-5':!canSubmit}" @submit="submitRefund">
+		</bottom-btn>
 	</view>
 </template>
 
@@ -84,6 +84,16 @@
 				refundType: 0,
 				id: '',
 			};
+		},
+		computed: {
+			canSubmit() {
+				if (this.reasonName && this.num > 0) {
+					return true
+				} else {
+					return false
+				}
+
+			}
 		},
 		onShow() {
 
@@ -233,6 +243,14 @@
 </script>
 
 <style lang="scss" scoped>
+	.opacity-5 {
+		opacity: 0.5
+	}
+
+	.opacity-1 {
+		opacity: 1
+	}
+
 	.icon-size {
 		font-size: 32rpx;
 		color: #c7c7c7;
