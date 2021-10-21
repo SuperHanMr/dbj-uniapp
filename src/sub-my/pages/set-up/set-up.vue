@@ -34,28 +34,29 @@
 			return {
 				listArr: [{
 						title: "打扮家装修服务协议",
-						url: "/app-pages/service-agreement/index.html"
+						// url: "/app-pages/service-agreement/index.html"
+						url: "/protocol/service-agreement.html"
 					},
 					{
 						title: "打扮家装修隐私协议",
-						url: "/app-pages/privacy-agreement/index.html"
+						// url: "/app-pages/privacy-agreement/index.html"
+						url: "/protocol/private-policy.html"
 					},
 					// {
 					// 	title: "打扮家用户行为规范",
-					// 	url: "/app-pages/user-code-of-conduct/index.html"
+					// 	// url: "/app-pages/user-code-of-conduct/index.html"
+					// 	url: "/protocol/behaviour-norms.html"
 					// },
 					{
 						title: "打扮家知识产权条款",
-						url: "/app-pages/intellectual-property-rights/index.html"
+						// url: "/app-pages/intellectual-property-rights/index.html"
+						url: "/protocol/intellectual-property.html"
 					},
 					{
 						title: "意见与反馈",
 						url: "../../../sub-my/pages/set-up/comments-feedback/comments-feedback"
 					},
-					// {
-					// 	title: "关于打扮家",
-					// 	url: "../../../sub-my/pages/set-up/about-dabanjia/about-dabanjia"
-					// },
+					
 					{
 						title:"版本号",
 						url:""
@@ -66,7 +67,7 @@
 		methods: {
 
 			onClick(item,index) {
-				if(index <4){
+				if(index <3){
 					let url = this.ENV.VUE_APP_BASE_H5 + item.url
 					uni.navigateTo({
 						url:`../../../pages/common/webview/webview?url=`+ encodeURIComponent(url),
