@@ -8,8 +8,8 @@
           <text>{{personData.genderName}}</text>
 <!--         <text>|</text>
           <text>{{personData.roleName}}</text> -->
-          <text>|</text>
-          <text>好评率{{personData.praiseRate||'100%'}}</text>
+          <text v-if="personData.praiseRate">|</text>
+          <text v-if="personData.praiseRate">好评率{{personData.praiseRate}}</text>
         </view>
       </view>
       <view class="person-msg-list">

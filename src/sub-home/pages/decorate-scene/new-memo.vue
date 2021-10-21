@@ -1,14 +1,19 @@
 <template>
 	<view class="new-memo">
-		<form @submit="formSubmit" @reset="formReset">
-			<textarea class="input" v-model="value" placeholder="请输入备忘录内容" maxlength="3000" required/>
-			<view class="remind" @click="toChooseRemind">
-				<view class="text" :class="{'selected': hasChoose}">提醒谁看</view>
-				<view class="reminder" v-if="reminderList.length" v-for="item in reminderList" :key="item.userId">@{{item.userName}}</view>
-				<image class="icon" src="http://dbj.dragonn.top/static/mp/dabanjia/images/home/ic_filtrate%402x.png"></image>
+		<view class="textStyle">
+			<textarea class="input" v-model="value"
+				placeholder-style="textStyle" placeholder="请输入备忘录内容"
+				:maxlength="3000" required
+			/>
+		</view>
+		<view class="remind" @click="toChooseRemind">
+			<view class="text" :class="{'selected': hasChoose}">提醒谁看</view>
+			<view class="list" v-if="reminderList.length">
+				<view class="reminder" v-for="item in reminderList" :key="item.userId">@{{item.userName}}</view>
 			</view>
-			<view class="finish" @click="finishC">完成</view>
-		</form>
+			<image class="icon" src="http://dbj.dragonn.top/static/mp/dabanjia/images/home/ic_memo_more%402x.png"></image>
+		</view>
+		<view class="finish" @click="finishC">完成</view>	
 	</view>
 </template>
 
@@ -29,7 +34,7 @@
 		onShow() {
 			uni.$once("sendReminders",(reminderList) => {
 				console.log(reminderList)
-				this.reminderList = reminderList
+				this.reminderList = reminderList.reverse()
 				this.hasChoose = reminderList.length?true:false
 			})
 		},
@@ -73,6 +78,12 @@
 		overflow: auto;
 		background: #fff;
 	}
+	.textStyle{
+		color: #333333;
+		font-size: 26rpx;
+		line-height: 40rpx;
+		letter-spacing: 1rpx;
+	}
 	.input{
 		width: 662rpx;
 		height: 456rpx;
@@ -101,13 +112,21 @@
 	.remind .text.selected{
 		color: #00C2B8;
 	}
+	.remind .list{
+		display: flex;
+		max-width: 454rpx;
+	}
 	.remind .reminder{
+		margin-right: 40rpx;
 		font-size: 28rpx;
 		color: #333333;
 	}
+	.remind .reminder:last-child{
+		margin-right: 0;
+	}
 	.remind .icon{
-		width: 18rpx;
-		height: 10rpx;
+		width: 24rpx;
+		height: 24rpx;
 		display: block;
 	}
 	.finish{

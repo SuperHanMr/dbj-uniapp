@@ -28,7 +28,7 @@
             <text class="name">{{personData.roleId>=1&&personData.roleId<7?personData.realName:personData.nickName}}</text>
             <view class="label">
               <text class="job" v-if="personData.roleId!==10000">{{personData.roleId===3?personData.personAllBadgeVO.skillBadges[0].name:personData.roleName}}</text>
-              <text class="rate" v-if="personData.roleId<7">好评率{{personData.praiseRate||'100%'}}</text>
+              <text class="rate" v-if="personData.roleId<7&&personData.praiseRate">好评率{{personData.praiseRate}}</text>
             </view>
           </view>
           <view class="btn" v-if="personData.roleId<7">
@@ -144,7 +144,8 @@
         serviceData:[],
         isRecommend:false,
         isAttention:false,
-        evaluateNum:0
+        evaluateNum:0,
+        userType:2
       }
     },
     computed:{
@@ -165,7 +166,8 @@
       
     },
     onLoad(e){
-      this.personId = e.personId||7206
+      this.userType = e.userType
+      this.personId = e.personId||7248
       // this.getGrabDetail()
     },
     onShow(){
@@ -254,7 +256,8 @@
           routeId:routeId,
           relationId:this.personData.zeusId,
           authorId:-1,
-          equipmentId:uni.getSystemInfoSync().deviceId
+          equipmentId:uni.getSystemInfoSync().deviceId,
+          userType:this.userType
         }
         queryAttention(data).then(res=>{
           this.isRecommend = routeId === 2001 ? !this.isRecommend : this.isRecommend
@@ -302,7 +305,7 @@
       //   // })
       // },
       changeOpacity(num){
-        num<10?this.opacityNum = 0:num<40?this.opacityNum=0.2:num<80?this.opacityNum=0.4:num<120?this.opacityNum=0.6:num<160?this.opacityNum=0.8:this.opacityNum=1
+        num<10?this.opacityNum = 0:num<20?this.opacityNum=0.2:num<40?this.opacityNum=0.3:num<60?this.opacityNum=0.4:num<80?this.opacityNum=0.5:num<100?this.opacityNum=0.6:num<120?this.opacityNum=0.7:num<140?this.opacityNum=0.8:num<160?this.opacityNum=0.9:this.opacityNum=1
         // console.log(this.opacityNum)
       },
       toItem(name) {

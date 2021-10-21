@@ -40,8 +40,8 @@
               @handleDetail="productDetail(item2)"
             />
           </view>
-
-          <view class="discount-container"  >
+	
+          <view class="discount-container"  v-if="item.details.length>1">
             <view class="left">
               <view class="item"  >
 								<view class="item-style">
@@ -76,7 +76,7 @@
             </view>
           </view>
 					
-          <view v-if="orderInfo.stockType == 1">
+          <view v-if="orderInfo.type == 2 && item.freeShipCount && orderInfo.stockType == 1">
             <view class="tips" v-if="item.freeShipCount || item.fullExemptionAmount ">
               <text>本次支付</text>
               <text style="color: #333333;">满{{item.fullExemptionAmount}}元</text>
@@ -458,7 +458,7 @@ export default {
           padding: 16rpx 24rpx;
           box-sizing: border-box;
         }
-
+				
         .discount-container {
           padding-bottom: 32rpx;
           display: flex;

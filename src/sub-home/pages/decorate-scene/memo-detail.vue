@@ -30,7 +30,7 @@
 			}
 		},
 		onLoad(option) {
-			this.memoId = option.memoId
+			this.memoId = option.memoId || getApp().globalData.decorateMsg.memoId
 		},
 		mounted() {
 			this.requestPage()

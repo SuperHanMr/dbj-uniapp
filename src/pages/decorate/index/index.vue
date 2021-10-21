@@ -85,7 +85,7 @@
             </view>
           </view>
           <!-- 我的装修服务 -->
-          <view class="my-decorate-service-wrap" v-if="purchasedServiceList.length > 0 || aServiceData.myServiceFlag">
+          <view class="my-decorate-service-wrap my-decorate-service-dec-wrap" v-if="purchasedServiceList.length > 0 || aServiceData.myServiceFlag">
             <!-- <view class="top-bg"></view> -->
             <view class="my-decorate-service">
               <view class="service-title flex-space-between-row">
@@ -543,16 +543,16 @@
           getMsgNum(this.currentProject.projectId).then(res => {
             this.msgNum = res.count
             
-            uni.setTabBarBadge({
-              index: 2,
-              text: this.msgNum+'',
-              success:()=>{
-                console.log('sucess')
-              },
-              fail:(e)=>{
-                console.log('fail',e)
-              }
-            })
+            // uni.setTabBarBadge({
+            //   index: 2,
+            //   text: this.msgNum+'',
+            //   success:()=>{
+            //     console.log('sucess')
+            //   },
+            //   fail:(e)=>{
+            //     console.log('fail',e)
+            //   }
+            // })
 
           })
         } else {
