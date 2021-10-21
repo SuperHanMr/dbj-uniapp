@@ -335,7 +335,7 @@
 			width: 188rpx;
 			height: 88rpx;
 			opacity: 1;
-			border: 1rpx solid #cccccc;
+			border: 1px solid #cccccc;
 			border-radius: 16rpx;
 			margin-right: 32rpx;
 			text-align: center;

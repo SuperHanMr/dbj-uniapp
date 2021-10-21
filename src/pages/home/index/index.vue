@@ -255,8 +255,11 @@
 				this.areaId = item.areaId;
 				this.currentHouseChange(item);
 			});
-			this.getHomeList();
-			this.reloadData();
+			setTimeout(() => {
+				this.getHomeList();
+				this.reloadData();
+			}, 500);
+
 			const systemInfo = uni.getSystemInfoSync();
 			//状态栏高度
 			this.tophight = systemInfo.statusBarHeight + "px";

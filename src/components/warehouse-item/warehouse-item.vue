@@ -323,7 +323,7 @@
 
 	.store {
 		background-color: #fff;
-		margin-bottom: 32rpx;
+		margin-bottom: 16rpx;
 
 		.store-info {
 			display: flex;
@@ -376,27 +376,28 @@
 			.goods-info {
 				margin-left: 16rpx;
 				flex: 1;
-				height: 100%;
+				height: 40rpx;
 				display: flex;
 				flex-direction: column;
 				align-items: center;
+				
 
 				.name {
 					display: flex;
 					flex-direction: row;
-					align-items: flex-start;
+					align-items: center;
 					width: 100%;
-					line-height: 28rpx;
 
 					.tip {
 						width: 60rpx;
 						height: 30rpx;
 						line-height: 30rpx;
 						text-align: center;
-						border: 1rpx solid #35c4c4;
+						border: 0.3px solid #35c4c4;
 						border-radius: 4rpx;
 						font-size: 20rpx;
 						color: #35c4c4;
+						vertical-align: text-bottom;
 					}
 
 					.text {
