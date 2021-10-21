@@ -13,7 +13,7 @@
             <view class="tag">户型</view>
           </view>
           <view class="area">
-            <view class="areaInner">{{projectInfo.estateArea}}平米</view>
+            <view class="areaInner">{{projectInfo.estateArea.toFixed(2)}}平米</view>
             <view class="tag">面积</view>
           </view>
         </view>
@@ -517,6 +517,9 @@ export default {
 		  this.homePageEstate = item
 		})  
   },
+	onPullDownRefresh(){
+		uni.stopPullDownRefresh()
+	},
 	onReachBottom() {
 		
 		if(this.selectedType){
@@ -1470,7 +1473,7 @@ export default {
 		opacity: 0.3;
 	}
 	.area .areaInner {
-		width: 122rpx;
+		width: 170rpx;
 		margin-top: 14rpx;
 	}
 
