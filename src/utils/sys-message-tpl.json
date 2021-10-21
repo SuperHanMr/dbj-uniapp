@@ -120,6 +120,20 @@
     "icon":"icon-icwodejia_qita_csn",
     "color":"#94A4B1"
   },
+  "sys_memo_delay_send_remind_msg":{
+    "url":"/sub-home/pages/decorate-scene/memo-detail",
+    "name":"备忘录",
+    "msg":"设计师已经交付了设计报告，请确认",
+    "icon":"icon-icwodejia_qita_csn",
+    "color":"#94A4B1"
+  },
+  "sys_memo_send_remind_msg":{
+    "url":"/sub-home/pages/decorate-scene/memo-detail",
+    "name":"备忘录",
+    "msg":"设计师已经交付了设计报告，请确认",
+    "icon":"icon-icwodejia_qita_csn",
+    "color":"#94A4B1"
+  },
   "11":{
     "icon":"icon-ic_wodejia_liangfangfuwu_csn1",
     "color":"#43d9e1"
