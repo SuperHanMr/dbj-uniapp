@@ -243,6 +243,7 @@
 			},
 		},
 		onLoad() {
+			uni.showShareMenu();
 			uni.$on("refrishHouse", (item) => {
 				this.reloadData();
 			});
