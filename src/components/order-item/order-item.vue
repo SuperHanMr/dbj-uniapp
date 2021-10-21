@@ -1,18 +1,18 @@
 <template>
 	<view  class="container">
-		
+
 		<view	class="body-main" :style="{paddingBottom:containerPaddingBottom +'rpx'}" @click="handleDetail()" >
 			<!-- 标签 -->
 			<view class="pic"  v-if="orderStatus==2 && dataList.type == 1 && !dataList.stockType">
 				<!-- 当该商品处于待发货标签时，则对应退款、退款关闭、退款失败状态 -->
 				<view class="icon-status1" v-if="dataList.showRefundBtn || (dataList.refundBillStatus == 3 || dataList.refundBillStatus == 4 ||dataList.refundBillStatus == 5)|| dataList.shipmentStatus == 0">
 					待发货
-				</view> 
-				
+				</view>
+
 				<view class="icon-status1"  v-if="dataList.shipmentStatus == 1">
 					待收货
-				</view> 
-				
+				</view>
+
 				<!-- 当该商品正在退款中显示退款中标签，则对应取消退款状态 -->
 				<view class="icon-status1" v-if="dataList.refundBillStatus == 0 || dataList.refundBillStatus == 1">
 					退款中
@@ -21,18 +21,18 @@
 				<view class="icon-status2" v-if="dataList.refundBillStatus == 2" >
 					已退款
 				</view>
-				
+
 				<image :src="dataList.imgUrl" mode=""></image>
 			</view>
 			<view class="pic" v-else>
 				<image :src="dataList.imgUrl" mode=""></image>
 			</view>
-			
+
 			<view class="basic-info">
 				<view class="name-attr">
 					<view class="text">
 						<text class="icon">{{dataList.type == 2?'服务':'物品'}}</text>
-						<text class="name">{{dataList.fullName}}</text>					
+						<text class="name">{{dataList.fullName}}</text>
 					</view>
 					<view class="attr" v-if="isEvaluate">
 						<text style="margin-right: 24rpx;" v-if="dataList.scaleProperties">{{dataList.scaleProperties}}</text>
@@ -41,9 +41,9 @@
 					<view class="attr" v-else>
 						<text style="margin-right: 24rpx;" v-if="refundType">{{dataList.scaleProperties}}</text>
 						<text style="margin-right: 24rpx;" v-else>{{dataList.salesProperties}}</text>
-					</view>						
+					</view>
 				</view>
-				
+
 				<view class="common-price">
 					<!-- 商品价格 -->
 					<view class="product-price" >
@@ -51,49 +51,42 @@
 						<text class="price-font">{{handlePrice(dataList.price)[0]}}.</text>
 						<text style="font-size:22rpx;" class="price-font">{{handlePrice(dataList.price)[1]}}</text>
 					</view>
-					
-					<!-- 商品价格 -->
-					<!-- <view  class="product-price" style="color: #999999;" v-if="showOriginPrice" >
-							<text style="font-size:22rpx;">￥</text>
-							<text class="price-font">{{handlePrice(dataList.price)[0]}}.</text>
-							<text style="font-size:22rpx;" class="price-font">{{handlePrice(dataList.price)[1]}}</text>
-					</view> --> 
-					
+
 					<view style="color: #999999;" v-if="refundType">共{{dataList.refundNumber || 1}}{{dataList.unit || '件'}}</view>
 					<view style="color: #999999;" v-else >共{{dataList.number || 1}}{{dataList.unit || '件'}}</view>
-				</view>	
+				</view>
 			</view>
 		</view>
-		
+
 		<view  class="apply-refund-container" :style="{paddingTop:0}" v-if="dataList.showRefundBtn && orderStatus == 2 && dataList.type ==1">
 			<view class="button" @click.stop="particalRefund">
 				申请退款
 			</view>
 		</view>
-		
+
 		<!-- //退款状态（0待确认 1退款中 2退款完成 3已拒绝 4已取消 5退款失败) -->
-		<view class="apply-refund-container" :style="{paddingTop:0}" 
+		<view class="apply-refund-container" :style="{paddingTop:0}"
 			v-if="!dataList.showRefundBtn && orderStatus==2 && dataList.type == 1 && dataList.stockType == 0 && dataList.refundBillStatus >-1"
 		 >
-		
+
 			<view class="button" v-if="dataList.refundBillStatus == 0 ||dataList.refundBillStatus == 1"  @click.stop="refundCancel">
 				取消退款
 			</view>
-			
+
 			<view class="button"  v-if="dataList.refundBillStatus == 2"  @click.stop="refundSuccess">
 				退款成功
 			</view>
-			
+
 			<view class="button" v-if="dataList.refundBillStatus == 5" @click.stop="refundFailed">
 				退款失败
 			</view>
-			
+
 			<view class="button" v-if="dataList.refundBillStatus == 3 || dataList.refundBillStatus == 4" @click.stop="refundClose">
 				退款关闭
 			</view>
 		</view>
 		<view
-		 class="warehouse-container" 
+		 class="warehouse-container"
 		 v-if="dataList.type == 1 && orderStatus==2 && dataList.stockType && dataList.stockType == 1"
 		 :style="{marginTop:(!dataList.showRefundBtn && orderStatus==2 && dataList.type == 1 && dataList.stockType == 0 && dataList.refundBillStatus >-1)?'0':'20rpx'}"
 		 >
@@ -111,13 +104,13 @@
 					<text class="text1">已收货</text>
 					<text class="text2 price-font">{{dataList.receiveNumber || 0}}</text>
 				</view>
-				<view class="item"> 
+				<view class="item">
 					<text class="text1">已退</text>
 					<text class="text2 price-font">{{dataList.returnNumber || 0}}</text>
 				</view>
 			</view>
 		</view>
-		
+
 		<view class="discount-container3" v-if="orderStatus==1 && dataList.type == 2 && dataList.deposit">
 			<view class="right">
 				<view class="item">
@@ -126,13 +119,13 @@
 				</view>
 			</view>
 		</view>
-	
+
 	</view>
-	
+
 </template>
 
 <script>
-	
+
 	export default {
 		name:"order-item",
 		props:{
@@ -178,12 +171,12 @@
 				this.containerPaddingBottom= 0
 			}
 		},
-		
+
 		methods:{
 			handleDetail(){
 				this.$emit('handleDetail')
 			},
-			
+
 			handlePrice(price){
 					if(!price) return ['0','00']
 				let list=String(price).split(".")
@@ -193,11 +186,11 @@
 					return[list[0],list[1]]
 				}
 			},
-			
+
 			particalRefund(){
 				this.$emit('toApplayForRefund')
 			},
-			
+
 			refundCancel(){
 				this.$emit('refundCancel')
 			},
@@ -215,7 +208,7 @@
 </script>
 
 <style lang="scss" scoped>
-	
+
 	.body-main {
 		box-sizing: border-box;
 		display: flex;
@@ -307,11 +300,11 @@
 					font-size: 32rpx;
 					margin-bottom: 12rpx;
 				}
-				
+
 			}
 		}
 	}
-	
+
 	.warehouse-container {
 		margin-bottom: 40rpx;
 		padding:18rpx 0;
@@ -347,7 +340,7 @@
 		}
 		.left,.right .item{
 			display: flex;
-			flex-flow: column nowrap; 
+			flex-flow: column nowrap;
 			align-items: center;
 			justify-content: space-around;
 			.text1{
@@ -362,7 +355,7 @@
 			}
 		}
 	}
-	
+
 	.apply-refund-container {
 	  padding: 24rpx 0 32rpx 0;
 	  display: flex;
@@ -390,7 +383,7 @@
 	  justify-content: flex-end;
 	  font-size: 22rpx;
 	  color: #999999;
-	
+
 	  .left,
 	  .right {
 	    .item {
@@ -415,19 +408,19 @@
 					}
 				}
 	    }
-	
+
 	    .item:nth-last-child(1) {
 	      margin-bottom: 0;
 	    }
 	  }
-	
+
 	  .line1 {
 	    width: 2rpx;
 	    height: 40rpx;
 	    background: #ebebeb;
 	    margin: 16rpx 40rpx;
 	  }
-	
+
 	  .line2 {
 	    width: 2rpx;
 	    height: 20rpx;
@@ -435,34 +428,34 @@
 	    margin: 6rpx 40rpx;
 	  }
 	}
-	
-	
-	.discount-container3 {
-		padding-bottom: 24rpx;
-		display: flex;
-		flex-flow: row nowrap;
-		flex: 1;
-		align-items: flex-start;
-		justify-content: flex-end;
-		font-size: 22rpx;
-		color: #999999;
-		.right {
-			.item {
-				width: 302rpx;
-				height: 32rpx;
-				line-height: 32rpx;
-				display: flex;
-				flex: 1;
-				flex-flow: row nowrap;
-				justify-content: space-between;
-				margin-bottom: 8rpx;
-				text{
-					font-size: 22rpx;
-					color: #333;
-				}
-			}
-		}
-	}
-	
+
+
+	// .discount-container3 {
+	// 	padding-bottom: 24rpx;
+	// 	display: flex;
+	// 	flex-flow: row nowrap;
+	// 	flex: 1;
+	// 	align-items: flex-start;
+	// 	justify-content: flex-end;
+	// 	font-size: 22rpx;
+	// 	color: #999999;
+	// 	.right {
+	// 		.item {
+	// 			width: 302rpx;
+	// 			height: 32rpx;
+	// 			line-height: 32rpx;
+	// 			display: flex;
+	// 			flex: 1;
+	// 			flex-flow: row nowrap;
+	// 			justify-content: space-between;
+	// 			margin-bottom: 8rpx;
+	// 			text{
+	// 				font-size: 22rpx;
+	// 				color: #333;
+	// 			}
+	// 		}
+	// 	}
+	// }
+
 
 </style>
