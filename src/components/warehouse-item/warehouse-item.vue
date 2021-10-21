@@ -438,6 +438,7 @@
 			display: flex;
 			flex-direction: row;
 			justify-content: flex-end;
+			margin-top: 16rpx;
 
 			.btn-back {
 				width: 160rpx;

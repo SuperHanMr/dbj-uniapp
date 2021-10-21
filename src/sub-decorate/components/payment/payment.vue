@@ -1,11 +1,12 @@
 <template>
   <view class="wrap">
     <view class="pieces-price-unit">
-      <text class="pieces">共{{pieces}}件，</text>
-      <text class="unit">总计：￥</text>
-      <!-- <text class="price">{{countPrice}}</text> -->
-      <text class="price">{{__countPrice[0]}}</text>
-      <text class="flot">.{{__countPrice[1] | filterLength}}</text>
+      <view class="pieces">共{{pieces}}件</view>
+      <view class="price-wrap">
+        <view class="unit">总计：￥</view>
+        <view class="price">{{__countPrice[0]}}</view>
+        <view class="flot">.{{__countPrice[1]}}</view>
+      </view>
     </view>
     <button class="btn" :disabled="!isAllChecked" :class="{ disabled: !isAllChecked }" @click="gotopay">去结算</button>
   </view>
@@ -77,10 +78,11 @@
   }
 
   .pieces-price-unit {
+    flex: 1;
     display: flex;
-    justify-content: space-between;
-    flex-direction: row;
-    align-items: flex-end;
+    // justify-content: space-between;
+    flex-direction: column;
+    // align-items: flex-end;
     margin-bottom: 16rpx;
     font-family: Unnamed, Unnamed-Regular;
 
@@ -91,6 +93,14 @@
       font-weight: 400;
       text-align: left;
       color: #999999;
+      // margin-bottom: 16rpx;
+    }
+
+    .price-wrap {
+      display: flex;
+      justify-content: flex-start;
+      flex-direction: row;
+      align-items: flex-end;
     }
 
     .unit {
@@ -111,7 +121,6 @@
       color: #333333;
       vertical-align: bottom;
       line-height: 48rpx;
-      flex: 1;
     }
 
     .flot {
@@ -129,7 +138,7 @@
     box-sizing: border-box;
     width: 248rpx;
     height: 88rpx;
-    background: linear-gradient(135deg,#00c2b2, #00c2bf);
+    background: linear-gradient(135deg, #00c2b2, #00c2bf);
     border-radius: 12rpx;
     border: 1rpx solid transparentize;
     font-size: 32rpx;

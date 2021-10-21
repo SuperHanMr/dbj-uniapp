@@ -3,8 +3,8 @@
 		<warehouse-item :showBtns="false" :showSubtitle="false" :showBack="type==0" :itemBtn="type==2" :item="res"
 			@backGoodItem="toBackGoodItem" @applyBackItem="applyBackItem">
 		</warehouse-item>
-		<view v-if="type!=0"  class="detail-price">
-		<!-- 	<view class="detail-price-row">
+		<view v-if="type!=0" class="detail-price">
+			<!-- 	<view class="detail-price-row">
 				<view class="detail-price-row-font">
 					商品总价
 				</view>
@@ -45,7 +45,7 @@
 				</view>
 
 			</view>
-		<!-- 	<view class="detail-price-row">
+			<!-- 	<view class="detail-price-row">
 				<view class="detail-price-row-font">
 					商家优惠
 				</view>
@@ -109,7 +109,7 @@
 					支付方式:
 				</view>
 				<view class="order-info-row-con">
-					{{payType(res.stockStatus)}}
+					{{payType(res.payType)}}
 				</view>
 			</view>
 			<view v-if="res.requireNo" class="order-info-row">
@@ -269,7 +269,7 @@
 					}).then(e => {
 						if (e.stockAppVOS && e.stockAppVOS.length) {
 							e.stockAppVOS.forEach(sub => {
-								sub.number = sub.requireNumber? sub.requireNumber:sub.stockNumber;
+								sub.number = sub.requireNumber ? sub.requireNumber : sub.stockNumber;
 								console.log('!!!!~~~~~');
 								console.log(sub.number);
 							})

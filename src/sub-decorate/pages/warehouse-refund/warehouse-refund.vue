@@ -26,11 +26,9 @@
 					</view>
 					<view style="flex:1">
 					</view>
-					<view class="">
-						<input style="color: #FF3347;width: 200rpx;text-align: end;" type="number" placeholder="请输入金额"
-							v-model="num" />
-					</view>
-					<view class="">
+					<view class="flex-row">
+						<input style="color: #FF3347;max-width: 200rpx;text-align: right;" dir="rtl" type="number"
+							placeholder="请输入金额" v-model="num" />
 						<i class="icon-xiaochengxu_fangwuguanli_bianji icon-size"></i>
 					</view>
 				</view>
@@ -56,7 +54,7 @@
 		<view style="height: 300rpx;">
 
 		</view>
-		<bottom-btn btnContent="提交申请" @submit="submitRefund"></bottom-btn>
+		<bottom-btn btnContent="提交申请" style="opacity: 0.5;" @submit="submitRefund"></bottom-btn>
 
 	</view>
 </template>
@@ -234,21 +232,24 @@
 	};
 </script>
 
-
 <style lang="scss" scoped>
-	.icon-size{
+	.icon-size {
 		font-size: 32rpx;
 		color: #c7c7c7;
+		margin-left: 16rpx;
 	}
-	.have-reason{
+
+	.have-reason {
 		color: black;
 		font-size: 28rpx;
 	}
-	.no-reason{
+
+	.no-reason {
 		color: #c7c7c7;
 		font-size: 28rpx;
 
 	}
+
 	.color-red {
 		color: #FF3B30;
 		margin-right: 12rpx;
@@ -277,6 +278,12 @@
 				font-size: 26rpx;
 			}
 		}
+	}
+
+	.flex-row {
+		display: flex;
+		flex-direction: row;
+		align-items: center;
 	}
 
 	.remark-tip {

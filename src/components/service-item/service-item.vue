@@ -30,17 +30,17 @@
           <image src="http://dbj.dragonn.top/static/mp/dabanjia/images/decorate/ic_more.svg"></image>
         </view>
       </view>
-      <view class="procsss flex-row-bet">
-        <view class="s0">进度</view>
-        <view class="s1 flex-row-start" @click="goTimeLine">
-          <view>{{serviceData.processNumerator}}/{{serviceData.processDenominator}}</view>
-          <image src="http://dbj.dragonn.top/static/mp/dabanjia/images/decorate/ic_more.svg"></image>
-        </view>
-      </view>
       <view class="procsss flex-row-bet" v-if="['管家', '拆除', '水电', '泥工', '木工', '油漆'].includes(serviceData.nodeName)">
         <view class="s0">工序支付</view>
         <view class="s1 flex-row-start" @click="goProcessCost">
           <view>{{serviceData.payStatus | filterPayStatus}}</view>
+          <image src="http://dbj.dragonn.top/static/mp/dabanjia/images/decorate/ic_more.svg"></image>
+        </view>
+      </view>
+      <view class="procsss flex-row-bet">
+        <view class="s0">进度</view>
+        <view class="s1 flex-row-start" @click="goTimeLine">
+          <view>{{serviceData.processNumerator}}/{{serviceData.processDenominator}}</view>
           <image src="http://dbj.dragonn.top/static/mp/dabanjia/images/decorate/ic_more.svg"></image>
         </view>
       </view>
