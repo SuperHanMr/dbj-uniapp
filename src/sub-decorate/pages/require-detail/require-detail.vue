@@ -4,10 +4,24 @@
 		<view class="res">
 			<view class="res-title">要货状态</view>
 			<view class="res-content">
-				{{res.statusName}}
+				<text v-if="res.status==0" style="color: #FE9000">
+					{{res.statusName}}
+				</text>
+				<text v-if="res.status==1" style="color: #FE9000">
+					{{res.statusName}}
+				</text>
+				<text v-if="res.status==2" style="color: #FF3347">
+					{{res.statusName}}
+				</text>
+				<text v-if="res.status==3" style="color: #00BFB6">
+					{{res.statusName}}
+				</text>
+				<text v-if="res.status==4" style="color: #BFBFBF">
+					{{res.statusName}}
+				</text>
 			</view>
 		</view>
-		<view class="res">
+		<view v-if="res.refuseReason" class="res">
 			<view class="res-title">驳回原因</view>
 			<view class="res-content">
 				{{res.refuseReason}}
@@ -34,11 +48,11 @@
 
 
 		<view v-for="(item,index) in res.details" :key="index" class="store">
-		<!-- 	<view class="header">
+			<!-- 	<view class="header">
 				{{item.title}}
 			</view> -->
-			<view class="items" >
-				<image class="img" :src="item.imgUrl" ></image>
+			<view class="items">
+				<image class="img" :src="item.imgUrl"></image>
 				<view class="content">
 					<view class="title">
 						{{item.fullName}}
