@@ -76,7 +76,7 @@
       justify-content: space-between;
       align-items: center;
 
-      border-bottom: 1px solid #efefef;
+      border-bottom: 0.5px solid #efefef;
       // height: 228rpx;
       padding: 32rpx 0;
       .item-left {
@@ -110,7 +110,7 @@
         line-height: 32rpx;
         text-align: center;
         font-size: 16rpx;
-        border: 1px solid #CCCCCC;
+        border: 0.5px solid #CCCCCC;
         border-radius: 50%;
         color: #666;
       }

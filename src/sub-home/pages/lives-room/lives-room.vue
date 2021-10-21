@@ -439,13 +439,13 @@
 			},
 			toBack() {
 				uni.$emit("refrishHouse");
-				if (this.fromShare) {
+				// if (this.fromShare) {
 					uni.switchTab({
 						url: '/pages/home/index/index'
 					});
-				} else {
-					uni.navigateBack({});
-				}
+				// } else {
+				// 	uni.navigateBack({});
+				// }
 
 			},
 			scrollToBottom() {

@@ -28,7 +28,7 @@
               <view class="item-top-left">
                 <!-- <image src="../../static/home_owner.png" mode=""></image> -->
                 <i :class="item.icon" class='icon' :style="{color:item.iconColor}"></i>
-                <text class="item-title">{{item.pushTitle}}服务</text>
+                <text class="item-title">{{item.pushTitle}}</text>
               </view>
               <text class="item-top-right">{{item.createTime|formatDate}}</text>
             </view>

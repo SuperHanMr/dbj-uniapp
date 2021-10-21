@@ -6,7 +6,7 @@
         <view class="title">简介：</view>
       </view>
       <view class="msg-content introudc-msg" >
-        <text class="report-text" :class="{'report-text-hidden':isHidden}">{{personData.intro||'这个人很懒，什么都没写'}}</text>
+        <view class="report-text" :class="{'report-text-hidden':isHidden}">{{personData.intro||'这个人很懒，什么都没写'}}</view>
         <view class="openHidden" v-if="showBtn" @click="clickHidden">
           {{hddenText}}
         </view>
@@ -80,7 +80,8 @@
     padding-bottom: 40rpx;
   }
   .introudc-msg{
-    align-items: center;
+    // align-items: center;
+    vertical-align: top;
   }
   .msg-item{
     margin-top: 32rpx;
@@ -88,8 +89,9 @@
     line-height: 36rpx;
     margin-bottom: 12rpx;
     .item-introudce{
-      display: flex;
-      align-items: center;
+      // display: in;
+      // align-items: center;
+      vertical-align: top;
     }
     .item-title{
       
