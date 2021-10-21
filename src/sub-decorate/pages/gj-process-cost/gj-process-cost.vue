@@ -86,6 +86,29 @@
         this.setMaterial(categoryId, origin)
       } else {
         this.getDataList()
+        let title = ""
+        switch (Number(this.msg.serviceType)) {
+          case 5:
+            title = "管家工序费"
+            break
+          case 6:
+            title = "拆除工序费"
+            break
+          case 7:
+            title = "水电工序费"
+            break
+          case 8:
+            title = "泥瓦工序费"
+            break
+          case 9:
+            title = "木工工序费"
+            break
+          case 10:
+            title = "油漆工序费"
+            break
+          default:
+            break
+        }
         uni.setNavigationBarTitle({
           title: this.msg.pushTitle
         })
