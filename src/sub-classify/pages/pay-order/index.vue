@@ -580,7 +580,7 @@
   }
 
   .goods-item .goods-info {
-    height: 192rpx;
+    height: 200rpx;
     position: relative;
     flex: 1;
   }
@@ -616,8 +616,8 @@
   .goods-info .goods-spec {
     width: fit-content;
     text-overflow: ellipsis;
-    padding: 4rpx;
-    margin: 12rpx 0 12rpx 0;
+    padding: 0 4rpx;
+    margin-top: 2rpx;
     font-size: 22rpx;
     display: flex;
     position: absolute;
@@ -630,11 +630,10 @@
   }
 
   .goods-info .tag {
-    margin-top: 8rpx;
     font-size: 22rpx;
     color: #999999;
     position: absolute;
-    padding: 4rpx 10rpx;
+    padding: 0 10rpx;
     line-height: 38rpx;
     text-align: center;
     background-color: #fafafa;
