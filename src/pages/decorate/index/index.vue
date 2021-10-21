@@ -543,16 +543,16 @@
           getMsgNum(this.currentProject.projectId).then(res => {
             this.msgNum = res.count
             
-            uni.setTabBarBadge({
-              index: 2,
-              text: this.msgNum+'',
-              success:()=>{
-                console.log('sucess')
-              },
-              fail:(e)=>{
-                console.log('fail',e)
-              }
-            })
+            // uni.setTabBarBadge({
+            //   index: 2,
+            //   text: this.msgNum+'',
+            //   success:()=>{
+            //     console.log('sucess')
+            //   },
+            //   fail:(e)=>{
+            //     console.log('fail',e)
+            //   }
+            // })
 
           })
         } else {
