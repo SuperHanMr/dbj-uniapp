@@ -1,5 +1,7 @@
   .design-deliver {
     position: relative;
+    height: 100vh;
+    background: #fff;
   }
   // .tabs-wrap {
   //   width: 100%;
@@ -15,7 +17,7 @@
   }
 
   .wrap {
-    padding-top: 94rpx;
+    margin-top: 88rpx;
     position: relative;
     padding: 32rpx;
     background: #fff;
@@ -70,6 +72,7 @@
       }
 
       .sub-title {
+        width: 100%;
         height: 34rpx;
         font-size: 24rpx;
         font-family: PingFangSC, PingFangSC-Regular;
@@ -77,6 +80,10 @@
         text-align: left;
         color: #333333;
         line-height: 34rpx;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+        text-align: center;
       }
     }
   }
