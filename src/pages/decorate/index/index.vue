@@ -2,7 +2,7 @@
   <view>
     <view class="decorate-index" v-if="estateList.length > 0">
       <image class="bg-index" mode="aspectFit"
-        src="http://dbj.dragonn.top/static/mp/dabanjia/images/decorate/bg@2x-3.png">
+        src="http://dbj.dragonn.top/%20static/mp/dabanjia/images/decorate/bg%402x-4.png">
       </image>
       <view class="content flex-column">
         <view class="house-firend">
