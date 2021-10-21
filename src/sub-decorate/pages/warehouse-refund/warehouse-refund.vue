@@ -234,11 +234,11 @@
 	};
 </script>
 
-
 <style lang="scss" scoped>
 	.icon-size{
 		font-size: 32rpx;
 		color: #c7c7c7;
+		margin-left: 16rpx;
 	}
 	.have-reason{
 		color: black;
