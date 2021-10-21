@@ -287,14 +287,14 @@
 					"path": "pages/decorate-scene/decorate-calendar",
 					"style": {
 						"navigationBarTitleText": "装修日历",
-						"enablePullDownRefresh": true
+						"enablePullDownRefresh": false
 					}
 				},
 				{
 					"path": "pages/decorate-scene/memo",
 					"style": {
 						"navigationBarTitleText": "备忘录",
-						"enablePullDownRefresh": true
+						"enablePullDownRefresh": false
 					}
 				},
 				{

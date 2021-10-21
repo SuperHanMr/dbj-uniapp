@@ -6,7 +6,7 @@
           <view class="left">
             <image
               :src="serverAvatar"
-              mode=""
+              mode="aspectFill"
             ></image>
             <text>{{serverName}}</text>
             <view class="icon">
@@ -167,7 +167,7 @@ export default {
 		this.type  =Number(e.type) || serveType
 		this.serverName = e.serverName || servicerName
 		this.serverRoleName = e.serverRoleName || servicerRole
-		this.serverAvatar  =e.serverAvatar || servicerAvatar
+		this.serverAvatar  =e.serverAvatar || servicerAvatar 
 		console.log("this.id=",this.id,"this.type=",this.type)
 		// this.getServiceInfo()
 		if (!e.title) return 
