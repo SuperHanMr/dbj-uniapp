@@ -266,7 +266,7 @@
 					"style": {
 						"navigationBarTitleText": "用户的家",
 						"enablePullDownRefresh": false,
-						"onReachBottomDistance": 100
+						"onReachBottomDistance": 50
 					}
 				},
 				{
