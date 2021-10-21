@@ -13,14 +13,15 @@
       </view>
     </view>
     <view v-if="nodata" class="no-data-wrap">
-      <no-data words="暂无改施工数据"></no-data>
+      <no-data words="暂无该施工数据"></no-data>
     </view>
   </view>
 </template>
 
 <script>
   import {
-    getCompletionLog
+    getCompletionLog,
+    getConstructionNodes
   } from "../../../api/construction.js"
   import Tabs from "../../components/tabs/tabs.vue"
   import UserDescPict from "../../components/user-desc-pict/user-desc-pict.vue"
@@ -49,19 +50,39 @@
       // }
     },
     mounted() {
-      this.getCompletionLog()
+      this.getConstructionNodes()
     },
     data() {
       return {
         dataList: [],
-        current: "拆除",
-        items: ["拆除", "水电", "泥工", "木工", "油工"],
+        current: "",
+        items: [],
+        originItem: [],
         projectId: null,
         nodata: false,
-        noDataWords: ""
+        noDataWords: "",
       }
     },
     methods: {
+      getConstructionNodes() {
+        getConstructionNodes({
+          projectId: this.projectId
+        }).then(data => {
+          this.constructionNodes = data
+          if (data?.length > 0) {
+            this.nodata = false
+            this.originItem = data
+            this.items = data.map(it => it.nodeName)
+            this.currentNodeType = data[0].nodeType
+            this.current = this.items[0]
+            this.getCompletionLog()
+          } else {
+            this.nodata = true
+            this.items = []
+          }
+            console.log(this.currentNodeType, this.current, this.items)
+        })
+      },
       setTitle(type) {
         let str = ''
         if (type == 4) {
@@ -74,7 +95,9 @@
         return this.current + str + '完工申请'
       },
       changeItem(item) {
-        this.current = item;
+        let temp = this.originItem.find(it => it.nodeName == item);
+        this.currentNodeType = temp.nodeType
+        this.current = temp.nodeName
         this.getCompletionLog()
       },
       getCompletionLog() {
@@ -82,7 +105,7 @@
         getCompletionLog({
           page: 1,
           rows: 1000,
-          nodeType: this.items.indexOf(this.current) + 6,
+          nodeType: this.currentNodeType,
           projectId: this.projectId
         }).then(data => {
           this.dataList = data.list || []
@@ -106,11 +129,13 @@
 
   .s-g-list {
     padding-top: 96rpx;
+
     .s-g-item {
       margin: 24rpx;
     }
   }
-  .no-data-wrap{
+
+  .no-data-wrap {
     display: flex;
     justify-content: center;
     align-items: center;

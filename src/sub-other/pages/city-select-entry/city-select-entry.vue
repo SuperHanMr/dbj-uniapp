@@ -53,6 +53,7 @@
 		position: fixed;
 		bottom: 0;
 		left: 0;
+		padding-bottom: 50rpx;
 		.submit{
 			margin: 24rpx 32rpx;
 			padding: 22rpx 0;
