@@ -15,13 +15,19 @@
 				<view class="title">
 					商家信息
 				</view>
+				<view class="title-modify">
+					
+				</view>
 				<view class="company-name">
 					<view class="label">
 						公司名称
 					</view>
-					<input type="text" :value="companyValue" maxlength=30 placeholder="请输入30个字以内" @input="companyHandler($event)" />
-					<image src="https://ali-image.dabanjia.com/static/mp/dabanjia/images/merchant-entry/live_input_clear_merchant-entry.png" mode=""
-						@click="deleteCompanyName()" v-if="companyValue != ''"></image>
+					<input type="text" :value="companyValue" maxlength=30 placeholder="请输入30个字以内"
+						@input="companyHandler($event)"
+						placeholder-style="font-size:28rpx;font-weight: 400;color: #C7C7C7;" />
+					<image
+						src="https://ali-image.dabanjia.com/static/mp/dabanjia/images/merchant-entry/live_input_clear_merchant-entry.png"
+						mode="" @click="deleteCompanyName()" v-if="companyValue != ''"></image>
 				</view>
 				<view class="service-city">
 					<view class="label">
@@ -31,8 +37,9 @@
 						<view class="text">
 							{{item.name}}
 						</view>
-						<image src="https://ali-image.dabanjia.com/static/mp/dabanjia/images/merchant-entry/live_input_clear_merchant-entry.png" mode=""
-							@click="deleteCity(index)"></image>
+						<image
+							src="https://ali-image.dabanjia.com/static/mp/dabanjia/images/merchant-entry/live_input_clear_merchant-entry.png"
+							mode="" @click="deleteCity(index)"></image>
 					</view>
 					<view class="add-service-city" @click="openSelectCity">
 						<view class="icon">
@@ -52,8 +59,9 @@
 						<view class="text">
 							{{item.oneLevelCategoryName + '-' + item.twoLevelCategoryName + '-' + item.label}}
 						</view>
-						<image src="https://ali-image.dabanjia.com/static/mp/dabanjia/images/merchant-entry/live_input_clear_merchant-entry.png" mode=""
-							@click="deleteBusinessCategory(index)"></image>
+						<image
+							src="https://ali-image.dabanjia.com/static/mp/dabanjia/images/merchant-entry/live_input_clear_merchant-entry.png"
+							mode="" @click="deleteBusinessCategory(index)"></image>
 					</view>
 					<view class="add-service-city" @click="openBusinessCategory">
 						<view class="icon">
@@ -89,7 +97,9 @@
 			</view>
 			<view class="argument">
 				<view class="img-box" @click="argumentFileHandler">
-					<image v-if="argumentFile" src="https://ali-image.dabanjia.com/static/mp/dabanjia/images/merchant-entry/merchant-entry-select.png" mode="">
+					<image v-if="argumentFile"
+						src="https://ali-image.dabanjia.com/static/mp/dabanjia/images/merchant-entry/merchant-entry-select.png"
+						mode="">
 					</image>
 					<view v-if="!argumentFile" class="circle">
 					</view>
@@ -107,7 +117,9 @@
 					<view class="text">
 						请选择服务城市
 					</view>
-					<image src="https://ali-image.dabanjia.com/static/mp/dabanjia/images/merchant-entry/live_input_clear_merchant-entry.png" mode="" @click="closePopup">
+					<image
+						src="https://ali-image.dabanjia.com/static/mp/dabanjia/images/merchant-entry/live_input_clear_merchant-entry.png"
+						mode="" @click="closePopup">
 					</image>
 				</view>
 				<view class="select">
@@ -247,7 +259,7 @@
 						title: '公司名称不能全是空格！',
 						icon: 'none'
 					})
-					return ;
+					return;
 				}
 				const ids = [];
 				// const businessList = JSON.parse(JSON.stringify(this.businessCategoryList));
@@ -270,7 +282,7 @@
 						scopes: this.businessCategoryList
 					},
 				};
-				
+
 				supplierEntry(params).then((res) => {
 					console.log(res, '>>>>>>>')
 					uni.navigateTo({
@@ -278,7 +290,7 @@
 					})
 				}).catch((res) => {
 					// error.response.data.message
-					console.log(res,">>>>>>>>>>>>>>>>>>>>>>>>>>>");
+					console.log(res, ">>>>>>>>>>>>>>>>>>>>>>>>>>>");
 					// uni.showToast({
 					// 	title: res.response.data.message,
 					// 	icon: 'none'
@@ -447,25 +459,29 @@
 		height: 590rpx;
 		background-size: 100%;
 		background-image: url(https://ali-image.dabanjia.com/static/mp/dabanjia/images/merchant-entry/merchant-entry-ic-bg.png);
-		.head-info-box{
+
+		.head-info-box {
 			position: absolute;
 			top: 100rpx;
 			left: 40rpx;
 		}
-		.info-title{
+
+		.info-title {
 			font-size: 44rpx;
 			font-family: PingFangSC-Semibold, PingFang SC;
 			font-weight: bold;
 			color: #333333;
 			margin-bottom: 2rpx;
 		}
+
 		.info {
 			font-size: 28rpx;
 			// color: #FFFFFF;
 			font-family: PingFangSC-Regular, PingFang SC;
 			font-weight: 400;
 			color: #333333;
-			text{
+
+			text {
 				font-size: 28rpx;
 				margin: 0 2rpx;
 				font-family: PingFangSC-Regular, PingFang SC;
@@ -478,16 +494,17 @@
 	.container {
 		position: absolute;
 		left: 0rpx;
-		top: 312rpx;
+		top: 324rpx;
 		width: 100%;
 		margin-bottom: 200rpx;
+
 		.info {
-			margin: 24rpx;
+			margin: 0 24rpx 24rpx;
 			padding-bottom: 1rpx;
 			background-repeat: no-repeat;
 			background-image: url(../../../static/merchant-entry/merchant-entry-container.png);
 			background-size: 100% 100%;
-
+			position: relative;
 			.title {
 				padding: 40rpx 0 40rpx 24rpx;
 				font-size: 40rpx;
@@ -495,7 +512,14 @@
 				font-weight: bold;
 				color: #333333;
 			}
-
+			.title-modify{
+				position: absolute;
+				left: 24rpx;
+				top: 68rpx;
+				width: 160rpx;
+				height: 28rpx;
+				background: rgba(0, 194, 184, 0.11);
+			}
 			.company-name,
 			.service-city,
 			.business-category {
@@ -519,7 +543,7 @@
 					border: 1px solid #CBCCCC;
 					margin-bottom: 48rpx;
 					padding: 24rpx 62rpx 24rpx 24rpx;
-					caret-color: #35C4C4
+					caret-color: #35C4C4;
 				}
 
 				image {
@@ -565,11 +589,15 @@
 					align-items: center;
 					padding: 24rpx 0;
 					margin-bottom: 48rpx;
+					height: 40rpx;
+					line-height: 40rpx;
 
 					.icon {
 						font-size: 40rpx;
 						color: #00C4B3;
 						margin-right: 16rpx;
+						height: 40rpx;
+						line-height: 35rpx;
 					}
 
 					.text {
@@ -711,7 +739,7 @@
 			align-items: center;
 			justify-content: center;
 			padding: 32rpx 0;
-			border-bottom: 1px solid #F2F3F3;
+			border-bottom: .5px solid #F2F3F3;
 			position: relative;
 
 			.text {
@@ -741,6 +769,10 @@
 			.search-city {
 				text-align: center;
 				padding: 28rpx 0;
+			}
+			.all-city{
+				border-bottom: .5px solid #F2F3F3;
+				margin: 0 32rpx;
 			}
 
 			.active-city {

@@ -15,7 +15,9 @@
         <scroll-view class="right-card" scroll-y="true">
           <view class="right-detail" v-for="(detail, detailK) in menu3['children']" :key="detailK"
             @click="toGoodsList(detail.name, detail.id)">
-            <image :src="detail.imageUrl"></image>
+            <view class="img-view">
+              <image :src="detail.imageUrl"></image>
+            </view>
             <text class="detail-name">{{detail.name}}</text>
           </view>
         </scroll-view>
@@ -179,12 +181,12 @@
     text-align: center;
     margin: 30rpx 0 30rpx 37rpx;
   }
-
-  .right-detail image {
+  .right-detail .img-view{
+    border-radius: 10rpx;
+    overflow: hidden;
     width: 124rpx;
     height: 124rpx;
   }
-
   .right-detail .detail-name {
     font-size: 24rpx;
     display: inline-block;

@@ -14,6 +14,7 @@
     onLoad(e){
       let id = e.id || getApp().globalData.decorateMsg.reportId
       let cost = e.isCost||1
+      let isFriends = getApp().globalData.currentProject.relegationType===2?1:0
       // if(e.isCost===0){
       //   uni.setNavigationBarTitle({
       //     title:'当前花销'
@@ -23,7 +24,7 @@
       //     title:'精算单'
       //   })
       // }
-      this.url = process.env.VUE_APP_BASE_H5+this.url + id +'&projectId='+(e.id?e.projectId:getApp().globalData.decorateMsg.projectId)+'&isClient=1' + '&isActuarial=' + cost +'&token='+getApp().globalData.token
+      this.url = process.env.VUE_APP_BASE_H5+this.url + id +'&projectId='+(e.id?e.projectId:getApp().globalData.decorateMsg.projectId)+'&isClient=1'+'&isFriends='+isFriends + '&isActuarial=' + cost +'&token='+getApp().globalData.token
       console.log(this.url)
     },
     // onReady(){

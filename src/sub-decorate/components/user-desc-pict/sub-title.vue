@@ -38,7 +38,7 @@
     }
 
     .text {
-      width: 256rpx;
+      // width: 256rpx;
       height: 44rpx;
       font-size: 32rpx;
       font-family: PingFangSC, PingFangSC-Medium;

@@ -3,7 +3,12 @@
 		<view class="remainTime-container" v-if="showCancelOrderBtn">
 			<image  src="../../../static/ic_time@2x.png" mode=""></image>
 			<text>剩余支付时间</text>
-			<count-down :start="remainTime"></count-down>
+			<count-down 
+				:start="remainTime" 
+				:timeBackground="'#FFEFF1'"
+				:timeColor="'#FF3347'"
+				:separatorColor="'#FF3347'"
+			></count-down>
 			<!-- <uni-countdown 
 				color="#FF3347" 
 				background-color="#FFEFF1" 
@@ -18,10 +23,12 @@
 		<view class="payItem" v-for="(item,index) in list.details" :key="index">
 			<view class="left">
 				<text>第{{priceList[index]}}笔支付金额：</text>
-				<view class="price">
+				<view class="price" :style="{color:item.status==0?'#FF3347':'#333333'}">
 					<text>￥</text>
-					<text style="font-size: 40rpx;font-weight: 500;">{{handlePrice(item.amount)[0]}}.</text>
-					<text>{{handlePrice(item.amount)[1]}}</text>
+					<text class="price-font">
+						<text style="font-size: 40rpx;font-weight: 500;">{{handlePrice(item.amount)[0]}}.</text>
+						<text>{{handlePrice(item.amount)[1]}}</text>
+					</text>
 				</view>
 			</view>
 			<view class="right">
@@ -45,15 +52,15 @@
 		  	<view class="total">
 		  		<text>总计</text>
 		  		<text style="margin-left: 12rpx;">￥</text>
-		  		<text class="price-style" >{{handlePrice(list.orderReceivableAmount)[0]}}.</text>
-		  		<text>{{handlePrice(list.orderReceivableAmount)[1]}}</text>
+		  		<text class="price-style price-font" >{{handlePrice(list.orderReceivableAmount)[0]}}.</text>
+		  		<text class="price-font">{{handlePrice(list.orderReceivableAmount)[1]}}</text>
 		  	</view>
 				
 				<view class="has-pay">
 					<text>已支付</text>
 					<text style="margin-left: 12rpx;">￥</text>
-					<text class="price-style" >{{handlePrice(list.totalActualIncomeAmount)[0]}}.</text>
-					<text>{{handlePrice(list.totalActualIncomeAmount)[1]}}</text>
+					<text class="price-style price-font" >{{handlePrice(list.totalActualIncomeAmount)[0]}}.</text>
+					<text class="price-font">{{handlePrice(list.totalActualIncomeAmount)[1]}}</text>
 				</view>
 			</view>
 		</view>
@@ -280,6 +287,7 @@
 					background: linear-gradient(135deg, #36D9CD 0%, #28C6C6 100%);
 					border-radius: 12rpx;
 					color: #FFFFFF;
+					font-weight: 500;
 					font-size: 24rpx;
 				}
 			}
