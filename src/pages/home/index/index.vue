@@ -129,7 +129,7 @@
 				</image>
 				<view class="top-content">
 					<image class="top-content-img"
-						:src="item.mediaType==1?'http://dbj.dragonn.top/static/mp/dabanjia/images/home/ic_liveing.png':'http://dbj.dragonn.top/static/mp/dabanjia/images/home/icon_video.png'">
+						:src="item.mediaType==1?'http://dbj.dragonn.top/static/mp/dabanjia/images/home/living.gif':'http://dbj.dragonn.top/static/mp/dabanjia/images/home/icon_video.png'">
 						<view v-if="item.mediaType==1" class="text">
 
 							{{item.roomLiveMediaVO.onLineCount}}人正在观看
@@ -243,6 +243,7 @@
 			},
 		},
 		onLoad() {
+			uni.showShareMenu();
 			uni.$on("refrishHouse", (item) => {
 				this.reloadData();
 			});

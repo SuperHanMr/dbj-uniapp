@@ -1,6 +1,7 @@
 <template>
   <view>
-    协议
+    <web-view src='https://jia.dabanjia.com/static/dbj-protocol/protocol.html'>
+    </web-view>
   </view>
 </template>
 
@@ -8,12 +9,14 @@
   export default {
     data() {
       return {
-        
+        baseUrl: ""
       }
     },
+    onShow() {
+    },
     methods: {
-      
-    }
+
+    } 
   }
 </script>
 

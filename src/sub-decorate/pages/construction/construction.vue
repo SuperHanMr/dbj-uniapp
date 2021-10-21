@@ -105,6 +105,7 @@
   }
 
   .s-g-list {
+    padding-top: 96rpx;
     .s-g-item {
       margin: 24rpx;
     }

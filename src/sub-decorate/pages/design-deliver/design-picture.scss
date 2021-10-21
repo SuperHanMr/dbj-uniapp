@@ -1,11 +1,23 @@
-.flex-row {
-    display: flex;
-    justify-content: flex-end;
-    flex-direction: row;
-    align-items: center;
+  .design-deliver {
+    position: relative;
+    height: 100vh;
+    background: #fff;
+  }
+  // .tabs-wrap {
+  //   width: 100%;
+  //   position: absolute;
+  //   top: 0;
+  //   left: 0;
+  // }
+  .flex-row {
+      display: flex;
+      justify-content: flex-end;
+      flex-direction: row;
+      align-items: center;
   }
 
   .wrap {
+    margin-top: 88rpx;
     position: relative;
     padding: 32rpx;
     background: #fff;
@@ -60,6 +72,7 @@
       }
 
       .sub-title {
+        width: 100%;
         height: 34rpx;
         font-size: 24rpx;
         font-family: PingFangSC, PingFangSC-Regular;
@@ -67,6 +80,10 @@
         text-align: left;
         color: #333333;
         line-height: 34rpx;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+        text-align: center;
       }
     }
   }

@@ -254,6 +254,9 @@
 			});
 		},
 		onReady() {
+			if(!this.isLiveing){
+				return
+			}
 			let that = this; //windoHeight为窗口高度，主要使用的是这个
 			let chatH = uni.createSelectorQuery().select(".player-end"); //想要获取高度的元素名（class/id）
 			chatH
@@ -439,13 +442,13 @@
 			},
 			toBack() {
 				uni.$emit("refrishHouse");
-				if (this.fromShare) {
+				// if (this.fromShare) {
 					uni.switchTab({
 						url: '/pages/home/index/index'
 					});
-				} else {
-					uni.navigateBack({});
-				}
+				// } else {
+				// 	uni.navigateBack({});
+				// }
 
 			},
 			scrollToBottom() {

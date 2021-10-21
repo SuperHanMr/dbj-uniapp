@@ -90,6 +90,10 @@ export default {
 		this.id =Number(e.id)
 		console.log("this.id=",this.id)
 		this.getServiceInfo()
+		if(!e.title) return 
+		uni.setNavigationBarTitle({
+				title: e.title
+		});
 	},
 	
   methods: {

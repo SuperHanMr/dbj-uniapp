@@ -2,9 +2,9 @@
   <view class="person-evaluate-list">
     <view class="aggregations">
       <view class="left">
-        全部评价（{{evaluate.list.length}}）
+        全部评价（{{pageInfo.totalRow}}）
       </view>
-      <view class="right">综合好评率 {{totalNum*100}}%</view>
+      <view class="right">综合好评率 {{(totalNum*100).toFixed(2)}}%</view>
     </view>
     <scroll-view :scroll-y="true" style="height:100%" @scrolltolower="bindscrolltolower">
       <personEvaliateItem :last='index===evaluate.list.length-1' v-for="item in evaluate.list" :item='item' :key='item.id'></personEvaliateItem>
@@ -28,7 +28,7 @@
         pageInfo:{
           page:1,
           totalPage:0,
-          
+          totalRow:0
         },
         totalNum:0
       }
@@ -52,6 +52,7 @@
       			this.totalNum = data.aggregations
       			this.evaluate.list = this.evaluate.list.concat(data.list)
             this.pageInfo.totalPage = data.totalPage
+            this.pageInfo.totalRow = data.totalRows
       		}
       	})
       },
@@ -69,9 +70,14 @@
 <style lang="scss" scoped>
   .person-evaluate-list{
     background-color: #fff;
-    padding: 32rpx;
+    padding: 140rpx 32rpx 32rpx;
     height: 100%;
+    padding-bottom: 88rpx;
     .aggregations{
+      box-sizing: border-box;
+      width: 686rpx;
+      position: fixed;
+      top: 30rpx;
       height: 88rpx;
       display: flex;
       align-items: center;
@@ -79,8 +85,11 @@
       box-shadow: 0px 0px 20px 0px rgba(0, 0, 0, 0.03);
       border-radius: 12px;
       border: 0.5px solid #E5E5E5;
+      background-color: #fff;
       padding: 0 32rpx;
-      margin-bottom: 40rpx;
+      z-index: 10;
+      // margin-bottom: 40rpx;
+      margin: 0 auto 40rpx;
       .left{
         color: #111;
         font-weight: 500;
