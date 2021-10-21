@@ -25,7 +25,7 @@
 
 								<view v-if="item.mediaType==1" class="top-content">
 									<image class="top-content-img-living"
-										src="http://dbj.dragonn.top/static/mp/dabanjia/images/home/ic_liveing.png">
+										src="http://dbj.dragonn.top/static/mp/dabanjia/images/home/living.gif">
 									</image>
 									{{item.roomLiveMediaVO.onLineCount}}人在看
 								</view>

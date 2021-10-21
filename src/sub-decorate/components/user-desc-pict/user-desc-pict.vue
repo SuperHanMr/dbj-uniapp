@@ -4,7 +4,7 @@
     <view class="content-wrap">
       <view class="avtor-wrap flex-row-bet">
         <view class="flex-row-start">
-          <image class="avtor" :src="butlerData.avatar"></image>
+          <image mode="aspectFill" class="avtor" :src="butlerData.avatar"></image>
           <view class="tigs">
             <view class="username">{{butlerData.name}}</view>
             <view class="role">{{butlerData.nodeName}}</view>
@@ -15,7 +15,7 @@
       <view class="desc">{{butlerData.content}}</view>
       <view class="picture flex-row">
         <view class="imgs" v-for="(item, index) in butlerData.fileUrls" :key="index" v-if="index < 6">
-          <image :src="item" @click="clickImg(butlerData.fileUrls, index)"></image>
+          <image mode="aspectFill" :src="item" @click="clickImg(butlerData.fileUrls, index)"></image>
           <view class="zz" v-if="index === 5" @click="clickImg(butlerData.fileUrls, 5)">+{{butlerData.fileUrls.length - 6}}
           </view>
         </view>
