@@ -335,7 +335,7 @@
 	}
 
 	.uni-indexed-list__menu {
-		margin-right: 18rpx;
+		margin-right: 12rpx;
 		width: 19px;
 		border-radius: 10px;
 		background: #F7F7F7;
