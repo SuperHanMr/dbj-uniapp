@@ -21,8 +21,10 @@
       @change="swiperChange"
     >
       <swiper-item
+			class="swiper-item"
         v-for="(item,tabindex) in tabList"
         :key="item"
+				
       >
         <scroll-view
           class="scroll-view"
@@ -193,8 +195,7 @@ export default {
               this.triggered = false;
             }
             if (e.length) {
-              this.lastId[this.currentIndex] = e[e.length - 1].id;
-
+              this.lastId[this.currentIndex] = e[e.length - 1].orderId;
               this.list0 = this.list0.concat(e);
             } else {
               if (this.lastId[this.currentIndex]) {
@@ -279,12 +280,13 @@ export default {
 };
 </script>
 
-<style lang="scss" scoped>
+<style scoped lang="scss" >
 .fill {
   width: 100%;
-  min-height: 100%;
+  height: 100%;
   display: flex;
   flex-direction: column;
+	overflow-y: hidden;
 }
 
 .item {
@@ -337,8 +339,12 @@ export default {
 }
 
 .swiper-item {
-  height: 200rpx;
+  // height: 200rpx;
   width: 100%;
+	height: 100%;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
 }
 
 .swiper {
@@ -349,6 +355,5 @@ export default {
 
 .scroll-view {
   flex: 1;
-  height: 100%;
 }
 </style>
