@@ -14,7 +14,7 @@
 					</view>
 				</view>
 				<view class="body" v-for="item2 in item.details" :key="item2.id">
-					<order-item :dataList="item2" :isEvaluate="item.levelName"></order-item>
+					<order-item :dataList="item2" :isEvaluate="isEvaluate"></order-item>
 				</view>
 				
 				<view class="line" />

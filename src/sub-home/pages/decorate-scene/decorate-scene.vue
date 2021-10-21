@@ -1,5 +1,5 @@
 <template>
-  <view class="sceneContainer">
+  <view class="sceneContainer" :class="{'noScroll':showComments}">
     <view class="header">
       <view class="houseInfo">
         <view class="location">{{projectInfo.estateNeighbourhood}}</view>
@@ -661,7 +661,7 @@ export default {
       getComments(params).then((data) => {
         if (data) {
           console.log(data);
-          let { page, rows, totalPage, totalRows, list } = data;
+          let { page, list } = data;
           this.comments = list;
         }
       });
@@ -903,6 +903,7 @@ export default {
 </script>
 
 <style scoped>
+	
 	.bottomDelete {
 		width: 100%;
 		height: fit-content;
@@ -1370,6 +1371,9 @@ export default {
 		width: 100%;
 		height: 100%;
 	}
+	.sceneContainer.noScroll{
+		overflow: hidden;
+	}
 	.sceneContainer > .header {
 		width: 100%;
 		height: 400rpx;
@@ -1763,6 +1767,7 @@ export default {
 		width: 100%;
 		height: fit-content;
 	}
+	
 	.item {
 		width: 100%;
 		display: flex;
