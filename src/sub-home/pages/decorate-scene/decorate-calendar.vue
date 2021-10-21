@@ -1,9 +1,11 @@
 <template>
 	<view class="calendarWrap">
 		<view class="calendar">
-			<dark-calendar :signeddates="signeddates" @filterDynamics="filterDynamics" :projectId="projectId" :showMemo="showMemo"></dark-calendar>
+			<dark-calendar :signeddates="signeddates" @filterDynamics="filterDynamics"
+				:projectId="projectId" :showMemo="showMemo" @changeMargin="changeMargin"
+				></dark-calendar>
 		</view>
-		<view class="dynamic" :class="{'noDynamics': !dynamics.length}">
+		<view class="dynamic" :class="{'noDynamics': !dynamics.length,'weekModel': isWeek}">
 			<view class="top">
 				<view class="title">装修动态</view>
 			</view>
@@ -12,10 +14,7 @@
 				<view class="text">暂无装修动态</view>
 				<view class="bottom"></view>
 			</view>
-			<scroll-view :scroll-y="true"
-				:refresher-enabled="true" refresher-default-style="none"
-				@refresherrefresh="refreshDynamics"
-				class="list" v-else>
+			<scroll-view :scroll-y="true" class="list" v-else>
 				<view class="item" v-for="(item,index) in dynamics" :key="item.id">
 					<image class="avatar" :src="item.avatar"></image>
 					<view class="acitonInfo">
@@ -72,17 +71,21 @@
 				dynamics: [],
 				dynamicPage: 1,
 				date: "",//选中日期,
+				isWeek: false
 			};
 		},
 		onLoad(option) {
 			this.projectId = option.projectId
 			this.showMemo = option.isDecorate === "1" ? true: false
 		},
-		// onReachBottom() {
-		// 	if(!this.date)return
-		// 	this.dynamicPage+=1;
-		// 	this.filterDynamics(this.date);
-		// },
+		onReachBottom() {
+			if(!this.date)return
+			this.dynamicPage+=1;
+			this.filterDynamics(this.date);
+		},
+		watch: {
+			
+		},
 		mounted(){
 			//当天日期
 			let y = new Date().getFullYear()
@@ -94,10 +97,8 @@
 			this.requestSigns()
 		},
 		methods:{
-			refreshDynamics(){
-				if(!this.date)return
-				this.dynamicPage+=1;
-				this.filterDynamics(this.date);
+			changeMargin(isShink){
+				this.isWeek = !isShink
 			},
 			requestSigns(){
 				let y = new Date().getFullYear()
@@ -144,17 +145,20 @@
 	.calendar{
 		width: 100%;
 		height: fit-content;
-		position: sticky;
+		position: fixed;
 		left: 0;
-		right: 0;
 		top: 0;
+		z-index: 9;
 	}
 	.dynamic{
 		width: 100%;
 		height: fit-content;
-		margin-top: 12rpx;
+		margin-top: 736rpx;
 		background: #ffffff;
 		border-radius: 40rpx;
+	}
+	.dynamic.weekModel{
+		margin-top: 286rpx;
 	}
 	.dynamic.noDynamics{
 		margin-bottom: 0;
