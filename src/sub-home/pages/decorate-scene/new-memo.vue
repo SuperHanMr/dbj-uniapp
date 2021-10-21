@@ -34,7 +34,7 @@
 		onShow() {
 			uni.$once("sendReminders",(reminderList) => {
 				console.log(reminderList)
-				this.reminderList = reminderList
+				this.reminderList = reminderList.reverse()
 				this.hasChoose = reminderList.length?true:false
 			})
 		},
@@ -114,13 +114,15 @@
 	}
 	.remind .list{
 		display: flex;
+		max-width: 454rpx;
 	}
 	.remind .reminder{
+		margin-right: 40rpx;
 		font-size: 28rpx;
 		color: #333333;
 	}
 	.remind .reminder:last-child{
-		order: -1;
+		margin-right: 0;
 	}
 	.remind .icon{
 		width: 24rpx;

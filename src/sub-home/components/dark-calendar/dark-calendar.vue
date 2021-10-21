@@ -37,7 +37,8 @@
     </view>
 		<image v-if="isShrink" @click="switchWeek()" class="shrink"
 			src="http://dbj.dragonn.top/static/mp/dabanjia/images/home/ic_shrink%402x.png"></image>
-		<view v-else @click="switchWeek()" class="grow"></view>
+		<view v-else @click="switchWeek()" class="grow"></view>	
+		
     
   </view>
 </template>
@@ -90,13 +91,13 @@
 			let m = mon < 10? `0${mon}` : mon
 			let d = date.getDate()
 			this.choose = `${y}-${m}-${d}`
-			console.log(this.choose,this.signeddates,'dadian')
+			console.log(this.choose,'。。')
 			
 			this.dates = this.monthDay(this.y, this.m)
 	    
 	  },
 	  mounted() {
-			
+			console.log(this.signeddates,'dadian')
 	  },
 	  computed: {
 	    // 顶部星期栏目

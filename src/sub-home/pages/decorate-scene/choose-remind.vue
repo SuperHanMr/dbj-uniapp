@@ -31,10 +31,10 @@
 		},
 		methods:{
 			checkC(index){
-				this.list[index].isChecked=!this.list[index].isChecked
+				this.list[index].isChecked = !this.list[index].isChecked
 			},
 			confirmC(){
-				this.list.map(item => {
+				this.list.forEach(item => {
 					if(!item.isChecked)return
 					this.reminderList.push({
 						userId: item.userId,
