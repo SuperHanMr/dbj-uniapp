@@ -18,7 +18,9 @@
 				<view class="text">{{item.content}}</view>
 				<view class="remark">
 					<view class="cueMe" v-if="!item.publisherFlag">提到了我</view>
-					<view class="cueOthers" v-else v-for="(name,index) in item.reminderList" :key="index">@{{name}}</view>
+					<view class="list" v-else>
+						<view class="cueOthers" v-for="(name,index) in item.reminderList" :key="index">@{{name}}</view>
+					</view>
 				</view>
 			</view>
 		</view>
@@ -146,7 +148,10 @@
 		border-radius: 50%;
 	}
 	.userInfo .userName{
-		width: 52rpx;
+		max-width: 282rpx;
+		overflow: hidden;
+		text-overflow: ellipsis;
+		white-space: nowrap;
 		height: 36rpx;
 		margin: 0 16rpx;
 		font-size: 26rpx;
@@ -172,10 +177,14 @@
 		margin-left: 24rpx;
 		padding-top: 24rpx;
 		width: 638rpx;
-		height: 80rpx;
+		max-height: 80rpx;
 		color: #333333;
 		font-size: 28rpx;
 		text-overflow: ellipsis;
+		overflow: hidden;
+		display: -webkit-box;
+		-webkit-box-orient: vertical;
+		-webkit-line-clamp: 2;
 	}
 	.content .remark{
 		display: flex;
@@ -189,8 +198,14 @@
 	.remark .cueMe{
 		width: 112rpx;
 	}
+	.remark .list{
+		max-width: 638rpx;
+	}
 	.remark .cueOthers{
-		width: 112rpx;
+		max-width: 370rpx;
+		overflow: hidden;
+		text-overflow: ellipsis;
+		white-space: nowrap;
 		margin-right: 40rpx;
 	}
 </style>

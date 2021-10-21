@@ -27,7 +27,7 @@
 					<view style="flex:1">
 					</view>
 					<view class="flex-row">
-						<input style="color: #FF3347;max-width: 200rpx;text-align: end;" dir="rtl" type="number"
+						<input style="color: #FF3347;max-width: 200rpx;text-align: right;" dir="rtl" type="number"
 							placeholder="请输入金额" v-model="num" />
 						<i class="icon-xiaochengxu_fangwuguanli_bianji icon-size"></i>
 					</view>
@@ -54,7 +54,7 @@
 		<view style="height: 300rpx;">
 
 		</view>
-		<bottom-btn btnContent="提交申请" @submit="submitRefund"></bottom-btn>
+		<bottom-btn btnContent="提交申请" style="opacity: 0.5;" @submit="submitRefund"></bottom-btn>
 
 	</view>
 </template>
@@ -283,6 +283,7 @@
 	.flex-row {
 		display: flex;
 		flex-direction: row;
+		align-items: center;
 	}
 
 	.remark-tip {

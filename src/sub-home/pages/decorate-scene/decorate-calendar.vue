@@ -12,7 +12,10 @@
 				<view class="text">暂无装修动态</view>
 				<view class="bottom"></view>
 			</view>
-			<scroll-view :scroll-y="true" class="list" v-else>
+			<scroll-view :scroll-y="true"
+				:refresher-enabled="true" refresher-default-style="none"
+				@refresherrefresh="refreshDynamics"
+				class="list" v-else>
 				<view class="item" v-for="(item,index) in dynamics" :key="item.id">
 					<image class="avatar" :src="item.avatar"></image>
 					<view class="acitonInfo">
@@ -75,11 +78,11 @@
 			this.projectId = option.projectId
 			this.showMemo = option.isDecorate === "1" ? true: false
 		},
-		onReachBottom() {
-			if(!this.date)return
-			this.dynamicPage+=1;
-			this.filterDynamics(this.date);
-		},
+		// onReachBottom() {
+		// 	if(!this.date)return
+		// 	this.dynamicPage+=1;
+		// 	this.filterDynamics(this.date);
+		// },
 		mounted(){
 			//当天日期
 			let y = new Date().getFullYear()
@@ -91,11 +94,16 @@
 			this.requestSigns()
 		},
 		methods:{
+			refreshDynamics(){
+				if(!this.date)return
+				this.dynamicPage+=1;
+				this.filterDynamics(this.date);
+			},
 			requestSigns(){
 				let y = new Date().getFullYear()
 				let m = new Date().getMonth() + 1
-				let mon = m < 10 ? '0'+m : m
-				getSigneddates(this.projectId,y+mon).then(data => {
+				let mon = m < 10 ? `0${m}`: m
+				getSigneddates(this.projectId,`${y}${mon}`).then(data => {
 					if(!data.length)return
 					this.signeddates = data.map(item => {
 						item.day = formatDate(item.day,'YYYY-MM-DD')
@@ -136,6 +144,10 @@
 	.calendar{
 		width: 100%;
 		height: fit-content;
+		position: sticky;
+		left: 0;
+		right: 0;
+		top: 0;
 	}
 	.dynamic{
 		width: 100%;
