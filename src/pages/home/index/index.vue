@@ -106,11 +106,10 @@
 			</view>
 			<view class="flex1">
 			</view>
-			<view class="sub-title-more" @click="toLiveList">
-				更多
-				<image class="more_icon" src="http://dbj.dragonn.top/static/mp/dabanjia/images/home/ic_more_right.png"
-					mode=""></image>
-			</view>
+
+			<image src="http://dbj.dragonn.top/static/mp/dabanjia/images/home/ic_gongdizhibo_more.png"
+				class="sub-title-more">
+			</image>
 		</view>
 		<view class="flex-row-common videos">
 			<view v-for="(item,index) in videoTypeList" :key="item"
@@ -924,17 +923,6 @@
 	.sub-title-more {
 		width: 92rpx;
 		height: 40rpx;
-		line-height: 40rpx;
-		border-radius: 20rpx;
-		border: 0.3px solid #DADFDF;
-		font-weight: 300;
-		color: #2d3033;
-		font-size: 22rpx;
-		text-align: center;
-		display: flex;
-		flex-direction: row;
-		justify-content: center;
-		align-items: center;
 	}
 
 	.address {

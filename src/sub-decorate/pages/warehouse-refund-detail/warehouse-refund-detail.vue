@@ -349,7 +349,7 @@
 			height: 88rpx;
 			line-height: 88rpx;
 			opacity: 1;
-			background: linear-gradient(135deg, #00bfaf, #00bfbc);
+			background: linear-gradient(135deg, #00ccbe, #00c2bf);
 			border-radius: 16rpx;
 			margin-right: 32rpx;
 			font-weight: 500;

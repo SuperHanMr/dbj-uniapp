@@ -225,7 +225,7 @@
 			},
 			{
 				"name": "lyb", //模式名称
-				"path": "/sub-my/pages/evaluate/immediate-evaluate/immediate-evaluate", //启动页面，必选
+				"path": "/sub-decorate/pages/person-page/person-page", //启动页面，必选
 				"query": "" //启动参数，在页面的onLoad函数里面得到
 			},
 			{
@@ -287,14 +287,14 @@
 					"path": "pages/decorate-scene/decorate-calendar",
 					"style": {
 						"navigationBarTitleText": "装修日历",
-						"enablePullDownRefresh": true
+						"enablePullDownRefresh": false
 					}
 				},
 				{
 					"path": "pages/decorate-scene/memo",
 					"style": {
 						"navigationBarTitleText": "备忘录",
-						"enablePullDownRefresh": true
+						"enablePullDownRefresh": false
 					}
 				},
 				{
