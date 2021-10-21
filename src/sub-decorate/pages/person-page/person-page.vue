@@ -11,7 +11,7 @@
         <!-- <image class="header-back"></image> -->
       </view>
       <view class="item nav-header-msg">
-        <view class="avatar" :style="{backgroundImage: `url(${personData.avatar})`}"  mode=""></view>
+        <image class="avatar" :src="personData.avatar" mode="aspectFill" ></image>
         <text>{{personData.roleId>=1&&personData.roleId<7?personData.realName:personData.nickName}}</text>
       </view>
       <view class="item "></view>
@@ -21,7 +21,7 @@
         <view class="person-msg-top" :class="{'is-self':personData.roleId === 10000}">
           <view class="person-msg-header">
             <view class="person-msg-header-image">
-              <view class="avatar" :style="{backgroundImage:`url(${personData.avatar})`}" ></view>
+              <image class="avatar" :src="personData.avatar" mode="aspectFill" ></image>
               <i class="icon icon-ic_nan" v-if="personData.gender===1"></i>
               <i class="icon icon-ic_nv" v-else></i>
             </view>

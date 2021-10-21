@@ -243,6 +243,7 @@
 			},
 		},
 		onLoad() {
+			uni.showShareMenu();
 			uni.$on("refrishHouse", (item) => {
 				this.reloadData();
 			});
@@ -383,7 +384,7 @@
 						url: "../../common/video-player/video-player?url=" +
 							encodeURIComponent(item.roomVideoMediaVO.videoUrl) +
 							"&title=" +
-							item.roomVideoMediaVO.title+'&id=' + item.roomVideoMediaVO.id,
+							item.roomVideoMediaVO.title + '&id=' + item.roomVideoMediaVO.id,
 					});
 				}
 			},
@@ -465,8 +466,8 @@
 				});
 			},
 			toCity() {
-				let house =   getApp().globalData.currentHouse 
-				let id=house.id||''
+				let house = getApp().globalData.currentHouse
+				let id = house.id || ''
 				uni.navigateTo({
 					url: `/sub-my/pages/my-house/my-house?fromHome=1&&isEdit=0&&id=${id}`,
 				});
