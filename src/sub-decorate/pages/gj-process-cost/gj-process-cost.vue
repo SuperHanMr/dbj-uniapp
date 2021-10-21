@@ -110,7 +110,7 @@
             break
         }
         uni.setNavigationBarTitle({
-          title: this.msg.pushTitle
+          title: title
         })
       }
     },
