@@ -29,7 +29,7 @@
       imagePreview
     },
     props:{
-      serverId:0,
+      projectId:0,
       index:0
     },
     data(){
@@ -59,6 +59,8 @@
           if(this.list.length===0){
             this.$emit('isEmpty',this.index)
           }
+        }).catch(e=>{
+          this.$emit('isEmpty',this.index)
         })
       },
       // previewImage(list,index){
