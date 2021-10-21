@@ -45,7 +45,9 @@
 						<view class="no-select" v-if="!isChecked(item)">
 							
 						</view>
-						<image class='select' src="https://ali-image.dabanjia.com/static/mp/dabanjia/images/merchant-entry/merchant-entry-select.png" v-if="isChecked(item)" mode=""></image>
+						<view class="icon-select select" v-if="isChecked(item)" >
+							
+						</view>
 						<view class="text">
 							{{item.label}}
 						</view>
@@ -376,8 +378,7 @@
 						flex: 1;
 					}
 					.select{
-						width: 32rpx;
-						height: 32rpx;
+						font-size: 32rpx;
 						margin-right: 24rpx;
 						border-radius: 50%;
 					}
