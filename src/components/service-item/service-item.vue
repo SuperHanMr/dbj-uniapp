@@ -30,7 +30,7 @@
           <image src="http://dbj.dragonn.top/static/mp/dabanjia/images/decorate/ic_more.svg"></image>
         </view>
       </view>
-      <view class="procsss flex-row-bet" v-if="['管家', '拆除', '水电', '泥工', '木工', '油漆'].includes(serviceData.nodeName)">
+      <view class="procsss flex-row-bet" v-if="[5, 6, 7, 8, 9, 10].includes(serviceData.nodeType)">
         <view class="s0">工序支付</view>
         <view class="s1 flex-row-start" @click="goProcessCost">
           <view>{{serviceData.payStatus | filterPayStatus}}</view>

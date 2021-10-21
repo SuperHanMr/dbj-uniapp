@@ -4,7 +4,7 @@
     <view class="content-wrap">
       <view class="avtor-wrap flex-row-bet">
         <view class="flex-row-start">
-          <image mode="aspectFill" class="avtor" :src="detail.avatar"></image>
+          <image mode="aspectFill" class="avtor" :src="detail.avatar" @click="goPersonPage"></image>
           <view class="tigs">
             <view class="username">{{detail.userName}}</view>
             <view class="role">管家</view>
@@ -17,7 +17,7 @@
         <view class="imgs" :class="{'img3': index % 3 == 2}" v-for="(item, index) in detail.sitePhotoList" :key="index"
           v-if="index < 6">
           <image mode="aspectFill" :src="item" @click="clickImg(detail.sitePhotoList, index)"></image>
-          <view class="zz" v-if="index === 5" @click="clickImg(detail.sitePhotoList, 5)">
+          <view class="zz" v-if="detail.sitePhotoList.length > 6 && index === 5" @click="clickImg(detail.sitePhotoList, 5)">
             +{{detail.sitePhotoList.length - 6}}
           </view>
         </view>
@@ -50,6 +50,11 @@
           current: index,
           urls: arr,
           // longPressActions:{}
+        })
+      },
+      goPersonPage() {
+        uni.navigateTo({
+          url: `/sub-decorate/pages/person-page/person-page?personId=${this.detail?.zeusId}`
         })
       }
     },
