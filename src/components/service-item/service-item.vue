@@ -16,9 +16,10 @@
       </view>
       <view class="status-name mr inservice flex-row-start">
         <view>{{ serviceData.statusName }}</view>
-        <image :class="{open: open}"
+        <!-- <image :class="{open: open}"
           v-if="serviceData.status >= 2 || (serviceData.status == 0 && serviceData.grepOrderStatus === 3)"
-          src="http://dbj.dragonn.top/static/mp/dabanjia/images/decorate/ic_triangle_up.svg"></image>
+          src="http://dbj.dragonn.top/static/mp/dabanjia/images/decorate/ic_triangle_up.svg"></image> -->
+        <view class="icon-zhuangxiushouye_fuwuzhankaijiantou" :class="{open: open}" v-if="serviceData.status >= 2 || (serviceData.status == 0 && serviceData.grepOrderStatus === 3)"></view>
       </view>
     </view>
     <view class="gc"
@@ -30,7 +31,7 @@
           <image src="http://dbj.dragonn.top/static/mp/dabanjia/images/decorate/ic_more.svg"></image>
         </view>
       </view>
-      <view class="procsss flex-row-bet" v-if="['管家', '拆除', '水电', '泥工', '木工', '油漆'].includes(serviceData.nodeName)">
+      <view class="procsss flex-row-bet" v-if="[5, 6, 7, 8, 9, 10].includes(serviceData.nodeType)">
         <view class="s0">工序支付</view>
         <view class="s1 flex-row-start" @click="goProcessCost">
           <view>{{serviceData.payStatus | filterPayStatus}}</view>

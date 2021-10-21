@@ -181,7 +181,7 @@ export default {
       color: #808080;
       font-size: 24rpx;
       font-weight: 400;
-      margin-bottom: 16rpx;
+      margin-bottom: 20rpx;
       .title {
         display: flex;
         flex-flow: row nowrap;
@@ -205,7 +205,7 @@ export default {
     text-align: right;
   }
   .footer1 {
-    padding: 24rpx 32rpx;
+    padding: 32rpx;
     display: flex;
     flex-flow: row nowrap;
     align-items: center;

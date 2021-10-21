@@ -739,7 +739,7 @@
 			align-items: center;
 			justify-content: center;
 			padding: 32rpx 0;
-			border-bottom: 1px solid #F2F3F3;
+			border-bottom: .5px solid #F2F3F3;
 			position: relative;
 
 			.text {
@@ -769,6 +769,10 @@
 			.search-city {
 				text-align: center;
 				padding: 28rpx 0;
+			}
+			.all-city{
+				border-bottom: .5px solid #F2F3F3;
+				margin: 0 32rpx;
 			}
 
 			.active-city {

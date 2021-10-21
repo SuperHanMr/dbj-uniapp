@@ -376,11 +376,10 @@
 			.goods-info {
 				margin-left: 16rpx;
 				flex: 1;
-				height: 40rpx;
 				display: flex;
 				flex-direction: column;
 				align-items: center;
-				
+				height: 100%;
 
 				.name {
 					display: flex;
@@ -393,11 +392,11 @@
 						height: 30rpx;
 						line-height: 30rpx;
 						text-align: center;
-						border: 0.3px solid #35c4c4;
+						border: 0.7px solid #35c4c4;
 						border-radius: 4rpx;
 						font-size: 20rpx;
 						color: #35c4c4;
-						vertical-align: text-bottom;
+						vertical-align: 13%;
 					}
 
 					.text {
