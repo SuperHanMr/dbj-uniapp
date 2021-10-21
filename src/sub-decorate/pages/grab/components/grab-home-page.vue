@@ -2,14 +2,14 @@
   <view class="grab-content">
     <view class="grab-content-top">
       <view class="grab-content-header">
-        <view class="avatar" :style="{backgroundImage: `url(${personData.avatar})`}"  mode=""></view>
+        <image class="avatar" :src="personData.avatar" mode="aspectFill" ></image>
         <text class="title">{{personData.realName}}</text>
         <view class="introduce">
           <text>{{personData.genderName}}</text>
 <!--         <text>|</text>
           <text>{{personData.roleName}}</text> -->
           <text>|</text>
-          <text>好评率{{personData.praiseRate||0}}</text>
+          <text>好评率{{personData.praiseRate||'100%'}}</text>
         </view>
       </view>
       <view class="person-msg-list">

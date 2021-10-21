@@ -213,6 +213,10 @@
         }
         getCheckResultDetail(this.serverId).then(res => {
           this.isLoading = true
+          if(res.serveCardState===4){
+            this.$emit('isEmpty',this.index)
+            return
+          }
           this.checkData = res
           this.checkData.time = '00:00:00'
           this.data[0].arr = res.normalList

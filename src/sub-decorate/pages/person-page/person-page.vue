@@ -11,7 +11,7 @@
         <!-- <image class="header-back"></image> -->
       </view>
       <view class="item nav-header-msg">
-        <view class="avatar" :style="{backgroundImage: `url(${personData.avatar})`}"  mode=""></view>
+        <image class="avatar" :src="personData.avatar" mode="aspectFill" ></image>
         <text>{{personData.roleId>=1&&personData.roleId<7?personData.realName:personData.nickName}}</text>
       </view>
       <view class="item "></view>
@@ -21,14 +21,14 @@
         <view class="person-msg-top" :class="{'is-self':personData.roleId === 10000}">
           <view class="person-msg-header">
             <view class="person-msg-header-image">
-              <view class="avatar" :style="{backgroundImage:`url(${personData.avatar})`}" ></view>
+              <image class="avatar" :src="personData.avatar" mode="aspectFill" ></image>
               <i class="icon icon-ic_nan" v-if="personData.gender===1"></i>
               <i class="icon icon-ic_nv" v-else></i>
             </view>
             <text class="name">{{personData.roleId>=1&&personData.roleId<7?personData.realName:personData.nickName}}</text>
             <view class="label">
               <text class="job" v-if="personData.roleId!==10000">{{personData.roleId===3?personData.personAllBadgeVO.skillBadges[0].name:personData.roleName}}</text>
-              <text class="rate" v-if="personData.roleId<7">好评率{{personData.praiseRate||'0%'}}</text>
+              <text class="rate" v-if="personData.roleId<7">好评率{{personData.praiseRate||'100%'}}</text>
             </view>
           </view>
           <view class="btn" v-if="personData.roleId<7">
@@ -165,7 +165,7 @@
       
     },
     onLoad(e){
-      this.personId = e.personId||7206
+      this.personId = e.personId||7581
       // this.getGrabDetail()
     },
     onShow(){
