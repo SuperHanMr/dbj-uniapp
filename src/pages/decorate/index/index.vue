@@ -542,6 +542,18 @@
         if (this.currentProject && this.currentProject.projectId) {
           getMsgNum(this.currentProject.projectId).then(res => {
             this.msgNum = res.count
+            
+            // uni.setTabBarBadge({
+            //   index: 2,
+            //   text: this.msgNum+'',
+            //   success:()=>{
+            //     console.log('sucess')
+            //   },
+            //   fail:(e)=>{
+            //     console.log('fail',e)
+            //   }
+            // })
+
           })
         } else {
           this.msgNum = 0

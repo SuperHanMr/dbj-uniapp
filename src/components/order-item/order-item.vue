@@ -35,7 +35,8 @@
 						<text class="name">{{dataList.fullName}}</text>					
 					</view>
 					<view class="attr" v-if="isEvaluate">
-						<text style="margin-right: 24rpx;">{{isEvaluate}}</text>
+						<text style="margin-right: 24rpx;" v-if="dataList.scaleProperties">{{dataList.scaleProperties}}</text>
+						<text style="margin-right: 24rpx;" v-else>{{dataList.skuName}}</text>
 					</view>
 					<view class="attr" v-else>
 						<text style="margin-right: 24rpx;" v-if="refundType">{{dataList.scaleProperties}}</text>
@@ -121,7 +122,7 @@
 			<view class="right">
 				<view class="item">
 					<text>押金</text>
-					<text>￥{{handlePrice(dataList.deposit)[0]}}.{{handlePrice(dataList.deposit)[1]}}</text>
+					<text class="price-font" style="color: #333333;">￥{{handlePrice(dataList.deposit)[0]}}.{{handlePrice(dataList.deposit)[1]}}</text>
 				</view>
 			</view>
 		</view>
@@ -184,6 +185,7 @@
 			},
 			
 			handlePrice(price){
+					if(!price) return ['0','00']
 				let list=String(price).split(".")
 				if(list.length==1){
 					return [list[0],"00"]
@@ -279,7 +281,7 @@
 						font-size: 20rpx;
 						text-align: center;
 						display: inline-block;
-						vertical-align: 16%;
+						vertical-align: 13%;
 					}
 					.name{
 						font-size: 26rpx;
@@ -379,6 +381,61 @@
 	    color: #111111;
 	  }
 	}
+	.discount-container {
+	  padding-bottom: 16rpx;
+	  display: flex;
+	  flex-flow: row nowrap;
+	  flex: 1;
+	  align-items: center;
+	  justify-content: flex-end;
+	  font-size: 22rpx;
+	  color: #999999;
+	
+	  .left,
+	  .right {
+	    .item {
+	      width: 302rpx;
+	      height: 32rpx;
+	      display: flex;
+	      flex: 1;
+				color: #333333;
+				font-size: 22rpx;
+	      flex-flow: row nowrap;
+	      justify-content: space-between;
+				align-items: center;
+	      margin-bottom: 8rpx;
+				.item-left{
+					display: flex;
+					flex-flow: row nowrap;
+					align-items: center;
+					image{
+						width: 24rpx;
+						height: 24rpx;
+						object-fit: cover;
+					}
+				}
+	    }
+	
+	    .item:nth-last-child(1) {
+	      margin-bottom: 0;
+	    }
+	  }
+	
+	  .line1 {
+	    width: 2rpx;
+	    height: 40rpx;
+	    background: #ebebeb;
+	    margin: 16rpx 40rpx;
+	  }
+	
+	  .line2 {
+	    width: 2rpx;
+	    height: 20rpx;
+	    background: #ebebeb;
+	    margin: 6rpx 40rpx;
+	  }
+	}
+	
 	
 	.discount-container3 {
 		padding-bottom: 24rpx;
@@ -399,6 +456,10 @@
 				flex-flow: row nowrap;
 				justify-content: space-between;
 				margin-bottom: 8rpx;
+				text{
+					font-size: 22rpx;
+					color: #333;
+				}
 			}
 		}
 	}
