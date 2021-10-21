@@ -212,6 +212,7 @@
     align-items: center;
     flex-direction: row;
     align-items: center;
+    border-radius: 10rpx;
   }
 
   .search-card {
