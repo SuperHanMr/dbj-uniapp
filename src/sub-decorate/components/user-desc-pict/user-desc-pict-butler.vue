@@ -14,9 +14,11 @@
       </view>
       <view class="desc">{{detail.summaryDescription}}</view>
       <view class="picture flex-row">
-        <view class="imgs" v-for="(item, index) in detail.sitePhotoList" :key="index" v-if="index < 6">
-          <image  mode="aspectFill" :src="item" @click="clickImg(detail.sitePhotoList, index)"></image>
-          <view class="zz" v-if="index === 5" @click="clickImg(detail.sitePhotoList, 5)">+{{detail.sitePhotoList.length - 6}}
+        <view class="imgs" :class="{'img3': index % 3 == 2}" v-for="(item, index) in detail.sitePhotoList" :key="index"
+          v-if="index < 6">
+          <image mode="aspectFill" :src="item" @click="clickImg(detail.sitePhotoList, index)"></image>
+          <view class="zz" v-if="index === 5" @click="clickImg(detail.sitePhotoList, 5)">
+            +{{detail.sitePhotoList.length - 6}}
           </view>
         </view>
       </view>
@@ -146,11 +148,16 @@
   }
 
   .picture {
-    justify-content: space-between;
+    justify-content: flex-start;
     flex-wrap: wrap;
+
+    .img3.imgs {
+      margin-right: 0;
+    }
 
     .imgs {
       margin-bottom: 8rpx;
+      margin-right: 8rpx;
       width: 32%;
       position: relative;
 
