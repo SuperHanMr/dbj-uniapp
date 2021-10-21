@@ -16,7 +16,7 @@
 					商家信息
 				</view>
 				<view class="title-modify">
-					
+
 				</view>
 				<view class="company-name">
 					<view class="label">
@@ -25,9 +25,8 @@
 					<input type="text" :value="companyValue" maxlength=30 placeholder="请输入30个字以内"
 						@input="companyHandler($event)"
 						placeholder-style="font-size:28rpx;font-weight: 400;color: #C7C7C7;" />
-					<image
-						src="https://ali-image.dabanjia.com/static/mp/dabanjia/images/merchant-entry/live_input_clear_merchant-entry.png"
-						mode="" @click="deleteCompanyName()" v-if="companyValue != ''"></image>
+					<view class='.icon-input-clear icon-merchant-close' @click="deleteCompanyName()"
+						v-if="companyValue != ''"></view>
 				</view>
 				<view class="service-city">
 					<view class="label">
@@ -37,9 +36,7 @@
 						<view class="text">
 							{{item.name}}
 						</view>
-						<image
-							src="https://ali-image.dabanjia.com/static/mp/dabanjia/images/merchant-entry/live_input_clear_merchant-entry.png"
-							mode="" @click="deleteCity(index)"></image>
+						<view class='.icon-input-clear icon-merchant-close' @click="deleteCity(index)"></view>
 					</view>
 					<view class="add-service-city" @click="openSelectCity">
 						<view class="icon">
@@ -59,9 +56,7 @@
 						<view class="text">
 							{{item.oneLevelCategoryName + '-' + item.twoLevelCategoryName + '-' + item.label}}
 						</view>
-						<image
-							src="https://ali-image.dabanjia.com/static/mp/dabanjia/images/merchant-entry/live_input_clear_merchant-entry.png"
-							mode="" @click="deleteBusinessCategory(index)"></image>
+						<view class='.icon-input-clear icon-merchant-close' @click="deleteBusinessCategory(index)"></view>
 					</view>
 					<view class="add-service-city" @click="openBusinessCategory">
 						<view class="icon">
@@ -97,10 +92,9 @@
 			</view>
 			<view class="argument">
 				<view class="img-box" @click="argumentFileHandler">
-					<image v-if="argumentFile"
-						src="https://ali-image.dabanjia.com/static/mp/dabanjia/images/merchant-entry/merchant-entry-select.png"
-						mode="">
-					</image>
+					<view class="icon-select icon-select-merchant" v-if="argumentFile">
+						
+					</view>
 					<view v-if="!argumentFile" class="circle">
 					</view>
 
@@ -117,10 +111,8 @@
 					<view class="text">
 						请选择服务城市
 					</view>
-					<image
-						src="https://ali-image.dabanjia.com/static/mp/dabanjia/images/merchant-entry/live_input_clear_merchant-entry.png"
-						mode="" @click="closePopup">
-					</image>
+					<view class="icon-closed icon-closed-merchant" @click="closePopup">
+					</view>
 				</view>
 				<view class="select">
 					<view class="all-city" @click="selectCity(1)">
@@ -505,6 +497,7 @@
 			background-image: url(../../../static/merchant-entry/merchant-entry-container.png);
 			background-size: 100% 100%;
 			position: relative;
+
 			.title {
 				padding: 40rpx 0 40rpx 24rpx;
 				font-size: 40rpx;
@@ -512,7 +505,8 @@
 				font-weight: bold;
 				color: #333333;
 			}
-			.title-modify{
+
+			.title-modify {
 				position: absolute;
 				left: 24rpx;
 				top: 68rpx;
@@ -520,6 +514,7 @@
 				height: 28rpx;
 				background: rgba(0, 194, 184, 0.11);
 			}
+
 			.company-name,
 			.service-city,
 			.business-category {
@@ -546,9 +541,10 @@
 					caret-color: #35C4C4;
 				}
 
-				image {
-					width: 64rpx;
-					height: 64rpx;
+				.icon-merchant-close {
+					font-size: 28rpx;
+					font-size: 65rpx;
+					color: #D3D3D3;
 					position: absolute;
 					right: 40rpx;
 					top: 88rpx;
@@ -574,10 +570,10 @@
 						color: #111111;
 					}
 
-					image {
+					.icon-merchant-close {
 						margin: 12rpx 8rpx 12rpx 0;
-						width: 64rpx;
-						height: 64rpx;
+						font-size: 64rpx;
+						color: #D3D3D3;
 					}
 				}
 
@@ -705,14 +701,13 @@
 				align-items: center;
 			}
 
-			image {
-				width: 30rpx;
-				height: 28rpx;
+			.icon-select-merchant {
+				font-size: 30rpx;
 			}
 
 			.circle {
 				width: 26rpx;
-				height: 24rpx;
+				height: 26rpx;
 				border-radius: 50%;
 				border: 2rpx solid #A8A8A8;
 			}
@@ -739,7 +734,7 @@
 			align-items: center;
 			justify-content: center;
 			padding: 32rpx 0;
-			border-bottom: 1px solid #F2F3F3;
+			border-bottom: .5px solid #F2F3F3;
 			position: relative;
 
 			.text {
@@ -750,12 +745,11 @@
 				color: #333333;
 			}
 
-			image {
+			.icon-closed-merchant {
 				position: absolute;
 				right: 32rpx;
 				top: 20rpx;
-				width: 64rpx;
-				height: 64rpx;
+				font-size: 64rpx;
 			}
 		}
 
@@ -769,6 +763,11 @@
 			.search-city {
 				text-align: center;
 				padding: 28rpx 0;
+			}
+
+			.all-city {
+				border-bottom: .5px solid #F2F3F3;
+				margin: 0 32rpx;
 			}
 
 			.active-city {
