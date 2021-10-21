@@ -1,7 +1,7 @@
 <template>
   <view class="result-content" >
     <view class="report-time" v-if="!isReport&&checkData.time">{{checkData.time}}后将会自动确认验房结果</view>
-    <view class="report-content">
+    <view class="report-content" v-if="isLoading">
       <view class="report-title">
         <view>
           <text class="title">验房报告</text>
@@ -35,7 +35,7 @@
       <deliverCard id="hazard" color="#F6A93B" title="隐患" :data='data[1]'></deliverCard>
       <deliverCard id="conform" color="#348BE2" title="符合项" :data='data[0]'></deliverCard>
     </view>
-    <text class="bottom-text">我是有底线的~</text>
+    <text class="bottom-text" v-if="isLoading">我是有底线的~</text>
 
   </view>
 </template>
@@ -59,7 +59,7 @@
       imagePreview
     },
     props: {
-      isReport: false,
+      isReport: true,
       scrollTop: 0,
       serverId:{
         type:Number,
@@ -75,7 +75,7 @@
         ec: {
           lazyLoad: true
         },
-        isLoading:true,
+        isLoading:false,
         option: {
           tooltip: {
             trigger: 'item'
@@ -212,10 +212,13 @@
           return
         }
         getCheckResultDetail(this.serverId).then(res => {
-          this.isLoading = true
-          if(res.serveCardState===4){
+          
+          if(this.isReport&&res.serveCardState===5){
+            console.log('123')
             this.$emit('isEmpty',this.index)
             return
+          }else{
+            this.isLoading = true
           }
           this.checkData = res
           this.checkData.time = '00:00:00'
@@ -225,9 +228,13 @@
           this.data[1].value = res.generalProblemList.length
           this.data[2].arr = res.seriousProblemList
           this.data[2].value = res.seriousProblemList.length
-          this.$refs.canvas.init(this.initChart)
-          this.drawImage()
-          this.getTop()
+          setTimeout(()=>{
+            this.$refs.canvas.init(this.initChart)
+            this.drawImage()
+            this.getTop()
+          },1000)
+          
+          this.isLoading = true
           if(!this.isReport&&this.checkData.autoSubmitTime>0){
             let id = setInterval(()=>{
               if(this.checkData.autoSubmitTime===0){
@@ -238,6 +245,7 @@
               this.checkData.time = this.toHHmmss(this.checkData.autoSubmitTime-1000).split('.')[0]
             },1000)
           }
+          
         }).catch(err=>{
           this.$emit('isEmpty',this.index)
         })
@@ -318,6 +326,7 @@
           height: height,
           devicePixelRatio: canvasDpr
         })
+        console.log(chart)
         canvas.setChart(chart)
         chart.setOption(this.option)
         return chart
