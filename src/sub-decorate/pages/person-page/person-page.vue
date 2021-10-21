@@ -167,7 +167,7 @@
     },
     onLoad(e){
       this.userType = e.userType
-      this.personId = e.personId||6833
+      this.personId = e.personId||7248
       // this.getGrabDetail()
     },
     onShow(){
@@ -305,7 +305,7 @@
       //   // })
       // },
       changeOpacity(num){
-        num<10?this.opacityNum = 0:num<40?this.opacityNum=0.2:num<80?this.opacityNum=0.4:num<120?this.opacityNum=0.6:num<160?this.opacityNum=0.8:this.opacityNum=1
+        num<10?this.opacityNum = 0:num<20?this.opacityNum=0.2:num<40?this.opacityNum=0.3:num<60?this.opacityNum=0.4:num<80?this.opacityNum=0.5:num<100?this.opacityNum=0.6:num<120?this.opacityNum=0.7:num<140?this.opacityNum=0.8:num<160?this.opacityNum=0.9:this.opacityNum=1
         // console.log(this.opacityNum)
       },
       toItem(name) {
