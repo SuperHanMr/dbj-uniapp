@@ -19,7 +19,6 @@
 						:showBacking="currentIndex==3" :showSubCount="currentIndex!=3" :showDetail="currentIndex==3">
 					</warehouse-item>
 					<view v-if="currentIndex==0" style="height: 200rpx;">
-
 					</view>
 				</scroll-view>
 			</swiper-item>
@@ -49,6 +48,7 @@
 				lastId: ["", "", "", ""],
 				triggered: false, //控制刷新显示字段
 				currentIndex: 0,
+				refreshIndex:-1
 			};
 		},
 		computed: {
@@ -162,6 +162,7 @@
 						.then((e) => {
 							if (isRefresh) {
 								this.triggered = false;
+								this.refreshIndex=-1
 							}
 							if (e.length) {
 								this.lastId[this.currentIndex] = e[e.length - 1].orderId;
@@ -175,6 +176,7 @@
 						.catch((e) => {
 							if (isRefresh) {
 								this.triggered = false;
+								this.refreshIndex=-1
 							}
 						});
 				} else if ([1, 2].includes(this.currentIndex)) {
@@ -183,6 +185,7 @@
 						.then((e) => {
 							if (isRefresh) {
 								this.triggered = false;
+								this.refreshIndex=-1
 							}
 							if (e.length) {
 								this.lastId[this.currentIndex] = e[e.length - 1].id;
@@ -201,6 +204,7 @@
 						.catch((e) => {
 							if (isRefresh) {
 								this.triggered = false;
+								this.refreshIndex=-1
 							}
 						});
 				} else {
@@ -208,6 +212,7 @@
 						.then((e) => {
 							if (isRefresh) {
 								this.triggered = false;
+								this.refreshIndex=-1
 							}
 							if (e.length) {
 								this.lastId[this.currentIndex] = e[e.length - 1].id;
@@ -221,6 +226,7 @@
 						.catch((e) => {
 							if (isRefresh) {
 								this.triggered = false;
+								this.refreshIndex=-1
 							}
 						});
 				}
@@ -229,6 +235,11 @@
 				this.getList(false);
 			},
 			onRefresh() {
+				if(this.refreshIndex==-1){
+					this.refreshIndex=this.currentIndex;
+				}else{
+					return
+				}
 				this.triggered = true;
 				this.lastId[this.currentIndex] = "";
 				if (this.currentIndex == 0) {
@@ -321,5 +332,6 @@
 
 	.scroll-view {
 		flex: 1;
+		height: 100%;
 	}
 </style>
