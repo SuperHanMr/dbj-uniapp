@@ -14,6 +14,14 @@
 				<scroll-view class="scroll-view" :enable-back-to-top="true" scroll-y="true" lower-threshold="10"
 					refresher-background="#FFF" refresher-enabled="true" :refresher-triggered="triggered"
 					@scroll="onScroll" @refresherrefresh="onRefresh" @scrolltolower="onLoadMore">
+
+					<view v-if="currentList.length==0" class="no-list-content">
+						<image class="no-list" src="../../../static/order/blank_house@2x.png" mode=""></image>
+						<view class="tip-text">
+							您还没有任何数据~
+						</view>
+					</view>
+
 					<warehouse-item v-for="(item,index) in currentList" :item="item" :key="item.id" @detail="toDetail"
 						@refund="toRefund" @confirmGoods="onConfirmGoods" :showRecived="currentIndex==1"
 						:showBacking="currentIndex==3" :showSubCount="currentIndex!=3" :showDetail="currentIndex==3">
@@ -48,7 +56,7 @@
 				lastId: ["", "", "", ""],
 				triggered: false, //控制刷新显示字段
 				currentIndex: 0,
-				refreshIndex:-1
+				refreshIndex: -1
 			};
 		},
 		computed: {
@@ -162,7 +170,7 @@
 						.then((e) => {
 							if (isRefresh) {
 								this.triggered = false;
-								this.refreshIndex=-1
+								this.refreshIndex = -1
 							}
 							if (e.length) {
 								this.lastId[this.currentIndex] = e[e.length - 1].orderId;
@@ -176,7 +184,7 @@
 						.catch((e) => {
 							if (isRefresh) {
 								this.triggered = false;
-								this.refreshIndex=-1
+								this.refreshIndex = -1
 							}
 						});
 				} else if ([1, 2].includes(this.currentIndex)) {
@@ -185,7 +193,7 @@
 						.then((e) => {
 							if (isRefresh) {
 								this.triggered = false;
-								this.refreshIndex=-1
+								this.refreshIndex = -1
 							}
 							if (e.length) {
 								this.lastId[this.currentIndex] = e[e.length - 1].id;
@@ -204,7 +212,7 @@
 						.catch((e) => {
 							if (isRefresh) {
 								this.triggered = false;
-								this.refreshIndex=-1
+								this.refreshIndex = -1
 							}
 						});
 				} else {
@@ -212,7 +220,7 @@
 						.then((e) => {
 							if (isRefresh) {
 								this.triggered = false;
-								this.refreshIndex=-1
+								this.refreshIndex = -1
 							}
 							if (e.length) {
 								this.lastId[this.currentIndex] = e[e.length - 1].id;
@@ -226,7 +234,7 @@
 						.catch((e) => {
 							if (isRefresh) {
 								this.triggered = false;
-								this.refreshIndex=-1
+								this.refreshIndex = -1
 							}
 						});
 				}
@@ -235,9 +243,9 @@
 				this.getList(false);
 			},
 			onRefresh() {
-				if(this.refreshIndex==-1){
-					this.refreshIndex=this.currentIndex;
-				}else{
+				if (this.refreshIndex == -1) {
+					this.refreshIndex = this.currentIndex;
+				} else {
 					return
 				}
 				this.triggered = true;
@@ -261,6 +269,26 @@
 </script>
 
 <style scoped lang="scss">
+	.no-list-content {
+		display: flex;
+		flex-direction: column;
+		height: 100%;
+		justify-content: center;
+		align-items: center;
+	}
+
+	.no-list {
+		width: 248rpx;
+		height: 248rpx;
+	}
+
+	.tip-text {
+		margin-top: 24rpx;
+		font-size: 30rpx;
+		font-weight: 400;
+		color: #999999;
+	}
+
 	.fill {
 		width: 100%;
 		height: 100%;
