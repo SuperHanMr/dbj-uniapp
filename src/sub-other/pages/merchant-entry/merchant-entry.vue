@@ -446,7 +446,7 @@
 		width: 100%;
 		height: 590rpx;
 		background-size: 100%;
-		background-image: url(https://ali-image.dabanjia.com/static/mp/dabanjia/images/merchant-entry/merchant-entry-ic／bg.png);
+		background-image: url(https://ali-image.dabanjia.com/static/mp/dabanjia/images/merchant-entry/merchant-entry-ic-bg.png);
 		.head-info-box{
 			position: absolute;
 			top: 100rpx;
