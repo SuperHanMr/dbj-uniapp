@@ -265,7 +265,7 @@
 					"path": "pages/decorate-scene/decorate-scene",
 					"style": {
 						"navigationBarTitleText": "用户的家",
-						"enablePullDownRefresh": true,
+						"enablePullDownRefresh": false,
 						"onReachBottomDistance": 100
 					}
 				},
