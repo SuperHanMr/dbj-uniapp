@@ -144,7 +144,8 @@
         serviceData:[],
         isRecommend:false,
         isAttention:false,
-        evaluateNum:0
+        evaluateNum:0,
+        userType:2
       }
     },
     computed:{
@@ -165,6 +166,7 @@
       
     },
     onLoad(e){
+      this.userType = e.userType
       this.personId = e.personId||7653
       // this.getGrabDetail()
     },
@@ -254,7 +256,8 @@
           routeId:routeId,
           relationId:this.personData.zeusId,
           authorId:-1,
-          equipmentId:uni.getSystemInfoSync().deviceId
+          equipmentId:uni.getSystemInfoSync().deviceId,
+          userType:this.userType
         }
         queryAttention(data).then(res=>{
           this.isRecommend = routeId === 2001 ? !this.isRecommend : this.isRecommend

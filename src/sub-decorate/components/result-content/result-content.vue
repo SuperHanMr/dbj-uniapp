@@ -295,8 +295,8 @@
         this.$emit('getData',data)
       },
       toItem(id) {
-        this.currentItem = id
-        let location = this[id] 
+        this.currentItem = id 
+        let location = this[id] + 6
         if (this.isReport) {
           location = location - 44
         }
