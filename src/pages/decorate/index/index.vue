@@ -2,7 +2,7 @@
   <view>
     <view class="decorate-index" v-if="estateList.length > 0">
       <image class="bg-index" mode="aspectFit"
-        src="http://dbj.dragonn.top/static/mp/dabanjia/images/decorate/bg@2x-3.png">
+        src="http://dbj.dragonn.top/%20static/mp/dabanjia/images/decorate/bg%402x-4.png">
       </image>
       <view class="content flex-column">
         <view class="house-firend">
@@ -85,7 +85,7 @@
             </view>
           </view>
           <!-- 我的装修服务 -->
-          <view class="my-decorate-service-wrap" v-if="purchasedServiceList.length > 0 || aServiceData.myServiceFlag">
+          <view class="my-decorate-service-wrap my-decorate-service-dec-wrap" v-if="purchasedServiceList.length > 0 || aServiceData.myServiceFlag">
             <!-- <view class="top-bg"></view> -->
             <view class="my-decorate-service">
               <view class="service-title flex-space-between-row">
@@ -542,6 +542,18 @@
         if (this.currentProject && this.currentProject.projectId) {
           getMsgNum(this.currentProject.projectId).then(res => {
             this.msgNum = res.count
+            
+            // uni.setTabBarBadge({
+            //   index: 2,
+            //   text: this.msgNum+'',
+            //   success:()=>{
+            //     console.log('sucess')
+            //   },
+            //   fail:(e)=>{
+            //     console.log('fail',e)
+            //   }
+            // })
+
           })
         } else {
           this.msgNum = 0

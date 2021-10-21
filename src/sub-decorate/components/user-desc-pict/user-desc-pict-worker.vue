@@ -14,7 +14,7 @@
       </view>
       <view class="desc">{{workerData.content}}</view>
       <view class="picture flex-row">
-        <view class="imgs" v-for="(item, index) in workerData.fileUrls" :key="index" v-if="index < 6">
+        <view class="imgs" :class="{'img3': index % 3 == 2}" v-for="(item, index) in workerData.fileUrls" :key="index" v-if="index < 6">
           <image  mode="aspectFill" :src="item" @click="clickImg(workerData.fileUrls, index)"></image>
           <view class="zz" v-if="index === 5" @click="clickImg(workerData.fileUrls, 5)">+{{workerData.fileUrls.length - 6}}</view>
         </view>
@@ -22,7 +22,7 @@
       <view v-for="(t,index) in workerData.workerItems">
         <view class="worker-title">{{t.workItemName}}</view>
         <view class="picture flex-row">
-          <view class="imgs" v-for="(kit, i) in t.fileUrls" :key="i" v-if="i < 3">
+          <view class="imgs" :class="{'img3': index % 3 == 2}" v-for="(kit, i) in t.fileUrls" :key="i" v-if="i < 3">
             <image mode="aspectFill" :src="kit" @click="clickImg(t.fileUrls, i)"></image>
             <view class="zz" v-if="i === 2" @click="clickImg(t.fileUrls, 2)">+{{t.fileUrls.length - 3}}</view>
           </view>
@@ -102,7 +102,7 @@
 
     .tigs {
       .username {
-        width: 90rpx;
+        min-width: 90rpx;
         height: 42rpx;
         font-size: 30rpx;
         font-family: PingFangSC, PingFangSC-Medium;
@@ -113,6 +113,7 @@
       }
 
       .role {
+        width: 90rpx;
         height: 32rpx;
         background: linear-gradient(45deg, #6d95ef, #84b9fc);
         border-radius: 6rpx;
@@ -153,9 +154,14 @@
   .picture {
     justify-content: space-between;
     flex-wrap: wrap;
-
+    
+    .img3.imgs {
+      margin-right: 0;
+    }
+    
     .imgs {
       margin-bottom: 8rpx;
+      margin-right: 8rpx;
       width: 32%;
       position: relative;
 

@@ -21,7 +21,7 @@
           <view class="price-count">
             <view class="price">
               <text>￥</text>
-              <text>{{item.price / 100}}</text>
+              <text>{{(item.price/100).toFixed(2)}}</text>
             </view>
             <view class="count">共{{item.count}}{{item.unit}}</view>
           </view>

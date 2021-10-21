@@ -81,7 +81,7 @@
         </text>
       </view>
 
-      <view v-else >
+      <view >
         <text style="margin-right: 12rpx;color:#333333;">需付款</text>
         <text style="color: #FF3347;" class="price-font">
           <text>￥</text>
@@ -174,11 +174,6 @@ export default {
           width: 24rpx;
           height: 24rpx;
 					object-fit: cover;
-          // border: 2rpx solid #999999;
-          // border-radius: 50%;
-          // line-height: 24rpx;
-          // text-align: center;
-					// background-image: url('../../static/question.png');
         }
       }
     }

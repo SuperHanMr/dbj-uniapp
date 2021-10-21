@@ -196,7 +196,7 @@
     align-items: center;
     width: 550rpx;
     height: 62rpx;
-    padding-left: 16rpx;
+    padding-left: 6rpx;
     opacity: 1;
     background: #f7f7f7;
     border-radius: 16rpx;
@@ -219,6 +219,7 @@
     display: flex;
     align-items: center;
     background-color: #F4F4F4;
+    padding: 0 10rpx;
   }
 
   .search-card uni-icons {

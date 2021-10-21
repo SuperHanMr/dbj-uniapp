@@ -29,7 +29,7 @@
                   <view class="price-edit">
                     <view class="price">
                       <text>￥</text>
-                      <text>{{item.price / 100}}</text>
+                      <text>{{(item.price/100).toFixed(2)}}</text>
                     </view>
                     <view class="editing" v-if="item.isEdit">
                       <view class="btl" @click="restoreDefault(item)">恢复默认</view>

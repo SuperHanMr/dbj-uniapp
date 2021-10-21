@@ -1,5 +1,5 @@
 <template>
-  <view class="sceneContainer">
+  <view class="sceneContainer" :class="{'noScroll':showComments}">
     <view class="header">
       <view class="houseInfo">
         <view class="location">{{projectInfo.estateNeighbourhood}}</view>
@@ -13,7 +13,7 @@
             <view class="tag">户型</view>
           </view>
           <view class="area">
-            <view class="areaInner">{{projectInfo.estateArea}}平米</view>
+            <view class="areaInner">{{projectInfo.estateArea.toFixed(2)}}平米</view>
             <view class="tag">面积</view>
           </view>
         </view>
@@ -517,6 +517,9 @@ export default {
 		  this.homePageEstate = item
 		})  
   },
+	onPullDownRefresh(){
+		uni.stopPullDownRefresh()
+	},
 	onReachBottom() {
 		
 		if(this.selectedType){
@@ -658,7 +661,7 @@ export default {
       getComments(params).then((data) => {
         if (data) {
           console.log(data);
-          let { page, rows, totalPage, totalRows, list } = data;
+          let { page, list } = data;
           this.comments = list;
         }
       });
@@ -900,6 +903,7 @@ export default {
 </script>
 
 <style scoped>
+	
 	.bottomDelete {
 		width: 100%;
 		height: fit-content;
@@ -1367,6 +1371,9 @@ export default {
 		width: 100%;
 		height: 100%;
 	}
+	.sceneContainer.noScroll{
+		overflow: hidden;
+	}
 	.sceneContainer > .header {
 		width: 100%;
 		height: 400rpx;
@@ -1470,7 +1477,7 @@ export default {
 		opacity: 0.3;
 	}
 	.area .areaInner {
-		width: 122rpx;
+		width: 170rpx;
 		margin-top: 14rpx;
 	}
 
@@ -1760,6 +1767,7 @@ export default {
 		width: 100%;
 		height: fit-content;
 	}
+	
 	.item {
 		width: 100%;
 		display: flex;

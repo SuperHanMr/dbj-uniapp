@@ -41,13 +41,19 @@
             />
           </view>
 
-          <view class="discount-container" v-if="item.showFreight" >
+          <view class="discount-container"  >
             <view class="left">
-              <view class="item" v-if="item.type == 1" >
-                <text>运费</text><text>￥{{item.freight?`￥${item.freight}`:"--"}}</text>
+              <view class="item"  >
+								<view class="item-style">
+									<view style="margin-right: 8rpx;">运费</view>
+									<image class="icon"  src="../../../../static/price_icon.svg" mode="" @click="readExpenses(1)"/>
+								</view>
+								<text class="price-font" v-if="item.stockType == 0">￥{{item.freight?`${item.freight}`:"0.00"}}</text>
+								<text class="price-font" v-else>￥{{item.freight?`${item.freight}`:"--"}}</text>
               </view>
               <view class="item" v-if="item.platformDiscount">
-                <text>平台优惠</text><text>￥{{item.platformDiscount}}</text>
+                <text>平台优惠</text>
+								<text class="price-font">-￥{{item.platformDiscount}}</text>
               </view>
             </view>
 
@@ -55,15 +61,21 @@
             <view class="line2" v-else/>
 
             <view class="right">
-              <view class="item" v-if="item.type == 1">
-                <text>搬运费</text><text>{{item.handlingFees?`￥${item.handlingFees}`:"--"}}</text>
+              <view class="item" >
+								<view class="item-style">
+									<view style="margin-right: 8rpx;">搬运费</view>
+									<image class="icon" src="../../../../static/price_icon.svg" mode="" @click="readExpenses(2)"/>
+								</view>
+								<text class="price-font" v-if="item.stockType == 0">￥{{item.handlingFees?`${item.handlingFees}`:"0.00"}}</text>
+								<text class="price-font" v-else>￥{{item.handlingFees?`${item.handlingFees}`:"--"}}</text>
               </view>
               <view class="item" v-if="item.storeDiscount">
-                <text>商家优惠</text><text>￥{{item.storeDiscount}}</text>
+                <text>商家优惠</text>
+								<text class="price-font">-￥{{item.storeDiscount}}</text>
               </view>
             </view>
           </view>
-
+					
           <view v-if="orderInfo.stockType == 1">
             <view class="tips" v-if="item.freeShipCount || item.fullExemptionAmount ">
               <text>本次支付</text>
@@ -130,6 +142,7 @@
       @confirm="cancleConfirm"
     >
     </popup-dialog>
+		<expenses-toast ref='expensesToast' :expensesType="expensesType"></expenses-toast>
   </view>
 </template>
 
@@ -145,7 +158,7 @@ export default {
     return {
       orderNo: "",
       orderInfo: {},
-
+			expensesType:"",
       systemBottom: "",
       systemHeight: "",
       containerBottom: "",
@@ -220,7 +233,11 @@ export default {
 				});
 			}
 		},
-
+		readExpenses(num) {
+		  this.expensesType = num
+		  this.$refs.expensesToast.showPupop()
+		},
+		
     // 跳转到商品详情页面
     productDetail(item) {
       uni.navigateTo({
@@ -325,6 +342,7 @@ export default {
     },
 
     handlePrice(price) {
+			if(!price) return ['0','00']
       let list = String(price).split(".");
       if (list.length == 1) {
         return [list[0], "00"];
@@ -456,12 +474,24 @@ export default {
             .item {
               width: 302rpx;
               height: 32rpx;
-              line-height: 32rpx;
               display: flex;
               flex: 1;
               flex-flow: row nowrap;
               justify-content: space-between;
               margin-bottom: 8rpx;
+							color: #333333;
+							font-size: 22rpx;
+							.item-style{
+								display: flex;
+								flex-flow: row nowrap;
+								align-items: center;
+								
+								.icon{
+									width: 24rpx;
+									height: 24rpx;
+									object-fit: cover;
+								}
+							}
             }
 
             .item:nth-last-child(1) {

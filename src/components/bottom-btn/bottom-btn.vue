@@ -1,6 +1,6 @@
 <template>
 	<view class="bottom-btn" :style="{paddingBottom:systemBottom,backgroundColor:bgcolor}">
-		<button v-if="showDefaultBtn" class="add-btn" @click="submit">{{btnContent}}</button>
+		<view v-if="showDefaultBtn" class="add-btn" @click="submit">{{btnContent}}</view>
 		<slot  ></slot>
 	</view>
 </template>
@@ -52,7 +52,7 @@
 		.add-btn {
 			// margin-top: 20rpx;
 			height: 88rpx;
-			background: linear-gradient(135deg, #53d5cc, #4fc9c9);
+			background: linear-gradient(135deg, #00ccbe, #00c2bf);
 			border-radius: 12rpx;
 			width: 686rpx;
 			line-height: 88rpx;

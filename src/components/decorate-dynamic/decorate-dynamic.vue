@@ -1,7 +1,7 @@
 <template>
   <view class="decorate-dynamic">
     		<view class="item" v-for="(item,index) in dynamicsArr" :key="item.id">
-    			<view class="avatar" :class="{'avatar-person':isPerson}" :style="{backgroundImage:`url(${item.avatar})`}" :src="item.avatar"></view>
+          <image class="avatar" :src="item.avatar" mode="aspectFill" ></image>
     			<view class="acitonInfo" :class="{'acitonInfo-person':isPerson}">
     				<view class="header">
     					<view>
@@ -116,7 +116,7 @@
 		border-radius: 50%;
 		display: block;
 		margin-top: 39rpx;
-		margin-left: 31rpx;
+		// margin-left: 31rpx;
     background-size: contain;
 	}
   view .item{

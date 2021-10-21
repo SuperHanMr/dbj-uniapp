@@ -4,7 +4,7 @@
       <view class="left">
         全部评价（{{pageInfo.totalRow}}）
       </view>
-      <view class="right">综合好评率 {{(totalNum*100).toFixed(2)}}%</view>
+      <view class="right">综合好评率 {{totalNum}}</view>
     </view>
     <scroll-view :scroll-y="true" style="height:100%" @scrolltolower="bindscrolltolower">
       <personEvaliateItem :last='index===evaluate.list.length-1' v-for="item in evaluate.list" :item='item' :key='item.id'></personEvaliateItem>
