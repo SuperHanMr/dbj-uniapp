@@ -24,6 +24,9 @@
     },
     onLoad(e) {
       this.getData(e.id)
+      uni.setNavigationBarTitle({
+        title:e.name+'服务进度'
+      })
     },
     filters:{
       formatDate

@@ -72,6 +72,7 @@
         }
         this.partpay = partpay
       } else {
+        console.log(getApp().globalData.decorateMsg)
         this.msg = getApp().globalData.decorateMsg
       }
       uni.$on("selectedMaterial", this.selectedMaterialCb)
@@ -350,6 +351,7 @@
         if (!this.partpay) {
           params.obtainType = this.msg.obtainType
         }
+        console.log(">>>>>>>params>>>>>>>", params)
         sellList(params).then(data => {
           this.dataOrigin = data
           if (this.dataOrigin?.artificial?.categoryList?.length > 0) {

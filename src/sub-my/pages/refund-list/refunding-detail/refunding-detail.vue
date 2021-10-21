@@ -1,18 +1,16 @@
 <template>
   <view class="container" >
     <!-- 退款详情 -->
-		<custom-navbar opacity="1"  bgcolor="">
+		<custom-navbar :opacity="scrollTop/100" :title="headerTitle">
 			<template v-slot:back>
-				<view @click="toBack">
-					<i class="icon-ic_cancel_white" style="color: white;">
-					</i>
-				</view>
+				<i class="icon-ic_cancel_white back-icon" :style="{color: (scrollTop/100>1)?'black':'white'}"
+					@click="toBack"></i>
 			</template>
 		</custom-navbar>
 		
 		<view class="order-container" :style="{paddingBottom:containerPaddingBottom}" >
-			<view :style="{backgroundImage:`url(${bgImg})`,backgroundSize: '100% 100%'}">
-				<!-- 占位 -->
+			<view  style="position: relative;" :style="{backgroundImage:`url(${bgImg})`,backgroundSize: '100% 100%'}">
+				<view class="bgcStyle" :style="{backgroundImage:`url(${bgImg})`,backgroundSize: '100% 100%'}"/>
 				<view :style="{height:navBarHeight}"></view>
 				<view class="order-status">
 					<view class="status">
@@ -22,7 +20,7 @@
 					</view>
 				</view>
 			</view>
-
+			
 			<view class="refund-product-info" >
 				<order-item v-for="item in refundInfo.detailAppVOS" :key="item.id" :dataList="item" :refundType="true"  @handleDetail="productDetail(item)"  />
 			</view>
@@ -35,12 +33,10 @@
 		  class="cancel-refund-pay"
 		  :style="{paddingBottom:systemBottom,height:systemHeight}"
 		>
-		<view class="button"  @click="cancelToPay()">
-			取消退款
+			<view class="button"  @click="cancelToPay()">
+				取消退款
+			</view>
 		</view>
-		
-		</view>
-		
 		
 		<!-- 取消退款的弹框 -->
     <uni-popup  ref="cancelRefund"  type="dialog">
@@ -68,6 +64,8 @@ export default {
 			containerBottom:"",
 			containerPaddingBottom:"",
 			navBarHeight:"",
+			scrollTop: 0,
+			headerTitle:"",
 			bgImg:'http://dbj.dragonn.top/static/mp/dabanjia/images/decorate/order_bg_orange.png'
     };
   },
@@ -79,10 +77,13 @@ export default {
 		this.containerPaddingBottom = menuButtonInfo.bottom + 160 + "rpx";
 		console.log(this.systemBottom);
 	},
-	
+	onPageScroll(scrollTop) {
+		this.scrollTop = scrollTop.scrollTop
+	},
   onLoad(e) {
 		this.orderId =Number(e.orderId);
 		this.refundDetail()
+		this.headerTitle = "退款详情"
 		const systemInfo = uni.getSystemInfoSync();
 		//状态栏高度
 		this.tophight = systemInfo.statusBarHeight + "px";
@@ -198,6 +199,18 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+	.bgcStyle{
+		width: 100%; 
+		height: 32rpx;
+		position: absolute;
+		bottom: -32rpx;
+		z-index: -1;
+	}
+	.back-icon {
+		color: white;
+		font-size: 40rpx;
+		padding: 20rpx;
+	}
 .header {
   margin-bottom: 32rpx;
   box-sizing: border-box;
@@ -319,10 +332,10 @@ export default {
 
 
 .container {
-  width: 100%;
-  height: 100%;
-  overflow: auto;
   .order-container {
+		width: 100%;
+		height: 100%;
+		overflow: auto;
     .order-status {
       width: 100%;
       height: 140rpx;

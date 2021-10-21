@@ -28,6 +28,11 @@
 
 <style lang="scss" scoped>
   .tabs {
+    position: fixed;
+    width: 100%;
+    top: 0;
+    left: 0;
+    z-index: 999;
     display: flex;
     align-items: flex-start;
     justify-content: flex-start;

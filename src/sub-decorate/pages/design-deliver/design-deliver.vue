@@ -48,6 +48,7 @@
       uni.setNavigationBarTitle({
         title: this.message.stageName
       });
+      // if(getApp().globalData.)
       this.getDataList()
     },
     methods: {
@@ -75,7 +76,7 @@
               confirmStageDeliver(this.message.serveId).then(data => {
                 console.log(data)
                 uni.navigateBack({
-                  
+
                 })
               })
             } else {
