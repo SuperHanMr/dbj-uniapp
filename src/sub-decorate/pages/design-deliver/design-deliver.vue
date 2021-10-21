@@ -43,13 +43,13 @@
       this.containerBottom = menuButtonInfo.bottom;
       this.systemBottom = menuButtonInfo.bottom * 2 + "rpx";
       this.systemHeight = menuButtonInfo.bottom * 2 + 24 + "rpx";
+      this.getDataList()
     },
     onShow() {
       uni.setNavigationBarTitle({
         title: this.message.stageName
       });
-      // if(getApp().globalData.)
-      this.getDataList()
+      // this.getDataList()
     },
     methods: {
       getDataList() {

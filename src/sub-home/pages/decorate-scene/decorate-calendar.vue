@@ -7,7 +7,7 @@
 			<view class="top">
 				<view class="title">装修动态</view>
 			</view>
-			<view class="noDynamics" v-if="showNoDynamics">
+			<view class="noDynamics" v-if="!dynamics.length">
 				<image class="noDynamicsImg" src="http://dbj.dragonn.top/static/mp/dabanjia/images/decorate/pic_empty%402x.png"></image>
 				<view class="text">暂无装修动态</view>
 				<view class="bottom"></view>
@@ -40,7 +40,7 @@
 					</view>
 				</view>
 			</scroll-view>
-			<view class="bottom">
+			<view class="bottom" v-if="dynamics.length">
 				<view class="text">暂时没有更多数据~</view>
 			</view>
 		</view>
@@ -69,12 +69,11 @@
 				dynamics: [],
 				dynamicPage: 1,
 				date: "",//选中日期,
-				showNoDynamics: false
 			};
 		},
 		onLoad(option) {
 			this.projectId = option.projectId
-			this.showMemo = option.isDecorate === "0" ? false : true
+			this.showMemo = option.isDecorate === "1" ? true: false
 		},
 		onReachBottom() {
 			if(!this.date)return
@@ -116,18 +115,14 @@
 					if(data){
 						let {list,page} = data
 						this.dynamicPage = page
-						if(this.dynamicPage!==1){
-							this.dynamics = this.dynamics.concat(list || [])
+						if(this.dynamicPage === 1){
+							this.dynamics = list
 						}else{
-							this.dynamics = list || []
-						}
-						if(!this.dynamics.length){
-							this.showNoDynamics = true
+							this.dynamics.push(...list)
 						}
 					}
 				})
 			}
-			
 		}
 	}
 </script>

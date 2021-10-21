@@ -21,7 +21,7 @@
         <view class="tags" v-for="item of personData.designTags">{{item}}</view>
       </view>
     </view>
-    <view class="msg-item" v-if="personData.roleId<7">
+    <view class="msg-item" v-if="personData.roleId<6">
       <view class="item-title" >
         <view class="line"></view>
         <view class="title">Ta的徽章</view>

@@ -84,7 +84,7 @@
 				} else {
 					list = this.rightList;
 				}
-			  if(data.isCollection){
+			  if(data.isCollect){
 			    list[this.activeIndex].collectionCount += 1
 			  }else{
 			    list[this.activeIndex].collectionCount -=1

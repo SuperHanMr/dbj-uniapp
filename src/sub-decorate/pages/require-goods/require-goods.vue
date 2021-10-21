@@ -39,7 +39,7 @@
 		</view>
 		<view class="bottom-btns" :style="{paddingBottom:systemBottom}">
 			<view class="shop-icon" @click="openCart">
-				<image class="icon" src="http://dbj.dragonn.top/static/mp/dabanjia/images/home/ic_apply_goods.png"
+				<image class="icon"  :class="{'btn-use':cartCount>0,'btn-un':cartCount==0}" src="http://dbj.dragonn.top/static/mp/dabanjia/images/home/ic_apply_goods.png"
 					mode=""></image>
 				<view v-if="cartCount" class="num">
 					{{cartCount}}
@@ -65,7 +65,7 @@
 			</view>
 			<view class="bottom-btns-pop" :style="{paddingBottom:systemBottom}">
 				<view class="shop-icon" @click="openCart">
-					<image class="icon" src="http://dbj.dragonn.top/static/mp/dabanjia/images/home/ic_apply_goods.png"
+					<image class="icon"  :class="{'btn-use':cartCount>0,'btn-un':cartCount==0}" src="http://dbj.dragonn.top/static/mp/dabanjia/images/home/ic_apply_goods.png"
 						mode=""></image>
 
 					<view v-if="cartCount" class="num">
@@ -254,6 +254,7 @@
 
 	.cart-content {
 		max-height: 792rpx;
+		padding: 0 32rpx;
 		overflow: auto;
 		background-color: #ffffff;
 	}
@@ -272,14 +273,14 @@
 		bottom: 0;
 
 		.shop-icon {
-			width: 76rpx;
-			height: 76rpx;
+			width: 96rpx;
+			height: 96rpx;
 			position: relative;
 			margin-left: 32rpx;
 
 			.icon {
-				width: 76rpx;
-				height: 76rpx;
+				width: 96rpx;
+				height: 96rpx;
 			}
 
 			.num {
@@ -305,7 +306,7 @@
 			line-height: 88rpx;
 			text-align: center;
 			color: #fff;
-			background: linear-gradient(135deg, #36d9cd, #28c6c6);
+			background: linear-gradient(135deg, #00ccbe, #00c2bf);
 			border-radius: 12rpx;
 			margin-right: 32rpx;
 		}

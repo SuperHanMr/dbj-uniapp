@@ -2,7 +2,7 @@
   <view class="grab-content">
     <view class="grab-content-top">
       <view class="grab-content-header">
-        <view class="avatar" :style="{backgroundImage: `url(${personData.avatar})`}"  mode=""></view>
+        <image class="avatar" :src="personData.avatar" mode="aspectFill" ></image>
         <text class="title">{{personData.realName}}</text>
         <view class="introduce">
           <text>{{personData.genderName}}</text>
