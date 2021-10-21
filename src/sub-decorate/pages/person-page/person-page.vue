@@ -28,7 +28,7 @@
             <text class="name">{{personData.roleId>=1&&personData.roleId<7?personData.realName:personData.nickName}}</text>
             <view class="label">
               <text class="job" v-if="personData.roleId!==10000">{{personData.roleId===3?personData.personAllBadgeVO.skillBadges[0].name:personData.roleName}}</text>
-              <text class="rate" v-if="personData.roleId<7">好评率{{personData.praiseRate||'100%'}}</text>
+              <text class="rate" v-if="personData.roleId<7&&personData.praiseRate">好评率{{personData.praiseRate}}</text>
             </view>
           </view>
           <view class="btn" v-if="personData.roleId<7">
@@ -165,7 +165,7 @@
       
     },
     onLoad(e){
-      this.personId = e.personId||7206
+      this.personId = e.personId||7653
       // this.getGrabDetail()
     },
     onShow(){
