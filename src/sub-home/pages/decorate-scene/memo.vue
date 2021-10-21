@@ -1,7 +1,8 @@
 <template>
 	<view class="memoWrap" :class="{'bg':!memos.length}">
 		<view class="noMemo" v-if="!memos.length">
-			<image class="noMemoImg" src="http://dbj.dragonn.top/static/mp/dabanjia/images/decorate/pic_empty%402x.png"></image>
+			<image class="noMemoImg"
+				src="http://dbj.dragonn.top/static/mp/dabanjia/images/home/memo_empty%402x.png"></image>
 			<view class="noMemoText">暂无内容~</view>
 		</view>
 		<view class="memoItem" v-else v-for="item in memos" :key="item.memoId">
