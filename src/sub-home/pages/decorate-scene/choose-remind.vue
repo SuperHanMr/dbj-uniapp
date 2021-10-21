@@ -7,7 +7,7 @@
 				<view class="role">{{item.role}}</view>
 			</view>
 			<image v-if="!item.isChecked" @click="checkC(index)" class="img" src="http://dbj.dragonn.top/static/mp/dabanjia/images/home/check%402x.png"></image>
-			<image v-else @click="checkC(index)" class="img" src="http://dbj.dragonn.top/static/mp/dabanjia/images/home/checked%402x.png"></image>
+			<image v-else @click="checkC(index)" class="img" src="http://dbj.dragonn.top/static/mp/dabanjia/images/home/ic_reminder_checked%402x.png"></image>
 		</view>
 		<view class="confirm" @click="confirmC">确认</view>
 	</view>

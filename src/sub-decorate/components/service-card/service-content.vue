@@ -9,7 +9,7 @@
         <text>x {{content.insideArea || 1}}m²</text>
       </view>
       <view class="price">
-        <view class="t1">￥</text><text class="t2">{{content.price/100}}</text><text class="t3">/m²</text></view>
+        <view class="t1">￥</text><text class="t2">{{(content.price/100).toFixed(2)}}</text><text class="t3">/m²</text></view>
         <view class="change" @click="selectAnother">
           <view class="change-t">更换</view>
           <image src="http://dbj.dragonn.top/static/mp/dabanjia/images/decorate/arrow-r-gr.svg" class="change-img"></image>

@@ -279,7 +279,13 @@
         if (this.msg.obtainType != 2) {
           this.dataOrigin?.artificial?.categoryList?.forEach(t => {
             t.itemList.forEach(it => {
-              it.originalId = it.originalId || it.id
+              it.originalId = it.originalId || -1
+              // 默认初始化SkuRelation
+              this.skuRelation.push({
+                originalId: it.originalId,
+                oldSuk: it.id,
+                newSuk: it.id
+              })
               this.checkedIds.push(it.originalId)
             })
           })
@@ -292,10 +298,17 @@
               it.isEdit = false
               if (it.inServiceArea && !it.selling) {
                 this.checkedIds.push(it.originalId)
+                // 默认初始化SkuRelation
+                this.skuRelation.push({
+                  originalId: it.originalId,
+                  oldSuk: it.id,
+                  newSuk: it.id
+                })
               }
             })
           })
         }
+        
         this.computePriceAndShopping()
       },
       computePriceAndShopping() {
