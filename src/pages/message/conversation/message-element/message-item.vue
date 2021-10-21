@@ -4,7 +4,7 @@
     :message="message"
   />
   <group-tip-element
-    v-else-if="message.from === 'administrator'"
+    v-else-if="message.from === 'administrator' && message.type === TIM.TYPES.MSG_TEXT"
     :message="message"
   />
   <text-element 
@@ -36,7 +36,7 @@
     :message="message" 
   />
   <call-element
-    v-else-if="message.type === TIM.TYPES.MSG_CUSTOM && (payloadData.type === 'single_room_call_action' || payloadData.type === 'group_room_call_action')"
+    v-else-if="message.type === TIM.TYPES.MSG_CUSTOM && template.template === 'call'"
     :message="message" 
   />
   <card-template

@@ -19,6 +19,7 @@ function enhanceTim(tim) {
   enhanceSendMessage(tim);
   enhanceGetConversationProfile(tim);
   enhanceGetMessageList(tim);
+  enhanceGetConversationList(tim);
 }
 
 /**
@@ -305,6 +306,41 @@ function enhanceGetMessageList(tim) {
       });
     }
     return _getMessageList(params);
+  }
+}
+
+/**
+ * 增强获取会话列表，处理IM的bug：当没有获取群的Profile时候，
+ * 会话列表无法得到的数据里groupProfile.introduction为空
+ * @param {Object} tim
+ */
+function enhanceGetConversationList(tim) {
+  const _getConversationList = tim.getConversationList;
+  let initMap = {};
+  tim.getConversationList = function(options) {
+    return new Promise((resolve, reject) => {
+      _getConversationList(options).then(res => {
+        const convList = res.data.conversationList || [];
+        let count = 0;
+        let done = 0;
+        convList.forEach(conv => {
+          if (conv.type === TIM.TYPES.CONV_GROUP && !initMap[conv.conversationID]) {
+            initMap[conv.conversationID] = true;
+            count++;
+            tim.getConversationProfile(conv.conversationID).then(p => {
+              conv.groupProfile = p.data.conversation.groupProfile;
+              done++;
+              if (done === count) {
+                resolve(res);
+              }
+            })
+          }
+        });
+        if (count === 0) {
+          resolve(res);
+        }
+      });
+    });
   }
 }
 
