@@ -102,7 +102,7 @@
 
     .tigs {
       .username {
-        width: 90rpx;
+        min-width: 90rpx;
         height: 42rpx;
         font-size: 30rpx;
         font-family: PingFangSC, PingFangSC-Medium;
@@ -113,6 +113,7 @@
       }
 
       .role {
+        width: 90rpx;
         height: 32rpx;
         background: linear-gradient(45deg, #6d95ef, #84b9fc);
         border-radius: 6rpx;

@@ -36,7 +36,7 @@
     filters: {
       filterShowPrice(content) {
         let deposit = content.product.sku.deposit ?? 0
-        return (content.product.skuPrice + Number(deposit)) / 100
+        return ((content.product.skuPrice + Number(deposit)) / 100).toFixed(2)
       }
     }
   }

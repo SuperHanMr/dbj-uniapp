@@ -10,7 +10,7 @@
       </view>
       <view class="check-price">
         <view class="price">
-          <text class="t1">￥</text><text class="t2">{{content.product.skuPrice / 100}}</text><text class="t3">/m²</text>
+          <text class="t1">￥</text><text class="t2">{{(content.product.skuPrice / 100).toFixed(2)}}</text><text class="t3">/m²</text>
         </view>
         <slot name="radio"></slot>
       </view>
