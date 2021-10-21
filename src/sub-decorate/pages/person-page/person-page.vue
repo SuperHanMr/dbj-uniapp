@@ -261,11 +261,21 @@
         }
         queryAttention(data).then(res=>{
           if(routeId === 2001){
+            if(this.isRecommend){
+              this.personData .fansCount--
+            }else{
+              this.personData .fansCount++
+            }
             this.isRecommend = !this.isRecommend 
-            this.personData .fansCount++
+            
           }else{
+            if(this.isAttention){
+              this.personData.recommendCount--
+            }else{
+              this.personData.recommendCount++
+            }
             this.isAttention = !this.isAttention
-            this.personData.recommendCount++
+            
           }
           
 
