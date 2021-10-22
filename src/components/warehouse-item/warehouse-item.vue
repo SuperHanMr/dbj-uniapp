@@ -69,7 +69,7 @@
 				</view>
 			</view>
 			<view v-if="showBack" class="btn-row">
-				<view class="apply-back" v-if="goodItem.status==6" @click="backGoodItem(goodItem)">
+				<view class="apply-back" v-if="goodItem.status==6&&dataList.length>1" @click="backGoodItem(goodItem)">
 					退库存
 				</view>
 				<view class="apply-backing" v-if="goodItem.status==1||goodItem.status==0">

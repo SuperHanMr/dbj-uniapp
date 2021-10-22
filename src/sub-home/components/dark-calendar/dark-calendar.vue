@@ -269,6 +269,7 @@
 	      }
 	
 	      this.dates = this.monthDay(this.y, this.m)
+				this.$emit('changeMargin',true)
 	    }
 	  }
 	}

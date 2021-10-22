@@ -30,7 +30,7 @@
       <payment @gotopay="gotopay" :pieces="pieces" :countPrice="countPrice" :isAllChecked="isAllChecked"></payment>
     </view>
     <uni-popup ref="level">
-      <change-level @changeLevel="setLevel" @close="close" :dataList="levelList" :current="levelList[0]"></change-level>
+      <change-level @changeLevel="setLevel" @close="close" :dataList="levelList" descType="worker" :current="levelList[0]"></change-level>
     </uni-popup>
   </view>
 </template>

@@ -14,7 +14,8 @@
     onLoad(option) {
       const baseUrl = process.env.VUE_APP_BASE_H5
       const scn = uni.getStorageSync("scn")
-      this.src = `${baseUrl}/app-pages/actuarial/index.html?projectId=${option.projectId}&isActuarial=1&token=${scn}`
+      this.src = `${baseUrl}/app-pages/actuarial/index.html?projectId=${option.projectId}&isActuarial=1&token=${scn}&isClient=${option.isClient}`
+      console.log(this.src)
     }
   }
 </script>

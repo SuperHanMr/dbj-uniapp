@@ -101,7 +101,7 @@
 												<text class="nomal">¥</text>
 												<text class="big price-font">
 													{{ foramtPrice(item.formatData.params.price)}}</text>
-												<text class="small price-font">
+												<text class="nomal price-font">
 													.{{ formatCent(item.formatData.params.price)}}</text>
 											</view>
 										</view>
@@ -568,13 +568,15 @@
 			font-size: 22rpx;
 			margin: 2rpx 2rpx 0 2rpx;
 			color: #13bbbb;
-			padding: 14rpx 12rpx;
+			padding: 2rpx 0 10rpx 16rpx;
 			background: linear-gradient(180deg, rgba(28, 191, 202, 0.16) 0%, rgba(25, 199, 212, 0) 100%);
+			border-top-left-radius: 12rpx;
+			border-top-right-radius: 12rpx;
 		}
 
 		.product-info {
 
-			padding: 12rpx;
+			padding: 0 16rpx 16rpx 16rpx;
 			display: flex;
 
 			.product-info-img {
@@ -587,7 +589,7 @@
 
 			.product-info-name {
 				color: black;
-				margin-left: 12rpx;
+				margin-left: 16rpx;
 				display: flex;
 				flex-direction: column;
 				justify-content: space-between;
@@ -615,6 +617,7 @@
 
 					.big {
 						font-size: 32rpx;
+						margin-left: 4rpx;
 					}
 				}
 			}

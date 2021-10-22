@@ -66,7 +66,7 @@
           </view>
         </view>
         <personIntroduce v-if="personData.roleId!==10000" :personData='personData'></personIntroduce>
-        <view class="send-msg" @click="sendMsg" v-if="personData.roleId<7">
+        <view class="send-msg" @click="sendMsg" v-if="personData.roleId<7||hasServe!==0">
           <i class="icon-gerenzhuye_ic_faxiaoxi"></i>
           <text>发消息</text>
           
@@ -112,6 +112,7 @@
     getGrabDetail,
     queryAttention,
     getAttention,
+    getServiceStatus
   } from '@/api/decorate.js'
   export default {
     components: {
@@ -145,7 +146,8 @@
         isRecommend:false,
         isAttention:false,
         evaluateNum:0,
-        userType:2
+        userType:2,
+        hasServe:0
       }
     },
     computed:{
@@ -167,7 +169,7 @@
     },
     onLoad(e){
       this.userType = e.userType
-      this.personId = e.personId||7248
+      this.personId = e.personId||7270
       // this.getGrabDetail()
     },
     onShow(){
@@ -199,17 +201,18 @@
         if(this.personData.roleId===1){
           
           this.currentItem = this.serviceTop<=130&&this.caseTop>130?'serviceTop':this.caseTop<=130&&this.evaluateTop>130?'caseTop':''
-          if(this.interact>88||this.interact === 0){
+          if(this.interact>100||this.interact === 0){
+            console.log(this.interact)
             this.currentItem = 'serviceTop'
           }
         }else if(this.personData.roleId===2){
           this.currentItem = this.caseTop<=130&&this.evaluateTop>130?'caseTop':''
-          if(this.interact>88||this.interact === 0){
+          if(this.interact>100||this.interact === 0){
             this.currentItem = 'caseTop'
           }
         }else{
           this.currentItem = this.dynamicTop<=130&&this.evaluateTop>130?'dynamicTop':''
-          if(this.interact>88||this.interact === 0){
+          if(this.interact>100||this.interact === 0){
             this.currentItem = 'dynamicTop'
           }
         }
@@ -262,17 +265,20 @@
         queryAttention(data).then(res=>{
           if(routeId === 2001){
             if(this.isRecommend){
-              this.personData .fansCount--
+              this.personData.fansCount = this.personData.fansCount-- +''
             }else{
-              this.personData .fansCount++
+              console.log(this.personData.fansCount)
+              this.personData.fansCount = this.personData.fansCount++ +''
+              console.log(this.personData.fansCount)
             }
             this.isRecommend = !this.isRecommend 
             
           }else{
             if(this.isAttention){
-              this.personData.recommendCount--
+              this.personData.recommendCount = this.personData.recommendCount +''
+              
             }else{
-              this.personData.recommendCount++
+              this.personData.recommendCount = this.personData.recommendCount++ +''
             }
             this.isAttention = !this.isAttention
             
@@ -305,6 +311,7 @@
             }
             this.getAttention(1001,'isAttention')
             this.getAttention(2001,'isRecommend')
+            this.getServiceStatus()
             setTimeout(()=>{
               this.getNodeHeight()
               this.getTopDistance()
@@ -315,6 +322,11 @@
             // console.log(this.personData)
             
           }
+        })
+      },
+      getServiceStatus(){
+        getServiceStatus(this.personData.zeusId).then(res=>{
+          this.hasServe = data.status||data.ststus
         })
       },
       // getCaseList() {
