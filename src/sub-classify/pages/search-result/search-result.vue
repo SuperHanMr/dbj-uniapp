@@ -4,8 +4,8 @@
       <view class="search-init" v-if="initSearch">
         <view class="uni-searchbar" @click="clickInitSearch">
           <view class="uni-searchbar__box-icon-search">
-            <view class="search-card" v-if="searchText">
-              <text>{{searchText}}</text>
+            <view class="search-card" v-if="searchVal">
+              <text>{{searchVal}}</text>
               <uni-icons color="#c0c4cc" size="15" type="clear" />
             </view>
           </view>
@@ -78,6 +78,7 @@
         timer: null,
         sort: "",
         isLoadMore: false,
+        searchVal: ""
       }
     },
     onShow() {
@@ -88,6 +89,7 @@
     },
     onLoad(e) {
       this.originFrom = e.originFrom
+      this.searchVal = this.originFrom ? "" : this.searchText
       this.getList()
       // 对上一个页面传值
       // var shequ = getCurrentPages();
@@ -98,10 +100,9 @@
     },
     methods: {
       getList() {
-        console.log(this.originFrom, "this.originFrom")
         let params = {
           serviceVersion: 0,
-          query: this.originFrom ? "" : this.searchText, //查询的关键词
+          query: this.searchVal, //查询的关键词
           categoryId: this.originFrom ? Number(this.categoryId) : "", //搜索范围，在指定的商品分类id的范围内搜索，可不传（表示不限定商品分类）,
           supplierId: 0, //搜索范围，在指定的供应商 id 的范围内搜索，可不传（表示不限定供应商）,
           storeId: 0, //搜索范围，在指定的店铺 id 的范围内搜索，可不传（表示不限定店铺）,
@@ -151,9 +152,8 @@
         this.initSearch = false
       },
       searchConfirm(resText) {
-        this.originFrom = ""
         this.isLoadMore = false
-        this.searchText = resText.value
+        this.searchVal = resText.value
         this.getList()
       },
       toDetails(id) {

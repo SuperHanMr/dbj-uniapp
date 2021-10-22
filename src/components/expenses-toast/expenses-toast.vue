@@ -116,7 +116,7 @@
     height: 80rpx;
     top: 14rpx;
     right: 14rpx;
-    background-image: url("../../static/image/close.png");
+    background-image: url("../../static/images/close.png");
     background-size: contain;
   }
 
