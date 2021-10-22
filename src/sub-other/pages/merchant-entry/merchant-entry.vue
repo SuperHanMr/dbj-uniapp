@@ -552,7 +552,7 @@
 				.icon-merchant-close {
 					font-size: 28rpx;
 					font-size: 65rpx;
-					color: #D3D3D3;
+					color: #333;
 					position: absolute;
 					right: 40rpx;
 					top: 90rpx;
