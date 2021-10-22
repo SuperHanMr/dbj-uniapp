@@ -99,7 +99,8 @@
 											</view>
 											<view class="price-info">
 												<text class="nomal">¥</text>
-												<text class="big price-font"> {{ foramtPrice(item.formatData.params.price)}}</text>
+												<text class="big price-font">
+													{{ foramtPrice(item.formatData.params.price)}}</text>
 												<text class="small price-font">
 													.{{ formatCent(item.formatData.params.price)}}</text>
 											</view>
@@ -563,16 +564,17 @@
 		flex-direction: column;
 		padding: 12rpx;
 		margin-bottom: 16rpx;
-	
+
 		.product-name {
 			font-size: 22rpx;
 			color: #13bbbb;
 			padding: 24rpx 0;
+			background: linear-gradient(180deg, rgba(28, 191, 202, 0.16) 0%, rgba(25, 199, 212, 0) 100%);
 		}
-	
+
 		.product-info {
 			display: flex;
-	
+
 			.product-info-img {
 				width: 96rpx;
 				height: 96rpx;
@@ -580,14 +582,14 @@
 				border: 1rpx solid #f5f5f5;
 				flex-shrink: 0;
 			}
-	
+
 			.product-info-name {
 				color: black;
 				margin-left: 12rpx;
 				display: flex;
 				flex-direction: column;
 				justify-content: space-between;
-	
+
 				.title {
 					line-height: 30rpx;
 					height: 30rpx;
@@ -599,16 +601,16 @@
 					-webkit-line-clamp: 1;
 					-webkit-box-orient: vertical;
 				}
-	
+
 				.price-info {
 					line-height: 30rpx;
 					height: 30rpx;
 					color: #f92a2a;
-	
+
 					.nomal {
 						font-size: 22rpx;
 					}
-	
+
 					.big {
 						font-size: 32rpx;
 					}
@@ -616,7 +618,7 @@
 			}
 		}
 	}
-	
+
 	.alert-app {
 		position: fixed;
 		width: 100vw;

@@ -216,7 +216,10 @@
 	};
 </script>
 
-<style lang="scss" scoped>
+<style lang="scss">
+	page{
+		overflow: hidden;
+	}
 	.history {
 		height: 80rpx;
 		line-height: 80rpx;
