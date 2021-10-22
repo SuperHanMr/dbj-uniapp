@@ -562,17 +562,19 @@
 		border-radius: 12rpx;
 		display: flex;
 		flex-direction: column;
-		padding: 12rpx;
 		margin-bottom: 16rpx;
 
 		.product-name {
 			font-size: 22rpx;
+			margin: 2rpx 2rpx 0 2rpx;
 			color: #13bbbb;
-			padding: 24rpx 0;
+			padding: 14rpx 12rpx;
 			background: linear-gradient(180deg, rgba(28, 191, 202, 0.16) 0%, rgba(25, 199, 212, 0) 100%);
 		}
 
 		.product-info {
+
+			padding: 12rpx;
 			display: flex;
 
 			.product-info-img {
