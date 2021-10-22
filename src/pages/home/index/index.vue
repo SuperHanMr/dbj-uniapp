@@ -107,7 +107,7 @@
 			<view class="flex1">
 			</view>
 
-			<image src="http://dbj.dragonn.top/static/mp/dabanjia/images/home/ic_gongdizhibo_more.png"
+			<image  @click="toLiveList" src="http://dbj.dragonn.top/static/mp/dabanjia/images/home/ic_gongdizhibo_more.png"
 				class="sub-title-more">
 			</image>
 		</view>

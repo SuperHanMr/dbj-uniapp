@@ -144,6 +144,11 @@ export function getSkuList(params) {
   return request.get("/product/app/products/relation/related/skus/list?" + str)
 }
 
+//查询业主与服务者服务状态
+export function getServiceStatus(params){
+  return request.get("/pm/app/serve/serverStatus/"+params)
+}
+
 //个人主页关注推荐
 export function queryAttention(params) {
   return request.post("/app/base/interactive/add", params)

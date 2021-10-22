@@ -1,5 +1,15 @@
 <template>
 	<view class="memoWrap" :class="{'bg':!memos.length}">
+		<custom-navbar opacity="1" :title="title" titleColor="#000" bgcolor="white">
+			<template v-slot:back>
+				<view @click="toBack">
+					<i class="icon-ic_cancel_white" style="color: black;"></i>
+				</view>
+			</template>
+		</custom-navbar>
+		<!-- 占位 -->
+		<view :style="{height:navBarHeight}">
+		</view>
 		<view class="noMemo" v-if="!memos.length">
 			<image class="noMemoImg"
 				src="http://dbj.dragonn.top/static/mp/dabanjia/images/home/memo_empty%402x.png"></image>
@@ -9,7 +19,7 @@
 			<view class="header">
 				<view class="userInfo">
 					<image class="avatar" :src="item.promulgator.avatar"></image>
-					<view class="userName">{{item.promulgator.userName}}</view>
+					<view class="userName">{{item.publisherFlag?'我':item.promulgator.userName}}</view>
 					<view class="role">{{item.promulgator.roleName}}</view>
 				</view>
 				<view class="time">{{item.createTime}}</view>
@@ -37,15 +47,38 @@
 			return {
 				memos: [],
 				projectId: 0,
+				title: "备忘录",
+				fromNewMemo: false,
+				navBarHeight: ""
 			}
 		},
 		onLoad(option) {
 			this.projectId = option.projectId
+			this.fromNewMemo = option.fromNewMemo && option.fromNewMemo === '1'? true: false
+			const systemInfo = uni.getSystemInfoSync();
+			//状态栏高度
+			this.tophight = systemInfo.statusBarHeight + "px";
+			// 获取胶囊按钮的位置
+			const menuButtonInfo = uni.getMenuButtonBoundingClientRect();
+			this.navBarHeight =
+				menuButtonInfo.top +
+				(menuButtonInfo.top - systemInfo.statusBarHeight) +
+				menuButtonInfo.height +
+				"px";
 		},
 		mounted() {
 			this.requestPage()
 		},
 		methods:{
+			toBack(){
+				if(this.fromNewMemo){
+					uni.navigateTo({
+						url: `/sub-home/pages/decorate-scene/decorate-calendar?projectId=${this.projectId}&isDecorate=1`,
+					})
+				}else{
+					uni.navigateBack({})
+				}
+			},
 			toNewMemo(){
 				uni.navigateTo({
 					url: `/sub-home/pages/decorate-scene/new-memo?projectId=${this.projectId}`
@@ -201,6 +234,7 @@
 	.remark .list{
 		max-width: 638rpx;
 		display: flex;
+		flex-wrap: wrap;
 	}
 	.remark .cueOthers{
 		max-width: 370rpx;
