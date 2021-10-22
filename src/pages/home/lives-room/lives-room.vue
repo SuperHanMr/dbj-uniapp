@@ -568,7 +568,7 @@
 			font-size: 22rpx;
 			margin: 2rpx 2rpx 0 2rpx;
 			color: #13bbbb;
-			padding: 2rpx 0 10rpx 16rpx;
+			padding: 4rpx 0 12rpx 16rpx;
 			background: linear-gradient(180deg, rgba(28, 191, 202, 0.16) 0%, rgba(25, 199, 212, 0) 100%);
 			border-top-left-radius: 12rpx;
 			border-top-right-radius: 12rpx;

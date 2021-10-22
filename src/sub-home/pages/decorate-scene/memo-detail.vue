@@ -3,7 +3,7 @@
 		<view class="topArea">
 			<view class="userInfo">
 				<image class="avatar" :src="userInfo.avatar"></image>
-				<view class="userName">{{userInfo.userName}}</view>
+				<view class="userName">{{isSelf?'我':userInfo.userName}}</view>
 				<view class="role">{{userInfo.roleName}}</view>
 			</view>
 			<view class="time">{{memoInfo.createTime}}</view>
@@ -26,6 +26,7 @@
 				memoId: 0,
 				memoInfo: {},
 				userInfo: {},
+				isSelf: false,
 				reminderList: []
 			}
 		},
@@ -39,9 +40,10 @@
 			requestPage(){
 				getMemoDetail(this.memoId).then(data => {
 					if(data){
-						let {promulgator,reminderList} = data
+						let {promulgator,publisherFlag,reminderList} = data
 						this.memoInfo = data
 						this.userInfo = promulgator
+						this.isSelf = publisherFlag
 						this.reminderList = reminderList
 					}
 				})

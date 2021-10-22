@@ -10,7 +10,11 @@
       :style="{width: elementWidth + 'px'}"
       >
       <text class="sound-duration">{{ duration }}″</text>
-      <view class="sound-icon icon-audio"></view>
+      <view class="sound-icon">
+        <view class="icon-audio-path1"></view>
+        <view class="icon-audio-path2"></view>
+        <view class="icon-audio-path3"></view>
+      </view>
      </view>
   </message-bubble>
 </template>
@@ -74,14 +78,67 @@ export default {
     font-size: 14px;
     margin-right: 8rpx;
   }
+  .sound-icon {
+    font-size: 16px;
+    position: relative;
+    .icon-audio-path1,
+    .icon-audio-path2 {
+      position: absolute;
+      left: 0;
+      top: 0;
+      z-index: 1;
+    }
+  }
   &.playing {
-    background-color: #f00;
+    .sound-icon {
+      .icon-audio-path1 {
+        animation: audio-playing1 1s linear infinite;
+      }
+      .icon-audio-path2 {
+        animation: audio-playing2 1s linear infinite;
+      }
+    }
   }
   &.sound-element-send {
     color: #fff;
     .sound-icon {
       order: 1;
     }
+  }
+}
+
+@keyframes audio-playing1 {
+  0% {
+    color: transparent;
+  }
+  25% {
+    color: transparent;
+  }
+  50% {
+    color: inherit;
+  }
+  75% {
+    color: inherit;
+  }
+  100% {
+    color: transparent;
+  }
+}
+@keyframes audio-playing2 {
+  0% {
+    color: transparent;
+  }
+  25% {
+    color: inherit;
+  }
+  50% {
+    color: inherit;
+  }
+  75% {
+    color: inherit;
+  }
+  100% {
+    color: transparent;
   }
 }
 </style>

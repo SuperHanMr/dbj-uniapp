@@ -12,8 +12,8 @@
             <view class="pay-num">{{item.sales}}人付款</view>
             <view class="item-msg-tip">
               <view class="price">¥
-                <text class="integer">{{item.convertedPrice.split('.')[0]}}</text>
-                <text class="decimals">.{{item.convertedPrice.split('.')[1]}}</text>
+                <text class="integer">{{item.convertedPrice.split('.')[0]||'0'}}</text>
+                <text class="decimals">.{{item.convertedPrice.split('.')[1]||'00'}}</text>
                 <text class="unit"  v-if="item.unitName">/{{item.unitName}}</text>
               </view>
               <view class="service-tag" v-if="item.showMiddleServerTitle">中级服务</view>
@@ -28,7 +28,7 @@
     <view class="empty" v-else>
       暂无服务
     </view>
-    <view class="click-text" v-if="serviceList.length>3" @click="open">
+    <view class="click-text" v-if="serviceData.length>3" @click="open">
     <text>{{isOpen?'收起全部服务':'展开全部服务'}}</text><i :class="{'icon-gerenzhuye_anlihefuwu_shouqiic':isOpen,'icon-gerenzhuye_anlihefuwu_zhankaiic':!isOpen}"></i>
     </view>
     
@@ -64,12 +64,14 @@
     },
     methods:{
       open(){
+        console.log(this.isOpen)
         if(this.isOpen){
           this.serviceList = this.serviceData.slice(0,3);
         }else{
           this.serviceList = this.serviceData
         }
         this.isOpen = !this.isOpen
+        console.log(this.isOpen)
       },
       toBuy(item){
         uni.navigateTo({

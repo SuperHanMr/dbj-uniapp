@@ -105,7 +105,7 @@
         </text>
       </view>
 			
-      <view  v-else>
+      <view  v-if="!data.totalActualIncomeAmount">
         <text style="margin-right: 12rpx;color:#333333;">需付款</text>
         <text style="color: #FF3347;" class="price-font">
           <text>￥</text>
