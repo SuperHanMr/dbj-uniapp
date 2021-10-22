@@ -65,7 +65,7 @@
 				}
 				createMemo(params).then(data => {
 					uni.navigateTo({
-						url: `/sub-home/pages/decorate-scene/memo?projectId=${this.projectId}`
+						url: `/sub-home/pages/decorate-scene/memo?projectId=${this.projectId}&fromNewMemo=1`
 					})
 				})
 			}

@@ -294,7 +294,8 @@
 					"path": "pages/decorate-scene/memo",
 					"style": {
 						"navigationBarTitleText": "备忘录",
-						"enablePullDownRefresh": false
+						"enablePullDownRefresh": false,
+						"navigationStyle": "custom"
 					}
 				},
 				{
