@@ -556,7 +556,7 @@
 	};
 </script>
 
-<style lang="scss">
+<style scoped lang="scss">
 	.product {
 		margin-top: 18rpx;
 		width: 448rpx;
@@ -565,11 +565,12 @@
 		display: flex;
 		flex-direction: column;
 		padding: 12rpx;
+		margin-bottom: 16rpx;
 
 		.product-name {
 			font-size: 22rpx;
 			color: #13bbbb;
-			line-height: 52rpx;
+			padding: 24rpx 0;
 		}
 
 		.product-info {
@@ -580,6 +581,7 @@
 				height: 96rpx;
 				border-radius: 8rpx;
 				border: 1rpx solid #f5f5f5;
+				flex-shrink: 0;
 			}
 
 			.product-info-name {
@@ -607,7 +609,7 @@
 					color: #f92a2a;
 
 					.nomal {
-						font-size: 20rpx;
+						font-size: 22rpx;
 					}
 
 					.big {

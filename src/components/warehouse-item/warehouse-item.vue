@@ -44,7 +44,7 @@
 						</view>
 					</view>
 					<view class="spec">
-						<view class="spec-item">
+						<view class="spec-item width-max">
 							{{goodItem.scaleProperties}}
 						</view>
 						<view class="spec-item">
@@ -278,6 +278,14 @@
 </script>
 
 <style lang="scss" scoped>
+	.width-max {
+		width: 300rpx;
+		// overflow: hidden;
+		// text-overflow: ellipsis;
+		// display: -webkit-box;
+		// -webkit-line-clamp: 2; //这个代表你要在几行显示省略号
+	}
+
 	.close-text {
 		color: #333333;
 		font-weight: 500;
@@ -376,11 +384,10 @@
 			.goods-info {
 				margin-left: 16rpx;
 				flex: 1;
-				height: 40rpx;
 				display: flex;
 				flex-direction: column;
 				align-items: center;
-				
+				height: 100%;
 
 				.name {
 					display: flex;
@@ -393,11 +400,11 @@
 						height: 30rpx;
 						line-height: 30rpx;
 						text-align: center;
-						border: 0.3px solid #35c4c4;
+						border: 0.7px solid #35c4c4;
 						border-radius: 4rpx;
 						font-size: 20rpx;
 						color: #35c4c4;
-						vertical-align: text-bottom;
+						vertical-align: 13%;
 					}
 
 					.text {

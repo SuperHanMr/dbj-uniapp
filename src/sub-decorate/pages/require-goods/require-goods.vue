@@ -253,9 +253,10 @@
 	}
 
 	.cart-content {
+		width: 686rpx;
 		max-height: 792rpx;
 		padding: 0 32rpx;
-		overflow: auto;
+		overflow: scroll;
 		background-color: #ffffff;
 	}
 

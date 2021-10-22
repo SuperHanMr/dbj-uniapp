@@ -8,10 +8,12 @@
 		</view>
 		<view class="remind" @click="toChooseRemind">
 			<view class="text" :class="{'selected': hasChoose}">提醒谁看</view>
-			<view class="list" v-if="reminderList.length">
-				<view class="reminder" v-for="item in reminderList" :key="item.userId">@{{item.userName}}</view>
+			<view class="main">
+				<view class="list" v-if="reminderList.length">
+					<view class="reminder" v-for="item in reminderList" :key="item.userId">@{{item.userName}}</view>
+				</view>
+				<image class="icon" src="http://dbj.dragonn.top/static/mp/dabanjia/images/home/ic_memo_more%402x.png"></image>
 			</view>
-			<image class="icon" src="http://dbj.dragonn.top/static/mp/dabanjia/images/home/ic_memo_more%402x.png"></image>
 		</view>
 		<view class="finish" @click="finishC">完成</view>	
 	</view>
@@ -112,21 +114,26 @@
 	.remind .text.selected{
 		color: #00C2B8;
 	}
-	.remind .list{
+	.remind .main{
+		display: flex;
+		align-items: center;
+	}
+	.main .list{
 		display: flex;
 		max-width: 454rpx;
 	}
-	.remind .reminder{
+	.main .list .reminder{
 		margin-right: 40rpx;
 		font-size: 28rpx;
 		color: #333333;
 	}
-	.remind .reminder:last-child{
+	.main .list .reminder:last-child{
 		margin-right: 0;
 	}
-	.remind .icon{
+	.main .icon{
 		width: 24rpx;
 		height: 24rpx;
+		margin-left: 4rpx;
 		display: block;
 	}
 	.finish{
