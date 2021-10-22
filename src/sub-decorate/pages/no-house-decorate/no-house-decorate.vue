@@ -41,7 +41,7 @@
     
     <no-data v-if="noData === 0" words="当前城市暂未开通此服务,敬请期待~"></no-data>
     <uni-popup ref="level">
-      <change-level @changeLevel="setLevel" @close="close" :dataList="levelList" :current="levelList[0]"></change-level>
+      <change-level @changeLevel="setLevel" @close="close" :dataList="levelList" descType="design" :current="levelList[0]"></change-level>
     </uni-popup>
     <uni-popup ref="tips">
       <cancel-tip :tips="tips" @result="setCardChecked" @close="tipsClose"></cancel-tip>
