@@ -64,7 +64,6 @@
 		width: 686rpx;
 		height: 136rpx;
 		display: flex;
-		justify-content: space-between;
 		align-items: center;
 		background: #f5f6f6;
 		border-radius: 16rpx;
@@ -86,6 +85,7 @@
 	.userInfo .avatar{
 		width: 72rpx;
 		height: 72rpx;
+		border-radius: 50%;
 		display: block;
 	}
 	.userInfo .userName{
@@ -116,7 +116,6 @@
 		display: flex;
 		flex-wrap: wrap;
 		max-width: 686rpx;
-		height: 40rpx;
 		margin-bottom: 16rpx;
 		margin-left: 32rpx;
 		font-size: 28rpx;

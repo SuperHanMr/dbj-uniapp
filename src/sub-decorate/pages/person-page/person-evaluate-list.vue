@@ -77,7 +77,7 @@
       box-sizing: border-box;
       width: 686rpx;
       position: fixed;
-      top: 30rpx;
+      top: 0;
       height: 88rpx;
       display: flex;
       align-items: center;
