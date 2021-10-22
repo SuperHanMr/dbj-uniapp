@@ -17,7 +17,7 @@
 				</view>
 			</view>
 		</scroll-view>
-		
+		<view class="divideLine"></view>
 		<view class="designer" v-if="serverList.length>=2">
 			<view class="designerInfo">
 				<image class="avatar" :src="serverList[selectedIndex].avatar"></image>
@@ -35,7 +35,7 @@
 			<image class="noDrawingsImg" src="http://dbj.dragonn.top/static/mp/dabanjia/images/decorate/pic_empty%402x.png"></image>
 			<view class="text">暂无施工图纸</view>
 		</view>
-		<scroll-view :scroll-y="true" class="contentWrap" v-else>
+		<scroll-view :scroll-y="true" :class="{'switchServer':serverList.length>=2}" class="contentWrap" v-else>
 			<view class="content"
 				v-if="navIndex===index"
 				v-for="(item,index) in serveTypes"
@@ -44,7 +44,8 @@
 				<view class="category" v-for="(category,index) in drawings" :key="category.categoryName">
 					<view class="title">{{category.categoryName}}</view>
 					<view class="itemWrap">
-						<view class="drawing" v-for="imgItem in category.imageFileList" :key="imgItem.createTime">
+						<view class="drawing" @click="previewImage(category.imageFileList,index)"
+							v-for="(imgItem,index) in category.imageFileList" :key="imgItem.createTime">
 							<image class="img" :src="imgItem.fileUrl"></image>
 							<view class="name">{{imgItem.fileName}}</view>
 						</view>
@@ -98,6 +99,16 @@
 			this.requestPage()
 		},
 		methods:{
+			previewImage(list,index){
+				let urls = []
+				list.forEach(item => {
+					urls.push(item.fileUrl)
+				})
+				uni.previewImage({
+					current: index,
+					urls: urls
+				})
+			},
 			switchC(){
 				this.showSwitchDesigner = true
 			},
@@ -275,17 +286,19 @@
 		height: fit-content;
 		background: #ffffff;
 	}
+	
   .tabWrap{
 		display: flex;
 		justify-content: space-between;
 		align-items: center;
 		white-space: nowrap;
     max-width: 750rpx;
-		height: fit-content;
-		border-bottom: 2rpx solid #efefef;
+		height: 88rpx;
+		
   }
 	.tabWrap .tab{
 		width: fit-content;
+		height: 88rpx;
 		margin-right: 48rpx;
 	}
 	.tabWrap .tab .text{
@@ -294,7 +307,8 @@
 		overflow: hidden;
 		white-space: nowrap;
 		height: 40rpx;
-		margin-top: 58rpx;
+		margin-top: 48rpx;
+		margin-bottom: 16rpx;
 		color: #999999;
 		font-size: 28rpx;
 	}
@@ -317,11 +331,15 @@
 		opacity: 0;
 		width: 32rpx;
 		height: 4rpx;
-		margin-top: 12rpx;
 		background: linear-gradient(129deg,#00cdec 0%, #00ed7d 92%);
 	}
 	.lineWrap .underline.active{
 		opacity: 1;
+	}
+	.divideLine{
+		width: 750rpx;
+		height: 2rpx;
+		background-color: #efefef;
 	}
 	.designer{
 		width: 702rpx;
@@ -331,6 +349,9 @@
 		margin: 24rpx;
 		margin-bottom: 0;
 		display: flex;
+		position: fixed;
+		left: 0;
+		top: 136rpx;
 	}
 	.designer .select{
 		display: flex;
@@ -380,7 +401,10 @@
 	}
 	.contentWrap{
 		width: 100%;
-		max-height: 1528rpx;
+		height: fit-content;
+	}
+	.contentWrap.switchServer{
+		margin-top: 232rpx;
 	}
   .content{
 		width: 686rpx;

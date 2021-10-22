@@ -8,7 +8,7 @@
 					</view>
 					<view v-else>
 						<view v-for="item2 in item.details" :key="item2.id">
-							<order-item :refundType="true" :dataList="item2"></order-item>
+							<order-item  :dataList="item2"></order-item>
 						</view>
 					</view>
         </view>
@@ -40,7 +40,7 @@
 							<image class="icon" src="../../../static/price_icon.svg" @click="readExpenses(2)" mode=""></image>
             
 						</view>
-            <text class="price-font">￥{{handlePrice(refundInfo.handlingFees)[0]}}.{{handlePrice(refundInfo.handlingFees)[1]}}</text>
+            <text  style="font-size: 28rpx;" class="price-font">￥{{handlePrice(refundInfo.handlingFees)[0]}}.{{handlePrice(refundInfo.handlingFees)[1]}}</text>
 					</view>
         </view>
       </view>
@@ -50,7 +50,7 @@
 				<view class="refund-reason">
 					<view class="left">
 						<view class="icon">*</view>
-						<text>退款原因</text>
+						<text style="color: #666666;">退款原因</text>
 					</view>
 					<!-- <view class="reason" v-if="!reasonName">
 						<text style="color:#C7C7C7;">请选择</text>
@@ -60,8 +60,8 @@
 					  <text style="margin-right: 16rpx;" @click="openPopup()">{{reasonName}}</text>
 					</view> -->
 					<view class="reason" >
-						<text v-if="!reasonName" style="color:#C7C7C7;" @click="openPopup()">请选择</text>
-						<text v-else style="margin-right: 16rpx;" @click="openPopup()">{{reasonName}}</text>
+						<text v-if="!reasonName" @click="openPopup()">请选择</text>
+						<text v-else style="margin-right: 16rpx;color: #333333;" @click="openPopup()">{{reasonName}}</text>
 						<image src="../../static/ic_arraw_down.svg" mode="" @click="openPopup()"/>
 					</view>
         </view>
@@ -125,7 +125,7 @@
 					<view class="edit-price">
 						<view class="left">
 							<view class="icon">*</view>
-							<text>退款金额</text>
+							<text style="color:#666666;">退款金额</text>
 						</view>
 						<view class="right1" >
 						  <text v-if="refundInfo.actualIncomeAmount" class="price-font">￥{{handlePrice(refundInfo.actualIncomeAmount)[0] || 0}}.{{handlePrice(refundInfo.actualIncomeAmount)[1]}}</text>

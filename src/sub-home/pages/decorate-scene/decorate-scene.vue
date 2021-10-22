@@ -778,7 +778,7 @@ export default {
 		},
     toDecorateCalendar() {
       uni.navigateTo({
-        url: `/sub-home/pages/decorate-scene/decorate-calendar?projectId=${this.projectInfo.id}&isDecorate=1`,
+        url: `/sub-home/pages/decorate-scene/decorate-calendar?projectId=${this.projectInfo.id}&isDecorate=0`,
       });
     },
     toVideoSite() {

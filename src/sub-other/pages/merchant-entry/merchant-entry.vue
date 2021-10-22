@@ -18,6 +18,7 @@
 				<view class="title-modify">
 
 				</view>
+				<image src="https://ali-image.dabanjia.com/static/mp/dabanjia/images/merchant-entry/merchant-entry-container.png" class="info-top-image" mode=""></image>
 				<view class="company-name">
 					<view class="label">
 						公司名称
@@ -56,7 +57,8 @@
 						<view class="text">
 							{{item.oneLevelCategoryName + '-' + item.twoLevelCategoryName + '-' + item.label}}
 						</view>
-						<view class='.icon-input-clear icon-merchant-close' @click="deleteBusinessCategory(index)"></view>
+						<view class='.icon-input-clear icon-merchant-close' @click="deleteBusinessCategory(index)">
+						</view>
 					</view>
 					<view class="add-service-city" @click="openBusinessCategory">
 						<view class="icon">
@@ -93,7 +95,7 @@
 			<view class="argument">
 				<view class="img-box" @click="argumentFileHandler">
 					<view class="icon-select icon-select-merchant" v-if="argumentFile">
-						
+
 					</view>
 					<view v-if="!argumentFile" class="circle">
 					</view>
@@ -472,7 +474,7 @@
 			font-family: PingFangSC-Regular, PingFang SC;
 			font-weight: 400;
 			color: #333333;
-
+			
 			text {
 				font-size: 28rpx;
 				margin: 0 2rpx;
@@ -488,16 +490,22 @@
 		left: 0rpx;
 		top: 324rpx;
 		width: 100%;
-		margin-bottom: 200rpx;
+		margin-bottom: 300rpx;
 
 		.info {
 			margin: 0 24rpx 24rpx;
 			padding-bottom: 1rpx;
-			background-repeat: no-repeat;
-			background-image: url(../../../static/merchant-entry/merchant-entry-container.png);
-			background-size: 100% 100%;
+			background: #fff;
+			border-radius: 16rpx;
 			position: relative;
-
+			.info-top-image{
+				position: absolute;
+				right: 0;
+				top: 0;
+				height: 160rpx;
+				width: 200rpx;
+				border-radius: 0 16rpx 0 0 ;
+			}
 			.title {
 				padding: 40rpx 0 40rpx 24rpx;
 				font-size: 40rpx;
@@ -547,7 +555,7 @@
 					color: #D3D3D3;
 					position: absolute;
 					right: 40rpx;
-					top: 88rpx;
+					top: 90rpx;
 					z-index: 10;
 				}
 			}
@@ -608,7 +616,8 @@
 	}
 
 	.bottom-fiexd {
-		padding-bottom: 230rpx;
+		width: 100%;
+		height: 230rpx;
 	}
 
 	.bottom {

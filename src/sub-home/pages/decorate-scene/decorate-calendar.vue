@@ -10,11 +10,11 @@
 				<view class="title">装修动态</view>
 			</view>
 			<view class="noDynamics" v-if="!dynamics.length">
-				<image class="noDynamicsImg" src="http://dbj.dragonn.top/static/mp/dabanjia/images/decorate/pic_empty%402x.png"></image>
+				<image class="noDynamicsImg" src="http://dbj.dragonn.top/%20static/mp/dabanjia/images/home/pic_empty%402x.png"></image>
 				<view class="text">暂无装修动态</view>
 				<view class="bottom"></view>
 			</view>
-			<scroll-view :scroll-y="true" class="list" v-else>
+			<view class="list" v-else>
 				<view class="item" v-for="(item,index) in dynamics" :key="item.id">
 					<image class="avatar" :src="item.avatar"></image>
 					<view class="acitonInfo">
@@ -41,7 +41,7 @@
 						</view>
 					</view>
 				</view>
-			</scroll-view>
+			</view>
 			<view class="bottom" v-if="dynamics.length">
 				<view class="text">暂时没有更多数据~</view>
 			</view>
@@ -273,15 +273,16 @@
 	}
 	.acitonInfo .report{
 		width: 100%;
-		max-height: 120rpx;
+		
 		font-size: 28rpx;
 		color: #666666;
 		line-height: 40rpx;
+		/* max-height: 120rpx;
 		text-overflow: ellipsis;
 		overflow: hidden;
 		display: -webkit-box;
 		-webkit-box-orient: vertical;
-		-webkit-line-clamp: 3;
+		-webkit-line-clamp: 3; */
 	}
 	.acitonInfo .evidence{
 		width: 100%;

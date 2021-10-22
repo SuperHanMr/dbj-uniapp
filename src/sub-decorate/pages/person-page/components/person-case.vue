@@ -5,7 +5,7 @@
     <view class="empty" v-else>
       暂无案例
     </view>
-    <view v-if="pagState.totalPage>pagState.page" @click="getList" class="click-text"><text>展开更多案例</text><i :class="{'icon-gerenzhuye_anlihefuwu_zhankaiic':true}"></i></view>
+    <view v-if="pagState.totalPage>pagState.page-1" @click="getList" class="click-text"><text>展开更多案例</text><i :class="{'icon-gerenzhuye_anlihefuwu_zhankaiic':true}"></i></view>
     
   </view>
 </template>
@@ -13,7 +13,7 @@
 <script>
   import designCase from '@/components/design-case/design-case.vue'
   import {
-    getCaseList,
+    getCaseListV1,
     getCollection
   } from '@/api/real-case.js'
   import '../style/common.scss'
@@ -39,8 +39,8 @@
         	rows: 10,
         	// 页码
         	page: 1,
-        	totalPage: '',
-        	totalRows: '',
+        	totalPage: 1,
+        	totalRows: 0,
         	end: "",
         },
         activeIndex:0,
@@ -121,12 +121,14 @@
       	const params = {
       		page: this.pagState.page,
       		rows: this.pagState.rows,
+          sortType:0,
+          sortPropNameType: 5,
           zeusId:this.personId
       	}
-      		getCaseList(params).then((res) => {
+      		getCaseListV1(params).then((res) => {
       			if (res && res.list) {
       				this.addList(res.list);
-      				this.pagState.page = res.page + 1;
+      				this.pagState.page = res.page+1;
       				this.pagState.totalPage = res.totalPage;
       				this.pagState.totalRows = res.totalRows;
       			}
@@ -168,27 +170,31 @@
       	];
       	// 获取插入的方向
       	let getDirection = (index) => {
-      		/* 左侧高度大于右侧超过 600px 时，则前3条数据都插入到右边 */
-      		if (differ >= 800 && index < 3) {
-      			differVal = 1;
-      			return "right";
-      		}
-      
-      		/* 右侧高度大于左侧超过 600px 时，则前3条数据都插入到左边 */
-      		if (differ <= -800 && index < 3) {
-      			differVal = -1;
-      			return "left";
-      		}
-      
-      		/* 左侧高度大于右侧超过 350px 时，则前2条数据都插入到右边 */
-      		if (differ >= 350 && index < 2) {
-      			return "right";
-      		}
-      		/* 右侧高度大于左侧超过 350px 时，则前2条数据都插入到左边 */
-      		if (differ <= -350 && index < 2) {
-      			differVal = -1;
-      			return "left";
-      		}
+          //考虑中台排序就是瀑布流，暂时不加这个
+      // 		/* 左侧高度大于右侧超过 600px 时，则前3条数据都插入到右边 */
+      // if(differ!==0){
+      //   if (differ >= 800 && index < 3) {
+      //   	differVal = 1;
+      //   	return "right";
+      //   }
+              
+      //   /* 右侧高度大于左侧超过 600px 时，则前3条数据都插入到左边 */
+      //   if (differ <= -800 && index < 3) {
+      //   	differVal = -1;
+      //   	return "left";
+      //   }
+              
+      //   /* 左侧高度大于右侧超过 350px 时，则前2条数据都插入到右边 */
+      //   if (differ >= 350 && index < 2) {
+      //   	return "right";
+      //   }
+      //   /* 右侧高度大于左侧超过 350px 时，则前2条数据都插入到左边 */
+      //   if (differ <= -350 && index < 2) {
+      //   	differVal = -1;
+      //   	return "left";
+      //   }
+      // }
+      		
       
       		/* 当前数据序号为偶数时，则插入到左边 */
       		if ((i + differVal) % 2 == 0) {

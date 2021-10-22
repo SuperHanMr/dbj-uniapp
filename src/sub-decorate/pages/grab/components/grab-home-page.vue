@@ -71,9 +71,9 @@
       .grab-content-header{
         position: absolute;
         top: -76rpx;
-        width: 270rpx;
-        left: 50%;
-        margin-left: -135rpx;
+        width: 100%;
+        // left: 50%;
+        // margin-left: -135rpx;
         display: flex;
         justify-content: center;
         flex-wrap: wrap;
@@ -97,6 +97,7 @@
           width: 100%;
           display: flex;
           justify-content: space-evenly;
+          width: 270rpx;
           text{
             color: #999;
             font-size: 22rpx;

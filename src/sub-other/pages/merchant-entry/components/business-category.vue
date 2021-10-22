@@ -12,23 +12,24 @@
 			</view>
 		</view>
 		<view class="container">
-			<scroll-view scroll-y="true" >
+			<scroll-view scroll-y="true">
 				<view class="first-category">
-					<view class="tab" v-for="(item, index) in categroyTreeList" :class="firstActive == index ? 'active-tab' : ''"
-						@click="firstTabClick(index)">
+					<view class="tab" v-for="(item, index) in categroyTreeList"
+						:class="[{'active-tab' : firstActive == index},{'active-tab1' : firstActive + 1 == index},{'active-tab0' : firstActive - 1 == index}]" @click="firstTabClick(index)">
 						<view class="text">
 							{{item.label}}
 						</view>
 						<view class="active-line" v-if="firstActive == index">
-				
+
 						</view>
 					</view>
-				
+
 				</view>
 			</scroll-view>
-			<scroll-view scroll-y="true" >
+			<scroll-view scroll-y="true">
 				<view class="second-category">
-					<view class="tab" v-for="(item, index) in categroyTreeList[firstActive].children" @click="secondTabClick(index)">
+					<view class="tab" v-for="(item, index) in categroyTreeList[firstActive].children"
+						@click="secondTabClick(index)">
 						<view class="text" :class="secondActive == index ? 'active-text' : ''">
 							{{item.label}}
 							<view class="number" v-if="showCheckedNumber(item)">
@@ -38,15 +39,16 @@
 					</view>
 				</view>
 			</scroll-view>
-			<scroll-view scroll-y="true" class="three-category-box" >
+			<scroll-view scroll-y="true" class="three-category-box">
 				<view class="three-category">
-					<view class="tab" v-for="(item, index) in categroyTreeList[firstActive].children[secondActive].children"
+					<view class="tab"
+						v-for="(item, index) in categroyTreeList[firstActive].children[secondActive].children"
 						@click="threeTabClick(item)">
 						<view class="no-select" v-if="!isChecked(item)">
-							
+
 						</view>
-						<view class="icon-select select" v-if="isChecked(item)" >
-							
+						<view class="icon-select select" v-if="isChecked(item)">
+
 						</view>
 						<view class="text">
 							{{item.label}}
@@ -60,7 +62,7 @@
 
 <script>
 	export default {
-		props:['categroyTreeList'],
+		props: ['categroyTreeList'],
 		data() {
 			return {
 				list: [{
@@ -78,7 +80,7 @@
 									},
 									{
 										text: "基础涂料15"
-									}, 
+									},
 									{
 										text: "基础涂料16"
 									},
@@ -100,7 +102,7 @@
 									},
 									{
 										text: "基础涂料25"
-									}, 
+									},
 									{
 										text: "基础涂料26"
 									},
@@ -155,8 +157,8 @@
 				firstActive: 0,
 				secondActive: 0,
 				threeActive: -1,
-				threeActiveList:[],
-				numberList:[]
+				threeActiveList: [],
+				numberList: []
 			}
 		},
 		mounted() {
@@ -173,13 +175,14 @@
 				this.secondActive = index;
 				this.threeActive = -1;
 			},
-			threeTabClick(item,index) {
+			threeTabClick(item, index) {
 				this.threeActive = index;
 				let param = {};
 				param.oneLevelCategoryId = this.$props.categroyTreeList[this.firstActive].id;
 				param.oneLevelCategoryName = this.$props.categroyTreeList[this.firstActive].label;
 				param.twoLevelCategoryId = this.$props.categroyTreeList[this.firstActive].children[this.secondActive].id;
-				param.twoLevelCategoryName = this.$props.categroyTreeList[this.firstActive].children[this.secondActive].label;
+				param.twoLevelCategoryName = this.$props.categroyTreeList[this.firstActive].children[this.secondActive]
+					.label;
 				param.threeLevelCategoryId = item.value;
 				param.label = item.label;
 				const checkedIndex = this.threeActiveList.findIndex((items, index) => {
@@ -189,7 +192,10 @@
 					return items.id == item.parent.id;
 				})
 				if (checkedNumber == -1) {
-					this.numberList.push({id: item.parent.id, num: 1});
+					this.numberList.push({
+						id: item.parent.id,
+						num: 1
+					});
 				} else {
 					if (checkedIndex == -1) {
 						this.numberList[checkedNumber].num += 1;
@@ -204,15 +210,17 @@
 				}
 				console.log(this.threeActiveList, ">>>>>>>>>>>>>>>>>>>>>>")
 			},
-			isChecked(item){
-				const checkedIndex = this.threeActiveList.findIndex((items, index) => {return items.threeLevelCategoryId == item.value})
+			isChecked(item) {
+				const checkedIndex = this.threeActiveList.findIndex((items, index) => {
+					return items.threeLevelCategoryId == item.value
+				})
 				if (checkedIndex == -1) {
 					return false;
 				} else {
 					return true;
 				}
 			},
-			modifyNumberList(item){
+			modifyNumberList(item) {
 				const checkedNumber = this.numberList.findIndex((items, index) => {
 					return items.id == item.twoLevelCategoryId;
 				})
@@ -220,8 +228,10 @@
 					this.numberList[checkedNumber].num -= 1;
 				}
 			},
-			showCheckedNumber(item){
-				const checkedNumber = this.numberList.findIndex((items, index) => {return items.id == item.id});
+			showCheckedNumber(item) {
+				const checkedNumber = this.numberList.findIndex((items, index) => {
+					return items.id == item.id
+				});
 				if (checkedNumber != -1) {
 					return this.numberList[checkedNumber].num ? this.numberList[checkedNumber].num : false;
 				} else {
@@ -231,7 +241,7 @@
 			closePopup() {
 				this.$emit("closeBusinessPopup");
 			},
-			selectBusiness(){
+			selectBusiness() {
 				console.log('点击了确认', this.threeActiveList);
 				this.$emit("confirmBusiness", this.threeActiveList);
 			}
@@ -278,13 +288,13 @@
 		.container {
 			display: flex;
 			height: 1000rpx;
+
 			.first-category {
 				.tab {
 					width: 200rpx;
 					overflow-x: hidden;
 					padding: 32rpx 0;
 					background: #F7F7F7;
-					border-radius: 0px 8px 0px 0px;
 					position: relative;
 
 					.text {
@@ -295,7 +305,7 @@
 						text-align: center;
 						margin-left: 10rpx;
 					}
-					
+
 					.active-line {
 						position: absolute;
 						left: 0;
@@ -309,11 +319,16 @@
 
 				.active-tab {
 					background: #FFFFFF;
-
 					.text {
 						color: #333333;
 						font-weight: bold;
 					}
+				}
+				.active-tab1{
+					border-radius: 0px 8px 0px 0px;
+				}
+				.active-tab0{
+					border-radius: 0px 0px 8px 0px;
 				}
 			}
 
@@ -324,6 +339,7 @@
 					background: #FFFFFF;
 					overflow: auto;
 					position: relative;
+
 					.text {
 						width: 100%;
 						display: flex;
@@ -335,7 +351,8 @@
 						font-family: PingFangSC-Regular, PingFang SC;
 						font-weight: 400;
 						color: #999999;
-						.number{
+
+						.number {
 							width: 32rpx;
 							height: 32rpx;
 							background: rgba(255, 51, 71, 1);
@@ -351,39 +368,44 @@
 							text-align: center;
 						}
 					}
+
 					.active-text {
 						font-weight: bold;
 						color: #333333;
 					}
 				}
 			}
-			
-			.three-category{
-				.tab{
+
+			.three-category {
+				.tab {
 					width: 100%;
 					padding: 32rpx 0;
 					background: #FFFFFF;
 					display: flex;
 					align-items: center;
-					image{
+
+					image {
 						width: 32rpx;
 						height: 32rpx;
 						margin-right: 24rpx;
 					}
-					.text{
+
+					.text {
 						font-size: 14px;
 						font-family: PingFangSC-Regular, PingFang SC;
 						font-weight: 400;
 						color: #999999;
 						flex: 1;
 					}
-					.select{
+
+					.select {
 						font-size: 32rpx;
 						margin-right: 24rpx;
 						border-radius: 50%;
 						color: #35c4c4;
 					}
-					.no-select{
+
+					.no-select {
 						width: 28rpx;
 						height: 28rpx;
 						margin-right: 24rpx;

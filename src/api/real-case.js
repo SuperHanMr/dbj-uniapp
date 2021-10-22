@@ -13,6 +13,13 @@ export function getCaseList(params) {
     params
   });
 }
+
+export function getCaseListV1(params) {
+  return request.get(`/app/case/list`, {
+    params
+  });
+}
+
 export function getDecorateProcess(params) {
   return request.get(`/pm/web-wol/project/detail`, {
     params
