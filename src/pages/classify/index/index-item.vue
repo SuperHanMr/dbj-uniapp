@@ -7,18 +7,21 @@
           v-for="(menu2,index2) in detailData" :key="index2" v-if="detailData[categoryActive]['children'].length">
           {{menu2.name}}
         </view>
+        <view class="nav-left-item" :class="{'nextNode':  categoryActive === detailData.length - 1}"></view>
       </view>
     </scroll-view>
     <scroll-view class="nav-right" scroll-y="true">
       <view class="right-view" v-for="(menu3, index3) in detailData[categoryActive]['children']" :key="index3" v-if="menu3['children'].length">
         <text class="menu3-title">{{menu3.name}}</text>
         <scroll-view class="right-card" scroll-y="true">
-          <view class="right-detail" v-for="(detail, detailK) in menu3['children']" :key="detailK"
-            @click="toGoodsList(detail.name, detail.id)">
-            <view class="img-view">
-              <image :src="detail.imageUrl"></image>
+          <view class="card-box">
+            <view class="right-detail" v-for="(detail, detailK) in menu3['children']" :key="detailK"
+              @click="toGoodsList(detail.name, detail.id)">
+              <view class="img-view">
+                <image :src="detail.imageUrl"></image>
+              </view>
+              <text class="detail-name">{{detail.name}}</text>
             </view>
-            <text class="detail-name">{{detail.name}}</text>
           </view>
         </scroll-view>
       </view>
@@ -169,11 +172,14 @@
     display: flex;
     flex-wrap: wrap;
     justify-content: center;
-    background-color: white;
     margin-top: 24rpx;
     width: 510rpx;
   }
-
+  .card-box{
+    border-radius: 16rpx;
+    overflow: hidden;
+    background-color: white;
+  }
   .right-detail {
     display: inline-block;
     /* height: 172rpx; */
