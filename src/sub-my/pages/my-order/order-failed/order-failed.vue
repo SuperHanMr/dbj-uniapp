@@ -447,12 +447,13 @@ export default {
         display: flex;
         align-items: center;
         text {
-          font-weight: bold;
+          font-weight: 500;
           max-width: 476rpx;
           font-size: 28rpx;
           overflow: hidden;
           text-overflow: ellipsis;
           white-space: nowrap;
+					color: #333333;
         }
 
         image {

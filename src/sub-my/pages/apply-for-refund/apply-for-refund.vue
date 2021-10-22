@@ -8,7 +8,7 @@
 					</view>
 					<view v-else>
 						<view v-for="item2 in item.details" :key="item2.id">
-							<order-item :refundType="true" :dataList="item2"></order-item>
+							<order-item  :dataList="item2"></order-item>
 						</view>
 					</view>
         </view>
@@ -40,7 +40,7 @@
 							<image class="icon" src="../../../static/price_icon.svg" @click="readExpenses(2)" mode=""></image>
             
 						</view>
-            <text class="price-font">￥{{handlePrice(refundInfo.handlingFees)[0]}}.{{handlePrice(refundInfo.handlingFees)[1]}}</text>
+            <text  style="font-size: 28rpx;" class="price-font">￥{{handlePrice(refundInfo.handlingFees)[0]}}.{{handlePrice(refundInfo.handlingFees)[1]}}</text>
 					</view>
         </view>
       </view>
