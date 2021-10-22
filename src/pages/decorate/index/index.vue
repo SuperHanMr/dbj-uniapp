@@ -110,11 +110,11 @@
               购买相关服务 即刻开启装修
             </view>
             <guide-card v-if="availGuides.includes('design')" cardType="service"
-              imageUrl="http://dbj.dragonn.top/static/mp/dabanjia/images/decorate/ic_myhouse_design.webp"
+              imageUrl="http://dbj.dragonn.top/%20static/mp/dabanjia/images/decorate/ic_myhouse_design2.webp"
               @buyNow="gonohousedecatore('design')">
             </guide-card>
             <guide-card v-if="availGuides.includes('actuary')" cardType="actuary"
-              imageUrl="http://dbj.dragonn.top/static/mp/dabanjia/images/decorate/ic_myhouse_actuary.webp"
+              imageUrl="http://dbj.dragonn.top/%20static/mp/dabanjia/images/decorate/ic_myhouse_actuary2.webp"
               @buyNow="gonohousedecatore('actuary')">
             </guide-card>
           </view>
@@ -464,7 +464,7 @@
       },
       goActuary() {
         uni.navigateTo({
-          url: `/sub-decorate/pages/actuary-detail/actuary-detail?projectId=${this.currentProject.projectId}`
+          url: `/sub-decorate/pages/actuary-detail/actuary-detail?projectId=${this.currentProject.projectId}&isClient=1`
         })
       },
       goVideo() {

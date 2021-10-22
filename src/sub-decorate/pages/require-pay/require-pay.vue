@@ -81,22 +81,34 @@
 		},
 		computed: {
 			totalPrice() {
-				if(this.detail.handlingFees || this.detail.freight){
+				if (this.detail.handlingFees || this.detail.freight) {
 					return (this.detail.handlingFees + this.detail.freight).toFixed(2);
-				}else{
+				} else {
 					return 0
 				}
-				
+
 			},
 		},
 		methods: {
 			onReject() {
+				uni.showModal({
+					content: '是否拒绝要货申请',
+					success: (res)=> {
+						if (res.confirm) {
+							this.toReject()
+						} else if (res.cancel) {
+							console.log('用户点击取消');
+						}
+					}
+				})
+			},
+			toReject() {
 				requireConfirm({
 					requireId: this.id,
 					status: 4,
 				}).then((e) => {
 					uni.navigateBack({
-					
+
 					})
 				});
 			},
@@ -151,9 +163,9 @@
 			},
 		},
 		onLoad(e) {
-			const data= getApp().globalData.decorateMsg.msgBody
+			const data = getApp().globalData.decorateMsg.msgBody
 			let res = JSON.parse(data);
-			this.id=res.requireId;
+			this.id = res.requireId;
 			console.log(getApp().globalData.decorateMsg)
 			console.log(this.id)
 			this.getDetail();

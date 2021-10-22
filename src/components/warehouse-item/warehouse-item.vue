@@ -45,9 +45,11 @@
 					</view>
 					<view class="spec">
 						<view class="spec-item width-max">
-							{{goodItem.scaleProperties}}
+							<text class="lines">
+								{{goodItem.scaleProperties}}
+							</text>
 						</view>
-						<view class="spec-item">
+						<view class="spec-item" style="margin-left: 24rpx;">
 							{{goodItem.price}}/{{goodItem.unit}}
 						</view>
 						<view style="flex:1">
@@ -279,11 +281,15 @@
 
 <style lang="scss" scoped>
 	.width-max {
-		width: 300rpx;
-		// overflow: hidden;
-		// text-overflow: ellipsis;
-		// display: -webkit-box;
-		// -webkit-line-clamp: 2; //这个代表你要在几行显示省略号
+		max-width: 300rpx;
+	
+	}
+	.lines{
+		overflow: hidden;
+		-webkit-line-clamp: 2;
+		text-overflow: ellipsis;
+		display: -webkit-box;
+		-webkit-box-orient: vertical;
 	}
 
 	.close-text {

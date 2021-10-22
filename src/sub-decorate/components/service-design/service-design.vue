@@ -19,8 +19,8 @@
     <view class="design-list" v-for="item of list" :key='item.categoryName'>
       <text>{{item.categoryName}}</text>
       <view class="design-img-list">
-        <view class="item" v-for="el of item.imageFileList" :key='el.fileUrl'>
-          <image :src="el.fileUrl"></image>
+        <view class="item" v-for="(el,index) of item.imageFileList" :key='el.fileUrl'>
+          <image :src="el.fileUrl" mode="aspectFill" @click="previewImage(item.imageFileList,index)"></image>
           <text>{{el.fileName}}</text>
         </view>
       </view>
@@ -75,7 +75,17 @@
         uni.navigateTo({
           url:'/sub-decorate/pages/beatiful-report/beatiful-report?themeId='+this.designData.beautyReport.templateId+'&id='+this.designData.beautyReport.id +'&serveId='+this.serverId
         })
-      }
+      },
+      previewImage(list,index){
+        let urls = []
+        list.forEach(item=>{
+          urls.push(item.url||item.fileUrl||item)
+        })
+        uni.previewImage({
+        	urls: urls,
+        	current: index
+        });
+      },
     }
   }
 </script>

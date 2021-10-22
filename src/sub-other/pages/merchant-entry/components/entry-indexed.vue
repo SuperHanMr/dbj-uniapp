@@ -8,7 +8,8 @@
 				<scroll-view :scroll-into-view="scrollViewId" class="uni-indexed-list__scroll" scroll-y>
 					<view v-for="(list, idx) in lists" :key="idx" :id="'uni-indexed-list-' + idx">
 						<!-- #endif -->
-						<indexed-list-item :list="list" :loaded="loaded" :idx="idx" :showSelect="showSelect" @itemClick="onClick"></indexed-list-item>
+						<indexed-list-item :list="list" :loaded="loaded" :idx="idx" :showSelect="showSelect"
+							@itemClick="onClick"></indexed-list-item>
 						<!-- #ifndef APP-NVUE -->
 					</view>
 				</scroll-view>
@@ -17,11 +18,12 @@
 			</cell>
 		</list>
 		<!-- #endif -->
-		<view class="uni-indexed-list__menu" :class="touchmove ? 'uni-indexed-list__menu--active' : ''" @touchstart="touchStart"
-		 @touchmove.stop.prevent="touchMove" @touchend="touchEnd" @mousedown.stop="mousedown" @mousemove.stop.prevent="mousemove"
-		 @mouseleave.stop="mouseleave">
+		<view class="uni-indexed-list__menu" :class="touchmove ? 'uni-indexed-list__menu--active' : ''"
+			@touchstart="touchStart" @touchmove.stop.prevent="touchMove" @touchend="touchEnd"
+			@mousedown.stop="mousedown" @mousemove.stop.prevent="mousemove" @mouseleave.stop="mouseleave">
 			<view v-for="(list, key) in lists" :key="key" class="uni-indexed-list__menu-item">
-				<text class="uni-indexed-list__menu-text" :class="touchmoveIndex == key ? 'uni-indexed-list__menu-text--active' : ''">{{ list.key }}</text>
+				<text class="uni-indexed-list__menu-text"
+					:class="touchmoveIndex == key ? 'uni-indexed-list__menu-text--active' : ''">{{ list.key }}</text>
 			</view>
 		</view>
 		<view v-if="touchmove" class="uni-indexed-list__alert-wrapper">
@@ -31,7 +33,10 @@
 </template>
 <script>
 	import indexedListItem from './entry-indexed-item.vue'
-	import { mapState, mapGetters } from "vuex";
+	import {
+		mapState,
+		mapGetters
+	} from "vuex";
 	// #ifdef APP-NVUE
 	const dom = weex.requireModule('dom');
 	// #endif
@@ -88,7 +93,7 @@
 		components: {
 			indexedListItem
 		},
-		emits:['click'],
+		emits: ['click'],
 		props: {
 			options: {
 				type: Array,
@@ -134,16 +139,16 @@
 				this.loaded = true
 			}, 300);
 		},
-		computed:{
+		computed: {
 			...mapState({
-			  cityList: (state) => state.merchantEntry.cityList,
+				cityList: (state) => state.merchantEntry.cityList,
 			}),
 		},
 		methods: {
 			setList() {
 				let index = 0;
 				this.lists = []
-				
+
 				this.options.forEach((value, index) => {
 					if (value.data.length === 0) {
 						return
@@ -166,7 +171,9 @@
 					let indexBefore = index
 					let items = value.data.map(item => {
 						if (cityCheckArr.length > 0) {
-							const index = cityCheckArr.findIndex((itemCity) => {return itemCity.id == item.id});
+							const index = cityCheckArr.findIndex((itemCity) => {
+								return itemCity.id == item.id
+							});
 							if (index != -1) {
 								item = cityCheckArr[index]
 							}
@@ -278,7 +285,7 @@
 
 
 			onClick(e) {
-				
+
 				let {
 					idx,
 					index
@@ -303,11 +310,11 @@
 					})
 				}
 				let checkedArr = [];
-				this.lists.forEach((item) =>{
+				this.lists.forEach((item) => {
 					const arr = item.items.filter((itemChild) => {
 						return itemChild.checked == true;
 					});
-					checkedArr.push(...arr) ;
+					checkedArr.push(...arr);
 				})
 				this.$emit('click', {
 					select: checkedArr
@@ -343,13 +350,16 @@
 		display: flex;
 		/* #endif */
 		flex-direction: column;
+		height: 85%;
+		padding-top: 20rpx;
 	}
 
 	.uni-indexed-list__menu-item {
 		/* #ifndef APP-NVUE */
 		display: flex;
 		/* #endif */
-		flex: 1;
+		// flex: 1;
+		margin: 10rpx 0;
 		align-items: center;
 		justify-content: center;
 		/* #ifdef H5 */
