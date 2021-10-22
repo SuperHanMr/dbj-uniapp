@@ -27,7 +27,7 @@
 							<view class="img-view">
 								<image class="img"
 									:src="item.mediaType==1?item.roomLiveMediaVO.scaleImg:item.roomVideoMediaVO.scaleImg"
-									mode="">
+									mode="aspectFill">
 								</image>
 
 								<view v-if="item.mediaType==1" class="top-content">
