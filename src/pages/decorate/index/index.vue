@@ -464,7 +464,7 @@
       },
       goActuary() {
         uni.navigateTo({
-          url: `/sub-decorate/pages/actuary-detail/actuary-detail?projectId=${this.currentProject.projectId}`
+          url: `/sub-decorate/pages/actuary-detail/actuary-detail?projectId=${this.currentProject.projectId}&isClient=1`
         })
       },
       goVideo() {
