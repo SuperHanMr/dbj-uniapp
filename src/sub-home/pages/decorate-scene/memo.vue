@@ -201,6 +201,7 @@
 	.remark .list{
 		max-width: 638rpx;
 		display: flex;
+		flex-wrap: wrap;
 	}
 	.remark .cueOthers{
 		max-width: 370rpx;

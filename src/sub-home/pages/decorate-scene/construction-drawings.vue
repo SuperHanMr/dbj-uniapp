@@ -44,7 +44,8 @@
 				<view class="category" v-for="(category,index) in drawings" :key="category.categoryName">
 					<view class="title">{{category.categoryName}}</view>
 					<view class="itemWrap">
-						<view class="drawing" v-for="imgItem in category.imageFileList" :key="imgItem.createTime">
+						<view class="drawing" @click="previewImage(category.imageFileList,index)"
+							v-for="(imgItem,index) in category.imageFileList" :key="imgItem.createTime">
 							<image class="img" :src="imgItem.fileUrl"></image>
 							<view class="name">{{imgItem.fileName}}</view>
 						</view>
@@ -98,6 +99,16 @@
 			this.requestPage()
 		},
 		methods:{
+			previewImage(list,index){
+				let urls = []
+				list.forEach(item => {
+					urls.push(item.fileUrl)
+				})
+				uni.previewImage({
+					current: index,
+					urls: urls
+				})
+			},
 			switchC(){
 				this.showSwitchDesigner = true
 			},
@@ -275,6 +286,7 @@
 		height: fit-content;
 		background: #ffffff;
 	}
+	
   .tabWrap{
 		display: flex;
 		justify-content: space-between;
@@ -331,6 +343,9 @@
 		margin: 24rpx;
 		margin-bottom: 0;
 		display: flex;
+		position: fixed;
+		left: 0;
+		top: 136rpx;
 	}
 	.designer .select{
 		display: flex;
@@ -380,7 +395,8 @@
 	}
 	.contentWrap{
 		width: 100%;
-		max-height: 1528rpx;
+		height: fit-content;
+		margin-top: 232rpx;
 	}
   .content{
 		width: 686rpx;
