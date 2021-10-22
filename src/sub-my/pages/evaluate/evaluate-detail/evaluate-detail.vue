@@ -87,9 +87,10 @@ export default {
 		this.id =Number(e.id)
 		console.log("this.id=",this.id)
 		this.getServiceInfo()
+		console.log("e.typeName=",e.typeName)
 		if(!e.typeName) return 
 		uni.setNavigationBarTitle({
-				title: this.typeName
+				title:`${e.typeName}服务评价`
 		});
 	},
 	
