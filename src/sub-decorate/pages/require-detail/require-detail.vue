@@ -121,11 +121,12 @@
 
 
 	.store {
-padding: 0 32rpx;
+		padding: 0 32rpx;
 		background-color: #FFF;
+
 		.items {
 			display: flex;
-			padding-bottom: 32rpx ;
+			padding-bottom: 32rpx;
 			border-bottom: 1rpx solid #f2f2f2;
 
 			.img {
