@@ -64,12 +64,14 @@
     },
     methods:{
       open(){
+        console.log(this.isOpen)
         if(this.isOpen){
           this.serviceList = this.serviceData.slice(0,3);
         }else{
           this.serviceList = this.serviceData
         }
         this.isOpen = !this.isOpen
+        console.log(this.isOpen)
       },
       toBuy(item){
         uni.navigateTo({
