@@ -27,9 +27,7 @@
 </template>
 
 <script>
-  import {
-    calendarFormat
-  } from "../../../utils/date.js"
+  import { formatDate } from "../../../utils/common.js"
   export default {
     props: {
       detail: {
@@ -60,7 +58,7 @@
     },
     filters: {
       calendarFormat(time) {
-        return calendarFormat(time)
+        return formatDate(time)
       }
     }
   }

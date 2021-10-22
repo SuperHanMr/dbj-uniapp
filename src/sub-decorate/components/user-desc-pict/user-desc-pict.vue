@@ -25,9 +25,10 @@
 </template>
 
 <script>
-  import {
-    calendarFormat
-  } from "../../../utils/date.js"
+  // import {
+  //   calendarFormat
+  // } from "../../../utils/date.js"
+  import { formatDate } from "../../../utils/common.js"
   export default {
     props: {
       butlerData: {
@@ -58,7 +59,7 @@
     },
     filters: {
       calendarFormat(time) {
-        return calendarFormat(time)
+        return formatDate(time)
       }
     }
   }

@@ -33,8 +33,15 @@
 
     },
     onShow() {
+      let type = "服务验收申请"
+      if(this.msg.data.type == 3) {
+        type = "服务阶段验收申请";
+      }
+      if(this.msg.data.type == 4) {
+        type = "服务整体验收申请";
+      }
       uni.setNavigationBarTitle({
-        title: this.msg.nodeName
+        title: this.msg.nodeName + type
       })
       this.getCompletionLogById()
     },
