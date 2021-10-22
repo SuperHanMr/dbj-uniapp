@@ -50,7 +50,7 @@
 				<view class="refund-reason">
 					<view class="left">
 						<view class="icon">*</view>
-						<text style="color: #666666;">退款原因</text>
+						<text>退款原因</text>
 					</view>
 					<!-- <view class="reason" v-if="!reasonName">
 						<text style="color:#C7C7C7;">请选择</text>
