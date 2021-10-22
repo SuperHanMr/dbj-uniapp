@@ -1,7 +1,7 @@
 <template>
   <view class="img-list" :style="{maxHeight:hasHeight?maxHeight:'auto',marginBottom:-lineSpace+'rpx',marginRight:-colSpace*3+'rpx',overflow: isHidden}">
     <!-- <text>{{}}</text> -->
-    <image class="img-item" :style="{width:imgWidth+'rpx',height:imgHeight+'rpx',marginBottom:lineSpace+'rpx',marginRight:colSpace+'rpx'}" v-for="(el,index) of list" @click="previewImage(list,index)" :key='el' :src="el.url||el.fileUrl||el"></image>
+    <image class="img-item" :style="{width:imgWidth+'rpx',height:imgHeight+'rpx',marginBottom:lineSpace+'rpx',marginRight:colSpace+'rpx'}" v-for="(el,index) of list" @click="previewImage(list,index)" :key='el' :src="el.url||el.fileUrl||el" mode="aspectFill"></image>
     <view class="" v-if="hasHeight&&list.length-row*3>0">
       <view class="mask" :style="{width:imgWidth+'rpx',height:imgHeight+'rpx',top:(imgHeight+lineSpace)*(row-1)+'rpx',left:imgWidth*2+colSpace*2+'rpx'}" >
       </view>

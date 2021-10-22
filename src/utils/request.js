@@ -148,7 +148,7 @@ instance.interceptors.response.use(
 			let config = {}
 			if (error.config && error.config.data) {
 				config = JSON.parse(error.config.data)
-			}
+			}     
 			if (!(config.data && config.data.hideToast)) {
 				uni.showToast({
 					title: error.response.data.message,

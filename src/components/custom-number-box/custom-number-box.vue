@@ -1,9 +1,9 @@
 <template>
 	<view class="uni-numbox">
-		<view v-if="!onlyShowAdd||inputValue>0" @click="_calcValue('minus')" class="uni-numbox__minus uni-cursor-point">
+		<view v-if="!onlyShowAdd||showInput" @click="_calcValue('minus')" class="uni-numbox__minus uni-cursor-point">
 			<text class="uni-numbox--text" :class="{ 'uni-numbox--disabled': inputValue <= min || disabled }">-</text>
 		</view>
-		<input v-if="!onlyShowAdd||inputValue>0" :disabled="disabled" @focus="_onFocus" @blur="_onBlur"
+		<input v-if="!onlyShowAdd||showInput" :disabled="disabled" @focus="_onFocus" @blur="_onBlur"
 			class="uni-numbox__value" type="number" v-model="inputValue" />
 		<view @click="_calcValue('plus')" class="uni-numbox__plus uni-cursor-point">
 			<text class="uni-numbox--text" :class="{ 'uni-numbox--disabled': inputValue >= max || disabled }">+</text>
@@ -58,17 +58,30 @@
 		},
 		data() {
 			return {
-				inputValue: 0
+				inputValue: 0,
+				focusing: false
 			};
 		},
 		watch: {
-			value(val,pre) {
-				
+			value(val, pre) {
+
 				this.inputValue = +val;
 			},
 			modelValue(val) {
 				this.inputValue = +val;
 			},
+		},
+		computed:{
+			showInput(){
+				if(this.focusing){
+					return true
+				}else if(this.inputValue==0){
+					return false
+				}else{
+					return true
+				}
+				
+			}
 		},
 		created() {
 			if (this.value === 1) {
@@ -108,10 +121,10 @@
 
 				this.inputValue = (value / scale).toFixed(String(scale).length - 1);
 				this.$emit("change", +this.inputValue);
-				// TODO vue2 兼容
-				this.$emit("input", +this.inputValue);
-				// TODO vue3 兼容
-				this.$emit("update:modelValue", +this.inputValue);
+				// // TODO vue2 兼容
+				// this.$emit("input", +this.inputValue);
+				// // TODO vue3 兼容
+				// this.$emit("update:modelValue", +this.inputValue);
 			},
 			_getDecimalScale() {
 
@@ -124,7 +137,7 @@
 			},
 			_onBlur(event) {
 				let value = event.detail.value;
-				if (!value||isNaN(value)) {
+				if (!value || isNaN(value)) {
 					this.inputValue = this.max;
 					return;
 				}
@@ -136,18 +149,19 @@
 				}
 				const scale = this._getDecimalScale();
 				this.inputValue = value.toFixed(String(scale).length - 1);
-				if(this.inputValue>this.max){
-					this.inputValue=this.max;
+				if (this.inputValue > this.max) {
+					this.inputValue = this.max;
 				}
-				if(this.inputValue<this.min){
-					this.inputValue=this.min
+				if (this.inputValue < this.min) {
+					this.inputValue = this.min
 				}
-				console.log(this.inputValue)
-				
+
 				this.$emit("change", +this.inputValue);
-				this.$emit("input", +this.inputValue);
+				
+					this.focusing =false
 			},
 			_onFocus(event) {
+				this.focusing = true
 				this.$emit('focus', event)
 			}
 		}

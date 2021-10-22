@@ -593,7 +593,7 @@
 						color: #00C4B3;
 						margin-right: 16rpx;
 						height: 40rpx;
-						line-height: 35rpx;
+						line-height: 34rpx;
 					}
 
 					.text {
