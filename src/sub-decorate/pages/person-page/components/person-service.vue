@@ -28,7 +28,7 @@
     <view class="empty" v-else>
       暂无服务
     </view>
-    <view class="click-text" v-if="serviceList.length>3" @click="open">
+    <view class="click-text" v-if="serviceData.length>3" @click="open">
     <text>{{isOpen?'收起全部服务':'展开全部服务'}}</text><i :class="{'icon-gerenzhuye_anlihefuwu_shouqiic':isOpen,'icon-gerenzhuye_anlihefuwu_zhankaiic':!isOpen}"></i>
     </view>
     

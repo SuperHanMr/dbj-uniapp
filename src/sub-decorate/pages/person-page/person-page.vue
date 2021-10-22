@@ -66,7 +66,7 @@
           </view>
         </view>
         <personIntroduce v-if="personData.roleId!==10000" :personData='personData'></personIntroduce>
-        <view class="send-msg" @click="sendMsg" v-if="personData.roleId<7">
+        <view class="send-msg" @click="sendMsg" v-if="personData.roleId<7||hasServe===0">
           <i class="icon-gerenzhuye_ic_faxiaoxi"></i>
           <text>发消息</text>
           
@@ -112,6 +112,7 @@
     getGrabDetail,
     queryAttention,
     getAttention,
+    getServiceStatus
   } from '@/api/decorate.js'
   export default {
     components: {
@@ -145,7 +146,8 @@
         isRecommend:false,
         isAttention:false,
         evaluateNum:0,
-        userType:2
+        userType:2,
+        hasServe:0
       }
     },
     computed:{
@@ -309,6 +311,7 @@
             }
             this.getAttention(1001,'isAttention')
             this.getAttention(2001,'isRecommend')
+            this.getServiceStatus()
             setTimeout(()=>{
               this.getNodeHeight()
               this.getTopDistance()
@@ -319,6 +322,11 @@
             // console.log(this.personData)
             
           }
+        })
+      },
+      getServiceStatus(){
+        getServiceStatus(this.personData.zeusId).then(res=>{
+          this.hasServe = data.ststus
         })
       },
       // getCaseList() {
