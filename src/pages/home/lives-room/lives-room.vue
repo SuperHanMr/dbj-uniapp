@@ -99,8 +99,9 @@
 											</view>
 											<view class="price-info">
 												<text class="nomal">¥</text>
-												<text class="big"> {{ foramtPrice(item.formatData.params.price)}}</text>
-												<text class="small">
+												<text class="big price-font">
+													{{ foramtPrice(item.formatData.params.price)}}</text>
+												<text class="small price-font">
 													.{{ formatCent(item.formatData.params.price)}}</text>
 											</view>
 										</view>
@@ -561,15 +562,19 @@
 		border-radius: 12rpx;
 		display: flex;
 		flex-direction: column;
-		padding: 12rpx;
+		margin-bottom: 16rpx;
 
 		.product-name {
 			font-size: 22rpx;
+			margin: 2rpx 2rpx 0 2rpx;
 			color: #13bbbb;
-			line-height: 52rpx;
+			padding: 14rpx 12rpx;
+			background: linear-gradient(180deg, rgba(28, 191, 202, 0.16) 0%, rgba(25, 199, 212, 0) 100%);
 		}
 
 		.product-info {
+
+			padding: 12rpx;
 			display: flex;
 
 			.product-info-img {
@@ -577,6 +582,7 @@
 				height: 96rpx;
 				border-radius: 8rpx;
 				border: 1rpx solid #f5f5f5;
+				flex-shrink: 0;
 			}
 
 			.product-info-name {
@@ -604,7 +610,7 @@
 					color: #f92a2a;
 
 					.nomal {
-						font-size: 20rpx;
+						font-size: 22rpx;
 					}
 
 					.big {

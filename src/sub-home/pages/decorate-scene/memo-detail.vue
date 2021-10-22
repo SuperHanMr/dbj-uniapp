@@ -87,7 +87,10 @@
 		display: block;
 	}
 	.userInfo .userName{
-		width: 86rpx;
+		max-width: 282rpx;
+		overflow: hidden;
+		text-overflow: ellipsis;
+		white-space: nowrap;
 		height: 40rpx;
 		margin: 0 16rpx;
 		font-size: 28rpx;

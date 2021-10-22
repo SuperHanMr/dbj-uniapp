@@ -174,6 +174,12 @@
 							}
 							if (e.length) {
 								this.lastId[this.currentIndex] = e[e.length - 1].orderId;
+								e.forEach(item=>{
+									item.stockAppVOS.forEach(subItem=>{
+										subItem.number=subItem.number-subItem.stockNumber;
+									})
+								})
+								console.log(e)
 								this.list0 = this.list0.concat(e);
 							} else {
 								if (this.lastId[this.currentIndex]) {

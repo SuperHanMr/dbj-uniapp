@@ -3,7 +3,7 @@
     <view class="message">
       管家发起竣工验收申请，系统将在{{countdown}}后自动确认验收
     </view>
-    <view class="content">
+    <view class="content" :style="{paddingBottom:containerBottom * 2 + 48 + 88 + 'rpx'}">
       <user-desc-pict-butler :detail="detail"></user-desc-pict-butler>
     </view>
     <view class="bt-btn-wrap flex-row" :style="{paddingBottom:systemBottom,height:systemHeight}">

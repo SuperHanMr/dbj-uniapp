@@ -26,7 +26,7 @@
 			</scroll-view>
 			<scroll-view class="nav-right" scroll-y="true">
 				<view class="right-view" v-for="(menu3, index3) in goodsList" :key="index3">
-					<text class="menu3-title">{{menu3.supplierName}}</text>
+					<view class="menu3-title">{{menu3.categoryIVName}}</view>
 					<scroll-view class="right-card" scroll-y="true">
 						<view v-for="(detail, detailK) in menu3['stockAppVOS']" :key="detail.id">
 							<goods-item :cartList="cartList" :item="detail" @change="onChange"></goods-item>
@@ -216,7 +216,10 @@
 	};
 </script>
 
-<style lang="scss" scoped>
+<style lang="scss">
+	page{
+		overflow: hidden;
+	}
 	.history {
 		height: 80rpx;
 		line-height: 80rpx;
@@ -555,8 +558,11 @@
 	}
 
 	.menu3-title {
-		font-size: 30rpx;
-		color: #111111;
+		font-size: 28rpx;
+		font-weight: bold;
+		color: #333333;
+		height: 100rpx;
+		line-height: 100rpx;
 	}
 
 	::-webkit-scrollbar {

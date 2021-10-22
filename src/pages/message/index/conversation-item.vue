@@ -54,11 +54,11 @@
           return this.conversation.userProfile.nick || this.conversation.userProfile.userID;
         }
         if (this.conversation.type === TIM.TYPES.CONV_GROUP) {
+          if (this.conversation.groupProfile && this.conversation.groupProfile.introduction) {
+            return this.conversation.groupProfile.introduction;
+          }
           if (this.conversation.groupDB) {
             return this.conversation.groupDB.introduction;
-          }
-          if (this.conversation.groupProfile) {
-            return this.conversation.groupProfile.introduction;
           }
           return this.conversation.groupProfile.groupID;
         }

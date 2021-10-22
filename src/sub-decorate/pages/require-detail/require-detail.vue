@@ -2,7 +2,7 @@
 	<view>
 
 		<view class="res">
-			<view class="res-title">要货状态</view>
+			<view class="res-title">要货单状态</view>
 			<view class="res-content">
 				<text v-if="res.status==0" style="color: #FE9000">
 					{{res.statusName}}
@@ -27,12 +27,12 @@
 				{{res.refuseReason}}
 			</view>
 		</view>
-		<view class="res">
+	<!-- 	<view class="res">
 			<view class="res-title">要货单状态</view>
 			<view class="res-content">
 				待收货
 			</view>
-		</view>
+		</view> -->
 		<view class="res">
 			<view class="res-title">要货单号</view>
 			<view class="res-content">

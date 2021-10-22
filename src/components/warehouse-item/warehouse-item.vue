@@ -44,10 +44,12 @@
 						</view>
 					</view>
 					<view class="spec">
-						<view class="spec-item">
-							{{goodItem.scaleProperties}}
+						<view class="spec-item width-max">
+							<text class="lines">
+								{{goodItem.scaleProperties}}
+							</text>
 						</view>
-						<view class="spec-item">
+						<view class="spec-item" style="margin-left: 24rpx;">
 							{{goodItem.price}}/{{goodItem.unit}}
 						</view>
 						<view style="flex:1">
@@ -278,6 +280,18 @@
 </script>
 
 <style lang="scss" scoped>
+	.width-max {
+		max-width: 300rpx;
+	
+	}
+	.lines{
+		overflow: hidden;
+		-webkit-line-clamp: 2;
+		text-overflow: ellipsis;
+		display: -webkit-box;
+		-webkit-box-orient: vertical;
+	}
+
 	.close-text {
 		color: #333333;
 		font-weight: 500;

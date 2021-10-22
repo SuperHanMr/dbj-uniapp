@@ -703,6 +703,7 @@
 
 			.icon-select-merchant {
 				font-size: 30rpx;
+				color: #35c4c4;
 			}
 
 			.circle {
