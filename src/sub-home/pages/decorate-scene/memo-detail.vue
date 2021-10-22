@@ -112,7 +112,8 @@
 	}
 	.content .remark{
 		display: flex;
-		width: fit-content;
+		flex-wrap: wrap;
+		max-width: 686rpx;
 		height: 40rpx;
 		margin-bottom: 16rpx;
 		margin-left: 32rpx;
@@ -123,7 +124,6 @@
 		width: 112rpx;
 	}
 	.remark .cueOthers{
-		width: 112rpx;
 		margin-right: 40rpx;
 	}
 	.content .text{
