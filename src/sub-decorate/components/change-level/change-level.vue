@@ -241,7 +241,7 @@
     background-color: #fff;
     border-radius: 32rpx 32rpx 0rpx 0rpx;
     padding-bottom: 48rpx;
-    height: 75vh;
+    // height: 75vh;
 
     .title-wrap {
       height: 103rpx;
