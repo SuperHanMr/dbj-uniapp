@@ -50,7 +50,7 @@
 				<view class="refund-reason">
 					<view class="left">
 						<view class="icon">*</view>
-						<text>退款原因</text>
+						<text style="color: #666666;">退款原因</text>
 					</view>
 					<!-- <view class="reason" v-if="!reasonName">
 						<text style="color:#C7C7C7;">请选择</text>
@@ -60,8 +60,8 @@
 					  <text style="margin-right: 16rpx;" @click="openPopup()">{{reasonName}}</text>
 					</view> -->
 					<view class="reason" >
-						<text v-if="!reasonName" style="color:#C7C7C7;" @click="openPopup()">请选择</text>
-						<text v-else style="margin-right: 16rpx;" @click="openPopup()">{{reasonName}}</text>
+						<text v-if="!reasonName" @click="openPopup()">请选择</text>
+						<text v-else style="margin-right: 16rpx;color: #333333;" @click="openPopup()">{{reasonName}}</text>
 						<image src="../../static/ic_arraw_down.svg" mode="" @click="openPopup()"/>
 					</view>
         </view>
@@ -125,7 +125,7 @@
 					<view class="edit-price">
 						<view class="left">
 							<view class="icon">*</view>
-							<text>退款金额</text>
+							<text style="color:#666666;">退款金额</text>
 						</view>
 						<view class="right1" >
 						  <text v-if="refundInfo.actualIncomeAmount" class="price-font">￥{{handlePrice(refundInfo.actualIncomeAmount)[0] || 0}}.{{handlePrice(refundInfo.actualIncomeAmount)[1]}}</text>
