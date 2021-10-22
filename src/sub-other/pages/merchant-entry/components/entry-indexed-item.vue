@@ -12,7 +12,9 @@
 							<view class="icon-circle" v-if="!item.checked">
 								
 							</view>
-							<image src="https://ali-image.dabanjia.com/static/mp/dabanjia/images/merchant-entry/merchant-entry-select.png" mode="" v-if="item.checked"></image>
+							<view class="icon-select select" v-if="item.checked" >
+								
+							</view>
 						</view>
 						<text class="uni-indexed-list__item-content">{{ item.name }}</text>
 					</view>
@@ -122,10 +124,10 @@
 			border-radius: 50%;
 			border: 1px solid #A8A8A8;
 		}
-		image{
+		.select{
 			margin: 0;
-			width: 32rpx;
-			height: 32rpx;
+			font-size: 32rpx;
+			color: #35c4c4;
 			border-radius: 50%;
 		}
 	}

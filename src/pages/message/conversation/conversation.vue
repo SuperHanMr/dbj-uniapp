@@ -271,7 +271,18 @@
         console.log("messageList receive:", messageList);
         this.$store.commit("pushCurrentMessageList", messageList);
         getTim().setMessageRead({ conversationID: this.currentConversation.conversationID });
+        this.handleGroupNameUpate(messageList);
         this.scrollToBottom();
+      },
+      handleGroupNameUpate(messageList) {
+        let updateNameMsgs = messageList.filter(msg => msg.type === TIM.TYPES.MSG_GRP_TIP && msg.payload.operationType === TIM.TYPES.GRP_TIP_GRP_PROFILE_UPDATED);
+        if (updateNameMsgs.length) {
+          let msg = updateNameMsgs[updateNameMsgs.length - 1];
+          let newName = msg.payload.newGroupProfile.introduction;
+          uni.setNavigationBarTitle({
+          　　title: newName
+          });
+        }
       },
       handleMessageListClick() {
         uni.$emit("message-list-click");

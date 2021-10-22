@@ -4,7 +4,7 @@
     <view class="content-wrap">
       <view class="avtor-wrap flex-row-bet">
         <view class="flex-row-start">
-          <image mode="aspectFill" class="avtor" :src="workerData.avatar"></image>
+          <image mode="aspectFill" class="avtor" :src="workerData.avatar" @click="goPersonPage"></image>
           <view class="tigs">
             <view class="username">{{workerData.name}}</view>
             <view class="role">{{workerData.nodeName}}</view>
@@ -15,8 +15,8 @@
       <view class="desc">{{workerData.content}}</view>
       <view class="picture flex-row">
         <view class="imgs" :class="{'img3': index % 3 == 2}" v-for="(item, index) in workerData.fileUrls" :key="index" v-if="index < 6">
-          <image  mode="aspectFill" :src="item" @click="clickImg(workerData.fileUrls, index)"></image>
-          <view class="zz" v-if="index === 5" @click="clickImg(workerData.fileUrls, 5)">+{{workerData.fileUrls.length - 6}}</view>
+          <image mode="aspectFill" :src="item" @click="clickImg(workerData.fileUrls, index)"></image>
+          <view class="zz" v-if="workerData.fileUrls.length > 6 && index === 5" @click="clickImg(workerData.fileUrls, 5)">+{{workerData.fileUrls.length - 6}}</view>
         </view>
       </view>
       <view v-for="(t,index) in workerData.workerItems">
@@ -24,7 +24,7 @@
         <view class="picture flex-row">
           <view class="imgs" :class="{'img3': index % 3 == 2}" v-for="(kit, i) in t.fileUrls" :key="i" v-if="i < 3">
             <image mode="aspectFill" :src="kit" @click="clickImg(t.fileUrls, i)"></image>
-            <view class="zz" v-if="i === 2" @click="clickImg(t.fileUrls, 2)">+{{t.fileUrls.length - 3}}</view>
+            <view class="zz" v-if="t.fileUrls.length > 3 && i === 2" @click="clickImg(t.fileUrls, 2)">+{{t.fileUrls.length - 3}}</view>
           </view>
         </view>
       </view>
@@ -56,6 +56,11 @@
           current: index,
           urls: arr,
           // longPressActions:{}
+        })
+      },
+      goPersonPage() {
+        uni.navigateTo({
+          url: `/sub-decorate/pages/person-page/person-page?personId=${this.workerData?.zeusId}`
         })
       }
     },
@@ -152,7 +157,7 @@
   }
 
   .picture {
-    justify-content: space-between;
+    justify-content: flex-start;
     flex-wrap: wrap;
     
     .img3.imgs {

@@ -71,7 +71,7 @@
       confirm() {
         uni.showModal({
           title: "",
-          content: "是否确定该阶段已验收通过?",
+          content: "是否确认该阶段已验收通过?",
           confirmText: "确定",
           success: (res) => {
             if (res.confirm) {

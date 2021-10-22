@@ -309,7 +309,7 @@
         <view class="topArea">
           <view class="mainTit">评论</view>
           <image
-            @click="showComments=false"
+            @click="closeComments"
             class="close"
             src="http://dbj.dragonn.top/static/mp/dabanjia/images/home/ic_closed_black%402x.png"
           ></image>
@@ -505,6 +505,7 @@ export default {
 			dynamicPage: 1,
 			dynamicPageType: 1,
 			replyPage: 1,
+			commentPage: 1,
 			homePageEstate: {},
 			buyState: false,//是否购买摄像头服务,
 			hasChange: false
@@ -537,6 +538,9 @@ export default {
 		this.checkBuyServe()
   },
   methods: {
+		closeComments(){
+			this.showComments = false
+		},
 		bindChange(e){
 			this.selectedIndex = e.detail.value - 1
 			this.hasChange = true
@@ -613,8 +617,7 @@ export default {
 					if(this.comments[index].secondComments.length >= totalRows){
 						this.isExpanded = true;
 					}
-          console.log(list);
-          this.replyPage = page++
+          this.replyPage = ++page
         }
       });
     },
@@ -653,19 +656,24 @@ export default {
       this.dynamicId = id;
       this.showComments = true;
       let params = {
-        page: 1,
+        page: this.commentPage,
         rows: 10,
         businessId: id, //	动态ID
         businessType: 2,
       };
       getComments(params).then((data) => {
         if (data) {
-          console.log(data);
           let { page, list } = data;
-          this.comments = list;
-        }
-      });
-    },
+					
+					if(this.commentPage === 1){
+						this.comments = list
+					}else{
+						this.comments.push(...list)
+					}
+					this.commentPage = ++page
+				}
+			});
+		},
     commentItemC(name, commentId) {
       if (this.userId !== this.projectInfo.estateOwnerId) return;
       this.showInput = true;

@@ -7,7 +7,7 @@
 					{{item.fullName}}
 				</view>
 				<view class="sub">
-				已购买	{{item.number}} 剩余{{item.stockNumber}}
+				已购买	{{item.number}}{{item.unit}} 剩余{{item.stockNumber}}{{item.unit}} 
  				</view>
 				<view class="num-input">
 					<custom-number-box :max="item.stockNumber" @change="onChange" :onlyShowAdd="true" :value="value"></custom-number-box>

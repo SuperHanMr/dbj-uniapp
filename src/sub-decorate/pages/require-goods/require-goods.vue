@@ -216,7 +216,10 @@
 	};
 </script>
 
-<style lang="scss" scoped>
+<style lang="scss">
+	page{
+		overflow: hidden;
+	}
 	.history {
 		height: 80rpx;
 		line-height: 80rpx;
@@ -253,9 +256,10 @@
 	}
 
 	.cart-content {
+		width: 686rpx;
 		max-height: 792rpx;
 		padding: 0 32rpx;
-		overflow: auto;
+		overflow: scroll;
 		background-color: #ffffff;
 	}
 

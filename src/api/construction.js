@@ -21,3 +21,6 @@ export function ownerInsertAudit(data) {
 export function ownerCompletionAudit(data) {
   return request.post(`/pm/app/site/completion/audit`, data)
 }
+export function getConstructionNodes(params) {
+  return request.get(`/pm/app/project/getConstructionNodes`, {params})
+}

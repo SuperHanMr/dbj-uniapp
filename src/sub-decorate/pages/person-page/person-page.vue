@@ -260,8 +260,26 @@
           userType:this.userType
         }
         queryAttention(data).then(res=>{
-          this.isRecommend = routeId === 2001 ? !this.isRecommend : this.isRecommend
-          this.isAttention = routeId === 1001 ? !this.isAttention : this.isAttention
+          if(routeId === 2001){
+            if(this.isRecommend){
+              this.personData .fansCount--
+            }else{
+              this.personData .fansCount++
+            }
+            this.isRecommend = !this.isRecommend 
+            
+          }else{
+            if(this.isAttention){
+              this.personData.recommendCount--
+            }else{
+              this.personData.recommendCount++
+            }
+            this.isAttention = !this.isAttention
+            
+          }
+          
+
+          
           if(routeId === 2001&&this.isRecommend){
             uni.showToast({
               title:"购买服务后，将为您优先推荐该服务者",
