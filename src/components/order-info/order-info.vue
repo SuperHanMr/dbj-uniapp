@@ -115,7 +115,8 @@
 		color: #333333;
 		.header{
 			font-size: 30rpx;
-			font-weight: 1000;
+			font-weight: 500;
+			color: #333333;
 			height: 48rpx;
 			line-height: 48rpx;
 			margin-bottom: 16rpx;
