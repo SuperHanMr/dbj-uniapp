@@ -4,7 +4,7 @@
       class="mask"
       v-if="showComments"
     >
-      <view class="popupComments" :class="{'is-ower':showInput}">
+      <view class="popupComments" :class="{'is-ower':showInput}" @click="changeObj">
         <view class="topArea">
           <view class="mainTit">评论</view>
 <!--          <image
@@ -38,7 +38,7 @@
             <view
               class="mainContent"
               @longpress="deleteComment(item.commentId,item.zeusId)"
-              @click="commentItemC(item.nickname,item.commentId,index)"
+              @click.stop="commentItemC(item.nickname,item.commentId,index)"
             >
               <image
                 class="avatar"
@@ -58,7 +58,7 @@
             <view
               class="reply"
               @longpress="deleteComment(replyItem.commentId,replyItem.zeusId)"
-              @click="replyItemC(replyItem.nickname,replyItem.commentId,index)"
+              @click.stop="replyItemC(replyItem.nickname,replyItem.commentId,index)"
               v-for="replyItem in item.secondComments"
               :key="replyItem.commentId"
             >
@@ -89,7 +89,7 @@
               <view
                 class="expand"
                 v-if="!isExpanded"
-                @click="expandC(item.commentId,index)"
+                @click.stop="expandC(item.commentId,index,item.secondCount)"
               >
                 <view class="text">展开{{item.secondCount}}条回复</view>
                 <image
@@ -98,9 +98,9 @@
                 ></image>
               </view>
               <view
-                class="packUp"
+                class="expand"
                 v-if="isExpanded"
-                @click="packUpC(index)"
+                @click.stop="packUpC(index)"
               >
                 <view class="test">收起</view>
                 <image
@@ -116,13 +116,12 @@
           v-if="showDelete"
         >
           <view class="deleteWrap">
-            <image
-              class="img"
-              src="../../static/ic_comment_delete@2x.png"
-            ></image>
-            <view class="delete" @click="sureDelete">删除</view>
+            <i
+              class="icon-ic_zhuangxiuxianchang_pinglunshanchu_csn icon"
+            ></i>
+            <view class="delete" @click.stop="sureDelete">删除</view>
           </view>
-          <view class="deleteCancel" @click="showDelete=false;showInput=true">取消</view>
+          <view class="deleteCancel" @click.stop="showDelete=false;showInput=true">取消</view>
         </view>
         <view
           class="bottomInputBox"
@@ -138,12 +137,14 @@
             :placeholder="isInputFocus?`回复@${inputName}`:'说点什么吧'"
             :class="{'focusInput':isInputFocus}"
             :focus="isOpen"
+            :adjust-position='false'
+            @click.stop="console.log(1)"
             class="easyInput"
           />
           <view
             class="send"
             :class="{'themeColor':isInputFocus}"
-            @click="setReply"
+            @click.stop="setReply"
           >发送</view>
         </view>
       </view>
@@ -260,6 +261,14 @@
           this.commentC(this.dynamicId);
         });
       },
+      changeObj(){
+        this.inputName = ''
+        this.commentId = 0;
+        this.commentIndex = 0;
+        this.isReply = false;
+        this.isOpen = false;
+        this.isInputFocus = false
+      },
       commentItemC(name, commentId,commentIndex) {
         console.log(111)
         console.log(this.ownId,this.houseOwnerId)
@@ -286,31 +295,29 @@
         this.inputName = name;
         this.replyId = replyId;
         this.commentIndex = commentIndex;
-        
       },
       packUpC(index) {
         this.isExpanded = false;
         this.comments[index].secondComments.splice(2);
       },
-      expandC(id, index) {
+      expandC(id, index,num) {
         console.log(id)
         let params = {
           page: this.replyPage,
-          rows: 10,
+          rows: num+2,
           parentId: id, //评论ID
         };
         getReplies(params).then((data) => {
           if (data) {
-      			let {list,page,totalRows} = data
+      			let {list,page,totalRows,totalPage} = data
             console.log(this.comments,index,this.comments[index])
       			if(this.replyPage!==1){
-      				this.comments[index].secondComments =
-      					this.comments[index].secondComments.concat(list || []);
+      				this.comments[index].secondComments =list
       			}else{
       				this.comments[index].secondComments = list || [];
       			}
-      			if(this.isReply){
-              if(this.comments[index].secondComments.length >= totalRows){
+      			
+              if(page >= totalPage){
               	uni.showToast({
               		title:'没有更多数据了',icon:"none",
               	});
@@ -318,7 +325,7 @@
               }
               
               this.replyPage = page++
-            }
+            
       			
           }
         });
@@ -388,7 +395,7 @@
   	display: flex;
   	align-items: center;
   }
-  .deleteWrap .img {
+  .deleteWrap .icon {
   	width: 26rpx;
   	height: 30rpx;
   	display: block;
@@ -544,9 +551,10 @@
   }
   .commentItem .mainContent {
   	width: 100%;
-  	height: 132rpx;
+  	// height: 132rpx;
   	margin-top: 32rpx;
   	display: flex;
+    padding: 20rpx 0;
   }
   .commentItem .mainContent .avatar {
   	width: 72rpx;
@@ -557,7 +565,7 @@
   }
   .commentItem .mainContent .commentInfo {
   	width: 598rpx;
-  	height: 36rpx;
+  	// height: 36rpx;
   }
   .commentInfo .info {
   	display: flex;

@@ -47,16 +47,17 @@
 									<view style="margin-right: 8rpx;">运费</view>
 									<image class="icon"  src="../../../../static/price_icon.svg" mode="" @click="readExpenses(1)"/>
 								</view>
-								<text class="price-font" style="color: #333;" v-if="orderInfo.stockType == 0">￥{{item.freight?`${item.freight}`:"0.00"}}</text>
-								<text class="price-font" :style="{marginTop:item.freight?'0':'8rpx'}" style="color: #333;" v-else>{{item.freight?`￥${item.freight}`:"--"}}</text>
+								<view class="price-font" style="color: #333;font-size: 26rpx;" v-if="orderInfo.stockType == 0">￥{{item.freight?`${item.freight}`:"0.00"}}</view>
+								<view class="price-font" :style="{marginTop:item.freight?'0':'8rpx'}" style="color: #333;font-size: 26rpx;" v-else>{{item.freight?`￥${item.freight}`:"--"}}</view>
               </view>
               
 							<view class="item" v-if="item.platformDiscount">
                 <text>平台优惠</text>
-								<text class="price-font" style="color: #333;">-￥{{item.platformDiscount}}</text>
+								<text class="price-font" style="color: #333;font-size: 26rpx;">-￥{{item.platformDiscount}}</text>
               </view>
             </view>
-            <view class="line1" v-if="item.handlingFees || item.storeDiscount" />
+						<!-- {{item.handlingFees}} {{ item.storeDiscount}} -->
+            <view class="line1" v-if="item.storeDiscount" />
             <view class="line2" v-else />
 
             <view class="right">
@@ -65,12 +66,12 @@
 									<view style="margin-right: 8rpx;">搬运费</view>
 									<image class="icon" src="../../../../static/price_icon.svg" mode="" @click="readExpenses(2)"/>
 								</view>
-								<text class="price-font" style="color: #333;" v-if="orderInfo.stockType == 0">￥{{item.handlingFees?item.handlingFees:"0.00"}}</text>
-								<text class="price-font" style="color: #333;" :style="{marginTop:item.handlingFees ? '0' : '8rpx' }" v-else>{{item.handlingFees?`￥${item.handlingFees}`:"--"}}</text>
+								<text class="price-font" style="color: #333;font-size: 26rpx;" v-if="orderInfo.stockType == 0">￥{{item.handlingFees?item.handlingFees:"0.00"}}</text>
+								<text class="price-font" style="color: #333;font-size: 26rpx;" :style="{marginTop:item.handlingFees ? '0' : '8rpx' }" v-else>{{item.handlingFees?`￥${item.handlingFees}`:"--"}}</text>
               </view>
               <view class="item" v-if="item.storeDiscount">
                 <text>商家优惠</text>
-								<text style="color: #333;" class="price-font">-￥{{item.storeDiscount}}</text>
+								<text style="color: #333;font-size: 26rpx;" class="price-font">-￥{{item.storeDiscount}}</text>
               </view>
             </view>
           </view>
