@@ -101,7 +101,7 @@
   .text-scroll {
     height: 88rpx;
     background: #ffffff;
-    border-radius: 24rpx;
+    border-radius: 16rpx;
     margin: 0 24rpx 16rpx;
     padding: 24rpx;
     box-sizing: border-box;
