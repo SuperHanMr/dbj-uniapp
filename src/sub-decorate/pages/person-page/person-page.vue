@@ -66,7 +66,7 @@
           </view>
         </view>
         <personIntroduce v-if="personData.roleId!==10000" :personData='personData'></personIntroduce>
-        <view class="send-msg" @click="sendMsg" v-if="personData.roleId<7||hasServe!==0">
+        <view class="send-msg" @click="sendMsg" v-if="personData.roleId<7&&hasServe!==0">
           <i class="icon-gerenzhuye_ic_faxiaoxi"></i>
           <text>发消息</text>
           
@@ -160,8 +160,12 @@
     },
     onPullDownRefresh() {
       this.init();
-      this.$refs.case&&this.$refs.case.getList()
+      // console.log(this.$refs.service,this.$refs.service.isOpen)
+      this.getSkuList()
+      
+      
       this.$refs.case&&this.$refs.case.cleanPage()
+      this.$refs.case&&this.$refs.case.getList()
       // console.log(this.$refs)
       this.$refs.dynamic&&this.$refs.dynamic.requestDynamic()
       this.$refs.evaluate.getComments()
@@ -202,7 +206,7 @@
           
           this.currentItem = this.serviceTop<=130&&this.caseTop>130?'serviceTop':this.caseTop<=130&&this.evaluateTop>130?'caseTop':''
           if(this.interact>100||this.interact === 0){
-            console.log(this.interact)
+            // console.log(this.interact)
             this.currentItem = 'serviceTop'
           }
         }else if(this.personData.roleId===2){
@@ -326,7 +330,7 @@
       },
       getServiceStatus(){
         getServiceStatus(this.personData.zeusId).then(res=>{
-          this.hasServe = data.status||data.ststus
+          this.hasServe = res.status||res.ststus
         })
       },
       // getCaseList() {
@@ -343,7 +347,7 @@
         
         uni.pageScrollTo({
           duration: 100, // 过渡时间
-          scrollTop: this[name] + this.scrollTop -124, // 滚动的实际距离
+          scrollTop: this[name] + this.scrollTop -115, // 滚动的实际距离
         })
       },
       getNodeHeight(){
@@ -389,6 +393,10 @@
         }
         getSkuList(data).then(res=>{
           this.serviceData = res
+          if(this.$refs.service){
+            this.$refs.service.isOpen = true
+            this.$refs.service.open()
+          }
         })
       },
       getEvaluate(num){

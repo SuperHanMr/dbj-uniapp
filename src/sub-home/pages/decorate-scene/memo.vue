@@ -1,10 +1,9 @@
 <template>
 	<view class="memoWrap" :class="{'bg':!memos.length}">
-		<custom-navbar opacity="1" :title="title" titleColor="#FFFFFF" bgcolor="white">
+		<custom-navbar opacity="1" :title="title" titleColor="#000" bgcolor="white">
 			<template v-slot:back>
 				<view @click="toBack">
-					<i class="icon-ic_cancel_white" style="color: black;">
-					</i>
+					<i class="icon-ic_cancel_white" style="color: black;"></i>
 				</view>
 			</template>
 		</custom-navbar>
@@ -48,7 +47,7 @@
 			return {
 				memos: [],
 				projectId: 0,
-				title: "",
+				title: "备忘录",
 				fromNewMemo: false,
 				navBarHeight: ""
 			}

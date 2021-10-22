@@ -1,8 +1,8 @@
 @font-face {
   font-family: "iconfont"; /* Project id 2785499 */
-  src: url('//at.alicdn.com/t/font_2785499_q5gdpq4aejm.woff2?t=1634818875210') format('woff2'),
-       url('//at.alicdn.com/t/font_2785499_q5gdpq4aejm.woff?t=1634818875210') format('woff'),
-       url('//at.alicdn.com/t/font_2785499_q5gdpq4aejm.ttf?t=1634818875210') format('truetype');
+  src: url('//at.alicdn.com/t/font_2785499_upmegazx1mr.woff2?t=1634888359334') format('woff2'),
+       url('//at.alicdn.com/t/font_2785499_upmegazx1mr.woff?t=1634888359334') format('woff'),
+       url('//at.alicdn.com/t/font_2785499_upmegazx1mr.ttf?t=1634888359334') format('truetype');
 }
 
 .iconfont {
@@ -11,6 +11,22 @@
   font-style: normal;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+}
+
+.icon-audio-path2:before {
+  content: "\e646";
+}
+
+.icon-audio-path3:before {
+  content: "\e647";
+}
+
+.icon-audio-path1:before {
+  content: "\e648";
+}
+
+.icon-audio:before {
+  content: "\e649";
 }
 
 .icon-input-clear:before {
@@ -699,10 +715,6 @@
 
 .icon-face:before {
   content: "\e616";
-}
-
-.icon-audio:before {
-  content: "\e622";
 }
 
 .icon-plus-circle:before {
