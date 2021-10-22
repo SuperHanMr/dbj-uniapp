@@ -259,8 +259,9 @@
       },
       goDecorateCalendar() {
         // console.log("date: ", date)
+        let type = this.currentProject.relegationType == 2 ? 0 : 1
         uni.navigateTo({
-          url: `/sub-home/pages/decorate-scene/decorate-calendar?projectId=${this.currentProject.projectId}&isDecorate=1`
+          url: `/sub-home/pages/decorate-scene/decorate-calendar?projectId=${this.currentProject.projectId}&isDecorate=${type}`
         })
       },
       getCarouselMsg() {

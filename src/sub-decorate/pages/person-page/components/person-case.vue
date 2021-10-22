@@ -170,27 +170,31 @@
       	];
       	// 获取插入的方向
       	let getDirection = (index) => {
-      		/* 左侧高度大于右侧超过 600px 时，则前3条数据都插入到右边 */
-      		if (differ >= 800 && index < 3) {
-      			differVal = 1;
-      			return "right";
-      		}
-      
-      		/* 右侧高度大于左侧超过 600px 时，则前3条数据都插入到左边 */
-      		if (differ <= -800 && index < 3) {
-      			differVal = -1;
-      			return "left";
-      		}
-      
-      		/* 左侧高度大于右侧超过 350px 时，则前2条数据都插入到右边 */
-      		if (differ >= 350 && index < 2) {
-      			return "right";
-      		}
-      		/* 右侧高度大于左侧超过 350px 时，则前2条数据都插入到左边 */
-      		if (differ <= -350 && index < 2) {
-      			differVal = -1;
-      			return "left";
-      		}
+          //考虑中台排序就是瀑布流，暂时不加这个
+      // 		/* 左侧高度大于右侧超过 600px 时，则前3条数据都插入到右边 */
+      // if(differ!==0){
+      //   if (differ >= 800 && index < 3) {
+      //   	differVal = 1;
+      //   	return "right";
+      //   }
+              
+      //   /* 右侧高度大于左侧超过 600px 时，则前3条数据都插入到左边 */
+      //   if (differ <= -800 && index < 3) {
+      //   	differVal = -1;
+      //   	return "left";
+      //   }
+              
+      //   /* 左侧高度大于右侧超过 350px 时，则前2条数据都插入到右边 */
+      //   if (differ >= 350 && index < 2) {
+      //   	return "right";
+      //   }
+      //   /* 右侧高度大于左侧超过 350px 时，则前2条数据都插入到左边 */
+      //   if (differ <= -350 && index < 2) {
+      //   	differVal = -1;
+      //   	return "left";
+      //   }
+      // }
+      		
       
       		/* 当前数据序号为偶数时，则插入到左边 */
       		if ((i + differVal) % 2 == 0) {
