@@ -8,20 +8,20 @@
 				</view>
 			</view>
 			<view class="state">
-				<view v-if="item.status==0" style="color: #FE9000">
-					{{item.statusName}}
+				<view v-if="item.customerStatus==0" style="color: #FE9000">
+					{{item.customerStatusName}}
 				</view>
-				<view v-if="item.status==1" style="color: #FE9000">
-					{{item.statusName}}
+				<view v-if="item.customerStatus==1" style="color: #FE9000">
+					{{item.customerStatusName}}
 				</view>
-				<view v-if="item.status==2" style="color: #FF3347">
-					{{item.statusName}}
+				<view v-if="item.customerStatus==2" style="color: #FF3347">
+					{{item.customerStatusName}}
 				</view>
-				<view v-if="item.status==3" style="color: #00BFB6">
-					{{item.statusName}}
+				<view v-if="item.customerStatus==3" style="color: #00BFB6">
+					{{item.customerStatusName}}
 				</view>
-				<view v-if="item.status==4" style="color: #BFBFBF">
-					{{item.statusName}}
+				<view v-if="item.customerStatus==4" style="color: #BFBFBF">
+					{{item.customerStatusName}}
 				</view>
 			</view>
 
