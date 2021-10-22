@@ -44,7 +44,7 @@
 						</view>
 					</view>
 					<view class="spec">
-						<view class="spec-item">
+						<view class="spec-item width-max">
 							{{goodItem.scaleProperties}}
 						</view>
 						<view class="spec-item">
@@ -278,6 +278,14 @@
 </script>
 
 <style lang="scss" scoped>
+	.width-max {
+		width: 300rpx;
+		// overflow: hidden;
+		// text-overflow: ellipsis;
+		// display: -webkit-box;
+		// -webkit-line-clamp: 2; //这个代表你要在几行显示省略号
+	}
+
 	.close-text {
 		color: #333333;
 		font-weight: 500;
