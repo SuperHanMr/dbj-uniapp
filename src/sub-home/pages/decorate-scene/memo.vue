@@ -1,17 +1,14 @@
 <template>
 	<view class="memoWrap" :class="{'bg':!memos.length}">
-		<view v-if="fromNewMemo">
-			<custom-navbar opacity="1" :title="title" titleColor="#000" bgcolor="white">
-				<template v-slot:back>
-					<view @click="toBack">
-						<i class="icon-ic_cancel_white" style="color: black;"></i>
-					</view>
-				</template>
-			</custom-navbar>
-			<!-- 占位 -->
-			<view :style="{height:navBarHeight}">
-			</view>
-		</view>
+		<custom-navbar opacity="1" :title="title" titleColor="#000" bgcolor="white">
+			<template v-slot:back>
+				<view @click="toBack">
+					<i class="icon-ic_cancel_white" style="color: black;"></i>
+				</view>
+			</template>
+		</custom-navbar>
+		<!-- 占位 -->
+		<view :style="{height:navBarHeight}"></view>
 		<view class="noMemo" v-if="!memos.length">
 			<image class="noMemoImg"
 				src="http://dbj.dragonn.top/static/mp/dabanjia/images/home/memo_empty%402x.png"></image>
@@ -107,8 +104,7 @@
 	.new{
 		width: 104rpx;
 		height: 104rpx;
-		margin-right: 40rpx;
-		opacity: 0.7;
+		opacity: 0.8;
 		background: #00c2b8;
 		border-radius: 50%;
 		display: flex;
@@ -116,7 +112,7 @@
 		align-items: center;
 		position: fixed;
 		right: 40rpx;
-		bottom: 20rpx;
+		bottom: 80rpx;
 	}
 	.new .create{
 		width: 32rpx;
@@ -206,12 +202,12 @@
 		width: 686rpx;
 		height: fit-content;
 		margin-left: 32rpx;
+		padding: 24rpx 0;
 		background: #f5f6f6;
 		border-radius: 16rpx;
 	}
 	.content .text{
 		margin-left: 24rpx;
-		padding-top: 24rpx;
 		width: 638rpx;
 		max-height: 80rpx;
 		color: #333333;
@@ -225,8 +221,6 @@
 	}
 	.content .remark{
 		display: flex;
-		width: fit-content;
-		height: 40rpx;
 		margin-top: 16rpx;
 		margin-left: 32rpx;
 		font-size: 28rpx;
