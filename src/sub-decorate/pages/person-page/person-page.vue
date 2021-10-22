@@ -167,7 +167,7 @@
     },
     onLoad(e){
       this.userType = e.userType
-      this.personId = e.personId||7248
+      this.personId = e.personId||7270
       // this.getGrabDetail()
     },
     onShow(){
@@ -199,17 +199,18 @@
         if(this.personData.roleId===1){
           
           this.currentItem = this.serviceTop<=130&&this.caseTop>130?'serviceTop':this.caseTop<=130&&this.evaluateTop>130?'caseTop':''
-          if(this.interact>88||this.interact === 0){
+          if(this.interact>100||this.interact === 0){
+            console.log(this.interact)
             this.currentItem = 'serviceTop'
           }
         }else if(this.personData.roleId===2){
           this.currentItem = this.caseTop<=130&&this.evaluateTop>130?'caseTop':''
-          if(this.interact>88||this.interact === 0){
+          if(this.interact>100||this.interact === 0){
             this.currentItem = 'caseTop'
           }
         }else{
           this.currentItem = this.dynamicTop<=130&&this.evaluateTop>130?'dynamicTop':''
-          if(this.interact>88||this.interact === 0){
+          if(this.interact>100||this.interact === 0){
             this.currentItem = 'dynamicTop'
           }
         }
