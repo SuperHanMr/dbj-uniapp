@@ -38,9 +38,9 @@ export default {
   font-size: 12px;
   line-height: 16px;
   text-align: center;
-  padding: 24rpx 32rpx;
+  /* padding: 24rpx 32rpx;
   background-color: #fff;
   border-radius: 8px;
-  margin: 0 120rpx;
+  margin: 0 120rpx; */
 }
 </style>

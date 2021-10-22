@@ -219,6 +219,7 @@
 				console.log(this.choice)
 				if(!Object.keys(this.choice).length)return
 				this.isShrink = !this.isShrink
+				this.$emit('changeMargin',this.isShrink)
 	      this.monthOpen = !this.monthOpen
 	      if (this.monthOpen) {
 	        this.positionTop = 0
