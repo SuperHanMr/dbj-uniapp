@@ -23,7 +23,7 @@
 					refresher-background="#FFF" refresher-enabled="true" :refresher-triggered="triggered"
 					@scroll="onScroll" @refresherrefresh="onRefresh" @scrolltolower="onLoadMore">
 					<view class="goods-list">
-						<view v-for="(item,index) in videoList" :key="index" class="item" @click="onLiveClick(item)">
+						<view v-for="(item,index) in videoList"  :class="{'margin-left24':index%2==0,'margin-left16':index%2==1}" :key="index" class="item" @click="onLiveClick(item)">
 							<view class="img-view">
 								<image class="img"
 									:src="item.mediaType==1?item.roomLiveMediaVO.scaleImg:item.roomVideoMediaVO.scaleImg"
@@ -228,7 +228,12 @@
 		flex: 1;
 		height: 100%;
 	}
-
+	.margin-left24{
+		margin-left: 24rpx;
+	}
+	.margin-left16{
+		margin-left: 16rpx;
+	}
 	.goods-list {
 		display: flex;
 		margin-top: 8rpx;
@@ -243,7 +248,6 @@
 			width: 343rpx;
 			height: 526rpx;
 			border-radius: 16rpx;
-			margin-left: 21.3rpx;
 			position: relative;
 			overflow: hidden;
 			display: flex;
@@ -348,7 +352,7 @@
 		width: 100%;
 		overflow: hidden;
 		white-space: nowrap;
-		background: linear-gradient(129deg, #FFFFFF 0%, #f5f6f6 100%);
+		background: linear-gradient(#FFFFFF,  #f5f6f6);
 	}
 
 	.tab-item {
