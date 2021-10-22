@@ -262,17 +262,20 @@
         queryAttention(data).then(res=>{
           if(routeId === 2001){
             if(this.isRecommend){
-              this.personData .fansCount--
+              this.personData.fansCount = this.personData.fansCount-- +''
             }else{
-              this.personData .fansCount++
+              console.log(this.personData.fansCount)
+              this.personData.fansCount = this.personData.fansCount++ +''
+              console.log(this.personData.fansCount)
             }
             this.isRecommend = !this.isRecommend 
             
           }else{
             if(this.isAttention){
-              this.personData.recommendCount--
+              this.personData.recommendCount = this.personData.recommendCount +''
+              
             }else{
-              this.personData.recommendCount++
+              this.personData.recommendCount = this.personData.recommendCount++ +''
             }
             this.isAttention = !this.isAttention
             
