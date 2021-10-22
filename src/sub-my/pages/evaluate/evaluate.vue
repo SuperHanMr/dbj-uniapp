@@ -101,14 +101,14 @@
 			immediateEvalute(item){
 				console.log("立即评价");
 				uni.navigateTo({
-					url:`immediate-evaluate/immediate-evaluate?title=${item.typeName}&id=${item.id}&type=${item.type}&serverName=${item.serverName}&serverRoleName=${item.serverRoleName}&serverAvatar=${item.serverAvatar}`,
+					url:`immediate-evaluate/immediate-evaluate?typeName=${item.typeName}&id=${item.id}&type=${item.type}&serverName=${item.serverName}&serverRoleName=${item.serverRoleName}&serverAvatar=${item.serverAvatar}`,
 				})
 			},
 			
 			gotoDetail(item){
 				console.log("item.id=",item.id)
 				uni.navigateTo({
-					url:`evaluate-detail/evaluate-detail?id=${item.id}&title=${item.typeName}`
+					url:`evaluate-detail/evaluate-detail?id=${item.id}&typeName=${item.typeName}`
 				})
 				console.log("hhhhhhhh")
 			},
