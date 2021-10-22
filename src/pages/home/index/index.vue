@@ -131,7 +131,7 @@
 						:src="item.mediaType==1?'http://dbj.dragonn.top/static/mp/dabanjia/images/home/living.gif':'http://dbj.dragonn.top/static/mp/dabanjia/images/home/live-repaly.png'">
 						<view v-if="item.mediaType==1" class="text">
 
-							{{item.roomLiveMediaVO.onLineCount}}人正在观看
+							{{item.roomLiveMediaVO.onLineCount||0}}人正在观看
 						</view>
 						<view v-else class="text">
 							回放

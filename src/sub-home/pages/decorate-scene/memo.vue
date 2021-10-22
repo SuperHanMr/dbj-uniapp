@@ -1,14 +1,16 @@
 <template>
 	<view class="memoWrap" :class="{'bg':!memos.length}">
-		<custom-navbar opacity="1" :title="title" titleColor="#000" bgcolor="white">
-			<template v-slot:back>
-				<view @click="toBack">
-					<i class="icon-ic_cancel_white" style="color: black;"></i>
-				</view>
-			</template>
-		</custom-navbar>
-		<!-- 占位 -->
-		<view :style="{height:navBarHeight}">
+		<view v-if="fromNewMemo">
+			<custom-navbar opacity="1" :title="title" titleColor="#000" bgcolor="white">
+				<template v-slot:back>
+					<view @click="toBack">
+						<i class="icon-ic_cancel_white" style="color: black;"></i>
+					</view>
+				</template>
+			</custom-navbar>
+			<!-- 占位 -->
+			<view :style="{height:navBarHeight}">
+			</view>
 		</view>
 		<view class="noMemo" v-if="!memos.length">
 			<image class="noMemoImg"
@@ -105,7 +107,8 @@
 	.new{
 		width: 104rpx;
 		height: 104rpx;
-		opacity: 0.9;
+		margin-right: 40rpx;
+		opacity: 0.7;
 		background: #00c2b8;
 		border-radius: 50%;
 		display: flex;
@@ -201,7 +204,7 @@
 	}
 	.content{
 		width: 686rpx;
-		height: 184rpx;
+		height: fit-content;
 		margin-left: 32rpx;
 		background: #f5f6f6;
 		border-radius: 16rpx;
@@ -213,6 +216,7 @@
 		max-height: 80rpx;
 		color: #333333;
 		font-size: 28rpx;
+		font-weight: 500;
 		text-overflow: ellipsis;
 		overflow: hidden;
 		display: -webkit-box;

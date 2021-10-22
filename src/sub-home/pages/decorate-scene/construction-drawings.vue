@@ -20,7 +20,7 @@
 		<view class="divideLine"></view>
 		<view class="designer" v-if="serverList.length>=2">
 			<view class="designerInfo">
-				<image class="avatar" :src="serverList[selectedIndex].avatar"></image>
+				<image class="avatar" @click="toPersonal(serverList[selectedIndex].userId)" :src="serverList[selectedIndex].avatar"></image>
 				<view>
 					<view class="designerName">{{serverList[selectedIndex].userName}}</view>
 					<view class="role">{{serverList[selectedIndex].role}}</view>
@@ -99,6 +99,11 @@
 			this.requestPage()
 		},
 		methods:{
+			toPersonal(userId){
+				uni.navigateTo({
+					url: `/sub-decorate/pages/person-page/person-page?personId=${userId}`
+				})
+			},
 			previewImage(list,index){
 				let urls = []
 				list.forEach(item => {
@@ -114,12 +119,20 @@
 			},
 			selectC(severId,index){
 				this.selectedIndex = index
-				this.serverList[index].checked = true
+				this.serverList.map(item => {
+					if(severId === item.severId){
+						item.checked = true
+					}else{
+						item.checked = false
+					}
+					return item
+				})
 				updateDrawings(severId).then(data => {
 					if(data){
 						this.$nextTick(()=>{
 							this.drawings = data
 						})
+						this.showSwitchDesigner = false
 					}
 				})
 			},

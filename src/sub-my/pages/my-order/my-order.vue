@@ -630,7 +630,7 @@
 
 		.selected {
 			color: black;
-			font-weight: bold;
+			font-weight: 500;
 
 			.bottom-icon {
 				position: absolute;

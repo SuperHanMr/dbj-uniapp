@@ -40,6 +40,13 @@
         console.log(e.detail.value)
       },
       confirm() {
+        if(this.reason.trim() == false) {
+          uni.showToast({
+            title: "请填写原因后提交",
+            icon: "none"
+          })
+          return 
+        }
         ownerCompletionAudit({
           id: Number(this.id),
           status: 1,
