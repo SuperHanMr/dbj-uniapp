@@ -176,7 +176,7 @@
 								this.lastId[this.currentIndex] = e[e.length - 1].orderId;
 								e.forEach(item=>{
 									item.stockAppVOS.forEach(subItem=>{
-										subItem.number=subItem.number-subItem.stockNumber;
+										subItem.number=subItem.stockNumber;
 									})
 								})
 								console.log(e)

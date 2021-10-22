@@ -97,7 +97,7 @@
 	}
 	.remind{
 		width: 686rpx;
-		height: 120rpx;
+		/* height: 120rpx; */
 		margin-left: 32rpx;
 		margin-top: 18rpx;
 		border-bottom: 2rpx solid #f5f6f6;
@@ -108,6 +108,7 @@
 	.remind .text{
 		width: 112rpx;
 		height: 40rpx;
+		margin: 40rpx 0;
 		color: #333333;
 		font-size: 28rpx;
 	}
@@ -120,6 +121,7 @@
 	}
 	.main .list{
 		display: flex;
+		flex-wrap: wrap;
 		max-width: 454rpx;
 	}
 	.main .list .reminder{
@@ -127,6 +129,7 @@
 		font-size: 28rpx;
 		color: #333333;
 	}
+	
 	.main .list .reminder:last-child{
 		margin-right: 0;
 	}

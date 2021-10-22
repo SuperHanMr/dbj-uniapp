@@ -4,20 +4,20 @@
 		<view class="res">
 			<view class="res-title">要货单状态</view>
 			<view class="res-content">
-				<text v-if="res.status==0" style="color: #FE9000">
-					{{res.statusName}}
+				<text v-if="res.customerStatus==0" style="color: #FE9000">
+					{{res.customerStatusName}}
 				</text>
-				<text v-if="res.status==1" style="color: #FE9000">
-					{{res.statusName}}
+				<text v-if="res.customerStatus==1" style="color: #FE9000">
+					{{res.customerStatusName}}
 				</text>
-				<text v-if="res.status==2" style="color: #FF3347">
-					{{res.statusName}}
+				<text v-if="res.customerStatus==2" style="color: #FF3347">
+					{{res.customerStatusName}}
 				</text>
-				<text v-if="res.status==3" style="color: #00BFB6">
-					{{res.statusName}}
+				<text v-if="res.customerStatus==3" style="color: #00BFB6">
+					{{res.customerStatusName}}
 				</text>
-				<text v-if="res.status==4" style="color: #BFBFBF">
-					{{res.statusName}}
+				<text v-if="res.customerStatus==4" style="color: #BFBFBF">
+					{{res.customerStatusName}}
 				</text>
 			</view>
 		</view>
@@ -27,7 +27,7 @@
 				{{res.refuseReason}}
 			</view>
 		</view>
-	<!-- 	<view class="res">
+		<!-- 	<view class="res">
 			<view class="res-title">要货单状态</view>
 			<view class="res-content">
 				待收货
@@ -46,11 +46,11 @@
 			</view>
 		</view>
 
-
+		<view class="header">
+			{{res.storeName}}
+		</view>
 		<view v-for="(item,index) in res.details" :key="index" class="store">
-			<!-- 	<view class="header">
-				{{item.title}}
-			</view> -->
+
 			<view class="items">
 				<image class="img" :src="item.imgUrl"></image>
 				<view class="content">
@@ -121,13 +121,11 @@
 
 
 	.store {
-		padding: 0 32rpx;
+padding: 0 32rpx;
 		background-color: #FFF;
-		margin-top: 16rpx;
-
 		.items {
 			display: flex;
-			padding: 32rpx 0;
+			padding-bottom: 32rpx ;
 			border-bottom: 1rpx solid #f2f2f2;
 
 			.img {
@@ -161,15 +159,19 @@
 			}
 		}
 
-		.header {
-			width: 100%;
-			height: 74rpx;
-			display: flex;
-			align-items: flex-end;
-			color: #333333;
-			font-size: 28rpx;
-			font-weight: 500;
 
-		}
+	}
+
+	.header {
+		padding: 0 32rpx;
+		margin-top: 16rpx;
+		width: 100%;
+		height: 106rpx;
+		line-height: 106rpx;
+		padding-left: 32rpx;
+		color: #333333;
+		font-size: 28rpx;
+		font-weight: 500;
+		background-color: #FFF;
 	}
 </style>

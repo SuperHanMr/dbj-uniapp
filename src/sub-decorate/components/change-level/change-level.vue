@@ -6,16 +6,16 @@
         <image src="http://dbj.dragonn.top/static/mp/dabanjia/images/decorate/ic_level.svg"></image>
         <view>选择您想要更换人工的等级</view>
       </view>
-      <view class="right left">
+      <view class="right left" @click="lookdesc">
         <view>什么是人工等级</view>
-        <image @click="lookdesc" src="http://dbj.dragonn.top/static/mp/dabanjia/images/decorate/ic_why.svg"></image>
+        <image src="http://dbj.dragonn.top/static/mp/dabanjia/images/decorate/ic_why.svg"></image>
       </view>
     </view>
     <view class="r-d-g">
       <group-radio-me :items="dataList" :defaultV="1" @change="change"></group-radio-me>
     </view>
     <view class="line"></view>
-    <view class="price-count">所有人工费用总和：¥{{currentLevel.totalPrice / 100}}</view>
+    <view class="price-count">所有人工费用总和：¥{{currentLevel && currentLevel.totalPrice ? (currentLevel.totalPrice / 100).toFixed(2) : ''}}</view>
     <view class="btn-wrap">
       <view class="cancel" @click="cancel">取消</view>
       <view class="submit" @click="ok">确定更改</view>
@@ -26,20 +26,39 @@
           <view class="d-title"><text>等级说明规则</text></view>
           <view class="close" @click="close">+</view>
         </view>
-        <view class="desc">
-          中级工人，在平台服务工地数量20个以上；
+        <view v-if="descType == 'design'">
+          <view class="desc">
+            <view class="sub-title-1">中级设计师：</view>平均5年以上设计经验，平均服务业主100+，平均拥有三项及以上设计师相关身份认证；
+          </view>
+          <view class="desc">
+            <view class="sub-title-1">高级设计师：</view>平均8年以上设计经验，平均服务业主200+，平均拥有五项及以上设计师相关身份认证；
+          </view>
+          <view class="desc">
+            <view class="sub-title-1">特级设计师：</view>平均10年以上设计经验，平均服务业主350+，平均拥有七项及以上设计师相关身份认证；
+          </view>
+          <view class="desc">
+            <view class="sub-title-1">钻石设计师：</view>平均15年以上设计经验，平均服务业主500+，平均拥有十项及以上设计师相关身份认证；
+          </view>
+          <view class="desc">
+            根据设计师级别不同，服务费也会有所差异，以购买时实际支付费用为准。
+          </view>
         </view>
-        <view class="desc">
-          高级工人，在平台服务工地数量30个以上；
-        </view>
-        <view class="desc">
-          特级工人，在平台服务工地数量40个以上；
-        </view>
-        <view class="desc">
-          钻石级工人，在平台服务工地数量50个以上；
-        </view>
-        <view class="desc">
-          根据工人级别不同，服务费也会有所差异，以购买时实际支付费用为准。
+        <view v-if="descType == 'worker'">
+          <view class="desc">
+            <view class="sub-title-1">中级工人：</view>在平台服务工地数量20个以上；
+          </view>
+          <view class="desc">
+            <view class="sub-title-1">高级工人：</view>在平台服务工地数量30个以上；
+          </view>
+          <view class="desc">
+            <view class="sub-title-1">特级工人：</view>在平台服务工地数量40个以上；
+          </view>
+          <view class="desc">
+            <view class="sub-title-1">钻石级工人：</view>在平台服务工地数量50个以上；
+          </view>
+          <view class="desc">
+            根据工人级别不同，服务费也会有所差异，以购买时实际支付费用为准。
+          </view>
         </view>
       </view>
     </uni-popup>
@@ -52,7 +71,7 @@
     components: {
       GroupRadioMe
     },
-    props: ["dataList", "current"],
+    props: ["dataList", "current", "descType"],
     data() {
       return {
         radioValue: null,
@@ -222,7 +241,7 @@
     background-color: #fff;
     border-radius: 32rpx 32rpx 0rpx 0rpx;
     padding-bottom: 48rpx;
-    height: 75vh;
+    // height: 75vh;
 
     .title-wrap {
       height: 103rpx;
@@ -269,5 +288,8 @@
     line-height: 44rpx;
     letter-spacing: 0rpx;
     margin-bottom: 24rpx;
+    .sub-title-1 {
+      font-weight: 600;
+    }
   }
 </style>

@@ -22,10 +22,10 @@
 						<count-down :start="orderInfo.remainTime" @finish="goToCancelDetail"></count-down>
 					</view>
 				</view>
-			</view> 
+			</view>
 
 			<order-user-base-info :data="orderInfo"></order-user-base-info>
-			
+
       <view class="store-container" v-for="(item,index) in orderInfo.details" :key="index">
 				<view v-if="index > 0" style="height:0.5px;margin: 0 32rpx;background-color: #EBEBEB;" />
         <view class="storeItem" :class="{paddingBottom: item.stockType == 1 }" :style="{borderRadius:index >= 1 ? '0' :'24rpx 24rpx 0 0'}">
@@ -40,8 +40,10 @@
               @handleDetail="productDetail(item2)"
             />
           </view>
-	
-          <view class="discount-container" v-if="(item.details.length > 1 || orderInfo.details.length > 1) && orderInfo.showFreight" >
+					<!-- {{item.details.length}} {{ orderInfo.details.length }} {{item.freight}}  {{item.handlingFees}} {{ item.storeDiscount }} {{ orderInfo.showFreight}} -->
+          <!-- <view class="discount-container"
+						v-if="(item.details.length > 1 || orderInfo.details.length > 1 || item.freight ||item.handlingFees || item.storeDiscount) && orderInfo.showFreight" > -->
+            <view class="discount-container" v-if="(item.details.length > 1 || orderInfo.details.length > 1) && orderInfo.showFreight" >
             <view class="left">
               <view class="item"  v-if="item.details.length > 1 && orderInfo.showFreight" >
 								<view class="item-style">
@@ -56,9 +58,8 @@
 								<text class="price-font" style="color: #333;">-￥{{item.platformDiscount}}</text>
               </view>
             </view>
-
             <view class="line1" v-if="item.handlingFees || item.storeDiscount" />
-            <view class="line2" v-else/>
+            <view class="line2" v-else />
 
             <view class="right">
               <view class="item"  v-if="item.details.length>1 && orderInfo.showFreight">
@@ -75,7 +76,7 @@
               </view>
             </view>
           </view>
-					
+
           <view v-if="orderInfo.type == 2 && item.freeShipCount && orderInfo.stockType == 1">
             <view class="tips" v-if="item.freeShipCount || item.fullExemptionAmount ">
               <text>本次支付</text>
@@ -117,18 +118,10 @@
         class="waitPayBottom"
         :style="{paddingBottom:systemBottom,height:systemHeight,justifyContent:bottomStyle }"
       >
-        <view
-          class="canclePay"
-          v-if="orderInfo.showCancelBtn"
-          @click="handleCancelOrder"
-        >
+        <view class="canclePay" v-if="orderInfo.showCancelBtn" @click="handleCancelOrder">
           取消订单
         </view>
-        <view
-          class="gotoPay"
-          v-if="orderInfo.showToPayBtn"
-          @click="toPay"
-        >
+        <view class="gotoPay" v-if="orderInfo.showToPayBtn" @click="toPay">
           去付款
         </view>
       </view>
@@ -237,7 +230,7 @@ export default {
 		  this.expensesType = num
 		  this.$refs.expensesToast.showPupop()
 		},
-		
+
     // 跳转到商品详情页面
     productDetail(item) {
       uni.navigateTo({
@@ -356,7 +349,7 @@ export default {
 
 <style lang="scss" scoped>
 	.bgcStyle{
-		width: 100%; 
+		width: 100%;
 		height: 32rpx;
 		position: absolute;
 		bottom: -32rpx;
@@ -458,7 +451,7 @@ export default {
           padding: 16rpx 24rpx;
           box-sizing: border-box;
         }
-				
+
         .discount-container {
           padding-bottom: 32rpx;
           display: flex;
@@ -485,7 +478,7 @@ export default {
 								display: flex;
 								flex-flow: row nowrap;
 								align-items: center;
-								
+
 								.icon{
 									width: 24rpx;
 									height: 24rpx;

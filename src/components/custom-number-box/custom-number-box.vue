@@ -120,7 +120,7 @@
 				}
 
 				this.inputValue = (value / scale).toFixed(String(scale).length - 1);
-				// this.$emit("change", +this.inputValue);
+				this.$emit("change", +this.inputValue);
 				// // TODO vue2 兼容
 				// this.$emit("input", +this.inputValue);
 				// // TODO vue3 兼容

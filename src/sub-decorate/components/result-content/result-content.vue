@@ -213,7 +213,7 @@
         }
         getCheckResultDetail(this.serverId).then(res => {
           
-          if(this.isReport&&res.serveCardState===5){
+          if(this.isReport&&res.serveCardState===4){
             console.log('123')
             this.$emit('isEmpty',this.index)
             return
