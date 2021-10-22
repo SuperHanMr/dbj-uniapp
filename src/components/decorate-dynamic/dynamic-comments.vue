@@ -137,6 +137,7 @@
             :placeholder="isInputFocus?`回复@${inputName}`:'说点什么吧'"
             :class="{'focusInput':isInputFocus}"
             :focus="isOpen"
+            :adjust-position='false'
             @click.stop="console.log(1)"
             class="easyInput"
           />
