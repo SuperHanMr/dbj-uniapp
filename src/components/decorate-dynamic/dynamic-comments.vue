@@ -136,9 +136,11 @@
             :cursor-spacing="10"
             :placeholder="isInputFocus?`回复@${inputName}`:'说点什么吧'"
             :class="{'focusInput':isInputFocus}"
+            :style="{bottom:heightNum}"
             :focus="isOpen"
             :adjust-position='false'
-            @click.stop="console.log(1)"
+            @click.stop=""
+            @keyboardheightchange='keybordChange'
             class="easyInput"
           />
           <view
@@ -185,6 +187,7 @@
         totalPage:0,
         isInputFocus:false,
         isOpen:false,
+        heightNum:0,
         
       }
     },
@@ -207,6 +210,7 @@
       },
       houseOwnerId:{
         handler:function(){
+          
           if(this.houseOwnerId===this.ownId){
             this.showInput = true
           }
@@ -231,6 +235,11 @@
           this.page++
           this.getComment()
         }
+      },
+      keybordChange(e){
+        console.log(e.detail.height+'>>>>>>>')
+        this.heightNum = e.detail.height*2+'rpx'
+        console.log(this.heightNum+'>>>>>>>')
       },
       getComment(){
         let params = {
@@ -432,6 +441,7 @@
   	left: 0rpx;
   	bottom: 0rpx;
   	display: flex;
+    position: absolute;
   }
   .focusInput {
   	caret-color: #00c2b8;
@@ -447,6 +457,7 @@
   	font-size: 28rpx;
   	background: #f5f6f6;
   	border-radius: 12rpx;
+    
   }
   .bottomInput .send {
   	width: 52rpx;
