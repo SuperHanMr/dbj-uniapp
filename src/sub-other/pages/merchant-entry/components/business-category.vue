@@ -15,7 +15,7 @@
 			<scroll-view scroll-y="true">
 				<view class="first-category">
 					<view class="tab" v-for="(item, index) in categroyTreeList"
-						:class="firstActive == index ? 'active-tab' : ''" @click="firstTabClick(index)">
+						:class="[{'active-tab' : firstActive == index},{'active-tab1' : firstActive + 1 == index},{'active-tab0' : firstActive - 1 == index}]" @click="firstTabClick(index)">
 						<view class="text">
 							{{item.label}}
 						</view>
@@ -319,12 +319,16 @@
 
 				.active-tab {
 					background: #FFFFFF;
-					border-radius: 0px 8px 0px 0px;
-
 					.text {
 						color: #333333;
 						font-weight: bold;
 					}
+				}
+				.active-tab1{
+					border-radius: 0px 8px 0px 0px;
+				}
+				.active-tab0{
+					border-radius: 0px 0px 8px 0px;
 				}
 			}
 

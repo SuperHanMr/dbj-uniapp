@@ -18,6 +18,7 @@
 				<view class="title-modify">
 
 				</view>
+				<image src="https://ali-image.dabanjia.com/static/mp/dabanjia/images/merchant-entry/merchant-entry-container.png" class="info-top-image" mode=""></image>
 				<view class="company-name">
 					<view class="label">
 						公司名称
@@ -473,7 +474,7 @@
 			font-family: PingFangSC-Regular, PingFang SC;
 			font-weight: 400;
 			color: #333333;
-
+			
 			text {
 				font-size: 28rpx;
 				margin: 0 2rpx;
@@ -494,11 +495,17 @@
 		.info {
 			margin: 0 24rpx 24rpx;
 			padding-bottom: 1rpx;
-			background-repeat: no-repeat;
-			background-image: url(../../../static/merchant-entry/merchant-entry-container.png);
-			background-size: 100% 100%;
+			background: #fff;
+			border-radius: 16rpx;
 			position: relative;
-
+			.info-top-image{
+				position: absolute;
+				right: 0;
+				top: 0;
+				height: 160rpx;
+				width: 200rpx;
+				border-radius: 0 16rpx 0 0 ;
+			}
 			.title {
 				padding: 40rpx 0 40rpx 24rpx;
 				font-size: 40rpx;
