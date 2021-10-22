@@ -13,7 +13,7 @@
 <script>
   import designCase from '@/components/design-case/design-case.vue'
   import {
-    getCaseList,
+    getCaseListV1,
     getCollection
   } from '@/api/real-case.js'
   import '../style/common.scss'
@@ -121,9 +121,11 @@
       	const params = {
       		page: this.pagState.page,
       		rows: this.pagState.rows,
+          sortType:0,
+          sortPropNameType: 5,
           zeusId:this.personId
       	}
-      		getCaseList(params).then((res) => {
+      		getCaseListV1(params).then((res) => {
       			if (res && res.list) {
       				this.addList(res.list);
       				this.pagState.page = res.page+1;

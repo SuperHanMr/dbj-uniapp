@@ -66,7 +66,7 @@
           </view>
         </view>
         <personIntroduce v-if="personData.roleId!==10000" :personData='personData'></personIntroduce>
-        <view class="send-msg" @click="sendMsg" v-if="personData.roleId<7||hasServe!==0">
+        <view class="send-msg" @click="sendMsg" v-if="personData.roleId<7&&hasServe!==0">
           <i class="icon-gerenzhuye_ic_faxiaoxi"></i>
           <text>发消息</text>
           
