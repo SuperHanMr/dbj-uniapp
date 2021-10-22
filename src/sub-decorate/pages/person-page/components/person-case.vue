@@ -5,7 +5,7 @@
     <view class="empty" v-else>
       暂无案例
     </view>
-    <view v-if="pagState.totalPage>pagState.page" @click="getList" class="click-text"><text>展开更多案例</text><i :class="{'icon-gerenzhuye_anlihefuwu_zhankaiic':true}"></i></view>
+    <view v-if="pagState.totalPage>pagState.page-1" @click="getList" class="click-text"><text>展开更多案例</text><i :class="{'icon-gerenzhuye_anlihefuwu_zhankaiic':true}"></i></view>
     
   </view>
 </template>
@@ -39,8 +39,8 @@
         	rows: 10,
         	// 页码
         	page: 1,
-        	totalPage: '',
-        	totalRows: '',
+        	totalPage: 1,
+        	totalRows: 0,
         	end: "",
         },
         activeIndex:0,
@@ -126,7 +126,7 @@
       		getCaseList(params).then((res) => {
       			if (res && res.list) {
       				this.addList(res.list);
-      				this.pagState.page = res.page + 1;
+      				this.pagState.page = res.page+1;
       				this.pagState.totalPage = res.totalPage;
       				this.pagState.totalRows = res.totalRows;
       			}
