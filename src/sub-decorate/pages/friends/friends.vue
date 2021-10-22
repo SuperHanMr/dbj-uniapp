@@ -87,7 +87,9 @@
 					title: "是否确定删除亲友？",
 					content: "删除亲友后，亲友将无法再看到您的房屋",
 					success: function(res) {
-						vm.deleteFriend(item.id);
+						if (res.confirm) {
+							vm.deleteFriend(item.id);
+						}
 					},
 				});
 			},
