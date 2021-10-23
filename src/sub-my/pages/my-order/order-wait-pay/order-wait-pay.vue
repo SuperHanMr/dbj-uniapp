@@ -25,7 +25,7 @@
 			</view>
 
 			<order-user-base-info :data="orderInfo"></order-user-base-info>
-			<view class="moreStore" v-if="orderInfo.details.length>1 && orderInfo.orderName">
+			<view class="moreStore" v-if=" orderInfo.orderName ">
 				{{orderInfo.orderName}}
 			</view>
       <view class="store-container" v-for="(item,index) in orderInfo.details" :key="index">

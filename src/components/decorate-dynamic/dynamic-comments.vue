@@ -24,7 +24,7 @@
             :cursor-spacing="10"
             :placeholder="isInputFocus?`回复@${inputName}`:'说点什么吧'"
             :class="{'focusInput':isInputFocus||clickInput}"
-            @focus="clickInput"
+            @focus="inputFocus"
             :focus="isOpen"
             :adjust-position='false'
             @click.stop=""
@@ -137,11 +137,11 @@
           class="bottomDelete"
           v-if="showDelete"
         >
-          <view class="deleteWrap">
+          <view class="deleteWrap" @click.stop="sureDelete">
             <i
               class="icon-ic_zhuangxiuxianchang_pinglunshanchu_csn icon"
             ></i>
-            <view class="delete" @click.stop="sureDelete">删除</view>
+            <view class="delete" >删除</view>
           </view>
           <view class="deleteCancel" @click.stop="showDelete=false;showInput=true">取消</view>
         </view>
@@ -279,7 +279,7 @@
         this.showDelete = true;
         this.showInput = false
         this.commentId = commentId
-        console.log(this.commentId,commentId)
+        console.log(this.commentId,commentId,'删除id')
         this.heightNum = 0
       },
       sureDelete(){
@@ -295,6 +295,7 @@
               });
               
             }
+            this.isExpanded?this.isExpanded = false:'';
               this.showDelete = false;
               this.showInput = true
               this.commentId = 0
@@ -366,7 +367,12 @@
       				this.comments[index].secondComments = list || [];
       			}
       			
-            if(num)this.isExpanded = true;
+            if(num){
+              this.isExpanded = true;
+            }else{
+              console.log(this.comments[index].secondCount)
+              this.isExpanded?this.isExpanded = false:'';
+            }
             
       			
           }
@@ -384,7 +390,8 @@
           if(this.isInputFocus){
             
             this.expandC(this.commentId,this.commentIndex)
-            if(this.comments[this.commentIndex].secondComments.length===2){
+            
+            if(this.comments[this.commentIndex].secondComments.length===2||this.comments[this.commentIndex].secondCount >0){
               this.comments[this.commentIndex].secondCount ++
             }
             
