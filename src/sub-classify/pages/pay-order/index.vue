@@ -278,7 +278,6 @@
       } else {
         this.isShow = true
       }
-      this.addUser = []
     },
     onUnload() {
       uni.removeStorageSync('houseListChooseId')
@@ -317,6 +316,7 @@
         this.$refs.houseDialog.close()
       },
       emitInfo(val) {
+        this.addUser = []
         this.hasCanBuy = false
         this.hasNoBuyItem = false
         this.projectId = val.projectId
