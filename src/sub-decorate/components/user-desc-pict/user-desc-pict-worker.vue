@@ -212,6 +212,7 @@
     color: #333333;
     line-height: 44rpx;
     margin-bottom: 24rpx;
+    word-break: break-all;
   }
 
   .worker-title {

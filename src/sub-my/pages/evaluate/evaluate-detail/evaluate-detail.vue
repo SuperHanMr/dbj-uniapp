@@ -5,13 +5,13 @@
         <view class="header">
           <view class="left">
             <image :src="serviceInfo.serverAvatar" mode=""/>
-            <text>{{serviceInfo.serverName}}</text>
+            <text class="serverName">{{serviceInfo.serverName}}</text>
             <view class="icon">
               {{serviceInfo.roleName}}
             </view>
           </view>
           <view class="right" v-if="serviceInfo.anonymous == 1">
-            <text>匿名评价</text>
+            <view>匿名评价</view>
           </view>
         </view>
 				
@@ -30,20 +30,15 @@
 				</view>
 
         <view class="line" />
-				<view class="auto-evaluate" v-if="serviceInfo.anonymous == 1">
+				<!-- <view class="auto-evaluate" v-if="serviceInfo.anonymous == 1">
 					系统自动评价
-				</view>
+				</view> -->
 
-        <view class="comment-content" v-else>
+        <view class="comment-content" >
         	<view class="comment">
 						{{serviceInfo.content}}
 					</view>
 					<view class="img-container" v-if="serviceInfo.imgList">
-						<!-- <view class="imgItem"  v-for="item4 in imgList" :key="item4">
-							{{item4}}
-						</view> -->
-						
-						
 						<image class="imgItem" v-for="item4 in imgList" :key="item4" :src="item4" mode="" @click="previewImg(item4)" />
 					</view>
         </view>
@@ -142,6 +137,14 @@ export default {
           object-fit: cover;
           margin-right: 8rpx;
         }
+				.serverName{
+					color:#333333;
+					max-width: 348rpx;
+					font-size: 32rpx;
+					overflow: hidden;/*超出部分隐藏*/
+					white-space: nowrap;/*不换行*/
+					text-overflow:ellipsis;/*超出部分文字以...显示*/
+				}
         .icon {
           width: 82rpx;
           height: 32rpx;
@@ -156,9 +159,11 @@ export default {
         }
       }
       .right {
+				height: 80rpx;
+				line-height: 80rpx;
 				text{
 					width: 96rpx;
-					height: 34rpx;
+					// height: 34rpx;
 					line-height: 34rpx;
 					font-size: 24rpx;
 					font-weight: 400;

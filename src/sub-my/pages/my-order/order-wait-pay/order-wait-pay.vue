@@ -75,9 +75,13 @@
               </view>
             </view>
           </view>
+					<!-- {{ orderInfo.type }} {{ item.freeShipCount }} {{ orderInfo.stockType }} -->
 
-          <view v-if="orderInfo.type == 2 && item.freeShipCount && orderInfo.stockType == 1">
-            <view class="tips" v-if="item.freeShipCount || item.fullExemptionAmount ">
+          <view 
+						v-if="orderInfo.type == 1 && item.freeShipCount && orderInfo.stockType == 1"
+						:style="{paddingBottom: orderInfo.type == 2 && item.freeShipCount && orderInfo.stockType == 1 ? '32rpx':'0'}" 
+					>
+            <view class="tips" v-if="item.freeShipCount &&  item.fullExemptionAmount ">
               <text>本次支付</text>
               <text style="color: #333333;">满{{item.fullExemptionAmount}}元</text>
               <text>，可获得</text>
