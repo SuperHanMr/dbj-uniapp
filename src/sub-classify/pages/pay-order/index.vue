@@ -12,7 +12,7 @@
       </uni-popup>
     </view>
     <view v-else>
-      <address-picker :houseId="houseId" :productType="productType" @emitInfo="emitInfo" :originFrom="originFrom" :addUser="addUser"
+      <address-picker :houseId="houseId" :productType="productType" @emitInfo="emitInfo" @typeServe2="typeServe2" :originFrom="originFrom" :addUser="addUser"
         v-if="isShow">
       </address-picker>
       <view class="content">
@@ -166,6 +166,15 @@
           </view>
         </view>
       </uni-popup>
+      <uni-popup ref="houseDialog" :mask-click="false">
+        <view class="popup-item house-item">
+          <view class="popup-title house-popup">由于服务类商品的特殊属性，请前往首页切换地址后重新购买</view>
+          <view class="popup-button house-button">
+            <view class="popup-cancel" @click='confirmHousePop'>前往</view>
+            <view class="popup-ok" @click='cancelHousePop'>取消</view>
+          </view>
+        </view>
+      </uni-popup>
       <uni-popup ref="timeDialog" :mask-click="false">
         <view class="popup-item">
           <view class="popup-title">请选择期望上门时间</view>
@@ -296,6 +305,17 @@
         this.time = val[0] + '年' + val[1] + '月' + val[2] + '日' + val[3] + '时' + val[4] + '分'
         this.$set(this.orderInfo.storeInfos[this.shopIndex].skuInfos[this.goodIndex], "doorTime", this.time)
       },
+      typeServe2() {
+        this.$refs.houseDialog.open()
+      },
+      confirmHousePop() {
+        uni.switchTab({
+            url: '/pages/home/index/index'
+        });
+      },
+      cancelHousePop() {
+        this.$refs.houseDialog.close()
+      },
       emitInfo(val) {
         this.hasCanBuy = false
         this.hasNoBuyItem = false
@@ -421,7 +441,6 @@
           if (this.orderInfo.storeInfos.length === 1) {
             this.totalClassNum = 1
           }
-        console.log(this.addUser, "this.addUser")
         })
       },
       chooseTime(shopIndex, goodIndex) {
@@ -885,7 +904,10 @@
     background: #ffffff;
     border-radius: 24rpx;
   }
-
+  .house-item{
+    height: 260rpx;
+    overflow: hidden;
+  }
   .popup-item .popup-title {
     height: 128rpx;
     line-height: 128rpx;
@@ -896,11 +918,22 @@
     text-align: center;
     color: #111111;
   }
-
+  .house-item .house-popup{
+    box-sizing: border-box;
+    padding: 40rpx 10rpx;
+    height: 160rpx;
+    line-height: 1.6em;
+  }
   .popup-item .popup-button {
     display: flex;
   }
-
+  .popup-item .house-button{
+    height: 100rpx;
+  }
+  .popup-item .house-button view{
+    height: 100% !important;
+    border-right: 1px solid #f5f5f5;
+  }
   .popup-item .popup-button view {
     height: 82rpx;
     line-height: 84rpx;
