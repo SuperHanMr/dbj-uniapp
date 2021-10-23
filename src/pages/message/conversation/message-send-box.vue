@@ -33,7 +33,7 @@
         @click="showEmojiChooser = !showEmojiChooser"
       />
       <view 
-        v-if="!messageContent" 
+        v-if="!canSendText" 
         class="iconfont icon-a-icxiaoxidibutianjia" 
         @click="showFileChooser = !showFileChooser"
       />
@@ -138,6 +138,9 @@
       // 是否人工客服
       isCustomerService() {
         return this.currentConversation.systemType === this.CONV_TYPES.CUSTOMER;
+      },
+      canSendText() {
+        return !!this.messageContent.trim();
       }
     },
     watch: {
@@ -193,7 +196,15 @@
     },
     methods: {
       sendTextMessage() {
-        console.log(this.toAccount, this.currentConversation.type, this.messageContent, 11111)
+        console.log(this.toAccount, this.currentConversation.type, this.messageContent, 11111);
+        let text = this.messageContent.trim();
+        if (!text) {
+          uni.showToast({
+            icon: "error",
+            title: "不能发送空消息"
+          })
+          return;
+        }
         const message = getTim().createTextMessage({
           to: this.toAccount,
           conversationType: this.currentConversation.type,

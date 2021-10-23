@@ -145,8 +145,8 @@ export function getSkuList(params) {
 }
 
 //查询业主与服务者服务状态
-export function getServiceStatus(params){
-  return request.get("/pm/app/serve/serverStatus/"+params)
+export function getServiceStatus(params) {
+  return request.get("/pm/app/serve/serverStatus/" + params)
 }
 
 //个人主页关注推荐
@@ -274,7 +274,7 @@ export function goodsApply(params) {
 
 // 获取工序费用
 export function sellList(params) {
-  if (params.obtainType == 0 ||params.obtainType == 1 || params.obtainType == 2) {
+  if (params.obtainType == 0 || params.obtainType == 1 || params.obtainType == 2) {
     return request.get(`/pm/app/actuary/sell/list/${params.projectId}/${params.type}/${params.obtainType}`)
   }
   return request.get(`/pm/app/actuary/sell/list/${params.projectId}/${params.type}`)
@@ -314,12 +314,12 @@ export function requireConfirm(params) {
 export function payFreight(params) {
   return request.post(`/order-center/app/order/payFreight`, params)
 }
-// 查看设计报告 
+// 查看设计报告
 export function serverReports(serveCardId) {
   return request.get(`/pm/app/serve/design/serverReports/${serveCardId}`)
 }
 
-// 确认设计报告 
+// 确认设计报告
 export function confirmDesignReport(serveCardId) {
   return request.post(`/pm/app/serve/design/confirmDesignReport/${serveCardId}`)
 }
@@ -332,4 +332,10 @@ export function getCarouselMsg(projectId) {
 // 搜索商品列表（这个是真实接口）
 export function productList(data) {
   return request.post(`/product/app/search/query`, data)
+}
+
+
+// 判断当前登录人是否是业主
+export function judgeOwner(params) {
+  return request.get(`/order-center/app/goods/stock/judgeOwner`, {params})
 }

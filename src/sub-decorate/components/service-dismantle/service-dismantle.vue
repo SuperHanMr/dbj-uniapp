@@ -66,8 +66,13 @@
       justify-content: space-between;
       margin-bottom: 26rpx;
       .name{
+        display: inline-block;
         color: #333333;
         font-size: 28rpx;
+        max-width: 400rpx;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
       }
       .time{
         font-size: 24rpx;
