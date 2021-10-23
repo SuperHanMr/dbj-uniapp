@@ -23,17 +23,16 @@
             v-model="inputValue"
             :cursor-spacing="10"
             :placeholder="isInputFocus?`回复@${inputName}`:'说点什么吧'"
-            :class="{'focusInput':isInputFocus}"
-            
+            :class="{'focusInput':isInputFocus||clickInput}"
+            @focus="clickInput"
             :focus="isOpen"
             :adjust-position='false'
             @click.stop=""
-            
             class="easyInput"
           />
           <view
             class="send"
-            :class="{'themeColor':isInputFocus}"
+            :class="{themeColor:inputValue.length>0}"
             @click.stop="setReply"
           >发送</view>
         </view>
@@ -191,11 +190,13 @@
         isOpen:false,
         heightNum:0,
         num:0,
+        clickInput:false,
       }
     },
     mounted(){
       
       this.ownId = getApp().globalData.userInfo.id 
+      
       // this.ownId = 6459
     },
     computed:{
@@ -212,10 +213,10 @@
       },
       houseOwnerId:{
         handler:function(){
-          
+          console.log(this.houseOwnerId,getApp().globalData.userInfo)
           if(this.houseOwnerId===this.ownId){
             this.showInput = true
-            this.heightNum = e.detail.height*2+'rpx'
+            
           }
         },
         // immediate:true
@@ -225,6 +226,7 @@
     methods:{
       close(){
         this.showComments=false;
+        this.showInput = false
         this.inputValue = ''
         this.comments = []
         this.$emit('change',this.totalRows,this.index)
@@ -232,7 +234,7 @@
         // this.
       },
       inputFocus() {
-        this.isInputFocus = true;
+        this.clickInput = true;
       },
       bindscrolltolower(){
         if(this.page<this.totalPage){
@@ -240,6 +242,7 @@
           this.getComment()
         }
       },
+      //暂时废弃
       keybordChange(e){
         console.log(e.detail.height+'>>>>>>>')
         console.log('键盘弹起收回'+this.num+'高度》》'+e.detail.height)
@@ -318,6 +321,7 @@
         if (this.ownId !== this.houseOwnerId) return;
         this.$nextTick(function(){
           this.isInputFocus = true
+          
         })
         this.showInput = true;
         this.isOpen = true
@@ -362,14 +366,7 @@
       				this.comments[index].secondComments = list || [];
       			}
       			
-              if(page >= totalPage){
-              	// uni.showToast({
-              	// 	title:'没有更多数据了',icon:"none",
-              	// });
-              	this.isExpanded = true;
-              }
-              
-              this.replyPage = page++
+            if(num)this.isExpanded = true;
             
       			
           }
@@ -407,6 +404,7 @@
         this.isOpen = false
         uni.hideKeyboard()
         this.isInputFocus = false
+        this.clickInput = false
         this.page=1
         let params = {
           page: this.page,

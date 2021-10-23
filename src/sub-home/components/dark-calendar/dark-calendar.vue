@@ -188,7 +188,6 @@
 						dates[i].weekIndex = 5
 					}
 				}
-				console.log(dates)
 	      return dates
 	    },
 	    // 已经签到处理
@@ -248,6 +247,8 @@
 	      }
 	      this.choose = date
 	      this.$emit('filterDynamics', date,true)
+				console.log(this.isShrink,'???')
+				this.$emit('changeMargin',this.isShrink,this.dates.length)
 	    },
 	    // 上个月，下个月
 	    turning(_action) {
@@ -266,9 +267,25 @@
 	          this.m = this.m - 1
 	        }
 	      }
-	
-	      this.dates = this.monthDay(this.y, this.m)
-				this.$emit('changeMargin',true)
+				if(this.monthOpen){
+					//月日历
+					this.positionTop = 0
+					this.dates = this.monthDay(this.y, this.m)
+					this.$emit('changeMargin',true,this.dates.length)
+				}else{
+					//周日历
+					let index = -1
+					this.dates.forEach((i, x) => {
+					  this.isToday(i.year, i.month, i.date) && (index = x)
+					})
+					this.positionTop = -((Math.ceil((index + 1) / 7) || 1) - 1) * 80
+					this.dates = this.monthDay(this.y, this.m)
+					let week = this.choice.day//周几
+					let weekIndex = this.choice.weekIndex
+					this.dates = this.dates.filter(item => item.weekIndex === weekIndex)
+					this.$emit('changeMargin',false)
+				}
+	      
 	    }
 	  }
 	}
@@ -301,7 +318,7 @@
 		align-items: center;
 	}
 	.switch-month .current-month{
-		width: 114rpx;
+		width: 130rpx;
 		height: 40rpx;
 		font-size: 28rpx;
 		font-weight: 500;
