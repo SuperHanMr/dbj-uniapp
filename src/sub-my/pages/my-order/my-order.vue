@@ -481,8 +481,7 @@
 						uni.requestPayment({
 							provider: "wxpay",
 							...payInfo,
-							success(res) {
-								console.log(res);
+							success:()=>{
 								uni.showToast({
 									title: "支付成功！",
 									icon: "none",
@@ -492,8 +491,7 @@
 									this.getOrderList();
 								}, 1000);
 							},
-							fail(e) {
-
+							fail:()=>{
 								uni.showToast({
 									title: "支付失败！",
 									icon: "none",
