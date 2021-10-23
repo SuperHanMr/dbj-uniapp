@@ -193,6 +193,10 @@
     width: 124rpx;
     height: 124rpx;
   }
+  .img-view image{
+    width: 100%;
+    height: 100%;
+  }
   .right-detail .detail-name {
     font-size: 24rpx;
     display: inline-block;

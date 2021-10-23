@@ -23,7 +23,7 @@
                     </view>
                     <view class="gui-ge-count">
                       <view class="gui-ge">{{item.name}}</view>
-                      <view class="count">共{{item.count}}件</view>
+                      <view class="count">共{{item.count}}{{item.unit}}</view>
                     </view>
                   </view>
                   <view class="price-edit">
