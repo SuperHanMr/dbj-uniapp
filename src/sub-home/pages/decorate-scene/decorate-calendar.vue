@@ -10,7 +10,7 @@
 				<view class="title">装修动态</view>
 			</view>
 		</view>
-		<view class="dynamic" :class="{'noDynamics': !dynamics.length,'weekModel': isWeek}">
+		<view class="dynamic" :class="{'noDynamics': !dynamics.length,'weekModel': isWeek,'maxMargin': bigMonth}">
 			
 			<view class="noDynamics" v-if="!dynamics.length">
 				<image class="noDynamicsImg" src="http://dbj.dragonn.top/%20static/mp/dabanjia/images/home/pic_empty%402x.png"></image>
@@ -74,7 +74,8 @@
 				dynamics: [],
 				dynamicPage: 1,
 				date: "",//选中日期,
-				isWeek: false
+				isWeek: false,
+				bigMonth: false
 			};
 		},
 		onLoad(option) {
@@ -100,8 +101,10 @@
 			this.requestSigns()
 		},
 		methods:{
-			changeMargin(isShink){
-				this.isWeek = !isShink
+			changeMargin(isShrink,length){
+				this.isWeek = !isShrink
+				this.bigMonth = length && length === 42? true: false
+				
 			},
 			requestSigns(){
 				let y = new Date().getFullYear()
@@ -158,9 +161,11 @@
 	.dynamic{
 		width: 100%;
 		height: fit-content;
-		margin-top: 832rpx;
+		margin-top: 742rpx;
 		background: #ffffff;
-		
+	}
+	.dynamic.maxMargin{
+		margin-top: 832rpx;
 	}
 	.dynamic.weekModel{
 		margin-top: 384rpx;
@@ -249,7 +254,7 @@
 		border-bottom: 0rpx;
 	}
 	.acitonInfo .header{
-		width: 100%;
+		width: 598rpx;
 		height: 42rpx;
 		margin-bottom: 16rpx;
 		display: flex;
@@ -257,8 +262,8 @@
 		align-items: center;
 	}
 	.acitonInfo .report{
-		width: 100%;
-		
+		width: 598rpx;
+		word-wrap: break-word;
 		font-size: 28rpx;
 		color: #666666;
 		line-height: 40rpx;
