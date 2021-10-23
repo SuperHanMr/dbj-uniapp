@@ -25,7 +25,9 @@
 			</view>
 
 			<order-user-base-info :data="orderInfo"></order-user-base-info>
-
+			<view class="moreStore" v-if="orderInfo.details.length>1">
+				{{orderInfo.orderName}}
+			</view>
       <view class="store-container" v-for="(item,index) in orderInfo.details" :key="index">
 				<view v-if="index > 0" style="height:0.5px;margin: 0 32rpx;background-color: #EBEBEB;" />
         <view class="storeItem" :class="{paddingBottom: item.stockType == 1 }" :style="{borderRadius:index >= 1 ? '0' :'24rpx 24rpx 0 0'}">
@@ -418,6 +420,14 @@ export default {
         align-items: center;
       }
     }
+		.moreStore{
+			background-color: #FFFFFF;
+			padding: 40rpx 0 10rpx;
+			font-size:32rpx;
+			font-weight: 500;
+			color: #333333;
+			text-align: center;
+		}
 
     .store-container {
       .storeItem {
