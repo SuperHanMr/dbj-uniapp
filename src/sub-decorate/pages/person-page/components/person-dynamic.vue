@@ -13,7 +13,7 @@
 <script>
   import '../style/common.scss'
   import decorateDynamic from '@/components/decorate-dynamic/decorate-dynamic.vue'
-  import {getPersonDynamic,setAttentions} from "@/api/real-case.js"
+  import {getPersonDynamic,setAttentions,getDecorateDynamic} from "@/api/real-case.js"
   export default{
     components:{
       decorateDynamic,
@@ -72,13 +72,24 @@
           page:1,
           rows:4
       	}
-      	getPersonDynamic(params).then(data => {
-      		if(data){
-      			
-      			this.dynamics = data.list
-            this.totalPage =  data.totalPage||0
-      		}
-      	})
+        if(getApp().globalData.token){
+          getPersonDynamic(params).then(data => {
+          	if(data){
+          		
+          		this.dynamics = data.list
+              this.totalPage =  data.totalPage||0
+          	}
+          })
+        }else{
+          getDecorateDynamic(params).then(data => {
+          	if(data){
+          		
+          		this.dynamics = data.list
+              this.totalPage =  data.totalPage||0
+          	}
+          })
+        }
+      	
       },
     }
   }

@@ -163,6 +163,9 @@
 				}).then(res => {
           this.isLoading = true
 					this.listData = res|| []
+          this.listData.sort(function(a,b){
+            return  b.createTime - a.createTime
+          })
 					this.listData.forEach(function(v, i) {
 						v.isTouchMove = false
 					})

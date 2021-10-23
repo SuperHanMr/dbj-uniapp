@@ -173,19 +173,20 @@
     },
     onLoad(e){
       this.userType = e.userType
-      this.personId = e.personId||7249
+      this.personId = e.personId||7270
       // this.getGrabDetail()
     },
     onShow(){
       // console.log(111)
       this.$refs.dynamic&&this.$refs.dynamic.requestDynamic()
+      this.init()
     },
     mounted() {
       // this.getCaseList()
       // this.getSkuList()
       // this.getNodeHeight()
       
-      this.init()
+      
     },
     onPageScroll(scrollTop) {
       
@@ -269,20 +270,20 @@
         queryAttention(data).then(res=>{
           if(routeId === 2001){
             if(this.isRecommend){
-              this.personData.fansCount = this.personData.fansCount-- +''
+              this.personData.recommendCount = +this.personData.recommendCount-1 +''
             }else{
               console.log(this.personData.fansCount)
-              this.personData.fansCount = this.personData.fansCount++ +''
+              this.personData.recommendCount = +this.personData.recommendCount+1 +''
               console.log(this.personData.fansCount)
             }
             this.isRecommend = !this.isRecommend 
             
           }else{
             if(this.isAttention){
-              this.personData.recommendCount = this.personData.recommendCount +''
+              this.personData.fansCount = +this.personData.fansCount-1 +''
               
             }else{
-              this.personData.recommendCount = this.personData.recommendCount++ +''
+              this.personData.fansCount = +this.personData.fansCount+1 +''
             }
             this.isAttention = !this.isAttention
             
@@ -313,9 +314,13 @@
               this.personData.roleId = 10000
               return
             }
-            this.getAttention(1001,'isAttention')
-            this.getAttention(2001,'isRecommend')
-            this.getServiceStatus()
+            
+            if(getApp().globalData.token){
+              this.getAttention(1001,'isAttention')
+              this.getAttention(2001,'isRecommend')
+              this.getServiceStatus()
+            }
+            
             setTimeout(()=>{
               this.getNodeHeight()
               this.getTopDistance()
@@ -525,11 +530,16 @@
       }
 
       .name {
+        display: block;
         font-size: 44rpx;
         font-weight: 500;
         color: #111;
         line-height: 60rpx;
         margin: 12rpx 0;
+        max-width: 704rpx;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
       }
 
       .label {

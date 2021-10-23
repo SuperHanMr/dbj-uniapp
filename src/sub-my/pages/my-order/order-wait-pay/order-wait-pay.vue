@@ -25,7 +25,9 @@
 			</view>
 
 			<order-user-base-info :data="orderInfo"></order-user-base-info>
-
+			<view class="moreStore" v-if="orderInfo.details.length>1 && orderInfo.orderName">
+				{{orderInfo.orderName}}
+			</view>
       <view class="store-container" v-for="(item,index) in orderInfo.details" :key="index">
 				<view v-if="index > 0" style="height:0.5px;margin: 0 32rpx;background-color: #EBEBEB;" />
         <view class="storeItem" :class="{paddingBottom: item.stockType == 1 }" :style="{borderRadius:index >= 1 ? '0' :'24rpx 24rpx 0 0'}">
@@ -78,8 +80,8 @@
 					<!-- {{ orderInfo.type }} {{ item.freeShipCount }} {{ orderInfo.stockType }} -->
 
           <view 
-						:style="{paddingBottom: orderInfo.type == 2 && item.freeShipCount && orderInfo.stockType == 1 ? '32rpx':'0'}" 
-						v-if="orderInfo.type == 2 && item.freeShipCount && orderInfo.stockType == 1"
+						v-if="orderInfo.type == 1 && item.freeShipCount && orderInfo.stockType == 1"
+						:style="{paddingBottom: orderInfo.type == 1 && item.freeShipCount && orderInfo.stockType == 1 ? '32rpx':'0'}" 
 					>
             <view class="tips" v-if="item.freeShipCount &&  item.fullExemptionAmount ">
               <text>本次支付</text>
@@ -418,6 +420,14 @@ export default {
         align-items: center;
       }
     }
+		.moreStore{
+			background-color: #FFFFFF;
+			padding: 40rpx 0 10rpx;
+			font-size:32rpx;
+			font-weight: 500;
+			color: #333333;
+			text-align: center;
+		}
 
     .store-container {
       .storeItem {
@@ -474,6 +484,7 @@ export default {
               flex: 1;
               flex-flow: row nowrap;
               justify-content: space-between;
+							align-items: center;
               margin-bottom: 8rpx;
 							color: #999999;
 							font-size: 22rpx;
