@@ -184,6 +184,11 @@
 		},
 		methods: {
 			toRequire() {
+				let list = this.res.stockAppVOS;
+				list.forEach(e=>{
+					e.number=e.stockNumber;
+				})
+				getApp().globalData.naviData=list
 				uni.navigateTo({
 					url: `/sub-decorate/pages/require-goods/require-goods?projectId=${this.projectId}`,
 				});
