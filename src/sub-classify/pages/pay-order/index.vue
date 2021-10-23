@@ -170,8 +170,8 @@
         <view class="popup-item house-item">
           <view class="popup-title house-popup">由于服务类商品的特殊属性，请前往首页切换地址后重新购买</view>
           <view class="popup-button house-button">
-            <view class="popup-cancel" @click='confirmHousePop'>前往</view>
             <view class="popup-ok" @click='cancelHousePop'>取消</view>
+            <view class="popup-cancel" @click='confirmHousePop'>前往</view>
           </view>
         </view>
       </uni-popup>
@@ -278,7 +278,6 @@
       } else {
         this.isShow = true
       }
-      this.addUser = []
     },
     onUnload() {
       uni.removeStorageSync('houseListChooseId')
@@ -317,6 +316,7 @@
         this.$refs.houseDialog.close()
       },
       emitInfo(val) {
+        this.addUser = []
         this.hasCanBuy = false
         this.hasNoBuyItem = false
         this.projectId = val.projectId
@@ -664,7 +664,7 @@
     -webkit-line-clamp: 2;
     line-clamp: 2;
     -webkit-box-orient: vertical;
-    max-width: 360rpx;
+    max-width: 320rpx;
     text-align: left;
   }
 

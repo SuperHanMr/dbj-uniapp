@@ -8,7 +8,7 @@
             <text class="default" v-if="addressInfo.defaultEstate">默认</text>
             <text class="txt">{{addressInfo.housingEstate}}</text>
           </view>
-          <view class="community">{{addressInfo.locationName}}</view>
+          <view class="community">{{addressInfo.locationName + addressInfo.housingEstate + addressInfo.address}}</view>
           <view class="userInfo">
             <text class="userName">{{addressInfo.contactName}}</text>
             <text class="userPhone">{{addressInfo.contactPhone}}</text>
@@ -17,7 +17,7 @@
         <image class="switchSite" src="../../static/images/ic_more_black.png"></image>
       </view>
       <view class="header-operator" v-for="(item, index) in addUser" :key="index">
-        <image src="../../static/images/ic_location@2x.png" class="locationIcon"></image>
+        <image src="../../static/images/addUser.png" class="locationIcon"></image>
         <view class="address">
           <view class="community">{{item.addingJobName}}:{{item.addingUserName}}</view>
         </view>
