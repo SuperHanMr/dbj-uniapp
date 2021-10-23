@@ -281,7 +281,8 @@
 						})
 						// const token = uni.getStorageSync("scn")
 						const token = getApp().globalData.token
-						const url = this.ENV.VUE_APP_BASE_H5 +`/app-pages/case-detail/case-detail.html?id=${data.id}&token=${token}&height=${this.height}`
+						console.log("token=",token)
+						const url = this.ENV.VUE_APP_BASE_H5 +`/app-pages/case-detail/case-detail.html?id=${data.id}&height=${this.height}#${token}`
 						uni.navigateTo({
 							url:`../../../../pages/common/webview/webview?url=`+ encodeURIComponent(url),
 						})
