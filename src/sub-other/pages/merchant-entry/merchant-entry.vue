@@ -502,8 +502,8 @@
 				position: absolute;
 				right: 0;
 				top: 0;
-				height: 160rpx;
-				width: 200rpx;
+				height: 156rpx;
+				width: 300rpx;
 				border-radius: 0 16rpx 0 0 ;
 			}
 			.title {
@@ -552,7 +552,7 @@
 				.icon-merchant-close {
 					font-size: 28rpx;
 					font-size: 65rpx;
-					color: #333;
+					color: #D3D3D3;
 					position: absolute;
 					right: 40rpx;
 					top: 90rpx;

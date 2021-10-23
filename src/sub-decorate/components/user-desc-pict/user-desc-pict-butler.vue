@@ -101,7 +101,10 @@
 
     .tigs {
       .username {
-        min-width: 90rpx;
+        width: 300rpx;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
         height: 42rpx;
         font-size: 30rpx;
         font-family: PingFangSC, PingFangSC-Medium;

@@ -3,7 +3,7 @@
 		<view class="sticky-view" :style="{top:navBarHeight}">
 			<scroll-view class="tab-list" scroll-x="true" @scroll="scroll">
 				<view v-for="(item,index) in videoTypeList" :key="item.id" class="tab-item"
-					:class="index==currentTab?'selected-tab ':'nomal-tab'" @click="onTab(index)">
+					:class="index==currentTab?'selected-tab':'nomal-tab'" @click="onTab(index)">
 					<text>{{item}}</text>
 					<view v-if="index==currentTab" class="current-select">
 					</view>
@@ -11,30 +11,38 @@
 			</scroll-view>
 		</view>
 		<swiper class="swiper" :current="currentTab" :duration="200" @change="swiperChange">
+
 			<swiper-item v-for="(item,tabindex) in videoTypeList" :key="item">
+				<view v-if="videoList.length==0" class="no-list-content">
+					<image class="no-list" src="../../../static/order/blank_house@2x.png" mode=""></image>
+					<view class="tip-text">
+						您还没有任何数据~
+					</view>
+				</view>
 				<scroll-view class="scroll-view" :enable-back-to-top="true" scroll-y="true" lower-threshold="10"
 					refresher-background="#FFF" refresher-enabled="true" :refresher-triggered="triggered"
 					@scroll="onScroll" @refresherrefresh="onRefresh" @scrolltolower="onLoadMore">
 					<view class="goods-list">
-						<view v-for="(item,index) in videoList" :key="index" class="item" @click="onLiveClick(item)">
+						<view v-for="(item,index) in videoList"  :class="{'margin-left24':index%2==0,'margin-left16':index%2==1}" :key="index" class="item" @click="onLiveClick(item)">
 							<view class="img-view">
 								<image class="img"
 									:src="item.mediaType==1?item.roomLiveMediaVO.scaleImg:item.roomVideoMediaVO.scaleImg"
-									mode="">
+									mode="aspectFill">
 								</image>
 
 								<view v-if="item.mediaType==1" class="top-content">
 									<image class="top-content-img-living"
 										src="http://dbj.dragonn.top/static/mp/dabanjia/images/home/living.gif">
 									</image>
-									{{item.roomLiveMediaVO.onLineCount}}人在看
+									{{item.roomLiveMediaVO.onLineCount||0}}人在看
 								</view>
 
 								<view v-if="item.mediaType==2" class="top-content">
 									<image class="top-content-img"
-										src="http://dbj.dragonn.top/static/mp/dabanjia/images/home/video_review.png">
+										src="http://dbj.dragonn.top/static/mp/dabanjia/images/home/live-repaly.png">
 									</image>
-									{{item.roomVideoMediaVO.viewsCount}}人看过
+									<text style="margin-left: 8rpx;">回放</text> <text
+										style="margin-left: 8rpx;">{{item.roomVideoMediaVO.viewsCount}}人在看</text>
 								</view>
 								<view class="name-content">
 									<image class="avatar"
@@ -45,7 +53,7 @@
 									</view>
 								</view>
 							</view>
-							<view class="name">
+							<view class="live-list-name">
 								{{item.mediaType==1?item.roomLiveMediaVO.title:item.roomVideoMediaVO.title}}
 							</view>
 						</view>
@@ -163,7 +171,42 @@
 
 <style lang="scss">
 	page {
-		background: #fff;
+		background: #F5F6F6;
+	}
+
+	.no-list-content {
+		display: flex;
+		flex-direction: column;
+		height: 100%;
+		justify-content: center;
+		align-items: center;
+	}
+
+	.no-list {
+		width: 248rpx;
+		height: 248rpx;
+	}
+
+	.tip-text {
+		margin-top: 24rpx;
+		font-size: 30rpx;
+		font-weight: 400;
+		color: #999999;
+	}
+
+	.live-list-name {
+		background: #FFF;
+		padding: 16rpx;
+		flex: 1;
+		display: flex;
+		font-size: 26rpx;
+		font-weight: 400;
+		color: #111111;
+		overflow: hidden;
+		text-overflow: ellipsis;
+		display: -webkit-box;
+		-webkit-line-clamp: 1; //这个代表你要在几行显示省略号
+		-webkit-box-orient: vertical;
 	}
 
 	.fill {
@@ -177,11 +220,20 @@
 		flex: 1;
 	}
 
+	.selected-tab {
+		font-weight: bold;
+	}
+
 	.scroll-view {
 		flex: 1;
 		height: 100%;
 	}
-
+	.margin-left24{
+		margin-left: 24rpx;
+	}
+	.margin-left16{
+		margin-left: 16rpx;
+	}
 	.goods-list {
 		display: flex;
 		margin-top: 8rpx;
@@ -196,18 +248,17 @@
 			width: 343rpx;
 			height: 526rpx;
 			border-radius: 16rpx;
-			border: 1rpx solid #e6eaed;
-			margin-left: 21.3rpx;
 			position: relative;
 			overflow: hidden;
 			display: flex;
 			flex-direction: column;
 
-			.name {
+			.live-name {
 				padding: 16rpx;
 				flex: 1;
 				display: flex;
 				align-items: center;
+				justify-content: flex-start;
 				font-size: 26rpx;
 				font-weight: 400;
 				color: #111111;
@@ -229,11 +280,14 @@
 
 				.name-content {
 					position: absolute;
-					bottom: 12rpx;
-					left: 16rpx;
-					right: 16rpx;
+					bottom: 0rpx;
+					left: 0;
+					right: 0;
+					height: 74rpx;
 					display: flex;
 					align-items: center;
+					background: linear-gradient(180deg, rgba(0, 0, 0, 0) 0%, rgba(0, 0, 0, 0.5) 100%);
+					padding: 0 16rpx;
 
 					.avatar {
 						width: 32rpx;
@@ -257,7 +311,7 @@
 					position: absolute;
 					top: 12rpx;
 					left: 20rpx;
-					padding: 12rpx;
+					padding: 0 8rpx 0 0;
 					height: 28rpx;
 					background: rgba(0, 0, 0, 0.35);
 					border-radius: 8rpx;
@@ -271,7 +325,7 @@
 					.top-content-img {
 						margin-right: 8rpx;
 						height: 28rpx;
-						width: 74rpx;
+						width: 28rpx;
 					}
 
 					.top-content-img-living {
@@ -289,15 +343,16 @@
 		position: -webkit-sticky;
 		left: 0;
 		right: 0;
-		background-color: white;
+		background-color: #F5F6F6;
 	}
 
 	.tab-list {
-		height: 64rpx;
-		line-height: 64rpx;
+		height: 88rpx;
+		line-height: 88rpx;
 		width: 100%;
 		overflow: hidden;
 		white-space: nowrap;
+		background: linear-gradient(#FFFFFF,  #f5f6f6);
 	}
 
 	.tab-item {

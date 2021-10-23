@@ -1,14 +1,17 @@
 <template>
 	<view class="calendarWrap">
-		<view class="calendar">
-			<dark-calendar :signeddates="signeddates" @filterDynamics="filterDynamics"
-				:projectId="projectId" :showMemo="showMemo" @changeMargin="changeMargin"
-				></dark-calendar>
-		</view>
-		<view class="dynamic" :class="{'noDynamics': !dynamics.length,'weekModel': isWeek}">
+		<view class="fixed">
+			<view class="calendar">
+				<dark-calendar :signeddates="signeddates" @filterDynamics="filterDynamics"
+					:projectId="projectId" :showMemo="showMemo" @changeMargin="changeMargin"
+					></dark-calendar>
+			</view>
 			<view class="top">
 				<view class="title">装修动态</view>
 			</view>
+		</view>
+		<view class="dynamic" :class="{'noDynamics': !dynamics.length,'weekModel': isWeek}">
+			
 			<view class="noDynamics" v-if="!dynamics.length">
 				<image class="noDynamicsImg" src="http://dbj.dragonn.top/%20static/mp/dabanjia/images/home/pic_empty%402x.png"></image>
 				<view class="text">暂无装修动态</view>
@@ -142,66 +145,48 @@
 		height: 100%;
 		background: #f2f5f8;
 	}
-	.calendar{
-		width: 100%;
-		height: fit-content;
+	.fixed{
 		position: fixed;
 		left: 0;
 		top: 0;
 		z-index: 9;
 	}
+	.calendar{
+		width: 100%;
+		height: fit-content;
+	}
 	.dynamic{
 		width: 100%;
 		height: fit-content;
-		margin-top: 736rpx;
+		margin-top: 832rpx;
 		background: #ffffff;
-		border-radius: 40rpx;
+		
 	}
 	.dynamic.weekModel{
-		margin-top: 286rpx;
+		margin-top: 384rpx;
 	}
 	.dynamic.noDynamics{
 		margin-bottom: 0;
 	}
 	
-	.dynamic .top{
+	.fixed .top{
 		width: 100%;
-		height: 78rpx;
+		height: 140rpx;
 		display: flex;
 		justify-content: space-between;
+		background-color: #fff;
+		border-radius: 40rpx 40rpx 0 0;
 	}
 	.top .title{
 		width: 128rpx;
 		height: 44rpx;
-		margin-top: 32rpx;
+		margin-top: 56rpx;
 		margin-left: 32rpx;
+		margin-bottom: 40rpx;
 		font-size: 32rpx;
 		font-weight: 500;
 		color: #333333;
 		line-height: 44rpx;
-	}
-	.top .filter{
-		width: 104rpx;
-		height: 46rpx;
-		margin-top: 32rpx;
-		margin-right: 32rpx;
-		background: #f5f6f6;
-		border-radius: 22rpx;
-		display: flex;
-		align-items: center;
-	}
-	.top .filter .text{
-		width: 48rpx;
-		height: 34rpx;
-		margin-left: 20rpx;
-		font-size: 24rpx;
-		color: #333333;
-	}
-	.top .filter .icon{
-		display: block;
-		width: 14rpx;
-		height: 8rpx;
-		margin-left: 5rpx;
 	}
 	.noDynamics {
 		width: 750rpx;
@@ -251,8 +236,8 @@
 		height: 74rpx;
 		border-radius: 50%;
 		display: block;
-		margin-top: 39rpx;
-		margin-left: 31rpx;
+		margin-top: 32rpx;
+		margin-left: 32rpx;
 	}
 	.item .acitonInfo{
 		width: 598rpx;
