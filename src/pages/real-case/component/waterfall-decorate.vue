@@ -10,8 +10,8 @@
 				<view class="size">
 					{{params.estateArea ? params.estateArea.toFixed(2) : '0.00'}}m²
 				</view>
-				<view class="phase-box">
-					<view class="phase" :class="params.projectStatus != 3 ? 'phase-pending' : ''">
+				<view :class="['phase-box', {'phase-box-border': params.projectStatus == 3}]">
+					<view :class="['phase', {'phase-pending' : params.projectStatus != 3}]">
 						{{params.projectStatus == 3 ? "已竣工" :  '装修中' }}
 					</view>
 					<view class="phase-newest-node" v-if="params.newestNodeName && params.projectStatus != 3">
@@ -132,6 +132,9 @@
 				align-items: center;
 				border: 1px solid #ffa751;
 				border-radius: 2px
+			}
+			.phase-box-border{
+				border: 0;
 			}
 			.phase{
 				padding: 0 4rpx;

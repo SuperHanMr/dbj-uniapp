@@ -169,7 +169,7 @@
 					<view class="flex1">
 					</view>
 					<view class="price">
-						<text style="padding-right: 5rpx;">
+						<text class="price-font" style="padding-right: 5rpx; ">
 							¥
 						</text>
 						<text class=" price-font amount">

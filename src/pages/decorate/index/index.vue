@@ -85,7 +85,8 @@
             </view>
           </view>
           <!-- 我的装修服务 -->
-          <view class="my-decorate-service-wrap my-decorate-service-dec-wrap" v-if="purchasedServiceList.length > 0 || aServiceData.myServiceFlag">
+          <view class="my-decorate-service-wrap my-decorate-service-dec-wrap"
+            v-if="purchasedServiceList.length > 0 || aServiceData.myServiceFlag">
             <!-- <view class="top-bg"></view> -->
             <view class="my-decorate-service">
               <view class="service-title flex-space-between-row">
@@ -202,7 +203,7 @@
     },
     onHide() {
       this.showScroll = false
-      if(this.$refs.sw) {
+      if (this.$refs.sw) {
         this.$refs.sw.close()
       }
     },
@@ -267,11 +268,13 @@
         if (this.currentProject.projectId) {
           getCarouselMsg(this.currentProject.projectId).then(data => {
             this.broadcastList = data
-            if(this.broadcastList?.length < 1) {
-              this.broadcastList = [{content: "暂无施工消息"}]
+            if (this.broadcastList?.length < 1) {
+              this.broadcastList = [{
+                content: "暂无施工消息"
+              }]
             }
-            
-            this.isConstruction = this.currentProject.showBroadcast || false 
+
+            this.isConstruction = this.currentProject.showBroadcast || false
           })
         }
       },
@@ -331,7 +334,7 @@
           this.availGuides = []
           this.defaultServices && this.addServiceCard(this.defaultServices, "serviceType")
           this.availableServiceList && this.addServiceCard(this.availableServiceList, "nodeType")
-          this.haveWarehouse = this.currentProject.existWarehouse || false 
+          this.haveWarehouse = this.currentProject.existWarehouse || false
           //this.haveWarehouse = this.purchasedServiceList.filter(t => t.nodeType >= 5).length > 0
           // for (let i = 0; i < this.purchasedServiceList.length; i++) {
           //   if ([5, 6, 7, 8, 9, 10].includes(this.purchasedServiceList[i].nodeType) && (this.purchasedServiceList[i]
@@ -341,7 +344,7 @@
           //     break
           //   }
           // }
-          
+
         }).catch(err => {
           console.log(err)
         })
@@ -380,6 +383,23 @@
           this.getCarouselMsg()
         }
         this.initData(item)
+        let index = 0
+        let firstItem = null
+        for (let i = 0; i < this.projectList.length; i++) {
+          if (this.projectList[i].uid === this.currentProject.uid) {
+            index = i
+            firstItem = {...this.projectList[i]}
+            break
+          }
+        }
+        if (index !== 0) {
+          console.log("被切换的项目索引", '-', index)
+          let arr = [...this.projectList]
+          arr.splice(index, 1)
+          arr.unshift(firstItem)
+          this.projectList = [...arr]
+        }
+        
         this.$refs.sw.close()
       },
       getProjectList() {
@@ -446,9 +466,9 @@
           this.getFriendsList()
         }
       },
-      bindChange(e) {
-        console.log(e);
-      },
+      // bindChange(e) {
+      //   console.log(e);
+      // },
       switchVisible() {
         this.$refs.sw.open('top')
       },
@@ -464,7 +484,7 @@
       },
       goActuary() {
         uni.navigateTo({
-          url: `/sub-decorate/pages/actuary-detail/actuary-detail?projectId=${this.currentProject.projectId}&isClient=1`
+          url: `/sub-decorate/pages/actuary-detail/actuary-detail?projectId=${this.currentProject.projectId}&isClient=1&estateId=${this.currentProject.estateId}`
         })
       },
       goVideo() {
@@ -542,7 +562,7 @@
         if (this.currentProject && this.currentProject.projectId) {
           getMsgNum(this.currentProject.projectId).then(res => {
             this.msgNum = res.count
-            
+
             // uni.setTabBarBadge({
             //   index: 2,
             //   text: this.msgNum+'',

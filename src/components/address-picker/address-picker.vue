@@ -84,6 +84,10 @@
     },
     methods: {
       checkAddress() {
+        if (this.productType === 2) {
+          this.$emit("typeServe2")
+          return
+        }
         this.$emit("closeToast")
         uni.navigateTo({
           url: "/sub-my/pages/my-house/my-house?isEdit=0"
@@ -100,7 +104,7 @@
           // this.timer = setTimeout(() => {
           //   uni.removeStorageSync("houseIdChange")
           // }, 300)
-          if(v) {
+          if (v) {
             getAddressInfo(v).then((data) => {
               this.addressInfo = data
               let params = {

@@ -23,15 +23,15 @@
 					</view>
 
 					<warehouse-item v-for="(item,index) in currentList" :item="item" :key="item.id" @detail="toDetail"
-						@refund="toRefund" @confirmGoods="onConfirmGoods" :showRecived="currentIndex==1"
-						:showBacking="currentIndex==3" :showSubCount="currentIndex!=3" :showDetail="currentIndex==3">
+						@refund="toRefund" @confirmGoods="onConfirmGoods" :showRecived="currentIndex==1&&ownered"
+						:showBacking="currentIndex==3&&ownered" :showSubCount="currentIndex!=3" :showDetail="currentIndex==3">
 					</warehouse-item>
 					<view v-if="currentIndex==0" style="height: 200rpx;">
 					</view>
 				</scroll-view>
 			</swiper-item>
 		</swiper>
-		<bottom-btn v-if="currentIndex==0&&list0.length" btnContent="要货" @submit="toRequire"></bottom-btn>
+		<bottom-btn v-if="currentIndex==0&&list0.length&&judgeOwner" btnContent="要货" @submit="toRequire"></bottom-btn>
 	</view>
 </template>
 
@@ -42,7 +42,8 @@
 		receivedList,
 	} from "../../../api/order.js";
 	import {
-		confirmGoods
+		confirmGoods,
+		judgeOwner
 	} from "../../../api/decorate.js";
 	export default {
 		data() {
@@ -56,7 +57,8 @@
 				lastId: ["", "", "", ""],
 				triggered: false, //控制刷新显示字段
 				currentIndex: 0,
-				refreshIndex: -1
+				refreshIndex: -1,
+				ownered:false
 			};
 		},
 		computed: {
@@ -75,6 +77,9 @@
 		onLoad(e) {
 			if (e && e.projectId) {
 				this.projectId = e.projectId;
+				judgeOwner({projectId:this.projectId}).then(e=>{
+					this.ownered=e.ownered
+				})
 			}
 			if (e && e.type) {
 				this.currentIndex = Number(e.type);
@@ -127,6 +132,7 @@
 				}
 			},
 			toRequire() {
+				getApp().globalData.naviData=[]
 				uni.navigateTo({
 					url: `/sub-decorate/pages/require-goods/require-goods?projectId=${this.projectId}`,
 				});
