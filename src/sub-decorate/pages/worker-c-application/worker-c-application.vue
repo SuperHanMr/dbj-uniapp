@@ -33,16 +33,7 @@
 
     },
     onShow() {
-      let type = "服务验收申请"
-      if(this.msg.data.type == 3) {
-        type = "服务阶段验收申请";
-      }
-      if(this.msg.data.type == 4) {
-        type = "服务整体验收申请";
-      }
-      uni.setNavigationBarTitle({
-        title: this.msg.nodeName + type
-      })
+      
       this.getCompletionLogById()
     },
     
@@ -120,6 +111,16 @@
       },
       getCompletionLogById() {
         getCompletionLogById(this.msg.data.id).then(data => {
+          let type = "--工人--服务验收申请"
+          if(data?.type == 3) {
+            type = "服务阶段验收申请";
+          }
+          if(data?.type == 4) {
+            type = "服务整体验收申请";
+          }
+          uni.setNavigationBarTitle({
+            title: data?.nodeName + type
+          })
           this.workerData = data.workerDecorationTrendLogVO
           this.butlerData = data.butlerDecorationTrendLogVO
           this.updateTime = data.updateTime
