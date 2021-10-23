@@ -37,9 +37,9 @@
   "sys_receive_focus_on_project_msg": {
     "type": "sys_receive_focus_on_project_msg",
     "template": "interaction",
-    "summary": "${customerName}关注了您的房子【${title}】",
+    "summary": "${customerName}：关注了您的[${estateAddress}]",
     "body": {
-      "content": "关注了您的房子【${title}】",
+      "content": "关注了您的[${estateAddress}]",
       "userName": "${customerName}",
       "userAvatar": "${customerAvatar}"
     }
