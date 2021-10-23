@@ -364,14 +364,7 @@
       				this.comments[index].secondComments = list || [];
       			}
       			
-              if(page >= totalPage){
-              	// uni.showToast({
-              	// 	title:'没有更多数据了',icon:"none",
-              	// });
-              	this.isExpanded = true;
-              }
-              
-              this.replyPage = page++
+            if(num)this.isExpanded = true;
             
       			
           }
