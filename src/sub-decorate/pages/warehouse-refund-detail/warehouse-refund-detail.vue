@@ -161,7 +161,7 @@
 				<view v-for="(item,index) in tipsList" :class="{'fontbold':index==1||index==3}"
 					style="margin-top: 24rpx;">
 					<text style="margin-left: 32rpx;"></text>
-					<text space="emsp" decode="true"> &nbsp&nbsp{{item}}</text>
+					<text  style="line-height: 44rpx;" space="emsp" decode="true"> &nbsp&nbsp{{item}}</text>
 				</view>
 
 				<view class="holder">
