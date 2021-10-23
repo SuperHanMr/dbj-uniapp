@@ -15,6 +15,28 @@
           <i class="icon-ic_zhuangxiuxianchang_danchuangquxiao_csn close" @click="close"></i>
         </view>
         <view
+          class="bottomInput"
+          v-if="showInput"
+          
+        >
+          <input
+            v-model="inputValue"
+            :cursor-spacing="10"
+            :placeholder="isInputFocus?`回复@${inputName}`:'说点什么吧'"
+            :class="{'focusInput':isInputFocus||clickInput}"
+            @focus="clickInput"
+            :focus="isOpen"
+            :adjust-position='false'
+            @click.stop=""
+            class="easyInput"
+          />
+          <view
+            class="send"
+            :class="{themeColor:inputValue.length>0}"
+            @click.stop="setReply"
+          >发送</view>
+        </view>
+        <view
           class="noComment"
           v-if="!comments.length"
         >
@@ -58,7 +80,7 @@
             <view
               class="reply"
               @longpress="deleteComment(replyItem.commentId,replyItem.zeusId)"
-              @click.stop="replyItemC(replyItem.nickname,replyItem.commentId,index)"
+              @click.stop="replyItemC(replyItem.nickname,item.commentId,replyItem.commentId,index)"
               v-for="replyItem in item.secondComments"
               :key="replyItem.commentId"
             >
@@ -84,7 +106,7 @@
             </view>
             <view
               class="replyFooter"
-              v-if="item.secondCount>=1"
+              v-if="item.secondCount>0"
             >
               <view
                 class="expand"
@@ -127,29 +149,7 @@
           class="bottomInputBox"
           v-if="showInput"
         ></view>
-        <view
-          class="bottomInput"
-          v-if="showInput"
-          :style="{bottom:heightNum}"
-        >
-          <input
-            v-model="inputValue"
-            :cursor-spacing="10"
-            :placeholder="isInputFocus?`回复@${inputName}`:'说点什么吧'"
-            :class="{'focusInput':isInputFocus}"
-            
-            :focus="isOpen"
-            :adjust-position='false'
-            @click.stop=""
-            @keyboardheightchange='keybordChange'
-            class="easyInput"
-          />
-          <view
-            class="send"
-            :class="{'themeColor':isInputFocus}"
-            @click.stop="setReply"
-          >发送</view>
-        </view>
+        
       </view>
     </view>
   </view>
@@ -190,11 +190,13 @@
         isOpen:false,
         heightNum:0,
         num:0,
+        clickInput:false,
       }
     },
     mounted(){
       
       this.ownId = getApp().globalData.userInfo.id 
+      
       // this.ownId = 6459
     },
     computed:{
@@ -211,10 +213,10 @@
       },
       houseOwnerId:{
         handler:function(){
-          
+          console.log(this.houseOwnerId,getApp().globalData.userInfo)
           if(this.houseOwnerId===this.ownId){
             this.showInput = true
-            this.heightNum = e.detail.height*2+'rpx'
+            
           }
         },
         // immediate:true
@@ -224,6 +226,7 @@
     methods:{
       close(){
         this.showComments=false;
+        this.showInput = false
         this.inputValue = ''
         this.comments = []
         this.$emit('change',this.totalRows,this.index)
@@ -231,7 +234,7 @@
         // this.
       },
       inputFocus() {
-        this.isInputFocus = true;
+        this.clickInput = true;
       },
       bindscrolltolower(){
         if(this.page<this.totalPage){
@@ -239,14 +242,15 @@
           this.getComment()
         }
       },
+      //暂时废弃
       keybordChange(e){
         console.log(e.detail.height+'>>>>>>>')
-        console.log(this.num)
-        if(this.num%2!==0){
-          this.heightNum = 0
-          this.num++
-          return
-        }
+        console.log('键盘弹起收回'+this.num+'高度》》'+e.detail.height)
+        // if(this.num%2!==0){
+        //   this.heightNum = 0
+        //   this.num++
+        //   return
+        // }
         this.num++
         
         this.heightNum = e.detail.height*2+'rpx'
@@ -271,19 +275,34 @@
         });
       },
       deleteComment(commentId, zeusId) {
-        if (this.ownId !== zeusId) return;
+        if (this.ownId !== this.houseOwnerId) return;
         this.showDelete = true;
         this.showInput = false
         this.commentId = commentId
+        console.log(this.commentId,commentId)
         this.heightNum = 0
       },
       sureDelete(){
-        removeComment(this.commentId).then((data) => {
-          this.commentC(this.dynamicId);
-          this.showDelete = false;
-          this.showInput = true
-          this.commentId = 0
+        uni.showModal({
+          // title:"您确定要取消该优先推荐吗？",
+          content: "删除评论后将无法撤回",
+          confirmText:"确定",
+          cancelText:"取消",
+          success: (res) => {
+            if (res.confirm) {
+              removeComment(this.commentId).then((data) => {
+                this.commentC(this.dynamicId);
+              });
+              
+            }
+              this.showDelete = false;
+              this.showInput = true
+              this.commentId = 0
+            
+          },
+            
         });
+        
       },
       changeObj(){
         this.inputName = ''
@@ -302,6 +321,7 @@
         if (this.ownId !== this.houseOwnerId) return;
         this.$nextTick(function(){
           this.isInputFocus = true
+          
         })
         this.showInput = true;
         this.isOpen = true
@@ -311,7 +331,7 @@
         this.commentIndex = commentIndex;
         console.log(this.isInputFocus)
       },
-      replyItemC(name, replyId, commentIndex) {
+      replyItemC(name,commentId, replyId, commentIndex) {
         console.log(222)
         if (this.ownId !== this.houseOwnerId) return;
         this.isInputFocus = true
@@ -320,6 +340,7 @@
         this.isOpen = true
         this.inputName = name;
         this.replyId = replyId;
+        this.commentId = commentId;
         this.commentIndex = commentIndex;
       },
       packUpC(index) {
@@ -327,10 +348,12 @@
         this.comments[index].secondComments.splice(2);
       },
       expandC(id, index,num) {
-        console.log(id)
+        
+        let rows = num?num+2:2
+        console.log(rows+'>>>>>>>><<<<<<<')
         let params = {
           page: this.replyPage,
-          rows: num+2,
+          rows: rows,
           parentId: id, //评论ID
         };
         getReplies(params).then((data) => {
@@ -343,14 +366,7 @@
       				this.comments[index].secondComments = list || [];
       			}
       			
-              if(page >= totalPage){
-              	uni.showToast({
-              		title:'没有更多数据了',icon:"none",
-              	});
-              	this.isExpanded = true;
-              }
-              
-              this.replyPage = page++
+            if(num)this.isExpanded = true;
             
       			
           }
@@ -358,7 +374,6 @@
       },
       setReply(isReply) {
         // this.showInput = false;
-        console.log(isReply);
         let params = {
           businessId: this.dynamicId, //	动态ID
           businessType: 2,
@@ -367,8 +382,13 @@
         };
         createReply(params).then((data) => {
           if(this.isInputFocus){
-            console.log(this.replyId,this.commentId)
+            
             this.expandC(this.commentId,this.commentIndex)
+            if(this.comments[this.commentIndex].secondComments.length===2){
+              this.comments[this.commentIndex].secondCount ++
+            }
+            
+            // console.log(this.comments)
           }else{
             this.commentC(this.dynamicId,);
           }
@@ -384,6 +404,7 @@
         this.isOpen = false
         uni.hideKeyboard()
         this.isInputFocus = false
+        this.clickInput = false
         this.page=1
         let params = {
           page: this.page,
@@ -453,13 +474,9 @@
   .bottomInput {
   	width: 100%;
   	height: 120rpx;
-  	padding-bottom: 40rpx;
+  	// padding-bottom: 40rpx;
   	background: #ffffff;
-  	position: fixed;
-  	left: 0rpx;
-  	bottom: 0rpx;
   	display: flex;
-    position: absolute;
   }
   .focusInput {
   	caret-color: #00c2b8;
@@ -518,10 +535,10 @@
   .bottomInputBox {
   	width: 100%;
   	height: 120rpx;
-  	padding-bottom: 40rpx;
-  	position: fixed;
-  	left: 0rpx;
-  	bottom: 0rpx;
+  	// padding-bottom: 40rpx;
+  	// position: fixed;
+  	// left: 0rpx;
+  	// bottom: 0rpx;
   }
   .popupComments .noComment {
   	width: 100%;
@@ -565,7 +582,7 @@
   }
   .commentList {
   	width: 100%;
-  	height: 700rpx;
+  	height: 690rpx;
     
   	/* height: fit-content; */
   	// overflow: auto;
