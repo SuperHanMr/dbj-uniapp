@@ -21,7 +21,7 @@
 				</view>
 			</view>
 			<view v-if="![0, 1].includes(detail.status)" class="header-content">
-				<view class="icon">
+				<view v-if="tips" class="icon">
 					<i class="icon-icon_order_tips"></i>
 				</view>
 				<view class="alert" :style="{color:detail.status==5?'#FF3347':'#333333'}" style="flex:1">
@@ -48,7 +48,6 @@
 			<view class="row">
 				<view class="heaer">
 					退款类型：
-
 				</view>
 				<view class="text">
 					{{refuntType(detail.type)}}
@@ -98,15 +97,15 @@
 				</view>
 			</view>
 		</view>
-		<view v-if="[4,5].includes(detail.status)" class="other-btn" @click="toMessage">联系客服
+		<view v-if="[4,5].includes(detail.status)&&ownered" class="other-btn" @click="toMessage">联系客服
 		</view>
-		<view v-if="[4,5].includes(detail.status)" class="other-btn" @click="reApply">重新申请
+		<view v-if="[4,5].includes(detail.status)&&ownered" class="other-btn" @click="reApply">重新申请
 		</view>
 
 		<view style="height: 200rpx;">
 
 		</view>
-		<view v-if="detail.status==1||detail.status==0" class="bottom-btn">
+		<view v-if="(detail.status==1||detail.status==0) &&ownered" class="bottom-btn">
 			<view class="btn" @click="cancelRefund">
 				取消退款
 			</view>
@@ -122,6 +121,7 @@
 		refundDetail,
 		cancelRefund
 	} from "../../../api/order.js"
+	import{judgeOwner}from "../../../api/decorate.js"
 	export default {
 		filters: {
 			formatDate
@@ -137,7 +137,8 @@
 				tips: '',
 				id: '',
 				stockStatus: '',
-				scrollTop: 0
+				scrollTop: 0,
+				ownered:false
 			}
 		},
 		onPageScroll(scrollTop) {
@@ -159,6 +160,12 @@
 				this.id = e.id
 				this.getDetail(e.id);
 			}
+			if(e&&e.projectId){
+				judgeOwner({projectId:e.projectId}).then(e=>{
+					this.ownered=e.ownered
+				})
+			}
+	
 			if (e && e.stockStatus) {
 				this.stockStatus = e.stockStatus
 			}

@@ -1,7 +1,7 @@
 <template>
 	<view>
-		<warehouse-item :showBtns="false" :showSubtitle="false" :showBack="type==0" :itemBtn="type==2" :item="res"
-			@backGoodItem="toBackGoodItem" @applyBackItem="applyBackItem">
+		<warehouse-item :showBtns="false" :showSubtitle="false" :showBack="type==0&&ownered" :itemBtn="type==2&&ownered"
+			:item="res" @backGoodItem="toBackGoodItem" @applyBackItem="applyBackItem">
 		</warehouse-item>
 		<view v-if="type!=0" class="detail-price">
 			<!-- 	<view class="detail-price-row">
@@ -18,9 +18,11 @@
 				</view>
 			</view> -->
 			<view class="detail-price-row">
-				<view class="detail-price-row-font">
+				<view class="detail-price-row-font" @click="openPopup(false)">
+
 					运费
 				</view>
+				<i class="icon-jingsuandan_rengongfeiyongwenhaoicon icon-tips" @click="openPopup(false)"></i>
 				<view style="flex:1">
 				</view>
 				<view class="detail-price-row-font">
@@ -32,9 +34,10 @@
 
 			</view>
 			<view class="detail-price-row">
-				<view class="detail-price-row-font">
+				<view class="detail-price-row-font" @click="openPopup(true)">
 					搬运费
 				</view>
+				<i class="icon-jingsuandan_rengongfeiyongwenhaoicon icon-tips" @click="openPopup(true)"></i>
 				<view style="flex:1">
 				</view>
 				<view class="detail-price-row-font">
@@ -129,7 +132,7 @@
 				</view>
 			</view>
 		</view>
-		<view class="bottom-btn">
+		<view v-if="ownered" class="bottom-btn">
 			<view v-if="type==0" class="refund-btn" @click="toBack">
 				退库存
 			</view>
@@ -144,6 +147,26 @@
 			</view>
 
 		</view>
+
+		<uni-popup ref="popup" type="bottom">
+			<view class="header-popup">
+				{{isBan?'搬运费说明':'运费说明'}}
+
+				<view class="close-popup" @click="closePopup">
+					<i class="icon-xiaochengxu_youshangjiaodankuangguanbi_ic .close-icon-popup"></i>
+
+				</view>
+			</view>
+			<view class="popup-content">
+				<view v-for="(item,index) in tipsList" style="margin-top: 24rpx;">
+					<text space="emsp">{{item}}</text>
+				</view>
+
+				<view class="holder">
+
+				</view>
+			</view>
+		</uni-popup>
 	</view>
 </template>
 
@@ -157,7 +180,8 @@
 		refundDetail
 	} from "../../../api/order.js"
 	import {
-		confirmGoods
+		confirmGoods,
+		judgeOwner
 	} from '../../../api/decorate.js'
 	export default {
 		filters: {
@@ -169,7 +193,10 @@
 				res: {},
 				type: -1,
 				id: '',
-				projectId: ''
+				projectId: '',
+				ownered: false,
+				isBan: false,
+				tipsList: []
 			}
 		},
 		onLoad(e) {
@@ -178,22 +205,52 @@
 			let type = e.type;
 			this.type = type
 			this.projectId = e.projectId;
+			judgeOwner({
+				projectId: this.projectId
+			}).then(e => {
+				this.ownered = e.ownered
+			})
 			let id = e.id;
 			this.id = id
 			this.loadData(type, id);
 		},
 		methods: {
+			openPopup(isBan) {
+				this.isBan = isBan
+				if (isBan) {
+					this.tipsList = ['由于装修场景的特殊性，在打扮家app购买商品时支付搬运费分为两种情况零售场景：',
+						'在商品结算时支付店铺规定的搬运费', '装修要货场景：', '搬运费为业主预约发货（管家要货）时产生；', '每次要货搬运费计算规则如下',
+						'楼梯房搬运费=商品要货数量*每层搬运费*（楼层数-1）+入户费*商品要货数量；', '电梯房搬运费=入户费*商品要货数量'
+					]
+				} else {
+					this.tipsList = ['由于装修场景的特殊性，在打扮家app购买商品时支付运费分为两种情况零售场景：',
+						'在商品结算时支付店铺规定的运费（达到店铺满减规则减免当次运费）',
+						'装修要货场景：',
+						'运费为业主预约发货（管家、工人、业主要货）时产生的费用，购买下单后仅计算用户可获得的免费次数，不产生实际运费；',
+						'用户在购买商品时，不同卖家有不同的运费收取标准，如下：',
+						'（1）同一店铺内商品，每次要货根据要货数量支付运费；',
+						'（2）同一店铺内商品，达到减免运费费用后，根据获得的减免运费次数，减免要货时的费用'
+					]
+
+				}
+				this.$refs.popup.open();
+
+			},
+			closePopup() {
+
+				this.$refs.popup.close();
+			},
 			toRequire() {
 				let list = this.res.stockAppVOS;
-			list=	list.filter(e=>{
-					return e.stockNumber>0
+				list = list.filter(e => {
+					return e.stockNumber > 0
 				})
-				list.forEach(e=>{
-					e.count=e.stockNumber;
+				list.forEach(e => {
+					e.count = e.stockNumber;
 				})
-				
-				
-				getApp().globalData.naviData=list
+
+
+				getApp().globalData.naviData = list
 				uni.navigateTo({
 					url: `/sub-decorate/pages/require-goods/require-goods?projectId=${this.projectId}`,
 				});
@@ -315,6 +372,57 @@
 </script>
 
 <style lang="scss" scoped>
+	.popup-content {
+		background-color: #FFF;
+		max-height: 700rpx;
+		font-size: 28rpx;
+		padding: 32rpx;
+
+		color: #333333;
+
+		.holder {
+			height: 200rpx;
+		}
+
+	}
+
+	.header-popup {
+		width: 750rpx;
+		height: 104rpx;
+		background: #ffffff;
+		border-radius: 32rpx 32rpx 0rpx 0rpx;
+		position: relative;
+		display: flex;
+		justify-content: center;
+		align-items: center;
+		color: #333333;
+		font-weight: 500;
+		font-size: 32rpx;
+		border-bottom: 1rpx solid #f2f2f2;;
+
+		.close-popup {
+			position: absolute;
+			top: 12rpx;
+			right: 16rpx;
+			width: 80rpx;
+			height: 80rpx;
+			display: flex;
+			justify-content: center;
+			align-items: center;
+
+			.close-icon-popup {
+				color: #333333;
+				font-size: 30rpx;
+			}
+		}
+	}
+
+	.icon-tips {
+		font-size: 24rpx;
+		margin-left: 8rpx;
+		color: #999999;
+	}
+
 	.bottom-btn {
 		position: fixed;
 		bottom: 0;

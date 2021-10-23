@@ -243,7 +243,7 @@
 			decryptPhoneNumber(e) {
 				console.log(e, '>>>>>>>>>>>>>>>>>');
 				this.phoneInfo = e.detail;
-				if (e.detail && e.detail.errMsg != "getPhoneNumber:fail user deny") {
+				if (e.detail && e.detail.iv) {
 					this.toPay();
 				}
 			},
