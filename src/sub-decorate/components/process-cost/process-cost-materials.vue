@@ -36,7 +36,7 @@
                       <view class="line"></view>
                       <view class="btr" @click="finishEditing(item)">完成编辑</view>
                     </view>
-                    <view class="edit" v-if="item.inServiceArea && !item.isEdit" @click="edit(item)">编辑商品</view>
+                    <view class="edit" v-if="item.inServiceArea && !item.isEdit && !item.selling" @click="edit(item)">编辑商品</view>
                   </view>
                 </view>
               </view>
@@ -57,7 +57,7 @@
                   </image>
                 </view>
                 <view class="change-wrap"
-                  v-if="item.inServiceArea && !isNaN(content.categoryId) && content.categoryName !== '其他' && content.categoryId != ''">
+                  v-if="item.inServiceArea && !isNaN(content.categoryId) && content.categoryName !== '其他' && content.categoryId != '' && !item.selling">
                   <view @click="goMaterialsList(item)">更换商品</view>
                   <image @click="goMaterialsList(item)"
                     src="http://dbj.dragonn.top/static/mp/dabanjia/images/decorate/change_material.svg"></image>

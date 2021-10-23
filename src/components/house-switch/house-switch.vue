@@ -1,6 +1,8 @@
 <template>
 	<view class="s-w">
-		<view class="top"></view>
+		<view class="top">
+      <view class="house-title">选择家</view>
+    </view>
 		<scroll-view :scroll-top="scrollTop" scroll-y="true" class="house-list">
 			<view class="item" v-for="(item ,i) in datalist" @click="checkHouse(item)" :key="item.uid">
 				<view class="item-inner flex-row-bet"
@@ -34,7 +36,7 @@
 			},
 			current: {
 				type: String
-			},
+			}
 		},
     data() {
       return {
@@ -79,13 +81,33 @@
 		width: 100%;
 		padding: 16rpx 40rpx;
 		background-color: #fff;
+    background-image: url("http://dbj.dragonn.top/static/mp/dabanjia/images/decorate/toast-bg.png");
+    background-repeat: no-repeat;
+    background-size: 100vw auto;;
+    background-position: 0 0;
 		box-sizing: border-box;
 		border-radius: 0rpx 0rpx 40rpx 40rpx;
 	}
 
 	.top{
-		height: 174rpx;
-		opacity: .7;
+		height: 184rpx;
+    position: relative;
+		// opacity: .7;
+    .house-title {
+      position: absolute;
+      bottom: 22rpx;
+      left: 50%;
+      transform: translateX(-50%);
+      text-align: center;
+      height: 44rpx;
+      font-size: 32rpx;
+      font-family: PingFangSC, PingFangSC-Medium;
+      font-weight: 600;
+      text-align: center;
+      color: #000000;
+      line-height: 44rpx;
+      
+    }
 	}
 	.house-list {
 		height: 472rpx;
@@ -150,7 +172,8 @@
 
 		.status {
 			box-sizing: border-box;
-			width: 104rpx;
+			min-width: 120rpx;
+      // padding: 0 8rpx;
 			height: 32rpx;
 			opacity: 1;
 			font-size: 22rpx;

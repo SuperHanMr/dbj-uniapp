@@ -108,7 +108,7 @@
 	.remind .text{
 		width: 112rpx;
 		height: 40rpx;
-		margin: 40rpx 0;
+		margin: 60rpx 0;
 		color: #333333;
 		font-size: 28rpx;
 	}
