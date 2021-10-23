@@ -157,7 +157,7 @@
 
 				</view>
 			</view>
-			<view class="popup-content">
+			<scroll-view :scroll-y="true" class="popup-content">
 				<view v-for="(item,index) in tipsList" :class="{'fontbold':index==1||index==3}"
 					style="margin-top: 24rpx;">
 					<text style="margin-left: 32rpx;"></text>
@@ -167,7 +167,7 @@
 				<view class="holder">
 
 				</view>
-			</view>
+			</scroll-view>
 		</uni-popup>
 	</view>
 </template>

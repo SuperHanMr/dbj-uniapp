@@ -39,8 +39,8 @@
 		</view>
 		<view class="bottom-btns" :style="{paddingBottom:systemBottom}">
 			<view class="shop-icon" @click="openCart">
-				<image class="icon"  :class="{'btn-use':cartCount>0,'btn-un':cartCount==0}" src="http://dbj.dragonn.top/static/mp/dabanjia/images/home/ic_apply_goods.png"
-					mode=""></image>
+				<image class="icon" :class="{'btn-use':cartCount>0,'btn-un':cartCount==0}"
+					src="http://dbj.dragonn.top/static/mp/dabanjia/images/home/ic_apply_goods.png" mode=""></image>
 				<view v-if="cartCount" class="num">
 					{{cartCount}}
 				</view>
@@ -56,17 +56,17 @@
 					清空全部
 				</view>
 			</view>
-			<view class="cart-content">
+			<scroll-view :scroll-y="true" class="cart-content">
 				<view v-for="(cart, cartIndex) in cartList" :key="cartIndex">
 					<goods-item :cartList="cartList" :item="cart" @change="changeFromCart($event,cartIndex)">
 					</goods-item>
 				</view>
 
-			</view>
+			</scroll-view>
 			<view class="bottom-btns-pop" :style="{paddingBottom:systemBottom}">
 				<view class="shop-icon" @click="openCart">
-					<image class="icon"  :class="{'btn-use':cartCount>0,'btn-un':cartCount==0}" src="http://dbj.dragonn.top/static/mp/dabanjia/images/home/ic_apply_goods.png"
-						mode=""></image>
+					<image class="icon" :class="{'btn-use':cartCount>0,'btn-un':cartCount==0}"
+						src="http://dbj.dragonn.top/static/mp/dabanjia/images/home/ic_apply_goods.png" mode=""></image>
 
 					<view v-if="cartCount" class="num">
 						{{cartCount}}
@@ -134,9 +134,9 @@
 			if (e && e.projectId) {
 				this.projectId = e.projectId;
 			}
-			let list =getApp().globalData.naviData;
-			if(list&&list.length){
-				this.cartList=list;
+			let list = getApp().globalData.naviData;
+			if (list && list.length) {
+				this.cartList = list;
 				console.log(this.cartList);
 				this.openCart()
 			}
@@ -223,9 +223,10 @@
 </script>
 
 <style lang="scss">
-	page{
+	page {
 		overflow: hidden;
 	}
+
 	.history {
 		height: 80rpx;
 		line-height: 80rpx;
@@ -262,10 +263,11 @@
 	}
 
 	.cart-content {
+		position: relative;
 		width: 686rpx;
 		max-height: 792rpx;
 		padding: 0 32rpx;
-		overflow: scroll;
+		overflow: auto;
 		background-color: #ffffff;
 	}
 

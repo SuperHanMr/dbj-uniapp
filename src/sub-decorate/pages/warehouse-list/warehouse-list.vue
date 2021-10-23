@@ -31,7 +31,7 @@
 				</scroll-view>
 			</swiper-item>
 		</swiper>
-		<bottom-btn v-if="currentIndex==0&&list0.length&&judgeOwner" btnContent="要货" @submit="toRequire"></bottom-btn>
+		<bottom-btn v-if="currentIndex==0&&list0.length&&ownered" btnContent="要货" @submit="toRequire"></bottom-btn>
 	</view>
 </template>
 
