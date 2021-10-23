@@ -134,6 +134,12 @@
 			if (e && e.projectId) {
 				this.projectId = e.projectId;
 			}
+			let list =getApp().globalData.naviData;
+			if(list&&list.length){
+				this.cartList=list;
+				console.log(this.cartList);
+				this.openCart()
+			}
 			this.getLeftList();
 		},
 		methods: {
