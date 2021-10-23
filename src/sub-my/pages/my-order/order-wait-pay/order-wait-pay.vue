@@ -25,7 +25,7 @@
 			</view>
 
 			<order-user-base-info :data="orderInfo"></order-user-base-info>
-			<view class="moreStore" v-if="orderInfo.details.length>1">
+			<view class="moreStore" v-if="orderInfo.details.length>1 && orderInfo.orderName">
 				{{orderInfo.orderName}}
 			</view>
       <view class="store-container" v-for="(item,index) in orderInfo.details" :key="index">
@@ -484,6 +484,7 @@ export default {
               flex: 1;
               flex-flow: row nowrap;
               justify-content: space-between;
+							align-items: center;
               margin-bottom: 8rpx;
 							color: #999999;
 							font-size: 22rpx;
