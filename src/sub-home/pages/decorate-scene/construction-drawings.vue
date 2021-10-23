@@ -19,17 +19,19 @@
 				</view>
 			</scroll-view>
 			<view class="divideLine" v-if="serveTypes.length"></view>
-			<view class="designer" v-if="serverList.length>=2">
-				<view class="designerInfo">
-					<image class="avatar" @click="toPersonal(serverList[selectedIndex].userId)" :src="serverList[selectedIndex].avatar"></image>
-					<view>
-						<view class="designerName">{{serverList[selectedIndex].userName}}</view>
-						<view class="role">{{serverList[selectedIndex].role}}</view>
+			<view class="cardWrap">
+				<view class="designer" v-if="serverList.length>=2">
+					<view class="designerInfo">
+						<image class="avatar" @click="toPersonal(serverList[selectedIndex].userId)" :src="serverList[selectedIndex].avatar"></image>
+						<view>
+							<view class="designerName">{{serverList[selectedIndex].userName}}</view>
+							<view class="role">{{serverList[selectedIndex].role}}</view>
+						</view>
 					</view>
-				</view>
-				<view class="select" @click="switchC">
-					<view>切换设计师</view>
-					<image class="switch" src="http://dbj.dragonn.top/static/mp/dabanjia/images/home/ic_switch%402x.png"></image>
+					<view class="select" @click="switchC">
+						<view>切换设计师</view>
+						<image class="switch" src="http://dbj.dragonn.top/static/mp/dabanjia/images/home/ic_switch%402x.png"></image>
+					</view>
 				</view>
 			</view>
 		</view>
@@ -300,7 +302,6 @@
 		margin-right: 20rpx;
 	}
 	.constructionWrap{
-		position: relative;
 		width: 100%;
 		height: fit-content;
 		background: #ffffff;
@@ -360,11 +361,15 @@
 		height: 2rpx;
 		background-color: #efefef;
 	}
+	.cardWrap{
+		width: 750rpx;
+		height: 230rpx;
+		background-color: #fff;
+	}
 	.designer{
 		width: 702rpx;
 		height: 176rpx;
-		/* background: #f7f7f7; */
-		background-color: #fff;
+		background: #f7f7f7;
 		border-radius: 24rpx;
 		margin: 0 24rpx;
 		display: flex;
@@ -427,7 +432,7 @@
 	}
   .content{
 		width: 686rpx;
-		max-height: 1528rpx;
+		height: fit-content;
 		margin: 0 32rpx;
 	}
 	.content .category{
