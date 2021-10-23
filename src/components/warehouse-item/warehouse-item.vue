@@ -55,7 +55,7 @@
 						<view style="flex:1">
 						</view>
 						<view v-if="showSubCount" class="spec-item">
-							共{{goodItem.number||goodItem.stockNumber}}件
+							共{{goodItem.number||goodItem.stockNumber}}{{goodItem.unit}}
 						</view>
 					</view>
 				</view>
