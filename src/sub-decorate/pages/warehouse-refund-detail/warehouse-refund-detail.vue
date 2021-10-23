@@ -185,9 +185,14 @@
 		methods: {
 			toRequire() {
 				let list = this.res.stockAppVOS;
-				list.forEach(e=>{
-					e.number=e.stockNumber;
+			list=	list.filter(e=>{
+					return e.stockNumber>0
 				})
+				list.forEach(e=>{
+					e.count=e.stockNumber;
+				})
+				
+				
 				getApp().globalData.naviData=list
 				uni.navigateTo({
 					url: `/sub-decorate/pages/require-goods/require-goods?projectId=${this.projectId}`,
