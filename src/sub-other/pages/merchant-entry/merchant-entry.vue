@@ -640,8 +640,9 @@
 		.get-phone {
 			position: absolute;
 			width: 100%;
-			height: 100%;
+			height: 88rpx;
 			opacity: 0;
+			top: 24rpx;
 		}
 
 		.pay-money {
