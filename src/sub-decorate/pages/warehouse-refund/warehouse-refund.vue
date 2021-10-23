@@ -129,10 +129,8 @@
 			this.data.stockAppVOS.forEach((e) => {
 				list.push({
 					returnNumber: e.refundNumber ?
-						e.refundNumber :
-						e.stockNumber ?
-						e.stockNumber :
-						e.requireNumber,
+						e.refundNumber : e.stockNumber ?
+						e.stockNumber : e.requireNumber,
 					stockId: e.id,
 					goodsId: e.goodsId,
 					price: e.price,
