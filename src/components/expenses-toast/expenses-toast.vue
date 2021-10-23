@@ -142,8 +142,8 @@
 
   p {
     text-align: justify;
-    text-indent: 2em;
     color: #333333;
     margin-top: 24rpx;
+    line-height: 1.6em;
   }
 </style>
