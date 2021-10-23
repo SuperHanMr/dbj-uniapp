@@ -9,7 +9,7 @@
     </view>
     <view class="service-content">
       <view class="msg">
-        <image class="avatar" @click="toPerson" :src="isDesign&&designData.designServerVO.avatar||tab.avatar"></image>
+        <image class="avatar" @click="toPerson" :src="isDesign&&designData.designServerVO.avatar||tab.avatar" mode="aspectFit"></image>
         <view class="name-msg">
           <view>
             <view class="name">{{isDesign&&designData.designServerVO.userName||tab.name}}</view>
@@ -78,6 +78,7 @@
     .design-name{
       color: #333333;
       font-size: 32rpx;
+      
     }
     .design-change{
       display: flex;
@@ -112,12 +113,16 @@
         align-items: center;
       }
       .name{
-        width: 100%;
+        // width: 100%;
         font-size: 30rpx;
         color: #333;
         font-weight: 500;
         display: block;
         margin-bottom: 8rpx;
+        max-width: 330rpx;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
       }
       .text{
         display: block;

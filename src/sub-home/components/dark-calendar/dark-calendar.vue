@@ -35,11 +35,10 @@
         </view>
       </view>
     </view>
-		<image v-if="isShrink" @click="switchWeek()" class="shrink"
+		<image v-if="isShrink" @click="switchWeek()" class="shrink" :class="{'rotate':!isShrink}"
 			src="http://dbj.dragonn.top/static/mp/dabanjia/images/home/ic_shrink%402x.png"></image>
-		<view v-else @click="switchWeek()" class="grow"></view>	
-		
-    
+		<image v-else @click="switchWeek()" class="grow"
+			src="http://dbj.dragonn.top/%20static/mp/dabanjia/images/home/ic_weekModel%402x.png"></image>
   </view>
 </template>
 
@@ -276,6 +275,7 @@
 </script>
 
 <style lang="scss" scoped>
+	
 	.sign-calendar {
 		width: 750rpx;
 		height: fit-content;
@@ -443,17 +443,7 @@
   .hide {
     height: 80rpx;
   }
-  .grow {
-    width: 64rpx;
-    height: 8rpx;
-    margin: 0 343rpx;
-    background: #e7e8e8;
-    border-radius: 4rpx;
-		position: absolute;
-		left: 0;
-		bottom: -36rpx;
-  }
-	.shrink{
+	.shrink,.grow{
 		display: block;
 		width: 32rpx;
 		height: 16rpx;
@@ -461,5 +451,8 @@
 		position: absolute;
 		left: 0;
 		bottom: -42rpx;
+	}
+	.shrink.rotate{
+		transform: rotate(180deg);
 	}
 </style>

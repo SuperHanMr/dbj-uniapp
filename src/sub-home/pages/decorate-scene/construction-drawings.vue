@@ -4,34 +4,36 @@
 			<image class="noTypesImg" src="http://dbj.dragonn.top/static/mp/dabanjia/images/decorate/pic_empty%402x.png"></image>
 			<view class="text">暂无施工图纸</view>
 		</view>
-		<scroll-view :scroll-x="true" :enable-flex="true" class="tabWrap" v-else>
-			<view
-				class="tab"
-				@click="checkIndex(index,item.type)"
-				v-for="(item,index) in serveTypes"
-				:key="item.type"
-			>
-				<view class="text" :class="{'color':navIndex===index}">{{item.severName}}</view>
-				<view class="lineWrap">
-					<view class="underline" :class="{'active':navIndex===index}"></view>
+		<view class="fixed">
+			<scroll-view :scroll-x="true" :enable-flex="true" class="tabWrap" v-if="serveTypes.length">
+				<view
+					class="tab"
+					@click="checkIndex(index,item.type)"
+					v-for="(item,index) in serveTypes"
+					:key="item.type"
+				>
+					<view class="text" :class="{'color':navIndex===index}">{{item.severName}}</view>
+					<view class="lineWrap">
+						<view class="underline" :class="{'active':navIndex===index}"></view>
+					</view>
 				</view>
-			</view>
-		</scroll-view>
-		<view class="divideLine"></view>
-		<view class="designer" v-if="serverList.length>=2">
-			<view class="designerInfo">
-				<image class="avatar" :src="serverList[selectedIndex].avatar"></image>
-				<view>
-					<view class="designerName">{{serverList[selectedIndex].userName}}</view>
-					<view class="role">{{serverList[selectedIndex].role}}</view>
+			</scroll-view>
+			<view class="divideLine" v-if="serveTypes.length"></view>
+			<view class="designer" v-if="serverList.length>=2">
+				<view class="designerInfo">
+					<image class="avatar" @click="toPersonal(serverList[selectedIndex].userId)" :src="serverList[selectedIndex].avatar"></image>
+					<view>
+						<view class="designerName">{{serverList[selectedIndex].userName}}</view>
+						<view class="role">{{serverList[selectedIndex].role}}</view>
+					</view>
 				</view>
-			</view>
-			<view class="select" @click="switchC">
-				<view>切换设计师</view>
-				<image class="switch" src="http://dbj.dragonn.top/static/mp/dabanjia/images/home/ic_switch%402x.png"></image>
+				<view class="select" @click="switchC">
+					<view>切换设计师</view>
+					<image class="switch" src="http://dbj.dragonn.top/static/mp/dabanjia/images/home/ic_switch%402x.png"></image>
+				</view>
 			</view>
 		</view>
-		<view class="noDrawings" v-if="!drawings.length">
+		<view class="noDrawings" v-if="serveTypes.length && !drawings.length">
 			<image class="noDrawingsImg" src="http://dbj.dragonn.top/static/mp/dabanjia/images/decorate/pic_empty%402x.png"></image>
 			<view class="text">暂无施工图纸</view>
 		</view>
@@ -99,6 +101,11 @@
 			this.requestPage()
 		},
 		methods:{
+			toPersonal(userId){
+				uni.navigateTo({
+					url: `/sub-decorate/pages/person-page/person-page?personId=${userId}`
+				})
+			},
 			previewImage(list,index){
 				let urls = []
 				list.forEach(item => {
@@ -114,12 +121,20 @@
 			},
 			selectC(severId,index){
 				this.selectedIndex = index
-				this.serverList[index].checked = true
+				this.serverList.map(item => {
+					if(severId === item.severId){
+						item.checked = true
+					}else{
+						item.checked = false
+					}
+					return item
+				})
 				updateDrawings(severId).then(data => {
 					if(data){
 						this.$nextTick(()=>{
 							this.drawings = data
 						})
+						this.showSwitchDesigner = false
 					}
 				})
 			},
@@ -159,16 +174,20 @@
 </script>
 
 <style scoped>
+	.fixed{
+		position: fixed;
+		left: 0;
+		top: 0;
+	}
 	.noTypesImg{
 		display: block;
 		width: 750rpx;
 		height: 640rpx;
-		margin: 24rpx 0;
 	}
 	.noTypes .text{
 		width: 168rpx;
 		height: 40rpx;
-		margin: 0 291rpx 692rpx;
+		margin: 24rpx 291rpx 692rpx;
 		font-size: 28rpx;
 		color: #999999;
 	}
@@ -294,7 +313,7 @@
 		white-space: nowrap;
     max-width: 750rpx;
 		height: 88rpx;
-		
+		background-color: #fff;
   }
 	.tabWrap .tab{
 		width: fit-content;
@@ -344,10 +363,10 @@
 	.designer{
 		width: 702rpx;
 		height: 176rpx;
-		background: #f7f7f7;
+		/* background: #f7f7f7; */
+		background-color: #fff;
 		border-radius: 24rpx;
-		margin: 24rpx;
-		margin-bottom: 0;
+		margin: 0 24rpx;
 		display: flex;
 		position: fixed;
 		left: 0;
@@ -404,7 +423,7 @@
 		height: fit-content;
 	}
 	.contentWrap.switchServer{
-		margin-top: 232rpx;
+		margin-top: 320rpx;
 	}
   .content{
 		width: 686rpx;

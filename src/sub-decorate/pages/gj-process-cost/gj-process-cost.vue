@@ -76,6 +76,7 @@
         this.msg = getApp().globalData.decorateMsg
       }
       uni.$on("selectedMaterial", this.selectedMaterialCb)
+      this.getDataList()
     },
     onShow() {
       if (this.selectedMaterialData?.categoryId) {
@@ -85,32 +86,32 @@
         } = this.selectedMaterialData
         this.setMaterial(categoryId, origin)
       } else {
-        this.getDataList()
-        let title = ""
+        // this.getDataList()
+        this.title = ""
         switch (Number(this.msg.serviceType)) {
           case 5:
-            title = "管家工序费"
+            this.title = "管家工序费"
             break
           case 6:
-            title = "拆除工序费"
+            this.title = "拆除工序费"
             break
           case 7:
-            title = "水电工序费"
+            this.title = "水电工序费"
             break
           case 8:
-            title = "泥瓦工序费"
+            this.title = "泥瓦工序费"
             break
           case 9:
-            title = "木工工序费"
+            this.title = "木工工序费"
             break
           case 10:
-            title = "油漆工序费"
+            this.title = "油漆工序费"
             break
           default:
             break
         }
         uni.setNavigationBarTitle({
-          title: title
+          title: this.title
         })
       }
     },
@@ -138,6 +139,7 @@
         message: null,
         skuRelation: [], // 精算单更换商品  新旧商品id对照表
         selectedMaterialData: null,
+        title: ""
       }
     },
     mounted() {
@@ -481,7 +483,7 @@
             estateId: Number(this.msg.estateId), //"long //房产id   非必须 默认0",
             total: this.countPrice, //"int //总计",
             remarks: "", //"string //备注",
-            orderName: "管家工序费", //"string //订单名称",
+            orderName: this.title || "工序费", //"string //订单名称",
             details: []
           }
           // roleType 7工人，10管家
@@ -500,6 +502,7 @@
                 storeType: 0, //"int //店铺类型 0普通 1设计师",
                 number: it.count, //"double //购买数量",
                 params: {
+                  skuRelation: this.skuRelation,
                   serviceType: this.msg.serviceType
                 }, //string //与订单无关的参数 如上门时间 doorTime"
               })

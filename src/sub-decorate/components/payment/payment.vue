@@ -93,7 +93,7 @@
       font-weight: 400;
       text-align: left;
       color: #999999;
-      // margin-bottom: 16rpx;
+      margin-bottom: 8rpx;
     }
 
     .price-wrap {

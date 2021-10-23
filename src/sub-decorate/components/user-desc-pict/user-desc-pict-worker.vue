@@ -14,9 +14,11 @@
       </view>
       <view class="desc">{{workerData.content}}</view>
       <view class="picture flex-row">
-        <view class="imgs" :class="{'img3': index % 3 == 2}" v-for="(item, index) in workerData.fileUrls" :key="index" v-if="index < 6">
+        <view class="imgs" :class="{'img3': index % 3 == 2}" v-for="(item, index) in workerData.fileUrls" :key="index"
+          v-if="index < 6">
           <image mode="aspectFill" :src="item" @click="clickImg(workerData.fileUrls, index)"></image>
-          <view class="zz" v-if="workerData.fileUrls.length > 6 && index === 5" @click="clickImg(workerData.fileUrls, 5)">+{{workerData.fileUrls.length - 6}}</view>
+          <view class="zz" v-if="workerData.fileUrls.length > 6 && index === 5"
+            @click="clickImg(workerData.fileUrls, 5)">+{{workerData.fileUrls.length - 6}}</view>
         </view>
       </view>
       <view v-for="(t,index) in workerData.workerItems">
@@ -24,7 +26,8 @@
         <view class="picture flex-row">
           <view class="imgs" :class="{'img3': index % 3 == 2}" v-for="(kit, i) in t.fileUrls" :key="i" v-if="i < 3">
             <image mode="aspectFill" :src="kit" @click="clickImg(t.fileUrls, i)"></image>
-            <view class="zz" v-if="t.fileUrls.length > 3 && i === 2" @click="clickImg(t.fileUrls, 2)">+{{t.fileUrls.length - 3}}</view>
+            <view class="zz" v-if="t.fileUrls.length > 3 && i === 2" @click="clickImg(t.fileUrls, 2)">
+              +{{t.fileUrls.length - 3}}</view>
           </view>
         </view>
       </view>
@@ -34,8 +37,8 @@
 
 <script>
   import {
-    calendarFormat
-  } from "../../../utils/date.js"
+    formatDate
+  } from "../../../utils/common.js"
   export default {
     props: {
       workerData: {
@@ -66,7 +69,7 @@
     },
     filters: {
       calendarFormat(time) {
-        return calendarFormat(time)
+        return formatDate(time)
       }
     }
   }
@@ -86,11 +89,13 @@
     bottom: 64rpx;
     justify-content: space-between;
   }
+
   .content-wrap {
     background-color: #fff;
     padding: 24rpx;
     border-radius: 16rpx;
   }
+
   .avtor-wrap {
     // padding-top: 112rpx;
     margin-bottom: 23rpx;
@@ -107,7 +112,10 @@
 
     .tigs {
       .username {
-        min-width: 90rpx;
+        width: 300rpx;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
         height: 42rpx;
         font-size: 30rpx;
         font-family: PingFangSC, PingFangSC-Medium;
@@ -159,11 +167,11 @@
   .picture {
     justify-content: flex-start;
     flex-wrap: wrap;
-    
+
     .img3.imgs {
       margin-right: 0;
     }
-    
+
     .imgs {
       margin-bottom: 8rpx;
       margin-right: 8rpx;
@@ -207,6 +215,11 @@
   }
 
   .worker-title {
+    box-sizing: border-box;
+    width: 100%;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
     height: 40rpx;
     font-size: 28rpx;
     font-family: PingFangSC, PingFangSC-Medium;

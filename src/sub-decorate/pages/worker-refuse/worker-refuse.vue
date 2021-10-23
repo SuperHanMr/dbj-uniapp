@@ -49,6 +49,14 @@
         this.reason = e.target.value
       },
       confirm() {
+
+        if (this.reason.trim() == false) {
+          uni.showToast({
+            title: "请填写原因后提交",
+            icon: "none"
+          })
+          return
+        }
         ownerInsertAudit({
           applyId: this.id,
           auditResult: this.reason,
@@ -61,7 +69,9 @@
           // uni.navigateTo({
           //   url: "/pages/decorate/index/index"
           // })
-          uni.navigateBack({delta: 2})
+          uni.navigateBack({
+            delta: 2
+          })
         })
       }
     },

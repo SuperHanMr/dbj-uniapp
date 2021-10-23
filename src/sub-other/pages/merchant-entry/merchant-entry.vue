@@ -502,8 +502,8 @@
 				position: absolute;
 				right: 0;
 				top: 0;
-				height: 160rpx;
-				width: 200rpx;
+				height: 156rpx;
+				width: 300rpx;
 				border-radius: 0 16rpx 0 0 ;
 			}
 			.title {

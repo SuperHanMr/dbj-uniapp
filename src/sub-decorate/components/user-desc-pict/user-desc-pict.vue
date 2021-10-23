@@ -25,9 +25,10 @@
 </template>
 
 <script>
-  import {
-    calendarFormat
-  } from "../../../utils/date.js"
+  // import {
+  //   calendarFormat
+  // } from "../../../utils/date.js"
+  import { formatDate } from "../../../utils/common.js"
   export default {
     props: {
       butlerData: {
@@ -58,7 +59,7 @@
     },
     filters: {
       calendarFormat(time) {
-        return calendarFormat(time)
+        return formatDate(time)
       }
     }
   }
@@ -101,7 +102,10 @@
 
     .tigs {
       .username {
-        min-width: 90rpx;
+        width: 300rpx;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
         height: 42rpx;
         font-size: 30rpx;
         font-family: PingFangSC, PingFangSC-Medium;
