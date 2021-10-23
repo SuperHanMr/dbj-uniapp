@@ -905,7 +905,7 @@
     border-radius: 24rpx;
   }
   .house-item{
-    height: 260rpx;
+    height: 250rpx;
     overflow: hidden;
   }
   .popup-item .popup-title {
