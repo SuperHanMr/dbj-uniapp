@@ -83,7 +83,7 @@
     // justify-content: space-between;
     flex-direction: column;
     // align-items: flex-end;
-    margin-bottom: 16rpx;
+    // margin-bottom: 16rpx;
     font-family: Unnamed, Unnamed-Regular;
 
     .pieces {

@@ -4,11 +4,8 @@
       <view class="body">
         <view class="header">
           <view class="left">
-            <image
-              :src="serverAvatar"
-              mode="aspectFill"
-            ></image>
-            <text>{{serverName}}</text>
+            <image :src="serverAvatar" mode="aspectFill" />
+            <text class="serverName">{{serverName}}</text>
             <view class="icon">
               {{serverRoleName}}
             </view>
@@ -163,13 +160,13 @@ export default {
   },
 	
 	onLoad(e) {
-    let {serveId,serveType,servicerName,servicerRole,servicerAvatar,typeName} = getApp().globalData.decorateMsg
+    let {serveId,serveType,servicerName,servicerRole,servicerAvatar,serveTypeName} = getApp().globalData.decorateMsg
 		this.id =Number(e.id) || serveId
 		this.type  =Number(e.type) || serveType
 		this.serverName = e.serverName || servicerName
 		this.serverRoleName = e.serverRoleName || servicerRole
 		this.serverAvatar  =e.serverAvatar || servicerAvatar 
-		this.typeName = e.typeName || typeName
+		this.typeName = e.typeName || serveTypeName
 		console.log("this.id=",this.id,"this.type=",this.type)
 		// this.getServiceInfo()
 		if (!this.typeName) return 
@@ -280,8 +277,13 @@ export default {
           object-fit: cover;
           margin-right: 8rpx;
         }
-				text{
-					color: #333333;
+				.serverName{
+					color:#333333;
+					max-width: 340rpx;
+					font-size: 32rpx;
+					overflow: hidden;/*超出部分隐藏*/
+					white-space: nowrap;/*不换行*/
+					text-overflow:ellipsis;/*超出部分文字以...显示*/
 				}
         .icon {
 					width: 90rpx;
@@ -297,8 +299,9 @@ export default {
         }
       }
       .right {
-        height: 36rpx;
 				width: 136rpx;
+        height: 80rpx;
+				line-height: 80rpx;
         display: flex;
         flex-flow: row nowrap;
         align-items: center;
