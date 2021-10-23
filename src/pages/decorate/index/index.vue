@@ -100,11 +100,11 @@
               <service-item v-for="(item, index) in purchasedServiceList" :key="item.nodeType" :serviceData="item"
                 :currentProject="currentProject">
               </service-item>
-              <no-service v-if="purchasedServiceList.length == 0" words="暂无进行中服务"></no-service>
+              <!-- <no-service v-if="purchasedServiceList.length == 0" words="暂无进行中服务"></no-service> -->
             </view>
           </view>
           <view v-if="aServiceData.projectStatus == 3" class="jun-gong-da-ji">
-            竣工大吉
+            <image src="http://dbj.dragonn.top/%20static/mp/dabanjia/images/decorate/img_finish.webp"></image>
           </view>
           <view class="tips-design-actuary">
             <view v-if="availGuides.length > 0" class="tips">
