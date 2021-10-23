@@ -32,9 +32,24 @@
         type:Boolean,
         default:false
       },
-      tab:{},
-      designName:[],
-      designData:{}
+      tab:{
+        type:Object,
+        default:()=>{
+          return{}
+        }
+      },
+      designName:{
+        type:Array,
+        default:()=>{
+          return []
+        }
+      },
+      designData:{
+        type:Object,
+        default:()=>{
+          return{}
+        }
+      },
     },
     methods:{
       toTimeLine(item){

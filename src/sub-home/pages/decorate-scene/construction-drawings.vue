@@ -19,8 +19,8 @@
 				</view>
 			</scroll-view>
 			<view class="divideLine" v-if="serveTypes.length"></view>
-			<view class="cardWrap">
-				<view class="designer" v-if="serverList.length>=2">
+			<view class="cardWrap" v-if="serverList.length>=2">
+				<view class="designer">
 					<view class="designerInfo">
 						<image class="avatar" @click="toPersonal(serverList[selectedIndex].userId)" :src="serverList[selectedIndex].avatar"></image>
 						<view>

@@ -53,7 +53,7 @@
                 <text v-if="goodsItem.errorType === 6">您已跳过该工序，不可购买</text>
                 <text v-if="goodsItem.errorType === 7">暂不可购买，请在精算服务结束后于精算单中购买</text>
                 <text v-if="goodsItem.errorType === 8 && cancelDialog">请从装修页面查询购买</text>
-                <text v-if="goodsItem.errorType === 9">暂不可购买，请在管家服务结束后于精算单中购买</text>
+                <text v-if="goodsItem.errorType === 9">暂不可购买，请确认管家抢单后于精算单中购买</text>
               </view>
             </view>
             <view class="choose-time" v-if="productType === 2 && goodsItem.appointmentRequired">

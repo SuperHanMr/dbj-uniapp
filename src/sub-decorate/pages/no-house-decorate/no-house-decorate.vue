@@ -305,6 +305,7 @@
         original.unitId = source.product.salesUnit.unitId
         original.spuName = source.product.spuName
         original.storeId = source.product.storeId
+        original.appointmentRequired = source.product.spu.appointmentRequired ?? false
       },
       changeLevel() {
         let tmp = {
