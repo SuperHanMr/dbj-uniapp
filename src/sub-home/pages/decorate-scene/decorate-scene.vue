@@ -13,7 +13,7 @@
             <view class="tag">户型</view>
           </view>
           <view class="area">
-            <view class="areaInner">{{projectInfo.estateArea.toFixed(2)}}平米</view>
+            <view class="areaInner">{{projectInfo.estateArea?projectInfo.estateArea.toFixed(2):projectInfo.estateArea}}平米</view>
             <view class="tag">面积</view>
           </view>
         </view>
@@ -269,7 +269,7 @@
 						<view>进行验房服务</view>
 					</view>
 				</view>
-				<view class="close" @click="showDecorateMask=false">
+				<view class="close" @click="closeDecorateServe">
 					<image src="http://dbj.dragonn.top/static/mp/dabanjia/images/home/ic_decorate_cancel%402x.png"></image>
 				</view>
 			</view>
@@ -538,6 +538,9 @@ export default {
 		this.checkBuyServe()
   },
   methods: {
+		closeDecorateServe(){
+			this.showDecorateMask = false
+		},
 		closeComments(){
 			this.showComments = false
 		},
@@ -1807,15 +1810,16 @@ export default {
 	}
 	.acitonInfo .report {
 		width: 100%;
-		max-height: 120rpx;
+		word-wrap: break-word;
 		font-size: 28rpx;
 		color: #666666;
 		line-height: 40rpx;
+		/* max-height: 120rpx;
 		text-overflow: ellipsis;
 		overflow: hidden;
 		display: -webkit-box;
 		-webkit-box-orient: vertical;
-		-webkit-line-clamp: 3;
+		-webkit-line-clamp: 3; */
 	}
 	.acitonInfo .evidence {
 		width: 100%;
