@@ -24,7 +24,7 @@
             :cursor-spacing="10"
             :placeholder="isInputFocus?`回复@${inputName}`:'说点什么吧'"
             :class="{'focusInput':isInputFocus}"
-            
+            @focus="inputFocus"
             :focus="isOpen"
             :adjust-position='false'
             @click.stop=""
@@ -33,7 +33,7 @@
           />
           <view
             class="send"
-            :class="{'themeColor':isInputFocus}"
+            :class="{themeColor:isInputFocus}"
             @click.stop="setReply"
           >发送</view>
         </view>
