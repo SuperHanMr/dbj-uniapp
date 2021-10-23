@@ -14,10 +14,10 @@
             <check-box v-else :checked="item.checked" @change="(val) => {checkItem(val, item)}"></check-box>
             <view class="flex-1">
               <view class="flex-r-l">
-                <image class="img" :src="item.imageUrl"></image>
+                <image class="img" :src="item.imageUrl" @click="goDetail(item.id)"></image>
                 <view class="tag-name-guige-price-edit">
                   <view class="spu-name-gui-ge-count">
-                    <view class="spu-name">
+                    <view class="spu-name" @click="goDetail(item.id)">
                       <view class="tag">{{item.productType | filterProductType}}</view>
                       <view class="name">{{item.spuName}}</view>
                     </view>
