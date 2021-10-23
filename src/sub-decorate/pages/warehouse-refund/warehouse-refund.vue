@@ -54,7 +54,10 @@
 		<view style="height: 300rpx;">
 
 		</view>
-		<bottom-btn btnContent="提交申请" :class="{'opacity-1':canSubmit,'opacity-5':!canSubmit}" @submit="submitRefund">
+		<view class="bottom-holder">
+			
+		</view>
+		<bottom-btn btnContent="提交申请" :disable="!canSubmit"  @submit="submitRefund">
 		</bottom-btn>
 	</view>
 </template>
@@ -245,6 +248,14 @@
 </script>
 
 <style lang="scss" scoped>
+	.bottom-holder{
+		width: 100%;
+		position: fixed;
+		bottom: 0;
+		height: 136rpx; 
+		background-color: #FFF;
+		opacity: 1;
+	}
 	.opacity-5 {
 		opacity: 0.5;
 	}

@@ -158,8 +158,10 @@
 				</view>
 			</view>
 			<view class="popup-content">
-				<view v-for="(item,index) in tipsList" style="margin-top: 24rpx;">
-					<text space="emsp">{{item}}</text>
+				<view v-for="(item,index) in tipsList" :class="{'fontbold':index==1||index==3}"
+					style="margin-top: 24rpx;">
+					<text style="margin-left: 32rpx;"></text>
+					<text space="emsp" decode="true"> &nbsp&nbsp{{item}}</text>
 				</view>
 
 				<view class="holder">
@@ -218,12 +220,13 @@
 			openPopup(isBan) {
 				this.isBan = isBan
 				if (isBan) {
-					this.tipsList = ['由于装修场景的特殊性，在打扮家app购买商品时支付搬运费分为两种情况零售场景：',
-						'在商品结算时支付店铺规定的搬运费', '装修要货场景：', '搬运费为业主预约发货（管家要货）时产生；', '每次要货搬运费计算规则如下',
+					this.tipsList = ['由于装修场景的特殊性，在打扮家app购买商品时支付搬运费分为两种情况',
+						'零售场景：', '在商品结算时支付店铺规定的搬运费', '装修要货场景：', '搬运费为业主预约发货（管家要货）时产生；', '每次要货搬运费计算规则如下',
 						'楼梯房搬运费=商品要货数量*每层搬运费*（楼层数-1）+入户费*商品要货数量；', '电梯房搬运费=入户费*商品要货数量'
 					]
 				} else {
-					this.tipsList = ['由于装修场景的特殊性，在打扮家app购买商品时支付运费分为两种情况零售场景：',
+					this.tipsList = ['由于装修场景的特殊性，在打扮家app购买商品时支付运费分为两种情况',
+						'零售场景：',
 						'在商品结算时支付店铺规定的运费（达到店铺满减规则减免当次运费）',
 						'装修要货场景：',
 						'运费为业主预约发货（管家、工人、业主要货）时产生的费用，购买下单后仅计算用户可获得的免费次数，不产生实际运费；',
@@ -372,11 +375,16 @@
 </script>
 
 <style lang="scss" scoped>
+	.fontbold {
+		font-weight: bold;
+	}
+
 	.popup-content {
 		background-color: #FFF;
 		max-height: 700rpx;
 		font-size: 28rpx;
 		padding: 32rpx;
+		overflow: auto;
 
 		color: #333333;
 
@@ -398,7 +406,8 @@
 		color: #333333;
 		font-weight: 500;
 		font-size: 32rpx;
-		border-bottom: 1rpx solid #f2f2f2;;
+		border-bottom: 1rpx solid #f2f2f2;
+		;
 
 		.close-popup {
 			position: absolute;
