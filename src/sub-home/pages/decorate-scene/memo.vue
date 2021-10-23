@@ -65,6 +65,11 @@
 				menuButtonInfo.height +
 				"px";
 		},
+		onShow() {
+			uni.$on('new-memo',() => {
+				this.requestPage()
+			})
+		},
 		mounted() {
 			this.requestPage()
 		},

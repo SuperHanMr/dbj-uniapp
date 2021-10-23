@@ -72,7 +72,7 @@
 
 <style lang="scss">
 .amount-house{
-  padding: 40rpx 32rpx;
+  padding: 40rpx 32rpx 148rpx;
   .image-title{
     display: flex;
     justify-content: space-between;
