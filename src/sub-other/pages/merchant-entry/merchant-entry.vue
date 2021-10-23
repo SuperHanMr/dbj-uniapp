@@ -70,10 +70,11 @@
 					</view>
 				</view>
 			</view>
+			<view class="bottom-fiexd">
+			
+			</view>
 		</view>
-		<view class="bottom-fiexd">
-
-		</view>
+		
 		<view class="bottom">
 			<button type="default" class="get-phone" open-type="getPhoneNumber" @getphonenumber="decryptPhoneNumber"
 				v-if="showBottomButtom()"></button>
@@ -490,7 +491,6 @@
 		left: 0rpx;
 		top: 324rpx;
 		width: 100%;
-		margin-bottom: 300rpx;
 
 		.info {
 			margin: 0 24rpx 24rpx;
@@ -617,7 +617,7 @@
 
 	.bottom-fiexd {
 		width: 100%;
-		height: 230rpx;
+		height: 300rpx;
 	}
 
 	.bottom {

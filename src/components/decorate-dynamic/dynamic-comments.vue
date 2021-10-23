@@ -130,13 +130,14 @@
         <view
           class="bottomInput"
           v-if="showInput"
+          :style="{bottom:heightNum}"
         >
           <input
             v-model="inputValue"
             :cursor-spacing="10"
             :placeholder="isInputFocus?`回复@${inputName}`:'说点什么吧'"
             :class="{'focusInput':isInputFocus}"
-            :style="{bottom:heightNum}"
+            
             :focus="isOpen"
             :adjust-position='false'
             @click.stop=""
@@ -188,7 +189,7 @@
         isInputFocus:false,
         isOpen:false,
         heightNum:0,
-        
+        num:0,
       }
     },
     mounted(){
@@ -213,6 +214,7 @@
           
           if(this.houseOwnerId===this.ownId){
             this.showInput = true
+            this.heightNum = e.detail.height*2+'rpx'
           }
         },
         // immediate:true
@@ -225,6 +227,7 @@
         this.inputValue = ''
         this.comments = []
         this.$emit('change',this.totalRows,this.index)
+        this.heightNum = 0
         // this.
       },
       inputFocus() {
@@ -238,7 +241,16 @@
       },
       keybordChange(e){
         console.log(e.detail.height+'>>>>>>>')
+        console.log(this.num)
+        if(this.num%2!==0){
+          this.heightNum = 0
+          this.num++
+          return
+        }
+        this.num++
+        
         this.heightNum = e.detail.height*2+'rpx'
+        
         console.log(this.heightNum+'>>>>>>>')
       },
       getComment(){
@@ -259,15 +271,18 @@
         });
       },
       deleteComment(commentId, zeusId) {
-        // if (this.ownId !== zeusId) return;
+        if (this.ownId !== zeusId) return;
         this.showDelete = true;
         this.showInput = false
         this.commentId = commentId
-        
+        this.heightNum = 0
       },
       sureDelete(){
         removeComment(this.commentId).then((data) => {
           this.commentC(this.dynamicId);
+          this.showDelete = false;
+          this.showInput = true
+          this.commentId = 0
         });
       },
       changeObj(){
@@ -277,6 +292,9 @@
         this.isReply = false;
         this.isOpen = false;
         this.isInputFocus = false
+        
+        this.heightNum = 0
+        console.log(this.heightNum)
       },
       commentItemC(name, commentId,commentIndex) {
         console.log(111)
@@ -285,7 +303,6 @@
         this.$nextTick(function(){
           this.isInputFocus = true
         })
-        
         this.showInput = true;
         this.isOpen = true
         this.inputName = name;
@@ -356,6 +373,7 @@
             this.commentC(this.dynamicId,);
           }
           this.inputValue = ''
+          this.heightNum = 0
           this.totalRows++
         });
       },
@@ -380,7 +398,7 @@
             this.page = page
             this.totalPage = totalPage
             this.comments = list
-            
+            this.heightNum = 0
           }
         });
       },
