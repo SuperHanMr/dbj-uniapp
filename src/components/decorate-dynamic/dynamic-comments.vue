@@ -196,6 +196,7 @@
     mounted(){
       
       this.ownId = getApp().globalData.userInfo.id 
+      
       // this.ownId = 6459
     },
     computed:{
@@ -212,10 +213,10 @@
       },
       houseOwnerId:{
         handler:function(){
-          
+          console.log(this.houseOwnerId,getApp().globalData.userInfo)
           if(this.houseOwnerId===this.ownId){
             this.showInput = true
-            this.heightNum = e.detail.height*2+'rpx'
+            
           }
         },
         // immediate:true
@@ -225,6 +226,7 @@
     methods:{
       close(){
         this.showComments=false;
+        this.showInput = false
         this.inputValue = ''
         this.comments = []
         this.$emit('change',this.totalRows,this.index)
