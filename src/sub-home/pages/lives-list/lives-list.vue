@@ -221,7 +221,8 @@
 	}
 
 	.selected-tab {
-		font-weight: bold;
+		font-weight: 500;
+		font-size: 29rpx;
 	}
 
 	.scroll-view {
