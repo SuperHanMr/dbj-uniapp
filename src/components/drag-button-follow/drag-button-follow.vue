@@ -175,7 +175,7 @@
         } = this.$options.safeArea
         this.moveHidden = false
         if (this.foll.isLeft && this.foll.isRight) {
-          console.log(dot.clientY)
+          console.log(dot.clientY,uni.getSystemInfoSync().windowHeight,'拖拽按钮测试')
           if(dot.clientY<88){
              dot.clientY = 88+20
           }else if(dot.clientY>uni.getSystemInfoSync().windowHeight){
