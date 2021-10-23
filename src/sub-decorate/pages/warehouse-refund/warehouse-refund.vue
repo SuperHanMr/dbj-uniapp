@@ -82,33 +82,34 @@
 				reasonName: "",
 				refundList: [],
 				refundType: 0,
-				id: '',
+				id: "",
 			};
 		},
 		computed: {
 			canSubmit() {
 				if (this.reasonName && this.num > 0) {
-					return true
+					return true;
 				} else {
-					return false
+					return false;
 				}
-
-			}
+			},
 		},
-		onShow() {
-
-		},
+		onShow() {},
 		onLoad(e) {
 			this.data = getApp().globalData.naviData;
-			if (this.data.detailAppVOS && this.data.detailAppVOS.length && !this.data.stockAppVOS) {
-				console.log('!!~~~~~')
-				this.data.stockAppVOS = this.data.detailAppVOS
+			if (
+				this.data.detailAppVOS &&
+				this.data.detailAppVOS.length &&
+				!this.data.stockAppVOS
+			) {
+				console.log("!!~~~~~");
+				this.data.stockAppVOS = this.data.detailAppVOS;
 			}
 
-			this.reasonName = this.data.reason || '';
-			this.remark = this.data.remark || '';
-			this.reasonValue = this.data.reasonId || ''
-			this.num = this.data.refundAmount || 0
+			this.reasonName = this.data.reason || "";
+			this.remark = this.data.remark || "";
+			this.reasonValue = this.data.reasonId || "";
+			this.num = this.data.refundAmount || 0;
 			let title;
 			this.type = e.type;
 			if (e.type == 0) {
@@ -123,46 +124,49 @@
 			uni.setNavigationBarTitle({
 				title: title,
 			});
-			this.id = e.id
-			let list = []
-			this.data.stockAppVOS.forEach(e => {
+			this.id = e.id;
+			let list = [];
+			this.data.stockAppVOS.forEach((e) => {
 				list.push({
-					returnNumber: e.refundNumber ? e.refundNumber : e.stockNumber ? e.stockNumber : e
-						.requireNumber,
+					returnNumber: e.refundNumber ?
+						e.refundNumber :
+						e.stockNumber ?
+						e.stockNumber :
+						e.requireNumber,
 					stockId: e.id,
 					goodsId: e.goodsId,
-					price: e.price
-				})
-			})
+					price: e.price,
+				});
+			});
 			this.refundList = list;
-			this.uploadNum()
+			this.uploadNum();
 		},
 
 		methods: {
 			uploadNum() {
 				let totalBack = 0;
-				this.refundList.forEach(e => {
-					console.log(e.returnNumber)
+				this.refundList.forEach((e) => {
+					console.log(e.returnNumber);
 					totalBack += e.price * e.returnNumber;
-				})
+				});
 				if (totalBack) {
 					this.num = totalBack.toFixed(2);
 				} else {
-					this.num = 0
+					this.num = 0;
 				}
 			},
 			onNumChange(e) {
-				this.refundList.forEach(item => {
+				this.refundList.forEach((item) => {
 					if (item.stockId == e.item.id) {
 						item.returnNumber = e.num;
 					}
-				})
+				});
 				console.log(this.refundList);
 
-				this.uploadNum()
+				this.uploadNum();
 			},
 			getRefundReasonList() {
-				console.log('????????')
+				console.log("????????");
 				refundReason({
 					codeKey: "refund_reason",
 				}).then((list) => {
@@ -175,53 +179,53 @@
 			submitRefund() {
 				if (!this.reasonName) {
 					uni.showToast({
-						title: '请选择退款原因',
-						icon: 'none'
-					})
-					return
+						title: "请选择退款原因",
+						icon: "none",
+					});
+					return;
 				}
-				if (!this.num || this.num < 0) {
+				if (!this.num || this.num <= 0) {
 					uni.showToast({
-						title: '请输入退款金额',
-						icon: 'none'
-					})
-					return
+						title: "请输入退款金额",
+						icon: "none",
+					});
+					return;
 				}
 				console.log(this.data);
-				let params = {}
-				params.id = this.id
-				params.returnMoney = this.num * 100
-				params.refundAmount = this.num * 100
-				params.remark = this.remark
+				let params = {};
+				params.id = this.id;
+				params.returnMoney = this.num * 100;
+				params.refundAmount = this.num * 100;
+				params.remark = this.remark;
 				params.reasonId = this.reasonValue;
-				params.reason = this.reasonName
-				console.log(params)
+				params.reason = this.reasonName;
+				console.log(params);
 				if (this.type == 1) {
 					params.details = this.refundList;
 					console.log(this.refundList);
-					goodsBack(params).then(e => {
+					goodsBack(params).then((e) => {
 						uni.showToast({
-							title: '提交成功',
-							icon: 'none'
-						})
+							title: "提交成功",
+							icon: "none",
+						});
 						uni.navigateBack({
-							delta: 2
-						})
-					})
+							delta: 2,
+						});
+					});
 				} else {
 					params.type = this.refundType;
 					if (params.type == 2) {
-						params.goodsId = this.data.stockAppVOS[0].goodsId
+						params.goodsId = this.data.stockAppVOS[0].goodsId;
 					}
-					goodsRefund(params).then(e => {
+					goodsRefund(params).then((e) => {
 						uni.showToast({
-							title: '提交成功',
-							icon: 'none'
-						})
+							title: "提交成功",
+							icon: "none",
+						});
 						uni.navigateBack({
-							delta: 2
-						})
-					})
+							delta: 2,
+						});
+					});
 				}
 			},
 			selectRes() {
@@ -244,11 +248,11 @@
 
 <style lang="scss" scoped>
 	.opacity-5 {
-		opacity: 0.5
+		opacity: 0.5;
 	}
 
 	.opacity-1 {
-		opacity: 1
+		opacity: 1;
 	}
 
 	.icon-size {
@@ -265,11 +269,10 @@
 	.no-reason {
 		color: #c7c7c7;
 		font-size: 28rpx;
-
 	}
 
 	.color-red {
-		color: #FF3B30;
+		color: #ff3b30;
 		margin-right: 12rpx;
 	}
 
