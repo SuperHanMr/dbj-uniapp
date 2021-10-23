@@ -13,7 +13,7 @@
             <view class="tag">户型</view>
           </view>
           <view class="area">
-            <view class="areaInner">{{projectInfo.estateArea?projectInfo.estateArea.toFixed(2):projectInfo.estateArea}}平米</view>
+            <view class="areaInner">{{projectInfo.estateArea?projectInfo.estateArea.toFixed(2):""}}平米</view>
             <view class="tag">面积</view>
           </view>
         </view>

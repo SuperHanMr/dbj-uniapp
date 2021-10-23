@@ -318,7 +318,7 @@
 		align-items: center;
 	}
 	.switch-month .current-month{
-		width: 114rpx;
+		width: 130rpx;
 		height: 40rpx;
 		font-size: 28rpx;
 		font-weight: 500;
