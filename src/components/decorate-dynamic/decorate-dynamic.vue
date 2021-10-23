@@ -23,8 +23,8 @@
     							<image v-else @click="likeC(index,false,item)" src="../../static/images/ic_liked@2x.png"></image>
     							<view class="text">{{item.likeCount}}</view>
     						</view>
-    						<view class="comment">
-    							<image @click="commentC(item,index)" src="../../static/images/ic_comments@2x.png"></image>
+    						<view class="comment" @click="commentC(item,index)">
+    							<image  src="../../static/images/ic_comments@2x.png"></image>
     							<view class="text">{{item.commentCount}}</view>
     						</view>
     					</view>

@@ -30,20 +30,15 @@
 				</view>
 
         <view class="line" />
-				<view class="auto-evaluate" v-if="serviceInfo.anonymous == 1">
+				<!-- <view class="auto-evaluate" v-if="serviceInfo.anonymous == 1">
 					系统自动评价
-				</view>
+				</view> -->
 
-        <view class="comment-content" v-else>
+        <view class="comment-content" >
         	<view class="comment">
 						{{serviceInfo.content}}
 					</view>
 					<view class="img-container" v-if="serviceInfo.imgList">
-						<!-- <view class="imgItem"  v-for="item4 in imgList" :key="item4">
-							{{item4}}
-						</view> -->
-						
-						
 						<image class="imgItem" v-for="item4 in imgList" :key="item4" :src="item4" mode="" @click="previewImg(item4)" />
 					</view>
         </view>
