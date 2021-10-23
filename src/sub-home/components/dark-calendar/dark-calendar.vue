@@ -239,15 +239,19 @@
 				this.choice = i
 				this.checkToday = false
 	      let date = `${i.year}-${i.month}-${i.date}`
-	      let selectD = new Date(date)
-				console.log(date,selectD.getMonth(),this.m)
-	      if (selectD.getMonth() != this.m) {
-	        console.log('不在可选范围内')
-	        return false
-	      }
+				let month = 0
+				if(typeof(i.month) === 'number'){
+					month = i.month-1
+				}
+				if(typeof(i.month) === 'string' && i.month.includes('0')){
+					month = parseInt(i.month.split('')[1])-1
+				}
+				this.y = i.year
+				this.m = month
+	      this.dates = this.monthDay(this.y,this.m)
 	      this.choose = date
+				console.log(date)
 	      this.$emit('filterDynamics', date,true)
-				console.log(this.isShrink,'???')
 				this.$emit('changeMargin',this.isShrink,this.dates.length)
 	    },
 	    // 上个月，下个月
