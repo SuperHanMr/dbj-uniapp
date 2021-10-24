@@ -59,7 +59,7 @@
           >
             <view
               class="mainContent"
-              @longpress="deleteComment(item.commentId,item.zeusId)"
+              @longpress="deleteComment(item.commentId,item.zeusId,item.secondComments.length+1+item.secondCount)"
               @click.stop="commentItemC(item.nickname,item.commentId,index)"
             >
               <image
@@ -79,7 +79,7 @@
             </view>
             <view
               class="reply"
-              @longpress="deleteComment(replyItem.commentId,replyItem.zeusId)"
+              @longpress="deleteComment(replyItem.commentId,replyItem.zeusId,1)"
               @click.stop="replyItemC(replyItem.nickname,item.commentId,replyItem.commentId,index)"
               v-for="replyItem in item.secondComments"
               :key="replyItem.commentId"
@@ -168,7 +168,7 @@
       houseOwnerId:0,
       dynamicId:0,
       index:0,
-      totalRows:0,
+      ParentTotalRows:0,
     },
     data(){
       return{
@@ -191,6 +191,7 @@
         heightNum:0,
         num:0,
         clickInput:false,
+        totalRows:0,
       }
     },
     mounted(){
@@ -212,6 +213,12 @@
       // }
     },
     watch:{
+      ParentTotalRows:{
+        handler:function(){
+          this.totalRows = this.ParentTotalRows
+        },
+        immediate:true
+      },
       showComments(){
         if(this.showComments=== true){
           this.getComment()
@@ -282,15 +289,18 @@
           }
         });
       },
-      deleteComment(commentId, zeusId) {
+      deleteComment(commentId, zeusId,num) {
         if (this.ownId !== this.houseOwnerId) return;
         this.showDelete = true;
         this.showInput = false
         this.commentId = commentId
-        console.log(this.commentId,commentId,'删除id')
+        console.log(num,'删除数量')
+        this.deletNum = num
+        
         this.heightNum = 0
       },
       sureDelete(){
+        
         uni.showModal({
           // title:"您确定要取消该优先推荐吗？",
           content: "删除评论后将无法撤回",
@@ -301,13 +311,13 @@
               removeComment(this.commentId).then((data) => {
                 this.commentC(this.dynamicId);
               });
-              
+              this.totalRows = this.totalRows - this.deletNum
             }
             this.isExpanded?this.isExpanded = false:'';
-              this.showDelete = false;
-              this.showInput = true
-              this.commentId = 0
-            
+            this.showDelete = false;
+            this.showInput = true
+            this.commentId = 0
+             
           },
             
         });
