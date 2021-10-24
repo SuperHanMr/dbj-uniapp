@@ -173,7 +173,7 @@
     data(){
       return{
         showComments:false,
-        showInput: false,
+        showInput: true,
         showDelete: false,
         commentId: 0,
         commentIndex: 0,
@@ -196,8 +196,14 @@
     mounted(){
       
       this.ownId = getApp().globalData.userInfo.id 
-      
-      // this.ownId = 6459
+      if(this.houseOwnerId===this.ownId){
+        this.showInput = true
+      }else{
+        this.showInput = false
+      }
+    },
+    onShow(){
+      console.log(11123)
     },
     computed:{
       // inputText(){
@@ -217,6 +223,8 @@
           if(this.houseOwnerId===this.ownId){
             this.showInput = true
             
+          }else{
+            this.showInput = false
           }
         },
         // immediate:true
@@ -226,7 +234,7 @@
     methods:{
       close(){
         this.showComments=false;
-        this.showInput = false
+        // this.showInput = false
         this.inputValue = ''
         this.comments = []
         this.$emit('change',this.totalRows,this.index)
@@ -400,6 +408,7 @@
             this.commentC(this.dynamicId,);
           }
           this.inputValue = ''
+          this.isInputFocus = false
           this.heightNum = 0
           this.totalRows++
         });
@@ -425,6 +434,7 @@
             let { page, rows, totalPage, totalRows, list,end,start } = data;
             this.page = page
             this.totalPage = totalPage
+            this.isInputFocus = false
             this.comments = list
             this.heightNum = 0
           }

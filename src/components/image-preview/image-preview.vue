@@ -16,7 +16,12 @@
   export default{
     props:{
       //必传参数，图片数组
-      list:[],
+      list:{
+        type:Array,
+        default:()=>{
+          return[]
+        }
+      },
       //图片宽度
       imgWidth:{
         type:Number,
