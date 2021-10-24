@@ -128,7 +128,6 @@
       },
       touchstart(e) {
         if (!this.drag) return
-        
         this.move = true
         this.moveHidden = true
       },
@@ -144,7 +143,7 @@
         
         
         const dot = e.changedTouches[0]
-        
+        console.log('移动时节点位置以及屏幕高度',dot.clientY,uni.getSystemInfoSync().windowHeight)
         // console.log(uni.getSystemInfoSync().windowBottom)
         if (dot.clientX < left + this.width / 2) dot.clientX = left + this.width / 2
         if (dot.clientX > right - this.width / 2) dot.clientX = right - this.width / 2
@@ -179,7 +178,11 @@
           if(dot.clientY<88){
              dot.clientY = 88+20
           }else if(dot.clientY>uni.getSystemInfoSync().windowHeight){
+            console.log(uni.getSystemInfoSync().windowHeight,'按钮超出780时屏幕高度')
              dot.clientY = uni.getSystemInfoSync().windowHeight-20
+          }else if(dot.clientY>780){
+            console.log(uni.getSystemInfoSync().windowHeight,'按钮超出780时屏幕高度')
+            dot.clientY = 500
           }
           this.offsetY = dot.clientY - this.top - this.height / 2
           if (dot.clientX <= (left + right) / 2) {
