@@ -408,6 +408,7 @@
             this.commentC(this.dynamicId,);
           }
           this.inputValue = ''
+          this.isInputFocus = false
           this.heightNum = 0
           this.totalRows++
         });
@@ -433,6 +434,7 @@
             let { page, rows, totalPage, totalRows, list,end,start } = data;
             this.page = page
             this.totalPage = totalPage
+            this.isInputFocus = false
             this.comments = list
             this.heightNum = 0
           }
