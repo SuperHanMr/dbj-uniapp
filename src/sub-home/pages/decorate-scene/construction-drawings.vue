@@ -442,7 +442,7 @@
 		
 	}
 	.category .title{
-		width: fit-content;
+		max-width: 686rpx;
 		text-overflow: ellipsis;
 		white-space: nowrap;
 		overflow: hidden;
