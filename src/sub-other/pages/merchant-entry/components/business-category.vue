@@ -14,7 +14,7 @@
 		<view class="container">
 			<scroll-view scroll-y="true">
 				<view class="first-category">
-					<view class="tab" v-for="(item, index) in categroyTreeList"
+					<view class="tab" v-for="(item, index) in categroyTreeList" :key="item.id"
 						:class="[{'active-tab' : firstActive == index},{'active-tab1' : firstActive + 1 == index},{'active-tab0' : firstActive - 1 == index}]" @click="firstTabClick(index)">
 						<view class="text">
 							{{item.label}}
@@ -28,7 +28,7 @@
 			</scroll-view>
 			<scroll-view scroll-y="true">
 				<view class="second-category">
-					<view class="tab" v-for="(item, index) in categroyTreeList[firstActive].children"
+					<view class="tab" v-for="(item, index) in categroyTreeList[firstActive].children" :key="item.id"
 						@click="secondTabClick(index)">
 						<view class="text" :class="secondActive == index ? 'active-text' : ''">
 							{{item.label}}
@@ -42,7 +42,7 @@
 			<scroll-view scroll-y="true" class="three-category-box">
 				<view class="three-category">
 					<view class="tab"
-						v-for="(item, index) in categroyTreeList[firstActive].children[secondActive].children"
+						v-for="(item, index) in categroyTreeList[firstActive].children[secondActive].children" :key="item.id"
 						@click="threeTabClick(item)">
 						<view class="no-select" v-if="!isChecked(item)">
 
