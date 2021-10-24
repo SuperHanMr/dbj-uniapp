@@ -427,9 +427,11 @@
 	.contentWrap{
 		width: 100%;
 		height: fit-content;
+		margin-top: 88rpx;
+		padding-bottom: 62rpx;
 	}
 	.contentWrap.switchServer{
-		margin-top: 320rpx;
+		margin-top: 318rpx;
 	}
   .content{
 		width: 686rpx;
@@ -440,7 +442,7 @@
 		
 	}
 	.category .title{
-		max-width: 84rpx;
+		max-width: 686rpx;
 		text-overflow: ellipsis;
 		white-space: nowrap;
 		overflow: hidden;

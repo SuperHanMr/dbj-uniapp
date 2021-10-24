@@ -169,14 +169,16 @@
 					<view class="flex1">
 					</view>
 					<view class="price">
-						<text class="price-font" style="padding-right: 5rpx; ">
+						<text class="price-font pre" >
 							¥
 						</text>
 						<text class=" price-font amount">
 							{{foramtPrice(item)}}
 						</text>
 						<text class="price-font ex">.{{formatCent(item)}}</text>
-						/{{item.product.salesUnit.unitName||''}}
+						<text style="vertical-align: 13%;">
+							/{{item.product.salesUnit.unitName||''}}
+						</text>
 					</view>
 				</view>
 			</view>
@@ -242,6 +244,14 @@
 			},
 		},
 		onLoad() {
+			let defaultHouse = {
+				name: "北京市朝阳区",
+				provinceId: 1,
+				cityId: 36,
+				areaId: 41,
+			};
+			this.areaId = 41;
+			this.currentAddress=defaultHouse
 			uni.showShareMenu();
 			uni.$on("refrishHouse", (item) => {
 				this.reloadData();
@@ -424,7 +434,7 @@
 					});
 				} else if (item.type == 1) {
 					if (item.url.endsWith("index/index")) {
-						getClassifyList(this.areaId).then((data) => {
+						getClassifyList(this.currentAddress.areaId).then((data) => {
 							if (
 								data.find((e) => {
 									return e.id == JSON.parse(item.urlParams).id;
@@ -774,10 +784,17 @@
 				}
 
 				.ex {
-					font-size: 28rpx;
+					font-size: 34rpx;
 					font-weight: 400;
 					color: #2b2f33;
 					line-height: 26rpx;
+				}
+				.pre {
+					font-size: 28rpx;
+					font-weight: 400;
+					line-height: 26rpx;
+					padding-right: 5rpx;
+					vertical-align: 13%;
 				}
 			}
 

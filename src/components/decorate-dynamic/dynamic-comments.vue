@@ -92,7 +92,7 @@
                 <view class="info">
                   <view class="userInfo">
                     <view class="userName">{{replyItem.nickname}}</view>
-                    <view class="role">{{replyItem.labelName}}</view>
+                    <view class="role" :class="{owenrRole:replyItem.labelName==='业主'}">{{replyItem.labelName}}</view>
                   </view>
                   <view class="date">{{replyItem.time}}</view>
                 </view>
@@ -173,7 +173,7 @@
     data(){
       return{
         showComments:false,
-        showInput: false,
+        showInput: true,
         showDelete: false,
         commentId: 0,
         commentIndex: 0,
@@ -196,8 +196,14 @@
     mounted(){
       
       this.ownId = getApp().globalData.userInfo.id 
-      
-      // this.ownId = 6459
+      if(this.houseOwnerId===this.ownId){
+        this.showInput = true
+      }else{
+        this.showInput = false
+      }
+    },
+    onShow(){
+      console.log(11123)
     },
     computed:{
       // inputText(){
@@ -217,6 +223,8 @@
           if(this.houseOwnerId===this.ownId){
             this.showInput = true
             
+          }else{
+            this.showInput = false
           }
         },
         // immediate:true
@@ -226,7 +234,7 @@
     methods:{
       close(){
         this.showComments=false;
-        this.showInput = false
+        // this.showInput = false
         this.inputValue = ''
         this.comments = []
         this.$emit('change',this.totalRows,this.index)
@@ -400,6 +408,7 @@
             this.commentC(this.dynamicId,);
           }
           this.inputValue = ''
+          this.isInputFocus = false
           this.heightNum = 0
           this.totalRows++
         });
@@ -425,6 +434,7 @@
             let { page, rows, totalPage, totalRows, list,end,start } = data;
             this.page = page
             this.totalPage = totalPage
+            this.isInputFocus = false
             this.comments = list
             this.heightNum = 0
           }
@@ -654,7 +664,7 @@
   	line-height: 28rpx;
   	text-align: center;
   	color: #fff;
-  	background: linear-gradient(45deg, #f2af1a, #ffd698);
+  	background: linear-gradient(45deg, #6d95ef, #84b9fc);
   	border-radius: 6rpx;
   }
   .info .date {
@@ -699,6 +709,9 @@
   }
   .replyInfo .info .role {
   	background: linear-gradient(45deg, #6d95ef, #84b9fc);
+  }
+  .owenrRole{
+    // background: linear-gradient(45deg, #f2af1a, #ffd698) !important;
   }
   .replyInfo .text {
   	width: 550rpx;
