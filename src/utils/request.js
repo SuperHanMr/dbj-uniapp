@@ -149,7 +149,8 @@ instance.interceptors.response.use(
 			if (error.config && error.config.data) {
 				config = JSON.parse(error.config.data)
 			}     
-			if (!(config.data && config.data.hideToast)) {
+      // console.log(error.response,error.config.data)
+			if ((error.response.data.code != 10001) &&!(config.data && config.data.hideToast)) {
 				uni.showToast({
 					title: error.response.data.message,
 					icon: 'none'

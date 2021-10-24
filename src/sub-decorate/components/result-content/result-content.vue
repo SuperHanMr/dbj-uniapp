@@ -1,7 +1,7 @@
 <template>
   <view class="result-content" >
-    <view class="report-time" v-if="!isReport&&checkData.time">{{checkData.time}}后将会自动确认验房结果</view>
-    <view class="report-content" v-if="isLoading">
+    <view class="report-time" v-show="!isReport&&checkData.time">{{checkData.time}}后将会自动确认验房结果</view>
+    <view class="report-content" v-show="isLoading">
       <view class="report-title">
         <view>
           <text class="title">验房报告</text>
@@ -22,7 +22,7 @@
         <!-- <image v-for="item of checkData.imageUrlList" :key='item' :src="item"></image> -->
       </view>
     </view>
-    <view class="sticky" v-if="isActive&&!isReport&&isLoading">
+    <view class="sticky" v-if="isActive&&!isReport">
       <view class="item" :class="{'item-active':!isReport&&currentItem==='top'}" @click="toItem('top')">
         重大隐患({{data[2].value}})</view>
       <view class="item" :class="{'item-active':!isReport&&currentItem==='hazardTop'}" @click="toItem('hazardTop')">
@@ -30,12 +30,12 @@
       <view class="item" :class="{'item-active':!isReport&&currentItem==='conformTop'}" @click="toItem('conformTop')">
         符合项({{data[0].value}})</view>
     </view>
-    <view class="text-content" v-if="isLoading">
+    <view class="text-content">
       <deliverCard id="major-hazard" color="#CA3737" title="重大隐患" :data='data[2]'></deliverCard>
       <deliverCard id="hazard" color="#F6A93B" title="隐患" :data='data[1]'></deliverCard>
       <deliverCard id="conform" color="#348BE2" title="符合项" :data='data[0]'></deliverCard>
     </view>
-    <text class="bottom-text" v-if="isLoading">我是有底线的~</text>
+    <text class="bottom-text" v-show="isLoading">我是有底线的~</text>
 
   </view>
 </template>
@@ -75,7 +75,7 @@
         ec: {
           lazyLoad: true
         },
-        isLoading:false,
+        isLoading:true,
         option: {
           tooltip: {
             trigger: 'item'
@@ -190,10 +190,12 @@
       serverId:{
         handler:function(){
           this.getData()
+          
         },
         immediate: true
       },
       scrollTop() {
+        
         if (this.scrollTop > this.top) {
           this.isActive = true
           this.currentItem = 'top'
@@ -207,12 +209,12 @@
     },
     methods: {
       getData() {
-        this.isLoading = false
+        // this.isLoading = false
         if(this.serverId === 0){
           return
         }
         getCheckResultDetail(this.serverId).then(res => {
-          
+          this.getTop()
           if(this.isReport&&res.serveCardState===4){
             console.log('123')
             this.$emit('isEmpty',this.index)
@@ -220,7 +222,9 @@
           }else{
             this.isLoading = true
           }
+          this.getTop()
           this.checkData = res
+          this.getTop()
           this.checkData.time = '00:00:00'
           this.data[0].arr = res.normalList
           this.data[0].value = res.normalList.length
@@ -228,13 +232,16 @@
           this.data[1].value = res.generalProblemList.length
           this.data[2].arr = res.seriousProblemList
           this.data[2].value = res.seriousProblemList.length
+          this.getTop()
+          this.isLoading = true
+          
           setTimeout(()=>{
             this.$refs.canvas.init(this.initChart)
             this.drawImage()
-            this.getTop()
+            
           },1000)
           
-          this.isLoading = true
+          
           if(!this.isReport&&this.checkData.autoSubmitTime>0){
             let id = setInterval(()=>{
               if(this.checkData.autoSubmitTime===0){
@@ -262,7 +269,9 @@
         this.$nextTick(function() {
           let query = uni.createSelectorQuery().in(this)
           query.select("#major-hazard").boundingClientRect((res) => {
+            console.log(res)
             this.top = res.top;
+            console.log(this.top)
           })
           query.select("#hazard").boundingClientRect((res) => {
             this.hazardTop = res.top;
