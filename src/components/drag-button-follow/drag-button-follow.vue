@@ -143,7 +143,7 @@
         
         
         const dot = e.changedTouches[0]
-        console.log('移动时节点位置以及屏幕高度',dot.clientY,uni.getSystemInfoSync().windowHeight)
+        console.log('位置，距离顶部位置，高度',dot.clientY,this.top,this.height)
         // console.log(uni.getSystemInfoSync().windowBottom)
         if (dot.clientX < left + this.width / 2) dot.clientX = left + this.width / 2
         if (dot.clientX > right - this.width / 2) dot.clientX = right - this.width / 2
@@ -151,7 +151,7 @@
         if (dot.clientY > bottom - this.height / 2) dot.clientY = bottom - this.height / 2
         this.offsetX = dot.clientX - this.left - this.width / 2
         this.offsetY = dot.clientY - this.top - this.height / 2
-
+        
         // #ifdef MP-WEIXIN
         this.$emit("update:style", `
 					transform: translate(${this.offsetX}px, ${this.offsetY}px);

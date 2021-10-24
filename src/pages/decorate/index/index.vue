@@ -256,6 +256,7 @@
         uni.setStorageSync('uuDeviceId', this.deviceId);
       }
       getApp().globalData.screenHeight = uni.getSystemInfoSync().windowHeight
+      console.log(getApp().globalData.screenHeight,'>>>>>>>>当前屏幕高度')
       
     },
     methods: {
