@@ -35,7 +35,7 @@
             </view>
     			</view>
     		</view>
-        <dynamicComments ref='comments' v-if="hiddenComment" :index="activeIndex" :totalRows='activeTotalRows' @change="changeComments" :userId='personId' :houseOwnerId='houseOwnerId' :dynamicId='dynamicId'></dynamicComments>
+        <dynamicComments ref='comments' v-if="hiddenComment" :index="activeIndex" :ParentTotalRows='activeTotalRows' @change="changeComments" :userId='personId' :houseOwnerId='houseOwnerId' :dynamicId='dynamicId'></dynamicComments>
   </view>
 </template>
 
