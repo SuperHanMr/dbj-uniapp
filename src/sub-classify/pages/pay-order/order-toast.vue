@@ -24,12 +24,14 @@
                       <view class='tag'>tag type</view>
                       <!-- <view class="totalNum">共1件</view> -->
                       <view class="goods-spec">
-                         <view class="goods-money" v-if='goodsItem.price'>
-                           ￥
-                           <text class="integer-price">{{String(goodsItem["price"]).split(".")[0]}}</text>
-                           <text>.{{String(goodsItem["price"]).split(".")[1]}}</text>
-                           <text>/{{goodsItem.unit}}</text>
-                         </view>
+                        <view class="goods-money">
+                          ￥
+                          <text
+                            class="integer-price">{{String(goodsItem.price).split(".")[0]?String(goodsItem.price).split(".")[0]:0}}</text>
+                          <text>.{{String(goodsItem.price).split(".")[1]?String(goodsItem.price).split(".")[1]:0}}</text>
+                          <text>/{{goodsItem.unit?goodsItem.unit:""}}</text>
+                        </view>
+                        <view v-if="Number(goodsItem.deposit)">押金 ¥{{goodsItem.deposit}}</view>
                       </view>
                     </view>
                   </view>

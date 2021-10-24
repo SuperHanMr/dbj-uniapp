@@ -189,7 +189,8 @@
 			toApplayForRefund(data, type) {
 				this.title="您确定要取消订单吗?"
 				if (type == 1) {
-					//type 1部分退款
+					//type 1部分退款=
+					console.log("orderId=",this.orderInfo.orderId)
 					console.log("部分退款","data=",data);
 					wx.setStorageSync("particalRefundOrderInfo", JSON.stringify(data));
 					uni.navigateTo({

@@ -81,7 +81,7 @@
 				退款失败
 			</view>
 
-			<view class="button" v-if="dataList.refundBillStatus == 3 || dataList.refundBillStatus == 4" @click.stop="refundClose">
+			<view class="button" v-if="(dataList.refundBillStatus == 3 || dataList.refundBillStatus == 4) && dataList.shipmentStatus == 1" @click.stop="refundClose">
 				退款关闭
 			</view>
 		</view>
