@@ -277,6 +277,9 @@
 				checkedSkuList:[],
 			}
 		},
+		onShow() {
+			this.requestPage()
+		},
 		mounted(){
 			this.userId = uni.getStorageSync("userId")
 			this.requestPage(true)
@@ -757,7 +760,7 @@
 						uni.showToast({
 							title:"已达到商品数量添加上限",
 							icon:"none",
-							duration:2000
+							duration:3000
 						})
 						return
 					}
@@ -772,7 +775,7 @@
 						uni.showToast({
 							title:"商品数量不能再减少了",
 							icon:"none",
-							duration:2000
+							duration:3000
 						})
 					}
 				}

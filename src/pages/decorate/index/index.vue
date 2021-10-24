@@ -244,7 +244,7 @@
       };
     },
     onPullDownRefresh() {
-      this.watchMsg()
+      this.getProjectList()
     },
     mounted() {
       uni.showTabBar()
