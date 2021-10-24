@@ -100,11 +100,14 @@
               <service-item v-for="(item, index) in purchasedServiceList" :key="item.nodeType" :serviceData="item"
                 :currentProject="currentProject">
               </service-item>
-              <!-- <no-service v-if="purchasedServiceList.length == 0" words="暂无进行中服务"></no-service> -->
+              <!--  -->
+              <view v-if="aServiceData.projectStatus == 3 && purchasedServiceList.length == 0" class="jun-gong-da-ji">
+                <image mode="aspectFit"
+                  src="http://dbj.dragonn.top/%20static/mp/dabanjia/images/decorate/img_finish.webp"></image>
+              </view>
+              <no-service v-if="aServiceData.projectStatus != 3 && purchasedServiceList.length == 0" words="暂无进行中服务">
+              </no-service>
             </view>
-          </view>
-          <view v-if="aServiceData.projectStatus == 3" class="jun-gong-da-ji">
-            <image src="http://dbj.dragonn.top/%20static/mp/dabanjia/images/decorate/img_finish.webp"></image>
           </view>
           <view class="tips-design-actuary">
             <view v-if="availGuides.length > 0" class="tips">
@@ -252,6 +255,9 @@
         this.deviceId = uuidv4()
         uni.setStorageSync('uuDeviceId', this.deviceId);
       }
+      getApp().globalData.screenHeight = uni.getSystemInfoSync().windowHeight
+      console.log(getApp().globalData.screenHeight,'>>>>>>>>当前屏幕高度')
+      
     },
     methods: {
       guid() {
@@ -338,15 +344,8 @@
           this.defaultServices && this.addServiceCard(this.defaultServices, "serviceType")
           this.availableServiceList && this.addServiceCard(this.availableServiceList, "nodeType")
           this.haveWarehouse = this.currentProject.existWarehouse || false
-          //this.haveWarehouse = this.purchasedServiceList.filter(t => t.nodeType >= 5).length > 0
-          // for (let i = 0; i < this.purchasedServiceList.length; i++) {
-          //   if ([5, 6, 7, 8, 9, 10].includes(this.purchasedServiceList[i].nodeType) && (this.purchasedServiceList[i]
-          //       .status >= 2 || (this.purchasedServiceList[i].status == 0 && this.purchasedServiceList[i]
-          //         .grepOrderStatus === 3))) {
-          //     this.isConstruction = true
-          //     break
-          //   }
-          // }
+
+          uni.stopPullDownRefresh()
 
         }).catch(err => {
           console.log(err)
@@ -391,7 +390,9 @@
         for (let i = 0; i < this.projectList.length; i++) {
           if (this.projectList[i].uid === this.currentProject.uid) {
             index = i
-            firstItem = {...this.projectList[i]}
+            firstItem = {
+              ...this.projectList[i]
+            }
             break
           }
         }
@@ -402,7 +403,7 @@
           arr.unshift(firstItem)
           this.projectList = [...arr]
         }
-        
+
         this.$refs.sw.close()
       },
       getProjectList() {
@@ -500,17 +501,17 @@
           let url = null
           if (this.currentProject && this.currentProject.projectId) {
             url =
-              `/sub-decorate/pages/no-house-decorate/no-house-decorate?type=${type}&estateId=${this.currentEstate.id}&projectId=${this.currentProject.projectId}&isDecorate=1`
+              `/sub-decorate/pages/no-house-decorate/no-house-decorate?type=${type}&estateId=${this.currentProject.estateId}&projectId=${this.currentProject.projectId}&isDecorate=1&from=decorateIndex`
           } else {
             url =
-              `/sub-decorate/pages/no-house-decorate/no-house-decorate?type=${type}&estateId=${this.currentEstate.id}&isDecorate=1`
+              `/sub-decorate/pages/no-house-decorate/no-house-decorate?type=${type}&estateId=${this.currentProject.estateId}&isDecorate=1&from=decorateIndex`
           }
           uni.navigateTo({
             url
           })
         } else {
           uni.navigateTo({
-            url: `/sub-decorate/pages/no-house-decorate/no-house-decorate?type=${type}&isDecorate=1`
+            url: `/sub-decorate/pages/no-house-decorate/no-house-decorate?type=${type}&isDecorate=1&from=decorateIndex`
           })
         }
 
@@ -565,7 +566,7 @@
         if (this.currentProject && this.currentProject.projectId) {
           getMsgNum(this.currentProject.projectId).then(res => {
             this.msgNum = res.count
-
+            uni.stopPullDownRefresh()
             // uni.setTabBarBadge({
             //   index: 2,
             //   text: this.msgNum+'',

@@ -24,13 +24,13 @@
 				</view>
 				<view class="form-item">
 					<label class="item-label">所在地区</label>
-					<input class="uni-input" placeholder-class="placeholder" :disabled="roomId&&isEdit" @click="chooseMap" disabled name="input"
+					<input class="uni-input" placeholder-class="placeholder" :class="{disabled:roomId&&isEdit}" :disabled="roomId&&isEdit" @click="chooseMap" disabled name="input"
 						v-model="addData.locationName" placeholder="请选择您房屋所在地区" />
 					<image src="../../../static/images/ic_more_black.svg" class="shopIcon"></image>
 				</view>
 				<view class="form-item">
 					<label class="item-label">小区</label>
-					<input class="uni-input" placeholder-class="placeholder" :disabled="!hasPoint||(roomId&&isEdit)" name="input"
+					<input class="uni-input" placeholder-class="placeholder" :class="{disabled:!hasPoint||(roomId&&isEdit)}" :disabled="!hasPoint||(roomId&&isEdit)" name="input"
 						v-model="addData.housingEstate" placeholder="房屋所在小区" @focus='getFocus("housingEstate")' @blur='changeFocus("housingEstate")'/>
             <view class="icon-clear" v-if="addData.housingEstate&&!isEdit&&focus.housingEstate" @touchstart="clear('housingEstate')">
               <uni-icons color="#c0c4cc" size="15" type="clear" />
@@ -41,7 +41,7 @@
 				<view class="form-item">
 					<label class="item-label">楼栋房号</label>
 					<input class="uni-input" placeholder-class="placeholder" name="input" :disabled="roomId&&isEdit" v-model="addData.address" @focus='getFocus("address")' @blur='changeFocus("address")'
-						placeholder="例:16号楼5层301" />
+            :class="{disabled:roomId&&isEdit}" placeholder="例:16号楼5层301" />
             <view class="icon-clear" v-if="addData.address&&!isEdit&&focus.address" @touchstart="clear('address')">
               <uni-icons color="#c0c4cc" size="15" type="clear" />
             </view>
@@ -54,7 +54,7 @@
 				<view class="form-item">
 					<label class="item-label">户型</label>
           
-            <input type="text" placeholder-class="placeholder" class="uni-input" disabled v-model="houseType"
+            <input type="text" :class="{disabled:roomId&&isEdit}" placeholder-class="placeholder" class="uni-input" disabled v-model="houseType"
             	placeholder="请选择房屋户型"  @click="openList"/>
             <image src="../../../static/images/ic_more_black.svg" class="shopIcon"></image>
           
@@ -63,12 +63,12 @@
 				<view class="form-item">
 					<label class="item-label">房屋面积</label>
 					<!-- <text class="placeholder" v-if="!addData.insideArea">请输入房屋面积</text> -->
-					<view v-if="addData.insideArea" class="uni-input area-text"><text
+					<view v-if="addData.insideArea" :class="{disabled:roomId&&isEdit}" class="uni-input area-text"><text
 							style="visibility: hidden">{{addData.insideArea}}</text>m²</view>
               <view class="icon-clear" v-if="addData.insideArea&&!isEdit&&focus.insideArea" @touchstart="clear('insideArea')">
                 <uni-icons color="#c0c4cc" size="15" type="clear" />
               </view>
-					<input v-if="!visible" :maxlength="7" class="uni-input house-area" :disabled="roomId&&isEdit" placeholder-class="placeholder" @focus='getFocus("insideArea")' @blur='changeFocus("insideArea")'
+					<input v-if="!visible" :maxlength="7" :class="{disabled:roomId&&isEdit}" class="uni-input house-area" :disabled="roomId&&isEdit" placeholder-class="placeholder" @focus='getFocus("insideArea")' @blur='changeFocus("insideArea")'
 						placeholder="请输入房屋面积" type="digit" name="input" v-model="addData.insideArea" />
             
 				</view>
@@ -76,7 +76,7 @@
 					<label class="item-label">有无电梯</label>
 					<choose-btn :btnList='elevatorList' :currentBtn='addData.hasLift' :disabled="roomId&&isEdit" @chooseBtn="chooseEle">
 					</choose-btn>
-					<input v-if="!addData.hasLift" :disabled="roomId&&isEdit" placeholder-class="placeholder" class="ele-input" name="input"
+					<input v-if="!addData.hasLift" :class="{disabled:roomId&&isEdit}" :disabled="roomId&&isEdit" placeholder-class="placeholder" class="ele-input" name="input"
 						v-model="addData.floors" placeholder="请输入房屋所在楼层" />
             <view class="icon-clear-spec"  v-if="!addData.hasLift&&addData.floors" @touchstart="clear('floors')">
               <uni-icons color="#c0c4cc" size="15" type="clear" />
@@ -519,7 +519,12 @@
 				// display: none;
 			}
 		}
-
+    .disabled{
+      color: #999999 !important;
+      // button{
+      //   color: #999999 !important;
+      // }
+    }
 		view .ele {
 			height: auto;
 

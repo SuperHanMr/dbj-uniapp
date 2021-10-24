@@ -8,7 +8,11 @@
 					</view>
 					<view v-else>
 						<view v-for="item2 in item.details" :key="item2.id">
-							<order-item  :dataList="item2"></order-item>
+							<order-item  
+								:dataList="item2"
+								:orderStatus="type?'2':'0'"
+							>
+							</order-item>
 						</view>
 					</view>
         </view>
@@ -146,13 +150,13 @@
 				<view class="body">
 					<textarea
 						v-model="query.remarks"
-						placeholder="可以填写与客服沟通过的备注信息"
+						placeholder="补充描述信息,有助于商家更好的处理售后问题"
 						placeholder-style="color:#AAAAAA;font-size:28rpx;padding-top:12rpx;"
-						maxlength="200"
+						maxlength="500"
 						class="remark"
 						@input="onTextAreaInput"
 					/>
-					<text class="fontNum" style="color: #999999;font-size: 26rpx;">{{textAreaLength}}/200</text>
+					<text class="fontNum" style="color: #999999;font-size: 26rpx;">{{textAreaLength}}/500</text>
 				</view>
       </view>
       <view class="proposal">建议与商家沟通后再发起退款</view>
@@ -586,7 +590,7 @@ export default {
 				height: 388rpx;
 				box-sizing: border-box;
 				border-radius: 16rpx;
-				padding: 24rpx;
+				padding: 24rpx 24rpx 56rpx;
 				border: 0.5px solid #EEEEEE;
 			}
 			.fontNum{

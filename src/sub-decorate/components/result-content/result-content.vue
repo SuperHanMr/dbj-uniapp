@@ -30,7 +30,7 @@
       <view class="item" :class="{'item-active':!isReport&&currentItem==='conformTop'}" @click="toItem('conformTop')">
         符合项({{data[0].value}})</view>
     </view>
-    <view class="text-content">
+    <view class="text-content" v-show="isLoading">
       <deliverCard id="major-hazard" color="#CA3737" title="重大隐患" :data='data[2]'></deliverCard>
       <deliverCard id="hazard" color="#F6A93B" title="隐患" :data='data[1]'></deliverCard>
       <deliverCard id="conform" color="#348BE2" title="符合项" :data='data[0]'></deliverCard>
@@ -75,7 +75,7 @@
         ec: {
           lazyLoad: true
         },
-        isLoading:true,
+        isLoading:false,
         option: {
           tooltip: {
             trigger: 'item'
@@ -214,7 +214,7 @@
           return
         }
         getCheckResultDetail(this.serverId).then(res => {
-          this.getTop()
+          
           if(this.isReport&&res.serveCardState===4){
             console.log('123')
             this.$emit('isEmpty',this.index)
@@ -222,9 +222,9 @@
           }else{
             this.isLoading = true
           }
-          this.getTop()
+          
           this.checkData = res
-          this.getTop()
+          
           this.checkData.time = '00:00:00'
           this.data[0].arr = res.normalList
           this.data[0].value = res.normalList.length
@@ -232,14 +232,15 @@
           this.data[1].value = res.generalProblemList.length
           this.data[2].arr = res.seriousProblemList
           this.data[2].value = res.seriousProblemList.length
-          this.getTop()
-          this.isLoading = true
           
+          this.isLoading = true
+          this.getMsgHeight()
           setTimeout(()=>{
             this.$refs.canvas.init(this.initChart)
             this.drawImage()
-            
+            this.getTop()
           },1000)
+          
           
           
           if(!this.isReport&&this.checkData.autoSubmitTime>0){
@@ -265,9 +266,23 @@
         time = (hours<10?('0'+hours):hours)+':'+(minutes<10?('0'+minutes):minutes) +':'+ (seconds<10?('0'+seconds):seconds)
         return time
       },
-      getTop() {
+      getMsgHeight(){
+        let query = uni.createSelectorQuery().in(this)
         this.$nextTick(function() {
-          let query = uni.createSelectorQuery().in(this)
+        query.select(".report-text").boundingClientRect((res) => {
+          console.log(res)
+          this.isHidden = res.height/20 > 6;
+          this.showBtn = res.height/20 > 6;
+          // console.log(res.height,this.isHidden)
+          
+        }).exec()
+        })
+      },
+      getTop() {
+        let query = uni.createSelectorQuery().in(this)
+        
+        this.$nextTick(function() {
+          
           query.select("#major-hazard").boundingClientRect((res) => {
             console.log(res)
             this.top = res.top;
@@ -279,13 +294,7 @@
           query.select("#conform").boundingClientRect((res) => {
             this.conformTop = res.top;
           })
-          query.select(".report-text").boundingClientRect((res) => {
-            
-            this.isHidden = res.height/20 > 6;
-            this.showBtn = res.height/20 > 6;
-            // console.log(res.height,this.isHidden)
-            
-          })
+          
           
           query.exec(function(res) {
             res[0].top // #the-id节点的上边界坐标
@@ -317,6 +326,7 @@
       clickHidden(){
         this.isHidden = !this.isHidden
         this.hddenText = this.isHidden?'查看全部':'收起隐藏'
+        this.getTop()
       },
       drawImage() {
         this.option.series[0].data = this.data

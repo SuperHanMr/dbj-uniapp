@@ -6,7 +6,10 @@
 
 <template>
 	<view class="my-house" v-if="isLoading">
-		<view class="box" :style="{marginBottom:systemHeight}" v-if="listData.length>0">
+		<view class="box"  v-if="listData.length>0">
+    <view class="main">
+      
+    
 			<view class="touch-item"  v-for="(item,index) in listData"
 				:class="item.isTouchMove == true?'touch-move-active':''" :key='item.id' @touchstart="touchstart"
 				@touchmove="touchmove" :data-index='index'>
@@ -40,6 +43,7 @@
 					</view>
 				</view>
 			</view>
+      </view>
 			<view class="bottom" :style="{paddingBottom:systemBottom,height:systemHeight}">
 				<view class="add-btn" @click="toAddHouse">
 					新建房屋地址
@@ -285,11 +289,19 @@
 
 	.box {
 		width: 100%;
-		background-color: #242424;
+		background-color: #fff;
 		overflow: hidden;
-		margin-bottom: 200rpx;
+		padding-bottom:148rpx
+    
 	}
-
+  .main{
+    background-color: #00050A;
+  }
+  .bottom-block{
+    background-color: #fff;
+    height: 148rpx;
+    width: 100%;
+  }
 	.list-count {
 		width: 100%;
 		// height: 206rpx;

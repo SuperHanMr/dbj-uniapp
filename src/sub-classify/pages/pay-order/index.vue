@@ -46,7 +46,7 @@
             <view class="shop-reduce no-send-tip good-tip" v-if="goodsItem.errorType">
               <view class="item-reduce-box" v-if="goodsItem.errorType">
                 <text v-if="goodsItem.errorType === 1">不在服务范围</text>
-                <text v-if="goodsItem.errorType === 2">不在配送范围</text>
+                <text v-if="goodsItem.errorType === 2">当前地址无法配送该商品，请更换地址</text>
                 <text v-if="goodsItem.errorType === 3">该房屋下已购买该服务，不可重复购买</text>
                 <text v-if="goodsItem.errorType === 4 && cancelDialog">该服务需精算师指导下完成</text>
                 <text v-if="goodsItem.errorType === 5 && cancelDialog">该服务需管家指导下完成</text>
@@ -156,7 +156,7 @@
       <expenses-toast ref='expensesToast' :expensesType="expensesType"></expenses-toast>
       <date-picker ref='datePicker' @getTime="getTime"></date-picker>
       <order-toast ref='orderToast' :houseId="houseId" :hasCanBuy="hasCanBuy" :noStoreInfos="noStoreInfos"
-        @toastConfirm="toastConfirm"></order-toast>
+        @toastConfirm="toastConfirm" @backCart="backCart"></order-toast>
       <uni-popup ref="cancelDialog" :mask-click="false">
         <view class="popup-item">
           <view class="popup-title">{{toastText}}</view>
@@ -285,6 +285,9 @@
     methods: {
       backFrom() {
         uni.navigateBack()
+      },
+      backCart() {
+        uni.removeStorageSync('houseListChooseId')
       },
       chooseHouse() {
         uni.navigateTo({
@@ -530,8 +533,7 @@
 <style scoped>
   .order-container {
     width: 100%;
-    height: 100%;
-    overflow: auto;
+    overflow: scroll;
     background: #f5f6f7;
     color: #333333;
     padding-bottom: 300rpx;

@@ -90,7 +90,7 @@
         left: 0,
         top: 0,
         right: systemInfo.windowWidth,
-        bottom: systemInfo.screenHeight
+        bottom: getApp().globalData.screenHeight
       }
       const query = this.$parent.createSelectorQuery()
       query.select(`.${this.className}`).boundingClientRect(data => {
@@ -128,7 +128,6 @@
       },
       touchstart(e) {
         if (!this.drag) return
-        
         this.move = true
         this.moveHidden = true
       },
@@ -144,7 +143,7 @@
         
         
         const dot = e.changedTouches[0]
-        
+        console.log('位置，距离顶部位置，高度',dot.clientY,this.top,this.height)
         // console.log(uni.getSystemInfoSync().windowBottom)
         if (dot.clientX < left + this.width / 2) dot.clientX = left + this.width / 2
         if (dot.clientX > right - this.width / 2) dot.clientX = right - this.width / 2
@@ -152,7 +151,7 @@
         if (dot.clientY > bottom - this.height / 2) dot.clientY = bottom - this.height / 2
         this.offsetX = dot.clientX - this.left - this.width / 2
         this.offsetY = dot.clientY - this.top - this.height / 2
-
+        
         // #ifdef MP-WEIXIN
         this.$emit("update:style", `
 					transform: translate(${this.offsetX}px, ${this.offsetY}px);
@@ -175,16 +174,25 @@
         } = this.$options.safeArea
         this.moveHidden = false
         if (this.foll.isLeft && this.foll.isRight) {
-          console.log(dot.clientY,uni.getSystemInfoSync().windowHeight,'拖拽按钮测试')
+          console.log(uni.getSystemInfoSync().windowHeight,uni.getSystemInfoSync().windowWidth,dot,'拖拽按钮测试')
           if(dot.clientY<88){
              dot.clientY = 88+20
-          }else if(dot.clientY>uni.getSystemInfoSync().windowHeight){
-             dot.clientY = uni.getSystemInfoSync().windowHeight-20
+          }else if(dot.clientY>getApp().globalData.screenHeight){
+            
+             dot.clientY = getApp().globalData.screenHeight-20
+          }else if(dot.clientY>780){
+            dot.clientY = 500
+          }
+          if(dot.clientX<0){
+             dot.clientY = 0
+          }else if(dot.clientX>375){
+            dot.clientX = 375
           }
           this.offsetY = dot.clientY - this.top - this.height / 2
           if (dot.clientX <= (left + right) / 2) {
             this.endLeft = true
             this.endRight = false
+            
             this.offsetX = this.foll.num - this.left
           }
           if (dot.clientX > (left + right) / 2){

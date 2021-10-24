@@ -1,17 +1,5 @@
 <template>
 	<view class="fill">
-		<!-- <custom-navbar opacity="1" :title="title" titleColor="#333" bgcolor="#ffffff">
-			<template v-slot:back>
-				<view @click="toBack">
-					<i class="icon-ic_cancel_white" style="color:#333">
-					</i>
-				</view>
-			</template>
-		</custom-navbar>
-
-		<view :style="{height:navBarHeight}"></view> -->
-
-
 		<view class="top-tab">
 			<view
 				v-for="(item,index) in tabList"
@@ -405,6 +393,7 @@
 
 			//去店铺首页
 			gotoShop(item) {
+				if(item.orderName && item.orderStatus == 0 ) return 
 				console.log("this.storeId=", item.storeId, "this.areaId=", this.areaId);
 				uni.navigateTo({
 					url: `../../../sub-classify/pages/shops/shops?storeId=${item.storeId}&areaId=${this.areaId}`,

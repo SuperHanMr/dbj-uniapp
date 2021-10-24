@@ -333,19 +333,14 @@
   }
 
   .jun-gong-da-ji {
-    // margin: 16rpx 24rpx;
-    text-align: center;
-    // height: 128rpx;
-    font-size: 32rpx;
-    font-family: PingFangSC, PingFangSC-Medium;
-    font-weight: 700;
-    color: #333333;
-    line-height: 128rpx;
-    letter-spacing: 10rpx;
-    background: #ffffff;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: row;
+    height: 360rpx;
+    background-color: #FBFBFB;
     border-radius: 24rpx;
     image {
-      width: 375rpx;
-      margin: 100rpx;
+      width: 240rpx;
     }
   }
