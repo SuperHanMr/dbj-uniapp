@@ -185,20 +185,23 @@
 			background: #f5f6f6;
 			border-radius: 6rpx;
 		}
-
-		.status.status1 {
+    .status.status0 {
+      color: #333333;
+      background: #d0efe9;
+    }
+		.status.status1, .status.status3 {
 			color: #fff;
-			background: #35C4C4;
+			background: #00c2b8;
 		}
 
-		.status.status3 {
-			color: #fff;
-			background: #999999;
-		}
+		// .status.status3 {
+		// 	color: #fff;
+		// 	background: #999999;
+		// }
 
 		.status.status4 {
-			color: #333333;
-			background: #f5f6f6;
+			color: #ffffff;
+			background: #999999;
 		}
 	}
 
