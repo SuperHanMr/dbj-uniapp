@@ -388,6 +388,13 @@
       },
       setReply(isReply) {
         // this.showInput = false;
+        if(this.inputValue.length===0){
+          uni.showToast({
+            title:'发送消息不能为空',
+            icon:'none'
+          })
+          return
+        }
         let params = {
           businessId: this.dynamicId, //	动态ID
           businessType: 2,

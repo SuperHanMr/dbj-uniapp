@@ -530,8 +530,7 @@
 <style scoped>
   .order-container {
     width: 100%;
-    height: 100%;
-    overflow: auto;
+    overflow: scroll;
     background: #f5f6f7;
     color: #333333;
     padding-bottom: 300rpx;
