@@ -92,7 +92,7 @@
                 <view class="info">
                   <view class="userInfo">
                     <view class="userName">{{replyItem.nickname}}</view>
-                    <view class="role">{{replyItem.labelName}}</view>
+                    <view class="role" :class="{owenrRole:replyItem.labelName==='业主'}">{{replyItem.labelName}}</view>
                   </view>
                   <view class="date">{{replyItem.time}}</view>
                 </view>
@@ -388,6 +388,13 @@
       },
       setReply(isReply) {
         // this.showInput = false;
+        if(this.inputValue.length===0){
+          uni.showToast({
+            title:'发送消息不能为空',
+            icon:'none'
+          })
+          return
+        }
         let params = {
           businessId: this.dynamicId, //	动态ID
           businessType: 2,
@@ -664,7 +671,7 @@
   	line-height: 28rpx;
   	text-align: center;
   	color: #fff;
-  	background: linear-gradient(45deg, #f2af1a, #ffd698);
+  	background: linear-gradient(45deg, #6d95ef, #84b9fc);
   	border-radius: 6rpx;
   }
   .info .date {
@@ -709,6 +716,9 @@
   }
   .replyInfo .info .role {
   	background: linear-gradient(45deg, #6d95ef, #84b9fc);
+  }
+  .owenrRole{
+    // background: linear-gradient(45deg, #f2af1a, #ffd698) !important;
   }
   .replyInfo .text {
   	width: 550rpx;
