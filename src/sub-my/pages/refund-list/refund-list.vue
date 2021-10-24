@@ -3,7 +3,7 @@
 		<view v-if="dataList.length>0">
 			<view class="order-container" v-for="(item,index) in dataList" :key="index" >
 				<view class="header">
-					<view class="store-name">
+					<view class="store-name" @click="gotoShop(item)">
 						<text style="color: #333333;">{{item.storeName}}</text>
 						<image src="../../static/ic_more.svg" mode="" />
 					</view>
@@ -117,7 +117,12 @@
 				itemId:"",
 				systemBottom:"",
 				title:"确定要取消本次退款申请？",
+				areaId:'',
 			}
+		},
+		onLoad() {
+			const currentHouse = getApp().globalData.currentHouse;
+			this.areaId = currentHouse.areaId;
 		},
 		onShow() {
 			this.query.lastId =-1
@@ -163,12 +168,20 @@
 			},
 			
 			handlePrice(price){
+				if(!price) return ['0','00']
 				let list=String(price).split(".")
 				if(list.length==1){
 					return [list[0],"00"]
 				}else{
 					return[list[0],list[1]]
 				}
+			},
+			//去店铺
+			gotoShop(item){
+				console.log("去店铺",item.storeId,"this.areaId=",this.areaId)
+				uni.navigateTo({
+					url:`../../../sub-classify/pages/shops/shops?storeId=${item.storeId}&areaId=${this.areaId}`
+				})
 			},
 		
 		
