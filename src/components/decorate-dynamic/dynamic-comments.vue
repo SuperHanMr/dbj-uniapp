@@ -664,7 +664,7 @@
   	line-height: 28rpx;
   	text-align: center;
   	color: #fff;
-  	background: linear-gradient(45deg, #f2af1a, #ffd698);
+  	background: linear-gradient(45deg, #6d95ef, #84b9fc);
   	border-radius: 6rpx;
   }
   .info .date {
@@ -711,7 +711,7 @@
   	background: linear-gradient(45deg, #6d95ef, #84b9fc);
   }
   .owenrRole{
-    background: linear-gradient(45deg, #f2af1a, #ffd698) !important;
+    // background: linear-gradient(45deg, #f2af1a, #ffd698) !important;
   }
   .replyInfo .text {
   	width: 550rpx;
