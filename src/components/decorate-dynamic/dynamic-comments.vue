@@ -424,6 +424,7 @@
           }else{
             this.commentC(this.dynamicId,);
           }
+          this.commentId = 0
           this.inputValue = ''
           this.isInputFocus = false
           this.heightNum = 0
