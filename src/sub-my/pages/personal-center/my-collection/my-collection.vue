@@ -127,6 +127,7 @@
 				currentIndex: 0,
 
 				productList: [], //商品列表
+				productListLength:'',
 				caseList: [], //案例列表
 				checkedItemIds:[],//选中的要取消收藏的item的id
 				listLength:"",//返回数据的个数
@@ -224,6 +225,8 @@
 				getGoodsList(params).then(data=>{
 					this.productList = this.productList.concat(data);
 					this.productList = this.handleList(this.productList,false,"product")
+					this.productListLength= this.productList.length
+					console.log("this.productList=",this.productList,"this.productList.length=",this.productList.length)
 					this.loading = false;
 					this.firstEntry = false;
 				})
@@ -366,7 +369,7 @@
 					list:this.checkedItemIds,
 					equipmentId:this.equipmentId,
 				}
-				if(this.currentIndex ==0){
+				if(this.currentIndex == 0){
 					params.routeId = 5002
 				}else{
 					params.routeId = 5001
@@ -401,7 +404,9 @@
 				// }
 				// this.page++;
 				if(this.currentIndex==0){
-					if(this.loading || this.page[0] >=this.totalPage[0]) return
+					if(this.loading || this.productListLength !== 10) return  
+					// if(this.loading || this.page[0] >=this.totalPage[0]) return
+					this.page[0]++
 					this.getProductList()
 				}else{
 					if(this.loading || this.page[1] >=this.totalPage[1])return
@@ -412,6 +417,15 @@
 			onRefresh(e) {
 				this.triggered = true;
 				setTimeout(() => {
+					if(this.currentIndex == 0){
+						this.page[0]=1
+						this.productList=[]
+						this.getProductList()
+					}else{
+						this.page[1]=1
+						this.caseList =[]
+						this.getCaseList()
+					}
 					this.triggered = false;
 				}, 1000);
 			},
