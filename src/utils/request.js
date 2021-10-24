@@ -49,7 +49,7 @@ function retryAllFailRequest() {
 // 创建axios实例
 const instance = axios.create({
 	baseURL: process.env.VUE_APP_BASE_API,
-	timeout: 1000 * 5,
+	timeout: 1000 * 10,
 });
 
 // 设置post请求头
