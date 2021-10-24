@@ -8,7 +8,7 @@
             <text class="default" v-if="addressInfo.defaultEstate">默认</text>
             <text class="txt">{{addressInfo.housingEstate}}</text>
           </view>
-          <view class="community">{{addressInfo.locationName + addressInfo.housingEstate + addressInfo.address}}</view>
+          <view class="community">{{addressInfo.area + addressInfo.housingEstate + addressInfo.address}}</view>
           <view class="userInfo">
             <text class="userName">{{addressInfo.contactName}}</text>
             <text class="userPhone">{{addressInfo.contactPhone}}</text>

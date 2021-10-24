@@ -346,6 +346,8 @@
 				});
 			},
 			currentHouseChange(item) {
+				console.log('!!!!@@@###')
+				console.log(item);
 				this.currentAddress = item;
 				this.areaId=item.areaId;
 				uni.$emit("currentHouseChange", item);
