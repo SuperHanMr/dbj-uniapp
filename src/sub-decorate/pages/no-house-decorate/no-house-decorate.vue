@@ -126,6 +126,7 @@
         containerBottom: null,
         systemBottom: null,
         systemHeight: null,
+        fromPage: ""
       }
     },
     mounted() {
@@ -203,6 +204,7 @@
       this.provinceId = provinceId //省id
       this.cityId = cityId //市id
       this.areaId = areaId
+      this.fromPage = option.from
       uni.setNavigationBarTitle({
         title: TYPE[type]
       })
@@ -472,8 +474,14 @@
             if (eastId) {
               flt = data.filter(t => t.id == eastId);
             } else {
-              // flt = this.defaultHouse
-              flt = data.filter(t => t.id == this.defaultHouse?.id);
+              let fromPage = this.fromPage ?? false
+              if(fromPage == "userHome") {
+                flt = data.filter(t => t.id == this.defaultHouse?.id);
+              }
+              if(!fromPage) {
+                // 来自消息
+                flt = data.filter(t => t.id == getApp().globalData.currentProject.estateId);
+              }
             }
             if (flt && flt.length > 0) {
               this.currentHouse = flt[0]
