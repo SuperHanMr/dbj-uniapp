@@ -35,7 +35,7 @@
         @click="showEmojiChooser = !showEmojiChooser"
       />
       <view 
-        v-if="!canSendText" 
+        v-if="!canSendText || showRecordBtn" 
         class="iconfont icon-a-icxiaoxidibutianjia" 
         @click="showFileChooser = !showFileChooser"
       />
@@ -149,6 +149,7 @@
     watch: {
       showFooter(val) {
         if (val) {
+          this.showRecordBtn = false;
           uni.$emit("scroll-to-bottom");
         }
       },
