@@ -55,10 +55,10 @@
 						请下载APP使用
 					</view>
 					<view class="text-tips text-top">
-						咨询家装问题，去手机应用市场搜索
+						手机应用市场搜索
 					</view>
 					<view class="text-tips">
-						【打扮家】APP与主播进行交流吧
+						【打扮家】APP查看工地直播
 					</view>
 					<view class="text-btn" @click="showDownload=false">
 						知道了

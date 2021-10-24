@@ -53,6 +53,13 @@
     },
     methods:{
       toBuy(item){
+        if(!item){
+          uni.showToast({
+            title:'商品不存在',
+            icon:'error'
+          })
+          return
+        }
         uni.navigateTo({
           url:'/sub-classify/pages/goods-detail/goods-detail?goodId='+item
         })

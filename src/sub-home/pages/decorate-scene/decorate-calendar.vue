@@ -145,8 +145,9 @@
 <style scoped>
 	.calendarWrap{
 		width: 100%;
-		height: 100%;
 		background: #f2f5f8;
+		display: flex;
+		flex-direction: column;
 	}
 	.fixed{
 		position: fixed;
@@ -163,6 +164,7 @@
 		height: fit-content;
 		margin-top: 742rpx;
 		background: #ffffff;
+		flex: 1;
 	}
 	.dynamic.maxMargin{
 		margin-top: 832rpx;

@@ -16,7 +16,7 @@
         </view>
         <image class="switchSite" src="../../static/images/ic_more_black.png"></image>
       </view>
-      <view class="header-operator" v-for="(item, index) in addUser" :key="index">
+      <view class="header-operator" v-for="(item, index) in addUser" :key="index" v-if="addUser.length">
         <image src="../../static/images/addUser.png" class="locationIcon"></image>
         <view class="address">
           <view class="community">{{item.addingJobName}}:{{item.addingUserName}}</view>
@@ -90,8 +90,9 @@
         }
         this.$emit("closeToast")
         uni.navigateTo({
-          url: "/sub-my/pages/my-house/my-house?isEdit=0"
-        })
+          url: "/sub-my/pages/my-house/my-house?isEdit=0&id=" +
+            Number(this.houseId),
+        });
       }
     },
     watch: {

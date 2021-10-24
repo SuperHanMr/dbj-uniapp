@@ -49,7 +49,7 @@ function retryAllFailRequest() {
 // 创建axios实例
 const instance = axios.create({
 	baseURL: process.env.VUE_APP_BASE_API,
-	timeout: 1000 * 5,
+	timeout: 1000 * 10,
 });
 
 // 设置post请求头
@@ -149,7 +149,8 @@ instance.interceptors.response.use(
 			if (error.config && error.config.data) {
 				config = JSON.parse(error.config.data)
 			}     
-			if (!(config.data && config.data.hideToast)) {
+      // console.log(error.response,error.config.data)
+			if ((error.response.data.code != 10001) &&!(config.data && config.data.hideToast)) {
 				uni.showToast({
 					title: error.response.data.message,
 					icon: 'none'

@@ -59,7 +59,7 @@
           >
             <view
               class="mainContent"
-              @longpress="deleteComment(item.commentId,item.zeusId)"
+              @longpress="deleteComment(item.commentId,item.zeusId,item.secondComments.length+1+item.secondCount)"
               @click.stop="commentItemC(item.nickname,item.commentId,index)"
             >
               <image
@@ -79,7 +79,7 @@
             </view>
             <view
               class="reply"
-              @longpress="deleteComment(replyItem.commentId,replyItem.zeusId)"
+              @longpress="deleteComment(replyItem.commentId,replyItem.zeusId,1)"
               @click.stop="replyItemC(replyItem.nickname,item.commentId,replyItem.commentId,index)"
               v-for="replyItem in item.secondComments"
               :key="replyItem.commentId"
@@ -92,7 +92,7 @@
                 <view class="info">
                   <view class="userInfo">
                     <view class="userName">{{replyItem.nickname}}</view>
-                    <view class="role">{{replyItem.labelName}}</view>
+                    <view class="role" :class="{owenrRole:replyItem.labelName==='业主'}">{{replyItem.labelName}}</view>
                   </view>
                   <view class="date">{{replyItem.time}}</view>
                 </view>
@@ -168,12 +168,12 @@
       houseOwnerId:0,
       dynamicId:0,
       index:0,
-      totalRows:0,
+      ParentTotalRows:0,
     },
     data(){
       return{
         showComments:false,
-        showInput: false,
+        showInput: true,
         showDelete: false,
         commentId: 0,
         commentIndex: 0,
@@ -191,13 +191,20 @@
         heightNum:0,
         num:0,
         clickInput:false,
+        totalRows:0,
       }
     },
     mounted(){
       
       this.ownId = getApp().globalData.userInfo.id 
-      
-      // this.ownId = 6459
+      if(this.houseOwnerId===this.ownId){
+        this.showInput = true
+      }else{
+        this.showInput = false
+      }
+    },
+    onShow(){
+      console.log(11123)
     },
     computed:{
       // inputText(){
@@ -206,6 +213,12 @@
       // }
     },
     watch:{
+      ParentTotalRows:{
+        handler:function(){
+          this.totalRows = this.ParentTotalRows
+        },
+        immediate:true
+      },
       showComments(){
         if(this.showComments=== true){
           this.getComment()
@@ -217,6 +230,8 @@
           if(this.houseOwnerId===this.ownId){
             this.showInput = true
             
+          }else{
+            this.showInput = false
           }
         },
         // immediate:true
@@ -226,7 +241,7 @@
     methods:{
       close(){
         this.showComments=false;
-        this.showInput = false
+        // this.showInput = false
         this.inputValue = ''
         this.comments = []
         this.$emit('change',this.totalRows,this.index)
@@ -274,15 +289,18 @@
           }
         });
       },
-      deleteComment(commentId, zeusId) {
+      deleteComment(commentId, zeusId,num) {
         if (this.ownId !== this.houseOwnerId) return;
         this.showDelete = true;
         this.showInput = false
         this.commentId = commentId
-        console.log(this.commentId,commentId,'删除id')
+        console.log(num,'删除数量')
+        this.deletNum = num
+        
         this.heightNum = 0
       },
       sureDelete(){
+        
         uni.showModal({
           // title:"您确定要取消该优先推荐吗？",
           content: "删除评论后将无法撤回",
@@ -293,13 +311,13 @@
               removeComment(this.commentId).then((data) => {
                 this.commentC(this.dynamicId);
               });
-              
+              this.totalRows = this.totalRows - this.deletNum
             }
             this.isExpanded?this.isExpanded = false:'';
-              this.showDelete = false;
-              this.showInput = true
-              this.commentId = 0
-            
+            this.showDelete = false;
+            this.showInput = true
+            this.commentId = 0
+             
           },
             
         });
@@ -380,6 +398,13 @@
       },
       setReply(isReply) {
         // this.showInput = false;
+        if(this.inputValue.length===0){
+          uni.showToast({
+            title:'发送消息不能为空',
+            icon:'none'
+          })
+          return
+        }
         let params = {
           businessId: this.dynamicId, //	动态ID
           businessType: 2,
@@ -400,6 +425,7 @@
             this.commentC(this.dynamicId,);
           }
           this.inputValue = ''
+          this.isInputFocus = false
           this.heightNum = 0
           this.totalRows++
         });
@@ -425,6 +451,7 @@
             let { page, rows, totalPage, totalRows, list,end,start } = data;
             this.page = page
             this.totalPage = totalPage
+            this.isInputFocus = false
             this.comments = list
             this.heightNum = 0
           }
@@ -654,7 +681,7 @@
   	line-height: 28rpx;
   	text-align: center;
   	color: #fff;
-  	background: linear-gradient(45deg, #f2af1a, #ffd698);
+  	background: linear-gradient(45deg, #6d95ef, #84b9fc);
   	border-radius: 6rpx;
   }
   .info .date {
@@ -699,6 +726,9 @@
   }
   .replyInfo .info .role {
   	background: linear-gradient(45deg, #6d95ef, #84b9fc);
+  }
+  .owenrRole{
+    // background: linear-gradient(45deg, #f2af1a, #ffd698) !important;
   }
   .replyInfo .text {
   	width: 550rpx;
