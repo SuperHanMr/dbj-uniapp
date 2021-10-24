@@ -468,7 +468,7 @@
 		display: block;
 		width: 32rpx;
 		height: 16rpx;
-		margin: 0 360rpx;
+		padding: 0 360rpx;
 		position: absolute;
 		left: 0;
 		bottom: -42rpx;
