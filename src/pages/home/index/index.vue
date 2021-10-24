@@ -794,7 +794,7 @@
 					font-weight: 400;
 					line-height: 26rpx;
 					padding-right: 5rpx;
-					vertical-align: 13%;
+					vertical-align: 3%;
 				}
 			}
 

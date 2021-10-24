@@ -136,7 +136,7 @@
 						e.stockNumber : e.requireNumber,
 					stockId: e.id,
 					goodsId: e.goodsId,
-					price: e.price,
+					price: e.discountPrice,
 				});
 			});
 			this.refundList = list;

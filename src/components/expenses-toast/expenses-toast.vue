@@ -11,8 +11,11 @@
           </view>
         </view>
         <view v-if='expensesType === 1'>
-          <view class="title">运费说明</view>
-          <view class="text">
+          <view class="title">
+						运费说明
+						<view class="close" @click="close"></view>
+					</view>
+          <view class="text" :style="{paddingBottom:systemBottom}">
             <p>
               由于装修场景的特殊性，在打扮家app购买商品时支付运费分为两种情况
             </p>
@@ -41,7 +44,7 @@
         </view>
         <view v-if='expensesType === 2'>
           <view class="title">搬运费说明</view>
-          <view class="text">
+          <view class="text" :style="{paddingBottom:systemBottom}">
             <p>由于装修场景的特殊性，在打扮家app购买商品时支付搬运费分为两种情况</p>
             <p>零售场景：</p>
             <p>在商品结算时支付店铺规定的搬运费</p>
@@ -54,7 +57,7 @@
         </view>
         <view v-if='expensesType === 3'>
           <view class="title">押金说明</view>
-          <view class="text">
+          <view class="text" :style="{paddingBottom:systemBottom}">
             <h1>一分钟了解设备租赁常见问题</h1>
             <h3>关于运费</h3>
             <p>本店所有设备来回快递费均由打扮家承担，顾客寄回需要联系设备管理员，由设 备管理员安排邮寄相关事宜。</p>
@@ -90,9 +93,16 @@
     },
     data() {
       return {
-
+				containerBottom:"",
+				systemBottom:"",
       }
     },
+		mounted(e) {
+		  const menuButtonInfo = uni.getMenuButtonBoundingClientRect();
+		  this.containerBottom = menuButtonInfo.bottom;
+		  this.systemBottom = menuButtonInfo.bottom + "rpx";
+		  console.log("this.systemBottom=",this.systemBottom);
+		},
     methods: {
       showPupop() {
         console.log("show")
@@ -134,10 +144,13 @@
     font-weight: 500;
     text-align: center;
     line-height: 100rpx;
+		position: re;
   }
 
   .text {
     padding: 0 32rpx 50rpx;
+		height: 800rpx;
+		overflow-y: auto;
   }
 
   p {

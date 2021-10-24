@@ -36,7 +36,7 @@
                   <view class="no-send-tip">
                      <view class="item-reduce-box">
                        <text v-if="goodsItem.errorType === 1">不在服务范围</text>
-                       <text v-if="goodsItem.errorType === 2">不在配送范围</text>
+                       <text v-if="goodsItem.errorType === 2">当前地址无法配送该商品，请更换地址</text>
                        <text v-if="goodsItem.errorType === 3">该房屋下已购买该服务，不可重复购买</text>
                        <text v-if="goodsItem.errorType === 6">您已跳过该工序，不可购买</text>
                        <text v-if="goodsItem.errorType === 7">暂不可购买，请在精算服务结束后于精算单中购买</text>
@@ -85,6 +85,7 @@
       },
       backShopCart(){
         this.$refs.noBuyToast.close()
+        this.$emit("backCart")
         uni.navigateTo({
           url: '/sub-my/pages/shopping-cart/shopping-cart',
         });

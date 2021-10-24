@@ -232,10 +232,10 @@
             let data = {
               type: "img_message",
               fileName: fileName,
-              fileSize: fileSize,
+              fileSize: +fileSize,
               fileUrl: filePath,
-              width: width,
-              height: height
+              width: +width,
+              height: +height
             }
             const message = getTim().createCustomMessage({
               to: self.toAccount,
@@ -290,10 +290,10 @@
         let data = {
           type: "video_message",
           fileName: fileName,
-          fileSize: fileSize,
+          fileSize: +fileSize,
           videoDuration: Math.round(duration),
-          width: width,
-          height: height,
+          width: +width,
+          height: +height,
           fileUrl: filePath,
           thumbnailUrl: thumbFilePath,
         }
