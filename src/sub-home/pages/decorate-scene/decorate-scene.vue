@@ -771,12 +771,12 @@ export default {
 		},
 		toDecorateService(){
 			uni.navigateTo({
-			  url: `/sub-decorate/pages/no-house-decorate/no-house-decorate?type=decorate&estateId=${this.homePageEstate.id}`,
+			  url: `/sub-decorate/pages/no-house-decorate/no-house-decorate?type=decorate&estateId=${this.homePageEstate.id}&from=userHome`,
 			});        
 		},
 		toCheckRoomService(){
 			uni.navigateTo({
-			  url: `/sub-decorate/pages/no-house-decorate/no-house-decorate?type=checkHouse&estateId=${this.homePageEstate.id}`,
+			  url: `/sub-decorate/pages/no-house-decorate/no-house-decorate?type=checkHouse&estateId=${this.homePageEstate.id}&from=userHome`,
 			});        
 		},
     toDecorateCalendar() {
