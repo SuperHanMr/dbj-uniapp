@@ -11,8 +11,10 @@
         <!-- <image class="header-back"></image> -->
       </view>
       <view class="item nav-header-msg">
+        <view class="main">
         <image class="avatar" :src="personData.avatar" mode="aspectFill" ></image>
         <text>{{personData.roleId>=1&&personData.roleId<7?personData.realName:personData.nickName}}</text>
+        </view>
       </view>
       <view class="item "></view>
     </view>
@@ -686,7 +688,8 @@
     opacity: 0;
     z-index: 1;
     .special-item{
-      width: 33%;
+      // width: 33%;
+      position: absolute;
     }
     .item {
       // flex: 1;
@@ -707,6 +710,11 @@
       line-height: 48rpx;
       max-width: 324rpx;
       flex: 1;
+      margin: 0 auto;
+      .main{
+        margin: 0 auto;
+        width: fit-content;
+      }
       .avatar {
         width: 48rpx;
         height: 48rpx;
@@ -719,7 +727,7 @@
       }
 
       text {
-        width: 242rpx;
+        max-width: 242rpx;
         font-weight: 500;
         color: #111111;
         font-size: 28rpx;

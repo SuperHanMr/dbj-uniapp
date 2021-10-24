@@ -92,7 +92,7 @@
                 <view class="info">
                   <view class="userInfo">
                     <view class="userName">{{replyItem.nickname}}</view>
-                    <view class="role">{{replyItem.labelName}}</view>
+                    <view class="role" :class="{owenrRole:replyItem.labelName==='业主'}">{{replyItem.labelName}}</view>
                   </view>
                   <view class="date">{{replyItem.time}}</view>
                 </view>
@@ -408,6 +408,7 @@
             this.commentC(this.dynamicId,);
           }
           this.inputValue = ''
+          this.isInputFocus = false
           this.heightNum = 0
           this.totalRows++
         });
@@ -433,6 +434,7 @@
             let { page, rows, totalPage, totalRows, list,end,start } = data;
             this.page = page
             this.totalPage = totalPage
+            this.isInputFocus = false
             this.comments = list
             this.heightNum = 0
           }
@@ -662,7 +664,7 @@
   	line-height: 28rpx;
   	text-align: center;
   	color: #fff;
-  	background: linear-gradient(45deg, #f2af1a, #ffd698);
+  	background: linear-gradient(45deg, #6d95ef, #84b9fc);
   	border-radius: 6rpx;
   }
   .info .date {
@@ -707,6 +709,9 @@
   }
   .replyInfo .info .role {
   	background: linear-gradient(45deg, #6d95ef, #84b9fc);
+  }
+  .owenrRole{
+    // background: linear-gradient(45deg, #f2af1a, #ffd698) !important;
   }
   .replyInfo .text {
   	width: 550rpx;

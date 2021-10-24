@@ -24,7 +24,7 @@
       }
     },
     mounted(){
-      this.serverId = getApp().globalData.decorateMsg.serveId||30458
+      this.serverId = getApp().globalData.decorateMsg.serveId||30643
     },
     onPageScroll(scrollTop){
       this.scrollTop = scrollTop.scrollTop   
