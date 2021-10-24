@@ -4,7 +4,7 @@
         + houseId + '&wx-defaultHouseId=' + defaultHouseInfo.id  + '&wx-defaultProvinceId=' + defaultHouseInfo.provinceId
         + '&wx-defaultCityId=' + defaultHouseInfo.cityId + '&wx-defaultAreaId=' + defaultHouseInfo.areaId 
         + '&wx-defaultLocationName=' + defaultHouseInfo.name  + '&wx-isDisabled=' + isDisabled
-        + '&wx-token=' + hashToken + '&wx-deviceId=' + deviceId">
+        + '&wx-token=' + hashToken + '&wx-deviceId=' + deviceId + '&wx-from=' + from">
        </web-view>
   </view>
 </template>
@@ -21,13 +21,15 @@
         isDisabled: false,
         searchToken: '',
         hashToken: '',
-        defaultHouseInfo: ''
+        defaultHouseInfo: '',
+        from: ''
       }
     },
     onLoad(e) {
       if(e.isDisabled === '0') {// 购物车跳转
         this.isDisabled = false
       }
+      this.from = e.from
       if(e.goodId){
         this.goodId = e.goodId
       }else if(uni.getStorageSync('goodId')) { // 商城列表和装修模块的商品id
