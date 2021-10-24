@@ -208,7 +208,6 @@
 					uni.navigateTo({
 						url: `/sub-my/pages/apply-for-refund/apply-for-refund?id=${this.orderNo}&type=partical&status=1`,
 					});
-
 				} else {
 					//type 2 整体退款
 					console.log("全部退款data=",data);
@@ -241,7 +240,14 @@
 					url: `../order-success/order-success?type=refund&id=${item.refundId}`,
 				});
 			},
-			refundFailed(item) {},
+			refundFailed(item) {
+				console.log("item数据=",item)
+				const showReApply= item.shipmentStatus !== 2 ? true : false
+				console.log("showReApply=",showReApply)
+				uni.navigateTo({
+					url:`../order-failed/order-failed?type=refund&id=${item.refundId}&showReApply=${showReApply}&status=${item.refundBillStatus}`
+				})
+			},
 
 			refundClose(item) {
 				console.log("item数据=",item)
@@ -386,8 +392,6 @@
 					padding: 32rpx 32rpx 2rpx;
 					background: #ffffff;
 					border-radius: 24rpx 24rpx 0 0;
-
-					.orederItem {}
 				}
 			}
 
