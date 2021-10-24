@@ -64,6 +64,7 @@
       background: rgba(197, 165, 141, 0.07);
       border: 1rpx solid #c5a58d;
       border-radius: 8rpx;
+      color: #c5a58d;
       box-shadow: 0rpx 10rpx 8rpx 0rpx rgba(47, 33, 23, 0.04);
 
       .top {
