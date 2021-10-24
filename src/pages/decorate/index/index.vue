@@ -99,12 +99,14 @@
               </view>
               <service-item v-for="(item, index) in purchasedServiceList" :key="item.nodeType" :serviceData="item"
                 :currentProject="currentProject">
-              </service-item>              
+              </service-item>
               <!--  -->
               <view v-if="aServiceData.projectStatus == 3" class="jun-gong-da-ji">
-                <image mode="aspectFit" src="http://dbj.dragonn.top/%20static/mp/dabanjia/images/decorate/img_finish.webp"></image>
+                <image mode="aspectFit"
+                  src="http://dbj.dragonn.top/%20static/mp/dabanjia/images/decorate/img_finish.webp"></image>
               </view>
-              <no-service v-if="aServiceData.projectStatus != 3 && purchasedServiceList.length == 0" words="暂无进行中服务"></no-service>
+              <no-service v-if="aServiceData.projectStatus != 3 && purchasedServiceList.length == 0" words="暂无进行中服务">
+              </no-service>
             </view>
           </view>
           <view class="tips-design-actuary">
@@ -339,15 +341,8 @@
           this.defaultServices && this.addServiceCard(this.defaultServices, "serviceType")
           this.availableServiceList && this.addServiceCard(this.availableServiceList, "nodeType")
           this.haveWarehouse = this.currentProject.existWarehouse || false
-          //this.haveWarehouse = this.purchasedServiceList.filter(t => t.nodeType >= 5).length > 0
-          // for (let i = 0; i < this.purchasedServiceList.length; i++) {
-          //   if ([5, 6, 7, 8, 9, 10].includes(this.purchasedServiceList[i].nodeType) && (this.purchasedServiceList[i]
-          //       .status >= 2 || (this.purchasedServiceList[i].status == 0 && this.purchasedServiceList[i]
-          //         .grepOrderStatus === 3))) {
-          //     this.isConstruction = true
-          //     break
-          //   }
-          // }
+
+          uni.stopPullDownRefresh()
 
         }).catch(err => {
           console.log(err)
@@ -392,7 +387,9 @@
         for (let i = 0; i < this.projectList.length; i++) {
           if (this.projectList[i].uid === this.currentProject.uid) {
             index = i
-            firstItem = {...this.projectList[i]}
+            firstItem = {
+              ...this.projectList[i]
+            }
             break
           }
         }
@@ -403,7 +400,7 @@
           arr.unshift(firstItem)
           this.projectList = [...arr]
         }
-        
+
         this.$refs.sw.close()
       },
       getProjectList() {
@@ -566,7 +563,7 @@
         if (this.currentProject && this.currentProject.projectId) {
           getMsgNum(this.currentProject.projectId).then(res => {
             this.msgNum = res.count
-
+            uni.stopPullDownRefresh()
             // uni.setTabBarBadge({
             //   index: 2,
             //   text: this.msgNum+'',
