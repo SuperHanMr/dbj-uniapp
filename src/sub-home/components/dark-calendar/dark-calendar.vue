@@ -93,10 +93,10 @@
 			console.log(this.choose,'。。')
 			
 			this.dates = this.monthDay(this.y, this.m)
-	    
 	  },
 	  mounted() {
 			console.log(this.signeddates,'dadian')
+			this.$emit('changeMargin',true,this.dates.length)
 	  },
 	  computed: {
 	    // 顶部星期栏目
@@ -468,7 +468,7 @@
 		display: block;
 		width: 32rpx;
 		height: 16rpx;
-		margin: 0 360rpx;
+		padding: 0 360rpx;
 		position: absolute;
 		left: 0;
 		bottom: -42rpx;

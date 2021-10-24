@@ -14,11 +14,14 @@
       @scrolltoupper="handlePulling"
       @click="handleMessageListClick"
     >
+      <view v-if="!isCompleted" class="loading-wrapper">
+        <image class="loading-img" src="https://ali-image.dabanjia.com/static/mp/dabanjia/images/loading.gif"></image>
+      </view>
       <template v-if="currentMessageList.length">
         <view v-if="type === CONV_TYPES.COMMON || type === CONV_TYPES.CUSTOMER" id="listBody" class="message-list-body">
           <template v-for="(msg, idx) in currentMessageList">
             <view
-              v-if="showTimeTag(msg, currentMessageList[idx - 1])"
+              v-if="showTimeTag(msg, currentMessageList[idx - 1], idx)"
               :key="msg.ID"
               class="message-tags-time"
             >{{ formatMessageTime(msg.time) }}</view>
@@ -189,7 +192,10 @@
       this.$store.commit("resetConversation");
     },
     methods: {
-      showTimeTag(message, prevMessage) {
+      showTimeTag(message, prevMessage, idx) {
+        if (idx == 0) {
+          return this.isCompleted;
+        }
         if (prevMessage) {
           return message.time - prevMessage.time > 300;
         }
@@ -347,7 +353,15 @@
     width: 28px;
     height: 28px;
   }
-  
+  .loading-wrapper {
+    display: flex;
+    justify-content: center;
+    padding-top: 12px;
+  }
+  .loading-img {
+    width: 20px;
+    height: 20px;
+  }
   .empty-container {
     display: flex;
     flex-flow: column nowrap;

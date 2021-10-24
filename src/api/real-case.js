@@ -94,3 +94,6 @@ export function removeComment(commentId) {
 export function checkEquipmentServe(params) {
   return request.post(`/pm/app/equipmentBind/checkBuyEquipmentServe`, params);
 }
+export function updateDrawings(severId) {
+  return request.get(`/pm/app/serve/design/designServeFile/${severId}`, {});
+}

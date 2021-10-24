@@ -1,10 +1,12 @@
 <template>
   <view class="person-evaluate-list">
+    <view class="aggregations-block">
     <view class="aggregations">
       <view class="left">
         全部评价（{{pageInfo.totalRow}}）
       </view>
       <view class="right">综合好评率 {{totalNum}}</view>
+    </view>
     </view>
     <scroll-view :scroll-y="true" style="height:100%" @scrolltolower="bindscrolltolower">
       <personEvaliateItem :last='index===evaluate.list.length-1' v-for="item in evaluate.list" :item='item' :key='item.id'></personEvaliateItem>
@@ -73,11 +75,18 @@
     padding: 140rpx 32rpx 32rpx;
     height: 100%;
     padding-bottom: 88rpx;
+    .aggregations-block{
+      box-sizing: border-box;
+      position: fixed;
+      top: 0;
+      // width: 100%;
+      background-color: #fff;
+      z-index: 10;
+    }
     .aggregations{
       box-sizing: border-box;
       width: 686rpx;
-      position: fixed;
-      top: 0;
+      
       height: 88rpx;
       display: flex;
       align-items: center;
@@ -87,7 +96,7 @@
       border: 0.5px solid #E5E5E5;
       background-color: #fff;
       padding: 0 32rpx;
-      z-index: 10;
+      
       // margin-bottom: 40rpx;
       margin: 0 auto 40rpx;
       .left{

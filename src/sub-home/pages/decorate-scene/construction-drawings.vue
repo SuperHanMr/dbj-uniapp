@@ -180,6 +180,7 @@
 		position: fixed;
 		left: 0;
 		top: 0;
+		z-index: 9;
 	}
 	.noTypesImg{
 		display: block;
@@ -426,9 +427,11 @@
 	.contentWrap{
 		width: 100%;
 		height: fit-content;
+		margin-top: 88rpx;
+		padding-bottom: 62rpx;
 	}
 	.contentWrap.switchServer{
-		margin-top: 320rpx;
+		margin-top: 318rpx;
 	}
   .content{
 		width: 686rpx;
@@ -439,7 +442,7 @@
 		
 	}
 	.category .title{
-		max-width: 84rpx;
+		width: fit-content;
 		text-overflow: ellipsis;
 		white-space: nowrap;
 		overflow: hidden;

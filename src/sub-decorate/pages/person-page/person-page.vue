@@ -173,7 +173,7 @@
     },
     onLoad(e){
       this.userType = e.userType
-      this.personId = e.personId||7270
+      this.personId = e.personId||7292
       // this.getGrabDetail()
     },
     onShow(){
@@ -189,20 +189,19 @@
       
     },
     onPageScroll(scrollTop) {
-      console.log(scrollTop+'sssssss')
-      console.log('dddd')
+      
       this.pageScroll(scrollTop.scrollTop)
     },
     methods: {
       init(){
-        console.log('init')
+        
         // this.getCaseList()
         this.getSkuList()
         this.getGrabDetail()
         
       },
       pageScroll(scrollTop){
-        console.log('pageScroll')
+        
         this.scrollTop = scrollTop
         scrollTop!==0&&this.changeOpacity(this.scrollTop)
         this.getTopDistance()
@@ -339,6 +338,8 @@
       getServiceStatus(){
         getServiceStatus(this.personData.zeusId).then(res=>{
           this.hasServe = res.status||res.ststus
+          uni.stopPullDownRefresh();
+
         })
       },
       // getCaseList() {
@@ -347,7 +348,7 @@
       //   // })
       // },
       changeOpacity(num){
-        console.log(num+'+>>>>>')
+        
         num<10?this.opacityNum = 0:num<20?this.opacityNum=0.2:num<40?this.opacityNum=0.3:num<60?this.opacityNum=0.4:num<80?this.opacityNum=0.5:num<100?this.opacityNum=0.6:num<120?this.opacityNum=0.7:num<140?this.opacityNum=0.8:num<160?this.opacityNum=0.9:this.opacityNum=1
         // console.log(this.opacityNum)
       },

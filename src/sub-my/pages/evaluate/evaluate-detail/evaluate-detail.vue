@@ -7,7 +7,7 @@
             <image :src="serviceInfo.serverAvatar" mode=""/>
             <text class="serverName">{{serviceInfo.serverName}}</text>
             <view class="icon">
-              {{serviceInfo.roleName}}
+              {{serviceInfo.roleName ? serviceInfo.roleName :''}}
             </view>
           </view>
           <view class="right" v-if="serviceInfo.anonymous == 1">
@@ -36,7 +36,7 @@
 
         <view class="comment-content" >
         	<view class="comment">
-						{{serviceInfo.content}}
+						{{ serviceInfo.content ?serviceInfo.content :'' }}
 					</view>
 					<view class="img-container" v-if="serviceInfo.imgList">
 						<image class="imgItem" v-for="item4 in imgList" :key="item4" :src="item4" mode="" @click="previewImg(item4)" />
