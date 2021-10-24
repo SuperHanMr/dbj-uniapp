@@ -132,7 +132,6 @@
   .header-address {
     display: flex;
     width: 100%;
-    height: 202rpx;
     background: #ffffff;
   }
 
