@@ -21,12 +21,14 @@
         @keyboardheightchange="handleKeyboradHeightChange"
       />
       <view
-        v-if="showRecordBtn"
+        v-show="showRecordBtn"
+        id="recordBar"
         class="audio-record-btn"
         @touchstart="handleRecordStart"
+        @touchmove="handleRecordMove"
         @touchend="handleRecordEnd"
       >
-        {{ recordStart ? '松开&nbsp;&nbsp;发送' : '按住&nbsp;&nbsp;说话' }}
+        {{ recordStart ? `松开${recordCancel ? '取消' : '发送'}` : '按住说话' }}
       </view>
       <view 
         class="iconfont icon-a-icxiaoxidibubiaoqing" 
@@ -108,6 +110,7 @@
         showEmojiChooser: false,
         showRecordBtn: false,
         recordStart: false,
+        recordCancel: false,
         emojiName: emojiName,
         emojiMap: emojiMap,
         isIphone: false
@@ -166,6 +169,11 @@
             scope: 'scope.record',
             success() {
               self.recorderManager = self.creatRecorderManager();
+              self.$nextTick(function(){
+                self.recordBarRectTask.exec((arr) => {
+                  self.recordBarBounding = arr[0];
+                })
+              })
             },
             fail() {
               uni.showToast({
@@ -181,10 +189,21 @@
         }
       }
     },
+    onHide() {
+      this.recordStart = false;
+      if (this.recorderManager) {
+        this.recordCancel = true;
+        this.recorderManager.stop();
+      }
+    },
     mounted() {
       const showFooter = () => {
         this.showFooter = false;
       };
+      const query = uni.createSelectorQuery().in(this);
+      this.recordBarNodesRef = query.select("#recordBar");
+      this.recordBarRectTask = this.recordBarNodesRef.boundingClientRect();
+  
       uni.$on("message-list-click", showFooter);
       this.$once("hook:beforeDestroy", () => {
         uni.$off("message-list-click", showFooter);
@@ -193,6 +212,10 @@
       if (/ios/i.test(info.platform)) {
         this.isIphone = true;
       }
+    },
+    beforeDestroy() {
+      this.recordBarRectTask = null;
+      this.recordBarNodesRef = null;
     },
     methods: {
       sendTextMessage() {
@@ -517,11 +540,16 @@
         // 1 监听录音错误事件
         recorderManager.onError(function(errMsg) {
           console.warn('recorder error:', errMsg);
+          this.recordCancel = false;
+          this.recordStart = false;
         });
         // 2 监听录音结束事件，录音结束后，调用 createAudioMessage 创建音频消息实例
         recorderManager.onStop(function(res) {
-          console.log('recorder stop', res);
-          self.sendAudioMessage(res);
+          console.log('recorder stop', self.recordCancel, res);
+          if (!self.recordCancel) {
+            self.sendAudioMessage(res);
+          }
+          self.recordCancel = false;
         });
         return recorderManager;
       },
@@ -533,9 +561,30 @@
           encodeBitRate: 192000, // 编码码率
           format: 'aac' // 音频格式，选择此格式创建的音频消息，可以在即时通信 IM 全平台（Android、iOS、微信小程序和Web）互通
         };
+        this.recordCancel = false;
         this.recordStart = true;
         // 开始录音
         this.recorderManager.start(recordOptions);
+      },
+      handleRecordMove(options) {
+        console.log("touch move", options, options.target.id, options.currentTarget.id);
+        let mouseEvt = options.touches[0];
+        let mouseX = mouseEvt.clientX;
+        let mouseY = mouseEvt.clientY;
+        if (this.recordBarBounding) {
+          let {left, right, top, bottom} = this.recordBarBounding;
+          if (
+            mouseX >= left && 
+            mouseX <= right && 
+            mouseY >= top && 
+            mouseY <= bottom) {
+            this.recordCancel = false;
+          } else {
+            this.recordCancel = true;
+          }
+        } else {
+          this.recordCancel = false;
+        }
       },
       handleRecordEnd() {
         this.recordStart = false;
