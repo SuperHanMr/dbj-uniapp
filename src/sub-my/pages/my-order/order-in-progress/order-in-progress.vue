@@ -192,16 +192,21 @@
 					//type 1部分退款=
 					console.log("orderId=",this.orderInfo.orderId)
 					console.log("部分退款","data=",data);
-					wx.setStorageSync("particalRefundOrderInfo", JSON.stringify(data));
+					console.log("orderDetailsId=",data.orderDetailId)
+					// return
 					uni.navigateTo({
-						url: `/sub-my/pages/apply-for-refund/apply-for-refund?id=${this.orderNo}&type=partical&status=1`,
+						url: `/sub-my/pages/apply-for-refund/apply-for-refund?orderId=${this.orderNo}&type=partical&status=1&applyMode=1&orderDetailsId=${data.orderDetailId}`,
 					});
+					// wx.setStorageSync("particalRefundOrderInfo", JSON.stringify(data));
+					// uni.navigateTo({
+					// 	url: `/sub-my/pages/apply-for-refund/apply-for-refund?id=${this.orderNo}&type=partical&status=1`,
+					// });
 				} else {
 					//type 2 整体退款
 					console.log("全部退款data=",data);
-					wx.setStorageSync("wholeRefundOrderInfo", JSON.stringify(data));
+					// wx.setStorageSync("wholeRefundOrderInfo", JSON.stringify(data));
 					uni.navigateTo({
-						url: `/sub-my/pages/apply-for-refund/apply-for-refund?id=${this.orderNo}&type=whole&status=1`,
+						url: `/sub-my/pages/apply-for-refund/apply-for-refund?orderId=${this.orderNo}&type=whole&status=1&applyMode=2`,
 					});
 				} 
 			},
