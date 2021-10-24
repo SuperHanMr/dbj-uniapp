@@ -468,6 +468,7 @@
           } else {
             let flt = null
             let eastId = Number(this.estateId) ?? false
+            console.log(">>estateId: >>", eastId)
             if (eastId) {
               flt = data.filter(t => t.id == eastId);
             } else {
