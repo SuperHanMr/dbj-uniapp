@@ -8,7 +8,7 @@
     <view class="index">
       <view class="item-list">
         <view class="item" v-for="(item, index) in content.itemList" :key="item.id">
-          <view class="img-name-tag-guige">
+          <view class="img-name-tag-guige" @click="goDetail(item.id)">
             <image class="img" :src="item.imageUrl"></image>
             <view class="tag-name-guige">
               <view class="spu-name">

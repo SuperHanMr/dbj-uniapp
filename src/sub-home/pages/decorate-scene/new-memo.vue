@@ -64,9 +64,8 @@
 					reminderList: this.reminderList,
 				}
 				createMemo(params).then(data => {
-					uni.navigateTo({
-						url: `/sub-home/pages/decorate-scene/memo?projectId=${this.projectId}&fromNewMemo=1`
-					})
+					uni.$emit('new-memo')
+					uni.navigateBack({})
 				})
 			}
 		}
