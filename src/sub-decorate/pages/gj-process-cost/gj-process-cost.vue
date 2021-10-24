@@ -239,7 +239,7 @@
           if (item.checked) {
             // 如果选择了
             // 如果是已经存在了新旧id对应关系，则替换新的id
-            flgArr[0].newSuk = item.id
+            flgArr[0].newSku = item.id
           } else {
             let index = null
             for (let i = 0; i < this.skuRelation.length > 0; i++) {
@@ -253,14 +253,14 @@
             }
           }
           // 如果是已经存在了新旧id对应关系，则替换新的id
-          flgArr[0].newSuk = item.id
+          flgArr[0].newSku = item.id
         } else {
           if (item.checked) {
             // 否则就是初始化
             this.skuRelation.push({
               originalId: item.originalId,
-              oldSuk: item.oldId || item.id,
-              newSuk: item.id
+              oldSku: item.oldId || item.id,
+              newSku: item.id
             })
           }
         }
@@ -285,8 +285,8 @@
               // 默认初始化SkuRelation
               this.skuRelation.push({
                 originalId: it.originalId,
-                oldSuk: it.id,
-                newSuk: it.id
+                oldSku: it.id,
+                newSku: it.id
               })
               this.checkedIds.push(it.originalId)
             })
@@ -303,8 +303,8 @@
                 // 默认初始化SkuRelation
                 this.skuRelation.push({
                   originalId: it.originalId,
-                  oldSuk: it.id,
-                  newSuk: it.id
+                  oldSku: it.id,
+                  newSku: it.id
                 })
               }
             })
