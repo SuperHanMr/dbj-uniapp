@@ -277,6 +277,9 @@
 				checkedSkuList:[],
 			}
 		},
+		onShow() {
+			this.requestPage()
+		},
 		mounted(){
 			this.userId = uni.getStorageSync("userId")
 			this.requestPage(true)
