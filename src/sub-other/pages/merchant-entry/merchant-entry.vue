@@ -33,7 +33,7 @@
 					<view class="label">
 						服务城市
 					</view>
-					<view class="value" v-if="cityList.length > 0" v-for="(item, index) in cityList">
+					<view class="value" v-if="cityList.length > 0" v-for="(item, index) in cityList" :key="item.id">
 						<view class="text">
 							{{item.name}}
 						</view>
@@ -53,7 +53,7 @@
 						经营品类
 					</view>
 					<view class="value" v-if="businessCategoryList.length > 0"
-						v-for="(item, index) in businessCategoryList">
+						v-for="(item, index) in businessCategoryList" :key="item.oneLevelCategoryId">
 						<view class="text">
 							{{item.oneLevelCategoryName + '-' + item.twoLevelCategoryName + '-' + item.label}}
 						</view>
@@ -152,7 +152,7 @@
 		<uni-popup ref="popupBusiness" type="bottom">
 			<view class="business-category-box">
 				<business-category ref='businessCategoryRef' @closeBusinessPopup='closeBusinessPopup'
-					@confirmBusiness='confirmBusiness' :categroyTreeList='categroyTreeList' />
+					@confirmBusiness='confirmBusiness' :categroyTreeList='categroyTreeList' v-if="categroyTreeList.length > 0"/>
 			</view>
 		</uni-popup>
 		<!-- <button type="default" open-type="getPhoneNumber" @getphonenumber="decryptPhoneNumber">获取手机号</button> -->

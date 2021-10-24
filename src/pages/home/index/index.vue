@@ -347,6 +347,7 @@
 			},
 			currentHouseChange(item) {
 				this.currentAddress = item;
+				this.areaId=item.areaId;
 				uni.$emit("currentHouseChange", item);
 				getApp().globalData.currentHouse = item;
 				this.reloadData();
