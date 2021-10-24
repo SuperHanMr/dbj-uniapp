@@ -240,6 +240,9 @@
         showScroll: false
       };
     },
+    onPullDownRefresh() {
+      this.watchMsg()
+    },
     mounted() {
       uni.showTabBar()
       this.showNoHouse = false
