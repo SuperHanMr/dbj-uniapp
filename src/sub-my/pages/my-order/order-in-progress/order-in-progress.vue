@@ -166,19 +166,6 @@
 			this.orderDetail();
 		},
 
-		// // 改变返回下一个页面的路径
-		// onUnload() {
-		//   if(this.from=="comfirmOrder"){
-		// 		uni.redirectTo({
-		// 			url:"../my-order?firstEntry=true&index=2"
-		// 		})
-		// 	}else{
-		// 		uni.navigateBack({
-		// 			delta: 1
-		// 		});
-		// 	}
-		// },
-
 		methods: {
 			orderDetail() {
 				getOrderDetail({
@@ -208,7 +195,6 @@
 					uni.navigateTo({
 						url: `/sub-my/pages/apply-for-refund/apply-for-refund?id=${this.orderNo}&type=partical&status=1`,
 					});
-
 				} else {
 					//type 2 整体退款
 					console.log("全部退款data=",data);
@@ -216,11 +202,11 @@
 					uni.navigateTo({
 						url: `/sub-my/pages/apply-for-refund/apply-for-refund?id=${this.orderNo}&type=whole&status=1`,
 					});
-				}
+				} 
 			},
 			refundCancel(item) {
 				this.itemId=item.refundId
-				this.title="确定要取消本次申请退款？"
+				this.title="确定要取消本次申请退款？" 
 				this.$refs.cancelRefund.open();
 			},
 			cancelRefundClose() {
@@ -241,7 +227,14 @@
 					url: `../order-success/order-success?type=refund&id=${item.refundId}`,
 				});
 			},
-			refundFailed(item) {},
+			refundFailed(item) {
+				console.log("item数据=",item,"测试")
+				const showReApply= item.shipmentStatus !== 2 ? true : false
+				console.log("showReApply=",showReApply)
+				uni.navigateTo({
+					url:`../order-failed/order-failed?type=refund&id=${item.refundId}&showReApply=${showReApply}&status=${item.refundBillStatus}`
+				})
+			},
 
 			refundClose(item) {
 				console.log("item数据=",item)
@@ -386,8 +379,6 @@
 					padding: 32rpx 32rpx 2rpx;
 					background: #ffffff;
 					border-radius: 24rpx 24rpx 0 0;
-
-					.orederItem {}
 				}
 			}
 

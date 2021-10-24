@@ -590,7 +590,7 @@ export default {
 				height: 388rpx;
 				box-sizing: border-box;
 				border-radius: 16rpx;
-				padding: 24rpx;
+				padding: 24rpx 24rpx 56rpx;
 				border: 0.5px solid #EEEEEE;
 			}
 			.fontNum{

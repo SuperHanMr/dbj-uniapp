@@ -101,7 +101,7 @@
                 :currentProject="currentProject">
               </service-item>
               <!--  -->
-              <view v-if="aServiceData.projectStatus == 3" class="jun-gong-da-ji">
+              <view v-if="aServiceData.projectStatus == 3 && purchasedServiceList.length == 0" class="jun-gong-da-ji">
                 <image mode="aspectFit"
                   src="http://dbj.dragonn.top/%20static/mp/dabanjia/images/decorate/img_finish.webp"></image>
               </view>
@@ -256,6 +256,7 @@
         uni.setStorageSync('uuDeviceId', this.deviceId);
       }
       getApp().globalData.screenHeight = uni.getSystemInfoSync().windowHeight
+      console.log(getApp().globalData.screenHeight,'>>>>>>>>当前屏幕高度')
       
     },
     methods: {
@@ -500,17 +501,17 @@
           let url = null
           if (this.currentProject && this.currentProject.projectId) {
             url =
-              `/sub-decorate/pages/no-house-decorate/no-house-decorate?type=${type}&estateId=${this.currentEstate.id}&projectId=${this.currentProject.projectId}&isDecorate=1`
+              `/sub-decorate/pages/no-house-decorate/no-house-decorate?type=${type}&estateId=${this.currentProject.estateId}&projectId=${this.currentProject.projectId}&isDecorate=1&from=decorateIndex`
           } else {
             url =
-              `/sub-decorate/pages/no-house-decorate/no-house-decorate?type=${type}&estateId=${this.currentEstate.id}&isDecorate=1`
+              `/sub-decorate/pages/no-house-decorate/no-house-decorate?type=${type}&estateId=${this.currentProject.estateId}&isDecorate=1&from=decorateIndex`
           }
           uni.navigateTo({
             url
           })
         } else {
           uni.navigateTo({
-            url: `/sub-decorate/pages/no-house-decorate/no-house-decorate?type=${type}&isDecorate=1`
+            url: `/sub-decorate/pages/no-house-decorate/no-house-decorate?type=${type}&isDecorate=1&from=decorateIndex`
           })
         }
 

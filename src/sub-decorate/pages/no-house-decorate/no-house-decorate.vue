@@ -467,8 +467,10 @@
             this.currentHouse = {}
           } else {
             let flt = null
-            if (this.estateId) {
-              flt = data.filter(t => t.id == this.estateId);
+            let eastId = Number(this.estateId) ?? false
+            console.log(">>estateId: >>", eastId)
+            if (eastId) {
+              flt = data.filter(t => t.id == eastId);
             } else {
               // flt = this.defaultHouse
               flt = data.filter(t => t.id == this.defaultHouse?.id);

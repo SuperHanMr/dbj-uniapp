@@ -44,9 +44,10 @@
           <view class="price-item" v-if="item.freight">
             <view class="title">
               <text style="margin-right: 8rpx;">运费</text>
-              <text class="icon">?</text>
+              <!-- <text class="icon">?</text> -->
+							<image src="../../../../static/price_icon.svg" class="icon" mode=""  @click="readExpenses(1)"></image>
             </view>
-            <view>
+            <view class="price">
               <text>￥</text>
               <text class="price-style price-font">{{handlePrice(item.freight)[0]}}.{{handlePrice(item.freight)[1]}}</text>
             </view>
@@ -56,7 +57,8 @@
           <view class="price-item" v-if="item.handlingFees">
             <view class="title">
               <text style="margin-right: 8rpx;">搬运费</text>
-              <text class="icon">?</text>
+              <!-- <text class="icon">?</text> -->
+							<image src="../../../../static/price_icon.svg" class="icon" mode=""  @click="readExpenses(2)"></image>
             </view>
             <view>
               <text>￥</text><text class="price-style price-font">{{handlePrice(item.handlingFees)[0]}}.{{handlePrice(item.handlingFees)[1]}}</text>
@@ -112,7 +114,7 @@
       </view>
       <order-price
         :data="orderInfo"
-        :waitPay="true"
+				:orderFailed="true"
       />
       <order-info
         :orderNo="orderInfo.orderNo"
@@ -121,7 +123,7 @@
         :showCancelTime="true"
       />
     </view>
-
+		<expenses-toast ref='expensesToast' :expensesType="expensesType"></expenses-toast>
   </view>
 </template>
 
@@ -239,6 +241,11 @@ export default {
 					delta:1
 				})
 			}
+		},
+		
+		readExpenses(num) {
+		  this.expensesType = num
+		  this.$refs.expensesToast.showPupop()
 		},
 
     refundDetail() {
@@ -420,13 +427,10 @@ export default {
             display: flex;
             flex-flow: row nowrap;
             align-items: center;
-            .icon {
-              width: 24rpx;
-              height: 24rpx;
-              border: 2rpx solid #999999;
-              border-radius: 50%;
-              line-height: 24rpx;
-              text-align: center;
+            .icon{
+            	width: 24rpx;
+            	height: 24rpx;
+            	object-fit: cover;
             }
           }
         }
