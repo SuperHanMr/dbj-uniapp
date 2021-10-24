@@ -48,7 +48,7 @@
 				</view>
 				<view class="form-item special">
 					<label class="item-label">楼型</label>
-					<choose-btn :btnList='floorList' :class="{disabled:roomId&&isEdit}" :currentBtn='addData.houseStructure' :disabled="roomId&&isEdit" @chooseBtn='chooseFloor'>
+					<choose-btn :btnList='floorList' :currentBtn='addData.houseStructure' :disabled="roomId&&isEdit" @chooseBtn='chooseFloor'>
 					</choose-btn>
 				</view>
 				<view class="form-item">
@@ -74,7 +74,7 @@
 				</view>
 				<view class="form-item special ele">
 					<label class="item-label">有无电梯</label>
-					<choose-btn :btnList='elevatorList' :class="{disabled:roomId&&isEdit}" :currentBtn='addData.hasLift' :disabled="roomId&&isEdit" @chooseBtn="chooseEle">
+					<choose-btn :btnList='elevatorList' :currentBtn='addData.hasLift' :disabled="roomId&&isEdit" @chooseBtn="chooseEle">
 					</choose-btn>
 					<input v-if="!addData.hasLift" :class="{disabled:roomId&&isEdit}" :disabled="roomId&&isEdit" placeholder-class="placeholder" class="ele-input" name="input"
 						v-model="addData.floors" placeholder="请输入房屋所在楼层" />
@@ -521,9 +521,9 @@
 		}
     .disabled{
       color: #999999 !important;
-      button{
-        color: #999999 !important;
-      }
+      // button{
+      //   color: #999999 !important;
+      // }
     }
 		view .ele {
 			height: auto;
