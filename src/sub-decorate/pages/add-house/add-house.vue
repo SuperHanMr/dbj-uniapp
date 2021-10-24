@@ -25,7 +25,7 @@
 				<view class="form-item">
 					<label class="item-label">所在地区</label>
 					<input class="uni-input" placeholder-class="placeholder" :class="{disabled:roomId&&isEdit}" :disabled="roomId&&isEdit" @click="chooseMap" disabled name="input"
-						v-model="addData.locationName" placeholder="请选择您房屋所在地区" />
+						v-model="addData.area||addData.locationName" placeholder="请选择您房屋所在地区" />
 					<image src="../../../static/images/ic_more_black.svg" class="shopIcon"></image>
 				</view>
 				<view class="form-item">
@@ -139,7 +139,7 @@
 					houseStructure: 1,
 					contactPhone: "",
 					housingEstate: "",
-					locationName: "",
+					area: "",
 					address: "",
 					roomNum: 0,
 					hallNum: 0,
@@ -221,7 +221,7 @@
 						houseStructure,
 						contactPhone,
 						housingEstate,
-						locationName,
+						area,
 						address,
 						roomNum,
 						hallNum,
@@ -237,7 +237,7 @@
 						houseStructure,
 						contactPhone,
 						housingEstate,
-						locationName,
+						area,
 						address,
 						roomNum,
 						hallNum,
@@ -278,7 +278,6 @@
 						if (res.address) {
 							console.log(res)
 							that.hasPoint = true;
-							
 							that.addData.housingEstate = res.name;
 							that.addData.latitude = res.latitude;
 							that.addData.longitude = res.longitude;
@@ -293,7 +292,7 @@
                   let address = res.data.result.addressComponent
 									let adcode = address.adcode;
                   
-                  that.addData.locationName = address.province === address.city ? address.province + '-' + address.district : address.province + '-' + address.city + '-' + address.district;
+                  that.addData.area = address.province === address.city ? address.province + '-' + address.district : address.province + '-' + address.city + '-' + address.district;
 									that.getAreaId(adcode);
 								},
 							});
@@ -370,6 +369,7 @@
 			save() {
 				if (this.check()) {
 					if (!this.roomId) {
+            // this.addData.area = this.addData.area
 						addHouse(this.addData).then((res) => {
 							if(this.addData.defaultEstate){
 								uni.$emit('defaultHouseChange');
