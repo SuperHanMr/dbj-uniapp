@@ -952,8 +952,6 @@
 <style scoped>
 	.cartContainer{
 		width: 100%;
-		height: 100%;
-		overflow: auto;
 		background: #f5f6f7;
 		position: relative;
 	}
@@ -1585,7 +1583,7 @@
 	  color: #333;
 	}
 	.totalPrice{
-	  max-width: 118rpx;
+	  max-width: 198rpx;
 	  height: 36rpx;
 		margin-bottom: -2rpx;
 		margin-right: 16rpx;

@@ -1,13 +1,15 @@
 <template>
 	<view class="choose-remind">
-		<view class="remindItem" v-for="(item,index) in list" :key="item.userId">
+		<view class="remindItem" @click="checkC(index)"
+			v-for="(item,index) in list" :key="item.userId"
+		>
 			<view class="userInfo">
 				<image class="avatar" :src="item.avatar"></image>
 				<view class="userName">{{item.name}}</view>
 				<view class="role">{{item.role}}</view>
 			</view>
-			<image v-if="!item.isChecked" @click="checkC(index)" class="img" src="http://dbj.dragonn.top/static/mp/dabanjia/images/home/check%402x.png"></image>
-			<image v-else @click="checkC(index)" class="img" src="http://dbj.dragonn.top/static/mp/dabanjia/images/home/ic_reminder_checked%402x.png"></image>
+			<image v-if="!item.isChecked" class="img" src="http://dbj.dragonn.top/static/mp/dabanjia/images/home/check%402x.png"></image>
+			<image v-else class="img" src="http://dbj.dragonn.top/static/mp/dabanjia/images/home/ic_reminder_checked%402x.png"></image>
 		</view>
 		<view class="confirm" @click="confirmC">确认</view>
 	</view>
