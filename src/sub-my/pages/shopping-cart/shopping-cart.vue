@@ -439,13 +439,13 @@
 			toShopHome(storeId){
 				let areaId = getApp().globalData.currentProject.areaId
 				uni.navigateTo({
-					url: `/sub-classify/pages/shops/shops?storeId=${storeId}&areaId=${areaId}`
+					url: `/sub-classify/pages/shops/shops?storeId=${storeId}&areaId=${areaId}&from=shopCart`
 				})
 			},
 			toGoodsDetail(skuId,isDisabled){
 				uni.navigateTo({
-					url: isDisabled ? `/sub-classify/pages/goods-detail/goods-detail?goodId=${skuId}&isDisabled=1`:
-					`/sub-classify/pages/goods-detail/goods-detail?goodId=${skuId}&isDisabled=0`
+					url: isDisabled ? `/sub-classify/pages/goods-detail/goods-detail?goodId=${skuId}&isDisabled=1&from=shopCart`:
+					`/sub-classify/pages/goods-detail/goods-detail?goodId=${skuId}&isDisabled=0&from=shopCart`
 				})
 			},
 			requestPage(isFirst){
