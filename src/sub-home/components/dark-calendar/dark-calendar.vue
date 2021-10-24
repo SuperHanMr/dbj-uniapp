@@ -217,7 +217,6 @@
 				console.log(this.choice)
 				if(!Object.keys(this.choice).length)return
 				this.isShrink = !this.isShrink
-				this.$emit('changeMargin',this.isShrink)
 	      this.monthOpen = !this.monthOpen
 	      if (this.monthOpen) {
 	        this.positionTop = 0
@@ -233,6 +232,7 @@
 					let weekIndex = this.choice.weekIndex
 					this.dates = this.dates.filter(item => item.weekIndex === weekIndex)
 	      }
+				this.$emit('changeMargin',this.isShrink,this.dates.length)
 	    },
 	    // 点击回调
 	    checkOne(i) {

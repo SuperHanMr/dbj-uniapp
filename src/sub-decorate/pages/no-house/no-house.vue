@@ -35,12 +35,12 @@
     methods: {
       goNoHouseDecorate() {
         uni.navigateTo({
-          url: "/sub-decorate/pages/no-house-decorate/no-house-decorate?type=decorate",
+          url: "/sub-decorate/pages/no-house-decorate/no-house-decorate?type=decorate&from=nohouse",
         });
       },
       goCheckService() {
         uni.navigateTo({
-          url: "/sub-decorate/pages/no-house-decorate/no-house-decorate?type=checkHouse",
+          url: "/sub-decorate/pages/no-house-decorate/no-house-decorate?type=checkHouse&from=nohouse",
         });
       },
       goAddHouse() {
