@@ -1,6 +1,6 @@
 <template>
   <view class="floor-btn">
-    <button class="btn" :class="{active:item.id==currentBtn}" v-for="item of btnList" :key='item.id' @click="chooseBtn(item.id)">{{item.label}}</button>
+    <button class="btn" :class="{active:item.id==currentBtn,disabled:disabled}" v-for="item of btnList" :key='item.id' @click="chooseBtn(item.id)">{{item.label}}</button>
   </view>
 </template>
 
@@ -12,7 +12,11 @@
         type:Array,
         default:[{id:0}]
       },
-      currentBtn:''
+      currentBtn:'',
+      disabled:{
+        type:Boolean,
+        default:false
+      }
     },
     data() {
       return {
@@ -36,7 +40,7 @@
   }
 </script>
 
-<style lang="scss">
+<style lang="scss" scoped>
 .btn{
       display: inline-block;
       width: 116rpx;
@@ -54,9 +58,12 @@
     .btn:after{
       border: none;
     }
-    .active{
+    .active {
       background-color: #e8fafa;
       border: 0.5px solid #35C4C4;
-      color: #24bdbd;
+      color: #24bdbd !important;
+    }
+    .disabled{
+      color: #999;
     }
 </style>

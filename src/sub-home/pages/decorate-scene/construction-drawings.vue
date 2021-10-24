@@ -39,7 +39,7 @@
 			<image class="noDrawingsImg" src="http://dbj.dragonn.top/static/mp/dabanjia/images/decorate/pic_empty%402x.png"></image>
 			<view class="text">暂无施工图纸</view>
 		</view>
-		<scroll-view :scroll-y="true" :class="{'switchServer':serverList.length>=2}" class="contentWrap" v-else>
+		<scroll-view :scroll-y="true" :class="{'switchServer':showCard}" class="contentWrap" v-else>
 			<view class="content"
 				v-if="navIndex===index"
 				v-for="(item,index) in serveTypes"
@@ -93,7 +93,8 @@
 				serverList: [],
 				drawings: [],
 				showSwitchDesigner: false,
-				selectedIndex: 0
+				selectedIndex: 0,
+				showCard: false
 			}
 		},
 		onLoad(option) {
@@ -167,7 +168,8 @@
 							return item
 						})
 						this.drawings = data.fileListVO
-						console.log(this.drawings,'///')
+						this.showCard = this.serverList.length>=2
+						console.log(data.serverVOS,data.fileListVO,'///')
 					}
 				})
 			}

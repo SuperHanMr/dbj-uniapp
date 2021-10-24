@@ -328,6 +328,7 @@
 					}).then(e => {
 						if (e.stockAppVOS && e.stockAppVOS.length) {
 							e.stockAppVOS.forEach(sub => {
+								sub.totoalNum=sub.number;
 								sub.number = sub.stockNumber;
 							})
 						}
@@ -339,6 +340,7 @@
 					}).then(e => {
 						if (e.stockAppVOS && e.stockAppVOS.length) {
 							e.stockAppVOS.forEach(sub => {
+								sub.totoalNum=sub.number;
 								sub.number = sub.requireNumber ? sub.requireNumber : sub.stockNumber;
 								console.log('!!!!~~~~~');
 								console.log(sub.number);
@@ -352,6 +354,7 @@
 					}).then(e => {
 						if (e.stockAppVOS && e.stockAppVOS.length) {
 							e.stockAppVOS.forEach(sub => {
+								sub.totoalNum=sub.number;
 								sub.number = sub.stockNumber;
 							})
 						}
