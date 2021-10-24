@@ -255,6 +255,8 @@
         this.deviceId = uuidv4()
         uni.setStorageSync('uuDeviceId', this.deviceId);
       }
+      getApp().globalData.screenHeight = uni.getSystemInfoSync().windowHeight
+      
     },
     methods: {
       guid() {

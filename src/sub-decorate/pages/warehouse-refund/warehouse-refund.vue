@@ -28,8 +28,8 @@
 					</view>
 					<view class="flex-row">
 						<input style="color: #FF3347;max-width: 200rpx;text-align: right;" dir="rtl" type="number"
-							placeholder="请输入金额" v-model="num" />
-						<i class="icon-xiaochengxu_fangwuguanli_bianji icon-size"></i>
+							placeholder="请输入金额" :disabled="true" v-model="num" />
+						<!-- <i class="icon-xiaochengxu_fangwuguanli_bianji icon-size"></i> -->
 					</view>
 				</view>
 			</view>
@@ -55,9 +55,9 @@
 
 		</view>
 		<view class="bottom-holder">
-			
+
 		</view>
-		<bottom-btn btnContent="提交申请" :disable="!canSubmit"  @submit="submitRefund">
+		<bottom-btn btnContent="提交申请" :disable="!canSubmit" @submit="submitRefund">
 		</bottom-btn>
 	</view>
 </template>
@@ -105,7 +105,6 @@
 				this.data.detailAppVOS.length &&
 				!this.data.stockAppVOS
 			) {
-				console.log("!!~~~~~");
 				this.data.stockAppVOS = this.data.detailAppVOS;
 			}
 
@@ -137,6 +136,10 @@
 					stockId: e.id,
 					goodsId: e.goodsId,
 					price: e.discountPrice,
+					alreadyReturnNumber: e.returnNumber,
+					number: e.totoalNum,
+					actualIncomeAmount: e.actualIncomeAmount,
+					discountSubtotal: e.discountSubtotal
 				});
 			});
 			this.refundList = list;
@@ -147,9 +150,18 @@
 			uploadNum() {
 				let totalBack = 0;
 				this.refundList.forEach((e) => {
-					console.log(e.returnNumber);
-					totalBack += e.price * e.returnNumber;
+
+					if (e.returnNumber + e.alreadyReturnNumber < e.number) {
+
+						totalBack += e.price * e.returnNumber;
+					} else {
+
+						let count = e.discountSubtotal - e.price * e.actualIncomeAmount
+						totalBack += count
+					}
+
 				});
+			
 				if (totalBack) {
 					this.num = totalBack.toFixed(2);
 				} else {
@@ -162,12 +174,10 @@
 						item.returnNumber = e.num;
 					}
 				});
-				console.log(this.refundList);
 
 				this.uploadNum();
 			},
 			getRefundReasonList() {
-				console.log("????????");
 				refundReason({
 					codeKey: "refund_reason",
 				}).then((list) => {
@@ -192,7 +202,6 @@
 					});
 					return;
 				}
-				console.log(this.data);
 				let params = {};
 				params.id = this.id;
 				params.returnMoney = this.num * 100;
@@ -200,10 +209,8 @@
 				params.remark = this.remark;
 				params.reasonId = this.reasonValue;
 				params.reason = this.reasonName;
-				console.log(params);
 				if (this.type == 1) {
 					params.details = this.refundList;
-					console.log(this.refundList);
 					goodsBack(params).then((e) => {
 						uni.showToast({
 							title: "提交成功",
@@ -248,14 +255,15 @@
 </script>
 
 <style lang="scss" scoped>
-	.bottom-holder{
+	.bottom-holder {
 		width: 100%;
 		position: fixed;
 		bottom: 0;
-		height: 136rpx; 
+		height: 136rpx;
 		background-color: #FFF;
 		opacity: 1;
 	}
+
 	.opacity-5 {
 		opacity: 0.5;
 	}

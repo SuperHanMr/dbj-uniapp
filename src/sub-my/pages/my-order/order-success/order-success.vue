@@ -69,7 +69,7 @@
 			<order-user-base-info :data="orderInfo"></order-user-base-info>
 
 			<view class="body2">
-				<view class="part1" v-for="item2 in orderInfo.details" :key="item2.id">
+				<view class="part1" v-for="(item2,index2) in orderInfo.details" :key="index2">
 					<view class="header" @click="gotoShop(item2)">
 						<text>{{item2.storeName}}</text>
 						<image src="../../../static/ic_more.svg" mode=""></image>
@@ -236,12 +236,13 @@
 					});
 				}
 			},
+			
 			// 跳转到店铺页面
-			gotoShop(item) {
-				console.log("去店铺首页！！！！");
-				console.log("this.storeId=", item.storeId, "this.areaId=", this.areaId);
+			gotoShop(item2) {
+				console.log("去店铺首页！！！！",item2);
+				console.log("item.storeId=", item2.storeId, "this.areaId=", this.areaId);
 				uni.navigateTo({
-					url: `../../../../sub-classify/pages/shops/shops?storeId=${item.storeId}&areaId=${this.areaId}`,
+					url: `../../../../sub-classify/pages/shops/shops?storeId=${item2.storeId}&areaId=${this.areaId}`,
 				});
 			},
 		},
