@@ -346,6 +346,8 @@
 				});
 			},
 			currentHouseChange(item) {
+				console.log('!!!!@@@###')
+				console.log(item);
 				this.currentAddress = item;
 				if(item.areaId){
 					this.areaId=item.areaId;
