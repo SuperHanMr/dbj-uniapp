@@ -29,7 +29,7 @@
 					<view class="flex-row">
 						<input style="color: #FF3347;max-width: 200rpx;text-align: right;" dir="rtl" type="number"
 							placeholder="请输入金额" :disabled="true" v-model="num" />
-						<i class="icon-xiaochengxu_fangwuguanli_bianji icon-size"></i>
+						<!-- <i class="icon-xiaochengxu_fangwuguanli_bianji icon-size"></i> -->
 					</view>
 				</view>
 			</view>
