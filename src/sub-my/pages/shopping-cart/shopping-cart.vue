@@ -757,7 +757,7 @@
 						uni.showToast({
 							title:"已达到商品数量添加上限",
 							icon:"none",
-							duration:1000
+							duration:2000
 						})
 						return
 					}
@@ -772,7 +772,7 @@
 						uni.showToast({
 							title:"商品数量不能再减少了",
 							icon:"none",
-							duration:1000
+							duration:2000
 						})
 					}
 				}
