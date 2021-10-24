@@ -174,20 +174,25 @@
         } = this.$options.safeArea
         this.moveHidden = false
         if (this.foll.isLeft && this.foll.isRight) {
-          console.log(dot.clientY,uni.getSystemInfoSync().windowHeight,dot,'拖拽按钮测试')
+          console.log(uni.getSystemInfoSync().windowHeight,uni.getSystemInfoSync().windowWidth,dot,'拖拽按钮测试')
           if(dot.clientY<88){
              dot.clientY = 88+20
           }else if(dot.clientY>getApp().globalData.screenHeight){
-            console.log(uni.getSystemInfoSync().windowHeight,'超出屏幕时屏幕高度',getApp().globalData.screenHeight)
+            
              dot.clientY = getApp().globalData.screenHeight-20
           }else if(dot.clientY>780){
-            console.log(uni.getSystemInfoSync().windowHeight,'按钮超出780时屏幕高度',getApp().globalData.screenHeight)
             dot.clientY = 500
+          }
+          if(dot.clientX<0){
+             dot.clientY = 0
+          }else if(dot.clientX>375){
+            dot.clientX = 375
           }
           this.offsetY = dot.clientY - this.top - this.height / 2
           if (dot.clientX <= (left + right) / 2) {
             this.endLeft = true
             this.endRight = false
+            
             this.offsetX = this.foll.num - this.left
           }
           if (dot.clientX > (left + right) / 2){

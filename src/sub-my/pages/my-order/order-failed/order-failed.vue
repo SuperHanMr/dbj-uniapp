@@ -114,6 +114,7 @@
       </view>
       <order-price
         :data="orderInfo"
+				:orderFailed="true"
       />
       <order-info
         :orderNo="orderInfo.orderNo"

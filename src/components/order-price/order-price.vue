@@ -117,12 +117,22 @@
 
     <!-- 其他情况 -->
     <view class="footer" v-else>
-      <text style="margin-right: 12rpx;">实付</text>
-      <text style="color: #FF3347;" class="price-font">
-        <text>￥</text>
-        <text style="font-size: 40rpx;" class="price-font">{{handlePrice(data.actuallyPayAmount)[0]}}.</text>
-        <text class="price-font">{{handlePrice(data.actuallyPayAmount)[1]}}</text>
-      </text>
+			<view v-if="orderFailed">
+				<text style="margin-right: 12rpx;">实付款</text>
+				<text style="color: #FF3347;" class="price-font">
+					<text>￥</text>
+					<text style="font-size: 40rpx;" class="price-font">{{handlePrice(data.actuallyPayAmount)[0]}}.</text>
+					<text class="price-font">{{handlePrice(data.actuallyPayAmount)[1]}}</text>
+				</text>
+			</view>
+			<view v-else>
+				<text style="margin-right: 12rpx;">实付</text>
+				<text style="color: #FF3347;" class="price-font">
+					<text>￥</text>
+					<text style="font-size: 40rpx;" class="price-font">{{handlePrice(data.actuallyPayAmount)[0]}}.</text>
+					<text class="price-font">{{handlePrice(data.actuallyPayAmount)[1]}}</text>
+				</text>
+			</view>
     </view>
 		<expenses-toast ref='expensesToast' :expensesType="expensesType"></expenses-toast>
   </view>
@@ -142,6 +152,10 @@ export default {
       type: Boolean,
       default: false,
     },
+		orderFailed:{
+			type:Boolean,
+			default: false,
+		}
   },
 
   data() {
