@@ -71,6 +71,7 @@
 		},
 		onShow() {
 			uni.$on('new-memo',() => {
+				this.page = 1
 				this.requestPage()
 			})
 		},
