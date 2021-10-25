@@ -1,7 +1,7 @@
 <template>
 	<view class="constructionWrap">
 		<view class="noTypes" v-if="!serveTypes.length">
-			<image class="noTypesImg" src="http://dbj.dragonn.top/static/mp/dabanjia/images/decorate/pic_empty%402x.png"></image>
+			<image class="noTypesImg" src="http://dbj.dragonn.top/static/mp/dabanjia/images/home/drawings_empty.png"></image>
 			<view class="text">暂无施工图纸</view>
 		</view>
 		<view class="fixed">
@@ -36,7 +36,7 @@
 			</view>
 		</view>
 		<view class="noDrawings" v-if="serveTypes.length && !drawings.length">
-			<image class="noDrawingsImg" src="http://dbj.dragonn.top/static/mp/dabanjia/images/decorate/pic_empty%402x.png"></image>
+			<image class="noDrawingsImg" src="http://dbj.dragonn.top/static/mp/dabanjia/images/home/drawings_empty.png"></image>
 			<view class="text">暂无施工图纸</view>
 		</view>
 		<scroll-view :scroll-y="true" :class="{'switchServer':showCard}" class="contentWrap" v-else>
