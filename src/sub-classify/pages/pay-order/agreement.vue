@@ -1,6 +1,6 @@
 <template>
   <view>
-    <web-view src='https://jia.dabanjia.com/static/dbj-protocol/protocol.html'>
+    <web-view :src= "baseUrl + '/static/dbj-protocol/protocol.html'">
     </web-view>
   </view>
 </template>
@@ -13,6 +13,7 @@
       }
     },
     onShow() {
+      this.baseUrl = this.ENV.VUE_APP_BASE_API
     },
     methods: {
 

@@ -696,7 +696,7 @@
     bottom: 0;
     left: 0;
     width: 100%;
-    padding: 24rpx 32rpx;
+    padding: 30rpx 32rpx 24rpx;
     background-color: #fff;
     box-sizing: border-box;
   }

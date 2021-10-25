@@ -11,7 +11,7 @@
 					  v-model="query.remarks"
 					  placeholder="您在使用过程中有任何问题与建议都可以写在这里，上传相关页面的截图可以方便我们更快速的给您解决问题~"
 					  placeholder-style="color:#bbbbbb;font-size:26rpx;line-height:40rpx;"
-					  maxlength="140"
+						maxlength="140"
 					  class="remark"
 					  @input="onTextAreaInput"
 					/>
@@ -62,7 +62,9 @@
 		  this.systemBottom = menuButtonInfo.bottom + "rpx";
 		},
 		watch: {
-		  textAreaLength(newVal, oldVal) {},
+		  textAreaLength(newVal, oldVal) {
+			 if(newVal>140) return 140
+			},
 		},
 		methods: {
 			// 反馈文字
