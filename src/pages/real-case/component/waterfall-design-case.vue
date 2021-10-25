@@ -25,9 +25,15 @@
 				</view>
 			</view>
 			<view class="position-icon">
-				<image src="/static/images/real-case/video_ic.png" mode="" v-if="params.parentType == 0"></image>
-				<image src="/static/images/real-case/ic_vr.png" mode="" v-if="params.parentType == 1"></image>
-				<image src="/static/images/real-case/img_ic.png" mode="" v-if="params.parentType == 2"></image>
+				<view class="icon-ic_zhuangxiuxianchang_shipinanli_csn1" v-if="params.parentType == 0">
+					
+				</view>
+				<view class="icon-ic_zhuangxiuxianchang_vranli_csn1" v-if="params.parentType == 1">
+					
+				</view>
+				<view class="icon-ic_zhuangxiuxianchang_tupiananli_csn1" v-if="params.parentType == 2">
+					
+				</view>
 			</view>
 		</view>
 		<!-- <video v-if="params.parentType !== 0" id="myVideo" :src="params.videoUrl"
@@ -150,11 +156,15 @@
 		}
 		.position-icon{
 			position: absolute;
+			width: 44rpx;
+			height: 44rpx;
+			background: rgba(0,0,0,.2);
+			border-radius: 50%;
 			right: 16rpx;
 			top: 16rpx;
-			image{
-				width: 44rpx;
-				height: 44rpx;
+			view{
+				font-size: 44rpx;
+				color: #ffffff;
 			}
 		}
 	}
