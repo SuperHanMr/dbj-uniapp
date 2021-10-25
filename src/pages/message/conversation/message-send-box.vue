@@ -670,7 +670,7 @@
     font-size: 16px;
   }
   .message-send-box.iphone {
-    padding-bottom: 20px;
+    padding-bottom: 34px;
   }
   .message-send-box.iphone .message-send-input {
     padding: 1px 16px;
