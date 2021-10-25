@@ -33,26 +33,16 @@
 		data() {
 			return {
 				listArr: [{
-						title: "打扮家装修服务协议",
-						// url: "/app-pages/service-agreement/index.html"
-						// url: "/protocol/service-agreement.html"
+						title: "打扮家平台服务协议",
 						url:'/static/dbj-protocol/protocol.html'
 					},
 					{
-						title: "打扮家装修隐私协议",
-						// url: "/app-pages/privacy-agreement/index.html"
-						// url: "/protocol/private-policy.html"
+						title: "打扮家隐私政策",
 						url:'/static/dbj-protocol/privacy-policy.html'
 					},
-					// {
-					// 	title: "打扮家用户行为规范",
-					// 	// url: "/app-pages/user-code-of-conduct/index.html"
-					// 	url: "/protocol/behaviour-norms.html"
-					// },
 					{
 						title: "打扮家知识产权条款",
-						// url: "/app-pages/intellectual-property-rights/index.html"
-						url: "/protocol/intellectual-property.html"
+						url: "/protocol-c/intellectual-property.html"
 					},
 					{
 						title: "意见与反馈",
@@ -69,10 +59,18 @@
 		methods: {
 
 			onClick(item,index) {
-				if(index <3){
+				
+				if(index <2){
 					console.log("this.ENV.VUE_APP_BASE_API=",this.ENV.VUE_APP_BASE_API)
 					
 					let url = this.ENV.VUE_APP_BASE_API + item.url
+					uni.navigateTo({
+						url:`../../../pages/common/webview/webview?url=`+ encodeURIComponent(url),
+					})
+				}if(index == 2){
+					console.log("this.VUE_APP_BASE_H5=",this.ENV.VUE_APP_BASE_H5)
+					
+					let url = this.ENV.VUE_APP_BASE_H5 + item.url
 					uni.navigateTo({
 						url:`../../../pages/common/webview/webview?url=`+ encodeURIComponent(url),
 					})
