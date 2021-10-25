@@ -80,8 +80,8 @@
 					<!-- {{ orderInfo.type }} {{ item.freeShipCount }} {{ orderInfo.stockType }} -->
 
           <view 
-						v-if="orderInfo.type == 1 && item.hasMaterial && orderInfo.stockType == 1"
-						:style="{paddingBottom: orderInfo.type == 1 && item.hasMaterial && orderInfo.stockType == 1 ? '32rpx':'0'}" 
+						v-if="item.hasMaterial && orderInfo.stockType == 1"
+						:style="{paddingBottom: item.hasMaterial && orderInfo.stockType == 1 ? '32rpx':'0'}" 
 					>
             <view class="tips" v-if="item.freeShipCount &&  item.fullExemptionAmount ">
               <text>本次支付</text>

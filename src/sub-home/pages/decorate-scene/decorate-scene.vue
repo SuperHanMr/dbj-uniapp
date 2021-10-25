@@ -90,18 +90,19 @@
               >
                 <view
                   class="connectLine"
-                  :class="{'line-green':item.nodeStatus===3||item.nodeStatus===4,
-									'line-gray':item.nodeStatus===1||item.nodeStatus===2}"
+                  :class="{'line-green':index<newestNodeIndex,
+									'line-gray':index>=newestNodeIndex}"
                 ></view>
 							</view>
             </view>
           </view>
           <view class="column">
             <view
-              :class="{'active':item.nodeStatus===2||item.nodeStatus===3}"
+              :class="{'active':item.nodeStatus!==1}"
               v-for="(item,index) in nodesInfo"
               :key="item.id"
-            ></view>
+            >
+						</view>
           </view>
           <view class="worker">
             <view class="item"
@@ -508,7 +509,8 @@ export default {
 			commentPage: 1,
 			homePageEstate: {},
 			buyState: false,//是否购买摄像头服务,
-			hasChange: false
+			hasChange: false,
+			newestNodeIndex: 0
     };
   },
   onLoad(option) {
@@ -875,11 +877,13 @@ export default {
       getDecorateProcess(params).then((data) => {
         if (data) {
           let { projectInfo, nodes, estate } = data;
-          this.projectInfo = projectInfo;
-          this.processId = nodes[0].processId;
-          this.houseStructure = estate.houseStructure;
-          this.requestFocus();
-          nodes.map((item, index) => {
+					let arr = []
+					nodes.slice().reverse().forEach(item => {
+						if(item.nodeType === 2 || item.nodeType === 3)return
+						arr.push(item)
+					})
+					console.log(arr,'??')
+					nodes.map((item, index) => {
 						if(item.nodeType === 2 || item.nodeType === 3){
 							return
 						}{
@@ -888,21 +892,31 @@ export default {
 								nodeType: item.nodeType
 							});
 						}
-            this.nodesInfo.push({
-              id: item.id,
-              nodeStatus: item.nodeStatus,
-              nextNodeId: item.nextNodeId,
-            });
-            this.workers.push({
-              id: item.serveId,
-              name: item.serveName.length<=3?item.serveName.slice(0,3):item.serveName.slice(0,2),
-              avatar: item.serveAvatar,
+						if(arr.find(item => item.nodeStatus !== 1)){
+							let nodeType = arr.find(item => item.nodeStatus !== 1).nodeType
+							this.newestNodeIndex = this.nodeTypes.findIndex(item => item.nodeType === nodeType)
+							console.log(nodeType)
+						}
+					  this.nodesInfo.push({
+					    id: item.id,
+					    nodeStatus: item.nodeStatus,
+					    nextNodeId: item.nextNodeId,
+					  });
+					  this.workers.push({
+					    id: item.serveId,
+					    name: item.serveName.length<=3?item.serveName.slice(0,3):item.serveName.slice(0,2),
+					    avatar: item.serveAvatar,
 							nodeStatus: item.nodeStatus,
 							nodeType: item.nodeType,
 							flag: item.serveName.length>3
-            });
-            return item;
-          });
+					  });
+					  return item;
+					});
+          this.projectInfo = projectInfo;
+          this.processId = nodes[0].processId;
+          this.houseStructure = estate.houseStructure;
+          this.requestFocus();
+          
           for (let i = 0; i < this.nodesInfo.length - 1; i++) {
             this.nodesInfo[i].nextNodeStatus = this.nodesInfo[i + 1].nodeStatus;
           }
@@ -1410,7 +1424,7 @@ export default {
 		display: block;
 	}
 	.houseInfo {
-		width: 70%;
+		width: 438rpx;
 		padding-top: 56rpx;
 	}
 	.location {
@@ -1565,7 +1579,7 @@ export default {
 		width: 606rpx;
 	}
 	.nodeType {
-		margin: 0 8rpx 16rpx;
+		margin: 0 10rpx 16rpx;
 		display: flex;
 		justify-content: space-between;
 	}
@@ -1579,7 +1593,7 @@ export default {
 	}
 	.nodeType > view.maxWidth{
 		width: 66rpx;
-		margin: 0 -10rpx;
+		margin: 0 -11rpx;
 	}
 	.progressBar {
 		display: flex;
@@ -1621,7 +1635,7 @@ export default {
 		border: 2rpx solid #c2c2c2;
 	}
 	.connectLine {
-		width: 60rpx;
+		width: 62rpx;
 		height: 2rpx;
 		margin-top: 8rpx;
 		margin-left: 16rpx;
@@ -1635,20 +1649,23 @@ export default {
 
 	.column {
 		height: 24rpx;
-		margin: 0 29rpx;
+		padding: 0 30rpx;
 		display: flex;
 		justify-content: space-between;
 	}
 	.column > view {
-		width: 1rpx;
 		height: 24rpx;
-		border-right: 1rpx dotted #c2c2c2;
+		border-right: 2rpx dotted #c2c2c2;
 	}
 	.column > view.active {
-		border-right: 1rpx dotted #01c2c3;
+		border-right: 2rpx dotted #01c2c3;
+	}
+	.column > view:nth-child(7),
+	.column > view:nth-child(8){
+		margin-right: 1rpx;
 	}
 	.worker {
-		margin: 0 8rpx;
+		padding: 0 10rpx;
 		display: flex;
 		justify-content: space-between;
 	}
@@ -1658,6 +1675,20 @@ export default {
 		height: 128rpx;
 		background: #f5f6f6;
 		border-radius: 20rpx;
+	}
+	.worker .item:nth-child(1),
+	.worker .item:nth-child(2),
+	.worker .item:nth-child(3),
+	.worker .item:nth-child(4){
+		margin-left: 1rpx;
+	}
+	.worker .item:nth-child(5),
+	.worker .item:nth-child(6){
+		margin-right: 1rpx;
+	}
+	.worker .item:nth-child(7),
+	.worker .item:nth-child(8){
+		margin-right: 2rpx;
 	}
 	.worker .item > view {
 		width: 40rpx;
@@ -1790,6 +1821,7 @@ export default {
 		display: block;
 		margin-top: 39rpx;
 		margin-left: 31rpx;
+		border: 1rpx solid #f5f6f6;
 	}
 	.item .acitonInfo {
 		width: 598rpx;

@@ -43,9 +43,9 @@
 
 			</view>
 			<view class="bottom-contain">
-				<view class="cover">
+				<!-- <view class="chat-cover">
 
-				</view>
+				</view> -->
 				<!-- 聊天 -->
 				<scroll-view id="scrollview" :scroll-top="scrollTop" :style="{maxHeight:chatMax}" class="scorll-chat"
 					scroll-y="true" :scroll-into-view="bottomId">
@@ -126,12 +126,12 @@
 						连麦
 					</view>
 					<image class="bottom-icon"
-						src="http://dbj.dragonn.top/static/mp/dabanjia/images/home/lives_shopping.png" mode=""
+						src="http://dbj.dragonn.top/static/mp/dabanjia/images/home/lives_shopping_new.png" mode=""
 						@click="showDownload=true">
 					</image>
 					<view class="bottom-icon" @click="clickLike">
-						<image class="img" src="http://dbj.dragonn.top/static/mp/dabanjia/images/home/lives_agree.png"
-							mode="">
+						<image class="img"
+							src="http://dbj.dragonn.top/static/mp/dabanjia/images/home/lives_agree_new.png" mode="">
 						</image>
 						<view class="like-count">
 							{{totoalLick}}
@@ -169,7 +169,7 @@
 
 		</view>
 
-		<view v-if="showDownload" class="alert-app">
+		<view v-if="showDownload" class="alert-app" >
 			<view class="content">
 				<view class="img">
 					<view class="close" @click="showDownload=false">
@@ -464,6 +464,9 @@
 			statechange(e) {},
 			error(e) {},
 			handleShowSendBox() {
+				if(this.showDownload){
+					return;
+				}
 				uni.$emit("show-live-send-box");
 			},
 			handleLiveRoomClick() {
@@ -555,6 +558,8 @@
 </script>
 
 <style lang="scss">
+	.cover {}
+
 	.product {
 		margin-top: 18rpx;
 		width: 448rpx;
@@ -632,6 +637,7 @@
 		flex-direction: column;
 		justify-content: center;
 		align-items: center;
+		background: rgba(0, 0, 0, 0.4);
 
 		.content {
 			width: 640rpx;
@@ -774,11 +780,24 @@
 		}
 	}
 
+	.chat-cover {
+		position: absolute;
+		bottom: 0;
+		right: 0;
+		left: 0;
+		z-index: 500;
+		width: 100%;
+		height: 92rpx;
+		background: linear-gradient(180deg, rgba(0, 0, 0, 0.00) 44%, rgba(0, 0, 0, 0.26) 100%);
+
+	}
+
 	.bottom-contain {
 		position: absolute;
 		bottom: 0;
 		right: 0;
 		left: 0;
+		z-index: 400;
 
 		.bottom-placeholder {
 			height: 68rpx;
@@ -797,8 +816,7 @@
 				margin-left: 24rpx;
 				width: 302rpx;
 				height: 72rpx;
-				opacity: 0.24;
-				background: #000000;
+				background: rgba(255, 255, 255, 0.1);
 				border-radius: 28rpx;
 				display: flex;
 				align-items: center;
@@ -844,7 +862,7 @@
 			.macphone {
 				width: 124rpx;
 				height: 72rpx;
-				background: rgba($color: #000000, $alpha: 0.24);
+				background: rgba(255, 255, 255, 0.1);
 				border-radius: 28rpx;
 				display: flex;
 				flex-direction: row;
@@ -876,7 +894,7 @@
 				margin-top: 12rpx;
 				margin-left: 24rpx;
 				max-width: 544rpx;
-				background: rgba(0, 0, 0, 0.3);
+				background: rgba(255, 255, 255, 0.1);
 				border-radius: 14rpx;
 				color: #fff;
 				padding: 0 16rpx;
@@ -1003,15 +1021,16 @@
 	.content {
 		width: 100vw;
 		height: 100vh;
-		background: url("http://dbj.dragonn.top/static/mp/dabanjia/images/home/live_bg.png");
-		background-size: 100% 100%;
-		background-repeat: no-repeat;
+		// background: url("http://dbj.dragonn.top/static/mp/dabanjia/images/home/live_bg.png");
+		// background-size: 100% 100%;
+		// background-repeat: no-repeat;
+		background-color: #000;
 		display: flex;
 		flex-direction: column;
 	}
 
 	.player {
-		height: 42vh;
+		height: 52vh;
 		width: 100vw;
 	}
 
