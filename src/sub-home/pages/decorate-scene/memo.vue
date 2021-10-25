@@ -48,7 +48,8 @@
 				projectId: 0,
 				title: "备忘录",
 				fromNewMemo: false,
-				navBarHeight: ""
+				navBarHeight: "",
+				page: 1
 			}
 		},
 		onLoad(option) {
@@ -69,6 +70,10 @@
 			uni.$on('new-memo',() => {
 				this.requestPage()
 			})
+		},
+		onReachBottom() {
+			this.page+=1
+			this.requestPage()
 		},
 		mounted() {
 			this.requestPage()
@@ -94,10 +99,19 @@
 				})
 			},
 			requestPage(){
-				getMemos(this.projectId).then(data => {
+				let params = {
+					page: this.page,
+					projectId: this.projectId
+				}
+				getMemos(params).then(data => {
 					if(data){
-						let {list} = data
-						this.memos = list || []
+						let {list,page} = data
+						this.page = page
+						if(this.page === 1){
+							this.memos = list
+						}else{
+							this.memos.push(...list)
+						}
 					}
 				})
 			}

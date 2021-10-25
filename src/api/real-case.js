@@ -76,8 +76,8 @@ export function getSigneddates(projectId,month) {
 export function getDynamics(params) {
   return request.post(`/pm/app/decorate/calendar/getSimpleListByPageQuery`, params);
 }
-export function getMemos(projectId) {
-  return request.get(`/pm/app/memo/all_list/${projectId}`, {});
+export function getMemos(params) {
+  return request.get(`/pm/app/memo/all_list`, {params});
 }
 export function getMemoDetail(memoId) {
   return request.get(`/pm/app/memo/${memoId}/details`, {});
