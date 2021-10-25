@@ -98,10 +98,11 @@
           </view>
           <view class="column">
             <view
-              :class="{'active':item.nodeStatus===2||item.nodeStatus===3}"
+              :class="{'active':item.nodeStatus!==1}"
               v-for="(item,index) in nodesInfo"
               :key="item.id"
-            ></view>
+            >
+						</view>
           </view>
           <view class="worker">
             <view class="item"
@@ -1648,7 +1649,7 @@ export default {
 
 	.column {
 		height: 24rpx;
-		margin: 0 30rpx;
+		padding: 0 30rpx;
 		display: flex;
 		justify-content: space-between;
 	}
@@ -1658,6 +1659,10 @@ export default {
 	}
 	.column > view.active {
 		border-right: 2rpx dotted #01c2c3;
+	}
+	.column > view:nth-child(7),
+	.column > view:nth-child(8){
+		margin-right: 1rpx;
 	}
 	.worker {
 		padding: 0 10rpx;
@@ -1678,10 +1683,12 @@ export default {
 		margin-left: 1rpx;
 	}
 	.worker .item:nth-child(5),
-	.worker .item:nth-child(6),
+	.worker .item:nth-child(6){
+		margin-right: 1rpx;
+	}
 	.worker .item:nth-child(7),
 	.worker .item:nth-child(8){
-		margin-right: 1rpx;
+		margin-right: 2rpx;
 	}
 	.worker .item > view {
 		width: 40rpx;
@@ -1814,6 +1821,7 @@ export default {
 		display: block;
 		margin-top: 39rpx;
 		margin-left: 31rpx;
+		border: 1rpx solid #f5f6f6;
 	}
 	.item .acitonInfo {
 		width: 598rpx;
