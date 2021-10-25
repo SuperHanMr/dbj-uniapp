@@ -189,7 +189,7 @@
 						id: false,
 					},
 				],
-				room: [],
+				room: [1,1,1,1],
 				//是否已经获取点位
 				hasPoint: false,
 				indicatorClass: "choose-item",
@@ -327,6 +327,7 @@
 				this.roomData = e.detail.value;
 			},
 			pickerCancel() {
+        console.log(111)
 				this.roomData = [...this.room];
 				this.$refs.popup.close();
 				this.visible = false;
