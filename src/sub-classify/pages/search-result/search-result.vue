@@ -19,8 +19,7 @@
         <sort-button class="sort-button"></sort-button>
       </div>
     </view>
-    <scroll-view class="content" scroll-y="true" @scrolltolower="loadMoreList" @scrolltoupper="refreshList"
-      lower-threshold="5">
+    <view class="content" @scrolltolower="loadMoreList">
       <uni-swipe-action v-if="listArr.length>0">
         <uni-swipe-action-item v-for="(goodsItem,goodsIndex) in listArr" :key="goodsIndex" :right-options="options">
           <view class="goodsItem" @click="toDetails(goodsItem.product.skuId)">
@@ -51,7 +50,7 @@
         <view class="img"></view>
         <view class="text">抱歉，没有找到符合的商品 请换关键词再搜搜看吧～</view>
       </view>
-    </scroll-view>
+    </view>
   </view>
 </template>
 
@@ -101,13 +100,13 @@
       //  }
     },
     onPullDownRefresh() {
-      console.log(999999999)
+      this.page = 1
+      this.getList()
+    },
+    onReachBottom() {
+      this.loadMoreList()
     },
     methods: {
-      refreshList() {
-        this.page = 1
-        this.getList()
-      },
       getList() {
         let params = {
           serviceVersion: 0,
@@ -127,6 +126,7 @@
         }
 
         getGoodsList(params).then((data) => {
+          uni.stopPullDownRefresh()
           this.isPageReady = true
           this.totalPage = data.total
           if (this.isLoadMore) {
@@ -270,6 +270,8 @@
     padding-bottom: 20rpx;
     margin-top: 115rpx;
     position: relative;
+    width: 100%;
+    overflow: scroll;
   }
 
   .content-item {
