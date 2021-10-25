@@ -18,7 +18,7 @@
           </view>
         </view>
       </view>
-      <image class="houseImg" src="http://dbj.dragonn.top/static/mp/dabanjia/images/decorate/pic_empty%402x.png"></image>
+      <image class="houseImg" :src="projectInfo.estateIconUrl"></image>
     </view>
     <view class="navBar">
       <view

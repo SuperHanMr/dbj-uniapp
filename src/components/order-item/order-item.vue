@@ -3,7 +3,7 @@
 
 		<view	class="body-main" :style="{paddingBottom:containerPaddingBottom +'rpx'}" @click="handleDetail()" >
 			<!-- 标签 -->
-			<view class="pic"  v-if="orderStatus==2 && dataList.type == 1 && !dataList.stockType">
+			<view class="pic"  v-if="(orderStatus==2 || showIcon) && dataList.type == 1 && !dataList.stockType">
 				<!-- 当该商品处于待发货标签时，则对应退款、退款关闭、退款失败状态 -->
 				<view class="icon-status1" v-if="dataList.showRefundBtn || (dataList.refundBillStatus == 3 || dataList.refundBillStatus == 4 ||dataList.refundBillStatus == 5)|| dataList.shipmentStatus == 0">
 					待发货
@@ -160,6 +160,10 @@
 				type:Boolean,
 				default:false,
 			},
+			showIcon:{
+				type:Boolean,
+				default:false
+			}
 		},
 		data() {
 			return {

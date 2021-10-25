@@ -2,7 +2,7 @@
   <view>
     <view class="container">
       <view  class="product-container">
-        <view v-if="type == 'whole'"  v-for="(item,index) in refundInfo.details" :key="index">
+        <!-- <view v-if="type == 'whole'"  v-for="(item,index) in refundInfo.details" :key="index">
 					<view v-if="refundId">
 						<order-item :refundType="true" :dataList="item"></order-item>
 					</view>
@@ -15,39 +15,55 @@
 							</order-item>
 						</view>
 					</view>
-        </view>
+        </view> -->
+				<view v-if="type == 'whole' && refundId "  >
+					{{refundInfo.detailAppVOS}}
+					<view v-for="(item1,index1) in refundInfo.details" :key="index1">
+						<order-item :refundType="true" :dataList="item1" :showIcon="true" ></order-item>
+					</view>
+				</view>
+				<view v-if="type == 'whole' && !refundId "  v-for="(item2,index2) in refundInfo.detailAppVOS" :key="index2">
+					<view>
+						<order-item :refundType="true" :dataList="item2" :orderStatus="2" :showIcon="true" ></order-item>
+					</view>
+				</view>
+				<view v-if="type=='partical' && refundId ">
+					<view v-for="item3 in refundInfo" :key="item3.id">
+						<order-item :refundType="true" :showIcon="true" :dataList="item3"></order-item>
+					</view>
+				</view>
 
-        <view v-if="type == 'partical'">
-					<view v-if="refundId">
-						<view v-for="item3 in refundInfo" :key="item3.id">
-							<order-item :refundType="true" :dataList="item3"></order-item>
+        <view v-if="type == 'partical' && !refundId ">
+						<view v-for="item4 in refundInfo.detailAppVOS" :key="item4.id">
+							<order-item :refundType="true" :dataList="item4" :showIcon="true" ></order-item>
 						</view>
-					</view>
-          <order-item  v-else :dataList="refundInfo"></order-item>
-        </view>
+				</view>
 				
-				<!-- 运费和搬运费 -->
-        <view class="price-container" >
-          <view class="price-item" v-if="refundInfo.freight">
-            <view  class="header" style="margin-bottom: 16rpx;">
-              <text style="margin-right: 8rpx;">运费</text>
-							<!-- <view class="icon">?</view>-->
+			<!-- 运费和搬运费 -->
+			<view class="price-container" v-if="refundInfo.freight || refundInfo.handlingFees" >
+			    <view class="price-item" v-if="refundInfo.freight">
+			      <view  class="header" style="margin-bottom: 16rpx;">
+			        <text style="margin-right: 8rpx;">运费</text>
 							<image class="icon" src="../../../static/price_icon.svg" mode="" @click="readExpenses(1)"></image>
-            
 						</view>
-            <text style="font-size: 28rpx;" class="price-font">￥{{handlePrice(refundInfo.freight)[0]}}.{{handlePrice(refundInfo.freight)[1]}}</text>
+						<text>
+							<text style="font-size: 24rpx;">￥</text>
+							<text style="font-size: 28rpx;" class="price-font">{{handlePrice(refundInfo.freight)[0]}}.{{handlePrice(refundInfo.freight)[1]}}</text>
+						</text>
 					</view>
-          <view class="price-item" v-if="refundInfo.handlingFees">
-            <view class="header">
-              <text style="margin-right: 8rpx;">搬运费</text>
-							<!-- <view class="icon">?</view> -->
+			    <view class="price-item" v-if="refundInfo.handlingFees">
+			      <view class="header">
+							
+			        <text style="margin-right: 8rpx;">搬运费</text>
 							<image class="icon" src="../../../static/price_icon.svg" @click="readExpenses(2)" mode=""></image>
-            
 						</view>
-            <text  style="font-size: 28rpx;" class="price-font">￥{{handlePrice(refundInfo.handlingFees)[0]}}.{{handlePrice(refundInfo.handlingFees)[1]}}</text>
+						<text>
+							<text style="font-size: 24rpx;">￥</text>
+							<text  style="font-size: 28rpx;" class="price-font">{{handlePrice(refundInfo.handlingFees)[0]}}.{{handlePrice(refundInfo.handlingFees)[1]}}</text>
+						</text>
 					</view>
-        </view>
-      </view>
+			  </view>
+			</view>
 
 
 			<view class="refund-container">
@@ -56,13 +72,6 @@
 						<view class="icon">*</view>
 						<text>退款原因</text>
 					</view>
-					<!-- <view class="reason" v-if="!reasonName">
-						<text style="color:#C7C7C7;">请选择</text>
-						<image src="../../static/ic_arraw_down@2x.png" mode="" @click="openPopup()"/>
-					</view>
-					<view class="reason" v-else >
-					  <text style="margin-right: 16rpx;" @click="openPopup()">{{reasonName}}</text>
-					</view> -->
 					<view class="reason" >
 						<text v-if="!reasonName" @click="openPopup()">请选择</text>
 						<text v-else style="margin-right: 16rpx;color: #333333;" @click="openPopup()">{{reasonName}}</text>
@@ -178,7 +187,7 @@
 </template>
 
 <script>
-import { getRefundInfo,refundReason,wholeOrderApplyForRefund,particalOrderApplyForRefund} from "@/api/order.js";
+import { getRefundInfo,refundReason,wholeOrderApplyForRefund,particalOrderApplyForRefund,getRefundInformation} from "@/api/order.js";
 export default {
   data() {
     return {
@@ -206,9 +215,14 @@ export default {
 			
 			refundId:"",
 			orderDetailId:"",
+			
       systemBottom: "",
 			
 			expensesType:"",
+			orderDetailsId:'',
+			applyMode:'',
+			freight:'',
+			handlingFees:'',
     };
   },
   mounted(e) {
@@ -222,24 +236,57 @@ export default {
   onLoad(e) {
     this.type = e.type;
 		if(this.type){
-			this.query.orderId=Number(e.id)
-			console.log("this.query.orderId=",this.query.orderId)
-			this.query.status=Number(e.status);//订单状态1进行中 2已完成
+			this.query.orderId=Number(e.orderId)
+			this.query.status=Number(e.status);//订单状态 1进行中 2已完成
+			this.applyMode = Number(e.applyMode)//	申请方式 1单商品 2整单退
 			console.log("this.type=", this.type);
 			if (this.type == "partical") {
-				this.refundInfo = JSON.parse(
-					wx.getStorageSync("particalRefundOrderInfo")
-				);
-				console.log("进行中数据带过来的数据：this.refundInfo=",this.refundInfo)
-				this.orderDetailId = this.refundInfo.orderDetailId
-				this.inputValue =  this.refundInfo.actualIncomeAmount
-				this.returnMoney = this.inputValue
-				console.log("this.inputValue",this.inputValue)
-				console.log("this.refundInfo=", this.refundInfo, typeof this.refundInfo);
+				this.orderDetailsId = e.orderDetailsId
+				console.log("this.query.orderId=",this.query.orderId)
+				console.log("this.query.status=",this.query.status)
+				console.log("this.applyMode=",this.applyMode)
+				console.log("this.orderDetailsId=",this.orderDetailsId)
+				let params = {
+					orderId:this.query.orderId,
+					status:this.query.status,
+					applyMode:this.applyMode,
+					orderDetailsId:this.orderDetailsId
+				}
+				getRefundInformation(params).then(res=>{
+					this.refundInfo = res
+					console.log("this.refundInfo=",this.refundInfo)
+					this.refundInfo.actualIncomeAmount = this.refundInfo.maxRefundAmount
+					this.returnMoney = this.refundInfo.maxRefundAmount
+				})
+				// this.refundInfo = JSON.parse(
+				// 	wx.getStorageSync("particalRefundOrderInfo")
+				// );
+				// console.log("进行中数据带过来的数据：this.refundInfo=",this.refundInfo)
+				// this.orderDetailId = this.refundInfo.orderDetailId
+				// this.inputValue =  this.refundInfo.actualIncomeAmount
+				// this.returnMoney = this.inputValue
+				// console.log("this.inputValue",this.inputValue)
+				// console.log("this.refundInfo=", this.refundInfo, typeof this.refundInfo);
 			} else {
-				console.log("进行中数据带过来的数据：this.refundInfo=",this.refundInfo)
-				this.refundInfo = JSON.parse(wx.getStorageSync("wholeRefundOrderInfo"));
-				this.returnMoney =  this.refundInfo.totalActualIncomeAmount
+				console.log("this.query.orderId=",this.query.orderId)
+				console.log("this.query.status=",this.query.status)
+				console.log("this.applyMode=",this.applyMode)
+				let params = {
+					orderId:this.query.orderId,
+					status:this.query.status,
+					applyMode:this.applyMode
+				}
+				getRefundInformation(params).then(res=>{
+					this.refundInfo = res
+					console.log("this.refundInfo=",this.refundInfo)
+					this.refundInfo.actualIncomeAmount = this.refundInfo.maxRefundAmount
+					this.returnMoney = this.refundInfo.maxRefundAmount
+					this.freight = this.refundInfo.freight?this.refundInfo.freight:'0'
+					this.handlingFees = this.refundInfo.handlingFees?this.refundInfo.freight:'0'
+				})
+				// console.log("进行中数据带过来的数据：this.refundInfo=",this.refundInfo)
+				// this.refundInfo = JSON.parse(wx.getStorageSync("wholeRefundOrderInfo"));
+				// this.returnMoney =  this.refundInfo.totalActualIncomeAmount
 			}
 		}else{
 			this.refundId = e.refundId
@@ -273,6 +320,8 @@ export default {
 				this.reasonName = data.reason
 				this.returnMoney  =data.refundAmount
 				this.inputValue  = data.refundAmount
+				this.freight = this.refundInfo.freight?this.refundInfo.freight:'0'
+				this.handlingFees = this.refundInfo.handlingFees?this.refundInfo.freight:'0'
 				console.log("this.type=",this.type)
 				if(this.type =='partical'){
 					this.refundInfo = data.detailAppVOS
@@ -314,6 +363,8 @@ export default {
 					reason:this.reasonName, //退款原因
 					reasonId:this.reasonValue,//退款原因id
 					remark:this.query.remarks, //备注
+					freight:this.freight,
+					handlingFees:this.handlingFees,
 					status:this.query.status, //订单状态1进行中 2已完成
 				}).then(data=>{
 					console.log("data=",data,"data.id=",data.id)
@@ -323,11 +374,13 @@ export default {
 				})
 			}else{
 				particalOrderApplyForRefund({
-					orderDetailsId:this.orderDetailId,//订单明Id字段
+					orderDetailsId:this.orderDetailsId?this.orderDetailsId:this.orderDetailId,//订单明Id字段
 					returnMoney:this.returnMoney * 100,//申请退货钱数(分)
 					reason:this.reasonName, //退款原因
 					reasonId:this.reasonValue,//退款原因id
 					remark:this.query.remarks, //备注
+					freight:this.freight,
+					handlingFees:this.handlingFees,
 					status:this.query.status, //订单状态1进行中 2已完成
 				}).then(data=>{
 					console.log("打印返回的数据=",data,"data.id=",data.id)
@@ -376,6 +429,7 @@ export default {
     },
 
     handlePrice(price) {
+			if(!price)return ['0','00']
       let list = String(price).split(".");
       if (list.length == 1) {
         return [list[0], "00"];
