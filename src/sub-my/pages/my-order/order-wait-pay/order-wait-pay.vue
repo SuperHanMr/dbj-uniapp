@@ -87,7 +87,7 @@
               <text>本次支付</text>
               <text style="color: #333333;">满{{item.fullExemptionAmount}}元</text>
               <text>，可获得</text>
-              <text style="color: #333333;">{{item.freeShipCount}}次免邮费额度，</text>
+              <text style="color: #333333;">{{item.freeShipCount}}次免运费额度，</text>
               <text>搬运费需要根据实际要货时进行核算</text>
             </view>
             <view class="tips"  v-else >

@@ -19,7 +19,7 @@
 						<text v-if="status == 3 || status == 4">退款关闭</text>
 						<text v-if="status == 5">退款失败</text>
 					</view>
-					<text class="time">{{refundInfo.refundTime | formatDate}}</text>
+					<text class="time" >{{refundInfo.refundTime | formatDate}}</text>
 				</view>
       </view>
 
@@ -33,39 +33,40 @@
 
 			</view>
 
-      <view class="body1" v-for="item in refundInfo.detailAppVOS" :key="item.id">
+      <view class="body1" >
         <order-item
+					v-for="item in refundInfo.detailAppVOS"
+				 :key="item.id"
           :dataList="item"
           :refundType="true"
           @handleDetail="productDetail(item,'refund')"
         />
-        <view class="refund-money" v-if="item.freight || item.handlingFees">
+        <view class="refund-money" v-if="refundInfo.freight || refundInfo.handlingFees">
           <!--运费 -->
-          <view class="price-item" v-if="item.freight">
+          <view class="price-item" v-if="refundInfo.freight">
             <view class="title">
               <text style="margin-right: 8rpx;">运费</text>
-              <!-- <text class="icon">?</text> -->
 							<image src="../../../../static/price_icon.svg" class="icon" mode=""  @click="readExpenses(1)"></image>
             </view>
             <view class="price">
               <text>￥</text>
-              <text class="price-style price-font">{{handlePrice(item.freight)[0]}}.{{handlePrice(item.freight)[1]}}</text>
+              <text class="price-style price-font">{{handlePrice(refundInfo.freight)[0]}}.{{handlePrice(refundInfo.freight)[1]}}</text>
             </view>
           </view>
 
           <!-- 搬运费 -->
-          <view class="price-item" v-if="item.handlingFees">
+          <view class="price-item" v-if="refundInfo.handlingFees">
             <view class="title">
               <text style="margin-right: 8rpx;">搬运费</text>
-              <!-- <text class="icon">?</text> -->
 							<image src="../../../../static/price_icon.svg" class="icon" mode=""  @click="readExpenses(2)"></image>
             </view>
             <view>
-              <text>￥</text><text class="price-style price-font">{{handlePrice(item.handlingFees)[0]}}.{{handlePrice(item.handlingFees)[1]}}</text>
+              <text>￥</text><text class="price-style price-font">{{handlePrice(refundInfo.handlingFees)[0]}}.{{handlePrice(refundInfo.handlingFees)[1]}}</text>
             </view>
           </view>
         </view>
       </view>
+			
       <order-refund-info :refundInfo="refundInfo"></order-refund-info>
 
       <view
