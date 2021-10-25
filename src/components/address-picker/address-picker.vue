@@ -17,7 +17,7 @@
         <image class="switchSite" src="../../static/images/ic_more_black.png"></image>
       </view>
       <view class="header-operator" v-for="(item, index) in addUser" :key="index" v-if="addUser.length">
-        <view v-if="item.addingJobName">
+        <view v-if="item.addingJobName" class="add-box">
           <image src="../../static/images/addUser.png" class="locationIcon"></image>
           <view class="address">
             <view class="community">{{item.addingJobName}}:{{item.addingUserName}}</view>
@@ -212,13 +212,14 @@
     margin-bottom: 16rpx;
     display: block;
   }
-
   .header-operator {
     display: flex;
     width: 100%;
     background: #ffffff;
   }
-
+  .add-box{
+    display: flex;
+  }
   .header-operator .address {
     flex: 1;
     border-top: 1rpx solid #f2f2f2;

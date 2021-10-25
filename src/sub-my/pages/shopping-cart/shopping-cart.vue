@@ -764,21 +764,22 @@
 						})
 						return
 					}
-					target.buyCount = count.toFixed(2).toString()	
-					
-				}else { // 累减
 					if(count > miniOrder){
-						count -= step
-						target.buyCount = count.toFixed(2).toString()
-					}else { // 数量为最小步长
+						target.isMiniOrder = false
+					}
+				}else { // 累减
+					if(count <= miniOrder){
 						target.isMiniOrder = true
 						uni.showToast({
 							title:"商品数量不能再减少了",
 							icon:"none",
 							duration:3000
 						})
+						return
 					}
+					count -= step
 				}
+				target.buyCount = count.toFixed(2).toString()	
 				this.freeShippings()
 				let params = {
 					userId: this.userId,
@@ -1004,6 +1005,7 @@
 		width: 400rpx;
 		margin-left: 196rpx;
 		padding-top: 284rpx;
+		padding-bottom: 705rpx;
 	}
 	.noGoods .noGoodsImg{
 		width: 248rpx;
@@ -1499,12 +1501,16 @@
 		height: 100%;
 	}
 	.disabledSkuInfo .disabledSkuDesc{
-		width: 436rpx;
-		height: 80rpx;
+		max-width: 436rpx;
+		max-height: 80rpx;
+		display: -webkit-box;
+		-webkit-line-clamp: 2;
+		-webkit-box-orient: vertical;
+		text-overflow: ellipsis;
+		overflow: hidden;
 		font-size: 28rpx;
 		color: #cdcdcd;
 		line-height: 40rpx;
-		text-overflow: ellipsis;
 	}
 	.disabledSkuInfo .disabledSkuDesc .disabledSkuType{
 		width: 60rpx;
@@ -1520,7 +1526,10 @@
 		text-align:center;
 	}
 	.disabledSkuInfo .disabledSkuSpec{
-		width: fit-content;
+		max-width: 436rpx;
+		text-overflow: ellipsis;
+		white-space: nowrap;
+		overflow: hidden;
 		height: 38rpx;
 		padding: 4rpx;
 		margin: 12rpx 0 12rpx 0;
@@ -1528,7 +1537,6 @@
 		border: 1rpx solid #f0f0f0;
 		border-radius: 4rpx;
 		font-size: 22rpx;		
-		text-overflow: ellipsis;
 		color: #cdcdcd;
 	}
 	.disabledSkuInfo .text{
@@ -1540,7 +1548,7 @@
 	}
 	.bottom{
 		width: 100%;
-		height: 152rpx;
+		height: 214rpx;
 	}
 	.allCheck{
 		width: 100%;

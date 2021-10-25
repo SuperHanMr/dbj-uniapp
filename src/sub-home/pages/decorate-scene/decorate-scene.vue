@@ -881,8 +881,6 @@ export default {
 						if(item.nodeType === 2 || item.nodeType === 3)return
 						arr.push(item)
 					})
-					let nodeType = arr.find(item => item.nodeStatus === 2).nodeType
-					console.log(nodeType)
 					nodes.map((item, index) => {
 						if(item.nodeType === 2 || item.nodeType === 3){
 							return
@@ -892,7 +890,11 @@ export default {
 								nodeType: item.nodeType
 							});
 						}
-						this.newestNodeIndex = this.nodeTypes.findIndex(item => item.nodeType === nodeType)
+						if(arr.find(item => item.nodeStatus === 2 || item.nodeType === 3)){
+							let nodeType = arr.find(item => item.nodeStatus === 2 || item.nodeType === 3).nodeType
+							this.newestNodeIndex = this.nodeTypes.findIndex(item => item.nodeType === nodeType)
+							console.log(nodeType)
+						}
 					  this.nodesInfo.push({
 					    id: item.id,
 					    nodeStatus: item.nodeStatus,
