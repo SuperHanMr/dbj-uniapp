@@ -74,7 +74,7 @@
 	border: 1px solid #ececec;
 	border-radius: 8px;
 	.waterfall-item-img{
-		width: 344rpx;
+		width: 100%;
 		height: 344rpx;
 	}
 	.decorate-state{
