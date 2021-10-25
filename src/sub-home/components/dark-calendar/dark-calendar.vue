@@ -36,9 +36,9 @@
       </view>
     </view>
 		<image v-if="isShrink" @click="switchWeek()" class="shrink" :class="{'rotate':!isShrink}"
-			src="http://dbj.dragonn.top/static/mp/dabanjia/images/home/ic_shrink%402x.png"></image>
+			src="http://dbj.dragonn.top/static/mp/dabanjia/images/home/monthOpen.png"></image>
 		<image v-else @click="switchWeek()" class="grow"
-			src="http://dbj.dragonn.top/%20static/mp/dabanjia/images/home/ic_weekModel%402x.png"></image>
+			src="http://dbj.dragonn.top/static/mp/dabanjia/images/home/weekModel.png"></image>
   </view>
 </template>
 
@@ -239,6 +239,9 @@
 				this.choice = i
 				this.checkToday = false
 	      let date = `${i.year}-${i.month}-${i.date}`
+				this.choose = date
+				this.$emit('filterDynamics', date,true)
+				
 				let month = 0
 				if(typeof(i.month) === 'number'){
 					month = i.month-1
@@ -248,10 +251,20 @@
 				}
 				this.y = i.year
 				this.m = month
-	      this.dates = this.monthDay(this.y,this.m)
-	      this.choose = date
-				console.log(date)
-	      this.$emit('filterDynamics', date,true)
+				
+				if(this.monthOpen){
+					this.positionTop = 0
+					this.dates = this.monthDay(this.y,this.m)
+				}else{
+					let index = -1
+					this.dates.forEach((i, x) => {
+					  this.isToday(i.year, i.month, i.date) && (index = x)
+					})
+					this.positionTop = -((Math.ceil((index + 1) / 7) || 1) - 1) * 80
+					let weekIndex = this.choice.weekIndex
+					this.dates = this.dates.filter(item => item.weekIndex === weekIndex)
+				}
+	     
 				this.$emit('changeMargin',this.isShrink,this.dates.length)
 	    },
 	    // 上个月，下个月
@@ -467,11 +480,11 @@
 	.shrink,.grow{
 		display: block;
 		width: 32rpx;
-		height: 16rpx;
+		height: 56rpx;
 		padding: 0 360rpx;
 		position: absolute;
 		left: 0;
-		bottom: -42rpx;
+		bottom: -56rpx;
 	}
 	.shrink.rotate{
 		transform: rotate(180deg);

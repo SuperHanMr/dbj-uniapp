@@ -40,7 +40,7 @@
 					</image>
 				</swiper-item>
 			</swiper>
-			<view class="swiper-tab">
+			<view v-if="bannerList.length>1" class="swiper-tab">
 				<view class="flex1" v-for="(item,index) in bannerList" :key="index"
 					:style="{backgroundColor:index==currentSwiper?'#FFF':'',borderRadius:index==currentSwiper?'2rpx':''}">
 				</view>
@@ -107,7 +107,8 @@
 			<view class="flex1">
 			</view>
 
-			<image  @click="toLiveList" src="http://dbj.dragonn.top/static/mp/dabanjia/images/home/ic_gongdizhibo_more.png"
+			<image @click="toLiveList"
+				src="http://dbj.dragonn.top/static/mp/dabanjia/images/home/ic_gongdizhibo_more.png"
 				class="sub-title-more">
 			</image>
 		</view>
@@ -169,7 +170,7 @@
 					<view class="flex1">
 					</view>
 					<view class="price">
-						<text class="price-font pre" >
+						<text class="price-font pre">
 							¥
 						</text>
 						<text class=" price-font amount">
@@ -251,7 +252,7 @@
 				areaId: 41,
 			};
 			this.areaId = 41;
-			this.currentAddress=defaultHouse
+			this.currentAddress = defaultHouse
 			uni.showShareMenu();
 			uni.$on("refrishHouse", (item) => {
 				this.reloadData();
@@ -346,8 +347,10 @@
 				});
 			},
 			currentHouseChange(item) {
+				console.log('!!!!@@@###')
+				console.log(item);
 				this.currentAddress = item;
-				this.areaId=item.areaId;
+				this.areaId = item.areaId;
 				uni.$emit("currentHouseChange", item);
 				getApp().globalData.currentHouse = item;
 				this.reloadData();
@@ -464,6 +467,10 @@
 					this.toWebview(baseurl + item.url);
 				}
 				if (item.type == 3) {
+					if (item.url.endsWith("search-construction/index.html")) {
+						item.url += `?areaId=${this.areaId}`
+					}
+					console.log(item.url)
 					this.toWebview(item.url);
 				}
 			},
@@ -790,6 +797,7 @@
 					color: #2b2f33;
 					line-height: 26rpx;
 				}
+
 				.pre {
 					font-size: 28rpx;
 					font-weight: 400;

@@ -41,7 +41,7 @@
               @input="onTextAreaInput"
             />
             <view class="word-limit">
-              {{textAreaLength}}/500
+              {{textAreaLength>500?500:textAreaLength}}/500
             </view>
           </view>
 
@@ -229,7 +229,7 @@ export default {
 			// userName:this.serviceInfo.userName,//评价人名称",
 			rank:this.query.stars, //评级 1不好，2还行，3一般，4满意，5超惊喜",
 			shortComments:"",//快捷评价ids",
-			content:this.query.remarks,//详细评价内容",
+			content:this.query.remarks.substr(0,500),//详细评价内容",
 			imgList:this.query.imageUrls,//图片
 		}
 		immediateEvaluate(params).then(e=>{

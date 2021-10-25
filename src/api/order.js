@@ -76,9 +76,12 @@ export function refundReason(params) {
 }
 
 
+//根据订单信息计算退款信息
 
 
-
+export function getRefundInformation(params) {
+	return request.get(`/order-center/app/order/getRefundInformation`, { params })
+}
 
 //我的-订单-退款-取消退款
 export function cancelRefund(params) {

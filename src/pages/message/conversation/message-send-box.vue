@@ -516,7 +516,6 @@
       },
       handleChooseEmoji(emoji) {
         let self = this;
-        this.inputFocus = true;
         this.$nextTick(() => {
           uni.getSelectedTextRange({
             complete(res) {
@@ -530,7 +529,6 @@
                   emoji +
                   self.messageContent.slice(end);
               }
-              self.inputFocus = true;
             },
           })
         })
