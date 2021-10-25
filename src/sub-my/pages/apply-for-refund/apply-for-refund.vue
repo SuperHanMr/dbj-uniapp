@@ -19,23 +19,23 @@
 				<view v-if="type == 'whole' && refundId "  >
 					{{refundInfo.detailAppVOS}}
 					<view v-for="(item1,index1) in refundInfo.details" :key="index1">
-						<order-item :refundType="true" :dataList="item1" :orderStatus="2" ></order-item>
+						<order-item :refundType="true" :dataList="item1" :showIcon="true" ></order-item>
 					</view>
 				</view>
 				<view v-if="type == 'whole' && !refundId "  v-for="(item2,index2) in refundInfo.detailAppVOS" :key="index2">
 					<view>
-						<order-item :refundType="true" :dataList="item2" :orderStatus="2" ></order-item>
+						<order-item :refundType="true" :dataList="item2" :orderStatus="2" :showIcon="true" ></order-item>
 					</view>
 				</view>
 				<view v-if="type=='partical' && refundId ">
 					<view v-for="item3 in refundInfo" :key="item3.id">
-						<order-item :refundType="true" :dataList="item3"></order-item>
+						<order-item :refundType="true" :showIcon="true" :dataList="item3"></order-item>
 					</view>
 				</view>
 
         <view v-if="type == 'partical' && !refundId ">
 						<view v-for="item4 in refundInfo.detailAppVOS" :key="item4.id">
-							<order-item :refundType="true" :dataList="item4" :orderStatus="2" ></order-item>
+							<order-item :refundType="true" :dataList="item4" :showIcon="true" ></order-item>
 						</view>
 				</view>
 				
