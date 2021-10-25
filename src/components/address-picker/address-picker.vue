@@ -212,15 +212,14 @@
     margin-bottom: 16rpx;
     display: block;
   }
-  .add-box{
-    display: flex;
-  }
   .header-operator {
     display: flex;
     width: 100%;
     background: #ffffff;
   }
-
+  .add-box{
+    display: flex;
+  }
   .header-operator .address {
     flex: 1;
     border-top: 1rpx solid #f2f2f2;
