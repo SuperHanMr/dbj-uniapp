@@ -76,10 +76,14 @@
 					<label class="item-label">有无电梯</label>
 					<choose-btn :btnList='elevatorList' :currentBtn='addData.hasLift' :disabled="roomId&&isEdit" @chooseBtn="chooseEle">
 					</choose-btn>
+          <view class="floor-content">
+            
+          
 					<input v-if="!addData.hasLift" :class="{disabled:roomId&&isEdit}" :disabled="roomId&&isEdit" placeholder-class="placeholder" class="ele-input" name="input"
 						v-model="addData.floors" placeholder="请输入房屋所在楼层" />
             <view class="icon-clear-spec"  v-if="!addData.hasLift&&addData.floors" @touchstart="clear('floors')">
               <uni-icons color="#c0c4cc" size="15" type="clear" />
+            </view>
             </view>
 				</view>
 			</view>
@@ -550,6 +554,11 @@
 			border-bottom: 0.5px solid #f2f2f2;
 			position: relative;
 			line-height: 116rpx;
+      .floor-content{
+        position: relative;
+        display: flex;
+        align-items: center;
+      }
       .icon-clear{
         display: inline-block;
         width: 50rpx;
@@ -572,6 +581,7 @@
         text-align: center;
         right: 112rpx;
         z-index: 10;
+        top: 0;
       }
 			.item-label {
 				color: #666;
