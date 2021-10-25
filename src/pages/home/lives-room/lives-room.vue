@@ -43,7 +43,7 @@
 
 			</view>
 			<view class="bottom-contain">
-				<view class="cover">
+				<view class="chat-cover">
 
 				</view>
 				<!-- 聊天 -->
@@ -555,6 +555,8 @@
 </script>
 
 <style lang="scss">
+	.cover {}
+
 	.product {
 		margin-top: 18rpx;
 		width: 448rpx;
@@ -774,11 +776,24 @@
 		}
 	}
 
+	.chat-cover {
+		position: absolute;
+		bottom: 0;
+		right: 0;
+		left: 0;
+		z-index: 500;
+		width: 100%;
+		height: 92rpx;
+		background: linear-gradient(180deg, rgba(0, 0, 0, 0.00) 44%, rgba(0, 0, 0, 0.26) 100%);
+		border-radius: 8rpx;
+	}
+
 	.bottom-contain {
 		position: absolute;
 		bottom: 0;
 		right: 0;
 		left: 0;
+		z-index: 400;
 
 		.bottom-placeholder {
 			height: 68rpx;
@@ -797,8 +812,7 @@
 				margin-left: 24rpx;
 				width: 302rpx;
 				height: 72rpx;
-				opacity: 0.24;
-				background: #000000;
+				background: rgba(255,255,255,0.1);
 				border-radius: 28rpx;
 				display: flex;
 				align-items: center;
@@ -876,7 +890,7 @@
 				margin-top: 12rpx;
 				margin-left: 24rpx;
 				max-width: 544rpx;
-				background: rgba(0, 0, 0, 0.3);
+				background:  rgba(255,255,255,0.1);
 				border-radius: 14rpx;
 				color: #fff;
 				padding: 0 16rpx;
@@ -1003,15 +1017,16 @@
 	.content {
 		width: 100vw;
 		height: 100vh;
-		background: url("http://dbj.dragonn.top/static/mp/dabanjia/images/home/live_bg.png");
-		background-size: 100% 100%;
-		background-repeat: no-repeat;
+		// background: url("http://dbj.dragonn.top/static/mp/dabanjia/images/home/live_bg.png");
+		// background-size: 100% 100%;
+		// background-repeat: no-repeat;
+		background-color: #000;
 		display: flex;
 		flex-direction: column;
 	}
 
 	.player {
-		height: 42vh;
+		height: 52vh;
 		width: 100vw;
 	}
 
