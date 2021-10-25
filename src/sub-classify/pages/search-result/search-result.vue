@@ -4,7 +4,7 @@
       <view class="search-init" v-if="initSearch">
         <view class="uni-searchbar" @click="clickInitSearch">
           <view class="uni-searchbar__box-icon-search">
-           <view class="search-card" v-if="searchVal">
+            <view class="search-card" v-if="searchVal">
               <text>{{searchVal}}</text>
               <uni-icons color="#c0c4cc" size="15" type="clear" />
             </view>
@@ -19,7 +19,8 @@
         <sort-button class="sort-button"></sort-button>
       </div>
     </view>
-    <scroll-view class="content" scroll-y="true" @scrolltolower="loadMoreList" lower-threshold="5">
+    <scroll-view class="content" scroll-y="true" @scrolltolower="loadMoreList" @scrolltoupper="refreshList"
+      lower-threshold="5">
       <uni-swipe-action v-if="listArr.length>0">
         <uni-swipe-action-item v-for="(goodsItem,goodsIndex) in listArr" :key="goodsIndex" :right-options="options">
           <view class="goodsItem" @click="toDetails(goodsItem.product.skuId)">
@@ -99,7 +100,14 @@
       //   name:"dd"
       //  }
     },
+    onPullDownRefresh() {
+      console.log(999999999)
+    },
     methods: {
+      refreshList() {
+        this.page = 1
+        this.getList()
+      },
       getList() {
         let params = {
           serviceVersion: 0,
@@ -107,8 +115,7 @@
           categoryId: this.originFrom ? Number(this.categoryId) : "", //搜索范围，在指定的商品分类id的范围内搜索，可不传（表示不限定商品分类）,
           supplierId: 0, //搜索范围，在指定的供应商 id 的范围内搜索，可不传（表示不限定供应商）,
           storeId: 0, //搜索范围，在指定的店铺 id 的范围内搜索，可不传（表示不限定店铺）,
-          areaId: getApp().globalData.currentHouse
-            .areaId, //区域编号，会按这个区域进行搜索；      区域的取值，请参考相关需求，好像是：有当前房屋就取当前房屋所在区域，没有当前房屋就取用户选取的位置区域...（具体逻辑比这个还复杂点）,
+          areaId: getApp().globalData.currentHouse.areaId, //区域编号，会按这个区域进行搜索；      区域的取值，请参考相关需求，好像是：有当前房屋就取当前房屋所在区域，没有当前房屋就取用户选取的位置区域...（具体逻辑比这个还复杂点）,
           sort: this.sort, //搜索排序方式：      price_asc  表示按价格从低到高排序；      price_desc 表示按价格从高到低排序；,
           pageIndex: this.page, //页面序号，从 1 开始，不传取 默认值第 1 页；,
           pageSize: 20, //每页数据量大小，不传取默认值 10；,
@@ -215,11 +222,13 @@
     align-items: center;
     border-radius: 10rpx;
   }
-  .search-default{
+
+  .search-default {
     font-size: 26rpx;
     color: #A9A9A9;
     margin-left: 10rpx;
   }
+
   .search-card {
     display: flex;
     align-items: center;

@@ -543,7 +543,7 @@
 					"path": "pages/search-result/search-result",
 					"style": {
 						"navigationBarTitleText": "",
-						"enablePullDownRefresh": false,
+						"enablePullDownRefresh": true,
 						"navigationBarBackgroundColor": "#FFFFFF"
 					}
 				},
