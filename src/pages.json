@@ -136,13 +136,6 @@
 				"navigationBarTitleText": "敬请期待",
 				"enablePullDownRefresh": false
 			}
-		},
-		{
-			"path": "pages/video-play/video-play",
-			"style": {
-				"navigationBarTitleText": "",
-				"enablePullDownRefresh": false
-			}
 		}
 	],
 	"globalStyle": {
@@ -226,7 +219,7 @@
 			},
 			{
 				"name": "lyb", //模式名称
-				"path": "/sub-my/pages/evaluate/immediate-evaluate/immediate-evaluate", //启动页面，必选
+				"path": "/sub-decorate/pages/checkResult/checkResult", //启动页面，必选
 				"query": "" //启动参数，在页面的onLoad函数里面得到
 			},
 			{
@@ -543,7 +536,7 @@
 					"path": "pages/search-result/search-result",
 					"style": {
 						"navigationBarTitleText": "",
-						"enablePullDownRefresh": false,
+						"enablePullDownRefresh": true,
 						"navigationBarBackgroundColor": "#FFFFFF"
 					}
 				},
