@@ -40,10 +40,10 @@
 						title: "打扮家隐私政策",
 						url:'/static/dbj-protocol/privacy-policy.html'
 					},
-					{
-						title: "打扮家知识产权条款",
-						url: "/protocol-c/intellectual-property.html"
-					},
+					// {
+					// 	title: "打扮家知识产权条款",
+					// 	url: "/protocol-c/intellectual-property.html"
+					// },
 					{
 						title: "意见与反馈",
 						url: "../../../sub-my/pages/set-up/comments-feedback/comments-feedback"
@@ -67,14 +67,16 @@
 					uni.navigateTo({
 						url:`../../../pages/common/webview/webview?url=`+ encodeURIComponent(url),
 					})
-				}if(index == 2){
-					console.log("this.VUE_APP_BASE_H5=",this.ENV.VUE_APP_BASE_H5)
+				}
+				// if(index == 2){
+				// 	console.log("this.VUE_APP_BASE_H5=",this.ENV.VUE_APP_BASE_H5)
 					
-					let url = this.ENV.VUE_APP_BASE_H5 + item.url
-					uni.navigateTo({
-						url:`../../../pages/common/webview/webview?url=`+ encodeURIComponent(url),
-					})
-				}else{
+				// 	let url = this.ENV.VUE_APP_BASE_H5 + item.url
+				// 	uni.navigateTo({
+				// 		url:`../../../pages/common/webview/webview?url=`+ encodeURIComponent(url),
+				// 	})
+				// }
+				else{
 					uni.navigateTo({
 						url:item.url
 					})
