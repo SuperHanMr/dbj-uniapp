@@ -40,7 +40,7 @@
 					</image>
 				</swiper-item>
 			</swiper>
-			<view class="swiper-tab">
+			<view v-if="bannerList.length>1" class="swiper-tab">
 				<view class="flex1" v-for="(item,index) in bannerList" :key="index"
 					:style="{backgroundColor:index==currentSwiper?'#FFF':'',borderRadius:index==currentSwiper?'2rpx':''}">
 				</view>
