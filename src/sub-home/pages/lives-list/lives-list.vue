@@ -54,7 +54,13 @@
 										{{item.mediaType==1?item.roomLiveMediaVO.anchor.nickName:item.roomVideoMediaVO.anchor.nickName}}
 									</view>
 								</view>
+
+								<image v-if="item.mediaType==1" class="living-gif"
+									src='http://dbj.dragonn.top/static/mp/dabanjia/images/home/living-gift.gif'>
+
+								</image>
 							</view>
+
 							<view class="live-list-name">
 								{{item.mediaType==1?item.roomLiveMediaVO.title:item.roomVideoMediaVO.title}}
 							</view>
@@ -174,6 +180,14 @@
 <style lang="scss">
 	page {
 		background: #F5F6F6;
+	}
+
+	.living-gif {
+		position: absolute;
+		right: 0;
+		bottom: 22rpx;
+		width: 70rpx;
+		height: 156rpx;
 	}
 
 	.no-list-content {

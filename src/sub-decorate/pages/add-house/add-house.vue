@@ -80,7 +80,7 @@
             
           
 					<input v-if="!addData.hasLift" :class="{disabled:roomId&&isEdit}" :disabled="roomId&&isEdit" placeholder-class="placeholder" class="ele-input" name="input"
-						v-model="addData.floors" placeholder="请输入房屋所在楼层" />
+						v-model="addData.floors" placeholder="请输入房屋所在楼层" :maxlength="3"/>
             <view class="icon-clear-spec"  v-if="!addData.hasLift&&addData.floors" @touchstart="clear('floors')">
               <uni-icons color="#c0c4cc" size="15" type="clear" />
             </view>
@@ -211,11 +211,13 @@
 			}
 			this.delta = e.delta;
 		},
-		// watch:{
-		//   'addData.insideArea':function(){
-        
-		//   }
-		// },
+		watch:{
+		  'addData.floors':function(){
+        if(this.addData.floors<0){
+          this.addData.floors = -this.addData.floors
+        }
+		  }
+		},
 		methods: {
 			getHouse() {
 				getHouse(this.roomId).then((res) => {
@@ -473,7 +475,16 @@
           });
           return false;
         }
-
+        
+        if (data.floors >150 ||data.floors ===0 ) {
+        	uni.showToast({
+        		title: "楼层可输入1-150层",
+        		duration: 2000,
+        		icon: "none",
+        	});
+        	return false;
+        }
+        
 				if (data.hasLift) {
 					delete data.floors;
 				}
@@ -575,7 +586,7 @@
         display: inline-block;
         height: 84rpx;
         line-height: 84rpx;
-        width: 50rpx;
+        width: 100rpx;
         margin-top: 0rpx;
         position: absolute;
         text-align: center;
