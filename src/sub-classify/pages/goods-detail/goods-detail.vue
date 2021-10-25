@@ -4,7 +4,7 @@
         + houseId + '&wx-defaultHouseId=' + defaultHouseInfo.id  + '&wx-defaultProvinceId=' + defaultHouseInfo.provinceId
         + '&wx-defaultCityId=' + defaultHouseInfo.cityId + '&wx-defaultAreaId=' + defaultHouseInfo.areaId 
         + '&wx-defaultLocationName=' + defaultHouseInfo.name  + '&wx-isDisabled=' + isDisabled
-        + '&wx-token=' + hashToken + '&wx-deviceId=' + deviceId + '&wx-from=' + from">
+        + '&wx-token=' + hashToken + '&wx-deviceId=' + deviceId + '&wx-from=' + from + '&shareAreaId=' + shareAreaId + '&shareAreaName=' + shareAreaName">
        </web-view>
   </view>
 </template>
@@ -22,13 +22,17 @@
         searchToken: '',
         hashToken: '',
         defaultHouseInfo: '',
-        from: ''
+        from: '',
+        shareAreaId: '',
+        shareAreaName: ''
       }
     },
     onLoad(e) {
       if(e.isDisabled === '0') {// 购物车跳转
         this.isDisabled = false
       }
+      this.shareAreaId = e.shareAreaId
+      this.shareAreaName = e.shareAreaName
       this.from = e.from
       if(e.goodId){
         this.goodId = e.goodId
