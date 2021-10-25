@@ -955,6 +955,7 @@
 <style scoped>
 	.cartContainer{
 		width: 100%;
+		height: fit-content;
 		background: #f5f6f7;
 		position: relative;
 	}
@@ -1002,7 +1003,7 @@
 	.noGoods{
 		width: 400rpx;
 		margin-left: 196rpx;
-		margin-top: 284rpx;
+		padding-top: 284rpx;
 	}
 	.noGoods .noGoodsImg{
 		width: 248rpx;
