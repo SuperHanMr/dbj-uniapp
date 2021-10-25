@@ -33,6 +33,9 @@
 				</view>
 			</view>
 		</view>
+		<view class="bottom" v-if="memos.length">
+			<view class="text">暂时没有更多数据~</view>
+		</view>
 		<view class="new" @click="toNewMemo">
 			<image class="create" src="http://dbj.dragonn.top/static/mp/dabanjia/images/home/ic_create_memo%402x.png"></image>
 		</view>
@@ -48,7 +51,8 @@
 				projectId: 0,
 				title: "备忘录",
 				fromNewMemo: false,
-				navBarHeight: ""
+				navBarHeight: "",
+				page: 1
 			}
 		},
 		onLoad(option) {
@@ -67,8 +71,13 @@
 		},
 		onShow() {
 			uni.$on('new-memo',() => {
+				this.page = 1
 				this.requestPage()
 			})
+		},
+		onReachBottom() {
+			this.page+=1
+			this.requestPage()
 		},
 		mounted() {
 			this.requestPage()
@@ -94,10 +103,27 @@
 				})
 			},
 			requestPage(){
-				getMemos(this.projectId).then(data => {
+				let params = {
+					page: this.page,
+					rows: 10
+				}
+				getMemos(this.projectId,params).then(data => {
 					if(data){
-						let {list} = data
-						this.memos = list || []
+						let {list,page} = data
+						this.page = page
+						if(this.page === 1){
+							if(list !== undefined){
+								this.memos = list
+							}else{
+								this.memos = []
+							}
+						}else{
+							if(list !== undefined){
+								this.memos.push(...list)
+							}else{
+								this.memos = this.memos.concat([])
+							}
+						}
 					}
 				})
 			}
@@ -126,10 +152,28 @@
 	}
 	.memoWrap{
 		width: 100%;
+		margin-bottom: 80rpx;
+	}
+	.memoWrap.hasMemo{
 		padding-bottom: 80rpx;
+		margin-bottom: 0;
 	}
 	.memoWrap.bg{
 		background: #fff;
+	}
+	.memoWrap .bottom{
+		width: 100%;
+		height: 126rpx;
+		background: #f5f6f6;
+	}
+	.memoWrap .bottom .text{
+		width: 222rpx;
+		height: 26rpx;
+		background: #f5f6f6;
+		margin: 0 264rpx 80rpx 264rpx;
+		padding-top: 60rpx;
+		font-size: 26rpx;
+		color: #999999;
 	}
 	.noMemo{
 		width: 100%;

@@ -1,15 +1,17 @@
 <template>
   <view>
-     <web-view :src="baseUrl + '/app-pages/goods-detail/index.html?token=' + searchToken + '#wx-goodsId='+ goodId + '&wx-houseId='
+    <web-view
+      :src="baseUrl + '/app-pages/goods-detail/index.html?token=' + searchToken + '#wx-goodsId='+ goodId + '&wx-houseId='
         + houseId + '&wx-defaultHouseId=' + defaultHouseInfo.id  + '&wx-defaultProvinceId=' + defaultHouseInfo.provinceId
         + '&wx-defaultCityId=' + defaultHouseInfo.cityId + '&wx-defaultAreaId=' + defaultHouseInfo.areaId 
         + '&wx-defaultLocationName=' + defaultHouseInfo.name  + '&wx-isDisabled=' + isDisabled
-        + '&wx-token=' + hashToken + '&wx-deviceId=' + deviceId + '&wx-from=' + from">
-       </web-view>
+        + '&wx-token=' + hashToken + '&wx-deviceId=' + deviceId + '&wx-from=' + from + '&shareAreaId=' + shareAreaId + '&shareAreaName=' + shareAreaName">
+    </web-view>
   </view>
 </template>
 
 <script>
+  import urlParse from "url-parse";
   export default {
     data() {
       return {
@@ -22,40 +24,56 @@
         searchToken: '',
         hashToken: '',
         defaultHouseInfo: '',
-        from: ''
+        from: '',
+        shareAreaId: '',
+        shareAreaName: ''
       }
     },
     onLoad(e) {
-      if(e.isDisabled === '0') {// 购物车跳转
+      if (e.isDisabled === '0') { // 购物车跳转
         this.isDisabled = false
       }
+      this.shareAreaId = e.shareAreaId
+      this.shareAreaName = e.shareAreaName
+      if (e.q) {
+        //如果是通过二维码分享进来的兼容
+        const qrCodeUrl = decodeURIComponent(e.q);
+        const urlResult = urlParse(qrCodeUrl, true);
+        const query = urlResult.query;
+        if (query.shareAreaId) {
+          this.shareAreaId = query.shareAreaId;
+        }
+        if (query.shareAreaName) {
+          this.shareAreaName = query.shareAreaName;
+        }
+      }
       this.from = e.from
-      if(e.goodId){
+      if (e.goodId) {
         this.goodId = e.goodId
-      }else if(uni.getStorageSync('goodId')) { // 商城列表和装修模块的商品id
+      } else if (uni.getStorageSync('goodId')) { // 商城列表和装修模块的商品id
         this.goodId = uni.getStorageSync('goodId')
       }
       this.houseId = e.houseId
       console.log(this.houseId, "this.houseId")
     },
     onShow() {
-      if(!this.searchToken) {
+      if (!this.searchToken) {
         this.searchToken = getApp().globalData.token
-      }else {
+      } else {
         this.hashToken = getApp().globalData.token
       }
       this.baseUrl = this.ENV.VUE_APP_BASE_H5
       this.defaultHouseInfo = getApp().globalData.currentHouse
-        uni.getSystemInfo({	
-          success:res => {
-            this.deviceId = res.deviceId
-          }
-        })
-        // 获取房屋信息
-        if(uni.getStorageSync('houseListChooseId')) {
-          this.houseId = uni.getStorageSync('houseListChooseId')
-          uni.removeStorageSync("houseListChooseId")
+      uni.getSystemInfo({
+        success: res => {
+          this.deviceId = res.deviceId
         }
+      })
+      // 获取房屋信息
+      if (uni.getStorageSync('houseListChooseId')) {
+        this.houseId = uni.getStorageSync('houseListChooseId')
+        uni.removeStorageSync("houseListChooseId")
+      }
     }
   }
 </script>
