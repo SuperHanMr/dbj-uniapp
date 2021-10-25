@@ -175,7 +175,7 @@
     },
     onLoad(e){
       this.userType = e.userType
-      this.personId = e.personId||7206
+      this.personId = e.personId||7725
       // this.getGrabDetail()
     },
     onShow(){
