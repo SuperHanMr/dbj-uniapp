@@ -43,8 +43,8 @@
               {{isAttention?'已':''}}关注
             </view>
           </view>
-          <view class="person-msg-list" v-if="personData.roleId<6">
-            <view class="list-item">
+          <view class="person-msg-list" >
+            <view class="list-item" v-if="personData.roleId<6">
               <text class="num">{{personData.likeCount||0}} <text class="unit" v-if="personData.likeCount.split('.')[1]">w</text></text>
               <text class="title">获赞</text>
             </view>
@@ -175,7 +175,7 @@
     },
     onLoad(e){
       this.userType = e.userType
-      this.personId = e.personId||7292
+      this.personId = e.personId||7206
       // this.getGrabDetail()
     },
     onShow(){
