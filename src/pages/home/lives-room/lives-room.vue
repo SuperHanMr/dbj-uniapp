@@ -464,7 +464,7 @@
 			statechange(e) {},
 			error(e) {},
 			handleShowSendBox() {
-				if(this.showDownload){
+				if(this.showDownload||!this.isLogin||!this.isLiveing){
 					return;
 				}
 				uni.$emit("show-live-send-box");
