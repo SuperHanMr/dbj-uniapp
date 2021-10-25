@@ -41,7 +41,8 @@
     "body": {
       "content": "关注了您的[${estateAddress}]",
       "userName": "${customerName}",
-      "userAvatar": "${customerAvatar}"
+      "userAvatar": "${customerAvatar}",
+      "thumbnail": "https://ali-image.dabanjia.com/static/mp/dabanjia/images/house_default_img.jpg"
     }
   },
   "sys_case_comment": {
