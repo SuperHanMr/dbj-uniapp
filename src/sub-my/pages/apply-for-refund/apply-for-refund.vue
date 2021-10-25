@@ -70,10 +70,10 @@
 				<view class="refund-reason">
 					<view class="left">
 						<view class="icon">*</view>
-						<text>退款原因</text>
+						<text style="color: #666666;">退款原因</text>
 					</view>
 					<view class="reason" >
-						<text v-if="!reasonName" @click="openPopup()">请选择</text>
+						<text style="color: #bbbbbb;"  v-if="!reasonName" @click="openPopup()">请选择</text>
 						<text v-else style="margin-right: 16rpx;color: #333333;" @click="openPopup()">{{reasonName}}</text>
 						<image src="../../static/ic_arraw_down.svg" mode="" @click="openPopup()"/>
 					</view>

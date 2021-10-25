@@ -1424,7 +1424,7 @@ export default {
 		display: block;
 	}
 	.houseInfo {
-		width: 438rpx;
+		width: 439rpx;
 		padding-top: 56rpx;
 	}
 	.location {

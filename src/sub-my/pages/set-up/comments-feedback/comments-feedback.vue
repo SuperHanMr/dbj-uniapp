@@ -16,7 +16,7 @@
 					  @input="onTextAreaInput"
 					/>
 					<view class="word-limit">
-					  {{textAreaLength}}/140
+					  {{textAreaLength<140?textAreaLength:'140'}}/140
 					</view>
 				</view>
 			</view>
@@ -63,7 +63,7 @@
 		},
 		watch: {
 		  textAreaLength(newVal, oldVal) {
-			
+			 if(newVal>140) return 140
 			},
 		},
 		methods: {
