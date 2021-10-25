@@ -49,9 +49,11 @@ export default {
 .text-element {
   color: #111;
   font-size: 16px;
-  white-space: pre-line;
   word-break: break-all;
-  
+  .text {
+    display: inline;
+    white-space: pre-line;
+  }
   .emoji {
     width: 24px;
     height: 24px;
@@ -60,6 +62,7 @@ export default {
 
     + .text:empty {
       margin-left: -4px;
+      white-space: nowrap;
     }
   }
 

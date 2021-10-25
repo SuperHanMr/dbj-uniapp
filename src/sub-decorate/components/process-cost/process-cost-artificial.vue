@@ -7,24 +7,27 @@
     </view>
     <view class="index">
       <view class="item-list">
-        <view class="item" v-for="(item, index) in content.itemList" :key="item.id">
-          <view class="img-name-tag-guige" @click="goDetail(item.id)">
-            <image class="img" :src="item.imageUrl"></image>
-            <view class="tag-name-guige">
+        <view class="item" v-for="(item, index) in content.itemList" :key="item.id" @click="goDetail(item.id)">
+          <image class="img" :src="item.imageUrl"></image>
+          <view class="tag-name-guige">
+            <view class="cctb">
               <view class="spu-name">
                 <view class="tag">{{item.productType | filterProductType}}</view>
                 <view class="name">{{item.spuName}}</view>
               </view>
-              <view class="gui-ge">{{item.name}}</view>
+              <view class="price-count">
+                <view class="gui-ge">{{item.name}}</view>
+                <view class="count">共{{item.count}}{{item.unit}}</view>
+              </view>
             </view>
-          </view>
-          <view class="price-count">
             <view class="price">
               <text>￥</text>
               <text>{{(item.price/100).toFixed(2)}}</text>
             </view>
-            <view class="count">共{{item.count}}{{item.unit}}</view>
           </view>
+          <!-- <view class="img-name-tag-guige" >
+            
+          </view> -->
         </view>
       </view>
 
@@ -117,17 +120,17 @@
 
   .item {
     display: flex;
-    justify-content: space-between;
+    justify-content: flex-start;
     flex-direction: row;
     align-items: center;
     padding-bottom: 32rpx;
 
-    .img-name-tag-guige {
-      display: flex;
-      justify-content: flex-start;
-      flex-direction: row;
-      align-items: center;
-    }
+    // .img-name-tag-guige {
+    //   display: flex;
+    //   justify-content: flex-start;
+    //   flex-direction: row;
+    //   align-items: center;
+    // }
 
     .img {
       width: 136rpx;
@@ -136,6 +139,30 @@
       border: 1rpx solid #f4f4f4;
       border-radius: 8rpx;
       box-sizing: border-box;
+    }
+
+    .tag-name-guige {
+      flex: 1;
+      display: flex;
+      justify-content: space-between;
+      flex-direction: column;
+      height: 136rpx;
+    }
+
+    .cctb {
+      display: flex;
+      justify-content: flex-start;
+      flex-direction: column;
+    }
+
+    .price {
+      height: 32rpx;
+      font-size: 32rpx;
+      font-family: Unnamed, Unnamed-Regular;
+      font-weight: 400;
+      text-align: left;
+      color: #333333;
+      margin-bottom: 12rpx;
     }
 
     .spu-name {
@@ -189,17 +216,10 @@
     }
 
     .price-count {
-      text-align: right;
-
-      .price {
-        height: 32rpx;
-        font-size: 32rpx;
-        font-family: Unnamed, Unnamed-Regular;
-        font-weight: 400;
-        text-align: left;
-        color: #333333;
-        margin-bottom: 12rpx;
-      }
+      display: flex;
+      justify-content: space-between;
+      flex-direction: row;
+      align-items: center;
 
       .count {
         height: 26rpx;
