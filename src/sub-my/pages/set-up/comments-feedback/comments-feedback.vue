@@ -63,7 +63,7 @@
 		},
 		watch: {
 		  textAreaLength(newVal, oldVal) {
-			
+			 if(newVal>140) return 140
 			},
 		},
 		methods: {
