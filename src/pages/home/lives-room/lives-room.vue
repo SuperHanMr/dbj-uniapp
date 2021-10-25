@@ -373,6 +373,9 @@
 				}
 			},
 			clickLike() {
+				if(this.showDownload||!this.isLogin||!this.isLiveing){
+					return;
+				}
 				this.likeCount++;
 			},
 			toGoodsDetail(item) {
