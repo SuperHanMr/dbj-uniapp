@@ -8,7 +8,9 @@
         <view class="flot">.{{__countPrice[1]}}</view>
       </view>
     </view>
-    <button class="btn" :disabled="!isAllChecked" :class="{ disabled: !isAllChecked }" @click="gotopay">去结算</button>
+    <view class="wrp-btn">
+      <button class="btn" :disabled="!isAllChecked" :class="{ disabled: !isAllChecked }" @click="gotopay">去结算</button>
+    </view>
   </view>
 </template>
 
@@ -71,7 +73,7 @@
 
 <style scoped lang="scss">
   .wrap {
-    height: 88rpx;
+    height: 112rpx;
     display: flex;
     flex-direction: row;
     justify-content: space-between;
@@ -80,10 +82,7 @@
   .pieces-price-unit {
     flex: 1;
     display: flex;
-    // justify-content: space-between;
     flex-direction: column;
-    // align-items: flex-end;
-    // margin-bottom: 16rpx;
     font-family: Unnamed, Unnamed-Regular;
 
     .pieces {
@@ -92,8 +91,8 @@
       font-family: PingFangSC, PingFangSC-Regular;
       font-weight: 400;
       text-align: left;
+      line-height: 40rpx;
       color: #999999;
-      margin-bottom: 8rpx;
     }
 
     .price-wrap {
@@ -101,6 +100,7 @@
       justify-content: flex-start;
       flex-direction: row;
       align-items: flex-end;
+      height: 72rpx;
     }
 
     .unit {
@@ -109,6 +109,7 @@
       font-family: PingFangSC, PingFangSC-Medium;
       font-weight: 700;
       text-align: left;
+      line-height: 56rpx;
       color: #333333;
     }
 
@@ -120,7 +121,7 @@
       text-align: left;
       color: #333333;
       vertical-align: bottom;
-      line-height: 48rpx;
+      line-height: 72rpx;
     }
 
     .flot {
@@ -129,8 +130,13 @@
       font-family: Unnamed, Unnamed-Regular;
       font-weight: 400;
       text-align: left;
+      line-height: 58rpx;
       color: #333333;
     }
+  }
+
+  .wrp-btn {
+    margin-top: 24rpx;
   }
 
   .btn {
