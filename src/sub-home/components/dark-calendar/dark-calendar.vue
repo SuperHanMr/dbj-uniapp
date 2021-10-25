@@ -36,9 +36,9 @@
       </view>
     </view>
 		<image v-if="isShrink" @click="switchWeek()" class="shrink" :class="{'rotate':!isShrink}"
-			src="http://dbj.dragonn.top/static/mp/dabanjia/images/home/ic_shrink%402x.png"></image>
+			src="http://dbj.dragonn.top/static/mp/dabanjia/images/home/monthOpen.png"></image>
 		<image v-else @click="switchWeek()" class="grow"
-			src="http://dbj.dragonn.top/%20static/mp/dabanjia/images/home/ic_weekModel%402x.png"></image>
+			src="http://dbj.dragonn.top/static/mp/dabanjia/images/home/weekModel.png"></image>
   </view>
 </template>
 
@@ -480,11 +480,11 @@
 	.shrink,.grow{
 		display: block;
 		width: 32rpx;
-		height: 16rpx;
+		height: 56rpx;
 		padding: 0 360rpx;
 		position: absolute;
 		left: 0;
-		bottom: -42rpx;
+		bottom: -56rpx;
 	}
 	.shrink.rotate{
 		transform: rotate(180deg);
