@@ -34,7 +34,7 @@
         <serviceActuarial id="d4" v-if="tab.nodeType===4&&!tab.currentEmpty" @isEmpty='isEmpty' :index='index1' :projectId='projectId' :serverId='tab.serveCardId'></serviceActuarial>
         <serviceSteward id="d5" v-if="tab.nodeType===5&&!tab.currentEmpty" @isEmpty='isEmpty' :index='index1' :projectId='projectId'></serviceSteward>
         <serviceDismantle id="d6" v-if="tab.nodeType>5&&!tab.currentEmpty" :index='index1' @isEmpty='isEmpty' :projectId='projectId' :serveId='tab.serveCardId'></serviceDismantle>
-        <no-service v-if="tab.currentEmpty" words="暂无服务相关信息 验收通过后即会呈现"></no-service>
+        <no-service v-if="tab.currentEmpty" :listImage='false' words="暂无服务相关信息 验收通过后即会呈现"></no-service>
       </swiper-item>
     </swiper>
   </view>
@@ -261,7 +261,7 @@
     width: 32rpx;
     height: 6rpx;
     opacity: 1;
-    background: linear-gradient(135deg, #00c2b2, #00c2bf);
+    background: linear-gradient(129deg,#00cdec 0%, #00ed7d 92%);;
     border-radius: 100px 100px 0px 0px;
     position: absolute;
     bottom: 0;

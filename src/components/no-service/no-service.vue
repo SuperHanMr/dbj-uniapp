@@ -1,6 +1,7 @@
 <template>
   <div class="no-service">
-    <image class="bg" src="http://dbj.dragonn.top/static/mp/dabanjia/images/my/blank_ic%402x.png">
+    <image class="bg" v-if="listImage" src="http://dbj.dragonn.top/static/mp/dabanjia/images/my/blank_ic%402x.png">
+      <image class="box-bg" v-else src="http://dbj.dragonn.top/static/mp/dabanjia/images/decorate/box_empty.png">
       </view>
       <view class="text">{{words}}</view>
   </div>
@@ -8,7 +9,16 @@
 
 <script>
   export default {
-    props: ["words"]
+    props: {
+      words:{
+        type:String,
+        default:""
+      },
+      listImage:{
+        type:Boolean,
+        default:true
+      }
+    }
   }
 </script>
 
@@ -31,7 +41,11 @@
     height: 300rpx;
     margin-bottom: 24rpx;
   }
-
+  .no-service .box-bg{
+    width: 344rpx;
+    height: 344rpx;
+    margin-bottom: 24rpx;
+  }
   .no-service .text {
     /* width: 196rpx; */
     height: 40rpx;

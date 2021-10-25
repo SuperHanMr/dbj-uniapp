@@ -42,7 +42,7 @@
         >
           <image
             class="noCommentImg"
-            src="http://dbj.dragonn.top/static/mp/dabanjia/images/decorate/pic_empty%402x.png"
+            src="http://dbj.dragonn.top/static/mp/dabanjia/images/decorate/comment_bg.png"
           ></image>
           <view class="noCommentText">暂无评论~</view>
         </view>
@@ -578,6 +578,7 @@
   .popupComments .noComment {
   	width: 100%;
   	height: 542rpx;
+    margin-top: 112rpx;
   }
   .popupComments .noCommentText {
   	width: 118rpx;
@@ -587,9 +588,10 @@
   	color: #999999;
   }
   .popupComments .noCommentImg {
-  	width: 750rpx;
-  	height: 492rpx;
+  	width: 260rpx;
+  	height: 260rpx;
   	display: block;
+    margin: 0 auto;
   }
   .popupComments .topArea {
   	height: 120rpx;
