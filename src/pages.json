@@ -136,13 +136,6 @@
 				"navigationBarTitleText": "敬请期待",
 				"enablePullDownRefresh": false
 			}
-		},
-		{
-			"path": "pages/video-play/video-play",
-			"style": {
-				"navigationBarTitleText": "",
-				"enablePullDownRefresh": false
-			}
 		}
 	],
 	"globalStyle": {
