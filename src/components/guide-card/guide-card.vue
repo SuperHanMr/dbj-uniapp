@@ -63,7 +63,7 @@
 		image {
 			width: 702rpx;
 			height: 160rpx;
-			border-radius: 24rpx;
+			border-radius: 16rpx;
 		}
 	}
 </style>

@@ -265,7 +265,6 @@ const message = {
         userID: userId,
         userSig: userSig
       }).then(res => {
-        context.commit("setIMLogin", true);
         addListener("CONVERSATION_LIST_UPDATED", (event) => {
           let conversationList = event.data || [];
           context.commit("updateConversationList", conversationList);
@@ -288,7 +287,9 @@ const message = {
             uni.$emit("system-messages", systemMessageList);
           }
         }, "IM-MESSAGE_RECEIVED");
-        context.dispatch("requestConversationList");
+        context.dispatch("requestConversationList").then(res => {
+          context.commit("setIMLogin", true);
+        });
         context.dispatch("requestDBGroupList");
       }).catch(err => {
         context.commit("setIMLogin", false);
