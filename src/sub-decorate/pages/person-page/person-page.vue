@@ -187,7 +187,24 @@
       // this.getCaseList()
       // this.getSkuList()
       // this.getNodeHeight()
-      
+      let query = uni.createSelectorQuery()
+      query.select(".person-interact").boundingClientRect((res) => {
+        this.interact = res&&res.top
+        
+      }).exec()
+      query.select(".content").boundingClientRect((res) => {
+        this.serviceTop = res&&res.top
+      }).exec()
+      query.select(".person-case").boundingClientRect((res) => {
+        this.caseTop = res&&res.top
+      }).exec()
+      query.select(".person-dynamic").boundingClientRect((res) => {
+        this.dynamicTop = res&&res.top
+      }).exec()
+      query.select(".person-evaluate").boundingClientRect((res) => {
+        
+        this.evaluateTop = res&&res.top
+      }).exec()
       
     },
     onPageScroll(scrollTop) {
@@ -351,7 +368,7 @@
       // },
       changeOpacity(num){
         
-        num<10?this.opacityNum = 0:num<20?this.opacityNum=0.2:num<40?this.opacityNum=0.3:num<60?this.opacityNum=0.4:num<80?this.opacityNum=0.5:num<100?this.opacityNum=0.6:num<120?this.opacityNum=0.7:num<140?this.opacityNum=0.8:num<160?this.opacityNum=0.9:this.opacityNum=1
+        num<200?this.opacityNum = 0:num<220?this.opacityNum=0.8:this.opacityNum=1
         // console.log(this.opacityNum)
       },
       toItem(name) {
@@ -369,24 +386,7 @@
         }).exec()
       },
       getTopDistance(){
-        let query = uni.createSelectorQuery()
-        query.select(".person-interact").boundingClientRect((res) => {
-          this.interact = res&&res.top
-          
-        }).exec()
-        query.select(".content").boundingClientRect((res) => {
-          this.serviceTop = res&&res.top
-        }).exec()
-        query.select(".person-case").boundingClientRect((res) => {
-          this.caseTop = res&&res.top
-        }).exec()
-        query.select(".person-dynamic").boundingClientRect((res) => {
-          this.dynamicTop = res&&res.top
-        }).exec()
-        query.select(".person-evaluate").boundingClientRect((res) => {
-          
-          this.evaluateTop = res&&res.top
-        }).exec()
+        
         
       },
       back(){

@@ -14,28 +14,7 @@
           ></image> -->
           <i class="icon-ic_zhuangxiuxianchang_danchuangquxiao_csn close" @click="close"></i>
         </view>
-        <view
-          class="bottomInput"
-          v-if="showInput"
-          
-        >
-          <input
-            v-model="inputValue"
-            :cursor-spacing="10"
-            :placeholder="isInputFocus?`回复@${inputName}`:'说点什么吧'"
-            :class="{'focusInput':isInputFocus||clickInput}"
-            @focus="inputFocus"
-            :focus="isOpen"
-            :adjust-position='false'
-            @click.stop=""
-            class="easyInput"
-          />
-          <view
-            class="send"
-            :class="{themeColor:inputValue.length>0}"
-            @click.stop="setReply"
-          >发送</view>
-        </view>
+        
         <view
           class="noComment"
           v-if="!comments.length"
@@ -149,7 +128,29 @@
           class="bottomInputBox"
           v-if="showInput"
         ></view>
-        
+        <view
+          class="bottomInput"
+          v-if="showInput"
+          
+        >
+          <textarea
+            v-model="inputValue"
+            :cursor-spacing="10"
+            :placeholder="isInputFocus?`回复@${inputName}`:'说点什么吧'"
+            :class="{'focusInput':isInputFocus||clickInput}"
+            @focus="inputFocus"
+            :focus="isOpen"
+            @click.stop=""
+            class="easyInput"
+            :maxlength="-1"
+            
+          />
+          <view
+            class="send"
+            :class="{themeColor:inputValue.length>0}"
+            @click.stop="setReply"
+          >发送</view>
+        </view>
       </view>
     </view>
   </view>
@@ -509,7 +510,7 @@
   .bottomInput {
   	width: 100%;
   	height: 120rpx;
-  	// padding-bottom: 40rpx;
+  	padding-bottom: 40rpx;
   	background: #ffffff;
   	display: flex;
   }
@@ -527,7 +528,8 @@
   	font-size: 28rpx;
   	background: #f5f6f6;
   	border-radius: 12rpx;
-    
+    max-height: 100rpx;
+    padding: 20rpx 0;
   }
   .bottomInput .send {
   	width: 52rpx;
@@ -565,11 +567,11 @@
   	z-index: 999;
   }
   view .is-ower{
-    padding-bottom: 160rpx;
+    // padding-bottom: 160rpx;
   }
   .bottomInputBox {
   	width: 100%;
-  	height: 120rpx;
+  	// height: 120rpx;
   	// padding-bottom: 40rpx;
   	// position: fixed;
   	// left: 0rpx;
@@ -619,7 +621,7 @@
   }
   .commentList {
   	width: 100%;
-  	height: 690rpx;
+  	height: 600rpx;
     
   	/* height: fit-content; */
   	// overflow: auto;

@@ -2,7 +2,7 @@
   <view class="evaluate-item" :class="{'border-none':last}">
     <view class="item-top">
       <view class="name">{{item.anonymous?'匿名':item.userName}}</view>
-      <view class="time">{{item.createTime | formatDate}}</view>
+      <view class="time">{{item.createTime}}</view>
     </view>
     <view class="item-content">
       <view class="evaluate-list">
@@ -39,9 +39,6 @@
         showBtn:false,
         hddenText:'展开',
       }
-    },
-    filters: {
-      formatDate
     },
     mounted(){
       this.check()
