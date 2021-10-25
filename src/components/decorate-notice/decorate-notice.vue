@@ -235,7 +235,7 @@
 
       .item-content {
         height: 104rpx;
-        line-height: 104rpx;
+        // line-height: 104rpx;
         background: #fbfbfb;
         border-radius: 20rpx;
         display: flex;
