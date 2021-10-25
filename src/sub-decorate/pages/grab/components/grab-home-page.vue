@@ -13,7 +13,7 @@
         </view>
       </view>
       <view class="person-msg-list">
-        <view class="list-item">
+        <view class="list-item" v-if="personData.roleId!==6">
           <text class="num">{{personData.likeCount}} <text class="unit" v-if="personData.likeCount.split('.')[1]">w</text></text>
           <text class="title">获赞</text>
         </view>
@@ -21,7 +21,7 @@
           <text class="num">{{personData.fansCount}} <text class="unit" v-if="personData.fansCount.split('.')[1]">w</text></text>
           <text class="title">粉丝</text>
         </view>
-        <view class="list-item" v-if="personData.roleId===1||personData.roleId===2||personData.roleId===6">
+        <view class="list-item" v-if="personData.roleId===1||personData.roleId===2">
           <text class="num">{{personData.collectCount}} <text class="unit" v-if="personData.collectCount.split('.')[1]">w</text></text>
           <text class="title">被收藏</text>
         </view>

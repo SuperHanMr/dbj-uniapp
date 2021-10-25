@@ -30,7 +30,7 @@
       <view class="item" :class="{'item-active':!isReport&&currentItem==='conformTop'}" @click="toItem('conformTop')">
         符合项({{data[0].value}})</view>
     </view>
-    <view class="text-content" v-show="isLoading">
+    <view class="text-content" v-if="isLoading">
       <deliverCard id="major-hazard" color="#CA3737" title="重大隐患" :data='data[2]'></deliverCard>
       <deliverCard id="hazard" color="#F6A93B" title="隐患" :data='data[1]'></deliverCard>
       <deliverCard id="conform" color="#348BE2" title="符合项" :data='data[0]'></deliverCard>
@@ -41,7 +41,7 @@
 </template>
 <script>
   import uniEcCanvas from '../../components/uni-ec-canvas/uni-ec-canvas.vue'
-  import * as echarts from '../../components/uni-ec-canvas/echarts'
+  import * as echarts from '../../components/uni-ec-canvas/echarts.min'
   import deliverCard from '../delivery-card/delivery-card.vue'
   import imagePreview from '../../../components/image-preview/image-preview.vue'
   
@@ -220,7 +220,7 @@
             this.$emit('isEmpty',this.index)
             return
           }else{
-            this.isLoading = true
+            // this.isLoading = true
           }
           
           this.checkData = res

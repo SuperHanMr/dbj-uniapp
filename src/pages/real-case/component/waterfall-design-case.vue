@@ -189,7 +189,7 @@
 					opacity: 1;
 					border: 1px solid #f2f5f8;
 					margin-right: 8rpx;
-					border-radius: 0;
+					border-radius: 50%;
 				}
 				.info-text{
 					font-size: 24rpx;

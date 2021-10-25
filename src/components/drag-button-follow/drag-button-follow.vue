@@ -175,8 +175,8 @@
         this.moveHidden = false
         if (this.foll.isLeft && this.foll.isRight) {
           console.log(uni.getSystemInfoSync().windowHeight,uni.getSystemInfoSync().windowWidth,dot,'拖拽按钮测试')
-          if(dot.clientY<88){
-             dot.clientY = 88+20
+          if(dot.clientY<148){
+             dot.clientY = 148
           }else if(dot.clientY>getApp().globalData.screenHeight){
             
              dot.clientY = getApp().globalData.screenHeight-20

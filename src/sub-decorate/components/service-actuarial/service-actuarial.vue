@@ -32,7 +32,13 @@
     methods:{
       getActuaryReport(){
         getActuaryReport(this.projectId).then(res=>{
-          this.hasReport = true
+          
+          if(res){
+            this.hasReport = true
+          }else{
+            this.hasReport = false
+            this.$emit('isEmpty',this.index)
+          }
         }).catch(err=>{
           console.log(err)
           this.hasReport = false

@@ -3,7 +3,7 @@
 
 		<view	class="body-main" :style="{paddingBottom:containerPaddingBottom +'rpx'}" @click="handleDetail()" >
 			<!-- 标签 -->
-			<view class="pic"  v-if="orderStatus==2 && dataList.type == 1 && !dataList.stockType">
+			<view class="pic"  v-if="(orderStatus==2 || showIcon) && dataList.type == 1 && !dataList.stockType">
 				<!-- 当该商品处于待发货标签时，则对应退款、退款关闭、退款失败状态 -->
 				<view class="icon-status1" v-if="dataList.showRefundBtn || (dataList.refundBillStatus == 3 || dataList.refundBillStatus == 4 ||dataList.refundBillStatus == 5)|| dataList.shipmentStatus == 0">
 					待发货
@@ -64,7 +64,7 @@
 			</view>
 		</view>
 
-		<!-- //退款状态（0待确认 1退款中 2退款完成 3已拒绝 4已取消 5退款失败) -->
+		<!-- //退款状态 refundBillStatus（ 0待确认 1退款中 2退款完成 3已拒绝 4已取消 5退款失败) -->
 		<view class="apply-refund-container" :style="{paddingTop:0}"
 			v-if="!dataList.showRefundBtn && orderStatus==2 && dataList.type == 1 && dataList.stockType == 0 && dataList.refundBillStatus >-1"
 		 >
@@ -81,7 +81,7 @@
 				退款失败
 			</view>
 
-			<view class="button" v-if="(dataList.refundBillStatus == 3 || dataList.refundBillStatus == 4) && dataList.shipmentStatus == 1" @click.stop="refundClose">
+			<view class="button" v-if="(dataList.refundBillStatus == 3 || dataList.refundBillStatus == 4) && dataList.shipmentStatus == 0" @click.stop="refundClose">
 				退款关闭
 			</view>
 		</view>
@@ -160,6 +160,10 @@
 				type:Boolean,
 				default:false,
 			},
+			showIcon:{
+				type:Boolean,
+				default:false
+			}
 		},
 		data() {
 			return {

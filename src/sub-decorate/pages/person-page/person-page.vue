@@ -43,7 +43,7 @@
               {{isAttention?'已':''}}关注
             </view>
           </view>
-          <view class="person-msg-list" v-if="personData.roleId<7">
+          <view class="person-msg-list" v-if="personData.roleId<6">
             <view class="list-item">
               <text class="num">{{personData.likeCount||0}} <text class="unit" v-if="personData.likeCount.split('.')[1]">w</text></text>
               <text class="title">获赞</text>
@@ -52,7 +52,7 @@
               <text class="num">{{personData.fansCount||0}} <text class="unit" v-if="personData.fansCount.split('.')[1]">w</text></text>
               <text class="title">粉丝</text>
             </view>
-            <view class="list-item" v-if="personData.roleId===1||personData.roleId===2||personData.roleId===6">
+            <view class="list-item" v-if="personData.roleId===1||personData.roleId===2">
               <text class="num">{{personData.collectCount||0}} <text class="unit" v-if="personData.collectCount.split('.')[1]">w</text></text>
               <text class="title">被收藏</text>
             </view>
