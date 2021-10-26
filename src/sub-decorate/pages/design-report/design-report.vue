@@ -195,7 +195,7 @@
   }
 
   .t {
-    idth: 500rpx;
+    idth: 490rpx;
     height: 32rpx;
     overflow: hidden;
     text-overflow: ellipsis;
