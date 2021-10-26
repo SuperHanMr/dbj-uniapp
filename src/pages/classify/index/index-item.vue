@@ -18,7 +18,7 @@
             <view class="right-detail" v-for="(detail, detailK) in menu3['children']" :key="detailK"
               @click="toGoodsList(detail.name, detail.id)">
               <view class="img-view">
-                <image :src="detail.imageUrl"></image>
+                <image :src="detail.imageUrl  + '?x-oss-process=image/resize,m_lfit,w_124,h_124' "></image>
               </view>
               <text class="detail-name">{{detail.name}}</text>
             </view>
