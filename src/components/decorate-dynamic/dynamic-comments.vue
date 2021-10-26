@@ -1,8 +1,9 @@
 <template>
-  <view class="decorate-dynamic" catchtouchmove="true">
+  <view class="decorate-dynamic" >
     <view
       class="mask"
       v-if="showComments"
+      catchtouchmove="true"
     >
       <view class="popupComments" :class="{'is-ower':showInput}" @click="changeObj">
         <view class="topArea">
@@ -14,28 +15,7 @@
           ></image> -->
           <i class="icon-ic_zhuangxiuxianchang_danchuangquxiao_csn close" @click="close"></i>
         </view>
-        <view
-          class="bottomInput"
-          v-if="showInput"
-          
-        >
-          <input
-            v-model="inputValue"
-            :cursor-spacing="10"
-            :placeholder="isInputFocus?`回复@${inputName}`:'说点什么吧'"
-            :class="{'focusInput':isInputFocus||clickInput}"
-            @focus="inputFocus"
-            :focus="isOpen"
-            :adjust-position='false'
-            @click.stop=""
-            class="easyInput"
-          />
-          <view
-            class="send"
-            :class="{themeColor:inputValue.length>0}"
-            @click.stop="setReply"
-          >发送</view>
-        </view>
+        
         <view
           class="noComment"
           v-if="!comments.length"
@@ -145,12 +125,43 @@
           </view>
           <view class="deleteCancel" @click.stop="showDelete=false;showInput=true">取消</view>
         </view>
-        <view
+<!--        <view
           class="bottomInputBox"
           v-if="showInput"
-        ></view>
+        ></view> -->
+        
+        
         
       </view>
+    </view>
+    <view
+      class="bottomInput"
+      v-if="showInput"
+      :style="{bottom:heightNum}"
+    >
+      <textarea
+        v-model="inputValue"
+        :placeholder="isInputFocus?`回复@${inputName}`:'说点什么吧'"
+        :class="{'focusInput':isInputFocus||clickInput}"
+        style="height: 80rpx;"
+        @focus="inputFocus"
+        @blur="blurChange"
+        :focus="isOpen"
+        :adjust-position='false'
+        @click.stop=""
+        fixed
+        :show-confirm-bar="false"
+        auto-height
+        :cursor-spacing="10"
+        class="easyInput"
+        maxlength="200"
+        @keyboardheightchange="keybordChange"
+      />
+      <view
+        class="send"
+        :class="{themeColor:inputValue.length>0}"
+        @click.stop="setReply"
+      >发送</view>
     </view>
   </view>
 </template>
@@ -239,6 +250,10 @@
       }
     },
     methods:{
+      blurChange(e){
+        this.heightNum=0
+        this.$emit('isOpenComment','')
+      },
       close(){
         this.showComments=false;
         // this.showInput = false
@@ -250,6 +265,7 @@
       },
       inputFocus() {
         this.clickInput = true;
+        this.$emit('isOpenComment',true)
       },
       bindscrolltolower(){
         if(this.page<this.totalPage){
@@ -257,18 +273,8 @@
           this.getComment()
         }
       },
-      //暂时废弃
       keybordChange(e){
-        console.log(e.detail.height+'>>>>>>>')
-        console.log('键盘弹起收回'+this.num+'高度》》'+e.detail.height)
-        // if(this.num%2!==0){
-        //   this.heightNum = 0
-        //   this.num++
-        //   return
-        // }
-        this.num++
-        
-        this.heightNum = e.detail.height*2+'rpx'
+        this.heightNum = e.detail.height+'px'
         
         console.log(this.heightNum+'>>>>>>>')
       },
@@ -508,10 +514,14 @@
   }
   .bottomInput {
   	width: 100%;
-  	height: 120rpx;
+  	// height: 120rpx;
   	// padding-bottom: 40rpx;
   	background: #ffffff;
   	display: flex;
+    position: fixed;
+    align-items: flex-end;
+    bottom: 0;
+    z-index: 1000;
   }
   .focusInput {
   	caret-color: #00c2b8;
@@ -527,7 +537,9 @@
   	font-size: 28rpx;
   	background: #f5f6f6;
   	border-radius: 12rpx;
-    
+    padding: 20rpx 0;
+    max-height: 120rpx;
+    padding-bottom: 20rpx;
   }
   .bottomInput .send {
   	width: 52rpx;
@@ -565,7 +577,7 @@
   	z-index: 999;
   }
   view .is-ower{
-    padding-bottom: 160rpx;
+    // padding-bottom: 160rpx;
   }
   .bottomInputBox {
   	width: 100%;

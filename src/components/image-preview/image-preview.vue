@@ -1,7 +1,7 @@
 <template>
   <view class="img-list" :style="{maxHeight:hasHeight?maxHeight:'auto',marginBottom:-lineSpace+'rpx',marginRight:-colSpace*3+'rpx',overflow: isHidden}">
     <!-- <text>{{}}</text> -->
-    <image class="img-item" :style="{width:imgWidth+'rpx',height:imgHeight+'rpx',marginBottom:lineSpace+'rpx',marginRight:colSpace+'rpx'}" v-for="(el,index) of list" @click="previewImage(list,index)" :key='el' :src="el.url||el.fileUrl||el" mode="aspectFill"></image>
+    <image class="img-item" :style="{width:imgWidth+'rpx',height:imgHeight+'rpx',marginBottom:lineSpace+'rpx',marginRight:colSpace+'rpx'}" v-for="(el,index) of list" @click="previewImage(list,index)" :key='el' :src="(el.url||el.fileUrl||el)+`?x-oss-process=image/resize,m_lfit,w_${imgWidth},h_${imgHeight}`" mode="aspectFill"></image>
     <view class="" v-if="hasHeight&&list.length-row*3>0">
       <view class="mask" :style="{width:imgWidth+'rpx',height:imgHeight+'rpx',top:(imgHeight+lineSpace)*(row-1)+1+'rpx',left:imgWidth*2+colSpace*2-1+'rpx'}" >
       </view>
@@ -77,6 +77,7 @@
       previewImage(list,index){
         let urls = []
         list.forEach(item=>{
+          let url = (item.url||item.fileUrl||item)+`?x-oss-process=image/resize,m_lfit,w_${this.imgWidth},h_${this.imgHeight}`
           urls.push(item.url||item.fileUrl||item)
         })
         uni.previewImage({
