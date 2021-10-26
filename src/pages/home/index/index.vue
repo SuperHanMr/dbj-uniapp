@@ -157,10 +157,9 @@
 			<view class="item" v-for="(item,index) in goodsList" :key="item.id"
 				:class="{'margin-left16':index%2!=0,'margin-left24':index%2==0}"
 				@click="toGoodsDetail(item.product.skuId)">
-				<image class="img" :src="item.product.skuImage" mode="aspectFill"></image>
+				<image class="img" :src="item.product.skuImage |imgFormat" mode="aspectFill"></image>
 				<view class="info">
 					<view class="title">
-
 						<text class="tip">
 							{{item.product.productTypeId==1?'物品':'服务'}}
 
@@ -207,7 +206,13 @@
 	import {
 		getAdcodeFromAreaId
 	} from "../../../utils/cityData.js";
+	import {
+		imgFormat
+	} from '../../../utils/common.js'
 	export default {
+		filters: {
+			imgFormat
+		},
 		data() {
 			return {
 				videoType: 0,
@@ -1161,6 +1166,7 @@
 	}
 
 	.header-flex-row {
+		min-width: 200rpx;
 		display: flex;
 		align-items: center;
 	}
