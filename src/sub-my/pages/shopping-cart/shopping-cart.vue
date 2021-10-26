@@ -279,7 +279,9 @@
 			}
 		},
 		onShow() {
-			this.requestPage()
+			uni.$on('submitOrder',() => {
+				this.requestPage()
+			})
 		},
 		mounted(){
 			this.userId = uni.getStorageSync("userId")
