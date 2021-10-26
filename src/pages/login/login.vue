@@ -2,9 +2,8 @@
   <view class="wrap">
     <temp :title="isLogin"></temp>
     <gome-login v-if="isLogin" :loginInit="loginInit" @suceess="loginSuccess" @fail="loginFail"></gome-login>
-    <view class="go-home" @click="goHome">
-      <image src="http://dbj.dragonn.top/static/mp/dabanjia/images/decorate/ic_go-home%402x.png"
-        class=""></image>
+    <view class="go-home" @click="goHome" :style="{top: topH + 'rpx'}">
+      <image src="http://dbj.dragonn.top/static/mp/dabanjia/images/decorate/ic_go-home%402x.png" class=""></image>
       <view class="t">返回首页</view>
     </view>
 
@@ -23,11 +22,13 @@
     data() {
       return {
         isLogin: false,
-        loginInit: {}
+        loginInit: {},
+        topH: 88
       };
     },
     onLoad() {
-
+      let menu = uni.getMenuButtonBoundingClientRect()
+      this.topH = menu.top * 2
       // 测试环境小程序appletId=B7E436F6DEF6E37296AADD3BC9F35165
       // 生产环境appletId=E370C3ABB4F1EEC5A3946F23BCB15C29
       let loginInit = {};
@@ -168,13 +169,13 @@
     top: 88rpx;
     left: 24rpx;
   }
-  
+
   .go-home image {
     width: 56rpx;
     height: 56rpx;
     margin-right: 4rpx;
   }
-  
+
   .go-home .t {
     width: 96rpx;
     height: 34rpx;
