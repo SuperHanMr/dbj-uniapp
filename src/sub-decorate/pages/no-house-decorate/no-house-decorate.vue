@@ -34,14 +34,14 @@
       </service-card>
     </view>
     <view v-if="noData === 1" class="payment-wrap" :style="{paddingBottom:systemBottom,height:systemHeight}">
-      <payment @gotopay="gotopay" :pieces="pieces" :countPrice="countPrice"
-        :isAllChecked="isAllChecked">
+      <payment @gotopay="gotopay" :pieces="pieces" :countPrice="countPrice" :isAllChecked="isAllChecked">
       </payment>
     </view>
-    
+
     <no-data v-if="noData === 0" words="当前城市暂未开通此服务,敬请期待~"></no-data>
     <uni-popup ref="level">
-      <change-level @changeLevel="setLevel" @close="close" :dataList="levelList" descType="design" :current="levelList[0]"></change-level>
+      <change-level @changeLevel="setLevel" @close="close" :dataList="levelList" descType="design"
+        :current="levelList[0]"></change-level>
     </uni-popup>
     <uni-popup ref="tips">
       <cancel-tip :tips="tips" @result="setCardChecked" @close="tipsClose"></cancel-tip>
@@ -475,10 +475,10 @@
               flt = data.filter(t => t.id == eastId);
             } else {
               let fromPage = this.fromPage ?? false
-              if(fromPage == "userHome") {
+              if (fromPage == "userHome") {
                 flt = data.filter(t => t.id == this.defaultHouse?.id);
               }
-              if(!fromPage) {
+              if (!fromPage) {
                 // 来自消息
                 flt = data.filter(t => t.id == getApp().globalData.currentProject.estateId);
               }
@@ -612,14 +612,18 @@
             },
             fail(e) {
               console.log(e);
-              const { errMsg } = e
-              if(errMsg.indexOf("cancel") !==-1) {
+              const {
+                errMsg
+              } = e
+              if (errMsg.indexOf("cancel") !== -1) {
                 uni.navigateTo({
                   url: `/sub-my/pages/my-order/my-order?index=1&firstEntry=true`
                 })
               } else {
                 uni.showToast({
-                  title: "掉起微信支付失败"
+                  title: "支付失败",
+                  icon: "none",
+                  duration: 3000
                 })
               }
             },
