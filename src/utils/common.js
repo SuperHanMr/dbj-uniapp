@@ -13,3 +13,10 @@ export function formatDate(timestamp){
 	timestamp=Number(timestamp);
 	return dayjs(timestamp).format(format)
 }
+
+export function imgFormat(imgUrl){
+	if(!imgUrl){
+		return ''
+	}
+	return imgUrl+`?x-oss-process=image/resize,m_mfit,w_200,h_100`
+}

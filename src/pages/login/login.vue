@@ -34,16 +34,17 @@
 			loginInit.sharerUnionId = uni.getStorageSync("sharerUnionId") || "";
 			loginInit.platForm = "wx"; // 小程序平台 微信：wx
 			loginInit.protocol = "http";
+      loginInit.nativePage = "/pages/common/webview/webview"
 			if (process.env.NODE_ENV === "development") {
 				console.log("开发环境");
 				loginInit.appId = "B7E436F6DEF6E37296AADD3BC9F35165"; //唯一标识
 				loginInit.env = "test";
 			} else {
 				console.log("生产环境");
-				// loginInit.appId = "E370C3ABB4F1EEC5A3946F23BCB15C29"; //唯一标识
-				// loginInit.env = "production";
-				loginInit.appId = "B7E436F6DEF6E37296AADD3BC9F35165"; //唯一标识
-				loginInit.env = "test";
+				loginInit.appId = "E370C3ABB4F1EEC5A3946F23BCB15C29"; //唯一标识
+				loginInit.env = "production";
+				// loginInit.appId = "B7E436F6DEF6E37296AADD3BC9F35165"; //唯一标识
+				// loginInit.env = "test";
 			}
 			loginInit.themeConfig = {
 				backgroundColor: "#62C1C0",

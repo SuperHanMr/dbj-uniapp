@@ -17,7 +17,7 @@
 					</view>
         </view> -->
 				<view v-if="type == 'whole' && refundId "  >
-					{{refundInfo.detailAppVOS}}
+					<!-- {{refundInfo.detailAppVOS}} -->
 					<view v-for="(item1,index1) in refundInfo.details" :key="index1">
 						<order-item :refundType="true" :dataList="item1" :showIcon="true" ></order-item>
 					</view>

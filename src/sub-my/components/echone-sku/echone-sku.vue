@@ -2,7 +2,7 @@
 	<popup-bottom :show="show" @close="closeSkuBox">
 		<view class="sku-box">
 				<view class="sku-header container">
-					<image class="goods-img" :src="selectSkuInfo[cbImage]"></image>
+					<image class="goods-img" :src="selectSkuInfo[cbImage]+'?x-oss-process=image/resize,m_mfit,w_96,h_96'"></image>
 					
 					<view class="sku-goods-info">
 						<view class="goodsDesc">

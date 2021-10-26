@@ -19,7 +19,7 @@
 			</view>
 			<view class="list" v-else>
 				<view class="item" v-for="(item,index) in dynamics" :key="item.id">
-					<image class="avatar" :src="item.avatar"></image>
+					<image class="avatar" :src="item.avatar+'?x-oss-process=image/resize,m_mfit,w_37,h_37'"></image>
 					<view class="acitonInfo">
 						<view class="header">
 							<view>
@@ -131,9 +131,13 @@
 						let {list,page} = data
 						this.dynamicPage = page
 						if(this.dynamicPage === 1){
-							this.dynamics = list
+							this.dynamics = list || []
 						}else{
-							this.dynamics.push(...list)
+							if(list ){
+								this.dynamics.push(...list)
+							}else{
+								this.dynamics = this.dynamics.concat([])
+							}
 						}
 					}
 				})
