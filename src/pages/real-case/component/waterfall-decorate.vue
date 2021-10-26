@@ -135,6 +135,8 @@
 			}
 			.phase-box-border{
 				border: 0;
+				border-radius: 2px;
+				background: #35c4c4;
 			}
 			.phase{
 				padding: 0 4rpx;
@@ -143,7 +145,6 @@
 				font-weight: 400;
 				text-align: left;
 				color: #ffffff;
-				background: #35c4c4;
 			}
 			.phase-pending{
 				color: #ffffff;

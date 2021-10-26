@@ -178,7 +178,7 @@
                 :imgWidth='192'
                 :imgHeight="192"
                 :lineSpace='10'
-                :colSpace="11"
+                :colSpace="10"
                 :row="2"
               ></imagePreview>
             </view>
@@ -221,7 +221,7 @@
         @click="toInlineService"
       >
         <image
-          src="http://dbj.dragonn.top/static/mp/dabanjia/images/home/consult%402x.png"
+          src="http://dbj.dragonn.top/%20static/mp/dabanjia/images/home/question.png"
         ></image>
         <view>咨询客服</view>
       </view>
@@ -230,7 +230,7 @@
         @click="toDecorate"
       >
         <image
-          src="http://dbj.dragonn.top/static/mp/dabanjia/images/home/decorate%402x.png"
+          src="http://dbj.dragonn.top/%20static/mp/dabanjia/images/home/decorate.png"
         ></image>
         <view>我要装修</view>
       </view>

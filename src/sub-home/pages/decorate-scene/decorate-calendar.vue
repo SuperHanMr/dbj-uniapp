@@ -131,9 +131,13 @@
 						let {list,page} = data
 						this.dynamicPage = page
 						if(this.dynamicPage === 1){
-							this.dynamics = list
+							this.dynamics = list || []
 						}else{
-							this.dynamics.push(...list)
+							if(list ){
+								this.dynamics.push(...list)
+							}else{
+								this.dynamics = this.dynamics.concat([])
+							}
 						}
 					}
 				})
