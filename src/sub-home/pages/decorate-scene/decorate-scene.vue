@@ -1,4 +1,5 @@
 <template>
+	
   <view class="sceneContainer" :class="{'noScroll':showComments}">
     <view class="header">
       <view class="houseInfo">
@@ -517,16 +518,20 @@ export default {
 			homePageEstate: {},
 			buyState: false,//是否购买摄像头服务,
 			hasChange: false,
-			newestNodeIndex: 0
+			newestNodeIndex: 0,
+			scn: ""
     };
   },
   onLoad(option) {
     this.projectId = option.projectId;
-    this.userId = uni.getStorageSync("userId");
 		uni.$on("currentHouseChange", (item) => {
 		  this.homePageEstate = item
 		})  
   },
+	onShow() {
+		this.userId = uni.getStorageSync("userId");
+		this.scn = uni.getStorageSync("scn")
+	},
 	onPullDownRefresh(){
 		uni.stopPullDownRefresh()
 	},
@@ -812,9 +817,15 @@ export default {
       });
     },
     toCost() {
-      uni.navigateTo({
-        url: `/sub-decorate/pages/actuary-bill/actuary-bill?projectId=${this.projectInfo.id}`,
-      });
+			if(this.scn){
+				uni.navigateTo({
+				  url: `/sub-decorate/pages/actuary-bill/actuary-bill?projectId=${this.projectInfo.id}`,
+				});
+			}else{
+				uni.navigateTo({
+					url: '/pages/login/login'
+				})
+			}
     },
     requestSelectOptions() {
       let params = {
