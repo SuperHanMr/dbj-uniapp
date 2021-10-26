@@ -4,7 +4,7 @@
 			v-for="(item,index) in list" :key="item.userId"
 		>
 			<view class="userInfo">
-				<image class="avatar" :src="item.avatar"></image>
+				<image class="avatar" :src="item.avatar+'?x-oss-process=image/resize,m_mfit,w_44,h_44'"></image>
 				<view class="userName">{{item.name}}</view>
 				<view class="role">{{item.role}}</view>
 			</view>

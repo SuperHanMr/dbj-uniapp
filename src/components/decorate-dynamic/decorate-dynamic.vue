@@ -1,6 +1,6 @@
 <template>
-  <view class="decorate-dynamic">
-    		<view class="item" v-for="(item,index) in dynamicsArr" :key="item.id">
+  <view class="decorate-dynamic" >
+    		<view class="item" v-for="(item,index) in dynamicsArr" :key="item.id" :catchtouchmove="isOpenComment">
           <image class="avatar" :src="item.avatar" mode="aspectFill" ></image>
     			<view class="acitonInfo" :class="{'acitonInfo-person':isPerson}">
     				<view class="header">
@@ -35,7 +35,10 @@
             </view>
     			</view>
     		</view>
-        <dynamicComments ref='comments' v-if="hiddenComment" :index="activeIndex" :ParentTotalRows='activeTotalRows' @change="changeComments" :userId='personId' :houseOwnerId='houseOwnerId' :dynamicId='dynamicId'></dynamicComments>
+        <view class="" >
+          <dynamicComments ref='comments' v-if="hiddenComment" :index="activeIndex" :ParentTotalRows='activeTotalRows' @change="changeComments" :userId='personId' :houseOwnerId='houseOwnerId' :dynamicId='dynamicId'></dynamicComments>
+        </view>
+        
   </view>
 </template>
 
@@ -64,6 +67,7 @@
         dynamicsArr:[],
         activeTotalRows:0,
         hiddenComment:true,
+        isOpenComment:''
       };
     },
     watch:{
@@ -95,6 +99,9 @@
         }
       	this.$emit('commentC',item.id)
         
+      },
+      commentOpen(e){
+        this.isOpenComment = e
       },
       changeComments(item,index){
         

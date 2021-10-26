@@ -19,7 +19,7 @@
 			</view>
 			<view class="list" v-else>
 				<view class="item" v-for="(item,index) in dynamics" :key="item.id">
-					<image class="avatar" :src="item.avatar"></image>
+					<image class="avatar" :src="item.avatar+'?x-oss-process=image/resize,m_mfit,w_37,h_37'"></image>
 					<view class="acitonInfo">
 						<view class="header">
 							<view>
