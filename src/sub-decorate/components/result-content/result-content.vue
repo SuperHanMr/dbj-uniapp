@@ -284,9 +284,9 @@
         this.$nextTick(function() {
           
           query.select("#major-hazard").boundingClientRect((res) => {
-            console.log(res)
+            
             this.top = res.top;
-            console.log(this.top)
+            
           })
           query.select("#hazard").boundingClientRect((res) => {
             this.hazardTop = res.top;
