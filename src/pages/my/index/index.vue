@@ -8,7 +8,7 @@
 			</view>
 		</view>
 		<view v-else class="backgroundStyle"
-			:style="{backgroundImage:userInfo.avatar?`url(${userInfo.avatar})`:url(),backgroundSize: 'cover'}">
+			:style="{backgroundImage:userInfo.avatar?`url(${userInfo.avatar}?x-oss-process=image/resize,m_mfit,w_375,h_245)`:url(),backgroundSize: 'cover'}">
 			<view class="mask">
 				<view class="linearStyle" />
 			</view>
@@ -29,7 +29,7 @@
 			</view>
 
 			<view class="avatar-img" v-else @click="handlerPersonalData()">
-				<image :src="userInfo.avatar" class="avatar" />
+				<image :src="`${userInfo.avatar}?x-oss-process=image/resize,m_mfit,w_60,h_60`" class="avatar" />
 				<view class="user-name">
 					<text class="name">{{userName}} </text>
 					<view class="edit-info">

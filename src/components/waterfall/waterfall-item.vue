@@ -19,8 +19,21 @@
 			<image v-if="item.parentType == 2" class="case-type"  src="../../static/order/images/icon_img.svg" mode="" />
 		</view>
 
-		<image v-if="item.icon =='product'" class="product-img" :src="item.imageUrl" mode="widthFix" lazy-load @load="onImageLoad"/>
-		<image v-if="item.icon =='case'" class="product-img" :src="item.imageUrl" mode="widthFix" lazy-load @load="onImageLoad"/>
+		<image 
+			v-if="item.icon =='product'" 
+			class="product-img" 
+			:src="`${item.imageUrl}?x-oss-process=image/resize,m_mfit,w_172`" 
+			mode="widthFix" 
+			lazy-load 
+			@load="onImageLoad"/>
+		
+		<image 
+			v-if="item.icon =='case'" 
+			class="product-img" 
+			:src="`${item.imageUrl}?x-oss-process=image/resize,m_mfit,w_172`" 
+			mode="widthFix" 
+			lazy-load 
+			@load="onImageLoad"/>
 
 		<!-- 商品的样式 -->
 		<view class="info-container" v-if="item.icon =='product'" :class="{hasDown:!item.enabled}">

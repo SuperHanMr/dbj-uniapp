@@ -15,7 +15,7 @@
 				<view class="body" @click="goToDetail(item)">
 					<view class="body-main" v-for="(item2,index2) in item.detailAppVOS" :key="index2">
 						<view class="pic">
-							<image :src="item2.imgUrl" mode="	scaleToFill"></image>
+							<image :src="`${item2.imgUrl}?x-oss-process=image/resize,m_mfit,w_68,h_68`" mode="	scaleToFill"></image>
 						</view>
 						<view class="basic-info">
 							<view class="name-attr">
