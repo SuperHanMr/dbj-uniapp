@@ -34,6 +34,7 @@
 			loginInit.sharerUnionId = uni.getStorageSync("sharerUnionId") || "";
 			loginInit.platForm = "wx"; // 小程序平台 微信：wx
 			loginInit.protocol = "http";
+      loginInit.nativePage = "/pages/common/webview/webview"
 			if (process.env.NODE_ENV === "development") {
 				console.log("开发环境");
 				loginInit.appId = "B7E436F6DEF6E37296AADD3BC9F35165"; //唯一标识
