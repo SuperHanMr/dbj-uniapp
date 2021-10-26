@@ -116,7 +116,9 @@
     getAttention,
     getServiceStatus
   } from '@/api/decorate.js'
+  var query = {}
   export default {
+    
     components: {
       personIntroduce,
       personService,
@@ -149,7 +151,8 @@
         isAttention:false,
         evaluateNum:0,
         userType:2,
-        hasServe:0
+        hasServe:0,
+        
       }
     },
     computed:{
@@ -175,7 +178,7 @@
     },
     onLoad(e){
       this.userType = e.userType
-      this.personId = e.personId||7206
+      this.personId = e.personId||7270
       // this.getGrabDetail()
     },
     onShow(){
@@ -187,25 +190,27 @@
       // this.getCaseList()
       // this.getSkuList()
       // this.getNodeHeight()
-      let query = uni.createSelectorQuery()
+      query = uni.createSelectorQuery()
       query.select(".person-interact").boundingClientRect((res) => {
         this.interact = res&&res.top
         
-      }).exec()
+      })
       query.select(".content").boundingClientRect((res) => {
         this.serviceTop = res&&res.top
-      }).exec()
+      })
       query.select(".person-case").boundingClientRect((res) => {
         this.caseTop = res&&res.top
-      }).exec()
+      })
       query.select(".person-dynamic").boundingClientRect((res) => {
         this.dynamicTop = res&&res.top
-      }).exec()
+      })
       query.select(".person-evaluate").boundingClientRect((res) => {
         
         this.evaluateTop = res&&res.top
-      }).exec()
-      
+      })
+      query.exec(function(res){
+        console.log(res)
+      })
     },
     onPageScroll(scrollTop) {
       
@@ -386,7 +391,9 @@
         }).exec()
       },
       getTopDistance(){
-        
+        query.exec(function(res){
+          console.log(res)
+        })
         
       },
       back(){
