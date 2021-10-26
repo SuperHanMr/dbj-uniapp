@@ -40,7 +40,7 @@
 
     <no-data v-if="noData === 0" words="当前城市暂未开通此服务,敬请期待~"></no-data>
     <uni-popup ref="level">
-      <change-level @changeLevel="setLevel" @close="close" :dataList="levelList" descType="design"
+      <change-level v-if="levelList.length > 0" @changeLevel="setLevel" @close="close" :dataList="levelList" descType="design"
         :current="levelList[0]"></change-level>
     </uni-popup>
     <uni-popup ref="tips">
@@ -320,6 +320,7 @@
         if (this.design.categoryTypeId === 7) {
           tmp.workerType = this.design.workerType
         }
+        this.levelList = []
         changeLevel(tmp).then(data => {
           this.showLevel = data?.length > 0
           console.log(this.showLevel)
