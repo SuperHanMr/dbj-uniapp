@@ -7,7 +7,7 @@
       <view class="sku-header container">
         <image
           class="goods-img"
-          :src="selectSkuInfo.imageUrl"
+          :src="selectSkuInfo.imageUrl+'?x-oss-process=image/resize,m_mfit,w_96,h_96'"
         ></image>
 
         <view class="sku-goods-info">

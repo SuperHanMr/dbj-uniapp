@@ -2,7 +2,7 @@
 	<view class="detailWrap">
 		<view class="topArea">
 			<view class="userInfo">
-				<image class="avatar" :src="userInfo.avatar"></image>
+				<image class="avatar" :src="userInfo.avatar+'?x-oss-process=image/resize,m_mfit,w_36,h_36'"></image>
 				<view class="userName">{{isSelf?'我':userInfo.userName}}</view>
 				<view class="role">{{userInfo.roleName}}</view>
 			</view>

@@ -18,7 +18,7 @@
           </view>
         </view>
       </view>
-      <image class="houseImg" :src="projectInfo.estateIconUrl"></image>
+      <image class="houseImg" :src="projectInfo.estateIconUrl+'?x-oss-process=image/resize,m_mfit,w_116,h_116'"></image>
     </view>
     <view class="navBar">
       <view
@@ -91,7 +91,8 @@
                 <view
                   class="connectLine"
                   :class="{'line-green':index<newestNodeIndex,
-									'line-gray':index>=newestNodeIndex}"
+									'line-gray':index>=newestNodeIndex,
+									'completed':projectInfo.projectStatus===3}"
                 ></view>
 							</view>
             </view>
@@ -115,7 +116,7 @@
 							>
 								<image
 								  class="avatar"
-								  :src="item.avatar"
+								  :src="item.avatar+'?x-oss-process=image/resize,m_mfit,w_16,h_16'"
 								></image>
 								<view class="name" :class="{'minHeight':item.flag}">{{item.name}}</view>
 								<view class="line" v-if="item.flag">...</view>
@@ -127,7 +128,13 @@
             </view>
           </view>
         </view>
+				<image
+					v-if="projectInfo.projectStatus===3"
+				  class="endWork"
+				  src="http://dbj.dragonn.top/static/mp/dabanjia/images/home/end_active.png"
+				></image>
         <image
+					v-else
           class="endWork"
           src="http://dbj.dragonn.top/static/mp/dabanjia/images/home/end_work%402x.png"
         ></image>
@@ -160,7 +167,7 @@
         >
           <image
             class="avatar"
-            :src="item.avatar"
+            :src="item.avatar+'?x-oss-process=image/resize,m_mfit,w_37,h_37'"
 						@click="toPersonalHome(item.userId)"
           ></image>
           <view class="acitonInfo">
@@ -342,7 +349,7 @@
             >
               <image
                 class="avatar"
-                :src="item.avatar"
+                :src="item.avatar+'?x-oss-process=image/resize,m_mfit,w_36,h_36'"
               ></image>
               <view class="commentInfo">
                 <view class="info">
@@ -364,7 +371,7 @@
             >
               <image
                 class="avatar"
-                :src="replyItem.avatar"
+                :src="replyItem.avatar+'?x-oss-process=image/resize,m_mfit,w_20,h_20'"
               ></image>
               <view class="replyInfo">
                 <view class="info">
@@ -1646,7 +1653,9 @@ export default {
 	.line-green {
 		background: #01c2c3;
 	}
-
+	.connectLine:last-child.completed{
+		background: #01c2c3;
+	}
 	.column {
 		height: 24rpx;
 		padding: 0 30rpx;
@@ -1703,7 +1712,7 @@ export default {
 		height: 28rpx;
 		border-radius: 50%;
 		display: block;
-		margin: 2rpx -2rpx 8rpx;
+		margin: 2rpx 0 8rpx -6rpx;
 	}
 	.worker .item > view .name {
 		
