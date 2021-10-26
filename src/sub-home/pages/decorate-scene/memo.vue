@@ -112,13 +112,9 @@
 						let {list,page} = data
 						this.page = page
 						if(this.page === 1){
-							if(list !== undefined){
-								this.memos = list
-							}else{
-								this.memos = []
-							}
+							this.memos = list || []
 						}else{
-							if(list !== undefined){
+							if(list){
 								this.memos.push(...list)
 							}else{
 								this.memos = this.memos.concat([])

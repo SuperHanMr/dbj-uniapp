@@ -1,7 +1,8 @@
 <template>
 	<view class="fill">
-		<image class="to-app-img" src="http://dbj.dragonn.top/static/mp/dabanjia/images/home/lives-decorate.jpg" mode="aspectFill" @click="showDownload=true">
-			
+		<image class="to-app-img" src="http://dbj.dragonn.top/static/mp/dabanjia/images/home/lives-decorate.jpg"
+			mode="aspectFill" @click="showDownload=true">
+
 		</image>
 		<view v-if="list.length">
 			<view class="header" @click="showDownload=true">
@@ -19,7 +20,8 @@
 						</view>
 					</view>
 					<view class="video-row">
-						<video class="video" :src="item.videoUrl">
+						<video class="video" :id="'video'+index" :src="item.videoUrl" show-center-play-btn
+							@play="onVideoPlay($event,index)">
 							<!-- <cover-view class="cover-video" @click.stop="toDetail(item.videoUrl)"></cover-view> -->
 						</video>
 					</view>
@@ -139,6 +141,14 @@
 			})
 		},
 		methods: {
+			onVideoPlay(e, index) {
+				for (let i = 0; i < this.list.length; i++) {
+					if (index != i) {
+						let videoContext = uni.createVideoContext('video' + i)
+						videoContext.pause()
+					}
+				}
+			},
 			changeLive(item) {
 				this.livePreview = item.hls;
 			},
@@ -201,11 +211,12 @@
 </script>
 
 <style lang="scss" scoped>
-	.to-app-img{
+	.to-app-img {
 		width: 100%;
 		height: 422rpx;
 		flex-shrink: 0;
 	}
+
 	.alert-app {
 		position: fixed;
 		width: 100vw;
