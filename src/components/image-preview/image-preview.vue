@@ -3,7 +3,7 @@
     <!-- <text>{{}}</text> -->
     <image class="img-item" :style="{width:imgWidth+'rpx',height:imgHeight+'rpx',marginBottom:lineSpace+'rpx',marginRight:colSpace+'rpx'}" v-for="(el,index) of list" @click="previewImage(list,index)" :key='el' :src="el.url||el.fileUrl||el" mode="aspectFill"></image>
     <view class="" v-if="hasHeight&&list.length-row*3>0">
-      <view class="mask" :style="{width:imgWidth+'rpx',height:imgHeight+'rpx',top:(imgHeight+lineSpace)*(row-1)+'rpx',left:imgWidth*2+colSpace*2+'rpx'}" >
+      <view class="mask" :style="{width:imgWidth+'rpx',height:imgHeight+'rpx',top:(imgHeight+lineSpace)*(row-1)+1+'rpx',left:imgWidth*2+colSpace*2-1+'rpx'}" >
       </view>
       <view class="mask-num" :style="{width:imgWidth+'rpx',height:imgHeight+'rpx',top:(imgHeight+lineSpace)*(row-1)+'rpx',left:imgWidth*2+colSpace*2+'rpx'}" @click="previewImage(list,3*row)">
         +{{list.length-row*3}}
