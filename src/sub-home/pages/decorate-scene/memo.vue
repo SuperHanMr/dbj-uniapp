@@ -17,7 +17,7 @@
 		<view class="memoItem" v-else v-for="item in memos" :key="item.memoId">
 			<view class="header">
 				<view class="userInfo">
-					<image class="avatar" :src="item.promulgator.avatar"></image>
+					<image class="avatar" :src="item.promulgator.avatar+'?x-oss-process=image/resize,m_mfit,w_28,h_28'"></image>
 					<view class="userName">{{item.publisherFlag?'我':item.promulgator.userName}}</view>
 					<view class="role">{{item.promulgator.roleName}}</view>
 				</view>

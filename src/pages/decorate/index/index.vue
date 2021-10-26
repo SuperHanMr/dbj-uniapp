@@ -1,5 +1,5 @@
 <template>
-  <view>
+  <view v-if="isLogin">
     <view class="decorate-index" v-if="estateList.length > 0">
       <image class="bg-index" mode="aspectFit"
         src="http://dbj.dragonn.top/%20static/mp/dabanjia/images/decorate/bg%402x-4.png">
@@ -142,6 +142,7 @@
     </view>
     <no-house :showNoHouse="showNoHouse"></no-house>
   </view>
+  <unlogin-page v-else />
 </template>
 
 <script>
@@ -193,16 +194,23 @@
       })
     },
     onShow() {
-      console.log('showTabBar')
-      this.showNoHouse = false
-      this.availGuides = []
-      if (!this.noticeActive) {
-        uni.showTabBar()
+      let scn = uni.getStorageSync("scn") || null;
+      console.log(">>>>scn>>>>>>",scn)
+      if(scn) {
+        this.isLogin = true
+        console.log('showTabBar')
+        this.showNoHouse = false
+        this.availGuides = []
+        if (!this.noticeActive) {
+          uni.showTabBar()
+        }
+        
+        this.getEstateList()
+        this.$store.dispatch("updateTabBarBadge")
+        this.showScroll = true
+      } else {
+        this.isLogin = false
       }
-
-      this.getEstateList()
-      this.$store.dispatch("updateTabBarBadge")
-      this.showScroll = true
     },
     onHide() {
       this.showScroll = false
@@ -240,7 +248,8 @@
         broadcastList: [],
         isConstruction: false,
         showNoHouse: false,
-        showScroll: false
+        showScroll: false,
+        isLogin: false
       };
     },
     onPullDownRefresh() {

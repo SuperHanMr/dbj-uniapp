@@ -13,7 +13,7 @@
 		<swiper class="swiper" :current="currentTab" :duration="200" @change="swiperChange">
 
 			<swiper-item v-for="(item,tabindex) in videoTypeList" :key="item">
-				<view v-if="videoList.length==0" class="no-list-content">
+				<view v-if="videoList.length==0&&noData" class="no-list-content">
 					<image class="no-list" src="../../../static/order/blank_house@2x.png" mode=""></image>
 					<view class="tip-text">
 						您还没有任何数据~
@@ -88,6 +88,7 @@
 				page: 1,
 				res: {},
 				triggered: false,
+				noData:false
 			};
 		},
 		onLoad() {
@@ -143,6 +144,7 @@
 				}
 			},
 			getList() {
+				this.noData=false
 				let type = -1;
 				switch (this.currentTab) {
 					case 0:
@@ -163,6 +165,9 @@
 					row: 10,
 					type,
 				}).then((e) => {
+					if(this.page==1&&e.list.length==0){
+						this.noData=true
+					}
 					this.videoList = this.videoList.concat(e.list);
 					this.triggered = false
 					this.res = e;

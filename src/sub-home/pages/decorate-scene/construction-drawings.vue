@@ -22,7 +22,7 @@
 			<view class="cardWrap" v-if="serverList.length>=2">
 				<view class="designer">
 					<view class="designerInfo">
-						<image class="avatar" @click="toPersonal(serverList[selectedIndex].userId)" :src="serverList[selectedIndex].avatar"></image>
+						<image class="avatar" @click="toPersonal(serverList[selectedIndex].userId)" :src="serverList[selectedIndex].avatar+'?x-oss-process=image/resize,m_mfit,w_52,h_52'"></image>
 						<view>
 							<view class="designerName">{{serverList[selectedIndex].userName}}</view>
 							<view class="role">{{serverList[selectedIndex].role}}</view>
@@ -50,7 +50,7 @@
 					<view class="itemWrap">
 						<view class="drawing" @click="previewImage(category.imageFileList,index)"
 							v-for="(imgItem,index) in category.imageFileList" :key="imgItem.createTime">
-							<image class="img" :src="imgItem.fileUrl"></image>
+							<image class="img" :src="imgItem.fileUrl+'?x-oss-process=image/resize,m_mfit,w_164,h_108'"></image>
 							<view class="name">{{imgItem.fileName}}</view>
 						</view>
 					</view>
@@ -70,7 +70,7 @@
 						@click="selectC(item.severId,index)"
 						>
 						<view class="designerInfo">
-							<image class="avatar" :src="item.avatar"></image>
+							<image class="avatar" :src="item.avatar+'?x-oss-process=image/resize,m_mfit,w_38,h_38'"></image>
 							<view class="designerName">{{item.userName}}</view>
 							<view class="role">{{item.role}}</view>
 						</view>

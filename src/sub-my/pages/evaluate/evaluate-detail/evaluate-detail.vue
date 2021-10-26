@@ -4,7 +4,7 @@
       <view class="body">
         <view class="header">
           <view class="left">
-            <image :src="serviceInfo.serverAvatar" mode=""/>
+            <image :src="`${serviceInfo.serverAvatar}?x-oss-process=image/resize,m_mfit,w_40,h_40`" mode=""/>
             <text class="serverName">{{serviceInfo.serverName}}</text>
             <view class="icon">
               {{serviceInfo.roleName ? serviceInfo.roleName :''}}
@@ -39,7 +39,14 @@
 						{{ serviceInfo.content ?serviceInfo.content :'' }}
 					</view>
 					<view class="img-container" v-if="serviceInfo.imgList">
-						<image class="imgItem" v-for="item4 in imgList" :key="item4" :src="item4" mode="" @click="previewImg(item4)" />
+						<image class="imgItem" 
+							v-for="item4 in imgList" 
+							:key="item4" 
+							:src="`${item4}?x-oss-process=image/resize,m_mfit,w_109,h_109`" 
+							mode="" 
+							@click="previewImg(item4)" 
+						/>
+						
 					</view>
         </view>
 				

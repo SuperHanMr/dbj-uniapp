@@ -314,7 +314,7 @@ const message = {
      * @param {Object} context
      */
     requestDBGroupList(context) {
-      getGroupList().then(data => {
+      return getGroupList().then(data => {
         const groupList = data.chatGroupBusinessDTOList || [];
         context.commit("setChatGroupList", groupList);
         context.state.chatGroupList.forEach(group => {

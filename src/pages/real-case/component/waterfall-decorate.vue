@@ -1,6 +1,6 @@
 <template>
 	<view class="waterfall-item" @tap="onTap">
-		<image :src="params.estateIconUrl" class="waterfall-item-img"></image>
+		<image :src="params.estateIconUrl + '?x-oss-process=image/resize,m_lfit,w_350'" class="waterfall-item-img"></image>
 		<!-- <view class="decorate-state">
 			{{params.projectStatus == 1 ? "已开启" : params.projectStatus == 2 ? '装修中' : params.projectStatus == 3 ? "已竣工" : "已结束"}}
 		</view> -->

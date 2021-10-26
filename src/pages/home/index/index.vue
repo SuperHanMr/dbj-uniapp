@@ -157,10 +157,9 @@
 			<view class="item" v-for="(item,index) in goodsList" :key="item.id"
 				:class="{'margin-left16':index%2!=0,'margin-left24':index%2==0}"
 				@click="toGoodsDetail(item.product.skuId)">
-				<image class="img" :src="item.product.skuImage" mode="aspectFill"></image>
+				<image class="img" :src="item.product.skuImage |imgFormat" mode="aspectFill"></image>
 				<view class="info">
 					<view class="title">
-
 						<text class="tip">
 							{{item.product.productTypeId==1?'物品':'服务'}}
 
@@ -184,7 +183,6 @@
 				</view>
 			</view>
 			<view style="height: 24rpx;width: 700rpx;">
-
 			</view>
 		</view>
 	</view>
@@ -207,7 +205,13 @@
 	import {
 		getAdcodeFromAreaId
 	} from "../../../utils/cityData.js";
+	import {
+		imgFormat
+	} from '../../../utils/common.js'
 	export default {
+		filters: {
+			imgFormat
+		},
 		data() {
 			return {
 				videoType: 0,
@@ -252,8 +256,20 @@
 				areaId: 41,
 			};
 			this.areaId = 41;
-			this.currentAddress = defaultHouse
+			this.currentAddress = defaultHouse;
 			uni.showShareMenu();
+			uni.$on("logout", (item) => {
+				let defaultHouse = {
+					name: "北京市朝阳区",
+					provinceId: 1,
+					cityId: 36,
+					areaId: 41,
+				};
+				this.areaId = 41;
+				this.currentAddress = defaultHouse;
+				this.getHomeList();
+				this.reloadData();
+			});
 			uni.$on("refrishHouse", (item) => {
 				this.reloadData();
 			});
@@ -1161,6 +1177,7 @@
 	}
 
 	.header-flex-row {
+		min-width: 200rpx;
 		display: flex;
 		align-items: center;
 	}
