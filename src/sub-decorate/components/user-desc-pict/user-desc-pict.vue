@@ -4,7 +4,7 @@
     <view class="content-wrap">
       <view class="avtor-wrap flex-row-bet">
         <view class="flex-row-start">
-          <image mode="aspectFill" class="avtor" :src="butlerData.avatar" @click="goPersonPage"></image>
+          <image mode="aspectFill" class="avtor" :src="butlerData.avatar+'?x-oss-process=image/resize,m_mfit,w_52,h_52'" @click="goPersonPage"></image>
           <view class="tigs">
             <view class="username">{{butlerData.name}}</view>
             <view class="role">{{butlerData.nodeName}}</view>
@@ -15,7 +15,7 @@
       <view class="desc">{{butlerData.content}}</view>
       <view class="picture flex-row">
         <view class="imgs" :class="{'img3': index % 3 == 2}" v-for="(item, index) in butlerData.fileUrls" :key="index" v-if="index < 6">
-          <image mode="aspectFill" :src="item" @click="clickImg(butlerData.fileUrls, index)"></image>
+          <image mode="aspectFill" :src="item+'?x-oss-process=image/resize,m_mfit,w_110,h_110'" @click="clickImg(butlerData.fileUrls, index)"></image>
           <view class="zz" v-if="butlerData.fileUrls.length > 6 && index === 5" @click="clickImg(butlerData.fileUrls, 5)">+{{butlerData.fileUrls.length - 6}}
           </view>
         </view>

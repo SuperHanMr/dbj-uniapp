@@ -8,7 +8,7 @@
     <view class="index">
       <view class="item-list">
         <view class="item" v-for="(item, index) in content.itemList" :key="item.id" @click="goDetail(item.id)">
-          <image class="img" :src="item.imageUrl"></image>
+          <image class="img" :src="item.imageUrl+'?x-oss-process=image/resize,m_mfit,w_68,h_68'"></image>
           <view class="tag-name-guige">
             <view class="cctb">
               <view class="spu-name">

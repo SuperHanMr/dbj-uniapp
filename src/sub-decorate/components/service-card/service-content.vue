@@ -1,7 +1,7 @@
 <template>
   <view class="service-content">
     <slot name="radio"></slot>
-    <image @click="goDetail" class="avotr" :src="content.imageUrl"></image>
+    <image @click="goDetail" class="avotr" :src="content.imageUrl+'?x-oss-process=image/resize,m_mfit,w_68,h_68'"></image>
     <view style="flex: 1">
       <view class="subtitle" @click="goDetail">{{content.spuName}}</view>
       <view class="desc-area" @click="goDetail">
