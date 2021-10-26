@@ -1,7 +1,7 @@
 <template>
 	<view class="waterfall-item">
 		<view class="img-box" @tap="onTap">
-			<image :src="params.imageUrl" mode="widthFix" @load="emitHeight" @error="emitHeight"></image>
+			<image :src="params.imageUrl + '?x-oss-process=image/resize,m_lfit,h_350,w_350'" mode="widthFix" @load="emitHeight" @error="emitHeight"></image>
 			<view class="comment-like">
 				<view class="comment">
 					<view class="comment-icon">

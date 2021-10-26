@@ -19,7 +19,7 @@
 
 				</view>
 				<image
-					src="https://ali-image.dabanjia.com/static/mp/dabanjia/images/merchant-entry/merchant-entry-container.png"
+					src="https://ali-image.dabanjia.com/static/mp/dabanjia/images/merchant-entry/merchant-entry-container.png?x-oss-process=image/resize,m_lfit,h_156,w_300"
 					class="info-top-image" mode=""></image>
 				<view class="company-name">
 					<view class="label">
@@ -466,7 +466,7 @@
 		width: 100%;
 		height: 590rpx;
 		background-size: 100%;
-		background-image: url(https://ali-image.dabanjia.com/static/mp/dabanjia/images/merchant-entry/merchant-entry-ic-bg.png);
+		background-image: url(https://ali-image.dabanjia.com/static/mp/dabanjia/images/merchant-entry/merchant-entry-ic-bg.png?x-oss-process=image/resize,m_lfit,h_600,w_750);
 
 		.head-info-box {
 			position: absolute;
