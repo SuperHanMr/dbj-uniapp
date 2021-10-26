@@ -410,17 +410,16 @@
 			},
 			toArguments(e) {
 				e.preventDefault();
-				// uni.navigateTo({
-				// 	url: '../merchant-entry-webview/merchant-entry-webview?url=https://ali-res.dabanjia.com/res/20210929/17/163290903769698.pdf'
-				// })
+				uni.showLoading({
+					title: '加载中'
+				});
 				uni.downloadFile({
 					url: 'https://ali-res.dabanjia.com/res/20211026/09/163521416388716.pdf',
 					success: (res) => {
 						if (res.statusCode === 200) {
-							console.log('下载成功', res);
+							uni.hideLoading();
 							uni.openDocument({
 								filePath: res.tempFilePath,
-								// filePath: 'https://ali-res.dabanjia.com/res/20210929/17/163290903769698.pdf',
 								fileType: 'pdf',
 								success: (res) => {
 									console.log(res, '>>>>>>>>>>>>>>')
@@ -434,6 +433,13 @@
 								}
 							})
 						}
+					},
+					fail(res) {
+						uni.hideLoading();
+						uni.showToast({
+							title: '文件下载失败',
+							icon: 'none'
+						})
 					}
 				})
 			},
