@@ -1,4 +1,5 @@
 <template>
+	
   <view class="sceneContainer" :class="{'noScroll':showComments}">
     <view class="header">
       <view class="houseInfo">
@@ -18,7 +19,7 @@
           </view>
         </view>
       </view>
-      <image class="houseImg" :src="projectInfo.estateIconUrl"></image>
+      <image class="houseImg" :src="projectInfo.estateIconUrl+'?x-oss-process=image/resize,m_mfit,w_116,h_116'"></image>
     </view>
     <view class="navBar">
       <view
@@ -91,7 +92,8 @@
                 <view
                   class="connectLine"
                   :class="{'line-green':index<newestNodeIndex,
-									'line-gray':index>=newestNodeIndex}"
+									'line-gray':index>=newestNodeIndex,
+									'completed':projectInfo.projectStatus===3}"
                 ></view>
 							</view>
             </view>
@@ -115,7 +117,7 @@
 							>
 								<image
 								  class="avatar"
-								  :src="item.avatar"
+								  :src="item.avatar+'?x-oss-process=image/resize,m_mfit,w_16,h_16'"
 								></image>
 								<view class="name" :class="{'minHeight':item.flag}">{{item.name}}</view>
 								<view class="line" v-if="item.flag">...</view>
@@ -127,7 +129,13 @@
             </view>
           </view>
         </view>
+				<image
+					v-if="projectInfo.projectStatus===3"
+				  class="endWork"
+				  src="http://dbj.dragonn.top/static/mp/dabanjia/images/home/end_active.png"
+				></image>
         <image
+					v-else
           class="endWork"
           src="http://dbj.dragonn.top/static/mp/dabanjia/images/home/end_work%402x.png"
         ></image>
@@ -160,7 +168,7 @@
         >
           <image
             class="avatar"
-            :src="item.avatar"
+            :src="item.avatar+'?x-oss-process=image/resize,m_mfit,w_37,h_37'"
 						@click="toPersonalHome(item.userId)"
           ></image>
           <view class="acitonInfo">
@@ -178,7 +186,7 @@
                 :imgWidth='192'
                 :imgHeight="192"
                 :lineSpace='10'
-                :colSpace="10"
+                :colSpace="11"
                 :row="2"
               ></imagePreview>
             </view>
@@ -342,7 +350,7 @@
             >
               <image
                 class="avatar"
-                :src="item.avatar"
+                :src="item.avatar+'?x-oss-process=image/resize,m_mfit,w_36,h_36'"
               ></image>
               <view class="commentInfo">
                 <view class="info">
@@ -364,7 +372,7 @@
             >
               <image
                 class="avatar"
-                :src="replyItem.avatar"
+                :src="replyItem.avatar+'?x-oss-process=image/resize,m_mfit,w_20,h_20'"
               ></image>
               <view class="replyInfo">
                 <view class="info">
@@ -510,16 +518,20 @@ export default {
 			homePageEstate: {},
 			buyState: false,//是否购买摄像头服务,
 			hasChange: false,
-			newestNodeIndex: 0
+			newestNodeIndex: 0,
+			scn: ""
     };
   },
   onLoad(option) {
     this.projectId = option.projectId;
-    this.userId = uni.getStorageSync("userId");
 		uni.$on("currentHouseChange", (item) => {
 		  this.homePageEstate = item
 		})  
   },
+	onShow() {
+		this.userId = uni.getStorageSync("userId");
+		this.scn = uni.getStorageSync("scn")
+	},
 	onPullDownRefresh(){
 		uni.stopPullDownRefresh()
 	},
@@ -805,9 +817,15 @@ export default {
       });
     },
     toCost() {
-      uni.navigateTo({
-        url: `/sub-decorate/pages/actuary-bill/actuary-bill?projectId=${this.projectInfo.id}`,
-      });
+			if(this.scn){
+				uni.navigateTo({
+				  url: `/sub-decorate/pages/actuary-bill/actuary-bill?projectId=${this.projectInfo.id}`,
+				});
+			}else{
+				uni.navigateTo({
+					url: '/pages/login/login'
+				})
+			}
     },
     requestSelectOptions() {
       let params = {
@@ -1646,7 +1664,9 @@ export default {
 	.line-green {
 		background: #01c2c3;
 	}
-
+	.connectLine:last-child.completed{
+		background: #01c2c3;
+	}
 	.column {
 		height: 24rpx;
 		padding: 0 30rpx;
@@ -1703,7 +1723,7 @@ export default {
 		height: 28rpx;
 		border-radius: 50%;
 		display: block;
-		margin: 2rpx -2rpx 8rpx;
+		margin: 2rpx 0 8rpx -5rpx;
 	}
 	.worker .item > view .name {
 		

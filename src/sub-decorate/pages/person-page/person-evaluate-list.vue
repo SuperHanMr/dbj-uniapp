@@ -8,7 +8,7 @@
       <view class="right">综合好评率 {{totalNum}}</view>
     </view>
     </view>
-    <scroll-view :scroll-y="true" style="height:100%" @scrolltolower="bindscrolltolower">
+    <scroll-view :scroll-y="true" style="height:600px" @scrolltolower="bindscrolltolower">
       <personEvaliateItem :last='index===evaluate.list.length-1' v-for="item in evaluate.list" :item='item' :key='item.id'></personEvaliateItem>
     </scroll-view>
   </view>
@@ -78,13 +78,13 @@
 <style lang="scss" scoped>
   .person-evaluate-list{
     background-color: #fff;
-    padding: 140rpx 32rpx 32rpx;
+    padding: 20rpx 32rpx ;
     height: 100%;
     padding-bottom: 88rpx;
     .aggregations-block{
       box-sizing: border-box;
-      position: fixed;
-      top: 0;
+      // position: fixed;
+      // top: 0;
       // width: 100%;
       background-color: #fff;
       z-index: 10;

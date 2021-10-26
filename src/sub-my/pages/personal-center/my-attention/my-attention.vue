@@ -46,7 +46,7 @@
 							:key="item.id"
 							@click="goToHouse(item)"
 						>
-							<image  :src="item.estateImage" mode=""/>
+							<image  :src="`${item.estateImage}?x-oss-process=image/resize,m_mfit,w_56,h_56`" mode=""/>
 							
 						  <view class="houseInfo">
 						    <view class="header">
@@ -63,7 +63,7 @@
 						<!-- 服务者 -->
 						<view  v-if="tabindex == 1" class="craftsmanAndRecommend" v-for="(item2,index2) in currentList" :key="item2.id"	>
 						  <view class="left">
-						    <image :src="item2.avatar" mode="" @click="goToPersonalHome(item2)" />
+						    <image :src="`${item2.avatar}?x-oss-process=image/resize,m_mfit,w_48,h_48`" mode="" @click="goToPersonalHome(item2)" />
 						    <view class="baseInfo">
 						      <view class="name1">
 						       {{item2.nickName}}
@@ -86,7 +86,7 @@
 						<view  v-if=" tabindex == 2" v-for="(item3,index3) in recommendlist" :key="item3.id"  >
 							<view class="craftsmanAndRecommend" >
 								<view class="left">
-									<image :src="item3.avatar" mode="" @click="goToPersonalHome(item3)"/>
+									<image :src="`${item3.avatar}?x-oss-process=image/resize,m_mfit,w_48,h_48`" mode="" @click="goToPersonalHome(item3)"/>
 									<view class="baseInfo">
 										<view class="name2">{{item3.nickName}}</view>
 										<view class="icon">{{item3.position}}</view>
