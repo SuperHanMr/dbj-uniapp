@@ -183,7 +183,6 @@
 				</view>
 			</view>
 			<view style="height: 24rpx;width: 700rpx;">
-
 			</view>
 		</view>
 	</view>
@@ -257,8 +256,20 @@
 				areaId: 41,
 			};
 			this.areaId = 41;
-			this.currentAddress = defaultHouse
+			this.currentAddress = defaultHouse;
 			uni.showShareMenu();
+			uni.$on("logout", (item) => {
+				let defaultHouse = {
+					name: "北京市朝阳区",
+					provinceId: 1,
+					cityId: 36,
+					areaId: 41,
+				};
+				this.areaId = 41;
+				this.currentAddress = defaultHouse;
+				this.getHomeList();
+				this.reloadData();
+			});
 			uni.$on("refrishHouse", (item) => {
 				this.reloadData();
 			});

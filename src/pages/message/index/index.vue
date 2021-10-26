@@ -51,7 +51,7 @@
       uni.showTabBar()
       this.$store.commit("setIMLogin", isSDKReady());
       this.$store.dispatch("updateTabBarBadge");
-      this.$store.dispatch("requestDBGroupList");
+      console.log("conversation list show")
     },
     data() {
       return {
