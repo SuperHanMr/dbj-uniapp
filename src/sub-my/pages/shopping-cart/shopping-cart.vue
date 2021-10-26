@@ -47,7 +47,8 @@
 								<image class="checked" v-else @click="checkGoods(shopItem.storeId,goodsItem.skuId)"
 									src="http://dbj.dragonn.top/static/mp/dabanjia/images/my/checked%402x.png" ></image>
 							</view>
-							<image :src="goodsItem.image" @click="toGoodsDetail(goodsItem.skuId)" class="goodsItemImg"></image>
+							<image :src="goodsItem.image+'?x-oss-process=image/resize,m_mfit,w_96,h_96'"
+								@click="toGoodsDetail(goodsItem.skuId)" class="goodsItemImg"></image>
 							<view class="goodsInfo">
 								<view>
 									<view class="goodsDesc" @click="toGoodsDetail(goodsItem.skuId)">
@@ -171,7 +172,7 @@
 					<view class="clear" @click="clearDisaledSku">清空失效商品</view>
 				</view>
 				<view class="disabldSkuItem" @click="toGoodsDetail(disabldSkuItem.skuId,true)" v-for="disabldSkuItem in disabledSkuList" :key="disabldSkuItem.skuId">
-					<image :src="disabldSkuItem.image" class="disabldSkuImg"></image>
+					<image :src="disabldSkuItem.image+'?x-oss-process=image/resize,m_mfit,w_96,h_96'" class="disabldSkuImg"></image>
 					<view class="disabledSkuInfo">
 						<view class="disabledSkuDesc">
 							<span class="disabledSkuType">{{disabldSkuItem.productType===1?'物品':'服务'}}</span>
