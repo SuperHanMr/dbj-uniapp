@@ -1,4 +1,5 @@
 <template>
+	
   <view class="sceneContainer" :class="{'noScroll':showComments}">
     <view class="header">
       <view class="houseInfo">
@@ -185,7 +186,7 @@
                 :imgWidth='192'
                 :imgHeight="192"
                 :lineSpace='10'
-                :colSpace="10"
+                :colSpace="11"
                 :row="2"
               ></imagePreview>
             </view>
@@ -517,16 +518,20 @@ export default {
 			homePageEstate: {},
 			buyState: false,//是否购买摄像头服务,
 			hasChange: false,
-			newestNodeIndex: 0
+			newestNodeIndex: 0,
+			scn: ""
     };
   },
   onLoad(option) {
     this.projectId = option.projectId;
-    this.userId = uni.getStorageSync("userId");
 		uni.$on("currentHouseChange", (item) => {
 		  this.homePageEstate = item
 		})  
   },
+	onShow() {
+		this.userId = uni.getStorageSync("userId");
+		this.scn = uni.getStorageSync("scn")
+	},
 	onPullDownRefresh(){
 		uni.stopPullDownRefresh()
 	},
@@ -812,9 +817,15 @@ export default {
       });
     },
     toCost() {
-      uni.navigateTo({
-        url: `/sub-decorate/pages/actuary-bill/actuary-bill?projectId=${this.projectInfo.id}`,
-      });
+			if(this.scn){
+				uni.navigateTo({
+				  url: `/sub-decorate/pages/actuary-bill/actuary-bill?projectId=${this.projectInfo.id}`,
+				});
+			}else{
+				uni.navigateTo({
+					url: '/pages/login/login'
+				})
+			}
     },
     requestSelectOptions() {
       let params = {
@@ -1712,7 +1723,7 @@ export default {
 		height: 28rpx;
 		border-radius: 50%;
 		display: block;
-		margin: 2rpx 0 8rpx -6rpx;
+		margin: 2rpx 0 8rpx -5rpx;
 	}
 	.worker .item > view .name {
 		

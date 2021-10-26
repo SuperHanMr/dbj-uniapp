@@ -1,8 +1,8 @@
 <template>
 	<view class="real-case">
-		<view class="" @click="toRuzhu()">
+		<!-- <view class="" @click="toRuzhu()">
 			商家入驻
-		</view>
+		</view> -->
 		<view class="collectWrapper">
 			<view class="tabbar">
 				<view class="tabbar-switch-box">

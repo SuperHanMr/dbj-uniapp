@@ -67,7 +67,13 @@
 									@click="goToDetail(item)">
 									<view class="product-img">
 										<scroll-view scroll-x style="width: 100%; white-space: nowrap;">
-											<image v-for="item2 in handleImage(item.details)" :key="item2" :src="item2"mode="" />
+											<image 
+												v-for="item2 in handleImage(item.details)" 
+												:key="item2" 
+												:src="`${item2}?x-oss-process=image/resize,m_mfit,w_68,h_68`"
+												mode=""
+											/>
+											
 										</scroll-view>
 									</view>
 									<view class="total-price">

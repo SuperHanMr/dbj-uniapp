@@ -1,6 +1,6 @@
 <template>
   <view class="material-content">
-    <image :src="content.product.skuImage" @click="goDetail"></image>
+    <image :src="content.product.skuImage+'?x-oss-process=image/resize,m_mfit,w_88,h_88'" @click="goDetail"></image>
     <view class="con">
       <view class="subtitle" @click="goDetail">{{content.product.spuName}}</view>
       <view class="desc-area" @click="goDetail">
