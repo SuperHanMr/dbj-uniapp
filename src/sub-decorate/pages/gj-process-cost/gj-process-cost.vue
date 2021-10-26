@@ -559,7 +559,9 @@
                 })
               } else {
                 uni.showToast({
-                  title: "掉起微信支付失败"
+                  title: "支付失败",
+                  icon: "none",
+                  duration: 3000
                 })
               }
             },
