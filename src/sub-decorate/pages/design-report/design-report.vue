@@ -195,7 +195,9 @@
   }
 
   .t {
-    idth: 490rpx;
+    flex: 1;
+    margin-right: 30rpx;
+    // width: 490rpx;
     height: 32rpx;
     overflow: hidden;
     text-overflow: ellipsis;
@@ -211,6 +213,7 @@
   }
 
   .lookDetail {
+    width: 130rpx;
     view {
       height: 36rpx;
       font-size: 26rpx;
