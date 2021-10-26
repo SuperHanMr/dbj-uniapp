@@ -185,7 +185,7 @@
                 :imgWidth='192'
                 :imgHeight="192"
                 :lineSpace='10'
-                :colSpace="10"
+                :colSpace="11"
                 :row="2"
               ></imagePreview>
             </view>

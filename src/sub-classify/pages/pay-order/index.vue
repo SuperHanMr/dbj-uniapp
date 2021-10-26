@@ -414,6 +414,7 @@
                 this.hasCanBuy = true
                 canStoreItem.skuInfos.push(skuItem)
                 this.totalClassNum += 1
+                console.log(this.totalClassNum)
                 // 整理出结算参数
                 let orderDetailItem = {
                   "relationId": skuItem.skuId, //实体id,
@@ -441,7 +442,7 @@
               this.$refs.orderToast.showPupop()
             }
           }
-          if (this.orderInfo.storeInfos.length === 1) {
+          if (this.orderInfo.storeInfos.skuInfos.length === 1) {
             this.totalClassNum = 1
           }
         })
