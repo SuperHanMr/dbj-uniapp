@@ -1723,7 +1723,7 @@ export default {
 		height: 28rpx;
 		border-radius: 50%;
 		display: block;
-		margin: 2rpx 0 8rpx -5rpx;
+		margin: 0 0 8rpx -6rpx;
 	}
 	.worker .item > view .name {
 		
