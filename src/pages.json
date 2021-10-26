@@ -98,13 +98,6 @@
 			}
 		},
 		{
-			"path": "pages/real-case/component/panorama/panorama",
-			"style": {
-				"navigationBarTitleText": "",
-				"enablePullDownRefresh": false
-			}
-		},
-		{
 			"path": "pages/common/video-player/video-player",
 			"style": {
 				"navigationBarBackgroundColor": "#000",

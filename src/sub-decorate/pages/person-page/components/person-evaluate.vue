@@ -13,6 +13,7 @@
 
 <script>
   import '../style/common.scss'
+  import {formatDate} from "@/utils/common.js"
   import personEvaliateItem from './person-evaliate-item.vue'
   import {getComments} from '@/api/decorate.js'
   export default{
@@ -40,7 +41,10 @@
         }
         getComments(data).then(res=>{
           this.evaluate = res
-          
+          this.evaluate.list.map(item=>{
+            console.log(formatDate(item.createTime,'YYYY-MM-DD'))
+            item.createTime = formatDate(item.createTime,'YYYY-MM-DD')
+          })
           this.getEvaluate()
         })
       },

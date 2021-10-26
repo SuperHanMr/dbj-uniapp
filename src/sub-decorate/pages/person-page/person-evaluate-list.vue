@@ -16,6 +16,7 @@
 
 <script>
   import personEvaliateItem from './components/person-evaliate-item.vue'
+  import {formatDate} from "@/utils/common.js"
   import {getComments} from '@/api/decorate.js'
   export default{
     components:{
@@ -52,7 +53,12 @@
       	getComments(params).then(data => {
       		if(data){
       			this.totalNum = data.aggregations
+            data.list.map(item=>{
+              console.log(formatDate(item.createTime,'YYYY-MM-DD'))
+              item.createTime = formatDate(item.createTime,'YYYY-MM-DD')
+            })
       			this.evaluate.list = this.evaluate.list.concat(data.list)
+            
             this.pageInfo.totalPage = data.totalPage
             this.pageInfo.totalRow = data.totalRows
       		}
