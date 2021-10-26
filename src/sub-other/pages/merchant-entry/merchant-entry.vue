@@ -18,7 +18,9 @@
 				<view class="title-modify">
 
 				</view>
-				<image src="https://ali-image.dabanjia.com/static/mp/dabanjia/images/merchant-entry/merchant-entry-container.png" class="info-top-image" mode=""></image>
+				<image
+					src="https://ali-image.dabanjia.com/static/mp/dabanjia/images/merchant-entry/merchant-entry-container.png"
+					class="info-top-image" mode=""></image>
 				<view class="company-name">
 					<view class="label">
 						公司名称
@@ -71,10 +73,10 @@
 				</view>
 			</view>
 			<view class="bottom-fiexd">
-			
+
 			</view>
 		</view>
-		
+
 		<view class="bottom">
 			<button type="default" class="get-phone" open-type="getPhoneNumber" @getphonenumber="decryptPhoneNumber"
 				v-if="showBottomButtom()"></button>
@@ -152,7 +154,8 @@
 		<uni-popup ref="popupBusiness" type="bottom">
 			<view class="business-category-box">
 				<business-category ref='businessCategoryRef' @closeBusinessPopup='closeBusinessPopup'
-					@confirmBusiness='confirmBusiness' :categroyTreeList='categroyTreeList' v-if="categroyTreeList.length > 0"/>
+					@confirmBusiness='confirmBusiness' :categroyTreeList='categroyTreeList'
+					v-if="categroyTreeList.length > 0" />
 			</view>
 		</uni-popup>
 		<!-- <button type="default" open-type="getPhoneNumber" @getphonenumber="decryptPhoneNumber">获取手机号</button> -->
@@ -411,7 +414,7 @@
 				// 	url: '../merchant-entry-webview/merchant-entry-webview?url=https://ali-res.dabanjia.com/res/20210929/17/163290903769698.pdf'
 				// })
 				uni.downloadFile({
-					url: 'https://ali-res.dabanjia.com/res/20210929/17/163290903769698.pdf', //仅为示例，并非真实的资源  
+					url: 'https://ali-res.dabanjia.com/res/20211026/09/163521416388716.pdf',
 					success: (res) => {
 						if (res.statusCode === 200) {
 							console.log('下载成功', res);
@@ -423,6 +426,10 @@
 									console.log(res, '>>>>>>>>>>>>>>')
 								},
 								fail: (res) => {
+									uni.showToast({
+										title: '打开协议失败',
+										icon: 'none'
+									})
 									console.log(res, '>>>>>>>>>>>>')
 								}
 							})
@@ -475,7 +482,7 @@
 			font-family: PingFangSC-Regular, PingFang SC;
 			font-weight: 400;
 			color: #333333;
-			
+
 			text {
 				font-size: 28rpx;
 				margin: 0 2rpx;
@@ -498,14 +505,16 @@
 			background: #fff;
 			border-radius: 16rpx;
 			position: relative;
-			.info-top-image{
+
+			.info-top-image {
 				position: absolute;
 				right: 0;
 				top: 0;
 				height: 156rpx;
 				width: 300rpx;
-				border-radius: 0 16rpx 0 0 ;
+				border-radius: 0 16rpx 0 0;
 			}
+
 			.title {
 				padding: 40rpx 0 40rpx 24rpx;
 				font-size: 40rpx;
