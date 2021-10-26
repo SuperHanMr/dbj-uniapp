@@ -472,6 +472,7 @@
             }
           })
         })
+        uni.$emit('submitOrder') // 购物车需要的逻辑
         let params = {
           payType: 1, //"int //支付方式  1微信支付",
           openid: uni.getStorageSync("openId"), //"string //微信openid 小程序支付用 app支付不传或传空",
