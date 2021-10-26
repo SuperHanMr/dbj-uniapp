@@ -204,16 +204,21 @@
       }
     },
     onPullDownRefresh() {
-      this.init();
-      // console.log(this.$refs.service,this.$refs.service.isOpen)
-      this.getSkuList()
-      
-      
-      this.$refs.case&&this.$refs.case.cleanPage()
-      this.$refs.case&&this.$refs.case.getList()
-      // console.log(this.$refs)
-      this.$refs.dynamic&&this.$refs.dynamic.requestDynamic()
-      this.$refs.evaluate.getComments()
+      if(this.personId!=0){
+        this.init();
+        // console.log(this.$refs.service,this.$refs.service.isOpen)
+        this.getSkuList()
+        
+        
+        this.$refs.case&&this.$refs.case.cleanPage()
+        this.$refs.case&&this.$refs.case.getList()
+        // console.log(this.$refs)
+        this.$refs.dynamic&&this.$refs.dynamic.requestDynamic()
+        this.$refs.evaluate.getComments()
+        
+      }else{
+        uni.stopPullDownRefresh();
+      }
       
     },
     onLoad(e){
