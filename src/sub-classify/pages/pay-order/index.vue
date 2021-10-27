@@ -414,6 +414,7 @@
                 this.hasCanBuy = true
                 canStoreItem.skuInfos.push(skuItem)
                 this.totalClassNum += 1
+                console.log(this.totalClassNum)
                 // 整理出结算参数
                 let orderDetailItem = {
                   "relationId": skuItem.skuId, //实体id,
@@ -441,7 +442,7 @@
               this.$refs.orderToast.showPupop()
             }
           }
-          if (this.orderInfo.storeInfos.length === 1) {
+          if (this.orderInfo.storeInfos.skuInfos.length === 1) {
             this.totalClassNum = 1
           }
         })
@@ -471,6 +472,7 @@
             }
           })
         })
+        uni.$emit('submitOrder') // 购物车需要的逻辑
         let params = {
           payType: 1, //"int //支付方式  1微信支付",
           openid: uni.getStorageSync("openId"), //"string //微信openid 小程序支付用 app支付不传或传空",

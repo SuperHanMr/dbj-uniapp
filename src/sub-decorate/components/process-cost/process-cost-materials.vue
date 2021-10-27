@@ -13,7 +13,7 @@
             <check-box style="margin-right: 24rpx;" v-else :checked="item.checked" @change="(val) => {checkItem(val, item)}"></check-box>
             <view class="flex-1">
               <view class="flex-r-l">
-                <image class="img" :src="item.imageUrl" @click="goDetail(item.id)"></image>
+                <image class="img" :src="item.imageUrl+'?x-oss-process=image/resize,m_mfit,w_68,h_68'" @click="goDetail(item.id)"></image>
                 <view class="tag-name-guige-price-edit">
                   <view class="spu-name-gui-ge-count">
                     <view class="spu-name" @click="goDetail(item.id)">

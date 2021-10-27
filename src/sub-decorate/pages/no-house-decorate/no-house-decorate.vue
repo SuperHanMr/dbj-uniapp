@@ -40,8 +40,8 @@
 
     <no-data v-if="noData === 0" words="当前城市暂未开通此服务,敬请期待~"></no-data>
     <uni-popup ref="level">
-      <change-level @changeLevel="setLevel" @close="close" :dataList="levelList" descType="design"
-        :current="levelList[0]"></change-level>
+      <change-level v-if="levelList.length > 0" @changeLevel="setLevel" @close="close" :dataList="levelList"
+        descType="design" :current="levelList[0]"></change-level>
     </uni-popup>
     <uni-popup ref="tips">
       <cancel-tip :tips="tips" @result="setCardChecked" @close="tipsClose"></cancel-tip>
@@ -280,8 +280,15 @@
         this.$refs.level.open('bottom')
       },
       setLevel(levelObj) {
-        this.design.level = levelObj.value
-        this.design.price = levelObj.price
+        let temp = {
+          ...this.design
+        }
+
+        temp.level = levelObj.value
+        temp.price = levelObj.price
+        this.design = {
+          ...temp
+        }
         console.log(this.design.level, this.design.price)
         this.close()
       },
@@ -320,6 +327,7 @@
         if (this.design.categoryTypeId === 7) {
           tmp.workerType = this.design.workerType
         }
+        this.levelList = []
         changeLevel(tmp).then(data => {
           this.showLevel = data?.length > 0
           console.log(this.showLevel)

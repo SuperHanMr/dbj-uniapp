@@ -10,7 +10,8 @@
       </view>
       <view class="date">{{calendarFormat(detail)}}</view>
     </view>
-    <view v-if="detail.beautyReport && detail.beautyReport.id && detail.beautyReport.templateId" class="card flex-row-bet">
+    <view v-if="detail.beautyReport && detail.beautyReport.id && detail.beautyReport.templateId"
+      class="card flex-row-bet">
       <view class="t">{{detail.beautyReport.title}}</view>
       <view class="lookDetail flex-row-start" @click="beatifulReport">
         <view>立即查看</view>
@@ -194,6 +195,14 @@
   }
 
   .t {
+    flex: 1;
+    margin-right: 30rpx;
+    // width: 490rpx;
+    height: 32rpx;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    word-break: break-all;
     height: 40rpx;
     font-size: 28rpx;
     font-family: PingFangSC, PingFangSC-Medium;
@@ -204,6 +213,7 @@
   }
 
   .lookDetail {
+    width: 130rpx;
     view {
       height: 36rpx;
       font-size: 26rpx;
