@@ -88,7 +88,7 @@
 				page: 1,
 				res: {},
 				triggered: false,
-				noData:false
+				noData: false
 			};
 		},
 		onLoad() {
@@ -144,7 +144,7 @@
 				}
 			},
 			getList() {
-				this.noData=false
+				this.noData = false
 				let type = -1;
 				switch (this.currentTab) {
 					case 0:
@@ -165,8 +165,8 @@
 					row: 10,
 					type,
 				}).then((e) => {
-					if(this.page==1&&e.list.length==0){
-						this.noData=true
+					if (this.page == 1 && e.list.length == 0) {
+						this.noData = true
 					}
 					this.videoList = this.videoList.concat(e.list);
 					this.triggered = false
@@ -218,16 +218,18 @@
 	.live-list-name {
 		background: #FFF;
 		padding: 16rpx;
-		flex: 1;
-		display: flex;
+		// flex: 1;
+		// display: flex;
 		font-size: 26rpx;
 		font-weight: 400;
+		line-height: 40rpx;
 		color: #111111;
 		overflow: hidden;
 		text-overflow: ellipsis;
 		display: -webkit-box;
 		-webkit-line-clamp: 1; //这个代表你要在几行显示省略号
 		-webkit-box-orient: vertical;
+		white-space: nowrap;
 	}
 
 	.fill {
