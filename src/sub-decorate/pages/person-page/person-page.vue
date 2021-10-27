@@ -12,28 +12,28 @@
       </view>
       <view class="item nav-header-msg">
         <view class="main">
-        <image class="avatar" :src="personData.avatar" mode="aspectFill" ></image>
-        <text>{{personData.roleId>=1&&personData.roleId<7?personData.realName:personData.nickName}}</text>
+        <image class="avatar" :src="personId!=0?personData.avatar:'http://dbj.dragonn.top/%20static/mp/dabanjia/images/decorate/bg_dbj.png'" mode="aspectFill" ></image>
+        <text>{{personId!=0? (personData.roleId>=1&&personData.roleId<7?personData.realName:personData.nickName):'打扮家'}}</text>
         </view>
       </view>
       <view class="item "></view>
     </view>
     <view class="person-page-content">
       <view class="person-msg" :class="{'is-self':personData.roleId === 10000}">
-        <view class="person-msg-top" :class="{'is-self':personData.roleId === 10000}">
+        <view :class="{'is-self':personData.roleId === 10000,'person-msg-top':personId!=0}">
           <view class="person-msg-header">
             <view class="person-msg-header-image">
-              <image class="avatar" :src="personData.avatar" mode="aspectFill" ></image>
-              <i class="icon icon-ic_nan" v-if="personData.gender===1"></i>
-              <i class="icon icon-ic_nv" v-else></i>
+              <image class="avatar" :src="personId!=0?personData.avatar:'http://dbj.dragonn.top/%20static/mp/dabanjia/images/decorate/bg_dbj.png'" mode="aspectFill" ></image>
+              <i class="icon icon-ic_nan" v-if="personId!=0&&personData.gender===1"></i>
+              <i class="icon icon-ic_nv" v-if="personId!=0&&personData.gender===2"></i>
             </view>
-            <text class="name">{{personData.roleId>=1&&personData.roleId<7?personData.realName:personData.nickName}}</text>
+            <text class="name">{{personId!=0?(personData.roleId>=1&&personData.roleId<7?personData.realName:personData.nickName):'打扮家'}}</text>
             <view class="label">
-              <text class="job" v-if="personData.roleId!==10000">{{personData.roleId===3?personData.personAllBadgeVO.skillBadges[0].name:personData.roleName}}</text>
-              <text class="rate" v-if="personData.roleId<7&&personData.praiseRate">好评率{{personData.praiseRate}}</text>
+              <text class="job" v-if="personData.roleId!==10000">{{personId!=0?(personData.roleId===3?personData.personAllBadgeVO.skillBadges[0].name:personData.roleName):'官方'}}</text>
+              <text class="rate" v-if="personId!=0&&personData.roleId<7&&personData.praiseRate">好评率{{personData.praiseRate}}</text>
             </view>
           </view>
-          <view class="btn" v-if="personData.roleId<7">
+          <view class="btn" v-if="personId!=0&&personData.roleId<7">
           <view class="recommend" @click="attentionSure(2001)" :class="{'already-recommend':isRecommend}">
               <i class="icon-gerenzhuye_youxiantuijianic" v-if="!isRecommend"></i>
               {{isRecommend?'已':''}}优先推荐
@@ -43,7 +43,7 @@
               {{isAttention?'已':''}}关注
             </view>
           </view>
-          <view class="person-msg-list" >
+          <view class="person-msg-list" v-if="personId!=0">
             <view class="list-item" v-if="personData.roleId<6">
               <text class="num">{{personData.likeCount||0}} <text class="unit" v-if="personData.likeCount.split('.')[1]">w</text></text>
               <text class="title">获赞</text>
@@ -67,14 +67,14 @@
             </view>
           </view>
         </view>
-        <personIntroduce v-if="personData.roleId!==10000" :personData='personData'></personIntroduce>
+        <personIntroduce v-if="personId!=0&&personData.roleId!==10000" :personData='personData'></personIntroduce>
         <view class="send-msg" @click="sendMsg" v-if="personData.roleId<7&&hasServe!==0">
           <i class="icon-gerenzhuye_ic_faxiaoxi"></i>
           <text>发消息</text>
           
         </view>
       </view>
-      <view class="person-interact" v-if="personData.roleId<7&&personData.roleId!=6" :class="{'person-interact-active':interactActive+10 >  interact }">
+      <view class="person-interact" v-if="personId!=0&&personData.roleId<7&&personData.roleId!=6" :class="{'person-interact-active':interactActive+10 >  interact }">
         <view class="sticky">
           <view class="item" v-if="personData.roleId===1" :class="{'item-active':currentItem==='serviceTop'}" @click="toItem('serviceTop')">
             服务</view>
@@ -86,7 +86,7 @@
             评价<text v-if="evaluateNum">{{evaluateNum}}</text></view>
         </view>
       </view>
-      <view class="content" v-if="personData.roleId<7">
+      <view class="content" v-if="personId!=0&&personData.roleId<7">
         <personService ref='service' v-if="personData.roleId===1" :serviceData='serviceData'></personService>
         <view class="interval" v-if="personData.roleId===1"></view>
         <personCase ref='case' :personId='personId' class="person-case" v-if="personData.roleId===1||personData.roleId===2"></personCase>
@@ -98,6 +98,46 @@
     <view class="person-self" v-if="personData.roleId===10000">
       <image></image>
       <text>暂无内容</text>
+    </view>
+    <view class="person-dbj" v-if="personId==0">
+      <view class="header">
+      <text>打扮家-家装BIM系统，国内互联网主流家装基础设施与服务的提供者。</text>
+      <text>坚持以科技提升效益，用智慧创造美好的使命。</text>
+      <text>为了实现用户“所想即所见，所见即所得，设计师更优、装企算得清”的终极目标，以打扮家BIM、AI等技术为基础为上下游产业链赋能，全面激活伙伴能力，打造全新的家装生态。</text>
+      </view>
+      
+      <text class="title">在打扮家平台：</text>
+      
+      <view class="li">
+        <text class="label">· 设计师</text>
+        <text>打扮家超级平台的诞生，让设计只专注于设计成为可能。</text>
+      </view>
+      <view class="li">
+        <text class="label">· 消费者</text>
+        <text>强大的技术与坚守的服务宗旨将消费者省钱、省心、装的快的诉求一一实现。</text>
+      </view>
+      <view class="li">
+        <text class="label">· 行业'</text>
+        <text>促使行业走向标准化、平台化、模块化、智能化、生态化。</text>
+      </view>
+      <view class="li">
+        <text class="label">· 工人、工长</text>
+        <text>有尊严、有归属感，实现自我价值为目标，改变在大众心中的印象。</text>
+      </view>
+      <text class="title">三大服务体系：</text>
+      <view class="li">
+        <text class="label">· 设计服务体系</text>
+        <text>基于BIM系统，为设计师提供不受地域限制、标准化的在线设计平台。为消费者提供设计、算量、方案、施工落地均透明的设计服务。</text>
+      </view>
+      <view class="li">
+        <text class="label">· 选材服务体系</text>
+        <text>利用技术建立集束型视频实时展示导购展厅，标准/非标材料线上展示线上选。</text>
+      </view>
+      <view class="li">
+        <text class="label">· 施工服务体系</text>
+        <text>利用AI算法，将为全国的施工现场进行标准化、无死角、低成本的直播服务。全国手艺人招募计划，科技教学，数字化变革为人才蓄力。</text>
+      </view>
+      <text class="title">打扮家 - 让用户家装更称心、更省心、更放心、更省钱最终达到真快乐的终极目标。</text>
     </view>
   </view>
 </template>
@@ -164,27 +204,36 @@
       }
     },
     onPullDownRefresh() {
-      this.init();
-      // console.log(this.$refs.service,this.$refs.service.isOpen)
-      this.getSkuList()
-      
-      
-      this.$refs.case&&this.$refs.case.cleanPage()
-      this.$refs.case&&this.$refs.case.getList()
-      // console.log(this.$refs)
-      this.$refs.dynamic&&this.$refs.dynamic.requestDynamic()
-      this.$refs.evaluate.getComments()
+      if(this.personId!=0){
+        this.init();
+        // console.log(this.$refs.service,this.$refs.service.isOpen)
+        this.getSkuList()
+        
+        
+        this.$refs.case&&this.$refs.case.cleanPage()
+        this.$refs.case&&this.$refs.case.getList()
+        // console.log(this.$refs)
+        this.$refs.dynamic&&this.$refs.dynamic.requestDynamic()
+        this.$refs.evaluate.getComments()
+        
+      }else{
+        uni.stopPullDownRefresh();
+      }
       
     },
     onLoad(e){
       this.userType = e.userType
-      this.personId = e.personId||7270
+      this.personId = e.personId||0
+      console.log(this.personId)
       // this.getGrabDetail()
     },
     onShow(){
       // console.log(111)
-      this.$refs.dynamic&&this.$refs.dynamic.requestDynamic()
-      this.init()
+      if(this.personId!=0){
+        this.$refs.dynamic&&this.$refs.dynamic.requestDynamic()
+        this.init()
+      }
+      
     },
     mounted() {
       // this.getCaseList()
@@ -209,7 +258,7 @@
         this.evaluateTop = res&&res.top
       })
       query.exec(function(res){
-        console.log(res)
+        
       })
     },
     onPageScroll(scrollTop) {
@@ -392,7 +441,7 @@
       },
       getTopDistance(){
         query.exec(function(res){
-          console.log(res)
+          
         })
         
       },
@@ -479,7 +528,7 @@
     background-color: #fff;
     border-radius: 32rpx 32rpx 0px 0px;
     box-shadow: 0px 26rpx 34rpx 0px rgba(3, 65, 63, 0.03);
-    padding: 226rpx 32rpx 24rpx;
+    padding: 242rpx 32rpx 24rpx;
     
     .send-msg{
       height: 104rpx;
@@ -815,5 +864,28 @@
     width: 100%;
     height: 16rpx;
     background: #F5F6F6;
+  }
+  .person-dbj{
+    padding: 20rpx 32rpx;
+    text{
+      color: #666;
+      display: block;
+      font-size: 26rpx;
+      margin-bottom: 24rpx;
+    }
+    .header{
+      padding: 24rpx 0;
+      
+    }
+    .title{
+      font-size: 28rpx;
+      color: #333;
+      font-weight: 600;
+    }
+    .label{
+      color: #666;
+      font-weight: 600;
+      margin-bottom: 16rpx;
+    }
   }
 </style>

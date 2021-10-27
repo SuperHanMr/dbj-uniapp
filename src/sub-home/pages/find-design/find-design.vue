@@ -95,10 +95,16 @@
 				menuButtonInfo.height +
 				"px";
 			findDesign().then(e => {
-				this.tabList = e
+				this.tabList = e;
+				let id = ''
+				if (this.tabList.length) {
+					id = this.tabList[0].id
+				}
 				if (this.tabList.length && this.tabList[0] && this.tabList[0].children) {
 					this.subChildren = this.tabList[0].children
+					id = this.subChildren[0].id
 				}
+				this.getGoods(id)
 			})
 		},
 		onPageScroll(scrollTop) {

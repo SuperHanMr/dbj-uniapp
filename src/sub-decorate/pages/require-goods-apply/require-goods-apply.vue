@@ -59,52 +59,16 @@ export default {
   data() {
     return {
       cartList: [],
-      list: [
-        {
-          title: "京东",
-          children: [
-            {
-              img: "",
-              title:
-                "开工保护（开工后对各区域进行的全方位保护全方位保护位保护位保护位保护位）…",
-              sub: "本次要货：1卷",
-            },
-            {
-              img: "",
-              title:
-                "开工保护（开工后对各区域进行的全方位保护位保护位保护位保护位）…",
-              sub: "本次要货：1卷",
-            },
-          ],
-        },
-        {
-          title: "天猫",
-          children: [
-            {
-              img: "",
-              title:
-                "开工保护（开工后对各区域进行的全方位保护位保护位保护位保护位）…",
-              sub: "本次要货：1卷",
-            },
-            {
-              img: "",
-              title:
-                "开工保护（开工后对各区域进行的全方位保护位保护位保护位保护位）…",
-              sub: "本次要货：1卷",
-            },
-          ],
-        },
-      ],
+      list: [],
       currentHouse: {},
       projectId: "",
     };
   },
-  onShow() {
+
+  onLoad(e) {
     uni.$once("selectedHouse", (item) => {
       this.currentHouse = item;
     });
-  },
-  onLoad(e) {
     this.cartList = getApp().globalData.naviData;
     this.currentHouse = getApp().globalData.currentEstate;
     if (e && e.projectId) {

@@ -68,8 +68,6 @@
 				(menuButtonInfo.top - systemInfo.statusBarHeight) +
 				menuButtonInfo.height +
 				"px";
-		},
-		onShow() {
 			uni.$on('new-memo',() => {
 				this.page = 1
 				this.requestPage()

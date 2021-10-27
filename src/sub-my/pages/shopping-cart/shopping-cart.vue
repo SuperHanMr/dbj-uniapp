@@ -278,7 +278,7 @@
 				checkedSkuList:[],
 			}
 		},
-		onShow() {
+		onLoad() {
 			uni.$on('submitOrder',() => {
 				this.requestPage()
 			})
