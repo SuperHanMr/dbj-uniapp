@@ -204,7 +204,7 @@
       }
 
       this.serveType = serveType
-      this.estateId = Number(estateId) || Number(option.estateId)
+      this.estateId = Number(option.estateId) || Number(estateId)
       this.customerId = customerId
       this.provinceId = provinceId //省id
       this.cityId = cityId //市id
@@ -483,13 +483,17 @@
           } else {
             let flt = null
             let eastId = Number(this.estateId) ?? false
+            let fromPage = this.fromPage ?? false
             console.log(">>estateId: >>", eastId)
             console.log(">>fromPage: >>", this.fromPage)
 
             if (eastId) {
-              flt = data.filter(t => t.id == eastId);
+              if (fromPage == "userHome") {
+                flt = data.filter(t => t.id == this.defaultHouse?.id);
+              } else {
+                flt = data.filter(t => t.id == eastId);
+              }
             } else {
-              let fromPage = this.fromPage ?? false
               if (fromPage == "userHome") {
                 flt = data.filter(t => t.id == this.defaultHouse?.id);
               }
