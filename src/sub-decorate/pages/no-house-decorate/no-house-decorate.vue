@@ -157,7 +157,12 @@
           chprice = this.checkHouse.price || 0
         }
         let insideArea = this.currentHouse.insideArea || 1
-        let temp = dprice * insideArea + aprice * insideArea + chprice * insideArea
+        
+        let dpriceCount = Math.trunc(dprice * insideArea)
+        let apriceCount = Math.trunc(aprice * insideArea)
+        let chpriceCount = Math.trunc(chprice * insideArea)
+        let temp = dpriceCount + apriceCount + chpriceCount
+        console.log(">>>>总价:",temp)
         return temp
       }
     },
