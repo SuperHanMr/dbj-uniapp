@@ -1,6 +1,6 @@
 <template>
   <view class="amount-house">
-    <view class="image-title">
+    <view class="image-title" v-if="imageData.measureStructImages.length>0">
       <text class="title">原始结构尺寸图</text>
       <text class="time">{{imageData.measureStructImagesDate}}</text>
     </view>
