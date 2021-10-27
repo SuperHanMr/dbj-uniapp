@@ -77,7 +77,9 @@
 					title: "是否确定退出亲友团？",
 					content: "退出后将无法看到亲友的房屋",
 					success: function(res) {
-						vm.deleteFriend(item.id);
+						if (res.confirm) {
+							vm.deleteFriend(item.id);
+						}
 					},
 				});
 			},
@@ -234,6 +236,7 @@
 		.exit-house {
 			color: #999999;
 			font-size: 26rpx;
+			padding: 20rpx 100rpx;
 		}
 	}
 

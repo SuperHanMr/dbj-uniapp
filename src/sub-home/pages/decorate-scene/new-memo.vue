@@ -32,8 +32,6 @@
 		},
 		onLoad(option) {
 			this.projectId = option.projectId
-		},
-		onShow() {
 			uni.$once("sendReminders",(reminderList) => {
 				console.log(reminderList)
 				this.reminderList = reminderList.reverse()

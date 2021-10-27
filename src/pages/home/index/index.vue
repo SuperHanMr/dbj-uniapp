@@ -448,9 +448,10 @@
 				this.getQueryLiveList();
 			},
 			onZoneClick(item) {
-				if (item.type == 0) {
+				if (item.type == 0||item.type==5) {
 					uni.showModal({
-						title: "敬请期待",
+						content: "敬请期待",
+						showCancel:false
 					});
 				} else if (item.type == 1) {
 					if (item.url.endsWith("index/index")) {

@@ -116,8 +116,8 @@
 									<text v-if="!item.freight && !item.handlingFees">需付款</text>
 									<text style="color:#FF3347;margin-left: 8rpx;">
 										<text style="font-size:22rpx;">￥</text>
-										<text style="font-size: 32rpx;" class="price-font">{{handlePrice(item.payAmount)[0]}}.</text>
-										<text style="font-size:22rpx;" class="price-font">{{handlePrice(item.payAmount)[1]}}</text>
+										<text style="font-size: 32rpx;" class="price-font">{{handlePrice(item.orderReceivableAmount)[0]}}.</text>
+										<text style="font-size:22rpx;" class="price-font">{{handlePrice(item.orderReceivableAmount)[1]}}</text>
 									</text>
 								</view>
 
@@ -125,8 +125,8 @@
 									<text>实付</text>
 									<text v-if="item.orderStatus == 3" style="color:#333333;margin-left: 8rpx;">
 										<text style="font-size:18rpx;">￥</text>
-										<text	style="font-size: 32rpx;" class="price-font">{{handlePrice(item.orderReceivableAmount)[0]}}.</text>
-										<text style="font-size:18rpx;" class="price-font">{{handlePrice(item.orderReceivableAmount)[1]}}</text>
+										<text	style="font-size: 32rpx;" class="price-font">{{handlePrice(item.payAmount)[0]}}.</text>
+										<text style="font-size:18rpx;" class="price-font">{{handlePrice(item.payAmount)[1]}}</text>
 									</text>
 									<text  v-else style="color:#333333;margin-left: 8rpx;">
 										<text style="font-size:18rpx;">￥</text>
