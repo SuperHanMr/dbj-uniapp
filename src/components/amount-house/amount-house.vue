@@ -59,7 +59,7 @@
     
         getAmountDetail(this.checkData).then(res=>{
           this.imageData = res
-          if(this.imageData.measureStructImages.length===0){
+          if(this.imageData.measureStructImages.length===0&&this.imageData.measureImagesDate.length===0){
             this.$emit('isEmpty',this.index)
           }
         }).catch(err=>{
