@@ -236,6 +236,7 @@
 		.exit-house {
 			color: #999999;
 			font-size: 26rpx;
+			padding: 20rpx 100rpx;
 		}
 	}
 
