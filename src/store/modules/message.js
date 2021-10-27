@@ -42,6 +42,7 @@ const message = {
       type: TIM.TYPES.CONV_GROUP,
       systemType: CONV_TYPES.CUSTOMER,
       isAvailable: false,
+      hasBulter: false,
       name: "在线客服"
     },
     sysConv: {
@@ -243,6 +244,13 @@ const message = {
         isAvailable: available
       };
     },
+    // 设置客服群是否有客服
+    setCustomerHasButler(state, hasBulter) {
+      state.cstServConv = {
+        ...state.cstServConv,
+        hasBulter: hasBulter
+      };
+    },
     setCustomerLastMessage(state, lastMessage) {
       state.cstServConv = {
         ...state.cstServConv,
@@ -404,6 +412,7 @@ const message = {
                   type: "MSG_QUESTION_LIST",
                 });
               }
+              context.commit("setCustomerHasButler", isGroupButlerExist);
             }).catch(e => {
               getTim().sendMessage({
                 type: "MSG_QUESTION_LIST",

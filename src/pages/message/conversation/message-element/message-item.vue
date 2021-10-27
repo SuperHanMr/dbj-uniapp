@@ -54,6 +54,11 @@
     :template="template"
     :message="message"
   />
+  <text-template
+    v-else-if="message.type === TIM.TYPES.MSG_CUSTOM && template.template === 'text'"
+    :template="template"
+    :message="message"
+  />
   <unsupported-element
     v-else
     :message="message"
@@ -76,6 +81,7 @@
   import CardTemplate from "./template/card-tpl.vue"
   import TipTemplate from "./template/tip-tpl.vue"
   import Tip2Template from "./template/tip2-tpl.vue"
+  import TextTemplate from "./template/text-tpl.vue"
   export default {
     name: "MessageItem",
     props: {
@@ -97,7 +103,8 @@
       UnsupportedElement,
       CardTemplate,
       TipTemplate,
-      Tip2Template
+      Tip2Template,
+      TextTemplate
     },
     computed: {
       TIM() {

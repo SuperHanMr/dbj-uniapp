@@ -2229,7 +2229,7 @@
   },
   "group_customer_answer": {
     "type": "group_customer_answer",
-    "template": "text_bubble",
+    "template": "text",
     "summary": "${content}",
     "body": {
       "content": "${content}"

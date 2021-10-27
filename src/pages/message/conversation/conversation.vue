@@ -275,6 +275,7 @@
       onReceiveMessage(event) {
         let messageList = event.data || [];
         console.log("messageList receive:", messageList);
+        messageList = this.handleMessageListBeforePush(messageList);
         this.$store.commit("pushCurrentMessageList", messageList);
         getTim().setMessageRead({ conversationID: this.currentConversation.conversationID });
         this.handleGroupNameUpate(messageList);
@@ -289,6 +290,18 @@
           　　title: newName
           });
         }
+      },
+      handleMessageListBeforePush(messageList) {
+        if (this.type === this.CONV_TYPES.CUSTOMER) {
+          //客服群中有客服时，智能客服的回复消息是有administrator发出的，需要转换
+          messageList.forEach(msg => {
+            if (msg.from === 'administrator' && msg.type === TIM.TYPES.MSG_CUSTOM) {
+              msg.nick = "智能客服";
+              msg.avatar = "https://ali-image.dabanjia.com/static/mp/dabanjia/images/message/smart-service%402x.png";
+            }
+          })
+        }
+        return messageList;
       },
       handleMessageListClick() {
         uni.$emit("message-list-click");
