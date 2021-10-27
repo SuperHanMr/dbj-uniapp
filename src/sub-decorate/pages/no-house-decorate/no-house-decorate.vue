@@ -157,7 +157,12 @@
           chprice = this.checkHouse.price || 0
         }
         let insideArea = this.currentHouse.insideArea || 1
-        let temp = dprice * insideArea + aprice * insideArea + chprice * insideArea
+
+        let dpriceCount = Math.trunc(dprice * insideArea)
+        let apriceCount = Math.trunc(aprice * insideArea)
+        let chpriceCount = Math.trunc(chprice * insideArea)
+        let temp = dpriceCount + apriceCount + chpriceCount
+        console.log(">>>>总价:",temp)
         return temp
       }
     },
@@ -479,6 +484,8 @@
             let flt = null
             let eastId = Number(this.estateId) ?? false
             console.log(">>estateId: >>", eastId)
+            console.log(">>fromPage: >>", this.fromPage)
+
             if (eastId) {
               flt = data.filter(t => t.id == eastId);
             } else {
@@ -486,7 +493,8 @@
               if (fromPage == "userHome") {
                 flt = data.filter(t => t.id == this.defaultHouse?.id);
               }
-              if (!fromPage) {
+              if (!fromPage || this.fromPage == "decorateIndex") {
+                console.log(">>fromPage: >>", this.fromPage)
                 // 来自消息
                 flt = data.filter(t => t.id == getApp().globalData.currentProject.estateId);
               }
