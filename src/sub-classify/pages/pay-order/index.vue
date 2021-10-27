@@ -134,7 +134,7 @@
       <view class="bottom">
         <view>
           购买即代表您已阅读并同意
-          <text class="agreement" @click="goAgreement">《打扮家服务用户协议》</text>
+          <text class="agreement" @click="goAgreement">《打扮家平台服务协议》</text>
         </view>
         <view class="second-part">
           <view class="total-price-info">
