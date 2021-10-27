@@ -35,7 +35,7 @@
       loginInit.imgUrl = "http://dbj.dragonn.top/static/mp/dabanjia/images/decorate/logo.0ccb88de.png"; // 登录logo
       loginInit.imgWidth = 272; // logo的宽度
       loginInit.imgHeight = 154; // logo的高度
-      loginInit.ctx = "app-guomeijia|ver-v8.2.2|plt-wxApp|cmpid-"; //登录ctx
+      // loginInit.ctx = "app-guomeijia|ver-v8.2.2|plt-wxApp|cmpid-"; //登录ctx
       loginInit.ctx = "app-dabanjia|ver-v8.2.2|plt-wxApp|cmpid-"; //登录ctx
       loginInit.sharerUserId = uni.getStorageSync("sharerUserId") || ""; //邀请人userId
       loginInit.sharerUnionId = uni.getStorageSync("sharerUnionId") || "";
