@@ -327,7 +327,7 @@
           this.dataOrigin?.artificial?.categoryList?.forEach((item, i) => {
             item.itemList.forEach((it, j) => {
               this.shopping.artificial.push(it)
-              this.countPrice += it.price * it.count
+              this.countPrice += Math.trunc(it.price * it.count)
               this.pieces += it.count
             })
           })
@@ -339,12 +339,13 @@
             item.itemList.forEach((it, j) => {
               if (this.checkedIds.includes(it.originalId)) {
                 this.shopping.material.push(it)
-                this.countPrice += it.price * it.count
+                this.countPrice += Math.trunc(it.price * it.count)
                 this.pieces += it.count
               }
             })
           })
         }
+        console.log(">>>>>>总价：>>>>>", this.countPrice)
       },
       batchChangeLevel(cllist) {
         batchChangeLevel({
