@@ -121,8 +121,8 @@
 				<text style="margin-right: 12rpx;">实付款</text>
 				<text style="color: #FF3347;" class="price-font">
 					<text>￥</text>
-					<text style="font-size: 40rpx;" class="price-font">{{handlePrice(data.actuallyPayAmount)[0]}}.</text>
-					<text class="price-font">{{handlePrice(data.actuallyPayAmount)[1]}}</text>
+					<text style="font-size: 40rpx;" class="price-font">{{handlePrice(data.payAmount)[0]}}.</text>
+					<text class="price-font">{{handlePrice(data.payAmount)[1]}}</text>
 				</text>
 			</view>
 			<view v-else>
