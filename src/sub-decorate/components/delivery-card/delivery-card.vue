@@ -11,7 +11,7 @@
           <text class="item-body">{{item.problemDetails||''}}</text>
         </view>
         <i class="icon-ic_wodejia_genghuandengji_csn"></i>
-        <!-- <image src="http://dbj.dragonn.top/static/mp/dabanjia/images/decorate/ic_triangle.svg" mode=""></image> -->
+        <!-- <image src="https://ali-image.dabanjia.com/static/mp/dabanjia/images/decorate/ic_triangle.svg" mode=""></image> -->
       </view>
       <view v-if="data.arr.length===0" class="list-item no-content">暂无内容</view>
     </view>

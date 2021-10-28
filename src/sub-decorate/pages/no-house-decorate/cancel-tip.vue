@@ -2,7 +2,7 @@
   <view class="pop-content">
     <view class="title-wrap">
       <view class="title">温馨提示</view>
-      <image src="http://dbj.dragonn.top/static/mp/dabanjia/images/decorate/ic_cancel.svg" @click="close"></image>
+      <image src="https://ali-image.dabanjia.com/static/mp/dabanjia/images/decorate/ic_cancel.svg" @click="close"></image>
     </view>
     <view class="desc">
       {{tips.content}}

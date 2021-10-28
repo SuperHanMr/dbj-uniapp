@@ -12,7 +12,7 @@
 				<view class="list" v-if="reminderList.length">
 					<view class="reminder" v-for="item in reminderList" :key="item.userId">@{{item.userName}}</view>
 				</view>
-				<image class="icon" src="http://dbj.dragonn.top/static/mp/dabanjia/images/home/ic_memo_more%402x.png"></image>
+				<image class="icon" src="https://ali-image.dabanjia.com/static/mp/dabanjia/images/home/ic_memo_more%402x.png"></image>
 			</view>
 		</view>
 		<view class="finish" @click="finishC">完成</view>	

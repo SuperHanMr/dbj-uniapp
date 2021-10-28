@@ -153,7 +153,7 @@ export default {
 			navBarHeight:"",
 			scrollTop: 0,
 			headerTitle:"",
-			bgImg :'http://dbj.dragonn.top/static/mp/dabanjia/images/decorate/order_bg_gray.png',
+			bgImg :'https://ali-image.dabanjia.com/static/mp/dabanjia/images/decorate/order_bg_gray.png',
     };
   },
 

@@ -33,7 +33,7 @@
 
 				</view>
 				<view class="state-bar-text">
-					<image class="img" src="http://dbj.dragonn.top/static/mp/dabanjia/images/home/ic_gkrs.png" mode="">
+					<image class="img" src="https://ali-image.dabanjia.com/static/mp/dabanjia/images/home/ic_gkrs.png" mode="">
 					</image>
 					{{getHotCount(roomInfo.hotCount) }}
 				</view>
@@ -57,7 +57,7 @@
 									</image>
 								</view>
 								<image class="anchor" v-if="item.from.startsWith('anchor')"
-									src="http://dbj.dragonn.top/static/mp/dabanjia/images/home/anchor.png"></image>
+									src="https://ali-image.dabanjia.com/static/mp/dabanjia/images/home/anchor.png"></image>
 
 								<text class="name">{{item.nick}} :</text>
 								<text v-if="item.type=='TIMTextElem'" class="text-info">{{item.payload.text}}</text>
@@ -80,7 +80,7 @@
 									</image>
 								</view>
 								<image class="anchor" v-if="item.from.startsWith('anchor')"
-									src="http://dbj.dragonn.top/static/mp/dabanjia/images/home/anchor.png"></image>
+									src="https://ali-image.dabanjia.com/static/mp/dabanjia/images/home/anchor.png"></image>
 
 								<text class="name">{{item.nick}} </text>
 								<image v-if="item.formatData.type=='img_message'" class="img"
@@ -115,21 +115,21 @@
 					<view class="input-text" @click.stop="handleShowSendBox">
 						说点什么...
 						<image class="iconfont"
-							src="http://dbj.dragonn.top/static/mp/dabanjia/images/home/ic_live_upload.png"
+							src="https://ali-image.dabanjia.com/static/mp/dabanjia/images/home/ic_live_upload.png"
 							@click.stop="handleChooseImage"></image>
 					</view>
 					<view class="macphone" @click="showDownload=true">
 						<image class="icon_macphone"
-							src="http://dbj.dragonn.top/static/mp/dabanjia/images/home/lives_macphone.png" mode="">
+							src="https://ali-image.dabanjia.com/static/mp/dabanjia/images/home/lives_macphone.png" mode="">
 						</image>
 						连麦
 					</view>
 					<image class="bottom-icon"
-						src="http://dbj.dragonn.top/static/mp/dabanjia/images/home/lives_shopping.png" mode=""
+						src="https://ali-image.dabanjia.com/static/mp/dabanjia/images/home/lives_shopping.png" mode=""
 						@click="showDownload=true">
 					</image>
 					<view class="bottom-icon" @click="clickLike">
-						<image class="img" src="http://dbj.dragonn.top/static/mp/dabanjia/images/home/lives_agree.png"
+						<image class="img" src="https://ali-image.dabanjia.com/static/mp/dabanjia/images/home/lives_agree.png"
 							mode="">
 						</image>
 						<view class="like-count">
@@ -144,7 +144,7 @@
 			</view>
 		</view>
 		<view v-else class="unlived">
-			<image class="img" src="http://dbj.dragonn.top/static/mp/dabanjia/images/home/un-liveing.png" mode="">
+			<image class="img" src="https://ali-image.dabanjia.com/static/mp/dabanjia/images/home/un-liveing.png" mode="">
 			</image>
 			<view class="tips">
 				直播暂未开始，去首页逛逛吧～
@@ -639,7 +639,7 @@
 			.img {
 				width: 640rpx;
 				height: 350rpx;
-				background: url("http://dbj.dragonn.top/static/mp/dabanjia/images/home/lives_download.png");
+				background: url("https://ali-image.dabanjia.com/static/mp/dabanjia/images/home/lives_download.png");
 				background-size: contain;
 				position: relative;
 				border-top-right-radius: 24rpx;
@@ -651,7 +651,7 @@
 					height: 64rpx;
 					margin-right: 24rpx;
 					margin-top: 24rpx;
-					background: url("http://dbj.dragonn.top/static/mp/dabanjia/images/home/ic_closed_black.png");
+					background: url("https://ali-image.dabanjia.com/static/mp/dabanjia/images/home/ic_closed_black.png");
 					background-size: contain;
 				}
 			}
@@ -999,7 +999,7 @@
 	.content {
 		width: 100vw;
 		height: 100vh;
-		background: url("http://dbj.dragonn.top/static/mp/dabanjia/images/home/live_bg.png");
+		background: url("https://ali-image.dabanjia.com/static/mp/dabanjia/images/home/live_bg.png");
 		background-size: 100% 100%;
 		background-repeat: no-repeat;
 		display: flex;

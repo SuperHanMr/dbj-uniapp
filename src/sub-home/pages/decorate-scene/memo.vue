@@ -11,7 +11,7 @@
 		<view :style="{height:navBarHeight}"></view>
 		<view class="noMemo" v-if="!memos.length">
 			<image class="noMemoImg"
-				src="http://dbj.dragonn.top/static/mp/dabanjia/images/home/memo_empty%402x.png"></image>
+				src="https://ali-image.dabanjia.com/static/mp/dabanjia/images/home/memo_empty%402x.png"></image>
 			<view class="noMemoText">暂无内容~</view>
 		</view>
 		<view class="memoItem" v-else v-for="item in memos" :key="item.memoId">
@@ -37,7 +37,7 @@
 			<view class="text">暂时没有更多数据~</view>
 		</view>
 		<view class="new" @click="toNewMemo">
-			<image class="create" src="http://dbj.dragonn.top/static/mp/dabanjia/images/home/ic_create_memo%402x.png"></image>
+			<image class="create" src="https://ali-image.dabanjia.com/static/mp/dabanjia/images/home/ic_create_memo%402x.png"></image>
 		</view>
 	</view>
 </template>

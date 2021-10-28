@@ -2,7 +2,7 @@
 	<view style="background-color: #FFF;">
 		<custom-navbar opacity="1" :showBack="false" bgcolor="#FFF">
 			<template v-slot:back>
-				<image class="icon_logo" src="http://dbj.dragonn.top/static/mp/dabanjia/images/home/dbj_logo_new.png"
+				<image class="icon_logo" src="https://ali-image.dabanjia.com/static/mp/dabanjia/images/home/dbj_logo_new.png"
 					mode=""></image>
 			</template>
 		</custom-navbar>
@@ -17,12 +17,12 @@
 					{{citydata}}
 				</view>
 				<image v-if="citydata" class="icon_down"
-					src="http://dbj.dragonn.top/static/mp/dabanjia/images/home/hone_ic_down.png" mode=""></image>
+					src="https://ali-image.dabanjia.com/static/mp/dabanjia/images/home/hone_ic_down.png" mode=""></image>
 			</view>
 			<image @click="toSearch" class="icon-search"
-				src="http://dbj.dragonn.top/static/mp/dabanjia/images/home/home_ic_search.png" mode=""></image>
+				src="https://ali-image.dabanjia.com/static/mp/dabanjia/images/home/home_ic_search.png" mode=""></image>
 			<image @click="toMessage" class="img"
-				src="http://dbj.dragonn.top/static/mp/dabanjia/images/home/online-server.png" mode="">
+				src="https://ali-image.dabanjia.com/static/mp/dabanjia/images/home/online-server.png" mode="">
 			</image>
 		</view>
 		<!-- 占位 -->
@@ -55,7 +55,7 @@
 						{{item.name}}
 					</view>
 					<image v-if="(index+1)%4" class="border-img"
-						src="http://dbj.dragonn.top/static/mp/dabanjia/images/home/home-zone-border_new.png" mode="">
+						src="https://ali-image.dabanjia.com/static/mp/dabanjia/images/home/home-zone-border_new.png" mode="">
 					</image>
 				</view>
 			</view>
@@ -67,7 +67,7 @@
 						{{item.name}}
 					</view>
 					<image v-if="(index+1)%4" class="border-img"
-						src="http://dbj.dragonn.top/static/mp/dabanjia/images/home/home-zone-border1.png" mode="">
+						src="https://ali-image.dabanjia.com/static/mp/dabanjia/images/home/home-zone-border1.png" mode="">
 					</image>
 				</view>
 			</view>
@@ -79,7 +79,7 @@
 						{{item.name}}
 					</view>
 					<image v-if="(index+1)%4" class="border-img"
-						src="http://dbj.dragonn.top/%20%20static/mp/dabanjia/images/home/home-zone-border1.png" mode="">
+						src="https://ali-image.dabanjia.com/static/mp/dabanjia/images/home/home-zone-border1.png" mode="">
 					</image>
 				</view>
 			</view>
@@ -108,7 +108,7 @@
 			</view>
 
 			<image @click="toLiveList"
-				src="http://dbj.dragonn.top/static/mp/dabanjia/images/home/ic_gongdizhibo_more.png"
+				src="https://ali-image.dabanjia.com/static/mp/dabanjia/images/home/ic_gongdizhibo_more.png"
 				class="sub-title-more">
 			</image>
 		</view>
@@ -129,7 +129,7 @@
 				</image>
 				<view class="top-content">
 					<image class="top-content-img"
-						:src="item.mediaType==1?'http://dbj.dragonn.top/static/mp/dabanjia/images/home/living.gif':'http://dbj.dragonn.top/static/mp/dabanjia/images/home/live-repaly.png'">
+						:src="item.mediaType==1?'https://ali-image.dabanjia.com/static/mp/dabanjia/images/home/living.gif':'https://ali-image.dabanjia.com/static/mp/dabanjia/images/home/live-repaly.png'">
 						<view v-if="item.mediaType==1" class="text">
 
 							{{item.roomLiveMediaVO.onLineCount||0}}人正在观看

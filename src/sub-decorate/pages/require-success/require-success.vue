@@ -4,8 +4,8 @@
 		</custom-navbar>
 
 		<view class="basic-info"
-			:style="{backgroundImage:`url(http://dbj.dragonn.top/static/mp/dabanjia/images/my/bg_img.png)`,backgroundSize: '100% 100%'}">
-			<image src="http://dbj.dragonn.top/static/mp/dabanjia/images/decorate/complete.png" mode=""></image>
+			:style="{backgroundImage:`url(https://ali-image.dabanjia.com/static/mp/dabanjia/images/my/bg_img.png)`,backgroundSize: '100% 100%'}">
+			<image src="https://ali-image.dabanjia.com/static/mp/dabanjia/images/decorate/complete.png" mode=""></image>
 			<view class="info">
 				<view class="header1">要货申请已发出,等待业主确认</view>
 			</view>

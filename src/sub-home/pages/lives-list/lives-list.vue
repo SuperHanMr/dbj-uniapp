@@ -34,14 +34,14 @@
 
 								<view v-if="item.mediaType==1" class="top-content">
 									<image class="top-content-img-living"
-										src="http://dbj.dragonn.top/static/mp/dabanjia/images/home/living.gif">
+										src="https://ali-image.dabanjia.com/static/mp/dabanjia/images/home/living.gif">
 									</image>
 									{{item.roomLiveMediaVO.onLineCount||0}}人在看
 								</view>
 
 								<view v-if="item.mediaType==2" class="top-content">
 									<image class="top-content-img"
-										src="http://dbj.dragonn.top/static/mp/dabanjia/images/home/live-repaly.png">
+										src="https://ali-image.dabanjia.com/static/mp/dabanjia/images/home/live-repaly.png">
 									</image>
 									<view>回放</view>
 									<view style="margin-left: 8rpx;">{{item.roomVideoMediaVO.viewsCount}}人在看</view>
@@ -56,7 +56,7 @@
 								</view>
 
 								<image v-if="item.mediaType==1" class="living-gif"
-									src='http://dbj.dragonn.top/static/mp/dabanjia/images/home/living-gift.gif'>
+									src='https://ali-image.dabanjia.com/static/mp/dabanjia/images/home/living-gift.gif'>
 
 								</image>
 							</view>

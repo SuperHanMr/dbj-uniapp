@@ -5,19 +5,19 @@
 				<view class="pre-month" @click="turning('prev')">
 					<image
 						class="header-btn"
-						src="http://dbj.dragonn.top/static/mp/dabanjia/images/home/ic_month_pre%402x.png"
+						src="https://ali-image.dabanjia.com/static/mp/dabanjia/images/home/ic_month_pre%402x.png"
 						></image>
 				</view>
 				<view class="current-month">{{ y }}-{{ m+1 < 10? `0${m+1}` : m+1 }}</view>
 				<view class="next-month" @click="turning('next')">
 					<image
 						class="header-btn"
-						src="http://dbj.dragonn.top/static/mp/dabanjia/images/home/ic_month_next%402x.png"
+						src="https://ali-image.dabanjia.com/static/mp/dabanjia/images/home/ic_month_next%402x.png"
 						></image>
 				</view>
 			</view>
 			<view class="memo" @click="toMemo" v-if="showMemo">
-				<image class="ic_memo" src="http://dbj.dragonn.top/static/mp/dabanjia/images/home/ic_memo%402x.png"></image>
+				<image class="ic_memo" src="https://ali-image.dabanjia.com/static/mp/dabanjia/images/home/ic_memo%402x.png"></image>
 				<view class="text">备忘录</view>
 			</view>
     </view>
@@ -36,9 +36,9 @@
       </view>
     </view>
 		<image v-if="isShrink" @click="switchWeek()" class="shrink" :class="{'rotate':!isShrink}"
-			src="http://dbj.dragonn.top/static/mp/dabanjia/images/home/monthOpen.png"></image>
+			src="https://ali-image.dabanjia.com/static/mp/dabanjia/images/home/monthOpen.png"></image>
 		<image v-else @click="switchWeek()" class="grow"
-			src="http://dbj.dragonn.top/static/mp/dabanjia/images/home/weekModel.png"></image>
+			src="https://ali-image.dabanjia.com/static/mp/dabanjia/images/home/weekModel.png"></image>
   </view>
 </template>
 

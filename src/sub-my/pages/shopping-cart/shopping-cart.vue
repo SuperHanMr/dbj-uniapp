@@ -1,7 +1,7 @@
 <template>
 	<view class="cartContainer" :class="{'bg':showNoGoods}">
 		<view class="noGoods" v-if="showNoGoods">
-			<image src="http://dbj.dragonn.top/static/mp/dabanjia/images/my/blank_ic%402x.png" class="noGoodsImg"></image>
+			<image src="https://ali-image.dabanjia.com/static/mp/dabanjia/images/my/blank_ic%402x.png" class="noGoodsImg"></image>
 			<view class="noGoodsText">
 				购物车空空如也，快去逛逛吧～
 			</view>
@@ -17,11 +17,11 @@
 				<view class="shopInfo">
 					<view style="width: 36rpx;height: 36rpx;">
 						<view class="check" v-if="!shopItem.shopChecked" @click="checkShop(shopItem.storeId)"></view>
-						<image class="checked" v-else @click="checkShop(shopItem.storeId)" src="http://dbj.dragonn.top/static/mp/dabanjia/images/my/checked%402x.png" ></image>
+						<image class="checked" v-else @click="checkShop(shopItem.storeId)" src="https://ali-image.dabanjia.com/static/mp/dabanjia/images/my/checked%402x.png" ></image>
 					</view>
 					<view class="goShop" @click="toShopHome(shopItem.storeId)">
 						<text class="shopName">{{shopItem.storeName}}</text>
-						<image class="shopIcon" src="http://dbj.dragonn.top/static/mp/dabanjia/images/my/ic_jumpToShop%402x.png"></text>
+						<image class="shopIcon" src="https://ali-image.dabanjia.com/static/mp/dabanjia/images/my/ic_jumpToShop%402x.png"></text>
 					</view>
 				</view>
 				<view class="freeMail">
@@ -30,7 +30,7 @@
 					<view class="text" v-else>还差{{shopItem.freeShippingThreshold===0?'0.00':shopItem.freePrice}}元可获得一次免运费权益</view>
 					<view class="toShop" @click="toShopHome(shopItem.storeId)">
 						<text>去凑单</text>
-						<image class="icon" src="http://dbj.dragonn.top/static/mp/dabanjia/images/my/toPostFree%402x.png"></image>
+						<image class="icon" src="https://ali-image.dabanjia.com/static/mp/dabanjia/images/my/toPostFree%402x.png"></image>
 					</view>
 				</view>
 				<!-- 商品 -->
@@ -45,7 +45,7 @@
 							<view style="width: 36rpx;height: 36rpx;">
 								<view class="check" v-if="!goodsItem.goodsChecked" @click="checkGoods(shopItem.storeId,goodsItem.skuId)"></view>
 								<image class="checked" v-else @click="checkGoods(shopItem.storeId,goodsItem.skuId)"
-									src="http://dbj.dragonn.top/static/mp/dabanjia/images/my/checked%402x.png" ></image>
+									src="https://ali-image.dabanjia.com/static/mp/dabanjia/images/my/checked%402x.png" ></image>
 							</view>
 							<image :src="goodsItem.image+'?x-oss-process=image/resize,m_mfit,w_96,h_96'"
 								@click="toGoodsDetail(goodsItem.skuId)" class="goodsItemImg"></image>
@@ -57,7 +57,7 @@
 									</view>
 									<view class="goodsSpec" @click="openSpec(goodsItem.skuId,goodsItem.goodsChecked)">
 										<view class="text">{{goodsItem.skuName}}</view>
-										<image src="http://dbj.dragonn.top/static/mp/dabanjia/images/my/selectOptions%402x.png" class="selectOptions"></image>
+										<image src="https://ali-image.dabanjia.com/static/mp/dabanjia/images/my/selectOptions%402x.png" class="selectOptions"></image>
 									</view>
 								</view>
 								<!-- 商品单价和数量 -->
@@ -69,12 +69,12 @@
 									</view>
 									<view class="countCtrl">
 										<image v-if="!goodsItem.isMiniOrder" class="dec" @click="changeCount(false,shopIndex, goodsIndex)"
-											src="http://dbj.dragonn.top/static/mp/dabanjia/images/my/details_pop_%402x.png"></image>
+											src="https://ali-image.dabanjia.com/static/mp/dabanjia/images/my/details_pop_%402x.png"></image>
 										<image v-else class="dec" @click="changeCount(false,shopIndex, goodsIndex)"
-											src="http://dbj.dragonn.top/static/mp/dabanjia/images/my/details_pop_subtract_disabled%402x.png"></image>
+											src="https://ali-image.dabanjia.com/static/mp/dabanjia/images/my/details_pop_subtract_disabled%402x.png"></image>
 										<view class="count" @click="openCount(shopIndex, goodsIndex,goodsItem.minimumOrderQuantity,goodsItem.stepLength,goodsItem.buyCount)"> {{goodsItem.buyCount}} </view>
 											
-										<image class="inc" @click="changeCount(true, shopIndex,goodsIndex)" src="http://dbj.dragonn.top/static/mp/dabanjia/images/my/details_pop_add_normal%402x.png"></image>          
+										<image class="inc" @click="changeCount(true, shopIndex,goodsIndex)" src="https://ali-image.dabanjia.com/static/mp/dabanjia/images/my/details_pop_add_normal%402x.png"></image>          
 									</view>
 								</view>
 							</view>
@@ -101,7 +101,7 @@
 					<view class="header">
 						<text class="tit">所选商品为不同类型商品，请分开结算</text>
 						<image class="closedIcon" @click="goBackCart"
-							src="http://dbj.dragonn.top/static/mp/dabanjia/images/my/ic_closed_black%402x.png"></image>
+							src="https://ali-image.dabanjia.com/static/mp/dabanjia/images/my/ic_closed_black%402x.png"></image>
 					</view>
 					<view class="line"></view>
 					<view class="service" :class="{'activeBorder':serviceChecked}">
@@ -112,7 +112,7 @@
 							</view>
 							<view class="check" v-if="!serviceChecked" @click="checkSame(true)"></view>
 							<image class="checked" v-else @click="checkSame(true)"
-								src="http://dbj.dragonn.top/static/mp/dabanjia/images/my/checked%402x.png"></image>
+								src="https://ali-image.dabanjia.com/static/mp/dabanjia/images/my/checked%402x.png"></image>
 						</view>
 						<view class="goods" v-for="item in serviceListShow" :key="item.skuId">
 							<image :src="item.image" class="img"></image>
@@ -127,7 +127,7 @@
 							</view>
 							<view class="check" v-if="!entityChecked" @click="checkSame(false)"></view>
 							<image class="checked" v-else @click="checkSame(false)"
-								src="http://dbj.dragonn.top/static/mp/dabanjia/images/my/checked%402x.png"></image>
+								src="https://ali-image.dabanjia.com/static/mp/dabanjia/images/my/checked%402x.png"></image>
 						</view>
 						<view class="goods" v-for="item in entityListShow" :key="item.skuId">
 							<image :src="item.image" class="img"></image>
@@ -189,7 +189,7 @@
 				<view class="allCheck" v-if="isManage">
 					<view class="left" @click="checkAll">
 						<view class="check" v-if="!isCheckedAll"></view>
-						<image src="http://dbj.dragonn.top/static/mp/dabanjia/images/my/checked%402x.png"
+						<image src="https://ali-image.dabanjia.com/static/mp/dabanjia/images/my/checked%402x.png"
 							class="check" v-else></image>
 						<view class="text">全选</view>
 					</view>
@@ -206,7 +206,7 @@
 				<view class="allCheck" v-else>
 					<view class="left" @click="checkAll">
 						<view class="check" v-if="!isCheckedAll"></view>
-						<image src="http://dbj.dragonn.top/static/mp/dabanjia/images/my/checked%402x.png"
+						<image src="https://ali-image.dabanjia.com/static/mp/dabanjia/images/my/checked%402x.png"
 							class="check" v-else></image>
 						<view class="text">全选</view>
 					</view>

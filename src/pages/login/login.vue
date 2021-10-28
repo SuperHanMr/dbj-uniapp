@@ -3,7 +3,7 @@
     <temp :title="isLogin"></temp>
     <gome-login v-if="isLogin" :loginInit="loginInit" @suceess="loginSuccess" @fail="loginFail"></gome-login>
     <view class="go-home" @click="goHome" :style="{top: topH + 'rpx'}">
-      <image src="http://dbj.dragonn.top/static/mp/dabanjia/images/decorate/ic_go-home%402x.png" class=""></image>
+      <image src="https://ali-image.dabanjia.com/static/mp/dabanjia/images/decorate/ic_go-home%402x.png" class=""></image>
       <view class="t">返回首页</view>
     </view>
 
@@ -32,7 +32,7 @@
       // 测试环境小程序appletId=B7E436F6DEF6E37296AADD3BC9F35165
       // 生产环境appletId=E370C3ABB4F1EEC5A3946F23BCB15C29
       let loginInit = {};
-      loginInit.imgUrl = "http://dbj.dragonn.top/static/mp/dabanjia/images/decorate/logo.0ccb88de.png"; // 登录logo
+      loginInit.imgUrl = "https://ali-image.dabanjia.com/static/mp/dabanjia/images/decorate/logo.0ccb88de.png"; // 登录logo
       loginInit.imgWidth = 272; // logo的宽度
       loginInit.imgHeight = 154; // logo的高度
       // loginInit.ctx = "app-guomeijia|ver-v8.2.2|plt-wxApp|cmpid-"; //登录ctx

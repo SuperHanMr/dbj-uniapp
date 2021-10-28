@@ -1,6 +1,6 @@
 <template>
   <view class="person-page">
-    <image class="bg-index" mode="aspectFit" src="http://dbj.dragonn.top/static/mp/dabanjia/images/decorate/person_bg.png">
+    <image class="bg-index" mode="aspectFit" src="https://ali-image.dabanjia.com/static/mp/dabanjia/images/decorate/person_bg.png">
     </image>
     <view class="back" @click="back">
       <i class="icon-ic_cancel_white"></i>
@@ -12,7 +12,7 @@
       </view>
       <view class="item nav-header-msg">
         <view class="main">
-        <image class="avatar" :src="personId!=0?personData.avatar:'http://dbj.dragonn.top/%20static/mp/dabanjia/images/decorate/bg_dbj.png'" mode="aspectFill" ></image>
+        <image class="avatar" :src="personId!=0?personData.avatar:'https://ali-image.dabanjia.com/static/mp/dabanjia/images/decorate/bg_dbj.png'" mode="aspectFill" ></image>
         <text>{{personId!=0? (personData.roleId>=1&&personData.roleId<7?personData.realName:personData.nickName):'打扮家'}}</text>
         </view>
       </view>
@@ -23,7 +23,7 @@
         <view :class="{'is-self':personData.roleId === 10000,'person-msg-top':personId!=0}">
           <view class="person-msg-header">
             <view class="person-msg-header-image">
-              <image class="avatar" :src="personId!=0?personData.avatar:'http://dbj.dragonn.top/%20static/mp/dabanjia/images/decorate/bg_dbj.png'" mode="aspectFill" ></image>
+              <image class="avatar" :src="personId!=0?personData.avatar:'https://ali-image.dabanjia.com/static/mp/dabanjia/images/decorate/bg_dbj.png'" mode="aspectFill" ></image>
               <i class="icon icon-ic_nan" v-if="personId!=0&&personData.gender===1"></i>
               <i class="icon icon-ic_nv" v-if="personId!=0&&personData.gender===2"></i>
             </view>

@@ -8,14 +8,14 @@
       <view v-if="setting.cardtype == 'design' && setting.insideArea && showLevel" class="change-service" @click="changeLevel">
         <text>更换等级</text>
         <image class="ic-triangle-999"
-          src="http://dbj.dragonn.top/static/mp/dabanjia/images/decorate/ic_triangle_999.svg" />
+          src="https://ali-image.dabanjia.com/static/mp/dabanjia/images/decorate/ic_triangle_999.svg" />
       </view>
     </view>
     <server-content :content="setting" @selectAnother="selectAnother"></server-content>
     <view class="door-time-wrap" v-if="(setting.serviceType == 2 || setting.title == '验房服务') && setting.appointmentRequired">
       <view class="door-time"><text class="label">选择期望上门时间</text><text class="value">{{setting.doorTime}}</text>
       </view>
-      <image @click="selectDoorTime" src="http://dbj.dragonn.top/static/mp/dabanjia/images/decorate/arrow-r-gr.svg" class="change-img"></image>
+      <image @click="selectDoorTime" src="https://ali-image.dabanjia.com/static/mp/dabanjia/images/decorate/arrow-r-gr.svg" class="change-img"></image>
     </view>
   </view>
 </template>

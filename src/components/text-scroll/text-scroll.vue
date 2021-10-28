@@ -1,11 +1,11 @@
 <template>
   <view class="text-scroll">
     <view class="text-scroll-item" @click="goDecorateCalendar">
-      <image class="icon-rili" src="http://dbj.dragonn.top/static/mp/dabanjia/images/decorate/ic_rili%402x.webp"></image>
+      <image class="icon-rili" src="https://ali-image.dabanjia.com/static/mp/dabanjia/images/decorate/ic_rili%402x.webp"></image>
       <view class="line"></view>
       <view class="content">{{current.content}}</view>
       <view class="date">{{current.recordTime | formatDate}}</view>
-      <image class="icon-r" src="http://dbj.dragonn.top/static/mp/dabanjia/images/decorate/ic_more.svg"></image>
+      <image class="icon-r" src="https://ali-image.dabanjia.com/static/mp/dabanjia/images/decorate/ic_more.svg"></image>
     </view>
   </view>
 </template>
