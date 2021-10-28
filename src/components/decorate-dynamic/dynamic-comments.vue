@@ -15,14 +15,14 @@
           ></image> -->
           <i class="icon-ic_zhuangxiuxianchang_danchuangquxiao_csn close" @click="close"></i>
         </view>
-        
+
         <view
           class="noComment"
           v-if="!comments.length"
         >
           <image
             class="noCommentImg"
-            src="http://dbj.dragonn.top/static/mp/dabanjia/images/decorate/comment_bg.png"
+            src="https://ali-image.dabanjia.com/static/mp/dabanjia/images/decorate/comment_bg.png"
           ></image>
           <view class="noCommentText">暂无评论~</view>
         </view>
@@ -80,7 +80,7 @@
                   <text>回复</text>
                   <text class="name">{{replyItem.toNickname}}</text>
                   {{replyItem.content}}
-                  
+
                 </view>
               </view>
             </view>
@@ -129,9 +129,9 @@
           class="bottomInputBox"
           v-if="showInput"
         ></view> -->
-        
-        
-        
+
+
+
       </view>
     </view>
     <view
@@ -206,8 +206,8 @@
       }
     },
     mounted(){
-      
-      this.ownId = getApp().globalData.userInfo.id 
+
+      this.ownId = getApp().globalData.userInfo.id
       if(this.houseOwnerId===this.ownId){
         this.showInput = true
       }else{
@@ -240,13 +240,13 @@
           console.log(this.houseOwnerId,getApp().globalData.userInfo)
           if(this.houseOwnerId===this.ownId){
             this.showInput = true
-            
+
           }else{
             this.showInput = false
           }
         },
         // immediate:true
-        
+
       }
     },
     methods:{
@@ -275,7 +275,7 @@
       },
       keybordChange(e){
         this.heightNum = e.detail.height+'px'
-        
+
         console.log(this.heightNum+'>>>>>>>')
       },
       getComment(){
@@ -302,11 +302,11 @@
         this.commentId = commentId
         console.log(num,'删除数量')
         this.deletNum = num
-        
+
         this.heightNum = 0
       },
       sureDelete(){
-        
+
         uni.showModal({
           // title:"您确定要取消该优先推荐吗？",
           content: "删除评论后将无法撤回",
@@ -323,11 +323,11 @@
             this.showDelete = false;
             this.showInput = true
             this.commentId = 0
-             
+
           },
-            
+
         });
-        
+
       },
       changeObj(){
         this.inputName = ''
@@ -336,7 +336,7 @@
         this.isReply = false;
         this.isOpen = false;
         this.isInputFocus = false
-        
+
         this.heightNum = 0
         console.log(this.heightNum)
       },
@@ -346,7 +346,7 @@
         if (this.ownId !== this.houseOwnerId) return;
         this.$nextTick(function(){
           this.isInputFocus = true
-          
+
         })
         this.showInput = true;
         this.isOpen = true
@@ -373,7 +373,7 @@
         this.comments[index].secondComments.splice(2);
       },
       expandC(id, index,num) {
-        
+
         let rows = num?num+2:2
         console.log(rows+'>>>>>>>><<<<<<<')
         let params = {
@@ -390,15 +390,15 @@
       			}else{
       				this.comments[index].secondComments = list || [];
       			}
-      			
+
             if(num){
               this.isExpanded = true;
             }else{
               console.log(this.comments[index].secondCount)
               this.isExpanded?this.isExpanded = false:'';
             }
-            
-      			
+
+
           }
         });
       },
@@ -419,13 +419,13 @@
         };
         createReply(params).then((data) => {
           if(this.isInputFocus){
-            
+
             this.expandC(this.commentId,this.commentIndex)
-            
+
             if(this.comments[this.commentIndex].secondComments.length===2||this.comments[this.commentIndex].secondCount >0){
               this.comments[this.commentIndex].secondCount ++
             }
-            
+
             // console.log(this.comments)
           }else{
             this.commentC(this.dynamicId,);
@@ -526,7 +526,7 @@
   .focusInput {
   	caret-color: #00c2b8;
   }
-  
+
   .bottomInput .easyInput {
   	width: 586rpx;
   	height: 80rpx;
@@ -632,7 +632,7 @@
   .commentList {
   	width: 100%;
   	height: 690rpx;
-    
+
   	/* height: fit-content; */
   	// overflow: auto;
   }

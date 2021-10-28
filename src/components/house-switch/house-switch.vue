@@ -21,7 +21,7 @@
 			</view>
 		</scroll-view>
 		<view class="go-add-house flex-row">
-			<image src="http://dbj.dragonn.top/static/mp/dabanjia/images/decorate/ic_add_house_c.svg" @click="goaddhouse"></image>
+			<image src="https://ali-image.dabanjia.com/static/mp/dabanjia/images/decorate/ic_add_house_c.svg" @click="goaddhouse"></image>
 			<text @click="goaddhouse">新增房屋</text>
 		</view>
 	</view>
@@ -55,7 +55,7 @@
       projectStatusName(str) {
         let res = ""
         switch (str) {
-          case 0: 
+          case 0:
             res = "未开工";
             break;
           case 1:
@@ -81,7 +81,7 @@
 		width: 100%;
 		padding: 16rpx 40rpx;
 		background-color: #fff;
-    background-image: url("http://dbj.dragonn.top/static/mp/dabanjia/images/decorate/toast-bg.png");
+    background-image: url("https://ali-image.dabanjia.com/static/mp/dabanjia/images/decorate/toast-bg.png");
     background-repeat: no-repeat;
     background-size: 100vw auto;;
     background-position: 0 0;
@@ -106,7 +106,7 @@
       text-align: center;
       color: #000000;
       line-height: 44rpx;
-      
+
     }
 	}
 	.house-list {

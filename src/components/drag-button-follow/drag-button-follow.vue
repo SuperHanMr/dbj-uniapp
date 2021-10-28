@@ -19,14 +19,14 @@
     @touchend="touchend"
     >
     <view class="white-bg" v-if="!moveHidden&&endLeft">
-          
+
         </view>
     <view class="white-circle" :class="{'left-style':endLeft}">
-      <image src="http://dbj.dragonn.top/%20static/mp/dabanjia/images/decorate/decorate_msg.png" class="image-icon"></image>
+      <image src="https://ali-image.dabanjia.com/static/mp/dabanjia/images/decorate/decorate_msg.png" class="image-icon"></image>
       <text class="tip">{{num}}</text>
     </view>
     <view class="white-bg" v-if="!moveHidden&&endRight">
-          
+
         </view>
 
   </view>
@@ -140,8 +140,8 @@
           top,
           bottom
         } = this.$options.safeArea
-        
-        
+
+
         const dot = e.changedTouches[0]
         console.log('位置，距离顶部位置，高度',dot.clientY,this.top,this.height)
         // console.log(uni.getSystemInfoSync().windowBottom)
@@ -151,7 +151,7 @@
         if (dot.clientY > bottom - this.height / 2) dot.clientY = bottom - this.height / 2
         this.offsetX = dot.clientX - this.left - this.width / 2
         this.offsetY = dot.clientY - this.top - this.height / 2
-        
+
         // #ifdef MP-WEIXIN
         this.$emit("update:style", `
 					transform: translate(${this.offsetX}px, ${this.offsetY}px);
@@ -178,7 +178,7 @@
           if(dot.clientY<148){
              dot.clientY = 148
           }else if(dot.clientY>getApp().globalData.screenHeight){
-            
+
              dot.clientY = getApp().globalData.screenHeight-20
           }else if(dot.clientY>780){
             dot.clientY = 500
@@ -192,21 +192,21 @@
           if (dot.clientX <= (left + right) / 2) {
             this.endLeft = true
             this.endRight = false
-            
+
             this.offsetX = this.foll.num - this.left
           }
           if (dot.clientX > (left + right) / 2){
             this.endRight = true
             this.endLeft = false
             this.offsetX = right - this.width - this.foll.num - this.left
-          } 
+          }
         } else if (this.foll.isLeft) {
           console.log(222)
-          
+
           this.offsetX = this.foll.num - this.left
         } else if (this.foll.isRight) {
           console.log(333)
-          
+
           this.offsetX = right - this.width - this.foll.num - this.left
         }
         if (this.foll.isTop && this.foll.isBottom) {
@@ -242,7 +242,7 @@
   }
 
   /* #endif */
-  
+
   .left-style{
     left: -38rpx;
     right: 0;

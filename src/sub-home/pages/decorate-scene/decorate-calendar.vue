@@ -11,9 +11,9 @@
 			</view>
 		</view>
 		<view class="dynamic" :class="{'noDynamics': !dynamics.length,'weekModel': isWeek,'maxMargin': bigMonth}">
-			
+
 			<view class="noDynamics" v-if="!dynamics.length">
-				<image class="noDynamicsImg" src="http://dbj.dragonn.top/%20static/mp/dabanjia/images/home/pic_empty%402x.png"></image>
+				<image class="noDynamicsImg" src="https://ali-image.dabanjia.com/static/mp/dabanjia/images/home/pic_empty%402x.png"></image>
 				<view class="text">暂无装修动态</view>
 				<view class="bottom"></view>
 			</view>
@@ -57,7 +57,7 @@
 	import {getSigneddates,getDynamics} from "../../../api/real-case.js"
 	import darkCalendar from "../../components/dark-calendar/dark-calendar"
 	import imagePreview from "../../../components/image-preview/image-preview.vue"
-	
+
 	export default {
 		filters:{
 			formatDate
@@ -88,7 +88,7 @@
 			this.filterDynamics(this.date);
 		},
 		watch: {
-			
+
 		},
 		mounted(){
 			//当天日期
@@ -104,7 +104,7 @@
 			changeMargin(isShrink,length){
 				this.isWeek = !isShrink
 				this.bigMonth = length && length === 42? true: false
-				
+
 			},
 			requestSigns(){
 				let y = new Date().getFullYear()
@@ -179,7 +179,7 @@
 	.dynamic.noDynamics{
 		margin-bottom: 0;
 	}
-	
+
 	.fixed .top{
 		width: 100%;
 		height: 140rpx;

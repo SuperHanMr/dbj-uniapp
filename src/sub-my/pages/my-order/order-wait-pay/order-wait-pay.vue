@@ -1,96 +1,136 @@
 <template>
   <view class="container">
-		<custom-navbar :opacity="scrollTop/100" :title="headerTitle">
-			<template v-slot:back>
-				<i class="icon-ic_cancel_white back-icon" :style="{color: (scrollTop/100>1)?'black':'white'}"
-					@click="toBack"></i>
-			</template>
-		</custom-navbar>
-
+    <custom-navbar :opacity="scrollTo 100" :title="headerTi tle">
+      <template v-slot:back>
+        <i
+          class="icon-ic_cancel_white back-icon"
+          :style="{colo r: (scrollTop/100>1)?'black':'white'}"
+          @click="toBack"
+        ></i>
+      </template>
+    </custom-navbar>
 
     <view class="order-container" :style="{paddingBottom:112+containerBottom+'rpx'}">
-			<view style="position: relative;" :style="{backgroundImage:`url(${bgImg})`,backgroundSize: '100% 100%'}">
-				<view class="bgcStyle" :style="{backgroundImage:`url(${bgImg})`,backgroundSize: '100% 100%'}"/>
-				<view :style="{height:navBarHeight}"></view>
-				<view class="order-status">
-					<view class="status">
-						<image src="../../../static/ic_status_wait_pay.svg" mode="scaleToFill"/>
-						<text>待付款</text>
-					</view>
-					<view class="time" v-if="orderInfo.showCancelOrderTime" >
-						<text style="margin-right: 16rpx;">剩余支付时间</text>
-						<count-down :start="orderInfo.remainTime" @finish="goToCancelDetail"></count-down>
-					</view>
-				</view>
-			</view>
+      <view
+        style="position: relative;"
+        :style="{backgroundImage      rl(${bgImg} )`,ba      roundSize: '100% 1      '}"
+      >
+        <view
+          class="bgcStyle"
+          :style="{backgrou ndIm      :`url(${bgImg})`,backgr ound      e: '100% 100% '}"
+        />
+        <view :style="{height:navBar      ght}"></view>
+        <view class="order-status">
+          <view class="status">
+            <image src="../../../static/ic_status_wait_pay.svg" mode="scaleToFill" />
+            <text>待付款</text>
+          </view>
+          <view class="time" v-if="ord erIn      showCa ncelOrderTime">
+            <text style="margin-right: 16rpx;">剩余支付时间</text>
+            <count-down :start="orderInfo.remainTime" @finish="goToCancelDetail"></count-down>
+          </view>
+        </view>
+      </view>
 
-			<order-user-base-info :data="orderInfo"></order-user-base-info>
-			<view class="moreStore" v-if=" orderInfo.orderName ">
-				{{orderInfo.orderName}}
-			</view>
+      <order-user-base-info :data="orderInfo"></order-user-base-info>
+      <view class="moreStore" v-if=" orderInfo.orderName ">{{orderInfo.o    erName}}</view>
       <view class="store-container" v-for="(item,index) in orderInfo.details" :key="index">
-				<view v-if="index > 0" style="height:0.5px;margin: 0 32rpx;background-color: #EBEBEB;" />
-        <view class="storeItem" :class="{paddingBottom: item.stockType == 1 }" :style="{borderRadius:index >= 1 ? '0' :'24rpx 24rpx 0 0'}">
+        <view v-if="inde    > 0" style="height:0.5px;margin: 0 32rpx;background-color: #EBEBEB;" />
+        <view
+          class="storeItem"
+          :class="{paddingBottom: item.stockType == 1 }"
+          :style="{borderRadius:index >= 1 ? '0' :'24rp    24rpx 0 0'}"
+        >
           <view class="header" @click="gotoShop(item)">
             <text style="color: #333333;">{{item.storeName}}</text>
-            <image src="../../../static/ic_more.svg" mode=""/>
+            <image src="../../../static/ic_more.svg" mode />
           </view>
-          <view v-for="item2 in item.details" :key="item2.id">
-            <order-item
-              :orderStatus="1"
-              :dataList="item2"
-              @handleDetail="productDetail(item2)"
-            />
+          <view v-for="item2 in item.details" :key="item    id">
+            <order-item :orderStatus="1" :dataList="item2" @handleDetail="productDe  ail  item2)" />
           </view>
-					<view class="discount-container" v-if="item.hasMaterial &&  orderInfo.details.length>1" >
+          <view class="discount-container" v-if="item.hasMateria    &&  orderInfo.details.length>1">
             <view class="left">
               <view class="item">
-								<view class="item-style">
-									<view style="margin-right: 8rpx;">运费</view>
-									<image class="icon"  src="../../../../static/price_icon.svg" mode="" @click="readExpenses(1)"/>
-								</view>
-								<view class="price-font" style="color: #333;font-size: 26rpx;" v-if="orderInfo.stockType == 0">￥{{item.freight?`${item.freight}`:"0.00"}}</view>
-								<view class="price-font" :style="{marginTop:item.freight?'0':'8rpx'}" style="color: #333;font-size: 26rpx;" v-else>{{item.freight?`￥${item.freight}`:"--"}}</view>
+                <view class="item-style">
+                  <view style="margin-right: 8rpx;">运费</view>
+                  <image
+                    class="icon"
+                    src="../../../../static/price_icon.svg"
+                    mode
+                    @click="re  dExpenses(1)"
+                  />
+                </view>
+                <view
+                  class="price-font"
+                  style="color: #333;font-size: 26rpx;"
+                  v-if="    derInfo.stockT ype == 0"
+                >￥{{item.f    ight?`${item.freight    :"0.00"}}</view>
+                <view
+                  class="price-font"
+                  :style="{marginTop:ite    freight?'0':'8rpx'}"
+                  style="color: #333;font-size: 26rpx;"
+                  v-else
+                >{{item.freight?`￥${ite    freight}    "--"}}</view>
               </view>
-              
-							<view class="item" v-if="item.platformDiscount">
+
+              <view class="item" v-if="item.platformDiscount">
                 <text>平台优惠</text>
-								<text class="price-font" style="color: #333;font-size: 26rpx;">-￥{{item.platformDiscount}}</text>
+                <text
+                  class="price-font"
+                  style="color: #333;font-size: 26rpx;"
+                >-￥{{item.platformDis    unt}}</text>
               </view>
             </view>
-						<!-- {{item.handlingFees}} {{ item.storeDiscount}} -->
-            <view class="line1" v-if="item.storeDiscount" />
+            <!-- {{item.handlingFees}} {{ item.storeDiscount}} -->
+            <view class="line1" v-if="item.    oreDiscount" />
             <view class="line2" v-else />
 
             <view class="right">
               <view class="item">
-								<view class="item-style">
-									<view style="margin-right: 8rpx;">搬运费</view>
-									<image class="icon" src="../../../../static/price_icon.svg" mode="" @click="readExpenses(2)"/>
-								</view>
-								<text class="price-font" style="color: #333;font-size: 26rpx;" v-if="orderInfo.stockType == 0">￥{{item.handlingFees?item.handlingFees:"0.00"}}</text>
-								<text class="price-font" style="color: #333;font-size: 26rpx;" :style="{marginTop:item.handlingFees ? '0' : '8rpx' }" v-else>{{item.handlingFees?`￥${item.handlingFees}`:"--"}}</text>
+                <view class="item-style">
+                  <view style="margin-right: 8rpx;">搬运费</view>
+                  <image
+                    class="icon"
+                    src="../../../../static/price_icon.svg"
+                    mode
+                    @click="readExpenses(2)"
+                  />
+                </view>
+                <text
+                  class="price-font"
+                  style="color: #333;font-size: 26rpx;"
+                  v-if="orderInfo.stockType == 0"
+                >￥{{item.handlingFees?i      .handlingFees:"0.00"}}</text>
+                <text
+                  class="price-font"
+                  style="color: #333;font-size: 26rpx;"
+                  :style="{marginTop:item.handlingFees ? '0' : '8rpx' }"
+                  v-else
+                >{{i      .handlingFees?`￥${item.h      lingFe    }`:"--"}}</text>
               </view>
               <view class="item" v-if="item.storeDiscount">
                 <text>商家优惠</text>
-								<text style="color: #333;font-size: 26rpx;" class="price-font">-￥{{item.storeDiscount}}</text>
+                <text
+                  style="color: #333;font-size: 26rpx;"
+                  class="price-font"
+                >-￥{{item.storeDiscount}}</text>
               </view>
             </view>
           </view>
-					<!-- {{ orderInfo.type }} {{ item.freeShipCount }} {{ orderInfo.stockType }} -->
+          <!-- {{ orderInfo.type }} {{ item.freeShipCount }} {{ orderInfo.stockType }} -->
 
-          <view 
-						v-if="item.hasMaterial && orderInfo.stockType == 1"
-						:style="{paddingBottom: item.hasMaterial && orderInfo.stockType == 1 ? '32rpx':'0'}" 
-					>
-            <view class="tips" v-if="item.freeShipCount &&  item.fullExemptionAmount ">
+          <view
+            v-if="item.hasMateria l && orderI      .stockType == 1"
+            :style="{paddingBott        item.hasMaterial && o      rI    o.s  ockType == 1 ? '3    px':'0'} "
+          >
+            <view class="tips" v-if="item.freeShipCount         item.f ul      emp    onA    unt ">
               <text>本次支付</text>
-              <text style="color: #333333;">满{{item.fullExemptionAmount}}元</text>
+              <text style="color: #333333;">满{{item.fullExe      ionAmount}}元</text>
               <text>，可获得</text>
-              <text style="color: #333333;">{{item.freeShipCount}}次免运费额度，</text>
+              <text style="color: #333333;">{{item. freeSh      ount}}次免运费额度，</text>
               <text>搬运费需要根据实际要货时进行核算</text>
             </view>
-            <view class="tips"  v-else >
+            <view class="tips" v-else>
               <text>搬运费需要根据实际要货时进行核算</text>
             </view>
           </view>
@@ -98,195 +138,161 @@
         <view class="split-line" />
       </view>
 
-      <order-price
-        :data="orderInfo"
-        :waitPay="true"
-      />
+      <order-price :data="orderInfo" :waitPay="true" />
 
       <view class="payment-method">
         <text>支付方式</text>
         <view class="method">
-          <image  src="@/static/order/ic_order_wechat@2x.png" mode="" />
+          <image src="@/static/order/ic_order_wechat@2x.png" mode />
           <text>微信支付</text>
         </view>
       </view>
 
-      <order-info
-        :orderNo="orderInfo.orderNo"
-        :createTime="orderInfo.createTime"
-      />
+      <order-info :orderNo=" order Info      de rNo" :createTime="o        Info.crea      ime" />
 
       <!-- 底部按钮 -->
       <view
-        v-if="orderInfo.showCancelBtn || orderInfo.showToPayBtn "
-        :class="{noCancelBtn:true}"
+        v-if="orderInfo.showCancelBtn ||  order Info      ow ToPayBtn  "
+        :class="{noCancel Bt      rue}"
         class="waitPayBottom"
-        :style="{paddingBottom:systemBottom,height:systemHeight,justifyContent:bottomStyle }"
+        :style="{paddingBottom:systemBottom ,hei      :systemHeight ,justif yContent    otto    tyle }"
       >
-        <view class="canclePay" v-if="orderInfo.showCancelBtn" @click="handleCancelOrder">
-          取消订单
-        </view>
-        <view class="gotoPay" v-if="orderInfo.showToPayBtn" @click="toPay">
-          去付款
-        </view>
+        <view class="canclePay" v-if="ord er      o.showCancelBtn" @click="handleCancelOrder">取消订单</view>
+        <view class="gotoPay" v-if="or de rI        .showToPayBtn" @click="toPay">去付款</view>
       </view>
-
     </view>
     <!-- 取消该订单弹框 -->
     <popup-dialog
       ref="cancleOrder"
       :title="title"
       @close="cancelOrderClose"
-      @confirm="cancleConfirm"
-    >
-    </popup-dialog>
-		<expenses-toast ref='expensesToast' :expensesType="expensesType"></expenses-toast>
+      @confirm="can    eCo    irm"
+    ></popup-dialog>
+    <expenses-toast ref="expensesToast" :expensesType="expen    sType"></expenses-toast>
   </view>
 </template>
 
 <script>
-import {
-  getOrderDetail,
+mport {
+   etOrderDetai,
   orderPay,
   cancelOrder,
-  confirmReceiptOrder,
-} from "../../../../api/order.js";
+  cnfirmRecei  Order,
+} from   ./../../../apiorder.js";
 export default {
-  data() {
-    return {
+  ata()  { 
+    retu r n {
       orderNo: "",
-      orderInfo: {},
-			expensesType:"",
-      systemBottom: "",
-      systemHeight: "",
+      orerInfo: {},
+			ex  nsesType:"",         systemB  tom:  ",
+          temHeight:      
       containerBottom: "",
       title: "您确定要取消该订单吗？",
       areaId: "",
 			from:"",
-			navBarHeight: "",
-			bottomStyle:"",
-			scrollTop: 0,
-			headerTitle:"",
-			bgImg:'http://dbj.dragonn.top/static/mp/dabanjia/images/decorate/order_bg_orange.png'
-    };
+			na      Height: "",
+			bot      tyle:"",
+			scroll       0,
+			heade      le:"",
+			bgImg:'      s://ali-image.dab      a.com/stati      /dabanjia      ges/decorate/order      orange.png'
+        
   },
-
-  mounted(e) {
-    const menuButtonInfo = uni.getMenuButtonBoundingClientRect();
-    this.containerBottom = menuButtonInfo.bottom;
-    this.systemBottom = menuButtonInfo.bottom + "rpx";
-    this.systemHeight = menuButtonInfo.bottom + this.num + "rpx";
+ 
+  mou    d(e  {
+    const menuButtonInfo = uni    tMenuButtonBoundingClientRect();
+      is.c  tainerBottom     enuButtonInfo.bottom;
+    this.systemBottom     enuButton    o.bottom + "rpx";
+    this.systemHeight = menuButto    fo.bottom + th    num + "rpx";
     console.log(this.systemBottom);
   },
-	onPageScroll(scrollTop) {
-		this.scrollTop = scrollTop.scrollTop
+	onPag    roll(scrollTop) {
+		this.scrollTop = scrollT    scrollTop
 	},
   onLoad(e) {
 		this.from= e.from
-    this.orderNo = Number(e.orderNo) || getApp().globalData.decorateMsg.orderId;
-    const currentHouse = getApp().globalData.currentHouse;
-    this.areaId = currentHouse.areaId;
+      this.orderNo = Numb      .orderNo) || getApp().globalData.decorateMsg.orderId;
+    const currentHouse       tApp().globalData.current      e;
+       is.areaId = curren      se.areaId;
 
-		// 获取胶囊按钮的位置
-		const systemInfo = uni.getSystemInfoSync();
-		const menuButtonInfo = uni.getMenuButtonBoundingClientRect();
-		this.navBarHeight =
-			menuButtonInfo.top +
-			(menuButtonInfo.top - systemInfo.statusBarHeight) +
-			menuButtonInfo.height +
-			"px";
-		uni.setNavigationBarColor({
-			frontColor: '#ffffff',
-			backgroundColor:'#ffb245',
+		      取胶囊按钮的位置
+		const syste    fo     ni .g et SystemInfoSy nc(      		const menu ButtonInfo  = uni.getM enuButton Bo und        ientRect();
+ 
+ 		this.navB      ight    
+			m    ButtonInfo.top +
+			(menuB      nInfo.top - systemInfo.statusBarHe    t)   
+			  nuButtonInfo    ight +
+			"px      		uni.setNavigationBarCo        
+			frontColor: '#fffff        			backgroundColo r:'#ff          
 			animation: {
-				duration: 400,
-				timingFunc: 'easeIn'
-			}
-		})
+				du        n:       
+			    ming    c: 'easeIn'
+		      		})
 	},
   onShow() {
 		this.headerTitle="订单详情"
-    this.orderDetail();
-  },
-  methods: {
+      th    orderDetail()       },
+  method      
     orderDetail() {
-      getOrderDetail({
-        id: this.orderNo,
+      getOrderDetail({            id: this.      rNo,
       }).then((e) => {
-        console.log(e);
-        this.orderInfo = e;
-				this.bottomStyle= this.orderInfo.showCancelBtn?'space-between':'flex-end'
-        console.log("this.orderInfo=", this.orderInfo);
+                le.log(e);               his.orderInfo = e;        	this.bottomStyle= this.orderInfo.showCancelBtn?'space-between':'flex-end'
+        console.log("this.orderInf       this.    erIn    ;
       });
-    },
-		// 改变返回下一个页面的路径
-		toBack(){
-			if(this.from=="waitPayOrder"){
-				uni.redirectTo({
-					url:"../my-order?firstEntry=true&index=1"
-				})
-			}else{
-				uni.navigateBack({
-				    delta: 1
-				});
-			}
-		},
-		readExpenses(num) {
-		  this.expensesType = num
-		  this.$refs.expensesToast.showPupop()
+    },      // 改变返回下一个页面的路径      toBack(){
+			if(        from=="wa          rder"){
+				uni.r          tTo({
+	        rl:"../my          ?firstEntry=true&i          "
+				}        	}else{
+          i.navigateBack({
+            delta:        			});
+	          	},
+		readExp          num) {
+        his.expens           = num
+      thi      efs.expensesT    t.sh    upop()
 		},
 
-    // 跳转到商品详情页面
-    productDetail(item) {
-      uni.navigateTo({
-        url: `../../../../sub-classify/pages/goods-detail/goods-detail?goodId=${item.id}`,
-      });
-    },
+         跳转到商品详情页面
+         ductDetail(item)             uni.navigateTo({
+            rl: `../../../../ sub-class          ges/goods-detail/goo            il?goodId=${item                    });
+            
     // 跳转到店铺页面
-    gotoShop(item) {
-      console.log("去店铺首页！！！！");
-      console.log("this.storeId=", item.storeId, "this.areaId=", this.areaId);
-      uni.navigateTo({
-        url: `../../../../sub-classify/pages/shops/shops?storeId=${item.storeId}&areaId=${this.areaId}`,
-      });
+              oShop(item) {
+      c            log(          ！！！！");
+      console.log            storeId=", item.storeId,          .ar        ",       .area    ;
+       uni.navigateTo(             url: `../        /../      classify/pages/s        shops?storeId=${item.storeId}&area        this.areaId}`,
+          );
     },
     // 倒计时间触发到的时间
-    goToCancelDetail() {
-      uni.redirectTo({
-        url: `../order-failed/order-failed?type=close&id=${this.orderNo}&from=waitPay`,
+             ancelDe           {
+      uni.redirectTo({              url: `../o            iled/order-failed?type=close&id=${this.orderNo}&from=waitPay`,
       });
     },
 
-    // 去申请退款页面
-    toApplayForRefund() {
-      uni.navigateTo({
-        url: "/sub-my/pages/apply-for-refund/apply-for-refund",
+            请退款页面
+    toApplayForRefund(               uni          ateTo({
+        url: "/sub          ges/apply-for-            apply-for-refund",
       });
     },
     // 取消订单
     handleCancelOrder() {
-      this.$refs.cancleOrder.open();
+      thi        fs.cancleOrder.open();
     },
-    cancelOrderClose() {
-      this.$refs.cancleOrder.close();
+    cancelOr          se() {
+          this.$refs.cancleOrder            );
     },
-    cancleConfirm() {
+    cancleConfi            
       //点击确定后订单会被取消且该订单会被移入已关闭订单中
-      cancelOrder({
-        id: this.orderNo,
-      }).then((e) => {
-        this.$refs.cancleOrder.close();
-        uni.redirectTo({
-          url: `../order-failed/order-failed?type=close&id=${this.orderNo}&from=waitPay`,
-        });
-      });
-    },
+              elO          
+        id: this.ord                  }).then((e) => {
+               is.$refs.cancleOrder.close();
+        un          rec          
+          url: `../or            led/order-failed?type=close            his.orderNo}&from=waitPay`,
+        });            }            },
 
-    //去支付
-    toPay() {
+    //              toPay() {
       // 先判断是否支付超额拆单了 // 拆单之后直接跳转到拆单页面	// 未拆单 直接支付
-      console.log(this.orderInfo, "orderInfo.orderId=", this.orderInfo.orderId);
-      if (this.orderInfo.isSplitPay) {
+      console.log(this.        Inf      orde    fo.o    rId=", thi      derInfo.orderId);
+       if   hisorderInfo.isSplitPay) {
         // orderId 是订单id
         uni.navigateTo({
           url: `../multiple-payments/multiple-payments?orderId=${this.orderNo}&type=detail&remainTime=${this.orderInfo.remainTime}`,
@@ -353,18 +359,18 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-	.bgcStyle{
-		width: 100%;
-		height: 32rpx;
-		position: absolute;
-		bottom: -32rpx;
-		z-index: -1;
-	}
-	.back-icon {
-		color: white;
-		font-size: 40rpx;
-		padding: 20rpx;
-	}
+.bgcStyle {
+  width: 100%;
+  height: 32rpx;
+  position: absolute;
+  bottom: -32rpx;
+  z-index: -1;
+}
+.back-icon {
+  color: white;
+  font-size: 40rpx;
+  padding: 20rpx;
+}
 .container {
   // background-color: skyblue;
   .order-container {
@@ -420,14 +426,14 @@ export default {
         align-items: center;
       }
     }
-		.moreStore{
-			background-color: #FFFFFF;
-			padding: 40rpx 0 10rpx;
-			font-size:32rpx;
-			font-weight: 500;
-			color: #333333;
-			text-align: center;
-		}
+    .moreStore {
+      background-color: #ffffff;
+      padding: 40rpx 0 10rpx;
+      font-size: 32rpx;
+      font-weight: 500;
+      color: #333333;
+      text-align: center;
+    }
 
     .store-container {
       .storeItem {
@@ -484,21 +490,21 @@ export default {
               flex: 1;
               flex-flow: row nowrap;
               justify-content: space-between;
-							align-items: center;
+              align-items: center;
               margin-bottom: 8rpx;
-							color: #999999;
-							font-size: 22rpx;
-							.item-style{
-								display: flex;
-								flex-flow: row nowrap;
-								align-items: center;
+              color: #999999;
+              font-size: 22rpx;
+              .item-style {
+                display: flex;
+                flex-flow: row nowrap;
+                align-items: center;
 
-								.icon{
-									width: 24rpx;
-									height: 24rpx;
-									object-fit: cover;
-								}
-							}
+                .icon {
+                  width: 24rpx;
+                  height: 24rpx;
+                  object-fit: cover;
+                }
+              }
             }
 
             .item:nth-last-child(1) {
@@ -616,7 +622,7 @@ export default {
     font-size: 32rpx;
     text-align: center;
     color: #ffffff;
-    background: linear-gradient(99deg, #00CCBE 0%, #00C2BF 100%);
+    background: linear-gradient(99deg, #00ccbe 0%, #00c2bf 100%);
     border-radius: 12rpx;
   }
 }

@@ -3,7 +3,7 @@
 		<view class="sku-box">
 				<view class="sku-header container">
 					<image class="goods-img" :src="selectSkuInfo[cbImage]+'?x-oss-process=image/resize,m_mfit,w_96,h_96'"></image>
-					
+
 					<view class="sku-goods-info">
 						<view class="goodsDesc">
 							<text class="goodsType">{{productType===1?"物品":"服务"}}</text>
@@ -18,28 +18,28 @@
 						</view> -->
 					</view>
 					<image class="close" @click="closeSkuBox"
-						src="http://dbj.dragonn.top/static/mp/dabanjia/images/my/ic_closed_black%402x.png"></image>
+						src="https://ali-image.dabanjia.com/static/mp/dabanjia/images/my/ic_closed_black%402x.png"></image>
 				</view>
 				<scroll-view class="sku-list" scroll-y="true">
 					<view class="sku-item container" v-for="(sku,speIdx) in mySpecifications" :key="sku[speId]">
 						<view class="sku-name">{{sku[speName]}}</view>
 						<view class="sku-content">
-							<text 
-								class="sku-content-item" 
+							<text
+								class="sku-content-item"
 								v-for="(item,index) in sku[speList]"
-								:key="item.id" 
+								:key="item.id"
 								:style="{
 									borderColor: item.checked? '#35c4c4': '#fff',
 									color: item.checked?'#34c4c4':'#333333',
-									backgroundColor: item.checked?'#e8fafa':'#f5f5f5' 
-								}" 
+									backgroundColor: item.checked?'#e8fafa':'#f5f5f5'
+								}"
 								@click="selectSkuCli(sku.id,speIdx,item.id,index)"
 							>{{item.value}}</text>
 						</view>
 					</view>
 					<view class="bottom-space"></view>
 				</scroll-view>
-				
+
 				<view class="confirm-btn container" @click="handleConfirm">确认</view>
 			</view>
 	</popup-bottom>
@@ -152,7 +152,7 @@
 				this.selectedIndex = this.defaultSelectIndex
 				this.selectSkuInfo = this.combinations[this.selectedIndex]
 				this.skuId = this.selectSkuInfo.id
-				
+
 				let defaultSpecIds = this.defaultSpecIds.split(',')
 				let arr = []
 				this.specifications.forEach(item => {
@@ -172,7 +172,7 @@
 				    })
 				  })
 				  return temp
-				})    
+				})
 				this.handleIds = this.handleIds.map(item => {
 					if(typeof item === 'string'){
 						return item.split(',').sort().toString()
@@ -180,7 +180,7 @@
 						return item.toString()
 					}
 				})
-				
+
 				let selectIds = this.selectSkuInfo.propValueIds
 				if(this.handleIds.indexOf(selectIds) === -1) {
 					uni.showToast({
@@ -307,7 +307,7 @@
 					line-height: 28rpx;
 					text-align:center;
 				}
-				
+
 			}
 			.money {
 				font-size: 28rpx;

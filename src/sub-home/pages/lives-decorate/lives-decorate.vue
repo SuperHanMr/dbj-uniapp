@@ -1,6 +1,6 @@
 <template>
 	<view class="fill">
-		<image class="to-app-img" src="http://dbj.dragonn.top/static/mp/dabanjia/images/home/lives-decorate.jpg"
+		<image class="to-app-img" src="https://ali-image.dabanjia.com/static/mp/dabanjia/images/home/lives-decorate.jpg"
 			mode="aspectFill" @click="showDownload=true">
 
 		</image>
@@ -37,7 +37,7 @@
 			</scroll-view>
 		</view>
 		<view v-else>
-			<image class="placehold-img" src="http://dbj.dragonn.top/static/mp/dabanjia/images/home/pic_empty.png"
+			<image class="placehold-img" src="https://ali-image.dabanjia.com/static/mp/dabanjia/images/home/pic_empty.png"
 				mode=""></image>
 			<view class="placehold-text">
 				暂无工地视频
@@ -237,7 +237,7 @@
 			.img {
 				width: 640rpx;
 				height: 350rpx;
-				background: url("http://dbj.dragonn.top/static/mp/dabanjia/images/home/lives_download.png");
+				background: url("https://ali-image.dabanjia.com/static/mp/dabanjia/images/home/lives_download.png");
 				background-size: contain;
 				position: relative;
 				border-top-right-radius: 24rpx;
@@ -249,7 +249,7 @@
 					height: 64rpx;
 					margin-right: 24rpx;
 					margin-top: 24rpx;
-					background: url("http://dbj.dragonn.top/static/mp/dabanjia/images/home/ic_closed_black.png");
+					background: url("https://ali-image.dabanjia.com/static/mp/dabanjia/images/home/ic_closed_black.png");
 					background-size: contain;
 				}
 			}

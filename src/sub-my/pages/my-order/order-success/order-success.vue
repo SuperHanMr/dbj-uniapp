@@ -6,7 +6,7 @@
 					@click="toBack"></i>
 			</template>
 		</custom-navbar>
-		
+
 		<!-- 退款成功 -->
 		<view class="order-container" v-if="type=='refund'" :style="{paddingBottom:systemBottom}">
 			<view style="position: relative;" :style="{backgroundImage:`url(${bgImg})`,backgroundSize: '100% 100%'}">
@@ -18,9 +18,9 @@
 						<text>退款成功</text>
 					</view>
 					<text class="time">{{refundInfo.createTime | formatDate}}</text>
-				</view>			
+				</view>
 			</view>
-			
+
 
 			<view class="order-header1">
 				<view class="refund-price">
@@ -63,7 +63,7 @@
 						<image src="../../../static/ic_order_success.svg" mode=""></image>
 						<text>已完成</text>
 					</view>
-				</view>				
+				</view>
 			</view>
 
 			<order-user-base-info :data="orderInfo"></order-user-base-info>
@@ -126,7 +126,7 @@
 				navBarHeight:"",
 				scrollTop: 0,
 				headerTitle:"",
-				bgImg:'http://dbj.dragonn.top/static/mp/dabanjia/images/decorate/order_bg_green.png',
+				bgImg:'https://ali-image.dabanjia.com/static/mp/dabanjia/images/decorate/order_bg_green.png',
 			};
 		},
 
@@ -139,7 +139,7 @@
 		onPageScroll(scrollTop) {
 			this.scrollTop = scrollTop.scrollTop
 		},
-		
+
 		onLoad(e) {
 			this.type = e.type;
 			console.log("页面显示类型 this.type=", this.type);
@@ -236,7 +236,7 @@
 					});
 				}
 			},
-			
+
 			// 跳转到店铺页面
 			gotoShop(item2) {
 				console.log("去店铺首页！！！！",item2);
@@ -251,14 +251,14 @@
 
 <style lang="scss" scoped>
 	.container {
-		
+
 		.back-icon {
 			color: white;
 			font-size: 40rpx;
 			padding: 20rpx;
 		}
 		.bgcStyle{
-			width: 100%; 
+			width: 100%;
 			height: 32rpx;
 			position: absolute;
 			bottom: -32rpx;

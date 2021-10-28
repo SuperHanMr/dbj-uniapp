@@ -1,5 +1,5 @@
 <template>
-	
+
   <view class="sceneContainer" :class="{'noScroll':showComments}">
     <view class="header">
       <view class="houseInfo">
@@ -28,7 +28,7 @@
       >
         <image
           class="toConstruction"
-          src="http://dbj.dragonn.top/static/mp/dabanjia/images/home/ic_construction_drawings%402x.png"
+          src="https://ali-image.dabanjia.com/static/mp/dabanjia/images/home/ic_construction_drawings%402x.png"
         ></image>
         <view class="text">施工图纸</view>
       </view>
@@ -38,7 +38,7 @@
       >
         <image
           class="toCost"
-          src="http://dbj.dragonn.top/static/mp/dabanjia/images/home/ic_cost_statistics%402x.png"
+          src="https://ali-image.dabanjia.com/static/mp/dabanjia/images/home/ic_cost_statistics%402x.png"
         ></image>
         <view class="text">花销统计</view>
       </view>
@@ -48,7 +48,7 @@
       >
         <image
           class="toDecorate"
-          src="http://dbj.dragonn.top/static/mp/dabanjia/images/home/ic_decorate_calendar%402x.png"
+          src="https://ali-image.dabanjia.com/static/mp/dabanjia/images/home/ic_decorate_calendar%402x.png"
         ></image>
         <view class="text">装修日历</view>
       </view>
@@ -58,7 +58,7 @@
       >
         <image
           class="toVideoSite"
-          src="http://dbj.dragonn.top/static/mp/dabanjia/images/home/ic_video_site%402x.png"
+          src="https://ali-image.dabanjia.com/static/mp/dabanjia/images/home/ic_video_site%402x.png"
         ></image>
         <view class="text">工地视频</view>
       </view>
@@ -68,7 +68,7 @@
       <view class="content">
         <image
           class="startWork"
-          src="http://dbj.dragonn.top/static/mp/dabanjia/images/home/start_work%402x.png"
+          src="https://ali-image.dabanjia.com/static/mp/dabanjia/images/home/start_work%402x.png"
         ></image>
         <view class="mainWrap">
           <view class="nodeType">
@@ -132,12 +132,12 @@
 				<image
 					v-if="projectInfo.projectStatus===3"
 				  class="endWork"
-				  src="http://dbj.dragonn.top/static/mp/dabanjia/images/home/end_active.png"
+				  src="https://ali-image.dabanjia.com/static/mp/dabanjia/images/home/end_active.png"
 				></image>
         <image
 					v-else
           class="endWork"
-          src="http://dbj.dragonn.top/static/mp/dabanjia/images/home/end_work%402x.png"
+          src="https://ali-image.dabanjia.com/static/mp/dabanjia/images/home/end_work%402x.png"
         ></image>
       </view>
     </view>
@@ -151,12 +151,12 @@
           <view class="text">筛选</view>
           <image
             class="icon"
-            src="http://dbj.dragonn.top/static/mp/dabanjia/images/home/ic_filtrate%402x.png"
+            src="https://ali-image.dabanjia.com/static/mp/dabanjia/images/home/ic_filtrate%402x.png"
           ></image>
         </view>
       </view>
 			<view class="noDynamics" v-if="!dynamics.length">
-				<image class="noDynamicsImg" src="http://dbj.dragonn.top/static/mp/dabanjia/images/home/pic_empty%402x.png"></image>
+				<image class="noDynamicsImg" src="https://ali-image.dabanjia.com/static/mp/dabanjia/images/home/pic_empty%402x.png"></image>
 				<view class="text">暂无装修动态</view>
 				<view class="bottom"></view>
 			</view>
@@ -197,19 +197,19 @@
                   <image
                     v-if="!item.selfLike"
                     @click="likeC(item.recordType,item.id,index,true)"
-                    src="http://dbj.dragonn.top/static/mp/dabanjia/images/home/ic_like_pre%402x.png"
+                    src="https://ali-image.dabanjia.com/static/mp/dabanjia/images/home/ic_like_pre%402x.png"
                   ></image>
                   <image
                     v-else
                     @click="likeC(item.recordType,item.id,index)"
-                    src="http://dbj.dragonn.top/static/mp/dabanjia/images/home/ic_red_hand%402x.png"
+                    src="https://ali-image.dabanjia.com/static/mp/dabanjia/images/home/ic_red_hand%402x.png"
                   ></image>
                   <view class="text">{{item.likeCount}}</view>
                 </view>
                 <view class="comment">
                   <image
                     @click="commentC(item.id)"
-                    src="http://dbj.dragonn.top/static/mp/dabanjia/images/home/ic_discuss%402x.png"
+                    src="https://ali-image.dabanjia.com/static/mp/dabanjia/images/home/ic_discuss%402x.png"
                   ></image>
                   <view class="text">{{item.commentCount}}</view>
                 </view>
@@ -229,7 +229,7 @@
         @click="toInlineService"
       >
         <image
-          src="http://dbj.dragonn.top/%20static/mp/dabanjia/images/home/question.png"
+          src="https://ali-image.dabanjia.com/static/mp/dabanjia/images/home/question.png"
         ></image>
         <view>咨询客服</view>
       </view>
@@ -238,7 +238,7 @@
         @click="toDecorate"
       >
         <image
-          src="http://dbj.dragonn.top/%20static/mp/dabanjia/images/home/decorate.png"
+          src="https://ali-image.dabanjia.com/static/mp/dabanjia/images/home/decorate.png"
         ></image>
         <view>我要装修</view>
       </view>
@@ -249,7 +249,7 @@
       >
         <image
           class="add"
-          src="http://dbj.dragonn.top/static/mp/dabanjia/images/home/ic_add_focus%402x.png"
+          src="https://ali-image.dabanjia.com/static/mp/dabanjia/images/home/ic_add_focus%402x.png"
         ></image>
         <view>关注</view>
       </view>
@@ -265,21 +265,21 @@
 		<view class="mask" v-if="showDecorateMask">
 			<view class="popupDecorate" :class="{'height':hasEstate}">
 				<view class="estateInfo" v-if="!hasEstate" @click="toAddEstate">
-					<image src="http://dbj.dragonn.top/static/mp/dabanjia/images/home/ic_add_estate%402x.png"></image>
+					<image src="https://ali-image.dabanjia.com/static/mp/dabanjia/images/home/ic_add_estate%402x.png"></image>
 					<view>添加房屋信息</view>
 				</view>
 				<view class="service" :class="{'margin':hasEstate}">
 					<view class="decorate_service" @click="toDecorateService">
-						<image src="http://dbj.dragonn.top/static/mp/dabanjia/images/home/ic_decorate_service%402x.png"></image>
+						<image src="https://ali-image.dabanjia.com/static/mp/dabanjia/images/home/ic_decorate_service%402x.png"></image>
 						<view>进行装修服务</view>
 					</view>
 					<view class="checkRoom_service" @click="toCheckRoomService">
-						<image src="http://dbj.dragonn.top/static/mp/dabanjia/images/home/ic_checkRoom_service%402x.png"></image>
+						<image src="https://ali-image.dabanjia.com/static/mp/dabanjia/images/home/ic_checkRoom_service%402x.png"></image>
 						<view>进行验房服务</view>
 					</view>
 				</view>
 				<view class="close" @click="closeDecorateServe">
-					<image src="http://dbj.dragonn.top/static/mp/dabanjia/images/home/ic_decorate_cancel%402x.png"></image>
+					<image src="https://ali-image.dabanjia.com/static/mp/dabanjia/images/home/ic_decorate_cancel%402x.png"></image>
 				</view>
 			</view>
 		</view>
@@ -320,7 +320,7 @@
           <image
             @click="closeComments"
             class="close"
-            src="http://dbj.dragonn.top/static/mp/dabanjia/images/home/ic_closed_black%402x.png"
+            src="https://ali-image.dabanjia.com/static/mp/dabanjia/images/home/ic_closed_black%402x.png"
           ></image>
         </view>
         <view
@@ -329,7 +329,7 @@
         >
           <image
             class="noCommentImg"
-            src="http://dbj.dragonn.top/static/mp/dabanjia/images/decorate/pic_empty%402x.png"
+            src="https://ali-image.dabanjia.com/static/mp/dabanjia/images/decorate/pic_empty%402x.png"
           ></image>
           <view class="noCommentText">暂无评论~</view>
         </view>
@@ -400,7 +400,7 @@
                 <view class="text">展开{{item.secondCount}}条回复</view>
                 <image
                   class="img"
-                  src="http://dbj.dragonn.top/static/mp/dabanjia/images/home/ic_expand%402x.png"
+                  src="https://ali-image.dabanjia.com/static/mp/dabanjia/images/home/ic_expand%402x.png"
                 ></image>
               </view>
               <view
@@ -411,7 +411,7 @@
                 <view class="test">收起</view>
                 <image
                   class="img"
-                  src="http://dbj.dragonn.top/static/mp/dabanjia/images/home/ic_packUp%402x.png"
+                  src="https://ali-image.dabanjia.com/static/mp/dabanjia/images/home/ic_packUp%402x.png"
                 ></image>
               </view>
             </view>
@@ -425,7 +425,7 @@
           <view class="deleteWrap">
             <image
               class="img"
-              src="http://dbj.dragonn.top/static/mp/dabanjia/images/home/ic_comment_delete%402x.png"
+              src="https://ali-image.dabanjia.com/static/mp/dabanjia/images/home/ic_comment_delete%402x.png"
             ></image>
             <view class="delete">删除</view>
           </view>
@@ -526,7 +526,7 @@ export default {
     this.projectId = option.projectId;
 		uni.$on("currentHouseChange", (item) => {
 		  this.homePageEstate = item
-		})  
+		})
   },
 	onShow() {
 		this.userId = uni.getStorageSync("userId");
@@ -536,7 +536,7 @@ export default {
 		uni.stopPullDownRefresh()
 	},
 	onReachBottom() {
-		
+
 		if(this.selectedType){
 			this.dynamicPageType+=1;
 			this.getDynamic(this.selectedType)
@@ -544,7 +544,7 @@ export default {
 			this.dynamicPage+=1;
 			this.requestDynamic();
 		}
-		
+
 	},
   mounted() {
     this.requestDecorateSteps();
@@ -614,7 +614,7 @@ export default {
       });
     },
     expandC(id, index) {
-      
+
       let params = {
         page: this.replyPage,
         rows: 10,
@@ -623,14 +623,14 @@ export default {
       getReplies(params).then((data) => {
         if (data) {
 					let {list,page,totalRows} = data
-          
+
 					if(this.replyPage!==1){
 						this.comments[index].secondComments =
 							this.comments[index].secondComments.concat(list || []);
 					}else{
 						this.comments[index].secondComments = list || [];
 					}
-					
+
 					if(this.comments[index].secondComments.length >= totalRows){
 						this.isExpanded = true;
 					}
@@ -681,7 +681,7 @@ export default {
       getComments(params).then((data) => {
         if (data) {
           let { page, list } = data;
-					
+
 					if(this.commentPage === 1){
 						this.comments = list
 					}else{
@@ -735,7 +735,7 @@ export default {
 							icon:'none'
 						})
 					}
-          
+
         }
       });
     },
@@ -781,17 +781,17 @@ export default {
 		toAddEstate(){
 			uni.navigateTo({
 			  url: "/sub-decorate/pages/add-house/add-house?type=decorate",
-			});        
+			});
 		},
 		toDecorateService(){
 			uni.navigateTo({
 			  url: `/sub-decorate/pages/no-house-decorate/no-house-decorate?type=decorate&estateId=${this.homePageEstate.id}&from=userHome`,
-			});        
+			});
 		},
 		toCheckRoomService(){
 			uni.navigateTo({
 			  url: `/sub-decorate/pages/no-house-decorate/no-house-decorate?type=checkHouse&estateId=${this.homePageEstate.id}&from=userHome`,
-			});        
+			});
 		},
     toDecorateCalendar() {
       uni.navigateTo({
@@ -934,7 +934,7 @@ export default {
           this.processId = nodes[0].processId;
           this.houseStructure = estate.houseStructure;
           this.requestFocus();
-          
+
           for (let i = 0; i < this.nodesInfo.length - 1; i++) {
             this.nodesInfo[i].nextNodeStatus = this.nodesInfo[i + 1].nodeStatus;
           }
@@ -946,7 +946,7 @@ export default {
 </script>
 
 <style scoped>
-	
+
 	.bottomDelete {
 		width: 100%;
 		height: fit-content;
@@ -1060,7 +1060,7 @@ export default {
 		display: flex;
 		align-items: center;
 	}
-	
+
 	.estateInfo image{
 		width: 28rpx;
 		height: 28rpx;
@@ -1421,7 +1421,7 @@ export default {
 		width: 100%;
 		height: 400rpx;
 		background-repeat: no-repeat;
-		background-image: url("http://dbj.dragonn.top/static/mp/dabanjia/images/home/bg%402x.png");
+		background-image: url("https://ali-image.dabanjia.com/static/mp/dabanjia/images/home/bg%402x.png");
 		display: flex;
 	}
 	.sceneContainer > .footer {
@@ -1607,7 +1607,7 @@ export default {
 		font-size: 22rpx;
 		color: #333333;
 		line-height: 32rpx;
-		
+
 	}
 	.nodeType > view.maxWidth{
 		width: 66rpx;
@@ -1689,7 +1689,7 @@ export default {
 		display: flex;
 		justify-content: space-between;
 	}
-	
+
 	.worker .item {
 		width: 40rpx;
 		height: 128rpx;
@@ -1726,7 +1726,7 @@ export default {
 		margin: 0 0 8rpx -4rpx;
 	}
 	.worker .item > view .name {
-		
+
 	}
 	.worker .item > view .name.minHeight {
 		height: 48rpx;
@@ -1744,7 +1744,7 @@ export default {
 	.worker .item .own{
 		margin: 16rpx 10rpx;
 	}
-	
+
 	.dynamic {
 		width: 100%;
 		height: fit-content;
@@ -1829,7 +1829,7 @@ export default {
 		width: 100%;
 		height: fit-content;
 	}
-	
+
 	.item {
 		width: 100%;
 		display: flex;
@@ -2030,5 +2030,5 @@ export default {
 		color: #ffffff;
 		line-height: 32rpx;
 	}
-	
+
 </style>

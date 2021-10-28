@@ -18,7 +18,7 @@
 				<view v-for="(item,index) in tabList" :key="item.id" class="tab-item"
 					:class="index==currentTab?'selected-tab ':'nomal-tab'" @click="onTab(index,item)">
 					<image v-if="index==0" :class="currentTab==0?'tab-img':'tab-img-un'"
-						:src=" currentTab==0? 'http://dbj.dragonn.top/static/mp/dabanjia/images/home/design_fire.png':'http://dbj.dragonn.top/static/mp/dabanjia/images/home/desigon_unfire.png'"
+						:src=" currentTab==0? 'https://ali-image.dabanjia.com/static/mp/dabanjia/images/home/design_fire.png':'https://ali-image.dabanjia.com/static/mp/dabanjia/images/home/desigon_unfire.png'"
 						mode=""></image>
 					<text>{{item.name}}</text>
 					<view v-if="index==currentTab" class="current-select">
@@ -36,7 +36,7 @@
 			</scroll-view>
 		</view>
 		<view v-if="goodsList.length==0" class="noMemo">
-			<image class="noMemoImg" src="http://dbj.dragonn.top/static/mp/dabanjia/images/decorate/pic_empty%402x.png">
+			<image class="noMemoImg" src="https://ali-image.dabanjia.com/static/mp/dabanjia/images/decorate/pic_empty%402x.png">
 			</image>
 			<view class="noMemoText">暂无内容~</view>
 		</view>
@@ -261,7 +261,7 @@
 	.top-bg {
 		width: 100%;
 		height: 420rpx;
-		background: url("http://dbj.dragonn.top/static/mp/dabanjia/images/home/find_design_bg.png");
+		background: url("https://ali-image.dabanjia.com/static/mp/dabanjia/images/home/find_design_bg.png");
 		background-size: contain;
 		position: relative;
 

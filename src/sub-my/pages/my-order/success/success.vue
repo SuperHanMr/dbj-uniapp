@@ -8,31 +8,31 @@
 
     <view
       class="basic-info"
-      :style="{backgroundImage:`url(http://dbj.dragonn.top/static/mp/dabanjia/images/my/bg_img.png)`,backgroundSize: '100% 100%'}"
+      :style="{backgroundImage:`url(https://ali-image.dabanjia.com/static/mp/dabanjia/images/my/bg_img.png)`,backgroundSize: '100% 100%'}"
     >
       <image
         src="../../../static/complete.png"
         mode=""
       ></image>
-			
+
 			<!-- 确认收货成功显示的页面 -->
       <view class="info" v-if="type=='confirmReceipt'">
 				<view class="header1">交易完成</view>
 				<view class="header2">感谢您的支持～</view>
 			</view>
-			
+
 			<!-- 订单取消成功显示的页面 -->
       <view class="info" v-if="type== 'cancelOrder'">
         <view class="header1">订单取消成功</view>
         <view class="header2">您已取消该订单，欢迎再次购买～</view>
       </view>
-			
+
 			<!-- 申请退款成功显示的页面 -->
       <view class="info" v-if="type=='applyForRefund'">
 				<view class="header1">提交成功</view>
 				<view class="header2">退款申请已提交，感谢您的支持～</view>
 			</view>
-			
+
     </view>
 
     <view class="button-container">
@@ -60,13 +60,13 @@ export default {
 		handleComplete(){
 			//确认收货  点击完成需要跳转的页面
 			if(this.type == "confirmReceipt"){
-				
+
 			}
 		},
 		goToDetail(){
 			//确认收货  点击完成需要跳转的页面
 			if(this.type == "confirmReceipt"){
-				
+
 			}
 		}
 	},

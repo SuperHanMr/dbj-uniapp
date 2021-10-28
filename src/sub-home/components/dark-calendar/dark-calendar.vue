@@ -5,19 +5,19 @@
 				<view class="pre-month" @click="turning('prev')">
 					<image
 						class="header-btn"
-						src="http://dbj.dragonn.top/static/mp/dabanjia/images/home/ic_month_pre%402x.png"
+						src="https://ali-image.dabanjia.com/static/mp/dabanjia/images/home/ic_month_pre%402x.png"
 						></image>
 				</view>
 				<view class="current-month">{{ y }}-{{ m+1 < 10? `0${m+1}` : m+1 }}</view>
 				<view class="next-month" @click="turning('next')">
 					<image
 						class="header-btn"
-						src="http://dbj.dragonn.top/static/mp/dabanjia/images/home/ic_month_next%402x.png"
+						src="https://ali-image.dabanjia.com/static/mp/dabanjia/images/home/ic_month_next%402x.png"
 						></image>
 				</view>
 			</view>
 			<view class="memo" @click="toMemo" v-if="showMemo">
-				<image class="ic_memo" src="http://dbj.dragonn.top/static/mp/dabanjia/images/home/ic_memo%402x.png"></image>
+				<image class="ic_memo" src="https://ali-image.dabanjia.com/static/mp/dabanjia/images/home/ic_memo%402x.png"></image>
 				<view class="text">备忘录</view>
 			</view>
     </view>
@@ -36,9 +36,9 @@
       </view>
     </view>
 		<image v-if="isShrink" @click="switchWeek()" class="shrink" :class="{'rotate':!isShrink}"
-			src="http://dbj.dragonn.top/static/mp/dabanjia/images/home/monthOpen.png"></image>
+			src="https://ali-image.dabanjia.com/static/mp/dabanjia/images/home/monthOpen.png"></image>
 		<image v-else @click="switchWeek()" class="grow"
-			src="http://dbj.dragonn.top/static/mp/dabanjia/images/home/weekModel.png"></image>
+			src="https://ali-image.dabanjia.com/static/mp/dabanjia/images/home/weekModel.png"></image>
   </view>
 </template>
 
@@ -91,7 +91,7 @@
 			let d = date.getDate()
 			this.choose = `${y}-${m}-${d}`
 			console.log(this.choose,'。。')
-			
+
 			this.dates = this.monthDay(this.y, this.m)
 	  },
 	  mounted() {
@@ -161,7 +161,7 @@
 	          year: m + 1 <= 11 ? y : y + 1
 	        })
 	      }
-				
+
 				dates.map(item => {
 					if(item.month+1 < 10){
 						item.month = `0${item.month+1}`
@@ -241,7 +241,7 @@
 	      let date = `${i.year}-${i.month}-${i.date}`
 				this.choose = date
 				this.$emit('filterDynamics', date,true)
-				
+
 				let month = 0
 				if(typeof(i.month) === 'number'){
 					month = i.month-1
@@ -251,7 +251,7 @@
 				}
 				this.y = i.year
 				this.m = month
-				
+
 				if(this.monthOpen){
 					this.positionTop = 0
 					this.dates = this.monthDay(this.y,this.m)
@@ -264,7 +264,7 @@
 					let weekIndex = this.choice.weekIndex
 					this.dates = this.dates.filter(item => item.weekIndex === weekIndex)
 				}
-	     
+
 				this.$emit('changeMargin',this.isShrink,this.dates.length)
 	    },
 	    // 上个月，下个月
@@ -302,14 +302,14 @@
 					this.dates = this.dates.filter(item => item.weekIndex === weekIndex)
 					this.$emit('changeMargin',false)
 				}
-	      
+
 	    }
 	  }
 	}
 </script>
 
 <style lang="scss" scoped>
-	
+
 	.sign-calendar {
 		width: 750rpx;
 		height: fit-content;
@@ -383,7 +383,7 @@
 		font-size: 26rpx;
 		color: #333333;
 	}
-	
+
   .week {
     display: flex;
     align-items: center;
@@ -414,7 +414,7 @@
 	  display: flex;
 	  align-items: center;
 	  flex-wrap: wrap;
-		
+
 		&.switchWeek{
 			height: 98rpx;
 		}
@@ -435,20 +435,20 @@
 	  line-height: 52rpx;
 		text-align: center;
 	  border-radius: 20rpx;
-		
+
 	  &.choose {
 			width: 50rpx;
 			height: 50rpx;
 			line-height: 50rpx;
 			border: 2rpx solid #00bfb6;
 	  }
-		
+
 	  &.gray {
 	    color: #333;
 	    opacity: 0.3;
 	  }
 	}
-		
+
 	.sign {
 	  width: 8rpx;
 	  height: 8rpx;
@@ -459,7 +459,7 @@
 	  margin-left: -4rpx;
 	  bottom: 6rpx;
 	}
-		
+
 	.today-text {
 		width: 52rpx;
 		height: 52rpx;

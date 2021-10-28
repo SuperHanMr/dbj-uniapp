@@ -122,7 +122,7 @@
 				navBarHeight: "",
 				scrollTop: 0,
 				headerTitle:"",
-				bgImg:'http://dbj.dragonn.top/static/mp/dabanjia/images/decorate/order_bg_orange.png'
+				bgImg:'https://ali-image.dabanjia.com/static/mp/dabanjia/images/decorate/order_bg_orange.png'
 			};
 		},
 
@@ -208,11 +208,11 @@
 					uni.navigateTo({
 						url: `/sub-my/pages/apply-for-refund/apply-for-refund?orderId=${this.orderNo}&type=whole&status=1&applyMode=2`,
 					});
-				} 
+				}
 			},
 			refundCancel(item) {
 				this.itemId=item.refundId
-				this.title="确定要取消本次申请退款？" 
+				this.title="确定要取消本次申请退款？"
 				this.$refs.cancelRefund.open();
 			},
 			cancelRefundClose() {
@@ -337,9 +337,9 @@
 		// height: 100%;
 		// overflow: auto;
 		// padding-bottom: 100rpx;
-		
+
 		.bgcStyle{
-			width: 100%; 
+			width: 100%;
 			height: 32rpx;
 			position: absolute;
 			bottom: -32rpx;
@@ -354,20 +354,20 @@
 			flex-flow: column nowrap;
 			align-items: center;
 			position: relative;
-		
+
 			.status {
 				display: flex;
 				flex-flow: row nowrap;
 				align-items: center;
 				margin-bottom: 8rpx;
-		
+
 				image {
 					width: 64rpx;
 					height: 64rpx;
 					object-fit: cover;
 					margin-right: 12rpx;
 				}
-		
+
 				view {
 					font-size: 48rpx;
 					font-weight: 500;
@@ -375,7 +375,7 @@
 				}
 			}
 		}
-		
+
 		.order-container {
 			width: 100%;
 			height: 100%;

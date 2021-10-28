@@ -30,7 +30,7 @@
     					</view>
     				</view>
             <view class="map-item" v-if="isPerson" @click="toDecorate(item)">
-              <image src="http://dbj.dragonn.top/%20static/mp/dabanjia/images/decorate/houseAddress.png"></image>
+              <image src="https://ali-image.dabanjia.com/static/mp/dabanjia/images/decorate/houseAddress.png"></image>
               <text>{{item.estateName}}</text>
             </view>
     			</view>
@@ -38,7 +38,7 @@
         <view class="" >
           <dynamicComments ref='comments' v-if="hiddenComment" :index="activeIndex" :ParentTotalRows='activeTotalRows' @change="changeComments" :userId='personId' :houseOwnerId='houseOwnerId' :dynamicId='dynamicId'></dynamicComments>
         </view>
-        
+
   </view>
 </template>
 
@@ -73,11 +73,11 @@
     watch:{
       dynamics:{
         handler:function(){
-          
+
           this.dynamicsArr = [...this.dynamics]
         },
         immediate:true
-        
+
       }
     },
     methods:{
@@ -95,16 +95,16 @@
             console.log(this.activeIndex)
             this.houseOwnerId = item.houseOwnerId
           })
-          
+
         }
       	this.$emit('commentC',item.id)
-        
+
       },
       commentOpen(e){
         this.isOpenComment = e
       },
       changeComments(item,index){
-        
+
         this.dynamicsArr[index].commentCount = item
         this.hiddenComment = false
       },

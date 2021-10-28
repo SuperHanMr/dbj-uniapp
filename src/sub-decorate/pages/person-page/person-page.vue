@@ -1,6 +1,6 @@
 <template>
   <view class="person-page">
-    <image class="bg-index" mode="aspectFit" src="http://dbj.dragonn.top/static/mp/dabanjia/images/decorate/person_bg.png">
+    <image class="bg-index" mode="aspectFit" src="https://ali-image.dabanjia.com/static/mp/dabanjia/images/decorate/person_bg.png">
     </image>
     <view class="back" @click="back">
       <i class="icon-ic_cancel_white"></i>
@@ -12,7 +12,7 @@
       </view>
       <view class="item nav-header-msg">
         <view class="main">
-        <image class="avatar" :src="personId!=0?personData.avatar:'http://dbj.dragonn.top/%20static/mp/dabanjia/images/decorate/bg_dbj.png'" mode="aspectFill" ></image>
+        <image class="avatar" :src="personId!=0?personData.avatar:'https://ali-image.dabanjia.com/static/mp/dabanjia/images/decorate/bg_dbj.png'" mode="aspectFill" ></image>
         <text>{{personId!=0? (personData.roleId>=1&&personData.roleId<7?personData.realName:personData.nickName):'打扮家'}}</text>
         </view>
       </view>
@@ -23,7 +23,7 @@
         <view :class="{'is-self':personData.roleId === 10000,'person-msg-top':personId!=0}">
           <view class="person-msg-header">
             <view class="person-msg-header-image">
-              <image class="avatar" :src="personId!=0?personData.avatar:'http://dbj.dragonn.top/%20static/mp/dabanjia/images/decorate/bg_dbj.png'" mode="aspectFill" ></image>
+              <image class="avatar" :src="personId!=0?personData.avatar:'https://ali-image.dabanjia.com/static/mp/dabanjia/images/decorate/bg_dbj.png'" mode="aspectFill" ></image>
               <i class="icon icon-ic_nan" v-if="personId!=0&&personData.gender===1"></i>
               <i class="icon icon-ic_nv" v-if="personId!=0&&personData.gender===2"></i>
             </view>
@@ -62,7 +62,7 @@
             </view>
             <view class="list-item">
               <text class="num">{{personData.totalNum||0}} <text class="unit" v-if="personData.totalNum.split('.')[1]">w</text></text>
-             
+
               <text class="title">总接单</text>
             </view>
           </view>
@@ -71,7 +71,7 @@
         <view class="send-msg" @click="sendMsg" v-if="personData.roleId<7&&hasServe!==0">
           <i class="icon-gerenzhuye_ic_faxiaoxi"></i>
           <text>发消息</text>
-          
+
         </view>
       </view>
       <view class="person-interact" v-if="personId!=0&&personData.roleId<7&&personData.roleId!=6" :class="{'person-interact-active':interactActive+10 >  interact }">
@@ -105,9 +105,9 @@
       <text>坚持以科技提升效益，用智慧创造美好的使命。</text>
       <text>为了实现用户“所想即所见，所见即所得，设计师更优、装企算得清”的终极目标，以打扮家BIM、AI等技术为基础为上下游产业链赋能，全面激活伙伴能力，打造全新的家装生态。</text>
       </view>
-      
+
       <text class="title">在打扮家平台：</text>
-      
+
       <view class="li">
         <text class="label">· 设计师</text>
         <text>打扮家超级平台的诞生，让设计只专注于设计成为可能。</text>
@@ -158,7 +158,7 @@
   } from '@/api/decorate.js'
   var query = {}
   export default {
-    
+
     components: {
       personIntroduce,
       personService,
@@ -192,14 +192,14 @@
         evaluateNum:0,
         userType:2,
         hasServe:0,
-        
+
       }
     },
     computed:{
       navStyle(){
         return {
           opacity: this.opacityNum,
-          
+
         }
       }
     },
@@ -208,18 +208,18 @@
         this.init();
         // console.log(this.$refs.service,this.$refs.service.isOpen)
         this.getSkuList()
-        
-        
+
+
         this.$refs.case&&this.$refs.case.cleanPage()
         this.$refs.case&&this.$refs.case.getList()
         // console.log(this.$refs)
         this.$refs.dynamic&&this.$refs.dynamic.requestDynamic()
         this.$refs.evaluate.getComments()
-        
+
       }else{
         uni.stopPullDownRefresh();
       }
-      
+
     },
     onLoad(e){
       this.userType = e.userType
@@ -233,7 +233,7 @@
         this.$refs.dynamic&&this.$refs.dynamic.requestDynamic()
         this.init()
       }
-      
+
     },
     mounted() {
       // this.getCaseList()
@@ -242,7 +242,7 @@
       query = uni.createSelectorQuery()
       query.select(".person-interact").boundingClientRect((res) => {
         this.interact = res&&res.top
-        
+
       })
       query.select(".content").boundingClientRect((res) => {
         this.serviceTop = res&&res.top
@@ -254,32 +254,32 @@
         this.dynamicTop = res&&res.top
       })
       query.select(".person-evaluate").boundingClientRect((res) => {
-        
+
         this.evaluateTop = res&&res.top
       })
       query.exec(function(res){
-        
+
       })
     },
     onPageScroll(scrollTop) {
-      
+
       this.pageScroll(scrollTop.scrollTop)
     },
     methods: {
       init(){
-        
+
         // this.getCaseList()
         this.getSkuList()
         this.getGrabDetail()
-        
+
       },
       pageScroll(scrollTop){
-        
+
         this.scrollTop = scrollTop
         scrollTop!==0&&this.changeOpacity(this.scrollTop)
         this.getTopDistance()
         if(this.personData.roleId===1){
-          
+
           this.currentItem = this.serviceTop<=130&&this.caseTop>130?'serviceTop':this.caseTop<=130&&this.evaluateTop>130?'caseTop':''
           if(this.interact>100||this.interact === 0){
             // console.log(this.interact)
@@ -308,13 +308,13 @@
           relationId:this.personData.zeusId,
         }
         getAttention(data).then(res=>{
-          
+
           this[type] = res
-          
+
         })
       },
       attentionSure(routeId){
-        
+
         if(this.isRecommend){
           uni.showModal({
             title:"您确定要取消该优先推荐吗？",
@@ -331,7 +331,7 @@
         }else{
           this.queryAttention(routeId)
         }
-        
+
       },
       queryAttention(routeId){
         let data = {
@@ -347,25 +347,25 @@
             if(this.isRecommend){
               this.personData.recommendCount = +this.personData.recommendCount-1 +''
             }else{
-              
+
               this.personData.recommendCount = +this.personData.recommendCount+1 +''
-              
+
             }
-            this.isRecommend = !this.isRecommend 
-            
+            this.isRecommend = !this.isRecommend
+
           }else{
             if(this.isAttention){
               this.personData.fansCount = +this.personData.fansCount-1 +''
-              
+
             }else{
               this.personData.fansCount = +this.personData.fansCount+1 +''
             }
             this.isAttention = !this.isAttention
-            
-          }
-          
 
-          
+          }
+
+
+
           if(routeId === 2001&&this.isRecommend){
             uni.showToast({
               title:"购买服务后，将为您优先推荐该服务者",
@@ -389,13 +389,13 @@
               this.personData.roleId = 10000
               return
             }
-            
+
             if(getApp().globalData.token){
               this.getAttention(1001,'isAttention')
               this.getAttention(2001,'isRecommend')
               this.getServiceStatus()
             }
-            
+
             setTimeout(()=>{
               this.getNodeHeight()
               this.getTopDistance()
@@ -404,7 +404,7 @@
           }else{
             // this.personData = getApp().globalData.userInfo
             // console.log(this.personData)
-            
+
           }
         })
       },
@@ -417,37 +417,37 @@
       },
       // getCaseList() {
       //   // getCaseList().then(res => {
-        
+
       //   // })
       // },
       changeOpacity(num){
-        
+
         num<200?this.opacityNum = 0:num<220?this.opacityNum=0.8:this.opacityNum=1
         // console.log(this.opacityNum)
       },
       toItem(name) {
         this.currentItem = name
-        
+
         uni.pageScrollTo({
           duration: 100, // 过渡时间
           scrollTop: this[name] + this.scrollTop -115, // 滚动的实际距离
         })
       },
       getNodeHeight(){
-        let query = uni.createSelectorQuery() 
+        let query = uni.createSelectorQuery()
         query.select(".nav-header").boundingClientRect((data) => {
           this.interactActive = data.height
         }).exec()
       },
       getTopDistance(){
         query.exec(function(res){
-          
+
         })
-        
+
       },
       back(){
         uni.navigateBack({
-          
+
         })
       },
       getSkuList(){
@@ -468,7 +468,7 @@
         })
       },
       getEvaluate(num){
-        
+
         this.evaluateNum = num
       },
       sendMsg(){
@@ -529,7 +529,7 @@
     border-radius: 32rpx 32rpx 0px 0px;
     box-shadow: 0px 26rpx 34rpx 0px rgba(3, 65, 63, 0.03);
     padding: 242rpx 32rpx 24rpx;
-    
+
     .send-msg{
       height: 104rpx;
       background: rgba(0, 191, 182, 0.07);
@@ -540,7 +540,7 @@
       color: #00BFB6;
       font-size: 28rpx;
       font-weight: 500;
-      
+
 
       i{
         font-size: 48rpx;
@@ -731,7 +731,7 @@
       }
     }
   }
- 
+
   .nav-header {
     position: sticky;
     padding-top: 98rpx;
@@ -806,7 +806,7 @@
     // height: 200rpx;
     // background-color: ;
     .sticky {
-      
+
       width: 100%;
       height: 80rpx;
       display: flex;
@@ -875,7 +875,7 @@
     }
     .header{
       padding: 24rpx 0;
-      
+
     }
     .title{
       font-size: 28rpx;

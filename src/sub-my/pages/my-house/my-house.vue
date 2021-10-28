@@ -8,15 +8,15 @@
 	<view class="my-house" v-if="isLoading">
 		<view class="box"  v-if="listData.length>0">
     <view class="main">
-      
-    
+
+
 			<view class="touch-item"  v-for="(item,index) in listData"
 				:class="item.isTouchMove == true?'touch-move-active':''" :key='item.id' @touchstart="touchstart"
 				@touchmove="touchmove" :data-index='index'>
 				<view class="list-count">
 					<view class="list-item" @click="toChoose(item)">
 						<view class="item-message">
-						<!-- 	<image src="http://dbj.dragonn.top/static/mp/dabanjia/images/decorate/choose.svg"
+						<!-- 	<image src="https://ali-image.dabanjia.com/static/mp/dabanjia/images/decorate/choose.svg"
 								 class="choose-icon edit-icon"></image> -->
               <i class='icon-ic_wodejia_danxuanzhong_csn choose-icon edit-icon' v-if="item.id==chooseId"></i>
 							<view class="message-right">
@@ -51,7 +51,7 @@
 			</view>
 		</view>
     <view class="no-house" :style="{marginBottom:systemHeight}"  v-else >
-      <image src="http://dbj.dragonn.top/static/mp/dabanjia/images/decorate/empty.png"></image>
+      <image src="https://ali-image.dabanjia.com/static/mp/dabanjia/images/decorate/empty.png"></image>
       <text>暂无收货地址</text>
       <view class="no-add-btn" @click="toAddHouse">
         添加地址
@@ -125,7 +125,7 @@
 				var that = this;
 				var listData = that.listData;
 				var index = e.currentTarget.dataset.index, //当前索引
-					startX = that.startX, //开始X坐标 
+					startX = that.startX, //开始X坐标
 					startY = that.startY, //开始Y坐标
 					touchMoveX = e.changedTouches[0].clientX, //滑动变化坐标
 					touchMoveY = e.changedTouches[0].clientY, //滑动变化坐标
@@ -292,7 +292,7 @@
 		background-color: #fff;
 		overflow: hidden;
 		padding-bottom:148rpx
-    
+
 	}
   .main{
     background-color: #00050A;

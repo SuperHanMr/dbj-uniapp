@@ -7,7 +7,7 @@
   <!--                 <view
             class="notice-item"
             @click="to(3)"
-          > 
+          >
             <view class="item-top">
               <view class="item-top-left">
                 <image
@@ -43,7 +43,7 @@
       </scroll-view>
       <view class="close-icon">
         <i class="icon-ic_wodejia_danchuang_quxiao_csn" @click="close()"></i>
-      <!--  <image src="http://dbj.dragonn.top/static/mp/dabanjia/images/decorate/ic_triangle.svg" mode="" @click="close()"> -->
+      <!--  <image src="https://ali-image.dabanjia.com/static/mp/dabanjia/images/decorate/ic_triangle.svg" mode="" @click="close()"> -->
         </image>
       </view>
     </view>
@@ -78,12 +78,12 @@
         systemHeight: '',
         list: [],
         scrollHeight: '',
-        
+
       };
     },
     created(){
       this.systemHeight = wx.getSystemInfoSync().windowHeight + 'px'
-      
+
     },
     mounted() {
       this.getMsg()
@@ -110,25 +110,25 @@
         this.close();
       },
       getMsg() {
-        
+
         getMsgList(this.current).then(res => {
-          
+
           res.map(item => {
             item.data = JSON.parse(item.msgBody)
             item.url = sysMessage[item.msgType].url
             if(item.msgType==='sys_design_stage_report_msg'&&item.data.isOnline){
               item.url = '/sub-decorate/pages/design-online-disclosure/design-online-disclosure'
             }
-            
+
             let name = item.data.serveType == 14?item.data.serveType+''+item.data.workerType:item.data.serveType
-            
+
             item.icon = sysMessage[name]?sysMessage[name].icon:sysMessage[item.msgType].icon
             item.iconColor = sysMessage[name]?sysMessage[name].color:sysMessage[item.msgType].color
-            
+
           })
           this.list = res
           this.scrollHeight = res.length * 140 * 2 + 'rpx'
-          
+
           console.log(this.scrollHeight)
         })
       }
@@ -200,8 +200,8 @@
       .icon{
         display: inline-block;
         vertical-align: middle;
-        
-        
+
+
       }
       // z-index: 11;
       .item-top {

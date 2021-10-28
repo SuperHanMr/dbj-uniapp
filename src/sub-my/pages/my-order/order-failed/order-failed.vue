@@ -66,7 +66,7 @@
           </view>
         </view>
       </view>
-			
+
       <order-refund-info :refundInfo="refundInfo"></order-refund-info>
 
       <view
@@ -153,7 +153,7 @@ export default {
 			navBarHeight:"",
 			scrollTop: 0,
 			headerTitle:"",
-			bgImg :'http://dbj.dragonn.top/static/mp/dabanjia/images/decorate/order_bg_gray.png',
+			bgImg :'https://ali-image.dabanjia.com/static/mp/dabanjia/images/decorate/order_bg_gray.png',
     };
   },
 
@@ -243,7 +243,7 @@ export default {
 				})
 			}
 		},
-		
+
 		readExpenses(num) {
 		  this.expensesType = num
 		  this.$refs.expensesToast.showPupop()
@@ -319,7 +319,7 @@ export default {
 
 <style lang="scss" scoped>
 	.bgcStyle{
-		width: 100%; 
+		width: 100%;
 		height: 32rpx;
 		position: absolute;
 		bottom: -32rpx;
@@ -330,13 +330,13 @@ export default {
 		font-size: 40rpx;
 		padding: 20rpx;
 	}
-	
+
 .container {
   .order-container {
     width: 100%;
     height: 100%;
     overflow: auto;
-		
+
     .order-status {
       width: 100%;
       height: 140rpx;
