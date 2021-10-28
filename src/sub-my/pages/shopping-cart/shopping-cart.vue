@@ -304,11 +304,11 @@
 				this.shopList.forEach(item=>{
 					item.skuList.forEach(ele=>{
 						if(ele.goodsChecked){
-							sum+=(+ele.buyCount*ele.price/100)
+							sum += parseInt(+ele.buyCount*ele.price)
 						}
 					})
 				})
-				return sum
+				return sum/100
 			}
 			
 		},
