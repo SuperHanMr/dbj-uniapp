@@ -79,7 +79,7 @@
 						{{item.name}}
 					</view>
 					<image v-if="(index+1)%4" class="border-img"
-						src="http://dbj.dragonn.top/%20%20static/mp/dabanjia/images/home/home-zone-border1.png" mode="">
+						src="https://ali-image.dabanjia.com/static/mp/dabanjia/images/home/home-zone-border1.png" mode="">
 					</image>
 				</view>
 			</view>
