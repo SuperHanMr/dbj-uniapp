@@ -12,8 +12,8 @@
             <view class="pay-num">{{item.sales}}人付款</view>
             <view class="item-msg-tip">
               <view class="price">¥
-                <text class="integer">{{item.convertedPrice.split('.')[0]||'0'}}</text>
-                <text class="decimals">.{{item.convertedPrice.split('.')[1]||'00'}}</text>
+                <text class="integer">{{item.convertedPrice?item.convertedPrice.split('.')[0]:'0'}}</text>
+                <text class="decimals">.{{item.convertedPrice?item.convertedPrice.split('.')[1]:'00'}}</text>
                 <text class="unit"  v-if="item.unitName">/{{item.unitName}}</text>
               </view>
               <view class="service-tag" v-if="item.showMiddleServerTitle">中级服务</view>
