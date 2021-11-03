@@ -269,12 +269,16 @@
 					sendH
 						.boundingClientRect((bottom) => {
 							this.chatMax = bottom.top - data.top + "px";
-							console.log("~~~~~~~");
-							console.log(this.chatMax);
 						})
 						.exec();
 				})
 				.exec();
+		},
+		onShareAppMessage(res) {
+			return {
+				title: this.title,
+				path: `/pages/home/lives-room/lives-room?roomId=${this.roomId}`
+			}
 		},
 		onLoad(e) {
 			uni.showShareMenu();
