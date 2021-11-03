@@ -96,6 +96,7 @@
 				list[this.activeIndex].likeCount = data.likeCount;
 			  list[this.activeIndex].isCollection = !list[this.activeIndex].isCollection;
 			})
+			uni.showShareMenu();
 		},
 		onReady() {
 			this.getList();
