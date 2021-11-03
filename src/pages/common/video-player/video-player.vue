@@ -16,11 +16,18 @@
 				title: ''
 			};
 		},
+		onShareAppMessage(res) {
+			return {
+				title: this.title,
+				path: `/pages/common/video-player/video-player?url=${encodeURIComponent(this.url)}`
+			}
+		},
 		onLoad(e) {
+			uni.showShareMenu();
 			if (e && e.url) {
 				this.url = decodeURIComponent(e.url);
 			}
-			if(e&&e.id){
+			if (e && e.id) {
 				updateViewCount(e.id)
 			}
 			if (e && e.title) {

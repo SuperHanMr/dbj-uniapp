@@ -23,9 +23,4 @@ const app = new Vue({
 	store,
 	...App
 })
-Vue.mixin({
-	onLoad: function() {
-		uni.showShareMenu();
-	},
-})
 app.$mount()

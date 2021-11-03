@@ -33,7 +33,8 @@
 
 				</view>
 				<view class="state-bar-text">
-					<image class="img" src="https://ali-image.dabanjia.com/static/mp/dabanjia/images/home/ic_gkrs.png" mode="">
+					<image class="img" src="https://ali-image.dabanjia.com/static/mp/dabanjia/images/home/ic_gkrs.png"
+						mode="">
 					</image>
 					{{getHotCount(roomInfo.hotCount) }}
 				</view>
@@ -57,7 +58,8 @@
 									</image>
 								</view>
 								<image class="anchor" v-if="item.from.startsWith('anchor')"
-									src="https://ali-image.dabanjia.com/static/mp/dabanjia/images/home/anchor.png"></image>
+									src="https://ali-image.dabanjia.com/static/mp/dabanjia/images/home/anchor.png">
+								</image>
 
 								<text class="name">{{item.nick}} :</text>
 								<text v-if="item.type=='TIMTextElem'" class="text-info">{{item.payload.text}}</text>
@@ -80,7 +82,8 @@
 									</image>
 								</view>
 								<image class="anchor" v-if="item.from.startsWith('anchor')"
-									src="https://ali-image.dabanjia.com/static/mp/dabanjia/images/home/anchor.png"></image>
+									src="https://ali-image.dabanjia.com/static/mp/dabanjia/images/home/anchor.png">
+								</image>
 
 								<text class="name">{{item.nick}} </text>
 								<image v-if="item.formatData.type=='img_message'" class="img"
@@ -121,17 +124,19 @@
 					</view>
 					<view class="macphone" @click="showDownload=true">
 						<image class="icon_macphone"
-							src="https://ali-image.dabanjia.com/static/mp/dabanjia/images/home/lives_macphone.png" mode="">
+							src="https://ali-image.dabanjia.com/static/mp/dabanjia/images/home/lives_macphone.png"
+							mode="">
 						</image>
 						连麦
 					</view>
 					<image class="bottom-icon"
-						src="https://ali-image.dabanjia.com/static/mp/dabanjia/images/home/lives_shopping_new.png" mode=""
-						@click="showDownload=true">
+						src="https://ali-image.dabanjia.com/static/mp/dabanjia/images/home/lives_shopping_new.png"
+						mode="" @click="showDownload=true">
 					</image>
 					<view class="bottom-icon" @click="clickLike">
 						<image class="img"
-							src="https://ali-image.dabanjia.com/static/mp/dabanjia/images/home/lives_agree_new.png" mode="">
+							src="https://ali-image.dabanjia.com/static/mp/dabanjia/images/home/lives_agree_new.png"
+							mode="">
 						</image>
 						<view class="like-count">
 							{{totoalLick}}
@@ -145,7 +150,8 @@
 			</view>
 		</view>
 		<view v-else class="unlived">
-			<image class="img" src="https://ali-image.dabanjia.com/static/mp/dabanjia/images/home/un-liveing.png" mode="">
+			<image class="img" src="https://ali-image.dabanjia.com/static/mp/dabanjia/images/home/un-liveing.png"
+				mode="">
 			</image>
 			<view class="tips">
 				直播暂未开始，去首页逛逛吧～
@@ -169,7 +175,7 @@
 
 		</view>
 
-		<view v-if="showDownload" class="alert-app" >
+		<view v-if="showDownload" class="alert-app">
 			<view class="content">
 				<view class="img">
 					<view class="close" @click="showDownload=false">
@@ -271,6 +277,7 @@
 				.exec();
 		},
 		onLoad(e) {
+			uni.showShareMenu();
 			if (e && e.roomId) {
 				this.roomId = e.roomId;
 			}
@@ -373,7 +380,7 @@
 				}
 			},
 			clickLike() {
-				if(this.showDownload||!this.isLogin||!this.isLiveing){
+				if (this.showDownload || !this.isLogin || !this.isLiveing) {
 					return;
 				}
 				this.likeCount++;
@@ -443,14 +450,9 @@
 			},
 			toBack() {
 				uni.$emit("refrishHouse");
-				if (this.fromShare) {
-					uni.switchTab({
-						url: '/pages/home/index/index'
-					});
-				} else {
-					uni.navigateBack({});
-				}
-
+				uni.switchTab({
+					url: '/pages/home/index/index'
+				});
 			},
 			scrollToBottom() {
 				console.log("!!!!!!!");
@@ -467,7 +469,7 @@
 			statechange(e) {},
 			error(e) {},
 			handleShowSendBox() {
-				if(this.showDownload||!this.isLogin||!this.isLiveing){
+				if (this.showDownload || !this.isLogin || !this.isLiveing) {
 					return;
 				}
 				uni.$emit("show-live-send-box");
