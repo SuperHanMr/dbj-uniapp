@@ -2,8 +2,9 @@
 	<view style="background-color: #FFF;">
 		<custom-navbar opacity="1" :showBack="false" bgcolor="#FFF">
 			<template v-slot:back>
-				<image class="icon_logo" src="https://ali-image.dabanjia.com/static/mp/dabanjia/images/home/dbj_logo_new.png"
-					mode=""></image>
+				<image class="icon_logo"
+					src="https://ali-image.dabanjia.com/static/mp/dabanjia/images/home/dbj_logo_new.png" mode="">
+				</image>
 			</template>
 		</custom-navbar>
 		<!-- 		<view :style="{height: navBarHeight}" style="width: 100%;background-color: red;">
@@ -17,7 +18,8 @@
 					{{citydata}}
 				</view>
 				<image v-if="citydata" class="icon_down"
-					src="https://ali-image.dabanjia.com/static/mp/dabanjia/images/home/hone_ic_down.png" mode=""></image>
+					src="https://ali-image.dabanjia.com/static/mp/dabanjia/images/home/hone_ic_down.png" mode="">
+				</image>
 			</view>
 			<image @click="toSearch" class="icon-search"
 				src="https://ali-image.dabanjia.com/static/mp/dabanjia/images/home/home_ic_search.png" mode=""></image>
@@ -55,7 +57,8 @@
 						{{item.name}}
 					</view>
 					<image v-if="(index+1)%4" class="border-img"
-						src="https://ali-image.dabanjia.com/static/mp/dabanjia/images/home/home-zone-border_new.png" mode="">
+						src="https://ali-image.dabanjia.com/static/mp/dabanjia/images/home/home-zone-border_new.png"
+						mode="">
 					</image>
 				</view>
 			</view>
@@ -67,7 +70,8 @@
 						{{item.name}}
 					</view>
 					<image v-if="(index+1)%4" class="border-img"
-						src="https://ali-image.dabanjia.com/static/mp/dabanjia/images/home/home-zone-border1.png" mode="">
+						src="https://ali-image.dabanjia.com/static/mp/dabanjia/images/home/home-zone-border1.png"
+						mode="">
 					</image>
 				</view>
 			</view>
@@ -79,7 +83,8 @@
 						{{item.name}}
 					</view>
 					<image v-if="(index+1)%4" class="border-img"
-						src="https://ali-image.dabanjia.com/static/mp/dabanjia/images/home/home-zone-border1.png" mode="">
+						src="https://ali-image.dabanjia.com/static/mp/dabanjia/images/home/home-zone-border1.png"
+						mode="">
 					</image>
 				</view>
 			</view>
@@ -237,7 +242,7 @@
 				swiperAuto: false,
 				status1List: [],
 				status2List: [],
-				currentAddress: {},
+				currentAddress: {}
 			};
 		},
 		watch: {
@@ -248,7 +253,15 @@
 				this.getHomeList();
 			},
 		},
-		onLoad() {
+		onLoad(e) {
+			if (e && e.shareId) {
+				uni.setStorage({
+					key: 'shareId',
+					data: String(e.shareId),
+					success: function() {
+					}
+				});
+			}
 			let defaultHouse = {
 				name: "北京市朝阳区",
 				provinceId: 1,
@@ -448,10 +461,10 @@
 				this.getQueryLiveList();
 			},
 			onZoneClick(item) {
-				if (item.type == 0||item.type==5) {
+				if (item.type == 0 || item.type == 5) {
 					uni.showModal({
 						content: "敬请期待",
-						showCancel:false
+						showCancel: false
 					});
 				} else if (item.type == 1) {
 					if (item.url.endsWith("index/index")) {
