@@ -586,11 +586,11 @@ export default {
     uni.$on("currentHouseChange", (item) => {
       this.homePageEstate = item;
     });
+    uni.showShareMenu();
   },
   onShow() {
     this.userId = uni.getStorageSync("userId");
     this.scn = uni.getStorageSync("scn");
-    uni.showShareMenu();
   },
   onPullDownRefresh() {
     uni.stopPullDownRefresh();
