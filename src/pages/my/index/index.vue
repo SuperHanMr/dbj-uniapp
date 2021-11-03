@@ -16,7 +16,7 @@
 
 		<view class="my-header">
 			<view class="avatar-img" v-if="!userId" @click="handlerPersonalData()">
-				<image src="https://ali-image.dabanjia.com/image/20210513/10/162087290165628.png" class="avatar" />
+				<image src="https://ali-image.dabanjia.com/image/20210513/10/162087290165628.png" class="avatar"  mode="aspectFill"/>
 				<view class="user-name">
 					<view class="name">
 						<text class="name">
@@ -29,7 +29,7 @@
 			</view>
 
 			<view class="avatar-img" v-else @click="handlerPersonalData()">
-				<image :src="`${userInfo.avatar}?x-oss-process=image/resize,m_mfit,w_60,h_60`" class="avatar" />
+				<image :src="`${userInfo.avatar}?x-oss-process=image/resize,m_mfit,w_60,h_60`" class="avatar" mode="aspectFill"/>
 				<view class="user-name">
 					<text class="name">{{userName}} </text>
 					<view class="edit-info">
