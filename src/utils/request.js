@@ -89,7 +89,7 @@ instance.interceptors.response.use(
     let startTime = requestTimeMap.get(res.config);
     if (startTime) {
       let costTime = new Date().getTime() - startTime;
-      delete requestTimeMap[res.config.url];
+      requestTimeMap.delete(res.config);
       console.log("request cost time:" + costTime + "ms, url:" + res.config.url);
     }
 
@@ -107,7 +107,7 @@ instance.interceptors.response.use(
 	},
 	// 请求失败
 	(error) => {
-    delete requestTimeMap[error.config.url];
+    requestTimeMap.delete(error.config);
 		uni.hideLoading();
 		if (error.response && error.response.status === 401) {
 			//刷新token
