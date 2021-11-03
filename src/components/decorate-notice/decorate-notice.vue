@@ -43,7 +43,7 @@
       </scroll-view>
       <view class="close-icon">
         <i class="icon-ic_wodejia_danchuang_quxiao_csn" @click="close()"></i>
-      <!--  <image src="http://dbj.dragonn.top/static/mp/dabanjia/images/decorate/ic_triangle.svg" mode="" @click="close()"> -->
+      <!--  <image src="https://ali-image.dabanjia.com/static/mp/dabanjia/images/decorate/ic_triangle.svg" mode="" @click="close()"> -->
         </image>
       </view>
     </view>

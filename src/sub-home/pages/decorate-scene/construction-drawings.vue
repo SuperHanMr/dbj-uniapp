@@ -1,7 +1,7 @@
 <template>
 	<view class="constructionWrap">
 		<view class="noTypes" v-if="!serveTypes.length">
-			<image class="noTypesImg" src="http://dbj.dragonn.top/static/mp/dabanjia/images/home/drawings_empty.png"></image>
+			<image class="noTypesImg" src="https://ali-image.dabanjia.com/static/mp/dabanjia/images/home/drawings_empty.png"></image>
 			<view class="text">暂无施工图纸</view>
 		</view>
 		<view class="fixed">
@@ -30,13 +30,13 @@
 					</view>
 					<view class="select" @click="switchC">
 						<view>切换设计师</view>
-						<image class="switch" src="http://dbj.dragonn.top/static/mp/dabanjia/images/home/ic_switch%402x.png"></image>
+						<image class="switch" src="https://ali-image.dabanjia.com/static/mp/dabanjia/images/home/ic_switch%402x.png"></image>
 					</view>
 				</view>
 			</view>
 		</view>
 		<view class="noDrawings" v-if="serveTypes.length && !drawings.length">
-			<image class="noDrawingsImg" src="http://dbj.dragonn.top/static/mp/dabanjia/images/home/drawings_empty.png"></image>
+			<image class="noDrawingsImg" src="https://ali-image.dabanjia.com/static/mp/dabanjia/images/home/drawings_empty.png"></image>
 			<view class="text">暂无施工图纸</view>
 		</view>
 		<scroll-view :scroll-y="true" :class="{'switchServer':showCard}" class="contentWrap" v-else>
@@ -61,7 +61,7 @@
 			<view class="popupSwitch">
 				<view class="topArea">
 					<view class="mainTit">切换设计师</view>
-					<image class="close" @click="showSwitchDesigner=false" src="http://dbj.dragonn.top/static/mp/dabanjia/images/home/ic_closed_black%402x.png"></image>
+					<image class="close" @click="showSwitchDesigner=false" src="https://ali-image.dabanjia.com/static/mp/dabanjia/images/home/ic_closed_black%402x.png"></image>
 				</view>
 				<ul class="options">
 					<li
@@ -74,7 +74,7 @@
 							<view class="designerName">{{item.userName}}</view>
 							<view class="role">{{item.role}}</view>
 						</view>
-						<image class="img" v-if="item.checked" src="http://dbj.dragonn.top/static/mp/dabanjia/images/home/ic_checked%402x.png"></image>
+						<image class="img" v-if="item.checked" src="https://ali-image.dabanjia.com/static/mp/dabanjia/images/home/ic_checked%402x.png"></image>
 					</li>
 				</ul>
 			</view>

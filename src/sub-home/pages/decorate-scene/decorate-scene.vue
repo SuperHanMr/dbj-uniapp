@@ -34,7 +34,7 @@
       >
         <image
           class="toConstruction"
-          src="http://dbj.dragonn.top/static/mp/dabanjia/images/home/ic_construction_drawings%402x.png"
+          src="https://ali-image.dabanjia.com/static/mp/dabanjia/images/home/ic_construction_drawings%402x.png"
         ></image>
         <view class="text">施工图纸</view>
       </view>
@@ -44,7 +44,7 @@
       >
         <image
           class="toCost"
-          src="http://dbj.dragonn.top/static/mp/dabanjia/images/home/ic_cost_statistics%402x.png"
+          src="https://ali-image.dabanjia.com/static/mp/dabanjia/images/home/ic_cost_statistics%402x.png"
         ></image>
         <view class="text">花销统计</view>
       </view>
@@ -54,7 +54,7 @@
       >
         <image
           class="toDecorate"
-          src="http://dbj.dragonn.top/static/mp/dabanjia/images/home/ic_decorate_calendar%402x.png"
+          src="https://ali-image.dabanjia.com/static/mp/dabanjia/images/home/ic_decorate_calendar%402x.png"
         ></image>
         <view class="text">装修日历</view>
       </view>
@@ -64,7 +64,7 @@
       >
         <image
           class="toVideoSite"
-          src="http://dbj.dragonn.top/static/mp/dabanjia/images/home/ic_video_site%402x.png"
+          src="https://ali-image.dabanjia.com/static/mp/dabanjia/images/home/ic_video_site%402x.png"
         ></image>
         <view class="text">工地视频</view>
       </view>
@@ -74,7 +74,7 @@
       <view class="content">
         <image
           class="startWork"
-          src="http://dbj.dragonn.top/static/mp/dabanjia/images/home/start_work%402x.png"
+          src="https://ali-image.dabanjia.com/static/mp/dabanjia/images/home/start_work%402x.png"
         ></image>
         <view class="mainWrap">
           <view class="nodeType">
@@ -151,6 +151,14 @@
             </view>
           </view>
         </view>
+<<<<<<< HEAD
+=======
+				<image
+					v-if="projectInfo.projectStatus===3"
+				  class="endWork"
+				  src="https://ali-image.dabanjia.com/static/mp/dabanjia/images/home/end_active.png"
+				></image>
+>>>>>>> 5a9824c43c873d7733c0db028e4f9dc759266cba
         <image
           v-if="projectInfo.projectStatus===3"
           class="endWork"
@@ -159,7 +167,7 @@
         <image
           v-else
           class="endWork"
-          src="http://dbj.dragonn.top/static/mp/dabanjia/images/home/end_work%402x.png"
+          src="https://ali-image.dabanjia.com/static/mp/dabanjia/images/home/end_work%402x.png"
         ></image>
       </view>
     </view>
@@ -176,10 +184,11 @@
           <view class="text">筛选</view>
           <image
             class="icon"
-            src="http://dbj.dragonn.top/static/mp/dabanjia/images/home/ic_filtrate%402x.png"
+            src="https://ali-image.dabanjia.com/static/mp/dabanjia/images/home/ic_filtrate%402x.png"
           ></image>
         </view>
       </view>
+<<<<<<< HEAD
       <view
         class="noDynamics"
         v-if="!dynamics.length"
@@ -197,6 +206,15 @@
         v-else
       >
         <view
+=======
+			<view class="noDynamics" v-if="!dynamics.length">
+				<image class="noDynamicsImg" src="https://ali-image.dabanjia.com/static/mp/dabanjia/images/home/pic_empty%402x.png"></image>
+				<view class="text">暂无装修动态</view>
+				<view class="bottom"></view>
+			</view>
+			<scroll-view :scroll-y="true" class="list" v-else>
+				<view
+>>>>>>> 5a9824c43c873d7733c0db028e4f9dc759266cba
           class="item"
           v-for="(item,index) in dynamics"
           :key="item.id"
@@ -232,19 +250,19 @@
                   <image
                     v-if="!item.selfLike"
                     @click="likeC(item.recordType,item.id,index,true)"
-                    src="http://dbj.dragonn.top/static/mp/dabanjia/images/home/ic_like_pre%402x.png"
+                    src="https://ali-image.dabanjia.com/static/mp/dabanjia/images/home/ic_like_pre%402x.png"
                   ></image>
                   <image
                     v-else
                     @click="likeC(item.recordType,item.id,index)"
-                    src="http://dbj.dragonn.top/static/mp/dabanjia/images/home/ic_red_hand%402x.png"
+                    src="https://ali-image.dabanjia.com/static/mp/dabanjia/images/home/ic_red_hand%402x.png"
                   ></image>
                   <view class="text">{{item.likeCount}}</view>
                 </view>
                 <view class="comment">
                   <image
                     @click="commentC(item.id)"
-                    src="http://dbj.dragonn.top/static/mp/dabanjia/images/home/ic_discuss%402x.png"
+                    src="https://ali-image.dabanjia.com/static/mp/dabanjia/images/home/ic_discuss%402x.png"
                   ></image>
                   <view class="text">{{item.commentCount}}</view>
                 </view>
@@ -266,14 +284,26 @@
         class="consult"
         @click="toInlineService"
       >
+<<<<<<< HEAD
         <image src="http://dbj.dragonn.top/%20static/mp/dabanjia/images/home/question.png"></image>
+=======
+        <image
+          src="https://ali-image.dabanjia.com/static/mp/dabanjia/images/home/question.png"
+        ></image>
+>>>>>>> 5a9824c43c873d7733c0db028e4f9dc759266cba
         <view>咨询客服</view>
       </view>
       <view
         class="userWant"
         @click="toDecorate"
       >
+<<<<<<< HEAD
         <image src="http://dbj.dragonn.top/%20static/mp/dabanjia/images/home/decorate.png"></image>
+=======
+        <image
+          src="https://ali-image.dabanjia.com/static/mp/dabanjia/images/home/decorate.png"
+        ></image>
+>>>>>>> 5a9824c43c873d7733c0db028e4f9dc759266cba
         <view>我要装修</view>
       </view>
       <view
@@ -283,7 +313,7 @@
       >
         <image
           class="add"
-          src="http://dbj.dragonn.top/static/mp/dabanjia/images/home/ic_add_focus%402x.png"
+          src="https://ali-image.dabanjia.com/static/mp/dabanjia/images/home/ic_add_focus%402x.png"
         ></image>
         <view>关注</view>
       </view>
@@ -339,6 +369,30 @@
         </view>
       </view>
     </view>
+<<<<<<< HEAD
+=======
+		<view class="mask" v-if="showDecorateMask">
+			<view class="popupDecorate" :class="{'height':hasEstate}">
+				<view class="estateInfo" v-if="!hasEstate" @click="toAddEstate">
+					<image src="https://ali-image.dabanjia.com/static/mp/dabanjia/images/home/ic_add_estate%402x.png"></image>
+					<view>添加房屋信息</view>
+				</view>
+				<view class="service" :class="{'margin':hasEstate}">
+					<view class="decorate_service" @click="toDecorateService">
+						<image src="https://ali-image.dabanjia.com/static/mp/dabanjia/images/home/ic_decorate_service%402x.png"></image>
+						<view>进行装修服务</view>
+					</view>
+					<view class="checkRoom_service" @click="toCheckRoomService">
+						<image src="https://ali-image.dabanjia.com/static/mp/dabanjia/images/home/ic_checkRoom_service%402x.png"></image>
+						<view>进行验房服务</view>
+					</view>
+				</view>
+				<view class="close" @click="closeDecorateServe">
+					<image src="https://ali-image.dabanjia.com/static/mp/dabanjia/images/home/ic_decorate_cancel%402x.png"></image>
+				</view>
+			</view>
+		</view>
+>>>>>>> 5a9824c43c873d7733c0db028e4f9dc759266cba
     <view
       class="mask"
       v-if="showNodeType"
@@ -379,7 +433,7 @@
           <image
             @click="closeComments"
             class="close"
-            src="http://dbj.dragonn.top/static/mp/dabanjia/images/home/ic_closed_black%402x.png"
+            src="https://ali-image.dabanjia.com/static/mp/dabanjia/images/home/ic_closed_black%402x.png"
           ></image>
         </view>
         <view
@@ -388,7 +442,7 @@
         >
           <image
             class="noCommentImg"
-            src="http://dbj.dragonn.top/static/mp/dabanjia/images/decorate/pic_empty%402x.png"
+            src="https://ali-image.dabanjia.com/static/mp/dabanjia/images/decorate/pic_empty%402x.png"
           ></image>
           <view class="noCommentText">暂无评论~</view>
         </view>
@@ -459,7 +513,7 @@
                 <view class="text">展开{{item.secondCount}}条回复</view>
                 <image
                   class="img"
-                  src="http://dbj.dragonn.top/static/mp/dabanjia/images/home/ic_expand%402x.png"
+                  src="https://ali-image.dabanjia.com/static/mp/dabanjia/images/home/ic_expand%402x.png"
                 ></image>
               </view>
               <view
@@ -470,7 +524,7 @@
                 <view class="test">收起</view>
                 <image
                   class="img"
-                  src="http://dbj.dragonn.top/static/mp/dabanjia/images/home/ic_packUp%402x.png"
+                  src="https://ali-image.dabanjia.com/static/mp/dabanjia/images/home/ic_packUp%402x.png"
                 ></image>
               </view>
             </view>
@@ -484,7 +538,7 @@
           <view class="deleteWrap">
             <image
               class="img"
-              src="http://dbj.dragonn.top/static/mp/dabanjia/images/home/ic_comment_delete%402x.png"
+              src="https://ali-image.dabanjia.com/static/mp/dabanjia/images/home/ic_comment_delete%402x.png"
             ></image>
             <view class="delete">删除</view>
           </view>
@@ -1066,6 +1120,7 @@ export default {
   caret-color: #00c2b8;
 }
 
+<<<<<<< HEAD
 .bottomInput .easyInput {
   width: 586rpx;
   height: 80rpx;
@@ -1122,6 +1177,527 @@ export default {
   display: flex;
   align-items: center;
 }
+=======
+	.bottomInput .easyInput {
+		width: 586rpx;
+		height: 80rpx;
+		margin: 20rpx 32rpx;
+		margin-right: 0;
+		padding-left: 24rpx;
+		color: #999999;
+		font-size: 28rpx;
+		background: #f5f6f6;
+		border-radius: 12rpx;
+	}
+	.bottomInput .send {
+		width: 52rpx;
+		height: 26rpx;
+		margin: 47rpx 32rpx 47rpx 24rpx;
+		font-size: 26rpx;
+		font-weight: 500;
+		color: #999999;
+	}
+	.bottomInput .themeColor {
+		color: #00c2b8;
+	}
+	.mask {
+		width: 100%;
+		height: 100%;
+		background: rgba(0, 0, 0, 0.3);
+		position: fixed;
+		left: 0;
+		top: 0;
+		right: 0;
+		bottom: 0;
+		z-index: 998;
+	}
+	.popupDecorate{
+		width: 100%;
+		height: 644rpx;
+		padding-bottom: 40rpx;
+		background: #ffffff;
+		border-radius: 32rpx 32rpx 0rpx 0rpx;
+		position: fixed;
+		left: 0;
+		bottom: 0;
+		z-index: 999;
+	}
+	.popupDecorate.height{
+		height: 460rpx;
+	}
+	.popupDecorate .estateInfo{
+		width: 622rpx;
+		height: 112rpx;
+		margin: 104rpx 54rpx 72rpx 74rpx;
+		border: 2rpx solid #333333;
+		border-radius: 32rpx;
+		display: flex;
+		align-items: center;
+	}
+	
+	.estateInfo image{
+		width: 28rpx;
+		height: 28rpx;
+		display: block;
+		margin-left: 190rpx;
+		margin-right: 24rpx;
+	}
+	.estateInfo view{
+		width: 192rpx;
+		height: 44rpx;
+		font-size: 32rpx;
+		font-weight: 500;
+		color: #333333;
+	}
+	.popupDecorate .service{
+		width: 100%;
+		height: 188rpx;
+		display: flex;
+		justify-content: space-around;
+	}
+	.popupDecorate .service.margin{
+		margin-top: 104rpx;
+	}
+	.popupDecorate .service image{
+		width: 128rpx;
+		height: 128rpx;
+		display: block;
+		margin: 0 14rpx;
+	}
+	.popupDecorate .service view{
+		width: 156rpx;
+		height: 36rpx;
+		margin-top: 24rpx;
+		font-size: 26rpx;
+		text-align: center;
+		color: #333333;
+	}
+	.popupDecorate .close{
+		width: 100%;
+		height: 64rpx;
+	}
+	.popupDecorate .close image{
+		width: 24rpx;
+		height: 24rpx;
+		display: block;
+		margin-left: 364rpx;
+		margin-top: 104rpx;
+	}
+	.popupComments {
+		position: relative;
+		width: 100%;
+		height: 840rpx;
+		padding-bottom: 40rpx;
+		background: #ffffff;
+		border-radius: 32rpx 32rpx 0rpx 0rpx;
+		position: fixed;
+		left: 0;
+		bottom: 0;
+		z-index: 999;
+	}
+	.bottomInputBox {
+		width: 100%;
+		height: 120rpx;
+		padding-bottom: 40rpx;
+		position: fixed;
+		left: 0rpx;
+		bottom: 0rpx;
+	}
+	.popupComments .noComment {
+		width: 100%;
+		height: 542rpx;
+	}
+	.popupComments .noCommentText {
+		width: 118rpx;
+		height: 36rpx;
+		margin: 24rpx 316rpx;
+		font-size: 26rpx;
+		color: #999999;
+	}
+	.popupComments .noCommentImg {
+		width: 750rpx;
+		height: 492rpx;
+		display: block;
+	}
+	.popupComments .topArea {
+		height: 120rpx;
+		border-radius: 32rpx 32rpx 0rpx 0rpx;
+		display: flex;
+		align-items: center;
+	}
+	.topArea .mainTit {
+		width: 64rpx;
+		height: 44rpx;
+		margin-left: 344rpx;
+		margin-right: 258rpx;
+		font-size: 32rpx;
+		font-weight: 600;
+		color: #333333;
+	}
+	.topArea .close {
+		width: 64rpx;
+		height: 64rpx;
+		display: block;
+		margin-right: 20rpx;
+	}
+	.commentList {
+		width: 100%;
+		max-height: 700rpx;
+		/* height: fit-content; */
+	}
+	.commentList .bottomText{
+		width: 144rpx;
+		height: 26rpx;
+		margin: 60rpx 0;
+		margin-left: 303rpx;
+		font-size: 26rpx;
+		color: #999999;
+	}
+	.commentItem {
+		width: 686rpx;
+		margin-left: 32rpx;
+		border-bottom: 2rpx solid #efefef;
+	}
+	.commentItem:last-child {
+		border: none;
+	}
+	.commentItem:first-child .mainContent {
+		margin-top: 24rpx;
+	}
+	.commentItem .mainContent {
+		width: 100%;
+		height: 132rpx;
+		margin-top: 32rpx;
+		display: flex;
+	}
+	.commentItem .mainContent .avatar {
+		width: 72rpx;
+		height: 72rpx;
+		border-radius: 50%;
+		margin-right: 16rpx;
+		display: block;
+	}
+	.commentItem .mainContent .commentInfo {
+		width: 598rpx;
+		height: 36rpx;
+	}
+	.commentInfo .info {
+		display: flex;
+		justify-content: space-between;
+		align-items: center;
+		margin-top: 8rpx;
+		margin-bottom: 8rpx;
+	}
+	.commentInfo .text {
+		width: 598rpx;
+		height: 80rpx;
+		font-size: 26rpx;
+		color: #333333;
+		line-height: 40rpx;
+	}
+	.info .userInfo {
+		display: flex;
+		align-items: center;
+	}
+	.info .userName {
+		max-width: 330rpx;
+		text-overflow: ellipsis;
+		overflow: hidden;
+		white-space: nowrap;
+		height: 36rpx;
+		margin-right: 8rpx;
+		font-size: 26rpx;
+		color: #999999;
+	}
+	.info .role {
+		width: 60rpx;
+		height: 28rpx;
+		font-size: 20rpx;
+		line-height: 28rpx;
+		text-align: center;
+		color: #fff;
+		background: linear-gradient(45deg, #f2af1a, #ffd698);
+		border-radius: 6rpx;
+	}
+	.info .date {
+		width: 146rpx;
+		height: 36rpx;
+		font-size: 26rpx;
+		color: #999999;
+		line-height: 36rpx;
+	}
+	.commentItem .reply {
+		width: 100%;
+		/* height: 150rpx; */
+		height: fit-content;
+		margin-top: 24rpx;
+		margin-left: 80rpx;
+		display: flex;
+	}
+	.commentItem .reply .avatar {
+		width: 40rpx;
+		height: 40rpx;
+		border-radius: 50%;
+		margin-right: 16rpx;
+		display: block;
+	}
+	.commentItem .reply .replyInfo {
+		width: 550rpx;
+		/* height: 120rpx; */
+		height: fit-content;
+	}
+	.replyInfo .info {
+		width: 550rpx;
+		height: 36rpx;
+		display: flex;
+		justify-content: space-between;
+		align-items: center;
+		margin-top: 2rpx;
+		margin-top: 8rpx;
+	}
+	.replyInfo .info .role {
+		background: linear-gradient(45deg, #6d95ef, #84b9fc);
+	}
+	.replyInfo .text {
+		width: 550rpx;
+		/* height: 120rpx; */
+		height: fit-content;
+		font-size: 26rpx;
+		color: #333333;
+		line-height: 40rpx;
+	}
+	.replyInfo .text .name {
+		color: #999999;
+	}
+	.replyFooter {
+		width: 164rpx;
+		height: 32rpx;
+		margin-top: 16rpx;
+		margin-bottom: 32rpx;
+		margin-left: 136rpx;
+	}
+	.expand {
+		width: 190rpx;
+		/* width: fit-content; */
+		height: 36rpx;
+		font-size: 26rpx;
+		font-weight: 500;
+		color: #00c2b8;
+		display: flex;
+		align-items: center;
+	}
+	.expand .text {
+		width: 168rpx;
+		/* width: fit-content; */
+		height: 36rpx;
+		font-size: 26rpx;
+		font-weight: 500;
+		color: #00c2b8;
+	}
+	.expand .img {
+		width: 14rpx;
+		height: 8rpx;
+		display: block;
+		margin-left: 8rpx;
+	}
+	.packUp {
+		width: 74rpx;
+		height: 36rpx;
+		font-size: 26rpx;
+		font-weight: 500;
+		color: #00c2b8;
+		display: flex;
+		align-items: center;
+	}
+	.packUp .img {
+		width: 14rpx;
+		height: 8rpx;
+		display: block;
+		margin-left: 8rpx;
+	}
+	.popupSelects {
+		width: 100%;
+		height: 670rpx;
+		padding-bottom: 40rpx;
+		background: #ffffff;
+		border-radius: 24rpx 24rpx 0rpx 0rpx;
+		position: fixed;
+		left: 0;
+		bottom: 0;
+		z-index: 999;
+	}
+	.popupSelects .selArea {
+		width: 100%;
+		height: 120rpx;
+		display: flex;
+		justify-content: space-between;
+		background: #f9fafb;
+		border-radius: 0rpx 0rpx 8rpx 8rpx;
+	}
+	.cancel {
+		width: 60rpx;
+		height: 42rpx;
+		margin: 40rpx 0 38rpx 48rpx;
+		font-size: 30rpx;
+		font-weight: 500;
+		color: #999999;
+	}
+	.confirm {
+		width: 60rpx;
+		height: 42rpx;
+		margin: 40rpx 48rpx 38rpx 0;
+		font-size: 30rpx;
+		font-weight: 500;
+		text-align: center;
+		color: #00c2b8;
+		line-height: 42rpx;
+	}
+	.picker-view {
+		width: 750rpx;
+		height: 550rpx;
+	}
+	.picker-view .item{
+		width: 750rpx;
+		height: 110rpx;
+		align-items: center;
+		justify-content: center;
+		line-height: 110rpx;
+		font-size: 32rpx;
+		color: #333;
+	}
+	.options {
+		width: 100%;
+		height: 550rpx;
+		list-style: none;
+	}
+	.options li {
+		width: 670rpx;
+		height: 110rpx;
+		margin: 0 40rpx;
+		line-height: 110rpx;
+		text-align: center;
+		font-size: 32rpx;
+		color: #999999;
+	}
+	.options .active {
+		border-top: 2rpx solid #e2e4ea;
+		border-bottom: 2rpx solid #e2e4ea;
+		color: #00c2b8;
+	}
+	.sceneContainer {
+		width: 100%;
+		height: 100%;
+	}
+	.sceneContainer.noScroll{
+		overflow: hidden;
+	}
+	.sceneContainer > .header {
+		width: 100%;
+		height: 400rpx;
+		background-repeat: no-repeat;
+		background-image: url("https://ali-image.dabanjia.com/static/mp/dabanjia/images/home/bg%402x.png");
+		display: flex;
+	}
+	.sceneContainer > .footer {
+		width: 100%;
+		height: 136rpx;
+		padding-bottom: 40rpx;
+		background: #ffffff;
+		display: flex;
+		position: fixed;
+		left: 0rpx;
+		bottom: 0rpx;
+	}
+	.houseImg{
+		width: 232rpx;
+		height: 232rpx;
+		margin: 56rpx 32rpx 48rpx 48rpx;
+		border-radius: 20rpx;
+		display: block;
+	}
+	.houseInfo {
+		width: 439rpx;
+		padding-top: 56rpx;
+	}
+	.location {
+		max-width: 406rpx;
+		overflow: hidden;
+		text-overflow: ellipsis;
+		white-space: nowrap;
+		height: 56rpx;
+		font-size: 40rpx;
+		font-weight: 500;
+		color: #ffffff;
+		line-height: 56rpx;
+		margin-left: 32rpx;
+	}
+	.focus {
+		margin-left: 32rpx;
+		height: 34rpx;
+		line-height: 34rpx;
+		display: flex;
+	}
+	.focus view {
+		width: 110rpx;
+		margin-top: 8rpx;
+		font-size: 24rpx;
+		color: #ffffff;
+		opacity: 0.3;
+	}
+	.focus .browse {
+		margin-right: 32rpx;
+	}
+	.itself {
+		width: 406rpx;
+		height: 96rpx;
+		margin-left: 32rpx;
+		margin-top: 38rpx;
+		border: 1rpx solid rgba(255, 255, 255, 0.1);
+		border-radius: 16rpx;
+		display: flex;
+	}
+	.itself .line {
+		width: 2rpx;
+		height: 36rpx;
+		margin: 30rpx 40rpx;
+		background: rgba(255, 255, 255, 0.1);
+	}
+	.type {
+		margin-left: 40rpx;
+		margin-right: 40rpx;
+	}
+	.type view {
+		height: 34rpx;
+		font-size: 24rpx;
+		color: #ffffff;
+		line-height: 34rpx;
+	}
+	.type .typeInner {
+		width: 154rpx;
+		margin-top: 14rpx;
+	}
+	.type .tag {
+		width: 48rpx;
+		opacity: 0.3;
+	}
+	.area {
+		margin-right: 58rpx;
+	}
+	.area view {
+		height: 34rpx;
+		font-size: 24rpx;
+		color: #ffffff;
+		line-height: 34rpx;
+	}
+	.area .tag {
+		width: 48rpx;
+		opacity: 0.3;
+	}
+	.area .areaInner {
+		width: 170rpx;
+		margin-top: 14rpx;
+	}
+>>>>>>> 5a9824c43c873d7733c0db028e4f9dc759266cba
 
 .estateInfo image {
   width: 28rpx;

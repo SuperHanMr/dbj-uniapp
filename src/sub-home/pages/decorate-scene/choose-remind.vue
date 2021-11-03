@@ -8,8 +8,8 @@
 				<view class="userName">{{item.name}}</view>
 				<view class="role">{{item.role}}</view>
 			</view>
-			<image v-if="!item.isChecked" class="img" src="http://dbj.dragonn.top/static/mp/dabanjia/images/home/check%402x.png"></image>
-			<image v-else class="img" src="http://dbj.dragonn.top/static/mp/dabanjia/images/home/ic_reminder_checked%402x.png"></image>
+			<image v-if="!item.isChecked" class="img" src="https://ali-image.dabanjia.com/static/mp/dabanjia/images/home/check%402x.png"></image>
+			<image v-else class="img" src="https://ali-image.dabanjia.com/static/mp/dabanjia/images/home/ic_reminder_checked%402x.png"></image>
 		</view>
 		<view class="confirm" @click="confirmC">确认</view>
 	</view>

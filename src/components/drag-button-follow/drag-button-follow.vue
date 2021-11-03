@@ -22,7 +22,7 @@
           
         </view>
     <view class="white-circle" :class="{'left-style':endLeft}">
-      <image src="http://dbj.dragonn.top/%20static/mp/dabanjia/images/decorate/decorate_msg.png" class="image-icon"></image>
+      <image src="https://ali-image.dabanjia.com/static/mp/dabanjia/images/decorate/decorate_msg.png" class="image-icon"></image>
       <text class="tip">{{num}}</text>
     </view>
     <view class="white-bg" v-if="!moveHidden&&endRight">

@@ -2,8 +2,9 @@
 	<view style="background-color: #FFF;">
 		<custom-navbar opacity="1" :showBack="false" bgcolor="#FFF">
 			<template v-slot:back>
-				<image class="icon_logo" src="http://dbj.dragonn.top/static/mp/dabanjia/images/home/dbj_logo_new.png"
-					mode=""></image>
+				<image class="icon_logo"
+					src="https://ali-image.dabanjia.com/static/mp/dabanjia/images/home/dbj_logo_new.png" mode="">
+				</image>
 			</template>
 		</custom-navbar>
 		<!-- 		<view :style="{height: navBarHeight}" style="width: 100%;background-color: red;">
@@ -17,12 +18,13 @@
 					{{citydata}}
 				</view>
 				<image v-if="citydata" class="icon_down"
-					src="http://dbj.dragonn.top/static/mp/dabanjia/images/home/hone_ic_down.png" mode=""></image>
+					src="https://ali-image.dabanjia.com/static/mp/dabanjia/images/home/hone_ic_down.png" mode="">
+				</image>
 			</view>
 			<image @click="toSearch" class="icon-search"
-				src="http://dbj.dragonn.top/static/mp/dabanjia/images/home/home_ic_search.png" mode=""></image>
+				src="https://ali-image.dabanjia.com/static/mp/dabanjia/images/home/home_ic_search.png" mode=""></image>
 			<image @click="toMessage" class="img"
-				src="http://dbj.dragonn.top/static/mp/dabanjia/images/home/online-server.png" mode="">
+				src="https://ali-image.dabanjia.com/static/mp/dabanjia/images/home/online-server.png" mode="">
 			</image>
 		</view>
 		<!-- 占位 -->
@@ -55,7 +57,8 @@
 						{{item.name}}
 					</view>
 					<image v-if="(index+1)%4" class="border-img"
-						src="http://dbj.dragonn.top/static/mp/dabanjia/images/home/home-zone-border_new.png" mode="">
+						src="https://ali-image.dabanjia.com/static/mp/dabanjia/images/home/home-zone-border_new.png"
+						mode="">
 					</image>
 				</view>
 			</view>
@@ -67,7 +70,8 @@
 						{{item.name}}
 					</view>
 					<image v-if="(index+1)%4" class="border-img"
-						src="http://dbj.dragonn.top/static/mp/dabanjia/images/home/home-zone-border1.png" mode="">
+						src="https://ali-image.dabanjia.com/static/mp/dabanjia/images/home/home-zone-border1.png"
+						mode="">
 					</image>
 				</view>
 			</view>
@@ -79,7 +83,8 @@
 						{{item.name}}
 					</view>
 					<image v-if="(index+1)%4" class="border-img"
-						src="http://dbj.dragonn.top/%20%20static/mp/dabanjia/images/home/home-zone-border1.png" mode="">
+						src="https://ali-image.dabanjia.com/static/mp/dabanjia/images/home/home-zone-border1.png"
+						mode="">
 					</image>
 				</view>
 			</view>
@@ -108,7 +113,7 @@
 			</view>
 
 			<image @click="toLiveList"
-				src="http://dbj.dragonn.top/static/mp/dabanjia/images/home/ic_gongdizhibo_more.png"
+				src="https://ali-image.dabanjia.com/static/mp/dabanjia/images/home/ic_gongdizhibo_more.png"
 				class="sub-title-more">
 			</image>
 		</view>
@@ -129,7 +134,7 @@
 				</image>
 				<view class="top-content">
 					<image class="top-content-img"
-						:src="item.mediaType==1?'http://dbj.dragonn.top/static/mp/dabanjia/images/home/living.gif':'http://dbj.dragonn.top/static/mp/dabanjia/images/home/live-repaly.png'">
+						:src="item.mediaType==1?'https://ali-image.dabanjia.com/static/mp/dabanjia/images/home/living.gif':'https://ali-image.dabanjia.com/static/mp/dabanjia/images/home/live-repaly.png'">
 						<view v-if="item.mediaType==1" class="text">
 
 							{{item.roomLiveMediaVO.onLineCount||0}}人正在观看
@@ -237,7 +242,7 @@
 				swiperAuto: false,
 				status1List: [],
 				status2List: [],
-				currentAddress: {},
+				currentAddress: {}
 			};
 		},
 		watch: {
@@ -248,7 +253,26 @@
 				this.getHomeList();
 			},
 		},
-		onLoad() {
+
+		onShareAppMessage() {
+			wx.showShareMenu({
+				withShareTicket: true,
+				menus: ['shareAppMessage', 'shareTimeline']
+			})
+		},
+		onShareTimeline(res) {
+			return {
+				title: '打扮家装修',
+			}
+		},
+		onLoad(e) {
+			if (e && e.shareId) {
+				uni.setStorage({
+					key: 'shareId',
+					data: String(e.shareId),
+					success: function() {}
+				});
+			}
 			let defaultHouse = {
 				name: "北京市朝阳区",
 				provinceId: 1,
@@ -448,10 +472,10 @@
 				this.getQueryLiveList();
 			},
 			onZoneClick(item) {
-				if (item.type == 0||item.type==5) {
+				if (item.type == 0 || item.type == 5) {
 					uni.showModal({
 						content: "敬请期待",
-						showCancel:false
+						showCancel: false
 					});
 				} else if (item.type == 1) {
 					if (item.url.endsWith("index/index")) {
@@ -657,6 +681,8 @@
 				getGoodsList({
 					pageIndex: this.page,
 					areaId: this.areaId,
+					// simplified: true,
+					// excludeFields: 'product.spu,product.process, product.store,product.supplier,product.sku,product.areaIds,product.areaPrices,product.category'
 				}).then((e) => {
 					this.goodsList = this.goodsList.concat(e.page);
 				});
@@ -665,34 +691,45 @@
 				this.bannerList = await getBanner();
 			},
 			async getHomeList() {
-				const token = getApp().globalData.token;
-				const userId = uni.getStorageSync("userId");
-				if (userId && token) {
-					let houseList = await queryEstates({
-						isNeedRelative: false,
-					});
-					let house = null;
-					let defaultHouse;
-					if (houseList && houseList.length) {
-						defaultHouse = houseList.find((e) => {
-							return e.defaultEstate == true;
-						});
+				try {
+					const token = getApp().globalData.token;
+					const userId = uni.getStorageSync("userId");
+					if (userId && token) {
+						let houseList = await queryEstates({
+							isNeedRelative: false,
+						}, false, true);
+						let house = null;
+						let defaultHouse;
+						if (houseList && houseList.length) {
+							defaultHouse = houseList.find((e) => {
+								return e.defaultEstate == true;
+							});
+						} else {
+							this.getAuthorizeInfo();
+						}
+						if (defaultHouse) {
+							house = defaultHouse;
+						} else if (houseList.length) {
+							house = houseList[0];
+						}
+						if (house) {
+							this.currentHouseChange(house);
+							// uni.setStorageSync("currentHouse", JSON.stringify(house));
+							this.areaId = house.areaId;
+							this.citydata = house.cityName + house.areaName + house.housingEstate;
+						}
 					} else {
 						this.getAuthorizeInfo();
 					}
-					if (defaultHouse) {
-						house = defaultHouse;
-					} else if (houseList.length) {
-						house = houseList[0];
-					}
-					if (house) {
-						this.currentHouseChange(house);
-						// uni.setStorageSync("currentHouse", JSON.stringify(house));
-						this.areaId = house.areaId;
-						this.citydata = house.cityName + house.areaName + house.housingEstate;
-					}
-				} else {
-					this.getAuthorizeInfo();
+				} catch {
+					let defaultHouse = {
+						name: "北京市朝阳区",
+						provinceId: 1,
+						cityId: 36,
+						areaId: 41,
+					};
+					this.areaId = 41;
+					this.currentHouseChange(defaultHouse);
 				}
 			},
 			onScroll(e) {

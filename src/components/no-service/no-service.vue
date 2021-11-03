@@ -1,7 +1,7 @@
 <template>
   <div class="no-service">
-    <image class="bg" v-if="listImage" src="http://dbj.dragonn.top/static/mp/dabanjia/images/my/blank_ic%402x.png">
-      <image class="box-bg" v-else src="http://dbj.dragonn.top/static/mp/dabanjia/images/decorate/box_empty.png">
+    <image class="bg" v-if="listImage" src="https://ali-image.dabanjia.com/static/mp/dabanjia/images/my/blank_ic%402x.png">
+      <image class="box-bg" v-else src="https://ali-image.dabanjia.com/static/mp/dabanjia/images/decorate/box_empty.png">
       </view>
       <view class="text">{{words}}</view>
   </div>

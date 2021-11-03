@@ -18,7 +18,7 @@
 						</view> -->
 					</view>
 					<image class="close" @click="closeSkuBox"
-						src="http://dbj.dragonn.top/static/mp/dabanjia/images/my/ic_closed_black%402x.png"></image>
+						src="https://ali-image.dabanjia.com/static/mp/dabanjia/images/my/ic_closed_black%402x.png"></image>
 				</view>
 				<scroll-view class="sku-list" scroll-y="true">
 					<view class="sku-item container" v-for="(sku,speIdx) in mySpecifications" :key="sku[speId]">
