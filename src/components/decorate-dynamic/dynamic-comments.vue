@@ -22,7 +22,7 @@
         >
           <image
             class="noCommentImg"
-            src="http://dbj.dragonn.top/static/mp/dabanjia/images/decorate/comment_bg.png"
+            src="https://ali-image.dabanjia.com/static/mp/dabanjia/images/decorate/comment_bg.png"
           ></image>
           <view class="noCommentText">暂无评论~</view>
         </view>

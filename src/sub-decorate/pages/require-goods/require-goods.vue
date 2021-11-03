@@ -40,7 +40,7 @@
 		<view class="bottom-btns" :style="{paddingBottom:systemBottom}">
 			<view class="shop-icon" @click="openCart">
 				<image class="icon" :class="{'btn-use':cartCount>0,'btn-un':cartCount==0}"
-					src="http://dbj.dragonn.top/static/mp/dabanjia/images/home/ic_apply_goods.png" mode=""></image>
+					src="https://ali-image.dabanjia.com/static/mp/dabanjia/images/home/ic_apply_goods.png" mode=""></image>
 				<view v-if="cartCount" class="num">
 					{{cartCount}}
 				</view>
@@ -66,7 +66,7 @@
 			<view class="bottom-btns-pop" :style="{paddingBottom:systemBottom}">
 				<view class="shop-icon" @click="openCart">
 					<image class="icon" :class="{'btn-use':cartCount>0,'btn-un':cartCount==0}"
-						src="http://dbj.dragonn.top/static/mp/dabanjia/images/home/ic_apply_goods.png" mode=""></image>
+						src="https://ali-image.dabanjia.com/static/mp/dabanjia/images/home/ic_apply_goods.png" mode=""></image>
 
 					<view v-if="cartCount" class="num">
 						{{cartCount}}

@@ -3,7 +3,7 @@
     <view class="content" v-if="noData === 1">
       <view class="addhouse-decs" v-if="!currentHouse.id">
         <button class="addhouse" @click="goAddHouse">
-          <image src="http://dbj.dragonn.top/static/mp/dabanjia/images/decorate/ic_add_house_info.svg"></image>
+          <image src="https://ali-image.dabanjia.com/static/mp/dabanjia/images/decorate/ic_add_house_info.svg"></image>
           <text>添加房屋信息</text>
         </button>
         <view class="decs"><text>打扮家按房子面积计算价格</text></view>
@@ -204,7 +204,7 @@
       }
 
       this.serveType = serveType
-      this.estateId = Number(estateId) || Number(option.estateId)
+      this.estateId = Number(option.estateId) || Number(estateId)
       this.customerId = customerId
       this.provinceId = provinceId //省id
       this.cityId = cityId //市id
@@ -483,13 +483,17 @@
           } else {
             let flt = null
             let eastId = Number(this.estateId) ?? false
+            let fromPage = this.fromPage ?? false
             console.log(">>estateId: >>", eastId)
             console.log(">>fromPage: >>", this.fromPage)
 
             if (eastId) {
-              flt = data.filter(t => t.id == eastId);
+              if (fromPage == "userHome") {
+                flt = data.filter(t => t.id == this.defaultHouse?.id);
+              } else {
+                flt = data.filter(t => t.id == eastId);
+              }
             } else {
-              let fromPage = this.fromPage ?? false
               if (fromPage == "userHome") {
                 flt = data.filter(t => t.id == this.defaultHouse?.id);
               }

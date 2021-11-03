@@ -1,14 +1,14 @@
 <template>
   <view class="wrap">
-    <image class="top-bg" src="http://dbj.dragonn.top/static/mp/dabanjia/images/decorate/top_bg%402x.png"></image>
+    <image class="top-bg" src="https://ali-image.dabanjia.com/static/mp/dabanjia/images/decorate/top_bg%402x.png"></image>
     <view class="title">
       <view class="left">
-        <image src="http://dbj.dragonn.top/static/mp/dabanjia/images/decorate/ic_level.svg"></image>
+        <image src="https://ali-image.dabanjia.com/static/mp/dabanjia/images/decorate/ic_level.svg"></image>
         <view>选择您想要更换人工的等级</view>
       </view>
       <view class="right left" @click="lookdesc">
         <view>什么是人工等级</view>
-        <image src="http://dbj.dragonn.top/static/mp/dabanjia/images/decorate/ic_why.svg"></image>
+        <image src="https://ali-image.dabanjia.com/static/mp/dabanjia/images/decorate/ic_why.svg"></image>
       </view>
     </view>
     <view class="r-d-g">

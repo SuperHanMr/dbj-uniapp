@@ -172,28 +172,42 @@ function enhanceSendMessage(tim) {
         commit("setCustomerLastMessage", convertToLastMessage(answerMsg));
         commit("pushCurrentMessageList", answerMsg);
         uni.$emit("scroll-to-bottom");
+      }).catch(e => {
+        console.log("向后端插入问题消息失败！", e);
+        let { data } = e;
+        if (data.code === 3704) {
+          // 已经有客服了，问题消息和答案消息由后端发
+          commit("removeMessageFromCurrentList", message);
+          uni.$emit("scroll-to-bottom");
+        }
       });
     } else if (msg.conversationID === state.cstServConv.conversationID) {
-      if (!state.cstServConv.isAvailable) {
-        commit("setCustomerLastMessage", convertToLastMessage(msg));
-        let params = {
-          groupId: state.cstServConv.conversationID.replace(/^GROUP/, '')
-        };
-        if (msg.type === TIM.TYPES.MSG_CUSTOM) {
-          params.type = "CUSTOM";
-          params.data = {
-            data: msg.payload.data
+      // 不管群是否可用，先用IM发消息，失败再走后端
+      return new Promise((resolve, reject) => {
+        _sendMessage(msg).then(res => {
+          resolve(res);
+        }).catch(err => {
+          console.log("向客服群发消息失败，走后台保存消息", err.message);
+          commit("setCustomerLastMessage", convertToLastMessage(msg));
+          let params = {
+            groupId: state.cstServConv.conversationID.replace(/^GROUP/, '')
           };
-        } else {
-          params.type = "TEXT";
-          params.data = {
-            content: msg.payload.text
-          };
-        }
-        return saveSmartMessage(params).then(res => {
-          return response(msg);
-        });
-      }
+          if (msg.type === TIM.TYPES.MSG_CUSTOM) {
+            params.type = "CUSTOM";
+            params.data = {
+              data: msg.payload.data
+            };
+          } else {
+            params.type = "TEXT";
+            params.data = {
+              content: msg.payload.text
+            };
+          }
+          saveSmartMessage(params).then(res => {
+            resolve(response(msg));
+          });
+        })
+      });
     }
     return _sendMessage(msg);
   }
@@ -222,6 +236,7 @@ function enhanceGetConversationProfile(tim) {
             commit("setCustomerAvailable", true);
             resolve(response(state.cstServConv));
           }).catch(err => {
+            console.log("在线客服会话Profile获取失败！", err.message);
             commit("setCustomerAvailable", false);
             resolve(response(state.cstServConv));
           })

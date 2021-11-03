@@ -13,7 +13,7 @@
 		<view class="dynamic" :class="{'noDynamics': !dynamics.length,'weekModel': isWeek,'maxMargin': bigMonth}">
 			
 			<view class="noDynamics" v-if="!dynamics.length">
-				<image class="noDynamicsImg" src="http://dbj.dragonn.top/%20static/mp/dabanjia/images/home/pic_empty%402x.png"></image>
+				<image class="noDynamicsImg" src="https://ali-image.dabanjia.com/static/mp/dabanjia/images/home/pic_empty%402x.png"></image>
 				<view class="text">暂无装修动态</view>
 				<view class="bottom"></view>
 			</view>

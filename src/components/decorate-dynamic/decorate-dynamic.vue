@@ -30,7 +30,7 @@
     					</view>
     				</view>
             <view class="map-item" v-if="isPerson" @click="toDecorate(item)">
-              <image src="http://dbj.dragonn.top/%20static/mp/dabanjia/images/decorate/houseAddress.png"></image>
+              <image src="https://ali-image.dabanjia.com/static/mp/dabanjia/images/decorate/houseAddress.png"></image>
               <text>{{item.estateName}}</text>
             </view>
     			</view>

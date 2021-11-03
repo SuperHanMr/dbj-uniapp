@@ -1,7 +1,7 @@
 <template>
   <view class="design-deliver">
     <view class="opt flex-row" @click="goEdit">
-      <image src="http://dbj.dragonn.top/static/mp/dabanjia/images/decorate/ic_edit_2.svg" class="edit"></image>
+      <image src="https://ali-image.dabanjia.com/static/mp/dabanjia/images/decorate/ic_edit_2.svg" class="edit"></image>
       <view>申请修改</view>
     </view>
     <tabs :items="items" :current="current" @changeItem="changeItem"></tabs>

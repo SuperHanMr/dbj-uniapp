@@ -128,7 +128,7 @@
 		},
 		data() {
 			return {
-				bgImg: 'http://dbj.dragonn.top/static/mp/dabanjia/images/decorate/order_bg_green.png',
+				bgImg: 'https://ali-image.dabanjia.com/static/mp/dabanjia/images/decorate/order_bg_green.png',
 				navBarHeight: '',
 				currentList: [1],
 				detail: {},
@@ -241,12 +241,12 @@
 						//退款中
 						this.headerTitle = '退款中'
 						this.bgImg =
-							'http://dbj.dragonn.top/static/mp/dabanjia/images/decorate/order_bg_orange.png'
+							'https://ali-image.dabanjia.com/static/mp/dabanjia/images/decorate/order_bg_orange.png'
 					} else if (e.status == 2) {
 						//退款完成
 						this.headerTitle = '退款成功'
 						this.bgImg =
-							'http://dbj.dragonn.top/static/mp/dabanjia/images/decorate/order_bg_green.png'
+							'https://ali-image.dabanjia.com/static/mp/dabanjia/images/decorate/order_bg_green.png'
 					} else if ([3, 4, 5].includes(e.status)) {
 						//退款完成
 						if (e.status == 3) {
@@ -262,7 +262,7 @@
 							this.tips = '您的退款账户存在异常，您可联系客服或重新发起申请'
 						}
 						this.bgImg =
-							'http://dbj.dragonn.top/static/mp/dabanjia/images/decorate/order_bg_green.png'
+							'https://ali-image.dabanjia.com/static/mp/dabanjia/images/decorate/order_bg_green.png'
 					}
 				})
 			},

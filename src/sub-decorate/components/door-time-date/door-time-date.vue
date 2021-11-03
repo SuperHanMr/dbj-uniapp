@@ -74,13 +74,13 @@
       },
       confirm() {
         const year = this.yearArr[this.pickTime[0]]
-        const month = this.monthArr[this.pickTime[1]] > 10 ? this.monthArr[this.pickTime[1]] : ('0' + this.monthArr[this
+        const month = this.monthArr[this.pickTime[1]] >= 10 ? this.monthArr[this.pickTime[1]] : ('0' + this.monthArr[this
           .pickTime[1]])
-        const day = this.dayArr[this.pickTime[2]] > 10 ? this.dayArr[this.pickTime[2]] : ('0' + this.dayArr[this
+        const day = this.dayArr[this.pickTime[2]] >= 10 ? this.dayArr[this.pickTime[2]] : ('0' + this.dayArr[this
           .pickTime[2]])
-        const hour = this.hoursArr[this.pickTime[3]] > 10 ? this.hoursArr[this.pickTime[3]] : ('0' + this.hoursArr[this
+        const hour = this.hoursArr[this.pickTime[3]] >= 10 ? this.hoursArr[this.pickTime[3]] : ('0' + this.hoursArr[this
           .pickTime[3]])
-        const minutes = this.minutesArr[this.pickTime[4]] > 10 ? this.minutesArr[this.pickTime[4]] : ('0' + this
+        const minutes = this.minutesArr[this.pickTime[4]] >= 10 ? this.minutesArr[this.pickTime[4]] : ('0' + this
           .minutesArr[this.pickTime[4]])
         let time = `${year}-${month}-${day} ${hour}:${minutes}:00`
         this.$emit('getTime', time)
