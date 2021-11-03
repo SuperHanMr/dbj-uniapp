@@ -14,6 +14,7 @@
     onLoad(e){
 			let Id = e.projectId
       this.url = process.env.VUE_APP_BASE_H5+this.url + Id +'&isActuarial=2'+'&token='+getApp().globalData.token
+			uni.showShareMenu();
     },
     methods: {
       
