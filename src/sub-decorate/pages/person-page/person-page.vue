@@ -224,6 +224,7 @@
     onLoad(e){
       this.userType = e.userType
       this.personId = e.personId||0
+      uni.showShareMenu();
       console.log(this.personId)
       // this.getGrabDetail()
     },
