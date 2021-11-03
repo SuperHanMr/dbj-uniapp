@@ -2,7 +2,7 @@
   <view class="base-info-container">
 		<view class="avatar-container">
 			<view class="container" @click="changeAvatar">
-				<image class="avatar" :src="`${userInfo.avatar}?x-oss-process=image/resize,m_mfit,w_88,h_88`" mode=""/>
+				<image class="avatar" :src="`${userInfo.avatar}?x-oss-process=image/resize,m_mfit,w_88,h_88`" mode="aspectFill"/>
 				<image class="change_avatar" src="../../static/ic_mine_change_avatar@2x.png" mode="" />
 			</view>
 		</view>
