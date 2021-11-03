@@ -26,10 +26,13 @@
         defaultHouseInfo: '',
         from: '',
         shareAreaId: '',
-        shareAreaName: ''
+        shareAreaName: '',
+        pageOpts: {}
       }
     },
     onLoad(e) {
+      this.pageOpts = {...e};
+      uni.showShareMenu(); // 显示分享按钮
       if (e.isDisabled === '0') { // 购物车跳转
         this.isDisabled = false
       }
@@ -55,6 +58,19 @@
       }
       this.houseId = e.houseId
       console.log(this.houseId, "this.houseId")
+    },
+    onShareAppMessage(res) {
+      let params = [];
+      Object.keys(this.pageOpts).forEach(key => {
+        params.push(`${key}=${this.pageOpts[key]}`)
+      });
+      let path = `/sub-classify/pages/goods-detail/goods-detail`;
+      if (params.length) {
+        path += '?' + params.join('&')
+      }
+      return {
+        path: path
+      }
     },
     onShow() {
       if (!this.searchToken) {
