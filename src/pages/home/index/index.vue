@@ -681,8 +681,8 @@
 				getGoodsList({
 					pageIndex: this.page,
 					areaId: this.areaId,
-					simplified: true,
-					excludeFields: 'product.spu,product.process, product.store,product.supplier,product.sku,product.areaIds,product.areaPrices,product.category'
+					// simplified: true,
+					// excludeFields: 'product.spu,product.process, product.store,product.supplier,product.sku,product.areaIds,product.areaPrices,product.category'
 				}).then((e) => {
 					this.goodsList = this.goodsList.concat(e.page);
 				});
@@ -691,34 +691,45 @@
 				this.bannerList = await getBanner();
 			},
 			async getHomeList() {
-				const token = getApp().globalData.token;
-				const userId = uni.getStorageSync("userId");
-				if (userId && token) {
-					let houseList = await queryEstates({
-						isNeedRelative: false,
-					});
-					let house = null;
-					let defaultHouse;
-					if (houseList && houseList.length) {
-						defaultHouse = houseList.find((e) => {
-							return e.defaultEstate == true;
-						});
+				try {
+					const token = getApp().globalData.token;
+					const userId = uni.getStorageSync("userId");
+					if (userId && token) {
+						let houseList = await queryEstates({
+							isNeedRelative: false,
+						}, false, true);
+						let house = null;
+						let defaultHouse;
+						if (houseList && houseList.length) {
+							defaultHouse = houseList.find((e) => {
+								return e.defaultEstate == true;
+							});
+						} else {
+							this.getAuthorizeInfo();
+						}
+						if (defaultHouse) {
+							house = defaultHouse;
+						} else if (houseList.length) {
+							house = houseList[0];
+						}
+						if (house) {
+							this.currentHouseChange(house);
+							// uni.setStorageSync("currentHouse", JSON.stringify(house));
+							this.areaId = house.areaId;
+							this.citydata = house.cityName + house.areaName + house.housingEstate;
+						}
 					} else {
 						this.getAuthorizeInfo();
 					}
-					if (defaultHouse) {
-						house = defaultHouse;
-					} else if (houseList.length) {
-						house = houseList[0];
-					}
-					if (house) {
-						this.currentHouseChange(house);
-						// uni.setStorageSync("currentHouse", JSON.stringify(house));
-						this.areaId = house.areaId;
-						this.citydata = house.cityName + house.areaName + house.housingEstate;
-					}
-				} else {
-					this.getAuthorizeInfo();
+				} catch {
+					let defaultHouse = {
+						name: "北京市朝阳区",
+						provinceId: 1,
+						cityId: 36,
+						areaId: 41,
+					};
+					this.areaId = 41;
+					this.currentHouseChange(defaultHouse);
 				}
 			},
 			onScroll(e) {

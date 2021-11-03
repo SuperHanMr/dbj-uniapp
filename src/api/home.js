@@ -83,6 +83,5 @@ export function insertAndGetLikeNum(params) {
 	return request.post(`/app/liveLike/insertAndGetLikeNum`, {
 		...params,
 		hideToast: true,
-		ignoreLogin: true
 	});
 }
