@@ -11,12 +11,12 @@
               <text>{{who}}的家</text>
               <i class="icon-shaixuan"></i>
             </view>
-            <view class="friend">
-              <text>亲友团</text>
+            <view class="friend" @click="toFriends">
+              <view class="text">亲友团</view>
               <view class="friend-list">
                 <image class="avtor" v-for="(item, index) in friendList" :key="item.id" :src="item.relativeAvatar"
                   :class="{avtor1: index == 0, avtor1: index == 0,avtor2: index == 1}"></image>
-                <view class="avtor-more" @click="toFriends">
+                <view class="avtor-more">
                   <image src="https://ali-image.dabanjia.com/static/mp/dabanjia/images/decorate/ic_avtor_more.svg">
                   </image>
                 </view>
