@@ -99,12 +99,15 @@
       //   }
       // },
       filterPayStatus(payStatus) {
-        if (payStatus == 0) {
-          return "未支付"
-        } else if (payStatus == 1) {
+        // if (payStatus == 0) {
+        //   return "未支付"
+        // } else 
+        if (payStatus === 1) {
           return "部分支付"
-        } else if (payStatus == 2) {
+        } else if (payStatus === 2) {
           return "全部支付"
+        } else {
+          return "--"
         }
       }
     }
