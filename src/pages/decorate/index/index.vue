@@ -288,6 +288,7 @@
             this.broadcastList = data
             if (this.broadcastList?.length < 1) {
               this.broadcastList = [{
+                recordTime: "",
                 content: "暂无施工消息"
               }]
             }
