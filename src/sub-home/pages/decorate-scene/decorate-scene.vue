@@ -119,6 +119,7 @@
               :key="item.id"
             >
               <view
+								class="server"
                 v-if="(item.nodeStatus===2&&item.id!==-1)||item.nodeStatus===3"
                 @click="toPersonalHome(item.id)"
               >
@@ -1776,7 +1777,6 @@ export default {
 }
 .worker .item > view {
   width: 40rpx;
-  height: 128rpx;
   margin: 10rpx 10rpx 14rpx;
   font-size: 20rpx;
   color: #333333;
@@ -1807,7 +1807,10 @@ export default {
 .worker .item .own {
   margin: 16rpx 10rpx;
 }
-
+.worker .item .server{
+	margin: 0;
+	padding: 10rpx 10rpx 14rpx;
+}
 .dynamic {
   width: 100%;
   height: fit-content;
