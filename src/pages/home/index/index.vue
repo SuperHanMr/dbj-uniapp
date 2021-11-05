@@ -129,7 +129,7 @@
 			<view style="width: 8rpx;height: 1rpx;flex-shrink: 0;">
 			</view>
 			<view v-for="(item,index) in liveList" :key="index" class="item margin-left24" @click="onLiveClick(item)">
-				<image class="img" :src="item.mediaType==1?item.roomLiveMediaVO.scaleImg:item.roomVideoMediaVO.scaleImg"
+				<image class="img" :src="item.mediaType==1?item.roomLiveMediaVO.scaleImg:item.roomVideoMediaVO.scaleImg |imgFormat(494,660)"
 					mode="aspectFill"></image>
 				</image>
 				<view class="top-content">
