@@ -30,6 +30,11 @@
       setTimer() {
         clearInterval(this.timer);
         if (this.dataList.length <= 1) {
+          console.log("暂无施工消息")
+          this.current = {
+            recordTime: "",
+            content: "暂无施工消息"
+          }
           return
         }
         this.timer = setInterval(() => {
