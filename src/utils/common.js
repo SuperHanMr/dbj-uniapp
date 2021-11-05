@@ -18,5 +18,5 @@ export function imgFormat(imgUrl){
 	if(!imgUrl){
 		return ''
 	}
-	return imgUrl+`?x-oss-process=image/resize,m_mfit,w_200,h_100`
+	return imgUrl+`?x-oss-process=image/resize,m_mfit,w_686,h_686`
 }
