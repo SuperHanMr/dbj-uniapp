@@ -12,7 +12,7 @@
       }
     },
     onLoad(e){
-      uni.showShareMenu();
+      // uni.showShareMenu();
       let id = e.id || getApp().globalData.decorateMsg.reportId
       let cost = e.isCost||1
       let isFriends = getApp().globalData.currentProject.relegationType===2?1:0

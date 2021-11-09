@@ -110,11 +110,11 @@
 							userSig: data.userSign,
 						});
 						let shaerId = uni.getStorageSync("shareId");
-						if (shaerId && type == "register") {
-							// bindCapsule({
-							// 	zeusId: data.id,
-							// 	salesmanPhone: shaerId
-							// });
+						if (shaerId) {
+							bindCapsule({
+								zeusId: data.id,
+								salesmanPhone: shaerId
+							});
 						}
 						//可以改成back
 						uni.$emit("defaultHouseChange");
