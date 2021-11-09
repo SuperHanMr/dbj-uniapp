@@ -19,8 +19,8 @@
 			currentHouse: {},
 			switchFlag: "home",
 			currentRoute: "/pages/home/index/index",
-      previewimageStatus: false,
-      screenHeight:0,
+			previewimageStatus: false,
+			screenHeight: 0,
 		},
 
 		onLaunch: function() {
@@ -29,6 +29,8 @@
 				let token = uni.getStorageSync("scn");
 				this.globalData.token = token;
 				oauthGomeInfo({
+					hideToast: true,
+					ignoreLogin: true,
 					clientType: "3",
 				}).then((data) => {
 					getApp().globalData.userInfo = data;
@@ -38,6 +40,10 @@
 						userId: data.tid,
 						userSig: data.userSign,
 					});
+				}).catch(e => {
+					getApp().globalData.token = "";
+					uni.clearStorageSync("scn");
+					uni.clearStorageSync("userId")
 				});
 			}
 		},

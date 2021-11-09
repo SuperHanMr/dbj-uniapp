@@ -2,7 +2,7 @@
   <view v-if="isLogin">
     <view class="decorate-index" v-if="estateList.length > 0">
       <image class="bg-index" mode="aspectFit"
-        src="http://dbj.dragonn.top/%20static/mp/dabanjia/images/decorate/bg%402x-4.png">
+        src="https://ali-image.dabanjia.com/static/mp/dabanjia/images/decorate/bg%402x-4.png">
       </image>
       <view class="content flex-column">
         <view class="house-firend">
@@ -11,13 +11,13 @@
               <text>{{who}}的家</text>
               <i class="icon-shaixuan"></i>
             </view>
-            <view class="friend">
-              <text>亲友团</text>
+            <view class="friend" @click="toFriends">
+              <view class="text">亲友团</view>
               <view class="friend-list">
                 <image class="avtor" v-for="(item, index) in friendList" :key="item.id" :src="item.relativeAvatar"
                   :class="{avtor1: index == 0, avtor1: index == 0,avtor2: index == 1}"></image>
-                <view class="avtor-more" @click="toFriends">
-                  <image src="http://dbj.dragonn.top/static/mp/dabanjia/images/decorate/ic_avtor_more.svg">
+                <view class="avtor-more">
+                  <image src="https://ali-image.dabanjia.com/static/mp/dabanjia/images/decorate/ic_avtor_more.svg">
                   </image>
                 </view>
               </view>
@@ -28,25 +28,25 @@
             <view class="insurance-house">
               <view :class="{'payed':aServiceData.insuranceStatus}" class="insurance">
                 <image @click="consultingService"
-                  :src="aServiceData.insuranceStatus ? 'http://dbj.dragonn.top/static/mp/dabanjia/images/decorate/insurance-pay.svg': 'http://dbj.dragonn.top/static/mp/dabanjia/images/decorate/insurance-unpay.svg'">
+                  :src="aServiceData.insuranceStatus ? 'https://ali-image.dabanjia.com/static/mp/dabanjia/images/decorate/insurance-pay.svg': 'https://ali-image.dabanjia.com/static/mp/dabanjia/images/decorate/insurance-unpay.svg'">
                 </image>
               </view>
               <view class="uni-title">{{ currentProject.housingEstate || '' }}{{currentProject.address || ''}}</view>
             </view>
             <view class="picture-btn-wrap">
               <picture-btn v-if="aServiceData.showDesignFlag"
-                iconUrl="http://dbj.dragonn.top/static/mp/dabanjia/images/decorate/ic_sgtz.svg" class="p-i-t"
+                iconUrl="https://ali-image.dabanjia.com/static/mp/dabanjia/images/decorate/ic_sgtz.svg" class="p-i-t"
                 text="施工图纸" @gotoPage="goDesignPicture">
               </picture-btn>
               <picture-btn v-if="aServiceData.showActuaryFlag"
-                iconUrl="http://dbj.dragonn.top/static/mp/dabanjia/images/decorate/ic_jsd.svg" class="p-i-t" text="精算单"
+                iconUrl="https://ali-image.dabanjia.com/static/mp/dabanjia/images/decorate/ic_jsd.svg" class="p-i-t" text="精算单"
                 @gotoPage="goActuary">
               </picture-btn>
               <picture-btn v-if="aServiceData.showVideoFlag"
-                iconUrl="http://dbj.dragonn.top/static/mp/dabanjia/images/decorate/ic_gdsp.svg" class="p-i-t"
+                iconUrl="https://ali-image.dabanjia.com/static/mp/dabanjia/images/decorate/ic_gdsp.svg" class="p-i-t"
                 text="工地视频" @gotoPage="goVideo"></picture-btn>
               <picture-btn v-if="aServiceData.constructionFlag"
-                iconUrl="http://dbj.dragonn.top/static/mp/dabanjia/images/decorate/ic_sg.svg" text="施工"
+                iconUrl="https://ali-image.dabanjia.com/static/mp/dabanjia/images/decorate/ic_sg.svg" text="施工"
                 @gotoPage="goConstrction"></picture-btn>
             </view>
           </view>
@@ -64,21 +64,21 @@
                 <text class="t">{{who}}的仓库</text>
                 <view class="r flex-start-row" @click="goToMyWarehouse">
                   <text>查看全部</text>
-                  <image src="http://dbj.dragonn.top/static/mp/dabanjia/images/decorate/ic_more.svg">
+                  <image src="https://ali-image.dabanjia.com/static/mp/dabanjia/images/decorate/ic_more.svg">
                   </image>
                 </view>
               </view>
               <view class="my-warehouse">
-                <mwarehouse-btn iconUrl="http://dbj.dragonn.top/static/mp/dabanjia/images/decorate/ic_ck_dfh.svg"
+                <mwarehouse-btn iconUrl="https://ali-image.dabanjia.com/static/mp/dabanjia/images/decorate/ic_ck_dfh.svg"
                   @gotoPage="gotoPage('0')" name="待发货">
                 </mwarehouse-btn>
-                <mwarehouse-btn iconUrl="http://dbj.dragonn.top/static/mp/dabanjia/images/decorate/ic_ck_dsh.svg"
+                <mwarehouse-btn iconUrl="https://ali-image.dabanjia.com/static/mp/dabanjia/images/decorate/ic_ck_dsh.svg"
                   @gotoPage="gotoPage('1')" name="待收货">
                 </mwarehouse-btn>
-                <mwarehouse-btn iconUrl="http://dbj.dragonn.top/static/mp/dabanjia/images/decorate/ic_ck_ysh.svg"
+                <mwarehouse-btn iconUrl="https://ali-image.dabanjia.com/static/mp/dabanjia/images/decorate/ic_ck_ysh.svg"
                   @gotoPage="gotoPage('2')" name="已收货">
                 </mwarehouse-btn>
-                <mwarehouse-btn iconUrl="http://dbj.dragonn.top/static/mp/dabanjia/images/decorate/ic_ck_tk.svg"
+                <mwarehouse-btn iconUrl="https://ali-image.dabanjia.com/static/mp/dabanjia/images/decorate/ic_ck_tk.svg"
                   @gotoPage="gotoPage('3')" name="退款">
                 </mwarehouse-btn>
               </view>
@@ -93,7 +93,7 @@
                 <text class="t">{{who}}的装修服务</text>
                 <view class="r flex-start-row" v-if="aServiceData.myServiceFlag" @click="goToMyDecorate">
                   <text>查看全部</text>
-                  <image src="http://dbj.dragonn.top/static/mp/dabanjia/images/decorate/ic_more.svg">
+                  <image src="https://ali-image.dabanjia.com/static/mp/dabanjia/images/decorate/ic_more.svg">
                   </image>
                 </view>
               </view>
@@ -103,7 +103,7 @@
               <!--  -->
               <view v-if="aServiceData.projectStatus == 3 && purchasedServiceList.length == 0" class="jun-gong-da-ji">
                 <image mode="aspectFit"
-                  src="http://dbj.dragonn.top/%20static/mp/dabanjia/images/decorate/img_finish.webp"></image>
+                  src="https://ali-image.dabanjia.com/static/mp/dabanjia/images/decorate/img_finish.webp"></image>
               </view>
               <no-service v-if="aServiceData.projectStatus != 3 && purchasedServiceList.length == 0" words="暂无进行中服务">
               </no-service>
@@ -114,11 +114,11 @@
               购买相关服务 即刻开启装修
             </view>
             <guide-card v-if="availGuides.includes('design')" cardType="service"
-              imageUrl="http://dbj.dragonn.top/%20static/mp/dabanjia/images/decorate/ic_myhouse_design2.webp"
+              imageUrl="https://ali-image.dabanjia.com/static/mp/dabanjia/images/decorate/ic_myhouse_design2.webp"
               @buyNow="gonohousedecatore('design')">
             </guide-card>
             <guide-card v-if="availGuides.includes('actuary')" cardType="actuary"
-              imageUrl="http://dbj.dragonn.top/%20static/mp/dabanjia/images/decorate/ic_myhouse_actuary2.webp"
+              imageUrl="https://ali-image.dabanjia.com/static/mp/dabanjia/images/decorate/ic_myhouse_actuary2.webp"
               @buyNow="gonohousedecatore('actuary')">
             </guide-card>
           </view>
@@ -288,6 +288,7 @@
             this.broadcastList = data
             if (this.broadcastList?.length < 1) {
               this.broadcastList = [{
+                recordTime: "",
                 content: "暂无施工消息"
               }]
             }

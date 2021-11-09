@@ -1,6 +1,6 @@
 <template>
 	<view class="fill">
-		<image class="img" src="http://dbj.dragonn.top/static/mp/dabanjia/images/home/img_no_report.png" mode=""></image>
+		<image class="img" src="https://ali-image.dabanjia.com/static/mp/dabanjia/images/home/img_no_report.png" mode=""></image>
 		<view class="font">
 			当前区域暂未开放该类商品售卖
 		</view>

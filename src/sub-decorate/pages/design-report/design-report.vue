@@ -15,7 +15,7 @@
       <view class="t">{{detail.beautyReport.title}}</view>
       <view class="lookDetail flex-row-start" @click="beatifulReport">
         <view>立即查看</view>
-        <image src="http://dbj.dragonn.top/static/mp/dabanjia/images/decorate/ic_more.svg"></image>
+        <image src="https://ali-image.dabanjia.com/static/mp/dabanjia/images/decorate/ic_more.svg"></image>
       </view>
       <!-- <view v-else class="lookDetail">未生成颜值报告</view> -->
     </view>
@@ -23,7 +23,7 @@
       <view class="t">{{detail.customReport.title}}</view>
       <view class="lookDetail flex-row-start" @click="customReport">
         <view>立即查看</view>
-        <image src="http://dbj.dragonn.top/static/mp/dabanjia/images/decorate/ic_more.svg"></image>
+        <image src="https://ali-image.dabanjia.com/static/mp/dabanjia/images/decorate/ic_more.svg"></image>
       </view>
       <!-- <view v-else class="lookDetail">未生成自定义报告</view> -->
     </view>

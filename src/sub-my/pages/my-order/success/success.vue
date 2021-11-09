@@ -8,7 +8,7 @@
 
     <view
       class="basic-info"
-      :style="{backgroundImage:`url(http://dbj.dragonn.top/static/mp/dabanjia/images/my/bg_img.png)`,backgroundSize: '100% 100%'}"
+      :style="{backgroundImage:`url(https://ali-image.dabanjia.com/static/mp/dabanjia/images/my/bg_img.png)`,backgroundSize: '100% 100%'}"
     >
       <image
         src="../../../static/complete.png"

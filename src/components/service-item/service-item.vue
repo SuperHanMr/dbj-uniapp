@@ -18,7 +18,7 @@
         <view>{{ serviceData.statusName }}</view>
         <!-- <image :class="{open: open}"
           v-if="serviceData.status >= 2 || (serviceData.status == 0 && serviceData.grepOrderStatus === 3)"
-          src="http://dbj.dragonn.top/static/mp/dabanjia/images/decorate/ic_triangle_up.svg"></image> -->
+          src="https://ali-image.dabanjia.com/static/mp/dabanjia/images/decorate/ic_triangle_up.svg"></image> -->
         <view class="icon-zhuangxiushouye_fuwuzhankaijiantou" :class="{open: open}" v-if="serviceData.status >= 2 || (serviceData.status == 0 && serviceData.grepOrderStatus === 3)"></view>
         <view v-else class="icon-no"></view>
       </view>
@@ -29,21 +29,21 @@
         <view class="s0">{{serviceData.serveRoleName}}</view>
         <view class="s1 flex-row-start" @click="personPage(serviceData)">
           <view>{{serviceData.serveName}}</view>
-          <image src="http://dbj.dragonn.top/static/mp/dabanjia/images/decorate/ic_more.svg"></image>
+          <image src="https://ali-image.dabanjia.com/static/mp/dabanjia/images/decorate/ic_more.svg"></image>
         </view>
       </view>
       <view class="procsss flex-row-bet" v-if="[5, 6, 7, 8, 9, 10].includes(serviceData.nodeType)">
         <view class="s0">工序支付</view>
         <view class="s1 flex-row-start" @click="goProcessCost">
           <view>{{serviceData.payStatus | filterPayStatus}}</view>
-          <image src="http://dbj.dragonn.top/static/mp/dabanjia/images/decorate/ic_more.svg"></image>
+          <image src="https://ali-image.dabanjia.com/static/mp/dabanjia/images/decorate/ic_more.svg"></image>
         </view>
       </view>
       <view class="procsss flex-row-bet">
         <view class="s0">进度</view>
         <view class="s1 flex-row-start" @click="goTimeLine">
           <view>{{serviceData.processNumerator}}/{{serviceData.processDenominator}}</view>
-          <image src="http://dbj.dragonn.top/static/mp/dabanjia/images/decorate/ic_more.svg"></image>
+          <image src="https://ali-image.dabanjia.com/static/mp/dabanjia/images/decorate/ic_more.svg"></image>
         </view>
       </view>
     </view>
@@ -99,12 +99,15 @@
       //   }
       // },
       filterPayStatus(payStatus) {
-        if (payStatus == 0) {
-          return "未支付"
-        } else if (payStatus == 1) {
+        // if (payStatus == 0) {
+        //   return "未支付"
+        // } else 
+        if (payStatus === 1) {
           return "部分支付"
-        } else if (payStatus == 2) {
+        } else if (payStatus === 2) {
           return "全部支付"
+        } else {
+          return "--"
         }
       }
     }

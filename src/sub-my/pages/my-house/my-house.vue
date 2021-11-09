@@ -16,7 +16,7 @@
 				<view class="list-count">
 					<view class="list-item" @click="toChoose(item)">
 						<view class="item-message">
-						<!-- 	<image src="http://dbj.dragonn.top/static/mp/dabanjia/images/decorate/choose.svg"
+						<!-- 	<image src="https://ali-image.dabanjia.com/static/mp/dabanjia/images/decorate/choose.svg"
 								 class="choose-icon edit-icon"></image> -->
               <i class='icon-ic_wodejia_danxuanzhong_csn choose-icon edit-icon' v-if="item.id==chooseId"></i>
 							<view class="message-right">
@@ -51,7 +51,7 @@
 			</view>
 		</view>
     <view class="no-house" :style="{marginBottom:systemHeight}"  v-else >
-      <image src="http://dbj.dragonn.top/static/mp/dabanjia/images/decorate/empty.png"></image>
+      <image src="https://ali-image.dabanjia.com/static/mp/dabanjia/images/decorate/empty.png"></image>
       <text>暂无收货地址</text>
       <view class="no-add-btn" @click="toAddHouse">
         添加地址

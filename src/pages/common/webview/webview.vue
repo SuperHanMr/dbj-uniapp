@@ -22,7 +22,13 @@
 				this.url = decodeURIComponent(e.url);
 				console.log(this.url)
 			}
-		}
+      uni.showShareMenu();
+		},
+    onShareAppMessage(res) {
+      return {
+        path: `/pages/common/webview/webview?url=${encodeURIComponent(this.url)}`
+      }
+    },
 	}
 </script>
 

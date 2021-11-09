@@ -43,23 +43,23 @@
               <view class="number-change-wrap" v-if="item.isEdit">
                 <view class="number-wrap">
                   <image @click="reduce(item)" v-if="item.count > item.minimumOrderQuantity"
-                    src="http://dbj.dragonn.top/static/mp/dabanjia/images/decorate/details_pop_.svg" class="reduce">
+                    src="https://ali-image.dabanjia.com/static/mp/dabanjia/images/decorate/details_pop_.svg" class="reduce">
                   </image>
                   <image v-else
-                    src="http://dbj.dragonn.top/static/mp/dabanjia/images/decorate/details_pop_subtract_disabled.svg"
+                    src="https://ali-image.dabanjia.com/static/mp/dabanjia/images/decorate/details_pop_subtract_disabled.svg"
                     class="reduce"></image>
                   <view class="number">
                     {{item.count}}
                   </view>
                   <image @click="plus(item)"
-                    src="http://dbj.dragonn.top/static/mp/dabanjia/images/decorate/details_pop_add.svg" class="plus">
+                    src="https://ali-image.dabanjia.com/static/mp/dabanjia/images/decorate/details_pop_add.svg" class="plus">
                   </image>
                 </view>
                 <view class="change-wrap"
                   v-if="item.inServiceArea && !isNaN(content.categoryId) && content.categoryName !== '其他' && content.categoryId != '' && !item.selling">
                   <view @click="goMaterialsList(item)">更换商品</view>
                   <image @click="goMaterialsList(item)"
-                    src="http://dbj.dragonn.top/static/mp/dabanjia/images/decorate/change_material.svg"></image>
+                    src="https://ali-image.dabanjia.com/static/mp/dabanjia/images/decorate/change_material.svg"></image>
                 </view>
               </view>
               <view class="no-pay-change" v-if="!item.inServiceArea">
@@ -68,7 +68,7 @@
                   v-if="!isNaN(content.categoryId) && content.categoryName !== '其他' && content.categoryId != ''">
                   <view @click="editAndGoMaterialsList(item)">更换商品</view>
                   <image @click="editAndGoMaterialsList(item)"
-                    src="http://dbj.dragonn.top/static/mp/dabanjia/images/decorate/change_material.svg"></image>
+                    src="https://ali-image.dabanjia.com/static/mp/dabanjia/images/decorate/change_material.svg"></image>
                 </view>
               </view>
             </view>

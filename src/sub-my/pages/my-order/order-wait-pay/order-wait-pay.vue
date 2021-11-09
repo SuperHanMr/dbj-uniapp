@@ -167,7 +167,7 @@ export default {
 			bottomStyle:"",
 			scrollTop: 0,
 			headerTitle:"",
-			bgImg:'http://dbj.dragonn.top/static/mp/dabanjia/images/decorate/order_bg_orange.png'
+			bgImg:'https://ali-image.dabanjia.com/static/mp/dabanjia/images/decorate/order_bg_orange.png'
     };
   },
 
