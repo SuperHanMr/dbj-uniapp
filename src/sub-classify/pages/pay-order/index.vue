@@ -473,13 +473,14 @@
           })
         })
         uni.$emit('submitOrder') // 购物车需要的逻辑
+        let orderPrice = Number(Number(this.totalPrice).toFixed(2).replace('.', "")) 
         let params = {
           payType: 1, //"int //支付方式  1微信支付",
           openid: uni.getStorageSync("openId"), //"string //微信openid 小程序支付用 app支付不传或传空",
           projectId: this.projectId, //"long //项目id  非必须 默认0",
           customerId: 0, //"long //业主id  非必须 默认0",
           estateId: this.estateId, //"long //房产id   非必须 默认0",
-          total: (this.totalPrice * 100).toFixed(), //"int //总计",
+          total: orderPrice, //"int //总计",
           remarks: this.remarks, //"string //备注",
           orderName: "", //"string //订单名称 可为空",
           details: details
