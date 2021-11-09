@@ -413,6 +413,9 @@
           arr.unshift(firstItem)
           this.projectList = [...arr]
         }
+				if(this.currentEstate){
+					uni.$emit('selectedHouse',this.currentEstate)
+				}
 
         this.$refs.sw.close()
       },
