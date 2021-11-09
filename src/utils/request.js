@@ -107,6 +107,9 @@ instance.interceptors.response.use(
 	},
 	// 请求失败
 	(error) => {
+		var pages = getCurrentPages();
+		var page = pages[pages.length - 1];
+		var pagePath = page.$page.fullPath;
     requestTimeMap.delete(error.config);
 		uni.hideLoading();
 		if (error.response && error.response.status === 401) {
@@ -121,7 +124,7 @@ instance.interceptors.response.use(
 			if (error.config && error.config.data) {
 				config = JSON.parse(error.config.data)
 			}
-			if (!(config && config.ignoreLogin)) {
+			if (!(config && config.ignoreLogin)&& pagePath != '/pages/login/login') {
         console.warn("goto login page", error.config);
 				uni.navigateTo({
 					url: "/pages/login/login",
