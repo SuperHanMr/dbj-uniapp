@@ -101,6 +101,9 @@
 		onReady() {
 			this.getList();
 		},
+		onUnload() {
+			uni.$off('isCollect');
+		}
 		// // 触底触发
 		// onReachBottom() {
 		// 	if (this.pagState.page <= this.pagState.totalPage) {
