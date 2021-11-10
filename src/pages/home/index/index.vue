@@ -392,8 +392,8 @@
 				console.log(item);
 				this.currentAddress = item;
 				this.areaId = item.areaId;
-				uni.$emit("currentHouseChange", item);
 				getApp().globalData.currentHouse = item;
+				uni.$emit("currentHouseChange", item);
 				this.reloadData();
 			},
 			toSearch() {
