@@ -46,9 +46,6 @@
         required: true,
       },
     },
-    mounted() {
-      console.log(">>>>>>>>>>>>>>>***>>>>>>>>>>>", this.template, this.message)
-    },
     computed: {
       data() {
         return this.message.payloadData.params || {};
@@ -69,7 +66,7 @@
       },
       actions() {
         return (this.template.body.actions || [])
-          .filter(action => action.isDisplay)//action.type === "native" && action.isDisplay))
+          .filter(action => action.isDisplay === undefined)//action.type === "native" && action.isDisplay))
       }
     },
     methods: {
@@ -101,6 +98,7 @@
         } else {
           const projectId = this.message?.payloadData?.params?.projectId
           uni.$emit("open_msg_list", projectId)
+          getApp().globalData.msg_projectId = projectId
           uni.switchTab({
             url: `/pages/decorate/index/index`
           })
