@@ -97,8 +97,7 @@
           });
         } else {
           const projectId = this.message?.payloadData?.params?.projectId
-          uni.$emit("open_msg_list", projectId)
-          getApp().globalData.msg_projectId = projectId
+          getApp().globalData.msgProjectId = projectId
           uni.switchTab({
             url: `/pages/decorate/index/index`
           })
