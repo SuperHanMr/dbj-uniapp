@@ -682,8 +682,8 @@
 				getGoodsList({
 					pageIndex: this.page,
 					areaId: this.areaId,
-					// simplified: true,
-					// excludeFields: 'product.spu,product.process, product.store,product.supplier,product.sku,product.areaIds,product.areaPrices,product.category'
+					simplified: true,
+					excludeFields: 'product.spu,product.process, product.store,product.supplier,product.sku,product.areaIds,product.areaPrices,product.category'
 				}).then((e) => {
 					if (this.page == 1) {
 						this.goodsList = [];
