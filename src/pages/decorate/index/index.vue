@@ -58,7 +58,6 @@
             @goDecorateCalendar="goDecorateCalendar"></text-scroll>
           <!-- 我的仓库 -->
           <view v-if="haveWarehouse" class="my-decorate-service-wrap">
-            <!-- <view class="top-bg"></view> -->
             <view class="my-decorate-service ck">
               <view class="service-title flex-space-between-row">
                 <text class="t">{{who}}的仓库</text>
@@ -87,7 +86,6 @@
           <!-- 我的装修服务 -->
           <view class="my-decorate-service-wrap my-decorate-service-dec-wrap"
             v-if="purchasedServiceList.length > 0 || aServiceData.myServiceFlag">
-            <!-- <view class="top-bg"></view> -->
             <view class="my-decorate-service">
               <view class="service-title flex-space-between-row">
                 <text class="t">{{who}}的装修服务</text>
@@ -202,7 +200,6 @@
     },
     onShow() {
       let scn = uni.getStorageSync("scn") || null;
-      // console.log(">>>>scn>>>>>>",scn)
       if(scn) {
         this.isLogin = true
         console.log('showTabBar')
@@ -428,7 +425,6 @@
         
         // 是否需要打开消息弹窗
         if(isOpenMsgList) {
-          console.log(111111111111111111111111111111, isOpenMsgList)
           this.openNotice()
         }
         this.$refs.sw.close()
