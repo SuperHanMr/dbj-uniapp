@@ -192,10 +192,17 @@
         this.homePageEstate = item
         getApp().globalData.switchFlag = "home"
       })
+      uni.$on("open_msg_list", projectId => {
+        const item = this.projectList.find(it => it.projectId === projectId)
+        if(item?.projectId) {
+          this.noticeActive = true
+          this.changeCurrentProject(item, true)
+        }
+      })
     },
     onShow() {
       let scn = uni.getStorageSync("scn") || null;
-      console.log(">>>>scn>>>>>>",scn)
+      // console.log(">>>>scn>>>>>>",scn)
       if(scn) {
         this.isLogin = true
         console.log('showTabBar')
@@ -203,6 +210,8 @@
         this.availGuides = []
         if (!this.noticeActive) {
           uni.showTabBar()
+        } else {
+          uni.hideTabBar()
         }
         
         this.getEstateList()
@@ -388,7 +397,7 @@
           url: "/sub-decorate/pages/add-house/add-house"
         })
       },
-      changeCurrentProject(item) {
+      changeCurrentProject(item, isOpenMsgList) {
         this.currentProject = item
         getApp().globalData.switchFlag = 'decorate'
         if (this.currentProject?.showBroadcast) {
@@ -416,7 +425,12 @@
 				if(this.currentEstate){
 					uni.$emit('selectedHouse',this.currentEstate)
 				}
-
+        
+        // 是否需要打开消息弹窗
+        if(isOpenMsgList) {
+          console.log(111111111111111111111111111111, isOpenMsgList)
+          this.openNotice()
+        }
         this.$refs.sw.close()
       },
       getProjectList() {

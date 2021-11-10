@@ -2475,7 +2475,7 @@
           "userType": 1,
           "targetUrl": "app-pages/confirm-inspection/index.html?id=${serveId}&projectId=${projectId}",
           "isNewH5Url": true,
-          "isDisplay": false,
+          "isDisplay": true,
           "params": {
             "showAppBar": false
           }
@@ -2495,7 +2495,7 @@
           "title": "查看详情",
           "type": "native_uri",
           "userType": 1,
-          "isDisplay": false,
+          "isDisplay": true,
           "targetRouter": "/riki_process_service/inspect_room_reminder?serveId=${serveId}&projectId=${projectId}"
         }
       ]
@@ -2513,7 +2513,7 @@
           "title": "查看详情",
           "type": "native_uri",
           "userType": 1,
-          "isDisplay": false,
+          "isDisplay": true,
           "targetRouter": "/riki_process_service/service_order_approve?serveId=${serveId}&projectId=${projectId}&serverId=${serverId}&serveType=${serveType}"
         }
       ]
@@ -2621,7 +2621,7 @@
           "title": "查看详情",
           "type": "native_uri",
           "userType": 1,
-          "isDisplay": false,
+          "isDisplay": true,
           "targetRouter": "/riki_process_service/goods_require_customer_handle_page?id=${requireId}&projectId=${projectId}"
         }
       ]
@@ -2640,7 +2640,7 @@
           "type": "h5",
           "userType": 1,
           "isNewH5Url": true,
-          "isDisplay": false,
+          "isDisplay": true,
           "targetUrl": "app-pages/actuarial/index.html?serveId=${serveId}&&isActuarial=1&projectId=${projectId}&isMessage=1&estateId=${estateId}",
           "params": {
             "title": "确认精算单",
@@ -2662,7 +2662,7 @@
           "title": "查看详情",
           "type": "native_uri",
           "userType": 1,
-          "isDisplay": false,
+          "isDisplay": true,
           "targetRouter": "/riki_order/detail?id=${orderId}"
         }
       ]
@@ -2680,7 +2680,7 @@
           "title": "查看详情",
           "type": "native_uri",
           "userType": 1,
-          "isDisplay": false,
+          "isDisplay": true,
           "targetRouter": "/riki_process_service/amount_room_result?serveId=${serveId}&serveType=${serveType}&projectId=${projectId}"
         }
       ]
@@ -2698,7 +2698,7 @@
           "title": "查看详情",
           "type": "native_uri",
           "userType": 1,
-          "isDisplay": false,
+          "isDisplay": true,
           "targetRouter": "/riki_process_service/design_result_confirm?serveId=${serveId}&designStageDes=${stageName}&projectId=${projectId}"
         }
       ]
@@ -2716,7 +2716,7 @@
           "title": "查看详情",
           "type": "native_uri",
           "userType": 1,
-          "isDisplay": false,
+          "isDisplay": true,
           "targetRouter": "/riki_process_service/furnish/design_report?serveId=${serveId}&projectId=${projectId}"
         }
       ]
@@ -2734,7 +2734,7 @@
           "title": "查看详情",
           "type": "native_uri",
           "userType": 1,
-          "isDisplay": false,
+          "isDisplay": true,
           "targetRouter": "/riki_process_service/online_disclosure?serveId=${serveId}&projectId=${projectId}"
         }
       ]
