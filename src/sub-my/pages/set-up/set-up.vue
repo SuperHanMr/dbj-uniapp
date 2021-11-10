@@ -5,7 +5,7 @@
 				<view class="item">
 					<text>{{item.title}}</text>
 					<image v-if="index <(listArr.length-1)" src="../../static/icon_setup_more@2x.png" mode=""></image>
-					<text v-else>v 2.0.0</text>
+					<text v-else>v {{ version }}</text>
 				</view>
 				<view class="line" v-if="index <(listArr.length-1)" />
 			</view>
@@ -30,6 +30,7 @@
 	export default {
 		data() {
 			return {
+        version: "",
 				listArr: [{
 						title: "打扮家平台服务协议",
 						url: '/static/dbj-protocol/protocol.html'
@@ -54,6 +55,12 @@
 				]
 			};
 		},
+    mounted() {
+      let info = uni.getAccountInfoSync().miniProgram;
+      if (info) {
+        this.version = info.version || "2.0.0";
+      }
+    },
 		methods: {
 
 			onClick(item, index) {
