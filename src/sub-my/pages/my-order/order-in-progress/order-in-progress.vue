@@ -36,6 +36,7 @@
 							:orderStatus="2"
 							:paddingBottom="24"
 							:dataList="item2"
+							:refundApplyMode="orderInfo.refundApplyMode"
 							@handleDetail="goToDetail(item2)"
 							@toApplayForRefund="toApplayForRefund(item2,1)"
 							@refundCancel="refundCancel(item2)"
@@ -57,11 +58,11 @@
 				:showPayType="true"
 				:payTime="orderInfo.payTime"
 			/>
-
+			
 			<view
 				class="applyforRefund-confirmReceipt"
 				:style="{paddingBottom:systemBottom,height:systemHeight}"
-				v-if="orderInfo.showRefundBtn || (orderInfo.stockType==0 &&orderInfo.shipmentStatus == 1)"
+				v-if="orderInfo.showRefundBtn || (orderInfo.stockType == 0 && orderInfo.shipmentStatus == 1)"
 			>
 				<view
 					v-if="orderInfo.showRefundBtn"
@@ -77,6 +78,48 @@
 				>
 					确认收货
 				</view>
+			</view>
+			
+			<!-- 申请退款之后的其他状态 -->
+			<!-- 
+				showRefundBtn  是否显示退款按钮
+				refundApplyMode 申请方式 1单商品 2 整单退款
+				stockType 库存方式 0无仓库 1有仓库
+				shipmentStatus 发货状态（0待发货 1待收货 2已收货）
+			-->
+			<view
+				class="applyforRefund-confirmReceipt2"
+				:style="{paddingBottom:systemBottom}"
+				v-if="!orderInfo.showRefundBtn && orderInfo.refundApplyMode == 2 && orderInfo.stockType == 0 "
+			>
+			
+			<view class="refundOrderStatus" 
+				v-if="orderInfo.refundBillStatus == 0 || orderInfo.refundBillStatus == 1" 
+				@click="refundCancel(orderInfo)"
+			>
+				取消退款
+			</view>
+			
+			<view class="refundOrderStatus" 
+				v-if="orderInfo.refundBillStatus == 2" 
+				@click="refundSuccess(orderInfo)" 
+			>
+				退款成功
+			</view>
+			
+			<view class="refundOrderStatus" style="color:#FF3347;"
+				v-if="orderInfo.refundBillStatus == 5" 
+				@click="refundFailed(orderInfo)"
+			>
+				退款失败
+			</view>
+			
+			<view class="refundOrderStatus" 
+				v-if="(orderInfo.refundBillStatus == 3 || orderInfo.refundBillStatus == 4) && orderInfo.shipmentStatus == 0"
+				@click="refundClose(orderInfo)"
+			>
+				退款关闭
+			</view>
 			</view>
 
 		</view>
@@ -130,7 +173,7 @@
 			const menuButtonInfo = uni.getMenuButtonBoundingClientRect();
 			this.containerBottom = menuButtonInfo.bottom;
 			this.systemBottom = menuButtonInfo.bottom + "rpx";
-			this.systemHeight = menuButtonInfo.bottom + this.num + "rpx";
+			this.systemHeight = menuButtonInfo.bottom  + "rpx";
 		},
 		onPageScroll(scrollTop) {
 			this.scrollTop = scrollTop.scrollTop
@@ -210,6 +253,7 @@
 					});
 				} 
 			},
+			
 			refundCancel(item) {
 				this.itemId=item.refundId
 				this.title="确定要取消本次申请退款？" 
@@ -453,7 +497,7 @@
 	}
 
 	// 底部 确认收货 及申请退款按钮
-	.applyforRefund-confirmReceipt {
+	.applyforRefund-confirmReceipt,.applyforRefund-confirmReceipt2{
 		position: fixed;
 		bottom: 0;
 		width: 686rpx;
@@ -489,6 +533,23 @@
 			color: #111111;
 			font-size: 24rpx;
 			border: 2rpx solid #eaeaea;
+		}
+	}
+	.applyforRefund-confirmReceipt{
+		
+	}
+	.applyforRefund-confirmReceipt2{
+		padding-top: 30rpx;
+		.refundOrderStatus{
+			width: 160rpx;
+			height: 56rpx;
+			line-height: 54rpx;
+			text-align: center;
+			border-radius: 16rpx;
+			border: 2rpx solid #EAEAEA;
+			font-size: 24rpx;
+			font-weight: 400;
+			color: #333333;
 		}
 	}
 

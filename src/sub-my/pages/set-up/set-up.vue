@@ -5,7 +5,7 @@
 				<view class="item">
 					<text>{{item.title}}</text>
 					<image v-if="index <(listArr.length-1)" src="../../static/icon_setup_more@2x.png" mode=""></image>
-					<text v-else>v 2.0.0</text>
+					<text v-else>{{version }}</text>
 				</view>
 				<view class="line" v-if="index <(listArr.length-1)" />
 			</view>
@@ -51,13 +51,17 @@
 						title: "版本号",
 						url: ""
 					}
-				]
+				],
+				version:"",
 			};
 		},
+		onLoad() {
+			this.version= uni.getAccountInfoSync().miniProgram.version || 'v 2.0.0'
+			console.log("this.version=",this.version)
+		},
+		
 		methods: {
-
 			onClick(item, index) {
-
 				if (index < 2) {
 					console.log("this.ENV.VUE_APP_BASE_API=", this.ENV.VUE_APP_BASE_API)
 
