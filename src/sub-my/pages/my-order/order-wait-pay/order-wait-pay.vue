@@ -292,7 +292,7 @@ export default {
           url: `../multiple-payments/multiple-payments?orderId=${this.orderNo}&type=detail&remainTime=${this.orderInfo.remainTime}`,
         });
       } else {
-        let openId = uni.getStorageSync("openId");
+        let openId = getApp().globalData.openId;
         orderPay({
           orderId: this.orderNo,
           payType: 1, //支付类型  1微信支付",

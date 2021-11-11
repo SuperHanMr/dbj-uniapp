@@ -527,7 +527,7 @@
           // let skuInfos = []
           let params = {
             payType: 1, //"int //支付方式  1微信支付",
-            openid: uni.getStorageSync("openId"), //"string //微信openid 小程序支付用 app支付不传或传空",
+            openid: getApp().globalData.openId, //"string //微信openid 小程序支付用 app支付不传或传空",
             projectId: this.projectId || 0, //"long //项目id  非必须 默认0",
             customerId: this.customerId || 0, //"long //业主id  非必须 默认0",
             estateId: this.currentHouse.id, //"long //房产id   非必须 默认0",

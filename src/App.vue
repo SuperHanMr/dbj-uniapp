@@ -21,13 +21,16 @@
 			currentRoute: "/pages/home/index/index",
 			previewimageStatus: false,
 			screenHeight: 0,
+      openId: ""
 		},
 
 		onLaunch: function() {
 			const userId = uni.getStorageSync("userId");
-			if (!userId) {} else {
+			const openId = uni.getStorageSync("openId");
+			if (userId && openId) {
 				let token = uni.getStorageSync("scn");
 				this.globalData.token = token;
+        this.globalData.openId = openId;
 				oauthGomeInfo({
 					hideToast: true,
 					ignoreLogin: true,
