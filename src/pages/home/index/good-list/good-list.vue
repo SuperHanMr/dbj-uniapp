@@ -20,7 +20,7 @@
       <view>
         <view
           v-for="(item2,index) in list2"
-          class="row-item margin-left24"
+          class="row-item "
           :key="item2.id"
         >
           <good-list-item :item="item2"></good-list-item>
@@ -143,16 +143,12 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.list-left,
-.list-right {
-  flex: 1;
-}
 
 .goods-view {
-  width: 100%;
-  display: flex;
-  flex-direction: row;
-  justify-content: center;
+		padding: 0 24rpx;
+		display: flex;
+		flex-direction: row;
+		justify-content: space-between;
 }
 
 .margin-left24 {
