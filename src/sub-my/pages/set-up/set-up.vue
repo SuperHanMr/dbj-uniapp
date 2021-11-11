@@ -107,6 +107,7 @@
 						getApp().globalData = {
 							userInfo: {},
 							token: "",
+							openId: "",
 							city: "",
 							houses: [],
 							tim: null,
