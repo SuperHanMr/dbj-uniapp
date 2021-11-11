@@ -159,7 +159,7 @@
 			</view>
 
 		</view>
-		<good-list ref="goodList" :page="page" @loadingFinish="loadingFinish" :areaId="areaId"></good-list>
+		<good-list ref="goodList" :page="page"  :areaId="areaId"></good-list>
 	</view>
 </template>
 
@@ -205,7 +205,6 @@
 				list: [],
 				comList: [],
 				caseList: [],
-				loading: false,
 				page: 1,
 				totalPage: 1,
 				navBarHeight: "",
@@ -216,8 +215,7 @@
 				swiperAuto: false,
 				status1List: [],
 				status2List: [],
-				currentAddress: {},
-				loading: false
+				currentAddress: {}
 			};
 		},
 		watch: {
@@ -314,10 +312,13 @@
 		},
 
 		onReachBottom() {
-			if (!this.loading) {
-				this.page++;
+			
+			this.page++;
+			console.log(this.page)
+				
+			setTimeout(e=>{
 				this.getHomeGoodsList();
-			}
+			})
 		},
 		onPullDownRefresh() {
 			this.reloadData();
@@ -357,9 +358,6 @@
 			},
 		},
 		methods: {
-			loadingFinish() {
-				this.loading = false
-			},
 			toLiveList() {
 				uni.navigateTo({
 					url: "../../../sub-home/pages/lives-list/lives-list",
@@ -654,7 +652,6 @@
 				this.getHomeGoodsList();
 			},
 			getHomeGoodsList() {
-				this.loading = true;
 				this.$refs.goodList.getHomeGoodsList()
 			},
 			async getBannerList() {
