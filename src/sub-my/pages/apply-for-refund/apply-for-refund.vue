@@ -8,7 +8,7 @@
 					</view>
 					<view v-else>
 						<view v-for="item2 in item.details" :key="item2.id">
-							<order-item  
+							<order-item
 								:dataList="item2"
 								:orderStatus="type?'2':'0'"
 							>
@@ -38,7 +38,7 @@
 							<order-item :refundType="true" :dataList="item4" :showIcon="true" ></order-item>
 						</view>
 				</view>
-				
+
 			<!-- 运费和搬运费 -->
 			<view class="price-container" v-if="refundInfo.freight || refundInfo.handlingFees" >
 			    <view class="price-item" v-if="refundInfo.freight">
@@ -53,7 +53,7 @@
 					</view>
 			    <view class="price-item" v-if="refundInfo.handlingFees">
 			      <view class="header">
-							
+
 			        <text style="margin-right: 8rpx;">搬运费</text>
 							<image class="icon" src="../../../static/price_icon.svg" @click="readExpenses(2)" mode=""></image>
 						</view>
@@ -78,9 +78,9 @@
 						<image src="../../static/ic_arraw_down.svg" mode="" @click="openPopup()"/>
 					</view>
         </view>
-				
+
 				<view class="line" />
-				
+
 				<!-- <view class="refund-price" v-if="type == 'whole'">
 					<view class="edit-price">
 						<view class="left">
@@ -94,7 +94,7 @@
 					<view class="tip-text">
 						商品未发货，商家同意后将会全额退还。
 					</view>
-				</view> 
+				</view>
 				<view class="refund-price" v-if="type == 'partical'">
 					<view	v-if="showEditInput==true"	class="edit-price">
 						<view class="left">
@@ -117,7 +117,7 @@
 							</view>
 						</view>
 					</view>
-	
+
 					<view v-else class="show-price">
 						<view class="left">
 							<view class="icon">*</view>
@@ -133,7 +133,7 @@
 						最多可以填写￥{{handlePrice(refundInfo.totalActualIncomeAmount)[0]}}.{{handlePrice(refundInfo.totalActualIncomeAmount)[1]}}，也可申请部分金额，以您与商家沟通协商的结果为准
 					</view>
         </view> -->
-				
+
 				<view class="refund-price">
 					<view class="edit-price">
 						<view class="left">
@@ -145,8 +145,11 @@
 						  <text v-else class="price-font">￥{{handlePrice(refundInfo.totalActualIncomeAmount)[0] || 0}}.{{handlePrice(refundInfo.totalActualIncomeAmount)[1]}}</text>
 						</view>
 					</view>
-					<view class="tip-text">
+					<view class="tip-text" v-if="refundType == 1">
 						商品未发货，商家同意后将会全额退还。
+					</view>
+					<view class="tip-text" v-if="refundType == 2">
+						服务未开始，商家同意后将会全额退还。
 					</view>
 				</view>
 			</view>
@@ -154,7 +157,7 @@
       <view class="remark-container">
         <view class="header">
           <text>备注说明</text>
-         
+
         </view>
 				<view class="body">
 					<textarea
@@ -179,7 +182,7 @@
 					提交申请
 				</view>
 			</view>
-			
+
 		</view>
 		<expenses-toast  ref='expensesToast' :expensesType="expensesType"></expenses-toast>
   </view>
@@ -203,26 +206,27 @@ export default {
 
       type: "", //partical部分退款  whole整个退款
       refundInfo: {},
-			
+
 			refundReasonList:[],//退款原因
 			reasonList:[],
-			
+
 			reasonValue:"",
 			reasonName:"",
-			
+
 			returnMoney:"",
-			
-			
+
+
 			refundId:"",
 			orderDetailId:"",
-			
+
       systemBottom: "",
-			
+
 			expensesType:"",
 			orderDetailsId:'',
 			applyMode:'',
 			freight:'',
 			handlingFees:'',
+			refundType:"",
     };
   },
   mounted(e) {
@@ -254,6 +258,7 @@ export default {
 				}
 				getRefundInformation(params).then(res=>{
 					this.refundInfo = res
+					this.refundType=this.refundInfo.type
 					console.log("this.refundInfo=",this.refundInfo)
 					this.refundInfo.actualIncomeAmount = this.refundInfo.maxRefundAmount
 					this.returnMoney = this.refundInfo.maxRefundAmount
@@ -278,6 +283,7 @@ export default {
 				}
 				getRefundInformation(params).then(res=>{
 					this.refundInfo = res
+					this.refundType=this.refundInfo.type
 					console.log("this.refundInfo=",this.refundInfo)
 					this.refundInfo.actualIncomeAmount = this.refundInfo.maxRefundAmount
 					this.returnMoney = this.refundInfo.maxRefundAmount
@@ -314,6 +320,7 @@ export default {
       getRefundInfo({ id: this.refundId }).then(data => {
         console.log("重新获取的订单信息=",data)
 				this.type = data.applyMode==1?'partical':'whole'
+				this.refundType = data.type
 				this.query.remarks = data.remark
 				this.textAreaLength = data.remark.length
 				this.reasonValue = data.reasonId
@@ -338,7 +345,7 @@ export default {
 				this.refundInfo.handlingFees = data.handlingFees
       });
     },
-		
+
 		// 获取退款原因列表
 		getRefundReasonList(){
 			refundReason({codeKey:"refund_reason"}).then(list=>{
@@ -352,7 +359,7 @@ export default {
 		  this.expensesType = num
 		  this.$refs.expensesToast.showPupop()
 		},
-		
+
 		submitApplication() {
 			// 提交申请后该订单会进入到退款页面，状态显示退款中；并直接跳转到该订单退款详情页
       console.log("申请退款");
@@ -410,7 +417,7 @@ export default {
 		onTextAreaInput(event) {
       this.textAreaLength = event.target.value.length;
     },
-		
+
 		// 请选择原因
     openPopup() {
 			uni.showActionSheet({
