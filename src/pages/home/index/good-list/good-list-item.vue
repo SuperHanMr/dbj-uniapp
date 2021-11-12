@@ -15,34 +15,34 @@
 			</view>
 
 			<view class="price">
-				<text class="price-font pre">
+				<text class="price-font pre" style="color: #2b2f33;">
 					¥
 				</text>
 				<text class=" price-font amount">
 					{{foramtPrice(item.product.skuPrice)}}
 				</text>
 				<text class="price-font ex">.{{formatCent(item.product.skuPrice)}}</text>
-				<text style="vertical-align: 13%;">
+				<text style="vertical-align: 13%;color: #2b2f33;">
 					/{{item.product.salesUnit.unitName||''}}
 				</text>
 			</view>
-			<view v-if="item.product.hasAllowance" class=" price " style="color: #bcbcbc;margin-top: 0;">
-				<text style="margin-right: 10rpx;text-decoration:line-through">市场价 :
-					<text class="price-font pre">
+			<view v-if="item.product.hasAllowance" class=" price " style="color: #bcbcbc;margin-top: -5rpx;">
+				<text style="font-size: 20rpx;margin-right: 10rpx;text-decoration:line-through">市场价 :
+					<text class="price-font pre " style="font-size: 20rpx;">
 						¥
 					</text>
-					<text class=" price-font amount" style="color: #bcbcbc;">
+					<text class=" price-font amount" style="color: #bcbcbc;font-size: 26rpx;">
 						{{foramtPrice(item.product.sku.marketPrice)}}
 					</text>
 					<text class="price-font ex"
-						style="color: #bcbcbc;">.{{formatCent(item.product.sku.marketPrice)}}</text>
-					<text style="vertical-align: 13%; color: #bcbcbc;">
+						style="color: #bcbcbc;font-size: 20rpx;">.{{formatCent(item.product.sku.marketPrice)}}</text>
+					<text style="vertical-align: 13%; color: #bcbcbc;font-size: 20rpx;">
 						/{{item.product.salesUnit.unitName||''}}
 					</text>
 				</text>
 			</view>
 		</view>
-		<view style="height: 19rpx;">
+		<view style="height: 12rpx;">
 		</view>
 
 	</view>
@@ -64,8 +64,7 @@
 			}
 		},
 		data() {
-			return {
-			}
+			return {}
 		},
 		methods: {
 			toGoodsDetail(id) {
@@ -106,6 +105,7 @@
 		.img {
 			width: 100%;
 			height: 343rpx;
+			display: block;
 		}
 
 		.allowance-view {
@@ -122,7 +122,7 @@
 				font-size: 20rpx;
 				font-weight: 400;
 				text-align: center;
-				padding: 0 7rpx;
+				padding: 0 8rpx;
 			}
 		}
 
@@ -131,8 +131,7 @@
 			font-size: 24rpx;
 			font-weight: 400;
 			color: #939699;
-			line-height: 26rpx;
-			font-family: Unnamed-Regular, Unnamed;
+			line-height: 0;
 
 			.amount {
 				font-size: 40rpx;
@@ -163,7 +162,7 @@
 			flex-direction: column;
 
 			.title {
-				margin-top: 10rpx;
+				margin-top: 8rpx;
 				font-size: 28rpx;
 				color: #2b2f33;
 				line-height: 40rpx;
@@ -180,7 +179,7 @@
 				height: 30rpx;
 				margin-right: 8rpx;
 				line-height: 30rpx;
-				border-radius: 4rpx;
+				border-radius: 6rpx;
 				color: #35c4c4;
 				font-size: 20rpx;
 				text-align: center;
