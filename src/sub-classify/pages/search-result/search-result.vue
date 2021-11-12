@@ -46,7 +46,7 @@
                   <text>.{{String(goodsItem.product.skuPrice/100).split(".")[1]?String(goodsItem.product.skuPrice/100).split(".")[1]: "00"}}</text>
                   <text>/{{goodsItem.product.salesUnit.unitName?goodsItem.product.salesUnit.unitName:""}}</text>
                   <text class="del-price"
-                    v-if="goodsItem.product.hasAllowance">市场价：¥{{goodsItem.product.sku.marketPrice/100}}/{{goodsItem.product.salesUnit.unitName?goodsItem.product.salesUnit.unitName:""}}</text>
+                    v-if="goodsItem.product.sku.marketPrice > goodsItem.product.skuPrice">市场价：¥{{goodsItem.product.sku.marketPrice/100}}/{{goodsItem.product.salesUnit.unitName?goodsItem.product.salesUnit.unitName:""}}</text>
                 </view>
               </view>
               <view class="foot">
