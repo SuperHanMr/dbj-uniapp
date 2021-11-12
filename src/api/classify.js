@@ -6,6 +6,9 @@ export function getClassifyList (areaId) {
 export function getGoodsList (params) {
   return request.post('/product/app/search/query', params)
 }
+export function getHomeGoodsList (params) {
+  return request.post('/app/search/recommend/home', params)
+}
 export function getAddressInfo(houseId) {
   return request.get(`/customer/app/estate/queryEstateDetail/${houseId}`);
 }
