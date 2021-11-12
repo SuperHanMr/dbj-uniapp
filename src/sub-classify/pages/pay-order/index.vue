@@ -12,8 +12,8 @@
       </uni-popup>
     </view>
     <view v-else>
-      <address-picker :houseId="houseId" :productType="productType" @emitInfo="emitInfo" @typeServe2="typeServe2" :originFrom="originFrom" :addUser="addUser"
-        v-if="isShow">
+      <address-picker :houseId="houseId" :productType="productType" @emitInfo="emitInfo" @typeServe2="typeServe2"
+        :originFrom="originFrom" :addUser="addUser" v-if="isShow">
       </address-picker>
       <view class="content">
         <view class="shop-item" v-for="(shopItem, shopIndex) in orderInfo.storeInfos" :key="shopIndex">
@@ -24,13 +24,17 @@
               <!-- <image src="https://ali-image-test.dabanjia.com/image/20210816/11/1629087052820_2600%241626858792066_0436s4.png" class="goodsItemImg"></image> -->
               <view class="goods-info">
                 <view class="goods-desc">
-                  <text class="goods-type">{{goodsItem.productType=== 1?"物品":"服务"}}</text>
+                  <text class="goods-type">{{goodsItem.productType === 1?"物品":"服务"}}</text>
                   {{goodsItem.spuName}}
                 </view>
                 <view class="spu-class">
                   <view class='tag'>{{levelName}}{{levelName?'|':''}}{{goodsItem.skuName}}</view>
                   <view class="total-num">共{{goodsItem.buyCount}}{{goodsItem.unit?goodsItem.unit:""}}</view>
                 </view>
+         <!--       <view class="safeguard" @click="readSafeguard(0)" v-if="goodsItem.productType === 1">
+                  七天无理由退换
+                  <text class="question-icon safe-icon"></text>
+                </view> -->
                 <view class="goods-spec">
                   <view class="goods-money">
                     ￥
@@ -45,15 +49,15 @@
             </view>
             <view class="shop-reduce no-send-tip good-tip" v-if="goodsItem.errorType">
               <view class="item-reduce-box" v-if="goodsItem.errorType">
-                <text v-if="goodsItem.errorType === 1">不在服务范围</text>
+                <text v-if="goodsItem.errorType === 1">当前地址不在商品服务范围内，请更换地址</text>
                 <text v-if="goodsItem.errorType === 2">当前地址无法配送该商品，请更换地址</text>
                 <text v-if="goodsItem.errorType === 3">该房屋下已购买该服务，不可重复购买</text>
                 <text v-if="goodsItem.errorType === 4 && cancelDialog">该服务需精算师指导下完成</text>
-                <text v-if="goodsItem.errorType === 5 && cancelDialog">该服务需管家指导下完成</text>
+                <text v-if="goodsItem.errorType === 5 && cancelDialog">请从精算单购买管家服务</text>
                 <text v-if="goodsItem.errorType === 6">您已跳过该工序，不可购买</text>
                 <text v-if="goodsItem.errorType === 7">暂不可购买，请在精算服务结束后于精算单中购买</text>
                 <text v-if="goodsItem.errorType === 8 && cancelDialog">请从装修页面查询购买</text>
-                <text v-if="goodsItem.errorType === 9">暂不可购买，请确认管家抢单后于精算单中购买</text>
+                <text v-if="goodsItem.errorType === 9">暂不可购买，请确认管家抢单后，在精算单中购买</text>
               </view>
             </view>
             <view class="choose-time" v-if="productType === 2 && goodsItem.appointmentRequired">
@@ -154,6 +158,7 @@
         </view>
       </view>
       <expenses-toast ref='expensesToast' :expensesType="expensesType"></expenses-toast>
+      <safeguard-toast ref='safeguardToast' :refundable="refundable"></safeguard-toast>
       <date-picker ref='datePicker' @getTime="getTime"></date-picker>
       <order-toast ref='orderToast' :houseId="houseId" :hasCanBuy="hasCanBuy" :noStoreInfos="noStoreInfos"
         @toastConfirm="toastConfirm" @backCart="backCart"></order-toast>
@@ -195,11 +200,13 @@
   } from '../../../api/classify.js'
   import orderToast from "./order-toast.vue"
   import datePicker from "./date-picker.vue"
-  // import expensesToast from "./expenses-toast.vue"
+  // import expensesToast from "./expenses-toast.vue" 
+  import safeguardToast from "./safeguard-toast.vue"
   export default {
     components: {
       orderToast,
-      datePicker
+      datePicker,
+      safeguardToast
     },
     data() {
       return {
@@ -238,7 +245,8 @@
         projectId: 0,
         level: 0,
         levelName: "",
-        cancelDialog: false
+        cancelDialog: false,
+        refundable: true,
       }
     },
     onLoad(e) {
@@ -303,6 +311,9 @@
         this.expensesType = num
         this.$refs.expensesToast.showPupop()
       },
+      readSafeguard() {
+        this.$refs.safeguardToast.showPupop()
+      },
       getTime(val) {
         this.time = val[0] + '年' + val[1] + '月' + val[2] + '日' + val[3] + '时' + val[4] + '分'
         this.$set(this.orderInfo.storeInfos[this.shopIndex].skuInfos[this.goodIndex], "doorTime", this.time)
@@ -312,7 +323,7 @@
       },
       confirmHousePop() {
         uni.switchTab({
-            url: '/pages/home/index/index'
+          url: '/pages/home/index/index'
         });
       },
       cancelHousePop() {
@@ -384,7 +395,7 @@
                   addingUserId: skuItem.addingUserId
                 })
               }
-              if(skuItem.appointmentRequired){
+              if (skuItem.appointmentRequired) {
                 this.hasTime = true
               }
               // 结算可配送和不可配送数据
@@ -398,7 +409,7 @@
                   }
                 } else if (skuItem.errorType === 5) {
                   this.toastType = 5
-                  this.toastText = "该服务需管家指导下完成"
+                  this.toastText = "请从精算单购买管家服务"
                   if (this.$refs.cancelDialog.open) {
                     this.$refs.cancelDialog.open()
                   }
@@ -414,7 +425,6 @@
                 this.hasCanBuy = true
                 canStoreItem.skuInfos.push(skuItem)
                 this.totalClassNum += 1
-                console.log(this.totalClassNum)
                 // 整理出结算参数
                 let orderDetailItem = {
                   "relationId": skuItem.skuId, //实体id,
@@ -456,7 +466,7 @@
         this.hasNoBuyItem = false
       },
       pay() {
-        if(this.hasTime && !this.time) {
+        if (this.hasTime && !this.time) {
           this.$refs.timeDialog.open()
           return
         }
@@ -473,7 +483,7 @@
           })
         })
         uni.$emit('submitOrder') // 购物车需要的逻辑
-        let orderPrice = Number(Number(this.totalPrice).toFixed(2).replace('.', "")) 
+        let orderPrice = Number(Number(this.totalPrice).toFixed(2).replace('.', ""))
         let params = {
           payType: 1, //"int //支付方式  1微信支付",
           openid: uni.getStorageSync("openId"), //"string //微信openid 小程序支付用 app支付不传或传空",
@@ -609,7 +619,7 @@
   }
 
   .goods-info .goods-desc {
-    width: 420rpx;
+    width: 300rpx;
     font-size: 28rpx;
     color: #333333;
     line-height: 40rpx;
@@ -644,12 +654,14 @@
     font-size: 22rpx;
     display: flex;
     position: absolute;
-    bottom: 0;
+    top: 0;
+    right: 0;
     align-items: baseline;
   }
 
   .goods-info .spu-class {
     position: relative;
+    margin-top: 10rpx;
   }
 
   .goods-info .tag {
@@ -669,7 +681,7 @@
     -webkit-line-clamp: 2;
     line-clamp: 2;
     -webkit-box-orient: vertical;
-    max-width: 320rpx;
+    max-width: 300rpx;
     text-align: left;
   }
 
@@ -681,12 +693,27 @@
     position: absolute;
   }
 
+  .safeguard {
+    position: absolute;
+    bottom: 0;
+    padding: 2rpx 10rpx;
+    border: 1px solid ##FF3347;
+    color: #FF3347;
+    font-size: 10px;
+  }
+
+  .safe-icon {
+    width: 18rpx;
+    height: 18rpx;
+    top: 12rpx;
+    background-image: url("../../static/image/safe-question.png");
+  }
+
   .goods-money {
     font-size: 24rpx;
     color: #333333;
     vertical-align: bottom;
     font-weight: bold;
-    margin-right: 30rpx;
   }
 
   .goods-money .integer-price {
@@ -909,10 +936,12 @@
     background: #ffffff;
     border-radius: 24rpx;
   }
-  .house-item{
+
+  .house-item {
     height: 250rpx;
     overflow: hidden;
   }
+
   .popup-item .popup-title {
     height: 128rpx;
     line-height: 128rpx;
@@ -923,22 +952,27 @@
     text-align: center;
     color: #111111;
   }
-  .house-item .house-popup{
+
+  .house-item .house-popup {
     box-sizing: border-box;
     padding: 40rpx 10rpx;
     height: 160rpx;
     line-height: 1.6em;
   }
+
   .popup-item .popup-button {
     display: flex;
   }
-  .popup-item .house-button{
+
+  .popup-item .house-button {
     height: 100rpx;
   }
-  .popup-item .house-button view{
+
+  .popup-item .house-button view {
     height: 100% !important;
     border-right: 1px solid #f5f5f5;
   }
+
   .popup-item .popup-button view {
     height: 82rpx;
     line-height: 84rpx;
