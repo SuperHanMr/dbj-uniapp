@@ -574,22 +574,27 @@
       getMsgNum() {
         if (this.currentProject && this.currentProject.projectId) {
           getMsgNum(this.currentProject.projectId).then(res => {
-            this.msgNum = res.count
+            this.msgNum = res.count+''
             uni.stopPullDownRefresh()
-            // uni.setTabBarBadge({
-            //   index: 2,
-            //   text: this.msgNum+'',
-            //   success:()=>{
-            //     console.log('sucess')
-            //   },
-            //   fail:(e)=>{
-            //     console.log('fail',e)
-            //   }
-            // })
+            if(res.count===0){
+              console.log(1111)
+              uni.removeTabBarBadge({
+                index: 2,
+              })
+            }else{
+              let num = res.count+''
+              uni.setTabBarBadge({
+                    index: 2,
+                    text: this.msgNum, 
+              })
+            }
 
           })
         } else {
           this.msgNum = 0
+          uni.removeTabBarBadge({
+            index: 2,
+          })
         }
       }
     },

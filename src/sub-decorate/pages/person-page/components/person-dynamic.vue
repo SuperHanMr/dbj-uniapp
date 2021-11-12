@@ -1,6 +1,6 @@
 <template>
-  <view class="person-dynamic person-content-item">
-    <view class="title">Ta的动态</view>
+  <view class="person-dynamic person-content-item" v-if="!(isGrab&&dynamics.length==0)">
+    <view class="title" v-if="!isGrab">Ta的动态</view>
     <decorateDynamic v-if="dynamics.length>0" :dynamics='dynamics' :personId='personId' :isPerson='true' @likeC='likeC' @commentC='commentC' ></decorateDynamic>
     <view class="empty" v-else>
       暂无动态
@@ -19,7 +19,11 @@
       decorateDynamic,
     },
     props:{
-      personId:0
+      personId:0,
+      isGrab:{
+        type:Boolean,
+        default:false,
+      }
     },
     data(){
       return{
@@ -65,6 +69,7 @@
         })
       },
       requestDynamic(){
+        console.log(this.personId)
       	let params = 
       	 {
       		creatorId: this.personId,
@@ -78,7 +83,11 @@
           		
           		this.dynamics = data.list
               this.totalPage =  data.totalPage||0
-          	}
+              console.log()
+              this.$emit('contentEmpty','dynamicEmpty',data.list.length>0?true:false)
+          	}else{
+              this.$emit('contentEmpty','dynamicEmpty',false)
+            }
           })
         }else{
           getDecorateDynamic(params).then(data => {
@@ -86,7 +95,10 @@
           		
           		this.dynamics = data.list
               this.totalPage =  data.totalPage||0
-          	}
+              this.$emit('contentEmpty','dynamicEmpty',data.list.length>0?true:false)
+          	}else{
+              this.$emit('contentEmpty','dynamicEmpty',false)
+            }
           })
         }
       	

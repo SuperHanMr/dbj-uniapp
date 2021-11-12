@@ -183,7 +183,7 @@
       height: 44rpx;
       opacity: 1;
       border: 0.5px solid #cccccc;
-      border-radius: 12px;
+      border-radius: 16rpx;
       margin: 24rpx auto;
       line-height: 44rpx;
       font-weight: 400;

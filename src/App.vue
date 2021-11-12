@@ -2,6 +2,9 @@
 	import {
 		oauthGomeInfo
 	} from "api/login.js";
+  import {
+    getMsgNumByHouse
+  } from "api/decorate.js"
 	import {
 		createTim
 	} from "utils/tim.js";
@@ -24,7 +27,10 @@
 		},
 
 		onLaunch: function() {
+      
 			const userId = uni.getStorageSync("userId");
+      uni.$on('system-messages', this.watchMsg)
+      uni.$on('currentHouseChange', this.watchMsg)
 			if (!userId) {} else {
 				let token = uni.getStorageSync("scn");
 				this.globalData.token = token;
@@ -48,11 +54,38 @@
 			}
 		},
 		onShow: function() {
+      
 			console.log("App Show");
 		},
 		onHide: function() {
 			console.log("App Hide");
 		},
+    methods:{
+      watchMsg(){
+        console.log('监听房屋消息','??????????????',this.globalData.currentHouse)
+        setTimeout(()=>{
+          getMsgNumByHouse(this.globalData.currentHouse?this.globalData.currentHouse.id:this.globalData.currentEstate.id).then(res=>{
+            if(res.count===0){
+              uni.removeTabBarBadge({
+                index:2
+              })
+            }else{
+              let num = res.count+''
+              uni.setTabBarBadge({
+                    index: 2,
+                    text: num, 
+              })
+            }
+          }).catch(err=>{
+            uni.removeTabBarBadge({
+              index:2
+            })
+          })
+        },100)
+        
+        
+      }
+    },
 	};
 </script>
 
