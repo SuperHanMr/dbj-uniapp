@@ -465,7 +465,7 @@
 						url: `multiple-payments/multiple-payments?orderId=${item.id}&remainTime=${item.remainTime}&type=list`,
 					});
 				} else {
-					let openId = uni.getStorageSync("openId");
+					let openId = getApp().globalData.openId;
 					console.log("openId=",this.openId)
 					orderPay({
 						orderId:Number(item.id),

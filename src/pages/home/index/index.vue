@@ -129,7 +129,8 @@
 			<view style="width: 8rpx;height: 1rpx;flex-shrink: 0;">
 			</view>
 			<view v-for="(item,index) in liveList" :key="index" class="item margin-left24" @click="onLiveClick(item)">
-				<image class="img" :src="item.mediaType==1?item.roomLiveMediaVO.scaleImg:item.roomVideoMediaVO.scaleImg |imgFormat(494,660)"
+				<image class="img"
+					:src="item.mediaType==1?item.roomLiveMediaVO.scaleImg:item.roomVideoMediaVO.scaleImg |imgFormat(494,660)"
 					mode="aspectFill"></image>
 				</image>
 				<view class="top-content">
@@ -158,38 +159,7 @@
 			</view>
 
 		</view>
-		<view class="goods-list">
-			<view class="item" v-for="(item,index) in goodsList" :key="item.id"
-				:class="{'margin-left16':index%2!=0,'margin-left24':index%2==0}"
-				@click="toGoodsDetail(item.product.skuId)">
-				<image class="img" :src="item.product.skuImage |imgFormat" mode="aspectFill"></image>
-				<view class="info">
-					<view class="title">
-						<text class="tip">
-							{{item.product.productTypeId==1?'物品':'服务'}}
-
-						</text>
-						<text>{{item.product.spuName}}</text>
-					</view>
-					<view class="flex1">
-					</view>
-					<view class="price">
-						<text class="price-font pre">
-							¥
-						</text>
-						<text class=" price-font amount">
-							{{foramtPrice(item)}}
-						</text>
-						<text class="price-font ex">.{{formatCent(item)}}</text>
-						<text style="vertical-align: 13%;">
-							/{{item.product.salesUnit.unitName||''}}
-						</text>
-					</view>
-				</view>
-			</view>
-			<view style="height: 24rpx;width: 700rpx;">
-			</view>
-		</view>
+		<good-list ref="goodList" :page="page"  :areaId="areaId"></good-list>
 	</view>
 </template>
 
@@ -213,9 +183,13 @@
 	import {
 		imgFormat
 	} from '../../../utils/common.js'
+	import GoodList from './good-list/good-list.vue'
 	export default {
 		filters: {
 			imgFormat
+		},
+		components: {
+			GoodList
 		},
 		data() {
 			return {
@@ -231,7 +205,6 @@
 				list: [],
 				comList: [],
 				caseList: [],
-				loading: false,
 				page: 1,
 				totalPage: 1,
 				navBarHeight: "",
@@ -293,7 +266,6 @@
 				this.areaId = 41;
 				this.currentAddress = defaultHouse;
 				this.getHomeList();
-				this.reloadData();
 			});
 			uni.$on("refrishHouse", (item) => {
 				this.reloadData();
@@ -308,7 +280,6 @@
 			});
 			setTimeout(() => {
 				this.getHomeList();
-				this.reloadData();
 			}, 500);
 
 			const systemInfo = uni.getSystemInfoSync();
@@ -341,8 +312,13 @@
 		},
 
 		onReachBottom() {
+			
 			this.page++;
-			this.getHomeGoodsList();
+			console.log(this.page)
+				
+			setTimeout(e=>{
+				this.getHomeGoodsList();
+			})
 		},
 		onPullDownRefresh() {
 			this.reloadData();
@@ -394,7 +370,6 @@
 				this.areaId = item.areaId;
 				uni.$emit("currentHouseChange", item);
 				getApp().globalData.currentHouse = item;
-				this.reloadData();
 			},
 			toSearch() {
 				uni.navigateTo({
@@ -409,18 +384,15 @@
 			toMessage() {
 				this.$store.dispatch("openCustomerConversation");
 			},
-
-			toGoodsDetail(id) {
-				uni.navigateTo({
-					url: "/sub-classify/pages/goods-detail/goods-detail?goodId=" + id,
-				});
-			},
 			foramtPrice(item) {
-				let price = String(item.product.skuPrice || "0");
+				let price = String(item || "0");
 				return price.slice(0, price.length - 2) || "0";
 			},
+			foramtPrePrice(price) {
+				return Number(price / 100).toFixed(2);
+			},
 			formatCent(item) {
-				let price = String(item.product.skuPrice || "0");
+				let price = String(item || "0");
 				let fixedNum = Number(price / 100).toFixed(2);
 				if (String(fixedNum).split(".").length > 1) {
 					return String(fixedNum).split(".")[1];
@@ -676,20 +648,11 @@
 				});
 				//首页推荐商品
 				this.goodsList = [];
+				this.page = 1
 				this.getHomeGoodsList();
 			},
 			getHomeGoodsList() {
-				getGoodsList({
-					pageIndex: this.page,
-					areaId: this.areaId,
-					// simplified: true,
-					// excludeFields: 'product.spu,product.process, product.store,product.supplier,product.sku,product.areaIds,product.areaPrices,product.category'
-				}).then((e) => {
-					if (this.page == 1) {
-						this.goodsList = [];
-					}
-					this.goodsList = this.goodsList.concat(e.page);
-				});
+				this.$refs.goodList.getHomeGoodsList()
 			},
 			async getBannerList() {
 				this.bannerList = await getBanner();
@@ -798,121 +761,9 @@
 		margin-right: 48rpx;
 	}
 
-	.goods-list {
-		display: flex;
-		margin-top: 8rpx;
-		width: 100%;
-		flex-direction: row;
-		flex-wrap: wrap;
-		justify-content: flex-start;
-		margin-bottom: 10rpx;
-
-		.margin-left16 {
-			margin-left: 16rpx;
-		}
-
-		.margin-left24 {
-			margin-left: 24rpx;
-		}
-
-		.margin-right24 {
-			margin-right: 24rpx;
-		}
-
-		.item {
-			margin-top: 16rpx;
-			flex-shrink: 0;
-			width: 343rpx;
-			height: 520rpx;
-			border-radius: 18rpx;
-			border: 0.3px solid #e6eaed;
-			position: relative;
-			overflow: hidden;
-
-			.img {
-				width: 100%;
-				height: 343rpx;
-			}
-
-			.price {
-				margin-bottom: 28rpx;
-				font-size: 24rpx;
-				font-weight: 400;
-				color: #939699;
-				line-height: 26rpx;
-				font-family: Unnamed-Regular, Unnamed;
-
-				.amount {
-					font-size: 40rpx;
-					font-weight: 400;
-					color: #2b2f33;
-					line-height: 42rpx;
-				}
-
-				.ex {
-					font-size: 34rpx;
-					font-weight: 400;
-					color: #2b2f33;
-					line-height: 26rpx;
-				}
-
-				.pre {
-					font-size: 28rpx;
-					font-weight: 400;
-					line-height: 26rpx;
-					padding-right: 5rpx;
-					vertical-align: 3%;
-				}
-			}
-
-			.info {
-				padding: 0 24rpx;
-				display: flex;
-				flex-direction: column;
-				height: 177rpx;
-
-				.title {
-					margin-top: 10rpx;
-					font-size: 28rpx;
-					color: #2b2f33;
-					line-height: 40rpx;
-					overflow: hidden;
-					text-overflow: ellipsis;
-					display: -webkit-box;
-					-webkit-line-clamp: 2; //这个代表你要在几行显示省略号
-					-webkit-box-orient: vertical;
-					vertical-align: middle;
-				}
-
-				.tip {
-					width: 60rpx;
-					height: 30rpx;
-					margin-right: 8rpx;
-					line-height: 30rpx;
-					border-radius: 4rpx;
-					color: #35c4c4;
-					font-size: 20rpx;
-					text-align: center;
-					display: inline-block;
-					border: 1rpx solid #35c4c4;
-					vertical-align: 13%;
-				}
-
-				// .tip:after {
-				// 	display: inline-block;
-				// 	vertical-align: middle;
-				// 	content: "";
-				// 	height: 120%;
-				// }
-			}
-		}
-	}
-
 	.player-scroll {
-		// width: 100%;
 		display: flex;
 		overflow: auto;
-		// margin-top: 14rpx;
 		margin: 14rpx 0 4rpx 0;
 
 		.margin-left24 {
@@ -1089,18 +940,6 @@
 	}
 
 	.function-zone {
-		.border-top {
-			// border-top: 1px soli: ;d #e7e8e8;
-		}
-
-		.border-top-left {
-			// border-top-left-radius: 16rpx;
-			// border-left: 1px solid #e7e8e8;
-		}
-
-		.border-top-right {
-			// border-top-right-radius: 16rpx;
-		}
 
 		.item {
 			height: 128rpx;

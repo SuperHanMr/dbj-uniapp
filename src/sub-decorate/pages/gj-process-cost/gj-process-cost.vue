@@ -478,7 +478,7 @@
         if (this.shopping?.artificial?.length > 0 || this?.shopping?.material?.length > 0) {
           let params = {
             payType: 1, //"int //支付方式  1微信支付",
-            openid: uni.getStorageSync("openId"), //"string //微信openid 小程序支付用 app支付不传或传空",
+            openid: getApp().globalData.openId, //"string //微信openid 小程序支付用 app支付不传或传空",
             projectId: Number(this.msg.projectId), //"long //项目id  非必须 默认0",
             customerId: Number(this.msg.customerId), //"long //业主id  非必须 默认0",
             estateId: Number(this.msg.estateId), //"long //房产id   非必须 默认0",
