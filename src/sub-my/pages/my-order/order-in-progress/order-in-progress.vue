@@ -153,7 +153,7 @@
 
         <view
           class="refundOrderStatus"
-          v-if="(orderInfo.refundBillStatus == 3 || orderInfo.refundBillStatus == 4) && (orderInfo.shipmentStatus == 0 || (orderInfo.type ==2 &&orderInfo.shipmentStatus == -1 ))"
+          v-if="(orderInfo.refundBillStatus == 3 || orderInfo.refundBillStatus == 4) && (orderInfo.shipmentStatus == 0 || (orderInfo.type ==2 && orderInfo.shipmentStatus == -1 ))"
           @click="refundClose(orderInfo)"
         >
           退款关闭

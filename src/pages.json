@@ -444,13 +444,6 @@
 					}
 				},
 				{
-					"path": "pages/personal-center/my-wallet/my-wallet",
-					"style": {
-						"navigationBarTitleText": "我的钱包",
-						"enablePullDownRefresh": false
-					}
-				},
-				{
 					"path": "pages/personal-center/complaints-and-suggestions/complaints-and-suggestions",
 					"style": {
 						"navigationBarTitleText": "投诉与建议",
@@ -485,13 +478,6 @@
 					"path": "pages/set-up/comments-feedback/comments-feedback",
 					"style": {
 						"navigationBarTitleText": "意见与反馈",
-						"enablePullDownRefresh": false
-					}
-				},
-				{
-					"path": "pages/set-up/about-dabanjia/about-dabanjia",
-					"style": {
-						"navigationBarTitleText": "关于打扮家",
 						"enablePullDownRefresh": false
 					}
 				},
