@@ -128,7 +128,7 @@
 
         <view
           class="refundOrderStatus"
-          v-if="orderInfo.refundBillStatus == 0 || orderInfo.refundBillStatus == 1"
+          v-if="orderInfo.refundBillStatus == 0 || (orderInfo.refundBillStatus == 1 && orderInfo.type == 2)"
           @click="refundCancel(orderInfo)"
         >
           取消退款
