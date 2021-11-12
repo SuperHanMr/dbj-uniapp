@@ -28,15 +28,15 @@
 					{{item.sales}} 人付款
 				</view>
 			</view>
-			<view v-if="item.tagging" class=" price " style="color: #bcbcbc;margin-top: -5rpx;">
+			<view v-if="showMark" class=" price " style="color: #bcbcbc;margin-top: -5rpx;">
 				<text style="font-size: 20rpx; margin-right: 10rpx;text-decoration:line-through">市场价 :
-					<text class="price-font pre"  style="font-size: 20rpx;" >
+					<text class="price-font pre" style="font-size: 20rpx;">
 						¥
 					</text>
 					<text class=" price-font amount" style="color: #bcbcbc;font-size: 26rpx;">
-						{{foramtPrice(item.convertedPrice*100)}}
+						{{foramtPrice(item.convertedMarketPrice*100)}}
 					</text>
-					<text class="price-font ex" style="color: #bcbcbc;">.{{formatCent(item.convertedPrice*100)}}</text>
+					<text class="price-font ex" style="color: #bcbcbc;font-size: 20rpx;">.{{formatCent(item.convertedMarketPrice*100)}}</text>
 					<text style="vertical-align: 13%; color: #bcbcbc;font-size: 20rpx;">
 						/{{item.unitName||''}}
 					</text>
@@ -61,6 +61,16 @@
 			item: {
 				type: Object,
 				default: () => {}
+			}
+		},
+		computed: {
+			showMark() {
+				if (this.item.convertedPrice && this.item.convertedMarketPrice) {
+					if (Number(this.item.convertedMarketPrice * 100) > Number(this.item.convertedPrice*100)) {
+						return true
+					}
+				}
+				return false
 			}
 		},
 		data() {
@@ -130,7 +140,7 @@
 			display: flex;
 			justify-content: space-between;
 			align-items: center;
-				margin-top: 13rpx;
+			margin-top: 13rpx;
 
 			.sale-count {
 				font-size: 22rpx;
@@ -206,26 +216,27 @@
 
 		}
 	}
+
 	.price {
 		font-size: 24rpx;
 		font-weight: 400;
 		color: #939699;
 		line-height: 0;
-	
+
 		.amount {
 			font-size: 40rpx;
 			font-weight: 400;
 			color: #2b2f33;
 			line-height: 42rpx;
 		}
-	
+
 		.ex {
 			font-size: 34rpx;
 			font-weight: 400;
 			color: #2b2f33;
 			line-height: 26rpx;
 		}
-	
+
 		.pre {
 			font-size: 28rpx;
 			font-weight: 400;
