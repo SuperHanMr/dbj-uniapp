@@ -51,7 +51,8 @@ const instance = axios.create({
 	baseURL: process.env.VUE_APP_BASE_API,
 	timeout: 1000 * 10,
 });
-
+// 记录请求时间
+const requestTimeMap = new WeakMap();
 // 设置post请求头
 instance.defaults.headers.post['Content-Type'] = 'application/x-www-form-urlencoded';
 
@@ -67,7 +68,7 @@ instance.interceptors.request.use(
 				mask: true
 			});
 		}
-
+    requestTimeMap.set(config, new Date().getTime());
 		const token = getApp().globalData.token;
 
 		if (token) {
@@ -85,6 +86,12 @@ instance.interceptors.request.use(
 instance.interceptors.response.use(
 	// 请求成功
 	async (res) => {
+    let startTime = requestTimeMap.get(res.config);
+    if (startTime) {
+      let costTime = new Date().getTime() - startTime;
+      requestTimeMap.delete(res.config);
+      console.log("request cost time:" + costTime + "ms, url:" + res.config.url);
+    }
 
 		uni.hideLoading();
 
@@ -100,6 +107,10 @@ instance.interceptors.response.use(
 	},
 	// 请求失败
 	(error) => {
+		var pages = getCurrentPages();
+		var page = pages[pages.length - 1];
+		var pagePath = page.$page.fullPath;
+    requestTimeMap.delete(error.config);
 		uni.hideLoading();
 		if (error.response && error.response.status === 401) {
 			//刷新token
@@ -113,7 +124,7 @@ instance.interceptors.response.use(
 			if (error.config && error.config.data) {
 				config = JSON.parse(error.config.data)
 			}
-			if (!(config && config.ignoreLogin)) {
+			if (!(config && config.ignoreLogin)&& pagePath != '/pages/login/login') {
         console.warn("goto login page", error.config);
 				uni.navigateTo({
 					url: "/pages/login/login",

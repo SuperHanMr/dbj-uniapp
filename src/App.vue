@@ -24,6 +24,7 @@
 			currentRoute: "/pages/home/index/index",
 			previewimageStatus: false,
 			screenHeight: 0,
+      msg_projectId: null,
 		},
 
 		onLaunch: function() {

@@ -129,7 +129,7 @@
 			<view style="width: 8rpx;height: 1rpx;flex-shrink: 0;">
 			</view>
 			<view v-for="(item,index) in liveList" :key="index" class="item margin-left24" @click="onLiveClick(item)">
-				<image class="img" :src="item.mediaType==1?item.roomLiveMediaVO.scaleImg:item.roomVideoMediaVO.scaleImg"
+				<image class="img" :src="item.mediaType==1?item.roomLiveMediaVO.scaleImg:item.roomVideoMediaVO.scaleImg |imgFormat(494,660)"
 					mode="aspectFill"></image>
 				</image>
 				<view class="top-content">
@@ -281,6 +281,7 @@
 			};
 			this.areaId = 41;
 			this.currentAddress = defaultHouse;
+			this.citydata = defaultHouse.name;
 			uni.showShareMenu();
 			uni.$on("logout", (item) => {
 				let defaultHouse = {
@@ -391,8 +392,8 @@
 				console.log(item);
 				this.currentAddress = item;
 				this.areaId = item.areaId;
-				uni.$emit("currentHouseChange", item);
 				getApp().globalData.currentHouse = item;
+				uni.$emit("currentHouseChange", item);
 				this.reloadData();
 			},
 			toSearch() {
@@ -684,6 +685,9 @@
 					// simplified: true,
 					// excludeFields: 'product.spu,product.process, product.store,product.supplier,product.sku,product.areaIds,product.areaPrices,product.category'
 				}).then((e) => {
+					if (this.page == 1) {
+						this.goodsList = [];
+					}
 					this.goodsList = this.goodsList.concat(e.page);
 				});
 			},
