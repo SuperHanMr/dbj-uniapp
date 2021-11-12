@@ -16,12 +16,17 @@
 			currentProject: {},
 			naviData: null,
 			decorateMsg: {},
-			currentHouse: {},
+			currentHouse: {
+				name: "北京市朝阳区",
+				provinceId: 1,
+				cityId: 36,
+				areaId: 41,
+			},
 			switchFlag: "home",
 			currentRoute: "/pages/home/index/index",
 			previewimageStatus: false,
 			screenHeight: 0,
-      openId: ""
+			openId: ""
 		},
 
 		onLaunch: function() {
@@ -30,7 +35,7 @@
 			if (userId && openId) {
 				let token = uni.getStorageSync("scn");
 				this.globalData.token = token;
-        this.globalData.openId = openId;
+				this.globalData.openId = openId;
 				oauthGomeInfo({
 					hideToast: true,
 					ignoreLogin: true,
