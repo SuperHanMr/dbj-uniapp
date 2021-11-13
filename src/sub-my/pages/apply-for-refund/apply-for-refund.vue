@@ -2,20 +2,6 @@
   <view>
     <view class="container">
       <view  class="product-container">
-        <!-- <view v-if="type == 'whole'"  v-for="(item,index) in refundInfo.details" :key="index">
-					<view v-if="refundId">
-						<order-item :refundType="true" :dataList="item"></order-item>
-					</view>
-					<view v-else>
-						<view v-for="item2 in item.details" :key="item2.id">
-							<order-item
-								:dataList="item2"
-								:orderStatus="type?'2':'0'"
-							>
-							</order-item>
-						</view>
-					</view>
-        </view> -->
 				<view v-if="type == 'whole' && refundId "  >
 					<!-- {{refundInfo.detailAppVOS}} -->
 					<view v-for="(item1,index1) in refundInfo.details" :key="index1">
