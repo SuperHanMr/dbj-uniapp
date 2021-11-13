@@ -276,6 +276,7 @@
 				miniOrder:0,
 				buyNum:"",//输入框的值,
 				checkedSkuList:[],
+				areaId:0
 			}
 		},
 		onLoad() {
@@ -284,6 +285,7 @@
 			})
 		},
 		mounted(){
+			this.areaId = getApp().globalData.currentHouse.areaId
 			this.userId = uni.getStorageSync("userId")
 			this.requestPage(true)
 		},
