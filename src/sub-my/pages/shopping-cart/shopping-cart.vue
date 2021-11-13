@@ -67,7 +67,7 @@
 										<text class="int">{{(goodsItem.price/100).toFixed(2).split('.')[0]}}</text>
 										<text>.{{(goodsItem.price/100).toFixed(2).split('.')[1]}}/{{goodsItem.unitName}}</text>
 									</view>
-									<view class="countCtrl">·
+									<view class="countCtrl">
 										<image v-if="!goodsItem.isMiniOrder" class="dec" @click="changeCount(false,shopIndex, goodsIndex)"
 											src="https://ali-image.dabanjia.com/static/mp/dabanjia/images/my/details_pop_%402x.png"></image>
 										<image v-else class="dec" @click="changeCount(false,shopIndex, goodsIndex)"
