@@ -28,8 +28,7 @@
             <view class="goodsInfo">
               <view class="goodsDesc">
                 <view class="spu-name-box">
-                  <text class="goodsType">{{goodsItem.product.productTypeId === 1?"物品":"服务"}}</text>
-                  <view class="spu-name">{{goodsItem.product.spuName}}</view>
+                  <view class="spu-name"><text class="goodsType">{{goodsItem.product.productTypeId === 1?"物品":"服务"}}</text>{{goodsItem.product.spuName}}</view>
                 </view>
                 <view class="tag-box">
                   <view class="middle-service" v-if="goodsItem.product.hasBadgeLevel">中级服务</view>
