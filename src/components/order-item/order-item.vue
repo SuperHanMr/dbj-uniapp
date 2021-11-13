@@ -117,7 +117,7 @@
 			</view>
 		</view>
 
-		<view class="discount-container3" v-if="orderStatus==1 && dataList.type == 2 && dataList.deposit">
+		<view class="discount-container3" v-if="(orderStatus==1 || orderType == 2) && dataList.type == 2 && dataList.deposit" :style="{paddingBottom:orderType == 2?'0':'24rpx'}">
 			<view class="right">
 				<view class="item">
 					<text>押金</text>
@@ -161,6 +161,9 @@
 			showIcon:{
 				type:Boolean,
 				default:false
+			},
+			orderType:{//1.材料 2.服务
+				type:Number,
 			}
 		},
 		data() {
@@ -169,7 +172,7 @@
 			};
 		},
 		mounted() {
-			if( (this.dataList.stockType && this.dataList.stockType == 1 && this.dataList.type == 1&& this.orderStatus==2) || (this. dataList.showRefundBtn && this. orderStatus==2)){
+			if( (this.dataList.stockType && this.dataList.stockType == 1 && this.dataList.type == 1&& this.orderStatus==2) || (this. dataList.showRefundBtn && this. orderStatus==2) ||this.orderType == 2  ){
 				this.containerPaddingBottom= 0
 			}
 		},
@@ -180,7 +183,7 @@
 			},
 
 			handlePrice(price){
-					if(!price) return ['0','00']
+				if(!price) return ['0','00']
 				let list=String(price).split(".")
 				if(list.length==1){
 					return [list[0],"00"]
@@ -432,32 +435,32 @@
 	}
 
 
-	// .discount-container3 {
-	// 	padding-bottom: 24rpx;
-	// 	display: flex;
-	// 	flex-flow: row nowrap;
-	// 	flex: 1;
-	// 	align-items: flex-start;
-	// 	justify-content: flex-end;
-	// 	font-size: 22rpx;
-	// 	color: #999999;
-	// 	.right {
-	// 		.item {
-	// 			width: 302rpx;
-	// 			height: 32rpx;
-	// 			line-height: 32rpx;
-	// 			display: flex;
-	// 			flex: 1;
-	// 			flex-flow: row nowrap;
-	// 			justify-content: space-between;
-	// 			margin-bottom: 8rpx;
-	// 			text{
-	// 				font-size: 22rpx;
-	// 				color: #333;
-	// 			}
-	// 		}
-	// 	}
-	// }
+	.discount-container3 {
+		padding-bottom: 24rpx;
+		display: flex;
+		flex-flow: row nowrap;
+		flex: 1;
+		align-items: flex-start;
+		justify-content: flex-end;
+		font-size: 22rpx;
+		color: #999999;
+		.right {
+			.item {
+				width: 302rpx;
+				height: 32rpx;
+				line-height: 32rpx;
+				display: flex;
+				flex: 1;
+				flex-flow: row nowrap;
+				justify-content: space-between;
+				margin-bottom: 8rpx;
+				text{
+					font-size: 22rpx;
+					color: #333;
+				}
+			}
+		}
+	}
 
 
 </style>

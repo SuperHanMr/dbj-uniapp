@@ -257,11 +257,17 @@ export default {
       });
     },
     toBack() {
+			console.log("this.from ===",this.from)
       if (this.from == "comfirmOrder") {
         uni.redirectTo({
           url: "../my-order?firstEntry=true&index=2",
         });
-      } else {
+      }else if(this.from == 'all'){
+				uni.redirectTo({
+					url:"../my-order?firstEntry=true&index=99"
+				})
+			}
+			 else {
         uni.redirectTo({
           url: "../my-order?firstEntry=true&index=2",
         });
