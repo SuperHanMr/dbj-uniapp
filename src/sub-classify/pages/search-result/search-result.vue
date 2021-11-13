@@ -27,9 +27,9 @@
               class="goodsItemImg"></image>
             <view class="goodsInfo">
               <view class="goodsDesc">
-                <view>
+                <view class="spu-name-box">
                   <text class="goodsType">{{goodsItem.product.productTypeId === 1?"物品":"服务"}}</text>
-                  <text>{{goodsItem.product.spuName}}</text>
+                  <view class="spu-name">{{goodsItem.product.spuName}}</view>
                 </view>
                 <view class="tag-box">
                   <view class="middle-service" v-if="goodsItem.product.hasBadgeLevel">中级服务</view>
@@ -369,8 +369,8 @@
   }
 
   .goodsItem .goodsItemImg {
-    width: 192rpx;
-    height: 192rpx;
+    width: 220rpx;
+    height: 220rpx;
     display: block;
     margin-left: 12rpx;
     margin-right: 20rpx;
@@ -378,27 +378,39 @@
   }
 
   .goodsItem .goodsInfo {
-    height: 100%;
+    height: 220rpx;
   }
 
   .goodsInfo .goodsDesc {
     width: 420rpx;
-    height: 80rpx;
+    height: 120rpx;
     font-size: 28rpx;
     color: #333333;
     line-height: 40rpx;
-    text-overflow: -o-ellipsis-lastline;
+/*   text-overflow: -o-ellipsis-lastline;
     overflow: hidden;
     text-overflow: ellipsis;
     display: -webkit-box;
     -webkit-line-clamp: 2;
     line-clamp: 2;
-    -webkit-box-orient: vertical;
+    -webkit-box-orient: vertical; */
     padding-bottom: 10rpx;
   }
-
+  .spu-name-box{
+    max-height: 80rpx;
+    display: flex;
+  }
+  .spu-name{
+   text-overflow: -o-ellipsis-lastline;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    line-clamp: 2;
+  }
   .goodsInfo .goodsDesc .goodsType {
-    width: 60rpx;
+    min-width: 45rpx;
     height: 30rpx;
     padding: 2rpx 10rpx 2rpx 10rpx;
     margin-right: 4rpx;
