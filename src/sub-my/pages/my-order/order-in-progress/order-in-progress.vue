@@ -68,6 +68,7 @@
               :orderStatus="2"
               :paddingBottom="24"
               :dataList="item2"
+							:productNum="item.details.length"
               :refundApplyMode="orderInfo.refundApplyMode"
               @handleDetail="goToDetail(item2)"
               @toApplayForRefund="toApplayForRefund(item2,1)"
