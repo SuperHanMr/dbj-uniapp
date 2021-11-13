@@ -200,6 +200,7 @@ export default {
 			reasonName:"",
 
 			returnMoney:"",
+			// returnMoney2:"",
 
 
 			refundId:"",
@@ -276,6 +277,7 @@ export default {
 					this.freight = this.refundInfo.freight?this.refundInfo.freight:'0'
 					this.handlingFees = this.refundInfo.handlingFees?this.refundInfo.freight:'0'
 				})
+				
 				// console.log("进行中数据带过来的数据：this.refundInfo=",this.refundInfo)
 				// this.refundInfo = JSON.parse(wx.getStorageSync("wholeRefundOrderInfo"));
 				// this.returnMoney =  this.refundInfo.totalActualIncomeAmount
@@ -350,13 +352,13 @@ export default {
 			// 提交申请后该订单会进入到退款页面，状态显示退款中；并直接跳转到该订单退款详情页
       console.log("申请退款");
 			if(this.type =='whole'){
-				console.log("没有处理的this.reurnMoney===",this.returnMoney)
-				this.returnMoney = Number( this.returnMoney.toFixed(2).replace(".",""))
-				console.log("处理过的this.reurnMoney===",this.returnMoney)
+				// console.log("没有处理的this.reurnMoney===",this.returnMoney)
+				// this.returnMoney2 = Number( this.returnMoney.toFixed(2).replace(".",""))
+				// console.log("处理过的this.reurnMoney===",this.returnMoney)
 
 				wholeOrderApplyForRefund({
 					orderId:this.query.orderId,//订单明Id字段
-					returnMoney:this.returnMoney ,//申请退货钱数(分)
+					returnMoney:Number( this.returnMoney.toFixed(2).replace(".","")) ,//申请退货钱数(分)
 					reason:this.reasonName, //退款原因
 					reasonId:this.reasonValue,//退款原因id
 					remark:this.query.remarks, //备注
@@ -370,12 +372,12 @@ export default {
 					})
 				})
 			}else{
-				console.log("没有处理的this.reurnMoney===",this.returnMoney)
-				this.returnMoney = Number( this.returnMoney.toFixed(2).replace(".",""))
-				console.log("处理过的this.reurnMoney===",this.returnMoney)
+				// console.log("没有处理的this.reurnMoney===",this.returnMoney)
+				// this.returnMoney2 = Number( this.returnMoney.toFixed(2).replace(".",""))
+				// console.log("处理过的this.reurnMoney===",this.returnMoney)
 				particalOrderApplyForRefund({
 					orderDetailsId:this.orderDetailsId?this.orderDetailsId:this.orderDetailId,//订单明Id字段
-					returnMoney:this.returnMoney,//申请退货钱数(分)
+					returnMoney:Number( this.returnMoney.toFixed(2).replace(".","")),//申请退货钱数(分)
 					reason:this.reasonName, //退款原因
 					reasonId:this.reasonValue,//退款原因id
 					remark:this.query.remarks, //备注
