@@ -13,7 +13,6 @@
 					打扮家补贴{{foramtPrePrice(item.product.sku.marketPrice-item.product.skuPrice)}}元
 				</view>
 			</view>
-
 			<view class="price">
 				<text class="price-font pre" style="color: #2b2f33;">
 					¥
@@ -26,7 +25,7 @@
 					/{{item.product.salesUnit.unitName||''}}
 				</text>
 			</view>
-			<view v-if="item.product.hasAllowance" class=" price " style="color: #bcbcbc;margin-top: -5rpx;">
+			<view v-if="(item.product.sku.marketPrice-item.product.skuPrice)>0" class=" price " style="color: #bcbcbc;margin-top: -5rpx;">
 				<text style="font-size: 20rpx;margin-right: 10rpx;text-decoration:line-through">市场价 :
 					<text class="price-font pre " style="font-size: 20rpx;">
 						¥

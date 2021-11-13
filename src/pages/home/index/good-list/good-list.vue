@@ -26,7 +26,7 @@
 
 <script>
 	import {
-		getGoodsList
+		getHomeGoodsList
 	} from "../../../../api/classify.js";
 	import GoodListItem from "./good-list-item.vue";
 	export default {
@@ -53,7 +53,7 @@
 		mounted() {},
 		methods: {
 			getHomeGoodsList() {
-				getGoodsList({
+				getHomeGoodsList({
 					pageIndex: this.page,
 					areaId: this.areaId,
 					simplified: true,

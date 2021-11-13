@@ -154,14 +154,6 @@
 			orderStatus:{//1 待付款 2 进行中 3 已完成
 				type:Number,
 			},
-			// showPrice:{
-			// 	type:Boolean,
-			// 	default:false
-			// },
-			// showOriginPrice:{
-			// 	type:Boolean,
-			// 	default:false
-			// },
 			refundType:{
 				type:Boolean,
 				default:false,
