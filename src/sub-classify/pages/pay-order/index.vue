@@ -452,7 +452,7 @@
               this.$refs.orderToast.showPupop()
             }
           }
-          if (this.orderInfo.storeInfos.skuInfos.length === 1) {
+          if (this.orderInfo.storeInfos[0].skuInfos.length === 1) {
             this.totalClassNum = 1
           }
         })
