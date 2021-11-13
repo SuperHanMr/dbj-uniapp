@@ -428,7 +428,7 @@
     width: fit-content;
     text-overflow: ellipsis;
     padding: 4rpx;
-    margin-top: 12rpx;
+    margin-top: 2rpx;
     font-size: 22rpx;
     display: flex;
   }
