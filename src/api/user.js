@@ -18,8 +18,8 @@ export function setBuyCount(params) {
 export function clearDisabled(params) {
 	return request.put(`/product/app/products/shoppingCart/clear`, params)
 }
-export function getGoodsSpec(skuId) {
-	return request.get(`/product/app/products/skus/${skuId}/properties`, {})
+export function getGoodsSpec(skuId, areaId) {
+	return request.get(`/product/app/products/skus/${skuId}/area/${areaId}/properties`, {})
 }
 export function setGoodsSku(params) {
 	return request.put(`/product/app/products/shoppingCart/changeSku`, params)

@@ -67,7 +67,7 @@
 										<text class="int">{{(goodsItem.price/100).toFixed(2).split('.')[0]}}</text>
 										<text>.{{(goodsItem.price/100).toFixed(2).split('.')[1]}}/{{goodsItem.unitName}}</text>
 									</view>
-									<view class="countCtrl">
+									<view class="countCtrl">·
 										<image v-if="!goodsItem.isMiniOrder" class="dec" @click="changeCount(false,shopIndex, goodsIndex)"
 											src="https://ali-image.dabanjia.com/static/mp/dabanjia/images/my/details_pop_%402x.png"></image>
 										<image v-else class="dec" @click="changeCount(false,shopIndex, goodsIndex)"
@@ -276,6 +276,7 @@
 				miniOrder:0,
 				buyNum:"",//输入框的值,
 				checkedSkuList:[],
+        defaultHouseInfo: "" // 房屋信息
 			}
 		},
 		onLoad() {
@@ -283,6 +284,10 @@
 				this.requestPage()
 			})
 		},
+    onShow() {
+      this.defaultHouseInfo = getApp().globalData.currentHouse
+      console.log(this.defaultHouseInfo)
+    },
 		mounted(){
 			this.userId = uni.getStorageSync("userId")
 			this.requestPage(true)
@@ -392,7 +397,7 @@
 				})
 			},
 			openSpec(skuId,goodsChecked){
-				getGoodsSpec(skuId).then(data => {
+				getGoodsSpec(skuId, this.defaultHouseInfo.areaId).then(data => {
 					
 					if(data.skuInputType===1){
 						this.popupShow = true

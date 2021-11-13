@@ -29,7 +29,6 @@
                 </view>
                 <view class="spu-class">
                   <view class='tag'>{{levelName}}{{levelName?'|':''}}{{goodsItem.skuName}}</view>
-                  <view class="total-num">共{{goodsItem.buyCount}}{{goodsItem.unit?goodsItem.unit:""}}</view>
                 </view>
          <!--       <view class="safeguard" @click="readSafeguard(0)" v-if="goodsItem.productType === 1">
                   七天无理由退换
@@ -44,6 +43,7 @@
                     <text>/{{goodsItem.unit?goodsItem.unit:""}}</text>
                   </view>
                   <view v-if="Number(goodsItem.deposit)">押金 ¥{{goodsItem.deposit}}</view>
+                  <view class="total-num">共{{goodsItem.buyCount}}{{goodsItem.unit?goodsItem.unit:""}}</view>
                 </view>
               </view>
             </view>
@@ -652,7 +652,6 @@
     padding: 0 4rpx;
     margin-top: 2rpx;
     font-size: 22rpx;
-    display: flex;
     position: absolute;
     top: 0;
     right: 0;
@@ -686,11 +685,8 @@
   }
 
   .goods-info .total-num {
-    top: 0;
-    right: 0;
     font-size: 28rpx;
     color: #999999;
-    position: absolute;
   }
 
   .safeguard {
