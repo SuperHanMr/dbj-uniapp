@@ -172,16 +172,19 @@
 				    })
 				  })
 				  return temp
-				})    
+				})
 				this.handleIds = this.handleIds.map(item => {
 					if(typeof item === 'string'){
-						return item.split(',').sort().toString()
+						let arr = item.split(',').map(item => +item)
+						arr.sort((a,b) => a-b)
+						return arr.join(',')
 					}else{
 						return item.toString()
 					}
 				})
 				
 				let selectIds = this.selectSkuInfo.propValueIds
+				console.log(this.handleIds,selectIds)
 				if(this.handleIds.indexOf(selectIds) === -1) {
 					uni.showToast({
 						title:"默认规格值不存在",

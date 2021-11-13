@@ -439,7 +439,7 @@
 					this.combinations = data.skuAndProperties
 					this.productType = data.productType
 					
-					// console.log(this.selectedIndex)
+					console.log(this.selectedIndex)
 				})
 			},
 			toShoppingMall(){
