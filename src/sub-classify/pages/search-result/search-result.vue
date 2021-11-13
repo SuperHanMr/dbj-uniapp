@@ -387,7 +387,7 @@
     font-size: 28rpx;
     color: #333333;
     line-height: 40rpx;
-/*   text-overflow: -o-ellipsis-lastline;
+    /*   text-overflow: -o-ellipsis-lastline;
     overflow: hidden;
     text-overflow: ellipsis;
     display: -webkit-box;
@@ -396,12 +396,14 @@
     -webkit-box-orient: vertical; */
     padding-bottom: 10rpx;
   }
-  .spu-name-box{
+
+  .spu-name-box {
     max-height: 80rpx;
     display: flex;
   }
-  .spu-name{
-   text-overflow: -o-ellipsis-lastline;
+
+  .spu-name {
+    text-overflow: -o-ellipsis-lastline;
     overflow: hidden;
     text-overflow: ellipsis;
     display: -webkit-box;
@@ -409,6 +411,7 @@
     -webkit-box-orient: vertical;
     line-clamp: 2;
   }
+
   .goodsInfo .goodsDesc .goodsType {
     min-width: 45rpx;
     height: 30rpx;
@@ -422,6 +425,7 @@
     line-height: 28rpx;
     text-align: center;
     vertical-align: middle;
+    margin-top: 4rpx;
   }
 
   .goodsInfo .goodsSpec {
