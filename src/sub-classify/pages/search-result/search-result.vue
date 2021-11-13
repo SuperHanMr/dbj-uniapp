@@ -110,6 +110,7 @@
       //  }
     },
     onPullDownRefresh() {
+      this.isLoadMore = false
       this.page = 1
       this.getList()
     },
