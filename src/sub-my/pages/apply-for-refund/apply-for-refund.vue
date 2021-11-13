@@ -353,7 +353,7 @@ export default {
 				console.log("没有处理的this.reurnMoney===",this.returnMoney)
 				this.returnMoney = Number( this.returnMoney.toFixed(2).replace(".",""))
 				console.log("处理过的this.reurnMoney===",this.returnMoney)
-				return
+
 				wholeOrderApplyForRefund({
 					orderId:this.query.orderId,//订单明Id字段
 					returnMoney:this.returnMoney ,//申请退货钱数(分)
@@ -373,7 +373,6 @@ export default {
 				console.log("没有处理的this.reurnMoney===",this.returnMoney)
 				this.returnMoney = Number( this.returnMoney.toFixed(2).replace(".",""))
 				console.log("处理过的this.reurnMoney===",this.returnMoney)
-				return
 				particalOrderApplyForRefund({
 					orderDetailsId:this.orderDetailsId?this.orderDetailsId:this.orderDetailId,//订单明Id字段
 					returnMoney:this.returnMoney,//申请退货钱数(分)
@@ -663,6 +662,7 @@ export default {
   }
 
   .sumbit-button {
+		z-index: 999;
     position: fixed;
     bottom: 0;
     width: 686rpx;

@@ -71,7 +71,7 @@
 		</view>
 		<!-- //退款状态 refundBillStatus（ 0待确认 1退款中 2退款完成 3已拒绝 4已取消 5退款失败) -->
 		<view class="apply-refund-container" :style="{paddingTop:0}"
-			v-if="productNum > 1 && !dataList.showRefundBtn && orderStatus==2 && dataList.type == 1 && dataList.stockType == 0 && dataList.refundBillStatus >-1"
+			v-if="refundApplyMode == 1 && productNum > 1 && !dataList.showRefundBtn && orderStatus==2 && dataList.type == 1 && dataList.stockType == 0 && dataList.refundBillStatus >-1"
 		 >
 
 			<view class="button" v-if="dataList.refundBillStatus == 0 ||dataList.refundBillStatus == 1"  @click.stop="refundCancel">
@@ -166,6 +166,9 @@
 			},
 			productNum:{
 				type:Number,
+			},
+			refundApplyMode:{
+				type:Number
 			}
 		},
 		data() {
