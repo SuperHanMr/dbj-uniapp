@@ -502,9 +502,15 @@
 					}
 				},
 				{
-					"path": "pages/shopping-cart/confirm-order",
+					"path": "pages/deposit-card/deposit-card",
 					"style": {
-						"navigationBarTitleText": "确认订单"
+						"navigationBarTitleText": "储值卡"
+					}
+				},
+				{
+					"path": "pages/deposit-card/billing-details",
+					"style": {
+						"navigationBarTitleText": "账单明细"
 					}
 				}
 			]
