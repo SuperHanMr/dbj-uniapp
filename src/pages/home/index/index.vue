@@ -261,7 +261,12 @@
         uni.setStorage({
           key: 'shareId',
           data: shareId,
-          success: function() {}
+          success: function() {
+            console.log("shareId存储成功");
+          },
+          fail: function() {
+            console.error("shareId存储失败")
+          }
         });
       }
 			let defaultHouse = {
