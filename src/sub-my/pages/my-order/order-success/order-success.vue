@@ -44,6 +44,7 @@
 			<view class="body1" v-for="item1 in refundInfo.detailAppVOS" :key="item1.id">
 				<order-item
 					:dataList="item1"
+					:orderType="2"
 					:refundType="true"
 					@handleDetail="productDetail(item1,'refund')"
 				></order-item>
@@ -221,6 +222,7 @@
 			},
 
 			handlePrice(price) {
+				if(!price) return ['0','00']
 				let list = String(price).split(".");
 				if (list.length == 1) {
 					return [list[0], "00"];

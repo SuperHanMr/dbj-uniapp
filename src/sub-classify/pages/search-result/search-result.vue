@@ -15,19 +15,27 @@
       <uni-search-bar @confirm="searchConfirm" clearButton="auto" cancelButton="false" focus="true" v-else>
         <uni-icons slot="searchIcon" />
       </uni-search-bar>
-      <div @click="sortList">
+      <view @click="sortList">
         <sort-button class="sort-button"></sort-button>
-      </div>
+      </view>
     </view>
     <view class="content" @scrolltolower="loadMoreList">
       <uni-swipe-action v-if="listArr.length>0">
         <uni-swipe-action-item v-for="(goodsItem,goodsIndex) in listArr" :key="goodsIndex" :right-options="options">
           <view class="goodsItem" @click="toDetails(goodsItem.product.skuId)">
-            <image :src="goodsItem.product.skuImage + '?x-oss-process=image/resize,m_lfit,w_400,h_400' " class="goodsItemImg"></image>
+            <image :src="goodsItem.product.skuImage + '?x-oss-process=image/resize,m_lfit,w_400,h_400' "
+              class="goodsItemImg"></image>
             <view class="goodsInfo">
               <view class="goodsDesc">
-                <text class="goodsType">{{goodsItem.product.productTypeId === 1?"物品":"服务"}}</text>
-                {{goodsItem.product.spuName}}
+                <view class="spu-name-box">
+                  <view class="spu-name"><text class="goodsType">{{goodsItem.product.productTypeId === 1?"物品":"服务"}}</text>{{goodsItem.product.spuName}}</view>
+                </view>
+                <view class="tag-box">
+                  <view class="middle-service" v-if="goodsItem.product.hasBadgeLevel">中级服务</view>
+                  <view class="price-tag" v-if="goodsItem.product.hasAllowance">
+                    <text>打扮家补贴{{(goodsItem.product.sku.marketPrice -goodsItem.product.skuPrice)/100}}元</text>
+                  </view>
+                </view>
               </view>
               <view class="goodsSpec">
                 <view class="goods-money">
@@ -36,7 +44,8 @@
                     class="integer-price">{{goodsItem.product.skuPrice?String(goodsItem.product.skuPrice/100).split(".")[0]: "0"}}</text>
                   <text>.{{String(goodsItem.product.skuPrice/100).split(".")[1]?String(goodsItem.product.skuPrice/100).split(".")[1]: "00"}}</text>
                   <text>/{{goodsItem.product.salesUnit.unitName?goodsItem.product.salesUnit.unitName:""}}</text>
-                  <text class="level" v-if="goodsItem.product.hasBadgeLevel">中级服务</text>
+                  <text class="del-price"
+                    v-if="goodsItem.product.sku.marketPrice > goodsItem.product.skuPrice  && !goodsItem.product.process">市场价：¥{{goodsItem.product.sku.marketPrice/100}}/{{goodsItem.product.salesUnit.unitName?goodsItem.product.salesUnit.unitName:""}}</text>
                 </view>
               </view>
               <view class="foot">
@@ -100,6 +109,7 @@
       //  }
     },
     onPullDownRefresh() {
+      this.isLoadMore = false
       this.page = 1
       this.getList()
     },
@@ -114,7 +124,8 @@
           categoryId: this.originFrom ? Number(this.categoryId) : "", //搜索范围，在指定的商品分类id的范围内搜索，可不传（表示不限定商品分类）,
           supplierId: 0, //搜索范围，在指定的供应商 id 的范围内搜索，可不传（表示不限定供应商）,
           storeId: 0, //搜索范围，在指定的店铺 id 的范围内搜索，可不传（表示不限定店铺）,
-          areaId: getApp().globalData.currentHouse.areaId, //区域编号，会按这个区域进行搜索；      区域的取值，请参考相关需求，好像是：有当前房屋就取当前房屋所在区域，没有当前房屋就取用户选取的位置区域...（具体逻辑比这个还复杂点）,
+          areaId: getApp().globalData.currentHouse
+            .areaId, //区域编号，会按这个区域进行搜索；      区域的取值，请参考相关需求，好像是：有当前房屋就取当前房屋所在区域，没有当前房屋就取用户选取的位置区域...（具体逻辑比这个还复杂点）,
           sort: this.sort, //搜索排序方式：      price_asc  表示按价格从低到高排序；      price_desc 表示按价格从高到低排序；,
           pageIndex: this.page, //页面序号，从 1 开始，不传取 默认值第 1 页；,
           pageSize: 20, //每页数据量大小，不传取默认值 10；,
@@ -325,9 +336,40 @@
     margin: auto;
   }
 
+  .tag-box {
+    width: 100%;
+    margin-bottom: 26rpx;
+    display: flex;
+    margin-top: 8rpx;
+  }
+
+  .middle-service {
+    font-size: 20rpx;
+    color: #c5a58d;
+    display: inline-block;
+    padding: 0 10rpx;
+    border: 1px solid #c5a58d;
+    border-radius: 8rpx;
+    line-height: 36rpx;
+  }
+
+  /*  .price-tag {
+    margin-left: 8rpx;
+  } */
+
+  .price-tag text {
+    float: left;
+    font-size: 20rpx;
+    color: #ff3347;
+    padding: 0 10rpx;
+    border: 1px solid #ff3347;
+    border-radius: 8rpx;
+    line-height: 36rpx;
+  }
+
   .goodsItem .goodsItemImg {
-    width: 192rpx;
-    height: 192rpx;
+    width: 220rpx;
+    height: 220rpx;
     display: block;
     margin-left: 12rpx;
     margin-right: 20rpx;
@@ -335,26 +377,42 @@
   }
 
   .goodsItem .goodsInfo {
-    height: 100%;
+    height: 220rpx;
   }
 
   .goodsInfo .goodsDesc {
     width: 420rpx;
-    height: 80rpx;
+    height: 120rpx;
     font-size: 28rpx;
     color: #333333;
     line-height: 40rpx;
-    text-overflow: -o-ellipsis-lastline;
+    /*   text-overflow: -o-ellipsis-lastline;
     overflow: hidden;
     text-overflow: ellipsis;
     display: -webkit-box;
     -webkit-line-clamp: 2;
     line-clamp: 2;
+    -webkit-box-orient: vertical; */
+    padding-bottom: 10rpx;
+  }
+
+  .spu-name-box {
+    max-height: 80rpx;
+    display: flex;
+  }
+
+  .spu-name {
+    text-overflow: -o-ellipsis-lastline;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
     -webkit-box-orient: vertical;
+    line-clamp: 2;
   }
 
   .goodsInfo .goodsDesc .goodsType {
-    width: 60rpx;
+    min-width: 45rpx;
     height: 30rpx;
     padding: 2rpx 10rpx 2rpx 10rpx;
     margin-right: 4rpx;
@@ -365,13 +423,15 @@
     color: #35c4c4;
     line-height: 28rpx;
     text-align: center;
+    vertical-align: middle;
+    margin-top: 4rpx;
   }
 
   .goodsInfo .goodsSpec {
     width: fit-content;
     text-overflow: ellipsis;
     padding: 4rpx;
-    margin: 12rpx 0 12rpx 0;
+    margin-top: 2rpx;
     font-size: 22rpx;
     display: flex;
   }
@@ -400,6 +460,14 @@
     line-height: 28rpx;
     border: 2rpx solid #c5a58d;
     margin-left: 16rpx;
+  }
+
+  .del-price {
+    margin-left: 12rpx;
+    text-decoration: line-through;
+    color: #bcbcbc;
+    font-size: 24rpx;
+    font-family: PingFangSC, PingFangSC-Medium;
   }
 
   .goodsInfo .foot {

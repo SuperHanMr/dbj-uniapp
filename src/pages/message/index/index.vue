@@ -5,23 +5,17 @@
     </view> -->
     <view class="im-common-message-list">
       <conversation-item
+        key="cstServConv"
         :conversation="cstServConv">
-        <template #avatar>
-          <image class="im-avatar-image" src="https://ali-image.dabanjia.com/static/mp/dabanjia/images/message/ic_customer_service@2x.png"></image>
-        </template>
+      </conversation-item>
+      <conversation-item
+        key="sysConv"
+        :conversation="sysConv">
+      </conversation-item>
+      <conversation-item
+        key="itaConv"
+        :conversation="itaConv">
        </conversation-item>
-       <conversation-item
-         :conversation="sysConv">
-         <template #avatar>
-           <image class="im-avatar-image" src="https://ali-image.dabanjia.com/static/mp/dabanjia/images/message/ic_system@2x.png"></image>
-         </template>
-        </conversation-item>
-        <conversation-item
-          :conversation="itaConv">
-          <template #avatar>
-            <image class="im-avatar-image" src="https://ali-image.dabanjia.com/static/mp/dabanjia/images/message/ic_interaction@2x.png"></image>
-          </template>
-         </conversation-item>
     </view>
     <view class="im-chat-message-list">
       <conversation-item 

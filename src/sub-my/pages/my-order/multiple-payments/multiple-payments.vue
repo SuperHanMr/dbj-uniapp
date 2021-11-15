@@ -127,7 +127,7 @@
 			},
 			// 去付款
 			gotoPay(id,index){
-				let openId = uni.getStorageSync("openId");
+				let openId = getApp().globalData.openId;
 				let params={
 					orderId:this.orderId,
 					payType:1,//支付类型  1微信支付"

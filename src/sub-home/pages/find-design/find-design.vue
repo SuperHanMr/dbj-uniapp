@@ -35,7 +35,9 @@
 				</view>
 			</scroll-view>
 		</view>
-		<view v-if="goodsList.length==0" class="noMemo">
+		<design-list ref="designList"></design-list>
+
+		<!-- 		<view v-if="goodsList.length==0" class="noMemo">
 			<image class="noMemoImg" src="https://ali-image.dabanjia.com/static/mp/dabanjia/images/decorate/pic_empty%402x.png">
 			</image>
 			<view class="noMemoText">暂无内容~</view>
@@ -61,6 +63,7 @@
 				</view>
 			</view>
 		</view>
+ -->
 	</view>
 </template>
 
@@ -69,7 +72,11 @@
 		findDesign,
 		defaultSkus
 	} from "../../../api/home.js"
+	import DesignList from './design-list.vue'
 	export default {
+		components: {
+			DesignList
+		},
 		data() {
 			return {
 				scrollTop: 0,
@@ -112,12 +119,13 @@
 		},
 		methods: {
 			getGoods(id) {
-				defaultSkus({
-					relationType: 5,
-					relationId: id
-				}).then(e => {
-					this.goodsList = e
-				})
+				this.$refs.designList.getList(id)
+				// defaultSkus({
+				// 	relationType: 5,
+				// 	relationId: id
+				// }).then(e => {
+				// 	this.goodsList = e
+				// })
 			},
 			foramtPrice(item) {
 				let price = String(item.price || '0');

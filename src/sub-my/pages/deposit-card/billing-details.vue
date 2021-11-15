@@ -12,7 +12,22 @@
 							</view>
 						</view>
 						<view class="right">
-							<view class="num">+440.00</view>
+							<view class="num price-font">+440.00</view>
+							<view class="date">2021/11/12 21:33</view>
+						</view>
+					</view>
+				</view>
+				<view class="item">
+					<view class="icon"></view>
+					<view class="content">
+						<view class="left">
+							<view class="category">充值</view>
+							<view class="order">
+								订单号：12345678909876
+							</view>
+						</view>
+						<view class="right">
+							<view class="num price-font">+440.00</view>
 							<view class="date">2021/11/12 21:33</view>
 						</view>
 					</view>
@@ -86,17 +101,30 @@
 		
 	}
 	.item{
-		width: 750rpx;
-		height: 152rpx;
+		width: 718rpx;
+		height: 76rpx;
+		padding: 38rpx 32rpx;
+		padding-right: 0;
 		background: #FFFFFF;
 		display: flex;
 		justify-content: space-between;
 		align-items: center;
 	}
+	.icon{
+		width: 48rpx;
+		height: 48rpx;
+		margin-top: 14rpx;
+		margin-right: 24rpx;
+		background: pink;
+	}
 	.content{
 		width: 644rpx;
 		height: 152rpx;
-		border-bottom: 2rpx solid #F3F3F3;
+		padding-right: 32rpx;
+		border-bottom: 2rpx solid #f3f3f3;
+		display: flex;
+		justify-content: space-between;
+		align-items: center;
 	}
 	.category{
 		width: 56rpx;
@@ -105,8 +133,22 @@
 		color: #333333;
 	}
 	.order{
-		width: 52rpx;
-		margin-left: 32rpx;
+		width: 326rpx;
+		height: 28rpx;
+		font-size: 22rpx;
+		color: #999999;
+		display: flex;
+	}
+	.num{
+		text-align: right;
+		font-size: 36rpx;
+		color: #333333;
+	}
+	.date{
+		width: 178rpx;
+		height: 28rpx;
+		font-size: 22rpx;
+		color: #cccccc;
 	}
 	.noRecords{
 		width: 750rpx;

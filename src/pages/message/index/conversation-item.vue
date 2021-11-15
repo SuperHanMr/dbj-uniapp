@@ -1,9 +1,22 @@
 <template>
   <view class="im-message-item" @click="handleClick">
     <view class="im-message-avatar">
-      <slot name="avatar">
-        <group-avatars :list="avatar" />
-      </slot>
+      <image 
+        v-if="conversation.systemType === CONV_TYPES.CUSTOMER" 
+        class="im-avatar-image" 
+        src="https://ali-image.dabanjia.com/static/mp/dabanjia/images/message/ic_customer_service@2x.png">
+      </image>
+      <image
+        v-else-if="conversation.systemType === CONV_TYPES.SYSTEM" 
+        class="im-avatar-image" 
+        src="https://ali-image.dabanjia.com/static/mp/dabanjia/images/message/ic_system@2x.png">
+      </image>
+      <image
+        v-else-if="conversation.systemType === CONV_TYPES.INTERACTION" 
+        class="im-avatar-image" 
+        src="https://ali-image.dabanjia.com/static/mp/dabanjia/images/message/ic_interaction@2x.png">
+      </image>
+      <group-avatars v-else :list="avatar" />
     </view>
     <view class="im-message-content">
       <view class="im-message-name">
