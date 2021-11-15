@@ -6,6 +6,7 @@
 					v-for="(item,index) in leftList" 
 					:key="index" 
 					:params="item" 
+          :isGrab='isGrab'
 					tag="left"
 					:index="index"
 					@height="onHeight"
@@ -18,6 +19,7 @@
 					v-for="(item,index) in rightList" 
 					:key="index" 
 					:params="item" 
+          :isGrab='isGrab'
 					@height="onHeight"
 					@click="onClick(index, '1')"
 					@collection="onCollection(index,'1')"
@@ -33,7 +35,7 @@
 <script>
 	import waterfall from "./waterfall-design-case.vue"
 	export default {
-		props:["leftList", "rightList", "leftHeight", "rightHeight","isPerson"],
+		props:["leftList", "rightList", "leftHeight", "rightHeight","isPerson","isGrab"],
 		components:{
 			waterfall
 		},
