@@ -229,7 +229,7 @@
 
 <style lang="scss" scoped>
   .grab{
-    margin-bottom: 156rpx;
+    padding-bottom: 156rpx;
     background-color: #FAFAFA;
     .person-interact-active {
       background-color: #fff;
