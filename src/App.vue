@@ -26,12 +26,18 @@
 			currentRoute: "/pages/home/index/index",
 			previewimageStatus: false,
 			screenHeight: 0,
-			openId: ""
+			openId: "",
+			shareId: ""
 		},
 
 		onLaunch: function() {
 			const userId = uni.getStorageSync("userId");
 			const openId = uni.getStorageSync("openId");
+			const shareId = uni.getStorageSync("shareId");
+      console.log("onLaunch", "userId:", userId, "openId:", openId, "shareId:", shareId);
+      if (shareId && !this.globalData.shareId) {
+        this.globalData.shareId = shareId;
+      }
 			if (userId && openId) {
 				let token = uni.getStorageSync("scn");
 				this.globalData.token = token;
