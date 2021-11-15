@@ -31,7 +31,7 @@
                   <view class='tag'>{{levelName}}{{levelName?'|':''}}{{goodsItem.skuName}}</view>
                 </view>
                 <view class="safeguard" @click="readSafeguard(goodsItem.refundable)" v-if="goodsItem.productType === 1">
-                  {{goodsItem.refundable?'七天无理由退还': '无质量问题不退还'}}
+                  {{goodsItem.refundable?'七天无理由退还': '无质量问题不退换'}}
                   <text class="question-icon safe-icon"></text>
                 </view>
                 <view class="goods-spec">
