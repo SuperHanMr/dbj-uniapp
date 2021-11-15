@@ -76,6 +76,7 @@
 						<text>{{item2.value}}</text>
 					</view>
 					<view class="right">
+						<text v-if="item2.key==1">3823.32元</text>
 						<image src="../../../static/order/images/arraw_right_@2x.png" mode="" />
 					</view>
 				</view>
@@ -112,12 +113,12 @@
 				userInfo: {},
 				userId: "",
 				list: [
-					{
-						key: "1",
-						image: "../../../static/order/images/ic_storeValueCard.svg",
-						value: "储值卡",
-						url: "../../../sub-my/pages/deposit-card/deposit-card",
-					},
+					// {
+					// 	key: "1",
+					// 	image: "../../../static/order/images/ic_storeValueCard.svg",
+					// 	value: "储值卡",
+					// 	url: "../../../sub-my/pages/deposit-card/deposit-card",
+					// },
 					{
 						key: "2",
 						image: "../../../static/order/images/shopping_Cart.png",
@@ -520,16 +521,22 @@
 						image {
 							width: 48rpx;
 							height: 48rpx;
-							object-fit: cover;
 							margin-right: 20rpx;
 						}
 					}
 
 					.right {
+						display: flex;
+						flex-flow: row nowrap;
+						align-items: center;
+						text{
+							font-size: 24rpx;
+							color: #999999;
+						}
 						image {
+							margin-left: 16rpx;
 							width: 24rpx;
 							height: 24rpx;
-							object-fit: cover;
 						}
 					}
 				}

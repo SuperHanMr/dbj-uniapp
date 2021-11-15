@@ -20,7 +20,7 @@
               <view class="img-view">
                 <image :src="detail.imageUrl  + '?x-oss-process=image/resize,m_lfit,w_124,h_124' "></image>
               </view>
-              <text class="detail-name">{{detail.name}}</text>
+              <view class="detail-name">{{detail.name}}</view>
             </view>
           </view>
         </scroll-view>
@@ -199,12 +199,15 @@
   }
   .right-detail .detail-name {
     font-size: 24rpx;
-    display: inline-block;
     width: 124rpx;
-    white-space: nowrap;
-    text-overflow: ellipsis;
+    text-overflow: -o-ellipsis-lastline;
     overflow: hidden;
-    word-break: break-all;
+    text-overflow: ellipsis;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    line-clamp: 2;
+    height: 70rpx;
   }
 
   .rigth-other-bar {

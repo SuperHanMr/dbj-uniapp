@@ -1,6 +1,6 @@
 <template>
 	<view class="cardWrap">
-		<view class="details">账单明细</view>
+		<view class="details" @click="toBillingDetails">账单明细</view>
 		<view class="header">
 			<view class="text">余额 (元)</view>
 			<view class="balance price-font">
@@ -20,6 +20,20 @@
 </template>
 
 <script>
+	export default {
+		data(){
+			return {
+				
+			}
+		},
+		methods: {
+			toBillingDetails(){
+				uni.navigateTo({
+					url: "/sub-my/pages/deposit-card/billing-details"
+				})
+			}
+		}
+	}
 </script>
 
 <style>
