@@ -75,6 +75,7 @@
           return
         }
         setTimeout(()=>{
+          console.log(this.globalData.currentHouse.id,this.globalData.currentEstate.id)
           getMsgNumByHouse(this.globalData.currentHouse?this.globalData.currentHouse.id:this.globalData.currentEstate.id).then(res=>{
             if(res.count===0){
               uni.removeTabBarBadge({

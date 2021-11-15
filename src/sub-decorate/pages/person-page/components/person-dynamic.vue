@@ -1,7 +1,7 @@
 <template>
-  <view class="person-dynamic person-content-item" v-if="!(isGrab&&dynamics.length==0)">
+  <view class="person-dynamic person-content-item" v-if="dynamics.length!==0">
     <view class="title" v-if="!isGrab">Ta的动态</view>
-    <decorateDynamic v-if="dynamics.length>0" :dynamics='dynamics' :personId='personId' :isPerson='true' @likeC='likeC' @commentC='commentC' ></decorateDynamic>
+    <decorateDynamic v-if="dynamics.length>0" :dynamics='dynamics' :personId='personId' :isPerson='true' @likeC='likeC' @commentC='commentC'></decorateDynamic>
     <view class="empty" v-else>
       暂无动态
     </view>
@@ -107,6 +107,6 @@
   }
 </script>
 
-<style lang="scss">
+<style lang="scss" scoped>
   
 </style>
