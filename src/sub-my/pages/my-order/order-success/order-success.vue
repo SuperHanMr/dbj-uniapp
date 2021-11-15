@@ -74,26 +74,29 @@
 						<text>{{item2.storeName}}</text>
 						<image src="../../../static/ic_more.svg" mode=""></image>
 					</view>
-
+					<!-- 显示服务和材料 -->
 					<view v-for="item3 in item2.details" :key="item3.id" class="orederItem">
 						<order-item
 							:dataList="item3"
 							:orderStatus="3"
 							@handleDetail="productDetail(item3)"
-						></order-item>
-						<!-- <view class="ww">
-							dddd
-						</view>
-						<store-calue-card-item></store-calue-card-item> -->
+						/>
 					</view>
+					<!-- 显示储值卡 -->
+						<!-- <store-calue-card-item></store-calue-card-item> -->
 				</view>
 			</view>
 
 			<order-price :data="orderInfo" />
 
-			<order-info :orderNo="orderInfo.orderNo" :createTime="orderInfo.createTime" :showPayTime="true"
-				:payTime="orderInfo.payTime" :showPayType="true" />
-
+			<order-info 
+				:orderNo="orderInfo.orderNo" 
+				:createTime="orderInfo.createTime" 
+				:showPayTime="true"
+				:payTime="orderInfo.payTime" 
+				:showPayType="true" 
+			/>
+			
 			<view v-if="orderInfo.showRefundBtn" class="applyforRefund-container" :style="{paddingBottom:systemBottom,height:systemHeight}">
 				<view class="applyforRefund" @click="toApplayForRefund(orderInfo,2)">
 					申请退款

@@ -71,7 +71,7 @@
 												v-for="item2 in handleImage(item.details)" 
 												:key="item2" 
 												:src="`${item2}?x-oss-process=image/resize,m_mfit,w_68,h_68`"
-												mode=""
+												mode="aspectFill"
 											/>
 											
 										</scroll-view>
@@ -88,7 +88,10 @@
 
 								<!-- 非套餐 -->
 								<view v-else v-for="item2 in item.details" :key="item2.id">
+									<!-- 服务和材料 -->
 									<order-item :dataList="item2" @handleDetail="goToDetail(item)" />
+									<!-- 储值卡 -->
+									<!-- <store-calue-card-item v-if="item.orderStatus !==1"></store-calue-card-item> -->
 								</view>
 							</view>
 

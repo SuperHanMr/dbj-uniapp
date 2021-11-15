@@ -72,7 +72,7 @@
 					申请退款
 				</view>
 				<view
-					v-if="orderInfo.stockType==0 && orderInfo.shipmentStatus == 1"
+					v-if="orderInfo.stockType == 0 && orderInfo.shipmentStatus == 1"
 					class="confirmReceipt"
 					@click="handleConfirmReceipt"
 				>

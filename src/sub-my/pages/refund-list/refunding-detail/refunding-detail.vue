@@ -23,6 +23,7 @@
 			
 			<view class="refund-product-info" >
 				<order-item v-for="item in refundInfo.detailAppVOS" :key="item.id" :dataList="item" :refundType="true"  @handleDetail="productDetail(item)"  />
+				<!-- <store-calue-card-item></store-calue-card-item> -->
 			</view>
 
 			<order-refund-info :refundInfo="refundInfo" ></order-refund-info>

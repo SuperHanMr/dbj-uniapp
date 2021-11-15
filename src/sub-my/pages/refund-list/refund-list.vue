@@ -2,6 +2,7 @@
 	<view class="container" :style="{paddingBottom:dataList.length > 0 ? systemBottom : 0,backgroundColor:dataList.length>0 ? '#ffffff':''}" >
 		<view v-if="dataList.length>0">
 			<view class="order-container" v-for="(item,index) in dataList" :key="index" >
+				<!-- 服务和材料 -->
 				<view class="header">
 					<view class="store-name" @click="gotoShop(item)">
 						<text style="color: #333333;">{{item.storeName}}</text>
@@ -11,7 +12,6 @@
 						<text> {{item.type==0?"仅退款(未发货)":item.type==1 ? "仅退款(退库存)":item.type==2 ? "仅退款(已收货)":item.type==3?"服务退款":""}}</text>				
 					</view>
 				</view>
-				
 				<view class="body" @click="goToDetail(item)">
 					<view class="body-main" v-for="(item2,index2) in item.detailAppVOS" :key="index2">
 						<view class="pic">
@@ -31,6 +31,35 @@
 					</view>	
 					<view class="line"></view>
 				</view>
+				<!-- 储值卡 -->
+				<!-- <view class="header" >
+					<view class="store-name">
+						<text style="color: #333333;">储值卡活动标题</text>
+					</view>
+					<view class="order-status">
+						<text>储值卡退款</text>				
+					</view>
+				</view>
+				<view class="body" @click="goToDetail(item)">
+					<view class="body-main" v-for="(item2,index2) in item.detailAppVOS" :key="index2">
+						<view class="pic">
+							<image :src="`${item2.imgUrl}?x-oss-process=image/resize,m_mfit,w_68,h_68`" mode="	scaleToFill"></image>
+						</view>
+						<view class="basic-info">
+							<view class="name-attr">
+								<view class="text">
+									<text class="name">储值卡</text>					
+								</view>
+								<view class="attr">
+									<text>共1件</text>
+								</view>
+							</view>
+						</view>
+					</view>	
+					<view class="line"></view>
+				</view> -->
+				
+				
 				<view class="refund-price">
 					<text style="margin-right:8rpx;">退款金额</text>
 					<text class="product-price">
