@@ -122,7 +122,7 @@
 				<text>总押金</text>
 				<text>¥{{orderInfo.totalDeposit}}</text>
 			</view>
-		<!-- 	<view class="pay-way" style="justify-content:center" @click="clickCard">
+			<view class="pay-way" style="justify-content:center" @click="clickCard">
 				<view>
 					<text>储值卡</text>
 					<text>(可用余额:580元)</text>
@@ -132,7 +132,7 @@
 				<view>
 					<view class="wechat_icon"></view><text> {{cardClick?'选中':'未选中'}}</text>
 				</view>
-			</view> -->
+			</view>
 			<view class="pay-way">
 				<text>支付方式</text>
 				<view>
