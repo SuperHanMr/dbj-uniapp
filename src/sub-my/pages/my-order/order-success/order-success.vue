@@ -81,6 +81,10 @@
 							:orderStatus="3"
 							@handleDetail="productDetail(item3)"
 						></order-item>
+						<!-- <view class="ww">
+							dddd
+						</view>
+						<store-calue-card-item></store-calue-card-item> -->
 					</view>
 				</view>
 			</view>
