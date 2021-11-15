@@ -80,14 +80,7 @@
 						<image src="../../../static/order/images/arraw_right_@2x.png" mode="" />
 					</view>
 				</view>
-				<!-- <view class="tool-item" @click="toCard">
-					<view class="left">
-						<text>储值卡</text>
-					</view>
-					<view class="right">
-						<image src="../../../static/order/images/arraw_right_@2x.png" mode="" />
-					</view>
-				</view> -->
+				
 			</view>
 		</view>
 
@@ -254,11 +247,7 @@
 					});
 				}
 			},
-			toCard(){
-				uni.navigateTo({
-					url: "/sub-my/pages/deposit-card/deposit-card"
-				})
-			},
+			
 			handlerViewAll() {
 				console.log("点击我的订单全部按钮");
 				if (!this.isLogin) {

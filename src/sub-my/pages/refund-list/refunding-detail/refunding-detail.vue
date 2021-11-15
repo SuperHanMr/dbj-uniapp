@@ -7,7 +7,7 @@
 					@click="toBack"></i>
 			</template>
 		</custom-navbar>
-		
+
 		<view class="order-container" :style="{paddingBottom:containerPaddingBottom}" >
 			<view  style="position: relative;" :style="{backgroundImage:`url(${bgImg})`,backgroundSize: '100% 100%'}">
 				<view class="bgcStyle" :style="{backgroundImage:`url(${bgImg})`,backgroundSize: '100% 100%'}"/>
@@ -20,14 +20,14 @@
 					</view>
 				</view>
 			</view>
-			
+
 			<view class="refund-product-info" :style="{paddingBottom:orderType==2?'24rpx':''}">
 				<order-item v-for="item in refundInfo.detailAppVOS" :orderType="orderType" :key="item.id" :dataList="item" :refundType="true"  @handleDetail="productDetail(item)"  />
 			</view>
 
 			<order-refund-info :refundInfo="refundInfo" ></order-refund-info>
 
-			
+
 		</view>
 		<view
 		  class="cancel-refund-pay"
@@ -37,7 +37,7 @@
 				取消退款
 			</view>
 		</view>
-		
+
 		<!-- 取消退款的弹框 -->
     <uni-popup  ref="cancelRefund"  type="dialog">
       <uni-popup-dialog
@@ -69,7 +69,7 @@ export default {
 			bgImg:'https://ali-image.dabanjia.com/static/mp/dabanjia/images/decorate/order_bg_orange.png'
     };
   },
-	
+
 	mounted(e) {
 		const menuButtonInfo = uni.getMenuButtonBoundingClientRect();
 		this.containerBottom = menuButtonInfo.bottom
@@ -103,7 +103,7 @@ export default {
 			}
 		})
 	},
-	
+
   methods: {
 		toBack(){
 			uni.navigateBack({
@@ -141,8 +141,8 @@ export default {
 				url:`../../../../sub-classify/pages/goods-detail/goods-detail?goodId=${item.relationId}`
 			})
 		},
-		
-		// 
+
+		//
 		 cancelToPay() {
       this.$refs.cancelRefund.open();
     },
@@ -182,10 +182,10 @@ export default {
 				}
 			})
     },
-		
-	
-		//进行中页面的方法 
-		
+
+
+		//进行中页面的方法
+
 		// 取消订单
 		handleCancelOrder(){
 			this.$refs.cancleOrder.open();
@@ -195,7 +195,7 @@ export default {
 		},
 		cancleConfirm(){
 			console.log("取消订单按钮成功！")
-			// 调用取消订单的接口  
+			// 调用取消订单的接口
 			// 成功后关闭弹框并跳转到订单取消页面
 			this.$refs.cancleOrder.close();
 		},
@@ -205,7 +205,7 @@ export default {
 
 <style lang="scss" scoped>
 	.bgcStyle{
-		width: 100%; 
+		width: 100%;
 		height: 32rpx;
 		position: absolute;
 		bottom: -32rpx;
@@ -507,7 +507,7 @@ export default {
 				}
 				.left,.right .item{
 					display: flex;
-					flex-flow: column nowrap; 
+					flex-flow: column nowrap;
 					align-items: center;
 					justify-content: space-around;
 					.text1{
@@ -526,7 +526,7 @@ export default {
       .shop-item {
         margin-bottom: 32rpx;
 
-        
+
         .split-line {
           height: 1rpx;
           background-color: #ebebeb;
@@ -578,8 +578,8 @@ export default {
       box-sizing: border-box;
     }
 
-    
-    
+
+
   }
 }
 
@@ -607,7 +607,7 @@ export default {
 		color: #ffffff;
 		font-size: 32rpx;
 	}
-}	
+}
 .applyforRefund-confirmReceipt{
 	padding: 12rpx 32rpx;
 	justify-content: flex-end;
@@ -638,7 +638,7 @@ export default {
 	}
 }
 
-.waitPayBottom{	
+.waitPayBottom{
 	padding: 12rpx 32rpx;
 	justify-content: space-between;
 	.gotoPay {
@@ -662,9 +662,9 @@ export default {
 ::v-deep .uni-countdown__splitor.data-v-02c75d70 {
   line-height: 36rpx !important;
 	color: #FFFFFF !important;
-	}	
+	}
 
-		
+
 // 弹框样式
 ::v-deep .uni-popup-dialog {
   width: 560rpx !important;

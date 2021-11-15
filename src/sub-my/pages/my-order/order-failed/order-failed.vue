@@ -41,6 +41,9 @@
           :refundType="true"
           @handleDetail="productDetail(item,'refund')"
         />
+				<!-- <store-calue-card-item :showActualPay="true"></store-calue-card-item> -->
+				
+				
         <view class="refund-money" v-if="refundInfo.freight || refundInfo.handlingFees">
           <!--运费 -->
           <view class="price-item" v-if="refundInfo.freight">
@@ -111,6 +114,7 @@
             :dataList="item2"
             @handleDetail="productDetail(item2)"
           />
+					<!-- <store-calue-card-item :showActualPay="true"></store-calue-card-item> -->
         </view>
       </view>
       <order-price
