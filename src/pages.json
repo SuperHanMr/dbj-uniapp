@@ -506,6 +506,12 @@
 					"style": {
 						"navigationBarTitleText": "储值卡"
 					}
+				},
+				{
+					"path": "pages/deposit-card/billing-details",
+					"style": {
+						"navigationBarTitleText": "账单明细"
+					}
 				}
 			]
 		},
