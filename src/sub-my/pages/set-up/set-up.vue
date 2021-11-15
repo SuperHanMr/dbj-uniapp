@@ -5,7 +5,7 @@
 				<view class="item">
 					<text>{{item.title}}</text>
 					<image v-if="index <(listArr.length-1)" src="../../static/icon_setup_more@2x.png" mode=""></image>
-					<text v-else>{{version }}</text>
+					<text v-else>v {{ version }}</text>
 				</view>
 				<view class="line" v-if="index <(listArr.length-1)" />
 			</view>
@@ -26,17 +26,18 @@
 <script>
 	import {
 		logout
-	} from "../../../api/order.js"
+	} from "../../../api/order.js";
 	export default {
 		data() {
 			return {
+				version: "",
 				listArr: [{
 						title: "打扮家平台服务协议",
-						url: '/static/dbj-protocol/protocol.html'
+						url: "/static/dbj-protocol/protocol.html",
 					},
 					{
 						title: "打扮家隐私政策",
-						url: '/static/dbj-protocol/privacy-policy.html'
+						url: "/static/dbj-protocol/privacy-policy.html",
 					},
 					// {
 					// 	title: "打扮家知识产权条款",
@@ -44,31 +45,33 @@
 					// },
 					{
 						title: "意见与反馈",
-						url: "../../../sub-my/pages/set-up/comments-feedback/comments-feedback"
+						url: "../../../sub-my/pages/set-up/comments-feedback/comments-feedback",
 					},
 
 					{
 						title: "版本号",
-						url: ""
-					}
+						url: "",
+					},
 				],
-				version:"",
+				version: "",
 			};
 		},
-		onLoad() {
-			this.version= uni.getAccountInfoSync().miniProgram.version || 'v 2.0.0'
-			console.log("this.version=",this.version)
+		mounted() {
+			let info = uni.getAccountInfoSync().miniProgram;
+			if (info) {
+				this.version = info.version || "2.0.0";
+			}
 		},
-		
 		methods: {
 			onClick(item, index) {
 				if (index < 2) {
-					console.log("this.ENV.VUE_APP_BASE_API=", this.ENV.VUE_APP_BASE_API)
+					console.log("this.ENV.VUE_APP_BASE_API=", this.ENV.VUE_APP_BASE_API);
 
-					let url = this.ENV.VUE_APP_BASE_API + item.url
+					let url = this.ENV.VUE_APP_BASE_API + item.url;
 					uni.navigateTo({
-						url: `../../../pages/common/webview/webview?url=` + encodeURIComponent(url),
-					})
+						url: `../../../pages/common/webview/webview?url=` +
+							encodeURIComponent(url),
+					});
 				}
 				// if(index == 2){
 				// 	console.log("this.VUE_APP_BASE_H5=",this.ENV.VUE_APP_BASE_H5)
@@ -80,10 +83,9 @@
 				// }
 				else {
 					uni.navigateTo({
-						url: item.url
-					})
+						url: item.url,
+					});
 				}
-
 			},
 			onOpen() {
 				this.$refs.popup.open();
@@ -94,16 +96,16 @@
 			confirm(val) {
 				console.log("退出登录");
 				logout({
-						clientCode: "APPLET"
+						clientCode: "APPLET",
 					})
 					.then(() => {
-
 						// 清除本地缓存 然后跳转到首页
 						this.$refs.popup.close();
 						uni.clearStorageSync();
 						getApp().globalData = {
 							userInfo: {},
 							token: "",
+							openId: "",
 							city: "",
 							houses: [],
 							tim: null,
@@ -112,20 +114,18 @@
 							noHouseCheckId: null,
 							naviData: null,
 							decorateMsg: {},
-						}
-						uni.$emit('logout')
+						};
+						uni.$emit("logout");
 
 						uni.switchTab({
-							url: "../../../pages/home/index/index"
+							url: "../../../pages/home/index/index",
 						});
 						this.$store.dispatch("logoutIM");
 					})
-					.catch(() => {})
-
-
-			}
-		}
-	}
+					.catch(() => {});
+			},
+		},
+	};
 </script>
 
 <style lang="scss" scoped>
@@ -134,7 +134,7 @@
 		background: #f5f6f6;
 
 		.body-container {
-			background-color: #FFFFFF;
+			background-color: #ffffff;
 			margin-top: 16rpx;
 
 			.item-list {
@@ -180,7 +180,6 @@
 			background: #ffffff;
 		}
 	}
-
 
 	button::after {
 		border: none;

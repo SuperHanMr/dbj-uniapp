@@ -123,7 +123,7 @@
 						})
 					});
 				} else {
-					let openid = uni.getStorageSync("openId");
+					let openid = getApp().globalData.openId;
 					payFreight({
 						orderId: this.detail.orderId,
 						goodsRequireId: this.id,
