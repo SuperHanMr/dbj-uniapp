@@ -79,14 +79,14 @@
 						<image src="../../../static/order/images/arraw_right_@2x.png" mode="" />
 					</view>
 				</view>
-				<view class="tool-item" @click="toCard">
+				<!-- <view class="tool-item" @click="toCard">
 					<view class="left">
 						<text>储值卡</text>
 					</view>
 					<view class="right">
 						<image src="../../../static/order/images/arraw_right_@2x.png" mode="" />
 					</view>
-				</view>
+				</view> -->
 			</view>
 		</view>
 
@@ -111,26 +111,33 @@
 				userName: "用户名称",
 				userInfo: {},
 				userId: "",
-				list: [{
+				list: [
+					{
 						key: "1",
+						image: "../../../static/order/images/ic_storeValueCard.svg",
+						value: "储值卡",
+						url: "../../../sub-my/pages/deposit-card/deposit-card",
+					},
+					{
+						key: "2",
 						image: "../../../static/order/images/shopping_Cart.png",
 						value: "购物车",
 						url: "../../../sub-my/pages/shopping-cart/shopping-cart",
 					},
 					{
-						key: "2",
+						key: "3",
 						image: "../../../static/order/images/collection.png",
 						value: "我的收藏",
 						url: "../../../sub-my/pages/personal-center/my-collection/my-collection?firstEntry=true",
 					},
 					{
-						key: "3",
+						key: "4",
 						image: "../../../static/order/images/attention.png",
 						value: "我的关注",
 						url: "../../../sub-my/pages/personal-center/my-attention/my-attention",
 					},
 					{
-						key: "4",
+						key: "5",
 						image: "../../../static/order/images/houseGgr.png",
 						value: "房屋管理",
 						url: "../../../sub-my/pages/my-house/my-house?isMy=true",
