@@ -25,13 +25,16 @@
 							<!-- <image src="https://ali-image-test.dabanjia.com/image/20210816/11/1629087052820_2600%241626858792066_0436s4.png" class="goodsItemImg"></image> -->
 							<view class="goods-info">
 								<view class="goods-desc">
-									<text class="goods-type">{{goodsItem.productType=== 1?"物品":"服务"}}</text>
+									<text class="goods-type">{{goodsItem.productType === 1?"物品":"服务"}}</text>
 									{{goodsItem.spuName}}
 								</view>
 								<view class="spu-class">
 									<view class='tag'>{{levelName}}{{levelName?'|':''}}{{goodsItem.skuName}}</view>
-									<view class="total-num">共{{goodsItem.buyCount}}{{goodsItem.unit?goodsItem.unit:""}}
-									</view>
+								</view>
+								<view class="safeguard" @click="readSafeguard(goodsItem.refundable)"
+									v-if="goodsItem.productType === 1">
+									{{goodsItem.refundable?'七天无理由退还': '无质量问题不退还'}}
+									<text class="question-icon safe-icon"></text>
 								</view>
 								<view class="goods-spec">
 									<view class="goods-money">
@@ -42,20 +45,22 @@
 										<text>/{{goodsItem.unit?goodsItem.unit:""}}</text>
 									</view>
 									<view v-if="Number(goodsItem.deposit)">押金 ¥{{goodsItem.deposit}}</view>
+									<view class="total-num">共{{goodsItem.buyCount}}{{goodsItem.unit?goodsItem.unit:""}}
+									</view>
 								</view>
 							</view>
 						</view>
 						<view class="shop-reduce no-send-tip good-tip" v-if="goodsItem.errorType">
 							<view class="item-reduce-box" v-if="goodsItem.errorType">
-								<text v-if="goodsItem.errorType === 1">不在服务范围</text>
+								<text v-if="goodsItem.errorType === 1">当前地址不在商品服务范围内，请更换地址</text>
 								<text v-if="goodsItem.errorType === 2">当前地址无法配送该商品，请更换地址</text>
 								<text v-if="goodsItem.errorType === 3">该房屋下已购买该服务，不可重复购买</text>
 								<text v-if="goodsItem.errorType === 4 && cancelDialog">该服务需精算师指导下完成</text>
-								<text v-if="goodsItem.errorType === 5 && cancelDialog">该服务需管家指导下完成</text>
+								<text v-if="goodsItem.errorType === 5 && cancelDialog">请从精算单购买管家服务</text>
 								<text v-if="goodsItem.errorType === 6">您已跳过该工序，不可购买</text>
 								<text v-if="goodsItem.errorType === 7">暂不可购买，请在精算服务结束后于精算单中购买</text>
 								<text v-if="goodsItem.errorType === 8 && cancelDialog">请从装修页面查询购买</text>
-								<text v-if="goodsItem.errorType === 9">暂不可购买，请确认管家抢单后于精算单中购买</text>
+								<text v-if="goodsItem.errorType === 9">暂不可购买，请确认管家抢单后，在精算单中购买</text>
 							</view>
 						</view>
 						<view class="choose-time" v-if="productType === 2 && goodsItem.appointmentRequired">
@@ -122,17 +127,6 @@
 				<text>总押金</text>
 				<text>¥{{orderInfo.totalDeposit}}</text>
 			</view>
-		<!-- 	<view class="pay-way" style="justify-content:center" @click="clickCard">
-				<view>
-					<text>储值卡</text>
-					<text>(可用余额:580元)</text>
-				</view>
-				<view style="flex:1">
-				</view>
-				<view>
-					<view class="wechat_icon"></view><text> {{cardClick?'选中':'未选中'}}</text>
-				</view>
-			</view> -->
 			<view class="pay-way">
 				<text>支付方式</text>
 				<view>
@@ -154,11 +148,11 @@
 					<view class="total-price-info">
 						<text class="info-text1">共{{totalClassNum}}类，</text>
 						<view class="info-text2">总计：</view>
-						<view class="total-money" v-if="Number(payPrice)">
+						<view class="total-money" v-if="Number(totalPrice)">
 							￥
 							<text
-								class="mony-text">{{payPrice?String.prototype.split.call(payPrice, ".")[0]: "-"}}</text>
-							<text>.{{payPrice?String.prototype.split.call(payPrice, ".")[1]?String.prototype.split.call(payPrice, ".")[1]:"-":"-"}}</text>
+								class="mony-text">{{totalPrice?String.prototype.split.call(totalPrice, ".")[0]: "-"}}</text>
+							<text>.{{totalPrice?String.prototype.split.call(totalPrice, ".")[1]?String.prototype.split.call(totalPrice, ".")[1]:"-":"-"}}</text>
 						</view>
 						<view v-else>
 							¥ --
@@ -169,6 +163,7 @@
 				</view>
 			</view>
 			<expenses-toast ref='expensesToast' :expensesType="expensesType"></expenses-toast>
+			<safeguard-toast ref='safeguardToast' :refundable="refundable"></safeguard-toast>
 			<date-picker ref='datePicker' @getTime="getTime"></date-picker>
 			<order-toast ref='orderToast' :houseId="houseId" :hasCanBuy="hasCanBuy" :noStoreInfos="noStoreInfos"
 				@toastConfirm="toastConfirm" @backCart="backCart"></order-toast>
@@ -206,21 +201,23 @@
 	import {
 		getAddWorker,
 		getDetailInfo,
-		payOrder
-	} from '../../../api/classify.js'
-	import orderToast from "./order-toast.vue"
-	import datePicker from "./date-picker.vue"
+		payOrder,
+	} from "../../../api/classify.js";
+	import orderToast from "./order-toast.vue";
+	import datePicker from "./date-picker.vue";
 	// import expensesToast from "./expenses-toast.vue"
+	import safeguardToast from "./safeguard-toast.vue";
 	export default {
 		components: {
 			orderToast,
-			datePicker
+			datePicker,
+			safeguardToast,
 		},
 		data() {
 			return {
 				isShow: true,
 				hasTime: false,
-				time: '',
+				time: "",
 				shopIndex: 0,
 				goodIndex: 0,
 				originFrom: "",
@@ -236,334 +233,347 @@
 				buyCount: 0,
 				skuId: 0,
 				storeId: 0,
-				unit: '',
+				unit: "",
 				estateId: 0,
 				expensesType: 0,
 				productType: 1,
-				frontendServe: '',
+				frontendServe: "",
 				toastType: 0,
-				toastText: '',
-				tipTest: '',
-				remarks: '',
-				orderName: '',
+				toastText: "",
+				tipTest: "",
+				remarks: "",
+				orderName: "",
 				orderDetails: [],
 				totalClassNum: 0,
-				totalPrice: '0.00',
+				totalPrice: "0.00",
 				hasCanBuy: false,
 				projectId: 0,
 				level: 0,
 				levelName: "",
 				cancelDialog: false,
-				cardClick: false
-			}
-		},
-		computed:{
-			payPrice(){
-				if(this.cardClick){
-					var res = Number(this.totalPrice)*100 - 2
-					return String((res/100).toFixed(2));
-				}else{
-					console.log(this.totalPrice)
-					return this.totalPrice
-				}
-			
-			}
+				refundable: false,
+			};
 		},
 		onLoad(e) {
 			// 购物车数据
 			const eventChannel = this.getOpenerEventChannel();
-			eventChannel.on('acceptDataFromOpenerPage', (data) => {
-				this.orderCartParams = data
-				this.originFrom = data.originFrom
-			})
+			eventChannel.on("acceptDataFromOpenerPage", (data) => {
+				this.orderCartParams = data;
+				this.originFrom = data.originFrom;
+			});
 			// 小程序数据
 			if (e.from) {
-				this.originFrom = e.from
+				this.originFrom = e.from;
 			}
-			this.houseId = e.houseId ? e.houseId : getApp().globalData.currentHouse.id
-			this.buyCount = e.buyCount
-			this.skuId = e.skuId
-			this.storeId = e.storeId
-			this.unit = e.unit
-			this.level = e.level
-			this.goodDetailId = uni.getStorageSync('goodId')
+			this.houseId = e.houseId ? e.houseId : getApp().globalData.currentHouse.id;
+			this.buyCount = e.buyCount;
+			this.skuId = e.skuId;
+			this.storeId = e.storeId;
+			this.unit = e.unit;
+			this.level = e.level;
+			this.goodDetailId = uni.getStorageSync("goodId");
 		},
 		onShow() {
-			if (uni.getStorageSync('houseListChooseId')) {
-				this.houseId = uni.getStorageSync('houseListChooseId')
-				console.log(this.houseId, "this.houseId")
+			if (uni.getStorageSync("houseListChooseId")) {
+				this.houseId = uni.getStorageSync("houseListChooseId");
+				console.log(this.houseId, "this.houseId");
 				if (this.$refs.houseDialog) {
-					this.$refs.houseDialog.close()
+					this.$refs.houseDialog.close();
 				}
 			}
 			if (!Number(this.houseId)) {
-				this.isShow = false
+				this.isShow = false;
 				setTimeout(() => {
 					if (this.$refs.houseDialog) {
-						this.$refs.houseDialog.open()
+						this.$refs.houseDialog.open();
 					}
-				})
+				});
 			} else {
-				this.isShow = true
+				this.isShow = true;
 			}
 		},
 		onUnload() {
-			uni.removeStorageSync('houseListChooseId')
+			uni.removeStorageSync("houseListChooseId");
 		},
 		methods: {
-			clickCard() {
-				this.cardClick = !this.cardClick
-			},
 			backFrom() {
-				uni.navigateBack()
+				uni.navigateBack();
 			},
 			backCart() {
-				uni.removeStorageSync('houseListChooseId')
+				uni.removeStorageSync("houseListChooseId");
 			},
 			chooseHouse() {
 				uni.navigateTo({
-					url: "/sub-my/pages/my-house/my-house?isEdit=0"
-				})
+					url: "/sub-my/pages/my-house/my-house?isEdit=0",
+				});
 			},
 			goAgreement() {
 				uni.navigateTo({
-					url: "/sub-classify/pages/pay-order/agreement"
-				})
+					url: "/sub-classify/pages/pay-order/agreement",
+				});
 			},
 			readExpenses(num) {
-				this.expensesType = num
-				this.$refs.expensesToast.showPupop()
+				this.expensesType = num;
+				this.$refs.expensesToast.showPupop();
+			},
+			readSafeguard(type) {
+				this.refundable = type;
+				this.$refs.safeguardToast.showPupop();
 			},
 			getTime(val) {
-				this.time = val[0] + '年' + val[1] + '月' + val[2] + '日' + val[3] + '时' + val[4] + '分'
-				this.$set(this.orderInfo.storeInfos[this.shopIndex].skuInfos[this.goodIndex], "doorTime", this.time)
+				this.time =
+					val[0] +
+					"年" +
+					val[1] +
+					"月" +
+					val[2] +
+					"日" +
+					val[3] +
+					"时" +
+					val[4] +
+					"分";
+				this.$set(
+					this.orderInfo.storeInfos[this.shopIndex].skuInfos[this.goodIndex],
+					"doorTime",
+					this.time
+				);
 			},
 			typeServe2() {
-				this.$refs.houseDialog.open()
+				this.$refs.houseDialog.open();
 			},
 			confirmHousePop() {
 				uni.switchTab({
-					url: '/pages/home/index/index'
+					url: "/pages/home/index/index",
 				});
 			},
 			cancelHousePop() {
-				this.$refs.houseDialog.close()
+				this.$refs.houseDialog.close();
 			},
 			emitInfo(val) {
-				this.addUser = []
-				this.hasCanBuy = false
-				this.hasNoBuyItem = false
-				this.projectId = val.projectId
-				this.orderDetails = []
-				this.addressInfo = val
-				this.estateId = val.id ? val.id : 0
-				let params = {}
-				if (this.originFrom === 'h5GoodDetail') {
+				this.addUser = [];
+				this.hasCanBuy = false;
+				this.hasNoBuyItem = false;
+				this.projectId = val.projectId;
+				this.orderDetails = [];
+				this.addressInfo = val;
+				this.estateId = val.id ? val.id : 0;
+				let params = {};
+				if (this.originFrom === "h5GoodDetail") {
 					params = {
 						skuInfos: [{
 							skuId: this.skuId,
 							storeId: this.storeId,
 							buyCount: this.buyCount,
 							unit: this.unit ? this.unit : "",
-							level: this.level
-						}],
-						estateId: this.estateId
-					}
-				} else if (this.originFrom === 'shopCart') {
+							level: this.level,
+						}, ],
+						estateId: this.estateId,
+					};
+				} else if (this.originFrom === "shopCart") {
 					params = {
 						skuInfos: this.orderCartParams.skuInfos,
-						estateId: this.estateId
-					}
+						estateId: this.estateId,
+					};
 				}
 				getDetailInfo(params).then((data) => {
-					this.totalPrice = (data.totalPrice + data.totalDeliveryFee + data.totalHandlingFee + data
-						.totalDeposit -
-						data.totalDiscount).toFixed(2)
-					let dataInfo = data
-					this.orderInfo = dataInfo
-					this.noStoreInfos = JSON.parse(JSON.stringify(dataInfo))
-					this.noStoreInfos.storeInfos = []
-					this.canStoreInfos = JSON.parse(JSON.stringify(dataInfo))
-					this.canStoreInfos.storeInfos = []
+					this.totalPrice = (
+						data.totalPrice +
+						data.totalDeliveryFee +
+						data.totalHandlingFee +
+						data.totalDeposit -
+						data.totalDiscount
+					).toFixed(2);
+					let dataInfo = data;
+					this.orderInfo = dataInfo;
+					this.noStoreInfos = JSON.parse(JSON.stringify(dataInfo));
+					this.noStoreInfos.storeInfos = [];
+					this.canStoreInfos = JSON.parse(JSON.stringify(dataInfo));
+					this.canStoreInfos.storeInfos = [];
 					this.orderInfo.storeInfos.map((storeItem, storeK) => {
-						let noStoreItem = JSON.parse(JSON.stringify(storeItem))
-						noStoreItem.skuInfos = []
-						let canStoreItem = JSON.parse(JSON.stringify(storeItem))
-						canStoreItem.skuInfos = []
-						this.noStoreInfos.storeInfos.push(noStoreItem)
-						this.canStoreInfos.storeInfos.push(canStoreItem)
+						let noStoreItem = JSON.parse(JSON.stringify(storeItem));
+						noStoreItem.skuInfos = [];
+						let canStoreItem = JSON.parse(JSON.stringify(storeItem));
+						canStoreItem.skuInfos = [];
+						this.noStoreInfos.storeInfos.push(noStoreItem);
+						this.canStoreInfos.storeInfos.push(canStoreItem);
 						storeItem.skuInfos.map((skuItem, skuK) => {
 							switch (skuItem.level) {
 								case 1:
-									this.levelName = '中级'
+									this.levelName = "中级";
 									break;
 								case 2:
-									this.levelName = '高级'
+									this.levelName = "高级";
 									break;
 								case 3:
-									this.levelName = '特高级'
+									this.levelName = "特高级";
 									break;
 								case 4:
-									this.levelName = '钻石级'
+									this.levelName = "钻石级";
 									break;
 							}
-							this.productType = skuItem.productType
+							this.productType = skuItem.productType;
 							// 头部补人工数据
 							if (skuItem.addingJobName) {
 								this.addUser.push({
 									addingJobName: skuItem.addingJobName,
 									addingUserName: skuItem.addingUserName,
-									addingUserId: skuItem.addingUserId
-								})
+									addingUserId: skuItem.addingUserId,
+								});
 							}
 							if (skuItem.appointmentRequired) {
-								this.hasTime = true
+								this.hasTime = true;
 							}
 							// 结算可配送和不可配送数据
 							if (skuItem.errorType) {
-								noStoreItem.skuInfos.push(skuItem)
+								noStoreItem.skuInfos.push(skuItem);
 								if (skuItem.errorType === 4) {
-									this.toastType = 4
-									this.toastText = "该服务需精算师指导下完成"
+									this.toastType = 4;
+									this.toastText = "该服务需精算师指导下完成";
 									if (this.$refs.cancelDialog.open) {
-										this.$refs.cancelDialog.open()
+										this.$refs.cancelDialog.open();
 									}
 								} else if (skuItem.errorType === 5) {
-									this.toastType = 5
-									this.toastText = "该服务需管家指导下完成"
+									this.toastType = 5;
+									this.toastText = "请从精算单购买管家服务";
 									if (this.$refs.cancelDialog.open) {
-										this.$refs.cancelDialog.open()
+										this.$refs.cancelDialog.open();
 									}
 								} else if (skuItem.errorType === 8) {
-									this.toastType = 8
-									this.toastText = "请从装修页面查询购买"
+									this.toastType = 8;
+									this.toastText = "请从装修页面查询购买";
 									if (this.$refs.cancelDialog.open) {
-										this.$refs.cancelDialog.open()
+										this.$refs.cancelDialog.open();
 									}
 								}
-								this.hasNoBuyItem = true // 判断所有数据中有没有不可配送数据
+								this.hasNoBuyItem = true; // 判断所有数据中有没有不可配送数据
 							} else {
-								this.hasCanBuy = true
-								canStoreItem.skuInfos.push(skuItem)
-								this.totalClassNum += 1
-								console.log(this.totalClassNum)
+								this.hasCanBuy = true;
+								canStoreItem.skuInfos.push(skuItem);
+								this.totalClassNum += 1;
 								// 整理出结算参数
 								let orderDetailItem = {
-									"relationId": skuItem.skuId, //实体id,
-									"type": skuItem.productType, //1材料  2服务   3专项付款,
-									"businessType": skuItem.categoryTypeId, //业务类型,
-									"roleType": skuItem.roleType ? Number(skuItem.roleType) :
-										0, //角色类型  7工人  10管家  购买工人和管家时参数必传,
-									"workType": skuItem.workType ? Number(skuItem.workType) : -
-										2, //工种类型 购买工人时参数必传,
-									"level": skuItem.level, //等级  0中级  1高级 2特级  3钻石",
-									"storeId": storeItem.storeId, //店铺id,
-									"storeType": 0, //店铺类型 0普通 1设计师",
-									"number": skuItem.buyCount, //购买数量",
-									"params": {}, //与订单无关的参数 如上门时间 doorTime
-								}
+									relationId: skuItem.skuId, //实体id,
+									type: skuItem.productType, //1材料  2服务   3专项付款,
+									businessType: skuItem.categoryTypeId, //业务类型,
+									roleType: skuItem.roleType ? Number(skuItem.roleType) :
+									0, //角色类型  7工人  10管家  购买工人和管家时参数必传,
+									workType: skuItem.workType ? Number(skuItem.workType) : -
+									2, //工种类型 购买工人时参数必传,
+									level: skuItem.level, //等级  0中级  1高级 2特级  3钻石",
+									storeId: storeItem.storeId, //店铺id,
+									storeType: 0, //店铺类型 0普通 1设计师",
+									number: skuItem.buyCount, //购买数量",
+									params: {}, //与订单无关的参数 如上门时间 doorTime
+								};
 								this.orderDetails.push({
 									orderDetailItem: orderDetailItem,
-									paramsInfo: skuItem
-								})
+									paramsInfo: skuItem,
+								});
 							}
-						})
-					})
-					if (this.orderInfo.storeInfos.length > 1 || this.orderInfo.storeInfos[0].skuInfos.length > 1) {
-						this.orderInfo = this.canStoreInfos
+						});
+					});
+					if (
+						this.orderInfo.storeInfos.length > 1 ||
+						this.orderInfo.storeInfos[0].skuInfos.length > 1
+					) {
+						this.orderInfo = this.canStoreInfos;
 						if (this.hasNoBuyItem) {
-							this.$refs.orderToast.showPupop()
+							this.$refs.orderToast.showPupop();
 						}
 					}
-					if (this.orderInfo.storeInfos.skuInfos.length === 1) {
-						this.totalClassNum = 1
+					if (this.orderInfo.storeInfos[0].skuInfos.length === 1) {
+						this.totalClassNum = 1;
 					}
-				})
+				});
 			},
 			chooseTime(shopIndex, goodIndex) {
-				this.shopIndex = shopIndex
-				this.goodIndex = goodIndex
-				this.$refs.datePicker.showDatePicker()
+				this.shopIndex = shopIndex;
+				this.goodIndex = goodIndex;
+				this.$refs.datePicker.showDatePicker();
 			},
 			toastConfirm() {
-				this.hasNoBuyItem = false
+				this.hasNoBuyItem = false;
 			},
 			pay() {
 				if (this.hasTime && !this.time) {
-					this.$refs.timeDialog.open()
-					return
+					this.$refs.timeDialog.open();
+					return;
 				}
 				if (!this.hasCanBuy || this.hasNoBuyItem || !this.totalPrice) {
-					return
+					return;
 				}
-				let details = []
+				let details = [];
 				this.orderDetails.map((v, k) => {
-					details.push(v.orderDetailItem)
+					details.push(v.orderDetailItem);
 					Object.keys(v.paramsInfo).map((item, index) => {
-						if (item === 'doorTime') {
-							v.orderDetailItem.params[item] = v.paramsInfo.doorTime
+						if (item === "doorTime") {
+							v.orderDetailItem.params[item] = v.paramsInfo.doorTime;
 						}
-					})
-				})
-				uni.$emit('submitOrder') // 购物车需要的逻辑
-				let orderPrice = Number(Number(this.totalPrice).toFixed(2).replace('.', ""))
+					});
+				});
+				uni.$emit("submitOrder"); // 购物车需要的逻辑
+				let orderPrice = Number(
+					Number(this.totalPrice).toFixed(2).replace(".", "")
+				);
 				let params = {
 					payType: 1, //"int //支付方式  1微信支付",
-					openid: uni.getStorageSync("openId"), //"string //微信openid 小程序支付用 app支付不传或传空",
+					openid: getApp().globalData.openId, //"string //微信openid 小程序支付用 app支付不传或传空",
 					projectId: this.projectId, //"long //项目id  非必须 默认0",
 					customerId: 0, //"long //业主id  非必须 默认0",
 					estateId: this.estateId, //"long //房产id   非必须 默认0",
 					total: orderPrice, //"int //总计",
 					remarks: this.remarks, //"string //备注",
 					orderName: "", //"string //订单名称 可为空",
-					details: details
-				}
-				payOrder(params).then(data => {
+					details: details,
+				};
+				payOrder(params).then((data) => {
 					const {
 						wechatPayJsapi
-					} = data
+					} = data;
 					uni.requestPayment({
 						provider: "wxpay",
 						...wechatPayJsapi,
 						success(res) {
-							console.log("付款成功", res)
+							console.log("付款成功", res);
 							uni.navigateTo({
-								url: "/sub-classify/pages/pay-order/pay-success?orderId=" + data.id
-							})
+								url: "/sub-classify/pages/pay-order/pay-success?orderId=" + data
+									.id,
+							});
 						},
 						fail(e) {
 							console.log(e, "取消付款");
 							uni.navigateTo({
-								url: `/sub-my/pages/my-order/order-wait-pay/order-wait-pay?orderNo=${data.id}&from=waitPayOrder`
-							})
+								url: `/sub-my/pages/my-order/order-wait-pay/order-wait-pay?orderNo=${data.id}&from=waitPayOrder`,
+							});
 						},
 					});
-				})
+				});
 			},
 			cancelGoodPop() {
-				this.cancelDialog = true
-				this.$refs.cancelDialog.close()
+				this.cancelDialog = true;
+				this.$refs.cancelDialog.close();
 			},
 			confirmGoodPop() {
 				if (this.toastType === 4) {
 					uni.navigateTo({
-						url: "/sub-classify/pages/search-result/search-result?searchText=" + "精算"
-					})
+						url: "/sub-classify/pages/search-result/search-result?searchText=" +
+							"精算",
+					});
 				} else if (this.toastType === 5) {
 					uni.switchTab({
-						url: "/pages/decorate/index/index"
-					})
+						url: "/pages/decorate/index/index",
+					});
 				} else if (this.toastType === 8) {
 					uni.switchTab({
-						url: "/pages/decorate/index/index"
-					})
+						url: "/pages/decorate/index/index",
+					});
 				}
 			},
 			confirmTimePop() {
-				this.$refs.timeDialog.close()
-			}
-		}
-	}
+				this.$refs.timeDialog.close();
+			},
+		},
+	};
 </script>
 
 <style scoped>
@@ -588,7 +598,7 @@
 		height: 28rpx;
 		top: 6rpx;
 		margin-left: 2rpx;
-		background-image: url('../../static/image/question.png');
+		background-image: url("../../static/image/question.png");
 		background-size: cover;
 	}
 
@@ -600,7 +610,7 @@
 	.shop-item {
 		margin-top: 25rpx;
 		padding: 0 32rpx;
-		background-color: #FFFFFF;
+		background-color: #ffffff;
 	}
 
 	.shop-name {
@@ -642,7 +652,7 @@
 	}
 
 	.goods-info .goods-desc {
-		width: 420rpx;
+		width: 300rpx;
 		font-size: 28rpx;
 		color: #333333;
 		line-height: 40rpx;
@@ -675,14 +685,15 @@
 		padding: 0 4rpx;
 		margin-top: 2rpx;
 		font-size: 22rpx;
-		display: flex;
 		position: absolute;
-		bottom: 0;
+		top: 0;
+		right: 0;
 		align-items: baseline;
 	}
 
 	.goods-info .spu-class {
 		position: relative;
+		margin-top: 10rpx;
 	}
 
 	.goods-info .tag {
@@ -702,16 +713,29 @@
 		-webkit-line-clamp: 2;
 		line-clamp: 2;
 		-webkit-box-orient: vertical;
-		max-width: 320rpx;
+		max-width: 300rpx;
 		text-align: left;
 	}
 
 	.goods-info .total-num {
-		top: 0;
-		right: 0;
 		font-size: 28rpx;
 		color: #999999;
+	}
+
+	.safeguard {
 		position: absolute;
+		bottom: 0;
+		padding: 2rpx 10rpx;
+		border: 1px solid ##ff3347;
+		color: #ff3347;
+		font-size: 10px;
+	}
+
+	.safe-icon {
+		width: 18rpx;
+		height: 18rpx;
+		top: 12rpx;
+		background-image: url("../../static/image/safe-question.png");
 	}
 
 	.goods-money {
@@ -719,7 +743,6 @@
 		color: #333333;
 		vertical-align: bottom;
 		font-weight: bold;
-		margin-right: 30rpx;
 	}
 
 	.goods-money .integer-price {
@@ -744,7 +767,7 @@
 	}
 
 	.cost-detail view text:nth-child(2) {
-		corlor: #333333
+		corlor: #333333;
 	}
 
 	.shop-reduce {
@@ -796,7 +819,7 @@
 
 	.good-store-account {
 		padding: 35rpx 32rpx;
-		background-color: #FFFFFF;
+		background-color: #ffffff;
 		margin-top: 25rpx;
 		font-size: 28rpx;
 		font-family: PingFangSC, PingFangSC-Regular;
@@ -829,7 +852,7 @@
 	.pledge,
 	.remarks {
 		padding: 5rpx 32rpx;
-		background-color: #FFFFFF;
+		background-color: #ffffff;
 		margin-top: 25rpx;
 		font-size: 28rpx;
 		font-family: PingFangSC, PingFangSC-Regular;
@@ -861,7 +884,7 @@
 	.bottom {
 		padding: 24rpx 32rpx 50rpx 32rpx;
 		box-sizing: border-box;
-		background-color: #FFFFFF;
+		background-color: #ffffff;
 		position: fixed;
 		bottom: 0;
 		width: 100%;
@@ -870,7 +893,7 @@
 	}
 
 	.bottom .agreement {
-		color: #FFA94F;
+		color: #ffa94f;
 	}
 
 	.bottom .second-part {
@@ -919,7 +942,7 @@
 		height: 88rpx;
 		background: linear-gradient(135deg, #00bfaf, #00bfbc);
 		border-radius: 6px;
-		color: #FFFFFF;
+		color: #ffffff;
 		font-size: 32rpx;
 		line-height: 88rpx;
 		text-align: center;

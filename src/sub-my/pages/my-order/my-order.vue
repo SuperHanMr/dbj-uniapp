@@ -380,16 +380,22 @@
 				if (data.orderStatus == 0) {
 					//（0待付款，1进行中，2已完成 3已关闭）
 					uni.navigateTo({
-						url: `order-wait-pay/order-wait-pay?orderNo=${data.id}`,
+						url: `order-wait-pay/order-wait-pay?orderNo=${data.id}?&from=all`,
 					});
 				} else if (data.orderStatus == 1) {
-					uni.navigateTo({
-						url: `order-in-progress/order-in-progress?orderNo=${data.id}`,
-					});
+					if(this.currentIndex == 0){
+						uni.navigateTo({
+							url: `order-in-progress/order-in-progress?orderNo=${data.id}&from=all`,
+						});
+					}else{
+						uni.navigateTo({
+							url: `order-in-progress/order-in-progress?orderNo=${data.id}`,
+						});
+					}
 				} else if (data.orderStatus == 2) {
-					uni.navigateTo({
-						url: `order-success/order-success?type=complete&id=${data.id}`,
-					});
+						uni.navigateTo({
+							url: `order-success/order-success?type=complete&id=${data.id}`,
+						});
 				} else {
 					uni.navigateTo({
 						url: `order-failed/order-failed?type=close&id=${data.id}`,
@@ -465,7 +471,7 @@
 						url: `multiple-payments/multiple-payments?orderId=${item.id}&remainTime=${item.remainTime}&type=list`,
 					});
 				} else {
-					let openId = uni.getStorageSync("openId");
+					let openId = getApp().globalData.openId;
 					console.log("openId=",this.openId)
 					orderPay({
 						orderId:Number(item.id),

@@ -96,6 +96,7 @@
 					loginName: data.loginName || "",
 				});
 				getApp().globalData.token = data.SCN;
+				getApp().globalData.openId = data.openId;
 
 				console.log("type", type); // 根据 type 类型，跳转页面/路由
 				if (uni.getStorageSync("scn")) {
@@ -110,7 +111,7 @@
 							userSig: data.userSign,
 						});
 						let shaerId = uni.getStorageSync("shareId");
-						if (shaerId) {
+						if (shaerId && type == "register") {
 							bindCapsule({
 								zeusId: data.id,
 								salesmanPhone: shaerId

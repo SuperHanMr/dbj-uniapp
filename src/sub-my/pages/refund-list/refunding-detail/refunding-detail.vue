@@ -21,8 +21,8 @@
 				</view>
 			</view>
 			
-			<view class="refund-product-info" >
-				<order-item v-for="item in refundInfo.detailAppVOS" :key="item.id" :dataList="item" :refundType="true"  @handleDetail="productDetail(item)"  />
+			<view class="refund-product-info" :style="{paddingBottom:orderType==2?'24rpx':''}">
+				<order-item v-for="item in refundInfo.detailAppVOS" :orderType="orderType" :key="item.id" :dataList="item" :refundType="true"  @handleDetail="productDetail(item)"  />
 			</view>
 
 			<order-refund-info :refundInfo="refundInfo" ></order-refund-info>
@@ -59,7 +59,7 @@ export default {
     return {
       orderId: "",
 			refundInfo:{},
-			
+			orderType:"",
 			systemBottom: "",
 			containerBottom:"",
 			containerPaddingBottom:"",
@@ -128,6 +128,11 @@ export default {
 			getRefundDetail({ id: this.orderId }).then(e=>{
 			console.log("打印请求回来的数据=",e,"e")
 				this.refundInfo = e
+				this.orderType=this.refundInfo.type
+				console.log("this.orderType===",this.orderType)
+				if(this.orderType == 3){
+					this.orderType=2
+				}
 			})
 		},
 		// 跳转到商品详情页面

@@ -341,283 +341,380 @@
 				this.countPrice = 0;
 				this.pieces = 0;
 
-				if (this.msg?.obtainType != 2) {
-					// 先计算人工费用
-					this.dataOrigin?.artificial?.categoryList?.forEach((item, i) => {
-						item.itemList.forEach((it, j) => {
-							this.shopping.artificial.push(it);
+				this.setSkuRelation(obj)
+				this.computePriceAndShopping()
+				this.setMaterial(categoryId, item)
+			})
+	},
+	gotopay() {
+			// TODO去结算页面
+			// let skuInfos = []
+			if (this.shopping?.artificial?.length > 0 || this?.shopping?.material?.length > 0) {
+				let params = {
+					payType: 1, //"int //支付方式  1微信支付",
+					openid: getApp().globalData.openId, //"string //微信openid 小程序支付用 app支付不传或传空",
+					projectId: Number(this.msg.projectId), //"long //项目id  非必须 默认0",
+					customerId: Number(this.msg.customerId), //"long //业主id  非必须 默认0",
+					estateId: Number(this.msg.estateId), //"long //房产id   非必须 默认0",
+					total: this.countPrice, //"int //总计",
+					remarks: "", //"string //备注",
+					orderName: this.title || "工序费", //"string //订单名称",
+					details: []
+				}
+				// roleType 7工人，10管家
+				let roleType = this.msg.serviceType == 5 ? 10 : 7
+				if (this.msg.obtainType != 2) {
+					this.shopping?.artificial?.forEach(it => {
+						params.details.push({
+							// supplierType: it.supplierType,
+							roleType,
+							relationId: it.id, //"long //实体id",
+							type: 2, //"int //实体类型   1材料  2服务   3专项付款",
+							businessType: it.categoryTypeId, //"int //业务类型",
+							workType: it.workType, //"int //工种类型",
+							level: this.artificialLevel, //"int //等级  0中级  1高级 2特级  3钻石",
+							storeId: it.storeId, //"long //店铺id",
+							storeType: 0, //"int //店铺类型 0普通 1设计师",
+							number: it.count, //"double //购买数量",
+							params: {
+								skuRelation: this.skuRelation,
+								serviceType: this.msg.serviceType
+							}, //string //与订单无关的参数 如上门时间 doorTime"
+						})
+					})
+				}
+				if (this.msg.obtainType != 1) {
+					this.shopping?.material?.forEach(it => {
+						params.details.push({
+							// supplierType: it.supplierType,
+							relationId: it.id, //"long //实体id",
+							type: 1, //"int //实体类型   1材料  2服务   3专项付款",
+							businessType: 1, //it.categoryTypeId, //"int //业务类型",辅材的businessType固定为1
+							workType: it.workType, //"int //工种类型",
+							// level: 1, //"int //等级  0中级  1高级 2特级  3钻石",
+							storeId: it.storeId, //"long //店铺id",
+							storeType: 0, //"int //店铺类型 0普通 1设计师",
+							number: it.count, //"double //购买数量",
+							params: {
+								skuRelation: this.skuRelation,
+								serviceType: this.msg.serviceType
+							}, //string //与订单无关的参数 如上门时间 doorTime"
+						})
+					})
+				}
+				this.createOrder(params)
+			} else {
+				uni.showToast({
+					title: "请您先选择人工",
+					icon: "none",
+					duration: 3000
+				})
+			}
+		},
+		createOrder(obj) {
+			createOrder(obj).then(data => {
+				const {
+					wechatPayJsapi
+				} = data
+				uni.requestPayment({
+					provider: "wxpay",
+					...wechatPayJsapi,
+					success(res) {
+						console.log("付款成功", res)
+						uni.switchTab({
+							url: "/pages/decorate/index/index"
+						})
+					},
+					fail(e) {
+						console.log(e)
+						const {
+							errMsg
+						} = e
+						if (errMsg.indexOf("cancel") !== -1) {
+							uni.navigateTo({
+								url: `/sub-my/pages/my-order/my-order?index=1&firstEntry=true`
+							})
+						} else {
+							uni.showToast({
+								title: "支付失败",
+								icon: "none",
+								duration: 3000
+							})
+						}
+					},
+				});
+			})
+		},
+		setLevel(levelObj) {
+			this.artificialLevel = levelObj.value
+			this.levelLabel = "（" + levelObj.label + "）"
+
+			if (this.msg?.obtainType != 1) {
+				// 再计算辅材费用
+				this.dataOrigin?.material?.categoryList?.forEach((item, i) => {
+					item.itemList.forEach((it, j) => {
+						if (this.checkedIds.includes(it.originalId)) {
+							this.shopping.material.push(it);
 							this.countPrice += Math.trunc(it.price * it.count);
 							this.pieces += it.count;
-						});
-					});
-				}
-
-				if (this.msg?.obtainType != 1) {
-					// 再计算辅材费用
-					this.dataOrigin?.material?.categoryList?.forEach((item, i) => {
-						item.itemList.forEach((it, j) => {
-							if (this.checkedIds.includes(it.originalId)) {
-								this.shopping.material.push(it);
-								this.countPrice += Math.trunc(it.price * it.count);
-								this.pieces += it.count;
-							}
-						});
-					});
-				}
-				console.log(">>>>>>总价：>>>>>", this.countPrice);
-			},
-			batchChangeLevel(cllist) {
-				batchChangeLevel({
-					changeLevelDetailList: cllist,
-				}).then((data) => {
-					if (data && data.length > 0) {
-						let list = [];
-						// 取第一项查询所有等级
-						data[0].changeLevelDetailList.forEach((itm) => {
-							list.push({
-								value: itm.level,
-								label: itm.levelName,
-								totalPrice: 0,
-							});
-						});
-						this.levelLabel = "（" + list[0].label + "）";
-						data.forEach((workerSku) => {
-							// 储存所有工人对应的等级列表和溢价价格
-							workerSku.changeLevelDetailList.forEach((levelItem) => {
-								this.workerLevelSkuMapping.push({
-									...levelItem,
-									skuId: workerSku.skuId,
-								});
-							});
-							workerSku.changeLevelDetailList.forEach((it) => {
-								let level = list.find((l) => l.value == it.level);
-								level.totalPrice += it.totalPrice;
-							});
-						});
-						this.levelList = list;
-					} else {
-						this.levelList = [];
-					}
-				});
-			},
-			getDataList() {
-				this.noData = false;
-				let params = {
-					projectId: this.msg.projectId,
-					type: this.msg.serviceType,
-				};
-				if (!this.partpay) {
-					params.obtainType = this.msg.obtainType;
-				}
-				console.log(">>>>>>>params>>>>>>>", params);
-				sellList(params)
-					.then((data) => {
-						this.dataOrigin = data;
-						if (this.dataOrigin?.artificial?.categoryList?.length > 0) {
-							let cllist = [];
-							this.dataOrigin?.artificial?.categoryList?.forEach((category) => {
-								category?.itemList.forEach((t) => {
-									let obj = {
-										skuId: t.id, //"long //商品id【必须】",
-										cityId: this.dataOrigin.cityId, //"long //市id【必须】",
-										categoryTypeId: t.categoryTypeId, //"int //商品品类类型id【必须】",
-										price: t.price, //"int //商品总价格 工艺商品单价个数 单位分【必须】",
-										count: t.count,
-									};
-									if (t.categoryTypeId == 7) {
-										obj.workerType = t
-											.workType; //"int //工种,品类为工人时（categoryTypeId=7）必传
-									}
-									cllist.push(obj);
-								});
-							});
-							if (cllist.length > 0) {
-								this.batchChangeLevel(cllist);
-							} else {
-								this.levelLabel = "（中级）";
-							}
-						}
-						// if (this.selectedMaterialData?.categoryId) {
-						//   const {
-						//     origin,
-						//     categoryId
-						//   } = this.selectedMaterialData
-						//   this.setMaterial(categoryId, origin)
-						// }
-						if (data?.material?.categoryList?.length > 0) {
-							let tempArr = [...data?.material?.categoryList];
-							tempArr.forEach((category) => {
-								category.itemList.forEach((it) => {
-									it.oldId = it.id;
-									it.checked = true;
-									it.isEdit = false;
-								});
-							});
-							uni.setStorageSync("originMaterialList", tempArr);
-						}
-						this.initData();
-					})
-					.catch((err) => {
-						const {
-							data
-						} = err;
-						if (data && data.code !== 1) {
-							this.noData = true;
-							this.message = data.message;
-						}
-					});
-			},
-			selectWp(obj) {
-				this.$nextTick(function() {
-					console.log(obj);
-					const {
-						val,
-						originalId,
-						categoryId,
-						item
-					} = obj;
-					let arr = this.checkedIds;
-					if (val) {
-						if (!arr.includes(originalId)) {
-							arr.push(originalId);
-						}
-					} else {
-						if (arr.includes(originalId)) {
-							const i = arr.indexOf(originalId);
-							arr.splice(i, 1);
-						}
-					}
-					this.checkedIds = arr;
-
-					this.setSkuRelation(obj);
-					this.computePriceAndShopping();
-					this.setMaterial(categoryId, item);
-				});
-			},
-			gotopay() {
-				// TODO去结算页面
-				// let skuInfos = []
-				if (
-					this.shopping?.artificial?.length > 0 ||
-					this?.shopping?.material?.length > 0
-				) {
-					let params = {
-						payType: 1, //"int //支付方式  1微信支付",
-						openid: uni.getStorageSync("openId"), //"string //微信openid 小程序支付用 app支付不传或传空",
-						projectId: Number(this.msg.projectId), //"long //项目id  非必须 默认0",
-						customerId: Number(this.msg.customerId), //"long //业主id  非必须 默认0",
-						estateId: Number(this.msg.estateId), //"long //房产id   非必须 默认0",
-						total: this.countPrice, //"int //总计",
-						remarks: "", //"string //备注",
-						orderName: this.title || "工序费", //"string //订单名称",
-						details: [],
-					};
-					// roleType 7工人，10管家
-					let roleType = this.msg.serviceType == 5 ? 10 : 7;
-					if (this.msg.obtainType != 2) {
-						this.shopping?.artificial?.forEach((it) => {
-							params.details.push({
-								// supplierType: it.supplierType,
-								roleType,
-								relationId: it.id, //"long //实体id",
-								type: 2, //"int //实体类型   1材料  2服务   3专项付款",
-								businessType: it.categoryTypeId, //"int //业务类型",
-								workType: it.workType, //"int //工种类型",
-								level: this.artificialLevel, //"int //等级  0中级  1高级 2特级  3钻石",
-								storeId: it.storeId, //"long //店铺id",
-								storeType: 0, //"int //店铺类型 0普通 1设计师",
-								number: it.count, //"double //购买数量",
-								params: {
-									skuRelation: this.skuRelation,
-									serviceType: this.msg.serviceType,
-								}, //string //与订单无关的参数 如上门时间 doorTime"
-							});
-						});
-					}
-					if (this.msg.obtainType != 1) {
-						this.shopping?.material?.forEach((it) => {
-							params.details.push({
-								// supplierType: it.supplierType,
-								relationId: it.id, //"long //实体id",
-								type: 1, //"int //实体类型   1材料  2服务   3专项付款",
-								businessType: 1, //it.categoryTypeId, //"int //业务类型",辅材的businessType固定为1
-								workType: it.workType, //"int //工种类型",
-								// level: 1, //"int //等级  0中级  1高级 2特级  3钻石",
-								storeId: it.storeId, //"long //店铺id",
-								storeType: 0, //"int //店铺类型 0普通 1设计师",
-								number: it.count, //"double //购买数量",
-								params: {
-									skuRelation: this.skuRelation,
-									serviceType: this.msg.serviceType,
-								}, //string //与订单无关的参数 如上门时间 doorTime"
-							});
-						});
-					}
-					this.createOrder(params);
-				} else {
-					uni.showToast({
-						title: "请您先选择人工",
-						icon: "none",
-						duration: 3000,
-					});
-				}
-			},
-			createOrder(obj) {
-				createOrder(obj).then((data) => {
-					const {
-						wechatPayJsapi
-					} = data;
-					uni.requestPayment({
-						provider: "wxpay",
-						...wechatPayJsapi,
-						success(res) {
-							console.log("付款成功", res);
-							uni.switchTab({
-								url: "/pages/decorate/index/index",
-							});
-						},
-						fail(e) {
-							console.log(e);
-							const {
-								errMsg
-							} = e;
-							if (errMsg.indexOf("cancel") !== -1) {
-								uni.navigateTo({
-									url: `/sub-my/pages/my-order/my-order?index=1&firstEntry=true`,
-								});
-							} else {
-								uni.showToast({
-									title: "支付失败",
-									icon: "none",
-									duration: 3000,
-								});
-							}
-						},
-					});
-				});
-			},
-			setLevel(levelObj) {
-				this.artificialLevel = levelObj.value;
-				this.levelLabel = "（" + levelObj.label + "）";
-
-				this.dataOrigin?.artificial?.categoryList?.forEach((category) => {
-					category.itemList.forEach((item) => {
-						let temp = this.workerLevelSkuMapping.filter(
-							(t) => t.skuId === item.id && levelObj.value === t.level
-						);
-						if (temp?.length > 0) {
-							item.price = temp[0].price;
 						}
 					});
 				});
-
-				this.close();
-				this.computePriceAndShopping();
-			},
-			close() {
-				this.$refs.level.close();
-			},
+			}
+			console.log(">>>>>>总价：>>>>>", this.countPrice);
 		},
+		batchChangeLevel(cllist) {
+			batchChangeLevel({
+				changeLevelDetailList: cllist,
+			}).then((data) => {
+				if (data && data.length > 0) {
+					let list = [];
+					// 取第一项查询所有等级
+					data[0].changeLevelDetailList.forEach((itm) => {
+						list.push({
+							value: itm.level,
+							label: itm.levelName,
+							totalPrice: 0,
+						});
+					});
+					this.levelLabel = "（" + list[0].label + "）";
+					data.forEach((workerSku) => {
+						// 储存所有工人对应的等级列表和溢价价格
+						workerSku.changeLevelDetailList.forEach((levelItem) => {
+							this.workerLevelSkuMapping.push({
+								...levelItem,
+								skuId: workerSku.skuId,
+							});
+						});
+						workerSku.changeLevelDetailList.forEach((it) => {
+							let level = list.find((l) => l.value == it.level);
+							level.totalPrice += it.totalPrice;
+						});
+					});
+					this.levelList = list;
+				} else {
+					this.levelList = [];
+				}
+			});
+		},
+		getDataList() {
+			this.noData = false;
+			let params = {
+				projectId: this.msg.projectId,
+				type: this.msg.serviceType,
+			};
+			if (!this.partpay) {
+				params.obtainType = this.msg.obtainType;
+			}
+			console.log(">>>>>>>params>>>>>>>", params);
+			sellList(params)
+				.then((data) => {
+					this.dataOrigin = data;
+					if (this.dataOrigin?.artificial?.categoryList?.length > 0) {
+						let cllist = [];
+						this.dataOrigin?.artificial?.categoryList?.forEach((category) => {
+							category?.itemList.forEach((t) => {
+								let obj = {
+									skuId: t.id, //"long //商品id【必须】",
+									cityId: this.dataOrigin.cityId, //"long //市id【必须】",
+									categoryTypeId: t.categoryTypeId, //"int //商品品类类型id【必须】",
+									price: t.price, //"int //商品总价格 工艺商品单价个数 单位分【必须】",
+									count: t.count,
+								};
+								if (t.categoryTypeId == 7) {
+									obj.workerType = t
+										.workType; //"int //工种,品类为工人时（categoryTypeId=7）必传
+								}
+								cllist.push(obj);
+							});
+						});
+						if (cllist.length > 0) {
+							this.batchChangeLevel(cllist);
+						} else {
+							this.levelLabel = "（中级）";
+						}
+					}
+					// if (this.selectedMaterialData?.categoryId) {
+					//   const {
+					//     origin,
+					//     categoryId
+					//   } = this.selectedMaterialData
+					//   this.setMaterial(categoryId, origin)
+					// }
+					if (data?.material?.categoryList?.length > 0) {
+						let tempArr = [...data?.material?.categoryList];
+						tempArr.forEach((category) => {
+							category.itemList.forEach((it) => {
+								it.oldId = it.id;
+								it.checked = true;
+								it.isEdit = false;
+							});
+						});
+						uni.setStorageSync("originMaterialList", tempArr);
+					}
+					this.initData();
+				})
+				.catch((err) => {
+					const {
+						data
+					} = err;
+					if (data && data.code !== 1) {
+						this.noData = true;
+						this.message = data.message;
+					}
+				});
+		},
+		selectWp(obj) {
+			this.$nextTick(function() {
+				console.log(obj);
+				const {
+					val,
+					originalId,
+					categoryId,
+					item
+				} = obj;
+				let arr = this.checkedIds;
+				if (val) {
+					if (!arr.includes(originalId)) {
+						arr.push(originalId);
+					}
+				} else {
+					if (arr.includes(originalId)) {
+						const i = arr.indexOf(originalId);
+						arr.splice(i, 1);
+					}
+				}
+				this.checkedIds = arr;
+
+				this.setSkuRelation(obj);
+				this.computePriceAndShopping();
+				this.setMaterial(categoryId, item);
+			});
+		},
+		gotopay() {
+			// TODO去结算页面
+			// let skuInfos = []
+			if (
+				this.shopping?.artificial?.length > 0 ||
+				this?.shopping?.material?.length > 0
+			) {
+				let params = {
+					payType: 1, //"int //支付方式  1微信支付",
+					openid: uni.getStorageSync("openId"), //"string //微信openid 小程序支付用 app支付不传或传空",
+					projectId: Number(this.msg.projectId), //"long //项目id  非必须 默认0",
+					customerId: Number(this.msg.customerId), //"long //业主id  非必须 默认0",
+					estateId: Number(this.msg.estateId), //"long //房产id   非必须 默认0",
+					total: this.countPrice, //"int //总计",
+					remarks: "", //"string //备注",
+					orderName: this.title || "工序费", //"string //订单名称",
+					details: [],
+				};
+				// roleType 7工人，10管家
+				let roleType = this.msg.serviceType == 5 ? 10 : 7;
+				if (this.msg.obtainType != 2) {
+					this.shopping?.artificial?.forEach((it) => {
+						params.details.push({
+							// supplierType: it.supplierType,
+							roleType,
+							relationId: it.id, //"long //实体id",
+							type: 2, //"int //实体类型   1材料  2服务   3专项付款",
+							businessType: it.categoryTypeId, //"int //业务类型",
+							workType: it.workType, //"int //工种类型",
+							level: this.artificialLevel, //"int //等级  0中级  1高级 2特级  3钻石",
+							storeId: it.storeId, //"long //店铺id",
+							storeType: 0, //"int //店铺类型 0普通 1设计师",
+							number: it.count, //"double //购买数量",
+							params: {
+								skuRelation: this.skuRelation,
+								serviceType: this.msg.serviceType,
+							}, //string //与订单无关的参数 如上门时间 doorTime"
+						});
+					});
+				}
+				if (this.msg.obtainType != 1) {
+					this.shopping?.material?.forEach((it) => {
+						params.details.push({
+							// supplierType: it.supplierType,
+							relationId: it.id, //"long //实体id",
+							type: 1, //"int //实体类型   1材料  2服务   3专项付款",
+							businessType: 1, //it.categoryTypeId, //"int //业务类型",辅材的businessType固定为1
+							workType: it.workType, //"int //工种类型",
+							// level: 1, //"int //等级  0中级  1高级 2特级  3钻石",
+							storeId: it.storeId, //"long //店铺id",
+							storeType: 0, //"int //店铺类型 0普通 1设计师",
+							number: it.count, //"double //购买数量",
+							params: {
+								skuRelation: this.skuRelation,
+								serviceType: this.msg.serviceType,
+							}, //string //与订单无关的参数 如上门时间 doorTime"
+						});
+					});
+				}
+				this.createOrder(params);
+			} else {
+				uni.showToast({
+					title: "请您先选择人工",
+					icon: "none",
+					duration: 3000,
+				});
+			}
+		},
+		createOrder(obj) {
+			createOrder(obj).then((data) => {
+				const {
+					wechatPayJsapi
+				} = data;
+				uni.requestPayment({
+					provider: "wxpay",
+					...wechatPayJsapi,
+					success(res) {
+						console.log("付款成功", res);
+						uni.switchTab({
+							url: "/pages/decorate/index/index",
+						});
+					},
+					fail(e) {
+						console.log(e);
+						const {
+							errMsg
+						} = e;
+						if (errMsg.indexOf("cancel") !== -1) {
+							uni.navigateTo({
+								url: `/sub-my/pages/my-order/my-order?index=1&firstEntry=true`,
+							});
+						} else {
+							uni.showToast({
+								title: "支付失败",
+								icon: "none",
+								duration: 3000,
+							});
+						}
+					},
+				});
+			});
+		},
+		setLevel(levelObj) {
+			this.artificialLevel = levelObj.value;
+			this.levelLabel = "（" + levelObj.label + "）";
+
+			this.dataOrigin?.artificial?.categoryList?.forEach((category) => {
+				category.itemList.forEach((item) => {
+					let temp = this.workerLevelSkuMapping.filter(
+						(t) => t.skuId === item.id && levelObj.value === t.level
+					);
+					if (temp?.length > 0) {
+						item.price = temp[0].price;
+					}
+				});
+			});
+
+			this.close();
+			this.computePriceAndShopping();
+		},
+		close() {
+			this.$refs.level.close();
+		},
+	},
 	};
 </script>
 

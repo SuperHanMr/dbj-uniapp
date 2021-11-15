@@ -2,9 +2,9 @@
 	import {
 		oauthGomeInfo
 	} from "api/login.js";
-  import {
-    getMsgNumByHouse
-  } from "api/decorate.js"
+	import {
+		getMsgNumByHouse
+	} from "api/decorate.js";
 	import {
 		createTim
 	} from "utils/tim.js";
@@ -19,84 +19,99 @@
 			currentProject: {},
 			naviData: null,
 			decorateMsg: {},
-			currentHouse: {},
+			currentHouse: {
+				name: "北京市朝阳区",
+				provinceId: 1,
+				cityId: 36,
+				areaId: 41,
+			},
 			switchFlag: "home",
 			currentRoute: "/pages/home/index/index",
 			previewimageStatus: false,
 			screenHeight: 0,
-      msg_projectId: null,
+			openId: "",
+			msg_projectId: null,
 		},
 
 		onLaunch: function() {
-      
 			const userId = uni.getStorageSync("userId");
-      
-			if (!userId) {} else {
+			const openId = uni.getStorageSync("openId");
+			if (userId && openId) {
 				let token = uni.getStorageSync("scn");
 				this.globalData.token = token;
+				this.globalData.openId = openId;
 				oauthGomeInfo({
-					hideToast: true,
-					ignoreLogin: true,
-					clientType: "3",
-				}).then((data) => {
-					getApp().globalData.userInfo = data;
-					uni.setStorageSync("userId", data.id);
-					getApp().tim = createTim(data.appId);
-					this.$store.dispatch("loginIM", {
-						userId: data.tid,
-						userSig: data.userSign,
+						hideToast: true,
+						ignoreLogin: true,
+						clientType: "3",
+					})
+					.then((data) => {
+						getApp().globalData.userInfo = data;
+						uni.setStorageSync("userId", data.id);
+						getApp().tim = createTim(data.appId);
+						this.$store.dispatch("loginIM", {
+							userId: data.tid,
+							userSig: data.userSign,
+						});
+					})
+					.catch((e) => {
+						getApp().globalData.token = "";
+						uni.clearStorageSync("scn");
+						uni.clearStorageSync("userId");
 					});
-				}).catch(e => {
-					getApp().globalData.token = "";
-					uni.clearStorageSync("scn");
-					uni.clearStorageSync("userId")
-				});
 			}
-      uni.$on('system-messages', ()=>{
-        console.log(1111)
-        this.watchMsg()
-      })
-      uni.$on('currentHouseChange', ()=>{
-        console.log(222)
-        this.watchMsg()
-      })
+			uni.$on("system-messages", () => {
+				console.log(1111);
+				this.watchMsg();
+			});
+			uni.$on("currentHouseChange", () => {
+				console.log(222);
+				this.watchMsg();
+			});
 		},
 		onShow: function() {
-      
 			console.log("App Show");
 		},
 		onHide: function() {
 			console.log("App Hide");
 		},
-    methods:{
-      watchMsg(){
-        console.log('监听房屋消息','??????????????',this.globalData.currentHouse)
-        if(!this.globalData.token){
-          return
-        }
-        setTimeout(()=>{
-          getMsgNumByHouse(this.globalData.currentHouse?this.globalData.currentHouse.id:this.globalData.currentEstate.id).then(res=>{
-            if(res.count===0){
-              uni.removeTabBarBadge({
-                index:2
-              })
-            }else{
-              let num = res.count+''
-              uni.setTabBarBadge({
-                    index: 2,
-                    text: num, 
-              })
-            }
-          }).catch(err=>{
-            uni.removeTabBarBadge({
-              index:2
-            })
-          })
-        },100)
-        
-        
-      }
-    },
+		methods: {
+			watchMsg() {
+				console.log(
+					"监听房屋消息",
+					"??????????????",
+					this.globalData.currentHouse
+				);
+				if (!this.globalData.token) {
+					return;
+				}
+				setTimeout(() => {
+					getMsgNumByHouse(
+							this.globalData.currentHouse ?
+							this.globalData.currentHouse.id :
+							this.globalData.currentEstate.id
+						)
+						.then((res) => {
+							if (res.count === 0) {
+								uni.removeTabBarBadge({
+									index: 2,
+								});
+							} else {
+								let num = res.count + "";
+								uni.setTabBarBadge({
+									index: 2,
+									text: num,
+								});
+							}
+						})
+						.catch((err) => {
+							uni.removeTabBarBadge({
+								index: 2,
+							});
+						});
+				}, 100);
+			},
+		},
 	};
 </script>
 
@@ -134,9 +149,8 @@
 
 	@font-face {
 		font-family: PriceFont;
-		src:
-			url('https://ali-res.dabanjia.com/static/font/price-font/price-font.woff2'),
-			url('https://ali-res.dabanjia.com/static/font/price-font/price-font.woff');
+		src: url("https://ali-res.dabanjia.com/static/font/price-font/price-font.woff2"),
+			url("https://ali-res.dabanjia.com/static/font/price-font/price-font.woff");
 	}
 
 	.price-font {
