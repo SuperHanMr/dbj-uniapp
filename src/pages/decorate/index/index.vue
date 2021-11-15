@@ -39,8 +39,8 @@
                 text="施工图纸" @gotoPage="goDesignPicture">
               </picture-btn>
               <picture-btn v-if="aServiceData.showActuaryFlag"
-                iconUrl="https://ali-image.dabanjia.com/static/mp/dabanjia/images/decorate/ic_jsd.svg" class="p-i-t" text="精算单"
-                @gotoPage="goActuary">
+                iconUrl="https://ali-image.dabanjia.com/static/mp/dabanjia/images/decorate/ic_jsd.svg" class="p-i-t"
+                text="精算单" @gotoPage="goActuary">
               </picture-btn>
               <picture-btn v-if="aServiceData.showVideoFlag"
                 iconUrl="https://ali-image.dabanjia.com/static/mp/dabanjia/images/decorate/ic_gdsp.svg" class="p-i-t"
@@ -58,7 +58,6 @@
             @goDecorateCalendar="goDecorateCalendar"></text-scroll>
           <!-- 我的仓库 -->
           <view v-if="haveWarehouse" class="my-decorate-service-wrap">
-            <!-- <view class="top-bg"></view> -->
             <view class="my-decorate-service ck">
               <view class="service-title flex-space-between-row">
                 <text class="t">{{who}}的仓库</text>
@@ -69,13 +68,16 @@
                 </view>
               </view>
               <view class="my-warehouse">
-                <mwarehouse-btn iconUrl="https://ali-image.dabanjia.com/static/mp/dabanjia/images/decorate/ic_ck_dfh.svg"
+                <mwarehouse-btn
+                  iconUrl="https://ali-image.dabanjia.com/static/mp/dabanjia/images/decorate/ic_ck_dfh.svg"
                   @gotoPage="gotoPage('0')" name="待发货">
                 </mwarehouse-btn>
-                <mwarehouse-btn iconUrl="https://ali-image.dabanjia.com/static/mp/dabanjia/images/decorate/ic_ck_dsh.svg"
+                <mwarehouse-btn
+                  iconUrl="https://ali-image.dabanjia.com/static/mp/dabanjia/images/decorate/ic_ck_dsh.svg"
                   @gotoPage="gotoPage('1')" name="待收货">
                 </mwarehouse-btn>
-                <mwarehouse-btn iconUrl="https://ali-image.dabanjia.com/static/mp/dabanjia/images/decorate/ic_ck_ysh.svg"
+                <mwarehouse-btn
+                  iconUrl="https://ali-image.dabanjia.com/static/mp/dabanjia/images/decorate/ic_ck_ysh.svg"
                   @gotoPage="gotoPage('2')" name="已收货">
                 </mwarehouse-btn>
                 <mwarehouse-btn iconUrl="https://ali-image.dabanjia.com/static/mp/dabanjia/images/decorate/ic_ck_tk.svg"
@@ -87,7 +89,6 @@
           <!-- 我的装修服务 -->
           <view class="my-decorate-service-wrap my-decorate-service-dec-wrap"
             v-if="purchasedServiceList.length > 0 || aServiceData.myServiceFlag">
-            <!-- <view class="top-bg"></view> -->
             <view class="my-decorate-service">
               <view class="service-title flex-space-between-row">
                 <text class="t">{{who}}的装修服务</text>
@@ -195,16 +196,17 @@
     },
     onShow() {
       let scn = uni.getStorageSync("scn") || null;
-      console.log(">>>>scn>>>>>>",scn)
-      if(scn) {
+      if (scn) {
         this.isLogin = true
         console.log('showTabBar')
         this.showNoHouse = false
         this.availGuides = []
         if (!this.noticeActive) {
           uni.showTabBar()
+        } else {
+          uni.hideTabBar()
         }
-        
+
         this.getEstateList()
         this.$store.dispatch("updateTabBarBadge")
         this.showScroll = true
@@ -265,8 +267,8 @@
         uni.setStorageSync('uuDeviceId', this.deviceId);
       }
       getApp().globalData.screenHeight = uni.getSystemInfoSync().windowHeight
-      console.log(getApp().globalData.screenHeight,'>>>>>>>>当前屏幕高度')
-      
+      console.log(getApp().globalData.screenHeight, '>>>>>>>>当前屏幕高度')
+
     },
     methods: {
       guid() {
@@ -388,7 +390,7 @@
           url: "/sub-decorate/pages/add-house/add-house"
         })
       },
-      changeCurrentProject(item) {
+      changeCurrentProject(item, isOpenMsgList) {
         this.currentProject = item
         getApp().globalData.switchFlag = 'decorate'
         if (this.currentProject?.showBroadcast) {
@@ -413,7 +415,14 @@
           arr.unshift(firstItem)
           this.projectList = [...arr]
         }
+        if (this.currentEstate) {
+          uni.$emit('selectedHouse', this.currentEstate)
+        }
 
+        // 是否需要打开消息弹窗
+        if (isOpenMsgList) {
+          this.openNotice()
+        }
         this.$refs.sw.close()
       },
       getProjectList() {
@@ -438,28 +447,38 @@
             this.projectList = data
             const {
               currentProject,
-              switchFlag
+              switchFlag,
+              msgProjectId
             } = getApp().globalData
             // 设置当前的项目
             let arr = []
-            if (switchFlag === "home") {
-              arr = data.filter(t => t.estateId === this.homePageEstate?.id || t.estateId === getApp().globalData
-                .currentHouse?.id)
-              if (arr.length > 1) {
-                arr = arr.filter(t => t.projectStatus !== 3 && t.projectStatus !== 4)
-              }
-            } else {
-              arr = data.filter(t => t.projectId === currentProject?.projectId)
-            }
-            if (arr.length === 0) {
-              arr = data.filter(t => t.defaultEstate && t.relegationType === 1)
-            }
-            if (arr && arr.length > 0) {
+            if (msgProjectId) {
+              //从消息跳转过来
+              arr = data.filter(t => t.projectId === msgProjectId)
               this.currentProject = arr[0]
-              this.initData(arr[0])
+              // 打开消息弹窗
+              this.noticeActive = true
+              this.changeCurrentProject(this.currentProject, true)
+              getApp().globalData.msgProjectId = null
             } else {
-              this.currentProject = data[0]
-              this.initData(data[0])
+              if (switchFlag === "home") {
+                arr = data.filter(t => t.estateId === this.homePageEstate?.id || t.estateId === getApp().globalData
+                  .currentHouse?.id)
+                if (arr.length > 1) {
+                  arr = arr.filter(t => t.projectStatus !== 3 && t.projectStatus !== 4)
+                }
+              } else {
+                arr = data.filter(t => t.projectId === currentProject?.projectId)
+              }
+              if (arr.length === 0) {
+                arr = data.filter(t => t.defaultEstate && t.relegationType === 1)
+              }
+              if (arr && arr.length > 0) {
+                this.currentProject = arr[0]
+              } else {
+                this.currentProject = data[0]
+              }
+              this.initData(this.currentProject)
             }
             if (this.currentProject?.showBroadcast) {
               this.getCarouselMsg()
@@ -480,9 +499,6 @@
           this.getFriendsList()
         }
       },
-      // bindChange(e) {
-      //   console.log(e);
-      // },
       switchVisible() {
         this.$refs.sw.open('top')
       },
@@ -575,22 +591,27 @@
       getMsgNum() {
         if (this.currentProject && this.currentProject.projectId) {
           getMsgNum(this.currentProject.projectId).then(res => {
-            this.msgNum = res.count
+            this.msgNum = res.count+''
             uni.stopPullDownRefresh()
-            // uni.setTabBarBadge({
-            //   index: 2,
-            //   text: this.msgNum+'',
-            //   success:()=>{
-            //     console.log('sucess')
-            //   },
-            //   fail:(e)=>{
-            //     console.log('fail',e)
-            //   }
-            // })
+            if(res.count===0){
+              console.log(1111)
+              uni.removeTabBarBadge({
+                index: 2,
+              })
+            }else{
+              let num = res.count+''
+              uni.setTabBarBadge({
+                    index: 2,
+                    text: this.msgNum, 
+              })
+            }
 
           })
         } else {
           this.msgNum = 0
+          uni.removeTabBarBadge({
+            index: 2,
+          })
         }
       }
     },

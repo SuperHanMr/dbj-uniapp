@@ -89,6 +89,12 @@ export function getMsgNum(params) {
 	return request.get("/pm/app/specialMsg/count?projectId=" + params)
 }
 
+//根据房产id获取装修消息数量
+export function getMsgNumByHouse(params) {
+	return request.get("/pm/app/specialMsg/count/estate?estateId=" + params)
+}
+
+
 //获取抢单审核详情
 export function getGrabDetail(params) {
 	return request.get("/app/employeeInfo/personInfo?zeusId=" + params)

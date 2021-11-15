@@ -43,7 +43,8 @@
                     <text>/{{goodsItem.unit?goodsItem.unit:""}}</text>
                   </view>
                   <view v-if="Number(goodsItem.deposit)">押金 ¥{{goodsItem.deposit}}</view>
-                  <view class="total-num">共{{goodsItem.buyCount}}{{goodsItem.unit?goodsItem.unit:""}}</view>
+                  <view class="total-num">共{{goodsItem.buyCount}}{{goodsItem.unit?goodsItem.unit:""}}
+                  </view>
                 </view>
               </view>
             </view>
@@ -566,7 +567,7 @@
     height: 28rpx;
     top: 6rpx;
     margin-left: 2rpx;
-    background-image: url('../../static/image/question.png');
+    background-image: url("../../static/image/question.png");
     background-size: cover;
   }
 
@@ -578,7 +579,7 @@
   .shop-item {
     margin-top: 25rpx;
     padding: 0 32rpx;
-    background-color: #FFFFFF;
+    background-color: #ffffff;
   }
 
   .shop-name {
@@ -694,8 +695,8 @@
     position: absolute;
     bottom: 0;
     padding: 2rpx 10rpx;
-    border: 1px solid ##FF3347;
-    color: #FF3347;
+    border: 1px solid ##ff3347;
+    color: #ff3347;
     font-size: 10px;
   }
 
@@ -735,7 +736,7 @@
   }
 
   .cost-detail view text:nth-child(2) {
-    corlor: #333333
+    corlor: #333333;
   }
 
   .shop-reduce {
@@ -787,7 +788,7 @@
 
   .good-store-account {
     padding: 35rpx 32rpx;
-    background-color: #FFFFFF;
+    background-color: #ffffff;
     margin-top: 25rpx;
     font-size: 28rpx;
     font-family: PingFangSC, PingFangSC-Regular;
@@ -820,7 +821,7 @@
   .pledge,
   .remarks {
     padding: 5rpx 32rpx;
-    background-color: #FFFFFF;
+    background-color: #ffffff;
     margin-top: 25rpx;
     font-size: 28rpx;
     font-family: PingFangSC, PingFangSC-Regular;
@@ -852,7 +853,7 @@
   .bottom {
     padding: 24rpx 32rpx 50rpx 32rpx;
     box-sizing: border-box;
-    background-color: #FFFFFF;
+    background-color: #ffffff;
     position: fixed;
     bottom: 0;
     width: 100%;
@@ -861,7 +862,7 @@
   }
 
   .bottom .agreement {
-    color: #FFA94F;
+    color: #ffa94f;
   }
 
   .bottom .second-part {
@@ -910,7 +911,7 @@
     height: 88rpx;
     background: linear-gradient(135deg, #00bfaf, #00bfbc);
     border-radius: 6px;
-    color: #FFFFFF;
+    color: #ffffff;
     font-size: 32rpx;
     line-height: 88rpx;
     text-align: center;

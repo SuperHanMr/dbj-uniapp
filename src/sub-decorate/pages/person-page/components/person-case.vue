@@ -1,6 +1,6 @@
 <template>
-  <view class="person-case person-content-item">
-    <view class="title">Ta的案例</view>
+  <view class="person-case person-content-item"  v-if="!(isGrab&&pagState.totalRows==0)">
+    <view class="title" v-if="!isGrab">Ta的案例</view>
     <designCase v-if="pagState.totalRows" class="design-case" :isPerson='true' :leftList="leftList" :rightList="rightList" :leftHeight="leftHeight" :rightHeight="rightHeight" ></designCase>
     <view class="empty" v-else>
       暂无案例
@@ -22,7 +22,11 @@
       designCase
     },
     props:{
-      personId:0
+      personId:0,
+      isGrab:{
+        type:Boolean,
+        default:false,
+      }
     },
     data(){
       return{
@@ -131,7 +135,11 @@
       				this.pagState.page = res.page+1;
       				this.pagState.totalPage = res.totalPage;
       				this.pagState.totalRows = res.totalRows;
-      			}
+              
+              this.$emit('contentEmpty','caseEmpty',res.list.length>0?true:false)
+      			}else{
+              this.$emit('contentEmpty','caseEmpty',false)
+            }
       		})
       },
       cleanPage(){

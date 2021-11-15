@@ -76,9 +76,18 @@
 						<text>{{item2.value}}</text>
 					</view>
 					<view class="right">
+						<text v-if="item2.key==1">3823.32元</text>
 						<image src="../../../static/order/images/arraw_right_@2x.png" mode="" />
 					</view>
 				</view>
+				<!-- <view class="tool-item" @click="toCard">
+					<view class="left">
+						<text>储值卡</text>
+					</view>
+					<view class="right">
+						<image src="../../../static/order/images/arraw_right_@2x.png" mode="" />
+					</view>
+				</view> -->
 			</view>
 		</view>
 
@@ -103,26 +112,33 @@
 				userName: "用户名称",
 				userInfo: {},
 				userId: "",
-				list: [{
-						key: "1",
+				list: [
+					// {
+					// 	key: "1",
+					// 	image: "../../../static/order/images/ic_storeValueCard.svg",
+					// 	value: "储值卡",
+					// 	url: "../../../sub-my/pages/deposit-card/deposit-card",
+					// },
+					{
+						key: "2",
 						image: "../../../static/order/images/shopping_Cart.png",
 						value: "购物车",
 						url: "../../../sub-my/pages/shopping-cart/shopping-cart",
 					},
 					{
-						key: "2",
+						key: "3",
 						image: "../../../static/order/images/collection.png",
 						value: "我的收藏",
 						url: "../../../sub-my/pages/personal-center/my-collection/my-collection?firstEntry=true",
 					},
 					{
-						key: "3",
+						key: "4",
 						image: "../../../static/order/images/attention.png",
 						value: "我的关注",
 						url: "../../../sub-my/pages/personal-center/my-attention/my-attention",
 					},
 					{
-						key: "4",
+						key: "5",
 						image: "../../../static/order/images/houseGgr.png",
 						value: "房屋管理",
 						url: "../../../sub-my/pages/my-house/my-house?isMy=true",
@@ -237,6 +253,11 @@
 						url: item.url,
 					});
 				}
+			},
+			toCard(){
+				uni.navigateTo({
+					url: "/sub-my/pages/deposit-card/deposit-card"
+				})
 			},
 			handlerViewAll() {
 				console.log("点击我的订单全部按钮");
@@ -500,16 +521,22 @@
 						image {
 							width: 48rpx;
 							height: 48rpx;
-							object-fit: cover;
 							margin-right: 20rpx;
 						}
 					}
 
 					.right {
+						display: flex;
+						flex-flow: row nowrap;
+						align-items: center;
+						text{
+							font-size: 24rpx;
+							color: #999999;
+						}
 						image {
+							margin-left: 16rpx;
 							width: 24rpx;
 							height: 24rpx;
-							object-fit: cover;
 						}
 					}
 				}

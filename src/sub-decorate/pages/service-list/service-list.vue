@@ -7,7 +7,7 @@
           @change="radioChange"></btn-radio>
       </template>
     </service-content-card>
-    <view v-if="isAllDataLoaded" style="padding: 24rpx;text-align: center;font-size: 26rpx;">~我也是有底线的~</view>
+    <view v-if="isAllDataLoaded" style="padding: 24rpx;text-align: center;font-size: 26rpx;">没有更多了～</view>
   </view>
 </template>
 

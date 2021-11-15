@@ -27,3 +27,6 @@ export function setGoodsSku(params) {
 export function createcollection(params) {
 	return request.post(`/app/base/interactive/add/list`, params)
 }
+export function getShares(params) {
+  return request.get(`/capsule-shop/capsuleShop/salesman/pullnew`, {params});
+}

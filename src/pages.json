@@ -207,7 +207,7 @@
 			},
 			{
 				"name": "lyb", //模式名称
-				"path": "/sub-decorate/pages/amoutDelivery/amoutDelivery", //启动页面，必选
+				"path": "/sub-decorate/pages/grab/grab", //启动页面，必选
 				"query": "" //启动参数，在页面的onLoad函数里面得到
 			},
 			{
@@ -488,9 +488,15 @@
 					}
 				},
 				{
-					"path": "pages/shopping-cart/confirm-order",
+					"path": "pages/deposit-card/deposit-card",
 					"style": {
-						"navigationBarTitleText": "确认订单"
+						"navigationBarTitleText": "储值卡"
+					}
+				},
+				{
+					"path": "pages/deposit-card/billing-details",
+					"style": {
+						"navigationBarTitleText": "账单明细"
 					}
 				}
 			]

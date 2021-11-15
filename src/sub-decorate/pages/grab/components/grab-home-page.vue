@@ -62,7 +62,7 @@
     
     width: 100%;
     background-color: #fff;
-    border-radius: 48rpx;
+    border-radius: 16rpx;
     .grab-content-top{
       position: relative;
       border-bottom: 0.5px solid #F3F3F3;

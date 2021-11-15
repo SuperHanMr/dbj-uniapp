@@ -16,7 +16,7 @@
       <view class="image-list">
         <image-preview :list='JSON.parse(item.imgList)' :row='3'></image-preview>
       </view>
-      <view class="case-item" @click="toBuy(item.skuInfoVO.skuId)">
+      <view class="case-item" v-if="item.skuId!=0" @click="toBuy(item.skuInfoVO.skuId)">
         <image :src="item.skuInfoVO.skuImage"></image>
         <text>{{item.skuInfoVO.skuName}}</text>
       </view>
@@ -147,7 +147,7 @@
       font-size: 24rpx;
       display: flex;
       align-items: center;
-      
+      margin: 20rpx 0;
       i{
         margin-left: 10rpx;
         font-size: 18rpx;

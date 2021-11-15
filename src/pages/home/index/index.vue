@@ -159,7 +159,7 @@
 			</view>
 
 		</view>
-		<good-list ref="goodList" :page="page"  :areaId="areaId"></good-list>
+		<good-list ref="goodList" :page="page" :areaId="areaId"></good-list>
 	</view>
 </template>
 
@@ -182,14 +182,14 @@
 	} from "../../../utils/cityData.js";
 	import {
 		imgFormat
-	} from '../../../utils/common.js'
-	import GoodList from './good-list/good-list.vue'
+	} from "../../../utils/common.js";
+	import GoodList from "./good-list/good-list.vue";
 	export default {
 		filters: {
-			imgFormat
+			imgFormat,
 		},
 		components: {
-			GoodList
+			GoodList,
 		},
 		data() {
 			return {
@@ -215,7 +215,7 @@
 				swiperAuto: false,
 				status1List: [],
 				status2List: [],
-				currentAddress: {}
+				currentAddress: {},
 			};
 		},
 		watch: {
@@ -230,20 +230,20 @@
 		onShareAppMessage() {
 			wx.showShareMenu({
 				withShareTicket: true,
-				menus: ['shareAppMessage', 'shareTimeline']
-			})
+				menus: ["shareAppMessage", "shareTimeline"],
+			});
 		},
 		onShareTimeline(res) {
 			return {
-				title: '打扮家装修',
-			}
+				title: "打扮家装修",
+			};
 		},
 		onLoad(e) {
 			if (e && e.shareId) {
 				uni.setStorage({
-					key: 'shareId',
+					key: "shareId",
 					data: String(e.shareId),
-					success: function() {}
+					success: function() {},
 				});
 			}
 			let defaultHouse = {
@@ -312,13 +312,12 @@
 		},
 
 		onReachBottom() {
-			
 			this.page++;
-			console.log(this.page)
-				
-			setTimeout(e=>{
+			console.log(this.page);
+
+			setTimeout((e) => {
 				this.getHomeGoodsList();
-			})
+			});
 		},
 		onPullDownRefresh() {
 			this.reloadData();
@@ -364,10 +363,11 @@
 				});
 			},
 			currentHouseChange(item) {
-				console.log('!!!!@@@###')
+				console.log("!!!!@@@###");
 				console.log(item);
 				this.currentAddress = item;
 				this.areaId = item.areaId;
+				getApp().globalData.currentHouse = item;
 				uni.$emit("currentHouseChange", item);
 				getApp().globalData.currentHouse = item;
 			},
@@ -413,7 +413,9 @@
 						url: "../../common/video-player/video-player?url=" +
 							encodeURIComponent(item.roomVideoMediaVO.videoUrl) +
 							"&title=" +
-							item.roomVideoMediaVO.title + '&id=' + item.roomVideoMediaVO.id,
+							item.roomVideoMediaVO.title +
+							"&id=" +
+							item.roomVideoMediaVO.id,
 					});
 				}
 			},
@@ -448,7 +450,7 @@
 				if (item.type == 0 || item.type == 5) {
 					uni.showModal({
 						content: "敬请期待",
-						showCancel: false
+						showCancel: false,
 					});
 				} else if (item.type == 1) {
 					if (item.url.endsWith("index/index")) {
@@ -482,9 +484,9 @@
 				}
 				if (item.type == 3) {
 					if (item.url.endsWith("search-construction/index.html")) {
-						item.url += `?areaId=${this.areaId}`
+						item.url += `?areaId=${this.areaId}`;
 					}
-					console.log(item.url)
+					console.log(item.url);
 					this.toWebview(item.url);
 				}
 			},
@@ -500,8 +502,8 @@
 				});
 			},
 			toCity() {
-				let house = getApp().globalData.currentHouse
-				let id = house.id || ''
+				let house = getApp().globalData.currentHouse;
+				let id = house.id || "";
 				uni.navigateTo({
 					url: `/sub-my/pages/my-house/my-house?fromHome=1&&isEdit=0&&id=${id}`,
 				});
@@ -648,11 +650,11 @@
 				});
 				//首页推荐商品
 				this.goodsList = [];
-				this.page = 1
+				this.page = 1;
 				this.getHomeGoodsList();
 			},
 			getHomeGoodsList() {
-				this.$refs.goodList.getHomeGoodsList()
+				this.$refs.goodList.getHomeGoodsList();
 			},
 			async getBannerList() {
 				this.bannerList = await getBanner();
@@ -663,8 +665,11 @@
 					const userId = uni.getStorageSync("userId");
 					if (userId && token) {
 						let houseList = await queryEstates({
-							isNeedRelative: false,
-						}, false, true);
+								isNeedRelative: false,
+							},
+							false,
+							true
+						);
 						let house = null;
 						let defaultHouse;
 						if (houseList && houseList.length) {
@@ -683,7 +688,8 @@
 							this.currentHouseChange(house);
 							// uni.setStorageSync("currentHouse", JSON.stringify(house));
 							this.areaId = house.areaId;
-							this.citydata = house.cityName + house.areaName + house.housingEstate;
+							this.citydata =
+								house.cityName + house.areaName + house.housingEstate;
 						}
 					} else {
 						this.getAuthorizeInfo();
@@ -906,10 +912,10 @@
 	}
 
 	.function-zone-top {
-		border-left: 0.3px solid #DADFDF;
-		border-top: 0.3px solid #DADFDF;
-		border-right: 0.3px solid #DADFDF;
-		border-bottom: 0.3px solid #E7E8E8;
+		border-left: 0.3px solid #dadfdf;
+		border-top: 0.3px solid #dadfdf;
+		border-right: 0.3px solid #dadfdf;
+		border-bottom: 0.3px solid #e7e8e8;
 		width: 704rpx;
 		display: flex;
 		flex-direction: row;
@@ -918,9 +924,9 @@
 	}
 
 	.function-zone-bottom {
-		border-left: 0.3px solid #DADFDF;
-		border-right: 0.3px solid #DADFDF;
-		border-bottom: 0.3px solid #DADFDF;
+		border-left: 0.3px solid #dadfdf;
+		border-right: 0.3px solid #dadfdf;
+		border-bottom: 0.3px solid #dadfdf;
 		border-top: none;
 		width: 704rpx;
 		display: flex;
@@ -930,9 +936,9 @@
 	}
 
 	.function-zone-center {
-		border-left: 0.3px solid #DADFDF;
-		border-right: 0.3px solid #DADFDF;
-		border-bottom: 0.3px solid #E7E8E8;
+		border-left: 0.3px solid #dadfdf;
+		border-right: 0.3px solid #dadfdf;
+		border-bottom: 0.3px solid #e7e8e8;
 		border-top: none;
 		width: 704rpx;
 		display: flex;
@@ -940,7 +946,6 @@
 	}
 
 	.function-zone {
-
 		.item {
 			height: 128rpx;
 			flex: 1;

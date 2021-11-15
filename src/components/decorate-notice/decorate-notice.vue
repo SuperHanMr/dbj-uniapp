@@ -2,6 +2,10 @@
   <view class="notice" catchtouchmove="true" :style="{height:systemHeight}">
     <view class="notice-mask"></view>
     <view class="notice-view" >
+      <view class="no-msg" v-if="isNoMessage">
+        <image src="https://ali-image.dabanjia.com/static/mp/dabanjia/images/decorate/img_sys_listempty_msg3x.png"></image>
+        <view class="txt">暂无待办消息</view>
+      </view>
       <scroll-view class="item-list" :style="{height:scrollHeight}" scroll-y="true">
        <view class="item">
   <!--                 <view
@@ -78,7 +82,7 @@
         systemHeight: '',
         list: [],
         scrollHeight: '',
-        
+        isNoMessage: false
       };
     },
     created(){
@@ -110,7 +114,7 @@
         this.close();
       },
       getMsg() {
-        
+        this.isNoMessage = false
         getMsgList(this.current).then(res => {
           
           res.map(item => {
@@ -128,6 +132,7 @@
           })
           this.list = res
           this.scrollHeight = res.length * 140 * 2 + 'rpx'
+          this.isNoMessage = res.length < 1
           
           console.log(this.scrollHeight)
         })
@@ -268,6 +273,33 @@
       // filter: blur(10rpx);
       background: rgba(0, 0, 0, 0.5);
       backdrop-filter: blur(16rpx);
+    }
+  }
+  .no-msg {
+    z-index: 102;
+    position: fixed;
+    width: 400rpx;
+    height: 444rpx;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    
+    image {
+      width: 400rpx;
+      height: 400rpx;
+    }
+    .txt {
+      text-align: center;
+      height: 42rpx;
+      font-size: 30rpx;
+      font-family: PingFangSC-Regular, PingFang SC;
+      font-weight: 400;
+      color: #FFFFFF;
+      line-height: 42rpx;
     }
   }
 </style>
