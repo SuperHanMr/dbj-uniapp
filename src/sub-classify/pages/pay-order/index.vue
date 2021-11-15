@@ -30,10 +30,10 @@
                 <view class="spu-class">
                   <view class='tag'>{{levelName}}{{levelName?'|':''}}{{goodsItem.skuName}}</view>
                 </view>
-         <!--       <view class="safeguard" @click="readSafeguard(0)" v-if="goodsItem.productType === 1">
-                  七天无理由退换
+                <view class="safeguard" @click="readSafeguard(goodsItem.refundable)" v-if="goodsItem.productType === 1">
+                  {{goodsItem.refundable?'七天无理由退还': '无质量问题不退还'}}
                   <text class="question-icon safe-icon"></text>
-                </view> -->
+                </view>
                 <view class="goods-spec">
                   <view class="goods-money">
                     ￥
@@ -246,7 +246,7 @@
         level: 0,
         levelName: "",
         cancelDialog: false,
-        refundable: true,
+        refundable: false,
       }
     },
     onLoad(e) {
@@ -311,7 +311,8 @@
         this.expensesType = num
         this.$refs.expensesToast.showPupop()
       },
-      readSafeguard() {
+      readSafeguard(type) {
+        this.refundable = type
         this.$refs.safeguardToast.showPupop()
       },
       getTime(val) {
