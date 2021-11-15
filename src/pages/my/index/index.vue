@@ -113,12 +113,12 @@
 				userInfo: {},
 				userId: "",
 				list: [
-					// {
-					// 	key: "1",
-					// 	image: "../../../static/order/images/ic_storeValueCard.svg",
-					// 	value: "储值卡",
-					// 	url: "../../../sub-my/pages/deposit-card/deposit-card",
-					// },
+					{
+						key: "1",
+						image: "../../../static/order/images/ic_storeValueCard.svg",
+						value: "储值卡",
+						url: "../../../sub-my/pages/deposit-card/deposit-card",
+					},
 					{
 						key: "2",
 						image: "../../../static/order/images/shopping_Cart.png",
