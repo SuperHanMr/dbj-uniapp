@@ -3,15 +3,18 @@
 		<view v-if="dataList.length>0">
 			<view class="order-container" v-for="(item,index) in dataList" :key="index" >
 				<!-- 服务和材料 -->
-				<view class="header">
+				<view class="header" >
 					<view class="store-name" @click="gotoShop(item)">
 						<text style="color: #333333;">{{item.storeName}}</text>
-						<image src="../../static/ic_more.svg" mode="" />
+						<image v-if="item.type !== 5" src="../../static/ic_more.svg" mode="" />
 					</view>
 					<view class="order-status">
-						<text> {{item.type==0?"仅退款(未发货)":item.type==1 ? "仅退款(退库存)":item.type==2 ? "仅退款(已收货)":item.type==3?"服务退款":""}}</text>				
+						<text>{{statusFunction(item)}}</text>
+						<!-- <text> {{item.type==0?"仅退款(未发货)":item.type==1 ? "仅退款(退库存)":item.type==2 ? "仅退款(已收货)":item.type==3?"服务退款":item.type==5?"储值卡退款":""}}</text>				 -->
 					</view>
 				</view>
+				
+				
 				<view class="body" @click="goToDetail(item)">
 					<view class="body-main" v-for="(item2,index2) in item.detailAppVOS" :key="index2">
 						<view class="pic">
@@ -19,12 +22,13 @@
 						</view>
 						<view class="basic-info">
 							<view class="name-attr">
-								<view class="text">
+								<view class="text" v-if="item2.type !== 5">
 									<text class="icon">{{item2.type ==1 ?"物品" :"服务"}}</text>
 									<text class="name">{{item2.fullName}}</text>					
 								</view>
 								<view class="attr">
-									<text>{{item2.scaleProperties}}</text>
+									<text v-if="item2.type == 5">共1件</text>
+									<text v-else>{{item2.scaleProperties}}</text>
 								</view>
 							</view>
 						</view>
@@ -195,6 +199,21 @@
 					this.dataList =this.dataList.concat(refundList)
 				})
 			},
+			statusFunction(item){
+				if(item.type==0){
+					return "仅退款(未发货)"
+				}else if(item.type == 1){
+					return "仅退款(退库存)"
+				}else if(item.type ==2){
+					return "仅退款(已收货)"
+				}else if(item.type == 3){
+					return "服务退款"
+				}else if(item.type == 5){
+					return "储值卡退款"
+				}else{
+					return ""
+				}
+			},
 			
 			handlePrice(price){
 				if(!price) return ['0','00']
@@ -208,6 +227,8 @@
 			//去店铺
 			gotoShop(item){
 				console.log("去店铺",item.storeId,"this.areaId=",this.areaId)
+				// type 5: 储值卡 没有页面跳转功能
+				if(item.type ==5) return 
 				uni.navigateTo({
 					url:`../../../sub-classify/pages/shops/shops?storeId=${item.storeId}&areaId=${this.areaId}`
 				})

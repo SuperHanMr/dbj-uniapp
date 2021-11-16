@@ -39,7 +39,7 @@
 								<view class="store-name" @click="gotoShop(item)">
 									<text v-if="item.orderStatus == 0 ">{{item.orderName?item.orderName:item.storeName}}</text>
 									<text v-else>{{item.storeName}}</text>
-									<image v-if="!item.orderName" src="../../static/ic_more.svg" mode=" " />
+									<image v-if="!item.orderName || item.type == 5" src="../../static/ic_more.svg" mode=" " />
 								</view>
 								<view class="order-status"
 									:class="{active: item.orderStatus == 2 || item.orderStatus == 3}">
@@ -89,9 +89,9 @@
 								<!-- 非套餐 -->
 								<view v-else v-for="item2 in item.details" :key="item2.id">
 									<!-- 服务和材料 -->
-									<order-item :dataList="item2" @handleDetail="goToDetail(item)" />
+									<order-item v-if="item2.type !== 5" :dataList="item2" @handleDetail="goToDetail(item)" />
 									<!-- 储值卡 -->
-									<!-- <store-calue-card-item v-if="item.orderStatus !==1"></store-calue-card-item> -->
+									<store-calue-card-item v-if="item.orderStatus !==1 && item2.type==5"></store-calue-card-item>
 								</view>
 							</view>
 
@@ -409,6 +409,7 @@
 			//去店铺首页
 			gotoShop(item) {
 				if(item.orderName && item.orderStatus == 0 ) return 
+				if(item.type ==5) return 
 				console.log("this.storeId=", item.storeId, "this.areaId=", this.areaId);
 				uni.navigateTo({
 					url: `../../../sub-classify/pages/shops/shops?storeId=${item.storeId}&areaId=${this.areaId}`,

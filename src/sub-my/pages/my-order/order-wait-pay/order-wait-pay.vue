@@ -33,14 +33,17 @@
         <view class="storeItem" :class="{paddingBottom: item.stockType == 1 }" :style="{borderRadius:index >= 1 ? '0' :'24rpx 24rpx 0 0'}">
           <view class="header" @click="gotoShop(item)">
             <text style="color: #333333;">{{item.storeName}}</text>
-            <image src="../../../static/ic_more.svg" mode=""/>
+            <image v-if="item.type !== 5" src="../../../static/ic_more.svg" mode=""/>
           </view>
           <view v-for="item2 in item.details" :key="item2.id">
             <order-item
+							v-if="item2.type !==5"
               :orderStatus="1"
               :dataList="item2"
               @handleDetail="productDetail(item2)"
             />
+						<store-calue-card-item v-else />
+						
           </view>
 					<view class="discount-container" v-if="item.hasMaterial &&  orderInfo.details.length>1" >
             <view class="left">
@@ -58,7 +61,6 @@
 								<text class="price-font" style="color: #333;font-size: 26rpx;">-￥{{item.platformDiscount}}</text>
               </view>
             </view>
-						<!-- {{item.handlingFees}} {{ item.storeDiscount}} -->
             <view class="line1" v-if="item.storeDiscount" />
             <view class="line2" v-else />
 
@@ -77,12 +79,8 @@
               </view>
             </view>
           </view>
-					<!-- {{ orderInfo.type }} {{ item.freeShipCount }} {{ orderInfo.stockType }} -->
 
-          <view 
-						v-if="item.hasMaterial && orderInfo.stockType == 1"
-						:style="{paddingBottom: item.hasMaterial && orderInfo.stockType == 1 ? '32rpx':'0'}" 
-					>
+          <view v-if="item.hasMaterial && orderInfo.stockType == 1" :style="{paddingBottom: item.hasMaterial && orderInfo.stockType == 1 ? '32rpx':'0'}" >
             <view class="tips" v-if="item.freeShipCount &&  item.fullExemptionAmount ">
               <text>本次支付</text>
               <text style="color: #333333;">满{{item.fullExemptionAmount}}元</text>
@@ -94,7 +92,8 @@
               <text>搬运费需要根据实际要货时进行核算</text>
             </view>
           </view>
-        </view>
+        
+				</view>
         <view class="split-line" />
       </view>
 

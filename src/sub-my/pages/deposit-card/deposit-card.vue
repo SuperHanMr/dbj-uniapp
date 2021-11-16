@@ -43,8 +43,13 @@
 	export default {
 		data(){
 			return {
-				isChoose: false
+				isChoose: false,
+				areaId: 0,
 			}
+		},
+		onShow() {
+			this.areaId = getApp().globalData.currentHouse.areaId;
+			console.log(this.areaId);
 		},
 		methods: {
 			toBillingDetails(){
@@ -62,14 +67,19 @@
 <style scoped>
 	.cardWrap{
 		width: 750rpx;
-		background: linear-gradient(180deg, #FFED8F 0%, rgba(255, 240, 188, 0.62) 30.85%);
+		height: 500rpx;
+		background-image: url('http://dbj.dragonn.top/static/mp/dabanjia/images/my/page_bg.png');
+		background-repeat: no-repeat;
+		background-size: cover;
 	}
 	.header{
 		width: 702rpx;
 		height: 260rpx;
 		margin: 0 24rpx;
 		border-radius: 16rpx;
-		background: #FF8B38;
+		background-image: url('http://dbj.dragonn.top/static/mp/dabanjia/images/my/card_bg.png');
+		background-repeat: no-repeat;
+		background-size: cover;
 	}
 	.header .text{
 		width: 120rpx;
@@ -229,7 +239,7 @@
 		width: 374rpx;
 		height: 28rpx;
 		margin-left: 188rpx;
-		margin-bottom: 64rpx;
+		margin-bottom: 92rpx;
 		font-size: 22rpx;
 		color: #999999;
 	}
