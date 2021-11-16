@@ -394,6 +394,8 @@
 						editHouse(this.addData).then((res) => {
 							if(this.addData.defaultEstate){
 								uni.$emit('defaultHouseChange');
+							}else{
+								uni.$emit('houseChange',this.addData);
 							}
 							uni.navigateBack({
 								delta: this.delta,

@@ -270,6 +270,27 @@
 			uni.$on("refrishHouse", (item) => {
 				this.reloadData();
 			});
+			uni.$on("houseChange", (item) => {
+				if (item.id == this.currentAddress.id) {
+					queryEstates({
+							isNeedRelative: false,
+						},
+						false,
+						true
+
+					).then(e => {
+						let houseList = e;
+						let changeHouse = houseList.find(e => {
+						return 	e.id == this.currentAddress.id
+						})
+						this.citydata = changeHouse.cityName + changeHouse.areaName + changeHouse
+							.housingEstate;
+						this.areaId = changeHouse.areaId;
+						this.currentHouseChange(changeHouse);
+					});
+
+				}
+			});
 			uni.$on("defaultHouseChange", (item) => {
 				this.getHomeList();
 			});
