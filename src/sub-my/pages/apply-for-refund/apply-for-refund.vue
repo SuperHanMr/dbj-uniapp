@@ -95,15 +95,15 @@
 							<view class="eidt-style">
 								<text>￥</text>
 								<input
-									type="number"
+									type="digit"
 									:value="inputValue"
 									class="input-style"
 									:focus="isFocus"
 									@input="onKeyInput"
 									@focus="onKeyFocus"
+									@blur="onKeyBlur"
 									:style="{width:inputWidth + 'rpx'}"
 								/>
-									<!-- @blur="onKeyBlur" -->
 							</view>
 						</view>
 						<view class="right2" v-else>
@@ -178,6 +178,7 @@ export default {
 			reasonName:"",
 
 			returnMoney:"",//向后台传递的退款金额
+			refundAmount:"" ,//后台返回的最大退款金额
 	
 			refundId:"",
 			orderDetailId:"",
@@ -265,13 +266,13 @@ export default {
       }
     },
     inputValue(newVal, oldVal) {
-			if(!newVal || String(newVal).length == 1){
+			if(!newVal){
 				this.inputWidth = 24
 			}
-			if(newVal>this.returnMoney){
+			if(newVal>this.refundAmount){
 				uni.showToast({
 					title:"退款金额大于储值卡余额，请修改",
-					icon:none,
+					icon:'none',
 					duration:1000
 				})
 				// newVal=储值卡余额
@@ -279,9 +280,6 @@ export default {
 			this.returnMoney =Number(newVal) 
       return newVal;
     },
-		inputWidth(newVal,oldVal){
-			return newVal
-		},
     textAreaLength(newVal, oldVal) {},
   },
   methods: {
@@ -297,6 +295,7 @@ export default {
 				this.textAreaLength = data.remark.length
 				this.reasonValue = data.reasonId
 				this.reasonName = data.reason
+				this.refundAmount  =data.refundAmount
 				this.returnMoney  =data.refundAmount
 				if(this.refundType == 5){
 					this.inputValue  = data.refundAmount
@@ -386,7 +385,18 @@ export default {
     onKeyBlur() {
       // 缺少输入退款金额值的判断及弹框提示数据
       this.showEditInput = false;
-      this.inputValue = Number(this.inputValue).toFixed(2);
+			console.log("this.inputValue===",this.inputValue)
+	
+			if(!(/^[1-9]\d*\.?\d{0,2}$|^0\.[1-9]\d$|^0\.\d[1-9]$/g.test(this.inputValue)) ){
+				uni.showToast({
+					title:"您输入的金额错误，请重新输入",
+					icon:'none',
+					duration:2000,
+				})  
+				
+			}
+      // this.inputValue = Number(this.inputValue).toFixed(2);
+			
       this.inputWidth = String(this.inputValue).length * 26 - 12
     },
 		onTextAreaInput(event) {
