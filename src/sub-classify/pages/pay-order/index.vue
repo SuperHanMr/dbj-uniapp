@@ -238,6 +238,9 @@
 					<view class="pay-diaolog-tip">
 						{{payChannel?'您正在使用储值卡支付,请确认':'您还需用微信支付,请确认'}}
 					</view>
+					<view class="pay-diaolog-alert">
+						金额以实际金额为准，若储值卡余额不足将用微信支付剩余部分
+					</view>
 					<view class="pay-diaolog-btn">
 						确认支付
 					</view>
@@ -391,12 +394,15 @@
 			uni.removeStorageSync("houseListChooseId");
 		},
 		methods: {
-			closePayDialog(){
-				
-					this.$refs.payDialog.close();
+			closePayDialog() {
+
+				this.$refs.payDialog.close();
 			},
 			clickCard() {
-				this.cardClick = !this.cardClick
+
+				if (this.cardBalance) {
+					this.cardClick = !this.cardClick
+				}
 			},
 			backFrom() {
 				uni.navigateBack();
@@ -730,6 +736,13 @@
 			margin-top: 40rpx;
 		}
 
+		&-alert {
+			color: #999999;
+			font-size: 22rpx;
+			margin-top: 60rpx;
+
+		}
+
 		&-btn {
 			width: 686rpx;
 			height: 88rpx;
@@ -739,7 +752,7 @@
 			text-align: center;
 			color: #ffffff;
 			font-size: 32rpx;
-			margin-top: 108rpx;
+			margin-top: 24rpx;
 		}
 
 	}
