@@ -143,7 +143,7 @@
         </view>
         <view class="second-part">
           <view class="total-price-info">
-            <text class="info-text1">共{{totalClassNum}}类，</text>
+            <view class="info-text1">共{{totalClassNum}}类，</view>
             <view class="info-text2">总计：</view>
             <view class="total-money" v-if="Number(totalPrice)">
               ￥
@@ -621,7 +621,7 @@
   }
 
   .goods-info .goods-desc {
-    width: 300rpx;
+    width: 290rpx;
     font-size: 28rpx;
     color: #333333;
     line-height: 40rpx;
@@ -632,6 +632,7 @@
     -webkit-line-clamp: 2;
     line-clamp: 2;
     -webkit-box-orient: vertical;
+    vertical-align: middle;
   }
 
   .goods-info .goods-desc .goods-type {
@@ -672,8 +673,6 @@
     padding: 0 10rpx;
     line-height: 38rpx;
     text-align: center;
-    background-color: #fafafa;
-    border: 2rpx solid #f0f0f0;
     border-radius: 6rpx;
     text-overflow: -o-ellipsis-lastline;
     overflow: hidden;
@@ -689,6 +688,7 @@
   .goods-info .total-num {
     font-size: 28rpx;
     color: #999999;
+    float: right;
   }
 
   .safeguard {
@@ -701,9 +701,10 @@
   }
 
   .safe-icon {
+    position: static;
+    display: inline-block;
     width: 18rpx;
     height: 18rpx;
-    top: 12rpx;
     background-image: url("../../static/image/safe-question.png");
   }
 
@@ -878,11 +879,13 @@
     justify-content: flex-start;
     align-items: baseline;
     flex: 1;
+    flex-wrap: wrap;
   }
 
   .total-price-info .info-text1 {
     font-family: PingFangSC, PingF;
     color: #999999;
+    width: 100%;
   }
 
   .total-price-info .info-text2 {
