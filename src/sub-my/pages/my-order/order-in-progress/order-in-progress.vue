@@ -26,9 +26,12 @@
 
 			<view class="storeContainer">
 				<view v-for="item in orderInfo.details" :key="item.storeId" class="item">
-					<view class="header" @click="gotoShop(item)">
-						<view style="color: #333333;">{{item.storeName}}</view>
-						<image src="../../../static/ic_more.svg" mode=""></image>
+					<view class="header">
+						<view class="header-content">
+							<text style="color: #333333;"  @click="gotoShop(item)">{{item.storeName}}</text>
+							<image src="../../../static/ic_more.svg" mode=""/>
+						</view>
+						<view class="icon"></view>
 					</view>
 
 					<view v-for="item2 in item.details" :key="item2.id" class="orederItem">
@@ -315,25 +318,28 @@
 <style lang="scss" scoped>
 	.header {
 		margin-bottom: 32rpx;
-		box-sizing: border-box;
-		display: flex;
-		align-items: center;
-
-		view {
-			font-weight: 500;
-			height: 40rpx;
-			line-height: 40rpx;
-			max-width: 476rpx;
-			font-size: 28rpx;
-			overflow: hidden;
-			text-overflow: ellipsis;
-			white-space: nowrap;
+		 display: flex;
+		 justify-content: space-between;
+		.header-content{
+			box-sizing: border-box;
+			display: flex;
+			align-items: center;
+			text {
+				font-weight: 500;
+				max-width: 476rpx;
+				font-size: 28rpx;
+				overflow: hidden;
+				text-overflow: ellipsis;
+				white-space: nowrap;
+			}
+			image {
+				width: 34rpx;
+				height: 34rpx;
+				object-fit: cover;
+			}
 		}
-
-		image {
-			width: 34rpx;
-			height: 34rpx;
-			object-fit: cover;
+		.icon{
+			width: 1rpx;
 		}
 	}
 

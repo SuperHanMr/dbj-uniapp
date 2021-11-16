@@ -102,9 +102,12 @@
         v-for="(item,index) in orderInfo.details"
         :key="index"
       >
-        <view class="header" @click="gotoShop(item)">
-          <text>{{item.storeName}}</text>
-          <image src="../../../static/ic_more.svg" mode="" />
+        <view class="header">
+        	<view class="header-content">
+        		<text style="color: #333333;"  @click="gotoShop(item)">{{item.storeName}}</text>
+        		<image src="../../../static/ic_more.svg" mode=""/>
+        	</view>
+        	<view class="icon"></view>
         </view>
         <view v-for="item2 in item.details" :key="item2.id">
           <order-item
@@ -444,29 +447,33 @@ export default {
       padding: 32rpx 32rpx 0;
       background: #ffffff;
       border-radius: 24rpx 24rpx 0 0;
-
-      .header {
-        // margin-top: 16rpx;
-        margin-bottom: 32rpx;
-        box-sizing: border-box;
-        display: flex;
-        align-items: center;
-        text {
-          font-weight: 500;
-          max-width: 476rpx;
-          font-size: 28rpx;
-          overflow: hidden;
-          text-overflow: ellipsis;
-          white-space: nowrap;
-					color: #333333;
-        }
-
-        image {
-          width: 34rpx;
-          height: 34rpx;
-          object-fit: cover;
-        }
-      }
+			.header {
+			  margin-bottom: 32rpx;
+				 display: flex;
+				 justify-content: space-between;
+				.header-content{
+					box-sizing: border-box;
+					display: flex;
+					align-items: center;
+					text {
+						font-weight: 500;
+						max-width: 476rpx;
+						font-size: 28rpx;
+						overflow: hidden;
+						text-overflow: ellipsis;
+						white-space: nowrap;
+					}
+					image {
+						width: 34rpx;
+						height: 34rpx;
+						object-fit: cover;
+					}
+				}
+				.icon{
+					width: 1rpx;
+				}
+			}
+			
     }
 
     .contact-service {
