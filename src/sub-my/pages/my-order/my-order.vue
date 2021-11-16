@@ -42,7 +42,7 @@
 									<image v-if="!item.orderName" src="../../static/ic_more.svg" mode=" " />
 								</view>
 								<view class="order-status"
-									:class="{active: item.orderStatus == 2 || item.orderStatus == 3}">
+									:class="{active: item.orderStatus == 2 || item.orderStatus == 3}"	@click="goToDetail(item)">
 									<!-- {{item.orderStatusName}} -->
 									{{
 										item.orderStatus == 1
