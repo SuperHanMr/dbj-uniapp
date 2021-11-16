@@ -24,7 +24,6 @@
 					<text v-else>
 						<text>￥</text>
 						  <text class="price-style price-font">{{handlePrice(data.freight)[0]}}.{{handlePrice(data.freight)[1]}}</text>
-						
 					</text>
 				</view>
         <view v-else>
@@ -32,8 +31,6 @@
           <text class="price-style price-font">{{handlePrice(data.freight)[0]}}.{{handlePrice(data.freight)[1]}}</text>
         </view>
       </view>
-
-
 
       <!-- 搬运费  有仓库默认显示  无仓库必显示-->
       <view class="price-item" v-if="data.showFreight">
@@ -135,7 +132,12 @@
 			</view>
 			<view v-else>
 				<text style="margin-right: 12rpx;">实付</text>
-				<text style="color: #FF3347;" class="price-font">
+				<text style="color: #FF3347;" class="price-font" v-if="payPrice">
+					<text>￥</text>
+					<text style="font-size: 40rpx;" class="price-font">{{handlePrice(payPrice)[0]}}.</text>
+					<text class="price-font">{{handlePrice(payPrice)[1]}}</text>
+				</text>
+				<text style="color: #FF3347;" class="price-font" v-else>
 					<text>￥</text>
 					<text style="font-size: 40rpx;" class="price-font">{{handlePrice(data.actuallyPayAmount)[0]}}.</text>
 					<text class="price-font">{{handlePrice(data.actuallyPayAmount)[1]}}</text>
@@ -163,6 +165,9 @@ export default {
 		orderFailed:{
 			type:Boolean,
 			default: false,
+		},
+		payPrice:{
+			type:String,
 		}
   },
 

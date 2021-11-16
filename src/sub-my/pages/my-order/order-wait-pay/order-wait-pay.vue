@@ -106,7 +106,7 @@
 				<view class="split-line" />
 			</view>
 
-			<order-price :data="orderInfo" :waitPay="true" />
+			<order-price :data="orderInfo" :waitPay="true" :payPrice="payPrice()"/>
 
 			<!-- <view class="payment-method">
 				<text>支付方式</text>
