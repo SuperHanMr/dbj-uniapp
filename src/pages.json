@@ -490,7 +490,9 @@
 				{
 					"path": "pages/deposit-card/deposit-card",
 					"style": {
-						"navigationBarTitleText": "储值卡"
+						"navigationBarTitleText": "储值卡",
+						"enablePullDownRefresh": true,
+						"navigationBarBackgroundColor": "#FFE58F"
 					}
 				},
 				{
