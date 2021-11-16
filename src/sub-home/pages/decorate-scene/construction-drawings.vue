@@ -387,7 +387,7 @@ export default {
 
 .tabWrap {
   display: flex;
-  justify-content: space-between;
+  /* justify-content: space-between; */
   align-items: center;
   white-space: nowrap;
   max-width: 750rpx;
@@ -436,8 +436,8 @@ export default {
 }
 .divideLine {
   width: 750rpx;
-  height: 2rpx;
-  background-color: #efefef;
+  height: 0.5px;
+  background-color: #f4f4f4;
 }
 .cardWrap {
   width: 750rpx;

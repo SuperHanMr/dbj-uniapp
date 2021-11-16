@@ -13,6 +13,7 @@ export default {
     currentProject: {},
     naviData: null,
     decorateMsg: {},
+    decorateMsgNum:0,
     currentHouse: {
       name: "北京市朝阳区",
       provinceId: 1,
@@ -24,12 +25,18 @@ export default {
     previewimageStatus: false,
     screenHeight: 0,
     openId: "",
+    shareId: "",
     msg_projectId: null,
   },
 
   onLaunch: function () {
     const userId = uni.getStorageSync("userId");
     const openId = uni.getStorageSync("openId");
+    const shareId = uni.getStorageSync("shareId");
+    console.log("onLaunch", "userId:", userId, "openId:", openId, "shareId:", shareId);
+    if (shareId && !this.globalData.shareId) {
+      this.globalData.shareId = shareId;
+    }
     if (userId && openId) {
       let token = uni.getStorageSync("scn");
       this.globalData.token = token;
@@ -62,6 +69,34 @@ export default {
       console.log(222);
       this.watchMsg();
     });
+    // 检查新版本
+    const updateManager = uni.getUpdateManager();
+    updateManager.onCheckForUpdate(function (res) {
+      // 请求完新版本信息的回调
+      console.log("检查新版本回调", res.hasUpdate, res);
+    });
+    updateManager.onUpdateReady(function (res) {
+      console.log("新版本已准备好", res);
+      uni.showModal({
+        title: '更新提示',
+        content: '新版本已经准备好，是否重启应用？',
+        success(res) {
+          console.log("确定更新版本", res);
+          if (res.confirm) {
+            // 新的版本已经下载好，调用 applyUpdate 应用新版本并重启
+            updateManager.applyUpdate();
+          }
+        }
+      });
+    });
+    updateManager.onUpdateFailed(function (res) {
+      // 新的版本下载失败
+      console.error("新的版本下载失败", res);
+      uni.showToast({
+        icon: "error",
+        title: "新版本下载失败"
+      })
+    });
   },
   onShow: function () {
     console.log("App Show");
@@ -86,12 +121,14 @@ export default {
             : this.globalData.currentEstate.id
         )
           .then((res) => {
+            let num = res.count + "";
+            this.globalData.decorateMsgNum = num
             if (res.count === 0) {
               uni.removeTabBarBadge({
                 index: 2,
               });
             } else {
-              let num = res.count + "";
+              
               uni.setTabBarBadge({
                 index: 2,
                 text: num,

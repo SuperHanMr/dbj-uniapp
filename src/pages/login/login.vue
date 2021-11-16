@@ -110,11 +110,11 @@
 							userId: data.tid,
 							userSig: data.userSign,
 						});
-						let shaerId = uni.getStorageSync("shareId");
-						if (shaerId && type == "register") {
+						let shareId = getApp().globalData.shareId;
+						if (shareId && type == "register") {
 							bindCapsule({
 								zeusId: data.id,
-								salesmanPhone: shaerId
+								salesmanPhone: shareId
 							});
 						}
 						//可以改成back
