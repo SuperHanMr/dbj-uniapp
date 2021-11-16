@@ -21,6 +21,17 @@ export default new Vuex.Store({
     updateTabBarBadge(context) {
       // 设置消息未读数
       let totalCount = context.getters.totalUnreadCount;
+      let decorateCount = getApp().globalData.decorateMsg
+      if (decorateCount > 0) {
+        uni.setTabBarBadge({
+          index: 2,
+          text: decorateCount > 99 ? "99+" : decorateCount + ""
+        })
+      } else {
+        uni.removeTabBarBadge({
+          index: 2
+        })
+      }
       if (totalCount > 0) {
         uni.setTabBarBadge({
           index: 3,
