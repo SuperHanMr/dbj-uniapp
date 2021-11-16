@@ -28,8 +28,14 @@ export function createcollection(params) {
 	return request.post(`/app/base/interactive/add/list`, params)
 }
 export function getBalance() {
-  return request.get(`/wallet/app/consume/query/giftCardAmount`, {});
+  return request.get(`/wallet/app/customer/query/giftCardAmount`, {});
 }
 export function getBillingDetails(params) {
-  return request.get(`/wallet/app/consume/query/giftCardAccountFlow`, {params});
+  return request.get(`/wallet/app/customer/query/giftCardAccountFlow`, {params});
+}
+export function getTwice(params) {
+  return request.get(`/market/app/activity/eligibility`, {params});
+}
+export function getActivity(params) {
+  return request.get(`/market/app/activity/list`, {params});
 }

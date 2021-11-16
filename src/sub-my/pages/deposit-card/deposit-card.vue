@@ -1,15 +1,15 @@
 <template>
-	<view class="cardWrap">
+	<scroll-view scroll-y="true" class="cardWrap">
 		<view class="header">
 			<view class="text">余额 (元)</view>
 			<view class="balance price-font">
 				<view>¥</view>
-				<view class="int">8994</view>
-				<view>.12</view>
+				<view class="int">{{(amount/100).toFixed(2).split('.')[0]}}</view>
+				<view>.{{(amount/100).toFixed(2).split('.')[1]}}</view>
 			</view>
 			<view class="details" @click="toBillingDetails">账单明细</view>
 		</view>
-		<view class="activity">
+		<!-- <view class="activity">
 			<view class="top">
 				<view class="title">施工活动</view>
 				<view class="rules">
@@ -29,6 +29,32 @@
 					</view>
 				</view>
 			</view>
+		</view> -->
+		<view class="activity" :class="{'minHeight': !item.activityImage}"
+			v-for="(item,index) in list" :key="item.activityId">
+			<view class="top">
+				<view class="title">{{item.activityName}}</view>
+				<view class="rules">
+					<view class="text">活动规则</view>
+					<view class="icon"></view>
+				</view>
+			</view>
+			<view class="date">活动时间：{{item.activityStartTime}}-{{item.activityEndTime}}</view>
+			<image class="banner" :src="item.activityImage" v-if="item.activityImage"></image>
+			<view class="main">
+				<view class="prePay"
+					:class="{'active': amount.isChecked}"
+					v-for="(amount,idx) in item.detailDTOList"
+					:key="amount.detailId"
+					@click="chooseOne(item.activityId,amount.detailId)">
+					<view class="icon" v-if="amount.isChecked"></view>
+					<view class="numWrap" :class="{'active': amount.isChecked}">
+						<view class="text">充</view>
+						<view>¥</view>
+						<view class="num price-font">{{amount.rechargeAmount/100}}</view>
+					</view>
+				</view>
+			</view>
 		</view>
 		<view class="buyWrap">
 			<view class="button">立即购买</view>
@@ -36,28 +62,33 @@
 				<text>《打扮家储值卡使用规则》</text>
 			</view>
 		</view>
-	</view>
+	</scroll-view>
 </template>
 
 <script>
-	import {getBalance} from "../../../api/user.js"
+	import {getBalance,getTwice,getActivity} from "../../../api/user.js"
 	export default {
 		data(){
 			return {
-				isChoose: false,
-				areaId: 0,
+				cityId: 0,
+				amount: 0,
+				list: [],
+				isChoose: false
 			}
 		},
 		onShow() {
-			this.areaId = getApp().globalData.currentHouse.areaId;
+			this.cityId = getApp().globalData.currentHouse.cityId;
 			console.log(this.areaId);
 		},
 		mounted() {
 			getBalance().then(data => {
-				if(data){
-					console.log(data)
+				if(data == null){
+					data = 0
 				}
+				this.amount = data
+				console.log(data)
 			})
+			this.requestPage()
 		},
 		methods: {
 			toBillingDetails(){
@@ -65,8 +96,54 @@
 					url: "/sub-my/pages/deposit-card/billing-details"
 				})
 			},
-			chooseOne(){
+			chooseOne(activityId,detailId){
 				this.isChoose = !this.isChoose
+				this.list.map(item => {
+					item.detailDTOList.map(ele => {
+						if(detailId === ele.detailId){
+							ele.isChecked = true
+						}else{
+							ele.isChecked = false
+						}
+						return ele
+					})
+					return item
+				})
+				let params = {activityId,detailId}
+				getTwice(params).then(data => {
+					if(!data){
+						uni.showToast({
+							title: "您已参加过此活动",
+							icon: "none",
+							duration: 2000
+						})
+						console.log(data)
+					}
+				})
+				
+			},
+			requestPage(){
+				let params = {
+					cityId: this.cityId
+				}
+				getActivity(params).then(data => {
+					console.log(data)
+					if(!data.length)return
+					this.list = data
+					this.list.map(item => {
+						item.detailDTOList.map(ele => {
+							ele.isChecked = false
+							return ele
+						})
+						if(item.detailDTOList.length){
+							this.$set(item.detailDTOList[0],'isChecked',true)
+							this.$nextTick(() => {
+								item.detailDTOList[0].isChecked = true
+							})
+						}
+						return item
+					})
+				})
 			}
 		}
 	}
@@ -75,7 +152,7 @@
 <style scoped>
 	.cardWrap{
 		width: 750rpx;
-		height: 1440rpx;
+		height: 2000rpx;
 		background-image: url('http://dbj.dragonn.top/static/mp/dabanjia/images/my/bg.png');
 		background-repeat: no-repeat;
 		background-size: cover;
@@ -139,6 +216,9 @@
 		background: #FFFFFF;
 		border-radius: 16rpx;
 	}
+	.activity.minHeight{
+		height: 206px;
+	}
 	.top{
 		width: 654rpx;
 		height: 50rpx;
@@ -149,7 +229,10 @@
 		align-items: center;
 	}
 	.top .title{
-		width: 144rpx;
+		max-width: 144rpx;
+		text-overflow: ellipsis;
+		overflow: hidden;
+		white-space: nowrap;
 		height: 50rpx;
 		font-weight: 500;
 		font-size: 36rpx;
@@ -172,10 +255,10 @@
 		color: #314F5E;
 	}
 	.banner{
+		display: block;
 		width: 654rpx;
 		height: 240rpx;
 		margin: 24rpx;
-		background: #DFDFDF;
 		border-radius: 16rpx;
 		box-shadow: 0px 4px 12px rgba(190, 102, 21, 0.15);
 	}
