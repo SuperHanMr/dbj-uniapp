@@ -133,27 +133,31 @@
 				</image>
 				<view>
 					<text>储值卡</text>
-					<text class="card-sub">(可用余额:580元)</text>
+					<text class="card-sub">(可用余额:{{(cardBalance/100).toFixed(2)}}元)</text>
 				</view>
 				<view style="flex:1">
 				</view>
-				<view class="card-price">
-					-¥232.00
+				<view v-if="cardClick" class="card-price">
+					-¥{{(this.cardPrice/100).toFixed(2)}}
 				</view>
-				<view>
-					<text> {{cardClick?'选中':'未选中'}}</text>
-				</view>
+				<image v-if="cardClick" class="selected-img"
+					src="https://ali-image.dabanjia.com/static/mp/dabanjia/images/classify/pay_selected.png" mode="">
+				</image>
+				<image v-else class="selected-img"
+					src="https://ali-image.dabanjia.com/static/mp/dabanjia/images/classify/pay_unselected.png" mode="">
+				</image>
 			</view>
 			<view class="pay-way">
 				<text>支付方式</text>
-				<view v-if="!payChannel">
-					<view class="wechat_icon"></view><text>微信支付</text>
-				</view>
-				<view v-else class="flex-center">
+
+				<view v-if="payChannel" class="flex-center">
 					<image class="card-img"
 						src="https://ali-image.dabanjia.com/static/mp/dabanjia/images/classify/ic_card.png" mode="">
 					</image><text>储值卡支付</text>
 
+				</view>
+				<view v-else>
+					<view class="wechat_icon"></view><text>微信支付</text>
 				</view>
 			</view>
 			<view class='remarks'>
@@ -171,15 +175,13 @@
 					<view class="total-price-info">
 						<text class="info-text1">共{{totalClassNum}}类，</text>
 						<view class="info-text2">总计：</view>
-						<view class="total-money" v-if="Number(payPrice)">
+						<view class="total-money">
 							￥
 							<text
 								class="mony-text">{{payPrice?String.prototype.split.call(payPrice, ".")[0]: "-"}}</text>
 							<text>.{{payPrice?String.prototype.split.call(payPrice, ".")[1]?String.prototype.split.call(payPrice, ".")[1]:"-":"-"}}</text>
 						</view>
-						<view v-else>
-							¥ --
-						</view>
+
 					</view>
 					<button class="pay-button" :class="{'no-pay': !hasCanBuy || hasNoBuyItem}" @click="pay"
 						ref="test">立即支付</button>
@@ -221,16 +223,17 @@
 				<view class="cart-header">
 					{{payChannel?'储值卡支付':'微信支付'}}
 
-					<view class="remove-all">
-						close
-					</view>
+					<image class="remove-all" @click="closePayDialog"
+						src="https://ali-image.dabanjia.com/static/mp/dabanjia/images/classify/ic_closed_black.png">
+
+					</image>
 				</view>
 				<view class="pay-diaolog">
 					<view class="pay-diaolog-title">
 						需支付
 					</view>
 					<view class="pay-diaolog-price">
-						<text style="font-size: 28rpx;">¥</text>232.00
+						<text style="font-size: 28rpx;">¥</text>{{payChannelPrice}}
 					</view>
 					<view class="pay-diaolog-tip">
 						{{payChannel?'您正在使用储值卡支付,请确认':'您还需用微信支付,请确认'}}
@@ -239,9 +242,7 @@
 						确认支付
 					</view>
 				</view>
-
 			</uni-popup>
-
 		</view>
 
 	</view>
@@ -301,20 +302,45 @@
 				levelName: "",
 				cancelDialog: false,
 				refundable: false,
-				cardClick: false
+				cardClick: false,
+				haveCard: false, //是否有会员卡
+				cardBalance: 1111 //会员卡余额
 			}
 		},
 		computed: {
 			payChannel() {
-				if (this.cardClick) {
+				var res = Number(this.totalPrice) * 100 - this.cardBalance
+				//支付渠道 true 储值卡  false 微信
+				console.log((this.cardClick && res > 0), res, Number(this.totalPrice) * 100)
+				if (this.cardClick && res <= 0) {
 					return true
 				} else {
 					return false
 				}
 			},
+			payChannelPrice() {
+				//提示框价格
+				if (!this.payChannel) {
+					return ((Number(this.totalPrice) * 100 - this.cardBalance) / 100).toFixed(2)
+				} else {
+					return this.totalPrice
+				}
+
+			},
+			cardPrice() {
+				var res = Number(this.totalPrice) * 100 - this.cardBalance
+				if (res >= 0) {
+					return this.cardBalance
+				} else {
+					return Number(this.totalPrice) * 100
+				}
+			},
 			payPrice() {
 				if (this.cardClick) {
-					var res = Number(this.totalPrice) * 100 - 2
+					var res = Number(this.totalPrice) * 100 - this.cardBalance
+					if (res <= 0) {
+						return '0.00'
+					}
 					return String((res / 100).toFixed(2));
 				} else {
 					console.log(this.totalPrice)
@@ -365,6 +391,10 @@
 			uni.removeStorageSync("houseListChooseId");
 		},
 		methods: {
+			closePayDialog(){
+				
+					this.$refs.payDialog.close();
+			},
 			clickCard() {
 				this.cardClick = !this.cardClick
 			},
@@ -574,10 +604,10 @@
 				if (!this.hasCanBuy || this.hasNoBuyItem || !this.totalPrice) {
 					return;
 				}
-				// if (this.cardClick) {
-				this.$refs.payDialog.open();
-				return;
-				// }
+				if (this.cardClick) {
+					this.$refs.payDialog.open();
+					return;
+				}
 				let details = [];
 				this.orderDetails.map((v, k) => {
 					details.push(v.orderDetailItem);
@@ -653,11 +683,18 @@
 </script>
 
 <style lang="scss" scoped>
-	.flex-center{
+	.selected-img {
+		width: 36rpx;
+		height: 36rpx;
+		margin-left: 16rpx;
+	}
+
+	.flex-center {
 		display: flex;
 		align-items: center;
 		justify-content: center;
 	}
+
 	.pay-diaolog {
 		border-top: 1rpx solid #f2f2f2;
 		display: flex;
@@ -720,12 +757,10 @@
 
 		.remove-all {
 			position: absolute;
-			top: 0;
-			right: 32rpx;
-			display: flex;
-			flex-direction: row;
-			align-items: center;
-			justify-content: center;
+			top: 12rpx;
+			right: 16rpx;
+			width: 80rpx;
+			height: 80rpx;
 			font-size: 24rpx;
 			color: #999999;
 		}
