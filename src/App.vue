@@ -13,6 +13,7 @@ export default {
     currentProject: {},
     naviData: null,
     decorateMsg: {},
+    decorateMsgNum:0,
     currentHouse: {
       name: "北京市朝阳区",
       provinceId: 1,
@@ -92,12 +93,14 @@ export default {
             : this.globalData.currentEstate.id
         )
           .then((res) => {
+            let num = res.count + "";
+            this.globalData.decorateMsgNum = num
             if (res.count === 0) {
               uni.removeTabBarBadge({
                 index: 2,
               });
             } else {
-              let num = res.count + "";
+              
               uni.setTabBarBadge({
                 index: 2,
                 text: num,
