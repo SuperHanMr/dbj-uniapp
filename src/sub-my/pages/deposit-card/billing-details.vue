@@ -17,18 +17,18 @@
 						</view>
 					</view>
 				</view>
-				<view class="item">
+				<view class="item" v-for="item in details" :key="item.id">
 					<view class="icon"></view>
 					<view class="content">
 						<view class="left">
-							<view class="category">充值</view>
+							<view class="category">{{item.transferTypeName}}</view>
 							<view class="order">
-								订单号：12345678909876
+								订单号：{{item.orderNum}}
 							</view>
 						</view>
 						<view class="right">
-							<view class="num price-font">+440.00</view>
-							<view class="date">2021/11/12 21:33</view>
+							<view class="num price-font">{{(item.transferInoutType === 1? '+': '-')+item.amount}}</view>
+							<view class="date">{{item.createTime|formatDate('YYYY/MM/DD HH:mm')}}</view>
 						</view>
 					</view>
 				</view>
@@ -43,11 +43,15 @@
 </template>
 
 <script>
-	import {getShares} from "../../../api/user.js"
+	import {getBillingDetails} from "../../../api/user.js"
+	import {formatDate} from "../../../utils/common.js"
 	export default {
+		filters: {
+			formatDate
+		},
 		data(){
 			return {
-				records: [],
+				details: [],
 				lastOneId: -1,
 				noMore: false
 			}
@@ -61,19 +65,20 @@
 		methods: {
 			requestPage(){
 				let params = {
-					pageSize: 10,
-					pageMaxId: this.lastOneId
+					limit: 10,
+					lastId: this.lastOneId
 				}
-				getShares(params).then(data => {
+				getBillingDetails().then(data => {
 					if(data){
 						if(data.length){
 							this.lastOneId = data[data.length-1].id
 						}else{
 							this.noMore = true
 						}
-						this.records = this.records.concat(data)
+						this.details = this.details.concat(data)
+						console.log(this.details,this.lastOneId)
 					}
-					console.log(data,this.records,this.lastOneId)
+					console.log(data)
 				})
 			}
 		}

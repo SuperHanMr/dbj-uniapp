@@ -498,7 +498,8 @@
 				{
 					"path": "pages/deposit-card/billing-details",
 					"style": {
-						"navigationBarTitleText": "账单明细"
+						"navigationBarTitleText": "账单明细",
+						"onReachBottomDistance": 50
 					}
 				}
 			]

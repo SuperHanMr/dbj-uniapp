@@ -27,6 +27,9 @@ export function setGoodsSku(params) {
 export function createcollection(params) {
 	return request.post(`/app/base/interactive/add/list`, params)
 }
-export function getShares(params) {
-  return request.get(`/capsule-shop/capsuleShop/salesman/pullnew`, {params});
+export function getBalance() {
+  return request.get(`/wallet/app/consume/query/giftCardAmount`, {});
+}
+export function getBillingDetails(params) {
+  return request.get(`/wallet/app/consume/query/giftCardAccountFlow`, {params});
 }
