@@ -45,7 +45,7 @@
 			</view>
 
 			<order-info :orderNo="orderInfo.orderNo" :createTime="orderInfo.createTime" :showPayTime="true"
-				:showPayType="true" :payTime="orderInfo.payTime" />
+				:showPayType="true" :payTime="orderInfo.payTime" :payChannel="orderInfo.payChannel" />
 
 			<view class="applyforRefund-confirmReceipt" :style="{paddingBottom:systemBottom,height:systemHeight}"
 				v-if="orderInfo.showRefundBtn || (orderInfo.stockType == 0 && orderInfo.shipmentStatus == 1)">
