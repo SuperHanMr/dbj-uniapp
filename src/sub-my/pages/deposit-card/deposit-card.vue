@@ -40,6 +40,7 @@
 </template>
 
 <script>
+	import {getBalance} from "../../../api/user.js"
 	export default {
 		data(){
 			return {
@@ -50,6 +51,13 @@
 		onShow() {
 			this.areaId = getApp().globalData.currentHouse.areaId;
 			console.log(this.areaId);
+		},
+		mounted() {
+			getBalance().then(data => {
+				if(data){
+					console.log(data)
+				}
+			})
 		},
 		methods: {
 			toBillingDetails(){
@@ -67,8 +75,8 @@
 <style scoped>
 	.cardWrap{
 		width: 750rpx;
-		height: 500rpx;
-		background-image: url('http://dbj.dragonn.top/static/mp/dabanjia/images/my/page_bg.png');
+		height: 1440rpx;
+		background-image: url('http://dbj.dragonn.top/static/mp/dabanjia/images/my/bg.png');
 		background-repeat: no-repeat;
 		background-size: cover;
 	}
@@ -77,6 +85,7 @@
 		height: 260rpx;
 		margin: 0 24rpx;
 		border-radius: 16rpx;
+		box-shadow: 0px 4px 12px rgba(190, 102, 21, 0.15);
 		background-image: url('http://dbj.dragonn.top/static/mp/dabanjia/images/my/card_bg.png');
 		background-repeat: no-repeat;
 		background-size: cover;
@@ -168,6 +177,7 @@
 		margin: 24rpx;
 		background: #DFDFDF;
 		border-radius: 16rpx;
+		box-shadow: 0px 4px 12px rgba(190, 102, 21, 0.15);
 	}
 	.main{
 		margin: 24rpx;
