@@ -18,15 +18,15 @@
     @touchstart="touchstart"
     @touchend="touchend"
     >
-    <view class="white-bg" v-if="!moveHidden&&endLeft">
-          
+    <view class="white-bg" v-if="!moveHidden&&endLeft" :class="{'end-left':endLeft}">
+          <text>请查看新消息</text>
         </view>
     <view class="white-circle" :class="{'left-style':endLeft}">
       <image src="https://ali-image.dabanjia.com/static/mp/dabanjia/images/decorate/decorate_msg.png" class="image-icon"></image>
       <text class="tip">{{num}}</text>
     </view>
     <view class="white-bg" v-if="!moveHidden&&endRight">
-          
+         <text>请查看新消息</text> 
         </view>
 
   </view>
@@ -291,13 +291,25 @@
 
     }
   }
-
+  .end-left{
+    padding: 10rpx 42rpx 10rpx 20rpx !important;
+  }
   .white-bg{
     display: inline-block;
-    width: 58rpx;
+    width: 130rpx;
     height: 80rpx;
     background-color: #fff;
     box-shadow: 0 5rpx 10rpx 0 rgba(0, 0, 0, 0.08);
+    box-sizing: border-box;
+    padding: 8rpx 20rpx 10rpx 42rpx;
+    
+    font-size: 22rpx;
+    color: #00979e;
+    // .text{
+    //   display: inline-block;
+    //   width: 68rpx;
+    //   height: 56rpx;
+    // }
     // .gray-bg{
     //   width: 28px;
     //   height: 40px;

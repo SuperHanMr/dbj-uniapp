@@ -10,7 +10,6 @@
       </view> -->
       <view
         class="person-interact"
-
         :class="{'person-interact-active':interact<2 }"
         v-if="caseEmpty||dynamicEmpty||evaluateEmpty"
       >
