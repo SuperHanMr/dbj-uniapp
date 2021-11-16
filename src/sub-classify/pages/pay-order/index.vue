@@ -221,7 +221,7 @@
 
 			<uni-popup ref="payDialog" type="bottom">
 				<view class="cart-header">
-					{{payChannel?'储值卡支付':'微信支付'}}
+					立即支付
 
 					<image class="remove-all" @click="closePayDialog"
 						src="https://ali-image.dabanjia.com/static/mp/dabanjia/images/classify/ic_closed_black.png">
