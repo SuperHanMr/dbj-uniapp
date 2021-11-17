@@ -11,7 +11,7 @@
       <view
         class="person-interact"
         :class="{'person-interact-active':interact<2 }"
-        v-if="caseEmpty||dynamicEmpty||evaluateEmpty"
+        v-if="(caseEmpty==dynamicEmpty)?caseEmpty:evaluateEmpty"
       >
         <view class="sticky">
           <!-- <view
@@ -158,7 +158,7 @@
     },
     onLoad(e){
       this.id = getApp().globalData.decorateMsg.serveId
-      this.personId = getApp().globalData.decorateMsg.serverId||7270
+      this.personId = getApp().globalData.decorateMsg.serverId||7573
       this.getGrabDetail()
       const menuButtonInfo = uni.getMenuButtonBoundingClientRect();
       this.systemBottom = menuButtonInfo.bottom + 'rpx'; 
