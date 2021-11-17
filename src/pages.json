@@ -16,7 +16,7 @@
 				"navigationBarTitleText": "装修",
 				"transparentTitle": "auto",
 				"navigationStyle": "custom",
-				"enablePullDownRefresh": true
+        "enablePullDownRefresh": true
 			}
 		},
 		{
@@ -40,7 +40,7 @@
 			"style": {
 				"navigationBarTitleText": "消息",
 				"navigationBarBackgroundColor": "#ffffff",
-				"enablePullDownRefresh": true
+        "enablePullDownRefresh": true
 			}
 		},
 		{
@@ -50,13 +50,13 @@
 				"navigationBarBackgroundColor": "#ffffff"
 			}
 		},
-		{
-			"path": "pages/message/conversation/conversation-interaction",
-			"style": {
-				"navigationBarTitleText": "互动消息",
-				"navigationBarBackgroundColor": "#ffffff"
-			}
-		},
+    {
+    	"path": "pages/message/conversation/conversation-interaction",
+    	"style": {
+    		"navigationBarTitleText": "互动消息",
+    		"navigationBarBackgroundColor": "#ffffff"
+    	}
+    },
 		{
 			"path": "pages/my/index/index",
 			"style": {
@@ -276,35 +276,6 @@
 					"path": "pages/decorate-scene/memo",
 					"style": {
 						"navigationBarTitleText": "备忘录",
-						"enablePullDownRefresh": false,
-						"navigationStyle": "custom"
-					}
-				},
-				{
-					"path": "pages/decorate-scene/memo-detail",
-					"style": {
-						"navigationBarTitleText": "备忘录详情",
-						"enablePullDownRefresh": false
-					}
-				},
-				{
-					"path": "pages/decorate-scene/new-memo",
-					"style": {
-						"navigationBarTitleText": "新建备忘录",
-						"enablePullDownRefresh": false
-					}
-				},
-				{
-					"path": "pages/decorate-scene/choose-remind",
-					"style": {
-						"navigationBarTitleText": "选择需要提醒的人",
-						"enablePullDownRefresh": false
-					}
-				},
-				{
-					"path": "pages/find-design/find-design",
-					"style": {
-						"navigationBarTitleText": "找设计",
 						"enablePullDownRefresh": false,
 						"navigationStyle": "custom"
 					}
