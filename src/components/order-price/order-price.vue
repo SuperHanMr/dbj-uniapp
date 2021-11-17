@@ -89,7 +89,7 @@
 			  </view>
 			</view> -->
 
-    </view>
+    </view> 
 
 		<!-- 待付款 -->
     <view class="footer1" v-if="waitPay">

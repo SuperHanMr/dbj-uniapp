@@ -87,22 +87,23 @@
 				<!-- 储值卡退款 -->
 				<view class="refund-price" v-else> 
 					<view :class="{'edit-price': showEditInput, 'show-price': !showEditInput }" >
-						<view class="left">
+						<view class="left" style="flex: 1;">
 							<view class="icon">*</view>
 							<text style="color:#666666;">退款金额</text>
 						</view>
+						<view style="flex:1"></view>
 						<view class="right1" v-if="showEditInput">
 							<view class="eidt-style">
 								<text>￥</text>
 								<input
 									type="digit"
-									:value="inputValue"
+									v-model="inputValue"
 									class="input-style"
 									:focus="isFocus"
-									@input="onKeyInput"
+									maxlength="10"
 									@focus="onKeyFocus"
 									@blur="onKeyBlur"
-									:style="{width:inputWidth + 'rpx'}"
+									:style="{width:inputWidth,'maxWidth':'294rpx !important'}"
 								/>
 							</view>
 						</view>
@@ -209,11 +210,6 @@ export default {
 			this.applyMode = Number(e.applyMode)//	申请方式 1单商品 2整单退
 			console.log("this.type=", this.type);
 			if (this.type == "partical") {
-				// this.orderDetailsId = e.orderDetailsId
-				// console.log("this.query.orderId=",this.query.orderId)
-				// console.log("this.query.status=",this.query.status)
-				// console.log("this.applyMode=",this.applyMode)
-				// console.log("this.orderDetailsId=",this.orderDetailsId)
 				let params = {
 					orderId:this.query.orderId,
 					status:this.query.status,
@@ -226,14 +222,7 @@ export default {
 					console.log("this.refundInfo=",this.refundInfo)
 					this.refundInfo.actualIncomeAmount = this.refundInfo.maxRefundAmount
 					this.returnMoney = this.refundInfo.maxRefundAmount
-				// console.log("进行中数据带过来的数据：this.refundInfo=",this.refundInfo)
-				// this.orderDetailId = this.refundInfo.orderDetailId
-				// this.inputValue =  this.refundInfo.actualIncomeAmount
-				// this.returnMoney = this.inputValue
-				// console.log("this.inputValue",this.inputValue)
-				// console.log("this.refundInfo=", this.refundInfo, typeof this.refundInfo);
 				})
-				
 			} else {
 				let params = {
 					orderId:this.query.orderId,
@@ -266,22 +255,39 @@ export default {
       }
     },
     inputValue(newVal, oldVal) {
-			if(!newVal){
-				this.inputWidth = 24
-			}
-			if(newVal>this.refundAmount){
+			console.log("newVal=====",newVal,String(newVal).length)
+			this.reqInputWidth(newVal)
+			if(newVal > this.refundAmount){
 				uni.showToast({
 					title:"退款金额大于储值卡余额，请修改",
 					icon:'none',
 					duration:1000
 				})
-				// newVal=储值卡余额
+				return Number(this.refundAmount).toFixed(2)
+			}else{
+				this.returnMoney =Number(newVal) 
+				return newVal;
 			}
-			this.returnMoney =Number(newVal) 
-      return newVal;
     },
     textAreaLength(newVal, oldVal) {},
   },
+	computed:{
+		reqInputWidth(value){
+			return (value)=>{
+				console.log("value==",typeof value,value=='',value==0)
+				if( value ==''){
+					this.inputWidth= '12rpx'
+				} else if(value === 0 ){
+					this.inputWidth= '22rpx'
+				} else if(value==='0.'){
+					this.inputWidth= '44rpx'
+				} else {
+					console.log("width====",String(value).length* 22)
+					this.inputWidth = String(value).length* 22  +'rpx'
+				}
+			}
+		}
+	},
   methods: {
     // 重新获取退款订单详情
     getReapplyRefundInfo() {
@@ -290,7 +296,7 @@ export default {
 				this.type = data.applyMode==1?'partical':'whole'
 				console.log("this.type=",this.type)
 				this.refundType = data.type
-				this.refundType = 5
+				// this.refundType = 5
 				this.query.remarks = data.remark
 				this.textAreaLength = data.remark.length
 				this.reasonValue = data.reasonId
@@ -299,7 +305,7 @@ export default {
 				this.returnMoney  =data.refundAmount
 				if(this.refundType == 5){
 					this.inputValue  = data.refundAmount
-					this.inputWidth =String(data.refundAmount).length* 26 - 12		
+					// this.inputWidth =String(data.refundAmount).length* 26 - 12		
 				}else{
 					this.freight = this.refundInfo.freight?this.refundInfo.freight:'0'
 					this.handlingFees = this.refundInfo.handlingFees?this.refundInfo.freight:'0'
@@ -372,10 +378,6 @@ export default {
 			}
     },
 
-    onKeyInput(event) {
-      this.inputValue = event.target.value;
-			this.inputWidth = event.target.value.length * 26 - 12;
-    },
     onKeyFocus() {
       this.isFocus = true;
       if (!this.inputValue) {
@@ -385,19 +387,17 @@ export default {
     onKeyBlur() {
       // 缺少输入退款金额值的判断及弹框提示数据
       this.showEditInput = false;
-			console.log("this.inputValue===",this.inputValue)
-	
 			if(!(/^[1-9]\d*\.?\d{0,2}$|^0\.[1-9]\d$|^0\.\d[1-9]$/g.test(this.inputValue)) ){
 				uni.showToast({
 					title:"您输入的金额错误，请重新输入",
 					icon:'none',
 					duration:2000,
 				})  
-				
+				this.inputValue =  Number(this.refundAmount).toFixed(2)
+			}else{
+				this.inputValue = Number(this.inputValue).toFixed(2);
 			}
-      // this.inputValue = Number(this.inputValue).toFixed(2);
-			
-      this.inputWidth = String(this.inputValue).length * 26 - 12
+      // this.inputWidth = String(this.inputValue).length * 26 - 12
     },
 		onTextAreaInput(event) {
       this.textAreaLength = event.target.value.length;
@@ -597,8 +597,9 @@ export default {
             color: #ff3347;
             .input-style {
               // background-color: #f3f3f3;
+							max-width: 440rpx;
               color: #ff3347;
-              font-size: 20px;
+              font-size: 38rpx;
               margin-right: 80rpx;
             }
           }
