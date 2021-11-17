@@ -375,7 +375,7 @@ export default {
   },
   onLoad(e) {
     this.userType = e.userType;
-    this.personId = e.personId || 7270;
+    this.personId = e.personId || 7248;
     uni.showShareMenu();
     console.log(this.personId);
     // this.getGrabDetail()

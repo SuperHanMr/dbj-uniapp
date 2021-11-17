@@ -1,6 +1,6 @@
 <template>
   <view class="person-case person-content-item"  v-if="pagState.totalRows!==0">
-    <view class="title" v-if="!isGrab">Ta的案例</view>
+    <view class="title">Ta的案例</view>
     <designCase v-if="pagState.totalRows" class="design-case" :isPerson='true' :leftList="leftList" :rightList="rightList" :leftHeight="leftHeight" :rightHeight="rightHeight" :isGrab='isGrab' ></designCase>
     <view class="empty" v-else>
       暂无案例

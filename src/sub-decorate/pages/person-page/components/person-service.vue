@@ -1,8 +1,8 @@
 <template>
   <view class="person-service person-content-item" v-if="serviceList.length>0">
-<!--    <view class="title">
-      Ta的服务
-    </view> -->
+   <view class="title">
+      优选服务
+    </view>
     <view class="service-list" >
       <view class="service-item" v-for="item of serviceList" :key='item.id'>
         <image :src="item.imageUrl" mode=""></image>

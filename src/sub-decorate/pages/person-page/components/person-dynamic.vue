@@ -1,6 +1,6 @@
 <template>
   <view class="person-dynamic person-content-item" v-if="dynamics.length!==0">
-    <view class="title" v-if="!isGrab">Ta的动态</view>
+    <view class="title" >Ta的动态</view>
     <decorateDynamic v-if="dynamics.length>0" :dynamics='dynamics' :personId='personId' :isPerson='true' @likeC='likeC' @commentC='commentC'></decorateDynamic>
     <view class="empty" v-else>
       暂无动态
