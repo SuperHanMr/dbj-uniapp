@@ -112,11 +112,16 @@
 			
       <view  v-if="!data.totalActualIncomeAmount">
         <text style="margin-right: 12rpx;color:#333333;">需付款</text>
-        <text style="color: #FF3347;" class="price-font">
+        <text style="color: #FF3347;" class="price-font"  v-if="payPrice">
           <text>￥</text>
-          <text style="font-size: 40rpx;">{{handlePrice(data.orderReceivableAmount)[0]}}.</text>
-          <text>{{handlePrice(data.orderReceivableAmount)[1]}}</text>
+          <text style="font-size: 40rpx;">{{handlePrice(payPrice)[0]}}.</text>
+          <text>{{handlePrice(payPrice)[1]}}.</text>
         </text>
+				<text style="color: #FF3347;" class="price-font"  v-else>
+				  <text>￥</text>
+				  <text style="font-size: 40rpx;">{{handlePrice(data.orderReceivableAmount)[0]}}.</text>
+				  <text>{{handlePrice(data.orderReceivableAmount)[1]}}</text>
+				</text>
       </view>
     </view>
 
@@ -132,12 +137,7 @@
 			</view>
 			<view v-else>
 				<text style="margin-right: 12rpx;">实付</text>
-				<text style="color: #FF3347;" class="price-font" v-if="payPrice">
-					<text>￥</text>
-					<text style="font-size: 40rpx;" class="price-font">{{handlePrice(payPrice)[0]}}.</text>
-					<text class="price-font">{{handlePrice(payPrice)[1]}}</text>
-				</text>
-				<text style="color: #FF3347;" class="price-font" v-else>
+				<text style="color: #FF3347;" class="price-font">
 					<text>￥</text>
 					<text style="font-size: 40rpx;" class="price-font">{{handlePrice(data.actuallyPayAmount)[0]}}.</text>
 					<text class="price-font">{{handlePrice(data.actuallyPayAmount)[1]}}</text>
