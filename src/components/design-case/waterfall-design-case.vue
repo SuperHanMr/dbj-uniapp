@@ -1,5 +1,5 @@
 <template>
-	<view class="waterfall-item">
+	<view class="waterfall-item" :class="{'is-grab':!isGrab}">
 		<view class="img-box" @tap="onTap">
 			<image :src="params.imageUrl" mode="widthFix" @load="emitHeight" @error="emitHeight"></image>
 			<view class="comment-like">
@@ -61,6 +61,10 @@
 					return {}
 				}
 			},
+      isGrab:{
+        type:Boolean,
+        default:false,
+      },
 			tag:{
 				type:String | Number,
 				default:''
@@ -97,12 +101,15 @@
 </script>
 
 <style lang="scss" scoped>
+.is-grab{
+  border: 0.5px solid #ececec;
+}
 .waterfall-item{
 	margin-right: 16rpx;
 	font-size: 28rpx;
 	margin-bottom: 20rpx;
 	background: #ffffff;
-	// border: 0.5px solid #ececec;
+	
 	border-radius: 8px;
 	.img-box{
 		position: relative;

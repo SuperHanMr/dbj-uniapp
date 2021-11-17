@@ -1,9 +1,9 @@
 <template>
-  <view class="person-service person-content-item">
+  <view class="person-service person-content-item" v-if="serviceList.length>0">
 <!--    <view class="title">
       Ta的服务
     </view> -->
-    <view class="service-list" v-if="serviceList.length>0">
+    <view class="service-list" >
       <view class="service-item" v-for="item of serviceList" :key='item.id'>
         <image :src="item.imageUrl" mode=""></image>
         <view class="item-msg">
@@ -25,9 +25,9 @@
         </view>
       </view>
     </view>
-    <view class="empty" v-else>
+    <!-- <view class="empty" v-else>
       暂无服务
-    </view>
+    </view> -->
     <view class="click-text" v-if="serviceData.length>3" @click="open">
     <text>{{isOpen?'收起全部服务':'展开全部服务'}}</text><i :class="{'icon-gerenzhuye_anlihefuwu_shouqiic':isOpen,'icon-gerenzhuye_anlihefuwu_zhankaiic':!isOpen}"></i>
     </view>

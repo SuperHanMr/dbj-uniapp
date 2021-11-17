@@ -163,24 +163,24 @@
         v-if="personId!=0&&personData.roleId<7&&personData.roleId!=6"
         :class="{'person-interact-active':interactActive+10 >  interact }"
       >
-        <view class="sticky">
+        <view class="sticky" v-if="hasTwo">
           <view
             class="item"
-            v-if="personData.roleId===1"
+            v-if="serviceEmpty&&personData.roleId===1"
             :class="{'item-active':currentItem==='serviceTop'}"
             @click="toItem('serviceTop')"
           >
             服务</view>
           <view
             class="item"
-            v-if="personData.roleId===1||personData.roleId===2"
+            v-if="caseEmpty&&(personData.roleId===1||personData.roleId===2)"
             :class="{'item-active':currentItem==='caseTop'}"
             @click="toItem('caseTop')"
           >
             案例</view>
           <view
             class="item"
-            v-if="personData.roleId===3||personData.roleId===4||personData.roleId===5"
+            v-if="dynamicEmpty&&(personData.roleId===3||personData.roleId===4||personData.roleId===5)"
             :class="{'item-active':currentItem==='dynamicTop'}"
             @click="toItem('dynamicTop')"
           >
@@ -189,6 +189,7 @@
             class="item"
             :class="{'item-active':currentItem==='evaluateTop'}"
             @click="toItem('evaluateTop')"
+            v-if="evaluateEmpty"
           >
             评价<text v-if="evaluateNum">{{evaluateNum}}</text></view>
         </view>
@@ -201,28 +202,33 @@
           ref='service'
           v-if="personData.roleId===1"
           :serviceData='serviceData'
+          @contentEmpty='contentEmpty'
         ></personService>
         <view
           class="interval"
-          v-if="personData.roleId===1"
+          v-if="serviceEmpty&&personData.roleId===1"
         ></view>
         <personCase
           ref='case'
           :personId='personId'
           class="person-case"
+          @contentEmpty='contentEmpty'
           v-if="personData.roleId===1||personData.roleId===2"
         ></personCase>
+        <view class="interval" v-if="caseEmpty"></view>
         <personDynamic
           ref='dynamic'
           :personId='personId'
           class="person-dynamic"
+          @contentEmpty='contentEmpty'
           v-if="personData.roleId===3||personData.roleId===4||personData.roleId===5"
         ></personDynamic>
-        <view class="interval"></view>
+        <view class="interval" v-if="dynamicEmpty"></view>
         <personEvaluate
           ref='evaluate'
           :personId='personId'
           class="person-evaluate"
+          @contentEmpty='contentEmpty'
           @getEvaluate='getEvaluate'
         ></personEvaluate>
       </view>
@@ -329,6 +335,10 @@ export default {
       evaluateNum: 0,
       userType: 2,
       hasServe: 0,
+      caseEmpty:false,
+      dynamicEmpty:false,
+      evaluateEmpty:false,
+      serviceEmpty:false,
     };
   },
   computed: {
@@ -337,6 +347,16 @@ export default {
         opacity: this.opacityNum,
       };
     },
+    hasTwo(){
+      let i = 0
+      switch(true){
+        case this.serviceEmpty: i++; 
+        case this.caseEmpty: i++;
+        case this.dynamicEmpty: i++;
+        case this.evaluateEmpty: i++;
+      }
+      return i>1?true:false
+    }
   },
   onPullDownRefresh() {
     if (this.personId != 0) {
@@ -355,7 +375,7 @@ export default {
   },
   onLoad(e) {
     this.userType = e.userType;
-    this.personId = e.personId || 0;
+    this.personId = e.personId || 7270;
     uni.showShareMenu();
     console.log(this.personId);
     // this.getGrabDetail()
@@ -397,6 +417,10 @@ export default {
       // this.getCaseList()
       this.getSkuList();
       this.getGrabDetail();
+    },
+    contentEmpty(name,value){
+      console.log(name,value)
+      this[name] = value
     },
     pageScroll(scrollTop) {
       this.scrollTop = scrollTop;
@@ -581,9 +605,13 @@ export default {
       };
       getSkuList(data).then((res) => {
         this.serviceData = res;
+        this.serviceEmpty = true
         if (this.$refs.service) {
           this.$refs.service.isOpen = true;
           this.$refs.service.open();
+        }
+        if(res.length==0){
+          this.serviceEmpty = false
         }
       });
     },
@@ -605,7 +633,7 @@ export default {
   padding-top: 98rpx;
   box-sizing: border-box;
   background-color: #fff;
-  padding-bottom: 40rpx;
+  margin-bottom: 40rpx;
   // height: 100%;
   .bg-index {
     top: -70rpx;

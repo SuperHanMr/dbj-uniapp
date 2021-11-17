@@ -122,17 +122,20 @@
           v-for="(item2,index2) in orderInfo.details"
           :key="index2"
         >
-          <view
-            class="header"
-            @click="gotoShop(item2)"
-          >
-            <text>{{item2.storeName}}</text>
-            <image
-              src="../../../static/ic_more.svg"
-              mode=""
-            ></image>
+          <view class="header">
+            <view class="header-content">
+              <text
+                style="color: #333333;"
+                @click="gotoShop(item2)"
+              >{{item2.storeName}}</text>
+              <image
+                src="../../../static/ic_more.svg"
+                mode=""
+              />
+            </view>
+            <view class="icon"></view>
           </view>
-          <!-- 显示服务和材料 -->
+
           <view
             v-for="item3 in item2.details"
             :key="item3.id"
@@ -142,10 +145,12 @@
               :dataList="item3"
               :orderStatus="3"
               @handleDetail="productDetail(item3)"
-            />
+            ></order-item>
+            <!-- <view class="ww">
+							dddd
+						</view>
+						<store-calue-card-item></store-calue-card-item> -->
           </view>
-          <!-- 显示储值卡 -->
-          <!-- <store-calue-card-item></store-calue-card-item> -->
         </view>
       </view>
 
@@ -157,7 +162,6 @@
         :showPayTime="true"
         :payTime="orderInfo.payTime"
         :showPayType="true"
-        :payChannel="orderInfo.payChannel"
       />
 
       <view
@@ -418,27 +422,29 @@ export default {
         background: #ffffff;
 
         .header {
-          box-sizing: border-box;
+          margin-bottom: 32rpx;
           display: flex;
-          align-items: center;
-          flex-flow: row nowrap;
-          padding-bottom: 32rpx;
-
-          text {
-            font-weight: 500;
-            max-width: 476rpx;
-            font-size: 28rpx;
-            line-height: 40rpx;
-            overflow: hidden;
-            text-overflow: ellipsis;
-            white-space: nowrap;
-            color: #333333;
+          justify-content: space-between;
+          .header-content {
+            box-sizing: border-box;
+            display: flex;
+            align-items: center;
+            text {
+              font-weight: 500;
+              max-width: 476rpx;
+              font-size: 28rpx;
+              overflow: hidden;
+              text-overflow: ellipsis;
+              white-space: nowrap;
+            }
+            image {
+              width: 34rpx;
+              height: 34rpx;
+              object-fit: cover;
+            }
           }
-
-          image {
-            width: 34rpx;
-            height: 34rpx;
-            object-fit: cover;
+          .icon {
+            width: 1rpx;
           }
         }
 

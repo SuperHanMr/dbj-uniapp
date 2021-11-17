@@ -1,6 +1,6 @@
 <template>
 	<view class="item" @click="toGoodsDetail(item.product.skuId)">
-		<image class="img" :src="item.product.skuImage |imgFormat" mode="aspectFill"></image>
+		<image class="img" :src="item.product.spuImage |imgFormat" mode="aspectFill"></image>
 		<view class="info">
 			<view class="title">
 				<text class="tip">
@@ -41,7 +41,7 @@
 				</text>
 			</view>
 		</view>
-		<view style="height: 12rpx;">
+		<view style="height: 18rpx;">
 		</view>
 
 	</view>
@@ -161,7 +161,7 @@
 			flex-direction: column;
 
 			.title {
-				margin-top: 8rpx;
+				margin-top: 20rpx;
 				font-size: 28rpx;
 				color: #2b2f33;
 				line-height: 40rpx;

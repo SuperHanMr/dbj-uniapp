@@ -23,7 +23,7 @@
       <uni-swipe-action v-if="listArr.length>0">
         <uni-swipe-action-item v-for="(goodsItem,goodsIndex) in listArr" :key="goodsIndex" :right-options="options">
           <view class="goodsItem" @click="toDetails(goodsItem.product.skuId)">
-            <image :src="goodsItem.product.skuImage + '?x-oss-process=image/resize,m_lfit,w_400,h_400' "
+            <image :src="goodsItem.product.spuImage + '?x-oss-process=image/resize,m_lfit,w_400,h_400' "
               class="goodsItemImg"></image>
             <view class="goodsInfo">
               <view class="goodsDesc">

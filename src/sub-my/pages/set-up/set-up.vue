@@ -106,6 +106,7 @@
 							userInfo: {},
 							token: "",
 							openId: "",
+							shareId: "",
 							city: "",
 							houses: [],
 							tim: null,

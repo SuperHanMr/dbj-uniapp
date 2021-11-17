@@ -1,5 +1,5 @@
 <template>
-  <view class="person-evaluate person-content-item"  v-if="!(isGrab&&evaluate.list.length==0)">
+  <view class="person-evaluate person-content-item"  v-if="evaluate.list.length!==0">
     <view class="title">对Ta的评价</view>
     <view class="" v-if="evaluate.list.length>0">
       <personEvaliateItem class="person-item" :last='index===evaluate.list.length-1' v-for="(item,index) in evaluate.list" :item='item' :key='item.id'></personEvaliateItem>

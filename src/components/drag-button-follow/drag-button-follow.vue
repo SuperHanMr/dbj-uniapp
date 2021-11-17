@@ -1,5 +1,6 @@
 <template>
-  <view <!-- #ifndef MP-WEIXIN -->
+  <view 
+    <!-- #ifndef MP-WEIXIN -->
     :style="{
     transform: `translate(${offsetX}px, ${offsetY}px)`,
     MsTransform: `translate(${offsetX}px, ${offsetY}px)`,
@@ -18,15 +19,15 @@
     @touchstart="touchstart"
     @touchend="touchend"
     >
-    <view class="white-bg" v-if="!moveHidden&&endLeft">
-          
+    <view class="white-bg" v-if="endLeft" @click.stop="click" :class="{'end-left':endLeft,'active-left':move}">
+          <view>请查看新消息</view>
         </view>
-    <view class="white-circle" :class="{'left-style':endLeft}">
+    <view class="white-circle" :class="{'left-style':endLeft}" >
       <image src="https://ali-image.dabanjia.com/static/mp/dabanjia/images/decorate/decorate_msg.png" class="image-icon"></image>
       <text class="tip">{{num}}</text>
     </view>
-    <view class="white-bg" v-if="!moveHidden&&endRight">
-          
+    <view class="white-bg" v-if="endRight" @click.stop="click" :class="{'active-right':move}">
+         <view>请查看新消息</view> 
         </view>
 
   </view>
@@ -129,10 +130,11 @@
       },
       touchstart(e) {
         if (!this.drag) return
-        this.move = true
+        
         this.moveHidden = true
       },
       touchmove(e) {
+        this.move = true
         if (!this.drag) return
         if (!this.move) return
         const {
@@ -249,6 +251,12 @@
     right: 0;
     box-shadow: 14rpx 0rpx 32rpx 0rpx rgba(0, 0, 0, 0.08) !important;
   }
+  .active-right{
+    border-radius: 0 40rpx 40rpx 0;
+  }
+  .active-left{
+    border-radius: 40rpx 0 0 40rpx;
+  }
   .white-circle {
     width: 80rpx;
     height: 80rpx;
@@ -264,6 +272,7 @@
     // align-items: center;
     // justify-content: center;
     // left: 28px;
+    z-index: 10;
     .image-icon {
       width: 60rpx;
       height: 60rpx;
@@ -291,13 +300,27 @@
 
     }
   }
-
+  .end-left{
+    padding: 0 42rpx 0 20rpx !important;
+  }
   .white-bg{
     display: inline-block;
-    width: 58rpx;
+    width: 130rpx;
     height: 80rpx;
     background-color: #fff;
     box-shadow: 0 5rpx 10rpx 0 rgba(0, 0, 0, 0.08);
+    box-sizing: border-box;
+    padding: 0 20rpx 0 42rpx;
+    position: relative;
+    font-size: 22rpx;
+    color: #00979e;
+    view{
+      position: absolute;
+      top: 50%;
+      margin-top: -30rpx;
+      width: 68rpx;
+      height: 56rpx;
+    }
     // .gray-bg{
     //   width: 28px;
     //   height: 40px;
