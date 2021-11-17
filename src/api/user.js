@@ -33,9 +33,9 @@ export function getBalance() {
 export function getBillingDetails(params) {
   return request.get(`/wallet/app/customer/query/giftCardAccountFlow`, {params});
 }
-export function getTwice(params) {
-  return request.get(`/market/app/activity/eligibility`, {params});
-}
 export function getActivity(params) {
   return request.get(`/market/app/activity/list`, {params});
+}
+export function createCardOrder(params) {
+	return request.post(`/order-center/app/order/createCardOrder`, params)
 }

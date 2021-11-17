@@ -20,7 +20,7 @@
 						</view>
 					</view>
 					<view class="right">
-						<view class="num price-font">{{(item.transferInoutType === 1? '+': '-')+item.amount}}</view>
+						<view class="num price-font">{{(item.transferInoutType === 1? '+': '-')+(item.amount/100)}}</view>
 						<view class="date">{{item.createTime|formatDate('YYYY/MM/DD HH:mm')}}</view>
 					</view>
 				</view>

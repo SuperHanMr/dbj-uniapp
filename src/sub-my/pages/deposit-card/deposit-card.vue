@@ -1,91 +1,103 @@
 <template>
 	<scroll-view scroll-y="true" class="cardWrap">
-		<view class="header">
-			<view class="text">余额 (元)</view>
-			<view class="balance price-font">
-				<view>¥</view>
-				<view class="int">{{(amount/100).toFixed(2).split('.')[0]}}</view>
-				<view>.{{(amount/100).toFixed(2).split('.')[1]}}</view>
-			</view>
-			<view class="details" @click="toBillingDetails">账单明细</view>
-		</view>
-		<!-- <view class="activity">
-			<view class="top">
-				<view class="title">施工活动</view>
-				<view class="rules">
-					<view class="text">活动规则</view>
-					<view class="icon"></view>
+		<view class="wrap">
+			<view class="header">
+				<view class="text">余额 (元)</view>
+				<view class="balance price-font">
+					<view>¥</view>
+					<view class="int">{{(balance/100).toFixed(2).split('.')[0]}}</view>
+					<view>.{{(balance/100).toFixed(2).split('.')[1]}}</view>
 				</view>
+				<view class="bill" @click="toBillingDetails">账单明细</view>
 			</view>
-			<view class="date">活动时间：2021年11月12日-2021年11月13日</view>
-			<view class="banner"></view>
-			<view class="main">
-				<view class="prePay" :class="{'active': isChoose}" @click="chooseOne">
-					<view class="icon" v-if="isChoose"></view>
-					<view class="numWrap" :class="{'active': isChoose}">
-						<view class="text">充</view>
-						<view>¥</view>
-						<view class="num price-font">10000</view>
+			<!-- <view class="activity">
+				<view class="top">
+					<view class="title">施工活动</view>
+					<view class="rules">
+						<view class="text">活动规则</view>
+						<view class="icon"></view>
+					</view>
+				</view>
+				<view class="date">活动时间：2021年11月12日-2021年11月13日</view>
+				<view class="banner"></view>
+				<view class="main">
+					<view class="prePay" :class="{'active': isChoose}" @click="chooseOne">
+						<view class="icon" v-if="isChoose"></view>
+						<view class="numWrap" :class="{'active': isChoose}">
+							<view class="text">充</view>
+							<view>¥</view>
+							<view class="num price-font">10000</view>
+						</view>
+					</view>
+				</view>
+			</view> -->
+			<view class="noList" v-if="noList">
+				<image src="http://dbj.dragonn.top/static/mp/dabanjia/images/my/img_sys_city.png"></image>
+				<view class="tit">敬请期待</view>
+				<view class="txt">您所在的城市暂无储值卡活动</view>
+			</view>
+			<view class="activity" v-else
+				:class="{'minHeight': !item.activityImage}"
+				v-for="(item,index) in list" :key="item.activityId">
+				<view class="top">
+					<view class="title">{{item.activityName}}</view>
+					<view class="rules">
+						<view class="text">活动规则</view>
+						<image src="http://dbj.dragonn.top/static/mp/dabanjia/images/my/ic_more.png" class="icon"></image>
+					</view>
+				</view>
+				<view class="date">活动时间：{{item.activityStartTime}}-{{item.activityEndTime}}</view>
+				<image class="banner" :src="item.activityImage" v-if="item.activityImage"></image>
+				<view class="main">
+					<view class="prePay"
+						:class="{'active': amount.isChecked,'cannot': !item.eligibility}"
+						v-for="(amount,idx) in item.detailDTOList"
+						:key="amount.detailId"
+						@click="chooseOne(amount.detailId,item.eligibility)">
+						<image src="http://dbj.dragonn.top/static/mp/dabanjia/images/my/ic_choice.png"
+							class="icon" v-if="amount.isChecked"></image>
+						<view class="numWrap" :class="{'active': amount.isChecked,'cannot': !item.eligibility}">
+							<view class="text">充</view>
+							<view>¥</view>
+							<view class="num price-font">{{amount.rechargeAmount/100}}</view>
+						</view>
 					</view>
 				</view>
 			</view>
-		</view> -->
-		<view class="activity" :class="{'minHeight': !item.activityImage}"
-			v-for="(item,index) in list" :key="item.activityId">
-			<view class="top">
-				<view class="title">{{item.activityName}}</view>
-				<view class="rules">
-					<view class="text">活动规则</view>
-					<view class="icon"></view>
+			<view class="buyWrap" v-if="showBuyBtn">
+				<view class="button" @click="buyNow">立即购买</view>
+				<view class="explain" @click="toRules">购买即同意
+					<text>《打扮家储值卡使用规则》</text>
 				</view>
-			</view>
-			<view class="date">活动时间：{{item.activityStartTime}}-{{item.activityEndTime}}</view>
-			<image class="banner" :src="item.activityImage" v-if="item.activityImage"></image>
-			<view class="main">
-				<view class="prePay"
-					:class="{'active': amount.isChecked}"
-					v-for="(amount,idx) in item.detailDTOList"
-					:key="amount.detailId"
-					@click="chooseOne(item.activityId,amount.detailId)">
-					<view class="icon" v-if="amount.isChecked"></view>
-					<view class="numWrap" :class="{'active': amount.isChecked}">
-						<view class="text">充</view>
-						<view>¥</view>
-						<view class="num price-font">{{amount.rechargeAmount/100}}</view>
-					</view>
-				</view>
-			</view>
-		</view>
-		<view class="buyWrap">
-			<view class="button">立即购买</view>
-			<view class="explain">购买即同意
-				<text>《打扮家储值卡使用规则》</text>
 			</view>
 		</view>
 	</scroll-view>
 </template>
 
 <script>
-	import {getBalance,getTwice,getActivity} from "../../../api/user.js"
+	import {getBalance,getActivity,createCardOrder} from "../../../api/user.js"
 	export default {
 		data(){
 			return {
 				cityId: 0,
-				amount: 0,
+				balance: 0,
 				list: [],
-				isChoose: false
+				isChoose: false,
+				noList: false,
+				showBuyBtn: true,
+				detailId: 0
 			}
 		},
 		onShow() {
 			this.cityId = getApp().globalData.currentHouse.cityId;
-			console.log(this.areaId);
+			console.log(this.cityId);
 		},
 		mounted() {
 			getBalance().then(data => {
 				if(data == null){
 					data = 0
 				}
-				this.amount = data
+				this.balance = data
 				console.log(data)
 			})
 			this.requestPage()
@@ -96,8 +108,14 @@
 					url: "/sub-my/pages/deposit-card/billing-details"
 				})
 			},
-			chooseOne(activityId,detailId){
+			toRules(){
+				uni.navigateTo({
+					url: "/sub-my/pages/deposit-card/activity-rules"
+				})
+			},
+			chooseOne(detailId,eligibility){
 				this.isChoose = !this.isChoose
+				if(!eligibility)return
 				this.list.map(item => {
 					item.detailDTOList.map(ele => {
 						if(detailId === ele.detailId){
@@ -109,18 +127,40 @@
 					})
 					return item
 				})
-				let params = {activityId,detailId}
-				getTwice(params).then(data => {
-					if(!data){
-						uni.showToast({
-							title: "您已参加过此活动",
-							icon: "none",
-							duration: 2000
-						})
-						console.log(data)
-					}
-				})
-				
+				this.detailId = detailId
+			},
+			buyNow(){
+				const openId = getApp().globalData.openId;
+				createCardOrder({
+					activityDetailId: this.detailId,
+					payType: 1, //支付类型  1微信支付
+					openid: openId,
+					sourceId: 100,//订单来源渠道 100小程序
+				}).then(e => {
+					const payInfo = e.wechatPayJsapi;
+					const id = e.id
+					uni.requestPayment({
+						provider: "wxpay",
+						...payInfo,
+						success(res) {
+							uni.showToast({
+								title: "支付成功！",
+								icon: "none",
+								duration: 1000,
+							});
+							uni.redirectTo({
+								url: `/sub-classify/pages/pay-order/pay-success?orderId=${id}`,
+							});
+						},
+						fail(e) {
+							uni.showToast({
+								title: "支付失败",
+								icon: "none",
+								duration: 2000,
+							});
+						},
+					});		
+				});
 			},
 			requestPage(){
 				let params = {
@@ -128,18 +168,23 @@
 				}
 				getActivity(params).then(data => {
 					console.log(data)
-					if(!data.length)return
+					if(!data.length){
+						this.noList = true
+						this.showBuyBtn = false
+					}
+					if( data.every(i=>!i.eligibility)){
+						this.showBuyBtn = false
+					}
 					this.list = data
 					this.list.map(item => {
 						item.detailDTOList.map(ele => {
 							ele.isChecked = false
 							return ele
 						})
-						if(item.detailDTOList.length){
+						if(item.eligibility && item.detailDTOList.length){
 							this.$set(item.detailDTOList[0],'isChecked',true)
-							this.$nextTick(() => {
-								item.detailDTOList[0].isChecked = true
-							})
+							// item.detailDTOList[0].isChecked = true
+							this.detailId = item.detailDTOList[0].detailId
 						}
 						return item
 					})
@@ -152,10 +197,14 @@
 <style scoped>
 	.cardWrap{
 		width: 750rpx;
-		height: 2000rpx;
+		height: 100%;
 		background-image: url('http://dbj.dragonn.top/static/mp/dabanjia/images/my/bg.png');
 		background-repeat: no-repeat;
 		background-size: cover;
+		background-attachment: fixed;
+	}
+	.wrap{
+		height: 2000rpx;
 	}
 	.header{
 		width: 702rpx;
@@ -195,7 +244,7 @@
 	.header .balance .int{
 		font-size: 56rpx;
 	}
-	.header .details{
+	.header .bill{
 		width: 128rpx;
 		height: 50rpx;
 		margin-left: 48rpx;
@@ -208,28 +257,49 @@
 		line-height: 50rpx;
 		color: #BC722D;
 	}
-	
+	.noList{
+		height: 750rpx;
+		margin: 24rpx 24rpx 408rpx;
+		background: #FFFFFF;
+		border-radius: 16rpx;
+	}
+	.noList image{
+		width: 400rpx;
+		height: 400rpx;
+		margin: 0 150rpx;
+		padding-top: 146rpx;
+		display: block;
+	}
+	.noList .tit{
+		margin-left: 286rpx;
+		font-size: 32rpx;
+		color: #333333;
+	}
+	.noList .txt{
+		margin-left: 196rpx;
+		font-size: 24rpx;
+		color: #999999;
+	}
 	.activity{
 		width: 351px;
-		height: 338px;
+		/* height: 338px; */
 		margin: 24rpx 24rpx 0;
 		background: #FFFFFF;
 		border-radius: 16rpx;
 	}
-	.activity.minHeight{
+	/* .activity.minHeight{
 		height: 206px;
-	}
+	} */
 	.top{
 		width: 654rpx;
 		height: 50rpx;
-		padding-top: 24rpx;
-		margin-left: 24rpx;
+		padding: 24rpx 24rpx 4rpx;
 		display: flex;
 		justify-content: space-between;
 		align-items: center;
 	}
 	.top .title{
-		max-width: 144rpx;
+		max-width: 65%;
 		text-overflow: ellipsis;
 		overflow: hidden;
 		white-space: nowrap;
@@ -240,6 +310,11 @@
 	}
 	.top .rules{
 		display: flex;
+	}
+	.top .rules .icon{
+		width: 32rpx;
+		height: 32rpx;
+		display: block;
 	}
 	.top .rules .text{
 		width: 88rpx;
@@ -259,44 +334,59 @@
 		width: 654rpx;
 		height: 240rpx;
 		margin: 24rpx;
+		margin-bottom: 0;
 		border-radius: 16rpx;
 		box-shadow: 0px 4px 12px rgba(190, 102, 21, 0.15);
 	}
 	.main{
 		margin: 24rpx;
+		padding-bottom: 24rpx;
+		margin-bottom: 0;
+		display: flex;
+		justify-content: space-between;
+		flex-wrap: wrap;
 	}
 	.main .prePay{
 		width: 318rpx;
 		height: 120rpx;
 		display: flex;
-		justify-content: center;
 		align-items: center;
 		background: #FFFDF8;
 		border: 1rpx solid #FFE1CD;
 		border-radius: 16rpx;
 	}
 	.main .prePay.active{
-		justify-content: normal;
 		width: 320rpx;
 		border: none;
 		background: linear-gradient(277.39deg, #FFA14A 0%, #FFC700 100%);
+	}
+	.main .prePay.cannot{
+		width: 320rpx;
+		border: none;
+		background: #F7F7F7;
 	}
 	.prePay .icon{
 		width: 32rpx;
 		height: 32rpx;
 		background: #fff;
 		border-radius: 50%;
-		margin: 44rpx 24rpx;
+		margin-left: 24rpx;
+		margin-right: 16rpx;
 	}
 	.prePay .numWrap{
 		width: 158rpx;
 		height: 50rpx;
+		margin-left: 72rpx;
 		display: flex;
 		align-items: center;
 		color: #CB985B;
 	}
 	.prePay .numWrap.active{
+		margin-left: 0;
 		color: #fff;
+	}
+	.prePay .numWrap.cannot{
+		color: #D1D1D1;
 	}
 	.numWrap .text{
 		font-size: 28rpx;
