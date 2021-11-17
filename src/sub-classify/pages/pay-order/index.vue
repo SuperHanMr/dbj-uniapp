@@ -200,7 +200,7 @@
   } from '../../../api/classify.js'
   import orderToast from "./order-toast.vue"
   import datePicker from "./date-picker.vue"
-  // import expensesToast from "./expenses-toast.vue" 
+  // import expensesToast from "./expenses-toast.vue"
   import safeguardToast from "./safeguard-toast.vue"
   export default {
     components: {
@@ -285,6 +285,9 @@
         })
       } else {
         this.isShow = true
+      }
+      if (!getApp().globalData.openId) { //确保拿到openId，否则无法支付
+        getApp().globalData.openId = uni.getStorageSync("openId");
       }
     },
     onUnload() {
