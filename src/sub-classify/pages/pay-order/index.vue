@@ -127,7 +127,7 @@
 				<text>总押金</text>
 				<text>¥{{orderInfo.totalDeposit}}</text>
 			</view>
-			<view class="pay-way" style="justify-content:center" @click="clickCard">
+			<view v-if="haveCard" class="pay-way" style="justify-content:center" @click="clickCard">
 				<image class="card-img"
 					src="https://ali-image.dabanjia.com/static/mp/dabanjia/images/classify/ic_card.png" mode="">
 				</image>
@@ -241,7 +241,7 @@
 					<view class="pay-diaolog-alert">
 						金额以实际金额为准，若储值卡余额不足将用微信支付剩余部分
 					</view>
-					<view class="pay-diaolog-btn">
+					<view class="pay-diaolog-btn" @click="payOrder">
 						确认支付
 					</view>
 				</view>
@@ -256,6 +256,9 @@
 		getDetailInfo,
 		payOrder,
 	} from "../../../api/classify.js";
+	import {
+		getBalance
+	} from "../../../api/user.js"
 	import orderToast from "./order-toast.vue";
 	import datePicker from "./date-picker.vue";
 	// import expensesToast from "./expenses-toast.vue"
@@ -389,6 +392,13 @@
 			} else {
 				this.isShow = true;
 			}
+			this.haveCard = false;
+			getBalance().then(e => {
+				if (e != null) {
+					this.haveCard = true;
+					this.cardBalance = e
+				}
+			})
 		},
 		onUnload() {
 			uni.removeStorageSync("houseListChooseId");
@@ -614,6 +624,9 @@
 					this.$refs.payDialog.open();
 					return;
 				}
+				this.payOrder();
+			},
+			payOrder() {
 				let details = [];
 				this.orderDetails.map((v, k) => {
 					details.push(v.orderDetailItem);
@@ -637,28 +650,39 @@
 					remarks: this.remarks, //"string //备注",
 					orderName: "", //"string //订单名称 可为空",
 					details: details,
+					isCardPay: this.cardClick
 				};
 				payOrder(params).then((data) => {
 					const {
-						wechatPayJsapi
+						wechatPayJsapi,
+						cardPayComplete
 					} = data;
-					uni.requestPayment({
-						provider: "wxpay",
-						...wechatPayJsapi,
-						success(res) {
-							console.log("付款成功", res);
-							uni.navigateTo({
-								url: "/sub-classify/pages/pay-order/pay-success?orderId=" + data
-									.id,
-							});
-						},
-						fail(e) {
-							console.log(e, "取消付款");
-							uni.navigateTo({
-								url: `/sub-my/pages/my-order/order-wait-pay/order-wait-pay?orderNo=${data.id}&from=waitPayOrder`,
-							});
-						},
-					});
+					if (!cardPayComplete) {
+						uni.requestPayment({
+							provider: "wxpay",
+							...wechatPayJsapi,
+							success(res) {
+								console.log("付款成功", res);
+								uni.navigateTo({
+									url: "/sub-classify/pages/pay-order/pay-success?orderId=" +
+										data
+										.id,
+								});
+							},
+							fail(e) {
+								console.log(e, "取消付款");
+								uni.navigateTo({
+									url: `/sub-my/pages/my-order/order-wait-pay/order-wait-pay?orderNo=${data.id}&from=waitPayOrder`,
+								});
+							},
+						});
+					} else {
+						uni.navigateTo({
+							url: "/sub-classify/pages/pay-order/pay-success?orderId=" +
+								data
+								.id,
+						});
+					}
 				});
 			},
 			cancelGoodPop() {

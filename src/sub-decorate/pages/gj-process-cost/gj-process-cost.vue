@@ -91,7 +91,7 @@
 				<view class="pay-diaolog-alert">
 					金额以实际金额为准，若储值卡余额不足将用微信支付剩余部分
 				</view>
-				<view class="pay-diaolog-btn">
+				<view class="pay-diaolog-btn" @click="payOrder()">
 					确认支付
 				</view>
 			</view>
@@ -105,6 +105,9 @@
 	import Payment from "../../components/payment/payment.vue";
 	import ChangeLevel from "../../components/change-level/change-level.vue";
 	import NoData from "../../components/no-data/no-data.vue";
+	import {
+		getBalance
+	} from '../../../api/user.js'
 	import {
 		LEVEL
 	} from "../../../utils/dict.js";
@@ -143,6 +146,13 @@
 			this.getDataList();
 		},
 		onShow() {
+			this.haveCard = false;
+			getBalance().then(e => {
+				if (e != null) {
+					this.haveCard = true;
+					this.cardBalance = e
+				}
+			})
 			if (this.selectedMaterialData?.categoryId) {
 				const {
 					origin,
@@ -610,59 +620,8 @@
 						this.$refs.payDialog.open();
 						return;
 					}
-					let params = {
-						payType: 1, //"int //支付方式  1微信支付",
-						openid: getApp().globalData.openId, //"string //微信openid 小程序支付用 app支付不传或传空",
-						projectId: Number(this.msg.projectId), //"long //项目id  非必须 默认0",
-						customerId: Number(this.msg.customerId), //"long //业主id  非必须 默认0",
-						estateId: Number(this.msg.estateId), //"long //房产id   非必须 默认0",
-						total: this.countPrice, //"int //总计",
-						remarks: "", //"string //备注",
-						orderName: this.title || "工序费", //"string //订单名称",
-						details: [],
-					};
-					// roleType 7工人，10管家
-					let roleType = this.msg.serviceType == 5 ? 10 : 7;
-					if (this.msg.obtainType != 2) {
-						this.shopping?.artificial?.forEach((it) => {
-							params.details.push({
-								// supplierType: it.supplierType,
-								roleType,
-								relationId: it.id, //"long //实体id",
-								type: 2, //"int //实体类型   1材料  2服务   3专项付款",
-								businessType: it.categoryTypeId, //"int //业务类型",
-								workType: it.workType, //"int //工种类型",
-								level: this.artificialLevel, //"int //等级  0中级  1高级 2特级  3钻石",
-								storeId: it.storeId, //"long //店铺id",
-								storeType: 0, //"int //店铺类型 0普通 1设计师",
-								number: it.count, //"double //购买数量",
-								params: {
-									skuRelation: this.skuRelation,
-									serviceType: this.msg.serviceType,
-								}, //string //与订单无关的参数 如上门时间 doorTime"
-							});
-						});
-					}
-					if (this.msg.obtainType != 1) {
-						this.shopping?.material?.forEach((it) => {
-							params.details.push({
-								// supplierType: it.supplierType,
-								relationId: it.id, //"long //实体id",
-								type: 1, //"int //实体类型   1材料  2服务   3专项付款",
-								businessType: 1, //it.categoryTypeId, //"int //业务类型",辅材的businessType固定为1
-								workType: it.workType, //"int //工种类型",
-								// level: 1, //"int //等级  0中级  1高级 2特级  3钻石",
-								storeId: it.storeId, //"long //店铺id",
-								storeType: 0, //"int //店铺类型 0普通 1设计师",
-								number: it.count, //"double //购买数量",
-								params: {
-									skuRelation: this.skuRelation,
-									serviceType: this.msg.serviceType,
-								}, //string //与订单无关的参数 如上门时间 doorTime"
-							});
-						});
-					}
-					this.createOrder(params);
+					this.payOrder()
+
 				} else {
 					uni.showToast({
 						title: "请您先选择人工",
@@ -671,38 +630,102 @@
 					});
 				}
 			},
+			payOrder() {
+				let params = {
+					payType: 1, //"int //支付方式  1微信支付",
+					openid: getApp().globalData.openId, //"string //微信openid 小程序支付用 app支付不传或传空",
+					projectId: Number(this.msg.projectId), //"long //项目id  非必须 默认0",
+					customerId: Number(this.msg.customerId), //"long //业主id  非必须 默认0",
+					estateId: Number(this.msg.estateId), //"long //房产id   非必须 默认0",
+					total: this.countPrice, //"int //总计",
+					remarks: "", //"string //备注",
+					orderName: this.title || "工序费", //"string //订单名称",
+					details: [],
+					isCardPay: this.cardClick
+				};
+				// roleType 7工人，10管家
+				let roleType = this.msg.serviceType == 5 ? 10 : 7;
+				if (this.msg.obtainType != 2) {
+					this.shopping?.artificial?.forEach((it) => {
+						params.details.push({
+							// supplierType: it.supplierType,
+							roleType,
+							relationId: it.id, //"long //实体id",
+							type: 2, //"int //实体类型   1材料  2服务   3专项付款",
+							businessType: it.categoryTypeId, //"int //业务类型",
+							workType: it.workType, //"int //工种类型",
+							level: this.artificialLevel, //"int //等级  0中级  1高级 2特级  3钻石",
+							storeId: it.storeId, //"long //店铺id",
+							storeType: 0, //"int //店铺类型 0普通 1设计师",
+							number: it.count, //"double //购买数量",
+							params: {
+								skuRelation: this.skuRelation,
+								serviceType: this.msg.serviceType,
+							}, //string //与订单无关的参数 如上门时间 doorTime"
+						});
+					});
+				}
+				if (this.msg.obtainType != 1) {
+					this.shopping?.material?.forEach((it) => {
+						params.details.push({
+							// supplierType: it.supplierType,
+							relationId: it.id, //"long //实体id",
+							type: 1, //"int //实体类型   1材料  2服务   3专项付款",
+							businessType: 1, //it.categoryTypeId, //"int //业务类型",辅材的businessType固定为1
+							workType: it.workType, //"int //工种类型",
+							// level: 1, //"int //等级  0中级  1高级 2特级  3钻石",
+							storeId: it.storeId, //"long //店铺id",
+							storeType: 0, //"int //店铺类型 0普通 1设计师",
+							number: it.count, //"double //购买数量",
+							params: {
+								skuRelation: this.skuRelation,
+								serviceType: this.msg.serviceType,
+							}, //string //与订单无关的参数 如上门时间 doorTime"
+						});
+					});
+				}
+				this.createOrder(params);
+			},
 			createOrder(obj) {
 				createOrder(obj).then((data) => {
 					const {
-						wechatPayJsapi
+						wechatPayJsapi,
+						cardPayComplete
 					} = data;
-					uni.requestPayment({
-						provider: "wxpay",
-						...wechatPayJsapi,
-						success(res) {
-							console.log("付款成功", res);
-							uni.switchTab({
-								url: "/pages/decorate/index/index",
-							});
-						},
-						fail(e) {
-							console.log(e);
-							const {
-								errMsg
-							} = e;
-							if (errMsg.indexOf("cancel") !== -1) {
-								uni.navigateTo({
-									url: `/sub-my/pages/my-order/my-order?index=1&firstEntry=true`,
+					if (!cardPayComplete) {
+						uni.requestPayment({
+							provider: "wxpay",
+							...wechatPayJsapi,
+							success(res) {
+								console.log("付款成功", res);
+								uni.switchTab({
+									url: "/pages/decorate/index/index",
 								});
-							} else {
-								uni.showToast({
-									title: "支付失败",
-									icon: "none",
-									duration: 3000,
-								});
-							}
-						},
-					});
+							},
+							fail(e) {
+								console.log(e);
+								const {
+									errMsg
+								} = e;
+								if (errMsg.indexOf("cancel") !== -1) {
+									uni.navigateTo({
+										url: `/sub-my/pages/my-order/my-order?index=1&firstEntry=true`,
+									});
+								} else {
+									uni.showToast({
+										title: "支付失败",
+										icon: "none",
+										duration: 3000,
+									});
+								}
+							},
+						});
+
+					} else {
+						uni.navigateTo({
+							url: `/sub-my/pages/my-order/my-order?index=1&firstEntry=true`,
+						});
+					}
 				});
 			},
 			setLevel(levelObj) {

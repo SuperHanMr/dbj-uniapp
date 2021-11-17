@@ -106,7 +106,7 @@
 				<view class="split-line" />
 			</view>
 
-			<order-price :data="orderInfo" :waitPay="true" :payPrice="payPrice()"/>
+			<order-price :data="orderInfo" :waitPay="true" :payPrice="payPrice()" />
 
 			<!-- <view class="payment-method">
 				<text>支付方式</text>
@@ -115,7 +115,7 @@
 					<text>微信支付</text>
 				</view>
 			</view> -->
-			<view class="pay-way" style="justify-content:center" @click="clickCard">
+			<view v-if="haveCard" class="pay-way" style="justify-content:center" @click="clickCard">
 				<image class="card-img"
 					src="https://ali-image.dabanjia.com/static/mp/dabanjia/images/classify/ic_card.png" mode="">
 				</image>
@@ -188,7 +188,7 @@
 				<view class="pay-diaolog-alert">
 					金额以实际金额为准，若储值卡余额不足将用微信支付剩余部分
 				</view>
-				<view class="pay-diaolog-btn">
+				<view class="pay-diaolog-btn" @click="payOrder()">
 					确认支付
 				</view>
 			</view>
@@ -203,6 +203,9 @@
 		cancelOrder,
 		confirmReceiptOrder,
 	} from "../../../../api/order.js";
+	import {
+		getBalance
+	} from '../../../../api/user.js'
 	export default {
 		data() {
 			return {
@@ -300,10 +303,18 @@
 					timingFunc: 'easeIn'
 				}
 			})
+
 		},
 		onShow() {
 			this.headerTitle = "订单详情"
 			this.orderDetail();
+			this.haveCard = false;
+			getBalance().then(e => {
+				if (e != null) {
+					this.haveCard = true;
+					this.cardBalance = e
+				}
+			})
 		},
 		methods: {
 			closePayDialog() {
@@ -402,13 +413,22 @@
 						this.$refs.payDialog.open();
 						return;
 					}
-					let openId = getApp().globalData.openId;
-					orderPay({
-						orderId: this.orderNo,
-						payType: 1, //支付类型  1微信支付",
-						openid: openId,
-					}).then((e) => {
-						const payInfo = e.wechatPayJsapi;
+					this.payOrder()
+
+				}
+			},
+			payOrder() {
+				let openId = getApp().globalData.openId;
+				orderPay({
+					orderId: this.orderNo,
+					payType: 1, //支付类型  1微信支付",
+					openid: openId,
+					isCardPay: this.cardClick
+				}).then((e) => {
+					const payInfo = e.wechatPayJsapi;
+					const cardPayComplete = e.cardPayComplete
+					if (!cardPayComplete) {
+
 						uni.requestPayment({
 							provider: "wxpay",
 							...payInfo,
@@ -430,10 +450,18 @@
 								});
 							},
 						});
-					});
-				}
+					}else{
+						uni.showToast({
+							title: "支付成功！",
+							icon: "none",
+							duration: 1000,
+						});
+						uni.redirectTo({
+							url: `../../../../sub-classify/pages/pay-order/pay-success?orderId=${this.orderNo}`,
+						});
+					}
+				});
 			},
-
 			formatTime(msTime) {
 				let time = msTime / 1000;
 				let hour = Math.floor(time / 60 / 60);
@@ -468,10 +496,12 @@
 		align-items: center;
 		justify-content: center;
 	}
-	.mrb{
-		
-    margin-bottom: 25rpx;
+
+	.mrb {
+
+		margin-bottom: 25rpx;
 	}
+
 	.selected-img {
 		width: 36rpx;
 		height: 36rpx;
