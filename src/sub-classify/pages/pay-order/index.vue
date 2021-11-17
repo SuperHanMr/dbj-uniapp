@@ -621,7 +621,7 @@
   }
 
   .goods-info .goods-desc {
-    width: 290rpx;
+    width: 260rpx;
     font-size: 28rpx;
     color: #333333;
     line-height: 40rpx;
@@ -633,6 +633,7 @@
     line-clamp: 2;
     -webkit-box-orient: vertical;
     vertical-align: middle;
+    padding-bottom: 2rpx;
   }
 
   .goods-info .goods-desc .goods-type {
@@ -681,7 +682,7 @@
     -webkit-line-clamp: 2;
     line-clamp: 2;
     -webkit-box-orient: vertical;
-    max-width: 300rpx;
+    max-width: 270rpx;
     text-align: left;
   }
 
