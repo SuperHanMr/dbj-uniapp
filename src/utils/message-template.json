@@ -2330,6 +2330,15 @@
       ]
     }
   },
+  "sys_web_confirm_service_staff": {
+    "type": "sys_web_confirm_service_staff",
+    "template": "form",
+    "summary": "已为您确认服务者，${serveTypeName}的服务者为${serverName}",
+    "body": {
+      "title": "${serveTypeName}",
+      "subTitle": "已为您确认服务者，${serveTypeName}的服务者为${serverName}"
+    }
+  },
   "sys_snatch_order_success": {
     "type": "sys_snatch_order_success",
     "template": "form",
