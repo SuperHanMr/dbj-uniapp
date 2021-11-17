@@ -76,7 +76,7 @@
 						<text>{{item2.value}}</text>
 					</view>
 					<view class="right">
-						<text v-if="item2.key==1">3823.32元</text>
+						<text v-if="item2.key==1 && storeValueCard !== null">{{ Number(storeValueCard)/100 }} 元</text>
 						<image src="../../../static/order/images/arraw_right_@2x.png" mode="" />
 					</view>
 				</view>
@@ -88,12 +88,8 @@
 </template>
 
 <script>
-	import {
-		uniBadge
-	} from "@dcloudio/uni-ui";
-	import {
-		queryToBePaidOrderNum
-	} from "../../../api/order.js";
+	import { uniBadge } from "@dcloudio/uni-ui";
+	import { queryToBePaidOrderNum, queryStoreValueCard } from "../../../api/order.js";
 	export default {
 		components: {
 			uniBadge,
@@ -101,6 +97,7 @@
 		data() {
 			return {
 				waitPayOrderNum: "",
+				storeValueCard:null,
 				isLogin: false,
 				userName: "用户名称",
 				userInfo: {},
@@ -186,9 +183,13 @@
 				this.userInfo = getApp().globalData.userInfo;
 				this.userName = this.userInfo.name;
 				queryToBePaidOrderNum().then((e) => {
-					// console.log("!!!!!!!!!!!!! data=", e);
 					this.waitPayOrderNum = e ? e : 0;
 				});
+				// queryStoreValueCard().then(data=>{
+				// 	console.log("!!!!!!!!!!!!! data=", data);
+				// 	if(data === null) data= null
+				// 	this.storeValueCard=data
+				// })
 			}
 			this.$store.dispatch("updateTabBarBadge");
 		},
