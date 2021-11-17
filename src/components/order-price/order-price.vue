@@ -115,7 +115,7 @@
         <text style="color: #FF3347;" class="price-font"  v-if="payPrice">
           <text>￥</text>
           <text style="font-size: 40rpx;">{{handlePrice(payPrice)[0]}}.</text>
-          <text>{{handlePrice(payPrice)[1]}}.</text>
+          <text>{{handlePrice(payPrice)[1]}}</text>
         </text>
 				<text style="color: #FF3347;" class="price-font"  v-else>
 				  <text>￥</text>
