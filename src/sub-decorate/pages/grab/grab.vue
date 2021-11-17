@@ -158,7 +158,7 @@
     },
     onLoad(e){
       this.id = getApp().globalData.decorateMsg.serveId
-      this.personId = getApp().globalData.decorateMsg.serverId||7573
+      this.personId = getApp().globalData.decorateMsg.serverId||7248
       this.getGrabDetail()
       const menuButtonInfo = uni.getMenuButtonBoundingClientRect();
       this.systemBottom = menuButtonInfo.bottom + 'rpx'; 
