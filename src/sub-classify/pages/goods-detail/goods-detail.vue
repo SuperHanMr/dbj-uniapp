@@ -4,8 +4,7 @@
       :src="baseUrl + '/app-pages/goods-detail/index.html?token=' + searchToken + '#wx-goodsId='+ goodId + '&wx-houseId='
         + houseId + '&wx-defaultHouseId=' + defaultHouseInfo.id  + '&wx-defaultProvinceId=' + defaultHouseInfo.provinceId
         + '&wx-defaultCityId=' + defaultHouseInfo.cityId + '&wx-defaultAreaId=' + defaultHouseInfo.areaId 
-        + '&wx-defaultLocationName=' + defaultHouseInfo.name  + '&wx-isDisabled=' + isDisabled
-        + '&wx-token=' + hashToken + '&wx-deviceId=' + deviceId + '&wx-from=' + from + '&shareAreaId=' + shareAreaId + '&shareAreaName=' + shareAreaName">
+        + '&wx-defaultLocationName=' + defaultHouseInfo.name  + '&wx-token=' + hashToken + '&wx-deviceId=' + deviceId + '&from=' + from + '&shareAreaId=' + shareAreaId + '&shareAreaName=' + shareAreaName">
     </web-view>
   </view>
 </template>
@@ -20,7 +19,6 @@
         goodId: '',
         defaultHouseId: '',
         houseId: '',
-        isDisabled: false,
         searchToken: '',
         hashToken: '',
         defaultHouseInfo: '',
@@ -33,9 +31,6 @@
     onLoad(e) {
       this.pageOpts = {...e};
       uni.showShareMenu(); // 显示分享按钮
-      if (e.isDisabled === '0') { // 购物车跳转
-        this.isDisabled = false
-      }
       this.shareAreaId = e.shareAreaId
       this.shareAreaName = e.shareAreaName
       if (e.q) {
