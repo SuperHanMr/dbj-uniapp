@@ -210,6 +210,10 @@ export default {
   onShow() {
 		this.headerTitle="订单详情"
     this.orderDetail();
+
+    if (!getApp().globalData.openId) { //确保拿到openId，否则无法支付
+      getApp().globalData.openId = uni.getStorageSync("openId");
+    }
   },
   methods: {
     orderDetail() {

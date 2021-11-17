@@ -67,13 +67,13 @@
 									@click="goToDetail(item)">
 									<view class="product-img">
 										<scroll-view scroll-x style="width: 100%; white-space: nowrap;">
-											<image 
-												v-for="item2 in handleImage(item.details)" 
-												:key="item2" 
+											<image
+												v-for="item2 in handleImage(item.details)"
+												:key="item2"
 												:src="`${item2}?x-oss-process=image/resize,m_mfit,w_68,h_68`"
 												mode=""
 											/>
-											
+
 										</scroll-view>
 									</view>
 									<view class="total-price">
@@ -281,6 +281,9 @@
 			this.lastId[this.currentIndex] = -1;
 			this.handleReset();
 			this.getOrderList();
+			if (!getApp().globalData.openId) { //确保拿到openId，否则无法支付
+				getApp().globalData.openId = uni.getStorageSync("openId");
+			}
 		},
 		onUnload() {
 			uni.switchTab({
@@ -405,7 +408,7 @@
 
 			//去店铺首页
 			gotoShop(item) {
-				if(item.orderName && item.orderStatus == 0 ) return 
+				if(item.orderName && item.orderStatus == 0 ) return
 				console.log("this.storeId=", item.storeId, "this.areaId=", this.areaId);
 				uni.navigateTo({
 					url: `../../../sub-classify/pages/shops/shops?storeId=${item.storeId}&areaId=${this.areaId}`,

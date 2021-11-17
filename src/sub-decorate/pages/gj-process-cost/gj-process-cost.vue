@@ -114,6 +114,9 @@
           title: this.title
         })
       }
+      if (!getApp().globalData.openId) { //确保拿到openId，否则无法支付
+        getApp().globalData.openId = uni.getStorageSync("openId");
+      }
     },
     data() {
       return {
