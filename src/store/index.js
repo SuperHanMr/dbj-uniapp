@@ -21,7 +21,8 @@ export default new Vuex.Store({
     updateTabBarBadge(context) {
       // 设置消息未读数
       let totalCount = context.getters.totalUnreadCount;
-      let decorateCount = getApp().globalData.decorateMsg
+      let decorateCount = getApp().globalData.decorateMsgNum
+      // console.log(decorateCount,"<><><><><><><><>")
       if (decorateCount > 0) {
         uni.setTabBarBadge({
           index: 2,

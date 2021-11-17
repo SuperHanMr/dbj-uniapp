@@ -106,11 +106,6 @@ export default {
   },
   methods: {
     watchMsg() {
-      console.log(
-        "监听房屋消息",
-        "??????????????",
-        this.globalData.currentHouse
-      );
       if (!this.globalData.token) {
         return;
       }
