@@ -37,8 +37,12 @@
 						<image v-if="item.type !== 5" src="../../../static/ic_more.svg" mode="" />
 					</view>
 					<view v-for="item2 in item.details" :key="item2.id">
-						<order-item v-if="item2.type !==5" :orderStatus="1" :dataList="item2"
-							@handleDetail="productDetail(item2)" />
+						<order-item 
+							v-if="item2.type !==5" 
+							:dataList="item2"
+							:orderStatus="1" 
+							@handleDetail="productDetail(item2)" 
+						/>
 						<store-calue-card-item v-else />
 
 					</view>
@@ -106,7 +110,7 @@
 				<view class="split-line" />
 			</view>
 
-			<order-price :data="orderInfo" :waitPay="true" :payPrice="payPrice()" />
+			<order-price :data="orderInfo" :waitPay="true" :payPrice="payPrice" />
 
 			<!-- <view class="payment-method">
 				<text>支付方式</text>
@@ -268,7 +272,6 @@
 					console.log(this.totalPrice)
 					return this.totalPrice
 				}
-
 			}
 		},
 		mounted(e) {
@@ -389,14 +392,20 @@
 			},
 			cancleConfirm() {
 				//点击确定后订单会被取消且该订单会被移入已关闭订单中
-				cancelOrder({
-					id: this.orderNo,
-				}).then((e) => {
+				cancelOrder({id: this.orderNo})
+				.then((e) => {
 					this.$refs.cancleOrder.close();
 					uni.redirectTo({
 						url: `../order-failed/order-failed?type=close&id=${this.orderNo}&from=waitPay`,
 					});
-				});
+				})
+				.catch(()=>{
+					uni.showToast({
+						title:"取消订单失败,请重试",
+						icon:"none",
+						duration:2000,
+					})
+				})
 			},
 
 			//去支付
