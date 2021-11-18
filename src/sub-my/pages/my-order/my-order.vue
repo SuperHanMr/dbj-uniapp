@@ -498,7 +498,7 @@
 									this.getOrderList();
 								}, 1000);
 							},
-							fail:()=>{
+							fail:(e)=>{
 								uni.showToast({
 									title: "支付失败！",
 									icon: "none",
@@ -507,6 +507,7 @@
                 log({
                   type: "wx-pay-fail",
                   page: "my-order",
+                  data: e,
                   openId: getApp().globalData.openId,
                   openIdLocal: uni.getStorageSync("openId")
                 });

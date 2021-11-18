@@ -523,7 +523,7 @@
               log({
                 type: "wx-pay-fail",
                 page: "pay-order/index",
-                data: params,
+                data: e,
                 openId: getApp().globalData.openId,
                 openIdLocal: uni.getStorageSync("openId")
               });

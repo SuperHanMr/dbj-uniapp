@@ -656,7 +656,7 @@
                 log({
                   type: "wx-pay-fail",
                   page: "no-house-decorate",
-                  data: obj,
+                  data: e,
                   openId: getApp().globalData.openId,
                   openIdLocal: uni.getStorageSync("openId")
                 });

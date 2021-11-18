@@ -328,6 +328,7 @@ export default {
               log({
                 type: "wx-pay-fail",
                 page: "order-wait-pay",
+                data: e,
                 openId: getApp().globalData.openId,
                 openIdLocal: uni.getStorageSync("openId")
               });

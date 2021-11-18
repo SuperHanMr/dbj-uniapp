@@ -573,7 +573,7 @@
                 log({
                   type: "wx-pay-fail",
                   page: "gj-process-cost",
-                  data: obj,
+                  data: e,
                   openId: getApp().globalData.openId,
                   openIdLocal: uni.getStorageSync("openId")
                 });

@@ -150,6 +150,7 @@
                 log({
                   type: "wx-pay-fail",
                   page: "require-pay",
+                  data: e,
                   openId: getApp().globalData.openId,
                   openIdLocal: uni.getStorageSync("openId")
                 });

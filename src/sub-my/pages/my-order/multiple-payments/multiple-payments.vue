@@ -171,7 +171,7 @@
               log({
                 type: "wx-pay-fail",
                 page: "multiple-payments",
-                data: params,
+                data: e,
                 openId: getApp().globalData.openId,
                 openIdLocal: uni.getStorageSync("openId")
               });
