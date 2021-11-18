@@ -98,8 +98,7 @@ instance.interceptors.response.use(
 		if (res.data.code !== 1) {
 			return Promise.reject(res)
 		} else {
-
-			if (res.data && res.data.data) {
+			if (res.data && res.data.data!=null) {
 				return res.data.data;
 			}
 			return null;
