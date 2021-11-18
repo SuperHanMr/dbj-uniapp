@@ -5,6 +5,9 @@
 	import {
 		createTim
 	} from "utils/tim.js";
+	import {
+		getOpenId
+	} from "api/other.js"
 	export default {
 		globalData: {
 			userInfo: {},
@@ -31,11 +34,28 @@
 
 		onLaunch: function() {
 			const userId = uni.getStorageSync("userId");
-			const openId = uni.getStorageSync("openId");
-			if (userId && openId) {
+			let openId = uni.getStorageSync("openId");
+			wx.login({
+				success: (res) => {
+					if (res.code) {
+						//微信登录成功 已拿到code
+						// ...doSomething
+						console.log(res);
+						getOpenId({
+							code: res.code,
+						}).then((e) => {
+							this.globalData.openId = e.openid;
+							uni.setStorageSync("openId", e.openid);
+						});
+					} else {
+						console.log("登录失败！" + res.errMsg);
+					}
+				},
+			});
+
+			if (userId) {
 				let token = uni.getStorageSync("scn");
 				this.globalData.token = token;
-				this.globalData.openId = openId;
 				oauthGomeInfo({
 					hideToast: true,
 					ignoreLogin: true,
