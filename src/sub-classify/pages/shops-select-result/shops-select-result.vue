@@ -19,9 +19,7 @@
       }
     },
     onLoad(e) {
-      console.log(e, "testselect")
       this.storeId = e.storeId,
-        this.houseId = e.houseId
     },
     onShow() {
       if (!this.searchToken) {
