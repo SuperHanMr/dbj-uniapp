@@ -43,6 +43,7 @@
 					</view>
 				</view>
 			</view>
+			<view class="cover" v-if="showBuyBtn"></view>
 			<view class="buyWrap" v-if="showBuyBtn">
 				<view class="button" @click="buyNow">立即购买</view>
 				<view class="explain" @click="toActivityRules">购买即同意
@@ -144,7 +145,7 @@
 								duration: 1000,
 							});
 							uni.redirectTo({
-								url: `/sub-classify/pages/pay-order/pay-success?orderId=${id}`,
+								url: `/sub-classify/pages/pay-order/pay-success?orderId=${id}&from=valueCard`,
 							});
 						},
 						fail(e) {
@@ -447,6 +448,10 @@
 	}
 	.numWrap .num{
 		font-size: 44rpx;
+	}
+	.cover{
+		width: 750rpx;
+		height: 256rpx;
 	}
 	.buyWrap{
 		position: fixed;

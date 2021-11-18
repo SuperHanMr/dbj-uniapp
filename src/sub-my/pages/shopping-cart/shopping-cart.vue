@@ -82,9 +82,9 @@
 										<image v-else class="dec" @click="changeCount(false,shopIndex, goodsIndex)"
 											src="https://ali-image.dabanjia.com/static/mp/dabanjia/images/my/details_pop_subtract_disabled%402x.png">
 										</image>
-										<view class="count"
+										<view class="count" :class="{'max': (+goodsItem.buyCount).toFixed(2).length > 5}"
 											@click="openCount(shopIndex, goodsIndex,goodsItem.minimumOrderQuantity,goodsItem.stepLength,goodsItem.buyCount)">
-											{{goodsItem.buyCount}}
+											{{(+goodsItem.buyCount).toFixed(2)}}
 										</view>
 
 										<image class="inc" @click="changeCount(true, shopIndex,goodsIndex)"
@@ -525,7 +525,7 @@
 				this.showInput = true;
 				this.miniOrder = miniOrder;
 				this.step = step;
-				this.buyNum = buyNum;
+				this.buyNum = (+buyNum).toFixed(2);
 				this.currentShopIndex = shopIndex;
 				this.currentGoodsIndex = goodsIndex;
 			},
@@ -1503,7 +1503,7 @@
 	}
 
 	.goodsInfo .goodsSpec {
-		width: fit-content;
+		width: 388rpx;
 		height: 38rpx;
 		margin-top: 8rpx;
 		background: #fafafa;
@@ -1514,7 +1514,7 @@
 	}
 
 	.goodsInfo .goodsSpec .text {
-		max-width: 340rpx;
+		max-width: 330rpx;
 		margin: 6rpx 12rpx;
 		overflow: hidden;
 		white-space: nowrap;
@@ -1538,7 +1538,7 @@
 	}
 
 	.goodsInfo .foot .goodsPrice {
-		width: fit-content;
+		width: 206rpx;
 		height: 36rpx;
 		color: #ff3347;
 		font-size: 24rpx;
@@ -1560,7 +1560,7 @@
 	}
 
 	.goodsInfo .foot .countCtrl .count {
-		width: 104rpx;
+		width: 76rpx;
 		height: 48rpx;
 		margin: 0 4rpx;
 		background: #f2f2f2;
@@ -1569,6 +1569,11 @@
 		text-align: center;
 		color: #333333;
 		line-height: 48rpx;
+	}
+	.goodsInfo .foot .countCtrl .count.max{
+		display: flex;
+		justify-content: flex-end;
+		overflow: hidden;
 	}
 
 	.goodsInfo .foot .countCtrl .inc {
