@@ -44,14 +44,19 @@
 
       <view class="body1">
         <order-item
+					v-if="refundInfo.type !==5"
           v-for="item in refundInfo.detailAppVOS"
-					v-if="item.type !==5"
           :key="item.id"
           :dataList="item"
           :refundType="true"
           @handleDetail="productDetail(item,'refund')"
         />
-        <store-calue-card-item :showActualPay="true" v-else />
+        <store-calue-card-item 
+					v-else 
+					v-for="item in refundInfo.detailAppVOS"
+					:key="item.id"
+					:dataInfo="item" 
+				/>
 
         <view class="refund-money" v-if="refundInfo.freight || refundInfo.handlingFees">
           <!--运费 -->
