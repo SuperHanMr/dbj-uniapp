@@ -1,13 +1,5 @@
 <template>
   <view class="pay-success">
-    <!--   <custom-navbar opacity="1" :title="title" titleColor="#ffb245" bgcolor="#ffb245">
-    	<template v-slot:back>
-    		<view @click="toBack">
-    			<i class="icon-ic_cancel_white" style="color: white;">
-    			</i>
-    		</view>
-    	</template>
-    </custom-navbar> -->
     <view class="head">
       <view>
         <img src='../../static/image/pay-bg.png' alt="" style='height: 600rpx; width:100%'>
@@ -34,18 +26,14 @@
       }
     },
     onLoad(val) {
-      this.orderId = val.orderId
+      this.orderId = val.orderId;
       this.from = val.from
     },
     methods: {
-      toBack() {
-
-      },
       backHome() {
         uni.switchTab({
           url: '/pages/home/index/index'
-          // });
-        }),
+        })
       },
       toOrderDetail() {
         uni.redirectTo({
@@ -53,6 +41,7 @@
         });
       }
     }
+
   }
 </script>
 
