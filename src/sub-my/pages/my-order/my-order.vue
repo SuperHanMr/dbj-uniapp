@@ -215,6 +215,9 @@
 		cancelOrder,
 		confirmReceiptOrder,
 	} from "@/api/order.js";
+  import {
+    log
+  } from "@/utils/log.js"
 	export default {
 		data() {
 			return {
@@ -501,6 +504,12 @@
 									icon: "none",
 									duration: 1000,
 								});
+                log({
+                  type: "wx-pay-fail",
+                  page: "my-order",
+                  openId: getApp().globalData.openId,
+                  openIdLocal: uni.getStorageSync("openId")
+                });
 							},
 						});
 					});

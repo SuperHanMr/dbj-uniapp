@@ -6,8 +6,12 @@
 		createTim
 	} from "utils/tim.js";
 	import {
-		getOpenId
+		getOpenId,
 	} from "api/other.js";
+  import {
+    setLogId,
+    log
+  } from "utils/log.js"
 	export default {
 		globalData: {
 			userInfo: {},
@@ -36,30 +40,51 @@
 		onLaunch: function() {
 			const userId = uni.getStorageSync("userId");
 			const shareId = uni.getStorageSync("shareId");
+      setLogId(userId + "-" + new Date().getTime());
+      log({
+        type: "wx-launch",
+        version: uni.getAccountInfoSync().miniProgram.version || "develop",
+        userId: userId,
+        shareId: shareId,
+        openId: uni.getStorageSync("openId")
+      });
 			wx.login({
 				success: (res) => {
 					if (res.code) {
 						//微信登录成功 已拿到code
-						// ...doSomething
-						console.log(res);
+            log({
+              type: "wx-login-sucess",
+              userId: userId,
+              data: res
+            });
 						getOpenId({
 							code: res.code,
 						}).then((e) => {
 							this.globalData.openId = e.openid;
 							uni.setStorageSync("openId", e.openid);
+              log({
+                type: "wx-got-openid",
+                userId: userId,
+                openId: getApp().globalData.openId,
+                data: e
+              });
 						});
 					} else {
-						console.log("登录失败！" + res.errMsg);
+            log({
+              type: "wx-login-sucess-no-code",
+              userId: userId,
+              data: res
+            });
 					}
 				},
+        fail: (err) => {
+          log({
+            type: "wx-login-fail",
+            userId: userId,
+            data: err
+          });
+        }
 			});
-			console.log(
-				"onLaunch",
-				"userId:",
-				userId,
-				"shareId:",
-				shareId
-			);
 			if (shareId && !this.globalData.shareId) {
 				this.globalData.shareId = shareId;
 			}

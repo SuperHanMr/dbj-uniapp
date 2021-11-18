@@ -71,6 +71,9 @@
 		requireConfirm,
 		payFreight,
 	} from "../../../api/decorate.js";
+  import {
+    log
+  } from "../../../utils/log.js"
 	export default {
 		data() {
 			return {
@@ -144,6 +147,12 @@
 							},
 							fail(e) {
 								console.log(e);
+                log({
+                  type: "wx-pay-fail",
+                  page: "require-pay",
+                  openId: getApp().globalData.openId,
+                  openIdLocal: uni.getStorageSync("openId")
+                });
 							},
 						});
 					});

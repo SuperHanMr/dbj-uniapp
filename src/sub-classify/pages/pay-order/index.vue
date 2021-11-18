@@ -198,6 +198,9 @@
     getDetailInfo,
     payOrder
   } from '../../../api/classify.js'
+  import {
+    log
+  } from '../../../utils/log.js'
   import orderToast from "./order-toast.vue"
   import datePicker from "./date-picker.vue"
   // import expensesToast from "./expenses-toast.vue"
@@ -517,6 +520,13 @@
               uni.navigateTo({
                 url: `/sub-my/pages/my-order/order-wait-pay/order-wait-pay?orderNo=${data.id}&from=waitPayOrder`
               })
+              log({
+                type: "wx-pay-fail",
+                page: "pay-order/index",
+                data: params,
+                openId: getApp().globalData.openId,
+                openIdLocal: uni.getStorageSync("openId")
+              });
             },
           });
         })

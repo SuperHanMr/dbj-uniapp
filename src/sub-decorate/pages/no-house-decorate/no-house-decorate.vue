@@ -74,6 +74,10 @@
   import {
     createOrder
   } from "../../../api/order-center.js"
+  
+  import {
+    log
+  } from "../../../utils/log.js"
 
   const TYPE = {
     decorate: "装修服务",
@@ -649,6 +653,13 @@
                   icon: "none",
                   duration: 3000
                 })
+                log({
+                  type: "wx-pay-fail",
+                  page: "no-house-decorate",
+                  data: obj,
+                  openId: getApp().globalData.openId,
+                  openIdLocal: uni.getStorageSync("openId")
+                });
               }
             },
           });

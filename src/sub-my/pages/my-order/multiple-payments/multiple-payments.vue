@@ -80,6 +80,7 @@
 
 <script>
 	import {querySplitPayList,splitPay,cancelOrder} from "@/api/order.js"
+  import { log } from "@/utils/log.js"
 	export default {
 		props: {
 			num: 0,
@@ -167,6 +168,13 @@
 								icon:"none",
 								duration: 1000
 							});
+              log({
+                type: "wx-pay-fail",
+                page: "multiple-payments",
+                data: params,
+                openId: getApp().globalData.openId,
+                openIdLocal: uni.getStorageSync("openId")
+              });
 						},
 					});
 				})

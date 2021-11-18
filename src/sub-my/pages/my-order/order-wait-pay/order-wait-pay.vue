@@ -151,6 +151,9 @@ import {
   cancelOrder,
   confirmReceiptOrder,
 } from "../../../../api/order.js";
+import {
+  log
+} from "../../../../utils/log.js"
 export default {
   data() {
     return {
@@ -321,6 +324,12 @@ export default {
                 title: "支付失败",
                 icon: "none",
                 duration: 2000,
+              });
+              log({
+                type: "wx-pay-fail",
+                page: "order-wait-pay",
+                openId: getApp().globalData.openId,
+                openIdLocal: uni.getStorageSync("openId")
               });
             },
           });
