@@ -87,7 +87,8 @@
 			<door-time-date @getTime="setDoorTime" @close="closeDoorTimePopup"></door-time-date>
 		</uni-popup>
 		<uni-popup ref="payDialog" type="bottom">
-		<pay-dialog :payChannel="payChannel" :payChannelPrice="payChannelPrice" @payOrder="payOrder" @closePayDialog="closePayDialog"></pay-dialog>
+			<pay-dialog :payChannel="payChannel" :payChannelPrice="payChannelPrice" @payOrder="payOrder"
+				@closePayDialog="closePayDialog"></pay-dialog>
 		</uni-popup>
 	</view>
 </template>
