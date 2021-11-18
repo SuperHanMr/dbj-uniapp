@@ -56,11 +56,16 @@
 
       <view class="body1" v-for="item1 in refundInfo.detailAppVOS" :key="item1.id">
         <order-item
+					v-if="refundInfo.type !==5"
           :dataList="item1"
           :orderType="2"
           :refundType="true"
           @handleDetail="productDetail(item1,'refund')"
-        ></order-item>
+        />
+				<store-calue-card-item 
+					v-else 
+					:dataInfo="item1" 
+				/>
       </view>
 			<order-refund-info :refundInfo="refundInfo"></order-refund-info>
     </view>
@@ -119,11 +124,12 @@
         :orderNo="orderInfo.orderNo"
         :createTime="orderInfo.createTime"
         :showPayTime="true"
+				:payChannel="orderInfo.payChannel"
         :payTime="orderInfo.payTime"
         :showPayType="true"
       />
-			<!-- v-if="orderInfo.showRefundBtn" -->
-      <view  class="applyforRefund-container" :style="{paddingBottom:systemBottom,height:systemHeight}">
+			<!--  -->
+      <view v-if="orderInfo.showRefundBtn" class="applyforRefund-container" :style="{paddingBottom:systemBottom,height:systemHeight}">
         <view class="applyforRefund" @click="toApplayForRefund(orderInfo,2)" >
           申请退款
         </view>

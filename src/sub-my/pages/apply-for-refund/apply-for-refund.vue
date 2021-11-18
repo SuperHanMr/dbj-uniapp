@@ -244,6 +244,7 @@ export default {
 					this.returnMoney = this.refundInfo.maxRefundAmount
 					if(this.refundType ==5){
 						this.inputValue = this.returnMoney
+						this.refundAmount = this.refundInfo.maxRefundAmount
 					}
 					this.freight = this.refundInfo.freight?this.refundInfo.freight:'0'
 					this.handlingFees = this.refundInfo.handlingFees?this.refundInfo.freight:'0'
@@ -267,6 +268,7 @@ export default {
     inputValue(newVal, oldVal) {
 			console.log("newVal=====",newVal,String(newVal).length)
 			this.reqInputWidth(newVal)
+			console.log("this.refundAmount===",this.refundAmount)
 			if(newVal > this.refundAmount){
 				uni.showToast({
 					title:"退款金额大于储值卡余额，请修改",
@@ -311,12 +313,14 @@ export default {
 				this.textAreaLength = data.remark.length
 				this.reasonValue = data.reasonId
 				this.reasonName = data.reason
-				this.refundAmount  =data.refundAmount
-				this.returnMoney  =data.refundAmount
+				console.log("this.refundType===",this.refundType)
 				if(this.refundType == 5){
-					this.inputValue  = data.refundAmount
-					// this.inputWidth =String(data.refundAmount).length* 26 - 12		
+					this.inputValue  = data.maxRefundAmount
+					this.refundAmount  = data.maxRefundAmount
+					this.returnMoney = data.maxRefundAmount
 				}else{
+					this.refundAmount  =data.refundAmount
+					this.returnMoney  =data.refundAmount
 					this.freight = this.refundInfo.freight?this.refundInfo.freight:'0'
 					this.handlingFees = this.refundInfo.handlingFees?this.refundInfo.freight:'0'
 				}
