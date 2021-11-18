@@ -407,7 +407,7 @@
 			}
 
 			this.haveCard = false;
-			console.log('!!!!!!!!!!')
+			console.log("!!!!!!!!!!");
 			getBalance().then((e) => {
 				if (e != null) {
 					this.haveCard = true;
@@ -840,7 +840,6 @@
 		padding-bottom: 300rpx;
 	}
 
-	// 问号图标模型布局
 	.question-box {
 		width: fit-content !important;
 		position: relative;
@@ -907,7 +906,7 @@
 	}
 
 	.goods-info .goods-desc {
-		width: 300rpx;
+		width: 260rpx;
 		font-size: 28rpx;
 		color: #333333;
 		line-height: 40rpx;
@@ -918,6 +917,8 @@
 		-webkit-line-clamp: 2;
 		line-clamp: 2;
 		-webkit-box-orient: vertical;
+		vertical-align: middle;
+		padding-bottom: 2rpx;
 	}
 
 	.goods-info .goods-desc .goods-type {
@@ -979,10 +980,12 @@
 	}
 
 	.safeguard {
-		padding: 2rpx 0;
-		border: 1px solid #ff3347;
+		padding: 2rpx 6rpx;
+		border: 1rpx solid rgba(255, 51, 71, 0.18);
 		color: #ff3347;
-		font-size: 10px;
+		font-size: 20rpx;
+		width: fit-content;
+		border-radius: 6rpx;
 	}
 
 	.safe-icon {
