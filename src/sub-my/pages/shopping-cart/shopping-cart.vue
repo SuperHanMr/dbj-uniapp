@@ -1571,6 +1571,7 @@
 		line-height: 48rpx;
 	}
 	.goodsInfo .foot .countCtrl .count.max{
+		padding-right: 5rpx;
 		display: flex;
 		justify-content: flex-end;
 		overflow: hidden;
