@@ -434,6 +434,7 @@ export default {
     getOrderList() {
       this.loading = true;
       getOrderList({
+				isNewVersion:true,
         orderStatus: this.currentIndex - 1,
         lastId: this.lastId[this.currentIndex],
         rows: this.rows,

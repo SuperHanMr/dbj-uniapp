@@ -218,8 +218,10 @@
 					<text>微信支付</text>
 				</view>
 			</view> -->
+			
+			<!-- v-if="haveCard && orderInfo.isReplenish" -->
       <view
-        v-if="haveCard && orderInfo.isReplenish"
+        v-if="haveCard"
         class="pay-way"
         style="justify-content:center"
         @click="clickCard"

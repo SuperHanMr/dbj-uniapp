@@ -81,13 +81,13 @@
         </view>
       </view>
 			<!-- 使用储值卡付款就显示-->
-			<!-- <view  class="price-item" v-if="data.platformDiscount">
+			<view  class="price-item" v-if="data.cardAmount">
 			  <view>储值卡</view>
 			  <view>
 			    <text>￥</text>
-			    <text class="price-style price-font">{{handlePrice(data.platformDiscount)[0]}}.{{handlePrice(data.platformDiscount)[1]}}</text>
+			    <text class="price-style price-font">{{handlePrice(data.cardAmount)[0]}}.{{handlePrice(data.cardAmount)[1]}}</text>
 			  </view>
-			</view> -->
+			</view>
 
     </view> 
 
