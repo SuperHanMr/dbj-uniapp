@@ -29,11 +29,13 @@
   export default {
     data() {
       return {
-        orderId: 0
+        orderId: 0,
+        from: ''
       }
     },
     onLoad(val) {
       this.orderId = val.orderId
+      this.from = val.from
     },
     methods: {
       toBack() {
@@ -45,12 +47,18 @@
         });
       },
       toOrderDetail() {
-        // uni.navigateTo({
-        //   url: `/sub-my/pages/my-order/order-in-progress/order-in-progress?orderNo=${this.orderId}&from=comfirmOrder`
-        // })
         uni.redirectTo({
-          url: "../../../sub-my/pages/my-order/my-order?firstEntry=true&index=2"
+          url: "../../../sub-my/pages/my-order/my-order?firstEntry=true&index=3"
         });
+        // if (this.from === 'valueCard') {
+        //   uni.redirectTo({
+        //     url: "../../../sub-my/pages/my-order/my-order?firstEntry=true&index=3"
+        //   });
+        // } else {
+        //   uni.redirectTo({
+        //     url: "../../../sub-my/pages/my-order/my-order?firstEntry=true&index=2"
+        //   });
+        // }
       }
     }
   }
