@@ -44,21 +44,13 @@
       backHome() {
         uni.switchTab({
           url: '/pages/home/index/index'
-        });
+          // });
+        }),
       },
       toOrderDetail() {
         uni.redirectTo({
           url: "../../../sub-my/pages/my-order/my-order?firstEntry=true&index=3"
         });
-        // if (this.from === 'valueCard') {
-        //   uni.redirectTo({
-        //     url: "../../../sub-my/pages/my-order/my-order?firstEntry=true&index=3"
-        //   });
-        // } else {
-        //   uni.redirectTo({
-        //     url: "../../../sub-my/pages/my-order/my-order?firstEntry=true&index=2"
-        //   });
-        // }
       }
     }
   }
