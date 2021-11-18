@@ -185,11 +185,11 @@
 				queryToBePaidOrderNum().then((e) => {
 					this.waitPayOrderNum = e ? e : 0;
 				});
-				// queryStoreValueCard().then(data=>{
-				// 	console.log("!!!!!!!!!!!!! data=", data);
-				// 	if(data === null) data= null
-				// 	this.storeValueCard=data
-				// })
+				queryStoreValueCard().then(data=>{
+					console.log("!!!!!!!!!!!!! data=", data);
+					if(data === null) data= null
+					this.storeValueCard=data
+				})
 			}
 			this.$store.dispatch("updateTabBarBadge");
 		},

@@ -219,7 +219,7 @@
 				</view>
 			</view> -->
       <view
-        v-if="haveCard"
+        v-if="haveCard && orderInfo.isReplenish"
         class="pay-way"
         style="justify-content:center"
         @click="clickCard"
