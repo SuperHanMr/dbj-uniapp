@@ -35,14 +35,16 @@
                   <text class="question-icon safe-icon"></text>
                 </view>
                 <view class="goods-spec">
-                  <view class="goods-money">
+                  <view class="goods-money price-font">
                     ￥
                     <text
                       class="integer-price">{{String(goodsItem.price).split(".")[0]?String(goodsItem.price).split(".")[0]:0}}</text>
                     <text>.{{String(goodsItem.price).split(".")[1]?String(goodsItem.price).split(".")[1]:0}}</text>
                     <text>/{{goodsItem.unit?goodsItem.unit:""}}</text>
                   </view>
-                  <view v-if="Number(goodsItem.deposit)">押金 ¥{{goodsItem.deposit}}</view>
+                  <view>
+                    <view class="sku-deposit price-font" v-if="goodsItem.deposit !== undefined && goodsItem.productType === 2">押金 ¥{{goodsItem.deposit}}</view>
+                  </view>
                   <view class="total-num">共{{goodsItem.buyCount}}{{goodsItem.unit?goodsItem.unit:""}}
                   </view>
                 </view>
@@ -70,11 +72,11 @@
             </view>
           </view>
           <view class="cost-detail" v-if="(shopItem.deliveryFee || shopItem.totalHandlingFee) && productType === 1">
-            <view v-if="shopItem.deliveryFee">
+            <view v-if="shopItem.deliveryFee !== undefined" class="price-font">
               <text>运费</text>
               <text>¥{{shopItem.deliveryFee}}</text>
             </view>
-            <view v-if="shopItem.totalHandlingFee">
+            <view v-if="shopItem.totalHandlingFee !== undefined" class="price-font">
               <text>搬运费</text>
               <text>¥{{shopItem.totalHandlingFee}}</text>
             </view>
@@ -88,39 +90,39 @@
           </view>
         </view>
       </view>
-      <view class="good-store-account" v-if="!orderInfo.hasStock">
-        <view>
-          <text>商品总价</text>
-          <text v-if="Number(orderInfo.totalPrice)">¥{{orderInfo.totalPrice}}</text>
-          <text v-else>¥- -</text>
-        </view>
-        <view v-if="Number(orderInfo.totalDeliveryFee)">
+      <view class="good-store-account" v-if="productType === 1">
+        <view v-if="orderInfo.totalDeliveryFee !== undefined && !orderInfo.hasStock">
           <view class="question-box">
-            总运费
+            运费
             <text class="question-icon" @click="readExpenses(1)"></text>
           </view>
           <text>¥{{orderInfo.totalDeliveryFee}}</text>
         </view>
-        <view v-if="Number(orderInfo.totalHandlingFee)">
+        <view v-if="orderInfo.totalHandlingFee !== undefined  && !orderInfo.hasStock" class="price-font">
           <view class="question-box">
-            总搬运费
+            搬运费
             <text class="question-icon" @click="readExpenses(2)"></text>
           </view>
           <text>¥{{orderInfo.totalHandlingFee}}</text>
         </view>
-      </view>
-      <view class="good-store-account is-store" v-else>
-        <view>
+        <view class="price-font">
           <text>商品总价</text>
-          <text>¥{{orderInfo.totalPrice}}</text>
+          <text v-if="Number(orderInfo.totalPrice)">¥{{orderInfo.totalPrice}}</text>
+          <text v-else>¥- -</text>
         </view>
-        <view class="store-read" v-if="productType === 1">
+        <view class="store-read" v-if="orderInfo.hasStock">
           <text>
             当前费用不包含运费和搬运费，具体费用会在要货时进行结算
           </text>
         </view>
       </view>
-      <view class="pledge" v-if="Number(orderInfo.totalDeposit)">
+      <view class="good-store-account is-store" v-else>
+        <view class="price-font">
+          <text>商品总价</text>
+          <text>¥{{orderInfo.totalPrice}}</text>
+        </view>
+      </view>
+      <view class="pledge price-font" v-if="orderInfo.totalDeposit !== undefined">
         <text>总押金</text>
         <text>¥{{orderInfo.totalDeposit}}</text>
       </view>
@@ -145,7 +147,7 @@
           <view class="total-price-info">
             <view class="info-text1">共{{totalClassNum}}类，</view>
             <view class="info-text2">总计：</view>
-            <view class="total-money" v-if="Number(totalPrice)">
+            <view class="total-money price-font" v-if="Number(totalPrice)">
               ￥
               <text class="mony-text">{{totalPrice?String.prototype.split.call(totalPrice, ".")[0]: "-"}}</text>
               <text>.{{totalPrice?String.prototype.split.call(totalPrice, ".")[1]?String.prototype.split.call(totalPrice, ".")[1]:"-":"-"}}</text>
@@ -201,7 +203,7 @@
   } from '../../../api/classify.js'
   import orderToast from "./order-toast.vue"
   import datePicker from "./date-picker.vue"
-  // import expensesToast from "./expenses-toast.vue"
+  // import expensesToast from "./expenses-toast.vue" 
   import safeguardToast from "./safeguard-toast.vue"
   export default {
     components: {
@@ -286,9 +288,6 @@
         })
       } else {
         this.isShow = true
-      }
-      if (!getApp().globalData.openId) { //确保拿到openId，否则无法支付
-        getApp().globalData.openId = uni.getStorageSync("openId");
       }
     },
     onUnload() {
@@ -673,8 +672,6 @@
   .goods-info .tag {
     font-size: 22rpx;
     color: #999999;
-    position: absolute;
-    padding: 0 10rpx;
     line-height: 38rpx;
     text-align: center;
     border-radius: 6rpx;
@@ -694,11 +691,11 @@
     color: #999999;
     float: right;
   }
-
+  .goods-info .sku-deposit {
+    float: right;
+  }
   .safeguard {
-    position: absolute;
-    bottom: 0;
-    padding: 2rpx 10rpx;
+    padding: 2rpx 0;
     border: 1px solid ##ff3347;
     color: #ff3347;
     font-size: 10px;
