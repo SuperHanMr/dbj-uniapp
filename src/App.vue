@@ -57,15 +57,13 @@
 				"onLaunch",
 				"userId:",
 				userId,
-				"openId:",
-				openId,
 				"shareId:",
 				shareId
 			);
 			if (shareId && !this.globalData.shareId) {
 				this.globalData.shareId = shareId;
 			}
-			if (userId && openId) {
+			if (userId) {
 				let token = uni.getStorageSync("scn");
 				this.globalData.token = token;
 				oauthGomeInfo({
