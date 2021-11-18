@@ -23,7 +23,7 @@ export function logout(params) {
 	return request.post(`/app/oauth/gome/logout`, params);
 }
 //我的-订单列表
-export function getOrderList(params) {
+export function queryOrderList(params) {
 	return request.get(`/order-center/app/order/list`, { params });
 }
 

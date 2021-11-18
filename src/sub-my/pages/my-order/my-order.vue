@@ -20,10 +20,7 @@
       :duration="200"
       @change="swiperChange"
     >
-      <swiper-item
-        v-for="item in tabList"
-        :key="item"
-      >
+      <swiper-item v-for="item in tabList" :key="item">
         <scroll-view
           class="scroll-view"
           :enable-back-to-top="true"
@@ -35,36 +32,25 @@
           refresher-enabled="true"
           @scrolltolower="onLoadMore"
         >
-          <view
-            v-if="loading"
-            class="swiper-item empty-container"
-          />
-          <view
-            v-if=" orderList.length > 0 "
-            :style="{paddingBottom:systemBottom}"
-            class="swiper-item"
-          >
-            <view
-              class="order-container"
-              v-for="item in orderList"
-              :key="item.id"
-            >
+          <view v-if="loading" class="swiper-item empty-container"/>
+          <view v-if=" orderList.length > 0 " :style="{paddingBottom:systemBottom}" class="swiper-item">
+            <view class="order-container" v-for="item in orderList" :key="item.id">
               <view class="header">
-                <view
-                  class="store-name"
-                  @click="gotoShop(item)"
-                >
-                  <text v-if="item.orderStatus == 0 ">{{item.orderName?item.orderName:item.storeName}}</text>
-                  <text v-else>{{item.storeName}}</text>
-                  <image
-                    v-if="!item.orderName || item.type == 5"
-                    src="../../static/ic_more.svg"
-                    mode=" "
-                  />
+                <view class="store-name" @click="gotoShop(item)">
+									<text v-if="item.type ==5">{{item.orderName}}</text>
+									<text v-else>
+										<text v-if="item.orderStatus == 0 ">{{item.orderName?item.orderName:item.storeName}}</text>
+										<text v-else>{{item.storeName}}</text>
+									</text>
+									<image
+										v-if="!item.orderName && item.type !== 5"
+										src="../../static/ic_more.svg"
+										mode=" "
+									/>
                 </view>
-                <view
-                  class="order-status"
-                  :class="{active: item.orderStatus == 2 || item.orderStatus == 3}"
+                <view 
+									class="order-status"
+									:class="{active: item.orderStatus == 2 || item.orderStatus == 3}"
                   @click="goToDetail(item)"
                 >
                   <!-- {{item.orderStatusName}} -->
@@ -92,41 +78,32 @@
                   @click="goToDetail(item)"
                 >
                   <view class="product-img">
-                    <scroll-view
-                      scroll-x
-                      style="width: 100%; white-space: nowrap;"
-                    >
+                    <scroll-view scroll-x style="width: 100%; white-space: nowrap;" >
                       <image
                         v-for="item2 in handleImage(item.details)"
                         :key="item2"
                         :src="`${item2}?x-oss-process=image/resize,m_mfit,w_68,h_68`"
                         mode="aspectFill"
                       />
-
                     </scroll-view>
                   </view>
                   <view class="total-price">
                     <view class="product-price">
                       <text style="font-size:22rpx;">￥</text>
-                      <text
-                        style="font-weight: 400;"
-                        class="price-font"
-                      >{{handlePrice(item.totalAmount)[0]}}.</text>
-                      <text
-                        style="font-size:22rpx;"
-                        class="price-font"
-                      >{{handlePrice(item.totalAmount)[1]}}</text>
+                      <text style="font-weight: 400;" class="price-font" >
+												{{handlePrice(item.totalAmount)[0]}}.
+											</text>
+                      <text style="font-size:22rpx;" class="price-font">
+												{{handlePrice(item.totalAmount)[1]}}
+											</text>
                     </view>
+										
                     <view>共{{item.goodsNumber}}类</view>
                   </view>
                 </view>
 
                 <!-- 非套餐 -->
-                <view
-                  v-else
-                  v-for="item2 in item.details"
-                  :key="item2.id"
-                >
+                <view v-else v-for="item2 in item.details" :key="item2.id">
                   <!-- 服务和材料 -->
                   <order-item
                     v-if="item2.type !== 5"
@@ -134,7 +111,11 @@
                     @handleDetail="goToDetail(item)"
                   />
                   <!-- 储值卡 -->
-                  <store-calue-card-item v-if="item.orderStatus !==1 && item2.type==5"></store-calue-card-item>
+                  <store-calue-card-item 
+										v-if="item.orderStatus !==1 && item2.type==5" 
+										:dataInfo="item2"
+										@handleDetail="goToDetail(item)" 
+									/>
                 </view>
               </view>
 
@@ -154,10 +135,7 @@
                   </text>
                 </view>
 
-                <view
-                  v-if="item.orderStatus == 0"
-                  class="need-pay"
-                >
+                <view v-if="item.orderStatus == 0" class="need-pay" >
                   <text v-if="item.freight && item.handlingFees">需付款(含运费、搬运费)</text>
                   <text v-if="item.freight && !item.handlingFees">需付款(含运费)</text>
                   <text v-if=" !item.freight && item.handlingFees">需付款(含搬运费)</text>
@@ -175,15 +153,9 @@
                   </text>
                 </view>
 
-                <view
-                  v-else
-                  class="need-pay"
-                >
+                <view v-else class="need-pay" >
                   <text>实付</text>
-                  <text
-                    v-if="item.orderStatus == 3"
-                    style="color:#333333;margin-left: 8rpx;"
-                  >
+                  <text v-if="item.orderStatus == 3" style="color:#333333;margin-left: 8rpx;" >
                     <text style="font-size:18rpx;">￥</text>
                     <text
                       style="font-size: 32rpx;"
@@ -194,10 +166,7 @@
                       class="price-font"
                     >{{handlePrice(item.payAmount)[1]}}</text>
                   </text>
-                  <text
-                    v-else
-                    style="color:#333333;margin-left: 8rpx;"
-                  >
+                  <text  v-else style="color:#333333;margin-left: 8rpx;">
                     <text style="font-size:18rpx;">￥</text>
                     <text
                       style="font-size: 32rpx;"
@@ -225,14 +194,8 @@
                 v-if="item.orderStatus == 0 && (item.showCancelOrderTime || item.showCancelBtn || item.showToPayBtn)"
                 :class="{buttonContainer:!item.showCancelOrderTime}"
               >
-                <view
-                  v-if="item.showCancelOrderTime"
-                  class="set-interval"
-                >
-                  <image
-                    src="../../static/ic_time@2x.png"
-                    mode=""
-                  />
+                <view v-if="item.showCancelOrderTime " class="set-interval">
+                  <image src="../../static/ic_time@2x.png" mode="" />
 
                   <view class="time-text">
                     <text class="remainPayTime">剩余支付时间</text>
@@ -242,7 +205,7 @@
                       :timeColor="'#333333'"
                       :separatorColor="'#333333'"
                       @finish="onRefresh(e)"
-                    ></count-down>
+                    />
                     <!-- <uni-countdown color="#333333" background-color="#E4E6E6" :showDay="false"
 											:hour="formatTime(item.remainTime)[0]"
 											:minute="formatTime(item.remainTime)[1]"
@@ -250,52 +213,29 @@
                   </view>
 
                 </view>
-                <view
-                  v-if="item.showToPayBtn || item.showCancelBtn"
-                  class="waitPayBottom"
-                >
-                  <view
-                    v-if="item.showCancelBtn"
-                    class="cancel-order"
-                    @click="handleCancelOrder(item.id)"
-                  >
+                <view  v-if="item.showToPayBtn || item.showCancelBtn" class="waitPayBottom">
+                  <view v-if="item.showCancelBtn"  class="cancel-order" @click="handleCancelOrder(item.id)" >
                     取消订单
                   </view>
-                  <view
-                    v-if="item.showToPayBtn"
-                    class="go-to-pay"
-                    @click="toPay(item)"
-                  >
+                  <view v-if="item.showToPayBtn" class="go-to-pay" @click="toPay(item)">
                     去付款
                   </view>
                 </view>
               </view>
-              <view
-                class="footer buttonContainer"
-                v-if="item.orderStatus == 1 && item.stockType == 0 && item.shipmentStatus == 1"
-              >
+              <view  class="footer buttonContainer"  v-if="item.orderStatus == 1 && item.stockType == 0 && item.shipmentStatus == 1" >
                 <view class="button">
-                  <view
-                    class="go-to-pay"
-                    @click="handleConfirmReceipt(item)"
-                  >
+                  <view class="go-to-pay"  @click="handleConfirmReceipt(item)">
                     确认收货
                   </view>
                 </view>
               </view>
             </view>
           </view>
-          <view
-            v-if="orderList.length == 0 && !loading"
-            class="swiper-item empty-container"
-          >
+          <view  v-if="orderList.length == 0 && !loading" class="swiper-item empty-container"  >
             <view class="empty-page">
               <view class="line" />
               <view class="content ">
-                <image
-                  src="../../static/empty_page@2x.png"
-                  mode=""
-                ></image>
+                <image src="../../static/empty_page@2x.png" mode=""/>
                 <text>暂无相关订单~</text>
               </view>
             </view>
@@ -326,7 +266,7 @@
 
 <script>
 import {
-  getOrderList,
+  queryOrderList,
   orderPay,
   cancelOrder,
   confirmReceiptOrder,
@@ -356,7 +296,7 @@ export default {
       id: -1,
       systemBottom: "",
       areaId: "",
-      loading: true,
+      loading: false,
       navBarHeight: "",
       title: "我的订单",
     };
@@ -433,7 +373,7 @@ export default {
     // 获取列表数据
     getOrderList() {
       this.loading = true;
-      getOrderList({
+      queryOrderList({
 				isNewVersion:true,
         orderStatus: this.currentIndex - 1,
         lastId: this.lastId[this.currentIndex],
@@ -498,37 +438,65 @@ export default {
 
     //跳转到详情页面
     goToDetail(data) {
-      if (data.orderStatus == 0) {
-        //（0待付款，1进行中，2已完成 3已关闭）
-        uni.navigateTo({
-          url: `order-wait-pay/order-wait-pay?orderNo=${data.id}?&from=all`,
-        });
-      } else if (data.orderStatus == 1) {
-        if (this.currentIndex == 0) {
-          uni.navigateTo({
-            url: `order-in-progress/order-in-progress?orderNo=${data.id}&from=all`,
-          });
-        } else {
-          uni.navigateTo({
-            url: `order-in-progress/order-in-progress?orderNo=${data.id}`,
-          });
-        }
-      } else if (data.orderStatus == 2) {
-        uni.navigateTo({
-          url: `order-success/order-success?type=complete&id=${data.id}`,
-        });
-      } else {
-        uni.navigateTo({
-          url: `order-failed/order-failed?type=close&id=${data.id}`,
-        });
-      }
+			switch(data.orderStatus){
+				case 0:
+					uni.navigateTo({
+					  url: `order-wait-pay/order-wait-pay?orderNo=${data.id}?&from=all`,
+					});
+					break
+				case 1:
+					if (this.currentIndex == 0) {
+					  uni.navigateTo({
+					    url: `order-in-progress/order-in-progress?orderNo=${data.id}&from=all`,
+					  });
+					} else {
+					  uni.navigateTo({
+					    url: `order-in-progress/order-in-progress?orderNo=${data.id}`,
+					  });
+					}
+					break
+				case 2:
+					uni.navigateTo({
+						url: `order-success/order-success?type=complete&id=${data.id}`,
+					});
+					break
+				case 3:
+					uni.navigateTo({
+					  url: `order-failed/order-failed?type=close&id=${data.id}`,
+					});
+					break
+					
+			}
+      // if (data.orderStatus == 0) {
+      //   //（0待付款，1进行中，2已完成 3已关闭）
+      //   uni.navigateTo({
+      //     url: `order-wait-pay/order-wait-pay?orderNo=${data.id}?&from=all`,
+      //   });
+      // } else if (data.orderStatus == 1) {
+      //   if (this.currentIndex == 0) {
+      //     uni.navigateTo({
+      //       url: `order-in-progress/order-in-progress?orderNo=${data.id}&from=all`,
+      //     });
+      //   } else {
+      //     uni.navigateTo({
+      //       url: `order-in-progress/order-in-progress?orderNo=${data.id}`,
+      //     });
+      //   }
+      // } else if (data.orderStatus == 2) {
+      //   uni.navigateTo({
+      //     url: `order-success/order-success?type=complete&id=${data.id}`,
+      //   });
+      // } else {
+      //   uni.navigateTo({
+      //     url: `order-failed/order-failed?type=close&id=${data.id}`,
+      //   });
+      // }
     },
 
     //去店铺首页
     gotoShop(item) {
       if (item.orderName && item.orderStatus == 0) return;
-      if (item.type == 5) return;
-      console.log("this.storeId=", item.storeId, "this.areaId=", this.areaId);
+      if (item.type == 5) return; 
       uni.navigateTo({
         url: `../../../sub-classify/pages/shops/shops?storeId=${item.storeId}&areaId=${this.areaId}`,
       });
@@ -536,6 +504,7 @@ export default {
 
     //刷新
     onRefresh(e) {
+			if(this.loading) return 
       this.triggered = true;
       this.lastId[this.currentIndex] = -1;
       this.handleReset();
@@ -556,7 +525,7 @@ export default {
       this.id = id;
       this.title = "您确定要取消该订单吗?";
       this.$refs.cancleOrder.open();
-      this.getOrderList();
+      // this.getOrderList();
     },
     cancelOrderClose() {
       this.$refs.cancleOrder.close();

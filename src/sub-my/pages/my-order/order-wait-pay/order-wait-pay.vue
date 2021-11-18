@@ -1,43 +1,23 @@
 <template>
   <view class="container">
-    <custom-navbar
-      :opacity="scrollTop/100"
-      :title="headerTitle"
-    >
+    <custom-navbar :opacity="scrollTop/100" :title="headerTitle">
       <template v-slot:back>
-        <i
-          class="icon-ic_cancel_white back-icon"
+        <i class="icon-ic_cancel_white back-icon"
           :style="{color: (scrollTop/100>1)?'black':'white'}"
-          @click="toBack"
-        ></i>
+          @click="toBack"></i>
       </template>
     </custom-navbar>
 
-    <view
-      class="order-container"
-      :style="{paddingBottom:112+containerBottom+'rpx'}"
-    >
-      <view
-        style="position: relative;"
-        :style="{backgroundImage:`url(${bgImg})`,backgroundSize: '100% 100%'}"
-      >
-        <view
-          class="bgcStyle"
-          :style="{backgroundImage:`url(${bgImg})`,backgroundSize: '100% 100%'}"
-        />
+    <view class="order-container" :style="{paddingBottom:112+containerBottom+'rpx'}">
+      <view style="position: relative;" :style="{backgroundImage:`url(${bgImg})`,backgroundSize: '100% 100%'}">
+        <view class="bgcStyle" :style="{backgroundImage:`url(${bgImg})`,backgroundSize: '100% 100%'}"/>
         <view :style="{height:navBarHeight}"></view>
         <view class="order-status">
           <view class="status">
-            <image
-              src="../../../static/ic_status_wait_pay.svg"
-              mode="scaleToFill"
-            />
+            <image src="../../../static/ic_status_wait_pay.svg" mode="scaleToFill"/>
             <text>待付款</text>
           </view>
-          <view
-            class="time"
-            v-if="orderInfo.showCancelOrderTime"
-          >
+          <view class="time" v-if="orderInfo.showCancelOrderTime" >
             <text style="margin-right: 16rpx;">剩余支付时间</text>
             <count-down
               :start="orderInfo.remainTime"
@@ -47,56 +27,37 @@
         </view>
       </view>
 
-      <order-user-base-info :data="orderInfo"></order-user-base-info>
-      <view
-        class="moreStore"
-        v-if=" orderInfo.orderName "
-      >
+      <order-user-base-info 
+				v-if="orderInfo.customerName && orderInfo.customerPhone && orderInfo.estateInfo" 
+				:data="orderInfo"
+			/>
+			
+      <view class="moreStore" v-if=" orderInfo.orderName && orderInfo.type !==5 ">
         {{orderInfo.orderName}}
       </view>
-      <view
-        class="store-container"
-        v-for="(item,index) in orderInfo.details"
-        :key="index"
-      >
-        <view
-          v-if="index > 0"
-          style="height:0.5px;margin: 0 32rpx;background-color: #EBEBEB;"
-        />
-        <view
-          class="storeItem"
-          :class="{paddingBottom: item.stockType == 1 }"
-          :style="{borderRadius:index >= 1 ? '0' :'24rpx 24rpx 0 0'}"
-        >
+      <view class="store-container" v-for="(item,index) in orderInfo.details" :key="index">
+        <view v-if="index > 0" style="height:0.5px;margin: 0 32rpx;background-color: #EBEBEB;"/>
+        <view  class="storeItem" :class="{paddingBottom: item.stockType == 1 }" :style="{borderRadius:index >= 1 ? '0' :'24rpx 24rpx 0 0'}">
           <view class="header">
-            <view class="header-content">
-              <text
-                style="color: #333333;"
-                @click="gotoShop(item)"
-              >{{item.storeName}}</text>
-              <image
-                src="../../../static/ic_more.svg"
-                mode=""
-              />
+            <view class="header-content" v-if="orderInfo.type !== 5">
+              <text style="color: #333333;" @click="gotoShop(item)" >{{item.storeName}}</text>
+              <image src="../../../static/ic_more.svg" mode="" />
             </view>
+						<view class="header-content" v-else>
+						  <text style="color: #333333;">{{orderInfo.orderName}}</text>
+						</view>
             <view class="icon"></view>
           </view>
-          <view
-            v-for="item2 in item.details"
-            :key="item2.id"
-          >
+          <view v-for="item2 in item.details" :key="item2.id">
             <order-item
 							v-if="item2.type !==5"
               :orderStatus="1"
               :dataList="item2"
               @handleDetail="productDetail(item2)"
             />
-						<store-calue-card-item v-else />
+						<store-calue-card-item :dataInfo="item2" v-else />
           </view>
-          <view
-            class="discount-container"
-            v-if="item.hasMaterial &&  orderInfo.details.length>1"
-          >
+          <view class="discount-container" v-if="item.hasMaterial &&  orderInfo.details.length>1">
             <view class="left">
               <view class="item">
                 <view class="item-style">
@@ -108,40 +69,23 @@
                     @click="readExpenses(1)"
                   />
                 </view>
-                <view
-                  class="price-font"
-                  style="color: #333;font-size: 26rpx;"
-                  v-if="orderInfo.stockType == 0"
-                >￥{{item.freight?`${item.freight}`:"0.00"}}</view>
-                <view
-                  class="price-font"
-                  :style="{marginTop:item.freight?'0':'8rpx'}"
-                  style="color: #333;font-size: 26rpx;"
-                  v-else
-                >
+                <view class="price-font" style="color: #333;font-size: 26rpx;" v-if="orderInfo.stockType == 0">
+									￥{{item.freight?`${item.freight}`:"0.00"}}
+								</view>
+                <view class="price-font" :style="{marginTop:item.freight?'0':'8rpx'}" style="color: #333;font-size: 26rpx;"  v-else >
                   {{item.freight?`￥${item.freight}`:"--"}}
                 </view>
               </view>
 
-              <view
-                class="item"
-                v-if="item.platformDiscount"
-              >
+              <view v-if="item.platformDiscount" class="item" >
                 <text>平台优惠</text>
-                <text
-                  class="price-font"
-                  style="color: #333;font-size: 26rpx;"
-                >-￥{{item.platformDiscount}}</text>
+                <text class="price-font" style="color: #333;font-size: 26rpx;">
+									-￥{{item.platformDiscount}}
+								</text>
               </view>
             </view>
-            <view
-              class="line1"
-              v-if="item.storeDiscount"
-            />
-            <view
-              class="line2"
-              v-else
-            />
+            <view v-if="item.storeDiscount" class="line1"/>
+            <view v-else  class="line2"/>
 
             <view class="right">
               <view class="item">
@@ -154,11 +98,8 @@
                     @click="readExpenses(2)"
                   />
                 </view>
-                <text
-                  class="price-font"
-                  style="color: #333;font-size: 26rpx;"
-                  v-if="orderInfo.stockType == 0"
-                >￥{{item.handlingFees?item.handlingFees:"0.00"}}</text>
+                <text class="price-font" style="color: #333;font-size: 26rpx;" v-if="orderInfo.stockType == 0" >
+								￥{{item.handlingFees?item.handlingFees:"0.00"}}</text>
                 <text
                   class="price-font"
                   style="color: #333;font-size: 26rpx;"
@@ -166,15 +107,11 @@
                   v-else
                 >{{item.handlingFees?`￥${item.handlingFees}`:"--"}}</text>
               </view>
-              <view
-                class="item"
-                v-if="item.storeDiscount"
-              >
+              <view  v-if="item.storeDiscount" class="item">
                 <text>商家优惠</text>
-                <text
-                  style="color: #333;font-size: 26rpx;"
-                  class="price-font"
-                >-￥{{item.storeDiscount}}</text>
+                <text style="color: #333;font-size: 26rpx;" class="price-font">
+									-￥{{item.storeDiscount}}
+								</text>
               </view>
             </view>
           </view>
@@ -183,20 +120,14 @@
             v-if="item.hasMaterial && orderInfo.stockType == 1"
             :style="{paddingBottom: item.hasMaterial && orderInfo.stockType == 1 ? '32rpx':'0'}"
           >
-            <view
-              class="tips"
-              v-if="item.freeShipCount &&  item.fullExemptionAmount "
-            >
+            <view v-if="item.freeShipCount &&  item.fullExemptionAmount " class="tips" >
               <text>本次支付</text>
               <text style="color: #333333;">满{{item.fullExemptionAmount}}元</text>
               <text>，可获得</text>
               <text style="color: #333333;">{{item.freeShipCount}}次免运费额度，</text>
               <text>搬运费需要根据实际要货时进行核算</text>
             </view>
-            <view
-              class="tips"
-              v-else
-            >
+            <view v-else class="tips">
               <text>搬运费需要根据实际要货时进行核算</text>
             </view>
           </view>
@@ -238,10 +169,7 @@
         </view>
         <view style="flex:1">
         </view>
-        <view
-          v-if="cardClick"
-          class="card-price"
-        >
+        <view v-if="cardClick" class="card-price">
           -¥{{(this.cardPrice/100).toFixed(2)}}
         </view>
         <image
@@ -262,16 +190,12 @@
       <view class="pay-way mrb">
         <text>支付方式</text>
 
-        <view
-          v-if="payChannel"
-          class="flex-center"
-        >
+        <view v-if="payChannel" class="flex-center" >
           <image
             class="card-img"
             src="https://ali-image.dabanjia.com/static/mp/dabanjia/images/classify/ic_card.png"
             mode=""
-          >
-          </image><text>储值卡支付</text>
+          ></image><text>储值卡支付</text>
 
         </view>
         <view v-else>
@@ -291,18 +215,10 @@
         class="waitPayBottom"
         :style="{paddingBottom:systemBottom,height:systemHeight,justifyContent:bottomStyle }"
       >
-        <view
-          class="canclePay"
-          v-if="orderInfo.showCancelBtn"
-          @click="handleCancelOrder"
-        >
+        <view v-if="orderInfo.showCancelBtn" class="canclePay" @click="handleCancelOrder">
           取消订单
         </view>
-        <view
-          class="gotoPay"
-          v-if="orderInfo.showToPayBtn"
-          @click="toPay"
-        >
+        <view v-if="orderInfo.showToPayBtn" class="gotoPay" @click="toPay" >
           去付款
         </view>
       </view>

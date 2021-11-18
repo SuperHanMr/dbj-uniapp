@@ -1,10 +1,10 @@
 <template>
 	<view  class="container">
 
-		<view	class="body-main" :style="{paddingBottom:containerPaddingBottom +'rpx'}" @click="handleDetail()" >
+		<view	class="body-main" v-if="refundType" :style="{paddingBottom:containerPaddingBottom +'rpx'}" @click="handleDetail()" >
 			<view class="pic">
 				<image
-					src="../../static/merchant-entry/merchant-entry-ic／bg.png"
+					:src="dataInfo.imgUrl"
 					mode="aspectFit"
 				 ></image>
 			</view>
@@ -12,18 +12,54 @@
 			<view class="basic-info">
 				<view class="name-attr">
 					<view class="text">
-						储值卡
+						{{dataInfo.fullName}}
 					</view>
 				</view>
 				<view class="common-price">
 					<!-- 商品价格 -->
-					<view class="product-price" >
-						<text v-if="showActualPay" style="font-size: 22rpx;margin-right: 8rpx;">实付</text>
+					<!-- <view class="product-price" v-if="showActualPay" >
+						<text  style="font-size: 22rpx;margin-right: 8rpx;">实付</text>
 						<text style="font-size:22rpx;">￥</text>
 						<text class="price-font">500.</text>
 						<text style="font-size:22rpx;" class="price-font">00</text>
+					</view> -->
+					<view class="product-price">
+						<text style="font-size:22rpx;">￥</text>
+						<text class="price-font">{{handlePrice(dataInfo.price)[0]}}.</text>
+						<text style="font-size:22rpx;" class="price-font">{{handlePrice(dataInfo.price)[1]}}</text>
 					</view>
-					<view style="color: #999999;">共{{dataList.number || 1}}件</view>
+					<view style="color: #999999;">共{{dataInfo.number || 1}}件</view>
+				</view>
+			</view>
+		</view>
+		<view	class="body-main" v-else :style="{paddingBottom:containerPaddingBottom +'rpx'}" @click="handleDetail()" >
+			<view class="pic">
+				<image
+					:src="dataInfo.imgUrl"
+					mode="aspectFit"
+				 ></image>
+			</view>
+		
+			<view class="basic-info">
+				<view class="name-attr">
+					<view class="text">
+						{{dataInfo.fullName}}
+					</view>
+				</view>
+				<view class="common-price">
+					<!-- 商品价格 -->
+					<!-- <view class="product-price" v-if="showActualPay" >
+						<text  style="font-size: 22rpx;margin-right: 8rpx;">实付</text>
+						<text style="font-size:22rpx;">￥</text>
+						<text class="price-font">500.</text>
+						<text style="font-size:22rpx;" class="price-font">00</text>
+					</view> -->
+					<view class="product-price">
+						<text style="font-size:22rpx;">￥</text>
+						<text class="price-font">{{handlePrice(dataInfo.price)[0]}}.</text>
+						<text style="font-size:22rpx;" class="price-font">{{handlePrice(dataInfo.price)[1]}}</text>
+					</view>
+					<view style="color: #999999;">共{{dataInfo.number || 1}}件</view>
 				</view>
 			</view>
 		</view>
@@ -40,7 +76,7 @@
 				type: Number,
 				default:32,
 			},
-			dataList:{
+			dataInfo:{
 				type:Object,
 				default:{},
 			},
@@ -49,6 +85,10 @@
 			},
 			showActualPay:{
 				type:Boolean,
+			},
+			refundType:{
+				type:Boolean,
+				default:false
 			}
 		},
 		data() {
@@ -57,8 +97,8 @@
 			};
 		},
 		mounted() {
-			if( (this.dataList.stockType && this.dataList.stockType == 1 && this.dataList.type == 1&& this.orderStatus==2) || (this. dataList.showRefundBtn && this. orderStatus==2)){
-				this.containerPaddingBottom= 0
+			if(this.refundType){
+				this.containerPaddingBottom = '0'
 			}
 		},
 
@@ -68,7 +108,7 @@
 			},
 
 			handlePrice(price){
-					if(!price) return ['0','00']
+				if(!price) return ['0','00']
 				let list=String(price).split(".")
 				if(list.length==1){
 					return [list[0],"00"]
@@ -79,19 +119,6 @@
 
 			particalRefund(){
 				this.$emit('toApplayForRefund')
-			},
-
-			refundCancel(){
-				this.$emit('refundCancel')
-			},
-			refundSuccess(){
-				this.$emit('refundSuccess')
-			},
-			refundFailed(){
-				this.$emit('refundFailed')
-			},
-			refundClose(){
-				this.$emit('refundClose')
 			},
 		}
 	}

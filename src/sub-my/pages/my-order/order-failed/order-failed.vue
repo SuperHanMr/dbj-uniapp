@@ -5,8 +5,7 @@
       :title="headerTitle"
     >
       <template v-slot:back>
-        <i
-          class="icon-ic_cancel_white back-icon"
+        <i class="icon-ic_cancel_white back-icon"
           :style="{color: (scrollTop/100>1)?'black':'white'}"
           @click="toBack"
         ></i>
@@ -14,26 +13,13 @@
     </custom-navbar>
 
     <!-- 退款详情 --退款关闭   退款取消与商家拒接 两个页面-->
-    <view
-      class="order-container"
-      v-if="type =='refund'"
-      :style="{paddingBottom:containerPaddingBottom}"
-    >
-      <view
-        style="position: relative;"
-        :style="{backgroundImage:`url(${bgImg})`,backgroundSize: '100% 100%'}"
-      >
-        <view
-          class="bgcStyle"
-          :style="{backgroundImage:`url(${bgImg})`,backgroundSize: '100% 100%'}"
-        />
+    <view class="order-container" v-if="type =='refund'" :style="{paddingBottom:containerPaddingBottom}" >
+      <view style="position: relative;" :style="{backgroundImage:`url(${bgImg})`,backgroundSize: '100% 100%'}">
+        <view class="bgcStyle" :style="{backgroundImage:`url(${bgImg})`,backgroundSize: '100% 100%'}"/>
         <view :style="{height:navBarHeight}"></view>
         <view class="order-status">
           <view class="status">
-            <image
-              src="../../../static/ic_order_failed.svg"
-              mode=""
-            />
+            <image src="../../../static/ic_order_failed.svg" mode=""/>
             <text v-if="status == 3 || status == 4">退款关闭</text>
             <text v-if="status == 5">退款失败</text>
           </view>
@@ -42,30 +28,18 @@
       </view>
 
       <view class="order-header">
-        <image
-          v-if="status == 5 "
-          src="../../../static/ic_order_refund_failed.svg"
-          mode=""
-        />
-        <image
-          v-else
-          src="../../../static/ic_failed.svg"
-          mode=""
-        />
+        <image v-if="status == 5 " src="../../../static/ic_order_refund_failed.svg" mode="" />
+        <image v-else src="../../../static/ic_failed.svg"  mode=""/>
 
-        <view
-          v-if="status == 3"
-          class="cancel-text"
-        >商家拒绝了您的申请，如有问题未解决，您可以重新申请</view>
-        <view
-          v-if="status == 4"
-          class="cancel-text"
-        >您已取消了本次退款，如有问题未解决，您可以重新申请</view>
-        <view
-          v-if="status == 5"
-          class="cancel-text failed-text"
-        >您的退款账户存在异常，您可联系客服或者重新发起申请</view>
-
+        <view v-if="status == 3" class="cancel-text">
+					商家拒绝了您的申请，如有问题未解决，您可以重新申请
+				</view>
+        <view v-if="status == 4" class="cancel-text">
+					您已取消了本次退款，如有问题未解决，您可以重新申请
+				</view>
+        <view v-if="status == 5" class="cancel-text failed-text" >
+					您的退款账户存在异常，您可联系客服或者重新发起申请
+				</view>
       </view>
 
       <view class="body1">
@@ -79,23 +53,12 @@
         />
         <store-calue-card-item :showActualPay="true" v-else />
 
-        <view
-          class="refund-money"
-          v-if="refundInfo.freight || refundInfo.handlingFees"
-        >
+        <view class="refund-money" v-if="refundInfo.freight || refundInfo.handlingFees">
           <!--运费 -->
-          <view
-            class="price-item"
-            v-if="refundInfo.freight"
-          >
+          <view  class="price-item" v-if="refundInfo.freight">
             <view class="title">
               <text style="margin-right: 8rpx;">运费</text>
-              <image
-                src="../../../../static/price_icon.svg"
-                class="icon"
-                mode=""
-                @click="readExpenses(1)"
-              ></image>
+              <image src="../../../../static/price_icon.svg" class="icon" mode="" @click="readExpenses(1)"/>
             </view>
             <view class="price">
               <text>￥</text>
@@ -104,18 +67,14 @@
           </view>
 
           <!-- 搬运费 -->
-          <view
-            class="price-item"
-            v-if="refundInfo.handlingFees"
-          >
+          <view class="price-item" v-if="refundInfo.handlingFees" >
             <view class="title">
               <text style="margin-right: 8rpx;">搬运费</text>
               <image
                 src="../../../../static/price_icon.svg"
                 class="icon"
                 mode=""
-                @click="readExpenses(2)"
-              ></image>
+                @click="readExpenses(2)"/>
             </view>
             <view>
               <text>￥</text><text class="price-style price-font">{{handlePrice(refundInfo.handlingFees)[0]}}.{{handlePrice(refundInfo.handlingFees)[1]}}</text>
@@ -126,83 +85,47 @@
 
       <order-refund-info :refundInfo="refundInfo"></order-refund-info>
 
-      <view
-        v-if="status == 3 || status == 5 || showReApply==true "
-        class="contact-customer-Reapply"
-        :style="{paddingBottom:systemBottom,height:systemHeight}"
-      >
-        <view
-          v-if="status == 3 || status == 5 "
-          class="contact-customer"
-          @click="contactCustomer()"
-        >
+      <view v-if="status == 3 || status == 5 || showReApply==true " class="contact-customer-Reapply" :style="{paddingBottom:systemBottom,height:systemHeight}" >
+        <view v-if="status == 3 || status == 5 " class="contact-customer" @click="contactCustomer()">
           联系客服
         </view>
 
-        <view
-          v-if="showReApply==true"
-          class="Reapply"
-          @click="toApplayForRefund(refundInfo)"
-        >
+        <view v-if="showReApply==true" class="Reapply" @click="toApplayForRefund(refundInfo)" >
           重新申请
         </view>
       </view>
     </view>
 
     <!-- 订单详情  已关闭页面 -->
-    <view
-      class="order-container"
-      v-if="type =='close'"
-      :style="{paddingBottom:systemBottom}"
-    >
-      <view
-        style="position: relative;"
-        :style="{backgroundImage:`url(${bgImg})`,backgroundSize: '100% 100%'}"
-      >
-        <view
-          class="bgcStyle"
-          :style="{backgroundImage:`url(${bgImg})`,backgroundSize: '100% 100%'}"
-        />
+    <view class="order-container" v-if="type =='close'" :style="{paddingBottom:systemBottom}">
+      <view style="position: relative;" :style="{backgroundImage:`url(${bgImg})`,backgroundSize: '100% 100%'}">
+        <view class="bgcStyle" :style="{backgroundImage:`url(${bgImg})`,backgroundSize: '100% 100%'}" />
         <view :style="{height:navBarHeight}"></view>
         <view class="order-status">
           <view class="status">
-            <image
-              src="../../../static/ic_order_failed.svg"
-              mode=""
-            />
+            <image src="../../../static/ic_order_failed.svg" mode="" />
             <text>已关闭</text>
           </view>
         </view>
       </view>
-      <order-user-base-info :data="orderInfo"></order-user-base-info>
-      <view
-        class="body2"
-        v-for="(item,index) in orderInfo.details"
-        :key="index"
-      >
+      <order-user-base-info v-if="orderInfo.customerName && orderInfo.customerPhone && orderInfo.estateInfo" :data="orderInfo"></order-user-base-info>
+      <view class="body2" v-for="(item2,index2) in orderInfo.details" :key="index2">
+
         <view class="header">
-          <view class="header-content">
-            <text
-              style="color: #333333;"
-              @click="gotoShop(item)"
-            >{{item.storeName}}</text>
-            <image
-              src="../../../static/ic_more.svg"
-              mode=""
-            />
+          <view class="header-content"> 
+            <text v-if="orderInfo.type !==5"  style="color: #333333;" @click="gotoShop(item2)" >{{item2.storeName}}</text>
+            <text v-else style="color: #333333;" @click="gotoShop(item2)" >{{orderInfo.orderName}}</text>
+						<image v-if="orderInfo.type !==5 " src="../../../static/ic_more.svg" mode=""/>
           </view>
           <view class="icon"></view>
         </view>
-        <view
-          v-for="item2 in item.details"
-          :key="item2.id"
-        >
+        <view v-for="item3 in item2.details" :key="item3.id" >
           <order-item
-					v-if="item2.type !== 5"
-            :dataList="item2"
-            @handleDetail="productDetail(item2)"
+						v-if="item3.type !== 5"
+            :dataList="item3"
+            @handleDetail="productDetail(item3)"
           />
-          <store-calue-card-item :showActualPay="true" v-else />
+          <store-calue-card-item :dataInfo="item3" :showActualPay="true" v-else />
         </view>
       </view>
       <order-price
