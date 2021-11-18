@@ -32,7 +32,7 @@
                 </view>
                 <view class="tag-box">
                   <view class="middle-service" v-if="goodsItem.product.hasBadgeLevel">中级服务</view>
-                  <view class="price-tag" v-if="goodsItem.product.hasAllowance">
+                  <view :class="{'price-tag': goodsItem.product.hasBadgeLevel}" v-if="goodsItem.product.hasAllowance">
                     <text>打扮家补贴{{(goodsItem.product.sku.marketPrice -goodsItem.product.skuPrice)/100}}元</text>
                   </view>
                 </view>
@@ -353,9 +353,9 @@
     line-height: 36rpx;
   }
 
-  /*  .price-tag {
+   .price-tag {
     margin-left: 8rpx;
-  } */
+  }
 
   .price-tag text {
     float: left;
