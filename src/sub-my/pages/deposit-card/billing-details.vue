@@ -16,7 +16,7 @@
 					<view class="left">
 						<view class="category">{{item.transferTypeName}}</view>
 						<view class="order">
-							订单号：{{item.orderNum}}
+							订单号：{{item.orderNo}}
 						</view>
 					</view>
 					<view class="right">

@@ -41,7 +41,7 @@
 				v-for="(item,index) in list" :key="item.activityId">
 				<view class="top">
 					<view class="title">{{item.activityName}}</view>
-					<view class="rules">
+					<view class="rules" @click="clickRules">
 						<view class="text">活动规则</view>
 						<image src="http://dbj.dragonn.top/static/mp/dabanjia/images/my/ic_more.png" class="icon"></image>
 					</view>
@@ -54,7 +54,7 @@
 						v-for="(amount,idx) in item.detailDTOList"
 						:key="amount.detailId"
 						@click="chooseOne(amount.detailId,item.eligibility)">
-						<image src="http://dbj.dragonn.top/static/mp/dabanjia/images/my/ic_choice.png"
+						<image src="http://dbj.dragonn.top/static/mp/dabanjia/images/my/choosed.png"
 							class="icon" v-if="amount.isChecked"></image>
 						<view class="numWrap" :class="{'active': amount.isChecked,'cannot': !item.eligibility}">
 							<view class="text">充</view>
@@ -66,9 +66,14 @@
 			</view>
 			<view class="buyWrap" v-if="showBuyBtn">
 				<view class="button" @click="buyNow">立即购买</view>
-				<view class="explain" @click="toRules">购买即同意
+				<view class="explain" @click="toActivityRules">购买即同意
 					<text>《打扮家储值卡使用规则》</text>
 				</view>
+			</view>
+		</view>
+		<view class="mask">
+			<view class="popup">
+				<view class="top"></view>
 			</view>
 		</view>
 	</scroll-view>
@@ -85,6 +90,7 @@
 				isChoose: false,
 				noList: false,
 				showBuyBtn: true,
+				showRules: false,
 				detailId: 0
 			}
 		},
@@ -108,10 +114,16 @@
 					url: "/sub-my/pages/deposit-card/billing-details"
 				})
 			},
-			toRules(){
+			toActivityRules(){
 				uni.navigateTo({
 					url: "/sub-my/pages/deposit-card/activity-rules"
 				})
+			},
+			clickRules(){
+				this.showRules = true
+			},
+			closeRules(){
+				this.showRules = false
 			},
 			chooseOne(detailId,eligibility){
 				this.isChoose = !this.isChoose
@@ -181,13 +193,12 @@
 							ele.isChecked = false
 							return ele
 						})
-						if(item.eligibility && item.detailDTOList.length){
-							this.$set(item.detailDTOList[0],'isChecked',true)
-							// item.detailDTOList[0].isChecked = true
-							this.detailId = item.detailDTOList[0].detailId
-						}
 						return item
 					})
+					let idx = data.findIndex(i=>i.eligibility&&i.detailDTOList.length)
+					console.log(idx,'//')
+					this.$set(this.list[idx].detailDTOList[0],'isChecked',true)
+					this.detailId = this.list[idx].detailDTOList[0].detailId
 				})
 			}
 		}
@@ -312,8 +323,10 @@
 		display: flex;
 	}
 	.top .rules .icon{
-		width: 32rpx;
-		height: 32rpx;
+		width: 16rpx;
+		height: 16rpx;
+		margin-left: 4rpx;
+		margin-top: 8rpx;
 		display: block;
 	}
 	.top .rules .text{
