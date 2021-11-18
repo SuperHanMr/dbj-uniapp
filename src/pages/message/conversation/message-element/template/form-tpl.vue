@@ -66,7 +66,7 @@
       },
       actions() {
         return (this.template.body.actions || [])
-          .filter(action => action.isDisplay === undefined)//action.type === "native" && action.isDisplay))
+          .filter(action => action.isDisplay === undefined || (action.type === "native" && action.isDisplay))
       }
     },
     methods: {
