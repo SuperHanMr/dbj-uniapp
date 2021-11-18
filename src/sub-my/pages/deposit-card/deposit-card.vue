@@ -89,7 +89,7 @@
 		mounted() {
 			this.requestBalance()
 			this.requestPage()
-		},
+		}, 
 		methods: {
 			toBillingDetails(){
 				uni.navigateTo({
