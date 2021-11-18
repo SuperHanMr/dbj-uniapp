@@ -218,6 +218,7 @@
       >
         <view
           v-for="(item,index) in tipsList"
+          :key="item.id"
           :class="{'fontbold':index==1||index==3}"
           style="margin-top: 24rpx;"
         >
@@ -375,10 +376,14 @@ export default {
       });
     },
     payType(type) {
-      if (type == 2) {
-        return "支付宝支付";
-      } else if (type == 1) {
+      if (type == 1) {
         return "微信支付";
+      } else if (type == 2) {
+        return "支付宝支付";
+      } else if (type == 3) {
+        return "国美支付";
+      } else if (type == 4) {
+        return "储值卡支付";
       } else {
         return "其他";
       }
