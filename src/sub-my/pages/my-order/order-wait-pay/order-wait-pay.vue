@@ -86,10 +86,12 @@
             :key="item2.id"
           >
             <order-item
+							v-if="item2.type !==5"
               :orderStatus="1"
               :dataList="item2"
               @handleDetail="productDetail(item2)"
             />
+						<store-calue-card-item v-else />
           </view>
           <view
             class="discount-container"
@@ -217,7 +219,7 @@
 				</view>
 			</view> -->
       <view
-        v-if="haveCard"
+        v-if="haveCard && orderInfo.isReplenish"
         class="pay-way"
         style="justify-content:center"
         @click="clickCard"
@@ -528,6 +530,7 @@ export default {
     },
     // 跳转到店铺页面
     gotoShop(item) {
+			if(item.type ==5 ) return
       console.log("去店铺首页！！！！");
       console.log("this.storeId=", item.storeId, "this.areaId=", this.areaId);
       uni.navigateTo({
@@ -915,72 +918,61 @@ export default {
         box-sizing: border-box;
       }
 
-      .discount-container {
-        padding-bottom: 32rpx;
-        display: flex;
-        flex-flow: row nowrap;
-        flex: 1;
-        align-items: center;
-        justify-content: flex-end;
-        font-size: 22rpx;
-        color: #999999;
+				.discount-container {
+					padding-bottom: 32rpx;
+					display: flex;
+					flex-flow: row nowrap;
+					flex: 1;
+					align-items: center;
+					justify-content: flex-end;
+					font-size: 22rpx;
+					color: #999999;
 
-        .left,
-        .right {
-          .item {
-            width: 302rpx;
-            height: 32rpx;
-            display: flex;
-            flex: 1;
-            flex-flow: row nowrap;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 8rpx;
-            color: #999999;
-            font-size: 22rpx;
-            .item-style {
-              display: flex;
-              flex: 1;
-              flex-flow: row nowrap;
-              justify-content: space-between;
-              align-items: center;
-              margin-bottom: 8rpx;
-              color: #999999;
-              font-size: 22rpx;
+					.left,
+					.right {
+						.item {
+							width: 302rpx;
+							height: 32rpx;
+							display: flex;
+							flex: 1;
+							flex-flow: row nowrap;
+							justify-content: space-between;
+							align-items: center;
+							margin-bottom: 8rpx;
+							color: #999999;
+							font-size: 22rpx;
+							.item-style{
+								display: flex;
+								flex-flow: row nowrap;
+								align-items: center;
 
-              .item-style {
-                display: flex;
-                flex-flow: row nowrap;
-                align-items: center;
+								.icon{
+									width: 24rpx;
+									height: 24rpx;
+									object-fit: cover;
+								}
+							}
+						}
 
-                .icon {
-                  width: 24rpx;
-                  height: 24rpx;
-                  object-fit: cover;
-                }
-              }
-            }
+						.item:nth-last-child(1) {
+							margin-bottom: 0;
+						}
+					}
 
-            .item:nth-last-child(1) {
-              margin-bottom: 0;
-            }
-          }
+					.line1 {
+						width: 2rpx;
+						height: 40rpx;
+						background: #ebebeb;
+						margin: 16rpx 40rpx;
+					}
 
-          .line1 {
-            width: 2rpx;
-            height: 40rpx;
-            background: #ebebeb;
-            margin: 16rpx 40rpx;
-          }
-
-          .line2 {
-            width: 2rpx;
-            height: 20rpx;
-            background: #ebebeb;
-            margin: 6rpx 40rpx;
-          }
-        }
-
+					.line2 {
+						width: 2rpx;
+						height: 20rpx;
+						background: #ebebeb;
+						margin: 6rpx 40rpx;
+					}
+				}
         .discount-container2 {
           margin-bottom: 24rpx;
           display: flex;
@@ -1016,7 +1008,7 @@ export default {
             margin: 16rpx 40rpx;
           }
         }
-      }
+      
 
       .paddingBottom {
         padding-bottom: 32rpx !important;

@@ -71,12 +71,13 @@
       <view class="body1">
         <order-item
           v-for="item in refundInfo.detailAppVOS"
+					v-if="item.type !==5"
           :key="item.id"
           :dataList="item"
           :refundType="true"
           @handleDetail="productDetail(item,'refund')"
         />
-        <!-- <store-calue-card-item :showActualPay="true"></store-calue-card-item> -->
+        <store-calue-card-item :showActualPay="true" v-else />
 
         <view
           class="refund-money"
@@ -197,10 +198,11 @@
           :key="item2.id"
         >
           <order-item
+					v-if="item2.type !== 5"
             :dataList="item2"
             @handleDetail="productDetail(item2)"
           />
-          <!-- <store-calue-card-item :showActualPay="true"></store-calue-card-item> -->
+          <store-calue-card-item :showActualPay="true" v-else />
         </view>
       </view>
       <order-price
@@ -388,7 +390,7 @@ export default {
     // 跳转到店铺页面
     gotoShop(item) {
       console.log("去店铺首页！！！！");
-      console.log("this.storeId=", item.storeId, "this.areaId=", this.areaId);
+			if(item.type !==5) return 
       uni.navigateTo({
         url: `../../../../sub-classify/pages/shops/shops?storeId=${item.storeId}&areaId=${this.areaId}`,
       });

@@ -501,6 +501,12 @@
 						"navigationBarTitleText": "账单明细",
 						"onReachBottomDistance": 50
 					}
+				},
+				{
+					"path": "pages/deposit-card/activity-rules",
+					"style": {
+						"navigationBarTitleText": ""
+					}
 				}
 			]
 		},

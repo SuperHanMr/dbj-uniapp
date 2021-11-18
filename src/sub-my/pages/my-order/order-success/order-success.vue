@@ -142,14 +142,13 @@
             class="orederItem"
           >
             <order-item
+							v-if="item3.type !==5"
               :dataList="item3"
               :orderStatus="3"
               @handleDetail="productDetail(item3)"
-            ></order-item>
-            <!-- <view class="ww">
-							dddd
-						</view>
-						<store-calue-card-item></store-calue-card-item> -->
+            />
+      
+						<store-calue-card-item v-else/>
           </view>
         </view>
       </view>
@@ -318,6 +317,7 @@ export default {
     // 跳转到店铺页面
     gotoShop(item2) {
       console.log("去店铺首页！！！！", item2);
+			if(item2.type==5)return
       console.log("item.storeId=", item2.storeId, "this.areaId=", this.areaId);
       uni.navigateTo({
         url: `../../../../sub-classify/pages/shops/shops?storeId=${item2.storeId}&areaId=${this.areaId}`,
