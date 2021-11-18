@@ -695,10 +695,12 @@
     float: right;
   }
   .safeguard {
-    padding: 2rpx 0;
-    border: 1px solid ##ff3347;
+    padding: 2rpx 6rpx;
+    border: 1rpx solid rgba(255,51,71,0.18);
     color: #ff3347;
-    font-size: 10px;
+    font-size: 20rpx;
+    width: fit-content;
+    border-radius: 6rpx;
   }
 
   .safe-icon {
