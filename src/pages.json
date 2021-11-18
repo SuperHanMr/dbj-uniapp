@@ -505,7 +505,8 @@
 				{
 					"path": "pages/deposit-card/activity-rules",
 					"style": {
-						"navigationBarTitleText": ""
+						"navigationBarTitleText": "",
+						"navigationStyle": "custom"
 					}
 				}
 			]
