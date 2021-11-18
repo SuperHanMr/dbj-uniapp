@@ -19,9 +19,9 @@
 	import {
 		createTim
 	} from "@/utils/tim.js";
-  import {
-    log
-  } from "@/utils/log.js"
+	import {
+		log
+	} from "@/utils/log.js"
 	export default {
 		data() {
 			return {
@@ -87,11 +87,11 @@
 					data,
 					type
 				} = e.detail;
-        log({
-          type: "wx-gome-login-success",
-          data: data,
-          loginType: type
-        })
+				log({
+					type: "wx-gome-login-success",
+					data: data,
+					loginType: type
+				})
 				// let userInfo = uni.getStorageSync("userInfo");
 				uni.setStorageSync("scn", data.SCN);
 				// uni.setStorageSync("userInfo", userInfo);

@@ -71,9 +71,9 @@
 		requireConfirm,
 		payFreight,
 	} from "../../../api/decorate.js";
-  import {
-    log
-  } from "../../../utils/log.js"
+	import {
+		log
+	} from "../../../utils/log.js"
 	export default {
 		data() {
 			return {
@@ -96,7 +96,7 @@
 			onReject() {
 				uni.showModal({
 					content: '是否拒绝要货申请',
-					success: (res)=> {
+					success: (res) => {
 						if (res.confirm) {
 							this.toReject()
 						} else if (res.cancel) {
@@ -147,13 +147,13 @@
 							},
 							fail(e) {
 								console.log(e);
-                log({
-                  type: "wx-pay-fail",
-                  page: "require-pay",
-                  data: e,
-                  openId: getApp().globalData.openId,
-                  openIdLocal: uni.getStorageSync("openId")
-                });
+								log({
+									type: "wx-pay-fail",
+									page: "require-pay",
+									data: e,
+									openId: getApp().globalData.openId,
+									openIdLocal: uni.getStorageSync("openId")
+								});
 							},
 						});
 					});

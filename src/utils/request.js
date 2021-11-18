@@ -8,7 +8,7 @@ import axios from '@/js_sdk/gangdiedao-uni-axios'
  */
 const toLogin = () => {
 	const pages = getCurrentPages();
-	const currentPage = pages?.[(pages?.length ?? 1) - 1];
+	const currentPage = pages?. [(pages?.length ?? 1) - 1];
 	uni.redirectTo({
 		url: `/pages/home/index?redirect=${encodeURIComponent(`/${currentPage?.route ?? ''}`)}`,
 	});
@@ -62,119 +62,119 @@ instance.defaults.headers.post['Content-Type'] = 'application/x-www-form-urlenco
  */
 instance.interceptors.request.use(
 	async (config) => {
-		if (!(config.data && config.data.hideToast)) {
-			uni.showLoading({
-				title: '加载中...',
-				mask: true
-			});
-		}
-    requestTimeMap.set(config, new Date().getTime());
-		const token = getApp().globalData.token;
+			if (!(config.data && config.data.hideToast)) {
+				uni.showLoading({
+					title: '加载中...',
+					mask: true
+				});
+			}
+			requestTimeMap.set(config, new Date().getTime());
+			const token = getApp().globalData.token;
 
-		if (token) {
-			config.headers = {
-				...(config.headers ?? {}),
-				accessToken: `${token}`,
-			};
-		}
-		return config;
-	},
-	(error) => Promise.reject(error),
+			if (token) {
+				config.headers = {
+					...(config.headers ?? {}),
+					accessToken: `${token}`,
+				};
+			}
+			return config;
+		},
+		(error) => Promise.reject(error),
 );
 
 // 响应拦截器
 instance.interceptors.response.use(
 	// 请求成功
 	async (res) => {
-    let startTime = requestTimeMap.get(res.config);
-    if (startTime) {
-      let costTime = new Date().getTime() - startTime;
-      requestTimeMap.delete(res.config);
-      console.log("request cost time:" + costTime + "ms, url:" + res.config.url);
-    }
-
-		uni.hideLoading();
-
-		if (res.data.code !== 1) {
-			return Promise.reject(res)
-		} else {
-			if (res.data && res.data.data!=null) {
-				return res.data.data;
+			let startTime = requestTimeMap.get(res.config);
+			if (startTime) {
+				let costTime = new Date().getTime() - startTime;
+				requestTimeMap.delete(res.config);
+				console.log("request cost time:" + costTime + "ms, url:" + res.config.url);
 			}
-			return null;
-		}
-	},
-	// 请求失败
-	(error) => {
-		var pages = getCurrentPages();
-		var page = pages[pages.length - 1];
-		var pagePath = page.$page.fullPath;
-    requestTimeMap.delete(error.config);
-		uni.hideLoading();
-		if (error.response && error.response.status === 401) {
-			//刷新token
-			// uni.showModal({
-			// 	title: '提示',
-			// 	showCancel: false,
-			// 	content: '用户信息已过期,请重新登录',
-			// 	success: function(res) {
 
-			let config = {}
-			if (error.config && error.config.data) {
-				config = JSON.parse(error.config.data)
+			uni.hideLoading();
+
+			if (res.data.code !== 1) {
+				return Promise.reject(res)
+			} else {
+				if (res.data && res.data.data != null) {
+					return res.data.data;
+				}
+				return null;
 			}
-			if (!(config && config.ignoreLogin)&& pagePath != '/pages/login/login') {
-        console.warn("goto login page", error.config);
+		},
+		// 请求失败
+		(error) => {
+			var pages = getCurrentPages();
+			var page = pages[pages.length - 1];
+			var pagePath = page.$page.fullPath;
+			requestTimeMap.delete(error.config);
+			uni.hideLoading();
+			if (error.response && error.response.status === 401) {
+				//刷新token
+				// uni.showModal({
+				// 	title: '提示',
+				// 	showCancel: false,
+				// 	content: '用户信息已过期,请重新登录',
+				// 	success: function(res) {
+
+				let config = {}
+				if (error.config && error.config.data) {
+					config = JSON.parse(error.config.data)
+				}
+				if (!(config && config.ignoreLogin) && pagePath != '/pages/login/login') {
+					console.warn("goto login page", error.config);
+					uni.navigateTo({
+						url: "/pages/login/login",
+					});
+				}
+				// 	}
+				// });
+
+				// return new Promise((resolve, reject) => {
+				// 	failRequestList.push({
+				// 		config: error.config,
+				// 		resolve: resolve,
+				// 		reject: reject
+				// 	});
+				// 	//重新请求接口
+				// 	retryAllFailRequest();
+				// })
+			} else if (error.response && error.response.status === 3504) {
+				// uni.showModal({
+				// 	title: '提示',
+				// 	showCancel: false,
+				// 	content: '您未登录或者登录已超时,请先登录！',
+				// 	success: function(res) {
 				uni.navigateTo({
 					url: "/pages/login/login",
 				});
+				// 	}
+				// });
 			}
-			// 	}
-			// });
+			if (error.response.status != 401 && error.response && error.response.data && error.response.data
+				.message) {
+				let config = {}
+				if (error.config && error.config.data) {
+					config = JSON.parse(error.config.data)
+				}
+				// console.log(error.response,error.config.data)
+				if ((error.response.data.code != 10001) && !(config.data && config.data.hideToast)) {
+					uni.showToast({
+						title: error.response.data.message,
+						icon: 'none'
+					})
+				}
 
-			// return new Promise((resolve, reject) => {
-			// 	failRequestList.push({
-			// 		config: error.config,
-			// 		resolve: resolve,
-			// 		reject: reject
-			// 	});
-			// 	//重新请求接口
-			// 	retryAllFailRequest();
-			// })
-		} else if (error.response && error.response.status === 3504) {
-			// uni.showModal({
-			// 	title: '提示',
-			// 	showCancel: false,
-			// 	content: '您未登录或者登录已超时,请先登录！',
-			// 	success: function(res) {
-			uni.navigateTo({
-				url: "/pages/login/login",
-			});
-			// 	}
-			// });
-		}
-		if (error.response.status != 401 && error.response && error.response.data && error.response.data
-			.message) {
-			let config = {}
-			if (error.config && error.config.data) {
-				config = JSON.parse(error.config.data)
-			}     
-      // console.log(error.response,error.config.data)
-			if ((error.response.data.code != 10001) &&!(config.data && config.data.hideToast)) {
-				uni.showToast({
-					title: error.response.data.message,
-					icon: 'none'
-				})
 			}
-
-		}
-		console.error("------response-error-----", 
-      error.response.status, 
-      error.config.url, 
-      error.config, 
-      error.response);
-		return Promise.reject(error.response);
-	},
+			console.error("------response-error-----",
+				error.response.status,
+				error.config.url,
+				error.config,
+				error.response);
+			return Promise.reject(error.response);
+		},
 );
 async function refrishToken() {
 	let res = await instance.post('/app/oauth/gome/login', {
