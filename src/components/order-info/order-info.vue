@@ -30,7 +30,7 @@
 			
 			<view class="item" v-if="showPayType">
 				<text class="item-header">支付方式：</text>
-				<text class="item-body">微信支付</text>
+				<text class="item-body">{{payChannel}}</text>
 			</view>
 	
 	</view>
@@ -55,6 +55,9 @@
 				type:String,
 			},
 			payTime:{
+				type:String,
+			},
+			payChannel:{
 				type:String,
 			},
 			marginBottom:{

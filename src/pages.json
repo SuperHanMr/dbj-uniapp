@@ -490,13 +490,22 @@
 				{
 					"path": "pages/deposit-card/deposit-card",
 					"style": {
-						"navigationBarTitleText": "储值卡"
+						"navigationBarTitleText": "储值卡",
+						"enablePullDownRefresh": true,
+						"navigationBarBackgroundColor": "#FFE58F"
 					}
 				},
 				{
 					"path": "pages/deposit-card/billing-details",
 					"style": {
-						"navigationBarTitleText": "账单明细"
+						"navigationBarTitleText": "账单明细",
+						"onReachBottomDistance": 50
+					}
+				},
+				{
+					"path": "pages/deposit-card/activity-rules",
+					"style": {
+						"navigationBarTitleText": ""
 					}
 				}
 			]

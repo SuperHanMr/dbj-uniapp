@@ -1,40 +1,52 @@
 <template>
 	<view class="wrap">
-		<view class="container">
-			<view class="main">
-				<view class="item">
-					<view class="icon"></view>
-					<view class="content">
-						<view class="left">
-							<view class="category">充值</view>
-							<view class="order">
-								订单号：12345678909876
-							</view>
+		<view class="main" v-if="details.length">
+			<view class="item" v-for="item in details" :key="item.id">
+				<image src="http://dbj.dragonn.top/static/mp/dabanjia/images/my/ic_recharge.png"
+					class="icon" v-if="item.transferType === 17"></image>
+				<image src="http://dbj.dragonn.top/static/mp/dabanjia/images/my/ic_consume.png"
+					class="icon" v-if="item.transferType === 18"></image>
+				<image src="http://dbj.dragonn.top/static/mp/dabanjia/images/my/ic_refund.png" class="icon"
+					v-if="item.transferType === 19 || item.transferType === 20"></image>
+				<image src="http://dbj.dragonn.top/static/mp/dabanjia/images/my/ic_card_refund%402x.png"
+					class="icon" v-if="item.transferType === 21"></image>
+				<image src="http://dbj.dragonn.top/static/mp/dabanjia/images/my/ic_cancel_refund.png"
+					class="icon" v-if="item.transferType === 22"></image>
+				<view class="content">
+					<view class="left">
+						<view class="category">{{item.transferTypeName}}</view>
+						<view class="order">
+							订单号：{{item.orderNo}}
 						</view>
-						<view class="right">
-							<view class="num">+440.00</view>
-							<view class="date">2021/11/12 21:33</view>
-						</view>
+					</view>
+					<view class="right">
+						<view class="num price-font">{{(item.transferInoutType === 1? '+': '-')+(item.amount/100)}}</view>
+						<view class="date">{{item.createTime|formatDate('YYYY/MM/DD HH:mm')}}</view>
 					</view>
 				</view>
 			</view>
 			<view class="tip" v-if="noMore">没有更多了～</view>
 		</view>
-		<!-- <view class="noRecords">
-			<image src="https://ali-image.dabanjia.com/static/mp/capsule-store/share/empty_records.png"></image>
+		<view class="noDetails" v-else>
+			<image src="http://dbj.dragonn.top/static/mp/dabanjia/images/my/list_empty.png"></image>
 			<view class="text">暂无账单明细</view>
-		</view> -->
+		</view>
 	</view>
 </template>
 
 <script>
-	import {getShares} from "../../../api/user.js"
+	import {getBillingDetails} from "../../../api/user.js"
+	import {formatDate} from "../../../utils/common.js"
 	export default {
+		filters: {
+			formatDate
+		},
 		data(){
 			return {
-				records: [],
+				details: [],
 				lastOneId: -1,
-				noMore: false
+				noMore: false,
+				hasData: false
 			}
 		},
 		onReachBottom() {
@@ -46,19 +58,21 @@
 		methods: {
 			requestPage(){
 				let params = {
-					pageSize: 10,
-					pageMaxId: this.lastOneId
+					limit: 10,
+					lastId: this.lastOneId
 				}
-				getShares(params).then(data => {
+				getBillingDetails(params).then(data => {
 					if(data){
 						if(data.length){
 							this.lastOneId = data[data.length-1].id
 						}else{
 							this.noMore = true
 						}
-						this.records = this.records.concat(data)
+						this.details = this.details.concat(data)
+						this.hasData = this.details.length ? true : false
+						console.log(this.details,this.lastOneId)
 					}
-					console.log(data,this.records,this.lastOneId)
+					console.log(data)
 				})
 			}
 		}
@@ -69,9 +83,9 @@
 	.wrap{
 		width: 750rpx;
 		min-height: 1500rpx;
-		background-color: #F5F6F7;
+		background: #FFFFFF;
 	}
-	.container{
+	.main{
 		padding-bottom: 80rpx;
 	}
 	.tip{
@@ -82,21 +96,30 @@
 		font-size: 24rpx;
 		color: #999999;
 	}
-	.main{
-		
-	}
 	.item{
-		width: 750rpx;
-		height: 152rpx;
-		background: #FFFFFF;
+		width: 718rpx;
+		height: 76rpx;
+		padding: 38rpx 32rpx;
+		padding-right: 0;
 		display: flex;
 		justify-content: space-between;
 		align-items: center;
 	}
+	.icon{
+		width: 48rpx;
+		height: 48rpx;
+		display: block;
+		margin-top: 14rpx;
+		margin-right: 24rpx;
+	}
 	.content{
 		width: 644rpx;
 		height: 152rpx;
-		border-bottom: 2rpx solid #F3F3F3;
+		padding-right: 32rpx;
+		border-bottom: 2rpx solid #f3f3f3;
+		display: flex;
+		justify-content: space-between;
+		align-items: center;
 	}
 	.category{
 		width: 56rpx;
@@ -105,26 +128,39 @@
 		color: #333333;
 	}
 	.order{
-		width: 52rpx;
-		margin-left: 32rpx;
+		width: 326rpx;
+		height: 28rpx;
+		font-size: 22rpx;
+		color: #999999;
+		display: flex;
 	}
-	.noRecords{
+	.num{
+		text-align: right;
+		font-size: 36rpx;
+		color: #333333;
+	}
+	.date{
+		width: 178rpx;
+		height: 28rpx;
+		font-size: 22rpx;
+		text-align: right;
+		color: #cccccc;
+	}
+	.noDetails{
 		width: 750rpx;
 		min-height: 1500rpx;
-		padding-top: 308rpx;
+		padding-top: 408rpx;
 		background: #FFFFFF;
 	}
-	.noRecords image{
-		width: 360rpx;
-		height: 360rpx;
+	.noDetails image{
+		width: 402rpx;
+		height: 416rpx;
 		display: block;
-		
-		margin-left: 195rpx;
+		margin-left: 174rpx;
 	}
-	.noRecords .text{
+	.noDetails .text{
 		width: 198rpx;
-		height: 34rpx;
-		margin-top: 12rpx;
+		height: 40rpx;
 		margin-left: 291rpx;
 		font-size: 28rpx;
 		color: #999999;
