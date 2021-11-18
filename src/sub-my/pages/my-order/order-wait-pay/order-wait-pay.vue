@@ -86,12 +86,12 @@
             :key="item2.id"
           >
             <order-item
-							v-if="item2.type !==5"
+              v-if="item2.type !==5"
               :orderStatus="1"
               :dataList="item2"
               @handleDetail="productDetail(item2)"
             />
-						<store-calue-card-item v-else />
+            <store-calue-card-item v-else />
           </view>
           <view
             class="discount-container"
@@ -218,8 +218,8 @@
 					<text>微信支付</text>
 				</view>
 			</view> -->
-			
-			<!-- v-if="haveCard && orderInfo.isReplenish" -->
+
+      <!-- v-if="haveCard && orderInfo.isReplenish" -->
       <view
         v-if="haveCard"
         class="pay-way"
@@ -365,6 +365,7 @@ import {
   confirmReceiptOrder,
 } from "../../../../api/order.js";
 import { getBalance } from "../../../../api/user.js";
+import { log } from "../../../../utils/log.js";
 export default {
   data() {
     return {
@@ -532,7 +533,7 @@ export default {
     },
     // 跳转到店铺页面
     gotoShop(item) {
-			if(item.type ==5 ) return
+      if (item.type == 5) return;
       console.log("去店铺首页！！！！");
       console.log("this.storeId=", item.storeId, "this.areaId=", this.areaId);
       uni.navigateTo({
@@ -623,6 +624,13 @@ export default {
                 title: "支付失败",
                 icon: "none",
                 duration: 2000,
+              });
+              log({
+                type: "wx-pay-fail",
+                page: "order-wait-pay",
+                data: e,
+                openId: getApp().globalData.openId,
+                openIdLocal: uni.getStorageSync("openId"),
               });
             },
           });
@@ -920,97 +928,96 @@ export default {
         box-sizing: border-box;
       }
 
-				.discount-container {
-					padding-bottom: 32rpx;
-					display: flex;
-					flex-flow: row nowrap;
-					flex: 1;
-					align-items: center;
-					justify-content: flex-end;
-					font-size: 22rpx;
-					color: #999999;
+      .discount-container {
+        padding-bottom: 32rpx;
+        display: flex;
+        flex-flow: row nowrap;
+        flex: 1;
+        align-items: center;
+        justify-content: flex-end;
+        font-size: 22rpx;
+        color: #999999;
 
-					.left,
-					.right {
-						.item {
-							width: 302rpx;
-							height: 32rpx;
-							display: flex;
-							flex: 1;
-							flex-flow: row nowrap;
-							justify-content: space-between;
-							align-items: center;
-							margin-bottom: 8rpx;
-							color: #999999;
-							font-size: 22rpx;
-							.item-style{
-								display: flex;
-								flex-flow: row nowrap;
-								align-items: center;
-
-								.icon{
-									width: 24rpx;
-									height: 24rpx;
-									object-fit: cover;
-								}
-							}
-						}
-
-						.item:nth-last-child(1) {
-							margin-bottom: 0;
-						}
-					}
-
-					.line1 {
-						width: 2rpx;
-						height: 40rpx;
-						background: #ebebeb;
-						margin: 16rpx 40rpx;
-					}
-
-					.line2 {
-						width: 2rpx;
-						height: 20rpx;
-						background: #ebebeb;
-						margin: 6rpx 40rpx;
-					}
-				}
-        .discount-container2 {
-          margin-bottom: 24rpx;
-          display: flex;
-          flex-flow: row nowrap;
-          flex: 1;
-          align-items: flex-start;
-          justify-content: flex-end;
-          font-size: 22rpx;
-          color: #999999;
-
-          .left,
-          .right {
-            .item {
-              width: 302rpx;
-              height: 32rpx;
-              line-height: 32rpx;
+        .left,
+        .right {
+          .item {
+            width: 302rpx;
+            height: 32rpx;
+            display: flex;
+            flex: 1;
+            flex-flow: row nowrap;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 8rpx;
+            color: #999999;
+            font-size: 22rpx;
+            .item-style {
               display: flex;
-              flex: 1;
               flex-flow: row nowrap;
-              justify-content: space-between;
-              margin-bottom: 8rpx;
-            }
+              align-items: center;
 
-            .item:nth-last-child(1) {
-              margin-bottom: 0;
+              .icon {
+                width: 24rpx;
+                height: 24rpx;
+                object-fit: cover;
+              }
             }
           }
 
-          .line {
-            width: 2rpx;
-            height: 80rpx;
-            background: #ebebeb;
-            margin: 16rpx 40rpx;
+          .item:nth-last-child(1) {
+            margin-bottom: 0;
           }
         }
-      
+
+        .line1 {
+          width: 2rpx;
+          height: 40rpx;
+          background: #ebebeb;
+          margin: 16rpx 40rpx;
+        }
+
+        .line2 {
+          width: 2rpx;
+          height: 20rpx;
+          background: #ebebeb;
+          margin: 6rpx 40rpx;
+        }
+      }
+      .discount-container2 {
+        margin-bottom: 24rpx;
+        display: flex;
+        flex-flow: row nowrap;
+        flex: 1;
+        align-items: flex-start;
+        justify-content: flex-end;
+        font-size: 22rpx;
+        color: #999999;
+
+        .left,
+        .right {
+          .item {
+            width: 302rpx;
+            height: 32rpx;
+            line-height: 32rpx;
+            display: flex;
+            flex: 1;
+            flex-flow: row nowrap;
+            justify-content: space-between;
+            margin-bottom: 8rpx;
+          }
+
+          .item:nth-last-child(1) {
+            margin-bottom: 0;
+          }
+        }
+
+        .line {
+          width: 2rpx;
+          height: 80rpx;
+          background: #ebebeb;
+          margin: 16rpx 40rpx;
+        }
+      }
 
       .paddingBottom {
         padding-bottom: 32rpx !important;

@@ -331,6 +331,8 @@ import {
   cancelOrder,
   confirmReceiptOrder,
 } from "@/api/order.js";
+
+import { log } from "@/utils/log.js";
 export default {
   data() {
     return {
@@ -434,7 +436,7 @@ export default {
     getOrderList() {
       this.loading = true;
       getOrderList({
-				isNewVersion:true,
+        isNewVersion: true,
         orderStatus: this.currentIndex - 1,
         lastId: this.lastId[this.currentIndex],
         rows: this.rows,
@@ -619,6 +621,13 @@ export default {
                 title: "支付失败！",
                 icon: "none",
                 duration: 1000,
+              });
+              log({
+                type: "wx-pay-fail",
+                page: "my-order",
+                data: e,
+                openId: getApp().globalData.openId,
+                openIdLocal: uni.getStorageSync("openId"),
               });
             },
           });
