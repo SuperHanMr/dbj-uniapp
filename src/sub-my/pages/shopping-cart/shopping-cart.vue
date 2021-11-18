@@ -101,7 +101,7 @@
 				<view class="popupNum">
 					<view class="header">
 						<view class="title">编辑数量</view>
-						<view class="text">当前最小单位为{{miniOrder}}，输入的数量需为{{step}}的倍数</view>
+						<view class="text">当前最小单位为{{step}}，输入的数量需为{{step}}的倍数</view>
 					</view>
 					<input class="uni-input" type="digit" v-model="buyNum" focus :cursor-spacing="102" />
 					<view class="button">
@@ -539,16 +539,8 @@
 				let val = this.buyNum;
 				let target =
 					this.shopList[this.currentShopIndex].skuList[this.currentGoodsIndex];
-				let miniOrder = +target.minimumOrderQuantity || 1;
-				let step = +target.stepLength || 1;
-				// if(isNaN(parseInt(val))){
-				// 	uni.showToast({
-				// 		title:`商品数量为数字`,
-				// 		icon:"none",
-				// 		duration:2000
-				// 	})
-				// 	return
-				// }
+				let miniOrder = +target.minimumOrderQuantity;
+				let step = +target.stepLength;
 				if (+val < miniOrder) {
 					setTimeout(() => {
 						uni.showToast({
@@ -558,7 +550,7 @@
 						});
 					}, 100);
 					return;
-				} else if (+val % step !== 0) {
+				} else if ((+val*100) % (step*100) !== 0) {
 					setTimeout(() => {
 						uni.showToast({
 							title: `当前最小单位为${step}，输入的数量需为${step}的倍数`,
