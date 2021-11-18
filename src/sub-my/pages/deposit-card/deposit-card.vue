@@ -10,27 +10,6 @@
 				</view>
 				<view class="bill" @click="toBillingDetails">账单明细</view>
 			</view>
-			<!-- <view class="activity">
-				<view class="top">
-					<view class="title">施工活动</view>
-					<view class="rules">
-						<view class="text">活动规则</view>
-						<view class="icon"></view>
-					</view>
-				</view>
-				<view class="date">活动时间：2021年11月12日-2021年11月13日</view>
-				<view class="banner"></view>
-				<view class="main">
-					<view class="prePay" :class="{'active': isChoose}" @click="chooseOne">
-						<view class="icon" v-if="isChoose"></view>
-						<view class="numWrap" :class="{'active': isChoose}">
-							<view class="text">充</view>
-							<view>¥</view>
-							<view class="num price-font">10000</view>
-						</view>
-					</view>
-				</view>
-			</view> -->
 			<view class="noList" v-if="noList">
 				<image src="http://dbj.dragonn.top/static/mp/dabanjia/images/my/img_sys_city.png"></image>
 				<view class="tit">敬请期待</view>
@@ -41,7 +20,7 @@
 				v-for="(item,index) in list" :key="item.activityId">
 				<view class="top">
 					<view class="title">{{item.activityName}}</view>
-					<view class="rules" @click="clickRules">
+					<view class="rules" @click="clickRules(index)">
 						<view class="text">活动规则</view>
 						<image src="http://dbj.dragonn.top/static/mp/dabanjia/images/my/ic_more.png" class="icon"></image>
 					</view>
@@ -71,9 +50,13 @@
 				</view>
 			</view>
 		</view>
-		<view class="mask">
+		<view class="mask" v-if="showRules">
 			<view class="popup">
-				<view class="top"></view>
+				<view class="top">
+					<view class="title">活动规则</view>
+					<image src="http://dbj.dragonn.top/static/mp/dabanjia/images/my/close_rules.png" @click="closeRules"></image>
+				</view>
+				<view class="content">{{ruleText}}</view>
 			</view>
 		</view>
 	</scroll-view>
@@ -91,21 +74,20 @@
 				noList: false,
 				showBuyBtn: true,
 				showRules: false,
-				detailId: 0
+				detailId: 0,
+				ruleText: ""
 			}
 		},
 		onShow() {
 			this.cityId = getApp().globalData.currentHouse.cityId;
 			console.log(this.cityId);
 		},
+		onPullDownRefresh(){
+			this.requestBalance()
+			this.requestPage()
+		},
 		mounted() {
-			getBalance().then(data => {
-				if(data == null){
-					data = 0
-				}
-				this.balance = data
-				console.log(data)
-			})
+			this.requestBalance()
 			this.requestPage()
 		},
 		methods: {
@@ -119,8 +101,9 @@
 					url: "/sub-my/pages/deposit-card/activity-rules"
 				})
 			},
-			clickRules(){
+			clickRules(index){
 				this.showRules = true
+				this.ruleText = this.list[index].activityRule
 			},
 			closeRules(){
 				this.showRules = false
@@ -174,6 +157,15 @@
 					});		
 				});
 			},
+			requestBalance(){
+				getBalance().then(data => {
+					if(data == null){
+						data = 0
+					}
+					this.balance = data
+					console.log(data)
+				})
+			},
 			requestPage(){
 				let params = {
 					cityId: this.cityId
@@ -213,6 +205,49 @@
 		background-repeat: no-repeat;
 		background-size: cover;
 		background-attachment: fixed;
+	}
+	.mask{
+		width: 100%;
+		height: 100%;
+		background: rgba(0, 0, 0, 0.3);
+		position: fixed;
+		left: 0;
+		top: 0;
+		right: 0;
+		bottom: 0;
+		z-index: 998;
+	}
+	.popup{
+		width: 638rpx;
+		height: 652rpx;
+		border-radius: 16px;
+		background: #ffffff;
+		position: fixed;
+		left: 56rpx;
+		top: 212rpx;
+		z-index: 999;
+	}
+	.popup .top{
+		position: relative;
+		padding-top: 48rpx;
+	}
+	.popup .top .title{
+		margin-left: 256rpx;
+		font-weight: 500;
+		font-size: 32rpx;
+		color: #333333;
+	}
+	.popup .top image{
+		width: 64rpx;
+		height: 64rpx;
+		display: block;
+		position: absolute;
+		top: 12rpx;
+		right: 12rpx;
+	}
+	.popup .content{
+		margin: 48rpx;
+		margin-top: 8rpx;
 	}
 	.wrap{
 		height: 2000rpx;
@@ -301,7 +336,7 @@
 	/* .activity.minHeight{
 		height: 206px;
 	} */
-	.top{
+	.activity .top{
 		width: 654rpx;
 		height: 50rpx;
 		padding: 24rpx 24rpx 4rpx;
@@ -309,7 +344,7 @@
 		justify-content: space-between;
 		align-items: center;
 	}
-	.top .title{
+	.activity .top .title{
 		max-width: 65%;
 		text-overflow: ellipsis;
 		overflow: hidden;
@@ -353,7 +388,7 @@
 	}
 	.main{
 		margin: 24rpx;
-		padding-bottom: 24rpx;
+		padding-bottom: 16rpx;
 		margin-bottom: 0;
 		display: flex;
 		justify-content: space-between;
@@ -362,6 +397,7 @@
 	.main .prePay{
 		width: 318rpx;
 		height: 120rpx;
+		margin-bottom: 8rpx;
 		display: flex;
 		align-items: center;
 		background: #FFFDF8;
