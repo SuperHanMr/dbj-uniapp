@@ -1,7 +1,7 @@
 <script>
 import { oauthGomeInfo } from "api/login.js";
-import { getMsgNumByHouse } from "api/decorate.js";
 import { createTim } from "utils/tim.js";
+import { getOpenId } from "api/other.js";
 export default {
   globalData: {
     userInfo: {},
@@ -13,7 +13,6 @@ export default {
     currentProject: {},
     naviData: null,
     decorateMsg: {},
-    decorateMsgNum:0,
     currentHouse: {
       name: "北京市朝阳区",
       provinceId: 1,
@@ -26,21 +25,35 @@ export default {
     screenHeight: 0,
     openId: "",
     shareId: "",
-    msg_projectId: null,
   },
 
   onLaunch: function () {
     const userId = uni.getStorageSync("userId");
-    const openId = uni.getStorageSync("openId");
     const shareId = uni.getStorageSync("shareId");
-    console.log("onLaunch", "userId:", userId, "openId:", openId, "shareId:", shareId);
+    wx.login({
+      success: (res) => {
+        if (res.code) {
+          //微信登录成功 已拿到code
+          // ...doSomething
+          console.log(res);
+          getOpenId({
+            code: res.code,
+          }).then((e) => {
+            this.globalData.openId = e.openid;
+            uni.setStorageSync("openId", e.openid);
+          });
+        } else {
+          console.log("登录失败！" + res.errMsg);
+        }
+      },
+    });
+    console.log("onLaunch", "userId:", userId, "shareId:", shareId);
     if (shareId && !this.globalData.shareId) {
       this.globalData.shareId = shareId;
     }
-    if (userId && openId) {
+    if (userId) {
       let token = uni.getStorageSync("scn");
       this.globalData.token = token;
-      this.globalData.openId = openId;
       oauthGomeInfo({
         hideToast: true,
         ignoreLogin: true,
@@ -61,14 +74,6 @@ export default {
           uni.clearStorageSync("userId");
         });
     }
-    uni.$on("system-messages", () => {
-      console.log(1111);
-      this.watchMsg();
-    });
-    uni.$on("currentHouseChange", () => {
-      console.log(222);
-      this.watchMsg();
-    });
     // 检查新版本
     const updateManager = uni.getUpdateManager();
     updateManager.onCheckForUpdate(function (res) {
@@ -78,15 +83,15 @@ export default {
     updateManager.onUpdateReady(function (res) {
       console.log("新版本已准备好", res);
       uni.showModal({
-        title: '更新提示',
-        content: '新版本已经准备好，是否重启应用？',
+        title: "更新提示",
+        content: "新版本已经准备好，是否重启应用？",
         success(res) {
           console.log("确定更新版本", res);
           if (res.confirm) {
             // 新的版本已经下载好，调用 applyUpdate 应用新版本并重启
             updateManager.applyUpdate();
           }
-        }
+        },
       });
     });
     updateManager.onUpdateFailed(function (res) {
@@ -94,8 +99,8 @@ export default {
       console.error("新的版本下载失败", res);
       uni.showToast({
         icon: "error",
-        title: "新版本下载失败"
-      })
+        title: "新版本下载失败",
+      });
     });
   },
   onShow: function () {
@@ -103,40 +108,6 @@ export default {
   },
   onHide: function () {
     console.log("App Hide");
-  },
-  methods: {
-    watchMsg() {
-      if (!this.globalData.token) {
-        return;
-      }
-      setTimeout(() => {
-        getMsgNumByHouse(
-          this.globalData.currentHouse
-            ? this.globalData.currentHouse.id
-            : this.globalData.currentEstate.id
-        )
-          .then((res) => {
-            let num = res.count + "";
-            this.globalData.decorateMsgNum = num
-            if (res.count === 0) {
-              uni.removeTabBarBadge({
-                index: 2,
-              });
-            } else {
-              
-              uni.setTabBarBadge({
-                index: 2,
-                text: num,
-              });
-            }
-          })
-          .catch((err) => {
-            uni.removeTabBarBadge({
-              index: 2,
-            });
-          });
-      }, 100);
-    },
   },
 };
 </script>
@@ -178,7 +149,6 @@ page {
   src: url("https://ali-res.dabanjia.com/static/font/price-font/price-font.woff2"),
     url("https://ali-res.dabanjia.com/static/font/price-font/price-font.woff");
 }
-
 .price-font {
   font-family: PriceFont;
 }
