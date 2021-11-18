@@ -76,18 +76,11 @@
 						<text>{{item2.value}}</text>
 					</view>
 					<view class="right">
-						<text v-if="item2.key==1">3823.32元</text>
+						<text v-if="item2.key==1 && isShowStoreValue">{{ Number(storeValueCard)/100 }} 元</text>
 						<image src="../../../static/order/images/arraw_right_@2x.png" mode="" />
 					</view>
 				</view>
-				<!-- <view class="tool-item" @click="toCard">
-					<view class="left">
-						<text>储值卡</text>
-					</view>
-					<view class="right">
-						<image src="../../../static/order/images/arraw_right_@2x.png" mode="" />
-					</view>
-				</view> -->
+				
 			</view>
 		</view>
 
@@ -95,12 +88,8 @@
 </template>
 
 <script>
-	import {
-		uniBadge
-	} from "@dcloudio/uni-ui";
-	import {
-		queryToBePaidOrderNum
-	} from "../../../api/order.js";
+	import { uniBadge } from "@dcloudio/uni-ui";
+	import { queryToBePaidOrderNum, queryStoreValueCard } from "../../../api/order.js";
 	export default {
 		components: {
 			uniBadge,
@@ -108,17 +97,19 @@
 		data() {
 			return {
 				waitPayOrderNum: "",
+				isShowStoreValue:false,
+				storeValueCard:"",
 				isLogin: false,
 				userName: "用户名称",
 				userInfo: {},
 				userId: "",
 				list: [
-					// {
-					// 	key: "1",
-					// 	image: "../../../static/order/images/ic_storeValueCard.svg",
-					// 	value: "储值卡",
-					// 	url: "../../../sub-my/pages/deposit-card/deposit-card",
-					// },
+					{
+						key: "1",
+						image: "../../../static/order/images/ic_storeValueCard.svg",
+						value: "储值卡",
+						url: "../../../sub-my/pages/deposit-card/deposit-card",
+					},
 					{
 						key: "2",
 						image: "../../../static/order/images/shopping_Cart.png",
@@ -193,9 +184,16 @@
 				this.userInfo = getApp().globalData.userInfo;
 				this.userName = this.userInfo.name;
 				queryToBePaidOrderNum().then((e) => {
-					// console.log("!!!!!!!!!!!!! data=", e);
 					this.waitPayOrderNum = e ? e : 0;
 				});
+				queryStoreValueCard().then(e=>{
+					console.log("!!!!!!!!!!!!! e=", e);
+					if (e !== null) {
+						console.log("????????????????")
+						this.isShowStoreValue = true
+						this.storeValueCard = e
+					}
+				})
 			}
 			this.$store.dispatch("updateTabBarBadge");
 		},
@@ -254,11 +252,7 @@
 					});
 				}
 			},
-			toCard(){
-				uni.navigateTo({
-					url: "/sub-my/pages/deposit-card/deposit-card"
-				})
-			},
+			
 			handlerViewAll() {
 				console.log("点击我的订单全部按钮");
 				if (!this.isLogin) {

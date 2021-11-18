@@ -2,15 +2,19 @@
   <view>
     <view class="container">
       <view  class="product-container">
-				<view v-if="type == 'whole' && refundId "  >
-					<!-- {{refundInfo.detailAppVOS}} -->
+				<view v-if="type == 'whole' && refundId " >
 					<view v-for="(item1,index1) in refundInfo.details" :key="index1">
 						<order-item :refundType="true" :orderType="refundType" :dataList="item1" :showIcon="true" ></order-item>
 					</view>
 				</view>
 				<view v-if="type == 'whole' && !refundId "  v-for="(item2,index2) in refundInfo.detailAppVOS" :key="index2">
 					<view>
-						<order-item :refundType="true" :orderType="refundType" :dataList="item2" :orderStatus="2" :showIcon="true" ></order-item>
+						<order-item v-if="item2.type !== 5" :refundType="true" :orderType="refundType" :dataList="item2" :orderStatus="2" :showIcon="true" ></order-item>
+						<store-calue-card-item
+							v-else
+							:refundType="true"
+							:dataInfo="item2"
+						/>
 					</view>
 				</view>
 				<view v-if="type=='partical' && refundId ">
@@ -21,7 +25,7 @@
 
         <view v-if="type == 'partical' && !refundId ">
 						<view v-for="item4 in refundInfo.detailAppVOS" :key="item4.id">
-							<order-item :refundType="true" :orderType="refundType" :dataList="item4" :showIcon="true" ></order-item>
+							<order-item  :refundType="true" :orderType="refundType" :dataList="item4" :showIcon="true" ></order-item>
 						</view>
 				</view>
 
@@ -50,9 +54,8 @@
 					</view>
 			  </view>
 			</view>
-
-
 			<view class="refund-container">
+				<!-- 退款原因 -->
 				<view class="refund-reason">
 					<view class="left">
 						<view class="icon">*</view>
@@ -66,61 +69,8 @@
         </view>
 
 				<view class="line" />
-
-				<!-- <view class="refund-price" v-if="type == 'whole'">
-					<view class="edit-price">
-						<view class="left">
-							<view class="icon">*</view>
-							<text>退款金额</text>
-						</view>
-						<view class="right1" >
-						  <text >￥{{handlePrice(refundInfo.totalActualIncomeAmount)[0]}}.{{handlePrice(refundInfo.totalActualIncomeAmount)[1]}}</text>
-						</view>
-					</view>
-					<view class="tip-text">
-						商品未发货，商家同意后将会全额退还。
-					</view>
-				</view>
-				<view class="refund-price" v-if="type == 'partical'">
-					<view	v-if="showEditInput==true"	class="edit-price">
-						<view class="left">
-							<view class="icon">*</view>
-							<text>退款金额</text>
-						</view>
-						<view class="right1">
-							<view class="eidt-style">
-								<text>￥</text>
-								<input
-									type="number"
-									:value="inputValue"
-									class="input-style"
-									:focus="isFocus"
-									@input="onKeyInput"
-									@focus="onKeyFocus"
-									@blur="onKeyBlur"
-									:style="{width:inputWidth + 'rpx'}"
-								/>
-							</view>
-						</view>
-					</view>
-
-					<view v-else class="show-price">
-						<view class="left">
-							<view class="icon">*</view>
-							<text>退款金额</text>
-						</view>
-						<view class="right2">
-							<text style="color:#FF3347;font-size: 40rpx;">￥{{inputValue==0?"0.00":inputValue}}</text>
-							<image src="../../static/ic_mine_edit_gray@2x.png" mode="" @click="showEditInput=true"/>
-						</view>
-					</view>
-
-					<view class="tip-text" >
-						最多可以填写￥{{handlePrice(refundInfo.totalActualIncomeAmount)[0]}}.{{handlePrice(refundInfo.totalActualIncomeAmount)[1]}}，也可申请部分金额，以您与商家沟通协商的结果为准
-					</view>
-        </view> -->
-
-				<view class="refund-price">
+				<!-- 材料服务 退款金额 -->
+				<view class="refund-price" v-if="refundType !==5">
 					<view class="edit-price">
 						<view class="left">
 							<view class="icon">*</view>
@@ -136,6 +86,42 @@
 					</view>
 					<view class="tip-text" v-if="refundType == 2">
 						服务未开始，商家同意后将会全额退还。
+					</view>
+				</view>
+				
+				<!-- 储值卡退款 -->
+				<view class="refund-price" v-else> 
+					<view :class="{'edit-price': showEditInput, 'show-price': !showEditInput }" >
+						<view class="left" style="flex: 1;">
+							<view class="icon">*</view>
+							<text style="color:#666666;">退款金额</text>
+						</view>
+						<view style="flex:1"></view>
+						<view class="right1" v-if="showEditInput">
+							<view class="eidt-style">
+								<text>￥</text>
+								<input
+									type="digit"
+									v-model="inputValue"
+									class="input-style"
+									:focus="isFocus"
+									maxlength="10"
+									@focus="onKeyFocus"
+									@blur="onKeyBlur"
+									:style="{width:inputWidth,'maxWidth':'294rpx !important'}"
+								/>
+							</view>
+						</view>
+						<view class="right2" v-else>
+							<text style="color:#FF3347;font-size: 40rpx;">￥{{inputValue==0?"0.00":inputValue}}</text>
+							<image src="../../static/ic_mine_edit_gray@2x.png" mode="" @click="showEditInput=true"/>
+						</view>
+					</view>
+					<view class="tip-text" v-if="refundInfo.cardUseIdentification" >\
+						储值卡已使用过,具体退款金额已您与商家沟通协商的结果为准
+					</view>
+					<view class="tip-text" >
+						储值卡未使用,商家同意后将会全额退还
 					</view>
 				</view>
 			</view>
@@ -158,8 +144,6 @@
 				</view>
       </view>
       <view class="proposal">建议与商家沟通后再发起退款</view>
-
-
       <view class="sumbit-button" :style="{paddingBottom:systemBottom}">
 				<view class="buttons1" v-if="!reasonName">
 					提交申请
@@ -184,9 +168,10 @@ export default {
         remarks: "",
 				status:"",
       },
+			status:"",
       showEditInput: false,
       inputValue: 0,
-      inputWidth: 4,
+      inputWidth:'',
       textAreaLength: 0,
       isFocus: false,
 
@@ -199,10 +184,9 @@ export default {
 			reasonValue:"",
 			reasonName:"",
 
-			returnMoney:"",
-			// returnMoney2:"",
-
-
+			returnMoney:"",//向后台传递的退款金额
+			refundAmount:"" ,//后台返回的最大退款金额
+	
 			refundId:"",
 			orderDetailId:"",
 
@@ -213,7 +197,7 @@ export default {
 			applyMode:'',
 			freight:'',
 			handlingFees:'',
-			refundType:"",
+			refundType:"",//1:材料 2:订单 5:储值卡
     };
   },
   mounted(e) {
@@ -229,14 +213,10 @@ export default {
 		if(this.type){
 			this.query.orderId=Number(e.orderId)
 			this.query.status=Number(e.status);//订单状态 1进行中 2已完成
+			this.status = this.query.status
 			this.applyMode = Number(e.applyMode)//	申请方式 1单商品 2整单退
 			console.log("this.type=", this.type);
 			if (this.type == "partical") {
-				this.orderDetailsId = e.orderDetailsId
-				console.log("this.query.orderId=",this.query.orderId)
-				console.log("this.query.status=",this.query.status)
-				console.log("this.applyMode=",this.applyMode)
-				console.log("this.orderDetailsId=",this.orderDetailsId)
 				let params = {
 					orderId:this.query.orderId,
 					status:this.query.status,
@@ -250,19 +230,7 @@ export default {
 					this.refundInfo.actualIncomeAmount = this.refundInfo.maxRefundAmount
 					this.returnMoney = this.refundInfo.maxRefundAmount
 				})
-				// this.refundInfo = JSON.parse(
-				// 	wx.getStorageSync("particalRefundOrderInfo")
-				// );
-				// console.log("进行中数据带过来的数据：this.refundInfo=",this.refundInfo)
-				// this.orderDetailId = this.refundInfo.orderDetailId
-				// this.inputValue =  this.refundInfo.actualIncomeAmount
-				// this.returnMoney = this.inputValue
-				// console.log("this.inputValue",this.inputValue)
-				// console.log("this.refundInfo=", this.refundInfo, typeof this.refundInfo);
 			} else {
-				console.log("this.query.orderId=",this.query.orderId)
-				console.log("this.query.status=",this.query.status)
-				console.log("this.applyMode=",this.applyMode)
 				let params = {
 					orderId:this.query.orderId,
 					status:this.query.status,
@@ -274,13 +242,12 @@ export default {
 					console.log("this.refundInfo=",this.refundInfo)
 					this.refundInfo.actualIncomeAmount = this.refundInfo.maxRefundAmount
 					this.returnMoney = this.refundInfo.maxRefundAmount
+					if(this.refundType ==5){
+						this.inputValue = this.returnMoney
+					}
 					this.freight = this.refundInfo.freight?this.refundInfo.freight:'0'
 					this.handlingFees = this.refundInfo.handlingFees?this.refundInfo.freight:'0'
 				})
-				
-				// console.log("进行中数据带过来的数据：this.refundInfo=",this.refundInfo)
-				// this.refundInfo = JSON.parse(wx.getStorageSync("wholeRefundOrderInfo"));
-				// this.returnMoney =  this.refundInfo.totalActualIncomeAmount
 			}
 		}else{
 			this.refundId = e.refundId
@@ -298,26 +265,61 @@ export default {
       }
     },
     inputValue(newVal, oldVal) {
-      return newVal;
+			console.log("newVal=====",newVal,String(newVal).length)
+			this.reqInputWidth(newVal)
+			if(newVal > this.refundAmount){
+				uni.showToast({
+					title:"退款金额大于储值卡余额，请修改",
+					icon:'none',
+					duration:1000
+				})
+				return Number(this.refundAmount).toFixed(2)
+			}else{
+				this.returnMoney =Number(newVal) 
+				return newVal;
+			}
     },
     textAreaLength(newVal, oldVal) {},
   },
+	computed:{
+		reqInputWidth(value){
+			return (value)=>{
+				console.log("value==",typeof value,value=='',value==0)
+				if( value ==''){
+					this.inputWidth= '12rpx'
+				} else if(value === 0 ){
+					this.inputWidth= '22rpx'
+				} else if(value==='0.'){
+					this.inputWidth= '44rpx'
+				} else {
+					console.log("width====",String(value).length* 22)
+					this.inputWidth = String(value).length* 22  +'rpx'
+				}
+			}
+		}
+	},
   methods: {
     // 重新获取退款订单详情
     getReapplyRefundInfo() {
       getRefundInfo({ id: this.refundId }).then(data => {
         console.log("重新获取的订单信息=",data)
 				this.type = data.applyMode==1?'partical':'whole'
+				console.log("this.type=",this.type)
 				this.refundType = data.type
+				// this.refundType = 5
 				this.query.remarks = data.remark
 				this.textAreaLength = data.remark.length
 				this.reasonValue = data.reasonId
 				this.reasonName = data.reason
+				this.refundAmount  =data.refundAmount
 				this.returnMoney  =data.refundAmount
-				this.inputValue  = data.refundAmount
-				this.freight = this.refundInfo.freight?this.refundInfo.freight:'0'
-				this.handlingFees = this.refundInfo.handlingFees?this.refundInfo.freight:'0'
-				console.log("this.type=",this.type)
+				if(this.refundType == 5){
+					this.inputValue  = data.refundAmount
+					// this.inputWidth =String(data.refundAmount).length* 26 - 12		
+				}else{
+					this.freight = this.refundInfo.freight?this.refundInfo.freight:'0'
+					this.handlingFees = this.refundInfo.handlingFees?this.refundInfo.freight:'0'
+				}
 				if(this.type =='partical'){
 					this.refundInfo = data.detailAppVOS
 					this.orderDetailId = data.detailAppVOS[0].orderDetailId
@@ -352,10 +354,6 @@ export default {
 			// 提交申请后该订单会进入到退款页面，状态显示退款中；并直接跳转到该订单退款详情页
       console.log("申请退款");
 			if(this.type =='whole'){
-				// console.log("没有处理的this.reurnMoney===",this.returnMoney)
-				// this.returnMoney2 = Number( this.returnMoney.toFixed(2).replace(".",""))
-				// console.log("处理过的this.reurnMoney===",this.returnMoney)
-
 				wholeOrderApplyForRefund({
 					orderId:this.query.orderId,//订单明Id字段
 					returnMoney:Number( this.returnMoney.toFixed(2).replace(".","")) ,//申请退货钱数(分)
@@ -372,9 +370,6 @@ export default {
 					})
 				})
 			}else{
-				// console.log("没有处理的this.reurnMoney===",this.returnMoney)
-				// this.returnMoney2 = Number( this.returnMoney.toFixed(2).replace(".",""))
-				// console.log("处理过的this.reurnMoney===",this.returnMoney)
 				particalOrderApplyForRefund({
 					orderDetailsId:this.orderDetailsId?this.orderDetailsId:this.orderDetailId,//订单明Id字段
 					returnMoney:Number( this.returnMoney.toFixed(2).replace(".","")),//申请退货钱数(分)
@@ -393,10 +388,6 @@ export default {
 			}
     },
 
-    onKeyInput(event) {
-      this.inputValue = event.target.value;
-			this.inputWidth = event.target.value.length * 24;
-    },
     onKeyFocus() {
       this.isFocus = true;
       if (!this.inputValue) {
@@ -406,8 +397,17 @@ export default {
     onKeyBlur() {
       // 缺少输入退款金额值的判断及弹框提示数据
       this.showEditInput = false;
-      this.inputValue = Number(this.inputValue).toFixed(2);
-      // console.log("this.inputValue=",this.inputValue,Number(this.inputValue).toFixed(2))
+			if(!(/^[1-9]\d*\.?\d{0,2}$|^0\.[1-9]\d$|^0\.\d[1-9]$/g.test(this.inputValue)) ){
+				uni.showToast({
+					title:"您输入的金额错误，请重新输入",
+					icon:'none',
+					duration:2000,
+				})  
+				this.inputValue =  Number(this.refundAmount).toFixed(2)
+			}else{
+				this.inputValue = Number(this.inputValue).toFixed(2);
+			}
+      // this.inputWidth = String(this.inputValue).length * 26 - 12
     },
 		onTextAreaInput(event) {
       this.textAreaLength = event.target.value.length;
@@ -607,8 +607,9 @@ export default {
             color: #ff3347;
             .input-style {
               // background-color: #f3f3f3;
+							max-width: 440rpx;
               color: #ff3347;
-              font-size: 20px;
+              font-size: 38rpx;
               margin-right: 80rpx;
             }
           }

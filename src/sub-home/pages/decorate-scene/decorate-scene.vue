@@ -893,7 +893,7 @@ export default {
       };
       getSelectOptions(params).then((data) => {
         if (data && data.length) {
-          this.selectNodeTypes = data;
+          this.selectNodeTypes = data.filter(item => item.nodeType > 4)
         }
       });
     },

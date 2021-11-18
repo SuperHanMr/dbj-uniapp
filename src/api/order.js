@@ -9,6 +9,10 @@ export function editUserInfo(params) {
 export function commentsAndFeedBack(params) {
 	return request.post(`/app/feedback`, params);
 }
+//储值卡 
+export function queryStoreValueCard(params) {
+	return request.get(`/wallet/app/customer/query/giftCardAmount`, params);
+}
 
 // 我的-代付款订单条数
 export function queryToBePaidOrderNum(params) {
@@ -19,7 +23,7 @@ export function logout(params) {
 	return request.post(`/app/oauth/gome/logout`, params);
 }
 //我的-订单列表
-export function getOrderList(params) {
+export function queryOrderList(params) {
 	return request.get(`/order-center/app/order/list`, { params });
 }
 
@@ -78,7 +82,6 @@ export function refundReason(params) {
 
 
 //根据订单信息计算退款信息
-
 
 export function getRefundInformation(params) {
 	return request.get(`/order-center/app/order/getRefundInformation`, { params })

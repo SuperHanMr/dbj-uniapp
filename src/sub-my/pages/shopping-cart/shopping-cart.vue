@@ -82,9 +82,9 @@
 										<image v-else class="dec" @click="changeCount(false,shopIndex, goodsIndex)"
 											src="https://ali-image.dabanjia.com/static/mp/dabanjia/images/my/details_pop_subtract_disabled%402x.png">
 										</image>
-										<view class="count"
+										<view class="count" :class="{'max': (+goodsItem.buyCount).toFixed(2).length > 5}"
 											@click="openCount(shopIndex, goodsIndex,goodsItem.minimumOrderQuantity,goodsItem.stepLength,goodsItem.buyCount)">
-											{{goodsItem.buyCount}}
+											{{(+goodsItem.buyCount).toFixed(2)}}
 										</view>
 
 										<image class="inc" @click="changeCount(true, shopIndex,goodsIndex)"
@@ -101,7 +101,7 @@
 				<view class="popupNum">
 					<view class="header">
 						<view class="title">编辑数量</view>
-						<view class="text">当前最小单位为{{miniOrder}}，输入的数量需为{{step}}的倍数</view>
+						<view class="text">当前最小单位为{{step}}，输入的数量需为{{step}}的倍数</view>
 					</view>
 					<input class="uni-input" type="digit" v-model="buyNum" focus :cursor-spacing="102" />
 					<view class="button">
@@ -525,7 +525,7 @@
 				this.showInput = true;
 				this.miniOrder = miniOrder;
 				this.step = step;
-				this.buyNum = buyNum;
+				this.buyNum = (+buyNum).toFixed(2);
 				this.currentShopIndex = shopIndex;
 				this.currentGoodsIndex = goodsIndex;
 			},
@@ -539,16 +539,8 @@
 				let val = this.buyNum;
 				let target =
 					this.shopList[this.currentShopIndex].skuList[this.currentGoodsIndex];
-				let miniOrder = +target.minimumOrderQuantity || 1;
-				let step = +target.stepLength || 1;
-				// if(isNaN(parseInt(val))){
-				// 	uni.showToast({
-				// 		title:`商品数量为数字`,
-				// 		icon:"none",
-				// 		duration:2000
-				// 	})
-				// 	return
-				// }
+				let miniOrder = +target.minimumOrderQuantity;
+				let step = +target.stepLength;
 				if (+val < miniOrder) {
 					setTimeout(() => {
 						uni.showToast({
@@ -558,7 +550,7 @@
 						});
 					}, 100);
 					return;
-				} else if (+val % step !== 0) {
+				} else if ((+val*100) % (step*100) !== 0) {
 					setTimeout(() => {
 						uni.showToast({
 							title: `当前最小单位为${step}，输入的数量需为${step}的倍数`,
@@ -1511,7 +1503,7 @@
 	}
 
 	.goodsInfo .goodsSpec {
-		width: fit-content;
+		width: 388rpx;
 		height: 38rpx;
 		margin-top: 8rpx;
 		background: #fafafa;
@@ -1522,7 +1514,7 @@
 	}
 
 	.goodsInfo .goodsSpec .text {
-		max-width: 340rpx;
+		max-width: 330rpx;
 		margin: 6rpx 12rpx;
 		overflow: hidden;
 		white-space: nowrap;
@@ -1546,7 +1538,7 @@
 	}
 
 	.goodsInfo .foot .goodsPrice {
-		width: fit-content;
+		width: 206rpx;
 		height: 36rpx;
 		color: #ff3347;
 		font-size: 24rpx;
@@ -1568,7 +1560,7 @@
 	}
 
 	.goodsInfo .foot .countCtrl .count {
-		width: 104rpx;
+		width: 76rpx;
 		height: 48rpx;
 		margin: 0 4rpx;
 		background: #f2f2f2;
@@ -1577,6 +1569,11 @@
 		text-align: center;
 		color: #333333;
 		line-height: 48rpx;
+	}
+	.goodsInfo .foot .countCtrl .count.max{
+		display: flex;
+		justify-content: flex-end;
+		overflow: hidden;
 	}
 
 	.goodsInfo .foot .countCtrl .inc {
