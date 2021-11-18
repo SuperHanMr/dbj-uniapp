@@ -559,7 +559,7 @@
 						});
 					}, 100);
 					return;
-				} else if (+val >= 9999.99) {
+				} else if (+val > 9999.99) {
 					setTimeout(() => {
 						uni.showToast({
 							title: "商品数量超出范围",
