@@ -19,7 +19,7 @@
       }
     },
     onLoad(e) {
-      this.storeId = e.storeId,
+      this.storeId = e.storeId
     },
     onShow() {
       if (!this.searchToken) {
