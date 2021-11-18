@@ -30,10 +30,10 @@
                 <view class="spu-class">
                   <view class='tag'>{{levelName}}{{levelName?'|':''}}{{goodsItem.skuName}}</view>
                 </view>
-                <view class="safeguard" @click="readSafeguard(goodsItem.refundable)" v-if="goodsItem.productType === 1">
+          <!--      <view class="safeguard" @click="readSafeguard(goodsItem.refundable)" v-if="goodsItem.productType === 1">
                   {{goodsItem.refundable?'七天无理由退还': '无质量问题不退还'}}
                   <text class="question-icon safe-icon"></text>
-                </view>
+                </view> -->
                 <view class="goods-spec">
                   <view class="goods-money">
                     ￥
@@ -200,7 +200,7 @@
   } from '../../../api/classify.js'
   import orderToast from "./order-toast.vue"
   import datePicker from "./date-picker.vue"
-  // import expensesToast from "./expenses-toast.vue" 
+  // import expensesToast from "./expenses-toast.vue"
   import safeguardToast from "./safeguard-toast.vue"
   export default {
     components: {
@@ -285,6 +285,9 @@
         })
       } else {
         this.isShow = true
+      }
+      if (!getApp().globalData.openId) { //确保拿到openId，否则无法支付
+        getApp().globalData.openId = uni.getStorageSync("openId");
       }
     },
     onUnload() {

@@ -7,7 +7,7 @@
 	} from "utils/tim.js";
 	import {
 		getOpenId
-	} from "api/other.js"
+	} from "api/other.js";
 	export default {
 		globalData: {
 			userInfo: {},
@@ -29,12 +29,13 @@
 			currentRoute: "/pages/home/index/index",
 			previewimageStatus: false,
 			screenHeight: 0,
-			openId: ""
+			openId: "",
+			shareId: "",
 		},
 
 		onLaunch: function() {
 			const userId = uni.getStorageSync("userId");
-			let openId = uni.getStorageSync("openId");
+			const shareId = uni.getStorageSync("shareId");
 			wx.login({
 				success: (res) => {
 					if (res.code) {
@@ -52,28 +53,69 @@
 					}
 				},
 			});
-
-			if (userId) {
+			console.log(
+				"onLaunch",
+				"userId:",
+				userId,
+				"openId:",
+				openId,
+				"shareId:",
+				shareId
+			);
+			if (shareId && !this.globalData.shareId) {
+				this.globalData.shareId = shareId;
+			}
+			if (userId && openId) {
 				let token = uni.getStorageSync("scn");
 				this.globalData.token = token;
 				oauthGomeInfo({
-					hideToast: true,
-					ignoreLogin: true,
-					clientType: "3",
-				}).then((data) => {
-					getApp().globalData.userInfo = data;
-					uni.setStorageSync("userId", data.id);
-					getApp().tim = createTim(data.appId);
-					this.$store.dispatch("loginIM", {
-						userId: data.tid,
-						userSig: data.userSign,
+						hideToast: true,
+						ignoreLogin: true,
+						clientType: "3",
+					})
+					.then((data) => {
+						getApp().globalData.userInfo = data;
+						uni.setStorageSync("userId", data.id);
+						getApp().tim = createTim(data.appId);
+						this.$store.dispatch("loginIM", {
+							userId: data.tid,
+							userSig: data.userSign,
+						});
+					})
+					.catch((e) => {
+						getApp().globalData.token = "";
+						uni.clearStorageSync("scn");
+						uni.clearStorageSync("userId");
 					});
-				}).catch(e => {
-					getApp().globalData.token = "";
-					uni.clearStorageSync("scn");
-					uni.clearStorageSync("userId")
-				});
 			}
+			// 检查新版本
+			const updateManager = uni.getUpdateManager();
+			updateManager.onCheckForUpdate(function(res) {
+				// 请求完新版本信息的回调
+				console.log("检查新版本回调", res.hasUpdate, res);
+			});
+			updateManager.onUpdateReady(function(res) {
+				console.log("新版本已准备好", res);
+				uni.showModal({
+					title: "更新提示",
+					content: "新版本已经准备好，是否重启应用？",
+					success(res) {
+						console.log("确定更新版本", res);
+						if (res.confirm) {
+							// 新的版本已经下载好，调用 applyUpdate 应用新版本并重启
+							updateManager.applyUpdate();
+						}
+					},
+				});
+			});
+			updateManager.onUpdateFailed(function(res) {
+				// 新的版本下载失败
+				console.error("新的版本下载失败", res);
+				uni.showToast({
+					icon: "error",
+					title: "新版本下载失败",
+				});
+			});
 		},
 		onShow: function() {
 			console.log("App Show");
@@ -118,9 +160,8 @@
 
 	@font-face {
 		font-family: PriceFont;
-		src:
-			url('https://ali-res.dabanjia.com/static/font/price-font/price-font.woff2'),
-			url('https://ali-res.dabanjia.com/static/font/price-font/price-font.woff');
+		src: url("https://ali-res.dabanjia.com/static/font/price-font/price-font.woff2"),
+			url("https://ali-res.dabanjia.com/static/font/price-font/price-font.woff");
 	}
 
 	.price-font {

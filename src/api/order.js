@@ -42,7 +42,8 @@ export function confirmReceiptOrder(params) {
 
 //app订单支付接口
 export function orderPay(params) {
-	return request.post(`/order-center/app/order/payOrder`, params);
+  let version = uni.getAccountInfoSync().miniProgram.version || 'develop';
+	return request.post(`/order-center/app/order/payOrder?v=${version}`, params);
 }
 
 
@@ -95,7 +96,8 @@ export function querySplitPayList(params) {
 
 //我的-订单-分次支付接口
 export function splitPay(params) {
-	return request.post(`/order-center/app/order/splitPayOrder`, params);
+  let version = uni.getAccountInfoSync().miniProgram.version || 'develop';
+	return request.post(`/order-center/app/order/splitPayOrder?v=${version}`, params);
 }
 
 

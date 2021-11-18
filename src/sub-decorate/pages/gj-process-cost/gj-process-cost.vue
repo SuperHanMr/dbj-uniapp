@@ -114,6 +114,9 @@
           title: this.title
         })
       }
+      if (!getApp().globalData.openId) { //确保拿到openId，否则无法支付
+        getApp().globalData.openId = uni.getStorageSync("openId");
+      }
     },
     data() {
       return {
@@ -172,7 +175,7 @@
         // if(categoryStorage) {
         //   originStorage = categoryStorage?.itemList.find(t => t.originalId == item.originalId)
         // }
-        
+
         // 取当前的数量
         const categoryOld = this.dataOrigin?.material?.categoryList?.find(cg => cg.categoryId == categoryId)
 
@@ -292,7 +295,7 @@
             })
           })
         }
-      
+
         if (this.msg.obtainType != 1) {
           this.dataOrigin?.material?.categoryList?.forEach(t => {
             t.itemList.forEach(it => {
@@ -310,7 +313,7 @@
             })
           })
         }
-        
+
         this.computePriceAndShopping()
       },
       computePriceAndShopping() {

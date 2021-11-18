@@ -87,7 +87,6 @@
 
 				// let userInfo = uni.getStorageSync("userInfo");
 				uni.setStorageSync("scn", data.SCN);
-				uni.setStorageSync("openId", data.openId);
 				// uni.setStorageSync("userInfo", userInfo);
 				uni.setStorageSync("date", Date.now());
 				uni.setStorageSync("memberInfo", {
@@ -96,7 +95,10 @@
 					loginName: data.loginName || "",
 				});
 				getApp().globalData.token = data.SCN;
-				getApp().globalData.openId = data.openId;
+				if (data.openId) {
+					getApp().globalData.openId = data.openId;
+					uni.setStorageSync("openId", data.openId);
+				}
 
 				console.log("type", type); // 根据 type 类型，跳转页面/路由
 				if (uni.getStorageSync("scn")) {
