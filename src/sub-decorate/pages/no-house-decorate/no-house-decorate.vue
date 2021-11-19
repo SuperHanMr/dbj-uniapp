@@ -46,14 +46,16 @@
 				<view style="flex:1">
 				</view>
 				<view v-if="cardClick" class="card-price">
-					-¥{{(this.cardPrice/100).toFixed(2)}}
+					<text style="margin-right:4rpx ;">-</text> <text style="margin-right:2rpx ;">¥</text>{{(this.cardPrice/100).toFixed(2)}}
 				</view>
-				<image v-if="cardClick" class="selected-img"
-					src="https://ali-image.dabanjia.com/static/mp/dabanjia/images/classify/pay_selected.png" mode="">
-				</image>
-				<image v-else class="selected-img"
-					src="https://ali-image.dabanjia.com/static/mp/dabanjia/images/classify/pay_unselected.png" mode="">
-				</image>
+			<image v-if="cardClick" class="selected-img"
+				src="https://ali-image.dabanjia.com/static/mp/dabanjia/images/classify/pay_selected.png" mode="">
+			</image>
+			<image v-if="!cardClick&&cardBalance" class="selected-img"
+				src="https://ali-image.dabanjia.com/static/mp/dabanjia/images/classify/pay_unselected.png" mode="">
+			</image>
+			<view v-if="!cardClick&&!cardBalance" class="select-disable">
+			</view>
 			</view>
 			<view class="pay-way">
 				<text>支付方式</text>
@@ -832,6 +834,14 @@
 </script>
 
 <style scoped lang="scss">
+	.select-disable {
+		width: 36rpx;
+		height: 36rpx;
+		background: #f5f5f5;
+		border: 1rpx solid #e8e8e8;
+		border-radius: 50%;
+	  margin-left: 16rpx;
+	}
 	.pay-way,
 	.pledge,
 	.remarks {
@@ -855,7 +865,7 @@
 
 	.card-price {
 		font-family: PriceFont;
-		font-size: 24rpx;
+		font-size: 28rpx;
 		color: #ff3347;
 	}
 
