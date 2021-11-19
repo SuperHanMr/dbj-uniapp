@@ -9,7 +9,7 @@
 		</view>
 		<view class="item">
 			<text class="item-header">退款类型：</text>
-			<text class="item-body"> {{refundInfo.type==0?"仅退款(未发货)":refundInfo.type==1 ? "仅退款(退库存)":refundInfo.type==2 ? "仅退款(已收货)":refundInfo.type==3?"服务退款":""}}</text>
+			<text class="item-body"> {{refundInfo.type==0?"仅退款(未发货)":refundInfo.type==1 ? "仅退款(退库存)":refundInfo.type==2 ? "仅退款(已收货)":refundInfo.type==3?"服务退款":refundInfo.type==5?"储值卡退款":""}}</text>
 			<!-- <text  class="item-body"> {{handleStatus(refundInfo.type)}}</text> -->
 		</view>
 		<view class="item">
