@@ -236,7 +236,6 @@ export default {
     });
   },
 	onShow() {
-		
 		if (this.type == "complete") {
 		  //订单完成页面
 		  this.headerTitle = "订单详情";
