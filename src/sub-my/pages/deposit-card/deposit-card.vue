@@ -207,6 +207,7 @@
 		background-image: url('https://ali-image.dabanjia.com/static/mp/dabanjia/images/my/bg.png');
 		background-repeat: no-repeat;
 		background-size: cover;
+		background-attachment: fixed;
 	}
 	.mask{
 		width: 100%;
@@ -419,6 +420,7 @@
 		background: #FFFDF8;
 		border: 1rpx solid #FFE1CD;
 		border-radius: 16rpx;
+		overflow: hidden;
 	}
 	.main .prePay.active{
 		width: 320rpx;
