@@ -122,7 +122,7 @@
 		align-items: center;
 	}
 	.category{
-		width: 56rpx;
+		/* width: 56rpx; */
 		height: 40rpx;
 		font-size: 28rpx;
 		color: #333333;

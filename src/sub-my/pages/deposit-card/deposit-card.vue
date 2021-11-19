@@ -337,8 +337,7 @@
 		color: #999999;
 	}
 	.activity{
-		width: 351px;
-		/* height: 338px; */
+		width: 702rpx;
 		margin: 24rpx 24rpx 0;
 		background: #FFFFFF;
 		border-radius: 16rpx;
