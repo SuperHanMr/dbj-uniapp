@@ -62,7 +62,7 @@
           v-if="personData.roleId===3||personData.roleId===4||personData.roleId===5"
         ></personDynamic>
         
-        <view class="interval"></view>
+        <view class="interval" v-if="dynamicEmpty"></view>
         <personEvaluate
           ref='evaluate'
           :personId='personId'
@@ -76,15 +76,17 @@
 		<bottom-btn style="width: 100%;" :showDefaultBtn="false">
 		  <view class="btn">
 		    <view class="btn-left" @click="toReplace">
-          
-            <i class="icon-ic_wodejia_shenqinggenghuan_csn"></i>
-            <text>申请更换</text>
+            <view class="btn-left-content">
+              <i class="icon-ic_wodejia_shenqinggenghuan_csn"></i>
+              <text>申请更换</text>
+            </view>
+            
 		    </view>
         <view class="btn-right" @click="sendMsg">
           <i class="icon-sixinic"></i>
           <text>发消息</text>
         </view>
-		    <button class="add-btn" @click="submit">确定</button>
+		    <view class="add-btn" @click="submit">确定</view>
 		  </view>
 		</bottom-btn>
 	</view>
@@ -158,7 +160,7 @@
     },
     onLoad(e){
       this.id = getApp().globalData.decorateMsg.serveId
-      this.personId = getApp().globalData.decorateMsg.serverId||7248
+      this.personId = getApp().globalData.decorateMsg.serverId||7542
       this.getGrabDetail()
       const menuButtonInfo = uni.getMenuButtonBoundingClientRect();
       this.systemBottom = menuButtonInfo.bottom + 'rpx'; 
@@ -228,7 +230,9 @@
 
 <style lang="scss" scoped>
   .grab{
-    padding-bottom: 156rpx;
+    padding-bottom: 156rpx;   
+    min-height: 100%;
+    box-sizing: border-box;
     background-color: #FAFAFA;
     .person-interact-active {
       background-color: #fff;
@@ -238,6 +242,7 @@
       display: flex;
       justify-content: center;
       flex-wrap: wrap;
+      
       .home-page{
         width: 100%;
         padding: 102rpx 32rpx 0;
@@ -341,22 +346,31 @@
     align-items: center;
     // width: 172rpx;
     // height: 88rpx;
+    .btn-left-content{
+      width: 100%;
+      display: flex;
+      // align-items: flex-end;
+      flex-wrap: wrap;
+      text-align: center;
+      justify-content: center;
+    }
     i{
-      width: 28rpx;
-      height: 28rpx;
+      // width: 28rpx;
+      // height: 28rpx;
       color: #333;
-      font-size: 16rpx;
+      font-size: 24rpx;
       line-height: 28rpx;
       text-align: center;
       color: #333;
-      margin-top: 14rpx;
+      // margin-top: 14rpx;
+      // margin: 14rpx auto 0;
     }
       
     text {
       display: block;
       font-size: 26rpx;
       color: #333;
-      
+      // margin:  0 auto;
     }
   }
   .btn-right {
