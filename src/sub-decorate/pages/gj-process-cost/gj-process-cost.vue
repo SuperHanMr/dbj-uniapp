@@ -15,7 +15,7 @@
 			<no-data v-if="noData" :words="message"></no-data>
 		</view>
 		<view class="material-cost" 
-			v-if="msg.obtainType != 1 && dataOrigin.material.categoryList.length > 0">
+			v-if="msg.obtainType != 1 && isHas">
 			<view class="title">
 				<view>辅材费用</view>
 			</view>
@@ -207,6 +207,7 @@
 				cardClick: false,
 				haveCard: false, //是否有会员卡
 				cardBalance: 0, //会员卡余额
+        isHas: true
 			};
 		},
 		mounted() {
@@ -518,6 +519,7 @@
 				sellList(params)
 					.then((data) => {
 						this.dataOrigin = data;
+            this.isHas = this.dataOrigin?.material?.categoryList?.length > 0 ;
 						if (this.dataOrigin?.artificial?.categoryList?.length > 0) {
 							let cllist = [];
 							this.dataOrigin?.artificial?.categoryList?.forEach((category) => {
