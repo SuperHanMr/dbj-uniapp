@@ -117,7 +117,7 @@
 							<image src="../../static/ic_mine_edit_gray@2x.png" mode="" @click="showEditInput=true"/>
 						</view>
 					</view>
-					<view class="tip-text" v-if="refundInfo.cardUseIdentification" >\
+					<view class="tip-text" v-if="refundInfo.cardUseIdentification" >
 						储值卡已使用过，具体退款金额以您与商家沟通协商的结果为准
 					</view>
 					<view class="tip-text" >
@@ -402,11 +402,11 @@ export default {
       // 缺少输入退款金额值的判断及弹框提示数据
       this.showEditInput = false;
 			if(!(/^[1-9]\d*\.?\d{0,2}$|^0\.[1-9]\d$|^0\.\d[1-9]$/g.test(this.inputValue)) ){
-				uni.showToast({
-					title:"您输入的金额错误，请重新输入",
-					icon:'none',
-					duration:2000,
-				})  
+				// uni.showToast({
+				// 	title:"您输入的金额错误，请重新输入",
+				// 	icon:'none',
+				// 	duration:2000,
+				// })  
 				this.inputValue =  Number(this.refundAmount).toFixed(2)
 			}else{
 				this.inputValue = Number(this.inputValue).toFixed(2);
