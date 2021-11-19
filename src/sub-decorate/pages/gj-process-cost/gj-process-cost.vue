@@ -14,7 +14,7 @@
 			</view>
 			<no-data v-if="noData" :words="message"></no-data>
 		</view>
-		<view class="material-cost" :style="{paddingBottom:containerBottom * 2 + 48 + 88 + 'rpx'}"
+		<view class="material-cost" 
 			v-if="msg.obtainType != 1">
 			<view class="title">
 				<view>辅材费用</view>
@@ -26,41 +26,45 @@
 				</process-cost-materials>
 			</view>
 			<no-data v-if="noData" :words="message"></no-data>
-			<view class="pay-way" style="justify-content:center" @click="clickCard">
+		</view>
+		<view class="pay-way" style="justify-content:center" @click="clickCard">
+			<image class="card-img" src="https://ali-image.dabanjia.com/static/mp/dabanjia/images/classify/ic_card.png"
+				mode="">
+			</image>
+			<view>
+				<text>储值卡</text>
+				<text class="card-sub">(可用余额:{{(cardBalance/100).toFixed(2)}}元)</text>
+			</view>
+			<view style="flex:1">
+			</view>
+			<view v-if="cardClick" class="card-price">
+				<text style="margin-right:4rpx ;">-</text> <text
+					style="margin-right:2rpx ;">¥</text>{{(this.cardPrice/100).toFixed(2)}}
+			</view>
+			<image v-if="cardClick" class="selected-img"
+				src="https://ali-image.dabanjia.com/static/mp/dabanjia/images/classify/pay_selected.png" mode="">
+			</image>
+			<image v-if="!cardClick&&cardBalance" class="selected-img"
+				src="https://ali-image.dabanjia.com/static/mp/dabanjia/images/classify/pay_unselected.png" mode="">
+			</image>
+			<view v-if="!cardClick&&!cardBalance" class="select-disable">
+			</view>
+		</view>
+		<view class="pay-way">
+			<text>支付方式</text>
+
+			<view v-if="payChannel" class="flex-center">
 				<image class="card-img"
 					src="https://ali-image.dabanjia.com/static/mp/dabanjia/images/classify/ic_card.png" mode="">
-				</image>
-				<view>
-					<text>储值卡</text>
-					<text class="card-sub">(可用余额:{{(cardBalance/100).toFixed(2)}}元)</text>
-				</view>
-				<view style="flex:1">
-				</view>
-				<view v-if="cardClick" class="card-price">
-					<text style="margin-right:4rpx ;">-</text> <text style="margin-right:2rpx ;">¥</text>{{(this.cardPrice/100).toFixed(2)}}
-				</view>
-				<image v-if="cardClick" class="selected-img"
-					src="https://ali-image.dabanjia.com/static/mp/dabanjia/images/classify/pay_selected.png" mode="">
-				</image>
-				<image v-if="!cardClick&&cardBalance" class="selected-img"
-					src="https://ali-image.dabanjia.com/static/mp/dabanjia/images/classify/pay_unselected.png" mode="">
-				</image>
-				<view v-if="!cardClick&&!cardBalance" class="select-disable">
-				</view>
-			</view>
-			<view class="pay-way">
-				<text>支付方式</text>
+				</image><text>储值卡支付</text>
 
-				<view v-if="payChannel" class="flex-center">
-					<image class="card-img"
-						src="https://ali-image.dabanjia.com/static/mp/dabanjia/images/classify/ic_card.png" mode="">
-					</image><text>储值卡支付</text>
-
-				</view>
-				<view v-else>
-					<view class="wechat_icon"></view><text>微信支付</text>
-				</view>
 			</view>
+			<view v-else>
+				<view class="wechat_icon"></view><text>微信支付</text>
+			</view>
+		</view>
+		<view :style="{paddingBottom:containerBottom * 2 + 48 + 88 + 'rpx'}">
+			
 		</view>
 		<view v-if="!msg.payStatus || msg.payStatus != 2" class="payment-wrap"
 			:style="{paddingBottom:systemBottom,height:systemHeight}">
@@ -526,7 +530,7 @@
 									};
 									if (t.categoryTypeId == 7) {
 										obj.workerType = t
-										.workType; //"int //工种,品类为工人时（categoryTypeId=7）必传
+											.workType; //"int //工种,品类为工人时（categoryTypeId=7）必传
 									}
 									cllist.push(obj);
 								});
@@ -713,7 +717,7 @@
 						});
 					} else {
 						uni.navigateTo({
-							url: `/sub-my/pages/my-order/my-order?index=1&firstEntry=true`,
+							url: `/pages/decorate/index/index`,
 						});
 					}
 				});
@@ -750,8 +754,9 @@
 		background: #f5f5f5;
 		border: 1rpx solid #e8e8e8;
 		border-radius: 50%;
-	  margin-left: 16rpx;
+		margin-left: 16rpx;
 	}
+
 	.pay-way,
 	.pledge,
 	.remarks {
