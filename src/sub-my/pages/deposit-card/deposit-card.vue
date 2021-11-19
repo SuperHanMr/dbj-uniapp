@@ -220,7 +220,7 @@
 		background-image: url('https://ali-image.dabanjia.com/static/mp/dabanjia/images/my/bg.png');
 		background-repeat: no-repeat;
 		background-size: cover;
-		background-attachment: fixed;
+		/* background-attachment: fixed; */
 	}
 	.cardWrap.noScroll{
 		overflow: hidden;
