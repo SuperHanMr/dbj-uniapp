@@ -177,7 +177,7 @@
 				</view>
 				<view class="second-part">
 					<view class="total-price-info">
-						<text class="info-text1">共{{totalClassNum}}类，</text>
+						<text class="info-text1">共{{totalClassNum}}类</text>
 						<view class="info-text2">总计：</view>
 						<view class="total-money price-font" v-if="Number(totalPrice)">
 							￥
