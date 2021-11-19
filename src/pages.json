@@ -687,7 +687,8 @@
 					"path": "pages/grab/grab",
 					"style": {
 						"navigationBarTitleText": "抢单审核",
-						"enablePullDownRefresh": false
+						"enablePullDownRefresh": false,
+            "navigationBarBackgroundColor": "#FAFAFA"
 					}
 				},
 				{
