@@ -15,7 +15,7 @@
 			<no-data v-if="noData" :words="message"></no-data>
 		</view>
 		<view class="material-cost" 
-			v-if="msg.obtainType != 1">
+			v-if="msg.obtainType != 1 && dataOrigin.material.categoryList > 0">
 			<view class="title">
 				<view>辅材费用</view>
 			</view>
@@ -468,6 +468,7 @@
 						});
 					});
 				}
+        this.pieces = this.pieces * 100 / 100
 				console.log(">>>>>>总价：>>>>>", this.countPrice);
 			},
 			batchChangeLevel(cllist) {
