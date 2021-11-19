@@ -113,6 +113,7 @@
 									maxlength="10"
 									@focus="onKeyFocus"
 									@blur="onKeyBlur"
+									
 									:style="{width:inputWidth,'maxWidth':'294rpx !important'}"
 								/>
 							</view>
@@ -282,7 +283,8 @@ export default {
 					duration:1000
 				})
 				this.returnMoney = Number(newVal) 
-				return
+				
+				return this.returnMoney
 				// return Number(this.refundAmount).toFixed(2)
 			}else{
 				this.returnMoney = Number(newVal) 
@@ -375,6 +377,14 @@ export default {
 				})
 				return
 			}
+			if(!(/^(([1-9]{1}\d*)|(0{1}))(\.\d{1,2})?$/.test(this.inputValue)) ){
+				uni.showToast({
+					title:"您输入的金额错误，请重新输入",
+					icon:'none',
+					duration:2000,
+				})  
+				return
+			} 
       console.log("申请退款");
 			if(this.type =='whole'){
 				wholeOrderApplyForRefund({
@@ -410,7 +420,7 @@ export default {
 				})
 			}
     },
-
+		
     onKeyFocus() {
       this.isFocus = true;
       if (!this.inputValue) {
@@ -429,7 +439,7 @@ export default {
 					icon:'none',
 					duration:2000,
 				})  
-				this.inputValue =  Number(this.refundAmount).toFixed(2)
+				// this.inputValue =  Number(this.inputValue).toFixed(2)
 			}else{
 				this.inputValue = Number(this.inputValue).toFixed(2);
 			}
