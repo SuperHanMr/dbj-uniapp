@@ -54,7 +54,14 @@
 				</view>
 			</view>
 		</view>
-		<view class="mask" v-if="showRules">
+		<!-- <uni-popup ref="popup" type="center">
+			<view class="top">
+				<view class="title">活动规则</view>
+				<image src="https://ali-image.dabanjia.com/static/mp/dabanjia/images/my/close_rules.png" @click="closeRules"></image>
+			</view>
+			<view class="content">{{ruleText}}</view>
+		</uni-popup> -->
+		<view class="mask" v-if="showRules" @tap.stop="test" :catchtouchmove="true">
 			<view class="popup">
 				<view class="top">
 					<view class="title">活动规则</view>
@@ -95,8 +102,8 @@
 			},1000)
 		}, 
 		methods: {
-			prevent(){
-				return
+			test(e){
+				e.preventDefault()
 			},
 			toBillingDetails(){
 				uni.navigateTo({
@@ -270,7 +277,7 @@
 	}
 	.header{
 		width: 702rpx;
-		height: 260rpx;
+		height: 266rpx;
 		margin: 0 24rpx;
 		border-radius: 16rpx;
 		box-shadow: 0px 4px 12px rgba(190, 102, 21, 0.15);
@@ -284,26 +291,26 @@
 		margin-left: 48rpx;
 		padding-top: 48rpx;
 		font-size: 24rpx;
-		color: #FFFFFF;
+		color: #AC6F28;
 	}
 	.header .balance{
 		width: 196rpx;
 		height: 48rpx;
-		margin-left: 48rpx;
+		margin-left: 48rpx; 
 		margin-top: 22rpx;
 		display: flex;
-		align-items: center;
-		color: #FFFFFF;
-	}
-	.header .balance view:last-child{
-		font-size: 40rpx;
+		color: #AC6F28;
 	}
 	.header .balance view:first-child{
 		margin-right: 8rpx;
 		font-weight: 600;
 		font-size: 40rpx;
 	}
+	.header .balance view:last-child{
+		font-size: 40rpx;
+	}
 	.header .balance .int{
+		margin-top: -10rpx;
 		font-size: 56rpx;
 	}
 	.header .bill{
@@ -391,7 +398,7 @@
 	}
 	.instructions .text{
 		font-size: 21rpx;
-		color: #314F5E;
+		color: #83959E;
 		width: 126rpx;
 		height: 30rpx;
 		margin-right: 24rpx;
@@ -401,7 +408,7 @@
 		height: 30rpx;
 		margin-left: 24rpx;
 		font-size: 21rpx;
-		color: #314F5E;
+		color: #83959E;
 	}
 	.banner{
 		display: block;
