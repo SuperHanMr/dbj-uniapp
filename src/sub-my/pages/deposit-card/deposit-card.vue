@@ -1,5 +1,5 @@
 <template>
-	<view class="cardWrap" :class="{'noScroll': showRules}">
+	<view class="cardWrap">
 		<view class="wrap">
 			<view class="header">
 				<view class="text">余额 (元)</view>
@@ -74,10 +74,8 @@
 				cityId: 0,
 				balance: 0,
 				list: [],
-				isChoose: false,
 				noList: false,
 				showBuyBtn: true,
-				showRules: false,
 				detailId: 0,
 				ruleText: ""
 			}
@@ -95,9 +93,6 @@
 			},1000)
 		}, 
 		methods: {
-			test(e){
-				e.preventDefault()
-			},
 			toBillingDetails(){
 				uni.navigateTo({
 					url: "/sub-my/pages/deposit-card/billing-details"
@@ -109,15 +104,13 @@
 				})
 			},
 			clickRules(index){
-				this.$refs.popup.open('center')
+				this.$refs.popup.open()
 				this.ruleText = this.list[index].activityRule
 			},
 			closeRules(){
-				this.showRules = false
 				this.$refs.popup.close()
 			},
 			chooseOne(detailId,eligibility){
-				this.isChoose = !this.isChoose
 				if(!eligibility)return
 				this.list.map(item => {
 					item.detailDTOList.map(ele => {
@@ -214,11 +207,6 @@
 		background-image: url('https://ali-image.dabanjia.com/static/mp/dabanjia/images/my/bg.png');
 		background-repeat: no-repeat;
 		background-size: cover;
-		/* background-attachment: fixed; */
-	}
-	.cardWrap.noScroll{
-		position: fixed;
-		overflow: hidden;
 	}
 	.mask{
 		width: 100%;
