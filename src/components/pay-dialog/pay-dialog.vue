@@ -14,7 +14,7 @@
 				<text style="font-size: 28rpx;">¥</text>{{payChannelPrice}}
 			</view>
 			<view class="pay-diaolog-tip">
-				{{payChannel?'您正在使用储值卡支付,请确认':'您还需用微信支付,请确认'}}
+				您正在使用储值卡支付,请确认
 			</view>
 			<view class="pay-diaolog-alert">
 				金额以实际金额为准，若储值卡余额不足将用微信支付剩余部分
