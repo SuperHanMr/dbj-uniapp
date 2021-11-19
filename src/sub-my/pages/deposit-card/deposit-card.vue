@@ -1,5 +1,5 @@
 <template>
-	<scroll-view scroll-y="true" class="cardWrap">
+	<view class="cardWrap">
 		<view class="wrap">
 			<view class="header">
 				<view class="text">余额 (元)</view>
@@ -60,7 +60,7 @@
 				<view class="content">{{ruleText}}</view>
 			</view>
 		</view>
-	</scroll-view>
+	</view>
 </template>
 
 <script>
@@ -86,6 +86,9 @@
 		onPullDownRefresh(){
 			this.requestBalance()
 			this.requestPage()
+			setTimeout(() => {
+				uni.stopPullDownRefresh()
+			},1000)
 		},
 		mounted() {
 			this.requestBalance()
@@ -154,6 +157,9 @@
 								icon: "none",
 								duration: 2000,
 							});
+							uni.redirectTo({
+								url: `/sub-my/pages/my-order/my-order?index=1&firstEntry=true`,
+							});
 						},
 					});		
 				});
@@ -201,7 +207,6 @@
 <style scoped>
 	.cardWrap{
 		width: 750rpx;
-		height: 100%;
 		background-image: url('http://dbj.dragonn.top/static/mp/dabanjia/images/my/bg.png');
 		background-repeat: no-repeat;
 		background-size: cover;
@@ -247,11 +252,15 @@
 		right: 12rpx;
 	}
 	.popup .content{
+		overflow: scroll;
+		width: calc(100vw-112rpx);
+		height: 504rpx;
+		/* max-height: 904rpx; */
 		margin: 48rpx;
 		margin-top: 8rpx;
 	}
 	.wrap{
-		height: 2000rpx;
+		width: 750rpx;
 	}
 	.header{
 		width: 702rpx;
