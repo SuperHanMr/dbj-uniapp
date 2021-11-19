@@ -103,14 +103,14 @@
 					</view>
 					<text>¥{{orderInfo.totalDeliveryFee}}</text>
 				</view>
-				<view v-if="orderInfo.totalHandlingFee !== undefined  && !orderInfo.hasStock" class="price-font">
+				<view v-if="orderInfo.totalHandlingFee !== undefined  && !orderInfo.hasStock" class="price-font mt26">
 					<view class="question-box">
 						搬运费
 						<text class="question-icon" @click="readExpenses(2)"></text>
 					</view>
 					<text>¥{{orderInfo.totalHandlingFee}}</text>
 				</view>
-				<view class="price-font">
+				<view class="price-font mt26">
 					<text>商品总价</text>
 					<text v-if="Number(orderInfo.totalPrice)">¥{{orderInfo.totalPrice}}</text>
 					<text v-else>¥- -</text>
@@ -126,10 +126,10 @@
 					<text>商品总价</text>
 					<text>¥{{orderInfo.totalPrice}}</text>
 				</view>
-        <view class="pledge price-font total-deposit" v-if="orderInfo.totalDeposit !== undefined">
-        	<text>押金</text>
-        	<text>¥{{orderInfo.totalDeposit}}</text>
-        </view>
+				<view class="pledge price-font total-deposit" v-if="orderInfo.totalDeposit !== undefined">
+					<text>押金</text>
+					<text>¥{{orderInfo.totalDeposit}}</text>
+				</view>
 			</view>
 			<view v-if="haveCard" class="pay-way" style="justify-content:center" @click="clickCard">
 				<image class="card-img"
@@ -142,14 +142,17 @@
 				<view style="flex:1">
 				</view>
 				<view v-if="cardClick" class="card-price">
-					-¥{{(this.cardPrice/100).toFixed(2)}}
+					<text style="margin-right:4rpx ;">-</text> <text style="margin-right:2rpx ;">¥</text>
+					{{(this.cardPrice/100).toFixed(2)}}
 				</view>
 				<image v-if="cardClick" class="selected-img"
 					src="https://ali-image.dabanjia.com/static/mp/dabanjia/images/classify/pay_selected.png" mode="">
 				</image>
-				<image v-else class="selected-img"
+				<image v-if="!cardClick&&cardBalance" class="selected-img"
 					src="https://ali-image.dabanjia.com/static/mp/dabanjia/images/classify/pay_unselected.png" mode="">
 				</image>
+				<view v-if="!cardClick&&!cardBalance" class="select-disable">
+				</view>
 			</view>
 			<view class="pay-way">
 				<text>支付方式</text>
@@ -316,10 +319,7 @@
 			payChannelPrice() {
 				//提示框价格
 				if (!this.payChannel) {
-					return (
-						(Number(this.totalPrice) * 100 - this.cardBalance) /
-						100
-					).toFixed(2);
+					return (this.cardPrice / 100).toFixed(2)
 				} else {
 					return this.totalPrice;
 				}
@@ -715,6 +715,17 @@
 </script>
 
 <style lang="scss" scoped>
+	.mt26{
+		margin-top: 26rpx;
+	}
+	.select-disable {
+		width: 36rpx;
+		height: 36rpx;
+		background: #f5f5f5;
+		border: 1rpx solid #e8e8e8;
+		border-radius: 50%;
+	  margin-left: 16rpx;
+	}
 	.selected-img {
 		width: 36rpx;
 		height: 36rpx;
@@ -735,7 +746,7 @@
 
 	.card-price {
 		font-family: PriceFont;
-		font-size: 24rpx;
+		font-size: 28rpx;
 		color: #ff3347;
 	}
 
@@ -991,7 +1002,7 @@
 	.good-store-account {
 		padding: 35rpx 32rpx;
 		background-color: #ffffff;
-		margin-top: 25rpx;
+		margin-top: 16rpx;
 		font-size: 28rpx;
 		font-family: PingFangSC, PingFangSC-Regular;
 		display: flex;
@@ -1018,15 +1029,17 @@
 		background-color: #fafafa;
 		border-radius: 8rpx;
 	}
-  .total-deposit{
-    padding: 0 !important;
-  }
+
+	.total-deposit {
+		padding: 0 !important;
+	}
+
 	.pay-way,
 	.pledge,
 	.remarks {
 		padding: 5rpx 32rpx;
 		background-color: #ffffff;
-		margin-top: 25rpx;
+		margin-top: 16rpx;
 		font-size: 28rpx;
 		font-family: PingFangSC, PingFangSC-Regular;
 		display: flex;
@@ -1192,4 +1205,6 @@
 		flex: 1;
 		color: #00bfb6;
 	}
+
+
 </style>
