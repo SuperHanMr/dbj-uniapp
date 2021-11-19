@@ -1,5 +1,5 @@
 <template>
-	<view class="cardWrap">
+	<view class="cardWrap" :class="{'noScroll': showRules}">
 		<view class="wrap">
 			<view class="header">
 				<view class="text">余额 (元)</view>
@@ -11,7 +11,7 @@
 				<view class="bill" @click="toBillingDetails">账单明细</view>
 			</view>
 			<view class="noList" v-if="noList">
-				<image src="http://dbj.dragonn.top/static/mp/dabanjia/images/my/img_sys_city.png"></image>
+				<image src="https://ali-image.dabanjia.com/static/mp/dabanjia/images/my/img_sys_city.png"></image>
 				<view class="tit">敬请期待</view>
 				<view class="txt">您所在的城市暂无储值卡活动</view>
 			</view>
@@ -22,7 +22,7 @@
 					<view class="title">{{item.activityName}}</view>
 					<view class="rules" @click="clickRules(index)">
 						<view class="text">活动规则</view>
-						<image src="http://dbj.dragonn.top/static/mp/dabanjia/images/my/ic_more.png" class="icon"></image>
+						<image src="https://ali-image.dabanjia.com/static/mp/dabanjia/images/my/ic_more.png" class="icon"></image>
 					</view>
 				</view>
 				<view class="date">活动时间：{{item.activityStartTime}}-{{item.activityEndTime}}</view>
@@ -33,7 +33,7 @@
 						v-for="(amount,idx) in item.detailDTOList"
 						:key="amount.detailId"
 						@click="chooseOne(amount.detailId,item.eligibility)">
-						<image src="http://dbj.dragonn.top/static/mp/dabanjia/images/my/choosed.png"
+						<image src="https://ali-image.dabanjia.com/static/mp/dabanjia/images/my/choosed.png"
 							class="icon" v-if="amount.isChecked"></image>
 						<view class="numWrap" :class="{'active': amount.isChecked,'cannot': !item.eligibility}">
 							<view class="text">充</view>
@@ -55,7 +55,7 @@
 			<view class="popup">
 				<view class="top">
 					<view class="title">活动规则</view>
-					<image src="http://dbj.dragonn.top/static/mp/dabanjia/images/my/close_rules.png" @click="closeRules"></image>
+					<image src="https://ali-image.dabanjia.com/static/mp/dabanjia/images/my/close_rules.png" @click="closeRules"></image>
 				</view>
 				<view class="content">{{ruleText}}</view>
 			</view>
@@ -92,6 +92,9 @@
 			},1000)
 		}, 
 		methods: {
+			prevent(){
+				return
+			},
 			toBillingDetails(){
 				uni.navigateTo({
 					url: "/sub-my/pages/deposit-card/billing-details"
@@ -204,10 +207,13 @@
 <style scoped>
 	.cardWrap{
 		width: 750rpx;
-		background-image: url('http://dbj.dragonn.top/static/mp/dabanjia/images/my/bg.png');
+		background-image: url('https://ali-image.dabanjia.com/static/mp/dabanjia/images/my/bg.png');
 		background-repeat: no-repeat;
 		background-size: cover;
 		background-attachment: fixed;
+	}
+	.cardWrap.noScroll{
+		overflow: hidden;
 	}
 	.mask{
 		width: 100%;
@@ -265,7 +271,7 @@
 		margin: 0 24rpx;
 		border-radius: 16rpx;
 		box-shadow: 0px 4px 12px rgba(190, 102, 21, 0.15);
-		background-image: url('http://dbj.dragonn.top/static/mp/dabanjia/images/my/card_bg.png');
+		background-image: url('https://ali-image.dabanjia.com/static/mp/dabanjia/images/my/card_bg.png');
 		background-repeat: no-repeat;
 		background-size: cover;
 	}

@@ -593,7 +593,7 @@
           getMsgNum(this.currentProject.projectId).then(res => {
             this.msgNum = res.count+''
             
-            this.globalData.decorateMsgNum = this.msgNum
+            getApp().globalData.decorateMsgNum = this.msgNum
             uni.stopPullDownRefresh()
             if(res.count===0){
               console.log(1111)
