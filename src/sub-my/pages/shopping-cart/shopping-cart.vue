@@ -559,7 +559,7 @@
 						});
 					}, 100);
 					return;
-				} else if (+val >= 9999.99) {
+				} else if (+val > 9999.99) {
 					setTimeout(() => {
 						uni.showToast({
 							title: "商品数量超出范围",
@@ -1571,6 +1571,7 @@
 		line-height: 48rpx;
 	}
 	.goodsInfo .foot .countCtrl .count.max{
+		padding-right: 5rpx;
 		display: flex;
 		justify-content: flex-end;
 		overflow: hidden;

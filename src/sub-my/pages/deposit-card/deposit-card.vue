@@ -372,7 +372,7 @@
 		color: #2B2F33;
 	}
 	.date{
-		width: 412rpx;
+		/* width: 412rpx; */
 		height: 30rpx;
 		margin-left: 24rpx;
 		font-size: 21rpx;
@@ -452,6 +452,7 @@
 	.cover{
 		width: 750rpx;
 		height: 256rpx;
+		margin-top: 24rpx;
 	}
 	.buyWrap{
 		position: fixed;
