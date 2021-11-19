@@ -84,7 +84,7 @@
 			<view  class="price-item" v-if="data.cardAmount">
 			  <view>储值卡</view>
 			  <view>
-			    <text>￥</text>
+			    <text>-￥</text>
 			    <text class="price-style price-font">{{handlePrice(data.cardAmount)[0]}}.{{handlePrice(data.cardAmount)[1]}}</text>
 			  </view>
 			</view>
