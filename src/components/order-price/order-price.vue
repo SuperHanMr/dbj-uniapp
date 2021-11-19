@@ -119,8 +119,8 @@
         </text>
 				<text style="color: #FF3347;" class="price-font"  v-else>
 				  <text>￥</text>
-				  <text style="font-size: 40rpx;">{{handlePrice(data.orderReceivableAmount)[0]}}.</text>
-				  <text>{{handlePrice(data.orderReceivableAmount)[1]}}</text>
+				  <text style="font-size: 40rpx;">{{handlePrice(data.payAmount)[0]}}.</text>
+				  <text>{{handlePrice(data.payAmount)[1]}}</text>
 				</text>
       </view>
     </view>

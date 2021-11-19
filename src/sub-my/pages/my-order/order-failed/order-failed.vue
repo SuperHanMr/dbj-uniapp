@@ -119,7 +119,7 @@
         <view class="header">
           <view class="header-content"> 
             <text v-if="orderInfo.type !==5"  style="color: #333333;" @click="gotoShop(item2)" >{{item2.storeName}}</text>
-            <text v-else style="color: #333333;" @click="gotoShop(item2)" >{{orderInfo.orderName}}</text>
+            <text v-else style="color: #333333;"  >{{orderInfo.orderName}}</text>
 						<image v-if="orderInfo.type !==5 " src="../../../static/ic_more.svg" mode=""/>
           </view>
           <view class="icon"></view>
@@ -318,7 +318,6 @@ export default {
     // 跳转到店铺页面
     gotoShop(item) {
       console.log("去店铺首页！！！！");
-			if(item.type !==5) return 
       uni.navigateTo({
         url: `../../../../sub-classify/pages/shops/shops?storeId=${item.storeId}&areaId=${this.areaId}`,
       });
