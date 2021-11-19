@@ -721,7 +721,7 @@
 						});
 					} else {
 						uni.redirectTo({
-							url: `/sub-classify/pages/pay-order/pay-success?orderId=${id}&from=valueCard`,
+							url: `/sub-classify/pages/pay-order/pay-success?orderId=${id}`,
 						});
 					}
 				});
