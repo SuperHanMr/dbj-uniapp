@@ -81,7 +81,8 @@
 		},
 		onShow() {
 			this.cityId = getApp().globalData.currentHouse.cityId;
-			console.log(this.cityId);
+			this.requestBalance()
+			this.requestPage()
 		},
 		onPullDownRefresh(){
 			this.requestBalance()
@@ -89,10 +90,6 @@
 			setTimeout(() => {
 				uni.stopPullDownRefresh()
 			},1000)
-		},
-		mounted() {
-			this.requestBalance()
-			this.requestPage()
 		}, 
 		methods: {
 			toBillingDetails(){

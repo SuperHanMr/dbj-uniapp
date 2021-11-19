@@ -179,6 +179,8 @@
 				this.userName = "点击登录";
 				this.isLogin = false;
 				this.userInfo = null;
+				this.isShowStoreValue = false
+				this.storeValueCard = null
 			} else {
 				this.isLogin = true;
 				this.userInfo = getApp().globalData.userInfo;
