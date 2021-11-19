@@ -25,7 +25,10 @@
 						<image src="https://ali-image.dabanjia.com/static/mp/dabanjia/images/my/ic_more.png" class="icon"></image>
 					</view>
 				</view>
-				<view class="date">活动时间：{{item.activityStartTime}}-{{item.activityEndTime}}</view>
+				<view class="instructions">
+					<view class="date">活动时间：{{item.activityStartTime}}-{{item.activityEndTime}}</view>
+					<view class="text" v-if="!item.eligibility">已参加过活动</view>
+				</view>
 				<image class="banner" :src="item.activityImage" v-if="item.activityImage"></image>
 				<view class="main">
 					<view class="prePay"
@@ -381,6 +384,17 @@
 		height: 28rpx;
 		font-size: 22rpx;
 		color: #2B2F33;
+	}
+	.instructions{
+		display: flex;
+		justify-content: space-between;
+	}
+	.instructions .text{
+		font-size: 21rpx;
+		color: #314F5E;
+		width: 126rpx;
+		height: 30rpx;
+		margin-right: 24rpx;
 	}
 	.date{
 		/* width: 412rpx; */
