@@ -2,33 +2,32 @@
 	<view class="wrap">
 		<view class="main" v-if="details.length">
 			<view class="item" v-for="item in details" :key="item.id">
-				<image src="http://dbj.dragonn.top/static/mp/dabanjia/images/my/ic_recharge.png"
+				<image src="https://ali-image.dabanjia.com/static/mp/dabanjia/images/my/ic_income.png"
 					class="icon" v-if="item.transferType === 17"></image>
-				<image src="http://dbj.dragonn.top/static/mp/dabanjia/images/my/ic_consume.png"
+				<image src="https://ali-image.dabanjia.com/static/mp/dabanjia/images/my/ic_consumes.png"
 					class="icon" v-if="item.transferType === 18"></image>
-				<image src="http://dbj.dragonn.top/static/mp/dabanjia/images/my/ic_refund.png" class="icon"
+				<image src="https://ali-image.dabanjia.com/static/mp/dabanjia/images/my/ic_refunds.png" class="icon"
 					v-if="item.transferType === 19 || item.transferType === 20"></image>
-				<image src="http://dbj.dragonn.top/static/mp/dabanjia/images/my/ic_card_refund%402x.png"
+				<image src="https://ali-image.dabanjia.com/static/mp/dabanjia/images/my/ic_cardRefund.png"
 					class="icon" v-if="item.transferType === 21"></image>
-				<image src="http://dbj.dragonn.top/static/mp/dabanjia/images/my/ic_cancel_refund.png"
+				<image src="https://ali-image.dabanjia.com/static/mp/dabanjia/images/my/ic_cancelRefund.png"
 					class="icon" v-if="item.transferType === 22"></image>
 				<view class="content">
 					<view class="left">
 						<view class="category">{{item.transferTypeName}}</view>
-						<view class="order">
-							订单号：{{item.orderNo}}
+						<view class="time">
+							{{item.createTime|formatDate('YYYY/MM/DD HH:mm')}}
 						</view>
 					</view>
 					<view class="right">
 						<view class="num price-font">{{(item.transferInoutType === 1? '+': '-')+(item.amount/100)}}</view>
-						<view class="date">{{item.createTime|formatDate('YYYY/MM/DD HH:mm')}}</view>
 					</view>
 				</view>
 			</view>
 			<view class="tip" v-if="noMore">没有更多了～</view>
 		</view>
 		<view class="noDetails" v-else>
-			<image src="http://dbj.dragonn.top/static/mp/dabanjia/images/my/list_empty.png"></image>
+			<image src="https://ali-image.dabanjia.com/static/mp/dabanjia/images/my/list_empty.png"></image>
 			<view class="text">暂无账单明细</view>
 		</view>
 	</view>
@@ -116,7 +115,7 @@
 		width: 644rpx;
 		height: 152rpx;
 		padding-right: 32rpx;
-		border-bottom: 2rpx solid #f3f3f3;
+		border-bottom: 1rpx solid #f3f3f3;
 		display: flex;
 		justify-content: space-between;
 		align-items: center;
@@ -127,8 +126,9 @@
 		font-size: 28rpx;
 		color: #333333;
 	}
-	.order{
-		width: 326rpx;
+	.time{
+		margin-top: 8rpx;
+		/* width: 326rpx; */
 		height: 28rpx;
 		font-size: 22rpx;
 		color: #999999;
@@ -138,13 +138,6 @@
 		text-align: right;
 		font-size: 36rpx;
 		color: #333333;
-	}
-	.date{
-		width: 178rpx;
-		height: 28rpx;
-		font-size: 22rpx;
-		text-align: right;
-		color: #cccccc;
 	}
 	.noDetails{
 		width: 750rpx;
