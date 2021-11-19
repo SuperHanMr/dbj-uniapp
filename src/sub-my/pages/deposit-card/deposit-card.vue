@@ -90,10 +90,6 @@
 			setTimeout(() => {
 				uni.stopPullDownRefresh()
 			},1000)
-		},
-		mounted() {
-			this.requestBalance()
-			this.requestPage()
 		}, 
 		methods: {
 			toBillingDetails(){
