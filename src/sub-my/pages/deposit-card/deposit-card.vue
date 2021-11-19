@@ -494,7 +494,7 @@
 		font-weight: 500;
 		font-size: 32rpx;
 		text-align: center;
-		line-height: 100rpx;
+		line-height: 88rpx;
 		color: #FFFFFF;
 		background: linear-gradient(263.5deg, #FF7051 0.55%, #FFC700 100%);
 	}
