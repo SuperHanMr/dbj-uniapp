@@ -5,6 +5,7 @@
       :showSubtitle="false"
       :showBack="type==0&&ownered"
       :itemBtn="type==2&&ownered"
+			:showPrePrice="false"
       :item="res"
       @backGoodItem="toBackGoodItem"
       @applyBackItem="applyBackItem"
