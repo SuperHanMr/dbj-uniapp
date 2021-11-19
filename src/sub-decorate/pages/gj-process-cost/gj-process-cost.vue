@@ -225,7 +225,7 @@
 			payChannelPrice() {
 				//提示框价格
 				if (!this.payChannel) {
-					return ((this.countPrice - this.cardBalance) / 100).toFixed(2);
+					return (this.cardPrice / 100).toFixed(2)
 				} else {
 					return (this.countPrice / 100).toFixed(2);
 				}
