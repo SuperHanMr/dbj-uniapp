@@ -521,7 +521,7 @@
 									this.levelName = "高级";
 									break;
 								case 3:
-									this.levelName = "特高级";
+									this.levelName = "特级";
 									break;
 								case 4:
 									this.levelName = "钻石级";
