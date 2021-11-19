@@ -54,14 +54,7 @@
 				</view>
 			</view>
 		</view>
-		<!-- <uni-popup ref="popup" type="center">
-			<view class="top">
-				<view class="title">活动规则</view>
-				<image src="https://ali-image.dabanjia.com/static/mp/dabanjia/images/my/close_rules.png" @click="closeRules"></image>
-			</view>
-			<view class="content">{{ruleText}}</view>
-		</uni-popup> -->
-		<view class="mask" v-if="showRules" @tap.stop="test" :catchtouchmove="true">
+		<uni-popup ref="popup" type="center">
 			<view class="popup">
 				<view class="top">
 					<view class="title">活动规则</view>
@@ -69,7 +62,7 @@
 				</view>
 				<view class="content">{{ruleText}}</view>
 			</view>
-		</view>
+		</uni-popup>
 	</view>
 </template>
 
@@ -116,11 +109,12 @@
 				})
 			},
 			clickRules(index){
-				this.showRules = true
+				this.$refs.popup.open('center')
 				this.ruleText = this.list[index].activityRule
 			},
 			closeRules(){
 				this.showRules = false
+				this.$refs.popup.close()
 			},
 			chooseOne(detailId,eligibility){
 				this.isChoose = !this.isChoose
@@ -223,6 +217,7 @@
 		/* background-attachment: fixed; */
 	}
 	.cardWrap.noScroll{
+		position: fixed;
 		overflow: hidden;
 	}
 	.mask{
@@ -492,6 +487,7 @@
 		left: 0;
 		width: 750rpx;
 		background: #fff;
+		box-shadow: 0px 4px 12px rgba(190, 102, 21, 0.15);
 	}
 	.button{
 		width: 686rpx;
