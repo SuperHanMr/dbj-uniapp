@@ -12,7 +12,9 @@
 		setLogId,
 		log
 	} from "utils/log.js";
-  import { getMsgNumByHouse } from "api/decorate.js";
+	import {
+		getMsgNumByHouse
+	} from "api/decorate.js";
 	export default {
 		globalData: {
 			userInfo: {},
@@ -24,7 +26,7 @@
 			currentProject: {},
 			naviData: null,
 			decorateMsg: {},
-      decorateMsgNum:0,
+			decorateMsgNum: 0,
 			currentHouse: {
 				name: "北京市朝阳区",
 				provinceId: 1,
@@ -113,14 +115,14 @@
 						uni.clearStorageSync("userId");
 					});
 			}
-      uni.$on("system-messages", () => {
-            console.log(1111);
-            this.watchMsg();
-          });
-      uni.$on("currentHouseChange", () => {
-        console.log(222);
-        this.watchMsg();
-      });
+			uni.$on("system-messages", () => {
+				console.log(1111);
+				this.watchMsg();
+			});
+			uni.$on("currentHouseChange", () => {
+				console.log(222);
+				this.watchMsg();
+			});
 			// 检查新版本
 			const updateManager = uni.getUpdateManager();
 			updateManager.onCheckForUpdate(function(res) {
@@ -156,41 +158,41 @@
 		onHide: function() {
 			console.log("App Hide");
 		},
-    methods: {
-        watchMsg() {
-          if (!this.globalData.token) {
-            return;
-          }
-          setTimeout(() => {
-            getMsgNumByHouse(
-              this.globalData.currentHouse
-                ? this.globalData.currentHouse.id
-                : this.globalData.currentEstate.id
-            )
-              .then((res) => {
-                let num = res.count + "";
-                this.globalData.decorateMsgNum = num
-                if (res.count === 0) {
-                  uni.removeTabBarBadge({
-                    index: 2,
-                  });
-                } else {
-                  
-                  uni.setTabBarBadge({
-                    index: 2,
-                    text: num,
-                  });
-                }
-              })
-              .catch((err) => {
-                uni.removeTabBarBadge({
-                  index: 2,
-                });
-              });
-          }, 100);
-        },
-	},
-}
+		methods: {
+			watchMsg() {
+				if (!this.globalData.token) {
+					return;
+				}
+				setTimeout(() => {
+					getMsgNumByHouse(
+							this.globalData.currentHouse ?
+							this.globalData.currentHouse.id :
+							this.globalData.currentEstate.id
+						)
+						.then((res) => {
+							let num = res.count + "";
+							this.globalData.decorateMsgNum = num
+							if (res.count === 0) {
+								uni.removeTabBarBadge({
+									index: 2,
+								});
+							} else {
+
+								uni.setTabBarBadge({
+									index: 2,
+									text: num,
+								});
+							}
+						})
+						.catch((err) => {
+							uni.removeTabBarBadge({
+								index: 2,
+							});
+						});
+				}, 100);
+			},
+		},
+	}
 </script>
 
 <style>
@@ -215,6 +217,10 @@
 	page {
 		height: 100%;
 		background-color: #f5f6f6;
+	}
+
+	button::after {
+		border: none;
 	}
 
 	::-webkit-scrollbar {

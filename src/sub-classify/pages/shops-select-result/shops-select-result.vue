@@ -1,7 +1,7 @@
 <template>
   <view>
     <web-view :src="baseUrl + '/app-pages/shops/shops-select-result.html?token=' + searchToken + '#wx-storeId='
-     + storeId + '&wx-houseId=' + houseId + '&wx-token=' + hashToken">
+     + storeId + '&wx-houseId=' + houseId + '&wx-categoryId=' + categoryId + '&wx-goodName=' + goodName + '&wx-token=' + hashToken">
     </web-view>
   </view>
 </template>
@@ -15,11 +15,17 @@
         searchToken: '',
         storeId: 0,
         areaId: 0,
-        houseId: 0
+        houseId: 0,
+        categoryId: 0,
+        goodName: ''
       }
     },
     onLoad(e) {
+      console.log(e, "eeeeeee")
       this.storeId = e.storeId
+      this.houseId = e.houseId
+      this.categoryId = e.categoryId
+      this.goodName = e.goodName
     },
     onShow() {
       if (!this.searchToken) {

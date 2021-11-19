@@ -1,8 +1,8 @@
 @font-face {
   font-family: "iconfont"; /* Project id 2785499 */
-  src: url('//at.alicdn.com/t/font_2785499_enmw6vhr5g8.woff2?t=1636622813903') format('woff2'),
-       url('//at.alicdn.com/t/font_2785499_enmw6vhr5g8.woff?t=1636622813903') format('woff'),
-       url('//at.alicdn.com/t/font_2785499_enmw6vhr5g8.ttf?t=1636622813903') format('truetype');
+  src: url('https://ali-res.dabanjia.com/static/mp/dabanjia/font/iconfont.woff2?t=1637308263021') format('woff2'),
+       url('https://ali-res.dabanjia.com/static/mp/dabanjia/font/iconfont.woff?t=1637308263021') format('woff'),
+       url('https://ali-res.dabanjia.com/static/mp/dabanjia/font/iconfont.ttf?t=1637308263021') format('truetype');
 }
 
 .iconfont {
@@ -748,3 +748,4 @@
 .icon-plus-circle:before {
   content: "\e641";
 }
+

@@ -439,7 +439,7 @@
   .goods-money {
     display: flex;
     font-size: 24rpx;
-    color: #ff3448;
+    color: #333333;
     display: table-cell;
     vertical-align: bottom;
     font-weight: bold;

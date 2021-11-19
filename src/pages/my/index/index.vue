@@ -76,7 +76,7 @@
 						<text>{{item2.value}}</text>
 					</view>
 					<view class="right">
-						<text v-if="item2.key==1 && isShowStoreValue">{{ Number(storeValueCard)/100 }} 元</text>
+						<text v-if="item2.key==1 && isShowStoreValue">{{ Number(storeValueCard)/100 }}元</text>
 						<image src="../../../static/order/images/arraw_right_@2x.png" mode="" />
 					</view>
 				</view>
