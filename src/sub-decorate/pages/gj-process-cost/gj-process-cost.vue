@@ -679,7 +679,8 @@
 				createOrder(obj).then((data) => {
 					const {
 						wechatPayJsapi,
-						cardPayComplete
+						cardPayComplete,
+						id
 					} = data;
 					if (!cardPayComplete) {
 						uni.requestPayment({
@@ -717,8 +718,8 @@
 							},
 						});
 					} else {
-						uni.navigateTo({
-							url: `/pages/decorate/index/index`,
+						uni.redirectTo({
+							url: `/sub-classify/pages/pay-order/pay-success?orderId=${id}&from=valueCard`,
 						});
 					}
 				});
