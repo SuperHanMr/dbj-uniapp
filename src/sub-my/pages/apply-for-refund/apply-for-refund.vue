@@ -191,8 +191,8 @@ export default {
 			reasonName:"",
 
 			returnMoney:"",//向后台传递的退款金额
-			refundAmount:"" ,//后台返回的最大退款金额
-	
+			refundAmount:"" ,
+			maxRefundAmount:"",//后台返回的最大退款金额
 			refundId:"",
 			orderDetailId:"",
 
@@ -275,15 +275,17 @@ export default {
 			console.log("newVal=====",newVal,String(newVal).length)
 			this.reqInputWidth(newVal)
 			console.log("this.refundAmount===",this.refundAmount)
-			if(newVal > this.refundAmount){
+			if(newVal > this.maxRefundAmount){
 				uni.showToast({
 					title:"退款金额大于储值卡余额，请修改",
 					icon:'none',
 					duration:1000
 				})
-				return Number(this.refundAmount).toFixed(2)
+				this.returnMoney = Number(newVal) 
+				return
+				// return Number(this.refundAmount).toFixed(2)
 			}else{
-				this.returnMoney =Number(newVal) 
+				this.returnMoney = Number(newVal) 
 				return newVal;
 			}
     },
@@ -323,9 +325,10 @@ export default {
 				this.reasonName = data.reason
 				console.log("this.refundType===",this.refundType)
 				if(this.refundType == 5){
-					this.inputValue  = data.maxRefundAmount
-					this.refundAmount  = data.maxRefundAmount
-					this.returnMoney = data.maxRefundAmount
+					this.maxRefundAmount = data.maxRefundAmount
+					this.returnMoney = data.refundAmount
+					this.inputValue  = data.refundAmount
+					this.refundAmount  = data.refundAmount
 				}else{
 					this.refundAmount  =data.refundAmount
 					this.returnMoney  =data.refundAmount
@@ -364,6 +367,14 @@ export default {
 
 		submitApplication() {
 			// 提交申请后该订单会进入到退款页面，状态显示退款中；并直接跳转到该订单退款详情页
+			if(this.returnMoney >this.maxRefundAmount){
+				uni.showToast({
+					title:"退款金额大于储值卡余额，请修改",
+					icon:'none',
+					duration:1000
+				})
+				return
+			}
       console.log("申请退款");
 			if(this.type =='whole'){
 				wholeOrderApplyForRefund({
@@ -408,13 +419,16 @@ export default {
     },
     onKeyBlur() {
       // 缺少输入退款金额值的判断及弹框提示数据
+			if(this.inputValue ==''){
+				this.inputValue = this.refundAmount
+			}
       this.showEditInput = false;
-			if(!(/^[1-9]\d*\.?\d{0,2}$|^0\.[1-9]\d$|^0\.\d[1-9]$/g.test(this.inputValue)) ){
-				// uni.showToast({
-				// 	title:"您输入的金额错误，请重新输入",
-				// 	icon:'none',
-				// 	duration:2000,
-				// })  
+			if(!(/^(([1-9]{1}\d*)|(0{1}))(\.\d{1,2})?$/.test(this.inputValue)) ){
+				uni.showToast({
+					title:"您输入的金额错误，请重新输入",
+					icon:'none',
+					duration:2000,
+				})  
 				this.inputValue =  Number(this.refundAmount).toFixed(2)
 			}else{
 				this.inputValue = Number(this.inputValue).toFixed(2);

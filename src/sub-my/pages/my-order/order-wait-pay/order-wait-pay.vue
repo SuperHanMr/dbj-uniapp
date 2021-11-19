@@ -244,7 +244,7 @@
 
       <!-- v-if="haveCard && orderInfo.isReplenish" -->
       <view
-        v-if="haveCard && orderInfo.type == 5"
+        v-if="haveCard && orderInfo.isReplenish"
         class="pay-way"
         style="justify-content:center"
         @click="clickCard"
