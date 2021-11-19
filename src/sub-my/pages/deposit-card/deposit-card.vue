@@ -81,7 +81,8 @@
 		},
 		onShow() {
 			this.cityId = getApp().globalData.currentHouse.cityId;
-			console.log(this.cityId);
+			this.requestBalance()
+			this.requestPage()
 		},
 		onPullDownRefresh(){
 			this.requestBalance()
