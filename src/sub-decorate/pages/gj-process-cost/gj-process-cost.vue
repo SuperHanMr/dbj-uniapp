@@ -15,7 +15,7 @@
 			<no-data v-if="noData" :words="message"></no-data>
 		</view>
 		<view class="material-cost" 
-			v-if="msg.obtainType != 1 && dataOrigin.material.categoryList > 0">
+			v-if="msg.obtainType != 1 && dataOrigin.material.categoryList.length > 0">
 			<view class="title">
 				<view>辅材费用</view>
 			</view>
