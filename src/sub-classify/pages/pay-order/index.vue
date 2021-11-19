@@ -103,14 +103,14 @@
 					</view>
 					<text>¥{{orderInfo.totalDeliveryFee}}</text>
 				</view>
-				<view v-if="orderInfo.totalHandlingFee !== undefined  && !orderInfo.hasStock" class="price-font">
+				<view v-if="orderInfo.totalHandlingFee !== undefined  && !orderInfo.hasStock" class="price-font mt26">
 					<view class="question-box">
 						搬运费
 						<text class="question-icon" @click="readExpenses(2)"></text>
 					</view>
 					<text>¥{{orderInfo.totalHandlingFee}}</text>
 				</view>
-				<view class="price-font">
+				<view class="price-font mt26">
 					<text>商品总价</text>
 					<text v-if="Number(orderInfo.totalPrice)">¥{{orderInfo.totalPrice}}</text>
 					<text v-else>¥- -</text>
@@ -715,6 +715,9 @@
 </script>
 
 <style lang="scss" scoped>
+	.mt26{
+		margin-top: 26rpx;
+	}
 	.select-disable {
 		width: 36rpx;
 		height: 36rpx;
