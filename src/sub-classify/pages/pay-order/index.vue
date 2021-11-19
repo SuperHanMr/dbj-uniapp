@@ -126,10 +126,10 @@
 					<text>商品总价</text>
 					<text>¥{{orderInfo.totalPrice}}</text>
 				</view>
-			</view>
-			<view class="pledge price-font" v-if="orderInfo.totalDeposit !== undefined">
-				<text>总押金</text>
-				<text>¥{{orderInfo.totalDeposit}}</text>
+        <view class="pledge price-font total-deposit" v-if="orderInfo.totalDeposit !== undefined">
+        	<text>押金</text>
+        	<text>¥{{orderInfo.totalDeposit}}</text>
+        </view>
 			</view>
 			<view v-if="haveCard" class="pay-way" style="justify-content:center" @click="clickCard">
 				<image class="card-img"
@@ -1018,7 +1018,9 @@
 		background-color: #fafafa;
 		border-radius: 8rpx;
 	}
-
+  .total-deposit{
+    padding: 0 !important;
+  }
 	.pay-way,
 	.pledge,
 	.remarks {
