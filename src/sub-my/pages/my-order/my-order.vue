@@ -178,11 +178,11 @@
                     <text
                       style="font-size: 32rpx;"
                       class="price-font"
-                    >{{handlePrice(item.orderReceivableAmount)[0]}}.</text>
+                    >{{handlePrice(item.payAmount)[0]}}.</text>
                     <text
                       style="font-size:22rpx;"
                       class="price-font"
-                    >{{handlePrice(item.orderReceivableAmount)[1]}}</text>
+                    >{{handlePrice(item.payAmount)[1]}}</text>
                   </text>
                 </view>
 

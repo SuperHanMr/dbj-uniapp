@@ -152,7 +152,7 @@
 
 			<!-- v-if="haveCard && orderInfo.isReplenish" -->
       <view
-        v-if="haveCard"
+        v-if="haveCard && orderInfo.type == 5"
         class="pay-way"
         style="justify-content:center"
         @click="clickCard"
@@ -190,7 +190,7 @@
       <view class="pay-way mrb">
         <text>支付方式</text>
 
-        <view v-if="payChannel" class="flex-center" >
+        <view v-if="payChannel " class="flex-center" >
           <image
             class="card-img"
             src="https://ali-image.dabanjia.com/static/mp/dabanjia/images/classify/ic_card.png"
@@ -303,7 +303,7 @@
 				scrollTop: 0,
 				headerTitle: "",
 				bgImg: "https://ali-image.dabanjia.com/static/mp/dabanjia/images/decorate/order_bg_orange.png",
-				cardClick: false,
+				cardClick: false,//是否选中储值卡
 				haveCard: false, //是否有会员卡
 				cardBalance: 11111111, //会员卡余额
 				totalPrice: "0.00",
@@ -420,7 +420,7 @@
 				}).then((e) => {
 					console.log(e);
 					this.orderInfo = e;
-					this.totalPrice = this.orderInfo.orderReceivableAmount;
+					this.totalPrice = this.orderInfo.payAmount;
 					this.bottomStyle = this.orderInfo.showCancelBtn ?
 						"space-between" :
 						"flex-end";
