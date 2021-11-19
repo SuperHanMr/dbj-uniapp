@@ -49,7 +49,7 @@
 								{{goodItem.scaleProperties}}
 							</text>
 						</view>
-						<view class="spec-item" style="margin-left: 24rpx;">
+						<view v-if="showPrePrice" class="spec-item" style="margin-left: 24rpx;">
 							{{goodItem.price}}/{{goodItem.unit}}
 						</view>
 						<view style="flex:1">
@@ -217,6 +217,10 @@
 			itemBtn: {
 				type: Boolean,
 				default: false,
+			},
+			showPrePrice: {
+				type: Boolean,
+				default: true,
 			},
 		},
 		computed: {
