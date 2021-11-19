@@ -1,5 +1,5 @@
 <template>
-	<scroll-view scroll-y="true" class="cardWrap">
+	<view class="cardWrap">
 		<view class="wrap">
 			<view class="header">
 				<view class="text">余额 (元)</view>
@@ -43,6 +43,7 @@
 					</view>
 				</view>
 			</view>
+			<view class="cover" v-if="showBuyBtn"></view>
 			<view class="buyWrap" v-if="showBuyBtn">
 				<view class="button" @click="buyNow">立即购买</view>
 				<view class="explain" @click="toActivityRules">购买即同意
@@ -59,7 +60,7 @@
 				<view class="content">{{ruleText}}</view>
 			</view>
 		</view>
-	</scroll-view>
+	</view>
 </template>
 
 <script>
@@ -80,15 +81,15 @@
 		},
 		onShow() {
 			this.cityId = getApp().globalData.currentHouse.cityId;
-			console.log(this.cityId);
+			this.requestBalance()
+			this.requestPage()
 		},
 		onPullDownRefresh(){
 			this.requestBalance()
 			this.requestPage()
-		},
-		mounted() {
-			this.requestBalance()
-			this.requestPage()
+			setTimeout(() => {
+				uni.stopPullDownRefresh()
+			},1000)
 		}, 
 		methods: {
 			toBillingDetails(){
@@ -144,7 +145,7 @@
 								duration: 1000,
 							});
 							uni.redirectTo({
-								url: `/sub-classify/pages/pay-order/pay-success?orderId=${id}`,
+								url: `/sub-classify/pages/pay-order/pay-success?orderId=${id}&from=valueCard`,
 							});
 						},
 						fail(e) {
@@ -152,6 +153,9 @@
 								title: "支付失败",
 								icon: "none",
 								duration: 2000,
+							});
+							uni.redirectTo({
+								url: `/sub-my/pages/my-order/my-order?index=1&firstEntry=true`,
 							});
 						},
 					});		
@@ -200,7 +204,6 @@
 <style scoped>
 	.cardWrap{
 		width: 750rpx;
-		height: 100%;
 		background-image: url('http://dbj.dragonn.top/static/mp/dabanjia/images/my/bg.png');
 		background-repeat: no-repeat;
 		background-size: cover;
@@ -246,11 +249,15 @@
 		right: 12rpx;
 	}
 	.popup .content{
+		overflow: scroll;
+		width: calc(100vw-112rpx);
+		height: 504rpx;
+		/* max-height: 904rpx; */
 		margin: 48rpx;
 		margin-top: 8rpx;
 	}
 	.wrap{
-		height: 2000rpx;
+		width: 750rpx;
 	}
 	.header{
 		width: 702rpx;
@@ -327,8 +334,7 @@
 		color: #999999;
 	}
 	.activity{
-		width: 351px;
-		/* height: 338px; */
+		width: 702rpx;
 		margin: 24rpx 24rpx 0;
 		background: #FFFFFF;
 		border-radius: 16rpx;
@@ -371,7 +377,7 @@
 		color: #2B2F33;
 	}
 	.date{
-		width: 412rpx;
+		/* width: 412rpx; */
 		height: 30rpx;
 		margin-left: 24rpx;
 		font-size: 21rpx;
@@ -447,6 +453,11 @@
 	}
 	.numWrap .num{
 		font-size: 44rpx;
+	}
+	.cover{
+		width: 750rpx;
+		height: 256rpx;
+		margin-top: 24rpx;
 	}
 	.buyWrap{
 		position: fixed;

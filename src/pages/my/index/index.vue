@@ -76,7 +76,7 @@
 						<text>{{item2.value}}</text>
 					</view>
 					<view class="right">
-						<text v-if="item2.key==1 && storeValueCard !== null">{{ Number(storeValueCard)/100 }} 元</text>
+						<text v-if="item2.key==1 && isShowStoreValue">{{ Number(storeValueCard)/100 }} 元</text>
 						<image src="../../../static/order/images/arraw_right_@2x.png" mode="" />
 					</view>
 				</view>
@@ -97,7 +97,8 @@
 		data() {
 			return {
 				waitPayOrderNum: "",
-				storeValueCard:null,
+				isShowStoreValue:false,
+				storeValueCard:"",
 				isLogin: false,
 				userName: "用户名称",
 				userInfo: {},
@@ -178,6 +179,8 @@
 				this.userName = "点击登录";
 				this.isLogin = false;
 				this.userInfo = null;
+				this.isShowStoreValue = false
+				this.storeValueCard = null
 			} else {
 				this.isLogin = true;
 				this.userInfo = getApp().globalData.userInfo;
@@ -185,10 +188,13 @@
 				queryToBePaidOrderNum().then((e) => {
 					this.waitPayOrderNum = e ? e : 0;
 				});
-				queryStoreValueCard().then(data=>{
-					console.log("!!!!!!!!!!!!! data=", data);
-					if(data === null) data= null
-					this.storeValueCard=data
+				queryStoreValueCard().then(e=>{
+					console.log("!!!!!!!!!!!!! e=", e);
+					if (e !== null) {
+						console.log("????????????????")
+						this.isShowStoreValue = true
+						this.storeValueCard = e
+					}
 				})
 			}
 			this.$store.dispatch("updateTabBarBadge");

@@ -1,13 +1,5 @@
 <template>
   <view class="pay-success">
-    <!--   <custom-navbar opacity="1" :title="title" titleColor="#ffb245" bgcolor="#ffb245">
-    	<template v-slot:back>
-    		<view @click="toBack">
-    			<i class="icon-ic_cancel_white" style="color: white;">
-    			</i>
-    		</view>
-    	</template>
-    </custom-navbar> -->
     <view class="head">
       <view>
         <img src='../../static/image/pay-bg.png' alt="" style='height: 600rpx; width:100%'>
@@ -29,30 +21,33 @@
   export default {
     data() {
       return {
-        orderId: 0
+        orderId: 0,
+        from: ''
       }
     },
     onLoad(val) {
-      this.orderId = val.orderId
+      this.orderId = val.orderId;
+      this.from = val.from
     },
     methods: {
-      toBack() {
-
-      },
       backHome() {
         uni.switchTab({
           url: '/pages/home/index/index'
-        });
+        })
       },
       toOrderDetail() {
-        // uni.navigateTo({
-        //   url: `/sub-my/pages/my-order/order-in-progress/order-in-progress?orderNo=${this.orderId}&from=comfirmOrder`
-        // })
-        uni.redirectTo({
-          url: "../../../sub-my/pages/my-order/my-order?firstEntry=true&index=2"
-        });
+        if (this.from === "valueCard") {
+          uni.redirectTo({
+            url: "../../../sub-my/pages/my-order/my-order?firstEntry=true&index=3"
+          });
+        } else {
+          uni.redirectTo({
+            url: "../../../sub-my/pages/my-order/my-order?firstEntry=true&index=2"
+          });
+        }
       }
     }
+
   }
 </script>
 

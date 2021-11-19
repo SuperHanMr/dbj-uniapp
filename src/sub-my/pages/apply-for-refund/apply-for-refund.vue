@@ -9,7 +9,12 @@
 				</view>
 				<view v-if="type == 'whole' && !refundId "  v-for="(item2,index2) in refundInfo.detailAppVOS" :key="index2">
 					<view>
-						<order-item :refundType="true" :orderType="refundType" :dataList="item2" :orderStatus="2" :showIcon="true" ></order-item>
+						<order-item v-if="item2.type !== 5" :refundType="true" :orderType="refundType" :dataList="item2" :orderStatus="2" :showIcon="true" ></order-item>
+						<store-calue-card-item
+							v-else
+							:refundType="true"
+							:dataInfo="item2"
+						/>
 					</view>
 				</view>
 				<view v-if="type=='partical' && refundId ">
@@ -20,7 +25,7 @@
 
         <view v-if="type == 'partical' && !refundId ">
 						<view v-for="item4 in refundInfo.detailAppVOS" :key="item4.id">
-							<order-item :refundType="true" :orderType="refundType" :dataList="item4" :showIcon="true" ></order-item>
+							<order-item  :refundType="true" :orderType="refundType" :dataList="item4" :showIcon="true" ></order-item>
 						</view>
 				</view>
 
@@ -112,11 +117,11 @@
 							<image src="../../static/ic_mine_edit_gray@2x.png" mode="" @click="showEditInput=true"/>
 						</view>
 					</view>
-					<view class="tip-text" >
-						储值卡未使用,商家同意后将会全额退还
+					<view class="tip-text" v-if="refundInfo.cardUseIdentification" >\
+						储值卡已使用过，具体退款金额以您与商家沟通协商的结果为准
 					</view>
 					<view class="tip-text" >
-						储值卡已使用过,具体退款金额已您与商家沟通协商的结果为准
+						储值卡未使用，商家同意后将会全额退还
 					</view>
 				</view>
 			</view>
@@ -163,6 +168,7 @@ export default {
         remarks: "",
 				status:"",
       },
+			status:"",
       showEditInput: false,
       inputValue: 0,
       inputWidth:'',
@@ -207,6 +213,7 @@ export default {
 		if(this.type){
 			this.query.orderId=Number(e.orderId)
 			this.query.status=Number(e.status);//订单状态 1进行中 2已完成
+			this.status = this.query.status
 			this.applyMode = Number(e.applyMode)//	申请方式 1单商品 2整单退
 			console.log("this.type=", this.type);
 			if (this.type == "partical") {
@@ -235,6 +242,10 @@ export default {
 					console.log("this.refundInfo=",this.refundInfo)
 					this.refundInfo.actualIncomeAmount = this.refundInfo.maxRefundAmount
 					this.returnMoney = this.refundInfo.maxRefundAmount
+					if(this.refundType ==5){
+						this.inputValue = this.returnMoney
+						this.refundAmount = this.refundInfo.maxRefundAmount
+					}
 					this.freight = this.refundInfo.freight?this.refundInfo.freight:'0'
 					this.handlingFees = this.refundInfo.handlingFees?this.refundInfo.freight:'0'
 				})
@@ -257,6 +268,7 @@ export default {
     inputValue(newVal, oldVal) {
 			console.log("newVal=====",newVal,String(newVal).length)
 			this.reqInputWidth(newVal)
+			console.log("this.refundAmount===",this.refundAmount)
 			if(newVal > this.refundAmount){
 				uni.showToast({
 					title:"退款金额大于储值卡余额，请修改",
@@ -301,12 +313,14 @@ export default {
 				this.textAreaLength = data.remark.length
 				this.reasonValue = data.reasonId
 				this.reasonName = data.reason
-				this.refundAmount  =data.refundAmount
-				this.returnMoney  =data.refundAmount
+				console.log("this.refundType===",this.refundType)
 				if(this.refundType == 5){
-					this.inputValue  = data.refundAmount
-					// this.inputWidth =String(data.refundAmount).length* 26 - 12		
+					this.inputValue  = data.maxRefundAmount
+					this.refundAmount  = data.maxRefundAmount
+					this.returnMoney = data.maxRefundAmount
 				}else{
+					this.refundAmount  =data.refundAmount
+					this.returnMoney  =data.refundAmount
 					this.freight = this.refundInfo.freight?this.refundInfo.freight:'0'
 					this.handlingFees = this.refundInfo.handlingFees?this.refundInfo.freight:'0'
 				}

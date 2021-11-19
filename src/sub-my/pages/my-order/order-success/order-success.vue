@@ -14,26 +14,13 @@
     </custom-navbar>
 
     <!-- 退款成功 -->
-    <view
-      class="order-container"
-      v-if="type=='refund'"
-      :style="{paddingBottom:systemBottom}"
-    >
-      <view
-        style="position: relative;"
-        :style="{backgroundImage:`url(${bgImg})`,backgroundSize: '100% 100%'}"
-      >
-        <view
-          class="bgcStyle"
-          :style="{backgroundImage:`url(${bgImg})`,backgroundSize: '100% 100%'}"
-        />
+    <view class="order-container" v-if="type=='refund'" :style="{paddingBottom:systemBottom}">
+      <view style="position: relative;":style="{backgroundImage:`url(${bgImg})`,backgroundSize: '100% 100%'}">
+        <view class="bgcStyle" :style="{backgroundImage:`url(${bgImg})`,backgroundSize: '100% 100%'}"/>
         <view :style="{height:navBarHeight}"></view>
         <view class="order-status">
           <view class="status">
-            <image
-              src="../../../static/ic_order_success.svg"
-              mode=""
-            ></image>
+            <image src="../../../static/ic_order_success.svg" mode=""/>
             <text>退款成功</text>
           </view>
           <text class="time">{{refundInfo.createTime | formatDate}}</text>
@@ -45,110 +32,88 @@
           <text>退款总金额</text>
           <view style="color:#FF3347;">
             <text style="font-size:26rpx;">￥</text>
-            <text
-              style="font-size:40rpx;"
-              class="price-font"
-            >{{handlePrice(refundInfo.refundAmount)[0]}}.</text>
-            <text
-              style="font-size:26rpx;"
-              class="price-font"
-            >{{handlePrice(refundInfo.refundAmount)[1]}}</text>
+            <text style="font-size:40rpx;" class="price-font" >
+							{{handlePrice(refundInfo.refundAmount)[0]}}.
+						</text>
+            <text  style="font-size:26rpx;" class="price-font">
+							{{handlePrice(refundInfo.refundAmount)[1]}}
+						</text>
           </view>
         </view>
         <view class="router">
           <text style="color: #999999;font-size: 26rpx;">原路径返回微信</text>
           <view>
             <text style="font-size: 20rpx;">￥</text>
-            <text
-              style="font-size:28rpx;"
-              class="price-font"
-            >{{handlePrice(refundInfo.refundAmount)[0]}}.</text>
-            <text
-              style="font-size:20rpx;"
-              class="price-font"
-            >{{handlePrice(refundInfo.refundAmount)[1]}}</text>
+            <text style="font-size:28rpx;" class="price-font">
+							{{handlePrice(refundInfo.refundAmount)[0]}}.
+						</text>
+            <text style="font-size:20rpx;" class="price-font" >
+							{{handlePrice(refundInfo.refundAmount)[1]}}
+						</text>
           </view>
         </view>
       </view>
 
-      <view
-        class="body1"
-        v-for="item1 in refundInfo.detailAppVOS"
-        :key="item1.id"
-      >
+      <view class="body1" v-for="item1 in refundInfo.detailAppVOS" :key="item1.id">
         <order-item
+					v-if="refundInfo.type !==5"
           :dataList="item1"
           :orderType="2"
           :refundType="true"
           @handleDetail="productDetail(item1,'refund')"
-        ></order-item>
+        />
+				<store-calue-card-item 
+					v-else 
+					:dataInfo="item1" 
+				/>
       </view>
-
-      <order-refund-info :refundInfo="refundInfo"></order-refund-info>
+			<order-refund-info :refundInfo="refundInfo"></order-refund-info>
     </view>
 
     <!-- 订单完成页面 -->
-    <view
-      class="order-container"
-      v-if="type == 'complete'"
-      :style="{paddingBottom:systemBottom}"
-    >
-      <view
-        style="position: relative;"
-        :style="{backgroundImage:`url(${bgImg})`,backgroundSize: '100% 100%'}"
-      >
+    <view class="order-container" v-if="type == 'complete'" :style="{paddingBottom:systemBottom}">
+      <view  style="position: relative;" :style="{backgroundImage:`url(${bgImg})`,backgroundSize: '100% 100%'}">
         <!-- 占位 -->
-        <view
-          class="bgcStyle"
-          :style="{backgroundImage:`url(${bgImg})`,backgroundSize: '100% 100%'}"
-        />
+        <view class="bgcStyle" :style="{backgroundImage:`url(${bgImg})`,backgroundSize: '100% 100%'}" />
         <view :style="{height:navBarHeight}"></view>
         <view class="order-status">
           <view class="status">
-            <image
-              src="../../../static/ic_order_success.svg"
-              mode=""
-            ></image>
+            <image src="../../../static/ic_order_success.svg" mode=""/>
             <text>已完成</text>
           </view>
         </view>
       </view>
 
-      <order-user-base-info :data="orderInfo"></order-user-base-info>
-
+     <order-user-base-info 
+			 v-if="orderInfo.customerName && orderInfo.customerPhone && orderInfo.estateInfo" 
+			 :data="orderInfo"
+		 />
       <view class="body2">
-        <view
-          class="part1"
-          v-for="(item2,index2) in orderInfo.details"
-          :key="index2"
-        >
+        <view class="part1" v-for="(item2,index2) in orderInfo.details" :key="index2" >
           <view class="header">
-            <view class="header-content">
-              <text
-                style="color: #333333;"
-                @click="gotoShop(item2)"
-              >{{item2.storeName}}</text>
-              <image
-                src="../../../static/ic_more.svg"
-                mode=""
-              />
+            <view class="header-content" v-if="orderInfo.type !==5">
+              <text style="color: #333333;"  @click="gotoShop(item2)" >
+								{{item2.storeName}}
+							</text>
+              <image src="../../../static/ic_more.svg" mode=""/>
             </view>
+						<view class="header-content" v-else>
+						  <text style="color: #333333;" >
+								{{orderInfo.orderName}}
+							</text>
+						</view>
             <view class="icon"></view>
           </view>
 
-          <view
-            v-for="item3 in item2.details"
-            :key="item3.id"
-            class="orederItem"
-          >
+          <view v-for="item3 in item2.details" :key="item3.id" class="orederItem" >
             <order-item
 							v-if="item3.type !==5"
               :dataList="item3"
               :orderStatus="3"
               @handleDetail="productDetail(item3)"
             />
-      
-						<store-calue-card-item v-else/>
+						
+						<store-calue-card-item :dataInfo ="item3" v-else/>
           </view>
         </view>
       </view>
@@ -159,30 +124,55 @@
         :orderNo="orderInfo.orderNo"
         :createTime="orderInfo.createTime"
         :showPayTime="true"
+				:payChannel="orderInfo.payChannel"
         :payTime="orderInfo.payTime"
         :showPayType="true"
       />
-
-      <view
-        v-if="orderInfo.showRefundBtn"
-        class="applyforRefund-container"
-        :style="{paddingBottom:systemBottom,height:systemHeight}"
-      >
-        <view
-          class="applyforRefund"
-          @click="toApplayForRefund(orderInfo,2)"
-        >
+			
+      <view v-if=" orderInfo.showRefundBtn " class="applyforRefund-container" :style="{paddingBottom:systemBottom,height:systemHeight}">
+        <view class="applyforRefund" @click="toApplayForRefund(orderInfo,2)" >
           申请退款
         </view>
+			</view>
+			<view class="applyforRefund-confirmReceipt2" :style="{paddingBottom:systemBottom}"
+				v-if="!orderInfo.showRefundBtn && orderInfo.refundApplyMode == 2 && (orderInfo.stockType == 0 || orderInfo.type == 2)">
+			
+				<view class="refundOrderStatus"
+					v-if="orderInfo.refundBillStatus == 0 || (orderInfo.refundBillStatus == 1 && orderInfo.type == 2)"
+					@click="refundCancel(orderInfo)">
+					取消退款
+				</view>
+				
+				<view class="refundOrderStatus" v-if="orderInfo.refundBillStatus == 2"
+					@click="refundSuccess(orderInfo)">
+					退款成功
+				</view>
+				
+				<view class="refundOrderStatus" style="color:#FF3347;" v-if="orderInfo.refundBillStatus == 5"
+					@click="refundFailed(orderInfo)">
+					退款失败
+				</view>
+				<!-- shipmentStatus 发货状态（0待发货 1待收货 2已收货） -->
+				<view class="refundOrderStatus"
+					v-if="(orderInfo.refundBillStatus == 3 || orderInfo.refundBillStatus == 4) && (orderInfo.type ==5 && orderInfo.shipmentStatus == -1 )"
+					@click="refundClose(orderInfo)">
+					退款关闭
+				</view>
       </view>
     </view>
-
+		<!-- 取消退款的弹框 -->
+		<popup-dialog 
+			ref="cancelRefund"
+			:title="title" 
+			@close="cancelRefundClose"
+			@confirm="cancelRefundConfirm"
+		/>
   </view>
 </template>
 
 <script>
 import { formatDate } from "../../../../utils/common.js";
-import { getRefundDetail, getOrderDetail } from "@/api/order.js";
+import { getRefundDetail, getOrderDetail ,cancelRefund} from "@/api/order.js";
 export default {
   filters: {
     formatDate,
@@ -201,6 +191,7 @@ export default {
       navBarHeight: "",
       scrollTop: 0,
       headerTitle: "",
+			title:"",
       bgImg:
         "https://ali-image.dabanjia.com/static/mp/dabanjia/images/decorate/order_bg_green.png",
     };
@@ -223,18 +214,6 @@ export default {
     console.log("退款单id=", this.id);
     // this.status = e.status?Number(e.status):"";
 
-    if (this.type == "complete") {
-      //订单完成页面
-      this.headerTitle = "订单详情";
-      this.orderDetail();
-    }
-
-    if (this.type == "refund") {
-      //退款成功页面
-      this.headerTitle = "退款详情";
-      console.log("退款成功页面");
-      this.refundDetail();
-    }
     const currentHouse = getApp().globalData.currentHouse;
     this.areaId = currentHouse.areaId;
     const systemInfo = uni.getSystemInfoSync();
@@ -256,6 +235,22 @@ export default {
       },
     });
   },
+	onShow() {
+		
+		if (this.type == "complete") {
+		  //订单完成页面
+		  this.headerTitle = "订单详情";
+		  this.orderDetail();
+		}
+		
+		if (this.type == "refund") {
+		  //退款成功页面
+		  this.headerTitle = "退款详情";
+		  console.log("退款成功页面");
+		  this.refundDetail();
+		}
+	},
+	
 
   methods: {
     orderDetail() {
@@ -283,9 +278,11 @@ export default {
     },
     // 申请退款
     toApplayForRefund(data, type) {
-      wx.setStorageSync("wholeRefundOrderInfo", JSON.stringify(data));
-      uni.navigateTo({
-        url: `/sub-my/pages/apply-for-refund/apply-for-refund?id=${this.id}&type=whole&status=2`,
+      // wx.setStorageSync("wholeRefundOrderInfo", JSON.stringify(data));
+     
+			
+			uni.navigateTo({
+        url: `/sub-my/pages/apply-for-refund/apply-for-refund?orderId=${this.id}&type=whole&status=2&applyMode=2`,
       });
     },
 
@@ -323,6 +320,47 @@ export default {
         url: `../../../../sub-classify/pages/shops/shops?storeId=${item2.storeId}&areaId=${this.areaId}`,
       });
     },
+		
+		// 取消退款
+		refundCancel(item) {
+			this.itemId = item.refundId;
+			this.title = "确定要取消本次申请退款？";
+			this.$refs.cancelRefund.open();
+		},
+		cancelRefundClose() {
+			this.$refs.cancelRefund.close();
+		},
+		cancelRefundConfirm() {
+			cancelRefund({
+				id: this.itemId,
+			}).then(() => {
+				this.$refs.cancelRefund.close();
+				this.orderDetail();
+			});
+		},
+		// 申请退款成功
+		refundSuccess(item) {
+			uni.navigateTo({
+				url: `../order-success/order-success?type=refund&id=${item.refundId}`,
+			});
+		},
+		refundFailed(item) {
+			console.log("item数据=", item, "测试");
+			const showReApply = item.shipmentStatus !== 2 ? true : false;
+			console.log("showReApply=", showReApply);
+			uni.navigateTo({
+				url: `../order-failed/order-failed?type=refund&id=${item.refundId}&showReApply=${showReApply}&status=${item.refundBillStatus}`,
+			});
+		},
+		
+		refundClose(item) {
+			console.log("item数据=", item);
+			const showReApply = item.shipmentStatus !== 2 ? true : false;
+			console.log("showReApply=", showReApply);
+			uni.navigateTo({
+				url: `../order-failed/order-failed?type=refund&id=${item.refundId}&showReApply=${showReApply}&status=${item.refundBillStatus}`,
+			});
+		},
   },
 };
 </script>
@@ -530,7 +568,8 @@ export default {
 }
 
 // 底部 确认收货 及申请退款按钮
-.applyforRefund-container {
+.applyforRefund-container,
+.applyforRefund-confirmReceipt2 {
   position: fixed;
   bottom: 0;
   width: 686rpx;
@@ -555,6 +594,21 @@ export default {
     border: 2rpx solid #eaeaea;
   }
 }
+.applyforRefund-confirmReceipt2 {
+		padding-top: 30rpx;
+
+		.refundOrderStatus {
+			width: 160rpx;
+			height: 56rpx;
+			line-height: 54rpx;
+			text-align: center;
+			border-radius: 16rpx;
+			border: 2rpx solid #eaeaea;
+			font-size: 24rpx;
+			font-weight: 400;
+			color: #333333;
+		}
+	}
 
 // 弹框样式
 ::v-deep .uni-popup-dialog {

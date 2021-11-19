@@ -1,115 +1,148 @@
 <template>
-	<view class="container">
-		<custom-navbar :opacity="scrollTop/100" :title="headerTitle">
-			<template v-slot:back>
-				<i class="icon-ic_cancel_white back-icon" :style="{color: (scrollTop/100>1)?'black':'white'}"
-					@click="toBack"></i>
-			</template>
-		</custom-navbar>
+  <view class="container">
+    <custom-navbar :opacity="scrollTop/100" :title="headerTitle">
+      <template v-slot:back>
+        <i class="icon-ic_cancel_white back-icon"
+          :style="{color: (scrollTop/100>1)?'black':'white'}"
+          @click="toBack"></i>
+      </template>
+    </custom-navbar>
 
-		<view class="order-container" :style="{paddingBottom:112+containerBottom+'rpx'}">
-			<view style="position: relative;" :style="{backgroundImage:`url(${bgImg})`,backgroundSize: '100% 100%'}">
-				<view class="bgcStyle" :style="{backgroundImage:`url(${bgImg})`,backgroundSize: '100% 100%'}" />
-				<view :style="{height:navBarHeight}"></view>
-				<view class="order-status">
-					<view class="status">
-						<image src="../../../static/ic_status_wait_pay.svg" mode="scaleToFill" />
-						<text>待付款</text>
-					</view>
-					<view class="time" v-if="orderInfo.showCancelOrderTime">
-						<text style="margin-right: 16rpx;">剩余支付时间</text>
-						<count-down :start="orderInfo.remainTime" @finish="goToCancelDetail"></count-down>
-					</view>
-				</view>
-			</view>
+    <view class="order-container" :style="{paddingBottom:112+containerBottom+'rpx'}">
+      <view style="position: relative;" :style="{backgroundImage:`url(${bgImg})`,backgroundSize: '100% 100%'}">
+        <view class="bgcStyle" :style="{backgroundImage:`url(${bgImg})`,backgroundSize: '100% 100%'}"/>
+        <view :style="{height:navBarHeight}"></view>
+        <view class="order-status">
+          <view class="status">
+            <image src="../../../static/ic_status_wait_pay.svg" mode="scaleToFill"/>
+            <text>待付款</text>
+          </view>
+          <view class="time" v-if="orderInfo.showCancelOrderTime" >
+            <text style="margin-right: 16rpx;">剩余支付时间</text>
+            <count-down
+              :start="orderInfo.remainTime"
+              @finish="goToCancelDetail"
+            ></count-down>
+          </view>
+        </view>
+      </view>
 
-			<order-user-base-info :data="orderInfo"></order-user-base-info>
-			<view class="moreStore" v-if=" orderInfo.orderName ">
-				{{orderInfo.orderName}}
-			</view>
-			<view class="store-container" v-for="(item,index) in orderInfo.details" :key="index">
-				<view v-if="index > 0" style="height:0.5px;margin: 0 32rpx;background-color: #EBEBEB;" />
-				<view class="storeItem" :class="{paddingBottom: item.stockType == 1 }"
-					:style="{borderRadius:index >= 1 ? '0' :'24rpx 24rpx 0 0'}">
-					<view class="header">
-						<view class="header-content">
-							<text style="color: #333333;" @click="gotoShop(item)">{{item.storeName}}</text>
-							<image src="../../../static/ic_more.svg" mode="" />
+      <order-user-base-info
+				v-if="orderInfo.customerName && orderInfo.customerPhone && orderInfo.estateInfo"
+				:data="orderInfo"
+			/>
+
+      <view class="moreStore" v-if=" orderInfo.orderName && orderInfo.type !==5 ">
+        {{orderInfo.orderName}}
+      </view>
+      <view class="store-container" v-for="(item,index) in orderInfo.details" :key="index">
+        <view v-if="index > 0" style="height:0.5px;margin: 0 32rpx;background-color: #EBEBEB;"/>
+        <view  class="storeItem" :class="{paddingBottom: item.stockType == 1 }" :style="{borderRadius:index >= 1 ? '0' :'24rpx 24rpx 0 0'}">
+          <view class="header">
+            <view class="header-content" v-if="orderInfo.type !== 5">
+              <text style="color: #333333;" @click="gotoShop(item)" >{{item.storeName}}</text>
+              <image src="../../../static/ic_more.svg" mode="" />
+            </view>
+						<view class="header-content" v-else>
+						  <text style="color: #333333;">{{orderInfo.orderName}}</text>
 						</view>
-						<view class="icon"></view>
-					</view>
-					<view v-for="item2 in item.details" :key="item2.id">
-						<order-item v-if="item2.type !==5" :orderStatus="1" :dataList="item2"
-							@handleDetail="productDetail(item2)" />
-						<store-calue-card-item v-else />
-					</view>
-					<view class="discount-container" v-if="item.hasMaterial &&  orderInfo.details.length>1">
-						<view class="left">
-							<view class="item">
-								<view class="item-style">
-									<view style="margin-right: 8rpx;">运费</view>
-									<image class="icon" src="../../../../static/price_icon.svg" mode=""
-										@click="readExpenses(1)" />
+            <view class="icon"></view>
+          </view>
+          <view v-for="item2 in item.details" :key="item2.id">
+            <order-item
+							v-if="item2.type !==5"
+              :orderStatus="1"
+              :dataList="item2"
+              @handleDetail="productDetail(item2)"
+            />
+						<store-calue-card-item :dataInfo="item2" v-else />
+          </view>
+          <view class="discount-container" v-if="item.hasMaterial &&  orderInfo.details.length>1">
+            <view class="left">
+              <view class="item">
+                <view class="item-style">
+                  <view style="margin-right: 8rpx;">运费</view>
+                  <image
+                    class="icon"
+                    src="../../../../static/price_icon.svg"
+                    mode=""
+                    @click="readExpenses(1)"
+                  />
+                </view>
+                <view class="price-font" style="color: #333;font-size: 26rpx;" v-if="orderInfo.stockType == 0">
+									￥{{item.freight?`${item.freight}`:"0.00"}}
 								</view>
-								<view class="price-font" style="color: #333;font-size: 26rpx;"
-									v-if="orderInfo.stockType == 0">￥{{item.freight?`${item.freight}`:"0.00"}}</view>
-								<view class="price-font" :style="{marginTop:item.freight?'0':'8rpx'}"
-									style="color: #333;font-size: 26rpx;" v-else>
-									{{item.freight?`￥${item.freight}`:"--"}}
-								</view>
-							</view>
+                <view class="price-font" :style="{marginTop:item.freight?'0':'8rpx'}" style="color: #333;font-size: 26rpx;"  v-else >
+                  {{item.freight?`￥${item.freight}`:"--"}}
+                </view>
+              </view>
 
-							<view class="item" v-if="item.platformDiscount">
-								<text>平台优惠</text>
-								<text class="price-font"
-									style="color: #333;font-size: 26rpx;">-￥{{item.platformDiscount}}</text>
-							</view>
-						</view>
-						<view class="line1" v-if="item.storeDiscount" />
-						<view class="line2" v-else />
+              <view v-if="item.platformDiscount" class="item" >
+                <text>平台优惠</text>
+                <text class="price-font" style="color: #333;font-size: 26rpx;">
+									-￥{{item.platformDiscount}}
+								</text>
+              </view>
+            </view>
+            <view v-if="item.storeDiscount" class="line1"/>
+            <view v-else  class="line2"/>
 
-						<view class="right">
-							<view class="item">
-								<view class="item-style">
-									<view style="margin-right: 8rpx;">搬运费</view>
-									<image class="icon" src="../../../../static/price_icon.svg" mode=""
-										@click="readExpenses(2)" />
-								</view>
-								<text class="price-font" style="color: #333;font-size: 26rpx;"
-									v-if="orderInfo.stockType == 0">￥{{item.handlingFees?item.handlingFees:"0.00"}}</text>
-								<text class="price-font" style="color: #333;font-size: 26rpx;"
-									:style="{marginTop:item.handlingFees ? '0' : '8rpx' }"
-									v-else>{{item.handlingFees?`￥${item.handlingFees}`:"--"}}</text>
-							</view>
-							<view class="item" v-if="item.storeDiscount">
-								<text>商家优惠</text>
-								<text style="color: #333;font-size: 26rpx;"
-									class="price-font">-￥{{item.storeDiscount}}</text>
-							</view>
-						</view>
-					</view>
+            <view class="right">
+              <view class="item">
+                <view class="item-style">
+                  <view style="margin-right: 8rpx;">搬运费</view>
+                  <image
+                    class="icon"
+                    src="../../../../static/price_icon.svg"
+                    mode=""
+                    @click="readExpenses(2)"
+                  />
+                </view>
+                <text class="price-font" style="color: #333;font-size: 26rpx;" v-if="orderInfo.stockType == 0" >
+								￥{{item.handlingFees?item.handlingFees:"0.00"}}</text>
+                <text
+                  class="price-font"
+                  style="color: #333;font-size: 26rpx;"
+                  :style="{marginTop:item.handlingFees ? '0' : '8rpx' }"
+                  v-else
+                >{{item.handlingFees?`￥${item.handlingFees}`:"--"}}</text>
+              </view>
+              <view  v-if="item.storeDiscount" class="item">
+                <text>商家优惠</text>
+                <text style="color: #333;font-size: 26rpx;" class="price-font">
+									-￥{{item.storeDiscount}}
+								</text>
+              </view>
+            </view>
+          </view>
 
-					<view v-if="item.hasMaterial && orderInfo.stockType == 1"
-						:style="{paddingBottom: item.hasMaterial && orderInfo.stockType == 1 ? '32rpx':'0'}">
-						<view class="tips" v-if="item.freeShipCount &&  item.fullExemptionAmount ">
-							<text>本次支付</text>
-							<text style="color: #333333;">满{{item.fullExemptionAmount}}元</text>
-							<text>，可获得</text>
-							<text style="color: #333333;">{{item.freeShipCount}}次免运费额度，</text>
-							<text>搬运费需要根据实际要货时进行核算</text>
-						</view>
-						<view class="tips" v-else>
-							<text>搬运费需要根据实际要货时进行核算</text>
-						</view>
-					</view>
+          <view
+            v-if="item.hasMaterial && orderInfo.stockType == 1"
+            :style="{paddingBottom: item.hasMaterial && orderInfo.stockType == 1 ? '32rpx':'0'}"
+          >
+            <view v-if="item.freeShipCount &&  item.fullExemptionAmount " class="tips" >
+              <text>本次支付</text>
+              <text style="color: #333333;">满{{item.fullExemptionAmount}}元</text>
+              <text>，可获得</text>
+              <text style="color: #333333;">{{item.freeShipCount}}次免运费额度，</text>
+              <text>搬运费需要根据实际要货时进行核算</text>
+            </view>
+            <view v-else class="tips">
+              <text>搬运费需要根据实际要货时进行核算</text>
+            </view>
+          </view>
 
-				</view>
-				<view class="split-line" />
-			</view>
+        </view>
+        <view class="split-line" />
+      </view>
 
-			<order-price :data="orderInfo" :waitPay="true" :payPrice="payPrice" />
+      <order-price
+        :data="orderInfo"
+        :waitPay="true"
+        :payPrice="payPrice"
+      />
 
-			<!-- <view class="payment-method">
+      <!-- <view class="payment-method">
 				<text>支付方式</text>
 				<view class="method">
 					<image src="@/static/order/ic_order_wechat@2x.png" mode="" />
@@ -118,85 +151,126 @@
 			</view> -->
 
 			<!-- v-if="haveCard && orderInfo.isReplenish" -->
-			<view v-if="haveCard" class="pay-way" style="justify-content:center" @click="clickCard">
-				<image class="card-img"
-					src="https://ali-image.dabanjia.com/static/mp/dabanjia/images/classify/ic_card.png" mode="">
-				</image>
-				<view>
-					<text>储值卡</text>
-					<text class="card-sub">(可用余额:{{(cardBalance/100).toFixed(2)}}元)</text>
-				</view>
-				<view style="flex:1">
-				</view>
-				<view v-if="cardClick" class="card-price">
-					-¥{{(this.cardPrice/100).toFixed(2)}}
-				</view>
-				<image v-if="cardClick" class="selected-img"
-					src="https://ali-image.dabanjia.com/static/mp/dabanjia/images/classify/pay_selected.png" mode="">
-				</image>
-				<image v-else class="selected-img"
-					src="https://ali-image.dabanjia.com/static/mp/dabanjia/images/classify/pay_unselected.png" mode="">
-				</image>
-			</view>
-			<view class="pay-way mrb">
-				<text>支付方式</text>
+      <view
+        v-if="haveCard && orderInfo.type == 5"
+        class="pay-way"
+        style="justify-content:center"
+        @click="clickCard"
+      >
+        <image
+          class="card-img"
+          src="https://ali-image.dabanjia.com/static/mp/dabanjia/images/classify/ic_card.png"
+          mode=""
+        >
+        </image>
+        <view>
+          <text>储值卡</text>
+          <text class="card-sub">(可用余额:{{(cardBalance/100).toFixed(2)}}元)</text>
+        </view>
+        <view style="flex:1">
+        </view>
+        <view v-if="cardClick" class="card-price">
+          -¥{{(this.cardPrice/100).toFixed(2)}}
+        </view>
+        <image
+          v-if="cardClick"
+          class="selected-img"
+          src="https://ali-image.dabanjia.com/static/mp/dabanjia/images/classify/pay_selected.png"
+          mode=""
+        >
+        </image>
+        <image
+          v-else
+          class="selected-img"
+          src="https://ali-image.dabanjia.com/static/mp/dabanjia/images/classify/pay_unselected.png"
+          mode=""
+        >
+        </image>
+      </view>
+      <view class="pay-way mrb">
+        <text>支付方式</text>
 
-				<view v-if="payChannel" class="flex-center">
-					<image class="card-img"
-						src="https://ali-image.dabanjia.com/static/mp/dabanjia/images/classify/ic_card.png" mode="">
-					</image><text>储值卡支付</text>
+        <view v-if="payChannel " class="flex-center" >
+          <image
+            class="card-img"
+            src="https://ali-image.dabanjia.com/static/mp/dabanjia/images/classify/ic_card.png"
+            mode=""
+          ></image><text>储值卡支付</text>
 
-				</view>
-				<view v-else>
-					<view class="wechat_icon"></view><text>微信支付</text>
-				</view>
-			</view>
+        </view>
+        <view v-else>
+          <view class="wechat_icon"></view><text>微信支付</text>
+        </view>
+      </view>
 
-			<order-info :orderNo="orderInfo.orderNo" :createTime="orderInfo.createTime" />
+      <order-info
+        :orderNo="orderInfo.orderNo"
+        :createTime="orderInfo.createTime"
+      />
 
-			<!-- 底部按钮 -->
-			<view v-if="orderInfo.showCancelBtn || orderInfo.showToPayBtn " :class="{noCancelBtn:true}"
-				class="waitPayBottom"
-				:style="{paddingBottom:systemBottom,height:systemHeight,justifyContent:bottomStyle }">
-				<view class="canclePay" v-if="orderInfo.showCancelBtn" @click="handleCancelOrder">
-					取消订单
-				</view>
-				<view class="gotoPay" v-if="orderInfo.showToPayBtn" @click="toPay">
-					去付款
-				</view>
-			</view>
+      <!-- 底部按钮 -->
+      <view
+        v-if="orderInfo.showCancelBtn || orderInfo.showToPayBtn "
+        :class="{noCancelBtn:true}"
+        class="waitPayBottom"
+        :style="{paddingBottom:systemBottom,height:systemHeight,justifyContent:bottomStyle }"
+      >
+        <view v-if="orderInfo.showCancelBtn" class="canclePay" @click="handleCancelOrder">
+          取消订单
+        </view>
+        <view v-if="orderInfo.showToPayBtn" class="gotoPay" @click="toPay" >
+          去付款
+        </view>
+      </view>
 
-		</view>
-		<!-- 取消该订单弹框 -->
-		<popup-dialog ref="cancleOrder" :title="title" @close="cancelOrderClose" @confirm="cancleConfirm">
-		</popup-dialog>
-		<expenses-toast ref='expensesToast' :expensesType="expensesType"></expenses-toast>
-		<uni-popup ref="payDialog" type="bottom">
-			<view class="cart-header">
-				立即支付
-				<image class="remove-all" @click="closePayDialog"
-					src="https://ali-image.dabanjia.com/static/mp/dabanjia/images/classify/ic_closed_black.png">
-				</image>
-			</view>
-			<view class="pay-diaolog">
-				<view class="pay-diaolog-title">
-					需支付
-				</view>
-				<view class="pay-diaolog-price">
-					<text style="font-size: 28rpx;">¥</text>{{payChannelPrice}}
-				</view>
-				<view class="pay-diaolog-tip">
-					{{payChannel?'您正在使用储值卡支付,请确认':'您还需用微信支付,请确认'}}
-				</view>
-				<view class="pay-diaolog-alert">
-					金额以实际金额为准，若储值卡余额不足将用微信支付剩余部分
-				</view>
-				<view class="pay-diaolog-btn" @click="payOrder()">
-					确认支付
-				</view>
-			</view>
-		</uni-popup>
-	</view>
+    </view>
+    <!-- 取消该订单弹框 -->
+    <popup-dialog
+      ref="cancleOrder"
+      :title="title"
+      @close="cancelOrderClose"
+      @confirm="cancleConfirm"
+    >
+    </popup-dialog>
+    <expenses-toast
+      ref='expensesToast'
+      :expensesType="expensesType"
+    ></expenses-toast>
+    <uni-popup
+      ref="payDialog"
+      type="bottom"
+    >
+      <view class="cart-header">
+        立即支付
+        <image
+          class="remove-all"
+          @click="closePayDialog"
+          src="https://ali-image.dabanjia.com/static/mp/dabanjia/images/classify/ic_closed_black.png"
+        >
+        </image>
+      </view>
+      <view class="pay-diaolog">
+        <view class="pay-diaolog-title">
+          需支付
+        </view>
+        <view class="pay-diaolog-price">
+          <text style="font-size: 28rpx;">¥</text>{{payChannelPrice}}
+        </view>
+        <view class="pay-diaolog-tip">
+          {{payChannel?'您正在使用储值卡支付,请确认':'您还需用微信支付,请确认'}}
+        </view>
+        <view class="pay-diaolog-alert">
+          金额以实际金额为准，若储值卡余额不足将用微信支付剩余部分
+        </view>
+        <view
+          class="pay-diaolog-btn"
+          @click="payOrder()"
+        >
+          确认支付
+        </view>
+      </view>
+    </uni-popup>
+  </view>
 </template>
 
 <script>
@@ -229,7 +303,7 @@
 				scrollTop: 0,
 				headerTitle: "",
 				bgImg: "https://ali-image.dabanjia.com/static/mp/dabanjia/images/decorate/order_bg_orange.png",
-				cardClick: false,
+				cardClick: false,//是否选中储值卡
 				haveCard: false, //是否有会员卡
 				cardBalance: 11111111, //会员卡余额
 				totalPrice: "0.00",
@@ -346,7 +420,7 @@
 				}).then((e) => {
 					console.log(e);
 					this.orderInfo = e;
-					this.totalPrice = this.orderInfo.orderReceivableAmount;
+					this.totalPrice = this.orderInfo.payAmount;
 					this.bottomStyle = this.orderInfo.showCancelBtn ?
 						"space-between" :
 						"flex-end";
