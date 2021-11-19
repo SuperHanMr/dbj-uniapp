@@ -4,7 +4,12 @@
       <view  class="product-container">
 				<view v-if="type == 'whole' && refundId " >
 					<view v-for="(item1,index1) in refundInfo.details" :key="index1">
-						<order-item :refundType="true" :orderType="refundType" :dataList="item1" :showIcon="true" ></order-item>
+						<order-item v-if="item1.type !==5" :refundType="true" :orderType="refundType" :dataList="item1" :showIcon="true" ></order-item>
+						<store-calue-card-item
+							v-else
+							:refundType="true"
+							:dataInfo="item1"
+						/>
 					</view>
 				</view>
 				<view v-if="type == 'whole' && !refundId "  v-for="(item2,index2) in refundInfo.detailAppVOS" :key="index2">
@@ -133,14 +138,14 @@
         </view>
 				<view class="body">
 					<textarea
-						v-model="query.remarks"
+						v-model="remarks"
 						placeholder="补充描述信息,有助于商家更好的处理售后问题"
 						placeholder-style="color:#AAAAAA;font-size:28rpx;padding-top:12rpx;"
 						maxlength="500"
 						class="remark"
 						@input="onTextAreaInput"
 					/>
-					<text class="fontNum" style="color: #999999;font-size: 26rpx;">{{textAreaLength}}/500</text>
+					<text class="fontNum" style="color: #999999;font-size: 26rpx;">{{textAreaLength>500?500:textAreaLength}}/500</text>
 				</view>
       </view>
       <view class="proposal">建议与商家沟通后再发起退款</view>
@@ -168,6 +173,7 @@ export default {
         remarks: "",
 				status:"",
       },
+			remarks:"",
 			status:"",
       showEditInput: false,
       inputValue: 0,
@@ -281,7 +287,9 @@ export default {
 				return newVal;
 			}
     },
-    textAreaLength(newVal, oldVal) {},
+    textAreaLength(newVal, oldVal) {
+			
+		},
   },
 	computed:{
 		reqInputWidth(value){
@@ -309,8 +317,8 @@ export default {
 				console.log("this.type=",this.type)
 				this.refundType = data.type
 				// this.refundType = 5
-				this.query.remarks = data.remark
-				this.textAreaLength = data.remark.length
+				this.remarks = data.remark
+				this.textAreaLength = this.remark?this.remark.length:'0'
 				this.reasonValue = data.reasonId
 				this.reasonName = data.reason
 				console.log("this.refundType===",this.refundType)
@@ -363,7 +371,7 @@ export default {
 					returnMoney:Number( this.returnMoney.toFixed(2).replace(".","")) ,//申请退货钱数(分)
 					reason:this.reasonName, //退款原因
 					reasonId:this.reasonValue,//退款原因id
-					remark:this.query.remarks, //备注
+					remark:this.remarks, //备注
 					freight:this.freight,
 					handlingFees:this.handlingFees,
 					status:this.query.status, //订单状态1进行中 2已完成
@@ -379,7 +387,7 @@ export default {
 					returnMoney:Number( this.returnMoney.toFixed(2).replace(".","")),//申请退货钱数(分)
 					reason:this.reasonName, //退款原因
 					reasonId:this.reasonValue,//退款原因id
-					remark:this.query.remarks, //备注
+					remark:this.remarks, //备注
 					freight:this.freight,
 					handlingFees:this.handlingFees,
 					status:this.query.status, //订单状态1进行中 2已完成
