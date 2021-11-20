@@ -183,10 +183,10 @@
 				if (this.type == 'detail') {
 					uni.redirectTo({
 						url: `../order-wait-pay/order-wait-pay?orderNo=${data.id}`
-					})
+					}) 
 				} else {
 					uni.redirectTo({
-						url: `../my-order?index=2`
+						url: `../my-order?index=2&firstEntry=true`
 					})
 				}
 			},
@@ -203,12 +203,9 @@
 				//点击确定后订单会被取消且该订单会被移入已关闭订单中
 				cancelOrder({
 					id: this.orderId
-				}).then(e => {
-					if (e.code == 1) {
-
-						this.$refs.cancleOrder.close();
-						this.toCancelPage()
-					}
+				}).then(()=> {
+					this.$refs.cancleOrder.close();
+					this.toCancelPage()
 				})
 			},
 
