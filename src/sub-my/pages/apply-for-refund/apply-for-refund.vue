@@ -216,7 +216,7 @@ export default {
 
   onLoad(e) {
     this.type = e.type;
-		this.orderDetailsId = e.orderDetailsId
+		this.orderDetailsId = e.orderDetailsId//此参数 提交申请的时候使用 
 		if(this.type){
 			this.query.orderId=Number(e.orderId)
 			this.query.status=Number(e.status);//订单状态 1进行中 2已完成

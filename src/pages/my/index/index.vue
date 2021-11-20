@@ -76,7 +76,7 @@
 						<text>{{item2.value}}</text>
 					</view>
 					<view class="right">
-						<text v-if="item2.key==1 && isShowStoreValue">{{ Number(storeValueCard)/100 }}元</text>
+						<text v-if="item2.key==1 && isShowStoreValue">{{storeValueCard? Number(storeValueCard)/100 :'0.00' }}元</text>
 						<image src="../../../static/order/images/arraw_right_@2x.png" mode="" />
 					</view>
 				</view>
@@ -183,6 +183,7 @@
 				this.storeValueCard = null
 			} else {
 				this.isLogin = true;
+				this.isShowStoreValue = true
 				this.userInfo = getApp().globalData.userInfo;
 				this.userName = this.userInfo.name;
 				queryToBePaidOrderNum().then((e) => {
@@ -192,7 +193,6 @@
 					console.log("!!!!!!!!!!!!! e=", e);
 					if (e !== null) {
 						console.log("????????????????")
-						this.isShowStoreValue = true
 						this.storeValueCard = e
 					}
 				})
