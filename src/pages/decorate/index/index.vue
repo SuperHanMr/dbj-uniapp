@@ -452,7 +452,13 @@
             } = getApp().globalData
             // 设置当前的项目
             let arr = []
-            if (msgProjectId) {
+            let isMsgAndProjectExist = 0// 0,不是消息跳转，1是消息跳转但项目已经不存在了，2是从消息跳转，且项目存在
+            if(msgProjectId) {
+              let temp = data.some(t => t.projectId === msgProjectId)
+              console.log("temp>>>>>>>>>>", temp)
+              isMsgAndProjectExist = temp ? 2 : 1
+            }
+            if (isMsgAndProjectExist === 2) {
               //从消息跳转过来
               arr = data.filter(t => t.projectId === msgProjectId)
               this.currentProject = arr[0]
@@ -461,6 +467,10 @@
               this.changeCurrentProject(this.currentProject, true)
               getApp().globalData.msgProjectId = null
             } else {
+              if(isMsgAndProjectExist === 1 ) {
+                this.noticeActive = true
+                getApp().globalData.msgProjectId = null
+              }
               if (switchFlag === "home") {
                 arr = data.filter(t => t.estateId === this.homePageEstate?.id || t.estateId === getApp().globalData
                   .currentHouse?.id)
