@@ -633,7 +633,7 @@ export default {
           uni.requestPayment({
             provider: "wxpay",
             ...payInfo,
-            success(res) {
+            success:()=> {
               uni.showToast({
                 title: "支付成功！",
                 icon: "none",

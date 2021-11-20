@@ -274,9 +274,10 @@ export default {
       }
     },
     inputValue(newVal, oldVal) {
-			console.log("newVal=====",newVal,String(newVal).length)
 			this.reqInputWidth(newVal)
+			console.log("newVal=====",newVal,String(newVal).length)
 			console.log("this.refundAmount===",this.refundAmount)
+			console.log("this.maxRefundAmount===",this.maxRefundAmount)
 			if(newVal > this.maxRefundAmount){
 				uni.showToast({
 					title:"退款金额大于储值卡余额，请修改",
@@ -368,22 +369,24 @@ export default {
 
 		submitApplication() {
 			// 提交申请后该订单会进入到退款页面，状态显示退款中；并直接跳转到该订单退款详情页
-			if(this.returnMoney >this.maxRefundAmount){
-				uni.showToast({
-					title:"退款金额大于储值卡余额，请修改",
-					icon:'none',
-					duration:1000
-				})
-				return
+			if(this.refundType ==5){
+				if(this.returnMoney >this.maxRefundAmount){
+					uni.showToast({
+						title:"退款金额大于储值卡余额，请修改",
+						icon:'none',
+						duration:1000
+					})
+					return
+				}
+				if(!(/^(([1-9]{1}\d*)|(0{1}))(\.\d{1,2})?$/.test(this.inputValue)) ){
+					uni.showToast({
+						title:"您输入的金额错误，请重新输入",
+						icon:'none',
+						duration:2000,
+					})  
+					return
+				} 
 			}
-			if(!(/^(([1-9]{1}\d*)|(0{1}))(\.\d{1,2})?$/.test(this.inputValue)) ){
-				uni.showToast({
-					title:"您输入的金额错误，请重新输入",
-					icon:'none',
-					duration:2000,
-				})  
-				return
-			} 
       console.log("申请退款");
 			if(this.type =='whole'){
 				wholeOrderApplyForRefund({
