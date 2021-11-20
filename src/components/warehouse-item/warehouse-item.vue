@@ -127,7 +127,7 @@
 						:class="{'color1-text':[0,1].includes(item.status),'color2-text':item.status==2,'color3-text':[3,4,5].includes(item.status) }">
 						{{tipTitle(item.status)}}
 					</view>
-					<view v-if="[0,1,2].includes(item.status)" class="back-price" 	:class="{'color1-text':[0,1].includes(item.status),'color2-text':item.status==2,'color3-text':[3,4,5].includes(item.status) }"">
+					<view v-if="[0,1,2].includes(item.status)" class="back-price" 	:class="{'color1-text':[0,1].includes(item.status),'color2-text':item.status==2,'color3-text':[3,4,5].includes(item.status) }">
 						<text class="num-x">¥</text>
 						<text class="num-z">{{String(item.refundAmount).split('.')[0]}}</text>
 						<text class="num-x">.{{String(item.refundAmount).split('.')[1]||'00'}}</text>

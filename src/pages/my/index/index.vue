@@ -70,7 +70,7 @@
 			<view class="header"> 更多功能</view>
 			<view class="tool-line" />
 			<view class="tool-body">
-				<view class="tool-item" v-for="item2 in list" :key="item2.key" @click="handlePersonalItem(item2)">
+				<view class="tool-item" v-for="item2 in list"    :key="item2.key" @click="handlePersonalItem(item2)">
 					<view class="left">
 						<image :src="item2.image" mode="" />
 						<text>{{item2.value}}</text>
@@ -103,13 +103,9 @@
 				userName: "用户名称",
 				userInfo: {},
 				userId: "",
+				MarketStoreSwitch:false,
 				list: [
-					{
-						key: "1",
-						image: "../../../static/order/images/ic_storeValueCard.svg",
-						value: "储值卡",
-						url: "../../../sub-my/pages/deposit-card/deposit-card",
-					},
+				
 					{
 						key: "2",
 						image: "../../../static/order/images/shopping_Cart.png",
@@ -179,6 +175,15 @@
 				})
 				return 
 				
+			}
+			if(getApp().globalData.MarketStoreSwitch&&this.list[0].key!='1'){
+				this.MarketStoreSwitch=true
+				this.list.unshift(	{
+						key: "1",
+						image: "../../../static/order/images/ic_storeValueCard.svg",
+						value: "储值卡",
+						url: "../../../sub-my/pages/deposit-card/deposit-card",
+					},)
 			}
 			uni.showTabBar();
 			this.userId = getApp().globalData.token;

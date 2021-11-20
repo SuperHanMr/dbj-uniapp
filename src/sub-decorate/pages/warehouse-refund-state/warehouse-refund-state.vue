@@ -268,7 +268,7 @@
 				});
 			},
 			foramtPrice(item) {
-				item=item*100
+				 item= Number(item*100).toFixed(0)
 				let price = String(item || "0");
 				return price.slice(0, price.length - 2) || "0";
 			},
