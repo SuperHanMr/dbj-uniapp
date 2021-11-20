@@ -153,17 +153,17 @@
 
 					if (e.returnNumber + e.alreadyReturnNumber < e.number) {
 
-						totalBack += e.price * e.returnNumber*100;
+						totalBack += e.price * e.returnNumber * 100;
 					} else {
 
-						let count = e.discountSubtotal*100 - e.price*100 * e.alreadyReturnNumber
+						let count = e.discountSubtotal * 100 - e.price * 100 * e.alreadyReturnNumber
 						totalBack += count
 					}
 
 				});
-				totalBack=totalBack/100
-			
-				if (totalBack>0) {
+				totalBack = totalBack / 100
+
+				if (totalBack > 0) {
 					this.num = totalBack.toFixed(2);
 				} else {
 					this.num = 0;
