@@ -43,7 +43,7 @@
 			openId: "",
 			shareId: "",
 			goHomeUrl: false,
-			MarketStoreSwitch: true
+			MarketStoreSwitch: false
 		},
 
 		onLaunch: function() {
