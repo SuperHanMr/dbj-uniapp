@@ -32,7 +32,7 @@
 				<image class="banner" :src="item.activityImage" v-if="item.activityImage"></image>
 				<view class="main">
 					<view class="prePay"
-						:class="{'active': amount.detailId===checkedId,'cannot': !item.eligibility}"
+						:class="{'active': amount.detailId===checkedId,'cannot': !item.eligibility,'margin': idx%2===0}"
 						v-for="(amount,idx) in item.detailDTOList"
 						:key="amount.detailId"
 						@click="chooseOne(amount.detailId,item.eligibility)">
@@ -282,7 +282,7 @@
 		width: 128rpx;
 		height: 50rpx;
 		margin-left: 48rpx;
-		margin-top: 30rpx;
+		margin-top: 14rpx;
 		background: #FFF8D6;
 		border-radius: 8px;
 		font-weight: 500;
@@ -386,16 +386,15 @@
 	}
 	.main{
 		margin: 24rpx;
-		padding-bottom: 16rpx;
+		padding-bottom: 14rpx;
 		margin-bottom: 0;
 		display: flex;
-		justify-content: space-between;
 		flex-wrap: wrap;
 	}
 	.main .prePay{
 		width: 318rpx;
 		height: 120rpx;
-		margin-bottom: 8rpx;
+		margin-bottom: 10rpx;
 		display: flex;
 		align-items: center;
 		background: #FFFDF8;
@@ -412,6 +411,9 @@
 		width: 320rpx;
 		border: none;
 		background: #F7F7F7;
+	}
+	.main .prePay.margin{
+		margin-right: 10rpx;
 	}
 	.prePay .icon{
 		width: 32rpx;
