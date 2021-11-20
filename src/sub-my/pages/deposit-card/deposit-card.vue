@@ -1,5 +1,5 @@
 <template>
-	<view class="cardWrap" :class="{'noScroll': showRules}">
+	<view class="cardWrap">
 		<view class="wrap">
 			<view class="header">
 				<view class="text">余额 (元)</view>
@@ -54,14 +54,7 @@
 				</view>
 			</view>
 		</view>
-		<!-- <uni-popup ref="popup" type="center">
-			<view class="top">
-				<view class="title">活动规则</view>
-				<image src="https://ali-image.dabanjia.com/static/mp/dabanjia/images/my/close_rules.png" @click="closeRules"></image>
-			</view>
-			<view class="content">{{ruleText}}</view>
-		</uni-popup> -->
-		<view class="mask" v-if="showRules" @tap.stop="test" :catchtouchmove="true">
+		<uni-popup ref="popup" type="center">
 			<view class="popup">
 				<view class="top">
 					<view class="title">活动规则</view>
@@ -69,7 +62,7 @@
 				</view>
 				<view class="content">{{ruleText}}</view>
 			</view>
-		</view>
+		</uni-popup>
 	</view>
 </template>
 
@@ -81,10 +74,8 @@
 				cityId: 0,
 				balance: 0,
 				list: [],
-				isChoose: false,
 				noList: false,
 				showBuyBtn: true,
-				showRules: false,
 				detailId: 0,
 				ruleText: ""
 			}
@@ -102,9 +93,6 @@
 			},1000)
 		}, 
 		methods: {
-			test(e){
-				e.preventDefault()
-			},
 			toBillingDetails(){
 				uni.navigateTo({
 					url: "/sub-my/pages/deposit-card/billing-details"
@@ -116,14 +104,13 @@
 				})
 			},
 			clickRules(index){
-				this.showRules = true
+				this.$refs.popup.open()
 				this.ruleText = this.list[index].activityRule
 			},
 			closeRules(){
-				this.showRules = false
+				this.$refs.popup.close()
 			},
 			chooseOne(detailId,eligibility){
-				this.isChoose = !this.isChoose
 				if(!eligibility)return
 				this.list.map(item => {
 					item.detailDTOList.map(ele => {
@@ -220,10 +207,7 @@
 		background-image: url('https://ali-image.dabanjia.com/static/mp/dabanjia/images/my/bg.png');
 		background-repeat: no-repeat;
 		background-size: cover;
-		/* background-attachment: fixed; */
-	}
-	.cardWrap.noScroll{
-		overflow: hidden;
+		background-attachment: fixed;
 	}
 	.mask{
 		width: 100%;
@@ -436,6 +420,7 @@
 		background: #FFFDF8;
 		border: 1rpx solid #FFE1CD;
 		border-radius: 16rpx;
+		overflow: hidden;
 	}
 	.main .prePay.active{
 		width: 320rpx;
@@ -492,6 +477,7 @@
 		left: 0;
 		width: 750rpx;
 		background: #fff;
+		box-shadow: 0px 4px 12px rgba(190, 102, 21, 0.15);
 	}
 	.button{
 		width: 686rpx;
