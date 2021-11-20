@@ -125,7 +125,7 @@
 					<view class="tip-text" v-if="refundInfo.cardUseIdentification" >
 						储值卡已使用过，具体退款金额以您与商家沟通协商的结果为准
 					</view>
-					<view class="tip-text" >
+					<view class="tip-text" v-else>
 						储值卡未使用，商家同意后将会全额退还
 					</view>
 				</view>
