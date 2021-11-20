@@ -235,7 +235,11 @@
 				refundDetail({
 					id
 				}).then(e => {
+					console.log(e)
 					e.stockStatus = this.stockStatus
+					e.detailAppVOS.map(e=>{
+						e.discountPrice=e.discountPrice*100
+					})
 					this.detail = e;
 					if ([0, 1].includes(e.status)) {
 						//退款中

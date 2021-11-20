@@ -32,13 +32,13 @@
 				<image class="banner" :src="item.activityImage" v-if="item.activityImage"></image>
 				<view class="main">
 					<view class="prePay"
-						:class="{'active': amount.isChecked,'cannot': !item.eligibility}"
+						:class="{'active': amount.detailId===checkedId,'cannot': !item.eligibility,'margin': idx%2===0}"
 						v-for="(amount,idx) in item.detailDTOList"
 						:key="amount.detailId"
 						@click="chooseOne(amount.detailId,item.eligibility)">
 						<image src="https://ali-image.dabanjia.com/static/mp/dabanjia/images/my/choosed.png"
-							class="icon" v-if="amount.isChecked"></image>
-						<view class="numWrap" :class="{'active': amount.isChecked,'cannot': !item.eligibility}">
+							class="icon" v-if="amount.detailId===checkedId"></image>
+						<view class="numWrap" :class="{'active': amount.detailId===checkedId,'cannot': !item.eligibility}">
 							<view class="text">充</view>
 							<view>¥</view>
 							<view class="num price-font">{{amount.rechargeAmount/100}}</view>
@@ -76,7 +76,7 @@
 				list: [],
 				noList: false,
 				showBuyBtn: true,
-				detailId: 0,
+				checkedId: 0,
 				ruleText: ""
 			}
 		},
@@ -112,23 +112,12 @@
 			},
 			chooseOne(detailId,eligibility){
 				if(!eligibility)return
-				this.list.map(item => {
-					item.detailDTOList.map(ele => {
-						if(detailId === ele.detailId){
-							ele.isChecked = true
-						}else{
-							ele.isChecked = false
-						}
-						return ele
-					})
-					return item
-				})
-				this.detailId = detailId
+				this.checkedId = detailId
 			},
 			buyNow(){
 				const openId = getApp().globalData.openId;
 				createCardOrder({
-					activityDetailId: this.detailId,
+					activityDetailId: this.checkedId,
 					payType: 1, //支付类型  1微信支付
 					openid: openId,
 					sourceId: 100,//订单来源渠道 100小程序
@@ -184,17 +173,9 @@
 						this.showBuyBtn = false
 					}
 					this.list = data
-					this.list.map(item => {
-						item.detailDTOList.map(ele => {
-							ele.isChecked = false
-							return ele
-						})
-						return item
-					})
 					let idx = data.findIndex(i=>i.eligibility&&i.detailDTOList.length)
 					console.log(idx,'//')
-					this.$set(this.list[idx].detailDTOList[0],'isChecked',true)
-					this.detailId = this.list[idx].detailDTOList[0].detailId
+					this.checkedId = this.list[idx].detailDTOList[0].detailId
 				})
 			}
 		}
@@ -301,7 +282,7 @@
 		width: 128rpx;
 		height: 50rpx;
 		margin-left: 48rpx;
-		margin-top: 30rpx;
+		margin-top: 14rpx;
 		background: #FFF8D6;
 		border-radius: 8px;
 		font-weight: 500;
@@ -405,16 +386,15 @@
 	}
 	.main{
 		margin: 24rpx;
-		padding-bottom: 16rpx;
+		padding-bottom: 8rpx;
 		margin-bottom: 0;
 		display: flex;
-		justify-content: space-between;
 		flex-wrap: wrap;
 	}
 	.main .prePay{
-		width: 318rpx;
+		width: 312rpx;
 		height: 120rpx;
-		margin-bottom: 8rpx;
+		margin-bottom: 16rpx;
 		display: flex;
 		align-items: center;
 		background: #FFFDF8;
@@ -423,14 +403,17 @@
 		overflow: hidden;
 	}
 	.main .prePay.active{
-		width: 320rpx;
+		width: 314rpx;
 		border: none;
 		background: linear-gradient(277.39deg, #FFA14A 0%, #FFC700 100%);
 	}
 	.main .prePay.cannot{
-		width: 320rpx;
+		width: 314rpx;
 		border: none;
 		background: #F7F7F7;
+	}
+	.main .prePay.margin{
+		margin-right: 16rpx;
 	}
 	.prePay .icon{
 		width: 32rpx;
