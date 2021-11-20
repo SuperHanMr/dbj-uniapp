@@ -216,6 +216,7 @@ export default {
 
   onLoad(e) {
     this.type = e.type;
+		this.orderDetailsId = e.orderDetailsId
 		if(this.type){
 			this.query.orderId=Number(e.orderId)
 			this.query.status=Number(e.status);//订单状态 1进行中 2已完成
@@ -250,7 +251,8 @@ export default {
 					this.returnMoney = this.refundInfo.maxRefundAmount
 					
 					if(this.refundType ==5){
-						this.inputValue = this.refundInfo.refundAmount
+						
+						this.inputValue = this.refundInfo.maxRefundAmount
 						this.refundAmount = this.refundInfo.refundAmount
 						this.maxRefundAmount=this.refundInfo.maxRefundAmount
 					}
@@ -292,9 +294,8 @@ export default {
 				return newVal;
 			}
     },
-    textAreaLength(newVal, oldVal) {
-			
-		},
+    
+		textAreaLength(newVal, oldVal) {},
   },
 	computed:{
 		reqInputWidth(value){
