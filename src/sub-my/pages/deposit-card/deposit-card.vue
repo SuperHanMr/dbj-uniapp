@@ -386,15 +386,15 @@
 	}
 	.main{
 		margin: 24rpx;
-		padding-bottom: 14rpx;
+		padding-bottom: 8rpx;
 		margin-bottom: 0;
 		display: flex;
 		flex-wrap: wrap;
 	}
 	.main .prePay{
-		width: 318rpx;
+		width: 312rpx;
 		height: 120rpx;
-		margin-bottom: 10rpx;
+		margin-bottom: 16rpx;
 		display: flex;
 		align-items: center;
 		background: #FFFDF8;
@@ -403,17 +403,17 @@
 		overflow: hidden;
 	}
 	.main .prePay.active{
-		width: 320rpx;
+		width: 314rpx;
 		border: none;
 		background: linear-gradient(277.39deg, #FFA14A 0%, #FFC700 100%);
 	}
 	.main .prePay.cannot{
-		width: 320rpx;
+		width: 314rpx;
 		border: none;
 		background: #F7F7F7;
 	}
 	.main .prePay.margin{
-		margin-right: 10rpx;
+		margin-right: 16rpx;
 	}
 	.prePay .icon{
 		width: 32rpx;
