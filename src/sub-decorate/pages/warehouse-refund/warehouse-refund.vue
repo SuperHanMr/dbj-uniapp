@@ -244,7 +244,7 @@
 						this.reasonName = this.reasonList[res.tapIndex];
 						this.reasonValue = this.refundReasonList.filter((item) => {
 							return item.itermName == this.reasonList[res.tapIndex];
-						})[0].id;
+						})[0].itermValue;
 					},
 					fail: (res) => {
 						console.log(res.errMsg);
