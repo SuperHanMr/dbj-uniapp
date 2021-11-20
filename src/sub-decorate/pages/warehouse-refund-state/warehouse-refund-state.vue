@@ -12,7 +12,10 @@
 				<view :style="{height:navBarHeight}">
 				</view>
 				<view class="info">
-					<view class="header1">{{headerTitle}}</view>
+					<view class="header1">
+						<image v-if="[2].includes(detail.status)" class="success-icon"
+							src="../../static/ic_order_success.svg" mode="" />{{headerTitle}}
+					</view>
 				</view>
 				<view class="header2">
 					{{detail.refundTime | formatDate}}
@@ -29,8 +32,37 @@
 				</view>
 			</view>
 		</view>
-		<warehouse-item :showTitle="false" :showPayPrice="true" :showPrePrice="false"  :item="detail" :key="item.id" @detail="toDetail"
-			@refund="toRefund">
+		<view v-if="detail.status==2" class="flex-between ">
+			<view class="row">
+				<view class="title">
+					退款总金额
+				</view>
+				<view class="price">
+					¥ <text style="font-size: 40rpx;"> {{foramtPrice(detail.refundAmount)}}</text>. <text> {{formatCent(detail.refundAmount)}}</text>
+				</view>
+			</view>
+			<view v-if=" Number(detail.weChatRefundedAmount)>0" class="row mt16">
+				<view class="sub-title">
+					原路径返回微信
+				</view>
+				<view class="sub-price">
+					¥ <text style="font-size: 30rpx;"> {{foramtPrice(detail.weChatRefundedAmount)}}</text>. <text> {{formatCent(detail.weChatRefundedAmount)}}</text>
+				</view>
+			</view>
+			<view v-if=" Number(detail.cardRefundedAmount)>0" class="row mt16">
+				<view class="sub-title">
+					原路径返回储值卡
+				</view>
+				<view class="sub-price">
+					¥  <text style="font-size: 30rpx;"> {{foramtPrice(detail.cardRefundedAmount)}}</text>. <text> {{formatCent(detail.cardRefundedAmount)}}</text>
+				</view>
+			</view>
+		</view>
+	<view v-if="detail.status==2" style="height: 16rpx;">
+		
+	</view>
+		<warehouse-item :showTitle="false" :showPayPrice="true" :showPrePrice="false" :item="detail" :key="item.id"
+			@detail="toDetail" @refund="toRefund">
 		</warehouse-item>
 		<view class="info-content">
 			<view class="title">
@@ -121,7 +153,9 @@
 		refundDetail,
 		cancelRefund
 	} from "../../../api/order.js"
-	import{judgeOwner}from "../../../api/decorate.js"
+	import {
+		judgeOwner
+	} from "../../../api/decorate.js"
 	export default {
 		filters: {
 			formatDate
@@ -138,7 +172,7 @@
 				id: '',
 				stockStatus: '',
 				scrollTop: 0,
-				ownered:false
+				ownered: false
 			}
 		},
 		onPageScroll(scrollTop) {
@@ -160,12 +194,14 @@
 				this.id = e.id
 				this.getDetail(e.id);
 			}
-			if(e&&e.projectId){
-				judgeOwner({projectId:e.projectId}).then(e=>{
-					this.ownered=e.ownered
+			if (e && e.projectId) {
+				judgeOwner({
+					projectId: e.projectId
+				}).then(e => {
+					this.ownered = e.ownered
 				})
 			}
-	
+
 			if (e && e.stockStatus) {
 				this.stockStatus = e.stockStatus
 			}
@@ -231,17 +267,33 @@
 					}
 				});
 			},
+			foramtPrice(item) {
+				item=item*100
+				let price = String(item || "0");
+				return price.slice(0, price.length - 2) || "0";
+			},
+			formatCent(item) {
+				item=item*100
+				let price = String(item || "0");
+				let fixedNum = Number(price / 100).toFixed(2);
+				if (String(fixedNum).split(".").length > 1) {
+					return String(fixedNum).split(".")[1];
+				} else {
+					return "";
+				}
+			},
 			getDetail(id) {
 				refundDetail({
 					id
 				}).then(e => {
 					console.log(e)
 					e.stockStatus = this.stockStatus
-					e.detailAppVOS.map(e=>{
-						e.discountPrice=e.discountPrice*100
-						e.number=e.refundNumber
+					e.detailAppVOS.map(e => {
+						e.discountPrice = e.discountPrice * 100
+						e.number = e.refundNumber
 					})
 					this.detail = e;
+					console.log(this.detail.refundAmount)
 					if ([0, 1].includes(e.status)) {
 						//退款中
 						this.headerTitle = '退款中'
@@ -279,6 +331,56 @@
 </script>
 
 <style lang="scss" scoped>
+	.mt16{
+		margin-top: 16rpx;
+	}
+	.flex-between {
+		background-color: #FFF;
+		padding: 0 32rpx 32rpx 32rpx;
+		border-bottom-left-radius: 20rpx;
+		border-bottom-right-radius: 20rpx;
+
+		.row {
+			display: flex;
+			flex-direction: row;
+			justify-content: space-between;
+
+			.title {
+				font-weight: 500;
+				font-size: 30rpx;
+				color: #333333;
+			}
+
+			.sub-title {
+				font-size: 26rpx;
+				font-weight: 400;
+				color: #999999;
+
+			}
+
+			.sub-price {
+				font-family: PriceFont;
+				font-size: 22rpx;
+				color: #333333;
+
+			}
+
+			.price {
+				font-family: PriceFont;
+				font-size: 26rpx;
+				color: #ff3347;
+
+			}
+		}
+	}
+
+	.success-icon {
+		width: 64rpx;
+		height: 64rpx;
+		object-fit: cover;
+		margin-right: 12rpx;
+	}
+
 	.tip {
 		width: 60rpx;
 		height: 30rpx;
@@ -381,8 +483,7 @@
 		display: flex;
 		font-size: 30rpx;
 		color: #333333;
-		padding: 0 32rpx 32rpx 32rpx;
-		margin-bottom: 16rpx;
+		padding: 0 32rpx 12rpx 32rpx;
 
 		.icon {
 			margin-top: 6rpx;
@@ -414,7 +515,7 @@
 		align-items: center;
 		position: relative;
 
-		image {
+		.image-ic {
 			margin-top: 200rpx;
 			width: 184rpx;
 			height: 184rpx;
@@ -428,8 +529,11 @@
 			align-items: center;
 
 			.header1 {
-				height: 48rpx;
-				line-height: 48rpx;
+				display: flex;
+				justify-content: center;
+				align-items: center;
+				height: 64rpx;
+				// line-height: 64rpx;
 				font-size: 48rpx;
 				font-weight: 500;
 				color: #ffffff;
