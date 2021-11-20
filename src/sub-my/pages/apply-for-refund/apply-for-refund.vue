@@ -113,7 +113,6 @@
 									maxlength="10"
 									@focus="onKeyFocus"
 									@blur="onKeyBlur"
-									
 									:style="{width:inputWidth,'maxWidth':'294rpx !important'}"
 								/>
 							</view>
@@ -249,9 +248,11 @@ export default {
 					console.log("this.refundInfo=",this.refundInfo)
 					this.refundInfo.actualIncomeAmount = this.refundInfo.maxRefundAmount
 					this.returnMoney = this.refundInfo.maxRefundAmount
+					
 					if(this.refundType ==5){
-						this.inputValue = this.returnMoney
-						this.refundAmount = this.refundInfo.maxRefundAmount
+						this.inputValue = this.refundInfo.refundAmount
+						this.refundAmount = this.refundInfo.refundAmount
+						this.maxRefundAmount=this.refundInfo.maxRefundAmount
 					}
 					this.freight = this.refundInfo.freight?this.refundInfo.freight:'0'
 					this.handlingFees = this.refundInfo.handlingFees?this.refundInfo.freight:'0'
@@ -283,7 +284,6 @@ export default {
 					duration:1000
 				})
 				this.returnMoney = Number(newVal) 
-				
 				return this.returnMoney
 				// return Number(this.refundAmount).toFixed(2)
 			}else{
@@ -328,12 +328,11 @@ export default {
 				console.log("this.refundType===",this.refundType)
 				if(this.refundType == 5){
 					this.maxRefundAmount = data.maxRefundAmount
+					this.refundAmount  = data.refundAmount
 					this.returnMoney = data.refundAmount
 					this.inputValue  = data.refundAmount
-					this.refundAmount  = data.refundAmount
 				}else{
-					this.refundAmount  =data.refundAmount
-					this.returnMoney  =data.refundAmount
+					this.returnMoney  =data.maxRefundAmount
 					this.freight = this.refundInfo.freight?this.refundInfo.freight:'0'
 					this.handlingFees = this.refundInfo.handlingFees?this.refundInfo.freight:'0'
 				}
