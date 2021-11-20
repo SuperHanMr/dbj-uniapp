@@ -41,7 +41,8 @@
           </view>
         </view>
         <view class="router">
-          <text style="color: #999999;font-size: 26rpx;">原路径返回微信</text>
+          <text v-if="refundInfo.type !==5" style="color: #999999;font-size: 26rpx;">原路径返回微信</text>
+          <text v-else style="color: #999999;font-size: 26rpx;">原路径返回储值卡</text>
           <view>
             <text style="font-size: 20rpx;">￥</text>
             <text style="font-size:28rpx;" class="price-font">

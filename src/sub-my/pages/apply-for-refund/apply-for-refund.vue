@@ -343,9 +343,12 @@ export default {
 					this.orderDetailId = data.detailAppVOS[0].orderDetailId
 					console.log("this.refundInfo=",this.refundInfo )
 				}else{
+					this.refundInfo.cardUseIdentification = data.cardUseIdentification //储值卡文案显示问题
+					console.log("!!!$$$$$$$$$$$$$$@@@@@@@@@@@@@@",this.refundInfo)
 					this.refundInfo.details = data.detailAppVOS
 					console.log("this.refundInfo.details = ",this.refundInfo.details)
 				}
+				
 				this.refundInfo.totalActualIncomeAmount = data.maxRefundAmount
 				this.query.orderId = data.orderId
 				this.query.status = data.progressed
