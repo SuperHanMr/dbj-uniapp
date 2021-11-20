@@ -147,10 +147,10 @@
         </view>
 			</view>
 			<view class="applyforRefund-confirmReceipt2" :style="{paddingBottom:systemBottom}"
-				v-if="!orderInfo.showRefundBtn && orderInfo.refundApplyMode == 2 && (orderInfo.stockType == 0 || orderInfo.type == 2)">
+				v-if="!orderInfo.showRefundBtn && orderInfo.refundApplyMode == 2 && (orderInfo.stockType == 0 || orderInfo.type == 5)">
 			
 				<view class="refundOrderStatus"
-					v-if="orderInfo.refundBillStatus == 0 || (orderInfo.refundBillStatus == 1 && orderInfo.type == 2)"
+					v-if="orderInfo.refundBillStatus == 0 || (orderInfo.refundBillStatus == 1 && orderInfo.type == 5)"
 					@click="refundCancel(orderInfo)">
 					取消退款
 				</view>
