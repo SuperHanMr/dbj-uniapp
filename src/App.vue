@@ -39,6 +39,7 @@
 			screenHeight: 0,
 			openId: "",
 			shareId: "",
+			goHomeUrl:false
 		},
 
 		onLaunch: function() {
