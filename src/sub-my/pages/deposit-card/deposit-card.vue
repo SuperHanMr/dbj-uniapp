@@ -163,6 +163,7 @@
 				}
 				getActivity(params).then(data => {
 					console.log(data)
+					data = data || [];
 					if(!data.length){
 						this.noList = true
 						this.showBuyBtn = false
@@ -171,9 +172,13 @@
 						this.showBuyBtn = false
 					}
 					this.list = data
-					let idx = data.findIndex(i=>i.eligibility&&i.detailDTOList.length)
-					console.log(idx,'//')
-					this.checkedId = this.list[idx].detailDTOList[0].detailId
+          for (let i = 0; i < data.length; i++) {
+            let item = data[i];
+            if (item.eligibility && (item.detailDTOList || []).length) {
+              this.checkedId = item.detailDTOList[0].detailId;
+              break;
+            }
+          }
 				})
 			}
 		}
