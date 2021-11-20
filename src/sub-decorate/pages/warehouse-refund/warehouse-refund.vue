@@ -163,7 +163,7 @@
 				});
 				totalBack=totalBack/100
 			
-				if (totalBack) {
+				if (totalBack>0) {
 					this.num = totalBack.toFixed(2);
 				} else {
 					this.num = 0;
