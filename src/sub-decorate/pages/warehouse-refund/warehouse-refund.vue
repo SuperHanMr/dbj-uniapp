@@ -153,14 +153,15 @@
 
 					if (e.returnNumber + e.alreadyReturnNumber < e.number) {
 
-						totalBack += e.price * e.returnNumber;
+						totalBack += e.price * e.returnNumber*100;
 					} else {
 
-						let count = e.discountSubtotal - e.price * e.actualIncomeAmount
+						let count = e.discountSubtotal*100 - e.price*100 * e.alreadyReturnNumber
 						totalBack += count
 					}
 
 				});
+				totalBack=totalBack/100
 			
 				if (totalBack) {
 					this.num = totalBack.toFixed(2);
