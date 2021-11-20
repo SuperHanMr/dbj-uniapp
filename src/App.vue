@@ -3,6 +3,9 @@
 		oauthGomeInfo
 	} from "api/login.js";
 	import {
+		appconfig
+	} from 'api/home.js'
+	import {
 		createTim
 	} from "utils/tim.js";
 	import {
@@ -39,10 +42,16 @@
 			screenHeight: 0,
 			openId: "",
 			shareId: "",
-			goHomeUrl:false
+			goHomeUrl: false,
+			MarketStoreSwitch: false
 		},
 
 		onLaunch: function() {
+			appconfig().then(e => {
+				if (e.MarketStoreSwitch=='1') {
+					this.globalData.MarketStoreSwitch = true;
+				}
+			})
 			const userId = uni.getStorageSync("userId");
 			const shareId = uni.getStorageSync("shareId");
 			setLogId(userId + "-" + new Date().getTime());

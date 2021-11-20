@@ -85,3 +85,11 @@ export function insertAndGetLikeNum(params) {
 		hideToast: true,
 	});
 }
+
+//appconfig
+export function appconfig(params) {
+	return request.get(`/app/common/open/config?type=1`, {
+		params
+	});
+}
+
