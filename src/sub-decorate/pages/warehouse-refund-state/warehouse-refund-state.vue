@@ -29,7 +29,7 @@
 				</view>
 			</view>
 		</view>
-		<warehouse-item :showTitle="false" :showPayPrice="true" :item="detail" :key="item.id" @detail="toDetail"
+		<warehouse-item :showTitle="false" :showPayPrice="true" :showPrePrice="false"  :item="detail" :key="item.id" @detail="toDetail"
 			@refund="toRefund">
 		</warehouse-item>
 		<view class="info-content">
