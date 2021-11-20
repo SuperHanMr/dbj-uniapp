@@ -21,7 +21,7 @@
 				</view>
 			</view>
 
-			<view class="refund-product-info" :style="{paddingBottom:orderType==2?'24rpx':''}">
+			<view class="refund-product-info" :style="{paddingBottom:( orderType==2 || refundInfo.type ==5) ?'24rpx':''}">
 				<order-item 
 					v-if="refundInfo.type !==5"
 					v-for="item in refundInfo.detailAppVOS" 

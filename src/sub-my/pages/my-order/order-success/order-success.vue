@@ -40,16 +40,27 @@
 						</text>
           </view>
         </view>
-        <view class="router">
-          <text v-if="refundInfo.type !==5" style="color: #999999;font-size: 26rpx;">原路径返回微信</text>
-          <text v-else style="color: #999999;font-size: 26rpx;">原路径返回储值卡</text>
+        <view class="router" v-if="refundInfo.weChatRefundedAmount" :style="{marginBottom:refundInfo.cardRefundedAmount?'16rpx':'0'}" >
+          <text style="color: #999999;font-size: 26rpx;">原路径返回微信</text>
           <view>
             <text style="font-size: 20rpx;">￥</text>
             <text style="font-size:28rpx;" class="price-font">
-							{{handlePrice(refundInfo.refundAmount)[0]}}.
+							{{handlePrice(refundInfo.weChatRefundedAmount)[0]}}.
 						</text>
             <text style="font-size:20rpx;" class="price-font" >
-							{{handlePrice(refundInfo.refundAmount)[1]}}
+							{{handlePrice(refundInfo.weChatRefundedAmount)[1]}}
+						</text>
+          </view>
+        </view>
+				<view class="router" v-if="refundInfo.cardRefundedAmount" style="margin-bottom: 0">
+          <text  style="color: #999999;font-size: 26rpx;">原路径返回储值卡</text>
+          <view>
+            <text style="font-size: 20rpx;">￥</text>
+            <text style="font-size:28rpx;" class="price-font">
+							{{handlePrice(refundInfo.cardRefundedAmount)[0]}}.
+						</text>
+            <text style="font-size:20rpx;" class="price-font" >
+							{{handlePrice(refundInfo.cardRefundedAmount)[1]}}
 						</text>
           </view>
         </view>
@@ -422,7 +433,6 @@ export default {
     }
 
     .order-header1 {
-      height: 170rpx;
       background: #ffffff;
       border-radius: 20rpx;
       padding: 32rpx;
@@ -432,7 +442,14 @@ export default {
       flex: 1;
       margin-bottom: 16rpx;
 
-      .refund-price,
+      .refund-price{
+				display: flex;
+				flex: 1;
+				flex-flow: row nowrap;
+				align-items: center;
+				justify-content: space-between;
+				margin-bottom: 16rpx;
+			}
       .router {
         display: flex;
         flex: 1;
