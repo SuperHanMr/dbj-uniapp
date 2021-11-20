@@ -15,9 +15,7 @@
 				<view class="tit">敬请期待</view>
 				<view class="txt">您所在的城市暂无储值卡活动</view>
 			</view>
-			<view class="activity" v-else
-				:class="{'minHeight': !item.activityImage}"
-				v-for="(item,index) in list" :key="item.activityId">
+			<view class="activity" v-else v-for="(item,index) in list" :key="item.activityId">
 				<view class="top">
 					<view class="title">{{item.activityName}}</view>
 					<view class="rules" @click="clickRules(index)">
@@ -60,7 +58,7 @@
 					<view class="title">活动规则</view>
 					<image src="https://ali-image.dabanjia.com/static/mp/dabanjia/images/my/close_rules.png" @click="closeRules"></image>
 				</view>
-				<view class="content">{{ruleText}}</view>
+				<scroll-view scroll-y="true" class="content">{{ruleText}}</scroll-view>
 			</view>
 		</uni-popup>
 	</view>
@@ -230,10 +228,8 @@
 		right: 12rpx;
 	}
 	.popup .content{
-		overflow: scroll;
-		width: calc(100vw-112rpx);
+		width: 544rpx;
 		height: 504rpx;
-		/* max-height: 904rpx; */
 		margin: 48rpx;
 		margin-top: 8rpx;
 	}
@@ -320,9 +316,6 @@
 		background: #FFFFFF;
 		border-radius: 16rpx;
 	}
-	/* .activity.minHeight{
-		height: 206px;
-	} */
 	.activity .top{
 		width: 654rpx;
 		height: 50rpx;

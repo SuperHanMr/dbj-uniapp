@@ -172,6 +172,14 @@
 			uni.showTabBar();
 		},
 		onShow() {
+			if(getApp().globalData.goHomeUrl){
+				getApp().globalData.goHomeUrl = false;
+				uni.switchTab({
+					url:'/pages/home/index/index'
+				})
+				return 
+				
+			}
 			uni.showTabBar();
 			this.userId = getApp().globalData.token;
 			if (!this.userId) {

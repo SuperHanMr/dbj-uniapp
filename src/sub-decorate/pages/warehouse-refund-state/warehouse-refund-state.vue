@@ -239,6 +239,7 @@
 					e.stockStatus = this.stockStatus
 					e.detailAppVOS.map(e=>{
 						e.discountPrice=e.discountPrice*100
+						e.number=e.refundNumber
 					})
 					this.detail = e;
 					if ([0, 1].includes(e.status)) {
