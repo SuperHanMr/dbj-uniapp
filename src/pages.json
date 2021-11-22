@@ -970,7 +970,7 @@
             "navigationBarTitleText": "用户评价"
           }
         }, {
-          "path": "change-application/change-application",
+          "path": "pages/change-application/change-application",
           "style": {
             "navigationBarTitleText": "",
             "enablePullDownRefresh": false
