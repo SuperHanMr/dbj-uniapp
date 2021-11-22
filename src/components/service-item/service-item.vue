@@ -72,7 +72,8 @@
     methods: {
       personPage(serviceData) {
         uni.navigateTo({
-          url: `/sub-decorate/pages/person-page/person-page?personId=${serviceData.serveId}`
+          // url: `/sub-decorate/pages/person-page/person-page?personId=${serviceData.serveId}`
+          url: `/sub-decorate/pages/grab/grab?personId=${serviceData.serveId}&isServed=true`
         })
       },
       openProcsss() {
