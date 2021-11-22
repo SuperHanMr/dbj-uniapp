@@ -101,7 +101,6 @@
 					gradeName: data.gradeName || "",
 					loginName: data.loginName || "",
 				});
-				let shareId = uni.getStorageSync("shareId");
 				getApp().globalData.token = data.SCN;
 				if (data.openId) {
 					getApp().globalData.openId = data.openId;
@@ -110,13 +109,9 @@
 
 				console.log("type", type); // 根据 type 类型，跳转页面/路由
 				if (uni.getStorageSync("scn")) {
-					let loginData = {
+					oauthGomeInfo({
 						clientType: "3",
-					}
-					if (shareId && type == "register") {
-						loginData.sourceType = "CAPSULE_STORE_APPLET"
-					}
-					oauthGomeInfo(loginData).then((data) => {
+					}).then((data) => {
 						getApp().globalData.userInfo = data;
 						uni.setStorageSync("userId", data.id);
 						getApp().tim = createTim(data.appId);
@@ -124,10 +119,11 @@
 							userId: data.tid,
 							userSig: data.userSign,
 						});
-						if (shareId && type == "register") {
+						let shaerId = uni.getStorageSync("shareId");
+						if (shaerId && type == "register") {
 							bindCapsule({
 								zeusId: data.id,
-								salesmanPhone: shareId
+								salesmanPhone: shaerId
 							});
 						}
 						//可以改成back
