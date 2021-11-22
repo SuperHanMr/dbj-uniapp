@@ -176,6 +176,12 @@ export function getComments(params) {
 	})
 }
 
+//查询服务中是否可以换人
+export function checkServeingChange(params) {
+	return request.get(`/pm/app/serve/serveing/change/check/${params}`)
+}
+
+
 //获取施工交付内容
 export function getComplateDetail(params) {
 	return request.get(`/pm/app/worker/decoration/trend/getCompletionLogById/${params.projectId}/${params.serveId}`)

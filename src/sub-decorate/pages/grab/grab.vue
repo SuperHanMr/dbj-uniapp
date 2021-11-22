@@ -82,18 +82,18 @@
             </view>
             
 		    </view>
-        <view class="btn-right" @click="sendMsg">
+        <view class="btn-right" @click="sendMsg" :class="{'btn-right-served':isServed}">
           <i class="icon-sixinic"></i>
           <text>发消息</text>
         </view>
-		    <view class="add-btn" @click="submit">确定</view>
+		    <view class="add-btn" @click="submit" v-if="!isServed">确定</view>
 		  </view>
 		</bottom-btn>
 	</view>
 </template>
 
 <script>
-  import{getGrabDetail, sureGrab} from "../../../api/decorate.js";
+  import{getGrabDetail, sureGrab,checkServeingChange} from "../../../api/decorate.js";
   import grabHomePage from "./components/grab-home-page.vue"
   import personEvaluate from "../person-page/components/person-evaluate.vue";
   import personCase from "../person-page/components/person-case.vue";
@@ -131,6 +131,7 @@
         caseEmpty:false,
         dynamicEmpty:false,
         evaluateEmpty:false,
+        isServed:true
 			};
 		},
     onReady(){
@@ -159,9 +160,11 @@
       query.exec(function (res) {});
     },
     onLoad(e){
-      this.id = getApp().globalData.decorateMsg.serveId
-      this.personId = getApp().globalData.decorateMsg.serverId||7542
+      this.id = e.serveCardId||getApp().globalData.decorateMsg.serveId
+      this.personId = e.personId||getApp().globalData.decorateMsg.serverId||7682
+      this.isServed = e.isServed||true
       this.getGrabDetail()
+      this.isServed&&this.checkServeingChange()
       const menuButtonInfo = uni.getMenuButtonBoundingClientRect();
       this.systemBottom = menuButtonInfo.bottom + 'rpx'; 
       this.systemHeight = menuButtonInfo.bottom + 136 +'rpx'
@@ -211,6 +214,11 @@
       sendMsg(){
         this.$store.dispatch("openC2CConversation", {
           id:this.personId,
+        })
+      },
+      checkServeingChange(){
+        checkServeingChange(this.id).then(res=>{
+          
         })
       },
 			submit(){
@@ -371,6 +379,19 @@
       font-size: 26rpx;
       color: #333;
       // margin:  0 auto;
+    }
+  }
+  view .btn-right-served{
+    width: 562rpx;
+    border: none;
+    background: linear-gradient(135deg, #00CCBE 0%, #00C2BF 100%);
+    border-radius: 12rpx;
+    color: #fff;
+    i{
+      color: #fff;
+    }
+    text{
+      color: #fff;
     }
   }
   .btn-right {
