@@ -74,8 +74,8 @@
       </view>
     </view>
 		<bottom-btn style="width: 100%;" :showDefaultBtn="false">
-		  <view class="btn">
-		    <view class="btn-left" @click="toReplace">
+		  <view class="btn" style="width: 100%;">
+		    <view class="btn-left" @click="toReplace" v-if="allowReplace">
             <view class="btn-left-content">
               <i class="icon-ic_wodejia_shenqinggenghuan_csn"></i>
               <text>申请更换</text>
@@ -131,7 +131,8 @@
         caseEmpty:false,
         dynamicEmpty:false,
         evaluateEmpty:false,
-        isServed:true
+        isServed:true,
+        allowReplace:true
 			};
 		},
     onReady(){
@@ -162,7 +163,7 @@
     onLoad(e){
       this.id = e.serveCardId||getApp().globalData.decorateMsg.serveId
       this.personId = e.personId||getApp().globalData.decorateMsg.serverId||7682
-      this.isServed = e.isServed||true
+      this.isServed = e.isServed||false
       this.getGrabDetail()
       this.isServed&&this.checkServeingChange()
       const menuButtonInfo = uni.getMenuButtonBoundingClientRect();
@@ -179,7 +180,6 @@
       getGrabDetail(){
         getGrabDetail(this.personId).then(res=>{
           this.personData = res
-          
           this.personData.totalNum = unitChange(this.personData.inServiceCount+this.personData.comServiceCount)
           // this.personData.totalNum = '1.0'
           this.personData.likeCount = unitChange(this.personData.likeCount)
@@ -205,7 +205,7 @@
       },
 			toReplace(){
 				uni.navigateTo({
-					url:"/sub-decorate/pages/replace-worker/replace-worker?id="+this.id
+					url:"/sub-decorate/pages/replace-worker/replace-worker?id="+this.id+"&isServed="+this.isServed
 				})
 			},
       getEvaluate(num) {
@@ -218,7 +218,7 @@
       },
       checkServeingChange(){
         checkServeingChange(this.id).then(res=>{
-          
+          this.allowReplace =res.result
         })
       },
 			submit(){
@@ -382,11 +382,12 @@
     }
   }
   view .btn-right-served{
-    width: 562rpx;
+    width: 100%;
     border: none;
     background: linear-gradient(135deg, #00CCBE 0%, #00C2BF 100%);
     border-radius: 12rpx;
     color: #fff;
+    margin-right: 0;
     i{
       color: #fff;
     }

@@ -37,7 +37,8 @@
 
 <script>
   import {
-    replaceGrab
+    replaceGrab,
+    replaceServe
   } from "../../../api/decorate.js";
   import upload from '../../../utils/upload.js'
   export default {
@@ -65,10 +66,12 @@
         imageValue: [],
         otherReason: "",
         serveId: '',
+        isServed:false
       };
     },
     onLoad(e) {
-      this.serveId = e.id
+      this.serveId = e.id,
+      this.isServed = e.isServed
     },
     methods: {
       radioChange(evt) {
@@ -156,16 +159,30 @@
         this.imageValue.forEach(item=>{
           data.imageUrls.push(item.url)
         })
-        replaceGrab(data).then(res => {
-          uni.showToast({
-            title: '已提交申请',
-            duration: 2000,
-            icon: 'success'
+        if(this.isServed){
+          replaceServe(data).then(res => {
+            uni.showToast({
+              title: '已提交申请',
+              duration: 2000,
+              icon: 'success'
+            })
+            uni.switchTab({
+              url: "/pages/decorate/index/index",
+            });
           })
-          uni.switchTab({
-            url: "/pages/decorate/index/index",
-          });
-        })
+        }else{
+          replaceGrab(data).then(res => {
+            uni.showToast({
+              title: '已提交申请',
+              duration: 2000,
+              icon: 'success'
+            })
+            uni.switchTab({
+              url: "/pages/decorate/index/index",
+            });
+          })
+        }
+        
       }
     },
   };
