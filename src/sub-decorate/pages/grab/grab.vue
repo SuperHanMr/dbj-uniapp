@@ -74,26 +74,26 @@
       </view>
     </view>
 		<bottom-btn style="width: 100%;" :showDefaultBtn="false">
-		  <view class="btn">
-		    <view class="btn-left" @click="toReplace">
+		  <view class="btn" style="width: 100%;">
+		    <view class="btn-left" @click="toReplace" v-if="allowReplace">
             <view class="btn-left-content">
               <i class="icon-ic_wodejia_shenqinggenghuan_csn"></i>
               <text>申请更换</text>
             </view>
             
 		    </view>
-        <view class="btn-right" @click="sendMsg">
+        <view class="btn-right" @click="sendMsg" :class="{'btn-right-served':isServed}">
           <i class="icon-sixinic"></i>
           <text>发消息</text>
         </view>
-		    <view class="add-btn" @click="submit">确定</view>
+		    <view class="add-btn" @click="submit" v-if="!isServed">确定</view>
 		  </view>
 		</bottom-btn>
 	</view>
 </template>
 
 <script>
-  import{getGrabDetail, sureGrab} from "../../../api/decorate.js";
+  import{getGrabDetail, sureGrab,checkServeingChange} from "../../../api/decorate.js";
   import grabHomePage from "./components/grab-home-page.vue"
   import personEvaluate from "../person-page/components/person-evaluate.vue";
   import personCase from "../person-page/components/person-case.vue";
@@ -131,6 +131,8 @@
         caseEmpty:false,
         dynamicEmpty:false,
         evaluateEmpty:false,
+        isServed:true,
+        allowReplace:true
 			};
 		},
     onReady(){
@@ -159,9 +161,11 @@
       query.exec(function (res) {});
     },
     onLoad(e){
-      this.id = getApp().globalData.decorateMsg.serveId
-      this.personId = getApp().globalData.decorateMsg.serverId||7542
+      this.id = e.serveCardId||getApp().globalData.decorateMsg.serveId
+      this.personId = e.personId||getApp().globalData.decorateMsg.serverId||7682
+      this.isServed = e.isServed||false
       this.getGrabDetail()
+      this.isServed&&this.checkServeingChange()
       const menuButtonInfo = uni.getMenuButtonBoundingClientRect();
       this.systemBottom = menuButtonInfo.bottom + 'rpx'; 
       this.systemHeight = menuButtonInfo.bottom + 136 +'rpx'
@@ -176,7 +180,6 @@
       getGrabDetail(){
         getGrabDetail(this.personId).then(res=>{
           this.personData = res
-          
           this.personData.totalNum = unitChange(this.personData.inServiceCount+this.personData.comServiceCount)
           // this.personData.totalNum = '1.0'
           this.personData.likeCount = unitChange(this.personData.likeCount)
@@ -202,7 +205,7 @@
       },
 			toReplace(){
 				uni.navigateTo({
-					url:"/sub-decorate/pages/replace-worker/replace-worker?id="+this.id
+					url:"/sub-decorate/pages/replace-worker/replace-worker?id="+this.id+"&isServed="+this.isServed
 				})
 			},
       getEvaluate(num) {
@@ -211,6 +214,11 @@
       sendMsg(){
         this.$store.dispatch("openC2CConversation", {
           id:this.personId,
+        })
+      },
+      checkServeingChange(){
+        checkServeingChange(this.id).then(res=>{
+          this.allowReplace =res.result
         })
       },
 			submit(){
@@ -371,6 +379,20 @@
       font-size: 26rpx;
       color: #333;
       // margin:  0 auto;
+    }
+  }
+  view .btn-right-served{
+    width: 100%;
+    border: none;
+    background: linear-gradient(135deg, #00CCBE 0%, #00C2BF 100%);
+    border-radius: 12rpx;
+    color: #fff;
+    margin-right: 0;
+    i{
+      color: #fff;
+    }
+    text{
+      color: #fff;
     }
   }
   .btn-right {
