@@ -363,6 +363,7 @@
 			this.unit = e.unit;
 			this.level = e.level;
 			this.goodDetailId = uni.getStorageSync("goodId");
+      console.log(e.houseId, getApp().globalData.currentHouse.id)
 		},
 		onShow() {
 			if (uni.getStorageSync("houseListChooseId")) {

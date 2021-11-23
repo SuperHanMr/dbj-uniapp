@@ -28,11 +28,14 @@
             <view class="goodsInfo">
               <view class="goodsDesc">
                 <view class="spu-name-box">
-                  <view class="spu-name"><text class="goodsType">{{goodsItem.product.productTypeId === 1?"物品":"服务"}}</text>{{goodsItem.product.spuName}}</view>
+                  <view class="spu-name"><text
+                      class="goodsType">{{goodsItem.product.productTypeId === 1?"物品":"服务"}}</text>{{goodsItem.product.spuName}}
+                  </view>
                 </view>
                 <view class="tag-box">
                   <view class="middle-service" v-if="goodsItem.product.hasBadgeLevel">中级服务</view>
-                  <view :class="{'price-tag': goodsItem.product.hasBadgeLevel}" v-if="goodsItem.product.hasAllowance">
+                  <view class="price-tag" :class="{'price-tag-level': goodsItem.product.hasBadgeLevel}"
+                    v-if="goodsItem.product.hasAllowance">
                     <text>打扮家补贴{{(goodsItem.product.sku.marketPrice -goodsItem.product.skuPrice)/100}}元</text>
                   </view>
                 </view>
@@ -353,7 +356,7 @@
     line-height: 36rpx;
   }
 
-   .price-tag {
+  .price-tag-level {
     margin-left: 8rpx;
   }
 
