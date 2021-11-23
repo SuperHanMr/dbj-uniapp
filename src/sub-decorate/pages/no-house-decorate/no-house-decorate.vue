@@ -35,7 +35,7 @@
 					</check-box>
 				</template>
 			</service-card>
-			<view class="pay-way" style="justify-content:center" @click="clickCard">
+			<view v-if="haveCard" class="pay-way" style="justify-content:center" @click="clickCard">
 				<image class="card-img"
 					src="https://ali-image.dabanjia.com/static/mp/dabanjia/images/classify/ic_card.png" mode="">
 				</image>
@@ -46,16 +46,17 @@
 				<view style="flex:1">
 				</view>
 				<view v-if="cardClick" class="card-price">
-					<text style="margin-right:4rpx ;">-</text> <text style="margin-right:2rpx ;">¥</text>{{(this.cardPrice/100).toFixed(2)}}
+					<text style="margin-right:4rpx ;">-</text> <text
+						style="margin-right:2rpx ;">¥</text>{{(this.cardPrice/100).toFixed(2)}}
 				</view>
-			<image v-if="cardClick" class="selected-img"
-				src="https://ali-image.dabanjia.com/static/mp/dabanjia/images/classify/pay_selected.png" mode="">
-			</image>
-			<image v-if="!cardClick&&cardBalance" class="selected-img"
-				src="https://ali-image.dabanjia.com/static/mp/dabanjia/images/classify/pay_unselected.png" mode="">
-			</image>
-			<view v-if="!cardClick&&!cardBalance" class="select-disable">
-			</view>
+				<image v-if="cardClick" class="selected-img"
+					src="https://ali-image.dabanjia.com/static/mp/dabanjia/images/classify/pay_selected.png" mode="">
+				</image>
+				<image v-if="!cardClick&&cardBalance" class="selected-img"
+					src="https://ali-image.dabanjia.com/static/mp/dabanjia/images/classify/pay_unselected.png" mode="">
+				</image>
+				<view v-if="!cardClick&&!cardBalance" class="select-disable">
+				</view>
 			</view>
 			<view class="pay-way">
 				<text>支付方式</text>
@@ -758,7 +759,9 @@
 							...wechatPayJsapi,
 							success(res) {
 								console.log("付款成功", res);
-								uni.navigateBack({});
+								uni.redirectTo({
+									url: `/sub-classify/pages/pay-order/pay-success`,
+								});
 							},
 							fail(e) {
 								console.log(e);
@@ -786,7 +789,9 @@
 							},
 						});
 					} else {
-						uni.navigateBack({});
+						uni.redirectTo({
+							url: `/sub-classify/pages/pay-order/pay-success`,
+						});
 					}
 				});
 			},
@@ -840,8 +845,9 @@
 		background: #f5f5f5;
 		border: 1rpx solid #e8e8e8;
 		border-radius: 50%;
-	  margin-left: 16rpx;
+		margin-left: 16rpx;
 	}
+
 	.pay-way,
 	.pledge,
 	.remarks {

@@ -153,16 +153,17 @@
 
 					if (e.returnNumber + e.alreadyReturnNumber < e.number) {
 
-						totalBack += e.price * e.returnNumber;
+						totalBack += e.price * e.returnNumber * 100;
 					} else {
 
-						let count = e.discountSubtotal - e.price * e.actualIncomeAmount
+						let count = e.discountSubtotal * 100 - e.price * 100 * e.alreadyReturnNumber
 						totalBack += count
 					}
 
 				});
-			
-				if (totalBack) {
+				totalBack = totalBack / 100
+
+				if (totalBack > 0) {
 					this.num = totalBack.toFixed(2);
 				} else {
 					this.num = 0;
@@ -243,7 +244,7 @@
 						this.reasonName = this.reasonList[res.tapIndex];
 						this.reasonValue = this.refundReasonList.filter((item) => {
 							return item.itermName == this.reasonList[res.tapIndex];
-						})[0].id;
+						})[0].itermValue;
 					},
 					fail: (res) => {
 						console.log(res.errMsg);

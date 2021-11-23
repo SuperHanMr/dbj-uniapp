@@ -255,13 +255,18 @@ export default {
     toBack() {
       if (this.from == "waitPay") {
         uni.redirectTo({
-          url: `../my-order?index=1`,
+          url: `../my-order?index=1&firstEntry=true`,
         });
       } else if (this.from == "inprogress") {
         uni.redirectTo({
-          url: `../my-order?index=2`,
+          url: `../my-order?index=2&firstEntry=true`,
         });
-      } else {
+      } else if(this.from == "multiple"){
+				uni.redirectTo({
+					 url: `../my-order?index=4&firstEntry=true`,
+				})
+			}
+			else {
         uni.navigateBack({
           delta: 1,
         });

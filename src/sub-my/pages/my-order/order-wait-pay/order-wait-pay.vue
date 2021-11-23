@@ -244,7 +244,7 @@
 
       <!-- v-if="haveCard && orderInfo.isReplenish" -->
       <view
-        v-if="haveCard && orderInfo.type == 5"
+        v-if="haveCard && orderInfo.isReplenish"
         class="pay-way"
         style="justify-content:center"
         @click="clickCard"
@@ -633,7 +633,7 @@ export default {
           uni.requestPayment({
             provider: "wxpay",
             ...payInfo,
-            success(res) {
+            success:()=> {
               uni.showToast({
                 title: "支付成功！",
                 icon: "none",

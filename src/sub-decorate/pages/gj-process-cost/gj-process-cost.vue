@@ -27,7 +27,7 @@
 			</view>
 			<no-data v-if="noData" :words="message"></no-data>
 		</view>
-		<view class="pay-way" style="justify-content:center" @click="clickCard">
+		<view v-if="haveCard" class="pay-way" style="justify-content:center" @click="clickCard">
 			<image class="card-img" src="https://ali-image.dabanjia.com/static/mp/dabanjia/images/classify/ic_card.png"
 				mode="">
 			</image>

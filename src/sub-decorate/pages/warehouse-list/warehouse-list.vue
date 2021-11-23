@@ -24,7 +24,7 @@
 
 					<warehouse-item v-for="(item,index) in currentList" :item="item" :key="item.id" @detail="toDetail"
 						@refund="toRefund" @confirmGoods="onConfirmGoods" :showRecived="currentIndex==1&&ownered"
-						:showBacking="currentIndex==3&&ownered" :showPrePrice="currentIndex==3" :showSubCount="currentIndex!=3" :showDetail="currentIndex==3">
+						:showBacking="currentIndex==3&&ownered" :showPrePrice="false" :showSubCount="currentIndex!=3" :showDetail="currentIndex==3">
 					</warehouse-item>
 					<view v-if="currentIndex==0" style="height: 200rpx;">
 					</view>

@@ -5,7 +5,7 @@
       :showSubtitle="false"
       :showBack="type==0&&ownered"
       :itemBtn="type==2&&ownered"
-			:showPrePrice="false"
+      :showPrePrice="false"
       :item="res"
       @backGoodItem="toBackGoodItem"
       @applyBackItem="applyBackItem"
@@ -385,6 +385,8 @@ export default {
         return "国美支付";
       } else if (type == 4) {
         return "储值卡支付";
+      } else if (type == 5) {
+        return "微信支付|储值卡支付";
       } else {
         return "其他";
       }

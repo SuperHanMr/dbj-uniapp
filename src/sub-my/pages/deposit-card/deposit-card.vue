@@ -1,5 +1,5 @@
 <template>
-	<view class="cardWrap" :class="{'noScroll': showRules}">
+	<view class="cardWrap">
 		<view class="wrap">
 			<view class="header">
 				<view class="text">余额 (元)</view>
@@ -15,9 +15,7 @@
 				<view class="tit">敬请期待</view>
 				<view class="txt">您所在的城市暂无储值卡活动</view>
 			</view>
-			<view class="activity" v-else
-				:class="{'minHeight': !item.activityImage}"
-				v-for="(item,index) in list" :key="item.activityId">
+			<view class="activity" v-else v-for="(item,index) in list" :key="item.activityId">
 				<view class="top">
 					<view class="title">{{item.activityName}}</view>
 					<view class="rules" @click="clickRules(index)">
@@ -32,13 +30,13 @@
 				<image class="banner" :src="item.activityImage" v-if="item.activityImage"></image>
 				<view class="main">
 					<view class="prePay"
-						:class="{'active': amount.isChecked,'cannot': !item.eligibility}"
+						:class="{'active': amount.detailId===checkedId,'cannot': !item.eligibility,'margin': idx%2===0}"
 						v-for="(amount,idx) in item.detailDTOList"
 						:key="amount.detailId"
 						@click="chooseOne(amount.detailId,item.eligibility)">
 						<image src="https://ali-image.dabanjia.com/static/mp/dabanjia/images/my/choosed.png"
-							class="icon" v-if="amount.isChecked"></image>
-						<view class="numWrap" :class="{'active': amount.isChecked,'cannot': !item.eligibility}">
+							class="icon" v-if="amount.detailId===checkedId"></image>
+						<view class="numWrap" :class="{'active': amount.detailId===checkedId,'cannot': !item.eligibility}">
 							<view class="text">充</view>
 							<view>¥</view>
 							<view class="num price-font">{{amount.rechargeAmount/100}}</view>
@@ -54,15 +52,15 @@
 				</view>
 			</view>
 		</view>
-		<view class="mask" v-if="showRules">
+		<uni-popup ref="popup" type="center">
 			<view class="popup">
 				<view class="top">
 					<view class="title">活动规则</view>
 					<image src="https://ali-image.dabanjia.com/static/mp/dabanjia/images/my/close_rules.png" @click="closeRules"></image>
 				</view>
-				<view class="content">{{ruleText}}</view>
+				<scroll-view scroll-y="true" class="content">{{ruleText}}</scroll-view>
 			</view>
-		</view>
+		</uni-popup>
 	</view>
 </template>
 
@@ -74,11 +72,9 @@
 				cityId: 0,
 				balance: 0,
 				list: [],
-				isChoose: false,
 				noList: false,
 				showBuyBtn: true,
-				showRules: false,
-				detailId: 0,
+				checkedId: 0,
 				ruleText: ""
 			}
 		},
@@ -95,9 +91,6 @@
 			},1000)
 		}, 
 		methods: {
-			prevent(){
-				return
-			},
 			toBillingDetails(){
 				uni.navigateTo({
 					url: "/sub-my/pages/deposit-card/billing-details"
@@ -109,32 +102,20 @@
 				})
 			},
 			clickRules(index){
-				this.showRules = true
+				this.$refs.popup.open()
 				this.ruleText = this.list[index].activityRule
 			},
 			closeRules(){
-				this.showRules = false
+				this.$refs.popup.close()
 			},
 			chooseOne(detailId,eligibility){
-				this.isChoose = !this.isChoose
 				if(!eligibility)return
-				this.list.map(item => {
-					item.detailDTOList.map(ele => {
-						if(detailId === ele.detailId){
-							ele.isChecked = true
-						}else{
-							ele.isChecked = false
-						}
-						return ele
-					})
-					return item
-				})
-				this.detailId = detailId
+				this.checkedId = detailId
 			},
 			buyNow(){
 				const openId = getApp().globalData.openId;
 				createCardOrder({
-					activityDetailId: this.detailId,
+					activityDetailId: this.checkedId,
 					payType: 1, //支付类型  1微信支付
 					openid: openId,
 					sourceId: 100,//订单来源渠道 100小程序
@@ -182,6 +163,7 @@
 				}
 				getActivity(params).then(data => {
 					console.log(data)
+					data = data || [];
 					if(!data.length){
 						this.noList = true
 						this.showBuyBtn = false
@@ -190,17 +172,13 @@
 						this.showBuyBtn = false
 					}
 					this.list = data
-					this.list.map(item => {
-						item.detailDTOList.map(ele => {
-							ele.isChecked = false
-							return ele
-						})
-						return item
-					})
-					let idx = data.findIndex(i=>i.eligibility&&i.detailDTOList.length)
-					console.log(idx,'//')
-					this.$set(this.list[idx].detailDTOList[0],'isChecked',true)
-					this.detailId = this.list[idx].detailDTOList[0].detailId
+          for (let i = 0; i < data.length; i++) {
+            let item = data[i];
+            if (item.eligibility && (item.detailDTOList || []).length) {
+              this.checkedId = item.detailDTOList[0].detailId;
+              break;
+            }
+          }
 				})
 			}
 		}
@@ -214,9 +192,6 @@
 		background-repeat: no-repeat;
 		background-size: cover;
 		background-attachment: fixed;
-	}
-	.cardWrap.noScroll{
-		overflow: hidden;
 	}
 	.mask{
 		width: 100%;
@@ -258,10 +233,8 @@
 		right: 12rpx;
 	}
 	.popup .content{
-		overflow: scroll;
-		width: calc(100vw-112rpx);
+		width: 544rpx;
 		height: 504rpx;
-		/* max-height: 904rpx; */
 		margin: 48rpx;
 		margin-top: 8rpx;
 	}
@@ -270,7 +243,7 @@
 	}
 	.header{
 		width: 702rpx;
-		height: 260rpx;
+		height: 266rpx;
 		margin: 0 24rpx;
 		border-radius: 16rpx;
 		box-shadow: 0px 4px 12px rgba(190, 102, 21, 0.15);
@@ -284,33 +257,33 @@
 		margin-left: 48rpx;
 		padding-top: 48rpx;
 		font-size: 24rpx;
-		color: #FFFFFF;
+		color: #AC6F28;
 	}
 	.header .balance{
 		width: 196rpx;
 		height: 48rpx;
-		margin-left: 48rpx;
+		margin-left: 48rpx; 
 		margin-top: 22rpx;
 		display: flex;
-		align-items: center;
-		color: #FFFFFF;
-	}
-	.header .balance view:last-child{
-		font-size: 40rpx;
+		color: #AC6F28;
 	}
 	.header .balance view:first-child{
 		margin-right: 8rpx;
 		font-weight: 600;
 		font-size: 40rpx;
 	}
+	.header .balance view:last-child{
+		font-size: 40rpx;
+	}
 	.header .balance .int{
+		margin-top: -10rpx;
 		font-size: 56rpx;
 	}
 	.header .bill{
 		width: 128rpx;
 		height: 50rpx;
 		margin-left: 48rpx;
-		margin-top: 30rpx;
+		margin-top: 14rpx;
 		background: #FFF8D6;
 		border-radius: 8px;
 		font-weight: 500;
@@ -348,9 +321,6 @@
 		background: #FFFFFF;
 		border-radius: 16rpx;
 	}
-	/* .activity.minHeight{
-		height: 206px;
-	} */
 	.activity .top{
 		width: 654rpx;
 		height: 50rpx;
@@ -391,7 +361,7 @@
 	}
 	.instructions .text{
 		font-size: 21rpx;
-		color: #314F5E;
+		color: #83959E;
 		width: 126rpx;
 		height: 30rpx;
 		margin-right: 24rpx;
@@ -401,7 +371,7 @@
 		height: 30rpx;
 		margin-left: 24rpx;
 		font-size: 21rpx;
-		color: #314F5E;
+		color: #83959E;
 	}
 	.banner{
 		display: block;
@@ -414,31 +384,34 @@
 	}
 	.main{
 		margin: 24rpx;
-		padding-bottom: 16rpx;
+		padding-bottom: 8rpx;
 		margin-bottom: 0;
 		display: flex;
-		justify-content: space-between;
 		flex-wrap: wrap;
 	}
 	.main .prePay{
-		width: 318rpx;
+		width: 312rpx;
 		height: 120rpx;
-		margin-bottom: 8rpx;
+		margin-bottom: 16rpx;
 		display: flex;
 		align-items: center;
 		background: #FFFDF8;
 		border: 1rpx solid #FFE1CD;
 		border-radius: 16rpx;
+		overflow: hidden;
 	}
 	.main .prePay.active{
-		width: 320rpx;
+		width: 314rpx;
 		border: none;
 		background: linear-gradient(277.39deg, #FFA14A 0%, #FFC700 100%);
 	}
 	.main .prePay.cannot{
-		width: 320rpx;
+		width: 314rpx;
 		border: none;
 		background: #F7F7F7;
+	}
+	.main .prePay.margin{
+		margin-right: 16rpx;
 	}
 	.prePay .icon{
 		width: 32rpx;
@@ -485,6 +458,7 @@
 		left: 0;
 		width: 750rpx;
 		background: #fff;
+		box-shadow: 0px 4px 12px rgba(190, 102, 21, 0.15);
 	}
 	.button{
 		width: 686rpx;
