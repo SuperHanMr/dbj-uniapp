@@ -1,17 +1,17 @@
 <template>
   <view class="application-wrap">
     <view class="title-wrap add-item">
-      <title :type="1" :money="199998"></title>
+      <title :type="1" :money="add"></title>
       <view class="list">
-        <change-item v-for="(item, index) in [1,2,3,4]" :type="1"></change-item>
+        <change-item v-for="(item, index) in [1,2,3,4]" :type="1" :key="index"></change-item>
       </view>
       <view class="zhu">注：</view>
       <view class="tips">该增项金额是根据您房屋实际需要补充的工艺项核算后的金额；支付完成后服务者会根据增加的工艺项为您提供服务</view>
     </view>
     <view class="title-wrap subtract-item">
-      <title :type="0" :money="99998"></title>
+      <title :type="0" :money="subtract"></title>
       <view class="list">
-        <change-item v-for="(item, index) in [1,2,3,4]" :type="0"></change-item>
+        <change-item v-for="(item, index) in [1,2,3,4]" :type="0" :key="index"></change-item>
       </view>
       <view class="zhu">注：</view>
       <view class="tips">该减项金额是根据您房屋实际需要减少的工艺项；您同意后会按照变更后的结果为您服务并退还减少的工艺项的差额</view>
@@ -19,33 +19,38 @@
     <view class="summary">
       <view class="add-money">
         <view class="label">增项费用</view>
-        <view class="money price-font">￥<text class="ft-28">1888.88</text></view>
+        <view class="money price-font">￥<text class="ft-28">{{(add/100).toFixed(2)}}</text></view>
       </view>
       <view class="recd-money">
         <view class="label">减项费用</view>
-        <view class="money price-font">-￥<text class="ft-28">1888.88</text></view>
+        <view class="money price-font">-￥<text class="ft-28">{{(subtract/100).toFixed(2)}}</text></view>
       </view>
       <view class="total-money">
         <view class="label">合计</view>
-        <view class="money price-font">￥<text class="ft-28">200.88</text></view>
+        <view class="money price-font">{{total < 0 ? "-" : ""}}￥<text
+            class="ft-28">{{(Math.abs(total)/100).toFixed(2)}}</text></view>
       </view>
     </view>
-    <view class="store-money-card">
+    <view class="store-money-card" v-if="total > 0">
       <view class="yu-e">
         <image src="http://dbj.dragonn.top/static/mp/dabanjia/images/ic_store_store_card2x.png"></image>
-        <view class="c-1">储值卡</view>>
-        <view class="c-2">(可用余额：￥232.00)</view>
+        <view class="c-1">储值卡</view>
+        <view class="c-2">(可用余额：￥{{(storeValue/100).toFixed(2)}})</view>
       </view>
       <check-box :borderRadius="'50%'" height="36rpx" width="36rpx" :checked="checkStoreValueCard"
         @change="changStoreValueCard"></check-box>
     </view>
-    <view class="pay-way">
+    <view class="pay-way" v-if="total > 0">
       <view class="label">支付方式</view>
       <view class="wx">微信支付</view>
     </view>
     <view class="pay-wrap">
-      <view class="b-t-1">拒绝申请</view>
-      <view class="b-t-1 b-t-p">同意并支付<text class="unit price-font">￥</text><text class="price-font">200.00</text></view>
+      <view class="b-t-1" @click="refuse">拒绝申请</view>
+      <view class="b-t-1 b-t-p" v-if="total > 0">同意并支付<text class="unit price-font">￥</text><text
+          class="price-font">{{(total/100).toFixed(2)}}</text></view>
+      <view class="b-t-1 b-t-p" v-if="total === 0">同意申请</view>
+      <view class="b-t-1 b-t-p" v-if="total < 0">同意并退还您<text class="unit price-font">￥</text><text
+          class="price-font">{{(Math.abs(total)/100).toFixed(2)}}</text></view>
     </view>
   </view>
 </template>
@@ -62,12 +67,35 @@
     },
     data() {
       return {
-        checkStoreValueCard: false
+        checkStoreValueCard: false,
+        msg: {},
+        storeValue: 232,
+        add: 1999,
+        subtract: 1000
       };
+    },
+    computed: {
+      total() {
+        return (this.add - this.subtract) * 100 / 100
+      }
+    },
+    onLoad(option) {
+      this.msg = {
+        title: "拆除工工艺项变更申请"
+      }
+      uni.setNavigationBarTitle({
+        title: this.msg.title
+      })
     },
     methods: {
       changStoreValueCard(value) {
         this.checkStoreValueCard = value
+      },
+      refuse() {
+        console.log("拒绝申请变更")
+        uni.navigateTo({
+          url: "/sub-decorate/pages/refused-apply/refused-apply"
+        })
       }
     }
   }
@@ -178,7 +206,7 @@
     background-color: #fff;
     padding: 0 32rpx;
   }
-  
+
   .tips {
     height: 68rpx;
     font-size: 24rpx;
@@ -212,14 +240,14 @@
     }
 
     .wx {
-      height: 28rpx;
+      height: 32rpx;
       font-size: 28rpx;
       font-family: PingFangSC, PingFangSC-Regular;
       font-weight: 400;
       text-align: right;
       padding-left: 44rpx;
       color: #111111;
-      line-height: 28rpx;
+      line-height: 32rpx;
       background-image: url("http://dbj.dragonn.top/static/mp/dabanjia/images/ic_order_wechat2x.png");
       background-size: 32rpx 32rpx;
       background-repeat: no-repeat;
