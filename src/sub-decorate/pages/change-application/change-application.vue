@@ -46,10 +46,10 @@
     </view>
     <view class="pay-wrap">
       <view class="b-t-1" @click="refuse">拒绝申请</view>
-      <view class="b-t-1 b-t-p" v-if="total > 0">同意并支付<text class="unit price-font">￥</text><text
+      <view class="b-t-1 b-t-p" v-if="total > 0" @click="createPayOrder">同意并支付<text class="unit price-font">￥</text><text
           class="price-font">{{(total/100).toFixed(2)}}</text></view>
-      <view class="b-t-1 b-t-p" v-if="total === 0">同意申请</view>
-      <view class="b-t-1 b-t-p" v-if="total < 0">同意并退还您<text class="unit price-font">￥</text><text
+      <view class="b-t-1 b-t-p" v-if="total === 0" @click="changeApplication">同意申请</view>
+      <view class="b-t-1 b-t-p" v-if="total < 0" @click="refund">同意并退还您<text class="unit price-font">￥</text><text
           class="price-font">{{(Math.abs(total)/100).toFixed(2)}}</text></view>
     </view>
   </view>
@@ -59,6 +59,15 @@
   import Title from "./item-title.vue"
   import ChangeItem from "./change-item.vue"
   import CheckBox from "../../components/check-box/check-box.vue"
+  import {
+    log
+  } from "../../../utils/log.js";
+  import {
+    createPayOrderApi,
+    refundApi,
+    changeApplicationApi,
+    constructionItemsChangeListApi
+  } from "../../../api/changeOrder.js"
   export default {
     components: {
       Title,
@@ -71,7 +80,8 @@
         msg: {},
         storeValue: 232,
         add: 1999,
-        subtract: 1000
+        subtract: 1000,
+        changeList: []
       };
     },
     computed: {
@@ -87,7 +97,15 @@
         title: this.msg.title
       })
     },
+    onShow() {
+      this.constructionItemsChangeList()
+    },
     methods: {
+      constructionItemsChangeList() {
+        constructionItemsChangeListApi({id: this.msg?.data?.id}).then(data => {
+          this.changeList = data
+        })
+      },
       changStoreValueCard(value) {
         this.checkStoreValueCard = value
       },
@@ -96,7 +114,69 @@
         uni.navigateTo({
           url: "/sub-decorate/pages/refused-apply/refused-apply"
         })
-      }
+      },
+      changeApplication() {
+        //TODO
+        changeApplicationApi.then(data => {
+          console.log(data)
+        })
+      },
+      refund() {
+        //TODO
+        refundApi({}).then(data => {
+          console.log(data)
+        })
+      },
+      createPayOrder() {
+        //TODO
+        createPayOrderApi({}).then((data) => {
+          const {
+            wechatPayJsapi,
+            cardPayComplete,
+            id
+          } = data;
+          if (!cardPayComplete) {
+            uni.requestPayment({
+              provider: "wxpay",
+              ...wechatPayJsapi,
+              success(res) {
+                console.log("付款成功", res);
+                uni.switchTab({
+                  url: "/pages/decorate/index/index",
+                });
+              },
+              fail(e) {
+                console.log(e);
+                const {
+                  errMsg
+                } = e;
+                if (errMsg.indexOf("cancel") !== -1) {
+                  uni.navigateTo({
+                    url: `/sub-my/pages/my-order/my-order?index=1&firstEntry=true`,
+                  });
+                  log({
+                    type: "wx-pay-fail",
+                    page: "gj-process-cost",
+                    data: e,
+                    openId: getApp().globalData.openId,
+                    openIdLocal: uni.getStorageSync("openId"),
+                  });
+                } else {
+                  uni.showToast({
+                    title: "支付失败",
+                    icon: "none",
+                    duration: 3000,
+                  });
+                }
+              },
+            });
+          } else {
+            uni.redirectTo({
+              url: `/sub-classify/pages/pay-order/pay-success?orderId=${id}`,
+            });
+          }
+        });
+      },
     }
   }
 </script>
