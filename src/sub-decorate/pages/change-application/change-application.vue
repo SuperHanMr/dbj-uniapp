@@ -5,12 +5,16 @@
       <view class="list">
         <change-item v-for="(item, index) in [1,2,3,4]" :type="1"></change-item>
       </view>
+      <view class="zhu">注：</view>
+      <view class="tips">该增项金额是根据您房屋实际需要补充的工艺项核算后的金额；支付完成后服务者会根据增加的工艺项为您提供服务</view>
     </view>
     <view class="title-wrap subtract-item">
       <title :type="0" :money="99998"></title>
       <view class="list">
         <change-item v-for="(item, index) in [1,2,3,4]" :type="0"></change-item>
       </view>
+      <view class="zhu">注：</view>
+      <view class="tips">该减项金额是根据您房屋实际需要减少的工艺项；您同意后会按照变更后的结果为您服务并退还减少的工艺项的差额</view>
     </view>
     <view class="summary">
       <view class="add-money">
@@ -32,7 +36,8 @@
         <view class="c-1">储值卡</view>>
         <view class="c-2">(可用余额：￥232.00)</view>
       </view>
-      <check-box :borderRadius="'50%'" height="36rpx" width="36rpx" :checked="checkStoreValueCard" @change="changStoreValueCard"></check-box>
+      <check-box :borderRadius="'50%'" height="36rpx" width="36rpx" :checked="checkStoreValueCard"
+        @change="changStoreValueCard"></check-box>
     </view>
     <view class="pay-way">
       <view class="label">支付方式</view>
@@ -75,7 +80,7 @@
   }
 
   .list {
-    margin-bottom: 16rpx;
+    padding-bottom: 32rpx;
     background-color: #fff;
   }
 
@@ -156,19 +161,36 @@
       font-family: PingFangSC, PingFangSC-Regular;
       font-weight: 400;
       text-align: left;
-      color: #999999;
+      color: #999;
       line-height: 28rpx;
     }
 
   }
 
-  // .check {
-  //   width: 36rpx;
-  //   height: 36rpx;
-  //   background: #fff;
-  //   border: 2rpx solid #cbcccc;
-  //   border-radius: 50%;
-  // }
+  .zhu {
+    height: 34rpx;
+    font-size: 24rpx;
+    font-family: PingFangSC, PingFangSC-Regular;
+    font-weight: 400;
+    text-align: left;
+    color: #999;
+    line-height: 34rpx;
+    background-color: #fff;
+    padding: 0 32rpx;
+  }
+  
+  .tips {
+    height: 68rpx;
+    font-size: 24rpx;
+    font-family: PingFangSC, PingFangSC-Regular;
+    font-weight: 400;
+    text-align: left;
+    color: #999;
+    line-height: 34rpx;
+    margin-bottom: 16rpx;
+    background-color: #fff;
+    padding: 0 32rpx 32rpx;
+  }
 
   .pay-way {
     display: flex;
