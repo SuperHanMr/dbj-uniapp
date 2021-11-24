@@ -7,7 +7,7 @@ export function decodeText(text) {
   if (!text) {
     return "";
   }
-  return emojiDecode(htmlEncode(text));
+  return atDecode(emojiDecode(htmlEncode(text)));
 }
 
 /**
@@ -54,6 +54,24 @@ export function linkDecode(str) {
         url = "http://" + m1;
       }
       return `<a class="link" href="${url}" target="_blank">${m1}</a>`;
+    }
+  )
+}
+
+/**
+ * 群消息中“@消息”显示解码
+ * @param {Object} str
+ */
+export function atDecode(str) {
+  return str.replace(
+    /@(.+?)\[(zeus_\d+)\]/g,
+    function (m1, m2, m3) {
+      return `<span class="at">@${m2}</span>`;
+    }
+  ).replace(
+    /@(所有人|all)\[0\]/ig,
+    function (m1, m2, m3) {
+      return `<span class="at">@${m2}</span>`;
     }
   )
 }
