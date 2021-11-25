@@ -209,7 +209,7 @@
       },
       {
         "name": "lyb", //模式名称
-        "path": "/sub-decorate/pages/grab/grab", //启动页面，必选
+        "path": "/sub-decorate/pages/construction-change/construction-change", //启动页面，必选
         "query": "" //启动参数，在页面的onLoad函数里面得到
       },
       {
@@ -976,6 +976,18 @@
             "enablePullDownRefresh": false
           }
 
+        },
+        {
+          "path": "pages/construction-change/construction-change",
+          "style": {
+            "navigationBarTitleText": "施工项变更"
+          }
+        },
+        {
+          "path": "pages/refused-apply/refused-apply",
+          "style": {
+            "navigationBarTitleText": "拒绝变更单申请"
+          }
         }
       ]
     }
