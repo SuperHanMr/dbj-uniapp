@@ -2333,10 +2333,10 @@
   "sys_web_confirm_service_staff": {
     "type": "sys_web_confirm_service_staff",
     "template": "form",
-    "summary": "已为您确认服务者，${serveTypeName}的服务者为${serverName}",
+    "summary": "已为您确认服务者，${jobName}的服务者为${serverName}",
     "body": {
-      "title": "${serveTypeName}",
-      "subTitle": "已为您确认服务者，${serveTypeName}的服务者为${serverName}"
+      "title": "${jobName}",
+      "subTitle": "已为您确认服务者，${jobName}的服务者为${serverName}"
     }
   },
   "sys_snatch_order_success": {
@@ -2673,6 +2673,24 @@
         "isDisplay": false,
         "targetRouter": "/riki_process_service/memorandum_details?memoId=${memoId}"
       }]
+    }
+  },
+  "sys_serveing_change_servicer_to_worker": {
+    "type": "sys_serveing_change_servicer_to_worker",
+    "template": "form",
+    "summary": "已经为您更换了新的${jobName}",
+    "body": {
+      "title": "${serveTypeName}",
+      "subTitle": "已经为您更换了新的${jobName}"
+    }
+  },
+  "sys_serveing_change_servicer_to_no_worker": {
+    "type": "sys_serveing_change_servicer_to_no_worker",
+    "template": "form",
+    "summary": "已经为您更换了新的${jobName}",
+    "body": {
+      "title": "${serveTypeName}",
+      "subTitle": "已经为您更换了新的${jobName}"
     }
   },
   "custom_agant_coming": {
