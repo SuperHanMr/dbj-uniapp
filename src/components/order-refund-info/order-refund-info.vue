@@ -7,6 +7,7 @@
 			<text class="item-header">退款原因：</text>
 			<text class="item-body">{{refundInfo.reason}}</text>
 		</view>
+		<!-- 退款类型 变更单的时候不显示 -->
 		<view class="item">
 			<text class="item-header">退款类型：</text>
 			<text class="item-body"> {{refundInfo.type==0?"仅退款(未发货)":refundInfo.type==1 ? "仅退款(退库存)":refundInfo.type==2 ? "仅退款(已收货)":refundInfo.type==3?"服务退款":refundInfo.type==5?"储值卡退款":""}}</text>

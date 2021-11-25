@@ -174,18 +174,21 @@
 				})
 			},
 			statusFunction(item){
-				if(item.type==0){
-					return "仅退款(未发货)"
-				}else if(item.type == 1){
-					return "仅退款(退库存)"
-				}else if(item.type ==2){
-					return "仅退款(已收货)"
-				}else if(item.type == 3){
-					return "服务退款"
-				}else if(item.type == 5){
-					return "储值卡退款"
-				}else{
-					return ""
+				switch(item.type){
+					case 0:
+						return "仅退款(未发货)"
+					case 1:
+						return "仅退款(退库存)"
+					case 2: 
+						return "仅退款(已收货)"
+					case 3:
+						return "服务退款"
+					case 5:
+						return "储值卡退款"
+					case 6:
+						return "服务退款"
+					default:
+						return ""
 				}
 			},
 			

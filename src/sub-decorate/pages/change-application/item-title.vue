@@ -1,8 +1,8 @@
 <template>
   <view class="title">
-    <view class="t-name">{{type === 1 ?  '拆除服务增项费' : '拆除服务减项费'}}</view>
-    <view class="money">{{type === 1 ? '增项需补金额' : '减项退还金额'}}：<text class="unit">￥</text><text
-        class="price-font">{{money.toFixed(2) || 1999.99}}</text>
+    <view class="t-name">{{label}}</view>
+    <view class="money">{{labelAmount}}：<text class="unit">￥</text><text
+        class="price-font">{{(money/100).toFixed(2) || 1999.99}}</text>
     </view>
   </view>
 </template>
@@ -13,8 +13,12 @@
       money: {
         type: Number
       },
-      type: {
-        type: Number,
+      labelAmount: {
+        type: String,
+        required: true
+      },
+      label: {
+        type: String,
         required: true
       }
     },

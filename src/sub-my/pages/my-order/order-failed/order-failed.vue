@@ -34,9 +34,14 @@
         <view v-if="status == 3" class="cancel-text">
 					商家拒绝了您的申请，如有问题未解决，您可以重新申请
 				</view>
-        <view v-if="status == 4" class="cancel-text">
+        <view v-if="status == 4 && refundInfo.type !== 6" class="cancel-text">
 					您已取消了本次退款，如有问题未解决，您可以重新申请
 				</view>
+				<!-- 变更单退款详情需要显示的文案 -->
+				<view v-if="status == 4 && refundInfo.type == 6" class="cancel-text failed-text" >
+					您已经取消了本次退款，如有问题可联系客服
+				</view>
+				
         <view v-if="status == 5" class="cancel-text failed-text" >
 					您的退款账户存在异常，您可联系客服或者重新发起申请
 				</view>
@@ -90,8 +95,8 @@
 
       <order-refund-info :refundInfo="refundInfo"></order-refund-info>
 
-      <view v-if="status == 3 || status == 5 || showReApply==true " class="contact-customer-Reapply" :style="{paddingBottom:systemBottom,height:systemHeight}" >
-        <view v-if="status == 3 || status == 5 " class="contact-customer" @click="contactCustomer()">
+      <view v-if="showContactCustomer || showReApply" class="contact-customer-Reapply" :style="{paddingBottom:systemBottom,height:systemHeight}" >
+        <view v-if="showContactCustomer" class="contact-customer" @click="contactCustomer()">
           联系客服
         </view>
 
@@ -118,7 +123,7 @@
 
         <view class="header">
           <view class="header-content"> 
-            <text v-if="orderInfo.type !==5"  style="color: #333333;" @click="gotoShop(item2)" >{{item2.storeName}}</text>
+            <text v-if="orderInfo.type !==5 "  style="color: #333333;" @click="gotoShop(item2)" >{{item2.storeName}}</text>
             <text v-else style="color: #333333;"  >{{orderInfo.orderName}}</text>
 						<image v-if="orderInfo.type !==5 " src="../../../static/ic_more.svg" mode=""/>
           </view>
@@ -163,9 +168,10 @@ export default {
     return {
       type: "close", //type:refund退款详情   close是订单关闭
       id: -1,
-      status: "",
+      status: "", //退款状态 0待确认 1退款中 2退款完成 3已拒绝 4已取消 5退款失败  退款处理中(0,1) 退款成功(2) 退款关闭(3,4)"
       from: "",
-      showReApply: true,
+      showReApply: false,//重新申请
+			showContactCustomer:false,//联系客服
 
       refundInfo: {},
       orderInfo: {},
@@ -196,8 +202,6 @@ export default {
     this.id = Number(e.id);
     this.status = Number(e.status);
     this.from = e.from;
-    this.showReApply = true;
-    console.log("this.showReApply=", this.showReApply);
     // 获取胶囊按钮的位置
     const systemInfo = uni.getSystemInfoSync();
     const menuButtonInfo = uni.getMenuButtonBoundingClientRect();
@@ -281,9 +285,11 @@ export default {
     refundDetail() {
       getRefundDetail({ id: this.id }).then((e) => {
         this.refundInfo = e;
-        this.showReApply = this.refundInfo.reapplyed;
-        console.log("获取详情数据data=", this.refundInfo);
-        console.log("this.showReApply = ", this.showReApply);
+        this.showReApply = this.refundInfo.reapplyed;//重新申请
+				this.showContactCustomer  =this.refundInfo.contactCustomer;//重新联系客服
+				console.log("获取详情数据data=", this.refundInfo);
+				console.log("重新申请==",this.showReApply)
+				console.log("联系客服==",this.showContactCustomer)
       });
     },
 
