@@ -1,17 +1,18 @@
 <template>
   <view class="application-wrap">
-    <view class="title-wrap add-item">
-      <title :type="1" :money="add"></title>
+    <view class="title-wrap add-item" v-if="changeOrderData.increasedItems">
+      <title :money="changeOrderData.increasedAmount" :label="msg.workTypeName+'服务增项费'" labelAmount="增项需补金额"></title>
       <view class="list">
-        <change-item v-for="(item, index) in [1,2,3,4]" :type="1" :key="index"></change-item>
+        <change-item v-for="(item, index) in changeOrderData.increasedItems" :itemData="item" :key="index">
+        </change-item>
       </view>
       <view class="zhu">注：</view>
       <view class="tips">该增项金额是根据您房屋实际需要补充的工艺项核算后的金额；支付完成后服务者会根据增加的工艺项为您提供服务</view>
     </view>
-    <view class="title-wrap subtract-item">
-      <title :type="0" :money="subtract"></title>
+    <view class="title-wrap subtract-item" v-if="changeOrderData.reducedItems">
+      <title :money="changeOrderData.reducedAmount" :label="msg.workTypeName+'服务减项费'" labelAmount="减项退还金额"></title>
       <view class="list">
-        <change-item v-for="(item, index) in [1,2,3,4]" :type="0" :key="index"></change-item>
+        <change-item v-for="(item, index) in changeOrderData.reducedItems" :itemData="item" :key="index"></change-item>
       </view>
       <view class="zhu">注：</view>
       <view class="tips">该减项金额是根据您房屋实际需要减少的工艺项；您同意后会按照变更后的结果为您服务并退还减少的工艺项的差额</view>
@@ -19,38 +20,41 @@
     <view class="summary">
       <view class="add-money">
         <view class="label">增项费用</view>
-        <view class="money price-font">￥<text class="ft-28">{{(add/100).toFixed(2)}}</text></view>
+        <view class="money price-font">￥<text class="ft-28">{{changeOrderData.increasedAmount ? (changeOrderData.increasedAmount/100).toFixed(2) : 0}}</text>
+        </view>
       </view>
       <view class="recd-money">
         <view class="label">减项费用</view>
-        <view class="money price-font">-￥<text class="ft-28">{{(subtract/100).toFixed(2)}}</text></view>
+        <view class="money price-font">-￥<text class="ft-28">{{changeOrderData.reducedAmount ? (changeOrderData.reducedAmount/100).toFixed(2) : 0}}</text>
+        </view>
       </view>
       <view class="total-money">
         <view class="label">合计</view>
-        <view class="money price-font">{{total < 0 ? "-" : ""}}￥<text
-            class="ft-28">{{(Math.abs(total)/100).toFixed(2)}}</text></view>
+        <view class="money price-font">{{changeOrderData.totalAmount < 0 ? "-" : ""}}￥<text
+            class="ft-28">{{(Math.abs(changeOrderData.totalAmount)/100).toFixed(2)}}</text></view>
       </view>
     </view>
-    <view class="store-money-card" v-if="total > 0">
+    <view class="store-money-card" v-if="changeOrderData.totalAmount > 0">
       <view class="yu-e">
         <image src="http://dbj.dragonn.top/static/mp/dabanjia/images/ic_store_store_card2x.png"></image>
         <view class="c-1">储值卡</view>
-        <view class="c-2">(可用余额：￥{{(storeValue/100).toFixed(2)}})</view>
+        <view class="c-2">(可用余额：￥{{(cardBalance/100).toFixed(2)}})</view>
       </view>
-      <check-box :borderRadius="'50%'" height="36rpx" width="36rpx" :checked="checkStoreValueCard"
+      <check-box :borderRadius="'50%'" height="36rpx" width="36rpx" :checked="isCardPay"
         @change="changStoreValueCard"></check-box>
     </view>
-    <view class="pay-way" v-if="total > 0">
+    <view class="pay-way" v-if="changeOrderData.totalAmount > 0">
       <view class="label">支付方式</view>
       <view class="wx">微信支付</view>
     </view>
     <view class="pay-wrap">
       <view class="b-t-1" @click="refuse">拒绝申请</view>
-      <view class="b-t-1 b-t-p" v-if="total > 0" @click="createPayOrder">同意并支付<text class="unit price-font">￥</text><text
-          class="price-font">{{(total/100).toFixed(2)}}</text></view>
-      <view class="b-t-1 b-t-p" v-if="total === 0" @click="changeApplication">同意申请</view>
-      <view class="b-t-1 b-t-p" v-if="total < 0" @click="refund">同意并退还您<text class="unit price-font">￥</text><text
-          class="price-font">{{(Math.abs(total)/100).toFixed(2)}}</text></view>
+      <view class="b-t-1 b-t-p" v-if="changeOrderData.totalAmount > 0" @click="createPayOrder">同意并支付<text
+          class="unit price-font">￥</text><text class="price-font">{{totalAmount}}</text></view>
+      <view class="b-t-1 b-t-p" v-if="changeOrderData.totalAmount === 0" @click="agreeChangeOrder">同意申请</view>
+      <view class="b-t-1 b-t-p" v-if="changeOrderData.totalAmount < 0" @click="refund">同意并退还您<text
+          class="unit price-font">￥</text><text
+          class="price-font">{{(Math.abs(changeOrderData.totalAmount)/100).toFixed(2)}}</text></view>
     </view>
   </view>
 </template>
@@ -63,10 +67,13 @@
     log
   } from "../../../utils/log.js";
   import {
-    createPayOrderApi,
+    getBalance
+  } from "../../../api/user.js";
+  import {
+    createChangeOrderApi,
     refundApi,
-    changeApplicationApi,
-    constructionItemsChangeListApi
+    agreeChangeOrderApi,
+    getChangeOrderApi
   } from "../../../api/changeOrder.js"
   export default {
     components: {
@@ -76,38 +83,58 @@
     },
     data() {
       return {
-        checkStoreValueCard: false,
+        isCardPay: false,
         msg: {},
-        storeValue: 232,
-        add: 1999,
-        subtract: 1000,
-        changeList: []
+        cardBalance: 0,
+        changeOrderData: {}
       };
     },
     computed: {
-      total() {
-        return (this.add - this.subtract) * 100 / 100
+      totalAmount() {
+        return this.isCardPay > 0 ? ((this.changeOrderData.totalAmount - this.cardBalance) / 100).toFixed(2) :
+          (this.changeOrderData.totalAmount / 100).toFixed(2)
       }
     },
     onLoad(option) {
-      this.msg = {
-        title: "拆除工工艺项变更申请"
+      if(getApp().globalData.decorateMsg.type === "sys_change_order_apply") {
+        this.msg = getApp().globalData.decorateMsg
+      } else {
+        this.msg = {
+          workTypeName: "拆除工",
+          changeOrderId: 1
+        }
       }
+      
       uni.setNavigationBarTitle({
-        title: this.msg.title
+        title: this.msg.workTypeName + "工艺项变更申请"
       })
     },
     onShow() {
-      this.constructionItemsChangeList()
+      this.getChangeOrderList()
+      this.getBalance()
     },
     methods: {
-      constructionItemsChangeList() {
-        constructionItemsChangeListApi({id: this.msg?.data?.id}).then(data => {
-          this.changeList = data
+      getBalance() {
+        getBalance().then((e) => {
+          if (e != null) {
+            this.cardBalance = e;
+          }
+        });
+      },
+      getChangeOrderList() {
+        getChangeOrderApi({
+          id: this.msg?.changeOrderId
+        }).then(data => {
+          console.log("变更单data：", data)
+          if(data) {
+            this.changeOrderData = data
+          }
+          // this.changeOrderData = data
         })
       },
       changStoreValueCard(value) {
-        this.checkStoreValueCard = value
+        console.log("isCardPay", value)
+        this.isCardPay = value
       },
       refuse() {
         console.log("拒绝申请变更")
@@ -115,21 +142,27 @@
           url: "/sub-decorate/pages/refused-apply/refused-apply"
         })
       },
-      changeApplication() {
+      agreeChangeOrder() {
         //TODO
-        changeApplicationApi.then(data => {
+        agreeChangeOrderApi({
+          changeOrderId: this.msg.changeOrderId
+        }).then(data => {
           console.log(data)
         })
       },
       refund() {
-        //TODO
-        refundApi({}).then(data => {
-          console.log(data)
-        })
+        this.createPayOrder()
       },
       createPayOrder() {
         //TODO
-        createPayOrderApi({}).then((data) => {
+        let bodyObj = {
+          payType: 1, //"int //支付方式  1微信支付  3国美支付",
+          openid: getApp().globalData.openId, //"string //微信openid 小程序支付用 app支付不传或传空",
+          sourceId: 100, //"long //订单来源渠道  1app  100小程序",
+          changeId: this.msg.changeOrderId, //"long //变更单id",
+          isCardPay: this.isCardPay //"boolean //是否使用储值卡支付  默认false"
+        }
+        createChangeOrderApi(bodyObj).then(data => {
           const {
             wechatPayJsapi,
             cardPayComplete,

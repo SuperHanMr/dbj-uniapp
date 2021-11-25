@@ -1,17 +1,24 @@
 import request from '../utils/request';
-export function constructionItemsChangeListApi(params) {
-  return request.get('', {
+/**
+ * @param {Object} params 
+ * 获取变更单明细信息
+ */
+export function getChangeOrderApi(params) {
+  return request.get('/pm/app/changeOrder/getChangeOrder', {
     params
   })
 }
-export function createPayOrderApi(data) {
-  return request.post('', data)
+/**
+ * @param {Object} data
+ */
+export function createChangeOrderApi(data) {
+  return request.post('/order-center/app/order/createChangeOrder', data)
 }
-
-export function refundApi(data) {
-  return request.post('', data)
-}
-
-export function changeApplicationApi(data) {
-  return request.post('', data)
+/**
+ * @param {Object} params
+ */
+export function agreeChangeOrderApi(params) {
+  return request.get('/pm/app/changeOrder/agreeChangeOrder', {
+    params
+  })
 }
