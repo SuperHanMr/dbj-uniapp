@@ -139,13 +139,13 @@
       refuse() {
         console.log("拒绝申请变更")
         uni.navigateTo({
-          url: "/sub-decorate/pages/refused-apply/refused-apply"
+          url: `/sub-decorate/pages/refused-apply/refused-apply?changeOrderId=${this.msg?.changeOrderId}`
         })
       },
       agreeChangeOrder() {
         //TODO
         agreeChangeOrderApi({
-          changeOrderId: this.msg.changeOrderId
+          changeOrderId: this.msg?.changeOrderId
         }).then(data => {
           console.log(data)
           uni.switchTab({
