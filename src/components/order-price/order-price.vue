@@ -9,23 +9,31 @@
         <view>
           <text>￥</text>
           <text class="price-style  price-font">
-					{{handlePrice(data.totalAmount)[0]}}.{{handlePrice(data.totalAmount)[1] || ''}}
-					</text>
+            {{handlePrice(data.totalAmount)[0]}}.{{handlePrice(data.totalAmount)[1] || ''}}
+          </text>
         </view>
       </view>
       <!-- 运费  有仓库默认显示  无仓库必显示-->
-     <view  class="price-item" v-if="data.showFreight">
+      <view
+        class="price-item"
+        v-if="data.showFreight"
+      >
         <view class="title">
           <text style="margin-right: 8rpx;">运费</text>
-					<image class="icon"  src="../../static/price_icon.svg" mode="" @click="readExpenses(1)"/>
+          <image
+            class="icon"
+            src="../../static/price_icon.svg"
+            mode=""
+            @click="readExpenses(1)"
+          />
         </view>
-				<view v-if="waitPay">
-					<text v-if="data.stockType==1">--</text>
-					<text v-else>
-						<text>￥</text>
-						  <text class="price-style price-font">{{handlePrice(data.freight)[0]}}.{{handlePrice(data.freight)[1]}}</text>
-					</text>
-				</view>
+        <view v-if="waitPay">
+          <text v-if="data.stockType==1">--</text>
+          <text v-else>
+            <text>￥</text>
+            <text class="price-style price-font">{{handlePrice(data.freight)[0]}}.{{handlePrice(data.freight)[1]}}</text>
+          </text>
+        </view>
         <view v-else>
           <text>￥</text>
           <text class="price-style price-font">{{handlePrice(data.freight)[0]}}.{{handlePrice(data.freight)[1]}}</text>
@@ -33,39 +41,65 @@
       </view>
 
       <!-- 搬运费  有仓库默认显示  无仓库必显示-->
-      <view class="price-item" v-if="data.showFreight">
+      <view
+        class="price-item"
+        v-if="data.showFreight"
+      >
         <view class="title">
           <text style="margin-right: 8rpx;">搬运费</text>
-					<image class="icon"  src="../../static/price_icon.svg" mode="" @click="readExpenses(2)"/>
+          <image
+            class="icon"
+            src="../../static/price_icon.svg"
+            mode=""
+            @click="readExpenses(2)"
+          />
         </view>
-				<view  v-if="waitPay">
-					<text v-if="data.stockType==1">--</text>
-					<text v-else>
-						<text>￥</text>
-						<text class="price-style price-font">{{handlePrice(data.handlingFees)[0]}}.{{handlePrice(data.handlingFees)[1]}}</text>
-					</text>
-				</view>
-        <view v-else > 
+        <view v-if="waitPay">
+          <text v-if="data.stockType==1">--</text>
+          <text v-else>
+            <text>￥</text>
+            <text class="price-style price-font">{{handlePrice(data.handlingFees)[0]}}.{{handlePrice(data.handlingFees)[1]}}</text>
+          </text>
+        </view>
+        <view v-else>
           <text>￥</text>
           <text class="price-style price-font">{{handlePrice(data.handlingFees)[0]}}.{{handlePrice(data.handlingFees)[1]}}</text>
         </view>
       </view>
 
       <!-- 有押金就显示 -->
-      <view class="price-item" v-if="data.depositTotalAmount">
+      <view
+        class="price-item"
+        v-if="data.depositTotalAmount"
+      >
         <view class="title">
           <text style="margin-right: 8rpx;">总押金</text>
         </view>
         <view>
           <text>￥</text>
-          <text class="price-style price-font" >{{handlePrice(data.depositTotalAmount)[0]}}.{{handlePrice(data.depositTotalAmount)[1]}}</text>
+          <text class="price-style price-font">{{handlePrice(data.depositTotalAmount)[0]}}.{{handlePrice(data.depositTotalAmount)[1]}}</text>
+        </view>
+      </view>
+      <!-- 有减项抵扣就显示 -->
+      <view
+        class="price-item"
+        v-if="data.deductAmount"
+      >
+        <view>减项抵扣</view>
+
+        <view>
+          <text>-￥</text>
+          <text class="price-style price-font">{{handlePrice(data.deductAmount)[0]}}.{{handlePrice(data.deductAmount)[1]}}</text>
         </view>
       </view>
 
       <!-- 有商家优惠就显示 -->
-      <view class="price-item" v-if="data.storeDiscount" >
+      <view
+        class="price-item"
+        v-if="data.storeDiscount"
+      >
         <view>商家优惠</view>
-				
+
         <view>
           <text>-￥</text>
           <text class="price-style price-font">{{handlePrice(data.storeDiscount)[0]}}.{{handlePrice(data.storeDiscount)[1]}}</text>
@@ -73,78 +107,122 @@
       </view>
 
       <!-- 有平台优惠就显示 -->
-      <view  class="price-item" v-if="data.platformDiscount">
+      <view
+        class="price-item"
+        v-if="data.platformDiscount"
+      >
         <view>平台优惠</view>
         <view>
           <text>-￥</text>
           <text class="price-style price-font">{{handlePrice(data.platformDiscount)[0]}}.{{handlePrice(data.platformDiscount)[1]}}</text>
         </view>
       </view>
-			<!-- 使用储值卡付款就显示-->
-			<view  class="price-item" v-if="data.cardAmount">
-			  <view>储值卡</view>
-			  <view>
-			    <text>-￥</text>
-			    <text class="price-style price-font">{{handlePrice(data.cardAmount)[0]}}.{{handlePrice(data.cardAmount)[1]}}</text>
-			  </view>
-			</view>
+      <!-- 使用储值卡付款就显示-->
+      <view
+        class="price-item"
+        v-if="data.cardAmount"
+      >
+        <view>储值卡</view>
+        <view>
+          <text>-￥</text>
+          <text class="price-style price-font">{{handlePrice(data.cardAmount)[0]}}.{{handlePrice(data.cardAmount)[1]}}</text>
+        </view>
+      </view>
 
-    </view> 
+    </view>
 
-		<!-- 待付款 -->
-    <view class="footer1" v-if="waitPay">
-      <view class="has-pay"  v-if="data.totalActualIncomeAmount">
+    <!-- 待付款 -->
+    <view
+      class="footer1"
+      v-if="waitPay"
+    >
+      <view
+        class="has-pay"
+        v-if="data.totalActualIncomeAmount"
+      >
         <text style="margin-right: 12rpx;">已付款</text>
         <text class="price-font">
           <text>￥</text>
-          <text style="font-size: 40rpx; " class="price-font">{{handlePrice(data.totalActualIncomeAmount)[0]}}.</text>
+          <text
+            style="font-size: 40rpx; "
+            class="price-font"
+          >{{handlePrice(data.totalActualIncomeAmount)[0]}}.</text>
           <text class="price-font">{{handlePrice(data.totalActualIncomeAmount)[1]}}</text>
         </text>
       </view>
-			<view v-if="data.totalActualIncomeAmount">
+      <view v-if="data.totalActualIncomeAmount">
         <text style="margin-right: 12rpx;color:#333333;">剩余支付金额</text>
-        <text style="color: #FF3347;" class="price-font">
+        <text
+          style="color: #FF3347;"
+          class="price-font"
+        >
           <text>￥</text>
           <text style="font-size: 40rpx;">{{handlePrice(data.payAmount)[0]}}.</text>
           <text>{{handlePrice(data.payAmount)[1]}}</text>
         </text>
       </view>
-			
-      <view  v-if="!data.totalActualIncomeAmount">
+
+      <view v-if="!data.totalActualIncomeAmount">
         <text style="margin-right: 12rpx;color:#333333;">需付款</text>
-        <text style="color: #FF3347;" class="price-font"  v-if="payPrice">
+        <text
+          style="color: #FF3347;"
+          class="price-font"
+          v-if="payPrice"
+        >
           <text>￥</text>
           <text style="font-size: 40rpx;">{{handlePrice(payPrice)[0]}}.</text>
           <text>{{handlePrice(payPrice)[1]}}</text>
         </text>
-				<text style="color: #FF3347;" class="price-font"  v-else>
-				  <text>￥</text>
-				  <text style="font-size: 40rpx;">{{handlePrice(data.payAmount)[0]}}.</text>
-				  <text>{{handlePrice(data.payAmount)[1]}}</text>
-				</text>
+        <text
+          style="color: #FF3347;"
+          class="price-font"
+          v-else
+        >
+          <text>￥</text>
+          <text style="font-size: 40rpx;">{{handlePrice(data.payAmount)[0]}}.</text>
+          <text>{{handlePrice(data.payAmount)[1]}}</text>
+        </text>
       </view>
     </view>
 
     <!-- 其他情况 -->
-    <view class="footer" v-else>
-			<view v-if="orderFailed">
-				<text style="margin-right: 12rpx;">实付款</text>
-				<text style="color: #FF3347;" class="price-font">
-					<text>￥</text>
-					<text style="font-size: 40rpx;" class="price-font">{{handlePrice(data.payAmount)[0]}}.</text>
-					<text class="price-font">{{handlePrice(data.payAmount)[1]}}</text>
-				</text>
-			</view>
-			<view v-else>
-				<text style="margin-right: 12rpx;">实付</text>
-				<text style="color: #FF3347;" class="price-font">
-					<text>￥</text>
-					<text style="font-size: 40rpx;" class="price-font">{{handlePrice(data.actuallyPayAmount)[0]}}.</text>
-					<text class="price-font">{{handlePrice(data.actuallyPayAmount)[1]}}</text>
-				</text>
-			</view>
+    <view
+      class="footer"
+      v-else
+    >
+      <view v-if="orderFailed">
+        <text style="margin-right: 12rpx;">实付款</text>
+        <text
+          style="color: #FF3347;"
+          class="price-font"
+        >
+          <text>￥</text>
+          <text
+            style="font-size: 40rpx;"
+            class="price-font"
+          >{{handlePrice(data.payAmount)[0]}}.</text>
+          <text class="price-font">{{handlePrice(data.payAmount)[1]}}</text>
+        </text>
+      </view>
+      <view v-else>
+        <text style="margin-right: 12rpx;">实付</text>
+        <text
+          style="color: #FF3347;"
+          class="price-font"
+        >
+          <text>￥</text>
+          <text
+            style="font-size: 40rpx;"
+            class="price-font"
+          >{{handlePrice(data.actuallyPayAmount)[0]}}.</text>
+          <text class="price-font">{{handlePrice(data.actuallyPayAmount)[1]}}</text>
+        </text>
+      </view>
     </view>
-		<expenses-toast ref='expensesToast' :expensesType="expensesType"></expenses-toast>
+    <expenses-toast
+      ref='expensesToast'
+      :expensesType="expensesType"
+    ></expenses-toast>
   </view>
 
 </template>
@@ -162,35 +240,35 @@ export default {
       type: Boolean,
       default: false,
     },
-		orderFailed:{
-			type:Boolean,
-			default: false,
-		},
-		payPrice:{
-			type:String,
-		}
+    orderFailed: {
+      type: Boolean,
+      default: false,
+    },
+    payPrice: {
+      type: String,
+    },
   },
 
   data() {
     return {
-			expensesType:"",
-		};
+      expensesType: "",
+    };
   },
   methods: {
     handlePrice(price) {
-			if(!price) return ['0','00']
+      if (!price) return ["0", "00"];
       let list = String(price).split(".");
-			// return [list[0], list[1]]
+      // return [list[0], list[1]]
       if (list.length == 1) {
         return [list[0], "00"];
       } else {
         return [list[0], list[1]];
       }
     },
-		readExpenses(num) {
-		  this.expensesType = num
-		  this.$refs.expensesToast.showPupop()
-		},
+    readExpenses(num) {
+      this.expensesType = num;
+      this.$refs.expensesToast.showPupop();
+    },
   },
 };
 </script>
@@ -224,7 +302,7 @@ export default {
         .icon {
           width: 24rpx;
           height: 24rpx;
-					object-fit: cover;
+          object-fit: cover;
         }
       }
     }
@@ -234,7 +312,7 @@ export default {
   }
 
   .footer {
-    padding:32rpx;
+    padding: 32rpx;
     color: #333333;
     font-size: 26rpx;
     text-align: right;
