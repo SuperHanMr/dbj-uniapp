@@ -20,12 +20,14 @@
     <view class="summary">
       <view class="add-money">
         <view class="label">增项费用</view>
-        <view class="money price-font">￥<text class="ft-28">{{changeOrderData.increasedAmount ? (changeOrderData.increasedAmount/100).toFixed(2) : 0}}</text>
+        <view class="money price-font">￥<text
+            class="ft-28">{{changeOrderData.increasedAmount ? (changeOrderData.increasedAmount/100).toFixed(2) : 0}}</text>
         </view>
       </view>
       <view class="recd-money">
         <view class="label">减项费用</view>
-        <view class="money price-font">-￥<text class="ft-28">{{changeOrderData.reducedAmount ? (changeOrderData.reducedAmount/100).toFixed(2) : 0}}</text>
+        <view class="money price-font">-￥<text
+            class="ft-28">{{changeOrderData.reducedAmount ? (changeOrderData.reducedAmount/100).toFixed(2) : 0}}</text>
         </view>
       </view>
       <view class="total-money">
@@ -40,8 +42,8 @@
         <view class="c-1">储值卡</view>
         <view class="c-2">(可用余额：￥{{(cardBalance/100).toFixed(2)}})</view>
       </view>
-      <check-box :borderRadius="'50%'" height="36rpx" width="36rpx" :checked="isCardPay"
-        @change="changStoreValueCard"></check-box>
+      <check-box :borderRadius="'50%'" height="36rpx" width="36rpx" :checked="isCardPay" @change="changStoreValueCard">
+      </check-box>
     </view>
     <view class="pay-way" v-if="changeOrderData.totalAmount > 0">
       <view class="label">支付方式</view>
@@ -49,10 +51,10 @@
     </view>
     <view class="pay-wrap">
       <view class="b-t-1" @click="refuse">拒绝申请</view>
-      <view class="b-t-1 b-t-p" v-if="changeOrderData.totalAmount > 0" @click="createPayOrder">同意并支付<text
+      <view class="b-t-1 b-t-p" v-if="changeOrderData.totalAmount > 0" @click="submit(1)">同意并支付<text
           class="unit price-font">￥</text><text class="price-font">{{totalAmount}}</text></view>
-      <view class="b-t-1 b-t-p" v-if="changeOrderData.totalAmount === 0" @click="agreeChangeOrder">同意申请</view>
-      <view class="b-t-1 b-t-p" v-if="changeOrderData.totalAmount < 0" @click="refund">同意并退还您<text
+      <view class="b-t-1 b-t-p" v-if="changeOrderData.totalAmount === 0" @click="submit(0)">同意申请</view>
+      <view class="b-t-1 b-t-p" v-if="changeOrderData.totalAmount < 0" @click="submit(-1)">同意并退还您<text
           class="unit price-font">￥</text><text
           class="price-font">{{(Math.abs(changeOrderData.totalAmount)/100).toFixed(2)}}</text></view>
     </view>
@@ -91,12 +93,12 @@
     },
     computed: {
       totalAmount() {
-        return this.isCardPay > 0 ? ((this.changeOrderData.totalAmount - this.cardBalance) / 100).toFixed(2) :
+        return this.isCardPay ? ((this.changeOrderData.totalAmount - this.cardBalance) / 100).toFixed(2) :
           (this.changeOrderData.totalAmount / 100).toFixed(2)
       }
     },
     onLoad(option) {
-      if(getApp().globalData.decorateMsg.type === "sys_change_order_apply") {
+      if (getApp().globalData.decorateMsg.type === "sys_change_order_apply") {
         this.msg = getApp().globalData.decorateMsg
       } else {
         this.msg = {
@@ -104,7 +106,7 @@
           changeOrderId: 1
         }
       }
-      
+
       uni.setNavigationBarTitle({
         title: this.msg.workTypeName + "工艺项变更申请"
       })
@@ -121,25 +123,61 @@
           }
         });
       },
-      getChangeOrderList() {
-        getChangeOrderApi({
-          id: this.msg?.changeOrderId
-        }).then(data => {
-          console.log("变更单data：", data)
-          if(data) {
-            this.changeOrderData = data
-          }
-          // this.changeOrderData = data
-        })
-      },
       changStoreValueCard(value) {
         console.log("isCardPay", value)
         this.isCardPay = value
+      },
+      submit(flag) {
+        let title, content
+        if (flag === 1) {
+          title = "是否同意工艺项变更申请"
+          content = `并支付￥${this.totalAmount}`
+        } else if (flag === -1) {
+          title = "是否同意工艺项变更申请"
+          content = `退还您￥${(Math.abs(this.changeOrderData.totalAmount)/100).toFixed(2)}`
+        } else if (flag === 0) {
+          title = "是否同意工艺项变更申请"
+          content = ''
+        }
+        let that = this
+        uni.showModal({
+          content,
+          title,
+          cancelText: "取消",
+          cancelColor: "#333333",
+          confirmText: "同意",
+          confirmColor: "#00BFB6",
+          success(res) {
+            if (res.confirm) {
+              if (flag === 1 || flag === -1) {
+                that.createPayOrder()
+              } else if (flag === 0) {
+                that.agreeChangeOrder()
+              }
+            } else if (res.cancel) {
+              console.log('用户取消了变更单申请的提交');
+            }
+          },
+          fail() {
+
+          }
+        })
       },
       refuse() {
         console.log("拒绝申请变更")
         uni.navigateTo({
           url: `/sub-decorate/pages/refused-apply/refused-apply?changeOrderId=${this.msg?.changeOrderId}`
+        })
+      },
+      getChangeOrderList() {
+        getChangeOrderApi({
+          id: this.msg?.changeOrderId
+        }).then(data => {
+          console.log("变更单data：", data)
+          if (data) {
+            this.changeOrderData = data
+          }
+          // this.changeOrderData = data
         })
       },
       agreeChangeOrder() {
@@ -152,9 +190,6 @@
             url: "/pages/decorate/index/index",
           });
         })
-      },
-      refund() {
-        this.createPayOrder()
       },
       createPayOrder() {
         //TODO
