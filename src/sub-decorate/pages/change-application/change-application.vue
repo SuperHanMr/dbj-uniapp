@@ -148,6 +148,9 @@
           changeOrderId: this.msg.changeOrderId
         }).then(data => {
           console.log(data)
+          uni.switchTab({
+            url: "/pages/decorate/index/index",
+          });
         })
       },
       refund() {
