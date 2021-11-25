@@ -170,10 +170,11 @@
 		},
 		methods: {
 			watchMsg() {
-				if (!this.globalData.token) {
+				if (!this.globalData.token||(!this.globalData.currentHouse.id &&
+							!this.globalData.currentEstate.id)) {
 					return;
 				}
-				setTimeout(() => {
+				setTimeout(() => { 
 					getMsgNumByHouse(
 							this.globalData.currentHouse ?
 							this.globalData.currentHouse.id :

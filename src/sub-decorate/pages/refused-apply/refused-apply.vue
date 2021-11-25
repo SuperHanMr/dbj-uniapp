@@ -11,7 +11,7 @@
           </view>
         </view>
       </view>
-      <view class="text-area" v-if="currentId === '其他'">
+      <view class="text-area" v-if="currentId === 4">
         <textarea v-model="otherReason" :show-confirm-bar='false' class="replace-text-area" :maxlength='500' placeholder="请输入原因详情" />
         <text class="text-area-warning" v-if="!otherReason">（必填）</text>
         <text class="text-area-info" v-if="otherReason">{{otherReason.length>500?500:otherReason.length}}/500</text>
@@ -25,8 +25,7 @@
 
 <script>
   import {
-    replaceGrab,
-    replaceServe
+    rejectChangeOrder
   } from "../../../api/decorate.js";
   import upload from '../../../utils/upload.js'
   export default {
@@ -35,30 +34,30 @@
         num: 0,
         items: [{
             label: "我不想变了",
-            value: "我不想变了",
+            value: 1,
           },
           {
             label: "变更单有误",
-            value: "变更单有误",
+            value: 2,
           },
           {
             label: "变更单计算错误",
-            value: "变更单计算错误",
+            value: 3,
           },
           {
             label: "其他原因",
-            value: "其他",
+            value: 4,
           },
         ],
         currentId: "",
         imageValue: [],
         otherReason: "",
-        serveId: '',
+        changeOrderId: '',
         isServed:false
       };
     },
     onLoad(e) {
-      this.serveId = e.id,
+      this.changeOrderId = e.changeOrderId || 1,
       this.isServed = e.isServed
     },
     methods: {
@@ -73,7 +72,7 @@
             icon: "none",
           });
           return;
-        } else if (this.currentId === "其他" && this.otherReason.length === 0) {
+        } else if (this.currentId === 4 && this.otherReason.length === 0) {
           uni.showToast({
             title: "请您描述具体原因",
             duration: 2000,
@@ -85,11 +84,11 @@
       },
       submitQuery() {
         let data = {
-          serveId: this.serveId,
-          remark: this.currentId!=='其他'?this.currentId:this.otherReason.substr(0,500),
-          imageUrls: []
+          changeOrderId: this.changeOrderId,
+          optionId: this.currentId,
+          optionMsg: this.currentId!==4?this.items[this.currentId-1].label:this.otherReason.substr(0,500)
         }
-          replaceGrab(data).then(res => {
+          rejectChangeOrder(data).then(res => {
             uni.showToast({
               title: '已提交申请',
               duration: 2000,
@@ -99,8 +98,6 @@
               url: "/pages/decorate/index/index",
             });
           })
-        
-        
       }
     },
   };
