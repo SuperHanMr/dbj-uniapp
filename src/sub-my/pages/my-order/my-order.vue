@@ -54,7 +54,7 @@
                   class="store-name"
                   @click="gotoShop(item)"
                 >
-                  <text v-if="item.type ==5">{{item.orderName}}</text>
+                  <text v-if="item.type ==5 || item.isReplenish">{{item.orderName}}</text>
                   <text v-else>
                     <text v-if="item.orderStatus == 0 ">{{item.orderName?item.orderName:item.storeName}}</text>
                     <text v-else>{{item.storeName}}</text>

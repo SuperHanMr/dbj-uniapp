@@ -96,14 +96,15 @@
         </view>
       </view>
 
-     <order-user-base-info 
+			<order-user-base-info 
 			 v-if="orderInfo.customerName && orderInfo.customerPhone && orderInfo.estateInfo" 
 			 :data="orderInfo"
 		 />
+		 
       <view class="body2">
         <view class="part1" v-for="(item2,index2) in orderInfo.details" :key="index2" >
           <view class="header">
-            <view class="header-content" v-if="orderInfo.type !==5">
+            <view class="header-content" v-if="orderInfo.type !==5 ">
               <text style="color: #333333;"  @click="gotoShop(item2)" >
 								{{item2.storeName}}
 							</text>
@@ -146,6 +147,14 @@
           申请退款
         </view>
 			</view>
+			
+			<!-- 申请售后的按钮 -->
+			<view v-if="orderInfo.showApplyAfterSalesBtn" class="applyforRefund-container" :style="{paddingBottom:systemBottom,height:systemHeight}">
+			  <view class="applyforRefund" @click="toApplyForAfterSales()" >
+			    申请售后
+			  </view>
+			</view>
+			
 			<view class="applyforRefund-confirmReceipt2" :style="{paddingBottom:systemBottom}"
 				v-if="!orderInfo.showRefundBtn && orderInfo.refundApplyMode == 2 && (orderInfo.stockType == 0 || orderInfo.type == 5)">
 			
@@ -290,12 +299,14 @@ export default {
     // 申请退款
     toApplayForRefund(data, type) {
       // wx.setStorageSync("wholeRefundOrderInfo", JSON.stringify(data));
-     
-			
 			uni.navigateTo({
         url: `/sub-my/pages/apply-for-refund/apply-for-refund?orderId=${this.id}&type=whole&status=2&applyMode=2`,
       });
     },
+		toApplyForAfterSales(){
+			console.log("申请售后 跳转到客服聊天页面")
+			this.$store.dispatch("openCustomerConversation");
+		},
 
     handlePrice(price) {
       if (!price) return ["0", "00"];
