@@ -13,14 +13,32 @@
     </view>
     <view class="construction-content">
       <swiper :current="currentActive" @change="ontabchange" class="swiper" :interval="3000" :duration="1000">
-        <swiper-item class="swiper-item">
-          <constructionItem v-for="(item) in sureData" :key="item.id" :item='item'></constructionItem>
+        <swiper-item class="swiper-item" :class="{'empty-bcakground':dataObj.allList.length==0}">
+          <constructionItem v-for="(item) in dataObj.allList" :key="item.id" :item='item'></constructionItem>
+          <view class="earn-empty" v-if="dataObj.allList.length==0">
+            <view class="earn-empty-block">
+              <image src="https://ali-image.dabanjia.com/static/mp/dabanjia/images/decorate/construction_empty.png" mode=""></image>
+              <text>暂无相关内容</text>
+            </view>
+          </view>
         </swiper-item>
-        <swiper-item>
-          <constructionItem v-for="(item) in waitData" :key="item.id" :item='item'></constructionItem>
+        <swiper-item class="swiper-item" :class="{'empty-bcakground':dataObj.allList.length==0}">
+          <constructionItem v-for="(item) in dataObj.auditList" :key="item.id" :item='item'></constructionItem>
+          <view class="earn-empty" v-if="dataObj.auditList.length==0">
+            <view class="earn-empty-block">
+              <image src="https://ali-image.dabanjia.com/static/mp/dabanjia/images/decorate/construction_empty.png" mode=""></image>
+              <text>暂无相关内容</text>
+            </view>
+          </view>
         </swiper-item>
-        <swiper-item>
-          <constructionItem v-for="(item) in refuseData" :key="item.id" :item='item'></constructionItem>
+        <swiper-item class="swiper-item" :class="{'empty-bcakground':dataObj.rejectList.length==0}">
+          <constructionItem v-for="(item) in dataObj.rejectList" :key="item.id" :item='item'></constructionItem>
+          <view class="earn-empty" v-if="dataObj.rejectList.length==0">
+            <view class="earn-empty-block">
+              <image src="https://ali-image.dabanjia.com/static/mp/dabanjia/images/decorate/construction_empty.png" mode=""></image>
+              <text>暂无相关内容</text>
+            </view>
+          </view>
         </swiper-item>
       </swiper>
     </view>
@@ -29,6 +47,7 @@
 
 <script>
   import constructionItem from './components/construction-item.vue'
+  import {getListChangeOrders} from '@/api/decorate.js'
   export default{
     components:{
       constructionItem
@@ -36,74 +55,27 @@
     data(){
       return{
         currentActive:0,
-        sureData:[
-          {
-            img:'https://file02.16sucai.com/d/file/2014/0829/b871e1addf5f8e96f3b390ece2b2da0d.jpg',
-            name:'曹山',
-            tag:'管家',
-            time:'2021-10-24 16:01:11',
-            status:'已支付',
-            statusColor:0,
-            money:'1055.32',
-            content:'增项：3项；减项：2项'
-          },
-          {
-            img:'',
-            name:'曹山',
-            tag:'管家',
-            time:'2021-10-24 16:01:11',
-            status:'已退还',
-            statusColor:0,
-            money:'1055.32',
-            content:'增项：3项；减项：2项'
-          }
-        ],
-        waitData:[
-          {
-            img:'',
-            name:'曹山',
-            tag:'管家',
-            time:'2021-10-24 16:01:11',
-            status:'待付款',
-            statusColor:1,
-            money:'1055.32',
-            content:'增项：3项；减项：2项'
-          },
-          {
-            img:'',
-            name:'曹山',
-            tag:'管家',
-            time:'2021-10-24 16:01:11',
-            status:'待退还',
-            statusColor:2,
-            money:'1055.32',
-            content:'增项：3项；减项：2项'
-          },
-        ],
-        refuseData:[
-          {
-            img:'',
-            name:'曹山',
-            tag:'管家',
-            time:'2021-10-24 16:01:11',
-
-            content:'增项：3项；减项：2项'
-          },
-          {
-            img:'',
-            name:'曹山',
-            tag:'管家',
-            time:'2021-10-24 16:01:11',
-
-            content:'增项：3项；减项：2项'
-          },
-        ],
+        projectId:0,
+        dataObj:{
+          allList:[],
+          auditList:[],
+          rejectList:[]
+        }
       }
+    },
+    onLoad(e){
+      this.projectId = e.porjectId||2
+      this.getListChangeOrders()
     },
     methods:{
       ontabchange(e){
         this.currentActive = e.detail.current
       },
+      getListChangeOrders(){
+        getListChangeOrders(this.projectId).then(res=>{
+          this.dataObj = res
+        })
+      }
     }
   }
 </script>
@@ -149,12 +121,37 @@
       margin: auto;
     }
   }
+  .construction-content{
+    height: calc(100% - 80rpx);
+  }
   .swiper{
-    height: 500px;
+    height: 100%;
   }
   .swiper-item{
     padding: 0 24rpx;
     box-sizing: border-box;
     height: fit-content;
+  }
+  .empty-bcakground{
+    background-color: #fff;
+  }
+  .earn-empty{
+    width: 100%;
+    height: 100%;
+    margin-top: 312rpx;
+    image{
+      display: block;
+      width: 360rpx;
+      height: 360rpx;
+      // background-color: #eee;
+      margin:0 auto 24rpx;
+    }
+    text{
+      text-align: center;
+      font-size: 28rpx;
+      color: #999;
+      display: inline-block;
+          width: 100%;
+    }
   }
 </style>
