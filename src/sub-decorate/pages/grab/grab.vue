@@ -131,14 +131,23 @@
         caseEmpty:false,
         dynamicEmpty:false,
         evaluateEmpty:false,
-        isServed:true,
+        isServed:false,
         allowReplace:true
 			};
 		},
     onReady(){
-      uni.setNavigationBarTitle({
-        title:'确认服务者'
-      })
+      console
+      if(this.isServed=='true'){
+        uni.setNavigationBarTitle({
+          title:'服务者信息'
+        })
+        
+      }else{
+        uni.setNavigationBarTitle({
+          title:'确认服务者'
+        })
+      }
+      
     },
     mounted(){
       query = uni.createSelectorQuery();
@@ -162,7 +171,7 @@
     },
     onLoad(e){
       this.id = e.serveCardId||getApp().globalData.decorateMsg.serveId
-      this.personId = e.personId||getApp().globalData.decorateMsg.serverId||7682
+      this.personId = e.personId||getApp().globalData.decorateMsg.serverId||7317
       this.isServed = e.isServed||false
       this.getGrabDetail()
       this.isServed&&this.checkServeingChange()

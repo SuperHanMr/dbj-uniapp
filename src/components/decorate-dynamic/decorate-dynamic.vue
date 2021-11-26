@@ -164,6 +164,7 @@
 		font-size: 28rpx;
 		color: #666666;
 		line-height: 40rpx;
+    word-break: break-all;
 	}
 	.acitonInfo .evidence{
 		width: 100%;
