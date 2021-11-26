@@ -186,6 +186,15 @@ export function replaceServe(params) {
 	return request.post("/pm/app/serve/serveing/change", params)
 }
 
+//查询变更单列表
+export function getListChangeOrders(params) {
+	return request.get("/pm/app/changeOrder/listChangeOrders?projectId="+params)
+}
+
+//拒绝变更单申请
+export function rejectChangeOrder(params) {
+	return request.get("/pm/app/changeOrder/rejectChangeOrder",{params})
+}
 
 //获取施工交付内容
 export function getComplateDetail(params) {

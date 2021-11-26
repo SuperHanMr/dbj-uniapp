@@ -2,31 +2,31 @@
   <view class="construction-item">
     <view class="item-top">
       <view class="top-left">
-        <image :src="item.img" mode="aspectFill"></image>
+        <image :src="item.initiatorPortrait" mode="aspectFill"></image>
         <view class="top-left-right">
           <view class="name">
-            <view class="name-text">{{item.name}}</view>
+            <view class="name-text">{{item.initiatorName}}</view>
             <view class="tag">
-              {{item.tag}}
+              {{item.initiatorRole}}
             </view>
           </view>
           <view class="time">
-            {{item.time}}
+            {{item.createdAt}}
           </view>
         </view>
       </view>
-      <view class="top-right" v-if="item.status">
+      <view class="top-right" v-if="item.stateDesc">
         <view class="pay-status" :style="{color:colorVaule[item.statusColor]}">
-          {{item.status}}
+          {{item.stateDesc}}
         </view>
         <view class="money">
-          <text>¥</text>{{item.money}}
+          <text>¥</text>{{item.totalAmount}}
         </view>
       </view>
     </view>
     <view class="item-content">
-      <!-- <text>增项：3项； 减项：2项</text> -->
-      <text>{{item.content}}</text>
+      <text>增项：{{item.increasedCount}}项； 减项：{{item.reducedCount}}项</text>
+      <!-- <text>{{item.content}}</text> -->
     </view>
   </view>
 </template>
@@ -58,17 +58,17 @@
     margin-top: 24rpx;
     width: 100%;
     box-sizing: border-box;
-    padding: 32rpx 24rpx;
+    padding: 24rpx 24rpx;
     background: #ffffff;
     border-radius: 16rpx;
-    height: 234rpx;
+    // height: 234rpx;
     .item-top{
       display: flex;
       justify-content: space-between;
       .top-left{
         image{
-          width: 76rpx;
-          height: 76rpx;
+          width: 72rpx;
+          height: 72rpx;
           margin-right: 22rpx;
           border-radius: 50%;
         }
@@ -80,7 +80,7 @@
           }
           .name-text{
             color: #333;
-            font-size: 30rpx;
+            font-size: 28rpx;
             margin-right: 16rpx;
             
           }
@@ -88,7 +88,7 @@
             height: 32rpx;
             background: linear-gradient(90deg,#40bff5, #53a9ff);
             border-radius: 6rpx;
-            font-size: 22rpx;
+            font-size: 20rpx;
             color: #fff;
             text-align: center;
             line-height: 32rpx;
@@ -110,14 +110,17 @@
           margin-top: 8rpx;
           color: #333;
           font-size: 32rpx;
+          font-family: PriceFont;
           text{
             font-size: 24rpx;
+            display: inline-block;
+            margin-right: 4rpx;
           }
         }
       }
     }
     .item-content{
-      margin-top: 24rpx;
+      margin-top: 20rpx;
       padding: 0 40rpx;
       height: 68rpx;
       line-height: 68rpx;
