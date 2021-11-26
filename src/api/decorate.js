@@ -188,7 +188,7 @@ export function replaceServe(params) {
 
 //查询变更单列表
 export function getListChangeOrders(params) {
-	return request.get("/pm/app/changeOrder/listChangeOrders?projectId="+params)
+	return request.get("/pm/web/changeOrder/list/owner?stateType="+params)
 }
 
 //拒绝变更单申请

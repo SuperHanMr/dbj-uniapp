@@ -159,7 +159,9 @@
         this.imageValue.forEach(item=>{
           data.imageUrls.push(item.url)
         })
-        if(this.isServed){
+        console.log(this.isServed)
+        if(this.isServed == 'true'){
+          console.log(1111)
           replaceServe(data).then(res => {
             uni.showToast({
               title: '已提交申请',
@@ -171,6 +173,7 @@
             });
           })
         }else{
+          console.log(222)
           replaceGrab(data).then(res => {
             uni.showToast({
               title: '已提交申请',
@@ -193,7 +196,8 @@
     // padding: 0 32rpx;
     background-color: #fff;
     height: 100%;
-
+    padding-bottom: 160rpx;
+    box-sizing: border-box;
     .content {
       padding: 0 32rpx;
     }

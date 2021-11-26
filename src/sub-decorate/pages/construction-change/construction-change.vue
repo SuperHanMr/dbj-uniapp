@@ -13,30 +13,30 @@
     </view>
     <view class="construction-content">
       <swiper :current="currentActive" @change="ontabchange" class="swiper" :interval="3000" :duration="1000">
-        <swiper-item class="swiper-item" :class="{'empty-bcakground':dataObj.allList.length==0}">
-          <constructionItem v-for="(item) in dataObj.allList" :key="item.id" :item='item'></constructionItem>
-          <view class="earn-empty" v-if="dataObj.allList.length==0">
+        <swiper-item class="swiper-item" :class="{'empty-bcakground':dataObj[0].length==0}">
+          <constructionItem v-for="(item) in dataObj[0]" :key="item.id" :item='item'></constructionItem>
+          <view class="earn-empty" v-if="dataObj[0].length==0">
             <view class="earn-empty-block">
               <image src="https://ali-image.dabanjia.com/static/mp/dabanjia/images/decorate/construction_empty.png" mode=""></image>
-              <text>暂无相关内容</text>
+              <text>暂无施工项～</text>
             </view>
           </view>
         </swiper-item>
-        <swiper-item class="swiper-item" :class="{'empty-bcakground':dataObj.allList.length==0}">
-          <constructionItem v-for="(item) in dataObj.auditList" :key="item.id" :item='item'></constructionItem>
-          <view class="earn-empty" v-if="dataObj.auditList.length==0">
+        <swiper-item class="swiper-item" :class="{'empty-bcakground':dataObj[1].length==0}">
+          <constructionItem v-for="(item) in dataObj[1]" :key="item.id" :item='item'></constructionItem>
+          <view class="earn-empty" v-if="dataObj[1].length==0">
             <view class="earn-empty-block">
               <image src="https://ali-image.dabanjia.com/static/mp/dabanjia/images/decorate/construction_empty.png" mode=""></image>
-              <text>暂无相关内容</text>
+              <text>暂无施工项～</text>
             </view>
           </view>
         </swiper-item>
-        <swiper-item class="swiper-item" :class="{'empty-bcakground':dataObj.rejectList.length==0}">
-          <constructionItem v-for="(item) in dataObj.rejectList" :key="item.id" :item='item'></constructionItem>
-          <view class="earn-empty" v-if="dataObj.rejectList.length==0">
+        <swiper-item class="swiper-item" :class="{'empty-bcakground':dataObj[2].length==0}">
+          <constructionItem v-for="(item) in dataObj[2]" :key="item.id" :item='item'></constructionItem>
+          <view class="earn-empty" v-if="dataObj[2].length==0">
             <view class="earn-empty-block">
               <image src="https://ali-image.dabanjia.com/static/mp/dabanjia/images/decorate/construction_empty.png" mode=""></image>
-              <text>暂无相关内容</text>
+              <text>暂无施工项～</text>
             </view>
           </view>
         </swiper-item>
@@ -56,11 +56,11 @@
       return{
         currentActive:0,
         projectId:0,
-        dataObj:{
-          allList:[],
-          auditList:[],
-          rejectList:[]
-        }
+        dataObj:[
+          [],
+          [],
+          []
+        ]
       }
     },
     onLoad(e){
@@ -70,10 +70,11 @@
     methods:{
       ontabchange(e){
         this.currentActive = e.detail.current
+        this.getListChangeOrders()
       },
       getListChangeOrders(){
-        getListChangeOrders(this.projectId).then(res=>{
-          this.dataObj = res
+        getListChangeOrders(this.currentActive+1).then(res=>{
+          this.dataObj[this.currentActive] = res.allList
         })
       }
     }
@@ -141,10 +142,10 @@
     margin-top: 312rpx;
     image{
       display: block;
-      width: 360rpx;
-      height: 360rpx;
+      width: 400rpx;
+      height: 400rpx;
       // background-color: #eee;
-      margin:0 auto 24rpx;
+      margin:0 auto ;
     }
     text{
       text-align: center;
