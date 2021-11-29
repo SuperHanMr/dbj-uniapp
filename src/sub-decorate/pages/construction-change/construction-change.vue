@@ -65,6 +65,9 @@
     },
     onLoad(e){
       this.projectId = e.porjectId||2
+      
+    },
+    onShow(){
       this.getListChangeOrders()
     },
     methods:{

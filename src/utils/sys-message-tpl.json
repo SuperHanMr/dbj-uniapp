@@ -135,7 +135,7 @@
     "color":"#94A4B1"
   },
   "sys_change_order_apply":{
-    "url":"/sub-home/pages/decorate-scene/memo-detail",
+    "url":"/sub-decorate/pages/change-application/change-application",
     "name":"变更单申请",
     "msg":"管家已经交付了变更单，请确认",
     "icon":"icon-icwodejia_qita_csn",

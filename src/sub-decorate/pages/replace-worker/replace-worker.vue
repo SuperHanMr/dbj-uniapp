@@ -195,7 +195,7 @@
   .replace-worker {
     // padding: 0 32rpx;
     background-color: #fff;
-    height: 100%;
+    // height: 100%;
     padding-bottom: 160rpx;
     box-sizing: border-box;
     .content {
