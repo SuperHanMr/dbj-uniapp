@@ -45,6 +45,9 @@ export default {
 <style lang="scss">
 .text-element.text-element-send {
   color: #fff;
+  .at {
+    color: #fff;
+  }
 }
 .text-element {
   color: #111;
@@ -53,6 +56,11 @@ export default {
   .text {
     display: inline;
     white-space: pre-line;
+  }
+  .at {
+    margin-left: 4px;
+    margin-right: 4px;
+    color: $uni-color-primary;
   }
   .emoji {
     width: 24px;

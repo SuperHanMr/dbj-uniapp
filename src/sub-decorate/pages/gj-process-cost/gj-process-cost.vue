@@ -633,6 +633,10 @@
 					orderName: this.title || "工序费", //"string //订单名称",
 					details: [],
 					isCardPay: this.cardClick,
+          params: {
+          	skuRelation: this.skuRelation,
+          	serviceType: this.msg.serviceType,
+          }, //string //与订单无关的参数"
 				};
 				// roleType 7工人，10管家
 				let roleType = this.msg.serviceType == 5 ? 10 : 7;
@@ -649,10 +653,10 @@
 							storeId: it.storeId, //"long //店铺id",
 							storeType: 0, //"int //店铺类型 0普通 1设计师",
 							number: it.count, //"double //购买数量",
-							params: {
-								skuRelation: this.skuRelation,
-								serviceType: this.msg.serviceType,
-							}, //string //与订单无关的参数 如上门时间 doorTime"
+							// params: {
+							// 	skuRelation: this.skuRelation,
+							// 	serviceType: this.msg.serviceType,
+							// }, //string //与订单无关的参数 如上门时间 doorTime"
 						});
 					});
 				}

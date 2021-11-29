@@ -11,23 +11,11 @@
           </view>
         </view>
       </view>
-      <view class="text-area" v-if="currentId === '其他'">
+      <view class="text-area" v-if="currentId === 4">
         <textarea v-model="otherReason" :show-confirm-bar='false' class="replace-text-area" :maxlength='500' placeholder="请输入原因详情" />
         <text class="text-area-warning" v-if="!otherReason">（必填）</text>
         <text class="text-area-info" v-if="otherReason">{{otherReason.length>500?500:otherReason.length}}/500</text>
       </view>
-      <view class="upload-tip">上传照片<text>（{{imageValue.length}}/6）</text></view>
-      <uni-file-picker :auto-upload='false'  v-model="imageValue" fileMediatype="image" mode="grid" :limit="6" @select="select"
-        @progress="progress" @success="success" @delete="deleteImg" @fail="fail">
-        <view class="upload-contet">
-          <view>
-            <!-- <image src="../../../static/shopping-cart/details_pop_add_normal@2x.png"></image>
-             -->
-             <i class="icon-ic_wodejia_shangchuanzhaopian_csn"></i>
-            <text>点击上传</text>
-          </view>
-        </view>
-      </uni-file-picker>
     </view>
     <bottom-btn style="width: 100%;" :showDefaultBtn="false">
       <button class="add-btn" @click="submit">提交</button>
@@ -37,8 +25,7 @@
 
 <script>
   import {
-    replaceGrab,
-    replaceServe
+    rejectChangeOrder
   } from "../../../api/decorate.js";
   import upload from '../../../utils/upload.js'
   export default {
@@ -46,91 +33,36 @@
       return {
         num: 0,
         items: [{
-            label: "服务态度不好",
-            value: "服务态度不好",
+            label: "我不想变了",
+            value: 1,
           },
           {
-            label: "能力不足",
-            value: "能力不足",
+            label: "变更单有误",
+            value: 2,
           },
           {
-            label: "沟通能力不足",
-            value: "沟通能力不足",
+            label: "变更单计算错误",
+            value: 3,
           },
           {
             label: "其他原因",
-            value: "其他",
+            value: 4,
           },
         ],
         currentId: "",
         imageValue: [],
         otherReason: "",
-        serveId: '',
+        changeOrderId: '',
         isServed:false
       };
     },
     onLoad(e) {
-      this.serveId = e.id,
+      this.changeOrderId = e.changeOrderId || 1,
       this.isServed = e.isServed
     },
     methods: {
       radioChange(evt) {
         this.currentId = evt.value;
-      },
-      // 获取上传状态
-      select(e) {
-        const {
-          tempFilePaths,
-          tempFiles
-        } = e;
-        console.log("choose image1:", e);
-        tempFiles.forEach(this.upload);
-        
-      },
-      // 获取上传进度
-      progress(e) {
-        console.log("上传进度：", e);
-      },
-      
-      // 上传成功
-      success(e) {
-        console.log("上传成功");
-        console.log(this.imageValue);
-      },
-
-      // 上传失败
-      fail(e) {
-        console.log("上传失败：", e);
-      },
-      deleteImg(e){
-        let index = this.imageValue.findIndex(item=>{
-          return item.name === e.tempFilePath
-        })
-        this.imageValue.splice(index,1)
-        console.log(this.imageValue)
-      },
-      upload(item){
-        console.log(item)
-        const {size: fileSize,path: filePath} = item;
-        upload({
-          filePath: filePath,
-          fileType: "image",
-          success: (res) => {
-            console.log("upload success", res);
-            let url = res.url;
-            this.imageValue.push({
-              name:url,
-              extname:'image',
-              url:url
-            })
-          },
-          fail: (res) => {
-            console.log("upload fail", res);
-          },
-          progess: (res) => {
-            console.log("upload progess:", res);
-          }
-        })
       },
       submit() {
         if (!this.currentId) {
@@ -140,7 +72,7 @@
             icon: "none",
           });
           return;
-        } else if (this.currentId === "其他" && this.otherReason.length === 0) {
+        } else if (this.currentId === 4 && this.otherReason.length === 0) {
           uni.showToast({
             title: "请您描述具体原因",
             duration: 2000,
@@ -152,17 +84,11 @@
       },
       submitQuery() {
         let data = {
-          serveId: this.serveId,
-          remark: this.currentId!=='其他'?this.currentId:this.otherReason.substr(0,500),
-          imageUrls: []
+          changeOrderId: this.changeOrderId,
+          optionId: this.currentId,
+          optionMsg: this.currentId!==4?this.items[this.currentId-1].label:this.otherReason.substr(0,500)
         }
-        this.imageValue.forEach(item=>{
-          data.imageUrls.push(item.url)
-        })
-        console.log(this.isServed)
-        if(this.isServed == 'true'){
-          console.log(1111)
-          replaceServe(data).then(res => {
+          rejectChangeOrder(data).then(res => {
             uni.showToast({
               title: '已提交申请',
               duration: 2000,
@@ -172,20 +98,6 @@
               url: "/pages/decorate/index/index",
             });
           })
-        }else{
-          console.log(222)
-          replaceGrab(data).then(res => {
-            uni.showToast({
-              title: '已提交申请',
-              duration: 2000,
-              icon: 'success'
-            })
-            uni.switchTab({
-              url: "/pages/decorate/index/index",
-            });
-          })
-        }
-        
       }
     },
   };
@@ -196,8 +108,7 @@
     // padding: 0 32rpx;
     background-color: #fff;
     height: 100%;
-    padding-bottom: 160rpx;
-    box-sizing: border-box;
+
     .content {
       padding: 0 32rpx;
     }

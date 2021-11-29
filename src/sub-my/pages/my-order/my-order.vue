@@ -565,8 +565,8 @@ export default {
 
     //去店铺首页
     gotoShop(item) {
-      if (item.orderName && item.orderStatus == 0) return;
-      if (item.type == 5) return;
+      if ((item.orderName || item.isReplenish) && item.orderStatus == 0) return;//多店铺购买 或者变更单 
+      if (item.type == 5) return; //  储值卡
       uni.navigateTo({
         url: `../../../sub-classify/pages/shops/shops?storeId=${item.storeId}&areaId=${this.areaId}`,
       });

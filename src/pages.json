@@ -976,6 +976,18 @@
             "enablePullDownRefresh": false
           }
 
+        },
+        {
+          "path": "pages/construction-change/construction-change",
+          "style": {
+            "navigationBarTitleText": "施工项变更"
+          }
+        },
+        {
+          "path": "pages/refused-apply/refused-apply",
+          "style": {
+            "navigationBarTitleText": "拒绝变更单申请"
+          }
         }
       ]
     }
