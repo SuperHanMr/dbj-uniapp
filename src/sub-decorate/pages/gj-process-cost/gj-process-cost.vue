@@ -27,7 +27,7 @@
 			</view>
 			<no-data v-if="noData" :words="message"></no-data>
 		</view>
-		<view v-if="haveCard" class="pay-way" style="justify-content:center" @click="clickCard">
+		<view v-if="(!msg.payStatus || msg.payStatus != 2)&&haveCard" class="pay-way" style="justify-content:center" @click="clickCard">
 			<image class="card-img" src="https://ali-image.dabanjia.com/static/mp/dabanjia/images/classify/ic_card.png"
 				mode="">
 			</image>
@@ -50,7 +50,7 @@
 			<view v-if="!cardClick&&!cardBalance" class="select-disable">
 			</view>
 		</view>
-		<view class="pay-way">
+		<view  v-if="!msg.payStatus || msg.payStatus != 2" class="pay-way">
 			<text>支付方式</text>
 
 			<view v-if="payChannel" class="flex-center">
