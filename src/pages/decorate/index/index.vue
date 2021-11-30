@@ -132,12 +132,8 @@
           <decorate-notice @touchmove.stop.prevent="()=>false" v-if="noticeActive" :num='msgNum'
             :current='currentProject.projectId' @closeNotice='closeNotice' class="decorate-notice"></decorate-notice>
         </view>
-        <drag-button-follow v-if="msgNum>0" :num='msgNum' :style.sync="style" @btnClick='openNotice'
+        <drag-button-follow v-if="msgNum>0&&dragButton" :num='msgNum' :style.sync="style" @btnClick='openNotice'
           :follow='`left,right`' className="drag-button" class="drag-button">
-          <view>
-            <text>消息</text>
-            <text style="color: red;">2</text>
-          </view>
         </drag-button-follow>
       </view>
     </view>
@@ -251,7 +247,8 @@
         isConstruction: false,
         showNoHouse: false,
         showScroll: false,
-        isLogin: false
+        isLogin: false,
+        dragButton:true
       };
     },
     onPullDownRefresh() {
@@ -584,6 +581,7 @@
         });
       },
       getEstateList() {
+        
         queryEstates({
           isNeedRelative: false
         }, true).then(data => {
@@ -600,9 +598,11 @@
       },
       getMsgNum() {
         if (this.currentProject && this.currentProject.projectId) {
+          this.dragButton = false
+          this.style = ''
           getMsgNum(this.currentProject.projectId).then(res => {
             this.msgNum = res.count+''
-            
+            this.dragButton = true
             getApp().globalData.decorateMsgNum = this.msgNum
             uni.stopPullDownRefresh()
             if(res.count===0){

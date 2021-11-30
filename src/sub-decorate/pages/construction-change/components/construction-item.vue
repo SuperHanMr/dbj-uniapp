@@ -7,11 +7,11 @@
           <view class="name">
             <view class="name-text">{{item.initiatorName}}</view>
             <view class="tag">
-              {{item.initiatorRole}}
+              {{item.initiatorRoleDesc}}
             </view>
           </view>
           <view class="time">
-            {{item.createdAt}}
+            {{item.createdAt |formatDate }}
           </view>
         </view>
       </view>
@@ -32,6 +32,7 @@
 </template>
 
 <script>
+  import { formatDate } from '@/utils/common.js'
   export default{
     props:{
       item:{
@@ -40,6 +41,9 @@
           return{}
         }
       }
+    },
+    filters:{
+      formatDate
     },
     data(){
       return{
