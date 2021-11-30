@@ -502,7 +502,7 @@
           <input
             v-model="inputValue"
             :cursor-spacing="10"
-            :placeholder="isInputFocus?`回复@${inputName}`:'说点什么吧'"
+            :placeholder="inputName?`回复@${inputName}`:'说点什么吧'"
             :class="{'focusInput':isInputFocus}"
             @focus="inputFocus"
             class="easyInput"
@@ -733,6 +733,7 @@ export default {
       this.showComments = true;
 			this.showInput = this.userId === this.projectInfo.estateOwnerId?true:false
 			this.inputValue = ""
+			this.inputName = ""
       let params = {
         page: 1,
         rows: 10,
