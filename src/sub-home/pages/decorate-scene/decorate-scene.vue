@@ -2,7 +2,6 @@
 
   <view
     class="sceneContainer"
-    :class="{'noScroll':showComments}"
   >
     <view class="header">
       <view class="houseInfo">
@@ -370,10 +369,7 @@
         </picker-view>
       </view>
     </view>
-    <view
-      class="mask"
-      v-if="showComments"
-    >
+		<uni-popup ref="popup" type="bottom">
       <view class="popupComments">
         <view class="topArea">
           <view class="mainTit">评论</view>
@@ -514,7 +510,7 @@
           >发送</view>
         </view>
       </view>
-    </view>
+		</uni-popup>
   </view>
 </template>
 
@@ -543,7 +539,6 @@ export default {
     return {
       hasEstate: false,
       showNodeType: false,
-      showComments: false,
       showDecorateMask: false,
       selectedIndex: -1,
       selectedType: 0,
@@ -615,7 +610,7 @@ export default {
       this.showDecorateMask = false;
     },
     closeComments() {
-      this.showComments = false;
+			this.$refs.popup.close()
     },
     bindChange(e) {
       this.selectedIndex = e.detail.value - 1;
@@ -659,17 +654,28 @@ export default {
         }
       });
     },
-    setReply(isReply) {
-      this.showInput = false;
-      console.log(this.inputValue, "blur");
+    setReply() {
       let params = {
         businessId: this.dynamicId, //	动态ID
         businessType: 2,
-        replyId: isReply ? this.replyId : this.commentId,
+        replyId: this.isReply ? this.replyId : this.commentId,
         content: this.inputValue,
       };
+			console.log(params, "blur");
       createReply(params).then((data) => {
-        this.getCommentList(this.dynamicId);
+				this.inputValue = ""
+        let params = {
+          page: 1,
+          rows: 10,
+          businessId: this.dynamicId, //	动态ID
+          businessType: 2,
+        };
+        getComments(params).then((data) => {
+          if (data) {
+            let { page, list } = data;
+            this.comments = list;
+          }
+        });
       });
     },
     expandC(id, index) {
@@ -730,8 +736,9 @@ export default {
     },
     commentC(id) {
       this.dynamicId = id;
-      this.showComments = true;
+			this.$refs.popup.open()
 			this.showInput = this.userId === this.projectInfo.estateOwnerId?true:false
+			console.log(this.showInput,this.userId,this.projectInfo.estateOwnerId,'..')
 			this.inputValue = ""
 			this.inputName = ""
       let params = {
@@ -743,7 +750,6 @@ export default {
       getComments(params).then((data) => {
         if (data) {
           let { page, list } = data;
-      
           this.comments = list;
         }
       });
@@ -1277,8 +1283,9 @@ export default {
 }
 .commentItem .mainContent {
   width: 100%;
-  height: 132rpx;
+  /* height: 132rpx; */
   margin-top: 32rpx;
+	margin-bottom: 32rpx;
   display: flex;
 }
 .commentItem .mainContent .avatar {
@@ -1290,7 +1297,7 @@ export default {
 }
 .commentItem .mainContent .commentInfo {
   width: 598rpx;
-  height: 36rpx;
+  /* height: 36rpx; */
 }
 .commentInfo .info {
   display: flex;
@@ -1301,7 +1308,7 @@ export default {
 }
 .commentInfo .text {
   width: 598rpx;
-  height: 80rpx;
+  /* height: 80rpx; */
   font-size: 26rpx;
   color: #333333;
   line-height: 40rpx;
@@ -1498,9 +1505,6 @@ export default {
 .sceneContainer {
   width: 100%;
   height: 100%;
-}
-.sceneContainer.noScroll {
-  overflow: hidden;
 }
 .sceneContainer > .header {
   width: 100%;
