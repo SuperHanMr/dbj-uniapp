@@ -34,7 +34,6 @@
     methods: {
       getData(id) {
         getLogs(id).then(res=>{
-          
           this.list = res
         })
       }
@@ -44,9 +43,10 @@
 
 <style lang="scss" scoped>
   .time-line {
-    height: 100%;
+    min-height: 100%;
     padding: 80rpx 32rpx;
     background-color: #fff;
+    box-sizing: border-box;
   }
 
   .item {
@@ -106,6 +106,9 @@
     .text {
       color: #333;
       font-weight: 500;
+      max-width: 292rpx;
+          // overflow: hidden;
+          word-break: break-all;
     }
 
     .time {
