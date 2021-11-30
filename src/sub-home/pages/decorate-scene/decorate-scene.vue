@@ -502,7 +502,7 @@
           <input
             v-model="inputValue"
             :cursor-spacing="10"
-            :placeholder="isInputFocus?`回复@${inputName}`:'说点什么吧'"
+            :placeholder="inputName?`回复@${inputName}`:'说点什么吧'"
             :class="{'focusInput':isInputFocus}"
             @focus="inputFocus"
             class="easyInput"
@@ -636,7 +636,7 @@ export default {
       if (this.userId !== zeusId) return;
       this.showDelete = true;
       removeComment(commentId).then((data) => {
-        this.commentC(this.dynamicId);
+        this.getCommentList(this.dynamicId);
       });
     },
     onView() {
@@ -669,7 +669,7 @@ export default {
         content: this.inputValue,
       };
       createReply(params).then((data) => {
-        this.commentC(this.dynamicId);
+        this.getCommentList(this.dynamicId);
       });
     },
     expandC(id, index) {
@@ -731,8 +731,11 @@ export default {
     commentC(id) {
       this.dynamicId = id;
       this.showComments = true;
+			this.showInput = this.userId === this.projectInfo.estateOwnerId?true:false
+			this.inputValue = ""
+			this.inputName = ""
       let params = {
-        page: this.commentPage,
+        page: 1,
         rows: 10,
         businessId: id, //	动态ID
         businessType: 2,
@@ -740,21 +743,37 @@ export default {
       getComments(params).then((data) => {
         if (data) {
           let { page, list } = data;
-
-          if (this.commentPage === 1) {
-            this.comments = list;
-          } else {
-            this.comments.push(...list);
-          }
-          this.commentPage = ++page;
+      
+          this.comments = list;
         }
       });
     },
+		getCommentList(id){
+			let params = {
+			  page: this.commentPage,
+			  rows: 10,
+			  businessId: id, //	动态ID
+			  businessType: 2,
+			};
+			getComments(params).then((data) => {
+			  if (data) {
+			    let { page, list } = data;
+			
+			    if (this.commentPage === 1) {
+			      this.comments = list;
+			    } else {
+			      this.comments.push(...list);
+			    }
+			    this.commentPage = ++page;
+			  }
+			});
+		},
     commentItemC(name, commentId) {
       if (this.userId !== this.projectInfo.estateOwnerId) return;
       this.showInput = true;
       this.inputName = name;
       this.commentId = commentId;
+			console.log(this.userId , this.projectInfo.estateOwnerId,this.showInput)
     },
     replyItemC(name, replyId, commentIndex) {
       if (this.userId !== this.projectInfo.estateOwnerId) return;

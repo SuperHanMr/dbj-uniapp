@@ -2693,6 +2693,24 @@
       "subTitle": "已经为您更换了新的${jobName}"
     }
   },
+  "sys_cancel_serveing_apply_change_servicer_to_worker": {
+    "type": "sys_cancel_serveing_apply_change_servicer_to_worker",
+    "template": "form",
+    "summary": "已为您取消了${serveTypeName}的更换申请",
+    "body": {
+      "title": "${serveTypeName}",
+      "subTitle": "已为您取消了${serveTypeName}的更换申请"
+    }
+  },
+  "sys_cancel_serveing_apply_change_servicer_to_no_worker": {
+    "type": "sys_cancel_serveing_apply_change_servicer_to_no_worker",
+    "template": "form",
+    "summary": "已为您取消了${serveTypeName}的更换申请",
+    "body": {
+      "title": "${serveTypeName}",
+      "subTitle": "已为您取消了${serveTypeName}的更换申请"
+    }
+  },
   "custom_agant_coming": {
     "type": "custom_agant_coming",
     "template": "tip2",
