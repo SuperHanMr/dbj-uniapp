@@ -62,7 +62,7 @@
 <style lang="scss" scoped>
   .time-line {
     min-height: 100%;
-    padding: 0 32rpx;
+    padding: 0 32rpx 40rpx;
     background-color: #fff;
     box-sizing: border-box;
   }
@@ -117,7 +117,7 @@
     color: red;
     position: absolute;
     left: 0;
-    height: 50%;
+    height: calc(50% - 12rpx);
     bottom: 0;
     width: 2px;
     background-color: #fff;
