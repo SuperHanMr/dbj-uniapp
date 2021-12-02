@@ -131,7 +131,26 @@
 					<text>¥{{orderInfo.totalDeposit}}</text>
 				</view>
 			</view>
-			<view v-if="haveCard" class="pay-way" style="justify-content:center" @click="clickCard">
+		<view class="recharge-row">
+			
+			<view v-if="couponList.length" class="row-item" style="margin-bottom: 32rpx;" @click="clickCard">
+				<image class="card-img"
+					src="https://ali-image.dabanjia.com/static/mp/dabanjia/images/classify/ic_card.png" mode="">
+				</image>
+				<view>
+					<text>优惠券</text>
+				</view>
+				<view style="flex:1">
+				</view>
+				<view v-if="selectCoupon&&selectCoupon.total" class="card-price">
+					<text style="margin-right:4rpx ;">-</text> <text style="margin-right:2rpx ;">¥</text>
+					{{(selectCoupon.total/100).toFixed(2)}}
+				</view>
+				<image class="selected-img"
+					src="https://ali-image.dabanjia.com/static/mp/dabanjia/images/decorate/ic_more.svg" mode="">
+				</image>
+			</view>
+			<view v-if="haveCard" class="row-item" @click="clickCard">
 				<image class="card-img"
 					src="https://ali-image.dabanjia.com/static/mp/dabanjia/images/classify/ic_card.png" mode="">
 				</image>
@@ -154,6 +173,7 @@
 				<view v-if="!cardClick&&!cardBalance" class="select-disable">
 				</view>
 			</view>
+		</view>
 			<view class="pay-way">
 				<text>支付方式</text>
 
@@ -299,6 +319,10 @@
 				cardClick: false,
 				haveCard: false, //是否有会员卡
 				cardBalance: 1111, //会员卡余额
+				couponList: [1, 2, 3, 4],
+				selectCoupon: {
+					total: 10000
+				}
 			};
 		},
 		computed: {
@@ -363,7 +387,7 @@
 			this.unit = e.unit;
 			this.level = e.level;
 			this.goodDetailId = uni.getStorageSync("goodId");
-      console.log(e.houseId, getApp().globalData.currentHouse.id)
+			console.log(e.houseId, getApp().globalData.currentHouse.id)
 		},
 		onShow() {
 			if (uni.getStorageSync("houseListChooseId")) {
@@ -716,17 +740,38 @@
 </script>
 
 <style lang="scss" scoped>
-	.mt26{
+	.recharge-row {
+    margin-top: 16rpx;
+		display: flex;
+		flex-direction: column;
+		justify-content: center;
+		align-items: center;
+		background-color: #FFFFFF;
+		padding: 32rpx;
+		font-size: 28rpx;
+
+		.row-item {
+			width: 100%;
+			display: flex;
+			flex-direction: row;
+			justify-content: center;
+			align-items: center;
+		}
+	}
+
+	.mt26 {
 		margin-top: 26rpx;
 	}
+
 	.select-disable {
 		width: 36rpx;
 		height: 36rpx;
 		background: #f5f5f5;
 		border: 1rpx solid #e8e8e8;
 		border-radius: 50%;
-	  margin-left: 16rpx;
+		margin-left: 16rpx;
 	}
+
 	.selected-img {
 		width: 36rpx;
 		height: 36rpx;
@@ -1206,6 +1251,4 @@
 		flex: 1;
 		color: #00bfb6;
 	}
-
-
 </style>
