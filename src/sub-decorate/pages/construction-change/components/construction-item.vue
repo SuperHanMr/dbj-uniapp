@@ -20,7 +20,7 @@
           {{item.stateDesc}}
         </view>
         <view class="money">
-          <text>¥</text>{{Math.abs(item.totalAmount).toFixed(2)}}
+          <text>¥</text>{{(Math.abs(item.totalAmount)/100).toFixed(2)}}
         </view>
       </view>
     </view>
