@@ -56,11 +56,11 @@
       return{
         currentActive:0,
         projectId:0,
-        dataObj:[
-          [],
-          [],
-          []
-        ]
+        dataObj:{
+          0:[],
+          1:[],
+          2:[]
+        }
       }
     },
     onLoad(e){
