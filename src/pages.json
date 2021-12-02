@@ -507,8 +507,20 @@
             "navigationBarTitleText": "",
             "navigationStyle": "custom"
           }
-        }
-      ]
+        },{
+						"path" : "pages/coupon-list/coupon-list",
+						"style" :  {
+							"navigationBarTitleText": "优惠券",
+							"enablePullDownRefresh": false
+						}
+         },{
+						"path" : "pages/history-coupon/history-coupon",
+						"style" :  {
+							"navigationBarTitleText": "历史优惠券",
+							"enablePullDownRefresh": false
+						}
+                
+         }]
     },
     {
       "root": "sub-classify", //商城模块分包
