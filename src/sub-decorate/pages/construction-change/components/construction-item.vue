@@ -20,7 +20,7 @@
           {{item.stateDesc}}
         </view>
         <view class="money">
-          <text>¥</text>{{item.totalAmount}}
+          <text>¥</text>{{Math.abs(item.totalAmount).toFixed(2)}}
         </view>
       </view>
     </view>
@@ -47,11 +47,13 @@
     },
     data(){
       return{
-        colorVaule:[
-          '#999999',
-          '#FE9000',
-          '#00BFB6'
-        ]
+        colorVaule:{
+          0:'#999999',
+          5:'#FE9000',
+          6:'#00BFB6'
+        }
+          
+        
       }
     }
   }
