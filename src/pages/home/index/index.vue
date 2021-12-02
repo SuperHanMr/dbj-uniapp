@@ -238,37 +238,37 @@
 				title: "打扮家装修",
 			};
 		},
-    onLoad(e) {
-      console.log("home page params:", e.scene, e);
-      let shareId = '';
-      if (e && e.scene) {
-        let scene = decodeURIComponent(e.scene) || "";
-        let obj = {};
-        let arr = scene.split("&");
-        arr.forEach(str => {
-          let a = str.split("=");
-          obj[a[0]] = a[1];
-        });
-        if (obj.shareId) {
-          shareId = obj.shareId;
-        }
-      }
-      if (e && e.shareId && !shareId) {
-        shareId = e.shareId;
-      }
-      if (shareId) {
-        getApp().globalData.shareId =  shareId;
-        uni.setStorage({
-          key: 'shareId',
-          data: shareId,
-          success: function() {
-            console.log("shareId存储成功");
-          },
-          fail: function() {
-            console.error("shareId存储失败")
-          }
-        });
-      }
+		onLoad(e) {
+			console.log("home page params:", e.scene, e);
+			let shareId = '';
+			if (e && e.scene) {
+				let scene = decodeURIComponent(e.scene) || "";
+				let obj = {};
+				let arr = scene.split("&");
+				arr.forEach(str => {
+					let a = str.split("=");
+					obj[a[0]] = a[1];
+				});
+				if (obj.shareId) {
+					shareId = obj.shareId;
+				}
+			}
+			if (e && e.shareId && !shareId) {
+				shareId = e.shareId;
+			}
+			if (shareId) {
+				getApp().globalData.shareId = shareId;
+				uni.setStorage({
+					key: 'shareId',
+					data: shareId,
+					success: function() {
+						console.log("shareId存储成功");
+					},
+					fail: function() {
+						console.error("shareId存储失败")
+					}
+				});
+			}
 			let defaultHouse = {
 				name: "北京市朝阳区",
 				provinceId: 1,
@@ -304,7 +304,7 @@
 					).then(e => {
 						let houseList = e;
 						let changeHouse = houseList.find(e => {
-						return 	e.id == this.currentAddress.id
+							return e.id == this.currentAddress.id
 						})
 						this.citydata = changeHouse.cityName + changeHouse.areaName + changeHouse
 							.housingEstate;
@@ -491,6 +491,20 @@
 				this.getQueryLiveList();
 			},
 			onZoneClick(item) {
+
+				let params = {}
+				if (item.configParams) {
+					params = JSON.parse(item.configParams);
+				}
+				console.log(params)
+				console.log('????????????')
+				if(params.needLogin&&!this.token){
+					uni.navigateTo({
+						url:'../../login/login'
+					})
+					return;
+				}
+
 				if (item.type == 0 || item.type == 5) {
 					uni.showModal({
 						content: "敬请期待",
@@ -518,6 +532,7 @@
 							}
 						});
 					} else {
+						console.log('')
 						uni.navigateTo({
 							url: item.url,
 						});
