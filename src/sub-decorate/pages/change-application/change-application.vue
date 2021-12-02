@@ -98,14 +98,18 @@
       }
     },
     onLoad(option) {
-      if (getApp().globalData.decorateMsg.type === "sys_change_order_apply") {
+      console.log("getApp().globalData.decorateMsg：", getApp().globalData.decorateMsg)
+      if (getApp().globalData.decorateMsg.msgType === "sys_change_order_owner_confirm") {
         this.msg = getApp().globalData.decorateMsg
       } else {
-        this.msg = {
-          workTypeName: "拆除工",
-          changeOrderId: 1
-        }
+        
       }
+      // } else {
+      //   this.msg = {
+      //     workTypeName: "拆除工",
+      //     changeOrderId: 1
+      //   }
+      // }
 
       uni.setNavigationBarTitle({
         title: this.msg.workTypeName + "工艺项变更申请"
