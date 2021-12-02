@@ -131,49 +131,51 @@
 					<text>¥{{orderInfo.totalDeposit}}</text>
 				</view>
 			</view>
-		<view class="recharge-row">
-			
-			<view v-if="couponList.length" class="row-item" style="margin-bottom: 32rpx;" @click="clickCard">
-				<image class="card-img"
-					src="https://ali-image.dabanjia.com/static/mp/dabanjia/images/classify/ic_card.png" mode="">
-				</image>
-				<view>
-					<text>优惠券</text>
+			<view class="recharge-row">
+
+				<view v-if="couponList.length" class="row-item" style="margin-bottom: 32rpx;" @click="clickCoupon">
+					<image class="card-img"
+						src="https://ali-image.dabanjia.com/static/mp/dabanjia/images/classify/ic_card.png" mode="">
+					</image>
+					<view>
+						<text>优惠券</text>
+					</view>
+					<view style="flex:1">
+					</view>
+					<view v-if="selectCoupon&&selectCoupon.total" class="card-price">
+						<text style="margin-right:4rpx ;">-</text> <text style="margin-right:2rpx ;">¥</text>
+						{{(selectCoupon.total/100).toFixed(2)}}
+					</view>
+					<image class="selected-img"
+						src="https://ali-image.dabanjia.com/static/mp/dabanjia/images/decorate/ic_more.svg" mode="">
+					</image>
 				</view>
-				<view style="flex:1">
+				<view v-if="haveCard" class="row-item" @click="clickCard">
+					<image class="card-img"
+						src="https://ali-image.dabanjia.com/static/mp/dabanjia/images/classify/ic_card.png" mode="">
+					</image>
+					<view>
+						<text>储值卡</text>
+						<text class="card-sub">(可用余额:{{(cardBalance/100).toFixed(2)}}元)</text>
+					</view>
+					<view style="flex:1">
+					</view>
+					<view v-if="cardClick" class="card-price">
+						<text style="margin-right:4rpx ;">-</text> <text style="margin-right:2rpx ;">¥</text>
+						{{(this.cardPrice/100).toFixed(2)}}
+					</view>
+					<image v-if="cardClick" class="selected-img"
+						src="https://ali-image.dabanjia.com/static/mp/dabanjia/images/classify/pay_selected.png"
+						mode="">
+					</image>
+					<image v-if="!cardClick&&cardBalance" class="selected-img"
+						src="https://ali-image.dabanjia.com/static/mp/dabanjia/images/classify/pay_unselected.png"
+						mode="">
+					</image>
+					<view v-if="!cardClick&&!cardBalance" class="select-disable">
+					</view>
 				</view>
-				<view v-if="selectCoupon&&selectCoupon.total" class="card-price">
-					<text style="margin-right:4rpx ;">-</text> <text style="margin-right:2rpx ;">¥</text>
-					{{(selectCoupon.total/100).toFixed(2)}}
-				</view>
-				<image class="selected-img"
-					src="https://ali-image.dabanjia.com/static/mp/dabanjia/images/decorate/ic_more.svg" mode="">
-				</image>
 			</view>
-			<view v-if="haveCard" class="row-item" @click="clickCard">
-				<image class="card-img"
-					src="https://ali-image.dabanjia.com/static/mp/dabanjia/images/classify/ic_card.png" mode="">
-				</image>
-				<view>
-					<text>储值卡</text>
-					<text class="card-sub">(可用余额:{{(cardBalance/100).toFixed(2)}}元)</text>
-				</view>
-				<view style="flex:1">
-				</view>
-				<view v-if="cardClick" class="card-price">
-					<text style="margin-right:4rpx ;">-</text> <text style="margin-right:2rpx ;">¥</text>
-					{{(this.cardPrice/100).toFixed(2)}}
-				</view>
-				<image v-if="cardClick" class="selected-img"
-					src="https://ali-image.dabanjia.com/static/mp/dabanjia/images/classify/pay_selected.png" mode="">
-				</image>
-				<image v-if="!cardClick&&cardBalance" class="selected-img"
-					src="https://ali-image.dabanjia.com/static/mp/dabanjia/images/classify/pay_unselected.png" mode="">
-				</image>
-				<view v-if="!cardClick&&!cardBalance" class="select-disable">
-				</view>
-			</view>
-		</view>
 			<view class="pay-way">
 				<text>支付方式</text>
 
@@ -249,6 +251,9 @@
 			<uni-popup ref="payDialog" type="bottom">
 				<pay-dialog :payChannel="payChannel" :payChannelPrice="payChannelPrice" @payOrder="payOrder"
 					@closePayDialog="closePayDialog"></pay-dialog>
+			</uni-popup>
+			<uni-popup ref="couponDialog" type="bottom">
+				<coupon-dialog :couponList="couponList" @onSelect="onSelectCoupon" @close="closeCoupon"></coupon-dialog>
 			</uni-popup>
 		</view>
 
@@ -429,6 +434,15 @@
 			uni.removeStorageSync("houseListChooseId");
 		},
 		methods: {
+			onSelectCoupon(item) {
+				this.selectCoupon = item
+			},
+			closeCoupon() {
+				this.$refs.couponDialog.close();
+			},
+			clickCoupon() {
+				this.$refs.couponDialog.open();
+			},
 			closePayDialog() {
 				this.$refs.payDialog.close();
 			},
@@ -741,7 +755,7 @@
 
 <style lang="scss" scoped>
 	.recharge-row {
-    margin-top: 16rpx;
+		margin-top: 16rpx;
 		display: flex;
 		flex-direction: column;
 		justify-content: center;
