@@ -1,10 +1,18 @@
 <template>
-	<view>
-		<view class="item">
-			<view class="price">
-				¥1000
+	<view class="main">
+		<view class="holder">
 
+		</view>
+		<view class="item">
+			<view class="header">
+				<view class="price price-font">
+					<text style="font-size:24rpx ;">¥</text>1000
+				</view>
+				<view class="sub-price">
+					满1000可用
+				</view>
 			</view>
+
 			<view class="flex1">
 				<view class="tips">
 					<view class="name">
@@ -12,7 +20,7 @@
 							优惠券名称最长就到这…
 						</view>
 						<view class="subtitle">
-							有效期至 2020.02.02 13:00
+							有效期 2020.02.02 至 2020.02.02
 						</view>
 					</view>
 					<view class="btn">
@@ -23,10 +31,10 @@
 					<view class="tip-title">
 						使用说明
 					</view>
-					<view class="">
-						up
+					<view v-if="!showTip" class="icon-gerenzhuye_anlihefuwu_zhankaiic icon-tip">
 					</view>
-
+					<view v-else class="icon-gerenzhuye_anlihefuwu_shouqiic icon-tip">
+					</view>
 				</view>
 
 			</view>
@@ -60,30 +68,66 @@
 </script>
 
 <style lang="scss" scoped>
+	.icon-tip {
+		font-size: 24rpx;
+		color: #FAEBEB;
+	}
+
+	.main {
+		position: relative;
+		margin-top: 24rpx;
+	}
+
 	.more-tip {
-		background: #f7f4ed;
+		background: #FCF7F7;
 		border-radius: 0rpx 0rpx 8rpx 8rpx;
 		padding: 38rpx 24rpx 24rpx 24rpx;
 		margin-top: -14rpx;
+		font-size: 26rpx;
+		color: #666666;
+	}
+
+	.holder {
+		height: 194rpx;
+
 	}
 
 	.item {
-		margin-top: 24rpx;
+		position: absolute;
+		left: 0;
+		top: 0;
 		width: 100%;
 		height: 194rpx;
-		background: rgba(255, 228, 176, 0.10);
+		background: url('http://dbj.dragonn.top/test/%E4%BC%98%E6%83%A0%E5%88%B8%403x.png') no-repeat;
+		background-size: 100% 100%;
 		// border: 1rpx solid #fcd3bf;
 		display: flex;
 		flex-direction: row;
 		align-items: center;
+		box-shadow: 0rpx 6rpx 8rpx 0px #FAEBEB;
 
-		.price {
+		.header {
 			width: 172rpx;
-			text-align: center;
-			font-size: 56rpx;
-			color: #ff5d35;
+			height: 100%;
+			display: flex;
+			flex-direction: column;
+			justify-content: center;
+			align-items: center;
 
+			.sub-price {
+				font-size: 22rpx;
+				color: #999999;
+				font-weight: 400;
+
+			}
+
+			.price {
+				text-align: center;
+				font-size: 56rpx;
+				color: #ff5d35;
+			}
 		}
+
 
 		.flex1 {
 			flex: 1;
@@ -95,6 +139,7 @@
 			.tips {
 				display: flex;
 				flex-direction: row;
+				margin-top: 16rpx;
 
 				.name {
 					width: 350rpx;
@@ -123,7 +168,7 @@
 					height: 58rpx;
 					line-height: 58rpx;
 					text-align: center;
-					background: linear-gradient(90deg, #fa462a, #ff6519);
+					background: linear-gradient(90deg, #FA3B34 0%, #FF6A33 100%);
 					border-radius: 12rpx;
 					color: #FFF;
 					font-size: 24rpx;
