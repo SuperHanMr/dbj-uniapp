@@ -75,8 +75,12 @@
 						<image :src="item2.image" mode="" />
 						<text>{{item2.value}}</text>
 					</view>
-					<view class="right">
-						<text v-if="item2.key==1 && isShowStoreValue">{{storeValueCard? Number(storeValueCard)/100 :'0.00' }}元</text>
+					<view v-if="item2.key==1"  class="right">
+						<text v-if="isShowStoreValue">{{storeValueCard? Number(storeValueCard)/100 :'0.00' }}元</text>
+						<image src="../../../static/order/images/arraw_right_@2x.png" mode="" />
+					</view>
+					<view v-if="item2.key==2"  class="right">
+						<text>3张</text>
 						<image src="../../../static/order/images/arraw_right_@2x.png" mode="" />
 					</view>
 				</view>
@@ -105,27 +109,32 @@
 				userId: "",
 				MarketStoreSwitch:false,
 				list: [
-				
 					{
 						key: "2",
+						image: "../../../static/order/images/ic_coupon.svg",
+						value: "优惠券",
+						url: "../../../sub-my/pages/coupon-list/coupon-list",
+					},
+					{
+						key: "3",
 						image: "../../../static/order/images/shopping_Cart.png",
 						value: "购物车",
 						url: "../../../sub-my/pages/shopping-cart/shopping-cart",
 					},
 					{
-						key: "3",
+						key: "4",
 						image: "../../../static/order/images/collection.png",
 						value: "我的收藏",
 						url: "../../../sub-my/pages/personal-center/my-collection/my-collection?firstEntry=true",
 					},
 					{
-						key: "4",
+						key: "5",
 						image: "../../../static/order/images/attention.png",
 						value: "我的关注",
 						url: "../../../sub-my/pages/personal-center/my-attention/my-attention",
 					},
 					{
-						key: "5",
+						key: "6",
 						image: "../../../static/order/images/houseGgr.png",
 						value: "房屋管理",
 						url: "../../../sub-my/pages/my-house/my-house?isMy=true",
