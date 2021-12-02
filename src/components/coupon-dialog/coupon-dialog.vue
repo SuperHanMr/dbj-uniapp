@@ -6,7 +6,7 @@
 			</view>
 		</view>
 		<scroll-view :scroll-y="true" class="cart-content">
-			<view v-for="(coupon, cartIndex) in couponList" :key="cartIndex" @click="onSelect(coupon)">
+			<view v-for="(coupon, cartIndex) in couponList" :key="cartIndex" @clickItem="onSelect(coupon)">
 				<coupon-item></coupon-item>
 			</view>
 			<view style="height: 100rpx;">

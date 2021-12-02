@@ -19,7 +19,7 @@
 						去使用
 					</view>
 				</view>
-				<view class="more">
+				<view class="more" @click="showTips">
 					<view class="tip-title">
 						使用说明
 					</view>
@@ -32,6 +32,14 @@
 			</view>
 
 		</view>
+		<view v-if="showTip" class="more-tip">
+			<view class="">
+				1.指定品类使用指定品类使用指定品类使用指定品类使发 指定品类使用指定品类使用指定品类使用指定品类使用
+			</view>
+			<view class="">
+				2.指定品类使用指定品类使用指定品类使用指定品类使发 指定品类使用指定品类使用指定品类使用指定品类使用
+			</view>
+		</view>
 	</view>
 </template>
 
@@ -40,13 +48,25 @@
 		name: "coupon-item",
 		data() {
 			return {
-
+				showTip: false
 			};
+		},
+		methods: {
+			showTips() {
+				this.showTip = !this.showTip
+			}
 		}
 	}
 </script>
 
 <style lang="scss" scoped>
+	.more-tip {
+		background: #f7f4ed;
+		border-radius: 0rpx 0rpx 8rpx 8rpx;
+		padding: 38rpx 24rpx 24rpx 24rpx;
+		margin-top: -14rpx;
+	}
+
 	.item {
 		margin-top: 24rpx;
 		width: 100%;
