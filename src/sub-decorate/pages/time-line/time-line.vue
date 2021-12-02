@@ -76,8 +76,6 @@
     // height: 144rpx;
   }
   .line-block{
-    // position: absolute;
-    // top: 50%;
     width: 4rpx;
     background: #00C2B8;
     height: calc(100% - 36rpx);
