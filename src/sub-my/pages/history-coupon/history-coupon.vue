@@ -25,16 +25,16 @@
 			<swiper-item>
 				<scroll-view scroll-y="true">
 					<view class="empty-history">
-						<image src="../../static/blank_ic@2x.png" mode=""></image>
-						<text>您还没有已过期优惠券</text>
+						<image src="../../static/img_noCoupon@2x.png" mode=""></image>
+						<text>您还没有已使用优惠券</text>
 					</view>
 				</scroll-view>
 			</swiper-item>
 			<swiper-item>
 				<scroll-view scroll-y="true" >
 					<view class="empty-invalidOrUsed">
-						<image src="../../static/blank_ic@2x.png" mode=""></image>
-						<text>您还没有已过期优惠券</text>
+						<image src="../../static/img_noCoupon@2x.png" mode=""></image>
+						<text>您还没有已过期/已失效优惠券</text>
 					</view>
 				</scroll-view>
 			</swiper-item>
@@ -104,7 +104,7 @@
 					height: 4rpx;
 					background: linear-gradient(129deg, #00cdec 0%, #00ed7d 100%);
 					border-radius: 200rpx 200rpx 0px 0px;
-					bottom: 0rpx;
+					bottom: 8rpx;
 					left: 176rpx;
 				}
 			}
@@ -123,15 +123,15 @@
 			flex-flow: column nowrap; 
 			align-items: center;
 			image{
-				width: 402rpx;
-				height: 416rpx;
+				width: 400rpx;
+				height: 400rpx;
 			}
 			text{
 				height: 40rpx;
 				line-height: 40rpx;
 				font-size: 28rpx;
 				font-weight:400;
-				color: #999999;
+				color: #CBCCCC;
 			}
 		}
 	}
