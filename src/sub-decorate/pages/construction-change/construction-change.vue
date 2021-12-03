@@ -64,7 +64,8 @@
       }
     },
     onLoad(e){
-      this.projectId = e.porjectId||2
+      console.log(e)
+      this.projectId = e.projectId||2
       
     },
     onShow(){

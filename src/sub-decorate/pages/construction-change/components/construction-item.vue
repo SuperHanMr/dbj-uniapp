@@ -16,8 +16,8 @@
         </view>
       </view>
       <view class="top-right" v-if="item.state!=3">
-        <view class="pay-status" :style="{color:colorVaule[item.state]}">
-          {{textValue[item.state]}}
+        <view class="pay-status" :style="{color:item.state!=2?'#999':item.totalAmount>0?'#FE9000':'#00BFB6'}">
+          {{item.state!=2?item.totalAmount>0?'已支付':'已退还':item.totalAmount>0?'待付款':'待退还'}}
         </view>
         <view class="money">
           <text>¥</text>{{(Math.abs(item.totalAmount)/100).toFixed(2)}}
