@@ -76,7 +76,7 @@
         this.getListChangeOrders()
       },
       getListChangeOrders(){
-        getListChangeOrders(this.currentActive+1).then(res=>{
+        getListChangeOrders(this.currentActive+1,this.projectId).then(res=>{
           this.dataObj[this.currentActive] = res.allList
         })
       }
