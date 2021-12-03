@@ -151,6 +151,8 @@
       submitCard() {
         if(this.isCardPay) {
           this.$refs.payDialog.open();
+        }else {
+          this.submit(1)
         }
       },
       submit(flag) {
