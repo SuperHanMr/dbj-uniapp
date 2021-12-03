@@ -1,6 +1,6 @@
 <template>
 	<view class="container">
-		<view class="empty-container" v-if="!couponList.length">
+		<view class="empty-container" v-if="couponList.length">
 			<view class="empty-content">
 				<image src="../../static/img_noCoupon@2x.png" mode=""></image>
 				<text>您还没有优惠券</text>
@@ -14,7 +14,15 @@
 				<image src="../../static/goShop_ic@2x.png" mode=""></image>
 			</view>
 		</view>
-
+		<view class="coupon-container">
+			<view class="coupon-item">
+				<coupon-item></coupon-item>	
+			</view>
+			<view class="gotoHistoryConpon" @click="goToHistoryCouponPage">
+				<text>查看历史优惠券</text>
+				<image src="../../static/goShop_ic@2x.png" mode=""></image>
+			</view>
+		</view>
 		<!-- <view class="coupon-container">
 			 <view class="coupon-item" :style="{backgroundImage:bgImg}">
 			 	<view class="left">
@@ -80,7 +88,6 @@
 .container{
 	width: 100%;
 	height: 100%;
-	overflow: hidden;
 	background-color: #FFFFFF;
 	.empty-container{
 		.empty-content{
@@ -118,16 +125,14 @@
 		}
 	}
 
-	// .coupon-container{
-	// 	.coupon-item{
-	// 		margin: 0 24rpx 24rpx;
-	// 		background-color: yellowgreen;
-
-	// 		width: 702rpx;
-	// 		height: 194rpx;
-	// 		display: flex;
-	// 		flex-flow: row nowrap;
-	// 		align-items: center;
+	.coupon-container{
+		.coupon-item{
+			margin: 0 24rpx 24rpx;
+			width: 702rpx;
+			height: 194rpx;
+			// display: flex;
+			// flex-flow: row nowrap;
+			// align-items: center;
 	// 		.left{
 	// 			width: 172rpx;
 	// 			height: 194rpx;
@@ -185,25 +190,25 @@
 	// 				}
 	// 			}
 	// 		}
-	// 	}
+		}
 
-	// 	.gotoHistoryConpon{
-	// 		display: flex;
-	// 		flex-flow: row nowrap;
-	// 		align-items: center;
-	// 		justify-content: center;
-	// 		padding-bottom: 24rpx;
-	// 		text{
-	// 			color: #999999;
-	// 			font-size: 24rpx;
-	// 			line-height: 34rpx;
-	// 		}
-	// 		image{
-	// 			width: 24rpx;
-	// 			height: 24rpx;
-	// 		}
-	// 	}
-	// }
+		.gotoHistoryConpon{
+			display: flex;
+			flex-flow: row nowrap;
+			align-items: center;
+			justify-content: center;
+			padding-bottom: 24rpx;
+			text{
+				color: #999999;
+				font-size: 24rpx;
+				line-height: 34rpx;
+			}
+			image{
+				width: 24rpx;
+				height: 24rpx;
+			}
+		}
+	}
 }
 
 </style>
