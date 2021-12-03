@@ -6,8 +6,18 @@
 			</view>
 		</view>
 		<scroll-view :scroll-y="true" class="cart-content">
-			<view v-for="(coupon, cartIndex) in couponList" :key="cartIndex" @click="onSelect(coupon)">
+			<view v-for="(coupon, cartIndex) in couponList" :key="cartIndex" @clickItem="onSelect(coupon)">
 				<coupon-item></coupon-item>
+			</view>
+			<view class="un-use">
+				<view class="title">
+					不使用优惠券
+				</view>
+				<image v-if="selectedId" class="selected-img"
+					src="https://ali-image.dabanjia.com/static/mp/dabanjia/images/classify/pay_selected.png" mode="">
+				</image>
+				<image v-if="!selectedId" class="selected-img"
+					src="https://ali-image.dabanjia.com/static/mp/dabanjia/images/classify/pay_unselected.png" mode="">
 			</view>
 			<view style="height: 100rpx;">
 
@@ -49,6 +59,28 @@
 </script>
 
 <style lang="scss" scoped>
+	.selected-img {
+		width: 36rpx;
+		height: 36rpx;
+	}
+	.un-use {
+		margin-top: 24rpx;
+		height: 104rpx;
+		background: #FCFCFC;
+		border-radius: 16rpx;
+		border: 1rpx solid #DBDBDB;
+		display: flex;
+		justify-content: space-between;
+		align-items: center;
+		padding: 0 32rpx;
+		.title {
+			font-weight: 500;
+			color: #333333;
+			font-size: 28rpx;
+		}
+
+	}
+
 	.close-icon {
 		color: #333333;
 		font-size: 32rpx;
