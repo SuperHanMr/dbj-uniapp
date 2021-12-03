@@ -20,6 +20,9 @@
 				<image v-if="selectedId" class="selected-img"
 					src="https://ali-image.dabanjia.com/static/mp/dabanjia/images/classify/pay_unselected.png" mode="">
 			</view>
+			<view class="no-more">
+				没有更多了～
+			</view>
 			<view style="height: 100rpx;">
 
 			</view>
@@ -80,6 +83,16 @@
 </script>
 
 <style lang="scss" scoped>
+	.no-more {
+		margin-top: 48rpx;
+		font-weight: 400;
+		color: #999999;
+		font-size: 24rpx;
+		width: 100%;
+		text-align: center;
+
+	}
+
 	.bottom-btn {
 		padding-bottom: 40rpx;
 		width: 100%;

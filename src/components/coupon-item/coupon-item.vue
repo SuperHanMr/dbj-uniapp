@@ -4,7 +4,7 @@
 
 		</view>
 		<view class="item">
-			<view class="header">
+			<view class="header" @click="clickItem">
 				<view class="price price-font">
 					<text style="font-size:24rpx ;">¥</text>1000
 				</view>
@@ -128,7 +128,7 @@
 		top: 0;
 		width: 100%;
 		height: 194rpx;
-		background: url('http://dbj.dragonn.top/test/%E4%BC%98%E6%83%A0%E5%88%B8%403x.png') no-repeat;
+		background: url('https://ali-image.dabanjia.com/static/mp/dabanjia/images/classify/coupon_bg.png') no-repeat;
 		background-size: 100% 100%;
 		// border: 1rpx solid #fcd3bf;
 		display: flex;
@@ -137,7 +137,7 @@
 		box-shadow: 0rpx 6rpx 8rpx 0px #FAEBEB;
 
 		.header {
-			width: 172rpx;
+			width: 176rpx;
 			height: 100%;
 			display: flex;
 			flex-direction: column;

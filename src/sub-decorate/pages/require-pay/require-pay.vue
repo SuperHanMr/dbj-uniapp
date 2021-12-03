@@ -123,6 +123,9 @@
 			<pay-dialog :payChannel="payChannel" :payChannelPrice="payChannelPrice" @payOrder="onConform"
 				@closePayDialog="closePayDialog"></pay-dialog>
 		</uni-popup>
+		<uni-popup ref="couponDialog" type="bottom">
+			<coupon-dialog :couponList="couponList" @onSelect="onSelectCoupon" @close="closeCoupon"></coupon-dialog>
+		</uni-popup>
 	</view>
 	</view>
 </template>
