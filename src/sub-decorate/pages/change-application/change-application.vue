@@ -59,7 +59,7 @@
           class="price-font">{{(Math.abs(changeOrderData.totalAmount)/100).toFixed(2)}}</text></view>
     </view>
     <uni-popup ref="payDialog" type="bottom">
-      <pay-dialog :payChannelPrice="payChannelPrice" @payOrder="submit(1)" @closePayDialog="closePayDialog"></pay-dialog>
+      <pay-dialog :payChannelPrice="payChannelPrice" @payOrder="submit(2)" @closePayDialog="closePayDialog"></pay-dialog>
     </uni-popup>
   </view>
 </template>
@@ -168,28 +168,31 @@
           content = ''
         }
         let that = this
-        uni.showModal({
-          content,
-          title,
-          cancelText: "取消",
-          cancelColor: "#333333",
-          confirmText: "同意",
-          confirmColor: "#00BFB6",
-          success(res) {
-            if (res.confirm) {
-              if (flag === 1 || flag === -1) {
-                that.createPayOrder()
-              } else if (flag === 0) {
-                that.agreeChangeOrder()
+        if(flag === 2) {
+          that.createPayOrder()
+        } else {
+          uni.showModal({
+            content,
+            title,
+            cancelText: "取消",
+            cancelColor: "#333333",
+            confirmText: "同意",
+            confirmColor: "#00BFB6",
+            success(res) {
+              if (res.confirm) {
+                if (flag === 1 || flag === -1) {
+                  that.createPayOrder()
+                } else if (flag === 0) {
+                  that.agreeChangeOrder()
+                }
+              } else if (res.cancel) {
+                console.log('用户取消了变更单申请的提交');
               }
-            } else if (res.cancel) {
-              console.log('用户取消了变更单申请的提交');
-            }
-          },
-          fail() {
-
-          }
-        })
+            },
+            fail() {}
+          })
+        }
+        
       },
       refuse() {
         console.log("拒绝申请变更")
