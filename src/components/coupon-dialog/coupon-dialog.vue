@@ -6,23 +6,29 @@
 			</view>
 		</view>
 		<scroll-view :scroll-y="true" class="cart-content">
-			<view v-for="(coupon, cartIndex) in couponList" :key="cartIndex" @clickItem="onSelect(coupon)">
-				<coupon-item></coupon-item>
+			<view v-for="(coupon, cartIndex) in couponList" :key="cartIndex">
+				<coupon-item  :item="coupon"  @clickItem="clickItem" :selectedId="selectedId" :canSelect="true"></coupon-item>
 			</view>
-			<view class="un-use">
+			<view class="un-use" @click="selectUnuse">
 				<view class="title">
 					不使用优惠券
 				</view>
-				<image v-if="selectedId" class="selected-img"
+				<image v-if="!selectedId" class="selected-img"
 					src="https://ali-image.dabanjia.com/static/mp/dabanjia/images/classify/pay_selected.png" mode="">
 				</image>
-				<image v-if="!selectedId" class="selected-img"
+				<image v-if="selectedId" class="selected-img"
 					src="https://ali-image.dabanjia.com/static/mp/dabanjia/images/classify/pay_unselected.png" mode="">
 			</view>
 			<view style="height: 100rpx;">
 
 			</view>
 		</scroll-view>
+		<view class="bottom-btn">
+			<view class="btn">
+				确定
+			</view>
+
+		</view>
 	</view>
 </template>
 
@@ -35,7 +41,8 @@
 		},
 		data() {
 			return {
-				selectedId: ''
+				selectedId: '',
+				selectedItem:{}
 			};
 		},
 		watch: {
@@ -47,6 +54,16 @@
 			}
 		},
 		methods: {
+			clickItem(item){
+				this.selectedItem=item
+				console.log(item);
+				
+				this.selectedId=item.id
+				
+			},
+			selectUnuse() {
+				this.selectedId = ""
+			},
 			removeAll() {
 				this.$emit('close')
 			},
@@ -59,10 +76,34 @@
 </script>
 
 <style lang="scss" scoped>
+	.bottom-btn {
+		padding-bottom: 40rpx;
+		width: 100%;
+		height: 136rpx;
+		display: flex;
+		justify-content: center;
+		align-items: center;
+		background: #FEFFFE;
+
+		.btn {
+			width: 686rpx;
+			height: 88rpx;
+			line-height: 88rpx;
+			text-align: center;
+			background: linear-gradient(135deg, #00CCBE 0%, #00C2BF 100%);
+			border-radius: 12rpx;
+			font-weight: 500;
+			font-size: 32rpx;
+			color: #FFFFFF;
+
+		}
+	}
+
 	.selected-img {
 		width: 36rpx;
 		height: 36rpx;
 	}
+
 	.un-use {
 		margin-top: 24rpx;
 		height: 104rpx;
@@ -73,6 +114,7 @@
 		justify-content: space-between;
 		align-items: center;
 		padding: 0 32rpx;
+
 		.title {
 			font-weight: 500;
 			color: #333333;

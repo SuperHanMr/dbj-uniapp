@@ -14,7 +14,7 @@
 			</view>
 
 			<view class="flex1">
-				<view class="tips">
+				<view class="tips"  @click="clickItem">
 					<view class="name">
 						<view class="title">
 							优惠券名称最长就到这…
@@ -23,8 +23,18 @@
 							有效期 2020.02.02 至 2020.02.02
 						</view>
 					</view>
-					<view class="btn">
+					<view v-if="!canSelect" class="btn">
 						去使用
+					</view>
+					<view v-else class="btn-view">
+						<image v-if="item.id ==selectedId" class="selected-img"
+							src="https://ali-image.dabanjia.com/static/mp/dabanjia/images/classify/pay_selected.png"
+							mode="">
+						</image>
+						<image v-if="item.id !=selectedId" class="selected-img"
+							src="https://ali-image.dabanjia.com/static/mp/dabanjia/images/classify/pay_unselected.png"
+							mode="">
+
 					</view>
 				</view>
 				<view class="more" @click="showTips">
@@ -59,15 +69,35 @@
 				showTip: false
 			};
 		},
+		props: {
+			canSelect: false,
+			selectedId: '',
+			item: {}
+		},
 		methods: {
 			showTips() {
 				this.showTip = !this.showTip
+			},
+
+			clickItem() {
+				this.$emit('clickItem', this.item)
 			}
 		}
 	}
 </script>
 
 <style lang="scss" scoped>
+	.btn-view {
+		display: flex;
+		justify-content: flex-end;
+		flex: 1;
+	}
+
+	.selected-img {
+		width: 36rpx;
+		height: 36rpx;
+	}
+
 	.icon-tip {
 		font-size: 24rpx;
 		color: #FAEBEB;
