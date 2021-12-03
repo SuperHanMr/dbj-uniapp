@@ -45,7 +45,7 @@
       <check-box :borderRadius="'50%'" height="36rpx" width="36rpx" :checked="isCardPay" @change="changStoreValueCard">
       </check-box>
     </view>
-    <view class="pay-way" v-if="changeOrderData.totalAmount > 0">
+    <view class="pay-way" v-if="changeOrderData.totalAmount > 0 && !isCardPay">
       <view class="label">支付方式</view>
       <view class="wx">微信支付</view>
     </view>
