@@ -25,7 +25,7 @@
       </view>
     </view>
     <view class="item-content">
-      <view><text v-if="item.increasedCount>0">增项：{{item.increasedCount}}项；</text> <text v-if="item.reducedCount">减项：{{item.reducedCount}}项</text></view>
+      <view><text v-if="item.increasedCount>0">增项：{{item.increasedCount}}项</text><text v-if="item.increasedCount>0&&item.reducedCount">;</text> <text v-if="item.reducedCount">减项：{{item.reducedCount}}项</text></view>
       <!-- <text>{{item.content}}</text> -->
     </view>
   </view>
