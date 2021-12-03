@@ -9,6 +9,7 @@
 					<view>.{{(balance/100).toFixed(2).split('.')[1]}}</view>
 				</view>
 				<view class="bill" @click="toBillingDetails">账单明细</view>
+				<view class="freeze">已被冻结金额：¥10.00</view>
 			</view>
 			<view class="noList" v-if="noList">
 				<image src="https://ali-image.dabanjia.com/static/mp/dabanjia/images/my/img_sys_city.png"></image>
@@ -29,17 +30,36 @@
 				</view>
 				<image class="banner" :src="item.activityImage" v-if="item.activityImage"></image>
 				<view class="main">
-					<view class="prePay"
-						:class="{'active': amount.detailId===checkedId,'cannot': !item.eligibility,'margin': idx%2===0}"
+					<view class="item"
 						v-for="(amount,idx) in item.detailDTOList"
 						:key="amount.detailId"
-						@click="chooseOne(amount.detailId,item.eligibility)">
-						<image src="https://ali-image.dabanjia.com/static/mp/dabanjia/images/my/choosed.png"
-							class="icon" v-if="amount.detailId===checkedId"></image>
-						<view class="numWrap" :class="{'active': amount.detailId===checkedId,'cannot': !item.eligibility}">
-							<view class="text">充</view>
-							<view>¥</view>
-							<view class="num price-font">{{amount.rechargeAmount/100}}</view>
+					>
+						<view class="file"
+							:class="{'active': amount.detailId===checkedId,'cannot': !item.eligibility,'margin': idx%2===0}"
+							@click="chooseOne(amount.detailId,item.eligibility)"
+						>
+							<view class="total">
+								<view class="content">
+									<view class="amount" :class="{'cannot': !item.eligibility}">
+										<view class="text">充</view>
+										<view>¥</view>
+										<view class="number">{{amount.rechargeAmount/100}}</view>
+									</view>
+									<view class="give">送总价值 
+										<view class="sum price-font">1000</view>元券
+									</view>
+								</view>
+								<image
+									src="http://dbj.dragonn.top/static/mp/dabanjia/images/my/checked.png"
+									class="choose" v-if="amount.detailId===checkedId"
+								></image>
+							</view>
+							<scroll-view scroll-x="true" class="scrolls">
+								<view class="coupon">
+									<view class="couponName">通用券</view>
+									<view class="couponNum">¥2000</view>
+								</view>
+							</scroll-view>
 						</view>
 					</view>
 				</view>
@@ -52,7 +72,7 @@
 				</view>
 			</view>
 		</view>
-		<uni-popup ref="popup" type="center">
+		<uni-popup ref="popup" type="bottom">
 			<view class="popup">
 				<view class="top">
 					<view class="title">活动规则</view>
@@ -193,17 +213,6 @@
 		background-size: cover;
 		background-attachment: fixed;
 	}
-	.mask{
-		width: 100%;
-		height: 100%;
-		background: rgba(0, 0, 0, 0.3);
-		position: fixed;
-		left: 0;
-		top: 0;
-		right: 0;
-		bottom: 0;
-		z-index: 998;
-	}
 	.popup{
 		width: 638rpx;
 		height: 652rpx;
@@ -247,7 +256,7 @@
 		margin: 0 24rpx;
 		border-radius: 16rpx;
 		box-shadow: 0px 4px 12px rgba(190, 102, 21, 0.15);
-		background-image: url('https://ali-image.dabanjia.com/static/mp/dabanjia/images/my/card_bg.png');
+		background-image: url('http://dbj.dragonn.top/static/mp/dabanjia/images/my/balance_bg.png');
 		background-repeat: no-repeat;
 		background-size: cover;
 	}
@@ -291,6 +300,14 @@
 		text-align: center;
 		line-height: 50rpx;
 		color: #BC722D;
+	}
+	.header .freeze{
+		float: right;
+		height: 34rpx;
+		margin-bottom: 24rpx;
+		margin-right: 32rpx;
+		font-size: 24rpx;
+		color: #AC6F28;
 	}
 	.noList{
 		height: 750rpx;
@@ -382,6 +399,7 @@
 		border-radius: 16rpx;
 		box-shadow: 0px 4px 12px rgba(190, 102, 21, 0.15);
 	}
+	/* 充值 */
 	.main{
 		margin: 24rpx;
 		padding-bottom: 8rpx;
@@ -389,63 +407,89 @@
 		display: flex;
 		flex-wrap: wrap;
 	}
-	.main .prePay{
-		width: 312rpx;
-		height: 120rpx;
+	.main .file{
+		width: 654rpx;
+		height: 180rpx;
 		margin-bottom: 16rpx;
-		display: flex;
-		align-items: center;
 		background: #FFFDF8;
-		border: 1rpx solid #FFE1CD;
+		border: 2rpx solid #FFE1CD;
 		border-radius: 16rpx;
 		overflow: hidden;
 	}
-	.main .prePay.active{
-		width: 314rpx;
-		border: none;
-		background: linear-gradient(277.39deg, #FFA14A 0%, #FFC700 100%);
+	.main .file.active{
+		background: #FFF8D6;
+		border: 3rpx solid #FF6600;
 	}
-	.main .prePay.cannot{
-		width: 314rpx;
+	.main .file.cannot{
 		border: none;
 		background: #F7F7F7;
 	}
-	.main .prePay.margin{
-		margin-right: 16rpx;
+	.main .file .scrolls{
+		white-space: nowrap;
 	}
-	.prePay .icon{
-		width: 32rpx;
-		height: 32rpx;
-		background: #fff;
-		border-radius: 50%;
+	.scrolls .coupon{
+		width: 60px;
+		height: 35px;
+		margin: 24rpx;
+		margin-top: 0;
+		font-size: 24rpx;
+		color: #FF9900;
+		background-image: url('http://dbj.dragonn.top/static/mp/dabanjia/images/my/subtract_active.png');
+		background-size: cover;
+		background-repeat: no-repeat;
+	}
+	.coupon .couponNum{
 		margin-left: 24rpx;
-		margin-right: 16rpx;
 	}
-	.prePay .numWrap{
-		width: 158rpx;
-		height: 50rpx;
-		margin-left: 72rpx;
+	.coupon .couponName{
+		font-size: 18rpx;
+	}
+	.main .file .total{
+		display: flex;
+		justify-content: space-between;
+	}
+	.file .total .content{
+		display: flex;
+	}
+	.file .give{
 		display: flex;
 		align-items: center;
+		margin: 24rpx 0;
+		font-size: 26rpx;
+		color: #BC722D;
+	}
+	.file .give .sum{
+		margin: 0 12rpx;
+		font-size: 44rpx;
+		color: #FF6600;
+	}
+	.file .choose{
+		width: 32rpx;
+		height: 32rpx;
+		border-radius: 50%;
+		margin: 24rpx;
+	}
+	.file .amount{
+		max-width: 200rpx;
+		overflow: hidden;
+		height: 50rpx;
+		margin: 24rpx;
+		display: flex;
+		align-items: center;
+		font-size: 26rpx;
 		color: #CB985B;
 	}
-	.prePay .numWrap.active{
-		margin-left: 0;
-		color: #fff;
-	}
-	.prePay .numWrap.cannot{
+	.file .amount.cannot{
 		color: #D1D1D1;
 	}
-	.numWrap .text{
-		font-size: 28rpx;
-	}
-	.numWrap view:nth-child(2){
+	.amount view:nth-child(2){
 		font-weight: 500;
 		font-size: 11px;
-		margin: 0 4rpx;
+		margin-left: 8rpx;
+		margin-right: 4rpx;
 	}
-	.numWrap .num{
-		font-size: 44rpx;
+	.amount .number{
+		font-weight: 500;
 	}
 	.cover{
 		width: 750rpx;
