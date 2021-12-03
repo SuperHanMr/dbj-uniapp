@@ -25,7 +25,8 @@
 
 <script>
   import {
-    rejectChangeOrder
+    rejectChangeOrder,
+    rejectReson
   } from "../../../api/decorate.js";
   import upload from '../../../utils/upload.js'
   export default {
@@ -59,8 +60,15 @@
     onLoad(e) {
       this.changeOrderId = e.changeOrderId || 1,
       this.isServed = e.isServed
+      this.rejectReson()
     },
     methods: {
+      rejectReson(){
+        rejectReson().then(res=>{
+          console.log(res)
+          // this.items
+        })
+      },
       radioChange(evt) {
         this.currentId = evt.value;
       },
