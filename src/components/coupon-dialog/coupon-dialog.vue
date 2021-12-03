@@ -7,7 +7,8 @@
 		</view>
 		<scroll-view :scroll-y="true" class="cart-content">
 			<view v-for="(coupon, cartIndex) in couponList" :key="cartIndex">
-				<coupon-item  :item="coupon"  @clickItem="clickItem" :selectedId="selectedId" :canSelect="true"></coupon-item>
+				<coupon-item :item="coupon" @clickItem="clickItem" :selectedId="selectedId" :canSelect="true">
+				</coupon-item>
 			</view>
 			<view class="un-use" @click="selectUnuse">
 				<view class="title">
@@ -36,13 +37,16 @@
 	export default {
 		name: "coupon-dialog",
 		props: {
-			couponList: [],
+			couponList: {
+				type: Array,
+				default: () => []
+			},
 			currentId: ''
 		},
 		data() {
 			return {
 				selectedId: '',
-				selectedItem:{}
+				selectedItem: {}
 			};
 		},
 		watch: {
@@ -54,12 +58,12 @@
 			}
 		},
 		methods: {
-			clickItem(item){
-				this.selectedItem=item
+			clickItem(item) {
+				this.selectedItem = item
 				console.log(item);
-				
-				this.selectedId=item.id
-				
+
+				this.selectedId = item.id
+
 			},
 			selectUnuse() {
 				this.selectedId = ""

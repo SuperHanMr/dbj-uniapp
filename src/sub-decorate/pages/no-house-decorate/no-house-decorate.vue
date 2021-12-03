@@ -35,27 +35,49 @@
 					</check-box>
 				</template>
 			</service-card>
-			<view v-if="haveCard" class="pay-way" style="justify-content:center" @click="clickCard">
-				<image class="card-img"
-					src="https://ali-image.dabanjia.com/static/mp/dabanjia/images/classify/ic_card.png" mode="">
-				</image>
-				<view>
-					<text>储值卡</text>
-					<text class="card-sub">(可用余额:{{(cardBalance/100).toFixed(2)}}元)</text>
+			<view class="recharge-row">
+
+				<view v-if="couponList.length" class="row-item" style="margin-bottom: 32rpx;" @click="clickCoupon">
+					<image class="card-img"
+						src="https://ali-image.dabanjia.com/static/mp/dabanjia/images/classify/ic_card.png" mode="">
+					</image>
+					<view>
+						<text>优惠券</text>
+					</view>
+					<view style="flex:1">
+					</view>
+					<view v-if="selectCoupon&&selectCoupon.total" class="card-price">
+						<text style="margin-right:4rpx ;">-</text> <text style="margin-right:2rpx ;">¥</text>
+						{{(selectCoupon.total/100).toFixed(2)}}
+					</view>
+					<image class="selected-img"
+						src="https://ali-image.dabanjia.com/static/mp/dabanjia/images/decorate/ic_more.svg" mode="">
+					</image>
 				</view>
-				<view style="flex:1">
-				</view>
-				<view v-if="cardClick" class="card-price">
-					<text style="margin-right:4rpx ;">-</text> <text
-						style="margin-right:2rpx ;">¥</text>{{(this.cardPrice/100).toFixed(2)}}
-				</view>
-				<image v-if="cardClick" class="selected-img"
-					src="https://ali-image.dabanjia.com/static/mp/dabanjia/images/classify/pay_selected.png" mode="">
-				</image>
-				<image v-if="!cardClick&&cardBalance" class="selected-img"
-					src="https://ali-image.dabanjia.com/static/mp/dabanjia/images/classify/pay_unselected.png" mode="">
-				</image>
-				<view v-if="!cardClick&&!cardBalance" class="select-disable">
+				<view v-if="haveCard" class="row-item" @click="clickCard">
+					<image class="card-img"
+						src="https://ali-image.dabanjia.com/static/mp/dabanjia/images/classify/ic_card.png" mode="">
+					</image>
+					<view>
+						<text>储值卡</text>
+						<text class="card-sub">(可用余额:{{(cardBalance/100).toFixed(2)}}元)</text>
+					</view>
+					<view style="flex:1">
+					</view>
+					<view v-if="cardClick" class="card-price">
+						<text style="margin-right:4rpx ;">-</text> <text
+							style="margin-right:2rpx ;">¥</text>{{(this.cardPrice/100).toFixed(2)}}
+					</view>
+					<image v-if="cardClick" class="selected-img"
+						src="https://ali-image.dabanjia.com/static/mp/dabanjia/images/classify/pay_selected.png"
+						mode="">
+					</image>
+					<image v-if="!cardClick&&cardBalance" class="selected-img"
+						src="https://ali-image.dabanjia.com/static/mp/dabanjia/images/classify/pay_unselected.png"
+						mode="">
+					</image>
+					<view v-if="!cardClick&&!cardBalance" class="select-disable">
+					</view>
 				</view>
 			</view>
 			<view class="pay-way">
@@ -92,6 +114,9 @@
 		<uni-popup ref="payDialog" type="bottom">
 			<pay-dialog :payChannel="payChannel" :payChannelPrice="payChannelPrice" @payOrder="payOrder"
 				@closePayDialog="closePayDialog"></pay-dialog>
+		</uni-popup>
+		<uni-popup ref="couponDialog" type="bottom">
+			<coupon-dialog :couponList="couponList" @onSelect="onSelectCoupon" @close="closeCoupon"></coupon-dialog>
 		</uni-popup>
 	</view>
 </template>
@@ -178,6 +203,22 @@
 				cardClick: false,
 				haveCard: false, //是否有会员卡
 				cardBalance: 0, //会员卡余额
+				couponList: [{
+						id: 1,
+					},
+					{
+						id: 2,
+					},
+					{
+						id: 3,
+					},
+					{
+						id: 4,
+					},
+				],
+				selectCoupon: {
+					total: 10000,
+				},
 			};
 		},
 		mounted() {
@@ -199,7 +240,7 @@
 			payChannelPrice() {
 				//提示框价格
 				if (!this.payChannel) {
-					return (this.cardPrice / 100).toFixed(2)
+					return (this.cardPrice / 100).toFixed(2);
 				} else {
 					return (this.countPrice / 100).toFixed(2);
 				}
@@ -359,6 +400,15 @@
 			}
 		},
 		methods: {
+			onSelectCoupon(item) {
+				this.selectCoupon = item;
+			},
+			closeCoupon() {
+				this.$refs.couponDialog.close();
+			},
+			clickCoupon() {
+				this.$refs.couponDialog.open();
+			},
 			closePayDialog() {
 				this.$refs.payDialog.close();
 			},
@@ -839,6 +889,29 @@
 </script>
 
 <style scoped lang="scss">
+	.recharge-row {
+		margin-top: 16rpx;
+		display: flex;
+		flex-direction: column;
+		justify-content: center;
+		align-items: center;
+		background-color: #ffffff;
+		padding: 32rpx;
+		font-size: 28rpx;
+
+		.row-item {
+			width: 100%;
+			display: flex;
+			flex-direction: row;
+			justify-content: center;
+			align-items: center;
+		}
+	}
+
+	.mt26 {
+		margin-top: 26rpx;
+	}
+
 	.select-disable {
 		width: 36rpx;
 		height: 36rpx;

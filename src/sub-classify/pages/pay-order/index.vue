@@ -323,7 +323,7 @@
 				refundable: false,
 				cardClick: false,
 				haveCard: false, //是否有会员卡
-				cardBalance: 1111, //会员卡余额
+				cardBalance: 0, //会员卡余额
 				couponList: [{
 					id: 1
 				}, {
