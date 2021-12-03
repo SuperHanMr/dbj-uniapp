@@ -196,6 +196,11 @@ export function rejectChangeOrder(params) {
 	return request.get("/pm/app/changeOrder/rejectChangeOrder",{params})
 }
 
+//查询拒绝变更单原因
+export function rejectReson(params) {
+	return request.get("/pm/app/changeOrder/listRejectReasons?type=2")
+}
+
 //获取施工交付内容
 export function getComplateDetail(params) {
 	return request.get(`/pm/app/worker/decoration/trend/getCompletionLogById/${params.projectId}/${params.serveId}`)
