@@ -12,7 +12,7 @@
             <view class="type">服务</view>
             <view class="spu-name">{{itemData.spuName}}</view>
           </view>
-          <view class="name">{{itemData.skuName}}</view>
+          <!-- <view class="name">{{itemData.skuName}}</view> -->
         </view>
         <view class="price">
           <view class="unit">￥</view>
@@ -23,7 +23,7 @@
     </view>
     <view class="count-wrap">
       <view class="total">
-        <!-- <text class="unit">￥</text>{{(itemData.newAmount/100).toFixed(2)}} -->
+        <text class="unit">￥</text>{{(itemData.newAmount/100).toFixed(2)}}
       </view>
       <view class="line"></view>
       <view class="volume-wrap">
