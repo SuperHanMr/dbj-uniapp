@@ -3,10 +3,10 @@
     <view class="content">
       <text class="replace-tip">请选择更换的原因</text>
       <view class="radio-group">
-        <view class="radio-item" v-for="(item, index) in items" :class="{last:item.value==='其他'}" :key="item.value"
+        <view class="radio-item" v-for="(item, index) in items" :class="{last:item.id===4}" :key="item.id"
           @click="radioChange(item)">
-          <view class="text">{{item.label}}</view>
-          <view class="circle" :class="{isActive:currentId===item.value}">
+          <view class="text">{{item.reason}}</view>
+          <view class="circle" :class="{isActive:currentId===item.id}">
             <view></view>
           </view>
         </view>
@@ -33,23 +33,7 @@
     data() {
       return {
         num: 0,
-        items: [{
-            label: "我不想变了",
-            value: 1,
-          },
-          {
-            label: "变更单有误",
-            value: 2,
-          },
-          {
-            label: "变更单计算错误",
-            value: 3,
-          },
-          {
-            label: "其他原因",
-            value: 4,
-          },
-        ],
+        items: [],
         currentId: "",
         imageValue: [],
         otherReason: "",
@@ -66,11 +50,11 @@
       rejectReson(){
         rejectReson().then(res=>{
           console.log(res)
-          // this.items
+          this.items = res
         })
       },
       radioChange(evt) {
-        this.currentId = evt.value;
+        this.currentId = evt.id;
       },
       submit() {
         if (!this.currentId) {
@@ -94,7 +78,7 @@
         let data = {
           changeOrderId: this.changeOrderId,
           optionId: this.currentId,
-          optionMsg: this.currentId!==4?this.items[this.currentId-1].label:this.otherReason.substr(0,500)
+          optionMsg: this.currentId!==4?this.items[this.currentId-1].reason:this.otherReason.substr(0,500)
         }
           rejectChangeOrder(data).then(res => {
             uni.showToast({
