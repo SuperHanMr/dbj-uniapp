@@ -71,7 +71,7 @@ export function particalOrderApplyForRefund(params) {
 
 //我的-订单-根据退款单id查询退款单详情（重新申请）
 export function getRefundInfo(params) {
-	return request.get(`/order-center/app/order/refundEchoInformation`, { params })
+	return request.get(`/order-center/app/order/refundEchoInformation/v2`, { params })
 }
 
 
