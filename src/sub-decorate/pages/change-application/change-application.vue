@@ -45,9 +45,10 @@
       <check-box :borderRadius="'50%'" height="36rpx" width="36rpx" :checked="isCardPay" @change="changStoreValueCard">
       </check-box>
     </view>
-    <view class="pay-way" v-if="totalAmount > 0">
+    <view class="pay-way" v-if="changeOrderData.totalAmount > 0">
       <view class="label">支付方式</view>
-      <view class="wx">微信支付</view>
+      <view class="wx" v-if="totalAmount > 0">微信支付</view>
+      <view class="store-pay" v-else>储值卡支付</view>
     </view>
     <view class="pay-wrap">
       <view class="b-t-1" @click="refuse">拒绝申请</view>
@@ -431,6 +432,19 @@
       color: #111111;
       line-height: 32rpx;
       background-image: url("http://dbj.dragonn.top/static/mp/dabanjia/images/ic_order_wechat2x.png");
+      background-size: 32rpx 32rpx;
+      background-repeat: no-repeat;
+    }
+    .store-pay {
+      height: 32rpx;
+      font-size: 28rpx;
+      font-family: PingFangSC, PingFangSC-Regular;
+      font-weight: 400;
+      text-align: right;
+      padding-left: 44rpx;
+      color: #111111;
+      line-height: 32rpx;
+      background-image: url("http://dbj.dragonn.top/static/mp/dabanjia/images/ic_store_store_card2x.png");
       background-size: 32rpx 32rpx;
       background-repeat: no-repeat;
     }
