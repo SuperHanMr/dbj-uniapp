@@ -54,11 +54,36 @@
 									class="choose" v-if="amount.detailId===checkedId"
 								></image>
 							</view>
-							<scroll-view scroll-x="true" class="scrolls">
+							<scroll-view :scroll-x="true" :enable-flex="true" class="scrolls">
 								<view class="coupon">
 									<view class="couponName">通用券</view>
 									<view class="couponNum">¥2000</view>
 								</view>
+								<view class="coupon">
+									<view class="couponName">通用券</view>
+									<view class="couponNum">¥2000</view>
+								</view>
+								<view class="coupon">
+									<view class="couponName">通用券</view>
+									<view class="couponNum">¥2000</view>
+								</view>
+								<view class="coupon">
+									<view class="couponName">通用券</view>
+									<view class="couponNum">¥2000</view>
+								</view>
+								<view class="coupon">
+									<view class="couponName">通用券</view>
+									<view class="couponNum">¥2000</view>
+								</view>
+								<view class="coupon">
+									<view class="couponName">通用券</view>
+									<view class="couponNum">¥2000</view>
+								</view>
+								<view class="coupon">
+									<view class="couponName">通用券</view>
+									<view class="couponNum">¥2000</view>
+								</view>
+								<view class="coupon-last"></view>
 							</scroll-view>
 						</view>
 					</view>
@@ -410,7 +435,8 @@
 	.main .file{
 		width: 654rpx;
 		height: 180rpx;
-		margin-bottom: 16rpx;
+		margin-bottom: 24rpx;
+		padding-bottom: 24rpx;
 		background: #FFFDF8;
 		border: 2rpx solid #FFE1CD;
 		border-radius: 16rpx;
@@ -425,23 +451,36 @@
 		background: #F7F7F7;
 	}
 	.main .file .scrolls{
+		/* max-width: 654rpx; */
+		height: 70rpx;
+		display: flex;
 		white-space: nowrap;
 	}
 	.scrolls .coupon{
-		width: 60px;
-		height: 35px;
-		margin: 24rpx;
-		margin-top: 0;
+		flex-shrink: 0;
+		width: 120rpx;
+		height: 70rpx;
+		margin-left: 24rpx;
 		font-size: 24rpx;
+		font-weight: 600;
 		color: #FF9900;
 		background-image: url('http://dbj.dragonn.top/static/mp/dabanjia/images/my/subtract_active.png');
 		background-size: cover;
 		background-repeat: no-repeat;
+		display: flex;
+		flex-direction: column;
+		justify-content: center;
+		align-items: center;
 	}
-	.coupon .couponNum{
-		margin-left: 24rpx;
+	.scrolls .coupon:last-child{
+		width: 24rpx;
+		height: 70rpx;
 	}
 	.coupon .couponName{
+		max-width: 72rpx;
+		overflow: hidden;
+		text-overflow: ellipsis;
+		white-space: nowrap;
 		font-size: 18rpx;
 	}
 	.main .file .total{
