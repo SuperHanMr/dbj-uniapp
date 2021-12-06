@@ -459,7 +459,7 @@ export default {
   font-size: 28rpx;
   padding: 32rpx;
   overflow: auto;
-
+  width: 686rpx;
   color: #333333;
 
   .holder {
