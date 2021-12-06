@@ -9,7 +9,7 @@ export function editUserInfo(params) {
 export function commentsAndFeedBack(params) {
 	return request.post(`/app/feedback`, params);
 }
-//储值卡 
+//储值卡
 export function queryStoreValueCard(params) {
 	return request.get(`/wallet/app/customer/query/giftCardAmount`, params);
 }
@@ -18,7 +18,7 @@ export function queryStoreValueCard(params) {
 export function queryToBePaidOrderNum(params) {
 	return request.get(`/order-center/app/order/queryToBePaidOrderNum`, params);
 }
-//我的-退出登陆 
+//我的-退出登陆
 export function logout(params) {
 	return request.post(`/app/oauth/gome/logout`, params);
 }
@@ -46,7 +46,7 @@ export function confirmReceiptOrder(params) {
 
 //app订单支付接口
 export function orderPay(params) {
-  let version = uni.getAccountInfoSync().miniProgram.version || 'develop';
+	let version = uni.getAccountInfoSync().miniProgram.version || 'develop';
 	return request.post(`/order-center/app/order/payOrder?v=${version}`, params);
 }
 
@@ -84,7 +84,7 @@ export function refundReason(params) {
 //根据订单信息计算退款信息
 
 export function getRefundInformation(params) {
-	return request.get(`/order-center/app/order/getRefundInformation`, { params })
+	return request.get(`/order-center/app/order/getRefundInformation/v2`, { params })
 }
 
 //我的-订单-退款-取消退款
@@ -99,7 +99,7 @@ export function querySplitPayList(params) {
 
 //我的-订单-分次支付接口
 export function splitPay(params) {
-  let version = uni.getAccountInfoSync().miniProgram.version || 'develop';
+	let version = uni.getAccountInfoSync().miniProgram.version || 'develop';
 	return request.post(`/order-center/app/order/splitPayOrder?v=${version}`, params);
 }
 
@@ -136,7 +136,7 @@ export function getRecommendList(params) {
 }
 //我的关注-取消关注
 export function cancelAttention(params) {
-	return request.post(`/app/base/interactive/add`, params )
+	return request.post(`/app/base/interactive/add`, params)
 }
 
 

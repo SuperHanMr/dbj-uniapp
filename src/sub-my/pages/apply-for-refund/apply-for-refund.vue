@@ -18,10 +18,18 @@
 				</view>
 				<view v-if="type == 'whole' && !refundId " v-for="(item2,index2) in refundInfo.detailAppVOS"
 					:key="index2">
-					<view>
-						<order-item v-if="item2.type !== 5" :refundType="true" :orderType="refundType" :dataList="item2"
-							:orderStatus="2" :showIcon="true"></order-item>
-						<store-calue-card-item v-else :refundType="true" :dataInfo="item2" />
+					<view v-if="item2.isOriginalOrder&&refundInfo.detailAppVOS.length>1" class="header-title">
+						<text class="title"> 原始订单</text>
+						<text class="tip">(该订单为购买该服务的首笔订单)</text>
+					</view>
+					<view v-if="!item2.isOriginalOrder&&refundInfo.detailAppVOS.length>1" class="header-title">
+						<text class="title"> 补单</text>
+						<text class="tip">(该订单为购买该服务除首笔订单外的后续补单)</text>
+					</view>
+					<view v-for="(item2Item,index2) in item2.detailAppVOS" :key="item2Item">
+						<order-item v-if="item2Item.type !== 5" :refundType="true" :orderType="refundType"
+							:dataList="item2Item" :orderStatus="2" :showIcon="true"></order-item>
+						<store-calue-card-item v-else :refundType="true" :dataInfo="item2Item" />
 					</view>
 				</view>
 				<view v-if="type=='partical' && refundId ">
@@ -33,8 +41,18 @@
 
 				<view v-if="type == 'partical' && !refundId ">
 					<view v-for="item4 in refundInfo.detailAppVOS" :key="item4.id">
-						<order-item :refundType="true" :orderType="refundType" :dataList="item4" :showIcon="true">
-						</order-item>
+						<view v-if="item4.isOriginalOrder&&refundInfo.detailAppVOS.length>1" class="header-title">
+							<text class="title"> 原始订单</text>
+							<text class="tip">(该订单为购买该服务的首笔订单)</text>
+						</view>
+						<view v-if="!item4.isOriginalOrder&&refundInfo.detailAppVOS.length>1" class="header-title">
+							<text class="title"> 补单</text>
+							<text class="tip">(该订单为购买该服务除首笔订单外的后续补单)</text>
+						</view>
+						<view v-for="item4Item in item4.detailAppVOS" :key="item4Item.id">
+							<order-item :refundType="true" :orderType="refundType" :dataList="item4Item" :showIcon="true">
+							</order-item>
+						</view>
 					</view>
 				</view>
 
@@ -449,8 +467,7 @@
 				} else {
 					particalOrderApplyForRefund({
 						orderDetailsId: this.orderDetailsId ?
-							this.orderDetailsId :
-							this.orderDetailId, //订单明Id字段
+							this.orderDetailsId : this.orderDetailId, //订单明Id字段
 						returnMoney: Number(this.returnMoney.toFixed(2).replace(".", "")), //申请退货钱数(分)
 						reason: this.reasonName, //退款原因
 						reasonId: this.reasonValue, //退款原因id
@@ -526,6 +543,22 @@
 </script>
 
 <style lang="scss" scoped>
+	.header-title {
+		.title {
+			font-weight: 500;
+			color: #333333;
+			font-size: 28rpx;
+
+		}
+
+		.tip {
+			color: #999999;
+			font-weight: 400;
+			font-size: 24rpx;
+
+		}
+	}
+
 	.server-order-tip {
 		background-color: #fef7f8;
 		display: flex;
