@@ -52,7 +52,7 @@
           </view>
         </view>
 
-        <view class="scroll-view flex-1" @touchmove.stop="()=>{}" @touch.stop="()=>{}">
+        <view class="scroll-view flex-1">
           <!-- 每日播报 -->
           <text-scroll :show="showScroll" :dataList="broadcastList" v-if="isConstruction"
             @goDecorateCalendar="goDecorateCalendar"></text-scroll>
