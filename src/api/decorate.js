@@ -187,13 +187,18 @@ export function replaceServe(params) {
 }
 
 //查询变更单列表
-export function getListChangeOrders(params) {
-	return request.get("/pm/web/changeOrder/list/owner?stateType="+params)
+export function getListChangeOrders(params,id) {
+	return request.get("/pm/web/changeOrder/list/owner?stateType="+params+'&projectId='+id)
 }
 
 //拒绝变更单申请
 export function rejectChangeOrder(params) {
 	return request.get("/pm/app/changeOrder/rejectChangeOrder",{params})
+}
+
+//查询拒绝变更单原因
+export function rejectReson(params) {
+	return request.get("/pm/app/changeOrder/listRejectReasons?type=2")
 }
 
 //获取施工交付内容

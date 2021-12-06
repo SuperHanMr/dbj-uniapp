@@ -13,7 +13,7 @@
     </view>
     <view class="construction-content">
       <swiper :current="currentActive" @change="ontabchange" class="swiper" :interval="3000" :duration="1000">
-        <swiper-item class="swiper-item" :class="{'empty-bcakground':dataObj[0].length==0}">
+        <swiper-item class="swiper-item" :class="{'empty-bcakground':swiperOne}">
           <constructionItem v-for="(item) in dataObj[0]" :key="item.id" :item='item'></constructionItem>
           <view class="earn-empty" v-if="dataObj[0].length==0">
             <view class="earn-empty-block">
@@ -22,8 +22,9 @@
             </view>
           </view>
         </swiper-item>
-        <swiper-item class="swiper-item" :class="{'empty-bcakground':dataObj[1].length==0}">
+        <swiper-item class="swiper-item" :class="{'empty-bcakground':swiperTwo}">
           <constructionItem v-for="(item) in dataObj[1]" :key="item.id" :item='item'></constructionItem>
+          
           <view class="earn-empty" v-if="dataObj[1].length==0">
             <view class="earn-empty-block">
               <image src="https://ali-image.dabanjia.com/static/mp/dabanjia/images/decorate/construction_empty.png" mode=""></image>
@@ -31,7 +32,7 @@
             </view>
           </view>
         </swiper-item>
-        <swiper-item class="swiper-item" :class="{'empty-bcakground':dataObj[2].length==0}">
+        <swiper-item class="swiper-item" :class="{'empty-bcakground':swiperThree}">
           <constructionItem v-for="(item) in dataObj[2]" :key="item.id" :item='item'></constructionItem>
           <view class="earn-empty" v-if="dataObj[2].length==0">
             <view class="earn-empty-block">
@@ -56,16 +57,27 @@
       return{
         currentActive:0,
         projectId:0,
-        dataObj:[
-          [],
-          [],
-          []
-        ]
+        dataObj:{
+          0:[],
+          1:[],
+          2:[]
+        }
       }
     },
     onLoad(e){
-      this.projectId = e.porjectId||2
-      
+      console.log(e)
+      this.projectId = e.projectId||2
+    },
+    computed:{
+      swiperOne(){
+        return this.dataObj[0].length==0
+      },
+      swiperTwo(){
+        return this.dataObj[1].length==0
+      },
+      swiperThree(){
+        return this.dataObj[2].length==0
+      },
     },
     onShow(){
       this.getListChangeOrders()
@@ -76,7 +88,7 @@
         this.getListChangeOrders()
       },
       getListChangeOrders(){
-        getListChangeOrders(this.currentActive+1).then(res=>{
+        getListChangeOrders(this.currentActive+1,this.projectId).then(res=>{
           this.dataObj[this.currentActive] = res.allList
         })
       }
