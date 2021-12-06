@@ -5,21 +5,15 @@
 				<view v-if="type == 'whole' && refundId " >
 					<view v-for="(item1,index1) in refundInfo.details" :key="index1">
 						<order-item v-if="item1.type !==5" :refundType="true" :orderType="refundType" :dataList="item1" :showIcon="true" ></order-item>
-						<store-calue-card-item
-							v-else
-							:refundType="true"
-							:dataInfo="item1"
-						/>
+						<store-calue-card-item v-else :refundType="true" :dataInfo="item1"/>
+						<refund-price></refund-price>
 					</view>
 				</view>
 				<view v-if="type == 'whole' && !refundId "  v-for="(item2,index2) in refundInfo.detailAppVOS" :key="index2">
 					<view>
 						<order-item v-if="item2.type !== 5" :refundType="true" :orderType="refundType" :dataList="item2" :orderStatus="2" :showIcon="true" ></order-item>
-						<store-calue-card-item
-							v-else
-							:refundType="true"
-							:dataInfo="item2"
-						/>
+						<store-calue-card-item v-else :refundType="true" :dataInfo="item2"/>
+						<refund-price></refund-price>
 					</view>
 				</view>
 				<view v-if="type=='partical' && refundId ">
@@ -27,7 +21,6 @@
 						<order-item :refundType="true" :orderType="refundType" :showIcon="true" :dataList="item3"></order-item>
 					</view>
 				</view>
-
         <view v-if="type == 'partical' && !refundId ">
 						<view v-for="item4 in refundInfo.detailAppVOS" :key="item4.id">
 							<order-item  :refundType="true" :orderType="refundType" :dataList="item4" :showIcon="true" ></order-item>
@@ -72,7 +65,6 @@
 						<image src="../../static/ic_arraw_down.svg" mode="" @click="openPopup()"/>
 					</view>
         </view>
-
 				<view class="line" />
 				<!-- 材料服务 退款金额 -->
 				<view class="refund-price" v-if="refundType !==5">
@@ -93,7 +85,6 @@
 						服务未开始，商家同意后将会全额退还。
 					</view>
 				</view>
-				
 				<!-- 储值卡退款 -->
 				<view class="refund-price" v-else> 
 					<view :class="{'edit-price': showEditInput, 'show-price': !showEditInput }" >
@@ -130,12 +121,9 @@
 					</view>
 				</view>
 			</view>
-
+			<!-- 退款说明 -->
       <view class="remark-container">
-        <view class="header">
-          <text>备注说明</text>
-
-        </view>
+        <view class="header"><text>备注说明</text></view>
 				<view class="body">
 					<textarea
 						v-model="remarks"
@@ -148,7 +136,8 @@
 					<text class="fontNum" style="color: #999999;font-size: 26rpx;">{{textAreaLength>500?500:textAreaLength}}/500</text>
 				</view>
       </view>
-      <view class="proposal">建议与商家沟通后再发起退款</view>
+      
+			<view class="proposal">建议与商家沟通后再发起退款</view>
       <view class="sumbit-button" :style="{paddingBottom:systemBottom}">
 				<view class="buttons1" v-if="!reasonName">
 					提交申请
@@ -157,7 +146,6 @@
 					提交申请
 				</view>
 			</view>
-
 		</view>
 		<expenses-toast  ref='expensesToast' :expensesType="expensesType"></expenses-toast>
   </view>
@@ -233,6 +221,11 @@ export default {
 				getRefundInformation(params).then(res=>{
 					this.refundInfo = res
 					this.refundType=this.refundInfo.type
+					if(this.refundType ==5){
+						uni.setNavigationBarTitle({
+						　　title:"储值卡退款"
+						})
+					}
 					console.log("this.refundInfo=",this.refundInfo)
 					this.refundInfo.actualIncomeAmount = this.refundInfo.maxRefundAmount
 					this.returnMoney = this.refundInfo.maxRefundAmount
@@ -251,7 +244,9 @@ export default {
 					this.returnMoney = this.refundInfo.maxRefundAmount
 					
 					if(this.refundType ==5){
-						
+						uni.setNavigationBarTitle({
+						　　title:"储值卡退款"
+						})
 						this.inputValue = this.refundInfo.maxRefundAmount
 						this.refundAmount = this.refundInfo.refundAmount
 						this.maxRefundAmount=this.refundInfo.maxRefundAmount
@@ -329,6 +324,9 @@ export default {
 				this.reasonName = data.reason
 				console.log("this.refundType===",this.refundType)
 				if(this.refundType == 5){
+					uni.setNavigationBarTitle({
+					　　title:"储值卡退款"
+					})
 					this.maxRefundAmount = data.maxRefundAmount
 					this.refundAmount  = data.refundAmount
 					this.returnMoney = data.refundAmount
@@ -449,7 +447,6 @@ export default {
 			}else{
 				this.inputValue = Number(this.inputValue).toFixed(2);
 			}
-      // this.inputWidth = String(this.inputValue).length * 26 - 12
     },
 		onTextAreaInput(event) {
       this.textAreaLength = event.target.value.length;
@@ -497,7 +494,8 @@ export default {
     padding: 32rpx;
     background: #ffffff;
     border-radius: 24rpx;
-    .deposit {
+		
+		.deposit {
       display: flex;
       justify-content: flex-end;
       margin: 24rpx 0 32rpx;
