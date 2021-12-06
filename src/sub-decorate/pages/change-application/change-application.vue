@@ -238,6 +238,12 @@
             cardPayComplete,
             id
           } = data;
+          if(!data) {
+            // 退款跳转装修首页
+            uni.switchTab({
+              url: "/pages/decorate/index/index",
+            });
+          }
           if (!cardPayComplete) {
             uni.requestPayment({
               provider: "wxpay",
