@@ -189,7 +189,7 @@
         确认收货
       </view>
       <view
-        v-if="type==2"
+        v-if="type==2&&res&&res.overallRefunded"
         class="apply-refund"
         @click="applyRefund"
       >

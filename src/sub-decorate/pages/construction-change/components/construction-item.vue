@@ -15,17 +15,17 @@
           </view>
         </view>
       </view>
-      <view class="top-right" v-if="item.stateDesc">
-        <view class="pay-status" :style="{color:colorVaule[item.statusColor]}">
-          {{item.stateDesc}}
+      <view class="top-right" v-if="item.state!=3">
+        <view class="pay-status" :style="{color:item.state!=2?'#999':item.totalAmount>0?'#FE9000':'#00BFB6'}">
+          {{item.state!=2?item.totalAmount>0?'已支付':'已退还':item.totalAmount>0?'待付款':'待退还'}}
         </view>
         <view class="money">
-          <text>¥</text>{{item.totalAmount}}
+          <text>¥</text>{{(Math.abs(item.totalAmount)/100).toFixed(2)}}
         </view>
       </view>
     </view>
     <view class="item-content">
-      <text>增项：{{item.increasedCount}}项； 减项：{{item.reducedCount}}项</text>
+      <view><text v-if="item.increasedCount>0">增项：{{item.increasedCount}}项</text><text v-if="item.increasedCount>0&&item.reducedCount">;</text> <text v-if="item.reducedCount">减项：{{item.reducedCount}}项</text></view>
       <!-- <text>{{item.content}}</text> -->
     </view>
   </view>
@@ -47,11 +47,19 @@
     },
     data(){
       return{
-        colorVaule:[
-          '#999999',
-          '#FE9000',
-          '#00BFB6'
-        ]
+        colorVaule:{
+          0:'#999999',
+          5:'#FE9000',
+          6:'#00BFB6'
+        },
+        textValue:{
+          7:'已支付',
+          8:'已退还',
+          5:'待付款',
+          6:'待退还'
+        }
+          
+        
       }
     }
   }

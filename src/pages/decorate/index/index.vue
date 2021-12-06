@@ -52,7 +52,7 @@
           </view>
         </view>
 
-        <view class="scroll-view flex-1">
+        <view class="scroll-view flex-1" @touchmove.stop="()=>{}" @touch.stop="()=>{}">
           <!-- 每日播报 -->
           <text-scroll :show="showScroll" :dataList="broadcastList" v-if="isConstruction"
             @goDecorateCalendar="goDecorateCalendar"></text-scroll>
@@ -143,31 +143,31 @@
 </template>
 
 <script>
-  import "./index.scss"
+  import "./index.scss";
   import {
     queryEstates,
     friendListByEstateId,
     getMsgNum,
-    getCarouselMsg
+    getCarouselMsg,
   } from "../../../api/decorate.js";
   import {
     getEstateProjectInfoList,
-    availableService
+    availableService,
   } from "../../../api/project.js";
   import {
     HouseSwitch
-  } from "../../../components/house-switch/house-switch.vue"
-  import ServiceItem from "../../../components/service-item/service-item.vue"
-  import NoService from "../../../components/no-service/no-service.vue"
+  } from "../../../components/house-switch/house-switch.vue";
+  import ServiceItem from "../../../components/service-item/service-item.vue";
+  import NoService from "../../../components/no-service/no-service.vue";
   import {
     v4 as uuidv4
-  } from 'uuid';
-  import GuideCard from "../../../components/guide-card/guide-card.vue"
-  import PictureBtn from "../../../components/picture-btn/picture-btn.vue"
+  } from "uuid";
+  import GuideCard from "../../../components/guide-card/guide-card.vue";
+  import PictureBtn from "../../../components/picture-btn/picture-btn.vue";
 
-  import MwarehouseBtn from "../../../components/mwarehouse-btn/mwarehouse-btn.vue"
-  import TextScroll from "../../../components/text-scroll/text-scroll.vue"
-  import NoHouse from "../../../components/no-house/no-house.vue"
+  import MwarehouseBtn from "../../../components/mwarehouse-btn/mwarehouse-btn.vue";
+  import TextScroll from "../../../components/text-scroll/text-scroll.vue";
+  import NoHouse from "../../../components/no-house/no-house.vue";
   import {
     mapGetters
   } from "vuex";
@@ -181,39 +181,39 @@
       PictureBtn,
       MwarehouseBtn,
       TextScroll,
-      NoHouse
+      NoHouse,
     },
     onLoad() {
-      this.showNoHouse = false
+      this.showNoHouse = false;
       uni.$on("currentHouseChange", (item) => {
-        this.homePageEstate = item
-        getApp().globalData.switchFlag = "home"
-      })
+        this.homePageEstate = item;
+        getApp().globalData.switchFlag = "home";
+      });
     },
     onShow() {
       let scn = uni.getStorageSync("scn") || null;
       if (scn) {
-        this.isLogin = true
-        console.log('showTabBar')
-        this.showNoHouse = false
-        this.availGuides = []
+        this.isLogin = true;
+        console.log("showTabBar");
+        this.showNoHouse = false;
+        this.availGuides = [];
         if (!this.noticeActive) {
-          uni.showTabBar()
+          uni.showTabBar();
         } else {
-          uni.hideTabBar()
+          uni.hideTabBar();
         }
 
-        this.getEstateList()
-        this.$store.dispatch("updateTabBarBadge")
-        this.showScroll = true
+        this.getEstateList();
+        this.$store.dispatch("updateTabBarBadge");
+        this.showScroll = true;
       } else {
-        this.isLogin = false
+        this.isLogin = false;
       }
     },
     onHide() {
-      this.showScroll = false
+      this.showScroll = false;
       if (this.$refs.sw) {
-        this.$refs.sw.close()
+        this.$refs.sw.close();
       }
     },
     data() {
@@ -232,12 +232,11 @@
         availableServiceList: [],
         defaultServices: [],
         availGuides: [],
-
-        deviceId: '',
-        accessKeyId: 'LTAI5tKwuhb948v9oakqnbTf',
-        instanceId: 'post-cn-tl32ajx3u0l',
-        groupId: 'GID_dabanjia',
-        token: '',
+        deviceId: "",
+        accessKeyId: "LTAI5tKwuhb948v9oakqnbTf",
+        instanceId: "post-cn-tl32ajx3u0l",
+        groupId: "GID_dabanjia",
+        token: "",
         msgNum: 0,
         aServiceData: {},
         haveWarehouse: false,
@@ -248,61 +247,63 @@
         showNoHouse: false,
         showScroll: false,
         isLogin: false,
-        dragButton:true
+        dragButton: true,
       };
     },
     onPullDownRefresh() {
-      this.getProjectList()
+      this.getProjectList();
     },
     mounted() {
-      uni.showTabBar()
-      this.showNoHouse = false
-      uni.$on('system-messages', this.watchMsg)
-      this.deviceId = uni.getStorageSync('uuDeviceId')
+      uni.showTabBar();
+      this.showNoHouse = false;
+      uni.$on("system-messages", this.watchMsg);
+      this.deviceId = uni.getStorageSync("uuDeviceId");
       if (!this.deviceId) {
-        this.deviceId = uuidv4()
-        uni.setStorageSync('uuDeviceId', this.deviceId);
+        this.deviceId = uuidv4();
+        uni.setStorageSync("uuDeviceId", this.deviceId);
       }
-      getApp().globalData.screenHeight = uni.getSystemInfoSync().windowHeight
-      console.log(getApp().globalData.screenHeight, '>>>>>>>>当前屏幕高度')
-
+      getApp().globalData.screenHeight = uni.getSystemInfoSync().windowHeight;
+      console.log(getApp().globalData.screenHeight, ">>>>>>>>当前屏幕高度");
     },
     methods: {
       guid() {
-        return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
-          var r = Math.random() * 16 | 0,
-            v = c == 'x' ? r : (r & 0x3 | 0x8);
-          return v.toString(16);
-        });
+        return "xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx".replace(
+          /[xy]/g,
+          function(c) {
+            var r = (Math.random() * 16) | 0,
+              v = c == "x" ? r : (r & 0x3) | 0x8;
+            return v.toString(16);
+          }
+        );
       },
       goDecorateCalendar() {
-        let type = this.currentProject.relegationType == 2 ? 0 : 1
+        let type = this.currentProject.relegationType == 2 ? 0 : 1;
         uni.navigateTo({
-          url: `/sub-home/pages/decorate-scene/decorate-calendar?projectId=${this.currentProject.projectId}&isDecorate=${type}`
-        })
+          url: `/sub-home/pages/decorate-scene/decorate-calendar?projectId=${this.currentProject.projectId}&isDecorate=${type}`,
+        });
       },
       getCarouselMsg() {
         if (this.currentProject.projectId) {
-          getCarouselMsg(this.currentProject.projectId).then(data => {
-            this.broadcastList = data
+          getCarouselMsg(this.currentProject.projectId).then((data) => {
+            this.broadcastList = data;
             if (this.broadcastList?.length < 1) {
               this.broadcastList = [{
                 recordTime: "",
-                content: "暂无施工消息"
-              }]
+                content: "暂无施工消息",
+              }, ];
             }
 
-            this.isConstruction = this.currentProject.showBroadcast || false
-          })
+            this.isConstruction = this.currentProject.showBroadcast || false;
+          });
         }
       },
       watchMsg() {
         this.getMsgNum();
-        this.getAvailableService()
+        this.getAvailableService();
       },
       consultingService() {
         if (this.aServiceData.insuranceStatus === 1) {
-          return
+          return;
         }
         uni.showModal({
           title: "",
@@ -310,254 +311,269 @@
           confirmText: "去咨询",
           success: (res) => {
             if (res.confirm) {
-              console.log("点击了确认")
-              this.$store.dispatch("openCustomerConversation")
+              console.log("点击了确认");
+              this.$store.dispatch("openCustomerConversation");
             } else {
-              console.log("点击了取消")
+              console.log("点击了取消");
             }
-          }
-        })
+          },
+        });
       },
       getAvailableService() {
-        this.availGuides = []
-        this.isConstruction = false
+        this.availGuides = [];
+        this.isConstruction = false;
         availableService({
-          relegationType: this.currentProject.relegationType,
-          projectId: this.currentProject.projectId
-        }).then(data => {
-          const {
-            purchasedServiceList,
-            availableServiceList,
-            defaultServices,
-            constructionFlag,
-            insuranceStatus,
-            showActuaryFlag,
-            showDesignFlag,
-            showVideoFlag,
-            projectStatus,
-            myServiceFlag
-          } = data
-          this.purchasedServiceList = purchasedServiceList || []
-          this.availableServiceList = availableServiceList || []
-          this.defaultServices = defaultServices || []
-          this.aServiceData = {
-            constructionFlag,
-            insuranceStatus,
-            showActuaryFlag,
-            showDesignFlag,
-            showVideoFlag,
-            projectStatus,
-            myServiceFlag
-          }
-          this.availGuides = []
-          this.defaultServices && this.addServiceCard(this.defaultServices, "serviceType")
-          this.availableServiceList && this.addServiceCard(this.availableServiceList, "nodeType")
-          this.haveWarehouse = this.currentProject.existWarehouse || false
+            relegationType: this.currentProject.relegationType,
+            projectId: this.currentProject.projectId,
+          })
+          .then((data) => {
+            const {
+              purchasedServiceList,
+              availableServiceList,
+              defaultServices,
+              constructionFlag,
+              insuranceStatus,
+              showActuaryFlag,
+              showDesignFlag,
+              showVideoFlag,
+              projectStatus,
+              myServiceFlag,
+            } = data;
+            this.purchasedServiceList = purchasedServiceList || [];
+            this.availableServiceList = availableServiceList || [];
+            this.defaultServices = defaultServices || [];
+            this.aServiceData = {
+              constructionFlag,
+              insuranceStatus,
+              showActuaryFlag,
+              showDesignFlag,
+              showVideoFlag,
+              projectStatus,
+              myServiceFlag,
+            };
+            this.availGuides = [];
+            this.defaultServices &&
+              this.addServiceCard(this.defaultServices, "serviceType");
+            this.availableServiceList &&
+              this.addServiceCard(this.availableServiceList, "nodeType");
+            this.haveWarehouse = this.currentProject.existWarehouse || false;
 
-          uni.stopPullDownRefresh()
-
-        }).catch(err => {
-          console.log(err)
-        })
+            uni.stopPullDownRefresh();
+          })
+          .catch((err) => {
+            console.log(err);
+          });
       },
       addServiceCard(arr, key) {
-        arr.forEach(t => {
+        arr.forEach((t) => {
           if (t[key] === 1) {
-            this.availGuides.push("design")
+            this.availGuides.push("design");
           }
           if (t[key] === 4) {
-            this.availGuides.push("actuary")
+            this.availGuides.push("actuary");
           }
-        })
-        console.log(this.availGuides)
+        });
+        console.log(this.availGuides);
       },
       async getFriendsList() {
         let list = await friendListByEstateId({
-          estateId: this.currentProject.estateId
+          estateId: this.currentProject.estateId,
         });
-        this.friendList = list.length > 2 ? list.slice(0, 2) : list
+        this.friendList = list.length > 2 ? list.slice(0, 2) : list;
       },
       toFriends() {
         uni.navigateTo({
-          url: "/sub-decorate/pages/friends/friends?id=" + this.currentProject.estateId,
+          url: "/sub-decorate/pages/friends/friends?id=" +
+            this.currentProject.estateId,
         });
       },
       addHouse() {
         uni.navigateTo({
-          url: "/sub-decorate/pages/add-house/add-house"
-        })
+          url: "/sub-decorate/pages/add-house/add-house",
+        });
       },
       changeCurrentProject(item, isOpenMsgList) {
-        this.currentProject = item
-        getApp().globalData.switchFlag = 'decorate'
+        this.currentProject = item;
+        getApp().globalData.switchFlag = "decorate";
         if (this.currentProject?.showBroadcast) {
-          this.getCarouselMsg()
+          this.getCarouselMsg();
         }
-        this.initData(item)
-        let index = 0
-        let firstItem = null
+        this.initData(item);
+        let index = 0;
+        let firstItem = null;
         for (let i = 0; i < this.projectList.length; i++) {
           if (this.projectList[i].uid === this.currentProject.uid) {
-            index = i
+            index = i;
             firstItem = {
-              ...this.projectList[i]
-            }
-            break
+              ...this.projectList[i],
+            };
+            break;
           }
         }
         if (index !== 0) {
-          console.log("被切换的项目索引", '-', index)
-          let arr = [...this.projectList]
-          arr.splice(index, 1)
-          arr.unshift(firstItem)
-          this.projectList = [...arr]
+          console.log("被切换的项目索引", "-", index);
+          let arr = [...this.projectList];
+          arr.splice(index, 1);
+          arr.unshift(firstItem);
+          this.projectList = [...arr];
         }
         if (this.currentEstate) {
-          uni.$emit('selectedHouse', this.currentEstate)
+          uni.$emit("selectedHouse", this.currentEstate);
         }
 
         // 是否需要打开消息弹窗
         if (isOpenMsgList) {
-          this.openNotice()
+          this.openNotice();
         }
-        this.$refs.sw.close()
+        this.$refs.sw.close();
       },
       getProjectList() {
         getEstateProjectInfoList({
-          isNeedRelative: true
-        }).then(data => {
+          isNeedRelative: true,
+        }).then((data) => {
           // 有房屋有服务，初始化当前的默认房屋
           if (data && data.length > 0) {
-            data.forEach(item => {
+            data.forEach((item) => {
               // 因为项目列表中的projectId字段没有，所以唯一标识用guid方法生成
-              item.uid = this.guid()
-            })
-            console.log(">>>>>>>>data", data)
+              item.uid = this.guid();
+            });
+            console.log(">>>>>>>>data", data);
             //将默认项目放在首位
             data.sort((a, b) => {
               if (a.defaultEstate && a.relegationType === 1) {
-                return -1
+                return -1;
               }
-              return b.createTime - a.createTime
-            })
+              return b.createTime - a.createTime;
+            });
             //end
-            this.projectList = data
+            this.projectList = data;
             const {
               currentProject,
               switchFlag,
               msgProjectId
-            } = getApp().globalData
+            } =
+            getApp().globalData;
             // 设置当前的项目
-            let arr = []
-            let isMsgAndProjectExist = 0// 0,不是消息跳转，1是消息跳转但项目已经不存在了，2是从消息跳转，且项目存在
-            if(msgProjectId) {
-              let temp = data.some(t => t.projectId === msgProjectId)
-              console.log("temp>>>>>>>>>>", temp)
-              isMsgAndProjectExist = temp ? 2 : 1
+            let arr = [];
+            let isMsgAndProjectExist = 0; // 0,不是消息跳转，1是消息跳转但项目已经不存在了，2是从消息跳转，且项目存在
+            if (msgProjectId) {
+              let temp = data.some((t) => t.projectId === msgProjectId);
+              console.log("temp>>>>>>>>>>", temp);
+              isMsgAndProjectExist = temp ? 2 : 1;
             }
             if (isMsgAndProjectExist === 2) {
               //从消息跳转过来
-              arr = data.filter(t => t.projectId === msgProjectId)
-              this.currentProject = arr[0]
+              arr = data.filter((t) => t.projectId === msgProjectId);
+              this.currentProject = arr[0];
               // 打开消息弹窗
-              this.noticeActive = true
-              this.changeCurrentProject(this.currentProject, true)
-              getApp().globalData.msgProjectId = null
+              this.noticeActive = true;
+              this.changeCurrentProject(this.currentProject, true);
+              getApp().globalData.msgProjectId = null;
             } else {
-              if(isMsgAndProjectExist === 1 ) {
-                this.noticeActive = true
-                getApp().globalData.msgProjectId = null
+              if (isMsgAndProjectExist === 1) {
+                this.noticeActive = true;
+                getApp().globalData.msgProjectId = null;
               }
               if (switchFlag === "home") {
-                arr = data.filter(t => t.estateId === this.homePageEstate?.id || t.estateId === getApp().globalData
-                  .currentHouse?.id)
+                arr = data.filter(
+                  (t) =>
+                  t.estateId === this.homePageEstate?.id ||
+                  t.estateId === getApp().globalData.currentHouse?.id
+                );
                 if (arr.length > 1) {
-                  arr = arr.filter(t => t.projectStatus !== 3 && t.projectStatus !== 4)
+                  arr = arr.filter(
+                    (t) => t.projectStatus !== 3 && t.projectStatus !== 4
+                  );
                 }
               } else {
-                arr = data.filter(t => t.projectId === currentProject?.projectId)
+                arr = data.filter(
+                  (t) => t.projectId === currentProject?.projectId
+                );
               }
               if (arr.length === 0) {
-                arr = data.filter(t => t.defaultEstate && t.relegationType === 1)
+                arr = data.filter(
+                  (t) => t.defaultEstate && t.relegationType === 1
+                );
               }
               if (arr && arr.length > 0) {
-                this.currentProject = arr[0]
+                this.currentProject = arr[0];
               } else {
-                this.currentProject = data[0]
+                this.currentProject = data[0];
               }
-              this.initData(this.currentProject)
+              this.initData(this.currentProject);
             }
             if (this.currentProject?.showBroadcast) {
-              this.getCarouselMsg()
+              this.getCarouselMsg();
             }
             // end
           }
-        })
+        });
       },
       // 根据查询出来的项目信息处理
       initData(obj) {
-        this.getMsgNum()
-        this.who = this.currentProject.relegationType == 2 ? "亲友" : "我"
-        this.currentEstate = this.estateList.filter(t => t.id === obj.estateId)[0]
-        getApp().globalData.currentEstate = this.currentEstate
-        getApp().globalData.currentProject = this.currentProject
+        this.getMsgNum();
+        this.who = this.currentProject.relegationType == 2 ? "亲友" : "我";
+        this.currentEstate = this.estateList.filter(
+          (t) => t.id === obj.estateId
+        )[0];
+        getApp().globalData.currentEstate = this.currentEstate;
+        getApp().globalData.currentProject = this.currentProject;
         if (this.currentProject.estateId) {
-          this.getAvailableService()
-          this.getFriendsList()
+          this.getAvailableService();
+          this.getFriendsList();
         }
       },
       switchVisible() {
-        this.$refs.sw.open('top')
+        this.$refs.sw.open("top");
       },
       goConstrction() {
         uni.navigateTo({
-          url: `/sub-decorate/pages/construction/construction?projectId=${this.currentProject.projectId}`
-        })
+          url: `/sub-decorate/pages/construction/construction?projectId=${this.currentProject.projectId}`,
+        });
       },
       goDesignPicture() {
         uni.navigateTo({
-          url: `/sub-home/pages/decorate-scene/construction-drawings?projectId=${this.currentProject.projectId}`
-        })
+          url: `/sub-home/pages/decorate-scene/construction-drawings?projectId=${this.currentProject.projectId}`,
+        });
       },
       goActuary() {
         uni.navigateTo({
-          url: `/sub-decorate/pages/actuary-detail/actuary-detail?projectId=${this.currentProject.projectId}&isClient=1&estateId=${this.currentProject.estateId}`
-        })
+          url: `/sub-decorate/pages/actuary-detail/actuary-detail?projectId=${this.currentProject.projectId}&isClient=1&estateId=${this.currentProject.estateId}`,
+        });
       },
       goVideo() {
         uni.navigateTo({
-          url: `/sub-home/pages/lives-decorate/lives-decorate?projectId=${this.currentProject.projectId}`
-        })
+          url: `/sub-home/pages/lives-decorate/lives-decorate?projectId=${this.currentProject.projectId}`,
+        });
       },
       gonohousedecatore(type) {
         if (this.currentEstate && this.currentEstate.id) {
-          let url = null
+          let url = null;
           if (this.currentProject && this.currentProject.projectId) {
             url =
-              `/sub-decorate/pages/no-house-decorate/no-house-decorate?type=${type}&estateId=${this.currentProject.estateId}&projectId=${this.currentProject.projectId}&isDecorate=1&from=decorateIndex`
+              `/sub-decorate/pages/no-house-decorate/no-house-decorate?type=${type}&estateId=${this.currentProject.estateId}&projectId=${this.currentProject.projectId}&isDecorate=1&from=decorateIndex`;
           } else {
             url =
-              `/sub-decorate/pages/no-house-decorate/no-house-decorate?type=${type}&estateId=${this.currentProject.estateId}&isDecorate=1&from=decorateIndex`
+              `/sub-decorate/pages/no-house-decorate/no-house-decorate?type=${type}&estateId=${this.currentProject.estateId}&isDecorate=1&from=decorateIndex`;
           }
           uni.navigateTo({
-            url
-          })
+            url,
+          });
         } else {
           uni.navigateTo({
-            url: `/sub-decorate/pages/no-house-decorate/no-house-decorate?type=${type}&isDecorate=1&from=decorateIndex`
-          })
+            url: `/sub-decorate/pages/no-house-decorate/no-house-decorate?type=${type}&isDecorate=1&from=decorateIndex`,
+          });
         }
-
       },
       closeNotice() {
         this.noticeActive = false;
-        console.log('showTabBar')
-        uni.showTabBar()
+        console.log("showTabBar");
+        uni.showTabBar();
       },
       openNotice() {
-        this.noticeActive = true
-        console.log('hideTabBar')
-        uni.hideTabBar()
+        this.noticeActive = true;
+        console.log("hideTabBar");
+        uni.hideTabBar();
       },
       goToAddHouseInfo() {
         uni.navigateTo({
@@ -566,8 +582,10 @@
       },
       goToMyDecorate() {
         uni.navigateTo({
-          url: "/sub-decorate/pages/my-decorate/my-decorate?processId=" + this.currentProject.processId +
-            '&projectId=' + this.currentProject.projectId,
+          url: "/sub-decorate/pages/my-decorate/my-decorate?processId=" +
+            this.currentProject.processId +
+            "&projectId=" +
+            this.currentProject.projectId,
         });
       },
       goToMyWarehouse() {
@@ -581,16 +599,17 @@
         });
       },
       getEstateList() {
-        
         queryEstates({
-          isNeedRelative: false
-        }, true).then(data => {
+            isNeedRelative: false,
+          },
+          true
+        ).then((data) => {
           if (!data || (data instanceof Array && data.length < 1)) {
-            uni.hideTabBar()
-            this.showNoHouse = true
+            uni.hideTabBar();
+            this.showNoHouse = true;
           } else {
-            const temp = data.filter(t => t.defaultEstate)
-            this.defaultEstate = temp && temp.length > 0 ? temp[0] : null
+            const temp = data.filter((t) => t.defaultEstate);
+            this.defaultEstate = temp && temp.length > 0 ? temp[0] : null;
             this.estateList = data;
             this.getProjectList();
           }
@@ -598,34 +617,33 @@
       },
       getMsgNum() {
         if (this.currentProject && this.currentProject.projectId) {
-          this.dragButton = false
-          this.style = ''
-          getMsgNum(this.currentProject.projectId).then(res => {
-            this.msgNum = res.count+''
-            this.dragButton = true
-            getApp().globalData.decorateMsgNum = this.msgNum
-            uni.stopPullDownRefresh()
-            if(res.count===0){
-              console.log(1111)
+          this.dragButton = false;
+          this.style = "";
+          getMsgNum(this.currentProject.projectId).then((res) => {
+            this.msgNum = res.count + "";
+            this.dragButton = true;
+            getApp().globalData.decorateMsgNum = this.msgNum;
+            uni.stopPullDownRefresh();
+            if (res.count === 0) {
+              console.log(1111);
               uni.removeTabBarBadge({
                 index: 2,
-              })
-            }else{
-              let num = res.count+''
+              });
+            } else {
+              let num = res.count + "";
               uni.setTabBarBadge({
-                    index: 2,
-                    text: this.msgNum, 
-              })
+                index: 2,
+                text: this.msgNum,
+              });
             }
-
-          })
+          });
         } else {
-          this.msgNum = 0
+          this.msgNum = 0;
           uni.removeTabBarBadge({
             index: 2,
-          })
+          });
         }
-      }
+      },
     },
   };
 </script>
