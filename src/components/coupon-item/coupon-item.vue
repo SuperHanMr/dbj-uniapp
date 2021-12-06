@@ -1,11 +1,9 @@
 <template>
 	<view class="main">
-		<view class="holder">
-
-		</view>
-		<view class="item">
+		<view class="holder"></view>
+		<view class="item" :class="{'item-status':showStatusIcon}">
 			<view class="header" @click="clickItem">
-				<view class="price price-font">
+				<view class="price price-font" :style="{color:showStatusIcon?'#999999':'#FA4D32'}">
 					<text style="font-size:24rpx ;">¥</text>1000
 				</view>
 				<view class="sub-price">
@@ -16,26 +14,32 @@
 			<view class="flex1">
 				<view class="tips"  @click="clickItem">
 					<view class="name">
-						<view class="title">
+						<view class="title" :style="{color:showStatusIcon?'#999999':'#333333'}">
 							优惠券名称最长就到这…
 						</view>
 						<view class="subtitle">
 							有效期 2020.02.02 至 2020.02.02
 						</view>
 					</view>
-					<view v-if="!canSelect" class="btn">
-						去使用
+					<view v-if="!showStatusIcon">
+						<view v-if="!canSelect" class="btn">
+							去使用
+						</view>
+						<view v-else class="btn-view">
+							<image v-if="item.id ==selectedId" class="selected-img"
+								src="https://ali-image.dabanjia.com/static/mp/dabanjia/images/classify/pay_selected.png"
+								mode="">
+							</image>
+							<image v-if="item.id !=selectedId" class="selected-img"
+								src="https://ali-image.dabanjia.com/static/mp/dabanjia/images/classify/pay_unselected.png"
+								mode="">
+						</view>
 					</view>
-					<view v-else class="btn-view">
-						<image v-if="item.id ==selectedId" class="selected-img"
-							src="https://ali-image.dabanjia.com/static/mp/dabanjia/images/classify/pay_selected.png"
-							mode="">
-						</image>
-						<image v-if="item.id !=selectedId" class="selected-img"
-							src="https://ali-image.dabanjia.com/static/mp/dabanjia/images/classify/pay_unselected.png"
-							mode="">
-
-					</view>
+				</view>
+				<view v-if="showStatusIcon" class="showCouponStaticIcon">
+					<image src="../../static/images/refund-item-expired.svg" mode=""></image>
+					<image v-if="item.status==2" src="../../static/images/refund-item-invalid.svg" mode=""></image>
+					<image v-if="item.status==3" src="../../static/images/refund-item-used.svg" mode=""></image>
 				</view>
 				<view class="more" @click="showTips">
 					<view class="tip-title">
@@ -50,12 +54,12 @@
 			</view>
 
 		</view>
-		<view v-if="showTip" class="more-tip">
-			<view class="">
-				1.指定品类使用指定品类使用指定品类使用指定品类使发 指定品类使用指定品类使用指定品类使用指定品类使用
+		<view v-if="showTip" class="explain-container" :class="{'unUnsed':showStatusIcon}">
+			<view class="explain-item" style="margin-bottom: 8rpx;">
+				1. 指定品类使用指定品类使用指定品类使用指定品类使发 指定品类使用指定品类使用指定品类使用指定品类使用
 			</view>
-			<view class="">
-				2.指定品类使用指定品类使用指定品类使用指定品类使发 指定品类使用指定品类使用指定品类使用指定品类使用
+			<view class="explain-item">
+				2. 指定品类使用指定品类使用指定品类使用指定品类使发 指定品类使用指定品类使用指定品类使用指定品类使用
 			</view>
 		</view>
 	</view>
@@ -72,7 +76,11 @@
 		props: {
 			canSelect: false,
 			selectedId: '',
-			item: {}
+			item: {},
+			showStatusIcon:{
+				type:Boolean,
+				default:false
+			}
 		},
 		methods: {
 			showTips() {
@@ -106,21 +114,13 @@
 	.main {
 		position: relative;
 		margin-top: 24rpx;
+		.holder {
+			height: 194rpx;
+		}
 	}
 
-	.more-tip {
-		background: #FCF7F7;
-		border-radius: 0rpx 0rpx 8rpx 8rpx;
-		padding: 38rpx 24rpx 24rpx 24rpx;
-		margin-top: -14rpx;
-		font-size: 26rpx;
-		color: #666666;
-	}
+	
 
-	.holder {
-		height: 194rpx;
-
-	}
 
 	.item {
 		position: absolute;
@@ -157,7 +157,7 @@
 				color: #ff5d35;
 			}
 		}
-
+		
 
 		.flex1 {
 			flex: 1;
@@ -167,7 +167,7 @@
 			flex-direction: column;
 			justify-content: space-between;
 			margin: 0 24rpx;
-
+			position: relative;
 			.tips {
 				display: flex;
 				flex-direction: row;
@@ -183,6 +183,7 @@
 						overflow: hidden;
 						text-overflow: ellipsis;
 						white-space: nowrap;
+						margin-bottom: 4rpx;
 					}
 
 					.subtitle {
@@ -208,7 +209,17 @@
 
 				}
 			}
-
+			
+			
+			.showCouponStaticIcon{
+				position: absolute;
+				top: 0;
+				right: -24rpx;
+				image{
+					width: 132rpx;
+					height: 114rpx;
+				}
+			}
 			.more {
 				margin-bottom: 14rpx;
 				display: flex;
@@ -224,5 +235,27 @@
 				}
 			}
 		}
+	}
+	
+	.item-status{
+		box-shadow: 0rpx 6rpx 8rpx 0px #F5F5F5;
+		background: url('https://ali-image.dabanjia.com/static/mp/dabanjia/images/classify/coupon-unUsed-bg.svg')  no-repeat;
+	}
+	.explain-container {
+		background: #FCF7F7;
+		border-radius: 0rpx 0rpx 8rpx 8rpx;
+		padding: 38rpx 24rpx 24rpx 24rpx;
+		margin-top: -14rpx;
+		font-size: 26rpx;
+		color: #666666;
+	}
+	.unUnsed{
+		background: #F5F5F5;
+		color: #999999;
+	}
+	.explain-item{
+		line-height: 36rpx;
+		font-size: 26rpx;
+		font-weight: 400;
 	}
 </style>

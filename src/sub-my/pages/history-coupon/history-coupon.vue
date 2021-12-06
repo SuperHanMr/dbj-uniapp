@@ -8,9 +8,7 @@
 				:class="{selected:index == currentIndex}"
 				@click="currentIndex = index"
 			>
-				<view class="tab-text">
-					{{item}}
-				</view>
+				<view class="tab-text">{{item}}</view>
 				<view class="bottom-icon" />
 			</view> 
 		</view>
@@ -24,17 +22,27 @@
 		>
 			<swiper-item>
 				<scroll-view scroll-y="true">
-					<view class="empty-history">
+					<view v-if="!usedList.length" class="empty-history">
 						<image src="../../static/img_noCoupon@2x.png" mode=""></image>
 						<text>您还没有已使用优惠券</text>
+					</view>
+					<view class="usedList-container">
+						<view class="coupon-item" v-for="item1 in usedList" :key=item1>
+							<coupon-item :showStatusIcon="true"></coupon-item>
+						</view>
 					</view>
 				</scroll-view>
 			</swiper-item>
 			<swiper-item>
 				<scroll-view scroll-y="true" >
-					<view class="empty-invalidOrUsed">
+					<view v-if="!invalidList.length" class="empty-invalidOrUsed">
 						<image src="../../static/img_noCoupon@2x.png" mode=""></image>
 						<text>您还没有已过期/已失效优惠券</text>
+					</view>
+					<view class="invalidList-container">
+						<view class="coupon-item" v-for="item2 in invalidList" :key=item2>
+							<coupon-item :showStatusIcon="true"></coupon-item>
+						</view>
 					</view>
 				</scroll-view>
 			</swiper-item>
@@ -48,12 +56,43 @@
 			return {
 				currentIndex:0,
 				tabList:['已使用' ,"已过期/已失效"],
+				usedList:[
+					{
+						key:1,
+					},
+					{
+						key:2,
+					},
+					{
+						key:3,
+					},
+					{
+						key:4,
+					},
+				],
+				invalidList:[
+					{
+						key:5,
+					},
+					{
+						key:6,
+					},
+					{
+						key:7,
+					},
+					{
+						key:8,
+					},
+				],
+				loading:false,
+				
 			}
 		},
 		methods: {
 			swiperChange(e) {
 			  let index = e.target.current || e.detail.current;
 			  this.currentIndex = index;
+				console.log("this.currentIndex=",this.currentIndex)
 			},
 		}
 	}
@@ -134,8 +173,17 @@
 				color: #CBCCCC;
 			}
 		}
+	
+		.usedList-container,.invalidList-container{
+			.coupon-item{
+				margin: 0 24rpx 24rpx;
+				width: 702rpx;
+			}
+			.coupon-item:nth-child(1){
+				padding-top: 8rpx;
+			}
+		}
 	}
-
 	
 </style>
 
