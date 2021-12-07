@@ -233,17 +233,18 @@
           isCardPay: this.isCardPay //"boolean //是否使用储值卡支付  默认false"
         }
         createChangeOrderApi(bodyObj).then(data => {
-          const {
-            wechatPayJsapi,
-            cardPayComplete,
-            id
-          } = data;
           if(!data) {
             // 退款跳转装修首页
             uni.switchTab({
               url: "/pages/decorate/index/index",
             });
+            return
           }
+          const {
+            wechatPayJsapi,
+            cardPayComplete,
+            id
+          } = data;
           if (!cardPayComplete) {
             uni.requestPayment({
               provider: "wxpay",
@@ -284,7 +285,7 @@
               url: `/sub-classify/pages/pay-order/pay-success?orderId=${id}`,
             });
           }
-        });
+        })
       },
     }
   }
