@@ -9,7 +9,7 @@
       <view v-if="!isCustomerService" class="iconfont icon-a-icxiaoxidibuyuyin" @click="showRecordBtn = !showRecordBtn"></view>
       <textarea
         v-show="!showRecordBtn"
-        v-model="messageContent"
+        :value="messageContent"
         id="messageInput"
         :focus="inputFocus"
         :show-confirm-bar="false"
@@ -19,6 +19,8 @@
         placeholder-class="message-send-input-placeholder" 
         placeholder="聊点什么吧"
         @keyboardheightchange="handleKeyboradHeightChange"
+        @input="handleInput"
+        @blur="inputFocus = false"
       />
       <view
         v-show="showRecordBtn"
@@ -91,20 +93,67 @@
         />
       </view>
     </view>
+    <uni-popup ref="userListPop" type="bottom">
+      <view class="pop-container">
+        <view class="pop-header">
+          <view class="pop-title">
+            选择提醒的人
+          </view>
+          <view class="pop-close icon-closed" @click="closeUserListPop">
+          </view>
+        </view>
+        <view class="pop-body">
+          <view class="user-item" @click="handleAtUser({nick: '所有人', userID: '0'})">
+            <view class="user-avatar">
+              <view class="all-user-tag">ALL</view>
+            </view>
+            <view class="user-info">
+              <view class="user-name">
+                所有人
+              </view>
+              <view class="user-flag">
+                <view class="all-user-tip">
+                  提示所有成员
+                </view>
+              </view>
+            </view>
+          </view>
+          <view v-for="(member,index) in memberList" :key="member.userID" class="user-item" @click="handleAtUser(member)">
+            <view class="user-avatar">
+              <image class="avatar" mode="aspectFill" :src="member.avatar"></image>
+            </view>
+            <view class="user-info">
+              <view class="user-name">
+                {{ member.nick }}
+              </view>
+              <!-- <view class="user-flag">
+                <view class="job-tag">
+                  客服
+                </view>
+              </view> -->
+            </view>
+          </view>
+        </view>
+      </view>
+    </uni-popup>
   </view>
 </template>
 
 <script>
+  import TIM from 'tim-wx-sdk'
   import upload from "@/utils/upload.js"
   import { emojiName, emojiMap } from "@/utils/emoji-map.js"
+  import { keywordEncode } from "@/utils/decode-text.js"
   import { getTim } from "@/utils/tim.js"
   import { mapState } from "vuex"
   import { callServiceAgent } from "@/api/message.js"
+
   export default {
     name: "MessageSendBox",
     data() {
       return {
         messageContent: "",
+        atMessageMap: {},
         inputFocus: false,
         showFileChooser: false,
         showEmojiChooser: false,
@@ -119,6 +168,7 @@
     computed: {
       ...mapState({
         currentConversation: (state) => state.message.currentConversation,
+        groupMembersMap: (state) => state.message.groupMembersMap,
         CONV_TYPES: (state) => state.message.CONV_TYPES,
       }),
       toAccount() {
@@ -144,6 +194,9 @@
       },
       canSendText() {
         return !!this.messageContent.trim();
+      },
+      memberList() {
+        return this.groupMembersMap[this.toAccount] || [];
       }
     },
     watch: {
@@ -219,6 +272,51 @@
       this.recordBarNodesRef = null;
     },
     methods: {
+      handleInput(e) {
+        console.log(e, this.messageContent, this.atMessageMap, 11111)
+        let preValue = this.messageContent;
+        let { detail = {} } = e;
+        let { cursor, value } = detail;
+        let isDelete = preValue.length > value.length;
+        if (isDelete) {
+          // 删除空格时，判断是否是删除@消息
+          if (preValue[cursor] === " ") {
+            let matchKey = "";
+            let isDelAt = Object.keys(this.atMessageMap).some((key) => {
+              matchKey = key;
+              return "@" + key === value.slice(cursor - (key.length + 1), cursor);
+            });
+            if (isDelAt) {
+              value = value.slice(0, cursor - (matchKey.length + 1)) + value.slice(cursor);
+            }
+          }
+        } else {
+          // 是否输入@符号
+          if (value[cursor - 1] === "@") {
+            this.inputCursor = cursor;
+            this.$refs.userListPop.open();
+          }
+        }
+        this.messageContent = value;
+      },
+      closeUserListPop() {
+        this.inputCursor = 0;
+        this.$refs.userListPop.close();
+      },
+      handleAtUser(user) {
+        let {nick, userID} = user;
+        let text = this.messageContent;
+        this.messageContent = text.slice(0, this.inputCursor) + nick + " " + text.slice(this.inputCursor);
+        this.atMessageMap[nick] = {
+          nick: nick,
+          userID: userID
+        };
+        this.inputCursor = 0;
+        this.$refs.userListPop.close();
+        this.$nextTick(() => {
+          this.inputFocus = true;
+        })
+      },
       sendTextMessage() {
         console.log(this.toAccount, this.currentConversation.type, this.messageContent, 11111);
         let text = this.messageContent.trim();
@@ -229,11 +327,32 @@
           })
           return;
         }
-        const message = getTim().createTextMessage({
-          to: this.toAccount,
-          conversationType: this.currentConversation.type,
-          payload: { text: this.messageContent },
+        let msgText = this.messageContent;
+        let atUserList = [];
+        let keyGroup = Object.keys(this.atMessageMap).map(key => keywordEncode(key)).join("|");
+        msgText = msgText.replace(new RegExp("@(" + keyGroup + ") ", "g"), (m, key) => {
+          let { userID } = this.atMessageMap[key];
+          atUserList.push(userID === "0" ? TIM.TYPES.MSG_AT_ALL : userID);
+          return "@" + key + "[" + userID + "]";
         });
+        console.log(msgText, atUserList);
+        let message;
+        if (atUserList.length) {
+          message = getTim().createTextAtMessage({
+            to: this.toAccount,
+            conversationType: this.currentConversation.type,
+            payload: { 
+              text: msgText,
+              atUserList: atUserList
+            },
+          });
+        } else {
+          message = getTim().createTextMessage({
+            to: this.toAccount,
+            conversationType: this.currentConversation.type,
+            payload: { text: msgText },
+          });
+        }
         this.$store.commit("pushCurrentMessageList", message);
         uni.$emit("scroll-to-bottom");
         getTim().sendMessage(message).then(() => {
@@ -740,5 +859,92 @@
     flex: none;
     box-sizing: content-box;
     padding: 10rpx;
+  }
+  
+  .pop-container {
+    display: flex;
+    flex-flow: column nowrap;
+    background: #fff;
+    height: 90vh;
+    border-radius: 16px 16px 0px 0px;
+  }
+  .pop-header {
+    height: 104rpx;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    flex: none;
+  }
+  .pop-title {
+    font-size: 16px;
+    color: #111;
+    font-weight: 500;
+  }
+  .pop-close {
+    position: absolute;
+    right: 16rpx;
+    top: 50%;
+    font-size: 32px;
+    margin-top: -16px;
+  }
+  .pop-body {
+    flex: 1;
+    overflow-y: auto;
+  }
+  .user-item {
+    width: 100%;
+    height: 140rpx;
+    box-sizing: border-box;
+    display: flex;
+    flex-flow: row nowrap;
+    padding: 0 32rpx;
+    align-items: center;
+  }
+  .all-user-tag {
+    width: 96rpx;
+    height: 96rpx;
+    border-radius: 8px;
+    background: #00C2B8;
+    border: 1px solid #F2F2F2;
+    box-sizing: border-box;
+    font-size: 16px;
+    color: #fff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .all-user-tip {
+    font-size: 11px;
+    color: #999;
+  }
+  .user-avatar, .user-avatar .avatar {
+    width: 96rpx;
+    height: 96rpx;
+  }
+  .user-avatar .avatar {
+    border-radius: 8px;
+    border: 1px solid #F2F2F2;
+    box-sizing: border-box;
+  }
+  .user-info {
+    margin-left: 24rpx;
+  }
+  .user-name {
+    font-size: 14px;
+    color: #333;
+    line-height: 40rpx;
+  }
+  .user-flag {
+    margin-top: 8rpx;
+  }
+  .job-tag {
+    background: linear-gradient(135deg, #40BFF5 0%, #53A9FF 100%);
+    border-radius: 2px;
+    font-size: 10px;
+    color: #fff;
+    text-align: center;
+    padding: 0 4px;
+    line-height: 28rpx;
   }
 </style>
