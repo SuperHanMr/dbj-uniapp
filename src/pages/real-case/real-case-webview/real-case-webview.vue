@@ -46,8 +46,9 @@
 					})
 				}
 				
-				this.url = this.ENV.VUE_APP_BASE_H5 +
-					`/app-pages/case-detail/case-detail.html?id=${this.id}&height=${this.height}#${token ? token : 0}`
+				// this.url = this.ENV.VUE_APP_BASE_H5 +
+				// 	`/app-pages/case-detail/case-detail.html?id=${this.id}&height=${this.height}#${token ? token : 0}`
+				this.url = 'https://local.meiwu365.com/app-pages/actuarial/actuarial-details/index.html?reportId=32&id=2459&projectId=20171&isActuarial=1&index=1&secondClass=1&categoryId=&areaId=43&estateId=22&isClient=1'
 				console.log(this.url)
 			},
 			loadSuccessHandler(e) {
