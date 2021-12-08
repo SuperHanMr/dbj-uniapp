@@ -207,7 +207,7 @@
         let imGroupMembers = this.groupMembersMap[this.toAccount] || [];
         if (this.currentChatGroupMembers.length) {
           return this.currentChatGroupMembers.map(mem => {
-            let imMem = imGroupMembers.find(item => item.userID === mem.tid);
+            let imMem = imGroupMembers.find(item => item.userID === mem.tid) || {};
             return {
               nick: imMem.nameCard || mem.userName || imMem.nick,
               avatar: mem.headImg || imMem.avatar,
@@ -302,7 +302,7 @@
         let preValue = this.messageContent;
         let { detail = {} } = e;
         let { cursor, value } = detail;
-        if (this.currentConversation.type === TIM.TYPES.CONV_GROUP) {
+        if (this.currentConversation.type === TIM.TYPES.CONV_GROUP && !this.isCustomerService) {
           let isDelete = preValue.length > value.length;
           if (isDelete) {
             // 删除空格时，判断是否是删除@消息
