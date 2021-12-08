@@ -1,6 +1,7 @@
 <template>
 	<view class="process-cost">
-		<view class="artificial" v-if="msg.payStatus == 2 || msg.obtainType != 2">
+		<!-- isBOM 1 代表精算过来的材料汇总  材料汇总没有人工费 -->
+		<view class="artificial" v-if="(msg.payStatus == 2 || msg.obtainType != 2) && msg.isBOM !== '1'">
 			<view class="title">
 				<view>人工费用{{levelLabel}}
 				</view>
@@ -16,8 +17,9 @@
 		</view>
 		<view class="material-cost" 
 			v-if="msg.obtainType != 1 && isHas">
-			<view class="title">
-				<view>辅材费用</view>
+			<!-- 材料汇总也没有这个标题 -->
+			<view class="title" v-if="msg.isBOM !== '1'">
+				<view>{{msg.materialTypeName || '辅材费用'}}</view>
 			</view>
 			<view class="process-cost-list">
 				<process-cost-materials :areaId="dataOrigin.areaId" :key="index"
@@ -119,6 +121,7 @@
 			const {
 				partpay
 			} = option;
+			console.log(option, 'optionoption>>>>>>>>>>>>')
 			if (partpay) {
 				this.msg = {
 					...option,
@@ -168,6 +171,7 @@
 						this.title = "油漆工序费";
 						break;
 					default:
+						this.title = this.msg.materialTypeName;  // 支持精算单中材料汇总跳转结算
 						break;
 				}
 				uni.setNavigationBarTitle({
@@ -516,53 +520,12 @@
 					params.obtainType = this.msg.obtainType;
 				}
 				console.log(">>>>>>>params>>>>>>>", params);
+				if (this.msg.isBOM === '1') {
+					params.isBOM = '1';
+				}
 				sellList(params)
 					.then((data) => {
-						this.dataOrigin = data;
-            this.isHas = this.dataOrigin?.material?.categoryList?.length > 0 ;
-						if (this.dataOrigin?.artificial?.categoryList?.length > 0) {
-							let cllist = [];
-							this.dataOrigin?.artificial?.categoryList?.forEach((category) => {
-								category?.itemList.forEach((t) => {
-									let obj = {
-										skuId: t.id, //"long //商品id【必须】",
-										cityId: this.dataOrigin.cityId, //"long //市id【必须】",
-										categoryTypeId: t.categoryTypeId, //"int //商品品类类型id【必须】",
-										price: t.price, //"int //商品总价格 工艺商品单价个数 单位分【必须】",
-										count: t.count,
-									};
-									if (t.categoryTypeId == 7) {
-										obj.workerType = t
-											.workType; //"int //工种,品类为工人时（categoryTypeId=7）必传
-									}
-									cllist.push(obj);
-								});
-							});
-							if (cllist.length > 0) {
-								this.batchChangeLevel(cllist);
-							} else {
-								this.levelLabel = "（中级）";
-							}
-						}
-						// if (this.selectedMaterialData?.categoryId) {
-						//   const {
-						//     origin,
-						//     categoryId
-						//   } = this.selectedMaterialData
-						//   this.setMaterial(categoryId, origin)
-						// }
-						if (data?.material?.categoryList?.length > 0) {
-							let tempArr = [...data?.material?.categoryList];
-							tempArr.forEach((category) => {
-								category.itemList.forEach((it) => {
-									it.oldId = it.id;
-									it.checked = true;
-									it.isEdit = false;
-								});
-							});
-							uni.setStorageSync("originMaterialList", tempArr);
-						}
-						this.initData();
+						this.dealListData(data);
 					})
 					.catch((err) => {
 						const {
@@ -573,6 +536,53 @@
 							this.message = data.message;
 						}
 					});
+			},
+			dealListData(data){
+				this.dataOrigin = data;
+				this.isHas = this.dataOrigin?.material?.categoryList?.length > 0 ;
+				if (this.dataOrigin?.artificial?.categoryList?.length > 0) {
+					let cllist = [];
+					this.dataOrigin?.artificial?.categoryList?.forEach((category) => {
+						category?.itemList.forEach((t) => {
+							let obj = {
+								skuId: t.id, //"long //商品id【必须】",
+								cityId: this.dataOrigin.cityId, //"long //市id【必须】",
+								categoryTypeId: t.categoryTypeId, //"int //商品品类类型id【必须】",
+								price: t.price, //"int //商品总价格 工艺商品单价个数 单位分【必须】",
+								count: t.count,
+							};
+							if (t.categoryTypeId == 7) {
+								obj.workerType = t
+									.workType; //"int //工种,品类为工人时（categoryTypeId=7）必传
+							}
+							cllist.push(obj);
+						});
+					});
+					if (cllist.length > 0) {
+						this.batchChangeLevel(cllist);
+					} else {
+						this.levelLabel = "（中级）";
+					}
+				}
+				// if (this.selectedMaterialData?.categoryId) {
+				//   const {
+				//     origin,
+				//     categoryId
+				//   } = this.selectedMaterialData
+				//   this.setMaterial(categoryId, origin)
+				// }
+				if (data?.material?.categoryList?.length > 0) {
+					let tempArr = [...data?.material?.categoryList];
+					tempArr.forEach((category) => {
+						category.itemList.forEach((it) => {
+							it.oldId = it.id;
+							it.checked = true;
+							it.isEdit = false;
+						});
+					});
+					uni.setStorageSync("originMaterialList", tempArr);
+				}
+				this.initData();
 			},
 			selectWp(obj) {
 				this.$nextTick(function() {

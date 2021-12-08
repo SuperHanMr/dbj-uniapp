@@ -304,6 +304,8 @@ export function goodsApply(params) {
 export function sellList(params) {
 	if (params.obtainType == 0 || params.obtainType == 1 || params.obtainType == 2) {
 		return request.get(`/pm/app/actuary/sell/list/${params.projectId}/${params.type}/${params.obtainType}`)
+	} else if (params.isBOM === '1') {
+		return request.get(`/pm/app/actuary/sell/other/list/${params.projectId}/${params.type}`)
 	}
 	return request.get(`/pm/app/actuary/sell/list/${params.projectId}/${params.type}`)
 }
