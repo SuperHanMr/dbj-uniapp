@@ -375,3 +375,8 @@ export function judgeOwner(params) {
 		params
 	})
 }
+
+// 是否可以操作（换人申请中是否可以操作）
+export function isAllowOperate(serveId) {
+	return request.get(`/pm/app/worker/service/isAllowOperate/${serveId}`)
+}

@@ -219,6 +219,7 @@
 				this.$store.dispatch("openCustomerConversation");
 			},
 			reApply() {
+				
 				//TODO 重新申请
 				getApp().globalData.naviData = this.detail;
 				let type = 0;
@@ -289,7 +290,7 @@
 					console.log(e)
 					e.stockStatus = this.stockStatus
 					e.detailAppVOS.map(e => {
-						e.discountPrice = e.discountPrice * 100
+						e.discountPriceFormate = e.discountPrice * 100
 						e.number = e.refundNumber
 					})
 					this.detail = e;
