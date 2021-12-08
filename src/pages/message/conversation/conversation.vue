@@ -91,6 +91,7 @@
         cstServConv: (state) => state.message.cstServConv,
         currentConversation: (state) => state.message.currentConversation,
         currentMessageList: (state) => state.message.currentMessageList,
+        chatGroupList: (state) => state.message.chatGroupList,
         isCompleted: (state) => state.message.isCompleted,
         isRequesting: (state) => state.message.isRequesting,
         isAppendMessageList: (state) => state.message.isAppendMessageList,
@@ -174,6 +175,7 @@
         });
         this.$store.dispatch("checkoutConversation", options.id).then(res => {
           this.loaded = true;
+          this.requestGroupMembers();
           if (!options.name) {
             if (this.currentConversation.userProfile) {
               uni.setNavigationBarTitle({
@@ -306,6 +308,23 @@
       handleMessageListClick() {
         uni.$emit("message-list-click");
       },
+      requestGroupMembers() {
+        if (this.currentConversation.type === TIM.TYPES.CONV_GROUP && 
+          this.type !== this.CONV_TYPES.CUSTOMER) {
+          let chatGroupId = 0;
+          let currentConvId = this.currentConversation.conversationID;
+          for(let i = 0; i < this.chatGroupList.length; i++) {
+            let group = this.chatGroupList[i];
+            if (currentConvId === "GROUP" + group.imGroupId) {
+              chatGroupId = group.id;
+              break;
+            }
+          }
+          if (chatGroupId) {
+            this.$store.dispatch("requestDBGroupMemberList", chatGroupId);
+          }
+        }
+      }
     }
   }
 </script>

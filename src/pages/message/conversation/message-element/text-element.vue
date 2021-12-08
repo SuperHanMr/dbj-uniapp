@@ -10,7 +10,7 @@
 
 <script>
 import MessageBubble from "./message-bubble";
-import { decodeText } from "@/utils/decode-text.js";
+import { decodeText, atDecode } from "@/utils/decode-text.js";
 
 export default {
   name: "TextElement",
@@ -34,7 +34,8 @@ export default {
       return this.message.payload;
     },
     text() {
-      return '<span class="text">' + decodeText(this.payload.text) + '</span>';
+      let tid = (getApp().globalData && getApp().globalData.userInfo) ? getApp().globalData.userInfo.tid : "";
+      return '<span class="text">' + atDecode(decodeText(this.payload.text), tid) + '</span>';
     },
   },
   methods: {
@@ -47,6 +48,11 @@ export default {
   color: #fff;
   .at {
     color: #fff;
+    font-weight: normal;
+    &.mark {
+      padding: 0;
+      background-color: transparent;
+    }
   }
 }
 .text-element {
@@ -58,9 +64,13 @@ export default {
     white-space: pre-line;
   }
   .at {
-    margin-left: 4px;
     margin-right: 4px;
-    color: $uni-color-primary;
+    font-weight: bold;
+    border-radius: 3px;
+    &.mark {
+      padding: 0 2px;
+      background-color: #E5F9F8;
+    }
   }
   .emoji {
     width: 24px;

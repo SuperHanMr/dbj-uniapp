@@ -10,6 +10,7 @@ import {
 import {
   getGroupList,
   getAgentStatus,
+  getGroupMembers,
   createC2CChat
 } from "@/api/message.js";
 
@@ -62,6 +63,7 @@ const message = {
     currentIMUserSig: '',
     conversationList: [], //腾讯会话列表
     chatGroupList: [], //后台返回的群列表
+    currentChatGroupMembers: [], //后台返回的群成员
     groupMembersMap: {}, //按照群id缓存群成员信息
     currentConversation: {},
     currentMessageList: [],
@@ -238,6 +240,9 @@ const message = {
         return true;
       });
     },
+    setChatGroupMembers(state, list) {
+      state.currentChatGroupMembers = list || [];
+    },
     setCustomerAvailable(state, available) {
       state.cstServConv = {
         ...state.cstServConv,
@@ -345,6 +350,17 @@ const message = {
         return memberList;
       }).catch(err => {
         console.error("get member list error:", groupId, err);
+      })
+    },
+    /**
+     * 从后台获取群成员信息
+     * @param {Object} context
+     * @param {Object} id
+     */
+    requestDBGroupMemberList(context, id) {
+      context.state.currentChatGroupMembers = [];
+      return getGroupMembers(id).then(data => {
+        context.commit("setChatGroupMembers", data);
       })
     },
     /**

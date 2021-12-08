@@ -103,7 +103,7 @@
           </view>
         </view>
         <view class="pop-body">
-          <view class="user-item" @click="handleAtUser({nick: '所有人', userID: '0'})">
+          <view class="user-item" @click="handleAtUser({nick: '所有人', userID: 'zeus_0'})">
             <view class="user-avatar">
               <view class="all-user-tag">ALL</view>
             </view>
@@ -121,16 +121,23 @@
           <view v-for="(member,index) in memberList" :key="member.userID" class="user-item" @click="handleAtUser(member)">
             <view class="user-avatar">
               <image class="avatar" mode="aspectFill" :src="member.avatar"></image>
+              <image v-if="member.role && member.role.type === 1" class="home_owner_flag" src="https://ali-image.dabanjia.com/static/mp/dabanjia/images/message/home_ower_flag.png"></image>
             </view>
             <view class="user-info">
               <view class="user-name">
                 {{ member.nick }}
               </view>
-              <!-- <view class="user-flag">
-                <view class="job-tag">
-                  客服
+              <view v-if="member.role" class="user-flag">
+                <view v-if="member.role.type === 1" class="user-tag">
+                  业主
                 </view>
-              </view> -->
+                <view v-else-if="member.role.type === 2" class="user-tag">
+                  亲友·{{ member.role.relativeRelationName }}
+                </view>
+                <view v-else-if="member.role.type === 3" class="job-tag">
+                  {{ member.role.typeName }}
+                </view>
+              </view>
             </view>
           </view>
         </view>
@@ -169,6 +176,7 @@
       ...mapState({
         currentConversation: (state) => state.message.currentConversation,
         groupMembersMap: (state) => state.message.groupMembersMap,
+        currentChatGroupMembers: (state) => state.message.currentChatGroupMembers,
         CONV_TYPES: (state) => state.message.CONV_TYPES,
       }),
       toAccount() {
@@ -196,7 +204,25 @@
         return !!this.messageContent.trim();
       },
       memberList() {
-        return this.groupMembersMap[this.toAccount] || [];
+        let imGroupMembers = this.groupMembersMap[this.toAccount] || [];
+        if (this.currentChatGroupMembers.length) {
+          return this.currentChatGroupMembers.map(mem => {
+            let imMem = imGroupMembers.find(item => item.userID === mem.tid);
+            return {
+              nick: imMem.nameCard || mem.userName || imMem.nick,
+              avatar: mem.headImg || imMem.avatar,
+              userID: mem.tid,
+              role: mem
+            }
+          })
+        }
+        return imGroupMembers.map(imMem => {
+          return {
+            nick: imMem.nameCard || imMem.nick,
+            avatar: imMem.avatar,
+            userID: imMem.userID
+          }
+        });
       }
     },
     watch: {
@@ -273,28 +299,29 @@
     },
     methods: {
       handleInput(e) {
-        console.log(e, this.messageContent, this.atMessageMap, 11111)
         let preValue = this.messageContent;
         let { detail = {} } = e;
         let { cursor, value } = detail;
-        let isDelete = preValue.length > value.length;
-        if (isDelete) {
-          // 删除空格时，判断是否是删除@消息
-          if (preValue[cursor] === " ") {
-            let matchKey = "";
-            let isDelAt = Object.keys(this.atMessageMap).some((key) => {
-              matchKey = key;
-              return "@" + key === value.slice(cursor - (key.length + 1), cursor);
-            });
-            if (isDelAt) {
-              value = value.slice(0, cursor - (matchKey.length + 1)) + value.slice(cursor);
+        if (this.currentConversation.type === TIM.TYPES.CONV_GROUP) {
+          let isDelete = preValue.length > value.length;
+          if (isDelete) {
+            // 删除空格时，判断是否是删除@消息
+            if (preValue[cursor] === " ") {
+              let matchKey = "";
+              let isDelAt = Object.keys(this.atMessageMap).some((key) => {
+                matchKey = key;
+                return "@" + key === value.slice(cursor - (key.length + 1), cursor);
+              });
+              if (isDelAt) {
+                value = value.slice(0, cursor - (matchKey.length + 1)) + value.slice(cursor);
+              }
             }
-          }
-        } else {
-          // 是否输入@符号
-          if (value[cursor - 1] === "@") {
-            this.inputCursor = cursor;
-            this.$refs.userListPop.open();
+          } else {
+            // 是否输入@符号
+            if (value[cursor - 1] === "@") {
+              this.inputCursor = cursor;
+              this.$refs.userListPop.open();
+            }
           }
         }
         this.messageContent = value;
@@ -332,7 +359,7 @@
         let keyGroup = Object.keys(this.atMessageMap).map(key => keywordEncode(key)).join("|");
         msgText = msgText.replace(new RegExp("@(" + keyGroup + ") ", "g"), (m, key) => {
           let { userID } = this.atMessageMap[key];
-          atUserList.push(userID === "0" ? TIM.TYPES.MSG_AT_ALL : userID);
+          atUserList.push(userID === "zeus_0" ? TIM.TYPES.MSG_AT_ALL : userID);
           return "@" + key + "[" + userID + "]";
         });
         console.log(msgText, atUserList);
@@ -922,6 +949,16 @@
     width: 96rpx;
     height: 96rpx;
   }
+  .user-avatar {
+    position: relative;
+  }
+  .home_owner_flag {
+    width: 16px;
+    height: 16px;
+    position: absolute;
+    right: -3px;
+    bottom: -3px;
+  }
   .user-avatar .avatar {
     border-radius: 8px;
     border: 1px solid #F2F2F2;
@@ -939,6 +976,7 @@
     margin-top: 8rpx;
   }
   .job-tag {
+    display: inline-block;
     background: linear-gradient(135deg, #40BFF5 0%, #53A9FF 100%);
     border-radius: 2px;
     font-size: 10px;
@@ -946,5 +984,13 @@
     text-align: center;
     padding: 0 4px;
     line-height: 28rpx;
+  }
+  .user-tag {
+    color: #00C2B8;
+    font-size: 10px;
+    background: #E5F9F8;
+    display: inline-block;
+    padding: 0 4px;
+    border-radius: 2px;
   }
 </style>
