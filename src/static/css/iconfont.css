@@ -1,8 +1,8 @@
 @font-face {
   font-family: "iconfont"; /* Project id 2785499 */
-  src: url('https://ali-res.dabanjia.com/static/mp/dabanjia/font/iconfont.woff2?t=1637308263021') format('woff2'),
-       url('https://ali-res.dabanjia.com/static/mp/dabanjia/font/iconfont.woff?t=1637308263021') format('woff'),
-       url('https://ali-res.dabanjia.com/static/mp/dabanjia/font/iconfont.ttf?t=1637308263021') format('truetype');
+  src: url('https://ali-res.dabanjia.com/static/mp/dabanjia/font/iconfont.woff2?t=1639041784343') format('woff2'),
+       url('https://ali-res.dabanjia.com/static/mp/dabanjia/font/iconfont.woff?t=1639041784343') format('woff'),
+       url('https://ali-res.dabanjia.com/static/mp/dabanjia/font/iconfont.ttf?t=1639041784343') format('truetype');
 }
 
 .iconfont {
@@ -11,6 +11,14 @@
   font-style: normal;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+}
+
+.icon-ic_shanghua:before {
+  content: "\e73c";
+}
+
+.icon-biangengxiangqing:before {
+  content: "\e64c";
 }
 
 .icon-shenqinggenghuan:before {
@@ -748,4 +756,3 @@
 .icon-plus-circle:before {
   content: "\e641";
 }
-

@@ -928,6 +928,9 @@
     padding: 0 32rpx;
     align-items: center;
   }
+  .user-item:active {
+    background-color: #fafafa;
+  }
   .all-user-tag {
     width: 96rpx;
     height: 96rpx;

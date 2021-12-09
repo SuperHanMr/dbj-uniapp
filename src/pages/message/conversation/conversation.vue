@@ -17,6 +17,9 @@
       <view v-if="!isCompleted" class="loading-wrapper">
         <image class="loading-img" src="https://ali-image.dabanjia.com/static/mp/dabanjia/images/loading.gif"></image>
       </view>
+      <view v-if="unreadCount >= 8" class="unread-msg-tip" @click="scrollToUnreadStart">
+        <view class="tip-icon icon-ic_shanghua"></view>{{ unreadCount }}条新消息
+      </view>
       <template v-if="currentMessageList.length">
         <view v-if="type === CONV_TYPES.COMMON || type === CONV_TYPES.CUSTOMER" id="listBody" class="message-list-body">
           <template v-for="(msg, idx) in currentMessageList">
@@ -25,6 +28,7 @@
               :key="msg.ID"
               class="message-tags-time"
             >{{ formatMessageTime(msg.time) }}</view>
+            <view v-if="unreadCount >= 8 && (currentMessageList.length - idx === unreadCount)" :key="msg.ID" :id="'startBar' + msg.ID" class="unread-message-start-bar"></view>
             <message-item :key="msg.ID" :message="msg"></message-item>
           </template>
         </view>
@@ -82,6 +86,7 @@
         preScrollHeight: 0,
         scrollTop: 0,
         currentScrollTop: 0,
+        unreadCount: 0,
         loaded: false
       }
     },
@@ -89,6 +94,7 @@
       ...mapState({
         CONV_TYPES: (state) => state.message.CONV_TYPES,
         cstServConv: (state) => state.message.cstServConv,
+        conversationList: (state) => state.message.conversationList,
         currentConversation: (state) => state.message.currentConversation,
         currentMessageList: (state) => state.message.currentMessageList,
         chatGroupList: (state) => state.message.chatGroupList,
@@ -138,12 +144,11 @@
       
       this.messageListRectTask = this.messageListNodesRef.boundingClientRect();
       this.messageListOffsetTask = this.messageListNodesRef.scrollOffset();
-      setTimeout(() => {
-        this.listBodyNodesRef = query.select("#listBody");
-        this.listBodyRectTask = this.listBodyNodesRef.boundingClientRect();
-      }, 200);
+      // setTimeout(() => {
+      //   this.listBodyNodesRef = query.select("#listBody");
+      //   this.listBodyRectTask = this.listBodyNodesRef.boundingClientRect();
+      // }, 200);
       this.messageListRectTask.exec((arr) => {
-        console.log(arr, 11111);
         let [rectOpt, offsetOpt] = arr;
         this.clientHeight = rectOpt.height;
       });;
@@ -157,8 +162,8 @@
       this.messageListOffsetTask = null;
       this.messageListNodesRef = null;
       
-      this.listBodyRectTask = null;
-      this.listBodyNodesRef = null;
+      // this.listBodyRectTask = null;
+      // this.listBodyNodesRef = null;
     },
     onLoad(options) {
       if (options.id === "CUSTOMER") {
@@ -173,9 +178,20 @@
         uni.setNavigationBarTitle({
         　　title: options.name || ""
         });
+        let conv = this.conversationList.find(item => item.conversationID === options.id);
+        if (conv) {
+          this.unreadCount =  conv.unreadCount || 0;
+        }
         this.$store.dispatch("checkoutConversation", options.id).then(res => {
           this.loaded = true;
           this.requestGroupMembers();
+          // 未读数大于15时，把除去15之后剩余的未读消息都拉取过来
+          if (this.unreadCount > 15) {
+            this.$store.dispatch("requestMessageList", {
+              conversationID: options.id,
+              count: this.unreadCount - 15
+            });
+          }
           if (!options.name) {
             if (this.currentConversation.userProfile) {
               uni.setNavigationBarTitle({
@@ -324,6 +340,27 @@
             this.$store.dispatch("requestDBGroupMemberList", chatGroupId);
           }
         }
+      },
+      // 滚动到未读消息的开始处
+      scrollToUnreadStart() {
+        let msg = this.currentMessageList[this.currentMessageList.length - this.unreadCount];
+        if (msg) {
+          const query = uni.createSelectorQuery().in(this);
+          let listBodyNodesRef = query.select("#listBody");
+          let startBarNodeRef = query.select("#startBar" + msg.ID);
+          if (listBodyNodesRef && startBarNodeRef) {
+            listBodyNodesRef.boundingClientRect()
+            startBarNodeRef.boundingClientRect().exec((arr) => {
+              let [listRect, barRect] = arr;
+              this.scrollTop = -(listRect.top - barRect.top);
+            })
+          } else {
+            this.scrollTop = 0;
+          }
+        } else {
+          this.scrollTop = 0;
+        }
+        this.unreadCount = 0;
       }
     }
   }
@@ -362,6 +399,31 @@
     font-size: 12px;
     color: #999;
     padding: 40rpx 0 0;
+  }
+  .unread-msg-tip {
+    position: fixed;
+    background: #fff;
+    right: 0;
+    top: 14px;
+    height: 38px;
+    line-height: 38px;
+    padding: 0 8px 0 12px;
+    box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, 0.05);
+    border-radius: 30px 0px 0px 30px;
+    color: #00C2B8;
+    font-size: 13px;
+  }
+  
+  .unread-msg-tip .tip-icon {
+    display: inline-block;
+    font-size: 18px;
+    margin-right: 2px;
+    vertical-align: -2px;
+  }
+  .unread-message-start-bar {
+    width: 100%;
+    height: 1rpx;
+    background: transparent;
   }
   
   .video-player-wrapper {
