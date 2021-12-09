@@ -21,6 +21,9 @@
 							有效期 2020.02.02 至 2020.02.02
 						</view>
 					</view>
+					<view style="flex:1">
+						
+					</view>
 					<view v-if="!showStatusIcon">
 						<view v-if="!canSelect" class="btn">
 							去使用
