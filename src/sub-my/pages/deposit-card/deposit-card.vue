@@ -259,15 +259,10 @@
 		background-attachment: fixed;
 	}
 	.popup{
-		width: 638rpx;
 		height: 652rpx;
 		background-color: #FFFFFF;
-		border-radius: 16px;
+		border-radius: 32rpx 32rpx 0 0;
 		background: #ffffff;
-		position: fixed;
-		left: 56rpx;
-		top: 212rpx;
-		z-index: 999;
 	}
 	.popup .top{
 		position: relative;
