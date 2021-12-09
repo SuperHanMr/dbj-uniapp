@@ -29,6 +29,7 @@
 					<view class="text" v-if="!item.eligibility">已参加过活动</view>
 				</view>
 				<image class="banner" :src="item.activityImage" v-if="item.activityImage"></image>
+				<!-- 优惠券的需求 -->
 				<view class="main">
 					<view class="item"
 						v-for="(amount,idx) in item.detailDTOList"
@@ -88,6 +89,24 @@
 						</view>
 					</view>
 				</view>
+				
+				<!-- 储值卡的需求 -->
+				<view class="main">
+					<view class="prePay"
+						:class="{'active': amount.detailId===checkedId,'cannot': !item.eligibility,'margin': idx%2===0}"
+						v-for="(amount,idx) in item.detailDTOList"
+						:key="amount.detailId"
+						@click="chooseOne(amount.detailId,item.eligibility)">
+						<image src="https://ali-image.dabanjia.com/static/mp/dabanjia/images/my/choosed.png"
+							class="icon" v-if="amount.detailId===checkedId"></image>
+						<view class="numWrap" :class="{'active': amount.detailId===checkedId,'cannot': !item.eligibility}">
+							<view class="text">充</view>
+							<view>¥</view>
+							<view class="num price-font">{{amount.rechargeAmount/100}}</view>
+						</view>
+					</view>
+				</view>
+				
 			</view>
 			<view class="cover" v-if="showBuyBtn"></view>
 			<view class="buyWrap" v-if="showBuyBtn">
@@ -132,7 +151,7 @@
 			this.requestBalance()
 			this.requestPage()
 			setTimeout(() => {
-				uni.stopPullDownRefresh()
+				uni.stopPullDownRefresh() 
 			},1000)
 		}, 
 		methods: {
@@ -149,6 +168,7 @@
 			clickRules(index){
 				this.$refs.popup.open()
 				this.ruleText = this.list[index].activityRule
+				console.log("this.ruleText",this.ruleText)
 			},
 			closeRules(){
 				this.$refs.popup.close()
@@ -241,6 +261,7 @@
 	.popup{
 		width: 638rpx;
 		height: 652rpx;
+		background-color: #FFFFFF;
 		border-radius: 16px;
 		background: #ffffff;
 		position: fixed;
@@ -530,6 +551,69 @@
 	.amount .number{
 		font-weight: 500;
 	}
+	
+	/* 只有储值卡的样式 */
+	.main .prePay{
+		width: 312rpx;
+		height: 120rpx;
+		margin-bottom: 16rpx;
+		display: flex;
+		align-items: center;
+		background: #FFFDF8;
+		border: 1rpx solid #FFE1CD;
+		border-radius: 16rpx;
+		overflow: hidden;
+	}
+	.main .prePay.active{
+		width: 314rpx;
+		border: none;
+		background: linear-gradient(277.39deg, #FFA14A 0%, #FFC700 100%);
+	}
+	.main .prePay.cannot{
+		width: 314rpx;
+		border: none;
+		background: #F7F7F7;
+	}
+	.main .prePay.margin{
+		margin-right: 16rpx;
+	}
+	.prePay .icon{
+		width: 32rpx;
+		height: 32rpx;
+		background: #fff;
+		border-radius: 50%;
+		margin-left: 24rpx;
+		margin-right: 16rpx;
+	}
+	.prePay .numWrap{
+		width: 158rpx;
+		height: 50rpx;
+		margin-left: 72rpx;
+		display: flex;
+		align-items: center;
+		color: #CB985B;
+	}
+	.prePay .numWrap.active{
+		margin-left: 0;
+		color: #fff;
+	}
+	.prePay .numWrap.cannot{
+		color: #D1D1D1;
+	}
+	.numWrap .text{
+		font-size: 28rpx;
+	}
+	.numWrap view:nth-child(2){
+		font-weight: 500;
+		font-size: 11px;
+		margin: 0 4rpx;
+	}
+	.numWrap .num{
+		font-size: 44rpx;
+	}
+
+	
+	
 	.cover{
 		width: 750rpx;
 		height: 256rpx;
