@@ -209,7 +209,7 @@
       },
       {
         "name": "lyb", //模式名称
-        "path": "/sub-decorate/pages/construction-change/construction-change", //启动页面，必选
+        "path": "/sub-decorate/pages/refused-apply/refused-apply", //启动页面，必选
         "query": "" //启动参数，在页面的onLoad函数里面得到
       },
       {
@@ -507,8 +507,20 @@
             "navigationBarTitleText": "",
             "navigationStyle": "custom"
           }
-        }
-      ]
+        },{
+						"path" : "pages/coupon-list/coupon-list",
+						"style" :  {
+							"navigationBarTitleText": "优惠券",
+							"enablePullDownRefresh": false
+						}
+         },{
+						"path" : "pages/history-coupon/history-coupon",
+						"style" :  {
+							"navigationBarTitleText": "历史优惠券",
+							"enablePullDownRefresh": false
+						}
+                
+         }]
     },
     {
       "root": "sub-classify", //商城模块分包

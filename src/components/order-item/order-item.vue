@@ -22,7 +22,7 @@
 					已退款
 				</view>
 
-				<image 
+				<image
 					:src="`${dataList.imgUrl}?x-oss-process=image/resize,m_mfit,w_68,h_68`"
 					mode=""
 				 ></image>
@@ -223,6 +223,8 @@
 		box-sizing: border-box;
 		display: flex;
 		flex: 1;
+		align-items: center;
+		height: 136rpx;
 		// padding-bottom:32rpx;
 		flex-flow: row nowrap;
 		.pic{

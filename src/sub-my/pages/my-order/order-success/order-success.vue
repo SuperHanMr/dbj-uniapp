@@ -40,7 +40,20 @@
 						</text>
           </view>
         </view>
-        <view class="router" v-if="refundInfo.weChatRefundedAmount" :style="{marginBottom:refundInfo.cardRefundedAmount?'16rpx':'0'}" >
+				<!-- 储值卡需求 -->
+				<view class="router" v-if="refundInfo.cardRefundedAmount" :style="{marginBottom:refundInfo.weChatRefundedAmount?'16rpx':'0'}">
+				  <text  style="color: #999999;font-size: 26rpx;">原路径返回储值卡</text>
+				  <view>
+				    <text style="font-size: 20rpx;">￥</text>
+				    <text style="font-size:28rpx;" class="price-font">
+							{{handlePrice(refundInfo.cardRefundedAmount)[0]}}.
+						</text>
+				    <text style="font-size:20rpx;" class="price-font" >
+							{{handlePrice(refundInfo.cardRefundedAmount)[1]}}
+						</text>
+				  </view>
+				</view>
+        <view class="router" v-if="refundInfo.weChatRefundedAmount" :style="{marginBottom:refundInfo.couponRefundedAmount?'16rpx':'0'}" >
           <text style="color: #999999;font-size: 26rpx;">原路径返回微信</text>
           <view>
             <text style="font-size: 20rpx;">￥</text>
@@ -52,18 +65,19 @@
 						</text>
           </view>
         </view>
-				<view class="router" v-if="refundInfo.cardRefundedAmount" style="margin-bottom: 0">
-          <text  style="color: #999999;font-size: 26rpx;">原路径返回储值卡</text>
-          <view>
-            <text style="font-size: 20rpx;">￥</text>
-            <text style="font-size:28rpx;" class="price-font">
-							{{handlePrice(refundInfo.cardRefundedAmount)[0]}}.
+				<!-- 优惠卡需求 -->
+				<view class="router" v-if="refundInfo.couponRefundedAmount"  style="margin-bottom: 0">
+				  <text  style="color: #999999;font-size: 26rpx;">退回优惠券</text>
+				  <view>
+				    <text style="font-size: 20rpx;">￥</text>
+				    <text style="font-size:28rpx;" class="price-font">
+							{{handlePrice(refundInfo.couponRefundedAmount)[0]}}.
 						</text>
-            <text style="font-size:20rpx;" class="price-font" >
-							{{handlePrice(refundInfo.cardRefundedAmount)[1]}}
+				    <text style="font-size:20rpx;" class="price-font" >
+							{{handlePrice(refundInfo.couponRefundedAmount)[1]}}
 						</text>
-          </view>
-        </view>
+				  </view>
+				</view>
       </view>
 
       <view class="body1" v-for="item1 in refundInfo.detailAppVOS" :key="item1.id">

@@ -131,17 +131,20 @@
 			this.data.stockAppVOS.forEach((e) => {
 				list.push({
 					returnNumber: e.refundNumber ?
-						e.refundNumber : e.stockNumber ?
+						e.refundNumber :e.requireNumber ?
+						e.requireNumber : e.stockNumber ?
 						e.stockNumber : e.requireNumber,
 					stockId: e.id,
 					goodsId: e.goodsId,
 					price: e.discountPrice,
-					alreadyReturnNumber: e.returnNumber,
-					number: e.totoalNum,
+					alreadyReturnNumber: e.returnNumber||0,
+					number:e.number|| e.totoalNum,
 					actualIncomeAmount: e.actualIncomeAmount,
 					discountSubtotal: e.discountSubtotal
 				});
 			});
+			console.log('?????',this.data.stockAppVOS)
+			console.log(list)
 			this.refundList = list;
 			this.uploadNum();
 		},
@@ -150,9 +153,13 @@
 			uploadNum() {
 				let totalBack = 0;
 				this.refundList.forEach((e) => {
-
-					if (e.returnNumber + e.alreadyReturnNumber < e.number) {
-
+					console.log(e)
+						console.log('~~~~~~')
+						console.log(e.returnNumber )
+						console.log(e.alreadyReturnNumber)
+						console.log(e.number)
+					if (e.returnNumber + e.alreadyReturnNumber <= e.number) {
+						console.log('~~~~~~')
 						totalBack += e.price * e.returnNumber * 100;
 					} else {
 
@@ -162,6 +169,7 @@
 
 				});
 				totalBack = totalBack / 100
+				console.log('~~~~',totalBack);
 
 				if (totalBack > 0) {
 					this.num = totalBack.toFixed(2);

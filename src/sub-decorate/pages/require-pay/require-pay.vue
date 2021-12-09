@@ -44,6 +44,63 @@
 				</view>
 			</view>
 		</view>
+		<view class="recharge-row">
+
+			<view v-if="couponList.length" class="row-item" style="margin-bottom: 32rpx;" @click="clickCoupon">
+				<image class="card-img"
+					src="https://ali-image.dabanjia.com/static/mp/dabanjia/images/classify/ic_card.png" mode="">
+				</image>
+				<view>
+					<text>优惠券</text>
+				</view>
+				<view style="flex:1">
+				</view>
+				<view v-if="selectCoupon&&selectCoupon.total" class="card-price">
+					<text style="margin-right:4rpx ;">-</text> <text style="margin-right:2rpx ;">¥</text>
+					{{(selectCoupon.total/100).toFixed(2)}}
+				</view>
+				<image class="selected-img"
+					src="https://ali-image.dabanjia.com/static/mp/dabanjia/images/decorate/ic_more.svg" mode="">
+				</image>
+			</view>
+			<view v-if="haveCard" class="row-item" @click="clickCard">
+				<image class="card-img"
+					src="https://ali-image.dabanjia.com/static/mp/dabanjia/images/classify/ic_card.png" mode="">
+				</image>
+				<view>
+					<text>储值卡</text>
+					<text class="card-sub">(可用余额:{{(cardBalance/100).toFixed(2)}}元)</text>
+				</view>
+				<view style="flex:1">
+				</view>
+				<view v-if="cardClick" class="card-price">
+					<text style="margin-right:4rpx ;">-</text> <text
+						style="margin-right:2rpx ;">¥</text>{{(this.cardPrice/100).toFixed(2)}}
+				</view>
+				<image v-if="cardClick" class="selected-img"
+					src="https://ali-image.dabanjia.com/static/mp/dabanjia/images/classify/pay_selected.png" mode="">
+				</image>
+				<image v-if="!cardClick&&cardBalance" class="selected-img"
+					src="https://ali-image.dabanjia.com/static/mp/dabanjia/images/classify/pay_unselected.png" mode="">
+				</image>
+				<view v-if="!cardClick&&!cardBalance" class="select-disable">
+				</view>
+			</view>
+		</view>
+		<view class="pay-way">
+			<text>支付方式</text>
+
+			<view v-if="payChannel" class="flex-center">
+				<image class="card-img"
+					src="https://ali-image.dabanjia.com/static/mp/dabanjia/images/classify/ic_card.png" mode="">
+				</image><text>储值卡支付</text>
+
+			</view>
+			<view v-else>
+				<view class="wechat_icon"></view><text>微信支付</text>
+			</view>
+		</view>
+
 		<view style="height: 200rpx;">
 
 		</view>
@@ -55,13 +112,21 @@
 				<view style="flex: 1;">
 
 				</view>
-				<view class="agree-btn" @click="onConform">
+				<view class="agree-btn" @click="payOrder">
 
-					同意 <text v-if="totalPrice">并支付¥ {{totalPrice}}</text>
+					同意 <text v-if="totalPrice">并支付¥ {{payPrice}}</text>
 				</view>
 			</template>
 
 		</bottom-btn>
+		<uni-popup ref="payDialog" type="bottom">
+			<pay-dialog :payChannel="payChannel" :payChannelPrice="payChannelPrice" @payOrder="onConform"
+				@closePayDialog="closePayDialog"></pay-dialog>
+		</uni-popup>
+		<uni-popup ref="couponDialog" type="bottom">
+			<coupon-dialog :couponList="couponList" @onSelect="onSelectCoupon" @close="closeCoupon"></coupon-dialog>
+		</uni-popup>
+	</view>
 	</view>
 </template>
 
@@ -72,48 +137,137 @@
 		payFreight,
 	} from "../../../api/decorate.js";
 	import {
+		getBalance
+	} from "../../../api/user.js";
+	import {
 		log
-	} from "../../../utils/log.js"
+	} from "../../../utils/log.js";
 	export default {
 		data() {
 			return {
 				id: "18",
 				list: [],
 				detail: {},
+				cardClick: false,
+				haveCard: false, //是否有会员卡
+				cardBalance: 0, //会员卡余额
+				couponList: [{
+						id: 1,
+					},
+					{
+						id: 2,
+					},
+					{
+						id: 3,
+					},
+					{
+						id: 4,
+					},
+				],
+				selectCoupon: {
+					total: 10000,
+				},
 			};
 		},
 		computed: {
+			payChannel() {
+				var res = Number(this.totalPrice) * 100 - this.cardBalance;
+				//支付渠道 true 储值卡  false 微信
+				console.log(
+					this.cardClick && res > 0,
+					res,
+					Number(this.totalPrice) * 100
+				);
+				if (this.cardClick && res <= 0) {
+					return true;
+				} else {
+					return false;
+				}
+			},
+			payChannelPrice() {
+				//提示框价格
+				if (!this.payChannel) {
+					return (
+						(Number(this.totalPrice) * 100 - this.cardBalance) /
+						100
+					).toFixed(2);
+				} else {
+					return this.totalPrice;
+				}
+			},
+			cardPrice() {
+				var res = Number(this.totalPrice) * 100 - this.cardBalance;
+				if (res >= 0) {
+					return this.cardBalance;
+				} else {
+					return Number(this.totalPrice) * 100;
+				}
+			},
+			payPrice() {
+				if (this.cardClick) {
+					var res = Number(this.totalPrice) * 100 - this.cardBalance;
+					if (res <= 0) {
+						return "0.00";
+					}
+					return String((res / 100).toFixed(2));
+				} else {
+					console.log(this.totalPrice);
+					return this.totalPrice;
+				}
+			},
+
 			totalPrice() {
 				if (this.detail.handlingFees || this.detail.freight) {
 					return (this.detail.handlingFees + this.detail.freight).toFixed(2);
 				} else {
-					return 0
+					return 0;
 				}
-
 			},
 		},
 		methods: {
+			onSelectCoupon(item) {
+				this.selectCoupon = item;
+			},
+			closeCoupon() {
+				this.$refs.couponDialog.close();
+			},
+			clickCoupon() {
+				this.$refs.couponDialog.open();
+			},
+			closePayDialog() {
+				this.$refs.payDialog.close();
+			},
+			clickCard() {
+				if (this.cardBalance) {
+					this.cardClick = !this.cardClick;
+				}
+			},
 			onReject() {
 				uni.showModal({
-					content: '是否拒绝要货申请',
+					content: "是否拒绝要货申请",
 					success: (res) => {
 						if (res.confirm) {
-							this.toReject()
+							this.toReject();
 						} else if (res.cancel) {
-							console.log('用户点击取消');
+							console.log("用户点击取消");
 						}
-					}
-				})
+					},
+				});
 			},
 			toReject() {
 				requireConfirm({
 					requireId: this.id,
 					status: 4,
 				}).then((e) => {
-					uni.navigateBack({
-
-					})
+					uni.navigateBack({});
 				});
+			},
+			payOrder() {
+				if (this.cardClick) {
+					this.$refs.payDialog.open();
+					return;
+				}
+				this.onConform();
 			},
 			onConform() {
 				if (!this.totalPrice) {
@@ -121,9 +275,7 @@
 						requireId: this.id,
 						status: 2,
 					}).then((e) => {
-						uni.navigateBack({
-
-						})
+						uni.navigateBack({});
 					});
 				} else {
 					let openid = getApp().globalData.openId;
@@ -132,30 +284,38 @@
 						goodsRequireId: this.id,
 						payType: 1,
 						openid,
+						isCardPay: this.cardClick,
 					}).then((e) => {
-						const payInfo = e.wechatPayJsapi;
-						uni.requestPayment({
-							provider: "wxpay",
-							...payInfo,
-							success(res) {
-								uni.showToast({
-									title: '支付成功'
-								})
-								uni.navigateBack({
+						const cardPayComplete = e.cardPayComplete;
 
-								})
-							},
-							fail(e) {
-								console.log(e);
-								log({
-									type: "wx-pay-fail",
-									page: "require-pay",
-									data: e,
-									openId: getApp().globalData.openId,
-									openIdLocal: uni.getStorageSync("openId")
-								});
-							},
-						});
+						if (!cardPayComplete) {
+							const payInfo = e.wechatPayJsapi;
+							uni.requestPayment({
+								provider: "wxpay",
+								...payInfo,
+								success(res) {
+									uni.showToast({
+										title: "支付成功",
+									});
+									uni.navigateBack({});
+								},
+								fail(e) {
+									console.log(e);
+									log({
+										type: "wx-pay-fail",
+										page: "require-pay",
+										data: e,
+										openId: getApp().globalData.openId,
+										openIdLocal: uni.getStorageSync("openId"),
+									});
+								},
+							});
+						} else {
+							uni.showToast({
+								title: "支付成功",
+							});
+							uni.navigateBack({});
+						}
 					});
 				}
 			},
@@ -173,22 +333,117 @@
 			},
 		},
 		onLoad(e) {
-			const data = getApp().globalData.decorateMsg.msgBody
+			const data = getApp().globalData.decorateMsg.msgBody;
 			let res = JSON.parse(data);
 			this.id = res.requireId;
-			console.log(getApp().globalData.decorateMsg)
-			console.log(this.id)
+			console.log(getApp().globalData.decorateMsg);
+			console.log(this.id);
 			this.getDetail();
+			getBalance().then((e) => {
+				if (e != null) {
+					this.haveCard = true;
+					this.cardBalance = e;
+				}
+			});
 		},
 		onShow() {
-			if (!getApp().globalData.openId) { //确保拿到openId，否则无法支付
+			if (!getApp().globalData.openId) {
+				//确保拿到openId，否则无法支付
 				getApp().globalData.openId = uni.getStorageSync("openId");
 			}
-		}
+		},
 	};
 </script>
 
 <style lang="scss" scoped>
+	.recharge-row {
+		margin-top: 16rpx;
+		display: flex;
+		flex-direction: column;
+		justify-content: center;
+		align-items: center;
+		background-color: #ffffff;
+		padding: 32rpx;
+		font-size: 28rpx;
+
+		.row-item {
+			width: 100%;
+			display: flex;
+			flex-direction: row;
+			justify-content: center;
+			align-items: center;
+		}
+	}
+
+	.mt26 {
+		margin-top: 26rpx;
+	}
+
+	.select-disable {
+		width: 36rpx;
+		height: 36rpx;
+		background: #f5f5f5;
+		border: 1rpx solid #e8e8e8;
+		border-radius: 50%;
+		margin-left: 16rpx;
+	}
+
+	.pay-way,
+	.pledge,
+	.remarks {
+		padding: 5rpx 32rpx;
+		background-color: #ffffff;
+		margin-top: 25rpx;
+		font-size: 28rpx;
+		font-family: PingFangSC, PingFangSC-Regular;
+		display: flex;
+		justify-content: space-between;
+		align-items: center;
+		height: 104rpx;
+		line-height: 104rpx;
+	}
+
+	.card-img {
+		width: 32rpx;
+		height: 32rpx;
+		margin-right: 12rpx;
+	}
+
+	.card-price {
+		font-family: PriceFont;
+		font-size: 28rpx;
+		color: #ff3347;
+	}
+
+	.card-sub {
+		font-size: 24rpx;
+		font-weight: 400;
+		color: #999999;
+	}
+
+	.selected-img {
+		width: 36rpx;
+		height: 36rpx;
+		margin-left: 16rpx;
+	}
+
+	.flex-center {
+		display: flex;
+		align-items: center;
+		justify-content: center;
+	}
+
+	.pay-way .wechat_icon {
+		vertical-align: sub;
+		display: inline-block;
+		width: 32rpx;
+		height: 32rpx;
+		background-image: url("../../static/wechat_icon.png");
+		background-size: contain;
+		margin-right: 12rpx;
+		background-color: #fff;
+	}
+
 	.price-font {
 		font-size: 28rpx;
 		font-weight: 500;
