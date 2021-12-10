@@ -87,6 +87,7 @@
         scrollTop: 0,
         currentScrollTop: 0,
         unreadCount: 0,
+        unreadStartBarPos: 0, //未读消息块的相对父容器的位置
         loaded: false
       }
     },
@@ -180,7 +181,7 @@
         });
         let conv = this.conversationList.find(item => item.conversationID === options.id);
         if (conv) {
-          this.unreadCount =  conv.unreadCount || 0;
+          this.unreadCount = conv.unreadCount || 0;
         }
         this.$store.dispatch("checkoutConversation", options.id).then(res => {
           this.loaded = true;
@@ -190,7 +191,9 @@
             this.$store.dispatch("requestMessageList", {
               conversationID: options.id,
               count: this.unreadCount - 15
-            });
+            }).then(this.calcUnreadStartBarPos);
+          } else if (this.unreadCount >= 8){
+            this.calcUnreadStartBarPos();
           }
           if (!options.name) {
             if (this.currentConversation.userProfile) {
@@ -283,6 +286,13 @@
       },
       handleMessageListScroll(e) {
         this.currentScrollTop = e.detail.scrollTop;
+        // 滚动到未读消息的开头时，隐藏未读消息数量的提示
+        if (this.unreadCount > 0) {
+          if (this.currentScrollTop <= this.unreadStartBarPos + 10) {
+            this.unreadCount = 0;
+            this.unreadStartBarPos = 0;
+          }
+        }
       },
       handlePulling() {
         if (this.isRequesting || this.isCompleted) {
@@ -341,8 +351,7 @@
           }
         }
       },
-      // 滚动到未读消息的开始处
-      scrollToUnreadStart() {
+      calcUnreadStartBarPos() {
         let msg = this.currentMessageList[this.currentMessageList.length - this.unreadCount];
         if (msg) {
           const query = uni.createSelectorQuery().in(this);
@@ -352,15 +361,17 @@
             listBodyNodesRef.boundingClientRect()
             startBarNodeRef.boundingClientRect().exec((arr) => {
               let [listRect, barRect] = arr;
-              this.scrollTop = -(listRect.top - barRect.top);
+              this.unreadStartBarPos = -(listRect.top - barRect.top);
+              console.log("unread start bar position:", this.unreadStartBarPos);
             })
-          } else {
-            this.scrollTop = 0;
           }
-        } else {
-          this.scrollTop = 0;
         }
+      },
+      // 滚动到未读消息的开始处
+      scrollToUnreadStart() {
+        this.scrollTop = this.unreadStartBarPos;
         this.unreadCount = 0;
+        this.unreadStartBarPos = 0;
       }
     }
   }
