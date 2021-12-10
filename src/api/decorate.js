@@ -309,6 +309,8 @@ export function goodsApply(params) {
 export function sellList(params) {
 	if (params.obtainType == 0 || params.obtainType == 1 || params.obtainType == 2) {
 		return request.get(`/pm/app/actuary/sell/list/${params.projectId}/${params.type}/${params.obtainType}`)
+	} else if (params.isBOM === '1') {
+		return request.get(`/pm/app/actuary/sell/other/list/${params.projectId}/${params.type}`)
 	}
 	return request.get(`/pm/app/actuary/sell/list/${params.projectId}/${params.type}`)
 }
@@ -374,4 +376,9 @@ export function judgeOwner(params) {
 	return request.get(`/order-center/app/goods/stock/judgeOwner`, {
 		params
 	})
+}
+
+// 是否可以操作（换人申请中是否可以操作）
+export function isAllowOperate(serveId) {
+	return request.get(`/pm/app/worker/service/isAllowOperate/${serveId}`)
 }

@@ -19,6 +19,7 @@ function enhanceTim(tim) {
   enhanceSendMessage(tim);
   enhanceGetConversationProfile(tim);
   enhanceGetMessageList(tim);
+  enhanceGetMessageListForCountLimit(tim);
   enhanceGetConversationList(tim);
 }
 
@@ -321,6 +322,62 @@ function enhanceGetMessageList(tim) {
       });
     }
     return _getMessageList(params);
+  }
+}
+
+/**
+ * 增强获取消息列表，处理腾讯IM一次最多获取15条的限制
+ * @param {Object} tim
+ */
+function enhanceGetMessageListForCountLimit(tim) {
+  const _getMessageList = tim.getMessageList;
+  const response = (list, isCompleted, nextID) => ({
+    code: 0,
+    data: {
+      nextReqMessageID: nextID || '',
+      isCompleted: isCompleted || false,
+      messageList: list,
+    }
+  });
+  let requestingConvId = ''; // 请求中的会话id
+  tim.getMessageList = function(params) {
+    console.log("enhance getMessageList for count limit", params);
+    const { conversationID, nextReqMessageID, count } = params;
+    if (conversationID === requestingConvId) {
+      return Promise.reject(new Error("会话在请求中，拒绝再次请求"));
+    }
+    if (count > 15) {
+      return new Promise((resolve, reject) => {
+        requestingConvId = conversationID;
+        let rest = count;
+        let nextId = nextReqMessageID;
+        let list = [];
+        const getNextPage = () => {
+          _getMessageList({ 
+            conversationID: conversationID, 
+            nextReqMessageID: nextId , 
+            count: rest > 15 ? 15 : rest 
+          }).then(imRes => {
+            const { nextReqMessageID, isCompleted, messageList } = imRes.data;
+            nextId = nextReqMessageID;
+            list = list.concat(messageList);
+            rest = rest - 15;
+            if (isCompleted) {
+              requestingConvId = '';
+              resolve(response(list, true, nextReqMessageID));
+            } else if (rest > 0) {
+              getNextPage();
+            } else {
+              requestingConvId = '';
+              resolve(response(list, isCompleted, nextReqMessageID));
+            }
+          })
+        }
+        getNextPage();
+      });
+    } else {
+      return _getMessageList(params);
+    }
   }
 }
 

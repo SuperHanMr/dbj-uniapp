@@ -51,3 +51,8 @@ export function replyMessage(params) {
 export function createC2CChat(params) {
   return request.post('/app/chatSingle/createChat', params);
 }
+
+// 获取群成员信息
+export function getGroupMembers(chatGroupId) {
+  return request.get(`/app/chatGroupMember/${chatGroupId}/getGroupMember`);
+}

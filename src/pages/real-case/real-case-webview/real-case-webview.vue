@@ -48,7 +48,6 @@
 				
 				this.url = this.ENV.VUE_APP_BASE_H5 +
 					`/app-pages/case-detail/case-detail.html?id=${this.id}&height=${this.height}#${token ? token : 0}`
-				console.log(this.url)
 			},
 			loadSuccessHandler(e) {
 				uni.hideLoading();

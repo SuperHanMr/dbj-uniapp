@@ -10,6 +10,7 @@ import {
 import {
   getGroupList,
   getAgentStatus,
+  getGroupMembers,
   createC2CChat
 } from "@/api/message.js";
 
@@ -62,6 +63,7 @@ const message = {
     currentIMUserSig: '',
     conversationList: [], //腾讯会话列表
     chatGroupList: [], //后台返回的群列表
+    currentChatGroupMembers: [], //后台返回的群成员
     groupMembersMap: {}, //按照群id缓存群成员信息
     currentConversation: {},
     currentMessageList: [],
@@ -238,6 +240,9 @@ const message = {
         return true;
       });
     },
+    setChatGroupMembers(state, list) {
+      state.currentChatGroupMembers = list || [];
+    },
     setCustomerAvailable(state, available) {
       state.cstServConv = {
         ...state.cstServConv,
@@ -348,19 +353,38 @@ const message = {
       })
     },
     /**
+     * 从后台获取群成员信息
+     * @param {Object} context
+     * @param {Object} id
+     */
+    requestDBGroupMemberList(context, id) {
+      context.state.currentChatGroupMembers = [];
+      return getGroupMembers(id).then(data => {
+        context.commit("setChatGroupMembers", data);
+      })
+    },
+    /**
      * 获取消息列表
      * 调用时机：打开某一会话时或下拉获取历史消息时
      * @param {Object} context
-     * @param {String} conversationID
+     * @param {String|Object} payload
      */
-    requestMessageList(context, conversationID) {
+    requestMessageList(context, payload) {
+      let conversationID = "";
+      let count = context.state.messagePageSize;
+      if (typeof payload === "object") {
+        conversationID = payload.conversationID;
+        count = payload.count || context.state.messagePageSize;
+      } else {
+        conversationID = payload;
+      }
       console.log("requestMessageList", conversationID, context.state.isCompleted)
       if (context.state.isCompleted) {
         return Promise.resolve();
       }
-      const { nextReqMessageID, messagePageSize, currentMessageList } = context.state
+      const { nextReqMessageID, currentMessageList } = context.state
       context.state.isRequesting = true;
-      return getTim().getMessageList({ conversationID, nextReqMessageID, count: messagePageSize }).then(imReponse => {
+      return getTim().getMessageList({ conversationID, nextReqMessageID, count: count}).then(imReponse => {
         context.state.isRequesting = false;
         context.commit("prependCurrentMessageList", imReponse.data);
       }).catch(err => {
