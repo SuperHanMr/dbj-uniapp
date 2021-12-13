@@ -12,7 +12,7 @@ export function getChangeOrderApi(params) {
  * @param {Object} data
  */
 export function createChangeOrderApi(data) {
-  return request.post('/order-center/app/order/createChangeOrder', data)
+  return request.post('c', data)
 }
 /**
  * @param {Object} params

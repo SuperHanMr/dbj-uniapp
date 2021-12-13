@@ -184,7 +184,7 @@
       },
       {
         "name": "wangbinyan", //模式名称
-        "path": "sub-decorate/pages/no-house/no-house", //启动页面，必选
+        "path": "sub-decorate/pages/gj-process-cost/gj-process-cost", //启动页面，必选
         "query": "" //启动参数，在页面的onLoad函数里面得到
       },
       {

@@ -50,6 +50,13 @@
       <view class="wx" v-if="totalAmount > 0">微信支付</view>
       <view class="store-pay" v-else>储值卡支付</view>
     </view>
+    <view class='remarks'>
+      <text>备注</text>
+      <view class="remark-text">
+        <textarea type="text" maxlength="200" v-model="remarks" auto-height placeholder-class="text-placeholder"
+          style="width:100%;line-height: 46rpx;padding-right: 10rpx;display: inline-block;" placeholder="选填,说点什么～" />
+      </view>
+    </view>
     <view class="pay-wrap">
       <view class="b-t-1" @click="refuse">拒绝申请</view>
       <view class="b-t-1 b-t-p" v-if="changeOrderData.totalAmount > 0" @click="submitCard">同意并支付<text
@@ -60,7 +67,8 @@
           class="price-font">{{(Math.abs(changeOrderData.totalAmount)/100).toFixed(2)}}</text></view>
     </view>
     <uni-popup ref="payDialog" type="bottom">
-      <pay-dialog :payChannelPrice="payChannelPrice" @payOrder="submit(2)" @closePayDialog="closePayDialog"></pay-dialog>
+      <pay-dialog :payChannelPrice="payChannelPrice" @payOrder="submit(2)" @closePayDialog="closePayDialog">
+      </pay-dialog>
     </uni-popup>
   </view>
 </template>
@@ -92,6 +100,7 @@
         isCardPay: false,
         msg: {},
         cardBalance: 0,
+        remarks: "",
         changeOrderData: {}
       };
     },
@@ -150,9 +159,9 @@
         this.isCardPay = value
       },
       submitCard() {
-        if(this.isCardPay) {
+        if (this.isCardPay) {
           this.$refs.payDialog.open();
-        }else {
+        } else {
           this.submit(1)
         }
       },
@@ -169,7 +178,7 @@
           content = ''
         }
         let that = this
-        if(flag === 2) {
+        if (flag === 2) {
           that.createPayOrder()
         } else {
           uni.showModal({
@@ -193,7 +202,7 @@
             fail() {}
           })
         }
-        
+
       },
       refuse() {
         console.log("拒绝申请变更")
@@ -226,6 +235,7 @@
       createPayOrder() {
         //TODO
         let bodyObj = {
+          remarks: this.remarks,
           payType: 1, //"int //支付方式  1微信支付  3国美支付",
           openid: getApp().globalData.openId, //"string //微信openid 小程序支付用 app支付不传或传空",
           sourceId: 100, //"long //订单来源渠道  1app  100小程序",
@@ -233,7 +243,7 @@
           isCardPay: this.isCardPay //"boolean //是否使用储值卡支付  默认false"
         }
         createChangeOrderApi(bodyObj).then(data => {
-          if(!data) {
+          if (!data) {
             // 退款跳转装修首页
             uni.switchTab({
               url: "/pages/decorate/index/index",
@@ -442,6 +452,7 @@
       background-size: 32rpx 32rpx;
       background-repeat: no-repeat;
     }
+
     .store-pay {
       height: 32rpx;
       font-size: 28rpx;
@@ -455,6 +466,32 @@
       background-size: 32rpx 32rpx;
       background-repeat: no-repeat;
     }
+  }
+
+  .remarks {
+    padding: 5rpx 32rpx;
+    background-color: #ffffff;
+    margin-top: 25rpx;
+    font-size: 28rpx;
+    font-family: PingFangSC, PingFangSC-Regular;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    height: 104rpx;
+    line-height: 104rpx;
+  }
+
+  .remarks text {
+    min-width: 180rpx;
+  }
+
+  .remarks view {
+    flex: 1;
+    overflow: scroll;
+  }
+
+  .remark-text {
+    height: 100%;
   }
 
   .pay-wrap {
