@@ -4,7 +4,7 @@
 		<view>
 			<view class="container">
 				<view v-if="refundType==2" class="server-order-tip">
-					<view class="icon-icon_order_tips" style="font-size: 36rpx;margin-right: 12rpx;">
+					<view class="icon-icon_order_tips" style="font-size: 28rpx;margin-right: 12rpx;">
 					</view>
 					<view>
 						若您想对服务的内容做调整，您可以联系管家发起变更申请，一旦发起退款且通过后，该服务会记为结束
@@ -556,6 +556,7 @@
 
 <style lang="scss" scoped>
 	.header-title {
+		margin-bottom: 32rpx;
 		.title {
 			font-weight: 500;
 			color: #333333;
