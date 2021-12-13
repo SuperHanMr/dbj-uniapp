@@ -21,7 +21,7 @@
 					<view v-if="type == 'whole' && !refundId ">
 
 						<view v-for="(item2,index2) in refundInfo.detailAppVOS" :key="index2">
-							<view v-if="item2.isOriginalOrder&&refundInfo.detailAppVOS.length>1" class="header-title">
+							<view v-if="item2.isOriginalOrder" class="header-title">
 								<text class="title"> 原始订单</text>
 								<text class="tip">(该订单为购买该服务的首笔订单)</text>
 							</view>
@@ -48,7 +48,7 @@
 
 					<view v-if="type == 'partical' && !refundId ">
 						<view v-for="item4 in refundInfo.detailAppVOS" :key="item4.id">
-							<view v-if="item4.isOriginalOrder&&refundInfo.detailAppVOS.length>1" class="header-title">
+							<view v-if="item4.isOriginalOrder" class="header-title">
 								<text class="title"> 原始订单</text>
 								<text class="tip">(该订单为购买该服务的首笔订单)</text>
 							</view>
