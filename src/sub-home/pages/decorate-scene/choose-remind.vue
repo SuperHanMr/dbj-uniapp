@@ -1,16 +1,18 @@
 <template>
 	<view class="choose-remind">
-		<view class="remindItem" @click="checkC(index)"
-			v-for="(item,index) in list" :key="item.userId"
-		>
-			<view class="userInfo">
-				<image class="avatar" :src="item.avatar+'?x-oss-process=image/resize,m_mfit,w_44,h_44'"></image>
-				<view class="userName">{{item.name}}</view>
-				<view class="role">{{item.role}}</view>
+		<scroll-view scroll-y="true" >
+			<view class="remindItem" @click="checkC(index)"
+				v-for="(item,index) in list" :key="item.userId"
+			>
+				<view class="userInfo">
+					<image class="avatar" :src="item.avatar+'?x-oss-process=image/resize,m_mfit,w_44,h_44'"></image>
+					<view class="userName">{{item.name}}</view>
+					<view class="role">{{item.role}}</view>
+				</view>
+				<image v-if="!item.isChecked" class="img" src="https://ali-image.dabanjia.com/static/mp/dabanjia/images/home/check%402x.png"></image>
+				<image v-else class="img" src="https://ali-image.dabanjia.com/static/mp/dabanjia/images/home/ic_reminder_checked%402x.png"></image>
 			</view>
-			<image v-if="!item.isChecked" class="img" src="https://ali-image.dabanjia.com/static/mp/dabanjia/images/home/check%402x.png"></image>
-			<image v-else class="img" src="https://ali-image.dabanjia.com/static/mp/dabanjia/images/home/ic_reminder_checked%402x.png"></image>
-		</view>
+		</scroll-view>
 		<view class="confirm" @click="confirmC">确认</view>
 	</view>
 </template>
@@ -54,9 +56,13 @@
 				getAddressBook(this.projectId).then(data => {
 					if(data){
 						if(!data.length)return
-						this.list = data.map(item => {
+						let obj = {}
+						data.forEach(item => {
 							item.isChecked = false
-							return item
+							if(!obj[item.userId]){
+								obj[item.userId] = 1
+								this.list.push(item)
+							}
 						})
 					}
 				})

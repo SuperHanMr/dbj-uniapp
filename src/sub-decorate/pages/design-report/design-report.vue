@@ -34,7 +34,8 @@
 <script>
   import {
     confirmDesignReport,
-    serverReports
+    serverReports,
+    isAllowOperate
   } from "../../../api/decorate.js"
   import {
     calendarFormat
@@ -62,9 +63,7 @@
             if (res.confirm) {
               console.log("点击了确认")
               confirmDesignReport(this.decorateMsg.serveId).then(data => {
-                uni.navigateBack({
-
-                })
+                uni.navigateBack({})
               })
             } else {
               console.log("点击了取消")
@@ -72,22 +71,62 @@
           }
         })
       },
+
       customReport() {
         const {
           customReport
         } = this.detail
-        const token = uni.getStorageSync("scn")
-        uni.navigateTo({
-          url: `/sub-decorate/pages/custom-report/custom-report?token=${token}&id=${customReport.id}`
+        isAllowOperate(customReport.serveId).then(res => {
+          const token = uni.getStorageSync("scn")
+          uni.navigateTo({
+            url: `/sub-decorate/pages/custom-report/custom-report?token=${token}&id=${customReport.id}`
+          })
+        }).catch(res => {
+          if (res.code === 6959) {
+            uni.showToast({
+              title: "已申请退款",
+              icon: "error",
+            })
+          } else if (res.code === 6962) {
+            uni.showToast({
+              title: "变更服务者",
+              icon: "error",
+            })
+          } else if (res.code === 6966) {
+            uni.showToast({
+              title: "变更单进行中",
+              icon: "error",
+            })
+          }
         })
       },
       beatifulReport() {
         const {
           beautyReport
         } = this.detail
-        const token = uni.getStorageSync("scn")
-        uni.navigateTo({
-          url: `/sub-decorate/pages/beatiful-report/beatiful-report?token=${token}&serveId=${beautyReport.serveId}&themeId=${beautyReport.templateId}&id=${beautyReport.id}`
+        isAllowOperate(beautyReport.serveId).then(res => {
+          console.log(">>>>>>>data>>>>>>>>>:", res)
+          const token = uni.getStorageSync("scn")
+          uni.navigateTo({
+            url: `/sub-decorate/pages/beatiful-report/beatiful-report?token=${token}&serveId=${beautyReport.serveId}&themeId=${beautyReport.templateId}&id=${beautyReport.id}`
+          })
+        }).catch(res => {
+          if (res.code === 6959) {
+            uni.showToast({
+              title: "已申请退款",
+              icon: "error",
+            })
+          } else if (res.code === 6962) {
+            uni.showToast({
+              title: "变更服务者",
+              icon: "error",
+            })
+          } else if (res.code === 6966) {
+            uni.showToast({
+              title: "变更单进行中",
+              icon: "error",
+            })
+          }
         })
       },
       getPorts() {
@@ -214,6 +253,7 @@
 
   .lookDetail {
     width: 130rpx;
+
     view {
       height: 36rpx;
       font-size: 26rpx;

@@ -2711,6 +2711,23 @@
       "subTitle": "已为您取消了${serveTypeName}的更换申请"
     }
   },
+  "sys_change_order_owner_confirm": {
+      "type": "sys_change_order_owner_confirm",
+      "template": "form",
+      "summary": "${applicantRoleNm}在${housingEstate}${address}，发起${workTypeName}施工项变更申请~",
+      "body": {
+        "title": "${workTypeName}施工项变更申请",
+        "subTitle": "${applicantRoleNm}在${housingEstate}${address}，发起${workTypeName}施工项变更申请~",
+        "actions": [
+          {
+            "title": "查看详情",
+            "type": "native_uri",
+            "userType": 1,
+            "targetRoute": "待办列表"
+          }
+        ]
+      }
+    },
   "custom_agant_coming": {
     "type": "custom_agant_coming",
     "template": "tip2",

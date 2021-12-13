@@ -187,13 +187,18 @@ export function replaceServe(params) {
 }
 
 //查询变更单列表
-export function getListChangeOrders(params) {
-	return request.get("/pm/web/changeOrder/list/owner?stateType="+params)
+export function getListChangeOrders(params,id) {
+	return request.get("/pm/web/changeOrder/list/owner?stateType="+params+'&projectId='+id)
 }
 
 //拒绝变更单申请
 export function rejectChangeOrder(params) {
-	return request.get("/pm/app/changeOrder/rejectChangeOrder",{params})
+	return request.post("/pm/app/changeOrder/doRejectChangeOrder",params)
+}
+
+//查询拒绝变更单原因
+export function rejectReson(params) {
+	return request.get("/pm/app/changeOrder/listRejectReasons?type=2")
 }
 
 //获取施工交付内容
@@ -369,4 +374,9 @@ export function judgeOwner(params) {
 	return request.get(`/order-center/app/goods/stock/judgeOwner`, {
 		params
 	})
+}
+
+// 是否可以操作（换人申请中是否可以操作）
+export function isAllowOperate(serveId) {
+	return request.get(`/pm/app/worker/service/isAllowOperate/${serveId}`)
 }
