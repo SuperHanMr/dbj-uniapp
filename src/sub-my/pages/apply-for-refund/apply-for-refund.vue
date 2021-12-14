@@ -13,9 +13,20 @@
 				<view class="product-container">
 					<view v-if="type == 'whole' && refundId ">
 						<view v-for="(item1,index1) in refundInfo.details" :key="index1">
-							<order-item v-if="item1.type !==5" :refundType="true" :orderType="refundType"
-								:dataList="item1" :showIcon="true"></order-item>
-							<store-calue-card-item v-else :refundType="true" :dataInfo="item1" />
+							<view v-if="item1.isOriginalOrder" class="header-title">
+								<text class="title"> 原始订单</text>
+								<text class="tip">(该订单为购买该服务的首笔订单)</text>
+							</view>
+							<view v-if="!item1.isOriginalOrder&&refundInfo.details.length>1" class="header-title">
+								<text class="title"> 补单</text>
+								<text class="tip">(该订单为购买该服务除首笔订单外的后续补单)</text>
+							</view>
+						<view v-for="(item1Item,index1Item) in item1.detailAppVOS" :key="item1Item.id">
+
+							<order-item v-if="item1Item.type !==5" :refundType="true" :orderType="refundType"
+								:dataList="item1Item" :showIcon="true"></order-item>
+							<store-calue-card-item v-else :refundType="true" :dataInfo="item1Item" />
+							</view>
 						</view>
 					</view>
 					<view v-if="type == 'whole' && !refundId ">
