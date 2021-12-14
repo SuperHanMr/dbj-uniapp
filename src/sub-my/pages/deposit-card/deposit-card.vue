@@ -9,7 +9,7 @@
           <view>.{{(balance/100).toFixed(2).split('.')[1]}}</view>
         </view>
         <view class="bill" @click="toBillingDetails">账单明细</view>
-        <view class="freeze">已被冻结金额：¥10.00</view>
+        <!-- <view class="freeze">已被冻结金额：¥10.00</view> -->
       </view>
       <view class="noList" v-if="noList">
         <image src="https://ali-image.dabanjia.com/static/mp/dabanjia/images/my/img_sys_city.png"></image>
