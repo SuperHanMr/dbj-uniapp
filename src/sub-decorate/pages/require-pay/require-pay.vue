@@ -151,18 +151,7 @@
 				cardClick: false,
 				haveCard: false, //是否有会员卡
 				cardBalance: 0, //会员卡余额
-				couponList: [{
-						id: 1,
-					},
-					{
-						id: 2,
-					},
-					{
-						id: 3,
-					},
-					{
-						id: 4,
-					},
+				couponList: [
 				],
 				selectCoupon: {
 					total: 10000,
