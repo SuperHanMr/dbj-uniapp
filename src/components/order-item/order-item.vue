@@ -224,7 +224,7 @@
 		display: flex;
 		flex: 1;
 		align-items: center;
-		height: 136rpx;
+		// height: 136rpx;
 		// padding-bottom:32rpx;
 		flex-flow: row nowrap;
 		.pic{
