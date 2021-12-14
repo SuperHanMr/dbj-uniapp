@@ -65,42 +65,49 @@
         })
       },
       actions() {
-        return (this.template.body.actions || [])
-          .filter(action => action.isDisplay === undefined || (action.type === "native" && action.isDisplay))
+        return this.template.body.actions || [];
       }
     },
     methods: {
       handleClick(btn) {
-        if (btn.targetRouter === "evalute") {
-          let params = btn.params;
-          let serviceId = compile(params.serviceId)(this.data);
-          let serviceType = compile(params.serviceType)(this.data);
-          let serverName = compile(params.serverName)(this.data);
-          let serverRoleName = compile(params.serverRoleName)(this.data);
-          let serverAvatar = compile(params.serverAvatar)(this.data);
-          evaluateDetail({
-            id: serviceId
-          }).then(data => {
-            if (data.commentStatus === 1) { //已评价
-              uni.navigateTo({
-                url: `/sub-my/pages/evaluate/evaluate-detail/evaluate-detail?id=${serviceId}`
-              })
-            } else {
+        if (btn.type === "native") { // 需要本地手动处理按钮动作
+          if (btn.targetRouter === "evalute") { // 去评价的消息
+            let params = btn.params;
+            let serviceId = compile(params.serviceId)(this.data);
+            let serviceType = compile(params.serviceType)(this.data);
+            let serverName = compile(params.serverName)(this.data);
+            let serverRoleName = compile(params.serverRoleName)(this.data);
+            let serverAvatar = compile(params.serverAvatar)(this.data);
+            evaluateDetail({
+              id: serviceId
+            }).then(data => {
+              if (data.commentStatus === 1) { //已评价
+                uni.navigateTo({
+                  url: `/sub-my/pages/evaluate/evaluate-detail/evaluate-detail?id=${serviceId}`
+                })
+              } else {
+                uni.navigateTo({
+                  url: `/sub-my/pages/evaluate/immediate-evaluate/immediate-evaluate?id=${serviceId}&type=${serviceType}&serverName=${serverName}&serverRoleName=${serverRoleName}&serverAvatar=${serverAvatar}`,
+                })
+              }
+            }).catch(e => {
               uni.navigateTo({
                 url: `/sub-my/pages/evaluate/immediate-evaluate/immediate-evaluate?id=${serviceId}&type=${serviceType}&serverName=${serverName}&serverRoleName=${serverRoleName}&serverAvatar=${serverAvatar}`,
               })
-            }
-          }).catch(e => {
-            uni.navigateTo({
-              url: `/sub-my/pages/evaluate/immediate-evaluate/immediate-evaluate?id=${serviceId}&type=${serviceType}&serverName=${serverName}&serverRoleName=${serverRoleName}&serverAvatar=${serverAvatar}`,
+            });
+          } else if (btn.targetRouter === "toDoListDecorate") {
+            let params = btn.params;
+            let projectId = +compile(params.projectId)(this.data);
+            getApp().globalData.msgProjectId = projectId;
+            uni.switchTab({
+              url: `/pages/decorate/index/index`
             })
+          }
+        } else if (btn.type === "native_uri") { // 跳转页面处理
+          let url = compile(btn.targetRouter)(this.data);
+          uni.navigateTo({
+            url: url
           });
-        } else {
-          const projectId = this.message?.payloadData?.params?.projectId
-          getApp().globalData.msgProjectId = projectId
-          uni.switchTab({
-            url: `/pages/decorate/index/index`
-          })
         }
       }
     }
