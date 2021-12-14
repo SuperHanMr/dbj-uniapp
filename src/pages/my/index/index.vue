@@ -109,12 +109,12 @@
 				userId: "",
 				MarketStoreSwitch:false,
 				list: [
-					{
-						key: "2",
-						image: "../../../static/order/images/ic_coupon.svg",
-						value: "优惠券",
-						url: "../../../sub-my/pages/coupon-list/coupon-list",
-					},
+					// {
+					// 	key: "2",
+					// 	image: "../../../static/order/images/ic_coupon.svg",
+					// 	value: "优惠券",
+					// 	url: "../../../sub-my/pages/coupon-list/coupon-list",
+					// },
 					{
 						key: "3",
 						image: "../../../static/order/images/shopping_Cart.png",
