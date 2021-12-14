@@ -193,7 +193,7 @@ export function getListChangeOrders(params,id) {
 
 //拒绝变更单申请
 export function rejectChangeOrder(params) {
-	return request.get("/pm/app/changeOrder/rejectChangeOrder",{params})
+	return request.post("/pm/app/changeOrder/doRejectChangeOrder",params)
 }
 
 //查询拒绝变更单原因

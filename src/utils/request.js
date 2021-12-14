@@ -70,11 +70,13 @@ instance.interceptors.request.use(
 			}
 			requestTimeMap.set(config, new Date().getTime());
 			const token = getApp().globalData.token;
-
+			const ip = getApp().globalData.ip;
+			
 			if (token) {
 				config.headers = {
 					...(config.headers ?? {}),
 					accessToken: `${token}`,
+					user_real_ip:`${ip}`
 				};
 			}
 			return config;

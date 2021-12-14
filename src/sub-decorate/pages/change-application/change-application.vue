@@ -193,7 +193,8 @@
                 if (flag === 1 || flag === -1) {
                   that.createPayOrder()
                 } else if (flag === 0) {
-                  that.agreeChangeOrder()
+                  that.createPayOrder()
+                  // that.agreeChangeOrder()
                 }
               } else if (res.cancel) {
                 console.log('用户取消了变更单申请的提交');
