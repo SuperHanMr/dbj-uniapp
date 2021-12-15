@@ -529,6 +529,7 @@
           projectId: this.msg.projectId,
           type: this.msg.serviceType,
         };
+				// 精算立即购买跳转的也需要赋值obtainType
         if (!this.partpay || this.msg.isActuarial === '1') {
           params.obtainType = this.msg.obtainType;
         }
