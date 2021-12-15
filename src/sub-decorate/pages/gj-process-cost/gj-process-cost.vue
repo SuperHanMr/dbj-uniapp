@@ -126,7 +126,8 @@
     },
     onLoad(option) {
       const {
-        partpay
+        partpay,
+				isActuarial
       } = option;
       console.log(option, 'optionoption>>>>>>>>>>>>')
       if (partpay) {
@@ -134,7 +135,11 @@
           ...option,
         };
         this.partpay = partpay;
-      } else {
+      } else if (isActuarial === '1') {
+				this.msg = {
+				  ...option,
+				};
+			} else {
         console.log(getApp().globalData.decorateMsg);
         this.msg = getApp().globalData.decorateMsg;
       }
@@ -524,7 +529,7 @@
           projectId: this.msg.projectId,
           type: this.msg.serviceType,
         };
-        if (!this.partpay) {
+        if (!this.partpay || this.msg.isActuarial === '1') {
           params.obtainType = this.msg.obtainType;
         }
         console.log(">>>>>>>params>>>>>>>", params);
