@@ -32,7 +32,8 @@
     compileTemplateStr as compile
   } from "@/utils/util.js";
   import {
-    evaluateDetail
+    evaluateDetail,
+    getRefundDetail
   } from "@/api/order.js"
   export default {
     name: "FormTemplate",
@@ -95,13 +96,34 @@
                 url: `/sub-my/pages/evaluate/immediate-evaluate/immediate-evaluate?id=${serviceId}&type=${serviceType}&serverName=${serverName}&serverRoleName=${serverRoleName}&serverAvatar=${serverAvatar}`,
               })
             });
-          } else if (btn.targetRouter === "toDoListDecorate") {
+          } else if (btn.targetRouter === "toDoListDecorate") { // 跳转装修待办列表
             let params = btn.params;
             let projectId = +compile(params.projectId)(this.data);
             getApp().globalData.msgProjectId = projectId;
             uni.switchTab({
               url: `/pages/decorate/index/index`
             })
+          } else if (btn.targetRouter === "refundDetail") { // 跳转退款详情
+            let params = btn.params;
+            let refundId = +compile(params.refundId)(this.data);
+            getRefundDetail({
+              id: refundId
+            }).then(data => {
+              if(data.status == 0 || data.status == 1 ){
+                uni.navigateTo({
+                  url:`/sub-my/pages/refund-list/refunding-detail/refunding-detail?id=${data.id}`
+                })
+              }else if(data.status == 2){
+                uni.navigateTo({
+                  url:`/sub-my/pages/my-order/order-success/order-success?type=refund&id=${data.id}`
+                })
+              }else{
+                uni.navigateTo({
+                  url:`/sub-my/pages/my-order/order-failed/order-failed?type=refund&id=${data.id}&status=${data.status}&showReApply=true`
+                })
+              }
+            })
+            
           }
         } else if (btn.type === "native_uri") { // 跳转页面处理
           let url = compile(btn.targetRouter)(this.data);

@@ -2378,7 +2378,19 @@
     "summary": "您发起的${serveTypeName}退款申请已退款成功",
     "body": {
       "title": "${serveTypeName}退款通知",
-      "subTitle": "您发起的${serveTypeName}退款申请已退款成功"
+      "subTitle": "您发起的${serveTypeName}退款申请已退款成功",
+      "actions": [
+        {
+          "title": "查看详情",
+          "type": "native",
+          "targetRouter": "refundDetail",
+          "params": {
+            "status": "${status}",
+            "orderId": "${orderId}",
+            "refundId": "${refundId}"
+          }
+        }
+      ]
     }
   },
   "sys_customer_refund_fail": {
@@ -2387,7 +2399,19 @@
     "summary": "您发起的${serveTypeName}退款申请退款失败了～",
     "body": {
       "title": "${serveTypeName}退款通知",
-      "subTitle": "您发起的${serveTypeName}退款申请退款失败了～"
+      "subTitle": "您发起的${serveTypeName}退款申请退款失败了～",
+      "actions": [
+        {
+          "title": "查看详情",
+          "type": "native",
+          "targetRouter": "refundDetail",
+          "params": {
+            "status": "${status}",
+            "orderId": "${orderId}",
+            "refundId": "${refundId}"
+          }
+        }
+      ]
     }
   },
   "sys_customer_refund_cancel": {
@@ -2396,7 +2420,19 @@
     "summary": "您发起的${serveTypeName}退款申请已关闭",
     "body": {
       "title": "${serveTypeName}退款通知",
-      "subTitle": "您发起的${serveTypeName}退款申请已关闭"
+      "subTitle": "您发起的${serveTypeName}退款申请已关闭",
+      "actions": [
+        {
+          "title": "查看详情",
+          "type": "native",
+          "targetRouter": "refundDetail",
+          "params": {
+            "status": "${status}",
+            "orderId": "${orderId}",
+            "refundId": "${refundId}"
+          }
+        }
+      ]
     }
   },
   "sys_change_order_owner_confirm": {
