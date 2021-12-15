@@ -95,54 +95,56 @@
       </view>
     </view>
     <uni-popup ref="userListPop" type="bottom">
-      <cover-view class="pop-container">
-        <cover-view class="pop-header">
-          <cover-view class="pop-title">
+      <view class="pop-container">
+        <view class="pop-header">
+          <view class="pop-title">
             选择提醒的人
-          </cover-view>
-          <cover-view class="pop-close icon-closed" @click="closeUserListPop">
-          </cover-view>
-        </cover-view>
-        <cover-view class="pop-body" style="overflow-y: scroll;">
-          <cover-view class="user-item" @click="handleAtUser({nick: '所有人', userID: 'zeus_0'})">
-            <cover-view class="user-avatar">
-              <cover-view class="all-user-tag">ALL</cover-view>
-            </cover-view>
-            <cover-view class="user-info">
-              <cover-view class="user-name">
-                所有人
+          </view>
+          <view class="pop-close icon-closed" @click="closeUserListPop">
+          </view>
+        </view>
+        <view class="pop-body" style="overflow-y: scroll;">
+          <cover-view class="user-list">
+            <cover-view class="user-item" @click="handleAtUser({nick: '所有人', userID: 'zeus_0'})">
+              <cover-view class="user-avatar">
+                <cover-image class="avatar" mode="aspectFill" src="https://ali-image.dabanjia.com/static/mp/dabanjia/images/message/ic_at_all.png"></cover-image>
               </cover-view>
-              <cover-view class="user-flag">
-                <cover-view class="all-user-tip">
-                  提示所有成员
+              <cover-view class="user-info">
+                <cover-view class="user-name">
+                  所有人
+                </cover-view>
+                <cover-view class="user-flag">
+                  <cover-view class="all-user-tip">
+                    提示所有成员
+                  </cover-view>
+                </cover-view>
+              </cover-view>
+            </cover-view>
+            <cover-view v-for="(member,index) in memberList" :key="member.userID" class="user-item" @click="handleAtUser(member)">
+              <cover-view class="user-avatar">
+                <cover-image class="avatar" mode="aspectFill" :src="member.avatar"></cover-image>
+              </cover-view>
+              <cover-image v-if="member.role && member.role.type === 1" class="home_owner_flag" src="https://ali-image.dabanjia.com/static/mp/dabanjia/images/message/home_ower_flag.png"></cover-image>
+              <cover-view class="user-info">
+                <cover-view class="user-name">
+                  {{ member.nick }}
+                </cover-view>
+                <cover-view v-if="member.role" class="user-flag">
+                  <cover-view v-if="member.role.type === 1" class="user-tag">
+                    业主
+                  </cover-view>
+                  <cover-view v-else-if="member.role.type === 2" class="user-tag">
+                    亲友·{{ member.role.relativeRelationName }}
+                  </cover-view>
+                  <cover-view v-else-if="member.role.type === 3" class="job-tag">
+                    {{ member.role.typeName }}
+                  </cover-view>
                 </cover-view>
               </cover-view>
             </cover-view>
           </cover-view>
-          <cover-view v-for="(member,index) in memberList" :key="member.userID" class="user-item" @click="handleAtUser(member)">
-            <cover-view class="user-avatar">
-              <cover-image class="avatar" mode="aspectFill" :src="member.avatar"></cover-image>
-            </cover-view>
-            <cover-image v-if="member.role && member.role.type === 1" class="home_owner_flag" src="https://ali-image.dabanjia.com/static/mp/dabanjia/images/message/home_ower_flag.png"></cover-image>
-            <cover-view class="user-info">
-              <cover-view class="user-name">
-                {{ member.nick }}
-              </cover-view>
-              <cover-view v-if="member.role" class="user-flag">
-                <cover-view v-if="member.role.type === 1" class="user-tag">
-                  业主
-                </cover-view>
-                <cover-view v-else-if="member.role.type === 2" class="user-tag">
-                  亲友·{{ member.role.relativeRelationName }}
-                </cover-view>
-                <cover-view v-else-if="member.role.type === 3" class="job-tag">
-                  {{ member.role.typeName }}
-                </cover-view>
-              </cover-view>
-            </cover-view>
-          </cover-view>
-        </cover-view>
-      </cover-view>
+        </view>
+      </view>
     </uni-popup>
   </view>
 </template>
@@ -924,6 +926,10 @@
     flex: 1;
     overflow-y: scroll;
   }
+  .user-list {
+    min-height: 100%;
+    background-color: #fff;
+  }
   .user-item {
     width: 100%;
     height: 140rpx;
@@ -935,21 +941,6 @@
   }
   .user-item:active {
     background-color: #fafafa;
-  }
-  .all-user-tag {
-    width: 96rpx;
-    height: 96rpx;
-    text-align: center;
-    line-height: 96rpx;
-    border-radius: 8px;
-    background: #00C2B8;
-    border: 1px solid #F2F2F2;
-    box-sizing: border-box;
-    font-size: 16px;
-    color: #fff;
-    display: flex;
-    align-items: center;
-    justify-content: center;
   }
   .all-user-tip {
     font-size: 11px;
