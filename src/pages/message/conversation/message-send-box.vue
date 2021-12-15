@@ -21,6 +21,7 @@
         @keyboardheightchange="handleKeyboradHeightChange"
         @input="handleInput"
         @blur="inputFocus = false"
+        @focus="inputFocus = true"
       />
       <view
         v-show="showRecordBtn"
@@ -94,54 +95,54 @@
       </view>
     </view>
     <uni-popup ref="userListPop" type="bottom">
-      <view class="pop-container">
-        <view class="pop-header">
-          <view class="pop-title">
+      <cover-view class="pop-container">
+        <cover-view class="pop-header">
+          <cover-view class="pop-title">
             选择提醒的人
-          </view>
-          <view class="pop-close icon-closed" @click="closeUserListPop">
-          </view>
-        </view>
-        <view class="pop-body">
-          <view class="user-item" @click="handleAtUser({nick: '所有人', userID: 'zeus_0'})">
-            <view class="user-avatar">
-              <view class="all-user-tag">ALL</view>
-            </view>
-            <view class="user-info">
-              <view class="user-name">
+          </cover-view>
+          <cover-view class="pop-close icon-closed" @click="closeUserListPop">
+          </cover-view>
+        </cover-view>
+        <cover-view class="pop-body" style="overflow-y: scroll;">
+          <cover-view class="user-item" @click="handleAtUser({nick: '所有人', userID: 'zeus_0'})">
+            <cover-view class="user-avatar">
+              <cover-view class="all-user-tag">ALL</cover-view>
+            </cover-view>
+            <cover-view class="user-info">
+              <cover-view class="user-name">
                 所有人
-              </view>
-              <view class="user-flag">
-                <view class="all-user-tip">
+              </cover-view>
+              <cover-view class="user-flag">
+                <cover-view class="all-user-tip">
                   提示所有成员
-                </view>
-              </view>
-            </view>
-          </view>
-          <view v-for="(member,index) in memberList" :key="member.userID" class="user-item" @click="handleAtUser(member)">
-            <view class="user-avatar">
-              <image class="avatar" mode="aspectFill" :src="member.avatar"></image>
-              <image v-if="member.role && member.role.type === 1" class="home_owner_flag" src="https://ali-image.dabanjia.com/static/mp/dabanjia/images/message/home_ower_flag.png"></image>
-            </view>
-            <view class="user-info">
-              <view class="user-name">
+                </cover-view>
+              </cover-view>
+            </cover-view>
+          </cover-view>
+          <cover-view v-for="(member,index) in memberList" :key="member.userID" class="user-item" @click="handleAtUser(member)">
+            <cover-view class="user-avatar">
+              <cover-image class="avatar" mode="aspectFill" :src="member.avatar"></cover-image>
+            </cover-view>
+            <cover-image v-if="member.role && member.role.type === 1" class="home_owner_flag" src="https://ali-image.dabanjia.com/static/mp/dabanjia/images/message/home_ower_flag.png"></cover-image>
+            <cover-view class="user-info">
+              <cover-view class="user-name">
                 {{ member.nick }}
-              </view>
-              <view v-if="member.role" class="user-flag">
-                <view v-if="member.role.type === 1" class="user-tag">
+              </cover-view>
+              <cover-view v-if="member.role" class="user-flag">
+                <cover-view v-if="member.role.type === 1" class="user-tag">
                   业主
-                </view>
-                <view v-else-if="member.role.type === 2" class="user-tag">
+                </cover-view>
+                <cover-view v-else-if="member.role.type === 2" class="user-tag">
                   亲友·{{ member.role.relativeRelationName }}
-                </view>
-                <view v-else-if="member.role.type === 3" class="job-tag">
+                </cover-view>
+                <cover-view v-else-if="member.role.type === 3" class="job-tag">
                   {{ member.role.typeName }}
-                </view>
-              </view>
-            </view>
-          </view>
-        </view>
-      </view>
+                </cover-view>
+              </cover-view>
+            </cover-view>
+          </cover-view>
+        </cover-view>
+      </cover-view>
     </uni-popup>
   </view>
 </template>
@@ -319,6 +320,7 @@
           } else {
             // 是否输入@符号
             if (value[cursor - 1] === "@") {
+              this.inputFocus = false;
               this.inputCursor = cursor;
               this.$refs.userListPop.open();
             }
@@ -329,6 +331,9 @@
       closeUserListPop() {
         this.inputCursor = 0;
         this.$refs.userListPop.close();
+        this.$nextTick(() => {
+          this.inputFocus = true;
+        })
       },
       handleAtUser(user) {
         let {nick, userID} = user;
@@ -917,7 +922,7 @@
   }
   .pop-body {
     flex: 1;
-    overflow-y: auto;
+    overflow-y: scroll;
   }
   .user-item {
     width: 100%;
@@ -925,8 +930,8 @@
     box-sizing: border-box;
     display: flex;
     flex-flow: row nowrap;
-    padding: 0 32rpx;
     align-items: center;
+    position: relative;
   }
   .user-item:active {
     background-color: #fafafa;
@@ -934,6 +939,8 @@
   .all-user-tag {
     width: 96rpx;
     height: 96rpx;
+    text-align: center;
+    line-height: 96rpx;
     border-radius: 8px;
     background: #00C2B8;
     border: 1px solid #F2F2F2;
@@ -954,13 +961,16 @@
   }
   .user-avatar {
     position: relative;
+    margin-left: 32rpx;
+    flex: none;
   }
   .home_owner_flag {
     width: 16px;
     height: 16px;
     position: absolute;
-    right: -3px;
-    bottom: -3px;
+    z-index: 10;
+    left: 110rpx;
+    top: 92rpx;
   }
   .user-avatar .avatar {
     border-radius: 8px;
@@ -969,11 +979,14 @@
   }
   .user-info {
     margin-left: 24rpx;
+    margin-right: 32rpx;
+    max-width: 100%;
   }
   .user-name {
     font-size: 14px;
     color: #333;
     line-height: 40rpx;
+    text-overflow: ellipsis;
   }
   .user-flag {
     margin-top: 8rpx;
