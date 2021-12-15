@@ -72,7 +72,7 @@ import {  getRefundDetail,cancelRefund,confirmReceiptOrder } from "../../../../a
 export default {
   data() {
     return {
-      orderId: "",
+      id: "",
 			refundInfo:{},
 			orderType:"",
 			systemBottom: "",
@@ -96,7 +96,7 @@ export default {
 		this.scrollTop = scrollTop.scrollTop
 	},
   onLoad(e) {
-		this.orderId =Number(e.orderId);
+		this.id =Number(e.id);
 		this.refundDetail()
 		this.headerTitle = "退款详情"
 		const systemInfo = uni.getSystemInfoSync();
@@ -140,7 +140,7 @@ export default {
 		},
 
 		refundDetail(){
-			getRefundDetail({ id: this.orderId }).then(e=>{
+			getRefundDetail({ id: this.id }).then(e=>{
 			console.log("打印请求回来的数据=",e,"e")
 				this.refundInfo = e
 				this.orderType=this.refundInfo.type
@@ -165,14 +165,14 @@ export default {
       this.$refs.cancelRefund.close();
     },
     confirmCancelToPay(value) {
-      // 调用申请退款的接口、
-			cancelRefund({id:this.orderId }).then(e=>{
+      // 调用申请退款的接口
+			cancelRefund({id:this.id }).then(e=>{
 				console.log(e)
 				// 成功就关闭弹框
 				// 跳转到退款关闭页面  退款取消页面
 				this.$refs.cancelRefund.close();
 				uni.redirectTo({
-					url:`../../my-order/order-failed/order-failed?type=refund&id=${this.orderId}&status=4&from=inprogress`
+					url:`../../my-order/order-failed/order-failed?type=refund&id=${this.id}&status=4&from=inprogress`
 				})
 			})
     },

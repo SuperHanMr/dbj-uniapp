@@ -215,9 +215,10 @@
 			goToDetail(data){
 				console.log("去详情页面","data",data.status,data.type)
 				// if(data.type == 5) return 
+				// data.id是退款单id
 				if(data.status == 0 || data.status == 1 ){
 					uni.navigateTo({
-						url:`refunding-detail/refunding-detail?orderId=${data.id}`
+						url:`refunding-detail/refunding-detail?id=${data.id}`
 					})
 				}else if(data.status == 2){
 					uni.navigateTo({
