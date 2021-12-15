@@ -96,7 +96,7 @@
                 <view class="text">展开{{item.secondCount}}条回复</view>
                 <image
                   class="img"
-                  src="../../static/ic_expand@2x.png"
+                  src="https://ali-image.dabanjia.com/static/mp/dabanjia/images/home/ic_expand%402x.png"
                 ></image>
               </view>
               <view
@@ -107,7 +107,7 @@
                 <view class="test">收起</view>
                 <image
                   class="img"
-                  src="../../static/ic_packUp@2x.png"
+                  src="https://ali-image.dabanjia.com/static/mp/dabanjia/images/home/ic_packUp%402x.png"
                 ></image>
               </view>
             </view>
