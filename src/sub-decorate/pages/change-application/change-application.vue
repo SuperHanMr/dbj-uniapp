@@ -54,7 +54,7 @@
       <text>备注</text>
       <view class="remark-text">
         <textarea type="text" maxlength="200" v-model="remarks" auto-height placeholder-class="text-placeholder"
-          style="width:100%;line-height: 46rpx;padding-right: 10rpx;display: inline-block;" placeholder="选填,说点什么～" />
+          style="width:100%;line-height: 46rpx;padding-right: 10rpx;display: inline-block;min-height: 100rpx;" placeholder="选填,说点什么～" />
       </view>
     </view>
     <view class="pay-wrap">
