@@ -73,7 +73,7 @@
     "url-parse": "^1.4.7"
   },
   "devDependencies": {
-    "@babel/runtime": "~7.12.0",
+    "@babel/runtime": "~7.15.3",
     "@dcloudio/types": "*",
     "@dcloudio/uni-automator": "^2.0.0-31920210709003",
     "@dcloudio/uni-cli-shared": "^2.0.0-31920210709003",

@@ -7,7 +7,7 @@
 			<view class="tabbar">
 				<view class="tabbar-switch-box">
 					<view :class="selectStatus == index ? 'selectStatus' : 'tabbar-switch'"
-						v-for="(item, index) in items" @tap="changeTabs(index)">
+						v-for="(item, index) in items" :key="index" @tap="changeTabs(index)">
 						{{item}}
 					</view>
 				</view>

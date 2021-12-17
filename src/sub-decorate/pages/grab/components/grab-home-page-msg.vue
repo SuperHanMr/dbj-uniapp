@@ -18,7 +18,7 @@
         <view class="title">Ta的擅长</view>
       </view>
       <view class="msg-content list">
-        <view class="tags" v-for="item of personData.designTags">{{item}}</view>
+        <view class="tags"  v-for="(item, idx) of personData.designTags" :key="idx">{{item}}</view>
       </view>
     </view>
     <view class="msg-item" v-if="personData.roleId<6">
@@ -27,11 +27,11 @@
         <view class="title">Ta的徽章</view>
       </view>
       <view class="msg-content list badge-list">
-        <view class="badge" v-for="item of personData.personAllBadgeVO.basicBadges">
+        <view class="badge" v-for="(item, idx) of personData.personAllBadgeVO.basicBadges" :key="idx">
           <image :src="item.ico"></image>
           <text>{{item.name}}</text>
         </view>
-        <view class="badge"  v-for="item of personData.personAllBadgeVO.skillBadges">
+        <view class="badge"  v-for="(item, idx) of personData.personAllBadgeVO.skillBadges" :key="idx">
           <image :src="item.ico"></image>
           <text>{{item.name}}{{item.level?'·'+item.levelName:''}}</text>
         </view>

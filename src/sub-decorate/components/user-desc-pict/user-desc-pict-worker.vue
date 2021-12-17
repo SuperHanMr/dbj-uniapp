@@ -21,7 +21,7 @@
             @click="clickImg(workerData.fileUrls, 5)">+{{workerData.fileUrls.length - 6}}</view>
         </view>
       </view>
-      <view v-for="(t,index) in workerData.workerItems">
+      <view v-for="(t,index) in workerData.workerItems" :key="index">
         <view class="worker-title">{{t.workItemName}}</view>
         <view class="picture flex-row">
           <view class="imgs" :class="{'img3': index % 3 == 2}" v-for="(kit, i) in t.fileUrls" :key="i" v-if="i < 3">
