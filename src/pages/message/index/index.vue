@@ -119,10 +119,4 @@
   .im-chat-message-list {
     border-top: 8rpx solid #f9f9f9;
   }
-  
-  .im-avatar-image {
-    width: 100rpx;
-    height: 100rpx;
-    border-radius: 6px;
-  }
 </style>

@@ -1,6 +1,6 @@
 <template>
   <view class="service-dismantle">
-    <view class="item" v-for="item of list">
+    <view class="item" v-for="(item, idx) of list" :key="idx">
       <view class="item-top">
         <text class="name">{{item.workItemName}}</text>
         <text class="time">{{item.completionTime|formatDate}}</text>

@@ -18,7 +18,7 @@
 				<view class="date">2021-08-19 20:20:00</view>
 			</view>
 			<view class="imgs img-measure">
-				<image v-for="(item,index) in measureImgList" :src="item" @click="clickImg(measureImgList)"></image>
+				<image v-for="(item,index) in measureImgList" :key="index" :src="item" @click="clickImg(measureImgList)"></image>
 			</view>
 		</view>
 	</view>
