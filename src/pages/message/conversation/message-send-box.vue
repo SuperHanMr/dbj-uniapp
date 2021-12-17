@@ -136,7 +136,7 @@
                   <cover-view v-else-if="member.role.type === 2" class="user-tag">
                     亲友·{{ member.role.relativeRelationName }}
                   </cover-view>
-                  <cover-view v-else-if="member.role.type === 3" class="job-tag">
+                  <cover-view v-else class="job-tag">
                     {{ member.role.typeName }}
                   </cover-view>
                 </cover-view>

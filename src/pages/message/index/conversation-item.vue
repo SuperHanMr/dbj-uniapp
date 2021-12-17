@@ -31,7 +31,7 @@
         {{ time }}
       </view>
       <view v-if="conversation.unreadCount > 0" class="unread-count">
-        {{ conversation.unreadCount }}
+        {{ conversation.unreadCount > 99 ? "99+" : conversation.unreadCount }}
       </view>
     </view>
   </view>
