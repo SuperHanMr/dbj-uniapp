@@ -19,7 +19,7 @@
         default:0
       },
       index:0,
-      projectId:0
+      projectId:0,
     },
     data(){
       return{
@@ -31,7 +31,7 @@
     },
     methods:{
       getActuaryReport(){
-        getActuaryReport(this.projectId).then(res=>{
+        getActuaryReport({projectId:this.projectId,serveId:this.serverId}).then(res=>{
           
           if(res){
             this.hasReport = true

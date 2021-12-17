@@ -128,7 +128,7 @@ export function sureAmount(params) {
 
 //查询是否有精算报告
 export function getActuaryReport(params) {
-	return request.get("/pm/app/actuary/isPass/" + params)
+	return request.get("/pm/app/actuary/isPass/new/" + params.projectId+'/'+params.serveId)
 }
 
 //获取验房交付报告
