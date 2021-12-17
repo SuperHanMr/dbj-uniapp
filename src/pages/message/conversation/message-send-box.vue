@@ -269,8 +269,7 @@
         }
         setTimeout(() => {
           this.inputFocus = true;
-          console.log(this.inputFocus, 343434);
-        }, 500);
+        }, 200);
       },
       handleAtUser(user) {
         let {nick, userID} = user;
