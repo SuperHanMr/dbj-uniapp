@@ -18,16 +18,16 @@
         "enablePullDownRefresh": true
       }
     },
-    {
-      "path": "pages/login/login",
-      "style": {
-        "navigationBarTitleText": "用户登录",
-        "navigationStyle": "custom",
-        "usingComponents": {
-          "gome-login": "/wxcomponents/gome-login/loginEmpower"
-        }
-      }
-    },
+    // {
+    //   "path": "pages/login/login",
+    //   "style": {
+    //     "navigationBarTitleText": "用户登录",
+    //     "navigationStyle": "custom",
+    //     "usingComponents": {
+    //       "gome-login": "/wxcomponents/gome-login/loginEmpower"
+    //     }
+    //   }
+    // },
     {
       "path": "pages/classify/index/index",
       "style": {

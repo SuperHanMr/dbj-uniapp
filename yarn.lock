@@ -896,10 +896,10 @@
   dependencies:
     regenerator-runtime "^0.13.4"
 
-"@babel/runtime@~7.12.0":
-  version "7.12.18"
-  resolved "https://registry.npmjs.org/@babel/runtime/-/runtime-7.12.18.tgz"
-  integrity sha512-BogPQ7ciE6SYAUPtlm9tWbgI9+2AgqSam6QivMgXgAT+fKbgppaj4ZX15MHeLC1PVF5sNk70huBu20XxWOs8Cg==
+"@babel/runtime@~7.15.3":
+  version "7.15.4"
+  resolved "https://registry.npmmirror.com/@babel/runtime/download/@babel/runtime-7.15.4.tgz#fd17d16bfdf878e6dd02d19753a39fa8a8d9c84a"
+  integrity sha1-/RfRa/34eObdAtGXU6OfqKjZyEo=
   dependencies:
     regenerator-runtime "^0.13.4"
 

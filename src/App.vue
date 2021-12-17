@@ -57,50 +57,50 @@ export default {
     const userId = uni.getStorageSync("userId");
     const shareId = uni.getStorageSync("shareId");
     setLogId(userId + "-" + new Date().getTime());
-    log({
-      type: "wx-launch",
-      version: uni.getAccountInfoSync().miniProgram.version || "develop",
-      userId: userId,
-      shareId: shareId,
-      openId: uni.getStorageSync("openId"),
-    });
-    wx.login({
-      success: (res) => {
-        if (res.code) {
-          //微信登录成功 已拿到code
-          log({
-            type: "wx-login-sucess",
-            userId: userId,
-            data: res,
-          });
-          getOpenId({
-            code: res.code,
-          }).then((e) => {
-            this.globalData.openId = e.openid;
-            uni.setStorageSync("openId", e.openid);
-            log({
-              type: "wx-got-openid",
-              userId: userId,
-              openId: getApp().globalData.openId,
-              data: e,
-            });
-          });
-        } else {
-          log({
-            type: "wx-login-sucess-no-code",
-            userId: userId,
-            data: res,
-          });
-        }
-      },
-      fail: (err) => {
-        log({
-          type: "wx-login-fail",
-          userId: userId,
-          data: err,
-        });
-      },
-    });
+    // log({
+    //   type: "wx-launch",
+    //   version: uni.getAccountInfoSync().miniProgram.version || "develop",
+    //   userId: userId,
+    //   shareId: shareId,
+    //   openId: uni.getStorageSync("openId"),
+    // });
+    // wx.login({
+    //   success: (res) => {
+    //     if (res.code) {
+    //       //微信登录成功 已拿到code
+    //       log({
+    //         type: "wx-login-sucess",
+    //         userId: userId,
+    //         data: res,
+    //       });
+    //       getOpenId({
+    //         code: res.code,
+    //       }).then((e) => {
+    //         this.globalData.openId = e.openid;
+    //         uni.setStorageSync("openId", e.openid);
+    //         log({
+    //           type: "wx-got-openid",
+    //           userId: userId,
+    //           openId: getApp().globalData.openId,
+    //           data: e,
+    //         });
+    //       });
+    //     } else {
+    //       log({
+    //         type: "wx-login-sucess-no-code",
+    //         userId: userId,
+    //         data: res,
+    //       });
+    //     }
+    //   },
+    //   fail: (err) => {
+    //     log({
+    //       type: "wx-login-fail",
+    //       userId: userId,
+    //       data: err,
+    //     });
+    //   },
+    // });
     if (shareId && !this.globalData.shareId) {
       this.globalData.shareId = shareId;
     }
