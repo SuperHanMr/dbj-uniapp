@@ -360,7 +360,7 @@ function enhanceGetMessageListForCountLimit(tim) {
           }).then(imRes => {
             const { nextReqMessageID, isCompleted, messageList } = imRes.data;
             nextId = nextReqMessageID;
-            list = list.concat(messageList);
+            list = (messageList || []).concat(list);
             rest = rest - 15;
             if (isCompleted) {
               requestingConvId = '';

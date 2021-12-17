@@ -8,8 +8,8 @@
         {{ tip }}
       </view>
       <view class="form-container">
-        <view v-for="(item,index) in formItems" class="form-item">
-          <view :key="index" class="form-item__label">
+        <view v-for="(item,index) in formItems" :key="index" class="form-item">
+          <view class="form-item__label">
             {{ item.label }}
           </view>
           <view class="form-item__content">

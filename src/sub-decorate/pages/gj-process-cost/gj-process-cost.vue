@@ -65,13 +65,13 @@
         <view class="wechat_icon"></view><text>微信支付</text>
       </view>
     </view>
-    <view class='remarks'>
+<!--    <view class='remarks'>
       <text>备注</text>
       <view class="remark-text">
         <textarea type="text" maxlength="200" v-model="remarks" auto-height placeholder-class="text-placeholder"
           style="width:100%;line-height: 46rpx;padding-right: 10rpx;display: inline-block;" placeholder="选填,说点什么～" />
       </view>
-    </view>
+    </view> -->
     <view :style="{paddingBottom:containerBottom * 2 + 48 + 88 + 'rpx'}">
 
     </view>
@@ -126,7 +126,8 @@
     },
     onLoad(option) {
       const {
-        partpay
+        partpay,
+				isActuarial
       } = option;
       console.log(option, 'optionoption>>>>>>>>>>>>')
       if (partpay) {
@@ -134,7 +135,11 @@
           ...option,
         };
         this.partpay = partpay;
-      } else {
+      } else if (isActuarial === '1') {
+				this.msg = {
+				  ...option,
+				};
+			} else {
         console.log(getApp().globalData.decorateMsg);
         this.msg = getApp().globalData.decorateMsg;
       }
@@ -524,7 +529,8 @@
           projectId: this.msg.projectId,
           type: this.msg.serviceType,
         };
-        if (!this.partpay) {
+				// 精算立即购买跳转的也需要赋值obtainType
+        if (!this.partpay || this.msg.isActuarial === '1') {
           params.obtainType = this.msg.obtainType;
         }
         console.log(">>>>>>>params>>>>>>>", params);

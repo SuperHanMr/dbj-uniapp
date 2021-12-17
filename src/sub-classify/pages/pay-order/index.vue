@@ -280,14 +280,14 @@
       </view>
       <view class='remarks'>
         <text>备注</text>
-        <view class="remark-text">
+        <view>
           <textarea
             type="text"
             maxlength="200"
             v-model="remarks"
             auto-height
             placeholder-class="text-placeholder"
-            style="width:100%;line-height: 46rpx;padding-right: 10rpx;display: inline-block;"
+            style="width:100%;line-height: 46rpx;display: inline-block;"
             placeholder="选填,说点什么～"
           />
         </view>
@@ -1235,7 +1235,9 @@ export default {
   background-size: contain;
   margin-right: 12rpx;
 }
-
+.remarks{
+  overflow: hidden;
+}
 .remarks text {
   min-width: 180rpx;
 }
@@ -1243,12 +1245,9 @@ export default {
 .remarks view {
   flex: 1;
   overflow: scroll;
-}
-
-.remark-text {
+  padding-top: 20rpx;
   height: 100%;
 }
-
 .bottom {
   padding: 24rpx 32rpx 50rpx 32rpx;
   box-sizing: border-box;

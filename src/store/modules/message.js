@@ -384,9 +384,15 @@ const message = {
       }
       const { nextReqMessageID, currentMessageList } = context.state
       context.state.isRequesting = true;
-      return getTim().getMessageList({ conversationID, nextReqMessageID, count: count}).then(imReponse => {
+      return getTim().getMessageList({ conversationID, nextReqMessageID, count: count}).then(imResponse => {
         context.state.isRequesting = false;
-        context.commit("prependCurrentMessageList", imReponse.data);
+        const data = imResponse.data;
+        // 兼容处理消息是否拉取完，当消息列表长度小于拉取的长度时，说明拉取完了
+        let isCompleted = data.isCompleted ||  false;
+        if (data.messageList.length < count && !isCompleted) {
+          data.isCompleted = true;
+        }
+        context.commit("prependCurrentMessageList", data);
       }).catch(err => {
         console.error("获取消息列表出错：", err);
       })

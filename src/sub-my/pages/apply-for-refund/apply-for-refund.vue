@@ -484,7 +484,7 @@
 					}).then((data) => {
 						console.log("data=", data, "data.id=", data.id);
 						uni.redirectTo({
-							url: `../refund-list/refunding-detail/refunding-detail?orderId=${data.id}`,
+							url: `../refund-list/refunding-detail/refunding-detail?id=${data.id}`,
 						});
 					});
 				} else {
@@ -499,9 +499,9 @@
 						handlingFees: this.handlingFees,
 						status: this.query.status, //订单状态1进行中 2已完成
 					}).then((data) => {
-						console.log("打印返回的数据=", data, "data.id=", data.id);
+						console.log("打印返回的数据=", data, "退款单id（data.id）=", data.id);
 						uni.redirectTo({
-							url: `../refund-list/refunding-detail/refunding-detail?orderId=${data.id}`,
+							url: `../refund-list/refunding-detail/refunding-detail?id=${data.id}`,
 						});
 					});
 				}

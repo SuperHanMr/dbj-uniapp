@@ -18,7 +18,7 @@
         <image class="loading-img" src="https://ali-image.dabanjia.com/static/mp/dabanjia/images/loading.gif"></image>
       </view>
       <view v-if="unreadCount >= 8" class="unread-msg-tip" @click="scrollToUnreadStart">
-        <view class="tip-icon icon-ic_shanghua"></view>{{ unreadCount }}条新消息
+        <view class="tip-icon icon-ic_shanghua"></view>{{ unreadCount > 99 ? "99+" : unreadCount }}条新消息
       </view>
       <template v-if="currentMessageList.length">
         <view v-if="type === CONV_TYPES.COMMON || type === CONV_TYPES.CUSTOMER" id="listBody" class="message-list-body">
