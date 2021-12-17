@@ -50,6 +50,13 @@
       }
     },
     {
+      "path": "pages/message/conversation/at-user-list",
+      "style": {
+        "navigationBarTitleText": "选择提醒的人",
+        "navigationBarBackgroundColor": "#ffffff"
+      }
+    },
+    {
       "path": "pages/message/conversation/conversation-interaction",
       "style": {
         "navigationBarTitleText": "互动消息",

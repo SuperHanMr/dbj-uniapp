@@ -66,7 +66,7 @@ export function getMyService(params) {
 
 //获取我的装修服务管家数据
 export function getStewardService(params) {
-	return request.get("/pm/app/butler/getByProjectId/" + params)
+	return request.get("/pm/app/butler/getByServeCardId/" + params)
 }
 
 // //获取mqtt信息
