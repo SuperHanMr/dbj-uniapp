@@ -65,13 +65,13 @@
         <view class="wechat_icon"></view><text>微信支付</text>
       </view>
     </view>
-<!--    <view class='remarks'>
+   <view class='remarks' v-if="!msg.payStatus || msg.payStatus != 2">
       <text>备注</text>
       <view class="remark-text">
         <textarea type="text" maxlength="200" v-model="remarks" auto-height placeholder-class="text-placeholder"
-          style="width:100%;line-height: 46rpx;padding-right: 10rpx;display: inline-block;" placeholder="选填,说点什么～" />
+          style="width:100%;line-height: 46rpx;display: inline-block;" placeholder="选填,说点什么～" />
       </view>
-    </view> -->
+    </view>
     <view :style="{paddingBottom:containerBottom * 2 + 48 + 88 + 'rpx'}">
 
     </view>
@@ -858,6 +858,10 @@
     line-height: 104rpx;
   }
 
+  .remarks {
+    overflow: hidden;
+  }
+
   .remarks text {
     min-width: 180rpx;
   }
@@ -865,9 +869,7 @@
   .remarks view {
     flex: 1;
     overflow: scroll;
-  }
-
-  .remark-text {
+    padding-top: 20rpx;
     height: 100%;
   }
 
