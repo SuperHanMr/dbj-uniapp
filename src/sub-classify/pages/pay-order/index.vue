@@ -287,7 +287,7 @@
             v-model="remarks"
             auto-height
             placeholder-class="text-placeholder"
-            style="width:100%;line-height: 46rpx;display: inline-block;"
+            style="width:100%;line-height: 46rpx;display: inline-block;position: absolute;bottom: 0;min-height: 90rpx;"
             placeholder="选填,说点什么～"
           />
         </view>
@@ -1245,8 +1245,8 @@ export default {
 .remarks view {
   flex: 1;
   overflow: scroll;
-  padding-top: 30rpx;
   height: 100%;
+  position: relative;
 }
 .bottom {
   padding: 24rpx 32rpx 50rpx 32rpx;
