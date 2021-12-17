@@ -605,6 +605,10 @@
     line-height: 104rpx;
   }
 
+  .remarks {
+    overflow: hidden;
+  }
+
   .remarks text {
     min-width: 180rpx;
   }
@@ -612,9 +616,7 @@
   .remarks view {
     flex: 1;
     overflow: scroll;
-  }
-
-  .remark-text {
+    padding-top: 30rpx;
     height: 100%;
   }
 

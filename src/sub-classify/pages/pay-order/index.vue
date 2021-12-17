@@ -1245,7 +1245,7 @@ export default {
 .remarks view {
   flex: 1;
   overflow: scroll;
-  padding-top: 20rpx;
+  padding-top: 30rpx;
   height: 100%;
 }
 .bottom {
