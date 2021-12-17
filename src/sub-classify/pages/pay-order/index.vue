@@ -1247,6 +1247,7 @@ export default {
   overflow: scroll;
   height: 100%;
   position: relative;
+  padding-top: 20rpx;
 }
 .bottom {
   padding: 24rpx 32rpx 50rpx 32rpx;
