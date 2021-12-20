@@ -29,7 +29,7 @@ export function queryOrderList(params) {
 
 //我的-订单-订单详情
 export function getOrderDetail(params) {
-	return request.get(`/order-center/app/order/detail`, { params });
+	return request.get(`/order-center/app/order/v26/detail`, { params });
 }
 
 //我的-订单-取消订单
