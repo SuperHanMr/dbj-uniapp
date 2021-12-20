@@ -234,6 +234,7 @@
 				refundInfo: {},
 
 				refundReasonList: [], //退款原因
+				errorTitle:"",//报错提示
 				reasonList: [],
 
 				reasonValue: "",
@@ -289,6 +290,7 @@
 					getRefundInformation(params).then((res) => {
 						this.refundInfo = res;
 						this.refundType = this.refundInfo.type;
+						this.showToast()
 						console.log("this.refundInfo=", this.refundInfo);
 						this.refundInfo.actualIncomeAmount = this.refundInfo.maxRefundAmount;
 						this.returnMoney = this.refundInfo.maxRefundAmount;
@@ -383,13 +385,14 @@
 					this.type = data.applyMode == 1 ? "partical" : "whole";
 					console.log("this.type=", this.type);
 					this.refundType = data.type;
+					this.showToast()
 					// this.refundType = 5
 					this.remarks = data.remark;
 					this.textAreaLength = this.remark ? this.remark.length : "0";
 					this.reasonValue = data.reasonId;
 					this.reasonName = data.reason;
 					console.log("this.refundType===", this.refundType);
-					if (this.refundType == 5) {
+					if (this.refundType == 5 || this.refundType == 2) {
 						this.maxRefundAmount = data.maxRefundAmount;
 						this.refundAmount = data.refundAmount;
 						this.returnMoney = data.refundAmount;
@@ -415,6 +418,7 @@
 					}
 					this.refundInfo.isWorker = data.isWorker
 					this.refundInfo.editabled = data.editabled
+					// this.refundInfo.editabled = true
 					this.refundInfo.totalActualIncomeAmount = data.maxRefundAmount;
 					this.query.orderId = data.orderId;
 					this.query.status = data.progressed;
@@ -439,7 +443,7 @@
 				this.$refs.expensesToast.showPupop();
 			},
 			submitApply() {
-					
+
 				if (this.refundType == 2) {
 					let content
 					if(this.refundInfo.isWorker){
@@ -463,7 +467,7 @@
 			},
 			submitApplication() {
 				// 提交申请后该订单会进入到退款页面，状态显示退款中；并直接跳转到该订单退款详情页
-				if (this.refundType == 5) {
+				if (this.refundType == 5 || this.refundType == 2 ) {
 					if (this.returnMoney > this.maxRefundAmount) {
 						uni.showToast({
 							title: "退款金额大于储值卡余额，请修改",
@@ -518,6 +522,16 @@
 				}
 			},
 
+			showToast(){
+				switch(this.refundType){
+					case 2:
+						this.errorTitle = "退款金额大于最大退款金额，请修改"
+						break
+					case 5:
+						this.errorTitle = "退款金额大于储值卡余额，请修改"
+				}
+			},
+
 			onKeyFocus() {
 				this.isFocus = true;
 				if (!this.inputValue) {
@@ -525,13 +539,14 @@
 				}
 			},
 			onKeyBlur() {
+				console.log("失去焦点！！！！！")
 				// 缺少输入退款金额值的判断及弹框提示数据
 				if (this.inputValue == "") {
 					this.inputValue = this.refundAmount;
 				}
 				this.showEditInput = false;
-				// if (!/^(([1-9]{1}\d*)|(0{1}))(\.\d{1,2})?$/.test(this.inputValue)) {
-				if (!/^(([1-9]{1}\d*)|(0{1}))(\.\d{1,2})?$/.test(this.inputValue)) {
+
+					if (!/^(([1-9]{1}\d*)|(0{1}))(\.\d{1,2})?$/.test(this.inputValue)) {
 					uni.showToast({
 						title: "您输入的金额错误，请重新输入",
 						icon: "none",
@@ -541,7 +556,16 @@
 				} else {
 					this.inputValue = Number(this.inputValue).toFixed(2);
 				}
-				// this.inputWidth = String(this.inputValue).length * 26 - 12
+				this.inputValue = Number(this.inputValue).toFixed(2);
+				if (this.inputValue > this.maxRefundAmount) {
+					uni.showToast({
+						title: this.errorTitle,
+						icon: "none",
+						duration: 1000,
+					});
+					return;
+				}
+
 			},
 			onTextAreaInput(event) {
 				this.textAreaLength = event.target.value.length;
