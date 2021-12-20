@@ -123,7 +123,7 @@
 
 					<view class="line" />
 					<!-- 材料服务 退款金额 -->
-					<view class="refund-price" v-if="refundType !==5">
+					<view class="refund-price" v-if="!refundInfo.editabled">
 						<view class="edit-price">
 							<view class="left">
 								<view class="icon">*</view>
