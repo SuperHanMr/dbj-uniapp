@@ -6,8 +6,11 @@
 				<view v-if="refundType==2" class="server-order-tip">
 					<view class="icon-icon_order_tips" style="font-size: 28rpx;margin-right: 12rpx;">
 					</view>
-					<view>
+					<view v-if="refundInfo.isWorker">
 						若您想对服务的内容做调整，您可以联系管家发起变更申请，一旦发起退款且通过后，该服务会记为结束
+					</view>
+					<view v-else>
+						若您想对服务的内容做调整，您可以联系客服，一旦发起退款且通过后，该服务会记为结束
 					</view>
 				</view>
 				<view class="product-container">
@@ -410,7 +413,8 @@
 						this.refundInfo.details = data.detailAppVOS;
 						console.log("this.refundInfo.details = ", this.refundInfo.details);
 					}
-
+					this.refundInfo.isWorker = data.isWorker
+					this.refundInfo.editabled = data.editabled
 					this.refundInfo.totalActualIncomeAmount = data.maxRefundAmount;
 					this.query.orderId = data.orderId;
 					this.query.status = data.progressed;
@@ -435,10 +439,17 @@
 				this.$refs.expensesToast.showPupop();
 			},
 			submitApply() {
+					
 				if (this.refundType == 2) {
+					let content
+					if(this.refundInfo.isWorker){
+						content = "发起退款且通过后，该服务会记为结束状态，且服务者不会再提供服务，若您想对工艺项进行调整可以联系管家"
+					}else{
+						content = "发起退款且通过后，该服务会记为结束状态，且服务者不会再提供服务，若您想对服务内容进行调整可以联系客服"
+					}
 					uni.showModal({
 						title: "是否确认退款",
-						content: "发起退款且通过后，该服务会记为结束状态，且服务者不会再提供服务，若您想对工艺项进行调整可以联系管家",
+						content: content,
 						success: (res) => {
 							if (res.confirm) {
 								this.submitApplication();
@@ -519,6 +530,7 @@
 					this.inputValue = this.refundAmount;
 				}
 				this.showEditInput = false;
+				// if (!/^(([1-9]{1}\d*)|(0{1}))(\.\d{1,2})?$/.test(this.inputValue)) {
 				if (!/^(([1-9]{1}\d*)|(0{1}))(\.\d{1,2})?$/.test(this.inputValue)) {
 					uni.showToast({
 						title: "您输入的金额错误，请重新输入",
