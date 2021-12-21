@@ -307,8 +307,8 @@
 						console.log("this.refundInfo=", this.refundInfo);
 						this.refundInfo.actualIncomeAmount = this.refundInfo.maxRefundAmount;
 						this.returnMoney = this.refundInfo.maxRefundAmount;
-
-						if (this.refundType == 5) {
+						this.showToast()
+						if (this.refundType == 5 || this.refundType == 2) {
 							this.inputValue = this.refundInfo.maxRefundAmount;
 							this.refundAmount = this.refundInfo.refundAmount;
 							this.maxRefundAmount = this.refundInfo.maxRefundAmount;
@@ -574,6 +574,7 @@
 
 
 			},
+			
 			onTextAreaInput(event) {
 				this.textAreaLength = event.target.value.length;
 			},
