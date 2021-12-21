@@ -471,7 +471,7 @@
 				if (this.refundType == 5 || this.refundType == 2 ) {
 					if (this.returnMoney > this.maxRefundAmount) {
 						uni.showToast({
-							title: "退款金额大于储值卡余额，请修改",
+							title: this.errorTitle,
 							icon: "none",
 							duration: 1000,
 						});
