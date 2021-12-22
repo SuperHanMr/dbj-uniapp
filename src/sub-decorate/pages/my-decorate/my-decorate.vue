@@ -184,7 +184,7 @@
       getMyService(){
         let data = {
           projectId:this.projectId,
-          processId:this.processId
+          // processId:this.processId
         }
         getMyService(data).then(res=>{
           
