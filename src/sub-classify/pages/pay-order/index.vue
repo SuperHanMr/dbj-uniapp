@@ -78,7 +78,7 @@
                   <view>
                     <view
                       class="sku-deposit price-font"
-                      v-if="goodsItem.deposit !== undefined && goodsItem.productType === 2"
+                      v-if="goodsItem.deposit && goodsItem.productType === 2"
                     >押金
                       ¥{{goodsItem.deposit}}</view>
                   </view>
@@ -208,7 +208,7 @@
         </view>
         <view
           class="pledge price-font total-deposit"
-          v-if="orderInfo.totalDeposit !== undefined"
+          v-if="orderInfo.totalDeposit"
         >
           <text>押金</text>
           <text>¥{{orderInfo.totalDeposit}}</text>
