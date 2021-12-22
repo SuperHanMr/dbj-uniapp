@@ -61,7 +61,7 @@ export function getDesignServeMenu(params) {
 
 //获取我的装修服务进度
 export function getMyService(params) {
-	return request.get("/pm/app/project/myService?projectId=" + params.projectId + "&processId=" + params.processId)
+	return request.get("/pm/app/project/myService?projectId=" + params.projectId )
 }
 
 //获取我的装修服务管家数据
