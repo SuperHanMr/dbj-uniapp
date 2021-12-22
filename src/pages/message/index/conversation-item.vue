@@ -188,6 +188,12 @@
   .im-message-avatar {
     margin-right: 24rpx;
   }
+
+  .im-avatar-image {
+    width: 100rpx;
+    height: 100rpx;
+    border-radius: 6px;
+  }
   
   .im-message-content {
     flex: 1;

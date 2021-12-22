@@ -78,8 +78,8 @@
 	.goods-row {
 		display: flex;
 		flex-direction: row;
-		justify-content: start;
-		align-items: start;
+		justify-content: flex-start;
+		align-items: flex-start;
 		padding-bottom: 40rpx;
 
 		.img {

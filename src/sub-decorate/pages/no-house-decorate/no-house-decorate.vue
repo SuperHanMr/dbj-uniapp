@@ -89,9 +89,11 @@
       </view>
       <view class='remarks'>
         <text>备注</text>
-        <view class="remark-text">
-          <textarea type="text" maxlength="200" v-model="remarks" auto-height placeholder-class="text-placeholder"
-            style="width:100%;line-height: 46rpx;display: inline-block;" placeholder="选填,说点什么～" />
+        <view class="remarks-right">
+          <textarea type="text" maxlength="200" v-model="remarks" cursor-spacing="15px"
+            placeholder-class="text-placeholder"
+            style="width:100%;line-height: 46rpx;min-height: 90rpx;height: 85%;overflow: scroll;padding-top: 20rpx;"
+            placeholder="选填,说点什么～" />
         </view>
       </view>
     </view>
@@ -987,12 +989,13 @@
     min-width: 180rpx;
   }
 
-  .remarks view {
+  .remarks .remarks-right {
     flex: 1;
-    overflow: scroll;
-    padding-top: 20rpx;
+    position: relative;
     height: 100%;
+    overflow: scroll;
   }
+
 
   .no-house-decorate {
     background-color: #f2f5f8;

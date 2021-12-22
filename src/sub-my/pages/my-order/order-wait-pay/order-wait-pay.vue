@@ -158,10 +158,12 @@
       </view>
       <view class='remarks'>
         <text>备注</text>
-        <view class="remark-text">
-          <textarea type="text" maxlength="200" v-model="remarks" auto-height placeholder-class="text-placeholder"
-            style="width:100%;line-height: 46rpx;display: inline-block;" placeholder="选填,说点什么～" />
-        </view>
+    <view class="remarks-right">
+      <textarea type="text" maxlength="200" v-model="remarks" cursor-spacing="15px"
+        placeholder-class="text-placeholder"
+        style="width:100%;line-height: 46rpx;min-height: 90rpx;height: 85%;overflow: scroll;padding-top: 20rpx;"
+        placeholder="选填,说点什么～" />
+    </view>
       </view>
       <order-info :orderNo="orderInfo.orderNo" :createTime="orderInfo.createTime" />
 
@@ -605,18 +607,21 @@
     line-height: 104rpx;
   }
 
+  .remarks {
+    overflow: hidden;
+  }
+
   .remarks text {
     min-width: 180rpx;
   }
 
-  .remarks view {
+  .remarks .remarks-right {
     flex: 1;
+    position: relative;
+    height: 100%;
     overflow: scroll;
   }
 
-  .remark-text {
-    height: 100%;
-  }
 
   .pay-diaolog {
     border-top: 1rpx solid #f2f2f2;

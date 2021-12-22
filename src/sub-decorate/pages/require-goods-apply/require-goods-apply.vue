@@ -128,7 +128,7 @@ export default {
   padding: 32rpx;
   display: flex;
   flex-direction: row;
-  justify-content: start;
+  justify-content: flex-start;
   align-items: flex-start;
 
   .img {

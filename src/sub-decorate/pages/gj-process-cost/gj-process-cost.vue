@@ -65,11 +65,13 @@
         <view class="wechat_icon"></view><text>微信支付</text>
       </view>
     </view>
-   <view class='remarks' v-if="!msg.payStatus || msg.payStatus != 2">
+    <view class='remarks' v-if="!msg.payStatus || msg.payStatus != 2">
       <text>备注</text>
-      <view class="remark-text">
-        <textarea type="text" maxlength="200" v-model="remarks" auto-height placeholder-class="text-placeholder"
-          style="width:100%;line-height: 46rpx;display: inline-block;" placeholder="选填,说点什么～" />
+      <view class="remarks-right">
+        <textarea type="text" maxlength="200" v-model="remarks" cursor-spacing="15px"
+          placeholder-class="text-placeholder"
+          style="width:100%;line-height: 46rpx;min-height: 90rpx;height: 85%;overflow: scroll;padding-top: 20rpx;"
+          placeholder="选填,说点什么～" />
       </view>
     </view>
     <view :style="{paddingBottom:containerBottom * 2 + 48 + 88 + 'rpx'}">
@@ -127,7 +129,7 @@
     onLoad(option) {
       const {
         partpay,
-				isActuarial
+        isActuarial
       } = option;
       console.log(option, 'optionoption>>>>>>>>>>>>')
       if (partpay) {
@@ -136,10 +138,10 @@
         };
         this.partpay = partpay;
       } else if (isActuarial === '1') {
-				this.msg = {
-				  ...option,
-				};
-			} else {
+        this.msg = {
+          ...option,
+        };
+      } else {
         console.log(getApp().globalData.decorateMsg);
         this.msg = getApp().globalData.decorateMsg;
       }
@@ -529,7 +531,7 @@
           projectId: this.msg.projectId,
           type: this.msg.serviceType,
         };
-				// 精算立即购买跳转的也需要赋值obtainType
+        // 精算立即购买跳转的也需要赋值obtainType
         if (!this.partpay || this.msg.isActuarial === '1') {
           params.obtainType = this.msg.obtainType;
         }
@@ -866,11 +868,11 @@
     min-width: 180rpx;
   }
 
-  .remarks view {
+  .remarks .remarks-right {
     flex: 1;
-    overflow: scroll;
-    padding-top: 20rpx;
+    position: relative;
     height: 100%;
+    overflow: scroll;
   }
 
   .process-cost {
