@@ -89,8 +89,8 @@
             <view class="steps">
               <view
                 class="dot"
-                :class="{'done':item.nodeStatus===4||item.nodeStatus===3,
-								'doing':item.nodeStatus===2,'unpaid':item.nodeStatus===1}"
+                :class="{'done':item.nodeStatus === 4||item.nodeStatus === 3,
+								'doing':item.nodeStatus === 2,'unpaid':item.nodeStatus === 1}"
                 v-for="(item,index) in nodesInfo"
                 :key="item.id"
               >
@@ -119,7 +119,7 @@
             >
               <view
 								class="server"
-                v-if="(item.nodeStatus===2&&item.id!==-1)||item.nodeStatus===3"
+                v-if="(item.nodeStatus === 2 && item.id !== -1) || item.nodeStatus === 3"
                 @click="toPersonalHome(item.id)"
               >
                 <image
@@ -137,22 +137,32 @@
               </view>
               <view
                 class="text"
-                v-else-if="item.nodeStatus===2&&item.id===-1"
+                v-else-if="item.nodeStatus=== 2 && item.id === -1"
               >
-                {{item.nodeType===1||item.nodeType===4||item.nodeType===5?'待服务':'待施工'}}</view>
+                {{item.nodeType === 1||item.nodeType === 4||item.nodeType === 5?'待服务':'待施工'}}
+							</view>
+							
+							<view
+								class="text"
+								style="color: #333333;"
+								v-else-if="item.nodeStatus=== 5 && item.id === -1"
+							>
+								{{item.nodeType === 1||item.nodeType === 4||item.nodeType === 5?'待服务':'待施工'}}
+							</view>
+							
               <view
                 class="text"
-                v-else-if="item.nodeStatus===1"
+                v-else-if="item.nodeStatus === 1"
               >待购买</view>
               <view
                 class="own"
-                v-else-if="item.nodeStatus===4"
+                v-else-if="item.nodeStatus === 4"
               >自带施工</view>
             </view>
           </view>
         </view>
         <image
-          v-if="projectInfo.projectStatus===3"
+          v-if="projectInfo.projectStatus === 3"
           class="endWork"
           src="https://ali-image.dabanjia.com/static/mp/dabanjia/images/home/end_active.png"
         ></image>
