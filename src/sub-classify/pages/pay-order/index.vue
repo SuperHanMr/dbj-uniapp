@@ -297,6 +297,7 @@
         cardClick: false,
         haveCard: false, //是否有会员卡
         cardBalance: 1111, //会员卡余额
+        shareOriginType: ''
       };
     },
     computed: {
@@ -361,6 +362,7 @@
       this.unit = e.unit;
       this.level = e.level;
       this.goodDetailId = uni.getStorageSync("goodId");
+      this.shareOriginType = e.shareOriginType
       console.log(e.houseId, getApp().globalData.currentHouse.id);
     },
     onShow() {
@@ -647,6 +649,7 @@
           orderName: "", //"string //订单名称 可为空",
           details: details,
           isCardPay: this.cardClick,
+          origin: this.shareOriginType
         };
         payOrder(params).then((data) => {
           const {
