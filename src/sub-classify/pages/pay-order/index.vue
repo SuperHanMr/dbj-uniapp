@@ -659,10 +659,15 @@
               ...wechatPayJsapi,
               success(res) {
                 console.log("付款成功", res);
-                uni.navigateTo({
-                  url: "/sub-classify/pages/pay-order/pay-success?orderId=" +
-                    data.id,
-                });
+                if (data.subOrderIds.length === 1) {
+                  uni.navigateTo({
+                    url: `/sub-my/pages/my-order/order-wait-pay/order-wait-pay?orderNo=${data.subOrderIds[0]}&from=waitPayOrder`,
+                  });
+                } else {
+                  uni.redirectTo({
+                    url: `/sub-my/pages/my-order/my-order?index=1&firstEntry=true`,
+                  });
+                }
               },
               fail(e) {
                 console.log(e, "取消付款");
