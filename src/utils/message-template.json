@@ -274,15 +274,7 @@
           "value": "${estate}"
         }
       ],
-      "actions": [{
-        "title": "查看详情",
-        "type": "h5",
-        "userType": 0,
-        "targetUrl": "redirect/service-detail.html?id=${serveId}&type=${serveType}",
-        "params": {
-          "showAppBar": false
-        }
-      }]
+      "actions": []
     }
   },
   "sys_serve_record_delivery": {
@@ -321,15 +313,7 @@
           "value": "${servicerRole} ${servicerNickName}"
         }
       ],
-      "actions": [{
-        "title": "查看详情",
-        "type": "h5",
-        "userType": 0,
-        "targetUrl": "redirect/service-detail.html?id=${serveId}&type=${serveType}&tabType=3",
-        "params": {
-          "showAppBar": false
-        }
-      }]
+      "actions": []
     }
   },
   "group_serve_record_delivery": {
@@ -404,15 +388,7 @@
           "value": "${servicerRole} ${servicerNickName}"
         }
       ],
-      "actions": [{
-        "title": "查看详情",
-        "type": "h5",
-        "userType": 0,
-        "targetUrl": "redirect/service-detail.html?id=${serveId}&type=${serveType}&tabType=3",
-        "params": {
-          "showAppBar": false
-        }
-      }]
+      "actions": []
     }
   },
   "group_serve_record_receive": {
@@ -623,27 +599,7 @@
           "value": "${servicerRole} ${servicerNickName}"
         }
       ],
-      "actions": [{
-          "title": "立即沟通",
-          "type": "native",
-          "userType": 0,
-          "targetRouter": "chat",
-          "params": {
-            "groupId": "${groupId}",
-            "userId": "${customerId}",
-            "name": "${customerNickName}"
-          }
-        },
-        {
-          "title": "查看详情",
-          "type": "h5",
-          "userType": 0,
-          "targetUrl": "redirect/service-detail.html?id=${serveId}&type=${serveType}&tabType=3",
-          "params": {
-            "showAppBar": false
-          }
-        }
-      ]
+      "actions": []
     }
   },
   "group_serve_record_finish_stage": {
@@ -682,27 +638,7 @@
           "value": "${servicerRole} ${servicerNickName}"
         }
       ],
-      "actions": [{
-          "title": "立即沟通",
-          "type": "native",
-          "userType": 0,
-          "targetRouter": "chat",
-          "params": {
-            "groupId": "${groupId}",
-            "userId": "${customerId}",
-            "name": "${customerNickName}"
-          }
-        },
-        {
-          "title": "查看详情",
-          "type": "h5",
-          "userType": 0,
-          "targetUrl": "redirect/service-detail.html?id=${serveId}&type=${serveType}&tabType=3",
-          "params": {
-            "showAppBar": false
-          }
-        }
-      ]
+      "actions": []
     }
   },
   "group_serve_record_change_stage": {
@@ -769,12 +705,7 @@
           "value": "${estate}"
         }
       ],
-      "actions": [{
-        "title": "去评价",
-        "type": "native_uri",
-        "userType": 1,
-        "targetRouter": "/riki_process_service/service_comment?refId=${serveId}&refType=${serveType}&projectId=${projectId}&serveTypeName=${serveTypeName}"
-      }]
+      "actions": []
     }
   },
   "group_serve_record_comment_notice": {
@@ -817,15 +748,7 @@
           "value": "${estate}"
         }
       ],
-      "actions": [{
-        "title": "查看详情",
-        "type": "h5",
-        "userType": 0,
-        "targetUrl": "redirect/service-detail.html?id=${serveId}&type=${serveType}&tabType=5",
-        "params": {
-          "showAppBar": false
-        }
-      }]
+      "actions": []
     }
   },
   "group_serve_record_publish_file": {
@@ -884,15 +807,7 @@
           "value": "${estate}"
         }
       ],
-      "actions": [{
-        "title": "查看详情",
-        "type": "h5",
-        "userType": 0,
-        "targetUrl": "redirect/service-detail.html?id=${serveId}&type=${serveType}&tabType=4",
-        "params": {
-          "showAppBar": false
-        }
-      }]
+      "actions": []
     }
   },
   "group_serve_record_publish_report": {
@@ -951,15 +866,7 @@
           "value": "${estate}"
         }
       ],
-      "actions": [{
-        "title": "查看详情",
-        "type": "h5",
-        "userType": 0,
-        "targetUrl": "redirect/service-detail.html?id=${serveId}&type=${serveType}&tabType=4",
-        "params": {
-          "showAppBar": false
-        }
-      }]
+      "actions": []
     }
   },
   "group_serve_record_publish_beauty_report": {
@@ -1022,27 +929,7 @@
           "value": "${servicerRole} ${servicerNickName}"
         }
       ],
-      "actions": [{
-          "title": "立即沟通",
-          "type": "native",
-          "userType": 0,
-          "targetRouter": "chat",
-          "params": {
-            "groupId": "${imGroupId}",
-            "userId": "${customerId}",
-            "name": "${customerNickName}"
-          }
-        },
-        {
-          "title": "查看详情",
-          "type": "h5",
-          "userType": 0,
-          "targetUrl": "redirect/service-detail.html?id=${serveId}&type=${serveType}&tabType=3",
-          "params": {
-            "showAppBar": false
-          }
-        }
-      ]
+      "actions": []
     }
   },
   "group_serve_record_start_serve": {
@@ -1199,15 +1086,7 @@
           "value": "${servicerRole} ${servicerNickName}"
         }
       ],
-      "actions": [{
-        "title": "查看详情",
-        "type": "h5",
-        "userType": 0,
-        "targetUrl": "redirect/service-detail.html?id=${serveId}&type=${serveType}&tabType=3",
-        "params": {
-          "showAppBar": false
-        }
-      }]
+      "actions": []
     }
   },
   "group_serve_record_cancel_serve": {
@@ -1246,15 +1125,7 @@
           "value": "${servicerRole} ${servicerNickName}"
         }
       ],
-      "actions": [{
-        "title": "查看详情",
-        "type": "h5",
-        "userType": 0,
-        "targetUrl": "redirect/service-detail.html?id=${serveId}&type=${serveType}&tabType=3",
-        "params": {
-          "showAppBar": false
-        }
-      }]
+      "actions": []
     }
   },
   "group_serve_record_finish_serve": {
@@ -1289,15 +1160,7 @@
           "value": "${estate}"
         }
       ],
-      "actions": [{
-        "title": "查看详情",
-        "type": "h5",
-        "userType": 0,
-        "targetUrl": "redirect/check-report.html?id=${reportId}&type=${reportType}",
-        "params": {
-          "showAppBar": false
-        }
-      }]
+      "actions": []
     }
   },
   "group_send_acceptance_report": {
@@ -1462,15 +1325,7 @@
           "value": "${reason}"
         }
       ],
-      "actions": [{
-        "title": "查看详情",
-        "type": "native",
-        "userType": 0,
-        "targetRouter": "orderDetail",
-        "params": {
-          "orderId": "${orderId}"
-        }
-      }]
+      "actions": []
     }
   },
   "sys_order_auto_cancel": {
@@ -1497,15 +1352,7 @@
           "value": "${reason}"
         }
       ],
-      "actions": [{
-        "title": "查看详情",
-        "type": "native",
-        "userType": 0,
-        "targetRouter": "orderDetail",
-        "params": {
-          "orderId": "${orderId}"
-        }
-      }]
+      "actions": []
     }
   },
   "sys_order_refund_apply": {
@@ -1606,15 +1453,7 @@
           "value": "${orderNo}"
         }
       ],
-      "actions": [{
-        "title": "去支付",
-        "type": "native",
-        "userType": 1,
-        "targetRouter": "orderDetail",
-        "params": {
-          "orderId": "${orderId}"
-        }
-      }]
+      "actions": []
     }
   },
   "sys_order_receipts": {
@@ -1649,15 +1488,7 @@
           "value": "${orderNo}"
         }
       ],
-      "actions": [{
-        "title": "查看详情",
-        "type": "native",
-        "userType": 1,
-        "targetRouter": "orderDetail",
-        "params": {
-          "orderId": "${orderId}"
-        }
-      }]
+      "actions": []
     }
   },
   "sys_order_payments": {
@@ -1714,15 +1545,7 @@
           "value": "${orderNo}"
         }
       ],
-      "actions": [{
-        "title": "查看详情",
-        "type": "native",
-        "userType": 1,
-        "targetRouter": "orderDetail",
-        "params": {
-          "orderId": "${orderId}"
-        }
-      }]
+      "actions": []
     }
   },
   "group_share_order_card": {
@@ -1845,15 +1668,7 @@
     "body": {
       "title": "进群通知",
       "subTitle": "您被${inviteOperatorNickName}邀请加入了${customerNickName}的${chatGroupTypeName}服务群：${customerGroupName}",
-      "actions": [{
-        "title": "立即进入",
-        "type": "native",
-        "userType": 2,
-        "targetRouter": "chat",
-        "params": {
-          "groupId": "${imChatGroupId}"
-        }
-      }]
+      "actions": []
     }
   },
   "sys_kick_out_chat_group": {
@@ -1933,16 +1748,7 @@
           "value": "${intentionRemarks}"
         }
       ],
-      "actions": [{
-        "title": "联系业主",
-        "type": "native",
-        "userType": 2,
-        "targetRouter": "chat",
-        "params": {
-          "userId": "${customerId}",
-          "name": "${customerNickName}"
-        }
-      }]
+      "actions": []
     }
   },
   "group_create_serve_chat_group": {
@@ -2027,15 +1833,7 @@
           "value": "${orderNo}"
         }
       ],
-      "actions": [{
-        "title": "查看详情",
-        "type": "native",
-        "userType": 1,
-        "targetRouter": "orderDetail",
-        "params": {
-          "orderId": "${orderId}"
-        }
-      }]
+      "actions": []
     }
   },
   "group_customer_unwork_tips": {
@@ -2117,15 +1915,7 @@
     "body": {
       "title": "初审失败通知",
       "subTitle": "您的设计师入驻申请初审未通过，初审未通过原因：${reason}",
-      "actions": [{
-        "title": "去修改",
-        "type": "native",
-        "userType": 1,
-        "targetRouter": "designerSettle",
-        "params": {
-          "applyId": "${applyId}"
-        }
-      }]
+      "actions": []
     }
   },
   "sys_preliminary_apply_success": {
@@ -2135,15 +1925,7 @@
     "body": {
       "title": "初审通过通知",
       "subTitle": "您的设计师入驻申请初审通过",
-      "actions": [{
-        "title": "查看详情",
-        "type": "native",
-        "userType": 1,
-        "targetRouter": "designerSettle",
-        "params": {
-          "applyId": "${applyId}"
-        }
-      }]
+      "actions": []
     }
   },
   "sys_preliminary_apply_cancel": {
@@ -2153,15 +1935,7 @@
     "body": {
       "title": "申请被撤销通知",
       "subTitle": "申请被撤销，申请被撤销原因：${reason}",
-      "actions": [{
-        "title": "去修改",
-        "type": "native",
-        "userType": 1,
-        "targetRouter": "designerSettle",
-        "params": {
-          "applyId": "${applyId}"
-        }
-      }]
+      "actions": []
     }
   },
   "sys_interview_success": {
@@ -2171,15 +1945,7 @@
     "body": {
       "title": "闯关通过通知",
       "subTitle": "恭喜您，通过打扮家成为云平台设计师闯关！",
-      "actions": [{
-        "title": "查看详情",
-        "type": "native",
-        "userType": 1,
-        "targetRouter": "designerSettle",
-        "params": {
-          "applyId": "${applyId}"
-        }
-      }]
+      "actions": []
     }
   },
   "sys_interview_fail": {
@@ -2189,15 +1955,7 @@
     "body": {
       "title": "闯关未通过通知",
       "subTitle": "很遗憾通知您，未能通过打扮家成为云平台设计师闯关！",
-      "actions": [{
-        "title": "查看详情",
-        "type": "native",
-        "userType": 1,
-        "targetRouter": "designerSettle",
-        "params": {
-          "applyId": "${applyId}"
-        }
-      }]
+      "actions": []
     }
   },
   "sys_settle_in_dbj_success": {
@@ -2207,15 +1965,7 @@
     "body": {
       "title": "入驻成功通知",
       "subTitle": "您的设计师入驻申请审核通过，恭喜您入驻成功！系统将为您自动开通设计师服务平台账号",
-      "actions": [{
-        "title": "查看详情",
-        "type": "native",
-        "userType": 1,
-        "targetRouter": "designerSettle",
-        "params": {
-          "applyId": "${applyId}"
-        }
-      }]
+      "actions": []
     }
   },
   "sys_open_account": {
@@ -2225,15 +1975,7 @@
     "body": {
       "title": "账号开通通知",
       "subTitle": "您的设计师服务工具账号已开通！请点击查看详情",
-      "actions": [{
-        "title": "查看详情",
-        "type": "native",
-        "userType": 1,
-        "targetRouter": "designerSettle",
-        "params": {
-          "applyId": "${applyId}"
-        }
-      }]
+      "actions": []
     }
   },
   "sys_service_staff_product_insert": {
@@ -2287,22 +2029,14 @@
     "body": {
       "title": "${serveTypeName}",
       "subTitle": "您有验房报告待验收",
-      "actions": [{
-          "title": "查看详情",
-          "type": "h5",
-          "userType": 1,
-          "targetUrl": "app-pages/confirm-inspection/index.html?id=${serveId}&projectId=${projectId}",
-          "isNewH5Url": true,
-          "isDisplay": false,
-          "params": {
-            "showAppBar": false
-          }
-        },
+      "actions": [
         {
           "title": "查看详情",
-          "type": "native_uri",
-          "userType": 1,
-          "targetRouter": "/riki_process_service/to_do_list?projectId=${projectId}"
+          "type": "native",
+          "targetRouter": "toDoListDecorate",
+          "params": {
+            "projectId": "${projectId}"
+          }
         }
       ]
     }
@@ -2314,18 +2048,14 @@
     "body": {
       "title": "${serveTypeName}",
       "subTitle": "验房师于${serviceTime}上门验房，请知悉",
-      "actions": [{
-          "title": "查看详情",
-          "type": "native_uri",
-          "userType": 1,
-          "isDisplay": false,
-          "targetRouter": "/riki_process_service/inspect_room_reminder?serveId=${serveId}&projectId=${projectId}"
-        },
+      "actions": [
         {
           "title": "查看详情",
-          "type": "native_uri",
-          "userType": 1,
-          "targetRouter": "/riki_process_service/to_do_list?projectId=${projectId}"
+          "type": "native",
+          "targetRouter": "toDoListDecorate",
+          "params": {
+            "projectId": "${projectId}"
+          }
         }
       ]
     }
@@ -2346,18 +2076,14 @@
     "body": {
       "title": "${serveTypeName}",
       "subTitle": "有${jobName}接单了，请确认",
-      "actions": [{
-          "title": "查看详情",
-          "type": "native_uri",
-          "userType": 1,
-          "isDisplay": false,
-          "targetRouter": "/riki_process_service/service_order_approve?serveId=${serveId}&projectId=${projectId}&serverId=${serverId}&serveType=${serveType}"
-        },
+      "actions": [
         {
           "title": "查看详情",
-          "type": "native_uri",
-          "userType": 1,
-          "targetRouter": "/riki_process_service/to_do_list?projectId=${projectId}"
+          "type": "native",
+          "targetRouter": "toDoListDecorate",
+          "params": {
+            "projectId": "${projectId}"
+          }
         }
       ]
     }
@@ -2369,18 +2095,14 @@
     "body": {
       "title": "${serveTypeName}",
       "subTitle": "您有一个竣工验收待确认",
-      "actions": [{
-          "title": "查看详情",
-          "type": "native_uri",
-          "userType": 1,
-          "isDisplay": false,
-          "targetRouter": "/riki_process_service/completion_apply?id=${id}&projectId=${projectId}"
-        },
+      "actions": [
         {
           "title": "查看详情",
-          "type": "native_uri",
-          "userType": 1,
-          "targetRouter": "/riki_process_service/to_do_list?projectId=${projectId}"
+          "type": "native",
+          "targetRouter": "toDoListDecorate",
+          "params": {
+            "projectId": "${projectId}"
+          }
         }
       ]
     }
@@ -2392,18 +2114,14 @@
     "body": {
       "title": "${nodeName}",
       "subTitle": "${nodeName}阶段完工，请验收",
-      "actions": [{
-          "title": "查看详情",
-          "type": "native_uri",
-          "userType": 1,
-          "isDisplay": false,
-          "targetRouter": "/riki_process_service/apply_record/result?id=${id}&serveId=${serveId}&projectId=${projectId}"
-        },
+      "actions": [
         {
           "title": "查看详情",
-          "type": "native_uri",
-          "userType": 1,
-          "targetRouter": "/riki_process_service/to_do_list?projectId=${projectId}"
+          "type": "native",
+          "targetRouter": "toDoListDecorate",
+          "params": {
+            "projectId": "${projectId}"
+          }
         }
       ]
     }
@@ -2415,18 +2133,14 @@
     "body": {
       "title": "${nodeName}",
       "subTitle": "${nodeName}整体完工，请验收",
-      "actions": [{
-          "title": "查看详情",
-          "type": "native_uri",
-          "userType": 1,
-          "isDisplay": false,
-          "targetRouter": "/riki_process_service/apply_record/result?id=${id}&serveId=${serveId}&projectId=${projectId}"
-        },
+      "actions": [
         {
           "title": "查看详情",
-          "type": "native_uri",
-          "userType": 1,
-          "targetRouter": "/riki_process_service/to_do_list?projectId=${projectId}"
+          "type": "native",
+          "targetRouter": "toDoListDecorate",
+          "params": {
+            "projectId": "${projectId}"
+          }
         }
       ]
     }
@@ -2438,18 +2152,14 @@
     "body": {
       "title": "${nodeName}",
       "subTitle": "您有一个${nodeName}待购买",
-      "actions": [{
-          "title": "查看详情",
-          "type": "native_uri",
-          "userType": 1,
-          "isDisplay": false,
-          "targetRouter": "/riki_process_service/furnish/buy_service?serviceType=[${serviceType}]&serviceName=${nodeName}&estateId=${estateId}&projectId=${projectId}"
-        },
+      "actions": [
         {
           "title": "查看详情",
-          "type": "native_uri",
-          "userType": 1,
-          "targetRouter": "/riki_process_service/to_do_list?projectId=${projectId}"
+          "type": "native",
+          "targetRouter": "toDoListDecorate",
+          "params": {
+            "projectId": "${projectId}"
+          }
         }
       ]
     }
@@ -2461,18 +2171,14 @@
     "body": {
       "title": "${nodeName}",
       "subTitle": "您有一个${nodeName}待购买",
-      "actions": [{
-          "title": "查看详情",
-          "type": "native_uri",
-          "userType": 1,
-          "isDisplay": false,
-          "targetRouter": "/riki_process_service/butler_work_cost?serveId=${serveCardId}&nodeType=${serviceType}&projectId=${projectId}&estateId=${estateId}&obtainType=${obtainType}&areaId=${areaId}"
-        },
+      "actions": [
         {
           "title": "查看详情",
-          "type": "native_uri",
-          "userType": 1,
-          "targetRouter": "/riki_process_service/to_do_list?projectId=${projectId}"
+          "type": "native",
+          "targetRouter": "toDoListDecorate",
+          "params": {
+            "projectId": "${projectId}"
+          }
         }
       ]
     }
@@ -2484,18 +2190,14 @@
     "body": {
       "title": "${roleTypeName}",
       "subTitle": "您有一个要货申请待确认",
-      "actions": [{
-          "title": "查看详情",
-          "type": "native_uri",
-          "userType": 1,
-          "isDisplay": false,
-          "targetRouter": "/riki_process_service/goods_require_customer_handle_page?id=${requireId}&projectId=${projectId}"
-        },
+      "actions": [
         {
           "title": "查看详情",
-          "type": "native_uri",
-          "userType": 1,
-          "targetRouter": "/riki_process_service/to_do_list?projectId=${projectId}"
+          "type": "native",
+          "targetRouter": "toDoListDecorate",
+          "params": {
+            "projectId": "${projectId}"
+          }
         }
       ]
     }
@@ -2507,23 +2209,14 @@
     "body": {
       "title": "${serveTypeName}",
       "subTitle": "精算师已经交付了精算单，请确认",
-      "actions": [{
-          "title": "查看详情",
-          "type": "h5",
-          "userType": 1,
-          "isNewH5Url": true,
-          "isDisplay": false,
-          "targetUrl": "app-pages/actuarial/index.html?serveId=${serveId}&&isActuarial=1&projectId=${projectId}&isMessage=1&estateId=${estateId}",
-          "params": {
-            "title": "确认精算单",
-            "showAppBar": false
-          }
-        },
+      "actions": [
         {
           "title": "查看详情",
-          "type": "native_uri",
-          "userType": 1,
-          "targetRouter": "/riki_process_service/to_do_list?projectId=${projectId}"
+          "type": "native",
+          "targetRouter": "toDoListDecorate",
+          "params": {
+            "projectId": "${projectId}"
+          }
         }
       ]
     }
@@ -2535,18 +2228,14 @@
     "body": {
       "title": "${serveTypeName}",
       "subTitle": "${workerTypeName}申请补人工，请支付差价",
-      "actions": [{
-          "title": "查看详情",
-          "type": "native_uri",
-          "userType": 1,
-          "isDisplay": false,
-          "targetRouter": "/riki_order/detail?id=${orderId}"
-        },
+      "actions": [
         {
           "title": "查看详情",
-          "type": "native_uri",
-          "userType": 1,
-          "targetRouter": "/riki_process_service/to_do_list?projectId=${projectId}"
+          "type": "native",
+          "targetRouter": "toDoListDecorate",
+          "params": {
+            "projectId": "${projectId}"
+          }
         }
       ]
     }
@@ -2558,18 +2247,14 @@
     "body": {
       "title": "${serveTypeName}",
       "subTitle": "您有原始结构尺寸图待验收",
-      "actions": [{
-          "title": "查看详情",
-          "type": "native_uri",
-          "userType": 1,
-          "isDisplay": false,
-          "targetRouter": "/riki_process_service/amount_room_result?serveId=${serveId}&serveType=${serveType}&projectId=${projectId}"
-        },
+      "actions": [
         {
           "title": "查看详情",
-          "type": "native_uri",
-          "userType": 1,
-          "targetRouter": "/riki_process_service/to_do_list?projectId=${projectId}"
+          "type": "native",
+          "targetRouter": "toDoListDecorate",
+          "params": {
+            "projectId": "${projectId}"
+          }
         }
       ]
     }
@@ -2581,18 +2266,14 @@
     "body": {
       "title": "${serveTypeName}",
       "subTitle": "您有${stageName}待验收",
-      "actions": [{
-          "title": "查看详情",
-          "type": "native_uri",
-          "userType": 1,
-          "isDisplay": false,
-          "targetRouter": "/riki_process_service/design_result_confirm?serveId=${serveId}&designStageDes=${stageName}&projectId=${projectId}"
-        },
+      "actions": [
         {
           "title": "查看详情",
-          "type": "native_uri",
-          "userType": 1,
-          "targetRouter": "/riki_process_service/to_do_list?projectId=${projectId}"
+          "type": "native",
+          "targetRouter": "toDoListDecorate",
+          "params": {
+            "projectId": "${projectId}"
+          }
         }
       ]
     }
@@ -2604,18 +2285,14 @@
     "body": {
       "title": "${serveTypeName}",
       "subTitle": "您有设计报告待验收",
-      "actions": [{
-          "title": "查看详情",
-          "type": "native_uri",
-          "userType": 1,
-          "isDisplay": false,
-          "targetRouter": "/riki_process_service/furnish/design_report?serveId=${serveId}&projectId=${projectId}"
-        },
+      "actions": [
         {
           "title": "查看详情",
-          "type": "native_uri",
-          "userType": 1,
-          "targetRouter": "/riki_process_service/to_do_list?projectId=${projectId}"
+          "type": "native",
+          "targetRouter": "toDoListDecorate",
+          "params": {
+            "projectId": "${projectId}"
+          }
         }
       ]
     }
@@ -2627,18 +2304,14 @@
     "body": {
       "title": "${serveTypeName}",
       "subTitle": "设计师已线上交底，请确认",
-      "actions": [{
-          "title": "查看详情",
-          "type": "native_uri",
-          "userType": 1,
-          "isDisplay": false,
-          "targetRouter": "/riki_process_service/online_disclosure?serveId=${serveId}&projectId=${projectId}"
-        },
+      "actions": [
         {
           "title": "查看详情",
-          "type": "native_uri",
-          "userType": 1,
-          "targetRouter": "/riki_process_service/to_do_list?projectId=${projectId}"
+          "type": "native",
+          "targetRouter": "toDoListDecorate",
+          "params": {
+            "projectId": "${projectId}"
+          }
         }
       ]
     }
@@ -2650,13 +2323,7 @@
     "body": {
       "title": "备忘录提醒",
       "subTitle": "有重要的信息，快去看看吧",
-      "actions": [{
-        "title": "去查看",
-        "type": "native_uri",
-        "userType": 1,
-        "isDisplay": false,
-        "targetRouter": "/riki_process_service/memorandum_details?memoId=${memoId}"
-      }]
+      "actions": []
     }
   },
   "sys_memo_delay_send_remind_msg": {
@@ -2666,13 +2333,7 @@
     "body": {
       "title": "备忘录提醒",
       "subTitle": "有重要的信息，快去看看吧",
-      "actions": [{
-        "title": "去查看",
-        "type": "native_uri",
-        "userType": 1,
-        "isDisplay": false,
-        "targetRouter": "/riki_process_service/memorandum_details?memoId=${memoId}"
-      }]
+      "actions": []
     }
   },
   "sys_serveing_change_servicer_to_worker": {
@@ -2709,6 +2370,106 @@
     "body": {
       "title": "${serveTypeName}",
       "subTitle": "已为您取消了${serveTypeName}的更换申请"
+    }
+  },
+  "sys_serveing_app_apply_change_servicer_to_customer": {
+    "type": "sys_serveing_app_apply_change_servicer_to_customer",
+    "template": "form",
+    "summary": "您发起的更换${jobName}申请已提交，请您耐心等待更换结果～",
+    "body": {
+      "title": "${serveTypeName}",
+      "subTitle": "您发起的更换${jobName}申请已提交，请您耐心等待更换结果～"
+    }
+  },
+  "sys_serveing_web_apply_change_servicer_to_customer": {
+    "type": "sys_serveing_web_apply_change_servicer_to_customer",
+    "template": "form",
+    "summary": "已为您发起${jobName}更换申请，请您耐心等待更换结果～",
+    "body": {
+      "title": "${serveTypeName}",
+      "subTitle": "已为您发起${jobName}更换申请，请您耐心等待更换结果～"
+    }
+  },
+  "sys_customer_refund_success": {
+    "type": "sys_customer_refund_success",
+    "template": "form",
+    "summary": "您发起的${serveTypeName}退款申请已退款成功",
+    "body": {
+      "title": "${serveTypeName}退款通知",
+      "subTitle": "您发起的${serveTypeName}退款申请已退款成功",
+      "actions": [
+        {
+          "title": "查看详情",
+          "type": "native",
+          "targetRouter": "refundDetail",
+          "params": {
+            "status": "${status}",
+            "orderId": "${orderId}",
+            "refundId": "${refundId}"
+          }
+        }
+      ]
+    }
+  },
+  "sys_customer_refund_fail": {
+    "type": "sys_customer_refund_fail",
+    "template": "form",
+    "summary": "您发起的${serveTypeName}退款申请退款失败了～",
+    "body": {
+      "title": "${serveTypeName}退款通知",
+      "subTitle": "您发起的${serveTypeName}退款申请退款失败了～",
+      "actions": [
+        {
+          "title": "查看详情",
+          "type": "native",
+          "targetRouter": "refundDetail",
+          "params": {
+            "status": "${status}",
+            "orderId": "${orderId}",
+            "refundId": "${refundId}"
+          }
+        }
+      ]
+    }
+  },
+  "sys_customer_refund_cancel": {
+    "type": "sys_customer_refund_cancel",
+    "template": "form",
+    "summary": "您发起的${serveTypeName}退款申请已关闭",
+    "body": {
+      "title": "${serveTypeName}退款通知",
+      "subTitle": "您发起的${serveTypeName}退款申请已关闭",
+      "actions": [
+        {
+          "title": "查看详情",
+          "type": "native",
+          "targetRouter": "refundDetail",
+          "params": {
+            "status": "${status}",
+            "orderId": "${orderId}",
+            "refundId": "${refundId}"
+          }
+        }
+      ]
+    }
+  },
+  "sys_change_order_owner_confirm": {
+    "type": "sys_change_order_owner_confirm",
+    "template": "form",
+    "summary": "${applicantRoleNm}在${housingEstate}${address}，发起${workTypeName}施工项变更申请~",
+    "body": {
+      "title": "${workTypeName}施工项变更申请",
+      "subTitle": "${applicantRoleNm}在${housingEstate}${address}，发起${workTypeName}施工项变更申请~",
+      "actions": [
+        {
+          "title": "查看详情",
+          "type": "native",
+          "targetRouter": "toDoListDecorate",
+          "params": {
+            "projectId": "${projectId}"
+          }
+        }
+      ]
     }
   },
   "custom_agant_coming": {

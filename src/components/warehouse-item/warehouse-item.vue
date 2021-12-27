@@ -39,8 +39,8 @@
 						<!-- 实付 -->
 						<view v-if="showPayPrice" class="price">
 							<text class="num-x">¥</text>
-							<text class="num-z">{{String(goodItem.discountPrice/100).split('.')[0]}}</text>
-							<text class="num-x">.{{String(goodItem.discountPrice/100).split('.')[1]||'00'}}</text>
+							<text class="num-z">{{String((goodItem.discountPriceFormate||goodItem.discountPrice)/100).split('.')[0]}}</text>
+							<text class="num-x">.{{String((goodItem.discountPriceFormate||goodItem.discountPrice)/100).split('.')[1]||'00'}}</text>
 						</view>
 					</view>
 					<view class="spec">

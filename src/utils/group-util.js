@@ -17,7 +17,7 @@ function getTextFromGroupTipMessage(message, conversationID) {
   const memberList = state.groupMembersMap[groupId] || [];
   const getMemberName = userID => {
     let member = memberList.find(m => m.userID === userID);
-    return member && member.nick ? member.nick : userID;
+    return member && member.nick ? member.nick : (message.nick || userID);
   };
   let userIDList = payload.userIDList || [];
   let groupProfile = payload.groupProfile || {};

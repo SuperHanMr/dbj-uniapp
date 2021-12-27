@@ -18,13 +18,13 @@
       <view class="tips">该减项金额是根据您房屋实际需要减少的工艺项；您同意后会按照变更后的结果为您服务并退还减少的工艺项的差额</view>
     </view>
     <view class="summary">
-      <view class="add-money">
+      <view class="add-money" v-if="changeOrderData.increasedItems">
         <view class="label">增项费用</view>
         <view class="money price-font">￥<text
             class="ft-28">{{changeOrderData.increasedAmount ? (changeOrderData.increasedAmount/100).toFixed(2) : 0}}</text>
         </view>
       </view>
-      <view class="recd-money">
+      <view class="recd-money" v-if="changeOrderData.reducedItems">
         <view class="label">减项费用</view>
         <view class="money price-font">-￥<text
             class="ft-28">{{changeOrderData.reducedAmount ? (changeOrderData.reducedAmount/100).toFixed(2) : 0}}</text>
@@ -47,17 +47,31 @@
     </view>
     <view class="pay-way" v-if="changeOrderData.totalAmount > 0">
       <view class="label">支付方式</view>
-      <view class="wx">微信支付</view>
+      <view class="wx" v-if="totalAmount > 0">微信支付</view>
+      <view class="store-pay" v-else>储值卡支付</view>
+    </view>
+    <view class='remarks'>
+      <text>备注</text>
+      <view class="remarks-right">
+        <textarea type="text" maxlength="200" v-model="remarks" cursor-spacing="15px"
+          placeholder-class="text-placeholder"
+          style="width:100%;line-height: 46rpx;min-height: 90rpx;height: 85%;overflow: scroll;padding-top: 20rpx;"
+          placeholder="选填,说点什么～" />
+      </view>
     </view>
     <view class="pay-wrap">
       <view class="b-t-1" @click="refuse">拒绝申请</view>
-      <view class="b-t-1 b-t-p" v-if="changeOrderData.totalAmount > 0" @click="submit(1)">同意并支付<text
+      <view class="b-t-1 b-t-p" v-if="changeOrderData.totalAmount > 0" @click="submitCard">同意并支付<text
           class="unit price-font">￥</text><text class="price-font">{{totalAmount}}</text></view>
       <view class="b-t-1 b-t-p" v-if="changeOrderData.totalAmount === 0" @click="submit(0)">同意申请</view>
       <view class="b-t-1 b-t-p" v-if="changeOrderData.totalAmount < 0" @click="submit(-1)">同意并退还您<text
           class="unit price-font">￥</text><text
           class="price-font">{{(Math.abs(changeOrderData.totalAmount)/100).toFixed(2)}}</text></view>
     </view>
+    <uni-popup ref="payDialog" type="bottom">
+      <pay-dialog :payChannelPrice="payChannelPrice" @payOrder="submit(2)" @closePayDialog="closePayDialog">
+      </pay-dialog>
+    </uni-popup>
   </view>
 </template>
 
@@ -88,28 +102,40 @@
         isCardPay: false,
         msg: {},
         cardBalance: 0,
+        remarks: "",
         changeOrderData: {}
       };
     },
     computed: {
       totalAmount() {
-        return this.isCardPay ? ((this.changeOrderData.totalAmount - this.cardBalance) / 100).toFixed(2) :
-          (this.changeOrderData.totalAmount / 100).toFixed(2)
-      }
+        if (this.isCardPay) {
+          let temp = this.cardBalance - this.changeOrderData.totalAmount
+          if (temp >= 0) {
+            return 0
+          } else {
+            return ((this.changeOrderData.totalAmount - this.cardBalance) / 100).toFixed(2)
+          }
+        } else {
+          return (this.changeOrderData.totalAmount / 100).toFixed(2)
+        }
+      },
+      payChannelPrice() {
+        //提示框价格
+        let temp = this.cardBalance - this.changeOrderData.totalAmount
+        if (temp <= 0) {
+          return (this.cardBalance / 100).toFixed(2)
+        } else {
+          return (this.changeOrderData.totalAmount / 100).toFixed(2);
+        }
+      },
     },
     onLoad(option) {
       console.log("getApp().globalData.decorateMsg：", getApp().globalData.decorateMsg)
       if (getApp().globalData.decorateMsg.msgType === "sys_change_order_owner_confirm") {
         this.msg = getApp().globalData.decorateMsg
       } else {
-        
+
       }
-      // } else {
-      //   this.msg = {
-      //     workTypeName: "拆除工",
-      //     changeOrderId: 1
-      //   }
-      // }
 
       uni.setNavigationBarTitle({
         title: this.msg.workTypeName + "工艺项变更申请"
@@ -120,6 +146,9 @@
       this.getBalance()
     },
     methods: {
+      closePayDialog() {
+        this.$refs.payDialog.close();
+      },
       getBalance() {
         getBalance().then((e) => {
           if (e != null) {
@@ -130,6 +159,13 @@
       changStoreValueCard(value) {
         console.log("isCardPay", value)
         this.isCardPay = value
+      },
+      submitCard() {
+        if (this.isCardPay) {
+          this.$refs.payDialog.open();
+        } else {
+          this.submit(1)
+        }
       },
       submit(flag) {
         let title, content
@@ -144,28 +180,32 @@
           content = ''
         }
         let that = this
-        uni.showModal({
-          content,
-          title,
-          cancelText: "取消",
-          cancelColor: "#333333",
-          confirmText: "同意",
-          confirmColor: "#00BFB6",
-          success(res) {
-            if (res.confirm) {
-              if (flag === 1 || flag === -1) {
-                that.createPayOrder()
-              } else if (flag === 0) {
-                that.agreeChangeOrder()
+        if (flag === 2) {
+          that.createPayOrder()
+        } else {
+          uni.showModal({
+            content,
+            title,
+            cancelText: "取消",
+            cancelColor: "#333333",
+            confirmText: "同意",
+            confirmColor: "#00BFB6",
+            success(res) {
+              if (res.confirm) {
+                if (flag === 1 || flag === -1) {
+                  that.createPayOrder()
+                } else if (flag === 0) {
+                  that.createPayOrder()
+                  // that.agreeChangeOrder()
+                }
+              } else if (res.cancel) {
+                console.log('用户取消了变更单申请的提交');
               }
-            } else if (res.cancel) {
-              console.log('用户取消了变更单申请的提交');
-            }
-          },
-          fail() {
+            },
+            fail() {}
+          })
+        }
 
-          }
-        })
       },
       refuse() {
         console.log("拒绝申请变更")
@@ -198,6 +238,7 @@
       createPayOrder() {
         //TODO
         let bodyObj = {
+          remarks: this.remarks,
           payType: 1, //"int //支付方式  1微信支付  3国美支付",
           openid: getApp().globalData.openId, //"string //微信openid 小程序支付用 app支付不传或传空",
           sourceId: 100, //"long //订单来源渠道  1app  100小程序",
@@ -205,6 +246,13 @@
           isCardPay: this.isCardPay //"boolean //是否使用储值卡支付  默认false"
         }
         createChangeOrderApi(bodyObj).then(data => {
+          if (!data) {
+            // 退款跳转装修首页
+            uni.switchTab({
+              url: "/pages/decorate/index/index",
+            });
+            return
+          }
           const {
             wechatPayJsapi,
             cardPayComplete,
@@ -250,7 +298,7 @@
               url: `/sub-classify/pages/pay-order/pay-success?orderId=${id}`,
             });
           }
-        });
+        })
       },
     }
   }
@@ -407,6 +455,48 @@
       background-size: 32rpx 32rpx;
       background-repeat: no-repeat;
     }
+
+    .store-pay {
+      height: 32rpx;
+      font-size: 28rpx;
+      font-family: PingFangSC, PingFangSC-Regular;
+      font-weight: 400;
+      text-align: right;
+      padding-left: 44rpx;
+      color: #111111;
+      line-height: 32rpx;
+      background-image: url("http://dbj.dragonn.top/static/mp/dabanjia/images/ic_store_store_card2x.png");
+      background-size: 32rpx 32rpx;
+      background-repeat: no-repeat;
+    }
+  }
+
+  .remarks {
+    padding: 5rpx 32rpx;
+    background-color: #ffffff;
+    margin-top: 25rpx;
+    font-size: 28rpx;
+    font-family: PingFangSC, PingFangSC-Regular;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    height: 104rpx;
+    line-height: 104rpx;
+  }
+
+  .remarks {
+    overflow: hidden;
+  }
+
+  .remarks text {
+    min-width: 180rpx;
+  }
+
+  .remarks .remarks-right {
+    flex: 1;
+    position: relative;
+    height: 100%;
+    overflow: scroll;
   }
 
   .pay-wrap {

@@ -5,7 +5,7 @@
 				<!-- 服务和材料 -->
 				<view class="header" >
 					<view class="store-name" @click="gotoShop(item)">
-						<text style="color: #333333;">{{item.storeName}}</text>
+						<text style="color: #333333;">{{item.ongoingServerName?item.ongoingServerName:item.storeName}}</text>
 						<image v-if="item.type !== 5" src="../../static/ic_more.svg" mode="" />
 					</view>
 					<view class="order-status">
@@ -215,9 +215,10 @@
 			goToDetail(data){
 				console.log("去详情页面","data",data.status,data.type)
 				// if(data.type == 5) return 
+				// data.id是退款单id
 				if(data.status == 0 || data.status == 1 ){
 					uni.navigateTo({
-						url:`refunding-detail/refunding-detail?orderId=${data.id}`
+						url:`refunding-detail/refunding-detail?id=${data.id}`
 					})
 				}else if(data.status == 2){
 					uni.navigateTo({

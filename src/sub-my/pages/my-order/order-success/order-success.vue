@@ -15,7 +15,7 @@
 
     <!-- 退款成功 -->
     <view class="order-container" v-if="type=='refund'" :style="{paddingBottom:systemBottom}">
-      <view style="position: relative;":style="{backgroundImage:`url(${bgImg})`,backgroundSize: '100% 100%'}">
+      <view style="position: relative;" :style="{backgroundImage:`url(${bgImg})`,backgroundSize: '100% 100%'}">
         <view class="bgcStyle" :style="{backgroundImage:`url(${bgImg})`,backgroundSize: '100% 100%'}"/>
         <view :style="{height:navBarHeight}"></view>
         <view class="order-status">
@@ -40,7 +40,32 @@
 						</text>
           </view>
         </view>
-        <view class="router" v-if="refundInfo.weChatRefundedAmount" :style="{marginBottom:refundInfo.cardRefundedAmount?'16rpx':'0'}" >
+				<!-- 储值卡需求 -->
+				<view class="router" v-if="refundInfo.deductedAmount" :style="{marginBottom:(refundInfo.weChatRefundedAmount || refundInfo.cardRefundedAmount)?'16rpx':'0'}">
+				  <text  style="color: #999999;font-size: 26rpx;">变更单抵扣</text>
+				  <view>
+				    <text style="font-size: 20rpx;">￥</text>
+				    <text style="font-size:28rpx;" class="price-font">
+							{{handlePrice(refundInfo.deductedAmount)[0]}}.
+						</text>
+				    <text style="font-size:20rpx;" class="price-font" >
+							{{handlePrice(refundInfo.deductedAmount)[1]}}
+						</text>
+				  </view>
+				</view>
+				<view class="router" v-if="refundInfo.cardRefundedAmount" :style="{marginBottom:refundInfo.weChatRefundedAmount?'16rpx':'0'}">
+				  <text  style="color: #999999;font-size: 26rpx;">原路径返回储值卡</text>
+				  <view>
+				    <text style="font-size: 20rpx;">￥</text>
+				    <text style="font-size:28rpx;" class="price-font">
+							{{handlePrice(refundInfo.cardRefundedAmount)[0]}}.
+						</text>
+				    <text style="font-size:20rpx;" class="price-font" >
+							{{handlePrice(refundInfo.cardRefundedAmount)[1]}}
+						</text>
+				  </view>
+				</view>
+        <view class="router" v-if="refundInfo.weChatRefundedAmount" :style="{marginBottom:refundInfo.couponRefundedAmount?'16rpx':'0'}" >
           <text style="color: #999999;font-size: 26rpx;">原路径返回微信</text>
           <view>
             <text style="font-size: 20rpx;">￥</text>
@@ -52,18 +77,19 @@
 						</text>
           </view>
         </view>
-				<view class="router" v-if="refundInfo.cardRefundedAmount" style="margin-bottom: 0">
-          <text  style="color: #999999;font-size: 26rpx;">原路径返回储值卡</text>
-          <view>
-            <text style="font-size: 20rpx;">￥</text>
-            <text style="font-size:28rpx;" class="price-font">
-							{{handlePrice(refundInfo.cardRefundedAmount)[0]}}.
+				<!-- 优惠卡需求 -->
+				<view class="router" v-if="refundInfo.couponRefundedAmount"  style="margin-bottom: 0">
+				  <text  style="color: #999999;font-size: 26rpx;">退回优惠券</text>
+				  <view>
+				    <text style="font-size: 20rpx;">￥</text>
+				    <text style="font-size:28rpx;" class="price-font">
+							{{handlePrice(refundInfo.couponRefundedAmount)[0]}}.
 						</text>
-            <text style="font-size:20rpx;" class="price-font" >
-							{{handlePrice(refundInfo.cardRefundedAmount)[1]}}
+				    <text style="font-size:20rpx;" class="price-font" >
+							{{handlePrice(refundInfo.couponRefundedAmount)[1]}}
 						</text>
-          </view>
-        </view>
+				  </view>
+				</view>
       </view>
 
       <view class="body1" v-for="item1 in refundInfo.detailAppVOS" :key="item1.id">
@@ -74,9 +100,9 @@
           :refundType="true"
           @handleDetail="productDetail(item1,'refund')"
         />
-				<store-calue-card-item 
-					v-else 
-					:dataInfo="item1" 
+				<store-calue-card-item
+					v-else
+					:dataInfo="item1"
 				/>
       </view>
 			<order-refund-info :refundInfo="refundInfo"></order-refund-info>
@@ -96,11 +122,11 @@
         </view>
       </view>
 
-			<order-user-base-info 
-			 v-if="orderInfo.customerName && orderInfo.customerPhone && orderInfo.estateInfo" 
+			<order-user-base-info
+			 v-if="orderInfo.customerName && orderInfo.customerPhone && orderInfo.estateInfo"
 			 :data="orderInfo"
 		 />
-		 
+
       <view class="body2">
         <view class="part1" v-for="(item2,index2) in orderInfo.details" :key="index2" >
           <view class="header">
@@ -125,7 +151,7 @@
               :orderStatus="3"
               @handleDetail="productDetail(item3)"
             />
-						
+
 						<store-calue-card-item :dataInfo ="item3" v-else/>
           </view>
         </view>
@@ -141,34 +167,34 @@
         :payTime="orderInfo.payTime"
         :showPayType="true"
       />
-			
+
       <view v-if=" orderInfo.showRefundBtn " class="applyforRefund-container" :style="{paddingBottom:systemBottom,height:systemHeight}">
         <view class="applyforRefund" @click="toApplayForRefund(orderInfo,2)" >
           申请退款
         </view>
 			</view>
-			
+
 			<!-- 申请售后的按钮 -->
 			<view v-if="orderInfo.showApplyAfterSalesBtn" class="applyforRefund-container" :style="{paddingBottom:systemBottom,height:systemHeight}">
 			  <view class="applyforRefund" @click="toApplyForAfterSales()" >
 			    申请售后
 			  </view>
 			</view>
-			
+
 			<view class="applyforRefund-confirmReceipt2" :style="{paddingBottom:systemBottom}"
 				v-if="!orderInfo.showRefundBtn && orderInfo.refundApplyMode == 2 && (orderInfo.stockType == 0 || orderInfo.type == 5)">
-			
+
 				<view class="refundOrderStatus"
 					v-if="orderInfo.refundBillStatus == 0 || (orderInfo.refundBillStatus == 1 && orderInfo.type == 5)"
 					@click="refundCancel(orderInfo)">
 					取消退款
 				</view>
-				
+
 				<view class="refundOrderStatus" v-if="orderInfo.refundBillStatus == 2"
 					@click="refundSuccess(orderInfo)">
 					退款成功
 				</view>
-				
+
 				<view class="refundOrderStatus" style="color:#FF3347;" v-if="orderInfo.refundBillStatus == 5"
 					@click="refundFailed(orderInfo)">
 					退款失败
@@ -182,9 +208,9 @@
       </view>
     </view>
 		<!-- 取消退款的弹框 -->
-		<popup-dialog 
+		<popup-dialog
 			ref="cancelRefund"
-			:title="title" 
+			:title="title"
 			@close="cancelRefundClose"
 			@confirm="cancelRefundConfirm"
 		/>
@@ -262,7 +288,7 @@ export default {
 		  this.headerTitle = "订单详情";
 		  this.orderDetail();
 		}
-		
+
 		if (this.type == "refund") {
 		  //退款成功页面
 		  this.headerTitle = "退款详情";
@@ -270,7 +296,7 @@ export default {
 		  this.refundDetail();
 		}
 	},
-	
+
 
   methods: {
     orderDetail() {
@@ -342,7 +368,7 @@ export default {
         url: `../../../../sub-classify/pages/shops/shops?storeId=${item2.storeId}&areaId=${this.areaId}`,
       });
     },
-		
+
 		// 取消退款
 		refundCancel(item) {
 			this.itemId = item.refundId;
@@ -374,7 +400,7 @@ export default {
 				url: `../order-failed/order-failed?type=refund&id=${item.refundId}&showReApply=${showReApply}&status=${item.refundBillStatus}`,
 			});
 		},
-		
+
 		refundClose(item) {
 			console.log("item数据=", item);
 			const showReApply = item.shipmentStatus !== 2 ? true : false;

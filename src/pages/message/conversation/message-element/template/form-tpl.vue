@@ -8,8 +8,8 @@
         {{ tip }}
       </view>
       <view class="form-container">
-        <view v-for="(item,index) in formItems" class="form-item">
-          <view :key="index" class="form-item__label">
+        <view v-for="(item,index) in formItems" :key="index" class="form-item">
+          <view class="form-item__label">
             {{ item.label }}
           </view>
           <view class="form-item__content">
@@ -32,7 +32,8 @@
     compileTemplateStr as compile
   } from "@/utils/util.js";
   import {
-    evaluateDetail
+    evaluateDetail,
+    getRefundDetail
   } from "@/api/order.js"
   export default {
     name: "FormTemplate",
@@ -65,42 +66,70 @@
         })
       },
       actions() {
-        return (this.template.body.actions || [])
-          .filter(action => action.isDisplay === undefined || (action.type === "native" && action.isDisplay))
+        return this.template.body.actions || [];
       }
     },
     methods: {
       handleClick(btn) {
-        if (btn.targetRouter === "evalute") {
-          let params = btn.params;
-          let serviceId = compile(params.serviceId)(this.data);
-          let serviceType = compile(params.serviceType)(this.data);
-          let serverName = compile(params.serverName)(this.data);
-          let serverRoleName = compile(params.serverRoleName)(this.data);
-          let serverAvatar = compile(params.serverAvatar)(this.data);
-          evaluateDetail({
-            id: serviceId
-          }).then(data => {
-            if (data.commentStatus === 1) { //已评价
-              uni.navigateTo({
-                url: `/sub-my/pages/evaluate/evaluate-detail/evaluate-detail?id=${serviceId}`
-              })
-            } else {
+        if (btn.type === "native") { // 需要本地手动处理按钮动作
+          if (btn.targetRouter === "evalute") { // 去评价的消息
+            let params = btn.params;
+            let serviceId = compile(params.serviceId)(this.data);
+            let serviceType = compile(params.serviceType)(this.data);
+            let serverName = compile(params.serverName)(this.data);
+            let serverRoleName = compile(params.serverRoleName)(this.data);
+            let serverAvatar = compile(params.serverAvatar)(this.data);
+            evaluateDetail({
+              id: serviceId
+            }).then(data => {
+              if (data.commentStatus === 1) { //已评价
+                uni.navigateTo({
+                  url: `/sub-my/pages/evaluate/evaluate-detail/evaluate-detail?id=${serviceId}`
+                })
+              } else {
+                uni.navigateTo({
+                  url: `/sub-my/pages/evaluate/immediate-evaluate/immediate-evaluate?id=${serviceId}&type=${serviceType}&serverName=${serverName}&serverRoleName=${serverRoleName}&serverAvatar=${serverAvatar}`,
+                })
+              }
+            }).catch(e => {
               uni.navigateTo({
                 url: `/sub-my/pages/evaluate/immediate-evaluate/immediate-evaluate?id=${serviceId}&type=${serviceType}&serverName=${serverName}&serverRoleName=${serverRoleName}&serverAvatar=${serverAvatar}`,
               })
-            }
-          }).catch(e => {
-            uni.navigateTo({
-              url: `/sub-my/pages/evaluate/immediate-evaluate/immediate-evaluate?id=${serviceId}&type=${serviceType}&serverName=${serverName}&serverRoleName=${serverRoleName}&serverAvatar=${serverAvatar}`,
+            });
+          } else if (btn.targetRouter === "toDoListDecorate") { // 跳转装修待办列表
+            let params = btn.params;
+            let projectId = +compile(params.projectId)(this.data);
+            getApp().globalData.msgProjectId = projectId;
+            uni.switchTab({
+              url: `/pages/decorate/index/index`
             })
+          } else if (btn.targetRouter === "refundDetail") { // 跳转退款详情
+            let params = btn.params;
+            let refundId = +compile(params.refundId)(this.data);
+            getRefundDetail({
+              id: refundId
+            }).then(data => {
+              if(data.status == 0 || data.status == 1 ){
+                uni.navigateTo({
+                  url:`/sub-my/pages/refund-list/refunding-detail/refunding-detail?id=${data.id}`
+                })
+              }else if(data.status == 2){
+                uni.navigateTo({
+                  url:`/sub-my/pages/my-order/order-success/order-success?type=refund&id=${data.id}`
+                })
+              }else{
+                uni.navigateTo({
+                  url:`/sub-my/pages/my-order/order-failed/order-failed?type=refund&id=${data.id}&status=${data.status}&showReApply=true`
+                })
+              }
+            })
+            
+          }
+        } else if (btn.type === "native_uri") { // 跳转页面处理
+          let url = compile(btn.targetRouter)(this.data);
+          uni.navigateTo({
+            url: url
           });
-        } else {
-          const projectId = this.message?.payloadData?.params?.projectId
-          getApp().globalData.msgProjectId = projectId
-          uni.switchTab({
-            url: `/pages/decorate/index/index`
-          })
         }
       }
     }

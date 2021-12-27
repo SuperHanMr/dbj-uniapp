@@ -32,7 +32,7 @@
           :isReport='true'></resultContent>
         <serviceDesign id="d1" v-if="tab.nodeType===1&&!tab.currentEmpty" :projectId='projectId' @isEmpty='isEmpty' :index='index1' @changeDesign='changeDesign' :serverId='tab.serveCardId'></serviceDesign>
         <serviceActuarial id="d4" v-if="tab.nodeType===4&&!tab.currentEmpty" @isEmpty='isEmpty' :index='index1' :projectId='projectId' :serverId='tab.serveCardId'></serviceActuarial>
-        <serviceSteward id="d5" v-if="tab.nodeType===5&&!tab.currentEmpty" @isEmpty='isEmpty' :index='index1' :projectId='projectId'></serviceSteward>
+        <serviceSteward id="d5" v-if="tab.nodeType===5&&!tab.currentEmpty" @isEmpty='isEmpty' :index='index1' :serveCardId='tab.serveCardId'></serviceSteward>
         <serviceDismantle id="d6" v-if="tab.nodeType>5&&!tab.currentEmpty" :index='index1' @isEmpty='isEmpty' :projectId='projectId' :serveId='tab.serveCardId'></serviceDismantle>
         <no-service v-if="tab.currentEmpty" :listImage='false' words="暂无服务相关信息 验收通过后即会呈现"></no-service>
       </swiper-item>
@@ -184,7 +184,7 @@
       getMyService(){
         let data = {
           projectId:this.projectId,
-          processId:this.processId
+          // processId:this.processId
         }
         getMyService(data).then(res=>{
           

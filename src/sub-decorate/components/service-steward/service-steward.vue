@@ -29,7 +29,7 @@
       imagePreview
     },
     props:{
-      projectId:0,
+      serveCardId:0,
       index:0
     },
     data(){
@@ -44,7 +44,7 @@
     //   this.getStewardService()
     // },
     watch:{
-      projectId:{
+      serveCardId:{
         handler:function(){
           this.getStewardService()
         },
@@ -53,7 +53,7 @@
     },
     methods:{
       getStewardService(){
-        getStewardService(this.projectId).then(res=>{
+        getStewardService(this.serveCardId).then(res=>{
           console.log(res)
           this.list = res.progressList
           if(this.list.length===0){

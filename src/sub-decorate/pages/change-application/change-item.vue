@@ -12,26 +12,30 @@
             <view class="type">服务</view>
             <view class="spu-name">{{itemData.spuName}}</view>
           </view>
-          <view class="name">{{itemData.unitName ||'--'}}</view>
+          <!-- <view class="name">{{itemData.skuName}}</view> -->
         </view>
         <view class="price">
           <view class="unit">￥</view>
           <view class="price-int">{{newPrice[0]}}</view>
-          <view class="price-float">.{{newPrice[1]}}</view>
+          <view class="price-float">.{{newPrice[1]}}/<text class="unit2">{{itemData.unitName}}</text></view>
         </view>
       </view>
     </view>
     <view class="count-wrap">
       <view class="total">
-        <text class="unit">￥</text>{{(itemData.newAmount/100).toFixed(2)}}
+        <text class="unit">{{itemData.newAmount < 0 ? "-" : ""}}￥</text>{{(Math.abs(itemData.newAmount)/100).toFixed(2)}}
       </view>
       <view class="line"></view>
       <view class="volume-wrap">
         <view class="volume" :class="{'add': km[itemData.type] === '增加'}">
-          {{km[itemData.type]}}{{itemData.newNumber.toFixed(2)}}</view>
+          {{km[itemData.type]}}{{itemData.newNumber.toFixed(2)}}<text class="unit2">{{itemData.unitName}}</text>
+        </view>
         <!-- 减量 -->
         <view class="jian" v-if="itemData.type === 3 || itemData.type === 4">
-          已购买：{{itemData.oldNumber.toFixed(2)}}；剩余：{{((itemData.oldNumber-itemData.newNumber)*100/100).toFixed(2)}}
+          已购买：{{itemData.oldNumber.toFixed(2)}}
+          <text
+            class="unit2">{{itemData.unitName}}</text>；剩余：{{((itemData.oldNumber-itemData.newNumber)*100/100).toFixed(2)}}
+          <text class="unit2">{{itemData.unitName}}</text>
         </view>
       </view>
     </view>
@@ -263,6 +267,7 @@
     color: #333333;
     line-height: 26rpx;
   }
+
   .volume.add {
     line-height: 24rpx;
   }
@@ -276,5 +281,9 @@
     text-align: left;
     color: #999999;
     line-height: 26rpx;
+  }
+
+  .unit2 {
+    font-size: 20rpx
   }
 </style>

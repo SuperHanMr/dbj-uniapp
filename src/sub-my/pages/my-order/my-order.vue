@@ -102,7 +102,7 @@
                       <image
                         v-for="item2 in handleImage(item.details)"
                         :key="item2"
-                        :src="`${item2}?x-oss-process=image/resize,m_mfit,w_68,h_68`"
+                        :src="`${item2}?x-oss-process=image/resize,m_mfit,w_272,h_272`"
                         mode="aspectFill"
                       />
                     </scroll-view>

@@ -23,7 +23,7 @@
         {{ name }}
       </view>
       <view v-if="message" class="im-message-msg">
-        {{ message }}
+        <text v-if="hasAtMeMsg" class="remind">[有人@我]</text>{{ message }}
       </view>
     </view>
     <view class="im-message-info">
@@ -31,7 +31,7 @@
         {{ time }}
       </view>
       <view v-if="conversation.unreadCount > 0" class="unread-count">
-        {{ conversation.unreadCount }}
+        {{ conversation.unreadCount > 99 ? "99+" : conversation.unreadCount }}
       </view>
     </view>
   </view>
@@ -45,6 +45,7 @@
   import { compileTemplateStr as compile } from "@/utils/util.js";
   import GroupAvatars from "@/components/group-avatars/group-avatars.vue"
   import { mapState } from "vuex"
+  const atUserReg = /@(.+?)\[(zeus_\d+)\]/g;
   export default {
     name: "ConversationItem",
     props: ["conversation"],
@@ -58,6 +59,9 @@
       }),
       toAccount() {
         return this.conversation.conversationID.replace(this.conversation.type, '');
+      },
+      hasAtMeMsg() {
+        return !!(this.conversation.groupAtInfoList && this.conversation.groupAtInfoList.length)
       },
       name() {
         if (this.conversation.systemType) {
@@ -93,7 +97,9 @@
       message() {
         let message = this.conversation.lastMessage;
         if (message) {
-          if (message && message.type === TIM.TYPES.MSG_CUSTOM) {
+          if (message.type === TIM.TYPES.MSG_TEXT) {
+            return message.messageForShow.replace(atUserReg, "@$1 ");
+          } else if (message.type === TIM.TYPES.MSG_CUSTOM) {
             try {
               let payloadData = JSON.parse(message.payload.data);
               if (payloadData.type === "img_message") {
@@ -182,6 +188,12 @@
   .im-message-avatar {
     margin-right: 24rpx;
   }
+
+  .im-avatar-image {
+    width: 100rpx;
+    height: 100rpx;
+    border-radius: 6px;
+  }
   
   .im-message-content {
     flex: 1;
@@ -228,7 +240,10 @@
     font-size: 10px;
     color: #bbb;
   }
-  
+  .remind {
+    color: #FA4D32;
+    margin-right: 4px;
+  }
   .unread-count {
     margin-top: 12rpx;
     height: 32rpx;

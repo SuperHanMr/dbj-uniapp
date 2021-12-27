@@ -61,12 +61,12 @@ export function getDesignServeMenu(params) {
 
 //获取我的装修服务进度
 export function getMyService(params) {
-	return request.get("/pm/app/project/myService?projectId=" + params.projectId + "&processId=" + params.processId)
+	return request.get("/pm/app/project/myService?projectId=" + params.projectId )
 }
 
 //获取我的装修服务管家数据
 export function getStewardService(params) {
-	return request.get("/pm/app/butler/getByProjectId/" + params)
+	return request.get("/pm/app/butler/getByServeCardId/" + params)
 }
 
 // //获取mqtt信息
@@ -128,7 +128,7 @@ export function sureAmount(params) {
 
 //查询是否有精算报告
 export function getActuaryReport(params) {
-	return request.get("/pm/app/actuary/isPass/" + params)
+	return request.get("/pm/app/actuary/isPass/new/" + params.projectId+'/'+params.serveId)
 }
 
 //获取验房交付报告
@@ -187,13 +187,18 @@ export function replaceServe(params) {
 }
 
 //查询变更单列表
-export function getListChangeOrders(params) {
-	return request.get("/pm/web/changeOrder/list/owner?stateType="+params)
+export function getListChangeOrders(params,id) {
+	return request.get("/pm/web/changeOrder/list/owner?stateType="+params+'&projectId='+id)
 }
 
 //拒绝变更单申请
 export function rejectChangeOrder(params) {
-	return request.get("/pm/app/changeOrder/rejectChangeOrder",{params})
+	return request.post("/pm/app/changeOrder/doRejectChangeOrder",params)
+}
+
+//查询拒绝变更单原因
+export function rejectReson(params) {
+	return request.get("/pm/app/changeOrder/listRejectReasons?type=2")
 }
 
 //获取施工交付内容
@@ -302,10 +307,10 @@ export function goodsApply(params) {
 
 // 获取工序费用
 export function sellList(params) {
-	if (params.obtainType == 0 || params.obtainType == 1 || params.obtainType == 2) {
-		return request.get(`/pm/app/actuary/sell/list/${params.projectId}/${params.type}/${params.obtainType}`)
-	} else if (params.isBOM === '1') {
+	if (params.isBOM === '1') {
 		return request.get(`/pm/app/actuary/sell/other/list/${params.projectId}/${params.type}`)
+	} else if (params.obtainType == 0 || params.obtainType == 1 || params.obtainType == 2) {
+		return request.get(`/pm/app/actuary/sell/list/${params.projectId}/${params.type}/${params.obtainType}`)
 	}
 	return request.get(`/pm/app/actuary/sell/list/${params.projectId}/${params.type}`)
 }
@@ -371,4 +376,9 @@ export function judgeOwner(params) {
 	return request.get(`/order-center/app/goods/stock/judgeOwner`, {
 		params
 	})
+}
+
+// 是否可以操作（换人申请中是否可以操作）
+export function isAllowOperate(serveId) {
+	return request.get(`/pm/app/worker/service/isAllowOperate/${serveId}`)
 }

@@ -43,8 +43,7 @@
                     <text>/{{goodsItem.unit?goodsItem.unit:""}}</text>
                   </view>
                   <view>
-                    <view class="sku-deposit price-font"
-                      v-if="goodsItem.deposit !== undefined && goodsItem.productType === 2">押金
+                    <view class="sku-deposit price-font" v-if="goodsItem.deposit && goodsItem.productType === 2">押金
                       ¥{{goodsItem.deposit}}</view>
                   </view>
                   <view class="total-num">共{{goodsItem.buyCount}}{{goodsItem.unit?goodsItem.unit:""}}
@@ -123,7 +122,7 @@
           <text>商品总价</text>
           <text>¥{{orderInfo.totalPrice}}</text>
         </view>
-        <view class="pledge price-font total-deposit" v-if="orderInfo.totalDeposit !== undefined">
+        <view class="pledge price-font total-deposit" v-if="orderInfo.totalDeposit">
           <text>押金</text>
           <text>¥{{orderInfo.totalDeposit}}</text>
         </view>
@@ -166,9 +165,11 @@
       </view>
       <view class='remarks'>
         <text>备注</text>
-        <view class="remark-text">
-          <textarea type="text" maxlength="200" v-model="remarks" auto-height placeholder-class="text-placeholder"
-            style="width:100%;line-height: 46rpx;padding-right: 10rpx;display: inline-block;" placeholder="选填,说点什么～" />
+        <view class="remarks-right">
+          <textarea type="text" maxlength="200" v-model="remarks" cursor-spacing="15px"
+            placeholder-class="text-placeholder"
+            style="width:100%;line-height: 46rpx;min-height: 90rpx;height: 85%;overflow: scroll;padding-top: 20rpx;"
+            placeholder="选填,说点什么～" />
         </view>
       </view>
       <view class="bottom">
@@ -316,7 +317,7 @@
       payChannelPrice() {
         //提示框价格
         if (!this.payChannel) {
-          return (this.cardPrice / 100).toFixed(2)
+          return (this.cardPrice / 100).toFixed(2);
         } else {
           return this.totalPrice;
         }
@@ -360,7 +361,7 @@
       this.unit = e.unit;
       this.level = e.level;
       this.goodDetailId = uni.getStorageSync("goodId");
-      console.log(e.houseId, getApp().globalData.currentHouse.id)
+      console.log(e.houseId, getApp().globalData.currentHouse.id);
     },
     onShow() {
       if (uni.getStorageSync("houseListChooseId")) {
@@ -571,8 +572,7 @@
                   businessType: skuItem.categoryTypeId, //业务类型,
                   roleType: skuItem.roleType ? Number(skuItem.roleType) :
                   0, //角色类型  7工人  10管家  购买工人和管家时参数必传,
-                  workType: skuItem.workType ? Number(skuItem.workType) : -
-                    2, //工种类型 购买工人时参数必传,
+                  workType: skuItem.workType ? Number(skuItem.workType) : -2, //工种类型 购买工人时参数必传,
                   level: skuItem.level, //等级  0中级  1高级 2特级  3钻石",
                   storeId: storeItem.storeId, //店铺id,
                   storeType: 0, //店铺类型 0普通 1设计师",
@@ -1069,8 +1069,8 @@
     margin-right: 12rpx;
   }
 
-  .remarks text {
-    min-width: 180rpx;
+  .remarks {
+    overflow: hidden;
   }
 
   .remarks view {
@@ -1078,8 +1078,15 @@
     overflow: scroll;
   }
 
-  .remark-text {
+  .remarks text {
+    min-width: 180rpx;
+  }
+
+  .remarks .remarks-right {
+    flex: 1;
+    position: relative;
     height: 100%;
+    overflow: scroll;
   }
 
   .bottom {

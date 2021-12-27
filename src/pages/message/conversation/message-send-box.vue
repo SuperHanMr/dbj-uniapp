@@ -9,7 +9,7 @@
       <view v-if="!isCustomerService" class="iconfont icon-a-icxiaoxidibuyuyin" @click="showRecordBtn = !showRecordBtn"></view>
       <textarea
         v-show="!showRecordBtn"
-        v-model="messageContent"
+        :value="messageContent"
         id="messageInput"
         :focus="inputFocus"
         :show-confirm-bar="false"
@@ -19,6 +19,8 @@
         placeholder-class="message-send-input-placeholder" 
         placeholder="聊点什么吧"
         @keyboardheightchange="handleKeyboradHeightChange"
+        @input="handleInput"
+        @blur="inputFocus = false"
       />
       <view
         v-show="showRecordBtn"
@@ -95,16 +97,20 @@
 </template>
 
 <script>
+  import TIM from 'tim-wx-sdk'
   import upload from "@/utils/upload.js"
   import { emojiName, emojiMap } from "@/utils/emoji-map.js"
+  import { keywordEncode } from "@/utils/decode-text.js"
   import { getTim } from "@/utils/tim.js"
   import { mapState } from "vuex"
   import { callServiceAgent } from "@/api/message.js"
+
   export default {
     name: "MessageSendBox",
     data() {
       return {
         messageContent: "",
+        atMessageMap: {},
         inputFocus: false,
         showFileChooser: false,
         showEmojiChooser: false,
@@ -209,6 +215,12 @@
       this.$once("hook:beforeDestroy", () => {
         uni.$off("message-list-click", showFooter);
       });
+      uni.$on("at-user-pick", this.handleAtUser);
+      uni.$on("at-user-close", this.closeAtUser);
+      this.$once("hook:beforeDestroy", () => {
+        uni.$off("at-user-pick", this.handleAtUser);
+        uni.$on("at-user-close", this.closeAtUser);
+      });
       let info = uni.getSystemInfoSync();
       if (/ios/i.test(info.platform)) {
         this.isIphone = true;
@@ -219,6 +231,56 @@
       this.recordBarNodesRef = null;
     },
     methods: {
+      handleInput(e) {
+        let preValue = this.messageContent;
+        let { detail = {} } = e;
+        let { cursor, value } = detail;
+        if (this.currentConversation.type === TIM.TYPES.CONV_GROUP && !this.isCustomerService) {
+          let isDelete = preValue.length > value.length;
+          if (isDelete) {
+            // 删除空格时，判断是否是删除@消息
+            if (preValue[cursor] === " ") {
+              let matchKey = "";
+              let isDelAt = Object.keys(this.atMessageMap).some((key) => {
+                matchKey = key;
+                return "@" + key === value.slice(cursor - (key.length + 1), cursor);
+              });
+              if (isDelAt) {
+                value = value.slice(0, cursor - (matchKey.length + 1)) + value.slice(cursor);
+              }
+            }
+          } else {
+            // 是否输入@符号
+            if (value[cursor - 1] === "@") {
+              this.inputFocus = false;
+              this.inputCursor = cursor;
+              uni.navigateTo({
+                url: "./at-user-list"
+              })
+            }
+          }
+        }
+        this.messageContent = value;
+      },
+      closeAtUser() {
+        this.inputCursor = 0;
+        if (this.inputFocus) {
+          this.inputFocus = false;
+        }
+        setTimeout(() => {
+          this.inputFocus = true;
+        }, 200);
+      },
+      handleAtUser(user) {
+        let {nick, userID} = user;
+        let text = this.messageContent;
+        this.messageContent = text.slice(0, this.inputCursor) + nick + " " + text.slice(this.inputCursor);
+        this.atMessageMap[nick] = {
+          nick: nick,
+          userID: userID
+        };
+        this.inputCursor = 0;
+      },
       sendTextMessage() {
         console.log(this.toAccount, this.currentConversation.type, this.messageContent, 11111);
         let text = this.messageContent.trim();
@@ -229,11 +291,32 @@
           })
           return;
         }
-        const message = getTim().createTextMessage({
-          to: this.toAccount,
-          conversationType: this.currentConversation.type,
-          payload: { text: this.messageContent },
+        let msgText = this.messageContent;
+        let atUserList = [];
+        let keyGroup = Object.keys(this.atMessageMap).map(key => keywordEncode(key)).join("|");
+        msgText = msgText.replace(new RegExp("@(" + keyGroup + ") ", "g"), (m, key) => {
+          let { userID } = this.atMessageMap[key];
+          atUserList.push(userID === "zeus_0" ? TIM.TYPES.MSG_AT_ALL : userID);
+          return "@" + key + "[" + userID + "]";
         });
+        console.log(msgText, atUserList);
+        let message;
+        if (atUserList.length) {
+          message = getTim().createTextAtMessage({
+            to: this.toAccount,
+            conversationType: this.currentConversation.type,
+            payload: { 
+              text: msgText,
+              atUserList: atUserList
+            },
+          });
+        } else {
+          message = getTim().createTextMessage({
+            to: this.toAccount,
+            conversationType: this.currentConversation.type,
+            payload: { text: msgText },
+          });
+        }
         this.$store.commit("pushCurrentMessageList", message);
         uni.$emit("scroll-to-bottom");
         getTim().sendMessage(message).then(() => {
@@ -741,4 +824,5 @@
     box-sizing: content-box;
     padding: 10rpx;
   }
+
 </style>

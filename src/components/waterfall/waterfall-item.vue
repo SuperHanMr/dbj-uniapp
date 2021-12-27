@@ -22,7 +22,7 @@
 		<image 
 			v-if="item.icon =='product'" 
 			class="product-img" 
-			:src="`${item.imageUrl}?x-oss-process=image/resize,m_mfit,w_172`" 
+			:src="`${item.imageUrl}?x-oss-process=image/resize,m_mfit,w_688`" 
 			mode="widthFix" 
 			lazy-load 
 			@load="onImageLoad"/>
@@ -30,7 +30,7 @@
 		<image 
 			v-if="item.icon =='case'" 
 			class="product-img" 
-			:src="`${item.imageUrl}?x-oss-process=image/resize,m_mfit,w_172`" 
+			:src="`${item.imageUrl}?x-oss-process=image/resize,m_mfit,w_688`" 
 			mode="widthFix" 
 			lazy-load 
 			@load="onImageLoad"/>
