@@ -2372,6 +2372,24 @@
       "subTitle": "已为您取消了${serveTypeName}的更换申请"
     }
   },
+  "sys_serveing_app_apply_change_servicer_to_customer": {
+    "type": "sys_serveing_app_apply_change_servicer_to_customer",
+    "template": "form",
+    "summary": "您发起的更换${jobName}申请已提交，请您耐心等待更换结果～",
+    "body": {
+      "title": "${serveTypeName}",
+      "subTitle": "您发起的更换${jobName}申请已提交，请您耐心等待更换结果～"
+    }
+  },
+  "sys_serveing_web_apply_change_servicer_to_customer": {
+    "type": "sys_serveing_web_apply_change_servicer_to_customer",
+    "template": "form",
+    "summary": "已为您发起${jobName}更换申请，请您耐心等待更换结果～",
+    "body": {
+      "title": "${serveTypeName}",
+      "subTitle": "已为您发起${jobName}更换申请，请您耐心等待更换结果～"
+    }
+  },
   "sys_customer_refund_success": {
     "type": "sys_customer_refund_success",
     "template": "form",

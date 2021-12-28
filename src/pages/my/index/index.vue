@@ -13,7 +13,7 @@
 				<view class="linearStyle" />
 			</view>
 		</view>
-
+		<view class="my-body">
 		<view class="my-header">
 			<view class="avatar-img" v-if="!userId" @click="handlerPersonalData()">
 				<image src="https://ali-image.dabanjia.com/image/20210513/10/162087290165628.png" class="avatar"  mode="aspectFill"/>
@@ -87,7 +87,7 @@
 				
 			</view>
 		</view>
-
+		</view>
 	</view>
 </template>
 
@@ -316,7 +316,7 @@
 			position: absolute;
 			filter: blur(13rpx);
 			width: 750rpx;
-			z-index: -1;
+			z-index: 1;
 			height: 490rpx;
 
 			image {
@@ -327,7 +327,7 @@
 				width: 100%;
 				height: 100%;
 				opacity: 0.3;
-				z-index: -1;
+				z-index: 1;
 				background-color: #111;
 				position: relative;
 
@@ -344,8 +344,16 @@
 			}
 		}
 
+		.my-body {
+			position: absolute;
+			width: 100%;
+			box-sizing: border-box;
+			top: 180rpx;
+			z-index: 2;
+			padding-bottom: 32rpx;
+		}
+
 		.my-header {
-			margin-top: 180rpx;
 			display: flex;
 			flex-flow: row nowrap;
 			justify-content: space-between;

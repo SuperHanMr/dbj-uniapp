@@ -29,7 +29,7 @@ export function queryOrderList(params) {
 
 //我的-订单-订单详情
 export function getOrderDetail(params) {
-	return request.get(`/order-center/app/order/detail`, { params });
+	return request.get(`/order-center/app/order/v26/detail`, { params });
 }
 
 //我的-订单-取消订单
@@ -46,8 +46,7 @@ export function confirmReceiptOrder(params) {
 
 //app订单支付接口
 export function orderPay(params) {
-	let version = uni.getAccountInfoSync().miniProgram.version || 'develop';
-	return request.post(`/order-center/app/order/payOrder?v=${version}`, params);
+	return request.post(`/order-center/app/order/payOrder`, params);
 }
 
 
@@ -99,8 +98,7 @@ export function querySplitPayList(params) {
 
 //我的-订单-分次支付接口
 export function splitPay(params) {
-	let version = uni.getAccountInfoSync().miniProgram.version || 'develop';
-	return request.post(`/order-center/app/order/splitPayOrder?v=${version}`, params);
+	return request.post(`/order-center/app/order/splitPayOrder`, params);
 }
 
 

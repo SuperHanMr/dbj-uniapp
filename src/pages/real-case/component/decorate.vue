@@ -56,10 +56,12 @@
 		},
 		methods: {
 			onHeight(height, tag) {
-				this.$parent.onHeight(height, tag);
+				this.$emit("height", height, tag);
+				// this.$parent.onHeight(height, tag);
 			},
 			onClick (index, tag){
-				this.$parent.onClick(index, tag);
+				this.$emit("click", index, tag);
+				// this.$parent.onClick(index, tag);
 			}
 		},
 	}

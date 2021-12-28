@@ -39,8 +39,8 @@
 				default: 1,
 			},
 			areaId: {
-				type: String,
-				default: "",
+				type: Number,
+				default: 0,
 			},
 		},
 		data() {

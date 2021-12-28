@@ -9,7 +9,7 @@
           <view class="title">
             <view class="house" @click="switchVisible">
               <text>{{who}}的家</text>
-              <i class="icon-shaixuan"></i>
+              <i class="icon icon-zhuangxiushouye_fuwuzhankaijiantou"></i>
             </view>
             <view class="friend" @click="toFriends">
               <view class="text">亲友团</view>
@@ -143,7 +143,6 @@
 </template>
 
 <script>
-  import "./index.scss";
   import {
     queryEstates,
     friendListByEstateId,
@@ -647,3 +646,352 @@
     },
   };
 </script>
+
+<style lang="scss">
+  .decorate-index {
+    position: relative;
+    padding-top: 176rpx;
+    height: 100vh;
+    overflow: hidden;
+    box-sizing: border-box;
+
+    .bg-index {
+      top: 0;
+      width: 100%;
+      height: 480rpx;
+      position: fixed;
+    }
+  }
+
+  .content {
+    width: 100%;
+    height: 100%;
+    position: relative;
+    z-index: 9;
+    height: 100%;
+  }
+
+  .flex-column {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .flex-1 {
+    flex: 1;
+  }
+
+  .scroll-view {
+    overflow-x: hidden;
+    overflow-y: auto;
+  }
+
+  .house-firend {
+    position: relative;
+    height: 242rpx;
+
+    .title {
+      display: flex;
+      justify-content: space-between;
+      flex-direction: row;
+      align-items: center;
+      margin-bottom: 4rpx;
+    }
+
+    .house {
+      display: flex;
+      justify-content: flex-start;
+      flex-direction: row;
+      align-items: center;
+      margin-left: 40rpx;
+
+      .icon {
+        font-size: 15px;
+        color: #333;
+      }
+
+      text {
+        height: 56rpx;
+        font-size: 40rpx;
+        font-family: PingFangSC, PingFangSC-Medium;
+        font-weight: 500;
+        text-align: left;
+        color: #333333;
+        line-height: 56rpx;
+        letter-spacing: 2rpx;
+        margin-right: 9rpx;
+      }
+    }
+
+    .friend {
+      margin-right: 32rpx;
+      display: flex;
+      justify-content: flex-start;
+      flex-direction: row;
+      align-items: center;
+
+      view.text {
+        height: 40rpx;
+        font-size: 24rpx;
+        font-family: PingFangSC, PingFangSC-Regular;
+        font-weight: 400;
+        text-align: right;
+        color: #666666;
+        line-height: 40rpx;
+        margin-right: 16rpx;
+      }
+
+      .friend-list {
+        display: flex;
+        justify-content: flex-start;
+        flex-direction: row;
+        align-items: center;
+
+        .avtor {
+          width: 40rpx;
+          height: 40rpx;
+          border-radius: 50%;
+        }
+
+        .avtor2,
+        .avtor-more {
+          margin-left: -12rpx;
+        }
+
+        .avtor2 {
+          z-index: 9;
+        }
+
+        .avtor-more {
+          box-sizing: border-box;
+          width: 40rpx;
+          height: 40rpx;
+          background: #f5f6f6;
+          border: 1rpx solid #f5f6f6;
+          border-radius: 50%;
+          z-index: 99;
+
+          image {
+            width: 20rpx;
+            height: 4rpx;
+            margin: 17rpx 10rpx;
+          }
+        }
+      }
+    }
+
+    .picker-view {
+      width: 750rpx;
+      height: 600rpx;
+      margin-top: 20rpx;
+    }
+
+    .item {
+      height: 50px;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+    }
+
+    .uni-padding-wrap {
+      margin-left: 40rpx;
+      height: 182rpx;
+
+      .insurance-house {
+        display: flex;
+        justify-content: flex-start;
+        align-items: center;
+        flex-direction: row;
+        margin-bottom: 40rpx;
+      }
+
+      .insurance {
+        width: 142rpx;
+        height: 32rpx;
+        margin-right: 16rpx;
+
+        image {
+          width: 142rpx;
+          height: 32rpx;
+        }
+      }
+
+      .insurance.payed {
+        width: 128rpx;
+        height: 32rpx;
+
+        image {
+          width: 142rpx;
+          height: 32rpx;
+        }
+      }
+
+      .uni-title {
+        flex: 1;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+        margin-top: 1rpx;
+        height: 34rpx;
+        font-size: 24rpx;
+        font-family: PingFangSC, PingFangSC-Regular;
+        font-weight: 400;
+        text-align: left;
+        margin-right: 40rpx;
+        color: #333;
+        line-height: 34rpx;
+      }
+    }
+  }
+
+  .my-decorate-service-dec-wrap {
+    .my-decorate-service {
+      padding: 32rpx 24rpx;
+      position: relative;
+    }
+    .service-title {
+      padding: 0 8rpx;
+    }
+  }
+
+  .my-decorate-service-wrap {
+    position: relative;
+    margin: 0 24rpx 16rpx;
+    background: #ffffff;
+    border-radius: 16rpx;
+    min-height: 256rpx;
+  }
+
+  .my-warehouse {
+    display: flex;
+    height: 106rpx;
+    justify-content: space-around;
+    flex-direction: row;
+    align-items: flex-end;
+    // padding: 0 20rpx;
+    margin-bottom: 8rpx;
+    background: #ffffff;
+  }
+
+  .my-decorate-service {
+    padding: 32rpx;
+    position: relative;
+  }
+  .ck.my-decorate-service {
+    padding: 32rpx 0;
+    position: relative;
+  }
+  .ck.my-decorate-service { 
+    .service-title {
+      margin: 0 32rpx 32rpx;
+    }
+  }
+  .top-bg {
+    width: 100%;
+    height: 108rpx;
+  }
+
+  .flex-space-between-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-direction: row;
+  }
+
+  .flex-start-row {
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    flex-direction: row;
+  }
+
+  .service-title {
+    margin-bottom: 32rpx;
+
+    .t {
+      font-size: 32rpx;
+      font-family: PingFangSC, PingFangSC-Medium;
+      font-weight: 600;
+      text-align: left;
+      color: #333333;
+      letter-spacing: 1rpx;
+    }
+
+    .r {
+      text {
+        height: 36rpx;
+        margin-right: 16rpx;
+        font-size: 26rpx;
+        font-family: PingFangSC, PingFangSC-Regular;
+        font-weight: 400;
+        text-align: right;
+        color: #999999;
+        line-height: 36rpx;
+      }
+
+      image {
+        width: 24rpx;
+        height: 24rpx;
+      }
+    }
+  }
+
+  .drag-button {
+    // background: #ffffff;
+    // border: 0.5px solid #eeeeee;
+    
+    // width: 100rpx;
+    // height: 100rpx;
+    // font-size: 24rpx;
+    // color: #000000;
+    position: absolute;
+    right: 0rpx;
+    top: 588rpx;
+    z-index: 99;
+    // border-radius: 100%;
+    // display: flex;
+    // align-items: center;
+    // justify-content: center;
+  }
+
+  .tips-design-actuary {
+    margin: 0 24rpx;
+
+    .tips {
+      height: 40rpx;
+      font-size: 28rpx;
+      font-family: PingFangSC, PingFangSC-Regular;
+      font-weight: 400;
+      text-align: center;
+      color: #333333;
+      line-height: 40rpx;
+      letter-spacing: 2rpx;
+      padding-top: 34rpx;
+      margin-bottom: 24rpx;
+    }
+  }
+
+  .picture-btn-wrap {
+    display: flex;
+    justify-content: flex-start;
+    flex-direction: row;
+    justify-items: center;
+    padding-right: 40rpx;
+
+    .p-i-t {
+      margin-right: 24rpx;
+    }
+  }
+
+  .jun-gong-da-ji {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: row;
+    height: 360rpx;
+    background-color: #FBFBFB;
+    border-radius: 24rpx;
+    image {
+      width: 240rpx;
+    }
+  }
+</style>

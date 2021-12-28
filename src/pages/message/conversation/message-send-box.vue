@@ -84,7 +84,7 @@
       </view>
       <view v-if="showEmojiChooser" class="emoji-choose-container">
         <image 
-          v-for="(emoji,index) in emojiName"
+          v-for="emoji in emojiName"
           :key="emoji"
           :src="emojiMap[emoji]" 
           :alt="emoji"
@@ -221,10 +221,12 @@
         uni.$off("at-user-pick", this.handleAtUser);
         uni.$on("at-user-close", this.closeAtUser);
       });
+      // #ifdef MP-WEIXIN
       let info = uni.getSystemInfoSync();
       if (/ios/i.test(info.platform)) {
         this.isIphone = true;
       }
+      // #endif
     },
     beforeDestroy() {
       this.recordBarRectTask = null;

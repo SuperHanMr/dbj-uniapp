@@ -5,7 +5,7 @@
 				<!-- 服务和材料 -->
 				<view class="header" >
 					<view class="store-name" @click="gotoShop(item)">
-						<text style="color: #333333;">{{item.storeName}}</text>
+						<text style="color: #333333;">{{item.ongoingServerName?item.ongoingServerName:item.storeName}}</text>
 						<image v-if="item.type !== 5" src="../../static/ic_more.svg" mode="" />
 					</view>
 					<view class="order-status">

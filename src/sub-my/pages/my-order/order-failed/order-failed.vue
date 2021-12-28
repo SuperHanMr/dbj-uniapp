@@ -143,6 +143,7 @@
         :orderFailed="true"
       />
       <order-info
+        v-if="orderInfo.orderNo"
         :orderNo="orderInfo.orderNo"
         :createTime="orderInfo.createTime"
         :cancelTime="orderInfo.cancelTime"
@@ -175,6 +176,7 @@ export default {
 
       refundInfo: {},
       orderInfo: {},
+      expensesType: 0,
 
       systemBottom: "",
       containerPaddingBottom: "",
