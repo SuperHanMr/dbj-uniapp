@@ -165,7 +165,7 @@
         placeholder="选填,说点什么～" />
     </view>
       </view>
-      <order-info :orderNo="orderInfo.orderNo" :createTime="orderInfo.createTime" />
+      <order-info v-if="orderInfo.orderNo" :orderNo="orderInfo.orderNo" :createTime="orderInfo.createTime" />
 
       <!-- 底部按钮 -->
       <view v-if="orderInfo.showCancelBtn || orderInfo.showToPayBtn " :class="{noCancelBtn:true}" class="waitPayBottom"

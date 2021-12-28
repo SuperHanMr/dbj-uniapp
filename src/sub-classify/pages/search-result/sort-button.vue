@@ -2,7 +2,7 @@
   <view class="sort">
     <view class="sort-content" @click="changeSortState">
       <text class="text">价格</text>
-      <view class="sort-button">
+      <view class="sort-btn">
         <view class="sort-img"  :class="{'defult-price': sortState === 0,'up-price': sortState === 1,'down-price': sortState === 2}" ></view>
       </view>
     </view>
@@ -43,7 +43,7 @@
       flex:1;
       text-align: center;
     }
-    .sort-button{
+    .sort-btn{
       width: 20rpx;
       text-align: center;
       position: relative;

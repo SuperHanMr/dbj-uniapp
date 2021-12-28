@@ -1,5 +1,5 @@
 <template>
-  <view class="process-cost">
+  <view class="process-cost" :style="{paddingBottom: (bottomHeight + 96) + 'px'}">
     <!-- isBOM 1 代表精算过来的材料汇总  材料汇总没有人工费 -->
     <view class="artificial" v-if="(msg.payStatus == 2 || msg.obtainType != 2) && msg.isBOM !== '1'">
       <view class="title">
@@ -74,11 +74,7 @@
           placeholder="选填,说点什么～" />
       </view>
     </view>
-    <view :style="{paddingBottom:containerBottom * 2 + 48 + 88 + 'rpx'}">
-
-    </view>
-    <view v-if="!msg.payStatus || msg.payStatus != 2" class="payment-wrap"
-      :style="{paddingBottom:systemBottom,height:systemHeight}">
+    <view v-if="!msg.payStatus || msg.payStatus != 2" class="payment-wrap" :style="{paddingBottom: bottomHeight + 12 + 'px'}">
       <payment @gotopay="gotopay" :pieces="pieces" :countPrice="payPrice" :isAllChecked="isAllChecked">
       </payment>
     </view>
@@ -214,9 +210,7 @@
         curr_artificial_categoryId: null,
         levelList: [],
         workerLevelSkuMapping: [],
-        containerBottom: null,
-        systemBottom: null,
-        systemHeight: null,
+        bottomHeight: 0, // 底部区域高度
         noData: false,
         message: null,
         skuRelation: [], // 精算单更换商品  新旧商品id对照表
@@ -230,10 +224,14 @@
       };
     },
     mounted() {
-      const menuButtonInfo = uni.getMenuButtonBoundingClientRect();
-      this.containerBottom = menuButtonInfo.bottom;
-      this.systemBottom = menuButtonInfo.bottom * 2 + "rpx";
-      this.systemHeight = menuButtonInfo.bottom * 2 + 24 + "rpx";
+      let _this = this;
+      uni.getSystemInfo({
+        success(data) {
+          let screenHeight = data.screenHeight;
+          let safeArea = data.safeArea || {};
+          _this.bottomHeight = screenHeight - (safeArea.bottom || screenHeight);
+        }
+      })
     },
     computed: {
       isAllChecked() {
@@ -877,7 +875,7 @@
 
   .process-cost {
     position: relative;
-    height: 100%;
+    padding-bottom: 96px;
   }
 
   .title {

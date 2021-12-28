@@ -25,26 +25,26 @@
           <template v-for="(msg, idx) in currentMessageList">
             <view
               v-if="showTimeTag(msg, currentMessageList[idx - 1], idx)"
-              :key="msg.ID"
+              :key="msgTimeKey(msg)"
               class="message-tags-time"
             >{{ formatMessageTime(msg.time) }}</view>
-            <view v-if="unreadCount >= 8 && (currentMessageList.length - idx === unreadCount)" :key="msg.ID" :id="'startBar' + msg.ID" class="unread-message-start-bar"></view>
-            <message-item :key="msg.ID" :message="msg"></message-item>
+            <view v-if="unreadCount >= 8 && (currentMessageList.length - idx === unreadCount)" :key="msgKey(msg)" :id="'startBar' + msg.ID" class="unread-message-start-bar"></view>
+            <message-item :key="msgKey(msg)" :message="msg"></message-item>
           </template>
         </view>
         <view v-else-if="type === CONV_TYPES.SYSTEM" id="listBody" class="message-list-body" style="padding-bottom: 48rpx">
-          <template v-for="(msg, idx) in currentMessageList">
+          <template v-for="msg in currentMessageList">
             <view
-              :key="msg.ID"
+              :key="msgTimeKey(msg)"
               class="message-tags-time"
             >{{ formatMessageTime(msg.time) }}</view>
-            <message-item-system :key="msg.ID" :message="msg"></message-item-system>
+            <message-item-system :key="msgKey(msg)" :message="msg"></message-item-system>
           </template>
         </view>
         <view v-else-if="type === CONV_TYPES.INTERACTION" id="listBody" class="message-list-body" style="padding-bottom: 48rpx; background: #fff;">
           <message-item-interaction
-            v-for="(msg, idx) in currentMessageList"
-            :key="msg.ID" 
+            v-for="msg in currentMessageList"
+            :key="msgKey(msg)"
             :message="msg"
           ></message-item-interaction>
         </view>
@@ -116,6 +116,12 @@
           [this.CONV_TYPES.INTERACTION]: "暂无互动消息",
           [this.CONV_TYPES.COMMON]: "暂无消息",
         })[this.type] || "暂无消息";
+      },
+      msgKey() {
+        return e => e.ID;
+      },
+      msgTimeKey() {
+        return e => 'msgTime' + e.ID;
       }
     },
     watch: {
@@ -170,14 +176,14 @@
       if (options.id === "CUSTOMER") {
         let conv = this.cstServConv;
         uni.setNavigationBarTitle({
-        　　title: conv.name
+          title: conv.name
         });
         this.$store.dispatch("checkoutConversation", conv.conversationID).then(res => {
           this.loaded = true;
         })
       } else {
         uni.setNavigationBarTitle({
-        　　title: options.name || ""
+          title: options.name || ""
         });
         let conv = this.conversationList.find(item => item.conversationID === options.id);
         if (conv) {
@@ -198,11 +204,11 @@
           if (!options.name) {
             if (this.currentConversation.userProfile) {
               uni.setNavigationBarTitle({
-              　　title: this.currentConversation.userProfile.nick
+                title: this.currentConversation.userProfile.nick
               });
             } else if (this.currentConversation.groupProfile) {
               uni.setNavigationBarTitle({
-              　　title: this.currentConversation.groupProfile.introduction
+                title: this.currentConversation.groupProfile.introduction
               });
             }
           }
@@ -315,7 +321,7 @@
           let msg = updateNameMsgs[updateNameMsgs.length - 1];
           let newName = msg.payload.newGroupProfile.introduction;
           uni.setNavigationBarTitle({
-          　　title: newName
+            title: newName
           });
         }
       },

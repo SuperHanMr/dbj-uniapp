@@ -160,6 +160,7 @@
       <order-price :data="orderInfo" />
 
       <order-info
+        v-if="orderInfo.orderNo"
         :orderNo="orderInfo.orderNo"
         :createTime="orderInfo.createTime"
         :showPayTime="true"

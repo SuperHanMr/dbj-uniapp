@@ -347,8 +347,7 @@ export function requireConfirm(params) {
 
 // app支付运费/搬运费
 export function payFreight(params) {
-  let version = uni.getAccountInfoSync().miniProgram.version || 'develop';
-	return request.post(`/order-center/app/order/payFreight?v=${version}`, params)
+	return request.post(`/order-center/app/order/payFreight`, params)
 }
 // 查看设计报告
 export function serverReports(serveCardId) {

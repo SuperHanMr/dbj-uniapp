@@ -25,7 +25,9 @@
 					:index="index"
 				></waterfall>
 			</view>
-			<!-- <image src='https://img.yzcdn.cn/vant/apple-1.jpg' mode=""></image> -->					<!-- <video id="myVideo" src="https://pano-stage.meiwu365.com/vr-home/viewer/5460/Wo7XZf37"					                    @error="videoErrorCallback" :danmu-list="danmuList" enable-danmu danmu-btn controls></video> -->
+			<!-- <image src='https://img.yzcdn.cn/vant/apple-1.jpg' mode=""></image> -->
+					<!-- <video id="myVideo" src="https://pano-stage.meiwu365.com/vr-home/viewer/5460/Wo7XZf37"
+					                    @error="videoErrorCallback" :danmu-list="danmuList" enable-danmu danmu-btn controls></video> -->
 		</view>
 	</view>
 </template>
@@ -58,14 +60,17 @@
 		},
 		methods: {
 			onHeight(height, tag) {
-				this.$parent.onHeight(height, tag);
+				this.$emit("height", height, tag);
+				// this.$parent.onHeight(height, tag);
 			},
 			onClick (index, tag){
-				console.log("点击")
-				this.$parent.onClick(index, tag);
+				this.$emit("click", index, tag);
+				// console.log("点击")
+				// this.$parent.onClick(index, tag);
 			},
 			onCollection (index, tag) {
-				this.$parent.onCollection(index, tag);
+				this.$emit("collection", index, tag);
+				// this.$parent.onCollection(index, tag);
 			}
 		},
 	}

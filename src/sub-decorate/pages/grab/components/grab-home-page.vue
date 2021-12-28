@@ -66,6 +66,7 @@
     .grab-content-top{
       position: relative;
       border-bottom: 0.5px solid #F3F3F3;
+      width: 100%;
       // height: 336rpx;
       padding-top: 216rpx;
       .grab-content-header{
@@ -101,6 +102,7 @@
           text{
             color: #999;
             font-size: 22rpx;
+            white-space: nowrap;
           }
         }
       }

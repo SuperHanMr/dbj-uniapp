@@ -1,18 +1,24 @@
 <template>
   <view class="search-result" v-if='isShow'>
     <view class="search">
-      <view class="search-init" v-if="initSearch">
-        <view class="uni-searchbar" @click="clickInitSearch">
-          <view class="uni-searchbar__box-icon-search">
-            <view class="search-card" v-if="searchVal">
-              <text>{{searchVal}}</text>
-              <uni-icons color="#c0c4cc" size="15" type="clear" />
-            </view>
-            <view v-else class="search-default">请搜索您要的商品</view>
+      <view v-if="initSearch" class="uni-searchbar" @click="clickInitSearch">
+        <view class="uni-searchbar__box">
+          <view class="search-card" v-if="searchVal">
+            <text>{{searchVal}}</text>
+            <uni-icons color="#c0c4cc" size="15" type="clear" />
           </view>
+          <view v-else class="search-default">请搜索您要的商品</view>
         </view>
       </view>
-      <uni-search-bar @confirm="searchConfirm" clearButton="auto" cancelButton="false" focus="true" v-else>
+      <uni-search-bar
+        v-else
+        @confirm="searchConfirm" 
+        clearButton="auto" 
+        cancelButton="false" 
+        :focus="true" 
+        bgColor="transparent" 
+        placeholder="请搜索您要的商品"
+        :radius="8">
         <uni-icons slot="searchIcon" />
       </uni-search-bar>
       <view @click="sortList">
@@ -21,7 +27,7 @@
     </view>
     <view class="content" @scrolltolower="loadMoreList">
       <uni-swipe-action v-if="listArr.length>0">
-        <uni-swipe-action-item v-for="(goodsItem,goodsIndex) in listArr" :key="goodsIndex" :right-options="options">
+        <uni-swipe-action-item v-for="(goodsItem,goodsIndex) in listArr" :key="goodsIndex">
           <view class="goodsItem" @click="toDetails(goodsItem.product.skuId)">
             <image :src="goodsItem.product.spuImage + '?x-oss-process=image/resize,m_lfit,w_400,h_400' "
               class="goodsItemImg"></image>
@@ -101,8 +107,9 @@
       uni.removeStorageSync('goodId')
     },
     onLoad(e) {
+      console.log(e, this.searchText, 2222);
       this.originFrom = e.originFrom
-      this.searchVal = this.originFrom ? "" : this.searchText
+      this.searchVal = this.originFrom ? "" : (e.searchText || "")
       this.getList()
       // 对上一个页面传值
       // var shequ = getCurrentPages();
@@ -186,17 +193,6 @@
     }
   }
 </script>
-<style>
-  .search-result .uni-searchbar__box {
-    box-sizing: border-box !important;
-    width: 550rpx !important;
-    height: 62rpx !important;
-    opacity: 1;
-    border: 2rpx solid #333333 !important;
-    border-radius: 16rpx !important;
-    background-color: #FFFFFF !important;
-  }
-</style>
 <style scoped>
   .search-result {
     display: flex;
@@ -204,43 +200,44 @@
   }
 
   .search {
-    position: fixed;
+    position: absolute;
     top: 0;
   }
 
-  .search-init {
-    padding: 16rpx;
-  }
-
-  .uni-searchbar {
+  .search /deep/ .uni-searchbar {
     box-sizing: border-box;
     display: flex;
     align-items: center;
     width: 550rpx;
     height: 62rpx;
-    padding-left: 6rpx;
+    padding-left: 8px;
     opacity: 1;
     background: #f7f7f7;
     border-radius: 16rpx;
     opacity: 1;
     border: 1px solid #333333;
     background-color: #FFFFFF;
+    margin-right: 8px;
   }
 
-  .uni-searchbar__box-icon-search {
-    height: 50rpx;
-    overflow: hidden;
-    display: flex;
-    align-items: center;
-    flex-direction: row;
-    align-items: center;
-    border-radius: 10rpx;
+  .search /deep/ .uni-searchbar .uni-searchbar__box-icon-search {
+    display: none;
   }
+
+  .search /deep/ .uni-searchbar .uni-searchbar__box {
+    border: none;
+    padding: 0;
+  }
+
+  .search /deep/ .uni-searchbar .uni-input-placeholder {
+    font-size: 14px;
+    color: #A9A9A9;
+  }
+
 
   .search-default {
-    font-size: 26rpx;
+    font-size: 14px;
     color: #A9A9A9;
-    margin-left: 10rpx;
   }
 
   .search-card {
@@ -316,7 +313,7 @@
     left: 0;
   }
 
-  //商品
+  /*商品*/
   .goodsItem {
     width: 100%;
     display: flex;
@@ -417,7 +414,7 @@
   .goodsInfo .goodsDesc .goodsType {
     min-width: 45rpx;
     height: 30rpx;
-    padding: 2rpx 10rpx 2rpx 10rpx;
+    padding: 0 10rpx;
     margin-right: 4rpx;
     border: 2rpx solid #35c4c4;
     border-radius: 4rpx;

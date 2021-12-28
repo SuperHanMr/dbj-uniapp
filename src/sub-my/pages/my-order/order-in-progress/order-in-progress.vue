@@ -52,7 +52,7 @@
 
 			</view>
 
-			<order-info :orderNo="orderInfo.orderNo" :createTime="orderInfo.createTime" :showPayTime="true"
+			<order-info v-if="orderInfo.orderNo" :orderNo="orderInfo.orderNo" :createTime="orderInfo.createTime" :showPayTime="true"
 				:showPayType="true" :payTime="orderInfo.payTime" :payChannel="orderInfo.payChannel" />
 
 			<view class="applyforRefund-confirmReceipt" :style="{paddingBottom:systemBottom,height:systemHeight}"

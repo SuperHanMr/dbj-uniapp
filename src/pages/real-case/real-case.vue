@@ -17,13 +17,13 @@
 					<swiper-item class="swiper-item">
 						<scroll-view scroll-y="true" style="height: 100%" @scrolltolower="bindscrolltolower">
 							<DesignCase v-if="selectStatus === 0" :leftList="leftList" :rightList="rightList"
-								:leftHeight="leftHeight" :rightHeight="rightHeight" />
+								:leftHeight="leftHeight" :rightHeight="rightHeight" @height="onHeight" @click="onClick" @collection="onCollection" />
 						</scroll-view>
 					</swiper-item>
 					<swiper-item class="swiper-item">
 						<scroll-view scroll-y="true" style="height: 100%" @scrolltolower="bindscrolltolower">
 							<Decorate v-if="selectStatus === 1" :leftList="leftList" :rightList="rightList"
-								:leftHeight="leftHeight" :rightHeight="rightHeight" />
+								:leftHeight="leftHeight" :rightHeight="rightHeight" @height="onHeight" @click="onClick" />
 						</scroll-view>
 					</swiper-item>
 				</swiper>
@@ -350,7 +350,7 @@
 	}
 
 	.collectWrapper {
-		// 确保swiper 内容填满设备，若需自适应只需取消掉100%即可
+		/* 确保swiper 内容填满设备，若需自适应只需取消掉100%即可 */
 		width: 100%;
 		height: 100%;
 	}

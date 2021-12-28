@@ -37,7 +37,7 @@
 		<view class="banner-content">
 			<swiper class="banner" :autoplay="swiperAuto" interval="2000" duration="500" :circular="true"
 				@change="swiperChange">
-				<swiper-item v-for="(item,index) in bannerList" :key="item.id">
+				<swiper-item v-for="(item) in bannerList" :key="item.id">
 					<image class="banner-img" :src="item.resUrl" mode="scaleToFill" @click="toWebview(item.jumpUrl)">
 					</image>
 				</swiper-item>
@@ -91,12 +91,11 @@
 		</view>
 		<!-- 快捷栏目 -->
 		<view style="padding: 0 24rpx;">
-			<image v-for="(item,index) in status1List" :key="item.id" @click="onZoneClick(item)" :src="item.icon"
-				class="experience">
+			<image v-for="item in status1List" :key="item.id" @click="onZoneClick(item)" :src="item.icon"
+				class="experience"></image>
 		</view>
 
-		</image>
-		<view class="example-content">
+		<view v-if="status2List && status2List.length" class="example-content">
 
 			<image @click="onZoneClick(status2List[0])" class="item" :src="status2List[0].icon"></image>
 			<view class="holder-item">
@@ -132,7 +131,6 @@
 				<image class="img"
 					:src="item.mediaType==1?item.roomLiveMediaVO.scaleImg:item.roomVideoMediaVO.scaleImg |imgFormat(494,660)"
 					mode="aspectFill"></image>
-				</image>
 				<view class="top-content">
 					<image class="top-content-img"
 						:src="item.mediaType==1?'https://ali-image.dabanjia.com/static/mp/dabanjia/images/home/living.gif':'https://ali-image.dabanjia.com/static/mp/dabanjia/images/home/live-repaly.png'">
@@ -228,7 +226,7 @@
 		},
 
 		onShareAppMessage() {
-			wx.showShareMenu({
+			uni.showShareMenu({
 				withShareTicket: true,
 				menus: ["shareAppMessage", "shareTimeline"],
 			});

@@ -1706,6 +1706,7 @@ export default {
   font-size: 22rpx;
   color: #333333;
   line-height: 32rpx;
+  white-space: nowrap;
 }
 .nodeType > view.maxWidth {
   width: 66rpx;
@@ -2092,6 +2093,7 @@ export default {
   text-align: center;
   color: #999999;
   line-height: 32rpx;
+  white-space: nowrap;
 }
 .sceneContainer .footer .userWant {
   width: 88rpx;

@@ -57,10 +57,12 @@
 			};
 		},
 		mounted() {
+			// #ifdef MP-WEIXIN
 			let info = uni.getAccountInfoSync().miniProgram;
 			if (info) {
 				this.version = info.version || "2.0.0";
 			}
+			// #endif
 		},
 		methods: {
 			onClick(item, index) {
