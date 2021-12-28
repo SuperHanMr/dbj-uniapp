@@ -12,7 +12,7 @@
           <view class="userInfo">
             <text class="userName">{{addressInfo.contactName}}</text>
             <text class="userPhone">{{addressInfo.contactPhone}}</text>
-          </view>
+          </view> 
         </view>
         <image class="switchSite" src="../../static/images/ic_more_black.png"></image>
       </view>
