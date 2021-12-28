@@ -297,6 +297,7 @@
         cardClick: false,
         haveCard: false, //是否有会员卡
         cardBalance: 1111, //会员卡余额
+        shareOriginType: ''
       };
     },
     computed: {
@@ -361,6 +362,7 @@
       this.unit = e.unit;
       this.level = e.level;
       this.goodDetailId = uni.getStorageSync("goodId");
+      this.shareOriginType = e.shareOriginType
       console.log(e.houseId, getApp().globalData.currentHouse.id);
     },
     onShow() {
@@ -647,6 +649,7 @@
           orderName: "", //"string //订单名称 可为空",
           details: details,
           isCardPay: this.cardClick,
+          origin: this.shareOriginType
         };
         payOrder(params).then((data) => {
           const {
@@ -659,10 +662,15 @@
               ...wechatPayJsapi,
               success(res) {
                 console.log("付款成功", res);
-                uni.navigateTo({
-                  url: "/sub-classify/pages/pay-order/pay-success?orderId=" +
-                    data.id,
-                });
+                if (data.subOrderIds.length === 1) {
+                  uni.navigateTo({
+                    url: `/sub-my/pages/my-order/order-wait-pay/order-wait-pay?orderNo=${data.subOrderIds[0]}&from=waitPayOrder`,
+                  });
+                } else {
+                  uni.redirectTo({
+                    url: `/sub-my/pages/my-order/my-order?index=1&firstEntry=true`,
+                  });
+                }
               },
               fail(e) {
                 console.log(e, "取消付款");
@@ -1066,6 +1074,11 @@
 
   .remarks {
     overflow: hidden;
+  }
+
+  .remarks view {
+    flex: 1;
+    overflow: scroll;
   }
 
   .remarks text {
