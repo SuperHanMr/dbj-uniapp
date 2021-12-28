@@ -21,13 +21,10 @@
 				<view class="icon-status2" v-if="dataList.refundBillStatus == 2" >
 					已退款
 				</view>
-				<image :src="`${dataList.imgUrl}?x-oss-process=image/resize,m_mfit,w_272,h_272`" mode=""//>
+				<image :src="`${dataList.imgUrl}?x-oss-process=image/resize,m_mfit,w_272,h_272`" mode=""/>
 			</view>
 			<view class="pic" v-else>
-				<image
-					:src="`${dataList.imgUrl}?x-oss-process=image/resize,m_mfit,w_272,h_272`"
-					mode=""
-				 />
+				<image :src="`${dataList.imgUrl}?x-oss-process=image/resize,m_mfit,w_272,h_272`" mode="" />
 			</view>
 
 			<view class="basic-info">
