@@ -662,21 +662,21 @@
               ...wechatPayJsapi,
               success(res) {
                 console.log("付款成功", res);
+                uni.redirectTo({
+                  url: `/sub-my/pages/my-order/my-order?index=1&firstEntry=true`,
+                });
+              },
+              fail(e) {
+                console.log(e, "取消付款");     
                 if (data.subOrderIds && data.subOrderIds.length === 1) {
                   uni.navigateTo({
                     url: `/sub-my/pages/my-order/order-wait-pay/order-wait-pay?orderNo=${data.subOrderIds[0]}&from=waitPayOrder`,
                   });
                 } else {
-                  uni.redirectTo({
-                    url: `/sub-my/pages/my-order/my-order?index=1&firstEntry=true`,
+                  uni.navigateTo({
+                    url: `/sub-my/pages/my-order/order-wait-pay/order-wait-pay?orderNo=${data.id}&from=waitPayOrder`,
                   });
                 }
-              },
-              fail(e) {
-                console.log(e, "取消付款");
-                uni.navigateTo({
-                  url: `/sub-my/pages/my-order/order-wait-pay/order-wait-pay?orderNo=${data.id}&from=waitPayOrder`,
-                });
                 log({
                   type: "wx-pay-fail",
                   page: "pay-order/index",
