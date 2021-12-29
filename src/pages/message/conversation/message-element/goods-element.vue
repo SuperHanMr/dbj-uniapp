@@ -6,10 +6,10 @@
       </view>
       <view class="goods-content">
         <view class="goods-title">
-          <view class="goods-price">
+          <view class="goods-price price-font">
             <text class="price-prefix">¥</text>{{priceSplit[0]}}<text class="price-suffix" style="font-size: 12px;">.{{priceSplit[1]}}/{{params.unitName}}</text>
           </view>
-          <view v-if="params.showMarketPrice" class="goods-price-sub">
+          <view v-if="params.showMarketPrice" class="goods-price-sub price-font">
             <text class="price-prefix">¥</text>{{priceSubSplit[0]}}<text class="price-suffix">.{{priceSubSplit[1]}}/{{params.unitName}}</text>
           </view>
         </view>
