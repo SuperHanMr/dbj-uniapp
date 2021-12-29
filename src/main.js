@@ -1,6 +1,7 @@
 import Vue from 'vue'
 import App from './App'
 import store from './store'
+import {VueJsonp} from 'vue-jsonp'
 // #ifdef MP-WEIXIN
 import gdp from './js_sdk/gio-minp.js'
 
@@ -17,6 +18,7 @@ gdp("init",
 // #endif
 
 // #ifdef H5
+Vue.use(VueJsonp)
 // H5中模拟获取胶囊按钮的位置
 uni.getMenuButtonBoundingClientRect = function() {
   const systemInfo = uni.getSystemInfoSync();
@@ -34,6 +36,8 @@ uni.getMenuButtonBoundingClientRect = function() {
 uni.showShareMenu = function() {
   console.log("H5 showShareMenu not implement")
 }
+
+
 // #endif
 Vue.config.productionTip = false
 

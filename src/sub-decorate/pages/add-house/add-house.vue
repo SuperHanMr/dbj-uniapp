@@ -24,13 +24,13 @@
 				</view>
 				<view class="form-item">
 					<label class="item-label">所在地区</label>
-					<input class="uni-input" placeholder-class="placeholder" :class="{disabled:roomId&&isEdit}" :disabled="roomId&&isEdit" @click="chooseMap" disabled name="input"
+					<input class="uni-input" placeholder-class="placeholder" :class="{disabled:!!(roomId&&isEdit)}" :disabled="!!(roomId&&isEdit)" @click="chooseMap" disabled name="input"
 						v-model="addData.area||addData.locationName" placeholder="请选择您房屋所在地区" />
 					<image src="../../../static/images/ic_more_black.svg" class="shopIcon"></image>
 				</view>
 				<view class="form-item">
 					<label class="item-label">小区</label>
-					<input class="uni-input" placeholder-class="placeholder" :class="{disabled:!hasPoint||(roomId&&isEdit)}" :disabled="!hasPoint||(roomId&&isEdit)" name="input"
+					<input class="uni-input" placeholder-class="placeholder" :class="{disabled:!hasPoint||(!!(roomId&&isEdit))}" :disabled="!hasPoint||(!!(roomId&&isEdit))" name="input"
 						v-model="addData.housingEstate" placeholder="房屋所在小区" @focus='getFocus("housingEstate")' @blur='changeFocus("housingEstate")'/>
             <view class="icon-clear" v-if="addData.housingEstate&&!isEdit&&focus.housingEstate" @touchstart="clear('housingEstate')">
               <uni-icons color="#c0c4cc" size="15" type="clear" />
@@ -40,21 +40,21 @@
 			<view class="content">
 				<view class="form-item">
 					<label class="item-label">楼栋房号</label>
-					<input class="uni-input" placeholder-class="placeholder" name="input" :disabled="roomId&&isEdit" v-model="addData.address" @focus='getFocus("address")' @blur='changeFocus("address")'
-            :class="{disabled:roomId&&isEdit}" placeholder="例:16号楼5层301" />
+					<input class="uni-input" placeholder-class="placeholder" name="input" :disabled="!!(!!(roomId&&isEdit))" v-model="addData.address" @focus='getFocus("address")' @blur='changeFocus("address")'
+            :class="{disabled:!!(roomId&&isEdit)}" placeholder="例:16号楼5层301" />
             <view class="icon-clear" v-if="addData.address&&!isEdit&&focus.address" @touchstart="clear('address')">
               <uni-icons color="#c0c4cc" size="15" type="clear" />
             </view>
 				</view>
 				<view class="form-item special">
 					<label class="item-label">楼型</label>
-					<choose-btn :btnList='floorList' :currentBtn='addData.houseStructure' :disabled="roomId&&isEdit" @chooseBtn='chooseFloor'>
+					<choose-btn :btnList='floorList' :currentBtn='addData.houseStructure' :disabled="!!(roomId&&isEdit)" @chooseBtn='chooseFloor'>
 					</choose-btn>
 				</view>
 				<view class="form-item">
 					<label class="item-label">户型</label>
           
-            <input type="text" :class="{disabled:roomId&&isEdit}" placeholder-class="placeholder" class="uni-input" disabled v-model="houseType"
+            <input type="text" :class="{disabled:!!(roomId&&isEdit)}" placeholder-class="placeholder" class="uni-input" disabled v-model="houseType"
             	placeholder="请选择房屋户型"  @click="openList"/>
             <image src="../../../static/images/ic_more_black.svg" class="shopIcon"></image>
           
@@ -63,23 +63,23 @@
 				<view class="form-item">
 					<label class="item-label">房屋面积</label>
 					<!-- <text class="placeholder" v-if="!addData.insideArea">请输入房屋面积</text> -->
-					<view v-if="addData.insideArea" :class="{disabled:roomId&&isEdit}" class="uni-input area-text"><text
+					<view v-if="addData.insideArea" :class="{disabled:!!(roomId&&isEdit)}" class="uni-input area-text"><text
 							style="visibility: hidden">{{addData.insideArea}}</text>m²</view>
               <view class="icon-clear" v-if="addData.insideArea&&!isEdit&&focus.insideArea" @touchstart="clear('insideArea')">
                 <uni-icons color="#c0c4cc" size="15" type="clear" />
               </view>
-					<input v-if="!visible" :maxlength="7" :class="{disabled:roomId&&isEdit}" class="uni-input house-area" :disabled="roomId&&isEdit" placeholder-class="placeholder" @focus='getFocus("insideArea")' @blur='changeFocus("insideArea")'
+					<input v-if="!visible" :maxlength="7" :class="{disabled:!!(roomId&&isEdit)}" class="uni-input house-area" :disabled="!!(roomId&&isEdit)" placeholder-class="placeholder" @focus='getFocus("insideArea")' @blur='changeFocus("insideArea")'
 						placeholder="请输入房屋面积" type="digit" name="input" v-model="addData.insideArea" />
             
 				</view>
 				<view class="form-item special ele">
 					<label class="item-label">有无电梯</label>
-					<choose-btn :btnList='elevatorList' :currentBtn='addData.hasLift' :disabled="roomId&&isEdit" @chooseBtn="chooseEle">
+					<choose-btn :btnList='elevatorList' :currentBtn='addData.hasLift' :disabled="!!(roomId&&isEdit)" @chooseBtn="chooseEle">
 					</choose-btn>
           <view class="floor-content">
             
           
-					<input v-if="!addData.hasLift" :class="{disabled:roomId&&isEdit}" :disabled="roomId&&isEdit" placeholder-class="placeholder" class="ele-input" name="input"
+					<input v-if="!addData.hasLift" :class="{disabled:!!(roomId&&isEdit)}" :disabled="!!(roomId&&isEdit)" placeholder-class="placeholder" class="ele-input" name="input"
 						v-model="addData.floors" placeholder="请输入房屋所在楼层" type="number" :maxlength="3"/>
             <view class="icon-clear-spec"  v-if="!addData.hasLift&&addData.floors" @touchstart="clear('floors')">
               <uni-icons color="#c0c4cc" size="15" type="clear" />
@@ -283,25 +283,7 @@
 					success: function(res) {
 						if (res.address) {
 							console.log(res)
-							that.hasPoint = true;
-							that.addData.housingEstate = res.name;
-							that.addData.latitude = res.latitude;
-							that.addData.longitude = res.longitude;
-							uni.request({
-								//将经纬度转换成adcode，然后用adcode去获取省市区id ak需要更换为公司的ak
-								url: "https://api.map.baidu.com/reverse_geocoding/v3/?ak=lrRwp5WQK6fyjnyHGbyHBgFIXXczCIWN&output=json&coordtype=gcj02ll&location=" +
-									res.latitude +
-									"," +
-									res.longitude,
-								success: (res) => {
-                  console.log(res)
-                  let address = res.data.result.addressComponent
-									let adcode = address.adcode;
-                  
-                  that.addData.area = address.province === address.city ? address.province + '-' + address.district : address.province + '-' + address.city + '-' + address.district;
-									that.getAreaId(adcode);
-								},
-							});
+              that.addressChange(res)
 						}
 					},
 				});
@@ -316,6 +298,37 @@
 				this.addData.cityId = cityId;
 				this.addData.provinceId = provinceId;
 			},
+      addressChange(res){
+        this.hasPoint = true;
+        this.addData.housingEstate = res.name;
+        this.addData.latitude = res.latitude;
+        this.addData.longitude = res.longitude;
+        this.$jsonp("https://api.map.baidu.com/reverse_geocoding/v3/?ak=hAhAUtphDqdvj4QtHXXIGoC4RW8HeLc1&output=json&coordtype=gcj02ll&output=json&location=" +
+        		res.latitude +
+        		"," +
+        		res.longitude+'&callback=showLocation').then(res=>{
+              console.log(res)
+              let address = res.result.addressComponent
+              let adcode = address.adcode;
+              
+              this.addData.area = address.province === address.city ? address.province + '-' + address.district : address.province + '-' + address.city + '-' + address.district;
+              this.getAreaId(adcode);
+            })
+        // uni.request({
+        // 	//将经纬度转换成adcode，然后用adcode去获取省市区id ak需要更换为公司的ak
+        // 	url: "https://api.map.baidu.com/reverse_geocoding/v3/?ak=hAhAUtphDqdvj4QtHXXIGoC4RW8HeLc1&output=json&coordtype=gcj02ll&location=" +
+        // 		res.latitude +
+        // 		"," +
+        // 		res.longitude,
+        // 	success: (res) => {
+        //     console.log(res)
+            
+        // 	},
+        // });
+      },
+      showLocation(e){
+        console.log(e,'123321')
+      },
 			openList() {
         if(this.isEdit){
           return
