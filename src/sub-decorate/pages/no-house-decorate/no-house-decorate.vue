@@ -97,7 +97,7 @@
         </view>
       </view>
     </view>
-    <view v-if="noData === 1" class="payment-wrap" :style="{paddingBottom:systemBottom,height:systemHeight}">
+    <view v-if="noData === 1" class="payment-wrap" :style="{paddingBottom:systemBottom}">
       <payment @gotopay="gotopay" :pieces="pieces" :countPrice="payPrice" :isAllChecked="isAllChecked">
       </payment>
     </view>
@@ -215,7 +215,7 @@
     mounted() {
       const menuButtonInfo = uni.getMenuButtonBoundingClientRect();
       this.containerBottom = menuButtonInfo.bottom;
-      this.systemBottom = menuButtonInfo.bottom * 2 + "rpx";
+      this.systemBottom = menuButtonInfo.bottom + "rpx";
       this.systemHeight = menuButtonInfo.bottom * 2 + 24 + "rpx";
     },
     computed: {
