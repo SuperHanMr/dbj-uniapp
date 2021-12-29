@@ -33,8 +33,9 @@
 					@scrolltolower="onLoadMore"
 				>
 					<view :style="{paddingBottom:systemBottom +'rpx'}">
+							<!-- :key="itemTab.fallKey" -->
 						<waterfall
-							:key="itemTab.fallKey"
+							:key="'product'"
 							:list="productList"
 							@selectedItem="onSelectedItem"
 							:allCheck="allCheck"
@@ -61,8 +62,9 @@
 					@scrolltolower="onLoadMore"
 				>
 					<view :style="{paddingBottom:systemBottom +'rpx'}">
+							<!-- :key="itemTab.fallKey" -->
 						<waterfall
-							:key="itemTab.fallKey"
+						  :key="'case'"
 							:list="caseList"
 							@selectedItem="onSelectedItem"
 							:allCheck="allCheck"
@@ -167,6 +169,7 @@
 				this.caseList =[]
 				this.page[1]=1
 				this.getCaseList()
+				console.log("onLoad")
 			}
 		},
 		onShow() {
@@ -179,6 +182,7 @@
 				this.caseList =[]
 				this.page[1]=1
 				this.getCaseList()
+				console.log("onShow")
 			}
 		},
 
@@ -212,6 +216,7 @@
 						break
 					case 1:
 						if (this.caseList.length < 1) this.getCaseList();
+						console.log("swiperChange")
 						break
 				}
 			},
@@ -246,7 +251,6 @@
 					this.firstEntry = false;
 				})
 			},
-			
 			//管理
 			handleMgr() {
 				this.showMgrBtn = !this.showMgrBtn
@@ -403,31 +407,36 @@
 				//   return;
 				// }
 				// this.page++;
+				if (this.loading) return;
 				if(this.currentIndex==0){
-					if(this.loading || this.productListLength !== 10) return  
-					// if(this.loading || this.page[0] >=this.totalPage[0]) return
+					// if(this.loading || this.productListLength !== 10) return
+					if(this.loading || this.page[0] >=this.totalPage[0]) return
 					this.page[0]++
 					this.getProductList()
 				}else{
 					if(this.loading || this.page[1] >=this.totalPage[1])return
 					this.page[1]++
 					this.getCaseList()
+					console.log("onLoadMore")
 				}
 			},
 			onRefresh(e) {
+				if (this.loading) return;
 				this.triggered = true;
-				setTimeout(() => {
-					if(this.currentIndex == 0){
-						this.page[0]=1
-						this.productList=[]
-						this.getProductList()
-					}else{
-						this.page[1]=1
-						this.caseList =[]
-						this.getCaseList()
-					}
-					this.triggered = false;
-				}, 1000);
+				if(this.currentIndex == 0){
+					this.page[0]=1
+					this.productList=[]
+					this.getProductList()
+				}else{
+					this.page[1]=1
+					this.caseList =[]
+					this.getCaseList()
+					console.log("onRefresh")
+				}
+				this.triggered = false;
+
+				// setTimeout(() => {
+				// }, 1000);
 			},
 		},
 	};

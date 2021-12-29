@@ -36,23 +36,23 @@
 						<text v-if="tabindex==1">您还没有关注服务者</text>
 						<text v-if="tabindex==2">您还没有关注优先推荐</text>
 					</view>
-					
+
 					<view  v-else :style="{paddingBottom:systemBottom}" >
 						<!-- 房屋 -->
-						<view 
+						<view
 							v-if="tabindex==0"
-							class="house-item" 
-							v-for="item in houselist" 
+							class="house-item"
+							v-for="item in houselist"
 							:key="item.id"
 							@click="goToHouse(item)"
 						>
 							<image  :src="`${item.estateImage}?x-oss-process=image/resize,m_mfit,w_56,h_56`" mode=""/>
-							
+
 						  <view class="houseInfo">
 						    <view class="header">
 						      {{item.estateAddress || ''}}
 						    </view>
-						
+
 						    <view class="area-house">
 						      <text>{{item.estateArea || 0}}㎡</text>
 						      <view class="split-line" />
@@ -103,7 +103,7 @@
 								</view>
 							</view>
 						</view>
-						
+
 					</view>
 				</scroll-view>
 			</swiper-item>
@@ -125,7 +125,7 @@ export default {
 			page:[1,1,1],
       totalPage: [1,1,1],
       loading: false,
-			
+
       routeId:"",
 			systemBottom:"",
 			equipmentId:"",
@@ -141,7 +141,7 @@ export default {
   onShow() {
 		this.houseList();
 	},
-	
+
 	mounted(e) {
 		const menuButtonInfo = uni.getMenuButtonBoundingClientRect();
 		this.systemBottom = menuButtonInfo.bottom + "rpx";
@@ -154,19 +154,19 @@ export default {
 				return this.craftsmanlist;
 			} else {
 				return this.recommendlist;
-			} 
+			}
 		},
 	},
-		
+
   methods: {
     swiperChange(e) {
       let index = e.target.current || e.detail.current;
       this.currentIndex = index;
 			switch(this.currentIndex){
-				case 0: 
+				case 0:
 					this.houselist.length <1 ? this.houseList() :"";
 					break;
-				case 1: 
+				case 1:
 					this.craftsmanlist.length <1 ? this.craftsmanList() :"";
 					break;
 				case 2:
@@ -174,7 +174,7 @@ export default {
 					break;
 			}
 		},
-		
+
 		// 房屋请求
 		houseList(){
 			this.loading = true;
@@ -185,7 +185,7 @@ export default {
 				console.log("data= ",data)
 			})
 		},
-	
+
 		// 工匠请求
 		craftsmanList(){
 			this.loading = true;
@@ -225,8 +225,8 @@ export default {
 				},1000)
 			}).catch(()=>{})
 		},
-		
-		
+
+
 		// 优先推荐请求
     recommendList() {
       this.loading = true;
@@ -270,33 +270,34 @@ export default {
 				url:`../../../../sub-home/pages/decorate-scene/decorate-scene?projectId=${item.id}`
 			})
 			console.log("进入到房子的详情页面")
-			
+
 		},
-		
+
 		// 去工匠的个人主页
 		goToPersonalHome(data){
 			uni.navigateTo({
 			  url: `/sub-decorate/pages/person-page/person-page?personId=${data.id}`,
 			});
 		},
-		
+
 		onLoadMore() {
       if (this.loading || this.page[this.currentIndex] >= this.totalPage[this.currentIndex]) {
         return;
       }
       this.page[this.currentIndex]++;
 			switch(this.currentIndex ==0){
-				
+
 			}
     },
-		
+
     onRefresh(e) {
       this.triggered = true;
+			if(this.loading) return
 			// this.lastId[this.currentIndex] = -1;
 			this.handleReset();
-			
+
     },
-		
+
 		handleReset(){
 			switch(this.currentIndex){
 				case 0 :
@@ -305,12 +306,12 @@ export default {
 				 case 1:
 				 this.craftsmanList()
 				 break
-				  case 2: 
+				  case 2:
 					this.recommendList()
-					return 
+					return
 			}
 		},
-		
+
 	},
 };
 </script>
@@ -434,9 +435,9 @@ export default {
           background: #d1d1d1;
         }
       }
-      
+
     }
-    
+
   }
 
   .empty-container {
@@ -513,7 +514,7 @@ export default {
       }
     }
     .right {
-			
+
       .button1,
       .button2,
       .button3,
@@ -538,7 +539,7 @@ export default {
         background: linear-gradient(135deg, #36d9cd, #28c6c6);
         color: #ffffff;
 				padding: 14rpx 30rpx;
-        
+
       }
       .button2,
       .button4 {
@@ -547,7 +548,7 @@ export default {
         padding: 12rpx 28rpx;
 				color: #666666;
       }
-			
+
 			.button3{
 				display: flex;
 				flex-flow: row nowrap;
