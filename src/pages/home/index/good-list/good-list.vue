@@ -40,14 +40,7 @@
       },
       areaId: {
         type: Number,
-        <<
-        << << < HEAD
-        default: "",
-        ===
-        === =
         default: 0,
-        >>>
-        >>> > ad3b9a453bf1ec8d98d2d9a7b24dca8a3dfc9521
       },
     },
     data() {

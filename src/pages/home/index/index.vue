@@ -37,7 +37,7 @@
     <view class="banner-content">
       <swiper class="banner" :autoplay="swiperAuto" interval="2000" duration="500" :circular="true"
         @change="swiperChange">
-        <swiper-item v-for="(item) in bannerList" :key="item.id">
+        <swiper-item v-for="(item,index) in bannerList" :key="item.id">
           <image class="banner-img" :src="item.resUrl" mode="scaleToFill" @click="toWebview(item.jumpUrl)">
           </image>
         </swiper-item>
@@ -88,24 +88,21 @@
     </view>
     <!-- 快捷栏目 -->
     <view style="padding: 0 24rpx;">
-      <image v-for="item in status1List" :key="item.id" @click="onZoneClick(item)" :src="item.icon" class="experience">
-      </image>
+      <image v-for="(item,index) in status1List" :key="item.id" @click="onZoneClick(item)" :src="item.icon"
+        class="experience">
     </view>
 
-    <<<<<<< HEAD </image>
-      <view v-if="status2List.length" class="example-content">
-        =======
-        <view v-if="status2List && status2List.length" class="example-content">
-          >>>>>>> ad3b9a453bf1ec8d98d2d9a7b24dca8a3dfc9521
+    </image>
+    <view v-if="status2List.length" class="example-content">
 
-          <image @click="onZoneClick(status2List[0])" class="item" :src="status2List[0].icon"></image>
-          <view class="holder-item">
-          </view>
-          <image @click="onZoneClick(status2List[1])" class="item" :src="status2List[1].icon"></image>
-        </view>
+      <image @click="onZoneClick(status2List[0])" class="item" :src="status2List[0].icon"></image>
+      <view class="holder-item">
+      </view>
+      <image @click="onZoneClick(status2List[1])" class="item" :src="status2List[1].icon"></image>
+    </view>
 
-        <!-- 直播 -->
-        <!-- 	<view class="flex-row-common" style="margin-top: 44rpx;">
+    <!-- 直播 -->
+    <!-- 	<view class="flex-row-common" style="margin-top: 44rpx;">
 			<view class="title">
 				免费服务
 			</view>
@@ -132,6 +129,7 @@
 				<image class="img"
 					:src="item.mediaType==1?item.roomLiveMediaVO.scaleImg:item.roomVideoMediaVO.scaleImg |imgFormat(494,660)"
 					mode="aspectFill"></image>
+				</image>
 				<view class="top-content">
 					<image class="top-content-img"
 						:src="item.mediaType==1?'https://ali-image.dabanjia.com/static/mp/dabanjia/images/home/living.gif':'https://ali-image.dabanjia.com/static/mp/dabanjia/images/home/live-repaly.png'">
@@ -151,15 +149,15 @@
 
 			</view>
 		</view> -->
-        <!-- 推荐 -->
-        <view class="flex-row-common" style="margin-top: 50rpx;">
-          <view class="title">
-            精选推荐
-          </view>
-
-        </view>
-        <good-list ref="goodList" :page="page" :areaId="areaId"></good-list>
+    <!-- 推荐 -->
+    <view class="flex-row-common" style="margin-top: 50rpx;">
+      <view class="title">
+        精选推荐
       </view>
+
+    </view>
+    <good-list ref="goodList" :page="page" :areaId="areaId"></good-list>
+  </view>
 </template>
 
 <script>
@@ -227,7 +225,7 @@
     },
 
     onShareAppMessage() {
-      uni.showShareMenu({
+      wx.showShareMenu({
         withShareTicket: true,
         menus: ["shareAppMessage", "shareTimeline"],
       });
@@ -239,12 +237,12 @@
     },
     onLoad(e) {
       console.log("home page params:", e.scene, e);
-      let shareId = '';
+      let shareId = "";
       if (e && e.scene) {
         let scene = decodeURIComponent(e.scene) || "";
         let obj = {};
         let arr = scene.split("&");
-        arr.forEach(str => {
+        arr.forEach((str) => {
           let a = str.split("=");
           obj[a[0]] = a[1];
         });
@@ -258,14 +256,14 @@
       if (shareId) {
         getApp().globalData.shareId = shareId;
         uni.setStorage({
-          key: 'shareId',
+          key: "shareId",
           data: shareId,
           success: function() {
             console.log("shareId存储成功");
           },
           fail: function() {
-            console.error("shareId存储失败")
-          }
+            console.error("shareId存储失败");
+          },
         });
       }
       let defaultHouse = {
@@ -298,18 +296,18 @@
             },
             false,
             true
-
-          ).then(e => {
+          ).then((e) => {
             let houseList = e;
-            let changeHouse = houseList.find(e => {
-              return e.id == this.currentAddress.id
-            })
-            this.citydata = changeHouse.cityName + changeHouse.areaName + changeHouse
-              .housingEstate;
+            let changeHouse = houseList.find((e) => {
+              return e.id == this.currentAddress.id;
+            });
+            this.citydata =
+              changeHouse.cityName +
+              changeHouse.areaName +
+              changeHouse.housingEstate;
             this.areaId = changeHouse.areaId;
             this.currentHouseChange(changeHouse);
           });
-
         }
       });
       uni.$on("defaultHouseChange", (item) => {
@@ -484,17 +482,16 @@
         this.getQueryLiveList();
       },
       onZoneClick(item) {
-
-        let params = {}
+        let params = {};
         if (item.configParams) {
           params = JSON.parse(item.configParams);
         }
-        console.log(params)
-        console.log('????????????')
+        console.log(params);
+        console.log("????????????");
         if (params.needLogin && !this.token) {
           uni.navigateTo({
-            url: '../../login/login'
-          })
+            url: "../../login/login",
+          });
           return;
         }
 
@@ -525,7 +522,7 @@
               }
             });
           } else {
-            console.log('')
+            console.log("");
             uni.navigateTo({
               url: item.url,
             });
