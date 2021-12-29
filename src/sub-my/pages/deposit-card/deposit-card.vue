@@ -121,7 +121,8 @@
           <image src="https://ali-image.dabanjia.com/static/mp/dabanjia/images/my/close_rules.png" @click="closeRules">
           </image>
         </view>
-        <scroll-view scroll-y="true" class="content">{{ruleText}}</scroll-view>
+         <view class="content">{{ruleText}}</view>
+        <!-- <scroll-view scroll-y="true" class="content">{{ruleText}}</scroll-view> -->
       </view>
     </uni-popup>
   </view>
@@ -275,7 +276,8 @@
   }
 
   .popup .top .title {
-    margin-left: 256rpx;
+    /* margin-left: 256rpx; */
+    text-align: center;
     font-weight: 500;
     font-size: 32rpx;
     color: #333333;
@@ -291,10 +293,12 @@
   }
 
   .popup .content {
-    width: 544rpx;
+    /* width: 544rpx; */
     height: 504rpx;
+    overflow: auto;
     margin: 48rpx;
     margin-top: 8rpx;
+    color: #999999;
   }
 
   .wrap {
