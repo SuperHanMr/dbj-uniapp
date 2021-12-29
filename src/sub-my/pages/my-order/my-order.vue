@@ -511,12 +511,15 @@ export default {
     goToDetail(data) {
       switch (data.orderStatus) {
         case 0:
+          console.log("订单id===", data.id);
+          // return
           uni.navigateTo({
-            url: `order-wait-pay/order-wait-pay?orderNo=${data.id}?&from=all`,
+            url: `order-wait-pay/order-wait-pay?orderNo=${data.id}&from=all`,
           });
           break;
         case 1:
           if (this.currentIndex == 0) {
+            console.log("订单id===", data.id);
             uni.navigateTo({
               url: `order-in-progress/order-in-progress?orderNo=${data.id}&from=all`,
             });
@@ -565,7 +568,7 @@ export default {
 
     //去店铺首页
     gotoShop(item) {
-      if ((item.orderName || item.isReplenish) && item.orderStatus == 0) return;//多店铺购买 或者变更单 
+      if ((item.orderName || item.isReplenish) && item.orderStatus == 0) return; //多店铺购买 或者变更单
       if (item.type == 5) return; //  储值卡
       uni.navigateTo({
         url: `../../../sub-classify/pages/shops/shops?storeId=${item.storeId}&areaId=${this.areaId}`,

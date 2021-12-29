@@ -36,14 +36,14 @@
 
 					<view v-for="item2 in item.details" :key="item2.id" class="orederItem">
 						<order-item :orderStatus="2" :paddingBottom="24" :dataList="item2"
-							:productNum="item.details.length" 
+							:productNum="item.details.length"
 							:refundApplyMode="orderInfo.refundApplyMode"
-							@handleDetail="goToDetail(item2)" 
+							@handleDetail="goToDetail(item2)"
 							@toApplayForRefund="toApplayForRefund(item2,1)"
-							@refundCancel="refundCancel(item2)" 
+							@refundCancel="refundCancel(item2)"
 							@refundSuccess="refundSuccess(item2)"
-							@refundFailed="refundFailed(item2,1)" 
-							@refundClose="refundClose(item2)" 
+							@refundFailed="refundFailed(item2,1)"
+							@refundClose="refundClose(item2)"
 						/>
 					</view>
 				</view>
@@ -149,6 +149,7 @@
 		onLoad(e) {
 			if (e && e.orderNo) {
 				this.orderNo = e.orderNo;
+				console.log("进行中订单id==",this.orderNo)
 			}
 			this.from = e.from || "";
 			const currentHouse = getApp().globalData.currentHouse;
@@ -517,8 +518,9 @@
 		}
 	}
 
-	// .applyforRefund-confirmReceipt {
-	// }
+	.applyforRefund-confirmReceipt {
+		padding-top: 30rpx;
+	}
 	.applyforRefund-confirmReceipt2 {
 		padding-top: 30rpx;
 

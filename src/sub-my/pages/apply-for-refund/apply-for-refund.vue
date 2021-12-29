@@ -574,7 +574,7 @@
 
 
 			},
-			
+
 			onTextAreaInput(event) {
 				this.textAreaLength = event.target.value.length;
 			},
@@ -642,8 +642,8 @@
 		width: 100%;
 		height: 100%;
 		overflow-y: auto;
-		background-color: #f2f3f3;
-		padding-bottom: 400rpx;
+		// background-color: #f2f3f3;
+		// padding-bottom: 400rpx;
 
 		.product-container {
 			margin-top: 16rpx;

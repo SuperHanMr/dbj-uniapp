@@ -68,7 +68,9 @@
 			onClick(item, index) {
 				if (index < 2) {
 					console.log("this.ENV.VUE_APP_BASE_API=", this.ENV.VUE_APP_BASE_API);
-
+					uni.setNavigationBarTitle({
+						title: item.title
+					});
 					let url = this.ENV.VUE_APP_BASE_API + item.url;
 					uni.navigateTo({
 						url: `../../../pages/common/webview/webview?url=` +
