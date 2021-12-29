@@ -259,6 +259,8 @@ button::after {
 .price-font {
   font-family: PriceFont;
 }
-
+.navbar-height{
+  height: 88rpx;
+}
 /*每个页面公共css */
 </style>

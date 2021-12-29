@@ -3,7 +3,7 @@
     <web-view
       :src="baseUrl + '/app-pages/goods-detail/index.html?token=' + searchToken + '#wx-goodsId='+ goodId + '&wx-houseId='
         + houseId + '&wx-defaultHouseId=' + defaultHouseInfo.id  + '&wx-defaultProvinceId=' + defaultHouseInfo.provinceId
-        + '&wx-defaultCityId=' + defaultHouseInfo.cityId + '&wx-defaultAreaId=' + defaultHouseInfo.areaId 
+        + '&wx-defaultCityId=' + defaultHouseInfo.cityId + '&wx-defaultAreaId=' + defaultHouseInfo.areaId
         + '&wx-defaultLocationName=' + defaultHouseInfo.name  + '&wx-token=' + hashToken + '&wx-deviceId=' + deviceId + '&from=' + from + '&shareAreaId=' + shareAreaId + '&shareAreaName=' + shareAreaName">
     </web-view>
   </view>
@@ -73,6 +73,7 @@
       } else {
         this.hashToken = getApp().globalData.token
       }
+      console.log(getApp().globalData.token, "getApp().globalData.token")
       this.baseUrl = this.ENV.VUE_APP_BASE_H5
       this.defaultHouseInfo = getApp().globalData.currentHouse
       uni.getSystemInfo({

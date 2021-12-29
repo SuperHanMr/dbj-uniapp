@@ -18,8 +18,18 @@
 		},
 		onReady() {},
 		onLoad(e) {
+			// #ifdef H5
+			window.addEventListener("message", (e) => {
+				let res = JSON.parse(e.data);
+				if (res.type === 'MP-setNavigationBarTitle') {
+					uni.setNavigationBarTitle({
+						title: res.data
+					})
+				}
+			})
+			// #endif
 			if (e && e.url) {
-				this.url = decodeURIComponent(e.url);
+				this.url = decodeURIComponent(this.url);
 				console.log(this.url)
 			}
       uni.showShareMenu();
