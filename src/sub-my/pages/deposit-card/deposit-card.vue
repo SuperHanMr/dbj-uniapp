@@ -46,7 +46,7 @@
 										<view>¥</view>
 										<view class="number">{{amount.rechargeAmount/100}}</view>
 									</view>
-									<view class="give">送总价值 
+									<view class="give">送总价值
 										<view class="sum price-font">1000</view>元券
 									</view>
 								</view>
@@ -435,7 +435,7 @@
   }
 
   .top .rules .text {
-    width: 88rpx;
+    width: 96rpx;
     height: 28rpx;
     font-size: 22rpx;
     color: #2B2F33;
@@ -696,7 +696,7 @@
   }
 
   .explain {
-    width: 374rpx;
+    width: 412rpx;
     height: 28rpx;
     margin-left: 188rpx;
     margin-bottom: 92rpx;

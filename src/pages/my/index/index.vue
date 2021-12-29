@@ -84,7 +84,7 @@
 						<image src="../../../static/order/images/arraw_right_@2x.png" mode="" />
 					</view>
 				</view>
-				
+
 			</view>
 		</view>
 		</view>
@@ -182,8 +182,8 @@
 				uni.switchTab({
 					url:'/pages/home/index/index'
 				})
-				return 
-				
+				return
+
 			}
 			if(getApp().globalData.MarketStoreSwitch&&this.list[0].key!='1'){
 				this.MarketStoreSwitch=true
@@ -276,7 +276,7 @@
 					});
 				}
 			},
-			
+
 			handlerViewAll() {
 				console.log("点击我的订单全部按钮");
 				if (!this.isLogin) {
@@ -298,10 +298,10 @@
 				}else{
 					uni.navigateTo({
 						url: item.url,
-					});					
+					});
 				}
 			},
-			
+
 		},
 	};
 </script>
@@ -501,6 +501,7 @@
 						left: 40rpx;
 						color: #ffffff;
 						font-size: 18rpx;
+						z-index: 99;
 					}
 				}
 
