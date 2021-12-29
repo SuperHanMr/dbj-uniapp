@@ -39,7 +39,7 @@
 				default: 1,
 			},
 			areaId: {
-				type: String,
+				type: Number,
 				default: "",
 			},
 		},

@@ -3,7 +3,7 @@
 		<custom-navbar :opacity="scrollTop/100" title="找设计" bgcolor="#FFF">
 			<template v-slot:back>
 				<view @click="toBack">
-					<i class="icon-ic_cancel_white" :style="{color: (scrollTop/100>1)?'black':'white'}">
+					<i class="icon-ic_cancel_white header-back" :style="{color: (scrollTop/100>1)?'black':'white'}">
 					</i>
 				</view>
 			</template>
@@ -92,22 +92,14 @@
 		},
 		onLoad() {
 			const systemInfo = uni.getSystemInfoSync();
-			//状态栏高度
-			this.tophight = systemInfo.statusBarHeight + "px";
-			// 获取胶囊按钮的位置
-			const menuButtonInfo = uni.getMenuButtonBoundingClientRect();
-			this.navBarHeight =
-				menuButtonInfo.top +
-				(menuButtonInfo.top - systemInfo.statusBarHeight) +
-				menuButtonInfo.height +
-				"px";
+			this.navBarHeight =systemInfo.statusBarHeight +"px";
 			findDesign().then(e => {
 				this.tabList = e;
 				let id = ''
-				if (this.tabList.length) {
+				if (this.tabList?.length) {
 					id = this.tabList[0].id
 				}
-				if (this.tabList.length && this.tabList[0] && this.tabList[0].children) {
+				if (this.tabList?.length && this.tabList[0] && this.tabList[0].children) {
 					this.subChildren = this.tabList[0].children
 					id = this.subChildren[0].id
 				}
@@ -172,7 +164,14 @@
 	page {
 		background: #FFF;
 	}
-
+ .header-back {
+      width: 82rpx;
+      height: 82rpx;
+      // background-color: #eee;
+      color: #000;
+      line-height: 82rpx;
+      text-align: center;
+    }
 	.tes1t {
 		width: 100%;
 		height: 10000rpx;

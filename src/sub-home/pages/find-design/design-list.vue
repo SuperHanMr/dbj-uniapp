@@ -135,7 +135,24 @@
 		flex-direction: row;
 		justify-content: space-between;
 	}
-
+	.noMemo{
+		width: 100%;
+		height: fit-content;
+		margin-top: 184rpx;
+	}
+	.noMemo .noMemoImg{
+		width: 750rpx;
+		height: 580rpx;
+		display: block;
+	}
+	.noMemo .noMemoText{
+		width: fit-content;
+		height: 36rpx;
+		margin-top: 24rpx;
+		margin-left: 324rpx;
+		font-size: 26rpx;
+		color: #999999;
+	}
 	.margin-left24 {
 		margin-left: 24rpx;
 	}

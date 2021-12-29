@@ -1,6 +1,6 @@
 <template>
 	<view style="background-color: #FFF;">
-		<custom-navbar opacity="1" :showBack="false" bgcolor="#FFF">
+		<custom-navbar :opacity="Number(1)" :showBack="false" bgcolor="#FFF">
 			<template v-slot:back>
 				<image class="icon_logo"
 					src="https://ali-image.dabanjia.com/static/mp/dabanjia/images/home/dbj_logo_new.png" mode="">
@@ -96,7 +96,7 @@
 		</view>
 
 		</image>
-		<view class="example-content">
+		<view v-if="status2List.length"  class="example-content">
 
 			<image @click="onZoneClick(status2List[0])" class="item" :src="status2List[0].icon"></image>
 			<view class="holder-item">
@@ -105,7 +105,7 @@
 		</view>
 
 		<!-- 直播 -->
-		<view class="flex-row-common" style="margin-top: 44rpx;">
+	<!-- 	<view class="flex-row-common" style="margin-top: 44rpx;">
 			<view class="title">
 				免费服务
 			</view>
@@ -151,7 +151,7 @@
 			<view style="width: 24rpx;height: 1rpx;flex-shrink: 0;">
 
 			</view>
-		</view>
+		</view> -->
 		<!-- 推荐 -->
 		<view class="flex-row-common" style="margin-top: 50rpx;">
 			<view class="title">
@@ -207,7 +207,7 @@
 				caseList: [],
 				page: 1,
 				totalPage: 1,
-				navBarHeight: "",
+				navBarHeight: "88rpx",
 				currentSwiper: 0,
 				goodsList: [],
 				areaId: "",
@@ -278,7 +278,6 @@
 			this.areaId = 41;
 			this.currentAddress = defaultHouse;
 			this.citydata = defaultHouse.name;
-			uni.showShareMenu();
 			uni.$on("logout", (item) => {
 				let defaultHouse = {
 					name: "北京市朝阳区",
@@ -330,14 +329,9 @@
 			//状态栏高度
 			this.tophight = systemInfo.statusBarHeight + "px";
 			// 获取胶囊按钮的位置
-			const menuButtonInfo = uni.getMenuButtonBoundingClientRect();
-			console.log("**********", this.backHeight);
+			// const menuButtonInfo = uni.getMenuButtonBoundingClientRect();
+			// console.log("**********", this.backHeight);
 			// 导航栏高度 = 状态栏到胶囊的间距（ 胶囊距上距离 - 状态栏高度 ）*2  +  胶囊高度
-			this.navBarHeight =
-				menuButtonInfo.top +
-				(menuButtonInfo.top - systemInfo.statusBarHeight) +
-				menuButtonInfo.height +
-				"px";
 		},
 		onShow() {
 			setTimeout(() => {

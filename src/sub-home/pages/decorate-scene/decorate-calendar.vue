@@ -5,7 +5,7 @@
         <dark-calendar
           :signeddates="signeddates"
           @filterDynamics="filterDynamics"
-          :projectId="projectId"
+          :projectId="Number(projectId)"
           :showMemo="showMemo"
           @changeMargin="changeMargin"
         ></dark-calendar>

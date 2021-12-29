@@ -2,12 +2,12 @@
 	<view class="nav" :class="{'navbar':opacity<100}">
 		<view class="navi-header-state" :style="{height:tophight,backgroundColor:bgcolor,opacity:opacity}">
 		</view>
-		<view class="navi-header" :style="{height:navBarHeight,backgroundColor:bgcolor,opacity:opacity}">
+		<view class="navi-header navbar-height" :style="{backgroundColor:bgcolor,opacity:opacity}">
 			<view  :style="{color:titleColor}">
 				{{title}}
 			</view>
 		</view>
-		<view class="navi-back" :style="{top:backTop,height:backHeight}">
+		<view class="navi-back navbar-height" :style="{top:tophight}">
 			<slot name="back">
 			</slot>
 		</view>
@@ -20,7 +20,7 @@
 		data() {
 			return {
 				tophight: 0,
-				navBarHeight: 0,
+				navBarHeight: '88px',
 				backTop: 0,
 				backHeight: 0
 			};
@@ -54,18 +54,14 @@
 			//状态栏高度
 			this.tophight = systemInfo.statusBarHeight + "px";
 			// 获取胶囊按钮的位置
-			const menuButtonInfo = uni.getMenuButtonBoundingClientRect();
-			this.backTop = menuButtonInfo.top + 'px';
-			this.backHeight = menuButtonInfo.height + 'px';
+			// const menuButtonInfo = uni.getMenuButtonBoundingClientRect();
+			// this.backTop = 0 + 'px';
+			// this.backHeight = 0 + 'px';
 			console.log('**********', this.backHeight);
 			// 导航栏高度 = 状态栏到胶囊的间距（ 胶囊距上距离 - 状态栏高度 ）*2  +  胶囊高度
-			this.navBarHeight =
-				(menuButtonInfo.top - systemInfo.statusBarHeight) * 2 +
-				menuButtonInfo.height +
-				"px";
-			let menuRight = systemInfo.screenWidth - menuButtonInfo.right;
-			let menuBotton = menuButtonInfo.top - systemInfo.statusBarHeight;
-			let menuHeight = menuButtonInfo.height;
+			// this.navBarHeight =
+			// 	systemInfo.statusBarHeight +
+			// 	"px";
 		},
 		onLoad() {
 

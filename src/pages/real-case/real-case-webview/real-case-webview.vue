@@ -29,9 +29,9 @@
 		},
 		onLoad(props) {
 			this.id = props.id;
-			uni.showLoading({
-				title: '加载中'
-			});
+			// uni.showLoading({
+			// 	title: '加载中'
+			// });
 			uni.showShareMenu()
 		},
 

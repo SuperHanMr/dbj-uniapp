@@ -9,7 +9,7 @@
 		<view>
 
 			<view class="basic-info" :style="{backgroundImage:`url(${bgImg})`,backgroundSize: '100% 100%'}">
-				<view :style="{height:navBarHeight}">
+				<view class="navbar-height" >
 				</view>
 				<view class="info">
 					<view class="header1">
@@ -61,7 +61,7 @@
 	<view v-if="detail.status==2" style="height: 16rpx;">
 		
 	</view>
-		<warehouse-item :showTitle="false" :showPayPrice="true" :showPrePrice="false" :item="detail" :key="item.id"
+		<warehouse-item v-if="detail" :showTitle="false" :showPayPrice="true" :showPrePrice="false" :item="detail"
 			@detail="toDetail" @refund="toRefund">
 		</warehouse-item>
 		<view class="info-content">
@@ -163,7 +163,6 @@
 		data() {
 			return {
 				bgImg: 'https://ali-image.dabanjia.com/static/mp/dabanjia/images/decorate/order_bg_green.png',
-				navBarHeight: '',
 				currentList: [1],
 				detail: {},
 				headerTitle: '',
@@ -179,17 +178,6 @@
 			this.scrollTop = scrollTop.scrollTop
 		},
 		onLoad(e) {
-			const systemInfo = uni.getSystemInfoSync();
-			//状态栏高度
-			this.tophight = systemInfo.statusBarHeight + "px";
-			// 获取胶囊按钮的位置
-			const menuButtonInfo = uni.getMenuButtonBoundingClientRect();
-			console.log('**********', this.backHeight);
-			// 导航栏高度 = 状态栏到胶囊的间距（ 胶囊距上距离 - 状态栏高度 ）*2  +  胶囊高度
-			this.navBarHeight =
-				(menuButtonInfo.top - systemInfo.statusBarHeight) * 2 + menuButtonInfo.top +
-				menuButtonInfo.height +
-				"px";
 			if (e && e.id) {
 				this.id = e.id
 				this.getDetail(e.id);
