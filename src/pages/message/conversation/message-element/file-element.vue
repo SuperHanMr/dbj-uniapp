@@ -1,5 +1,5 @@
 <template>
-  <message-bubble :message="message" class="file-message">
+  <message-bubble :message="message" class="file-message" no-padding>
     <view class="file-element" @click="handleDownloadFile">
       <view class="file-side">
         <image class="file-icon" :src="fileIcon" />

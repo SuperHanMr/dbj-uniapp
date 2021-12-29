@@ -7,7 +7,7 @@
     v-else-if="message.from === 'administrator' && message.type === TIM.TYPES.MSG_TEXT"
     :message="message"
   />
-  <text-element 
+  <text-element
     v-else-if="message.type === TIM.TYPES.MSG_TEXT" 
     :message="message" 
   />
@@ -37,6 +37,10 @@
   />
   <call-element
     v-else-if="message.type === TIM.TYPES.MSG_CUSTOM && template.template === 'call'"
+    :message="message" 
+  />
+  <goods-element
+    v-else-if="message.type === TIM.TYPES.MSG_CUSTOM && template.template === 'goods'"
     :message="message" 
   />
   <card-template
@@ -77,6 +81,7 @@
   import QuestionsElement from "./questions-element.vue";
   import RevokeElement from "./revoke-element.vue";
   import CallElement from "./call-element.vue"
+  import GoodsElement from "./goods-element.vue"
   import UnsupportedElement from "./unsupported-element.vue";
   import CardTemplate from "./template/card-tpl.vue"
   import TipTemplate from "./template/tip-tpl.vue"
@@ -100,6 +105,7 @@
       QuestionsElement,
       RevokeElement,
       CallElement,
+      GoodsElement,
       UnsupportedElement,
       CardTemplate,
       TipTemplate,
