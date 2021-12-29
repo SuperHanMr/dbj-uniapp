@@ -61,7 +61,7 @@ export function getDesignServeMenu(params) {
 
 //获取我的装修服务进度
 export function getMyService(params) {
-	return request.get("/pm/app/project/myService?projectId=" + params.projectId + "&processId=" + params.processId)
+	return request.get("/pm/app/project/myService?projectId=" + params.projectId )
 }
 
 //获取我的装修服务管家数据
@@ -307,10 +307,10 @@ export function goodsApply(params) {
 
 // 获取工序费用
 export function sellList(params) {
-	if (params.obtainType == 0 || params.obtainType == 1 || params.obtainType == 2) {
-		return request.get(`/pm/app/actuary/sell/list/${params.projectId}/${params.type}/${params.obtainType}`)
-	} else if (params.isBOM === '1') {
+	if (params.isBOM === '1') {
 		return request.get(`/pm/app/actuary/sell/other/list/${params.projectId}/${params.type}`)
+	} else if (params.obtainType == 0 || params.obtainType == 1 || params.obtainType == 2) {
+		return request.get(`/pm/app/actuary/sell/list/${params.projectId}/${params.type}/${params.obtainType}`)
 	}
 	return request.get(`/pm/app/actuary/sell/list/${params.projectId}/${params.type}`)
 }
@@ -347,8 +347,7 @@ export function requireConfirm(params) {
 
 // app支付运费/搬运费
 export function payFreight(params) {
-  let version = uni.getAccountInfoSync().miniProgram.version || 'develop';
-	return request.post(`/order-center/app/order/payFreight?v=${version}`, params)
+	return request.post(`/order-center/app/order/payFreight`, params)
 }
 // 查看设计报告
 export function serverReports(serveCardId) {

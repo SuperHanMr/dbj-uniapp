@@ -22,20 +22,20 @@
 			</view>
 
 			<view class="refund-product-info" :style="{paddingBottom:( orderType==2 || refundInfo.type ==5) ?'24rpx':''}">
-				<order-item 
+				<order-item
 					v-if="refundInfo.type !==5"
-					v-for="item in refundInfo.detailAppVOS" 
-					:orderType="orderType" 
-					:key="item.id" 
-					:dataList="item" 
-					:refundType="true"  
-					@handleDetail="productDetail(item)"  
+					v-for="item in refundInfo.detailAppVOS"
+					:orderType="orderType"
+					:key="item.id"
+					:dataList="item"
+					:refundType="true"
+					@handleDetail="productDetail(item)"
 				/>
 				<store-calue-card-item
 					v-else
 					v-for="item in refundInfo.detailAppVOS"
 					:key="item.id"
-					:refundType="true" 
+					:refundType="true"
 					:dataInfo="item"
 				/>
 			</view>
@@ -46,7 +46,7 @@
 		</view>
 		<view
 		  class="cancel-refund-pay"
-		  :style="{paddingBottom:systemBottom,height:systemHeight}"
+		  :style="{paddingBottom:systemBottom}"
 		>
 			<view class="button"  @click="cancelToPay()">
 				取消退款

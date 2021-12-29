@@ -18,16 +18,18 @@
         "enablePullDownRefresh": true
       }
     },
-    // {
-    //   "path": "pages/login/login",
-    //   "style": {
-    //     "navigationBarTitleText": "用户登录",
-    //     "navigationStyle": "custom",
-    //     "usingComponents": {
-    //       "gome-login": "/wxcomponents/gome-login/loginEmpower"
-    //     }
-    //   }
-    // },
+    // #ifdef MP-WEIXIN
+    {
+      "path": "pages/login/login",
+      "style": {
+        "navigationBarTitleText": "用户登录",
+        "navigationStyle": "custom",
+        "usingComponents": {
+          "gome-login": "/wxcomponents/gome-login/loginEmpower"
+        }
+      }
+    },
+    // #endif
     {
       "path": "pages/classify/index/index",
       "style": {
@@ -674,12 +676,6 @@
           "style": {
             "navigationBarTitleText": "装修服务",
             "enablePullDownRefresh": true
-          }
-        },
-        {
-          "path": "pages/design-picture/design-picture",
-          "style": {
-            "navigationBarTitleText": ""
           }
         },
         {

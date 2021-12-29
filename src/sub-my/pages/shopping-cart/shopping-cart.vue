@@ -29,7 +29,7 @@
 					</view>
 				</view>
 				<view class="freeMail">
-					<view class="text" v-if="isDefault" :key="index">每满{{shopItem.freeShippingThreshold===0?'0.00'
+					<view class="text" v-if="isDefault" :key="shopIndex">每满{{shopItem.freeShippingThreshold===0?'0.00'
 						:(shopItem.freeShippingThreshold/100).toFixed(2)}}元可获得一次免运费权益</view>
 					<view class="text" v-else>
 						还差{{shopItem.freeShippingThreshold===0?'0.00':shopItem.freePrice}}元可获得一次免运费权益</view>

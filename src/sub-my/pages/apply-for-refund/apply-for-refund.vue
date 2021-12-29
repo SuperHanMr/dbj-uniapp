@@ -6,8 +6,11 @@
 				<view v-if="refundType==2" class="server-order-tip">
 					<view class="icon-icon_order_tips" style="font-size: 28rpx;margin-right: 12rpx;">
 					</view>
-					<view>
+					<view v-if="refundInfo.isWorker">
 						若您想对服务的内容做调整，您可以联系管家发起变更申请，一旦发起退款且通过后，该服务会记为结束
+					</view>
+					<view v-else>
+						若您想对服务的内容做调整，您可以联系客服，一旦发起退款且通过后，该服务会记为结束
 					</view>
 				</view>
 				<view class="product-container">
@@ -123,7 +126,7 @@
 
 					<view class="line" />
 					<!-- 材料服务 退款金额 -->
-					<view class="refund-price" v-if="refundType !==5">
+					<view class="refund-price" v-if="!refundInfo.editabled">
 						<view class="edit-price">
 							<view class="left">
 								<view class="icon">*</view>
@@ -231,6 +234,7 @@
 				refundInfo: {},
 
 				refundReasonList: [], //退款原因
+				errorTitle:"",//报错提示
 				reasonList: [],
 
 				reasonValue: "",
@@ -286,6 +290,7 @@
 					getRefundInformation(params).then((res) => {
 						this.refundInfo = res;
 						this.refundType = this.refundInfo.type;
+						this.showToast()
 						console.log("this.refundInfo=", this.refundInfo);
 						this.refundInfo.actualIncomeAmount = this.refundInfo.maxRefundAmount;
 						this.returnMoney = this.refundInfo.maxRefundAmount;
@@ -302,8 +307,8 @@
 						console.log("this.refundInfo=", this.refundInfo);
 						this.refundInfo.actualIncomeAmount = this.refundInfo.maxRefundAmount;
 						this.returnMoney = this.refundInfo.maxRefundAmount;
-
-						if (this.refundType == 5) {
+						this.showToast()
+						if (this.refundType == 5 || this.refundType == 2) {
 							this.inputValue = this.refundInfo.maxRefundAmount;
 							this.refundAmount = this.refundInfo.refundAmount;
 							this.maxRefundAmount = this.refundInfo.maxRefundAmount;
@@ -336,19 +341,18 @@
 				console.log("newVal=====", newVal, String(newVal).length);
 				console.log("this.refundAmount===", this.refundAmount);
 				console.log("this.maxRefundAmount===", this.maxRefundAmount);
-				if (newVal > this.maxRefundAmount) {
-					uni.showToast({
-						title: "退款金额大于储值卡余额，请修改",
-						icon: "none",
-						duration: 1000,
-					});
-					this.returnMoney = Number(newVal);
-					return this.returnMoney;
-					// return Number(this.refundAmount).toFixed(2)
-				} else {
-					this.returnMoney = Number(newVal);
-					return newVal;
-				}
+				// if (newVal > this.maxRefundAmount) {
+				// 	uni.showToast({
+				// 		title: this.errorTitle,
+				// 		icon: "none",
+				// 		duration: 1000,
+				// 	});
+				// 	this.returnMoney = Number(newVal);
+				// 	return this.returnMoney;
+				// } else {
+				// 	this.returnMoney = Number(newVal);
+				// 	return newVal;
+				// }
 			},
 
 			textAreaLength(newVal, oldVal) {},
@@ -380,13 +384,14 @@
 					this.type = data.applyMode == 1 ? "partical" : "whole";
 					console.log("this.type=", this.type);
 					this.refundType = data.type;
+					this.showToast()
 					// this.refundType = 5
 					this.remarks = data.remark;
 					this.textAreaLength = this.remark ? this.remark.length : "0";
 					this.reasonValue = data.reasonId;
 					this.reasonName = data.reason;
 					console.log("this.refundType===", this.refundType);
-					if (this.refundType == 5) {
+					if (this.refundType == 5 || this.refundType == 2) {
 						this.maxRefundAmount = data.maxRefundAmount;
 						this.refundAmount = data.refundAmount;
 						this.returnMoney = data.refundAmount;
@@ -410,7 +415,9 @@
 						this.refundInfo.details = data.detailAppVOS;
 						console.log("this.refundInfo.details = ", this.refundInfo.details);
 					}
-
+					this.refundInfo.isWorker = data.isWorker
+					this.refundInfo.editabled = data.editabled
+					// this.refundInfo.editabled = true
 					this.refundInfo.totalActualIncomeAmount = data.maxRefundAmount;
 					this.query.orderId = data.orderId;
 					this.query.status = data.progressed;
@@ -430,15 +437,23 @@
 					});
 				});
 			},
+
 			readExpenses(num) {
 				this.expensesType = num;
 				this.$refs.expensesToast.showPupop();
 			},
+
 			submitApply() {
 				if (this.refundType == 2) {
+					let content
+					if(this.refundInfo.isWorker){
+						content = "发起退款且通过后，该服务会记为结束状态，且服务者不会再提供服务，若您想对工艺项进行调整可以联系管家"
+					}else{
+						content = "发起退款且通过后，该服务会记为结束状态，且服务者不会再提供服务，若您想对服务内容进行调整可以联系客服"
+					}
 					uni.showModal({
-						title: "是否确认退款",
-						content: "发起退款且通过后，该服务会记为结束状态，且服务者不会再提供服务，若您想对工艺项进行调整可以联系管家",
+						title: "退款提醒",
+						content: content,
 						success: (res) => {
 							if (res.confirm) {
 								this.submitApplication();
@@ -450,12 +465,13 @@
 					this.submitApplication();
 				}
 			},
+
 			submitApplication() {
 				// 提交申请后该订单会进入到退款页面，状态显示退款中；并直接跳转到该订单退款详情页
-				if (this.refundType == 5) {
+				if (this.refundType == 5 || this.refundType == 2 ) {
 					if (this.returnMoney > this.maxRefundAmount) {
 						uni.showToast({
-							title: "退款金额大于储值卡余额，请修改",
+							title: this.errorTitle,
 							icon: "none",
 							duration: 1000,
 						});
@@ -507,30 +523,58 @@
 				}
 			},
 
+			showToast(){
+				switch(this.refundType){
+					case 2:
+						this.errorTitle = "退款金额大于最大退款金额，请修改"
+						break
+					case 5:
+						this.errorTitle = "退款金额大于储值卡余额，请修改"
+				}
+			},
+
 			onKeyFocus() {
 				this.isFocus = true;
 				if (!this.inputValue) {
 					this.inputValue = "";
 				}
 			},
+
 			onKeyBlur() {
+				console.log("失去焦点！！！！！")
 				// 缺少输入退款金额值的判断及弹框提示数据
 				if (this.inputValue == "") {
 					this.inputValue = this.refundAmount;
 				}
 				this.showEditInput = false;
+
+				this.inputValue = Number(this.inputValue).toFixed(2);
 				if (!/^(([1-9]{1}\d*)|(0{1}))(\.\d{1,2})?$/.test(this.inputValue)) {
 					uni.showToast({
 						title: "您输入的金额错误，请重新输入",
 						icon: "none",
 						duration: 2000,
 					});
-					// this.inputValue =  Number(this.inputValue).toFixed(2)
-				} else {
+				}
+				else {
 					this.inputValue = Number(this.inputValue).toFixed(2);
 				}
-				// this.inputWidth = String(this.inputValue).length * 26 - 12
+				if (this.inputValue > this.maxRefundAmount) {
+					uni.showToast({
+						title: this.errorTitle,
+						icon: "none",
+						duration: 1000,
+					});
+					this.returnMoney = Number(this.inputValue)
+					return;
+				}
+				else{
+					this.returnMoney = Number(this.inputValue)
+				}
+
+
 			},
+
 			onTextAreaInput(event) {
 				this.textAreaLength = event.target.value.length;
 			},
@@ -598,8 +642,8 @@
 		width: 100%;
 		height: 100%;
 		overflow-y: auto;
-		background-color: #f2f3f3;
-		padding-bottom: 400rpx;
+		// background-color: #f2f3f3;
+		// padding-bottom: 400rpx;
 
 		.product-container {
 			margin-top: 16rpx;

@@ -89,13 +89,15 @@
       </view>
       <view class='remarks'>
         <text>备注</text>
-        <view class="remark-text">
-          <textarea type="text" maxlength="200" v-model="remarks" auto-height placeholder-class="text-placeholder"
-           style="width:100%;line-height: 46rpx;display: inline-block;position: absolute;bottom: 0;min-height: 90rpx;" placeholder="选填,说点什么～" />
+        <view class="remarks-right">
+          <textarea type="text" maxlength="200" v-model="remarks" cursor-spacing="15px"
+            placeholder-class="text-placeholder"
+            style="width:100%;line-height: 46rpx;min-height: 90rpx;height: 85%;overflow: scroll;padding-top: 20rpx;"
+            placeholder="选填,说点什么～" />
         </view>
       </view>
     </view>
-    <view v-if="noData === 1" class="payment-wrap" :style="{paddingBottom:systemBottom,height:systemHeight}">
+    <view v-if="noData === 1" class="payment-wrap" :style="{paddingBottom:systemBottom}">
       <payment @gotopay="gotopay" :pieces="pieces" :countPrice="payPrice" :isAllChecked="isAllChecked">
       </payment>
     </view>
@@ -213,7 +215,7 @@
     mounted() {
       const menuButtonInfo = uni.getMenuButtonBoundingClientRect();
       this.containerBottom = menuButtonInfo.bottom;
-      this.systemBottom = menuButtonInfo.bottom * 2 + "rpx";
+      this.systemBottom = menuButtonInfo.bottom + "rpx";
       this.systemHeight = menuButtonInfo.bottom * 2 + 24 + "rpx";
     },
     computed: {
@@ -987,13 +989,13 @@
     min-width: 180rpx;
   }
 
-  .remarks view {
+  .remarks .remarks-right {
     flex: 1;
-    overflow: scroll;
-    padding-top: 30rpx;
-    height: 100%;
     position: relative;
+    height: 100%;
+    overflow: scroll;
   }
+
 
   .no-house-decorate {
     background-color: #f2f5f8;

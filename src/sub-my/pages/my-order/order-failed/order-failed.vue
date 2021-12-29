@@ -41,7 +41,7 @@
 				<view v-if="status == 4 && refundInfo.type == 6" class="cancel-text failed-text" >
 					您已经取消了本次退款，如有问题可联系客服
 				</view>
-				
+
         <view v-if="status == 5" class="cancel-text failed-text" >
 					您的退款账户存在异常，您可联系客服或者重新发起申请
 				</view>
@@ -56,11 +56,11 @@
           :refundType="true"
           @handleDetail="productDetail(item,'refund')"
         />
-        <store-calue-card-item 
-					v-else 
+        <store-calue-card-item
+					v-else
 					v-for="item in refundInfo.detailAppVOS"
 					:key="item.id"
-					:dataInfo="item" 
+					:dataInfo="item"
 				/>
 
         <view class="refund-money" v-if="refundInfo.freight || refundInfo.handlingFees">
@@ -95,7 +95,7 @@
 
       <order-refund-info :refundInfo="refundInfo"></order-refund-info>
 
-      <view v-if="showContactCustomer || showReApply" class="contact-customer-Reapply" :style="{paddingBottom:systemBottom,height:systemHeight}" >
+      <view v-if="showContactCustomer || showReApply" class="contact-customer-Reapply" :style="{paddingBottom:systemBottom,}" >
         <view v-if="showContactCustomer" class="contact-customer" @click="contactCustomer()">
           联系客服
         </view>
@@ -122,7 +122,7 @@
       <view class="body2" v-for="(item2,index2) in orderInfo.details" :key="index2">
 
         <view class="header">
-          <view class="header-content"> 
+          <view class="header-content">
             <text v-if="orderInfo.type !==5 "  style="color: #333333;" @click="gotoShop(item2)" >{{item2.storeName}}</text>
             <text v-else style="color: #333333;"  >{{orderInfo.orderName}}</text>
 						<image v-if="orderInfo.type !==5 " src="../../../static/ic_more.svg" mode=""/>
@@ -143,6 +143,7 @@
         :orderFailed="true"
       />
       <order-info
+        v-if="orderInfo.orderNo"
         :orderNo="orderInfo.orderNo"
         :createTime="orderInfo.createTime"
         :cancelTime="orderInfo.cancelTime"
@@ -175,6 +176,7 @@ export default {
 
       refundInfo: {},
       orderInfo: {},
+      expensesType: 0,
 
       systemBottom: "",
       containerPaddingBottom: "",

@@ -13,7 +13,7 @@
 				<view class="linearStyle" />
 			</view>
 		</view>
-
+		<view class="my-body">
 		<view class="my-header">
 			<view class="avatar-img" v-if="!userId" @click="handlerPersonalData()">
 				<image src="https://ali-image.dabanjia.com/image/20210513/10/162087290165628.png" class="avatar"  mode="aspectFill"/>
@@ -84,10 +84,10 @@
 						<image src="../../../static/order/images/arraw_right_@2x.png" mode="" />
 					</view>
 				</view>
-				
+
 			</view>
 		</view>
-
+		</view>
 	</view>
 </template>
 
@@ -182,8 +182,8 @@
 				uni.switchTab({
 					url:'/pages/home/index/index'
 				})
-				return 
-				
+				return
+
 			}
 			if(getApp().globalData.MarketStoreSwitch&&this.list[0].key!='1'){
 				this.MarketStoreSwitch=true
@@ -276,7 +276,7 @@
 					});
 				}
 			},
-			
+
 			handlerViewAll() {
 				console.log("点击我的订单全部按钮");
 				if (!this.isLogin) {
@@ -298,10 +298,10 @@
 				}else{
 					uni.navigateTo({
 						url: item.url,
-					});					
+					});
 				}
 			},
-			
+
 		},
 	};
 </script>
@@ -316,7 +316,7 @@
 			position: absolute;
 			filter: blur(13rpx);
 			width: 750rpx;
-			z-index: -1;
+			z-index: 1;
 			height: 490rpx;
 
 			image {
@@ -327,7 +327,7 @@
 				width: 100%;
 				height: 100%;
 				opacity: 0.3;
-				z-index: -1;
+				z-index: 1;
 				background-color: #111;
 				position: relative;
 
@@ -344,8 +344,16 @@
 			}
 		}
 
+		.my-body {
+			position: absolute;
+			width: 100%;
+			box-sizing: border-box;
+			top: 180rpx;
+			z-index: 2;
+			padding-bottom: 32rpx;
+		}
+
 		.my-header {
-			margin-top: 180rpx;
 			display: flex;
 			flex-flow: row nowrap;
 			justify-content: space-between;
@@ -493,6 +501,7 @@
 						left: 40rpx;
 						color: #ffffff;
 						font-size: 18rpx;
+						z-index: 99;
 					}
 				}
 

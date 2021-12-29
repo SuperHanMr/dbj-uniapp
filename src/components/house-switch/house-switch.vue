@@ -7,7 +7,7 @@
 			<view class="item" v-for="(item ,i) in datalist" @click="checkHouse(item)" :key="item.uid">
 				<view class="item-inner flex-row-bet"
 					:class="{default: item.defaultEstate, current: item.uid == current}">
-					<view class="left flex-row-start">
+					<view class="left">
 						<view v-if="item.relegationType == 2" class="friend">亲友</view>
 						<view v-if="item.defaultEstate && item.relegationType == 1" class="default">默认</view>
 						<view class="house-address" :class="{'width-ext': item.relegationType == 2 || (item.defaultEstate && item.relegationType == 1)}">{{item.housingEstate}}{{item.address}}</view>
@@ -128,6 +128,11 @@
 		.left {
 			margin-right: 32rpx;
 			box-sizing: border-box;
+			&::after {
+				content: " ";
+				display: inline;
+				clear: both;
+			}
 
 			.friend,
 			.default {
@@ -145,6 +150,7 @@
 				color: #666666;
 				line-height: 29rpx;
 				margin-right: 8rpx;
+				float: left;
 			}
 
 			.house-address {

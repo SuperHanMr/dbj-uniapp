@@ -218,7 +218,7 @@ $page-bg-color-grey: #f5f5f5;
       .goodsType {
         width: 60rpx;
         height: 30rpx;
-        padding: 2rpx 10rpx 2rpx 10rpx;
+        padding: 0 10rpx;
         margin-right: 4rpx;
         border: 2rpx solid #35c4c4;
         border-radius: 4rpx;

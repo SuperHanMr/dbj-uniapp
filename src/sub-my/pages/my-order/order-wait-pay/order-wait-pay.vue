@@ -158,13 +158,14 @@
       </view>
       <view class='remarks'>
         <text>备注</text>
-        <view class="remark-text">
-          <textarea type="text" maxlength="200" v-model="remarks" auto-height placeholder-class="text-placeholder"
-            style="width:100%;line-height: 46rpx;display: inline-block;position: absolute;bottom: 0;min-height: 90rpx;"
+        <view class="remarks-right">
+          <textarea type="text" maxlength="200" v-model="remarks" cursor-spacing="15px"
+            placeholder-class="text-placeholder"
+            style="width:100%;line-height: 68rpx;min-height: 90rpx;height: 85%;overflow: scroll;padding-top: 20rpx;"
             placeholder="选填,说点什么～" />
         </view>
       </view>
-      <order-info :orderNo="orderInfo.orderNo" :createTime="orderInfo.createTime" />
+      <order-info v-if="orderInfo.orderNo" :orderNo="orderInfo.orderNo" :createTime="orderInfo.createTime" />
 
       <!-- 底部按钮 -->
       <view v-if="orderInfo.showCancelBtn || orderInfo.showToPayBtn " :class="{noCancelBtn:true}" class="waitPayBottom"
@@ -289,8 +290,7 @@
           }
           return String((res / 100).toFixed(2));
         } else {
-          console.log(this.totalPrice);
-          return this.totalPrice;
+          return String(this.totalPrice);
         }
       },
     },
@@ -307,6 +307,7 @@
     onLoad(e) {
       this.from = e.from;
       this.orderNo = Number(e.orderNo) || getApp().globalData.decorateMsg.orderId;
+      console.log("订单id编号===",this.orderNo)
       const currentHouse = getApp().globalData.currentHouse;
       this.areaId = currentHouse.areaId;
 
@@ -595,14 +596,16 @@
 
   .remarks {
     padding: 5rpx 32rpx;
+    margin-bottom: 16rpx;
     background-color: #ffffff;
-    margin-top: 25rpx;
+    // margin-top: 25rpx;
     font-size: 28rpx;
     font-family: PingFangSC, PingFangSC-Regular;
     display: flex;
     justify-content: space-between;
     align-items: center;
     height: 104rpx;
+    border-radius: 24rpx;
     line-height: 104rpx;
   }
 
@@ -614,13 +617,13 @@
     min-width: 180rpx;
   }
 
-  .remarks view {
+  .remarks .remarks-right {
     flex: 1;
-    overflow: scroll;
-    padding-top: 30rpx;
-    height: 100%;
     position: relative;
+    height: 100%;
+    overflow: scroll;
   }
+
 
   .pay-diaolog {
     border-top: 1rpx solid #f2f2f2;

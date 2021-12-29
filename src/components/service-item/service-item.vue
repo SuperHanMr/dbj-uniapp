@@ -51,7 +51,6 @@
 </template>
 
 <script>
-  import "./item.scss"
   export default {
     name: "ServiceItem",
     props: {
@@ -114,3 +113,156 @@
     }
   }
 </script>
+
+<style lang="scss">
+.item {
+  box-sizing: border-box;
+  width: 100%;
+  min-height: 104rpx;
+  background: #fbfbfb;
+  border-radius: 16rpx;
+  margin-bottom: 24rpx;
+}
+.flex-row-bet {
+  display: flex;
+  justify-content: space-between;
+  flex-direction: row;
+  align-items: center;
+}
+.flex-row-start {
+  display: flex;
+  justify-content: flex-start;
+  flex-direction: row;
+  align-items: center;
+}
+.item-name {
+  padding: 34rpx 40rpx 34rpx 24rpx;
+  image {
+    width: 32rpx;
+    height: 32rpx;
+    margin-right: 16rpx;
+  }
+  .icon-zx {
+    font-size: 32rpx;
+    margin-right: 16rpx;
+  }
+  .icon-ic_wodejia_shejifuwu_csn1 {
+    color: #2bbaf2;
+  }
+  .icon-ic_wodejia_yanfangfuwu_csn1 {
+    color: #5A99DA;
+  }
+  .icon-ic_wodejia_liangfangfuwu_csn1 {
+    color: #43d9e1;
+  }
+  .icon-ic_wodejia_jingsuanfuwu_csn1 {
+    color: #1E7BEA;
+  }
+  .icon-ic_wodejia_guanjia_csn {
+    color: #ffb568;
+  }
+  .icon-ic_zhuangxiuxianchang_chaichu_csn1 {
+    color: #a38af4;
+  }
+  .icon-ic_zhuangxiuxianchang_shuidian_csn1 {
+    color: #58a8ff;
+  }
+  .icon-ic_zhuangxiuxianchang_nigong_csn1 {
+    color: #f47f62;
+  }
+  .icon-ic_zhuangxiuxianchang_mugong_csn1 {
+    color: #a38af4;
+  }
+  .icon-ic_zhuangxiuxianchang_youqi_csn1 {
+    color: #8cd874;
+  }
+  view {
+    height: 36rpx;
+    font-size: 26rpx;
+    font-family: PingFangSC, PingFangSC-Regular;
+    font-weight: 700;
+    text-align: left;
+    color: #333333;
+    line-height: 36rpx;
+  }
+}
+.status-name {
+  padding-right: 48rpx;
+  view {
+    // width: 156rpx;
+    height: 36rpx;
+    font-size: 26rpx;
+    font-family: PingFangSC, PingFangSC-Regular;
+    font-weight: 400;
+    text-align: right;
+    line-height: 36rpx;
+  }
+  .icon-no{
+    width: 26rpx;
+    height: 36rpx;
+    margin-left: 8rpx;
+  }
+  .icon-zhuangxiushouye_fuwuzhankaijiantou {
+    transition: all 0.2s;
+    margin-left: 8rpx;
+    // width: 24rpx;
+    // height: 24rpx;
+    font-size: 26rpx;
+    color: #ccc;
+    transform: rotate(180deg);
+  }
+  .icon-zhuangxiushouye_fuwuzhankaijiantou.open {
+    transition: all 0.2s;
+    transform: none;
+  }
+}
+.mr.status-name  {
+  padding-right: 16rpx;
+}
+.robbing {
+  color: red;
+}
+.shouldsure {
+  color: #00C2B8;
+}
+.inservice {
+  color: #00C2B8;
+}
+.uncheck{
+  color: red;
+}
+.completed{
+  color: #999999;
+}
+.gc {
+  .procsss {
+    padding: 20rpx 20rpx 9rpx 72rpx;
+    .s0 {
+      height: 34rpx;
+      font-size: 24rpx;
+      font-family: PingFangSC, PingFangSC-Regular;
+      font-weight: 400;
+      text-align: left;
+      color: #999999;
+      line-height: 34rpx;
+    }
+    .s1 {
+      view {
+        height: 34rpx;
+        opacity: 1;
+        font-size: 24rpx;
+        font-family: PingFangSC, PingFangSC-Regular;
+        font-weight: 400;
+        text-align: right;
+        color: #333333;
+        line-height: 34rpx;
+        margin-right: 8rpx;
+      }
+      image {
+        width: 24rpx;
+        height: 24rpx;
+      }
+    }
+  }
+}
+</style>

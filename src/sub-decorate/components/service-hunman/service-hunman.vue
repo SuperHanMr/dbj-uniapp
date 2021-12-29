@@ -1,7 +1,7 @@
 <template>
   <view class="service-hunman">
     <view class="design-top" v-if="isDesign">
-      <view class="design-name">{{designData.severName||designName[0].serveName}}</view>
+      <view class="design-name">{{designData.severName||(designName.length > 0 && designName[0].serveName)}}</view>
       <view class="design-change" @click="openPopup" v-if="designName.length>1">
         <text>更换设计类型</text>
         <i class="icon-a-ic_zhuangxiuxianchang_jingsuanzhankai_csn"></i>
@@ -9,10 +9,10 @@
     </view>
     <view class="service-content">
       <view class="msg">
-        <image class="avatar" @click="toPerson" :src="isDesign&&designData.designServerVO.avatar||tab.avatar" mode="aspectFit"></image>
+        <image class="avatar" @click="toPerson" :src="isDesign&&(designData.designServerVO && designData.designServerVO.avatar)||tab.avatar" mode="aspectFit"></image>
         <view class="name-msg">
           <view>
-            <view class="name">{{isDesign&&designData.designServerVO.userName||tab.name}}</view>
+            <view class="name">{{isDesign&&(designData.designServerVO && designData.designServerVO.userName)||tab.name}}</view>
             <view class="text">{{tab.nodeName}}</view>
           </view>
         </view>
@@ -51,6 +51,9 @@
         }
       },
     },
+		mounted() {
+			console.log(this.designData, this.isDesign, '>>><<<>>>');
+		},
     methods:{
       toTimeLine(item){
         console.log(this.tab)

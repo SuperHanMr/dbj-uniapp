@@ -140,7 +140,6 @@
 						{{item}}
 					</view> -->
 				</view>
-				</scroll-view>
 			</view>
 		</view>
 		<view v-else class="unlived">

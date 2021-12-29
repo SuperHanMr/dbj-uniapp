@@ -318,7 +318,7 @@
       position: absolute;
       top: 50%;
       margin-top: -30rpx;
-      width: 68rpx;
+      width: 72rpx;
       height: 56rpx;
     }
     // .gray-bg{
