@@ -2,9 +2,9 @@
   <view class="wrap">
     <view class="avtor-wrap flex-row-bet">
       <view class="flex-row-start">
-        <image class="avtor" :src="detail.designServerVO.avatar"></image>
+        <image class="avtor" :src="(detail.designServerVO && detail.designServerVO.avatar)"></image>
         <view class="tigs">
-          <view class="username">{{detail.designServerVO.userName}}</view>
+          <view class="username">{{(detail.designServerVO && detail.designServerVO.userName)}}</view>
           <view class="role">设计师</view>
         </view>
       </view>
