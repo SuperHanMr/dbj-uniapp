@@ -5,7 +5,7 @@
         
       </view>
       <view class="line-content">
-        <view class="item" v-if="list.length>0" v-for="(item,index) of list" :key='item.operateTime'>
+        <view class="item" v-if="list.length>0" v-for="(item,index) of list" :key='item.operatorId'>
             <view class="out">
             </view>
             
