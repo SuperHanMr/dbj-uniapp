@@ -7,7 +7,7 @@
     <tabs :items="items" :current="current" @changeItem="changeItem"></tabs>
     <pictures :imgList="imgList"></pictures>
     <view :style="{height: containerBottom * 2 + 48 + 88 + 'rpx'}"></view>
-    <view class="btn-wrap" :style="{paddingBottom:systemBottom,height:systemHeight}">
+    <view class="btn-wrap" :style="{paddingBottom:systemBottom}">
       <button class="btn" @click="confirm">确认{{message.stageName}}</button>
     </view>
   </view>
@@ -41,7 +41,7 @@
     mounted() {
       const menuButtonInfo = uni.getMenuButtonBoundingClientRect();
       this.containerBottom = menuButtonInfo.bottom;
-      this.systemBottom = menuButtonInfo.bottom * 2 + "rpx";
+      this.systemBottom = menuButtonInfo.bottom + "rpx";
       this.systemHeight = menuButtonInfo.bottom * 2 + 24 + "rpx";
       this.getDataList()
     },
