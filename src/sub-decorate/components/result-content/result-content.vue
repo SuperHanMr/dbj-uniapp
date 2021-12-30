@@ -8,9 +8,8 @@
           <text class="time">{{checkData.submitReportTime}}</text>
         </view>
       </view>
-      <view class="charts">
-        <uniEcCanvas class="uni-ec-canvas" id="uni-ec-canvas" ref="canvas" canvas-id="uni-ec-canvas" :ec="ec">
-        </uniEcCanvas>
+      <view class="charts-box" id="echarts">
+        
       </view>
       <text class="report-text" :class="{'report-text-hidden':isHidden}">{{checkData.summaryDescription}}</text>
       <view class="openHidden" v-if="showBtn" @click="clickHidden">
@@ -40,21 +39,21 @@
   </view>
 </template>
 <script>
-  import uniEcCanvas from '../../components/uni-ec-canvas/uni-ec-canvas.vue'
-  import * as echarts from '../../components/uni-ec-canvas/echarts.min'
   import deliverCard from '../delivery-card/delivery-card.vue'
   import imagePreview from '../../../components/image-preview/image-preview.vue'
-  
+  import * as echarts from "./echarts.min";
+
+
   import {
     getCheckResultDetail,
     confirmCheckResult
   } from '../../../api/decorate.js'
   import { formatDate } from '../../../utils/common.js'
   
-  let chart = null
+  let myChart = null
+  
   export default {
     components: {
-      uniEcCanvas,
       deliverCard,
       imagePreview
     },
@@ -236,8 +235,12 @@
           this.isLoading = true
           this.getMsgHeight()
           setTimeout(()=>{
-            this.$refs.canvas.init(this.initChart)
+            myChart = echarts.init(document.getElementById('echarts'))
+            
+            // this.$refs.canvas.initByOldWay(this.initChart)
+            console.log(2222)
             this.drawImage()
+            myChart.setOption(this.option)
             this.getTop()
           },1000)
           
@@ -330,6 +333,7 @@
       },
       drawImage() {
         this.option.series[0].data = this.data
+        
         let text = [`{a|${this.checkData.checkCount}}{b|项}`, "{x|总检查}"].join("\n")
         this.option.series[0].label.formatter = text
         this.option.legend.formatter = (name) => {
@@ -345,6 +349,7 @@
           height: height,
           devicePixelRatio: canvasDpr
         })
+        console.log(3333)
         console.log(chart)
         canvas.setChart(chart)
         chart.setOption(this.option)
@@ -462,7 +467,7 @@
     }
   }
 
-  .charts {
+  .charts-box {
     height: 350rpx;
     width: 100%;
 
