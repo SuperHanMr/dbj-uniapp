@@ -8,7 +8,7 @@ import { getMsgNumByHouse } from "api/decorate.js";
 export default {
   globalData: {
     userInfo: {},
-    token: "",
+    token: 'Pc0jlCMLaageAbuvl97z3PmZkuU8UOQrHjTV3svtxH%2BTEO%2B7U%2FWrRFtAnA3z1hDOnoxxbbehR56WtOKAjcCb8ETYhwgWaADxzoUIrVU7uqB3GfFUw6bm6RoRrGRY4lGf5b8c5d331b56d3be92816e1d231b30c7',
     city: "",
     houses: [],
     tim: null,
@@ -37,6 +37,8 @@ export default {
   onLaunch: function () {
     const userId = uni.getStorageSync("userId");
     const shareId = uni.getStorageSync("shareId");
+        // this.globalData.token = 
+
     // #ifdef MP-WEIXIN
     uni.request({
       url: "https://pv.sohu.com/cityjson", //仅为示例，并非真实接口地址。

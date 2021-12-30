@@ -58,8 +58,11 @@
         this.$nextTick(function(){
           query.select(".report-text").boundingClientRect((res) => {
             console.log(res)
-            this.isHidden = res.height/20 >= 3;
-            this.showBtn = res.height/20 >= 3;
+            if(res){
+              this.isHidden = res.height/20 >= 3;
+              this.showBtn = res.height/20 >= 3;
+            }
+            
             // console.log(res.height,this.isHidden)
             
           }).exec()

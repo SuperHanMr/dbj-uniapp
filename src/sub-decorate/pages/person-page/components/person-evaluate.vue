@@ -30,7 +30,9 @@
     data(){
       return{
         num:3,
-        evaluate:{}
+        evaluate:{
+          list:[]
+        }
       }
     },
     mounted() {
@@ -49,6 +51,7 @@
             console.log(formatDate(item.createTime,'YYYY-MM-DD'))
             item.createTime = formatDate(item.createTime,'YYYY-MM-DD')
           })
+          console.log(res.list.length)
           this.$emit('contentEmpty','evaluateEmpty',res.list.length>0?true:false)
           this.getEvaluate()
         })

@@ -5,7 +5,7 @@
         
       </view>
       <view class="line-content">
-        <view class="item" v-if="list.length>0" v-for="(item,index) of list" :key='item.operatorId'>
+        <view class="item" v-if="list.length>0" v-for="(item,index) of list" :key='item.operatorId + item.operateTime'>
             <view class="out">
             </view>
             
@@ -103,10 +103,10 @@
     content:"";
     color: red;
     position: absolute;
-    left: 0;
+    left: -2rpx;
     height: 50%;
     top: 0;
-    width: 2px;
+    width: 4px;
     background-color: #fff;
   }
   
@@ -114,10 +114,10 @@
     content:"";
     color: red;
     position: absolute;
-    left: 0;
+    left: -2rpx;
     height: calc(50% - 12rpx);
     bottom: 0;
-    width: 2px;
+    width: 4px;
     background-color: #fff;
   }
   .real{

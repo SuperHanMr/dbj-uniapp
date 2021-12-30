@@ -1,13 +1,13 @@
 <template>
   <view class="wrap">
-    <view class="message">
+    <view class="message" :style="{top: messageTop + 'rpx'}">
       管家已验收通过，系统将在{{countdown}}后自动确认验收
     </view>
     <view class="content" :style="{paddingBottom:containerBottom * 2 + 48 + 88 + 'rpx'}">
       <user-desc-pict :butlerData="butlerData"></user-desc-pict>
       <user-desc-pict-worker :workerData="workerData"></user-desc-pict-worker>
     </view>
-    <view class="bt-btn-wrap flex-row" :style="{paddingBottom:systemBottom,height:systemHeight}">
+    <view class="bt-btn-wrap flex-row" :style="{paddingBottom:systemBottom}">
       <view class="btn-l" @click="refuse">拒绝通过</view>
       <view class="btn-r" @click="confirm">验收通过</view>
     </view>
@@ -47,6 +47,7 @@
         daojishi: "",
         msg: {},
         timer: null,
+				messageTop: 0,
         countdown: "72:00:00",
         updateTime: new Date().getTime(),
 
@@ -58,7 +59,11 @@
     mounted() {
       const menuButtonInfo = uni.getMenuButtonBoundingClientRect();
       this.containerBottom = menuButtonInfo.bottom;
-      this.systemBottom = menuButtonInfo.bottom * 2 + "rpx";
+			this.systemBottom = menuButtonInfo.bottom * 2 + "rpx";
+			// #ifdef H5
+      this.systemBottom = menuButtonInfo.bottom * 4 + "rpx";
+			this.messageTop = 76
+			// #endif
       this.systemHeight = menuButtonInfo.bottom * 2 + 24 + "rpx";
     },
     destroyed() {
@@ -158,7 +163,7 @@
 
   .message {
     position: fixed;
-    top: 0;
+    top: 86rpx;
     left: 0;
     width: 100%;
     height: 56rpx;
