@@ -29,7 +29,7 @@
 			})
 			// #endif
 			if (e && e.url) {
-				this.url = decodeURIComponent(this.url);
+				this.url = decodeURIComponent(e.url);
 				console.log(this.url)
 			}
       uni.showShareMenu();
