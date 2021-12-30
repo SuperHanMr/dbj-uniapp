@@ -12,7 +12,7 @@
 			要货记录
 		</view>
 		<view class="page-body-goods">
-			<scroll-view class="nav-left" scroll-y :scroll-top="scrollLeftTop" scroll-with-animation>
+			<scroll-view class="nav-left" scroll-y  scroll-with-animation>
 				<view class="left-title-block">
 					<view class="nav-left-item"
 						:class="{'active': index2==categoryActive, 'preNode': index2==categoryActive -1, 'nextNode': index2==categoryActive +1}"
@@ -128,9 +128,9 @@
 			},
 		},
 		onLoad(e) {
-			const menuButtonInfo = uni.getMenuButtonBoundingClientRect();
-			this.systemBottom = menuButtonInfo.bottom + "rpx";
-			this.menuBottom = menuButtonInfo.bottom;
+			// const menuButtonInfo = uni.getMenuButtonBoundingClientRect();
+			// this.systemBottom = menuButtonInfo.bottom + "rpx";
+			// this.menuBottom = menuButtonInfo.bottom;
 			if (e && e.projectId) {
 				this.projectId = e.projectId;
 			}

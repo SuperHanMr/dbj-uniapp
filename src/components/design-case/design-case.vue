@@ -60,14 +60,17 @@
 		},
 		methods: {
 			onHeight(height, tag) {
-				this.$parent.onHeight(height, tag);
+				this.$emit("height", height, tag);
+				// this.$parent.onHeight(height, tag);
 			},
 			onClick (index, tag){
-				console.log("点击")
-				this.$parent.onClick(index, tag);
+				this.$emit("click", index, tag);
+				// console.log("点击")
+				// this.$parent.onClick(index, tag);
 			},
-			onCollection (index,tag) {
-				this.$parent.onCollection(index,tag);
+			onCollection (index, tag) {
+				this.$emit("collection", index, tag);
+				// this.$parent.onCollection(index, tag);
 			}
 		},
 	}

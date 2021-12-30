@@ -683,6 +683,7 @@
   .scroll-view {
     overflow-x: hidden;
     overflow-y: auto;
+    padding-bottom: 112rpx;
   }
 
   .house-firend {
@@ -880,7 +881,7 @@
     padding: 32rpx 0;
     position: relative;
   }
-  .ck.my-decorate-service { 
+  .ck.my-decorate-service {
     .service-title {
       margin: 0 32rpx 32rpx;
     }
@@ -938,7 +939,7 @@
   .drag-button {
     // background: #ffffff;
     // border: 0.5px solid #eeeeee;
-    
+
     // width: 100rpx;
     // height: 100rpx;
     // font-size: 24rpx;
