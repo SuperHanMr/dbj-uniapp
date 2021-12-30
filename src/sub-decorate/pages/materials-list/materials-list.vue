@@ -121,5 +121,6 @@
     flex-direction: row;
     justify-content: flex-start;
     align-items: center;
+		background: #fff;
   }
 </style>
