@@ -17,7 +17,7 @@
       let cost = e.isCost||1
       // #ifdef H5
       window.addEventListener("message", (e) => {
-      	let res = JSON.parse(e.data);
+      	let res = JSON.parse(e.data || {});
       	if (res.type === 'MP-setNavigationBarTitle') {
       		uni.setNavigationBarTitle({
       			title: res.data

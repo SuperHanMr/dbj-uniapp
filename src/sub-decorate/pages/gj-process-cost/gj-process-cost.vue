@@ -1,5 +1,5 @@
 <template>
-  <view class="process-cost" :style="{paddingBottom: (bottomHeight + 96) + 'px'}">
+  <view class="process-cost">
     <!-- isBOM 1 代表精算过来的材料汇总  材料汇总没有人工费 -->
     <view class="artificial" v-if="(msg.payStatus == 2 || msg.obtainType != 2) && msg.isBOM !== '1'">
       <view class="title">
@@ -9,7 +9,7 @@
         </view>
       </view>
       <view class="process-cost-list">
-        <process-cost-artificial :key="index" v-for="(item,index) in dataOrigin.artificial.categoryList"
+        <process-cost-artificial :key="index" v-for="(item,index) in (dataOrigin.artificial && dataOrigin.artificial.categoryList)"
           :content="item">
         </process-cost-artificial>
       </view>
@@ -22,7 +22,7 @@
       </view>
       <view class="process-cost-list">
         <process-cost-materials :areaId="dataOrigin.areaId" :key="index"
-          v-for="(item,index) in dataOrigin.material.categoryList" :content="item" @change="selectWp"
+          v-for="(item,index) in (dataOrigin.material && dataOrigin.material.categoryList)" :content="item" @change="selectWp"
           @changeMaterial="changeMaterial">
         </process-cost-materials>
       </view>
@@ -74,7 +74,11 @@
           placeholder="选填,说点什么～" />
       </view>
     </view>
-    <view v-if="!msg.payStatus || msg.payStatus != 2" class="payment-wrap" :style="{paddingBottom: bottomHeight + 12 + 'px'}">
+    <view :style="{paddingBottom:containerBottom * 2 + 48 + 88 + 'rpx'}">
+
+    </view>
+    <view v-if="!msg.payStatus || msg.payStatus != 2" class="payment-wrap"
+      :style="{paddingBottom:systemBottom}">
       <payment @gotopay="gotopay" :pieces="pieces" :countPrice="payPrice" :isAllChecked="isAllChecked">
       </payment>
     </view>
@@ -210,7 +214,9 @@
         curr_artificial_categoryId: null,
         levelList: [],
         workerLevelSkuMapping: [],
-        bottomHeight: 0, // 底部区域高度
+        containerBottom: null,
+        systemBottom: null,
+        systemHeight: null,
         noData: false,
         message: null,
         skuRelation: [], // 精算单更换商品  新旧商品id对照表
@@ -224,14 +230,18 @@
       };
     },
     mounted() {
-      let _this = this;
-      uni.getSystemInfo({
-        success(data) {
-          let screenHeight = data.screenHeight;
-          let safeArea = data.safeArea || {};
-          _this.bottomHeight = screenHeight - (safeArea.bottom || screenHeight);
-        }
-      })
+      const menuButtonInfo = uni.getMenuButtonBoundingClientRect();
+      this.containerBottom = menuButtonInfo.bottom;
+      this.systemBottom = menuButtonInfo.bottom + "rpx";
+      this.systemHeight = menuButtonInfo.bottom * 2 + 24 + "rpx";
+			let _this = this;
+			      uni.getSystemInfo({
+			        success(data) {
+			          let screenHeight = data.screenHeight;
+			          let safeArea = data.safeArea || {};
+			          _this.bottomHeight = screenHeight - (safeArea.bottom || screenHeight);
+			        }
+			      })
     },
     computed: {
       isAllChecked() {
@@ -316,6 +326,7 @@
         // origin.originalId = origin.originalId // "原始ID 【下单params附带参数】",
         // origin.originalId = origin.originalId // "原始ID 【下单params附带参数】",
         origin.id = item.product.skuId; //"long //商品ID 【下单params附带参数】",
+				debugger
         origin.title = item.title; //"string //标题",
         // origin.productType = origin.productType //"int //下单参数 type\r      标签 1.物品 2.服务 3.虚拟\r ,
         // origin.roleType = item.roleType // "int //下单参数 roleType",  这里是辅材所以不需要替换
