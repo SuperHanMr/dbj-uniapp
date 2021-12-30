@@ -236,7 +236,6 @@
           this.getMsgHeight()
           setTimeout(()=>{
             myChart = echarts.init(document.getElementById('echarts'))
-            
             // this.$refs.canvas.initByOldWay(this.initChart)
             console.log(2222)
             this.drawImage()

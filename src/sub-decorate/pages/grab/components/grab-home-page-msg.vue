@@ -94,6 +94,7 @@
 <style lang="scss" scoped>
   .grab-content-msg{
     padding-bottom: 40rpx;
+    width: 100%;
   }
 
   .msg-item{
