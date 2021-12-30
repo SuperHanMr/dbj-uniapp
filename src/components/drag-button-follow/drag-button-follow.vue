@@ -125,7 +125,7 @@
     },
     methods: {
       click() {
-        uni.$emit('system-messages')
+        // uni.$emit('system-messages')
         this.$emit('btnClick');
       },
       touchstart(e) {

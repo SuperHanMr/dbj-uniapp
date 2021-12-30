@@ -103,10 +103,10 @@
     content:"";
     color: red;
     position: absolute;
-    left: 0;
+    left: -2rpx;
     height: 50%;
     top: 0;
-    width: 2px;
+    width: 4px;
     background-color: #fff;
   }
   
@@ -114,10 +114,10 @@
     content:"";
     color: red;
     position: absolute;
-    left: 0;
+    left: -2rpx;
     height: calc(50% - 12rpx);
     bottom: 0;
-    width: 2px;
+    width: 4px;
     background-color: #fff;
   }
   .real{
