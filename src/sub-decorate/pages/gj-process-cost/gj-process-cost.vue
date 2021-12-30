@@ -235,13 +235,13 @@
       this.systemBottom = menuButtonInfo.bottom + "rpx";
       this.systemHeight = menuButtonInfo.bottom * 2 + 24 + "rpx";
 			let _this = this;
-			      uni.getSystemInfo({
-			        success(data) {
-			          let screenHeight = data.screenHeight;
-			          let safeArea = data.safeArea || {};
-			          _this.bottomHeight = screenHeight - (safeArea.bottom || screenHeight);
-			        }
-			      })
+			uni.getSystemInfo({
+			  success(data) {
+			    let screenHeight = data.screenHeight;
+			    let safeArea = data.safeArea || {};
+			    _this.bottomHeight = screenHeight - (safeArea.bottom || screenHeight);
+			  }
+			})
     },
     computed: {
       isAllChecked() {
