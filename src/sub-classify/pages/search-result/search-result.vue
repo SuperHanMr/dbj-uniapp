@@ -12,11 +12,11 @@
       </view>
       <uni-search-bar
         v-else
-        @confirm="searchConfirm" 
-        clearButton="auto" 
-        cancelButton="false" 
-        :focus="true" 
-        bgColor="transparent" 
+        @confirm="searchConfirm"
+        clearButton="auto"
+        cancelButton="false"
+        :focus="true"
+        bgColor="transparent"
         placeholder="请搜索您要的商品"
         :radius="8">
         <uni-icons slot="searchIcon" />
@@ -81,10 +81,6 @@
     components: {
       sortButton
     },
-    props: {
-      searchText: '',
-      categoryId: 0
-    },
     data() {
       return {
         originFrom: "",
@@ -97,7 +93,9 @@
         timer: null,
         sort: "",
         isLoadMore: false,
-        searchVal: ""
+        searchVal: "",
+        categoryId: 0,
+        searchText: ''
       }
     },
     onShow() {
@@ -107,13 +105,14 @@
       uni.removeStorageSync('goodId')
     },
     onLoad(e) {
-      console.log(e, this.searchText, 2222);
+      this.categoryId = e.categoryId
+      this.searchText = e.searchText
       this.originFrom = e.originFrom
       this.searchVal = this.originFrom ? "" : (e.searchText || "")
       this.getList()
       // 对上一个页面传值
       // var shequ = getCurrentPages();
-      // var prevShequ = shequ[shequ.length - 2]; 
+      // var prevShequ = shequ[shequ.length - 2];
       // prevShequ.brand ={
       //   name:"dd"
       //  }
@@ -267,8 +266,6 @@
     justify-content: center;
     align-items: center;
   }
-
-  .sort-button {}
 
   .search-result {
     height: 100%;
