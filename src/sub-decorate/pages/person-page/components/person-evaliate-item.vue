@@ -7,7 +7,7 @@
     <view class="item-content">
       <view class="evaluate-list">
         <image v-for="(el, idx) of item.rank" :key="idx" src="../../../static/ic_score_star@2x.png" mode=""></image>
-        <image v-for="(el, idx) of 5-item.rank" :key="idx" src="../../../static/ic_blank_star@2x.png" mode=""></image>
+        <image v-for="(el, idx) of 5-item.rank" :key="5-idx" src="../../../static/ic_blank_star@2x.png" mode=""></image>
       </view>
       <view class="evaluate-text" :class="{'report-text-hidden':isHidden}">{{item.content}}</view>
       <view class="openHidden" v-if="showBtn" @click="clickHidden">

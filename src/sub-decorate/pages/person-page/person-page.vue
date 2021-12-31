@@ -319,6 +319,8 @@ export default {
         collectCount: "0",
         totalNum: "0",
         roleId: 0,
+        designTags:[],
+        personAllBadgeVO:{}
       },
       currentItem: "serviceTop",
       scrollTop: 0,
@@ -889,6 +891,7 @@ view .is-self {
   background-color: #fff;
   opacity: 0;
   z-index: 1;
+  padding-left: 10px;
   .special-item {
     // width: 33%;
     position: absolute;

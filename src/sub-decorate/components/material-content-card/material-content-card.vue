@@ -37,6 +37,7 @@
       filterShowPrice(content) {
         let deposit = content.product.sku.deposit ?? 0
         return ((content.product.skuPrice + Number(deposit)) / 100).toFixed(2)
+				
       }
     }
   }
@@ -48,9 +49,9 @@
     justify-content: center;
     align-items: center;
     padding: 40rpx 32rpx;
-    background: #fff;
+    // background: #fff;
     // border-radius: 16rpx;
-    width: 100%;
+		// width: 100%;
 
     image {
       width: 176rpx;

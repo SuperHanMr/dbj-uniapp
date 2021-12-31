@@ -16,15 +16,16 @@
       <view class="tips-3">{{timeMsg.serviceTime}}</view>
     </view>
 
-    <view class="tips" :style="{marginBottom:containerBottom * 2 + 48 + 88 + 'rpx'}">
+    <view class="tips">
       <view class="tips-t">验房前准备</view>
       <view class="tips-c">
         {{timeMsg.note || "无"}}
       </view>
     </view>
-    <view class="btn-wrap" :style="{paddingBottom:systemBottom,height:systemHeight}">
+	<view :style="{height: containerBottom * 2 + 48 + 88 + 'rpx'}"></view>
+	<bottom-btn style="width: 100%" :showDefaultBtn="false">
       <view class="btn" @click="submitConfirmServeTime">我知道了</view>
-    </view>
+	</bottom-btn>
   </view>
 </template>
 
@@ -210,26 +211,17 @@
     line-height: 40rpx;
     letter-spacing: 1rpx;
   }
-
-  .btn-wrap {
-    position: fixed;
-    bottom: 0;
-    left: 0;
-    width: 100%;
-    padding: 24rpx 32rpx;
-    background-color: #fff;
-    box-sizing: border-box;
-
-    .btn {
-      height: 88rpx;
-      background: linear-gradient(135deg, #00c2b2, #00c2bf);
-      border-radius: 12rpx;
-      font-size: 32rpx;
-      font-family: PingFangSC, PingFangSC-Medium;
-      font-weight: 700;
-      text-align: center;
-      color: #ffffff;
-      line-height: 88rpx;
-    }
+  
+  .btn {
+    // margin-top: 20rpx;
+    height: 88rpx;
+    background: linear-gradient(135deg,#00c2b2, #00c2bf);
+    border-radius: 12rpx;
+    width: 686rpx;
+    line-height: 88rpx;
+    text-align: center;
+    color: #ffffff;
+    font-size: 32rpx;
   }
+
 </style>

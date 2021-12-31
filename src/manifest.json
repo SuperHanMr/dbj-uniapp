@@ -83,5 +83,14 @@
     },
     "mp-qq" : {
         "usingComponents" : true
+    },
+    "h5" : {
+        "sdkConfigs" : {
+            "maps" : {
+              "qqmap":{
+                "key":"ZNLBZ-3AOKD-KPN4E-HPYFB-GCU4H-BUFNL"
+              }
+            }
+        }
     }
 }

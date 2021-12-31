@@ -15,7 +15,16 @@
     onLoad(e){
       let id = e.id || getApp().globalData.decorateMsg.reportId
       let cost = e.isCost||1
-      
+      // #ifdef H5
+      window.addEventListener("message", (e) => {
+      	let res = JSON.parse(e.data || {});
+      	if (res.type === 'MP-setNavigationBarTitle') {
+      		uni.setNavigationBarTitle({
+      			title: res.data
+      		})
+      	}
+      })
+      // #endif
       this.url = process.env.VUE_APP_BASE_H5+this.url +`&projectId=${e.projectId}`+ `&secondClass=${e.secondClass}` +'&index='+(e.index)+'&isClient='+e.isClient+'&estateId='+e.estateId +'&isActuarial='+(e.isActuarial) +'&isTourists='+(e.isTourists)+'&token='+getApp().globalData.token
       console.log(this.url)
     },

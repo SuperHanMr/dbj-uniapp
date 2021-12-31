@@ -17,15 +17,16 @@
       let cost = e.isCost||1
       let isFriends = getApp().globalData.currentProject.relegationType===2?1:0
       let estateId = getApp().globalData.currentProject.estateId
-      // if(e.isCost===0){
-      //   uni.setNavigationBarTitle({
-      //     title:'当前花销'
-      //   })
-      // }else if(e.id){
-      //   uni.setNavigationBarTitle({
-      //     title:'精算单'
-      //   })
-      // }
+      // #ifdef H5
+      window.addEventListener("message", (e) => {
+      	let res = JSON.parse(e.data);
+      	if (res.type === 'MP-setNavigationBarTitle') {
+      		uni.setNavigationBarTitle({
+      			title: res.data
+      		})
+      	}
+      })
+			// #endif
       this.url = process.env.VUE_APP_BASE_H5+this.url + id +'&projectId='+(e.id?e.projectId:getApp().globalData.decorateMsg.projectId)+'&isClient=1'+'&estateId='+estateId+'&isFriends='+isFriends + '&isActuarial=' + cost +'&token='+getApp().globalData.token
       console.log(this.url)
     },

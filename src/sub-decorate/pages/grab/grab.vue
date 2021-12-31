@@ -118,7 +118,9 @@
           fansCount:'0',
           recommendCount:'0',
           collectCount:'0',
-          totalNum:'0'
+          totalNum:'0',
+          intro:'',
+          designTags:[]
         },
         scrollTop:0,
         currentItem:'',
