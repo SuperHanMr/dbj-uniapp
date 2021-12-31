@@ -8,7 +8,7 @@ import { getMsgNumByHouse } from "api/decorate.js";
 export default {
   globalData: {
     userInfo: {},
-    token: 'Pc0jlCMLaageAbuvl97z3PmZkuU8UOQrHjTV3svtxH%2BTEO%2B7U%2FWrRFtAnA3z1hDOnoxxbbehR56WtOKAjcCb8ETYhwgWaADxzoUIrVU7uqB3GfFUw6bm6RoRrGRY4lGf5b8c5d331b56d3be92816e1d231b30c7',
+    token: 'Pc0jlCMLaageAbuvl97z3PmZkuU8UOQrHjTV3svtxH%2BTEO%2B7U%2FWrRFtAnA3z1hDOt68wZvwEsmt5vgEU1TlHgpwILYKU5t3ixW8yb%2Fr75KnUBOtl%2FMMqhhoRrGRY4lGf66d4bbaa49e8a86f511ee7d697dfe71b',
     city: "",
     houses: [],
     tim: null,
