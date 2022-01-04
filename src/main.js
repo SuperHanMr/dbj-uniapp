@@ -23,4 +23,22 @@ const app = new Vue({
 	store,
 	...App
 })
+Vue.mixin({
+  onLoad(e){
+    if(typeof e === "object"&&e.scene){
+      let scene = decodeURIComponent(e.scene) || "";
+      let obj = {};
+      let arr = scene.split("&");
+      arr.forEach(str => {
+        let a = str.split("=");
+        obj[a[0]] = a[1];
+      });
+      Object.keys(obj).forEach((key)=>{
+        if(!key in e){
+          e[key]=obj[key]
+        }
+      })
+    }
+  }
+})
 app.$mount()
