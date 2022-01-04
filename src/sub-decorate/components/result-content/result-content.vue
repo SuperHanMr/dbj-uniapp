@@ -8,9 +8,15 @@
           <text class="time">{{checkData.submitReportTime}}</text>
         </view>
       </view>
-      <view class="charts-box" id="echarts">
-        
-      </view>
+      <!-- #ifdef MP-WEIXIN -->
+        <view class="charts-box">
+          <uniEcCanvas class="uni-ec-canvas" id="uni-ec-canvas" ref="canvas" canvas-id="uni-ec-canvas" :ec="ec">
+          </uniEcCanvas>
+        </view>
+      <!-- #endif -->
+      <!-- #ifdef H5 -->
+      <view class="charts-box" id="echarts"></view>
+      <!-- #endif -->
       <text class="report-text" :class="{'report-text-hidden':isHidden}">{{checkData.summaryDescription}}</text>
       <view class="openHidden" v-if="showBtn" @click="clickHidden">
         {{hddenText}}
@@ -39,11 +45,13 @@
   </view>
 </template>
 <script>
+  // #ifdef MP-WEIXIN 
+  import uniEcCanvas from '../../components/uni-ec-canvas/uni-ec-canvas.vue'
+  // #endif
+  import * as echarts from '../../components/uni-ec-canvas/echarts.min'
   import deliverCard from '../delivery-card/delivery-card.vue'
   import imagePreview from '../../../components/image-preview/image-preview.vue'
-  import * as echarts from "./echarts.min";
-
-
+  // import * as echarts from "./echarts.min";
   import {
     getCheckResultDetail,
     confirmCheckResult
@@ -54,6 +62,9 @@
   
   export default {
     components: {
+      // #ifdef MP-WEIXIN 
+      uniEcCanvas,
+      // #endif
       deliverCard,
       imagePreview
     },
@@ -235,11 +246,16 @@
           this.isLoading = true
           this.getMsgHeight()
           setTimeout(()=>{
+            // #ifndef MP-WEIXIN 
+            this.$refs.canvas.init(this.initChart)
+            // #endif
+            // #ifdef H5
             myChart = echarts.init(document.getElementById('echarts'))
-            // this.$refs.canvas.initByOldWay(this.initChart)
-            console.log(2222)
-            this.drawImage()
             myChart.setOption(this.option)
+            // #endif
+            // this.$refs.canvas.initByOldWay(this.initChart)
+            // console.log(2222)
+            this.drawImage()
             this.getTop()
           },1000)
           
@@ -348,13 +364,10 @@
           height: height,
           devicePixelRatio: canvasDpr
         })
-        console.log(3333)
-        console.log(chart)
         canvas.setChart(chart)
         chart.setOption(this.option)
         return chart
       },
-      
     }
   }
 </script>
@@ -465,7 +478,7 @@
       }
     }
   }
-
+  
   .charts-box {
     height: 350rpx;
     width: 100%;

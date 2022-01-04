@@ -1,7 +1,7 @@
 import Vue from 'vue'
 import App from './App'
 import store from './store'
-import {VueJsonp} from 'vue-jsonp'
+
 // #ifdef MP-WEIXIN
 import gdp from './js_sdk/gio-minp.js'
 
@@ -18,6 +18,7 @@ gdp("init",
 // #endif
 
 // #ifdef H5
+import {VueJsonp} from 'vue-jsonp'
 Vue.use(VueJsonp)
 // H5中模拟获取胶囊按钮的位置
 uni.getMenuButtonBoundingClientRect = function() {

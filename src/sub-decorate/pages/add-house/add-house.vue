@@ -283,7 +283,30 @@
 					success: function(res) {
 						if (res.address) {
 							console.log(res)
+              // #ifdef MP-WEIXIN
+                that.hasPoint = true;
+                that.addData.housingEstate = res.name;
+                that.addData.latitude = res.latitude;
+                that.addData.longitude = res.longitude;
+                uni.request({
+                  //将经纬度转换成adcode，然后用adcode去获取省市区id ak需要更换为公司的ak
+                  url: "https://api.map.baidu.com/reverse_geocoding/v3/?ak=lrRwp5WQK6fyjnyHGbyHBgFIXXczCIWN&output=json&coordtype=gcj02ll&location=" +
+                    res.latitude +
+                    "," +
+                    res.longitude,
+                  success: (res) => {
+                    console.log(res)
+                    let address = res.data.result.addressComponent
+                    let adcode = address.adcode;
+                    
+                    that.addData.area = address.province === address.city ? address.province + '-' + address.district : address.province + '-' + address.city + '-' + address.district;
+                    that.getAreaId(adcode);
+                  },
+                });
+              // #endif
+              // #ifdef H5
               that.addressChange(res)
+              // #endif
 						}
 					},
 				});
