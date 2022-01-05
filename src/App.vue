@@ -45,9 +45,16 @@
       goHomeUrl: false,
       MarketStoreSwitch: false,
       ip: "",
+      isSaler:false
     },
 
     onLaunch: function(options) {
+      
+        let isSaler = uni.getStorageSync("isSaler");
+        if(isSaler){
+          this.globalData.isSaler = true;
+        }
+        
       if (options && options.query && options.query.scene) {
         let shareId = '';
         let scene = decodeURIComponent(options.query.scene) || "";

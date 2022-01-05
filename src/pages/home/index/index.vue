@@ -241,6 +241,7 @@
 		onLoad(e) {
 			console.log("home page params:", e.scene, e);
 			let shareId = '';
+      let isSaler=false
 			if (e && e.scene) {
 				let scene = decodeURIComponent(e.scene) || "";
 				let obj = {};
@@ -253,6 +254,20 @@
 					shareId = obj.shareId;
 				}
 			}
+      if (e && e.isSaler) {
+      	isSaler = true;
+				getApp().globalData.isSaler = true;
+        uni.setStorage({
+        	key: 'isSaler',
+        	data: '1',
+        	success: function() {
+        		console.log("isSaler存储成功");
+        	},
+        	fail: function() {
+        		console.error("isSaler存储失败")
+        	}
+        });
+      }
 			if (e && e.shareId && !shareId) {
 				shareId = e.shareId;
 			}

@@ -49,6 +49,9 @@
       Object.keys(this.pageOpts).forEach(key => {
         params.push(`${key}=${this.pageOpts[key]}`)
       });
+      if(getApp().globalData.isSaler){
+        params.push(`shareId=${getApp().globalData.shareId}`)
+      }
       let path = `/sub-classify/pages/goods-detail/goods-detail`;
       if (params.length) {
         path += '?' + params.join('&')
