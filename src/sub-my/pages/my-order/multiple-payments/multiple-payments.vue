@@ -164,7 +164,7 @@ export default {
       let openId = getApp().globalData.openId;
       let params = {
         orderId: this.orderId,
-        payType: 1, //支付类型  1微信支付"
+        payType: 1, //支付类型  1在线支付"
         orderSplitPayId: id,
         openid: openId, //微信openid 小程序支付用 app支付不传或传空"
       };
@@ -210,11 +210,11 @@ export default {
     },
     toCancelPage() {
       console.log("this.type===", this.type);
-			console.log("this.orderId==",this.orderId)
+      console.log("this.orderId==", this.orderId);
       if (this.type == "detail") {
         uni.redirectTo({
           // url: `../order-wait-pay/order-wait-pay?orderNo=${this.orderId}`,
-					url:`../order-failed/order-failed?type=close&id=${this.orderId}&from=multiple`
+          url: `../order-failed/order-failed?type=close&id=${this.orderId}&from=multiple`,
         });
       } else {
         uni.redirectTo({

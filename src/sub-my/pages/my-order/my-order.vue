@@ -565,7 +565,7 @@ export default {
 
     //去店铺首页
     gotoShop(item) {
-      if ((item.orderName || item.isReplenish) && item.orderStatus == 0) return;//多店铺购买 或者变更单 
+      if ((item.orderName || item.isReplenish) && item.orderStatus == 0) return; //多店铺购买 或者变更单
       if (item.type == 5) return; //  储值卡
       uni.navigateTo({
         url: `../../../sub-classify/pages/shops/shops?storeId=${item.storeId}&areaId=${this.areaId}`,
@@ -636,7 +636,7 @@ export default {
         console.log("openId=", this.openId);
         orderPay({
           orderId: Number(item.id),
-          payType: 1, //支付类型  1微信支付",
+          payType: 1, //支付类型  1在线支付",
           openid: openId,
         }).then((e) => {
           const payInfo = e.wechatPayJsapi;

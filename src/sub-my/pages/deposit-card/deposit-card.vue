@@ -46,7 +46,7 @@
 										<view>¥</view>
 										<view class="number">{{amount.rechargeAmount/100}}</view>
 									</view>
-									<view class="give">送总价值 
+									<view class="give">送总价值
 										<view class="sum price-font">1000</view>元券
 									</view>
 								</view>
@@ -184,7 +184,7 @@
         const openId = getApp().globalData.openId;
         createCardOrder({
           activityDetailId: this.checkedId,
-          payType: 1, //支付类型  1微信支付
+          payType: 1, //支付类型  1在线支付
           openid: openId,
           sourceId: 100, //订单来源渠道 100小程序
         }).then(e => {
