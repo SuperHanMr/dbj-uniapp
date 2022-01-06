@@ -326,9 +326,17 @@
       //状态栏高度
       this.tophight = systemInfo.statusBarHeight + "px";
       // 获取胶囊按钮的位置
-      // const menuButtonInfo = uni.getMenuButtonBoundingClientRect();
+      const menuButtonInfo = uni.getMenuButtonBoundingClientRect();
       // console.log("**********", this.backHeight);
       // 导航栏高度 = 状态栏到胶囊的间距（ 胶囊距上距离 - 状态栏高度 ）*2  +  胶囊高度
+			// #ifdef H5
+			this.navBarHeight = '88rpx'
+			// #endif
+			this.navBarHeight =
+				menuButtonInfo.top +
+				(menuButtonInfo.top - systemInfo.statusBarHeight) +
+				menuButtonInfo.height +
+				"px";
     },
     onShow() {
       setTimeout(() => {
