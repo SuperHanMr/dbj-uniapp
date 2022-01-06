@@ -163,7 +163,8 @@
           </image><text>储值卡支付</text>
         </view>
         <view v-else>
-          <view class="wechat_icon"></view><text>在线支付</text>
+          <!-- <view class="wechat_icon"></view> -->
+          <text>在线支付</text>
         </view>
       </view>
       <view class='remarks'>
