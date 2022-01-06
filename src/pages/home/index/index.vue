@@ -49,7 +49,17 @@
       </view>
     </view>
     <!-- 金刚区 -->
-    <view class="zone-view">
+		<view class="zone-view">
+			<view class="item-box">
+				<view :class="['item', {'item-more': zoneList.length > 8}]" v-for="(item,index) in zoneList" :key="item.id" @click="onZoneClick(item)">
+					<image class="icon" :src="item.icon"></image>
+					<view class="name">
+					  {{item.name}}
+					</view>
+				</view>
+			</view>
+		</view>
+    <!--<view class="zone-view">
       <view class="function-zone function-zone-top">
         <view class="item" v-for="(item,index) in zoneList1" :key="item.id" @click="onZoneClick(item)">
           <image class="icon" :src="item.icon"></image>
@@ -61,7 +71,6 @@
           </image>
         </view>
       </view>
-      <!-- 金刚区 -->
       <view v-if="zoneList2.length" class="function-zone function-zone-center">
         <view class="item" v-for="(item,index) in zoneList2" :key="item.id" @click="onZoneClick(item)">
           <image class="icon" :src="item.icon"></image>
@@ -73,7 +82,6 @@
           </image>
         </view>
       </view>
-      <!-- 金刚区 -->
       <view class="function-zone function-zone-bottom">
         <view class="item" v-for="(item,index) in zoneList3" :key="item.id" @click="onZoneClick(item)">
           <image class="icon" :src="item.icon"></image>
@@ -85,7 +93,7 @@
           </image>
         </view>
       </view>
-    </view>
+    </view>-->
     <!-- 快捷栏目 -->
     <view style="padding: 0 24rpx;">
       <image v-for="(item,index) in status1List" :key="item.id" @click="onZoneClick(item)" :src="item.icon"
@@ -100,15 +108,15 @@
       </view>
       <image @click="onZoneClick(status2List[1])" class="item" :src="status2List[1].icon"></image>
     </view>
-
-    <!-- 直播 -->
-    <!-- 	<view class="flex-row-common" style="margin-top: 44rpx;">
+		<!-- #ifdef MP-WEIXIN -->
+		<!-- 直播 -->
+			<view class="flex-row-common" style="margin-top: 44rpx;">
 			<view class="title">
 				免费服务
 			</view>
 			<view class="flex1">
 			</view>
-
+		
 			<image @click="toLiveList"
 				src="https://ali-image.dabanjia.com/static/mp/dabanjia/images/home/ic_gongdizhibo_more.png"
 				class="sub-title-more">
@@ -121,7 +129,7 @@
 				{{item}}
 			</view>
 		</view>
-
+		
 		<view class="player-scroll">
 			<view style="width: 8rpx;height: 1rpx;flex-shrink: 0;">
 			</view>
@@ -134,7 +142,7 @@
 					<image class="top-content-img"
 						:src="item.mediaType==1?'https://ali-image.dabanjia.com/static/mp/dabanjia/images/home/living.gif':'https://ali-image.dabanjia.com/static/mp/dabanjia/images/home/live-repaly.png'">
 						<view v-if="item.mediaType==1" class="text">
-
+		
 							{{item.roomLiveMediaVO.onLineCount||0}}人正在观看
 						</view>
 						<view v-else class="text">
@@ -146,9 +154,11 @@
 				</view>
 			</view>
 			<view style="width: 24rpx;height: 1rpx;flex-shrink: 0;">
-
+		
 			</view>
-		</view> -->
+		</view>
+		<!-- #endif -->
+    
     <!-- 推荐 -->
     <view class="flex-row-common" style="margin-top: 50rpx;">
       <view class="title">
@@ -368,6 +378,7 @@
     computed: {
       zoneList1() {
         let list = [];
+				console.log(this.zoneList, '>>>>>>>>>>>>>>>>')
         for (let i = 0; i < this.zoneList.length; i++) {
           if (i < 4) {
             list.push(this.zoneList[i]);
@@ -965,7 +976,38 @@
     justify-content: center;
     align-items: center;
     width: 100%;
-    padding: 24rpx 0;
+    padding-top: 48rpx;
+		.item-box{
+			display: flex;
+			width: 100%;
+			justify-content: space-between;
+			align-items: center;
+			flex-wrap: wrap;
+			.item{
+				width: calc(100% / 4);
+				display: flex;
+				flex-direction: column;
+				justify-content: center;
+				align-items: center;
+				margin-bottom: 36rpx;
+				.name {
+				  font-size: 24rpx;
+				  font-weight: 400;
+				  color: #333333;
+				  line-height: 34rpx;
+				  margin-top: 12rpx;
+				}
+				
+				.icon {
+				  display: block;
+				  width: 76rpx;
+				  height: 76rpx;
+				}
+			}
+			.item-more{
+				width: calc(100% / 6);
+			}
+		}
   }
 
   .function-zone-top {
