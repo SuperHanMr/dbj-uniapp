@@ -239,51 +239,51 @@
 			};
 		},
 		onLoad(e) {
-			console.log("home page params:", e.scene, e);
-			let shareId = '';
-      let isSaler=false
-			if (e && e.scene) {
-				let scene = decodeURIComponent(e.scene) || "";
-				let obj = {};
-				let arr = scene.split("&");
-				arr.forEach(str => {
-					let a = str.split("=");
-					obj[a[0]] = a[1];
-				});
-				if (obj.shareId) {
-					shareId = obj.shareId;
-				}
-			}
-      if (e && e.isSaler) {
-      	isSaler = true;
-				getApp().globalData.isSaler = true;
-        uni.setStorage({
-        	key: 'isSaler',
-        	data: '1',
-        	success: function() {
-        		console.log("isSaler存储成功");
-        	},
-        	fail: function() {
-        		console.error("isSaler存储失败")
-        	}
-        });
-      }
-			if (e && e.shareId && !shareId) {
-				shareId = e.shareId;
-			}
-			if (shareId) {
-				getApp().globalData.shareId = shareId;
-				uni.setStorage({
-					key: 'shareId',
-					data: shareId,
-					success: function() {
-						console.log("shareId存储成功");
-					},
-					fail: function() {
-						console.error("shareId存储失败")
-					}
-				});
-			}
+			// console.log("home page params:", e.scene, e);
+			// let shareId = '';
+   //    let isSaler=false
+			// if (e && e.scene) {
+			// 	let scene = decodeURIComponent(e.scene) || "";
+			// 	let obj = {};
+			// 	let arr = scene.split("&");
+			// 	arr.forEach(str => {
+			// 		let a = str.split("=");
+			// 		obj[a[0]] = a[1];
+			// 	});
+			// 	if (obj.shareId) {
+			// 		shareId = obj.shareId;
+			// 	}
+			// }
+   //    if (e && e.isSaler) {
+   //    	isSaler = true;
+			// 	getApp().globalData.isSaler = true;
+   //      uni.setStorage({
+   //      	key: 'isSaler',
+   //      	data: '1',
+   //      	success: function() {
+   //      		console.log("isSaler存储成功");
+   //      	},
+   //      	fail: function() {
+   //      		console.error("isSaler存储失败")
+   //      	}
+   //      });
+   //    }
+			// if (e && e.shareId && !shareId) {
+			// 	shareId = e.shareId;
+			// }
+			// if (shareId) {
+			// 	getApp().globalData.shareId = shareId;
+			// 	uni.setStorage({
+			// 		key: 'shareId',
+			// 		data: shareId,
+			// 		success: function() {
+			// 			console.log("shareId存储成功");
+			// 		},
+			// 		fail: function() {
+			// 			console.error("shareId存储失败")
+			// 		}
+			// 	});
+			// }
 			let defaultHouse = {
 				name: "北京市朝阳区",
 				provinceId: 1,

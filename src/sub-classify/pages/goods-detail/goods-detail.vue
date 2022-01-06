@@ -42,7 +42,6 @@
         this.goodId = uni.getStorageSync('goodId')
       }
       this.houseId = e.houseId
-      console.log(this.houseId, "this.houseId")
     },
     onShareAppMessage(res) {
       let params = [];
@@ -56,6 +55,7 @@
       if (params.length) {
         path += '?' + params.join('&')
       }
+      console.log(path, "path88888888")
       return {
         path: path
       }
