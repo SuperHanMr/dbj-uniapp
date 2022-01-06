@@ -132,7 +132,7 @@
 
 <style lang="scss" scoped>
   .goods-view {
-    padding: 0 24rpx;
+    padding: 0 32rpx;
     display: flex;
     flex-direction: row;
     justify-content: space-between;

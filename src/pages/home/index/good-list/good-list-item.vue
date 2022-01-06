@@ -95,9 +95,9 @@
 	.item {
 		margin-top: 16rpx;
 		flex-shrink: 0;
-		width: 343rpx;
-		border-radius: 18rpx;
-		border: 0.3px solid #e6eaed;
+		width: 328rpx;
+		// border-radius: 18rpx;
+		// border: 0.3px solid #e6eaed;
 		position: relative;
 		overflow: hidden;
 
@@ -105,6 +105,7 @@
 			width: 100%;
 			height: 343rpx;
 			display: block;
+			border-radius: 16rpx;
 		}
 
 		.allowance-view {
@@ -135,14 +136,14 @@
 			.amount {
 				font-size: 40rpx;
 				font-weight: 400;
-				color: #2b2f33;
+				color: #333333;
 				line-height: 42rpx;
 			}
 
 			.ex {
 				font-size: 34rpx;
 				font-weight: 400;
-				color: #2b2f33;
+				color: #333333;
 				line-height: 26rpx;
 			}
 
@@ -156,7 +157,7 @@
 		}
 
 		.info {
-			padding: 0 24rpx;
+			// padding: 0 24rpx;
 			display: flex;
 			flex-direction: column;
 
@@ -164,7 +165,7 @@
 				margin-top: 20rpx;
 				font-size: 28rpx;
 				color: #2b2f33;
-				line-height: 40rpx;
+				line-height: 44rpx;
 				overflow: hidden;
 				text-overflow: ellipsis;
 				display: -webkit-box;
@@ -174,16 +175,17 @@
 			}
 
 			.tip {
-				width: 60rpx;
-				height: 30rpx;
+				padding: 3rpx 8rpx 1rpx;
 				margin-right: 8rpx;
 				line-height: 30rpx;
 				border-radius: 6rpx;
+				letter-spacing: 0.2px;
 				color: #35c4c4;
-				font-size: 20rpx;
+				font-size: 21rpx;
 				text-align: center;
 				display: inline-block;
-				border: 1rpx solid #35c4c4;
+				background: linear-gradient(90deg, #BDD9E5 0%, #CDEFCE 94.34%);
+				color: #212121;
 				vertical-align: 13%;
 			}
 		}
