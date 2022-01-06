@@ -1,21 +1,8 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<svg width="32px" height="32px" viewBox="0 0 32 32" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
-    <title>ic/评价</title>
-    <defs>
-        <linearGradient x1="0%" y1="5.63278778%" x2="100%" y2="94.3672122%" id="linearGradient-1">
-            <stop stop-color="#54D1CD" offset="0%"></stop>
-            <stop stop-color="#00BFB5" offset="100%"></stop>
-        </linearGradient>
-    </defs>
-    <g id="V2.0" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
-        <g id="我的" transform="translate(-242.000000, -240.000000)">
-            <g id="编组-13" transform="translate(242.000000, 240.000000)">
-                <rect id="矩形备份" fill="#DCDCDC" opacity="0" x="0" y="0" width="32" height="32"></rect>
-                <path d="M7,25 C5.34314575,25 4,23.6568542 4,22 L4,9 C4,7.34314575 5.34314575,6 7,6 L24,6 C25.6568542,6 27,7.34314575 27,9 L27,22 C27,23.6568542 25.6568542,25 24,25 L20,25 L16.3246015,27.4187682 C15.8241875,27.748089 15.1758125,27.748089 14.6753985,27.4187682 L11,25 L7,25 Z" id="形状结合" fill="url(#linearGradient-1)"></path>
-                <rect id="矩形备份-24" fill="#FFFFFF" x="9.5172788" y="14.4429061" width="2" height="2" rx="1"></rect>
-                <rect id="矩形备份-25" fill="#FFFFFF" x="14.5172788" y="14.4429061" width="2" height="2" rx="1"></rect>
-                <rect id="矩形备份-26" fill="#FFFFFF" x="19.5172788" y="14.4429061" width="2" height="2" rx="1"></rect>
-            </g>
-        </g>
-    </g>
+<svg width="32" height="32" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+<mask id="path-1-inside-1_625_39256" fill="white">
+<path fill-rule="evenodd" clip-rule="evenodd" d="M7 6C5.34315 6 4 7.34315 4 9V22C4 23.6569 5.34315 25 7 25H11L14.6754 27.4188C15.1758 27.7481 15.8242 27.7481 16.3246 27.4188L20 25H24C25.6569 25 27 23.6569 27 22V9C27 7.34315 25.6569 6 24 6H7Z"/>
+</mask>
+<path d="M11 25L11.8246 23.747L11.4493 23.5H11V25ZM14.6754 27.4188L15.5 26.1658H15.5L14.6754 27.4188ZM16.3246 27.4188L15.5 26.1658H15.5L16.3246 27.4188ZM20 25V23.5H19.5507L19.1754 23.747L20 25ZM5.5 9C5.5 8.17157 6.17157 7.5 7 7.5V4.5C4.51472 4.5 2.5 6.51472 2.5 9H5.5ZM5.5 22V9H2.5V22H5.5ZM7 23.5C6.17157 23.5 5.5 22.8284 5.5 22H2.5C2.5 24.4853 4.51472 26.5 7 26.5V23.5ZM11 23.5H7V26.5H11V23.5ZM15.5 26.1658L11.8246 23.747L10.1754 26.253L13.8508 28.6718L15.5 26.1658ZM15.5 26.1658V26.1658L13.8508 28.6718C14.8516 29.3304 16.1484 29.3304 17.1492 28.6718L15.5 26.1658ZM19.1754 23.747L15.5 26.1658L17.1492 28.6718L20.8246 26.253L19.1754 23.747ZM24 23.5H20V26.5H24V23.5ZM25.5 22C25.5 22.8284 24.8284 23.5 24 23.5V26.5C26.4853 26.5 28.5 24.4853 28.5 22H25.5ZM25.5 9V22H28.5V9H25.5ZM24 7.5C24.8284 7.5 25.5 8.17157 25.5 9H28.5C28.5 6.51472 26.4853 4.5 24 4.5V7.5ZM7 7.5H24V4.5H7V7.5Z" fill="#404748" mask="url(#path-1-inside-1_625_39256)"/>
+<rect x="9.51758" y="14.4429" width="3" height="2" rx="0.7" fill="#FA462A"/>
+<rect x="14.5176" y="14.4429" width="8" height="2" rx="0.7" fill="#FA462A"/>
 </svg>

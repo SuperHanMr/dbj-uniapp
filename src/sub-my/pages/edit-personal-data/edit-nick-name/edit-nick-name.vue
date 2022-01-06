@@ -133,7 +133,7 @@
 			font-size: 28rpx;
 			color:#111111;
 			font-weight: 500;
-			caret-color: #35C4C4;
+			caret-color: #FA4D32;
 		}
 		.icon{
 			position: absolute;

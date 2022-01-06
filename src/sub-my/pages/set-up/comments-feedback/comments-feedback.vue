@@ -149,6 +149,7 @@
 				height: 2rpx;
 				background: #f2f2f2;
 				border-radius: 2rpx;
+				margin: 0 32rpx;
 			}
 			.feedback-imageContainer{
 				.header{
