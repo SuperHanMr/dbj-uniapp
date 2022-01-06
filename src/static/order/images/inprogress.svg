@@ -1,21 +1,5 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<svg width="32px" height="32px" viewBox="0 0 32 32" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
-    <title>ic/进行中</title>
-    <defs>
-        <linearGradient x1="0%" y1="12.7066116%" x2="100%" y2="87.2933884%" id="linearGradient-1">
-            <stop stop-color="#54D1CD" offset="0%"></stop>
-            <stop stop-color="#00BFB5" offset="100%"></stop>
-        </linearGradient>
-    </defs>
-    <g id="V2.0" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
-        <g id="我的" transform="translate(-102.000000, -240.000000)">
-            <g id="-mockplus-" transform="translate(102.000000, 240.000000)">
-                <g id="编组-12" transform="translate(5.000000, 5.000000)">
-                    <rect id="矩形" fill="#49CFCA" x="3.5" y="0" width="15" height="1.5" rx="0.4"></rect>
-                    <rect id="矩形" fill="url(#linearGradient-1)" x="0" y="3" width="22" height="19" rx="3"></rect>
-                    <path d="M10.8,9 C11.0761424,9 11.3,9.22385763 11.3,9.5 L11.3,13.099 L13.8342327,15.6329825 C14.0294948,15.8282447 14.0294948,16.1448272 13.8342327,16.3400893 L13.6221006,16.5522213 C13.4268385,16.7474835 13.110256,16.7474835 12.9149938,16.5522213 L10.1926327,13.8298602 C10.0910964,13.7283239 10.0301746,13.601553 10.0098674,13.4697351 L10.0070477,13.4460522 C10.0024051,13.4147083 10,13.382635 10,13.35 L10,9.5 C10,9.22385763 10.2238576,9 10.5,9 L10.8,9 Z" id="形状结合" fill="#FFFFFF"></path>
-                </g>
-            </g>
-        </g>
-    </g>
+<svg width="32" height="32" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+<rect x="8.5" y="5" width="15" height="1.5" rx="0.4" fill="#404748"/>
+<rect x="5.75" y="8.75" width="20.5" height="17.5" rx="2.25" stroke="#404748" stroke-width="1.5"/>
+<path fill-rule="evenodd" clip-rule="evenodd" d="M13.9675 14.0033C13.9441 14.0033 13.9251 14.0223 13.9251 14.0458V18.9468C13.9172 18.9974 13.9131 19.0493 13.9131 19.1021C13.9131 19.405 14.0478 19.6765 14.2606 19.8599C14.4372 20.0171 14.67 20.1126 14.9251 20.1126C14.9745 20.1126 15.023 20.109 15.0705 20.1021H21.1117C21.1396 20.1021 21.1621 20.0795 21.1621 20.0517V18.1525C21.1621 18.1247 21.1396 18.1021 21.1117 18.1021H15.9251V14.0458C15.9251 14.0223 15.9061 14.0033 15.8826 14.0033H13.9675Z" fill="#FA462A"/>
 </svg>

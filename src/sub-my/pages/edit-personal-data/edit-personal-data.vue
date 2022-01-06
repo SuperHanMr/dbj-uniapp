@@ -43,13 +43,13 @@
 			</view>
 			<view class="popup-body">
 				<view class="left">
-					<image v-if="gender == 1"  src="../../static/ic_boy_checked@2x.png" mode=""></image>
-					<image v-else src="../../static/ic_boy_unCheck@2x.png" mode="" @click="checkGender(1)"></image>
+					<image v-if="gender == 1"  src="../../static/ic_boy_checked.svg" mode=""></image>
+					<image v-else src="../../static/ic_boy_unCheck.svg" mode="" @click="checkGender(1)"></image>
 					<text>男</text>
 				</view>
 				<view class="right">
-					<image v-if="gender == 2" src="../../static/ic_girl_checked@2x.png" mode="" ></image>
-					<image v-else src="../../static/ic_girl_unCheck@2x.png" mode="" @click="checkGender(2)"></image>
+					<image v-if="gender == 2" src="../../static/ic_girl_checked.svg" mode="" ></image>
+					<image v-else src="../../static/ic_girl_unCheck.svg" mode="" @click="checkGender(2)"></image>
 					<text>女</text>
 				</view>
 			</view>
@@ -269,7 +269,7 @@ export default {
 				line-height: 32rpx;
 				font-size: 26rpx;
 				font-weight: 400;
-				color: #808080;
+				color: #666666;
 			}
 			.right{
 				display: flex;
@@ -279,8 +279,7 @@ export default {
 					height: 32rpx;
 					line-height: 32rpx;				
 					font-size: 26rpx;
-					font-weight: 550;
-					color: #111111;
+					color: #333333;
 				}
 				image{
 					margin-left: 4rpx;
@@ -346,8 +345,8 @@ export default {
 				height: 88rpx;
 				line-height:88rpx;
 				text-align: center;
-				background: linear-gradient(135deg,#00bfaf, #00bfbc);
-				border-radius: 12rpx;
+				background: linear-gradient(116.19deg, #F83112 16.48%, #FD6421 83.52%);
+				border-radius: 16rpx;
 				color: #FFFFFF;
 				font-weight: 500;
 				font-size: 32rpx;
