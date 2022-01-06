@@ -64,7 +64,7 @@
   }
 
   .waterfall-box {
-    padding: 24rpx 8rpx 24rpx 24rpx;
+    padding: 24rpx 0rpx 24rpx 32rpx;
     box-sizing: border-box;
   }
 

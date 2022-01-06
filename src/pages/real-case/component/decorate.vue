@@ -61,7 +61,7 @@
 
 <style lang="scss" scoped>
   .waterfall-box {
-    padding: 20rpx 0rpx 20rpx 14rpx;
+    padding: 20rpx 0rpx 20rpx 32rpx;
   }
 
   .h-flex-x {

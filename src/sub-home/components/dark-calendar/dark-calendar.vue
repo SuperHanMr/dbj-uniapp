@@ -440,7 +440,7 @@
 			width: 50rpx;
 			height: 50rpx;
 			line-height: 50rpx;
-			border: 2rpx solid #00bfb6;
+			border: 2rpx solid #FA4D32;
 	  }
 		
 	  &.gray {
@@ -452,7 +452,7 @@
 	.sign {
 	  width: 8rpx;
 	  height: 8rpx;
-	  background: #00C2B8;
+	  background: #FA4D32;
 	  border-radius: 50%;
 	  position: absolute;
 	  left: 50%;
@@ -471,7 +471,7 @@
 		background: #9fa5b4;
 		border-radius: 20rpx;
 		&.checked{
-			background: #00c2b8;
+			background: #FA4D32;
 		}
 	}
   .hide {

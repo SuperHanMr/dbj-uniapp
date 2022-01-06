@@ -1628,7 +1628,7 @@ export default {
   width: 100%;
   height: 176rpx;
   background: #ffffff;
-  border-radius: 40rpx;
+  border-radius: 32rpx;
   display: flex;
   justify-content: space-between;
 }
@@ -1652,8 +1652,8 @@ export default {
   line-height: 34rpx;
 }
 .navBar image {
-  width: 72rpx;
-  height: 72rpx;
+  width: 68rpx;
+  height: 68rpx;
   margin: 4rpx;
   display: block;
 }
@@ -1662,7 +1662,7 @@ export default {
   height: 364rpx;
   margin-top: 24rpx;
   background: #ffffff;
-  border-radius: 40rpx;
+  border-radius: 32rpx;
 }
 .process .title {
   width: 128rpx;
@@ -1719,12 +1719,14 @@ export default {
 .connectStartLine {
   width: 22rpx;
   height: 2rpx;
-  background: #01c2c3;
+  background: linear-gradient(133.98deg, #6D6D6D 6.28%, #333333 100.79%);
+  mix-blend-mode: normal;
+  opacity: 0.9;
 }
 .connectEndLine {
   width: 22rpx;
   height: 2rpx;
-  background: #c2c2c2;
+  background: #C2C2C2;
 }
 .steps {
   width: 562rpx;
@@ -1740,16 +1742,17 @@ export default {
   border-radius: 50%;
 }
 .done {
-  background: #01c2c3;
-  border: 2rpx solid #01c2c3;
+  background: linear-gradient(134.53deg, #6D6D6D 5.36%, #333333 100.8%);
 }
 .doing {
   background: #ffffff;
-  border: 2rpx solid #35c4c4;
+  border: 2rpx solid #333333;
 }
 .unpaid {
-  background: #ffffff;
-  border: 2rpx solid #c2c2c2;
+  /* background: #ffffff;
+  border: 2rpx solid #c2c2c2; */
+	background: #FFFFFF;
+	border: 1px solid #C2C2C2;
 }
 .connectLine {
   width: 62rpx;
@@ -1761,10 +1764,10 @@ export default {
   background: #c2c2c2;
 }
 .line-green {
-  background: #01c2c3;
+  background: linear-gradient(133.98deg, #6D6D6D 6.28%, #333333 100.79%);
 }
 .connectLine:last-child.completed {
-  background: #01c2c3;
+  background: linear-gradient(133.98deg, #6D6D6D 6.28%, #333333 100.79%);
 }
 .column {
   height: 24rpx;
@@ -1777,7 +1780,7 @@ export default {
   border-right: 2rpx dotted #c2c2c2;
 }
 .column > view.active {
-  border-right: 2rpx dotted #01c2c3;
+  border-right: 2rpx dotted linear-gradient(134.53deg, #6D6D6D 5.36%, #333333 100.8%);
 }
 .column > view:nth-child(7),
 .column > view:nth-child(8) {
@@ -1850,7 +1853,7 @@ export default {
   height: fit-content;
   margin-top: 24rpx;
   background: #ffffff;
-  border-radius: 40rpx;
+  border-radius: 32rpx;
 }
 .dynamic.mg {
   margin-bottom: 60rpx;
@@ -1861,10 +1864,10 @@ export default {
   background: #f5f6f6;
 }
 .dynamic .bottom .text {
-  width: 222rpx;
   height: 26rpx;
+	text-align: center;
   background: #f5f6f6;
-  margin: 0 264rpx 40rpx 264rpx;
+  margin-bottom: 40rpx;
   padding-top: 60rpx;
   font-size: 26rpx;
   color: #999999;
@@ -2015,12 +2018,12 @@ export default {
 .acitonInfo .header .role {
   width: 82rpx;
   height: 32rpx;
-  background: linear-gradient(45deg, #6d95ef, #84b9fc);
+  background: linear-gradient(135deg, #40BFF5 0%, #53A9FF 100%);
   border-radius: 6rpx;
   font-size: 22rpx;
   text-align: center;
   color: #ffffff;
-  line-height: 32rpx;
+  line-height: 30rpx;
 }
 .acitonInfo .header .date {
   width: 136rpx;
@@ -2105,16 +2108,16 @@ export default {
   height: 88rpx;
   display: flex;
   align-items: center;
-  background: linear-gradient(135deg, #53d5cc, #4fc9c9);
+  background: linear-gradient(117.02deg, #FA3B34 24.56%, #FF6A33 92.21%);
   border-radius: 12rpx;
   margin: 24rpx 32rpx 24rpx 48rpx;
 }
 .sceneContainer .footer .focusOn.bgColor {
-  background: #f5f6f6;
+  background: #F3F3F3;
 }
 .sceneContainer .footer .focusOn.bgColor view {
   margin-left: 163rpx;
-  color: #666666;
+  color: #999999;
 }
 .focusOn .add {
   width: 18rpx;

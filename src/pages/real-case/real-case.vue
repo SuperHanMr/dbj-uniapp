@@ -9,6 +9,7 @@
           <view :class="selectStatus == index ? 'selectStatus' : 'tabbar-switch'" v-for="(item, index) in items"
             :key="index" @tap="changeTabs(index)">
             {{item}}
+						<image src="/static/images/real-case/select_head.png" v-if="selectStatus == index" mode="" class="image-select"></image>
           </view>
         </view>
       </view>
@@ -336,14 +337,15 @@
   }
 
   .selectStatus {
-    padding: 10rpx 112rpx;
-    font-size: 28rpx;
+		flex: 1;
+    padding: 10rpx 0;
+    font-size: 27rpx;
     font-family: PingFangSC, PingFangSC-Medium;
     font-weight: bold;
     text-align: center;
-    color: #333333;
-    background: #ffffff;
+    color: #111111;
     border-radius: 6px;
+		position: relative;
   }
 
   .collectWrapper {
@@ -356,24 +358,34 @@
     position: fixed;
     z-index: 100;
     background-color: #ffffff;
+		width: 100%;
   }
 
   .tabbar-switch-box {
+		width: 100%;
     display: flex;
-    background: #f5f6f6;
     border-radius: 8px;
     margin: 20rpx 32rpx 8rpx 32rpx;
     padding: 4rpx;
   }
+	.tabbar-switch-box image{
+		width: 32rpx;
+		height: 6rpx;
+		position: absolute;
+		bottom: -11rpx;
+		left: calc((50% - 6px));
+	}
 
   .tabbar-switch-box .tabbar-switch {
-    padding: 10rpx 112rpx;
+		flex: 1;
+    padding: 10rpx 0;
     text-align: center;
-    font-size: 28rpx;
+    font-size: 27rpx;
     font-family: PingFangSC, PingFangSC-Regular;
     font-weight: 400;
     text-align: center;
     color: #999999;
+		position: relative;
   }
 
   .collectWrapper .uni-padding-wrap {

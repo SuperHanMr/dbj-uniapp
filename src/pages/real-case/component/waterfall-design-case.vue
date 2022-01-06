@@ -100,26 +100,25 @@
 				console.log("收藏")
 				this.$emit("collection",this.$props.index);
 			}
-		}
+		} 
 	}
 </script>
 
 <style lang="scss" scoped>
 .waterfall-item{
-	margin-right: 16rpx;
+	margin-right: 32rpx;
 	font-size: 28rpx;
 	margin-bottom: 20rpx;
 	background: #ffffff;
-	border: 1px solid #ececec;
 	border-radius: 8px;
 	.img-box{
 		position: relative;
 		image{
 			display: block;
-			width: 100%;
+			width: 328rpx;
 			// 默认设置一个图片的大约值
 			max-height: 600rpx;
-			border-radius: 8px 8px 0px 0px;
+			border-radius: 16rpx;
 		}
 		.comment-like{
 			position: absolute;
@@ -171,10 +170,11 @@
 	
 	.content{
 		.title{
-			margin: 20rpx 16rpx 18rpx 20rpx;
-			font-size: 28rpx;
+			margin: 20rpx 16rpx 18rpx 0;
+			line-height: 44rpx;
+			font-size: 26rpx;
 			font-family: PingFangSC, PingFangSC-Medium;
-			font-weight: bold;
+			// font-weight: bold;
 			text-align: left;
 			color: #333333;
 			letter-spacing: 0px;
@@ -187,7 +187,7 @@
 			-webkit-box-orient: vertical;
 		}
 		.case-info{
-			padding: 0 16rpx 24rpx 16rpx;
+			padding: 0 16rpx 24rpx 0;
 			display: flex;
 			justify-content: space-between;
 			.info-img{
