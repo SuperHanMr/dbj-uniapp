@@ -12,7 +12,7 @@
         <view class="bottom-icon" />
       </view>
     </view>
-    <view class="line" />
+    <!-- <view class="line" /> -->
     <swiper
       class="swiper"
       :class="{empty:orderListLength<=0}"
@@ -301,14 +301,16 @@
             class="swiper-item empty-container"
           >
             <view class="empty-page">
-              <view class="line" />
+              <!-- <view class="line" /> -->
               <view class="content ">
                 <image
-                  src="../../static/empty_page@2x.png"
+                  src="../../static/img_noOrder.svg"
                   mode=""
                 />
-                <text>暂无相关订单~</text>
               </view>
+							<view class="text">
+								您暂时没有相关订单哦～
+							</view>
             </view>
           </view>
 
@@ -997,7 +999,7 @@ export default {
       text-align: center;
       font-size: 24rpx;
       margin-left: 24rpx;
-      background: linear-gradient(99deg, #00ccbe 0%, #00c2bf 100%);
+      background: linear-gradient(116.19deg, #F83112 16.48%, #FD6421 83.52%);
       border-radius: 32rpx;
       color: #ffffff;
       padding: 0;
@@ -1069,9 +1071,9 @@ export default {
     //   padding-bottom: 100rpx;
     // }
     .empty-page {
-      .line {
-        height: 1rpx solid #f2f2f2;
-      }
+      // .line {
+      //   height: 1rpx solid #f2f2f2;
+      // }
 
       .content {
         margin: 388rpx 254rpx 0 256rpx;
@@ -1080,22 +1082,20 @@ export default {
         flex-flow: column nowrap;
         align-items: center;
         color: #999999;
-
         image {
-          width: 240rpx;
-          height: 240rpx;
+          width: 400rpx;
+          height: 400rpx;
           object-fit: cover;
-          margin-bottom: 24rpx;
         }
-
-        text {
+      }
+			.text {
           height: 40rpx;
           line-height: 40rpx;
           font-size: 28rpx;
           font-weight: 400;
           color: #999999;
+					text-align: center;
         }
-      }
     }
   }
 }

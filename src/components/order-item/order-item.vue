@@ -241,7 +241,9 @@
 			image{
 				width: 136rpx;
 				height: 136rpx;
+				box-sizing: border-box;
 				border-radius: 8rpx;
+				border: 0.5px solid #F4F4F4;
 			}
 		}
 		.basic-info{
@@ -270,12 +272,14 @@
 					max-width: 349rpx;
 					.icon{
 						width: 60rpx;
-						height: 30rpx;
-						line-height: 28rpx;
-						margin-right: 8rpx;
+						height: 34rpx;
+						line-height: 34rpx;
+						margin-right: 4rpx;
 						border-radius: 2px;
-						border: 0.5px solid #35c4c4;
-						color: #35c4c4;
+						// border: 0.5px solid #35c4c4;
+						color: #212121;
+						font-weight: 600;
+						background: linear-gradient(90deg, #BDD9E5 0%, #CDEFCE 94.34%);
 						font-size: 20rpx;
 						text-align: center;
 						display: inline-block;
@@ -284,6 +288,7 @@
 					.name{
 						font-size: 26rpx;
 						color: #333333;
+						
 						line-height: 32rpx;
 					}
 				}

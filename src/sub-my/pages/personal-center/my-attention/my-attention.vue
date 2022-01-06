@@ -31,12 +31,9 @@
           @scrolltolower="onLoadMore"
 				>
          <view class="empty-container" v-if="currentList.length < 1">
-						<image src="../../../../static/order/blank_house@2x.png" mode=""></image>
-						<text v-if="tabindex==0">您还没有关注房子</text>
-						<text v-if="tabindex==1">您还没有关注服务者</text>
-						<text v-if="tabindex==2">您还没有关注优先推荐</text>
+						<image src="../../../static/img_attention_empty.svg" mode=""></image>
+						<text>暂无相关内容～</text>
 					</view>
-
 					<view  v-else :style="{paddingBottom:systemBottom}" >
 						<!-- 房屋 -->
 						<view 
@@ -47,7 +44,6 @@
 							@click="goToHouse(item)"
 						>
 							<image  :src="`${item.estateImage}?x-oss-process=image/resize,m_mfit,w_224,h_224`" mode=""/>
-							
 						  <view class="houseInfo">
 						    <view class="header">
 						      {{item.estateAddress || ''}}
@@ -441,16 +437,16 @@ export default {
   }
 
   .empty-container {
-    padding: 180rpx 240rpx 0 240rpx;
+    padding: 350rpx 240rpx 0 240rpx;
     display: flex;
     flex-flow: column nowrap;
     align-items: center;
     justify-content: space-around;
     image {
-      width: 248rpx;
-      height: 248rpx;
+      width: 400rpx;
+      height: 400rpx;
       object-fit: cover;
-      margin-bottom: 22rpx;
+      // margin-bottom: 22rpx;
     }
     text {
       font-size: 26rpx;
@@ -519,8 +515,8 @@ export default {
       .button2,
       .button3,
       .button4 {
-        height: 68rpx;
-        line-height: 40rpx;
+        height: 64rpx;
+        line-height: 62rpx;
         box-sizing: border-box;
         font-size: 28rpx;
         text-align: center;
@@ -532,27 +528,27 @@ export default {
       }
       .button3,
       .button4 {
-        width: 200rpx;
+        width: 188rpx;
       }
       .button1,
       .button3 {
-        background: linear-gradient(135deg, #36d9cd, #28c6c6);
+        background: linear-gradient(116.19deg, #F83112 16.48%, #FD6421 83.52%);
         color: #ffffff;
-				padding: 14rpx 30rpx;
 
       }
       .button2,
       .button4 {
         background: #ffffff;
-        border: 0.5px solid #dbdbdb;
-        padding: 12rpx 28rpx;
-				color: #666666;
+        border: 0.5px solid #CBCCCC;
+				text-align: center;
+				color: #333333;
       }
 
 			.button3{
 				display: flex;
 				flex-flow: row nowrap;
 				align-items: center;
+				padding: 14rpx 22rpx;
 				image{
 					width: 24rpx;
 					height: 26rpx;
