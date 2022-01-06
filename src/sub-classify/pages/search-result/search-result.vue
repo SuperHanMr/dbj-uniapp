@@ -244,6 +244,7 @@
     align-items: center;
     background-color: #F4F4F4;
     padding: 0 10rpx;
+    font-size: 28rpx;
   }
 
   .search-card uni-icons {
