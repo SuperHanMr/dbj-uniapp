@@ -1,12 +1,18 @@
 <template>
-  <message-bubble :message="message" class="image-message">
+  <message-bubble
+    :message="message"
+    :body-style="bodyStyle"
+    no-padding
+    class="image-message"
+    >
     <image class="image-element" :src="url" @click="handlePreview" />
   </message-bubble>
 </template>
 
 <script>
 import MessageBubble from "./message-bubble";
-
+const IMG_MAX_HEIGHT = 140;
+const IMG_MAX_WIDTH = 140;
 export default {
   name: "ImageElement",
   components: {
@@ -32,6 +38,24 @@ export default {
       }
       return url;
     },
+    bodyStyle() {
+      let { width = 0, height = 0 } = this.payloadData;
+      if (width/height > IMG_MAX_WIDTH/IMG_MAX_HEIGHT) {
+        if (width > IMG_MAX_WIDTH) {
+          height = height/width * IMG_MAX_WIDTH;
+          width = IMG_MAX_WIDTH;
+        }
+      } else {
+        if (height > IMG_MAX_HEIGHT) {
+          width = width/height * IMG_MAX_HEIGHT;
+          height = IMG_MAX_HEIGHT;
+        }
+      }
+      return [
+        `width: ${Math.round(width)}px`,
+        `height: ${Math.round(height)}px`
+      ].join(";") + ";";
+    }
   },
   methods: {
     handlePreview() {

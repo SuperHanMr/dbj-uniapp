@@ -97,6 +97,20 @@
       message() {
         let message = this.conversation.lastMessage;
         if (message) {
+          if (message.isRevoked) {
+            let currentUserId = getApp().globalData.userInfo.tid;
+            if (message.fromAccount === currentUserId) {
+              return "你撤回了一条消息";
+            }
+            if (this.conversation.type === TIM.TYPES.CONV_C2C) {
+              return "对方撤回了一条消息";
+            }
+            if (this.conversation.type === TIM.TYPES.CONV_GROUP) {
+              const memberList = this.groupMembersMap[this.toAccount] || [];
+              let member = memberList.find(m => m.userID === message.fromAccount) || {};
+              return `“${member.nick || message.fromAccount}” 撤回了一条消息`;
+            }
+          }
           if (message.type === TIM.TYPES.MSG_TEXT) {
             return message.messageForShow.replace(atUserReg, "@$1 ");
           } else if (message.type === TIM.TYPES.MSG_CUSTOM) {

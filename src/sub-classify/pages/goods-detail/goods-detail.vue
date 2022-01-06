@@ -3,8 +3,8 @@
     <web-view
       :src="baseUrl + '/app-pages/goods-detail/index.html?token=' + searchToken + '#wx-goodsId='+ goodId + '&wx-houseId='
         + houseId + '&wx-defaultHouseId=' + defaultHouseInfo.id  + '&wx-defaultProvinceId=' + defaultHouseInfo.provinceId
-        + '&wx-defaultCityId=' + defaultHouseInfo.cityId + '&wx-defaultAreaId=' + defaultHouseInfo.areaId
-        + '&wx-defaultLocationName=' + defaultHouseInfo.name  + '&wx-token=' + hashToken + '&wx-deviceId=' + deviceId + '&from=' + from + '&shareAreaId=' + shareAreaId + '&shareAreaName=' + shareAreaName">
+        + '&wx-defaultCityId=' + defaultHouseInfo.cityId + '&wx-defaultAreaId=' + defaultHouseInfo.areaId 
+        + '&wx-defaultLocationName=' + defaultHouseInfo.name  + '&wx-token=' + hashToken + '&wx-deviceId=' + deviceId + '&from=' + from + '&shareAreaId=' + shareAreaId + '&shareAreaName=' + shareAreaName+ '&shareOriginType=' + shareOriginType">
     </web-view>
   </view>
 </template>
@@ -25,7 +25,8 @@
         from: '',
         shareAreaId: '',
         shareAreaName: '',
-        pageOpts: {}
+        pageOpts: {},
+        shareOriginType: ''
       }
     },
     onLoad(e) {
@@ -33,18 +34,7 @@
       uni.showShareMenu(); // 显示分享按钮
       this.shareAreaId = e.shareAreaId
       this.shareAreaName = e.shareAreaName
-      if (e.q) {
-        //如果是通过二维码分享进来的兼容
-        const qrCodeUrl = decodeURIComponent(e.q);
-        const urlResult = urlParse(qrCodeUrl, true);
-        const query = urlResult.query;
-        if (query.shareAreaId) {
-          this.shareAreaId = query.shareAreaId;
-        }
-        if (query.shareAreaName) {
-          this.shareAreaName = query.shareAreaName;
-        }
-      }
+      this.shareOriginType = e.originType
       this.from = e.from
       if (e.goodId) {
         this.goodId = e.goodId

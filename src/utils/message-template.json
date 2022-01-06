@@ -2472,6 +2472,16 @@
       ]
     }
   },
+  "single_product_card": {
+    "type": "single_product_card",
+    "template": "goods",
+    "summary": "${fullName}"
+  },
+  "group_product_card": {
+    "type": "group_product_card",
+    "template": "goods",
+    "summary": "${fullName}"
+  },
   "custom_agant_coming": {
     "type": "custom_agant_coming",
     "template": "tip2",
