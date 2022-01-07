@@ -228,10 +228,10 @@
 		display: inline-block;
 		width: 50%;
 		height: 4rpx;
-		background-color: #00ed7d;
+		background: linear-gradient(116.19deg, #F83112 16.48%, #FD6421 83.52%);
 		border-radius: 100px 100px 0px 0px;
 		position: absolute;
-		bottom: -6rpx;
+		bottom: -12rpx;
 		left: 0;
 		right: 0;
 		margin: auto;

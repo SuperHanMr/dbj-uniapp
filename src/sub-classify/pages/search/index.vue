@@ -75,6 +75,9 @@
   .uni-searchbar__cancel{
     line-height: 62rpx !important;
   }
+  input{
+    caret-color: #FA4D32;
+  }
 </style>
 <style scoped>
 
