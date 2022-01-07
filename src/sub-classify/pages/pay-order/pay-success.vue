@@ -2,7 +2,7 @@
 	<view class="pay-success">
 		<view class="head">
 			<view>
-				<img src='../../static/image/pay-bg.png' alt="" style='height: 600rpx; width:100%'>
+				<!-- <img src='../../static/image/pay-bg.png' alt="" style='height: 600rpx; width:100%'> -->
 			</view>
 			<view class="icon-text">
 				<view class="icon"></view>
@@ -11,8 +11,8 @@
 			</view>
 		</view>
 		<view class="bottom">
-			<button class="button1" @click="backHome">返回首页</button>
-			<button class="button2" @click="toOrderDetail">查看订单</button>
+			<button class="button1" @click="toOrderDetail">查看订单</button>
+			<button class="button2" @click="backHome">返回首页</button>
 		</view>
 	</view>
 </template>
@@ -75,17 +75,21 @@
 	}
 
 	.icon-text .icon {
-		width: 180rpx;
-		height: 182rpx;
+		width: 224rpx;
+		height: 224rpx;
 		background-image: url('../../static/image/pay-icon.png');
 		background-size: cover;
 	}
 
 	.icon-text .text1 {
-		font-size: 36rpx;
+		font-size: 48rpx;
 		font-weight: 500;
+    color: #222222;
 	}
-
+	.icon-text .text2 {
+		font-size: 28rpx;
+    color: #999999;
+	}
 	.bottom {
 		position: absolute;
 		right: 0;
@@ -93,14 +97,13 @@
 		top: 740rpx;
 		margin: auto;
 		display: flex;
-		width: 400rpx;
+		width: calc(100% - 100rpx);
 		height: 220rpx;
-		flex-wrap: wrap;
-		align-content: space-between;
+		justify-content: space-between;
 	}
 
 	.bottom button {
-		width: 396rpx;
+		width: 300rpx;
 		height: 88rpx;
 		text-align: center;
 		line-height: 88rpx;
@@ -109,12 +112,12 @@
 		border-radius: 12rpx;
 	}
 
-	.bottom .button1 {
-		background: linear-gradient(135deg, #36d9cd, #28c6c6);
+	.bottom .button2 {
+		background: linear-gradient(117.02deg, #FA3B34 24.56%, #FF6A33 92.21%);
 		color: #FFFFFF;
 	}
 
-	.bottom .button2 {
+	.bottom .button1 {
 		border: 1px solid #dedede;
 	}
 </style>
