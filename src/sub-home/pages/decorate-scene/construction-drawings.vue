@@ -28,17 +28,16 @@
             :class="{'color':navIndex===index}"
           >{{item.severName}}</view>
           <view class="lineWrap">
-            <view
-              class="underline"
-              :class="{'active':navIndex===index}"
-            ></view>
+						<image src="/static/images/real-case/select_head.png" class="underline"
+              v-if='navIndex===index' mode=""></image>
+            
           </view>
         </view>
       </scroll-view>
-      <view
+      <!-- <view
         class="divideLine"
         v-if="serveTypes.length"
-      ></view>
+      ></view> -->
       <view
         class="cardWrap"
         v-if="serverList.length>=2"
@@ -258,6 +257,7 @@ export default {
   left: 0;
   top: 0;
   z-index: 9;
+	width: 100%;
 }
 .noTypesImg {
   display: block;
@@ -426,13 +426,8 @@ export default {
   justify-content: center;
 }
 .lineWrap .underline {
-  opacity: 0;
   width: 32rpx;
-  height: 4rpx;
-  background: linear-gradient(129deg, #00cdec 0%, #00ed7d 92%);
-}
-.lineWrap .underline.active {
-  opacity: 1;
+	height: 6rpx;
 }
 .divideLine {
   width: 750rpx;

@@ -192,12 +192,12 @@
 			border-radius: 6rpx;
 		}
     .status.status0 {
-      color: #333333;
-      background: #d0efe9;
+      color: #fff;
+      background: rgba(153, 153, 153, 0.5);;
     }
 		.status.status1, .status.status3 {
 			color: #fff;
-			background: #00c2b8;
+			background: #F57F65;
 		}
 
 		// .status.status3 {
@@ -216,12 +216,12 @@
 
 			.friend,
 			.default {
-				border: 1rpx solid #35C4C4;
-				color: #35C4C4;
+				border: 2rpx solid #ccc;
+				color: #666;
 			}
 
 			.house-address {
-				color: #35C4C4;
+				color: #333;
 			}
 		}
 	}

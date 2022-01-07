@@ -1,8 +1,8 @@
 @font-face {
   font-family: "iconfont"; /* Project id 2785499 */
-  src: url('https://ali-res.dabanjia.com/static/mp/dabanjia/font/iconfont.woff2?t=1639041784343') format('woff2'),
-       url('https://ali-res.dabanjia.com/static/mp/dabanjia/font/iconfont.woff?t=1639041784343') format('woff'),
-       url('https://ali-res.dabanjia.com/static/mp/dabanjia/font/iconfont.ttf?t=1639041784343') format('truetype');
+  src: url('//at.alicdn.com/t/font_2785499_zwpzqj1x3r.woff2?t=1641537024406') format('woff2'),
+       url('//at.alicdn.com/t/font_2785499_zwpzqj1x3r.woff?t=1641537024406') format('woff'),
+       url('//at.alicdn.com/t/font_2785499_zwpzqj1x3r.ttf?t=1641537024406') format('truetype');
 }
 
 .iconfont {
@@ -11,6 +11,18 @@
   font-style: normal;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+}
+
+.icon-alert_notice_jump:before {
+  content: "\e646";
+}
+
+.icon-list_arrow_pullup:before {
+  content: "\e640";
+}
+
+.icon-list_arrow_dropdown:before {
+  content: "\e645";
 }
 
 .icon-ic_shanghua:before {
@@ -49,18 +61,6 @@
   content: "\e739";
 }
 
-.icon-audio-path2:before {
-  content: "\e646";
-}
-
-.icon-audio-path3:before {
-  content: "\e647";
-}
-
-.icon-audio-path1:before {
-  content: "\e648";
-}
-
 .icon-audio:before {
   content: "\e649";
 }
@@ -83,10 +83,6 @@
 
 .icon-zhuangxiushouye_fuwuzhankaijiantou:before {
   content: "\e644";
-}
-
-.icon-zhuangxiushouye_fuwuxiangrukoujiantou:before {
-  content: "\e645";
 }
 
 .icon-huifuic:before {
@@ -135,10 +131,6 @@
 
 .icon-ic_wodejia_liangfangfuwu_csn1:before {
   content: "\e72c";
-}
-
-.icon-kefuxiaoxi_ic:before {
-  content: "\e640";
 }
 
 .icon-call-audio:before {
@@ -201,10 +193,6 @@
   content: "\e633";
 }
 
-.icon-shangpinxiangqing_ic_guigepeisongxuanzejiantou:before {
-  content: "\e635";
-}
-
 .icon-shangpinxiangqing_ic_youshangjiaofenxiang:before {
   content: "\e62f";
 }
@@ -217,10 +205,6 @@
   content: "\e632";
 }
 
-.icon-dianpu_ic_fenleizhankaijiantou:before {
-  content: "\e62c";
-}
-
 .icon-dianpu_ic_shangpintabweixuanzhong:before {
   content: "\e62d";
 }
@@ -229,20 +213,12 @@
   content: "\e62e";
 }
 
-.icon-dianpu_ic_fenleishouqijiantou:before {
-  content: "\e628";
-}
-
 .icon-dianpu_ic_fenlei:before {
   content: "\e629";
 }
 
 .icon-dianpu_ic_fanhuiheijiantou:before {
   content: "\e62a";
-}
-
-.icon-dianpu_ic_dianpuxiangqingjiantou:before {
-  content: "\e62b";
 }
 
 .icon-gerenzhuye_anli_ic_dianzan:before {
@@ -255,18 +231,6 @@
 
 .icon-gerenzhuye_anli_ic_pinglun:before {
   content: "\e627";
-}
-
-.icon-gerenzhuye_anlihefuwu_zhankaiic:before {
-  content: "\e621";
-}
-
-.icon-gerenzhuye_anlihefuwu_shouqiic:before {
-  content: "\e623";
-}
-
-.icon-gerenzhuye_pingjiatiaozhuanwu_ic:before {
-  content: "\e624";
 }
 
 .icon-gerenzhuye_ic_pingjia:before {
@@ -329,36 +293,12 @@
   content: "\e6f8";
 }
 
-.icon-ic_wodejia_beiwanglugengduo_csn:before {
-  content: "\e6f9";
-}
-
-.icon-ic_zhuangxiuxianchang_jingsuangengduo_csn:before {
-  content: "\e6f7";
-}
-
-.icon-a-ic_zhuangxiuxianchang_jingsuanzhankai_csn:before {
-  content: "\e6fa";
-}
-
-.icon-a-ic_zhuangxiuxianchang_jingsuanshouqi_csn:before {
-  content: "\e6fb";
-}
-
-.icon-ic_zhuangxiuxianchang_zhuangxiurilixiala_csn:before {
-  content: "\e728";
-}
-
 .icon-ic_zhuangxiuxianchang_vranli_csn:before {
   content: "\e723";
 }
 
 .icon-ic_zhuangxiuxianchang_zixunkefu_csn:before {
   content: "\e725";
-}
-
-.icon-ic_zhuangxiuxianchang_zhuangxiurilishanghua_csn:before {
-  content: "\e726";
 }
 
 .icon-ic_zhuangxiuxianchang_zuo_csn:before {
@@ -433,10 +373,6 @@
   content: "\e710";
 }
 
-.icon-ic_zhuangxiuxianchang_pinglunzhankai_csn:before {
-  content: "\e711";
-}
-
 .icon-ic_zhuangxiuxianchang_rilijintian_csn:before {
   content: "\e712";
 }
@@ -459,10 +395,6 @@
 
 .icon-ic_zhuangxiuxianchang_liangfang:before {
   content: "\e70b";
-}
-
-.icon-ic_zhuangxiuxianchang_pinglunshouqi_csn:before {
-  content: "\e70c";
 }
 
 .icon-ic_zhuangxiuxianchang_pinglunshanchu_csn:before {
@@ -531,10 +463,6 @@
 
 .icon-ic_wodejia_zhongdayinhuan_csn:before {
   content: "\e6f5";
-}
-
-.icon-ic_wodejia_zhankai_csn:before {
-  content: "\e6ea";
 }
 
 .icon-ic_wodejia_shangchuanzhaopian_csn:before {
@@ -631,10 +559,6 @@
 
 .icon-ic_wodejia_shaixuandizhi_shouqi_csn:before {
   content: "\e6e4";
-}
-
-.icon-ic_wodejia_genghuan_csn:before {
-  content: "\e6e5";
 }
 
 .icon-ic_wodejia_dizhi_csn:before {

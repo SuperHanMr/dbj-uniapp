@@ -681,9 +681,9 @@ view .is-self {
 
   .send-msg {
     height: 104rpx;
-    background: rgba(0, 191, 182, 0.07);
+    background: #fff;
     border-radius: 16rpx;
-    border: 0.5px solid rgba(0, 191, 182, 0.2);
+    border: 2rpx solid #333;
     text-align: center;
     line-height: 104rpx;
     color: #00bfb6;
@@ -697,10 +697,12 @@ view .is-self {
       margin-right: 8rpx;
       display: inline-block;
       vertical-align: middle;
+      color: #333;
     }
     text {
       display: inline-block;
       vertical-align: middle;
+      color: #333;
     }
   }
   .person-msg-top {
@@ -772,9 +774,9 @@ view .is-self {
 
       .rate {
         padding: 0 8rpx;
-        background: #eafcfb;
+        background: rgba(255, 127, 70, 0.05);
         border-radius: 6px;
-        color: #00bfb6;
+        color: #FF7F46;
         border-radius: 6rpx;
       }
     }
@@ -800,8 +802,8 @@ view .is-self {
       // width: 86rpx;
       height: 64rpx;
       border-radius: 12rpx;
-      border: 0.5px solid #00bfb6;
-      color: #00bfb6;
+      border: 2rpx solid #333;
+      color: #333;
       line-height: 64rpx;
       padding: 0 18rpx;
       font-size: 28rpx;
@@ -809,6 +811,7 @@ view .is-self {
       i {
         display: inline-block;
         margin-right: 8rpx;
+        color: #333;
       }
     }
     .already-attention {
@@ -819,7 +822,7 @@ view .is-self {
     .recommend {
       // width: 146rpx;
       height: 64rpx;
-      background: linear-gradient(135deg, #00bfaf 0%, #00bfbc 100%);
+      background: linear-gradient(116.19deg, #F83112 16.48%, #FD6421 83.52%);
       border-radius: 12rpx;
       margin-right: 24rpx;
       line-height: 64rpx;

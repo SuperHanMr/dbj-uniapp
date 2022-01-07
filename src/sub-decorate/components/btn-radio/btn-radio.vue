@@ -45,8 +45,8 @@
     font-family: PingFangSC, PingFangSC-Regular;
     font-weight: 400;
     text-align: center;
-    color: #00bfb6;
-    border: 1rpx solid #00bfb6;
+    color: #FA4D32;
+    border: 2rpx solid #FA4D32;
     border-radius: 8rpx;
 	}
 

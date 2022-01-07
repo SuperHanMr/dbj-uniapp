@@ -1,8 +1,9 @@
 <template>
   <view class="check-box-e" :class="{'checked': checked}" @click="change"
-    :style="{width: width, height: height, borderRadius: borderRadius}">
-    <image v-if="checked" :style="{width: width, height: height, borderRadius: borderRadius}" class="checked-img"
-      src="https://ali-image.dabanjia.com/static/mp/dabanjia/images/decorate/ic_checked.svg"></image>
+    :style="{width: width, height: height,lineHeight:height,borderRadius: borderRadius}">
+    
+   <image v-if="checked" :style="{width: width, height: height, borderRadius: borderRadius}" class="checked-img"
+      src="https://ali-image.dabanjia.com/static/mp/dabanjia/images/theme-red/decorate/ic_checked.svg"></image>
   </view>
 </template>
 
@@ -19,7 +20,7 @@
       },
       borderRadius: {
         type: String,
-        default: "10rpx",
+        default: "50%",
       },
       checked: {
         type: Boolean,
@@ -42,6 +43,7 @@
     .checked-img {
       width: 32rpx;
       height: 32rpx;
+      // background: linear-gradient(134.53deg, #6D6D6D 5.36%, #333333 100.8%);
     }
   }
 

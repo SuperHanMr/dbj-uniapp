@@ -12,7 +12,7 @@
         <view class="t1">￥</text><text class="t2">{{(content.price/100).toFixed(2)}}</text><text class="t3">/m²</text></view>
         <view class="change" @click="selectAnother">
           <view class="change-t">更换</view>
-          <image src="https://ali-image.dabanjia.com/static/mp/dabanjia/images/decorate/arrow-r-gr.svg" class="change-img"></image>
+          <i class='icon-alert_notice_jump'></i>
         </view>
       </view>
     </view>
@@ -136,14 +136,13 @@
       font-family: PingFangSC, PingFangSC-Medium;
       font-weight: 700;
       text-align: left;
-      color: #00c2b8;
+      color: #FA4D32;
       line-height: 32rpx;
       margin-right: 4rpx;
     }
-    .change-img {
-      width: 20rpx;
-      height: 20rpx;
-      
+    .icon-alert_notice_jump {
+      font-size: 20rpx;
+      color: #FA4D32;
     }
   }
 </style>

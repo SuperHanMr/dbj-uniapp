@@ -258,7 +258,7 @@
     font-family: PingFangSC, PingFangSC-Medium;
     font-weight: 700;
     text-align: center;
-    color: #989898;
+    color: #FA4D32;
     line-height: 42rpx;
   }
   .ok {

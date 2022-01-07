@@ -101,9 +101,9 @@
 </script>
 
 <style lang="scss" scoped>
-.is-grab{
-  border: 0.5px solid #ececec;
-}
+// .is-grab{
+//   border: 0.5px solid #ececec;
+// }
 .waterfall-item{
 	margin-right: 16rpx;
 	font-size: 28rpx;

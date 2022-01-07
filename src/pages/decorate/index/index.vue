@@ -115,11 +115,11 @@
               购买相关服务 即刻开启装修
             </view>
             <guide-card v-if="availGuides.includes('design')" cardType="service"
-              imageUrl="https://ali-image.dabanjia.com/static/mp/dabanjia/images/decorate/ic_myhouse_design2.webp"
+              imageUrl="https://ali-image.dabanjia.com/static/mp/dabanjia/images/theme-red/decorate/ic_myhouse_design2.webp"
               @buyNow="gonohousedecatore('design')">
             </guide-card>
             <guide-card v-if="availGuides.includes('actuary')" cardType="actuary"
-              imageUrl="https://ali-image.dabanjia.com/static/mp/dabanjia/images/decorate/ic_myhouse_actuary2.webp"
+              imageUrl="https://ali-image.dabanjia.com/static/mp/dabanjia/images/theme-red/decorate/ic_myhouse_actuary2.webp"
               @buyNow="gonohousedecatore('actuary')">
             </guide-card>
           </view>
