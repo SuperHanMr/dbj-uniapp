@@ -12,7 +12,7 @@
 				<view class="bottom-icon" />
       </view>
     </view>
-		 <view class="line" />
+		 <!-- <view class="line" /> -->
     <swiper
       class="swiper"
       :current="currentIndex"
@@ -36,10 +36,10 @@
 					</view>
 					<view  v-else :style="{paddingBottom:systemBottom}" >
 						<!-- 房屋 -->
-						<view 
+						<view
 							v-if="tabindex==0"
-							class="house-item" 
-							v-for="item in houselist" 
+							class="house-item"
+							v-for="item in houselist"
 							:key="item.id"
 							@click="goToHouse(item)"
 						>
@@ -437,7 +437,7 @@ export default {
   }
 
   .empty-container {
-    padding: 350rpx 240rpx 0 240rpx;
+    padding: 350rpx 175rpx 0 175rpx;
     display: flex;
     flex-flow: column nowrap;
     align-items: center;
@@ -452,7 +452,7 @@ export default {
       font-size: 26rpx;
       font-weight: 400;
       text-align: center;
-      color: #999999;
+      color: #CBCCCC;
     }
   }
 

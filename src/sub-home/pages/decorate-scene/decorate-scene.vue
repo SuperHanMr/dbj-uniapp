@@ -1235,7 +1235,7 @@ export default {
   height: 542rpx;
 }
 .popupComments .noCommentText {
-  width: 118rpx;
+  width: 100%;
   height: 36rpx;
   margin: 24rpx 316rpx;
   font-size: 26rpx;
@@ -1248,7 +1248,7 @@ export default {
 }
 .popupComments .topArea {
   height: 120rpx;
-  border-radius: 32rpx 32rpx 0rpx 0rpx;
+  border-radius: 16rpx 16rpx 0rpx 0rpx;
   display: flex;
   align-items: center;
 }
@@ -1344,7 +1344,8 @@ export default {
   line-height: 28rpx;
   text-align: center;
   color: #fff;
-  background: linear-gradient(45deg, #f2af1a, #ffd698);
+  /* background: linear-gradient(45deg, #f2af1a, #ffd698); */
+	background: linear-gradient(135deg, #40BFF5 0%, #53A9FF 100%);
   border-radius: 6rpx;
 }
 .info .date {
@@ -1384,7 +1385,7 @@ export default {
   margin-top: 8rpx;
 }
 .replyInfo .info .role {
-  background: linear-gradient(45deg, #6d95ef, #84b9fc);
+  background: linear-gradient(135deg, #40BFF5 0%, #53A9FF 100%);
 }
 .replyInfo .text {
   width: 550rpx;
@@ -1420,7 +1421,7 @@ export default {
   height: 36rpx;
   font-size: 26rpx;
   font-weight: 500;
-  color: #00c2b8;
+  color: #FA4D32;
 }
 .expand .img {
   width: 14rpx;
@@ -1460,7 +1461,7 @@ export default {
   display: flex;
   justify-content: space-between;
   background: #f9fafb;
-  border-radius: 0rpx 0rpx 8rpx 8rpx;
+  border-radius: 16rpx 16rpx 0 0;
 }
 .cancel {
   width: 60rpx;
@@ -1473,11 +1474,11 @@ export default {
 .confirm {
   width: 60rpx;
   height: 42rpx;
-  margin: 40rpx 48rpx 38rpx 0;
+  margin: 40rpx 48rpx 38rpx 0; 
   font-size: 30rpx;
-  font-weight: 500;
+  font-weight: 600;
   text-align: center;
-  color: #00c2b8;
+  color: #FA4D32;
   line-height: 42rpx;
 }
 .picker-view {

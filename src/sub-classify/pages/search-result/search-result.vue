@@ -411,18 +411,15 @@
 
   .goodsInfo .goodsDesc .goodsType {
     min-width: 45rpx;
-    height: 30rpx;
-    padding: 0 10rpx;
+    height: 32rpx;
+    padding: 2rpx 10rpx;
     margin-right: 4rpx;
-    border: 2rpx solid #35c4c4;
     border-radius: 4rpx;
     font-size: 20rpx;
     font-weight: 500;
-    color: #35c4c4;
-    line-height: 28rpx;
-    text-align: center;
-    vertical-align: middle;
-    margin-top: 4rpx;
+    color: #212121;
+    background: linear-gradient(90deg, #BDD9E5 0%, #CDEFCE 94.34%);
+    vertical-align: text-bottom;
   }
 
   .goodsInfo .goodsSpec {

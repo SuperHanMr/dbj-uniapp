@@ -110,13 +110,6 @@
       }
     },
     {
-      "path": "pages/classify/test",
-      "style": {
-        "navigationBarTitleText": "",
-        "enablePullDownRefresh": false
-      }
-    },
-    {
       "path": "pages/real-case/real-case-webview/real-case-webview",
       "style": {
         "navigationBarTitleText": "",
