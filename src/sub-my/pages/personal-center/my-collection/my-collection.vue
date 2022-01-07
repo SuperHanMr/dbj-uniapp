@@ -17,7 +17,7 @@
 			</view>
 		</view>
 
-		<view class="line" />
+		<!-- <view class="line" /> -->
 
 		<swiper class="swiper" :current="currentIndex" :duration="200"	@change="swiperChange"	:style="{backgroundColor:listLength > 0 ?'none':'#ffffff'}">
 			<!-- 商品 -->
@@ -45,8 +45,8 @@
 					</view>
 				</scroll-view>
 				<view v-else class="empty-body">
-					<image src="../../../../static/order/blank_house@2x.png" mode=""></image>
-					<text>您还没有收藏商品</text>
+					<image src="../../../static/img_attention_empty.svg" mode=""></image>
+					<text>暂无相关内容～</text>
 				</view>
 			</swiper-item>
 			<!-- 案例 -->
@@ -74,8 +74,8 @@
 					</view>
 				</scroll-view>
 				<view v-else class="empty-body">
-					<image src="../../../../static/order/blank_house@2x.png" mode=""></image>
-					<text>您还没有收藏案例</text>
+					<image src="../../../static/img_attention_empty.svg" mode=""></image>
+					<text>暂无相关内容～</text>
 				</view>
 			</swiper-item>
 		</swiper>
@@ -448,7 +448,7 @@
 		height: 100%;
 		display: flex;
 		flex-direction: column;
-		background-color: #f4f4f4;
+		background-color: #ffffff;
 	}
 
 	.tab-container {
@@ -484,7 +484,8 @@
 			}
 
 			.selected {
-				color: #333333;
+				color: #111111;
+				font-weight: 500;
 
 				.bottom-icon {
 					position: absolute;
@@ -501,7 +502,7 @@
 
 		.edit-btn {
 			font-size: 28rpx;
-			color: #00bfb6;
+			color: #333333;
 		}
 	}
 
@@ -526,24 +527,24 @@
 	.emptyContainer {
 
 		.empty-body {
-			padding: 180rpx 240rpx 0 240rpx;
+			padding: 350rpx 175rpx 0 175rpx;
 			display: flex;
 			flex-flow: column nowrap;
 			align-items: center;
 			justify-content: space-around;
 
 			image {
-				width: 248rpx;
-				height: 248rpx;
+				width: 400rpx;
+				height: 400rpx;
 				object-fit: cover;
-				margin-bottom: 22rpx;
+				// margin-bottom: 22rpx;
 			}
 
 			text {
 				font-size: 26rpx;
 				font-weight: 400;
 				text-align: center;
-				color: #999999;
+				color: #CBCCCC;
 			}
 		}
 	}
@@ -574,10 +575,10 @@
 				margin-right: 10rpx;
 			}
 			image {
-				width: 40rpx;
-				height: 40rpx;
+				width: 48rpx;
+				height: 48rpx;
 				object-fit: cover;
-				margin-right: 10rpx;
+				margin-right: 8rpx;
 			}
 
 			text {
@@ -590,10 +591,10 @@
 		}
 
 		.button {
-			width: 400rpx;
+			width: 326rpx;
 			height: 88rpx;
 			line-height: 88rpx;
-			background: linear-gradient(135deg, #36d9cd, #28c6c6);
+			background: linear-gradient(117.02deg, #FA3B34 24.56%, #FF6A33 92.21%);
 			border-radius: 12rpx;
 			text-align: center;
 			font-size: 32rpx;
