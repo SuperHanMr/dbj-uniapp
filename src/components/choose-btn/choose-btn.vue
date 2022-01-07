@@ -45,12 +45,12 @@
       display: inline-block;
       width: 116rpx;
       height: 64rpx;
-      background-color: #f7f7f7;
-      border-radius: 32rpx;
+      background-color: #f6f6f6;
+      border-radius: 42rpx;
       margin-right: 24rpx;
       border: 0;
       font-size: 26rpx;
-      color: #111;
+      color: #333;
     }
     .btn:last-child{
       margin-right: 0;
@@ -59,9 +59,9 @@
       border: none;
     }
     .active {
-      background-color: #e8fafa;
-      border: 0.5px solid #35C4C4;
-      color: #24bdbd !important;
+      background-color: #333;
+      // border: 2rpx solid #35C4C4;
+      color: #fff !important;
     }
     .disabled{
       color: #999;

@@ -361,7 +361,7 @@
 				width: 60rpx;
 				height: 32rpx;
 				color: #fff;
-				background: linear-gradient(135deg, #36d9cd, #28c6c6);
+				background: linear-gradient(133.85deg, #696B6B 3.06%, #575C5C 100.1%);
 				border-radius: 4rpx;
 				font-size: 20rpx;
 				margin-right: 8rpx;
@@ -456,8 +456,8 @@
 		.add-btn {
 			// margin-top: 20rpx;
 			height: 88rpx;
-			background: linear-gradient(135deg, #53d5cc, #4fc9c9);
-			border-radius: 12rpx;
+			background: linear-gradient(116.19deg, #F83112 16.48%, #FD6421 83.52%);
+			border-radius: 16rpx;
 			width: 686rpx;
 			line-height: 88rpx;
 			text-align: center;
@@ -483,15 +483,16 @@
       text-align: center;
     }
     .no-add-btn{
-      width: 248rpx;
-      height: 88rpx;
-      background: linear-gradient(135deg,#53d5cc, #4fc9c9);
+      width: 192rpx;
+      height: 64rpx;
+      background: linear-gradient(117.02deg, #FA3B34 24.56%, #FF6A33 92.21%);
       border-radius: 12rpx;
       line-height: 88rpx;
       text-align: center;
       margin-top: 76rpx;
       color: #fff;
-      font-size: 32rpx;
+      font-size: 24rpx;
+      font-weight: 500;
     }
   }
 </style>
