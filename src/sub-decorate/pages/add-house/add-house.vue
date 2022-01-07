@@ -309,6 +309,37 @@
               // #endif
 						}
 					},
+          fail() {
+            
+            uni.getSetting({
+              success:function(res){
+                let status = res.authSetting
+                if(!status['scope.userLocation']){
+                  uni.showModal({
+                    title:'是否授权当前位置',
+                    content:'需要获取您的地理位置，请确认授权，否则地图功能无法使用',
+                    success(tip){
+                      if(tip.confirm){
+                        uni.openSetting({
+                          success:function(data){
+                            if(data.authSetting["scope.userLocation"] ===true){
+                              uni.showToast({
+                                title:'授权成功',
+                                icon:'success'
+                              })
+                              // setTimeout(()=>{
+                              //   this.chooseMap()
+                              // },1000)
+                            }
+                          }
+                        })
+                      }
+                    }
+                  })
+                }
+              }
+            })
+          }
 				});
 			},
 			async getAreaId(adcode) {

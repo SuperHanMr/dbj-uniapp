@@ -23,14 +23,21 @@
 
 <script>
 import { mapState } from "vuex";
-const IMG_MAX_HEIGHT = 140;
-const IMG_MAX_WIDTH = 140;
+
 export default {
   name: "MessageBubble",
   props: {
     message: {
       type: Object,
       required: true,
+    },
+    noPadding: {
+      type: Boolean,
+      default: false,
+    },
+    bodyStyle: {
+      type: String,
+      default: "",
     }
   },
   computed: {
@@ -52,42 +59,6 @@ export default {
     payloadData() {
       return this.message.payloadData || {};
     },
-    noPadding() {
-      if (!this.payloadData) {
-        return false;
-      }
-      return this.payloadData.type === "img_message" ||
-        this.payloadData.type === "video_message" ||
-        this.payloadData.type === "file_message"
-        ;
-    },
-    bodyStyle() {
-      if (!this.payloadData) {
-        return "";
-      }
-      if (
-        this.payloadData.type === "img_message"||
-        this.payloadData.type === "video_message"
-      ) {
-        let { width = 0, height = 0 } = this.payloadData;
-        if (width/height > IMG_MAX_WIDTH/IMG_MAX_HEIGHT) {
-          if (width > IMG_MAX_WIDTH) {
-            height = height/width * IMG_MAX_WIDTH;
-            width = IMG_MAX_WIDTH;
-          }
-        } else {
-          if (height > IMG_MAX_HEIGHT) {
-            width = width/height * IMG_MAX_HEIGHT;
-            height = IMG_MAX_HEIGHT;
-          }
-        }
-        return [
-          `width: ${Math.round(width)}px`,
-          `height: ${Math.round(height)}px`
-        ].join(";") + ";";
-      }
-      return "";
-    }
   }
 };
 </script>

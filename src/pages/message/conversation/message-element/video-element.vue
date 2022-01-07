@@ -1,5 +1,10 @@
 <template>
-  <message-bubble :message="message" class="video-message">
+  <message-bubble
+    :message="message"
+    :body-style="bodyStyle"
+    no-padding
+    class="video-message"
+    >
     <view class="video-element" @click="handlePlayVideo">
       <image class="video-thumb-img" :src="url" />
       <image class="play-icon" src="https://ali-image.dabanjia.com/static/mp/dabanjia/images/message/ic_play%402x.png" />
@@ -9,7 +14,8 @@
 
 <script>
 import MessageBubble from "./message-bubble";
-
+const IMG_MAX_HEIGHT = 140;
+const IMG_MAX_WIDTH = 140;
 export default {
   name: "VideoElement",
   components: {
@@ -35,6 +41,24 @@ export default {
       }
       return url;
     },
+    bodyStyle() {
+      let { width = 0, height = 0 } = this.payloadData;
+      if (width/height > IMG_MAX_WIDTH/IMG_MAX_HEIGHT) {
+        if (width > IMG_MAX_WIDTH) {
+          height = height/width * IMG_MAX_WIDTH;
+          width = IMG_MAX_WIDTH;
+        }
+      } else {
+        if (height > IMG_MAX_HEIGHT) {
+          width = width/height * IMG_MAX_HEIGHT;
+          height = IMG_MAX_HEIGHT;
+        }
+      }
+      return [
+        `width: ${Math.round(width)}px`,
+        `height: ${Math.round(height)}px`
+      ].join(";") + ";";
+    }
   },
   methods: {
     handlePlayVideo() {

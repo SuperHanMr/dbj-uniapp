@@ -29,7 +29,7 @@
 			</view>
 
 			<view class="avatar-img" v-else @click="handlerPersonalData()">
-				<image :src="`${userInfo.avatar}?x-oss-process=image/resize,m_mfit,w_60,h_60`" class="avatar" mode="aspectFill"/>
+				<image :src="`${userInfo.avatar}?x-oss-process=image/resize,m_mfit,w_240,h_240`" class="avatar" mode="aspectFill"/>
 				<view class="user-name">
 					<text class="name">{{userName}} </text>
 					<view class="edit-info">
