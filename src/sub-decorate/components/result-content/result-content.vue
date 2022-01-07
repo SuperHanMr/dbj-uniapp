@@ -59,7 +59,7 @@
   import { formatDate } from '../../../utils/common.js'
   
   let myChart = null
-  
+  let chart = null
   export default {
     components: {
       // #ifdef MP-WEIXIN 
@@ -246,11 +246,11 @@
           this.isLoading = true
           this.getMsgHeight()
           setTimeout(()=>{
-            // #ifndef MP-WEIXIN 
+            // #ifdef MP-WEIXIN 
             this.$refs.canvas.init(this.initChart)
             // #endif
             // #ifdef H5
-            myChart = echarts.init(document.getElementById('echarts'))
+            chart = echarts.init(document.getElementById('echarts'))
             myChart.setOption(this.option)
             // #endif
             // this.$refs.canvas.initByOldWay(this.initChart)
@@ -348,7 +348,7 @@
       },
       drawImage() {
         this.option.series[0].data = this.data
-        
+        console.log(11111111111111)
         let text = [`{a|${this.checkData.checkCount}}{b|项}`, "{x|总检查}"].join("\n")
         this.option.series[0].label.formatter = text
         this.option.legend.formatter = (name) => {
@@ -359,6 +359,7 @@
         }
       },
       initChart(canvas, width, height, canvasDpr) {
+        console.log(111111111,">>>>>>>>>>>>>><<<<<<<<<<<<")
         chart = echarts.init(canvas, null, {
           width: width,
           height: height,
@@ -366,6 +367,7 @@
         })
         canvas.setChart(chart)
         chart.setOption(this.option)
+        console.log(chart,">>>>>>>>>>>>>><<<<<<<<<<<<")
         return chart
       },
     }

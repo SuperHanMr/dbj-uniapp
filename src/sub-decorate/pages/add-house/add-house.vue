@@ -92,7 +92,7 @@
 					<text class="text">设置为默认地址</text>
 					<text class="tips">提醒：每次下单会默认使用该地址</text>
 				</view>
-				<switch color="#24BDBD" :checked='addData.defaultEstate' @change="switchChange"
+				<switch color="#333" :checked='addData.defaultEstate' @change="switchChange"
 					style="transform:scale(0.9)"></switch>
 			</view>
       </view>
@@ -779,7 +779,7 @@
 				text-align: center;
 				color: #fff;
 				// opacity: 1;
-				background: linear-gradient(135deg, #53d5cc, #4fc9c9);
+				background: linear-gradient(116.19deg, #F83112 16.48%, #FD6421 83.52%);
 				border-radius: 12rpx;
 			}
 		}
