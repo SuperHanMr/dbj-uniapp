@@ -289,11 +289,11 @@
           v-if="payChannel "
           class="flex-center"
         >
-          <image
+          <!-- <image
             class="card-img"
             src="https://ali-image.dabanjia.com/static/mp/dabanjia/images/classify/ic_card.png"
             mode=""
-          ></image>
+          ></image> -->
           <text>储值卡支付</text>
 
         </view>
