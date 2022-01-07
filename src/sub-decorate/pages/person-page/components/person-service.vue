@@ -150,12 +150,13 @@
       .btn{
         width: 118rpx;
         height: 58rpx;
-        background: linear-gradient(135deg, #00BFAF 0%, #00BFBC 100%);
+        background: #fff;
         border-radius: 12rpx;
         font-size: 26rpx;
         text-align: center;
-        color: #fff;
+        color: #666;
         line-height: 58rpx;
+        border: 2rpx solid #ccc;
       }
       
     }

@@ -66,6 +66,7 @@
             <text style="margin-right:4rpx ;">-</text> <text
               style="margin-right:2rpx ;">¥</text>{{(this.cardPrice/100).toFixed(2)}}
           </view>
+          
           <image v-if="cardClick" class="selected-img"
             src="https://ali-image.dabanjia.com/static/mp/dabanjia/images/classify/pay_selected.png" mode="">
           </image>

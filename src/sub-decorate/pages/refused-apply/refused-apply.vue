@@ -6,8 +6,11 @@
         <view class="radio-item" v-for="(item, index) in items" :class="{last:item.id===4}" :key="item.id"
           @click="radioChange(item)">
           <view class="text">{{item.reason}}</view>
-          <view class="circle" :class="{isActive:currentId===item.id}">
+          <view class="circle" v-if="currentId!==item.id" >
             <view></view>
+          </view>
+          <view class="circle" v-else>
+            <image src="" mode=""></image>
           </view>
         </view>
       </view>
@@ -223,7 +226,7 @@
   .add-btn {
     // margin-top: 20rpx;
     height: 88rpx;
-    background: linear-gradient(135deg, #53d5cc, #4fc9c9);
+    background: linear-gradient(115.75deg, #FA3B34 -3.13%, #FF6A33 92.1%);
     border-radius: 12rpx;
     width: 686rpx;
     line-height: 88rpx;

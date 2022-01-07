@@ -88,7 +88,7 @@
       width: 320rpx;
       height: 80rpx;
       border: 2rpx solid #f2f5f8;
-      border-radius: 44rpx;
+      border-radius: 16rpx;
 
       font-size: 28rpx;
       font-family: PingFangSC, PingFangSC-Medium;
@@ -102,8 +102,8 @@
       box-sizing: border-box;
       width: 320rpx;
       height: 80rpx;
-      background: linear-gradient(135deg, #00c2b2, #00c2bf);
-      border-radius: 44rpx;
+      background: linear-gradient(117.02deg, #FA3B34 24.56%, #FF6A33 92.21%);
+      border-radius: 16rpx;
 
       font-size: 28rpx;
       font-family: PingFangSC, PingFangSC-Medium;

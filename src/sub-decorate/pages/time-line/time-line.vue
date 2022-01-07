@@ -77,7 +77,7 @@
   }
   .line-block{
     width: 4rpx;
-    background: #00C2B8;
+    background: #222;
     height: calc(100% - 36rpx);
     position: absolute;
     top: 36rpx;
@@ -94,8 +94,8 @@
     width: 12px;
     height: 12px;
     opacity: 1;
-    background: #00c2b8;
-    border: 2px solid #e0f7f7;
+    background: #222;
+    border: 2px solid #F3F3F3;
     border-radius: 50%;
     z-index: 10;
   }

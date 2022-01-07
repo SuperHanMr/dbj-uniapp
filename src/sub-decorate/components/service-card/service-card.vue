@@ -7,8 +7,7 @@
       </view>
       <view v-if="setting.cardtype == 'design' && setting.insideArea && showLevel" class="change-service" @click="changeLevel">
         <text>更换等级</text>
-        <image class="ic-triangle-999"
-          src="https://ali-image.dabanjia.com/static/mp/dabanjia/images/decorate/ic_triangle_999.svg" />
+        <i class='icon-alert_notice_jump'></i>
       </view>
     </view>
     <server-content :content="setting" @selectAnother="selectAnother"></server-content>
@@ -147,10 +146,8 @@
         font-size: 22rpx;
         margin-right: 8rpx;
       }
-
-      .ic-triangle-999 {
-        width: 8rpx;
-        height: 13rpx;
+      i {
+       font-size: 12rpx;
       }
     }
   }

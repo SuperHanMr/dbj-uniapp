@@ -395,7 +395,7 @@
   view .btn-right-served{
     width: 100%;
     border: none;
-    background: linear-gradient(135deg, #00CCBE 0%, #00C2BF 100%);
+    background: linear-gradient(115.95deg, #FA3B34 -3.74%, #FB4934 25.2%, #FF6A33 92.05%);
     border-radius: 12rpx;
     color: #fff;
     margin-right: 0;
@@ -439,7 +439,7 @@
   .add-btn {
     // margin-top: 20rpx;
     height: 88rpx;
-    background: linear-gradient(135deg, #53d5cc, #4fc9c9);
+    background: linear-gradient(115.95deg, #FA3B34 -3.74%, #FB4934 25.2%, #FF6A33 92.05%);
     border-radius: 12rpx;
     width: 454rpx;
     line-height: 88rpx;

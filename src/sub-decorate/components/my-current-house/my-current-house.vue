@@ -1,6 +1,6 @@
 <template>
 	<view class="my-current-house">
-		<image class="ic-location" src="https://ali-image.dabanjia.com/static/mp/dabanjia/images/decorate/ic_location.svg"></image>
+		<image class="ic-location" src="https://ali-image.dabanjia.com/static/mp/dabanjia/images/theme-red/decorate/ic_location.svg"></image>
 		<view class="house-info">
 			<view class="address">{{houseData.housingEstate}}{{houseData.address}}</view>
 			<view class="area">面积：{{houseData.insideArea}}m²</view>
