@@ -14,7 +14,7 @@
 
     <!-- 退款详情 --退款关闭   退款取消与商家拒接 两个页面-->
     <view class="order-container" v-if="type =='refund'" :style="{paddingBottom:containerPaddingBottom}" >
-      <view style="position: relative;" :style="{backgroundImage:`url(${bgImg})`,backgroundSize: '100% 100%'}">
+      <view style="position: relative;">
         <view class="bgcStyle" :style="{backgroundImage:`url(${bgImg})`,backgroundSize: '100% 100%'}"/>
         <view :style="{height:navBarHeight}"></view>
         <view class="order-status">
@@ -108,7 +108,7 @@
 
     <!-- 订单详情  已关闭页面 -->
     <view class="order-container" v-if="type =='close'" :style="{paddingBottom:systemBottom}">
-      <view style="position: relative;" :style="{backgroundImage:`url(${bgImg})`,backgroundSize: '100% 100%'}">
+      <view style="position: relative;">
         <view class="bgcStyle" :style="{backgroundImage:`url(${bgImg})`,backgroundSize: '100% 100%'}" />
         <view :style="{height:navBarHeight}"></view>
         <view class="order-status">
@@ -185,8 +185,7 @@ export default {
       navBarHeight: "",
       scrollTop: 0,
       headerTitle: "",
-      bgImg:
-        "https://ali-image.dabanjia.com/static/mp/dabanjia/images/decorate/order_bg_gray.png",
+      bgImg: "../../../static/order_bg.png",
     };
   },
 
@@ -356,7 +355,8 @@ export default {
 <style lang="scss" scoped>
 .bgcStyle {
   width: 100%;
-  height: 32rpx;
+  // height: 32rpx;
+	height: 116%;
   position: absolute;
   bottom: -32rpx;
   z-index: -1;
@@ -396,7 +396,6 @@ export default {
         image {
           width: 64rpx;
           height: 64rpx;
-          object-fit: cover;
           margin-right: 12rpx;
         }
         text {
@@ -538,7 +537,7 @@ export default {
     height: 72rpx;
     line-height: 72rpx;
     box-sizing: border-box;
-    background: linear-gradient(99deg, #00ccbe 0%, #00c2bf 100%);
+    background: linear-gradient(117.02deg, #FA3B34 24.56%, #FF6A33 92.21%);
     border-radius: 12rpx;
     font-size: 28 rpx;
     font-weight: 500;
@@ -546,7 +545,6 @@ export default {
     color: #ffffff;
   }
   .contact-customer {
-    margin: 20rpx 0;
     width: 184rpx;
     height: 72rpx;
     line-height: 72rpx;

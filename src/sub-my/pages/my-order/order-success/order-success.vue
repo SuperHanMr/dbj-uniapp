@@ -15,7 +15,7 @@
 
     <!-- 退款成功 -->
     <view class="order-container" v-if="type=='refund'" :style="{paddingBottom:systemBottom}">
-      <view style="position: relative;" :style="{backgroundImage:`url(${bgImg})`,backgroundSize: '100% 100%'}">
+      <view style="position: relative;">
         <view class="bgcStyle" :style="{backgroundImage:`url(${bgImg})`,backgroundSize: '100% 100%'}"/>
         <view :style="{height:navBarHeight}"></view>
         <view class="order-status">
@@ -110,7 +110,7 @@
 
     <!-- 订单完成页面 -->
     <view class="order-container" v-if="type == 'complete'" :style="{paddingBottom:systemBottom}">
-      <view  style="position: relative;" :style="{backgroundImage:`url(${bgImg})`,backgroundSize: '100% 100%'}">
+      <view  style="position: relative;">
         <!-- 占位 -->
         <view class="bgcStyle" :style="{backgroundImage:`url(${bgImg})`,backgroundSize: '100% 100%'}" />
         <view :style="{height:navBarHeight}"></view>
@@ -240,8 +240,7 @@ export default {
       scrollTop: 0,
       headerTitle: "",
 			title:"",
-      bgImg:
-        "https://ali-image.dabanjia.com/static/mp/dabanjia/images/decorate/order_bg_green.png",
+      bgImg: "../../../static/order_bg.png",
     };
   },
 
@@ -423,7 +422,8 @@ export default {
   }
   .bgcStyle {
     width: 100%;
-    height: 32rpx;
+		height: 116%;
+    // height: 32rpx;
     position: absolute;
     bottom: -32rpx;
     z-index: -1;
