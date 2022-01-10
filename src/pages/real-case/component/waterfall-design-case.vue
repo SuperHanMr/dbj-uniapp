@@ -5,7 +5,7 @@
 			<view class="comment-like">
 				<view class="comment">
 					<view class="comment-icon">
-						<view class=".icon-gerenzhuye_anli_ic_pinglun icon_view">
+						<view class="icon-gerenzhuye_anli_ic_pinglun icon_view">
 							
 						</view>
 					</view>
@@ -15,7 +15,7 @@
 				</view>
 				<view class="like">
 					<view class="comment-icon">
-						<view class=".icon-gerenzhuye_anli_ic_dianzan icon_view">
+						<view class="icon-gerenzhuye_anli_ic_dianzan icon_view">
 							
 						</view>
 					</view>
