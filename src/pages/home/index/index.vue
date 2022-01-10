@@ -44,7 +44,7 @@
         </swiper-item>
       </swiper>
       <view v-if="bannerList.length>1" class="swiper-tab">
-        <image :class="['flex1', {'flex1-active': index==currentSwiper}]" v-for="(item,index) in bannerList" :key="index"
+        <image :class="['swiper-tab-flex1', {'flex1-active': index==currentSwiper}]" v-for="(item,index) in bannerList" :key="index"
           :src="index==currentSwiper?'https://ali-image.dabanjia.com/static/mp/dabanjia/images/theme-red/home/swiper_tab_ic_active.png':'https://ali-image.dabanjia.com/static/mp/dabanjia/images/theme-red/home/swiper_tab_ic.png'">
         </image>
       </view>
@@ -1086,7 +1086,7 @@
   .swiper-tab {
     position: absolute;
     bottom: 22rpx;
-    width: 200rpx;
+    // width: 200rpx;
     // height: 4rpx;
     left: 50%;
     // background: rgba(255, 255, 255, 0.4);
@@ -1095,7 +1095,7 @@
     display: flex;
     flex-direction: row;
     z-index: 500;
-		.flex1{
+		.swiper-tab-flex1{
 			width: 8rpx;
 			height: 6rpx;
 			margin-right: 4rpx;

@@ -169,7 +169,7 @@
         <image
           v-else
           class="endWork"
-          src="https://ali-image.dabanjia.com/static/mp/dabanjia/images/theme-red/home/end_work.webp"
+          src="https://ali-image.dabanjia.com/static/mp/dabanjia/images/theme-red/home/end_work.png"
         ></image>
       </view>
     </view>
