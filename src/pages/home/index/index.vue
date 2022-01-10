@@ -2,7 +2,7 @@
   <view style="background-color: #FFF;">
     <custom-navbar :opacity="Number(1)" :showBack="false" bgcolor="#FFF">
       <template v-slot:back>
-        <image class="icon_logo" src="https://ali-image.dabanjia.com/static/mp/dabanjia/images/home/dbj_logo_new.png"
+        <image class="icon_logo" src="https://ali-image.dabanjia.com/static/mp/dabanjia/images/theme-red/home/dbj_logo_new.png"
           mode="">
         </image>
       </template>
@@ -18,14 +18,15 @@
           {{citydata}}
         </view>
         <image v-if="citydata" class="icon_down"
-          src="https://ali-image.dabanjia.com/static/mp/dabanjia/images/home/hone_ic_down.png" mode="">
+          src="https://ali-image.dabanjia.com/static/mp/dabanjia/images/theme-red/home/home_ic_down.png" mode="">
         </image>
       </view>
       <image @click="toSearch" class="icon-search"
-        src="https://ali-image.dabanjia.com/static/mp/dabanjia/images/home/home_ic_search.png" mode=""></image>
+        src="https://ali-image.dabanjia.com/static/mp/dabanjia/images/theme-red/home/home_ic_search.png" mode=""></image>
       <image @click="toMessage" class="img"
-        src="https://ali-image.dabanjia.com/static/mp/dabanjia/images/home/online-server.png" mode="">
+        src="https://ali-image.dabanjia.com/static/mp/dabanjia/images/theme-red/home/online-server.png" mode="">
       </image>
+			<image src="https://ali-image.dabanjia.com/static/mp/dabanjia/images/theme-red/home/ic_bg_home.png" class="head-bg-home" mode=""></image>
     </view>
     <!-- 占位 -->
     <view :style="{height:navBarHeight}">
@@ -43,9 +44,9 @@
         </swiper-item>
       </swiper>
       <view v-if="bannerList.length>1" class="swiper-tab">
-        <view class="flex1" v-for="(item,index) in bannerList" :key="index"
-          :style="{backgroundColor:index==currentSwiper?'#FFF':'',borderRadius:index==currentSwiper?'2rpx':''}">
-        </view>
+        <image :class="['flex1', {'flex1-active': index==currentSwiper}]" v-for="(item,index) in bannerList" :key="index"
+          :src="index==currentSwiper?'https://ali-image.dabanjia.com/static/mp/dabanjia/images/theme-red/home/swiper_tab_ic_active.png':'https://ali-image.dabanjia.com/static/mp/dabanjia/images/theme-red/home/swiper_tab_ic.png'">
+        </image>
       </view>
     </view>
     <!-- 金刚区 -->
@@ -140,10 +141,11 @@
 				</image>
 				<view class="top-content">
 					<image class="top-content-img"
-						:src="item.mediaType==1?'https://ali-image.dabanjia.com/static/mp/dabanjia/images/home/living.gif':'https://ali-image.dabanjia.com/static/mp/dabanjia/images/home/live-repaly.png'">
+						:src="item.mediaType==1?'https://ali-image.dabanjia.com/static/mp/dabanjia/images/theme-red/home/living.gif':'https://ali-image.dabanjia.com/static/mp/dabanjia/images/theme-red/home/live-repaly.png'">
 						<view v-if="item.mediaType==1" class="text">
 		
-							{{item.roomLiveMediaVO.onLineCount||0}}人正在观看
+							{{item.roomLiveMediaVO.onLineCount||0}}
+							<!-- 人正在观看 -->
 						</view>
 						<view v-else class="text">
 							回放
@@ -800,8 +802,8 @@
   }
 
   .icon_down {
-    width: 28rpx;
-    height: 28rpx;
+    width: 24rpx;
+    height: 24rpx;
     flex-shrink: 0;
   }
 
@@ -816,6 +818,8 @@
     height: 48rpx;
     margin-right: 32rpx;
     margin-left: 40rpx;
+		position: relative;
+		z-index: 10;
   }
 
   .bottom-border {
@@ -846,11 +850,11 @@
 
     .item {
       flex-shrink: 0;
-      width: 248rpx;
-      height: 330rpx;
-      background: linear-gradient(213deg, #dfe4ed 0%, #f3f5f8 56%, #f8fafa 100%);
+      width: 200rpx;
+      height: 272rpx;
+      background: linear-gradient(180deg, rgba(81, 185, 224, 0.19) 0%, rgba(152, 199, 255, 0.113882) 100%);
       box-shadow: 0rpx 2rpx 32rpx -4rpx #e8eced;
-      border-radius: 16rpx;
+      border-radius: 12rpx;
       position: relative;
       overflow: hidden;
 
@@ -881,7 +885,8 @@
         top: 12rpx;
         left: 12rpx;
         height: 28rpx;
-        background: rgba(0, 0, 0, 0.35);
+				background: rgba(0, 0, 0, 0.7);
+				backdrop-filter: blur(8.15485px);
         // filter: blur(3rpx);
         border-radius: 8rpx;
         color: #ffffff;
@@ -1082,14 +1087,23 @@
     position: absolute;
     bottom: 22rpx;
     width: 200rpx;
-    height: 4rpx;
+    // height: 4rpx;
     left: 50%;
-    background: rgba(255, 255, 255, 0.4);
+    // background: rgba(255, 255, 255, 0.4);
     transform: translateX(-50%);
     border-radius: 2rpx;
     display: flex;
     flex-direction: row;
     z-index: 500;
+		.flex1{
+			width: 8rpx;
+			height: 6rpx;
+			margin-right: 4rpx;
+		}
+		.flex1-active{
+			width: 22rpx;
+			height: 6rpx;
+		}
   }
 
   .state-bar {
@@ -1105,11 +1119,20 @@
     padding: 6rpx 32rpx 6rpx 32rpx;
     border-bottom-left-radius: 32rpx;
     border-bottom-right-radius: 32rpx;
-
+		
     .img {
       width: 76rpx;
       height: 74rpx;
+			position: relative;
+			z-index: 10;
     }
+		.head-bg-home{
+			width: 284rpx;
+			height: 284rpx;
+			position: fixed;
+			right: 0;
+			z-index: 1;
+		}
   }
 
   .flex1 {
