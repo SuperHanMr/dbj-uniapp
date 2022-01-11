@@ -8,7 +8,7 @@
 		</custom-navbar>
 		<view>
 
-			<view class="basic-info" :style="{backgroundImage:'https://ali-image.dabanjia.com/static/mp/dabanjia/images/theme-red/decorate/order_bg.png',backgroundSize: '100% 100%'}">
+			<view class="basic-info" :style="{backgroundImage:'url(https://ali-image.dabanjia.com/static/mp/dabanjia/images/theme-red/decorate/order_bg.png)',backgroundSize: '100% 100%'}">
 				<view class="navbar-height" >
 				</view>
 				<view class="info">
@@ -427,11 +427,11 @@
 
 	.placehold {
 		margin-top: 20rpx;
-		height: 20rpx;
+		height: 32rpx;
 		width: 100%;
 		background-color: #FFF;
-		border-top-right-radius: 20rpx;
-		border-top-left-radius: 20rpx;
+		border-top-right-radius: 32rpx;
+		border-top-left-radius: 32rpx;
 	}
 
 	.info-content {
