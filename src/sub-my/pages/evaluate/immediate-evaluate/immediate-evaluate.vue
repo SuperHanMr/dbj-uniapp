@@ -474,7 +474,7 @@ export default {
     line-height: 88rpx;
     box-sizing: border-box;
 		font-weight: 500;
-		background: linear-gradient(99deg, #00CCBE 0%, #00C2BF 100%);
+		background: linear-gradient(117.02deg, #FA3B34 24.56%, #FF6A33 92.21%);
     border-radius: 12rpx;
     font-size: 32rpx;
     text-align: center;

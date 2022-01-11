@@ -36,7 +36,7 @@
 							</view>
 						</view>
 					</view>	
-					<view class="line"></view>
+					<!-- <view class="line"></view> -->
 				</view> 
 				<view class="refund-price">
 					<text style="margin-right:8rpx;">退款金额</text>
@@ -99,7 +99,7 @@
 		<view class="empty-container" v-else>
 			<view class="line" />
 			<view class="show">
-				<image src="../../static/empty_page@2x.png" mode=""></image>
+				<image src="/static/empty_page@2x.png" mode=""></image>
 				<text>您还没有退款记录</text>
 			</view>
 		</view>
@@ -260,15 +260,15 @@
 		height: 100%;
 		.order-container{
 			background-color: #FFFFFF;
+			border-radius: 40rpx;
 		}
 	}
 	
 	.header {
-		height: 96rpx;
+		// height: 96rpx;
 		margin-top: 16rpx;
-		padding: 28rpx 32rpx;
+		padding: 28rpx 32rpx 0;
 		box-sizing: border-box;
-		background-color: #fafafa;
 		display: flex;
 		align-items: center;
 		justify-content: space-between;
@@ -310,6 +310,7 @@
 			.pic{
 				margin-right: 16rpx;
 				image{
+					display: block;
 					width: 136rpx;
 					height: 136rpx;
 					border-radius: 8rpx;
@@ -342,8 +343,9 @@
 							margin-right: 8rpx;
 							line-height: 30rpx;
 							border-radius: 4rpx;
-							border: 0.5px solid #35c4c4;
-							color: #35c4c4;
+							color: #212121;
+							font-weight: 500;
+							background: linear-gradient(90deg, #BDD9E5 0%, #CDEFCE 94.34%);
 							font-size: 20rpx;
 							text-align: center;
 							display: inline-block;
@@ -363,14 +365,10 @@
 				}
 			}
 		}
-		.line{
-			height: 0.5px;
-			background: #F4F4F4;
-		}
 	}
 	.refund-price{
-		padding: 26rpx 32rpx;
-		height: 78rpx;
+		padding: 0 32rpx 26rpx;
+		// height: 78rpx;
 		box-sizing: border-box;
 		text-align: right;
 		color: #999999;
@@ -433,7 +431,7 @@
 		flex-flow: row nowrap;
 		justify-content:  flex-end;
 		padding:32rpx;
-		// text-align: right;
+		border-radius: 40rpx;
 		background-color: #ffffff;
 		
 		.button-container{

@@ -34,8 +34,8 @@
         <text>第{{priceList[index]}}笔支付金额：</text>
         <view
           class="price"
-          :style="{color:item.status==0?'#FF3347':'#333333'}"
         >
+         <!-- :style="{color:item.status==0?'#FF3347':'#333333'}" -->
           <text>￥</text>
           <text class="price-font">
             <text style="font-size: 40rpx;font-weight: 500;">{{handlePrice(item.amount)[0]}}.</text>
@@ -270,7 +270,7 @@ export default {
 .container {
   height: 100%;
   overflow-y: auto;
-  background-color: #f2f2f2;
+  // background-color: #f2f2f2;
 
   .remainTime-container {
     height: 60rpx;
@@ -315,6 +315,7 @@ export default {
 
       .price {
         font-size: 26rpx;
+				color: #333333;
       }
     }
 
@@ -331,7 +332,7 @@ export default {
         height: 56rpx;
         line-height: 56rpx;
         text-align: center;
-        background: linear-gradient(135deg, #36d9cd 0%, #28c6c6 100%);
+        background: linear-gradient(270deg, #FF6519 -0.66%, #FA462A 98.78%);
         border-radius: 12rpx;
         color: #ffffff;
         font-weight: 500;

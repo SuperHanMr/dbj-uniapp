@@ -110,7 +110,7 @@
       </view>
       <view v-if="data.totalActualIncomeAmount">
         <text style="margin-right: 12rpx;color:#333333;">剩余支付金额</text>
-        <text style="color: #FF3347;" class="price-font" >
+        <text style="color: #F83112;" class="price-font" >
           <text>￥</text>
           <text style="font-size: 40rpx;">{{handlePrice(data.payAmount)[0]}}.</text>
           <text>{{handlePrice(data.payAmount)[1]}}</text>
@@ -119,12 +119,12 @@
 
       <view v-if="!data.totalActualIncomeAmount">
         <text style="margin-right: 12rpx;color:#333333;">需付款</text>
-        <text v-if="payPrice" class="price-font" style="color: #FF3347;" >
+        <text v-if="payPrice" class="price-font" style="color: #F83112;" >
           <text>￥</text>
           <text style="font-size: 40rpx;">{{handlePrice(payPrice)[0]}}.</text>
           <text>{{handlePrice(payPrice)[1]}}</text>
         </text>
-        <text v-else style="color: #FF3347;" class="price-font">
+        <text v-else style="color: #F83112;" class="price-font">
           <text>￥</text>
           <text style="font-size: 40rpx;">{{handlePrice(data.payAmount)[0]}}.</text>
           <text>{{handlePrice(data.payAmount)[1]}}</text>
@@ -136,7 +136,7 @@
     <view v-else class="footer">
       <view v-if="orderFailed">
         <text style="margin-right: 12rpx;">实付款</text>
-        <text style="color: #FF3347;" class="price-font" >
+        <text style="color: #F83112;" class="price-font" >
           <text>￥</text>
           <text style="font-size: 40rpx;" class="price-font">{{handlePrice(data.payAmount)[0]}}.</text>
           <text class="price-font">{{handlePrice(data.payAmount)[1]}}</text>
@@ -144,7 +144,7 @@
       </view>
       <view v-else>
         <text style="margin-right: 12rpx;">实付</text>
-        <text style="color: #FF3347;" class="price-font">
+        <text style="color: #F83112;" class="price-font">
           <text>￥</text>
           <text style="font-size: 40rpx;" class="price-font">{{handlePrice(data.actuallyPayAmount)[0]}}.</text>
           <text class="price-font">{{handlePrice(data.actuallyPayAmount)[1]}}</text>

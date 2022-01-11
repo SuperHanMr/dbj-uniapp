@@ -1,5 +1,5 @@
 <template>
-	<view >
+	<view class="container" >
 		<view class="evaluate-container" v-if="evaluateList.length">
 			<view class="evaluate-item" v-for="item in evaluateList" :key="item.id">
 				<view class="header">
@@ -39,8 +39,8 @@
 		
 		<view class="empty-container" v-else>
 			<view class="empty-page">
-				<image src="../../static/empty_page@2x.png" mode=""></image>
-				<text>暂无相关订单</text>
+				<image src="../../static/img_noOrder.svg" mode=""></image>
+				<text>您暂时没有相关订单哦～</text>
 			</view>
 		</view>
 	</view>
@@ -117,8 +117,12 @@
 </script>
 
 <style lang="scss" scoped>
+	.container{
+		height: 100%;
+		background-color: #FFFFFF;
+	}
 	.evaluate-container{
-		
+		background-color: #E3E3E3;
 		.evaluate-item{
 			background-color: #FFFFFF;
 		}
@@ -189,7 +193,7 @@
 				padding: 0;
 			}
 			.immediate-evaluate{
-				background: linear-gradient(99deg, #00CCBE 0%, #00C2BF 100%);   	
+				background: linear-gradient(116.19deg, #F83112 16.48%, #FD6421 83.52%) 	
 			}
 			.review-detail{
 				color: #333333;
@@ -206,22 +210,21 @@
 	}
 	
 	page{
-		background-color: #ffff !important;
+		background-color: #ffffff !important;
 	}
 	.empty-container{
 		width: 100%;
 		height: 100%;
 		background-color: #fff;
 		.empty-page{
-			padding: 484rpx 254rpx 800rpx 256rpx;
+			padding: 362rpx 176rpx 0 174rpx;
 			display: flex;
 			flex-flow: column nowrap;
 			align-items: center;
 			image{
-				width: 240rpx;
-				height: 240rpx;
+				width: 400rpx;
+				height: 400rpx;
 				object-fit: cover;
-				margin-bottom: 24rpx;
 			}
 			text{
 				height: 40rpx;

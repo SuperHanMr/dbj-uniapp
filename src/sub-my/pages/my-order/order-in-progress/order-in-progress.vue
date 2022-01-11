@@ -9,7 +9,7 @@
 			</template>
 		</custom-navbar>
 
-		<view style="position: relative;" :style="{backgroundImage:`url(${bgImg})`,backgroundSize: '100% 100%'}">
+		<view style="position: relative;" >
 			<!-- 占位 -->
 			<view class="bgcStyle" :style="{backgroundImage:`url(${bgImg})`,backgroundSize: '100% 100%'}" />
 			<view :style="{height:navBarHeight}"></view>
@@ -133,7 +133,7 @@
 				navBarHeight: "",
 				scrollTop: 0,
 				headerTitle: "",
-				bgImg: "https://ali-image.dabanjia.com/static/mp/dabanjia/images/decorate/order_bg_orange.png",
+				bgImg: "../../../static/order_bg.png",
 			};
 		},
 
@@ -363,7 +363,8 @@
 
 		.bgcStyle {
 			width: 100%;
-			height: 32rpx;
+			height: 116%;
+			// height: 32rpx;
 			position: absolute;
 			bottom: -32rpx;
 			z-index: -1;

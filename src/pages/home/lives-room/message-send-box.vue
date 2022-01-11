@@ -123,6 +123,7 @@
 		color: #111;
 		height: 80rpx;
 		max-height: 180rpx;
+		caret-color: #FA4D32;
 	}
 
 	.reply-send-input-placeholder-live {

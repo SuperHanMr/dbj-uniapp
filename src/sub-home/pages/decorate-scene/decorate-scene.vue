@@ -33,7 +33,7 @@
       >
         <image
           class="toConstruction"
-          src="https://ali-image.dabanjia.com/static/mp/dabanjia/images/home/ic_construction_drawings%402x.png"
+          src="https://ali-image.dabanjia.com/static/mp/dabanjia/images/theme-red/home/ic_construction_drawings%402x.png"
         ></image>
         <view class="text">施工图纸</view>
       </view>
@@ -43,7 +43,7 @@
       >
         <image
           class="toCost"
-          src="https://ali-image.dabanjia.com/static/mp/dabanjia/images/home/ic_cost_statistics%402x.png"
+          src="https://ali-image.dabanjia.com/static/mp/dabanjia/images/theme-red/home/ic_cost_statistics%402x.png"
         ></image>
         <view class="text">花销统计</view>
       </view>
@@ -53,7 +53,7 @@
       >
         <image
           class="toDecorate"
-          src="https://ali-image.dabanjia.com/static/mp/dabanjia/images/home/ic_decorate_calendar%402x.png"
+          src="https://ali-image.dabanjia.com/static/mp/dabanjia/images/theme-red/home/ic_decorate_calendar%402x.png"
         ></image>
         <view class="text">装修日历</view>
       </view>
@@ -63,7 +63,7 @@
       >
         <image
           class="toVideoSite"
-          src="https://ali-image.dabanjia.com/static/mp/dabanjia/images/home/ic_video_site%402x.png"
+          src="https://ali-image.dabanjia.com/static/mp/dabanjia/images/theme-red/home/ic_video_site%402x.png"
         ></image>
         <view class="text">工地视频</view>
       </view>
@@ -73,7 +73,7 @@
       <view class="content">
         <image
           class="startWork"
-          src="https://ali-image.dabanjia.com/static/mp/dabanjia/images/home/start_work%402x.png"
+          src="https://ali-image.dabanjia.com/static/mp/dabanjia/images/theme-red/home/start_work.webp"
         ></image>
         <view class="mainWrap">
           <view class="nodeType">
@@ -164,12 +164,12 @@
         <image
           v-if="projectInfo.projectStatus === 3"
           class="endWork"
-          src="https://ali-image.dabanjia.com/static/mp/dabanjia/images/home/end_active.png"
+          src="https://ali-image.dabanjia.com/static/mp/dabanjia/images/theme-red/home/end_active.webp"
         ></image>
         <image
           v-else
           class="endWork"
-          src="https://ali-image.dabanjia.com/static/mp/dabanjia/images/home/end_work%402x.png"
+          src="https://ali-image.dabanjia.com/static/mp/dabanjia/images/theme-red/home/end_work.png"
         ></image>
       </view>
     </view>
@@ -330,14 +330,14 @@
             class="decorate_service"
             @click="toDecorateService"
           >
-            <image src="https://ali-image.dabanjia.com/static/mp/dabanjia/images/home/ic_decorate_service%402x.png"></image>
+            <image src="https://ali-image.dabanjia.com/static/mp/dabanjia/images/theme-red/home/ic_decorate_service.png"></image>
             <view>进行装修服务</view>
           </view>
           <view
             class="checkRoom_service"
             @click="toCheckRoomService"
-          >
-            <image src="https://ali-image.dabanjia.com/static/mp/dabanjia/images/home/ic_checkRoom_service%402x.png"></image>
+          > 
+            <image src="https://ali-image.dabanjia.com/static/mp/dabanjia/images/theme-red/home/ic_checkRoom_service.png"></image>
             <view>进行验房服务</view>
           </view>
         </view>
@@ -395,7 +395,7 @@
         >
           <image
             class="noCommentImg"
-            src="https://ali-image.dabanjia.com/static/mp/dabanjia/images/decorate/pic_empty%402x.png"
+            src="https://ali-image.dabanjia.com/static/mp/dabanjia/images/theme-red/decorate/pic_empty%402x.png"
           ></image>
           <view class="noCommentText">暂无评论~</view>
         </view>
@@ -1238,13 +1238,14 @@ export default {
   width: 100%;
   height: 36rpx;
   margin: 24rpx 316rpx;
-  font-size: 26rpx;
-  color: #999999;
+  font-size: 24rpx;
+  color: #CBCCCC;
 }
 .popupComments .noCommentImg {
-  width: 750rpx;
-  height: 492rpx;
+  width: 400rpx;
+  height: 400rpx;
   display: block;
+	margin: 0 auto;
 }
 .popupComments .topArea {
   height: 120rpx;
@@ -1684,9 +1685,9 @@ export default {
 }
 .content > image {
   width: 40rpx;
-  height: 72rpx;
+  height: 90rpx;
   display: block;
-  margin-top: 20rpx;
+  margin-top: 13rpx;
   margin-left: 32rpx;
 }
 .content .endWork {

@@ -5,8 +5,8 @@
 				<view v-for="(item,index) in videoTypeList" :key="item.id" class="tab-item"
 					:class="index==currentTab?'selected-tab':'nomal-tab'" @click="onTab(index)">
 					<text>{{item}}</text>
-					<view v-if="index==currentTab" class="current-select">
-					</view>
+					<image v-if="index==currentTab" class="current-select" src="/static/images/real-case/select_head.png">
+					</image>
 				</view>
 			</scroll-view>
 		</view>
@@ -21,7 +21,7 @@
 				</view>
 				<scroll-view class="scroll-view" :enable-back-to-top="true" scroll-y="true" lower-threshold="10"
 					refresher-background="#FFF" refresher-enabled="true" :refresher-triggered="triggered"
-					@scroll="onScroll" @refresherrefresh="onRefresh" @scrolltolower="onLoadMore">
+					 @refresherrefresh="onRefresh" @scrolltolower="onLoadMore">
 					<view class="goods-list">
 						<view v-for="(item,index) in videoList"
 							:class="{'margin-left24':index%2==0,'margin-left16':index%2==1}" :key="index" class="item"
@@ -34,14 +34,15 @@
 
 								<view v-if="item.mediaType==1" class="top-content">
 									<image class="top-content-img-living"
-										src="https://ali-image.dabanjia.com/static/mp/dabanjia/images/home/living.gif">
+										src="https://ali-image.dabanjia.com/static/mp/dabanjia/images/theme-red/home/living.gif">
 									</image>
-									{{item.roomLiveMediaVO.onLineCount||0}}人在看
+									{{item.roomLiveMediaVO.onLineCount||0}}
+									<!-- 人在看 -->
 								</view>
 
 								<view v-if="item.mediaType==2" class="top-content">
 									<image class="top-content-img"
-										src="https://ali-image.dabanjia.com/static/mp/dabanjia/images/home/live-repaly.png">
+										src="https://ali-image.dabanjia.com/static/mp/dabanjia/images/theme-red/home/live-repaly.png">
 									</image>
 									<view>回放</view>
 									<view style="margin-left: 8rpx;">{{item.roomVideoMediaVO.viewsCount}}人在看</view>
@@ -341,7 +342,8 @@
 					left: 20rpx;
 					padding: 0 8rpx 0 0;
 					height: 28rpx;
-					background: rgba(0, 0, 0, 0.35);
+					background: rgba(0, 0, 0, 0.7);
+					backdrop-filter: blur(8.15485px);
 					border-radius: 8rpx;
 					font-weight: 400;
 					color: #ffffff;
@@ -395,11 +397,8 @@
 		right: 0;
 		bottom: 0;
 		width: 32rpx;
-		height: 4rpx;
-		background: linear-gradient(129deg, #00cdec 0%, #00ed7d 92%);
-		border-radius: 200rpx 200rpx 0rpx 0rpx;
-		left: 50%;
-		transform: translate(-50%, -50%);
+		height: 6rpx;
+		left: calc((50% - 8px));
 	}
 
 	.nomal-tab {

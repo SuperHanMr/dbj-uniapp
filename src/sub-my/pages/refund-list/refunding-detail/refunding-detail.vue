@@ -9,7 +9,7 @@
 		</custom-navbar>
 
 		<view class="order-container" :style="{paddingBottom:containerPaddingBottom}" >
-			<view  style="position: relative;" :style="{backgroundImage:`url(${bgImg})`,backgroundSize: '100% 100%'}">
+			<view  style="position: relative;">
 				<view class="bgcStyle" :style="{backgroundImage:`url(${bgImg})`,backgroundSize: '100% 100%'}"/>
 				<view :style="{height:navBarHeight}"></view>
 				<view class="order-status">
@@ -81,7 +81,7 @@ export default {
 			navBarHeight:"",
 			scrollTop: 0,
 			headerTitle:"",
-			bgImg:'https://ali-image.dabanjia.com/static/mp/dabanjia/images/decorate/order_bg_orange.png'
+			bgImg: "../../../static/order_bg.png",
     };
   },
 
@@ -221,7 +221,8 @@ export default {
 <style lang="scss" scoped>
 	.bgcStyle{
 		width: 100%;
-		height: 32rpx;
+		height: 116%;
+		// height: 32rpx;
 		position: absolute;
 		bottom: -32rpx;
 		z-index: -1;
@@ -358,7 +359,7 @@ export default {
 		overflow: auto;
     .order-status {
       width: 100%;
-      height: 140rpx;
+      // height: 140rpx;
       color: #ffffff;
       background-size: 100% 172rpx;
       display: flex;
@@ -376,7 +377,7 @@ export default {
         display: flex;
         flex-flow: row nowrap;
         align-items: center;
-        margin-bottom: 8rpx;
+        margin-bottom: 32rpx;
         image {
           width: 64rpx;
           height: 64rpx;
@@ -421,7 +422,7 @@ export default {
         color: #ffffff;
         font-size: 32rpx;
         font-weight: 500;
-        background: linear-gradient(135deg, #53d5cc 0%, #4fc9c9 100%);
+        background: linear-gradient(117.02deg, #FA3B34 24.56%, #FF6A33 92.21%);
         border-radius: 12rpx;
       }
     }

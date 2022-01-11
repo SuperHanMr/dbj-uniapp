@@ -8,7 +8,7 @@
     </custom-navbar>
 
     <view class="order-container" :style="{paddingBottom:112+containerBottom+'rpx'}">
-      <view style="position: relative;" :style="{backgroundImage:`url(${bgImg})`,backgroundSize: '100% 100%'}">
+      <view style="position: relative;">
         <view class="bgcStyle" :style="{backgroundImage:`url(${bgImg})`,backgroundSize: '100% 100%'}" />
         <view :style="{height:navBarHeight}"></view>
         <view class="order-status">
@@ -18,7 +18,7 @@
           </view>
           <view class="time" v-if="orderInfo.showCancelOrderTime">
             <text style="margin-right: 16rpx;">剩余支付时间</text>
-            <count-down :start="orderInfo.remainTime" @finish="goToCancelDetail"></count-down>
+            <count-down class="countStyle" :start="orderInfo.remainTime" @finish="goToCancelDetail"></count-down>
           </view>
         </view>
       </view>
@@ -148,12 +148,14 @@
         <text>支付方式</text>
 
         <view v-if="payChannel " class="flex-center">
-          <image class="card-img" src="https://ali-image.dabanjia.com/static/mp/dabanjia/images/classify/ic_card.png"
-            mode=""></image><text>储值卡支付</text>
+          <!-- <image class="card-img" src="https://ali-image.dabanjia.com/static/mp/dabanjia/images/classify/ic_card.png"
+            mode=""></image> -->
+					<text>储值卡支付</text>
 
         </view>
         <view v-else>
-          <view class="wechat_icon"></view><text>微信支付</text>
+          <!-- <view class="wechat_icon"></view> -->
+					<text>微信支付</text>
         </view>
       </view>
       <view class='remarks'>
@@ -240,7 +242,7 @@
         bottomStyle: "",
         scrollTop: 0,
         headerTitle: "",
-        bgImg: "https://ali-image.dabanjia.com/static/mp/dabanjia/images/decorate/order_bg_orange.png",
+        bgImg: "../../../static/order_bg.png",
         cardClick: false, //是否选中储值卡
         haveCard: false, //是否有会员卡
         cardBalance: 11111111, //会员卡余额
@@ -702,7 +704,8 @@
 
   .bgcStyle {
     width: 100%;
-    height: 32rpx;
+		height: 116%;
+    // height: 345rpx;
     position: absolute;
     bottom: -32rpx;
     z-index: -1;
@@ -743,7 +746,7 @@
           display: flex;
           flex-flow: row nowrap;
           align-items: center;
-          margin-bottom: 8rpx;
+          margin-bottom: 16rpx;
 
           image {
             width: 64rpx;
@@ -765,9 +768,22 @@
           line-height: 40rpx;
           font-size: 24rpx;
           font-weight: 400;
+					padding-left:4rpx;
+					box-sizing: border-box;
           display: flex;
           flex-flow: row nowrap;
           align-items: center;
+					.countStyle{
+						width: 154rpx;
+						height: 40rpx;
+						padding-left:4rpx;
+						box-sizing: border-box;
+						border-radius: 8rpx;
+						background: rgba(255, 255, 255, 0.06);
+						background-blend-mode: darken;
+						mix-blend-mode: normal;
+						border: 1px solid rgba(255, 255, 255, 0.3);
+					}
         }
       }
 
@@ -973,12 +989,12 @@
 
     .gotoPay {
       width: 248rpx;
-      height: 88rpx;
-      line-height: 88rpx;
-      font-size: 32rpx;
+      height: 80rpx;
+      line-height: 80rpx;
+      font-size: 30rpx;
       text-align: center;
       color: #ffffff;
-      background: linear-gradient(99deg, #00ccbe 0%, #00c2bf 100%);
+			background: linear-gradient(117.02deg, #FA3B34 24.56%, #FF6A33 92.21%);
       border-radius: 12rpx;
     }
   }
