@@ -2,13 +2,17 @@
 	<view class="fill">
 		<view class="tab-container">
 			<view class="top-tab">
-				<view v-for="(itemTab,index) in tabList" :key="index" class="item" :class="{selected:index==currentIndex}"
-					@click="currentIndex=index">
+				<view v-for="(itemTab,index) in tabList" :key="index" class="item"
+					:class="{selected:index==currentIndex}"
+					@click="currentIndex=index"
+				>
 					<view class="tab-text">
 						{{itemTab.title}}
 					</view>
 
-					<view class="bottom-icon" />
+				<view class="bottom-icon"
+				 :style="{backgroundImage:`url(${bgcIcon})`,backgroundSize: '100% 100%'}"
+				/>
 				</view>
 			</view>
 			<view class="edit-btn" v-if="currentList.length >= 1">
@@ -147,6 +151,7 @@
 				height:"",
 				systemBottom: "",
 				firstEntry: false,
+				bgcIcon:"../../../static/selectIcon.svg",
 			};
 		},
 

@@ -11,7 +11,10 @@
 						</view>
 						<view class="money">
 							<text class="symbol fs-26">￥</text>
-							<text class="amount fs-38">{{selectSkuInfo[cbPrice]/100}}/{{selectSkuInfo[cbUnit]}}</text>
+							<!-- <text class="amount fs-38">{{(selectSkuInfo[cbPrice])/100}}</text> -->
+							<text class="amount fs-38"> {{ handlePrice(selectSkuInfo.price/100)[0]}}.</text>
+							<text class="amount fs-28"> {{ handlePrice(selectSkuInfo.price/100)[1]}}</text>
+							<text class="amount fs-28">/{{ selectSkuInfo[cbUnit]}}</text>
 						</view>
 						<!-- <view class="fs-24">
 							已选："{{selectSkuInfo[cbValue]}}"
@@ -24,17 +27,18 @@
 					<view class="sku-item container" v-for="(sku,speIdx) in mySpecifications" :key="sku[speId]">
 						<view class="sku-name">{{sku[speName]}}</view>
 						<view class="sku-content">
-							<text 
+							<view 
 								class="sku-content-item" 
 								v-for="(item,index) in sku[speList]"
 								:key="item.id" 
 								:style="{
-									borderColor: item.checked? '#35c4c4': '#fff',
-									color: item.checked?'#34c4c4':'#333333',
-									backgroundColor: item.checked?'#e8fafa':'#f5f5f5' 
+									borderColor: item.checked? '#333333': '#E8E8E8',
+									fontWeight:item.checked?'500':'normal'
 								}" 
 								@click="selectSkuCli(sku.id,speIdx,item.id,index)"
-							>{{item.value}}</text>
+							>{{item.value}}
+								<image  v-if="item.checked" src="../../static/productAttributeSelected.svg" mode=""></image>
+							</view>
 						</view>
 					</view>
 					<view class="bottom-space"></view>
@@ -148,9 +152,18 @@
 			},
 		},
 		methods: {
+			handlePrice(price) {
+			  let list = String(price).split(".");
+			  if (list.length == 1) {
+			    return [list[0], "00"];
+			  } else {
+			    return [list[0], list[1]];
+			  }
+			},
 			initSkuData() {
 				this.selectedIndex = this.defaultSelectIndex
 				this.selectSkuInfo = this.combinations[this.selectedIndex]
+				console.log("this.selectSkuInfo==",this.selectSkuInfo)
 				this.skuId = this.selectSkuInfo.id
 				
 				let defaultSpecIds = this.defaultSpecIds.split(',')
@@ -267,6 +280,7 @@
 		background-color: white;
 		padding-bottom: 92rpx;
 		font-size: 28rpx;
+		border-radius: 32rpx;
 		color: #333333;
 		.sku-header {
 			display: flex;
@@ -298,25 +312,27 @@
 				line-height: 40rpx;
 				text-overflow: ellipsis;
 				.goodsType{
+					display: inline-block;
 					width: 60rpx;
 					height: 30rpx;
-					padding: 0 10rpx;
+					line-height: 30rpx;
+					text-align: center;
 					margin-right: 4rpx;
-					border: 2rpx solid #35c4c4;
 					border-radius: 4rpx;
+					background: linear-gradient(90.48deg, #B4EEE1 0.28%, #EAFCD7 99.48%);
 					font-size: 20rpx;
-					font-weight: 500;
-					color: #35c4c4;
-					line-height: 28rpx;
-					text-align:center;
+					font-weight: 600;
+					color: #222222;
 				}
 				
 			}
 			.money {
 				font-size: 28rpx;
-				color:#FF3347;
 				border: none;
 				padding-bottom: 0;
+				text{
+					color:#333333;
+				}
 			}
 			.stock {
 				color: $font-color-light;
@@ -332,6 +348,7 @@
 			padding: 8rpx 0;
 			.sku-name {
 				color: #333333;
+				font-weight: 500;
 				font-size: 28rpx;
 				margin-bottom:12rpx;
 			}
@@ -340,10 +357,22 @@
 				flex-wrap: wrap;
 				@extend .flex-center;
 				.sku-content-item {
+					display: inline-block;
+					color: #333333;
+					background-color: #FFFFFF;
 					padding: 16rpx 32rpx 16rpx 32rpx;
 					border-radius: 8rpx;
-					margin-right: 12rpx;
+					margin-right: 16rpx;
+					margin-bottom: 32rpx;
 					border: 2rpx solid transparent;
+					position: relative;
+					image{
+						position: absolute;
+						width:28rpx;
+						height: 20rpx;
+						right: -2rpx;
+						bottom: -2rpx;
+					}
 				}
 			}
 			&.count {

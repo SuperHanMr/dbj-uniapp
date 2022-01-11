@@ -216,7 +216,7 @@
     width: calc(100% - 64rpx);
     height: 88rpx;
     line-height: 88rpx;
-    background: linear-gradient(135deg, #00c2b2, #00c2bf);
+    background: linear-gradient(115.75deg, #FA3B34 -3.13%, #FF6A33 92.1%);
     border-radius: 12rpx;
     font-size: 32rpx;
     font-family: PingFangSC, PingFangSC-Medium;

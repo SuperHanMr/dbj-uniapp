@@ -169,14 +169,14 @@
         :showPayType="true"
       />
 
-      <view v-if=" orderInfo.showRefundBtn " class="applyforRefund-container" :style="{paddingBottom:systemBottom,height:systemHeight}">
+      <view v-if=" orderInfo.showRefundBtn " class="applyforRefund-container" :style="{paddingBottom:systemBottom,}">
         <view class="applyforRefund" @click="toApplayForRefund(orderInfo,2)" >
           申请退款
         </view>
 			</view>
 
 			<!-- 申请售后的按钮 -->
-			<view v-if="orderInfo.showApplyAfterSalesBtn" class="applyforRefund-container" :style="{paddingBottom:systemBottom,height:systemHeight}">
+			<view v-if="orderInfo.showApplyAfterSalesBtn" class="applyforRefund-container" :style="{paddingBottom:systemBottom,}">
 			  <view class="applyforRefund" @click="toApplyForAfterSales()" >
 			    申请售后
 			  </view>

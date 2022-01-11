@@ -6,8 +6,11 @@
         <view class="radio-item" v-for="(item, index) in items" :class="{last:item.value==='其他'}" :key="item.value"
           @click="radioChange(item)">
           <view class="text">{{item.label}}</view>
-          <view class="circle" :class="{isActive:currentId===item.value}">
+          <view class="circle" v-if="currentId!==item.value" >
             <view></view>
+          </view>
+          <view class="circle" v-else>
+            <image src="https://ali-image.dabanjia.com/static/mp/dabanjia/images/theme-red/decorate/ic_checked.svg" mode=""></image>
           </view>
         </view>
       </view>
@@ -320,7 +323,7 @@
   .add-btn {
     // margin-top: 20rpx;
     height: 88rpx;
-    background: linear-gradient(135deg, #53d5cc, #4fc9c9);
+    background: linear-gradient(115.75deg, #FA3B34 -3.13%, #FF6A33 92.1%);
     border-radius: 12rpx;
     width: 686rpx;
     line-height: 88rpx;
