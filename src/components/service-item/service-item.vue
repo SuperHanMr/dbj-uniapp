@@ -223,10 +223,10 @@
   color: red;
 }
 .shouldsure {
-  color: #00C2B8;
+  color: #FA4D32;
 }
 .inservice {
-  color: #00C2B8;
+  color: #FA4D32;
 }
 .uncheck{
   color: red;

@@ -2,7 +2,7 @@
   <view v-if="isLogin">
     <view class="decorate-index" v-if="estateList.length > 0">
       <image class="bg-index" mode="aspectFit"
-        src="https://ali-image.dabanjia.com/static/mp/dabanjia/images/decorate/bg%402x-4.png">
+        src="https://ali-image.dabanjia.com/static/mp/dabanjia/images/theme-red/decorate/bg%402x-4.png">
       </image>
       <view class="content flex-column">
         <view class="house-firend">
@@ -69,18 +69,18 @@
               </view>
               <view class="my-warehouse">
                 <mwarehouse-btn
-                  iconUrl="https://ali-image.dabanjia.com/static/mp/dabanjia/images/decorate/ic_ck_dfh.svg"
+                  iconUrl="https://ali-image.dabanjia.com/static/mp/dabanjia/images/theme-red/decorate/ic_ck_dfh.svg"
                   @gotoPage="gotoPage('0')" name="待发货">
                 </mwarehouse-btn>
                 <mwarehouse-btn
-                  iconUrl="https://ali-image.dabanjia.com/static/mp/dabanjia/images/decorate/ic_ck_dsh.svg"
+                  iconUrl="https://ali-image.dabanjia.com/static/mp/dabanjia/images/theme-red/decorate/ic_ck_dsh.svg"
                   @gotoPage="gotoPage('1')" name="待收货">
                 </mwarehouse-btn>
                 <mwarehouse-btn
-                  iconUrl="https://ali-image.dabanjia.com/static/mp/dabanjia/images/decorate/ic_ck_ysh.svg"
+                  iconUrl="https://ali-image.dabanjia.com/static/mp/dabanjia/images/theme-red/decorate/ic_ck_ysh.svg"
                   @gotoPage="gotoPage('2')" name="已收货">
                 </mwarehouse-btn>
-                <mwarehouse-btn iconUrl="https://ali-image.dabanjia.com/static/mp/dabanjia/images/decorate/ic_ck_tk.svg"
+                <mwarehouse-btn iconUrl="https://ali-image.dabanjia.com/static/mp/dabanjia/images/theme-red/decorate/ic_ck_tk.svg"
                   @gotoPage="gotoPage('3')" name="退款">
                 </mwarehouse-btn>
               </view>
@@ -115,11 +115,11 @@
               购买相关服务 即刻开启装修
             </view>
             <guide-card v-if="availGuides.includes('design')" cardType="service"
-              imageUrl="https://ali-image.dabanjia.com/static/mp/dabanjia/images/theme-red/decorate/ic_myhouse_design2.webp"
+              imageUrl="https://ali-image.dabanjia.com/static/mp/dabanjia/images/theme-red/decorate/ic_myhouse_design2.png"
               @buyNow="gonohousedecatore('design')">
             </guide-card>
             <guide-card v-if="availGuides.includes('actuary')" cardType="actuary"
-              imageUrl="https://ali-image.dabanjia.com/static/mp/dabanjia/images/theme-red/decorate/ic_myhouse_actuary2.webp"
+              imageUrl="https://ali-image.dabanjia.com/static/mp/dabanjia/images/theme-red/decorate/ic_myhouse_actuary2.png"
               @buyNow="gonohousedecatore('actuary')">
             </guide-card>
           </view>

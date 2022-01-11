@@ -1,6 +1,6 @@
 <template>
   <view class="view-item">
-    <view class="title" :style="{background:color}">{{title}}
+    <view class="title" :style="{background:backgroundColor,color:color}">{{title}}
       <text>({{data.value}}项)</text>
     </view> 
     <view class="list">
@@ -21,6 +21,7 @@
 <script>
   export default {
     props: {
+      backgroundColor:'',
       color: '',
       title: '',
       data: {
