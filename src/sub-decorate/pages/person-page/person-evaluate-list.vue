@@ -111,7 +111,7 @@
         font-size: 32rpx;
       }
       .right{
-        color: #21C091;
+        color: #FF7F46;
         font-size: 28rpx;
         font-weight: 500;
       }

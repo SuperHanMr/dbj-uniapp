@@ -36,9 +36,9 @@
         符合项({{data[0].value}})</view>
     </view>
     <view class="text-content" v-if="isLoading">
-      <deliverCard id="major-hazard" color="#CA3737" title="重大隐患" :data='data[2]'></deliverCard>
-      <deliverCard id="hazard" color="#F6A93B" title="隐患" :data='data[1]'></deliverCard>
-      <deliverCard id="conform" color="#348BE2" title="符合项" :data='data[0]'></deliverCard>
+      <deliverCard id="major-hazard" backgroundColor="linear-gradient(90.02deg, rgba(250, 77, 50, 0.09) 0.02%, rgba(250, 77, 50, 0.02) 99.99%);" color="#F5432D" title="重大隐患" :data='data[2]'></deliverCard>
+      <deliverCard id="hazard"  backgroundColor="linear-gradient(90.02deg, rgba(254, 195, 101, 0.09) 0.02%, rgba(254, 195, 101, 0.02) 99.99%);" color="#FF7F1E" title="隐患" :data='data[1]'></deliverCard>
+      <deliverCard id="conform"  backgroundColor="linear-gradient(90.02deg, rgba(74, 164, 252, 0.09) 0.02%, rgba(74, 164, 252, 0.02) 99.99%);" color="#4AA4FC" title="符合项" :data='data[0]'></deliverCard>
     </view>
     <text class="bottom-text" v-show="isLoading">我是有底线的~</text>
 
@@ -545,7 +545,7 @@
       width: 68rpx;
       height: 6rpx;
       opacity: 1;
-      background: linear-gradient(135deg, #00c2b2, #00c2bf);
+      background: linear-gradient(116.19deg, #F83112 16.48%, #FD6421 83.52%);
       border-radius: 100px 100px 0px 0px;
       position: absolute;
       bottom: 0;

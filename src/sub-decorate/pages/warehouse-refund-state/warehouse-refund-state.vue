@@ -8,7 +8,7 @@
 		</custom-navbar>
 		<view>
 
-			<view class="basic-info" :style="{backgroundImage:`url(${bgImg})`,backgroundSize: '100% 100%'}">
+			<view class="basic-info" :style="{backgroundImage:'url(https://ali-image.dabanjia.com/static/mp/dabanjia/images/theme-red/decorate/order_bg.png)',backgroundSize: '100% 100%'}">
 				<view class="navbar-height" >
 				</view>
 				<view class="info">
@@ -243,6 +243,7 @@
 				let vm = this
 				uni.showModal({
 					content: '确定要取消本次退款申请？',
+					confirmColor: '#FA3B34',
 					success: function(res) {
 						if (res.confirm) {
 							cancelRefund({
@@ -376,11 +377,11 @@
 		margin-left: 8rpx;
 		line-height: 30rpx;
 		border-radius: 4rpx;
-		color: #35c4c4;
+		color: #111111;
 		font-size: 20rpx;
 		text-align: center;
 		display: inline-block;
-		border: 1rpx solid #35c4c4;
+		border: 1rpx solid #EAEAEA;
 		vertical-align: 13%;
 	}
 
@@ -414,8 +415,8 @@
 			height: 88rpx;
 			line-height: 88rpx;
 			opacity: 1;
-			background: linear-gradient(135deg, #36d9cd, #28c6c6);
-			border-radius: 12rpx;
+			background: linear-gradient(117.02deg, #FA3B34 24.56%, #FF6A33 92.21%);
+			border-radius: 16rpx;
 			text-align: center;
 			font-size: 32rpx;
 			color: #ffffff;
@@ -426,11 +427,11 @@
 
 	.placehold {
 		margin-top: 20rpx;
-		height: 20rpx;
+		height: 32rpx;
 		width: 100%;
 		background-color: #FFF;
-		border-top-right-radius: 20rpx;
-		border-top-left-radius: 20rpx;
+		border-top-right-radius: 32rpx;
+		border-top-left-radius: 32rpx;
 	}
 
 	.info-content {

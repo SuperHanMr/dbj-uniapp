@@ -152,50 +152,50 @@
   },
   "3":{
     "icon":"icon-ic_wodejia_yanfangfuwu_csn1",
-    "color":"#5A99DA"
+    "color":"#5481F3"
   },
   "1":{
     "icon":"icon-ic_wodejia_shejifuwu_csn1",
-    "color":"#2bbaf2"
+    "color":"#4FBEED"
   },
   "2":{
     "icon":"icon-ic_wodejia_shejifuwu_csn1",
-    "color":"#2bbaf2"
+    "color":"#4FBEED"
   },
   "6":{
     "icon":"icon-ic_wodejia_shejifuwu_csn1",
-    "color":"#2bbaf2"
+    "color":"#4FBEED"
   },
   "7":{
     "icon":"icon-ic_wodejia_shejifuwu_csn1",
-    "color":"#2bbaf2"
+    "color":"#4FBEED"
   },
   "23":{
     "icon":"icon-ic_wodejia_jingsuanfuwu_csn1",
-    "color":"#1e7bea"
+    "color":"#3FCECE"
   },
   "141":{
     "icon":"icon-ic_zhuangxiuxianchang_mugong_csn1",
-    "color":"#a38af4"
+    "color":"#DAB163"
   },
   "143":{
     "icon":"icon-ic_zhuangxiuxianchang_youqi_csn1",
-    "color":"#8cd874"
+    "color":"#27D19A"
   },
   "142":{
     "icon":"icon-ic_zhuangxiuxianchang_nigong_csn1",
-    "color":"#f47f62"
+    "color":"#D7C467"
   },
   "146":{
     "icon":"icon-ic_zhuangxiuxianchang_shuidian_csn1",
-    "color":"#58a8ff"
+    "color":"#5B98F3"
   },
   "145":{
     "icon":"icon-ic_zhuangxiuxianchang_chaichu_csn1",
-    "color":"#a38af4"
+    "color":"#A38AE4"
   },
   "17":{
     "icon":"icon-ic_wodejia_guanjia_csn",
-    "color":"#ffb568"
+    "color":"#FF775B"
   }
 }

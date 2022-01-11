@@ -3,7 +3,7 @@
     <image
       class="bg-index"
       mode="aspectFit"
-      src="https://ali-image.dabanjia.com/static/mp/dabanjia/images/decorate/person_bg.png"
+      src="https://ali-image.dabanjia.com/static/mp/dabanjia/images/theme-red/decorate/person_bg.png"
     >
     </image>
     <view
@@ -735,10 +735,10 @@ view .is-self {
         // background-color: #00C2B2;
       }
       .icon-ic_nan {
-        color: #619ee9;
+        color: #5196FF;
       }
       .icon-ic_nv {
-        color: #e96197;
+        color: #FF56B1;
       }
     }
 
@@ -980,7 +980,7 @@ view .is-self {
       display: inline-block;
       width: 32rpx;
       height: 4rpx;
-      background: linear-gradient(129deg, #00cdec 0%, #00ed7d 100%);
+      background: linear-gradient(116.19deg, #F83112 16.48%, #FD6421 83.52%);
       border-radius: 200rpx 200rpx 0px 0px;
       position: absolute;
       bottom: 0;

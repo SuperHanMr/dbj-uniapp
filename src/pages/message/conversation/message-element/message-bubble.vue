@@ -125,7 +125,7 @@ export default {
     }
     .message-bubble-body {
       border-radius: 8px 2px 8px 8px;
-      background: $uni-color-primary;
+      background: #FA4D32;
     }
     // &.new .message-bubble-body {
     //   transform: scale(0);

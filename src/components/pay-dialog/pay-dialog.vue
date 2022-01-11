@@ -99,8 +99,8 @@
 		&-btn {
 			width: 686rpx;
 			height: 88rpx;
-			background: linear-gradient(135deg, #00ccbe, #00c2bf);
-			border-radius: 12rpx;
+			background: linear-gradient(117.02deg, #FA3B34 24.56%, #FF6A33 92.21%);
+			border-radius: 16rpx;
 			line-height: 88rpx;
 			text-align: center;
 			color: #ffffff;
