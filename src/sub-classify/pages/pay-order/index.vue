@@ -24,7 +24,7 @@
               <!-- <image src="https://ali-image-test.dabanjia.com/image/20210816/11/1629087052820_2600%241626858792066_0436s4.png" class="goodsItemImg"></image> -->
               <view class="goods-info">
                 <view class="goods-desc">
-                  <text class="goods-type">{{goodsItem.productType === 1?"物品":"服务"}}</text>
+                  <text class="goods-type">{{goodsItem.productType === 1?"物品":"服务商品"}}</text>
                   {{goodsItem.spuName}}
                 </view>
                 <view class="spu-class">
@@ -160,7 +160,7 @@
 
         </view>
         <view v-else>
-          <view class="wechat_icon"></view><text>微信支付</text>
+          <view class="wechat_icon"></view><text>在线支付</text>
         </view>
       </view>
       <view class='remarks'>
@@ -867,17 +867,17 @@
   }
 
   .goods-info .goods-desc .goods-type {
-    width: 60rpx;
     height: 30rpx;
     padding: 2rpx 10rpx 2rpx 10rpx;
     margin-right: 4rpx;
-    border: 2rpx solid #35c4c4;
     border-radius: 4rpx;
     font-size: 20rpx;
     font-weight: 500;
-    color: #35c4c4;
+    color: #333333;
     line-height: 28rpx;
     text-align: center;
+    vertical-align: middle;
+    background: linear-gradient(90.48deg, #B4EEE1 0.28%, #EAFCD7 99.48%);
   }
 
   .goods-info .goods-spec {
@@ -1075,7 +1075,7 @@
     display: inline-block;
     width: 32rpx;
     height: 32rpx;
-    background-image: url("../../static/image/wechat_icon.png");
+    // background-image: url("../../static/image/wechat_icon.png");
     background-size: contain;
     margin-right: 12rpx;
   }
@@ -1161,7 +1161,7 @@
   .bottom .pay-button {
     width: 248rpx;
     height: 88rpx;
-    background: linear-gradient(135deg, #00bfaf, #00bfbc);
+    background: linear-gradient(114.87deg, #FA3B34 23.76%, #FF6A33 93.55%);
     border-radius: 6px;
     color: #ffffff;
     font-size: 32rpx;
