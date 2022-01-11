@@ -3,7 +3,7 @@
     <image
       class="bg-index"
       mode="aspectFit"
-      src="https://ali-image.dabanjia.com/static/mp/dabanjia/images/decorate/person_bg.png"
+      src="https://ali-image.dabanjia.com/static/mp/dabanjia/images/theme-red/decorate/person_bg.png"
     >
     </image>
     <view
@@ -735,10 +735,10 @@ view .is-self {
         // background-color: #00C2B2;
       }
       .icon-ic_nan {
-        color: #619ee9;
+        color: #5196FF;
       }
       .icon-ic_nv {
-        color: #e96197;
+        color: #FF56B1;
       }
     }
 

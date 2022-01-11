@@ -147,34 +147,34 @@
     margin-right: 16rpx;
   }
   .icon-ic_wodejia_shejifuwu_csn1 {
-    color: #2bbaf2;
+    color: #4FBEED;
   }
   .icon-ic_wodejia_yanfangfuwu_csn1 {
-    color: #5A99DA;
+    color: #5481F3;
   }
   .icon-ic_wodejia_liangfangfuwu_csn1 {
     color: #43d9e1;
   }
   .icon-ic_wodejia_jingsuanfuwu_csn1 {
-    color: #1E7BEA;
+    color: #3FCECE;
   }
   .icon-ic_wodejia_guanjia_csn {
-    color: #ffb568;
+    color: #FF775B;
   }
   .icon-ic_zhuangxiuxianchang_chaichu_csn1 {
-    color: #a38af4;
+    color: #A38AE4;
   }
   .icon-ic_zhuangxiuxianchang_shuidian_csn1 {
-    color: #58a8ff;
+    color: #5B98F3;
   }
   .icon-ic_zhuangxiuxianchang_nigong_csn1 {
-    color: #f47f62;
+    color: #D7C467;
   }
   .icon-ic_zhuangxiuxianchang_mugong_csn1 {
-    color: #a38af4;
+    color: #DAB163;
   }
   .icon-ic_zhuangxiuxianchang_youqi_csn1 {
-    color: #8cd874;
+    color: #27D19A;
   }
   view {
     height: 36rpx;

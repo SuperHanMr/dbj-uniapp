@@ -28,7 +28,7 @@
             <view class="insurance-house">
               <view :class="{'payed':aServiceData.insuranceStatus}" class="insurance">
                 <image @click="consultingService"
-                  :src="aServiceData.insuranceStatus ? 'https://ali-image.dabanjia.com/static/mp/dabanjia/images/decorate/insurance-pay.svg': 'https://ali-image.dabanjia.com/static/mp/dabanjia/images/decorate/insurance-unpay.svg'">
+                  :src="aServiceData.insuranceStatus ? 'https://ali-image.dabanjia.com/static/mp/dabanjia/images/theme-red/decorate/insurance-pay.svg': 'https://ali-image.dabanjia.com/static/mp/dabanjia/images/theme-red/decorate/insurance-unpay.svg'">
                 </image>
               </view>
               <view class="uni-title">{{ currentProject.housingEstate || '' }}{{currentProject.address || ''}}</view>
