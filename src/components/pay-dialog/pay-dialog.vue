@@ -17,7 +17,7 @@
 				您正在使用储值卡支付,请确认
 			</view>
 			<view class="pay-diaolog-alert">
-				金额以实际金额为准，若储值卡余额不足将用微信支付剩余部分
+				金额以实际金额为准，若储值卡余额不足将用在线支付剩余部分
 			</view>
 			<view class="pay-diaolog-btn" @click="payOrder()">
 				确认支付
@@ -41,7 +41,7 @@
 		},
 		data() {
 			return {
-				
+
 			};
 		},
 		methods:{

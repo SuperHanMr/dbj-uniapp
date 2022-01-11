@@ -19,7 +19,7 @@
 		<view v-for="(goodItem,index) in dataList" :key="index" :class="{'bor-bottom':index<dataList.length-1}"
 			class="goods-list">
 			<view class="good-detail" @click="toDetail">
-				<image class="img" :src="goodItem.imgUrl">
+				<image class="img" :src="`${goodItem.imgUrl}?x-oss-process=image/resize,m_mfit,w_272,h_272`">
 				</image>
 				<view class="goods-info">
 					<view class="name">
@@ -286,7 +286,7 @@
 <style lang="scss" scoped>
 	.width-max {
 		max-width: 300rpx;
-	
+
 	}
 	.lines{
 		overflow: hidden;

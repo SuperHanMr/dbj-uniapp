@@ -37,9 +37,8 @@ uni.getMenuButtonBoundingClientRect = function() {
 uni.showShareMenu = function() {
   console.log("H5 showShareMenu not implement")
 }
-
-
 // #endif
+
 Vue.config.productionTip = false
 
 App.mpType = 'app'
@@ -48,5 +47,23 @@ Vue.prototype.ENV = process.env;
 const app = new Vue({
   store,
   ...App
+})
+Vue.mixin({
+  onLoad(e){
+    if(typeof e === "object"&&e.scene){
+      let scene = decodeURIComponent(e.scene) || "";
+      let obj = {};
+      let arr = scene.split("&");
+      arr.forEach(str => {
+        let a = str.split("=");
+        obj[a[0]] = a[1];
+      });
+      Object.keys(obj).forEach((key)=>{
+        if(!key in e){
+          e[key]=obj[key]
+        }
+      })
+    }
+  }
 })
 app.$mount()

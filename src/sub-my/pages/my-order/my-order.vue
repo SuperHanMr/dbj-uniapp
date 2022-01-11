@@ -641,7 +641,7 @@ export default {
         console.log("openId=", this.openId);
         orderPay({
           orderId: Number(item.id),
-          payType: 1, //支付类型  1微信支付",
+          payType: 1, //支付类型  1在线支付",
           openid: openId,
         }).then((e) => {
           const payInfo = e.wechatPayJsapi;

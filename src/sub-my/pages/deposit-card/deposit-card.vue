@@ -185,7 +185,7 @@
         const openId = getApp().globalData.openId;
         createCardOrder({
           activityDetailId: this.checkedId,
-          payType: 1, //支付类型  1微信支付
+          payType: 1, //支付类型  1在线支付
           openid: openId,
           sourceId: 100, //订单来源渠道 100小程序
         }).then(e => {
