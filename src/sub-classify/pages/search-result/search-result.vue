@@ -35,7 +35,7 @@
               <view class="goodsDesc">
                 <view class="spu-name-box">
                   <view class="spu-name"><text
-                      class="goodsType">{{goodsItem.product.productTypeId === 1?"物品":"服务"}}</text>{{goodsItem.product.spuName}}
+                      class="goodsType">{{goodsItem.product.productTypeId === 1?"物品":"服务商品"}}</text>{{goodsItem.product.spuName}}
                   </view>
                 </view>
                 <view class="tag-box">
