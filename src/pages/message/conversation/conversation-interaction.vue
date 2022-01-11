@@ -22,9 +22,9 @@
         ></message-item-interaction>
       </view>
       <view v-else-if="loaded" class="empty-container">
-        <image class="empty-img" src="https://ali-image.dabanjia.com/static/mp/dabanjia/images/empty.png"></image>
+        <image class="empty-img" src="https://ali-image-test.dabanjia.com/image/20220110/16/1641804745453_9800%24img_sys_NoSystemmessage.png"></image>
         <view class="empty-tip">
-          暂无互动消息
+          暂无互动消息~
         </view>
       </view>
     </scroll-view>
@@ -158,8 +158,8 @@
     height: 248rpx;
   }
   .empty-tip {
-    color: #999;
+    color: #CBCCCC;
     margin-top: 24rpx;
-    font-size: 13px;
+    font-size: 12px;
   }
 </style>

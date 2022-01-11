@@ -10,7 +10,6 @@
 </template>
 
 <script>
-  import urlParse from "url-parse";
   export default {
     data() {
       return {
@@ -42,13 +41,15 @@
         this.goodId = uni.getStorageSync('goodId')
       }
       this.houseId = e.houseId
-      console.log(this.houseId, "this.houseId")
     },
     onShareAppMessage(res) {
       let params = [];
       Object.keys(this.pageOpts).forEach(key => {
         params.push(`${key}=${this.pageOpts[key]}`)
       });
+      if(getApp().globalData.isSaler){
+        params.push(`shareId=${getApp().globalData.shareId}`)
+      }
       let path = `/sub-classify/pages/goods-detail/goods-detail`;
       if (params.length) {
         path += '?' + params.join('&')
