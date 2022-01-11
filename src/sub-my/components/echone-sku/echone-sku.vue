@@ -403,7 +403,7 @@
 			text-align: center;
 			border-radius: 12rpx;
 			color: white;
-			background: linear-gradient(135deg,#53d5cc, #4fc9c9);
+			background: linear-gradient(117.02deg, #FA3B34 24.56%, #FF6A33 92.21%);
 			font-size: 32rpx;
 			margin-top: 14rpx;
 		}
