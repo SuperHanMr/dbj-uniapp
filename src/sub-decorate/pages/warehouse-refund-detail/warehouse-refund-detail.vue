@@ -234,7 +234,7 @@
             style="line-height: 44rpx;"
             space="emsp"
             decode="true"
-          > &nbsp&nbsp{{item}}</text>
+          > &nbsp;&nbsp;{{item}}</text>
         </view>
 
         <view class="holder">

@@ -198,7 +198,6 @@
       ></coupon-dialog>
     </uni-popup>
   </view>
-  </view>
 </template>
 
 <script>
