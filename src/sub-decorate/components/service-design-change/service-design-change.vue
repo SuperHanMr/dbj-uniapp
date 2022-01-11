@@ -107,7 +107,7 @@
       .choose-icon{
         width: 48rpx;
         height: 48rpx;
-        color: #00BFB6;
+        color: #FA3B34;
       }
     }
   }

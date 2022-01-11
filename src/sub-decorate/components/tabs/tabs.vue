@@ -75,7 +75,7 @@
         display: block;
         width: 32rpx;
         height: 4rpx;
-        background: linear-gradient(129deg, #00cdec 0%, #00ed7d 92%);
+        background: linear-gradient(116.19deg, #F83112 16.48%, #FD6421 83.52%);
         border-radius: 200rpx 200rpx 0rpx 0rpx;
       }
     }

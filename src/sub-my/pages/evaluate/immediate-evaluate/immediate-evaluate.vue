@@ -12,7 +12,7 @@
 						
           </view>
           <view class="right" @click="handleCheck">
-            <image v-if="isAnonymous" src="../../../static/anonymous_check.svg" mode=""></image>
+            <image v-if="isAnonymous" src="https://ali-image.dabanjia.com/static/mp/dabanjia/images/theme-red/decorate/ic_checked.svg" mode=""></image>
             <image  v-else  src="../../../static/anonymous_unCheck.svg" mode=""></image>
             <text>匿名评价</text>
           </view>

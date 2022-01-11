@@ -613,13 +613,7 @@
             "enablePullDownRefresh": false
           }
         },
-        {
-          "path": "pages/test/test",
-          "style": {
-            "navigationBarTitleText": "",
-            "enablePullDownRefresh": false
-          }
-        },
+
         {
           "path": "pages/city-select-entry/city-select-entry",
           "style": {
