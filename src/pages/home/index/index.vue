@@ -248,36 +248,36 @@
       };
     },
     onLoad(e) {
-      console.log("home page params:", e.scene, e);
-      let shareId = "";
-      if (e && e.scene) {
-        let scene = decodeURIComponent(e.scene) || "";
-        let obj = {};
-        let arr = scene.split("&");
-        arr.forEach((str) => {
-          let a = str.split("=");
-          obj[a[0]] = a[1];
-        });
-        if (obj.shareId) {
-          shareId = obj.shareId;
-        }
-      }
-      if (e && e.shareId && !shareId) {
-        shareId = e.shareId;
-      }
-      if (shareId) {
-        getApp().globalData.shareId = shareId;
-        uni.setStorage({
-          key: "shareId",
-          data: shareId,
-          success: function() {
-            console.log("shareId存储成功");
-          },
-          fail: function() {
-            console.error("shareId存储失败");
-          },
-        });
-      }
+      // console.log("home page params:", e.scene, e);
+      // let shareId = "";
+      // if (e && e.scene) {
+      //   let scene = decodeURIComponent(e.scene) || "";
+      //   let obj = {};
+      //   let arr = scene.split("&");
+      //   arr.forEach((str) => {
+      //     let a = str.split("=");
+      //     obj[a[0]] = a[1];
+      //   });
+      //   if (obj.shareId) {
+      //     shareId = obj.shareId;
+      //   }
+      // }
+      // if (e && e.shareId && !shareId) {
+      //   shareId = e.shareId;
+      // }
+      // if (shareId) {
+      //   getApp().globalData.shareId = shareId;
+      //   uni.setStorage({
+      //     key: "shareId",
+      //     data: shareId,
+      //     success: function() {
+      //       console.log("shareId存储成功");
+      //     },
+      //     fail: function() {
+      //       console.error("shareId存储失败");
+      //     },
+      //   });
+      // }
       let defaultHouse = {
         name: "北京市朝阳区",
         provinceId: 1,
@@ -287,6 +287,7 @@
       this.areaId = 41;
       this.currentAddress = defaultHouse;
       this.citydata = defaultHouse.name;
+      uni.showShareMenu();
       uni.$on("logout", (item) => {
         let defaultHouse = {
           name: "北京市朝阳区",

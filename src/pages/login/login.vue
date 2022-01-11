@@ -120,6 +120,13 @@
 							userSig: data.userSign,
 						});
 						let shaerId = uni.getStorageSync("shareId");
+            //临时测试用，上线前修改
+            // if (shaerId ) {
+            // 	bindCapsule({
+            // 		zeusId: data.id,
+            // 		salesmanPhone: shaerId
+            // 	});
+            // }
 						if (shaerId && type == "register") {
 							bindCapsule({
 								zeusId: data.id,

@@ -236,7 +236,7 @@
 				<text>支付方式</text>
 				<view class="method">
 					<image src="@/static/order/ic_order_wechat@2x.png" mode="" />
-					<text>微信支付</text>
+					<text>在线支付</text>
 				</view>
 			</view> -->
 
@@ -287,14 +287,17 @@
           v-if="payChannel "
           class="flex-center"
         >
-          <!-- <image class="card-img" src="https://ali-image.dabanjia.com/static/mp/dabanjia/images/classify/ic_card.png"
-            mode=""></image> -->
+          <!-- <image
+            class="card-img"
+            src="https://ali-image.dabanjia.com/static/mp/dabanjia/images/classify/ic_card.png"
+            mode=""
+          ></image> -->
           <text>储值卡支付</text>
 
         </view>
         <view v-else>
           <!-- <view class="wechat_icon"></view> -->
-          <text>微信支付</text>
+          <text>在线支付</text>
         </view>
       </view>
       <view class='remarks'>
@@ -374,10 +377,10 @@
           <text style="font-size: 28rpx;">¥</text>{{payChannelPrice}}
         </view>
         <view class="pay-diaolog-tip">
-          {{payChannel?'您正在使用储值卡支付,请确认':'您还需用微信支付,请确认'}}
+          {{payChannel?'您正在使用储值卡支付,请确认':'您还需用在线支付,请确认'}}
         </view>
         <view class="pay-diaolog-alert">
-          金额以实际金额为准，若储值卡余额不足将用微信支付剩余部分
+          金额以实际金额为准，若储值卡余额不足将用在线支付剩余部分
         </view>
         <view
           class="pay-diaolog-btn"
@@ -415,7 +418,8 @@ export default {
       bottomStyle: "",
       scrollTop: 0,
       headerTitle: "",
-      bgImg: "/static/order_bg.png",
+      bgImg:
+        "https://ali-image.dabanjia.com/static/mp/dabanjia/images/decorate/order_bg_orange.png",
       cardClick: false, //是否选中储值卡
       haveCard: false, //是否有会员卡
       cardBalance: 11111111, //会员卡余额
@@ -482,7 +486,6 @@ export default {
   onLoad(e) {
     this.from = e.from;
     this.orderNo = Number(e.orderNo) || getApp().globalData.decorateMsg.orderId;
-    console.log("订单id编号===", this.orderNo);
     const currentHouse = getApp().globalData.currentHouse;
     this.areaId = currentHouse.areaId;
 
@@ -635,7 +638,7 @@ export default {
       orderPay({
         remarks: this.remarks,
         orderId: this.orderNo,
-        payType: 1, //支付类型  1微信支付",
+        payType: 1, //支付类型  1在线支付",
         openid: openId,
         isCardPay: this.cardClick,
       }).then((e) => {
