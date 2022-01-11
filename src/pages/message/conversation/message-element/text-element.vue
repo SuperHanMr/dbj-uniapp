@@ -69,7 +69,7 @@ export default {
     border-radius: 3px;
     &.mark {
       padding: 0 2px;
-      background-color: #E5F9F8;
+      background-color: #FEEAE6;
     }
   }
   ::v-deep .emoji {
