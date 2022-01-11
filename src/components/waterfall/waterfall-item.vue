@@ -217,7 +217,8 @@
 		}
 
 		.info-container {
-			padding: 20rpx 16rpx 26rpx 16rpx;
+			// padding: 20rpx 16rpx 26rpx 16rpx;
+			padding: 20rpx 0 26rpx 0;
 			position: relative;
 			color: #333333;
 

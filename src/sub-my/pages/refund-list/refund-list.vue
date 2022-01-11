@@ -99,7 +99,7 @@
 		<view class="empty-container" v-else>
 			<view class="line" />
 			<view class="show">
-				<image src="/static/empty_page@2x.png" mode=""></image>
+				<image src="../../static/img_noOrder.svg" mode=""></image>
 				<text>您还没有退款记录</text>
 			</view>
 		</view>
