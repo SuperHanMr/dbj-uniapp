@@ -75,20 +75,14 @@
               class="header-content"
               v-if="orderInfo.type !== 5"
             >
-              <text
-                style="color: #333333;"
-                @click="gotoShop(item)"
-              >{{item.storeName}}</text>
-              <image
-                src="../../../static/ic_more.svg"
-                mode=""
-              />
+              <view class="storeName" @click="gotoShop(item)">{{item.storeName}}</view>
+              <image src="../../../static/small_gotoShop.svg"/>
             </view>
             <view
               class="header-content"
               v-else
             >
-              <text style="color: #333333;">{{orderInfo.orderName}}</text>
+              <view class="storeName">{{orderInfo.orderName}}</view>
             </view>
             <view class="icon"></view>
           </view>
@@ -971,8 +965,9 @@ export default {
             box-sizing: border-box;
             display: flex;
             align-items: center;
-
-            text {
+            .storeName {
+							height: 40rpx;
+							color: #333333;
               font-weight: 500;
               max-width: 476rpx;
               font-size: 28rpx;
@@ -982,9 +977,9 @@ export default {
             }
 
             image {
-              width: 34rpx;
-              height: 34rpx;
-              object-fit: cover;
+              width: 40rpx;
+              height: 40rpx;
+							display: block;
             }
           }
 
