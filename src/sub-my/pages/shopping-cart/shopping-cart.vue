@@ -28,7 +28,7 @@
 							</text>
 					</view>
 				</view>
-				<view class="freeMail">
+	<!-- 			<view class="freeMail">
 					<view class="text" v-if="isDefault" :key="shopIndex">每满{{shopItem.freeShippingThreshold===0?'0.00'
 						:(shopItem.freeShippingThreshold/100).toFixed(2)}}元可获得一次免运费权益</view>
 					<view class="text" v-else>
@@ -39,7 +39,7 @@
 							src="https://ali-image.dabanjia.com/static/mp/dabanjia/images/my/toPostFree%402x.png">
 						</image>
 					</view>
-				</view>
+				</view> -->
 				<!-- 商品 -->
 				<uni-swipe-action>
 					<uni-swipe-action-item v-for="(goodsItem,goodsIndex) in shopItem.skuList" :key="goodsItem.skuId"
