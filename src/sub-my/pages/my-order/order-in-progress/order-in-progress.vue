@@ -28,8 +28,8 @@
 				<view v-for="item in orderInfo.details" :key="item.storeId" class="item">
 					<view class="header">
 						<view class="header-content">
-							<text style="color: #333333;"  @click="gotoShop(item)">{{item.storeName}}</text>
-							<image src="../../../static/ic_more.svg" mode=""/>
+							<view class="storeName" @click="gotoShop(item)">{{item.storeName}}</view>
+							<image src="../../../static/small_gotoShop.svg" mode=""/>
 						</view>
 						<view class="icon"></view>
 					</view>
@@ -133,7 +133,7 @@
 				navBarHeight: "",
 				scrollTop: 0,
 				headerTitle: "",
-				bgImg: "../../../static/order_bg.png",
+				bgImg: "https://ali-image.dabanjia.com/static/mp/dabanjia/images/theme-red/decorate/order_bg.png",
 			};
 		},
 
@@ -339,7 +339,9 @@
 			box-sizing: border-box;
 			display: flex;
 			align-items: center;
-			text {
+			.storeName {
+				height: 40rpx;
+				color: #333333;
 				font-weight: 500;
 				max-width: 476rpx;
 				font-size: 28rpx;
@@ -348,8 +350,8 @@
 				white-space: nowrap;
 			}
 			image {
-				width: 34rpx;
-				height: 34rpx;
+				width: 40rpx;
+				height: 40rpx;
 				object-fit: cover;
 			}
 		}

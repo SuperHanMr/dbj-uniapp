@@ -123,9 +123,9 @@
 
         <view class="header">
           <view class="header-content">
-            <text v-if="orderInfo.type !==5 "  style="color: #333333;" @click="gotoShop(item2)" >{{item2.storeName}}</text>
-            <text v-else style="color: #333333;"  >{{orderInfo.orderName}}</text>
-						<image v-if="orderInfo.type !==5 " src="../../../static/ic_more.svg" mode=""/>
+            <view v-if="orderInfo.type !==5" class="storeName" @click="gotoShop(item2)" >{{item2.storeName}}</view>
+            <view v-else class="storeName" >{{orderInfo.orderName}}</view>
+						<image v-if="orderInfo.type !==5 " src="../../../static/small_gotoShop.svg" mode=""/>
           </view>
           <view class="icon"></view>
         </view>
@@ -185,7 +185,7 @@ export default {
       navBarHeight: "",
       scrollTop: 0,
       headerTitle: "",
-      bgImg: "../../../static/order_bg.png",
+      bgImg: "https://ali-image.dabanjia.com/static/mp/dabanjia/images/theme-red/decorate/order_bg.png",
     };
   },
 
@@ -487,7 +487,9 @@ export default {
           box-sizing: border-box;
           display: flex;
           align-items: center;
-          text {
+          .storeName {
+						height: 40rpx;
+						color: #333333;
             font-weight: 500;
             max-width: 476rpx;
             font-size: 28rpx;
@@ -496,9 +498,8 @@ export default {
             white-space: nowrap;
           }
           image {
-            width: 34rpx;
-            height: 34rpx;
-            object-fit: cover;
+            width: 40rpx;
+            height: 40rpx;
           }
         }
         .icon {

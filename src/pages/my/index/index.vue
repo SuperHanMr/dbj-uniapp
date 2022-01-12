@@ -30,15 +30,10 @@
               <text class="name">
                 {{userName}}
               </text>
-              <image
-                src="../../../static/order/images/icon_to_login.png"
-                mode=""
-              ></image>
+              <image src="../../../static/order/images/back.svg" />
             </view>
-
           </view>
         </view>
-
         <view
           class="avatar-img"
           v-else
@@ -57,29 +52,17 @@
           </view>
         </view>
 
-        <view
-          class="set-up"
-          @click="handleSetUp"
-        >
-          <image
-            src="../../../static/order/images/setting.svg"
-            mode=""
-          />
+        <view  class="set-up"  @click="handleSetUp">
+          <image src="../../../static/order/images/setting.svg" />
         </view>
       </view>
 
       <view class="my-order">
         <view class="order-header">
           <view class="order">我的订单</view>
-          <view
-            class="total"
-            @click="handlerViewAll()"
-          >
+          <view class="total" @click="handlerViewAll()" >
             <text>全部订单</text>
-            <image
-              src="../../../static/order/images/arraw_right_@2x.png"
-              mode=""
-            />
+            <image src="../../../static/order/images/gray_array_back.svg"/>
           </view>
         </view>
         <view class="order-line" />
@@ -97,10 +80,7 @@
             >
               {{ waitPayOrderNum }}
             </view>
-            <image
-              :src="item.image"
-              mode=""
-            />
+            <image :src="item.image"/>
             <text style="color:#333333;font-size: 24rpx;">{{item.value}}</text>
           </view>
         </view>
@@ -116,31 +96,14 @@
             @click="handlePersonalItem(item2)"
           >
             <view class="left">
-              <image
-                :src="item2.image"
-                mode=""
-              />
+              <image :src="item2.image" />
               <text>{{item2.value}}</text>
             </view>
-            <view
-              v-if="item2.key==1"
-              class="right"
-            >
-              <text v-if="isShowStoreValue">{{storeValueCard? Number(storeValueCard)/100 :'0.00' }}元</text>
-              <image
-                src="../../../static/order/images/arraw_right_@2x.png"
-                mode=""
-              />
-            </view>
-            <view
-              v-if="item2.key==2"
-              class="right"
-            >
-              <text>3张</text>
-              <image
-                src="../../../static/order/images/arraw_right_@2x.png"
-                mode=""
-              />
+						
+            <view class="right" >
+              <text v-if="isShowStoreValue && item2.key==1">{{storeValueCard? Number(storeValueCard)/100 :'0.00' }}元</text>
+               <text v-if="item2.key==2">3张</text>
+							<image src="../../../static/order/images/gray_array_back.svg"/>
             </view>
           </view>
 
@@ -439,10 +402,9 @@ export default {
         font-weight: 500;
         color: #222222;
         image {
-          width: 24rpx;
-          height: 24rpx;
-          object-fit: cover;
-          margin-left: 8rpx;
+          width: 40rpx;
+          height: 40rpx;
+          display: block;
         }
       }
 
@@ -503,7 +465,6 @@ export default {
           margin-left: 8rpx;
           width: 24rpx;
           height: 24rpx;
-          object-fit: cover;
         }
       }
     }
@@ -593,7 +554,6 @@ export default {
           font-size: 28rpx;
           font-weight: 400;
           color: #333333;
-
           image {
             width: 48rpx;
             height: 48rpx;

@@ -139,7 +139,7 @@
 				type:Object,
 				default:{},
 			},
-			isEvaluate:{
+			isEvaluate:{//是否是待评价列表使用
 				type:String,
 				default:''
 			},
@@ -288,7 +288,7 @@
 					.name{
 						font-size: 26rpx;
 						color: #333333;
-						
+
 						line-height: 32rpx;
 					}
 				}

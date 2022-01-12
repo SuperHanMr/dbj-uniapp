@@ -57,14 +57,17 @@
 				second:''
 			}
 		},
+		watch:{
+			hour(newVal,oldVal){
+				if(newVal==2){
+					this.$emit("changeBgc")
+				}
+			}
+		},
 		created(){
 			let start = this.start.toString()
 			let finish = this.finish.toString()
 			let timer = parseInt(start)-parseInt(finish)
-			// var hours = parseInt((timer % ( 1000 * 60 * 60)) / ( 1000 * 60 * 60));
-			// var minutes = parseInt((timer % (1000 * 60 * 60)) / (1000 * 60));
-			// var seconds =  parseInt((timer % (1000 * 60)) / 1000);
-			
 			let hours = Math.floor(timer / 1000/ 60 / 60);
 			let minutes = Math.floor(timer/ 1000 / 60) % 60;
 			let seconds = Math.floor(timer/ 1000) % 60;
@@ -72,10 +75,6 @@
 			this.minute = (minutes < 10 ? ('0' + minutes) : minutes);
 			this.second = (seconds < 10 ? ('0' + seconds) : seconds);
 			
-			// console.log("!!!!!!!!!!!!!!!!!!!!!!!!!")
-			// console.log("a.hour=",this.hour)
-			// console.log("a.minute=",this.minute)
-			// console.log("a.second=",this.second)
 			var interval = setInterval(() => {
 				this.second = (Array(2).join(0) + parseInt(--this.second)).slice(-2)
 				if (this.second == 0) {
