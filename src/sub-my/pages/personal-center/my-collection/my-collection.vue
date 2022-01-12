@@ -87,7 +87,7 @@
 		<!-- 底部按钮 -->
 		<view class="footer" v-if=" currentList.length >= 1 && showCalCelBtn" :style="{paddingBottom:systemBottom + 24 + 'rpx'}">
 			<view class="left" @click="handleAllCheck">
-				<image v-if="allCheck"  src="../../../static/all_Check.svg"  mode="" />
+				<image v-if="allCheck"  src="https://ali-image.dabanjia.com/static/mp/dabanjia/images/theme-red/my/all_Check.svg"  mode="" />
 				<image v-else src="../../../static/all_Uncheck.svg" mode="" />
 				<text>全选</text>
 			</view>
