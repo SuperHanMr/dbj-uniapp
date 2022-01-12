@@ -59,8 +59,6 @@
 		},
 		watch:{
 			hour(newVal,oldVal){
-				console.log("newVal==",newVal,typeof newVal)
-				console.log("oldVal==",oldVal)
 				if(newVal==2){
 					this.$emit("changeBgc")
 				}
