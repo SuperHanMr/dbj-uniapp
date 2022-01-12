@@ -17,7 +17,7 @@
 				<!-- 店铺 -->
 				<view class="shopInfo">
 					<image v-if="!shopItem.shopChecked" @click="checkShop(shopItem.storeId)" src="../../static/all_Uncheck.svg" mode="" />
-					<image v-else @click="checkShop(shopItem.storeId)"src="../../static/all_Check.svg"/>
+					<image v-else @click="checkShop(shopItem.storeId)" fade-show=""src="https://ali-image.dabanjia.com/static/mp/dabanjia/images/theme-red/my/all_Check.svg"/>
 
 					<view class="goShop" @click="toShopHome(shopItem.storeId)">
 						<text class="shopName">{{shopItem.storeName}}</text>
@@ -44,7 +44,7 @@
 						:right-options="options" @click="deleteGoods(goodsItem.skuId,goodsItem.buyCount)">
 						<view class="goodsItem">
 							<image v-if="!goodsItem.goodsChecked" class="itemIcon" @click="checkGoods(shopItem.storeId,goodsItem.skuId)" src="../../static/all_Uncheck.svg" />
-							<image v-else class="itemIcon" @click="checkGoods(shopItem.storeId,goodsItem.skuId)"src="../../static/all_Check.svg" />
+							<image v-else class="itemIcon" @click="checkGoods(shopItem.storeId,goodsItem.skuId)" src="https://ali-image.dabanjia.com/static/mp/dabanjia/images/theme-red/my/all_Check.svg" />
 							<image class="goodsItemImg" :src="goodsItem.image+'?x-oss-process=image/resize,m_mfit,w_96,h_96'"
 								@click="toGoodsDetail(goodsItem.skuId)"  />
 							<view class="goodsInfo">
@@ -225,7 +225,7 @@
 				<view class="allCheck" v-if="isManage">
 					<view class="left" @click="checkAll">
 						<image v-if="!isCheckedAll" src="../../static/all_Uncheck.svg" ></image>
-						<image v-else src="../../static/all_check.svg" />
+						<image v-else src="https://ali-image.dabanjia.com/static/mp/dabanjia/images/theme-red/my/all_Check.svg" />
 						<view class="text">全选</view>
 					</view>
 					<view class="right">
@@ -241,7 +241,7 @@
 				<view class="allCheck" v-else>
 					<view class="left" @click="checkAll">
 						<image  v-if="!isCheckedAll" src="../../static/all_Uncheck.svg" />
-						<image v-else src="../../static/all_Check.svg" />
+						<image v-else src="https://ali-image.dabanjia.com/static/mp/dabanjia/images/theme-red/my/all_Check.svg" />
 						<view class="text">全选</view>
 					</view>
 					<view class="right">
