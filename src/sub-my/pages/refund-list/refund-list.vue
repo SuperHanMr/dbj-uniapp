@@ -6,7 +6,7 @@
 				<view class="header" >
 					<view class="store-name" @click="gotoShop(item)">
 						<text style="color: #333333;">{{item.ongoingServerName?item.ongoingServerName:item.storeName}}</text>
-						<image v-if="item.type !== 5" src="../../static/small_gotoShop.svg" mode="" />
+						<image v-if="item.type !== 5" src="https://ali-image.dabanjia.com/static/mp/dabanjia/images/theme-red/my/small_gotoShop.svg" mode="" />
 					</view>
 					<view class="order-status">
 						<text>{{statusFunction(item)}}</text>
@@ -99,7 +99,7 @@
 		<view class="empty-container" v-else>
 			<view class="line" />
 			<view class="show">
-				<image src="../../static/img_noOrder.svg" mode=""></image>
+				<image src="https://ali-image.dabanjia.com/static/mp/dabanjia/images/theme-red/my/img_noOrder.svg" mode=""></image>
 				<text>您还没有退款记录</text>
 			</view>
 		</view>

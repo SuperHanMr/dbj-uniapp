@@ -16,9 +16,9 @@
 				<view class="body" v-for="item2 in item.details" :key="item2.id">
 					<order-item :dataList="item2" :isEvaluate="isEvaluate"></order-item>
 				</view>
-				
+
 				<view class="line" />
-				
+
 				<view class="footer" v-if="item.commentStatus == 0 ">
 					<view class="button-container">
 						<view class="immediate-evaluate" @click="immediateEvalute(item)">
@@ -33,18 +33,18 @@
 						</view>
 					</view>
 				</view>
-			
+
 			</view>
 		</view>
-		
+
 		<view class="empty-container" v-else>
 			<view class="empty-page">
-				<image src="../../static/img_noOrder.svg" mode=""></image>
+				<image src="https://ali-image.dabanjia.com/static/mp/dabanjia/images/theme-red/my/img_noOrder.svg" mode=""></image>
 				<text>您暂时没有相关订单哦～</text>
 			</view>
 		</view>
 	</view>
-	
+
 
 </template>
 
@@ -68,21 +68,21 @@
 			this.evaluateList=[];
 			this.getList()
 		},
-		
+
 		//下拉刷新
 		onPullDownRefresh() {
 			console.log('refresh');
 			setTimeout(function () {
 					uni.stopPullDownRefresh();
 			}, 1000);
-		}, 
-		
+		},
+
 		//页面上拉触底事件的处理函数
 		onReachBottom(e) {
 			if (this.loading || this.query.page > this.totalPage) return
 			this.getList();
 		},
-		
+
 		methods: {
 			getList(){
 				this.loading= true
@@ -97,14 +97,14 @@
 					this.loading=false
 				})
 			},
-	
+
 			immediateEvalute(item){
 				console.log("立即评价");
 				uni.navigateTo({
 					url:`immediate-evaluate/immediate-evaluate?typeName=${item.typeName}&id=${item.id}&type=${item.type}&serverName=${item.serverName}&serverRoleName=${item.serverRoleName}&serverAvatar=${item.serverAvatar}`,
 				})
 			},
-			
+
 			gotoDetail(item){
 				console.log("item.id=",item.id)
 				uni.navigateTo({
@@ -157,11 +157,11 @@
 			// font-weight: 800;
 		}
 	}
-	
+
 	.body{
 		padding: 32rpx 32rpx 0;
 	}
-	
+
 	.line {
 		width: 100%;
 		height: 0.5px;
@@ -175,7 +175,7 @@
 		padding: 32rpx;
 		// text-align: right;
 		background-color: #ffffff;
-		
+
 		.button-container{
 			display: flex;
 			flex-flow: row nowrap;
@@ -193,7 +193,7 @@
 				padding: 0;
 			}
 			.immediate-evaluate{
-				background: linear-gradient(116.19deg, #F83112 16.48%, #FD6421 83.52%) 	
+				background: linear-gradient(116.19deg, #F83112 16.48%, #FD6421 83.52%)
 			}
 			.review-detail{
 				color: #333333;
@@ -201,14 +201,14 @@
 			}
 		}
 	}
-	
+
 	button{
 		display: none;
 	}
 	button::after {
 	  border: none;
 	}
-	
+
 	page{
 		background-color: #ffffff !important;
 	}
