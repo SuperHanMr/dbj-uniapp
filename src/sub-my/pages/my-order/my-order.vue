@@ -62,7 +62,7 @@
                   </text>
                   <image
                     v-if="!item.orderName && item.type !== 5"
-                    src="../../static/small_gotoShop.svg"
+                    src="https://ali-image.dabanjia.com/static/mp/dabanjia/images/theme-red/my/small_gotoShop.svg"
                     mode=" "
                   />
                 </view>
@@ -85,8 +85,8 @@
 										:item.orderStatusName
 									}}
                 </view>
-								<view 
-									class="countDownStyle" 
+								<view
+									class="countDownStyle"
 									v-if="currentIndex==1 && item.showCancelOrderTime"
 									:style="{backgroundImage:showDangerBgc?`url(${countDownBgc1})`:`url(${countDownBgc2})`,backgroundSize: '100% 100%'}"
 								>
@@ -267,7 +267,7 @@
                   </view>
 
                 </view> -->
-								
+
                 <view
                   v-if="item.showToPayBtn || item.showCancelBtn"
                   class="waitPayBottom"
@@ -302,12 +302,12 @@
           <view v-if="orderList.length == 0 && !loading" class="swiper-item empty-container">
             <view class="empty-page">
               <view class="content ">
-                <image src="../../static/img_noOrder.svg" />
+                <image src="https://ali-image.dabanjia.com/static/mp/dabanjia/images/theme-red/my/img_noOrder.svg" />
               </view>
 							<view class="text">您暂时没有相关订单哦～</view>
             </view>
           </view>
-					
+
 
         </scroll-view>
       </swiper-item>
@@ -368,9 +368,9 @@ export default {
       loading: false,
       navBarHeight: "",
       title: "我的订单",
-			bgcIcon:"../../static/selectIcon.svg",
-			countDownBgc1:"../../static/countDown_danger.svg" ,//小于两个小时的样式
-			countDownBgc2:"../../static/countDown_normal.svg",//大于两个小时的样式
+			bgcIcon:"https://ali-image.dabanjia.com/static/mp/dabanjia/images/theme-red/my/selectIcon.svg",
+			countDownBgc1:"https://ali-image.dabanjia.com/static/mp/dabanjia/images/theme-red/my/countDown_danger.svg" ,//小于两个小时的样式
+			countDownBgc2:"https://ali-image.dabanjia.com/static/mp/dabanjia/images/theme-red/my/countDown_normal.svg",//大于两个小时的样式
     };
   },
 
@@ -714,7 +714,7 @@ export default {
 
       // let hours = Math.floor(timer / 1000/ 60 / 60);
       // this.hour = (hours < 10 ? ('0' + hours) : hours);
-      
+
       // // console.log("!!!!!!!!!!!!!!!!!!!!!!!!!")
       // // console.log("a.hour=",this.hour)
       // var interval = setInterval(() => {
@@ -874,7 +874,7 @@ export default {
 			top: 0;
 			right: 16rpx;
 		}
-		
+
 	}
 }
 .count_down ::v-deep .count .list{
