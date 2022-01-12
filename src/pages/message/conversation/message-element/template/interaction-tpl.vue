@@ -197,7 +197,7 @@ export default {
 }
 .reply-btn {
   margin-top: 24rpx;
-  color: #35c4c4;
+  color: #FA462A;
   font-size: 13px;
   line-height: 16px;
   display: flex;

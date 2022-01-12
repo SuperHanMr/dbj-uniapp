@@ -18,6 +18,7 @@
         class="message-send-input"
         placeholder-class="message-send-input-placeholder" 
         placeholder="聊点什么吧"
+		style="caret-color: #FA462A"
         @keyboardheightchange="handleKeyboradHeightChange"
         @input="handleInput"
         @blur="inputFocus = false"

@@ -6,7 +6,7 @@
         <view class="tab-text">
           {{item}}
         </view>
-        <view class="bottom-icon" />
+        <image class="bottom-icon" src="/static/images/real-case/select_head.png" v-if="index==currentIndex"/>
       </view>
     </view>
     <swiper class="swiper" :current="currentIndex" :duration="200" @change="swiperChange">
@@ -16,7 +16,7 @@
           @refresherrefresh="onRefresh" @scrolltolower="onLoadMore">
 
           <view v-if="currentList.length==0" class="no-list-content">
-            <image class="no-list" src="../../../static/order/blank_house@2x.png" mode=""></image>
+            <image class="no-list" src="/static/order/blank_house@2x.png" mode=""></image>
             <view class="tip-text">
               您还没有任何数据~
             </view>
@@ -100,6 +100,7 @@
         let vm = this;
         uni.showModal({
           title: "是否确认收货?",
+					confirmColor: '#FA3B34',
           success: function(res) {
             if (res.confirm) {
               confirmGoods({
@@ -290,11 +291,12 @@
     height: 100%;
     justify-content: center;
     align-items: center;
+		background: #ffffff;
   }
 
   .no-list {
-    width: 248rpx;
-    height: 248rpx;
+    width: 400rpx;
+    height: 400rpx;
   }
 
   .tip-text {
@@ -351,9 +353,7 @@
       .bottom-icon {
         position: absolute;
         width: 32rpx;
-        height: 4rpx;
-        background: linear-gradient(129deg, #00cdec 0%, #00ed7d 100%);
-        border-radius: 200rpx 200rpx 0px 0px;
+        height: 6rpx;
         bottom: 10rpx;
         left: 50%;
         margin-left: -16rpx;

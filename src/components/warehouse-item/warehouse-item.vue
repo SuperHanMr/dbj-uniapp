@@ -19,7 +19,7 @@
 		<view v-for="(goodItem,index) in dataList" :key="index" :class="{'bor-bottom':index<dataList.length-1}"
 			class="goods-list">
 			<view class="good-detail" @click="toDetail">
-				<image class="img" :src="goodItem.imgUrl">
+				<image class="img" :src="`${goodItem.imgUrl}?x-oss-process=image/resize,m_mfit,w_272,h_272`">
 				</image>
 				<view class="goods-info">
 					<view class="name">
@@ -286,7 +286,7 @@
 <style lang="scss" scoped>
 	.width-max {
 		max-width: 300rpx;
-	
+
 	}
 	.lines{
 		overflow: hidden;
@@ -410,11 +410,13 @@
 						height: 30rpx;
 						line-height: 30rpx;
 						text-align: center;
-						border: 0.7px solid #35c4c4;
+						background: linear-gradient(90.48deg, #B4EEE1 0.28%, #EAFCD7 99.48%);
 						border-radius: 4rpx;
 						font-size: 20rpx;
-						color: #35c4c4;
+						letter-spacing: 0.2px;
+						color: #212121;
 						vertical-align: 13%;
+						font-weight: 600;
 					}
 
 					.text {
@@ -476,7 +478,7 @@
 				font-size: 24rpx;
 				color: #ffffff;
 				text-align: center;
-				background: linear-gradient(135deg, #36d9cd, #28c6c6);
+				background: linear-gradient(116.19deg, #F83112 16.48%, #FD6421 83.52%);
 				border-radius: 16rpx;
 			}
 		}
@@ -496,37 +498,37 @@
 		}
 
 		.color1-text {
-			color: #fc8b19;
+			color: #FE9000;
 		}
 
 		.color1-bg {
-			background: #fcf9f5;
-			border: 1rpx solid #f5d9bc;
+			background: #FFFAF5;
+			border: 1rpx solid #FAE0C5;
 		}
 
 		.color2-text {
-			color: #0ec270;
+			color: #0EC270;
 		}
 
 		.color2-bg {
-			background: #bcf5d9;
-			border: 1rpx solid #bcf5d9;
+			background: #F5FCF9;
+			border: 1rpx solid #BCEBD4;
 		}
 
 		.color3-text {
-			color: #808080;
+			color: #FE3F52;
 		}
 
 		.color3-bg {
-			background: #f7f7f7;
-			border: none;
+			background: #FEF7F8;
+			border: 1rpx solid #FFD4D8;
 		}
 
 		.back-item {
 			width: 686rpx;
 			height: 80rpx;
 			line-height: 80rpx;
-			border: 1rpx solid #f5d9bc;
+			border: 1rpx solid #FAE0C5;
 			border-radius: 16rpx;
 			display: flex;
 			flex-direction: row;
@@ -538,11 +540,11 @@
 			}
 
 			.num-z {
-				font-size: 32rpx;
+				font-size: 40rpx;
 			}
 
 			.num-x {
-				font-size: 22rpx;
+				font-size: 26rpx;
 			}
 
 			.back-price {

@@ -54,7 +54,7 @@
 				  </view>
 				</view>
 				<view class="router" v-if="refundInfo.cardRefundedAmount" :style="{marginBottom:refundInfo.weChatRefundedAmount?'16rpx':'0'}">
-				  <text  style="color: #999999;font-size: 26rpx;">原路径返回储值卡</text>
+				  <text  style="color: #999999;font-size: 26rpx;">原路径退回至储值卡</text>
 				  <view>
 				    <text style="font-size: 20rpx;">￥</text>
 				    <text style="font-size:28rpx;" class="price-font">
@@ -66,7 +66,7 @@
 				  </view>
 				</view>
         <view class="router" v-if="refundInfo.weChatRefundedAmount" :style="{marginBottom:refundInfo.couponRefundedAmount?'16rpx':'0'}" >
-          <text style="color: #999999;font-size: 26rpx;">原路径返回微信</text>
+          <text style="color: #999999;font-size: 26rpx;">原路径退回至原账户</text>
           <view>
             <text style="font-size: 20rpx;">￥</text>
             <text style="font-size:28rpx;" class="price-font">
@@ -169,14 +169,14 @@
         :showPayType="true"
       />
 
-      <view v-if=" orderInfo.showRefundBtn " class="applyforRefund-container" :style="{paddingBottom:systemBottom,height:systemHeight}">
+      <view v-if=" orderInfo.showRefundBtn " class="applyforRefund-container" :style="{paddingBottom:systemBottom,}">
         <view class="applyforRefund" @click="toApplayForRefund(orderInfo,2)" >
           申请退款
         </view>
 			</view>
 
 			<!-- 申请售后的按钮 -->
-			<view v-if="orderInfo.showApplyAfterSalesBtn" class="applyforRefund-container" :style="{paddingBottom:systemBottom,height:systemHeight}">
+			<view v-if="orderInfo.showApplyAfterSalesBtn" class="applyforRefund-container" :style="{paddingBottom:systemBottom,}">
 			  <view class="applyforRefund" @click="toApplyForAfterSales()" >
 			    申请售后
 			  </view>

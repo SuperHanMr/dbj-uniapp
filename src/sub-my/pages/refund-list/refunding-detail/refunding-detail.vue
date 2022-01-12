@@ -57,7 +57,7 @@
     <uni-popup  ref="cancelRefund"  type="dialog">
       <uni-popup-dialog
         mode="base"
-        title="确定要取消本次退款申请？"
+        :title="title"
         :before-close="true"
         @close="cancelToPayClose"
         @confirm="confirmCancelToPay"
@@ -80,6 +80,7 @@ export default {
 			containerPaddingBottom:"",
 			navBarHeight:"",
 			scrollTop: 0,
+			title:"确定要取消本次退款申请？",
 			headerTitle:"",
 			bgImg: "../../../static/order_bg.png",
     };
@@ -159,6 +160,13 @@ export default {
 
 		//
 		 cancelToPay() {
+			 console.log("this.refundInfo.approvalCompleted==",this.refundInfo.approvalCompleted)
+			 // this.refundInfo.approvalCompleted = true
+			 if(this.refundInfo.approvalCompleted){
+				this.title="退款审核已通过，不可取消"
+			 }else{
+				 this.title="确定要取消本次退款申请？"
+			 }
       this.$refs.cancelRefund.open();
     },
     cancelToPayClose() {
@@ -166,15 +174,19 @@ export default {
     },
     confirmCancelToPay(value) {
       // 调用申请退款的接口
-			cancelRefund({id:this.id }).then(e=>{
-				console.log(e)
-				// 成功就关闭弹框
-				// 跳转到退款关闭页面  退款取消页面
+			if(this.refundInfo.approvalCompleted){
 				this.$refs.cancelRefund.close();
-				uni.redirectTo({
-					url:`../../my-order/order-failed/order-failed?type=refund&id=${this.id}&status=4&from=inprogress`
+			}else{
+				cancelRefund({id:this.id }).then(e=>{
+					console.log(e)
+					// 成功就关闭弹框
+					// 跳转到退款关闭页面  退款取消页面
+					this.$refs.cancelRefund.close();
+					uni.redirectTo({
+						url:`../../my-order/order-failed/order-failed?type=refund&id=${this.id}&status=4&from=inprogress`
+					})
 				})
-			})
+			}
     },
 
 

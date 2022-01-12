@@ -9,10 +9,11 @@
         @click="currentIndex=index"
       >
         <view class="tab-text">{{item}}</view>
-				<view class="bottom-icon" />
+				<view class="bottom-icon"  
+				 :style="{backgroundImage:`url(${bgcIcon})`,backgroundSize: '100% 100%'}"
+				/>
       </view>
     </view>
-		 <!-- <view class="line" /> -->
     <swiper
       class="swiper"
       :current="currentIndex"
@@ -39,7 +40,7 @@
 						<view
 							v-if="tabindex==0"
 							class="house-item"
-							v-for="item in houselist"
+							v-for="item in currentList"
 							:key="item.id"
 							@click="goToHouse(item)"
 						>
@@ -79,7 +80,7 @@
 						  </view>
 						</view>
 						<!-- 优先推荐 -->
-						<view  v-if=" tabindex == 2" v-for="(item3,index3) in recommendlist" :key="item3.id"  >
+						<view  v-if=" tabindex == 2" v-for="(item3,index3) in currentList" :key="item3.id"  >
 							<view class="craftsmanAndRecommend" >
 								<view class="left">
 									<image :src="`${item3.avatar}?x-oss-process=image/resize,m_mfit,w_192,h_192`" mode="" @click="goToPersonalHome(item3)"/>
@@ -121,7 +122,7 @@ export default {
 			page:[1,1,1],
       totalPage: [1,1,1],
       loading: false,
-
+			bgcIcon:"../../../static/selectIcon.svg",
       routeId:"",
 			systemBottom:"",
 			equipmentId:"",
@@ -358,7 +359,7 @@ export default {
       position: absolute;
       width: 32rpx;
       height: 4rpx;
-      background: linear-gradient(129deg, #00cdec 0%, #00ed7d 100%);
+      // background: linear-gradient(129deg, #00cdec 0%, #00ed7d 100%);
       border-radius: 200rpx 200rpx 0px 0px;
       bottom: 1rpx;
       left: 50%;

@@ -230,19 +230,28 @@
 
 			refundCancel(item) {
 				this.itemId = item.refundId;
-				this.title = "确定要取消本次申请退款？";
+				this.approvalCompleted = item.approvalCompleted
+				if(this.approvalCompleted){
+					this.title="退款审核已通过，不可取消"
+				}else{
+					this.title = "确定要取消本次申请退款？";
+				}
 				this.$refs.cancelRefund.open();
 			},
 			cancelRefundClose() {
 				this.$refs.cancelRefund.close();
 			},
 			cancelRefundConfirm() {
-				cancelRefund({
-					id: this.itemId,
-				}).then(() => {
-					this.$refs.cancelRefund.close();
-					this.orderDetail();
-				});
+				if(this.approvalCompleted){
+					this.$refs.cancelRefund.close()
+				}else{
+					cancelRefund({
+						id: this.itemId,
+					}).then(() => {
+						this.$refs.cancelRefund.close();
+						this.orderDetail();
+					});
+				}
 			},
 
 			// 申请退款成功

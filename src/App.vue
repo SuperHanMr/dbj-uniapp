@@ -45,10 +45,30 @@
       goHomeUrl: false,
       MarketStoreSwitch: false,
       ip: "",
+      isSaler:false
     },
 
-    onLaunch: function(options) {
+    onLaunch: function(options) {   
+        // let isSaler = uni.getStorageSync("isSaler");
+        // if(isSaler){
+        //   this.globalData.isSaler = true;
+        // }
       if (options && options.query && options.query.scene) {
+        if(options.query.isSaler) {
+          getApp().globalData.isSaler = true;
+          // uni.setStorage({
+          // 	key: 'isSaler',
+          // 	data: '1',
+          // 	success: function() {
+          // 		console.log("isSaler存储成功");
+          // 	},
+          // 	fail: function() {
+          // 		console.error("isSaler存储失败")
+          // 	}
+          // });
+          uni.setStorageSync('isSaler', '1')
+          console.log("isSaler", uni.getStorageSync('isSaler'))
+        }
         let shareId = '';
         let scene = decodeURIComponent(options.query.scene) || "";
         let obj = {};
@@ -62,16 +82,18 @@
         }
         if (shareId) {
           this.globalData.shareId = shareId;
-          uni.setStorage({
-            key: 'shareId',
-            data: shareId,
-            success: function() {
-              console.log("shareId存储成功");
-            },
-            fail: function() {
-              console.error("shareId存储失败")
-            }
-          });
+          // uni.setStorageSync({
+          //   key: 'shareId',
+          //   data: shareId,
+          //   success: function() {
+          //     console.log("shareId存储成功");
+          //   },
+          //   fail: function() {
+          //     console.error("shareId存储失败")
+          //   }
+          // });
+          uni.setStorageSync('shareId', shareId)
+          console.log("--shareId--", uni.getStorageSync('shareId'))
         }
       }
       // #ifdef MP-WEIXIN
@@ -171,11 +193,9 @@
           });
       }
       uni.$on("system-messages", () => {
-        console.log(1111);
         this.watchMsg();
       });
       uni.$on("currentHouseChange", () => {
-        console.log(222);
         this.watchMsg();
       });
       // 检查新版本
@@ -214,8 +234,6 @@
       console.log("App Hide");
     },
     onLoad: function(options) {
-      console.log("???????");
-
     },
     methods: {
       watchMsg() {

@@ -99,12 +99,21 @@
 		<view class="empty-container" v-else>
 			<view class="line" />
 			<view class="show">
-				<image src="/static/empty_page@2x.png" mode=""></image>
+				<image src="../../static/img_noOrder.svg" mode=""></image>
 				<text>您还没有退款记录</text>
 			</view>
 		</view>
 		
-		<popup-dialog ref="popup"  :title="title" @close="close" @confirm="confirm"></popup-dialog>
+		<popup-dialog  ref="popup"  :title="title" @close="close" @confirm="confirm"></popup-dialog>
+		<!-- <uni-popup ref="cannotRefund"  type="dialog">
+			<uni-popup-dialog 
+				mode="base"
+				:title="title"
+				:before-close="true"
+				@close="close"
+				@confirm="confirm"
+			></uni-popup-dialog>
+		</uni-popup> -->
 	</view>
 
 
@@ -211,7 +220,6 @@
 				})
 			},
 		
-		
 			goToDetail(data){
 				console.log("去详情页面","data",data.status,data.type)
 				// if(data.type == 5) return 
@@ -234,21 +242,42 @@
 			open(data) {
 				this.refundItem  =data
 				this.itemId = data.id 
+				// this.refundItem.approvalCompleted  = true
+				// approvalCompleted 是否审核完成 true不可退 false可退
+				console.log("approvalCompleted===",this.refundItem.approvalCompleted)
+				if(this.refundItem.approvalCompleted){
+					this.title="退款审核已通过，不可取消"
+					// this.$refs.cannotRefund.open()
+				}else{
+					this.title="确定要取消本次退款申请？"
+				}
 				this.$refs.popup.open()
 			},
 			close() {
+				// if(this.refundItem.approvalCompleted){	
+				// 	this.$refs.cannotRefund.close()
+				// }else{
+				// 	this.$refs.popup.close()
+				// }
 				this.$refs.popup.close()
 			},				
 			confirm(value) {
 				// 调用申请退款的接口
 				// 成功就关闭弹框
-				console.log("this.itemId=",this.itemId)
-				cancelRefund({id:this.itemId}).then(()=>{
+				if(this.refundItem.approvalCompleted){
+					this.title="退款审核已通过，不可取消"
+					console.log("this.itemId=",this.itemId,"退款审核已通过,不可取消")
+					// this.$refs.cannotRefund.close()
 					this.$refs.popup.close()
-					this.dataList=[]
-					this.query.lastId = -1
-					this.getList()
-				})
+				}else{
+					this.title="确定要取消本次退款申请？"
+					cancelRefund({id:this.itemId}).then(()=>{
+						this.$refs.popup.close()
+						this.dataList=[]
+						this.query.lastId = -1
+						this.getList()
+					})
+				}
 			},
 			
 		}
