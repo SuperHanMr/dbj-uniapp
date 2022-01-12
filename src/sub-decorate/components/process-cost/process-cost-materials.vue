@@ -474,7 +474,7 @@
         font-family: PingFangSC, PingFangSC-Medium;
         font-weight: 700;
         text-align: right;
-        color: #00bfb6;
+        color: #FA4D32;
         line-height: 32rpx;
       }
 

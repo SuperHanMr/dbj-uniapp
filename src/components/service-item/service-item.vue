@@ -14,7 +14,7 @@
         <i v-if="serviceData.nodeType == 10" class="icon-zx icon-ic_zhuangxiuxianchang_youqi_csn1"></i>
         <view>{{serviceData.serviceName}}</view>
       </view>
-      <view class="status-name mr inservice flex-row-start">
+      <view class="status-name mr flex-row-start" :class="{inservice:serviceData.status > 2,shouldsure:serviceData.grepOrderStatus < 3}">
         <view>{{ serviceData.statusName }}</view>
         <!-- <image :class="{open: open}"
           v-if="serviceData.status >= 2 || (serviceData.status == 0 && serviceData.grepOrderStatus === 3)"
@@ -226,7 +226,7 @@
   color: #FA4D32;
 }
 .inservice {
-  color: #FA4D32;
+  color: #333;
 }
 .uncheck{
   color: red;

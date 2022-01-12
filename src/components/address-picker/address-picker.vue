@@ -2,7 +2,8 @@
   <view class="">
     <view v-if='houseId'>
       <view class="header-address">
-        <image src="../../static/images/ic_location@2x.png" class="locationIcon"></image>
+        <span class="locationIcon"></span>
+        <!-- <image src="../../static/images/ic_location@2x.png" class="locationIcon"></image> -->
         <view class="address" @click="checkAddress">
           <view class="way">
             <text class="default" v-if="addressInfo.defaultEstate">默认</text>
@@ -18,7 +19,8 @@
       </view>
       <view class="header-operator" v-for="(item, index) in addUser" :key="index" v-if="addUser.length">
         <view v-if="item.addingJobName" class="add-box">
-          <image src="../../static/images/addUser.png" class="locationIcon"></image>
+          <span class="locationIcon"></span>
+          <!-- <image src="../../static/images/addUser.png" class="locationIcon"></image> -->
           <view class="address">
             <view class="community">{{item.addingJobName}}:{{item.addingUserName}}</view>
           </view>
@@ -138,10 +140,10 @@
   }
 
   .locationIcon {
-    width: 48rpx;
+    width: 30rpx;
     height: 48rpx;
     display: block;
-    margin: 32rpx 8rpx 0 32rpx;
+    margin-top: 32rpx;
   }
 
   .switchSite {
@@ -169,11 +171,12 @@
     text-align: center;
     padding: 2rpx 10rpx;
     margin-right: 8rpx;
-    background: linear-gradient(135deg, #36d9cd, #28c6c6);
+    background: linear-gradient(133.85deg, #696B6B 3.06%, #575C5C 100.1%);
     border-radius: 4rpx;
     font-size: 20rpx;
     font-weight: 500;
     color: #ffffff;
+    vertical-align: middle;
   }
 
   .address .way .txt {
