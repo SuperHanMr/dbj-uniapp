@@ -157,7 +157,7 @@
 
   .btn.disabled {
     opacity: 0.5;
-    background: linear-gradient(135deg, #53d5cc, #4fc9c9);
+    background: linear-gradient(117.02deg, rgba(250, 59, 52, 0.4) 24.56%, rgba(255, 106, 51, 0.4) 92.21%), #FFFFFF;
     color: #ffffff;
   }
 </style>

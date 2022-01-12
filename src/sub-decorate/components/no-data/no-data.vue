@@ -1,6 +1,6 @@
 <template>
   <view class="no-service">
-    <image class="bg" src="https://ali-image.dabanjia.com/static/mp/dabanjia/images/my/blank_ic%402x.png">
+    <image class="bg" src="https://ali-image.dabanjia.com/static/mp/dabanjia/images/theme-red/decorate/blank_ic%402x.png">
     <view class="text" v-for="(item,index) in wordscp" :key="index">{{item}}</view>
   </view>
 </template>
