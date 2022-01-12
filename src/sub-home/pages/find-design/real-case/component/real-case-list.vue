@@ -177,6 +177,7 @@
 				border: 0.5px solid #E8E8E8;
 				box-sizing: border-box;
 				padding: 32rpx 24rpx;
+				border-radius: 16rpx 16rpx 0 0; 
 
 				.title {
 					display: flex;
