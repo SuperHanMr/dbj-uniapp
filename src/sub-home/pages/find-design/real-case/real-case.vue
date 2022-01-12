@@ -9,10 +9,18 @@
 		</view>
 		<view class="container" :style="{marginTop: Number(statusHeight) + 44 + 'px'}">
 			<view class="screening" >
-				<real-case-screening v-if="showScreen"/>
-				<view class="hide-screen" v-else>
-					<view class="title">
-						隐藏
+				<real-case-screening v-show="showScreen" @updateTag='updateTag'/>
+				<view class="hide-screen" v-if="!showScreen" @click="onShowScreen">
+					<view class="title" v-if="selectTag.length <= 0">
+						筛选
+					</view>
+					<view class="tag" v-else>
+						<view class="name" v-for="name in selectTag" :key='name'>
+							{{name}}
+						</view>
+						<view class="point" v-if="selectTag.length >= 2">
+							
+						</view>
 					</view>
 					<view class="icon-ic_cancel_white">
 						
@@ -20,7 +28,13 @@
 				</view>
 			</view>
 			<view class="list">
-				<real-case-list @triggerScroll='triggerScroll' @scrollUpper='scrollUpper'/>
+				<real-case-list @triggerScroll='triggerScroll' @scrollUpper='scrollUpper' ref='realCaseList'/>
+				<!-- <view class="no-service">
+					<image src="/static/real-case-design/no-service.png" mode=""></image>
+					<view class="title">
+						暂无相关案例～
+					</view>
+				</view> -->
 			</view>
 		</view>
 		<view class="perfect-house-info">
@@ -40,6 +54,7 @@
 		data() {
 			return {
 				statusHeight: '',
+				selectTag: [],
 				showScreen: true
 			}
 		},
@@ -55,11 +70,24 @@
 				uni.navigateBack()
 			},
 			triggerScroll(){
-				console.log('触发了滚动')
+				if (!this.showScreen) return;
 				this.showScreen = false;
 			},
 			scrollUpper(){
+				if (this.scshowScreen) return;
 				this.showScreen = true;
+			},
+			onShowScreen(){
+				this.showScreen = true;
+				this.$refs.realCaseList.scrollToTop();
+			},
+			updateTag(obj){
+				const arr = [];
+				for(let i in obj) {
+					arr.push(obj[i])
+				}
+				console.log(arr)
+				this.selectTag = arr;
 			}
 		}
 	}
@@ -106,10 +134,25 @@
 				display: flex;
 				justify-content: space-between;
 				background: #FFFFFF;
-				.title{
+				position: relative;
+				.title, .name{
 					font-size: 28rpx;
 					line-height: 40rpx;
 					color: #333333;
+				}
+				.tag{
+					display: flex;
+					.name{
+						margin-right: 38rpx;
+					}
+					.point{
+						width: 4rpx;
+						height: 4rpx;
+						background: #333333;
+						position: absolute;
+						left: 102rpx;
+						top: 38rpx;
+					}
 				}
 				.hide-screen-icon{
 					font-size: 32rpx;
@@ -118,6 +161,24 @@
 			.list{
 				flex: 1;
 				overflow: scroll;
+				.no-service{
+					width: 100%;
+					height: 100%;
+					display: flex;
+					flex-direction: column;
+					justify-content: center;
+					align-items: center;
+					image{
+						width: 400rpx;
+						height: 400rpx;
+					}
+					view{
+						font-size: 24rpx;
+						line-height: 34rpx;
+						text-align: center;
+						color: #CBCCCC;
+					}
+				}
 			}
 		}
 	}

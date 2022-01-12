@@ -1,11 +1,11 @@
 <template>
 	<view class="real-case-screening">
-		<view class="list" v-for="item in list" :key='item.key'>
+		<view class="list" v-for="(item, index) in list" :key='item.key'>
 			<view class="left">
 				{{item.title}}
 			</view>
 			<view class="right">
-				<view :class="['tag', {'tag-all': tag.key == tagSelect[index]}]" v-for="(tag, index) in item.list" :key='tag.key'>
+				<view :class="['tag', {'tag-all': tag.key == tagSelect[index]}]" v-for="(tag, tagIndex) in item.list" :key='tag.key' @click="onTag(index,tag.key, tagIndex)">
 					{{tag.name}}
 				</view>
 			</view>
@@ -102,7 +102,20 @@
 						]
 					}
 				],
-				tagSelect: [1, 1]
+				tagSelect: [1, 1],
+				selectData: {
+					0: '全部',
+					1: '全部'
+				}
+			}
+		},
+		methods:{
+			onTag(index,key, tagIndex){
+				let arr = JSON.parse(JSON.stringify(this.tagSelect));
+				arr[index] = key;
+				this.tagSelect = arr;
+				this.selectData[index] = this.list[index].list[tagIndex].name;
+				this.$emit('updateTag', this.selectData);
 			}
 		}
 	}
