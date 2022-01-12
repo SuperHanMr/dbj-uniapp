@@ -959,7 +959,7 @@
 
     .item {
       flex: 1;
-      height: 150rpx;
+      height: 190rpx;
       background: #f5fcfc;
       border-radius: 16rpx;
     }
@@ -974,6 +974,7 @@
     border-radius: 16rpx;
     width: 100%;
     display: block;
+		margin-top: 30rpx;
   }
 
   .zone-view {
@@ -995,19 +996,19 @@
 				flex-direction: column;
 				justify-content: center;
 				align-items: center;
-				margin-bottom: 36rpx;
+				margin-bottom: 18rpx;
 				.name {
 				  font-size: 24rpx;
 				  font-weight: 400;
 				  color: #333333;
 				  line-height: 34rpx;
-				  margin-top: 12rpx;
+				  // margin-top: 12rpx;
 				}
 				
 				.icon {
 				  display: block;
-				  width: 76rpx;
-				  height: 76rpx;
+				  width: 112rpx;
+				  height: 112rpx;
 				}
 			}
 			.item-more{

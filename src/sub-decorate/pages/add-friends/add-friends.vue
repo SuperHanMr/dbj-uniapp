@@ -1,7 +1,7 @@
 <template>
   <view
     class="content"
-    :style="{backgroundImage:`url(https://ali-image.dabanjia.com/static/mp/dabanjia/images/decorate/add-friends-bg.png)`,backgroundSize: '100% 100%'}"
+    :style="{backgroundImage:`url(https://ali-image.dabanjia.com/static/mp/dabanjia/images/theme-red/decorate/add-friends-bg.png)`,backgroundSize: '100% 100%'}"
   >
     <view class="header">
       <view class="text">
@@ -191,7 +191,7 @@ page {
     align-items: center;
 
     .text {
-      color: #456666;
+      color: #CAB89A;
       font-size: 56rpx;
       font-weight: 500;
       text-align: center;
@@ -275,7 +275,7 @@ page {
       }
 
       .add {
-        background: linear-gradient(135deg, #36d9cd, #28c6c6);
+        background: linear-gradient(117.02deg, #FA3B34 24.56%, #FF6A33 92.21%);
         color: #ffffff;
 				border: none;
       }
@@ -283,7 +283,7 @@ page {
   }
 
   .tips {
-    color: #35c4c4;
+    color: #CAB89A;
     font-weight: 400;
     font-size: 26rpx;
     margin-top: 24rpx;

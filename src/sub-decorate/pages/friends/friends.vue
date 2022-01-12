@@ -224,7 +224,7 @@
 
 		.add-btn {
 			height: 88rpx;
-			background: linear-gradient(135deg, #00BFAF, #00BFBC);
+			background: linear-gradient(116.19deg, #F83112 16.48%, #FD6421 83.52%);
 			border-radius: 12rpx;
 			width: 686rpx;
 			line-height: 88rpx;
