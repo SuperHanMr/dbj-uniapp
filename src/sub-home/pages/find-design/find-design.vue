@@ -8,7 +8,7 @@
 				</view>
 			</template>
 		</custom-navbar>
-
+		
 		<view class="top-bg">
 			<view class="pleaholder">
 			</view>
@@ -34,6 +34,9 @@
 					<text>{{item.name}}</text>
 				</view>
 			</scroll-view>
+		</view>
+		<view class="" @click="toRealCase">
+			真实案例
 		</view>
 		<design-list ref="designList"></design-list>
 
@@ -154,6 +157,11 @@
 			toBack() {
 				uni.navigateBack({
 
+				})
+			},
+			toRealCase(){
+				uni.navigateTo({
+					url: '/sub-home/pages/find-design/real-case/real-case'
 				})
 			}
 		}

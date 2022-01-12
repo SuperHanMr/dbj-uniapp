@@ -313,8 +313,17 @@
             "navigationBarTitleText": "直播",
             "enablePullDownRefresh": true
           }
-        }
-      ]
+        },
+        {
+					"path" : "pages/find-design/real-case/real-case",
+					    "style" :                                                                                    
+					{
+					    "navigationBarTitleText": "",
+					    "enablePullDownRefresh": false,
+							"navigationStyle": "custom"
+					}
+				}
+            ]
     },
     {
       "root": "sub-message", //消息模块分包
