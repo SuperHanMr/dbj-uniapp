@@ -16,16 +16,14 @@
 			<view class="shopItem" v-for="(shopItem,shopIndex) in shopList" :key="shopItem.storeId">
 				<!-- 店铺 -->
 				<view class="shopInfo">
-					<view style="width: 36rpx;height: 36rpx;">
-						<view class="check" v-if="!shopItem.shopChecked" @click="checkShop(shopItem.storeId)"></view>
-						<image class="checked" v-else @click="checkShop(shopItem.storeId)"
-							src="https://ali-image.dabanjia.com/static/mp/dabanjia/images/my/checked%402x.png"></image>
-					</view>
+					<image v-if="!shopItem.shopChecked" @click="checkShop(shopItem.storeId)" src="https://ali-image.dabanjia.com/static/mp/dabanjia/images/theme-red/my/all_Uncheck.svg" mode="" />
+					<image v-else @click="checkShop(shopItem.storeId)" src="https://ali-image.dabanjia.com/static/mp/dabanjia/images/theme-red/my/all_Check.svg"/>
+
 					<view class="goShop" @click="toShopHome(shopItem.storeId)">
 						<text class="shopName">{{shopItem.storeName}}</text>
 						<image class="shopIcon"
-							src="https://ali-image.dabanjia.com/static/mp/dabanjia/images/my/ic_jumpToShop%402x.png">
-							</text>
+							src="https://ali-image.dabanjia.com/static/mp/dabanjia/images/my/ic_jumpToShop%402x.png" />
+
 					</view>
 				</view>
 	<!-- 			<view class="freeMail">
@@ -45,15 +43,10 @@
 					<uni-swipe-action-item v-for="(goodsItem,goodsIndex) in shopItem.skuList" :key="goodsItem.skuId"
 						:right-options="options" @click="deleteGoods(goodsItem.skuId,goodsItem.buyCount)">
 						<view class="goodsItem">
-							<view style="width: 36rpx;height: 36rpx;">
-								<view class="check" v-if="!goodsItem.goodsChecked"
-									@click="checkGoods(shopItem.storeId,goodsItem.skuId)"></view>
-								<image class="checked" v-else @click="checkGoods(shopItem.storeId,goodsItem.skuId)"
-									src="https://ali-image.dabanjia.com/static/mp/dabanjia/images/my/checked%402x.png">
-								</image>
-							</view>
-							<image :src="goodsItem.image+'?x-oss-process=image/resize,m_mfit,w_96,h_96'"
-								@click="toGoodsDetail(goodsItem.skuId)" class="goodsItemImg"></image>
+							<image v-if="!goodsItem.goodsChecked" class="itemIcon" @click="checkGoods(shopItem.storeId,goodsItem.skuId)" src="https://ali-image.dabanjia.com/static/mp/dabanjia/images/theme-red/my/all_Uncheck.svg" />
+							<image v-else class="itemIcon" @click="checkGoods(shopItem.storeId,goodsItem.skuId)" src="https://ali-image.dabanjia.com/static/mp/dabanjia/images/theme-red/my/all_Check.svg" />
+							<image class="goodsItemImg" :src="goodsItem.image+'?x-oss-process=image/resize,m_mfit,w_96,h_96'"
+								@click="toGoodsDetail(goodsItem.skuId)"  />
 							<view class="goodsInfo">
 								<view>
 									<view class="goodsDesc" @click="toGoodsDetail(goodsItem.skuId)">
@@ -81,7 +74,7 @@
 											src="https://ali-image.dabanjia.com/static/mp/dabanjia/images/my/details_pop_subtract_disabled%402x.png">
 										</image>
 										<view class="count" :class="{'max': (+goodsItem.buyCount).toFixed(2).length > 5}"
-											@click="openCount(shopIndex, goodsIndex,goodsItem.minimumOrderQuantity,goodsItem.stepLength,goodsItem.buyCount)">
+											@click="openCount(shopIndex, goodsIndex,goodsItem.minimumOrderQuantity,goodsItem.stepLength,goodsItem.buyCount,goodsItem)">
 											{{(+goodsItem.buyCount).toFixed(2)}}
 										</view>
 
@@ -90,12 +83,13 @@
 										</image>
 									</view>
 								</view>
+
 							</view>
 						</view>
 					</uni-swipe-action-item>
 				</uni-swipe-action>
 			</view>
-			<view class="mask" v-if="showInput">
+			<!-- <view class="mask" v-if="showInput">
 				<view class="popupNum">
 					<view class="header">
 						<view class="title">编辑数量</view>
@@ -104,11 +98,45 @@
 					<input class="uni-input" type="digit" v-model="buyNum" focus :cursor-spacing="102" />
 					<view class="button">
 						<view class="cancel" @click="closeDialog">取消</view>
-						<!-- <view class="line"></view> -->
 						<view class="confirm" @click="defineCount">完成</view>
 					</view>
 				</view>
-			</view>
+			</view> -->
+
+			<uni-popup ref="editNumber" type="dialog">
+				<view class="dialogContainer">
+					<view class="title">
+						<text>编辑数量</text>
+						<image src="../../static/ic_cancel_black.svg" @click="closeDialog"/>
+					</view>
+					<view class="content">
+						当前最小单位为{{step}}，输入的数量需为{{step}}的倍数
+					</view>
+
+					<view class="countCtrl">
+						<image v-if="!goodsItemInfo.isMiniOrder" class="dec"
+							@click="changeCount(false,currentShopIndex, currentGoodsIndex)"
+							src="https://ali-image.dabanjia.com/static/mp/dabanjia/images/my/details_pop_%402x.png">
+						</image>
+						<image v-else class="dec" @click="changeCount(false,currentShopIndex, currentGoodsIndex)"
+							src="https://ali-image.dabanjia.com/static/mp/dabanjia/images/my/details_pop_subtract_disabled%402x.png">
+						</image>
+						<input class="input-style" type="digit" v-model="buyNum"	focus :cursor-spacing="102" />
+
+						<image class="inc" @click="changeCount(true, currentShopIndex,currentGoodsIndex)"
+							src="https://ali-image.dabanjia.com/static/mp/dabanjia/images/my/details_pop_add_normal%402x.png">
+						</image>
+					</view>
+
+					<view class="confirmBtn" @click="defineCount">完成</view>
+
+				</view>
+			</uni-popup>
+
+
+
+
+
 			<view class="mask" v-if="showClass">
 				<view class="popupClass">
 					<view class="header">
@@ -155,12 +183,15 @@
 					<view class="footer" @click="paySame">去结算</view>
 				</view>
 			</view>
+
 			<echone-sku :show="popupShow" :theme-color="themeColor" :combinations="combinations"
 				:specifications="specifications" :specifications-props="specificationsProps"
 				:combinations-props="combinationsProps" :default-select-index="selectedIndex" :spuName="spuName"
 				:productType="productType" :defaultSpec="defaultSpec" :defaultSpecIds="defaultSpecIds"
 				@close="popupShow=false" @confirm="handleConfirm"></echone-sku>
 			<!-- <view class="mask" v-if="skuShow"> -->
+
+
 			<custom-sku :show="skuShow" :combinations="combinations" :skuNames="skuNames" :selectedIndex="selectedIndex"
 				:productType="productType" :defaultSku="defaultSku" :defaultSpu="defaultSpu" @close="skuShow=false"
 				@confirm="handleConfirm"></custom-sku>
@@ -176,23 +207,25 @@
 					<image :src="disabldSkuItem.image+'?x-oss-process=image/resize,m_mfit,w_96,h_96'"
 						class="disabldSkuImg"></image>
 					<view class="disabledSkuInfo">
-						<view class="disabledSkuDesc">
-							<span class="disabledSkuType">{{disabldSkuItem.productType===1?'物品':'服务'}}</span>
-							{{disabldSkuItem.spuName}}
+						<view>
+							<view class="disabledSkuDesc">
+								<span class="disabledSkuType">{{disabldSkuItem.productType===1?'物品':'服务'}}</span>
+								{{disabldSkuItem.spuName}}
+							</view>
+							<view class="disabledSkuSpec">{{disabldSkuItem.skuName}}</view>
 						</view>
-						<view class="disabledSkuSpec">{{disabldSkuItem.skuName}}</view>
 						<view class="text">该商品已经失效</view>
 					</view>
 				</view>
 			</view>
 			<view class="bottom"></view>
+
 			<!-- 底部区域 -->
 			<view v-if="shopList.length">
 				<view class="allCheck" v-if="isManage">
 					<view class="left" @click="checkAll">
-						<view class="check" v-if="!isCheckedAll"></view>
-						<image src="https://ali-image.dabanjia.com/static/mp/dabanjia/images/my/checked%402x.png"
-							class="check" v-else></image>
+						<image v-if="!isCheckedAll" src="https://ali-image.dabanjia.com/static/mp/dabanjia/images/theme-red/my/all_Uncheck.svg" ></image>
+						<image v-else src="https://ali-image.dabanjia.com/static/mp/dabanjia/images/theme-red/my/all_Check.svg" />
 						<view class="text">全选</view>
 					</view>
 					<view class="right">
@@ -207,9 +240,8 @@
 				</view>
 				<view class="allCheck" v-else>
 					<view class="left" @click="checkAll">
-						<view class="check" v-if="!isCheckedAll"></view>
-						<image src="https://ali-image.dabanjia.com/static/mp/dabanjia/images/my/checked%402x.png"
-							class="check" v-else></image>
+						<image  v-if="!isCheckedAll" src="https://ali-image.dabanjia.com/static/mp/dabanjia/images/theme-red/my/all_Uncheck.svg" />
+						<image v-else src="https://ali-image.dabanjia.com/static/mp/dabanjia/images/theme-red/my/all_Check.svg" />
 						<view class="text">全选</view>
 					</view>
 					<view class="right">
@@ -283,8 +315,10 @@
 				step: 0, //步长
 				miniOrder: 0,
 				buyNum: "", //输入框的值,
+				editNum:"",//编辑弹框输入框的值
 				checkedSkuList: [],
 				defaultHouseInfo: "", // 房屋信息
+				goodsItemInfo:"",//商品信息
 			};
 		},
 		onLoad() {
@@ -519,8 +553,13 @@
 					}
 				});
 			},
-			openCount(shopIndex, goodsIndex, miniOrder, step, buyNum) {
+			openCount(shopIndex, goodsIndex, miniOrder, step, buyNum,goodsItem) {
+				console.log("goodsItem===",goodsItem)
+				this.goodsItemInfo = goodsItem
 				this.showInput = true;
+				//彈出编辑数量的弹框
+				this.$refs.editNumber.open()
+
 				this.miniOrder = miniOrder;
 				this.step = step;
 				this.buyNum = (+buyNum).toFixed(2);
@@ -529,11 +568,14 @@
 			},
 			closeDialog() {
 				this.showInput = false;
+
+				this.$refs.editNumber.close()
 			},
 			goBackCart() {
 				this.showClass = false;
 			},
 			defineCount() {
+				// this.buyNum = this.editNum
 				let val = this.buyNum;
 				let target =
 					this.shopList[this.currentShopIndex].skuList[this.currentGoodsIndex];
@@ -577,6 +619,7 @@
 				};
 				setBuyCount(params).then((data) => {
 					this.showInput = false;
+					this.$refs.editNumber.close()
 					this.getPage(target.skuId, target.goodsChecked);
 				});
 
@@ -794,11 +837,15 @@
 			changeCount(isAdd, shopIndex, goodsIndex) {
 				let target = this.shopList[shopIndex].skuList[goodsIndex];
 				let count = +target.buyCount;
+
+				this.buyNum = count //新添加的
+
 				let step = +target.stepLength;
 				let miniOrder = +target.minimumOrderQuantity;
 				if (isAdd) {
 					// 累加
 					count += step;
+
 					if (count > 9999.99) {
 						uni.showToast({
 							title: "已达到商品数量添加上限",
@@ -824,6 +871,8 @@
 					count -= step;
 				}
 				target.buyCount = count.toFixed(2).toString();
+				this.buyNum = count.toFixed(2).toString(); //新添加的
+				console.log("this.buyNum ===",this.buyNum)
 				this.freeShippings();
 				let params = {
 					userId: this.userId,
@@ -834,6 +883,7 @@
 				};
 				setBuyCount(params).then(() => {});
 			},
+
 			checkAll() {
 				//原逻辑
 				this.isCheckedAll = !this.isCheckedAll;
@@ -978,7 +1028,7 @@
 			clearDisaledSku() {
 				uni.showModal({
 					title: "确定要清空失效商品吗？",
-					content: "清空后会移除全部已失效商品",
+					// content: "清空后会移除全部已失效商品",
 					cancelColor: "#333333",
 					confirmColor: "#ff3347",
 					success: (res) => {
@@ -1053,7 +1103,7 @@
 			text-align: center;
 			line-height: 40rpx;
 		}
-		
+
 	}
 
 	.noGoods {
@@ -1166,7 +1216,7 @@
 			height: 102rpx;
 			background: #e5e5e5;
 		}
-		
+
 	}
 
 	.popupNum .button view {
@@ -1311,32 +1361,25 @@
 		color: #00bfb6;
 	}
 
-	
+
 
 	.shopInfo {
 		height: 96rpx;
 		display: flex;
 		align-items: center;
-		.check {
-			width: 32rpx;
-			height: 32rpx;
-			border-radius: 50%;
-			background: #ffffff;
-			border: 2rpx solid #cbcccc;
-		}
-		.checked {
-			width: 36rpx;
-			height: 36rpx;
-			display: block;
+		image{
+			width: 48rpx;
+			height: 48rpx;
 		}
 		.goShop {
 			display: flex;
+			height: 40rpx;
 			align-items: center;
 			.shopName {
 				font-size: 28rpx;
 				font-weight: 500;
 				color: #333333;
-				margin-left: 20rpx;
+				margin-left: 12rpx;
 			}
 			.shopIcon {
 				width: 40rpx;
@@ -1344,7 +1387,7 @@
 				display: block;
 			}
 		}
-		
+
 	}
 
 	.freeMail {
@@ -1383,7 +1426,8 @@
 				display: block;
 			}
 		}
-	} 
+	}
+
 	/* 商品 */
 	.shopItem {
 		margin: 16rpx 0;
@@ -1395,24 +1439,16 @@
 			display: flex;
 			align-items: center;
 			padding-bottom: 24rpx;
-			.check {
-				width: 32rpx;
-				height: 32rpx;
-				border-radius: 50%;
-				background: #ffffff;
-				border: 2rpx solid #cbcccc;
-			}
-			.checked {
-				width: 36rpx;
-				height: 36rpx;
-				display: block;
+			.itemIcon{
+				width: 48rpx;
+				height: 48rpx;
 			}
 			.goodsItemImg {
 				width: 192rpx;
 				height: 192rpx;
 				display: block;
 				margin-left: 16rpx;
-				margin-right: 20rpx;
+				margin-right: 24rpx;
 				border-radius: 8rpx;
 			}
 			.goodsInfo {
@@ -1523,14 +1559,14 @@
 				}
 			}
 		}
-	} 
+	}
 
 	/* 已失效商品 */
 	.disabledSku {
-		margin: 24rpx 22rpx 48rpx 24rpx;
-		padding: 24rpx 28rpx 32rpx 24rpx;
+		margin: 24rpx 0 48rpx 0;
+		padding: 24rpx 32rpx 32rpx;
 		background: #ffffff;
-		border-radius: 16rpx;
+		border-radius: 32rpx;
 		.top {
 			width: 100%;
 			display: flex;
@@ -1546,9 +1582,9 @@
 				width: 168rpx;
 				height: 40rpx;
 				font-size: 28rpx;
-				color: #35c4c4;
+				color: #FE9000;
 				line-height: 40rpx;
-			}		
+			}
 		}
 		.disabldSkuItem {
 			width: 100%;
@@ -1565,6 +1601,9 @@
 			}
 			.disabledSkuInfo {
 				height: 100%;
+				display: flex;
+				flex-flow: column nowrap;
+				justify-content: space-between;
 				.disabledSkuDesc {
 					max-width: 436rpx;
 					max-height: 80rpx;
@@ -1577,27 +1616,29 @@
 					color: #cdcdcd;
 					line-height: 40rpx;
 					.disabledSkuType {
+						display: inline-block;
 						width: 60rpx;
 						height: 30rpx;
-						padding: 2rpx 10rpx 2rpx 10rpx;
-						margin-right: 4rpx;
-						border: 1rpx solid #cdcdcd;
-						border-radius: 4rpx;
-						font-size: 20rpx;
-						font-weight: 500;
-						color: #cdcdcd;
-						line-height: 28rpx;
+						line-height: 30rpx;
 						text-align: center;
+						margin-right: 4rpx;
+						border-radius: 4rpx;
+						background: linear-gradient(90.48deg, #B4EEE1 0.28%, #EAFCD7 99.48%);
+						font-size: 20rpx;
+						font-weight: 600;
+						color: #cdcdcd;
 					}
 				}
 				.disabledSkuSpec {
-					max-width: 436rpx;
+					// max-width: 436rpx;
+					max-width: 200rpx;
 					text-overflow: ellipsis;
 					white-space: nowrap;
 					overflow: hidden;
-					height: 38rpx;
-					padding: 4rpx;
-					margin: 12rpx 0 12rpx 0;
+					height: 36rpx;
+					line-height: 36rpx;
+					// padding: 4rpx;
+					margin: 12rpx 0 26rpx 0;
 					background: #fafafa;
 					border: 1rpx solid #f0f0f0;
 					border-radius: 4rpx;
@@ -1613,12 +1654,8 @@
 				}
 			}
 		}
-		
+
 	}
-
-
-	 
-
 	.bottom {
 		width: 100%;
 		height: 214rpx;
@@ -1638,15 +1675,14 @@
 		left: 0rpx;
 		.left {
 			display: flex;
-		}
-		.check {
-			width: 36rpx;
-			height: 36rpx;
-			margin-left: 32rpx;
-			margin-right: 20rpx;
-			border-radius: 50%;
-			background: #ffffff;
-			border: 2rpx solid #e5e5e5;
+			flex-flow: row nowrap;
+			align-items: center;
+			margin-left: 26rpx;
+			image{
+				width: 48rpx;
+				height: 48rpx;
+				margin-right: 8rpx;
+			}
 		}
 		.text {
 			width: 56rpx;
@@ -1666,56 +1702,116 @@
 				font-size: 28rpx;
 				color: #333;
 			}
+			.totalPrice {
+				max-width: 198rpx;
+				height: 36rpx;
+				// margin-bottom: -2rpx;
+				margin-right: 16rpx;
+				font-size: 24rpx;
+				color: #ff3347;
+				.int {
+					font-size: 36rpx;
+				}
+			}
+			.preOrder {
+				width: 248rpx;
+				height: 80rpx;
+				line-height: 80rpx;
+				text-align: center;
+				margin-right: 32rpx;
+				border-radius: 16rpx;
+				font-size: 32rpx;
+				color: #fff;
+				background: linear-gradient(117.02deg, #FA3B34 24.56%, #FF6A33 92.21%);
+			}
+			.collect {
+				width: 168rpx;
+				height: 64rpx;
+				line-height: 64rpx;
+				font-size: 26rpx;
+				text-align: center;
+				color: #fe9000;
+				background: #ffffff;
+				border: 2rpx solid #fe9000;
+				border-radius: 12rpx;
+			}
+			.delete {
+				width: 116rpx;
+				height: 64rpx;
+				margin: 0 32rpx 0 24rpx;
+				line-height: 64rpx;
+				font-size: 26rpx;
+				text-align: center;
+				color: #ff3347;
+				background: #ffffff;
+				border: 2rpx solid #ff3347;
+				border-radius: 12rpx;
+			}
 		}
-		
 	}
-
-
-	.totalPrice {
-		max-width: 198rpx;
-		height: 36rpx;
-		margin-bottom: -2rpx;
-		margin-right: 16rpx;
-		font-size: 24rpx;
-		color: #ff3347;
-		.int {
-			font-size: 36rpx;
+	//編輯数量的弹框
+	.dialogContainer{
+		width: 636rpx;
+		height: 466rpx;
+		box-sizing: border-box;
+		padding: 40rpx 48rpx 48rpx;
+		background-color: #FFFFFF;
+		border-radius: 32rpx;
+		.title{
+			height: 64rpx;
+			line-height: 64rpx;
+			text-align: center;
+			font-weight: 500;
+			font-size: 32rpx;
+			position: relative;
+			image{
+				position: absolute;
+				width: 64rpx;
+				height: 64rpx;
+				right: 16rpx;
+				bottom: 0;
+			}
 		}
-	}
-	.preOrder {
-		width: 248rpx;
-		height: 88rpx;
-		text-align: center;
-		line-height: 88rpx;
-		margin-right: 32rpx;
-		border-radius: 12rpx;
-		font-size: 32rpx;
-		color: #fff;
-		background: linear-gradient(135deg, #53d5cc, #4fc9c9);
-	}
+		.content{
+			padding:8rpx 0 32rpx;
+			height: 42rpx;
+			line-height: 42rpx;
+			text-align: center;
+			color: #999999;
+			font-size: 28rpx
+		}
+		.countCtrl{
+			height: 96rpx;
+			display: flex;
+			flex-flow: row nowrap;
+			align-items: center;
+			margin-bottom: 48rpx;
+			image{
+				width: 96rpx;
+				height: 96rpx;
+			}
+			.input-style{
+				width: 350rpx;
+				height: 96rpx;
+				box-sizing: border-box;
+				border: 0.5px solid #E7E8E8;
+				caret-color: #FA4D32;
+				text-align: center;
+			}
+		}
+		.confirmBtn{
+			width: 542rpx;
+			height: 88rpx;
+			line-height: 88rpx;
+			text-align: center;
+			background: linear-gradient(117.02deg, #FA3B34 24.56%, #FF6A33 92.21%);
+			border-radius: 16rpx;
+			color: #FFFFFF;
+			font-weight: 500;
+			font-size: 30rpx;
+		}
 
-	.collect {
-		width: 168rpx;
-		height: 64rpx;
-		line-height: 64rpx;
-		font-size: 26rpx;
-		text-align: center;
-		color: #fe9000;
-		background: #ffffff;
-		border: 2rpx solid #fe9000;
-		border-radius: 12rpx;
-	}
 
-	.delete {
-		width: 116rpx;
-		height: 64rpx;
-		margin: 0 32rpx 0 32rpx;
-		line-height: 64rpx;
-		font-size: 26rpx;
-		text-align: center;
-		color: #ff3347;
-		background: #ffffff;
-		border: 2rpx solid #ff3347;
-		border-radius: 12rpx;
+
 	}
 </style>

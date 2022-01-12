@@ -15,7 +15,7 @@
 				<view class="order-status">
 					<view class="status">
 						<image
-							src="../../../static/ic_status_inprogress.svg" mode=""/>
+							src="https://ali-image.dabanjia.com/static/mp/dabanjia/images/theme-red/my/ic_status_inprogress.svg" mode=""/>
 						<text>退款中</text>
 					</view>
 				</view>
@@ -82,7 +82,7 @@ export default {
 			scrollTop: 0,
 			title:"确定要取消本次退款申请？",
 			headerTitle:"",
-			bgImg: "../../../static/order_bg.png",
+			bgImg: "https://ali-image.dabanjia.com/static/mp/dabanjia/images/theme-red/decorate/order_bg.png",
     };
   },
 

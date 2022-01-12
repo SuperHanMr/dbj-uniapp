@@ -8,7 +8,7 @@
       class="backgroundStyle"
       :style="{backgroundImage:`url(${bgImg})`,backgroundSize:'cover'}"
     >
-			<!-- <view class="mask">
+      <!-- <view class="mask">
 				<view class="linearStyle" />
 			</view> -->
     </view>
@@ -30,15 +30,10 @@
               <text class="name">
                 {{userName}}
               </text>
-              <image
-                src="../../../static/order/images/icon_to_login.png"
-                mode=""
-              ></image>
+              <image src="https://ali-image.dabanjia.com/static/mp/dabanjia/images/theme-red/my/back.svg" />
             </view>
-
           </view>
         </view>
-
         <view
           class="avatar-img"
           v-else
@@ -61,10 +56,7 @@
           class="set-up"
           @click="handleSetUp"
         >
-          <image
-            src="../../../static/order/images/setting.svg"
-            mode=""
-          />
+          <image src="https://ali-image.dabanjia.com/static/mp/dabanjia/images/theme-red/my/setting.svg" />
         </view>
       </view>
 
@@ -76,10 +68,7 @@
             @click="handlerViewAll()"
           >
             <text>全部订单</text>
-            <image
-              src="../../../static/order/images/arraw_right_@2x.png"
-              mode=""
-            />
+            <image src="https://ali-image.dabanjia.com/static/mp/dabanjia/images/theme-red/my/gray_array_back.svg" />
           </view>
         </view>
         <view class="order-line" />
@@ -97,10 +86,7 @@
             >
               {{ waitPayOrderNum }}
             </view>
-            <image
-              :src="item.image"
-              mode=""
-            />
+            <image :src="item.image" />
             <text style="color:#333333;font-size: 24rpx;">{{item.value}}</text>
           </view>
         </view>
@@ -116,31 +102,14 @@
             @click="handlePersonalItem(item2)"
           >
             <view class="left">
-              <image
-                :src="item2.image"
-                mode=""
-              />
+              <image :src="item2.image" />
               <text>{{item2.value}}</text>
             </view>
-            <view
-              v-if="item2.key==1"
-              class="right"
-            >
-              <text v-if="isShowStoreValue">{{storeValueCard? Number(storeValueCard)/100 :'0.00' }}元</text>
-              <image
-                src="../../../static/order/images/arraw_right_@2x.png"
-                mode=""
-              />
-            </view>
-            <view
-              v-if="item2.key==2"
-              class="right"
-            >
-              <text>3张</text>
-              <image
-                src="../../../static/order/images/arraw_right_@2x.png"
-                mode=""
-              />
+
+            <view class="right">
+              <text v-if="isShowStoreValue && item2.key==1">{{storeValueCard? Number(storeValueCard)/100 :'0.00' }}元</text>
+              <text v-if="item2.key==2">3张</text>
+              <image src="https://ali-image.dabanjia.com/static/mp/dabanjia/images/theme-red/my/gray_array_back.svg" />
             </view>
           </view>
 
@@ -162,7 +131,8 @@ export default {
   },
   data() {
     return {
-      bgImg: "../../../static/order/images/myPage_bgImg.svg",
+      bgImg:
+        "https://ali-image.dabanjia.com/static/mp/dabanjia/images/theme-red/my/myPage_bgImg.svg",
       waitPayOrderNum: "",
       isShowStoreValue: false,
       storeValueCard: "",
@@ -180,25 +150,29 @@ export default {
         // },
         {
           key: "3",
-          image: "../../../static/order/images/shopping_Cart.svg",
+          image:
+            "https://ali-image.dabanjia.com/static/mp/dabanjia/images/theme-red/my/shopping_Cart.svg",
           value: "购物车",
           url: "../../../sub-my/pages/shopping-cart/shopping-cart",
         },
         {
           key: "4",
-          image: "../../../static/order/images/collection.svg",
+          image:
+            "https://ali-image.dabanjia.com/static/mp/dabanjia/images/theme-red/my/collection.svg",
           value: "我的收藏",
           url: "../../../sub-my/pages/personal-center/my-collection/my-collection?firstEntry=true",
         },
         {
           key: "5",
-          image: "../../../static/order/images/attention.svg",
+          image:
+            "https://ali-image.dabanjia.com/static/mp/dabanjia/images/theme-red/my/attention.svg",
           value: "我的关注",
           url: "../../../sub-my/pages/personal-center/my-attention/my-attention",
         },
         {
           key: "6",
-          image: "../../../static/order/images/houseGgr.svg",
+          image:
+            "https://ali-image.dabanjia.com/static/mp/dabanjia/images/theme-red/my/houseGgr.svg",
           value: "房屋管理",
           url: "../../../sub-my/pages/my-house/my-house?isMy=true",
         },
@@ -206,31 +180,36 @@ export default {
       orderStatusList: [
         {
           key: "1",
-          image: "../../../static/order/images/wait_pay.svg",
+          image:
+            "https://ali-image.dabanjia.com/static/mp/dabanjia/images/theme-red/my/wait_pay.svg",
           value: "待付款",
           url: "../../../sub-my/pages/my-order/my-order?index=1&firstEntry=true",
         },
         {
           key: "2",
-          image: "../../../static/order/images/inprogress.svg",
+          image:
+            "https://ali-image.dabanjia.com/static/mp/dabanjia/images/theme-red/my/inprogress.svg",
           value: "进行中",
           url: "../../../sub-my/pages/my-order/my-order?index=2&firstEntry=true",
         },
         {
           key: "3",
-          image: "../../../static/order/images/order_done.svg",
+          image:
+            "https://ali-image.dabanjia.com/static/mp/dabanjia/images/theme-red/my/order_done.svg",
           value: "已完成",
           url: "../../../sub-my/pages/my-order/my-order?index=3&firstEntry=true",
         },
         {
           key: "4",
-          image: "../../../static/order/images/evaluate.svg",
+          image:
+            "https://ali-image.dabanjia.com/static/mp/dabanjia/images/theme-red/my/evaluate.svg",
           value: "评价",
           url: "../../../sub-my/pages/evaluate/evaluate",
         },
         {
           key: "5",
-          image: "../../../static/order/images/refund.svg",
+          image:
+            "https://ali-image.dabanjia.com/static/mp/dabanjia/images/theme-red/my/refund.svg",
           value: "退款", //退款列表
           url: "../../../sub-my/pages/refund-list/refund-list",
         },
@@ -252,7 +231,8 @@ export default {
       this.MarketStoreSwitch = true;
       this.list.unshift({
         key: "1",
-        image: "../../../static/order/images/ic_storeValueCard.svg",
+        image:
+          "https://ali-image.dabanjia.com/static/mp/dabanjia/images/theme-red/my/ic_storeValueCard.svg",
         value: "储值卡",
         url: "../../../sub-my/pages/deposit-card/deposit-card",
       });
@@ -378,22 +358,22 @@ export default {
     position: absolute;
     width: 750rpx;
     height: 490rpx;
-  //   .mask {
-		// 	opacity: 1;
-		// 	z-index: 1;
-		// 	position: relative;
-		// 	width: 100%;
-		// 	height: 100%;
-		// 	.linearStyle {
-		// 		filter: blur(13rpx);
-		// 		width: 100%;
-		// 		height: 22px;
-		// 		bottom: 0;
-		// 		left: 0;
-		// 		z-index: 1;
-		// 		position: absolute;
-		// 	}
-		// }
+    //   .mask {
+    // 	opacity: 1;
+    // 	z-index: 1;
+    // 	position: relative;
+    // 	width: 100%;
+    // 	height: 100%;
+    // 	.linearStyle {
+    // 		filter: blur(13rpx);
+    // 		width: 100%;
+    // 		height: 22px;
+    // 		bottom: 0;
+    // 		left: 0;
+    // 		z-index: 1;
+    // 		position: absolute;
+    // 	}
+    // }
   }
 
   .my-body {
@@ -439,10 +419,9 @@ export default {
         font-weight: 500;
         color: #222222;
         image {
-          width: 24rpx;
-          height: 24rpx;
-          object-fit: cover;
-          margin-left: 8rpx;
+          width: 40rpx;
+          height: 40rpx;
+          display: block;
         }
       }
 
@@ -503,7 +482,6 @@ export default {
           margin-left: 8rpx;
           width: 24rpx;
           height: 24rpx;
-          object-fit: cover;
         }
       }
     }
@@ -593,7 +571,6 @@ export default {
           font-size: 28rpx;
           font-weight: 400;
           color: #333333;
-
           image {
             width: 48rpx;
             height: 48rpx;

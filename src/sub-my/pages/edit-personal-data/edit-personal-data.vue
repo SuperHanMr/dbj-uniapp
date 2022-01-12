@@ -6,13 +6,13 @@
 				<image class="change_avatar" src="../../static/ic_mine_change_avatar@2x.png" mode="" />
 			</view>
 		</view>
-		
+
 		<view class="main-body">
      <view class="nickName-container" @click="changeNickName">
 				<text>昵称</text>
 				<view class="right">
 					<text>{{userName}}</text>
-					<image src="../../static/ic_mine_editPersonal_arraw@2x.png" mode=""></image>
+					<image src="https://ali-image.dabanjia.com/static/mp/dabanjia/images/theme-red/my/small_gotoShop.svg" mode=""></image>
 				</view>
      </view>
 		 <view class="line"/>
@@ -20,21 +20,21 @@
 				<text>性别</text>
 				<view class="right">
 					<text>{{userInfo.sex == 1?"男":"女"}}</text>
-					<image src="../../static/ic_mine_editPersonal_arraw@2x.png" mode=""></image>
+					<image src="https://ali-image.dabanjia.com/static/mp/dabanjia/images/theme-red/my/small_gotoShop.svg" mode=""></image>
 				</view>
 		 </view>
 		 <view class="line"/>
-		 
+
 		 <view class="gender-container" @click="showToast">
 				<text>手机号</text>
 				<view class="right" style="margin-right: 8rpx;">
 					<text>{{userInfo.phone}}</text>
 				</view>
 		 </view>
-		 
+
 		</view>
-		
-		
+
+
 		<!-- 修改性别 -->
 		<uni-popup ref="editGender" type="bottom" class="edit-gender-container" >
 			<view class="popup-top">
@@ -43,13 +43,13 @@
 			</view>
 			<view class="popup-body">
 				<view class="left">
-					<image v-if="gender == 1"  src="../../static/ic_boy_checked.svg" mode=""></image>
-					<image v-else src="../../static/ic_boy_unCheck.svg" mode="" @click="checkGender(1)"></image>
+					<image v-if="gender == 1"  src="https://ali-image.dabanjia.com/static/mp/dabanjia/images/theme-red/my/ic_boy_checked.svg" mode=""></image>
+					<image v-else src="https://ali-image.dabanjia.com/static/mp/dabanjia/images/theme-red/my/ic_boy_unCheck.svg" mode="" @click="checkGender(1)"></image>
 					<text>男</text>
 				</view>
 				<view class="right">
-					<image v-if="gender == 2" src="../../static/ic_girl_checked.svg" mode="" ></image>
-					<image v-else src="../../static/ic_girl_unCheck.svg" mode="" @click="checkGender(2)"></image>
+					<image v-if="gender == 2" src="https://ali-image.dabanjia.com/static/mp/dabanjia/images/theme-red/my/ic_girl_checked.svg" mode="" ></image>
+					<image v-else src="https://ali-image.dabanjia.com/static/mp/dabanjia/images/theme-red/my/ic_girl_unCheck.svg" mode="" @click="checkGender(2)"></image>
 					<text>女</text>
 				</view>
 			</view>
@@ -59,10 +59,10 @@
 				</view>
 			</view>
 		</uni-popup>
-		
-		
-		
-		
+
+
+
+
   </view>
 </template>
 
@@ -76,7 +76,7 @@ export default {
 			userName:"",
 			gender:"",
 			files:{},
-			
+
 			systemBottom:"",
 		};
   },
@@ -85,7 +85,7 @@ export default {
 		// console.log("userInfo=",this.userInfo)
 		this.userName=this.userInfo.name;
 		this.gender  =this.userInfo.sex
-		this.files.url = 	this.userInfo.avatar 
+		this.files.url = 	this.userInfo.avatar
 		console.log("this.files=",this.files)
 	},
 	mounted(e) {
@@ -127,10 +127,10 @@ export default {
 					duration: 2000
 				})
 			})
-			
+
 		},
-		
-		
+
+
 		// 更改头像
 		changeAvatar(){
 			uni.chooseImage({
@@ -170,7 +170,7 @@ export default {
 				url:`edit-nick-name/edit-nick-name?nickName=${this.userInfo.name}`
 			})
 		},
-		
+
 		//修改性别  性别（1男，2女）
 		changeGender(){
 			 this.$refs.editGender.open()
@@ -201,11 +201,11 @@ export default {
 				this.gender = 2
 			}
 		},
-		
-		
-		
-		
-		
+
+
+
+
+
 		// 手机号
 		showToast(){
 			uni.showToast({
@@ -214,7 +214,7 @@ export default {
 				duration: 1000
 			})
 		},
-		
+
 	},
 };
 </script>
@@ -249,7 +249,7 @@ export default {
 			}
 		}
 	}
-	
+
 	.main-body {
 		background-color: #FFFFFF;
 		.line{
@@ -277,7 +277,7 @@ export default {
 				align-items: center;
 				text{
 					height: 32rpx;
-					line-height: 32rpx;				
+					line-height: 32rpx;
 					font-size: 26rpx;
 					color: #333333;
 				}
@@ -290,7 +290,7 @@ export default {
 			}
 		}
 	}
-	
+
 	.edit-gender-container{
 		background-color: #FFFFFF !important;
 		.popup-top{
@@ -333,7 +333,7 @@ export default {
 					// color: #00BFB6;
 					font-size: 13px;
 				}
-			} 
+			}
 			.left{
 				padding-right: 278rpx;
 			}
@@ -352,9 +352,9 @@ export default {
 				font-size: 32rpx;
 			}
 		}
-	
+
 	}
-	
+
 }
 
 

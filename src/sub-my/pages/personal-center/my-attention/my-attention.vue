@@ -9,7 +9,7 @@
         @click="currentIndex=index"
       >
         <view class="tab-text">{{item}}</view>
-				<view class="bottom-icon"  
+				<view class="bottom-icon"
 				 :style="{backgroundImage:`url(${bgcIcon})`,backgroundSize: '100% 100%'}"
 				/>
       </view>
@@ -122,7 +122,7 @@ export default {
 			page:[1,1,1],
       totalPage: [1,1,1],
       loading: false,
-			bgcIcon:"../../../static/selectIcon.svg",
+			bgcIcon:"https://ali-image.dabanjia.com/static/mp/dabanjia/images/theme-red/my/selectIcon.svg",
       routeId:"",
 			systemBottom:"",
 			equipmentId:"",

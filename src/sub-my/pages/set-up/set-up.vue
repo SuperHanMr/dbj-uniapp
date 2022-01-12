@@ -4,7 +4,7 @@
 			<view class="item-list" v-for="(item, index) in listArr" :key="item.url" @click="onClick(item,index)">
 				<view class="item">
 					<text>{{item.title}}</text>
-					<image v-if="index <(listArr.length-1)" src="../../static/icon_setup_more@2x.png" mode=""></image>
+					<image v-if="index <(listArr.length-1)" src="https://ali-image.dabanjia.com/static/mp/dabanjia/images/theme-red/my/back.svg" />
 					<text v-else>v {{ version }}</text>
 				</view>
 				<view class="line" v-if="index <(listArr.length-1)" />
@@ -151,9 +151,9 @@
 					padding: 38rpx 24rpx 38rpx 32rpx;
 
 					image {
-						width: 32rpx;
-						height: 34rpx;
-						object-fit: cover;
+						width: 48rpx;
+						height: 48rpx;
+						display: block;
 					}
 
 					text {

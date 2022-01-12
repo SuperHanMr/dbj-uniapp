@@ -26,7 +26,7 @@
         <view class="order-status">
           <view class="status">
             <image
-              src="../../../static/ic_status_wait_pay.svg"
+              src="https://ali-image.dabanjia.com/static/mp/dabanjia/images/theme-red/my/ic_status_wait_pay.svg"
               mode="scaleToFill"
             />
             <text>待付款</text>
@@ -75,20 +75,14 @@
               class="header-content"
               v-if="orderInfo.type !== 5"
             >
-              <text
-                style="color: #333333;"
-                @click="gotoShop(item)"
-              >{{item.storeName}}</text>
-              <image
-                src="../../../static/ic_more.svg"
-                mode=""
-              />
+              <view class="storeName" @click="gotoShop(item)">{{item.storeName}}</view>
+              <image src="https://ali-image.dabanjia.com/static/mp/dabanjia/images/theme-red/my/small_gotoShop.svg"/>
             </view>
             <view
               class="header-content"
               v-else
             >
-              <text style="color: #333333;">{{orderInfo.orderName}}</text>
+              <view class="storeName">{{orderInfo.orderName}}</view>
             </view>
             <view class="icon"></view>
           </view>
@@ -107,98 +101,84 @@
               v-else
             />
           </view>
-          <view
-            class="discount-container"
+
+					<view class="discount-container"
             v-if="item.hasMaterial &&  orderInfo.details.length>1"
-          >
-            <view class="left">
-              <view class="item">
-                <view class="item-style">
-                  <view style="margin-right: 8rpx;">运费</view>
-                  <image
-                    class="icon"
-                    src="../../../../static/price_icon.svg"
-                    mode=""
-                    @click="readExpenses(1)"
-                  />
-                </view>
-                <view
-                  class="price-font"
-                  style="color: #333;font-size: 26rpx;"
-                  v-if="orderInfo.stockType == 0"
-                >
-                  ￥{{item.freight?`${item.freight}`:"0.00"}}
-                </view>
-                <view
-                  class="price-font"
-                  :style="{marginTop:item.freight?'0':'8rpx'}"
-                  style="color: #333;font-size: 26rpx;"
-                  v-else
-                >
-                  {{item.freight?`￥${item.freight}`:"--"}}
-                </view>
-              </view>
+					>
+						<view class="item_css_style">
+							<view class="left">
+							 	<view style="margin-right: 8rpx;">运费</view>
+								<image
+								  class="icon"
+								  src="../../../../static/price_icon.svg"
+								  @click="readExpenses(1)"
+								/>
+							</view>
+							<view class="right">
+								<view
+									class="price-font"
+									style="color: #333;font-size: 26rpx;"
+									v-if="orderInfo.stockType == 0"
+								>
+									￥{{item.freight?`${item.freight}`:"0.00"}}
+								</view>
+								<view
+									class="price-font"
+									:style="{marginTop:item.freight?'0':'8rpx'}"
+									style="color: #333;font-size: 26rpx;"
+									v-else
+								>
+									{{item.freight?`￥${item.freight}`:"--"}}
+								</view>
+							</view>
+						</view>
+						<view class="item_css_style">
+							<view class="left">
+								<view style="margin-right: 8rpx;">搬运费</view>
+								<image
+								  class="icon"
+								  src="../../../../static/price_icon.svg"
+								  mode=""
+								  @click="readExpenses(2)"
+								/>
+							</view>
+							<view class="right">
+								<text
+								  class="price-font"
+								  style="color: #333;font-size: 26rpx;"
+								  v-if="orderInfo.stockType == 0"
+								>
+								  ￥{{item.handlingFees?item.handlingFees:"0.00"}}</text>
+								<text
+								  class="price-font"
+								  style="color: #333;font-size: 26rpx;"
+								  :style="{marginTop:item.handlingFees ? '0' : '8rpx' }"
+								  v-else
+								>{{item.handlingFees?`￥${item.handlingFees}`:"--"}}</text>
+							</view>
+						</view>
+						<view class="item_css_style"  v-if="item.storeDiscount">
+							<view class="left">
+								<text>商家</text>
+							</view>
+							<view class="right">
+								<text style="color: #333;font-size: 26rpx;" class="price-font">
+								  -￥{{item.storeDiscount}}
+								</text>
+							</view>
+						</view>
 
-              <view
-                v-if="item.platformDiscount"
-                class="item"
-              >
-                <text>平台优惠</text>
-                <text
-                  class="price-font"
-                  style="color: #333;font-size: 26rpx;"
-                >
-                  -￥{{item.platformDiscount}}
-                </text>
-              </view>
-            </view>
-            <view
-              v-if="item.storeDiscount"
-              class="line1"
-            />
-            <view
-              v-else
-              class="line2"
-            />
-
-            <view class="right">
-              <view class="item">
-                <view class="item-style">
-                  <view style="margin-right: 8rpx;">搬运费</view>
-                  <image
-                    class="icon"
-                    src="../../../../static/price_icon.svg"
-                    mode=""
-                    @click="readExpenses(2)"
-                  />
-                </view>
-                <text
-                  class="price-font"
-                  style="color: #333;font-size: 26rpx;"
-                  v-if="orderInfo.stockType == 0"
-                >
-                  ￥{{item.handlingFees?item.handlingFees:"0.00"}}</text>
-                <text
-                  class="price-font"
-                  style="color: #333;font-size: 26rpx;"
-                  :style="{marginTop:item.handlingFees ? '0' : '8rpx' }"
-                  v-else
-                >{{item.handlingFees?`￥${item.handlingFees}`:"--"}}</text>
-              </view>
-              <view
-                v-if="item.storeDiscount"
-                class="item"
-              >
-                <text>商家优惠</text>
-                <text
-                  style="color: #333;font-size: 26rpx;"
-                  class="price-font"
-                >
-                  -￥{{item.storeDiscount}}
-                </text>
-              </view>
-            </view>
-          </view>
+						<view class="item_css_style"  v-if="item.platformDiscount">
+							<view class="left">
+								<text>平台优惠</text>
+							</view>
+							<view class="right">
+								<text  class="price-font" style="color: #333;font-size: 26rpx;">
+								  -￥{{item.platformDiscount}}
+								</text>
+							</view>
+						</view>
+					</view>
 
           <view
             v-if="item.hasMaterial && orderInfo.stockType == 1"
@@ -419,7 +399,7 @@ export default {
       scrollTop: 0,
       headerTitle: "",
       bgImg:
-        "https://ali-image.dabanjia.com/static/mp/dabanjia/images/decorate/order_bg_orange.png",
+        "https://ali-image.dabanjia.com/static/mp/dabanjia/images/theme-red/decorate/order_bg.png",
       cardClick: false, //是否选中储值卡
       haveCard: false, //是否有会员卡
       cardBalance: 11111111, //会员卡余额
@@ -985,8 +965,9 @@ export default {
             box-sizing: border-box;
             display: flex;
             align-items: center;
-
-            text {
+            .storeName {
+							height: 40rpx;
+							color: #333333;
               font-weight: 500;
               max-width: 476rpx;
               font-size: 28rpx;
@@ -996,9 +977,9 @@ export default {
             }
 
             image {
-              width: 34rpx;
-              height: 34rpx;
-              object-fit: cover;
+              width: 40rpx;
+              height: 40rpx;
+							display: block;
             }
           }
 
@@ -1018,60 +999,45 @@ export default {
       }
 
       .discount-container {
-        padding-bottom: 32rpx;
+        padding-bottom: 22rpx;
         display: flex;
-        flex-flow: row nowrap;
+        flex-flow: column nowrap;
         flex: 1;
         align-items: center;
         justify-content: flex-end;
         font-size: 22rpx;
         color: #999999;
-
-        .left,
-        .right {
-          .item {
-            width: 302rpx;
-            height: 32rpx;
-            display: flex;
-            flex: 1;
-            flex-flow: row nowrap;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 8rpx;
-            color: #999999;
-            font-size: 22rpx;
-
-            .item-style {
-              display: flex;
-              flex-flow: row nowrap;
-              align-items: center;
-
-              .icon {
-                width: 24rpx;
-                height: 24rpx;
-                object-fit: cover;
-              }
-            }
-          }
-
-          .item:nth-last-child(1) {
-            margin-bottom: 0;
-          }
-        }
-
-        .line1 {
-          width: 2rpx;
-          height: 40rpx;
-          background: #ebebeb;
-          margin: 16rpx 40rpx;
-        }
-
-        .line2 {
-          width: 2rpx;
-          height: 20rpx;
-          background: #ebebeb;
-          margin: 6rpx 40rpx;
-        }
+				.item_css_style{
+					width: 100%;
+					height: 36rpx;
+					display: flex;
+					flex-flow: row nowrap;
+					align-items: center;
+					justify-content: space-between;
+					margin-bottom: 8rpx;
+					.left{
+						display: flex;
+						flex-flow: row nowrap;
+						align-items: center;
+						.icon {
+						  width: 24rpx;
+						  height: 24rpx;
+						 // vertical-align: sub;
+						 // display: inline-block;
+						 // width: 32rpx;
+						 // height: 32rpx;
+						 // background-image: url("@/static/order/ic_order_wechat@2x.png");
+						 // background-size: contain;
+						 // margin-right: 12rpx;
+						}
+					}
+					.right{
+						text{
+							color: #333;
+							font-size: 26rpx;
+						}
+					}
+				}
       }
 
       .discount-container2 {

@@ -20,7 +20,7 @@
         <view :style="{height:navBarHeight}"></view>
         <view class="order-status">
           <view class="status">
-            <image src="../../../static/ic_order_success.svg" mode=""/>
+            <image src="https://ali-image.dabanjia.com/static/mp/dabanjia/images/theme-red/my/ic_order_success.svg" mode=""/>
             <text>退款成功</text>
           </view>
           <text class="time">{{refundInfo.createTime | formatDate}}</text>
@@ -116,7 +116,7 @@
         <view :style="{height:navBarHeight}"></view>
         <view class="order-status">
           <view class="status">
-            <image src="../../../static/ic_order_success.svg" mode=""/>
+            <image src="https://ali-image.dabanjia.com/static/mp/dabanjia/images/theme-red/my/ic_order_success.svg" mode=""/>
             <text>已完成</text>
           </view>
         </view>
@@ -131,15 +131,15 @@
         <view class="part1" v-for="(item2,index2) in orderInfo.details" :key="index2" >
           <view class="header">
             <view class="header-content" v-if="orderInfo.type !==5 ">
-              <text style="color: #333333;"  @click="gotoShop(item2)" >
+              <view class="storeName"  @click="gotoShop(item2)" >
 								{{item2.storeName}}
-							</text>
-              <image src="../../../static/ic_more.svg" mode=""/>
+							</view>
+              <image src="https://ali-image.dabanjia.com/static/mp/dabanjia/images/theme-red/my/small_gotoShop.svg" />
             </view>
 						<view class="header-content" v-else>
-						  <text style="color: #333333;" >
+						  <view class="storeName">
 								{{orderInfo.orderName}}
-							</text>
+							</view>
 						</view>
             <view class="icon"></view>
           </view>
@@ -240,7 +240,7 @@ export default {
       scrollTop: 0,
       headerTitle: "",
 			title:"",
-      bgImg: "../../../static/order_bg.png",
+      bgImg: "https://ali-image.dabanjia.com/static/mp/dabanjia/images/theme-red/decorate/order_bg.png",
     };
   },
 
@@ -522,7 +522,9 @@ export default {
             box-sizing: border-box;
             display: flex;
             align-items: center;
-            text {
+            .storeName {
+							height: 40rpx;
+							color: #333333;
               font-weight: 500;
               max-width: 476rpx;
               font-size: 28rpx;
@@ -531,9 +533,8 @@ export default {
               white-space: nowrap;
             }
             image {
-              width: 34rpx;
-              height: 34rpx;
-              object-fit: cover;
+              width: 40rpx;
+              height: 40rpx;
             }
           }
           .icon {
