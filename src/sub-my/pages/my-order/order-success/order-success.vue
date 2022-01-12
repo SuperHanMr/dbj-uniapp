@@ -240,7 +240,7 @@ export default {
       scrollTop: 0,
       headerTitle: "",
 			title:"",
-      bgImg: "../../../static/order_bg.png",
+      bgImg: "https://ali-image.dabanjia.com/static/mp/dabanjia/images/theme-red/decorate/order_bg.png",
     };
   },
 

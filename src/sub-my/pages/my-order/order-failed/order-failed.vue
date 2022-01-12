@@ -185,7 +185,7 @@ export default {
       navBarHeight: "",
       scrollTop: 0,
       headerTitle: "",
-      bgImg: "../../../static/order_bg.png",
+      bgImg: "https://ali-image.dabanjia.com/static/mp/dabanjia/images/theme-red/decorate/order_bg.png",
     };
   },
 
