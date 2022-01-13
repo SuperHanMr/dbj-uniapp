@@ -162,7 +162,7 @@
 			.fade{
 				position: absolute;
 				right: 0;
-				bottom: 0;
+				bottom: 16rpx;
 				width: 40rpx;
 				height: 40rpx;
 				background: linear-gradient(90deg, rgba(255, 255, 255, 0) 0%, #FFFFFF 100%);

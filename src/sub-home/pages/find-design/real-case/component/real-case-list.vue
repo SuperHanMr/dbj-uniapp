@@ -5,7 +5,7 @@
 				<view class="head">
 					<view class="title">
 						<text>{{item.title}}</text>
-						<view class="navigation-bar-back icon-ic_cancel_white" @click="goBack"></view>
+						<view class="head-icon icon-alert_notice_jump" @click="goBack"></view>
 					</view>
 					<view class="info">
 						<view class="pattern">
@@ -32,6 +32,18 @@
 				</view>
 				<view class="bottom">
 					111
+					<view class="addressAndSimilarity">
+						<view class="near">
+							附近2KM
+						</view>
+						<view class="point">
+							
+						</view>
+						<view class="similarity">
+							户型相似度
+							<text>90%</text>
+						</view>
+					</view>
 				</view>
 			</view>
 		</scroll-view>
@@ -161,22 +173,25 @@
 
 <style lang="scss" scoped>
 	.real-case-list {
-		margin-top: 32rpx;
+		// margin-top: 32rpx;
 		width: 100%;
 		height: 100%;
+		background-color: #FFFFFF;
+		padding-bottom: 80rpx;
 
 		.real-case-list-scroll {
 			height: 100%;
 		}
 
 		.list {
-			padding: 0 32rpx;
+			padding: 0 32rpx 16rpx;
 
 			.head {
 				background: #FFFFFF;
 				border: 0.5px solid #E8E8E8;
 				box-sizing: border-box;
 				padding: 32rpx 24rpx;
+				border-radius: 16rpx 16rpx 0 0; 
 
 				.title {
 					display: flex;
@@ -186,7 +201,9 @@
 					line-height: 44rpx;
 					color: #222222;
 				}
-
+				.head-icon{
+					font-size: 20rpx;
+				}
 				.info {
 					display: flex;
 					align-items: center;
@@ -235,7 +252,36 @@
 			.bottom {
 				border-radius: 0px 0px 16rpx 16rpx;
 				height: 364rpx;
+				position: relative;
+				.addressAndSimilarity{
+					position: absolute;
+					top: 24rpx;
+					left: 24rpx;
+					background: rgba(0, 0, 0, 0.45);
+					backdrop-filter: blur(5px);
+					border-radius: 8rpx;
+					display: flex;
+					align-items: center;
+					padding: 8rpx 12rpx;
+					font-weight: 500;
+					font-size: 20rpx;
+					line-height: 28rpx;
+					color: #FFFFFF;
+					.point{
+						width: 4rpx;
+						height: 4rpx;
+						background: #FFFFFF;
+						margin: 0 12rpx;
+					}
+					.similarity{
+						text{
+							margin-left: 4rpx;
+						}
+					}
+				}
 			}
+			
+			
 		}
 	}
 </style>
