@@ -823,7 +823,7 @@ export default {
         orderName: "", //"string //订单名称 可为空",
         details: details,
         isCardPay: this.cardClick,
-        origin: this.shareOriginType,
+        origin: decodeURIComponent(this.shareOriginType),
       };
       payOrder(params).then((data) => {
         const { wechatPayJsapi, cardPayComplete } = data;
