@@ -16,17 +16,17 @@
 			<view class="shopItem" v-for="(shopItem,shopIndex) in shopList" :key="shopItem.storeId">
 				<!-- 店铺 -->
 				<view class="shopInfo">
-					<image v-if="!shopItem.shopChecked" @click="checkShop(shopItem.storeId)" src="../../static/all_Uncheck.svg" mode="" />
-					<image v-else @click="checkShop(shopItem.storeId)"src="../../static/all_Check.svg"/>
+					<image v-if="!shopItem.shopChecked" @click="checkShop(shopItem.storeId)" src="https://ali-image.dabanjia.com/static/mp/dabanjia/images/theme-red/my/all_Uncheck.svg" mode="" />
+					<image v-else @click="checkShop(shopItem.storeId)" src="https://ali-image.dabanjia.com/static/mp/dabanjia/images/theme-red/my/all_Check.svg"/>
 
 					<view class="goShop" @click="toShopHome(shopItem.storeId)">
 						<text class="shopName">{{shopItem.storeName}}</text>
 						<image class="shopIcon"
-							src="https://ali-image.dabanjia.com/static/mp/dabanjia/images/my/ic_jumpToShop%402x.png">
-							</text>
+							src="https://ali-image.dabanjia.com/static/mp/dabanjia/images/my/ic_jumpToShop%402x.png" />
+
 					</view>
 				</view>
-				<view class="freeMail">
+	<!-- 			<view class="freeMail">
 					<view class="text" v-if="isDefault" :key="shopIndex">每满{{shopItem.freeShippingThreshold===0?'0.00'
 						:(shopItem.freeShippingThreshold/100).toFixed(2)}}元可获得一次免运费权益</view>
 					<view class="text" v-else>
@@ -37,14 +37,14 @@
 							src="https://ali-image.dabanjia.com/static/mp/dabanjia/images/my/toPostFree%402x.png">
 						</image>
 					</view>
-				</view>
+				</view> -->
 				<!-- 商品 -->
 				<uni-swipe-action>
 					<uni-swipe-action-item v-for="(goodsItem,goodsIndex) in shopItem.skuList" :key="goodsItem.skuId"
 						:right-options="options" @click="deleteGoods(goodsItem.skuId,goodsItem.buyCount)">
 						<view class="goodsItem">
-							<image v-if="!goodsItem.goodsChecked" class="itemIcon" @click="checkGoods(shopItem.storeId,goodsItem.skuId)" src="../../static/all_Uncheck.svg" />
-							<image v-else class="itemIcon" @click="checkGoods(shopItem.storeId,goodsItem.skuId)"src="../../static/all_Check.svg" />
+							<image v-if="!goodsItem.goodsChecked" class="itemIcon" @click="checkGoods(shopItem.storeId,goodsItem.skuId)" src="https://ali-image.dabanjia.com/static/mp/dabanjia/images/theme-red/my/all_Uncheck.svg" />
+							<image v-else class="itemIcon" @click="checkGoods(shopItem.storeId,goodsItem.skuId)" src="https://ali-image.dabanjia.com/static/mp/dabanjia/images/theme-red/my/all_Check.svg" />
 							<image class="goodsItemImg" :src="goodsItem.image+'?x-oss-process=image/resize,m_mfit,w_96,h_96'"
 								@click="toGoodsDetail(goodsItem.skuId)"  />
 							<view class="goodsInfo">
@@ -224,8 +224,8 @@
 			<view v-if="shopList.length">
 				<view class="allCheck" v-if="isManage">
 					<view class="left" @click="checkAll">
-						<image v-if="!isCheckedAll" src="../../static/all_Uncheck.svg" ></image>
-						<image v-else src="../../static/all_check.svg" />
+						<image v-if="!isCheckedAll" src="https://ali-image.dabanjia.com/static/mp/dabanjia/images/theme-red/my/all_Uncheck.svg" ></image>
+						<image v-else src="https://ali-image.dabanjia.com/static/mp/dabanjia/images/theme-red/my/all_Check.svg" />
 						<view class="text">全选</view>
 					</view>
 					<view class="right">
@@ -240,8 +240,8 @@
 				</view>
 				<view class="allCheck" v-else>
 					<view class="left" @click="checkAll">
-						<image  v-if="!isCheckedAll" src="../../static/all_Uncheck.svg" />
-						<image v-else src="../../static/all_Check.svg" />
+						<image  v-if="!isCheckedAll" src="https://ali-image.dabanjia.com/static/mp/dabanjia/images/theme-red/my/all_Uncheck.svg" />
+						<image v-else src="https://ali-image.dabanjia.com/static/mp/dabanjia/images/theme-red/my/all_Check.svg" />
 						<view class="text">全选</view>
 					</view>
 					<view class="right">

@@ -15,7 +15,7 @@
 			<view :style="{height:navBarHeight}"></view>
 			<view class="order-status">
 				<view class="status">
-					<image src="../../../static/ic_status_inprogress.svg" mode="scaleToFill"></image>
+					<image src="https://ali-image.dabanjia.com/static/mp/dabanjia/images/theme-red/my/ic_status_inprogress.svg" mode="scaleToFill"></image>
 					<view>进行中</view>
 				</view>
 			</view>
@@ -29,7 +29,7 @@
 					<view class="header">
 						<view class="header-content">
 							<view class="storeName" @click="gotoShop(item)">{{item.storeName}}</view>
-							<image src="../../../static/small_gotoShop.svg" mode=""/>
+							<image src="https://ali-image.dabanjia.com/static/mp/dabanjia/images/theme-red/my/small_gotoShop.svg" mode=""/>
 						</view>
 						<view class="icon"></view>
 					</view>

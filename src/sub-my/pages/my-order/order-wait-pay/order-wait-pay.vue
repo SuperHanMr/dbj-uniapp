@@ -26,7 +26,7 @@
         <view class="order-status">
           <view class="status">
             <image
-              src="../../../static/ic_status_wait_pay.svg"
+              src="https://ali-image.dabanjia.com/static/mp/dabanjia/images/theme-red/my/ic_status_wait_pay.svg"
               mode="scaleToFill"
             />
             <text>待付款</text>
@@ -76,7 +76,7 @@
               v-if="orderInfo.type !== 5"
             >
               <view class="storeName" @click="gotoShop(item)">{{item.storeName}}</view>
-              <image src="../../../static/small_gotoShop.svg"/>
+              <image src="https://ali-image.dabanjia.com/static/mp/dabanjia/images/theme-red/my/small_gotoShop.svg"/>
             </view>
             <view
               class="header-content"
@@ -101,7 +101,7 @@
               v-else
             />
           </view>
-					
+
 					<view class="discount-container"
             v-if="item.hasMaterial &&  orderInfo.details.length>1"
 					>
@@ -167,7 +167,7 @@
 								</text>
 							</view>
 						</view>
-						
+
 						<view class="item_css_style"  v-if="item.platformDiscount">
 							<view class="left">
 								<text>平台优惠</text>
@@ -179,7 +179,7 @@
 							</view>
 						</view>
 					</view>
-					
+
           <view
             v-if="item.hasMaterial && orderInfo.stockType == 1"
             :style="{paddingBottom: item.hasMaterial && orderInfo.stockType == 1 ? '32rpx':'0'}"
@@ -1037,7 +1037,7 @@ export default {
 							font-size: 26rpx;
 						}
 					}
-				} 
+				}
       }
 
       .discount-container2 {
