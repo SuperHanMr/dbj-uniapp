@@ -8,20 +8,22 @@
 						<view class="head-icon icon-alert_notice_jump" @click="goBack"></view>
 					</view>
 					<view class="info">
-						<view class="pattern" v-if="item.roomNum">
-							{{item.leixing}}
+						<view class="pattern">
+							<text v-if="item.roomNum">{{roomNum}}室</text>
+							<text v-if="item.hallNum">{{hallNum}}厅</text>
+							<text v-if="item.kitchenNum">{{kitchenNum}}厨</text>
 						</view>
-						<view class="line" v-if="item.insideArea">
+						<view class="line" v-if="item.roomNum || item.hallNum || item.kitchenNum">
 
 						</view>
 						<view class="area" v-if="item.insideArea">
 							{{item.insideArea}}
 						</view>
-						<view class="line" v-if="item.huaxiao">
+						<view class="line" v-if="item.insideArea">
 
 						</view>
-						<view class="preferential" v-if="item.huaxiao">
-							{{item.huaxiao}}
+						<view class="preferential" v-if="item.budget">
+							{{item.budget}}
 						</view>
 					</view>
 					<view class="tag-box">

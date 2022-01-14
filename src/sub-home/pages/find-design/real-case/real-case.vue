@@ -5,9 +5,9 @@
 			<view class="home-address" v-if="currentHouse.address && showScreen">
 				<home-address :currentHouse='currentHouse' @openHomeList='openHomeList'/>
 			</view>
-			<!-- <view class="no-case">
+			<view class="no-case" v-if="currentHouse.address && caseDetailInfo.caseFlag">
 				当前房屋所在地区暂无真实案例，为您推荐其他地区的精选案例
-			</view> -->
+			</view>
 			<view class="screening" v-if="!currentHouse.address">
 				<real-case-screening v-show="showScreen" @updateTag='updateTag' ref='realCaseScreeningRef'/>
 				<view class="hide-screen" v-if="!showScreen" @click="onShowScreen">
@@ -60,7 +60,7 @@
 	import HomeAddress from './component/home-address.vue';
 	import NavigationBar from './component/navigation-bar.vue';
 	import AddHomeInfo from './component/add-home-info.vue';
-	import {moreCaseList} from '/src/api/home-find-design.js'
+	import { moreCaseList } from '/src/api/home-find-design.js'
 	export default {
 		components:{
 			RealCaseScreening,
@@ -91,6 +91,7 @@
 					row: 10,
 				},
 				realCaseListData: [],
+				caseDetailInfo: {},
 				endPage: false
 			}
 		},
@@ -130,6 +131,10 @@
 				moreCaseList({...param, ...this.listParam}).then((res) => {
 					const obj = res.moreCasePageVOPager
 					this.realCaseListData = [...this.realCaseListData, ...obj.list];
+					this.caseDetailInfo = {
+						estateFlag: res.estateFlag,
+						caseFlag: res.caseFlag,
+					};
 					this.listParam = {
 						page: obj.page,
 						row: obj.rows,
