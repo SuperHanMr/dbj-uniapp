@@ -278,6 +278,7 @@
 				position: relative;
 				display: flex;
 				flex-direction: column;
+				background-color: #ffffff;
 
 				.screening {
 					display: flex;
