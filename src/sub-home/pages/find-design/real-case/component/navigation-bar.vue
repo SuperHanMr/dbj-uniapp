@@ -5,9 +5,9 @@
 			</view>
 			<view class="title" @click="openHomeList">
 				<view class="text">
-					{{!showScreen ? `${currentHouse.housingEstate}${currentHouse.address}` : '真实案例'}}
+					{{(!showScreen && currentHouse.address) ? `${currentHouse.housingEstate}${currentHouse.address}` : '推荐案例'}}
 				</view>
-				<view class="address-icon icon-zhuangxiushouye_fuwuzhankaijiantou" v-if="!showScreen">
+				<view class="address-icon icon-zhuangxiushouye_fuwuzhankaijiantou" v-if="(!showScreen && currentHouse.address)">
 				</view>
 			</view>
 		</view>

@@ -9,20 +9,20 @@
 				当前房屋所在地区暂无真实案例，为您推荐其他地区的精选案例
 			</view> -->
 			<view class="screening" v-if="!currentHouse.address">
-				<real-case-screening v-show="showScreen" @updateTag='updateTag'/>
+				<real-case-screening v-show="showScreen" @updateTag='updateTag' ref='realCaseScreeningRef'/>
 				<view class="hide-screen" v-if="!showScreen" @click="onShowScreen">
 					<view class="title" v-if="selectTag.length <= 0">
 						筛选
 					</view>
 					<view class="tag" v-else>
-						<view class="name" v-for="name in selectTag" :key='name'>
-							{{name}}
+						<view class="name" v-for="item in selectTag" :key='item.key'>
+							{{item.name}}
 						</view>
 						<view class="point" v-if="selectTag.length >= 2">
 							
 						</view>
 					</view>
-					<view class="icon-ic_cancel_white">
+					<view class="tag-icon icon-list_arrow_dropdown">
 						
 					</view>
 				</view>
@@ -37,15 +37,15 @@
 						</view>
 					</view> -->
 				</view>
-				<view class="box">
-					<real-case-list @triggerScroll='triggerScroll' @scrollUpper='scrollUpper' ref='realCaseList'/>
+				<view class="box" v-if="realCaseListData && realCaseListData.length > 0">
+					<real-case-list :currentHouse='currentHouse' :realCaseListData='realCaseListData' @triggerScroll='triggerScroll' @scrollUpper='scrollUpper' @scrolltolower='scrolltolower' ref='realCaseList'/>
 				</view>
-				<!-- <view class="no-service">
+				<view class="no-service" v-else>
 					<image src="/static/real-case-design/no-service.png" mode=""></image>
 					<view class="title">
 						暂无相关案例～
 					</view>
-				</view> -->
+				</view>
 			</view>
 		</view>
 		<view class="home-info-box" v-if="!currentHouse.address">
@@ -59,7 +59,8 @@
 	import RealCaseList from './component/real-case-list.vue';
 	import HomeAddress from './component/home-address.vue';
 	import NavigationBar from './component/navigation-bar.vue';
-	import AddHomeInfo from './component/add-home-info.vue'
+	import AddHomeInfo from './component/add-home-info.vue';
+	import {moreCaseList} from '/src/api/home-find-design.js'
 	export default {
 		components:{
 			RealCaseScreening,
@@ -84,7 +85,13 @@
 						key: '2'
 					}
 				],
-				selectScreenTag: 1
+				selectScreenTag: 1,
+				listParam: {
+					page: 0,
+					row: 10,
+				},
+				realCaseListData: [],
+				endPage: false
 			}
 		},
 		onLoad() {
@@ -93,32 +100,62 @@
 					this.statusHeight = res.statusBarHeight;
 				},
 			});
-			uni.$on('selectedHouse', (item) => {
-				console.log(item, '>>>>>>>')
-			});
 		},
 		onShow() {
 			const currentHouse = getApp().globalData.currentHouse;
 			this.currentHouse = currentHouse;
-			// if (currentHouse.address) {
-				
-			// }
-			
-			console.log( getApp().globalData, '>>>>>>')
+			this.getListData();
 		},
 		methods: {
+			getListData(){
+				if (this.endPage) return;
+				const obj = this.$refs.realCaseScreeningRef.selectData;
+				let param = {};
+				// 居室查询条件
+				if (obj[0] && obj[0].key != null) {
+					param.roomNum = obj[0].key;
+				}
+				// 面积查询条件
+				if (obj[1] && obj[1].key != null) {
+					let areaObj = obj[1].key.split('-');
+					param.minInsideArea = Number(areaObj[0]);
+					param.maxInsideArea = Number(areaObj[1]);
+				}
+				// 有无默认房屋
+				if (this.currentHouse.housingEstateId) {
+					param.estateId = this.currentHouse.housingEstateId;
+				}
+				console.log(param, '..>>>>>>>>')
+				// 获取列表
+				moreCaseList({...param, ...this.listParam}).then((res) => {
+					const obj = res.moreCasePageVOPager
+					this.realCaseListData = [...this.realCaseListData, ...obj.list];
+					this.listParam = {
+						page: obj.page,
+						row: obj.rows,
+					}
+					if (this.listParam.page >= obj.totalPage) {
+						this.endPage = true;
+					}
+					console.log(this.realCaseListData, '>>>>>>>>>>>>>')
+				})
+			},
+			// 滑动不显示筛选条件
 			triggerScroll(){
 				if (!this.showScreen) return;
 				this.showScreen = false;
 			},
+			// 滑动到顶部显示筛选条件
 			scrollUpper(){
 				if (this.scshowScreen) return;
 				this.showScreen = true;
 			},
+			// 显示筛选条件
 			onShowScreen(){
 				this.showScreen = true;
 				this.$refs.realCaseList.scrollToTop();
 			},
+			// 房屋面积和居室筛选条件
 			updateTag(obj){
 				const arr = [];
 				for(let i in obj) {
@@ -126,15 +163,21 @@
 				}
 				console.log(arr)
 				this.selectTag = arr;
+				this.getListData();
 			},
 			checkoutScreen(key){
 				this.selectScreenTag = key;
 			},
+			// 跳转房屋列表
 			openHomeList(){
-				console.log('打开下拉')
 				uni.navigateTo({
 					url:'/sub-my/pages/my-house/my-house?fromHome=true'
 				})
+			},
+			// 下拉获取更多
+			scrolltolower(){
+				this.listParam.page += 1;
+				this.getListData();
 			}
 		}
 	}
@@ -174,6 +217,10 @@
 					font-size: 28rpx;
 					line-height: 40rpx;
 					color: #333333;
+				}
+				.tag-icon{
+					font-size: 32rpx;
+					color: #222222;
 				}
 				.tag{
 					display: flex;
