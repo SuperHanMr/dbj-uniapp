@@ -1,29 +1,30 @@
 <template>
 	<view class="real-case-list" v-if="realCaseListData.length > 0">
-		<scroll-view class="real-case-list-scroll" :scroll-top="scrollTop" scroll-y="true" @scroll="scroll" @scrolltoupper='scrolltoupper' @scrolltolower='scrolltolower' >
+		<scroll-view class="real-case-list-scroll" :scroll-top="scrollTop" scroll-y="true" @scroll="scroll"
+			@scrolltoupper='scrolltoupper' @scrolltolower='scrolltolower'>
 			<view class="list" v-for="item in realCaseListData" :key='item.id' @click="toCaseDetail(item)">
-				<view class="head" >
+				<view class="head">
 					<view class="title">
 						<text>{{item.caseName}} Ta家</text>
 						<view class="head-icon icon-alert_notice_jump" @click="goBack"></view>
 					</view>
 					<view class="info">
 						<view class="pattern">
-							<text v-if="item.roomNum">{{roomNum}}室</text>
-							<text v-if="item.hallNum">{{hallNum}}厅</text>
-							<text v-if="item.kitchenNum">{{kitchenNum}}厨</text>
+							<text v-if="item.roomNum">{{item.roomNum}}室</text>
+							<text v-if="item.hallNum">{{item.hallNum}}厅</text>
+							<text v-if="item.kitchenNum">{{item.kitchenNum}}厨</text>
 						</view>
 						<view class="line" v-if="item.roomNum || item.hallNum || item.kitchenNum">
 
 						</view>
 						<view class="area" v-if="item.insideArea">
-							{{item.insideArea}}
+							{{item.insideArea}}m²
 						</view>
 						<view class="line" v-if="item.insideArea">
 
 						</view>
 						<view class="preferential" v-if="item.budget">
-							{{item.budget}}
+							预算: ¥{{(item.budget).toFixed(2)}}万
 						</view>
 					</view>
 					<view class="tag-box">
@@ -33,13 +34,13 @@
 					</view>
 				</view>
 				<view class="bottom">
-					<image :src="item.imageUrlList[0]" mode=""></image>
+					<ImgList :imgList='item.imageUrlList' />
 					<view class="addressAndSimilarity" v-if="currentHouse.address">
 						<view class="near">
 							{{item.flag ? `附近${item.distance}km` : getName()}}
 						</view>
 						<view class="point" v-if="item.Similarity">
-							
+
 						</view>
 						<view class="similarity" v-if="item.Similarity">
 							户型相似度
@@ -53,6 +54,7 @@
 </template>
 
 <script>
+	import ImgList from './img-list.vue'
 	export default {
 		props: {
 			realCaseListData: {
@@ -63,6 +65,9 @@
 				type: Object,
 				default: {}
 			}
+		},
+		components: {
+			ImgList
 		},
 		data() {
 			return {
@@ -79,7 +84,7 @@
 					this.$emit('triggerScroll')
 				}
 			},
-			scrolltoupper(){
+			scrolltoupper() {
 				this.$emit('scrollUpper')
 			},
 			scrollToTop() {
@@ -88,21 +93,21 @@
 					this.scrollTop = 0;
 				});
 			},
-			getName(){
+			getName() {
 				let currentHouse = this.$props.currentHouse;
 				let name = '';
 				if (currentHouse.cityName) {
-					return name = currentHouse.cityName.substring(0,currentHouse.cityName.indexOf('市'))
-				} else if (currentHouse.name){
-					return name = currentHouse.name.substring(0,currentHouse.name.indexOf('市'))
+					return name = currentHouse.cityName.substring(0, currentHouse.cityName.indexOf('市'))
+				} else if (currentHouse.name) {
+					return name = currentHouse.name.substring(0, currentHouse.name.indexOf('市'))
 				}
 			},
-			toCaseDetail(item){
+			toCaseDetail(item) {
 				uni.navigateTo({
-				  url: `/pages/real-case/real-case-webview/real-case-webview?id=${item.id}`,
+					url: `/pages/real-case/real-case-webview/real-case-webview?id=${item.id}`,
 				});
 			},
-			scrolltolower(){
+			scrolltolower() {
 				this.$emit('scrolltolower')
 			}
 		}
@@ -129,7 +134,7 @@
 				border: 0.5px solid #E8E8E8;
 				box-sizing: border-box;
 				padding: 32rpx 24rpx;
-				border-radius: 16rpx 16rpx 0 0; 
+				border-radius: 16rpx 16rpx 0 0;
 
 				.title {
 					display: flex;
@@ -139,17 +144,20 @@
 					font-size: 32rpx;
 					line-height: 44rpx;
 					color: #222222;
-					text{
+
+					text {
 						max-width: 570rpx;
-						white-space:nowrap;
-						overflow:hidden;
-						text-overflow:ellipsis;
+						white-space: nowrap;
+						overflow: hidden;
+						text-overflow: ellipsis;
 					}
 				}
-				.head-icon{
+
+				.head-icon {
 					font-size: 20rpx;
 					color: #000000;
 				}
+
 				.info {
 					display: flex;
 					align-items: center;
@@ -174,7 +182,7 @@
 					.preferential {
 						font-size: 24rpx;
 						line-height: 34rpx;
-						color: #FF7F46;
+						color: #999999;
 					}
 				}
 
@@ -196,14 +204,9 @@
 			}
 
 			.bottom {
-				height: 364rpx;
 				position: relative;
-				image{
-					width: 100%;
-					height: 100%;
-					border-radius: 0px 0px 16rpx 16rpx;
-				}
-				.addressAndSimilarity{
+
+				.addressAndSimilarity {
 					position: absolute;
 					top: 24rpx;
 					left: 24rpx;
@@ -217,21 +220,23 @@
 					font-size: 20rpx;
 					line-height: 28rpx;
 					color: #FFFFFF;
-					.point{
+
+					.point {
 						width: 4rpx;
 						height: 4rpx;
 						background: #FFFFFF;
 						margin: 0 12rpx;
 					}
-					.similarity{
-						text{
+
+					.similarity {
+						text {
 							margin-left: 4rpx;
 						}
 					}
 				}
 			}
-			
-			
+
+
 		}
 	}
 </style>
