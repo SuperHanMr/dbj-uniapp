@@ -108,7 +108,8 @@
 			this.getListData();
 		},
 		methods: {
-			getListData(){
+			getListData(isTagSearch){
+				// 如果是最后一页  直接返回
 				if (this.endPage) return;
 				const obj = this.$refs.realCaseScreeningRef.selectData;
 				let param = {};
@@ -130,7 +131,11 @@
 				// 获取列表
 				moreCaseList({...param, ...this.listParam}).then((res) => {
 					const obj = res.moreCasePageVOPager
-					this.realCaseListData = [...this.realCaseListData, ...obj.list];
+					if (isTagSearch) {
+						this.realCaseListData = obj.list
+					} else {
+						this.realCaseListData = [...this.realCaseListData, ...obj.list];
+					}
 					this.caseDetailInfo = {
 						estateFlag: res.estateFlag,
 						caseFlag: res.caseFlag,
@@ -139,7 +144,7 @@
 						page: obj.page,
 						row: obj.rows,
 					}
-					if (this.listParam.page >= obj.totalPage) {
+					if (this.listParam.page >= obj.totalPage && !isTagSearch) {
 						this.endPage = true;
 					}
 					console.log(this.realCaseListData, '>>>>>>>>>>>>>')
@@ -168,7 +173,7 @@
 				}
 				console.log(arr)
 				this.selectTag = arr;
-				this.getListData();
+				this.getListData(true);
 			},
 			checkoutScreen(key){
 				this.selectScreenTag = key;

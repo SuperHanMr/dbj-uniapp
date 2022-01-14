@@ -9,21 +9,21 @@
 					</view>
 					<view class="info">
 						<view class="pattern">
-							<text v-if="item.roomNum">{{roomNum}}室</text>
-							<text v-if="item.hallNum">{{hallNum}}厅</text>
-							<text v-if="item.kitchenNum">{{kitchenNum}}厨</text>
+							<text v-if="item.roomNum">{{item.roomNum}}室</text>
+							<text v-if="item.hallNum">{{item.hallNum}}厅</text>
+							<text v-if="item.kitchenNum">{{item.kitchenNum}}厨</text>
 						</view>
 						<view class="line" v-if="item.roomNum || item.hallNum || item.kitchenNum">
 
 						</view>
 						<view class="area" v-if="item.insideArea">
-							{{item.insideArea}}
+							{{item.insideArea}}m²
 						</view>
 						<view class="line" v-if="item.insideArea">
 
 						</view>
 						<view class="preferential" v-if="item.budget">
-							{{item.budget}}
+							预算: ¥{{(item.budget).toFixed(2)}}万
 						</view>
 					</view>
 					<view class="tag-box">
@@ -33,7 +33,8 @@
 					</view>
 				</view>
 				<view class="bottom">
-					<image :src="item.imageUrlList[0]" mode=""></image>
+					<ImgList :imgList='item.imageUrlList'/>
+					<!-- <image :src="item.imageUrlList[0]" mode=""></image> -->
 					<view class="addressAndSimilarity" v-if="currentHouse.address">
 						<view class="near">
 							{{item.flag ? `附近${item.distance}km` : getName()}}
@@ -53,6 +54,7 @@
 </template>
 
 <script>
+	import ImgList from './img-list.vue'
 	export default {
 		props: {
 			realCaseListData: {
@@ -63,6 +65,9 @@
 				type: Object,
 				default: {}
 			}
+		},
+		components:{
+			ImgList
 		},
 		data() {
 			return {
@@ -174,7 +179,7 @@
 					.preferential {
 						font-size: 24rpx;
 						line-height: 34rpx;
-						color: #FF7F46;
+						color: #999999;
 					}
 				}
 
@@ -198,11 +203,7 @@
 			.bottom {
 				height: 364rpx;
 				position: relative;
-				image{
-					width: 100%;
-					height: 100%;
-					border-radius: 0px 0px 16rpx 16rpx;
-				}
+				
 				.addressAndSimilarity{
 					position: absolute;
 					top: 24rpx;

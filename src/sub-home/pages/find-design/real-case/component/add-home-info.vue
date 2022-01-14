@@ -21,7 +21,6 @@
 	export default {
 		methods:{
 			openHomeList(){
-				console.log('>>>>>>>>>>>>>>>>')
 				this.$emit('openHomeList');
 			}
 		}
