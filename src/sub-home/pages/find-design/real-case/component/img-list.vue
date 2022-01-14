@@ -28,9 +28,7 @@
 			}
 		},
 		mounted() {
-			console.log(this.$props.imgList, '>>>>>>>>')
 			const list = this.$props.imgList;
-			debugger
 			if (list.length > 0) {
 				this.list1.push(list[0]);
 				if (list.length >= 3) {
