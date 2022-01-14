@@ -86,7 +86,7 @@
 				arr[index] = key;
 				this.tagSelect = arr;
 				this.selectData[index] = {
-					name: this.list[index].list[tagIndex].name,
+					name: this.list[index].list[tagIndex].key == null ? '' : this.list[index].list[tagIndex].name,
 					key: this.list[index].list[tagIndex].key,
 				};
 				this.$emit('updateTag', this.selectData);

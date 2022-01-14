@@ -41,7 +41,7 @@
 					<real-case-list :currentHouse='currentHouse' :realCaseListData='realCaseListData' @triggerScroll='triggerScroll' @scrollUpper='scrollUpper' @scrolltolower='scrolltolower' ref='realCaseList'/>
 				</view>
 				<view class="no-service" v-else>
-					<image src="https://ali-image.dabanjia.com/static/mp/dabanjia/images/home/no-service.png?x-oss-process=image/resize,m_lfit,w_400,h_100" mode=""></image>
+					<image src="https://ali-image.dabanjia.com/static/mp/dabanjia/images/home/no-service.png?x-oss-process=image/resize,m_lfit,w_400,h_400" mode=""></image>
 					<view class="title">
 						暂无相关案例～
 					</view>
@@ -110,7 +110,7 @@
 		methods: {
 			getListData(isTagSearch){
 				// 如果是最后一页  直接返回
-				if (this.endPage) return;
+				if (this.endPage && !isTagSearch) return;
 				const obj = this.$refs.realCaseScreeningRef.selectData;
 				let param = {};
 				// 居室查询条件
@@ -169,10 +169,13 @@
 			updateTag(obj){
 				const arr = [];
 				for(let i in obj) {
-					arr.push(obj[i])
+					if (obj[i].key != null) {
+						arr.push(obj[i])
+					}
 				}
 				console.log(arr)
 				this.selectTag = arr;
+				this.listParam.page = 0;
 				this.getListData(true);
 			},
 			checkoutScreen(key){
