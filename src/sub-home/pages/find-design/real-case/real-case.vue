@@ -136,7 +136,6 @@
 						param.estateId = res.data;
 					}
 				});
-				console.log(param, '..>>>>>>>>')
 				// 获取列表
 				moreCaseList({
 					...param,
@@ -159,7 +158,6 @@
 					if (this.listParam.page >= obj.totalPage && !isTagSearch) {
 						this.endPage = true;
 					}
-					console.log(this.realCaseListData, '>>>>>>>>>>>>>')
 				})
 			},
 			// 滑动不显示筛选条件
@@ -185,7 +183,6 @@
 						arr.push(obj[i])
 					}
 				}
-				console.log(arr)
 				this.selectTag = arr;
 				this.listParam.page = 0;
 				this.getListData(true);
