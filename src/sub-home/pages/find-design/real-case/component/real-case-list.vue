@@ -201,7 +201,6 @@
 			}
 
 			.bottom {
-				height: 364rpx;
 				position: relative;
 				
 				.addressAndSimilarity{
