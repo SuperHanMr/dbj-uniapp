@@ -13,7 +13,7 @@
 		<view class="bottom">
 			{{currentHouse.area}}
 		</view>
-		<image class="img-bg" src="/static/real-case-design/home-address-bg.png">
+		<image class="img-bg" src="https://ali-image.dabanjia.com/static/mp/dabanjia/images/home/home-address-bg.png?x-oss-process=image/resize,m_lfit,w_686,h_132">
 			
 		</image>
 	</view>

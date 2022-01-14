@@ -41,7 +41,7 @@
 					<real-case-list :currentHouse='currentHouse' :realCaseListData='realCaseListData' @triggerScroll='triggerScroll' @scrollUpper='scrollUpper' @scrolltolower='scrolltolower' ref='realCaseList'/>
 				</view>
 				<view class="no-service" v-else>
-					<image src="/static/real-case-design/no-service.png" mode=""></image>
+					<image src="https://ali-image.dabanjia.com/static/mp/dabanjia/images/home/no-service.png?x-oss-process=image/resize,m_lfit,w_400,h_100" mode=""></image>
 					<view class="title">
 						暂无相关案例～
 					</view>

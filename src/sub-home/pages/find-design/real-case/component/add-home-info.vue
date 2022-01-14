@@ -1,7 +1,7 @@
 <template>
 	<view class="perfect-house-info" @click="openHomeList">
 		<view class="image-box">
-			<image src="/static/real-case-design/perfect-information.png" mode=""></image>
+			<image src="https://ali-image.dabanjia.com/static/mp/dabanjia/images/home/perfect-information.png?x-oss-process=image/resize,m_lfit,w_148,h_150" mode=""></image>
 		</view>
 		<view class="box">
 			<view class="title">

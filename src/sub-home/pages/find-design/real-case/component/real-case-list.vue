@@ -34,7 +34,6 @@
 				</view>
 				<view class="bottom">
 					<ImgList :imgList='item.imageUrlList'/>
-					<!-- <image :src="item.imageUrlList[0]" mode=""></image> -->
 					<view class="addressAndSimilarity" v-if="currentHouse.address">
 						<view class="near">
 							{{item.flag ? `附近${item.distance}km` : getName()}}

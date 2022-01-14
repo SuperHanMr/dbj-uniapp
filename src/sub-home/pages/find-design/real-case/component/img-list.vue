@@ -1,19 +1,19 @@
 <template>
 	<view class="img-list">
 		<view class="list-box1" v-if="list1.length > 0 && list2.length == 0">
-			<image :src="imgList[0]" mode=""></image>
+			<image :src="imgList[0] + '?x-oss-process=image/resize,m_lfit,w_750,h_364'" mode=""></image>
 		</view>
 		<view class="list-box2" v-if="list2.length > 0">
 			<view class="top">
 				<view class="left">
-					<image :src="imgList[0]" mode="" :style="{borderRadius: list3.length > 0 ? 'none' : '0 0 0 32rpx'}"></image>
+					<image :src="imgList[0] + '?x-oss-process=image/resize,m_lfit,w_456,h_364'" mode="" :style="{borderRadius: list3.length > 0 ? 'none' : '0 0 0 32rpx'}"></image>
 				</view>
 				<view class="right">
-					<image :src="item" mode="" v-for="(item, index) in list2" :key='item' :style="{borderRadius: (list3.length > 0 || (index != list2.length - 1)) ? 'none' : '0 0 32rpx 0'}"></image>
+					<image :src="item + '?x-oss-process=image/resize,m_lfit,w_226,h_180'" mode="" v-for="(item, index) in list2" :key='item' :style="{borderRadius: (list3.length > 0 || (index != list2.length - 1)) ? 'none' : '0 0 32rpx 0'}"></image>
 				</view>
 			</view>
 			<view class="bottom" v-if="list3.length > 0">
-				<image :src="item" mode="" v-for="item in list3" :key='item'></image>
+				<image :src="item + '?x-oss-process=image/resize,m_lfit,w_226,h_180'" mode="" v-for="item in list3" :key='item'></image>
 			</view>
 		</view>
 	</view>
