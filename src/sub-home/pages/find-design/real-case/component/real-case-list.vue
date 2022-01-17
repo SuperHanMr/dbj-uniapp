@@ -10,17 +10,17 @@
 					</view>
 					<view class="info">
 						<view class="pattern">
-							<text v-if="item.roomNum">{{item.roomNum}}室</text>
-							<text v-if="item.hallNum">{{item.hallNum}}厅</text>
-							<text v-if="item.kitchenNum">{{item.kitchenNum}}厨</text>
+							<text v-if="item.roomNum != 0">{{item.roomNum || '-'}}室</text>
+							<text v-if="item.hallNum != 0">{{item.hallNum || '-'}}厅</text>
+							<text v-if="item.kitchenNum != 0">{{item.kitchenNum || '-'}}厨</text>
 						</view>
-						<view class="line" v-if="item.roomNum || item.hallNum || item.kitchenNum">
+						<view class="line" v-if="item.roomNum != 0 || item.hallNum != 0 || item.kitchenNum != 0">
 
 						</view>
-						<view class="area" v-if="item.insideArea">
-							{{item.insideArea}}m²
+						<view class="area" v-if="item.insideArea != 0">
+							{{item.insideArea || '-'}}m²
 						</view>
-						<view class="line" v-if="item.insideArea">
+						<view class="line" v-if="item.budget">
 
 						</view>
 						<view class="preferential" v-if="item.budget">
