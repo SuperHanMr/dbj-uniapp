@@ -1,47 +1,50 @@
 <template>
-	<view class="real-case-list">
-		<scroll-view class="real-case-list-scroll" :scroll-top="scrollTop" scroll-y="true" @scroll="scroll" @scrolltoupper='scrolltoupper'>
-			<view class="list" v-for="item in list" :key='item.title'>
+	<view class="real-case-list" v-if="realCaseListData.length > 0">
+		<scroll-view class="real-case-list-scroll" :scroll-top="scrollTop" scroll-y="true" @scroll="scroll"
+			@scrolltoupper='scrolltoupper' @scrolltolower='scrolltolower'>
+			<view class="list" v-for="item in realCaseListData" :key='item.id' @click="toCaseDetail(item)">
 				<view class="head">
 					<view class="title">
-						<text>{{item.title}}</text>
+						<text>{{item.caseName}} Ta家</text>
 						<view class="head-icon icon-alert_notice_jump" @click="goBack"></view>
 					</view>
 					<view class="info">
 						<view class="pattern">
-							{{item.leixing}}
+							<text v-if="item.roomNum">{{item.roomNum}}室</text>
+							<text v-if="item.hallNum">{{item.hallNum}}厅</text>
+							<text v-if="item.kitchenNum">{{item.kitchenNum}}厨</text>
 						</view>
-						<view class="line">
+						<view class="line" v-if="item.roomNum || item.hallNum || item.kitchenNum">
 
 						</view>
-						<view class="area">
-							{{item.area}}
+						<view class="area" v-if="item.insideArea">
+							{{item.insideArea}}m²
 						</view>
-						<view class="line">
+						<view class="line" v-if="item.insideArea">
 
 						</view>
-						<view class="preferential">
-							{{item.huaxiao}}
+						<view class="preferential" v-if="item.budget">
+							预算: ¥{{(item.budget).toFixed(2)}}万
 						</view>
 					</view>
 					<view class="tag-box">
-						<view class="tag" v-for="tag in item.tag" :key='tag.key'>
-							{{tag.name}}
+						<view class="tag" v-for="tag in item.features" :key='tag.key'>
+							{{tag}}
 						</view>
 					</view>
 				</view>
 				<view class="bottom">
-					111
-					<view class="addressAndSimilarity">
+					<ImgList :imgList='item.imageUrlList' />
+					<view class="addressAndSimilarity" v-if="currentHouse.address">
 						<view class="near">
-							附近2KM
+							{{item.flag ? `附近${item.distance}km` : getName()}}
 						</view>
-						<view class="point">
-							
+						<view class="point" v-if="item.Similarity">
+
 						</view>
-						<view class="similarity">
+						<view class="similarity" v-if="item.Similarity">
 							户型相似度
-							<text>90%</text>
+							<text>{{item.Similarity}}</text>
 						</view>
 					</view>
 				</view>
@@ -51,102 +54,25 @@
 </template>
 
 <script>
+	import ImgList from './img-list.vue'
 	export default {
+		props: {
+			realCaseListData: {
+				type: Array,
+				default: []
+			},
+			currentHouse: {
+				type: Object,
+				default: {}
+			}
+		},
+		components: {
+			ImgList
+		},
 		data() {
 			return {
 				noEmit: false,
 				scrollTop: 0,
-				list: [{
-						title: '念恩 Ta家',
-						leixing: '3室2厅1厨',
-						area: '201.2㎡',
-						huaxiao: '装修花销：¥3243.00',
-						tag: [{
-								name: '现在简约',
-								key: '1'
-							},
-							{
-								name: '极简装饰',
-								key: '2'
-							},
-						]
-					},
-					{
-						title: '念恩 Ta家',
-						leixing: '3室2厅1厨',
-						area: '201.2㎡',
-						huaxiao: '装修花销：¥3243.00',
-						tag: [{
-								name: '现在简约',
-								key: '1'
-							},
-							{
-								name: '极简装饰',
-								key: '2'
-							},
-						]
-					},
-					{
-						title: '念恩 Ta家',
-						leixing: '3室2厅1厨',
-						area: '201.2㎡',
-						huaxiao: '装修花销：¥3243.00',
-						tag: [{
-								name: '现在简约',
-								key: '1'
-							},
-							{
-								name: '极简装饰',
-								key: '2'
-							},
-						]
-					},
-					{
-						title: '念恩 Ta家',
-						leixing: '3室2厅1厨',
-						area: '201.2㎡',
-						huaxiao: '装修花销：¥3243.00',
-						tag: [{
-								name: '现在简约',
-								key: '1'
-							},
-							{
-								name: '极简装饰',
-								key: '2'
-							},
-						]
-					},
-					{
-						title: '念恩 Ta家',
-						leixing: '3室2厅1厨',
-						area: '201.2㎡',
-						huaxiao: '装修花销：¥3243.00',
-						tag: [{
-								name: '现在简约',
-								key: '1'
-							},
-							{
-								name: '极简装饰',
-								key: '2'
-							},
-						]
-					},
-					{
-						title: '念恩 Ta家',
-						leixing: '3室2厅1厨',
-						area: '201.2㎡',
-						huaxiao: '装修花销：¥3243.00',
-						tag: [{
-								name: '现在简约',
-								key: '1'
-							},
-							{
-								name: '极简装饰',
-								key: '2'
-							},
-						]
-					}
-				]
 			}
 		},
 		methods: {
@@ -158,7 +84,7 @@
 					this.$emit('triggerScroll')
 				}
 			},
-			scrolltoupper(){
+			scrolltoupper() {
 				this.$emit('scrollUpper')
 			},
 			scrollToTop() {
@@ -166,6 +92,23 @@
 				this.$nextTick(() => {
 					this.scrollTop = 0;
 				});
+			},
+			getName() {
+				let currentHouse = this.$props.currentHouse;
+				let name = '';
+				if (currentHouse.cityName) {
+					return name = currentHouse.cityName.substring(0, currentHouse.cityName.indexOf('市'))
+				} else if (currentHouse.name) {
+					return name = currentHouse.name.substring(0, currentHouse.name.indexOf('市'))
+				}
+			},
+			toCaseDetail(item) {
+				uni.navigateTo({
+					url: `/pages/real-case/real-case-webview/real-case-webview?id=${item.id}`,
+				});
+			},
+			scrolltolower() {
+				this.$emit('scrolltolower')
 			}
 		}
 	}
@@ -191,19 +134,30 @@
 				border: 0.5px solid #E8E8E8;
 				box-sizing: border-box;
 				padding: 32rpx 24rpx;
-				border-radius: 16rpx 16rpx 0 0; 
+				border-radius: 16rpx 16rpx 0 0;
 
 				.title {
 					display: flex;
 					justify-content: space-between;
+					align-items: center;
 					font-weight: 500;
 					font-size: 32rpx;
 					line-height: 44rpx;
 					color: #222222;
+
+					text {
+						max-width: 570rpx;
+						white-space: nowrap;
+						overflow: hidden;
+						text-overflow: ellipsis;
+					}
 				}
-				.head-icon{
+
+				.head-icon {
 					font-size: 20rpx;
+					color: #000000;
 				}
+
 				.info {
 					display: flex;
 					align-items: center;
@@ -228,7 +182,7 @@
 					.preferential {
 						font-size: 24rpx;
 						line-height: 34rpx;
-						color: #FF7F46;
+						color: #999999;
 					}
 				}
 
@@ -250,10 +204,9 @@
 			}
 
 			.bottom {
-				border-radius: 0px 0px 16rpx 16rpx;
-				height: 364rpx;
 				position: relative;
-				.addressAndSimilarity{
+
+				.addressAndSimilarity {
 					position: absolute;
 					top: 24rpx;
 					left: 24rpx;
@@ -267,21 +220,23 @@
 					font-size: 20rpx;
 					line-height: 28rpx;
 					color: #FFFFFF;
-					.point{
+
+					.point {
 						width: 4rpx;
 						height: 4rpx;
 						background: #FFFFFF;
 						margin: 0 12rpx;
 					}
-					.similarity{
-						text{
+
+					.similarity {
+						text {
 							margin-left: 4rpx;
 						}
 					}
 				}
 			}
-			
-			
+
+
 		}
 	}
 </style>
