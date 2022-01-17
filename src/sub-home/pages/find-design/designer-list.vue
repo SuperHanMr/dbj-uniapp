@@ -109,7 +109,7 @@
 </template>
 <script>
 import SortButton from "./sort-btn.vue";
-import { designerList } from "@/api/home-find-design";
+import { searchDesigner } from "@/api/home-find-design";
 
 function throttle(fn, time) {
 	let canUse = true;
@@ -214,7 +214,7 @@ export default {
 				params.searchKey = this.searchText.trim();
 			}
 
-			designerList(params).then((res) => {
+			searchDesigner(params).then((res) => {
 				this.totalPage = res.totalPage;
 				this.isPageReady = true;
 				if (this.isLoadMore) {
