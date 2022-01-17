@@ -16,7 +16,7 @@
 					class="sort-items"
 					v-for="items in sortType"
 					:key="items.key"
-				><text>{{items.value}}</text></view>
+				><text>{{items.value}}</text><view v-if="items.key === sort.key" class="selected-icon"></view></view>
 			</view>
 		</uni-popup>
 	</view>
@@ -104,4 +104,12 @@ export default {
 	border-bottom-left-radius: 20rpx;
 	border-bottom-right-radius: 20rpx;
 }
+.selected-icon{
+	display: inline-block;
+	height: 21rpx;
+	width: 28rpx;
+	background-image: url("/static/images/ic_curr_selected@2x.png");
+	background-size: 100%;
+}
+
 </style>
