@@ -136,8 +136,8 @@
       <scroll-view
         scroll-x="true"
         style="white-space: nowrap;"
-        @scrolltolower="gotoNext"
       >
+        <!-- @scrolltolower="gotoNext" -->
         <view
           class="design-card-item"
           v-for="item2 in searchDesignerList"
@@ -165,53 +165,45 @@
             </view>
           </view>
         </view>
-        <view class="showMoreCard">
-          <view class="content">
-            <image
-              src="../../static/showMoreCard.svg"
-              mode=""
-            ></image>
-            <view class="text">
-              左滑查看更多
-            </view>
-          </view>
-        </view>
+        <view class="showMoreCard_container" @click="gotoMoreDesigner">
+					<view class="showMoreCard" :style="{backgroundImage:`url(${bgImg3})`,backgroundSize:'contaienr'}">
+					</view>
+					<view class="content">
+						<image
+							src="../../static/showMoreCard.svg"
+							mode=""
+						></image>
+						<view class="text">
+							左滑查看更多
+						</view>
+					</view>
+										
+				</view>
       </scroll-view>
 
     </view>
     <view
       class="perfectHouseInfo_container"
       @click="gotoEditHouse"
+			v-if="!userId || (userId && !hasEstate)"
     >
-      <!-- <view class="perfect_house_info"
-			>
-				<view class="title">
-					完善房屋信息
-				</view>
-				<view class="sub_title">
-					即可查看您家附近的案例
-				</view>
+      <!-- <view class="perfect_house_info">
+				<view class="title">完善房屋信息</view>
+				<view class="sub_title">即可查看您家附近的案例</view>
 				<view class="button">
 					<text>去完善</text>
 					<image src="../../static/gotoCase.svg" mode=""></image>
 				</view>
 			</view> -->
-      <image
-        class="bigImage"
-        src="../../static/perfectHouseInfo.svg"
-        mode=""
-      ></image>
+      <image class="bigImage" src="../../static/perfectHouseInfo.svg" />
 
-      <view
-        class="btn"
-        @click="gotoRealCase"
-      >
+      <view class="btn" @click="gotoRealCase" >
         <text>去看推荐案例</text>
         <image src="../../static/gotoCase.svg" />
       </view>
     </view>
 
-    <view class="recommendCase title_container">
+    <view v-if="userId && hasEstate" class="recommendCase title_container" @click="gotoRealCase">
       <view class="left">
         为您推荐
       </view>
@@ -220,7 +212,7 @@
         <image src="https://ali-image.dabanjia.com/static/mp/dabanjia/images/theme-red/my/small_gotoShop.svg" />
       </view>
     </view>
-    <view class="recommendCaseItem_container">
+    <view class="recommendCaseItem_container" v-if="userId && hasEstate && CaseList.length">
       <view
         :style="{backgroundImage:`url(${bgImg})`}"
         class="case-item"
@@ -230,7 +222,18 @@
         <view class="left">
           <view class="name_container">
             <view class="name">{{item.nikeName}}</view>
-            <view class="cost">预算： {{item.budget|| "-"}} {{item.Similarity || "-"}}</view>
+            <view class="cost">
+							<text v-if="item.Similarity">户型相似度{{item.Similarity}}</text>
+							<text v-if="item.Similarity" class="icon"></text>
+							
+							<text v-if="item.flag">附近{{item.distance}}</text>
+							<text v-if="item.flag" class="icon"></text>
+							
+							<text v-if="!item.flag">{{item.cityName}}</text>
+							<text v-if="!item.flag" class="icon"></text>
+							
+							<text>预算： {{item.budget || "-"}} {{item.Similarity || "-"}}</text>
+							</view>
           </view>
           <view class="attr_container">
             <view class="attr_item">{{item.styleName}}</view>
@@ -270,11 +273,11 @@ export default {
       subIndex: 0,
       goodsList: [],
       //新加的
-      userId: "",
       bgImg: "../../static/caseItemBg.svg",
       bgImg1:
         "https://ali-res-test.dabanjia.com/res/20211024/17/1635068528844_4631%24%E8%B6%85%E8%B6%8A3.jpg?x-oss-process=image/resize,m_mfit,w_686,h_686",
       bgImg2: "../../static/findDesignbg.svg",
+			bgImg3:"../../static/moreDesignerBg.svg",
       iconList: [
         {
           key: 1,
@@ -299,6 +302,8 @@ export default {
       ],
       searchDesignerList: [], //设计师列表
       CaseList: [], //推荐列表
+      userId: "",//用户id 
+			hasEstate:false,//是否有房屋
     };
   },
   onLoad() {
@@ -321,8 +326,12 @@ export default {
 
     // 新加的
     this.userId = getApp().globalData.token;
+		console.log("getApp().globalData.userInfo==",getApp().globalData.userInfo)
+		
     if (this.userId) {
       // 登录
+			this.hasEstate = getApp().globalData.userInfo.hasEstate
+		
     } else {
       // 未登录
     }
@@ -383,7 +392,9 @@ export default {
 
     // 新加的
     gotoNext() {
-      console.log("查看更多啊！！");
+			uni.navigateTo({
+			  url: "/sub-home/pages/find-design/search-design",
+			});
     },
     getRecommendCaseList() {
       recommendCaseList({}).then((res) => {
@@ -425,9 +436,18 @@ export default {
     },
     //去完善房屋信息
     gotoEditHouse() {
-      uni.navigateTo({
-        url: "/sub-my/pages/my-house/my-house?fromHome=true",
-      });
+			if(this.userId){
+				//登录的情况下 调整到编辑房屋页面
+				uni.navigateTo({
+					url: "/sub-my/pages/my-house/my-house?fromHome=true",
+				});
+			}else{
+				//未登录的情况下跳转到登录页面
+				console.log("跳转到登录页面")
+				uni.navigateTo({
+					url:"/pages/login/login"
+				});
+			}
     },
     //更多设计师
     gotoMoreDesigner() {
@@ -655,33 +675,41 @@ export default {
     // .design-card-item:nth-last-child(1) {
     // 	margin-right: 0;
     // }
-    .showMoreCard {
-      width: 252rpx;
-      height: 698rpx;
-      border-radius: 32rpx 0 0 32rpx;
-      display: inline-block;
-      background-color: pink;
-      position: relative;
-      .content {
-        position: absolute;
-        left: 66rpx;
-        top: 320rpx;
-        image {
-          width: 32rpx;
-          height: 18rpx;
-          margin-bottom: 10rpx;
-        }
-        .text {
-          width: 144rpx;
-          height: 34rpx;
-          line-height: 34rpx;
-          font-size: 24rpx;
-          color: #ffffff;
-          font-weight: 500;
-        }
-      }
-    }
-  }
+		.showMoreCard_container{
+			width: 252rpx;
+			height: 698rpx;
+			border-radius: 32rpx 0 0 32rpx;
+			overflow: hidden;
+			display: inline-block;
+			position: relative;
+			.showMoreCard {
+				width: 434rpx;
+				height: 698rpx;
+			  background: rgba(0, 0, 0, 0.04);
+				filter: blur(14px);
+				background-repeat: no-repeat;
+				background-position: top center;
+			}
+			.content {
+			  position: absolute;
+			  left: 66rpx;
+			  top: 320rpx;
+			  image {
+			    width: 32rpx;
+			    height: 18rpx;
+			    margin-bottom: 10rpx;
+			  }
+			  .text {
+			    width: 144rpx;
+			    height: 34rpx;
+			    line-height: 34rpx;
+			    font-size: 24rpx;
+			    color: #ffffff;
+			    font-weight: 500;
+			  }
+			}					
+		}
+	}
 }
 
 .perfectHouseInfo_container {
@@ -825,10 +853,23 @@ export default {
         }
         .cost {
           height: 30rpx;
-          line-height: 30rpx;
-          color: #999999;
-          font-size: 22rpx;
+					font-size: 22rpx;
           margin-bottom: 16rpx;
+					display: flex;
+					flex-flow: row nowrap;
+					align-items: center;
+					text {
+					  line-height: 30rpx;
+					   color: #999999;
+					}
+					.icon {
+					  display: block;
+					  height: 20rpx;
+					  width: 2rpx;
+					  background: #ffffff;
+					  opacity: 0.7;
+					  margin: 0 16rpx;
+					}
         }
       }
       .attr_container {
