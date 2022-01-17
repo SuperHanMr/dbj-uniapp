@@ -100,7 +100,7 @@
 		</view>
 		<view
 			v-if="isPageReady && dataSource.length === 0"
-			class="no-goods"
+			class="no-designers"
 		>
 			<view class="img"></view>
 			<view class="text">暂无相关内容～</view>
@@ -332,7 +332,7 @@ export default {
 	background: #fff;
 	position: relative;
 	padding-top: 104rpx;
-	min-height: 100%;
+	min-height: calc(100% - 104rpx);
 	.search {
 		height: 104rpx;
 	}
@@ -466,9 +466,7 @@ export default {
 	}
 }
 
-.no-goods {
-	width: 355rpx;
-	height: 315rpx;
+.no-designers {
 	position: absolute;
 	left: 0;
 	top: 0;
@@ -476,9 +474,13 @@ export default {
 	right: 0;
 	margin: auto;
 	text-align: center;
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	align-items: center;
 }
 
-.no-goods .img {
+.no-designers .img {
 	display: inline-block;
 	width: 400rpx;
 	height: 400rpx;
@@ -486,9 +488,9 @@ export default {
 	background-size: cover;
 }
 
-.no-goods .text {
+.no-designers .text {
 	display: inline-block;
-	width: 312rpx;
+	width: 400rpx;
 	height: 80rpx;
 	opacity: 1;
 	font-size: 24rpx;
