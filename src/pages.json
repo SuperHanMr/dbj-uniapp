@@ -308,6 +308,23 @@
           }
         },
         {
+          "path": "pages/find-design/search-design",
+          "style": {
+            "navigationBarTitleText": "找设计",
+            "enablePullDownRefresh": false,
+            "navigationBarBackgroundColor": "#ffffff"
+          }
+        },
+        {
+          "path": "pages/find-design/designer-list",
+          "style": {
+            "navigationBarTitleText": "自己找",
+            "enablePullDownRefresh": true,
+            "navigationBarBackgroundColor": "#ffffff",
+            "backgroundColor": "#ffffff"
+          }
+        },
+        {
           "path": "pages/lives-list/lives-list",
           "style": {
             "navigationBarTitleText": "直播",
@@ -316,7 +333,7 @@
         },
         {
 					"path" : "pages/find-design/real-case/real-case",
-					    "style" :                                                                                    
+					    "style" :
 					{
 					    "navigationBarTitleText": "",
 					    "enablePullDownRefresh": false,
@@ -525,7 +542,7 @@
 							"navigationBarTitleText": "历史优惠券",
 							"enablePullDownRefresh": false
 						}
-                
+
          }]
     },
     {
