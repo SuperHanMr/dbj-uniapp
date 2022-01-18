@@ -95,7 +95,7 @@
 							v-for="(style, index) in designer.styles.slice(0, 5)"
 							:key="index"
 							class="designer-tag"
-						><text>{{style}}</text></view>
+						><view class="tag-text"><text>{{style}}</text></view>	</view>
 					</view>
 				</view>
 			</view>
@@ -379,7 +379,7 @@ export default {
 		flex: 1;
 		margin-left: 24rpx;
 		border-bottom: 1px solid #f3f3f3;
-		padding-bottom: 32rpx;
+		padding-bottom: 16rpx;
 	}
 }
 
@@ -446,6 +446,7 @@ export default {
 
 	.designer-opera {
 		width: 126rpx;
+		margin-left: 32rpx;
 		.btn-find-designer {
 			width: 126rpx;
 			height: 56rpx;
@@ -476,9 +477,17 @@ export default {
 	-webkit-box-orient: vertical;
 }
 .designer-tags {
+	display: flex;
+	flex-direction: row;
+	flex-wrap: wrap;
+	overflow: hidden;
 	.designer-tag {
-		display: inline-block;
+
+		display: flex;
+		// justify-content: center;
+		align-items: center;
 		height: 34rpx;
+		overflow: hidden;
 		line-height: 34rpx;
 		border: 1rpx solid #e8e8e8;
 		box-sizing: border-box;
@@ -487,6 +496,15 @@ export default {
 		color: #999999;
 		padding: 0 12rpx;
 		margin-right: 16rpx;
+		margin-bottom: 16rpx;
+
+		max-width: 300rpx;
+		.tag-text{
+			flex: 1;
+			overflow: hidden;
+			text-overflow: ellipsis;
+			white-space: nowrap;
+		}
 	}
 }
 
