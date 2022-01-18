@@ -236,7 +236,7 @@
           @contentEmpty='contentEmpty'
           v-if="personData.roleId===1||personData.roleId===2"
         ></personCase>
-        <view class="interval" v-if="caseEmpty"></view>
+        <view class="interval" v-if="caseEmpty&&dynamicEmpty"></view>
         <personDynamic
           ref='dynamic'
           :personId='personId'
@@ -686,9 +686,10 @@ export default {
   position: relative;
   padding-top: 98rpx;
   box-sizing: border-box;
-  // background-color: #fff;
+  background-color: #fff;
   margin-bottom: 40rpx;
   // height: 100%;
+  min-height: 100%;
   .bg-index {
     top: -70rpx;
     width: 100%;

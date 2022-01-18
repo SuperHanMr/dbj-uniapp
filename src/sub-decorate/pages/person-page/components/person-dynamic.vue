@@ -108,5 +108,7 @@
 </script>
 
 <style lang="scss" scoped>
-  
+  .person-dynamic{
+    background-color: #fff;
+  }
 </style>

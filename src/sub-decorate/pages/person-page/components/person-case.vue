@@ -247,6 +247,9 @@
 </script>
 
 <style lang="scss" scoped>
+  .person-case{
+    background-color: #fff;
+  }
   .title{
     margin-bottom: 32rpx;
   }

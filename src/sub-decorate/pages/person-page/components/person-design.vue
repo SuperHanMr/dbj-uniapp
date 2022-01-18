@@ -252,6 +252,7 @@
       .skill{
         display: flex;
         margin-bottom: 22rpx;
+        flex-wrap: wrap;
         .skill-item{
           background: rgba(255, 255, 255, 0.05);
           border: 0.5px solid rgba(255, 255, 255, 0.08);
@@ -265,6 +266,7 @@
           color: #fff;
           opacity: 0.6;
           font-size: 20rpx;
+          margin-bottom: 10rpx;
         }
       }
       .msg-content{
