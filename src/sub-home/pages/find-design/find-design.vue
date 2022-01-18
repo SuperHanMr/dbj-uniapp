@@ -22,7 +22,7 @@
     >
       <view class="search_container">
         <view class="search_style" @click="findOwnDesigner()">
-          <image src="../../static/findDesingerSearchIcon.svg" />
+          <image src="https://ali-image.dabanjia.com/static/mp/dabanjia/images/home/findDesingerSearchIcon.svg" />
           <text>我想自己找...</text>
         </view>
         <image
@@ -36,7 +36,7 @@
         <view
           class="tabItem"
           v-for="item1 in iconList"
-          :key="item1"
+          :key="item1.name"
         >
           <image :src="item1.url" />
           <view style="color: #333333;font-size: 26rpx;">
@@ -68,7 +68,7 @@
           class="design-card-item"
           v-for="item2 in searchDesignerList"
           :key="item2.id"
-          :style="{backgroundImage:`url(${item2.artImage}?x-oss-process=image/resize,m_fill,h_572,w_434,limit_0)`,backgroundSize:'434rpx 572rpx'}"
+          :style="{backgroundImage:`url(${item2.artImage})`,backgroundSize:'434rpx 572rpx'}"
           @click="gotoDesignerHomePage(item2.id)"
         >
           <view class="basic-info">
@@ -93,7 +93,7 @@
 					<view class="showMoreCard" :style="{backgroundImage:`url(${bgImg3})`,backgroundSize:'contaienr'}">
 					</view>
 					<view class="content">
-						<image src="../../static/showMoreCard.svg"/>
+						<image src="https://ali-image.dabanjia.com/static/mp/dabanjia/images/home/showMoreCard.svg"/>
 						<view class="text">
 							左滑查看更多
 						</view>
@@ -116,11 +116,11 @@
 					<image src="../../static/gotoCase.svg" mode=""></image>
 				</view>
 			</view> -->
-      <image class="bigImage" src="../../static/perfectHouseInfo.svg" />
+      <image class="bigImage" src="https://ali-image.dabanjia.com/static/mp/dabanjia/images/home/perfectHouseInfo.svg" />
 
       <view class="btn" @click="gotoRealCase" >
         <text>去看推荐案例</text>
-        <image src="../../static/gotoCase.svg" />
+        <image src="https://ali-image.dabanjia.com/static/mp/dabanjia/images/home/gotoCase.svg" />
       </view>
     </view>
 
@@ -138,7 +138,7 @@
         :style="{backgroundImage:`url(${bgImg})`}"
         class="case-item"
         v-for="item4 in CaseList"
-        :key="item4"
+        :key="item4.id"
       >
         <view class="left">
           <view class="name_container">
@@ -185,11 +185,10 @@ export default {
       subIndex: 0,
       goodsList: [],
       //新加的
-      bgImg: "../../static/caseItemBg.svg",
-      bgImg1:
-        "https://ali-res-test.dabanjia.com/res/20211024/17/1635068528844_4631%24%E8%B6%85%E8%B6%8A3.jpg?x-oss-process=image/resize,m_mfit,w_686,h_686",
-      bgImg2: "../../static/findDesignbg.svg",
-			bgImg3:"../../static/moreDesignerBg.svg",
+      bgImg: "https://ali-image.dabanjia.com/static/mp/dabanjia/images/home/caseItemBg.svg",
+      bgImg1: "https://ali-res-test.dabanjia.com/res/20211024/17/1635068528844_4631%24%E8%B6%85%E8%B6%8A3.jpg?x-oss-process=image/resize,m_mfit,w_686,h_686",
+      bgImg2: "https://ali-image.dabanjia.com/static/mp/dabanjia/images/home/findDesignbg.svg",
+			bgImg3: "https://ali-image.dabanjia.com/static/mp/dabanjia/images/home/moreDesignerBg.svg",
       iconList: [
         {
           key: 1,
@@ -277,10 +276,11 @@ export default {
 		},
 		
     gotoNext() {
+			
 			uni.navigateTo({
-			  url: "/sub-home/pages/find-design/search-design",
+				url: "/sub-home/pages/find-design/search-design",
 			});
-    },
+		},
    
 		getRecommendCaseList() {
 			let params = {
