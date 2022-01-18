@@ -37,7 +37,7 @@
 					<ImgList :imgList='item.imageUrlList' />
 					<view class="addressAndSimilarity" v-if="currentHouse.address">
 						<view class="near">
-							{{item.flag ? `附近${item.distance}km` : getName()}}
+							{{item.flag ? `附近${(item.distance / 1000).toFixed(2)}km` : getName()}}
 						</view>
 						<view class="point" v-if="item.Similarity">
 

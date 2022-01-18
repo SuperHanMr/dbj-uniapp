@@ -111,8 +111,13 @@
 		},
 		onShow() {
 			const currentHouse = getApp().globalData.currentHouse;
+			let isRefshList = null;
+			if (this.currentHouse.id != currentHouse.id) {
+				isRefshList = true;
+				this.listParam.page = 0;
+			} 
 			this.currentHouse = currentHouse;
-			this.getListData();
+			this.getListData(isRefshList);
 		},
 		methods: {
 			getListData(isTagSearch) {
@@ -137,37 +142,32 @@
 					param.maxInsideArea = Number(areaObj[1]);
 				}
 				// 有无默认房屋
-				uni.getStorage({
-					key: 'houseListChooseId',
-					complete: (res) => {
-						if (res.data) {
-							param.estateId = res.data;
-						}
-						// 获取列表
-						moreCaseList({
-							...param,
-							...this.listParam
-						}).then((res) => {
-							const obj = res.moreCasePageVOPager
-							if (isTagSearch) {
-								this.realCaseListData = obj.list
-							} else {
-								this.realCaseListData = [...this.realCaseListData, ...obj.list];
-							}
-							this.caseDetailInfo = {
-								estateFlag: res.estateFlag,
-								caseFlag: res.caseFlag,
-							};
-							this.listParam = {
-								page: obj.page,
-								row: obj.rows,
-							}
-							if (this.listParam.page >= obj.totalPage && !isTagSearch) {
-								this.endPage = true;
-							}
-						})
+				if (this.currentHouse.id) {
+					param.estateId = this.currentHouse.id;
+				}
+				// 获取列表
+				moreCaseList({
+					...param,
+					...this.listParam
+				}).then((res) => {
+					const obj = res.moreCasePageVOPager
+					if (isTagSearch) {
+						this.realCaseListData = obj.list
+					} else {
+						this.realCaseListData = [...this.realCaseListData, ...obj.list];
 					}
-				});
+					this.caseDetailInfo = {
+						estateFlag: res.estateFlag,
+						caseFlag: res.caseFlag,
+					};
+					this.listParam = {
+						page: obj.page,
+						row: obj.rows,
+					}
+					if (this.listParam.page >= obj.totalPage && !isTagSearch) {
+						this.endPage = true;
+					}
+				})
 			},
 			// 滑动不显示筛选条件
 			triggerScroll() {
