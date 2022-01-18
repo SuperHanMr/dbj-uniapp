@@ -6,7 +6,7 @@
 			<view class="home-address" v-if="currentHouse.address && showScreen">
 				<home-address :currentHouse='currentHouse' @openHomeList='openHomeList' />
 			</view>
-			<view class="no-case" v-if="currentHouse.address && !caseDetailInfo.caseFlag">
+			<view class="no-case" v-if="currentHouse.address && !caseDetailInfo.caseFlag && showScreen">
 				当前房屋所在地区暂无真实案例，为您推荐其他地区的精选案例
 			</view>
 			<view class="screening" v-if="!currentHouse.address">
@@ -98,7 +98,8 @@
 				},
 				realCaseListData: [],
 				caseDetailInfo: {},
-				endPage: false
+				endPage: false,
+				selectData: {}
 			}
 		},
 		onLoad() {
@@ -117,7 +118,13 @@
 			getListData(isTagSearch) {
 				// 如果是最后一页  直接返回
 				if (this.endPage && !isTagSearch) return;
-				const obj = this.$refs.realCaseScreeningRef.selectData;
+				let obj;
+				if (this.$refs.realCaseScreeningRef) {
+					obj = this.$refs.realCaseScreeningRef.selectData
+					this.selectData = obj;
+				} else {
+					obj = this.selectData;
+				}
 				let param = {};
 				// 居室查询条件
 				if (obj[0] && obj[0].key != null) {
@@ -198,11 +205,11 @@
 					url: '/sub-my/pages/my-house/my-house?fromHome=true'
 				})
 			},
-			// 下拉获取更多
+			// 上拉获取更多
 			scrolltolower() {
 				this.listParam.page += 1;
 				this.getListData();
-			}
+			},
 		}
 	}
 </script>

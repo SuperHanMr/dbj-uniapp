@@ -84,7 +84,7 @@
 					this.$emit('triggerScroll')
 				}
 			},
-			scrolltoupper() {
+			scrolltoupper(e) {
 				this.$emit('scrollUpper')
 			},
 			scrollToTop() {
