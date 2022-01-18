@@ -180,7 +180,9 @@ export default {
 	onPullDownRefresh() {
 		this.isLoadMore = false;
 		this.page = 1;
-		this.searchList();
+		this.searchList().finally(() => {
+			uni.stopPullDownRefresh();
+		});
 	},
 	onReachBottom() {
 		this.loadMoreList();
@@ -226,7 +228,7 @@ export default {
 				params.searchKey = this.searchText.trim();
 			}
 
-			searchDesigner(params).then((res) => {
+			return searchDesigner(params).then((res) => {
 				this.totalPage = res.totalPage;
 				this.isPageReady = true;
 				if (this.isLoadMore) {
