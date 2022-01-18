@@ -129,7 +129,7 @@
 			.address{
         color: #fff;
         font-size: 20rpx;
-        max-width: 328rpx;
+        max-width: 310rpx;
         overflow: hidden;
         text-overflow: ellipsis;
         white-space: nowrap;
