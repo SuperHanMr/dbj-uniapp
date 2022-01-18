@@ -19,7 +19,7 @@
         <view :style="{height:navBarHeight}"></view>
         <view class="order-status">
           <view class="status">
-            <image src="../../../static/ic_order_failed.svg" mode=""/>
+            <image src="https://ali-image.dabanjia.com/static/mp/dabanjia/images/theme-red/my/ic_order_failed.svg" mode=""/>
             <text v-if="status == 3 || status == 4">退款关闭</text>
             <text v-if="status == 5">退款失败</text>
           </view>
@@ -28,8 +28,8 @@
       </view>
 
       <view class="order-header">
-        <image v-if="status == 5 " src="../../../static/ic_order_refund_failed.svg" mode="" />
-        <image v-else src="../../../static/ic_failed.svg"  mode=""/>
+        <image v-if="status == 5 " src="https://ali-image.dabanjia.com/static/mp/dabanjia/images/theme-red/my/ic_order_refund_failed.svg" mode="" />
+        <image v-else src="https://ali-image.dabanjia.com/static/mp/dabanjia/images/theme-red/my/ic_failed.svg"  mode=""/>
 
         <view v-if="status == 3" class="cancel-text">
 					商家拒绝了您的申请，如有问题未解决，您可以重新申请
@@ -113,7 +113,7 @@
         <view :style="{height:navBarHeight}"></view>
         <view class="order-status">
           <view class="status">
-            <image src="../../../static/ic_order_failed.svg" mode="" />
+            <image src="https://ali-image.dabanjia.com/static/mp/dabanjia/images/theme-red/my/ic_order_failed.svg" mode="" />
             <text>已关闭</text>
           </view>
         </view>
@@ -125,7 +125,7 @@
           <view class="header-content">
             <view v-if="orderInfo.type !==5" class="storeName" @click="gotoShop(item2)" >{{item2.storeName}}</view>
             <view v-else class="storeName" >{{orderInfo.orderName}}</view>
-						<image v-if="orderInfo.type !==5 " src="../../../static/small_gotoShop.svg" mode=""/>
+						<image v-if="orderInfo.type !==5 " src="https://ali-image.dabanjia.com/static/mp/dabanjia/images/theme-red/my/small_gotoShop.svg" mode=""/>
           </view>
           <view class="icon"></view>
         </view>

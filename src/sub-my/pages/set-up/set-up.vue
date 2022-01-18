@@ -4,7 +4,7 @@
 			<view class="item-list" v-for="(item, index) in listArr" :key="item.url" @click="onClick(item,index)">
 				<view class="item">
 					<text>{{item.title}}</text>
-					<image v-if="index <(listArr.length-1)" src="../../../static/order/images/back.svg" />
+					<image v-if="index <(listArr.length-1)" src="https://ali-image.dabanjia.com/static/mp/dabanjia/images/theme-red/my/back.svg" />
 					<text v-else>v {{ version }}</text>
 				</view>
 				<view class="line" v-if="index <(listArr.length-1)" />

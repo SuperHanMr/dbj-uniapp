@@ -8,7 +8,7 @@
       class="backgroundStyle"
       :style="{backgroundImage:`url(${bgImg})`,backgroundSize:'cover'}"
     >
-			<!-- <view class="mask">
+      <!-- <view class="mask">
 				<view class="linearStyle" />
 			</view> -->
     </view>
@@ -52,7 +52,10 @@
           </view>
         </view>
 
-        <view  class="set-up"  @click="handleSetUp">
+        <view
+          class="set-up"
+          @click="handleSetUp"
+        >
           <image src="https://ali-image.dabanjia.com/static/mp/dabanjia/images/theme-red/my/setting.svg" />
         </view>
       </view>
@@ -60,9 +63,12 @@
       <view class="my-order">
         <view class="order-header">
           <view class="order">我的订单</view>
-          <view class="total" @click="handlerViewAll()" >
+          <view
+            class="total"
+            @click="handlerViewAll()"
+          >
             <text>全部订单</text>
-            <image src="https://ali-image.dabanjia.com/static/mp/dabanjia/images/theme-red/my/gray_array_back.svg"/>
+            <image src="https://ali-image.dabanjia.com/static/mp/dabanjia/images/theme-red/my/gray_array_back.svg" />
           </view>
         </view>
         <view class="order-line" />
@@ -80,7 +86,7 @@
             >
               {{ waitPayOrderNum }}
             </view>
-            <image :src="item.image"/>
+            <image :src="item.image" />
             <text style="color:#333333;font-size: 24rpx;">{{item.value}}</text>
           </view>
         </view>
@@ -100,10 +106,10 @@
               <text>{{item2.value}}</text>
             </view>
 
-            <view class="right" >
+            <view class="right">
               <text v-if="isShowStoreValue && item2.key==1">{{storeValueCard? Number(storeValueCard)/100 :'0.00' }}元</text>
-               <text v-if="item2.key==2">3张</text>
-							<image src="https://ali-image.dabanjia.com/static/mp/dabanjia/images/theme-red/my/gray_array_back.svg"/>
+              <text v-if="item2.key==2">3张</text>
+              <image src="https://ali-image.dabanjia.com/static/mp/dabanjia/images/theme-red/my/gray_array_back.svg" />
             </view>
           </view>
 
@@ -125,7 +131,8 @@ export default {
   },
   data() {
     return {
-      bgImg: "https://ali-image.dabanjia.com/static/mp/dabanjia/images/theme-red/my/myPage_bgImg.svg",
+      bgImg:
+        "https://ali-image.dabanjia.com/static/mp/dabanjia/images/theme-red/my/myPage_bgImg.svg",
       waitPayOrderNum: "",
       isShowStoreValue: false,
       storeValueCard: "",
@@ -143,25 +150,29 @@ export default {
         // },
         {
           key: "3",
-          image: "https://ali-image.dabanjia.com/static/mp/dabanjia/images/theme-red/my/shopping_Cart.svg",
+          image:
+            "https://ali-image.dabanjia.com/static/mp/dabanjia/images/theme-red/my/shopping_Cart.svg",
           value: "购物车",
           url: "../../../sub-my/pages/shopping-cart/shopping-cart",
         },
         {
           key: "4",
-          image: "https://ali-image.dabanjia.com/static/mp/dabanjia/images/theme-red/my/collection.svg",
+          image:
+            "https://ali-image.dabanjia.com/static/mp/dabanjia/images/theme-red/my/collection.svg",
           value: "我的收藏",
           url: "../../../sub-my/pages/personal-center/my-collection/my-collection?firstEntry=true",
         },
         {
           key: "5",
-          image: "https://ali-image.dabanjia.com/static/mp/dabanjia/images/theme-red/my/attention.svg",
+          image:
+            "https://ali-image.dabanjia.com/static/mp/dabanjia/images/theme-red/my/attention.svg",
           value: "我的关注",
           url: "../../../sub-my/pages/personal-center/my-attention/my-attention",
         },
         {
           key: "6",
-          image: "https://ali-image.dabanjia.com/static/mp/dabanjia/images/theme-red/my/houseGgr.svg",
+          image:
+            "https://ali-image.dabanjia.com/static/mp/dabanjia/images/theme-red/my/houseGgr.svg",
           value: "房屋管理",
           url: "../../../sub-my/pages/my-house/my-house?isMy=true",
         },
@@ -169,31 +180,36 @@ export default {
       orderStatusList: [
         {
           key: "1",
-          image: "https://ali-image.dabanjia.com/static/mp/dabanjia/images/theme-red/my/wait_pay.svg",
+          image:
+            "https://ali-image.dabanjia.com/static/mp/dabanjia/images/theme-red/my/wait_pay.svg",
           value: "待付款",
           url: "../../../sub-my/pages/my-order/my-order?index=1&firstEntry=true",
         },
         {
           key: "2",
-          image: "https://ali-image.dabanjia.com/static/mp/dabanjia/images/theme-red/my/inprogress.svg",
+          image:
+            "https://ali-image.dabanjia.com/static/mp/dabanjia/images/theme-red/my/inprogress.svg",
           value: "进行中",
           url: "../../../sub-my/pages/my-order/my-order?index=2&firstEntry=true",
         },
         {
           key: "3",
-          image: "https://ali-image.dabanjia.com/static/mp/dabanjia/images/theme-red/my/order_done.svg",
+          image:
+            "https://ali-image.dabanjia.com/static/mp/dabanjia/images/theme-red/my/order_done.svg",
           value: "已完成",
           url: "../../../sub-my/pages/my-order/my-order?index=3&firstEntry=true",
         },
         {
           key: "4",
-          image: "https://ali-image.dabanjia.com/static/mp/dabanjia/images/theme-red/my/evaluate.svg",
+          image:
+            "https://ali-image.dabanjia.com/static/mp/dabanjia/images/theme-red/my/evaluate.svg",
           value: "评价",
           url: "../../../sub-my/pages/evaluate/evaluate",
         },
         {
           key: "5",
-          image: "https://ali-image.dabanjia.com/static/mp/dabanjia/images/theme-red/my/refund.svg",
+          image:
+            "https://ali-image.dabanjia.com/static/mp/dabanjia/images/theme-red/my/refund.svg",
           value: "退款", //退款列表
           url: "../../../sub-my/pages/refund-list/refund-list",
         },
@@ -215,7 +231,8 @@ export default {
       this.MarketStoreSwitch = true;
       this.list.unshift({
         key: "1",
-        image: "../../../static/order/images/ic_storeValueCard.svg",
+        image:
+          "https://ali-image.dabanjia.com/static/mp/dabanjia/images/theme-red/my/ic_storeValueCard.svg",
         value: "储值卡",
         url: "../../../sub-my/pages/deposit-card/deposit-card",
       });
@@ -341,22 +358,22 @@ export default {
     position: absolute;
     width: 750rpx;
     height: 490rpx;
-  //   .mask {
-		// 	opacity: 1;
-		// 	z-index: 1;
-		// 	position: relative;
-		// 	width: 100%;
-		// 	height: 100%;
-		// 	.linearStyle {
-		// 		filter: blur(13rpx);
-		// 		width: 100%;
-		// 		height: 22px;
-		// 		bottom: 0;
-		// 		left: 0;
-		// 		z-index: 1;
-		// 		position: absolute;
-		// 	}
-		// }
+    //   .mask {
+    // 	opacity: 1;
+    // 	z-index: 1;
+    // 	position: relative;
+    // 	width: 100%;
+    // 	height: 100%;
+    // 	.linearStyle {
+    // 		filter: blur(13rpx);
+    // 		width: 100%;
+    // 		height: 22px;
+    // 		bottom: 0;
+    // 		left: 0;
+    // 		z-index: 1;
+    // 		position: absolute;
+    // 	}
+    // }
   }
 
   .my-body {

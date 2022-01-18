@@ -88,7 +88,7 @@
 		<view class="footer" v-if=" currentList.length >= 1 && showCalCelBtn" :style="{paddingBottom:systemBottom + 24 + 'rpx'}">
 			<view class="left" @click="handleAllCheck">
 				<image v-if="allCheck"  src="https://ali-image.dabanjia.com/static/mp/dabanjia/images/theme-red/my/all_Check.svg"  mode="" />
-				<image v-else src="../../../static/all_Uncheck.svg" mode="" />
+				<image v-else src="https://ali-image.dabanjia.com/static/mp/dabanjia/images/theme-red/my/all_Uncheck.svg" mode="" />
 				<text>全选</text>
 			</view>
 			<view class="button" @click="handleCancel">
@@ -151,7 +151,7 @@
 				height:"",
 				systemBottom: "",
 				firstEntry: false,
-				bgcIcon:"../../../static/selectIcon.svg",
+				bgcIcon:"https://ali-image.dabanjia.com/static/mp/dabanjia/images/theme-red/my/selectIcon.svg",
 			};
 		},
 

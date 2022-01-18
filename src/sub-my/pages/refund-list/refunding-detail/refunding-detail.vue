@@ -15,7 +15,7 @@
 				<view class="order-status">
 					<view class="status">
 						<image
-							src="../../../static/ic_status_inprogress.svg" mode=""/>
+							src="https://ali-image.dabanjia.com/static/mp/dabanjia/images/theme-red/my/ic_status_inprogress.svg" mode=""/>
 						<text>退款中</text>
 					</view>
 				</view>

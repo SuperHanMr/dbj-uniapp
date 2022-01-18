@@ -20,7 +20,7 @@
         <view :style="{height:navBarHeight}"></view>
         <view class="order-status">
           <view class="status">
-            <image src="../../../static/ic_order_success.svg" mode=""/>
+            <image src="https://ali-image.dabanjia.com/static/mp/dabanjia/images/theme-red/my/ic_order_success.svg" mode=""/>
             <text>退款成功</text>
           </view>
           <text class="time">{{refundInfo.createTime | formatDate}}</text>
@@ -116,7 +116,7 @@
         <view :style="{height:navBarHeight}"></view>
         <view class="order-status">
           <view class="status">
-            <image src="../../../static/ic_order_success.svg" mode=""/>
+            <image src="https://ali-image.dabanjia.com/static/mp/dabanjia/images/theme-red/my/ic_order_success.svg" mode=""/>
             <text>已完成</text>
           </view>
         </view>
@@ -134,7 +134,7 @@
               <view class="storeName"  @click="gotoShop(item2)" >
 								{{item2.storeName}}
 							</view>
-              <image src="../../../static/small_gotoShop.svg" />
+              <image src="https://ali-image.dabanjia.com/static/mp/dabanjia/images/theme-red/my/small_gotoShop.svg" />
             </view>
 						<view class="header-content" v-else>
 						  <view class="storeName">

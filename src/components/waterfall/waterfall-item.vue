@@ -6,33 +6,42 @@
 
 		<!-- 左上角的icon -->
 		<image v-if="showCheckIcon && !isChecked" class="product-check"
-			src="../../static/order/images/product_unChecked.svg" mode="" />
+			src="https://ali-image.dabanjia.com/static/mp/dabanjia/images/theme-red/my/product_unChecked.svg" mode="" />
 
 		<image v-if="showCheckIcon && isChecked" class="product-check"
-			src="../../static/order/images/product_checked.svg" mode="" />
+			src="https://ali-image.dabanjia.com/static/mp/dabanjia/images/theme-red/my/product_checked.svg" mode="" />
 
 
 		<!-- 案例右上角的icon图标 -->
 		<view v-if="item.icon == 'case'">
-			<image  v-if="item.parentType == 0" class="case-type"  src="../../static/order/images/icon_video.svg"  mode="" />
-			<image  v-if="item.parentType == 1" class="case-type" src="../../static/order/images/icon_vr.svg" mode="" />
-			<image v-if="item.parentType == 2" class="case-type"  src="../../static/order/images/icon_img.svg" mode="" />
+			<image
+				v-if="item.parentType == 0"
+				class="case-type"
+				src="https://ali-image.dabanjia.com/static/mp/dabanjia/images/theme-red/my/icon_video.svg"  mode="" />
+			<image
+				v-if="item.parentType == 1"
+				class="case-type"
+				src="https://ali-image.dabanjia.com/static/mp/dabanjia/images/theme-red/my/icon_vr.svg" mode="" />
+			<image
+				v-if="item.parentType == 2"
+				class="case-type"
+				src="https://ali-image.dabanjia.com/static/mp/dabanjia/images/theme-red/my/icon_img.svg" mode="" />
 		</view>
 
-		<image 
-			v-if="item.icon =='product'" 
-			class="product-img" 
-			:src="`${item.imageUrl}?x-oss-process=image/resize,m_mfit,w_688`" 
-			mode="widthFix" 
-			lazy-load 
+		<image
+			v-if="item.icon =='product'"
+			class="product-img"
+			:src="`${item.imageUrl}?x-oss-process=image/resize,m_mfit,w_688`"
+			mode="widthFix"
+			lazy-load
 			@load="onImageLoad"/>
-		
-		<image 
-			v-if="item.icon =='case'" 
-			class="product-img" 
-			:src="`${item.imageUrl}?x-oss-process=image/resize,m_mfit,w_688`" 
-			mode="widthFix" 
-			lazy-load 
+
+		<image
+			v-if="item.icon =='case'"
+			class="product-img"
+			:src="`${item.imageUrl}?x-oss-process=image/resize,m_mfit,w_688`"
+			mode="widthFix"
+			lazy-load
 			@load="onImageLoad"/>
 
 		<!-- 商品的样式 -->
