@@ -308,13 +308,39 @@
           }
         },
         {
+          "path": "pages/find-design/search-design",
+          "style": {
+            "navigationBarTitleText": "找设计",
+            "enablePullDownRefresh": false,
+            "navigationBarBackgroundColor": "#ffffff"
+          }
+        },
+        {
+          "path": "pages/find-design/designer-list",
+          "style": {
+            "navigationBarTitleText": "自己找",
+            "enablePullDownRefresh": true,
+            "navigationBarBackgroundColor": "#ffffff",
+            "backgroundColor": "#ffffff"
+          }
+        },
+        {
           "path": "pages/lives-list/lives-list",
           "style": {
             "navigationBarTitleText": "直播",
             "enablePullDownRefresh": true
           }
-        }
-      ]
+        },
+        {
+					"path" : "pages/find-design/real-case/real-case",
+					    "style" :
+					{
+					    "navigationBarTitleText": "",
+					    "enablePullDownRefresh": false,
+							"navigationStyle": "custom"
+					}
+				}
+            ]
     },
     {
       "root": "sub-message", //消息模块分包
@@ -516,7 +542,7 @@
 							"navigationBarTitleText": "历史优惠券",
 							"enablePullDownRefresh": false
 						}
-                
+
          }]
     },
     {

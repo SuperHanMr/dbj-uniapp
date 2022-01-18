@@ -123,7 +123,7 @@
               </view>
             </view>
           </view>
-          <view
+<!--          <view
             class="cost-detail"
             v-if="(shopItem.deliveryFee || shopItem.totalHandlingFee) && productType === 1"
           >
@@ -141,8 +141,8 @@
               <text>搬运费</text>
               <text>¥{{shopItem.totalHandlingFee}}</text>
             </view>
-          </view>
-          <view
+          </view> -->
+<!--          <view
             class="shop-reduce"
             v-if="shopItem.freeDeliveryCount && productType === 1"
           >
@@ -154,7 +154,7 @@
                 ></text>
               </view>
             </view>
-          </view>
+          </view> -->
         </view>
       </view>
       <view
@@ -823,7 +823,7 @@ export default {
         orderName: "", //"string //订单名称 可为空",
         details: details,
         isCardPay: this.cardClick,
-        origin: this.shareOriginType,
+        origin: decodeURIComponent(this.shareOriginType),
       };
       payOrder(params).then((data) => {
         const { wechatPayJsapi, cardPayComplete } = data;
