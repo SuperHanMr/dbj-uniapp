@@ -629,7 +629,7 @@ export default {
       query.exec(function (res) {});
     },
     back() {
-      uni.navigateBack({});
+      uni.navigateBack();
     },
     getSkuList() {
       let data = {
@@ -686,7 +686,7 @@ export default {
   position: relative;
   padding-top: 98rpx;
   box-sizing: border-box;
-  background-color: #fff;
+  // background-color: #fff;
   margin-bottom: 40rpx;
   // height: 100%;
   .bg-index {
@@ -719,7 +719,7 @@ export default {
     display: flex;
     align-items: center;
     justify-content: center;
-    z-index: 20;
+    z-index: 40;
     i {
       width: 32rpx;
       height: 32rpx;
