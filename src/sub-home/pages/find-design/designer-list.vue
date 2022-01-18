@@ -12,7 +12,9 @@
 						class="search-card"
 						v-if="searchVal"
 					>
-						<text>{{searchVal}}</text>
+						<view class="search-card-text">
+							<text>{{searchVal}}</text>
+						</view>
 						<uni-icons
 							color="#c0c4cc"
 							size="15"
@@ -22,18 +24,18 @@
 					<view
 						v-else
 						class="search-default"
-					>搜索词语</view>
+					>请搜索您想要的设计风格或设计师</view>
 				</view>
 			</view>
 			<uni-search-bar
 				v-else
+				:modelValue="searchText"
 				v-model="searchText"
-				@confirm="searchConfirm"
 				clearButton="auto"
 				cancelButton="false"
 				:focus="true"
 				bgColor="transparent"
-				placeholder="搜索词语"
+				placeholder="请搜索您想要的设计风格或设计师"
 				:radius="8"
 			>
 				<uni-icons slot="searchIcon" />
@@ -100,7 +102,7 @@
 		</view>
 		<view
 			v-if="isPageReady && dataSource.length === 0"
-			class="no-goods"
+			class="no-designers"
 		>
 			<view class="img"></view>
 			<view class="text">暂无相关内容～</view>
@@ -149,7 +151,7 @@ export default {
 	},
 	watch: {
 		searchText(v, oldv) {
-			if (v !== oldv) {
+			if (v !== oldv && !this.initSearch) {
 				this.topic = "";
 				this.style = "";
 				this.page = 1;
@@ -165,11 +167,12 @@ export default {
 		}
 		if (props.topic) {
 			this.topic = props.topic;
-			// this.searchVal = props.topic;
+			this.searchVal = props.topic;
 		}
 		if (props.style) {
-			this.style = props.style;
 			this.searchVal = props.style;
+			this.searchText = props.style;
+			this.style = props.style;
 		}
 	},
 	onPullDownRefresh() {
@@ -202,7 +205,7 @@ export default {
 			let params = {
 				sort: this.sortType,
 				page: this.page,
-				rows: 20,
+				rows: 10,
 			};
 
 			// 关键字、特色、风格 只能传一个
@@ -280,6 +283,14 @@ export default {
 	background-color: #f4f4f4;
 	padding: 0 10rpx;
 	font-size: 28rpx;
+	max-width: 100%;
+	overflow: hidden;
+}
+
+.search-card-text{
+	overflow: hidden;
+	text-overflow: ellipsis;
+	white-space: nowrap;
 }
 
 .search-card uni-icons {
@@ -309,6 +320,13 @@ export default {
 .search /deep/ .uni-searchbar .uni-searchbar__box {
 	border: none;
 	padding: 0;
+	overflow: hidden;
+}
+
+.search /deep/ .uni-searchbar .uni-searchbar__box input {
+	text-overflow: ellipsis;
+	overflow: hidden;
+	white-space: nowrap;
 }
 
 .search /deep/ .uni-searchbar .uni-input-placeholder {
@@ -332,7 +350,7 @@ export default {
 	background: #fff;
 	position: relative;
 	padding-top: 104rpx;
-	min-height: 100%;
+	min-height: calc(100% - 104rpx);
 	.search {
 		height: 104rpx;
 	}
@@ -382,10 +400,16 @@ export default {
 		.designer-name {
 			font-size: 32rpx;
 			font-weight: 500;
+			overflow: hidden;
+			text-overflow: ellipsis;
+			white-space: nowrap;
 		}
 		.designer-level {
 			margin-left: 16rpx;
 			display: inline-block;
+			overflow: hidden;
+			text-overflow: ellipsis;
+			flex-shrink: 0;
 			height: 30rpx;
 			line-height: 30rpx;
 			background: #f0fbff;
@@ -466,9 +490,7 @@ export default {
 	}
 }
 
-.no-goods {
-	width: 355rpx;
-	height: 315rpx;
+.no-designers {
 	position: absolute;
 	left: 0;
 	top: 0;
@@ -476,9 +498,13 @@ export default {
 	right: 0;
 	margin: auto;
 	text-align: center;
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	align-items: center;
 }
 
-.no-goods .img {
+.no-designers .img {
 	display: inline-block;
 	width: 400rpx;
 	height: 400rpx;
@@ -486,9 +512,9 @@ export default {
 	background-size: cover;
 }
 
-.no-goods .text {
+.no-designers .text {
 	display: inline-block;
-	width: 312rpx;
+	width: 400rpx;
 	height: 80rpx;
 	opacity: 1;
 	font-size: 24rpx;

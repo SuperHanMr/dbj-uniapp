@@ -304,6 +304,7 @@ export default {
       CaseList: [], //推荐列表
       userId: "",//用户id 
 			hasEstate:false,//是否有房屋
+			estateId:"",//房屋id
     };
   },
   onLoad() {
@@ -321,20 +322,25 @@ export default {
       }
       // this.getGoods(id)
     });
-    this.getDesignerList();
-    this.getRecommendCaseList();
+   
 
     // 新加的
     this.userId = getApp().globalData.token;
-		console.log("getApp().globalData.userInfo==",getApp().globalData.userInfo)
+		// console.log("getApp().globalData.userInfo==",getApp().globalData.userInfo)
 		
+		this.estateId = uni.getStorageSync("houseListChooseId");
+		
+		console.log("this.estateId===",this.estateId)
     if (this.userId) {
       // 登录
 			this.hasEstate = getApp().globalData.userInfo.hasEstate
 		
     } else {
       // 未登录
+			this.estateId= ""
     }
+		this.getDesignerList();
+		this.getRecommendCaseList();
   },
   onPageScroll(scrollTop) {
     this.scrollTop = scrollTop.scrollTop;
@@ -397,7 +403,11 @@ export default {
 			});
     },
     getRecommendCaseList() {
-      recommendCaseList({}).then((res) => {
+			let params = {
+				estateId:this.estateId
+			}
+			console.log("params===",params)
+      recommendCaseList(params).then((res) => {
         this.CaseList = res;
         console.log("res1====", this.CaseList);
       });
@@ -413,10 +423,8 @@ export default {
         sortType: "", //排序类型 0:默认排序，1:服务次数排序 2： 好评率排序"
       };
       searchDesigner(params).then((res) => {
-        console.log("userId==", getApp().globalData.token);
-        console.log("getApp().globalData===", getApp().globalData.userInfo);
         this.searchDesignerList = res.list;
-        console.log("res2====", res.list);
+        // console.log("res2====", res.list);
       });
     },
 
