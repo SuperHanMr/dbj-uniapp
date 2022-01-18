@@ -81,7 +81,7 @@
 		width: 100%;
 		padding: 16rpx 40rpx;
 		background-color: #fff;
-    background-image: url("https://ali-image.dabanjia.com/static/mp/dabanjia/images/decorate/toast-bg.png");
+    background-image: url("https://ali-image.dabanjia.com/static/mp/dabanjia/images/theme-red/decorate/toast-bg.png");
     background-repeat: no-repeat;
     background-size: 100vw auto;;
     background-position: 0 0;

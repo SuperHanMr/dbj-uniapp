@@ -519,22 +519,22 @@
       width: 33.3%;
     }
 
-    .report-item {
-      width: 144rpx;
-      margin-right: 16rpx;
-      height: 58rpx;
-      line-height: 58rpx;
-      border: 0.5px solid #ececec;
-      border-radius: 8rpx;
-    }
+    // .report-item {
+    //   width: 144rpx;
+    //   margin-right: 16rpx;
+    //   height: 58rpx;
+    //   line-height: 58rpx;
+    //   border: 0.5px solid #ececec;
+    //   border-radius: 8rpx;
+    // }
 
-    .report-item-active {
-      background: rgba(0, 191, 182, 0.07);
-      border: 0.5px solid #00bfb6;
-      color: #00BFB6;
-      font-size: 26rpx;
-      font-weight: 400;
-    }
+    // .report-item-active {
+    //   background: rgba(0, 191, 182, 0.07);
+    //   border: 0.5px solid #00bfb6;
+    //   color: #00BFB6;
+    //   font-size: 26rpx;
+    //   font-weight: 400;
+    // }
     .item-active{
       font-weight: 500;
       color: #333;
