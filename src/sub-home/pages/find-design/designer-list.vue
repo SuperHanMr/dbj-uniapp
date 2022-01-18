@@ -92,10 +92,12 @@
 					</view>
 					<view class="designer-tags">
 						<view
-							v-for="(style, index) in designer.styles.slice(0, 5)"
+							v-for="(style, index) in getTags(designer)"
 							:key="index"
 							class="designer-tag"
-						><view class="tag-text"><text>{{style}}</text></view>	</view>
+						>
+							<view class="tag-text"><text>{{style}}</text></view>
+						</view>
 					</view>
 				</view>
 			</view>
@@ -187,6 +189,13 @@ export default {
 		this.searchList();
 	},
 	methods: {
+		getTags(designer) {
+			return [
+				...designer.styles.slice(0, 5),
+				...designer.designs.slice(0, 5),
+				...designer.houses.slice(0, 5),
+			].slice(0, 5);
+		},
 		showDesigner(designer) {
 			let url =
 				"/sub-decorate/pages/person-page/person-page?personId=" + designer.id;
@@ -287,7 +296,7 @@ export default {
 	overflow: hidden;
 }
 
-.search-card-text{
+.search-card-text {
 	overflow: hidden;
 	text-overflow: ellipsis;
 	white-space: nowrap;
@@ -380,6 +389,7 @@ export default {
 		margin-left: 24rpx;
 		border-bottom: 1px solid #f3f3f3;
 		padding-bottom: 16rpx;
+		overflow: hidden;
 	}
 }
 
@@ -482,7 +492,6 @@ export default {
 	flex-wrap: wrap;
 	overflow: hidden;
 	.designer-tag {
-
 		display: flex;
 		// justify-content: center;
 		align-items: center;
@@ -498,8 +507,8 @@ export default {
 		margin-right: 16rpx;
 		margin-bottom: 16rpx;
 
-		max-width: 300rpx;
-		.tag-text{
+		max-width: 100%;
+		.tag-text {
 			flex: 1;
 			overflow: hidden;
 			text-overflow: ellipsis;
