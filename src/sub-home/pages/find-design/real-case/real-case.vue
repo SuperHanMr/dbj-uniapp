@@ -1,6 +1,6 @@
 <template>
 	<view :class="['real-case', {'real-case-house': currentHouse.address}]">
-		<navigation-bar :paddingTop='statusHeight' :showScreen='showScreen' :currentHouse='currentHouse'
+		<Navigation-bar :paddingTop='statusHeight' :showScreen='showScreen' :currentHouse='currentHouse'
 			@openHomeList='openHomeList' />
 		<view class="container" :style="{marginTop: Number(statusHeight) + 44 + 'px'}">
 			<view class="home-address" v-if="currentHouse.address && showScreen">
