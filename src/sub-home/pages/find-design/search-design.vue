@@ -1,5 +1,9 @@
 <template>
 	<view class="search-page">
+
+		<uni-popup ref="popup" type="message">
+			<uni-popup-message type="warn" message="关键字不能为空" :duration="2000"></uni-popup-message>
+		</uni-popup>
 		<view class="search">
 			<uni-search-bar
 				@confirm="searchConfirm"
@@ -7,7 +11,7 @@
 				cancelButton="none"
 				@cancel="toBack"
 				class="search-bar"
-				placeholder="搜索"
+				placeholder="请搜索您想要的设计风格或设计师"
 			>
 				<uni-icons slot="searchIcon" />
 			</uni-search-bar>
@@ -111,6 +115,10 @@ export default {
 			});
 		},
 		searchConfirm(resText) {
+			if (typeof resText.value !== 'string' || !resText.value.trim()) {
+				// this.$refs.popup.open()
+				return;
+			}
 			this.search({ searchValue: resText.value });
 		},
 		checkTopic(topic) {

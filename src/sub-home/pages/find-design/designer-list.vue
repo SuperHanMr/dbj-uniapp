@@ -12,7 +12,9 @@
 						class="search-card"
 						v-if="searchVal"
 					>
-						<text>{{searchVal}}</text>
+						<view class="search-card-text">
+							<text>{{searchVal}}</text>
+						</view>
 						<uni-icons
 							color="#c0c4cc"
 							size="15"
@@ -22,18 +24,18 @@
 					<view
 						v-else
 						class="search-default"
-					>搜索词语</view>
+					>请搜索您想要的设计风格或设计师</view>
 				</view>
 			</view>
 			<uni-search-bar
 				v-else
+				:modelValue="searchText"
 				v-model="searchText"
-				@confirm="searchConfirm"
 				clearButton="auto"
 				cancelButton="false"
 				:focus="true"
 				bgColor="transparent"
-				placeholder="搜索词语"
+				placeholder="请搜索您想要的设计风格或设计师"
 				:radius="8"
 			>
 				<uni-icons slot="searchIcon" />
@@ -90,17 +92,19 @@
 					</view>
 					<view class="designer-tags">
 						<view
-							v-for="(style, index) in designer.styles.slice(0, 5)"
+							v-for="(style, index) in getTags(designer)"
 							:key="index"
 							class="designer-tag"
-						><text>{{style}}</text></view>
+						>
+							<view class="tag-text"><text>{{style}}</text></view>
+						</view>
 					</view>
 				</view>
 			</view>
 		</view>
 		<view
 			v-if="isPageReady && dataSource.length === 0"
-			class="no-goods"
+			class="no-designers"
 		>
 			<view class="img"></view>
 			<view class="text">暂无相关内容～</view>
@@ -149,7 +153,7 @@ export default {
 	},
 	watch: {
 		searchText(v, oldv) {
-			if (v !== oldv) {
+			if (v !== oldv && !this.initSearch) {
 				this.topic = "";
 				this.style = "";
 				this.page = 1;
@@ -165,11 +169,12 @@ export default {
 		}
 		if (props.topic) {
 			this.topic = props.topic;
-			// this.searchVal = props.topic;
+			this.searchVal = props.topic;
 		}
 		if (props.style) {
-			this.style = props.style;
 			this.searchVal = props.style;
+			this.searchText = props.style;
+			this.style = props.style;
 		}
 	},
 	onPullDownRefresh() {
@@ -184,6 +189,13 @@ export default {
 		this.searchList();
 	},
 	methods: {
+		getTags(designer) {
+			return [
+				...designer.styles.slice(0, 5),
+				...designer.designs.slice(0, 5),
+				...designer.houses.slice(0, 5),
+			].slice(0, 5);
+		},
 		showDesigner(designer) {
 			let url =
 				"/sub-decorate/pages/person-page/person-page?personId=" + designer.id;
@@ -202,7 +214,7 @@ export default {
 			let params = {
 				sort: this.sortType,
 				page: this.page,
-				rows: 20,
+				rows: 10,
 			};
 
 			// 关键字、特色、风格 只能传一个
@@ -280,6 +292,14 @@ export default {
 	background-color: #f4f4f4;
 	padding: 0 10rpx;
 	font-size: 28rpx;
+	max-width: 100%;
+	overflow: hidden;
+}
+
+.search-card-text {
+	overflow: hidden;
+	text-overflow: ellipsis;
+	white-space: nowrap;
 }
 
 .search-card uni-icons {
@@ -309,6 +329,13 @@ export default {
 .search /deep/ .uni-searchbar .uni-searchbar__box {
 	border: none;
 	padding: 0;
+	overflow: hidden;
+}
+
+.search /deep/ .uni-searchbar .uni-searchbar__box input {
+	text-overflow: ellipsis;
+	overflow: hidden;
+	white-space: nowrap;
 }
 
 .search /deep/ .uni-searchbar .uni-input-placeholder {
@@ -332,7 +359,7 @@ export default {
 	background: #fff;
 	position: relative;
 	padding-top: 104rpx;
-	min-height: 100%;
+	min-height: calc(100% - 104rpx);
 	.search {
 		height: 104rpx;
 	}
@@ -361,7 +388,8 @@ export default {
 		flex: 1;
 		margin-left: 24rpx;
 		border-bottom: 1px solid #f3f3f3;
-		padding-bottom: 32rpx;
+		padding-bottom: 16rpx;
+		overflow: hidden;
 	}
 }
 
@@ -382,10 +410,16 @@ export default {
 		.designer-name {
 			font-size: 32rpx;
 			font-weight: 500;
+			overflow: hidden;
+			text-overflow: ellipsis;
+			white-space: nowrap;
 		}
 		.designer-level {
 			margin-left: 16rpx;
 			display: inline-block;
+			overflow: hidden;
+			text-overflow: ellipsis;
+			flex-shrink: 0;
 			height: 30rpx;
 			line-height: 30rpx;
 			background: #f0fbff;
@@ -422,6 +456,7 @@ export default {
 
 	.designer-opera {
 		width: 126rpx;
+		margin-left: 32rpx;
 		.btn-find-designer {
 			width: 126rpx;
 			height: 56rpx;
@@ -452,9 +487,16 @@ export default {
 	-webkit-box-orient: vertical;
 }
 .designer-tags {
+	display: flex;
+	flex-direction: row;
+	flex-wrap: wrap;
+	overflow: hidden;
 	.designer-tag {
-		display: inline-block;
+		display: flex;
+		// justify-content: center;
+		align-items: center;
 		height: 34rpx;
+		overflow: hidden;
 		line-height: 34rpx;
 		border: 1rpx solid #e8e8e8;
 		box-sizing: border-box;
@@ -463,12 +505,19 @@ export default {
 		color: #999999;
 		padding: 0 12rpx;
 		margin-right: 16rpx;
+		margin-bottom: 16rpx;
+
+		max-width: 100%;
+		.tag-text {
+			flex: 1;
+			overflow: hidden;
+			text-overflow: ellipsis;
+			white-space: nowrap;
+		}
 	}
 }
 
-.no-goods {
-	width: 355rpx;
-	height: 315rpx;
+.no-designers {
 	position: absolute;
 	left: 0;
 	top: 0;
@@ -476,9 +525,13 @@ export default {
 	right: 0;
 	margin: auto;
 	text-align: center;
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	align-items: center;
 }
 
-.no-goods .img {
+.no-designers .img {
 	display: inline-block;
 	width: 400rpx;
 	height: 400rpx;
@@ -486,9 +539,9 @@ export default {
 	background-size: cover;
 }
 
-.no-goods .text {
+.no-designers .text {
 	display: inline-block;
-	width: 312rpx;
+	width: 400rpx;
 	height: 80rpx;
 	opacity: 1;
 	font-size: 24rpx;
