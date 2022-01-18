@@ -12,7 +12,9 @@
 						class="search-card"
 						v-if="searchVal"
 					>
-						<text>{{searchVal}}</text>
+						<view class="search-card-text">
+							<text>{{searchVal}}</text>
+						</view>
 						<uni-icons
 							color="#c0c4cc"
 							size="15"
@@ -22,18 +24,18 @@
 					<view
 						v-else
 						class="search-default"
-					>搜索词语</view>
+					>请搜索您想要的设计风格或设计师</view>
 				</view>
 			</view>
 			<uni-search-bar
 				v-else
+				:modelValue="searchText"
 				v-model="searchText"
-				@confirm="searchConfirm"
 				clearButton="auto"
 				cancelButton="false"
 				:focus="true"
 				bgColor="transparent"
-				placeholder="搜索词语"
+				placeholder="请搜索您想要的设计风格或设计师"
 				:radius="8"
 			>
 				<uni-icons slot="searchIcon" />
@@ -149,7 +151,7 @@ export default {
 	},
 	watch: {
 		searchText(v, oldv) {
-			if (v !== oldv) {
+			if (v !== oldv && !this.initSearch) {
 				this.topic = "";
 				this.style = "";
 				this.page = 1;
@@ -165,11 +167,12 @@ export default {
 		}
 		if (props.topic) {
 			this.topic = props.topic;
-			// this.searchVal = props.topic;
+			this.searchVal = props.topic;
 		}
 		if (props.style) {
-			this.style = props.style;
 			this.searchVal = props.style;
+			this.searchText = props.style;
+			this.style = props.style;
 		}
 	},
 	onPullDownRefresh() {
@@ -202,7 +205,7 @@ export default {
 			let params = {
 				sort: this.sortType,
 				page: this.page,
-				rows: 20,
+				rows: 10,
 			};
 
 			// 关键字、特色、风格 只能传一个
@@ -280,6 +283,14 @@ export default {
 	background-color: #f4f4f4;
 	padding: 0 10rpx;
 	font-size: 28rpx;
+	max-width: 100%;
+	overflow: hidden;
+}
+
+.search-card-text{
+	overflow: hidden;
+	text-overflow: ellipsis;
+	white-space: nowrap;
 }
 
 .search-card uni-icons {
@@ -309,6 +320,13 @@ export default {
 .search /deep/ .uni-searchbar .uni-searchbar__box {
 	border: none;
 	padding: 0;
+	overflow: hidden;
+}
+
+.search /deep/ .uni-searchbar .uni-searchbar__box input {
+	text-overflow: ellipsis;
+	overflow: hidden;
+	white-space: nowrap;
 }
 
 .search /deep/ .uni-searchbar .uni-input-placeholder {
@@ -382,10 +400,16 @@ export default {
 		.designer-name {
 			font-size: 32rpx;
 			font-weight: 500;
+			overflow: hidden;
+			text-overflow: ellipsis;
+			white-space: nowrap;
 		}
 		.designer-level {
 			margin-left: 16rpx;
 			display: inline-block;
+			overflow: hidden;
+			text-overflow: ellipsis;
+			flex-shrink: 0;
 			height: 30rpx;
 			line-height: 30rpx;
 			background: #f0fbff;
