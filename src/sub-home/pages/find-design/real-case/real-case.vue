@@ -6,7 +6,7 @@
 			<view class="home-address" v-if="currentHouse.address && showScreen">
 				<home-address :currentHouse='currentHouse' @openHomeList='openHomeList' />
 			</view>
-			<view class="no-case" v-if="currentHouse.address && caseDetailInfo.caseFlag">
+			<view class="no-case" v-if="currentHouse.address && !caseDetailInfo.caseFlag">
 				当前房屋所在地区暂无真实案例，为您推荐其他地区的精选案例
 			</view>
 			<view class="screening" v-if="!currentHouse.address">
@@ -132,33 +132,35 @@
 				// 有无默认房屋
 				uni.getStorage({
 					key: 'houseListChooseId',
-					success: function(res) {
-						param.estateId = res.data;
+					complete: (res) => {
+						if (res.data) {
+							param.estateId = res.data;
+						}
+						// 获取列表
+						moreCaseList({
+							...param,
+							...this.listParam
+						}).then((res) => {
+							const obj = res.moreCasePageVOPager
+							if (isTagSearch) {
+								this.realCaseListData = obj.list
+							} else {
+								this.realCaseListData = [...this.realCaseListData, ...obj.list];
+							}
+							this.caseDetailInfo = {
+								estateFlag: res.estateFlag,
+								caseFlag: res.caseFlag,
+							};
+							this.listParam = {
+								page: obj.page,
+								row: obj.rows,
+							}
+							if (this.listParam.page >= obj.totalPage && !isTagSearch) {
+								this.endPage = true;
+							}
+						})
 					}
 				});
-				// 获取列表
-				moreCaseList({
-					...param,
-					...this.listParam
-				}).then((res) => {
-					const obj = res.moreCasePageVOPager
-					if (isTagSearch) {
-						this.realCaseListData = obj.list
-					} else {
-						this.realCaseListData = [...this.realCaseListData, ...obj.list];
-					}
-					this.caseDetailInfo = {
-						estateFlag: res.estateFlag,
-						caseFlag: res.caseFlag,
-					};
-					this.listParam = {
-						page: obj.page,
-						row: obj.rows,
-					}
-					if (this.listParam.page >= obj.totalPage && !isTagSearch) {
-						this.endPage = true;
-					}
-				})
 			},
 			// 滑动不显示筛选条件
 			triggerScroll() {
@@ -274,7 +276,7 @@
 
 			.list {
 				flex: 1;
-				overflow: scroll;
+				overflow: scroll;	
 				position: relative;
 				display: flex;
 				flex-direction: column;
