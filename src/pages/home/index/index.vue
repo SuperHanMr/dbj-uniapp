@@ -701,6 +701,7 @@
           areaId: this.currentAddress.areaId,
         }).then((e) => {
           this.zoneList = [];
+					let arr = []
           this.status1List = [];
           this.status2List = [];
           e.forEach((e) => {
@@ -711,12 +712,15 @@
               } else if (params.status && params.status == 2) {
                 this.status2List.push(e);
               } else {
-                this.zoneList.push(e);
+                arr.push(e);
               }
             } else {
-              this.zoneList.push(e);
+              arr.push(e);
             }
           });
+					this.$nextTick(function(){
+						this.zoneList = arr;
+					})
           uni.stopPullDownRefresh();
         });
         //首页推荐商品

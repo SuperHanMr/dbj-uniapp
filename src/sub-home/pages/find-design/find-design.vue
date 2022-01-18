@@ -10,19 +10,23 @@
         <view @click="toBack">
           <i
             class="icon-ic_cancel_white header-back"
-            style="color:'black'">
+            style="color:'black'"
+          >
           </i>
         </view>
       </template>
     </custom-navbar>
-		
+
     <view
       class="header-container"
       :style="{backgroundImage:`url(${bgImg2})`}"
     >
       <view class="search_container">
-        <view class="search_style" @click="findOwnDesigner()">
-          <image src="../../static/findDesingerSearchIcon.svg" />
+        <view
+          class="search_style"
+          @click="findOwnDesigner()"
+        >
+          <image src="https://ali-image.dabanjia.com/static/mp/dabanjia/images/home/findDesingerSearchIcon.svg" />
           <text>我想自己找...</text>
         </view>
         <image
@@ -36,7 +40,7 @@
         <view
           class="tabItem"
           v-for="item1 in iconList"
-          :key="item1"
+          :key="item1.name"
         >
           <image :src="item1.url" />
           <view style="color: #333333;font-size: 26rpx;">
@@ -50,7 +54,10 @@
         <view class="left">
           为您推荐
         </view>
-        <view class="right" @click="gotoMoreDesigner" >
+        <view
+          class="right"
+          @click="gotoMoreDesigner"
+        >
           <text>更多</text>
           <image src="https://ali-image.dabanjia.com/static/mp/dabanjia/images/theme-red/my/small_gotoShop.svg" />
         </view>
@@ -63,12 +70,13 @@
         scroll-x="true"
         style="white-space: nowrap;"
         @scrolltolower="gotoNext"
+				:scroll-left="scrollLeft"
       >
         <view
           class="design-card-item"
           v-for="item2 in searchDesignerList"
           :key="item2.id"
-          :style="{backgroundImage:`url(${item2.artImage}?x-oss-process=image/resize,m_fill,h_572,w_434,limit_0)`,backgroundSize:'434rpx 572rpx'}"
+          :style="{backgroundImage:`url(${item2.artImage})`,backgroundSize:'434rpx 572rpx'}"
           @click="gotoDesignerHomePage(item2.id)"
         >
           <view class="basic-info">
@@ -76,7 +84,10 @@
               <view class="name">{{item2.name}}</view>
               <view class="rank">{{item2.levelName}}</view>
             </view>
-            <view class="goodPraise" style="margin-bottom: 8rpx;">
+            <view
+              class="goodPraise"
+              style="margin-bottom: 8rpx;"
+            >
               <view class="item">
                 <text>好评率{{item2.praiseEfficiency}}%</text>
                 <text class="icon"></text>
@@ -84,29 +95,36 @@
               </view>
             </view>
             <view class="attr">
-              <view  class="attrItem" v-for=" item3 in item2.designs" :key="item3" >{{item3}}</view>
+              <view
+                class="attrItem"
+                v-for=" item3 in item2.designs"
+                :key="item3"
+              >{{item3}}</view>
             </view>
           </view>
         </view>
-        <view class="showMoreCard_container" >
-					<!-- @click="gotoMoreDesigner" -->
-					<view class="showMoreCard" :style="{backgroundImage:`url(${bgImg3})`,backgroundSize:'contaienr'}">
-					</view>
-					<view class="content">
-						<image src="../../static/showMoreCard.svg"/>
-						<view class="text">
-							左滑查看更多
-						</view>
-					</view>
-										
-				</view>
+        <view class="showMoreCard_container">
+          <!-- @click="gotoMoreDesigner" -->
+          <view
+            class="showMoreCard"
+            :style="{backgroundImage:`url(${bgImg3})`,backgroundSize:'contaienr'}"
+          >
+          </view>
+          <view class="content">
+            <image src="https://ali-image.dabanjia.com/static/mp/dabanjia/images/home/showMoreCard.svg" />
+            <view class="text">
+              左滑查看更多
+            </view>
+          </view>
+
+        </view>
       </scroll-view>
 
     </view>
     <view
       class="perfectHouseInfo_container"
       @click="gotoEditHouse"
-			v-if="!userId || (userId && !hasEstate)"
+      v-if="!userId || (userId && !hasEstate)"
     >
       <!-- <view class="perfect_house_info">
 				<view class="title">完善房屋信息</view>
@@ -116,15 +134,25 @@
 					<image src="../../static/gotoCase.svg" mode=""></image>
 				</view>
 			</view> -->
-      <image class="bigImage" src="../../static/perfectHouseInfo.svg" />
+      <image
+        class="bigImage"
+        src="https://ali-image.dabanjia.com/static/mp/dabanjia/images/home/perfectHouseInfo.svg"
+      />
 
-      <view class="btn" @click="gotoRealCase" >
+      <view
+        class="btn"
+        @click="gotoRealCase"
+      >
         <text>去看推荐案例</text>
-        <image src="../../static/gotoCase.svg" />
+        <image src="https://ali-image.dabanjia.com/static/mp/dabanjia/images/home/gotoCase.svg" />
       </view>
     </view>
 
-    <view v-if="userId && hasEstate" class="recommendCase title_container" @click="gotoRealCase">
+    <view
+      v-if="userId && hasEstate"
+      class="recommendCase title_container"
+      @click="gotoRealCase"
+    >
       <view class="left">
         为您推荐
       </view>
@@ -133,31 +161,47 @@
         <image src="https://ali-image.dabanjia.com/static/mp/dabanjia/images/theme-red/my/small_gotoShop.svg" />
       </view>
     </view>
-    <view class="recommendCaseItem_container" v-if="userId && hasEstate && CaseList.length">
+    <view
+      class="recommendCaseItem_container"
+      v-if="userId && hasEstate && CaseList.length"
+    >
       <view
         :style="{backgroundImage:`url(${bgImg})`}"
         class="case-item"
         v-for="item4 in CaseList"
-        :key="item4"
+        :key="item4.id"
       >
         <view class="left">
           <view class="name_container">
             <view class="name">{{item4.nikeName}}</view>
             <view class="cost">
-							<text v-if="item4.Similarity">户型相似度{{item4.Similarity}}</text>
-							<text v-if="item4.Similarity" class="icon"></text>
-							
-							<text v-if="item4.flag">附近{{item4.distance}}</text>
-							<text v-if="item4.flag && item4.budget" class="icon"></text>
-							
-							<text v-if="!item4.flag">{{item4.cityName}}</text>
-							<text v-if="(!item4.flag) && item4.budget" class="icon"></text>
-							
-							<text>预算： ￥{{item4.budget || "--"}}</text>
-							</view>
+              <text v-if="item4.Similarity">户型相似度{{item4.Similarity}}</text>
+              <text
+                v-if="item4.Similarity"
+                class="icon"
+              ></text>
+
+              <text v-if="item4.flag">附近{{item4.distance}}</text>
+              <text
+                v-if="item4.flag && item4.budget"
+                class="icon"
+              ></text>
+
+              <text v-if="!item4.flag">{{item4.cityName}}</text>
+              <text
+                v-if="(!item4.flag) && item4.budget"
+                class="icon"
+              ></text>
+
+              <text>预算： ￥{{item4.budget || "--"}}</text>
+            </view>
           </view>
           <view class="attr_container">
-            <view class="attr_item" v-for="item5 in item4.features" :key="item5">{{item5}}</view>
+            <view
+              class="attr_item"
+              v-for="item5 in item4.features"
+              :key="item5"
+            >{{item5}}</view>
             <!-- <view class="attr_item">极简简装</view> -->
           </view>
         </view>
@@ -173,11 +217,16 @@
 </template>
 
 <script>
-import { recommendCaseList, searchDesigner} from "../../../api/home-find-design.js";
+import { debounce } from "@/utils/common.js";
+import {
+  recommendCaseList,
+  searchDesigner,
+} from "../../../api/home-find-design.js";
 export default {
   data() {
     return {
       scrollTop: 0,
+			scrollLeft:0,
       navBarHeight: "",
       tabList: ["1", "2", "3"],
       currentTab: 0,
@@ -185,11 +234,14 @@ export default {
       subIndex: 0,
       goodsList: [],
       //新加的
-      bgImg: "../../static/caseItemBg.svg",
+      bgImg:
+        "https://ali-image.dabanjia.com/static/mp/dabanjia/images/home/caseItemBg.svg",
       bgImg1:
         "https://ali-res-test.dabanjia.com/res/20211024/17/1635068528844_4631%24%E8%B6%85%E8%B6%8A3.jpg?x-oss-process=image/resize,m_mfit,w_686,h_686",
-      bgImg2: "../../static/findDesignbg.svg",
-			bgImg3:"../../static/moreDesignerBg.svg",
+      bgImg2:
+        "https://ali-image.dabanjia.com/static/mp/dabanjia/images/home/findDesignbg.svg",
+      bgImg3:
+        "https://ali-image.dabanjia.com/static/mp/dabanjia/images/home/moreDesignerBg.svg",
       iconList: [
         {
           key: 1,
@@ -214,108 +266,114 @@ export default {
       ],
       searchDesignerList: [], //设计师列表
       CaseList: [], //推荐列表
-      userId: "",//用户id 
-			hasEstate:false,//是否有房屋
-			estateId:"",//房屋id
-			page:0,
-			totalPage:'',
+      userId: "", //用户id
+      hasEstate: false, //是否有房屋
+      estateId: "", //房屋id
+      page: 0,
+      totalPage: "",
     };
   },
-	
+
   onLoad() {
-		console.log("onLoad!!!!!!!!!!!!!")
+    console.log("onLoad!!!!!!!!!!!!!");
     const systemInfo = uni.getSystemInfoSync();
     this.navBarHeight = systemInfo.statusBarHeight + "px";
-   
+
     // 新加的
     this.userId = getApp().globalData.token;
-		// console.log("getApp().globalData.userInfo==",getApp().globalData.userInfo)
-		
-		this.estateId = uni.getStorageSync("houseListChooseId");
-		
-		console.log("this.estateId===",this.estateId)
+    // console.log("getApp().globalData.userInfo==",getApp().globalData.userInfo)
+
+    this.estateId = uni.getStorageSync("houseListChooseId");
+
+    console.log("this.estateId===", this.estateId);
     if (this.userId) {
       // 登录
-			this.hasEstate = getApp().globalData.userInfo.hasEstate
-		} else {
+      this.hasEstate = getApp().globalData.userInfo.hasEstate;
+    } else {
       // 未登录
-			this.estateId= ""
-		}
-		
-		this.getRecommendCaseList();
-		if(uni.getStorageSync("recommendDesignerPage")){
-			this.page = uni.getStorageSync("recommendDesignerPage")
-		}
-		// if(this.page==1){
-		// 	this.getDesignerList();
-		// }
+      this.estateId = "";
+    }
+
+    this.getRecommendCaseList();
+    if (uni.getStorageSync("recommendDesignerPage")) {
+      this.page = uni.getStorageSync("recommendDesignerPage");
+    }
+    // if(this.page==1){
+    // 	this.getDesignerList();
+    // }
   },
-	onShow() {
-		console.log("onShow!!!!!!!!!!!!!")
-		this.page++
-		uni.setStorageSync("recommendDesignerPage",this.page)
-		const hhh =uni.getStorageSync("recommendDesignerPage")
-		this.getDesignerList();
-		
-		// if(this.page>1){
-		// 	this.getDesignerList();
-		// }
-		console.log("this.page",this.page)
-	},
+  onShow() {
+		this.scrollLeft = 1
+		this.$nextTick(()=>{
+			this.scrollLeft = 0
+		})
+    console.log("onShow!!!!!!!!!!!!!");
+    this.page++;
+    uni.setStorageSync("recommendDesignerPage", this.page);
+    const hhh = uni.getStorageSync("recommendDesignerPage");
+    this.getDesignerList();
+
+    // if(this.page>1){
+    // 	this.getDesignerList();
+    // }
+    console.log("this.page", this.page);
+  },
   onPageScroll(scrollTop) {
     this.scrollTop = scrollTop.scrollTop;
   },
-  methods: {   
-   
+  methods: {
     toRealCase() {
       uni.navigateTo({
         url: "/sub-home/pages/find-design/real-case/real-case",
       });
     },
-		toBack() {
-		  uni.navigateBack({});
-		},
-		
-    gotoNext() {
-			uni.navigateTo({
-			  url: "/sub-home/pages/find-design/search-design",
-			});
+    toBack() {
+      uni.navigateBack({});
     },
-   
-		getRecommendCaseList() {
-			let params = {
-				estateId:this.estateId
-			}
-			console.log("params===",params)
+
+    gotoNext() {
+      console.log("!!!!!!!!!!!!!!!!!!");
+      console.log(debounce);
+      debounce(() => {
+        uni.navigateTo({
+          url: "/sub-home/pages/find-design/search-design",
+        });
+      }, 100)();
+    },
+
+    getRecommendCaseList() {
+      let params = {
+        estateId: this.estateId,
+      };
+      console.log("params===", params);
       recommendCaseList(params).then((res) => {
         this.CaseList = res;
         // console.log("res1====", this.CaseList);
       });
     },
-		
+
     getDesignerList() {
       let params = {
         page: this.page,
         rows: 5,
-				isRecommend:true,
+        isRecommend: true,
         position: "",
         searchKey: "",
         topic: "",
         style: "",
         sortType: "", //排序类型 0:默认排序，1:服务次数排序 2： 好评率排序"
       };
-			
+
       searchDesigner(params).then((res) => {
         // console.log("res2====", res);
         this.searchDesignerList = res.list;
-				this.totalPage = res.totalPage
-				uni.setStorageSync("recommendDesignerTotalPage",res.totalPage)
-				console.log("res.rows")
-				if((this.page ==(this.totalPage-1)) || res.rows % 5 !==0){
-					this.page = 0
-					uni.setStorageSync("recommendDesignerPage",this.page)
-				}
-				
+        this.totalPage = res.totalPage;
+        uni.setStorageSync("recommendDesignerTotalPage", res.totalPage);
+        console.log("res.rows");
+        if (this.page == this.totalPage - 1 || res.rows % 5 !== 0) {
+          this.page = 0;
+          uni.setStorageSync("recommendDesignerPage", this.page);
+        }
       });
     },
     //自己找设计师
@@ -334,18 +392,18 @@ export default {
     },
     //去完善房屋信息
     gotoEditHouse() {
-			if(this.userId){
-				//登录的情况下 调整到编辑房屋页面
-				uni.navigateTo({
-					url: "/sub-my/pages/my-house/my-house?fromHome=true",
-				});
-			}else{
-				//未登录的情况下跳转到登录页面
-				console.log("跳转到登录页面")
-				uni.navigateTo({
-					url:"/pages/login/login"
-				});
-			}
+      if (this.userId) {
+        //登录的情况下 调整到编辑房屋页面
+        uni.navigateTo({
+          url: "/sub-my/pages/my-house/my-house?fromHome=true",
+        });
+      } else {
+        //未登录的情况下跳转到登录页面
+        console.log("跳转到登录页面");
+        uni.navigateTo({
+          url: "/pages/login/login",
+        });
+      }
     },
     //更多设计师
     gotoMoreDesigner() {
@@ -582,41 +640,41 @@ export default {
     // .design-card-item:nth-last-child(1) {
     // 	margin-right: 0;
     // }
-		.showMoreCard_container{
-			width: 252rpx;
-			height: 698rpx;
-			border-radius: 32rpx 0 0 32rpx;
-			overflow: hidden;
-			display: inline-block;
-			position: relative;
-			.showMoreCard {
-				width: 434rpx;
-				height: 698rpx;
-			  background: rgba(0, 0, 0, 0.04);
-				filter: blur(14px);
-				background-repeat: no-repeat;
-				background-position: top center;
-			}
-			.content {
-			  position: absolute;
-			  left: 66rpx;
-			  top: 320rpx;
-			  image {
-			    width: 32rpx;
-			    height: 18rpx;
-			    margin-bottom: 10rpx;
-			  }
-			  .text {
-			    width: 144rpx;
-			    height: 34rpx;
-			    line-height: 34rpx;
-			    font-size: 24rpx;
-			    color: #ffffff;
-			    font-weight: 500;
-			  }
-			}					
-		}
-	}
+    .showMoreCard_container {
+      width: 252rpx;
+      height: 698rpx;
+      border-radius: 32rpx 0 0 32rpx;
+      overflow: hidden;
+      display: inline-block;
+      position: relative;
+      .showMoreCard {
+        width: 434rpx;
+        height: 698rpx;
+        background: rgba(0, 0, 0, 0.04);
+        filter: blur(14px);
+        background-repeat: no-repeat;
+        background-position: top center;
+      }
+      .content {
+        position: absolute;
+        left: 66rpx;
+        top: 320rpx;
+        image {
+          width: 32rpx;
+          height: 18rpx;
+          margin-bottom: 10rpx;
+        }
+        .text {
+          width: 144rpx;
+          height: 34rpx;
+          line-height: 34rpx;
+          font-size: 24rpx;
+          color: #ffffff;
+          font-weight: 500;
+        }
+      }
+    }
+  }
 }
 
 .perfectHouseInfo_container {
@@ -760,23 +818,23 @@ export default {
         }
         .cost {
           height: 30rpx;
-					font-size: 22rpx;
+          font-size: 22rpx;
           margin-bottom: 16rpx;
-					display: flex;
-					flex-flow: row nowrap;
-					align-items: center;
-					text {
-					  line-height: 30rpx;
-					   color: #999999;
-					}
-					.icon {
-					  display: block;
-					  height: 20rpx;
-					  width: 2rpx;
-					  background: #999999;
-					  opacity: 0.7;
-					  margin: 0 16rpx;
-					}
+          display: flex;
+          flex-flow: row nowrap;
+          align-items: center;
+          text {
+            line-height: 30rpx;
+            color: #999999;
+          }
+          .icon {
+            display: block;
+            height: 20rpx;
+            width: 2rpx;
+            background: #999999;
+            opacity: 0.7;
+            margin: 0 16rpx;
+          }
         }
       }
       .attr_container {
@@ -802,5 +860,4 @@ export default {
     }
   }
 }
-
 </style>
