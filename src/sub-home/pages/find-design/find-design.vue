@@ -153,7 +153,7 @@
 							<text v-if="!item4.flag">{{item4.cityName}}</text>
 							<text v-if="(!item4.flag) && item4.budget" class="icon"></text>
 							
-							<text>预算： {{item4.budget || "--"}}</text>
+							<text>预算： ￥{{item4.budget || "--"}}</text>
 							</view>
           </view>
           <view class="attr_container">
@@ -265,23 +265,7 @@ export default {
   onPageScroll(scrollTop) {
     this.scrollTop = scrollTop.scrollTop;
   },
-  methods: {
-   
-    // foramtPrice(item) {
-    //   let price = String(item.price || "0");
-    //   return price.slice(0, price.length - 2) || "0";
-    // },
-    // formatCent(item) {
-    //   let price = String(item.price || "0");
-    //   let fixedNum = Number(price / 100).toFixed(2);
-    //   if (String(fixedNum).split(".").length > 1) {
-    //     return String(fixedNum).split(".")[1];
-    //   } else {
-    //     return "";
-    //   }
-    // },
-  
-    
+  methods: {   
    
     toRealCase() {
       uni.navigateTo({
@@ -313,7 +297,7 @@ export default {
       let params = {
         page: this.page,
         rows: 5,
-				// isRecommend:true,
+				isRecommend:true,
         position: "",
         searchKey: "",
         topic: "",
