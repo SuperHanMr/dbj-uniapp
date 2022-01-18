@@ -11,11 +11,14 @@
 </template>
 
 <script>
-  import designCase from '@/components/design-case/design-case.vue'
+  import designCase from './design-case/design-case.vue'
   import {
-    getCaseList,
+    
     getCollection
   } from '@/api/real-case.js'
+  import {
+    getCaseList
+  } from '@/api/decorate.js'
   import '../style/common.scss'
   export default{
     components:{
