@@ -446,6 +446,7 @@ export default {
 
 	.designer-opera {
 		width: 126rpx;
+		margin-left: 32rpx;
 		.btn-find-designer {
 			width: 126rpx;
 			height: 56rpx;
