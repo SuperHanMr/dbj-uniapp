@@ -223,6 +223,7 @@
           v-if="personData.roleId===1"
           :serviceData='serviceData'
           :isFirst='commentData.totalRows==0'
+          :userId='personId'
           @contentEmpty='contentEmpty'
         ></personService>
         <view
