@@ -170,6 +170,7 @@
         class="case-item"
         v-for="item4 in CaseList"
         :key="item4.id"
+				@click="toRealCaseDetail(item4)"
       >
         <view class="left">
           <view class="name_container">
@@ -207,7 +208,6 @@
         </view>
         <image
           class="right"
-          @click="toRealCase()"
           src="https://ali-image.dabanjia.com/static/mp/dabanjia/images/theme-red/my/small_gotoShop.svg"
         />
       </view>
@@ -322,11 +322,7 @@ export default {
     this.scrollTop = scrollTop.scrollTop;
   },
   methods: {
-    toRealCase() {
-      uni.navigateTo({
-        url: "/sub-home/pages/find-design/real-case/real-case",
-      });
-    },
+    
     toBack() {
       uni.navigateBack({});
     },
@@ -425,6 +421,12 @@ export default {
         url: "/sub-home/pages/find-design/real-case/real-case",
       });
     },
+		toRealCaseDetail(item) {
+			console.log("item4===",item)
+		  uni.navigateTo({
+		    url: `/pages/real-case/real-case-webview/real-case-webview?id=${item.id}`,
+		  });
+		},
   },
 };
 </script>
