@@ -383,7 +383,7 @@
 
 		.order-status {
 			width: 100%;
-			height: 140rpx;
+			// height: 140rpx;
 			color: #ffffff;
 			background-size: 100% 172rpx;
 			display: flex;
@@ -395,7 +395,7 @@
 				display: flex;
 				flex-flow: row nowrap;
 				align-items: center;
-				margin-bottom: 8rpx;
+				margin-bottom: 32rpx;
 
 				image {
 					width: 64rpx;

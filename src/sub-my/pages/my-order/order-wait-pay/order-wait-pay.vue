@@ -117,7 +117,6 @@
 							<view class="right">
 								<view
 									class="price-font"
-									style="color: #333;font-size: 26rpx;"
 									v-if="orderInfo.stockType == 0"
 								>
 									￥{{item.freight?`${item.freight}`:"0.00"}}
@@ -125,7 +124,6 @@
 								<view
 									class="price-font"
 									:style="{marginTop:item.freight?'0':'8rpx'}"
-									style="color: #333;font-size: 26rpx;"
 									v-else
 								>
 									{{item.freight?`￥${item.freight}`:"--"}}
@@ -145,14 +143,11 @@
 							<view class="right">
 								<text
 								  class="price-font"
-								  style="color: #333;font-size: 26rpx;"
 								  v-if="orderInfo.stockType == 0"
 								>
 								  ￥{{item.handlingFees?item.handlingFees:"0.00"}}</text>
 								<text
-								  class="price-font"
-								  style="color: #333;font-size: 26rpx;"
-								  :style="{marginTop:item.handlingFees ? '0' : '8rpx' }"
+								  class="price-font" :style="{marginTop:item.handlingFees ? '0' : '8rpx' }"
 								  v-else
 								>{{item.handlingFees?`￥${item.handlingFees}`:"--"}}</text>
 							</view>
@@ -162,7 +157,7 @@
 								<text>商家</text>
 							</view>
 							<view class="right">
-								<text style="color: #333;font-size: 26rpx;" class="price-font">
+								<text  class="price-font">
 								  -￥{{item.storeDiscount}}
 								</text>
 							</view>
@@ -173,7 +168,7 @@
 								<text>平台优惠</text>
 							</view>
 							<view class="right">
-								<text  class="price-font" style="color: #333;font-size: 26rpx;">
+								<text  class="price-font">
 								  -￥{{item.platformDiscount}}
 								</text>
 							</view>
@@ -462,7 +457,26 @@ export default {
   },
   onPageScroll(scrollTop) {
     this.scrollTop = scrollTop.scrollTop;
+		if(this.scrollTop/100>1){
+			uni.setNavigationBarColor({
+			  frontColor: "#333333",
+			  animation: {
+			    duration: 400,
+			    timingFunc: "easeIn",
+			  },
+			});
+		}else{
+			uni.setNavigationBarColor({
+			  frontColor: "#ffffff",
+			  animation: {
+			    duration: 400,
+			    timingFunc: "easeIn",
+			  },
+			});
+		}
   },
+
+	
   onLoad(e) {
     this.from = e.from;
     this.orderNo = Number(e.orderNo) || getApp().globalData.decorateMsg.orderId;
@@ -479,7 +493,6 @@ export default {
       "px";
     uni.setNavigationBarColor({
       frontColor: "#ffffff",
-      backgroundColor: "#ffb245",
       animation: {
         duration: 400,
         timingFunc: "easeIn",
@@ -1033,7 +1046,7 @@ export default {
 					}
 					.right{
 						text{
-							color: #333;
+							color: #666;
 							font-size: 26rpx;
 						}
 					}

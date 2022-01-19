@@ -352,10 +352,16 @@ export default {
         this.totalPage = res.totalPage;
         uni.setStorageSync("recommendDesignerTotalPage", res.totalPage);
         console.log("res.rows");
-        if (this.page == this.totalPage - 1 || res.rows % 5 !== 0) {
+				// 返回的总条数不是5的倍数
+        if (res.totalRows % 5 !== 0 && this.page == this.totalPage - 1) {
           this.page = 0;
           uni.setStorageSync("recommendDesignerPage", this.page);
         }
+				//返回的总条数是5的倍数
+				if(res.totalRows % 5 == 0 && this.page ==this.totalPage){
+					this.page = 0;
+					uni.setStorageSync("recommendDesignerPage", this.page);
+				}
       });
     },
     //自己找设计师

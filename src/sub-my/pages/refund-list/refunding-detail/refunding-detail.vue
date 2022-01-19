@@ -397,7 +397,7 @@ export default {
           margin-right: 12rpx;
         }
         text {
-          font-size: 48rpx;
+          font-size: 36rpx;
           font-weight: 500;
           color: #ffffff;
         }
@@ -612,7 +612,7 @@ export default {
 }
 
 // 底部 取消支付按钮样式 确认收货 及申请退款按钮
-.cancel-refund-pay ,.applyforRefund-confirmReceipt,.waitPayBottom{
+.cancel-refund-pay ,.applyforRefund-confirmReceipt{
 	position: fixed;
 	bottom: 0;
 	background-color: #FFFFFF;
@@ -627,7 +627,7 @@ export default {
 	font-size: 26rpx;
 	.button{
 		height: 88rpx;
-		background: linear-gradient(99deg, #00CCBE 0%, #00C2BF 100%);
+		background: linear-gradient(117.02deg, #FA3B34 24.56%, #FF6A33 92.21%);
 		border-radius: 12rpx;
 		width: 686rpx;
 		line-height: 88rpx;
@@ -644,7 +644,7 @@ export default {
 		height: 88rpx;
 		line-height: 88rpx;
 		box-sizing: border-box;
-		background: linear-gradient(135deg, #36D9CD 0%, #28C6C6 100%);
+		background: linear-gradient(117.02deg, #FA3B34 24.56%, #FF6A33 92.21%);
 		border-radius: 12rpx;
 		font-size: 32rpx;
 		text-align: center;
@@ -665,32 +665,6 @@ export default {
 		border: 2rpx solid #EAEAEA;
 	}
 }
-
-.waitPayBottom{
-	padding: 12rpx 32rpx;
-	justify-content: space-between;
-	.gotoPay {
-	  width: 248rpx;
-	  height: 88rpx;
-	  line-height: 88rpx;
-	  font-size: 32rpx;
-	  text-align: center;
-	  color: #ffffff;
-	  background: linear-gradient(135deg, #36d9cd 0%, #28c6c6 100%);
-	  border-radius: 12rpx;
-	}
-}
-
-
-//头部倒计时样式
-::v-deep .uni-countdown__number{
-	width: 36rpx !important;
-	height: 36rpx !important;
-}
-::v-deep .uni-countdown__splitor.data-v-02c75d70 {
-  line-height: 36rpx !important;
-	color: #FFFFFF !important;
-	}
 
 
 // 弹框样式
