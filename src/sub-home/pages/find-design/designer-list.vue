@@ -193,10 +193,10 @@ export default {
 	methods: {
 		getTags(designer) {
 			return [
-				...designer.styles.slice(0, 5),
-				...designer.designs.slice(0, 5),
-				...designer.houses.slice(0, 5),
-			].slice(0, 5);
+				...designer.styles,
+				...designer.designs,
+				...designer.houses,
+			];
 		},
 		showDesigner(designer) {
 			let url =
