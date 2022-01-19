@@ -184,7 +184,7 @@
               <text v-if="!item4.flag">{{item4.cityName|| "-"}}</text>
               <text v-if="!item4.flag" class="icon"></text>
 
-              <text>预算：{{item4.budget?`￥${(item4.budget).toFixed(2)}`: "-"}}</text>
+              <text v-if="item4.budget">预算：{{item4.budget?`￥${(item4.budget).toFixed(2)}`: "-"}}</text>
             </view>
           </view>
           <view class="attr_container">
