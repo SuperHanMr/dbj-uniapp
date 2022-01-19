@@ -68,7 +68,7 @@
       <view class="info-list">
         {{personData.gender===1?'男':'女'}}
         <text>|</text>
-        设计师 
+        {{personData.roleLevel?personData.roleLevel:''}}设计师 
         <text v-if="personData.praiseRate">|</text>
         {{personData.praiseRate?'好评率'+personData.praiseRate:''}}
         <text v-if="personData.industryYearsStr">|</text>
