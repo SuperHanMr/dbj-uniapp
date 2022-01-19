@@ -69,10 +69,10 @@
         {{personData.gender===1?'男':'女'}}
         <text>|</text>
         设计师 
-        <text>|</text>
-        好评率{{personData.praiseRate}}
-        <text>|</text>
-        5年设计经验
+        <text v-if="personData.praiseRate">|</text>
+        {{personData.praiseRate?'好评率'+personData.praiseRate:''}}
+        <text v-if="personData.industryYearsStr">|</text>
+        {{personData.industryYearsStr?personData.industryYearsStr:''}}
       </view>
       <view class="skill">
         <view class="skill-item" v-for="(item,index) of personData.designTags" :key='index'>

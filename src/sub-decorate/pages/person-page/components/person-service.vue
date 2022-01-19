@@ -93,6 +93,7 @@
   .person-service{
     padding: 38rpx 0 16rpx 32rpx;
     background-color: #fff;
+    box-sizing: border-box;
   }
   .is-first{
     border-radius: 32rpx 32rpx 0 0;

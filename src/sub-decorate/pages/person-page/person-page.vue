@@ -245,7 +245,7 @@
           @contentEmpty='contentEmpty'
           v-if="personData.roleId===3||personData.roleId===4||personData.roleId===5"
         ></personDynamic>
-        <view class="interval" v-if="dynamicEmpty"></view>
+        <view class="interval" v-if="dynamicEmpty&&personData.roleId!==1"></view>
         <personEvaluate
           ref='evaluate'
           :personId='personId'
@@ -401,6 +401,7 @@ export default {
       // console.log(this.$refs)
       this.$refs.dynamic && this.$refs.dynamic.requestDynamic();
       this.$refs.evaluate.getComments();
+      uni.stopPullDownRefresh();
     } else {
       uni.stopPullDownRefresh();
     }
@@ -639,17 +640,20 @@ export default {
         page: 1,
         row: 10000,
         spuIsEnabled: 1,
-        skuIsEnabled: 1,
+        
+        hidden:0
       };
       getSkuList(data).then((res) => {
         this.serviceData = res;
-        this.serviceEmpty = true
-        if (this.$refs.service) {
-          this.$refs.service.isOpen = true;
-          this.$refs.service.open();
-        }
+        // if (this.$refs.service) {
+        //   this.$refs.service.isOpen = true;
+        //   this.$refs.service.open();
+        // }
+        console.log(res)
         if(res.length==0){
           this.serviceEmpty = false
+        }else{
+          this.serviceEmpty = true
         }
       });
     },
@@ -967,7 +971,7 @@ view .is-self {
   background-color: #fff;
   opacity: 0;
   z-index: 20;
-  padding-left: 10px;
+  // padding-left: 10px;
   .special-item {
     // width: 33%;
     position: absolute;
