@@ -974,7 +974,7 @@
   }
 
   .experience {
-    height: 198rpx;
+    height: 160rpx;
     border-radius: 16rpx;
     width: 100%;
     display: block;
@@ -987,10 +987,10 @@
     justify-content: center;
     align-items: center;
     width: 100%;
-    padding-top: 48rpx;
+    padding-top: 30rpx;
 		.item-box{
 			display: flex;
-			width: 100%;
+			width: calc(100% - 24rpx);
 			justify-content: space-between;
 			align-items: center;
 			flex-wrap: wrap;
@@ -1091,7 +1091,7 @@
 
   .swiper-tab {
     position: absolute;
-    bottom: 22rpx;
+    bottom: 16rpx;
     // width: 200rpx;
     // height: 4rpx;
     left: 50%;
@@ -1172,13 +1172,12 @@
 
   .banner-content {
     position: relative;
-    margin: 0 24rpx;
-    margin-top: 8rpx;
+    margin: 16rpx 24rpx 0;
 
     .banner {
       border-radius: 16rpx;
       overflow: hidden;
-      height: 234rpx;
+      height: 200rpx;
       width: 704rpx;
       z-index: 200;
       position: relative;
@@ -1186,7 +1185,7 @@
 
     .banner-img {
       width: 100%;
-      height: 234rpx;
+      height: 200rpx;
     }
   }
 
