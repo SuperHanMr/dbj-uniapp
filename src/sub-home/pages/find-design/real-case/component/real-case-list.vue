@@ -5,7 +5,7 @@
 			<view class="list" v-for="item in realCaseListData" :key='item.id' @click="toCaseDetail(item)">
 				<view class="head">
 					<view class="title">
-						<text>{{item.caseName}} Ta家</text>
+						<text>{{item.nikeName || '--'}} Ta家</text>
 						<view class="head-icon icon-alert_notice_jump" @click="goBack"></view>
 					</view>
 					<view class="info">
