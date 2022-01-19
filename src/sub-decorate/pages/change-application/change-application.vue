@@ -585,7 +585,7 @@ export default {
 
   .b-t-p {
     flex: 1;
-    background: linear-gradient(135deg, #00ccbe, #00c2bf);
+    background: linear-gradient(116.19deg, #f83112 16.48%, #fd6421 83.52%);
     margin-left: 32rpx;
     color: #fff;
 

@@ -223,6 +223,7 @@
           v-if="personData.roleId===1"
           :serviceData='serviceData'
           :isFirst='commentData.totalRows==0'
+          :userId='personId'
           @contentEmpty='contentEmpty'
         ></personService>
         <view
@@ -670,6 +671,7 @@ export default {
     sendMsg() {
       this.$store.dispatch("openC2CConversation", {
         id: this.personId,
+        name:this.personData.realName
       });
     },
     toEvaluateList(){

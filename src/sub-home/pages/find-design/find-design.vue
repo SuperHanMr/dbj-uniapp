@@ -317,15 +317,11 @@ export default {
       uni.navigateBack({});
     },
 
-    gotoNext() {
-      console.log("!!!!!!!!!!!!!!!!!!");
-      console.log(debounce);
-      debounce(() => {
-        uni.navigateTo({
-          url: "/sub-home/pages/find-design/search-design",
-        });
-      }, 100)();
-    },
+    gotoNext: debounce(() => {
+			  uni.navigateTo({
+			    url: "/sub-home/pages/find-design/search-design",
+			  });
+		},400),
 
     getRecommendCaseList() {
       let params = {

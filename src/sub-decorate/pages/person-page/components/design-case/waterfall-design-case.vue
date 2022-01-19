@@ -26,10 +26,11 @@
 		<view class="content">
 			<view class="title">{{params.caseName}}</view>
       <view class="tag">
-        <view v-for="item of params.features" :key='item'>{{item}}</view>
-        <view class="" v-if="parmas.styleName">
-          {{parmas.styleName}}
+        <view class="" v-if="params.styleName">
+          {{params.styleName}}
         </view>
+        <view v-for="item of params.features" :key='item'>{{item}}</view>
+        
       </view>
 			<view class="case-info">
 				<view class="info-img">
@@ -170,7 +171,7 @@
     .tag{
       margin-bottom: 8rpx;
       width: 100%;
-      // height: 32rpx;
+      height: 40rpx;
       overflow: hidden;
       view{
         display: inline-block;
