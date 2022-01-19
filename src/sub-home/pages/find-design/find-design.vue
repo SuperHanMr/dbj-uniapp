@@ -176,19 +176,16 @@
           <view class="name_container">
             <view class="name">{{item4.nikeName}}</view>
             <view class="cost">
-              <text v-if="item4.Similarity">户型相似度{{item4.Similarity}}</text>
-              <text
-                v-if="item4.Similarity"
-                class="icon"
-              ></text>
+              <text >户型相似度{{item4.Similarity || '-'}}</text>
+              <text class="icon"></text>
 
               <text v-if="item4.flag">附近{{parseInt(item4.distance)}}m</text>
-              <text v-if="item4.flag && item4.budget" class="icon"></text>
+              <text v-if="item4.flag" class="icon"></text>
 
-              <text v-if="!item4.flag">{{item4.cityName}}</text>
-              <text v-if="(!item4.flag) && item4.budget" class="icon"></text>
+              <text v-if="!item4.flag">{{item4.cityName|| "-"}}</text>
+              <text v-if="!item4.flag" class="icon"></text>
 
-              <text>预算： ￥{{item4.budget?(item4.budget).toFixed(2): "--"}}</text>
+              <text>预算：{{item4.budget?`￥${(item4.budget).toFixed(2)}`: "-"}}</text>
             </view>
           </view>
           <view class="attr_container">
