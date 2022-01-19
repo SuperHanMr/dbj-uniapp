@@ -670,6 +670,7 @@ export default {
     sendMsg() {
       this.$store.dispatch("openC2CConversation", {
         id: this.personId,
+        name:this.personData.realName
       });
     },
     toEvaluateList(){
