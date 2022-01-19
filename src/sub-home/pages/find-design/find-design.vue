@@ -170,6 +170,7 @@
         class="case-item"
         v-for="item4 in CaseList"
         :key="item4.id"
+				@click="toRealCaseDetail(item4)"
       >
         <view class="left">
           <view class="name_container">
@@ -181,19 +182,13 @@
                 class="icon"
               ></text>
 
-              <text v-if="item4.flag">附近{{item4.distance}}</text>
-              <text
-                v-if="item4.flag && item4.budget"
-                class="icon"
-              ></text>
+              <text v-if="item4.flag">附近{{parseInt(item4.distance)}}m</text>
+              <text v-if="item4.flag && item4.budget" class="icon"></text>
 
               <text v-if="!item4.flag">{{item4.cityName}}</text>
-              <text
-                v-if="(!item4.flag) && item4.budget"
-                class="icon"
-              ></text>
+              <text v-if="(!item4.flag) && item4.budget" class="icon"></text>
 
-              <text>预算： ￥{{item4.budget || "--"}}</text>
+              <text>预算： ￥{{item4.budget?(item4.budget).toFixed(2): "--"}}</text>
             </view>
           </view>
           <view class="attr_container">
@@ -207,7 +202,6 @@
         </view>
         <image
           class="right"
-          @click="toRealCase()"
           src="https://ali-image.dabanjia.com/static/mp/dabanjia/images/theme-red/my/small_gotoShop.svg"
         />
       </view>
@@ -322,11 +316,7 @@ export default {
     this.scrollTop = scrollTop.scrollTop;
   },
   methods: {
-    toRealCase() {
-      uni.navigateTo({
-        url: "/sub-home/pages/find-design/real-case/real-case",
-      });
-    },
+
     toBack() {
       uni.navigateBack({});
     },
@@ -379,7 +369,7 @@ export default {
     //自己找设计师
     findOwnDesigner() {
       uni.navigateTo({
-        url: "/sub-home/pages/find-design/designer-list",
+        url: "/sub-home/pages/find-design/search-design",
       });
     },
     //联系客服
@@ -408,9 +398,10 @@ export default {
     //更多设计师
     gotoMoreDesigner() {
       console.log("筛选更多设计师");
-      uni.navigateTo({
-        url: "/sub-home/pages/find-design/search-design",
-      });
+			uni.navigateTo({
+			  url: "/sub-home/pages/find-design/designer-list",
+			});
+      
     },
     //去设计师个人主页
     gotoDesignerHomePage(zeusId) {
@@ -425,6 +416,12 @@ export default {
         url: "/sub-home/pages/find-design/real-case/real-case",
       });
     },
+		toRealCaseDetail(item) {
+			console.log("item4===",item)
+		  uni.navigateTo({
+		    url: `/pages/real-case/real-case-webview/real-case-webview?id=${item.id}`,
+		  });
+		},
   },
 };
 </script>
