@@ -19,7 +19,7 @@
       </view>
       <view class="service-progress" @click="toTimeLine">
         <text>服务进度</text>
-        <i class="icon-ic_zhuangxiuxianchang_jingsuangengduo_csn"></i>
+        <i class="icon-alert_notice_jump"></i>
       </view>
     </view>
   </view>

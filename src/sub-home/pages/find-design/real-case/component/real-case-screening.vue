@@ -5,12 +5,13 @@
 				{{item.title}}
 			</view>
 			<view class="right">
-				<view :class="['tag', {'tag-all': tag.key == tagSelect[index]}]" v-for="(tag, tagIndex) in item.list" :key='tag.key' @click="onTag(index,tag.key, tagIndex)">
+				<view :class="['tag', {'tag-all': tag.key == tagSelect[index]}]" v-for="(tag, tagIndex) in item.list"
+					:key='tag.key' @click="onTag(index,tag.key, tagIndex)">
 					{{tag.name}}
 				</view>
 			</view>
 			<view class="fade">
-				
+
 			</view>
 		</view>
 	</view>
@@ -18,59 +19,33 @@
 
 <script>
 	export default {
-		data(){
+		data() {
 			return {
-				list: [
-					{
+				list: [{
 						title: '居室',
 						key: 1,
-						list: [
-							{
+						list: [{
 								name: '全部',
-								key: 1
+								key: null
 							},
 							{
 								name: '一室',
-								key: 2
+								key: 1
 							},
 							{
 								name: '二室',
-								key: 3
+								key: 2
 							},
 							{
 								name: '三室',
+								key: 3
+							},
+							{
+								name: '四室',
 								key: 4
 							},
 							{
-								name: '四室',
-								key: 5
-							},
-							{
-								name: '四室',
-								key: 5
-							},
-							{
-								name: '四室',
-								key: 5
-							},
-							{
-								name: '四室',
-								key: 5
-							},
-							{
-								name: '四室',
-								key: 5
-							},
-							{
-								name: '四室',
-								key: 5
-							},
-							{
-								name: '四室',
-								key: 5
-							},
-							{
-								name: '四室',
+								name: '五室',
 								key: 5
 							}
 						]
@@ -78,43 +53,40 @@
 					{
 						title: '面积',
 						key: 2,
-						list: [
-							{
+						list: [{
 								name: '全部',
-								key: 1
+								key: null
 							},
 							{
-								name: '60m²一下',
-								key: 2
+								name: '60m²以下',
+								key: '0-60'
 							},
 							{
 								name: '60-90m²',
-								key: 3
+								key: '60-90'
 							},
 							{
 								name: '90-120m²',
-								key: 4
+								key: '90-120'
 							},
-							{
-								name: '110m²',
-								key: 5
-							}
 						]
 					}
 				],
-				tagSelect: [1, 1],
+				tagSelect: [null, null],
 				selectData: {
-					0: '全部',
-					1: '全部'
+
 				}
 			}
 		},
-		methods:{
-			onTag(index,key, tagIndex){
+		methods: {
+			onTag(index, key, tagIndex) {
 				let arr = JSON.parse(JSON.stringify(this.tagSelect));
 				arr[index] = key;
 				this.tagSelect = arr;
-				this.selectData[index] = this.list[index].list[tagIndex].name;
+				this.selectData[index] = {
+					name: this.list[index].list[tagIndex].key == null ? '' : this.list[index].list[tagIndex].name,
+					key: this.list[index].list[tagIndex].key,
+				};
 				this.$emit('updateTag', this.selectData);
 			}
 		}
@@ -122,15 +94,17 @@
 </script>
 
 <style lang="scss" scoped>
-	.real-case-screening{
+	.real-case-screening {
 		width: 100%;
 		height: 100%;
-		.list{
+
+		.list {
 			display: flex;
 			align-items: center;
 			padding: 16rpx 0 16rpx 32rpx;
 			position: relative;
-			.left{
+
+			.left {
 				display: flex;
 				margin-right: 32rpx;
 				font-family: PingFang SC;
@@ -140,7 +114,8 @@
 				text-align: center;
 				color: #333333;
 			}
-			.right{
+
+			.right {
 				flex: 1;
 				display: flex;
 				font-family: PingFang SC;
@@ -149,17 +124,20 @@
 				text-align: center;
 				color: #333333;
 				overflow-y: auto;
-				.tag{
+
+				.tag {
 					margin-right: 16rpx;
 					padding: 2rpx 16rpx 4rpx;
 					white-space: nowrap;
 				}
-				.tag-all{
+
+				.tag-all {
 					background: #F3F3F3;
 					border-radius: 6rpx;
 				}
 			}
-			.fade{
+
+			.fade {
 				position: absolute;
 				right: 0;
 				bottom: 16rpx;

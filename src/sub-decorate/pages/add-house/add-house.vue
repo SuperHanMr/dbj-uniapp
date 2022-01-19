@@ -767,7 +767,7 @@
 			}
 
 			.sure-btn {
-				color: #24bdbd;
+				color: #FA4D32;
 			}
 		}
 

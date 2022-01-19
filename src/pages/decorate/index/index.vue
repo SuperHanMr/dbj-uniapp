@@ -393,10 +393,16 @@
       },
       changeCurrentProject(item, isOpenMsgList) {
         this.currentProject = item;
+        console.log('111111111111111',item)
         getApp().globalData.switchFlag = "decorate";
+        
         if (this.currentProject?.showBroadcast) {
           this.getCarouselMsg();
         }
+				uni.setStorageSync(
+					'houseListChooseId',
+					item.estateId,
+				);
         this.initData(item);
         let index = 0;
         let firstItem = null;

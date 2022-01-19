@@ -2,10 +2,13 @@
   <view class="person-page">
     <image
       class="bg-index"
-      mode="aspectFit"
-      src="https://ali-image.dabanjia.com/static/mp/dabanjia/images/theme-red/decorate/person_bg.png"
+      :class="{'bg-design':personData.roleId===1}"
+      :src="personData.roleId===1?personData.artImage:'https://ali-image.dabanjia.com/static/mp/dabanjia/images/decorate/person_bg.png'"
     >
     </image>
+    <view class="mask" v-if="personData.roleId===1">
+      
+    </view>
     <view
       class="back"
       @click="back"
@@ -35,9 +38,17 @@
       </view>
       <view class="item "></view>
     </view>
-    <view class="person-page-content">
+    <view class="person-page-content" :class="{'person-page-content-dsgin':personData.roleId===1}">
+      <personDesign
+       :personData='personData'
+       v-if="personData.roleId===1"
+       @queryAttention='queryAttention'
+       :isAttention='isAttention'
+       @sendMsg='sendMsg'
+       ></personDesign>
       <view
         class="person-msg"
+        v-if="personData.roleId!==1"
         :class="{'is-self':personData.roleId === 10000}"
       >
         <view :class="{'is-self':personData.roleId === 10000,'person-msg-top':personId!=0}">
@@ -160,7 +171,7 @@
       </view>
       <view
         class="person-interact"
-        v-if="personId!=0&&personData.roleId<7&&personData.roleId!=6"
+        v-if="personId!=0&&personData.roleId<7&&personData.roleId!=6&&personData.roleId!=1"
         :class="{'person-interact-active':interactActive+10 >  interact }"
       >
         <view class="sticky" v-if="hasTwo">
@@ -198,10 +209,20 @@
         class="content"
         v-if="personId!=0&&personData.roleId<7"
       >
+        <personEvaluateDesign 
+        :commentData='commentData'
+        v-if="personData.roleId===1&&commentData.totalRows>0"
+        @toEvaluateList='toEvaluateList'
+         ></personEvaluateDesign>
+        <view
+          class="interval"
+          v-if="commentData.totalRows>0&&commentEmpty&&personData.roleId===1"
+        ></view>
         <personService
           ref='service'
           v-if="personData.roleId===1"
           :serviceData='serviceData'
+          :isFirst='commentData.totalRows==0'
           @contentEmpty='contentEmpty'
         ></personService>
         <view
@@ -215,7 +236,7 @@
           @contentEmpty='contentEmpty'
           v-if="personData.roleId===1||personData.roleId===2"
         ></personCase>
-        <view class="interval" v-if="caseEmpty"></view>
+        <view class="interval" v-if="caseEmpty&&dynamicEmpty"></view>
         <personDynamic
           ref='dynamic'
           :personId='personId'
@@ -227,6 +248,7 @@
         <personEvaluate
           ref='evaluate'
           :personId='personId'
+          v-if="personData.roleId!==1"
           class="person-evaluate"
           @contentEmpty='contentEmpty'
           @getEvaluate='getEvaluate'
@@ -292,6 +314,8 @@ import personService from "./components/person-service.vue";
 import personEvaluate from "./components/person-evaluate.vue";
 import personCase from "./components/person-case.vue";
 import personDynamic from "./components/person-dynamic.vue";
+import personDesign from "./components/person-design.vue"
+import personEvaluateDesign from "./components/person-evaliate-design.vue";
 import { unitChange } from "@/utils/util.js";
 import {
   getSkuList,
@@ -299,6 +323,7 @@ import {
   queryAttention,
   getAttention,
   getServiceStatus,
+  getComments
 } from "@/api/decorate.js";
 var query = {};
 export default {
@@ -308,6 +333,8 @@ export default {
     personEvaluate,
     personCase,
     personDynamic,
+    personDesign,
+    personEvaluateDesign
   },
   data() {
     return {
@@ -322,6 +349,7 @@ export default {
         designTags:[],
         personAllBadgeVO:{}
       },
+      commentData:{},
       currentItem: "serviceTop",
       scrollTop: 0,
       interact: 0,
@@ -341,6 +369,7 @@ export default {
       dynamicEmpty:false,
       evaluateEmpty:false,
       serviceEmpty:false,
+      commentEmpty:true,
     };
   },
   computed: {
@@ -377,7 +406,7 @@ export default {
   },
   onLoad(e) {
     this.userType = e.userType;
-    this.personId = e.personId || 7248;
+    this.personId = e.personId || 7270;
     uni.showShareMenu();
     console.log(this.personId);
     // this.getGrabDetail()
@@ -457,6 +486,7 @@ export default {
         this.currentItem = "evaluateTop";
       }
     },
+    //查询是否关注推荐
     getAttention(routeId, type) {
       let data = {
         subBizType: this.personData.roleId,
@@ -494,6 +524,7 @@ export default {
         equipmentId: uni.getSystemInfoSync().deviceId,
         userType: this.userType,
       };
+      console.log(data)
       queryAttention(data).then((res) => {
         if (routeId === 2001) {
           if (this.isRecommend) {
@@ -531,6 +562,8 @@ export default {
           res.fansCount = unitChange(res.fansCount);
           res.recommendCount = unitChange(res.recommendCount);
           res.collectCount = unitChange(res.collectCount);
+          res.collectLikeNum = unitChange(res.sumLikeCollection);
+          res.caseCount = unitChange(res.caseCount);
           this.personData = res;
           if (!this.personData.roleId) {
             this.personData.roleId = 10000;
@@ -542,7 +575,9 @@ export default {
             this.getAttention(2001, "isRecommend");
             this.getServiceStatus();
           }
-
+          if(this.personData.roleId==1){
+            this.getDesignComments()
+          }
           setTimeout(() => {
             this.getNodeHeight();
             this.getTopDistance();
@@ -594,7 +629,7 @@ export default {
       query.exec(function (res) {});
     },
     back() {
-      uni.navigateBack({});
+      uni.navigateBack();
     },
     getSkuList() {
       let data = {
@@ -620,11 +655,29 @@ export default {
     getEvaluate(num) {
       this.evaluateNum = num;
     },
+    getDesignComments(){
+      let params = {
+        page:1,
+        rows:1,
+        userId:this.personId,
+        sortType:0
+      }
+      getComments(params).then(res=>{
+        this.commentData = res
+        // this.commentData.list[0].rank = 3
+      })
+    },
     sendMsg() {
       this.$store.dispatch("openC2CConversation", {
         id: this.personId,
+        name:this.personData.realName
       });
     },
+    toEvaluateList(){
+      uni.navigateTo({
+        url:'/sub-decorate/pages/person-page/person-evaluate-list?id='+this.personId
+      })
+    }
   },
 };
 </script>
@@ -637,11 +690,25 @@ export default {
   background-color: #fff;
   margin-bottom: 40rpx;
   // height: 100%;
+  min-height: 100%;
   .bg-index {
     top: -70rpx;
     width: 100%;
     height: 480rpx;
     position: absolute;
+  }
+  .bg-design{
+    height: 1010rpx;
+    top: 0rpx;
+  }
+  .mask{
+    height: 1010rpx;
+    position: absolute;
+    top: 0rpx;
+    background: linear-gradient(180deg, rgba(0, 0, 0, 0.65) 0%, #000000 100%);
+    z-index: 1;
+    backdrop-filter: blur(8rpx);
+    width: 100%;
   }
   .back {
     position: absolute;
@@ -654,7 +721,7 @@ export default {
     display: flex;
     align-items: center;
     justify-content: center;
-    z-index: 2;
+    z-index: 40;
     i {
       width: 32rpx;
       height: 32rpx;
@@ -667,6 +734,11 @@ export default {
   position: relative;
   top: 28rpx;
   background: #fff;
+  z-index: 10;
+}
+.person-page-content-dsgin{
+  background: transparent;
+  top: -26rpx;
 }
 view .is-self {
   border-bottom: none !important;
@@ -893,7 +965,7 @@ view .is-self {
   align-items: center;
   background-color: #fff;
   opacity: 0;
-  z-index: 1;
+  z-index: 20;
   padding-left: 10px;
   .special-item {
     // width: 33%;
