@@ -57,9 +57,9 @@
         }
       }
     },
-    mounted() {
-      this.getComments()
-    },
+    // mounted() {
+    //   this.getComments()
+    // },
     methods:{
       toBuy(item){
         if(!item){
