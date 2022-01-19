@@ -188,7 +188,7 @@
               <text v-if="!item4.flag">{{item4.cityName}}</text>
               <text v-if="(!item4.flag) && item4.budget" class="icon"></text>
 
-              <text>预算： ￥{{item4.budget.toFixed(2) || "--"}}</text>
+              <text>预算： ￥{{item4.budget?(item4.budget).toFixed(2): "--"}}</text>
             </view>
           </view>
           <view class="attr_container">
@@ -369,7 +369,7 @@ export default {
     //自己找设计师
     findOwnDesigner() {
       uni.navigateTo({
-        url: "/sub-home/pages/find-design/designer-list",
+        url: "/sub-home/pages/find-design/search-design",
       });
     },
     //联系客服
@@ -398,9 +398,10 @@ export default {
     //更多设计师
     gotoMoreDesigner() {
       console.log("筛选更多设计师");
-      uni.navigateTo({
-        url: "/sub-home/pages/find-design/search-design",
-      });
+			uni.navigateTo({
+			  url: "/sub-home/pages/find-design/designer-list",
+			});
+      
     },
     //去设计师个人主页
     gotoDesignerHomePage(zeusId) {
