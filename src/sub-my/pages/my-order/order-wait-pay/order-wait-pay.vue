@@ -943,13 +943,15 @@ export default {
         .countStyle {
           width: 154rpx;
           height: 40rpx;
-          padding-left: 4rpx;
+          padding-left: 2rpx;
+					display: flex;
+					align-items: center;
           box-sizing: border-box;
           border-radius: 8rpx;
           background: rgba(255, 255, 255, 0.06);
           background-blend-mode: darken;
           mix-blend-mode: normal;
-          border: 1px solid rgba(255, 255, 255, 0.3);
+          border: 2rpx solid rgba(255, 255, 255, 0.3);
         }
       }
     }
@@ -1200,5 +1202,9 @@ export default {
 
 ::v-deep .uni-dialog-button-text {
   font-size: 30rpx !important;
+}
+
+::v-deep .count .separator {
+  line-height: 30rpx !important;
 }
 </style>
