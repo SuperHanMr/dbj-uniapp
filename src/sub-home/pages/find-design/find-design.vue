@@ -182,19 +182,13 @@
                 class="icon"
               ></text>
 
-              <text v-if="item4.flag">附近{{item4.distance}}</text>
-              <text
-                v-if="item4.flag && item4.budget"
-                class="icon"
-              ></text>
+              <text v-if="item4.flag">附近{{parseInt(item4.distance)}}m</text>
+              <text v-if="item4.flag && item4.budget" class="icon"></text>
 
               <text v-if="!item4.flag">{{item4.cityName}}</text>
-              <text
-                v-if="(!item4.flag) && item4.budget"
-                class="icon"
-              ></text>
+              <text v-if="(!item4.flag) && item4.budget" class="icon"></text>
 
-              <text>预算： ￥{{item4.budget || "--"}}</text>
+              <text>预算： ￥{{item4.budget.toFixed(2) || "--"}}</text>
             </view>
           </view>
           <view class="attr_container">
@@ -322,7 +316,7 @@ export default {
     this.scrollTop = scrollTop.scrollTop;
   },
   methods: {
-    
+
     toBack() {
       uni.navigateBack({});
     },
