@@ -69,7 +69,7 @@
 						<view class="base-items">
 							<view class="name-wrapper">
 								<text class="designer-name">{{designer.name}}</text>
-								<view class="designer-level"><text>{{designer.levelName}}设计师</text></view>
+								<view class="designer-level"><text>{{designer.levelName}}{{designer.roleName}}</text></view>
 							</view>
 							<view class="rate-wrapper">
 								<text class="designer-score">接单数 {{designer.totalCount}}</text>
@@ -214,7 +214,7 @@ export default {
 		searchList() {
 			// TODO getlist
 			let params = {
-				sort: this.sortType,
+				sortType: this.sortType,
 				page: this.page,
 				rows: 10,
 			};
