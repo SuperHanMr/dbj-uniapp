@@ -270,6 +270,7 @@
         }
       }
       .msg-content{
+        margin-bottom: 30rpx;
         .report-text {
           color: #fff;
           font-size: 26rpx;
