@@ -118,6 +118,9 @@
 			} 
 			this.currentHouse = currentHouse;
 			this.getListData(isRefshList);
+			this.$nextTick(function(){
+				this.$refs.realCaseList.scrollToTop();
+			})
 		},
 		methods: {
 			getListData(isTagSearch) {
