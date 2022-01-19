@@ -30,7 +30,7 @@
 			</view>
 			<view class="list">
 				<view :class="['screening', {'screening-noShowScreen': !showScreen}]">
-				<!-- <view class="screening-tag" @click="checkoutScreen(item.key)" v-for="item in realListScreen" :key='item.key'>
+					<!-- <view class="screening-tag" @click="checkoutScreen(item.key)" v-for="item in realListScreen" :key='item.key'>
 						<view :class="['title', {'title-active': selectScreenTag == item.key}]">
 							{{item.title}}
 						</view>
@@ -41,7 +41,7 @@
 				<view class="box" v-if="realCaseListData && realCaseListData.length > 0">
 					<real-case-list :currentHouse='currentHouse' :realCaseListData='realCaseListData'
 						@triggerScroll='triggerScroll' @scrollUpper='scrollUpper' @scrolltolower='scrolltolower'
-						ref='realCaseList' />
+						@refresherrefresh='refresherrefresh' ref='realCaseList' />
 				</view>
 				<view class="no-service" v-else>
 					<image
@@ -99,7 +99,8 @@
 				realCaseListData: [],
 				caseDetailInfo: {},
 				endPage: false,
-				selectData: {}
+				selectData: {},
+				triggered: false
 			}
 		},
 		onLoad() {
@@ -115,11 +116,12 @@
 			if (this.currentHouse.id != currentHouse.id) {
 				isRefshList = true;
 				this.listParam.page = 0;
-			} 
+			}
 			this.currentHouse = currentHouse;
 			this.getListData(isRefshList);
-			this.$nextTick(function(){
-				this.$refs.realCaseList.scrollToTop();
+			this.$nextTick(function() {
+				this.$refs.realCaseList && this.$refs.realCaseList.scrollToTop && this.$refs.realCaseList
+					.scrollToTop();
 			})
 		},
 		methods: {
@@ -170,6 +172,9 @@
 					if (this.listParam.page >= obj.totalPage && !isTagSearch) {
 						this.endPage = true;
 					}
+					if (this.$refs.realCaseList) {
+						this.$refs.realCaseList.triggered = false;
+					}
 				})
 			},
 			// 滑动不显示筛选条件
@@ -213,6 +218,18 @@
 				this.listParam.page += 1;
 				this.getListData();
 			},
+			refresherrefresh() {
+				this.endPage = false;
+				this.listParam.page = 0;
+				this.$refs.realCaseList.triggered = true;
+				this.getListData();
+			},
+			onPullDownRefresh() {
+				this.endPage = false;
+				this.listParam.page = 0;
+				this.getListData();
+				uni.stopPullDownRefresh()
+			}
 		}
 	}
 </script>
@@ -286,7 +303,7 @@
 
 			.list {
 				flex: 1;
-				overflow: scroll;	
+				overflow: scroll;
 				position: relative;
 				display: flex;
 				flex-direction: column;

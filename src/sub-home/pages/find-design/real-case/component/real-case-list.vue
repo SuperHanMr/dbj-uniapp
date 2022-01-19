@@ -1,11 +1,13 @@
 <template>
 	<view class="real-case-list" v-if="realCaseListData.length > 0">
 		<scroll-view class="real-case-list-scroll" :scroll-top="scrollTop" scroll-y="true" @scroll="scroll"
-			@scrolltoupper='scrolltoupper' @scrolltolower='scrolltolower'>
+			@scrolltoupper='scrolltoupper' @scrolltolower='scrolltolower'
+			refresher-enabled='true' @refresherrefresh='refresherrefresh' :refresher-triggered="triggered"
+			>
 			<view class="list" v-for="item in realCaseListData" :key='item.id' @click="toCaseDetail(item)">
 				<view class="head">
 					<view class="title">
-						<text>{{item.caseName}} Ta家</text>
+						<text>{{item.nikeName || '--'}} Ta家</text>
 						<view class="head-icon icon-alert_notice_jump" @click="goBack"></view>
 					</view>
 					<view class="info">
@@ -73,6 +75,7 @@
 			return {
 				noEmit: false,
 				scrollTop: 0,
+				triggered: false
 			}
 		},
 		methods: {
@@ -109,6 +112,9 @@
 			},
 			scrolltolower() {
 				this.$emit('scrolltolower')
+			},
+			refresherrefresh() {
+				this.$emit('refresherrefresh')
 			}
 		}
 	}

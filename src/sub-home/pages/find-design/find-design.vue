@@ -82,7 +82,7 @@
           <view class="basic-info">
             <view class="header">
               <view class="name">{{item2.name}}</view>
-              <view class="rank">{{item2.levelName}}</view>
+              <view class="rank">{{item2.levelName}}设计师</view>
             </view>
             <view
               class="goodPraise"
@@ -95,12 +95,11 @@
               </view>
             </view>
             <view class="attr">
-              <view
-                class="attrItem"
-                v-for=" item3 in item2.designs"
-                :key="item3"
-              >{{item3}}</view>
-            </view>
+							<view class="attrItem" v-for="item32 in item2.styles" :key="item32">
+								{{item32}}
+							</view>
+              <view class="attrItem" v-for=" item3 in item2.designs" :key="item3" >{{item3}}</view>
+						</view>
           </view>
         </view>
         <view class="showMoreCard_container">
@@ -174,24 +173,22 @@
       >
         <view class="left">
           <view class="name_container">
-            <view class="name">{{item4.nikeName}}</view>
+            <view class="name">{{item4.nikeName || 'xxx'}}   Ta家</view>
             <view class="cost">
-              <text v-if="item4.Similarity">户型相似度{{item4.Similarity}}</text>
-              <text
-                v-if="item4.Similarity"
-                class="icon"
-              ></text>
+              <text v-if="item4.Similarity" >{{item4.Similarity}}</text>
+              <text v-if="item4.Similarity" class="icon"></text>
 
               <text v-if="item4.flag">附近{{parseInt(item4.distance)}}m</text>
-              <text v-if="item4.flag && item4.budget" class="icon"></text>
+              <text v-if="item4.flag" class="icon"></text>
 
-              <text v-if="!item4.flag">{{item4.cityName}}</text>
-              <text v-if="(!item4.flag) && item4.budget" class="icon"></text>
+              <text v-if="!item4.flag">{{item4.cityName|| "-"}}</text>
+              <text v-if="!item4.flag" class="icon"></text>
 
-              <text>预算： ￥{{item4.budget?(item4.budget).toFixed(2): "--"}}</text>
+              <text v-if="item4.budget">预算：{{item4.budget?`￥${(item4.budget).toFixed(2)}`: "-"}}</text>
             </view>
           </view>
           <view class="attr_container">
+						<view class="attr_item">{{item4.styleName}}</view>
             <view
               class="attr_item"
               v-for="item5 in item4.features"
@@ -269,13 +266,12 @@ export default {
   },
 
   onLoad() {
-    console.log("onLoad!!!!!!!!!!!!!");
     const systemInfo = uni.getSystemInfoSync();
     this.navBarHeight = systemInfo.statusBarHeight + "px";
 
     // 新加的
     this.userId = getApp().globalData.token;
-    // console.log("getApp().globalData.userInfo==",getApp().globalData.userInfo)
+    console.log("getApp().globalData.userInfo==",getApp().globalData)
 
     this.estateId = uni.getStorageSync("houseListChooseId");
 
@@ -321,15 +317,11 @@ export default {
       uni.navigateBack({});
     },
 
-    gotoNext() {
-      console.log("!!!!!!!!!!!!!!!!!!");
-      console.log(debounce);
-      debounce(() => {
-        uni.navigateTo({
-          url: "/sub-home/pages/find-design/search-design",
-        });
-      }, 100)();
-    },
+    gotoNext: debounce(() => {
+			  uni.navigateTo({
+			    url: "/sub-home/pages/find-design/search-design",
+			  });
+		},400),
 
     getRecommendCaseList() {
       let params = {
@@ -475,7 +467,7 @@ export default {
       width: 574rpx;
       height: 62rpx;
       box-sizing: border-box;
-      border: 0.5px solid #999999;
+      border: 2rpx solid #999999;
       border-radius: 16rpx;
       background-color: #ffffff;
       display: flex;
@@ -788,7 +780,7 @@ export default {
 .recommendCaseItem_container {
   padding: 0 32rpx 32rpx;
   .case-item {
-    height: 182rpx;
+    // height: 182rpx;
     padding: 24rpx 24rpx 24rpx 32rpx;
     margin-bottom: 20rpx;
     background-color: #ffffff;
@@ -839,15 +831,17 @@ export default {
         flex-flow: row wrap;
         align-items: center;
         .attr_item {
-          width: 128rpx;
+          // width: 128rpx;
           height: 40rpx;
           line-height: 40rpx;
+					padding: 0 16rpx;
           color: #999999;
           background-color: #f6f6f6;
           text-align: center;
           border-radius: 6rpx;
           font-size: 24rpx;
           margin-right: 16rpx;
+					margin-bottom: 16rpx;
         }
       }
     }

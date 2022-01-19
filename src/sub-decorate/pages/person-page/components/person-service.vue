@@ -47,6 +47,10 @@
       isFirst:{
         type:Boolean,
         default:false
+      },
+      userId:{
+        type:Number,
+        default:0
       }
     },
     data(){
@@ -77,9 +81,9 @@
       //   console.log(this.isOpen)
       // },
       toBuy(item){
-        console.log(item)
+        console.log(this.userId)
         uni.navigateTo({
-          url:'/sub-classify/pages/goods-detail/goods-detail?goodId='+item.id
+          url:'/sub-classify/pages/goods-detail/goods-detail?goodId='+item.id+'&userId='+this.userId
         })
       }
     }
@@ -89,6 +93,7 @@
   .person-service{
     padding: 38rpx 0 16rpx 32rpx;
     background-color: #fff;
+    box-sizing: border-box;
   }
   .is-first{
     border-radius: 32rpx 32rpx 0 0;
