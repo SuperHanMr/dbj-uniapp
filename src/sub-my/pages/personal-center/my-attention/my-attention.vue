@@ -458,7 +458,7 @@ export default {
   }
 
   .craftsmanAndRecommend {
-    padding: 24rpx 32rpx;
+    padding: 0 32rpx;
     height: 144rpx;
     box-sizing: border-box;
     background-color: #ffffff;

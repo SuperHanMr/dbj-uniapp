@@ -40,7 +40,7 @@
 					<ImgList :imgList='item.imageUrlList' />
 					<view class="addressAndSimilarity" v-if="item.flag || item.cityName || item.similarity">
 						<view class="near" v-if="item.flag || item.cityName">
-							{{item.flag ? `附近${(item.distance / 1000).toFixed(2)}km` : item.cityName}}
+							{{item.flag ? nearHandler(item) : item.cityName}}
 						</view>
 						<view class="point" v-if="item.similarity">
 
@@ -117,6 +117,15 @@
 			},
 			itemHandler(arr) {
 				return arr;
+			},
+			nearHandler(item){
+				let itemReturn = '';
+				if (item.distance < 1000) {
+					itemReturn =  `附近${item.distance}m`
+				} else {
+					itemReturn = `附近${(item.distance / 1000).toFixed(2)}km`
+				}
+				return itemReturn;
 			}
 		}
 	}

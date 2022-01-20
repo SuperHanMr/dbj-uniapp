@@ -1,5 +1,5 @@
 <template>
-  <view class="wrap" :style="{marginBottom: setting.isLast ? 0 : '24rpx'}">
+  <view class="wrap" :style="{marginBottom: setting.isLast ? 0 : '16rpx'}">
     <view class="title">
       <view class="title-check">
         <slot name="check"></slot>
@@ -92,7 +92,7 @@
     box-sizing: border-box;
     min-height: 300rpx;
     background: #fff;
-    border-radius: 40rpx;
+    border-radius: 32rpx;
     padding: 32rpx;
   }
 
@@ -130,7 +130,7 @@
       align-items: center;
       width: 124rpx;
       height: 44rpx;
-      background: #f5f6f6;
+      // background: #f5f6f6;
       border-radius: 12rpx;
       font-family: PingFangSC, PingFangSC-Regular;
       font-weight: 400;

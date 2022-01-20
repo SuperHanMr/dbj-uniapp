@@ -14,8 +14,8 @@
         <i v-if="serviceData.nodeType == 10" class="icon-zx icon-ic_zhuangxiuxianchang_youqi_csn1"></i>
         <view>{{serviceData.serviceName}}</view>
       </view>
-      <view class="status-name mr flex-row-start" :class="{inservice:serviceData.status > 2,shouldsure:serviceData.grepOrderStatus < 3}">
-        <view>{{ serviceData.statusName }}</view>
+      <view class="status-name mr flex-row-start" :class="{inservice:serviceData.grepOrderStatus > 2,shouldsure:serviceData.grepOrderStatus < 3}">
+        <view :class="{inservice:serviceData.grepOrderStatus > 2,shouldsure:serviceData.grepOrderStatus < 3}">{{ serviceData.statusName }}</view>
         <!-- <image :class="{open: open}"
           v-if="serviceData.status >= 2 || (serviceData.status == 0 && serviceData.grepOrderStatus === 3)"
           src="https://ali-image.dabanjia.com/static/mp/dabanjia/images/decorate/ic_triangle_up.svg"></image> -->
@@ -29,21 +29,21 @@
         <view class="s0">{{serviceData.serveRoleName}}</view>
         <view class="s1 flex-row-start" @click="personPage(serviceData)">
           <view>{{serviceData.serveName}}</view>
-          <image src="https://ali-image.dabanjia.com/static/mp/dabanjia/images/decorate/ic_more.svg"></image>
+          <i class='icon-alert_notice_jump'></i>
         </view>
       </view>
       <view class="procsss flex-row-bet" v-if="[5, 6, 7, 8, 9, 10].includes(serviceData.nodeType)">
         <view class="s0">工序支付</view>
         <view class="s1 flex-row-start" @click="goProcessCost">
           <view>{{serviceData.payStatus | filterPayStatus}}</view>
-          <image src="https://ali-image.dabanjia.com/static/mp/dabanjia/images/decorate/ic_more.svg"></image>
+          <i class='icon-alert_notice_jump'></i>
         </view>
       </view>
       <view class="procsss flex-row-bet">
         <view class="s0">进度</view>
         <view class="s1 flex-row-start" @click="goTimeLine">
           <view>{{serviceData.processNumerator}}/{{serviceData.processDenominator}}</view>
-          <image src="https://ali-image.dabanjia.com/static/mp/dabanjia/images/decorate/ic_more.svg"></image>
+          <i class='icon-alert_notice_jump'></i>
         </view>
       </view>
     </view>
@@ -115,6 +115,9 @@
 </script>
 
 <style lang="scss">
+.icon-alert_notice_jump{
+  color: #b9b9b9 !important;
+}
 .item {
   box-sizing: border-box;
   width: 100%;

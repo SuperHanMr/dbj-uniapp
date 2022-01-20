@@ -360,7 +360,7 @@
 					display: inline-block;
 					color: #333333;
 					background-color: #FFFFFF;
-					padding: 16rpx 32rpx 16rpx 32rpx;
+					padding: 16rpx 32rpx;
 					border-radius: 8rpx;
 					margin-right: 16rpx;
 					margin-bottom: 32rpx;

@@ -69,7 +69,7 @@
       <scroll-view
         scroll-x="true"
         style="white-space: nowrap;"
-        @scrolltolower="gotoNext"
+        @scrolltolower.stop="gotoMoreDesigner"
 				:scroll-left="scrollLeft"
       >
         <view
@@ -89,8 +89,8 @@
               style="margin-bottom: 8rpx;"
             >
               <view class="item">
-                <text>好评率{{item2.praiseEfficiency}}%</text>
-                <text class="icon"></text>
+                <text v-if="item2.praiseEfficiency">好评率{{item2.praiseEfficiency}}%</text>
+                <text v-if="item2.praiseEfficiency" class="icon"></text>
                 <text>{{item2.industryYears}}年设计经验</text>
               </view>
             </view>
@@ -145,7 +145,7 @@
       @click="gotoRealCase"
     >
       <view class="left">
-        为您推荐
+        推荐案例
       </view>
       <view class="right">
         <text>更多</text>
@@ -167,10 +167,10 @@
           <view class="name_container">
             <view class="name">{{item4.nikeName || '--'}}   Ta家</view>
             <view class="cost">
-              <text >{{item4.Similarity?item4.Similarity:'户型相似度-'}}</text>
-              <text class="icon"></text>
+              <text v-if="item4.similarity">{{item4.similarity}}</text>
+              <text v-if="item4.similarity" class="icon"></text>
 
-              <text v-if="item4.flag">附近{{parseInt(item4.distance)}}m</text>
+              <text v-if="item4.flag">附近{{ item4.distance/1000>1?`${(item4.distance/1000).toFixed(2)}km`:`${parseInt(item4.distance)}m`}}</text>
               <text v-if="item4.flag" class="icon"></text>
 
               <text v-if="!item4.flag">{{item4.cityName|| "-"}}</text>
@@ -261,8 +261,8 @@ export default {
   onLoad() {
     const systemInfo = uni.getSystemInfoSync();
     this.navBarHeight = systemInfo.statusBarHeight + "px";
-
-    // 新加的
+  },
+  onShow() { 
     this.userId = getApp().globalData.token;
     console.log("getApp().globalData.userInfo==",getApp().globalData)
 
@@ -281,11 +281,6 @@ export default {
     if (uni.getStorageSync("recommendDesignerPage")) {
       this.page = uni.getStorageSync("recommendDesignerPage");
     }
-    // if(this.page==1){
-    // 	this.getDesignerList();
-    // }
-  },
-  onShow() {
 		this.scrollLeft = 1
 		this.$nextTick(()=>{
 			this.scrollLeft = 0
@@ -346,12 +341,12 @@ export default {
         uni.setStorageSync("recommendDesignerTotalPage", res.totalPage);
         console.log("res.rows");
 				// 返回的总条数不是5的倍数
-        if (res.totalRows % 5 !== 0 && this.page == this.totalPage - 1) {
+        if ((res.totalRows % 5 !== 0) && (this.page == (this.totalPage - 1))) {
           this.page = 0;
           uni.setStorageSync("recommendDesignerPage", this.page);
         }
 				//返回的总条数是5的倍数
-				if(res.totalRows % 5 == 0 && this.page ==this.totalPage){
+				if((res.totalRows % 5 == 0) && (this.page ==this.totalPage)){
 					this.page = 0;
 					uni.setStorageSync("recommendDesignerPage", this.page);
 				}
@@ -387,13 +382,11 @@ export default {
       }
     },
     //更多设计师
-    gotoMoreDesigner() {
-      console.log("筛选更多设计师");
-			uni.navigateTo({
-			  url: "/sub-home/pages/find-design/designer-list",
-			});
-      
-    },
+    gotoMoreDesigner: debounce(() => {
+			  uni.navigateTo({
+			    url: "/sub-home/pages/find-design/designer-list",
+			  });
+		},500),
     //去设计师个人主页
     gotoDesignerHomePage(zeusId) {
       console.log("zeusId====", zeusId);

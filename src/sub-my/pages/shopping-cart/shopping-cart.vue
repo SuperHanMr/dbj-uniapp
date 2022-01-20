@@ -21,8 +21,7 @@
 
 					<view class="goShop" @click="toShopHome(shopItem.storeId)">
 						<text class="shopName">{{shopItem.storeName}}</text>
-						<image class="shopIcon"
-							src="https://ali-image.dabanjia.com/static/mp/dabanjia/images/my/ic_jumpToShop%402x.png" />
+						<image class="shopIcon" src="https://ali-image.dabanjia.com/static/mp/dabanjia/images/theme-red/my/small_gotoShop.svg" />
 
 					</view>
 				</view>
@@ -50,12 +49,14 @@
 							<view class="goodsInfo">
 								<view>
 									<view class="goodsDesc" @click="toGoodsDetail(goodsItem.skuId)">
-										<text class="goodsType">{{goodsItem.productType=== 1?"物品":"服务"}}</text>
+										<view class="goodsType">{{goodsItem.productType=== 1?"物品":"服务"}}</view>
 										{{goodsItem.spuName}}
 									</view>
-									<view class="goodsSpec" @click="openSpec(goodsItem.skuId,goodsItem.goodsChecked)">
-										<view class="text">{{goodsItem.skuName}}</view>
-										<image 	class="selectOptions" src="../../static/shoppingCart_dropDown.svg"></image>
+									<view class="goodsSpec-container" @click="openSpec(goodsItem.skuId,goodsItem.goodsChecked)">
+										<view class="goodsSpec">
+											<view class="text">{{goodsItem.skuName}}</view>
+											<image 	class="selectOptions" src="../../static/shoppingCart_dropDown.svg"></image>
+										</view>
 									</view>
 								</view>
 								<!-- 商品单价和数量 -->
@@ -189,7 +190,6 @@
 				:combinations-props="combinationsProps" :default-select-index="selectedIndex" :spuName="spuName"
 				:productType="productType" :defaultSpec="defaultSpec" :defaultSpecIds="defaultSpecIds"
 				@close="popupShow=false" @confirm="handleConfirm"></echone-sku>
-			<!-- <view class="mask" v-if="skuShow"> -->
 
 
 			<custom-sku :show="skuShow" :combinations="combinations" :skuNames="skuNames" :selectedIndex="selectedIndex"
@@ -1452,13 +1452,12 @@
 				border-radius: 8rpx;
 			}
 			.goodsInfo {
+				width: 414rpx;
 				height: 192rpx;
-				margin-right: 20rpx;
 				display: flex;
 				flex-direction: column;
 				justify-content: space-between;
 				.goodsDesc {
-					max-width: 380rpx;
 					max-height: 80rpx;
 					font-size: 28rpx;
 					color: #333333;
@@ -1468,12 +1467,14 @@
 					-webkit-box-orient: vertical;
 					overflow: hidden;
 					text-overflow: ellipsis;
+					margin-bottom: 8rpx;
 					.goodsType {
 						display: inline-block;
-						width: 60rpx;
+						// width: 60rpx;
 						height: 30rpx;
 						line-height: 30rpx;
 						text-align: center;
+						padding: 0 10rpx;
 						margin-right: 4rpx;
 						border-radius: 4rpx;
 						background: linear-gradient(90.48deg, #B4EEE1 0.28%, #EAFCD7 99.48%);
@@ -1482,37 +1483,37 @@
 						color: #222222;
 					}
 				}
-				.goodsSpec {
-					// width: 388rpx;
-					width: 190rpx;
+				.goodsSpec-container{
 					height: 38rpx;
-					margin-top: 8rpx;
+					padding:0 12rpx;
 					background: #fafafa;
 					border: 1rpx solid #f0f0f0;
+					box-sizing: border-box;
 					border-radius: 4rpx;
-					display: flex;
-					align-items: center;
-					flex-flow: row nowrap;
-					justify-content: space-between;
-					.text {
-						// max-width: 330rpx;
-						max-width: 132rpx;
-						margin: 6rpx 12rpx;
-						overflow: hidden;
-						white-space: nowrap;
-						text-overflow: ellipsis;
-						font-size: 22rpx;
-						color: #999999;
-					}
-					.selectOptions {
-						width: 28rpx;
-						height: 28rpx;
-						margin-right: 8rpx;
-						display: block;
+					.goodsSpec {
+						display: flex;
+						align-items: center;
+						flex-flow: row nowrap;
+						justify-content: space-between;
+						.text {
+							max-width: 368rpx;
+							height: 34rpx;
+							line-height: 34rpx;
+							overflow: hidden;
+							white-space: nowrap;
+							text-overflow: ellipsis;
+							font-size: 22rpx;
+							color: #999999;
+						}
+						.selectOptions {
+							width: 26rpx;
+							height: 26rpx;
+						}
 					}
 				}
+			
 				.foot {
-					width: 388rpx;
+					// width: 388rpx;
 					display: flex;
 					justify-content: space-between;
 					align-items: flex-end;

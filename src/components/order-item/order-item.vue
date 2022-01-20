@@ -279,7 +279,7 @@
 						border-radius: 4rpx;
 						color: #212121;
 						font-weight: 600;
-						background: linear-gradient(90deg, #BDD9E5 0%, #CDEFCE 94.34%);
+						background: linear-gradient(90.48deg, #B4EEE1 0.28%, #EAFCD7 99.48%);
 						font-size: 20rpx;
 						text-align: center;
 						display: inline-block;
@@ -288,7 +288,6 @@
 					.name{
 						font-size: 26rpx;
 						color: #333333;
-
 						line-height: 32rpx;
 					}
 				}
