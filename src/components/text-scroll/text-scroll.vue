@@ -5,7 +5,8 @@
       <view class="line"></view>
       <view class="content">{{current.content}}</view>
       <view class="date">{{current.recordTime | formatDate}}</view>
-      <image class="icon-r" src="https://ali-image.dabanjia.com/static/mp/dabanjia/images/decorate/ic_more.svg"></image>
+  <!--    <image class="icon-r" src="https://ali-image.dabanjia.com/static/mp/dabanjia/images/decorate/ic_more.svg"></image> -->
+      <i class='icon-r icon-alert_notice_jump'></i>
     </view>
   </view>
 </template>
@@ -167,8 +168,8 @@
     }
 
     .icon-r {
-      width: 24rpx;
-      height: 24rpx;
+      font-size: 24rpx;
+      color: #b9b9b9;
     }
   }
 

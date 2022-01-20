@@ -7,13 +7,13 @@
     <view class="decorate-yf">
       <view class="wrap decorate" @click="goNoHouseDecorate">
         <view class="bg">
-          <image src="https://ali-image.dabanjia.com/static/mp/dabanjia/images/decorate/ic_decorate.svg"></image>
+          <image src="../../static/ic_decorate.svg"></image>
         </view>
         <text>进行装修服务</text>
       </view>
       <view class="wrap yf" @click="goCheckService">
         <view class="bg">
-          <image src="https://ali-image.dabanjia.com/static/mp/dabanjia/images/decorate/ic_checkhouse.svg"></image>
+          <image src="../../static/ic_checkhouse.svg"></image>
         </view>
         <text>进行验房服务</text>
       </view>
@@ -80,7 +80,7 @@
     height: 112rpx;
     opacity: 1;
     border: 2rpx solid #333333;
-    border-radius: 32rpx;
+    border-radius: 24rpx;
 
     image {
       width: 28rpx;

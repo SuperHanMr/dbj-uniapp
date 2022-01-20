@@ -7,7 +7,7 @@
 </template>
 
 <script>
-  import decorateDynamic from '@/components/decorate-dynamic/decorate-dynamic.vue'
+  import decorateDynamic from '../../components/decorate-dynamic/decorate-dynamic.vue'
   import {getDecorateDynamic,setAttentions,
   getFocusBrowse,getComments,expandReplies,createReply,removeComment} from "@/api/real-case.js"
   export default{

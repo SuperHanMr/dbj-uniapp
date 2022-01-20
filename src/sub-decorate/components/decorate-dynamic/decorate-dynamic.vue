@@ -19,12 +19,12 @@
     					<view class="actionType">{{item.recordName}}</view>
     					<view class="right">
     						<view class="like">
-    							<image v-if="!item.selfLike" @click="likeC(index,true,item)" src="../../static/images/ic_like@2x.png"></image>
-    							<image v-else @click="likeC(index,false,item)" src="../../static/images/ic_liked@2x.png"></image>
+    							<i v-if="!item.selfLike" @click="likeC(index,true,item)" class='icon-ic_zhuangxiuxianchang_weidianzan_csn'></i>
+    							<i v-else @click="likeC(index,false,item)" class='icon-ic_zhuangxiuxianchang_weidianzan_csn like-false'></i>
     							<view class="text">{{item.likeCount}}</view>
     						</view>
     						<view class="comment" @click="commentC(item,index)">
-    							<image  src="../../static/images/ic_comments@2x.png"></image>
+    							<i class="icon-ic_zhuangxiuxianchang_pinglun_csn"></i>
     							<view class="text">{{item.commentCount}}</view>
     						</view>
     					</view>
@@ -254,15 +254,21 @@
 	.acitonInfo .footer .right .like{
 		margin-right: 32rpx;
 	}
-	.acitonInfo .footer .like image{
-		width: 26rpx;
-		height: 26rpx;
+	.acitonInfo .footer .like i{
+    color: #999;
+		font-size: 26rpx;
+		
 		display: block;
 		margin-right: 8rpx;
+    // color: #000;
 	}
-	.acitonInfo .footer .comment image{
-		width: 24rpx;
-		height: 24rpx;
+  .like-false{
+    color: #FA4D32 !important;
+    // background-color: #FA4D32;
+  }
+	.acitonInfo .footer .comment i{
+		font-size: 24rpx;
+		color: #999;
 		display: block;
 		margin-right: 8rpx;
 	}
@@ -278,11 +284,12 @@
     display: flex;
     align-items: center;
     width: fit-content;
+    padding: 0 12rpx;
     image{
       width: 48rpx;
       height: 48rpx;
       background: #C1C1C1;
-      border-radius: 4rpx;
+      border-radius: 8rpx;
       margin-right: 18rpx;
     }
     text{

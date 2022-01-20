@@ -1,7 +1,7 @@
 <template>
   <view v-if="isLogin">
     <view class="decorate-index" v-if="estateList.length > 0">
-      <image class="bg-index" mode="aspectFit"
+      <image class="bg-index" 
         src="https://ali-image.dabanjia.com/static/mp/dabanjia/images/theme-red/decorate/bg%402x-4.png">
       </image>
       <view class="content flex-column">
@@ -28,7 +28,8 @@
             <view class="insurance-house">
               <view :class="{'payed':aServiceData.insuranceStatus}" class="insurance">
                 <image @click="consultingService"
-                  :src="aServiceData.insuranceStatus ? 'https://ali-image.dabanjia.com/static/mp/dabanjia/images/theme-red/decorate/insurance-pay.svg': 'https://ali-image.dabanjia.com/static/mp/dabanjia/images/theme-red/decorate/insurance-unpay.svg'">
+                
+                  :src="aServiceData.insuranceStatus ? '../../../static/insurance-pay.png': 'https://ali-image.dabanjia.com/static/mp/dabanjia/images/theme-red/decorate/insurance-unpay.svg'">
                 </image>
               </view>
               <view class="uni-title">{{ currentProject.housingEstate || '' }}{{currentProject.address || ''}}</view>
@@ -63,24 +64,24 @@
                 <text class="t">{{who}}的仓库</text>
                 <view class="r flex-start-row" @click="goToMyWarehouse">
                   <text>查看全部</text>
-                  <image src="https://ali-image.dabanjia.com/static/mp/dabanjia/images/decorate/ic_more.svg">
+                  <i class='icon-alert_notice_jump'></i>
                   </image>
                 </view>
               </view>
               <view class="my-warehouse">
                 <mwarehouse-btn
-                  iconUrl="https://ali-image.dabanjia.com/static/mp/dabanjia/images/theme-red/decorate/ic_ck_dfh.svg"
+                  iconUrl="../../static/ic_ck_dfh.svg"
                   @gotoPage="gotoPage('0')" name="待发货">
                 </mwarehouse-btn>
                 <mwarehouse-btn
-                  iconUrl="https://ali-image.dabanjia.com/static/mp/dabanjia/images/theme-red/decorate/ic_ck_dsh.svg"
+                  iconUrl="../../static/ic_ck_dsh.svg"
                   @gotoPage="gotoPage('1')" name="待收货">
                 </mwarehouse-btn>
                 <mwarehouse-btn
-                  iconUrl="https://ali-image.dabanjia.com/static/mp/dabanjia/images/theme-red/decorate/ic_ck_ysh.svg"
+                  iconUrl="../../static/ic_ck_ysh.svg"
                   @gotoPage="gotoPage('2')" name="已收货">
                 </mwarehouse-btn>
-                <mwarehouse-btn iconUrl="https://ali-image.dabanjia.com/static/mp/dabanjia/images/theme-red/decorate/ic_ck_tk.svg"
+                <mwarehouse-btn iconUrl="../../static/ic_ck_tk.svg"
                   @gotoPage="gotoPage('3')" name="退款">
                 </mwarehouse-btn>
               </view>
@@ -94,8 +95,8 @@
                 <text class="t">{{who}}的装修服务</text>
                 <view class="r flex-start-row" v-if="aServiceData.myServiceFlag" @click="goToMyDecorate">
                   <text>查看全部</text>
-                  <image src="https://ali-image.dabanjia.com/static/mp/dabanjia/images/decorate/ic_more.svg">
-                  </image>
+                  <i class='icon-alert_notice_jump'></i>
+                  
                 </view>
               </view>
               <service-item v-for="(item, index) in purchasedServiceList" :key="item.nodeType" :serviceData="item"
@@ -812,12 +813,12 @@
       }
 
       .insurance {
-        width: 142rpx;
+        width: 128rpx;
         height: 32rpx;
         margin-right: 16rpx;
 
         image {
-          width: 142rpx;
+          width: 128rpx;
           height: 32rpx;
         }
       }
@@ -825,10 +826,12 @@
       .insurance.payed {
         width: 128rpx;
         height: 32rpx;
-
+        // background-color: #fff;
         image {
-          width: 142rpx;
+          width: 128rpx;
           height: 32rpx;
+          // background-color: #fff;
+          z-index: 10;
         }
       }
 
@@ -935,9 +938,9 @@
         line-height: 36rpx;
       }
 
-      image {
-        width: 24rpx;
-        height: 24rpx;
+      i {
+        font-size: 24rpx;
+        color: #b9b9b9;
       }
     }
   }

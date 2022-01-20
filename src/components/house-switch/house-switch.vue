@@ -192,12 +192,14 @@
 			border-radius: 6rpx;
 		}
     .status.status0 {
-      color: #fff;
-      background: rgba(153, 153, 153, 0.5);;
+      color: #999;
+      background: #E8E8E8;
     }
 		.status.status1, .status.status3 {
-			color: #fff;
-			background: #F57F65;
+			color: #FA4D32;
+			background: rgba(250, 77, 50, 0.08);
+      border-radius: 8rpx 8rpx 4rpx 8rpx ;
+      // opacity: ;
 		}
 
 		// .status.status3 {
@@ -206,8 +208,9 @@
 		// }
 
 		.status.status4 {
-			color: #ffffff;
-			background: #999999;
+			color: #ccc;
+			background: #fff;
+      border: 0.5px solid #e8e8e8;
 		}
 	}
 
