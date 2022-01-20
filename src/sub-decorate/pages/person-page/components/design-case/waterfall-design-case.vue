@@ -156,20 +156,21 @@
 			margin: 20rpx 0 10rpx 0;
 			font-size: 26rpx;
 			font-family: PingFangSC, PingFangSC-Medium;
-			font-weight: bold;
+			// font-weight: bold;
 			text-align: left;
 			color: #333333;
 			letter-spacing: 0px;
 			text-overflow: -o-ellipsis-lastline;
 			overflow: hidden;
 			text-overflow: ellipsis;
+      line-height: 44rpx;
 			display: -webkit-box;
 			-webkit-line-clamp: 2;
 			line-clamp: 2;
 			-webkit-box-orient: vertical;
 		}
     .tag{
-      margin-bottom: 8rpx;
+      margin-bottom: 12rpx;
       width: 100%;
       height: 40rpx;
       overflow: hidden;
