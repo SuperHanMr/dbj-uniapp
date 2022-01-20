@@ -378,41 +378,41 @@
     onPullDownRefresh() {
       this.reloadData();
     },
-    computed: {
-      zoneList1() {
-        let list = [];
-				console.log(this.zoneList, '>>>>>>>>>>>>>>>>')
-        for (let i = 0; i < this.zoneList.length; i++) {
-          if (i < 4) {
-            list.push(this.zoneList[i]);
-          }
-        }
-        return list;
-      },
-      zoneList2() {
-        if (this.zoneList.length != 12) {
-          return [];
-        }
-        let list = [];
-        for (let i = 0; i < this.zoneList.length; i++) {
-          if (i >= 4 && i < 8) {
-            list.push(this.zoneList[i]);
-          }
-        }
-        return list;
-      },
-      zoneList3() {
-        let list = [];
-        for (let i = 0; i < this.zoneList.length; i++) {
-          if (this.zoneList.length == 12 && i > 7) {
-            list.push(this.zoneList[i]);
-          } else if (this.zoneList.length == 8 && i > 3) {
-            list.push(this.zoneList[i]);
-          }
-        }
-        return list;
-      },
-    },
+    // computed: {
+    //   zoneList1() {
+    //     let list = [];
+				// console.log(this.zoneList, '>>>>>>>>>>>>>>>>')
+    //     for (let i = 0; i < this.zoneList.length; i++) {
+    //       if (i < 4) {
+    //         list.push(this.zoneList[i]);
+    //       }
+    //     }
+    //     return list;
+    //   },
+    //   zoneList2() {
+    //     if (this.zoneList.length != 12) {
+    //       return [];
+    //     }
+    //     let list = [];
+    //     for (let i = 0; i < this.zoneList.length; i++) {
+    //       if (i >= 4 && i < 8) {
+    //         list.push(this.zoneList[i]);
+    //       }
+    //     }
+    //     return list;
+    //   },
+    //   zoneList3() {
+    //     let list = [];
+    //     for (let i = 0; i < this.zoneList.length; i++) {
+    //       if (this.zoneList.length == 12 && i > 7) {
+    //         list.push(this.zoneList[i]);
+    //       } else if (this.zoneList.length == 8 && i > 3) {
+    //         list.push(this.zoneList[i]);
+    //       }
+    //     }
+    //     return list;
+    //   },
+    // },
     methods: {
       toLiveList() {
         uni.navigateTo({
