@@ -90,6 +90,7 @@
 </template>
 
 <script>
+  
   export default{
     props:{
       personData:{},
@@ -111,12 +112,12 @@
       let query = uni.createSelectorQuery().in(this)
       this.$nextTick(function(){
         query.select(".report-text").boundingClientRect((res) => {
-          console.log(res)
+          console.log(1111)
           if(res){
             this.isHidden = res.height/20 >= 3;
             this.showBtn = res.height/20 >= 3;
           }
-          console.log(res)
+          // console.log(res)
           
           // console.log(res.height,this.isHidden)
           
@@ -125,7 +126,7 @@
     },
     methods:{
       // clickHidden(){
-      //   this.$emit('clickHidden')
+      //   
       // },
       queryAttention(data){
         this.$emit('queryAttention',data)
@@ -133,8 +134,20 @@
       clickHidden(){
         this.isHidden = !this.isHidden
         this.hddenText = this.isHidden?'查看全部':'收起隐藏'
+        let num = 0
+        let query = uni.createSelectorQuery().in(this)
+        this.$nextTick(function(){
+          query.select(".person-desgin").boundingClientRect((res) => {
+            console.log(res)
+            num = res.height+res.top+40
+            this.$emit('clickHidden',num)
+            // console.log(res.height,this.isHidden)
+            
+          }).exec()
+        })
       },
       sendMsg(){
+        
         this.$emit('sendMsg')
       }
     }
@@ -157,6 +170,7 @@
         padding: 10rpx 10rpx;
         .header-right-top{
           display: flex;
+          justify-content: center;
         }
         .list-item:last-child{
           margin-right: 0;

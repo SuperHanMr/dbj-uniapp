@@ -1,5 +1,5 @@
 <template>
-  <view class="person-case person-content-item"  v-if="pagState.totalRows!==0">
+  <view class="person-case person-content-item" :class="{'is-first':isFirst}"  v-if="pagState.totalRows!==0">
     <view class="title">Ta的案例</view>
     <designCase v-if="pagState.totalRows" class="design-case" :isPerson='true' :leftList="leftList" :rightList="rightList" :leftHeight="leftHeight" :rightHeight="rightHeight" :isGrab='isGrab' @height="onHeight" @click="onClick" @collection="onCollection" ></designCase>
     <view class="empty" v-else>
@@ -29,7 +29,11 @@
       isGrab:{
         type:Boolean,
         default:false,
-      }
+      },
+      isFirst:{
+        type:Boolean,
+        default:false
+      },
     },
     data(){
       return{
@@ -249,6 +253,9 @@
 <style lang="scss" scoped>
   .person-case{
     background-color: #fff;
+  }
+  .is-first{
+    border-radius: 32rpx 32rpx 0 0;
   }
   .title{
     margin-bottom: 32rpx;

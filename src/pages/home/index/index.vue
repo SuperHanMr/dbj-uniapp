@@ -987,7 +987,7 @@
     justify-content: center;
     align-items: center;
     width: 100%;
-    padding-top: 48rpx;
+    padding-top: 30rpx;
 		.item-box{
 			display: flex;
 			width: calc(100% - 24rpx);
@@ -1091,7 +1091,7 @@
 
   .swiper-tab {
     position: absolute;
-    bottom: 22rpx;
+    bottom: 16rpx;
     // width: 200rpx;
     // height: 4rpx;
     left: 50%;
@@ -1172,8 +1172,7 @@
 
   .banner-content {
     position: relative;
-    margin: 0 24rpx;
-    margin-top: 8rpx;
+    margin: 16rpx 24rpx 0;
 
     .banner {
       border-radius: 16rpx;

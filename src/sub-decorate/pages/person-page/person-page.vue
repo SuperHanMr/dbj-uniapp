@@ -6,7 +6,7 @@
       :src="personData.roleId===1?personData.artImage:'https://ali-image.dabanjia.com/static/mp/dabanjia/images/decorate/person_bg.png'"
     >
     </image>
-    <view class="mask" v-if="personData.roleId===1">
+    <view class="mask" :style="{height:maskHeight}" v-if="personData.roleId===1">
       
     </view>
     <view
@@ -45,6 +45,8 @@
        @queryAttention='queryAttention'
        :isAttention='isAttention'
        @sendMsg='sendMsg'
+       @clickHidden='clickHidden'
+       class="person-design"
        ></personDesign>
       <view
         class="person-msg"
@@ -233,6 +235,7 @@
         <personCase
           ref='case'
           :personId='personId'
+          :isFirst='commentData.totalRows==0&&!serviceEmpty'
           class="person-case"
           @contentEmpty='contentEmpty'
           v-if="personData.roleId===1||personData.roleId===2"
@@ -371,6 +374,7 @@ export default {
       evaluateEmpty:false,
       serviceEmpty:false,
       commentEmpty:true,
+      maskHeight:'1010rpx'
     };
   },
   computed: {
@@ -682,6 +686,9 @@ export default {
       uni.navigateTo({
         url:'/sub-decorate/pages/person-page/person-evaluate-list?id='+this.personId
       })
+    },
+    clickHidden(num){
+      this.maskHeight = num+'px'
     }
   },
 };
