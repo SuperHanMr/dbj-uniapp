@@ -80,7 +80,7 @@ export default {
 	top: 0;
 	bottom: 0;
 	margin: auto;
-	background-image: url("../../../static/images/price_up.png");
+	background-image: url("../../../static/images/price_down.png");
 }
 
 .sort-type {
