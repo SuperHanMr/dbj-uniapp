@@ -261,8 +261,8 @@ export default {
   onLoad() {
     const systemInfo = uni.getSystemInfoSync();
     this.navBarHeight = systemInfo.statusBarHeight + "px";
-
-    // 新加的
+  },
+  onShow() { 
     this.userId = getApp().globalData.token;
     console.log("getApp().globalData.userInfo==",getApp().globalData)
 
@@ -281,11 +281,6 @@ export default {
     if (uni.getStorageSync("recommendDesignerPage")) {
       this.page = uni.getStorageSync("recommendDesignerPage");
     }
-    // if(this.page==1){
-    // 	this.getDesignerList();
-    // }
-  },
-  onShow() {
 		this.scrollLeft = 1
 		this.$nextTick(()=>{
 			this.scrollLeft = 0
