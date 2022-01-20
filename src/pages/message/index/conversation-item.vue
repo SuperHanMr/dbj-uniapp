@@ -222,8 +222,6 @@
   }
 
   .im-message-name {
-	display: flex;
-	align-items: center;
     line-height: 44rpx;
     font-size: 16px;
     color: #111;
