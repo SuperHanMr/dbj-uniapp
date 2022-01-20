@@ -89,8 +89,8 @@
               style="margin-bottom: 8rpx;"
             >
               <view class="item">
-                <text>好评率{{item2.praiseEfficiency}}%</text>
-                <text class="icon"></text>
+                <text v-if="item2.praiseEfficiency">好评率{{item2.praiseEfficiency}}%</text>
+                <text v-if="item2.praiseEfficiency" class="icon"></text>
                 <text>{{item2.industryYears}}年设计经验</text>
               </view>
             </view>
@@ -167,8 +167,8 @@
           <view class="name_container">
             <view class="name">{{item4.nikeName || '--'}}   Ta家</view>
             <view class="cost">
-              <text v-if="item4.Similarity">{{item4.Similarity}}</text>
-              <text v-if="item4.Similarity" class="icon"></text>
+              <text v-if="item4.similarity">{{item4.similarity}}</text>
+              <text v-if="item4.similarity" class="icon"></text>
 
               <text v-if="item4.flag">附近{{ item4.distance/1000>1?`${(item4.distance/1000).toFixed(2)}km`:`${parseInt(item4.distance)}m`}}</text>
               <text v-if="item4.flag" class="icon"></text>
@@ -346,12 +346,12 @@ export default {
         uni.setStorageSync("recommendDesignerTotalPage", res.totalPage);
         console.log("res.rows");
 				// 返回的总条数不是5的倍数
-        if (res.totalRows % 5 !== 0 && this.page == this.totalPage - 1) {
+        if ((res.totalRows % 5 !== 0) && (this.page == (this.totalPage - 1))) {
           this.page = 0;
           uni.setStorageSync("recommendDesignerPage", this.page);
         }
 				//返回的总条数是5的倍数
-				if(res.totalRows % 5 == 0 && this.page ==this.totalPage){
+				if((res.totalRows % 5 == 0) && (this.page ==this.totalPage)){
 					this.page = 0;
 					uni.setStorageSync("recommendDesignerPage", this.page);
 				}
