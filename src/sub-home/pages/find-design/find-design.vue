@@ -125,14 +125,6 @@
       @click="gotoEditHouse"
       v-if="!userId || (userId && !hasEstate)"
     >
-      <!-- <view class="perfect_house_info">
-				<view class="title">完善房屋信息</view>
-				<view class="sub_title">即可查看您家附近的案例</view>
-				<view class="button">
-					<text>去完善</text>
-					<image src="../../static/gotoCase.svg" mode=""></image>
-				</view>
-			</view> -->
       <image
         class="bigImage"
         src="https://ali-image.dabanjia.com/static/mp/dabanjia/images/home/perfectHouseInfo.svg"
@@ -272,14 +264,14 @@ export default {
 
     // 新加的
     this.userId = getApp().globalData.token;
-    console.log("getApp().globalData.userInfo==",getApp().globalData.currentHouse.id)
+    console.log("getApp().globalData.userInfo==",getApp().globalData)
 
     this.estateId = getApp().globalData.currentHouse.id
 
     console.log("this.estateId===", this.estateId);
     if (this.userId) {
       // 登录
-      this.hasEstate = this.estateId?ture:false
+      this.hasEstate = this.estateId?true:false
     } else {
       // 未登录
       this.estateId = "";
