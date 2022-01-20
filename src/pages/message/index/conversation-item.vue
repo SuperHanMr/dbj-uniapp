@@ -4,7 +4,7 @@
       <image 
         v-if="conversation.systemType === CONV_TYPES.CUSTOMER" 
         class="im-avatar-image" 
-        src="https://ali-image.dabanjia.com/static/mp/dabanjia/images/message/ic_customer_service@2x.png">
+        src="https://ali-image-test.dabanjia.com/image/20220120/14/1642662928381_0531%24customer_ic.png">
       </image>
       <image
         v-else-if="conversation.systemType === CONV_TYPES.SYSTEM" 
@@ -222,8 +222,6 @@
   }
 
   .im-message-name {
-	display: flex;
-	align-items: center;
     line-height: 44rpx;
     font-size: 16px;
     color: #111;

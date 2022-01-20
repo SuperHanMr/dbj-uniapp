@@ -69,7 +69,7 @@
       <scroll-view
         scroll-x="true"
         style="white-space: nowrap;"
-        @scrolltolower="gotoNext"
+        @scrolltolower.stop="gotoMoreDesigner"
 				:scroll-left="scrollLeft"
       >
         <view
@@ -125,14 +125,6 @@
       @click="gotoEditHouse"
       v-if="!userId || (userId && !hasEstate)"
     >
-      <!-- <view class="perfect_house_info">
-				<view class="title">完善房屋信息</view>
-				<view class="sub_title">即可查看您家附近的案例</view>
-				<view class="button">
-					<text>去完善</text>
-					<image src="../../static/gotoCase.svg" mode=""></image>
-				</view>
-			</view> -->
       <image
         class="bigImage"
         src="https://ali-image.dabanjia.com/static/mp/dabanjia/images/home/perfectHouseInfo.svg"
@@ -153,7 +145,7 @@
       @click="gotoRealCase"
     >
       <view class="left">
-        为您推荐
+        推荐案例
       </view>
       <view class="right">
         <text>更多</text>
@@ -173,24 +165,25 @@
       >
         <view class="left">
           <view class="name_container">
-            <view class="name">{{item4.nikeName || 'xxx'}}   Ta家</view>
+            <view class="name">{{item4.nikeName || '--'}}   Ta家</view>
             <view class="cost">
-              <text v-if="item4.Similarity" >{{item4.Similarity}}</text>
+              <text v-if="item4.Similarity">{{item4.Similarity}}</text>
               <text v-if="item4.Similarity" class="icon"></text>
 
-              <text v-if="item4.flag">附近{{parseInt(item4.distance)}}m</text>
+              <text v-if="item4.flag">附近{{ item4.distance/1000>1?`${(item4.distance/1000).toFixed(2)}km`:`${parseInt(item4.distance)}m`}}</text>
               <text v-if="item4.flag" class="icon"></text>
 
               <text v-if="!item4.flag">{{item4.cityName|| "-"}}</text>
               <text v-if="!item4.flag" class="icon"></text>
 
-              <text v-if="item4.budget">预算：{{item4.budget?`￥${(item4.budget).toFixed(2)}`: "-"}}</text>
+              <text>{{item4.budget?`预算：￥${(item4.budget).toFixed(2)}`: "预算：-"}}</text>
             </view>
           </view>
           <view class="attr_container">
-						<view class="attr_item">{{item4.styleName}}</view>
+						<view class="attr_item" v-if="item4.styleName">{{item4.styleName}}</view>
             <view
               class="attr_item"
+							v-if="item4.features"
               v-for="item5 in item4.features"
               :key="item5"
             >{{item5}}</view>
@@ -273,12 +266,12 @@ export default {
     this.userId = getApp().globalData.token;
     console.log("getApp().globalData.userInfo==",getApp().globalData)
 
-    this.estateId = uni.getStorageSync("houseListChooseId");
+    this.estateId = getApp().globalData.currentHouse.id
 
     console.log("this.estateId===", this.estateId);
     if (this.userId) {
       // 登录
-      this.hasEstate = getApp().globalData.userInfo.hasEstate;
+      this.hasEstate = this.estateId?true:false
     } else {
       // 未登录
       this.estateId = "";
@@ -321,7 +314,7 @@ export default {
 			  uni.navigateTo({
 			    url: "/sub-home/pages/find-design/search-design",
 			  });
-		},400),
+		},500),
 
     getRecommendCaseList() {
       let params = {
@@ -352,10 +345,16 @@ export default {
         this.totalPage = res.totalPage;
         uni.setStorageSync("recommendDesignerTotalPage", res.totalPage);
         console.log("res.rows");
-        if (this.page == this.totalPage - 1 || res.rows % 5 !== 0) {
+				// 返回的总条数不是5的倍数
+        if (res.totalRows % 5 !== 0 && this.page == this.totalPage - 1) {
           this.page = 0;
           uni.setStorageSync("recommendDesignerPage", this.page);
         }
+				//返回的总条数是5的倍数
+				if(res.totalRows % 5 == 0 && this.page ==this.totalPage){
+					this.page = 0;
+					uni.setStorageSync("recommendDesignerPage", this.page);
+				}
       });
     },
     //自己找设计师
@@ -829,6 +828,7 @@ export default {
       .attr_container {
         display: flex;
         flex-flow: row wrap;
+				min-height: 40rpx;
         align-items: center;
         .attr_item {
           // width: 128rpx;

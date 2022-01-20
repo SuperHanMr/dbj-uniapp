@@ -222,12 +222,12 @@
 				this.endPage = false;
 				this.listParam.page = 0;
 				this.$refs.realCaseList.triggered = true;
-				this.getListData();
+				this.getListData(true);
 			},
 			onPullDownRefresh() {
 				this.endPage = false;
 				this.listParam.page = 0;
-				this.getListData();
+				this.getListData(true);
 				uni.stopPullDownRefresh()
 			}
 		}
