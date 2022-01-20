@@ -5,12 +5,13 @@
 				{{item.title}}
 			</view>
 			<view class="right">
-				<view :class="['tag', {'tag-all': tag.key == tagSelect[index]}]" v-for="(tag, tagIndex) in item.list" :key='tag.key' @click="onTag(index,tag.key, tagIndex)">
+				<view :class="['tag', {'tag-all': tag.key == tagSelect[index]}]" v-for="(tag, tagIndex) in item.list"
+					:key='tag.key' @click="onTag(index,tag.key, tagIndex)">
 					{{tag.name}}
 				</view>
 			</view>
 			<view class="fade">
-				
+
 			</view>
 		</view>
 	</view>
@@ -18,14 +19,12 @@
 
 <script>
 	export default {
-		data(){
+		data() {
 			return {
-				list: [
-					{
+				list: [{
 						title: '居室',
 						key: 1,
-						list: [
-							{
+						list: [{
 								name: '全部',
 								key: null
 							},
@@ -54,8 +53,7 @@
 					{
 						title: '面积',
 						key: 2,
-						list: [
-							{
+						list: [{
 								name: '全部',
 								key: null
 							},
@@ -76,12 +74,12 @@
 				],
 				tagSelect: [null, null],
 				selectData: {
-					
+
 				}
 			}
 		},
-		methods:{
-			onTag(index,key, tagIndex){
+		methods: {
+			onTag(index, key, tagIndex) {
 				let arr = JSON.parse(JSON.stringify(this.tagSelect));
 				arr[index] = key;
 				this.tagSelect = arr;
@@ -96,15 +94,17 @@
 </script>
 
 <style lang="scss" scoped>
-	.real-case-screening{
+	.real-case-screening {
 		width: 100%;
 		height: 100%;
-		.list{
+
+		.list {
 			display: flex;
 			align-items: center;
 			padding: 16rpx 0 16rpx 32rpx;
 			position: relative;
-			.left{
+
+			.left {
 				display: flex;
 				margin-right: 32rpx;
 				font-family: PingFang SC;
@@ -114,7 +114,8 @@
 				text-align: center;
 				color: #333333;
 			}
-			.right{
+
+			.right {
 				flex: 1;
 				display: flex;
 				font-family: PingFang SC;
@@ -123,17 +124,20 @@
 				text-align: center;
 				color: #333333;
 				overflow-y: auto;
-				.tag{
+
+				.tag {
 					margin-right: 16rpx;
 					padding: 2rpx 16rpx 4rpx;
 					white-space: nowrap;
 				}
-				.tag-all{
+
+				.tag-all {
 					background: #F3F3F3;
 					border-radius: 6rpx;
 				}
 			}
-			.fade{
+
+			.fade {
 				position: absolute;
 				right: 0;
 				bottom: 16rpx;

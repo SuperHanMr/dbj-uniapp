@@ -6,14 +6,19 @@
 		<view class="list-box2" v-if="list2.length > 0">
 			<view class="top">
 				<view class="left">
-					<image :src="imgList[0] + '?x-oss-process=image/resize,m_lfit,w_456,h_364'" mode="" :style="{borderRadius: list3.length > 0 ? 'none' : '0 0 0 32rpx'}"></image>
+					<image :src="imgList[0] + '?x-oss-process=image/resize,m_lfit,w_456,h_364'" mode=""
+						:style="{borderRadius: list3.length > 0 ? 'none' : '0 0 0 32rpx'}"></image>
 				</view>
 				<view class="right">
-					<image :src="item + '?x-oss-process=image/resize,m_lfit,w_226,h_180'" mode="" v-for="(item, index) in list2" :key='item' :style="{borderRadius: (list3.length > 0 || (index != list2.length - 1)) ? 'none' : '0 0 32rpx 0'}"></image>
+					<image :src="item + '?x-oss-process=image/resize,m_lfit,w_226,h_180'" mode=""
+						v-for="(item, index) in list2" :key='item'
+						:style="{borderRadius: (list3.length > 0 || (index != list2.length - 1)) ? 'none' : '0 0 32rpx 0'}">
+					</image>
 				</view>
 			</view>
 			<view class="bottom" v-if="list3.length > 0">
-				<image :src="item + '?x-oss-process=image/resize,m_lfit,w_226,h_180'" mode="" v-for="item in list3" :key='item'></image>
+				<image :src="item + '?x-oss-process=image/resize,m_lfit,w_226,h_180'" mode="" v-for="item in list3"
+					:key='item'></image>
 			</view>
 		</view>
 	</view>
@@ -32,12 +37,12 @@
 			if (list.length > 0) {
 				this.list1.push(list[0]);
 				if (list.length >= 3) {
-					this.list2.push(...[list[0], list[1], list[2]]);
+					this.list2.push(...[list[1], list[2]]);
 				}
 				if (list.length >= 6) {
 					this.list3.push(...[list[3], list[4], list[5]]);
 				}
-			} 
+			}
 		},
 		data() {
 			return {
@@ -77,6 +82,7 @@
 					width: 456rpx;
 					height: 100%;
 					margin-right: 4rpx;
+
 					image {
 						width: 100%;
 						height: 100%;

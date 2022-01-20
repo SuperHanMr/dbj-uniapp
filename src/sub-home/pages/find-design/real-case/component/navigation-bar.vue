@@ -1,5 +1,6 @@
 <template>
-	<view class="navigation-bar" :style="{paddingTop: Number(paddingTop) + 'px', backgroundColor: !showScreen ? '#FFFFFF' : 'none'}">
+	<view class="navigation-bar"
+		:style="{paddingTop: Number(paddingTop) + 'px', backgroundColor: !showScreen ? '#FFFFFF' : 'none'}">
 		<view class="box">
 			<view class="navigation-bar-back icon-ic_cancel_white" @click="goBack">
 			</view>
@@ -7,7 +8,8 @@
 				<view class="text">
 					{{(!showScreen && currentHouse.address) ? `${currentHouse.housingEstate}${currentHouse.address}` : '推荐案例'}}
 				</view>
-				<view class="address-icon icon-zhuangxiushouye_fuwuzhankaijiantou" v-if="(!showScreen && currentHouse.address)">
+				<view class="address-icon icon-zhuangxiushouye_fuwuzhankaijiantou"
+					v-if="(!showScreen && currentHouse.address)">
 				</view>
 			</view>
 		</view>
@@ -16,7 +18,7 @@
 
 <script>
 	export default {
-		props:{
+		props: {
 			currentHouse: {
 				type: Object,
 				default: {}
@@ -30,11 +32,11 @@
 				default: ''
 			}
 		},
-		methods:{
-			goBack(){
+		methods: {
+			goBack() {
 				uni.navigateBack()
 			},
-			openHomeList(){
+			openHomeList() {
 				if (this.$props.showScreen) return;
 				this.$emit('openHomeList')
 			}
@@ -43,7 +45,7 @@
 </script>
 
 <style lang="scss" scoped>
-	.navigation-bar{
+	.navigation-bar {
 		position: fixed;
 		top: 0;
 		left: 0;
@@ -56,35 +58,39 @@
 		color: #000000;
 		// background-color: #ffffff;
 		z-index: 10;
-		
+
 		.box {
 			position: relative;
 			display: flex;
 			align-items: center;
 			width: 100%;
+
 			.navigation-bar-back {
 				margin-left: 34rpx;
 				font-size: 34rpx;
 				position: relative;
 				z-index: 20;
 			}
-			.title{
+
+			.title {
 				flex: 1;
 				display: flex;
 				align-items: center;
 				justify-content: center;
 				margin-left: -68rpx;
-				.text{
+
+				.text {
 					max-width: 325rpx;
-					white-space:nowrap;
-					overflow:hidden;
-					text-overflow:ellipsis;
+					white-space: nowrap;
+					overflow: hidden;
+					text-overflow: ellipsis;
 					font-weight: 500;
 					font-size: 32rpx;
 					color: #111111;
 					margin-right: 14rpx;
 				}
-				.address-icon{
+
+				.address-icon {
 					font-size: 20rpx;
 				}
 			}

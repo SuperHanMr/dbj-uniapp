@@ -16,9 +16,9 @@
 				<view class="list-count">
 					<view class="list-item" @click="toChoose(item)">
 						<view class="item-message">
-						<!-- 	<image src="https://ali-image.dabanjia.com/static/mp/dabanjia/images/decorate/choose.svg"
-								 class="choose-icon edit-icon"></image> -->
-              <i class='icon-ic_wodejia_danxuanzhong_csn choose-icon edit-icon' v-if="item.id==chooseId"></i>
+							<image src="https://ali-image.dabanjia.com/static/mp/dabanjia/images/theme-red/decorate/ic_checked.svg"
+								 class="choose-icon edit-icon" v-if="item.id==chooseId"></image>
+              <!-- <i class='icon-ic_wodejia_danxuanzhong_csn choose-icon edit-icon' ></i> -->
 							<view class="message-right">
 								<view class="item">
 									<text class="defalut" v-if="item.defaultEstate">默认</text>

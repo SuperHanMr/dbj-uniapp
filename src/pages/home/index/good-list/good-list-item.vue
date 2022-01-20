@@ -128,27 +128,27 @@
 
 		.price {
 			margin-top: 13rpx;
-			font-size: 24rpx;
+			font-size: 20rpx;
 			font-weight: 400;
 			color: #939699;
 			line-height: 0;
 
 			.amount {
-				font-size: 40rpx;
+				font-size: 36rpx;
 				font-weight: 400;
 				color: #333333;
 				line-height: 42rpx;
 			}
 
 			.ex {
-				font-size: 34rpx;
+				font-size: 28rpx;
 				font-weight: 400;
 				color: #333333;
 				line-height: 26rpx;
 			}
 
 			.pre {
-				font-size: 28rpx;
+				font-size: 24rpx;
 				font-weight: 400;
 				line-height: 26rpx;
 				padding-right: 5rpx;
@@ -178,14 +178,14 @@
 				padding: 3rpx 8rpx 1rpx;
 				margin-right: 8rpx;
 				line-height: 30rpx;
-				border-radius: 6rpx;
+				border-radius: 4rpx;
 				letter-spacing: 0.2px;
-				color: #35c4c4;
+				color: #222222;
+				font-weight: 600;
 				font-size: 21rpx;
 				text-align: center;
 				display: inline-block;
-				background: linear-gradient(90deg, #BDD9E5 0%, #CDEFCE 94.34%);
-				color: #212121;
+				background: linear-gradient(90.48deg, #B4EEE1 0.28%, #EAFCD7 99.48%);
 				vertical-align: 13%;
 			}
 		}

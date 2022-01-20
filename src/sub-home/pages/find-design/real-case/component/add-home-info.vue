@@ -1,7 +1,9 @@
 <template>
 	<view class="perfect-house-info" @click="openHomeList">
 		<view class="image-box">
-			<image src="https://ali-image.dabanjia.com/static/mp/dabanjia/images/home/perfect-information.png?x-oss-process=image/resize,m_lfit,w_148,h_150" mode=""></image>
+			<image
+				src="https://ali-image.dabanjia.com/static/mp/dabanjia/images/home/perfect-information.png?x-oss-process=image/resize,m_lfit,w_148,h_150"
+				mode=""></image>
 		</view>
 		<view class="box">
 			<view class="title">
@@ -19,8 +21,8 @@
 
 <script>
 	export default {
-		methods:{
-			openHomeList(){
+		methods: {
+			openHomeList() {
 				this.$emit('openHomeList');
 			}
 		}
@@ -28,7 +30,7 @@
 </script>
 
 <style lang="scss" scoped>
-	.perfect-house-info{
+	.perfect-house-info {
 		position: fixed;
 		bottom: 150rpx;
 		left: 40rpx;
@@ -38,9 +40,11 @@
 		background: #FFFFFF;
 		box-shadow: 0px 0px 40rpx rgba(0, 0, 0, 0.06);
 		border-radius: 24rpx;
-		.image-box{
+
+		.image-box {
 			position: relative;
-			image{
+
+			image {
 				width: 148rpx;
 				height: 150rpx;
 				position: absolute;
@@ -48,19 +52,23 @@
 				left: -12rpx;
 			}
 		}
-		.box{
+
+		.box {
 			margin: 16rpx 0 14rpx 64rpx;
-			.title{
+
+			.title {
 				font-size: 28rpx;
 				color: #333333;
 				font-weight: 500;
 			}
-			.info{
+
+			.info {
 				color: #999999;
 				font-size: 20rpx;
 			}
 		}
-		.add-home-address{
+
+		.add-home-address {
 			margin: 24rpx 20rpx 22rpx 0;
 			background: linear-gradient(117.02deg, #FA3B34 24.56%, #FF6A33 92.21%);
 			border-radius: 8rpx;

@@ -105,7 +105,7 @@
       .line{
         width: 4rpx;
         height: 34rpx;
-        background: #00BFB6;
+        background: #222;
         border-radius: 0px 200rpx 200rpx 0px;
         margin-right: 28rpx;
       }

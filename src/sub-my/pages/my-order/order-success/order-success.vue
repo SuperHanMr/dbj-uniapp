@@ -21,7 +21,7 @@
         <view class="order-status">
           <view class="status">
             <image src="https://ali-image.dabanjia.com/static/mp/dabanjia/images/theme-red/my/ic_order_success.svg" mode=""/>
-            <text>退款成功</text>
+            <view class="text">退款成功</view>
           </view>
           <text class="time">{{refundInfo.createTime | formatDate}}</text>
         </view>
@@ -30,7 +30,7 @@
       <view class="order-header1">
         <view class="refund-price">
           <text>退款总金额</text>
-          <view style="color:#FF3347;">
+          <view style="color:#FA4D32;">
             <text style="font-size:26rpx;">￥</text>
             <text style="font-size:40rpx;" class="price-font" >
 							{{handlePrice(refundInfo.refundAmount)[0]}}.
@@ -114,10 +114,10 @@
         <!-- 占位 -->
         <view class="bgcStyle" :style="{backgroundImage:`url(${bgImg})`,backgroundSize: '100% 100%'}" />
         <view :style="{height:navBarHeight}"></view>
-        <view class="order-status">
+        <view class="order-status-done">
           <view class="status">
             <image src="https://ali-image.dabanjia.com/static/mp/dabanjia/images/theme-red/my/ic_order_success.svg" mode=""/>
-            <text>已完成</text>
+            <view class="text">已完成</view>
           </view>
         </view>
       </view>
@@ -196,7 +196,7 @@
 					退款成功
 				</view>
 
-				<view class="refundOrderStatus" style="color:#FF3347;" v-if="orderInfo.refundBillStatus == 5"
+				<view class="refundOrderStatus" style="color:#FA4D32;" v-if="orderInfo.refundBillStatus == 5"
 					@click="refundFailed(orderInfo)">
 					退款失败
 				</view>
@@ -432,9 +432,8 @@ export default {
     width: 100%;
     height: 100%;
     overflow: auto;
-    .order-status {
+    .order-status,.order-status-done {
       width: 100%;
-      height: 140rpx;
       color: #ffffff;
       background-size: 100% 172rpx;
       display: flex;
@@ -446,18 +445,20 @@ export default {
         flex-flow: row nowrap;
         align-items: center;
         margin-bottom: 8rpx;
-
-        image {
+				image {
           width: 64rpx;
           height: 64rpx;
+					display: block;
           object-fit: cover;
           margin-right: 12rpx;
         }
 
-        text {
-          font-size: 48rpx;
+        .text {
+          font-size: 40rpx;
           font-weight: 500;
           color: #ffffff;
+					height: 64rpx;
+					line-height: 62rpx;
         }
       }
 
@@ -467,9 +468,13 @@ export default {
         line-height: 40rpx;
         font-size: 26rpx;
         font-weight: 400;
+				margin-bottom: 32rpx;
       }
     }
-
+		
+		.order-status-done .status{
+			margin-bottom: 32rpx;
+		}
     .order-header1 {
       background: #ffffff;
       border-radius: 20rpx;
@@ -696,7 +701,7 @@ export default {
 }
 
 ::v-deep .uni-button-color {
-  color: #ff3347 !important;
+  color: #FA4D32 !important;
   font-size: 30rpx !important;
   font-weight: 500;
 }

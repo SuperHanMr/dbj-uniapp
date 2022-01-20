@@ -69,6 +69,9 @@
 </script>
 
 <style lang="scss" scoped>
+  .person-evaluate{
+    background-color: #fff;
+  }
   .grab-padding{
     padding: 38rpx 0 16rpx ;
   }

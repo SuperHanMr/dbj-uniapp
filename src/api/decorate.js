@@ -176,6 +176,21 @@ export function getComments(params) {
 	})
 }
 
+//查询设计师个人主页评价
+export function getDesignComments(params) {
+	// const str = objectToUrlString(params)
+	return request.get("/pm/app/commentSetting/v2/getComments", {
+		params
+	})
+}
+
+//获取个人主页案例列表
+export function getCaseList(params) {
+	return request.post("/app/case/new/personal/page", params)
+}
+
+
+
 //查询服务中是否可以换人
 export function checkServeingChange(params) {
 	return request.get(`/pm/app/serve/serveing/change/check/${params}`)
