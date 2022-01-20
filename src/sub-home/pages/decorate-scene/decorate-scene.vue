@@ -226,14 +226,14 @@
             </view>
             <view class="report">{{item.content}}</view>
             <view class="evidence">
-              <imagePreview
+              <image-preview
                 :list='item.imagesList'
                 :imgWidth='192'
                 :imgHeight="192"
                 :lineSpace='10'
                 :colSpace="11"
                 :row="2"
-              ></imagePreview>
+              ></image-preview>
             </view>
             <view class="footer">
               <view class="actionType">{{item.recordName}}</view>
@@ -540,11 +540,11 @@ import {
   checkEquipmentServe,
 } from "../../../api/real-case.js";
 import { queryEstates } from "../../../api/decorate.js";
-import imagePreview from "../../../components/image-preview/image-preview.vue";
+// import imagePreview from "../../../components/image-preview/image-preview.vue";
 export default {
-  components: {
-    imagePreview,
-  },
+  // components: {
+  //   imagePreview,
+  // },
   data() {
     return {
       hasEstate: false,

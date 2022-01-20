@@ -79,7 +79,8 @@
 
 <style lang="scss" scoped>
   .content {
-    border-bottom: 2rpx solid #f4f4f4;
+    // border-bottom: 2rpx solid #f4f4f4;
+    border-radius: 32rpx;
   }
 
   .s-4level-name {

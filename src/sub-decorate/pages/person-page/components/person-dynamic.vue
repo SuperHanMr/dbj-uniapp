@@ -12,7 +12,7 @@
 
 <script>
   import '../style/common.scss'
-  import decorateDynamic from '@/components/decorate-dynamic/decorate-dynamic.vue'
+  import decorateDynamic from '../../../components/decorate-dynamic/decorate-dynamic.vue'
   import {getPersonDynamic,setAttentions,getDecorateDynamic} from "@/api/real-case.js"
   export default{
     components:{

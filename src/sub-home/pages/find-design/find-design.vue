@@ -387,13 +387,11 @@ export default {
       }
     },
     //更多设计师
-    gotoMoreDesigner() {
-      console.log("筛选更多设计师");
-			uni.navigateTo({
-			  url: "/sub-home/pages/find-design/designer-list",
-			});
-      
-    },
+    gotoMoreDesigner: debounce(() => {
+			  uni.navigateTo({
+			    url: "/sub-home/pages/find-design/designer-list",
+			  });
+		},500),
     //去设计师个人主页
     gotoDesignerHomePage(zeusId) {
       console.log("zeusId====", zeusId);

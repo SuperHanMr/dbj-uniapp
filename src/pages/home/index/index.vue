@@ -22,7 +22,7 @@
         </image>
       </view>
       <image @click="toSearch" class="icon-search"
-        src="https://ali-image.dabanjia.com/static/mp/dabanjia/images/theme-red/home/home_ic_search.png" mode=""></image>
+        src="https://ali-image.dabanjia.com/static/mp/dabanjia/images/theme-red/home/home_ic_search.jpg" mode=""></image>
       <image @click="toMessage" class="img"
         src="https://ali-image.dabanjia.com/static/mp/dabanjia/images/theme-red/home/online-server.png" mode="">
       </image>
@@ -378,41 +378,41 @@
     onPullDownRefresh() {
       this.reloadData();
     },
-    computed: {
-      zoneList1() {
-        let list = [];
-				console.log(this.zoneList, '>>>>>>>>>>>>>>>>')
-        for (let i = 0; i < this.zoneList.length; i++) {
-          if (i < 4) {
-            list.push(this.zoneList[i]);
-          }
-        }
-        return list;
-      },
-      zoneList2() {
-        if (this.zoneList.length != 12) {
-          return [];
-        }
-        let list = [];
-        for (let i = 0; i < this.zoneList.length; i++) {
-          if (i >= 4 && i < 8) {
-            list.push(this.zoneList[i]);
-          }
-        }
-        return list;
-      },
-      zoneList3() {
-        let list = [];
-        for (let i = 0; i < this.zoneList.length; i++) {
-          if (this.zoneList.length == 12 && i > 7) {
-            list.push(this.zoneList[i]);
-          } else if (this.zoneList.length == 8 && i > 3) {
-            list.push(this.zoneList[i]);
-          }
-        }
-        return list;
-      },
-    },
+    // computed: {
+    //   zoneList1() {
+    //     let list = [];
+				// console.log(this.zoneList, '>>>>>>>>>>>>>>>>')
+    //     for (let i = 0; i < this.zoneList.length; i++) {
+    //       if (i < 4) {
+    //         list.push(this.zoneList[i]);
+    //       }
+    //     }
+    //     return list;
+    //   },
+    //   zoneList2() {
+    //     if (this.zoneList.length != 12) {
+    //       return [];
+    //     }
+    //     let list = [];
+    //     for (let i = 0; i < this.zoneList.length; i++) {
+    //       if (i >= 4 && i < 8) {
+    //         list.push(this.zoneList[i]);
+    //       }
+    //     }
+    //     return list;
+    //   },
+    //   zoneList3() {
+    //     let list = [];
+    //     for (let i = 0; i < this.zoneList.length; i++) {
+    //       if (this.zoneList.length == 12 && i > 7) {
+    //         list.push(this.zoneList[i]);
+    //       } else if (this.zoneList.length == 8 && i > 3) {
+    //         list.push(this.zoneList[i]);
+    //       }
+    //     }
+    //     return list;
+    //   },
+    // },
     methods: {
       toLiveList() {
         uni.navigateTo({
@@ -824,7 +824,6 @@
     margin-right: 32rpx;
     margin-left: 40rpx;
 		position: relative;
-		z-index: 10;
   }
 
   .bottom-border {
@@ -1127,8 +1126,8 @@
     border-bottom-right-radius: 32rpx;
 		
     .img {
-      width: 76rpx;
-      height: 74rpx;
+      width: 80rpx;
+      height: 80rpx;
 			position: relative;
 			z-index: 10;
     }
