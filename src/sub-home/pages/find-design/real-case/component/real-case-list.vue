@@ -41,12 +41,11 @@
 						<view class="near">
 							{{item.flag ? `附近${(item.distance / 1000).toFixed(2)}km` : getName()}}
 						</view>
-						<view class="point" v-if="item.Similarity">
+						<view class="point" v-if="item.similarity">
 
 						</view>
-						<view class="similarity" v-if="item.Similarity">
-							户型相似度
-							<text>{{item.Similarity}}</text>
+						<view class="similarity" v-if="item.similarity">
+							<text>{{item.similarity}}</text>
 						</view>
 					</view>
 				</view>
