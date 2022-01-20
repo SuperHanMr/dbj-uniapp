@@ -15,18 +15,19 @@
 							<text v-if="item.roomNum != 0">{{item.roomNum || '-'}}室</text>
 							<text v-if="item.hallNum != 0">{{item.hallNum || '-'}}厅</text>
 							<text v-if="item.kitchenNum != 0">{{item.kitchenNum || '-'}}厨</text>
+							<text v-if="item.bathroomNum != 0">{{item.bathroomNum || '-'}}卫</text>
 						</view>
-						<view class="line" v-if="item.roomNum != 0 || item.hallNum != 0 || item.kitchenNum != 0">
+						<view class="line" v-if="item.roomNum != 0 || item.hallNum != 0 || item.kitchenNum != 0 || item.bathroomNum != 0">
 
 						</view>
 						<view class="area" v-if="item.insideArea != 0">
 							{{item.insideArea || '-'}}m²
 						</view>
-						<view class="line" v-if="item.budget">
+						<view class="line" v-if="item.budget != 0">
 
 						</view>
-						<view class="preferential" v-if="item.budget">
-							预算: ¥{{(item.budget).toFixed(2)}}万
+						<view class="preferential" v-if="item.budget != 0">
+							预算: ¥{{item.budget ? (item.budget).toFixed(2) : '-'}}万
 						</view>
 					</view>
 					<view class="tag-box">
@@ -37,16 +38,15 @@
 				</view>
 				<view class="bottom">
 					<ImgList :imgList='item.imageUrlList' />
-					<view class="addressAndSimilarity" v-if="currentHouse.address">
-						<view class="near">
-							{{item.flag ? `附近${(item.distance / 1000).toFixed(2)}km` : getName()}}
+					<view class="addressAndSimilarity" v-if="item.flag || item.cityName || item.similarity">
+						<view class="near" v-if="item.flag || item.cityName">
+							{{item.flag ? `附近${(item.distance / 1000).toFixed(2)}km` : item.cityName}}
 						</view>
-						<view class="point" v-if="item.Similarity">
+						<view class="point" v-if="item.similarity">
 
 						</view>
-						<view class="similarity" v-if="item.Similarity">
-							户型相似度
-							<text>{{item.Similarity}}</text>
+						<view class="similarity" v-if="item.similarity">
+							<text>{{item.similarity}}</text>
 						</view>
 					</view>
 				</view>
@@ -96,13 +96,12 @@
 					this.scrollTop = 0;
 				});
 			},
-			getName() {
-				let currentHouse = this.$props.currentHouse;
+			getName(item) {
 				let name = '';
-				if (currentHouse.cityName) {
-					return name = currentHouse.cityName.substring(0, currentHouse.cityName.indexOf('市'))
-				} else if (currentHouse.name) {
-					return name = currentHouse.name.substring(0, currentHouse.name.indexOf('市'))
+				if (item.cityName) {
+					return name = item.cityName.substring(0, item.cityName.indexOf('市'))
+				} else if (item.name) {
+					return name = item.name.substring(0, item.name.indexOf('市'))
 				}
 			},
 			toCaseDetail(item) {
