@@ -69,7 +69,7 @@
       <scroll-view
         scroll-x="true"
         style="white-space: nowrap;"
-        @scrolltolower="gotoNext"
+        @scrolltolower.stop="gotoMoreDesigner"
 				:scroll-left="scrollLeft"
       >
         <view
@@ -145,7 +145,7 @@
       @click="gotoRealCase"
     >
       <view class="left">
-        为您推荐
+        推荐案例
       </view>
       <view class="right">
         <text>更多</text>
@@ -167,10 +167,10 @@
           <view class="name_container">
             <view class="name">{{item4.nikeName || '--'}}   Ta家</view>
             <view class="cost">
-              <text >{{item4.Similarity?item4.Similarity:'户型相似度-'}}</text>
-              <text class="icon"></text>
+              <text v-if="item4.Similarity">{{item4.Similarity}}</text>
+              <text v-if="item4.Similarity" class="icon"></text>
 
-              <text v-if="item4.flag">附近{{parseInt(item4.distance)}}m</text>
+              <text v-if="item4.flag">附近{{ item4.distance/1000>1?`${(item4.distance/1000).toFixed(2)}km`:`${parseInt(item4.distance)}m`}}</text>
               <text v-if="item4.flag" class="icon"></text>
 
               <text v-if="!item4.flag">{{item4.cityName|| "-"}}</text>

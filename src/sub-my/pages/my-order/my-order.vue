@@ -827,9 +827,9 @@ export default {
 }
 
 .header {
-  height: 96rpx;
+  // height: 96rpx;
   margin-top: 16rpx;
-  padding: 28rpx 32rpx;
+	padding: 28rpx 32rpx 0 32rpx;
   box-sizing: border-box;
   background-color: #FFFFFF;
   display: flex;
@@ -840,7 +840,6 @@ export default {
     display: flex;
     flex-flow: row nowrap;
     align-items: center;
-
     text {
 			display: block;
 			height: 40rpx;
@@ -887,7 +886,7 @@ export default {
 }
 
 .body {
-  padding: 32rpx 32rpx 0;
+  padding: 28rpx 32rpx 0;
   background-color: #ffffff;
   box-sizing: border-box;
   display: flex;

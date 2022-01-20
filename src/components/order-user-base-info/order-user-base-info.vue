@@ -1,7 +1,7 @@
 <template>
   <view class="container">
     <image
-      src="../../static/order/ic_location.svg"
+      src="../../static/order/ic_location.png"
       mode=""
     ></image>
     <view class="basic-info">
