@@ -95,10 +95,15 @@
           <text class="price-style price-font">{{handlePrice(data.cardAmount)[0]}}.{{handlePrice(data.cardAmount)[1]}}</text>
         </view>
       </view>
-
     </view>
 
     <!-- 待付款 -->
+		<!-- 此处还差判断条件 -->
+		<view v-if="waitPay" class="complainStyle">
+			
+			辅材类商品下单时不收取运费搬运费，具体费用将在仓库要货时产生并另行结算
+		</view>
+		
     <view v-if="waitPay" class="footer1">
       <view v-if="data.totalActualIncomeAmount" class="has-pay">
         <text style="margin-right: 12rpx;">已付款</text>
@@ -239,6 +244,20 @@ export default {
       margin-bottom: 0;
     }
   }
+	.complainStyle{
+		margin: 32rpx 32rpx 0;
+		padding: 18rpx 24rpx;
+		width: 686rpx;
+		height: 96rpx;
+		background: #FCFCFC;
+		box-sizing: border-box;
+		border: 1rpx solid #F3F3F3;
+		box-sizing: border-box;
+		border-radius: 12rpx;
+		font-size: 22rpx;
+		line-height: 30rpx;
+		color: #999999;
+	}
 
   .footer {
     padding: 32rpx;
