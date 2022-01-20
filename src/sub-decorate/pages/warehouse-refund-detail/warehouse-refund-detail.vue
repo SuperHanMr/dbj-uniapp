@@ -529,7 +529,7 @@ export default {
     line-height: 88rpx;
     text-align: center;
     opacity: 1;
-    background: linear-gradient(135deg, #36d9cd, #28c6c6);
+    background: linear-gradient(115.75deg, #FA3B34 -3.13%, #FF6A33 92.1%);
     border-radius: 12rpx;
     margin-right: 32rpx;
     color: #ffffff;
@@ -554,7 +554,7 @@ export default {
     height: 88rpx;
     line-height: 88rpx;
     opacity: 1;
-    background: linear-gradient(135deg, #00ccbe, #00c2bf);
+    background: linear-gradient(115.75deg, #FA3B34 -3.13%, #FF6A33 92.1%);
     border-radius: 16rpx;
     margin-right: 32rpx;
     font-weight: 500;

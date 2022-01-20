@@ -46,7 +46,7 @@
     align-items: center;
     margin-left: 48rpx;
     padding: 16rpx;
-    background: #f5f6f6;
+    background: #f6f6f6;
     border-radius: 16rpx;
 
     .avotr {

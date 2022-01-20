@@ -127,13 +127,13 @@
     >
       <text>备注</text>
       <view class="remarks-right">
-        <textarea
+        <input
           type="text"
           maxlength="200"
           v-model="remarks"
           cursor-spacing="15px"
           placeholder-class="text-placeholder"
-          style="width:100%;line-height: 46rpx;min-height: 90rpx;height: 85%;overflow: scroll;padding-top: 30rpx;"
+          style="width:100%;height: 100%;overflow: scroll;"
           placeholder="选填,说点什么～"
         />
       </view>
@@ -850,7 +850,7 @@ export default {
 .remarks {
   padding: 5rpx 32rpx;
   background-color: #ffffff;
-  margin-top: 25rpx;
+  margin-top: 16rpx;
   font-size: 28rpx;
   font-family: PingFangSC, PingFangSC-Regular;
   display: flex;
@@ -858,6 +858,7 @@ export default {
   align-items: center;
   height: 104rpx;
   line-height: 104rpx;
+  border-radius: 32rpx;
 }
 
 .card-img {
@@ -904,7 +905,7 @@ export default {
 .remarks {
   padding: 5rpx 32rpx;
   background-color: #ffffff;
-  margin-top: 25rpx;
+  margin-top: 16rpx;
   font-size: 28rpx;
   font-family: PingFangSC, PingFangSC-Regular;
   display: flex;
@@ -942,7 +943,7 @@ export default {
   align-items: center;
   box-sizing: border-box;
   height: 112rpx;
-  padding: 48rpx 32rpx 24rpx;
+  padding: 48rpx 32rpx 16rpx;
   background: #f5f6f6;
   font-size: 28rpx;
   font-family: PingFangSC, PingFangSC-Medium;
@@ -965,6 +966,7 @@ export default {
 .process-cost-list {
   padding: 0 32rpx;
   background-color: #fff;
+  border-radius: 32rpx;
 }
 
 .payment-wrap {
