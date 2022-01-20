@@ -192,11 +192,7 @@ export default {
 	},
 	methods: {
 		getTags(designer) {
-			return [
-				...designer.styles,
-				...designer.designs,
-				...designer.houses,
-			];
+			return [...designer.styles, ...designer.designs, ...designer.houses];
 		},
 		showDesigner(designer) {
 			let url =
@@ -235,6 +231,10 @@ export default {
 					this.dataSource = this.dataSource.concat(res.list || []);
 				} else {
 					this.dataSource = res.list || [];
+					uni.pageScrollTo({
+						scrollTop: 0,
+						duration: 0,
+					});
 				}
 			});
 		},

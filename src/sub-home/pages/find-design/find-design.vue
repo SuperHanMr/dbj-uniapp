@@ -314,7 +314,7 @@ export default {
 			  uni.navigateTo({
 			    url: "/sub-home/pages/find-design/search-design",
 			  });
-		},400),
+		},500),
 
     getRecommendCaseList() {
       let params = {

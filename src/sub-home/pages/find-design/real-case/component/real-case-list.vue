@@ -30,8 +30,8 @@
 						</view>
 					</view>
 					<view class="tag-box">
-						<view class="tag" v-for="tag in item.features" :key='tag.key'>
-							{{tag}}
+						<view class="tag" v-for="tag in itemHandler([item.styleName, ...item.features])" :key='tag.key'>
+							<text v-if="tag">{{tag}}</text>
 						</view>
 					</view>
 				</view>
@@ -115,6 +115,9 @@
 			},
 			refresherrefresh() {
 				this.$emit('refresherrefresh')
+			},
+			itemHandler(arr) {
+				return arr;
 			}
 		}
 	}
