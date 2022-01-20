@@ -22,7 +22,7 @@
         ></message-item-interaction>
       </view>
       <view v-else-if="loaded" class="empty-container">
-        <image class="empty-img" src="https://ali-image-test.dabanjia.com/image/20220110/16/1641804745453_9800%24img_sys_NoSystemmessage.png"></image>
+        <image class="empty-img" src="https://ali-image.dabanjia.com/static/mp/dabanjia/images/theme-red/message/img_sys_no_system_message.png"></image>
         <view class="empty-tip">
           暂无互动消息~
         </view>
