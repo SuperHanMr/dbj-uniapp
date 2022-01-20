@@ -397,7 +397,7 @@ export default {
           margin-right: 12rpx;
         }
         text {
-          font-size: 36rpx;
+          font-size: 40rpx;
           font-weight: 500;
           color: #ffffff;
         }

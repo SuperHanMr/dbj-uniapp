@@ -405,7 +405,7 @@
 				}
 
 				view {
-					font-size: 48rpx;
+					font-size: 40rpx;
 					font-weight: 500;
 					color: #ffffff;
 				}

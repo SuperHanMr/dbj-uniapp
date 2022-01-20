@@ -29,7 +29,7 @@
               src="https://ali-image.dabanjia.com/static/mp/dabanjia/images/theme-red/my/ic_status_wait_pay.svg"
               mode="scaleToFill"
             />
-            <text>待付款</text>
+            <view class="text">待付款</view>
           </view>
           <view
             class="time"
@@ -71,40 +71,26 @@
           :style="{borderRadius:index >= 1 ? '0' :'24rpx 24rpx 0 0'}"
         >
           <view class="header">
-            <view
-              class="header-content"
-              v-if="orderInfo.type !== 5"
-            >
+            <view class="header-content" v-if="orderInfo.type !== 5">
               <view class="storeName" @click="gotoShop(item)">{{item.storeName}}</view>
               <image src="https://ali-image.dabanjia.com/static/mp/dabanjia/images/theme-red/my/small_gotoShop.svg"/>
             </view>
-            <view
-              class="header-content"
-              v-else
-            >
+            <view class="header-content" v-else>
               <view class="storeName">{{orderInfo.orderName}}</view>
             </view>
             <view class="icon"></view>
           </view>
-          <view
-            v-for="item2 in item.details"
-            :key="item2.id"
-          >
+          <view v-for="item2 in item.details" :key="item2.id" >
             <order-item
               v-if="item2.type !==5"
               :orderStatus="1"
               :dataList="item2"
               @handleDetail="productDetail(item2)"
             />
-            <store-calue-card-item
-              :dataInfo="item2"
-              v-else
-            />
+            <store-calue-card-item :dataInfo="item2"  v-else/>
           </view>
 
-					<view class="discount-container"
-            v-if="item.hasMaterial &&  orderInfo.details.length>1"
-					>
+					<view class="discount-container" v-if="item.hasMaterial &&  orderInfo.details.length>1">
 						<view class="item_css_style">
 							<view class="left">
 							 	<view style="margin-right: 8rpx;">运费</view>
@@ -115,19 +101,12 @@
 								/>
 							</view>
 							<view class="right">
-								<view
-									class="price-font"
-									v-if="orderInfo.stockType == 0"
-								>
+								<text class="price-font"v-if="orderInfo.stockType == 0">
 									￥{{item.freight?`${item.freight}`:"0.00"}}
-								</view>
-								<view
-									class="price-font"
-									:style="{marginTop:item.freight?'0':'8rpx'}"
-									v-else
-								>
+								</text>
+								<text class="price-font" :style="{marginTop:item.freight?'0':'8rpx'}" v-else>
 									{{item.freight?`￥${item.freight}`:"--"}}
-								</view>
+								</text>
 							</view>
 						</view>
 						<view class="item_css_style">
@@ -141,10 +120,7 @@
 								/>
 							</view>
 							<view class="right">
-								<text
-								  class="price-font"
-								  v-if="orderInfo.stockType == 0"
-								>
+								<text class="price-font" v-if="orderInfo.stockType == 0">
 								  ￥{{item.handlingFees?item.handlingFees:"0.00"}}</text>
 								<text
 								  class="price-font" :style="{marginTop:item.handlingFees ? '0' : '8rpx' }"
@@ -157,9 +133,7 @@
 								<text>商家</text>
 							</view>
 							<view class="right">
-								<text  class="price-font">
-								  -￥{{item.storeDiscount}}
-								</text>
+								<text  class="price-font"> -￥{{item.storeDiscount}}</text>
 							</view>
 						</view>
 
@@ -168,14 +142,12 @@
 								<text>平台优惠</text>
 							</view>
 							<view class="right">
-								<text  class="price-font">
-								  -￥{{item.platformDiscount}}
-								</text>
+								<text  class="price-font"> -￥{{item.platformDiscount}}</text>
 							</view>
 						</view>
 					</view>
 
-          <view
+          <!-- <view
             v-if="item.hasMaterial && orderInfo.stockType == 1"
             :style="{paddingBottom: item.hasMaterial && orderInfo.stockType == 1 ? '32rpx':'0'}"
           >
@@ -195,17 +167,18 @@
             >
               <text>搬运费需要根据实际要货时进行核算</text>
             </view>
-          </view>
+          </view> -->
 
         </view>
         <view class="split-line" />
       </view>
-
-      <order-price
-        :data="orderInfo"
-        :waitPay="true"
-        :payPrice="payPrice"
-      />
+			
+			<order-price
+				:data="orderInfo"
+				:waitPay="true"
+				:payPrice="payPrice"
+			/>
+      
 
       <!-- <view class="payment-method">
 				<text>支付方式</text>
@@ -256,24 +229,9 @@
         </image>
       </view>
       <view class="pay-way mrb">
-        <text>支付方式</text>
-
-        <view
-          v-if="payChannel "
-          class="flex-center"
-        >
-          <!-- <image
-            class="card-img"
-            src="https://ali-image.dabanjia.com/static/mp/dabanjia/images/classify/ic_card.png"
-            mode=""
-          ></image> -->
-          <text>储值卡支付</text>
-
-        </view>
-        <view v-else>
-          <!-- <view class="wechat_icon"></view> -->
-          <text>在线支付</text>
-        </view>
+        <text style="color: #333333;">支付方式</text>
+				<view v-if="payChannel" class="flex-center"><text>储值卡支付</text></view>
+        <view v-else class="flex-center"><text>在线支付</text></view>
       </view>
       <view class='remarks'>
         <text>备注</text>
@@ -711,6 +669,9 @@ export default {
   display: flex;
   align-items: center;
   justify-content: center;
+	text{
+		color: #111111;
+	}
 }
 
 .mrb {
@@ -922,8 +883,10 @@ export default {
           margin-right: 12rpx;
         }
 
-        text {
-          font-size: 48rpx;
+        .text {
+					height: 64rpx;
+					line-height: 62rpx;
+          font-size: 40rpx;
           font-weight: 500;
           color: #ffffff;
         }
@@ -935,7 +898,7 @@ export default {
         line-height: 40rpx;
         font-size: 24rpx;
         font-weight: 400;
-        padding-left: 4rpx;
+        padding-left: 5rpx;
         box-sizing: border-box;
         display: flex;
         flex-flow: row nowrap;
@@ -943,7 +906,7 @@ export default {
         .countStyle {
           width: 154rpx;
           height: 40rpx;
-          padding-left: 2rpx;
+          padding-left: 4rpx;
 					display: flex;
 					align-items: center;
           box-sizing: border-box;
@@ -1037,18 +1000,11 @@ export default {
 						.icon {
 						  width: 24rpx;
 						  height: 24rpx;
-						 // vertical-align: sub;
-						 // display: inline-block;
-						 // width: 32rpx;
-						 // height: 32rpx;
-						 // background-image: url("@/static/order/ic_order_wechat@2x.png");
-						 // background-size: contain;
-						 // margin-right: 12rpx;
 						}
 					}
 					.right{
 						text{
-							color: #666;
+							color: #666666;
 							font-size: 26rpx;
 						}
 					}

@@ -21,7 +21,7 @@
         <view class="order-status">
           <view class="status">
             <image src="https://ali-image.dabanjia.com/static/mp/dabanjia/images/theme-red/my/ic_order_success.svg" mode=""/>
-            <text>退款成功</text>
+            <view class="text">退款成功</view>
           </view>
           <text class="time">{{refundInfo.createTime | formatDate}}</text>
         </view>
@@ -117,7 +117,7 @@
         <view class="order-status-done">
           <view class="status">
             <image src="https://ali-image.dabanjia.com/static/mp/dabanjia/images/theme-red/my/ic_order_success.svg" mode=""/>
-            <text>已完成</text>
+            <view class="text">已完成</view>
           </view>
         </view>
       </view>
@@ -453,10 +453,12 @@ export default {
           margin-right: 12rpx;
         }
 
-        text {
-          font-size: 48rpx;
+        .text {
+          font-size: 40rpx;
           font-weight: 500;
           color: #ffffff;
+					height: 64rpx;
+					line-height: 62rpx;
         }
       }
 

@@ -20,8 +20,8 @@
         <view class="order-status">
           <view class="status">
             <image src="https://ali-image.dabanjia.com/static/mp/dabanjia/images/theme-red/my/ic_order_failed.svg" mode=""/>
-            <text v-if="status == 3 || status == 4">退款关闭</text>
-            <text v-if="status == 5">退款失败</text>
+            <view class="text" v-if="status == 3 || status == 4">退款关闭</view>
+            <view class="text" v-if="status == 5">退款失败</view>
           </view>
           <text class="time">{{refundInfo.refundTime | formatDate}}</text>
         </view>
@@ -114,7 +114,7 @@
         <view class="order-status">
           <view class="status1">
             <image src="https://ali-image.dabanjia.com/static/mp/dabanjia/images/theme-red/my/ic_order_failed.svg" mode="" />
-            <text>已关闭</text>
+            <view class="text">已关闭</view>
           </view>
         </view>
       </view>
@@ -391,8 +391,10 @@ export default {
 					display: block;
           margin-right: 12rpx;
         }
-        text {
-          font-size: 48rpx;
+        .text {
+					height: 64rpx;
+					line-height: 62rpx;
+          font-size: 40rpx;
           font-weight: 500;
           color: #ffffff;
         }
