@@ -43,7 +43,7 @@
           :key="item1.name"
         >
           <image :src="item1.url" />
-          <view style="color: #333333;font-size: 26rpx;">
+          <view >
             {{item1.name}}
           </view>
         </view>
@@ -55,10 +55,10 @@
 					<view class="recommend">
 						为您推荐
 					</view>
-					<!-- <view class="change-designerList" @click="changeDesignerList">
+					<view class="change-designerList" @click="changeDesignerList">
 						<text>换一换</text>
 						<image src="../../static/next_batch.png" mode=""></image>
-					</view> -->
+					</view>
         </view>
         <view
           class="right"
@@ -110,7 +110,7 @@
         </view>
         <view class="showMoreCard_container">
           <!-- @click="gotoMoreDesigner" -->
-          <view
+          <!-- <view
             class="showMoreCard"
             :style="{backgroundImage:`url(${bgImg3})`,backgroundSize:'contaienr'}"
           >
@@ -120,7 +120,8 @@
             <view class="text">
               左滑查看更多
             </view>
-          </view>
+          </view> -->
+					<image src="../../static/moreDesignerImg.png" mode=""></image>
 
         </view>
       </scroll-view>
@@ -182,7 +183,7 @@
               <text v-if="!item4.flag">{{item4.cityName|| "-"}}</text>
               <text v-if="!item4.flag" class="icon"></text>
 
-              <text>{{item4.budget?`预算：￥${(item4.budget).toFixed(2)}`: "预算：-"}}</text>
+              <text>{{item4.budget?`预算：￥${(item4.budget).toFixed(2)}万`: "预算：-"}}</text>
             </view>
           </view>
           <view class="attr_container">
@@ -233,25 +234,25 @@ export default {
       bgImg3:
         "https://ali-image.dabanjia.com/static/mp/dabanjia/images/home/moreDesignerBg.svg",
       iconList: [
-        {
-          key: 1,
-          url: "../../static/guomeiIcon.svg",
-          name: "服务保障",
-        },
-        {
-          key: 2,
-          url: "../../static/pingtairenzheng.svg",
-          name: "平台认证",
-        },
-        {
-          key: 3,
-          url: "../../static/yanxuan.svg",
-          name: "严选设计师",
-        },
+				{
+				  key: 1,
+				  url: "../../static/pingtairenzheng.svg",
+				  name: "平台认证",
+				},
+				{
+				  key: 2,
+				  url: "../../static/yanxuan.svg",
+				  name: "严选设计师",
+				},
+				{
+				  key: 3,
+				  url: "../../static/baozhang.svg",
+				  name: "品质设计",
+				},
         {
           key: 4,
-          url: "../../static/baozhang.svg",
-          name: "品质设计",
+          url: "../../static/guomeiIcon.svg",
+          name: "服务保障",
         },
       ],
       searchDesignerList: [], //设计师列表
@@ -267,43 +268,50 @@ export default {
   onLoad() {
     const systemInfo = uni.getSystemInfoSync();
     this.navBarHeight = systemInfo.statusBarHeight + "px";
-		
+		if (uni.getStorageSync("recommendDesignerPage")) {
+		  this.page = uni.getStorageSync("recommendDesignerPage");
+		}
+		this.page++;
+		uni.setStorageSync("recommendDesignerPage", this.page);
+		const hhh = uni.getStorageSync("recommendDesignerPage");
+		console.log("this.page===",hhh)
+		this.getDesignerList();
   },
   onShow() { 
-    this.userId = getApp().globalData.token;
-    // console.log("getApp().globalData.userInfo==",getApp().globalData)
-		this.estateId = getApp().globalData.currentHouse.id
-		// console.log("this.estateId===", this.estateId);
-    if (this.userId) {
-      // 登录
-      this.hasEstate = this.estateId?true:false
-    } else {
-      // 未登录
-      this.estateId = "";
-    }
-		this.getRecommendCaseList();
-		
 		this.scrollLeft = 1
 		this.$nextTick(()=>{
 			this.scrollLeft = 0
+			uni.$emit("currentHouseChange")
+			this.userId = getApp().globalData.token;
+			console.log("getApp().globalData===",getApp().globalData)
+			this.estateId = getApp().globalData.currentHouse.id
+			if (this.userId) {
+			  // 登录
+			  this.hasEstate = this.estateId ? true : false
+			} else {
+			  // 未登录
+			  this.estateId = "";
+			}
+			console.log("this.estateId==",this.estateId)
+			console.log("this.hasEstate==",this.hasEstate)
+			this.getRecommendCaseList();
 		})
 		
-    if (uni.getStorageSync("recommendDesignerPage")) {
-      this.page = uni.getStorageSync("recommendDesignerPage");
-    }
-    this.page++;
-    uni.setStorageSync("recommendDesignerPage", this.page);
-    const hhh = uni.getStorageSync("recommendDesignerPage");
-    this.getDesignerList();
-
-    // if(this.page>1){
-    // 	this.getDesignerList();
-    // }
+		
+		
   },
 	
   onPageScroll(scrollTop) {
     this.scrollTop = scrollTop.scrollTop;
   },
+	watch:{
+		searchDesignerList:{
+			deep:true,
+			handler(newList,oldList){
+				return newList
+			},
+		}
+	},
   methods: {
 
     toBack() {
@@ -320,10 +328,8 @@ export default {
       let params = {
         estateId: this.estateId,
       };
-      console.log("params===", params);
       recommendCaseList(params).then((res) => {
         this.CaseList = res;
-        // console.log("res1====", this.CaseList);
       });
     },
 
@@ -340,11 +346,10 @@ export default {
       };
 
       searchDesigner(params).then((res) => {
-        // console.log("res2====", res);
         this.searchDesignerList = res.list;
         this.totalPage = res.totalPage;
         uni.setStorageSync("recommendDesignerTotalPage", res.totalPage);
-        console.log("res.rows");
+        console.log("res.totalRows==",res.totalRows);
 				// 返回的总条数不是5的倍数
         if ((res.totalRows % 5 !== 0) && (this.page == (this.totalPage - 1))) {
           this.page = 0;
@@ -358,8 +363,13 @@ export default {
       });
     },
     
+		// 换一批
 		changeDesignerList(){
-			console.log("换一批！！！！！！！！！！！！！！！！！")
+			console.log("换一批！")
+			this.page++;
+			uni.setStorageSync("recommendDesignerPage", this.page);
+			console.log("this.page==",this.page)
+			this.getDesignerList();
 		},
 		
 		//自己找设计师
@@ -378,18 +388,18 @@ export default {
     },
     //去完善房屋信息
     gotoEditHouse() {
-      if (this.userId) {
+      // if (this.userId) {
         //登录的情况下 调整到编辑房屋页面
         uni.navigateTo({
           url: "/sub-my/pages/my-house/my-house?fromHome=true",
         });
-      } else {
-        //未登录的情况下跳转到登录页面
-        console.log("跳转到登录页面");
-        uni.navigateTo({
-          url: "/pages/login/login",
-        });
-      }
+      // } else {
+      //   //未登录的情况下跳转到登录页面
+      //   console.log("跳转到登录页面");
+      //   uni.navigateTo({
+      //     url: "/pages/login/login",
+      //   });
+      // }
     },
     //更多设计师
     gotoMoreDesigner: debounce(() => {
@@ -514,8 +524,15 @@ export default {
       image {
         width: 32rpx;
         height: 32rpx;
-        margin-right: 12rpx;
+				display: block;
+        margin-right: 6rpx;
       }
+			view{
+				color: #333333;
+				font-size: 26rpx;
+				height: 36rpx;
+				line-height: 36rpx;
+			}
     }
     .tabItem:last-child {
       margin-right: 0;
@@ -638,6 +655,10 @@ export default {
       overflow: hidden;
       display: inline-block;
       position: relative;
+			image{
+				width: 252rpx;
+				height: 698rpx;
+			}
       .showMoreCard {
         width: 434rpx;
         height: 698rpx;

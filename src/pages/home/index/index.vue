@@ -658,7 +658,8 @@
           },
         });
       },
-      async getAreaId(adcode) {
+      
+			async getAreaId(adcode) {
         let areaInfo = await getAdcodeFromAreaId(adcode);
         this.citydata = areaInfo.name;
         this.currentHouseChange(areaInfo);
@@ -758,10 +759,11 @@
               house = defaultHouse;
             } else if (houseList.length) {
               house = houseList[0];
-            }
+            } 
             if (house) {
+							console.log("房屋信息@@@@@@")
               this.currentHouseChange(house);
-              // uni.setStorageSync("currentHouse", JSON.stringify(house));
+              uni.setStorageSync("currentHouse", JSON.stringify(house));
               this.areaId = house.areaId;
               this.citydata =
                 house.cityName + house.areaName + house.housingEstate;
