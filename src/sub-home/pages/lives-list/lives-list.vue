@@ -47,15 +47,6 @@
 									<view>回放</view>
 									<view style="margin-left: 8rpx;">{{item.roomVideoMediaVO.viewsCount}}人在看</view>
 								</view>
-								<view class="name-content">
-									<image class="avatar"
-										:src="item.mediaType==1?item.roomLiveMediaVO.anchor.avatar:item.roomVideoMediaVO.anchor.avatar"
-										mode=""></image>
-									<view class="name-live">
-										{{item.mediaType==1?item.roomLiveMediaVO.anchor.nickName:item.roomVideoMediaVO.anchor.nickName}}
-									</view>
-								</view>
-
 								<image v-if="item.mediaType==1" class="living-gif"
 									src='https://ali-image.dabanjia.com/static/mp/dabanjia/images/home/living-gift.gif'>
 
@@ -64,6 +55,14 @@
 
 							<view class="live-list-name">
 								{{item.mediaType==1?item.roomLiveMediaVO.title:item.roomVideoMediaVO.title}}
+							</view>
+							<view class="name-content">
+								<image class="avatar"
+									:src="item.mediaType==1?item.roomLiveMediaVO.anchor.avatar:item.roomVideoMediaVO.anchor.avatar"
+									mode=""></image>
+								<view class="name-live">
+									{{item.mediaType==1?item.roomLiveMediaVO.anchor.nickName:item.roomVideoMediaVO.anchor.nickName}}
+								</view>
 							</view>
 						</view>
 					</view>
@@ -205,20 +204,19 @@
 	}
 
 	.no-list {
-		width: 248rpx;
-		height: 248rpx;
+		width: 400rpx;
+		height: 400rpx;
 	}
 
 	.tip-text {
 		margin-top: 24rpx;
 		font-size: 30rpx;
 		font-weight: 400;
-		color: #999999;
+		color: #CBCCCC;
 	}
 
 	.live-list-name {
-		background: #FFF;
-		padding: 16rpx;
+		padding: 16rpx 0;
 		// flex: 1;
 		// display: flex;
 		font-size: 26rpx;
@@ -231,6 +229,28 @@
 		-webkit-line-clamp: 1; //这个代表你要在几行显示省略号
 		-webkit-box-orient: vertical;
 		white-space: nowrap;
+	}
+	
+	.name-content {
+		display: flex;
+		align-items: center;
+	
+		.avatar {
+			width: 36rpx;
+			height: 36rpx;
+			border-radius: 18rpx;
+		}
+	
+		.name-live {
+			margin-left: 8rpx;
+			text-overflow: ellipsis;
+			display: -webkit-box;
+			-webkit-line-clamp: 1; //这个代表你要在几行显示省略号
+			-webkit-box-orient: vertical;
+			font-size: 24rpx;
+			font-weight: 400;
+			color: #999999;
+		}
 	}
 
 	.fill {
@@ -256,27 +276,26 @@
 	}
 
 	.margin-left24 {
-		margin-left: 24rpx;
+		margin-left: 32rpx;
 	}
 
 	.margin-left16 {
-		margin-left: 16rpx;
+		margin-left: 30rpx;
 	}
 
 	.goods-list {
 		display: flex;
-		margin-top: 8rpx;
+		margin-top: 24rpx;
 		width: 100%;
 		flex-direction: row;
 		flex-wrap: wrap;
 		justify-content: flex-start;
 
 		.item {
-			margin-top: 16rpx;
+			margin-bottom: 48rpx;
 			flex-shrink: 0;
-			width: 343rpx;
-			height: 526rpx;
-			border-radius: 16rpx;
+			width: 328rpx;
+			
 			position: relative;
 			overflow: hidden;
 			display: flex;
@@ -299,42 +318,15 @@
 			}
 
 			.img-view {
-				height: 458rpx;
+				width: 328rpx;
 				position: relative;
-
 				.img {
-					height: 458rpx;
-					width: 343rpx;
+					width: 328rpx;
+					height: 436rpx;
+					border-radius: 12rpx;
 				}
 
-				.name-content {
-					position: absolute;
-					bottom: 0rpx;
-					left: 0;
-					right: 0;
-					height: 74rpx;
-					display: flex;
-					align-items: center;
-					background: linear-gradient(180deg, rgba(0, 0, 0, 0) 0%, rgba(0, 0, 0, 0.5) 100%);
-					padding: 0 16rpx;
-
-					.avatar {
-						width: 32rpx;
-						height: 32rpx;
-						border-radius: 16rpx;
-					}
-
-					.name-live {
-						margin-left: 12rpx;
-						text-overflow: ellipsis;
-						display: -webkit-box;
-						-webkit-line-clamp: 1; //这个代表你要在几行显示省略号
-						-webkit-box-orient: vertical;
-						font-size: 22rpx;
-						font-weight: 400;
-						color: #ffffff;
-					}
-				}
+				
 
 				.top-content {
 					position: absolute;
