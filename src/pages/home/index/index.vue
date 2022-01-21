@@ -658,7 +658,8 @@
           },
         });
       },
-      async getAreaId(adcode) {
+      
+			async getAreaId(adcode) {
         let areaInfo = await getAdcodeFromAreaId(adcode);
         this.citydata = areaInfo.name;
         this.currentHouseChange(areaInfo);
@@ -758,10 +759,11 @@
               house = defaultHouse;
             } else if (houseList.length) {
               house = houseList[0];
-            }
+            } 
             if (house) {
+							console.log("房屋信息@@@@@@")
               this.currentHouseChange(house);
-              // uni.setStorageSync("currentHouse", JSON.stringify(house));
+              uni.setStorageSync("currentHouse", JSON.stringify(house));
               this.areaId = house.areaId;
               this.citydata =
                 house.cityName + house.areaName + house.housingEstate;
@@ -1172,6 +1174,7 @@
   .banner-content {
     position: relative;
     margin: 16rpx 24rpx 0;
+		z-index: 1000;
 
     .banner {
       border-radius: 16rpx;

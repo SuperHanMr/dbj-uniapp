@@ -5,7 +5,9 @@
 			<view class="navigation-bar-back icon-ic_cancel_white" @click="goBack">
 			</view>
 			<view class="title">
-				{{projectName}}
+				<view class="text">
+					{{projectName}}
+				</view>
 			</view>
 		</view>
 	</view>
@@ -66,9 +68,15 @@
 				align-items: center;
 				justify-content: center;
 				margin-left: -68rpx;
-				color: #FFFFFF;
-				font-weight: 500;
-				font-size: 32rpx;
+				.text{
+					color: #FFFFFF;
+					font-weight: 500;
+					font-size: 32rpx;
+					max-width: 400rpx;
+					white-space: nowrap;
+					overflow: hidden;
+					text-overflow: ellipsis;
+				}
 			}
 		}
 	}
