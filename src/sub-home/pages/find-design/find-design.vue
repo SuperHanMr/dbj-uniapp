@@ -585,11 +585,15 @@ export default {
           align-items: center;
           margin-bottom: 4rpx;
           .name {
+						max-width: 344rpx;
             color: #ffffff;
             font-size: 30rpx;
             display: block;
             height: 42rpx;
             line-height: 42rpx;
+						overflow: hidden;
+						white-space: nowrap;
+						text-overflow: ellipsis;
           }
           .rank {
             margin-left: 12rpx;
