@@ -72,8 +72,8 @@
 								<view class="designer-level"><text>{{designer.levelName}}{{designer.roleName}}</text></view>
 							</view>
 							<view class="rate-wrapper">
-								<text class="designer-score" v-if="designer.totalCount">接单数 {{designer.totalCount}}</text>
-								<view class="split-line" v-if="designer.praiseEfficiency && designer.totalCount"></view>
+								<text class="designer-score" >接单数 {{designer.totalCount}}</text>
+								<view class="split-line" v-if="designer.praiseEfficiency"></view>
 								<view class="designer-ordernum" v-if="designer.praiseEfficiency">
 									<text>好评率 {{designer.praiseEfficiency}}%</text>
 								</view>
