@@ -233,6 +233,9 @@ export default {
         display: flex;
         flex-flow: row nowrap;
         align-items: center;
+				text{
+					color: #666666;	
+				}
         .icon {
           width: 24rpx;
           height: 24rpx;

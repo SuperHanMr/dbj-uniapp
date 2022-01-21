@@ -52,7 +52,13 @@
     <view class="recommendForYou-container">
       <view class="title_container">
         <view class="left">
-          为您推荐
+					<view class="recommend">
+						为您推荐
+					</view>
+					<!-- <view class="change-designerList" @click="changeDesignerList">
+						<text>换一换</text>
+						<image src="../../static/next_batch.png" mode=""></image>
+					</view> -->
         </view>
         <view
           class="right"
@@ -89,8 +95,8 @@
               style="margin-bottom: 8rpx;"
             >
               <view class="item">
-                <text>好评率{{item2.praiseEfficiency}}%</text>
-                <text class="icon"></text>
+                <text v-if="item2.praiseEfficiency">好评率{{item2.praiseEfficiency}}%</text>
+                <text v-if="item2.praiseEfficiency" class="icon"></text>
                 <text>{{item2.industryYears}}年设计经验</text>
               </view>
             </view>
@@ -167,8 +173,8 @@
           <view class="name_container">
             <view class="name">{{item4.nikeName || '--'}}   Ta家</view>
             <view class="cost">
-              <text v-if="item4.Similarity">{{item4.Similarity}}</text>
-              <text v-if="item4.Similarity" class="icon"></text>
+              <text v-if="item4.similarity">{{item4.similarity}}</text>
+              <text v-if="item4.similarity" class="icon"></text>
 
               <text v-if="item4.flag">附近{{ item4.distance/1000>1?`${(item4.distance/1000).toFixed(2)}km`:`${parseInt(item4.distance)}m`}}</text>
               <text v-if="item4.flag" class="icon"></text>
@@ -261,14 +267,13 @@ export default {
   onLoad() {
     const systemInfo = uni.getSystemInfoSync();
     this.navBarHeight = systemInfo.statusBarHeight + "px";
-
-    // 新加的
+		
+  },
+  onShow() { 
     this.userId = getApp().globalData.token;
-    console.log("getApp().globalData.userInfo==",getApp().globalData)
-
-    this.estateId = getApp().globalData.currentHouse.id
-
-    console.log("this.estateId===", this.estateId);
+    // console.log("getApp().globalData.userInfo==",getApp().globalData)
+		this.estateId = getApp().globalData.currentHouse.id
+		// console.log("this.estateId===", this.estateId);
     if (this.userId) {
       // 登录
       this.hasEstate = this.estateId?true:false
@@ -276,21 +281,16 @@ export default {
       // 未登录
       this.estateId = "";
     }
-
-    this.getRecommendCaseList();
-    if (uni.getStorageSync("recommendDesignerPage")) {
-      this.page = uni.getStorageSync("recommendDesignerPage");
-    }
-    // if(this.page==1){
-    // 	this.getDesignerList();
-    // }
-  },
-  onShow() {
+		this.getRecommendCaseList();
+		
 		this.scrollLeft = 1
 		this.$nextTick(()=>{
 			this.scrollLeft = 0
 		})
-    console.log("onShow!!!!!!!!!!!!!");
+		
+    if (uni.getStorageSync("recommendDesignerPage")) {
+      this.page = uni.getStorageSync("recommendDesignerPage");
+    }
     this.page++;
     uni.setStorageSync("recommendDesignerPage", this.page);
     const hhh = uni.getStorageSync("recommendDesignerPage");
@@ -299,8 +299,8 @@ export default {
     // if(this.page>1){
     // 	this.getDesignerList();
     // }
-    console.log("this.page", this.page);
   },
+	
   onPageScroll(scrollTop) {
     this.scrollTop = scrollTop.scrollTop;
   },
@@ -346,18 +346,23 @@ export default {
         uni.setStorageSync("recommendDesignerTotalPage", res.totalPage);
         console.log("res.rows");
 				// 返回的总条数不是5的倍数
-        if (res.totalRows % 5 !== 0 && this.page == this.totalPage - 1) {
+        if ((res.totalRows % 5 !== 0) && (this.page == (this.totalPage - 1))) {
           this.page = 0;
           uni.setStorageSync("recommendDesignerPage", this.page);
         }
 				//返回的总条数是5的倍数
-				if(res.totalRows % 5 == 0 && this.page ==this.totalPage){
+				if((res.totalRows % 5 == 0) && (this.page ==this.totalPage)){
 					this.page = 0;
 					uni.setStorageSync("recommendDesignerPage", this.page);
 				}
       });
     },
-    //自己找设计师
+    
+		changeDesignerList(){
+			console.log("换一批！！！！！！！！！！！！！！！！！")
+		},
+		
+		//自己找设计师
     findOwnDesigner() {
       uni.navigateTo({
         url: "/sub-home/pages/find-design/search-design",
@@ -746,11 +751,36 @@ export default {
   justify-content: space-between;
   padding: 32rpx 32rpx 26rpx 40rpx;
   .left {
-    height: 44rpx;
-    line-height: 44rpx;
-    color: #333333;
-    font-size: 32rpx;
-    font-weight: 500;
+    position: relative;
+		.recommend{
+			height: 44rpx;
+			line-height: 44rpx;
+			color: #333333;
+			font-size: 32rpx;
+			font-weight: 500;
+		}
+		.change-designerList{
+			position: absolute;
+			top: 5rpx;
+			left: 154rpx;
+			display: flex;
+			align-items: center;
+			flex-flow: row nowrap;
+			width: 98rpx;
+			text{
+				display: block;
+				height: 34rpx;
+				line-height: 34rpx;
+				margin-right: 4rpx;
+				font-size: 24rpx;
+				color: #999999;
+			}
+			image{
+				display: block;
+				width: 20rpx;
+				height: 20rpx;
+			}
+		}
   }
   .right {
     height: 40rpx;

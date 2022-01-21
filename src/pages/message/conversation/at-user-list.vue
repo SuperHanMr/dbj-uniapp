@@ -4,7 +4,7 @@
       <view class="user-list">
         <view class="user-item" @click="handleClick({nick: '所有人', userID: 'zeus_0'})">
           <view class="user-avatar">
-            <image class="avatar" mode="aspectFill" src="https://ali-image-test.dabanjia.com/image/20220110/16/1641803892117_3628%24Group13921.png"></image>
+            <image class="avatar" mode="aspectFill" src="https://ali-image.dabanjia.com/static/mp/dabanjia/images/theme-red/message/group_ic.png"></image>
           </view>
           <view class="user-info">
             <view class="user-name">

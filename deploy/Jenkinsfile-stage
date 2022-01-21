@@ -61,6 +61,7 @@ pipeline{
     stage('Image Build And Publish'){
       steps{
         container("kaniko") {
+          sh "echo 'AAAA'"
           sh "kaniko -f `pwd`/deploy/Dockerfile-dev -c `pwd` --destination=${ORIGIN_REPO}/${REPO}-${PROFILE}:${IMAGE_TAG}_FE --skip-tls-verify --cache=true"
         }
       }
