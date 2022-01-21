@@ -172,13 +172,13 @@
         </view>
         <view class="split-line" />
       </view>
-			
+
 			<order-price
 				:data="orderInfo"
 				:waitPay="true"
 				:payPrice="payPrice"
 			/>
-      
+
 
       <!-- <view class="payment-method">
 				<text>支付方式</text>
@@ -434,7 +434,7 @@ export default {
 		}
   },
 
-	
+
   onLoad(e) {
     this.from = e.from;
     this.orderNo = Number(e.orderNo) || getApp().globalData.decorateMsg.orderId;
@@ -906,7 +906,7 @@ export default {
         .countStyle {
           width: 154rpx;
           height: 40rpx;
-          padding-left: 4rpx;
+          padding-left: 5rpx;
 					display: flex;
 					align-items: center;
           box-sizing: border-box;
@@ -1094,7 +1094,7 @@ export default {
   flex-flow: row nowrap;
   align-items: center;
   justify-content: space-between;
-  padding: 12rpx 32rpx;
+  padding: 16rpx 32rpx;
   position: fixed;
   bottom: 0;
 
