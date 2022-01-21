@@ -315,9 +315,7 @@
   .goodsItem {
     width: 100%;
     display: flex;
-    align-items: center;
     padding-left: 24rpx;
-    padding-bottom: 22rpx;
     margin-top: 25rpx;
   }
 
@@ -371,11 +369,13 @@
     display: block;
     margin-left: 12rpx;
     margin-right: 20rpx;
-    border-radius: 8rpx;
+    border-radius: 16rpx;
   }
 
   .goodsItem .goodsInfo {
-    height: 220rpx;
+    height: 240rpx;
+    flex: 1;
+    border-bottom: 0.01rpx solid #F2F2F2;
   }
 
   .goodsInfo .goodsDesc {

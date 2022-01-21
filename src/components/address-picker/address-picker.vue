@@ -15,7 +15,7 @@
             <text class="userPhone">{{addressInfo.contactPhone}}</text>
           </view> 
         </view>
-        <image class="switchSite" src="../../static/images/ic_more_black.png"></image>
+        <image class="switchSite" src="../../static/ic_back.png"></image>
       </view>
       <view class="header-operator" v-for="(item, index) in addUser" :key="index" v-if="addUser.length">
         <view v-if="item.addingJobName" class="add-box">
@@ -33,7 +33,7 @@
         <view class="address check-address">
           <view class="community">请选择地址</view>
         </view>
-        <image class="switchSite" src="../../static/images/ic_more_black.png"></image>
+        <image class="switchSite" src="../../static/ic_back.png"></image>
       </view>
 
     </view>
@@ -147,8 +147,8 @@
   }
 
   .switchSite {
-    width: 32rpx;
-    height: 32rpx;
+    width: 48rpx;
+    height: 48rpx;
     display: block;
     margin: 40rpx 32rpx 0 0;
   }
