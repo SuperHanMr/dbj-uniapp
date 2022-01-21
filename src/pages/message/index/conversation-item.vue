@@ -4,17 +4,17 @@
       <image 
         v-if="conversation.systemType === CONV_TYPES.CUSTOMER" 
         class="im-avatar-image" 
-        src="https://ali-image.dabanjia.com/static/mp/dabanjia/images/message/ic_customer_service@2x.png">
+        src="https://ali-image.dabanjia.com/static/mp/dabanjia/images/theme-red/message/customer_ic.png">
       </image>
       <image
         v-else-if="conversation.systemType === CONV_TYPES.SYSTEM" 
         class="im-avatar-image" 
-        src="https://ali-image-test.dabanjia.com/image/20220110/17/1641808348538_5664%24sys_ic.png">
+        src="https://ali-image.dabanjia.com/static/mp/dabanjia/images/theme-red/message/sys_ic.png">
       </image>
       <image
         v-else-if="conversation.systemType === CONV_TYPES.INTERACTION" 
         class="im-avatar-image" 
-        src="https://ali-image-test.dabanjia.com/image/20220110/18/1641808944214_3389%24int_ic.png">
+        src="https://ali-image.dabanjia.com/static/mp/dabanjia/images/theme-red/message/int_ic.png">
       </image>
       <group-avatars v-else :list="avatar" />
     </view>
@@ -222,8 +222,6 @@
   }
 
   .im-message-name {
-	display: flex;
-	align-items: center;
     line-height: 44rpx;
     font-size: 16px;
     color: #111;

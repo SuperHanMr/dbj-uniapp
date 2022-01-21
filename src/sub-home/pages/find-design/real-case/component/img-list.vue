@@ -37,7 +37,7 @@
 			if (list.length > 0) {
 				this.list1.push(list[0]);
 				if (list.length >= 3) {
-					this.list2.push(...[list[0], list[1], list[2]]);
+					this.list2.push(...[list[1], list[2]]);
 				}
 				if (list.length >= 6) {
 					this.list3.push(...[list[3], list[4], list[5]]);

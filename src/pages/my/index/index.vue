@@ -181,35 +181,35 @@ export default {
         {
           key: "1",
           image:
-            "https://ali-image.dabanjia.com/static/mp/dabanjia/images/theme-red/my/wait_pay.svg",
+            "https://ali-image.dabanjia.com/static/mp/dabanjia/images/theme-red/my/wait_pay.png",
           value: "待付款",
           url: "../../../sub-my/pages/my-order/my-order?index=1&firstEntry=true",
         },
         {
           key: "2",
           image:
-            "https://ali-image.dabanjia.com/static/mp/dabanjia/images/theme-red/my/inprogress.svg",
+            "https://ali-image.dabanjia.com/static/mp/dabanjia/images/theme-red/my/inprogress.png",
           value: "进行中",
           url: "../../../sub-my/pages/my-order/my-order?index=2&firstEntry=true",
         },
         {
           key: "3",
           image:
-            "https://ali-image.dabanjia.com/static/mp/dabanjia/images/theme-red/my/order_done.svg",
+            "https://ali-image.dabanjia.com/static/mp/dabanjia/images/theme-red/my/order_done.png",
           value: "已完成",
           url: "../../../sub-my/pages/my-order/my-order?index=3&firstEntry=true",
         },
         {
           key: "4",
           image:
-            "https://ali-image.dabanjia.com/static/mp/dabanjia/images/theme-red/my/evaluate.svg",
+            "https://ali-image.dabanjia.com/static/mp/dabanjia/images/theme-red/my/evaluate.png",
           value: "评价",
           url: "../../../sub-my/pages/evaluate/evaluate",
         },
         {
           key: "5",
           image:
-            "https://ali-image.dabanjia.com/static/mp/dabanjia/images/theme-red/my/refund.svg",
+            "https://ali-image.dabanjia.com/static/mp/dabanjia/images/theme-red/my/refund.png",
           value: "退款", //退款列表
           url: "../../../sub-my/pages/refund-list/refund-list",
         },

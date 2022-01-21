@@ -241,6 +241,7 @@
 			image{
 				width: 136rpx;
 				height: 136rpx;
+				display: block;
 				box-sizing: border-box;
 				border-radius: 8rpx;
 				border: 0.5px solid #F4F4F4;
@@ -275,11 +276,10 @@
 						height: 34rpx;
 						line-height: 34rpx;
 						margin-right: 4rpx;
-						border-radius: 2px;
-						// border: 0.5px solid #35c4c4;
+						border-radius: 4rpx;
 						color: #212121;
 						font-weight: 600;
-						background: linear-gradient(90deg, #BDD9E5 0%, #CDEFCE 94.34%);
+						background: linear-gradient(90.48deg, #B4EEE1 0.28%, #EAFCD7 99.48%);
 						font-size: 20rpx;
 						text-align: center;
 						display: inline-block;
@@ -288,7 +288,6 @@
 					.name{
 						font-size: 26rpx;
 						color: #333333;
-
 						line-height: 32rpx;
 					}
 				}
@@ -296,6 +295,14 @@
 					margin-top: 16rpx;
 					font-size: 22rpx;
 					color: #999999;
+					text{
+						word-break: break-all;
+						text-overflow: ellipsis;
+						display: -webkit-box;
+						-webkit-box-orient: vertical;
+						-webkit-line-clamp: 2;
+						overflow: hidden
+					}
 				}
 			}
 			.common-price{

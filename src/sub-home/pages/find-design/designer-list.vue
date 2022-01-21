@@ -72,9 +72,9 @@
 								<view class="designer-level"><text>{{designer.levelName}}{{designer.roleName}}</text></view>
 							</view>
 							<view class="rate-wrapper">
-								<text class="designer-score">接单数 {{designer.totalCount}}</text>
-								<view class="split-line"></view>
-								<view class="designer-ordernum">
+								<text class="designer-score" >接单数 {{designer.totalCount}}</text>
+								<view class="split-line" v-if="designer.praiseEfficiency"></view>
+								<view class="designer-ordernum" v-if="designer.praiseEfficiency">
 									<text>好评率 {{designer.praiseEfficiency}}%</text>
 								</view>
 							</view>
@@ -192,11 +192,7 @@ export default {
 	},
 	methods: {
 		getTags(designer) {
-			return [
-				...designer.styles.slice(0, 5),
-				...designer.designs.slice(0, 5),
-				...designer.houses.slice(0, 5),
-			].slice(0, 5);
+			return [...designer.styles, ...designer.designs, ...designer.houses];
 		},
 		showDesigner(designer) {
 			let url =
@@ -235,6 +231,10 @@ export default {
 					this.dataSource = this.dataSource.concat(res.list || []);
 				} else {
 					this.dataSource = res.list || [];
+					uni.pageScrollTo({
+						scrollTop: 0,
+						duration: 0,
+					});
 				}
 			});
 		},

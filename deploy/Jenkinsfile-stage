@@ -1,0 +1,129 @@
+pipeline{
+  // 定义groovy脚本中使用的环境变量
+  environment{
+    // 将构建任务中的构建参数转换为环境变量
+    PROFILE = sh(returnStdout: true, script: 'echo $profile').trim()
+    IMAGE_TAG = sh(returnStdout: true, script: 'echo $image_tag').trim()
+    ORIGIN_REPO = sh(returnStdout: true, script: 'echo $origin_repo').trim()
+    REPO = sh(returnStdout: true, script: 'echo $repo').trim()
+    BRANCH = sh(returnStdout: true, script: 'echo $branch').trim()
+  }
+
+  // 时间戳、超时时间10分钟
+  options{
+    timestamps()
+    timeout(10)
+  }
+
+  // 定义本次构建使用哪个标签的构建环境，本示例中为 “slave-pipeline”
+  agent{
+    node{
+      label 'slave-pipeline-frontend-new'
+    }
+  }
+
+  // "stages"定义项目构建的多个模块，可以添加多个 “stage”， 可以多个 “stage” 串行或者并行执行
+  stages{
+    // 定义第一个stage， 完成克隆源码的任务
+    stage('Git'){
+      steps{
+        // 发送机器人消息-部署开始
+        wrap([$class: 'BuildUser']) {
+          sh '''
+          body='{"msg_type":"interactive","card":{"header":{"title":{"tag":"plain_text","content":"发版开始通知:'${JOB_NAME}'"},"template":"blue"},"card_link":{"url":"'${BUILD_URL}'"},"elements":[{"tag":"div","fields":[{"is_short":true,"text":{"tag":"lark_md","content":"**环境:**'${profile}'"}},{"is_short":true,"text":{"tag":"lark_md","content":"**分支:**'${branch}'"}}]},{"tag":"hr"},{"tag":"note","elements":[{"tag":"plain_text","content":"@'${BUILD_USER}'"}]}]}}'
+          {
+            curl -X POST -H "Content-Type: application/json" -d ${body} https://open.feishu.cn/open-apis/bot/v2/hook/5927e950-884a-4d7e-adf3-f0422f14b6c0
+          } || {
+            echo "发送消息报错"
+          }
+          '''
+        }
+        git branch: '${BRANCH}', credentialsId: 'gitlab通用账号', url: 'https://gitlab.dabanjia.com/backend/dbj-uniapp.git'
+      }
+    }
+
+    // 添加第二个stage， 运行源码打包命令
+    stage('Package'){
+      steps{
+        container("node") {
+          sh '''
+            sudo curl -L https://ali-res.dabanjia.com/res/20210715/10/162631790489402.sh -o $HOME/.nvm/nvm.sh || echo 'success'
+            sudo bash -l -c ". $HOME/.nvm/nvm.sh; \\
+            nvm use 14 || nvm install 14 && nvm use 14; \\
+            npm config set registry https://registry.npm.taobao.org/; \\
+            npm install && npm run build:h5-stage"
+          '''
+        }
+      }
+    }
+
+    // 添加第三个stage, 运行容器镜像构建和推送命令， 用到了environment中定义的groovy环境变量
+    stage('Image Build And Publish'){
+      steps{
+        container("kaniko") {
+          sh "echo 'AAAA'"
+          sh "kaniko -f `pwd`/deploy/Dockerfile-dev -c `pwd` --destination=${ORIGIN_REPO}/${REPO}-${PROFILE}:${IMAGE_TAG}_FE --skip-tls-verify --cache=true"
+        }
+      }
+    }
+
+    // 添加第四个stage, 部署应用到指定k8s集群
+    stage('Deploy to Kubernetes') {
+      steps {
+        container('kubectl') {
+          sh """
+          sed -i 's#\${PROFILE}#${PROFILE}#' deploy/deployment-stage.yml
+          sed -i 's#\${ORIGIN_REPO}#${ORIGIN_REPO}#' deploy/deployment-stage.yml
+          sed -i 's#\${REPO}#${REPO}#' deploy/deployment-stage.yml
+          sed -i 's#\${IMAGE_TAG}#${IMAGE_TAG}#' deploy/deployment-stage.yml
+          """
+          kubernetesDeploy configs: 'deploy/deployment-stage.yml', kubeconfigId: "k8s-config-new"
+          withKubeConfig(credentialsId: '打扮家-k8s-new', namespace: 'witch-doctor-${PROFILE}') {
+            sh "kubectl rollout status -n witch-doctor-${PROFILE} deployment/mp-h5-${PROFILE}"
+          }
+        }
+      }
+    }
+  }
+
+  post{
+    aborted {
+      // 发送机器人消息-部署终止
+      wrap([$class: 'BuildUser']) {
+        sh '''
+        body='{"msg_type":"interactive","card":{"header":{"title":{"tag":"plain_text","content":"发版终止通知:'${JOB_NAME}'"},"template":"grey"},"card_link":{"url":"'${BUILD_URL}'"},"elements":[{"tag":"div","fields":[{"is_short":true,"text":{"tag":"lark_md","content":"**环境:**'${profile}'"}},{"is_short":true,"text":{"tag":"lark_md","content":"**分支:**'${branch}'"}}]},{"tag":"hr"},{"tag":"note","elements":[{"tag":"plain_text","content":"@'${BUILD_USER}'"}]}]}}'
+        curl -X POST -H "Content-Type: application/json" -d ${body} https://open.feishu.cn/open-apis/bot/v2/hook/5927e950-884a-4d7e-adf3-f0422f14b6c0
+        '''
+      }
+      echo "post condition executed: aborted ..."
+    }
+    failure{
+      // 发送机器人消息-部署失败
+      wrap([$class: 'BuildUser']) {
+        sh '''
+        body='{"msg_type":"interactive","card":{"header":{"title":{"tag":"plain_text","content":"发版失败通知:'${JOB_NAME}'"},"template":"red"},"card_link":{"url":"'${BUILD_URL}'"},"elements":[{"tag":"div","fields":[{"is_short":true,"text":{"tag":"lark_md","content":"**环境:**'${profile}'"}},{"is_short":true,"text":{"tag":"lark_md","content":"**分支:**'${branch}'"}}]},{"tag":"hr"},{"tag":"note","elements":[{"tag":"plain_text","content":"@'${BUILD_USER}'"}]}]}}'
+        {
+           curl -X POST -H "Content-Type: application/json" -d ${body} https://open.feishu.cn/open-apis/bot/v2/hook/5927e950-884a-4d7e-adf3-f0422f14b6c0
+         } || {
+           echo "发送消息报错"
+         }
+         '''
+      }
+      echo "post condition executed: failure..."
+    }
+    success {
+      // 发送机器人消息-部署成功
+      wrap([$class: 'BuildUser']) {
+        sh '''
+        body='{"msg_type":"interactive","card":{"header":{"title":{"tag":"plain_text","content":"发版成功通知:'${JOB_NAME}'"},"template":"green"},"card_link":{"url":"'${BUILD_URL}'"},"elements":[{"tag":"div","fields":[{"is_short":true,"text":{"tag":"lark_md","content":"**环境:**'${profile}'"}},{"is_short":true,"text":{"tag":"lark_md","content":"**分支:**'${branch}'"}}]},{"tag":"hr"},{"tag":"note","elements":[{"tag":"plain_text","content":"@'${BUILD_USER}'"}]}]}}'
+        {
+            curl -X POST -H "Content-Type: application/json" -d ${body} https://open.feishu.cn/open-apis/bot/v2/hook/5927e950-884a-4d7e-adf3-f0422f14b6c0
+        } || {
+            echo "发送消息报错"
+        }
+        '''
+      }
+      echo "post condition executed: success..."
+    }
+  }
+}

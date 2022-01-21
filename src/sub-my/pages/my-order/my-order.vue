@@ -188,7 +188,7 @@
                   <text v-if="item.freight && !item.handlingFees">需付款(含运费)</text>
                   <text v-if=" !item.freight && item.handlingFees">需付款(含搬运费)</text>
                   <text v-if="!item.freight && !item.handlingFees">需付款</text>
-                  <text style="color:#FF3347;margin-left: 8rpx;">
+                  <text style="color:#F83112;margin-left: 8rpx;">
                     <text style="font-size:22rpx;">￥</text>
                     <text
                       style="font-size: 32rpx;"
@@ -827,9 +827,9 @@ export default {
 }
 
 .header {
-  height: 96rpx;
+  // height: 96rpx;
   margin-top: 16rpx;
-  padding: 28rpx 32rpx;
+	padding: 28rpx 32rpx 0 32rpx;
   box-sizing: border-box;
   background-color: #FFFFFF;
   display: flex;
@@ -840,7 +840,6 @@ export default {
     display: flex;
     flex-flow: row nowrap;
     align-items: center;
-
     text {
 			display: block;
 			height: 40rpx;
@@ -871,7 +870,7 @@ export default {
 		height: 37rpx;
 		.count_down{
 			position: absolute;
-			top: 0;
+			top: 2rpx;
 			right: 16rpx;
 		}
 
@@ -887,7 +886,7 @@ export default {
 }
 
 .body {
-  padding: 32rpx 32rpx 0;
+  padding: 28rpx 32rpx 0;
   background-color: #ffffff;
   box-sizing: border-box;
   display: flex;
@@ -978,7 +977,7 @@ export default {
   flex-flow: row nowrap;
   align-items: center;
   justify-content: space-between;
-  padding: 32rpx;
+  padding: 0 32rpx 32rpx;
   background-color: #ffffff;
 
   .set-interval {
