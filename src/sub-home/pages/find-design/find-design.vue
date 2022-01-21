@@ -52,7 +52,13 @@
     <view class="recommendForYou-container">
       <view class="title_container">
         <view class="left">
-          为您推荐
+					<view class="recommend">
+						为您推荐
+					</view>
+					<!-- <view class="change-designerList" @click="changeDesignerList">
+						<text>换一换</text>
+						<image src="../../static/next_batch.png" mode=""></image>
+					</view> -->
         </view>
         <view
           class="right"
@@ -261,14 +267,13 @@ export default {
   onLoad() {
     const systemInfo = uni.getSystemInfoSync();
     this.navBarHeight = systemInfo.statusBarHeight + "px";
+		
   },
   onShow() { 
     this.userId = getApp().globalData.token;
-    console.log("getApp().globalData.userInfo==",getApp().globalData)
-
-    this.estateId = getApp().globalData.currentHouse.id
-
-    console.log("this.estateId===", this.estateId);
+    // console.log("getApp().globalData.userInfo==",getApp().globalData)
+		this.estateId = getApp().globalData.currentHouse.id
+		// console.log("this.estateId===", this.estateId);
     if (this.userId) {
       // 登录
       this.hasEstate = this.estateId?true:false
@@ -276,16 +281,16 @@ export default {
       // 未登录
       this.estateId = "";
     }
-
-    this.getRecommendCaseList();
-    if (uni.getStorageSync("recommendDesignerPage")) {
-      this.page = uni.getStorageSync("recommendDesignerPage");
-    }
+		this.getRecommendCaseList();
+		
 		this.scrollLeft = 1
 		this.$nextTick(()=>{
 			this.scrollLeft = 0
 		})
-    console.log("onShow!!!!!!!!!!!!!");
+		
+    if (uni.getStorageSync("recommendDesignerPage")) {
+      this.page = uni.getStorageSync("recommendDesignerPage");
+    }
     this.page++;
     uni.setStorageSync("recommendDesignerPage", this.page);
     const hhh = uni.getStorageSync("recommendDesignerPage");
@@ -294,8 +299,8 @@ export default {
     // if(this.page>1){
     // 	this.getDesignerList();
     // }
-    console.log("this.page", this.page);
   },
+	
   onPageScroll(scrollTop) {
     this.scrollTop = scrollTop.scrollTop;
   },
@@ -352,7 +357,12 @@ export default {
 				}
       });
     },
-    //自己找设计师
+    
+		changeDesignerList(){
+			console.log("换一批！！！！！！！！！！！！！！！！！")
+		},
+		
+		//自己找设计师
     findOwnDesigner() {
       uni.navigateTo({
         url: "/sub-home/pages/find-design/search-design",
@@ -741,11 +751,36 @@ export default {
   justify-content: space-between;
   padding: 32rpx 32rpx 26rpx 40rpx;
   .left {
-    height: 44rpx;
-    line-height: 44rpx;
-    color: #333333;
-    font-size: 32rpx;
-    font-weight: 500;
+    position: relative;
+		.recommend{
+			height: 44rpx;
+			line-height: 44rpx;
+			color: #333333;
+			font-size: 32rpx;
+			font-weight: 500;
+		}
+		.change-designerList{
+			position: absolute;
+			top: 5rpx;
+			left: 154rpx;
+			display: flex;
+			align-items: center;
+			flex-flow: row nowrap;
+			width: 98rpx;
+			text{
+				display: block;
+				height: 34rpx;
+				line-height: 34rpx;
+				margin-right: 4rpx;
+				font-size: 24rpx;
+				color: #999999;
+			}
+			image{
+				display: block;
+				width: 20rpx;
+				height: 20rpx;
+			}
+		}
   }
   .right {
     height: 40rpx;
