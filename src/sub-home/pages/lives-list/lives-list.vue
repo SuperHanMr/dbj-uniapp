@@ -204,15 +204,15 @@
 	}
 
 	.no-list {
-		width: 248rpx;
-		height: 248rpx;
+		width: 400rpx;
+		height: 400rpx;
 	}
 
 	.tip-text {
 		margin-top: 24rpx;
 		font-size: 30rpx;
 		font-weight: 400;
-		color: #999999;
+		color: #CBCCCC;
 	}
 
 	.live-list-name {
