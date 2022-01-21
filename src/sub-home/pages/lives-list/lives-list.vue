@@ -295,7 +295,7 @@
 			margin-bottom: 48rpx;
 			flex-shrink: 0;
 			width: 328rpx;
-			border-radius: 12rpx;
+			
 			position: relative;
 			overflow: hidden;
 			display: flex;
@@ -320,10 +320,10 @@
 			.img-view {
 				width: 328rpx;
 				position: relative;
-
 				.img {
 					width: 328rpx;
 					height: 436rpx;
+					border-radius: 12rpx;
 				}
 
 				
