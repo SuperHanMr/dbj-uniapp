@@ -242,7 +242,7 @@
 		}
 	
 		.name-live {
-			margin-left: 12rpx;
+			margin-left: 8rpx;
 			text-overflow: ellipsis;
 			display: -webkit-box;
 			-webkit-line-clamp: 1; //这个代表你要在几行显示省略号
