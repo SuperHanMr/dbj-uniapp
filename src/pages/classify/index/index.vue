@@ -226,8 +226,8 @@
 	.uni-tab-item-title-active::after {
 		content: "";
 		display: inline-block;
-		width: 50%;
-		height: 4rpx;
+		width: 32rpx;
+		height: 6rpx;
 		background: linear-gradient(116.19deg, #F83112 16.48%, #FD6421 83.52%);
 		border-radius: 100px 100px 0px 0px;
 		position: absolute;

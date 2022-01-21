@@ -4,8 +4,8 @@
 			<image :src="params.imageUrl" mode="widthFix" @load="emitHeight" @error="emitHeight"></image>
 			<view class="comment-like">
 				<view class="address" v-if="params.cityName">
-          {{params.roomNum===0?`${params.roomNum}室`:`${params.hallNum}厅`}}
-          <view> | </view>
+          {{params.roomNum!==0?`${params.roomNum}室`:params.hallNum!==0?`${params.hallNum}厅`:''}}
+          <view v-if="params.roomNum&&params.hallNum"> | </view>
           {{params.insideArea}}㎡
           <view> | </view>
           {{params.cityName}}
@@ -15,6 +15,9 @@
           {{params.housingEstate}}
         </view>
 			</view>
+      <view class="mask" v-if="params.cityName">
+        
+      </view>
 			<view class="position-icon">
 				<image src="/static/images/real-case/video_ic.png" mode="" v-if="params.parentType == 0"></image>
 				<image src="/static/images/real-case/ic_vr.png" mode="" v-if="params.parentType == 1"></image>
@@ -122,7 +125,7 @@
 		}
 		.comment-like{
 			position: absolute;
-			bottom: 10rpx;
+			bottom: 0;
 			left: 16rpx;
 			display: flex;
 			align-items: center;
@@ -134,12 +137,23 @@
         overflow: hidden;
         text-overflow: ellipsis;
         white-space: nowrap;
+        height: 60rpx;
+        line-height: 60rpx;
         view{
           display: inline-block;
           margin: 0 8rpx;
         }
       }
+      
 		}
+    .mask{
+      background: linear-gradient(180deg, rgba(0, 0, 0, 0.05) 0%, rgba(0, 0, 0, 0.65) 100%);
+      width: 100%;
+      height: 60rpx;
+      position: absolute;
+      bottom: 0;
+      border-radius: 0 0 16rpx 16rpx;
+    }
 		.position-icon{
 			position: absolute;
 			right: 16rpx;
