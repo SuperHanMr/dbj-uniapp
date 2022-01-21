@@ -6,9 +6,9 @@
 			</view>
 			<view style="flex: 1;">
 			</view>
-			<view v-if="item.stockStatus==1" class="store-sub">
+			<!-- <view v-if="item.stockStatus==1" class="store-sub">
 				剩余{{item.remainingShipments}}次免运费额度
-			</view>
+			</view> -->
 			<!-- 	<view v-if="showBackStatus" class="store-sub">
 				剩余{{item.remainingShipments}}次免运费额度
 			</view> -->
