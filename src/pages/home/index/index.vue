@@ -1174,6 +1174,7 @@
   .banner-content {
     position: relative;
     margin: 16rpx 24rpx 0;
+		z-index: 1000;
 
     .banner {
       border-radius: 16rpx;
