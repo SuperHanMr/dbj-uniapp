@@ -246,27 +246,6 @@
                 class="footer buttonContainer"
                 v-if="item.orderStatus == 0 && (item.showCancelBtn || item.showToPayBtn)"
               >
-                <!-- <view
-                  v-if="item.showCancelOrderTime "
-                  class="set-interval"
-                >
-                  <image
-                    src="../../static/ic_time@2x.png"
-                    mode=""
-                  />
-
-                  <view class="time-text">
-                    <text class="remainPayTime">剩余支付时间</text>
-                    <count-down
-                      :start="item.remainTime"
-                      :timeBackground="'#E4E6E6'"
-                      :timeColor="'#333333'"
-                      :separatorColor="'#333333'"
-                      @finish="onRefresh(e)"
-                    />
-                  </view>
-
-                </view> -->
 
                 <view
                   v-if="item.showToPayBtn || item.showCancelBtn"
@@ -818,7 +797,6 @@ export default {
       position: absolute;
       width: 32rpx;
       height: 4rpx;
-      // background: linear-gradient(129deg, #00cdec 0%, #00ed7d 100%);
       border-radius: 200rpx 200rpx 0px 0px;
       bottom: 10rpx;
       left: 60rpx;
@@ -1060,7 +1038,7 @@ export default {
     font-size: 24rpx;
     padding: 0;
     margin-left: 24rpx;
-    background: linear-gradient(135deg, #36d9cd 0%, #28c6c6 100%);
+		background: linear-gradient(116.19deg, #F83112 16.48%, #FD6421 83.52%);
     border-radius: 32rpx;
     color: #ffffff;
   }
@@ -1082,7 +1060,7 @@ export default {
   text-align: center;
   font-size: 24rpx;
   margin-left: 24rpx;
-  background: linear-gradient(99deg, #00ccbe 0%, #00c2bf 100%);
+  background: linear-gradient(116.19deg, #F83112 16.48%, #FD6421 83.52%);
   border-radius: 32rpx;
   color: #ffffff;
   padding: 0;

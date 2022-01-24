@@ -21,7 +21,7 @@
           @click="handlerPersonalData()"
         >
           <image
-            src="https://ali-image.dabanjia.com/image/20210513/10/162087290165628.png"
+            src="https://ali-image.dabanjia.com/image/20220121/14/164274679927815.png"
             class="avatar"
             mode="aspectFill"
           />
