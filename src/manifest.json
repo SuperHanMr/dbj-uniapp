@@ -1,5 +1,5 @@
 {
-    "name" : "打扮家装修",
+    "name" : "2.0.18",
     "appid" : "__UNI__B1DB5D4",
     "description" : "",
     "versionName" : "1.0.0",
@@ -54,7 +54,6 @@
     "quickapp" : {},
     /* 快应用特有相关 */
     "mp-weixin" : {
-        /* 微信小程序特有相关 */
         "appid" : "wx2e14a7847b8047b5",
         "setting" : {
             "urlCheck" : true,
@@ -87,9 +86,9 @@
     "h5" : {
         "sdkConfigs" : {
             "maps" : {
-              "qqmap":{
-                "key":"ZNLBZ-3AOKD-KPN4E-HPYFB-GCU4H-BUFNL"
-              }
+                "qqmap" : {
+                    "key" : "ZNLBZ-3AOKD-KPN4E-HPYFB-GCU4H-BUFNL"
+                }
             }
         }
     }

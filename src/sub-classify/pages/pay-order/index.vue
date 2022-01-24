@@ -179,7 +179,6 @@
             搬运费
             <text
               class="question-icon"
-              
               @click="readExpenses(2)"
             ></text>
           </view>
