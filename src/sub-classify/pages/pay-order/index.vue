@@ -91,18 +91,27 @@
           </view>
         </view>
       </view>
-      <view class="good-store-account" v-if="productType === 1">
-        <view v-if="orderInfo.totalDeliveryFee !== undefined && !orderInfo.hasStock">
+      <view
+        class="good-store-account"
+        v-if="productType === 1"
+      >
+        <view v-if="orderInfo.totalDeliveryFee !== undefined">
           <view class="question-box">
             运费
             <text class="question-icon" @click="readExpenses(1)"></text>
           </view>
           <text>¥{{orderInfo.totalDeliveryFee}}</text>
         </view>
-        <view v-if="orderInfo.totalHandlingFee !== undefined  && !orderInfo.hasStock" class="price-font mt26">
+        <view
+          v-if="orderInfo.totalHandlingFee !== undefined"
+          class="price-font mt26"
+        >
           <view class="question-box">
             搬运费
-            <text class="question-icon" @click="readExpenses(2)"></text>
+            <text
+              class="question-icon"        
+              @click="readExpenses(2)"
+            ></text>
           </view>
           <text>¥{{orderInfo.totalHandlingFee}}</text>
         </view>

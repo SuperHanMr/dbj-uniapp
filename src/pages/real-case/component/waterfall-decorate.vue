@@ -97,7 +97,7 @@
 	
 	.content{
 		.title{
-			margin: 20rpx 16rpx 18rpx 0;
+			margin: 16rpx 16rpx 12rpx 0;
 			font-size: 26rpx;
 			line-height: 44rpx;
 			font-family: PingFangSC, PingFangSC-Medium;
@@ -128,13 +128,13 @@
 			.phase-box{
 				display: flex;
 				align-items: center;
-				border: .5px solid #58A8FF;
+				border: .5px solid #FA4D32;
 				border-radius: 2px
 			}
 			.phase-box-border{
 				border: 0;
 				border-radius: 2px;
-				background: #58A8FF;
+				background: #FA4D32;
 			}
 			.phase{
 				padding: 0 4rpx;
@@ -144,10 +144,11 @@
 				text-align: left;
 				color: #ffffff;
 				background: #333333;
+				border-radius: 4rpx;
 			}
 			.phase-pending{
 				color: #ffffff;
-				background: #58A8FF;
+				background: #FA4D32;
 			}
 			.phase-newest-node{
 				padding: 0 4rpx;
@@ -155,7 +156,7 @@
 				font-family: PingFangSC, PingFangSC-Regular;
 				font-weight: 400;
 				text-align: left;
-				color: #58A8FF;
+				color: #FA4D32;
 			}
 		}
 	}

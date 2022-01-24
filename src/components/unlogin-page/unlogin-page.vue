@@ -11,13 +11,41 @@
 </template>
 
 <script>
+import request from '../../utils/request';
 export default {
   name: "UnloginPage",
   methods: {
     gotoLogin() {
+      // #ifdef MP-WEIXIN
       uni.navigateTo({
       	url: "/pages/login/login",
       });
+      // #endif
+      // #ifdef H5
+      function oauthGomeInfo(data) {
+        let shareId = uni.getStorageSync("shareId");
+        if (shareId) {
+          //只要是从胶囊小店跳转过来的就传这个值
+          data.sourceType = "CAPSULE_STORE_APPLET"
+        }
+        data = Object.assign(data, {
+          clientCode: "APPLET",
+          ignoreLogin: true
+        })
+        return request.post('http://apis-dbj.gomeuat.com.cn/customer/app/oauth/gome/loginByCookie', data)
+      }
+      console.log("发送登录请求测试");
+      oauthGomeInfo({
+        hideToast: true,
+        ignoreLogin: true,
+        clientType: "3",
+      })
+      .then((data) => {
+        console.log("请求成功！", data);
+      }).catch(err => {
+        console.error("请求失败", err);
+      })
+      // #endif
     }
   }
 }

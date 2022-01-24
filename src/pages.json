@@ -411,6 +411,14 @@
             "enablePullDownRefresh": false
           }
         },
+				{
+					"path" : "pages/my-order/order-detail/order-detail",
+					"style": {
+					  "navigationBarTitleText": "",
+					  "enablePullDownRefresh": false,
+					  "navigationStyle": "custom"
+					}
+				},
         {
           "path": "pages/my-order/order-in-progress/order-in-progress",
           "style": {
