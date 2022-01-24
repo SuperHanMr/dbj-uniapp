@@ -91,10 +91,7 @@
           </view>
         </view>
       </view>
-      <view
-        class="good-store-account"
-        v-if="productType === 1"
-      >
+      <view class="good-store-account" v-if="productType === 1">
         <view v-if="orderInfo.totalDeliveryFee !== undefined" class="price-font mt26">
           <view class="question-box">
             运费
@@ -102,16 +99,10 @@
           </view>
           <text>¥<text class="fee">{{orderInfo.totalDeliveryFee}}</text></text>
         </view>
-        <view
-          v-if="orderInfo.totalHandlingFee !== undefined"
-          class="price-font mt26"
-        >
+        <view v-if="orderInfo.totalHandlingFee !== undefined" class="price-font mt26">
           <view class="question-box">
             搬运费
-            <text
-              class="question-icon"        
-              @click="readExpenses(2)"
-            ></text>
+            <text class="question-icon" @click="readExpenses(2)"></text>
           </view>
           <text>¥<text class="fee">{{orderInfo.totalHandlingFee}}</text></text>
         </view>
@@ -647,6 +638,7 @@
         let orderPrice = Number(
           Number(this.totalPrice).toFixed(2).replace(".", "")
         );
+        //#ifdef MP-WEIXIN
         let params = {
           payType: 1, //"int //支付方式  1微信支付",
           openid: getApp().globalData.openId, //"string //微信openid 小程序支付用 app支付不传或传空",
@@ -660,22 +652,6 @@
           isCardPay: this.cardClick,
           origin: this.shareOriginType
         };
-        //#ifdef H5
-        params = {
-          payType: 3, //"int //支付方式  1微信支付",
-          deviceType: 2,
-          openid: getApp().globalData.openId, //"string //微信openid 小程序支付用 app支付不传或传空",
-          projectId: this.projectId, //"long //项目id  非必须 默认0",
-          customerId: 0, //"long //业主id  非必须 默认0",
-          estateId: this.estateId, //"long //房产id   非必须 默认0",
-          total: orderPrice, //"int //总计",
-          remarks: this.remarks, //"string //备注",
-          orderName: "", //"string //订单名称 可为空",
-          details: details,
-          isCardPay: this.cardClick,
-          origin: this.shareOriginType
-        };
-        //#endif
         payOrder(params).then((data) => {
           const {
             wechatPayJsapi,
@@ -725,6 +701,24 @@
             });
           }
         });
+        //#endif
+        //#ifdef H5
+        params = {
+          payType: 3, //"int //支付方式  1微信支付",
+          deviceType: 2,
+          openid: getApp().globalData.openId, //"string //微信openid 小程序支付用 app支付不传或传空",
+          projectId: this.projectId, //"long //项目id  非必须 默认0",
+          customerId: 0, //"long //业主id  非必须 默认0",
+          estateId: this.estateId, //"long //房产id   非必须 默认0",
+          total: orderPrice, //"int //总计",
+          remarks: this.remarks, //"string //备注",
+          orderName: "", //"string //订单名称 可为空",
+          details: details,
+          isCardPay: this.cardClick,
+          origin: this.shareOriginType
+        };
+        //#endif
+
       },
       cancelGoodPop() {
         this.cancelDialog = true;
@@ -763,12 +757,15 @@
     margin-top: 26rpx;
     font-size: 24rpx;
   }
-  .mt26 .fee{
+
+  .mt26 .fee {
     font-size: 28rpx;
   }
-  .mt26 .total-fee{
+
+  .mt26 .total-fee {
     font-size: 32rpx;
   }
+
   .select-disable {
     width: 36rpx;
     height: 36rpx;
@@ -837,11 +834,12 @@
   }
 
   // 商品item
-  .content{
+  .content {
     background-color: #ffffff;
     border-radius: 32rpx;
     overflow: hidden;
   }
+
   .shop-item {
     margin-top: 25rpx;
     padding: 0 32rpx;
@@ -1091,6 +1089,7 @@
   .total-deposit {
     padding: 0 !important;
   }
+
   .pay-way,
   .pledge,
   .remarks {
