@@ -1,6 +1,6 @@
 <template>
   <view class="unlogin-page">
-    <image class="empty-img" src="https://ali-image.dabanjia.com/static/mp/dabanjia/images/empty.png"></image>
+    <image class="empty-img" src="https://ali-image.dabanjia.com/static/mp/dabanjia/images/theme-red/message/img_sys_listempty.png"></image>
     <view class="unlogin-tip">
       登录后可查看全部内容
     </view>
@@ -43,7 +43,7 @@ export default {
 .unlogin-btn {
   width: 178px;
   height: 44px;
-  background: linear-gradient(135deg,#00bfaf, #00bfbc);
+  background: linear-gradient(117deg, #FA3B34 25%, #FF6A33 92%);
   border-radius: 6px;
   color: #fff;
   display: flex;
