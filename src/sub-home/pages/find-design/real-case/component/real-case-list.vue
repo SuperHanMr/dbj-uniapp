@@ -12,10 +12,10 @@
 					</view>
 					<view class="info">
 						<view class="pattern">
-							<text v-if="item.roomNum">{{item.roomNum || '-'}}室</text>
-							<text v-if="item.hallNum">{{item.hallNum || '-'}}厅</text>
-							<text v-if="item.kitchenNum">{{item.kitchenNum || '-'}}厨</text>
-							<text v-if="item.bathroomNum">{{item.bathroomNum || '-'}}卫</text>
+							<text>{{item.roomNum || '-'}}室</text>
+							<text>{{item.hallNum || '-'}}厅</text>
+							<text>{{item.kitchenNum || '-'}}厨</text>
+							<text>{{item.bathroomNum || '-'}}卫</text>
 						</view>
 						<view class="line">
 
@@ -195,11 +195,19 @@
 						color: #999999;
 						margin-right: 20rpx;
 					}
+					.pattern{
+						white-space: nowrap;
+						overflow: hidden;
+						text-overflow: ellipsis;
+					}
 
 					.preferential {
 						font-size: 24rpx;
 						line-height: 34rpx;
 						color: #999999;
+						white-space: nowrap;
+						overflow: hidden;
+						text-overflow: ellipsis;
 					}
 				}
 
