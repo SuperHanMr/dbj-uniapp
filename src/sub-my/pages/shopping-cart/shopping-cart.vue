@@ -47,16 +47,15 @@
 							<image class="goodsItemImg" :src="goodsItem.image+'?x-oss-process=image/resize,m_mfit,w_96,h_96'"
 								@click="toGoodsDetail(goodsItem.skuId)"  />
 							<view class="goodsInfo">
-								<view>
+								<view class="header">
 									<view class="goodsDesc" @click="toGoodsDetail(goodsItem.skuId)">
 										<view class="goodsType">{{goodsItem.productType=== 1?"物品":"服务"}}</view>
 										{{goodsItem.spuName}}
 									</view>
-									<view class="goodsSpec-container" @click="openSpec(goodsItem.skuId,goodsItem.goodsChecked)">
-										<view class="goodsSpec">
-											<view class="text">{{goodsItem.skuName}}</view>
-											<image 	class="selectOptions" src="../../static/shoppingCart_dropDown.svg"></image>
-										</view>
+									<view class="goodsSpec" @click="openSpec(goodsItem.skuId,goodsItem.goodsChecked)">
+											<!-- <view class="text">{{goodsItem.skuName}}</view> -->
+											{{goodsItem.skuName}}
+										<image 	class="selectOptions" src="../../static/shoppingCart_dropDown.svg"></image>
 									</view>
 								</view>
 								<!-- 商品单价和数量 -->
@@ -291,7 +290,7 @@
 				options: [{
 					text: "删除",
 					style: {
-						backgroundColor: "#FF3347",
+						backgroundColor: "#FF6357",
 					},
 				}, ],
 				userId: 0,
@@ -1457,61 +1456,61 @@
 				display: flex;
 				flex-direction: column;
 				justify-content: space-between;
-				.goodsDesc {
-					max-height: 80rpx;
-					font-size: 28rpx;
-					color: #333333;
-					line-height: 40rpx;
-					display: -webkit-box;
-					-webkit-line-clamp: 2;
-					-webkit-box-orient: vertical;
-					overflow: hidden;
-					text-overflow: ellipsis;
-					margin-bottom: 8rpx;
-					.goodsType {
-						display: inline-block;
-						// width: 60rpx;
-						height: 30rpx;
-						line-height: 30rpx;
-						text-align: center;
-						padding: 0 10rpx;
-						margin-right: 4rpx;
-						border-radius: 4rpx;
-						background: linear-gradient(90.48deg, #B4EEE1 0.28%, #EAFCD7 99.48%);
-						font-size: 20rpx;
-						font-weight: 600;
-						color: #222222;
-					}
-				}
-				.goodsSpec-container{
-					height: 38rpx;
-					padding:0 12rpx;
-					background: #fafafa;
-					border: 1rpx solid #f0f0f0;
-					box-sizing: border-box;
-					border-radius: 4rpx;
-					.goodsSpec {
-						display: flex;
-						align-items: center;
-						flex-flow: row nowrap;
-						justify-content: space-between;
-						.text {
-							max-width: 368rpx;
-							height: 34rpx;
-							line-height: 34rpx;
-							overflow: hidden;
-							white-space: nowrap;
-							text-overflow: ellipsis;
-							font-size: 22rpx;
-							color: #999999;
+				.header{
+					display: flex;
+					align-items: flex-start;
+					flex-flow: column nowrap;
+					justify-content: flex-start;
+					width: 414rpx;
+					.goodsDesc {
+						max-height: 80rpx;
+						font-size: 28rpx;
+						color: #333333;
+						line-height: 40rpx;
+						display: -webkit-box;
+						-webkit-line-clamp: 2;
+						-webkit-box-orient: vertical;
+						overflow: hidden;
+						text-overflow: ellipsis;
+						margin-bottom: 8rpx;
+						.goodsType {
+							display: inline-block;
+							height: 30rpx;
+							line-height: 30rpx;
+							text-align: center;
+							padding: 0 10rpx;
+							margin-right: 4rpx;
+							border-radius: 4rpx;
+							background: linear-gradient(90.48deg, #B4EEE1 0.28%, #EAFCD7 99.48%);
+							font-size: 20rpx;
+							font-weight: 600;
+							color: #222222;
 						}
+					}
+					.goodsSpec{
+						max-width: 414rpx;
+						height: 38rpx;
+						line-height: 34rpx;
+						overflow: hidden;
+						white-space: nowrap;
+						text-overflow: ellipsis;
+						font-size: 22rpx;
+						color: #999999;
+						padding: 0 46rpx 0 12rpx;
+						background: #fafafa;
+						border: 1rpx solid #f0f0f0;
+						box-sizing: border-box;
+						border-radius: 4rpx;
+						position: relative;
 						.selectOptions {
+							position: absolute;
+							right: 12rpx;
+							top: 4rpx;
 							width: 26rpx;
 							height: 26rpx;
 						}
 					}
 				}
-			
 				.foot {
 					// width: 388rpx;
 					display: flex;

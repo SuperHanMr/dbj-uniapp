@@ -154,28 +154,28 @@ export default {
         {
           key: "3",
           image:
-            "https://ali-image.dabanjia.com/static/mp/dabanjia/images/theme-red/my/shopping_Cart.svg",
+            "https://ali-image.dabanjia.com/static/mp/dabanjia/images/theme-red/my/shopping_Cart.png",
           value: "购物车",
           url: "../../../sub-my/pages/shopping-cart/shopping-cart",
         },
         {
           key: "4",
           image:
-            "https://ali-image.dabanjia.com/static/mp/dabanjia/images/theme-red/my/collection.svg",
+            "https://ali-image.dabanjia.com/static/mp/dabanjia/images/theme-red/my/collection.png",
           value: "我的收藏",
           url: "../../../sub-my/pages/personal-center/my-collection/my-collection?firstEntry=true",
         },
         {
           key: "5",
           image:
-            "https://ali-image.dabanjia.com/static/mp/dabanjia/images/theme-red/my/attention.svg",
+            "https://ali-image.dabanjia.com/static/mp/dabanjia/images/theme-red/my/attention.png",
           value: "我的关注",
           url: "../../../sub-my/pages/personal-center/my-attention/my-attention",
         },
         {
           key: "6",
           image:
-            "https://ali-image.dabanjia.com/static/mp/dabanjia/images/theme-red/my/houseGgr.svg",
+            "https://ali-image.dabanjia.com/static/mp/dabanjia/images/theme-red/my/houseGgr.png",
           value: "房屋管理",
           url: "../../../sub-my/pages/my-house/my-house?isMy=true",
         },
@@ -235,7 +235,7 @@ export default {
       this.list.unshift({
         key: "1",
         image:
-          "https://ali-image.dabanjia.com/static/mp/dabanjia/images/theme-red/my/ic_storeValueCard.svg",
+          "https://ali-image.dabanjia.com/static/mp/dabanjia/images/theme-red/my/ic_storeValueCard.png",
         value: "储值卡",
         url: "../../../sub-my/pages/deposit-card/deposit-card",
       });

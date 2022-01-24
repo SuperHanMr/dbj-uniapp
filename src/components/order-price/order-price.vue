@@ -99,8 +99,7 @@
 
     <!-- 待付款 -->
 		<!-- 此处还差判断条件 -->
-		<view v-if="waitPay" class="complainStyle">
-			
+		<view v-if="waitPay && data.type==1 && data.stockType == 1" class="complainStyle">
 			辅材类商品下单时不收取运费搬运费，具体费用将在仓库要货时产生并另行结算
 		</view>
 		

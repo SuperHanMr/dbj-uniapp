@@ -3,8 +3,9 @@
   <view
     class="sceneContainer"
   >
-    <view class="header">
-      <view class="houseInfo">
+    <view class="header" :style="{paddingBottom: Number(statusHeight) + 44 + 'px'}">
+			<Navigation-bar :projectName='projectInfo.projectName' :paddingTop='statusHeight' />
+      <view class="houseInfo" :style="{marginTop: Number(statusHeight) + 44 + 'px'}">
         <view class="location">{{projectInfo.estateNeighbourhood}}</view>
         <view class="focus">
           <view class="browse">浏览 {{estateViewCount}}</view>
@@ -24,6 +25,7 @@
       <image
         class="houseImg"
         :src="projectInfo.estateIconUrl+'?x-oss-process=image/resize,m_mfit,w_116,h_116'"
+				 :style="{marginTop: Number(statusHeight) + 72 + 'px'}"
       ></image>
     </view>
     <view class="navBar">
@@ -526,6 +528,7 @@
 
 <script>
 import axios from "@/js_sdk/gangdiedao-uni-axios";
+import NavigationBar from './navigation-bar.vue';
 import {
   getDecorateProcess,
   getDecorateDynamic,
@@ -542,9 +545,9 @@ import {
 import { queryEstates } from "../../../api/decorate.js";
 // import imagePreview from "../../../components/image-preview/image-preview.vue";
 export default {
-  // components: {
-  //   imagePreview,
-  // },
+  components: {
+    NavigationBar,
+  },
   data() {
     return {
       hasEstate: false,
@@ -585,6 +588,7 @@ export default {
       hasChange: false,
       newestNodeIndex: 0,
       scn: "",
+			statusHeight: 0,
     };
   },
   onLoad(option) {
@@ -593,6 +597,11 @@ export default {
       this.homePageEstate = item;
     });
     uni.showShareMenu();
+		uni.getSystemInfo({
+			success: (res) => {
+				this.statusHeight = res.statusBarHeight;
+			},
+		});
   },
   onShow() {
     this.userId = uni.getStorageSync("userId");
@@ -1522,7 +1531,8 @@ export default {
   width: 100%;
   height: 400rpx;
   background-repeat: no-repeat;
-  background-image: url("https://ali-image.dabanjia.com/static/mp/dabanjia/images/home/bg%402x.png");
+  background-image: url("https://ali-image.dabanjia.com/static/mp/dabanjia/images/theme-red/home/bg.png");
+	background-size: 100% 100%;
   display: flex;
 }
 .sceneContainer > .footer {
@@ -1538,7 +1548,7 @@ export default {
 .houseImg {
   width: 232rpx;
   height: 232rpx;
-  margin: 56rpx 32rpx 48rpx 48rpx;
+  margin: 0 32rpx 48rpx 48rpx;
   border-radius: 20rpx;
   display: block;
 }
