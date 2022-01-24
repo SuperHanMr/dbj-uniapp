@@ -6,8 +6,11 @@
         来自 {{commentData.list[0].userName=='匿名'?commentData.list[0].userName+'用户':commentData.list[0].userName}} 
         <text> 的评价</text>
       </view>
-      <view class="content">
+      <view class="evaluate-text" :class="{'report-text-hidden':isHidden}">
         {{commentData.list[0].content?commentData.list[0].content:(JSON.parse(commentData.list[0].imgList).length>0?'此用户上传了图片评价。':`用户对设计师进行了${commentData.list[0].rank}星好评`)}}
+      </view>
+      <view class="openHidden" v-if="showBtn" @click="clickHidden">
+        {{hddenText}}<i :class="{'icon-a-ic_zhuangxiuxianchang_jingsuanzhankai_csn':isHidden,'icon-a-ic_zhuangxiuxianchang_jingsuanshouqi_csn':!isHidden}"></i>
       </view>
       <view class="case-item" v-if="commentData.list[0].skuId!=0" @click="toBuy(commentData.list[0].skuInfoVO.skuId)">
         <image :src="commentData.list[0].skuInfoVO.skuImage"></image>
@@ -54,12 +57,23 @@
         num:3,
         evaluate:{
           list:[]
-        }
+        },
+        isHidden:false,
+        showBtn:false,
+        hddenText:'展开',
       }
     },
     // mounted() {
     //   this.getComments()
     // },
+    watch:{
+      commentData:{
+        handler:function(){
+          this.check()
+        },
+        immediate: true
+      }
+    },
     methods:{
       toBuy(item){
         if(!item){
@@ -75,6 +89,22 @@
       },
       toEvaluateList(){
         this.$emit('toEvaluateList')
+      },
+      check(){
+        let query = uni.createSelectorQuery().in(this)
+        this.$nextTick(function(){
+          query.select(".evaluate-text").boundingClientRect((res) => {
+            
+            this.isHidden = res.height/20 >= 3;
+            this.showBtn = res.height/20 >= 3;
+            console.log(res.height,this.isHidden)
+            
+          }).exec()
+        })
+      },
+      clickHidden(){
+        this.isHidden = !this.isHidden
+        this.hddenText = this.isHidden?'展开':'收起'
       },
     }
   }
@@ -106,15 +136,43 @@
         margin-left: 10rpx;
       }
     }
-    .content{
-      margin: 25rpx 0 12rpx;
-      color: #666;
+    .evaluate-text{
       font-size: 28rpx;
+      color: #666;
+      line-height: 44rpx;
+      overflow : hidden;
+      text-overflow: ellipsis;
+      display: -webkit-box;
+      margin: 24rpx 0;
+      // -webkit-line-clamp: 6;
+      // -webkit-box-orient: vertical;
+    }
+    .report-text-hidden{
       overflow : hidden;
       text-overflow: ellipsis;
       display: -webkit-box;
       -webkit-line-clamp: 2;
       -webkit-box-orient: vertical;
+    }
+    .openHidden{
+      // width: 148rpx;
+      // height: 44rpx;
+      // opacity: 1;
+      // border: 0.5px solid #cccccc;
+      // border-radius: 12px;
+      // margin: 24rpx auto;
+      // line-height: 44rpx;
+      font-weight: 400;
+      text-align: center;
+      color: #FA4D32;
+      font-size: 24rpx;
+      display: flex;
+      align-items: center;
+      margin: 20rpx 0;
+      i{
+        margin-left: 10rpx;
+        font-size: 18rpx;
+      }
     }
     .case-item{
       // margin-top: 16rpx;

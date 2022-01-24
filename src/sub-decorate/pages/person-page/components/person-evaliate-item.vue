@@ -143,7 +143,7 @@
       // line-height: 44rpx;
       font-weight: 400;
       text-align: center;
-      color: #21C091;
+      color: #FA4D32;
       font-size: 24rpx;
       display: flex;
       align-items: center;

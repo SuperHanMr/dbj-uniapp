@@ -1033,7 +1033,10 @@ view .is-self {
     }
   }
 }
-
+.content{
+  min-height: 500rpx;
+  background-color: #fff;
+}
 .person-interact {
   margin-top: 24rpx;
   position: sticky;
