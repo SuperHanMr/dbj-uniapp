@@ -243,6 +243,10 @@
           font-weight: 500;
           color: #fff;
           margin-right: 24rpx;
+          max-width: 440rpx;
+          overflow: hidden;
+          text-overflow: ellipsis;
+          white-space: nowrap;
         }
         .tag{
           display: flex;

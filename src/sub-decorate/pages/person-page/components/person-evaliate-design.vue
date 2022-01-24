@@ -47,6 +47,10 @@
         default:()=>{
           return{}
         }
+      },
+      userId:{
+        type:Number,
+        default:0
       }
     },
     components:{
@@ -84,7 +88,7 @@
           return
         }
         uni.navigateTo({
-          url:'/sub-classify/pages/goods-detail/goods-detail?goodId='+item
+          url:'/sub-classify/pages/goods-detail/goods-detail?goodId='+item+'&userId='+this.userId+'&originType='+`2|${this.userId}|${this.userId}|`
         })
       },
       toEvaluateList(){

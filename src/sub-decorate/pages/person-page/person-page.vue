@@ -213,6 +213,7 @@
       >
         <personEvaluateDesign 
         :commentData='commentData'
+        :userId='personId'
         v-if="personData.roleId===1&&commentData.totalRows>0"
         @toEvaluateList='toEvaluateList'
          ></personEvaluateDesign>
@@ -254,6 +255,7 @@
           :personId='personId'
           v-if="personData.roleId!==1"
           class="person-evaluate"
+          
           @contentEmpty='contentEmpty'
           @getEvaluate='getEvaluate'
         ></personEvaluate>
