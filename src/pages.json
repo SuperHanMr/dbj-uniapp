@@ -589,6 +589,14 @@
           }
         },
         {
+          "path": "pages/pay-order/pay-h5",
+          "style": {
+            "navigationBarTitleText": "收银台",
+            "enablePullDownRefresh": false,
+            "navigationBarBackgroundColor": "#ffffff"
+          }
+        },
+        {
           "path": "pages/pay-order/pay-success",
           "style": {
             "navigationBarTitleText": "",
