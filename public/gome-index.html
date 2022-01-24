@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <link rel="icon" href="https://www.dabanjia.com/favicon.ico" mce_href="http://www.dabanjia.com/favicon.ico"
+    type="image/x-icon" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>跳转打扮家中...</title>
+  <style>
+    html, body {
+      padding: 0;
+      margin: 0;
+      width: 100%;
+      height: 100%;
+    }
+    .container {
+      width: 100%;
+      height: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <img class="loading-img" src="https://ali-image.dabanjia.com/static/image/loading/loading-red-circle.gif">
+  </div>
+  <script>
+    function request(options) {
+      var xhr = new XMLHttpRequest()
+      xhr.withCredentials = true;
+      xhr.onreadystatechange = function() {
+        if (xhr.readyState === 4 && xhr.status === 200) {
+          if (options.success) {
+            options.success(xhr.responseText);
+          }
+        }
+      }
+      xhr.onerror = function(err) {
+        if (options.error) {
+          options.error(err);
+        }
+      }
+      xhr.open(options.method, options.url)
+      xhr.setRequestHeader('Content-Type', 'application/json');
+      xhr.send(JSON.stringify(options.data));
+    }
+    function redirectToWeb(token) {
+      let hash = window.location.hash;
+      window.location.replace('https://mp-h5-stage.meiwu365.com/?token=' + token + hash);
+    }
+    var host = '<%= VUE_APP_BASE_API %>';
+    console.log(host, 1213)
+    var url = 'http://apis-dbj.gomeuat.com.cn/customer/app/oauth/gome/loginByCookie';
+    var params = {};
+    request({
+      url: url,
+      data: params,
+      method: "post",
+      success: function(resText) {
+        let res = JSON.parse(resText);
+        console.log('success:', resText, res);
+        if (res.data) {
+          let token = res.data;
+          redirectToWeb(token);
+        }
+      },
+      error: function(err) {
+        console.error(err);
+      }
+    });
+  </script>
+</body>
+</html>

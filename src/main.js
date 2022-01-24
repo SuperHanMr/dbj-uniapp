@@ -37,6 +37,22 @@ uni.getMenuButtonBoundingClientRect = function() {
 uni.showShareMenu = function() {
   console.log("H5 showShareMenu not implement")
 }
+let params = (function (a) {
+  var ret = {},
+    seg = a.search.replace(/^\?/, '').split('&'),
+    len = seg.length, i = 0, s;
+  for (; i < len; i++) {
+    if (!seg[i]) { continue; }
+    s = seg[i].split('=');
+    ret[s[0]] = s[1];
+  }
+  return ret;
+})(window.location);
+if (params.token) {
+  uni.setStorageSync("scn", params.token)
+  window.location.replace('/' + window.location.hash);
+}
+console.log(App, 112313);
 // #endif
 
 Vue.config.productionTip = false
