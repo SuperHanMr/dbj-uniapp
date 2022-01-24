@@ -115,7 +115,7 @@
 
         </view>
       </view>
-		<!-- 	<view @click="gotoDetail">
+			<<!-- view @click="gotoDetail">
 				订单详情
 			</view> -->
 		</view>
@@ -275,7 +275,7 @@ export default {
   methods: {
 		gotoDetail(){
 			uni.navigateTo({
-				url:"../../../sub-my/pages/my-order/order-detail/order-detail?type=close&id=30280"
+				url:"../../../sub-my/pages/my-order/order-detail/order-detail?orderId=30324"
 			})
 		},
     toLogin() {
