@@ -12,12 +12,12 @@
 					</view>
 					<view class="info">
 						<view class="pattern">
-							<text v-if="item.roomNum != 0">{{item.roomNum || '-'}}室</text>
-							<text v-if="item.hallNum != 0">{{item.hallNum || '-'}}厅</text>
-							<text v-if="item.kitchenNum != 0">{{item.kitchenNum || '-'}}厨</text>
-							<text v-if="item.bathroomNum != 0">{{item.bathroomNum || '-'}}卫</text>
+							<text v-if="item.roomNum">{{item.roomNum || '-'}}室</text>
+							<text v-if="item.hallNum">{{item.hallNum || '-'}}厅</text>
+							<text v-if="item.kitchenNum">{{item.kitchenNum || '-'}}厨</text>
+							<text v-if="item.bathroomNum">{{item.bathroomNum || '-'}}卫</text>
 						</view>
-						<view class="line" v-if="item.roomNum != 0 || item.hallNum != 0 || item.kitchenNum != 0 || item.bathroomNum != 0">
+						<view class="line">
 
 						</view>
 						<view class="area" v-if="item.insideArea != 0">
