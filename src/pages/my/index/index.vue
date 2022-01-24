@@ -115,7 +115,7 @@
 
         </view>
       </view>
-			<<!-- view @click="gotoDetail">
+			<!-- view @click="gotoDetail">
 				订单详情
 			</view> -->
 		</view>
