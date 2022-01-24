@@ -13,61 +13,38 @@
     </custom-navbar>
 
 
-    <view class="order-container"
-			:style="{paddingBottom:systemBottom}"
-		>
+    <view class="order-container" :style="{paddingBottom:systemBottom}">
       <view style="position: relative;">
-        <view
-					class="bgcStyle"
-					:style="{backgroundImage:`url(${bgImg})`,backgroundSize: '100% 100%'}"
-				/>
+        <view	class="bgcStyle"	:style="{backgroundImage:`url(${bgImg})`,backgroundSize: '100% 100%'}"/>
         <view :style="{height:navBarHeight}"></view>
 
-        <view class="order-status">
-					<view class="status1">
-						<image src="https://ali-image.dabanjia.com/static/mp/dabanjia/images/theme-red/my/ic_status_inprogress.svg" mode="scaleToFill"></image>
-						<view>进行中</view>
+        <view class="order-status" >
+					<view v-for="statusItem in orderStatusList" :key="statusItem.value">
+						<view class="status1" v-if="orderInfo.orderStatus==statusItem.value">
+							<image :src="statusItem.imgUrl" />
+							<view class="text">{{statusItem.statusName}}</view>
+						</view>
 					</view>
-					
-         <!-- <view class="status1">
-            <image src="https://ali-image.dabanjia.com/static/mp/dabanjia/images/theme-red/my/ic_order_failed.svg" mode="" />
-            <view class="text">已关闭</view>
-          </view>
-					<view class="status1">
-					  <image src="https://ali-image.dabanjia.com/static/mp/dabanjia/images/theme-red/my/ic_order_success.svg" mode=""/>
-					  <view class="text">已完成</view>
-					</view> -->
-        </view>
-				<!-- <view class="order-status">
-				  <view class="status">
-				    <image
-				      src="https://ali-image.dabanjia.com/static/mp/dabanjia/images/theme-red/my/ic_status_wait_pay.svg"
-				      mode="scaleToFill"
-				    />
-				    <view class="text">待付款</view>
-				  </view>
-				  <view
-				    class="time"
-				    v-if="orderInfo.showCancelOrderTime"
-				  >
+
+				  <view class="time" v-if="orderInfo.showCancelOrderTime && orderInfo.orderStatus==0">
 				    <text style="margin-right: 16rpx;">剩余支付时间</text>
 				    <count-down
 				      class="countStyle"
 				      :start="orderInfo.remainTime"
 				      @finish="goToCancelDetail"
-				    ></count-down>
+				    />
 				  </view>
 				</view>
-      -->
 			</view>
-      <order-user-base-info
+			
+			<order-user-base-info
 				v-if="orderInfo.customerName && orderInfo.customerPhone && orderInfo.estateInfo"
 				:data="orderInfo"
 			/>
+			
+			
+			
 			<view class="order-container" :style="{paddingBottom:112+containerBottom+'rpx'}">
-			
-				<order-user-base-info :data="orderInfo"></order-user-base-info>
-			
 				<view class="storeContainer">
 					<view v-for="item in orderInfo.details" :key="item.storeId" class="item">
 						<view class="header">
@@ -147,11 +124,6 @@
 			</view>
 			
 			
-			<!-- 确认收货的弹框 -->
-			<popup-dialog ref="confirmReceipt" :title="title" @close="confirmReceiptClose" @confirm="receiptConfirm" />
-			
-			<!-- 取消退款的弹框 -->
-			<popup-dialog ref="cancelRefund" :title="title" @close="cancelRefundClose" @confirm="cancelRefundConfirm" />
 				
 			<!--  代付款多店铺的时候展示 -->
 			<!-- <view class="moreStore" v-if=" orderInfo.orderName && orderInfo.type !==5 ">
@@ -467,6 +439,7 @@
 				<!-- shipmentStatus 发货状态（0待发货 1待收货 2已收货） -->
 
     </view>
+		
     <expenses-toast
       ref='expensesToast'
       :expensesType="expensesType"
@@ -478,6 +451,22 @@
 			@close="cancelRefundClose"
 			@confirm="cancelRefundConfirm"
 		/>
+		<!-- 确认收货的弹框 -->
+		<popup-dialog 
+			ref="confirmReceipt" 
+			:title="title" 
+			@close="confirmReceiptClose" 
+			@confirm="receiptConfirm" 
+		/>
+		
+		<!-- 取消退款的弹框 -->
+		<popup-dialog 
+			ref="cancelRefund" 
+			:title="title" 
+			@close="cancelRefundClose" 
+			@confirm="cancelRefundConfirm" 
+		/>
+		
   </view>
 </template>
 
@@ -522,6 +511,29 @@ export default {
 			totalPrice: "0.00",
 			bottomStyle:"",
 			remarks: "",
+			orderStatusList:[
+				{
+					value:0,
+					imgUrl:"https://ali-image.dabanjia.com/static/mp/dabanjia/images/theme-red/my/ic_status_wait_pay.svg",
+					statusName:"待付款",
+				},
+				{
+					value:1,
+					imgUrl:"https://ali-image.dabanjia.com/static/mp/dabanjia/images/theme-red/my/ic_status_inprogress.svg",
+					statusName:"进行中",
+				},
+				{
+					value:2,
+					imgUrl:"https://ali-image.dabanjia.com/static/mp/dabanjia/images/theme-red/my/ic_order_success.svg",
+					statusName:"已完成",
+				},
+				{
+					value:3,
+					imgUrl:"https://ali-image.dabanjia.com/static/mp/dabanjia/images/theme-red/my/ic_order_failed.svg",
+					statusName:"已关闭",
+				},
+				
+			],
 		};
   },
  computed: {
@@ -860,12 +872,12 @@ export default {
 
 		// 已完成页面独有的接口
 		// 申请退款
-		toApplayForRefund(data, type) {
-		  // wx.setStorageSync("wholeRefundOrderInfo", JSON.stringify(data));
-			uni.navigateTo({
-		    url: `/sub-my/pages/apply-for-refund/apply-for-refund?orderId=${this.id}&type=whole&status=2&applyMode=2`,
-		  });
-		},
+		// toApplayForRefund(data, type) {
+		//   // wx.setStorageSync("wholeRefundOrderInfo", JSON.stringify(data));
+		// 	uni.navigateTo({
+		//     url: `/sub-my/pages/apply-for-refund/apply-for-refund?orderId=${this.id}&type=whole&status=2&applyMode=2`,
+		//   });
+		// },
 		toApplyForAfterSales(){
 			console.log("申请售后 跳转到客服聊天页面")
 			this.$store.dispatch("openCustomerConversation");
@@ -910,11 +922,147 @@ export default {
 				url: `../order-failed/order-failed?type=refund&id=${item.refundId}&showReApply=${showReApply}&status=${item.refundBillStatus}`,
 			});
 		},
+		
+		
+		// 进行中订单详情接口
+		// 点击商品区域，跳转到商品详情页面
+		goToDetail(item2) {
+			uni.navigateTo({
+				url: `../../../../sub-classify/pages/goods-detail/goods-detail?goodId=${item2.id}`,
+			});
+		},
+		// 确认收货
+		handleConfirmReceipt() {
+			this.title = "确定要确认收货吗?";
+			this.$refs.confirmReceipt.open();
+		},
+		confirmReceiptClose() {
+			this.$refs.confirmReceipt.close();
+		},
+		receiptConfirm(value) {
+			// 确认收货的订单接口
+			confirmReceiptOrder({
+				id: this.orderNo,
+			}).then(() => {
+				this.$refs.confirmReceipt.close();
+				uni.redirectTo({
+					url: `../order-success/order-success?type=complete&id=${this.orderNo}`,
+				});
+			});
+		},
+		
+		// 申请退款
+		toApplayForRefund(data, type) {
+			this.title = "您确定要取消订单吗?";
+			if (type == 1) {
+				//type 1部分退款=
+				console.log("orderId=", this.orderInfo.orderId);
+				console.log("部分退款", "data=", data);
+				console.log("orderDetailsId=", data.orderDetailId);
+				// return
+				uni.navigateTo({
+					url:`../../apply-for-refund/apply-for-refund?orderId=${thisorderId}&type=partical&status=1&applyMode=1&orderDetailsId=${data.orderDetailId}`
+					// url: `/sub-my/pages/apply-for-refund/apply-for-refund?orderId=${this.orderNo}&type=partical&status=1&applyMode=1&orderDetailsId=${data.orderDetailId}`,
+				});
+				// wx.setStorageSync("particalRefundOrderInfo", JSON.stringify(data));
+				// uni.navigateTo({
+				// 	url: `/sub-my/pages/apply-for-refund/apply-for-refund?id=${this.orderNo}&type=partical&status=1`,
+				// });
+			} else {
+				//type 2 整体退款
+				console.log("全部退款data=", data);
+				// wx.setStorageSync("wholeRefundOrderInfo", JSON.stringify(data));
+				uni.navigateTo({
+					url:`../../apply-for-refund/apply-for-refund?orderId=${this.orderId}&type=whole&status=1&applyMode=2`
+					// url: `/sub-my/pages/apply-for-refund/apply-for-refund?orderId=${this.orderNo}&type=whole&status=1&applyMode=2`,
+				});
+			}
+		},
+		
+		refundCancel(item) {
+			this.itemId = item.refundId;
+			this.approvalCompleted = item.approvalCompleted
+			if(this.approvalCompleted){
+				this.title="退款审核已通过，不可取消"
+			}else{
+				this.title = "确定要取消本次申请退款？";
+			}
+			this.$refs.cancelRefund.open();
+		},
+		cancelRefundClose() {
+			this.$refs.cancelRefund.close();
+		},
+		cancelRefundConfirm() {
+			if(this.approvalCompleted){
+				this.$refs.cancelRefund.close()
+			}else{
+				cancelRefund({
+					id: this.itemId,
+				}).then(() => {
+					this.$refs.cancelRefund.close();
+					this.orderDetail();
+				});
+			}
+		},
+		
+		// 申请退款成功
+		refundSuccess(item) {
+			uni.navigateTo({
+				url: `../order-success/order-success?type=refund&id=${item.refundId}`,
+			});
+		},
+		refundFailed(item) {
+			console.log("item数据=", item, "测试");
+			const showReApply = item.shipmentStatus !== 2 ? true : false;
+			console.log("showReApply=", showReApply);
+			uni.navigateTo({
+				url: `../order-failed/order-failed?type=refund&id=${item.refundId}&showReApply=${showReApply}&status=${item.refundBillStatus}`,
+			});
+		},
+		
+		refundClose(item) {
+			console.log("item数据=", item);
+			const showReApply = item.shipmentStatus !== 2 ? true : false;
+			console.log("showReApply=", showReApply);
+			uni.navigateTo({
+				url: `../order-failed/order-failed?type=refund&id=${item.refundId}&showReApply=${showReApply}&status=${item.refundBillStatus}`,
+			});
+		},
+		
+		
   },
 };
 </script>
 
 <style lang="scss" scoped>
+	.header {
+		margin-bottom: 32rpx;
+		 display: flex;
+		 justify-content: space-between;
+		.header-content{
+			box-sizing: border-box;
+			display: flex;
+			align-items: center;
+			.storeName {
+				height: 40rpx;
+				color: #333333;
+				font-weight: 500;
+				max-width: 476rpx;
+				font-size: 28rpx;
+				overflow: hidden;
+				text-overflow: ellipsis;
+				white-space: nowrap;
+			}
+			image {
+				width: 40rpx;
+				height: 40rpx;
+				object-fit: cover;
+			}
+		}
+		.icon{
+			width: 1rpx;
+		}
+	}
 	.pay-way {
 	  padding: 0 32rpx;
 	  background-color: #ffffff;
@@ -1092,6 +1240,14 @@ export default {
   font-size: 40rpx;
   padding: 20rpx;
 }
+.storeContainer {
+	.item {
+		padding: 32rpx 32rpx 2rpx;
+		background: #ffffff;
+		border-radius: 24rpx 24rpx 0 0;
+	}
+}
+
  .moreStore {
 		background-color: #ffffff;
 		padding: 40rpx 0 10rpx;
@@ -1515,4 +1671,103 @@ export default {
 ::v-deep .uni-dialog-button-text {
   font-size: 30rpx !important;
 }
+
+	// 底部 确认收货 及申请退款按钮
+	.applyforRefund-confirmReceipt,
+	.applyforRefund-confirmReceipt2 {
+		position: fixed;
+		bottom: 0;
+		width: 686rpx;
+		background-color: #ffffff;
+		display: flex;
+		flex-flow: row nowrap;
+		align-items: center;
+		justify-content: flex-end;
+		padding: 16rpx 32rpx;
+
+		.confirmReceipt {
+			width: 248rpx;
+			height: 88rpx;
+			line-height: 88rpx;
+			box-sizing: border-box;
+			background: linear-gradient(117.02deg, #FA3B34 24.56%, #FF6A33 92.21%);
+			border-radius: 12rpx;
+			font-size: 32rpx;
+			text-align: center;
+			font-weight: 400;
+			color: #ffffff;
+		}
+
+		.applyforRefund {
+			margin: 14rpx 0 10rpx;
+			box-sizing: border-box;
+			width: 160rpx;
+			height: 56rpx;
+			line-height: 56rpx;
+			text-align: center;
+			background: #ffffff;
+			border-radius: 16rpx;
+			color: #111111;
+			font-size: 24rpx;
+			border: 2rpx solid #eaeaea;
+		}
+	}
+
+	// .applyforRefund-confirmReceipt {
+	// 	padding-top: 30rpx;
+	// }
+	.applyforRefund-confirmReceipt2 {
+		padding-top: 30rpx 32rpx 26rpx 32rpx;
+
+		.refundOrderStatus {
+			width: 160rpx;
+			height: 56rpx;
+			line-height: 54rpx;
+			text-align: center;
+			border-radius: 16rpx;
+			border: 2rpx solid #eaeaea;
+			font-size: 24rpx;
+			font-weight: 400;
+			color: #333333;
+		}
+	}
+
+	// 弹框样式
+	::v-deep .uni-popup-dialog {
+		width: 560rpx !important;
+		border-radius: 24rpx !important;
+		background-color: #fff !important;
+	}
+
+	::v-deep .uni-dialog-title-text {
+		color: #111111 !important;
+		font-size: 32rpx !important;
+		font-weight: 550 !important;
+	}
+
+	::v-deep .uni-dialog-title {
+		padding: 48rpx 0 !important;
+	}
+
+	::v-deep .uni-dialog-content {
+		display: none !important;
+	}
+
+	::v-deep .uni-dialog-button-group {
+		border-top: 2rpx solid #f5f5f5;
+	}
+
+	::v-deep .uni-dialog-button {
+		height: 82rpx !important;
+	}
+
+	::v-deep .uni-button-color {
+		color: #ff3347 !important;
+		font-size: 30rpx !important;
+		font-weight: 500;
+	}
+
+	::v-deep .uni-dialog-button-text {
+		font-size: 30rpx !important;
+	}
 </style>
