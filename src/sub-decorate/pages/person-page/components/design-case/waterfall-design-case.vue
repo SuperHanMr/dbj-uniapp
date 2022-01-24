@@ -4,8 +4,8 @@
 			<image :src="params.imageUrl" mode="widthFix" @load="emitHeight" @error="emitHeight"></image>
 			<view class="comment-like">
 				<view class="address" v-if="params.cityName">
-          {{params.roomNum===0?`${params.roomNum}室`:`${params.hallNum}厅`}}
-          <view> | </view>
+          {{params.roomNum!==0?`${params.roomNum}室`:params.hallNum!==0?`${params.hallNum}厅`:''}}
+          <view v-if="params.roomNum&&params.hallNum"> | </view>
           {{params.insideArea}}㎡
           <view> | </view>
           {{params.cityName}}

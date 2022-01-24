@@ -229,6 +229,7 @@ export default {
   width: 124rpx;
   text-align: center;
   margin: 30rpx 0 30rpx 37rpx;
+  vertical-align: text-top;
 }
 .right-detail .img-view {
   border-radius: 10rpx;
@@ -250,7 +251,7 @@ export default {
   -webkit-line-clamp: 2;
   -webkit-box-orient: vertical;
   line-clamp: 2;
-  height: 70rpx;
+  margin-top: 14rpx;
 }
 
 .rigth-other-bar {

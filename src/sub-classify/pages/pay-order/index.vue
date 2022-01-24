@@ -95,12 +95,12 @@
         class="good-store-account"
         v-if="productType === 1"
       >
-        <view v-if="orderInfo.totalDeliveryFee !== undefined">
+        <view v-if="orderInfo.totalDeliveryFee !== undefined" class="price-font mt26">
           <view class="question-box">
             运费
             <text class="question-icon" @click="readExpenses(1)"></text>
           </view>
-          <text>¥{{orderInfo.totalDeliveryFee}}</text>
+          <text>¥<text class="fee">{{orderInfo.totalDeliveryFee}}</text></text>
         </view>
         <view
           v-if="orderInfo.totalHandlingFee !== undefined"
@@ -113,11 +113,11 @@
               @click="readExpenses(2)"
             ></text>
           </view>
-          <text>¥{{orderInfo.totalHandlingFee}}</text>
+          <text>¥<text class="fee">{{orderInfo.totalHandlingFee}}</text></text>
         </view>
         <view class="price-font mt26">
           <text>商品总价</text>
-          <text v-if="Number(orderInfo.totalPrice)">¥{{orderInfo.totalPrice}}</text>
+          <text v-if="Number(orderInfo.totalPrice)">¥<text class="total-fee">{{orderInfo.totalPrice}}</text></text>
           <text v-else>¥- -</text>
         </view>
         <view class="store-read" v-if="orderInfo.hasStock">
@@ -761,8 +761,14 @@
 <style lang="scss" scoped>
   .mt26 {
     margin-top: 26rpx;
+    font-size: 24rpx;
   }
-
+  .mt26 .fee{
+    font-size: 28rpx;
+  }
+  .mt26 .total-fee{
+    font-size: 32rpx;
+  }
   .select-disable {
     width: 36rpx;
     height: 36rpx;
@@ -831,10 +837,14 @@
   }
 
   // 商品item
+  .content{
+    background-color: #ffffff;
+    border-radius: 32rpx;
+    overflow: hidden;
+  }
   .shop-item {
     margin-top: 25rpx;
     padding: 0 32rpx;
-    background-color: #ffffff;
   }
 
   .shop-name {
@@ -1041,8 +1051,8 @@
   }
 
   .choose-icon {
-    width: 32rpx;
-    height: 32rpx;
+    width: 40rpx;
+    height: 40rpx;
   }
 
   .good-store-account {
@@ -1054,6 +1064,8 @@
     display: flex;
     flex-wrap: wrap;
     align-content: space-around;
+    border-radius: 32rpx;
+    overflow: hidden;
   }
 
   .good-store-account view {
@@ -1079,7 +1091,6 @@
   .total-deposit {
     padding: 0 !important;
   }
-
   .pay-way,
   .pledge,
   .remarks {
@@ -1093,6 +1104,8 @@
     align-items: center;
     height: 104rpx;
     line-height: 104rpx;
+    overflow: hidden;
+    border-radius: 32rpx;
   }
 
   .pay-way .wechat_icon {

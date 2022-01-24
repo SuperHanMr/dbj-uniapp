@@ -36,10 +36,10 @@
 			// 测试环境小程序appletId=B7E436F6DEF6E37296AADD3BC9F35165
 			// 生产环境appletId=E370C3ABB4F1EEC5A3946F23BCB15C29
 			let loginInit = {};
-			loginInit.imgUrl =
-				"https://ali-image.dabanjia.com/static/mp/dabanjia/images/decorate/logo.0ccb88de.png"; // 登录logo
-			loginInit.imgWidth = 272; // logo的宽度
-			loginInit.imgHeight = 154; // logo的高度
+			loginInit.imgUrl = "../../../../static/logo.png";
+				// "https://ali-image.dabanjia.com/static/mp/dabanjia/images/decorate/logo.0ccb88de.png"; // 登录logo
+			loginInit.imgWidth = 130; // logo的宽度
+			loginInit.imgHeight = 130; // logo的高度
 			// loginInit.ctx = "app-guomeijia|ver-v8.2.2|plt-wxApp|cmpid-"; //登录ctx
 			loginInit.ctx = "app-dabanjia|ver-v8.2.2|plt-wxApp|cmpid-"; //登录ctx
 			loginInit.sharerUserId = uni.getStorageSync("sharerUserId") || ""; //邀请人userId

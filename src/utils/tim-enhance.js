@@ -33,7 +33,7 @@ function createSmartMessage(type, payload) {
   const msg = {
     ID: "SMART-CUSTMER-" + time,
     nick: "智能客服",
-    avatar: "https://ali-image.dabanjia.com/static/mp/dabanjia/images/message/smart-service%402x.png",
+    avatar: "https://ali-image.dabanjia.com/static/mp/dabanjia/images/theme-red/message/smart_service.png",
     flow: "in",
     time: time,
     from: "SMART-CUSTMER",

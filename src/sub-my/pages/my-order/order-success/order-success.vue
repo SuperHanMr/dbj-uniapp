@@ -639,10 +639,10 @@ export default {
   flex-flow: row nowrap;
   align-items: center;
   justify-content: flex-end;
-  padding: 12rpx 32rpx;
+  padding: 30rpx 32rpx 26rpx 32rpx;
 
   .applyforRefund {
-    margin: 18rpx 0;
+    // margin: 18rpx 0;
     box-sizing: border-box;
     width: 160rpx;
     height: 56rpx;
@@ -654,22 +654,19 @@ export default {
     font-size: 24rpx;
     border: 2rpx solid #eaeaea;
   }
-}
-.applyforRefund-confirmReceipt2 {
-		padding-top: 30rpx;
 
-		.refundOrderStatus {
-			width: 160rpx;
-			height: 56rpx;
-			line-height: 54rpx;
-			text-align: center;
-			border-radius: 16rpx;
-			border: 2rpx solid #eaeaea;
-			font-size: 24rpx;
-			font-weight: 400;
-			color: #333333;
-		}
+	.refundOrderStatus {
+		width: 160rpx;
+		height: 56rpx;
+		line-height: 54rpx;
+		text-align: center;
+		border-radius: 16rpx;
+		border: 2rpx solid #eaeaea;
+		font-size: 24rpx;
+		font-weight: 400;
+		color: #333333;
 	}
+}
 
 // 弹框样式
 ::v-deep .uni-popup-dialog {

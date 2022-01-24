@@ -1,5 +1,5 @@
 <template>
-  <view class="">
+  <view class="goods-list">
 
     <view class="goods-view">
       <view>
@@ -131,6 +131,10 @@
 </script>
 
 <style lang="scss" scoped>
+	.goods-list{
+		position: relative;
+		z-index: 10;
+	}
   .goods-view {
     padding: 0 32rpx;
     display: flex;
