@@ -642,6 +642,7 @@
 		width: 100%;
 		height: 100%;
 		overflow-y: auto;
+		margin-bottom: 128rpx;
 		// background-color: #f2f3f3;
 		// padding-bottom: 400rpx;
 
@@ -897,7 +898,7 @@
 				text-align: center;
 				border-radius: 12rpx;
 				font-weight: bold;
-				background: linear-gradient(99deg, #00ccbe 0%, #00c2bf 100%);
+				background: linear-gradient(117.02deg, #FA3B34 24.56%, #FF6A33 92.21%);
 				font-size: 32rpx;
 				color: #ffffff;
 			}
@@ -908,8 +909,7 @@
 				text-align: center;
 				font-weight: bold;
 				border-radius: 12rpx;
-				background: linear-gradient(99deg, #00ccbe 0%, #00c2bf 100%);
-				opacity: 0.5;
+				background: linear-gradient(116.19deg, rgba(248, 49, 18, 0.4) 16.48%, rgba(253, 100, 33, 0.4) 83.52%), #FFFFFF;
 				font-size: 32rpx;
 				color: #ffffff;
 			}
