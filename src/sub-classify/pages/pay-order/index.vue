@@ -108,8 +108,8 @@
             </view>
             <view
               class="choose-time"
+              v-if="productType === 2 && goodsItem.appointmentRequired"
             >
-            <!-- v-if="productType === 2 && goodsItem.appointmentRequired" -->
               <view
                 class="time-bar"
                 @click='chooseTime(shopIndex, goodIndex)'
