@@ -58,7 +58,7 @@
                   {{goodsItem.spuName}}
                 </view>
                 <view class="spu-class">
-                  <view class='tag'>{{goodsItem.levelName}}{{goodsItem.levelName?'|':''}}{{goodsItem.skuName}}</view>
+                  <view class='tag'>{{goodsItem.levelName?goodsItem.levelName + '|': ''}}{{goodsItem.skuName}}</view>
                 </view>
                 <view
                   class="safeguard"
@@ -1216,9 +1216,6 @@ export default {
   .good-store-account .store-read {
     color: #666666;
     font-size: 24rpx;
-    height: 58rpx;
-    line-height: 58rpx;
-    text-align: center;
     background-color: #fafafa;
     border-radius: 8rpx;
   }
