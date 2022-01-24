@@ -41,94 +41,43 @@
 				v-if="orderInfo.customerName && orderInfo.customerPhone && orderInfo.estateInfo"
 				:data="orderInfo"
 			/>
+			<!-- 代付款订单 多店铺下单特有样式 -->
+			<view class="moreStore" v-if=" orderInfo.orderName && orderInfo.type !==5 ">
+			  {{orderInfo.orderName}}
+			</view>
 			
-			
-			
-			<view class="order-container" :style="{paddingBottom:112+containerBottom+'rpx'}">
-				<view class="storeContainer">
-					<view v-for="item in orderInfo.details" :key="item.storeId" class="item">
-						<view class="header">
-							<view class="header-content">
-								<view class="storeName" @click="gotoShop(item)">{{item.storeName}}</view>
-								<image src="https://ali-image.dabanjia.com/static/mp/dabanjia/images/theme-red/my/small_gotoShop.svg" mode=""/>
-							</view>
-							<view class="icon"></view>
+			<view class="storeContainer">
+				<view v-for="item in orderInfo.details" :key="item.storeId" class="item">
+					<view class="header">
+						<view class="header-content">
+							<view class="storeName" @click="gotoShop(item)">{{item.storeName}}</view>
+							<image src="https://ali-image.dabanjia.com/static/mp/dabanjia/images/theme-red/my/small_gotoShop.svg" mode=""/>
 						</view>
-			
-						<view v-for="item2 in item.details" :key="item2.id" class="orederItem">
-							<order-item :orderStatus="2" :paddingBottom="24" :dataList="item2"
-								:productNum="item.details.length"
-								:refundApplyMode="orderInfo.refundApplyMode"
-								@handleDetail="goToDetail(item2)"
-								@toApplayForRefund="toApplayForRefund(item2,1)"
-								@refundCancel="refundCancel(item2)"
-								@refundSuccess="refundSuccess(item2)"
-								@refundFailed="refundFailed(item2,1)"
-								@refundClose="refundClose(item2)"
-							/>
-						</view>
+						<view class="icon"></view>
 					</view>
-			
-					<order-price :data="orderInfo" />
-			
-				</view>
-			
-				<order-info v-if="orderInfo.orderNo" :orderNo="orderInfo.orderNo" :createTime="orderInfo.createTime" :showPayTime="true"
-					:showPayType="true" :payTime="orderInfo.payTime" :payChannel="orderInfo.payChannel" />
-			
-				<view class="applyforRefund-confirmReceipt" :style="{paddingBottom:systemBottom,height:systemHeight}"
-					v-if="orderInfo.showRefundBtn || (orderInfo.stockType == 0 && orderInfo.shipmentStatus == 1)">
-					<view v-if="orderInfo.showRefundBtn" class="applyforRefund" @click="toApplayForRefund(orderInfo,2)">
-						申请退款
-					</view>
-					<view v-if="orderInfo.stockType==0 && orderInfo.shipmentStatus == 1" class="confirmReceipt"
-						@click="handleConfirmReceipt">
-						确认收货
+		
+					<view v-for="item2 in item.details" :key="item2.id" class="orederItem">
+						<order-item :orderStatus="2" :paddingBottom="24" :dataList="item2"
+							:productNum="item.details.length"
+							:refundApplyMode="orderInfo.refundApplyMode"
+							@handleDetail="goToDetail(item2)"
+							@toApplayForRefund="toApplayForRefund(item2,1)"
+							@refundCancel="refundCancel(item2)"
+							@refundSuccess="refundSuccess(item2)"
+							@refundFailed="refundFailed(item2,1)"
+							@refundClose="refundClose(item2)"
+						/>
 					</view>
 				</view>
-			
-				<!-- 申请退款之后的其他状态 -->
-				<!--
-					showRefundBtn  是否显示退款按钮
-					refundApplyMode 申请方式 1单商品 2 整单退款
-					stockType 库存方式 0无仓库 1有仓库  服务订单默认显示的是零
-					shipmentStatus 发货状态（0待发货 1待收货 2已收货）
-					type:1 材料 2 服务
-				-->
-				<view class="applyforRefund-confirmReceipt2" :style="{paddingBottom:systemBottom}"
-					v-if="!orderInfo.showRefundBtn && orderInfo.refundApplyMode == 2 && (orderInfo.stockType == 0 || orderInfo.type == 2)">
-			
-					<view class="refundOrderStatus"
-						v-if="orderInfo.refundBillStatus == 0 || (orderInfo.refundBillStatus == 1 && orderInfo.type == 2)"
-						@click="refundCancel(orderInfo)">
-						取消退款
-					</view>
-			
-					<view class="refundOrderStatus" v-if="orderInfo.refundBillStatus == 2"
-						@click="refundSuccess(orderInfo)">
-						退款成功
-					</view>
-			
-					<view class="refundOrderStatus" style="color:#FF3347;" v-if="orderInfo.refundBillStatus == 5"
-						@click="refundFailed(orderInfo)">
-						退款失败
-					</view>
-			
-					<view class="refundOrderStatus"
-						v-if="(orderInfo.refundBillStatus == 3 || orderInfo.refundBillStatus == 4) && (orderInfo.shipmentStatus == 0 || (orderInfo.type ==2 && orderInfo.shipmentStatus == -1 ))"
-						@click="refundClose(orderInfo)">
-						退款关闭
-					</view>
-				</view>
-			
+				
+
+				
 			</view>
 			
 			
 				
 			<!--  代付款多店铺的时候展示 -->
-			<!-- <view class="moreStore" v-if=" orderInfo.orderName && orderInfo.type !==5 ">
-        {{orderInfo.orderName}}
-      </view>
+			<!-- 
 			
 			<view class="store-container" v-for="(item,index) in orderInfo.details":key="index" >
 			  <view
@@ -220,11 +169,7 @@
 			  <view class="split-line" />
 			</view>
 			
-			<order-price
-				:data="orderInfo"
-				:waitPay="true"
-				:payPrice="payPrice"
-			/>
+			
 			<view
 			  v-if="haveCard && orderInfo.isReplenish"
 			  class="pay-way"
@@ -283,11 +228,7 @@
 			    />
 			  </view>
 			</view>
-			<order-info
-			  v-if="orderInfo.orderNo"
-			  :orderNo="orderInfo.orderNo"
-			  :createTime="orderInfo.createTime"
-			/> -->
+			 -->
 			<!-- 底部按钮 -->
 			<!-- <view
 			  v-if="orderInfo.showCancelBtn || orderInfo.showToPayBtn "
@@ -375,35 +316,113 @@
 			    <store-calue-card-item :dataInfo="item3" :showActualPay="true" v-else />
 			  </view>
 			</view> -->
-      <!-- <order-price
+      
+			
+			
+			
+			
+			
+			<order-price
+				v-if="orderInfo.orderStatus ==0" 
+				:data="orderInfo"
+				:waitPay="true"
+				:payPrice="payPrice"
+			/>
+			
+			<order-price 
+				v-if="orderInfo.orderStatus ==1 || orderInfo.orderStatus ==2" 
+				:data="orderInfo" 
+			/>
+			
+      <order-price
+				v-if="orderInfo.orderStatus ==3" 
         :data="orderInfo"
         :orderFailed="true"
       />
-      <order-info
-        v-if="orderInfo.orderNo"
-        :orderNo="orderInfo.orderNo"
-        :createTime="orderInfo.createTime"
-        :cancelTime="orderInfo.cancelTime"
-        :showCancelTime="true"
-        :payChannel="orderInfo.payChannel"
-      /> -->
-			<!-- 已完成订单信息 -->
-			<!-- <order-price :data="orderInfo" />
-
 			<order-info
-        v-if="orderInfo.orderNo"
-        :orderNo="orderInfo.orderNo"
-        :createTime="orderInfo.createTime"
-        :showPayTime="true"
+			 v-if="orderInfo.orderStatus==0"
+			  :orderNo="orderInfo.orderNo"
+			  :createTime="orderInfo.createTime"
+			/>
+			<order-info
+				v-if="orderInfo.orderStatus==1"
+				:orderNo="orderInfo.orderNo" 
+				:createTime="orderInfo.createTime" 
+				:showPayTime="true"
+				:showPayType="true" 
+				:payTime="orderInfo.payTime" 
+				:payChannel="orderInfo.payChannel" 
+			/>
+			<order-info
+			  v-if="orderInfo.orderStatus==2"
+			  :orderNo="orderInfo.orderNo"
+			  :createTime="orderInfo.createTime"
+			  :showPayTime="true"
 				:payChannel="orderInfo.payChannel"
-        :payTime="orderInfo.payTime"
-        :showPayType="true"
-      />
+			  :payTime="orderInfo.payTime"
+			  :showPayType="true"
+			/>
+			<order-info
+				v-if="orderInfo.orderStatus==3"
+			  :orderNo="orderInfo.orderNo"
+			  :createTime="orderInfo.createTime"
+			  :cancelTime="orderInfo.cancelTime"
+			  :showCancelTime="true"
+			  :payChannel="orderInfo.payChannel"
+			/>
+			<!-- 进行中订单底部按钮 -->
+			<view class="applyforRefund-confirmReceipt" :style="{paddingBottom:systemBottom}"
+				v-if="orderInfo.showRefundBtn || (orderInfo.stockType == 0 && orderInfo.shipmentStatus == 1)">
+				<view v-if="orderInfo.showRefundBtn" class="applyforRefund" @click="toApplayForRefund(orderInfo,2)">
+					申请退款
+				</view>
+				<view v-if="orderInfo.stockType==0 && orderInfo.shipmentStatus == 1" class="confirmReceipt"
+					@click="handleConfirmReceipt">
+					确认收货
+				</view>
+			</view>
+						
+			<!-- 申请退款之后的其他状态 -->
+			<!--
+				showRefundBtn  是否显示退款按钮
+				refundApplyMode 申请方式 1单商品 2 整单退款
+				stockType 库存方式 0无仓库 1有仓库  服务订单默认显示的是零
+				shipmentStatus 发货状态（0待发货 1待收货 2已收货）
+				type:1 材料 2 服务
+			-->
+			<view class="applyforRefund-confirmReceipt2" :style="{paddingBottom:systemBottom}"
+				v-if="!orderInfo.showRefundBtn && orderInfo.refundApplyMode == 2 && (orderInfo.stockType == 0 || orderInfo.type == 2)">
+						
+				<view class="refundOrderStatus"
+					v-if="orderInfo.refundBillStatus == 0 || (orderInfo.refundBillStatus == 1 && orderInfo.type == 2)"
+					@click="refundCancel(orderInfo)">
+					取消退款
+				</view>
+						
+				<view class="refundOrderStatus" v-if="orderInfo.refundBillStatus == 2"
+					@click="refundSuccess(orderInfo)">
+					退款成功
+				</view>
+						
+				<view class="refundOrderStatus" style="color:#FF3347;" v-if="orderInfo.refundBillStatus == 5"
+					@click="refundFailed(orderInfo)">
+					退款失败
+				</view>
+						
+				<view class="refundOrderStatus"
+					v-if="(orderInfo.refundBillStatus == 3 || orderInfo.refundBillStatus == 4) && (orderInfo.shipmentStatus == 0 || (orderInfo.type ==2 && orderInfo.shipmentStatus == -1 ))"
+					@click="refundClose(orderInfo)">
+					退款关闭
+				</view>
+			</view>
+			<!-- 已完成订单信息 -->
+			
 			<view v-if=" orderInfo.showRefundBtn " class="applyforRefund-container" :style="{paddingBottom:systemBottom,}">
 			  <view class="applyforRefund" @click="toApplayForRefund(orderInfo,2)" >
 			    申请退款
 			  </view>
-			</view> -->
+			</view>
+						
 
 			<!-- 申请售后的按钮 -->
 			<!-- <view v-if="orderInfo.showApplyAfterSalesBtn" class="applyforRefund-container" :style="{paddingBottom:systemBottom,}">
@@ -444,13 +463,7 @@
       ref='expensesToast'
       :expensesType="expensesType"
     />
-		<!-- 取消退款的弹框 -->
-		<popup-dialog
-			ref="cancelRefund"
-			:title="title"
-			@close="cancelRefundClose"
-			@confirm="cancelRefundConfirm"
-		/>
+		
 		<!-- 确认收货的弹框 -->
 		<popup-dialog 
 			ref="confirmReceipt" 
@@ -1571,6 +1584,31 @@ export default {
 
 // 底部 确认收货 及申请退款按钮
 .applyforRefund-container,
+
+// 底部 取消支付按钮样式 确认收货 及申请退款按钮
+.waitPayBottom {
+  width: 686rpx;
+  background-color: #ffffff;
+  display: flex;
+  flex-flow: row nowrap;
+  align-items: center;
+  justify-content: space-between;
+  padding: 12rpx 32rpx;
+  position: fixed;
+  bottom: 0;
+
+  .gotoPay {
+    width: 248rpx;
+    height: 80rpx;
+    line-height: 80rpx;
+    font-size: 30rpx;
+    text-align: center;
+    color: #ffffff;
+    background: linear-gradient(117.02deg, #fa3b34 24.56%, #ff6a33 92.21%);
+    border-radius: 12rpx;
+  }
+}
+
 .applyforRefund-confirmReceipt2 {
   position: fixed;
   bottom: 0;
@@ -1581,6 +1619,7 @@ export default {
   align-items: center;
   justify-content: flex-end;
   padding: 30rpx 32rpx 26rpx 32rpx;
+	
   .applyforRefund {
     box-sizing: border-box;
     width: 160rpx;
@@ -1609,68 +1648,6 @@ export default {
 			color: #333333;
 		}
 	}
-
-// 底部 取消支付按钮样式 确认收货 及申请退款按钮
-.waitPayBottom {
-  width: 686rpx;
-  background-color: #ffffff;
-  display: flex;
-  flex-flow: row nowrap;
-  align-items: center;
-  justify-content: space-between;
-  padding: 12rpx 32rpx;
-  position: fixed;
-  bottom: 0;
-
-  .gotoPay {
-    width: 248rpx;
-    height: 80rpx;
-    line-height: 80rpx;
-    font-size: 30rpx;
-    text-align: center;
-    color: #ffffff;
-    background: linear-gradient(117.02deg, #fa3b34 24.56%, #ff6a33 92.21%);
-    border-radius: 12rpx;
-  }
-}
-// 弹框样式
-::v-deep .uni-popup-dialog {
-  width: 560rpx !important;
-  border-radius: 24rpx !important;
-  background-color: #fff !important;
-}
-
-::v-deep .uni-dialog-title-text {
-  color: #111111 !important;
-  font-size: 32rpx !important;
-  font-weight: 550 !important;
-}
-
-::v-deep .uni-dialog-title {
-  padding: 48rpx 0 !important;
-}
-
-::v-deep .uni-dialog-content {
-  display: none !important;
-}
-
-::v-deep .uni-dialog-button-group {
-  border-top: 2rpx solid #f5f5f5;
-}
-
-::v-deep .uni-dialog-button {
-  height: 82rpx !important;
-}
-
-::v-deep .uni-button-color {
-  color: #FA4D32 !important;
-  font-size: 30rpx !important;
-  font-weight: 500;
-}
-
-::v-deep .uni-dialog-button-text {
-  font-size: 30rpx !important;
-}
 
 	// 底部 确认收货 及申请退款按钮
 	.applyforRefund-confirmReceipt,
@@ -1712,12 +1689,8 @@ export default {
 			border: 2rpx solid #eaeaea;
 		}
 	}
-
-	// .applyforRefund-confirmReceipt {
-	// 	padding-top: 30rpx;
-	// }
 	.applyforRefund-confirmReceipt2 {
-		padding-top: 30rpx 32rpx 26rpx 32rpx;
+		padding: 30rpx 32rpx 26rpx 32rpx;
 
 		.refundOrderStatus {
 			width: 160rpx;
@@ -1731,43 +1704,43 @@ export default {
 			color: #333333;
 		}
 	}
-
 	// 弹框样式
 	::v-deep .uni-popup-dialog {
-		width: 560rpx !important;
-		border-radius: 24rpx !important;
-		background-color: #fff !important;
+	  width: 560rpx !important;
+	  border-radius: 24rpx !important;
+	  background-color: #fff !important;
 	}
-
+	
 	::v-deep .uni-dialog-title-text {
-		color: #111111 !important;
-		font-size: 32rpx !important;
-		font-weight: 550 !important;
+	  color: #111111 !important;
+	  font-size: 32rpx !important;
+	  font-weight: 550 !important;
 	}
-
+	
 	::v-deep .uni-dialog-title {
-		padding: 48rpx 0 !important;
+	  padding: 48rpx 0 !important;
 	}
-
+	
 	::v-deep .uni-dialog-content {
-		display: none !important;
+	  display: none !important;
 	}
-
+	
 	::v-deep .uni-dialog-button-group {
-		border-top: 2rpx solid #f5f5f5;
+	  border-top: 2rpx solid #f5f5f5;
 	}
-
+	
 	::v-deep .uni-dialog-button {
-		height: 82rpx !important;
+	  height: 82rpx !important;
 	}
-
+	
 	::v-deep .uni-button-color {
-		color: #ff3347 !important;
-		font-size: 30rpx !important;
-		font-weight: 500;
+	  color: #FA4D32 !important;
+	  font-size: 30rpx !important;
+	  font-weight: 500;
+	}
+	
+	::v-deep .uni-dialog-button-text {
+	  font-size: 30rpx !important;
 	}
 
-	::v-deep .uni-dialog-button-text {
-		font-size: 30rpx !important;
-	}
 </style>
