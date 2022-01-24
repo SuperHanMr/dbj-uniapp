@@ -1,174 +1,179 @@
 <template>
-  <view style="background-color: #FFF;">
-    <custom-navbar :opacity="Number(1)" :showBack="false" bgcolor="#FFF">
-      <template v-slot:back>
-        <image class="icon_logo" src="https://ali-image.dabanjia.com/static/mp/dabanjia/images/theme-red/home/dbj_logo_new.png"
-          mode="">
-        </image>
-      </template>
-    </custom-navbar>
-    <!-- 		<view :style="{height: navBarHeight}" style="width: 100%;background-color: red;">
-
-		</view> -->
-
-    <!-- //头部 -->
-    <view class="state-bar" :style="{top:navBarHeight}">
-      <view class=" header-flex-row flex1" @click="toCity">
-        <view class="address">
-          {{citydata}}
-        </view>
-        <image v-if="citydata" class="icon_down"
-          src="https://ali-image.dabanjia.com/static/mp/dabanjia/images/theme-red/home/home_ic_down.png" mode="">
-        </image>
-      </view>
-      <image @click="toSearch" class="icon-search"
-        src="https://ali-image.dabanjia.com/static/mp/dabanjia/images/theme-red/home/home_ic_search.jpg" mode=""></image>
-      <image @click="toMessage" class="img"
-        src="https://ali-image.dabanjia.com/static/mp/dabanjia/images/theme-red/home/online-server.png" mode="">
-      </image>
-			<image src="https://ali-image.dabanjia.com/static/mp/dabanjia/images/theme-red/home/ic_bg_home.png" class="head-bg-home" mode=""></image>
+  <view class="home">
+    <view class="home-top">
+    	<custom-navbar :opacity="Number(1)" :showBack="false" bgcolor="#FFF">
+    	  <template v-slot:back>
+    	    <image class="icon_logo" src="https://ali-image.dabanjia.com/static/mp/dabanjia/images/theme-red/home/dbj_logo_new.png"
+    	      mode="">
+    	    </image>
+    	  </template>
+    	</custom-navbar>
+    	<!-- 		<view :style="{height: navBarHeight}" style="width: 100%;background-color: red;">
+    	
+    	</view> -->
+    	
+    	<!-- //头部 -->
+    	<view class="state-bar" :style="{top:navBarHeight}">
+    	  <view class=" header-flex-row flex1" @click="toCity">
+    	    <view class="address">
+    	      {{citydata}}
+    	    </view>
+    	    <image v-if="citydata" class="icon_down"
+    	      src="https://ali-image.dabanjia.com/static/mp/dabanjia/images/theme-red/home/home_ic_down.png" mode="">
+    	    </image>
+    	  </view>
+    	  <image @click="toSearch" class="icon-search"
+    	    src="/static/home_ic_search.png" mode=""></image>
+    	  <image @click="toMessage" class="img"
+    	    src="https://ali-image.dabanjia.com/static/mp/dabanjia/images/theme-red/home/online-server.png" mode="">
+    	  </image>
+    		<view class="head-bg-home" mode=""></view>
+    	</view>
+    	<!-- 占位 -->
+    	<view :style="{height:navBarHeight}">
+    	</view>
+    	<!-- 占位 -->
+    	<view style="height: 87rpx;">
+    	</view>
     </view>
-    <!-- 占位 -->
-    <view :style="{height:navBarHeight}">
-    </view>
-    <!-- 占位 -->
-    <view style="height: 87rpx;">
-    </view>
-    <!-- banner -->
-    <view class="banner-content">
-      <swiper class="banner" :autoplay="swiperAuto" interval="2000" duration="500" :circular="true"
-        @change="swiperChange">
-        <swiper-item v-for="(item,index) in bannerList" :key="item.id">
-          <image class="banner-img" :src="item.resUrl" mode="scaleToFill" @click="toWebview(item.jumpUrl)">
-          </image>
-        </swiper-item>
-      </swiper>
-      <view v-if="bannerList.length>1" class="swiper-tab">
-        <image :class="['swiper-tab-flex1', {'flex1-active': index==currentSwiper}]" v-for="(item,index) in bannerList" :key="index"
-          :src="index==currentSwiper?'https://ali-image.dabanjia.com/static/mp/dabanjia/images/theme-red/home/swiper_tab_ic_active.png':'https://ali-image.dabanjia.com/static/mp/dabanjia/images/theme-red/home/swiper_tab_ic.png'">
-        </image>
-      </view>
-    </view>
-    <!-- 金刚区 -->
-		<view class="zone-view">
-			<view class="item-box">
-				<view :class="['item', {'item-more': zoneList.length > 8}]" v-for="(item,index) in zoneList" :key="item.id" @click="onZoneClick(item)">
-					<image class="icon" :src="item.icon"></image>
-					<view class="name">
-					  {{item.name}}
-					</view>
-				</view>
-			</view>
-		</view>
-    <!--<view class="zone-view">
-      <view class="function-zone function-zone-top">
-        <view class="item" v-for="(item,index) in zoneList1" :key="item.id" @click="onZoneClick(item)">
-          <image class="icon" :src="item.icon"></image>
-          <view class="name">
-            {{item.name}}
-          </view>
-          <image v-if="(index+1)%4" class="border-img"
-            src="https://ali-image.dabanjia.com/static/mp/dabanjia/images/home/home-zone-border_new.png" mode="">
-          </image>
-        </view>
-      </view>
-      <view v-if="zoneList2.length" class="function-zone function-zone-center">
-        <view class="item" v-for="(item,index) in zoneList2" :key="item.id" @click="onZoneClick(item)">
-          <image class="icon" :src="item.icon"></image>
-          <view class="name">
-            {{item.name}}
-          </view>
-          <image v-if="(index+1)%4" class="border-img"
-            src="https://ali-image.dabanjia.com/static/mp/dabanjia/images/home/home-zone-border1.png" mode="">
-          </image>
-        </view>
-      </view>
-      <view class="function-zone function-zone-bottom">
-        <view class="item" v-for="(item,index) in zoneList3" :key="item.id" @click="onZoneClick(item)">
-          <image class="icon" :src="item.icon"></image>
-          <view class="name">
-            {{item.name}}
-          </view>
-          <image v-if="(index+1)%4" class="border-img"
-            src="https://ali-image.dabanjia.com/static/mp/dabanjia/images/home/home-zone-border1.png" mode="">
-          </image>
-        </view>
-      </view>
-    </view>-->
-    <!-- 快捷栏目 -->
-    <view style="padding: 0 24rpx;">
-      <image v-for="(item,index) in status1List" :key="item.id" @click="onZoneClick(item)" :src="item.icon"
-        class="experience">
-    </view>
-
-    </image>
-    <view v-if="status2List.length" class="example-content">
-
-      <image @click="onZoneClick(status2List[0])" class="item" :src="status2List[0].icon"></image>
-      <view class="holder-item">
-      </view>
-      <image @click="onZoneClick(status2List[1])" class="item" :src="status2List[1].icon"></image>
-    </view>
-		<!-- #ifdef MP-WEIXIN -->
-		<!-- 直播 -->
-			<view class="flex-row-common" style="margin-top: 44rpx;">
-			<view class="title">
-				免费服务
-			</view>
-			<view class="flex1">
-			</view>
-		
-			<image @click="toLiveList"
-				src="https://ali-image.dabanjia.com/static/mp/dabanjia/images/home/ic_gongdizhibo_more.png"
-				class="sub-title-more">
-			</image>
-		</view>
-		<view class="flex-row-common videos">
-			<view v-for="(item,index) in videoTypeList" :key="item"
-				:style="{color:index==videoType?'#2B2F33':'#999999'}" class="video-title"
-				@click="videoTypeChange(index)">
-				{{item}}
-			</view>
-		</view>
-		
-		<view class="player-scroll">
-			<view style="width: 8rpx;height: 1rpx;flex-shrink: 0;">
-			</view>
-			<view v-for="(item,index) in liveList" :key="index" class="item margin-left24" @click="onLiveClick(item)">
-				<image class="img"
-					:src="item.mediaType==1?item.roomLiveMediaVO.scaleImg:item.roomVideoMediaVO.scaleImg |imgFormat(494,660)"
-					mode="aspectFill"></image>
-				</image>
-				<view class="top-content">
-					<image class="top-content-img"
-						:src="item.mediaType==1?'https://ali-image.dabanjia.com/static/mp/dabanjia/images/theme-red/home/living.gif':'https://ali-image.dabanjia.com/static/mp/dabanjia/images/theme-red/home/live-repaly.png'">
-						<view v-if="item.mediaType==1" class="text">
-		
-							{{item.roomLiveMediaVO.onLineCount||0}}
-							<!-- 人正在观看 -->
-						</view>
-						<view v-else class="text">
-							回放
-						</view>
-				</view>
-				<view class="name-content">
-					{{item.mediaType==1?item.roomLiveMediaVO.title:item.roomVideoMediaVO.title}}
-				</view>
-			</view>
-			<view style="width: 24rpx;height: 1rpx;flex-shrink: 0;">
-		
-			</view>
-		</view>
-		<!-- #endif -->
-    
-    <!-- 推荐 -->
-    <view class="flex-row-common" style="margin-top: 50rpx;">
-      <view class="title">
-        精选推荐
-      </view>
-
-    </view>
-    <good-list ref="goodList" :page="page" :areaId="areaId"></good-list>
+    <scroll-view class="home-container" scroll-y="true" @scrolltolower='scrolltolower'
+			refresher-enabled='true' @refresherrefresh='refresherrefresh' :refresher-triggered="triggered">
+    	<!-- banner -->
+    	<view class="banner-content">
+    	  <swiper class="banner" :autoplay="swiperAuto" interval="2000" duration="500" :circular="true"
+    	    @change="swiperChange">
+    	    <swiper-item v-for="(item,index) in bannerList" :key="item.id">
+    	      <image class="banner-img" :src="item.resUrl" mode="scaleToFill" @click="toWebview(item.jumpUrl)">
+    	      </image>
+    	    </swiper-item>
+    	  </swiper>
+    	  <view v-if="bannerList.length>1" class="swiper-tab">
+    	    <image :class="['swiper-tab-flex1', {'flex1-active': index==currentSwiper}]" v-for="(item,index) in bannerList" :key="index"
+    	      :src="index==currentSwiper?'https://ali-image.dabanjia.com/static/mp/dabanjia/images/theme-red/home/swiper_tab_ic_active.png':'https://ali-image.dabanjia.com/static/mp/dabanjia/images/theme-red/home/swiper_tab_ic.png'">
+    	    </image>
+    	  </view>
+    	</view>
+    	<!-- 金刚区 -->
+    	<view class="zone-view">
+    		<view class="item-box">
+    			<view :class="['item', {'item-more': zoneList.length > 8}]" v-for="(item,index) in zoneList" :key="item.id" @click="onZoneClick(item)">
+    				<image class="icon" :src="item.icon"></image>
+    				<view class="name">
+    				  {{item.name}}
+    				</view>
+    			</view>
+    		</view>
+    	</view>
+    	<!--<view class="zone-view">
+    	  <view class="function-zone function-zone-top">
+    	    <view class="item" v-for="(item,index) in zoneList1" :key="item.id" @click="onZoneClick(item)">
+    	      <image class="icon" :src="item.icon"></image>
+    	      <view class="name">
+    	        {{item.name}}
+    	      </view>
+    	      <image v-if="(index+1)%4" class="border-img"
+    	        src="https://ali-image.dabanjia.com/static/mp/dabanjia/images/home/home-zone-border_new.png" mode="">
+    	      </image>
+    	    </view>
+    	  </view>
+    	  <view v-if="zoneList2.length" class="function-zone function-zone-center">
+    	    <view class="item" v-for="(item,index) in zoneList2" :key="item.id" @click="onZoneClick(item)">
+    	      <image class="icon" :src="item.icon"></image>
+    	      <view class="name">
+    	        {{item.name}}
+    	      </view>
+    	      <image v-if="(index+1)%4" class="border-img"
+    	        src="https://ali-image.dabanjia.com/static/mp/dabanjia/images/home/home-zone-border1.png" mode="">
+    	      </image>
+    	    </view>
+    	  </view>
+    	  <view class="function-zone function-zone-bottom">
+    	    <view class="item" v-for="(item,index) in zoneList3" :key="item.id" @click="onZoneClick(item)">
+    	      <image class="icon" :src="item.icon"></image>
+    	      <view class="name">
+    	        {{item.name}}
+    	      </view>
+    	      <image v-if="(index+1)%4" class="border-img"
+    	        src="https://ali-image.dabanjia.com/static/mp/dabanjia/images/home/home-zone-border1.png" mode="">
+    	      </image>
+    	    </view>
+    	  </view>
+    	</view>-->
+    	<!-- 快捷栏目 -->
+    	<view style="padding: 0 24rpx;">
+    	  <image v-for="(item,index) in status1List" :key="item.id" @click="onZoneClick(item)" :src="item.icon"
+    	    class="experience">
+    	</view>
+    	
+    	</image>
+    	<view v-if="status2List.length" class="example-content">
+    	
+    	  <image @click="onZoneClick(status2List[0])" class="item" :src="status2List[0].icon"></image>
+    	  <view class="holder-item">
+    	  </view>
+    	  <image @click="onZoneClick(status2List[1])" class="item" :src="status2List[1].icon"></image>
+    	</view>
+    	<!-- #ifdef MP-WEIXIN -->
+    	<!-- 直播 -->
+    		<view class="flex-row-common" style="margin-top: 44rpx;">
+    		<view class="title">
+    			免费服务
+    		</view>
+    		<view class="flex1">
+    		</view>
+    	
+    		<image @click="toLiveList"
+    			src="https://ali-image.dabanjia.com/static/mp/dabanjia/images/home/ic_gongdizhibo_more.png"
+    			class="sub-title-more">
+    		</image>
+    	</view>
+    	<view class="flex-row-common videos">
+    		<view v-for="(item,index) in videoTypeList" :key="item"
+    			:style="{color:index==videoType?'#2B2F33':'#999999'}" class="video-title"
+    			@click="videoTypeChange(index)">
+    			{{item}}
+    		</view>
+    	</view>
+    	
+    	<view class="player-scroll">
+    		<view style="width: 8rpx;height: 1rpx;flex-shrink: 0;">
+    		</view>
+    		<view v-for="(item,index) in liveList" :key="index" class="item margin-left24" @click="onLiveClick(item)">
+    			<image class="img"
+    				:src="item.mediaType==1?item.roomLiveMediaVO.scaleImg:item.roomVideoMediaVO.scaleImg |imgFormat(494,660)"
+    				mode="aspectFill"></image>
+    			</image>
+    			<view class="top-content">
+    				<image class="top-content-img"
+    					:src="item.mediaType==1?'https://ali-image.dabanjia.com/static/mp/dabanjia/images/theme-red/home/living.gif':'https://ali-image.dabanjia.com/static/mp/dabanjia/images/theme-red/home/live-repaly.png'">
+    					<view v-if="item.mediaType==1" class="text">
+    	
+    						{{item.roomLiveMediaVO.onLineCount||0}}
+    						<!-- 人正在观看 -->
+    					</view>
+    					<view v-else class="text">
+    						回放
+    					</view>
+    			</view>
+    			<view class="name-content">
+    				{{item.mediaType==1?item.roomLiveMediaVO.title:item.roomVideoMediaVO.title}}
+    			</view>
+    		</view>
+    		<view style="width: 24rpx;height: 1rpx;flex-shrink: 0;">
+    	
+    		</view>
+    	</view>
+    	<!-- #endif -->
+    	
+    	<!-- 推荐 -->
+    	<view class="flex-row-common" style="margin-top: 50rpx;">
+    	  <view class="title">
+    	    精选推荐
+    	  </view>
+    	
+    	</view>
+    	<good-list ref="goodList" :page="page" :areaId="areaId"></good-list>
+    </scroll-view>
   </view>
 </template>
 
@@ -225,6 +230,7 @@
         status1List: [],
         status2List: [],
         currentAddress: {},
+				triggered: false,
       };
     },
     watch: {
@@ -366,18 +372,6 @@
     onHide() {
       this.swiperAuto = false;
     },
-
-    onReachBottom() {
-      this.page++;
-      console.log(this.page);
-
-      setTimeout((e) => {
-        this.getHomeGoodsList();
-      });
-    },
-    onPullDownRefresh() {
-      this.reloadData();
-    },
     // computed: {
     //   zoneList1() {
     //     let list = [];
@@ -414,6 +408,18 @@
     //   },
     // },
     methods: {
+			scrolltolower() {
+			  this.page++;
+			  console.log(this.page);
+			
+			  setTimeout((e) => {
+			    this.getHomeGoodsList();
+			  });
+			},
+			refresherrefresh() {
+				this.triggered = true;
+			  this.reloadData();
+			},
       toLiveList() {
         uni.navigateTo({
           url: "../../../sub-home/pages/lives-list/lives-list",
@@ -722,7 +728,7 @@
 					this.$nextTick(function(){
 						this.zoneList = arr;
 					})
-          uni.stopPullDownRefresh();
+					this.triggered = false;
         });
         //首页推荐商品
         this.goodsList = [];
@@ -789,7 +795,20 @@
   };
 </script>
 
-<style lang="scss">
+<style lang="scss" scoped>
+	.home{
+		background-color: #FFF;
+		width: 100%;
+		height: 100%;
+		display: flex;
+		flex-direction: column;
+		.home-container{
+			flex: 1;
+			overflow: scroll;
+			position: relative;
+			z-index: 1000;
+		}
+	}
   scroll-view ::-webkit-scrollbar {
     display: none;
     width: 0 !important;
@@ -826,6 +845,7 @@
     margin-right: 32rpx;
     margin-left: 40rpx;
 		position: relative;
+		z-index: 100000;
   }
 
   .bottom-border {
@@ -983,6 +1003,8 @@
   }
 
   .zone-view {
+		position: relative;
+		z-index: 10;
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -1139,6 +1161,9 @@
 			position: fixed;
 			right: 0;
 			z-index: 1;
+			background: url('https://ali-image.dabanjia.com/static/mp/dabanjia/images/theme-red/home/ic_bg_home.png');
+			background-size: 100% 100%;
+			background-repeat: no-repeat;
 		}
   }
 
@@ -1174,7 +1199,7 @@
   .banner-content {
     position: relative;
     margin: 16rpx 24rpx 0;
-		z-index: 1000;
+		z-index: 101;
 
     .banner {
       border-radius: 16rpx;

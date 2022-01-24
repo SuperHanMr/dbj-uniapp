@@ -58,7 +58,7 @@
                   {{goodsItem.spuName}}
                 </view>
                 <view class="spu-class">
-                  <view class='tag'>{{levelName}}{{levelName?'|':''}}{{goodsItem.skuName}}</view>
+                  <view class='tag'>{{goodsItem.levelName?goodsItem.levelName + '|': ''}}{{goodsItem.skuName}}</view>
                 </view>
                 <view
                   class="safeguard"
@@ -108,8 +108,8 @@
             </view>
             <view
               class="choose-time"
+              v-if="productType === 2 && goodsItem.appointmentRequired"
             >
-            <!-- v-if="productType === 2 && goodsItem.appointmentRequired" -->
               <view
                 class="time-bar"
                 @click='chooseTime(shopIndex, goodIndex)'
@@ -465,7 +465,6 @@ export default {
       hasCanBuy: false,
       projectId: 0,
       level: 0,
-      levelName: "",
       cancelDialog: false,
       refundable: false,
       cardClick: false,
@@ -690,20 +689,6 @@ export default {
           this.noStoreInfos.storeInfos.push(noStoreItem);
           this.canStoreInfos.storeInfos.push(canStoreItem);
           storeItem.skuInfos.map((skuItem, skuK) => {
-            switch (skuItem.level) {
-              case 1:
-                this.levelName = "中级";
-                break;
-              case 2:
-                this.levelName = "高级";
-                break;
-              case 3:
-                this.levelName = "特级";
-                break;
-              case 4:
-                this.levelName = "钻石级";
-                break;
-            }
             this.productType = skuItem.productType;
             // 头部补人工数据
             if (skuItem.addingJobName) {
@@ -1231,9 +1216,6 @@ export default {
   .good-store-account .store-read {
     color: #666666;
     font-size: 24rpx;
-    height: 58rpx;
-    line-height: 58rpx;
-    text-align: center;
     background-color: #fafafa;
     border-radius: 8rpx;
   }

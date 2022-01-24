@@ -292,7 +292,7 @@
 					}
 				}
 				.attr{
-					margin-top: 16rpx;
+					margin-top: 12rpx;
 					font-size: 22rpx;
 					color: #999999;
 					text{
