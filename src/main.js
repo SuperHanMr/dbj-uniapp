@@ -52,7 +52,6 @@ if (params.token) {
   uni.setStorageSync("scn", params.token)
   window.location.replace('/' + window.location.hash);
 }
-console.log(App, 112313);
 // #endif
 
 Vue.config.productionTip = false

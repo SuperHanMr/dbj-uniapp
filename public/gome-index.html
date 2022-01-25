@@ -32,9 +32,15 @@
       var xhr = new XMLHttpRequest()
       xhr.withCredentials = true;
       xhr.onreadystatechange = function() {
-        if (xhr.readyState === 4 && xhr.status === 200) {
-          if (options.success) {
-            options.success(xhr.responseText);
+        if (xhr.readyState === 4) {
+          if (xhr.status === 200) {
+            if (options.success) {
+              options.success(xhr.responseText);
+            }
+          } else {
+            if (options.error) {
+              options.error(xhr.status);
+            }
           }
         }
       }
@@ -48,27 +54,35 @@
       xhr.send(JSON.stringify(options.data));
     }
     function redirectToWeb(token) {
-      let hash = window.location.hash;
-      window.location.replace('https://mp-h5-stage.meiwu365.com/?token=' + token + hash);
+      var hash = window.location.hash;
+      if (token) {
+        window.location.replace('<%= VUE_APP_MP_H5 %>/?token=' + token + hash);
+      } else {
+        window.location.replace('<%= VUE_APP_MP_H5 %>/' + hash);
+      }
     }
-    var host = '<%= VUE_APP_BASE_API %>';
-    console.log(host, 1213)
-    var url = 'http://apis-dbj.gomeuat.com.cn/customer/app/oauth/gome/loginByCookie';
-    var params = {};
+    var url = '<%= VUE_APP_GOME_API %>/customer/app/oauth/gome/loginByCookie';
+    var params = {
+      clientType: "3",
+      clientCode: "APPLET"
+    };
     request({
       url: url,
       data: params,
       method: "post",
       success: function(resText) {
-        let res = JSON.parse(resText);
+        var res = JSON.parse(resText);
         console.log('success:', resText, res);
         if (res.data) {
-          let token = res.data;
+          var token = res.data;
           redirectToWeb(token);
+        } else {
+          redirectToWeb();
         }
       },
       error: function(err) {
         console.error(err);
+        redirectToWeb();
       }
     });
   </script>
