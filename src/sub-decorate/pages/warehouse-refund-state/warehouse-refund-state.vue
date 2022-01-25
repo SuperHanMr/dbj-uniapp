@@ -267,7 +267,7 @@ export default {
         type = 1;
       }
       uni.navigateTo({
-        url: `../warehouse-refund/warehouse-refund?refundType=${this.detail.type}&id=${this.detail.id}&type=${type}`,
+        url: `../warehouse-refund/warehouse-refund?refundType=${this.detail.type}&id=${this.detail.requireId}&type=${type}`,
       });
     },
     refuntType(type) {
