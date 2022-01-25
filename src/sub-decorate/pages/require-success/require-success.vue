@@ -4,20 +4,22 @@
 		</custom-navbar>
 
 		<view class="basic-info"
-			:style="{backgroundImage:`url(https://ali-image.dabanjia.com/static/mp/dabanjia/images/my/bg_img.png)`,backgroundSize: '100% 100%'}">
-			<image src="https://ali-image.dabanjia.com/static/mp/dabanjia/images/decorate/complete.png" mode=""></image>
+			>
+			<image src="https://ali-image.dabanjia.com/static/mp/dabanjia/images/theme-red/decorate/complete.png" mode=""></image>
 			<view class="info">
-				<view class="header1">要货申请已发出,等待业主确认</view>
+				<view class="header1">要货申请已发出</view>
+        <view class="header2">等待业主确认</view>
 			</view>
 		</view>
 
 		<view class="button-container">
+      <view class="detail-button" @click="toDetail">
+      	查看要货记录
+      </view>
 			<view class="complete-button" @click="toDecorate">
 				返回装修页面
 			</view>
-			<view class="detail-button" @click="toDetail">
-				查看要货记录
-			</view>
+			
 		</view>
 	</view>
 </template>
@@ -51,14 +53,14 @@
 
 <style lang="scss" scoped>
 	.container {
-		background: #f6f7f7;
-
+		background: #fff;
+    height: 100%;
 		.basic-info {
 			height: 600rpx;
 			display: flex;
 			flex-flow: column nowrap;
 			align-items: center;
-
+      background-color: #fff;
 			image {
 				margin-top: 200rpx;
 				width: 184rpx;
@@ -77,7 +79,7 @@
 					line-height: 48rpx;
 					font-size: 36rpx;
 					font-weight: 500;
-					color: #ffffff;
+					color: #222;
 					margin-bottom: 12rpx;
 				}
 
@@ -85,36 +87,40 @@
 					font-size: 26rpx;
 					height: 48rpx;
 					line-height: 48rpx;
-					color: #ffffff;
+					color: #999;
 				}
 			}
 		}
 
 		.button-container {
 			display: flex;
-			flex-flow: column nowrap;
+			flex-flow: wrap;
 			align-items: center;
+      padding: 0 60rpx;
+      justify-content: space-between;
 
 			.complete-button,
 			.detail-button {
-				width: 396rpx;
+				width: 296rpx;
 				height: 88rpx;
 				border-radius: 12rpx;
 				text-align: center;
 				font-size: 32rpx;
 				font-weight: 500;
+        // display: inline-block;
+        // vertical-align: top;
 			}
 
 			.complete-button {
-				margin-top: 140rpx;
+				// margin-top: 140rpx;
 				line-height: 88rpx;
 				color: #ffffff;
-				background: linear-gradient(135deg, #36d9cd 0%, #28c6c6 100%);
+				background: linear-gradient(117.02deg, #FA3B34 24.56%, #FF6A33 92.21%);
 				background-size: 100% 100%;
 			}
 
 			.detail-button {
-				margin-top: 40rpx;
+				// margin-top: 40rpx;
 				color: #333333;
 				border: 2rpx solid #dedede;
 				box-sizing: border-box;
