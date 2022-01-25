@@ -9,7 +9,7 @@
     </view>
     </view>
     <scroll-view :scroll-y="true" style="height:600px" @scrolltolower="bindscrolltolower">
-      <personEvaliateItem :last='index===evaluate.list.length-1' v-for="item in evaluate.list" :item='item' :key='item.id'></personEvaliateItem>
+      <personEvaliateItem :userId='personId' :last='index===evaluate.list.length-1' v-for="item in evaluate.list" :item='item' :key='item.id'></personEvaliateItem>
     </scroll-view>
   </view>
 </template>

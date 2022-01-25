@@ -29,7 +29,7 @@
               <view :class="{'payed':aServiceData.insuranceStatus}" class="insurance">
                 <image @click="consultingService"
                 
-                  :src="aServiceData.insuranceStatus ? '../../../static/insurance-pay.png': '../../../static/insurance-unpay.svg'">
+                  :src="aServiceData.insuranceStatus ? '../../../static/insurance-pay.png': '../../../static/insurance-unpay.png'">
                 </image>
               </view>
               <view class="uni-title">{{ currentProject.housingEstate || '' }}{{currentProject.address || ''}}</view>

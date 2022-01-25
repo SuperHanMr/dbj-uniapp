@@ -12,22 +12,20 @@
 					</view>
 					<view class="info">
 						<view class="pattern">
-							<text v-if="item.roomNum != 0">{{item.roomNum || '-'}}室</text>
-							<text v-if="item.hallNum != 0">{{item.hallNum || '-'}}厅</text>
-							<text v-if="item.kitchenNum != 0">{{item.kitchenNum || '-'}}厨</text>
-							<text v-if="item.bathroomNum != 0">{{item.bathroomNum || '-'}}卫</text>
+							<text>{{item.roomNum || '-'}}室</text>
+							<text>{{item.hallNum || '-'}}厅</text>
 						</view>
-						<view class="line" v-if="item.roomNum != 0 || item.hallNum != 0 || item.kitchenNum != 0 || item.bathroomNum != 0">
+						<view class="line">
 
 						</view>
 						<view class="area" v-if="item.insideArea != 0">
-							{{item.insideArea || '-'}}m²
+							{{item.insideArea >= 1 ? (item.insideArea).toFixed(0) : '-'}}m²
 						</view>
 						<view class="line" v-if="item.budget != 0">
 
 						</view>
 						<view class="preferential" v-if="item.budget != 0">
-							预算: ¥{{item.budget ? (item.budget).toFixed(2) : '-'}}万
+							预算: ¥{{item.budget >= 10000 ? (item.budget).toFixed(0) : '-'}}万
 						</view>
 					</view>
 					<view class="tag-box">
@@ -195,11 +193,19 @@
 						color: #999999;
 						margin-right: 20rpx;
 					}
+					.pattern{
+						white-space: nowrap;
+						overflow: hidden;
+						text-overflow: ellipsis;
+					}
 
 					.preferential {
 						font-size: 24rpx;
 						line-height: 34rpx;
 						color: #999999;
+						white-space: nowrap;
+						overflow: hidden;
+						text-overflow: ellipsis;
 					}
 				}
 

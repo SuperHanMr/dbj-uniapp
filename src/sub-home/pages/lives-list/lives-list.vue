@@ -258,6 +258,7 @@
 		height: 100%;
 		display: flex;
 		flex-direction: column;
+		background-color: #ffffff;
 	}
 
 	.swiper {
@@ -364,7 +365,7 @@
 		position: -webkit-sticky;
 		left: 0;
 		right: 0;
-		background-color: #F5F6F6;
+		background-color: #ffffff;
 	}
 
 	.tab-list {
@@ -373,7 +374,6 @@
 		width: 100%;
 		overflow: hidden;
 		white-space: nowrap;
-		background: linear-gradient(#FFFFFF, #f5f6f6);
 	}
 
 	.tab-item {

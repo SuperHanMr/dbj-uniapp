@@ -38,7 +38,7 @@
             </view>
             <view class="item-content">
               <text>{{item.pushContent}}</text>
-              <i class="icon-ic_zhuangxiuxianchang_jingsuangengduo_csn icon" ></i>
+              <i class="icon-alert_notice_jump icon" ></i>
               <!-- <image src="../../static/images/ic_more_black.svg"></image> -->
             </view>
           </view>
@@ -256,8 +256,8 @@
         }
 
         i {
-          font-size: 16rpx;
-          color: #999;
+          font-size: 20rpx;
+          // color: #999;
         }
       }
     }
