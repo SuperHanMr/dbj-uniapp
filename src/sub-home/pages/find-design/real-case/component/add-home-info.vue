@@ -1,5 +1,5 @@
 <template>
-	<view class="perfect-house-info" @click="openHomeList">
+	<view class="perfect-house-info" @click="openHomeList" :style="{bottom:bottom}">
 		<view class="image-box">
 			<image
 				src="https://ali-image.dabanjia.com/static/mp/dabanjia/images/home/perfect-information.png?x-oss-process=image/resize,m_lfit,w_148,h_150"
@@ -21,6 +21,13 @@
 
 <script>
 	export default {
+		
+		props:{
+			bottom:{}
+		},
+		onLoad() {
+			console.log("bottom ====",this.bottom)
+		},
 		methods: {
 			openHomeList() {
 				this.$emit('openHomeList');
@@ -32,7 +39,7 @@
 <style lang="scss" scoped>
 	.perfect-house-info {
 		position: fixed;
-		bottom: 150rpx;
+		// bottom: 32rpx;
 		left: 40rpx;
 		width: 670rpx;
 		display: flex;

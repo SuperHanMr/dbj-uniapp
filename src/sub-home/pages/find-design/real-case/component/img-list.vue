@@ -7,12 +7,12 @@
 			<view class="top">
 				<view class="left">
 					<image :src="imgList[0] + '?x-oss-process=image/resize,m_lfit,w_456,h_364'" mode=""
-						:style="{borderRadius: list3.length > 0 ? 'none' : '0 0 0 32rpx'}"></image>
+						:style="{borderRadius: list3.length > 0 ? 'none' : '0 0 0 16rpx'}"></image>
 				</view>
 				<view class="right">
 					<image :src="item + '?x-oss-process=image/resize,m_lfit,w_226,h_180'" mode=""
 						v-for="(item, index) in list2" :key='item'
-						:style="{borderRadius: (list3.length > 0 || (index != list2.length - 1)) ? 'none' : '0 0 32rpx 0'}">
+						:style="{borderRadius: (list3.length > 0 || (index != list2.length - 1)) ? 'none' : '0 0 16rpx 0'}">
 					</image>
 				</view>
 			</view>
@@ -119,11 +119,11 @@
 				}
 
 				image:first-child {
-					border-radius: 0 0 0 16px;
+					border-radius: 0 0 0 16rpx;
 				}
 
 				image:last-child {
-					border-radius: 0 0 16px 0;
+					border-radius: 0 0 16rpx 0;
 					margin-right: 0;
 				}
 			}
