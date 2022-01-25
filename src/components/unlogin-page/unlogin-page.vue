@@ -38,18 +38,18 @@ export default {
 .unlogin-tip {
   color: #999;
   margin-top: 24rpx;
-  font-size: 13px;
+  font-size: 12px;
 }
 .unlogin-btn {
-  width: 178px;
-  height: 44px;
+  width: 96px;
+  height: 32px;
   background: linear-gradient(117deg, #FA3B34 25%, #FF6A33 92%);
   border-radius: 6px;
   color: #fff;
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 14px;
-  margin-top: 100rpx;
+  font-size: 12px;
+  margin-top: 24rpx;
 }
 </style>
