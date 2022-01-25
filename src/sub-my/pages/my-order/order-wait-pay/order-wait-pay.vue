@@ -105,7 +105,7 @@
 									￥{{item.freight?`${item.freight}`:"0.00"}}
 								</text>
 								<text class="price-font" :style="{marginTop:item.freight?'0':'8rpx'}" v-else>
-									{{item.freight?`￥${item.freight}`:"--"}}
+									{{item.freight?`￥${item.freight}`:"00"}}
 								</text>
 							</view>
 						</view>
@@ -125,7 +125,7 @@
 								<text
 								  class="price-font" :style="{marginTop:item.handlingFees ? '0' : '8rpx' }"
 								  v-else
-								>{{item.handlingFees?`￥${item.handlingFees}`:"--"}}</text>
+								>{{item.handlingFees?`￥${item.handlingFees}`:"00"}}</text>
 							</view>
 						</view>
 						<view class="item_css_style"  v-if="item.storeDiscount">
