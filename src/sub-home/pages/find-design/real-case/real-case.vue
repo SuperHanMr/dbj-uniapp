@@ -53,7 +53,7 @@
 				</view>
 			</view>
 		</view>
-		<view class="home-info-box" v-if="!currentHouse.address">
+		<view class="home-info-box" v-if="!currentHouse.id">
 			<add-home-info :bottom="systemBottom" @openHomeList='openHomeList' />
 		</view>
 	</view>
@@ -114,13 +114,13 @@
 			uni.$on('defaultHouseChange',() => {
 				this.caseDetail = false;
 			})
-			
+
 			const menuButtonInfo = uni.getMenuButtonBoundingClientRect();
 			console.log("menuButtonInfo=", menuButtonInfo);
 			this.systemBottom = menuButtonInfo.bottom + 32 + "rpx";
 			console.log("this.systemBottom=", this.systemBottom);
-			
-			
+
+
 		},
 		onShow() {
 			if (this.caseDetail) {
