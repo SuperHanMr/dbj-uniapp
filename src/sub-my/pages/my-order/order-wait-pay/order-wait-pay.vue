@@ -867,9 +867,8 @@ export default {
         flex-flow: row nowrap;
         align-items: center;
         .countStyle {
-          width: 154rpx;
-          height: 40rpx;
-          padding-left: 5rpx;
+          // width: 154rpx;
+          // height: 40rpx;
 					display: flex;
 					align-items: center;
           box-sizing: border-box;
@@ -1125,5 +1124,12 @@ export default {
 
 ::v-deep .count .separator {
   line-height: 30rpx !important;
+}
+::v-deep .count-container{
+	width: 154rpx;
+	height: 40rpx;
+	display: flex;
+	align-items: center;
+	justify-content: space-around;
 }
 </style>

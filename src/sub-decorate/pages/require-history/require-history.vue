@@ -56,7 +56,8 @@
 			getList() {
 				let params = {
 					rows: 9999,
-					projectId: this.projectId
+					projectId: this.projectId,
+					personType: 0
 				};
 				requireList(params).then(e => {
 					this.list = e

@@ -81,9 +81,10 @@
       //   console.log(this.isOpen)
       // },
       toBuy(item){
-        console.log(this.userId)
+        console.log('/sub-classify/pages/goods-detail/goods-detail?goodId='+item.id+'&userId='+this.userId+'&originType='+`2|${this.userId}|${this.userId}|`)
+        
         uni.navigateTo({
-          url:'/sub-classify/pages/goods-detail/goods-detail?goodId='+item.id+'&userId='+this.userId
+          url:'/sub-classify/pages/goods-detail/goods-detail?goodId='+item.id+'&userId='+this.userId+'&originType='+`2|${this.userId}|${this.userId}|`
         })
       }
     }

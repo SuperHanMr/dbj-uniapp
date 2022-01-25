@@ -6,7 +6,7 @@
 				<view class="address" v-if="params.cityName">
           {{params.roomNum!==0?`${params.roomNum}室`:params.hallNum!==0?`${params.hallNum}厅`:''}}
           <view v-if="params.roomNum&&params.hallNum"> | </view>
-          {{params.insideArea}}㎡
+          {{Math.floor(params.insideArea)<1?'-':Math.floor(params.insideArea)}}㎡
           <view> | </view>
           {{params.cityName}}
           <view class="">

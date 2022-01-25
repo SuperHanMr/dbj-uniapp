@@ -5,7 +5,7 @@
     <view class="empty" v-else>
       暂无案例
     </view>
-    <view v-if="pagState.totalPage>pagState.page-1" @click="getList" class="click-text"><text>展开更多案例</text><i :class="{'icon-gerenzhuye_anlihefuwu_zhankaiic':true}"></i></view>
+    <view v-if="pagState.totalPage>pagState.page-1" @click="getList" class="click-text"><text>展开更多案例</text><i :class="{'icon-list_arrow_dropdown':true}"></i></view>
     
   </view>
 </template>

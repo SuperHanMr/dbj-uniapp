@@ -15,8 +15,8 @@
       </view>
       <!-- 运费  有仓库默认显示  无仓库必显示-->
       <view v-if="data.showFreight" class="price-item">
-        <view class="title">
-          <text style="margin-right: 8rpx;">运费</text>
+        <view class="title" >
+          <text  style="margin-right: 8rpx;">运费</text>
           <image class="icon" src="../../static/price_icon.svg" mode="" @click="readExpenses(1)"/>
         </view>
         <view v-if="waitPay">
@@ -224,17 +224,20 @@ export default {
       flex-flow: row nowrap;
       align-items: center;
       justify-content: space-between;
-      color: #808080;
       font-size: 24rpx;
       font-weight: 400;
       margin-bottom: 20rpx;
+			view{
+				color: #666666;
+				text{
+					color: #666666;	
+				}
+			}
       .title {
         display: flex;
         flex-flow: row nowrap;
         align-items: center;
-				text{
-					color: #666666;	
-				}
+			
         .icon {
           width: 24rpx;
           height: 24rpx;
@@ -283,4 +286,5 @@ export default {
 .price-style {
   font-size: 28rpx;
 }
+
 </style>

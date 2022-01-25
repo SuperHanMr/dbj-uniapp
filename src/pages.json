@@ -988,6 +988,7 @@
             "transparentTitle": "auto",
             "navigationStyle": "custom",
             "enablePullDownRefresh": true
+            
           }
         },
         {
