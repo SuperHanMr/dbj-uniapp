@@ -1180,7 +1180,7 @@ export default {
     background-color: #fafafa;
     border-radius: 8rpx;
     padding-left: 20rpx;
-    color: #00bfb6;
+    color: #ff3347;
     font-size: 22rpx;
     position: absolute;
     bottom: 16rpx;
@@ -1368,7 +1368,7 @@ export default {
 
   .bottom .no-pay {
     opacity: 0.4;
-    background: linear-gradient(135deg, #00bfaf, #00bfbc);
+    background: linear-gradient(114.87deg, #FA3B34 23.76%, #FF6A33 93.55%);
   }
 
   .popup-item {
