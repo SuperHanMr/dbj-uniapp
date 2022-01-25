@@ -1,5 +1,5 @@
 <template>
-	<view>
+	<view class="count-container">
 		<view class="count">
 			<view 
 				class="list" 
