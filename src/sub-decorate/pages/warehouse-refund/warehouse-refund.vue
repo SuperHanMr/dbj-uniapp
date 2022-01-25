@@ -139,7 +139,7 @@
             e.requireNumber : e.stockNumber ?
             e.stockNumber : e.requireNumber,
           stockId: e.id,
-          goodsId: e.goodsId,
+          goodsId: e.relationId,
           price: e.discountPrice,
           alreadyReturnNumber: e.returnNumber || 0,
           number: e.number || e.totoalNum,
@@ -244,7 +244,7 @@
         } else {
           params.type = this.refundType;
           if (params.type == 2) {
-            params.goodsId = this.data.stockAppVOS[0].goodsId;
+            params.goodsId = this.data.stockAppVOS[0].relationId;
           }
           goodsRefund(params).then((e) => {
             uni.showToast({

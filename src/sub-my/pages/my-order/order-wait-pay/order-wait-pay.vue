@@ -378,23 +378,7 @@ export default {
   },
   onPageScroll(scrollTop) {
     this.scrollTop = scrollTop.scrollTop;
-		if(this.scrollTop/100>1){
-			uni.setNavigationBarColor({
-			  frontColor: "#333333",
-			  animation: {
-			    duration: 400,
-			    timingFunc: "easeIn",
-			  },
-			});
-		}else{
-			uni.setNavigationBarColor({
-			  frontColor: "#ffffff",
-			  animation: {
-			    duration: 400,
-			    timingFunc: "easeIn",
-			  },
-			});
-		}
+		
   },
 
 
@@ -413,12 +397,13 @@ export default {
       menuButtonInfo.height +
       "px";
     uni.setNavigationBarColor({
-      frontColor: "#ffffff",
-      animation: {
-        duration: 400,
-        timingFunc: "easeIn",
-      },
-    });
+    	frontColor: '#ffffff',
+    	backgroundColor: "#ff0000",
+    	animation: {
+    		duration: 400,
+    		timingFunc: 'easeIn'
+    	}
+    })
   },
   onShow() {
     this.headerTitle = "订单详情";
@@ -1127,7 +1112,7 @@ export default {
 }
 ::v-deep .count-container{
 	width: 154rpx;
-	height: 40rpx;
+	height: 36rpx;
 	display: flex;
 	align-items: center;
 	justify-content: space-around;
