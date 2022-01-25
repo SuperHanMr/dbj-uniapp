@@ -500,14 +500,14 @@
 		flex-flow: row nowrap;
 		align-items: center;
 		justify-content: flex-end;
-		padding: 12rpx 32rpx;
+		padding: 16rpx 32rpx;
 
 		.confirmReceipt {
 			width: 248rpx;
 			height: 88rpx;
 			line-height: 88rpx;
 			box-sizing: border-box;
-			background: linear-gradient(99deg, #00ccbe 0%, #00c2bf 100%);
+			background: linear-gradient(117.02deg, #FA3B34 24.56%, #FF6A33 92.21%);
 			border-radius: 12rpx;
 			font-size: 32rpx;
 			text-align: center;
@@ -516,7 +516,7 @@
 		}
 
 		.applyforRefund {
-			margin: 18rpx 0;
+			margin: 14rpx 0 10rpx;
 			box-sizing: border-box;
 			width: 160rpx;
 			height: 56rpx;
@@ -530,11 +530,11 @@
 		}
 	}
 
-	.applyforRefund-confirmReceipt {
-		padding-top: 30rpx;
-	}
+	// .applyforRefund-confirmReceipt {
+	// 	padding-top: 30rpx;
+	// }
 	.applyforRefund-confirmReceipt2 {
-		padding-top: 30rpx;
+		padding-top: 30rpx 32rpx 26rpx 32rpx;
 
 		.refundOrderStatus {
 			width: 160rpx;
