@@ -12,12 +12,15 @@
 			要货记录
 		</view>
 		<view class="page-body-goods">
-			<scroll-view class="nav-left" scroll-y :scroll-top="scrollLeftTop" scroll-with-animation>
+			<scroll-view class="nav-left" scroll-y  scroll-with-animation>
 				<view class="left-title-block">
 					<view class="nav-left-item"
 						:class="{'active': index2==categoryActive, 'preNode': index2==categoryActive -1, 'nextNode': index2==categoryActive +1}"
 						v-for="(menu2,index2) in leftList" :key="index2" @click="categoryClickMain(menu2,index2)">
-						{{menu2.categoryName}}
+						<view class="text">
+							{{menu2.categoryName}}
+						</view>
+						<image class="left-icon" src="/static/images/select_head.png" v-if="index2==categoryActive"/>
 					</view>
 				</view>
 				<view :style="{height:Number(menuBottom) +Number(104)+'rpx'}">
@@ -37,10 +40,10 @@
 				</view>
 			</scroll-view>
 		</view>
-		<view class="bottom-btns" :style="{paddingBottom:systemBottom}">
+		<view class="bottom-btns" :style="{paddingBottom:'20px'}">
 			<view class="shop-icon" @click="openCart">
 				<image class="icon" :class="{'btn-use':cartCount>0,'btn-un':cartCount==0}"
-					src="https://ali-image.dabanjia.com/static/mp/dabanjia/images/home/ic_apply_goods.png" mode=""></image>
+					src="https://ali-image.dabanjia.com/static/mp/dabanjia/images/theme-red/home/ic_apply_goods.png" mode=""></image>
 				<view v-if="cartCount" class="num">
 					{{cartCount}}
 				</view>
@@ -128,9 +131,9 @@
 			},
 		},
 		onLoad(e) {
-			const menuButtonInfo = uni.getMenuButtonBoundingClientRect();
-			this.systemBottom = menuButtonInfo.bottom + "rpx";
-			this.menuBottom = menuButtonInfo.bottom;
+			// const menuButtonInfo = uni.getMenuButtonBoundingClientRect();
+			// this.systemBottom = menuButtonInfo.bottom + "rpx";
+			// this.menuBottom = menuButtonInfo.bottom;
 			if (e && e.projectId) {
 				this.projectId = e.projectId;
 			}
@@ -314,13 +317,14 @@
 
 		.btn {
 			width: 248rpx;
-			height: 88rpx;
-			line-height: 88rpx;
+			height: 80rpx;
+			line-height: 80rpx;
 			text-align: center;
 			color: #fff;
-			background: linear-gradient(135deg, #00ccbe, #00c2bf);
-			border-radius: 12rpx;
+			background: linear-gradient(117.02deg, #FA3B34 24.56%, #FF6A33 92.21%);
+			border-radius: 16rpx;
 			margin-right: 32rpx;
+			font-size: 30rpx;
 		}
 	}
 
@@ -549,6 +553,14 @@
 		align-items: center;
 		justify-content: center;
 		background-color: #f7f7f7;
+		position: relative;
+		.left-icon{
+			position: absolute;
+			left: 0;
+			top: 28rpx;
+			width: 6rpx;
+			height: 44rpx;
+		}
 	}
 
 	.active {

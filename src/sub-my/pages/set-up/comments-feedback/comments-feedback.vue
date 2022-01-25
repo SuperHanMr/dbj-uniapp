@@ -31,7 +31,7 @@
 				</view>
 			</view>
 		</view>
-		<view class="footer-container"  :style="{paddingBottom:systemBottom,height:systemHeight}">
+		<view class="footer-container"  :style="{paddingBottom:systemBottom}">
 			<view class="confirm-btn" v-if="!textAreaLength"  style="opacity:0.5">
 				提交
 			</view>
@@ -39,7 +39,7 @@
 				提交
 			</view>
 		</view>
-		
+
 	</view>
 </template>
 
@@ -53,7 +53,7 @@
 					imageUrls:[],
 				},
 				systemBottom:"",
-				
+
 				textAreaLength:0,
 			}
 		},
@@ -101,8 +101,8 @@
 					},1000)
 				}).catch(()=>{})
 			},
-			
-			
+
+
 		}
 	}
 </script>
@@ -143,12 +143,13 @@
 					  overflow-y: auto;
 					}
 				}
-				
+
 			}
 			.line{
 				height: 2rpx;
 				background: #f2f2f2;
 				border-radius: 2rpx;
+				margin: 0 32rpx;
 			}
 			.feedback-imageContainer{
 				.header{
@@ -163,10 +164,10 @@
 					padding: 0 16rpx 48rpx;
 				}
 			}
-				
+
 		}
 	}
-	
+
 	// 底部 确认收货 及申请退款按钮
 	.footer-container{
 	  position: fixed;
@@ -182,13 +183,13 @@
 	    height: 88rpx;
 	    line-height: 88rpx;
 	    box-sizing: border-box;
-	    background: linear-gradient(135deg, #36d9cd 0%, #28c6c6 100%);
+	    background: linear-gradient(116.19deg, #F83112 16.48%, #FD6421 83.52%);
 	    border-radius: 12rpx;
 	    font-size: 32rpx;
 	    text-align: center;
 	    font-weight: 400;
 	    color: #ffffff;
 	  }
-	  
+
 	}
 </style>

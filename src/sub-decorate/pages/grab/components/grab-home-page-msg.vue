@@ -27,11 +27,11 @@
         <view class="title">Ta的徽章</view>
       </view>
       <view class="msg-content list badge-list">
-        <view class="badge" v-for="(item, idx) of personData.personAllBadgeVO.basicBadges" :key="idx">
+       <view class="badge" v-for="(item, idx) of personData.personAllBadgeVO.basicBadges" :key="idx">
           <image :src="item.ico"></image>
           <text>{{item.name}}</text>
         </view>
-        <view class="badge"  v-for="(item, idx) of personData.personAllBadgeVO.skillBadges" :key="idx">
+        <view class="badge"  v-for="(item, idx) of personData.personAllBadgeVO.skillBadges" :key="idx+personData.personAllBadgeVO.basicBadges.length">
           <image :src="item.ico"></image>
           <text>{{item.name}}{{item.level?'·'+item.levelName:''}}</text>
         </view>
@@ -70,8 +70,12 @@
         let query = uni.createSelectorQuery().in(this)
         this.$nextTick(function(){
           query.select(".report-text").boundingClientRect((res) => {
-            this.isHidden = res.height/20 >= 3;
-            this.showBtn = res.height/20 >= 3;
+            
+            if(res){
+              this.isHidden = res.height/20 >= 3;
+              this.showBtn = res.height/20 >= 3;
+            }
+            
             // console.log(res.height,this.isHidden)
             
           }).exec()
@@ -90,6 +94,7 @@
 <style lang="scss" scoped>
   .grab-content-msg{
     padding-bottom: 40rpx;
+    width: 100%;
   }
 
   .msg-item{
@@ -100,7 +105,7 @@
       .line{
         width: 4rpx;
         height: 34rpx;
-        background: #00BFB6;
+        background: #222;
         border-radius: 0px 200rpx 200rpx 0px;
         margin-right: 28rpx;
       }

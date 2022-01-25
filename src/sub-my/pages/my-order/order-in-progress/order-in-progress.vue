@@ -9,13 +9,13 @@
 			</template>
 		</custom-navbar>
 
-		<view style="position: relative;" :style="{backgroundImage:`url(${bgImg})`,backgroundSize: '100% 100%'}">
+		<view style="position: relative;" >
 			<!-- 占位 -->
 			<view class="bgcStyle" :style="{backgroundImage:`url(${bgImg})`,backgroundSize: '100% 100%'}" />
 			<view :style="{height:navBarHeight}"></view>
 			<view class="order-status">
 				<view class="status">
-					<image src="../../../static/ic_status_inprogress.svg" mode="scaleToFill"></image>
+					<image src="https://ali-image.dabanjia.com/static/mp/dabanjia/images/theme-red/my/ic_status_inprogress.svg" mode="scaleToFill"></image>
 					<view>进行中</view>
 				</view>
 			</view>
@@ -28,22 +28,22 @@
 				<view v-for="item in orderInfo.details" :key="item.storeId" class="item">
 					<view class="header">
 						<view class="header-content">
-							<text style="color: #333333;"  @click="gotoShop(item)">{{item.storeName}}</text>
-							<image src="../../../static/ic_more.svg" mode=""/>
+							<view class="storeName" @click="gotoShop(item)">{{item.storeName}}</view>
+							<image src="https://ali-image.dabanjia.com/static/mp/dabanjia/images/theme-red/my/small_gotoShop.svg" mode=""/>
 						</view>
 						<view class="icon"></view>
 					</view>
 
 					<view v-for="item2 in item.details" :key="item2.id" class="orederItem">
 						<order-item :orderStatus="2" :paddingBottom="24" :dataList="item2"
-							:productNum="item.details.length" 
+							:productNum="item.details.length"
 							:refundApplyMode="orderInfo.refundApplyMode"
-							@handleDetail="goToDetail(item2)" 
+							@handleDetail="goToDetail(item2)"
 							@toApplayForRefund="toApplayForRefund(item2,1)"
-							@refundCancel="refundCancel(item2)" 
+							@refundCancel="refundCancel(item2)"
 							@refundSuccess="refundSuccess(item2)"
-							@refundFailed="refundFailed(item2,1)" 
-							@refundClose="refundClose(item2)" 
+							@refundFailed="refundFailed(item2,1)"
+							@refundClose="refundClose(item2)"
 						/>
 					</view>
 				</view>
@@ -52,7 +52,7 @@
 
 			</view>
 
-			<order-info :orderNo="orderInfo.orderNo" :createTime="orderInfo.createTime" :showPayTime="true"
+			<order-info v-if="orderInfo.orderNo" :orderNo="orderInfo.orderNo" :createTime="orderInfo.createTime" :showPayTime="true"
 				:showPayType="true" :payTime="orderInfo.payTime" :payChannel="orderInfo.payChannel" />
 
 			<view class="applyforRefund-confirmReceipt" :style="{paddingBottom:systemBottom,height:systemHeight}"
@@ -133,7 +133,7 @@
 				navBarHeight: "",
 				scrollTop: 0,
 				headerTitle: "",
-				bgImg: "https://ali-image.dabanjia.com/static/mp/dabanjia/images/decorate/order_bg_orange.png",
+				bgImg: "https://ali-image.dabanjia.com/static/mp/dabanjia/images/theme-red/decorate/order_bg.png",
 			};
 		},
 
@@ -149,6 +149,7 @@
 		onLoad(e) {
 			if (e && e.orderNo) {
 				this.orderNo = e.orderNo;
+				console.log("进行中订单id==",this.orderNo)
 			}
 			this.from = e.from || "";
 			const currentHouse = getApp().globalData.currentHouse;
@@ -338,7 +339,9 @@
 			box-sizing: border-box;
 			display: flex;
 			align-items: center;
-			text {
+			.storeName {
+				height: 40rpx;
+				color: #333333;
 				font-weight: 500;
 				max-width: 476rpx;
 				font-size: 28rpx;
@@ -347,8 +350,8 @@
 				white-space: nowrap;
 			}
 			image {
-				width: 34rpx;
-				height: 34rpx;
+				width: 40rpx;
+				height: 40rpx;
 				object-fit: cover;
 			}
 		}
@@ -371,7 +374,8 @@
 
 		.bgcStyle {
 			width: 100%;
-			height: 32rpx;
+			height: 116%;
+			// height: 32rpx;
 			position: absolute;
 			bottom: -32rpx;
 			z-index: -1;
@@ -379,7 +383,7 @@
 
 		.order-status {
 			width: 100%;
-			height: 140rpx;
+			// height: 140rpx;
 			color: #ffffff;
 			background-size: 100% 172rpx;
 			display: flex;
@@ -391,7 +395,7 @@
 				display: flex;
 				flex-flow: row nowrap;
 				align-items: center;
-				margin-bottom: 8rpx;
+				margin-bottom: 32rpx;
 
 				image {
 					width: 64rpx;
@@ -401,7 +405,7 @@
 				}
 
 				view {
-					font-size: 48rpx;
+					font-size: 40rpx;
 					font-weight: 500;
 					color: #ffffff;
 				}
@@ -496,14 +500,14 @@
 		flex-flow: row nowrap;
 		align-items: center;
 		justify-content: flex-end;
-		padding: 12rpx 32rpx;
+		padding: 16rpx 32rpx;
 
 		.confirmReceipt {
 			width: 248rpx;
 			height: 88rpx;
 			line-height: 88rpx;
 			box-sizing: border-box;
-			background: linear-gradient(99deg, #00ccbe 0%, #00c2bf 100%);
+			background: linear-gradient(117.02deg, #FA3B34 24.56%, #FF6A33 92.21%);
 			border-radius: 12rpx;
 			font-size: 32rpx;
 			text-align: center;
@@ -512,7 +516,7 @@
 		}
 
 		.applyforRefund {
-			margin: 18rpx 0;
+			margin: 14rpx 0 10rpx;
 			box-sizing: border-box;
 			width: 160rpx;
 			height: 56rpx;
@@ -527,9 +531,10 @@
 	}
 
 	// .applyforRefund-confirmReceipt {
+	// 	padding-top: 30rpx;
 	// }
 	.applyforRefund-confirmReceipt2 {
-		padding-top: 30rpx;
+		padding-top: 30rpx 32rpx 26rpx 32rpx;
 
 		.refundOrderStatus {
 			width: 160rpx;

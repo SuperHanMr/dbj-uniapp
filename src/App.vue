@@ -96,6 +96,7 @@
           console.log("--shareId--", uni.getStorageSync('shareId'))
         }
       }
+      // #ifdef MP-WEIXIN
       uni.request({
         url: "https://pv.sohu.com/cityjson", //仅为示例，并非真实接口地址。
         data: {},
@@ -115,10 +116,11 @@
           this.globalData.MarketStoreSwitch = true;
         }
       });
+      // #endif
       const userId = uni.getStorageSync("userId");
       const shareId = uni.getStorageSync("shareId");
+      // #ifdef MP-WEIXIN
       setLogId(userId + "-" + new Date().getTime());
-      console.log(shareId, "shareIdtest11111")
       log({
         type: "wx-launch",
         version: uni.getAccountInfoSync().miniProgram.version || "develop",
@@ -163,6 +165,7 @@
           });
         },
       });
+      // #endif
       if (shareId && !this.globalData.shareId) {
         this.globalData.shareId = shareId;
       }
@@ -293,6 +296,7 @@
   page {
     height: 100%;
     background-color: #f5f6f6;
+    font-size: 16px;
   }
 
   button::after {
@@ -315,6 +319,10 @@
 
   .price-font {
     font-family: PriceFont;
+  }
+
+  .navbar-height{
+    height: 88rpx;
   }
 
   /*每个页面公共css */

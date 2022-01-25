@@ -18,9 +18,8 @@
       <view class="process-cost-list">
         <process-cost-artificial
           :key="index"
-          v-for="(item,index) in dataOrigin.artificial.categoryList"
-          :content="item"
-        >
+          v-for="(item,index) in (dataOrigin.artificial && dataOrigin.artificial.categoryList)"
+          :content="item">
         </process-cost-artificial>
       </view>
       <no-data
@@ -43,11 +42,10 @@
         <process-cost-materials
           :areaId="dataOrigin.areaId"
           :key="index"
-          v-for="(item,index) in dataOrigin.material.categoryList"
+          v-for="(item,index) in (dataOrigin.material && dataOrigin.material.categoryList)"
           :content="item"
           @change="selectWp"
-          @changeMaterial="changeMaterial"
-        >
+          @changeMaterial="changeMaterial">
         </process-cost-materials>
       </view>
       <no-data
@@ -129,13 +127,13 @@
     >
       <text>备注</text>
       <view class="remarks-right">
-        <textarea
+        <input
           type="text"
           maxlength="200"
           v-model="remarks"
           cursor-spacing="15px"
           placeholder-class="text-placeholder"
-          style="width:100%;line-height: 46rpx;min-height: 90rpx;height: 85%;overflow: scroll;padding-top: 20rpx;"
+          style="width:100%;height: 100%;overflow: scroll;"
           placeholder="选填,说点什么～"
         />
       </view>
@@ -146,14 +144,12 @@
     <view
       v-if="!msg.payStatus || msg.payStatus != 2"
       class="payment-wrap"
-      :style="{paddingBottom:systemBottom,height:systemHeight}"
-    >
+      :style="{paddingBottom:systemBottom}">
       <payment
         @gotopay="gotopay"
         :pieces="pieces"
         :countPrice="payPrice"
-        :isAllChecked="isAllChecked"
-      >
+        :isAllChecked="isAllChecked">
       </payment>
     </view>
     <uni-popup ref="level">
@@ -302,6 +298,14 @@ export default {
     this.containerBottom = menuButtonInfo.bottom;
     this.systemBottom = menuButtonInfo.bottom * 2 + "rpx";
     this.systemHeight = menuButtonInfo.bottom * 2 + 24 + "rpx";
+    let _this = this;
+    uni.getSystemInfo({
+      success(data) {
+        let screenHeight = data.screenHeight;
+        let safeArea = data.safeArea || {};
+        _this.bottomHeight = screenHeight - (safeArea.bottom || screenHeight);
+      }
+    })
   },
   computed: {
     isAllChecked() {
@@ -846,7 +850,7 @@ export default {
 .remarks {
   padding: 5rpx 32rpx;
   background-color: #ffffff;
-  margin-top: 25rpx;
+  margin-top: 16rpx;
   font-size: 28rpx;
   font-family: PingFangSC, PingFangSC-Regular;
   display: flex;
@@ -854,6 +858,7 @@ export default {
   align-items: center;
   height: 104rpx;
   line-height: 104rpx;
+  border-radius: 32rpx;
 }
 
 .card-img {
@@ -900,7 +905,7 @@ export default {
 .remarks {
   padding: 5rpx 32rpx;
   background-color: #ffffff;
-  margin-top: 25rpx;
+  margin-top: 16rpx;
   font-size: 28rpx;
   font-family: PingFangSC, PingFangSC-Regular;
   display: flex;
@@ -928,6 +933,7 @@ export default {
 .process-cost {
   position: relative;
   height: 100%;
+  padding-bottom: 96px;
 }
 
 .title {
@@ -937,7 +943,7 @@ export default {
   align-items: center;
   box-sizing: border-box;
   height: 112rpx;
-  padding: 48rpx 32rpx 24rpx;
+  padding: 48rpx 32rpx 16rpx;
   background: #f5f6f6;
   font-size: 28rpx;
   font-family: PingFangSC, PingFangSC-Medium;
@@ -960,6 +966,7 @@ export default {
 .process-cost-list {
   padding: 0 32rpx;
   background-color: #fff;
+  border-radius: 32rpx;
 }
 
 .payment-wrap {

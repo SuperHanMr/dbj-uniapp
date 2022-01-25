@@ -6,7 +6,7 @@
       <view class="maxlength">{{reason.length}}/500</view>
     </view>
     <view class="tips">建议与服务者沟通后再拒绝通过</view>
-    <view class="bt-btn-wrap" :style="{paddingBottom:systemBottom,height:systemHeight}">
+    <view class="bt-btn-wrap" :style="{paddingBottom:systemBottom}">
       <button class="btn" @click="confirm">提交</button>
     </view>
   </view>
@@ -38,7 +38,10 @@
     mounted() {
       const menuButtonInfo = uni.getMenuButtonBoundingClientRect();
       this.containerBottom = menuButtonInfo.bottom;
-      this.systemBottom = menuButtonInfo.bottom * 2 + "rpx";
+			this.systemBottom = menuButtonInfo.bottom * 2 + "rpx";
+			// #ifdef H5
+			this.systemBottom = menuButtonInfo.bottom * 4 + "rpx";
+			// #endif
       this.systemHeight = menuButtonInfo.bottom * 2 + 24 + "rpx";
     },
     methods: {
@@ -125,7 +128,7 @@
   .btn {
     height: 88rpx;
     line-height: 88rpx;
-    background: linear-gradient(135deg, #00c2b2, #00c2bf);
+    background: linear-gradient(117.02deg, #FA3B34 24.56%, #FF6A33 92.21%);
     border-radius: 12rpx;
     font-size: 32rpx;
     font-family: PingFangSC, PingFangSC-Medium;

@@ -1,6 +1,6 @@
 <template>
   <view class="wrap">
-    <view class="message">
+    <view class="message" :style="{top: messageTop + 'rpx'}">
       管家发起竣工验收申请，系统将在{{countdown}}后自动确认验收
     </view>
     <view class="content" :style="{paddingBottom:containerBottom * 2 + 48 + 88 + 'rpx'}">
@@ -54,6 +54,10 @@
       const menuButtonInfo = uni.getMenuButtonBoundingClientRect();
       this.containerBottom = menuButtonInfo.bottom;
       this.systemBottom = menuButtonInfo.bottom * 2 + "rpx";
+      // #ifdef H5
+      this.systemBottom = menuButtonInfo.bottom * 4 + "rpx";
+      this.messageTop = 76
+      // #endif
       this.systemHeight = menuButtonInfo.bottom * 2 + 24 + "rpx";
     },
     methods: {
@@ -300,7 +304,7 @@
       font-weight: 700;
       text-align: center;
       color: #ffffff;
-      background: linear-gradient(135deg, #00bfaf, #00bfbc);
+      background: linear-gradient(117.02deg, #FA3B34 24.56%, #FF6A33 92.21%);
       border-radius: 16rpx;
     }
   }

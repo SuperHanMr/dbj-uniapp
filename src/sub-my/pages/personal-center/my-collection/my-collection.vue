@@ -2,13 +2,17 @@
 	<view class="fill">
 		<view class="tab-container">
 			<view class="top-tab">
-				<view v-for="(itemTab,index) in tabList" :key="index" class="item" :class="{selected:index==currentIndex}"
-					@click="currentIndex=index">
+				<view v-for="(itemTab,index) in tabList" :key="index" class="item"
+					:class="{selected:index==currentIndex}"
+					@click="currentIndex=index"
+				>
 					<view class="tab-text">
 						{{itemTab.title}}
 					</view>
 
-					<view class="bottom-icon" />
+				<view class="bottom-icon"
+				 :style="{backgroundImage:`url(${bgcIcon})`,backgroundSize: '100% 100%'}"
+				/>
 				</view>
 			</view>
 			<view class="edit-btn" v-if="currentList.length >= 1">
@@ -17,7 +21,7 @@
 			</view>
 		</view>
 
-		<view class="line" />
+		<!-- <view class="line" /> -->
 
 		<swiper class="swiper" :current="currentIndex" :duration="200"	@change="swiperChange"	:style="{backgroundColor:listLength > 0 ?'none':'#ffffff'}">
 			<!-- 商品 -->
@@ -33,8 +37,9 @@
 					@scrolltolower="onLoadMore"
 				>
 					<view :style="{paddingBottom:systemBottom +'rpx'}">
+							<!-- :key="itemTab.fallKey" -->
 						<waterfall
-							:key="itemTab.fallKey"
+							:key="'product'"
 							:list="productList"
 							@selectedItem="onSelectedItem"
 							:allCheck="allCheck"
@@ -44,8 +49,8 @@
 					</view>
 				</scroll-view>
 				<view v-else class="empty-body">
-					<image src="../../../../static/order/blank_house@2x.png" mode=""></image>
-					<text>您还没有收藏商品</text>
+					<image src="../../../static/img_attention_empty.svg" mode=""></image>
+					<text>暂无相关内容～</text>
 				</view>
 			</swiper-item>
 			<!-- 案例 -->
@@ -61,8 +66,9 @@
 					@scrolltolower="onLoadMore"
 				>
 					<view :style="{paddingBottom:systemBottom +'rpx'}">
+							<!-- :key="itemTab.fallKey" -->
 						<waterfall
-							:key="itemTab.fallKey"
+						  :key="'case'"
 							:list="caseList"
 							@selectedItem="onSelectedItem"
 							:allCheck="allCheck"
@@ -72,8 +78,8 @@
 					</view>
 				</scroll-view>
 				<view v-else class="empty-body">
-					<image src="../../../../static/order/blank_house@2x.png" mode=""></image>
-					<text>您还没有收藏案例</text>
+					<image src="../../../static/img_attention_empty.svg" mode=""></image>
+					<text>暂无相关内容～</text>
 				</view>
 			</swiper-item>
 		</swiper>
@@ -81,8 +87,8 @@
 		<!-- 底部按钮 -->
 		<view class="footer" v-if=" currentList.length >= 1 && showCalCelBtn" :style="{paddingBottom:systemBottom + 24 + 'rpx'}">
 			<view class="left" @click="handleAllCheck">
-				<image v-if="allCheck"  src="../../../static/all_Check.svg"  mode="" />
-				<image v-else src="../../../static/all_Uncheck.svg" mode="" />
+				<image v-if="allCheck"  src="https://ali-image.dabanjia.com/static/mp/dabanjia/images/theme-red/my/all_Check.svg"  mode="" />
+				<image v-else src="https://ali-image.dabanjia.com/static/mp/dabanjia/images/theme-red/my/all_Uncheck.svg" mode="" />
 				<text>全选</text>
 			</view>
 			<view class="button" @click="handleCancel">
@@ -145,6 +151,7 @@
 				height:"",
 				systemBottom: "",
 				firstEntry: false,
+				bgcIcon:"https://ali-image.dabanjia.com/static/mp/dabanjia/images/theme-red/my/selectIcon.svg",
 			};
 		},
 
@@ -167,6 +174,7 @@
 				this.caseList =[]
 				this.page[1]=1
 				this.getCaseList()
+				console.log("onLoad")
 			}
 		},
 		onShow() {
@@ -179,6 +187,7 @@
 				this.caseList =[]
 				this.page[1]=1
 				this.getCaseList()
+				console.log("onShow")
 			}
 		},
 
@@ -212,6 +221,7 @@
 						break
 					case 1:
 						if (this.caseList.length < 1) this.getCaseList();
+						console.log("swiperChange")
 						break
 				}
 			},
@@ -246,7 +256,6 @@
 					this.firstEntry = false;
 				})
 			},
-			
 			//管理
 			handleMgr() {
 				this.showMgrBtn = !this.showMgrBtn
@@ -403,31 +412,36 @@
 				//   return;
 				// }
 				// this.page++;
+				if (this.loading) return;
 				if(this.currentIndex==0){
-					if(this.loading || this.productListLength !== 10) return  
-					// if(this.loading || this.page[0] >=this.totalPage[0]) return
+					// if(this.loading || this.productListLength !== 10) return
+					if(this.loading || this.page[0] >=this.totalPage[0]) return
 					this.page[0]++
 					this.getProductList()
 				}else{
 					if(this.loading || this.page[1] >=this.totalPage[1])return
 					this.page[1]++
 					this.getCaseList()
+					console.log("onLoadMore")
 				}
 			},
 			onRefresh(e) {
+				if (this.loading) return;
 				this.triggered = true;
-				setTimeout(() => {
-					if(this.currentIndex == 0){
-						this.page[0]=1
-						this.productList=[]
-						this.getProductList()
-					}else{
-						this.page[1]=1
-						this.caseList =[]
-						this.getCaseList()
-					}
-					this.triggered = false;
-				}, 1000);
+				if(this.currentIndex == 0){
+					this.page[0]=1
+					this.productList=[]
+					this.getProductList()
+				}else{
+					this.page[1]=1
+					this.caseList =[]
+					this.getCaseList()
+					console.log("onRefresh")
+				}
+				this.triggered = false;
+
+				// setTimeout(() => {
+				// }, 1000);
 			},
 		},
 	};
@@ -439,7 +453,7 @@
 		height: 100%;
 		display: flex;
 		flex-direction: column;
-		background-color: #f4f4f4;
+		background-color: #ffffff;
 	}
 
 	.tab-container {
@@ -475,7 +489,8 @@
 			}
 
 			.selected {
-				color: #333333;
+				color: #111111;
+				font-weight: 500;
 
 				.bottom-icon {
 					position: absolute;
@@ -492,7 +507,7 @@
 
 		.edit-btn {
 			font-size: 28rpx;
-			color: #00bfb6;
+			color: #333333;
 		}
 	}
 
@@ -517,24 +532,24 @@
 	.emptyContainer {
 
 		.empty-body {
-			padding: 180rpx 240rpx 0 240rpx;
+			padding: 350rpx 175rpx 0 175rpx;
 			display: flex;
 			flex-flow: column nowrap;
 			align-items: center;
 			justify-content: space-around;
 
 			image {
-				width: 248rpx;
-				height: 248rpx;
+				width: 400rpx;
+				height: 400rpx;
 				object-fit: cover;
-				margin-bottom: 22rpx;
+				// margin-bottom: 22rpx;
 			}
 
 			text {
 				font-size: 26rpx;
 				font-weight: 400;
 				text-align: center;
-				color: #999999;
+				color: #CBCCCC;
 			}
 		}
 	}
@@ -565,10 +580,10 @@
 				margin-right: 10rpx;
 			}
 			image {
-				width: 40rpx;
-				height: 40rpx;
+				width: 48rpx;
+				height: 48rpx;
 				object-fit: cover;
-				margin-right: 10rpx;
+				margin-right: 8rpx;
 			}
 
 			text {
@@ -581,10 +596,10 @@
 		}
 
 		.button {
-			width: 400rpx;
+			width: 326rpx;
 			height: 88rpx;
 			line-height: 88rpx;
-			background: linear-gradient(135deg, #36d9cd, #28c6c6);
+			background: linear-gradient(117.02deg, #FA3B34 24.56%, #FF6A33 92.21%);
 			border-radius: 12rpx;
 			text-align: center;
 			font-size: 32rpx;

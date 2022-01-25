@@ -14,8 +14,8 @@
         <i v-if="serviceData.nodeType == 10" class="icon-zx icon-ic_zhuangxiuxianchang_youqi_csn1"></i>
         <view>{{serviceData.serviceName}}</view>
       </view>
-      <view class="status-name mr inservice flex-row-start">
-        <view>{{ serviceData.statusName }}</view>
+      <view class="status-name mr flex-row-start" :class="{inservice:serviceData.grepOrderStatus > 2,shouldsure:serviceData.grepOrderStatus < 3}">
+        <view :class="{inservice:serviceData.grepOrderStatus > 2,shouldsure:serviceData.grepOrderStatus < 3}">{{ serviceData.statusName }}</view>
         <!-- <image :class="{open: open}"
           v-if="serviceData.status >= 2 || (serviceData.status == 0 && serviceData.grepOrderStatus === 3)"
           src="https://ali-image.dabanjia.com/static/mp/dabanjia/images/decorate/ic_triangle_up.svg"></image> -->
@@ -29,21 +29,21 @@
         <view class="s0">{{serviceData.serveRoleName}}</view>
         <view class="s1 flex-row-start" @click="personPage(serviceData)">
           <view>{{serviceData.serveName}}</view>
-          <image src="https://ali-image.dabanjia.com/static/mp/dabanjia/images/decorate/ic_more.svg"></image>
+          <i class='icon-alert_notice_jump'></i>
         </view>
       </view>
       <view class="procsss flex-row-bet" v-if="[5, 6, 7, 8, 9, 10].includes(serviceData.nodeType)">
         <view class="s0">工序支付</view>
         <view class="s1 flex-row-start" @click="goProcessCost">
           <view>{{serviceData.payStatus | filterPayStatus}}</view>
-          <image src="https://ali-image.dabanjia.com/static/mp/dabanjia/images/decorate/ic_more.svg"></image>
+          <i class='icon-alert_notice_jump'></i>
         </view>
       </view>
       <view class="procsss flex-row-bet">
         <view class="s0">进度</view>
         <view class="s1 flex-row-start" @click="goTimeLine">
           <view>{{serviceData.processNumerator}}/{{serviceData.processDenominator}}</view>
-          <image src="https://ali-image.dabanjia.com/static/mp/dabanjia/images/decorate/ic_more.svg"></image>
+          <i class='icon-alert_notice_jump'></i>
         </view>
       </view>
     </view>
@@ -51,7 +51,6 @@
 </template>
 
 <script>
-  import "./item.scss"
   export default {
     name: "ServiceItem",
     props: {
@@ -114,3 +113,159 @@
     }
   }
 </script>
+
+<style lang="scss">
+.icon-alert_notice_jump{
+  color: #b9b9b9 !important;
+}
+.item {
+  box-sizing: border-box;
+  width: 100%;
+  min-height: 104rpx;
+  background: #fbfbfb;
+  border-radius: 16rpx;
+  margin-bottom: 24rpx;
+}
+.flex-row-bet {
+  display: flex;
+  justify-content: space-between;
+  flex-direction: row;
+  align-items: center;
+}
+.flex-row-start {
+  display: flex;
+  justify-content: flex-start;
+  flex-direction: row;
+  align-items: center;
+}
+.item-name {
+  padding: 34rpx 40rpx 34rpx 24rpx;
+  image {
+    width: 32rpx;
+    height: 32rpx;
+    margin-right: 16rpx;
+  }
+  .icon-zx {
+    font-size: 32rpx;
+    margin-right: 16rpx;
+  }
+  .icon-ic_wodejia_shejifuwu_csn1 {
+    color: #4FBEED;
+  }
+  .icon-ic_wodejia_yanfangfuwu_csn1 {
+    color: #5481F3;
+  }
+  .icon-ic_wodejia_liangfangfuwu_csn1 {
+    color: #43d9e1;
+  }
+  .icon-ic_wodejia_jingsuanfuwu_csn1 {
+    color: #3FCECE;
+  }
+  .icon-ic_wodejia_guanjia_csn {
+    color: #FF775B;
+  }
+  .icon-ic_zhuangxiuxianchang_chaichu_csn1 {
+    color: #A38AE4;
+  }
+  .icon-ic_zhuangxiuxianchang_shuidian_csn1 {
+    color: #5B98F3;
+  }
+  .icon-ic_zhuangxiuxianchang_nigong_csn1 {
+    color: #D7C467;
+  }
+  .icon-ic_zhuangxiuxianchang_mugong_csn1 {
+    color: #DAB163;
+  }
+  .icon-ic_zhuangxiuxianchang_youqi_csn1 {
+    color: #27D19A;
+  }
+  view {
+    height: 36rpx;
+    font-size: 26rpx;
+    font-family: PingFangSC, PingFangSC-Regular;
+    font-weight: 700;
+    text-align: left;
+    color: #333333;
+    line-height: 36rpx;
+  }
+}
+.status-name {
+  padding-right: 48rpx;
+  view {
+    // width: 156rpx;
+    height: 36rpx;
+    font-size: 26rpx;
+    font-family: PingFangSC, PingFangSC-Regular;
+    font-weight: 400;
+    text-align: right;
+    line-height: 36rpx;
+  }
+  .icon-no{
+    width: 26rpx;
+    height: 36rpx;
+    margin-left: 8rpx;
+  }
+  .icon-zhuangxiushouye_fuwuzhankaijiantou {
+    transition: all 0.2s;
+    margin-left: 8rpx;
+    // width: 24rpx;
+    // height: 24rpx;
+    font-size: 26rpx;
+    color: #ccc;
+    transform: rotate(180deg);
+  }
+  .icon-zhuangxiushouye_fuwuzhankaijiantou.open {
+    transition: all 0.2s;
+    transform: none;
+  }
+}
+.mr.status-name  {
+  padding-right: 16rpx;
+}
+.robbing {
+  color: red;
+}
+.shouldsure {
+  color: #FA4D32;
+}
+.inservice {
+  color: #333;
+}
+.uncheck{
+  color: red;
+}
+.completed{
+  color: #999999;
+}
+.gc {
+  .procsss {
+    padding: 20rpx 20rpx 9rpx 72rpx;
+    .s0 {
+      height: 34rpx;
+      font-size: 24rpx;
+      font-family: PingFangSC, PingFangSC-Regular;
+      font-weight: 400;
+      text-align: left;
+      color: #999999;
+      line-height: 34rpx;
+    }
+    .s1 {
+      view {
+        height: 34rpx;
+        opacity: 1;
+        font-size: 24rpx;
+        font-family: PingFangSC, PingFangSC-Regular;
+        font-weight: 400;
+        text-align: right;
+        color: #333333;
+        line-height: 34rpx;
+        margin-right: 8rpx;
+      }
+      image {
+        width: 24rpx;
+        height: 24rpx;
+      }
+    }
+  }
+}
+</style>

@@ -102,7 +102,7 @@
           v-model="remarks"
           cursor-spacing="15px"
           placeholder-class="text-placeholder"
-          style="width:100%;line-height: 46rpx;min-height: 90rpx;height: 85%;overflow: scroll;padding-top: 20rpx;"
+          style="width:100%;line-height: 46rpx;min-height: 90rpx;height: 85%;overflow: scroll;padding-top: 30rpx;"
           placeholder="选填,说点什么～"
         />
       </view>
@@ -585,7 +585,7 @@ export default {
 
   .b-t-p {
     flex: 1;
-    background: linear-gradient(135deg, #00ccbe, #00c2bf);
+    background: linear-gradient(116.19deg, #f83112 16.48%, #fd6421 83.52%);
     margin-left: 32rpx;
     color: #fff;
 

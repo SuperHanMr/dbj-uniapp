@@ -15,8 +15,8 @@
       </view>
       <!-- 运费  有仓库默认显示  无仓库必显示-->
       <view v-if="data.showFreight" class="price-item">
-        <view class="title">
-          <text style="margin-right: 8rpx;">运费</text>
+        <view class="title" >
+          <text  style="margin-right: 8rpx;">运费</text>
           <image class="icon" src="../../static/price_icon.svg" mode="" @click="readExpenses(1)"/>
         </view>
         <view v-if="waitPay">
@@ -95,10 +95,14 @@
           <text class="price-style price-font">{{handlePrice(data.cardAmount)[0]}}.{{handlePrice(data.cardAmount)[1]}}</text>
         </view>
       </view>
-
     </view>
 
     <!-- 待付款 -->
+		<!-- 此处还差判断条件 -->
+		<view v-if="waitPay && data.type==1 && data.stockType == 1" class="complainStyle">
+			辅材类商品下单时不收取运费搬运费，具体费用将在仓库要货时产生并另行结算
+		</view>
+		
     <view v-if="waitPay" class="footer1">
       <view v-if="data.totalActualIncomeAmount" class="has-pay">
         <text style="margin-right: 12rpx;">已付款</text>
@@ -110,7 +114,7 @@
       </view>
       <view v-if="data.totalActualIncomeAmount">
         <text style="margin-right: 12rpx;color:#333333;">剩余支付金额</text>
-        <text style="color: #FF3347;" class="price-font" >
+        <text style="color: #F83112;" class="price-font" >
           <text>￥</text>
           <text style="font-size: 40rpx;">{{handlePrice(data.payAmount)[0]}}.</text>
           <text>{{handlePrice(data.payAmount)[1]}}</text>
@@ -119,12 +123,12 @@
 
       <view v-if="!data.totalActualIncomeAmount">
         <text style="margin-right: 12rpx;color:#333333;">需付款</text>
-        <text v-if="payPrice" class="price-font" style="color: #FF3347;" >
+        <text v-if="payPrice" class="price-font" style="color: #F83112;" >
           <text>￥</text>
           <text style="font-size: 40rpx;">{{handlePrice(payPrice)[0]}}.</text>
           <text>{{handlePrice(payPrice)[1]}}</text>
         </text>
-        <text v-else style="color: #FF3347;" class="price-font">
+        <text v-else style="color: #F83112;" class="price-font">
           <text>￥</text>
           <text style="font-size: 40rpx;">{{handlePrice(data.payAmount)[0]}}.</text>
           <text>{{handlePrice(data.payAmount)[1]}}</text>
@@ -136,7 +140,7 @@
     <view v-else class="footer">
       <view v-if="orderFailed">
         <text style="margin-right: 12rpx;">实付款</text>
-        <text style="color: #FF3347;" class="price-font" >
+        <text style="color: #F83112;" class="price-font" >
           <text>￥</text>
           <text style="font-size: 40rpx;" class="price-font">{{handlePrice(data.payAmount)[0]}}.</text>
           <text class="price-font">{{handlePrice(data.payAmount)[1]}}</text>
@@ -144,7 +148,7 @@
       </view>
       <view v-else>
         <text style="margin-right: 12rpx;">实付</text>
-        <text style="color: #FF3347;" class="price-font">
+        <text style="color: #F83112;" class="price-font">
           <text>￥</text>
           <text style="font-size: 40rpx;" class="price-font">{{handlePrice(data.actuallyPayAmount)[0]}}.</text>
           <text class="price-font">{{handlePrice(data.actuallyPayAmount)[1]}}</text>
@@ -220,14 +224,20 @@ export default {
       flex-flow: row nowrap;
       align-items: center;
       justify-content: space-between;
-      color: #808080;
       font-size: 24rpx;
       font-weight: 400;
       margin-bottom: 20rpx;
+			view{
+				color: #666666;
+				text{
+					color: #666666;	
+				}
+			}
       .title {
         display: flex;
         flex-flow: row nowrap;
         align-items: center;
+			
         .icon {
           width: 24rpx;
           height: 24rpx;
@@ -239,6 +249,20 @@ export default {
       margin-bottom: 0;
     }
   }
+	.complainStyle{
+		margin: 32rpx 32rpx 0;
+		padding: 18rpx 24rpx;
+		width: 686rpx;
+		height: 96rpx;
+		background: #FCFCFC;
+		box-sizing: border-box;
+		border: 1rpx solid #F3F3F3;
+		box-sizing: border-box;
+		border-radius: 12rpx;
+		font-size: 22rpx;
+		line-height: 30rpx;
+		color: #999999;
+	}
 
   .footer {
     padding: 32rpx;
@@ -262,4 +286,5 @@ export default {
 .price-style {
   font-size: 28rpx;
 }
+
 </style>

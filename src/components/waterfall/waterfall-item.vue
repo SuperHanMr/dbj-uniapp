@@ -6,33 +6,42 @@
 
 		<!-- 左上角的icon -->
 		<image v-if="showCheckIcon && !isChecked" class="product-check"
-			src="../../static/order/images/product_unChecked.svg" mode="" />
+			src="https://ali-image.dabanjia.com/static/mp/dabanjia/images/theme-red/my/product_unChecked.svg" mode="" />
 
 		<image v-if="showCheckIcon && isChecked" class="product-check"
-			src="../../static/order/images/product_checked.svg" mode="" />
+			src="https://ali-image.dabanjia.com/static/mp/dabanjia/images/theme-red/my/product_checked.svg" mode="" />
 
 
 		<!-- 案例右上角的icon图标 -->
 		<view v-if="item.icon == 'case'">
-			<image  v-if="item.parentType == 0" class="case-type"  src="../../static/order/images/icon_video.svg"  mode="" />
-			<image  v-if="item.parentType == 1" class="case-type" src="../../static/order/images/icon_vr.svg" mode="" />
-			<image v-if="item.parentType == 2" class="case-type"  src="../../static/order/images/icon_img.svg" mode="" />
+			<image
+				v-if="item.parentType == 0"
+				class="case-type"
+				src="https://ali-image.dabanjia.com/static/mp/dabanjia/images/theme-red/my/icon_video.svg"  mode="" />
+			<image
+				v-if="item.parentType == 1"
+				class="case-type"
+				src="https://ali-image.dabanjia.com/static/mp/dabanjia/images/theme-red/my/icon_vr.svg" mode="" />
+			<image
+				v-if="item.parentType == 2"
+				class="case-type"
+				src="https://ali-image.dabanjia.com/static/mp/dabanjia/images/theme-red/my/icon_img.svg" mode="" />
 		</view>
 
-		<image 
-			v-if="item.icon =='product'" 
-			class="product-img" 
-			:src="`${item.imageUrl}?x-oss-process=image/resize,m_mfit,w_688`" 
-			mode="widthFix" 
-			lazy-load 
+		<image
+			v-if="item.icon =='product'"
+			class="product-img"
+			:src="`${item.imageUrl}?x-oss-process=image/resize,m_mfit,w_688`"
+			mode="widthFix"
+			lazy-load
 			@load="onImageLoad"/>
-		
-		<image 
-			v-if="item.icon =='case'" 
-			class="product-img" 
-			:src="`${item.imageUrl}?x-oss-process=image/resize,m_mfit,w_688`" 
-			mode="widthFix" 
-			lazy-load 
+
+		<image
+			v-if="item.icon =='case'"
+			class="product-img"
+			:src="`${item.imageUrl}?x-oss-process=image/resize,m_mfit,w_688`"
+			mode="widthFix"
+			lazy-load
 			@load="onImageLoad"/>
 
 		<!-- 商品的样式 -->
@@ -158,7 +167,7 @@
 
 <style lang="scss" scoped>
 	.waterfall-item {
-		width: 344rpx;
+		width: 328rpx;
 		margin-top: 32rpx;
 		box-sizing: border-box;
 		background-color: #ffffff;
@@ -170,10 +179,10 @@
 
 		.withdraw-container {
 			position: absolute;
-			width: 344rpx;
+			width: 328rpx;
 			height: 100%;
 			border-radius: 16rpx;
-			background-color: rgba(0, 0, 0, 0.7);
+			background-color: rgba(0, 0, 0, 0.35);
 			z-index: 1;
 		}
 
@@ -181,7 +190,7 @@
 			position: absolute;
 			left: 0;
 			bottom: 44%;
-			width: 344rpx;
+			width: 328rpx;
 			height: 44rpx;
 			line-height: 44rpx;
 			text-align: center;
@@ -196,7 +205,7 @@
 			width: 60rpx;
 			height: 60rpx;
 			object-fit: cover;
-			left: 14rpx;
+			left: 16rpx;
 			top: 16rpx;
 			z-index: 99;
 		}
@@ -211,18 +220,20 @@
 		}
 
 		.product-img {
-			width: 344rpx;
+			width: 328rpx;
 			display: block;
+			border-radius: 16rpx;
 		}
 
 		.info-container {
-			padding: 20rpx 16rpx 26rpx 16rpx;
+			// padding: 20rpx 16rpx 26rpx 16rpx;
+			padding: 20rpx 0 26rpx 0;
 			position: relative;
 			color: #333333;
 
 			.withdraw-text {
 				position: absolute;
-				width: 360rpx;
+				width: 328rpx;
 				height: 50rpx;
 				line-height: 50rpx;
 				text-align: center;
@@ -253,11 +264,11 @@
 					height: 30rpx;
 					margin-right: 8rpx;
 					margin-bottom: 4rpx;
-					line-height: 28rpx;
+					line-height: 30rpx;
 					border-radius: 4rpx;
-					border: 0.5px solid #35c4c4;
-					color: #35c4c4;
+					color: #222222;
 					font-weight: 500;
+					background: linear-gradient(90.48deg, #B4EEE1 0.28%, #EAFCD7 99.48%);
 					font-size: 20rpx;
 					text-align: center;
 					display: inline-block;
@@ -275,7 +286,8 @@
 			}
 
 			.iconDown {
-				border: 2rpx solid #cccccc !important;
+				background: linear-gradient(90.48deg, #B4EEE1 0.28%, #EAFCD7 99.48%);
+				// border: 2rpx solid #cccccc !important;
 				color: #999999 !important;
 			}
 

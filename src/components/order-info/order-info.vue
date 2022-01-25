@@ -52,10 +52,10 @@
 				required:true,
 			},
 			cancelTime:{
-				type:String,
+				type:Number,
 			},
 			payTime:{
-				type:String,
+				type:Number,
 			},
 			payChannel:{
 				type:String,

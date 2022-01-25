@@ -2,9 +2,9 @@
   <view class="wrap">
     <view class="avtor-wrap flex-row-bet">
       <view class="flex-row-start">
-        <image class="avtor" :src="detail.designServerVO.avatar"></image>
+        <image class="avtor" :src="(detail.designServerVO && detail.designServerVO.avatar)"></image>
         <view class="tigs">
-          <view class="username">{{detail.designServerVO.userName}}</view>
+          <view class="username">{{(detail.designServerVO && detail.designServerVO.userName)}}</view>
           <view class="role">设计师</view>
         </view>
       </view>
@@ -216,7 +216,7 @@
     width: calc(100% - 64rpx);
     height: 88rpx;
     line-height: 88rpx;
-    background: linear-gradient(135deg, #00c2b2, #00c2bf);
+    background: linear-gradient(115.75deg, #FA3B34 -3.13%, #FF6A33 92.1%);
     border-radius: 12rpx;
     font-size: 32rpx;
     font-family: PingFangSC, PingFangSC-Medium;

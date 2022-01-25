@@ -23,7 +23,7 @@
           <view>请查看新消息</view>
         </view>
     <view class="white-circle" :class="{'left-style':endLeft}" >
-      <image src="https://ali-image.dabanjia.com/static/mp/dabanjia/images/decorate/decorate_msg.png" class="image-icon"></image>
+      <image src="https://ali-image.dabanjia.com/static/mp/dabanjia/images/theme-red/decorate/decorate_msg.png" class="image-icon"></image>
       <text class="tip">{{num}}</text>
     </view>
     <view class="white-bg" v-if="endRight" @click.stop="click" :class="{'active-right':move}">
@@ -125,7 +125,7 @@
     },
     methods: {
       click() {
-        uni.$emit('system-messages')
+        // uni.$emit('system-messages')
         this.$emit('btnClick');
       },
       touchstart(e) {
@@ -313,12 +313,12 @@
     padding: 0 20rpx 0 42rpx;
     position: relative;
     font-size: 22rpx;
-    color: #00979e;
+    color: #333;
     view{
       position: absolute;
       top: 50%;
       margin-top: -30rpx;
-      width: 68rpx;
+      width: 72rpx;
       height: 56rpx;
     }
     // .gray-bg{

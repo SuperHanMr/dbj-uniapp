@@ -14,22 +14,22 @@
 
     <!-- 退款详情 --退款关闭   退款取消与商家拒接 两个页面-->
     <view class="order-container" v-if="type =='refund'" :style="{paddingBottom:containerPaddingBottom}" >
-      <view style="position: relative;" :style="{backgroundImage:`url(${bgImg})`,backgroundSize: '100% 100%'}">
+      <view style="position: relative;">
         <view class="bgcStyle" :style="{backgroundImage:`url(${bgImg})`,backgroundSize: '100% 100%'}"/>
         <view :style="{height:navBarHeight}"></view>
         <view class="order-status">
           <view class="status">
-            <image src="../../../static/ic_order_failed.svg" mode=""/>
-            <text v-if="status == 3 || status == 4">退款关闭</text>
-            <text v-if="status == 5">退款失败</text>
+            <image src="https://ali-image.dabanjia.com/static/mp/dabanjia/images/theme-red/my/ic_order_failed.svg" mode=""/>
+            <view class="text" v-if="status == 3 || status == 4">退款关闭</view>
+            <view class="text" v-if="status == 5">退款失败</view>
           </view>
           <text class="time">{{refundInfo.refundTime | formatDate}}</text>
         </view>
       </view>
 
       <view class="order-header">
-        <image v-if="status == 5 " src="../../../static/ic_order_refund_failed.svg" mode="" />
-        <image v-else src="../../../static/ic_failed.svg"  mode=""/>
+        <image v-if="status == 5 " src="https://ali-image.dabanjia.com/static/mp/dabanjia/images/theme-red/my/ic_order_refund_failed.svg" mode="" />
+        <image v-else src="https://ali-image.dabanjia.com/static/mp/dabanjia/images/theme-red/my/ic_failed.svg"  mode=""/>
 
         <view v-if="status == 3" class="cancel-text">
 					商家拒绝了您的申请，如有问题未解决，您可以重新申请
@@ -41,7 +41,7 @@
 				<view v-if="status == 4 && refundInfo.type == 6" class="cancel-text failed-text" >
 					您已经取消了本次退款，如有问题可联系客服
 				</view>
-				
+
         <view v-if="status == 5" class="cancel-text failed-text" >
 					您的退款账户存在异常，您可联系客服或者重新发起申请
 				</view>
@@ -56,11 +56,11 @@
           :refundType="true"
           @handleDetail="productDetail(item,'refund')"
         />
-        <store-calue-card-item 
-					v-else 
+        <store-calue-card-item
+					v-else
 					v-for="item in refundInfo.detailAppVOS"
 					:key="item.id"
-					:dataInfo="item" 
+					:dataInfo="item"
 				/>
 
         <view class="refund-money" v-if="refundInfo.freight || refundInfo.handlingFees">
@@ -95,7 +95,7 @@
 
       <order-refund-info :refundInfo="refundInfo"></order-refund-info>
 
-      <view v-if="showContactCustomer || showReApply" class="contact-customer-Reapply" :style="{paddingBottom:systemBottom,height:systemHeight}" >
+      <view v-if="showContactCustomer || showReApply" class="contact-customer-Reapply" :style="{paddingBottom:systemBottom,}" >
         <view v-if="showContactCustomer" class="contact-customer" @click="contactCustomer()">
           联系客服
         </view>
@@ -108,13 +108,13 @@
 
     <!-- 订单详情  已关闭页面 -->
     <view class="order-container" v-if="type =='close'" :style="{paddingBottom:systemBottom}">
-      <view style="position: relative;" :style="{backgroundImage:`url(${bgImg})`,backgroundSize: '100% 100%'}">
+      <view style="position: relative;">
         <view class="bgcStyle" :style="{backgroundImage:`url(${bgImg})`,backgroundSize: '100% 100%'}" />
         <view :style="{height:navBarHeight}"></view>
         <view class="order-status">
-          <view class="status">
-            <image src="../../../static/ic_order_failed.svg" mode="" />
-            <text>已关闭</text>
+          <view class="status1">
+            <image src="https://ali-image.dabanjia.com/static/mp/dabanjia/images/theme-red/my/ic_order_failed.svg" mode="" />
+            <view class="text">已关闭</view>
           </view>
         </view>
       </view>
@@ -122,10 +122,10 @@
       <view class="body2" v-for="(item2,index2) in orderInfo.details" :key="index2">
 
         <view class="header">
-          <view class="header-content"> 
-            <text v-if="orderInfo.type !==5 "  style="color: #333333;" @click="gotoShop(item2)" >{{item2.storeName}}</text>
-            <text v-else style="color: #333333;"  >{{orderInfo.orderName}}</text>
-						<image v-if="orderInfo.type !==5 " src="../../../static/ic_more.svg" mode=""/>
+          <view class="header-content">
+            <view v-if="orderInfo.type !==5" class="storeName" @click="gotoShop(item2)" >{{item2.storeName}}</view>
+            <view v-else class="storeName" >{{orderInfo.orderName}}</view>
+						<image v-if="orderInfo.type !==5 " src="https://ali-image.dabanjia.com/static/mp/dabanjia/images/theme-red/my/small_gotoShop.svg" mode=""/>
           </view>
           <view class="icon"></view>
         </view>
@@ -143,6 +143,7 @@
         :orderFailed="true"
       />
       <order-info
+        v-if="orderInfo.orderNo"
         :orderNo="orderInfo.orderNo"
         :createTime="orderInfo.createTime"
         :cancelTime="orderInfo.cancelTime"
@@ -175,6 +176,7 @@ export default {
 
       refundInfo: {},
       orderInfo: {},
+      expensesType: 0,
 
       systemBottom: "",
       containerPaddingBottom: "",
@@ -183,8 +185,7 @@ export default {
       navBarHeight: "",
       scrollTop: 0,
       headerTitle: "",
-      bgImg:
-        "https://ali-image.dabanjia.com/static/mp/dabanjia/images/decorate/order_bg_gray.png",
+      bgImg: "https://ali-image.dabanjia.com/static/mp/dabanjia/images/theme-red/decorate/order_bg.png",
     };
   },
 
@@ -354,7 +355,8 @@ export default {
 <style lang="scss" scoped>
 .bgcStyle {
   width: 100%;
-  height: 32rpx;
+  // height: 32rpx;
+	height: 116%;
   position: absolute;
   bottom: -32rpx;
   z-index: -1;
@@ -370,23 +372,15 @@ export default {
     width: 100%;
     height: 100%;
     overflow: auto;
-
-    .order-status {
+		.order-status {
       width: 100%;
-      height: 140rpx;
+      // height: 140rpx;
       color: #ffffff;
       background-size: 100% 172rpx;
       display: flex;
       flex-flow: column nowrap;
       align-items: center;
-      .backgroundStyle {
-        position: absolute;
-        z-index: -1;
-        width: 100%;
-        height: 172rpx;
-        background-color: #c6c6c6;
-      }
-      .status {
+      .status,.status1 {
         display: flex;
         flex-flow: row nowrap;
         align-items: center;
@@ -394,15 +388,20 @@ export default {
         image {
           width: 64rpx;
           height: 64rpx;
-          object-fit: cover;
+					display: block;
           margin-right: 12rpx;
         }
-        text {
-          font-size: 48rpx;
+        .text {
+					height: 64rpx;
+					line-height: 62rpx;
+          font-size: 40rpx;
           font-weight: 500;
           color: #ffffff;
         }
       }
+			.status1{
+				margin-bottom: 32rpx;
+			}
 
       .time {
         color: #ffffff;
@@ -410,6 +409,7 @@ export default {
         line-height: 40rpx;
         font-size: 26rpx;
         font-weight: 400;
+				margin-bottom: 32rpx;
       }
     }
 
@@ -486,7 +486,9 @@ export default {
           box-sizing: border-box;
           display: flex;
           align-items: center;
-          text {
+          .storeName {
+						height: 40rpx;
+						color: #333333;
             font-weight: 500;
             max-width: 476rpx;
             font-size: 28rpx;
@@ -495,9 +497,8 @@ export default {
             white-space: nowrap;
           }
           image {
-            width: 34rpx;
-            height: 34rpx;
-            object-fit: cover;
+            width: 40rpx;
+            height: 40rpx;
           }
         }
         .icon {
@@ -536,7 +537,7 @@ export default {
     height: 72rpx;
     line-height: 72rpx;
     box-sizing: border-box;
-    background: linear-gradient(99deg, #00ccbe 0%, #00c2bf 100%);
+    background: linear-gradient(117.02deg, #FA3B34 24.56%, #FF6A33 92.21%);
     border-radius: 12rpx;
     font-size: 28 rpx;
     font-weight: 500;
@@ -544,7 +545,6 @@ export default {
     color: #ffffff;
   }
   .contact-customer {
-    margin: 20rpx 0;
     width: 184rpx;
     height: 72rpx;
     line-height: 72rpx;

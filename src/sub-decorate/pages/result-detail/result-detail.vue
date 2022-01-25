@@ -71,7 +71,7 @@
     .line{
       width: 6rpx;
       height: 28rpx;
-      background: #00c2b8;
+      background: #222;
       position: absolute;
       left: 0;
       top: 28rpx;

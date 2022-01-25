@@ -12,7 +12,7 @@
 						
           </view>
           <view class="right" @click="handleCheck">
-            <image v-if="isAnonymous" src="../../../static/anonymous_check.svg" mode=""></image>
+            <image v-if="isAnonymous" src="https://ali-image.dabanjia.com/static/mp/dabanjia/images/theme-red/decorate/ic_checked.svg" mode=""></image>
             <image  v-else  src="../../../static/anonymous_unCheck.svg" mode=""></image>
             <text>匿名评价</text>
           </view>
@@ -145,15 +145,17 @@ export default {
 	  this.systemHeight = menuButtonInfo.bottom + 24+ "rpx";
 	},
 	
-	computed:{
-		starNum(){
-		 let arr = 	this.list.filter(item=>{
-				return item.isred == false
-			})
-			this.query.stars = arr.length
-			console.log("this.query.stars=",this.query.stars)
-		}
-	},
+	// computed:{
+	// 	starNum(){
+ //      console.log(111)
+	// 	 let arr = 	this.list.filter(item=>{
+	// 			return item.isred == false
+	// 		})
+      
+	// 		this.query.stars = arr.length
+	// 		console.log("this.query.stars=",this.query.stars)
+	// 	}
+	// },
 	
   watch: {
     textAreaLength(newVal, oldVal) {},
@@ -203,6 +205,7 @@ export default {
 		
 		//星星操作
 		cools(id){
+      
 			this.list.forEach(element => {
 				if(element.id<=id){
 						element.isred = false
@@ -210,6 +213,7 @@ export default {
 						element.isred = true
 				}
 		 })
+     console.log(this.starNum)
 		},
 		onFileChange(files) {
 			this.query.imageUrls = files.map(item=>{
@@ -217,8 +221,15 @@ export default {
 			})
 			console.log("this.imageValue=",this.query.imageUrls)
 		},
+    getRank(){
+      let arr = this.list.filter(item=>{
+        return item.isred == false
+      })
+      this.query.stars = arr.length
+    },
 		// 确认评价按钮
 	confirmEvaluate(){
+    this.getRank()
 		let params={
 			refId:this.id, //关联ID"
 			refType:this.type,//关联类型",
@@ -463,7 +474,7 @@ export default {
     line-height: 88rpx;
     box-sizing: border-box;
 		font-weight: 500;
-		background: linear-gradient(99deg, #00CCBE 0%, #00C2BF 100%);
+		background: linear-gradient(117.02deg, #FA3B34 24.56%, #FF6A33 92.21%);
     border-radius: 12rpx;
     font-size: 32rpx;
     text-align: center;

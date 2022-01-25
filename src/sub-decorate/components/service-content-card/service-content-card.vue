@@ -47,7 +47,7 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    padding: 40rpx 32rpx;
+    padding: 24rpx 32rpx;
     background: #FFF;
     // border-radius: 16rpx;
 
@@ -106,7 +106,7 @@
         font-family: PingFangSC, PingFangSC-Regular;
         font-weight: 400;
         text-align: left;
-        color: #29c7c7;
+        color: #333;
         line-height: 24rpx;
       }
 
@@ -116,7 +116,7 @@
         font-family: Unnamed, Unnamed-Regular;
         font-weight: 400;
         text-align: left;
-        color: #29c7c7;
+        color: #333;
         line-height: 28rpx;
       }
 
@@ -126,7 +126,7 @@
         font-family: Unnamed, Unnamed-Regular;
         font-weight: 400;
         text-align: left;
-        color: #35c4c4;
+        color: #333;
         line-height: 24rpx;
       }
     }

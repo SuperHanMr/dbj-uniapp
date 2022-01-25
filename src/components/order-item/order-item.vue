@@ -139,7 +139,7 @@
 				type:Object,
 				default:{},
 			},
-			isEvaluate:{
+			isEvaluate:{//是否是待评价列表使用
 				type:String,
 				default:''
 			},
@@ -241,7 +241,10 @@
 			image{
 				width: 136rpx;
 				height: 136rpx;
+				display: block;
+				box-sizing: border-box;
 				border-radius: 8rpx;
+				border: 0.5px solid #F4F4F4;
 			}
 		}
 		.basic-info{
@@ -270,12 +273,13 @@
 					max-width: 349rpx;
 					.icon{
 						width: 60rpx;
-						height: 30rpx;
-						line-height: 28rpx;
-						margin-right: 8rpx;
-						border-radius: 2px;
-						border: 0.5px solid #35c4c4;
-						color: #35c4c4;
+						height: 34rpx;
+						line-height: 34rpx;
+						margin-right: 4rpx;
+						border-radius: 4rpx;
+						color: #212121;
+						font-weight: 600;
+						background: linear-gradient(90.48deg, #B4EEE1 0.28%, #EAFCD7 99.48%);
 						font-size: 20rpx;
 						text-align: center;
 						display: inline-block;
@@ -288,9 +292,17 @@
 					}
 				}
 				.attr{
-					margin-top: 16rpx;
+					margin-top: 12rpx;
 					font-size: 22rpx;
 					color: #999999;
+					text{
+						word-break: break-all;
+						text-overflow: ellipsis;
+						display: -webkit-box;
+						-webkit-box-orient: vertical;
+						-webkit-line-clamp: 2;
+						overflow: hidden
+					}
 				}
 			}
 			.common-price{

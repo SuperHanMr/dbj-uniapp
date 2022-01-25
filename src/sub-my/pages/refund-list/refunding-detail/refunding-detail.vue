@@ -9,33 +9,33 @@
 		</custom-navbar>
 
 		<view class="order-container" :style="{paddingBottom:containerPaddingBottom}" >
-			<view  style="position: relative;" :style="{backgroundImage:`url(${bgImg})`,backgroundSize: '100% 100%'}">
+			<view  style="position: relative;">
 				<view class="bgcStyle" :style="{backgroundImage:`url(${bgImg})`,backgroundSize: '100% 100%'}"/>
 				<view :style="{height:navBarHeight}"></view>
 				<view class="order-status">
 					<view class="status">
 						<image
-							src="../../../static/ic_status_inprogress.svg" mode=""/>
+							src="https://ali-image.dabanjia.com/static/mp/dabanjia/images/theme-red/my/ic_status_inprogress.svg" mode=""/>
 						<text>退款中</text>
 					</view>
 				</view>
 			</view>
 
 			<view class="refund-product-info" :style="{paddingBottom:( orderType==2 || refundInfo.type ==5) ?'24rpx':''}">
-				<order-item 
+				<order-item
 					v-if="refundInfo.type !==5"
-					v-for="item in refundInfo.detailAppVOS" 
-					:orderType="orderType" 
-					:key="item.id" 
-					:dataList="item" 
-					:refundType="true"  
-					@handleDetail="productDetail(item)"  
+					v-for="item in refundInfo.detailAppVOS"
+					:orderType="orderType"
+					:key="item.id"
+					:dataList="item"
+					:refundType="true"
+					@handleDetail="productDetail(item)"
 				/>
 				<store-calue-card-item
 					v-else
 					v-for="item in refundInfo.detailAppVOS"
 					:key="item.id"
-					:refundType="true" 
+					:refundType="true"
 					:dataInfo="item"
 				/>
 			</view>
@@ -46,7 +46,7 @@
 		</view>
 		<view
 		  class="cancel-refund-pay"
-		  :style="{paddingBottom:systemBottom,height:systemHeight}"
+		  :style="{paddingBottom:systemBottom}"
 		>
 			<view class="button"  @click="cancelToPay()">
 				取消退款
@@ -82,7 +82,7 @@ export default {
 			scrollTop: 0,
 			title:"确定要取消本次退款申请？",
 			headerTitle:"",
-			bgImg:'https://ali-image.dabanjia.com/static/mp/dabanjia/images/decorate/order_bg_orange.png'
+			bgImg: "https://ali-image.dabanjia.com/static/mp/dabanjia/images/theme-red/decorate/order_bg.png",
     };
   },
 
@@ -233,7 +233,8 @@ export default {
 <style lang="scss" scoped>
 	.bgcStyle{
 		width: 100%;
-		height: 32rpx;
+		height: 116%;
+		// height: 32rpx;
 		position: absolute;
 		bottom: -32rpx;
 		z-index: -1;
@@ -370,7 +371,7 @@ export default {
 		overflow: auto;
     .order-status {
       width: 100%;
-      height: 140rpx;
+      // height: 140rpx;
       color: #ffffff;
       background-size: 100% 172rpx;
       display: flex;
@@ -388,7 +389,7 @@ export default {
         display: flex;
         flex-flow: row nowrap;
         align-items: center;
-        margin-bottom: 8rpx;
+        margin-bottom: 32rpx;
         image {
           width: 64rpx;
           height: 64rpx;
@@ -396,7 +397,7 @@ export default {
           margin-right: 12rpx;
         }
         text {
-          font-size: 48rpx;
+          font-size: 40rpx;
           font-weight: 500;
           color: #ffffff;
         }
@@ -433,7 +434,7 @@ export default {
         color: #ffffff;
         font-size: 32rpx;
         font-weight: 500;
-        background: linear-gradient(135deg, #53d5cc 0%, #4fc9c9 100%);
+        background: linear-gradient(117.02deg, #FA3B34 24.56%, #FF6A33 92.21%);
         border-radius: 12rpx;
       }
     }
@@ -611,7 +612,7 @@ export default {
 }
 
 // 底部 取消支付按钮样式 确认收货 及申请退款按钮
-.cancel-refund-pay ,.applyforRefund-confirmReceipt,.waitPayBottom{
+.cancel-refund-pay ,.applyforRefund-confirmReceipt{
 	position: fixed;
 	bottom: 0;
 	background-color: #FFFFFF;
@@ -626,7 +627,7 @@ export default {
 	font-size: 26rpx;
 	.button{
 		height: 88rpx;
-		background: linear-gradient(99deg, #00CCBE 0%, #00C2BF 100%);
+		background: linear-gradient(117.02deg, #FA3B34 24.56%, #FF6A33 92.21%);
 		border-radius: 12rpx;
 		width: 686rpx;
 		line-height: 88rpx;
@@ -643,7 +644,7 @@ export default {
 		height: 88rpx;
 		line-height: 88rpx;
 		box-sizing: border-box;
-		background: linear-gradient(135deg, #36D9CD 0%, #28C6C6 100%);
+		background: linear-gradient(117.02deg, #FA3B34 24.56%, #FF6A33 92.21%);
 		border-radius: 12rpx;
 		font-size: 32rpx;
 		text-align: center;
@@ -664,32 +665,6 @@ export default {
 		border: 2rpx solid #EAEAEA;
 	}
 }
-
-.waitPayBottom{
-	padding: 12rpx 32rpx;
-	justify-content: space-between;
-	.gotoPay {
-	  width: 248rpx;
-	  height: 88rpx;
-	  line-height: 88rpx;
-	  font-size: 32rpx;
-	  text-align: center;
-	  color: #ffffff;
-	  background: linear-gradient(135deg, #36d9cd 0%, #28c6c6 100%);
-	  border-radius: 12rpx;
-	}
-}
-
-
-//头部倒计时样式
-::v-deep .uni-countdown__number{
-	width: 36rpx !important;
-	height: 36rpx !important;
-}
-::v-deep .uni-countdown__splitor.data-v-02c75d70 {
-  line-height: 36rpx !important;
-	color: #FFFFFF !important;
-	}
 
 
 // 弹框样式

@@ -5,7 +5,7 @@
         <dark-calendar
           :signeddates="signeddates"
           @filterDynamics="filterDynamics"
-          :projectId="projectId"
+          :projectId="Number(projectId)"
           :showMemo="showMemo"
           @changeMargin="changeMargin"
         ></dark-calendar>
@@ -233,11 +233,11 @@ export default {
   margin-top: 40rpx;
 }
 .noDynamics .text {
-  width: 156rpx;
   height: 36rpx;
   font-size: 26rpx;
   color: #999999;
-  margin: 24rpx 298rpx;
+  margin: 24rpx 0;
+	text-align: center;
 }
 .noDynamics .bottom {
   width: 750rpx;
@@ -249,10 +249,10 @@ export default {
   background: #f5f6f6;
 }
 .dynamic .bottom .text {
-  width: 222rpx;
+	text-align: center;
   height: 26rpx;
   background: #f5f6f6;
-  margin: 0 264rpx 80rpx 264rpx;
+  margin-bottom: 80rpx;
   padding-top: 60rpx;
   font-size: 26rpx;
   color: #999999;
@@ -343,7 +343,7 @@ export default {
 .acitonInfo .header .role {
   width: 82rpx;
   height: 32rpx;
-  background: linear-gradient(45deg, #6d95ef, #84b9fc);
+  background: linear-gradient(135deg, #40BFF5 0%, #53A9FF 100%);
   border-radius: 6rpx;
   font-size: 22rpx;
   text-align: center;

@@ -6,15 +6,15 @@
 				<view class="header" >
 					<view class="store-name" @click="gotoShop(item)">
 						<text style="color: #333333;">{{item.ongoingServerName?item.ongoingServerName:item.storeName}}</text>
-						<image v-if="item.type !== 5" src="../../static/ic_more.svg" mode="" />
+						<image v-if="item.type !== 5" src="https://ali-image.dabanjia.com/static/mp/dabanjia/images/theme-red/my/small_gotoShop.svg" mode="" />
 					</view>
 					<view class="order-status">
 						<text>{{statusFunction(item)}}</text>
 						<!-- <text> {{item.type==0?"仅退款(未发货)":item.type==1 ? "仅退款(退库存)":item.type==2 ? "仅退款(已收货)":item.type==3?"服务退款":item.type==5?"储值卡退款":""}}</text>				 -->
 					</view>
 				</view>
-				
-				
+
+
 				<view class="body" @click="goToDetail(item)">
 					<view class="body-main" v-for="(item2,index2) in item.detailAppVOS" :key="index2">
 						<view class="pic">
@@ -24,10 +24,10 @@
 							<view class="name-attr">
 								<view class="text" v-if="item2.type !== 5">
 									<text class="icon">{{item2.type ==1 ?"物品" :"服务"}}</text>
-									<text class="name">{{item2.fullName}}</text>					
+									<text class="name">{{item2.fullName}}</text>
 								</view>
 								<view class="text" v-else>
-									<text class="name">{{item2.fullName}}</text>					
+									<text class="name">{{item2.fullName}}</text>
 								</view>
 								<view class="attr">
 									<text v-if="item2.type == 5">共1件</text>
@@ -35,9 +35,9 @@
 								</view>
 							</view>
 						</view>
-					</view>	
-					<view class="line"></view>
-				</view> 
+					</view>
+					<!-- <view class="line"></view> -->
+				</view>
 				<view class="refund-price">
 					<text style="margin-right:8rpx;">退款金额</text>
 					<text class="product-price">
@@ -48,8 +48,8 @@
 						</text>
 					</text>
 				</view>
-				
-				
+
+
 				<view class="refund-status refundInProgress" v-if="item.status == 0 || item.status == 1 ">
 					<text style="margin-right: 16rpx;">退款中</text>
 					<text>
@@ -60,7 +60,7 @@
 						</text>
 					</text>
 				</view>
-				
+
 				<view class="refund-status refund-success" v-if="item.status == 2">
 					<text  style="margin-right: 16rpx;">退款成功</text>
 					<text>
@@ -71,17 +71,17 @@
 						</text>
 					</text>
 				</view>
-				
+
 				<view class="refund-status refund-close" v-if="item.status == 3 || item.status == 4">
 					<text style="margin-right: 16rpx;">退款关闭</text>
 					<text  style="color: #333333; font-weight: 500">退款已关闭</text>
 				</view>
-				
+
 				<view class="refund-status refund-fail" v-if="item.status == 5">
 					<text style="margin-right: 16rpx;">退款失败</text>
 					<text  style="font-weight: 500">退款账户异常</text>
 				</view>
-			
+
 				<view class="footer">
 					<view class="button-container">
 						<view v-if="item.status ==0 ||item.status == 1" class="cancel-apply"  @click="open(item)">
@@ -90,23 +90,23 @@
 						<view class="view-detail" style="margin-left: 24rpx;" @click="goToDetail(item)">
 							查看详情
 						</view>
-						
+
 						</view>
 				</view>
 			</view>
 		</view>
-		
+
 		<view class="empty-container" v-else>
 			<view class="line" />
 			<view class="show">
-				<image src="../../static/empty_page@2x.png" mode=""></image>
+				<image src="https://ali-image.dabanjia.com/static/mp/dabanjia/images/theme-red/my/img_noOrder.svg" mode=""></image>
 				<text>您还没有退款记录</text>
 			</view>
 		</view>
-		
+
 		<popup-dialog  ref="popup"  :title="title" @close="close" @confirm="confirm"></popup-dialog>
 		<!-- <uni-popup ref="cannotRefund"  type="dialog">
-			<uni-popup-dialog 
+			<uni-popup-dialog
 				mode="base"
 				:title="title"
 				:before-close="true"
@@ -154,16 +154,16 @@
 				uni.stopPullDownRefresh();
 			}, 1000);
 		},
-	
+
 	 //页面上拉触底事件的处理函数
 		onReachBottom(e) {
-			console.log("底部")// 滚动到页面执行该方法 
+			console.log("底部")// 滚动到页面执行该方法
 			console.log("this.query.lastId",this.query.lastId,"this.dataListLength=",this.dataListLength)
-			if(this.query.lastId > 0 && this.dataListLength == 0) return 
+			if(this.query.lastId > 0 && this.dataListLength == 0) return
 			this.getList();
-			
+
 		},
-		  
+
 		mounted(e) {
 			const menuButtonInfo = uni.getMenuButtonBoundingClientRect();
 			this.systemBottom = menuButtonInfo.bottom + "rpx";
@@ -188,7 +188,7 @@
 						return "仅退款(未发货)"
 					case 1:
 						return "仅退款(退库存)"
-					case 2: 
+					case 2:
 						return "仅退款(已收货)"
 					case 3:
 						return "服务退款"
@@ -200,7 +200,7 @@
 						return ""
 				}
 			},
-			
+
 			handlePrice(price){
 				if(!price) return ['0','00']
 				let list=String(price).split(".")
@@ -214,15 +214,15 @@
 			gotoShop(item){
 				console.log("去店铺",item.storeId,item.type,"this.areaId=",this.areaId)
 				// type 5: 储值卡 没有页面跳转功能
-				if(item.type == 5) return 
+				if(item.type == 5) return
 				uni.navigateTo({
 					url:`../../../sub-classify/pages/shops/shops?storeId=${item.storeId}&areaId=${this.areaId}`
 				})
 			},
-		
+
 			goToDetail(data){
 				console.log("去详情页面","data",data.status,data.type)
-				// if(data.type == 5) return 
+				// if(data.type == 5) return
 				// data.id是退款单id
 				if(data.status == 0 || data.status == 1 ){
 					uni.navigateTo({
@@ -238,10 +238,10 @@
 					})
 				}
 			},
-			
+
 			open(data) {
 				this.refundItem  =data
-				this.itemId = data.id 
+				this.itemId = data.id
 				// this.refundItem.approvalCompleted  = true
 				// approvalCompleted 是否审核完成 true不可退 false可退
 				console.log("approvalCompleted===",this.refundItem.approvalCompleted)
@@ -254,13 +254,13 @@
 				this.$refs.popup.open()
 			},
 			close() {
-				// if(this.refundItem.approvalCompleted){	
+				// if(this.refundItem.approvalCompleted){
 				// 	this.$refs.cannotRefund.close()
 				// }else{
 				// 	this.$refs.popup.close()
 				// }
 				this.$refs.popup.close()
-			},				
+			},
 			confirm(value) {
 				// 调用申请退款的接口
 				// 成功就关闭弹框
@@ -279,7 +279,7 @@
 					})
 				}
 			},
-			
+
 		}
 	}
 </script>
@@ -289,15 +289,15 @@
 		height: 100%;
 		.order-container{
 			background-color: #FFFFFF;
+			border-radius: 40rpx;
 		}
 	}
-	
+
 	.header {
-		height: 96rpx;
+		// height: 96rpx;
 		margin-top: 16rpx;
-		padding: 28rpx 32rpx;
+		padding: 28rpx 32rpx 0;
 		box-sizing: border-box;
-		background-color: #fafafa;
 		display: flex;
 		align-items: center;
 		justify-content: space-between;
@@ -339,6 +339,7 @@
 			.pic{
 				margin-right: 16rpx;
 				image{
+					display: block;
 					width: 136rpx;
 					height: 136rpx;
 					border-radius: 8rpx;
@@ -371,8 +372,9 @@
 							margin-right: 8rpx;
 							line-height: 30rpx;
 							border-radius: 4rpx;
-							border: 0.5px solid #35c4c4;
-							color: #35c4c4;
+							color: #212121;
+							font-weight: 500;
+							background: linear-gradient(90deg, #BDD9E5 0%, #CDEFCE 94.34%);
 							font-size: 20rpx;
 							text-align: center;
 							display: inline-block;
@@ -388,18 +390,14 @@
 						font-size: 22rpx;
 						color: #999999;
 					}
-					
+
 				}
 			}
 		}
-		.line{
-			height: 0.5px;
-			background: #F4F4F4;
-		}
 	}
 	.refund-price{
-		padding: 26rpx 32rpx;
-		height: 78rpx;
+		padding: 0 32rpx 26rpx;
+		// height: 78rpx;
 		box-sizing: border-box;
 		text-align: right;
 		color: #999999;
@@ -444,7 +442,7 @@
 		padding: 0 24rpx ;
 		line-height: 40rpx;
 	}
-	
+
 	.refund-status{
 		width: 686rpx;
 		height: 80rpx;
@@ -462,9 +460,9 @@
 		flex-flow: row nowrap;
 		justify-content:  flex-end;
 		padding:32rpx;
-		// text-align: right;
+		border-radius: 40rpx;
 		background-color: #ffffff;
-		
+
 		.button-container{
 			display: flex;
 			flex-flow: row nowrap;
@@ -496,7 +494,7 @@
 			}
 		}
 	}
-	
+
 	.empty-container{
 		height: 100%;
 		background-color: #FFFFFF;
@@ -521,7 +519,7 @@
 				font-size: 26rpx;
 				color: #999999;
 			}
-			
+
 		}
 	}
 
@@ -530,7 +528,7 @@
 		width: 560rpx !important;
 		border-radius: 24rpx !important;
 		background-color: #fff !important;
-	} 
+	}
 	::v-deep .uni-dialog-title-text{
 	 color: #111111 !important;
 	 font-size: 32rpx !important;
@@ -538,7 +536,7 @@
 	}
 	::v-deep .uni-dialog-title{
 		padding: 48rpx 0 !important;
-		
+
 	}
 	::v-deep .uni-dialog-content {
 		display:  none !important;

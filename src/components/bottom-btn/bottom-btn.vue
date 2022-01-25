@@ -75,8 +75,8 @@ export default {
   .add-btn {
     // margin-top: 20rpx;
     height: 88rpx;
-    background: linear-gradient(135deg, #00ccbe, #00c2bf);
-    border-radius: 12rpx;
+    background: linear-gradient(115.75deg, #FA3B34 -3.13%, #FF6A33 92.1%);
+    border-radius: 16rpx;
     width: 686rpx;
     line-height: 88rpx;
     text-align: center;

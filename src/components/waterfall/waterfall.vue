@@ -152,20 +152,20 @@
 		width: 100%;
 		display: flex;
 		justify-content: space-between;
-		padding: 0 20rpx;
+		padding: 0 32rpx;
 		box-sizing: border-box;
-
+		background: #FFFFFF;
 		.left,
 		.right {
 			.waterfall-item {
-				width: 345rpx;
+				width: 328rpx;
 				margin-top: 32rpx;
 				box-sizing: border-box;
 				background-color: #FFFFFF;
 				border-radius: 16rpx;
 
 				image {
-					width: 345rpx;
+					width: 328rpx;
 					display: block;
 				}
 

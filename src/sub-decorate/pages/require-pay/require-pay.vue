@@ -136,18 +136,16 @@
         v-if="payChannel"
         class="flex-center"
       >
-        <!-- <image
+        <image
           class="card-img"
           src="https://ali-image.dabanjia.com/static/mp/dabanjia/images/classify/ic_card.png"
           mode=""
         >
-        </image> -->
-        <text>储值卡支付</text>
+        </image><text>储值卡支付</text>
 
       </view>
       <view v-else>
-        <!-- <view class="wechat_icon"></view> -->
-        <text>在线支付</text>
+        <view class="wechat_icon"></view><text>微信支付</text>
       </view>
     </view>
 
@@ -199,7 +197,6 @@
         @close="closeCoupon"
       ></coupon-dialog>
     </uni-popup>
-  </view>
   </view>
 </template>
 
@@ -383,11 +380,6 @@ export default {
         this.detail = e;
       });
     },
-    submit() {
-      uni.redirectTo({
-        url: "../require-success/require-success",
-      });
-    },
   },
   onLoad(e) {
     const data = getApp().globalData.decorateMsg.msgBody;
@@ -564,7 +556,7 @@ export default {
   text-align: center;
   color: #ffffff;
   font-size: 30rpx;
-  background: linear-gradient(135deg, #00bfaf, #00bfbc);
+  background: linear-gradient(117.02deg, #FA3B34 24.56%, #FF6A33 92.21%);
   border-radius: 16rpx;
   margin-right: 32rpx;
 }

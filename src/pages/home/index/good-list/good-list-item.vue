@@ -95,9 +95,9 @@
 	.item {
 		margin-top: 16rpx;
 		flex-shrink: 0;
-		width: 343rpx;
-		border-radius: 18rpx;
-		border: 0.3px solid #e6eaed;
+		width: 328rpx;
+		// border-radius: 18rpx;
+		// border: 0.3px solid #e6eaed;
 		position: relative;
 		overflow: hidden;
 
@@ -105,6 +105,7 @@
 			width: 100%;
 			height: 343rpx;
 			display: block;
+			border-radius: 16rpx;
 		}
 
 		.allowance-view {
@@ -127,27 +128,27 @@
 
 		.price {
 			margin-top: 13rpx;
-			font-size: 24rpx;
+			font-size: 20rpx;
 			font-weight: 400;
 			color: #939699;
 			line-height: 0;
 
 			.amount {
-				font-size: 40rpx;
+				font-size: 36rpx;
 				font-weight: 400;
-				color: #2b2f33;
+				color: #333333;
 				line-height: 42rpx;
 			}
 
 			.ex {
-				font-size: 34rpx;
+				font-size: 28rpx;
 				font-weight: 400;
-				color: #2b2f33;
+				color: #333333;
 				line-height: 26rpx;
 			}
 
 			.pre {
-				font-size: 28rpx;
+				font-size: 24rpx;
 				font-weight: 400;
 				line-height: 26rpx;
 				padding-right: 5rpx;
@@ -156,7 +157,7 @@
 		}
 
 		.info {
-			padding: 0 24rpx;
+			// padding: 0 24rpx;
 			display: flex;
 			flex-direction: column;
 
@@ -164,7 +165,7 @@
 				margin-top: 20rpx;
 				font-size: 28rpx;
 				color: #2b2f33;
-				line-height: 40rpx;
+				line-height: 44rpx;
 				overflow: hidden;
 				text-overflow: ellipsis;
 				display: -webkit-box;
@@ -174,16 +175,17 @@
 			}
 
 			.tip {
-				width: 60rpx;
-				height: 30rpx;
+				padding: 3rpx 8rpx 1rpx;
 				margin-right: 8rpx;
 				line-height: 30rpx;
-				border-radius: 6rpx;
-				color: #35c4c4;
-				font-size: 20rpx;
+				border-radius: 4rpx;
+				letter-spacing: 0.2px;
+				color: #222222;
+				font-weight: 600;
+				font-size: 21rpx;
 				text-align: center;
 				display: inline-block;
-				border: 1rpx solid #35c4c4;
+				background: linear-gradient(90.48deg, #B4EEE1 0.28%, #EAFCD7 99.48%);
 				vertical-align: 13%;
 			}
 		}

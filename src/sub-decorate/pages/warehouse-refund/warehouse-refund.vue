@@ -139,7 +139,7 @@
             e.requireNumber : e.stockNumber ?
             e.stockNumber : e.requireNumber,
           stockId: e.id,
-          goodsId: e.goodsId,
+          goodsId: e.relationId,
           price: e.discountPrice,
           alreadyReturnNumber: e.returnNumber || 0,
           number: e.number || e.totoalNum,
@@ -233,30 +233,29 @@
         if (this.type == 1) {
           params.details = this.refundList;
           goodsBack(params).then((e) => {
-            uni.showToast({
-              title: "提交成功",
-              icon: "none",
-            });
-            uni.navigateBack({
-              delta: 2,
-            });
+            this.toastHandler()
           });
         } else {
           params.type = this.refundType;
           if (params.type == 2) {
-            params.goodsId = this.data.stockAppVOS[0].goodsId;
+            params.goodsId = this.data.stockAppVOS[0].relationId;
           }
           goodsRefund(params).then((e) => {
-            uni.showToast({
-              title: "提交成功",
-              icon: "none",
-            });
-            uni.navigateBack({
-              delta: 2,
-            });
+            this.toastHandler()
           });
         }
       },
+			toastHandler(){
+				uni.showToast({
+				  title: "提交成功",
+				  icon: "none",
+				});
+				setTimeout(() => {
+					uni.navigateBack({
+					  delta: 2,
+					});
+				}, 1000)
+			},
       selectRes() {
         uni.showActionSheet({
           itemList: this.reasonList,

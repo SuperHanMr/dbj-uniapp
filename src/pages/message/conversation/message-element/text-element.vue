@@ -43,10 +43,10 @@ export default {
 };
 </script>
 
-<style lang="scss">
+<style lang="scss" scoped>
 .text-element.text-element-send {
   color: #fff;
-  .at {
+  ::v-deep .at {
     color: #fff;
     font-weight: normal;
     &.mark {
@@ -59,20 +59,20 @@ export default {
   color: #111;
   font-size: 16px;
   word-break: break-all;
-  .text {
+  ::v-deep .text {
     display: inline;
     white-space: pre-line;
   }
-  .at {
+  ::v-deep .at {
     margin-right: 4px;
     font-weight: bold;
     border-radius: 3px;
     &.mark {
       padding: 0 2px;
-      background-color: #E5F9F8;
+      background-color: #FEEAE6;
     }
   }
-  .emoji {
+  ::v-deep .emoji {
     width: 24px;
     height: 24px;
     vertical-align: -5px;
@@ -84,7 +84,7 @@ export default {
     }
   }
 
-  .link {
+  ::v-deep .link {
     text-decoration: underline;
   }
 }

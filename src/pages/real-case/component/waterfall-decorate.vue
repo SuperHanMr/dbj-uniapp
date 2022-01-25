@@ -67,14 +67,11 @@
 <style lang="scss" scoped>
 .waterfall-item{
 	position: relative;
-	margin-right: 16rpx;
+	margin-right: 32rpx;
 	font-size: 28rpx;
 	margin-bottom: 20rpx;
 	background: #ffffff;
-	border: 1px solid #ececec;
-	border-radius: 8px;
 	.waterfall-item-img{
-		width: 100%;
 		height: 344rpx;
 	}
 	.decorate-state{
@@ -92,18 +89,19 @@
 	}
 	image{
 		display: block;
-		width: 344rpx;
+		width: 328rpx;
 		// 默认设置一个图片的大约值
 		height: 344rpx;
-		border-radius: 8px 8px 0px 0px;
+		border-radius: 16rpx;
 	}
 	
 	.content{
 		.title{
-			margin: 20rpx 16rpx 18rpx 20rpx;
-			font-size: 28rpx;
+			margin: 16rpx 16rpx 12rpx 0;
+			font-size: 26rpx;
+			line-height: 44rpx;
 			font-family: PingFangSC, PingFangSC-Medium;
-			font-weight: bold;
+			// font-weight: bold;
 			text-align: left;
 			color: #333333;
 			letter-spacing: 0px;
@@ -119,7 +117,7 @@
 			display: flex;
 			justify-content: space-between;
 			align-items: center;
-			padding: 0 16rpx 28rpx 16rpx;
+			padding: 0 16rpx 28rpx 0;
 			.size{
 				font-size: 24rpx;
 				font-family: PingFangSC, PingFangSC-Regular;
@@ -130,13 +128,13 @@
 			.phase-box{
 				display: flex;
 				align-items: center;
-				border: 1px solid #ffa751;
+				border: .5px solid #FA4D32;
 				border-radius: 2px
 			}
 			.phase-box-border{
 				border: 0;
 				border-radius: 2px;
-				background: #35c4c4;
+				background: #FA4D32;
 			}
 			.phase{
 				padding: 0 4rpx;
@@ -145,10 +143,12 @@
 				font-weight: 400;
 				text-align: left;
 				color: #ffffff;
+				background: #333333;
+				border-radius: 4rpx;
 			}
 			.phase-pending{
 				color: #ffffff;
-				background: #ffa751;
+				background: #FA4D32;
 			}
 			.phase-newest-node{
 				padding: 0 4rpx;
@@ -156,7 +156,7 @@
 				font-family: PingFangSC, PingFangSC-Regular;
 				font-weight: 400;
 				text-align: left;
-				color: #ffa751;
+				color: #FA4D32;
 			}
 		}
 	}

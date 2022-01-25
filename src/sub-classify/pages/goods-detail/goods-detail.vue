@@ -4,13 +4,12 @@
       :src="baseUrl + '/app-pages/goods-detail/index.html?token=' + searchToken + '#wx-goodsId='+ goodId + '&wx-houseId='
         + houseId + '&wx-defaultHouseId=' + defaultHouseInfo.id  + '&wx-defaultProvinceId=' + defaultHouseInfo.provinceId
         + '&wx-defaultCityId=' + defaultHouseInfo.cityId + '&wx-defaultAreaId=' + defaultHouseInfo.areaId 
-        + '&wx-defaultLocationName=' + defaultHouseInfo.name  + '&wx-token=' + hashToken + '&wx-deviceId=' + deviceId + '&from=' + from + '&shareAreaId=' + shareAreaId + '&shareAreaName=' + shareAreaName+ '&shareOriginType=' + shareOriginType">
+        + '&wx-defaultLocationName=' + defaultHouseInfo.name  + '&wx-token=' + hashToken + '&wx-deviceId=' + deviceId + '&from=' + from + '&shareAreaId=' + shareAreaId + '&shareAreaName=' + shareAreaName+ '&shareOriginType=' + shareOriginType + '&wx-userId=' + userId">
     </web-view>
   </view>
 </template>
 
 <script>
-  import urlParse from "url-parse";
   export default {
     data() {
       return {
@@ -26,7 +25,8 @@
         shareAreaId: '',
         shareAreaName: '',
         pageOpts: {},
-        shareOriginType: ''
+        shareOriginType: '',
+        userId: 0
       }
     },
     onLoad(e) {
@@ -36,6 +36,7 @@
       this.shareAreaName = e.shareAreaName
       this.shareOriginType = e.originType
       this.from = e.from
+      this.userId = e.userId
       if (e.goodId) {
         this.goodId = e.goodId
       } else if (uni.getStorageSync('goodId')) { // 商城列表和装修模块的商品id
@@ -55,7 +56,6 @@
       if (params.length) {
         path += '?' + params.join('&')
       }
-      console.log(path, "path88888888")
       return {
         path: path
       }
@@ -66,6 +66,7 @@
       } else {
         this.hashToken = getApp().globalData.token
       }
+      console.log(getApp().globalData.token, "getApp().globalData.token")
       this.baseUrl = this.ENV.VUE_APP_BASE_H5
       this.defaultHouseInfo = getApp().globalData.currentHouse
       uni.getSystemInfo({

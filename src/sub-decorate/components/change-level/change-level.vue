@@ -215,14 +215,14 @@
     .cancel {
       width: 326rpx;
       height: 88rpx;
-      border: 2rpx solid #00bfb6;
+      border: 2rpx solid #FA4D32;
       border-radius: 16rpx;
       box-sizing: border-box;
       font-size: 30rpx;
       font-family: PingFangSC, PingFangSC-Regular;
       font-weight: 400;
       text-align: center;
-      color: #00bfb6;
+      color: #FA4D32;
       line-height: 88rpx;
     }
 
@@ -230,7 +230,7 @@
       width: 326rpx;
       height: 88rpx;
       opacity: 1;
-      background: linear-gradient(135deg, #00bfaf, #00bfbc);
+      background: linear-gradient(117.02deg, #FA3B34 24.56%, #FF6A33 92.21%);
       border-radius: 16rpx;
       font-size: 30rpx;
       font-family: PingFangSC, PingFangSC-Medium;

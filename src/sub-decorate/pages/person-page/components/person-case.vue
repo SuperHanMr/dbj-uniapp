@@ -1,21 +1,24 @@
 <template>
-  <view class="person-case person-content-item"  v-if="pagState.totalRows!==0">
-    <view class="title">Ta的案例</view>
-    <designCase v-if="pagState.totalRows" class="design-case" :isPerson='true' :leftList="leftList" :rightList="rightList" :leftHeight="leftHeight" :rightHeight="rightHeight" :isGrab='isGrab' ></designCase>
+  <view class="person-case person-content-item" :class="{'is-first':isFirst}"  v-if="pagState.totalRows!==0">
+    <view class="title">Ta的内容</view>
+    <designCase v-if="pagState.totalRows" class="design-case" :isPerson='true' :leftList="leftList" :rightList="rightList" :leftHeight="leftHeight" :rightHeight="rightHeight" :isGrab='isGrab' @height="onHeight" @click="onClick" @collection="onCollection" ></designCase>
     <view class="empty" v-else>
       暂无案例
     </view>
-    <view v-if="pagState.totalPage>pagState.page-1" @click="getList" class="click-text"><text>展开更多案例</text><i :class="{'icon-gerenzhuye_anlihefuwu_zhankaiic':true}"></i></view>
+    <view v-if="pagState.totalPage>pagState.page-1" @click="getList" class="click-text"><text>展开更多案例</text><i :class="{'icon-list_arrow_dropdown':true}"></i></view>
     
   </view>
 </template>
 
 <script>
-  import designCase from '@/components/design-case/design-case.vue'
+  import designCase from './design-case/design-case.vue'
   import {
-    getCaseList,
+    
     getCollection
   } from '@/api/real-case.js'
+  import {
+    getCaseList
+  } from '@/api/decorate.js'
   import '../style/common.scss'
   export default{
     components:{
@@ -26,7 +29,11 @@
       isGrab:{
         type:Boolean,
         default:false,
-      }
+      },
+      isFirst:{
+        type:Boolean,
+        default:false
+      },
     },
     data(){
       return{
@@ -244,6 +251,12 @@
 </script>
 
 <style lang="scss" scoped>
+  .person-case{
+    background-color: #fff;
+  }
+  .is-first{
+    border-radius: 32rpx 32rpx 0 0;
+  }
   .title{
     margin-bottom: 32rpx;
   }

@@ -17,10 +17,7 @@
       class="order-container"
       :style="{paddingBottom:112+containerBottom+'rpx'}"
     >
-      <view
-        style="position: relative;"
-        :style="{backgroundImage:`url(${bgImg})`,backgroundSize: '100% 100%'}"
-      >
+      <view style="position: relative;">
         <view
           class="bgcStyle"
           :style="{backgroundImage:`url(${bgImg})`,backgroundSize: '100% 100%'}"
@@ -29,10 +26,10 @@
         <view class="order-status">
           <view class="status">
             <image
-              src="../../../static/ic_status_wait_pay.svg"
+              src="https://ali-image.dabanjia.com/static/mp/dabanjia/images/theme-red/my/ic_status_wait_pay.svg"
               mode="scaleToFill"
             />
-            <text>待付款</text>
+            <view class="text">待付款</view>
           </view>
           <view
             class="time"
@@ -40,6 +37,7 @@
           >
             <text style="margin-right: 16rpx;">剩余支付时间</text>
             <count-down
+              class="countStyle"
               :start="orderInfo.remainTime"
               @finish="goToCancelDetail"
             ></count-down>
@@ -73,136 +71,83 @@
           :style="{borderRadius:index >= 1 ? '0' :'24rpx 24rpx 0 0'}"
         >
           <view class="header">
-            <view
-              class="header-content"
-              v-if="orderInfo.type !== 5"
-            >
-              <text
-                style="color: #333333;"
-                @click="gotoShop(item)"
-              >{{item.storeName}}</text>
-              <image
-                src="../../../static/ic_more.svg"
-                mode=""
-              />
+            <view class="header-content" v-if="orderInfo.type !== 5">
+              <view class="storeName" @click="gotoShop(item)">{{item.storeName}}</view>
+              <image src="https://ali-image.dabanjia.com/static/mp/dabanjia/images/theme-red/my/small_gotoShop.svg"/>
             </view>
-            <view
-              class="header-content"
-              v-else
-            >
-              <text style="color: #333333;">{{orderInfo.orderName}}</text>
+            <view class="header-content" v-else>
+              <view class="storeName">{{orderInfo.orderName}}</view>
             </view>
             <view class="icon"></view>
           </view>
-          <view
-            v-for="item2 in item.details"
-            :key="item2.id"
-          >
+          <view v-for="item2 in item.details" :key="item2.id" >
             <order-item
               v-if="item2.type !==5"
               :orderStatus="1"
               :dataList="item2"
               @handleDetail="productDetail(item2)"
             />
-            <store-calue-card-item
-              :dataInfo="item2"
-              v-else
-            />
-          </view>
-          <view
-            class="discount-container"
-            v-if="item.hasMaterial &&  orderInfo.details.length>1"
-          >
-            <view class="left">
-              <view class="item">
-                <view class="item-style">
-                  <view style="margin-right: 8rpx;">运费</view>
-                  <image
-                    class="icon"
-                    src="../../../../static/price_icon.svg"
-                    mode=""
-                    @click="readExpenses(1)"
-                  />
-                </view>
-                <view
-                  class="price-font"
-                  style="color: #333;font-size: 26rpx;"
-                  v-if="orderInfo.stockType == 0"
-                >
-                  ￥{{item.freight?`${item.freight}`:"0.00"}}
-                </view>
-                <view
-                  class="price-font"
-                  :style="{marginTop:item.freight?'0':'8rpx'}"
-                  style="color: #333;font-size: 26rpx;"
-                  v-else
-                >
-                  {{item.freight?`￥${item.freight}`:"--"}}
-                </view>
-              </view>
-
-              <view
-                v-if="item.platformDiscount"
-                class="item"
-              >
-                <text>平台优惠</text>
-                <text
-                  class="price-font"
-                  style="color: #333;font-size: 26rpx;"
-                >
-                  -￥{{item.platformDiscount}}
-                </text>
-              </view>
-            </view>
-            <view
-              v-if="item.storeDiscount"
-              class="line1"
-            />
-            <view
-              v-else
-              class="line2"
-            />
-
-            <view class="right">
-              <view class="item">
-                <view class="item-style">
-                  <view style="margin-right: 8rpx;">搬运费</view>
-                  <image
-                    class="icon"
-                    src="../../../../static/price_icon.svg"
-                    mode=""
-                    @click="readExpenses(2)"
-                  />
-                </view>
-                <text
-                  class="price-font"
-                  style="color: #333;font-size: 26rpx;"
-                  v-if="orderInfo.stockType == 0"
-                >
-                  ￥{{item.handlingFees?item.handlingFees:"0.00"}}</text>
-                <text
-                  class="price-font"
-                  style="color: #333;font-size: 26rpx;"
-                  :style="{marginTop:item.handlingFees ? '0' : '8rpx' }"
-                  v-else
-                >{{item.handlingFees?`￥${item.handlingFees}`:"--"}}</text>
-              </view>
-              <view
-                v-if="item.storeDiscount"
-                class="item"
-              >
-                <text>商家优惠</text>
-                <text
-                  style="color: #333;font-size: 26rpx;"
-                  class="price-font"
-                >
-                  -￥{{item.storeDiscount}}
-                </text>
-              </view>
-            </view>
+            <store-calue-card-item :dataInfo="item2"  v-else/>
           </view>
 
-          <view
+					<view class="discount-container" v-if="item.hasMaterial &&  orderInfo.details.length>1">
+						<view class="item_css_style">
+							<view class="left">
+							 	<view style="margin-right: 8rpx;">运费</view>
+								<image
+								  class="icon"
+								  src="../../../../static/price_icon.svg"
+								  @click="readExpenses(1)"
+								/>
+							</view>
+							<view class="right">
+								<text class="price-font" v-if="orderInfo.stockType == 0">
+									￥{{item.freight?`${item.freight}`:"0.00"}}
+								</text>
+								<text class="price-font" :style="{marginTop:item.freight?'0':'8rpx'}" v-else>
+									{{item.freight?`￥${item.freight}`:"00"}}
+								</text>
+							</view>
+						</view>
+						<view class="item_css_style">
+							<view class="left">
+								<view style="margin-right: 8rpx;">搬运费</view>
+								<image
+								  class="icon"
+								  src="../../../../static/price_icon.svg"
+								  mode=""
+								  @click="readExpenses(2)"
+								/>
+							</view>
+							<view class="right">
+								<text class="price-font" v-if="orderInfo.stockType == 0">
+								  ￥{{item.handlingFees?item.handlingFees:"0.00"}}</text>
+								<text
+								  class="price-font" :style="{marginTop:item.handlingFees ? '0' : '8rpx' }"
+								  v-else
+								>{{item.handlingFees?`￥${item.handlingFees}`:"00"}}</text>
+							</view>
+						</view>
+						<view class="item_css_style"  v-if="item.storeDiscount">
+							<view class="left">
+								<text>商家</text>
+							</view>
+							<view class="right">
+								<text  class="price-font"> -￥{{item.storeDiscount}}</text>
+							</view>
+						</view>
+
+						<view class="item_css_style"  v-if="item.platformDiscount">
+							<view class="left">
+								<text>平台优惠</text>
+							</view>
+							<view class="right">
+								<text  class="price-font"> -￥{{item.platformDiscount}}</text>
+							</view>
+						</view>
+					</view>
+
+          <!-- <view
             v-if="item.hasMaterial && orderInfo.stockType == 1"
             :style="{paddingBottom: item.hasMaterial && orderInfo.stockType == 1 ? '32rpx':'0'}"
           >
@@ -222,17 +167,18 @@
             >
               <text>搬运费需要根据实际要货时进行核算</text>
             </view>
-          </view>
+          </view> -->
 
         </view>
         <view class="split-line" />
       </view>
 
-      <order-price
-        :data="orderInfo"
-        :waitPay="true"
-        :payPrice="payPrice"
-      />
+			<order-price
+				:data="orderInfo"
+				:waitPay="true"
+				:payPrice="payPrice"
+			/>
+
 
       <!-- <view class="payment-method">
 				<text>支付方式</text>
@@ -283,24 +229,9 @@
         </image>
       </view>
       <view class="pay-way mrb">
-        <text>支付方式</text>
-
-        <view
-          v-if="payChannel "
-          class="flex-center"
-        >
-          <!-- <image
-            class="card-img"
-            src="https://ali-image.dabanjia.com/static/mp/dabanjia/images/classify/ic_card.png"
-            mode=""
-          ></image> -->
-          <text>储值卡支付</text>
-
-        </view>
-        <view v-else>
-          <!-- <view class="wechat_icon"></view> -->
-          <text>在线支付</text>
-        </view>
+        <text style="color: #333333;">支付方式</text>
+				<view v-if="payChannel" class="flex-center"><text>储值卡支付</text></view>
+        <view v-else class="flex-center"><text>在线支付</text></view>
       </view>
       <view class='remarks'>
         <text>备注</text>
@@ -311,12 +242,13 @@
             v-model="remarks"
             cursor-spacing="15px"
             placeholder-class="text-placeholder"
-            style="width:100%;line-height: 46rpx;min-height: 90rpx;height: 85%;overflow: scroll;padding-top: 20rpx;"
+            style="width:100%;line-height: 68rpx;min-height: 90rpx;height: 85%;overflow: scroll;padding-top: 30rpx;"
             placeholder="选填,说点什么～"
           />
         </view>
       </view>
       <order-info
+        v-if="orderInfo.orderNo"
         :orderNo="orderInfo.orderNo"
         :createTime="orderInfo.createTime"
       />
@@ -420,7 +352,7 @@ export default {
       scrollTop: 0,
       headerTitle: "",
       bgImg:
-        "https://ali-image.dabanjia.com/static/mp/dabanjia/images/decorate/order_bg_orange.png",
+        "https://ali-image.dabanjia.com/static/mp/dabanjia/images/theme-red/decorate/order_bg.png",
       cardClick: false, //是否选中储值卡
       haveCard: false, //是否有会员卡
       cardBalance: 11111111, //会员卡余额
@@ -470,8 +402,7 @@ export default {
         }
         return String((res / 100).toFixed(2));
       } else {
-        console.log(this.totalPrice);
-        return this.totalPrice;
+        return String(this.totalPrice);
       }
     },
   },
@@ -484,7 +415,10 @@ export default {
   },
   onPageScroll(scrollTop) {
     this.scrollTop = scrollTop.scrollTop;
+
   },
+
+
   onLoad(e) {
     this.from = e.from;
     this.orderNo = Number(e.orderNo) || getApp().globalData.decorateMsg.orderId;
@@ -500,13 +434,13 @@ export default {
       menuButtonInfo.height +
       "px";
     uni.setNavigationBarColor({
-      frontColor: "#ffffff",
-      backgroundColor: "#ffb245",
-      animation: {
-        duration: 400,
-        timingFunc: "easeIn",
-      },
-    });
+    	frontColor: '#ffffff',
+    	backgroundColor: "#ff0000",
+    	animation: {
+    		duration: 400,
+    		timingFunc: 'easeIn'
+    	}
+    })
   },
   onShow() {
     this.headerTitle = "订单详情";
@@ -720,6 +654,9 @@ export default {
   display: flex;
   align-items: center;
   justify-content: center;
+	text{
+		color: #111111;
+	}
 }
 
 .mrb {
@@ -776,14 +713,16 @@ export default {
 
 .remarks {
   padding: 5rpx 32rpx;
+  margin-bottom: 16rpx;
   background-color: #ffffff;
-  margin-top: 25rpx;
+  // margin-top: 25rpx;
   font-size: 28rpx;
   font-family: PingFangSC, PingFangSC-Regular;
   display: flex;
   justify-content: space-between;
   align-items: center;
   height: 104rpx;
+  border-radius: 24rpx;
   line-height: 104rpx;
 }
 
@@ -879,7 +818,8 @@ export default {
 
 .bgcStyle {
   width: 100%;
-  height: 32rpx;
+  height: 116%;
+  // height: 345rpx;
   position: absolute;
   bottom: -32rpx;
   z-index: -1;
@@ -919,7 +859,7 @@ export default {
         display: flex;
         flex-flow: row nowrap;
         align-items: center;
-        margin-bottom: 8rpx;
+        margin-bottom: 16rpx;
 
         image {
           width: 64rpx;
@@ -928,8 +868,10 @@ export default {
           margin-right: 12rpx;
         }
 
-        text {
-          font-size: 48rpx;
+        .text {
+					height: 64rpx;
+					line-height: 62rpx;
+          font-size: 40rpx;
           font-weight: 500;
           color: #ffffff;
         }
@@ -941,9 +883,23 @@ export default {
         line-height: 40rpx;
         font-size: 24rpx;
         font-weight: 400;
+        padding-left: 5rpx;
+        box-sizing: border-box;
         display: flex;
         flex-flow: row nowrap;
         align-items: center;
+        .countStyle {
+          // width: 154rpx;
+          // height: 40rpx;
+					display: flex;
+					align-items: center;
+          box-sizing: border-box;
+          border-radius: 8rpx;
+          background: rgba(255, 255, 255, 0.06);
+          background-blend-mode: darken;
+          mix-blend-mode: normal;
+          border: 2rpx solid rgba(255, 255, 255, 0.3);
+        }
       }
     }
 
@@ -971,8 +927,9 @@ export default {
             box-sizing: border-box;
             display: flex;
             align-items: center;
-
-            text {
+            .storeName {
+							height: 40rpx;
+							color: #333333;
               font-weight: 500;
               max-width: 476rpx;
               font-size: 28rpx;
@@ -982,9 +939,9 @@ export default {
             }
 
             image {
-              width: 34rpx;
-              height: 34rpx;
-              object-fit: cover;
+              width: 40rpx;
+              height: 40rpx;
+							display: block;
             }
           }
 
@@ -1004,60 +961,38 @@ export default {
       }
 
       .discount-container {
-        padding-bottom: 32rpx;
+        padding-bottom: 22rpx;
         display: flex;
-        flex-flow: row nowrap;
+        flex-flow: column nowrap;
         flex: 1;
         align-items: center;
         justify-content: flex-end;
         font-size: 22rpx;
         color: #999999;
-
-        .left,
-        .right {
-          .item {
-            width: 302rpx;
-            height: 32rpx;
-            display: flex;
-            flex: 1;
-            flex-flow: row nowrap;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 8rpx;
-            color: #999999;
-            font-size: 22rpx;
-
-            .item-style {
-              display: flex;
-              flex-flow: row nowrap;
-              align-items: center;
-
-              .icon {
-                width: 24rpx;
-                height: 24rpx;
-                object-fit: cover;
-              }
-            }
-          }
-
-          .item:nth-last-child(1) {
-            margin-bottom: 0;
-          }
-        }
-
-        .line1 {
-          width: 2rpx;
-          height: 40rpx;
-          background: #ebebeb;
-          margin: 16rpx 40rpx;
-        }
-
-        .line2 {
-          width: 2rpx;
-          height: 20rpx;
-          background: #ebebeb;
-          margin: 6rpx 40rpx;
-        }
+				.item_css_style{
+					width: 100%;
+					height: 36rpx;
+					display: flex;
+					flex-flow: row nowrap;
+					align-items: center;
+					justify-content: space-between;
+					margin-bottom: 8rpx;
+					.left{
+						display: flex;
+						flex-flow: row nowrap;
+						align-items: center;
+						.icon {
+						  width: 24rpx;
+						  height: 24rpx;
+						}
+					}
+					.right{
+						text{
+							color: #666666;
+							font-size: 26rpx;
+						}
+					}
+				}
       }
 
       .discount-container2 {
@@ -1143,18 +1078,18 @@ export default {
   flex-flow: row nowrap;
   align-items: center;
   justify-content: space-between;
-  padding: 12rpx 32rpx;
+  padding: 16rpx 32rpx;
   position: fixed;
   bottom: 0;
 
   .gotoPay {
     width: 248rpx;
-    height: 88rpx;
-    line-height: 88rpx;
-    font-size: 32rpx;
+    height: 80rpx;
+    line-height: 80rpx;
+    font-size: 30rpx;
     text-align: center;
     color: #ffffff;
-    background: linear-gradient(99deg, #00ccbe 0%, #00c2bf 100%);
+    background: linear-gradient(117.02deg, #fa3b34 24.56%, #ff6a33 92.21%);
     border-radius: 12rpx;
   }
 }
@@ -1207,5 +1142,16 @@ export default {
 
 ::v-deep .uni-dialog-button-text {
   font-size: 30rpx !important;
+}
+
+::v-deep .count .separator {
+  line-height: 30rpx !important;
+}
+::v-deep .count-container{
+	width: 154rpx;
+	height: 36rpx;
+	display: flex;
+	align-items: center;
+	justify-content: space-around;
 }
 </style>

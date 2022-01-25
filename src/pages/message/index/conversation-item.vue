@@ -4,23 +4,26 @@
       <image 
         v-if="conversation.systemType === CONV_TYPES.CUSTOMER" 
         class="im-avatar-image" 
-        src="https://ali-image.dabanjia.com/static/mp/dabanjia/images/message/ic_customer_service@2x.png">
+        src="https://ali-image.dabanjia.com/static/mp/dabanjia/images/theme-red/message/customer_ic.png">
       </image>
       <image
         v-else-if="conversation.systemType === CONV_TYPES.SYSTEM" 
         class="im-avatar-image" 
-        src="https://ali-image.dabanjia.com/static/mp/dabanjia/images/message/ic_system@2x.png">
+        src="https://ali-image.dabanjia.com/static/mp/dabanjia/images/theme-red/message/sys_ic.png">
       </image>
       <image
         v-else-if="conversation.systemType === CONV_TYPES.INTERACTION" 
         class="im-avatar-image" 
-        src="https://ali-image.dabanjia.com/static/mp/dabanjia/images/message/ic_interaction@2x.png">
+        src="https://ali-image.dabanjia.com/static/mp/dabanjia/images/theme-red/message/int_ic.png">
       </image>
       <group-avatars v-else :list="avatar" />
     </view>
     <view class="im-message-content">
       <view class="im-message-name">
         {{ name }}
+		<view v-if="conversation.systemType === CONV_TYPES.CUSTOMER" class="official">
+			官方
+		</view>
       </view>
       <view v-if="message" class="im-message-msg">
         <text v-if="hasAtMeMsg" class="remind">[有人@我]</text>{{ message }}
@@ -225,6 +228,17 @@
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
+  }
+  .im-message-name .official {
+	  color: #fff;
+	  font-size: 10px;
+	  background: linear-gradient(90deg, #FA462A 0%, #FF6519 100%);
+	  display: inline-block;
+	  padding: 0px 4px 1px;
+	  border-radius: 3px;
+	  line-height: 28rpx;
+	  height: 28rpx;
+	  margin-left: 4px;
   }
   
   .im-message-msg {

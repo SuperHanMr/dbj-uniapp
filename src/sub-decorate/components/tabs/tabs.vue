@@ -3,7 +3,7 @@
     <view class="item" v-for="(item, index) in items" @click="changeItem(item)" :key="index"
       :class="{active: item === current}">
       <view class="name">{{item}}</view>
-      <view class="bt" src="http://iph.href.lu/48x6?fg=00ed7d"></view>
+      <view class="bt"></view>
     </view>
   </view>
 </template>
@@ -30,7 +30,7 @@
   .tabs {
     position: fixed;
     width: 100%;
-    top: 0;
+    top: var(--window-top, 0);
     left: 0;
     z-index: 9;
     display: flex;
@@ -75,7 +75,7 @@
         display: block;
         width: 32rpx;
         height: 4rpx;
-        background: linear-gradient(129deg, #00cdec 0%, #00ed7d 92%);
+        background: linear-gradient(116.19deg, #F83112 16.48%, #FD6421 83.52%);
         border-radius: 200rpx 200rpx 0rpx 0rpx;
       }
     }

@@ -7,7 +7,7 @@
 			<view class="item" v-for="(item ,i) in datalist" @click="checkHouse(item)" :key="item.uid">
 				<view class="item-inner flex-row-bet"
 					:class="{default: item.defaultEstate, current: item.uid == current}">
-					<view class="left flex-row-start">
+					<view class="left">
 						<view v-if="item.relegationType == 2" class="friend">亲友</view>
 						<view v-if="item.defaultEstate && item.relegationType == 1" class="default">默认</view>
 						<view class="house-address" :class="{'width-ext': item.relegationType == 2 || (item.defaultEstate && item.relegationType == 1)}">{{item.housingEstate}}{{item.address}}</view>
@@ -81,7 +81,7 @@
 		width: 100%;
 		padding: 16rpx 40rpx;
 		background-color: #fff;
-    background-image: url("https://ali-image.dabanjia.com/static/mp/dabanjia/images/decorate/toast-bg.png");
+    background-image: url("https://ali-image.dabanjia.com/static/mp/dabanjia/images/theme-red/decorate/toast-bg.png");
     background-repeat: no-repeat;
     background-size: 100vw auto;;
     background-position: 0 0;
@@ -128,6 +128,11 @@
 		.left {
 			margin-right: 32rpx;
 			box-sizing: border-box;
+			&::after {
+				content: " ";
+				display: inline;
+				clear: both;
+			}
 
 			.friend,
 			.default {
@@ -145,6 +150,7 @@
 				color: #666666;
 				line-height: 29rpx;
 				margin-right: 8rpx;
+				float: left;
 			}
 
 			.house-address {
@@ -186,12 +192,14 @@
 			border-radius: 6rpx;
 		}
     .status.status0 {
-      color: #333333;
-      background: #d0efe9;
+      color: #999;
+      background: #E8E8E8;
     }
 		.status.status1, .status.status3 {
-			color: #fff;
-			background: #00c2b8;
+			color: #FA4D32;
+			background: rgba(250, 77, 50, 0.08);
+      border-radius: 8rpx 8rpx 4rpx 8rpx ;
+      // opacity: ;
 		}
 
 		// .status.status3 {
@@ -200,8 +208,9 @@
 		// }
 
 		.status.status4 {
-			color: #ffffff;
-			background: #999999;
+			color: #ccc;
+			background: #fff;
+      border: 0.5px solid #e8e8e8;
 		}
 	}
 
@@ -210,12 +219,12 @@
 
 			.friend,
 			.default {
-				border: 1rpx solid #35C4C4;
-				color: #35C4C4;
+				border: 2rpx solid #ccc;
+				color: #666;
 			}
 
 			.house-address {
-				color: #35C4C4;
+				color: #333;
 			}
 		}
 	}

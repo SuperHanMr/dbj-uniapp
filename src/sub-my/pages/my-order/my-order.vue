@@ -9,10 +9,11 @@
         @click="currentIndex=index"
       >
         <view class="tab-text">{{item}}</view>
-        <view class="bottom-icon" />
+        <view class="bottom-icon"
+					:style="{backgroundImage:`url(${bgcIcon})`,backgroundSize: '100% 100%'}"
+				/>
       </view>
     </view>
-    <view class="line" />
     <swiper
       class="swiper"
       :class="{empty:orderListLength<=0}"
@@ -61,16 +62,15 @@
                   </text>
                   <image
                     v-if="!item.orderName && item.type !== 5"
-                    src="../../static/ic_more.svg"
+                    src="https://ali-image.dabanjia.com/static/mp/dabanjia/images/theme-red/my/small_gotoShop.svg"
                     mode=" "
                   />
                 </view>
-                <view
+                <view v-if="currentIndex!==1"
                   class="order-status"
                   :class="{active: item.orderStatus == 2 || item.orderStatus == 3}"
                   @click="goToDetail(item)"
                 >
-                  <!-- {{item.orderStatusName}} -->
                   {{
 										item.orderStatus == 1
 										?(item.type == 2
@@ -85,6 +85,21 @@
 										:item.orderStatusName
 									}}
                 </view>
+								<view
+									class="countDownStyle"
+									v-if="currentIndex==1 && item.showCancelOrderTime"
+									:style="{backgroundImage:showDangerBgc?`url(${countDownBgc1})`:`url(${countDownBgc2})`,backgroundSize: '100% 100%'}"
+								>
+									<count-down
+										class="count_down"
+									  :start="item.remainTime"
+									  :timeBackground="''"
+									  :timeColor="!showDangerBgc?'#222222':'#F83112'"
+									  :separatorColor="!showDangerBgc?'#222222':'#F83112'"
+									  @finish="onRefresh(e)"
+										@changeBgc="changeBgc"
+									/>
+								</view>
               </view>
 
               <view class="body">
@@ -173,7 +188,7 @@
                   <text v-if="item.freight && !item.handlingFees">需付款(含运费)</text>
                   <text v-if=" !item.freight && item.handlingFees">需付款(含搬运费)</text>
                   <text v-if="!item.freight && !item.handlingFees">需付款</text>
-                  <text style="color:#FF3347;margin-left: 8rpx;">
+                  <text style="color:#F83112;margin-left: 8rpx;">
                     <text style="font-size:22rpx;">￥</text>
                     <text
                       style="font-size: 32rpx;"
@@ -224,43 +239,14 @@
 
               <view
                 class="line"
-                v-if="item.orderStatus == 0 && (item.showCancelOrderTime || item.showCancelBtn || item.showToPayBtn)"
-              />
-              <view
-                class="line"
                 v-if="item.orderStatus == 1 && item.shipmentStatus == 1"
               />
 
               <view
-                class="footer"
-                v-if="item.orderStatus == 0 && (item.showCancelOrderTime || item.showCancelBtn || item.showToPayBtn)"
-                :class="{buttonContainer:!item.showCancelOrderTime}"
+                class="footer buttonContainer"
+                v-if="item.orderStatus == 0 && (item.showCancelBtn || item.showToPayBtn)"
               >
-                <view
-                  v-if="item.showCancelOrderTime "
-                  class="set-interval"
-                >
-                  <image
-                    src="../../static/ic_time@2x.png"
-                    mode=""
-                  />
 
-                  <view class="time-text">
-                    <text class="remainPayTime">剩余支付时间</text>
-                    <count-down
-                      :start="item.remainTime"
-                      :timeBackground="'#E4E6E6'"
-                      :timeColor="'#333333'"
-                      :separatorColor="'#333333'"
-                      @finish="onRefresh(e)"
-                    />
-                    <!-- <uni-countdown color="#333333" background-color="#E4E6E6" :showDay="false"
-											:hour="formatTime(item.remainTime)[0]"
-											:minute="formatTime(item.remainTime)[1]"
-											:second="formatTime(item.remainTime)[2]" /> -->
-                  </view>
-
-                </view>
                 <view
                   v-if="item.showToPayBtn || item.showCancelBtn"
                   class="waitPayBottom"
@@ -286,31 +272,21 @@
                 v-if="item.orderStatus == 1 && item.stockType == 0 && item.shipmentStatus == 1"
               >
                 <view class="button">
-                  <view
-                    class="go-to-pay"
-                    @click="handleConfirmReceipt(item)"
-                  >
-                    确认收货
-                  </view>
+                  <view class="go-to-pay" @click="handleConfirmReceipt(item)">确认收货</view>
                 </view>
               </view>
             </view>
           </view>
-          <view
-            v-if="orderList.length == 0 && !loading"
-            class="swiper-item empty-container"
-          >
+					<!-- 空白页面 -->
+          <view v-if="orderList.length == 0 && !loading" class="swiper-item empty-container">
             <view class="empty-page">
-              <view class="line" />
               <view class="content ">
-                <image
-                  src="../../static/empty_page@2x.png"
-                  mode=""
-                />
-                <text>暂无相关订单~</text>
+                <image src="https://ali-image.dabanjia.com/static/mp/dabanjia/images/theme-red/my/img_noOrder.svg" />
               </view>
+							<view class="text">您暂时没有相关订单哦～</view>
             </view>
           </view>
+
 
         </scroll-view>
       </swiper-item>
@@ -353,6 +329,7 @@ export default {
       currentIndex: -1,
       orderStatus: -1, //订单状态（-1全部,0待付款，1进行中，2已完成 3已关闭）
       rows: 15,
+			showDangerBgc:"",
 
       lastId: [-1, -1, -1, -1, -1],
       orderList0: [],
@@ -370,6 +347,9 @@ export default {
       loading: false,
       navBarHeight: "",
       title: "我的订单",
+			bgcIcon:"https://ali-image.dabanjia.com/static/mp/dabanjia/images/theme-red/my/selectIcon.svg",
+			countDownBgc1:"https://ali-image.dabanjia.com/static/mp/dabanjia/images/theme-red/my/countDown_danger.svg" ,//小于两个小时的样式
+			countDownBgc2:"https://ali-image.dabanjia.com/static/mp/dabanjia/images/theme-red/my/countDown_normal.svg",//大于两个小时的样式
     };
   },
 
@@ -511,12 +491,15 @@ export default {
     goToDetail(data) {
       switch (data.orderStatus) {
         case 0:
+          console.log("订单id===", data.id);
+          // return
           uni.navigateTo({
-            url: `order-wait-pay/order-wait-pay?orderNo=${data.id}?&from=all`,
+            url: `order-wait-pay/order-wait-pay?orderNo=${data.id}&from=all`,
           });
           break;
         case 1:
           if (this.currentIndex == 0) {
+            console.log("订单id===", data.id);
             uni.navigateTo({
               url: `order-in-progress/order-in-progress?orderNo=${data.id}&from=all`,
             });
@@ -705,17 +688,31 @@ export default {
       return list.map((item) => item.imgUrl);
     },
     formatTime(msTime) {
-      let time = msTime / 1000;
-      let hour = Math.floor(time / 60 / 60) % 24;
-      if (!hour) {
-        hour = 0;
-      }
-      let minute = Math.floor(time / 60) % 60;
-      if (!minute) {
-        minute = 0;
-      }
-      let second = Math.floor(time) % 60;
-      return [hour, minute, second];
+      // let start = this.start.toString()
+      // let timer = parseInt(start)
+
+      // let hours = Math.floor(timer / 1000/ 60 / 60);
+      // this.hour = (hours < 10 ? ('0' + hours) : hours);
+
+      // // console.log("!!!!!!!!!!!!!!!!!!!!!!!!!")
+      // // console.log("a.hour=",this.hour)
+      // var interval = setInterval(() => {
+      // 	this.second = (Array(2).join(0) + parseInt(--this.second)).slice(-2)
+      // 	if (this.second == 0) {
+      // 		if (this.minute != 0) {
+      // 				this.minute = (Array(2).join(0) + parseInt(--this.minute)).slice(-2)
+      // 				this.second = 59
+      // 		} else {
+      // 			if (this.hour != 0) {
+      // 				this.hour = (Array(2).join(0) + parseInt(--this.hour)).slice(-2)
+      // 				this.minute = 59
+      // 				this.second = 59
+      // 			} else {
+      // 				clearInterval(interval)
+      // 			}
+      // 		}
+      // 	}
+      // }, 1000)
     },
     handleReset() {
       switch (this.currentIndex) {
@@ -736,7 +733,10 @@ export default {
           break;
       }
     },
-  },
+		changeBgc(){
+			this.showDangerBgc = true
+		},
+	},
 };
 </script>
 
@@ -797,7 +797,6 @@ export default {
       position: absolute;
       width: 32rpx;
       height: 4rpx;
-      background: linear-gradient(129deg, #00cdec 0%, #00ed7d 100%);
       border-radius: 200rpx 200rpx 0px 0px;
       bottom: 10rpx;
       left: 60rpx;
@@ -806,11 +805,11 @@ export default {
 }
 
 .header {
-  height: 96rpx;
+  // height: 96rpx;
   margin-top: 16rpx;
-  padding: 28rpx 32rpx;
+	padding: 28rpx 32rpx 0 32rpx;
   box-sizing: border-box;
-  background-color: #fafafa;
+  background-color: #FFFFFF;
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -819,8 +818,9 @@ export default {
     display: flex;
     flex-flow: row nowrap;
     align-items: center;
-
     text {
+			display: block;
+			height: 40rpx;
       font-weight: 500;
       max-width: 476rpx;
       font-size: 28rpx;
@@ -830,8 +830,8 @@ export default {
     }
 
     image {
-      width: 34rpx;
-      height: 34rpx;
+      width: 40rpx;
+      height: 40rpx;
       object-fit: cover;
     }
   }
@@ -842,10 +842,29 @@ export default {
     // font-weight: 800;
     line-height: 100%;
   }
+	.countDownStyle{
+		position: relative;
+		width: 242rpx;
+		height: 37rpx;
+		.count_down{
+			position: absolute;
+			top: 2rpx;
+			right: 16rpx;
+		}
+
+	}
+}
+.count_down ::v-deep .count .list{
+	width: 30rpx;
+	height: 32rpx;
+}
+.count_down ::v-deep .count .separator{
+	width: 4rpx;
+	height: 38rpx;
 }
 
 .body {
-  padding: 32rpx 32rpx 0;
+  padding: 28rpx 32rpx 0;
   background-color: #ffffff;
   box-sizing: border-box;
   display: flex;
@@ -936,7 +955,7 @@ export default {
   flex-flow: row nowrap;
   align-items: center;
   justify-content: space-between;
-  padding: 32rpx;
+  padding: 0 32rpx 32rpx;
   background-color: #ffffff;
 
   .set-interval {
@@ -994,7 +1013,7 @@ export default {
       text-align: center;
       font-size: 24rpx;
       margin-left: 24rpx;
-      background: linear-gradient(99deg, #00ccbe 0%, #00c2bf 100%);
+      background: linear-gradient(116.19deg, #F83112 16.48%, #FD6421 83.52%);
       border-radius: 32rpx;
       color: #ffffff;
       padding: 0;
@@ -1019,7 +1038,7 @@ export default {
     font-size: 24rpx;
     padding: 0;
     margin-left: 24rpx;
-    background: linear-gradient(135deg, #36d9cd 0%, #28c6c6 100%);
+		background: linear-gradient(116.19deg, #F83112 16.48%, #FD6421 83.52%);
     border-radius: 32rpx;
     color: #ffffff;
   }
@@ -1041,7 +1060,7 @@ export default {
   text-align: center;
   font-size: 24rpx;
   margin-left: 24rpx;
-  background: linear-gradient(99deg, #00ccbe 0%, #00c2bf 100%);
+  background: linear-gradient(116.19deg, #F83112 16.48%, #FD6421 83.52%);
   border-radius: 32rpx;
   color: #ffffff;
   padding: 0;
@@ -1066,9 +1085,9 @@ export default {
     //   padding-bottom: 100rpx;
     // }
     .empty-page {
-      .line {
-        height: 1rpx solid #f2f2f2;
-      }
+      // .line {
+      //   height: 1rpx solid #f2f2f2;
+      // }
 
       .content {
         margin: 388rpx 254rpx 0 256rpx;
@@ -1077,22 +1096,20 @@ export default {
         flex-flow: column nowrap;
         align-items: center;
         color: #999999;
-
         image {
-          width: 240rpx;
-          height: 240rpx;
+          width: 400rpx;
+          height: 400rpx;
           object-fit: cover;
-          margin-bottom: 24rpx;
         }
-
-        text {
+      }
+			.text {
           height: 40rpx;
           line-height: 40rpx;
           font-size: 28rpx;
           font-weight: 400;
           color: #999999;
+					text-align: center;
         }
-      }
     }
   }
 }

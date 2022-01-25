@@ -3,7 +3,7 @@
     <view class="pieces-price-unit">
       <view class="pieces">共{{pieces}}件</view>
       <view class="price-wrap">
-        <view class="unit">总计：￥</view>
+        <view class="unit">总计：<text style="color: #FA3E24;">￥</text></view>
         <view class="price">{{__countPrice[0]}}</view>
         <view class="flot">.{{__countPrice[1]}}</view>
       </view>
@@ -119,7 +119,7 @@
       font-family: Unnamed, Unnamed-Regular;
       font-weight: 400;
       text-align: left;
-      color: #333333;
+      color: #FA3E24;
       vertical-align: bottom;
       line-height: 72rpx;
     }
@@ -131,7 +131,7 @@
       font-weight: 400;
       text-align: left;
       line-height: 58rpx;
-      color: #333333;
+      color: #FA3E24;
     }
   }
 
@@ -144,7 +144,7 @@
     box-sizing: border-box;
     width: 248rpx;
     height: 88rpx;
-    background: linear-gradient(135deg, #00c2b2, #00c2bf);
+    background: linear-gradient(117.02deg, #FA3B34 24.56%, #FF6A33 92.21%);
     border-radius: 12rpx;
     border: 1rpx solid transparentize;
     font-size: 32rpx;
@@ -157,7 +157,7 @@
 
   .btn.disabled {
     opacity: 0.5;
-    background: linear-gradient(135deg, #53d5cc, #4fc9c9);
+    background: linear-gradient(117.02deg, rgba(250, 59, 52, 0.4) 24.56%, rgba(255, 106, 51, 0.4) 92.21%), #FFFFFF;
     color: #ffffff;
   }
 </style>

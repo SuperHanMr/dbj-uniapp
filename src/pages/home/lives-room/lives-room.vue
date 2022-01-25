@@ -150,7 +150,7 @@
 			</view>
 		</view>
 		<view v-else class="unlived">
-			<image class="img" src="https://ali-image.dabanjia.com/static/mp/dabanjia/images/home/un-liveing.png"
+			<image class="img" src="https://ali-image.dabanjia.com/static/mp/dabanjia/images/theme-red/home/un-liveing.png"
 				mode="">
 			</image>
 			<view class="tips">
@@ -704,15 +704,13 @@
 				}
 
 				.text-btn {
-					width: 266rpx;
-					height: 88rpx;
-					line-height: 88rpx;
-					background: linear-gradient(135deg, #00bfaf, #00bfbc);
+					padding: 30rpx 90rpx;
+					border: 1px solid #FA3C35;
 					border-radius: 12rpx;
 					text-align: center;
 					font-size: 28rpx;
 					font-weight: 500;
-					color: #ffffff;
+					color: #FA4D32;
 					margin-top: 48rpx;
 				}
 			}
@@ -726,8 +724,8 @@
 
 		.img {
 			margin-top: 116rpx;
-			width: 280rpx;
-			height: 120rpx;
+			width: 200rpx;
+			height: 112rpx;
 		}
 
 		.tips {
@@ -753,7 +751,7 @@
 			line-height: 88rpx;
 			text-align: center;
 			border: 1rpx solid #ffffff;
-			border-radius: 12rpx;
+			border-radius: 16rpx;
 			font-size: 32rpx;
 			color: #ffffff;
 		}
@@ -782,10 +780,10 @@
 			margin-bottom: 280rpx;
 			line-height: 88rpx;
 			text-align: center;
-			background-color: #07bfb1;
+			background: linear-gradient(117.02deg, #FA3B34 24.56%, #FF6A33 92.21%);
 			color: white;
 			font-size: 28rpx;
-			border-radius: 12rpx;
+			border-radius: 16rpx;
 		}
 	}
 

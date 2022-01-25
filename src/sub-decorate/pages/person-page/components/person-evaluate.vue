@@ -2,7 +2,7 @@
   <view class="person-evaluate person-content-item"  v-if="evaluate.list.length!==0">
     <view class="title">对Ta的评价</view>
     <view class="" v-if="evaluate.list.length>0">
-      <personEvaliateItem class="person-item" :last='index===evaluate.list.length-1' v-for="(item,index) in evaluate.list" :item='item' :key='item.id'></personEvaliateItem>
+      <personEvaliateItem :userId='personId' class="person-item" :last='index===evaluate.list.length-1' v-for="(item,index) in evaluate.list" :item='item' :key='item.id'></personEvaliateItem>
     </view>
     <view class="empty" v-else>
       暂无评价
@@ -18,11 +18,14 @@
   import {getComments} from '@/api/decorate.js'
   export default{
     props:{
-      personId:0,
+      personId:{
+        type:Number,
+        default:0
+      },
       isGrab:{
         type:Boolean,
         default:false,
-      }
+      },
     },
     components:{
       personEvaliateItem
@@ -30,7 +33,9 @@
     data(){
       return{
         num:3,
-        evaluate:{}
+        evaluate:{
+          list:[]
+        }
       }
     },
     mounted() {
@@ -49,6 +54,7 @@
             console.log(formatDate(item.createTime,'YYYY-MM-DD'))
             item.createTime = formatDate(item.createTime,'YYYY-MM-DD')
           })
+          console.log(res.list.length)
           this.$emit('contentEmpty','evaluateEmpty',res.list.length>0?true:false)
           this.getEvaluate()
         })
@@ -66,6 +72,9 @@
 </script>
 
 <style lang="scss" scoped>
+  .person-evaluate{
+    background-color: #fff;
+  }
   .grab-padding{
     padding: 38rpx 0 16rpx ;
   }

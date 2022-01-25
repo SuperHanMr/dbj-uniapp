@@ -8,6 +8,8 @@
     "build:app-plus": "cross-env NODE_ENV=production UNI_PLATFORM=app-plus vue-cli-service uni-build",
     "build:custom": "cross-env NODE_ENV=production uniapp-cli custom",
     "build:h5": "cross-env NODE_ENV=production UNI_PLATFORM=h5 vue-cli-service uni-build",
+    "build:h5-stage": "cross-env NODE_ENV=development UNI_PLATFORM=h5 vue-cli-service uni-build",
+    "build:h5-dev": "cross-env NODE_ENV=dev UNI_PLATFORM=h5 vue-cli-service uni-build",
     "build:mp-360": "cross-env NODE_ENV=production UNI_PLATFORM=mp-360 vue-cli-service uni-build",
     "build:mp-alipay": "cross-env NODE_ENV=production UNI_PLATFORM=mp-alipay vue-cli-service uni-build",
     "build:mp-baidu": "cross-env NODE_ENV=production UNI_PLATFORM=mp-baidu vue-cli-service uni-build",
@@ -67,10 +69,11 @@
     "regenerator-runtime": "^0.12.1",
     "tim-upload-plugin": "^1.0.3",
     "tim-wx-sdk": "^2.13.1",
+    "url-parse": "^1.4.7",
     "uuid": "^3.4.0",
     "vue": "^2.6.11",
-    "vuex": "^3.2.0",
-    "url-parse": "^1.4.7"
+    "vue-jsonp": "^2.0.0",
+    "vuex": "^3.2.0"
   },
   "devDependencies": {
     "@babel/runtime": "~7.15.3",

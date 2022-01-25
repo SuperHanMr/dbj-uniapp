@@ -1,5 +1,5 @@
 <template>
-	<view >
+	<view class="container" >
 		<view class="evaluate-container" v-if="evaluateList.length">
 			<view class="evaluate-item" v-for="item in evaluateList" :key="item.id">
 				<view class="header">
@@ -16,9 +16,9 @@
 				<view class="body" v-for="item2 in item.details" :key="item2.id">
 					<order-item :dataList="item2" :isEvaluate="isEvaluate"></order-item>
 				</view>
-				
+
 				<view class="line" />
-				
+
 				<view class="footer" v-if="item.commentStatus == 0 ">
 					<view class="button-container">
 						<view class="immediate-evaluate" @click="immediateEvalute(item)">
@@ -33,18 +33,18 @@
 						</view>
 					</view>
 				</view>
-			
+
 			</view>
 		</view>
-		
+
 		<view class="empty-container" v-else>
 			<view class="empty-page">
-				<image src="../../static/empty_page@2x.png" mode=""></image>
-				<text>暂无相关订单</text>
+				<image src="https://ali-image.dabanjia.com/static/mp/dabanjia/images/theme-red/my/img_noOrder.svg" mode=""></image>
+				<text>您暂时没有相关订单哦～</text>
 			</view>
 		</view>
 	</view>
-	
+
 
 </template>
 
@@ -68,21 +68,21 @@
 			this.evaluateList=[];
 			this.getList()
 		},
-		
+
 		//下拉刷新
 		onPullDownRefresh() {
 			console.log('refresh');
 			setTimeout(function () {
 					uni.stopPullDownRefresh();
 			}, 1000);
-		}, 
-		
+		},
+
 		//页面上拉触底事件的处理函数
 		onReachBottom(e) {
 			if (this.loading || this.query.page > this.totalPage) return
 			this.getList();
 		},
-		
+
 		methods: {
 			getList(){
 				this.loading= true
@@ -97,14 +97,14 @@
 					this.loading=false
 				})
 			},
-	
+
 			immediateEvalute(item){
 				console.log("立即评价");
 				uni.navigateTo({
 					url:`immediate-evaluate/immediate-evaluate?typeName=${item.typeName}&id=${item.id}&type=${item.type}&serverName=${item.serverName}&serverRoleName=${item.serverRoleName}&serverAvatar=${item.serverAvatar}`,
 				})
 			},
-			
+
 			gotoDetail(item){
 				console.log("item.id=",item.id)
 				uni.navigateTo({
@@ -117,8 +117,12 @@
 </script>
 
 <style lang="scss" scoped>
+	.container{
+		height: 100%;
+		background-color: #FFFFFF;
+	}
 	.evaluate-container{
-		
+		background-color: #E3E3E3;
 		.evaluate-item{
 			background-color: #FFFFFF;
 		}
@@ -153,11 +157,11 @@
 			// font-weight: 800;
 		}
 	}
-	
+
 	.body{
 		padding: 32rpx 32rpx 0;
 	}
-	
+
 	.line {
 		width: 100%;
 		height: 0.5px;
@@ -171,7 +175,7 @@
 		padding: 32rpx;
 		// text-align: right;
 		background-color: #ffffff;
-		
+
 		.button-container{
 			display: flex;
 			flex-flow: row nowrap;
@@ -189,7 +193,7 @@
 				padding: 0;
 			}
 			.immediate-evaluate{
-				background: linear-gradient(99deg, #00CCBE 0%, #00C2BF 100%);   	
+				background: linear-gradient(116.19deg, #F83112 16.48%, #FD6421 83.52%)
 			}
 			.review-detail{
 				color: #333333;
@@ -197,31 +201,30 @@
 			}
 		}
 	}
-	
+
 	button{
 		display: none;
 	}
 	button::after {
 	  border: none;
 	}
-	
+
 	page{
-		background-color: #ffff !important;
+		background-color: #ffffff !important;
 	}
 	.empty-container{
 		width: 100%;
 		height: 100%;
 		background-color: #fff;
 		.empty-page{
-			padding: 484rpx 254rpx 800rpx 256rpx;
+			padding: 362rpx 176rpx 0 174rpx;
 			display: flex;
 			flex-flow: column nowrap;
 			align-items: center;
 			image{
-				width: 240rpx;
-				height: 240rpx;
+				width: 400rpx;
+				height: 400rpx;
 				object-fit: cover;
-				margin-bottom: 24rpx;
 			}
 			text{
 				height: 40rpx;

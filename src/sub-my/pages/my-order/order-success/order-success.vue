@@ -15,13 +15,13 @@
 
     <!-- 退款成功 -->
     <view class="order-container" v-if="type=='refund'" :style="{paddingBottom:systemBottom}">
-      <view style="position: relative;" :style="{backgroundImage:`url(${bgImg})`,backgroundSize: '100% 100%'}">
+      <view style="position: relative;">
         <view class="bgcStyle" :style="{backgroundImage:`url(${bgImg})`,backgroundSize: '100% 100%'}"/>
         <view :style="{height:navBarHeight}"></view>
         <view class="order-status">
           <view class="status">
-            <image src="../../../static/ic_order_success.svg" mode=""/>
-            <text>退款成功</text>
+            <image src="https://ali-image.dabanjia.com/static/mp/dabanjia/images/theme-red/my/ic_order_success.svg" mode=""/>
+            <view class="text">退款成功</view>
           </view>
           <text class="time">{{refundInfo.createTime | formatDate}}</text>
         </view>
@@ -30,7 +30,7 @@
       <view class="order-header1">
         <view class="refund-price">
           <text>退款总金额</text>
-          <view style="color:#FF3347;">
+          <view style="color:#FA4D32;">
             <text style="font-size:26rpx;">￥</text>
             <text style="font-size:40rpx;" class="price-font" >
 							{{handlePrice(refundInfo.refundAmount)[0]}}.
@@ -110,14 +110,14 @@
 
     <!-- 订单完成页面 -->
     <view class="order-container" v-if="type == 'complete'" :style="{paddingBottom:systemBottom}">
-      <view  style="position: relative;" :style="{backgroundImage:`url(${bgImg})`,backgroundSize: '100% 100%'}">
+      <view  style="position: relative;">
         <!-- 占位 -->
         <view class="bgcStyle" :style="{backgroundImage:`url(${bgImg})`,backgroundSize: '100% 100%'}" />
         <view :style="{height:navBarHeight}"></view>
-        <view class="order-status">
+        <view class="order-status-done">
           <view class="status">
-            <image src="../../../static/ic_order_success.svg" mode=""/>
-            <text>已完成</text>
+            <image src="https://ali-image.dabanjia.com/static/mp/dabanjia/images/theme-red/my/ic_order_success.svg" mode=""/>
+            <view class="text">已完成</view>
           </view>
         </view>
       </view>
@@ -131,15 +131,15 @@
         <view class="part1" v-for="(item2,index2) in orderInfo.details" :key="index2" >
           <view class="header">
             <view class="header-content" v-if="orderInfo.type !==5 ">
-              <text style="color: #333333;"  @click="gotoShop(item2)" >
+              <view class="storeName"  @click="gotoShop(item2)" >
 								{{item2.storeName}}
-							</text>
-              <image src="../../../static/ic_more.svg" mode=""/>
+							</view>
+              <image src="https://ali-image.dabanjia.com/static/mp/dabanjia/images/theme-red/my/small_gotoShop.svg" />
             </view>
 						<view class="header-content" v-else>
-						  <text style="color: #333333;" >
+						  <view class="storeName">
 								{{orderInfo.orderName}}
-							</text>
+							</view>
 						</view>
             <view class="icon"></view>
           </view>
@@ -160,6 +160,7 @@
       <order-price :data="orderInfo" />
 
       <order-info
+        v-if="orderInfo.orderNo"
         :orderNo="orderInfo.orderNo"
         :createTime="orderInfo.createTime"
         :showPayTime="true"
@@ -168,14 +169,14 @@
         :showPayType="true"
       />
 
-      <view v-if=" orderInfo.showRefundBtn " class="applyforRefund-container" :style="{paddingBottom:systemBottom,height:systemHeight}">
+      <view v-if=" orderInfo.showRefundBtn " class="applyforRefund-container" :style="{paddingBottom:systemBottom,}">
         <view class="applyforRefund" @click="toApplayForRefund(orderInfo,2)" >
           申请退款
         </view>
 			</view>
 
 			<!-- 申请售后的按钮 -->
-			<view v-if="orderInfo.showApplyAfterSalesBtn" class="applyforRefund-container" :style="{paddingBottom:systemBottom,height:systemHeight}">
+			<view v-if="orderInfo.showApplyAfterSalesBtn" class="applyforRefund-container" :style="{paddingBottom:systemBottom,}">
 			  <view class="applyforRefund" @click="toApplyForAfterSales()" >
 			    申请售后
 			  </view>
@@ -195,7 +196,7 @@
 					退款成功
 				</view>
 
-				<view class="refundOrderStatus" style="color:#FF3347;" v-if="orderInfo.refundBillStatus == 5"
+				<view class="refundOrderStatus" style="color:#FA4D32;" v-if="orderInfo.refundBillStatus == 5"
 					@click="refundFailed(orderInfo)">
 					退款失败
 				</view>
@@ -239,8 +240,7 @@ export default {
       scrollTop: 0,
       headerTitle: "",
 			title:"",
-      bgImg:
-        "https://ali-image.dabanjia.com/static/mp/dabanjia/images/decorate/order_bg_green.png",
+      bgImg: "https://ali-image.dabanjia.com/static/mp/dabanjia/images/theme-red/decorate/order_bg.png",
     };
   },
 
@@ -422,7 +422,8 @@ export default {
   }
   .bgcStyle {
     width: 100%;
-    height: 32rpx;
+		height: 116%;
+    // height: 32rpx;
     position: absolute;
     bottom: -32rpx;
     z-index: -1;
@@ -431,9 +432,8 @@ export default {
     width: 100%;
     height: 100%;
     overflow: auto;
-    .order-status {
+    .order-status,.order-status-done {
       width: 100%;
-      height: 140rpx;
       color: #ffffff;
       background-size: 100% 172rpx;
       display: flex;
@@ -445,18 +445,20 @@ export default {
         flex-flow: row nowrap;
         align-items: center;
         margin-bottom: 8rpx;
-
-        image {
+				image {
           width: 64rpx;
           height: 64rpx;
+					display: block;
           object-fit: cover;
           margin-right: 12rpx;
         }
 
-        text {
-          font-size: 48rpx;
+        .text {
+          font-size: 40rpx;
           font-weight: 500;
           color: #ffffff;
+					height: 64rpx;
+					line-height: 62rpx;
         }
       }
 
@@ -466,9 +468,13 @@ export default {
         line-height: 40rpx;
         font-size: 26rpx;
         font-weight: 400;
+				margin-bottom: 32rpx;
       }
     }
-
+		
+		.order-status-done .status{
+			margin-bottom: 32rpx;
+		}
     .order-header1 {
       background: #ffffff;
       border-radius: 20rpx;
@@ -521,7 +527,9 @@ export default {
             box-sizing: border-box;
             display: flex;
             align-items: center;
-            text {
+            .storeName {
+							height: 40rpx;
+							color: #333333;
               font-weight: 500;
               max-width: 476rpx;
               font-size: 28rpx;
@@ -530,9 +538,8 @@ export default {
               white-space: nowrap;
             }
             image {
-              width: 34rpx;
-              height: 34rpx;
-              object-fit: cover;
+              width: 40rpx;
+              height: 40rpx;
             }
           }
           .icon {
@@ -632,10 +639,10 @@ export default {
   flex-flow: row nowrap;
   align-items: center;
   justify-content: flex-end;
-  padding: 12rpx 32rpx;
+  padding: 30rpx 32rpx 26rpx 32rpx;
 
   .applyforRefund {
-    margin: 18rpx 0;
+    // margin: 18rpx 0;
     box-sizing: border-box;
     width: 160rpx;
     height: 56rpx;
@@ -647,22 +654,19 @@ export default {
     font-size: 24rpx;
     border: 2rpx solid #eaeaea;
   }
-}
-.applyforRefund-confirmReceipt2 {
-		padding-top: 30rpx;
 
-		.refundOrderStatus {
-			width: 160rpx;
-			height: 56rpx;
-			line-height: 54rpx;
-			text-align: center;
-			border-radius: 16rpx;
-			border: 2rpx solid #eaeaea;
-			font-size: 24rpx;
-			font-weight: 400;
-			color: #333333;
-		}
+	.refundOrderStatus {
+		width: 160rpx;
+		height: 56rpx;
+		line-height: 54rpx;
+		text-align: center;
+		border-radius: 16rpx;
+		border: 2rpx solid #eaeaea;
+		font-size: 24rpx;
+		font-weight: 400;
+		color: #333333;
 	}
+}
 
 // 弹框样式
 ::v-deep .uni-popup-dialog {
@@ -694,7 +698,7 @@ export default {
 }
 
 ::v-deep .uni-button-color {
-  color: #ff3347 !important;
+  color: #FA4D32 !important;
   font-size: 30rpx !important;
   font-weight: 500;
 }

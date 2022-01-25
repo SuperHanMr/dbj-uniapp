@@ -58,8 +58,9 @@
                 <view class="change-wrap"
                   v-if="item.inServiceArea && !isNaN(content.categoryId) && content.categoryName !== '其他' && content.categoryId != '' && !item.selling">
                   <view @click="goMaterialsList(item)">更换商品</view>
-                  <image @click="goMaterialsList(item)"
-                    src="https://ali-image.dabanjia.com/static/mp/dabanjia/images/decorate/change_material.svg"></image>
+                  <i class='icon-alert_notice_jump' @click="goMaterialsList(item)"></i>
+                  <!-- <image 
+                    src="https://ali-image.dabanjia.com/static/mp/dabanjia/images/decorate/change_material.svg"></image> -->
                 </view>
               </view>
               <view class="no-pay-change" v-if="!item.inServiceArea">
@@ -67,8 +68,8 @@
                 <view class="change"
                   v-if="!isNaN(content.categoryId) && content.categoryName !== '其他' && content.categoryId != ''">
                   <view @click="editAndGoMaterialsList(item)">更换商品</view>
-                  <image @click="editAndGoMaterialsList(item)"
-                    src="https://ali-image.dabanjia.com/static/mp/dabanjia/images/decorate/change_material.svg"></image>
+                  <i class='icon-alert_notice_jump' @click="editAndGoMaterialsList(item)"></i>
+                  
                 </view>
               </view>
             </view>
@@ -312,13 +313,13 @@
       width: 60rpx;
       height: 30rpx;
       box-sizing: border-box;
-      border: 1rpx solid #35c4c4;
+      background: linear-gradient(90.48deg, #B4EEE1 0.28%, #EAFCD7 99.48%);
       border-radius: 4rpx;
       font-size: 20rpx;
       font-family: PingFangSC, PingFangSC-Regular;
-      font-weight: 400;
+      font-weight: 600;
       text-align: center;
-      color: #35c4c4;
+      color: #212121;
       line-height: 27rpx;
       margin-right: 8rpx;
     }
@@ -358,7 +359,7 @@
         font-family: PingFangSC, PingFangSC-Regular;
         font-weight: 700;
         text-align: right;
-        color: #00bfb6;
+        color: #FA4D32;
         line-height: 34rpx;
       }
     }
@@ -411,7 +412,7 @@
       font-family: PingFangSC, PingFangSC-Regular;
       font-weight: 700;
       text-align: right;
-      color: #00bfb6;
+      color: #FA4D32;
       line-height: 34rpx;
     }
   }
@@ -449,13 +450,13 @@
       font-family: PingFangSC, PingFangSC-Medium;
       font-weight: 700;
       text-align: right;
-      color: #00bfb6;
+      color: #FA4D32;
       line-height: 32rpx;
     }
 
-    image {
-      width: 20rpx;
-      height: 20rpx;
+    i {
+      font-size: 20rpx;
+      color: #FA4D32;
     }
   }
 
@@ -473,13 +474,13 @@
         font-family: PingFangSC, PingFangSC-Medium;
         font-weight: 700;
         text-align: right;
-        color: #00bfb6;
+        color: #FA4D32;
         line-height: 32rpx;
       }
 
-      image {
-        width: 20rpx;
-        height: 20rpx;
+      i {
+        font-size: 20rpx;
+        color: #FA4D32;
       }
     }
 

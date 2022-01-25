@@ -54,7 +54,6 @@
     "quickapp" : {},
     /* 快应用特有相关 */
     "mp-weixin" : {
-        /* 微信小程序特有相关 */
         "appid" : "wx2e14a7847b8047b5",
         "setting" : {
             "urlCheck" : true,
@@ -83,5 +82,14 @@
     },
     "mp-qq" : {
         "usingComponents" : true
+    },
+    "h5" : {
+        "sdkConfigs" : {
+            "maps" : {
+                "qqmap" : {
+                    "key" : "ZNLBZ-3AOKD-KPN4E-HPYFB-GCU4H-BUFNL"
+                }
+            }
+        }
     }
 }

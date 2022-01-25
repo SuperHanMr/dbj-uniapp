@@ -4,7 +4,7 @@
       <view class="user-list">
         <view class="user-item" @click="handleClick({nick: '所有人', userID: 'zeus_0'})">
           <view class="user-avatar">
-            <image class="avatar" mode="aspectFill" src="https://ali-image.dabanjia.com/static/mp/dabanjia/images/message/ic_at_all.png"></image>
+            <image class="avatar" mode="aspectFill" src="https://ali-image.dabanjia.com/static/mp/dabanjia/images/theme-red/message/group_ic.png"></image>
           </view>
           <view class="user-info">
             <view class="user-name">
@@ -33,7 +33,7 @@
               <view v-else-if="member.role.type === 2" class="user-tag">
                 亲友·{{ member.role.relativeRelationName }}
               </view>
-              <view v-else class="job-tag">
+              <view v-else class="job-tag" :class="{'customer-ser':member.role.jobType === 8}">
                 {{ member.role.typeName }}
               </view>
             </view>
@@ -193,6 +193,9 @@
     padding: 0 4px;
     line-height: 28rpx;
     height: 28rpx;
+  }
+  .customer-ser {
+	  background: linear-gradient(90deg, #FA462A 0%, #FF6519 100%);;
   }
   .user-tag {
     color: #00C2B8;

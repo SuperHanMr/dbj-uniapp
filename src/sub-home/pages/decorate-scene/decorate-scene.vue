@@ -3,8 +3,9 @@
   <view
     class="sceneContainer"
   >
-    <view class="header">
-      <view class="houseInfo">
+    <view class="header" :style="{paddingBottom: Number(statusHeight) + 44 + 'px'}">
+			<Navigation-bar :projectName='projectInfo.projectName' :paddingTop='statusHeight' />
+      <view class="houseInfo" :style="{marginTop: Number(statusHeight) + 44 + 'px'}">
         <view class="location">{{projectInfo.estateNeighbourhood}}</view>
         <view class="focus">
           <view class="browse">浏览 {{estateViewCount}}</view>
@@ -24,6 +25,7 @@
       <image
         class="houseImg"
         :src="projectInfo.estateIconUrl+'?x-oss-process=image/resize,m_mfit,w_116,h_116'"
+				 :style="{marginTop: Number(statusHeight) + 72 + 'px'}"
       ></image>
     </view>
     <view class="navBar">
@@ -33,7 +35,7 @@
       >
         <image
           class="toConstruction"
-          src="https://ali-image.dabanjia.com/static/mp/dabanjia/images/home/ic_construction_drawings%402x.png"
+          src="https://ali-image.dabanjia.com/static/mp/dabanjia/images/theme-red/home/ic_construction_drawings%402x.png"
         ></image>
         <view class="text">施工图纸</view>
       </view>
@@ -43,7 +45,7 @@
       >
         <image
           class="toCost"
-          src="https://ali-image.dabanjia.com/static/mp/dabanjia/images/home/ic_cost_statistics%402x.png"
+          src="https://ali-image.dabanjia.com/static/mp/dabanjia/images/theme-red/home/ic_cost_statistics%402x.png"
         ></image>
         <view class="text">花销统计</view>
       </view>
@@ -53,7 +55,7 @@
       >
         <image
           class="toDecorate"
-          src="https://ali-image.dabanjia.com/static/mp/dabanjia/images/home/ic_decorate_calendar%402x.png"
+          src="https://ali-image.dabanjia.com/static/mp/dabanjia/images/theme-red/home/ic_decorate_calendar%402x.png"
         ></image>
         <view class="text">装修日历</view>
       </view>
@@ -63,7 +65,7 @@
       >
         <image
           class="toVideoSite"
-          src="https://ali-image.dabanjia.com/static/mp/dabanjia/images/home/ic_video_site%402x.png"
+          src="https://ali-image.dabanjia.com/static/mp/dabanjia/images/theme-red/home/ic_video_site%402x.png"
         ></image>
         <view class="text">工地视频</view>
       </view>
@@ -73,7 +75,7 @@
       <view class="content">
         <image
           class="startWork"
-          src="https://ali-image.dabanjia.com/static/mp/dabanjia/images/home/start_work%402x.png"
+          src="https://ali-image.dabanjia.com/static/mp/dabanjia/images/theme-red/home/start_work.webp"
         ></image>
         <view class="mainWrap">
           <view class="nodeType">
@@ -164,12 +166,12 @@
         <image
           v-if="projectInfo.projectStatus === 3"
           class="endWork"
-          src="https://ali-image.dabanjia.com/static/mp/dabanjia/images/home/end_active.png"
+          src="https://ali-image.dabanjia.com/static/mp/dabanjia/images/theme-red/home/end_active.webp"
         ></image>
         <image
           v-else
           class="endWork"
-          src="https://ali-image.dabanjia.com/static/mp/dabanjia/images/home/end_work%402x.png"
+          src="https://ali-image.dabanjia.com/static/mp/dabanjia/images/theme-red/home/end_work.png"
         ></image>
       </view>
     </view>
@@ -226,14 +228,14 @@
             </view>
             <view class="report">{{item.content}}</view>
             <view class="evidence">
-              <imagePreview
+              <image-preview
                 :list='item.imagesList'
                 :imgWidth='192'
                 :imgHeight="192"
                 :lineSpace='10'
                 :colSpace="11"
                 :row="2"
-              ></imagePreview>
+              ></image-preview>
             </view>
             <view class="footer">
               <view class="actionType">{{item.recordName}}</view>
@@ -330,14 +332,14 @@
             class="decorate_service"
             @click="toDecorateService"
           >
-            <image src="https://ali-image.dabanjia.com/static/mp/dabanjia/images/home/ic_decorate_service%402x.png"></image>
+            <image src="https://ali-image.dabanjia.com/static/mp/dabanjia/images/theme-red/home/ic_decorate_service.png"></image>
             <view>进行装修服务</view>
           </view>
           <view
             class="checkRoom_service"
             @click="toCheckRoomService"
-          >
-            <image src="https://ali-image.dabanjia.com/static/mp/dabanjia/images/home/ic_checkRoom_service%402x.png"></image>
+          > 
+            <image src="https://ali-image.dabanjia.com/static/mp/dabanjia/images/theme-red/home/ic_checkRoom_service.png"></image>
             <view>进行验房服务</view>
           </view>
         </view>
@@ -395,7 +397,7 @@
         >
           <image
             class="noCommentImg"
-            src="https://ali-image.dabanjia.com/static/mp/dabanjia/images/decorate/pic_empty%402x.png"
+            src="https://ali-image.dabanjia.com/static/mp/dabanjia/images/theme-red/decorate/pic_empty%402x.png"
           ></image>
           <view class="noCommentText">暂无评论~</view>
         </view>
@@ -526,6 +528,7 @@
 
 <script>
 import axios from "@/js_sdk/gangdiedao-uni-axios";
+import NavigationBar from './navigation-bar.vue';
 import {
   getDecorateProcess,
   getDecorateDynamic,
@@ -540,10 +543,10 @@ import {
   checkEquipmentServe,
 } from "../../../api/real-case.js";
 import { queryEstates } from "../../../api/decorate.js";
-import imagePreview from "../../../components/image-preview/image-preview.vue";
+// import imagePreview from "../../../components/image-preview/image-preview.vue";
 export default {
   components: {
-    imagePreview,
+    NavigationBar,
   },
   data() {
     return {
@@ -585,6 +588,7 @@ export default {
       hasChange: false,
       newestNodeIndex: 0,
       scn: "",
+			statusHeight: 0,
     };
   },
   onLoad(option) {
@@ -593,6 +597,11 @@ export default {
       this.homePageEstate = item;
     });
     uni.showShareMenu();
+		uni.getSystemInfo({
+			success: (res) => {
+				this.statusHeight = res.statusBarHeight;
+			},
+		});
   },
   onShow() {
     this.userId = uni.getStorageSync("userId");
@@ -1235,20 +1244,21 @@ export default {
   height: 542rpx;
 }
 .popupComments .noCommentText {
-  width: 118rpx;
+  width: 100%;
   height: 36rpx;
   margin: 24rpx 316rpx;
-  font-size: 26rpx;
-  color: #999999;
+  font-size: 24rpx;
+  color: #CBCCCC;
 }
 .popupComments .noCommentImg {
-  width: 750rpx;
-  height: 492rpx;
+  width: 400rpx;
+  height: 400rpx;
   display: block;
+	margin: 0 auto;
 }
 .popupComments .topArea {
   height: 120rpx;
-  border-radius: 32rpx 32rpx 0rpx 0rpx;
+  border-radius: 16rpx 16rpx 0rpx 0rpx;
   display: flex;
   align-items: center;
 }
@@ -1344,7 +1354,8 @@ export default {
   line-height: 28rpx;
   text-align: center;
   color: #fff;
-  background: linear-gradient(45deg, #f2af1a, #ffd698);
+  /* background: linear-gradient(45deg, #f2af1a, #ffd698); */
+	background: linear-gradient(135deg, #40BFF5 0%, #53A9FF 100%);
   border-radius: 6rpx;
 }
 .info .date {
@@ -1384,7 +1395,7 @@ export default {
   margin-top: 8rpx;
 }
 .replyInfo .info .role {
-  background: linear-gradient(45deg, #6d95ef, #84b9fc);
+  background: linear-gradient(135deg, #40BFF5 0%, #53A9FF 100%);
 }
 .replyInfo .text {
   width: 550rpx;
@@ -1420,7 +1431,7 @@ export default {
   height: 36rpx;
   font-size: 26rpx;
   font-weight: 500;
-  color: #00c2b8;
+  color: #FA4D32;
 }
 .expand .img {
   width: 14rpx;
@@ -1460,7 +1471,7 @@ export default {
   display: flex;
   justify-content: space-between;
   background: #f9fafb;
-  border-radius: 0rpx 0rpx 8rpx 8rpx;
+  border-radius: 16rpx 16rpx 0 0;
 }
 .cancel {
   width: 60rpx;
@@ -1473,11 +1484,11 @@ export default {
 .confirm {
   width: 60rpx;
   height: 42rpx;
-  margin: 40rpx 48rpx 38rpx 0;
+  margin: 40rpx 48rpx 38rpx 0; 
   font-size: 30rpx;
-  font-weight: 500;
+  font-weight: 600;
   text-align: center;
-  color: #00c2b8;
+  color: #FA4D32;
   line-height: 42rpx;
 }
 .picker-view {
@@ -1520,7 +1531,8 @@ export default {
   width: 100%;
   height: 400rpx;
   background-repeat: no-repeat;
-  background-image: url("https://ali-image.dabanjia.com/static/mp/dabanjia/images/home/bg%402x.png");
+  background-image: url("https://ali-image.dabanjia.com/static/mp/dabanjia/images/theme-red/home/bg.png");
+	background-size: 100% 100%;
   display: flex;
 }
 .sceneContainer > .footer {
@@ -1536,7 +1548,7 @@ export default {
 .houseImg {
   width: 232rpx;
   height: 232rpx;
-  margin: 56rpx 32rpx 48rpx 48rpx;
+  margin: 0 32rpx 48rpx 48rpx;
   border-radius: 20rpx;
   display: block;
 }
@@ -1628,7 +1640,7 @@ export default {
   width: 100%;
   height: 176rpx;
   background: #ffffff;
-  border-radius: 40rpx;
+  border-radius: 32rpx;
   display: flex;
   justify-content: space-between;
 }
@@ -1652,8 +1664,8 @@ export default {
   line-height: 34rpx;
 }
 .navBar image {
-  width: 72rpx;
-  height: 72rpx;
+  width: 68rpx;
+  height: 68rpx;
   margin: 4rpx;
   display: block;
 }
@@ -1662,7 +1674,7 @@ export default {
   height: 364rpx;
   margin-top: 24rpx;
   background: #ffffff;
-  border-radius: 40rpx;
+  border-radius: 32rpx;
 }
 .process .title {
   width: 128rpx;
@@ -1683,9 +1695,9 @@ export default {
 }
 .content > image {
   width: 40rpx;
-  height: 72rpx;
+  height: 90rpx;
   display: block;
-  margin-top: 20rpx;
+  margin-top: 13rpx;
   margin-left: 32rpx;
 }
 .content .endWork {
@@ -1706,6 +1718,7 @@ export default {
   font-size: 22rpx;
   color: #333333;
   line-height: 32rpx;
+  white-space: nowrap;
 }
 .nodeType > view.maxWidth {
   width: 66rpx;
@@ -1718,12 +1731,14 @@ export default {
 .connectStartLine {
   width: 22rpx;
   height: 2rpx;
-  background: #01c2c3;
+  background: linear-gradient(133.98deg, #6D6D6D 6.28%, #333333 100.79%);
+  mix-blend-mode: normal;
+  opacity: 0.9;
 }
 .connectEndLine {
   width: 22rpx;
   height: 2rpx;
-  background: #c2c2c2;
+  background: #C2C2C2;
 }
 .steps {
   width: 562rpx;
@@ -1739,16 +1754,17 @@ export default {
   border-radius: 50%;
 }
 .done {
-  background: #01c2c3;
-  border: 2rpx solid #01c2c3;
+  background: linear-gradient(134.53deg, #6D6D6D 5.36%, #333333 100.8%);
 }
 .doing {
   background: #ffffff;
-  border: 2rpx solid #35c4c4;
+  border: 2rpx solid #333333;
 }
 .unpaid {
-  background: #ffffff;
-  border: 2rpx solid #c2c2c2;
+  /* background: #ffffff;
+  border: 2rpx solid #c2c2c2; */
+	background: #FFFFFF;
+	border: 1px solid #C2C2C2;
 }
 .connectLine {
   width: 62rpx;
@@ -1760,10 +1776,10 @@ export default {
   background: #c2c2c2;
 }
 .line-green {
-  background: #01c2c3;
+  background: linear-gradient(133.98deg, #6D6D6D 6.28%, #333333 100.79%);
 }
 .connectLine:last-child.completed {
-  background: #01c2c3;
+  background: linear-gradient(133.98deg, #6D6D6D 6.28%, #333333 100.79%);
 }
 .column {
   height: 24rpx;
@@ -1776,7 +1792,7 @@ export default {
   border-right: 2rpx dotted #c2c2c2;
 }
 .column > view.active {
-  border-right: 2rpx dotted #01c2c3;
+  border-right: 2rpx dotted linear-gradient(134.53deg, #6D6D6D 5.36%, #333333 100.8%);
 }
 .column > view:nth-child(7),
 .column > view:nth-child(8) {
@@ -1849,7 +1865,7 @@ export default {
   height: fit-content;
   margin-top: 24rpx;
   background: #ffffff;
-  border-radius: 40rpx;
+  border-radius: 32rpx;
 }
 .dynamic.mg {
   margin-bottom: 60rpx;
@@ -1860,10 +1876,10 @@ export default {
   background: #f5f6f6;
 }
 .dynamic .bottom .text {
-  width: 222rpx;
   height: 26rpx;
+	text-align: center;
   background: #f5f6f6;
-  margin: 0 264rpx 40rpx 264rpx;
+  margin-bottom: 40rpx;
   padding-top: 60rpx;
   font-size: 26rpx;
   color: #999999;
@@ -2014,12 +2030,12 @@ export default {
 .acitonInfo .header .role {
   width: 82rpx;
   height: 32rpx;
-  background: linear-gradient(45deg, #6d95ef, #84b9fc);
+  background: linear-gradient(135deg, #40BFF5 0%, #53A9FF 100%);
   border-radius: 6rpx;
   font-size: 22rpx;
   text-align: center;
   color: #ffffff;
-  line-height: 32rpx;
+  line-height: 30rpx;
 }
 .acitonInfo .header .date {
   width: 136rpx;
@@ -2092,6 +2108,7 @@ export default {
   text-align: center;
   color: #999999;
   line-height: 32rpx;
+  white-space: nowrap;
 }
 .sceneContainer .footer .userWant {
   width: 88rpx;
@@ -2103,16 +2120,16 @@ export default {
   height: 88rpx;
   display: flex;
   align-items: center;
-  background: linear-gradient(135deg, #53d5cc, #4fc9c9);
+  background: linear-gradient(117.02deg, #FA3B34 24.56%, #FF6A33 92.21%);
   border-radius: 12rpx;
   margin: 24rpx 32rpx 24rpx 48rpx;
 }
 .sceneContainer .footer .focusOn.bgColor {
-  background: #f5f6f6;
+  background: #F3F3F3;
 }
 .sceneContainer .footer .focusOn.bgColor view {
   margin-left: 163rpx;
-  color: #666666;
+  color: #999999;
 }
 .focusOn .add {
   width: 18rpx;

@@ -1,5 +1,5 @@
 <template>
-  <view class="wrap" :style="{marginBottom: setting.isLast ? 0 : '24rpx'}">
+  <view class="wrap" :style="{marginBottom: setting.isLast ? 0 : '16rpx'}">
     <view class="title">
       <view class="title-check">
         <slot name="check"></slot>
@@ -7,8 +7,7 @@
       </view>
       <view v-if="setting.cardtype == 'design' && setting.insideArea && showLevel" class="change-service" @click="changeLevel">
         <text>更换等级</text>
-        <image class="ic-triangle-999"
-          src="https://ali-image.dabanjia.com/static/mp/dabanjia/images/decorate/ic_triangle_999.svg" />
+        <i class='icon-alert_notice_jump'></i>
       </view>
     </view>
     <server-content :content="setting" @selectAnother="selectAnother"></server-content>
@@ -93,7 +92,7 @@
     box-sizing: border-box;
     min-height: 300rpx;
     background: #fff;
-    border-radius: 40rpx;
+    border-radius: 32rpx;
     padding: 32rpx;
   }
 
@@ -131,7 +130,7 @@
       align-items: center;
       width: 124rpx;
       height: 44rpx;
-      background: #f5f6f6;
+      // background: #f5f6f6;
       border-radius: 12rpx;
       font-family: PingFangSC, PingFangSC-Regular;
       font-weight: 400;
@@ -147,10 +146,8 @@
         font-size: 22rpx;
         margin-right: 8rpx;
       }
-
-      .ic-triangle-999 {
-        width: 8rpx;
-        height: 13rpx;
+      i {
+       font-size: 12rpx;
       }
     }
   }

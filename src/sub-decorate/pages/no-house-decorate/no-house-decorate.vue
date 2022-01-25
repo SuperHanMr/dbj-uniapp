@@ -131,7 +131,7 @@
           <image
             v-if="cardClick"
             class="selected-img"
-            src="https://ali-image.dabanjia.com/static/mp/dabanjia/images/classify/pay_selected.png"
+            src="https://ali-image.dabanjia.com/static/mp/dabanjia/images/theme-red/decorate/ic_checked.svg"
             mode=""
           >
           </image>
@@ -171,29 +171,20 @@
       <view class='remarks'>
         <text>备注</text>
         <view class="remarks-right">
-          <textarea
+          <input
             type="text"
             maxlength="200"
             v-model="remarks"
             cursor-spacing="15px"
             placeholder-class="text-placeholder"
-            style="width:100%;line-height: 46rpx;min-height: 90rpx;height: 85%;overflow: scroll;padding-top: 20rpx;"
+            style="width:100%;line-height: 104rpx;min-height: 104rpx;height: 100%;overflow: scroll;"
             placeholder="选填,说点什么～"
           />
         </view>
       </view>
     </view>
-    <view
-      v-if="noData === 1"
-      class="payment-wrap"
-      :style="{paddingBottom:systemBottom,height:systemHeight}"
-    >
-      <payment
-        @gotopay="gotopay"
-        :pieces="pieces"
-        :countPrice="payPrice"
-        :isAllChecked="isAllChecked"
-      >
+    <view v-if="noData === 1" class="payment-wrap" :style="{paddingBottom:systemBottom}">
+      <payment @gotopay="gotopay" :pieces="pieces" :countPrice="payPrice" :isAllChecked="isAllChecked">
       </payment>
     </view>
 
@@ -986,13 +977,14 @@ export default {
   background-color: #ffffff;
   padding: 32rpx;
   font-size: 28rpx;
-
+  border-radius: 32rpx;
   .row-item {
     width: 100%;
     display: flex;
     flex-direction: row;
     justify-content: center;
     align-items: center;
+    border-radius: 32rpx;
   }
 }
 
@@ -1014,7 +1006,7 @@ export default {
 .remarks {
   padding: 5rpx 32rpx;
   background-color: #ffffff;
-  margin-top: 25rpx;
+  margin-top: 16rpx;
   font-size: 28rpx;
   font-family: PingFangSC, PingFangSC-Regular;
   display: flex;
@@ -1022,6 +1014,7 @@ export default {
   align-items: center;
   height: 104rpx;
   line-height: 104rpx;
+  border-radius: 32rpx;
 }
 
 .card-img {
@@ -1068,7 +1061,7 @@ export default {
 .remarks {
   padding: 5rpx 32rpx;
   background-color: #ffffff;
-  margin-top: 25rpx;
+  margin-top: 16rpx;
   font-size: 28rpx;
   font-family: PingFangSC, PingFangSC-Regular;
   display: flex;
@@ -1080,6 +1073,8 @@ export default {
 
 .remarks {
   overflow: hidden;
+  margin-bottom: 16rpx;
+  border-radius: 32rpx;
 }
 
 .remarks text {
@@ -1094,7 +1089,7 @@ export default {
 }
 
 .no-house-decorate {
-  background-color: #f2f5f8;
+  background-color: #f6f6f6;
   display: flex;
   flex-direction: column;
   justify-content: space-between;

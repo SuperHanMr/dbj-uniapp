@@ -7,18 +7,18 @@
     <view class="case-withdraw-text">该内容已下架</view>
     <image
       class="product-check"
-      src="../../static/images/product_unChecked.png"
+      src="https://ali-image.dabanjia.com/static/mp/dabanjia/images/theme-red/my/product_unChecked.png"
       mode=""
     ></image>
     <!-- <image
 			class="product-check"
-			src="../../static/images/product_checked.png"
+			src="https://ali-image.dabanjia.com/static/mp/dabanjia/images/theme-red/my/product_checked.png"
 			mode=""
 		></image> -->
 
     <image
       class="case-type"
-      src="../../static/images/icon_video.png"
+      src="https://ali-image.dabanjia.com/static/mp/dabanjia/images/theme-red/my/icon_video.png"
       mode=""
     ></image>
 

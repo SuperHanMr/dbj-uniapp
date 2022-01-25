@@ -4,7 +4,7 @@
 
       <image
         class="img"
-        src="https://ali-image.dabanjia.com/static/mp/dabanjia/images/decorate/ic_location.png"
+        src="https://ali-image.dabanjia.com/static/mp/dabanjia/images/theme-red/decorate/ic_location.svg"
       ></image>
       <view class="content">
         <view class="city">

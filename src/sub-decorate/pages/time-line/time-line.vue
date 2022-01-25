@@ -5,7 +5,7 @@
         
       </view>
       <view class="line-content">
-        <view class="item" v-if="list.length>0" v-for="(item,index) of list" :key='item.operateTime'>
+        <view class="item" v-if="list.length>0" v-for="(item,index) of list" :key='item.operatorId + item.operateTime'>
             <view class="out">
             </view>
             
@@ -77,7 +77,7 @@
   }
   .line-block{
     width: 4rpx;
-    background: #00C2B8;
+    background: #222;
     height: calc(100% - 36rpx);
     position: absolute;
     top: 36rpx;
@@ -94,8 +94,8 @@
     width: 12px;
     height: 12px;
     opacity: 1;
-    background: #00c2b8;
-    border: 2px solid #e0f7f7;
+    background: #222;
+    border: 2px solid #F3F3F3;
     border-radius: 50%;
     z-index: 10;
   }
@@ -103,10 +103,10 @@
     content:"";
     color: red;
     position: absolute;
-    left: 0;
+    left: -2rpx;
     height: 50%;
     top: 0;
-    width: 2px;
+    width: 4px;
     background-color: #fff;
   }
   
@@ -114,10 +114,10 @@
     content:"";
     color: red;
     position: absolute;
-    left: 0;
+    left: -2rpx;
     height: calc(50% - 12rpx);
     bottom: 0;
-    width: 2px;
+    width: 4px;
     background-color: #fff;
   }
   .real{

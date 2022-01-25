@@ -8,10 +8,15 @@
           <text class="time">{{checkData.submitReportTime}}</text>
         </view>
       </view>
-      <view class="charts">
-        <uniEcCanvas class="uni-ec-canvas" id="uni-ec-canvas" ref="canvas" canvas-id="uni-ec-canvas" :ec="ec">
-        </uniEcCanvas>
-      </view>
+      <!-- #ifdef MP-WEIXIN -->
+        <view class="charts-box">
+          <uniEcCanvas class="uni-ec-canvas" id="uni-ec-canvas" ref="canvas" canvas-id="uni-ec-canvas" :ec="ec">
+          </uniEcCanvas>
+        </view>
+      <!-- #endif -->
+      <!-- #ifdef H5 -->
+      <view class="charts-box" id="echarts"></view>
+      <!-- #endif -->
       <text class="report-text" :class="{'report-text-hidden':isHidden}">{{checkData.summaryDescription}}</text>
       <view class="openHidden" v-if="showBtn" @click="clickHidden">
         {{hddenText}}
@@ -31,30 +36,35 @@
         符合项({{data[0].value}})</view>
     </view>
     <view class="text-content" v-if="isLoading">
-      <deliverCard id="major-hazard" color="#CA3737" title="重大隐患" :data='data[2]'></deliverCard>
-      <deliverCard id="hazard" color="#F6A93B" title="隐患" :data='data[1]'></deliverCard>
-      <deliverCard id="conform" color="#348BE2" title="符合项" :data='data[0]'></deliverCard>
+      <deliverCard id="major-hazard" backgroundColor="linear-gradient(90.02deg, rgba(250, 77, 50, 0.09) 0.02%, rgba(250, 77, 50, 0.02) 99.99%);" color="#F5432D" title="重大隐患" :data='data[2]'></deliverCard>
+      <deliverCard id="hazard"  backgroundColor="linear-gradient(90.02deg, rgba(254, 195, 101, 0.09) 0.02%, rgba(254, 195, 101, 0.02) 99.99%);" color="#FF7F1E" title="隐患" :data='data[1]'></deliverCard>
+      <deliverCard id="conform"  backgroundColor="linear-gradient(90.02deg, rgba(74, 164, 252, 0.09) 0.02%, rgba(74, 164, 252, 0.02) 99.99%);" color="#4AA4FC" title="符合项" :data='data[0]'></deliverCard>
     </view>
     <text class="bottom-text" v-show="isLoading">我是有底线的~</text>
 
   </view>
 </template>
 <script>
+  // #ifdef MP-WEIXIN 
   import uniEcCanvas from '../../components/uni-ec-canvas/uni-ec-canvas.vue'
+  // #endif
   import * as echarts from '../../components/uni-ec-canvas/echarts.min'
   import deliverCard from '../delivery-card/delivery-card.vue'
   import imagePreview from '../../../components/image-preview/image-preview.vue'
-  
+  // import * as echarts from "./echarts.min";
   import {
     getCheckResultDetail,
     confirmCheckResult
   } from '../../../api/decorate.js'
   import { formatDate } from '../../../utils/common.js'
   
+  let myChart = null
   let chart = null
   export default {
     components: {
+      // #ifdef MP-WEIXIN 
       uniEcCanvas,
+      // #endif
       deliverCard,
       imagePreview
     },
@@ -236,7 +246,15 @@
           this.isLoading = true
           this.getMsgHeight()
           setTimeout(()=>{
+            // #ifdef MP-WEIXIN 
             this.$refs.canvas.init(this.initChart)
+            // #endif
+            // #ifdef H5
+            chart = echarts.init(document.getElementById('echarts'))
+            myChart.setOption(this.option)
+            // #endif
+            // this.$refs.canvas.initByOldWay(this.initChart)
+            // console.log(2222)
             this.drawImage()
             this.getTop()
           },1000)
@@ -330,6 +348,7 @@
       },
       drawImage() {
         this.option.series[0].data = this.data
+        console.log(11111111111111)
         let text = [`{a|${this.checkData.checkCount}}{b|项}`, "{x|总检查}"].join("\n")
         this.option.series[0].label.formatter = text
         this.option.legend.formatter = (name) => {
@@ -340,17 +359,17 @@
         }
       },
       initChart(canvas, width, height, canvasDpr) {
+        console.log(111111111,">>>>>>>>>>>>>><<<<<<<<<<<<")
         chart = echarts.init(canvas, null, {
           width: width,
           height: height,
           devicePixelRatio: canvasDpr
         })
-        console.log(chart)
         canvas.setChart(chart)
         chart.setOption(this.option)
+        console.log(chart,">>>>>>>>>>>>>><<<<<<<<<<<<")
         return chart
       },
-      
     }
   }
 </script>
@@ -461,8 +480,8 @@
       }
     }
   }
-
-  .charts {
+  
+  .charts-box {
     height: 350rpx;
     width: 100%;
 
@@ -500,22 +519,22 @@
       width: 33.3%;
     }
 
-    .report-item {
-      width: 144rpx;
-      margin-right: 16rpx;
-      height: 58rpx;
-      line-height: 58rpx;
-      border: 0.5px solid #ececec;
-      border-radius: 8rpx;
-    }
+    // .report-item {
+    //   width: 144rpx;
+    //   margin-right: 16rpx;
+    //   height: 58rpx;
+    //   line-height: 58rpx;
+    //   border: 0.5px solid #ececec;
+    //   border-radius: 8rpx;
+    // }
 
-    .report-item-active {
-      background: rgba(0, 191, 182, 0.07);
-      border: 0.5px solid #00bfb6;
-      color: #00BFB6;
-      font-size: 26rpx;
-      font-weight: 400;
-    }
+    // .report-item-active {
+    //   background: rgba(0, 191, 182, 0.07);
+    //   border: 0.5px solid #00bfb6;
+    //   color: #00BFB6;
+    //   font-size: 26rpx;
+    //   font-weight: 400;
+    // }
     .item-active{
       font-weight: 500;
       color: #333;
@@ -526,7 +545,7 @@
       width: 68rpx;
       height: 6rpx;
       opacity: 1;
-      background: linear-gradient(135deg, #00c2b2, #00c2bf);
+      background: linear-gradient(116.19deg, #F83112 16.48%, #FD6421 83.52%);
       border-radius: 100px 100px 0px 0px;
       position: absolute;
       bottom: 0;

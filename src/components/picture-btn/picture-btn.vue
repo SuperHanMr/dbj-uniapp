@@ -2,7 +2,7 @@
   <view class="design" @click="gotoPage">
     <image class="icon" :src="iconUrl"></image>
     <view class="text">{{text}}</view>
-    <view class="gotopage icon-shangpinxiangqing_ic_guigepeisongxuanzejiantou"></view>
+    <i class="gotopage icon-alert_notice_jump"></i>
   </view>
 </template>
 
@@ -51,7 +51,7 @@
 
   .gotopage {
     color: #333;
-    font-size: 18rpx;
-    margin-top: 2rpx;
+   font-size: 16rpx;
+    margin-left: 4rpx;
   }
 </style>

@@ -17,8 +17,7 @@ export function getDetailInfo(params) {
   // return axios.post('http://rap2api.taobao.org/app/mock/290704/test-good', params);
 }
 export function payOrder(params) {
-  let version = uni.getAccountInfoSync().miniProgram.version || 'develop';
-	return request.post(`/order-center/app/order/createOrder?v=${version}`, params)
+	return request.post(`/order-center/app/order/createOrder`, params)
 }
 export function getProductID(params) {
   return request.get("/pm/web/project/getProjectIdByEstateId", {params});

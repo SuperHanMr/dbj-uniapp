@@ -5,8 +5,8 @@
 				<view v-for="(item,index) in videoTypeList" :key="item.id" class="tab-item"
 					:class="index==currentTab?'selected-tab':'nomal-tab'" @click="onTab(index)">
 					<text>{{item}}</text>
-					<view v-if="index==currentTab" class="current-select">
-					</view>
+					<image v-if="index==currentTab" class="current-select" src="/static/images/real-case/select_head.png">
+					</image>
 				</view>
 			</scroll-view>
 		</view>
@@ -21,7 +21,7 @@
 				</view>
 				<scroll-view class="scroll-view" :enable-back-to-top="true" scroll-y="true" lower-threshold="10"
 					refresher-background="#FFF" refresher-enabled="true" :refresher-triggered="triggered"
-					@scroll="onScroll" @refresherrefresh="onRefresh" @scrolltolower="onLoadMore">
+					 @refresherrefresh="onRefresh" @scrolltolower="onLoadMore">
 					<view class="goods-list">
 						<view v-for="(item,index) in videoList"
 							:class="{'margin-left24':index%2==0,'margin-left16':index%2==1}" :key="index" class="item"
@@ -34,27 +34,19 @@
 
 								<view v-if="item.mediaType==1" class="top-content">
 									<image class="top-content-img-living"
-										src="https://ali-image.dabanjia.com/static/mp/dabanjia/images/home/living.gif">
+										src="https://ali-image.dabanjia.com/static/mp/dabanjia/images/theme-red/home/living.gif">
 									</image>
-									{{item.roomLiveMediaVO.onLineCount||0}}人在看
+									{{item.roomLiveMediaVO.onLineCount||0}}
+									<!-- 人在看 -->
 								</view>
 
 								<view v-if="item.mediaType==2" class="top-content">
 									<image class="top-content-img"
-										src="https://ali-image.dabanjia.com/static/mp/dabanjia/images/home/live-repaly.png">
+										src="https://ali-image.dabanjia.com/static/mp/dabanjia/images/theme-red/home/live-repaly.png">
 									</image>
 									<view>回放</view>
 									<view style="margin-left: 8rpx;">{{item.roomVideoMediaVO.viewsCount}}人在看</view>
 								</view>
-								<view class="name-content">
-									<image class="avatar"
-										:src="item.mediaType==1?item.roomLiveMediaVO.anchor.avatar:item.roomVideoMediaVO.anchor.avatar"
-										mode=""></image>
-									<view class="name-live">
-										{{item.mediaType==1?item.roomLiveMediaVO.anchor.nickName:item.roomVideoMediaVO.anchor.nickName}}
-									</view>
-								</view>
-
 								<image v-if="item.mediaType==1" class="living-gif"
 									src='https://ali-image.dabanjia.com/static/mp/dabanjia/images/home/living-gift.gif'>
 
@@ -63,6 +55,14 @@
 
 							<view class="live-list-name">
 								{{item.mediaType==1?item.roomLiveMediaVO.title:item.roomVideoMediaVO.title}}
+							</view>
+							<view class="name-content">
+								<image class="avatar"
+									:src="item.mediaType==1?item.roomLiveMediaVO.anchor.avatar:item.roomVideoMediaVO.anchor.avatar"
+									mode=""></image>
+								<view class="name-live">
+									{{item.mediaType==1?item.roomLiveMediaVO.anchor.nickName:item.roomVideoMediaVO.anchor.nickName}}
+								</view>
 							</view>
 						</view>
 					</view>
@@ -204,20 +204,19 @@
 	}
 
 	.no-list {
-		width: 248rpx;
-		height: 248rpx;
+		width: 400rpx;
+		height: 400rpx;
 	}
 
 	.tip-text {
 		margin-top: 24rpx;
 		font-size: 30rpx;
 		font-weight: 400;
-		color: #999999;
+		color: #CBCCCC;
 	}
 
 	.live-list-name {
-		background: #FFF;
-		padding: 16rpx;
+		padding: 16rpx 0;
 		// flex: 1;
 		// display: flex;
 		font-size: 26rpx;
@@ -231,12 +230,35 @@
 		-webkit-box-orient: vertical;
 		white-space: nowrap;
 	}
+	
+	.name-content {
+		display: flex;
+		align-items: center;
+	
+		.avatar {
+			width: 36rpx;
+			height: 36rpx;
+			border-radius: 18rpx;
+		}
+	
+		.name-live {
+			margin-left: 8rpx;
+			text-overflow: ellipsis;
+			display: -webkit-box;
+			-webkit-line-clamp: 1; //这个代表你要在几行显示省略号
+			-webkit-box-orient: vertical;
+			font-size: 24rpx;
+			font-weight: 400;
+			color: #999999;
+		}
+	}
 
 	.fill {
 		width: 100%;
 		height: 100%;
 		display: flex;
 		flex-direction: column;
+		background-color: #ffffff;
 	}
 
 	.swiper {
@@ -245,7 +267,7 @@
 
 	.selected-tab {
 		font-weight: 500;
-		font-size: 29rpx;
+		font-size: 27rpx;
 		color: #111111;
 	}
 
@@ -255,27 +277,26 @@
 	}
 
 	.margin-left24 {
-		margin-left: 24rpx;
+		margin-left: 32rpx;
 	}
 
 	.margin-left16 {
-		margin-left: 16rpx;
+		margin-left: 30rpx;
 	}
 
 	.goods-list {
 		display: flex;
-		margin-top: 8rpx;
+		margin-top: 24rpx;
 		width: 100%;
 		flex-direction: row;
 		flex-wrap: wrap;
 		justify-content: flex-start;
 
 		.item {
-			margin-top: 16rpx;
+			margin-bottom: 48rpx;
 			flex-shrink: 0;
-			width: 343rpx;
-			height: 526rpx;
-			border-radius: 16rpx;
+			width: 328rpx;
+			
 			position: relative;
 			overflow: hidden;
 			display: flex;
@@ -298,42 +319,16 @@
 			}
 
 			.img-view {
-				height: 458rpx;
+				width: 328rpx;
+				height: 436rpx;
 				position: relative;
-
 				.img {
-					height: 458rpx;
-					width: 343rpx;
+					width: 328rpx;
+					height: 436rpx;
+					border-radius: 12rpx;
 				}
 
-				.name-content {
-					position: absolute;
-					bottom: 0rpx;
-					left: 0;
-					right: 0;
-					height: 74rpx;
-					display: flex;
-					align-items: center;
-					background: linear-gradient(180deg, rgba(0, 0, 0, 0) 0%, rgba(0, 0, 0, 0.5) 100%);
-					padding: 0 16rpx;
-
-					.avatar {
-						width: 32rpx;
-						height: 32rpx;
-						border-radius: 16rpx;
-					}
-
-					.name-live {
-						margin-left: 12rpx;
-						text-overflow: ellipsis;
-						display: -webkit-box;
-						-webkit-line-clamp: 1; //这个代表你要在几行显示省略号
-						-webkit-box-orient: vertical;
-						font-size: 22rpx;
-						font-weight: 400;
-						color: #ffffff;
-					}
-				}
+				
 
 				.top-content {
 					position: absolute;
@@ -341,7 +336,8 @@
 					left: 20rpx;
 					padding: 0 8rpx 0 0;
 					height: 28rpx;
-					background: rgba(0, 0, 0, 0.35);
+					background: rgba(0, 0, 0, 0.7);
+					backdrop-filter: blur(8.15485px);
 					border-radius: 8rpx;
 					font-weight: 400;
 					color: #ffffff;
@@ -370,7 +366,7 @@
 		position: -webkit-sticky;
 		left: 0;
 		right: 0;
-		background-color: #F5F6F6;
+		background-color: #ffffff;
 	}
 
 	.tab-list {
@@ -379,7 +375,6 @@
 		width: 100%;
 		overflow: hidden;
 		white-space: nowrap;
-		background: linear-gradient(#FFFFFF, #f5f6f6);
 	}
 
 	.tab-item {
@@ -393,18 +388,15 @@
 		position: absolute;
 		left: 0;
 		right: 0;
-		bottom: 0;
+		bottom: 2rpx;
 		width: 32rpx;
-		height: 4rpx;
-		background: linear-gradient(129deg, #00cdec 0%, #00ed7d 92%);
-		border-radius: 200rpx 200rpx 0rpx 0rpx;
-		left: 50%;
-		transform: translate(-50%, -50%);
+		height: 6rpx;
+		left: calc((50% - 8px));
 	}
 
 	.nomal-tab {
-		font-size: 29rpx;
+		font-size: 27rpx;
 		font-weight: 400;
-		color: #696d70;
+		color: #999999;
 	}
 </style>

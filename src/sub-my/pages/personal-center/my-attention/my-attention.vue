@@ -9,10 +9,11 @@
         @click="currentIndex=index"
       >
         <view class="tab-text">{{item}}</view>
-				<view class="bottom-icon" />
+				<view class="bottom-icon"
+				 :style="{backgroundImage:`url(${bgcIcon})`,backgroundSize: '100% 100%'}"
+				/>
       </view>
     </view>
-		 <view class="line" />
     <swiper
       class="swiper"
       :current="currentIndex"
@@ -31,28 +32,24 @@
           @scrolltolower="onLoadMore"
 				>
          <view class="empty-container" v-if="currentList.length < 1">
-						<image src="../../../../static/order/blank_house@2x.png" mode=""></image>
-						<text v-if="tabindex==0">您还没有关注房子</text>
-						<text v-if="tabindex==1">您还没有关注服务者</text>
-						<text v-if="tabindex==2">您还没有关注优先推荐</text>
+						<image src="../../../static/img_attention_empty.svg" mode=""></image>
+						<text>暂无相关内容～</text>
 					</view>
-					
 					<view  v-else :style="{paddingBottom:systemBottom}" >
 						<!-- 房屋 -->
-						<view 
+						<view
 							v-if="tabindex==0"
-							class="house-item" 
-							v-for="item in houselist" 
+							class="house-item"
+							v-for="item in currentList"
 							:key="item.id"
 							@click="goToHouse(item)"
 						>
 							<image  :src="`${item.estateImage}?x-oss-process=image/resize,m_mfit,w_224,h_224`" mode=""/>
-							
 						  <view class="houseInfo">
 						    <view class="header">
 						      {{item.estateAddress || ''}}
 						    </view>
-						
+
 						    <view class="area-house">
 						      <text>{{item.estateArea || 0}}㎡</text>
 						      <view class="split-line" />
@@ -83,7 +80,7 @@
 						  </view>
 						</view>
 						<!-- 优先推荐 -->
-						<view  v-if=" tabindex == 2" v-for="(item3,index3) in recommendlist" :key="item3.id"  >
+						<view  v-if=" tabindex == 2" v-for="(item3,index3) in currentList" :key="item3.id"  >
 							<view class="craftsmanAndRecommend" >
 								<view class="left">
 									<image :src="`${item3.avatar}?x-oss-process=image/resize,m_mfit,w_192,h_192`" mode="" @click="goToPersonalHome(item3)"/>
@@ -103,7 +100,7 @@
 								</view>
 							</view>
 						</view>
-						
+
 					</view>
 				</scroll-view>
 			</swiper-item>
@@ -125,7 +122,7 @@ export default {
 			page:[1,1,1],
       totalPage: [1,1,1],
       loading: false,
-			
+			bgcIcon:"https://ali-image.dabanjia.com/static/mp/dabanjia/images/theme-red/my/selectIcon.svg",
       routeId:"",
 			systemBottom:"",
 			equipmentId:"",
@@ -141,7 +138,7 @@ export default {
   onShow() {
 		this.houseList();
 	},
-	
+
 	mounted(e) {
 		const menuButtonInfo = uni.getMenuButtonBoundingClientRect();
 		this.systemBottom = menuButtonInfo.bottom + "rpx";
@@ -154,19 +151,19 @@ export default {
 				return this.craftsmanlist;
 			} else {
 				return this.recommendlist;
-			} 
+			}
 		},
 	},
-		
+
   methods: {
     swiperChange(e) {
       let index = e.target.current || e.detail.current;
       this.currentIndex = index;
 			switch(this.currentIndex){
-				case 0: 
+				case 0:
 					this.houselist.length <1 ? this.houseList() :"";
 					break;
-				case 1: 
+				case 1:
 					this.craftsmanlist.length <1 ? this.craftsmanList() :"";
 					break;
 				case 2:
@@ -174,7 +171,7 @@ export default {
 					break;
 			}
 		},
-		
+
 		// 房屋请求
 		houseList(){
 			this.loading = true;
@@ -185,7 +182,7 @@ export default {
 				console.log("data= ",data)
 			})
 		},
-	
+
 		// 工匠请求
 		craftsmanList(){
 			this.loading = true;
@@ -225,8 +222,8 @@ export default {
 				},1000)
 			}).catch(()=>{})
 		},
-		
-		
+
+
 		// 优先推荐请求
     recommendList() {
       this.loading = true;
@@ -270,33 +267,34 @@ export default {
 				url:`../../../../sub-home/pages/decorate-scene/decorate-scene?projectId=${item.id}`
 			})
 			console.log("进入到房子的详情页面")
-			
+
 		},
-		
+
 		// 去工匠的个人主页
 		goToPersonalHome(data){
 			uni.navigateTo({
 			  url: `/sub-decorate/pages/person-page/person-page?personId=${data.id}`,
 			});
 		},
-		
+
 		onLoadMore() {
       if (this.loading || this.page[this.currentIndex] >= this.totalPage[this.currentIndex]) {
         return;
       }
       this.page[this.currentIndex]++;
 			switch(this.currentIndex ==0){
-				
+
 			}
     },
-		
+
     onRefresh(e) {
       this.triggered = true;
+			if(this.loading) return
 			// this.lastId[this.currentIndex] = -1;
 			this.handleReset();
-			
+
     },
-		
+
 		handleReset(){
 			switch(this.currentIndex){
 				case 0 :
@@ -305,12 +303,12 @@ export default {
 				 case 1:
 				 this.craftsmanList()
 				 break
-				  case 2: 
+				  case 2:
 					this.recommendList()
-					return 
+					return
 			}
 		},
-		
+
 	},
 };
 </script>
@@ -361,7 +359,7 @@ export default {
       position: absolute;
       width: 32rpx;
       height: 4rpx;
-      background: linear-gradient(129deg, #00cdec 0%, #00ed7d 100%);
+      // background: linear-gradient(129deg, #00cdec 0%, #00ed7d 100%);
       border-radius: 200rpx 200rpx 0px 0px;
       bottom: 1rpx;
       left: 50%;
@@ -434,33 +432,33 @@ export default {
           background: #d1d1d1;
         }
       }
-      
+
     }
-    
+
   }
 
   .empty-container {
-    padding: 180rpx 240rpx 0 240rpx;
+    padding: 350rpx 175rpx 0 175rpx;
     display: flex;
     flex-flow: column nowrap;
     align-items: center;
     justify-content: space-around;
     image {
-      width: 248rpx;
-      height: 248rpx;
+      width: 400rpx;
+      height: 400rpx;
       object-fit: cover;
-      margin-bottom: 22rpx;
+      // margin-bottom: 22rpx;
     }
     text {
       font-size: 26rpx;
       font-weight: 400;
       text-align: center;
-      color: #999999;
+      color: #CBCCCC;
     }
   }
 
   .craftsmanAndRecommend {
-    padding: 24rpx 32rpx;
+    padding: 0 32rpx;
     height: 144rpx;
     box-sizing: border-box;
     background-color: #ffffff;
@@ -513,13 +511,13 @@ export default {
       }
     }
     .right {
-			
+
       .button1,
       .button2,
       .button3,
       .button4 {
-        height: 68rpx;
-        line-height: 40rpx;
+        height: 64rpx;
+        line-height: 62rpx;
         box-sizing: border-box;
         font-size: 28rpx;
         text-align: center;
@@ -531,27 +529,27 @@ export default {
       }
       .button3,
       .button4 {
-        width: 200rpx;
+        width: 188rpx;
       }
       .button1,
       .button3 {
-        background: linear-gradient(135deg, #36d9cd, #28c6c6);
+        background: linear-gradient(116.19deg, #F83112 16.48%, #FD6421 83.52%);
         color: #ffffff;
-				padding: 14rpx 30rpx;
-        
+
       }
       .button2,
       .button4 {
         background: #ffffff;
-        border: 0.5px solid #dbdbdb;
-        padding: 12rpx 28rpx;
-				color: #666666;
+        border: 0.5px solid #CBCCCC;
+				text-align: center;
+				color: #333333;
       }
-			
+
 			.button3{
 				display: flex;
 				flex-flow: row nowrap;
 				align-items: center;
+				padding: 14rpx 22rpx;
 				image{
 					width: 24rpx;
 					height: 26rpx;
