@@ -14,8 +14,6 @@
 						<view class="pattern">
 							<text>{{item.roomNum || '-'}}室</text>
 							<text>{{item.hallNum || '-'}}厅</text>
-							<text>{{item.kitchenNum || '-'}}厨</text>
-							<text>{{item.bathroomNum || '-'}}卫</text>
 						</view>
 						<view class="line">
 
