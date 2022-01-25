@@ -20,11 +20,7 @@
           <image class="icon" src="../../static/price_icon.svg" mode="" @click="readExpenses(1)"/>
         </view>
         <view v-if="waitPay">
-					<!-- 有仓库 -->
-          <text v-if="data.stockType==1">
-						<text>￥</text>
-						  <text class="price-style price-font">{{handlePrice(data.freight)[0]}}.{{handlePrice(data.freight)[1]}}</text>
-					</text>
+          <text v-if="data.stockType==1">--</text>
           <text v-else>
             <text>￥</text>
             <text class="price-style price-font">{{handlePrice(data.freight)[0]}}.{{handlePrice(data.freight)[1]}}</text>
@@ -43,8 +39,7 @@
           <image class="icon" src="../../static/price_icon.svg" mode=""  @click="readExpenses(2)"/>
         </view>
         <view v-if="waitPay">
-					<!-- 有仓库 -->
-          <text v-if="data.stockType==1">{{handlePrice(data.handlingFees)[0]}}.{{handlePrice(data.handlingFees)[1]}}</text>
+          <text v-if="data.stockType==1">--</text>
           <text v-else>
             <text>￥</text>
             <text class="price-style price-font">{{handlePrice(data.handlingFees)[0]}}.{{handlePrice(data.handlingFees)[1]}}</text>
