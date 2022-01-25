@@ -10,7 +10,7 @@
         {{commentData.list[0].content?commentData.list[0].content:(JSON.parse(commentData.list[0].imgList).length>0?'此用户上传了图片评价。':`用户对设计师进行了${commentData.list[0].rank}星好评`)}}
       </view>
       <view class="openHidden" v-if="showBtn" @click="clickHidden">
-        {{hddenText}}<i :class="{'icon-a-ic_zhuangxiuxianchang_jingsuanzhankai_csn':isHidden,'icon-a-ic_zhuangxiuxianchang_jingsuanshouqi_csn':!isHidden}"></i>
+        {{hddenText}}<i :class="{'icon-list_arrow_dropdown':isHidden,'icon-list_arrow_pullup':!isHidden}"></i>
       </view>
       <view class="case-item" v-if="commentData.list[0].skuId!=0" @click="toBuy(commentData.list[0].skuInfoVO.skuId)">
         <image :src="commentData.list[0].skuInfoVO.skuImage"></image>
@@ -166,9 +166,9 @@
       // border-radius: 12px;
       // margin: 24rpx auto;
       // line-height: 44rpx;
-      font-weight: 400;
+      font-weight: 600;
       text-align: center;
-      color: #FA4D32;
+      color: #333;
       font-size: 24rpx;
       display: flex;
       align-items: center;
