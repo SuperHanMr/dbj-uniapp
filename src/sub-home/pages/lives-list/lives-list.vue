@@ -267,7 +267,7 @@
 
 	.selected-tab {
 		font-weight: 500;
-		font-size: 29rpx;
+		font-size: 27rpx;
 		color: #111111;
 	}
 
@@ -320,6 +320,7 @@
 
 			.img-view {
 				width: 328rpx;
+				height: 436rpx;
 				position: relative;
 				.img {
 					width: 328rpx;
@@ -387,15 +388,15 @@
 		position: absolute;
 		left: 0;
 		right: 0;
-		bottom: 0;
+		bottom: 2rpx;
 		width: 32rpx;
 		height: 6rpx;
 		left: calc((50% - 8px));
 	}
 
 	.nomal-tab {
-		font-size: 29rpx;
+		font-size: 27rpx;
 		font-weight: 400;
-		color: #696d70;
+		color: #999999;
 	}
 </style>
