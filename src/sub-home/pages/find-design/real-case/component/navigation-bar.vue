@@ -9,7 +9,7 @@
 					{{(!showScreen && currentHouse.id) ? `${currentHouse.housingEstate}${currentHouse.address}` : '推荐案例'}}
 				</view>
 				<view class="address-icon icon-zhuangxiushouye_fuwuzhankaijiantou"
-					v-if="(!showScreen && currentHouse.address)">
+					v-if="(!showScreen && currentHouse.id)">
 				</view>
 			</view>
 		</view>
