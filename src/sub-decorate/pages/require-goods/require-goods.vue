@@ -40,7 +40,7 @@
 				</view>
 			</scroll-view>
 		</view>
-		<view class="bottom-btns" :style="{paddingBottom:systemBottom}">
+		<view class="bottom-btns" :style="{paddingBottom:'20px'}">
 			<view class="shop-icon" @click="openCart">
 				<image class="icon" :class="{'btn-use':cartCount>0,'btn-un':cartCount==0}"
 					src="https://ali-image.dabanjia.com/static/mp/dabanjia/images/theme-red/home/ic_apply_goods.png" mode=""></image>
