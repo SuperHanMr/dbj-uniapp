@@ -862,7 +862,7 @@ export default {
         });
         //#endif
         //#ifdef H5
-        params = {
+        let params = {
           payType: 3, //"int //支付方式  1微信支付",
           deviceType: 2,
           openid: getApp().globalData.openId, //"string //微信openid 小程序支付用 app支付不传或传空",
@@ -876,6 +876,12 @@ export default {
           isCardPay: this.cardClick,
           origin: this.shareOriginType
         };
+          payOrder(params).then((data) => {
+            uni.navigateTo({
+              // url: `/sub-classify/pages/pay-order/pay-h5?payTal=${data.gomePayH5.payModelList[0].payTal}&totalPrice=${orderPrice}`,
+              url: `/sub-classify/pages/pay-order/pay-h5?payTal=testPay&totalPrice=888.88`,
+            });
+          })
         //#endif
     },
     cancelGoodPop() {

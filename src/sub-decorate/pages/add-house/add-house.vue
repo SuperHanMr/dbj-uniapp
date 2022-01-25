@@ -26,7 +26,7 @@
 					<label class="item-label">所在地区</label>
 					<input class="uni-input" placeholder-class="placeholder" :class="{disabled:!!(roomId&&isEdit)}" :disabled="!!(roomId&&isEdit)" @click="chooseMap" disabled name="input"
 						v-model="addData.area||addData.locationName" placeholder="请选择您房屋所在地区" />
-					<image src="../../../static/images/ic_more_black.svg" class="shopIcon"></image>
+					<image src="../../../static/images/ic_back.png" class="shopIcon"></image>
 				</view>
 				<view class="form-item">
 					<label class="item-label">小区</label>
@@ -56,7 +56,7 @@
           
             <input type="text" :class="{disabled:!!(roomId&&isEdit)}" placeholder-class="placeholder" class="uni-input" disabled v-model="houseType"
             	placeholder="请选择房屋户型"  @click="openList"/>
-            <image src="../../../static/images/ic_more_black.svg" class="shopIcon"></image>
+            <image src="../../../static/images/ic_back.png" class="shopIcon"></image>
           
 					
 				</view>

@@ -19,6 +19,10 @@ export function getDetailInfo(params) {
 export function payOrder(params) {
 	return request.post(`/order-center/app/order/createOrder`, params)
 }
+
+export function payH5(params) {
+  return request.post("/order-center/app/pay/gomeConfirmPay", params);
+}
 export function getProductID(params) {
   return request.get("/pm/web/project/getProjectIdByEstateId", {params});
 }
