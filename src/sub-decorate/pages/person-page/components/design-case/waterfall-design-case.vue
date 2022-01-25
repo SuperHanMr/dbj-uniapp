@@ -186,7 +186,7 @@
     .tag{
       margin-bottom: 12rpx;
       width: 100%;
-      height: 40rpx;
+      max-height: 40rpx;
       overflow: hidden;
       view{
         display: inline-block;
