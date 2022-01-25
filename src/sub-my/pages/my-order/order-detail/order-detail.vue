@@ -1582,8 +1582,6 @@ export default {
 
 
 
-// 底部 确认收货 及申请退款按钮
-.applyforRefund-container,
 
 // 底部 取消支付按钮样式 确认收货 及申请退款按钮
 .waitPayBottom {
@@ -1609,7 +1607,9 @@ export default {
   }
 }
 
-.applyforRefund-confirmReceipt2 {
+
+// 底部 确认收货 及申请退款按钮
+.applyforRefund-container,.applyforRefund-confirmReceipt2 {
   position: fixed;
   bottom: 0;
   width: 686rpx;
@@ -1633,21 +1633,7 @@ export default {
     border: 2rpx solid #eaeaea;
   }
 }
-.applyforRefund-confirmReceipt2 {
-		padding-top: 30rpx;
 
-		.refundOrderStatus {
-			width: 160rpx;
-			height: 56rpx;
-			line-height: 54rpx;
-			text-align: center;
-			border-radius: 16rpx;
-			border: 2rpx solid #eaeaea;
-			font-size: 24rpx;
-			font-weight: 400;
-			color: #333333;
-		}
-	}
 
 	// 底部 确认收货 及申请退款按钮
 	.applyforRefund-confirmReceipt,
@@ -1704,6 +1690,7 @@ export default {
 			color: #333333;
 		}
 	}
+	
 	// 弹框样式
 	::v-deep .uni-popup-dialog {
 	  width: 560rpx !important;
