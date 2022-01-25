@@ -21,13 +21,13 @@
 
 						</view>
 						<view class="area" v-if="item.insideArea != 0">
-							{{item.insideArea ? (item.insideArea).toFixed(0) : '-'}}m²
+							{{item.insideArea >= 1 ? (item.insideArea).toFixed(0) : '-'}}m²
 						</view>
 						<view class="line" v-if="item.budget != 0">
 
 						</view>
 						<view class="preferential" v-if="item.budget != 0">
-							预算: ¥{{item.budget ? (item.budget).toFixed(0) : '-'}}万
+							预算: ¥{{item.budget >= 10000 ? (item.budget).toFixed(0) : '-'}}万
 						</view>
 					</view>
 					<view class="tag-box">
