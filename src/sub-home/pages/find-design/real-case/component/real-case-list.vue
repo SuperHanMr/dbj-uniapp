@@ -143,7 +143,7 @@
 		}
 
 		.list {
-			padding: 0 32rpx 16rpx;
+			padding: 0 32rpx 24rpx;
 
 			.head {
 				background: #FFFFFF;

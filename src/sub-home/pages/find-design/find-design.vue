@@ -152,7 +152,9 @@
       @click="gotoRealCase"
     >
       <view class="left">
-        推荐案例
+				<view class="recommend">
+					推荐案例
+				</view>
       </view>
       <view class="right">
         <text>更多</text>
