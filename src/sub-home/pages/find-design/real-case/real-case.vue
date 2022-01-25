@@ -1,5 +1,5 @@
 <template>
-	<view :class="['real-case', {'real-case-house': currentHouse.address}]">
+	<view :class="['real-case', {'real-case-house': currentHouse.id}]">
 		<Navigation-bar :paddingTop='statusHeight' :showScreen='showScreen' :currentHouse='currentHouse'
 			@openHomeList='openHomeList' />
 		<view class="container" :style="{marginTop: Number(statusHeight) + 44 + 'px'}">

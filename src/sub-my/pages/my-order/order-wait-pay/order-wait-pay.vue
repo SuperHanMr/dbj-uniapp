@@ -102,10 +102,10 @@
 							</view>
 							<view class="right">
 								<text class="price-font" v-if="orderInfo.stockType == 0">
-									￥{{item.freight?`${item.freight}`:"0.00"}}
+									￥{{item.freight?`${item.freight}`:"--"}}
 								</text>
 								<text class="price-font" :style="{marginTop:item.freight?'0':'8rpx'}" v-else>
-									{{item.freight?`￥${item.freight}`:"00"}}
+									{{item.freight?`￥${item.freight}`:"--"}}
 								</text>
 							</view>
 						</view>
@@ -121,11 +121,11 @@
 							</view>
 							<view class="right">
 								<text class="price-font" v-if="orderInfo.stockType == 0">
-								  ￥{{item.handlingFees?item.handlingFees:"0.00"}}</text>
+								  ￥{{item.handlingFees?item.handlingFees:"--"}}</text>
 								<text
 								  class="price-font" :style="{marginTop:item.handlingFees ? '0' : '8rpx' }"
 								  v-else
-								>{{item.handlingFees?`￥${item.handlingFees}`:"00"}}</text>
+								>{{item.handlingFees?`￥${item.handlingFees}`:"--"}}</text>
 							</view>
 						</view>
 						<view class="item_css_style"  v-if="item.storeDiscount">
@@ -147,7 +147,7 @@
 						</view>
 					</view>
 
-          <!-- <view
+          <view
             v-if="item.hasMaterial && orderInfo.stockType == 1"
             :style="{paddingBottom: item.hasMaterial && orderInfo.stockType == 1 ? '32rpx':'0'}"
           >
@@ -167,7 +167,7 @@
             >
               <text>搬运费需要根据实际要货时进行核算</text>
             </view>
-          </view> -->
+          </view>
 
         </view>
         <view class="split-line" />
@@ -217,7 +217,7 @@
           v-if="cardClick"
           class="selected-img"
           src="https://ali-image.dabanjia.com/static/mp/dabanjia/images/classify/pay_selected.png"
-          mode=""
+          mode="" 
         >
         </image>
         <image
