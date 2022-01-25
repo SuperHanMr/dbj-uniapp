@@ -303,12 +303,12 @@ export default {
 
 .bottom button:nth-child(1) {
   background-color: #ffffff;
-  border: 1px solid #00bfb6;
-  color: #00bfb6;
+  border: 1px solid #F83112;
+  color: #F83112;
 }
 
 .bottom button:nth-child(2) {
-  background: linear-gradient(135deg, #00bfaf, #00bfbc);
+  background: linear-gradient(117.02deg, #FA3B34 24.56%, #FF6A33 92.21%);
   color: #ffffff;
 }
 
