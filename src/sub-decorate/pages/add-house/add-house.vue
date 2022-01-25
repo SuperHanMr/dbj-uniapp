@@ -1,9 +1,7 @@
 <template>
 	<view class="add-house">
 		<form>
-      <view class="main">
-        
-      
+      <view class="main">  
 			<view class="content">
 				<view class="form-item">
 					<label class="item-label">业主姓名</label>
@@ -26,7 +24,7 @@
 					<label class="item-label">所在地区</label>
 					<input class="uni-input" placeholder-class="placeholder" :class="{disabled:!!(roomId&&isEdit)}" :disabled="!!(roomId&&isEdit)" @click="chooseMap" disabled name="input"
 						v-model="addData.area||addData.locationName" placeholder="请选择您房屋所在地区" />
-					<image src="../../../static/images/ic_back.png" class="shopIcon"></image>
+					<i src="" class="icon-alert_notice_jump shopIcon"></i>
 				</view>
 				<view class="form-item">
 					<label class="item-label">小区</label>
@@ -56,9 +54,7 @@
           
             <input type="text" :class="{disabled:!!(roomId&&isEdit)}" placeholder-class="placeholder" class="uni-input" disabled v-model="houseType"
             	placeholder="请选择房屋户型"  @click="openList"/>
-            <image src="../../../static/images/ic_back.png" class="shopIcon"></image>
-          
-					
+            <i src="" class="icon-alert_notice_jump shopIcon"></i>				
 				</view>
 				<view class="form-item">
 					<label class="item-label">房屋面积</label>

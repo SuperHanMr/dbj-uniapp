@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 <template>
   <view class="order-container">
     <view v-if="!isShow">

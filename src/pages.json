@@ -453,14 +453,6 @@
           }
         },
         {
-          "path": "pages/my-order/success/success",
-          "style": {
-            "navigationBarTitleText": "",
-            "enablePullDownRefresh": false,
-            "navigationStyle": "custom"
-          }
-        },
-        {
           "path": "pages/personal-center/my-collection/my-collection",
           "style": {
             "navigationBarTitleText": "我的收藏",
@@ -996,6 +988,7 @@
             "transparentTitle": "auto",
             "navigationStyle": "custom",
             "enablePullDownRefresh": true
+            
           }
         },
         {

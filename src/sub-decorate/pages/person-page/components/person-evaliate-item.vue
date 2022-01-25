@@ -11,7 +11,7 @@
       </view>
       <view class="evaluate-text" :class="{'report-text-hidden':isHidden}">{{item.content}}</view>
       <view class="openHidden" v-if="showBtn" @click="clickHidden">
-        {{hddenText}}<i :class="{'icon-a-ic_zhuangxiuxianchang_jingsuanzhankai_csn':isHidden,'icon-a-ic_zhuangxiuxianchang_jingsuanshouqi_csn':!isHidden}"></i>
+        {{hddenText}}<i :class="{'icon-list_arrow_dropdown':isHidden,'icon-list_arrow_pullup':!isHidden}"></i>
       </view>
       <view class="image-list">
         <image-preview :list='JSON.parse(item.imgList)' :row='3'></image-preview>
@@ -32,6 +32,10 @@
     props:{
       item:{},
       last:false,
+      userId:{
+        type:Number,
+        default:0
+      }
     },
     data(){
       return{
@@ -57,8 +61,9 @@
           })
           return
         }
+        console.log('/sub-classify/pages/goods-detail/goods-detail?goodId='+item+'&userId='+this.userId+'&originType='+`2|${this.userId}|${this.userId}|`)
         uni.navigateTo({
-          url:'/sub-classify/pages/goods-detail/goods-detail?goodId='+item
+          url:'/sub-classify/pages/goods-detail/goods-detail?goodId='+item+'&userId='+this.userId+'&originType='+`2|${this.userId}|${this.userId}|`
         })
       },
       check(){
@@ -143,7 +148,7 @@
       // line-height: 44rpx;
       font-weight: 400;
       text-align: center;
-      color: #21C091;
+      color: #FA4D32;
       font-size: 24rpx;
       display: flex;
       align-items: center;

@@ -56,7 +56,7 @@
           class="set-up"
           @click="handleSetUp"
         >
-          <image src="https://ali-image.dabanjia.com/static/mp/dabanjia/images/theme-red/my/setting.svg" />
+          <image src="../../../static/order/setting.png" />
         </view>
       </view>
 
@@ -453,8 +453,8 @@ export default {
 
     .set-up {
       image {
-        width: 40rpx;
-        height: 40rpx;
+        width: 72rpx;
+        height: 72rpx;
       }
     }
   }
