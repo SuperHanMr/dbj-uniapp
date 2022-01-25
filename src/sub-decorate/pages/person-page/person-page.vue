@@ -3,6 +3,7 @@
     <image
       class="bg-index"
       :class="{'bg-design':personData.roleId===1}"
+      mode="aspectFill"
       :src="personData.roleId===1?personData.artImage:'https://ali-image.dabanjia.com/static/mp/dabanjia/images/decorate/person_bg.png'"
     >
     </image>
@@ -209,6 +210,7 @@
       </view>
       <view
         class="content"
+        :class="{'design-content':personData.roleId===1}"
         v-if="personId!=0&&personData.roleId<7"
       >
         <personEvaluateDesign 
@@ -449,6 +451,7 @@ export default {
     query.exec(function (res) {});
   },
   onPageScroll(scrollTop) {
+    // console.log(scrollTop.scrollTop)
     this.pageScroll(scrollTop.scrollTop);
   },
   methods: {
@@ -463,7 +466,7 @@ export default {
     },
     pageScroll(scrollTop) {
       this.scrollTop = scrollTop;
-      scrollTop !== 0 && this.changeOpacity(this.scrollTop);
+      this.changeOpacity(this.scrollTop);
       this.getTopDistance();
       if (this.personData.roleId === 1) {
         this.currentItem =
@@ -609,9 +612,10 @@ export default {
     //   // })
     // },
     changeOpacity(num) {
-      num < 200
+      // console.log(num)
+      num < 150
         ? (this.opacityNum = 0)
-        : num < 220
+        : num < 180
         ? (this.opacityNum = 0.8)
         : (this.opacityNum = 1);
       // console.log(this.opacityNum)
@@ -1034,6 +1038,9 @@ view .is-self {
       vertical-align: top;
     }
   }
+}
+.design-content{
+  border-radius: 32rpx 32rpx 0 0;
 }
 .content{
   min-height: 500rpx;

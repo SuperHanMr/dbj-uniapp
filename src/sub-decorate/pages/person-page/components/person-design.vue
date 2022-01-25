@@ -139,7 +139,7 @@
         this.$nextTick(function(){
           query.select(".person-desgin").boundingClientRect((res) => {
             console.log(res)
-            num = res.height+res.top+40
+            num = res.height+129*2+40
             this.$emit('clickHidden',num)
             // console.log(res.height,this.isHidden)
             
