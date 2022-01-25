@@ -82,7 +82,7 @@
           class="design-card-item"
           v-for="item2 in searchDesignerList"
           :key="item2.id"
-          :style="{backgroundImage:`url(${item2.artImage})`,backgroundSize:'434rpx 572rpx'}"
+          :style="{backgroundImage:`url(${item2.artImage}?x-oss-process=image/resize,m_mfit,w_868,h_1396)`,backgroundSize:'434rpx 572rpx'}"
           @click="gotoDesignerHomePage(item2.id)"
         >
           <view class="basic-info">
