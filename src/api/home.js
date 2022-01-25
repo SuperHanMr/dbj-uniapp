@@ -20,7 +20,7 @@ export function updateViewCount(id) {
 
 //首页金刚区
 export function navList(params) {
-	return request.get(`app/home/config/versions/9`, {
+	return request.get(`app/home/config/versions/12`, {
 		params
 	});
 }
