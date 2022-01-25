@@ -177,13 +177,16 @@
               <text v-if="item4.similarity">{{item4.similarity}}</text>
               <text v-if="item4.similarity" class="icon"></text>
 
-              <text v-if="item4.flag">附近{{ item4.distance/1000>1?`${(item4.distance/1000).toFixed(2)}km`:`${parseInt(item4.distance)}m`}}</text>
+              <text v-if="item4.flag">附近{{ item4.distance/1000>1
+							?`${(item4.distance/1000).toFixed(0)}km`:`${parseInt(item4.distance)}m`}}</text>
               <text v-if="item4.flag" class="icon"></text>
 
               <text v-if="!item4.flag">{{item4.cityName|| "-"}}</text>
               <text v-if="!item4.flag" class="icon"></text>
 
-              <text>{{item4.budget?`预算：￥${(item4.budget).toFixed(2)}万`: "预算：-"}}</text>
+              <text>{{item4.budget
+							?(item4.budget).toFixed(0)<1?`预算：-万`:`预算：￥${(item4.budget).toFixed(0)}万`
+							: "预算：-"}}</text>
             </view>
           </view>
           <view class="attr_container">
