@@ -11,7 +11,7 @@
       </view>
       <view class="evaluate-text" :class="{'report-text-hidden':isHidden}">{{item.content}}</view>
       <view class="openHidden" v-if="showBtn" @click="clickHidden">
-        {{hddenText}}<i :class="{'icon-a-ic_zhuangxiuxianchang_jingsuanzhankai_csn':isHidden,'icon-a-ic_zhuangxiuxianchang_jingsuanshouqi_csn':!isHidden}"></i>
+        {{hddenText}}<i :class="{'icon-list_arrow_dropdown':isHidden,'icon-list_arrow_pullup':!isHidden}"></i>
       </view>
       <view class="image-list">
         <image-preview :list='JSON.parse(item.imgList)' :row='3'></image-preview>
