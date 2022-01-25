@@ -598,6 +598,14 @@
           }
         },
         {
+          "path": "pages/pay-order/pay-h5-success",
+          "style": {
+            "navigationBarTitleText": "",
+            "enablePullDownRefresh": false,
+            "navigationBarBackgroundColor": "#ffffff"
+          }
+        },
+        {
           "path": "pages/pay-order/agreement",
           "style": {
             "navigationBarTitleText": "",

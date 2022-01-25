@@ -23,17 +23,11 @@
         <view class="toast-content">
           <view class="title">确认支付</view>
           <view class="text">
-            <view v-if="refundable">
-              <h3>七天无理由退换</h3>
-              <p>
-                签收后7天内由于客户主观原因申请退货，买家需承担退货产生的物流、上楼搬运等费用。退货需保证商品完好（无破损、未使用），且不影响二次销售。如商品已安装、缺少配件、外观破损等任一商品不完好场景，均不适用7天无理由退货
-              </p>
-            </view>
-            <view v-else>
-              <h2>无质量问题不退换</h2>
-              <p>
-                非产品质量问题，不支持退换货。如收到货物发现质量问题，请把产品外包装、批次及产品质量问题及时拍照，联系售后客服。
-              </p>
+            <view><image src="../../static/image/h5-pay.png" mode="" class="pay-icon"></image></view>
+            <view>请确认微信支付是否已完成</view>
+            <view class="pay-button">
+              <button>重新支付</button>
+              <button>已完成支付</button>
             </view>
           </view>
         </view>
@@ -71,8 +65,11 @@
           let payUrl = data.url + '&redirect_url=' + location.href + '&type=pay_redirect';
           location.href = payUrl
         }, (err) => {
-          let payUrl = location.href + '&redirect_url=' + location.href + '&type=pay_redirect';
-          location.href = payUrl
+          // let payUrl = location.href + '&redirect_url=' + location.href + '&type=pay_redirect';
+          // location.href = payUrl
+          uni.navigateTo({
+            url: './pay-h5-success'
+          })
         })
       },
       closeToast() {
@@ -89,6 +86,7 @@
   padding: 32rpx;
   font-size: 30rpx;
   background-color: #FFFFFF;
+  font-family: "PingFang SC";
 }
 .pay-num{
   position: absolute;
@@ -181,12 +179,39 @@
 
   .text {
     padding: 0 32rpx 50rpx;
+    text-align: center;
+    font-weight: 500;
   }
-
+  .pay-icon{
+    width: 224rpx;
+    height: 224rpx;
+  }
   p {
     text-align: justify;
     text-indent: 2em;
     color: #999999;
     margin-top: 24rpx;
+  }
+  .pay-button{
+    margin-top: 130rpx;
+    display: flex;
+    width: 680rpx;
+    justify-content: space-between;
+  }
+  .pay-button button {
+    width: 326rpx;
+    height: 88rpx;
+    line-height: 88rpx;
+    border-radius: 16rpx;
+    font-weight: 500;
+    font-size: 32rpx;
+  }
+  .pay-button button:nth-child(1) {
+    border: 1px solid #333333;
+    color: #333333;
+  }
+  .pay-button button:nth-child(2) {
+    color: #ffffff;
+    background: linear-gradient(117.02deg, #FA3B34 24.56%, #FF6A33 92.21%);
   }
 </style>
