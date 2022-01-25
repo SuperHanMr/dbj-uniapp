@@ -101,8 +101,8 @@
 								/>
 							</view>
 							<view class="right">
-								<text class="price-font"v-if="orderInfo.stockType == 0">
-									￥{{item.freight?`${item.freight}`:"0.00"}}
+								<text class="price-font" v-if="orderInfo.stockType == 0">
+									￥{{item.freight?`${item.freight}`:"--"}}
 								</text>
 								<text class="price-font" :style="{marginTop:item.freight?'0':'8rpx'}" v-else>
 									{{item.freight?`￥${item.freight}`:"--"}}
@@ -121,7 +121,7 @@
 							</view>
 							<view class="right">
 								<text class="price-font" v-if="orderInfo.stockType == 0">
-								  ￥{{item.handlingFees?item.handlingFees:"0.00"}}</text>
+								  ￥{{item.handlingFees?item.handlingFees:"--"}}</text>
 								<text
 								  class="price-font" :style="{marginTop:item.handlingFees ? '0' : '8rpx' }"
 								  v-else
@@ -146,7 +146,27 @@
 							</view>
 						</view>
 					</view>
-
+          <view
+            v-if="item.hasMaterial && orderInfo.stockType == 1"
+            :style="{paddingBottom: item.hasMaterial && orderInfo.stockType == 1 ? '32rpx':'0'}"
+          >
+            <view
+              v-if="item.freeShipCount &&  item.fullExemptionAmount "
+              class="tips"
+            >
+              <text>本次支付</text>
+              <text style="color: #333333;">满{{item.fullExemptionAmount}}元</text>
+              <text>，可获得</text>
+              <text style="color: #333333;">{{item.freeShipCount}}次免运费额度，</text>
+              <text>搬运费需要根据实际要货时进行核算</text>
+            </view>
+            <view
+              v-else
+              class="tips"
+            >
+              <text>搬运费需要根据实际要货时进行核算</text>
+            </view>
+          </view>
         </view>
         <view class="split-line" />
       </view>
@@ -183,7 +203,9 @@
           v-if="cardClick"
           class="selected-img"
           src="https://ali-image.dabanjia.com/static/mp/dabanjia/images/classify/pay_selected.png"
-        />
+          mode="" 
+        >
+        </image>
         <image
           v-else
           class="selected-img"
@@ -378,7 +400,7 @@ export default {
   },
   onPageScroll(scrollTop) {
     this.scrollTop = scrollTop.scrollTop;
-		
+
   },
 
 
