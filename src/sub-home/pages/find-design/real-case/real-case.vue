@@ -53,7 +53,7 @@
 				</view>
 			</view>
 		</view>
-		<view class="home-info-box" v-if="!currentHouse.address">
+		<view class="home-info-box" v-if="!currentHouse.id">
 			<add-home-info @openHomeList='openHomeList' />
 		</view>
 	</view>
