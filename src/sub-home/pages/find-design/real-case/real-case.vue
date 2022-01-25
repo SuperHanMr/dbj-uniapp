@@ -41,7 +41,7 @@
 				<view class="box" v-if="realCaseListData && realCaseListData.length > 0">
 					<real-case-list :currentHouse='currentHouse' :realCaseListData='realCaseListData'
 						@triggerScroll='triggerScroll' @scrollUpper='scrollUpper' @scrolltolower='scrolltolower'
-						@refresherrefresh='refresherrefresh' ref='realCaseList' />
+						@refresherrefresh='refresherrefresh' @toCaseDetail='toCaseDetail' ref='realCaseList' />
 				</view>
 				<view class="no-service" v-else>
 					<image
@@ -100,7 +100,8 @@
 				caseDetailInfo: {},
 				endPage: false,
 				selectData: {},
-				triggered: false
+				triggered: false,
+				caseDetail: false
 			}
 		},
 		onLoad() {
@@ -109,8 +110,15 @@
 					this.statusHeight = res.statusBarHeight;
 				},
 			});
+			uni.$on('defaultHouseChange',() => {
+				this.caseDetail = false;
+			})
 		},
 		onShow() {
+			if (this.caseDetail) {
+				this.caseDetail = false;
+				return;
+			}
 			const currentHouse = getApp().globalData.currentHouse;
 			let isRefshList = null;
 			if (this.currentHouse.id != currentHouse.id) {
@@ -229,6 +237,10 @@
 				this.listParam.page = 0;
 				this.getListData(true);
 				uni.stopPullDownRefresh()
+			},
+			toCaseDetail(){
+				console.log('toCaseDetail', ">>>>>>")
+				this.caseDetail = true;
 			}
 		}
 	}

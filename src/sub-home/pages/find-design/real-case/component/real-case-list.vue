@@ -103,6 +103,7 @@
 				}
 			},
 			toCaseDetail(item) {
+				this.$emit('toCaseDetail');
 				uni.navigateTo({
 					url: `/pages/real-case/real-case-webview/real-case-webview?id=${item.id}`,
 				});
