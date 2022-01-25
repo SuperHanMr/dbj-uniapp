@@ -251,9 +251,11 @@
               title: "提交成功",
               icon: "none",
             });
-            uni.navigateBack({
-              delta: 2,
-            });
+						setTimeout(() => {
+							uni.navigateBack({
+							  delta: 2,
+							});
+						}, 1000)
           });
         }
       },
