@@ -147,28 +147,6 @@
 						</view>
 					</view>
 
-          <!-- <view
-            v-if="item.hasMaterial && orderInfo.stockType == 1"
-            :style="{paddingBottom: item.hasMaterial && orderInfo.stockType == 1 ? '32rpx':'0'}"
-          >
-            <view
-              v-if="item.freeShipCount &&  item.fullExemptionAmount "
-              class="tips"
-            >
-              <text>本次支付</text>
-              <text style="color: #333333;">满{{item.fullExemptionAmount}}元</text>
-              <text>，可获得</text>
-              <text style="color: #333333;">{{item.freeShipCount}}次免运费额度，</text>
-              <text>搬运费需要根据实际要货时进行核算</text>
-            </view>
-            <view
-              v-else
-              class="tips"
-            >
-              <text>搬运费需要根据实际要货时进行核算</text>
-            </view>
-          </view> -->
-
         </view>
         <view class="split-line" />
       </view>
@@ -179,16 +157,6 @@
 				:payPrice="payPrice"
 			/>
 
-
-      <!-- <view class="payment-method">
-				<text>支付方式</text>
-				<view class="method">
-					<image src="@/static/order/ic_order_wechat@2x.png" mode="" />
-					<text>在线支付</text>
-				</view>
-			</view> -->
-
-      <!-- v-if="haveCard && orderInfo.isReplenish" -->
       <view
         v-if="haveCard && orderInfo.isReplenish"
         class="pay-way"
@@ -198,9 +166,7 @@
         <image
           class="card-img"
           src="https://ali-image.dabanjia.com/static/mp/dabanjia/images/classify/ic_card.png"
-          mode=""
-        >
-        </image>
+        />
         <view>
           <text>储值卡</text>
           <text class="card-sub">(可用余额:{{(cardBalance/100).toFixed(2)}}元)</text>
@@ -217,22 +183,19 @@
           v-if="cardClick"
           class="selected-img"
           src="https://ali-image.dabanjia.com/static/mp/dabanjia/images/classify/pay_selected.png"
-          mode=""
-        >
-        </image>
+        />
         <image
           v-else
           class="selected-img"
           src="https://ali-image.dabanjia.com/static/mp/dabanjia/images/classify/pay_unselected.png"
-          mode=""
-        >
-        </image>
+        />
       </view>
       <view class="pay-way mrb">
         <text style="color: #333333;">支付方式</text>
 				<view v-if="payChannel" class="flex-center"><text>储值卡支付</text></view>
         <view v-else class="flex-center"><text>在线支付</text></view>
       </view>
+
       <view class='remarks'>
         <text>备注</text>
         <view class="remarks-right">

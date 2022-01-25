@@ -513,10 +513,10 @@ export default {
       switch (data.orderStatus) {
         case 0:
           console.log("订单id===", data.id);
-          // return
-          uni.navigateTo({
-            url: `order-wait-pay/order-wait-pay?orderNo=${data.id}&from=all`,
-          });
+					uni.navigateTo({
+						url:`order-wait-pay/order-wait-pay?orderId=${data.id}&from=waitPay`
+						// url:`order-detail/order-detail?orderId=${data.id}&from=waitPay`
+					})
           break;
         case 1:
           if (this.currentIndex == 0) {
@@ -532,39 +532,18 @@ export default {
           break;
         case 2:
           uni.navigateTo({
-            url: `order-success/order-success?type=complete&id=${data.id}`,
+            // url: `order-success/order-success?type=complete&id=${data.id}`,
+						url:`order-detail/order-detail?orderId=${data.id}`
           });
           break;
         case 3:
           uni.navigateTo({
-            url: `order-failed/order-failed?type=close&id=${data.id}`,
+            // url: `order-failed/order-failed?type=close&id=${data.id}`,
+						url:`order-detail/order-detail?orderId=${data.id}`
           });
           break;
       }
-      // if (data.orderStatus == 0) {
-      //   //（0待付款，1进行中，2已完成 3已关闭）
-      //   uni.navigateTo({
-      //     url: `order-wait-pay/order-wait-pay?orderNo=${data.id}?&from=all`,
-      //   });
-      // } else if (data.orderStatus == 1) {
-      //   if (this.currentIndex == 0) {
-      //     uni.navigateTo({
-      //       url: `order-in-progress/order-in-progress?orderNo=${data.id}&from=all`,
-      //     });
-      //   } else {
-      //     uni.navigateTo({
-      //       url: `order-in-progress/order-in-progress?orderNo=${data.id}`,
-      //     });
-      //   }
-      // } else if (data.orderStatus == 2) {
-      //   uni.navigateTo({
-      //     url: `order-success/order-success?type=complete&id=${data.id}`,
-      //   });
-      // } else {
-      //   uni.navigateTo({
-      //     url: `order-failed/order-failed?type=close&id=${data.id}`,
-      //   });
-      // }
+      
     },
 
     //去店铺首页
@@ -707,33 +686,6 @@ export default {
     },
     handleImage(list) {
       return list.map((item) => item.imgUrl);
-    },
-    formatTime(msTime) {
-      // let start = this.start.toString()
-      // let timer = parseInt(start)
-
-      // let hours = Math.floor(timer / 1000/ 60 / 60);
-      // this.hour = (hours < 10 ? ('0' + hours) : hours);
-
-      // // console.log("!!!!!!!!!!!!!!!!!!!!!!!!!")
-      // // console.log("a.hour=",this.hour)
-      // var interval = setInterval(() => {
-      // 	this.second = (Array(2).join(0) + parseInt(--this.second)).slice(-2)
-      // 	if (this.second == 0) {
-      // 		if (this.minute != 0) {
-      // 				this.minute = (Array(2).join(0) + parseInt(--this.minute)).slice(-2)
-      // 				this.second = 59
-      // 		} else {
-      // 			if (this.hour != 0) {
-      // 				this.hour = (Array(2).join(0) + parseInt(--this.hour)).slice(-2)
-      // 				this.minute = 59
-      // 				this.second = 59
-      // 			} else {
-      // 				clearInterval(interval)
-      // 			}
-      // 		}
-      // 	}
-      // }, 1000)
     },
     handleReset() {
       switch (this.currentIndex) {

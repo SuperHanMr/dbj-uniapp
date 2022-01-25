@@ -16,13 +16,6 @@
 					</view>
 				</view>
 				<view class="common-price">
-					<!-- 商品价格 -->
-					<!-- <view class="product-price" v-if="showActualPay" >
-						<text  style="font-size: 22rpx;margin-right: 8rpx;">实付</text>
-						<text style="font-size:22rpx;">￥</text>
-						<text class="price-font">500.</text>
-						<text style="font-size:22rpx;" class="price-font">00</text>
-					</view> -->
 					<view class="product-price">
 						<text style="font-size:22rpx;">￥</text>
 						<text class="price-font">{{handlePrice(dataInfo.price)[0]}}.</text>
@@ -47,13 +40,6 @@
 					</view>
 				</view>
 				<view class="common-price">
-					<!-- 商品价格 -->
-					<!-- <view class="product-price" v-if="showActualPay" >
-						<text  style="font-size: 22rpx;margin-right: 8rpx;">实付</text>
-						<text style="font-size:22rpx;">￥</text>
-						<text class="price-font">500.</text>
-						<text style="font-size:22rpx;" class="price-font">00</text>
-					</view> -->
 					<view class="product-price">
 						<text style="font-size:22rpx;">￥</text>
 						<text class="price-font">{{handlePrice(dataInfo.price)[0]}}.</text>
@@ -82,9 +68,6 @@
 			},
 			orderStatus:{//1 待付款 2 进行中 3 已完成
 				type:Number,
-			},
-			showActualPay:{
-				type:Boolean,
 			},
 			refundType:{
 				type:Boolean,
