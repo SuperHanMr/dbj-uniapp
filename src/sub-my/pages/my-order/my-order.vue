@@ -493,21 +493,28 @@ export default {
         case 0:
           console.log("订单id===", data.id);
 					uni.navigateTo({
-						url:`order-wait-pay/order-wait-pay?orderId=${data.id}&from=waitPay`
-						// url:`order-detail/order-detail?orderId=${data.id}&from=waitPay`
+						// url:`order-wait-pay/order-wait-pay?orderNo=${data.id}&from=waitPay`
+						url:`order-detail/order-detail?orderId=${data.id}&from=waitPay`
 					})
           break;
         case 1:
-          if (this.currentIndex == 0) {
-            console.log("订单id===", data.id);
-            uni.navigateTo({
-              url: `order-in-progress/order-in-progress?orderNo=${data.id}&from=all`,
-            });
-          } else {
-            uni.navigateTo({
-              url: `order-in-progress/order-in-progress?orderNo=${data.id}`,
-            });
-          }
+					console.log("订单id===", data.id);
+					uni.navigateTo({
+						// url: `order-in-progress/order-in-progress?orderNo=${data.id}&from=all`,
+						url:`order-detail/order-detail?orderId=${data.id}`
+					});
+					 //    if (this.currentIndex == 0) {
+					 //      console.log("订单id===", data.id);
+					 //      uni.navigateTo({
+					 //        // url: `order-in-progress/order-in-progress?orderNo=${data.id}&from=all`,
+									// 	url:`order-detail/order-detail?orderId=${data.id}`
+					 //      });
+					 //    } else {
+					 //      uni.navigateTo({
+									// url:`order-detail/order-detail?orderId=${data.id}`
+					 //        // url: `order-in-progress/order-in-progress?orderNo=${data.id}`,
+					 //      });
+					 //    }
           break;
         case 2:
           uni.navigateTo({

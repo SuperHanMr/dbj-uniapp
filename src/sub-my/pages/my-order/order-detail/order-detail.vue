@@ -569,23 +569,7 @@ export default {
 		    timingFunc: "easeIn",
 		  },
 		});
-		// if(this.scrollTop/100>1){
-		// 	uni.setNavigationBarColor({
-		// 	  frontColor: "#333333",
-		// 	  animation: {
-		// 	    duration: 400,
-		// 	    timingFunc: "easeIn",
-		// 	  },
-		// 	});
-		// }else{
-		// 	uni.setNavigationBarColor({
-		// 	  frontColor: "#ffffff",
-		// 	  animation: {
-		// 	    duration: 400,
-		// 	    timingFunc: "easeIn",
-		// 	  },
-		// 	});
-		// }
+		
   },
 	
 
@@ -618,12 +602,10 @@ export default {
   },
 
 	onShow() {
-		 this.haveCard = false;
+		this.haveCard = false;
       //订单关闭页面
 		this.headerTitle = "订单详情";
 		this.orderDetail();
-		
-		
 		
 		// 代付款订单详情独有
 		this.haveCard = false;
@@ -660,12 +642,14 @@ export default {
 
     // 改变返回下一个页面的路径
     toBack() {
+			console.log("this.type====",this.type)
 			// 进行中
-			if (this.from == "comfirmOrder") {
-				uni.redirectTo({
-					url: "../my-order?firstEntry=true&index=2",
-				});
-			} else if (this.from == "all") {
+			// if (this.from == "comfirmOrder") {
+			// 	uni.redirectTo({
+			// 		url: "../my-order?firstEntry=true&index=2",
+			// 	});
+			// } else 
+			if (this.from == "all") {
 				uni.redirectTo({
 					url: "../my-order?firstEntry=true&index=99",
 				});
@@ -675,13 +659,13 @@ export default {
         uni.redirectTo({
           url: `../my-order?index=1&firstEntry=true`,
         });
-      } else if (this.from == "inprogress") {
+      } else if (this.from == "inprogress" || this.from == "comfirmOrder") {
         uni.redirectTo({
           url: `../my-order?index=2&firstEntry=true`,
         });
-      } else if(this.from == "multiple"){
+      } else if(this.from == "multiple" || this.from == "closedOrder"){
 				uni.redirectTo({
-					 url: `../my-order?index=4&firstEntry=true`,
+					url: `../my-order?index=4&firstEntry=true`,
 				})
 			} else {
         uni.navigateBack({
@@ -751,6 +735,9 @@ export default {
 		  })
 		    .then((e) => {
 		      this.$refs.cancleOrder.close();
+					// 重新加载页面
+					// this.orderDetail()
+					// this.type = "closedOrder"
 		      uni.redirectTo({
 		        url: `../order-failed/order-failed?type=close&id=${this.orderNo}&from=waitPay`,
 		      });
@@ -770,7 +757,7 @@ export default {
 		  if (this.orderInfo.isSplitPay) {
 		    // orderId 是订单id
 		    uni.navigateTo({
-		      url: `../multiple-payments/multiple-payments?orderId=${this.orderNo}&type=detail&remainTime=${this.orderInfo.remainTime}`,
+		      url: `../multiple-payments/multiple-payments?orderId=${this.orderId}&type=detail&remainTime=${this.orderInfo.remainTime}`,
 		    });
 		  } else {
 		    if (this.cardClick) {

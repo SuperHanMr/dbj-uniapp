@@ -1,6 +1,5 @@
 <template>
   <view class="container" >
-    <!-- 退款详情 -->
 		<custom-navbar :opacity="scrollTop/100" :title="headerTitle">
 			<template v-slot:back>
 				<i class="icon-ic_cancel_white back-icon" :style="{color: (scrollTop/100>1)?'black':'white'}"
@@ -8,7 +7,9 @@
 			</template>
 		</custom-navbar>
 
-		<view class="order-container" :style="{paddingBottom:containerPaddingBottom}" >
+    <!-- 退款中详情 -->
+		<view class="order-container" v-if="refundInfo.status ==0 || refundInfo.status ==1"
+		:style="{paddingBottom:containerPaddingBottom}" >
 			<view  style="position: relative;">
 				<view class="bgcStyle" :style="{backgroundImage:`url(${bgImg})`,backgroundSize: '100% 100%'}"/>
 				<view :style="{height:navBarHeight}"></view>
@@ -21,7 +22,8 @@
 				</view>
 			</view>
 
-			<view class="refund-product-info" :style="{paddingBottom:( orderType==2 || refundInfo.type ==5) ?'24rpx':''}">
+			<view class="refund-product-info"  v-if="refundInfo.status ==0 || refundInfo.status ==1"
+			 :style="{paddingBottom:( orderType==2 || refundInfo.type ==5) ?'24rpx':''}">
 				<order-item
 					v-if="refundInfo.type !==5"
 					v-for="item in refundInfo.detailAppVOS"
@@ -44,14 +46,120 @@
 
 
 		</view>
-		<view
-		  class="cancel-refund-pay"
-		  :style="{paddingBottom:systemBottom}"
-		>
+		<view class="cancel-refund-pay" :style="{paddingBottom:systemBottom}">
 			<view class="button"  @click="cancelToPay()">
 				取消退款
 			</view>
 		</view>
+		
+		
+	
+		
+		
+		<!-- 退款详情 --退款关闭   退款取消与商家拒接 两个页面-->
+		<view class="order-container" v-if="refundInfo.type ==3 || refundInfo.type == 4" :style="{paddingBottom:containerPaddingBottom}" >
+		  <view style="position: relative;">
+		    <view class="bgcStyle" :style="{backgroundImage:`url(${bgImg})`,backgroundSize: '100% 100%'}"/>
+		    <view :style="{height:navBarHeight}"></view>
+		    <view class="order-status">
+		      <view class="status">
+		        <image src="https://ali-image.dabanjia.com/static/mp/dabanjia/images/theme-red/my/ic_order_failed.svg" mode=""/>
+		        <view class="text" v-if="status == 3 || status == 4">退款关闭</view>
+		        <view class="text" v-if="status == 5">退款失败</view>
+		      </view>
+		      <text class="time">{{refundInfo.refundTime | formatDate}}</text>
+		    </view>
+		  </view>
+		
+		  <view class="order-header">
+		    <image v-if="status == 5 " src="https://ali-image.dabanjia.com/static/mp/dabanjia/images/theme-red/my/ic_order_refund_failed.svg" mode="" />
+		    <image v-else src="https://ali-image.dabanjia.com/static/mp/dabanjia/images/theme-red/my/ic_failed.svg"  mode=""/>
+		
+		    <view v-if="status == 3" class="cancel-text">
+					商家拒绝了您的申请，如有问题未解决，您可以重新申请
+				</view>
+		    <view v-if="status == 4 && refundInfo.type !== 6" class="cancel-text">
+					您已取消了本次退款，如有问题未解决，您可以重新申请
+				</view>
+				<!-- 变更单退款详情需要显示的文案 -->
+				<view v-if="status == 4 && refundInfo.type == 6" class="cancel-text failed-text" >
+					您已经取消了本次退款，如有问题可联系客服
+				</view>
+		
+		    <view v-if="status == 5" class="cancel-text failed-text" >
+					您的退款账户存在异常，您可联系客服或者重新发起申请
+				</view>
+		  </view>
+		
+		  <view class="body1">
+		    <order-item
+					v-if="refundInfo.type !==5"
+		      v-for="item in refundInfo.detailAppVOS"
+		      :key="item.id"
+		      :dataList="item"
+		      :refundType="true"
+		      @handleDetail="productDetail(item,'refund')"
+		    />
+		    <store-calue-card-item
+					v-else
+					v-for="item in refundInfo.detailAppVOS"
+					:key="item.id"
+					:dataInfo="item"
+				/>
+		
+		    <view class="refund-money" v-if="refundInfo.freight || refundInfo.handlingFees">
+		      <!--运费 -->
+		      <view  class="price-item" v-if="refundInfo.freight">
+		        <view class="title">
+		          <text style="margin-right: 8rpx;">运费</text>
+		          <image src="../../../../static/price_icon.svg" class="icon" mode="" @click="readExpenses(1)"/>
+		        </view>
+		        <view class="price">
+		          <text>￥</text>
+		          <text class="price-style price-font">{{handlePrice(refundInfo.freight)[0]}}.{{handlePrice(refundInfo.freight)[1]}}</text>
+		        </view>
+		      </view>
+		
+		      <!-- 搬运费 -->
+		      <view class="price-item" v-if="refundInfo.handlingFees" >
+		        <view class="title">
+		          <text style="margin-right: 8rpx;">搬运费</text>
+		          <image
+		            src="../../../../static/price_icon.svg"
+		            class="icon"
+		            mode=""
+		            @click="readExpenses(2)"/>
+		        </view>
+		        <view>
+		          <text>￥</text><text class="price-style price-font">{{handlePrice(refundInfo.handlingFees)[0]}}.{{handlePrice(refundInfo.handlingFees)[1]}}</text>
+		        </view>
+		      </view>
+		    </view>
+		  </view>
+		
+		  <order-refund-info :refundInfo="refundInfo"></order-refund-info>
+		
+		  <view v-if="showContactCustomer || showReApply" class="contact-customer-Reapply" :style="{paddingBottom:systemBottom,}" >
+		    <view v-if="showContactCustomer" class="contact-customer" @click="contactCustomer()">
+		      联系客服
+		    </view>
+		
+		    <view v-if="showReApply==true" class="Reapply" @click="toApplayForRefund(refundInfo)" >
+		      重新申请
+		    </view>
+		  </view>
+		</view>
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
 
 		<!-- 取消退款的弹框 -->
     <uni-popup  ref="cancelRefund"  type="dialog">
@@ -68,8 +176,12 @@
 </template>
 
 <script>
+import { formatDate } from "../../../../utils/common.js";
 import {  getRefundDetail,cancelRefund,confirmReceiptOrder } from "../../../../api/order.js";
 export default {
+	filters: {
+	  formatDate,
+	},
   data() {
     return {
       id: "",
@@ -83,7 +195,13 @@ export default {
 			title:"确定要取消本次退款申请？",
 			headerTitle:"",
 			bgImg: "https://ali-image.dabanjia.com/static/mp/dabanjia/images/theme-red/decorate/order_bg.png",
-    };
+			areaId:"" ,
+			status: "", //退款状态 0待确认 1退款中 2退款完成 3已拒绝 4已取消 5退款失败  退款处理中(0,1) 退款成功(2) 退款关闭(3,4)"
+			showReApply: false,//重新申请
+			showContactCustomer:false,//联系客服
+			expensesType: 0,
+			headerTitle: "",
+		};
   },
 
 	mounted(e) {
@@ -100,6 +218,9 @@ export default {
 		this.id =Number(e.id);
 		this.refundDetail()
 		this.headerTitle = "退款详情"
+		this.status = Number(e.status);
+		
+		
 		const systemInfo = uni.getSystemInfoSync();
 		//状态栏高度
 		this.tophight = systemInfo.statusBarHeight + "px";
@@ -112,19 +233,121 @@ export default {
 			"px";
 		uni.setNavigationBarColor({
 			frontColor: '#ffffff',
-			backgroundColor:'#23d5c6',
+			backgroundColor:'#ff0000',
 			animation: {
 				duration: 400,
 				timingFunc: 'easeIn'
 			}
 		})
 	},
+	//退款关闭页面写的代码
+	// onShow() {
+ //    if (this.type == "refund") {
+ //      //退款成功页面
+ //      this.refundDetail();
+ //      console.log("this.status=", this.status);
+ //      switch (this.status) {
+ //        case 3:
+ //          this.headerTitle = "退款关闭";
+ //          break;
+ //        case 4:
+ //          this.headerTitle = "退款关闭";
+ //          break;
+ //        case 5:
+ //          this.headerTitle = "退款失败";
+ //      }
+ //    }
+
+ //    if (this.type == "close") {
+ //      //订单关闭页面
+ //      this.headerTitle = "订单详情";
+ //      this.orderDetail();
+ //      const currentHouse = getApp().globalData.currentHouse;
+ //      console.log("currentHouse=", currentHouse);
+ //      this.areaId = currentHouse.areaId;
+ //    }
+ //  },
 
   methods: {
 		toBack(){
-			uni.navigateBack({
-				delta:1
-			})
+			// if (this.from == "waitPay") {
+			//   uni.redirectTo({
+			//     url: `../my-order?index=1&firstEntry=true`,
+			//   });
+			// } else if (this.from == "inprogress") {
+			//   uni.redirectTo({
+			//     url: `../my-order?index=2&firstEntry=true`,
+			//   });
+			// } else if(this.from == "multiple"){
+			// 	uni.redirectTo({
+			// 		 url: `../my-order?index=4&firstEntry=true`,
+			// 	})
+			// }else{
+				
+				uni.navigateBack({
+					delta:1
+				})
+			// }
+		},
+		readExpenses(num) {
+		  this.expensesType = num;
+		  this.$refs.expensesToast.showPupop();
+		},
+		// 退款关闭
+		// // 联系客服
+		// contactCustomer() {
+		//   //跳转到客服的页面
+		//   console.log("联系客服");
+		//   this.$store.dispatch("openCustomerConversation");
+		// },
+		// // 申请退款
+		// toApplayForRefund(data) {
+		//   if (data.isWarehoused) {
+		//     console.log(data);
+		//     // 有仓库跳转到成龙的页面
+		//     getApp().globalData.naviData = data;
+		//     let type = 0;
+		//     if (data.isReturnInventory) {
+		//       type = 1;
+		//     }
+		//     uni.redirectTo({
+		//       url: `/sub-decorate/pages/warehouse-refund/warehouse-refund?refundType=${data.type}&id=${data.id}&type=${type}`,
+		//     });
+		//   } else {
+		//     wx.setStorageSync("wholeRefundOrderInfo", JSON.stringify(data));
+		//     uni.redirectTo({
+		//       url: `/sub-my/pages/apply-for-refund/apply-for-refund?refundId=${data.id}`,
+		//     });
+		//   }
+		// },
+		// // 跳转到商品详情页面
+		// productDetail(item, type) {
+		//   console.log("item=", item, "type=", type);
+		//   if (type == "refund") {
+		//     uni.navigateTo({
+		//       url: `../../../../sub-classify/pages/goods-detail/goods-detail?goodId=${item.relationId}`,
+		//     });
+		//   } else {
+		//     uni.navigateTo({
+		//       url: `../../../../sub-classify/pages/goods-detail/goods-detail?goodId=${item.id}`,
+		//     });
+		//   }
+		// },
+		// // 跳转到店铺页面
+		// gotoShop(item) {
+		//   console.log("去店铺首页！！！！");
+		//   uni.navigateTo({
+		//     url: `../../../../sub-classify/pages/shops/shops?storeId=${item.storeId}&areaId=${this.areaId}`,
+		//   });
+		// },
+		
+		handlePrice(price) {
+		  let list = String(price).split(".");
+		  if (list.length == 1) {
+		    return [list[0], "00"];
+		  } else {
+		    return [list[0], list[1]];
+		  }
 		},
 		formatTime(msTime) {
 			let time = msTime /1000;
