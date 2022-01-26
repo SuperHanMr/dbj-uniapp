@@ -66,10 +66,10 @@
 				</view>
 
 			</scroll-view>
-			<view class="bottom-btns-pop" :style="{paddingBottom:systemBottom}">
+			<view class="bottom-btns-pop" :style="{paddingBottom:'20px'}">
 				<view class="shop-icon" @click="openCart">
 					<image class="icon" :class="{'btn-use':cartCount>0,'btn-un':cartCount==0}"
-						src="https://ali-image.dabanjia.com/static/mp/dabanjia/images/home/ic_apply_goods.png" mode=""></image>
+						src="https://ali-image.dabanjia.com/static/mp/dabanjia/images/theme-red/home/ic_apply_goods.png" mode=""></image>
 
 					<view v-if="cartCount" class="num">
 						{{cartCount}}
@@ -376,11 +376,11 @@
 
 		.btn {
 			width: 248rpx;
-			height: 88rpx;
-			line-height: 88rpx;
+			height: 80rpx;
+			line-height: 80rpx;
 			text-align: center;
 			color: #fff;
-			background: linear-gradient(135deg, #36d9cd, #28c6c6);
+			background: linear-gradient(117.02deg, #FA3B34 24.56%, #FF6A33 92.21%);
 			border-radius: 12rpx;
 			margin-right: 32rpx;
 		}
