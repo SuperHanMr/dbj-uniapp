@@ -12,8 +12,8 @@
       </template>
     </custom-navbar>
 
-
-    <view class="order-container" :style="{paddingBottom:systemBottom}">
+		<!-- :style="{paddingBottom:systemBottom}" -->
+    <view class="order-container" >
       <view style="position: relative;">
         <view	class="bgcStyle"	:style="{backgroundImage:`url(${bgImg})`,backgroundSize: '100% 100%'}"/>
         <view :style="{height:navBarHeight}"></view>
@@ -41,12 +41,140 @@
 				v-if="orderInfo.customerName && orderInfo.customerPhone && orderInfo.estateInfo"
 				:data="orderInfo"
 			/>
-			<!-- 代付款订单 多店铺下单特有样式 -->
-			<view class="moreStore" v-if=" orderInfo.orderName && orderInfo.type !==5 ">
+			
+			<view class="moreStore" v-if=" orderInfo.orderStatus==0 && orderInfo.orderName && orderInfo.type !==5 ">
 			  {{orderInfo.orderName}}
 			</view>
+			<!--  代付款订单详情的时候展示 -->
+			<view v-if="orderInfo.orderStatus == 0">
+				<view class="store-container" v-for="(item,index) in orderInfo.details":key="index" >
+				  <view v-if="index > 0" class="store-line" />
+				  <view class="storeItem" :class="{paddingBottom: item.stockType == 1 }" :style="{borderRadius:index >= 1 ? '0' :'24rpx 24rpx 0 0'}" >
+				    <view class="header">
+				      <view class="header-content" v-if="orderInfo.type !== 5">
+				        <view class="storeName" @click="gotoShop(item)">{{item.storeName}}</view>
+				        <image src="https://ali-image.dabanjia.com/static/mp/dabanjia/images/theme-red/my/small_gotoShop.svg"/>
+				      </view>
+				      <view class="header-content" v-else>
+				        <view class="storeName">{{orderInfo.orderName}}</view>
+				      </view>
+				      <view class="icon"></view>
+				    </view>
+				    <view v-for="item2 in item.details" :key="item2.id" >
+				      <order-item
+				        v-if="item2.type !==5"
+				        :orderStatus="1"
+				        :dataList="item2"
+				        @handleDetail="productDetail(item2)"
+				      />
+				      <store-calue-card-item :dataInfo="item2"  v-else/>
+				    </view>
+				
+						<view class="discount-container" v-if="item.hasMaterial &&  orderInfo.details.length>1">
+							<view class="item_css_style">
+								<view class="left">
+								 	<view style="margin-right: 8rpx;">运费</view>
+									<image class="icon" @click="readExpenses(1)" src="../../../../static/price_icon.svg"/>
+								</view>
+								<view class="right">
+									<text class="price-font"v-if="orderInfo.stockType == 0">
+										￥{{item.freight?`${item.freight}`:"0.00"}}
+									</text>
+									<text class="price-font" :style="{marginTop:item.freight?'0':'8rpx'}" v-else>
+										{{item.freight?`￥${item.freight}`:"--"}}
+									</text>
+								</view>
+							</view>
+							<view class="item_css_style">
+								<view class="left">
+									<view style="margin-right: 8rpx;">搬运费</view>
+									<image class="icon" @click="readExpenses(2)" src="../../../../static/price_icon.svg"/>
+								</view>
+								<view class="right">
+									<text class="price-font" v-if="orderInfo.stockType == 0">
+									  ￥{{item.handlingFees?item.handlingFees:"0.00"}}</text>
+									<text
+									  class="price-font" :style="{marginTop:item.handlingFees ? '0' : '8rpx' }"
+									  v-else
+									>{{item.handlingFees?`￥${item.handlingFees}`:"--"}}</text>
+								</view>
+							</view>
+							<view class="item_css_style"  v-if="item.storeDiscount">
+								<view class="left">
+									<text>商家</text>
+								</view>
+								<view class="right">
+									<text  class="price-font"> -￥{{item.storeDiscount}}</text>
+								</view>
+							</view>
+							<view class="item_css_style"  v-if="item.platformDiscount">
+								<view class="left">
+									<text>平台优惠</text>
+								</view>
+								<view class="right">
+									<text  class="price-font"> -￥{{item.platformDiscount}}</text>
+								</view>
+							</view>
+						</view>
+					</view>
+				  <view class="split-line" />
+				</view>
+				
+				<order-price
+					:data="orderInfo"
+					:waitPay="true"
+					:payPrice="payPrice"
+				/>
+				
+				<view v-if="haveCard && orderInfo.isReplenish" class="pay-way" style="justify-content:center" @click="clickCard">
+				  <image
+				    class="card-img"
+				    src="https://ali-image.dabanjia.com/static/mp/dabanjia/images/classify/ic_card.png"
+				  />
+				  <view>
+				    <text>储值卡</text>
+				    <text class="card-sub">(可用余额:{{(cardBalance/100).toFixed(2)}}元)</text>
+				  </view>
+				  <view style="flex:1"> </view>
+				  <view v-if="cardClick" class="card-price" > -¥{{(this.cardPrice/100).toFixed(2)}}</view>
+				  
+					<image
+				    v-if="cardClick"
+				    class="selected-img"
+				    src="https://ali-image.dabanjia.com/static/mp/dabanjia/images/classify/pay_selected.png"
+				  />
+				  <image
+				    v-else
+				    class="selected-img"
+				    src="https://ali-image.dabanjia.com/static/mp/dabanjia/images/classify/pay_unselected.png"
+				  />
+				</view>
+				
+				<view class="pay-way mrb">
+				  <text style="color: #333333;">支付方式</text>
+					<view v-if="payChannel" class="flex-center"><text>储值卡支付</text></view>
+				  <view v-else class="flex-center"><text>在线支付</text></view>
+				</view>
+				
+				<view class='remarks'>
+				  <text>备注</text>
+				  <view class="remarks-right">
+				    <textarea
+				      type="text"
+				      maxlength="200"
+				      v-model="remarks"
+				      cursor-spacing="15px"
+				      placeholder-class="text-placeholder"
+				      style="width:100%;line-height: 36rpx;min-height: 90rpx;height: 85%;overflow: scroll;padding-top: 30rpx;"
+				      placeholder="选填,说点什么～"
+				    />
+				  </view>
+				</view>
+			</view>
 			
-			<view class="storeContainer">
+			
+			<!--进行中订单样式 -->
+			<view class="storeContainer"  v-if="orderInfo.orderStatus == 1">
 				<view v-for="item in orderInfo.details" :key="item.storeId" class="item">
 					<view class="header">
 						<view class="header-content">
@@ -69,283 +197,55 @@
 						/>
 					</view>
 				</view>
-				
-
-				
 			</view>
 			
-			
-				
-			<!--  代付款多店铺的时候展示 -->
-			<!-- 
-			
-			<view class="store-container" v-for="(item,index) in orderInfo.details":key="index" >
-			  <view
-			    v-if="index > 0"
-			    style="height:0.5px;margin: 0 32rpx;background-color: #EBEBEB;"
-			  />
-			  <view
-			    class="storeItem"
-			    :class="{paddingBottom: item.stockType == 1 }"
-			    :style="{borderRadius:index >= 1 ? '0' :'24rpx 24rpx 0 0'}"
-			  >
+			<!--已完成和已关闭订单样式 -->
+			<view class="body2" v-if="orderStatus ==2 || orderStatus ==3">
+			  <view class="part1" v-for="(item2,index2) in orderInfo.details" :key="index2" >
 			    <view class="header">
-			      <view class="header-content" v-if="orderInfo.type !== 5">
-			        <view class="storeName" @click="gotoShop(item)">{{item.storeName}}</view>
-			        <image src="https://ali-image.dabanjia.com/static/mp/dabanjia/images/theme-red/my/small_gotoShop.svg"/>
-			      </view>
-			      <view class="header-content" v-else>
-			        <view class="storeName">{{orderInfo.orderName}}</view>
-			      </view>
-			      <view class="icon"></view>
+						<view class="header-content">
+						  <view v-if="orderInfo.type !==5" class="storeName" @click="gotoShop(item2)" >{{item2.storeName}}</view>
+						  <view v-else class="storeName" >{{orderInfo.orderName}}</view>
+							<image v-if="orderInfo.type !==5 " src="https://ali-image.dabanjia.com/static/mp/dabanjia/images/theme-red/my/small_gotoShop.svg" mode=""/>
+						</view>
+						<view class="icon"></view>
 			    </view>
-			    <view v-for="item2 in item.details" :key="item2.id" >
+			
+			    <view v-for="item3 in item2.details" :key="item3.id" class="orederItem" >
 			      <order-item
-			        v-if="item2.type !==5"
-			        :orderStatus="1"
-			        :dataList="item2"
-			        @handleDetail="productDetail(item2)"
+							v-if="item3.type !==5 && orderStatus ==2"
+			        :dataList="item3"
+			        :orderStatus="3"
+			        @handleDetail="productDetail(item3)"
 			      />
-			      <store-calue-card-item :dataInfo="item2"  v-else/>
+						<order-item
+							v-if="item3.type !== 5 && orderStatus ==3"
+						  :dataList="item3"
+						  @handleDetail="productDetail(item3)"
+						/>
+						<store-calue-card-item :dataInfo ="item3" v-if="item3.type ==5"/>
 			    </view>
-			
-					<view class="discount-container" v-if="item.hasMaterial &&  orderInfo.details.length>1">
-						<view class="item_css_style">
-							<view class="left">
-							 	<view style="margin-right: 8rpx;">运费</view>
-								<image
-								  class="icon"
-								  src="../../../../static/price_icon.svg"
-								  @click="readExpenses(1)"
-								/>
-							</view>
-							<view class="right">
-								<text class="price-font"v-if="orderInfo.stockType == 0">
-									￥{{item.freight?`${item.freight}`:"0.00"}}
-								</text>
-								<text class="price-font" :style="{marginTop:item.freight?'0':'8rpx'}" v-else>
-									{{item.freight?`￥${item.freight}`:"--"}}
-								</text>
-							</view>
-						</view>
-						<view class="item_css_style">
-							<view class="left">
-								<view style="margin-right: 8rpx;">搬运费</view>
-								<image
-								  class="icon"
-								  src="../../../../static/price_icon.svg"
-								  mode=""
-								  @click="readExpenses(2)"
-								/>
-							</view>
-							<view class="right">
-								<text class="price-font" v-if="orderInfo.stockType == 0">
-								  ￥{{item.handlingFees?item.handlingFees:"0.00"}}</text>
-								<text
-								  class="price-font" :style="{marginTop:item.handlingFees ? '0' : '8rpx' }"
-								  v-else
-								>{{item.handlingFees?`￥${item.handlingFees}`:"--"}}</text>
-							</view>
-						</view>
-						<view class="item_css_style"  v-if="item.storeDiscount">
-							<view class="left">
-								<text>商家</text>
-							</view>
-							<view class="right">
-								<text  class="price-font"> -￥{{item.storeDiscount}}</text>
-							</view>
-						</view>
-			
-						<view class="item_css_style"  v-if="item.platformDiscount">
-							<view class="left">
-								<text>平台优惠</text>
-							</view>
-							<view class="right">
-								<text  class="price-font"> -￥{{item.platformDiscount}}</text>
-							</view>
-						</view>
-					</view>
-				</view>
-			  <view class="split-line" />
+			  </view>
 			</view>
 			
-			
-			<view
-			  v-if="haveCard && orderInfo.isReplenish"
-			  class="pay-way"
-			  style="justify-content:center"
-			  @click="clickCard"
-			>
-			  <image
-			    class="card-img"
-			    src="https://ali-image.dabanjia.com/static/mp/dabanjia/images/classify/ic_card.png"
-			    mode=""
-			  >
-			  </image>
-			  <view>
-			    <text>储值卡</text>
-			    <text class="card-sub">(可用余额:{{(cardBalance/100).toFixed(2)}}元)</text>
-			  </view>
-			  <view style="flex:1">
-			  </view>
-			  <view
-			    v-if="cardClick"
-			    class="card-price"
-			  >
-			    -¥{{(this.cardPrice/100).toFixed(2)}}
-			  </view>
-			  <image
-			    v-if="cardClick"
-			    class="selected-img"
-			    src="https://ali-image.dabanjia.com/static/mp/dabanjia/images/classify/pay_selected.png"
-			    mode=""
-			  >
-			  </image>
-			  <image
-			    v-else
-			    class="selected-img"
-			    src="https://ali-image.dabanjia.com/static/mp/dabanjia/images/classify/pay_unselected.png"
-			    mode=""
-			  >
-			  </image>
-			</view>
-			<view class="pay-way mrb">
-			  <text style="color: #333333;">支付方式</text>
-				<view v-if="payChannel" class="flex-center"><text>储值卡支付</text></view>
-			  <view v-else class="flex-center"><text>在线支付</text></view>
-			</view>
-			<view class='remarks'>
-			  <text>备注</text>
-			  <view class="remarks-right">
-			    <textarea
-			      type="text"
-			      maxlength="200"
-			      v-model="remarks"
-			      cursor-spacing="15px"
-			      placeholder-class="text-placeholder"
-			      style="width:100%;line-height: 68rpx;min-height: 90rpx;height: 85%;overflow: scroll;padding-top: 30rpx;"
-			      placeholder="选填,说点什么～"
-			    />
-			  </view>
-			</view>
-			 -->
-			<!-- 底部按钮 -->
-			<!-- <view
-			  v-if="orderInfo.showCancelBtn || orderInfo.showToPayBtn "
-			  :class="{noCancelBtn:true}"
-			  class="waitPayBottom"
-			  :style="{paddingBottom:systemBottom,height:systemHeight,justifyContent:bottomStyle }"
-			>
-			  <view
-			    v-if="orderInfo.showCancelBtn"
-			    class="canclePay"
-			    @click="handleCancelOrder"
-			  >
-			    取消订单
-			  </view>
-			  <view
-			    v-if="orderInfo.showToPayBtn"
-			    class="gotoPay"
-			    @click="toPay"
-			  >
-			    去付款
-			  </view>
-			</view> -->
-			<!-- 取消该订单弹框 -->
-			<!-- <popup-dialog
-			  ref="cancleOrder"
-			  :title="title"
-			  @close="cancelOrderClose"
-			  @confirm="cancleConfirm"
-			>
-			</popup-dialog>
-			<expenses-toast
-			  ref='expensesToast'
-			  :expensesType="expensesType"
-			></expenses-toast>
-			<uni-popup
-			  ref="payDialog"
-			  type="bottom"
-			>
-			  <view class="cart-header">
-			    立即支付
-			    <image
-			      class="remove-all"
-			      @click="closePayDialog"
-			      src="https://ali-image.dabanjia.com/static/mp/dabanjia/images/classify/ic_closed_black.png"
-			    >
-			    </image>
-			  </view>
-			  <view class="pay-diaolog">
-			    <view class="pay-diaolog-title">
-			      需支付
-			    </view>
-			    <view class="pay-diaolog-price">
-			      <text style="font-size: 28rpx;">¥</text>{{payChannelPrice}}
-			    </view>
-			    <view class="pay-diaolog-tip">
-			      {{payChannel?'您正在使用储值卡支付,请确认':'您还需用在线支付,请确认'}}
-			    </view>
-			    <view class="pay-diaolog-alert">
-			      金额以实际金额为准，若储值卡余额不足将用在线支付剩余部分
-			    </view>
-			    <view
-			      class="pay-diaolog-btn"
-			      @click="payOrder()"
-			    >
-			      确认支付
-			    </view>
-			  </view>
-			</uni-popup> -->
-			<!-- 已关闭订单信息 -->
-			<!-- <view class="body" v-for="(item2,index2) in orderInfo.details" :key="index2">
-				<view class="header">
-			    <view class="header-content">
-			      <view v-if="orderInfo.type !==5" class="storeName" @click="gotoShop(item2)" >{{item2.storeName}}</view>
-			      <view v-else class="storeName" >{{orderInfo.orderName}}</view>
-						<image v-if="orderInfo.type !==5 " src="https://ali-image.dabanjia.com/static/mp/dabanjia/images/theme-red/my/small_gotoShop.svg" mode=""/>
-			    </view>
-			    <view class="icon"></view>
-			  </view>
-			  <view v-for="item3 in item2.details" :key="item3.id" >
-			    <order-item
-						v-if="item3.type !== 5"
-			      :dataList="item3"
-			      @handleDetail="productDetail(item3)"
-			    />
-			    <store-calue-card-item :dataInfo="item3" :showActualPay="true" v-else />
-			  </view>
-			</view> -->
-      
-			
-			
-			
-			
-			
-			<order-price
-				v-if="orderInfo.orderStatus ==0" 
-				:data="orderInfo"
-				:waitPay="true"
-				:payPrice="payPrice"
-			/>
 			
 			<order-price 
-				v-if="orderInfo.orderStatus ==1 || orderInfo.orderStatus ==2" 
+				v-if="orderStatus ==1 || orderStatus ==2" 
 				:data="orderInfo" 
 			/>
 			
       <order-price
-				v-if="orderInfo.orderStatus ==3" 
+				v-if="orderStatus ==3" 
         :data="orderInfo"
         :orderFailed="true"
       />
 			<order-info
-			 v-if="orderInfo.orderStatus==0"
+			 v-if="orderStatus==0"
 			  :orderNo="orderInfo.orderNo"
 			  :createTime="orderInfo.createTime"
 			/>
 			<order-info
-				v-if="orderInfo.orderStatus==1"
+				v-if="orderStatus==1"
 				:orderNo="orderInfo.orderNo" 
 				:createTime="orderInfo.createTime" 
 				:showPayTime="true"
@@ -354,7 +254,7 @@
 				:payChannel="orderInfo.payChannel" 
 			/>
 			<order-info
-			  v-if="orderInfo.orderStatus==2"
+			  v-if="orderStatus==2"
 			  :orderNo="orderInfo.orderNo"
 			  :createTime="orderInfo.createTime"
 			  :showPayTime="true"
@@ -363,22 +263,54 @@
 			  :showPayType="true"
 			/>
 			<order-info
-				v-if="orderInfo.orderStatus==3"
+				v-if="orderStatus==3"
 			  :orderNo="orderInfo.orderNo"
 			  :createTime="orderInfo.createTime"
 			  :cancelTime="orderInfo.cancelTime"
 			  :showCancelTime="true"
 			  :payChannel="orderInfo.payChannel"
 			/>
+			
+			
+			<!-- 代付款订单详情 底部按钮 -->
+			<view v-if="orderInfo.showCancelBtn || orderInfo.showToPayBtn "
+			  class="footer-container"
+			  :class="{noCancelBtn:true}"
+			  :style="{paddingBottom:systemBottom,justifyContent:bottomStyle }"
+			>
+			  <view v-if="orderInfo.showCancelBtn" class="canclePay" @click="handleCancelOrder" >
+			    取消订单
+			  </view>
+			  <view v-if="orderInfo.showToPayBtn" class="gotoPay" @click="toPay">
+			    去付款
+			  </view>
+				
+			</view>
+			
 			<!-- 进行中订单底部按钮 -->
-			<view class="applyforRefund-confirmReceipt" :style="{paddingBottom:systemBottom}"
-				v-if="orderInfo.showRefundBtn || (orderInfo.stockType == 0 && orderInfo.shipmentStatus == 1)">
+			<view v-if="orderInfo.showRefundBtn || (orderInfo.stockType == 0 && orderInfo.shipmentStatus == 1)"
+				class="applyforRefund-confirmReceipt" 
+				:style="{paddingBottom:systemBottom}"
+			>
 				<view v-if="orderInfo.showRefundBtn" class="applyforRefund" @click="toApplayForRefund(orderInfo,2)">
 					申请退款
 				</view>
 				<view v-if="orderInfo.stockType==0 && orderInfo.shipmentStatus == 1" class="confirmReceipt"
 					@click="handleConfirmReceipt">
 					确认收货
+				</view>
+			</view>
+			
+			<!-- 已完成订单信息 -->
+			<view v-if="orderStatus ==2 && ( orderInfo.showRefundBtn || orderInfo.showApplyAfterSalesBtn)" 
+				:style="{paddingBottom:systemBottom,}"
+				class="applyforRefund-container" 
+			>
+			  <view v-if="orderInfo.showRefundBtn" class="applyforRefund" @click="toApplayForRefund(orderInfo,2)" >
+			    申请退款
+			  </view>
+				<view v-if="orderInfo.showApplyAfterSalesBtn" class="applyforRefund" @click="toApplyForAfterSales()" >
+				  申请售后
 				</view>
 			</view>
 						
@@ -391,7 +323,7 @@
 				type:1 材料 2 服务
 			-->
 			<view class="applyforRefund-confirmReceipt2" :style="{paddingBottom:systemBottom}"
-				v-if="!orderInfo.showRefundBtn && orderInfo.refundApplyMode == 2 && (orderInfo.stockType == 0 || orderInfo.type == 2)">
+				v-if="orderStatus == 1 && !orderInfo.showRefundBtn && orderInfo.refundApplyMode == 2 && (orderInfo.stockType == 0 || orderInfo.type == 2)">
 						
 				<view class="refundOrderStatus"
 					v-if="orderInfo.refundBillStatus == 0 || (orderInfo.refundBillStatus == 1 && orderInfo.type == 2)"
@@ -415,24 +347,10 @@
 					退款关闭
 				</view>
 			</view>
-			<!-- 已完成订单信息 -->
 			
-			<view v-if=" orderInfo.showRefundBtn " class="applyforRefund-container" :style="{paddingBottom:systemBottom,}">
-			  <view class="applyforRefund" @click="toApplayForRefund(orderInfo,2)" >
-			    申请退款
-			  </view>
-			</view>
-						
-
-			<!-- 申请售后的按钮 -->
-			<!-- <view v-if="orderInfo.showApplyAfterSalesBtn" class="applyforRefund-container" :style="{paddingBottom:systemBottom,}">
-			  <view class="applyforRefund" @click="toApplyForAfterSales()" >
-			    申请售后
-			  </view>
-			</view> -->
-
-			<!-- <view class="applyforRefund-confirmReceipt2" :style="{paddingBottom:systemBottom}"
-				v-if="!orderInfo.showRefundBtn && orderInfo.refundApplyMode == 2 && (orderInfo.stockType == 0 || orderInfo.type == 5)">
+			
+			<view class="applyforRefund-confirmReceipt2" :style="{paddingBottom:systemBottom}"
+				v-if="orderStatus==2 && !orderInfo.showRefundBtn && orderInfo.refundApplyMode == 2 && (orderInfo.stockType == 0 || orderInfo.type == 5)">
 
 				<view class="refundOrderStatus"
 					v-if="orderInfo.refundBillStatus == 0 || (orderInfo.refundBillStatus == 1 && orderInfo.type == 5)"
@@ -454,12 +372,46 @@
 					@click="refundClose(orderInfo)">
 					退款关闭
 				</view>
-			</view> -->
-				<!-- shipmentStatus 发货状态（0待发货 1待收货 2已收货） -->
-
+			</view>
+			
     </view>
 		
-    <expenses-toast
+		
+		<!-- 取消该订单弹框 -->
+		<popup-dialog
+		  ref="cancleOrder"
+		  :title="title"
+		  @close="cancelOrderClose"
+		  @confirm="cancleConfirm"
+		/>
+		<!-- 立即支付弹框 -->
+		<uni-popup ref="payDialog" type="bottom">
+		  <view class="cart-header">
+		    立即支付
+		    <image
+		      class="remove-all"
+		      @click="closePayDialog"
+		      src="https://ali-image.dabanjia.com/static/mp/dabanjia/images/classify/ic_closed_black.png"
+		    />
+		  </view>
+		  <view class="pay-diaolog">
+		    <view class="pay-diaolog-title"> 需支付 </view>
+		    <view class="pay-diaolog-price">
+		      <text style="font-size: 28rpx;">¥</text>{{payChannelPrice}}
+		    </view>
+		    <view class="pay-diaolog-tip">
+		      {{payChannel?'您正在使用储值卡支付,请确认':'您还需用在线支付,请确认'}}
+		    </view>
+		    <view class="pay-diaolog-alert">
+		      金额以实际金额为准，若储值卡余额不足将用在线支付剩余部分
+		    </view>
+		    <view class="pay-diaolog-btn" @click="payOrder()" >
+		      确认支付
+		    </view>
+		  </view>
+		</uni-popup>
+		
+		<expenses-toast
       ref='expensesToast'
       :expensesType="expensesType"
     />
@@ -510,6 +462,10 @@ export default {
 			showContactCustomer:false,//联系客服
 
       orderInfo: {},
+			orderStatus:"",
+			approvalCompleted:"",// 退款是否审核完成 是否审核完成 true不可取消 false可取消"
+			
+			
       expensesType: 0,
 
       systemBottom: "",
@@ -549,6 +505,7 @@ export default {
 			],
 		};
   },
+	
  computed: {
     payChannel() {
       var res = Number(this.totalPrice) * 100 - this.cardBalance;
@@ -595,40 +552,53 @@ export default {
       }
     },
   },
+	
   mounted(e) {
     const menuButtonInfo = uni.getMenuButtonBoundingClientRect();
     this.systemBottom = menuButtonInfo.bottom + "rpx";
     this.containerPaddingBottom = menuButtonInfo.bottom + 112 + "rpx";
-		// this.systemHeight = menuButtonInfo.bottom + this.num + "rpx";
     console.log(this.systemBottom);
   },
 
   onPageScroll(scrollTop) {
     this.scrollTop = scrollTop.scrollTop;
-		if(this.scrollTop/100>1){
-			uni.setNavigationBarColor({
-			  frontColor: "#333333",
-			  animation: {
-			    duration: 400,
-			    timingFunc: "easeIn",
-			  },
-			});
-		}else{
-			uni.setNavigationBarColor({
-			  frontColor: "#ffffff",
-			  animation: {
-			    duration: 400,
-			    timingFunc: "easeIn",
-			  },
-			});
-		}
+		uni.setNavigationBarColor({
+		  frontColor: "#ffffff",
+		  animation: {
+		    duration: 400,
+		    timingFunc: "easeIn",
+		  },
+		});
+		// if(this.scrollTop/100>1){
+		// 	uni.setNavigationBarColor({
+		// 	  frontColor: "#333333",
+		// 	  animation: {
+		// 	    duration: 400,
+		// 	    timingFunc: "easeIn",
+		// 	  },
+		// 	});
+		// }else{
+		// 	uni.setNavigationBarColor({
+		// 	  frontColor: "#ffffff",
+		// 	  animation: {
+		// 	    duration: 400,
+		// 	    timingFunc: "easeIn",
+		// 	  },
+		// 	});
+		// }
   },
+	
 
   onLoad(e) {
     this.type = e.type;
     this.orderId = Number(e.orderId);
     this.status = Number(e.status);
     this.from = e.from;
+		
+		const currentHouse = getApp().globalData.currentHouse;
+		console.log("currentHouse=", currentHouse);
+		this.areaId = currentHouse.areaId;
+		
     // 获取胶囊按钮的位置
     const systemInfo = uni.getSystemInfoSync();
     const menuButtonInfo = uni.getMenuButtonBoundingClientRect();
@@ -652,10 +622,11 @@ export default {
       //订单关闭页面
 		this.headerTitle = "订单详情";
 		this.orderDetail();
-		const currentHouse = getApp().globalData.currentHouse;
-		console.log("currentHouse=", currentHouse);
-		this.areaId = currentHouse.areaId;
+		
+		
+		
 		// 代付款订单详情独有
+		this.haveCard = false;
     getBalance().then((e) => {
       if (e != null) {
         this.haveCard = true;
@@ -675,6 +646,9 @@ export default {
       console.log("订单完成页面");
       getOrderDetail({ id: this.orderId }).then((e) => {
         this.orderInfo = e;
+				this.orderStatus = e.orderStatus
+				this.approvalCompleted =e.approvalCompleted
+				console.log("this.orderStatus===",this.orderStatus)
 				//以下代码是代付款独有的
 				this.totalPrice = this.orderInfo.payAmount;
 				this.bottomStyle = this.orderInfo.showCancelBtn
@@ -686,7 +660,18 @@ export default {
 
     // 改变返回下一个页面的路径
     toBack() {
-      if (this.from == "waitPay") {
+			// 进行中
+			if (this.from == "comfirmOrder") {
+				uni.redirectTo({
+					url: "../my-order?firstEntry=true&index=2",
+				});
+			} else if (this.from == "all") {
+				uni.redirectTo({
+					url: "../my-order?firstEntry=true&index=99",
+				});
+			}
+			// 已关闭
+			else  if (this.from == "waitPay") {
         uni.redirectTo({
           url: `../my-order?index=1&firstEntry=true`,
         });
@@ -698,43 +683,60 @@ export default {
 				uni.redirectTo({
 					 url: `../my-order?index=4&firstEntry=true`,
 				})
-			}
-			else {
+			} else {
         uni.navigateBack({
           delta: 1,
         });
       }
     },
 
-		// 跳转到商品详情页面
-    productDetail(item, type) {
-      console.log("item=", item, "type=", type);
-      uni.navigateTo({
-				url: `../../../../sub-classify/pages/goods-detail/goods-detail?goodId=${item.id}`,
-			});
-    },
+		
     // 跳转到店铺页面
     gotoShop(item) {
-      console.log("去店铺首页！！！！");
+			if (item.type == 5) return;
+			console.log("去店铺首页！！！！");
+			console.log("this.storeId=", item.storeId, "this.areaId=", this.areaId);
       uni.navigateTo({
         url: `../../../../sub-classify/pages/shops/shops?storeId=${item.storeId}&areaId=${this.areaId}`,
       });
     },
+		
     // 联系客服
     contactCustomer() {
       //跳转到客服的页面
       console.log("联系客服");
       this.$store.dispatch("openCustomerConversation");
     },
-    handlePrice(price) {
-      let list = String(price).split(".");
-      if (list.length == 1) {
-        return [list[0], "00"];
-      } else {
-        return [list[0], list[1]];
-      }
-    },
-		//代付款订单独有的接口
+    
+		
+	
+		closePayDialog() {
+		  this.$refs.payDialog.close();
+		},
+		clickCard() {
+		  if (this.cardBalance) {
+		    this.cardClick = !this.cardClick;
+		  }
+		},
+		readExpenses(num) {
+		  this.expensesType = num;
+		  this.$refs.expensesToast.showPupop();
+		},
+		
+		// 跳转到商品详情页面
+		productDetail(item, type) {
+		  console.log("item=", item, "type=", type);
+		  uni.navigateTo({
+				url: `../../../../sub-classify/pages/goods-detail/goods-detail?goodId=${item.id}`,
+			});
+		},
+		
+		// 倒计时间触发到的时间
+		goToCancelDetail() {
+		  uni.redirectTo({
+		    url: `../order-failed/order-failed?type=close&id=${this.orderNo}&from=waitPay`,
+		  });
+		},
 		// 取消订单
 		handleCancelOrder() {
 		  this.$refs.cancleOrder.open();
@@ -745,7 +747,7 @@ export default {
 		cancleConfirm() {
 		  //点击确定后订单会被取消且该订单会被移入已关闭订单中
 		  cancelOrder({
-		    id: this.orderNo,
+		    id: this.orderId,
 		  })
 		    .then((e) => {
 		      this.$refs.cancleOrder.close();
@@ -760,25 +762,6 @@ export default {
 		        duration: 2000,
 		      });
 		    });
-		},
-		closePayDialog() {
-		  this.$refs.payDialog.close();
-		},
-		clickCard() {
-		  if (this.cardBalance) {
-		    this.cardClick = !this.cardClick;
-		  }
-		},
-		readExpenses(num) {
-		  this.expensesType = num;
-		  this.$refs.expensesToast.showPupop();
-		},
-
-		// 倒计时间触发到的时间
-		goToCancelDetail() {
-		  uni.redirectTo({
-		    url: `../order-failed/order-failed?type=close&id=${this.orderNo}&from=waitPay`,
-		  });
 		},
 		//去支付
 		toPay() {
@@ -849,6 +832,7 @@ export default {
 		    }
 		  });
 		},
+		
 		formatTime(msTime) {
 		  let time = msTime / 1000;
 		  let hour = Math.floor(time / 60 / 60);
@@ -876,122 +860,36 @@ export default {
 
 
 
-
-
-
-
-
-
-
-		// 已完成页面独有的接口
 		// 申请退款
-		// toApplayForRefund(data, type) {
-		//   // wx.setStorageSync("wholeRefundOrderInfo", JSON.stringify(data));
-		// 	uni.navigateTo({
-		//     url: `/sub-my/pages/apply-for-refund/apply-for-refund?orderId=${this.id}&type=whole&status=2&applyMode=2`,
-		//   });
-		// },
+		toApplayForRefund(data, type) {
+			// this.title = "您确定要取消订单吗?";
+			//type: 1 部分退款  2 整体退款
+			if (type == 1) {
+				console.log("orderId=", this.orderInfo.orderId);
+				console.log("部分退款", "data=", data);
+				uni.navigateTo({
+					url:`../../apply-for-refund/apply-for-refund?orderId=${this.orderId}&type=partical&status=1&applyMode=1&orderDetailsId=${data.orderDetailId}`
+				});
+			} else {
+				let status; //此处的status值影响到申请退款页面样式
+				if(this.orderStatus ==2){
+					status = 2
+				}else{
+					status = 1
+				}
+				console.log("全部退款data=", data);
+				uni.navigateTo({
+					url:`../../apply-for-refund/apply-for-refund?orderId=${this.orderId}&type=whole&status=${status}&applyMode=2`
+				});
+			}
+		},
+		// 申请售后
 		toApplyForAfterSales(){
 			console.log("申请售后 跳转到客服聊天页面")
 			this.$store.dispatch("openCustomerConversation");
 		},
+		
 		// 取消退款
-		refundCancel(item) {
-			this.itemId = item.refundId;
-			this.title = "确定要取消本次申请退款？";
-			this.$refs.cancelRefund.open();
-		},
-		cancelRefundClose() {
-			this.$refs.cancelRefund.close();
-		},
-		cancelRefundConfirm() {
-			cancelRefund({
-				id: this.itemId,
-			}).then(() => {
-				this.$refs.cancelRefund.close();
-				this.orderDetail();
-			});
-		},
-		// 申请退款成功
-		refundSuccess(item) {
-			uni.navigateTo({
-				url: `../order-success/order-success?type=refund&id=${item.refundId}`,
-			});
-		},
-		refundFailed(item) {
-			console.log("item数据=", item, "测试");
-			const showReApply = item.shipmentStatus !== 2 ? true : false;
-			console.log("showReApply=", showReApply);
-			uni.navigateTo({
-				url: `../order-failed/order-failed?type=refund&id=${item.refundId}&showReApply=${showReApply}&status=${item.refundBillStatus}`,
-			});
-		},
-
-		refundClose(item) {
-			console.log("item数据=", item);
-			const showReApply = item.shipmentStatus !== 2 ? true : false;
-			console.log("showReApply=", showReApply);
-			uni.navigateTo({
-				url: `../order-failed/order-failed?type=refund&id=${item.refundId}&showReApply=${showReApply}&status=${item.refundBillStatus}`,
-			});
-		},
-		
-		
-		// 进行中订单详情接口
-		// 点击商品区域，跳转到商品详情页面
-		goToDetail(item2) {
-			uni.navigateTo({
-				url: `../../../../sub-classify/pages/goods-detail/goods-detail?goodId=${item2.id}`,
-			});
-		},
-		// 确认收货
-		handleConfirmReceipt() {
-			this.title = "确定要确认收货吗?";
-			this.$refs.confirmReceipt.open();
-		},
-		confirmReceiptClose() {
-			this.$refs.confirmReceipt.close();
-		},
-		receiptConfirm(value) {
-			// 确认收货的订单接口
-			confirmReceiptOrder({
-				id: this.orderNo,
-			}).then(() => {
-				this.$refs.confirmReceipt.close();
-				uni.redirectTo({
-					url: `../order-success/order-success?type=complete&id=${this.orderNo}`,
-				});
-			});
-		},
-		
-		// 申请退款
-		toApplayForRefund(data, type) {
-			this.title = "您确定要取消订单吗?";
-			if (type == 1) {
-				//type 1部分退款=
-				console.log("orderId=", this.orderInfo.orderId);
-				console.log("部分退款", "data=", data);
-				console.log("orderDetailsId=", data.orderDetailId);
-				// return
-				uni.navigateTo({
-					url:`../../apply-for-refund/apply-for-refund?orderId=${thisorderId}&type=partical&status=1&applyMode=1&orderDetailsId=${data.orderDetailId}`
-					// url: `/sub-my/pages/apply-for-refund/apply-for-refund?orderId=${this.orderNo}&type=partical&status=1&applyMode=1&orderDetailsId=${data.orderDetailId}`,
-				});
-				// wx.setStorageSync("particalRefundOrderInfo", JSON.stringify(data));
-				// uni.navigateTo({
-				// 	url: `/sub-my/pages/apply-for-refund/apply-for-refund?id=${this.orderNo}&type=partical&status=1`,
-				// });
-			} else {
-				//type 2 整体退款
-				console.log("全部退款data=", data);
-				// wx.setStorageSync("wholeRefundOrderInfo", JSON.stringify(data));
-				uni.navigateTo({
-					url:`../../apply-for-refund/apply-for-refund?orderId=${this.orderId}&type=whole&status=1&applyMode=2`
-					// url: `/sub-my/pages/apply-for-refund/apply-for-refund?orderId=${this.orderNo}&type=whole&status=1&applyMode=2`,
-				});
-			}
-		},
-		
 		refundCancel(item) {
 			this.itemId = item.refundId;
 			this.approvalCompleted = item.approvalCompleted
@@ -1017,6 +915,66 @@ export default {
 				});
 			}
 		},
+		
+		// 退款成功
+		refundSuccess(item) {
+			uni.navigateTo({
+				url: `../order-success/order-success?type=refund&id=${item.refundId}`,
+			});
+		},
+		// 退款失败
+		refundFailed(item) {
+			const showReApply = item.shipmentStatus !== 2 ? true : false;
+			// console.log("item数据=", item, "测试");
+			// console.log("showReApply=", showReApply);
+			uni.navigateTo({
+				url: `../order-failed/order-failed?type=refund&id=${item.refundId}&showReApply=${showReApply}&status=${item.refundBillStatus}`,
+			});
+		},
+		
+		// 退款关闭
+		refundClose(item) {
+			console.log("item数据=", item);
+			const showReApply = item.shipmentStatus !== 2 ? true : false;
+			console.log("showReApply=", showReApply);
+			uni.navigateTo({
+				url: `../order-failed/order-failed?type=refund&id=${item.refundId}&showReApply=${showReApply}&status=${item.refundBillStatus}`,
+			});
+		},
+		
+		// 进行中订单详情接口
+		// 点击商品区域，跳转到商品详情页面
+		goToDetail(item2) {
+			uni.navigateTo({
+				url: `../../../../sub-classify/pages/goods-detail/goods-detail?goodId=${item2.id}`,
+			});
+		},
+		
+		// 进行中订单独有的接口
+		// 确认收货
+		handleConfirmReceipt() {
+			this.title = "确定要确认收货吗?";
+			this.$refs.confirmReceipt.open();
+		},
+		confirmReceiptClose() {
+			this.$refs.confirmReceipt.close();
+		},
+		receiptConfirm(value) {
+			// 确认收货的订单接口
+			confirmReceiptOrder({
+				id: this.orderNo,
+			}).then(() => {
+				this.$refs.confirmReceipt.close();
+				uni.redirectTo({
+					url: `../order-success/order-success?type=complete&id=${this.orderNo}`,
+				});
+			});
+		},
+		
+	
+		
+		
+		
 		
 		// 申请退款成功
 		refundSuccess(item) {
@@ -1076,6 +1034,7 @@ export default {
 			width: 1rpx;
 		}
 	}
+	
 	.pay-way {
 	  padding: 0 32rpx;
 	  background-color: #ffffff;
@@ -1088,23 +1047,21 @@ export default {
 	  height: 104rpx;
 	  line-height: 104rpx;
 	  border-radius: 24rpx;
-	}
-	
-	.pay-way .wechat_icon {
-	  vertical-align: sub;
-	  display: inline-block;
-	  width: 32rpx;
-	  height: 32rpx;
-	  background-image: url("@/static/order/ic_order_wechat@2x.png");
-	  background-size: contain;
-	  margin-right: 12rpx;
+		.wechat_icon {
+		  vertical-align: sub;
+		  display: inline-block;
+		  width: 32rpx;
+		  height: 32rpx;
+		  background-image: url("@/static/order/ic_order_wechat@2x.png");
+		  background-size: contain;
+		  margin-right: 12rpx;
+		}
 	}
 	
 	.remarks {
 	  padding: 5rpx 32rpx;
 	  margin-bottom: 16rpx;
 	  background-color: #ffffff;
-	  // margin-top: 25rpx;
 	  font-size: 28rpx;
 	  font-family: PingFangSC, PingFangSC-Regular;
 	  display: flex;
@@ -1113,23 +1070,19 @@ export default {
 	  height: 104rpx;
 	  border-radius: 24rpx;
 	  line-height: 104rpx;
+		overflow: hidden;
+		text {
+		  min-width: 180rpx;
+		}
+		.remarks-right {
+		  flex: 1;
+		  position: relative;
+		  height: 100%;
+		  overflow: scroll;
+		}
+		
 	}
-	
-	.remarks {
-	  overflow: hidden;
-	}
-	
-	.remarks text {
-	  min-width: 180rpx;
-	}
-	
-	.remarks .remarks-right {
-	  flex: 1;
-	  position: relative;
-	  height: 100%;
-	  overflow: scroll;
-	}
-	
+ 
 	.pay-diaolog {
 	  border-top: 1rpx solid #f2f2f2;
 	  display: flex;
@@ -1253,6 +1206,7 @@ export default {
   font-size: 40rpx;
   padding: 20rpx;
 }
+// 除了代付款订单外的其他样式
 .storeContainer {
 	.item {
 		padding: 32rpx 32rpx 2rpx;
@@ -1260,7 +1214,19 @@ export default {
 		border-radius: 24rpx 24rpx 0 0;
 	}
 }
+.body2 {
+	background: #ffffff;
+	border-radius: 24rpx;
 
+	.part1 {
+		padding: 32rpx 32rpx 0;
+		border-radius: 24rpx 24rpx 0 0;
+		background: #ffffff;
+	}
+}
+
+
+	// 代付款订单详情样式
  .moreStore {
 		background-color: #ffffff;
 		padding: 40rpx 0 10rpx;
@@ -1270,44 +1236,16 @@ export default {
 		text-align: center;
 	}
 	.store-container {
+		.store-line{
+			height:0.5px;
+			margin: 0 32rpx;
+			background-color: #EBEBEB;
+		}
 	  .storeItem {
 	    padding: 32rpx 32rpx 0;
-	    background: #ffffff;
 	    border-radius: 24rpx 24rpx 0 0;
-	
-	    .header {
-	      margin-bottom: 32rpx;
-	      display: flex;
-	      justify-content: space-between;
-	
-	      .header-content {
-	        box-sizing: border-box;
-	        display: flex;
-	        align-items: center;
-	        .storeName {
-						height: 40rpx;
-						color: #333333;
-	          font-weight: 500;
-	          max-width: 476rpx;
-	          font-size: 28rpx;
-	          overflow: hidden;
-	          text-overflow: ellipsis;
-	          white-space: nowrap;
-	        }
-	
-	        image {
-	          width: 40rpx;
-	          height: 40rpx;
-						display: block;
-	        }
-	      }
-	
-	      .icon {
-	        width: 1rpx;
-	      }
-	    }
+	    background: #ffffff;
 	  }
-	
 	  .tips {
 	    background: #f7f7f7;
 	    border-radius: 16rpx;
@@ -1316,7 +1254,6 @@ export default {
 	    padding: 16rpx 24rpx;
 	    box-sizing: border-box;
 	  }
-	
 	  .discount-container {
 	    padding-bottom: 22rpx;
 	    display: flex;
@@ -1583,8 +1520,8 @@ export default {
 
 
 
-// 底部 取消支付按钮样式 确认收货 及申请退款按钮
-.waitPayBottom {
+// 底部 取消支付按钮样式
+.footer-container {
   width: 686rpx;
   background-color: #ffffff;
   display: flex;

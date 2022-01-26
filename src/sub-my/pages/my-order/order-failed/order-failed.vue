@@ -119,7 +119,8 @@
         </view>
       </view>
       <order-user-base-info v-if="orderInfo.customerName && orderInfo.customerPhone && orderInfo.estateInfo" :data="orderInfo"></order-user-base-info>
-      <view class="body2" v-for="(item2,index2) in orderInfo.details" :key="index2">
+
+			<view class="body2" v-for="(item2,index2) in orderInfo.details" :key="index2">
 
         <view class="header">
           <view class="header-content">
@@ -135,10 +136,11 @@
             :dataList="item3"
             @handleDetail="productDetail(item3)"
           />
-          <store-calue-card-item :dataInfo="item3" :showActualPay="true" v-else />
+          <store-calue-card-item :dataInfo="item3"  v-else />
         </view>
       </view>
-      <order-price
+
+			<order-price
         :data="orderInfo"
         :orderFailed="true"
       />
