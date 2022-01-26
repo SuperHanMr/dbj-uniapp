@@ -25,7 +25,7 @@
 
 						</view>
 						<view class="preferential" v-if="item.budget != 0">
-							预算: ¥{{item.budget >= 10000 ? Math.floor(item.budget) : '-'}}万
+							预算: ¥{{item.budget >= 1 ? Math.floor(item.budget) : '-'}}万
 						</view>
 					</view>
 					<view class="tag-box">
