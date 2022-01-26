@@ -237,10 +237,10 @@
                 </view>
               </view>
 
-              <view
+              <!-- <view
                 class="line"
                 v-if="item.orderStatus == 1 && item.shipmentStatus == 1"
-              />
+              /> -->
 
               <view
                 class="footer buttonContainer"
@@ -493,32 +493,17 @@ export default {
         case 0:
           console.log("订单id===", data.id);
 					uni.navigateTo({
-						// url:`order-wait-pay/order-wait-pay?orderNo=${data.id}&from=waitPay`
 						url:`order-detail/order-detail?orderId=${data.id}&from=waitPay`
 					})
           break;
         case 1:
 					console.log("订单id===", data.id);
 					uni.navigateTo({
-						// url: `order-in-progress/order-in-progress?orderNo=${data.id}&from=all`,
 						url:`order-detail/order-detail?orderId=${data.id}`
 					});
-					 //    if (this.currentIndex == 0) {
-					 //      console.log("订单id===", data.id);
-					 //      uni.navigateTo({
-					 //        // url: `order-in-progress/order-in-progress?orderNo=${data.id}&from=all`,
-									// 	url:`order-detail/order-detail?orderId=${data.id}`
-					 //      });
-					 //    } else {
-					 //      uni.navigateTo({
-									// url:`order-detail/order-detail?orderId=${data.id}`
-					 //        // url: `order-in-progress/order-in-progress?orderNo=${data.id}`,
-					 //      });
-					 //    }
           break;
         case 2:
           uni.navigateTo({
-            // url: `order-success/order-success?type=complete&id=${data.id}`,
 						url:`order-detail/order-detail?orderId=${data.id}`
           });
           break;
@@ -582,12 +567,13 @@ export default {
           duration: 1000,
         });
         this.onRefresh();
-        setTimeout(() => {
-          //跳转到订单取消页面
-          uni.redirectTo({
-            url: `../order-failed/order-failed?type=close&id=${this.id}`,
-          });
-        }, 1000);
+      //   setTimeout(() => {
+      //     //跳转到订单取消页面
+      //     uni.redirectTo({
+      //       url: `../order-failed/order-failed?type=close&id=${this.id}`,
+						// // url:`order-detail/order-detail?type=closeOrder&orderId=${this.id}`
+      //     });
+      //   }, 1000);
       });
     },
 
