@@ -1,15 +1,15 @@
 <template>
-	<view :class="['real-case', {'real-case-house': currentHouse.address}]">
+	<view :class="['real-case', {'real-case-house': currentHouse.id}]">
 		<Navigation-bar :paddingTop='statusHeight' :showScreen='showScreen' :currentHouse='currentHouse'
 			@openHomeList='openHomeList' />
 		<view class="container" :style="{marginTop: Number(statusHeight) + 44 + 'px'}">
-			<view class="home-address" v-if="currentHouse.address && showScreen">
+			<view class="home-address" v-if="currentHouse.id && showScreen">
 				<home-address :currentHouse='currentHouse' @openHomeList='openHomeList' />
 			</view>
-			<view class="no-case" v-if="currentHouse.address && !caseDetailInfo.caseFlag && showScreen">
+			<view class="no-case" v-if="currentHouse.id && !caseDetailInfo.caseFlag && showScreen">
 				当前房屋所在地区暂无真实案例，为您推荐其他地区的精选案例
 			</view>
-			<view class="screening" v-if="!currentHouse.address">
+			<view class="screening" v-if="!currentHouse.id">
 				<real-case-screening v-show="showScreen" @updateTag='updateTag' ref='realCaseScreeningRef' />
 				<view class="hide-screen" v-if="!showScreen" @click="onShowScreen">
 					<view class="title" v-if="selectTag.length <= 0">
