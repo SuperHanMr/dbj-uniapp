@@ -88,7 +88,7 @@ export default {
   justify-content: center;
   font-size: 12px;
   font-weight: 600;
-  letter-spacing: 2px;
+  /* letter-spacing: 2px; */
   /* margin-top: 100rpx; */
   margin: 100rpx auto 0;
   margin-top: 24rpx;

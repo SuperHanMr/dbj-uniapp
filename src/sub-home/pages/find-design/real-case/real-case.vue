@@ -41,7 +41,7 @@
 				<view class="box" v-if="realCaseListData && realCaseListData.length > 0">
 					<real-case-list :currentHouse='currentHouse' :realCaseListData='realCaseListData'
 						@triggerScroll='triggerScroll' @scrollUpper='scrollUpper' @scrolltolower='scrolltolower'
-						@refresherrefresh='refresherrefresh' ref='realCaseList' />
+						@refresherrefresh='refresherrefresh' @toCaseDetail='toCaseDetail' ref='realCaseList' />
 				</view>
 				<view class="no-service" v-else>
 					<image
@@ -53,8 +53,8 @@
 				</view>
 			</view>
 		</view>
-		<view class="home-info-box" v-if="!currentHouse.address">
-			<add-home-info @openHomeList='openHomeList' />
+		<view class="home-info-box" v-if="!currentHouse.id">
+			<add-home-info :bottom="systemBottom" @openHomeList='openHomeList' />
 		</view>
 	</view>
 </template>
@@ -82,6 +82,7 @@
 				selectTag: [],
 				showScreen: true,
 				currentHouse: {},
+				systemBottom:"",
 				realListScreen: [{
 						title: '户型相似度',
 						key: '1'
@@ -100,7 +101,8 @@
 				caseDetailInfo: {},
 				endPage: false,
 				selectData: {},
-				triggered: false
+				triggered: false,
+				caseDetail: false
 			}
 		},
 		onLoad() {
@@ -109,8 +111,22 @@
 					this.statusHeight = res.statusBarHeight;
 				},
 			});
+			uni.$on('defaultHouseChange',() => {
+				this.caseDetail = false;
+			})
+
+			const menuButtonInfo = uni.getMenuButtonBoundingClientRect();
+			console.log("menuButtonInfo=", menuButtonInfo);
+			this.systemBottom = menuButtonInfo.bottom + 32 + "rpx";
+			console.log("this.systemBottom=", this.systemBottom);
+
+
 		},
 		onShow() {
+			if (this.caseDetail) {
+				this.caseDetail = false;
+				return;
+			}
 			const currentHouse = getApp().globalData.currentHouse;
 			let isRefshList = null;
 			if (this.currentHouse.id != currentHouse.id) {
@@ -229,6 +245,10 @@
 				this.listParam.page = 0;
 				this.getListData(true);
 				uni.stopPullDownRefresh()
+			},
+			toCaseDetail(){
+				console.log('toCaseDetail', ">>>>>>")
+				this.caseDetail = true;
 			}
 		}
 	}

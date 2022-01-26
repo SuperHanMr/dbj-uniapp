@@ -6,12 +6,12 @@
 			</view>
 			<view style="flex: 1;">
 			</view>
-			<!-- <view v-if="item.stockStatus==1" class="store-sub">
+			<view v-if="item.stockStatus==1" class="store-sub">
 				剩余{{item.remainingShipments}}次免运费额度
-			</view> -->
-			<!-- 	<view v-if="showBackStatus" class="store-sub">
+			</view>
+				<view v-if="showBackStatus" class="store-sub">
 				剩余{{item.remainingShipments}}次免运费额度
-			</view> -->
+			</view>
 			<view v-if="item.stockStatus==4" class="store-sub">
 				{{item.type==0?'仅退款（未发货）':item.type==1?'仅退款（退库存）':'仅退款（已收货) '}}
 			</view>

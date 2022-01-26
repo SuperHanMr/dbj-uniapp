@@ -136,7 +136,7 @@
     	</view>
     	
     	<view class="player-scroll">
-    		<view style="width: 8rpx;height: 1rpx;flex-shrink: 0;">
+    		<view style="width: 16rpx;height: 1rpx;flex-shrink: 0;">
     		</view>
     		<view v-for="(item,index) in liveList" :key="index" class="item margin-left24" @click="onLiveClick(item)">
     			<image class="img"

@@ -82,7 +82,7 @@
           class="design-card-item"
           v-for="item2 in searchDesignerList"
           :key="item2.id"
-          :style="{backgroundImage:`url(${item2.artImage})`,backgroundSize:'434rpx 572rpx'}"
+          :style="{backgroundImage:`url(${item2.artImage}?x-oss-process=image/resize,m_fill,h_800,w_600,limit_0)`,backgroundSize:'434rpx 572rpx'}"
           @click="gotoDesignerHomePage(item2.id)"
         >
           <view class="basic-info">
@@ -152,7 +152,9 @@
       @click="gotoRealCase"
     >
       <view class="left">
-        推荐案例
+				<view class="recommend">
+					推荐案例
+				</view>
       </view>
       <view class="right">
         <text>更多</text>

@@ -5,7 +5,7 @@
 			<view class="comment-like">
 				<view class="address" v-if="params.cityName">
           {{params.roomNum!==0?`${params.roomNum}室`:params.hallNum!==0?`${params.hallNum}厅`:''}}
-          <view v-if="params.roomNum&&params.hallNum"> | </view>
+          <view v-if="params.roomNum||params.hallNum"> | </view>
           {{Math.floor(params.insideArea)<1?'-':Math.floor(params.insideArea)}}㎡
           <view> | </view>
           {{params.cityName}}
@@ -186,7 +186,7 @@
     .tag{
       margin-bottom: 12rpx;
       width: 100%;
-      height: 40rpx;
+      max-height: 40rpx;
       overflow: hidden;
       view{
         display: inline-block;

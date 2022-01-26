@@ -448,6 +448,11 @@ export default {
     query.select(".person-evaluate").boundingClientRect((res) => {
       this.evaluateTop = res && res.top;
     });
+    query.select(".person-design").boundingClientRect((res) => {
+      // console.log(res.height)
+      this.maskHeight = res && res.height*2+129*2+60+'rpx';
+      
+    });
     query.exec(function (res) {});
   },
   onPageScroll(scrollTop) {
