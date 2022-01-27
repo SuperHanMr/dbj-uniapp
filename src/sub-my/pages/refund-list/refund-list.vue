@@ -229,12 +229,15 @@
 						url:`refunding-detail/refunding-detail?id=${data.id}`
 					})
 				}else if(data.status == 2){
+					console.log("data.id==============",data.id)
 					uni.navigateTo({
-						url:`../my-order/order-success/order-success?type=refund&id=${data.id}`
+						url:`refunding-detail/refunding-detail?id=${data.id}`
+						// url:`../my-order/order-success/order-success?type=refund&id=${data.id}`
 					})
 				}else{
 					uni.navigateTo({
-						url:`../my-order/order-failed/order-failed?type=refund&id=${data.id}&status=${data.status}&showReApply=true`
+						url:`refunding-detail/refunding-detail?id=${data.id}`
+						// url:`../my-order/order-failed/order-failed?type=refund&id=${data.id}&status=${data.status}&showReApply=true`
 					})
 				}
 			},
@@ -254,11 +257,6 @@
 				this.$refs.popup.open()
 			},
 			close() {
-				// if(this.refundItem.approvalCompleted){
-				// 	this.$refs.cannotRefund.close()
-				// }else{
-				// 	this.$refs.popup.close()
-				// }
 				this.$refs.popup.close()
 			},
 			confirm(value) {
@@ -267,7 +265,6 @@
 				if(this.refundItem.approvalCompleted){
 					this.title="退款审核已通过，不可取消"
 					console.log("this.itemId=",this.itemId,"退款审核已通过,不可取消")
-					// this.$refs.cannotRefund.close()
 					this.$refs.popup.close()
 				}else{
 					this.title="确定要取消本次退款申请？"

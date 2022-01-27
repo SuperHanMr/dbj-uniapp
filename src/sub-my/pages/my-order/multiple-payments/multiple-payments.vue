@@ -213,12 +213,11 @@ export default {
       console.log("this.orderId==", this.orderId);
       if (this.type == "detail") {
         uni.redirectTo({
-          // url: `../order-wait-pay/order-wait-pay?orderNo=${this.orderId}`,
-          url: `../order-failed/order-failed?type=close&id=${this.orderId}&from=multiple`,
+					url:`../order-detail/order-detail?orderId=${this.orderId}&from=multiple`
         });
       } else {
         uni.redirectTo({
-          url: `../my-order?index=2&firstEntry=true`,
+          url: `../my-order?index=4&firstEntry=true`,
         });
       }
     },
@@ -241,12 +240,13 @@ export default {
       });
     },
 
-    handlePrice(price) {
-      let list = String(price).split(".");
-      if (list.length == 1) {
-        return [list[0], "00"];
-      } else {
-        return [list[0], list[1]];
+    handlePrice(price){
+      if(!price) return ['0','00']
+      let list=String(price).split(".")
+      if(list.length==1){
+        return [list[0],"00"]
+      }else{
+        return[list[0],list[1]]
       }
     },
     formatTime(msTime) {

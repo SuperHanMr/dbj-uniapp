@@ -12,7 +12,6 @@
       </template>
     </custom-navbar>
 
-		<!-- :style="{paddingBottom:systemBottom}" -->
     <view class="order-container" >
       <view style="position: relative;">
         <view	class="bgcStyle"	:style="{backgroundImage:`url(${bgImg})`,backgroundSize: '100% 100%'}"/>
@@ -301,7 +300,7 @@
 				</view>
 			</view>
 			
-			<!-- 已完成订单信息 -->
+			<!-- 已完成订单底部按钮 -->
 			<view v-if="orderStatus ==2 && ( orderInfo.showRefundBtn || orderInfo.showApplyAfterSalesBtn)" 
 				:style="{paddingBottom:systemBottom,}"
 				class="applyforRefund-container" 
@@ -314,7 +313,7 @@
 				</view>
 			</view>
 						
-			<!-- 申请退款之后的其他状态 -->
+			<!-- 退款之后订单页面底部按钮显示情况-->
 			<!--
 				showRefundBtn  是否显示退款按钮
 				refundApplyMode 申请方式 1单商品 2 整单退款
@@ -322,6 +321,7 @@
 				shipmentStatus 发货状态（0待发货 1待收货 2已收货）
 				type:1 材料 2 服务
 			-->
+			<!-- 进行中订单底部按钮 -->
 			<view class="applyforRefund-confirmReceipt2" :style="{paddingBottom:systemBottom}"
 				v-if="orderStatus == 1 && !orderInfo.showRefundBtn && orderInfo.refundApplyMode == 2 && (orderInfo.stockType == 0 || orderInfo.type == 2)">
 						
@@ -348,7 +348,7 @@
 				</view>
 			</view>
 			
-			
+			<!-- 已完成订单底部按钮 -->
 			<view class="applyforRefund-confirmReceipt2" :style="{paddingBottom:systemBottom}"
 				v-if="orderStatus==2 && !orderInfo.showRefundBtn && orderInfo.refundApplyMode == 2 && (orderInfo.stockType == 0 || orderInfo.type == 5)">
 
@@ -501,7 +501,6 @@ export default {
 					imgUrl:"https://ali-image.dabanjia.com/static/mp/dabanjia/images/theme-red/my/ic_order_failed.svg",
 					statusName:"已关闭",
 				},
-				
 			],
 		};
   },
@@ -642,32 +641,36 @@ export default {
 
     // 改变返回下一个页面的路径
     toBack() {
-			console.log("this.type====",this.type)
-			// 进行中
-			// if (this.from == "comfirmOrder") {
-			// 	uni.redirectTo({
-			// 		url: "../my-order?firstEntry=true&index=2",
-			// 	});
-			// } else 
-			if (this.from == "all") {
+			// 玉帛写的页面跳转到这个页面
+			if(this.from == "waitPayOrder"){
+				console.log("this.from====%%%%%%%%%%%",this.from)
 				uni.redirectTo({
-					url: "../my-order?firstEntry=true&index=99",
+					url: "../my-order?firstEntry=true&index=1",
 				});
 			}
-			// 已关闭
+			
+			//这个情况暂时未知
+			// else if (this.from == "comfirmOrder") {
+			// 	console.log("this.from====%%%%%%%%%%%",this.from)
+   //      uni.redirectTo({
+   //        url: `../my-order?index=2&firstEntry=true`,
+   //      });
+			// } 
+			// 1. 代付款订单列表进入-->点击取消订单 变为已关闭  -->   返回
+			// 2. 直接购买未付款-->点击取消订单  变为已关闭  -->   返回
 			else  if (this.from == "waitPay") {
-        uni.redirectTo({
-          url: `../my-order?index=1&firstEntry=true`,
-        });
-      } else if (this.from == "inprogress" || this.from == "comfirmOrder") {
-        uni.redirectTo({
-          url: `../my-order?index=2&firstEntry=true`,
-        });
-      } else if(this.from == "multiple" || this.from == "closedOrder"){
+			  uni.redirectTo({
+			    url: `../my-order?index=1&firstEntry=true`,
+			  });
+			} 
+			// 从分次支付页面跳转到订单关闭页面 退出
+			else if(this.from == "multiple"){
 				uni.redirectTo({
 					url: `../my-order?index=4&firstEntry=true`,
 				})
-			} else {
+			} 
+			else {
+				console.log("this.from====%%%%%%%%%%%",this.from)
         uni.navigateBack({
           delta: 1,
         });
@@ -735,12 +738,12 @@ export default {
 		  })
 		    .then((e) => {
 		      this.$refs.cancleOrder.close();
-					// 重新加载页面
-					// this.orderDetail()
-					// this.type = "closedOrder"
-		      uni.redirectTo({
-		        url: `../order-failed/order-failed?type=close&id=${this.orderNo}&from=waitPay`,
-		      });
+					// 重新加载页面 代付款状态变为已关闭状态
+					this.orderDetail()
+					this.from = "waitPay"
+		      // uni.redirectTo({
+		      //   url: `../order-failed/order-failed?type=close&id=${this.orderId}&from=waitPay`,
+		      // });
 		    })
 		    .catch(() => {
 		      uni.showToast({
@@ -903,31 +906,7 @@ export default {
 			}
 		},
 		
-		// 退款成功
-		refundSuccess(item) {
-			uni.navigateTo({
-				url: `../order-success/order-success?type=refund&id=${item.refundId}`,
-			});
-		},
-		// 退款失败
-		refundFailed(item) {
-			const showReApply = item.shipmentStatus !== 2 ? true : false;
-			// console.log("item数据=", item, "测试");
-			// console.log("showReApply=", showReApply);
-			uni.navigateTo({
-				url: `../order-failed/order-failed?type=refund&id=${item.refundId}&showReApply=${showReApply}&status=${item.refundBillStatus}`,
-			});
-		},
 		
-		// 退款关闭
-		refundClose(item) {
-			console.log("item数据=", item);
-			const showReApply = item.shipmentStatus !== 2 ? true : false;
-			console.log("showReApply=", showReApply);
-			uni.navigateTo({
-				url: `../order-failed/order-failed?type=refund&id=${item.refundId}&showReApply=${showReApply}&status=${item.refundBillStatus}`,
-			});
-		},
 		
 		// 进行中订单详情接口
 		// 点击商品区域，跳转到商品详情页面
@@ -949,44 +928,37 @@ export default {
 		receiptConfirm(value) {
 			// 确认收货的订单接口
 			confirmReceiptOrder({
-				id: this.orderNo,
+				id: this.orderId,
 			}).then(() => {
 				this.$refs.confirmReceipt.close();
-				uni.redirectTo({
-					url: `../order-success/order-success?type=complete&id=${this.orderNo}`,
-				});
+				this.orderDetail()
+				this.from ="hhhhhhh"
+				// uni.redirectTo({
+				// 	url: `../order-success/order-success?type=complete&id=${this.orderNo}`,
+				// });
 			});
 		},
-		
-	
-		
-		
-		
-		
-		// 申请退款成功
+			
+		// 退款成功
 		refundSuccess(item) {
 			uni.navigateTo({
-				url: `../order-success/order-success?type=refund&id=${item.refundId}`,
+				// url: `../order-success/order-success?type=refund&id=${item.refundId}`,
+				url:`../../refund-list/refunding-detail/refunding-detail?id=${item.refundId}`
 			});
 		},
+		// 退款失败
 		refundFailed(item) {
-			console.log("item数据=", item, "测试");
-			const showReApply = item.shipmentStatus !== 2 ? true : false;
-			console.log("showReApply=", showReApply);
 			uni.navigateTo({
-				url: `../order-failed/order-failed?type=refund&id=${item.refundId}&showReApply=${showReApply}&status=${item.refundBillStatus}`,
+				url: `../order-failed/order-failed?type=refund&id=${item.refundId}`,
 			});
 		},
 		
+		// 退款关闭
 		refundClose(item) {
-			console.log("item数据=", item);
-			const showReApply = item.shipmentStatus !== 2 ? true : false;
-			console.log("showReApply=", showReApply);
 			uni.navigateTo({
-				url: `../order-failed/order-failed?type=refund&id=${item.refundId}&showReApply=${showReApply}&status=${item.refundBillStatus}`,
+				url: `../order-failed/order-failed?type=refund&id=${item.refundId}`,
 			});
 		},
-		
 		
   },
 };
@@ -1354,14 +1326,6 @@ export default {
 				margin-bottom: 32rpx;
 			}
 
-      .time {
-        color: #ffffff;
-        height: 40rpx;
-        line-height: 40rpx;
-        font-size: 26rpx;
-        font-weight: 400;
-				margin-bottom: 32rpx;
-      }
 			.time {
 			  color: #ffffff;
 			  height: 40rpx;
@@ -1369,6 +1333,7 @@ export default {
 			  font-size: 24rpx;
 			  font-weight: 400;
 			  padding-left: 5rpx;
+				margin-bottom: 32rpx;
 			  box-sizing: border-box;
 			  display: flex;
 			  flex-flow: row nowrap;
