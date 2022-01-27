@@ -240,12 +240,13 @@ export default {
       });
     },
 
-    handlePrice(price) {
-      let list = String(price).split(".");
-      if (list.length == 1) {
-        return [list[0], "00"];
-      } else {
-        return [list[0], list[1]];
+    handlePrice(price){
+      if(!price) return ['0','00']
+      let list=String(price).split(".")
+      if(list.length==1){
+        return [list[0],"00"]
+      }else{
+        return[list[0],list[1]]
       }
     },
     formatTime(msTime) {
