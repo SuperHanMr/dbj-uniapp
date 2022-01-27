@@ -132,7 +132,7 @@
 						</view>
 						<view class="item_css_style"  v-if="item.storeDiscount">
 							<view class="left">
-								<text>商家</text>
+								<text>商家优惠</text>
 							</view>
 							<view class="right">
 								<text  class="price-font"> -￥{{item.storeDiscount}}</text>
@@ -149,7 +149,7 @@
 						</view>
 					</view>
 
-          <view
+         <!-- <view
             v-if="item.hasMaterial && orderInfo.stockType == 1"
             :style="{paddingBottom: item.hasMaterial && orderInfo.stockType == 1 ? '32rpx':'0'}"
           >
@@ -169,7 +169,7 @@
             >
               <text>搬运费需要根据实际要货时进行核算</text>
             </view>
-          </view>
+          </view> -->
 
         </view>
         <view class="split-line" />
