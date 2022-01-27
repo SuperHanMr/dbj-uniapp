@@ -19,7 +19,11 @@ module.exports = {
         transform: envTransformer
       }]),
       new CopyWebpackPlugin([{ 
-        from: './public/gome-index-h5.html',
+        from: './public/gome-login.html',
+        transform: envTransformer
+      }]),
+      new CopyWebpackPlugin([{ 
+        from: './public/gome-login-h5.html',
         transform: envTransformer
       }])
     ]
