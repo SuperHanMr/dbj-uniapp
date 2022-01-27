@@ -35,12 +35,12 @@
 				  </view>
 				</view>
 			</view>
-			
+
 			<order-user-base-info
 				v-if="orderInfo.customerName && orderInfo.customerPhone && orderInfo.estateInfo"
 				:data="orderInfo"
 			/>
-			
+
 			<view class="moreStore" v-if=" orderInfo.orderStatus==0 && orderInfo.orderName && orderInfo.type !==5 ">
 			  {{orderInfo.orderName}}
 			</view>
@@ -68,7 +68,7 @@
 				      />
 				      <store-calue-card-item :dataInfo="item2"  v-else/>
 				    </view>
-				
+
 						<view class="discount-container" v-if="item.hasMaterial &&  orderInfo.details.length>1">
 							<view class="item_css_style">
 								<view class="left">
@@ -118,13 +118,13 @@
 					</view>
 				  <view class="split-line" />
 				</view>
-				
+
 				<order-price
 					:data="orderInfo"
 					:waitPay="true"
 					:payPrice="payPrice"
 				/>
-				
+
 				<view v-if="haveCard && orderInfo.isReplenish" class="pay-way" style="justify-content:center" @click="clickCard">
 				  <image
 				    class="card-img"
@@ -136,7 +136,7 @@
 				  </view>
 				  <view style="flex:1"> </view>
 				  <view v-if="cardClick" class="card-price" > -¥{{(this.cardPrice/100).toFixed(2)}}</view>
-				  
+
 					<image
 				    v-if="cardClick"
 				    class="selected-img"
@@ -148,13 +148,13 @@
 				    src="https://ali-image.dabanjia.com/static/mp/dabanjia/images/classify/pay_unselected.png"
 				  />
 				</view>
-				
+
 				<view class="pay-way mrb">
 				  <text style="color: #333333;">支付方式</text>
 					<view v-if="payChannel" class="flex-center"><text>储值卡支付</text></view>
 				  <view v-else class="flex-center"><text>在线支付</text></view>
 				</view>
-				
+
 				<view class='remarks'>
 				  <text>备注</text>
 				  <view class="remarks-right">
@@ -170,8 +170,8 @@
 				  </view>
 				</view>
 			</view>
-			
-			
+
+
 			<!--进行中订单样式 -->
 			<view class="storeContainer"  v-if="orderInfo.orderStatus == 1">
 				<view v-for="item in orderInfo.details" :key="item.storeId" class="item">
@@ -182,7 +182,7 @@
 						</view>
 						<view class="icon"></view>
 					</view>
-		
+
 					<view v-for="item2 in item.details" :key="item2.id" class="orederItem">
 						<order-item :orderStatus="2" :paddingBottom="24" :dataList="item2"
 							:productNum="item.details.length"
@@ -197,7 +197,7 @@
 					</view>
 				</view>
 			</view>
-			
+
 			<!--已完成和已关闭订单样式 -->
 			<view class="body2" v-if="orderStatus ==2 || orderStatus ==3">
 			  <view class="part1" v-for="(item2,index2) in orderInfo.details" :key="index2" >
@@ -209,7 +209,7 @@
 						</view>
 						<view class="icon"></view>
 			    </view>
-			
+
 			    <view v-for="item3 in item2.details" :key="item3.id" class="orederItem" >
 			      <order-item
 							v-if="item3.type !==5 && orderStatus ==2"
@@ -226,15 +226,15 @@
 			    </view>
 			  </view>
 			</view>
-			
-			
-			<order-price 
-				v-if="orderStatus ==1 || orderStatus ==2" 
-				:data="orderInfo" 
+
+
+			<order-price
+				v-if="orderStatus ==1 || orderStatus ==2"
+				:data="orderInfo"
 			/>
-			
+
       <order-price
-				v-if="orderStatus ==3" 
+				v-if="orderStatus ==3"
         :data="orderInfo"
         :orderFailed="true"
       />
@@ -245,12 +245,12 @@
 			/>
 			<order-info
 				v-if="orderStatus==1"
-				:orderNo="orderInfo.orderNo" 
-				:createTime="orderInfo.createTime" 
+				:orderNo="orderInfo.orderNo"
+				:createTime="orderInfo.createTime"
 				:showPayTime="true"
-				:showPayType="true" 
-				:payTime="orderInfo.payTime" 
-				:payChannel="orderInfo.payChannel" 
+				:showPayType="true"
+				:payTime="orderInfo.payTime"
+				:payChannel="orderInfo.payChannel"
 			/>
 			<order-info
 			  v-if="orderStatus==2"
@@ -269,8 +269,8 @@
 			  :showCancelTime="true"
 			  :payChannel="orderInfo.payChannel"
 			/>
-			
-			
+
+
 			<!-- 代付款订单详情 底部按钮 -->
 			<view v-if="orderInfo.showCancelBtn || orderInfo.showToPayBtn "
 			  class="footer-container"
@@ -283,12 +283,12 @@
 			  <view v-if="orderInfo.showToPayBtn" class="gotoPay" @click="toPay">
 			    去付款
 			  </view>
-				
+
 			</view>
-			
+
 			<!-- 进行中订单底部按钮 -->
 			<view v-if="orderInfo.showRefundBtn || (orderInfo.stockType == 0 && orderInfo.shipmentStatus == 1)"
-				class="applyforRefund-confirmReceipt" 
+				class="applyforRefund-confirmReceipt"
 				:style="{paddingBottom:systemBottom}"
 			>
 				<view v-if="orderInfo.showRefundBtn" class="applyforRefund" @click="toApplayForRefund(orderInfo,2)">
@@ -299,11 +299,11 @@
 					确认收货
 				</view>
 			</view>
-			
+
 			<!-- 已完成订单底部按钮 -->
-			<view v-if="orderStatus ==2 && ( orderInfo.showRefundBtn || orderInfo.showApplyAfterSalesBtn)" 
+			<view v-if="orderStatus ==2 && ( orderInfo.showRefundBtn || orderInfo.showApplyAfterSalesBtn)"
 				:style="{paddingBottom:systemBottom,}"
-				class="applyforRefund-container" 
+				class="applyforRefund-container"
 			>
 			  <view v-if="orderInfo.showRefundBtn" class="applyforRefund" @click="toApplayForRefund(orderInfo,2)" >
 			    申请退款
@@ -312,7 +312,7 @@
 				  申请售后
 				</view>
 			</view>
-						
+
 			<!-- 退款之后订单页面底部按钮显示情况-->
 			<!--
 				showRefundBtn  是否显示退款按钮
@@ -324,30 +324,30 @@
 			<!-- 进行中订单底部按钮 -->
 			<view class="applyforRefund-confirmReceipt2" :style="{paddingBottom:systemBottom}"
 				v-if="orderStatus == 1 && !orderInfo.showRefundBtn && orderInfo.refundApplyMode == 2 && (orderInfo.stockType == 0 || orderInfo.type == 2)">
-						
+
 				<view class="refundOrderStatus"
 					v-if="orderInfo.refundBillStatus == 0 || (orderInfo.refundBillStatus == 1 && orderInfo.type == 2)"
 					@click="refundCancel(orderInfo)">
 					取消退款
 				</view>
-						
+
 				<view class="refundOrderStatus" v-if="orderInfo.refundBillStatus == 2"
 					@click="refundSuccess(orderInfo)">
 					退款成功
 				</view>
-						
+
 				<view class="refundOrderStatus" style="color:#FF3347;" v-if="orderInfo.refundBillStatus == 5"
 					@click="refundFailed(orderInfo)">
 					退款失败
 				</view>
-						
+
 				<view class="refundOrderStatus"
 					v-if="(orderInfo.refundBillStatus == 3 || orderInfo.refundBillStatus == 4) && (orderInfo.shipmentStatus == 0 || (orderInfo.type ==2 && orderInfo.shipmentStatus == -1 ))"
 					@click="refundClose(orderInfo)">
 					退款关闭
 				</view>
 			</view>
-			
+
 			<!-- 已完成订单底部按钮 -->
 			<view class="applyforRefund-confirmReceipt2" :style="{paddingBottom:systemBottom}"
 				v-if="orderStatus==2 && !orderInfo.showRefundBtn && orderInfo.refundApplyMode == 2 && (orderInfo.stockType == 0 || orderInfo.type == 5)">
@@ -373,10 +373,10 @@
 					退款关闭
 				</view>
 			</view>
-			
+
     </view>
-		
-		
+
+
 		<!-- 取消该订单弹框 -->
 		<popup-dialog
 		  ref="cancleOrder"
@@ -410,35 +410,35 @@
 		    </view>
 		  </view>
 		</uni-popup>
-		
+
 		<expenses-toast
       ref='expensesToast'
       :expensesType="expensesType"
     />
-		
+
 		<!-- 确认收货的弹框 -->
-		<popup-dialog 
-			ref="confirmReceipt" 
-			:title="title" 
-			@close="confirmReceiptClose" 
-			@confirm="receiptConfirm" 
+		<popup-dialog
+			ref="confirmReceipt"
+			:title="title"
+			@close="confirmReceiptClose"
+			@confirm="receiptConfirm"
 		/>
-		
+
 		<!-- 取消退款的弹框 -->
-		<popup-dialog 
-			ref="cancelRefund" 
-			:title="title" 
-			@close="cancelRefundClose" 
-			@confirm="cancelRefundConfirm" 
+		<popup-dialog
+			ref="cancelRefund"
+			:title="title"
+			@close="cancelRefundClose"
+			@confirm="cancelRefundConfirm"
 		/>
-		
+
   </view>
 </template>
 
 <script>
 import { formatDate } from "../../../../utils/common.js";
-import { 
-	getRefundDetail, 
+import {
+	getRefundDetail,
 	getOrderDetail,
 	cancelRefund ,
 	orderPay,
@@ -464,8 +464,8 @@ export default {
       orderInfo: {},
 			orderStatus:"",
 			approvalCompleted:"",// 退款是否审核完成 是否审核完成 true不可取消 false可取消"
-			
-			
+
+
       expensesType: 0,
 
       systemBottom: "",
@@ -504,7 +504,7 @@ export default {
 			],
 		};
   },
-	
+
  computed: {
     payChannel() {
       var res = Number(this.totalPrice) * 100 - this.cardBalance;
@@ -551,7 +551,7 @@ export default {
       }
     },
   },
-	
+
   mounted(e) {
     const menuButtonInfo = uni.getMenuButtonBoundingClientRect();
     this.systemBottom = menuButtonInfo.bottom + "rpx";
@@ -568,20 +568,20 @@ export default {
 		    timingFunc: "easeIn",
 		  },
 		});
-		
+
   },
-	
+
 
   onLoad(e) {
     this.type = e.type;
     this.orderId = Number(e.orderId);
     this.status = Number(e.status);
     this.from = e.from;
-		
+
 		const currentHouse = getApp().globalData.currentHouse;
 		console.log("currentHouse=", currentHouse);
 		this.areaId = currentHouse.areaId;
-		
+
     // 获取胶囊按钮的位置
     const systemInfo = uni.getSystemInfoSync();
     const menuButtonInfo = uni.getMenuButtonBoundingClientRect();
@@ -605,7 +605,7 @@ export default {
       //订单关闭页面
 		this.headerTitle = "订单详情";
 		this.orderDetail();
-		
+
 		// 代付款订单详情独有
 		this.haveCard = false;
     getBalance().then((e) => {
@@ -648,27 +648,27 @@ export default {
 					url: "../my-order?firstEntry=true&index=1",
 				});
 			}
-			
+
 			//这个情况暂时未知
 			// else if (this.from == "comfirmOrder") {
 			// 	console.log("this.from====%%%%%%%%%%%",this.from)
    //      uni.redirectTo({
    //        url: `../my-order?index=2&firstEntry=true`,
    //      });
-			// } 
+			// }
 			// 1. 代付款订单列表进入-->点击取消订单 变为已关闭  -->   返回
 			// 2. 直接购买未付款-->点击取消订单  变为已关闭  -->   返回
 			else  if (this.from == "waitPay") {
 			  uni.redirectTo({
 			    url: `../my-order?index=1&firstEntry=true`,
 			  });
-			} 
+			}
 			// 从分次支付页面跳转到订单关闭页面 退出
 			else if(this.from == "multiple"){
 				uni.redirectTo({
 					url: `../my-order?index=4&firstEntry=true`,
 				})
-			} 
+			}
 			else {
 				console.log("this.from====%%%%%%%%%%%",this.from)
         uni.navigateBack({
@@ -677,7 +677,7 @@ export default {
       }
     },
 
-		
+
     // 跳转到店铺页面
     gotoShop(item) {
 			if (item.type == 5) return;
@@ -687,16 +687,16 @@ export default {
         url: `../../../../sub-classify/pages/shops/shops?storeId=${item.storeId}&areaId=${this.areaId}`,
       });
     },
-		
+
     // 联系客服
     contactCustomer() {
       //跳转到客服的页面
       console.log("联系客服");
       this.$store.dispatch("openCustomerConversation");
     },
-    
-		
-	
+
+
+
 		closePayDialog() {
 		  this.$refs.payDialog.close();
 		},
@@ -709,7 +709,7 @@ export default {
 		  this.expensesType = num;
 		  this.$refs.expensesToast.showPupop();
 		},
-		
+
 		// 跳转到商品详情页面
 		productDetail(item, type) {
 		  console.log("item=", item, "type=", type);
@@ -717,12 +717,14 @@ export default {
 				url: `../../../../sub-classify/pages/goods-detail/goods-detail?goodId=${item.id}`,
 			});
 		},
-		
+
 		// 倒计时间触发到的时间
 		goToCancelDetail() {
-		  uni.redirectTo({
-		    url: `../order-failed/order-failed?type=close&id=${this.orderNo}&from=waitPay`,
-		  });
+			this.from = "waitpay"
+			this.orderDetail()
+		  // uni.redirectTo({
+		  //   url: `../order-failed/order-failed?type=close&id=${this.orderNo}&from=waitPay`,
+		  // });
 		},
 		// 取消订单
 		handleCancelOrder() {
@@ -822,7 +824,7 @@ export default {
 		    }
 		  });
 		},
-		
+
 		formatTime(msTime) {
 		  let time = msTime / 1000;
 		  let hour = Math.floor(time / 60 / 60);
@@ -878,7 +880,7 @@ export default {
 			console.log("申请售后 跳转到客服聊天页面")
 			this.$store.dispatch("openCustomerConversation");
 		},
-		
+
 		// 取消退款
 		refundCancel(item) {
 			this.itemId = item.refundId;
@@ -905,9 +907,9 @@ export default {
 				});
 			}
 		},
-		
-		
-		
+
+
+
 		// 进行中订单详情接口
 		// 点击商品区域，跳转到商品详情页面
 		goToDetail(item2) {
@@ -915,7 +917,7 @@ export default {
 				url: `../../../../sub-classify/pages/goods-detail/goods-detail?goodId=${item2.id}`,
 			});
 		},
-		
+
 		// 进行中订单独有的接口
 		// 确认收货
 		handleConfirmReceipt() {
@@ -938,7 +940,7 @@ export default {
 				// });
 			});
 		},
-			
+
 		// 退款成功
 		refundSuccess(item) {
 			uni.navigateTo({
@@ -948,18 +950,20 @@ export default {
 		},
 		// 退款失败
 		refundFailed(item) {
-			uni.navigateTo({
-				url: `../order-failed/order-failed?type=refund&id=${item.refundId}`,
-			});
+			this.orderDetail()
+			// uni.navigateTo({
+			// 	url: `../order-failed/order-failed?type=refund&id=${item.refundId}`,
+			// });
 		},
-		
+
 		// 退款关闭
 		refundClose(item) {
-			uni.navigateTo({
-				url: `../order-failed/order-failed?type=refund&id=${item.refundId}`,
-			});
+			this.orderDetail()
+			// uni.navigateTo({
+			// 	url: `../order-failed/order-failed?type=refund&id=${item.refundId}`,
+			// });
 		},
-		
+
   },
 };
 </script>
@@ -993,7 +997,7 @@ export default {
 			width: 1rpx;
 		}
 	}
-	
+
 	.pay-way {
 	  padding: 0 32rpx;
 	  background-color: #ffffff;
@@ -1016,7 +1020,7 @@ export default {
 		  margin-right: 12rpx;
 		}
 	}
-	
+
 	.remarks {
 	  padding: 5rpx 32rpx;
 	  margin-bottom: 16rpx;
@@ -1039,9 +1043,9 @@ export default {
 		  height: 100%;
 		  overflow: scroll;
 		}
-		
+
 	}
- 
+
 	.pay-diaolog {
 	  border-top: 1rpx solid #f2f2f2;
 	  display: flex;
@@ -1049,21 +1053,21 @@ export default {
 	  background-color: #fff;
 	  padding-bottom: 80rpx;
 	  align-items: center;
-	
+
 	  &-title {
 	    color: #999999;
 	    font-size: 30rpx;
 	    margin-top: 40rpx;
 	  }
-	
+
 	  &-price {
 	    color: #333333;
 	    font-size: 56rpx;
 	    margin-top: 16rpx;
-	
+
 	    font-family: PriceFont;
 	  }
-	
+
 	  &-tip {
 	    width: 684rpx;
 	    height: 68rpx;
@@ -1075,13 +1079,13 @@ export default {
 	    font-size: 26rpx;
 	    margin-top: 40rpx;
 	  }
-	
+
 	  &-alert {
 	    color: #999999;
 	    font-size: 22rpx;
 	    margin-top: 60rpx;
 	  }
-	
+
 	  &-btn {
 	    width: 686rpx;
 	    height: 88rpx;
@@ -1094,7 +1098,7 @@ export default {
 	    margin-top: 24rpx;
 	  }
 	}
-	
+
 	.cart-header {
 	  width: 100%;
 	  height: 104rpx;
@@ -1105,7 +1109,7 @@ export default {
 	  font-size: 32rpx;
 	  font-weight: 500;
 	  color: #111111;
-	
+
 	  .remove-all {
 	    position: absolute;
 	    top: 12rpx;
@@ -1124,29 +1128,29 @@ export default {
 			color: #111111;
 		}
 	}
-	
+
 	.mrb {
 	  margin-bottom: 16rpx;
 	}
-	
+
 	.selected-img {
 	  width: 36rpx;
 	  height: 36rpx;
 	  margin-left: 16rpx;
 	}
-	
+
 	.card-img {
 	  width: 32rpx;
 	  height: 32rpx;
 	  margin-right: 12rpx;
 	}
-	
+
 	.card-price {
 	  font-family: PriceFont;
 	  font-size: 24rpx;
 	  color: #ff3347;
 	}
-	
+
 	.card-sub {
 	  font-size: 24rpx;
 	  font-weight: 400;
@@ -1247,7 +1251,7 @@ export default {
 				}
 			}
 	  }
-	
+
 	  .discount-container2 {
 	    margin-bottom: 24rpx;
 	    display: flex;
@@ -1257,7 +1261,7 @@ export default {
 	    justify-content: flex-end;
 	    font-size: 22rpx;
 	    color: #999999;
-	
+
 	    .left,
 	    .right {
 	      .item {
@@ -1270,12 +1274,12 @@ export default {
 	        justify-content: space-between;
 	        margin-bottom: 8rpx;
 	      }
-	
+
 	      .item:nth-last-child(1) {
 	        margin-bottom: 0;
 	      }
 	    }
-	
+
 	    .line {
 	      width: 2rpx;
 	      height: 80rpx;
@@ -1283,12 +1287,12 @@ export default {
 	      margin: 16rpx 40rpx;
 	    }
 	  }
-	
+
 	  .paddingBottom {
 	    padding-bottom: 32rpx !important;
 	  }
 	}
-	
+
 
 .container {
   .order-container {
@@ -1352,7 +1356,7 @@ export default {
 			    border: 2rpx solid rgba(255, 255, 255, 0.3);
 			  }
 			}
-			    
+
     }
 
     .order-header {
@@ -1508,7 +1512,7 @@ export default {
   align-items: center;
   justify-content: flex-end;
   padding: 30rpx 32rpx 26rpx 32rpx;
-	
+
   .applyforRefund {
     box-sizing: border-box;
     width: 160rpx;
@@ -1579,42 +1583,42 @@ export default {
 			color: #333333;
 		}
 	}
-	
+
 	// 弹框样式
 	::v-deep .uni-popup-dialog {
 	  width: 560rpx !important;
 	  border-radius: 24rpx !important;
 	  background-color: #fff !important;
 	}
-	
+
 	::v-deep .uni-dialog-title-text {
 	  color: #111111 !important;
 	  font-size: 32rpx !important;
 	  font-weight: 550 !important;
 	}
-	
+
 	::v-deep .uni-dialog-title {
 	  padding: 48rpx 0 !important;
 	}
-	
+
 	::v-deep .uni-dialog-content {
 	  display: none !important;
 	}
-	
+
 	::v-deep .uni-dialog-button-group {
 	  border-top: 2rpx solid #f5f5f5;
 	}
-	
+
 	::v-deep .uni-dialog-button {
 	  height: 82rpx !important;
 	}
-	
+
 	::v-deep .uni-button-color {
 	  color: #FA4D32 !important;
 	  font-size: 30rpx !important;
 	  font-weight: 500;
 	}
-	
+
 	::v-deep .uni-dialog-button-text {
 	  font-size: 30rpx !important;
 	}
