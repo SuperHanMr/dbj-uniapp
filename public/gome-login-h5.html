@@ -6,7 +6,7 @@
     type="image/x-icon" />
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>跳转打扮家中...</title>
+  <title>登录</title>
   <style>
     html, body {
       padding: 0;
@@ -54,14 +54,15 @@
       xhr.send(JSON.stringify(options.data));
     }
     function redirectToWeb(token) {
-      var hash = window.location.hash;
-      if (token) {
-        window.location.replace('<%= VUE_APP_MP_H5 %>/?token=' + token + hash);
+      var backURL = localStorage.getItem("backURL");
+      if (backURL) {
+        localStorage.removeItem("backURL");
+        window.location.replace(backURL);
       } else {
-        window.location.replace('<%= VUE_APP_MP_H5 %>/' + hash);
+        window.location.replace('<%= VUE_APP_MP_H5 %>/');
       }
     }
-    function requestToken() {
+    function requestToken(scn) {
       var url = '<%= VUE_APP_GOME_API %>/customer/app/oauth/gome/loginByCookie';
       var params = {
         clientType: "3",
@@ -87,7 +88,27 @@
         }
       });
     }
-    requestToken();
+    function getPageParms() {
+      var ret = {},
+        seg = window.location.search.replace(/^\?/, '').split('&'),
+        len = seg.length, i = 0, s;
+      for (; i < len; i++) {
+        if (!seg[i]) { continue; }
+        s = seg[i].split('=');
+        ret[s[0]] = s[1];
+      }
+      return ret;
+    }
+    var pageParams = getPageParms();
+    // 从H5站跳转到国美H5登录页
+    if (pageParams.backURL) {
+      localStorage.setItem("backURL", decodeURIComponent(pageParams.backURL));
+      window.replace('https://login.m.gome.com.cn/login.html')
+    }
+    // 登录成功后回调
+    if (pageParams.scn) {
+      requestToken(pageParams.scn);
+    }
   </script>
 </body>
 </html>
