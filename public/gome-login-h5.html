@@ -21,6 +21,10 @@
       align-items: center;
       justify-content: center;
     }
+    .loading-img {
+      width: 40px;
+      height: 40px;
+    }
   </style>
 </head>
 <body>
@@ -63,10 +67,11 @@
       }
     }
     function requestToken(scn) {
-      var url = '<%= VUE_APP_GOME_API %>/customer/app/oauth/gome/loginByCookie';
+      var url = '/customer/app/oauth/gome/loginByCookie';
       var params = {
         clientType: "3",
-        clientCode: "APPLET"
+        clientCode: "APPLET",
+        SCN: scn
       };
       request({
         url: url,
@@ -103,7 +108,7 @@
     // 从H5站跳转到国美H5登录页
     if (pageParams.backURL) {
       localStorage.setItem("backURL", decodeURIComponent(pageParams.backURL));
-      window.replace('https://login.m.gome.com.cn/login.html')
+      window.location.replace('https://login.m.gome.com.cn/login.html')
     }
     // 登录成功后回调
     if (pageParams.scn) {

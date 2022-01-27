@@ -21,6 +21,10 @@
       align-items: center;
       justify-content: center;
     }
+    .loading-img {
+      width: 40px;
+      height: 40px;
+    }
   </style>
 </head>
 <body>
@@ -30,7 +34,7 @@
   <script>
     function request(options) {
       var xhr = new XMLHttpRequest()
-      xhr.withCredentials = true;
+      // xhr.withCredentials = true;
       xhr.onreadystatechange = function() {
         if (xhr.readyState === 4) {
           if (xhr.status === 200) {
@@ -62,7 +66,7 @@
       }
     }
     function requestToken() {
-      var url = '<%= VUE_APP_GOME_API %>/customer/app/oauth/gome/loginByCookie';
+      var url = '/customer/app/oauth/gome/loginByCookie';
       var params = {
         clientType: "3",
         clientCode: "APPLET"
@@ -88,7 +92,7 @@
       });
     }
     // 是否在真快乐APP中
-    if (GomeJSBridge) {
+    if (window.GomeJSBridge) {
       GomeJSBridge.ready(function() {
         if (GomeJSBridge.isLogin()) {
           requestToken()

@@ -37,6 +37,21 @@ uni.getMenuButtonBoundingClientRect = function() {
 uni.showShareMenu = function() {
   console.log("H5 showShareMenu not implement")
 }
+const _navigateTo = uni.navigateTo;
+uni.navigateTo = function(options) {
+  // 如果是跳转登录页面
+  if (/\/login\/login$/.test(options.url)) {
+    console.log("H5跳转登录页");
+    if (window.GomeJSBridge) {
+      let gomeUrl = process.env.VUE_APP_GOME_H5;
+      window.location.href = gomeUrl + '/gome-login.html' + window.location.hash;
+    } else {
+      window.location.href = '/gome-login-h5.html?backURL=' + encodeURIComponent(window.location.href);
+    }
+  } else {
+    _navigateTo(options);
+  }
+}
 let params = (function (a) {
   var ret = {},
     seg = a.search.replace(/^\?/, '').split('&'),
@@ -49,7 +64,12 @@ let params = (function (a) {
   return ret;
 })(window.location);
 if (params.token) {
-  uni.setStorageSync("scn", params.token)
+  if (params.token === "CLEAR") {
+    uni.clearStorageSync("scn");
+    uni.clearStorageSync("userId");
+  } else {
+    uni.setStorageSync("scn", params.token)
+  }
   window.location.replace('/' + window.location.hash);
 }
 // #endif
