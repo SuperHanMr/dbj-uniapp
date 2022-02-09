@@ -26,4 +26,7 @@ export function payH5(params) {
 export function getProductID(params) {
   return request.get("/pm/web/project/getProjectIdByEstateId", {params});
 }
+export function checkPay(params) {
+  return request.get("/order-center/app/order/queryPayResult", {params});
+}
 

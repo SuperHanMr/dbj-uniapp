@@ -17,7 +17,7 @@
     <view class="pay-btn price-font" @click="pay">
       微信支付 ¥ {{(totalPrice/100).toFixed(2)}}
     </view>
-<!--    <uni-popup ref="payDialog" type="bottom" :mask-click="false">
+   <uni-popup ref="payDialog" type="bottom" :mask-click="false">
       <view class="pay-toast">
         <view class="close" @click="closeToast">取消支付</view>
         <view class="toast-content">
@@ -28,33 +28,38 @@
             是否已完成</view>
             <view class="pay-button">
               <button>重新支付</button>
-              <button>已完成支付</button>
+              <button @click="checkPay">已完成支付</button>
             </view>
           </view>
         </view>
       </view>
-    </uni-popup> -->
+    </uni-popup>
   </view>
 </template>
 
 <script>
   import {
-    payH5
+    payH5,
+    checkPay
   } from "../../../api/classify.js";
   export default {
     data() {
       return {
         totalPrice: 0,
         payTal: '',
-        isPay: false
+        isPay: false,
+        payRecordId: 0,
+        isRedirect: 0
       }
     },
     onLoad(e) {
       this.totalPrice = Number(e.totalPrice)
       this.payTal = e.payTal
-      // this.$nextTick(() => {
-      //   this.$refs.payDialog.open();
-      // })
+      this.payRecordId = e.payRecordId
+      this.isRedirect = Number(e.isRedirect)
+      if(this.isRedirect) {
+        this.$refs.payDialog.open()
+      }    
     },
     methods: {
       pay() {
@@ -62,15 +67,19 @@
           payTal: this.payTal
         }
         payH5(params).then((data) => {
-          console.log(data, "dataUrl")
-          let payUrl = data.url + encodeURIComponent('https://mp-h5-stage.meiwu365.com/#/sub-classify/pages/pay-order/pay-h5-success')
+          // let payUrl = data.url + encodeURIComponent('https://mp-h5-stage.meiwu365.com/#/sub-classify/pages/pay-order/pay-h5-success')
+          let payUrl = data.url + encodeURIComponent(location.href + '&isRedirect=1')
           location.href = payUrl
-        }, (err) => {
-          // let payUrl = location.href + '&redirect_url=' + location.href + '&type=pay_redirect';
-          // location.href = payUrl
-          // uni.navigateTo({
-          //   url: './pay-h5-success'
-          // })
+        })
+      },
+      checkPay() {
+        let params={
+          payRecordId: this.payRecordId
+        }
+        checkPay(params).then((data) => {
+         uni.navigateTo({
+           url: './pay-h5-success?payStatus=' + data.payStatus
+         })
         })
       },
       // closeToast() {

@@ -1,14 +1,14 @@
 <template>
   <view class="page">
-   <view class="pay-box">
+   <view class="pay-box" v-if="payStatus">
       <view class="pay-success"></view>
       <view class="text1">恭喜您，支付成功</view>
       <view class="text2">感谢您的支持</view>
     </view>
-<!--   <view class="pay-box">
+    <view class="pay-box" v-else>
       <view class="pay-fail"></view>
       <view class="text1">支付失败</view>
-    </view> -->
+    </view>
     <view class="back-btn">返回应用</view>
   </view>
 </template>
@@ -17,9 +17,12 @@
   export default {
     data() {
       return {
-        
+        payStatus: 0
       }
     },
+    onLoad(e) {
+      this.payStatus = Number(e.payStatus) 
+    }
     methods: {
       
     }
