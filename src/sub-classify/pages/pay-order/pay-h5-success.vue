@@ -22,7 +22,7 @@
     },
     onLoad(e) {
       this.payStatus = Number(e.payStatus) 
-    }
+    },
     methods: {
       
     }
