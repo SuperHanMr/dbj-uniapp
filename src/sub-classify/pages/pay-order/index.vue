@@ -838,11 +838,13 @@ export default {
                 console.log(e, "取消付款");
                 if (data.subOrderIds && data.subOrderIds.length === 1) {
                   uni.navigateTo({
-                    url: `/sub-my/pages/my-order/order-wait-pay/order-wait-pay?orderNo=${data.subOrderIds[0]}&from=waitPayOrder`,
+										url:`../../../sub-my/pages/my-order/order-detail/order-detail?orderId=${data.subOrderIds[0]}&from=waitPayOrder`
+                    // url: `/sub-my/pages/my-order/order-wait-pay/order-wait-pay?orderNo=${data.subOrderIds[0]}&from=waitPayOrder`,
                   });
                 } else {
                   uni.navigateTo({
-                    url: `/sub-my/pages/my-order/order-wait-pay/order-wait-pay?orderNo=${data.id}&from=waitPayOrder`,
+										url:`../../../sub-my/pages/my-order/order-detail/order-detail?orderId=${data.id}&from=waitPayOrder`
+                    // url: `/sub-my/pages/my-order/order-wait-pay/order-wait-pay?orderNo=${data.id}&from=waitPayOrder`,
                   });
                 }
                 log({

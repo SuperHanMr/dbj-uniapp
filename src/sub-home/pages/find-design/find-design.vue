@@ -82,7 +82,7 @@
           class="design-card-item"
           v-for="item2 in searchDesignerList"
           :key="item2.id"
-          :style="{backgroundImage:`url(${item2.artImage}?x-oss-process=image/resize,m_mfit,w_868,h_1396)`,backgroundSize:'434rpx 572rpx'}"
+          :style="{backgroundImage:`url(${item2.artImage}?x-oss-process=image/resize,m_fill,h_800,w_600,limit_0)`,backgroundSize:'434rpx 572rpx'}"
           @click="gotoDesignerHomePage(item2.id)"
         >
           <view class="basic-info">
@@ -152,7 +152,9 @@
       @click="gotoRealCase"
     >
       <view class="left">
-        推荐案例
+				<view class="recommend">
+					推荐案例
+				</view>
       </view>
       <view class="right">
         <text>更多</text>
@@ -178,14 +180,14 @@
               <text v-if="item4.similarity" class="icon"></text>
 
               <text v-if="item4.flag">附近{{ item4.distance/1000>1
-							?`${(item4.distance/1000).toFixed(0)}km`:`${parseInt(item4.distance)}m`}}</text>
+							?`${Math.floor(item4.distance/1000)}km`:`${parseInt(item4.distance)}m`}}</text>
               <text v-if="item4.flag" class="icon"></text>
 
               <text v-if="!item4.flag">{{item4.cityName|| "-"}}</text>
               <text v-if="!item4.flag" class="icon"></text>
 
               <text>{{item4.budget
-							?(item4.budget).toFixed(0)<1?`预算：-万`:`预算：￥${(item4.budget).toFixed(0)}万`
+							?Math.floor(item4.budget)<1?`预算：-万`:`预算：￥${Math.floor(item4.budget)}万`
 							: "预算：-"}}</text>
             </view>
           </view>

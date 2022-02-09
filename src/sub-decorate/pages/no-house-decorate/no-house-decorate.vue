@@ -72,7 +72,7 @@
           </check-box>
         </template>
       </service-card>
-      <view class="recharge-row">
+      <view class="recharge-row" v-if="haveCard">
 
         <view
           v-if="couponList.length"
@@ -319,7 +319,7 @@ export default {
   mounted() {
     const menuButtonInfo = uni.getMenuButtonBoundingClientRect();
     this.containerBottom = menuButtonInfo.bottom;
-    this.systemBottom = menuButtonInfo.bottom * 2 + "rpx";
+    this.systemBottom = menuButtonInfo.bottom + "rpx";
     this.systemHeight = menuButtonInfo.bottom * 2 + 24 + "rpx";
   },
   computed: {
@@ -438,9 +438,10 @@ export default {
   onShow() {
     this.haveCard = false;
     getBalance().then((e) => {
+      
       if (e != null) {
         this.haveCard = true;
-        this.cardBalance = e;
+        this.cardBalance = e
       }
     });
     const { serviceType } = this.selectedServer;

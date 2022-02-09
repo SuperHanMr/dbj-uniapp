@@ -19,13 +19,13 @@
 
 						</view>
 						<view class="area" v-if="item.insideArea != 0">
-							{{item.insideArea >= 1 ? (item.insideArea).toFixed(0) : '-'}}m²
+							{{item.insideArea >= 1 ? Math.floor(item.insideArea) : '-'}}m²
 						</view>
 						<view class="line" v-if="item.budget != 0">
 
 						</view>
 						<view class="preferential" v-if="item.budget != 0">
-							预算: ¥{{item.budget >= 10000 ? (item.budget).toFixed(0) : '-'}}万
+							预算: ¥{{item.budget >= 1 ? Math.floor(item.budget) : '-'}}万
 						</view>
 					</view>
 					<view class="tag-box">
@@ -143,7 +143,7 @@
 		}
 
 		.list {
-			padding: 0 32rpx 16rpx;
+			padding: 0 32rpx 24rpx;
 
 			.head {
 				background: #FFFFFF;

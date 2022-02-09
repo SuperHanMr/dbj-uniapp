@@ -73,10 +73,11 @@
 
 <style scoped lang="scss">
   .wrap {
-    height: 112rpx;
+    height: 100rpx;
     display: flex;
-    flex-direction: row;
+    // flex-direction: row;
     justify-content: space-between;
+    align-items: center;
   }
 
   .pieces-price-unit {
@@ -136,7 +137,7 @@
   }
 
   .wrp-btn {
-    margin-top: 24rpx;
+    // margin-top: 24rpx;
   }
 
   .btn {
