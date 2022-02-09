@@ -59,14 +59,23 @@
     }
     function redirectToWeb(token) {
       var hash = window.location.hash;
+      // 跳转gome域名的H5站
       if (token) {
-        window.location.replace('<%= VUE_APP_MP_H5 %>/?token=' + token + hash);
+        localStorage.setItem("scn", token);
       } else {
-        window.location.replace('<%= VUE_APP_MP_H5 %>/' + hash);
+        localStorage.removeItem("scn");
+        localStorage.removeItem("userId");
       }
+      window.location.replace('/' + hash);
+      // XXX: 以下是跳转打扮家域名的H5站，先保留，以后可能有用
+      // if (token) {
+      //   window.location.replace('<%= VUE_APP_MP_H5 %>/?token=' + token + hash);
+      // } else {
+      //   window.location.replace('<%= VUE_APP_MP_H5 %>/?token=CLEAR' + hash);
+      // }
     }
     function requestToken() {
-      var url = '/customer/app/oauth/gome/loginByCookie';
+      var url = '<%= VUE_APP_GOME_API %>/customer/app/oauth/gome/loginByCookie';
       var params = {
         clientType: "3",
         clientCode: "APPLET"
