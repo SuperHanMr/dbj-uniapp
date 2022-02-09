@@ -63,7 +63,8 @@
         }
         payH5(params).then((data) => {
           console.log(data, "dataUrl")
-          let payUrl = data.url + '&redirect_url=' + location.href + '&type=pay_redirect';
+          // let payUrl = data.url + '&redirect_url=' + location.href + '&type=pay_redirect';
+          let payUrl = data.url + '&redirect_url=' + encodeURIComponent('https://mp-h5-stage.meiwu365.com/#/sub-classify/pages/pay-order/pay-h5-success')
           location.href = payUrl
         }, (err) => {
           // let payUrl = location.href + '&redirect_url=' + location.href + '&type=pay_redirect';
