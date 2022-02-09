@@ -17,7 +17,7 @@
 					<order-item :dataList="item2" :isEvaluate="isEvaluate"></order-item>
 				</view>
 
-				<view class="line" />
+				<!-- <view class="line" /> -->
 
 				<view class="footer" v-if="item.commentStatus == 0 ">
 					<view class="button-container">
@@ -119,11 +119,11 @@
 <style lang="scss" scoped>
 	.container{
 		height: 100%;
-		background-color: #FFFFFF;
+		background-color: #f6f6f6;
 	}
 	.evaluate-container{
-		background-color: #E3E3E3;
 		.evaluate-item{
+			border-radius: 32rpx;
 			background-color: #FFFFFF;
 		}
 	}
@@ -132,7 +132,7 @@
 		margin-top: 16rpx;
 		padding: 28rpx 32rpx;
 		box-sizing: border-box;
-		background-color: #fafafa;
+		// background-color: #fafafa;
 		display: flex;
 		align-items: center;
 		justify-content: space-between;
@@ -159,7 +159,7 @@
 	}
 
 	.body{
-		padding: 32rpx 32rpx 0;
+		padding: 0 32rpx;
 	}
 
 	.line {
@@ -172,8 +172,8 @@
 		display: flex;
 		flex-flow: row nowrap;
 		justify-content:  flex-end;
-		padding: 32rpx;
-		// text-align: right;
+		padding:0 32rpx 32rpx;
+		border-radius: 0 0 32rpx 32rpx;
 		background-color: #ffffff;
 
 		.button-container{

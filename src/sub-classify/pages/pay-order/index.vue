@@ -880,8 +880,7 @@ export default {
         };
           payOrder(params).then((data) => {
             uni.navigateTo({
-              // url: `/sub-classify/pages/pay-order/pay-h5?payTal=${data.gomePayH5.payModelList[0].payTal}&totalPrice=${orderPrice}`,
-              url: `/sub-classify/pages/pay-order/pay-h5?payTal=testPay&totalPrice=888.88`,
+              url: `/sub-classify/pages/pay-order/pay-h5?payTal=${data.gomePayH5.payModeList[0].payTal}&totalPrice=${orderPrice}`,
             });
           })
         //#endif

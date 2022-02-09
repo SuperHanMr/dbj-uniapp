@@ -2,7 +2,7 @@
   <view class="pay-h5">
     <view class="pay-num">
       <view>应付金额</view>
-      <view>¥<text class="price-font pay-font">{{totalPrice}}</text></view>
+      <view>¥<text class="price-font pay-font">{{(totalPrice/100).toFixed(2)}}</text></view>
     </view>
     <view class="pay-way-box">
       <view>请选择支付方式</view>
@@ -15,16 +15,17 @@
       </view>
     </view>
     <view class="pay-btn price-font" @click="pay">
-      微信支付 ¥ {{totalPrice}}
+      微信支付 ¥ {{(totalPrice/100).toFixed(2)}}
     </view>
-    <uni-popup ref="payDialog" type="bottom" :mask-click="false">
+<!--    <uni-popup ref="payDialog" type="bottom" :mask-click="false">
       <view class="pay-toast">
         <view class="close" @click="closeToast">取消支付</view>
         <view class="toast-content">
           <view class="title">确认支付</view>
           <view class="text">
             <view><image src="../../static/image/h5-pay.png" mode="" class="pay-icon"></image></view>
-            <view>请确认微信支付是否已完成</view>
+            <view>请确认微信支付
+            是否已完成</view>
             <view class="pay-button">
               <button>重新支付</button>
               <button>已完成支付</button>
@@ -32,8 +33,7 @@
           </view>
         </view>
       </view>
- 
-    </uni-popup>
+    </uni-popup> -->
   </view>
 </template>
 
@@ -52,9 +52,9 @@
     onLoad(e) {
       this.totalPrice = Number(e.totalPrice)
       this.payTal = e.payTal
-      this.$nextTick(() => {
-        this.$refs.payDialog.open();
-      })
+      // this.$nextTick(() => {
+      //   this.$refs.payDialog.open();
+      // })
     },
     methods: {
       pay() {
@@ -62,19 +62,20 @@
           payTal: this.payTal
         }
         payH5(params).then((data) => {
+          console.log(data, "dataUrl")
           let payUrl = data.url + '&redirect_url=' + location.href + '&type=pay_redirect';
           location.href = payUrl
         }, (err) => {
           // let payUrl = location.href + '&redirect_url=' + location.href + '&type=pay_redirect';
           // location.href = payUrl
-          uni.navigateTo({
-            url: './pay-h5-success'
-          })
+          // uni.navigateTo({
+          //   url: './pay-h5-success'
+          // })
         })
       },
-      closeToast() {
-        this.$refs.payDialog.close();
-      }
+      // closeToast() {
+      //   this.$refs.payDialog.close();
+      // }
     }
   }
 </script>

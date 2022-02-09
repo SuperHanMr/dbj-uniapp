@@ -35,18 +35,16 @@
 				</view> -->
 
         <view class="comment-content" >
-        	<view class="comment">
+        	<view class="comment" :style="{marginBottom:imgList.length>0?'32rpx':'0'}">
 						{{ serviceInfo.content ?serviceInfo.content :'' }}
 					</view>
-					<view class="img-container" v-if="serviceInfo.imgList">
+					<view class="img-container" v-if="imgList.length>0">
 						<image class="imgItem" 
 							v-for="item4 in imgList" 
 							:key="item4" 
 							:src="`${item4}?x-oss-process=image/resize,m_mfit,w_109,h_109`" 
-							mode="" 
 							@click="previewImg(item4)" 
 						/>
-						
 					</view>
         </view>
 				
@@ -101,6 +99,7 @@ export default {
 			evaluateDetail({id:this.id}).then(data=>{
 				this.serviceInfo = data
 				this.blankStar = 5 - data.rank
+				console.log("this.serviceInfo.imgList===",this.serviceInfo.imgList)
 				this.imgList =JSON.parse(this.serviceInfo.imgList)  
 				console.log(typeof this.imgList)
 				console.log("this.imgList=",this.imgList)
@@ -215,6 +214,7 @@ export default {
     .line {
       height: 1rpx;
       background-color: #f2f2f2;
+			margin: 0 32rpx;
     }
 		.auto-evaluate{
 			padding: 48rpx 32rpx;
@@ -226,14 +226,14 @@ export default {
 		}
 		
 		.comment-content{
-			padding:44rpx 32rpx 64rpx;
+			// padding:44rpx 32rpx 64rpx;
+			padding: 48rpx 32rpx 48rpx ;
 			background-color: #FFF;
 			.comment{
 				font-size: 28rpx;
 				line-height: 40rpx;
 				font-weight: 400;
 				color: #333333;
-				margin-bottom: 32rpx;
 			}
 			.img-container{
 				.imgItem{
@@ -253,30 +253,6 @@ export default {
 
    
 	}
-}
-// 底部 确认收货 及申请退款按钮
-.footer-container{
-  position: fixed;
-  bottom: 0;
-  width: 686rpx;
-  background-color: #ffffff;
-  display: flex;
-  flex-flow: row nowrap;
-  align-items: center;
-  padding: 24rpx 32rpx;
-  .confirm-btn {
-		width: 686rpx;
-    height: 88rpx;
-    line-height: 88rpx;
-    box-sizing: border-box;
-    background: linear-gradient(135deg, #36d9cd 0%, #28c6c6 100%);
-    border-radius: 12rpx;
-    font-size: 32rpx;
-    text-align: center;
-    font-weight: 400;
-    color: #ffffff;
-  }
-  
 }
 
 // 上传图片的样式
