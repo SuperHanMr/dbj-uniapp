@@ -160,14 +160,7 @@
       },
       sendMsg(){
         if(!this.isAttention){
-          uni.showToast({
-          	title: '已为你关注该设计师。',
-          	icon: 'none',
-          	
-          })
-          setTimeout(()=>{
-            this.queryAttention(1001,'auto')
-            },500)
+          this.queryAttention(1001,'auto') 
         }else{
           this.$emit('sendMsg')
         }

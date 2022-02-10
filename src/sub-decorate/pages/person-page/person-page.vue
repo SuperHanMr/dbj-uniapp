@@ -561,7 +561,14 @@ export default {
         }
         console.log(from,'zzzzzzzzzzzzzzzzzzzzzz')
         if(from==='auto'){
-          this.sendMsg()
+          uni.showToast({
+          	title: '已为你关注该设计师。',
+          	icon: 'none',
+          	
+          })
+          setTimeout(()=>{
+            this.sendMsg()
+          },1000)
         }
         if (routeId === 2001 && this.isRecommend) {
           uni.showToast({
