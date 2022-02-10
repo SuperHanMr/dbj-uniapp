@@ -136,8 +136,8 @@
 							</view>
 							<view class="price">
 								<text style="color: #999;font-size: 20rpx;">￥</text>
-								<text style="color: #333;font-size: 28rpx;">{{handlePrice(item4.price)[0]}}</text>
-								<text style="color: #333;font-size: 24rpx;">.{{handlePrice(item4.price)[1]}}</text>
+								<text style="color: #333;font-size: 28rpx;">{{handlePrice(item4.price/100)[0]}}</text>
+								<text style="color: #333;font-size: 24rpx;">.{{handlePrice(item4.price/100)[1]}}</text>
 								<text style="color: #999;font-size: 22rpx;">/{{item4.unit}}</text>
 							</view>
 						</view>
@@ -302,7 +302,6 @@ export default {
 		this.page++;
 		uni.setStorageSync("recommendDesignerPage", this.page);
 		const hhh = uni.getStorageSync("recommendDesignerPage");
-		console.log("this.page===",hhh)
 		this.getDesignerList();
 		this.reqDesignServiceRecommendList()
   },
@@ -325,10 +324,7 @@ export default {
 			console.log("this.hasEstate==",this.hasEstate)
 			this.getRecommendCaseList();
 		})
-		
-		
-		
-  },
+	},
 	
   onPageScroll(scrollTop) {
     this.scrollTop = scrollTop.scrollTop;
@@ -373,10 +369,11 @@ export default {
         style: "",
         sortType: "", //排序类型 0:默认排序，1:服务次数排序 2： 好评率排序"
       };
-
+			console.log("请求设计师列表参数==",params)
       searchDesigner(params).then((res) => {
         this.searchDesignerList = res.list;
         this.totalPage = res.totalPage;
+				console.log("this.totalPgae====",this.totalPage)
         uni.setStorageSync("recommendDesignerTotalPage", res.totalPage);
         console.log("res.totalRows==",res.totalRows);
 				// // 返回的总条数不是5的倍数
