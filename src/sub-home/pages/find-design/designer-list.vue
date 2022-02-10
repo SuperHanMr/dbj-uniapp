@@ -263,39 +263,51 @@ export default {
       this.searchList();
     },
     handleChat(designer) {
-      this.defaultAttention(designer);
+      this.getAttention(designer)
+        .then(this.queryAttention)
+        .catch((err) => {
+          console.log("关注失败");
+        });
 
       this.$store.dispatch("openC2CConversation", {
         id: designer.id,
         name: designer.name,
       });
     },
-    defaultAttention(designer) {
-      let quary = {
-        subBizType: designer.roleId,
-        routeId: 1001,
-        relationId: designer.id,
-      };
-      getAttention(quary).then((res) => {
-        if (!res) {
-          let params = {
-            subBizType: designer.roleId,
-            routeId: 1001,
-            relationId: designer.id,
-            authorId: -1,
-            equipmentId: uni.getSystemInfoSync().deviceId,
+    getAttention(designerInfo) {
+      return new Promise((resolve, reject) => {
+        let quary = {
+          subBizType: designerInfo.roleId,
+          routeId: 1001,
+          relationId: designerInfo.id,
+        };
+        getAttention(quary).then((res) => {
+          let result = {
+            code: 1,
+            data: res,
+            designerInfo,
           };
-          queryAttention(params)
-            .then((res) => {
-              uni.showToast({
-                title: "已为你关注该设计师",
-                icon: "none",
-              });
-            })
-            .catch((res) => {
-              console.log("关注该设计师失败");
-            });
-        }
+          resolve(result);
+        });
+      });
+    },
+    queryAttention(res) {
+      return new Promise((resolve, reject) => {
+        let { designerInfo, data } = res;
+        if (data) return;
+        let params = {
+          subBizType: designerInfo.roleId,
+          routeId: 1001,
+          relationId: designerInfo.id,
+          authorId: -1,
+          equipmentId: uni.getSystemInfoSync().deviceId,
+        };
+        queryAttention(params).then((res) => {
+          uni.showToast({
+            title: "已为你关注该设计师",
+            icon: "none",
+          });
+        });
       });
     },
   },

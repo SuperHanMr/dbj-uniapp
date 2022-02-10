@@ -531,7 +531,7 @@ export default {
         this.queryAttention(routeId);
       }
     },
-    queryAttention(routeId) {
+    queryAttention(routeId, from = 'attention') {
       let data = {
         subBizType: this.personData.roleId,
         routeId: routeId,
@@ -559,7 +559,10 @@ export default {
           }
           this.isAttention = !this.isAttention;
         }
-
+        console.log(from,'zzzzzzzzzzzzzzzzzzzzzz')
+        if(from==='auto'){
+          this.sendMsg()
+        }
         if (routeId === 2001 && this.isRecommend) {
           uni.showToast({
             title: "购买服务后，将为您优先推荐该服务者",

@@ -3,7 +3,7 @@
     <image class="bg" src="../../../static/design_comment.png" mode=""></image>
     <view class="" v-if="commentData.list[0].rank>3">
       <view class="title">
-        来自 {{commentData.list[0].userName=='匿名'?commentData.list[0].userName+'用户':commentData.list[0].userName}} 
+        来自 {{commentData.list[0].anonymous?'匿名用户':commentData.list[0].userName}} 
         <text> 的评价</text>
       </view>
       <view class="evaluate-text" :class="{'report-text-hidden':isHidden}">
