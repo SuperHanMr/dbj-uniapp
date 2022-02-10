@@ -17,17 +17,18 @@
     <view class="pay-btn price-font" @click="pay">
       微信支付 ¥ {{(totalPrice/100).toFixed(2)}}
     </view>
-   <uni-popup ref="payDialog" type="bottom" :mask-click="false">
+    <uni-popup ref="payDialog" type="bottom" :mask-click="false">
       <view class="pay-toast">
-        <view class="close" @click="closeToast">取消支付</view>
+        <!-- <view class="close" @click="closeToast">取消支付</view> -->
         <view class="toast-content">
           <view class="title">确认支付</view>
           <view class="text">
-            <view><image src="../../static/image/h5-pay.png" mode="" class="pay-icon"></image></view>
+            <view>
+              <image src="../../static/image/h5-pay.png" mode="" class="pay-icon"></image>
+            </view>
             <view>请确认微信支付
-            是否已完成</view>
+              是否已完成</view>
             <view class="pay-button">
-              <button>重新支付</button>
               <button @click="checkPay">已完成支付</button>
             </view>
           </view>
@@ -57,109 +58,124 @@
       this.payTal = e.payTal
       this.payRecordId = e.payRecordId
       this.isRedirect = Number(e.isRedirect)
-      if(this.isRedirect) {
-        this.$refs.payDialog.open()
-      }    
+      if (this.isRedirect) {
+        this.$nextTick(() => {
+          this.$refs.payDialog.open()
+        })
+      }
+      // this.$nextTick(() => {
+      //   this.$refs.payDialog.open()
+      // })
     },
     methods: {
       pay() {
-        let params={
+        let params = {
           payTal: this.payTal
         }
         payH5(params).then((data) => {
-          // let payUrl = data.url + encodeURIComponent('https://mp-h5-stage.meiwu365.com/#/sub-classify/pages/pay-order/pay-h5-success')
           let payUrl = data.url + encodeURIComponent(location.href + '&isRedirect=1')
           location.href = payUrl
         })
       },
       checkPay() {
-        let params={
+        let params = {
           payRecordId: this.payRecordId
         }
         checkPay(params).then((data) => {
-         uni.navigateTo({
-           url: './pay-h5-success?payStatus=' + data.payStatus
-         })
+          if (data.payStatus) {
+            uni.navigateTo({
+              url: './pay-h5-success?payStatus=1'
+            })
+          } else {
+            uni.navigateTo({
+              url: `./pay-h5-success?payStatus=0&payTal=${this.payTal}&payRedirectUrl=${encodeURIComponent(location.href + '&isRedirect=1')}`
+            })
+          }
         })
       },
-      // closeToast() {
-      //   this.$refs.payDialog.close();
-      // }
     }
   }
 </script>
 <style scoped lang="scss">
-.pay-h5{
-  height: calc(100% - 70rpx);
-  position: relative;
-  color: #333333;
-  padding: 32rpx;
-  font-size: 30rpx;
-  background-color: #FFFFFF;
-  font-family: "PingFang SC";
-}
-.pay-num{
-  position: absolute;
-  top: 140rpx;
-  left: 0;
-  right: 0;
-  text-align: center;
-}
-.pay-font{
-  font-size: 78rpx;
-  color: #222222;
-}
-.pay-way-box{
-  position: absolute;
-  top: 400rpx;
-  left: 0;
-  width: 100%;
-  padding-left: 35rpx;
-  padding-bottom: 35rpx;
-  border-bottom: 1rpx solid #F2F3F3;
-}
-.pay-way{
-  margin-top: 66rpx;
-  display: flex;
-  width: 680rpx;
-  align-items: center;
-  justify-content: space-between;
-}
-.icon-box{
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  width: 180rpx;
-}
-.choose-pay{
-  width: 48rpx;
-  height: 48rpx;
-  background-image: url("../../static/image/choose-pay.png");
-  background-size: contain;
-}
-.wechat-icon{
-  width: 32rpx;
-  height: 32rpx;
-  background-image: url("../../static/image/wechat_icon.png");
-  background-size: contain;
-}
-.pay-btn{
-  position: absolute;
-  left: 0;
-  right: 0;
-  height: 88rpx;
-  width: 680rpx;
-  bottom: 32rpx;
-  margin: auto;
-  text-align: center;
-  background: linear-gradient(117.02deg, #FA3B34 24.56%, #FF6A33 92.21%);
-  border-radius: 8px;
-  color: #FFFFFF;
-  line-height: 88rpx;
-}
+  .pay-h5 {
+    height: calc(100% - 70rpx);
+    position: relative;
+    color: #333333;
+    padding: 32rpx;
+    font-size: 30rpx;
+    background-color: #FFFFFF;
+    font-family: "PingFang SC";
+  }
+
+  .pay-num {
+    position: absolute;
+    top: 140rpx;
+    left: 0;
+    right: 0;
+    text-align: center;
+  }
+
+  .pay-font {
+    font-size: 78rpx;
+    color: #222222;
+  }
+
+  .pay-way-box {
+    position: absolute;
+    top: 400rpx;
+    left: 0;
+    width: 100%;
+    padding-left: 35rpx;
+    padding-bottom: 35rpx;
+    border-bottom: 1rpx solid #F2F3F3;
+  }
+
+  .pay-way {
+    margin-top: 66rpx;
+    display: flex;
+    width: 680rpx;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .icon-box {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 180rpx;
+  }
+
+  .choose-pay {
+    width: 48rpx;
+    height: 48rpx;
+    background-image: url("../../static/image/choose-pay.png");
+    background-size: contain;
+  }
+
+  .wechat-icon {
+    width: 32rpx;
+    height: 32rpx;
+    background-image: url("../../static/image/wechat_icon.png");
+    background-size: contain;
+  }
+
+  .pay-btn {
+    position: absolute;
+    left: 0;
+    right: 0;
+    height: 88rpx;
+    width: 680rpx;
+    bottom: 32rpx;
+    margin: auto;
+    text-align: center;
+    background: linear-gradient(117.02deg, #FA3B34 24.56%, #FF6A33 92.21%);
+    border-radius: 8px;
+    color: #FFFFFF;
+    line-height: 88rpx;
+  }
 
 
-.pay-toast {
+  .pay-toast {
     position: relative;
   }
 
@@ -192,35 +208,33 @@
     text-align: center;
     font-weight: 500;
   }
-  .pay-icon{
+
+  .pay-icon {
     width: 224rpx;
     height: 224rpx;
   }
+
   p {
     text-align: justify;
     text-indent: 2em;
     color: #999999;
     margin-top: 24rpx;
   }
-  .pay-button{
+
+  .pay-button {
     margin-top: 130rpx;
     display: flex;
     width: 680rpx;
     justify-content: space-between;
   }
+
   .pay-button button {
-    width: 326rpx;
+    width: 680rpx;
     height: 88rpx;
     line-height: 88rpx;
     border-radius: 16rpx;
     font-weight: 500;
     font-size: 32rpx;
-  }
-  .pay-button button:nth-child(1) {
-    border: 1px solid #333333;
-    color: #333333;
-  }
-  .pay-button button:nth-child(2) {
     color: #ffffff;
     background: linear-gradient(117.02deg, #FA3B34 24.56%, #FF6A33 92.21%);
   }

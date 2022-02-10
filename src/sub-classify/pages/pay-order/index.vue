@@ -878,11 +878,15 @@ export default {
           isCardPay: this.cardClick,
           origin: this.shareOriginType
         };
-          payOrder(params).then((data) => {
+        payOrder(params).then((data) => {
+          if (!data.cardPayComplete) {
             uni.navigateTo({
               url: `/sub-classify/pages/pay-order/pay-h5?payTal=${data.gomePayH5.payModeList[0].payTal}&totalPrice=${orderPrice}&payRecordId=${data.payRecordId}`,
             });
-          })
+          } else {
+            // 真快乐地址
+          }
+        });
         //#endif
     },
     cancelGoodPop() {
