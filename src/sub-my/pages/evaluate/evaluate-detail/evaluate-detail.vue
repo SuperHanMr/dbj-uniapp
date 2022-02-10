@@ -142,6 +142,7 @@ export default {
           height: 80rpx;
           object-fit: cover;
           margin-right: 8rpx;
+					border-radius: 8rpx;
         }
 				.serverName{
 					color:#333333;
