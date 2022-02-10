@@ -20,3 +20,8 @@ export function recommendCaseList(params) {
 export function searchDesigner(params) {
 	return request.post(`/app/search/designer`, params);
 }
+
+//找设计首页设计服务
+export function designServiceList(params){
+	return request.get(`/app/search/designer/getServiceRecommend`,params)
+}
