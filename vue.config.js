@@ -16,11 +16,13 @@ module.exports = {
     plugins: [
       new CopyWebpackPlugin([
         {
-          from: './public/gome-*.html',
+          from: 'gome-*.html',
+          context: './public',
           transform: envTransformer
         },
         {
-          from: './public/libs/*'
+          from: 'libs/*',
+          context: './public'
         },
       ])
     ]
