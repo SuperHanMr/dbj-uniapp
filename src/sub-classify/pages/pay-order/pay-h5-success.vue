@@ -44,7 +44,7 @@
           payTal: this.payTal
         }
         payH5(params).then((data) => {
-          let payUrl = data.url + encodeURIComponent(location.href + '&isRedirect=1')
+          let payUrl = data.url + this.payRedirectUrl
           location.href = payUrl
         })
       },
