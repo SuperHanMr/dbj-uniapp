@@ -78,7 +78,7 @@
       </view>
       <view class="info-list">
         <!-- {{personData.gender===1?'男':'女'}} -->
-        居住地
+        {{personData.liveAddress}}
         <text>|</text>
         {{personData.roleLevel?personData.roleLevel:''}}设计师 
         <text v-if="personData.praiseRate">|</text>
@@ -140,8 +140,8 @@
       // clickHidden(){
       //   
       // },
-      queryAttention(data){
-        this.$emit('queryAttention',data)
+      queryAttention(data,from='attention'){
+        this.$emit('queryAttention',data,from)
       },
       clickHidden(){
         this.isHidden = !this.isHidden
@@ -159,10 +159,19 @@
         })
       },
       sendMsg(){
-        if(!isAttention){
-          this.queryAttention(1001,'isAttention')
+        if(!this.isAttention){
+          uni.showToast({
+          	title: '已为你关注该设计师。',
+          	icon: 'none',
+          	
+          })
+          setTimeout(()=>{
+            this.queryAttention(1001,'auto')
+            },500)
+        }else{
+          this.$emit('sendMsg')
         }
-        this.$emit('sendMsg')
+        
       }
     }
   }
