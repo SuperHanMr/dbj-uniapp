@@ -42,11 +42,13 @@ uni.navigateTo = function(options) {
   // 如果是跳转登录页面
   if (/\/login\/login$/.test(options.url)) {
     console.log("H5跳转登录页");
-    if (window.GomeJSBridge) {
-      let gomeUrl = process.env.VUE_APP_GOME_H5;
-      window.location.href = gomeUrl + '/gome-login.html' + window.location.hash;
+    let gomeUrl = process.env.VUE_APP_GOME_H5;
+    // 是否是打扮家域名，如果是打扮家域名登录成功之后返回打扮家域名
+    let fromDbj = /(meiwu365|dabanjia)\.com/.test(window.location.origin);
+    if (fromDbj) {
+      window.location.href = gomeUrl + '/gome-login.html?fromDbj=true' + window.location.hash;
     } else {
-      window.location.href = '/gome-login-h5.html?backURL=' + encodeURIComponent(window.location.href);
+      window.location.href = gomeUrl + '/gome-login.html' + window.location.hash;
     }
   } else {
     _navigateTo(options);
