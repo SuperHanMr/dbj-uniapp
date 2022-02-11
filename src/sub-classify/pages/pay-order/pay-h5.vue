@@ -70,7 +70,7 @@
     },
     methods: {
       toApp() {
-        location.href = 'gome://m.gome.com.cn/appHome'
+        location.href = 'gome://m.gome.com.cn/appHome_2.html'
       },
       pay() {
         let params = {
