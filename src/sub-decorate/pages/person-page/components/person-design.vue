@@ -78,7 +78,7 @@
       </view>
       <view class="info-list">
         <!-- {{personData.gender===1?'男':'女'}} -->
-        {{personData.liveAddress}}
+        {{'居住地'+personData.liveAddress}}
         <text>|</text>
         {{personData.roleLevel?personData.roleLevel:''}}设计师 
         <text v-if="personData.praiseRate">|</text>
