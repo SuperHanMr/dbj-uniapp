@@ -14,18 +14,17 @@ module.exports = {
   },
   configureWebpack: {
     plugins: [
-      new CopyWebpackPlugin([{ 
-        from: './public/gome-index.html',
-        transform: envTransformer
-      }]),
-      new CopyWebpackPlugin([{ 
-        from: './public/gome-login.html',
-        transform: envTransformer
-      }]),
-      new CopyWebpackPlugin([{ 
-        from: './public/gome-login-h5.html',
-        transform: envTransformer
-      }])
+      new CopyWebpackPlugin([
+        {
+          from: 'gome-*.html',
+          context: './public',
+          transform: envTransformer
+        },
+        {
+          from: 'libs/*',
+          context: './public'
+        },
+      ])
     ]
   }
 }

@@ -31,7 +31,19 @@
   <div class="container">
     <img class="loading-img" src="https://ali-image.dabanjia.com/static/image/loading/loading-red-circle.gif">
   </div>
+  <script src="./libs/base64.js"></script>
   <script>
+    function getPageParms() {
+      var ret = {},
+        seg = window.location.search.replace(/^\?/, '').split('&'),
+        len = seg.length, i = 0, s;
+      for (; i < len; i++) {
+        if (!seg[i]) { continue; }
+        s = seg[i].split('=');
+        ret[s[0]] = s[1];
+      }
+      return ret;
+    }
     function request(options) {
       var xhr = new XMLHttpRequest()
       xhr.withCredentials = true;
@@ -59,20 +71,25 @@
     }
     function redirectToWeb(token) {
       var hash = window.location.hash;
-      // 跳转gome域名的H5站
-      if (token) {
-        localStorage.setItem("scn", token);
+      var fromDbj = localStorage.getItem("fromDbj");
+      if (fromDbj) {
+        // 如果来自打扮家的域名，跳转打扮家域名的H5站
+        localStorage.removeItem("fromDbj");
+        if (token) {
+          window.location.replace('<%= VUE_APP_MP_H5 %>/?token=' + token + hash);
+        } else {
+          window.location.replace('<%= VUE_APP_MP_H5 %>/?token=CLEAR' + hash);
+        }
       } else {
-        localStorage.removeItem("scn");
-        localStorage.removeItem("userId");
+        // 跳转gome域名的H5站
+        if (token) {
+          localStorage.setItem("scn", token);
+        } else {
+          localStorage.removeItem("scn");
+          localStorage.removeItem("userId");
+        }
+        window.location.replace('/' + hash);
       }
-      window.location.replace('/' + hash);
-      // XXX: 以下是跳转打扮家域名的H5站，先保留，以后可能有用
-      // if (token) {
-      //   window.location.replace('<%= VUE_APP_MP_H5 %>/?token=' + token + hash);
-      // } else {
-      //   window.location.replace('<%= VUE_APP_MP_H5 %>/?token=CLEAR' + hash);
-      // }
     }
     function requestToken() {
       var url = '/customer/app/oauth/gome/loginByCookie';
@@ -111,6 +128,20 @@
           });
         }
       })
+    } else {
+      // H5站的登录
+      var pageParams = getPageParms();
+      if (pageParams.fromDbj) {
+        localStorage.setItem("fromDbj", "true");
+      } else if (!pageParams.isLogin) {
+        localStorage.removeItem("fromDbj");
+      }
+      if (pageParams.isLogin) {
+        requestToken();
+      } else {
+        var backURL = window.location.origin + window.location.pathname + '?isLogin=true' + window.location.hash;
+        window.location.replace('<%= VUE_APP_GOME_LOGIN %>?return_url=' + Base64.encode(backURL));
+      }
     }
   </script>
 </body>
