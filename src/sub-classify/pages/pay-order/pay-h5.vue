@@ -14,7 +14,6 @@
         <view class="choose-pay"></view>
       </view>
     </view>
-    <view @click="toApp">测试跳转</view>
     <view class="pay-btn price-font" @click="pay">
       微信支付 ¥ {{(totalPrice/100).toFixed(2)}}
     </view>
@@ -69,9 +68,6 @@
       // })
     },
     methods: {
-      toApp() {
-        location.href = 'gome://m.gome.com.cn/appHome_2.html'
-      },
       pay() {
         let params = {
           payTal: this.payTal

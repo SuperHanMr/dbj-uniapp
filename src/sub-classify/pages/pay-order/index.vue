@@ -884,7 +884,7 @@ export default {
               url: `/sub-classify/pages/pay-order/pay-h5?payTal=${data.gomePayH5.payModeList[0].payTal}&totalPrice=${orderPrice}&payRecordId=${data.payRecordId}`,
             });
           } else {
-            // 真快乐地址
+            location.href = 'gome://m.gome.com.cn/appHome_2.html'
           }
         });
         //#endif

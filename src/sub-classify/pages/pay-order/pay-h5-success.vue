@@ -48,7 +48,9 @@
           location.href = payUrl
         })
       },
-      backApplication() {}
+      backApplication() {
+        location.href = 'gome://m.gome.com.cn/appHome_2.html'
+      }
     }
   }
 </script>
