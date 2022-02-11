@@ -657,7 +657,7 @@ export default {
     },
     back() {
       let pages = getCurrentPages()
-      // console.log(pages.length)
+      console.log(pages.length,'当前栈深度')
       if(pages.length<2){
         uni.switchTab({
         	url: '/pages/home/index/index'
