@@ -126,19 +126,18 @@
     // 是否在真快乐APP中
     if (window.GomeJSBridge && window.GomeJSBridge.ready) {
       GomeJSBridge.ready(function() {
-        console.log('========bridge ready', GomeJSBridge.onLoginChanged)
-        GomeJSBridge.onLoginChanged(function(data) {
-          console.log('========bridge login change', data);
-          if (data.isLogined === 'Y') {
-            requestToken();
-          } else {
-            requestToken();
-          }
-        });
+        console.log('========bridge ready', GomeJSBridge.login)
         GomeJSBridge.login(
-          null,
+          function(data) {
+            console.log('========bridge login success', data, data.isLogined);
+            if (data.isLogined === 'Y') {
+              requestToken();
+            } else {
+              requestToken();
+            }
+          },
           function(err) {
-            console.error('=======login error:', err);
+            console.error('=======bridge login error:', err);
             redirectToWeb();
           },
           {
