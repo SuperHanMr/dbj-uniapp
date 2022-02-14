@@ -125,7 +125,12 @@
 					:payPrice="payPrice"
 				/>
 
-				<view v-if="haveCard && orderInfo.isReplenish" class="pay-way" style="justify-content:center" @click="clickCard">
+				<view
+					v-if="haveCard && orderInfo.isReplenish"
+					class="pay-way"
+					style="justify-content:center"
+					@click="clickCard"
+				>
 				  <image
 				    class="card-img"
 				    src="https://ali-image.dabanjia.com/static/mp/dabanjia/images/classify/ic_card.png"
@@ -280,7 +285,7 @@
 			  <view v-if="orderInfo.showCancelBtn" class="canclePay" @click="handleCancelOrder" >
 			    取消订单
 			  </view>
-			  <view v-if="orderInfo.showToPayBtn" class="gotoPay" @click="toPay(this.payPrice())">
+			  <view v-if="orderInfo.showToPayBtn" class="gotoPay" @click="toPay()">
 			    去付款
 			  </view>
 
@@ -539,17 +544,18 @@ export default {
         return Number(this.totalPrice) * 100;
       }
     },
-    payPrice() {
-      if (this.cardClick) {
-        var res = Number(this.totalPrice) * 100 - this.cardBalance;
-        if (res <= 0) {
-          return "0.00";
-        }
-        return String((res / 100).toFixed(2));
-      } else {
-        return String(this.totalPrice);
-      }
-    },
+		payPrice() {
+		  if (this.cardClick) {
+		    var res = Number(this.totalPrice) * 100 - this.cardBalance;
+		    if (res <= 0) {
+		      return "0.00";
+		    }
+		    return String((res / 100).toFixed(2));
+		  } else {
+		    return String(this.totalPrice);
+		  }
+		},
+
   },
 
   mounted(e) {
@@ -630,15 +636,26 @@ export default {
 				this.orderStatus = e.orderStatus
 				this.approvalCompleted =e.approvalCompleted
 				console.log("this.orderStatus===",this.orderStatus)
-				//以下代码是代付款独有的
 				this.totalPrice = this.orderInfo.payAmount;
+				//以下代码是代付款独有的
+				// this.totalPrice = 4991050
+				let res = Number(this.totalPrice) * 100 - this.cardBalance;
+				if (res <= 0) {
+					this.cardClick = true
+				}else{
+					this.cardClick = false
+				}
+				console.log("this.cardClick yayay =",this.cardClick)
+
+
 				this.bottomStyle = this.orderInfo.showCancelBtn
+				
 				  ? "space-between"
 				  : "flex-end";
 				console.log("this.orderInfo=", this.orderInfo);
       });
     },
-
+		
     // 改变返回下一个页面的路径
     toBack() {
 			// 玉帛写的页面跳转到这个页面
