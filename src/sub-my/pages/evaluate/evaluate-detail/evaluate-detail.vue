@@ -47,11 +47,8 @@
 						/>
 					</view>
         </view>
-				
 			</view>
 		</view>
-		
-		
   </view>
 </template>
 
@@ -142,6 +139,7 @@ export default {
           height: 80rpx;
           object-fit: cover;
           margin-right: 8rpx;
+					border-radius: 8rpx;
         }
 				.serverName{
 					color:#333333;
@@ -248,10 +246,7 @@ export default {
 					margin-right: 0;
 				}
 			}
-			
 		}
-
-   
 	}
 }
 
@@ -273,9 +268,4 @@ export default {
 ::v-deep .file-picker__box-content{
 	margin: 0 !important;
 }
-
-
-
-
-
 </style>

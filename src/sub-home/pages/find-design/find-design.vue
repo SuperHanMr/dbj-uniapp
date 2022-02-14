@@ -57,7 +57,7 @@
 					</view>
 					<view class="change-designerList" @click="changeDesignerList">
 						<text>换一换</text>
-						<image src="../../static/next_batch.png" mode=""></image>
+						<image src="../../static/next_batch.png" />
 					</view>
         </view>
         <view
@@ -109,24 +109,44 @@
           </view>
         </view>
         <view class="showMoreCard_container">
-          <!-- @click="gotoMoreDesigner" -->
-          <!-- <view
-            class="showMoreCard"
-            :style="{backgroundImage:`url(${bgImg3})`,backgroundSize:'contaienr'}"
-          >
-          </view>
-          <view class="content">
-            <image src="https://ali-image.dabanjia.com/static/mp/dabanjia/images/home/showMoreCard.svg" />
-            <view class="text">
-              左滑查看更多
-            </view>
-          </view> -->
 					<image src="../../static/moreDesignerImg.png" mode=""></image>
-
-        </view>
+				</view>
       </scroll-view>
-
-    </view>
+		</view>
+		
+		<!-- 元宵节新增需求 -->
+		<view class="design-service-container">
+			<view class="title">
+				设计服务推荐
+			</view>
+			<view class="scroll-container">
+				<scroll-view  
+					scroll-x="true"	
+					style="white-space: nowrap;"
+				>
+					<view class="design-service-item"
+						v-for="item4 in designServiceRecList"
+						:key="item4.id"
+						@click="gotoProduceDetail(item4)"
+					>
+						<image :src="item4.imageUrl" />
+						<view class="footer">
+							<view class="name">
+								{{item4.fullName}}
+							</view>
+							<view class="price">
+								<text style="color: #999;font-size: 20rpx;">￥</text>
+								<text style="color: #333;font-size: 28rpx;">{{handlePrice(item4.price/100)[0]}}</text>
+								<text style="color: #333;font-size: 24rpx;">.{{handlePrice(item4.price/100)[1]}}</text>
+								<text style="color: #999;font-size: 22rpx;">/{{item4.unit}}</text>
+							</view>
+						</view>
+					</view>
+				</scroll-view>
+			</view>
+		</view>
+		
+		
     <view
       class="perfectHouseInfo_container"
       @click="gotoEditHouse"
@@ -145,6 +165,7 @@
         <image src="https://ali-image.dabanjia.com/static/mp/dabanjia/images/home/gotoCase.svg" />
       </view>
     </view>
+		
 
     <view
       v-if="userId && hasEstate"
@@ -163,12 +184,12 @@
     </view>
     <view
       class="recommendCaseItem_container"
-      v-if="userId && hasEstate && CaseList.length"
+      v-if="userId && hasEstate && caseList.length"
     >
       <view
         :style="{backgroundImage:`url(${bgImg})`}"
         class="case-item"
-        v-for="item4 in CaseList"
+        v-for="item4 in caseList"
         :key="item4.id"
 				@click="toRealCaseDetail(item4)"
       >
@@ -199,7 +220,6 @@
               v-for="item5 in item4.features"
               :key="item5"
             >{{item5}}</view>
-            <!-- <view class="attr_item">极简简装</view> -->
           </view>
         </view>
         <image
@@ -217,6 +237,7 @@ import { debounce } from "@/utils/common.js";
 import {
   recommendCaseList,
   searchDesigner,
+	designServiceList,
 } from "../../../api/home-find-design.js";
 export default {
   data() {
@@ -261,12 +282,14 @@ export default {
         },
       ],
       searchDesignerList: [], //设计师列表
-      CaseList: [], //推荐列表
+			designServiceRecList:[],//设计服务推荐
+      caseList: [], //推荐列表
       userId: "", //用户id
       hasEstate: false, //是否有房屋
       estateId: "", //房屋id
       page: 0,
       totalPage: "",
+			
     };
   },
 
@@ -279,8 +302,8 @@ export default {
 		this.page++;
 		uni.setStorageSync("recommendDesignerPage", this.page);
 		const hhh = uni.getStorageSync("recommendDesignerPage");
-		console.log("this.page===",hhh)
 		this.getDesignerList();
+		this.reqDesignServiceRecommendList()
   },
   onShow() { 
 		this.scrollLeft = 1
@@ -301,10 +324,7 @@ export default {
 			console.log("this.hasEstate==",this.hasEstate)
 			this.getRecommendCaseList();
 		})
-		
-		
-		
-  },
+	},
 	
   onPageScroll(scrollTop) {
     this.scrollTop = scrollTop.scrollTop;
@@ -334,7 +354,7 @@ export default {
         estateId: this.estateId,
       };
       recommendCaseList(params).then((res) => {
-        this.CaseList = res;
+        this.caseList = res;
       });
     },
 
@@ -349,24 +369,51 @@ export default {
         style: "",
         sortType: "", //排序类型 0:默认排序，1:服务次数排序 2： 好评率排序"
       };
-
+			console.log("请求设计师列表参数==",params)
       searchDesigner(params).then((res) => {
         this.searchDesignerList = res.list;
+        this.searchDesignerList = res.list.map(item=>{
+					if(item.artImage.indexOf('?x-oss-process=image/resize,m_fill,h_160,w_120,limit_0') !==-1){
+						item.artImage = item.artImage.split('?')[0]
+					}
+					console.log("设计师列表item===",item)
+					return item
+				})
+				
         this.totalPage = res.totalPage;
+				console.log("this.totalPgae====",this.totalPage)
         uni.setStorageSync("recommendDesignerTotalPage", res.totalPage);
         console.log("res.totalRows==",res.totalRows);
 				// 返回的总条数不是5的倍数
-        if ((res.totalRows % 5 !== 0) && (this.page == (this.totalPage - 1))) {
-          this.page = 0;
-          uni.setStorageSync("recommendDesignerPage", this.page);
-        }
+				if ((res.totalRows % 5 !== 0) && (this.page == (this.totalPage - 1))) {
+					this.page = 0;
+					uni.setStorageSync("recommendDesignerPage", this.page);
+				}
 				//返回的总条数是5的倍数
 				if((res.totalRows % 5 == 0) && (this.page ==this.totalPage)){
 					this.page = 0;
 					uni.setStorageSync("recommendDesignerPage", this.page);
 				}
+				// if(this.page == this.totalPage){
+				// 	this.page = 0 
+				// 	uni.setStorageSync("recommendDesignerPage", this.page);
+				// }
       });
     },
+		
+		reqDesignServiceRecommendList(){
+			designServiceList().then(res=>{
+				this.designServiceRecList = res
+				//处理一下price /100 
+				console.log("designerServiceRecList===",res)
+			})
+		},
+		//商品详情页面
+		gotoProduceDetail(item){
+			uni.navigateTo({
+				url:`../../../sub-classify/pages/goods-detail/goods-detail?goodId=${item.id}`,
+			});
+		},
     
 		// 换一批
 		changeDesignerList(){
@@ -430,6 +477,15 @@ export default {
 		  uni.navigateTo({
 		    url: `/pages/real-case/real-case-webview/real-case-webview?id=${item.id}`,
 		  });
+		},
+		handlePrice(price) {
+		  if (!price) return ["0", "00"];
+		  let list = String(price).split(".");
+		  if (list.length == 1) {
+		    return [list[0], "00"];
+		  } else {
+		    return [list[0], list[1]];
+		  }
 		},
   },
 };
@@ -654,9 +710,6 @@ export default {
         }
       }
     }
-    // .design-card-item:nth-last-child(1) {
-    // 	margin-right: 0;
-    // }
     .showMoreCard_container {
       width: 252rpx;
       height: 698rpx;
@@ -909,4 +962,54 @@ export default {
     }
   }
 }
+
+
+// 元宵节新增需求 
+
+.design-service-container{
+	
+	.title{
+		padding: 48rpx 40rpx 24rpx;
+		color: #333333;
+		font-size: 32rpx;
+		font-weight: 500;
+	}
+	.scroll-container{
+		padding: 0 0 32rpx 40rpx;
+		scroll-view{
+			.design-service-item{
+				width: 244rpx;
+				display: inline-block;
+				margin-right: 24rpx;
+				image{
+					width: 244rpx;
+					height: 244rpx;
+					border-radius: 16rpx;
+					margin-bottom: 12rpx;
+				}
+				.footer{
+					.name{
+						width: 244rpx;
+						height: 36rpx;
+						line-height: 36rpx;
+						margin-bottom: 8rpx;
+						color: #333333;
+						font-size: 26rpx;
+						overflow: hidden; 
+						white-space: nowrap; 
+						text-overflow: ellipsis
+					}
+					.price{
+						
+					}
+				}
+			}
+			.design-service-item:nth-last-child(1){
+				margin-right: 40rpx;
+			}
+		}
+	}
+}
+
+
 </style>
