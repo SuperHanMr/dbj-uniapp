@@ -388,7 +388,7 @@ export default {
         const { wechatPayJsapi, cardPayComplete, id } = data;
         if (!cardPayComplete) {
           uni.navigateTo({
-            url: `/sub-classify/pages/pay-order/pay-h5?payTal=${data.gomePayH5.payModeList[0].payTal}&totalPrice=${orderPrice}&payRecordId=${data.payRecordId}`,
+            url: `/sub-classify/pages/pay-order/pay-h5?payTal=${data.gomePayH5.payModeList[0].payTal}&totalPrice=${this.totalAmount}&payRecordId=${data.payRecordId}`,
           });
         } else {
           uni.redirectTo({

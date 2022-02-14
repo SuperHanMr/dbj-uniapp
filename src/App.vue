@@ -21,7 +21,7 @@
   export default {
     globalData: {
       userInfo: {},
-      token: "Pc0jlCMLaageAbuvl97z3OjRNz%2BFxXrdHjTV3svtxH8ZYtzDTO87dW6k2vvjBtUQZzSBAyHG3Zx35y2ERVxQltANOHEjy0haBbFYtDo%2BAlNHSKm1iEKxSRoRrGRY4lGfd0309400cf6c750af5a9af1117342553",
+      token: "",
       city: "",
       houses: [],
       tim: null,

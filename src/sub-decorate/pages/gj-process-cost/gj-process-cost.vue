@@ -783,7 +783,7 @@
             //#endif
             //#ifdef H5
             uni.navigateTo({
-              url: `/sub-classify/pages/pay-order/pay-h5?payTal=${data.gomePayH5.payModeList[0].payTal}&totalPrice=${orderPrice}&payRecordId=${data.payRecordId}`,
+              url: `/sub-classify/pages/pay-order/pay-h5?payTal=${data.gomePayH5.payModeList[0].payTal}&totalPrice=${this.countPrice}&payRecordId=${data.payRecordId}`,
             });
             //#endif
           } else {

@@ -333,16 +333,26 @@ export default {
         });
       } else {
         let openid = getApp().globalData.openId;
+        //#ifdef MP-WEIXIN
+        let payType = 1
+        let deviceType = 0
+        //#endif
+        //#ifdef H5
+        let payType = 3
+        let deviceType = 2
+        //#endif
         payFreight({
           orderId: this.detail.orderId,
           goodsRequireId: this.id,
-          payType: 1,
+          payType: payType,
+          deviceType: deviceType,
           openid,
           isCardPay: this.cardClick,
         }).then((e) => {
           const cardPayComplete = e.cardPayComplete;
 
           if (!cardPayComplete) {
+            //#ifdef MP-WEIXIN
             const payInfo = e.wechatPayJsapi;
             uni.requestPayment({
               provider: "wxpay",
@@ -364,6 +374,12 @@ export default {
                 });
               },
             });
+            //#endif
+            //#ifdef H5
+            uni.navigateTo({
+              url: `/sub-classify/pages/pay-order/pay-h5?payTal=${e.gomePayH5.payModeList[0].payTal}&totalPrice=${this.payPrice()}&payRecordId=${e.payRecordId}`,
+            });
+            //#endif
           } else {
             uni.showToast({
               title: "支付成功",

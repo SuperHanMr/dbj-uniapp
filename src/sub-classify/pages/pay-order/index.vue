@@ -884,7 +884,9 @@ export default {
               url: `/sub-classify/pages/pay-order/pay-h5?payTal=${data.gomePayH5.payModeList[0].payTal}&totalPrice=${orderPrice}&payRecordId=${data.payRecordId}`,
             });
           } else {
-            location.href = 'gome://m.gome.com.cn/appHome_2.html'
+            uni.navigateTo({
+              url: "/sub-classify/pages/pay-order/pay-success?orderId=" + data.id,
+            });
           }
         });
         //#endif

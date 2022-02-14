@@ -280,7 +280,7 @@
 			  <view v-if="orderInfo.showCancelBtn" class="canclePay" @click="handleCancelOrder" >
 			    取消订单
 			  </view>
-			  <view v-if="orderInfo.showToPayBtn" class="gotoPay" @click="toPay">
+			  <view v-if="orderInfo.showToPayBtn" class="gotoPay" @click="toPay()">
 			    去付款
 			  </view>
 
@@ -405,7 +405,7 @@
 		    <view class="pay-diaolog-alert">
 		      金额以实际金额为准，若储值卡余额不足将用在线支付剩余部分
 		    </view>
-		    <view class="pay-diaolog-btn" @click="payOrder()" >
+		    <view class="pay-diaolog-btn" @click="payOrder(payChannelPrice*100)" >
 		      确认支付
 		    </view>
 		  </view>
@@ -774,16 +774,26 @@ export default {
 		},
 		payOrder() {
 		  let openId = getApp().globalData.openId;
+      //#ifdef MP-WEIXIN
+      let payType = 1
+      let deviceType = 0
+      //#endif
+      //#ifdef H5
+      let payType = 3
+      let deviceType = 2
+      //#endif
 		  orderPay({
+        payType: payType,
+        deviceType: deviceType,
 		    remarks: this.remarks,
 		    orderId: this.orderNo,
-		    payType: 1, //支付类型  1在线支付",
 		    openid: openId,
-		    isCardPay: this.cardClick,
+		    isCardPay: this.cardClick
 		  }).then((e) => {
 		    const payInfo = e.wechatPayJsapi;
 		    const cardPayComplete = e.cardPayComplete;
 		    if (!cardPayComplete) {
+          //#ifdef MP-WEIXIN
 		      uni.requestPayment({
 		        provider: "wxpay",
 		        ...payInfo,
@@ -812,6 +822,12 @@ export default {
 		          });
 		        },
 		      });
+          //#endif
+          //#ifdef H5
+          uni.navigateTo({
+            url: `/sub-classify/pages/pay-order/pay-h5?payTal=${data.gomePayH5.payModeList[0].payTal}&totalPrice=${this.countPrice}&payRecordId=${data.payRecordId}`,
+          });
+          //#endif
 		    } else {
 		      uni.showToast({
 		        title: "支付成功！",

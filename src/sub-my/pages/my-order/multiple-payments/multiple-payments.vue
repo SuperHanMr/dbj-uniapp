@@ -48,7 +48,7 @@
         <view
           v-if="item.status==0"
           class="button"
-          @click="gotoPay(item.id,index)"
+          @click="gotoPay(item.id,index,item.amount)"
         >
           去付款
         </view>
@@ -160,17 +160,27 @@ export default {
       });
     },
     // 去付款
-    gotoPay(id, index) {
+    gotoPay(id, index, totalPrice) {
       let openId = getApp().globalData.openId;
+      //#ifdef MP-WEIXIN
+      let payType = 1
+      let deviceType = 0
+      //#endif
+      //#ifdef H5
+      let payType = 3
+      let deviceType = 2
+      //#endif
       let params = {
         orderId: this.orderId,
-        payType: 1, //支付类型  1在线支付"
+        payType: 1,
+        deviceType: 0,
         orderSplitPayId: id,
         openid: openId, //微信openid 小程序支付用 app支付不传或传空"
       };
       console.log(params);
       splitPay(params).then((e) => {
         const payInfo = e.wechatPayJsapi;
+        //#ifdef MP-WEIXIN
         uni.requestPayment({
           provider: "wxpay",
           ...payInfo,
@@ -207,6 +217,12 @@ export default {
           },
         });
       });
+      //#endif
+      //#ifdef H5
+      uni.navigateTo({
+        url: `/sub-classify/pages/pay-order/pay-h5?payTal=${e.gomePayH5.payModeList[0].payTal}&totalPrice=${totalPrice}&payRecordId=${e.payRecordId}`,
+      });
+      //#endif
     },
     toCancelPage() {
       console.log("this.type===", this.type);
