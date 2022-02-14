@@ -111,7 +111,7 @@
         <image
           v-if="cardClick"
           class="selected-img"
-          src="https://ali-image.dabanjia.com/static/mp/dabanjia/images/classify/pay_selected.png"
+          src="https://ali-image.dabanjia.com/static/mp/dabanjia/images/theme-red/decorate/ic_checked.svg"
           mode=""
         >
         </image>
@@ -394,6 +394,7 @@ export default {
         id: this.id,
       }).then((e) => {
         this.detail = e;
+        this.cardClick = this.cardBalance>=this.selectCoupon.total
       });
     },
   },
