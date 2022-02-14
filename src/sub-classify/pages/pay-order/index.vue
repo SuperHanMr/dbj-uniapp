@@ -504,14 +504,16 @@ export default {
       }
     },
     payPrice() {
+      var res = Number(this.totalPrice) * 100 - this.cardBalance;
+      if(res >= 0) {
+        this.cardClick = true
+      }
       if (this.cardClick) {
-        var res = Number(this.totalPrice) * 100 - this.cardBalance;
         if (res <= 0) {
           return "0.00";
         }
         return String((res / 100).toFixed(2));
       } else {
-        console.log(this.totalPrice);
         return this.totalPrice;
       }
     },
