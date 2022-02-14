@@ -32,6 +32,10 @@
     <img class="loading-img" src="https://ali-image.dabanjia.com/static/image/loading/loading-red-circle.gif">
   </div>
   <script src="./libs/base64.js"></script>
+  <script src="https://ali-res.dabanjia.com/static/libs/vconsole/3.4.1/vconsole.min.js"></script>
+  <script>
+    new VConsole();
+  </script>
   <script>
     function getPageParms() {
       var ret = {},
@@ -117,16 +121,28 @@
         }
       });
     }
+    console.log('bridge', window.GomeJSBridge);
     // 是否在真快乐APP中
     if (window.GomeJSBridge) {
       GomeJSBridge.ready(function() {
-        if (GomeJSBridge.isLogin()) {
-          requestToken()
-        } else {
-          GomeJSBridge.login({
-            refresh: true
-          });
-        }
+        console.log('bridge ready', GomeJSBridge.isLogin)
+        GomeJSBridge.isLogin(function(data) {
+          console.log('bridge logined?', data, data.isLogin, data.isLogined);
+          if (data.isLogin === 'Y' || data.isLogined === 'Y') {
+            requestToken();
+          } else {
+            GomeJSBridge.login(
+              null,
+              function(err) {
+                console.error('login error:', err);
+                redirectToWeb();
+              },
+              {
+                refresh: true
+              }
+            );
+          }
+        });
       })
     } else {
       // H5站的登录
