@@ -994,13 +994,19 @@
           "style": {
             "navigationBarTitleText": "用户评价"
           }
-        }, {
+        },
+		{
+		  "path": "pages/person-page/person-peer-evaluate-list",
+		  "style": {
+		    "navigationBarTitleText": "同行评价"
+		  }
+		},
+		{
           "path": "pages/change-application/change-application",
           "style": {
             "navigationBarTitleText": "",
             "enablePullDownRefresh": false
           }
-
         },
         {
           "path": "pages/construction-change/construction-change",
