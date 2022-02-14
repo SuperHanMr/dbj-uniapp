@@ -109,21 +109,25 @@
             getRefundDetail({
               id: refundId
             }).then(data => {
-              if(data.status == 0 || data.status == 1 ){
+              
                 uni.navigateTo({
                   url:`/sub-my/pages/refund-list/refunding-detail/refunding-detail?id=${data.id}`
                 })
-              }else if(data.status == 2){
-                uni.navigateTo({
-                  url:`/sub-my/pages/my-order/order-success/order-success?type=refund&id=${data.id}`
-                })
-              }else{
-                uni.navigateTo({
-                  url:`/sub-my/pages/my-order/order-failed/order-failed?type=refund&id=${data.id}&status=${data.status}&showReApply=true`
-                })
-              }
+              // if(data.status == 0 || data.status == 1 ){
+              //   uni.navigateTo({
+              //     url:`/sub-my/pages/refund-list/refunding-detail/refunding-detail?id=${data.id}`
+              //   })
+              // }else if(data.status == 2){
+              //   uni.navigateTo({
+              //     url:`/sub-my/pages/my-order/order-success/order-success?type=refund&id=${data.id}`
+              //   })
+              // }else{
+              //   uni.navigateTo({
+              //     url:`/sub-my/pages/my-order/order-failed/order-failed?type=refund&id=${data.id}&status=${data.status}&showReApply=true`
+              //   })
+              // }
             })
-            
+
           }
         } else if (btn.type === "native_uri") { // 跳转页面处理
           let url = compile(btn.targetRouter)(this.data);

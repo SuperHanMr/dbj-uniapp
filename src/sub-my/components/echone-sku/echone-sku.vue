@@ -3,7 +3,7 @@
 		<view class="sku-box">
 				<view class="sku-header container">
 					<image class="goods-img" :src="selectSkuInfo[cbImage]+'?x-oss-process=image/resize,m_mfit,w_96,h_96'"></image>
-					
+
 					<view class="sku-goods-info">
 						<view class="goodsDesc">
 							<text class="goodsType">{{productType===1?"物品":"服务"}}</text>
@@ -27,14 +27,14 @@
 					<view class="sku-item container" v-for="(sku,speIdx) in mySpecifications" :key="sku[speId]">
 						<view class="sku-name">{{sku[speName]}}</view>
 						<view class="sku-content">
-							<view 
-								class="sku-content-item" 
+							<view
+								class="sku-content-item"
 								v-for="(item,index) in sku[speList]"
-								:key="item.id" 
+								:key="item.id"
 								:style="{
 									borderColor: item.checked? '#333333': '#E8E8E8',
 									fontWeight:item.checked?'500':'normal'
-								}" 
+								}"
 								@click="selectSkuCli(sku.id,speIdx,item.id,index)"
 							>{{item.value}}
 								<image  v-if="item.checked" src="../../static/productAttributeSelected.svg" mode=""></image>
@@ -43,7 +43,7 @@
 					</view>
 					<view class="bottom-space"></view>
 				</scroll-view>
-				
+
 				<view class="confirm-btn container" @click="handleConfirm">确认</view>
 			</view>
 	</popup-bottom>
@@ -152,20 +152,21 @@
 			},
 		},
 		methods: {
-			handlePrice(price) {
-			  let list = String(price).split(".");
-			  if (list.length == 1) {
-			    return [list[0], "00"];
-			  } else {
-			    return [list[0], list[1]];
-			  }
+			handlePrice(price){
+				if(!price) return ['0','00']
+				let list=String(price).split(".")
+				if(list.length==1){
+					return [list[0],"00"]
+				}else{
+					return[list[0],list[1]]
+				}
 			},
 			initSkuData() {
 				this.selectedIndex = this.defaultSelectIndex
 				this.selectSkuInfo = this.combinations[this.selectedIndex]
 				console.log("this.selectSkuInfo==",this.selectSkuInfo)
 				this.skuId = this.selectSkuInfo.id
-				
+
 				let defaultSpecIds = this.defaultSpecIds.split(',')
 				let arr = []
 				this.specifications.forEach(item => {
@@ -195,7 +196,7 @@
 						return item.toString()
 					}
 				})
-				
+
 				let selectIds = this.selectSkuInfo.propValueIds
 				console.log(this.handleIds,selectIds)
 				if(this.handleIds.indexOf(selectIds) === -1) {
@@ -324,7 +325,7 @@
 					font-weight: 600;
 					color: #222222;
 				}
-				
+
 			}
 			.money {
 				font-size: 28rpx;
