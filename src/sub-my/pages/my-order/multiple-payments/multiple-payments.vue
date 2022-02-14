@@ -216,13 +216,13 @@ export default {
             });
           },
         });
+        //#endif
+        //#ifdef H5
+        uni.navigateTo({
+          url: `/sub-classify/pages/pay-order/pay-h5?payTal=${e.gomePayH5.payModeList[0].payTal}&totalPrice=${totalPrice}&payRecordId=${e.payRecordId}`,
+        });
+        //#endif
       });
-      //#endif
-      //#ifdef H5
-      uni.navigateTo({
-        url: `/sub-classify/pages/pay-order/pay-h5?payTal=${e.gomePayH5.payModeList[0].payTal}&totalPrice=${totalPrice}&payRecordId=${e.payRecordId}`,
-      });
-      //#endif
     },
     toCancelPage() {
       console.log("this.type===", this.type);
