@@ -48,7 +48,7 @@
         <view
           v-if="item.status==0"
           class="button"
-          @click="gotoPay(item.id,index)"
+          @click="gotoPay(item.id,index,item.amount)"
         >
           去付款
         </view>
@@ -160,17 +160,27 @@ export default {
       });
     },
     // 去付款
-    gotoPay(id, index) {
+    gotoPay(id, index, totalPrice) {
       let openId = getApp().globalData.openId;
+      //#ifdef MP-WEIXIN
+      let payType = 1
+      let deviceType = 0
+      //#endif
+      //#ifdef H5
+      let payType = 3
+      let deviceType = 2
+      //#endif
       let params = {
         orderId: this.orderId,
-        payType: 1, //支付类型  1在线支付"
+        payType: 1,
+        deviceType: 0,
         orderSplitPayId: id,
         openid: openId, //微信openid 小程序支付用 app支付不传或传空"
       };
       console.log(params);
       splitPay(params).then((e) => {
         const payInfo = e.wechatPayJsapi;
+        //#ifdef MP-WEIXIN
         uni.requestPayment({
           provider: "wxpay",
           ...payInfo,
@@ -206,6 +216,12 @@ export default {
             });
           },
         });
+        //#endif
+        //#ifdef H5
+        uni.navigateTo({
+          url: `/sub-classify/pages/pay-order/pay-h5?payTal=${e.gomePayH5.payModeList[0].payTal}&totalPrice=${totalPrice}&payRecordId=${e.payRecordId}`,
+        });
+        //#endif
       });
     },
     toCancelPage() {
@@ -213,12 +229,11 @@ export default {
       console.log("this.orderId==", this.orderId);
       if (this.type == "detail") {
         uni.redirectTo({
-          // url: `../order-wait-pay/order-wait-pay?orderNo=${this.orderId}`,
-          url: `../order-failed/order-failed?type=close&id=${this.orderId}&from=multiple`,
+					url:`../order-detail/order-detail?orderId=${this.orderId}&from=multiple`
         });
       } else {
         uni.redirectTo({
-          url: `../my-order?index=2&firstEntry=true`,
+          url: `../my-order?index=4&firstEntry=true`,
         });
       }
     },
@@ -241,12 +256,13 @@ export default {
       });
     },
 
-    handlePrice(price) {
-      let list = String(price).split(".");
-      if (list.length == 1) {
-        return [list[0], "00"];
-      } else {
-        return [list[0], list[1]];
+    handlePrice(price){
+      if(!price) return ['0','00']
+      let list=String(price).split(".")
+      if(list.length==1){
+        return [list[0],"00"]
+      }else{
+        return[list[0],list[1]]
       }
     },
     formatTime(msTime) {

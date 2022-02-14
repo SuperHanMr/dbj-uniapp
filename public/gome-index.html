@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <link rel="icon" href="https://www.dabanjia.com/favicon.ico" mce_href="http://www.dabanjia.com/favicon.ico"
+    type="image/x-icon" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>跳转打扮家中...</title>
+  <style>
+    html, body {
+      padding: 0;
+      margin: 0;
+      width: 100%;
+      height: 100%;
+    }
+    .container {
+      width: 100%;
+      height: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .loading-img {
+      width: 40px;
+      height: 40px;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <img class="loading-img" src="https://ali-image.dabanjia.com/static/image/loading/loading-red-circle.gif">
+  </div>
+  <script>
+    function request(options) {
+      var xhr = new XMLHttpRequest()
+      xhr.withCredentials = true;
+      xhr.onreadystatechange = function() {
+        if (xhr.readyState === 4) {
+          if (xhr.status === 200) {
+            if (options.success) {
+              options.success(xhr.responseText);
+            }
+          } else {
+            if (options.error) {
+              options.error(xhr.status);
+            }
+          }
+        }
+      }
+      xhr.onerror = function(err) {
+        if (options.error) {
+          options.error(err);
+        }
+      }
+      xhr.open(options.method, options.url)
+      xhr.setRequestHeader('Content-Type', 'application/json');
+      xhr.send(JSON.stringify(options.data));
+    }
+    function redirectToWeb(token) {
+      var hash = window.location.hash;
+      // 跳转gome域名的H5站
+      if (token) {
+        localStorage.setItem("scn", token);
+      } else {
+        localStorage.removeItem("scn");
+        localStorage.removeItem("userId");
+      }
+      window.location.replace('/' + hash);
+      // XXX: 以下是跳转打扮家域名的H5站，先保留，以后可能有用
+      // if (token) {
+      //   window.location.replace('<%= VUE_APP_MP_H5 %>/?token=' + token + hash);
+      // } else {
+      //   window.location.replace('<%= VUE_APP_MP_H5 %>/?token=CLEAR' + hash);
+      // }
+    }
+    function requestToken() {
+      var url = '/customer/app/oauth/gome/loginByCookie';
+      var params = {
+        clientType: "3",
+        clientCode: "APPLET"
+      };
+      request({
+        url: url,
+        data: params,
+        method: "post",
+        success: function(resText) {
+          var res = JSON.parse(resText);
+          console.log('success:', resText, res);
+          if (res.data) {
+            var token = res.data;
+            redirectToWeb(token);
+          } else {
+            redirectToWeb();
+          }
+        },
+        error: function(err) {
+          console.error(err);
+          redirectToWeb();
+        }
+      });
+    }
+    requestToken();
+  </script>
+</body>
+</html>

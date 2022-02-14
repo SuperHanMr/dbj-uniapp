@@ -237,10 +237,10 @@
                 </view>
               </view>
 
-              <view
+              <!-- <view
                 class="line"
                 v-if="item.orderStatus == 1 && item.shipmentStatus == 1"
-              />
+              /> -->
 
               <view
                 class="footer buttonContainer"
@@ -492,58 +492,29 @@ export default {
       switch (data.orderStatus) {
         case 0:
           console.log("订单id===", data.id);
-          // return
-          uni.navigateTo({
-            url: `order-wait-pay/order-wait-pay?orderNo=${data.id}&from=all`,
-          });
+					uni.navigateTo({
+						url:`order-detail/order-detail?orderId=${data.id}&from=waitPay`
+					})
           break;
         case 1:
-          if (this.currentIndex == 0) {
-            console.log("订单id===", data.id);
-            uni.navigateTo({
-              url: `order-in-progress/order-in-progress?orderNo=${data.id}&from=all`,
-            });
-          } else {
-            uni.navigateTo({
-              url: `order-in-progress/order-in-progress?orderNo=${data.id}`,
-            });
-          }
+					console.log("订单id===", data.id);
+					uni.navigateTo({
+						url:`order-detail/order-detail?orderId=${data.id}`
+					});
           break;
         case 2:
           uni.navigateTo({
-            url: `order-success/order-success?type=complete&id=${data.id}`,
+						url:`order-detail/order-detail?orderId=${data.id}`
           });
           break;
         case 3:
           uni.navigateTo({
-            url: `order-failed/order-failed?type=close&id=${data.id}`,
+            // url: `order-failed/order-failed?type=close&id=${data.id}`,
+						url:`order-detail/order-detail?orderId=${data.id}`
           });
           break;
       }
-      // if (data.orderStatus == 0) {
-      //   //（0待付款，1进行中，2已完成 3已关闭）
-      //   uni.navigateTo({
-      //     url: `order-wait-pay/order-wait-pay?orderNo=${data.id}?&from=all`,
-      //   });
-      // } else if (data.orderStatus == 1) {
-      //   if (this.currentIndex == 0) {
-      //     uni.navigateTo({
-      //       url: `order-in-progress/order-in-progress?orderNo=${data.id}&from=all`,
-      //     });
-      //   } else {
-      //     uni.navigateTo({
-      //       url: `order-in-progress/order-in-progress?orderNo=${data.id}`,
-      //     });
-      //   }
-      // } else if (data.orderStatus == 2) {
-      //   uni.navigateTo({
-      //     url: `order-success/order-success?type=complete&id=${data.id}`,
-      //   });
-      // } else {
-      //   uni.navigateTo({
-      //     url: `order-failed/order-failed?type=close&id=${data.id}`,
-      //   });
-      // }
+
     },
 
     //去店铺首页
@@ -596,12 +567,13 @@ export default {
           duration: 1000,
         });
         this.onRefresh();
-        setTimeout(() => {
-          //跳转到订单取消页面
-          uni.redirectTo({
-            url: `../order-failed/order-failed?type=close&id=${this.id}`,
-          });
-        }, 1000);
+      //   setTimeout(() => {
+      //     //跳转到订单取消页面
+      //     uni.redirectTo({
+      //       url: `../order-failed/order-failed?type=close&id=${this.id}`,
+						// // url:`order-detail/order-detail?type=closeOrder&orderId=${this.id}`
+      //     });
+      //   }, 1000);
       });
     },
 
@@ -676,43 +648,17 @@ export default {
     },
 
     //处理页面展示的相关函数
-    handlePrice(price) {
-      let list = String(price).split(".");
-      if (list.length == 1) {
-        return [list[0], "00"];
-      } else {
-        return [list[0], list[1]];
+    handlePrice(price){
+      if(!price) return ['0','00']
+      let list=String(price).split(".")
+      if(list.length==1){
+        return [list[0],"00"]
+      }else{
+        return[list[0],list[1]]
       }
     },
     handleImage(list) {
       return list.map((item) => item.imgUrl);
-    },
-    formatTime(msTime) {
-      // let start = this.start.toString()
-      // let timer = parseInt(start)
-
-      // let hours = Math.floor(timer / 1000/ 60 / 60);
-      // this.hour = (hours < 10 ? ('0' + hours) : hours);
-
-      // // console.log("!!!!!!!!!!!!!!!!!!!!!!!!!")
-      // // console.log("a.hour=",this.hour)
-      // var interval = setInterval(() => {
-      // 	this.second = (Array(2).join(0) + parseInt(--this.second)).slice(-2)
-      // 	if (this.second == 0) {
-      // 		if (this.minute != 0) {
-      // 				this.minute = (Array(2).join(0) + parseInt(--this.minute)).slice(-2)
-      // 				this.second = 59
-      // 		} else {
-      // 			if (this.hour != 0) {
-      // 				this.hour = (Array(2).join(0) + parseInt(--this.hour)).slice(-2)
-      // 				this.minute = 59
-      // 				this.second = 59
-      // 			} else {
-      // 				clearInterval(interval)
-      // 			}
-      // 		}
-      // 	}
-      // }, 1000)
     },
     handleReset() {
       switch (this.currentIndex) {

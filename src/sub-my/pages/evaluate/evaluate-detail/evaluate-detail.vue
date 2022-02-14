@@ -47,11 +47,8 @@
 						/>
 					</view>
         </view>
-				
 			</view>
 		</view>
-		
-		
   </view>
 </template>
 
@@ -249,10 +246,7 @@ export default {
 					margin-right: 0;
 				}
 			}
-			
 		}
-
-   
 	}
 }
 
@@ -274,9 +268,4 @@ export default {
 ::v-deep .file-picker__box-content{
 	margin: 0 !important;
 }
-
-
-
-
-
 </style>

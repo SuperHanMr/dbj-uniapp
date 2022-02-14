@@ -19,7 +19,8 @@
         <process-cost-artificial
           :key="index"
           v-for="(item,index) in (dataOrigin.artificial && dataOrigin.artificial.categoryList)"
-          :content="item">
+          :content="item"
+        >
         </process-cost-artificial>
       </view>
       <no-data
@@ -45,7 +46,8 @@
           v-for="(item,index) in (dataOrigin.material && dataOrigin.material.categoryList)"
           :content="item"
           @change="selectWp"
-          @changeMaterial="changeMaterial">
+          @changeMaterial="changeMaterial"
+        >
         </process-cost-materials>
       </view>
       <no-data
@@ -77,6 +79,7 @@
       >
         <text style="margin-right:4rpx ;">-</text> <text style="margin-right:2rpx ;">¥</text>{{(this.cardPrice/100).toFixed(2)}}
       </view>
+      
       <image
         v-if="cardClick"
         class="selected-img"
@@ -144,12 +147,14 @@
     <view
       v-if="!msg.payStatus || msg.payStatus != 2"
       class="payment-wrap"
-      :style="{paddingBottom:systemBottom}">
+      :style="{paddingBottom:systemBottom}"
+    >
       <payment
         @gotopay="gotopay"
         :pieces="pieces"
         :countPrice="payPrice"
-        :isAllChecked="isAllChecked">
+        :isAllChecked="isAllChecked"
+      >
       </payment>
     </view>
     <uni-popup ref="level">
@@ -304,8 +309,8 @@ export default {
         let screenHeight = data.screenHeight;
         let safeArea = data.safeArea || {};
         _this.bottomHeight = screenHeight - (safeArea.bottom || screenHeight);
-      }
-    })
+      },
+    });
   },
   computed: {
     isAllChecked() {
@@ -557,9 +562,9 @@ export default {
         });
       }
       this.pieces = (this.pieces * 100) / 100;
-      this.cardClick = this.countPrice<=this.cardBalance
-      
-      console.log(">>>>>>总价：>>>>>", this.countPrice,this.cardBalance);
+      this.cardClick = this.countPrice <= this.cardBalance;
+
+      console.log(">>>>>>总价：>>>>>", this.countPrice);
     },
     batchChangeLevel(cllist) {
       batchChangeLevel({
@@ -710,6 +715,7 @@ export default {
       }
     },
     payOrder() {
+      //#ifdef MP-WEIXIN
       let params = {
         payType: 1, //"int //支付方式  1在线支付",
         openid: getApp().globalData.openId, //"string //微信openid 小程序支付用 app支付不传或传空",
@@ -726,6 +732,26 @@ export default {
           serviceType: this.msg.serviceType,
         }, //string //与订单无关的参数"
       };
+      //#endif
+      //#ifdef H5
+      let params = {
+        payType: 3, //"int //支付方式  1微信支付",
+        deviceType: 2,
+        openid: getApp().globalData.openId, //"string //微信openid 小程序支付用 app支付不传或传空",
+        projectId: Number(this.msg.projectId), //"long //项目id  非必须 默认0",
+        customerId: Number(this.msg.customerId), //"long //业主id  非必须 默认0",
+        estateId: Number(this.msg.estateId), //"long //房产id   非必须 默认0",
+        total: this.countPrice, //"int //总计",
+        remarks: this.remarks, //"string //备注",
+        orderName: this.title || "工序费", //"string //订单名称",
+        details: [],
+        isCardPay: this.cardClick,
+        params: {
+          skuRelation: this.skuRelation,
+          serviceType: this.msg.serviceType,
+        }, //string //与订单无关的参数"
+      };
+      //#endif
       // roleType 7工人，10管家
       let roleType = this.msg.serviceType == 5 ? 10 : 7;
       if (this.msg.obtainType != 2) {
@@ -773,6 +799,7 @@ export default {
       createOrder(obj).then((data) => {
         const { wechatPayJsapi, cardPayComplete, id } = data;
         if (!cardPayComplete) {
+          //#ifdef MP-WEIXIN
           uni.requestPayment({
             provider: "wxpay",
             ...wechatPayJsapi,
@@ -805,6 +832,12 @@ export default {
               }
             },
           });
+          //#endif
+          //#ifdef H5
+          uni.navigateTo({
+            url: `/sub-classify/pages/pay-order/pay-h5?payTal=${data.gomePayH5.payModeList[0].payTal}&totalPrice=${this.countPrice}&payRecordId=${data.payRecordId}`,
+          });
+          //#endif
         } else {
           uni.redirectTo({
             url: `/sub-classify/pages/pay-order/pay-success?orderId=${id}`,
