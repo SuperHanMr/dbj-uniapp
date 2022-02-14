@@ -130,15 +130,15 @@
         GomeJSBridge.login(
           function(data) {
             console.log('========bridge login success', data, data.isLogined);
-            if (data.isLogined === 'Y') {
-              requestToken();
-            } else {
-              requestToken();
-            }
+            // if (data.isLogined === 'Y') {
+            //   requestToken();
+            // } else {
+            //   requestToken();
+            // }
           },
           function(err) {
             console.error('=======bridge login error:', err);
-            redirectToWeb();
+            // redirectToWeb();
           },
           {
             refresh: false
