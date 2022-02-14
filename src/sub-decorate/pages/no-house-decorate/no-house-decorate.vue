@@ -388,7 +388,8 @@ export default {
       let apriceCount = Math.trunc(aprice * insideArea);
       let chpriceCount = Math.trunc(chprice * insideArea);
       let temp = dpriceCount + apriceCount + chpriceCount;
-      console.log(">>>>总价:", temp);
+      console.log(">>>>总价:", temp,this.cardBalance);
+      this.cardClick = this.cardBalance>=temp
       return temp;
     },
   },

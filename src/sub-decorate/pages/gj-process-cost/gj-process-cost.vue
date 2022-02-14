@@ -80,7 +80,7 @@
       <image
         v-if="cardClick"
         class="selected-img"
-        src="https://ali-image.dabanjia.com/static/mp/dabanjia/images/classify/pay_selected.png"
+        src="https://ali-image.dabanjia.com/static/mp/dabanjia/images/theme-red/decorate/ic_checked.svg"
         mode=""
       >
       </image>
@@ -557,7 +557,9 @@ export default {
         });
       }
       this.pieces = (this.pieces * 100) / 100;
-      console.log(">>>>>>总价：>>>>>", this.countPrice);
+      this.cardClick = this.countPrice<=this.cardBalance
+      
+      console.log(">>>>>>总价：>>>>>", this.countPrice,this.cardBalance);
     },
     batchChangeLevel(cllist) {
       batchChangeLevel({

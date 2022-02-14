@@ -76,6 +76,7 @@
         width="36rpx"
         :checked="isCardPay"
         @change="changStoreValueCard"
+        @click='changeValue'
       >
       </check-box>
     </view>
@@ -170,6 +171,7 @@ export default {
     };
   },
   computed: {
+    
     totalAmount() {
       if (this.isCardPay) {
         let temp = this.cardBalance - this.changeOrderData.totalAmount;
@@ -217,6 +219,9 @@ export default {
     this.getBalance();
   },
   methods: {
+    changeValue(){
+      this.isCardPay = !this.isCardPay
+    },
     closePayDialog() {
       this.$refs.payDialog.close();
     },
@@ -292,6 +297,7 @@ export default {
         console.log("变更单data：", data);
         if (data) {
           this.changeOrderData = data;
+          this.isCardPay = this.cardBalance>=this.changeOrderData.totalAmount
         }
         // this.changeOrderData = data
       });
