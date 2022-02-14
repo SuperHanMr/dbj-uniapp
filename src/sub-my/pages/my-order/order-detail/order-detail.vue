@@ -280,7 +280,7 @@
 			  <view v-if="orderInfo.showCancelBtn" class="canclePay" @click="handleCancelOrder" >
 			    取消订单
 			  </view>
-			  <view v-if="orderInfo.showToPayBtn" class="gotoPay" @click="toPay()">
+			  <view v-if="orderInfo.showToPayBtn" class="gotoPay" @click="toPay(this.payPrice())">
 			    去付款
 			  </view>
 
@@ -756,7 +756,7 @@ export default {
 		    });
 		},
 		//去支付
-		toPay() {
+		toPay(totalAmount) {
 		  // 先判断是否支付超额拆单了 // 拆单之后直接跳转到拆单页面	// 未拆单 直接支付
 		  console.log(this.orderInfo, "orderInfo.orderId=", this.orderInfo.orderId);
 		  if (this.orderInfo.isSplitPay) {
@@ -769,10 +769,10 @@ export default {
 		      this.$refs.payDialog.open();
 		      return;
 		    }
-		    this.payOrder();
+		    this.payOrder(totalAmount);
 		  }
 		},
-		payOrder() {
+		payOrder(totalAmount) {
 		  let openId = getApp().globalData.openId;
       //#ifdef MP-WEIXIN
       let payType = 1
@@ -825,7 +825,7 @@ export default {
           //#endif
           //#ifdef H5
           uni.navigateTo({
-            url: `/sub-classify/pages/pay-order/pay-h5?payTal=${data.gomePayH5.payModeList[0].payTal}&totalPrice=${this.countPrice}&payRecordId=${data.payRecordId}`,
+            url: `/sub-classify/pages/pay-order/pay-h5?payTal=${data.gomePayH5.payModeList[0].payTal}&totalPrice=${totalAmount}&payRecordId=${data.payRecordId}`,
           });
           //#endif
 		    } else {

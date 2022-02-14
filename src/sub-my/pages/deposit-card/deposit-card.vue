@@ -227,13 +227,13 @@
               });
             },
           });
+          //#endif
+          //#ifdef H5
+          uni.navigateTo({
+            url: `/sub-classify/pages/pay-order/pay-h5?payTal=${e.gomePayH5.payModeList[0].payTal}&totalPrice=${this.totalPrice}&payRecordId=${e.payRecordId}`,
+          });
+          //#endif
         });
-        //#endif
-        //#ifdef H5
-        uni.navigateTo({
-          url: `/sub-classify/pages/pay-order/pay-h5?payTal=${e.gomePayH5.payModeList[0].payTal}&totalPrice=${this.totalPrice}&payRecordId=${e.payRecordId}`,
-        });
-        //#endif
       },
       requestBalance() {
         getBalance().then(data => {
