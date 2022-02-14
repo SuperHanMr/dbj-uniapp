@@ -656,7 +656,15 @@ export default {
       query.exec(function (res) {});
     },
     back() {
-      uni.navigateBack();
+      let pages = getCurrentPages()
+      console.log(pages.length,'当前栈深度')
+      if(pages.length<2){
+        uni.switchTab({
+        	url: '/pages/home/index/index'
+        });
+      }else{
+        uni.navigateBack();
+      }
     },
     getSkuList() {
       let data = {
