@@ -31,9 +31,9 @@
   <div class="container">
     <img class="loading-img" src="https://ali-image.dabanjia.com/static/image/loading/loading-red-circle.gif">
   </div>
-  <script src="http://js.atguat.com.cn/csr/common/jsbridge/GomeJSBridge.min.js"></script>
   <script src="./libs/base64.js"></script>
-  <script src="./libs/vconsole.min.js"></script>
+  <script src="<%= VUE_APP_GOME_SDK_APP %>"></script>
+  <script src="https://ali-res.dabanjia.com/static/libs/vconsole/3.4.1/vconsole.min.js"></script>
   <script>
     new VConsole();
   </script>
@@ -109,12 +109,14 @@
         success: function(resText) {
           var res = JSON.parse(resText);
           console.log('success:', resText, res);
-          // if (res.data) {
-          //   var token = res.data;
-          //   redirectToWeb(token);
-          // } else {
-          //   redirectToWeb();
-          // }
+          if (res.data) {
+            var token = res.data;
+            redirectToWeb(token);
+          } else {
+            // 读取cookie失败
+            console.log('读取cookie失败', res);
+            // redirectToWeb();
+          }
         },
         error: function(err) {
           console.error(err);
@@ -133,7 +135,7 @@
             if (data.isLogined === 'Y') {
               requestToken();
             } else {
-              requestToken();
+              redirectToWeb();
             }
           },
           function(err) {
