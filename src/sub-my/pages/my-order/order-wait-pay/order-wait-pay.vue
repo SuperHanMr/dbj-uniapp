@@ -462,6 +462,17 @@ export default {
         console.log(e);
         this.orderInfo = e;
         this.totalPrice = this.orderInfo.payAmount;
+				
+				
+				
+				let res = Number(this.totalPrice) * 100 - this.cardBalance;
+				if (res <= 0) {
+					this.cardClick = true
+				}else{
+					this.cardClick = false
+				}
+				console.log("this.cardClick yayay =",this.cardClick)
+
         this.bottomStyle = this.orderInfo.showCancelBtn
           ? "space-between"
           : "flex-end";
