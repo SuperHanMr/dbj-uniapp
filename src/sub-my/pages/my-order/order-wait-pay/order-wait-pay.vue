@@ -127,7 +127,7 @@
 									<text v-if="item.orderType ==1">{{item.handlingFees?`￥${item.handlingFees}`:"0.00"}}</text>
 									<text v-else>{{item.handlingFees}}</text>
 								</text>
-								
+
 							</view>
 						</view>
 						<view class="item_css_style"  v-if="item.storeDiscount">
@@ -205,8 +205,8 @@
         <image
           v-if="cardClick"
           class="selected-img"
-          src="https://ali-image.dabanjia.com/static/mp/dabanjia/images/classify/pay_selected.png"
-          mode="" 
+          src="https://ali-image.dabanjia.com/static/mp/dabanjia/images/theme-red/decorate/ic_checked.svg"
+          mode=""
         >
         </image>
         <image
@@ -462,6 +462,18 @@ export default {
         console.log(e);
         this.orderInfo = e;
         this.totalPrice = this.orderInfo.payAmount;
+
+
+
+				let res = Number(this.totalPrice) * 100 - this.cardBalance;
+				if (res <= 0) {
+					this.cardClick = true
+				}else{
+					this.cardClick = false
+				}
+				console.log("this.cardClick yayay =",this.cardClick)
+
+
         this.bottomStyle = this.orderInfo.showCancelBtn
           ? "space-between"
           : "flex-end";
