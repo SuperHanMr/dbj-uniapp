@@ -485,6 +485,7 @@ export default {
 			totalPrice: "0.00",
 			bottomStyle:"",
 			remarks: "",
+			needPay:"",
 			orderStatusList:[
 				{
 					value:0,
@@ -547,11 +548,18 @@ export default {
 		payPrice() {
 		  if (this.cardClick) {
 		    var res = Number(this.totalPrice) * 100 - this.cardBalance;
-		    if (res <= 0) {
-		      return "0.00";
+		    if (res <= 0 && !this.orderInfo.isReplenish) {
+					this.needPay = String(this.totalPrice)
+					return String(this.totalPrice);
 		    }
+				if(res <=0 && this.orderInfo.isReplenish){
+					this.needPay = "0.00"
+					return "0.00";
+				}
+				this.needPay = String((res / 100).toFixed(2))
 		    return String((res / 100).toFixed(2));
 		  } else {
+				this.needPay = String(this.totalPrice)
 		    return String(this.totalPrice);
 		  }
 		},
@@ -649,13 +657,13 @@ export default {
 
 
 				this.bottomStyle = this.orderInfo.showCancelBtn
-				
+
 				  ? "space-between"
 				  : "flex-end";
 				console.log("this.orderInfo=", this.orderInfo);
       });
     },
-		
+
     // 改变返回下一个页面的路径
     toBack() {
 			// 玉帛写的页面跳转到这个页面
@@ -786,7 +794,7 @@ export default {
 		      this.$refs.payDialog.open();
 		      return;
 		    }
-		    this.payOrder(totalAmount);
+		    this.payOrder(this.needPay);
 		  }
 		},
 		payOrder(totalAmount) {
