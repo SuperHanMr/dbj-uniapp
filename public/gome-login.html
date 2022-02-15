@@ -133,7 +133,8 @@
           function(data) {
             console.log('========bridge login success', data, data.isLogined);
             if (data.isLogined === 'Y') {
-              requestToken();
+              // 延时一下？等待APP注入cookie
+              setTimeout(requestToken, 500);
             } else {
               redirectToWeb();
             }
