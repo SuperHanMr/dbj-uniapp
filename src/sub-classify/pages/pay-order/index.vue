@@ -468,7 +468,7 @@ export default {
       refundable: false,
       cardClick: false,
       haveCard: false, //是否有会员卡
-      cardBalance: 1111, //会员卡余额
+      cardBalance: 0, //会员卡余额
       shareOriginType: "",
     };
   },
@@ -476,6 +476,11 @@ export default {
     payChannel() {
       var res = Number(this.totalPrice) * 100 - this.cardBalance;
       //支付渠道 true 储值卡  false 微信
+      console.log(
+        this.cardClick && res > 0,
+        res,
+        Number(this.totalPrice) * 100
+      );
       if (this.cardClick && res <= 0) {
         return true;
       } else {
@@ -499,7 +504,6 @@ export default {
       }
     },
     payPrice() {
-      console.log(this.cardClick, "this.cardClick99999")
       if (this.cardClick) {
         var res = Number(this.totalPrice) * 100 - this.cardBalance;
         if (res <= 0) {
@@ -507,6 +511,7 @@ export default {
         }
         return String((res / 100).toFixed(2));
       } else {
+        console.log(this.totalPrice);
         return this.totalPrice;
       }
     },
@@ -561,10 +566,6 @@ export default {
       if (e != null) {
         this.haveCard = true;
         this.cardBalance = e;
-        var res = Number(this.totalPrice) * 100 - this.cardBalance;
-        if(res <= 0) {
-          this.cardClick = true
-        }
       }
     });
     if (!getApp().globalData.openId) {
@@ -673,6 +674,11 @@ export default {
           data.totalDeposit -
           data.totalDiscount
         ).toFixed(2);
+        var res = Number(this.totalPrice) * 100 - this.cardBalance;
+        console.log(this.totalPrice, res, "res666666666")
+        if(res <= 0) {
+          this.cardClick = true
+        }
         let dataInfo = data;
         this.orderInfo = dataInfo;
         this.noStoreInfos = JSON.parse(JSON.stringify(dataInfo));
