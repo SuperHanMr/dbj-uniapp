@@ -520,11 +520,15 @@ export default {
         res,
         Number(this.totalPrice) * 100
       );
-      if (this.cardClick && res <= 0) {
-        return true;
-      } else {
-        return false;
-      }
+      if(!this.orderInfo.isReplenish){
+				return false
+			}else{
+				if (this.cardClick && res <= 0 ) {
+					return true;
+				} else {
+					return false;
+				}
+			}
     },
     payChannelPrice() {
       //提示框价格
@@ -648,12 +652,16 @@ export default {
 				//以下代码是代付款独有的
 				// this.totalPrice = 4991050
 				let res = Number(this.totalPrice) * 100 - this.cardBalance;
-				if (res <= 0) {
-					this.cardClick = true
+				if(!this.orderInfo.isReplenish){
+					this.cardClick=false
 				}else{
-					this.cardClick = false
+					if (res <= 0) {
+						this.cardClick = true
+					}else{
+						this.cardClick = false
+					}
+					console.log("this.cardClick yayay =",this.cardClick)
 				}
-				console.log("this.cardClick yayay =",this.cardClick)
 
 
 				this.bottomStyle = this.orderInfo.showCancelBtn
@@ -748,7 +756,7 @@ export default {
 			this.from = "waitpay"
 			this.orderDetail()
 		  // uni.redirectTo({
-		  //   url: `../order-failed/order-failed?type=close&id=${this.orderNo}&from=waitPay`,
+		  //   url: `../order-failed/order-failed?type=close&id=${this.orderId}&from=waitPay`,
 		  // });
 		},
 		// 取消订单
@@ -790,134 +798,84 @@ export default {
 		      url: `../multiple-payments/multiple-payments?orderId=${this.orderId}&type=detail&remainTime=${this.orderInfo.remainTime}`,
 		    });
 		  } else {
-		    if (this.cardClick) {
+				console.log("this.cardClick-=====",this.cardClick)
+		    if (this.cardClick  && this.orderInfo.isReplenish) {
 		      this.$refs.payDialog.open();
 		      return;
 		    }
 		    this.payOrder(this.needPay);
 		  }
 		},
-		// payOrder(totalAmount) {
-		//   let openId = getApp().globalData.openId;
-  //     //#ifdef MP-WEIXIN
-  //     let payType = 1
-  //     let deviceType = 0
-  //     //#endif
-  //     //#ifdef H5
-  //     let payType = 3
-  //     let deviceType = 2
-  //     //#endif
-		//   orderPay({
-  //       payType: payType,
-  //       deviceType: deviceType,
-		//     remarks: this.remarks,
-		//     orderId: this.orderNo,
-		//     openid: openId,
-		//     isCardPay: this.cardClick
-		//   }).then((e) => {
-		//     const payInfo = e.wechatPayJsapi;
-		//     const cardPayComplete = e.cardPayComplete;
-		//     if (!cardPayComplete) {
-  //         //#ifdef MP-WEIXIN
-		//       uni.requestPayment({
-		//         provider: "wxpay",
-		//         ...payInfo,
-		//         success: () => {
-		//           uni.showToast({
-		//             title: "支付成功！",
-		//             icon: "none",
-		//             duration: 1000,
-		//           });
-		//           uni.redirectTo({
-		//             url: `../../../../sub-classify/pages/pay-order/pay-success?orderId=${this.orderNo}`,
-		//           });
-		//         },
-		//         fail(e) {
-		//           uni.showToast({
-		//             title: "支付失败",
-		//             icon: "none",
-		//             duration: 2000,
-		//           });
-		//           log({
-		//             type: "wx-pay-fail",
-		//             page: "order-wait-pay",
-		//             data: e,
-		//             openId: getApp().globalData.openId,
-		//             openIdLocal: uni.getStorageSync("openId"),
-		//           });
-		//         },
-		//       });
-  //         //#endif
-  //         //#ifdef H5
-  //         uni.navigateTo({
-  //           url: `/sub-classify/pages/pay-order/pay-h5?payTal=${data.gomePayH5.payModeList[0].payTal}&totalPrice=${totalAmount}&payRecordId=${data.payRecordId}`,
-  //         });
-  //         //#endif
-		//     } else {
-		//       uni.showToast({
-		//         title: "支付成功！",
-		//         icon: "none",
-		//         duration: 1000,
-		//       });
-		//       uni.redirectTo({
-		//         url: `../../../../sub-classify/pages/pay-order/pay-success?orderId=${this.orderNo}`,
-		//       });
-		//     }
-		//   });
-		// },
-		
-		payOrder() {
-			let openId = getApp().globalData.openId;
-			orderPay({
-				remarks: this.remarks,
-				orderId: this.orderNo,
-				payType: 1, //支付类型  1在线支付",
-				openid: openId,
-				isCardPay: this.cardClick,
-			}).then((e) => {
-				const payInfo = e.wechatPayJsapi;
-				const cardPayComplete = e.cardPayComplete;
-				if (!cardPayComplete) {
-					uni.requestPayment({
-						provider: "wxpay",
-						...payInfo,
-						success: () => {
-							uni.showToast({
-								title: "支付成功！",
-								icon: "none",
-								duration: 1000,
-							});
-							uni.redirectTo({
-								url: `../../../../sub-classify/pages/pay-order/pay-success?orderId=${this.orderNo}`,
-							});
-						},
-						fail(e) {
-							uni.showToast({
-								title: "支付失败",
-								icon: "none",
-								duration: 2000,
-							});
-							log({
-								type: "wx-pay-fail",
-								page: "order-wait-pay",
-								data: e,
-								openId: getApp().globalData.openId,
-								openIdLocal: uni.getStorageSync("openId"),
-							});
-						},
-					});
-				} else {
-					uni.showToast({
-						title: "支付成功！",
-						icon: "none",
-						duration: 1000,
-					});
-					uni.redirectTo({
-						url: `../../../../sub-classify/pages/pay-order/pay-success?orderId=${this.orderNo}`,
-					});
-				}
-			});
+		payOrder(totalAmount) {
+		  let openId = getApp().globalData.openId;
+
+      //#ifdef MP-WEIXIN
+      let payType = 1
+      let deviceType = 0
+      //#endif
+      //#ifdef H5
+      let payType = 3
+      let deviceType = 2
+      //#endif
+		  orderPay({
+        payType: payType,
+        deviceType: deviceType,
+		    remarks: this.remarks,
+		    orderId: this.orderId,
+		    openid: openId,
+		    isCardPay: this.cardClick
+		  }).then((e) => {
+		    const payInfo = e.wechatPayJsapi;
+		    const cardPayComplete = e.cardPayComplete;
+		    if (!cardPayComplete) {
+          //#ifdef MP-WEIXIN
+		      uni.requestPayment({
+		        provider: "wxpay",
+		        ...payInfo,
+		        success: () => {
+		          uni.showToast({
+		            title: "支付成功！",
+		            icon: "none",
+		            duration: 1000,
+		          });
+		          uni.redirectTo({
+		            url: `../../../../sub-classify/pages/pay-order/pay-success?orderId=${this.orderId}`,
+		          });
+		        },
+		        fail(e) {
+		          uni.showToast({
+		            title: "支付失败",
+		            icon: "none",
+		            duration: 2000,
+		          });
+		          log({
+		            type: "wx-pay-fail",
+		            page: "order-wait-pay",
+		            data: e,
+		            openId: getApp().globalData.openId,
+		            openIdLocal: uni.getStorageSync("openId"),
+		          });
+		        },
+		      });
+          //#endif
+          //#ifdef H5
+          uni.navigateTo({
+            url: `/sub-classify/pages/pay-order/pay-h5?payTal=${data.gomePayH5.payModeList[0].payTal}&totalPrice=${totalAmount}&payRecordId=${data.payRecordId}`,
+          });
+          //#endif
+		    } else {
+		      uni.showToast({
+		        title: "支付成功！",
+		        icon: "none",
+		        duration: 1000,
+		      });
+		      uni.redirectTo({
+		        url: `../../../../sub-classify/pages/pay-order/pay-success?orderId=${this.orderId}`,
+		      });
+		    }
+		  });
 		},
+		
 
 		formatTime(msTime) {
 		  let time = msTime / 1000;
@@ -1030,7 +988,7 @@ export default {
 				this.orderDetail()
 				this.from ="hhhhhhh"
 				// uni.redirectTo({
-				// 	url: `../order-success/order-success?type=complete&id=${this.orderNo}`,
+				// 	url: `../order-success/order-success?type=complete&id=${this.orderId}`,
 				// });
 			});
 		},

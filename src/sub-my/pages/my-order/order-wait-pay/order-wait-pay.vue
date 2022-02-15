@@ -357,11 +357,15 @@ export default {
         res,
         Number(this.totalPrice) * 100
       );
-      if (this.cardClick && res <= 0) {
-        return true;
-      } else {
-        return false;
-      }
+			if(!this.orderInfo.isReplenish){
+				return false
+			}else{
+				if (this.cardClick && res <= 0 ) {
+					return true;
+				} else {
+					return false;
+				}
+			}
     },
     payChannelPrice() {
       //提示框价格
