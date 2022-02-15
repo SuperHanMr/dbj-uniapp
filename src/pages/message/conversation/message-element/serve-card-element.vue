@@ -15,7 +15,7 @@
 				</view>
 				<view class="servecard-template__main">
 					<view class="title">
-						{{ data.name }}
+						{{ data.name || data.nickName }}
 					</view>
 					<view class="role">
 						<text>{{ data.jobName }}</text>
