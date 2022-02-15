@@ -1,6 +1,8 @@
 <template>
 	<view class="peer-evaluate-page">
-		<view class="evaluate-head">共5位同行评价了Ta</view>
+		<view class="evaluate-head-bac">
+			<view class="evaluate-head">共5位同行评价了Ta</view>
+		</view>
 		<view class="evaluate-list">
 			<view class="evaluate-item" v-for="(item,index) in evaluate.list" :key="index" >
 				<view class="evaluate-person-info">
@@ -53,6 +55,15 @@
 		mounted() {
 			this.getComments()
 		},
+		
+		
+		onReachBottom(){
+			if (this.pageInfo.totalPage > this.pageInfo.page) {
+				this.pageInfo.page++
+				this.getComments()
+			}
+		},
+	
 		methods: {
 			getComments() {
 				let params = {
@@ -72,31 +83,38 @@
 					}
 				})
 			},
-			bindscrolltolower() {
-				if (this.pageInfo.totalPage > this.pageInfo.page) {
-					this.pageInfo.page++
-					this.getComments()
-				}
-			}
 		}
 	}
 </script>
 
+<style>
+	page{
+		background-color: #fff;
+	}
+</style>
 <style lang="scss" scoped>
 	.peer-evaluate-page {
 		background-color: #fff;
 		padding: 32rpx 32rpx 0 32rpx;
 		height: 100%;
-		padding-bottom: 88rpx;
-		.evaluate-head {
-			padding-left: 32rpx;
-			height: 88rpx;
-			line-height: 88rpx;
-			box-shadow: 0px 0px 20px 0px rgba(0, 0, 0, 0.05);
-			border-radius: 12rpx;
-			border: 0.5px solid #E5E5E5;
-			background-color: #fff;
+		.evaluate-head-bac{
+			position: fixed;
+			top: 0;
+			width: calc(100% - 64rpx);
+			background-color: #FFFFFF;
+			padding: 32rpx 0;
+			.evaluate-head {
+				padding-left: 32rpx;
+				height: 88rpx;
+				line-height: 88rpx;
+				box-shadow: 0px 0px 20px 0px rgba(0, 0, 0, 0.05);
+				border-radius: 12rpx;
+				border: 0.5px solid #E5E5E5;
+				background-color: #fff;
+			
+			}
 		}
+
 		.evaluate-list{
 			padding-top: 88rpx;
 			.evaluate-item{
