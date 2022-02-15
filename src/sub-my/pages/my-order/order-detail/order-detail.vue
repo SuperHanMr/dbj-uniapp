@@ -125,7 +125,12 @@
 					:payPrice="payPrice"
 				/>
 
-				<view v-if="haveCard && orderInfo.isReplenish" class="pay-way" style="justify-content:center" @click="clickCard">
+				<view
+					v-if="haveCard && orderInfo.isReplenish"
+					class="pay-way"
+					style="justify-content:center"
+					@click="clickCard"
+				>
 				  <image
 				    class="card-img"
 				    src="https://ali-image.dabanjia.com/static/mp/dabanjia/images/classify/ic_card.png"
@@ -140,7 +145,7 @@
 					<image
 				    v-if="cardClick"
 				    class="selected-img"
-				    src="https://ali-image.dabanjia.com/static/mp/dabanjia/images/classify/pay_selected.png"
+				    src="https://ali-image.dabanjia.com/static/mp/dabanjia/images/theme-red/decorate/ic_checked.svg"
 				  />
 				  <image
 				    v-else
@@ -280,7 +285,7 @@
 			  <view v-if="orderInfo.showCancelBtn" class="canclePay" @click="handleCancelOrder" >
 			    取消订单
 			  </view>
-			  <view v-if="orderInfo.showToPayBtn" class="gotoPay" @click="toPay(this.payPrice())">
+			  <view v-if="orderInfo.showToPayBtn" class="gotoPay" @click="toPay()">
 			    去付款
 			  </view>
 
@@ -480,6 +485,7 @@ export default {
 			totalPrice: "0.00",
 			bottomStyle:"",
 			remarks: "",
+			needPay:"",
 			orderStatusList:[
 				{
 					value:0,
@@ -539,17 +545,25 @@ export default {
         return Number(this.totalPrice) * 100;
       }
     },
-    payPrice() {
-      if (this.cardClick) {
-        var res = Number(this.totalPrice) * 100 - this.cardBalance;
-        if (res <= 0) {
-          return "0.00";
-        }
-        return String((res / 100).toFixed(2));
-      } else {
-        return String(this.totalPrice);
-      }
-    },
+		payPrice() {
+		  if (this.cardClick) {
+		    var res = Number(this.totalPrice) * 100 - this.cardBalance;
+		    if (res <= 0 && !this.orderInfo.isReplenish) {
+					this.needPay = String(this.totalPrice)
+					return String(this.totalPrice);
+		    }
+				if(res <=0 && this.orderInfo.isReplenish){
+					this.needPay = "0.00"
+					return "0.00";
+				}
+				this.needPay = String((res / 100).toFixed(2))
+		    return String((res / 100).toFixed(2));
+		  } else {
+				this.needPay = String(this.totalPrice)
+		    return String(this.totalPrice);
+		  }
+		},
+
   },
 
   mounted(e) {
@@ -630,9 +644,20 @@ export default {
 				this.orderStatus = e.orderStatus
 				this.approvalCompleted =e.approvalCompleted
 				console.log("this.orderStatus===",this.orderStatus)
-				//以下代码是代付款独有的
 				this.totalPrice = this.orderInfo.payAmount;
+				//以下代码是代付款独有的
+				// this.totalPrice = 4991050
+				let res = Number(this.totalPrice) * 100 - this.cardBalance;
+				if (res <= 0) {
+					this.cardClick = true
+				}else{
+					this.cardClick = false
+				}
+				console.log("this.cardClick yayay =",this.cardClick)
+
+
 				this.bottomStyle = this.orderInfo.showCancelBtn
+
 				  ? "space-between"
 				  : "flex-end";
 				console.log("this.orderInfo=", this.orderInfo);
@@ -769,76 +794,129 @@ export default {
 		      this.$refs.payDialog.open();
 		      return;
 		    }
-		    this.payOrder(totalAmount);
+		    this.payOrder(this.needPay);
 		  }
 		},
-		payOrder(totalAmount) {
-		  let openId = getApp().globalData.openId;
-      //#ifdef MP-WEIXIN
-      let payType = 1
-      let deviceType = 0
-      //#endif
-      //#ifdef H5
-      let payType = 3
-      let deviceType = 2
-      //#endif
-		  orderPay({
-        payType: payType,
-        deviceType: deviceType,
-		    remarks: this.remarks,
-		    orderId: this.orderNo,
-		    openid: openId,
-		    isCardPay: this.cardClick
-		  }).then((e) => {
-		    const payInfo = e.wechatPayJsapi;
-		    const cardPayComplete = e.cardPayComplete;
-		    if (!cardPayComplete) {
-          //#ifdef MP-WEIXIN
-		      uni.requestPayment({
-		        provider: "wxpay",
-		        ...payInfo,
-		        success: () => {
-		          uni.showToast({
-		            title: "支付成功！",
-		            icon: "none",
-		            duration: 1000,
-		          });
-		          uni.redirectTo({
-		            url: `../../../../sub-classify/pages/pay-order/pay-success?orderId=${this.orderNo}`,
-		          });
-		        },
-		        fail(e) {
-		          uni.showToast({
-		            title: "支付失败",
-		            icon: "none",
-		            duration: 2000,
-		          });
-		          log({
-		            type: "wx-pay-fail",
-		            page: "order-wait-pay",
-		            data: e,
-		            openId: getApp().globalData.openId,
-		            openIdLocal: uni.getStorageSync("openId"),
-		          });
-		        },
-		      });
-          //#endif
-          //#ifdef H5
-          uni.navigateTo({
-            url: `/sub-classify/pages/pay-order/pay-h5?payTal=${data.gomePayH5.payModeList[0].payTal}&totalPrice=${totalAmount}&payRecordId=${data.payRecordId}`,
-          });
-          //#endif
-		    } else {
-		      uni.showToast({
-		        title: "支付成功！",
-		        icon: "none",
-		        duration: 1000,
-		      });
-		      uni.redirectTo({
-		        url: `../../../../sub-classify/pages/pay-order/pay-success?orderId=${this.orderNo}`,
-		      });
-		    }
-		  });
+		// payOrder(totalAmount) {
+		//   let openId = getApp().globalData.openId;
+  //     //#ifdef MP-WEIXIN
+  //     let payType = 1
+  //     let deviceType = 0
+  //     //#endif
+  //     //#ifdef H5
+  //     let payType = 3
+  //     let deviceType = 2
+  //     //#endif
+		//   orderPay({
+  //       payType: payType,
+  //       deviceType: deviceType,
+		//     remarks: this.remarks,
+		//     orderId: this.orderNo,
+		//     openid: openId,
+		//     isCardPay: this.cardClick
+		//   }).then((e) => {
+		//     const payInfo = e.wechatPayJsapi;
+		//     const cardPayComplete = e.cardPayComplete;
+		//     if (!cardPayComplete) {
+  //         //#ifdef MP-WEIXIN
+		//       uni.requestPayment({
+		//         provider: "wxpay",
+		//         ...payInfo,
+		//         success: () => {
+		//           uni.showToast({
+		//             title: "支付成功！",
+		//             icon: "none",
+		//             duration: 1000,
+		//           });
+		//           uni.redirectTo({
+		//             url: `../../../../sub-classify/pages/pay-order/pay-success?orderId=${this.orderNo}`,
+		//           });
+		//         },
+		//         fail(e) {
+		//           uni.showToast({
+		//             title: "支付失败",
+		//             icon: "none",
+		//             duration: 2000,
+		//           });
+		//           log({
+		//             type: "wx-pay-fail",
+		//             page: "order-wait-pay",
+		//             data: e,
+		//             openId: getApp().globalData.openId,
+		//             openIdLocal: uni.getStorageSync("openId"),
+		//           });
+		//         },
+		//       });
+  //         //#endif
+  //         //#ifdef H5
+  //         uni.navigateTo({
+  //           url: `/sub-classify/pages/pay-order/pay-h5?payTal=${data.gomePayH5.payModeList[0].payTal}&totalPrice=${totalAmount}&payRecordId=${data.payRecordId}`,
+  //         });
+  //         //#endif
+		//     } else {
+		//       uni.showToast({
+		//         title: "支付成功！",
+		//         icon: "none",
+		//         duration: 1000,
+		//       });
+		//       uni.redirectTo({
+		//         url: `../../../../sub-classify/pages/pay-order/pay-success?orderId=${this.orderNo}`,
+		//       });
+		//     }
+		//   });
+		// },
+		
+		payOrder() {
+			let openId = getApp().globalData.openId;
+			orderPay({
+				remarks: this.remarks,
+				orderId: this.orderNo,
+				payType: 1, //支付类型  1在线支付",
+				openid: openId,
+				isCardPay: this.cardClick,
+			}).then((e) => {
+				const payInfo = e.wechatPayJsapi;
+				const cardPayComplete = e.cardPayComplete;
+				if (!cardPayComplete) {
+					uni.requestPayment({
+						provider: "wxpay",
+						...payInfo,
+						success: () => {
+							uni.showToast({
+								title: "支付成功！",
+								icon: "none",
+								duration: 1000,
+							});
+							uni.redirectTo({
+								url: `../../../../sub-classify/pages/pay-order/pay-success?orderId=${this.orderNo}`,
+							});
+						},
+						fail(e) {
+							uni.showToast({
+								title: "支付失败",
+								icon: "none",
+								duration: 2000,
+							});
+							log({
+								type: "wx-pay-fail",
+								page: "order-wait-pay",
+								data: e,
+								openId: getApp().globalData.openId,
+								openIdLocal: uni.getStorageSync("openId"),
+							});
+						},
+					});
+				} else {
+					uni.showToast({
+						title: "支付成功！",
+						icon: "none",
+						duration: 1000,
+					});
+					uni.redirectTo({
+						url: `../../../../sub-classify/pages/pay-order/pay-success?orderId=${this.orderNo}`,
+					});
+				}
+			});
 		},
 
 		formatTime(msTime) {
