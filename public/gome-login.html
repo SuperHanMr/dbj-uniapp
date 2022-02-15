@@ -25,49 +25,17 @@
       width: 40px;
       height: 40px;
     }
-    #log-window {
-      position: absolute;
-      z-index: 10000;
-      background: rgba(0, 0, 0, 0.5);
-      width: 80%;
-      height: 50%;
-      right: 0;
-      bottom: 0;
-      color: #fff;
-      font-size: 14px;
-      padding: 8px;
-      white-space: pre-wrap;
-      overflow-y: auto;
-    }
   </style>
 </head>
 <body>
   <div class="container">
     <img class="loading-img" src="https://ali-image.dabanjia.com/static/image/loading/loading-red-circle.gif">
   </div>
-  <div id="log-window"></div>
   <script src="./libs/base64.js"></script>
-  <script src="./libs/vconsole.min.js"></script>
+  <script src="<%= VUE_APP_GOME_SDK_APP %>"></script>
+  <script src="https://ali-res.dabanjia.com/static/libs/vconsole/3.4.1/vconsole.min.js"></script>
   <script>
     new VConsole();
-  </script>
-  <script>
-    var logs = [];
-    var _log = console.log;
-    var _error = console.error;
-    console.log = (...args) => {
-      logs.push(args.map(arg => typeof arg === 'object' ? JSON.stringify(arg) : arg.toString()).join(' '));
-      _log.apply(console, args);
-      printLogs();
-    }
-    console.error = (...args) => {
-      logs.push(args.join(' '));
-      _error.apply(console, args);
-      printLogs();
-    }
-    function printLogs() {
-      document.getElementById('log-window').innerText = logs.join('\n');
-    } 
   </script>
   <script>
     function getPageParms() {
@@ -145,7 +113,9 @@
             var token = res.data;
             redirectToWeb(token);
           } else {
-            redirectToWeb();
+            // 读取cookie失败
+            console.log('读取cookie失败', res);
+            // redirectToWeb();
           }
         },
         error: function(err) {
@@ -154,28 +124,30 @@
         }
       });
     }
-    console.log('bridge', window.GomeJSBridge);
+    console.log('======bridge', window.GomeJSBridge, window.GomeJSBridge && window.GomeJSBridge.ready);
     // 是否在真快乐APP中
-    if (window.GomeJSBridge) {
+    if (window.GomeJSBridge && window.GomeJSBridge.ready) {
       GomeJSBridge.ready(function() {
-        console.log('bridge ready', GomeJSBridge.isLogin)
-        GomeJSBridge.isLogin(function(data) {
-          console.log('bridge logined?', data, data.isLogin, data.isLogined);
-          if (data.isLogin === 'Y' || data.isLogined === 'Y') {
-            requestToken();
-          } else {
-            GomeJSBridge.login(
-              null,
-              function(err) {
-                console.error('login error:', err);
-                redirectToWeb();
-              },
-              {
-                refresh: true
-              }
-            );
+        console.log('========bridge ready', GomeJSBridge.login)
+        GomeJSBridge.login(
+          function(data) {
+            console.log('========bridge login success', data, data.isLogined);
+            if (data.isLogined === 'Y') {
+              console.log('延时3秒再请求')
+              // 延时一下？等待APP注入cookie
+              setTimeout(requestToken, 3000);
+            } else {
+              redirectToWeb();
+            }
+          },
+          function(err) {
+            console.error('=======bridge login error:', err);
+            redirectToWeb();
+          },
+          {
+            refresh: false
           }
-        });
+        );
       })
     } else {
       // H5站的登录
