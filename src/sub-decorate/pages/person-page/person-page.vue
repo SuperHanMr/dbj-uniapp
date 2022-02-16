@@ -703,9 +703,14 @@ export default {
       });
     },
     toEvaluateList(){
-      uni.navigateTo({
-        url:'/sub-decorate/pages/person-page/person-evaluate-list?id='+this.personId
-      })
+      // uni.navigateTo({
+      //   url:'/sub-decorate/pages/person-page/person-evaluate-list?id='+this.personId
+      // })
+	  
+	  uni.navigateTo({
+	    url:'/sub-decorate/pages/person-page/person-peer-evaluate-list?id='+this.personId
+	  })
+	  
     },
     clickHidden(num){
       this.maskHeight = num+'px'
