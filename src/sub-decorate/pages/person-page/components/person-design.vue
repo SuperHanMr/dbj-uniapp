@@ -60,10 +60,7 @@
         <view class="name">
           {{personData.realName}}
         </view>
-        <view class="tag">
-          <image v-for="(item,index) in personData.personAllBadgeVO.basicBadges" :key='item.badgeId' :src="item.ico" mode=""></image>
-          <image v-for="(item,index) in personData.personAllBadgeVO.skillBadges" :key='item.badgeId' :src="item.ico" mode=""></image>
-        </view>
+        
       </view>
       <view class="info-list">
         {{personData.gender===1?'男':'女'}}
@@ -74,16 +71,35 @@
         <text v-if="personData.industryYearsStr">|</text>
         {{personData.industryYearsStr?personData.industryYearsStr:''}}
       </view>
-      <view class="skill">
-        <view class="skill-item" v-for="(item,index) of personData.designTags" :key='index'>
-          {{item}}
+      <view class="introduce">
+        <view class="item" @click="openPopup">
+          <i class='icon-biangengxiangqing icon'></i>
+          <text class="tag-tip">Ta的徽章</text>
+          <view class="tag">
+            <image v-for="(item,index) in personData.personAllBadgeVO.basicBadges" :key='item.badgeId' :src="item.ico" mode=""></image>
+            <image v-for="(item,index) in personData.personAllBadgeVO.skillBadges" :key='item.badgeId' :src="item.ico" mode=""></image>
+          </view>
+          <i class="icon-alert_notice_jump"></i>
         </view>
-      </view>
-      <view class="msg-content introudc-msg" >
-        <view class="report-text" :class="{'report-text-hidden':isHidden}">{{personData.intro||'这个人很懒，什么都没写'}}</view>
-        <view class="openHidden" v-if="showBtn" @click="clickHidden">
-          {{hddenText}}
+        <view class="item">
+          <i class='icon-biangengxiangqing icon'></i>
+          <view class="skill">
+            <view class="skill-item" v-for="(item,index) of personData.designTags" :key='index'>
+              {{item}}
+            </view>
+            
+          </view>
         </view>
+        <view class="item">
+          <i class='icon-biangengxiangqing icon'></i>
+          <view class="msg-content introudc-msg" >
+            <view class="report-text" :class="{'report-text-hidden':isHidden}">{{personData.intro||'这个人很懒，什么都没写'}}</view>
+            <view class="openHidden" v-if="showBtn" @click="clickHidden">
+              {{hddenText}}
+            </view>
+          </view>
+        </view>
+        
       </view>
     </view>
   </view>
@@ -130,6 +146,9 @@
       // },
       queryAttention(data){
         this.$emit('queryAttention',data)
+      },
+      openPopup(){
+        this.$emit('openPopup')
       },
       clickHidden(){
         this.isHidden = !this.isHidden
@@ -248,6 +267,30 @@
           text-overflow: ellipsis;
           white-space: nowrap;
         }
+        
+      }
+      .introduce{
+        border-bottom: 0.5px solid rgba(255, 255, 255, 0.2);;
+        .item{
+          display: flex;
+          margin-bottom: 24rpx;
+          .icon{
+            color: #fff;
+            margin-right: 12rpx;
+          }
+          .tag-tip{
+            color: #fff;
+            opacity: 0.8;
+            font-size: 22rpx;
+            margin-right: 12rpx;
+          }
+          .icon-alert_notice_jump{
+            color: #fff;
+            opacity: 0.8;
+            font-size: 24rpx;
+            line-height: 32rpx;
+          }
+        }
         .tag{
           display: flex;
           align-items: center;
@@ -269,7 +312,7 @@
       }
       .skill{
         display: flex;
-        margin-bottom: 22rpx;
+        // margin-bottom: 22rpx;
         flex-wrap: wrap;
         .skill-item{
           background: rgba(255, 255, 255, 0.05);
@@ -288,7 +331,7 @@
         }
       }
       .msg-content{
-        margin-bottom: 30rpx;
+        // margin-bottom: 30rpx;
         .report-text {
           color: #fff;
           font-size: 26rpx;
