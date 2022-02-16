@@ -1,13 +1,21 @@
 <template>
 	<view class="peer-evaluate-page">
-		<view class="evaluate-head">共5位同行评价了Ta</view>
+		<view class="evaluate-head-bac">
+			<view class="evaluate-head">共5位同行评价了Ta</view>
+		</view>
 		<view class="evaluate-list">
-			<view class="evaluate-item" v-for="(item,index) in evaluate.list" :key="index" >
+			<view class="evaluate-item" v-for="(item,index) in evaluate.list" :key="index">
 				<view class="evaluate-person-info">
 					<image src="" mode="aspectFit"></image>
 					<view class="right">
 						<text class="name">设计师刘金鸿</text>
-						<text class="leve">高级设计师</text>
+						<view class="design-tag-info">
+							<text class="design-leve">高级设计师</text>
+							<view class="design-tag">
+								<text>TOP.1</text>
+								<text>最具价值</text>
+							</view>
+						</view>
 					</view>
 				</view>
 				<view class="evaluate-tag">
@@ -53,6 +61,15 @@
 		mounted() {
 			this.getComments()
 		},
+
+
+		onReachBottom() {
+			if (this.pageInfo.totalPage > this.pageInfo.page) {
+				this.pageInfo.page++
+				this.getComments()
+			}
+		},
+
 		methods: {
 			getComments() {
 				let params = {
@@ -72,53 +89,64 @@
 					}
 				})
 			},
-			bindscrolltolower() {
-				if (this.pageInfo.totalPage > this.pageInfo.page) {
-					this.pageInfo.page++
-					this.getComments()
-				}
-			}
 		}
 	}
 </script>
 
+<style>
+	page {
+		background-color: #fff;
+	}
+</style>
 <style lang="scss" scoped>
 	.peer-evaluate-page {
 		background-color: #fff;
 		padding: 32rpx 32rpx 0 32rpx;
 		height: 100%;
-		padding-bottom: 88rpx;
-		.evaluate-head {
-			padding-left: 32rpx;
-			height: 88rpx;
-			line-height: 88rpx;
-			box-shadow: 0px 0px 20px 0px rgba(0, 0, 0, 0.05);
-			border-radius: 12rpx;
-			border: 0.5px solid #E5E5E5;
-			background-color: #fff;
+
+		.evaluate-head-bac {
+			position: fixed;
+			top: 0;
+			width: calc(100% - 64rpx);
+			background-color: #FFFFFF;
+			padding: 32rpx 0;
+
+			.evaluate-head {
+				padding-left: 32rpx;
+				height: 88rpx;
+				line-height: 88rpx;
+				box-shadow: 0px 0px 20px 0px rgba(0, 0, 0, 0.05);
+				border-radius: 12rpx;
+				border: 0.5px solid #E5E5E5;
+				background-color: #fff;
+
+			}
 		}
-		.evaluate-list{
+
+		.evaluate-list {
 			padding-top: 88rpx;
-			.evaluate-item{
+			.evaluate-item {
 				margin-top: 24rpx;
 				padding-bottom: 32rpx;
 				border-bottom: 1rpx solid #F4F4F4;
-				.evaluate-person-info{
+
+				.evaluate-person-info {
 					display: flex;
 					align-items: center;
 					height: 84rpx;
-					
-					image{
+
+					image {
 						width: 84rpx;
 						height: 84rpx;
 						border-radius: 50%;
 					}
-					.right{
+
+					.right {
 						display: flex;
 						flex-direction: column;
 						margin-left: 24rpx;
-						.name{
-							
+
+						.name {
 							font-family: PingFang SC;
 							font-style: normal;
 							font-weight: normal;
@@ -126,25 +154,53 @@
 							line-height: 40rpx;
 							color: #666666;
 						}
-						
-						.leve{
-							height: 30rpx;
-							line-height: 30rpx;
-							font-size: 20rpx;
-							width: 100rpx;
-							color: #4FBEED;
-							background: rgba(79, 190, 237, 0.06);
-							border-radius: 4rpx;
-							padding: 0 4rpx;
-						
+						.design-tag-info {
+							margin-top: 6rpx;
+							display: flex;
+							.design-leve {
+								height: 30rpx;
+								line-height: 30rpx;
+								font-size: 20rpx;
+								width: 100rpx;
+								color: #4FBEED;
+								background: rgba(79, 190, 237, 0.06);
+								border-radius: 4rpx;
+								padding: 0 4rpx;
+							}
+
+							.design-tag {
+								margin-left: 12rpx;
+								display: flex;
+								height: 30rpx;
+								line-height: 30rpx;
+								background: linear-gradient(180deg, #FFEBCC 0%, #FFE5B7 100%);
+								text:nth-child(1) {
+									border-top-left-radius: 4rpx;
+									border-bottom-left-radius: 4rpx;
+									padding: 0 6rpx 0 4rpx;
+									font-size: 20rpx;
+									font-weight: bold;
+									color: #865e41;
+								}
+								text:nth-child(2) {
+									border-top-right-radius: 4rpx;
+									border-bottom-right-radius: 4rpx;
+									background: linear-gradient(180deg, #FFDFA8 0%, #EFC988 100%);
+									padding: 0 4rpx 0 4rpx;
+									font-size: 20rpx;
+									font-weight: bold;
+									color: #865e41;
+								}
+							}
 						}
-						
 					}
 				}
-				.evaluate-tag{
+
+				.evaluate-tag {
 					margin-top: 26rpx;
 					display: flex;
-					view{
+
+					view {
 						height: 34rpx;
 						padding: 0 12rpx;
 						background: #F3F3F3;
@@ -157,21 +213,19 @@
 						color: #333333;
 					}
 				}
-				
-				.evaluate-content{
-					margin-top: 18rpx;
+
+				.evaluate-content {
+					margin-top: 16rpx;
 					font-family: PingFang SC;
-					font-style: normal;
-					font-weight: normal;
 					font-size: 28rpx;
 					line-height: 44rpx;
 					letter-spacing: 0.2rpx;
 					color: #333333;
 				}
-				
-				
+
+
 			}
 		}
-		
+
 	}
 </style>

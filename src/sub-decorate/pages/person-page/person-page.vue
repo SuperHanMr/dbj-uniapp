@@ -47,6 +47,7 @@
        :isAttention='isAttention'
        @sendMsg='sendMsg'
        @clickHidden='clickHidden'
+       @openPopup='openPopup'
        class="person-design"
        ></personDesign>
       <view
@@ -243,6 +244,7 @@
           @contentEmpty='contentEmpty'
           v-if="personData.roleId===1||personData.roleId===2"
         ></personCase>
+        <designEmpty v-if='!caseEmpty&&!serviceEmpty&&commentData.totalRows===0'></designEmpty>
         <view class="interval" v-if="caseEmpty&&dynamicEmpty"></view>
         <personDynamic
           ref='dynamic'
@@ -313,6 +315,9 @@
       </view>
       <text class="title">打扮家 - 让用户家装更称心、更省心、更放心、更省钱最终达到真快乐的终极目标。</text>
     </view>
+    <uni-popup ref="popup" type="bottom">
+      <tagShow :imgList='personData.personAllBadgeVO'></tagShow>
+    </uni-popup>
   </view>
 </template>
 
@@ -324,6 +329,8 @@ import personCase from "./components/person-case.vue";
 import personDynamic from "./components/person-dynamic.vue";
 import personDesign from "./components/person-design.vue"
 import personEvaluateDesign from "./components/person-evaliate-design.vue";
+import designEmpty from "./components/design-empty.vue"
+import tagShow from "./components/tag-show.vue"
 import { unitChange } from "@/utils/util.js";
 import {
   getSkuList,
@@ -342,7 +349,9 @@ export default {
     personCase,
     personDynamic,
     personDesign,
-    personEvaluateDesign
+    personEvaluateDesign,
+    designEmpty,
+    tagShow
   },
   data() {
     return {
@@ -705,7 +714,11 @@ export default {
     },
     clickHidden(num){
       this.maskHeight = num+'px'
+    },
+    openPopup(){
+      this.$refs.popup.open()
     }
+
   },
 };
 </script>
