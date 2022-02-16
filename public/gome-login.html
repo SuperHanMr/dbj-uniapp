@@ -127,28 +127,32 @@
     console.log('======bridge', window.GomeJSBridge, window.GomeJSBridge && window.GomeJSBridge.ready);
     // 是否在真快乐APP中
     if (window.GomeJSBridge && window.GomeJSBridge.ready) {
-      GomeJSBridge.ready(function() {
-        console.log('========bridge ready', GomeJSBridge.login)
-        GomeJSBridge.login(
-          function(data) {
-            console.log('========bridge login success', data, data.isLogined);
-            if (data.isLogined === 'Y') {
-              console.log('延时3秒再请求')
-              // 延时一下？等待APP注入cookie
-              setTimeout(requestToken, 3000);
-            } else {
+      var pageParams = getPageParms();
+      if (pageParams.isLogin) {
+        requestToken();
+      } else {
+        GomeJSBridge.ready(function() {
+          console.log('========bridge ready', GomeJSBridge.login)
+          GomeJSBridge.login(
+            function(data) {
+              console.log('========bridge login success', data, data.isLogined);
+              if (data.isLogined === 'Y') {
+                var loginedUrl = window.location.origin + window.location.pathname + '?isLogin=true' + window.location.hash;
+                window.location.replace(loginedUrl);
+              } else {
+                redirectToWeb();
+              }
+            },
+            function(err) {
+              console.error('=======bridge login error:', err);
               redirectToWeb();
+            },
+            {
+              refresh: false
             }
-          },
-          function(err) {
-            console.error('=======bridge login error:', err);
-            redirectToWeb();
-          },
-          {
-            refresh: false
-          }
-        );
-      })
+          );
+        })
+      }
     } else {
       // H5站的登录
       var pageParams = getPageParms();

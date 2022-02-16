@@ -32,6 +32,17 @@
     <img class="loading-img" src="https://ali-image.dabanjia.com/static/image/loading/loading-red-circle.gif">
   </div>
   <script>
+    function getPageParms() {
+      var ret = {},
+        seg = window.location.search.replace(/^\?/, '').split('&'),
+        len = seg.length, i = 0, s;
+      for (; i < len; i++) {
+        if (!seg[i]) { continue; }
+        s = seg[i].split('=');
+        ret[s[0]] = s[1];
+      }
+      return ret;
+    }
     function request(options) {
       var xhr = new XMLHttpRequest()
       xhr.withCredentials = true;
@@ -57,7 +68,7 @@
       xhr.setRequestHeader('Content-Type', 'application/json');
       xhr.send(JSON.stringify(options.data));
     }
-    function redirectToWeb(token) {
+    function redirectToWeb(token, isGomeMp) {
       var hash = window.location.hash;
       // 跳转gome域名的H5站
       if (token) {
@@ -66,7 +77,7 @@
         localStorage.removeItem("scn");
         localStorage.removeItem("userId");
       }
-      window.location.replace('/' + hash);
+      window.location.replace('/' + (isGomeMp ? '?isGomeMp=true' : '') + hash);
       // XXX: 以下是跳转打扮家域名的H5站，先保留，以后可能有用
       // if (token) {
       //   window.location.replace('<%= VUE_APP_MP_H5 %>/?token=' + token + hash);
@@ -100,7 +111,14 @@
         }
       });
     }
-    requestToken();
+    var pageParams = getPageParms();
+    if (pageParams.scn) {
+      // 是否在真快乐小程序中
+      var isGomeMp = /plt-wxApp/.test(pageParams.ctx);
+      redirectToWeb(pageParams.scn, isGomeMp);
+    } else {
+      requestToken();
+    }
   </script>
 </body>
 </html>
