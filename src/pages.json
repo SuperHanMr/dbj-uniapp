@@ -334,14 +334,21 @@
         },
         {
 					"path" : "pages/find-design/real-case/real-case",
-					    "style" :
-					{
-					    "navigationBarTitleText": "",
-					    "enablePullDownRefresh": true,
-							"navigationStyle": "custom"
+					"style" :{
+						"navigationBarTitleText": "",
+						"enablePullDownRefresh": true,
+						"navigationStyle": "custom"
+					}
+				},
+				{
+					"path" : "pages/find-design/designer-rank-list",
+					"style" : {
+						"navigationBarTitleText": "",
+						"enablePullDownRefresh": true,
+						"navigationStyle": "custom"
 					}
 				}
-            ]
+		]
     },
     {
       "root": "sub-message", //消息模块分包

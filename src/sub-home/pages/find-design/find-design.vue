@@ -1,5 +1,5 @@
 <template>
-  <view style="background-color: #F6F6F6;margin-bottom: 60rpx;">
+  <view style="background-color: #F6F6F6;margin-bottom: 60rpx;position: relative;">
     <!-- <view > -->
     <custom-navbar
       :opacity="scrollTop/100"
@@ -89,6 +89,14 @@
             <view class="header">
               <view class="name">{{item2.name}}</view>
               <view class="rank">{{item2.levelName}}设计师</view>
+							<view class="ranking-container">
+								<view class="num">
+									Top.1
+								</view>
+								<view class="text">
+									最具价值
+								</view>
+							</view>
             </view>
             <view
               class="goodPraise"
@@ -109,18 +117,6 @@
           </view>
         </view>
         <view class="showMoreCard_container">
-          <!-- @click="gotoMoreDesigner" -->
-          <!-- <view
-            class="showMoreCard"
-            :style="{backgroundImage:`url(${bgImg3})`,backgroundSize:'contaienr'}"
-          >
-          </view>
-          <view class="content">
-            <image src="https://ali-image.dabanjia.com/static/mp/dabanjia/images/home/showMoreCard.svg" />
-            <view class="text">
-              左滑查看更多
-            </view>
-          </view> -->
 					<image src="../../static/moreDesignerImg.png" mode=""></image>
 
         </view>
@@ -208,7 +204,21 @@
         />
       </view>
     </view>
-
+		<view class="connectServiceContainer" @click="gotoRankPage" :style="{bottom: containerPaddingBottom}">
+			<view class="connectServiceContent">
+				<image src="../../static/images/kefu.png" /> 
+				<view class="contentInfo">
+					<view class="no">不知道如何选择设计师</view>
+					<view class="find">找我聊聊为您推荐</view>
+				</view>
+				<view class="btn" @click="immediatelyChat">
+					立即沟通
+				</view>
+				<view class="cancel-Container">
+					<image src="../../static/images/find-designer-cancel.png" mode=""></image>
+				</view>
+			</view>
+		</view>
   </view>
 </template>
 
@@ -267,8 +277,15 @@ export default {
       estateId: "", //房屋id
       page: 0,
       totalPage: "",
+			containerPaddingBottom:"",
     };
   },
+	mounted() {
+		const menuButtonInfo = uni.getMenuButtonBoundingClientRect();
+		this.systemBottom = menuButtonInfo.bottom + "rpx";
+		this.containerPaddingBottom = menuButtonInfo.bottom + 58 + "rpx";
+		console.log("this.containerPaddingBottom ====",this.containerPaddingBottom )
+	},
 
   onLoad() {
     const systemInfo = uni.getSystemInfoSync();
@@ -318,7 +335,11 @@ export default {
 		}
 	},
   methods: {
-
+		gotoRankPage(){
+			uni.navigateTo({
+				url:"designer-rank-list"
+			})
+		},
     toBack() {
       uni.navigateBack({});
     },
@@ -376,7 +397,9 @@ export default {
 			console.log("this.page==",this.page)
 			this.getDesignerList();
 		},
-		
+		immediatelyChat(){
+			this.$store.dispatch("openCustomerConversation");
+		},
 		//自己找设计师
     findOwnDesigner() {
       uni.navigateTo({
@@ -387,9 +410,6 @@ export default {
     contactService() {
       console.log("联系客服");
       this.$store.dispatch("openCustomerConversation");
-      // uni.navigateTo({
-      // 	url:""
-      // })
     },
     //去完善房屋信息
     gotoEditHouse() {
@@ -576,11 +596,7 @@ export default {
         height: 170rpx;
         box-sizing: border-box;
         padding: 24rpx;
-        background: linear-gradient(
-          180deg,
-          rgba(136, 141, 145, 0.79) -2.26%,
-          rgba(74, 81, 86, 0.51) 100%
-        );
+        background: linear-gradient(180deg, rgba(52, 85, 116, 0.35) -2.26%, rgba(52, 85, 116, 0.8) 100%);
         border-radius: 16rpx;
         backdrop-filter: blur(28rpx);
         // transform: matrix(1, 0, 0, -1, 0, 0);
@@ -612,6 +628,32 @@ export default {
             color: #ffffff;
             font-size: 20rpx;
           }
+					.ranking-container{
+						display: flex;
+						align-items: center;
+						flex-flow: row nowrap;
+						margin-left: 8rpx;
+						.num{
+							background: linear-gradient(180deg, #FFEBCC 0%, #FFE5B7 100%);
+							border-radius: 4rpx 0 0 4rpx;
+							height: 30rpx;
+							box-sizing: border-box;
+							padding: 0 8rpx 2rpx;
+							color: #865E41;
+							font-weight: 500;
+							font-size: 20rpx;
+						}
+						.text{
+							background: linear-gradient(180deg, #FFDFA8 0%, #EFC988 100%);
+							border-radius:0 4rpx 4rpx 0;
+							height: 30rpx;
+							box-sizing: border-box;
+							padding: 0 8rpx 2rpx;
+							color: #865E41;
+							font-weight: 500;
+							font-size: 20rpx;
+						}
+					}
           .item {
             display: flex;
             flex-flow: row nowrap;
@@ -637,8 +679,10 @@ export default {
 
         .attr {
           display: flex;
-          flex-flow: row nowrap;
+          flex-flow: row wrap;
           align-items: center;
+					height: 34rpx;
+					overflow: hidden;
           .attrItem {
             height: 34rpx;
             line-height: 30rpx;
@@ -909,4 +953,71 @@ export default {
     }
   }
 }
+.connectServiceContainer{
+	position: fixed;
+	width: 686rpx;
+	height: 120rpx;
+	box-sizing: border-box;
+	padding:0 48rpx;
+	border-radius: 16rpx;
+	background: rgba(0, 0, 0, 0.75);
+	left: 32rpx;
+	.connectServiceContent{
+		display: flex;
+		flex-flow: row nowrap;
+		align-items: center;
+		image{
+			width: 76rpx;
+			height: 76rpx;
+		}
+		.contentInfo{
+			margin: 26rpx 70rpx 26rpx 16rpx;
+			position: relative;
+			.no{
+				width: 288rpx;
+				height: 36rpx;
+				line-height: 36rpx;
+				color: #FFFFFF;
+				font-size: 26rpx;
+				font-weight: 500;
+				margin-bottom: 4rpx;
+				letter-spacing: 1rpx;
+			}
+			.find{
+				height: 28rpx;
+				line-height: 28rpx;
+				color: #FFFFFF;
+				font-size: 20rpx;
+				letter-spacing: 1rpx;
+			}
+		}
+		.btn{
+			width: 140rpx;
+			height: 56rpx;
+			line-height: 56rpx;
+			text-align: center;
+			color: #FFFFFF;
+			font-size: 24rpx;
+			border-radius: 8rpx;
+			background: linear-gradient(116.19deg, #F83112 16.48%, #FD6421 83.52%)
+		}
+		.cancel-Container{
+			position: absolute;
+			width: 44rpx;
+			height: 28rpx;
+			border-radius: 0 16rpx 0 16rpx;
+			background: rgba(255, 255, 255, 0.23);
+			display: flex;
+			align-items: center;
+			justify-content: space-around;
+			top: 0;
+			right: 0;
+			image{
+				width: 15rpx;
+				height: 15rpx;
+			}
+		}
+	}
+}
+
 </style>
