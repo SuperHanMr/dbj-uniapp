@@ -5,7 +5,7 @@
         + '&wx-defaultCityId=' + defaultHouseInfo.cityId + '&wx-defaultAreaId=' + defaultHouseInfo.areaId 
         + '&wx-defaultLocationName=' + defaultHouseInfo.name  + '&wx-token=' + hashToken + '&wx-deviceId=' + deviceId + '&from=' + from
          + '&shareAreaId=' + shareAreaId + '&shareAreaName=' + shareAreaName+ '&shareOriginType=' + shareOriginType + '&wx-userId=' + userId
-        + '&skuTemplateId=' + skuTemplateId + '&gomeDivisionCode=' + gomeDivisionCode">
+        + '&skuTemplateId=' + skuTemplateId + '&gomeDivisionCode=' + gomeDivisionCode + '&fromPakage='  + fromPakage">
     </web-view>
   </view>
 </template>
@@ -29,7 +29,8 @@
         shareOriginType: '',
         userId: 0,
         gomeDivisionCode: 0,
-        skuTemplateId: 0
+        skuTemplateId: 0,
+        fromPakage: 0
       }
     },
     onLoad(e) {
@@ -50,6 +51,7 @@
       this.houseId = e.houseId
       this.skuTemplateId = e.skuTemplateId
       this.gomeDivisionCode = e.gomeDivisionCode
+      this.fromPakage = e.fromPakage
     },
     onShareAppMessage(res) {
       let params = [];
