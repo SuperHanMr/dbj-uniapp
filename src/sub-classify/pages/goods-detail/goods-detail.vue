@@ -1,10 +1,11 @@
 <template>
   <view>
-    <web-view
-      :src="baseUrl + '/app-pages/goods-detail/index.html?token=' + searchToken + '#wx-goodsId='+ goodId + '&wx-houseId='
+    <web-view :src="baseUrl + '/app-pages/goods-detail/index.html?token=' + searchToken + '#wx-goodsId='+ goodId + '&wx-houseId='
         + houseId + '&wx-defaultHouseId=' + defaultHouseInfo.id  + '&wx-defaultProvinceId=' + defaultHouseInfo.provinceId
         + '&wx-defaultCityId=' + defaultHouseInfo.cityId + '&wx-defaultAreaId=' + defaultHouseInfo.areaId 
-        + '&wx-defaultLocationName=' + defaultHouseInfo.name  + '&wx-token=' + hashToken + '&wx-deviceId=' + deviceId + '&from=' + from + '&shareAreaId=' + shareAreaId + '&shareAreaName=' + shareAreaName+ '&shareOriginType=' + shareOriginType + '&wx-userId=' + userId">
+        + '&wx-defaultLocationName=' + defaultHouseInfo.name  + '&wx-token=' + hashToken + '&wx-deviceId=' + deviceId + '&from=' + from
+         + '&shareAreaId=' + shareAreaId + '&shareAreaName=' + shareAreaName+ '&shareOriginType=' + shareOriginType + '&wx-userId=' + userId
+        + '&skuTemplateId=' + skuTemplateId + '&gomeDivisionCode=' + gomeDivisionCode + '&fromPakage='  + fromPakage">
     </web-view>
   </view>
 </template>
@@ -26,11 +27,16 @@
         shareAreaName: '',
         pageOpts: {},
         shareOriginType: '',
-        userId: 0
+        userId: 0,
+        gomeDivisionCode: 0,
+        skuTemplateId: 0,
+        fromPakage: 0
       }
     },
     onLoad(e) {
-      this.pageOpts = {...e};
+      this.pageOpts = {
+        ...e
+      };
       uni.showShareMenu(); // 显示分享按钮
       this.shareAreaId = e.shareAreaId
       this.shareAreaName = e.shareAreaName
@@ -43,13 +49,16 @@
         this.goodId = uni.getStorageSync('goodId')
       }
       this.houseId = e.houseId
+      this.skuTemplateId = e.skuTemplateId
+      this.gomeDivisionCode = e.gomeDivisionCode
+      this.fromPakage = e.fromPakage
     },
     onShareAppMessage(res) {
       let params = [];
       Object.keys(this.pageOpts).forEach(key => {
         params.push(`${key}=${this.pageOpts[key]}`)
       });
-      if(getApp().globalData.isSaler){
+      if (getApp().globalData.isSaler) {
         params.push(`shareId=${getApp().globalData.shareId}`)
       }
       let path = `/sub-classify/pages/goods-detail/goods-detail`;

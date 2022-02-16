@@ -280,7 +280,7 @@
 			  <view v-if="orderInfo.showCancelBtn" class="canclePay" @click="handleCancelOrder" >
 			    取消订单
 			  </view>
-			  <view v-if="orderInfo.showToPayBtn" class="gotoPay" @click="toPay(this.payPrice())">
+			  <view v-if="orderInfo.showToPayBtn" class="gotoPay" @click="toPay(payPrice)">
 			    去付款
 			  </view>
 

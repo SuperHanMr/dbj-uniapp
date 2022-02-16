@@ -468,7 +468,7 @@ export default {
       refundable: false,
       cardClick: false,
       haveCard: false, //是否有会员卡
-      cardBalance: 1111, //会员卡余额
+      cardBalance: 0, //会员卡余额
       shareOriginType: "",
     };
   },
@@ -566,6 +566,10 @@ export default {
       if (e != null) {
         this.haveCard = true;
         this.cardBalance = e;
+         var res = Number(this.totalPrice) * 100 - this.cardBalance;
+         if(res <= 0) {
+           this.cardClick = true
+         }
       }
     });
     if (!getApp().globalData.openId) {

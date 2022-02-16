@@ -556,16 +556,26 @@ export default {
     },
     payOrder() {
       let openId = getApp().globalData.openId;
+      //#ifdef MP-WEIXIN
+      let payType = 1
+      let deviceType = 0
+      //#endif
+      //#ifdef H5
+      let payType = 3
+      let deviceType = 2
+      //#endif
       orderPay({
         remarks: this.remarks,
         orderId: this.orderNo,
-        payType: 1, //支付类型  1在线支付",
+        payType: payType,
+        deviceType: deviceType,
         openid: openId,
         isCardPay: this.cardClick,
       }).then((e) => {
         const payInfo = e.wechatPayJsapi;
         const cardPayComplete = e.cardPayComplete;
         if (!cardPayComplete) {
+          //#ifdef MP-WEIXIN
           uni.requestPayment({
             provider: "wxpay",
             ...payInfo,
@@ -594,6 +604,12 @@ export default {
               });
             },
           });
+          //#endif
+          //#ifdef H5
+          uni.navigateTo({
+            url: `/sub-classify/pages/pay-order/pay-h5?payTal=${e.gomePayH5.payModeList[0].payTal}&totalPrice=${this.payChannelPrice}&payRecordId=${e.payRecordId}`,
+          });
+          //#endif
         } else {
           uni.showToast({
             title: "支付成功！",

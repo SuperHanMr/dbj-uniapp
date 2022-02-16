@@ -587,14 +587,32 @@ export default {
           url: `multiple-payments/multiple-payments?orderId=${item.id}&remainTime=${item.remainTime}&type=list`,
         });
       } else {
+        //#ifdef H5
+        let totalPrice
+        if(item.orderStatus === 0 || item.orderStatus === 3) {
+          totalPrice = item.payAmount*100
+        }else {
+          totalPrice = item.totalActualIncomeAmount*100
+        }
+        //#endif
         let openId = getApp().globalData.openId;
         console.log("openId=", this.openId);
+        //#ifdef MP-WEIXIN
+        let payType = 1
+        let deviceType = 0
+        //#endif
+        //#ifdef H5
+        let payType = 3
+        let deviceType = 2
+        //#endif
         orderPay({
           orderId: Number(item.id),
-          payType: 1, //支付类型  1在线支付",
+          payType: payType,
+          deviceType: deviceType,
           openid: openId,
         }).then((e) => {
           const payInfo = e.wechatPayJsapi;
+          //#ifdef MP-WEIXIN
           uni.requestPayment({
             provider: "wxpay",
             ...payInfo,
@@ -616,6 +634,12 @@ export default {
               });
             },
           });
+          //#endif
+          //#ifdef H5
+          uni.navigateTo({
+            url: `/sub-classify/pages/pay-order/pay-h5?payTal=${data.gomePayH5.payModeList[0].payTal}&totalPrice=${totalPrice}&payRecordId=${data.payRecordId}`,
+          });
+          //#endif
         });
       }
     },
