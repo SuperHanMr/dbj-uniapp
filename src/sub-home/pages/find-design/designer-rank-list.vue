@@ -15,12 +15,9 @@
 		  </template>
 		</custom-navbar>
 
-		<view class="bgImg">
-			<view class="rankExplain" @click="openExplain">
-				<view class="text">
-					榜单说明
-				</view>
-				<image class="icon" src="../../static/avatar@2x(1).png" mode=""></image>
+		<view class="bgImg" :style="{backgroundImage:`url(${headerBgImg})`,}">
+			<view class="rankExplain"  @click="openExplain">
+				榜单说明
 			</view>
 		</view>
 		<view class="list-container">
@@ -46,6 +43,7 @@
 								<!-- liveArea 居住地 -->
 								<text class="text" v-if="item1.liveArea">{{item1.liveArea}}</text>
 								<text class="line" v-if="item1.liveArea"></text>
+								
 								<text class="text">服务次数  {{item1.searchDesignerVO.totalPeopleCount || "0" }}</text>
 								<text class="line"></text>
 								<text class="text">好评率{{item1.searchDesignerVO.praiseEfficiency || "0"}}%</text>
@@ -53,15 +51,14 @@
 							<view class="label_container">
 								<view class="label_item" v-if="item1.searchDesignerVO.styleTag">{{item1.searchDesignerVO.styleTag}}</view>
 								<view class="label_item" v-if="item1.searchDesignerVO.designTag"  v-for="tagItem in item1.searchDesignerVO.designTag" :key="tagItem" >{{tagItem}}</view>
-
 							</view>
 						</view>
-						<view class="hasAttention" v-if="item1.isFocusOn" @click="handleConcernDesigner(item1,index1)">
+						<view class="hasAttention" v-if="item1.isFocusOn" @click.stop="handleDesigner(item1,index1)">
 							已关注
 						</view>
-						<view class="attention" v-else @click="handleConcernDesigner(item1,index1)">
-							<!-- <image src="https://ali-image.dabanjia.com/static/mp/dabanjia/images/theme-red/home/find-designer-cancel.png" mode=""></image> -->
-							<text>+ 关注</text>
+						<view class="attention" v-else @click.stp="handleDesigner(item1,index1)">
+							<image src="https://ali-image.dabanjia.com/static/mp/dabanjia/images/theme-red/home/attentionIcon.png"  />
+							<text>关注</text>
 						</view>
 					</view>
 					<view class="case-container">
@@ -73,15 +70,11 @@
 						>
 						<view class="case-content">
 							<view class="case-item" v-for="(item2,index2) in item1.valuationCaseVOS" :key="item2.id" @click="gotoCaseDetail">
-								<!-- 成名之作 -->
 								<image v-if="item2.famous" class="icon" src="https://ali-image.dabanjia.com/static/mp/dabanjia/images/theme-red/home/famousWork.png" />
-								<!-- 得意之作 -->
 								<image v-if="item2.favourite" class="icon" src="https://ali-image.dabanjia.com/static/mp/dabanjia/images/theme-red/home/favouriteWork.png" />
 
 								<view class="img-Container">
-									<!-- 只有一张图片 -->
 									<image v-if="item2.imageUrlList.length < 2" class="oneImg" :src="`${item2.imageUrlList[0]}?x-oss-process=image/resize,m_fill,h_484,w_924,limit_0`"/>
-									<!-- 三张图片 -->
 									<view v-else class="threeImg">
 										<image class="bigImg" :src="`${item2.imageUrlList[0]}?x-oss-process=image/resize,m_fill,h_484,w_924,limit_0`"/>
 										<view class="smallImg-Container">
@@ -92,18 +85,15 @@
 								</view>
 								<view class="caseName">{{item2.caseName}}</view>
 								<view class="caseInfo">
-									<!--  roomNum  //卧室个数  hallNum //客厅个数 kitchenNum 厨房个数 bathroomNum //卫生间个数-->
-									<text class="text">
+									<text class="text" v-if="item2.roomNum || item2.hallNum">
 										<text>{{item2.roomNum ||"-"}}室</text>
 										<text>{{item2.hallNum || "-"}}厅</text>
-										<!-- <text>{{item2.kitchenNum || "-"}}厨</text>
-										<text>{{item2.bathroomNum || "-"}}卫</text> -->
 									</text>
 									<text class="line"></text>
-									<!-- 套内面积 -->
+									
 									<text class="text">{{item2.insideArea?Math.floor(item2.insideArea): "-"}}m²</text>
 									<text class="line"></text>
-									<!-- 预算 -->
+									
 									<text class="text">预算：{{ item2.budget? Math.floor(item2.budget) : '-'}}万</text>
 								</view> 
 							</view>
@@ -137,11 +127,12 @@
 </template>
 
 <script>
-	import { getDesignRank } from "../../../api/decorate.js"
+	import { getDesignRank, queryAttention } from "../../../api/decorate.js"
 	export default {
 		data() {
 			return {
-				 scrollTop: 0,
+				scrollTop: 0,
+				headerBgImg:"https://ali-image.dabanjia.com/static/mp/dabanjia/images/theme-red/home/designerRankBg.png?x-oss-process=image/resize,m_fill,h_382,w_750,limit_0",
 				bgColorList:[
 					{
 						bgColor:"#EDC48E",
@@ -166,6 +157,7 @@
 					],
 				designerList:[],//设计师列表
 				containerPaddingBottom:"",
+				equipmentId:"",
 			}
 		},
 		mounted() {
@@ -174,6 +166,11 @@
 			console.log("this.containerPaddingBottom ====",this.containerPaddingBottom )
 		},
 		onLoad() {
+			uni.getSystemInfo({
+				success:res => {
+					this.equipmentId = res.deviceId
+				}
+			})
 			uni.setNavigationBarColor({
 				frontColor: '#ffffff',
 				backgroundColor: '#232323',
@@ -199,46 +196,41 @@
 			},
 			gotoPersonalPage(){
 				console.log("去设计师主页")
-				// uni.navigateTo({
-				// 	url:`../../../sub-decorate/pages/person-page/person-page?personId=${xxxx}&isToContent=true`
-				// })
+				uni.navigateTo({ 
+					url:`../../../sub-decorate/pages/person-page/person-page?personId=${xxxx}&isToContent=true`
+				})
 			},
 			gotoCaseDetail(){
 				console.log("去案例详情")
 			},
-			handleconcernDesigner(item,index){
-				console.log("关注设计师")
+			handleDesigner(item,index){
+				console.log("是否关注设计师")
+				console.log("itemmmmmmm====",item.searchDesignerVO.id)
+				let params ={
+					authorId:-1,
+					equipmentId:this.equipmentId,
+					relationId:item.searchDesignerVO.id,
+					routeId:1001,
+					subBizType:1,
+				}
+				queryAttention(params).then(()=>{
+					if(item.isFocusOn){
+						uni.showToast({
+							title:"取消关注成功",
+							icon:"none",
+							duration:1000
+						})
+						this.designerList[index].isFocusOn = false
+					} else {
+						uni.showToast({
+							title:"关注成功!",
+							icon:"none",
+							duration:1000
+						})
+						this.designerList[index].isFocusOn = true;
+					}
+				})
 			},
-			// handleCraftsman(data,index2){
-			// 	cancelAttention({
-			// 		routeId:1001,
-			// 		relationId:data.id,
-			// 		authorId:data.authorId,
-			// 		subBizType:data.subBizType,
-			// 		equipmentId:this.equipmentId,
-			// 	}).then(()=>{
-			// 		if(data.isFocused){
-			// 			uni.showToast({
-			// 				title:"取消关注成功",
-			// 				icon:"none",
-			// 				duration:1000
-			// 			})
-			// 			this.currentList[index2].isFocused = false;
-			// 		}else{
-			// 			uni.showToast({
-			// 				title:"关注成功!",
-			// 				icon:"none",
-			// 				duration:1000
-			// 			})
-			// 			this.currentList[index2].isFocused = true;
-			// 		}
-			// 		// this.craftsmanlist=[]
-			// 		setTimeout(()=>{
-			// 			// this.craftsmanList()
-			// 		},1000)
-			// 	}).catch(()=>{})
-			// }
-			
 			
 			openExplain(){
 				this.$refs.explainPopup.open()
@@ -249,40 +241,47 @@
 		}
 	}
 </script>
-
+<style scoped>
+</style>
 <style lang="scss" scoped>
 	.container{
 		background: #101216 !important;
-	}
-	.bgImg{
-		height: 400rpx;
 		position: relative;
-		.rankExplain{
-			position: absolute;
-			bottom: 60rpx;
-			right: 32rpx;
+		.bgImg{
+			height: 382rpx;
+			width: 750rpx;
+			background-size: contain;
+			position: fixed;
+			z-index: 8;
+			top: 0;
+			left: 0;
 			display: flex;
-			align-items: center;
-			flex-flow: row nowrap;
-			.text{
-				height: 40rpx;
-				line-height: 40rpx;
-				color: #FFFFFF;
-				font-size: 28rpx;
-				margin-right: 8rpx;
-			}
-			.icon{
-				width: 24rpx;
-				height: 24rpx;
+			align-items: flex-end;
+			justify-content: flex-end;
+			.rankExplain{
+				width: 52rpx;
+				height: 130rpx;
+				box-sizing: border-box;
+				background: linear-gradient(90deg, rgba(248, 223, 181, 0.1) -5.56%, rgba(22, 24, 29, 0.07) 100%);
+				padding: 10rpx 10rpx 8rpx;
+				border-radius: 8rpx 0 0 8rpx;
+				color: #595652;
+				font-size: 24rpx;
+				letter-spacing: 2rpx;
+				writing-mode: vertical-lr;/*从左向右 从右向左是 writing-mode: vertical-rl;*/
+				writing-mode: tb-lr;/*IE浏览器的从左向右 从右向左是 writing-mode: tb-rl；*/
+				margin-bottom: 10rpx;
 			}
 		}
+		
 	}
 	.list-container{
 		box-sizing: border-box;
-		padding: 0 24rpx 24rpx;
+		padding: 400rpx 24rpx 24rpx;
+		height: 100%;
 		.designer-item{
 			width: 702rpx;
-			height: 664rpx;
+			height: 624rpx;
 			padding-top: 40rpx;
 			box-sizing: border-box;
 			position: relative;
