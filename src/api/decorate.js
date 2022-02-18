@@ -174,7 +174,7 @@ export function getComments(params) {
 }
 
 //查询同行评价列表
-export function getPeerComments(params) {
+export function getPeerCommentsList(params) {
 	return request.get("/pm/app/commentSetting/getPeerListComments",{params})
 }
 

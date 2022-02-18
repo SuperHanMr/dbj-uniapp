@@ -5,7 +5,7 @@
 		</view>
 		<view class="evaluate-list">
 			<view class="evaluate-item" v-for="(item,index) in peerCommentsList" :key="index">
-			
+
 				<view class="evaluate-person-info">
 					<image :src="item.avatar" />
 					<view class="right">
@@ -30,7 +30,7 @@
 </template>
 
 <script>
-	import {getPeerComments} from "../../../api/decorate.js"
+	import {getPeerCommentsList} from "../../../api/decorate.js"
 	export default {
 		data() {
 			return {
@@ -66,7 +66,7 @@
 					page: this.pageInfo.page,
 					rows: 10,
 				}
-				getPeerComments(params).then(res => {
+				getPeerCommentsList(params).then(res => {
 					console.log("res=====",res)
 					this.peerCommentsList = res.list
 					this.peerCommentsList  = this.peerCommentsList.map(item=>{
