@@ -6,7 +6,7 @@
         <image :src="peerComment.avatar" @click="toPerson" mode=""></image>
         <text class="design-name">{{peerComment.userName}}</text>
         <text class="design-job">{{peerComment.roleName}}</text>
-        <view class="design-rank" v-if="peerComment.valueRank>0" @click="toRankList">
+        <view class="design-rank" v-if="peerComment.valueRank>0&&peerComment.isFlag" @click="toRankList">
           <text class="num">TOP.{{peerComment.valueRank}}</text>
           <text class="text">最具价值</text>
         </view>
