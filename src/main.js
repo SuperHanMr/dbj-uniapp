@@ -72,7 +72,7 @@ if (params.token) {
   } else {
     uni.setStorageSync("scn", params.token)
   }
-  window.location.replace('/' + window.location.hash);
+  window.location.replace('/' + (params.isGomeMp ? '?isGomeMp=true' : '') + window.location.hash);
 }
 // #endif
 
