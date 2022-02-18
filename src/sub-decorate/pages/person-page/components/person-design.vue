@@ -100,7 +100,7 @@
         </view>
         
       </view>
-      <view class="value-rank" v-if="personData.valueRank>0" @click="toRankList">
+      <view class="value-rank" v-if="personData.valueRank>0&&personData.isFlag" @click="toRankList">
         <text>Top.</text>
         <text class="num">{{personData.valueRank}}</text>
         <text>打扮家最具价值设计师榜单</text>
