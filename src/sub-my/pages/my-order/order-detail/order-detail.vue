@@ -712,6 +712,10 @@ export default {
 
 		// 跳转到商品详情页面
 		productDetail(item, type) {
+			if (getApp().globalData.isInGomeMp) {
+				console.warn('在国美小程序中，不可跳转商品详情');
+				return;
+			}
 		  console.log("item=", item, "type=", type);
 		  uni.navigateTo({
 				url: `../../../../sub-classify/pages/goods-detail/goods-detail?goodId=${item.id}`,

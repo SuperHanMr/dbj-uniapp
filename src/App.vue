@@ -20,6 +20,7 @@
   } from "api/decorate.js";
   export default {
     globalData: {
+      isInGomeMp: false, //是否在国美小程序中(编译H5站的情况下)
       userInfo: {},
       token: "",
       city: "",

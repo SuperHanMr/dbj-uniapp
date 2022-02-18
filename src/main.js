@@ -72,7 +72,7 @@ if (params.token) {
   } else {
     uni.setStorageSync("scn", params.token)
   }
-  window.location.replace('/' + window.location.hash);
+  window.location.replace('/' + (params.isGomeMp ? '?isGomeMp=true' : '') + window.location.hash);
 }
 // #endif
 
@@ -104,3 +104,12 @@ Vue.mixin({
   }
 })
 app.$mount()
+
+// #ifdef H5
+// 是否在国美小程序中的标记
+if (params.isGomeMp) {
+  app.globalData.isInGomeMp = true;
+} else {
+  app.globalData.isInGomeMp = false;
+}
+// #endif

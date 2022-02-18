@@ -33,10 +33,6 @@
   </div>
   <script src="./libs/base64.js"></script>
   <script src="<%= VUE_APP_GOME_SDK_APP %>"></script>
-  <script src="https://ali-res.dabanjia.com/static/libs/vconsole/3.4.1/vconsole.min.js"></script>
-  <script>
-    new VConsole();
-  </script>
   <script>
     function getPageParms() {
       var ret = {},
@@ -76,10 +72,9 @@
     }
     function redirectToWeb(token) {
       var hash = window.location.hash;
-      var fromDbj = localStorage.getItem("fromDbj");
-      if (fromDbj) {
+      var pageParams = getPageParms();
+      if (pageParams.fromDbj) {
         // 如果来自打扮家的域名，跳转打扮家域名的H5站
-        localStorage.removeItem("fromDbj");
         if (token) {
           window.location.replace('<%= VUE_APP_MP_H5 %>/?token=' + token + hash);
         } else {
@@ -97,7 +92,7 @@
       }
     }
     function requestToken() {
-      var url = '/customer/app/oauth/gome/loginByCookie';
+      var url = '<%= VUE_APP_GOME_API %>/app/oauth/gome/loginByCookie';
       var params = {
         clientType: "3",
         clientCode: "APPLET"
@@ -110,12 +105,12 @@
           var res = JSON.parse(resText);
           console.log('success:', resText, res);
           if (res.data) {
-            var token = res.data;
-            redirectToWeb(token);
+            var data = res.data || {};
+            redirectToWeb(data.accessToken);
           } else {
             // 读取cookie失败
             console.log('读取cookie失败', res);
-            // redirectToWeb();
+            redirectToWeb();
           }
         },
         error: function(err) {
@@ -127,40 +122,39 @@
     console.log('======bridge', window.GomeJSBridge, window.GomeJSBridge && window.GomeJSBridge.ready);
     // 是否在真快乐APP中
     if (window.GomeJSBridge && window.GomeJSBridge.ready) {
-      GomeJSBridge.ready(function() {
-        console.log('========bridge ready', GomeJSBridge.login)
-        GomeJSBridge.login(
-          function(data) {
-            console.log('========bridge login success', data, data.isLogined);
-            if (data.isLogined === 'Y') {
-              console.log('延时3秒再请求')
-              // 延时一下？等待APP注入cookie
-              setTimeout(requestToken, 3000);
-            } else {
-              redirectToWeb();
-            }
-          },
-          function(err) {
-            console.error('=======bridge login error:', err);
-            redirectToWeb();
-          },
-          {
-            refresh: false
-          }
-        );
-      })
-    } else {
-      // H5站的登录
       var pageParams = getPageParms();
-      if (pageParams.fromDbj) {
-        localStorage.setItem("fromDbj", "true");
-      } else if (!pageParams.isLogin) {
-        localStorage.removeItem("fromDbj");
-      }
       if (pageParams.isLogin) {
         requestToken();
       } else {
-        var backURL = window.location.origin + window.location.pathname + '?isLogin=true' + window.location.hash;
+        GomeJSBridge.ready(function() {
+          console.log('========bridge ready', GomeJSBridge.login)
+          GomeJSBridge.login(
+            function(data) {
+              console.log('========bridge login success', data, data.isLogined);
+              if (data.isLogined === 'Y') {
+                var loginedUrl = window.location.origin + window.location.pathname + '?isLogin=true' + (pageParams.fromDbj ? '&fromDbj=true' : '') + window.location.hash;
+                window.location.replace(loginedUrl);
+              } else {
+                redirectToWeb();
+              }
+            },
+            function(err) {
+              console.error('=======bridge login error:', err);
+              redirectToWeb();
+            },
+            {
+              refresh: false
+            }
+          );
+        })
+      }
+    } else {
+      // H5站的登录
+      var pageParams = getPageParms();
+      if (pageParams.isLogin) {
+        requestToken();
+      } else {
+        var backURL = window.location.origin + window.location.pathname + '?isLogin=true' + (pageParams.fromDbj ? '&fromDbj=true' : '')  + window.location.hash;
         window.location.replace('<%= VUE_APP_GOME_LOGIN %>?return_url=' + Base64.encode(backURL));
       }
     }
