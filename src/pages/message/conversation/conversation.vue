@@ -138,11 +138,11 @@
           }
         }
       },
-      type() {
-        if (this.type === this.CONV_TYPES.COMMON) {
-          this.$store.dispatch('requestDesignTopRank')
-        }
-      }
+      // type() {
+      //   if (this.type === this.CONV_TYPES.COMMON) {
+      //     this.$store.dispatch('requestDesignTopRank')
+      //   }
+      // }
     },
     mounted() {
       uni.$on("scroll-to-bottom", this.scrollToBottom);
