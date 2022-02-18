@@ -24,44 +24,45 @@
 			</view>
 		</view>
 		<view class="list-container">
-			<view class="designer-item" v-for="(item1,index1) in 10" :key="item1">
-				<view class="top-bg" :style="{backgroundColor:index1>2?bgColorList[3].bgColor:bgColorList[index1].bgColor}"
-				 ></view>
-				<view class="topNum" :style="{backgroundImage:index1>2?bgColorList[3].bgImg:bgColorList[index1].bgImg,backgroundSize:'100% 100%'}">
-					<view>Top</view>
-					<view>{{index1+1}}</view>
+			<view class="designer-item" v-for="(item1,index1) in designerList" :key="index1">
+				<view class="top-bg" 
+					:style="{backgroundColor:index1>2?bgColorList[3].bgColor:bgColorList[index1].bgColor}"
+				></view>
+				<view class="topNum" 
+				:style="{backgroundImage:index1>2?`url(${bgColorList[3].bgImg})`:`url(${bgColorList[index1].bgImg})`,backgroundSize:'100% 100%'}">
+					<view
+					:style="{color:index1>2?bgColorList[3].color:bgColorList[index1].color}"
+					>{{index1+1}}</view>
 				</view>
 				<view class="info-container">
 					<view class="header">
-						<image class="avatar" src="../../static/avatar@2x(1).png" />
+						<image class="avatar" @click="gotoPersonalPage"  :src="`${item1.searchDesignerVO.avatar}?x-oss-process=image/resize,m_fill,h_88,w_88,limit_0`" />
 						<view class="basic-info">
 							<view class="name-container">
-								<text class="name"> 牛逼plus设计 </text>
-								<text class="rank"> 高级设计师 </text>
+								<text class="name"> {{item1.searchDesignerVO.name}}</text>
+								<text class="rank"> {{item1.levelName || ""}}设计师 </text>
 							</view>
 							<view class="attr">
-								<text class="text">北京</text>
+								<!-- liveArea 居住地 -->
+								<text class="text" v-if="item1.liveArea">{{item1.liveArea}}</text>
+								<text class="line" v-if="item1.liveArea"></text>
+								<text class="text">服务次数  {{item1.searchDesignerVO.totalPeopleCount || "0" }}</text>
 								<text class="line"></text>
-								<text class="text">北京</text>
-								<text class="line"></text>
-								<text class="text">北京</text>
-								<text class="line"></text>
+								<text class="text">好评率{{item1.searchDesignerVO.praiseEfficiency || "0"}}%</text>
 							</view>
 							<view class="label_container">
-								<view class="label_item">轻奢</view>
-								<view class="label_item">奢华</view>
-								<view class="label_item">擅长标签</view>
-								<view class="label_item">ggggg</view>
-								<view class="label_item">顶顶顶顶顶顶顶顶顶顶</view>
+								<view class="label_item" v-if="item1.searchDesignerVO.styleTag">{{item1.searchDesignerVO.styleTag}}</view>
+								<view class="label_item" v-if="item1.searchDesignerVO.designTag"  v-for="tagItem in item1.searchDesignerVO.designTag" :key="tagItem" >{{tagItem}}</view>
+
 							</view>
 						</view>
-						<view class="attention">
-							<image src="../../static/avatar@2x(1).png" mode=""></image>
-							<text>关注</text>
-						</view>
-						<!-- <view class="hasAttention">
+						<view class="hasAttention" v-if="item1.isFocusOn" @click="handleConcernDesigner(item1,index1)">
 							已关注
-						</view> -->
+						</view>
+						<view class="attention" v-else @click="handleConcernDesigner(item1,index1)">
+							<!-- <image src="https://ali-image.dabanjia.com/static/mp/dabanjia/images/theme-red/home/find-designer-cancel.png" mode=""></image> -->
+							<text>+ 关注</text>
+						</view>
 					</view>
 					<view class="case-container">
 						<scroll-view
@@ -71,33 +72,42 @@
 							:scroll-left="scrollLeft"
 						>
 						<view class="case-content">
-							<view class="case-item" v-for="(item2,index2) in 4" :key="item2" @click="gotoPersonalPage">
+							<view class="case-item" v-for="(item2,index2) in item1.valuationCaseVOS" :key="item2.id" @click="gotoCaseDetail">
 								<!-- 成名之作 -->
-								<!-- <image class="icon" src="../../static/images/famousWork.png" mode=""></image> -->
+								<image v-if="item2.famous" class="icon" src="https://ali-image.dabanjia.com/static/mp/dabanjia/images/theme-red/home/famousWork.png" />
 								<!-- 得意之作 -->
-								<image class="icon" src="../../static/images/favouriteWork.png" mode=""></image>
+								<image v-if="item2.favourite" class="icon" src="https://ali-image.dabanjia.com/static/mp/dabanjia/images/theme-red/home/favouriteWork.png" />
 
 								<view class="img-Container">
-									<image v-if="index2 <2" class="oneImg" src="../../static/images/famousWork.png" mode=""></image>
+									<!-- 只有一张图片 -->
+									<image v-if="item2.imageUrlList.length < 2" class="oneImg" :src="`${item2.imageUrlList[0]}?x-oss-process=image/resize,m_fill,h_484,w_924,limit_0`"/>
+									<!-- 三张图片 -->
 									<view v-else class="threeImg">
-										<image class="bigImg" src="../../static/images/famousWork.png" mode=""></image>
+										<image class="bigImg" :src="`${item2.imageUrlList[0]}?x-oss-process=image/resize,m_fill,h_484,w_924,limit_0`"/>
 										<view class="smallImg-Container">
-											<image class="smalImg1" src="../../static/images/famousWork.png" mode=""></image>
-											<image class="smalImg2" src="../../static/images/famousWork.png" mode=""></image>
+											<image class="smalImg1" :src="`${item2.imageUrlList[1]}?x-oss-process=image/resize,m_fill,h_484,w_924,limit_0`"/>
+											<image class="smalImg2" :src="`${item2.imageUrlList[2]}?x-oss-process=image/resize,m_fill,h_484,w_924,limit_0`"/>
 										</view>
 									</view>
 								</view>
-								<view class="caseName">案例标题案例标题案例标题案例标题案例标题</view>
+								<view class="caseName">{{item2.caseName}}</view>
 								<view class="caseInfo">
-									<text class="text">北京</text>
+									<!--  roomNum  //卧室个数  hallNum //客厅个数 kitchenNum 厨房个数 bathroomNum //卫生间个数-->
+									<text class="text">
+										<text>{{item2.roomNum ||"-"}}室</text>
+										<text>{{item2.hallNum || "-"}}厅</text>
+										<!-- <text>{{item2.kitchenNum || "-"}}厨</text>
+										<text>{{item2.bathroomNum || "-"}}卫</text> -->
+									</text>
 									<text class="line"></text>
-									<text class="text">北京</text>
+									<!-- 套内面积 -->
+									<text class="text">{{item2.insideArea?Math.floor(item2.insideArea): "-"}}m²</text>
 									<text class="line"></text>
-									<text class="text">北京</text>
-									<text class="line"></text>
-								</view>
+									<!-- 预算 -->
+									<text class="text">预算：{{ item2.budget? Math.floor(item2.budget) : '-'}}万</text>
+								</view> 
 							</view>
-							<view class="show-more">
+							<view class="show-more" v-if="item1.valuationCaseVOS.length >2">
 								<view class="text">左滑查看更多</view>
 							</view>
 						</view>
@@ -106,27 +116,28 @@
 				</view>
 			</view>
 		</view>
-	<uni-popup ref="explainPopup" type="bottom" >
-		<view 
-		:style="{paddingBottom:containerPaddingBottom}"
-		style="z-index: 999;background-color: #FFFFFF;border-radius: 32rpx 32rpx 0 0;"
-		>
-			<view class="header-popup">
-				<text>最具价值设计师</text>
-				<view class="close-popup" @click="close">
-					<i class="icon-xiaochengxu_youshangjiaodankuangguanbi_ic close-icon-popup"></i>
+		<uni-popup ref="explainPopup" type="bottom" >
+			<view
+			:style="{paddingBottom:containerPaddingBottom}"
+			style="z-index: 999;background-color: #FFFFFF;border-radius: 32rpx 32rpx 0 0;"
+			>
+				<view class="header-popup">
+					<text>最具价值设计师</text>
+					<view class="close-popup" @click="close">
+						<i class="icon-xiaochengxu_youshangjiaodankuangguanbi_ic close-icon-popup"></i>
+					</view>
 				</view>
+				<scroll-view :scroll-y="true" class="toast-content">
+					<p>噼噼啪啪铺铺铺铺铺铺铺铺铺铺铺铺铺铺铺铺铺铺铺铺铺铺铺铺</p>
+					<p>谢谢谢谢谢寻寻寻寻寻寻寻寻寻寻寻寻寻寻寻寻寻寻寻寻寻寻寻寻寻寻</p>
+				</scroll-view>
 			</view>
-			<scroll-view :scroll-y="true" class="toast-content">
-				<p>噼噼啪啪铺铺铺铺铺铺铺铺铺铺铺铺铺铺铺铺铺铺铺铺铺铺铺铺</p>
-				<p>谢谢谢谢谢寻寻寻寻寻寻寻寻寻寻寻寻寻寻寻寻寻寻寻寻寻寻寻寻寻寻</p>
-			</scroll-view>
-		</view>
-	</uni-popup>
+		</uni-popup>
 	</view>
 </template>
 
 <script>
+	import { getDesignRank } from "../../../api/decorate.js"
 	export default {
 		data() {
 			return {
@@ -134,19 +145,23 @@
 				bgColorList:[
 					{
 						bgColor:"#EDC48E",
-						bgImg:"",
+						color:"#725947",
+						bgImg:"https://ali-image.dabanjia.com/static/mp/dabanjia/images/theme-red/home/rank_top1.png",
 					},
 					{
 						bgColor:"#BFCBD6",
-						bgImg:"",
+						color:"#476072",
+						bgImg:"https://ali-image.dabanjia.com/static/mp/dabanjia/images/theme-red/home/rank_top2.png",
 					},
 					{
 						bgColor:"#D6C2BF",
-						bgImg:"",
+						color:"#725447",
+						bgImg:"https://ali-image.dabanjia.com/static/mp/dabanjia/images/theme-red/home/rank_top3.png",
 					},
 					{
 						bgColor:"#EBEEF1",
-						bgImg:"",
+						color:"#93A0AF",
+						bgImg:"https://ali-image.dabanjia.com/static/mp/dabanjia/images/theme-red/home/rank_top4.png",
 					},
 					],
 				designerList:[],//设计师列表
@@ -166,21 +181,65 @@
 					duration: 400,
 					timingFunc: 'easeIn'
 				}
-			})
+			});
+			this.reqDesignerRank()
 		},
 		onPageScroll(scrollTop) {
 		  this.scrollTop = scrollTop.scrollTop;
 		},
 		methods: {
+			reqDesignerRank(){
+				getDesignRank().then(res=>{
+					console.log("res====",res)
+					this.designerList = res
+				})
+			},
 			toBack(){
 				uni.navigateBack({});
 			},
 			gotoPersonalPage(){
-				// uni.navigateTo({
-				// 	url:`../../../pages/real-case/real-case-webview/real-case-webview?id=${item.id}`
-				// })
 				console.log("去设计师主页")
+				// uni.navigateTo({
+				// 	url:`../../../sub-decorate/pages/person-page/person-page?personId=${xxxx}&isToContent=true`
+				// })
 			},
+			gotoCaseDetail(){
+				console.log("去案例详情")
+			},
+			handleconcernDesigner(item,index){
+				console.log("关注设计师")
+			},
+			// handleCraftsman(data,index2){
+			// 	cancelAttention({
+			// 		routeId:1001,
+			// 		relationId:data.id,
+			// 		authorId:data.authorId,
+			// 		subBizType:data.subBizType,
+			// 		equipmentId:this.equipmentId,
+			// 	}).then(()=>{
+			// 		if(data.isFocused){
+			// 			uni.showToast({
+			// 				title:"取消关注成功",
+			// 				icon:"none",
+			// 				duration:1000
+			// 			})
+			// 			this.currentList[index2].isFocused = false;
+			// 		}else{
+			// 			uni.showToast({
+			// 				title:"关注成功!",
+			// 				icon:"none",
+			// 				duration:1000
+			// 			})
+			// 			this.currentList[index2].isFocused = true;
+			// 		}
+			// 		// this.craftsmanlist=[]
+			// 		setTimeout(()=>{
+			// 			// this.craftsmanList()
+			// 		},1000)
+			// 	}).catch(()=>{})
+			// }
+			
+			
 			openExplain(){
 				this.$refs.explainPopup.open()
 			},
@@ -193,7 +252,7 @@
 
 <style lang="scss" scoped>
 	.container{
-		background: #232323 !important;
+		background: #101216 !important;
 	}
 	.bgImg{
 		height: 400rpx;
@@ -243,14 +302,16 @@
 				top: 0;
 				width: 74rpx;
 				height: 82rpx;
-				background-color: yellowGreen;
 				z-index: 3;
 				word-wrap: break-word;
-				padding: 8rpx 14rpx 0;
+				display: flex;
+				justify-content: space-around;
 				view{
-					color: #725947;
-					font-size: 24rpx;
+					margin-top: 32rpx;
+					font-size: 32rpx;
 					font-weight: bold;
+					height: 44rpx;
+					line-height: 44rpx;
 				}
 			}
 			.info-container{
@@ -288,8 +349,9 @@
 							}
 							.rank{
 								display: block;
-								width: 116rpx;
 								height: 30rpx;
+								padding: 0 8rpx 2rpx;
+								box-sizing: border-box;
 								line-height: 30rpx;
 								background: rgba(79, 190, 237, 0.06);
 								border-radius: 4rpx;
