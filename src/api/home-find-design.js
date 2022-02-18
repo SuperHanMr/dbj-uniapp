@@ -20,3 +20,8 @@ export function recommendCaseList(params) {
 export function searchDesigner(params) {
 	return request.post(`/app/search/designer`, params);
 }
+
+// 设计师榜单top10
+export function requestDesignerTopRank(params = {}) {
+	return request.get(`/app/designRank/getTop10Ranking`, params)
+}

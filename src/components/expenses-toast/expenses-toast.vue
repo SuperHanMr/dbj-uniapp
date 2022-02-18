@@ -152,7 +152,6 @@
 	.header-popup {
 		width: 750rpx;
 		height: 104rpx;
-		background: #f5f6f7;
 		border-radius: 32rpx 32rpx 0rpx 0rpx;
 		position: relative;
 		display: flex;
@@ -162,7 +161,6 @@
 		font-weight: 500;
 		font-size: 32rpx;
 		border-bottom: 1rpx solid #f2f2f2;
-		;
 	}
 
 	.close-icon-popup {
@@ -183,9 +181,7 @@
 	.toast-content {
 		max-height: 1000rpx;
 		overflow: auto;
-		background-color: #f5f6f7;
 	}
-
 	.title {
 		height: 100rpx;
 		font-size: 32rpx;
