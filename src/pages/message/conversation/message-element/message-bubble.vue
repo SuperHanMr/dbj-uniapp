@@ -1,8 +1,8 @@
 <template>
-  <view 
-    class="message-bubble" 
+  <view
+    class="message-bubble"
     :class="{
-      'message-send': isMine, 
+      'message-send': isMine,
       'no-padding': noPadding,
       new: isNew
     }"
@@ -12,7 +12,11 @@
     </view>
     <view class="message-bubble-main">
       <view class="message-bubble-header">
-        <text class="message-username">{{name}}</text>
+        <view class="message-username-wrapper"><text class="message-username">{{name}}</text></view>
+        <view v-if="designTopRank[zesuId]" class="message-rank-wrapper">
+          <view class="message-rank">TOP.{{designTopRank[zesuId]}}</view>
+          <view class="message-rank-tip">最具价值</view>
+        </view>
       </view>
       <view class="message-bubble-body" :style="bodyStyle" @click="$emit('body-click')">
         <slot></slot>
@@ -42,13 +46,17 @@ export default {
   },
   computed: {
     ...mapState({
-      newMessageMap: (state) => state.message.newMessageMap
+      newMessageMap: (state) => state.message.newMessageMap,
+      designTopRank: (state) => state.designTopRank,
     }),
     isNew() {
       return this.newMessageMap[this.message.ID] || false;
     },
     isMine() {
       return this.message.flow === "out";
+    },
+    zesuId() {
+      return this.message.from;
     },
     avatar() {
       return this.message.avatar || "https://ali-image.dabanjia.com/static/mp/dabanjia/images/avatar-default.png";
@@ -82,17 +90,58 @@ export default {
       object-fit: cover;
     }
   }
-  
+
   .message-bubble-main {
     display: flex;
     flex-flow: column nowrap;
     align-items: flex-start;
   }
-  
+
+  .message-bubble-header {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+      .message-username-wrapper{
+        display: inline-block;
+      }
+
+      .message-rank-wrapper{
+        display: inline-block;
+        margin-left: 12rpx;
+        vertical-align: middle;
+        line-height: 21rpx;
+        white-space: nowrap;
+        .message-rank{
+          display: inline-block;
+          vertical-align: middle;
+          height: 30rpx;
+          padding: 0 8rpx;
+          font-size: 20rpx;
+          line-height: 30rpx;
+          background: linear-gradient(180deg, #FFEBCC 0%, #FFE5B7 100%);
+          border-top-left-radius: 4rpx;
+          border-bottom-left-radius: 4rpx;
+          color: #865E41;
+        }
+        .message-rank-tip{
+          display: inline-block;
+          vertical-align: middle;
+          height: 30rpx;
+          padding: 0 8rpx;
+          font-size: 20rpx;
+          line-height: 30rpx;
+          background: #F7D397;
+          border-top-right-radius: 4rpx;
+          border-bottom-right-radius: 4rpx;
+          color: #865E41;
+        }
+      }
+    }
+
   .message-username {
     color: #999;
     font-size: 12px;
-    max-width: 400rpx;
+    max-width: 300rpx;
     white-space: nowrap;
     overflow: hidden;
     display: inline-block;
@@ -103,13 +152,13 @@ export default {
     background: #fff;
     border-radius: 2px 8px 8px 8px;
   }
-  
+
   // &.new .message-bubble-body {
   //   transform: scale(0);
   //   transform-origin: top left;
   //   animation: bounce 500ms linear both;
   // }
-  
+
   &.message-send {
     padding: 24rpx 32rpx 24rpx 128rpx;
     flex-flow: row-reverse nowrap;
@@ -140,7 +189,7 @@ export default {
     font-size: 0;
   }
 }
-  
+
 @keyframes bounce {
   0% {
     transform: matrix3d(0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1);

@@ -199,7 +199,7 @@
     </view>
 		<view class="connectServiceContainer" v-if="showFloating" @click="gotoRankPage" :style="{bottom: containerPaddingBottom}">
 			<view class="connectServiceContent">
-				<image src="https://ali-image.dabanjia.com/static/mp/dabanjia/images/theme-red/home/kefu.png"  @click="gotoEvaluatePage"/> 
+				<image src="https://ali-image.dabanjia.com/static/mp/dabanjia/images/theme-red/home/kefu.png"  @click="gotoEvaluatePage"/>
 				<view class="contentInfo">
 					<view class="no">不知道如何选择设计师</view>
 					<view class="find">找我聊聊为您推荐</view>
@@ -219,7 +219,7 @@
 import { debounce } from "@/utils/common.js";
 import {
   recommendCaseList,
-  searchDesigner,
+  firstsearchDesigner,
 } from "../../../api/home-find-design.js";
 export default {
   data() {
@@ -294,7 +294,7 @@ export default {
 		console.log("this.page===",hhh)
 		this.getDesignerList();
   },
-  onShow() { 
+  onShow() {
 		this.scrollLeft = 1
 		this.$nextTick(()=>{
 			this.scrollLeft = 0
@@ -313,11 +313,11 @@ export default {
 			console.log("this.hasEstate==",this.hasEstate)
 			this.getRecommendCaseList();
 		})
-		
-		
-		
+
+
+
   },
-	
+
   onPageScroll(scrollTop) {
     this.scrollTop = scrollTop.scrollTop;
   },
@@ -373,10 +373,10 @@ export default {
         sortType: "", //排序类型 0:默认排序，1:服务次数排序 2： 好评率排序"
       };
 
-      searchDesigner(params).then((res) => {
+      firstsearchDesigner(params).then((res) => {
         this.searchDesignerList = res.list;
         this.totalPage = res.totalPage;
-				
+
 				if(this.page ==res.totalPage){
 					this.page = 0
 					console.log("this.page11==",this.page)
@@ -384,7 +384,7 @@ export default {
 				}
       });
     },
-    
+
 		// 换一批
 		changeDesignerList(){
 			console.log("换一批！")

@@ -138,13 +138,13 @@
       	}
       		getCaseList(params).then((res) => {
       			if (res && res.list) {
-      				// this.addList(res.list);
-      				// this.pagState.page = res.page+1;
-      				// this.pagState.totalPage = res.totalPage;
-      				// this.pagState.totalRows = res.totalRows;
+      				this.addList(res.list);
+      				this.pagState.page = res.page+1;
+      				this.pagState.totalPage = res.totalPage;
+      				this.pagState.totalRows = res.totalRows;
               
-          //     this.$emit('contentEmpty','caseEmpty',res.list.length>0?true:false)
-          this.$emit('contentEmpty','caseEmpty',false)
+              this.$emit('contentEmpty','caseEmpty',res.list.length>0?true:false)
+          // this.$emit('contentEmpty','caseEmpty',false)
       			}else{
               this.$emit('contentEmpty','caseEmpty',false)
             }

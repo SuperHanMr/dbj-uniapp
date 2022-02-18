@@ -199,7 +199,10 @@ export function getCaseList(params) {
 	return request.post("/app/case/new/personal/page", params)
 }
 
-
+//获取个人主页同行评价
+export function getPeerComments(params) {
+	return request.get(`/pm/app/commentSetting/getPeerComments?refUserId=`+params)
+}
 
 //查询服务中是否可以换人
 export function checkServeingChange(params) {

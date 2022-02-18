@@ -2,6 +2,8 @@
 	<view class="waterfall-item" :class="{'is-grab':!isGrab}">
 		<view class="img-box" @tap="onTap">
 			<image :src="params.imageUrl" mode="widthFix" @load="emitHeight" @error="emitHeight"></image>
+      <image class="person-tag" src="../../../../static/famous.png" mode="" v-if="params.famous"></image>
+      <image class="person-tag" src="../../../../static/favourite.png" mode="" v-if="params.favourite"></image>
 			<view class="comment-like">
 				<view class="address" v-if="params.cityName">
           {{params.roomNum!==0?`${params.roomNum}室`:params.hallNum!==0?`${params.hallNum}厅`:''}}
@@ -123,6 +125,14 @@
 			max-height: 600rpx;
 			border-radius: 8px;
 		}
+    .person-tag{
+      width: 132rpx;
+      height: 42rpx;
+      position: absolute;
+      top: 16rpx;
+      left: 16rpx;
+      border-radius: 0;
+    }
 		.comment-like{
 			position: absolute;
 			bottom: 0;
