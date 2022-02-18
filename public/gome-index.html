@@ -86,7 +86,7 @@
       // }
     }
     function requestToken() {
-      var url = '/customer/app/oauth/gome/loginByCookie';
+      var url = '/app/oauth/gome/loginByCookie';
       var params = {
         clientType: "3",
         clientCode: "APPLET"
@@ -99,8 +99,8 @@
           var res = JSON.parse(resText);
           console.log('success:', resText, res);
           if (res.data) {
-            var token = res.data;
-            redirectToWeb(token);
+            var data = res.data || {};
+            redirectToWeb(data.accessToken);
           } else {
             redirectToWeb();
           }
