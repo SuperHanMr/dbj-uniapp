@@ -1,7 +1,7 @@
 <template>
   <view class="person-desgin">
     <view class="header">
-      <image :src="personData.avatar" mode="aspectFill"></image>
+      <image :src="personData.avatar"  mode="aspectFill"></image>
       <view class="header-right">
         <view class="header-right-top">
           <view class="list-item">
@@ -72,8 +72,8 @@
         {{personData.industryYearsStr?personData.industryYearsStr:''}}
       </view>
       <view class="introduce">
-        <view class="item" @click="openPopup">
-          <i class='icon-biangengxiangqing icon'></i>
+        <view class="item" @click="openPopup" v-if="personData.personAllBadgeVO.skillBadges.length||personData.personAllBadgeVO.basicBadges.length">
+          <i class='icon-a-homepage_Thebadge icon'></i>
           <text class="tag-tip">Ta的徽章</text>
           <view class="tag">
             <image v-for="(item,index) in personData.personAllBadgeVO.basicBadges" :key='item.badgeId' :src="item.ico" mode=""></image>
@@ -81,17 +81,16 @@
           </view>
           <i class="icon-alert_notice_jump"></i>
         </view>
-        <view class="item">
-          <i class='icon-biangengxiangqing icon'></i>
+        <view class="item" v-if="personData.designTags.length">
+          <i class='icon-a-homepage_Goodat icon'></i>
           <view class="skill">
             <view class="skill-item" v-for="(item,index) of personData.designTags" :key='index'>
               {{item}}
             </view>
-            
           </view>
         </view>
         <view class="item">
-          <i class='icon-biangengxiangqing icon'></i>
+          <i class='icon-a-homepage_data icon'></i>
           <view class="msg-content introudc-msg" >
             <view class="report-text" :class="{'report-text-hidden':isHidden}">{{personData.intro||'这个人很懒，什么都没写'}}</view>
             <view class="openHidden" v-if="showBtn" @click="clickHidden">
@@ -100,6 +99,13 @@
           </view>
         </view>
         
+      </view>
+      <view class="value-rank" v-if="personData.valueRank>0" @click="toRankList">
+        <text>Top.</text>
+        <text class="num">{{personData.valueRank}}</text>
+        <text>打扮家最具价值设计师榜单</text>
+        <i class="icon-alert_notice_jump"></i>
+        <image :src="personData.valueRank>9?'../../../static/person_rank.png':'../../../static/person_rank_one.png'" mode=""></image>
       </view>
     </view>
   </view>
@@ -168,6 +174,11 @@
       sendMsg(){
         
         this.$emit('sendMsg')
+      },
+      toRankList(){
+        uni.navigateTo({
+          url:'/sub-home/pages/find-design/designer-rank-list'
+        })
       }
     }
   }
@@ -277,18 +288,25 @@
           .icon{
             color: #fff;
             margin-right: 12rpx;
+            // margin-top: 6rpx;
+            line-height: 42rpx;
+            font-size: 20rpx;
+          }
+          .icon-a-homepage_data{
+            margin-top: 4rpx;
           }
           .tag-tip{
             color: #fff;
             opacity: 0.8;
             font-size: 22rpx;
             margin-right: 12rpx;
+            line-height: 40rpx;
           }
           .icon-alert_notice_jump{
             color: #fff;
             opacity: 0.8;
             font-size: 24rpx;
-            line-height: 32rpx;
+            line-height: 40rpx;
           }
         }
         .tag{
@@ -364,6 +382,38 @@
           font-size: 24rpx;
           
         }
+      }
+    }
+    .value-rank{
+      margin: 32rpx 0;
+      height: 60rpx;
+      line-height: 60rpx;
+      font-size: 24rpx;
+      color: #865E41;
+      position: relative;
+      padding: 0 24rpx;
+      text{
+        z-index: 10;
+        position: relative;
+      }
+      .num{
+        margin: 0 44rpx 0 8rpx;
+        font-size: 28rpx;
+        font-weight: bold;
+      }
+      i{
+        position: relative;
+        z-index: 10;
+        margin-left: 8rpx;
+        font-size: 20rpx;
+        display: inline-block;
+      }
+      image{
+        position: absolute;
+        left: 0;
+        top: 0;
+        height: 60rpx;
+        width: 100%;
       }
     }
   }
