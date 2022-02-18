@@ -24,6 +24,49 @@
             <strong>Please enable JavaScript to continue.</strong>
         </noscript>
         <div id="app"></div>
+        <script src="<%= VUE_APP_GOME_SDK_APP %>"></script>
+        <script>
+        (function(GomeJSBridge, document) {
+            // 处理当页面的title变化时，修改APP的title
+            function setAppTitle(title) {
+                GomeJSBridge.setHeadBar(null, null, {
+                    title: title
+                })
+            }
+            var titleDom = document.querySelector('title');
+            var _title = titleDom.innerText;
+            // 是否在真快乐APP中
+            if (GomeJSBridge && GomeJSBridge.ready) {
+                GomeJSBridge.ready(function() {
+                    _title = titleDom.innerText;
+                    setAppTitle(_title);
+                    Object.defineProperty(document, 'title', {
+                        get() {
+                            return _title;
+                        },
+                        set(val) {
+                            setAppTitle(val);
+                            titleDom.innerText = _title = val;
+                        }
+                    })
+                });
+                // 插入样式隐藏H5的头
+                var style = document.createElement('style');
+                style.innerText = [
+                    'uni-page-head {',
+                        'display: none !important;',
+                    '}',
+                    '.uni-app--showtabbar uni-page-head[uni-page-head-type="default"] ~ uni-page-wrapper {',
+                        'height: calc(100% - 50px);',
+                    '}',
+                    'uni-page-head[uni-page-head-type=default]~uni-page-wrapper {',
+                        'height: 100%',
+                    '}',
+                ].join('');
+                document.head.appendChild(style);
+            }
+        })(window.GomeJSBridge, window.document);
+        </script>
         <!-- built files will be auto injected -->
     </body>
 
