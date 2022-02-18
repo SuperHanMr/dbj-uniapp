@@ -89,19 +89,12 @@
             <view class="header">
               <view class="name">{{item2.name}}</view>
               <view class="rank">{{item2.levelName}}设计师</view>
-							<view class="ranking-container">
-								<view class="num">
-									Top.1
-								</view>
-								<view class="text">
-									最具价值
-								</view>
+							<view class="ranking-container" v-if="item2.rank >=1">
+								<view class="num">TOP.{{item2.rank}}</view>
+								<view class="text">最具价值</view>
 							</view>
             </view>
-            <view
-              class="goodPraise"
-              style="margin-bottom: 8rpx;"
-            >
+            <view class="goodPraise" style="margin-bottom: 8rpx;">
               <view class="item">
                 <text v-if="item2.praiseEfficiency">好评率{{item2.praiseEfficiency}}%</text>
                 <text v-if="item2.praiseEfficiency" class="icon"></text>
@@ -204,9 +197,9 @@
         />
       </view>
     </view>
-		<view class="connectServiceContainer" @click="gotoRankPage" :style="{bottom: containerPaddingBottom}">
+		<view class="connectServiceContainer" v-if="showFloating" @click="gotoRankPage" :style="{bottom: containerPaddingBottom}">
 			<view class="connectServiceContent">
-				<image src="../../static/images/kefu.png" /> 
+				<image src="https://ali-image.dabanjia.com/static/mp/dabanjia/images/theme-red/home/kefu.png"  @click="gotoEvaluatePage"/>
 				<view class="contentInfo">
 					<view class="no">不知道如何选择设计师</view>
 					<view class="find">找我聊聊为您推荐</view>
@@ -214,8 +207,8 @@
 				<view class="btn" @click="immediatelyChat">
 					立即沟通
 				</view>
-				<view class="cancel-Container">
-					<image src="../../static/images/find-designer-cancel.png" mode=""></image>
+				<view class="cancel-Container" @click.stop="showFloating=false">
+					<image src="https://ali-image.dabanjia.com/static/mp/dabanjia/images/theme-red/home/find-designer-cancel.png" mode=""></image>
 				</view>
 			</view>
 		</view>
@@ -226,7 +219,7 @@
 import { debounce } from "@/utils/common.js";
 import {
   recommendCaseList,
-  searchDesigner,
+  firstsearchDesigner,
 } from "../../../api/home-find-design.js";
 export default {
   data() {
@@ -276,8 +269,10 @@ export default {
       hasEstate: false, //是否有房屋
       estateId: "", //房屋id
       page: 0,
+			totalRows:"",
       totalPage: "",
 			containerPaddingBottom:"",
+			showFloating:true,
     };
   },
 	mounted() {
@@ -299,7 +294,7 @@ export default {
 		console.log("this.page===",hhh)
 		this.getDesignerList();
   },
-  onShow() { 
+  onShow() {
 		this.scrollLeft = 1
 		this.$nextTick(()=>{
 			this.scrollLeft = 0
@@ -318,11 +313,11 @@ export default {
 			console.log("this.hasEstate==",this.hasEstate)
 			this.getRecommendCaseList();
 		})
-		
-		
-		
+
+
+
   },
-	
+
   onPageScroll(scrollTop) {
     this.scrollTop = scrollTop.scrollTop;
   },
@@ -336,9 +331,16 @@ export default {
 	},
   methods: {
 		gotoRankPage(){
+			console.log("去设计师榜单列表页面")
 			uni.navigateTo({
 				url:"designer-rank-list"
 			})
+		},
+		gotoEvaluatePage(){
+			console.log("去同行评价页面")
+			// uni.navigateTo({
+			// 	url:"../../../sub-decorate/pages/person-page/person-peer-evaluate-list"
+			// })
 		},
     toBack() {
       uni.navigateBack({});
@@ -371,30 +373,24 @@ export default {
         sortType: "", //排序类型 0:默认排序，1:服务次数排序 2： 好评率排序"
       };
 
-      searchDesigner(params).then((res) => {
+      firstsearchDesigner(params).then((res) => {
         this.searchDesignerList = res.list;
         this.totalPage = res.totalPage;
-        uni.setStorageSync("recommendDesignerTotalPage", res.totalPage);
-        console.log("res.totalRows==",res.totalRows);
-				// 返回的总条数不是5的倍数
-        if ((res.totalRows % 5 !== 0) && (this.page == (this.totalPage - 1))) {
-          this.page = 0;
-          uni.setStorageSync("recommendDesignerPage", this.page);
-        }
-				//返回的总条数是5的倍数
-				if((res.totalRows % 5 == 0) && (this.page ==this.totalPage)){
-					this.page = 0;
+
+				if(this.page ==res.totalPage){
+					this.page = 0
+					console.log("this.page11==",this.page)
 					uni.setStorageSync("recommendDesignerPage", this.page);
 				}
       });
     },
-    
+
 		// 换一批
 		changeDesignerList(){
 			console.log("换一批！")
 			this.page++;
+			console.log("this.page22==",this.page)
 			uni.setStorageSync("recommendDesignerPage", this.page);
-			console.log("this.page==",this.page)
 			this.getDesignerList();
 		},
 		immediatelyChat(){

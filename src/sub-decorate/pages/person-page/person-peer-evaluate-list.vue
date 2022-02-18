@@ -1,31 +1,28 @@
 <template>
 	<view class="peer-evaluate-page">
 		<view class="evaluate-head-bac">
-			<view class="evaluate-head">共5位同行评价了Ta</view>
+			<view class="evaluate-head">共获得{{showCommentCount}}次同行的评价</view>
 		</view>
 		<view class="evaluate-list">
-			<view class="evaluate-item" v-for="(item,index) in evaluate.list" :key="index">
+			<view class="evaluate-item" v-for="(item,index) in peerCommentsList" :key="index">
+
 				<view class="evaluate-person-info">
-					<image src="" mode="aspectFit"></image>
+					<image :src="item.avatar" />
 					<view class="right">
-						<text class="name">设计师刘金鸿</text>
+						<text class="name">{{item.userName}}</text>
 						<view class="design-tag-info">
-							<text class="design-leve">高级设计师</text>
-							<view class="design-tag">
-								<text>TOP.1</text>
-								<text>最具价值</text>
+							<text class="design-leve">{{item.roleName}}</text>
+							<view class="design-tag" v-if="item.valueRank>=1">
+								<view class="topNum">TOP.{{item.valueRank}}</view>
+								<view class="tagText">最具价值</view >
 							</view>
 						</view>
 					</view>
 				</view>
-				<view class="evaluate-tag">
-					<view>
-						设计水平高
-					</view>
+				<view class="evaluate-tag" v-if="item.commentTags.length">
+					<view v-for="tageItem in item.commentTags" :key="tageItem">{{tageItem}}</view>
 				</view>
-				<view class="evaluate-content">
-					这个设计师挺牛逼的，反正我觉得挺牛逼的这个设计师挺牛逼的，反正我觉得挺牛逼的这个设计师挺牛逼的，反正我觉得挺牛逼的这个设计师挺牛逼的，反正我觉得挺牛逼的这个设计师挺牛逼的，反正我觉得挺牛逼的这个设计师挺牛逼的，反正我觉得挺牛逼的
-				</view>
+				<view class="evaluate-content">{{item.content}}</view>
 			</view>
 		</view>
 
@@ -33,32 +30,23 @@
 </template>
 
 <script>
-	import {
-		formatDate
-	} from "@/utils/common.js"
-	import {
-		getComments
-	} from '@/api/decorate.js'
+	import {getPeerCommentsList} from "../../../api/decorate.js"
 	export default {
-		components: {},
 		data() {
 			return {
 				personId: 0,
-				evaluate: {
-					list: []
-				},
+				showCommentCount:"",
+				peerCommentsList:[],
 				pageInfo: {
 					page: 1,
 					totalPage: 0,
-					totalRow: 0
+					totalRow: 0,
 				},
-				totalNum: 0
+				totalNum: 0,
 			}
 		},
-		onLoad(e) {
+		onLoad() {
 			this.personId = e.id
-		},
-		mounted() {
 			this.getComments()
 		},
 
@@ -73,32 +61,29 @@
 		methods: {
 			getComments() {
 				let params = {
+					// userId: 8218,
 					userId: this.personId,
 					page: this.pageInfo.page,
-					rows: 10
+					rows: 10,
 				}
-				getComments(params).then(data => {
-					if (data) {
-						this.totalNum = data.aggregations
-						data.list.map(item => {
-							item.createTime = formatDate(item.createTime, 'YYYY-MM-DD')
-						})
-						this.evaluate.list = this.evaluate.list.concat(data.list)
-						this.pageInfo.totalPage = data.totalPage
-						this.pageInfo.totalRow = data.totalRows
-					}
+				getPeerCommentsList(params).then(res => {
+					console.log("res=====",res)
+					this.peerCommentsList = res.list
+					this.peerCommentsList  = this.peerCommentsList.map(item=>{
+						item.commentTags = item.commentTags.split(",")
+						return item
+					})
+					this.showCommentCount = res.aggregations.showCommentCount
 				})
 			},
 		}
 	}
 </script>
 
-<style>
+<style lang="scss" scoped>
 	page {
 		background-color: #fff;
 	}
-</style>
-<style lang="scss" scoped>
 	.peer-evaluate-page {
 		background-color: #fff;
 		padding: 32rpx 32rpx 0 32rpx;
@@ -115,11 +100,14 @@
 				padding-left: 32rpx;
 				height: 88rpx;
 				line-height: 88rpx;
-				box-shadow: 0px 0px 20px 0px rgba(0, 0, 0, 0.05);
+				color: #222222;
+				font-size: 32rpx;
+				font-weight: bold;
+				box-shadow: 0 0 40rpx 0 rgba(0, 0, 0, 0.05);
 				border-radius: 12rpx;
-				border: 0.5px solid #E5E5E5;
+				border: 1rpx solid #E5E5E5;
 				background-color: #fff;
-
+				letter-spacing: 2rpx;
 			}
 		}
 
@@ -160,35 +148,37 @@
 							.design-leve {
 								height: 30rpx;
 								line-height: 30rpx;
+								box-sizing: border-box;
 								font-size: 20rpx;
-								width: 100rpx;
 								color: #4FBEED;
 								background: rgba(79, 190, 237, 0.06);
 								border-radius: 4rpx;
-								padding: 0 4rpx;
+								padding: 0 8rpx 2rpx;
 							}
 
 							.design-tag {
 								margin-left: 12rpx;
 								display: flex;
-								height: 30rpx;
-								line-height: 30rpx;
+								// height: 30rpx;
+								// line-height: 30rpx;
 								background: linear-gradient(180deg, #FFEBCC 0%, #FFE5B7 100%);
-								text:nth-child(1) {
-									border-top-left-radius: 4rpx;
-									border-bottom-left-radius: 4rpx;
-									padding: 0 6rpx 0 4rpx;
+								.topNum {
+									height: 28rpx;
+									line-height: 28rpx;
+									padding: 0 8rpx 4rpx;
+									border-radius: 4rpx 0 0 4rpx;
 									font-size: 20rpx;
 									font-weight: bold;
 									color: #865e41;
 								}
-								text:nth-child(2) {
-									border-top-right-radius: 4rpx;
-									border-bottom-right-radius: 4rpx;
+								.tagText {
+									height: 28rpx;
+									line-height: 28rpx;
+									padding: 0 8rpx 4rpx;
+									border-radius:0 4rpx 4rpx 0;
 									background: linear-gradient(180deg, #FFDFA8 0%, #EFC988 100%);
-									padding: 0 4rpx 0 4rpx;
 									font-size: 20rpx;
-									font-weight: bold;
+									font-weight: 500;
 									color: #865e41;
 								}
 							}
@@ -199,23 +189,27 @@
 				.evaluate-tag {
 					margin-top: 26rpx;
 					display: flex;
-
+					align-items: center;
+					flex-flow: row wrap;
+					flex: 1;
 					view {
 						height: 34rpx;
+						line-height: 33rpx;
 						padding: 0 12rpx;
 						background: #F3F3F3;
 						border-radius: 6rpx;
+						border: 0.6rpx solid #CCCCCC;
 						font-family: PingFang SC;
 						font-style: normal;
 						font-weight: normal;
-						line-height: 34rpx;
 						font-size: 22rpx;
 						color: #333333;
+						margin:0 12rpx 12rpx 0 ;
 					}
 				}
 
 				.evaluate-content {
-					margin-top: 16rpx;
+					margin-top: 4rpx;
 					font-family: PingFang SC;
 					font-size: 28rpx;
 					line-height: 44rpx;
