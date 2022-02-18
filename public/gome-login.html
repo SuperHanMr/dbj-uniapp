@@ -132,7 +132,7 @@
             function(data) {
               console.log('========bridge login success', data, data.isLogined);
               if (data.isLogined === 'Y') {
-                var loginedUrl = window.location.origin + window.location.pathname + '?isLogin=true' + window.location.hash;
+                var loginedUrl = window.location.origin + window.location.pathname + '?isLogin=true' + (pageParams.fromDbj ? '&fromDbj=true' : '') + window.location.hash;
                 window.location.replace(loginedUrl);
               } else {
                 redirectToWeb();
