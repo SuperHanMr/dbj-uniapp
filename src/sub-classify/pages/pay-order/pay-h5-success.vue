@@ -50,6 +50,7 @@
       },
       backApplication() {
         location.href = 'gome://m.gome.com.cn/appHome_2.html'
+        location.href = 'https://m.gome.com.cn/appHome_2.html'
       }
     }
   }
