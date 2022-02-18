@@ -790,7 +790,7 @@ export default {
         payType: payType,
         deviceType: deviceType,
 		    remarks: this.remarks,
-		    orderId: this.orderNo,
+		    orderId: this.orderId,
 		    openid: openId,
 		    isCardPay: this.cardClick
 		  }).then((e) => {
@@ -808,7 +808,7 @@ export default {
 		            duration: 1000,
 		          });
 		          uni.redirectTo({
-		            url: `../../../../sub-classify/pages/pay-order/pay-success?orderId=${this.orderNo}`,
+		            url: `../../../../sub-classify/pages/pay-order/pay-success?orderId=${this.orderId}`,
 		          });
 		        },
 		        fail(e) {
@@ -839,7 +839,7 @@ export default {
 		        duration: 1000,
 		      });
 		      uni.redirectTo({
-		        url: `../../../../sub-classify/pages/pay-order/pay-success?orderId=${this.orderNo}`,
+		        url: `../../../../sub-classify/pages/pay-order/pay-success?orderId=${this.orderId}`,
 		      });
 		    }
 		  });
