@@ -1,6 +1,6 @@
 <template>
   <view class="order-container">
-    <view v-if="!isShow">
+    <view v-if="!isShow && !isFromPackage">
       <uni-popup
         ref="houseDialog"
         :mask-click="false"
@@ -28,7 +28,7 @@
         @typeServe2="typeServe2"
         :originFrom="originFrom"
         :addUser="addUser"
-        v-if="isShow"
+        v-if="isShow && !isFromPackage"
       >
       </address-picker>
       <view class="content">
@@ -414,6 +414,8 @@ import {
   getAddWorker,
   getDetailInfo,
   payOrder,
+  getBundleDetail,
+  payBundleOrder,
 } from "../../../api/classify.js";
 import { getBalance } from "../../../api/user.js";
 import orderToast from "./order-toast.vue";
@@ -430,6 +432,8 @@ export default {
   },
   data() {
     return {
+      isFromPackage: false, // 来源于套包下单
+      packageId: 0, // 促销套包id
       isShow: true,
       hasTime: false,
       time: "",
@@ -526,6 +530,18 @@ export default {
     // 小程序数据
     if (e.from) {
       this.originFrom = e.from;
+    }
+    if (Number(e.fromPackage) !== 1) { // 套包下单
+      this.isFromPackage = true;
+      this.packageId = e.packageId;
+      // e.houseId = 277;
+      this.estateId = e.houseId;
+      // TODO 接收套包下单页传递的商品列表信息
+      // this.orderCartParams = e.
+      this.getBundleDetail({
+        bundleId: 63496,
+        skuIds: [133505, 133498]
+      });
     }
     this.houseId = e.houseId ? e.houseId : getApp().globalData.currentHouse.id;
     this.buyCount = e.buyCount;
@@ -638,6 +654,11 @@ export default {
     cancelHousePop() {
       this.$refs.houseDialog.close();
     },
+    getBundleDetail(params) {
+      getBundleDetail(params).then(data => {
+        this.reducePayParams(this.reduceDetailInfo(data));
+      })
+    },
     emitInfo(val) {
       this.addUser = [];
       this.hasCanBuy = false;
@@ -667,7 +688,67 @@ export default {
         };
       }
       getDetailInfo(params).then((data) => {
-        this.totalPrice = (
+        this.reducePayParams(this.reduceDetailInfo(data));
+      });
+    },
+    // XXX: getBundleDetail 和 getDetailInfo 接口返回的数据接口不一致
+    // 对getBundleDetail 数据聚合以供 reducePayParams 方法使用
+    reduceDetailInfo(data) {
+      if (this.isFromPackage) {
+        let storeInfos = []
+        let storeMap = {};
+        data.skuPropertyVOS.forEach(sku => {
+          let storeId = sku.storeId;
+          let store = storeMap[storeId];
+          if (!storeMap[storeId]) {
+            store = {
+              storeId: storeId,
+              "storeName":"商家店铺名字",
+              skuInfos: [],
+            }
+            storeMap[storeId] = store;
+            storeInfos.push(store);
+          }
+
+          let skuInfo = {
+            ...sku,
+            skuId: sku.id,
+				    // storeId: storeId,
+				    // productType: sku.productType,
+				    // categoryTypeId: sku.categoryTypeId,
+				    // categoryId: sku.categoryId,
+				    skuName: sku.name,
+				    // spuName: sku.spuName,
+				    // spuId: sku.spuId,
+				    // imageUrl: sku.imageUrl,
+				    // appointmentRequired: sku.appointmentRequired,
+				    // unit: sku.unit,
+				    price: sku.discountPrice, // 折后价
+				    buyCount: sku.minimumOrderQuantity, // 购买数量取起购价
+				    handlingFee: sku.stairwayRoomHandlingFee,
+				    // deposit: sku.deposit,
+				    // shippingFee: sku.shippingFee,
+				    // refundable:sku.refundable
+          }
+
+          store.skuInfos.push(skuInfo);
+        })
+
+        return {
+          totalPrice: data.totalPrice,
+          totalDeliveryFee: 0,
+          totalHandlingFee: 0,
+          totalDeposit: 0,
+          totalDiscount: 0,
+          storeInfos: storeInfos,
+        }
+      }
+
+      return data
+    },
+    // 整理结算相关参数
+    reducePayParams(data) {
+      this.totalPrice = (
           data.totalPrice +
           data.totalDeliveryFee +
           data.totalHandlingFee +
@@ -759,7 +840,6 @@ export default {
         if (this.orderInfo.storeInfos[0].skuInfos.length === 1) {
           this.totalClassNum = 1;
         }
-      });
     },
     chooseTime(shopIndex, goodIndex) {
       this.shopIndex = shopIndex;
@@ -782,6 +862,9 @@ export default {
         return;
       }
       this.payOrder();
+    },
+    createOrder(params) {
+      return this.isFromPackage ? payBundleOrder(params) : payOrder(params);
     },
     payOrder() {
       let details = [];
@@ -809,8 +892,9 @@ export default {
         details: details,
         isCardPay: this.cardClick,
         origin: decodeURIComponent(this.shareOriginType),
+        packageId: this.isFromPackage ? this.packageId : undefined, // 套包下单时需要套包id参数，默认undefined
       };
-      payOrder(params).then((data) => {
+      this.createOrder(params).then((data) => {
         const { wechatPayJsapi, cardPayComplete } = data;
         if (!cardPayComplete) {
           uni.requestPayment({
