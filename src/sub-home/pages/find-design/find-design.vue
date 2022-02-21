@@ -333,15 +333,15 @@ export default {
   methods: {
 		gotoRankPage(){
 			console.log("去设计师榜单列表页面")
-			uni.navigateTo({
-				url:"designer-rank-list"
-			})
+			// uni.navigateTo({
+			// 	url:"designer-rank-list"
+			// })
 		},
 		gotoEvaluatePage(){
 			console.log("去同行评价页面")
-			uni.navigateTo({
-				url:"../../../sub-decorate/pages/person-page/person-peer-evaluate-list?id=8772"
-			})
+			// uni.navigateTo({
+			// 	url:"../../../sub-decorate/pages/person-page/person-peer-evaluate-list?id=8772"
+			// })
 		},
     toBack() {
       uni.navigateBack({});
