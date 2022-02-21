@@ -5,7 +5,7 @@
         + '&wx-defaultCityId=' + defaultHouseInfo.cityId + '&wx-defaultAreaId=' + defaultHouseInfo.areaId 
         + '&wx-defaultLocationName=' + defaultHouseInfo.name  + '&wx-token=' + hashToken + '&wx-deviceId=' + deviceId + '&from=' + from
          + '&shareAreaId=' + shareAreaId + '&shareAreaName=' + shareAreaName+ '&shareOriginType=' + shareOriginType + '&wx-userId=' + userId
-        + '&skuTemplateId=' + skuTemplateId + '&gomeDivisionCode=' + gomeDivisionCode + '&fromPackage='  + fromPackage + '&wx-bundleId='  + bundleId">
+        + '&skuTemplateId=' + skuTemplateId + '&gomeDivisionCode=' + gomeDivisionCode + '&fromPackage='  + fromPackage + '&wx-bundleId='  + bundleId + '&wx-spuId=' + spuId">
     </web-view>
   </view>
 </template>
@@ -31,7 +31,8 @@
         gomeDivisionCode: 0,
         skuTemplateId: 0,
         fromPackage: 0,
-        bundleId: 0
+        bundleId: 0,
+        spuId: 0
       }
     },
     onLoad(e) {
@@ -45,6 +46,7 @@
       this.from = e.from
       this.userId = e.userId
       this.bundleId = e.bundleId
+      this.spuId = e.spuId
       if (e.goodId) {
         this.goodId = e.goodId
       } else if (uni.getStorageSync('goodId')) { // 商城列表和装修模块的商品id
