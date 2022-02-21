@@ -572,6 +572,15 @@
             "navigationBarBackgroundColor": "#ffffff"
           }
         },
+		{
+		  "path": "pages/promotion-product-list/index",
+		  "style": {
+		    "navigationBarTitleText": "活动详情",
+		    "enablePullDownRefresh": true,
+			"navigationBarTextStyle":"white",
+		    "navigationBarBackgroundColor": "#e38b49"
+		  }
+		},
         {
           "path": "pages/pay-order/index",
           "style": {

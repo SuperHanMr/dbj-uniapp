@@ -316,11 +316,11 @@
     src: url("https://ali-res.dabanjia.com/static/font/price-font/price-font.woff2"),
       url("https://ali-res.dabanjia.com/static/font/price-font/price-font.woff");
   }
-
+  
   .price-font {
     font-family: PriceFont;
   }
-
+  
   .navbar-height{
     height: 88rpx;
   }
