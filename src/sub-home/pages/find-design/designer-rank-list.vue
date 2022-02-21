@@ -27,7 +27,7 @@
 				></view>
 				<view class="topNum" 
 				:style="{backgroundImage:index1>2?`url(${bgColorList[3].bgImg})`:`url(${bgColorList[index1].bgImg})`,backgroundSize:'100% 100%'}">
-					<view
+					<view class="top-font"
 					:style="{color:index1>2?bgColorList[3].color:bgColorList[index1].color}"
 					>{{index1+1}}</view>
 				</view>
@@ -49,8 +49,9 @@
 								<text class="text">好评率{{item1.searchDesignerVO.praiseEfficiency || "0"}}%</text>
 							</view>
 							<view class="label_container">
-								<view class="label_item" v-if="item1.searchDesignerVO.styleTag">{{item1.searchDesignerVO.styleTag}}</view>
-								<view class="label_item" v-if="item1.searchDesignerVO.designTag"  v-for="tagItem in item1.searchDesignerVO.designTag" :key="tagItem" >{{tagItem}}</view>
+							<view class="label_item" v-if="item1.searchDesignerVO.designs">{{item1.searchDesignerVO.styleTag}}</view>
+							<!-- 	<view class="label_item" v-if="item1.searchDesignerVO.styleTag">{{item1.searchDesignerVO.styleTag}}</view>
+								<view class="label_item" v-if="item1.searchDesignerVO.designTag"  v-for="tagItem in item1.searchDesignerVO.designTag" :key="tagItem" >{{tagItem}}</view> -->
 							</view>
 						</view>
 						<view class="hasAttention" v-if="item1.isFocusOn" @click.stop="handleDesigner(item1,index1)">
@@ -118,8 +119,8 @@
 					</view>
 				</view>
 				<scroll-view :scroll-y="true" class="toast-content">
-					<p>噼噼啪啪铺铺铺铺铺铺铺铺铺铺铺铺铺铺铺铺铺铺铺铺铺铺铺铺</p>
-					<p>谢谢谢谢谢寻寻寻寻寻寻寻寻寻寻寻寻寻寻寻寻寻寻寻寻寻寻寻寻寻寻</p>
+					<p>打扮家平台通过对设计师智能测评，以及对设计师服务能力、设计水平等多维度的评估，评选出最具价值设计师</p>
+					<p>我们的算法，包括对Wide & Deep、Learning、xDeepFM等算法、以及NLP双塔模型的独特应用</p>
 				</scroll-view>
 			</view>
 		</uni-popup>

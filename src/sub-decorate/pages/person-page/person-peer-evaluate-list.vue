@@ -13,8 +13,8 @@
 						<view class="design-tag-info">
 							<text class="design-leve">{{item.roleName}}</text>
 							<view class="design-tag" v-if="item.valueRank>=1">
-								<view class="topNum">TOP.{{item.valueRank}}</view>
-								<view class="tagText">最具价值</view >
+								<view class="topNum top-font"> <text>TOP.{{item.valueRank}}</text></view>
+								<view class="tagText"><text>最具价值</text></view >
 							</view>
 						</view>
 					</view>
@@ -172,27 +172,38 @@
 							.design-tag {
 								margin-left: 12rpx;
 								display: flex;
-								// height: 30rpx;
-								// line-height: 30rpx;
-								background: linear-gradient(180deg, #FFEBCC 0%, #FFE5B7 100%);
 								.topNum {
-									height: 28rpx;
-									line-height: 28rpx;
-									padding: 0 8rpx 4rpx;
+									height: 30rpx;
 									border-radius: 4rpx 0 0 4rpx;
-									font-size: 20rpx;
-									font-weight: bold;
-									color: #865e41;
+									background: linear-gradient(180deg, #FFDFA8 0%, #EFC988 100%);
+									text{
+										display: block;
+										background: linear-gradient(180deg, #FFEBCC 0%, #FFE5B7 100%);
+										height: 30rpx;
+										line-height: 34rpx;
+										padding: 0 8rpx;
+										box-sizing: border-box;
+										border-radius: 4rpx 0 8rpx 4rpx;
+										font-size: 20rpx;
+										font-weight: bold;
+										color: #865e41;
+									}
 								}
 								.tagText {
-									height: 28rpx;
-									line-height: 28rpx;
-									padding: 0 8rpx 4rpx;
-									border-radius:0 4rpx 4rpx 0;
-									background: linear-gradient(180deg, #FFDFA8 0%, #EFC988 100%);
-									font-size: 20rpx;
-									font-weight: 500;
-									color: #865e41;
+									height: 30rpx;
+									background: linear-gradient(180deg, #FFEBCC 0%, #FFE5B7 100%);
+									text{
+										background: linear-gradient(180deg, #FFDFA8 0%, #EFC988 100%);
+										display: block;
+										height: 30rpx;
+										line-height: 32rpx;
+										box-sizing: border-box;
+										padding: 0 8rpx;
+										border-radius:8rpx 4rpx 4rpx 0;
+										font-size: 20rpx;
+										font-weight: 500;
+										color: #865e41;
+									}
 								}
 							}
 						}

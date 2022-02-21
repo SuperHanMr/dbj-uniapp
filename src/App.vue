@@ -48,7 +48,7 @@
       isSaler:false
     },
 
-    onLaunch: function(options) {   
+    onLaunch: function(options) {
         // let isSaler = uni.getStorageSync("isSaler");
         // if(isSaler){
         //   this.globalData.isSaler = true;
@@ -319,6 +319,15 @@
 
   .price-font {
     font-family: PriceFont;
+  }
+   @font-face {
+  	font-family:TopFont;
+  	src: url("https://ali-res.dabanjia.com/static/font/rank-font/rank-font-Bold.woff2"),
+	       url("https://ali-res.dabanjia.com/static/font/rank-font/rank-font-Bold.woff");
+  }
+
+  .top-font{
+	  font-family: TopFont;
   }
 
   .navbar-height{
