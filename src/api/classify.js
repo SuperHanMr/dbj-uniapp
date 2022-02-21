@@ -19,6 +19,10 @@ export function getDetailInfo(params) {
 export function payOrder(params) {
 	return request.post(`/order-center/app/order/createOrder`, params)
 }
+
+export function payH5(params) {
+  return request.post("/order-center/app/pay/gomeConfirmPay", params);
+}
 export function getProductID(params) {
   return request.get("/pm/web/project/getProjectIdByEstateId", {params});
 }
@@ -211,5 +215,8 @@ export function getBundleDetail(params) {
   // }
   // return Promise.resolve(data);
   return request.post(`/product/app/bundle/${params.bundleId}/property`, params);
+}
+export function checkPay(params) {
+  return request.get("/order-center/app/order/queryPayResult", {params});
 }
 

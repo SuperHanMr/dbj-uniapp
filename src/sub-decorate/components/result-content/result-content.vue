@@ -23,7 +23,7 @@
         <i :class="{'icon-a-ic_zhuangxiuxianchang_jingsuanzhankai_csn':isHidden,'icon-a-ic_zhuangxiuxianchang_jingsuanshouqi_csn':!isHidden}"></i>
       </view>
       <view class="img-list">
-        <imagePreview :list='checkData.imageUrlList' :row='2'></imagePreview>
+        <image-preview :list='checkData.imageUrlList' :row='2'></image-preview>
         <!-- <image v-for="item of checkData.imageUrlList" :key='item' :src="item"></image> -->
       </view>
     </view>
@@ -50,7 +50,7 @@
   // #endif
   import * as echarts from '../../components/uni-ec-canvas/echarts.min'
   import deliverCard from '../delivery-card/delivery-card.vue'
-  import imagePreview from '../../../components/image-preview/image-preview.vue'
+  // import imagePreview from '../../../components/image-preview/image-preview.vue'
   // import * as echarts from "./echarts.min";
   import {
     getCheckResultDetail,
@@ -66,7 +66,7 @@
       uniEcCanvas,
       // #endif
       deliverCard,
-      imagePreview
+      // imagePreview
     },
     props: {
       isReport: true,

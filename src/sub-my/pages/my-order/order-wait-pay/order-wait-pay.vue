@@ -101,11 +101,12 @@
 								/>
 							</view>
 							<view class="right">
-								<text class="price-font" v-if="orderInfo.stockType == 0">
-									￥{{item.freight?`${item.freight}`:"--"}}
-								</text>
+								<!-- 无仓库 -->
+								<text class="price-font" v-if="item.stockType == 0">￥{{item.freight}}</text>
+								<!-- 有仓库 -->
 								<text class="price-font" :style="{marginTop:item.freight?'0':'8rpx'}" v-else>
-									{{item.freight?`￥${item.freight}`:"--"}}
+									<text class="price-font" v-if="item.orderType ==1">{{item.freight?`￥${item.freight}`:"0.00"}}</text>
+									<text class="price-font" v-else>{{item.freight}}</text>
 								</text>
 							</view>
 						</view>
@@ -115,22 +116,23 @@
 								<image
 								  class="icon"
 								  src="../../../../static/price_icon.svg"
-								  mode=""
 								  @click="readExpenses(2)"
 								/>
 							</view>
 							<view class="right">
-								<text class="price-font" v-if="orderInfo.stockType == 0">
-								  ￥{{item.handlingFees?item.handlingFees:"--"}}</text>
-								<text
-								  class="price-font" :style="{marginTop:item.handlingFees ? '0' : '8rpx' }"
-								  v-else
-								>{{item.handlingFees?`￥${item.handlingFees}`:"--"}}</text>
+								<!-- 无仓库 -->
+								<text class="price-font" v-if="item.stockType == 0">￥{{item.handlingFees}}</text>
+									<!-- 有仓库 -->
+								<text class="price-font" :style="{marginTop:item.handlingFees ? '0' : '8rpx' }" v-else>
+									<text v-if="item.orderType ==1">{{item.handlingFees?`￥${item.handlingFees}`:"0.00"}}</text>
+									<text v-else>{{item.handlingFees}}</text>
+								</text>
+
 							</view>
 						</view>
 						<view class="item_css_style"  v-if="item.storeDiscount">
 							<view class="left">
-								<text>商家</text>
+								<text>商家优惠</text>
 							</view>
 							<view class="right">
 								<text  class="price-font"> -￥{{item.storeDiscount}}</text>
@@ -146,8 +148,7 @@
 							</view>
 						</view>
 					</view>
-
-          <view
+         <!-- <view
             v-if="item.hasMaterial && orderInfo.stockType == 1"
             :style="{paddingBottom: item.hasMaterial && orderInfo.stockType == 1 ? '32rpx':'0'}"
           >
@@ -167,8 +168,8 @@
             >
               <text>搬运费需要根据实际要货时进行核算</text>
             </view>
-          </view>
 
+          </view> -->
         </view>
         <view class="split-line" />
       </view>
@@ -179,16 +180,6 @@
 				:payPrice="payPrice"
 			/>
 
-
-      <!-- <view class="payment-method">
-				<text>支付方式</text>
-				<view class="method">
-					<image src="@/static/order/ic_order_wechat@2x.png" mode="" />
-					<text>在线支付</text>
-				</view>
-			</view> -->
-
-      <!-- v-if="haveCard && orderInfo.isReplenish" -->
       <view
         v-if="haveCard && orderInfo.isReplenish"
         class="pay-way"
@@ -198,9 +189,7 @@
         <image
           class="card-img"
           src="https://ali-image.dabanjia.com/static/mp/dabanjia/images/classify/ic_card.png"
-          mode=""
-        >
-        </image>
+        />
         <view>
           <text>储值卡</text>
           <text class="card-sub">(可用余额:{{(cardBalance/100).toFixed(2)}}元)</text>
@@ -216,23 +205,22 @@
         <image
           v-if="cardClick"
           class="selected-img"
-          src="https://ali-image.dabanjia.com/static/mp/dabanjia/images/classify/pay_selected.png"
-          mode="" 
+          src="https://ali-image.dabanjia.com/static/mp/dabanjia/images/theme-red/decorate/ic_checked.svg"
+          mode=""
         >
         </image>
         <image
           v-else
           class="selected-img"
           src="https://ali-image.dabanjia.com/static/mp/dabanjia/images/classify/pay_unselected.png"
-          mode=""
-        >
-        </image>
+        />
       </view>
       <view class="pay-way mrb">
         <text style="color: #333333;">支付方式</text>
 				<view v-if="payChannel" class="flex-center"><text>储值卡支付</text></view>
         <view v-else class="flex-center"><text>在线支付</text></view>
       </view>
+
       <view class='remarks'>
         <text>备注</text>
         <view class="remarks-right">
@@ -369,11 +357,15 @@ export default {
         res,
         Number(this.totalPrice) * 100
       );
-      if (this.cardClick && res <= 0) {
-        return true;
-      } else {
-        return false;
-      }
+			if(!this.orderInfo.isReplenish){
+				return false
+			}else{
+				if (this.cardClick && res <= 0 ) {
+					return true;
+				} else {
+					return false;
+				}
+			}
     },
     payChannelPrice() {
       //提示框价格
@@ -474,6 +466,18 @@ export default {
         console.log(e);
         this.orderInfo = e;
         this.totalPrice = this.orderInfo.payAmount;
+
+
+
+				let res = Number(this.totalPrice) * 100 - this.cardBalance;
+				if (res <= 0) {
+					this.cardClick = true
+				}else{
+					this.cardClick = false
+				}
+				console.log("this.cardClick yayay =",this.cardClick)
+
+
         this.bottomStyle = this.orderInfo.showCancelBtn
           ? "space-between"
           : "flex-end";
@@ -981,6 +985,9 @@ export default {
 						display: flex;
 						flex-flow: row nowrap;
 						align-items: center;
+						view{
+							color: #999999;
+						}
 						.icon {
 						  width: 24rpx;
 						  height: 24rpx;

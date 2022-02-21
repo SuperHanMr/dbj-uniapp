@@ -435,6 +435,7 @@
         getApp().globalData.currentHouse = item;
       },
       toSearch() {
+		  
         uni.navigateTo({
           url: "../../../sub-classify/pages/search/index",
         });
@@ -574,9 +575,16 @@
         if (!url) {
           return;
         }
-        uni.navigateTo({
-          url: "../../common/webview/webview?url=" + encodeURIComponent(url),
-        });
+		url = "app-pages/product-promotion-list/index.html"
+		 if (url.indexOf("product-promotion-list")!=-1) {
+			 uni.navigateTo({
+			   url: "../../../sub-classify/pages/promotion-product-list/index",
+			 });
+		 } else {
+			uni.navigateTo({
+			  url: "../../common/webview/webview?url=" + encodeURIComponent(url),
+			}); 
+		 }
       },
       toCity() {
         let house = getApp().globalData.currentHouse;

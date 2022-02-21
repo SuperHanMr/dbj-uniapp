@@ -531,7 +531,7 @@ export default {
         this.queryAttention(routeId);
       }
     },
-    queryAttention(routeId) {
+    queryAttention(routeId, from = 'attention') {
       let data = {
         subBizType: this.personData.roleId,
         routeId: routeId,
@@ -559,7 +559,17 @@ export default {
           }
           this.isAttention = !this.isAttention;
         }
-
+        console.log(from,'zzzzzzzzzzzzzzzzzzzzzz')
+        if(from==='auto'){
+          uni.showToast({
+          	title: '已为你关注该设计师。',
+          	icon: 'none',
+          	
+          })
+          setTimeout(()=>{
+            this.sendMsg()
+          },1000)
+        }
         if (routeId === 2001 && this.isRecommend) {
           uni.showToast({
             title: "购买服务后，将为您优先推荐该服务者",
@@ -646,7 +656,15 @@ export default {
       query.exec(function (res) {});
     },
     back() {
-      uni.navigateBack();
+      let pages = getCurrentPages()
+      console.log(pages.length,'当前栈深度')
+      if(pages.length<2){
+        uni.switchTab({
+        	url: '/pages/home/index/index'
+        });
+      }else{
+        uni.navigateBack();
+      }
     },
     getSkuList() {
       let data = {

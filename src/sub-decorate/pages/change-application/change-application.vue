@@ -76,6 +76,7 @@
         width="36rpx"
         :checked="isCardPay"
         @change="changStoreValueCard"
+        @click='changeValue'
       >
       </check-box>
     </view>
@@ -170,6 +171,7 @@ export default {
     };
   },
   computed: {
+    
     totalAmount() {
       if (this.isCardPay) {
         let temp = this.cardBalance - this.changeOrderData.totalAmount;
@@ -217,6 +219,9 @@ export default {
     this.getBalance();
   },
   methods: {
+    changeValue(){
+      this.isCardPay = !this.isCardPay
+    },
     closePayDialog() {
       this.$refs.payDialog.close();
     },
@@ -292,6 +297,7 @@ export default {
         console.log("变更单data：", data);
         if (data) {
           this.changeOrderData = data;
+          this.isCardPay = this.cardBalance>=this.changeOrderData.totalAmount
         }
         // this.changeOrderData = data
       });
@@ -309,6 +315,7 @@ export default {
     },
     createPayOrder() {
       //TODO
+      //#ifdef MP-WEIXIN
       let bodyObj = {
         remarks: this.remarks,
         payType: 1, //"int //支付方式  1在线支付  3国美支付",
@@ -365,6 +372,37 @@ export default {
           });
         }
       });
+      //#endif
+      //#ifdef H5
+      let bodyObj = {
+        remarks: this.remarks,
+        payType: 3, //"int //支付方式  1微信支付",
+        deviceType: 2,
+        openid: getApp().globalData.openId, //"string //微信openid 小程序支付用 app支付不传或传空",
+        sourceId: 100, //"long //订单来源渠道  1app  100小程序",
+        changeId: this.msg.changeOrderId, //"long //变更单id",
+        isCardPay: this.isCardPay, //"boolean //是否使用储值卡支付  默认false"
+      };
+      createChangeOrderApi(bodyObj).then((data) => {
+        if (!data) {
+          // 退款跳转装修首页
+          uni.switchTab({
+            url: "/pages/decorate/index/index",
+          });
+          return;
+        }
+        const { wechatPayJsapi, cardPayComplete, id } = data;
+        if (!cardPayComplete) {
+          uni.navigateTo({
+            url: `/sub-classify/pages/pay-order/pay-h5?payTal=${data.gomePayH5.payModeList[0].payTal}&totalPrice=${this.totalAmount}&payRecordId=${data.payRecordId}`,
+          });
+        } else {
+          uni.redirectTo({
+            url: `/sub-classify/pages/pay-order/pay-success?orderId=${id}`,
+          });
+        }
+      });
+      //#endif
     },
   },
 };

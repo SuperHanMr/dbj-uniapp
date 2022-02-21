@@ -95,7 +95,7 @@
           <view class="prePay"
             :class="{'active': amount.detailId===checkedId,'cannot': !item.eligibility,'margin': idx%2===0}"
             v-for="(amount,idx) in item.detailDTOList" :key="amount.detailId"
-            @click="chooseOne(amount.detailId,item.eligibility)">
+            @click="chooseOne(amount.detailId,item.eligibility, amount.rechargeAmount/100)">
             <image src="https://ali-image.dabanjia.com/static/mp/dabanjia/images/my/choosed.png" class="icon"
               v-if="amount.detailId===checkedId"></image>
             <view class="numWrap" :class="{'active': amount.detailId===checkedId,'cannot': !item.eligibility}">
@@ -143,7 +143,8 @@
         noList: false,
         showBuyBtn: true,
         checkedId: 0,
-        ruleText: ""
+        ruleText: "",
+        totalPrice: 0
       }
     },
     onShow() {
@@ -177,20 +178,31 @@
       closeRules() {
         this.$refs.popup.close()
       },
-      chooseOne(detailId, eligibility) {
+      chooseOne(detailId, eligibility, amount) {
         if (!eligibility) return
         this.checkedId = detailId
+        this.totalPrice = amount
       },
       buyNow() {
         const openId = getApp().globalData.openId;
+        //#ifdef MP-WEIXIN
+        let payType = 1
+        let deviceType = 0
+        //#endif
+        //#ifdef H5
+        let payType = 3
+        let deviceType = 2
+        //#endif
         createCardOrder({
           activityDetailId: this.checkedId,
-          payType: 1, //支付类型  1在线支付
+          payType: payType, //"int //支付方式  1在线支付",
+          deviceType: deviceType,
           openid: openId,
           sourceId: 100, //订单来源渠道 100小程序
         }).then(e => {
           const payInfo = e.wechatPayJsapi;
           const id = e.id
+          //#ifdef MP-WEIXIN
           uni.requestPayment({
             provider: "wxpay",
             ...payInfo,
@@ -215,6 +227,12 @@
               });
             },
           });
+          //#endif
+          //#ifdef H5
+          uni.navigateTo({
+            url: `/sub-classify/pages/pay-order/pay-h5?payTal=${e.gomePayH5.payModeList[0].payTal}&totalPrice=${this.totalPrice}&payRecordId=${e.payRecordId}`,
+          });
+          //#endif
         });
       },
       requestBalance() {
