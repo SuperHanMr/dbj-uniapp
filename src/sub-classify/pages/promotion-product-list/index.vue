@@ -22,7 +22,7 @@
 			}
 		},
 		onLoad(e) {
-			this.baseUrl = 'https://localhost' //this.ENV.VUE_APP_BASE_H5
+			this.baseUrl = this.ENV.VUE_APP_BASE_H5//'https://localhost' //
 			this.searchToken = getApp().globalData.token
 			this.houseId = getApp().globalData.currentHouse.id
 		},
