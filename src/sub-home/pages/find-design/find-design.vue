@@ -197,7 +197,8 @@
         />
       </view>
     </view>
-		<view class="connectServiceContainer" v-if="showFloating" @click="gotoRankPage" :style="{bottom: containerPaddingBottom}">
+		<!-- <view class="connectServiceContainer" v-if="showFloating" @click="gotoRankPage" :style="{bottom: containerPaddingBottom}"> -->
+		<view class="connectServiceContainer" v-if="showFloating":style="{bottom: containerPaddingBottom}">
 			<view class="connectServiceContent">
 				<image src="https://ali-image.dabanjia.com/static/mp/dabanjia/images/theme-red/home/kefu.png"  @click="gotoEvaluatePage"/>
 				<view class="contentInfo">
@@ -339,7 +340,7 @@ export default {
 		gotoEvaluatePage(){
 			console.log("去同行评价页面")
 			// uni.navigateTo({
-			// 	url:"../../../sub-decorate/pages/person-page/person-peer-evaluate-list"
+			// 	url:"../../../sub-decorate/pages/person-page/person-peer-evaluate-list?id=8772"
 			// })
 		},
     toBack() {

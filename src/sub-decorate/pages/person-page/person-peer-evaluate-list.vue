@@ -7,7 +7,7 @@
 			<view class="evaluate-item" v-for="(item,index) in peerCommentsList" :key="index">
 
 				<view class="evaluate-person-info">
-					<image :src="item.avatar" />
+					<image :src="item.avatar"  @click="gotoPersonalPage(item.userId)"/>
 					<view class="right">
 						<text class="name">{{item.userName}}</text>
 						<view class="design-tag-info">
@@ -20,7 +20,7 @@
 					</view>
 				</view>
 				<view class="evaluate-tag" v-if="item.commentTags.length">
-					<view v-for="tageItem in item.commentTags" :key="tageItem">{{tageItem}}</view>
+					<view v-for="tageItem in item.commentTags" :key="tageItem" @click="gotoDesignerRankListPage">{{tageItem}}</view>
 				</view>
 				<view class="evaluate-content">{{item.content}}</view>
 			</view>
@@ -45,7 +45,7 @@
 				totalNum: 0,
 			}
 		},
-		onLoad() {
+		onLoad(e) {
 			this.personId = e.id
 			this.getComments()
 		},
@@ -61,8 +61,9 @@
 		methods: {
 			getComments() {
 				let params = {
-					// userId: 8218,
+					// userId: 8772,
 					userId: this.personId,
+					showFlag:true,
 					page: this.pageInfo.page,
 					rows: 10,
 				}
@@ -74,6 +75,18 @@
 						return item
 					})
 					this.showCommentCount = res.aggregations.showCommentCount
+				})
+			},
+			gotoPersonalPage(id){
+				console.log("去设计师主页")
+				uni.navigateTo({
+					url:`./person-page?personId=${id}&isToContent=true`
+				})
+			},
+			gotoDesignerRankListPage(){
+				console.log("去设计师榜单页面")
+				uni.navigateTo({
+					url:"../../../sub-home/pages/find-design/designer-rank-list"
 				})
 			},
 		}
@@ -112,7 +125,7 @@
 		}
 
 		.evaluate-list {
-			padding-top: 88rpx;
+			padding-top: 112rpx;
 			.evaluate-item {
 				margin-top: 24rpx;
 				padding-bottom: 32rpx;
