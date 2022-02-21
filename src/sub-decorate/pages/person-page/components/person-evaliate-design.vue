@@ -7,7 +7,7 @@
         <text class="design-name">{{peerComment.userName}}</text>
         <text class="design-job">{{peerComment.roleName}}</text>
         <view class="design-rank" v-if="peerComment.valueRank>0">
-          <text class="num">TOP.{{peerComment.valueRank}}</text>
+          <text class="num top-font">TOP.{{peerComment.valueRank}}</text>
           <text class="text">最具价值</text>
         </view>
       </view>

@@ -74,8 +74,8 @@
                   class="rank-label"
                   v-if="designer.rank > 0"
                 >
-                  <view class="rank-left">TOP.{{designer.rank}}</view>
-                  <view class="rank-right">最具价值</view>
+                  <view class="rank-left top-font">TOP.{{designer.rank}}</view>
+                  <view class="rank-right top-font">最具价值</view>
                 </view>
               </view>
             </view>
@@ -452,7 +452,6 @@ export default {
         display: flex;
         background: linear-gradient(to bottom, #fff0d9, #f0ca89);
         justify-content: space-between;
-        line-height: 30rpx;
         height: 30rpx;
         border-radius: 2px;
         overflow: hidden;
@@ -462,7 +461,7 @@ export default {
           height: 100%;
           border-bottom-right-radius: 10rpx;
           padding: 0 8rpx;
-          font-weight: bold;
+          font-weight: 500;
           background: linear-gradient(
             180deg,
             rgba(255, 235, 204, 1),
