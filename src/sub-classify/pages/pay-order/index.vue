@@ -470,9 +470,9 @@ export default {
       level: 0,
       cancelDialog: false,
       refundable: false,
-      cardClick: true,
+      cardClick: false,
       haveCard: false, //是否有会员卡
-      cardBalance: 1111, //会员卡余额
+      cardBalance: 0, //会员卡余额
       shareOriginType: "",
     };
   },
@@ -584,6 +584,7 @@ export default {
       if (e != null) {
         this.haveCard = true;
         this.cardBalance = e;
+        this.cardClick = true;
       }
     });
     if (!getApp().globalData.openId) {
