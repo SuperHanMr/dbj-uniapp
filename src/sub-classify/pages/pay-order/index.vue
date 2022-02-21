@@ -470,7 +470,7 @@ export default {
       level: 0,
       cancelDialog: false,
       refundable: false,
-      cardClick: false,
+      cardClick: true,
       haveCard: false, //是否有会员卡
       cardBalance: 1111, //会员卡余额
       shareOriginType: "",
@@ -531,16 +531,18 @@ export default {
     if (e.from) {
       this.originFrom = e.from;
     }
-    if (Number(e.fromPackage) !== 1) { // 套包下单
+    console.log('h5 传递的数据', e);
+    if (Number(e.fromPackage) === 1) { // 套包下单
       this.isFromPackage = true;
       this.packageId = e.packageId;
       // e.houseId = 277;
       this.estateId = e.houseId;
+      let skuIds = e.skuIdsString.split(',').filter(l => !!l)
       // TODO 接收套包下单页传递的商品列表信息
       // this.orderCartParams = e.
       this.getBundleDetail({
-        bundleId: 63496,
-        skuIds: [133505, 133498]
+        bundleId: this.packageId,
+        skuIds: skuIds
       });
     }
     this.houseId = e.houseId ? e.houseId : getApp().globalData.currentHouse.id;
@@ -703,7 +705,7 @@ export default {
           if (!storeMap[storeId]) {
             store = {
               storeId: storeId,
-              "storeName":"商家店铺名字",
+              storeName: sku.storeName,
               skuInfos: [],
             }
             storeMap[storeId] = store;
@@ -723,7 +725,7 @@ export default {
 				    // imageUrl: sku.imageUrl,
 				    // appointmentRequired: sku.appointmentRequired,
 				    // unit: sku.unit,
-				    price: sku.discountPrice, // 折后价
+				    price: sku.discountPrice / 100, // 折后价
 				    buyCount: sku.minimumOrderQuantity, // 购买数量取起购价
 				    handlingFee: sku.stairwayRoomHandlingFee,
 				    // deposit: sku.deposit,
@@ -735,7 +737,7 @@ export default {
         })
 
         return {
-          totalPrice: data.totalPrice,
+          totalPrice: data.totalPrice / 100,
           totalDeliveryFee: 0,
           totalHandlingFee: 0,
           totalDeposit: 0,
@@ -892,7 +894,7 @@ export default {
         details: details,
         isCardPay: this.cardClick,
         origin: decodeURIComponent(this.shareOriginType),
-        packageId: this.isFromPackage ? this.packageId : undefined, // 套包下单时需要套包id参数，默认undefined
+        packageId: this.isFromPackage ? parseInt(this.packageId) : undefined, // 套包下单时需要套包id参数，默认undefined
       };
       this.createOrder(params).then((data) => {
         const { wechatPayJsapi, cardPayComplete } = data;
