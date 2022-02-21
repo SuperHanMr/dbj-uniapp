@@ -1,7 +1,18 @@
 <template>
   <view class="person-desgin">
     <view class="header">
-      <image :src="personData.avatar" mode="aspectFill"></image>
+      <view class="header-image">
+        <image :src="personData.avatar" mode="aspectFill"></image>
+        <i
+          class="icon icon-ic_nan"
+          v-if="personId!=0&&personData.gender===1"
+        ></i>
+        <i
+          class="icon icon-ic_nv"
+          v-if="personId!=0&&personData.gender===2"
+        ></i>
+      </view>
+      
       <view class="header-right">
         <view class="header-right-top">
           <view class="list-item">
@@ -66,7 +77,8 @@
         </view>
       </view>
       <view class="info-list">
-        {{personData.gender===1?'男':'女'}}
+        <!-- {{personData.gender===1?'男':'女'}} -->
+        {{'居住地'+personData.liveAddress}}
         <text>|</text>
         {{personData.roleLevel?personData.roleLevel:''}}设计师 
         <text v-if="personData.praiseRate">|</text>
@@ -128,8 +140,8 @@
       // clickHidden(){
       //   
       // },
-      queryAttention(data){
-        this.$emit('queryAttention',data)
+      queryAttention(data,from='attention'){
+        this.$emit('queryAttention',data,from)
       },
       clickHidden(){
         this.isHidden = !this.isHidden
@@ -147,8 +159,12 @@
         })
       },
       sendMsg(){
+        if(!this.isAttention){
+          this.queryAttention(1001,'auto') 
+        }else{
+          this.$emit('sendMsg')
+        }
         
-        this.$emit('sendMsg')
       }
     }
   }
@@ -165,6 +181,26 @@
         height: 172rpx;
         border: 4rpx solid #fff;
         border-radius: 50%;
+      }
+      .header-image{
+        position: relative;
+        .icon {
+          position: absolute;
+          // width: 32rpx;
+          // height: 32rpx;
+          font-size: 32rpx;
+          left: 128rpx;
+          bottom: 10rpx;
+          background-color: #fff;
+          padding: 1px;
+          border-radius: 50%;
+        }
+        .icon-ic_nan {
+          color: #5196FF;
+        }
+        .icon-ic_nv {
+          color: #FF56B1;
+        }
       }
       .header-right{
         padding: 10rpx 10rpx;

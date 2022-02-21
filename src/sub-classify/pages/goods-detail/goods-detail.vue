@@ -1,10 +1,11 @@
 <template>
   <view>
-    <web-view
-      :src="baseUrl + '/app-pages/goods-detail/index.html?token=' + searchToken + '#wx-goodsId='+ goodId + '&wx-houseId='
+    <web-view :src="baseUrl + '/app-pages/goods-detail/index.html?token=' + searchToken + '#wx-goodsId='+ goodId + '&wx-houseId='
         + houseId + '&wx-defaultHouseId=' + defaultHouseInfo.id  + '&wx-defaultProvinceId=' + defaultHouseInfo.provinceId
         + '&wx-defaultCityId=' + defaultHouseInfo.cityId + '&wx-defaultAreaId=' + defaultHouseInfo.areaId 
-        + '&wx-defaultLocationName=' + defaultHouseInfo.name  + '&wx-token=' + hashToken + '&wx-deviceId=' + deviceId + '&from=' + from + '&shareAreaId=' + shareAreaId + '&shareAreaName=' + shareAreaName+ '&shareOriginType=' + shareOriginType + '&wx-userId=' + userId">
+        + '&wx-defaultLocationName=' + defaultHouseInfo.name  + '&wx-token=' + hashToken + '&wx-deviceId=' + deviceId + '&from=' + from
+         + '&shareAreaId=' + shareAreaId + '&shareAreaName=' + shareAreaName+ '&shareOriginType=' + shareOriginType + '&wx-userId=' + userId
+        + '&skuTemplateId=' + skuTemplateId + '&gomeDivisionCode=' + gomeDivisionCode + '&fromPackage='  + fromPackage + '&wx-bundleId='  + bundleId">
     </web-view>
   </view>
 </template>
@@ -26,30 +27,40 @@
         shareAreaName: '',
         pageOpts: {},
         shareOriginType: '',
-        userId: 0
+        userId: 0,
+        gomeDivisionCode: 0,
+        skuTemplateId: 0,
+        fromPackage: 0,
+        bundleId: 0
       }
     },
     onLoad(e) {
-      this.pageOpts = {...e};
+      this.pageOpts = {
+        ...e
+      };
       uni.showShareMenu(); // 显示分享按钮
       this.shareAreaId = e.shareAreaId
       this.shareAreaName = e.shareAreaName
       this.shareOriginType = e.originType
       this.from = e.from
       this.userId = e.userId
+      this.bundleId = e.bundleId
       if (e.goodId) {
         this.goodId = e.goodId
       } else if (uni.getStorageSync('goodId')) { // 商城列表和装修模块的商品id
         this.goodId = uni.getStorageSync('goodId')
       }
       this.houseId = e.houseId
+      this.skuTemplateId = e.skuTemplateId
+      this.gomeDivisionCode = e.gomeDivisionCode
+      this.fromPackage = e.fromPackage
     },
     onShareAppMessage(res) {
       let params = [];
       Object.keys(this.pageOpts).forEach(key => {
         params.push(`${key}=${this.pageOpts[key]}`)
       });
-      if(getApp().globalData.isSaler){
+      if (getApp().globalData.isSaler) {
         params.push(`shareId=${getApp().globalData.shareId}`)
       }
       let path = `/sub-classify/pages/goods-detail/goods-detail`;

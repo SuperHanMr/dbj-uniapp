@@ -1,6 +1,6 @@
 <template>
   <revoke-element
-    v-if="message.isRevoked" 
+    v-if="message.isRevoked"
     :message="message"
   />
   <group-tip-element
@@ -8,8 +8,8 @@
     :message="message"
   />
   <text-element
-    v-else-if="message.type === TIM.TYPES.MSG_TEXT" 
-    :message="message" 
+    v-else-if="message.type === TIM.TYPES.MSG_TEXT"
+    :message="message"
   />
   <sound-element
     v-else-if="message.type === TIM.TYPES.MSG_AUDIO"
@@ -19,9 +19,9 @@
     v-else-if="message.type === TIM.TYPES.MSG_GRP_TIP"
     :message="message"
   />
-  <image-element 
+  <image-element
     v-else-if="message.type === TIM.TYPES.MSG_CUSTOM && payloadData.type === 'img_message'"
-    :message="message" 
+    :message="message"
   />
   <file-element
     v-else-if="message.type === TIM.TYPES.MSG_CUSTOM && payloadData.type === 'file_message'"
@@ -33,15 +33,19 @@
   />
   <questions-element
     v-else-if="message.type === TIM.TYPES.MSG_CUSTOM && payloadData.type === 'questions_message'"
-    :message="message" 
+    :message="message"
   />
   <call-element
     v-else-if="message.type === TIM.TYPES.MSG_CUSTOM && template.template === 'call'"
-    :message="message" 
+    :message="message"
   />
   <goods-element
     v-else-if="message.type === TIM.TYPES.MSG_CUSTOM && template.template === 'goods'"
-    :message="message" 
+    :message="message"
+  />
+  <serve-card-element
+    v-else-if="message.type === TIM.TYPES.MSG_CUSTOM && template.template === 'servecard'"
+    :message="message"
   />
   <card-template
     v-else-if="message.type === TIM.TYPES.MSG_CUSTOM && template.template === 'card'"
@@ -84,6 +88,7 @@
   import GoodsElement from "./goods-element.vue"
   import UnsupportedElement from "./unsupported-element.vue";
   import CardTemplate from "./template/card-tpl.vue"
+  import ServeCardElement from "./serve-card-element.vue";
   import TipTemplate from "./template/tip-tpl.vue"
   import Tip2Template from "./template/tip2-tpl.vue"
   import TextTemplate from "./template/text-tpl.vue"
@@ -110,7 +115,8 @@
       CardTemplate,
       TipTemplate,
       Tip2Template,
-      TextTemplate
+      TextTemplate,
+      ServeCardElement,
     },
     computed: {
       TIM() {

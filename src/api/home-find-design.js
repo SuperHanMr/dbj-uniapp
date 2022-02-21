@@ -18,5 +18,11 @@ export function recommendCaseList(params) {
 
 // //设计师主页个人案例列表分页
 export function searchDesigner(params) {
+	//    /app/search/designer/recommend
 	return request.post(`/app/search/designer`, params);
+}
+
+//找设计首页设计服务
+export function designServiceList(params){
+	return request.get(`/app/search/designer/getServiceRecommend`,params)
 }

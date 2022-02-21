@@ -173,7 +173,7 @@ const message = {
       } else if (data.conversationID === state.currentConversation.conversationID) {
         list = [data];
       }
-      
+
       state.newMessageMap = list.reduce((obj, msg) => {
         obj[msg.ID] = true;
         return obj;
@@ -339,8 +339,8 @@ const message = {
      * 从腾讯获取群成员信息
      */
     requestGroupMemberList(context, groupId) {
-      return getSafeTim().then(tim => tim.getGroupMemberList({ 
-        groupID: groupId, 
+      return getSafeTim().then(tim => tim.getGroupMemberList({
+        groupID: groupId,
         count: 30,
         offset:0 ,
       })).then(imResponse => {
@@ -405,7 +405,7 @@ const message = {
      */
     checkoutConversation(context, conversationID) {
       console.log("check conversation:", conversationID);
-      // 2.待切换的会话也进行已读上报 
+      // 2.待切换的会话也进行已读上报
       const state = context.state;
       if (conversationID === 'CUSTOMER') {
         if (state.cstServConv.unreadCount > 0) {
@@ -429,7 +429,7 @@ const message = {
       return getTim().getConversationProfile(conversationID).then(({data}) => {
         const conversation = data.conversation;
         console.log("conversation  data:", conversation);
-        // 3.1 更新当前会话 
+        // 3.1 更新当前会话
         context.state.currentConversation = conversation;
         if (conversation.systemType === CONV_TYPES.CUSTOMER) {
           return context.dispatch("requestMessageList", conversationID).then(() => {
@@ -552,7 +552,7 @@ const message = {
         userId = +(id + "").replace(/^zeus_/, "");
       }
       const convId = TIM.TYPES.CONV_C2C + userIMID;
-      
+
       let params = {
         sourceZeusId: getApp().globalData.userInfo.id,
         targetZeusId: userId
@@ -562,9 +562,17 @@ const message = {
         if (name) {
           url += "&name=" + name
         }
-        uni.navigateTo({
-          url: url
-        });
+        let pages = getCurrentPages();
+        if (pages.length && pages[pages.length - 1].route === 'pages/message/conversation/conversation') {
+          uni.redirectTo({
+            url: url
+          });
+        } else {
+          uni.navigateTo({
+            url: url
+          });
+        }
+
       });
     }
   }

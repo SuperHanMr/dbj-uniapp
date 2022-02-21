@@ -242,7 +242,7 @@
         <image
           v-if="cardClick"
           class="selected-img"
-          src="https://ali-image.dabanjia.com/static/mp/dabanjia/images/classify/pay_selected.png"
+          src="https://ali-image.dabanjia.com/static/mp/dabanjia/images/theme-red/decorate/ic_checked.svg"
           mode=""
         >
         </image>
@@ -468,7 +468,7 @@ export default {
       refundable: false,
       cardClick: false,
       haveCard: false, //是否有会员卡
-      cardBalance: 1111, //会员卡余额
+      cardBalance: 0, //会员卡余额
       shareOriginType: "",
     };
   },
@@ -674,6 +674,11 @@ export default {
           data.totalDeposit -
           data.totalDiscount
         ).toFixed(2);
+        var res = Number(this.totalPrice) * 100 - this.cardBalance;
+        console.log(this.totalPrice, res, "res666666666")
+        if(res <= 0) {
+          this.cardClick = true
+        }
         let dataInfo = data;
         this.orderInfo = dataInfo;
         this.noStoreInfos = JSON.parse(JSON.stringify(dataInfo));
@@ -797,67 +802,99 @@ export default {
       let orderPrice = Number(
         Number(this.totalPrice).toFixed(2).replace(".", "")
       );
-      let params = {
-        payType: 1, //"int //支付方式  1在线支付",
-        openid: getApp().globalData.openId, //"string //微信openid 小程序支付用 app支付不传或传空",
-        projectId: this.projectId, //"long //项目id  非必须 默认0",
-        customerId: 0, //"long //业主id  非必须 默认0",
-        estateId: this.estateId, //"long //房产id   非必须 默认0",
-        total: orderPrice, //"int //总计",
-        remarks: this.remarks, //"string //备注",
-        orderName: "", //"string //订单名称 可为空",
-        details: details,
-        isCardPay: this.cardClick,
-        origin: decodeURIComponent(this.shareOriginType),
-      };
-      payOrder(params).then((data) => {
-        const { wechatPayJsapi, cardPayComplete } = data;
-        if (!cardPayComplete) {
-          uni.requestPayment({
-            provider: "wxpay",
-            ...wechatPayJsapi,
-            success(res) {
-              console.log("付款成功", res);
-              if (data.subOrderIds && data.subOrderIds.length === 1) {
-                uni.navigateTo({
-                  url:
-                    "/sub-classify/pages/pay-order/pay-success?orderId=" +
-                    data.subOrderIds[0],
+        //#ifdef MP-WEIXIN
+        let params = {
+          payType: 1, //"int //支付方式  1微信支付",
+          openid: getApp().globalData.openId, //"string //微信openid 小程序支付用 app支付不传或传空",
+          projectId: this.projectId, //"long //项目id  非必须 默认0",
+          customerId: 0, //"long //业主id  非必须 默认0",
+          estateId: this.estateId, //"long //房产id   非必须 默认0",
+          total: orderPrice, //"int //总计",
+          remarks: this.remarks, //"string //备注",
+          orderName: "", //"string //订单名称 可为空",
+          details: details,
+          isCardPay: this.cardClick,
+          origin: this.shareOriginType
+        };
+        payOrder(params).then((data) => {
+          const {
+            wechatPayJsapi,
+            cardPayComplete
+          } = data;
+          if (!cardPayComplete) {
+            uni.requestPayment({
+              provider: "wxpay",
+              ...wechatPayJsapi,
+              success(res) {
+                console.log("付款成功", res);
+                if (data.subOrderIds && data.subOrderIds.length === 1) {
+                  uni.navigateTo({
+                    url: "/sub-classify/pages/pay-order/pay-success?orderId=" +
+                      data.subOrderIds[0],
+                  });
+                } else {
+                  uni.navigateTo({
+                    url: "/sub-classify/pages/pay-order/pay-success?orderId=" +
+                      data.id,
+                  });
+                }
+              },
+              fail(e) {
+                console.log(e, "取消付款");
+                if (data.subOrderIds && data.subOrderIds.length === 1) {
+                  uni.navigateTo({
+										url:`../../../sub-my/pages/my-order/order-detail/order-detail?orderId=${data.subOrderIds[0]}&from=waitPayOrder`
+                    // url: `/sub-my/pages/my-order/order-wait-pay/order-wait-pay?orderNo=${data.subOrderIds[0]}&from=waitPayOrder`,
+                  });
+                } else {
+                  uni.navigateTo({
+										url:`../../../sub-my/pages/my-order/order-detail/order-detail?orderId=${data.id}&from=waitPayOrder`
+                    // url: `/sub-my/pages/my-order/order-wait-pay/order-wait-pay?orderNo=${data.id}&from=waitPayOrder`,
+                  });
+                }
+                log({
+                  type: "wx-pay-fail",
+                  page: "pay-order/index",
+                  data: e,
+                  openId: getApp().globalData.openId,
+                  openIdLocal: uni.getStorageSync("openId"),
                 });
-              } else {
-                uni.navigateTo({
-                  url:
-                    "/sub-classify/pages/pay-order/pay-success?orderId=" +
-                    data.id,
-                });
-              }
-            },
-            fail(e) {
-              console.log(e, "取消付款");
-              if (data.subOrderIds && data.subOrderIds.length === 1) {
-                uni.navigateTo({
-                  url: `/sub-my/pages/my-order/order-wait-pay/order-wait-pay?orderNo=${data.subOrderIds[0]}&from=waitPayOrder`,
-                });
-              } else {
-                uni.navigateTo({
-                  url: `/sub-my/pages/my-order/order-wait-pay/order-wait-pay?orderNo=${data.id}&from=waitPayOrder`,
-                });
-              }
-              log({
-                type: "wx-pay-fail",
-                page: "pay-order/index",
-                data: e,
-                openId: getApp().globalData.openId,
-                openIdLocal: uni.getStorageSync("openId"),
-              });
-            },
-          });
-        } else {
-          uni.navigateTo({
-            url: "/sub-classify/pages/pay-order/pay-success?orderId=" + data.id,
-          });
-        }
-      });
+              },
+            });
+          } else {
+            uni.navigateTo({
+              url: "/sub-classify/pages/pay-order/pay-success?orderId=" + data.id,
+            });
+          }
+        });
+        //#endif
+        //#ifdef H5
+        let params = {
+          payType: 3, //"int //支付方式  1微信支付",
+          deviceType: 2,
+          openid: getApp().globalData.openId, //"string //微信openid 小程序支付用 app支付不传或传空",
+          projectId: this.projectId, //"long //项目id  非必须 默认0",
+          customerId: 0, //"long //业主id  非必须 默认0",
+          estateId: this.estateId, //"long //房产id   非必须 默认0",
+          total: orderPrice, //"int //总计",
+          remarks: this.remarks, //"string //备注",
+          orderName: "", //"string //订单名称 可为空",
+          details: details,
+          isCardPay: this.cardClick,
+          origin: this.shareOriginType
+        };
+        payOrder(params).then((data) => {
+          if (!data.cardPayComplete) {
+            uni.navigateTo({
+              url: `/sub-classify/pages/pay-order/pay-h5?payTal=${data.gomePayH5.payModeList[0].payTal}&totalPrice=${orderPrice}&payRecordId=${data.payRecordId}`,
+            });
+          } else {
+            uni.navigateTo({
+              url: "/sub-classify/pages/pay-order/pay-success?orderId=" + data.id,
+            });
+          }
+        });
+        //#endif
     },
     cancelGoodPop() {
       this.cancelDialog = true;
