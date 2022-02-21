@@ -575,7 +575,6 @@
         if (!url) {
           return;
         }
-		url = "app-pages/product-promotion-list/index.html"
 		 if (url.indexOf("product-promotion-list")!=-1) {
 			 uni.navigateTo({
 			   url: "../../../sub-classify/pages/promotion-product-list/index",
