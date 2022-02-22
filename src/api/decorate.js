@@ -170,11 +170,21 @@ export function getAttention(params) {
 
 //查询个人主页评价
 export function getComments(params) {
-	// const str = objectToUrlString(params)
-	return request.get("/pm/app/commentSetting/getComments", {
-		params
-	})
+	return request.get("/pm/app/commentSetting/getComments", {params})
 }
+
+//查询同行评价列表
+export function getPeerCommentsList(params) {
+	return request.get("/pm/app/commentSetting/getPeerListComments",{params})
+}
+
+
+//查询设计师 前10名排行榜 榜单信息
+export function getDesignRank(params) {
+	return request.get("/app/designRank/getTop10Ranking", {params})
+}
+
+
 
 //查询设计师个人主页评价
 export function getDesignComments(params) {
@@ -189,7 +199,10 @@ export function getCaseList(params) {
 	return request.post("/app/case/new/personal/page", params)
 }
 
-
+//获取个人主页同行评价
+export function getPeerComments(params) {
+	return request.get(`/pm/app/commentSetting/getPeerComments?refUserId=`+params)
+}
 
 //查询服务中是否可以换人
 export function checkServeingChange(params) {

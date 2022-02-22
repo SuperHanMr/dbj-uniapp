@@ -1,5 +1,5 @@
 <template>
-  <view style="background-color: #F6F6F6;margin-bottom: 60rpx;">
+  <view style="background-color: #F6F6F6;margin-bottom: 60rpx;position: relative;">
     <!-- <view > -->
     <custom-navbar
       :opacity="scrollTop/100"
@@ -89,11 +89,12 @@
             <view class="header">
               <view class="name">{{item2.name}}</view>
               <view class="rank">{{item2.levelName}}设计师</view>
+							<view class="ranking-container" v-if="item2.rank >=1" >
+								<view class="num"><text class="top-font">TOP.{{item2.rank}}</text></view>
+								<view class="text"><text class="top-font">最具价值</text></view>
+							</view>
             </view>
-            <view
-              class="goodPraise"
-              style="margin-bottom: 8rpx;"
-            >
+            <view class="goodPraise" style="margin-bottom: 8rpx;">
               <view class="item">
                 <text v-if="item2.praiseEfficiency">好评率{{item2.praiseEfficiency}}%</text>
                 <text v-if="item2.praiseEfficiency" class="icon"></text>
@@ -113,15 +114,15 @@
 				</view>
       </scroll-view>
 		</view>
-		
+
 		<!-- 元宵节新增需求 -->
 		<view class="design-service-container">
 			<view class="title">
 				设计服务推荐
 			</view>
 			<view class="scroll-container">
-				<scroll-view  
-					scroll-x="true"	
+				<scroll-view
+					scroll-x="true"
 					style="white-space: nowrap;"
 				>
 					<view class="design-service-item"
@@ -145,8 +146,8 @@
 				</scroll-view>
 			</view>
 		</view>
-		
-		
+
+
     <view
       class="perfectHouseInfo_container"
       @click="gotoEditHouse"
@@ -165,7 +166,7 @@
         <image src="https://ali-image.dabanjia.com/static/mp/dabanjia/images/home/gotoCase.svg" />
       </view>
     </view>
-		
+
 
     <view
       v-if="userId && hasEstate"
@@ -228,7 +229,22 @@
         />
       </view>
     </view>
-
+		<view class="connectServiceContainer" v-if="showFloating" @click="gotoRankPage" :style="{bottom: containerPaddingBottom}">
+		<!-- <view class="connectServiceContainer" v-if="showFloating":style="{bottom: containerPaddingBottom}"> -->
+			<view class="connectServiceContent">
+				<image src="https://ali-image.dabanjia.com/static/mp/dabanjia/images/theme-red/home/kefu.png"  @click="gotoEvaluatePage"/>
+				<view class="contentInfo">
+					<view class="no">不知道如何选择设计师</view>
+					<view class="find">找我聊聊为您推荐</view>
+				</view>
+				<view class="btn" @click="immediatelyChat">
+					立即沟通
+				</view>
+				<view class="cancel-Container" @click.stop="showFloating=false">
+					<image src="https://ali-image.dabanjia.com/static/mp/dabanjia/images/theme-red/home/find-designer-cancel.png" mode=""></image>
+				</view>
+			</view>
+		</view>
   </view>
 </template>
 
@@ -238,6 +254,7 @@ import {
   recommendCaseList,
   searchDesigner,
 	designServiceList,
+  firstsearchDesigner,
 } from "../../../api/home-find-design.js";
 export default {
   data() {
@@ -288,10 +305,18 @@ export default {
       hasEstate: false, //是否有房屋
       estateId: "", //房屋id
       page: 0,
+			totalRows:"",
       totalPage: "",
-			
+			containerPaddingBottom:"",
+			showFloating:true,
     };
   },
+	mounted() {
+		const menuButtonInfo = uni.getMenuButtonBoundingClientRect();
+		this.systemBottom = menuButtonInfo.bottom + "rpx";
+		this.containerPaddingBottom = menuButtonInfo.bottom + 58 + "rpx";
+		console.log("this.containerPaddingBottom ====",this.containerPaddingBottom )
+	},
 
   onLoad() {
     const systemInfo = uni.getSystemInfoSync();
@@ -305,7 +330,7 @@ export default {
 		this.getDesignerList();
 		this.reqDesignServiceRecommendList()
   },
-  onShow() { 
+  onShow() {
 		this.scrollLeft = 1
 		this.$nextTick(()=>{
 			this.scrollLeft = 0
@@ -338,7 +363,18 @@ export default {
 		}
 	},
   methods: {
-
+		gotoRankPage(){
+			console.log("去设计师榜单列表页面")
+			uni.navigateTo({
+				url:"designer-rank-list"
+			})
+		},
+		gotoEvaluatePage(){
+			console.log("去同行评价页面")
+			uni.navigateTo({
+				url:"../../../sub-decorate/pages/person-page/person-peer-evaluate-list?id=8772"
+			})
+		},
     toBack() {
       uni.navigateBack({});
     },
@@ -379,7 +415,7 @@ export default {
 					console.log("设计师列表item===",item)
 					return item
 				})
-				
+
         this.totalPage = res.totalPage;
 				console.log("this.totalPgae====",this.totalPage)
         uni.setStorageSync("recommendDesignerTotalPage", res.totalPage);
@@ -395,16 +431,16 @@ export default {
 					uni.setStorageSync("recommendDesignerPage", this.page);
 				}
 				// if(this.page == this.totalPage){
-				// 	this.page = 0 
+				// 	this.page = 0
 				// 	uni.setStorageSync("recommendDesignerPage", this.page);
 				// }
       });
     },
-		
+
 		reqDesignServiceRecommendList(){
 			designServiceList().then(res=>{
 				this.designServiceRecList = res
-				//处理一下price /100 
+				//处理一下price /100
 				console.log("designerServiceRecList===",res)
 			})
 		},
@@ -414,16 +450,18 @@ export default {
 				url:`../../../sub-classify/pages/goods-detail/goods-detail?goodId=${item.id}`,
 			});
 		},
-    
+
 		// 换一批
 		changeDesignerList(){
 			console.log("换一批！")
 			this.page++;
+			console.log("this.page22==",this.page)
 			uni.setStorageSync("recommendDesignerPage", this.page);
-			console.log("this.page==",this.page)
 			this.getDesignerList();
 		},
-		
+		immediatelyChat(){
+			this.$store.dispatch("openCustomerConversation");
+		},
 		//自己找设计师
     findOwnDesigner() {
       uni.navigateTo({
@@ -434,9 +472,6 @@ export default {
     contactService() {
       console.log("联系客服");
       this.$store.dispatch("openCustomerConversation");
-      // uni.navigateTo({
-      // 	url:""
-      // })
     },
     //去完善房屋信息
     gotoEditHouse() {
@@ -632,11 +667,7 @@ export default {
         height: 170rpx;
         box-sizing: border-box;
         padding: 24rpx;
-        background: linear-gradient(
-          180deg,
-          rgba(136, 141, 145, 0.79) -2.26%,
-          rgba(74, 81, 86, 0.51) 100%
-        );
+        background: linear-gradient(180deg, rgba(52, 85, 116, 0.35) -2.26%, rgba(52, 85, 116, 0.8) 100%);
         border-radius: 16rpx;
         backdrop-filter: blur(28rpx);
         // transform: matrix(1, 0, 0, -1, 0, 0);
@@ -964,10 +995,10 @@ export default {
 }
 
 
-// 元宵节新增需求 
+// 元宵节新增需求
 
 .design-service-container{
-	
+
 	.title{
 		padding: 48rpx 40rpx 24rpx;
 		color: #333333;
@@ -995,12 +1026,12 @@ export default {
 						margin-bottom: 8rpx;
 						color: #333333;
 						font-size: 26rpx;
-						overflow: hidden; 
-						white-space: nowrap; 
+						overflow: hidden;
+						white-space: nowrap;
 						text-overflow: ellipsis
 					}
 					.price{
-						
+
 					}
 				}
 			}
@@ -1011,5 +1042,72 @@ export default {
 	}
 }
 
+
+.connectServiceContainer{
+	position: fixed;
+	width: 686rpx;
+	height: 120rpx;
+	box-sizing: border-box;
+	padding:0 48rpx;
+	border-radius: 16rpx;
+	background: rgba(0, 0, 0, 0.75);
+	left: 32rpx;
+	.connectServiceContent{
+		display: flex;
+		flex-flow: row nowrap;
+		align-items: center;
+		image{
+			width: 76rpx;
+			height: 76rpx;
+		}
+		.contentInfo{
+			margin: 26rpx 70rpx 26rpx 16rpx;
+			position: relative;
+			.no{
+				width: 288rpx;
+				height: 36rpx;
+				line-height: 36rpx;
+				color: #FFFFFF;
+				font-size: 26rpx;
+				font-weight: 500;
+				margin-bottom: 4rpx;
+				letter-spacing: 1rpx;
+			}
+			.find{
+				height: 28rpx;
+				line-height: 28rpx;
+				color: #FFFFFF;
+				font-size: 20rpx;
+				letter-spacing: 1rpx;
+			}
+		}
+		.btn{
+			width: 140rpx;
+			height: 56rpx;
+			line-height: 56rpx;
+			text-align: center;
+			color: #FFFFFF;
+			font-size: 24rpx;
+			border-radius: 8rpx;
+			background: linear-gradient(116.19deg, #F83112 16.48%, #FD6421 83.52%)
+		}
+		.cancel-Container{
+			position: absolute;
+			width: 44rpx;
+			height: 28rpx;
+			border-radius: 0 16rpx 0 16rpx;
+			background: rgba(255, 255, 255, 0.23);
+			display: flex;
+			align-items: center;
+			justify-content: space-around;
+			top: 0;
+			right: 0;
+			image{
+				width: 15rpx;
+				height: 15rpx;
+			}
+		}
+	}
+}
 
 </style>

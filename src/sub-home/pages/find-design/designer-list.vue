@@ -67,21 +67,15 @@
         <view class="designer-message">
           <view class="base-message">
             <view class="base-items">
-              <view class="name-wrapper">
-                <text class="designer-name">{{designer.name}}</text>
-                <view class="designer-level"><text>{{designer.levelName}}{{designer.roleName}}</text></view>
-              </view>
-              <view class="rate-wrapper">
-                <text class="designer-score">服务次数 {{designer.totalCount}}</text>
+              <view class="designer-name">{{designer.name}}</view>
+              <view class="designer-level">
+                <view class="level-label">{{designer.levelName}}{{designer.roleName}}</view>
                 <view
-                  class="split-line"
-                  v-if="designer.praiseEfficiency"
-                ></view>
-                <view
-                  class="designer-ordernum"
-                  v-if="designer.praiseEfficiency"
+                  class="rank-label"
+                  v-if="designer.rank > 0"
                 >
-                  <text>好评率 {{designer.praiseEfficiency}}%</text>
+                  <view class="rank-left top-font">TOP.{{designer.rank}}</view>
+                  <view class="rank-right top-font">最具价值</view>
                 </view>
               </view>
             </view>
@@ -90,6 +84,20 @@
                 class="btn-find-designer"
                 @click.stop="handleChat(designer)"
               >就找Ta</button>
+            </view>
+          </view>
+
+          <view class="rate-wrapper">
+            <text class="designer-score">接单数 {{designer.totalCount}}</text>
+            <view
+              class="split-line"
+              v-if="designer.praiseEfficiency"
+            ></view>
+            <view
+              class="designer-ordernum"
+              v-if="designer.praiseEfficiency"
+            >
+              <text>好评率 {{designer.praiseEfficiency}}%</text>
             </view>
           </view>
 
@@ -456,12 +464,6 @@ export default {
     flex: 1;
     overflow: hidden;
 
-    .name-wrapper {
-      height: 44rpx;
-      display: flex;
-      flex-direction: row;
-      align-items: center;
-    }
     .designer-name {
       font-size: 32rpx;
       font-weight: 500;
@@ -470,42 +472,54 @@ export default {
       white-space: nowrap;
     }
     .designer-level {
-      margin-left: 16rpx;
-      display: inline-block;
-      overflow: hidden;
-      text-overflow: ellipsis;
-      flex-shrink: 0;
-      height: 30rpx;
-      line-height: 30rpx;
-      background: #f0fbff;
-      border-radius: 4rpx;
-      padding: 0 8rpx;
-
-      font-weight: 500;
-      font-size: 20rpx;
-      color: #4fbeed;
-    }
-    .rate-wrapper {
-      margin-top: 6rpx;
-      height: 34rpx;
       display: flex;
-      flex-direction: row;
-      align-items: center;
-    }
-    .designer-score,
-    .designer-ordernum {
-      color: #333333;
-      font-size: 24rpx;
-    }
-    .split-line {
-      display: inline-block;
-      width: 1rpx;
-      background: #ccc;
-      height: 22rpx;
-      margin: 0 16rpx;
-    }
-    .designer-ordernum {
-      display: inline-block;
+      font-size: 20rpx;
+      margin-top: 12rpx;
+
+      .level-label {
+        overflow: hidden;
+        text-overflow: ellipsis;
+        flex-shrink: 0;
+        height: 30rpx;
+        width: 100rpx;
+        line-height: 30rpx;
+        background: #f0fbff;
+        border-radius: 4rpx;
+        margin-right: 12rpx;
+        padding: 0 8rpx;
+        font-weight: 500;
+        color: #4fbeed;
+      }
+
+      .rank-label {
+        display: flex;
+        background: linear-gradient(to bottom, #fff0d9, #f0ca89);
+        justify-content: space-between;
+        height: 30rpx;
+        border-radius: 2px;
+        overflow: hidden;
+        color: rgba(134, 94, 65, 1);
+
+        .rank-left {
+          height: 100%;
+          border-bottom-right-radius: 10rpx;
+          padding: 0 8rpx;
+          font-weight: 500;
+          background: linear-gradient(
+            180deg,
+            rgba(255, 235, 204, 1),
+            rgba(255, 229, 183, 1)
+          );
+        }
+
+        .rank-right {
+          flex: 1;
+          height: 100%;
+          padding: 0 8rpx 0 10rpx;
+          border-top-left-radius: 10rpx;
+          background: linear-gradient(180deg, #fedfa7, #e8cc94);
+        }
+      }
     }
   }
 
@@ -525,6 +539,30 @@ export default {
       padding-left: 0;
       padding-right: 0;
     }
+  }
+}
+
+.rate-wrapper {
+  margin-top: 18rpx;
+  height: 34rpx;
+  font-size: 24rpx;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  .designer-score,
+  .designer-ordernum {
+    color: #333333;
+    font-size: 24rpx;
+  }
+  .split-line {
+    display: inline-block;
+    width: 1rpx;
+    background: #ccc;
+    height: 22rpx;
+    margin: 0 16rpx;
+  }
+  .designer-ordernum {
+    display: inline-block;
   }
 }
 
