@@ -26,13 +26,13 @@
     </view>
     <view class="user-evaliate">
     <image class="bg" src="../../../static/design_comment.png" mode=""></image>
-    <view class="" v-if="commentData.list[0].rank>3">
+    <view class="" v-if="commentData.list[0]&&commentData.list[0].rank>3">
       <view class="title">
         来自 {{commentData.list[0].userName=='匿名'?commentData.list[0].userName+'用户':commentData.list[0].userName}} 
         <text> 的评价</text>
       </view>
       <view class="evaluate-text" :class="{'report-text-hidden':isHidden}">
-        {{commentData.list[0].content?commentData.list[0].content:(JSON.parse(commentData.list[0].imgList).length>0?'此用户上传了图片评价。':`用户对设计师进行了${commentData.list[0].rank}星好评`)}}
+        {{commentData.list[0].content?commentData.list[0].content:(JSON.parse(commentData.list[0].imgList).length>0?'此用户上传了图片评价。':`用户对设计师进行了${commentData.list[0]&&commentData.list[0].rank}星好评`)}}
       </view>
       <view class="openHidden" v-if="showBtn" @click="clickHidden">
         {{hddenText}}<i :class="{'icon-list_arrow_dropdown':isHidden,'icon-list_arrow_pullup':!isHidden}"></i>

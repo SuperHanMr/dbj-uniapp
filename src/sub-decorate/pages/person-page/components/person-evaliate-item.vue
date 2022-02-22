@@ -71,8 +71,8 @@
         this.$nextTick(function(){
           query.select(".evaluate-text").boundingClientRect((res) => {
             
-            this.isHidden = res.height/20 >= 6;
-            this.showBtn = res.height/20 >= 6;
+            this.isHidden = res&&(res.height/20 >= 6);
+            this.showBtn = res&&(res.height/20 >= 6);
             console.log(res.height,this.isHidden)
             
           }).exec()
