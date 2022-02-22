@@ -395,6 +395,13 @@ export default {
 
       firstsearchDesigner(params).then((res) => {
         this.searchDesignerList = res.list;
+				this.searchDesignerList = res.list.map(item=>{
+					if(item.artImage.indexOf('?x-oss-process=image/resize,m_fill,h_160,w_120,limit_0') !==-1){
+						item.artImage = item.artImage.split('?')[0]
+					}
+					console.log("设计师列表item===",item)
+					return item
+				})
         this.totalPage = res.totalPage;
 
 				if(this.page ==res.totalPage){
