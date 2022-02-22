@@ -80,7 +80,7 @@
         this.hashToken = getApp().globalData.token
       }
       console.log(getApp().globalData.token, "getApp().globalData.token")
-      this.baseUrl = "https://localhost",//this.ENV.VUE_APP_BASE_H5
+      this.baseUrl = this.ENV.VUE_APP_BASE_H5,//"https://localhost"
       this.defaultHouseInfo = getApp().globalData.currentHouse
       uni.getSystemInfo({
         success: res => {
