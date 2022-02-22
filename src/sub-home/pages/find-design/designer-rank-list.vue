@@ -89,10 +89,10 @@
 									</text>
 									<text class="line" v-if="item2.roomNum || item2.hallNum"></text>
 									
-									<text class="text">{{item2.insideArea?Math.floor(item2.insideArea): "-"}}m²</text>
+									<text class="text">{{item2.insideArea?`${Math.floor(item2.insideArea)}m²`: "-"}}</text>
 									<text class="line"></text>
 									
-									<text class="text">预算：{{ item2.budget? Math.floor(item2.budget) : '-'}}万</text>
+									<text class="text">预算：{{ item2.budget?`${Math.floor(item2.budget)}万` : '-'}}</text>
 								</view> 
 							</view>
 							<view class="show-more" v-if="item1.valuationCaseVOS.length >2">

@@ -295,6 +295,7 @@ export default {
 		  this.page = uni.getStorageSync("recommendDesignerPage");
 		}
 		this.page++;
+		
 		uni.setStorageSync("recommendDesignerPage", this.page);
 
 
@@ -304,12 +305,8 @@ export default {
 			this.intoPageNum = uni.getStorageSync("intoPageNum");
 		}
 		this.intoPageNum ++;
-		uni.setStorageSync("intoPageNum", this.intoPageNum);
-
-		const hhh = uni.getStorageSync("intoPageNum");
-		console.log("this.intoPageNum===",hhh)
-
-	this.getDesignerList();
+		
+		this.getDesignerList();
   },
   onShow() {
 		this.scrollLeft = 1
@@ -320,27 +317,26 @@ export default {
 			console.log("getApp().globalData===",getApp().globalData)
 			this.estateId = getApp().globalData.currentHouse.id
 			if (this.userId) {
-			  // 登录
 			  this.hasEstate = this.estateId ? true : false
+				uni.setStorageSync("intoPageNum", this.intoPageNum);
+				uni.setStorageSync("intoDesignerListPage",this.intoDesignerListPage)
+				if(this.intoDesignerListPage == 1){
+					this.showFloating = true
+				}else{
+					this.showFloating =false
+				}
 			} else {
-			  // 未登录
 			  this.estateId = "";
+				this.intoDesignerListPage = 0
 			}
-			console.log("this.estateId==",this.estateId)
-			console.log("this.hasEstate==",this.hasEstate)
 			this.getRecommendCaseList();
-			if(this.intoPageNum==1 && this.intoDesignerListPage==1){
-				this.showFloating =true
-			}else{
-				this.showFloating =false
-			}
 		})
 	},
 
   onPageScroll(scrollTop) {
     this.scrollTop = scrollTop.scrollTop;
   },
-	
+
 	watch:{
 		searchDesignerList:{
 			deep:true,
@@ -419,10 +415,11 @@ export default {
 			uni.setStorageSync("recommendDesignerPage", this.page);
 			this.getDesignerList();
 		},
-		
+
 		cancelShowFloating(){
 			this.showFloating  =false;
 			this.intoDesignerListPage++;
+			console.log("cancelShow!!!!!!!!!!!")
 		},
 		immediatelyChat(){
 			this.$store.dispatch("openCustomerConversation");
@@ -453,7 +450,7 @@ export default {
 
 		gotoMoreDesigner(){
 			this.intoDesignerListPage ++ ;
-			console.log("this.intoDesignerListPage===",this.intoDesignerListPage)
+			console.log("this.intoDesignerListPage===more",this.intoDesignerListPage)
 			debounce(() => {
 				uni.navigateTo({
 					url: "/sub-home/pages/find-design/designer-list",
