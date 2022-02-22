@@ -12,12 +12,9 @@
         </view>
       </view>
       <view class="tag-list">
-        <view class="tag-item" v-for="item of peerComment.commentTags.split(',')">
+       <view class="tag-item" v-for="item of peerComment.commentTags.split(',')">
           {{item}}
         </view>
-<!--        <view class="tag-item">
-          设计水平高
-        </view> -->
       </view>
       <view class="peer-content">
         {{peerComment.content}}
@@ -243,7 +240,7 @@
           color: #333;
           font-size: 24rpx;
           margin-right: 12rpx;
-          margin-top: 10rpx;
+          margin-top: 12rpx;
         }
       }
       .peer-content{
