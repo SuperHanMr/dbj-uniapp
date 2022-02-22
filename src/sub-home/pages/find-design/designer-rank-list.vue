@@ -33,7 +33,7 @@
 				</view>
 				<view class="info-container">
 					<view class="header">
-						<image class="avatar" @click="gotoPersonalPage"  :src="`${item1.searchDesignerVO.avatar}?x-oss-process=image/resize,m_fill,h_88,w_88,limit_0`" />
+						<image class="avatar" @click="gotoPersonalPage(item1)"  :src="`${item1.searchDesignerVO.avatar}?x-oss-process=image/resize,m_fill,h_88,w_88,limit_0`" />
 						<view class="basic-info">
 							<view class="name-container">
 								<text class="name"> {{item1.searchDesignerVO.name}}</text>
@@ -41,17 +41,14 @@
 							</view>
 							<view class="attr">
 								<!-- liveArea 居住地 -->
-								<text class="text" v-if="item1.liveArea">{{item1.liveArea}}</text>
-								<text class="line" v-if="item1.liveArea"></text>
-								
-								<text class="text">服务次数  {{item1.searchDesignerVO.totalPeopleCount || "0" }}</text>
-								<text class="line"></text>
-								<text class="text">好评率{{item1.searchDesignerVO.praiseEfficiency || "0"}}%</text>
+								<view class="liveAreaValue" v-if="item1.liveArea" 
+									:class="{anotherStyle:item1.liveArea.length>=8}"
+								><text>{{item1.liveArea}}</text></view>
+								<view class="attrValue">{{item1.liveArea?"&nbsp;| ":''}}服务次数{{item1.searchDesignerVO.totalPeopleCount || "0" }}  |  好评率{{item1.searchDesignerVO.praiseEfficiency || "0"}}%</view>
 							</view>
 							<view class="label_container">
-							<view class="label_item" v-if="item1.searchDesignerVO.designs">{{item1.searchDesignerVO.styleTag}}</view>
-							<!-- 	<view class="label_item" v-if="item1.searchDesignerVO.styleTag">{{item1.searchDesignerVO.styleTag}}</view>
-								<view class="label_item" v-if="item1.searchDesignerVO.designTag"  v-for="tagItem in item1.searchDesignerVO.designTag" :key="tagItem" >{{tagItem}}</view> -->
+							<view 
+								class="label_item" v-if="item1.searchDesignerVO.designs.length>0" v-for="tagItem in item1.searchDesignerVO.designs" :key="tagItem">{{tagItem}}</view>
 							</view>
 						</view>
 						<view class="hasAttention" v-if="item1.isFocusOn" @click.stop="handleDesigner(item1,index1)">
@@ -66,7 +63,7 @@
 						<scroll-view
 							scroll-x="true"
 							style="white-space: nowrap;"
-							@scrolltolower.stop="gotoPersonalPage"
+							@scrolltolower.stop="gotoPersonalPage(item1)"
 							:scroll-left="scrollLeft"
 						>
 						<view class="case-content">
@@ -90,12 +87,12 @@
 										<text>{{item2.roomNum ||"-"}}室</text>
 										<text>{{item2.hallNum || "-"}}厅</text>
 									</text>
+									<text class="line" v-if="item2.roomNum || item2.hallNum"></text>
+									
+									<text class="text">{{item2.insideArea?`${Math.floor(item2.insideArea)}m²`: "-"}}</text>
 									<text class="line"></text>
 									
-									<text class="text">{{item2.insideArea?Math.floor(item2.insideArea): "-"}}m²</text>
-									<text class="line"></text>
-									
-									<text class="text">预算：{{ item2.budget? Math.floor(item2.budget) : '-'}}万</text>
+									<text class="text">预算：{{ item2.budget?`${Math.floor(item2.budget)}万` : '-'}}</text>
 								</view> 
 							</view>
 							<view class="show-more" v-if="item1.valuationCaseVOS.length >2">
@@ -159,6 +156,7 @@
 				designerList:[],//设计师列表
 				containerPaddingBottom:"",
 				equipmentId:"",
+				scrollLeft:0,
 			}
 		},
 		mounted() {
@@ -182,6 +180,12 @@
 			});
 			this.reqDesignerRank()
 		},
+		onShow() {
+			this.scrollLeft = 1
+			this.$nextTick(()=>{
+				this.scrollLeft = 0
+			})
+		},
 		onPageScroll(scrollTop) {
 		  this.scrollTop = scrollTop.scrollTop;
 		},
@@ -195,10 +199,11 @@
 			toBack(){
 				uni.navigateBack({});
 			},
-			gotoPersonalPage(){
-				console.log("去设计师主页")
+			gotoPersonalPage(item){
+				console.log("去设计师主页",item)
+				if(item.valuationCaseVOS.length<=2) return 
 				uni.navigateTo({ 
-					url:`../../../sub-decorate/pages/person-page/person-page?personId=${xxxx}&isToContent=true`
+					url:`../../../sub-decorate/pages/person-page/person-page?personId=${item.searchDesignerVO.id}&isToContent=true`
 				})
 			},
 			gotoCaseDetail(){
@@ -362,25 +367,37 @@
 							}
 						}
 						.attr {
+							max-width: 416rpx;
 							height: 30rpx;
-							font-size: 22rpx;
 							margin-bottom: 16rpx;
 							display: flex;
 							flex-flow: row nowrap;
 							align-items: center;
-							text {
+							flex: 1;
+							.liveAreaValue{
+								display: flex;
+								// flex: 1;
+								overflow: hidden;
+								text{
+									overflow: hidden;
+									white-space: nowrap; 
+									text-overflow: ellipsis;
+									height: 30rpx;
+									line-height: 30rpx;
+									color: #333333;
+									font-size: 22rpx;
+								}
+							}
+							
+							.attrValue{
+								height: 30rpx;
 								line-height: 30rpx;
 								color: #333333;
-							}
-							.line {
-								display: block;
-								height: 20rpx;
-								width: 2rpx;
-								background: #333333;
-								opacity: 0.7;
-								margin: 0 16rpx;
+								font-size: 22rpx;
+								
 							}
 						}
+						
 						.label_container {
 							display: flex;
 							flex-flow: row wrap;
@@ -482,6 +499,7 @@
 											width: 308rpx;
 											height: 242rpx;
 											margin-right: 4rpx;
+											border-radius: 12rpx 0 0 12rpx;
 										}
 										.smallImg-Container{
 											display: flex;
@@ -607,6 +625,9 @@
 		text-indent: 52rpx;
 		font-size: 26rpx;
 		letter-spacing: 1rpx;
+	}
+	.anotherStyle{
+		flex: 1;
 	}
 
 </style>

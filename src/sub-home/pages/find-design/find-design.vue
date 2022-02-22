@@ -229,8 +229,8 @@
         />
       </view>
     </view>
-		<view class="connectServiceContainer" v-if="showFloating" @click="gotoRankPage" :style="{bottom: containerPaddingBottom}">
-		<!-- <view class="connectServiceContainer" v-if="showFloating":style="{bottom: containerPaddingBottom}"> -->
+		<!-- <view class="connectServiceContainer" v-if="showFloating" @click="gotoRankPage" :style="{bottom: containerPaddingBottom}"> -->
+		<view class="connectServiceContainer" v-if="showFloating":style="{bottom: containerPaddingBottom}">
 			<view class="connectServiceContent">
 				<image src="https://ali-image.dabanjia.com/static/mp/dabanjia/images/theme-red/home/kefu.png"  @click="gotoEvaluatePage"/>
 				<view class="contentInfo">
@@ -240,7 +240,7 @@
 				<view class="btn" @click="immediatelyChat">
 					立即沟通
 				</view>
-				<view class="cancel-Container" @click.stop="showFloating=false">
+				<view class="cancel-Container" @click.stop="cancelShowFloating">
 					<image src="https://ali-image.dabanjia.com/static/mp/dabanjia/images/theme-red/home/find-designer-cancel.png" mode=""></image>
 				</view>
 			</view>
@@ -308,9 +308,14 @@ export default {
 			totalRows:"",
       totalPage: "",
 			containerPaddingBottom:"",
-			showFloating:true,
+			intoPageNum:0,
+			intoDesignerListPage:0,
+			showFloating:false,
     };
   },
+
+
+
 	mounted() {
 		const menuButtonInfo = uni.getMenuButtonBoundingClientRect();
 		this.systemBottom = menuButtonInfo.bottom + "rpx";
@@ -327,6 +332,15 @@ export default {
 		this.page++;
 		uni.setStorageSync("recommendDesignerPage", this.page);
 		const hhh = uni.getStorageSync("recommendDesignerPage");
+
+
+
+		// 处理弹框展示问题
+		if (uni.getStorageSync("intoPageNum")) {
+			this.intoPageNum = uni.getStorageSync("intoPageNum");
+		}
+		this.intoPageNum ++;
+
 		this.getDesignerList();
 		this.reqDesignServiceRecommendList()
   },
@@ -339,21 +353,26 @@ export default {
 			console.log("getApp().globalData===",getApp().globalData)
 			this.estateId = getApp().globalData.currentHouse.id
 			if (this.userId) {
-			  // 登录
 			  this.hasEstate = this.estateId ? true : false
+				uni.setStorageSync("intoPageNum", this.intoPageNum);
+				uni.setStorageSync("intoDesignerListPage",this.intoDesignerListPage)
+				if(this.intoDesignerListPage == 1){
+					this.showFloating = true
+				}else{
+					this.showFloating =false
+				}
 			} else {
-			  // 未登录
 			  this.estateId = "";
+				this.intoDesignerListPage = 0
 			}
-			console.log("this.estateId==",this.estateId)
-			console.log("this.hasEstate==",this.hasEstate)
 			this.getRecommendCaseList();
 		})
 	},
-	
+
   onPageScroll(scrollTop) {
     this.scrollTop = scrollTop.scrollTop;
   },
+
 	watch:{
 		searchDesignerList:{
 			deep:true,
@@ -365,15 +384,15 @@ export default {
   methods: {
 		gotoRankPage(){
 			console.log("去设计师榜单列表页面")
-			uni.navigateTo({
-				url:"designer-rank-list"
-			})
+			// uni.navigateTo({
+			// 	url:"designer-rank-list"
+			// })
 		},
 		gotoEvaluatePage(){
 			console.log("去同行评价页面")
-			uni.navigateTo({
-				url:"../../../sub-decorate/pages/person-page/person-peer-evaluate-list?id=8772"
-			})
+			// uni.navigateTo({
+			// 	url:"../../../sub-decorate/pages/person-page/person-peer-evaluate-list?id=8772"
+			// })
 		},
     toBack() {
       uni.navigateBack({});
@@ -459,6 +478,12 @@ export default {
 			uni.setStorageSync("recommendDesignerPage", this.page);
 			this.getDesignerList();
 		},
+
+		cancelShowFloating(){
+			this.showFloating  =false;
+			this.intoDesignerListPage++;
+			console.log("cancelShow!!!!!!!!!!!")
+		},
 		immediatelyChat(){
 			this.$store.dispatch("openCustomerConversation");
 		},
@@ -475,25 +500,27 @@ export default {
     },
     //去完善房屋信息
     gotoEditHouse() {
-      // if (this.userId) {
-        //登录的情况下 调整到编辑房屋页面
-        uni.navigateTo({
-          url: "/sub-my/pages/my-house/my-house?fromHome=true",
-        });
-      // } else {
-      //   //未登录的情况下跳转到登录页面
-      //   console.log("跳转到登录页面");
-      //   uni.navigateTo({
-      //     url: "/pages/login/login",
-      //   });
-      // }
+			uni.navigateTo({
+				url: "/sub-my/pages/my-house/my-house?fromHome=true",
+			});
     },
     //更多设计师
-    gotoMoreDesigner: debounce(() => {
-			  uni.navigateTo({
-			    url: "/sub-home/pages/find-design/designer-list",
-			  });
-		},500),
+  //   gotoMoreDesigner: debounce(() => {
+		// 	uni.navigateTo({
+		// 		url: "/sub-home/pages/find-design/designer-list",
+		// 	});
+		// },500),
+
+		gotoMoreDesigner(){
+			this.intoDesignerListPage ++ ;
+			console.log("this.intoDesignerListPage===more",this.intoDesignerListPage)
+			debounce(() => {
+				uni.navigateTo({
+					url: "/sub-home/pages/find-design/designer-list",
+				});
+			},500)()
+		},
+
     //去设计师个人主页
     gotoDesignerHomePage(zeusId) {
       console.log("zeusId====", zeusId);
@@ -699,6 +726,44 @@ export default {
             color: #ffffff;
             font-size: 20rpx;
           }
+					.ranking-container{
+						display: flex;
+						align-items: center;
+						flex-flow: row nowrap;
+						margin-left: 8rpx;
+						.num{
+							border-radius: 4rpx 0 0 4rpx;
+							background: linear-gradient(180deg, #FFDFA8 0%, #EFC988 100%);
+							height: 30rpx;
+							text{
+								display: block;
+								height: 30rpx;
+								box-sizing: border-box;
+								color: #865E41;
+								padding: 0 8rpx 2rpx;
+								background: linear-gradient(180deg, #FFEBCC 0%, #FFE5B7 100%);
+								font-weight: 500;
+								font-size: 20rpx;
+								border-radius:4rpx 0 8rpx 4rpx;
+							}
+						}
+						.text{
+							border-radius:0 4rpx 4rpx 0;
+							height: 30rpx;
+							background: linear-gradient(180deg, #FFEBCC 0%, #FFE5B7 100%);
+							text{
+								height: 30rpx;
+								box-sizing: border-box;
+								padding: 0 8rpx 2rpx;
+								background: linear-gradient(180deg, #FFDFA8 0%, #EFC988 100%);
+								display: block;
+								color: #865E41;
+								font-weight: 500;
+								font-size: 20rpx;
+								border-radius:8rpx 4rpx 4rpx 0;
+							}
+						}
+					}
           .item {
             display: flex;
             flex-flow: row nowrap;
@@ -726,6 +791,8 @@ export default {
           display: flex;
           flex-flow: row nowrap;
           align-items: center;
+					height: 34rpx;
+					overflow: hidden;
           .attrItem {
             height: 34rpx;
             line-height: 30rpx;
@@ -741,6 +808,9 @@ export default {
         }
       }
     }
+    // .design-card-item:nth-last-child(1) {
+    // 	margin-right: 0;
+    // }
     .showMoreCard_container {
       width: 252rpx;
       height: 698rpx;
