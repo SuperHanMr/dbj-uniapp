@@ -197,8 +197,8 @@
         />
       </view>
     </view>
-		<view class="connectServiceContainer" v-if="showFloating" @click="gotoRankPage" :style="{bottom: containerPaddingBottom}">
-		<!-- <view class="connectServiceContainer" v-if="showFloating":style="{bottom: containerPaddingBottom}"> -->
+		<!-- <view class="connectServiceContainer" v-if="showFloating" @click="gotoRankPage" :style="{bottom: containerPaddingBottom}"> -->
+		<view class="connectServiceContainer" v-if="showFloating":style="{bottom: containerPaddingBottom}">
 			<view class="connectServiceContent">
 				<image src="https://ali-image.dabanjia.com/static/mp/dabanjia/images/theme-red/home/kefu.png"  @click="gotoEvaluatePage"/>
 				<view class="contentInfo">
@@ -208,7 +208,7 @@
 				<view class="btn" @click="immediatelyChat">
 					立即沟通
 				</view>
-				<view class="cancel-Container" @click.stop="showFloating=false">
+				<view class="cancel-Container" @click.stop="cancelShowFloating">
 					<image src="https://ali-image.dabanjia.com/static/mp/dabanjia/images/theme-red/home/find-designer-cancel.png" mode=""></image>
 				</view>
 			</view>
@@ -273,9 +273,14 @@ export default {
 			totalRows:"",
       totalPage: "",
 			containerPaddingBottom:"",
-			showFloating:true,
+			intoPageNum:0,
+			intoDesignerListPage:0,
+			showFloating:false,
     };
   },
+
+
+
 	mounted() {
 		const menuButtonInfo = uni.getMenuButtonBoundingClientRect();
 		this.systemBottom = menuButtonInfo.bottom + "rpx";
@@ -291,9 +296,20 @@ export default {
 		}
 		this.page++;
 		uni.setStorageSync("recommendDesignerPage", this.page);
-		const hhh = uni.getStorageSync("recommendDesignerPage");
-		console.log("this.page===",hhh)
-		this.getDesignerList();
+
+
+
+		// 处理弹框展示问题
+		if (uni.getStorageSync("intoPageNum")) {
+			this.intoPageNum = uni.getStorageSync("intoPageNum");
+		}
+		this.intoPageNum ++;
+		uni.setStorageSync("intoPageNum", this.intoPageNum);
+
+		const hhh = uni.getStorageSync("intoPageNum");
+		console.log("this.intoPageNum===",hhh)
+
+	this.getDesignerList();
   },
   onShow() {
 		this.scrollLeft = 1
@@ -313,15 +329,18 @@ export default {
 			console.log("this.estateId==",this.estateId)
 			console.log("this.hasEstate==",this.hasEstate)
 			this.getRecommendCaseList();
+			if(this.intoPageNum==1 && this.intoDesignerListPage==1){
+				this.showFloating =true
+			}else{
+				this.showFloating =false
+			}
 		})
-
-
-
-  },
+	},
 
   onPageScroll(scrollTop) {
     this.scrollTop = scrollTop.scrollTop;
   },
+	
 	watch:{
 		searchDesignerList:{
 			deep:true,
@@ -379,8 +398,7 @@ export default {
         this.totalPage = res.totalPage;
 
 				if(this.page ==res.totalPage){
-					this.page = 0
-					console.log("this.page11==",this.page)
+					this.page = 0;
 					uni.setStorageSync("recommendDesignerPage", this.page);
 				}
       });
@@ -393,6 +411,11 @@ export default {
 			console.log("this.page22==",this.page)
 			uni.setStorageSync("recommendDesignerPage", this.page);
 			this.getDesignerList();
+		},
+		
+		cancelShowFloating(){
+			this.showFloating  =false;
+			this.intoDesignerListPage++;
 		},
 		immediatelyChat(){
 			this.$store.dispatch("openCustomerConversation");
@@ -410,25 +433,27 @@ export default {
     },
     //去完善房屋信息
     gotoEditHouse() {
-      // if (this.userId) {
-        //登录的情况下 调整到编辑房屋页面
-        uni.navigateTo({
-          url: "/sub-my/pages/my-house/my-house?fromHome=true",
-        });
-      // } else {
-      //   //未登录的情况下跳转到登录页面
-      //   console.log("跳转到登录页面");
-      //   uni.navigateTo({
-      //     url: "/pages/login/login",
-      //   });
-      // }
+			uni.navigateTo({
+				url: "/sub-my/pages/my-house/my-house?fromHome=true",
+			});
     },
     //更多设计师
-    gotoMoreDesigner: debounce(() => {
-			  uni.navigateTo({
-			    url: "/sub-home/pages/find-design/designer-list",
-			  });
-		},500),
+  //   gotoMoreDesigner: debounce(() => {
+		// 	uni.navigateTo({
+		// 		url: "/sub-home/pages/find-design/designer-list",
+		// 	});
+		// },500),
+
+		gotoMoreDesigner(){
+			this.intoDesignerListPage ++ ;
+			console.log("this.intoDesignerListPage===",this.intoDesignerListPage)
+			debounce(() => {
+				uni.navigateTo({
+					url: "/sub-home/pages/find-design/designer-list",
+				});
+			},500)()
+		},
+
     //去设计师个人主页
     gotoDesignerHomePage(zeusId) {
       console.log("zeusId====", zeusId);
