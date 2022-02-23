@@ -485,6 +485,7 @@ export default {
 			console.log("cancelShow!!!!!!!!!!!")
 		},
 		immediatelyChat(){
+			this.intoDesignerListPage++;
 			this.$store.dispatch("openCustomerConversation");
 		},
 		//自己找设计师
