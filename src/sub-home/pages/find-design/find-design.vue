@@ -425,7 +425,7 @@ export default {
         sortType: "", //排序类型 0:默认排序，1:服务次数排序 2： 好评率排序"
       };
 			console.log("请求设计师列表参数==",params)
-      searchDesigner(params).then((res) => {
+      firstsearchDesigner(params).then((res) => {
         this.searchDesignerList = res.list;
         this.searchDesignerList = res.list.map(item=>{
 					if(item.artImage.indexOf('?x-oss-process=image/resize,m_fill,h_160,w_120,limit_0') !==-1){
@@ -439,20 +439,20 @@ export default {
 				console.log("this.totalPgae====",this.totalPage)
         uni.setStorageSync("recommendDesignerTotalPage", res.totalPage);
         console.log("res.totalRows==",res.totalRows);
-				// 返回的总条数不是5的倍数
-				if ((res.totalRows % 5 !== 0) && (this.page == (this.totalPage - 1))) {
-					this.page = 0;
-					uni.setStorageSync("recommendDesignerPage", this.page);
-				}
-				//返回的总条数是5的倍数
-				if((res.totalRows % 5 == 0) && (this.page ==this.totalPage)){
-					this.page = 0;
-					uni.setStorageSync("recommendDesignerPage", this.page);
-				}
-				// if(this.page == this.totalPage){
-				// 	this.page = 0
+				// // 返回的总条数不是5的倍数
+				// if ((res.totalRows % 5 !== 0) && (this.page == (this.totalPage - 1))) {
+				// 	this.page = 0;
 				// 	uni.setStorageSync("recommendDesignerPage", this.page);
 				// }
+				// //返回的总条数是5的倍数
+				// if((res.totalRows % 5 == 0) && (this.page ==this.totalPage)){
+				// 	this.page = 0;
+				// 	uni.setStorageSync("recommendDesignerPage", this.page);
+				// }
+				if(this.page == this.totalPage){
+					this.page = 0
+					uni.setStorageSync("recommendDesignerPage", this.page);
+				}
       });
     },
 
@@ -485,6 +485,7 @@ export default {
 			console.log("cancelShow!!!!!!!!!!!")
 		},
 		immediatelyChat(){
+			this.intoDesignerListPage++;
 			this.$store.dispatch("openCustomerConversation");
 		},
 		//自己找设计师
