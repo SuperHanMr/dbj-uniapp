@@ -80,7 +80,7 @@
 										￥{{item.freight?`${item.freight}`:"0.00"}}
 									</text>
 									<text class="price-font" :style="{marginTop:item.freight?'0':'8rpx'}" v-else>
-										{{item.freight?`￥${item.freight}`:"--"}}
+										{{item.freight?`￥${item.freight}`: (isFromPackage ? "￥0.00" : "--")}}
 									</text>
 								</view>
 							</view>
@@ -95,7 +95,7 @@
 									<text
 									  class="price-font" :style="{marginTop:item.handlingFees ? '0' : '8rpx' }"
 									  v-else
-									>{{item.handlingFees?`￥${item.handlingFees}`:"--"}}</text>
+									>{{item.handlingFees?`￥${item.handlingFees}`:(isFromPackage ? "￥0.00" : "--")}}</text>
 								</view>
 							</view>
 							<view class="item_css_style"  v-if="item.storeDiscount">
@@ -458,6 +458,7 @@ export default {
   },
   data() {
     return {
+			isFromPackage: false, // 来自套包下单页面时，运费搬运分固定展示 0
       scrollTop: 0,
       headerTitle: "订单详情",
       orderId: -1,//订单id
@@ -595,6 +596,7 @@ export default {
     this.orderId = Number(e.orderId);
     this.status = Number(e.status);
     this.from = e.from;
+		this.isFromPackage = !!e.fromPackage;
 
 		const currentHouse = getApp().globalData.currentHouse;
 		console.log("currentHouse=", currentHouse);
@@ -875,7 +877,7 @@ export default {
 		    }
 		  });
 		},
-		
+
 
 		formatTime(msTime) {
 		  let time = msTime / 1000;
