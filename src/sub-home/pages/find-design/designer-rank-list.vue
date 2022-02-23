@@ -45,7 +45,7 @@
 								<view class="liveAreaValue" v-if="item1.liveArea"
 									:class="{anotherStyle:item1.liveArea.length>=8}"
 								><text>{{item1.liveArea}}</text></view>
-								<view class="attrValue">{{item1.liveArea?"&nbsp;| ":''}}服务次数{{item1.searchDesignerVO.totalPeopleCount || "0" }}  |  好评率{{item1.searchDesignerVO.praiseEfficiency || "0"}}%</view>
+								<view class="attrValue">{{item1.liveArea?"&nbsp;| ":''}}服务次数{{item1.searchDesignerVO.totalCount || "0" }}  |  好评率{{item1.searchDesignerVO.praiseEfficiency || "0"}}%</view>
 							</view>
 							<view class="label_container">
 							<view
@@ -69,7 +69,7 @@
 							:scroll-left="scrollLeft"
 						>
 						<view class="case-content">
-							<view class="case-item" v-for="item2 in item1.valuationCaseVOS" :key="item2.id" @click="gotoCaseDetail(item2)">
+							<view class="case-item" v-for="item2 in item1.valuationCaseList" :key="item2.id" @click="gotoCaseDetail(item2)">
 								<image v-if="item2.famous" class="icon" src="https://ali-image.dabanjia.com/static/mp/dabanjia/images/theme-red/home/famousWork.png" />
 								<image v-if="item2.favourite" class="icon" src="https://ali-image.dabanjia.com/static/mp/dabanjia/images/theme-red/home/favouriteWork.png" />
 
@@ -86,8 +86,8 @@
 								<view class="caseName">{{item2.caseName}}</view>
 								<view class="caseInfo">
 									<text class="text" v-if="item2.roomNum || item2.hallNum">
-										<text>{{item2.roomNum ||"-"}}室</text>
-										<text>{{item2.hallNum || "-"}}厅</text>
+										<text v-if="item2.roomNum">{{item2.roomNum ||"-"}}室</text>
+										<text v-if="item2.hallNum">{{item2.hallNum || "-"}}厅</text>
 									</text>
 									<text class="line" v-if="item2.roomNum || item2.hallNum"></text>
 
@@ -97,7 +97,7 @@
 									<text class="text">预算：{{ item2.budget?`${Math.floor(item2.budget)}万` : '-'}}</text>
 								</view>
 							</view>
-							<view class="show-more" v-if="item1.valuationCaseVOS.length >2">
+							<view class="show-more" v-if="item1.showMoreCase">
 								<view class="text">左滑查看更多</view>
 							</view>
 						</view>
@@ -119,8 +119,9 @@
 					</view>
 				</view>
 				<scroll-view :scroll-y="true" class="toast-content">
-					<p>打扮家平台通过对设计师智能测评，以及对设计师服务能力、设计水平等多维度的评估，评选出最具价值设计师</p>
-					<p>我们的算法，包括对Wide & Deep、Learning、xDeepFM等算法、以及NLP双塔模型的独特应用</p>
+				<view class="bankingComplain">
+					榜单说明：本榜单为打扮家平台对设计师四维能力的综合评估得分排行，数据实时更新。评估数据维度包含：设计师综合能力估值，设计水平，服务水平及业主反馈。
+				</view>
 				</scroll-view>
 			</view>
 		</uni-popup>
@@ -197,6 +198,21 @@
 				getDesignRank().then(res=>{
 					console.log("res====",res)
 					this.designerList = res
+					this.designerList=this.designerList.map(item=>{
+						if(item.valuationCaseVOS && item.valuationCaseVOS.length>2){
+							item.showMoreCase = true
+							console.log("item.valuationCase-=====",item.valuationCaseVOS)
+							item.valuationCaseList=item.valuationCaseVOS.slice(0,2)
+						}else if(item.valuationCaseVOS && item.valuationCaseVOS.length<=2){
+							item.valuationCaseList = item.valuationCaseVOS
+							item.showMoreCase = false
+						}else{
+							console.log("案例个数不超过三个")
+							item.valuationCaseList=[]
+							item.showMoreCase = false
+						}
+						return item
+					})
 				})
 			},
 			toBack(){
@@ -359,6 +375,10 @@
 					font-size: 32rpx;
 					font-weight: 500;
 					margin-right: 24rpx;
+					max-width: 276rpx;
+					overflow: hidden;
+					white-space: nowrap;
+					text-overflow: ellipsis;
 				}
 				.rank{
 					display: block;
@@ -601,7 +621,7 @@
 		justify-content: center;
 		align-items: center;
 		color: #111111;
-		font-weight: 500;
+		font-weight: bold;
 		font-size: 32rpx;
 
 	}
@@ -632,12 +652,12 @@
 		padding: 0 32rpx 38rpx;
 		background-color: #FFFFFF;
 	}
-	p {
+	 .bankingComplain{
 		text-align: justify;
 		color: #999999;
 		margin-bottom: 10rpx;
 		line-height: 44rpx;
-		text-indent: 52rpx;
+		// text-indent: 52rpx;
 		font-size: 26rpx;
 		letter-spacing: 1rpx;
 	}
