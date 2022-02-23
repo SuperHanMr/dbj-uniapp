@@ -150,12 +150,12 @@
 
     <view
       class="perfectHouseInfo_container"
-      @click="gotoEditHouse"
       v-if="!userId || (userId && !hasEstate)"
     >
       <image
         class="bigImage"
         src="https://ali-image.dabanjia.com/static/mp/dabanjia/images/home/perfectHouseInfo.svg"
+				@click="gotoEditHouse"
       />
 
       <view
