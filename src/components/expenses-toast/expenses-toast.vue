@@ -150,6 +150,7 @@
 	}
 
 	.header-popup {
+		background: #fff;
 		width: 750rpx;
 		height: 104rpx;
 		border-radius: 32rpx 32rpx 0rpx 0rpx;
@@ -181,6 +182,7 @@
 	.toast-content {
 		max-height: 1000rpx;
 		overflow: auto;
+		background: #fff;
 	}
 	.title {
 		height: 100rpx;
