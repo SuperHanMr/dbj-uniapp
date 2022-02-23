@@ -196,6 +196,10 @@
           font-size: 24rpx;
           color: #666;
           margin-right: 12rpx;
+          max-width: 152rpx;
+          overflow: hidden;
+          text-overflow: ellipsis;
+          white-space: nowrap;
         }
         .design-job{
           padding: 0 8rpx;
@@ -210,6 +214,10 @@
         .design-rank{
           height: 30rpx;
           line-height: 30rpx;
+          z-index: 10;
+          display: flex;
+          align-items: center;
+
           text{
             display: inline-block;
             padding: 0 8rpx;

@@ -630,7 +630,7 @@ export default {
             this.getTopDistance();
             this.pageScroll(0);
             
-          }, 1000);
+          }, 500);
         } else {
           // this.personData = getApp().globalData.userInfo
           // console.log(this.personData)

@@ -73,7 +73,7 @@
             
             this.isHidden = res&&(res.height/20 >= 6);
             this.showBtn = res&&(res.height/20 >= 6);
-            console.log(res.height,this.isHidden)
+            // console.log(res.height,this.isHidden)
             
           }).exec()
         })
