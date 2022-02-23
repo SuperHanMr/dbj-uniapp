@@ -12,7 +12,7 @@
           v-if="personId!=0&&personData.gender===2"
         ></i>
       </view>
-      
+
       <view class="header-right">
         <view class="header-right-top">
           <view class="list-item">
@@ -71,10 +71,7 @@
         <view class="name">
           {{personData.realName}}
         </view>
-        <view class="tag">
-          <image v-for="(item,index) in personData.personAllBadgeVO.basicBadges" :key='item.badgeId' :src="item.ico" mode=""></image>
-          <image v-for="(item,index) in personData.personAllBadgeVO.skillBadges" :key='item.badgeId' :src="item.ico" mode=""></image>
-        </view>
+
       </view>
       <view class="info-list">
         <!-- {{personData.gender===1?'男':'女'}} -->
@@ -86,16 +83,41 @@
         <text v-if="personData.industryYearsStr">|</text>
         {{personData.industryYearsStr?personData.industryYearsStr:''}}
       </view>
-      <view class="skill">
-        <view class="skill-item" v-for="(item,index) of personData.designTags" :key='index'>
-          {{item}}
+      <view class="introduce">
+        <view class="item" @click="openPopup" v-if="personData.personAllBadgeVO.skillBadges.length||personData.personAllBadgeVO.basicBadges.length">
+          <i class='icon-a-homepage_Thebadge icon'></i>
+          <text class="tag-tip">Ta的徽章</text>
+          <view class="tag">
+            <image v-for="(item,index) in personData.personAllBadgeVO.basicBadges" :key='item.badgeId' :src="item.ico" mode=""></image>
+            <image v-for="(item,index) in personData.personAllBadgeVO.skillBadges" :key='item.badgeId' :src="item.ico" mode=""></image>
+          </view>
+          <i class="icon-alert_notice_jump"></i>
         </view>
+        <view class="item" v-if="personData.designTags.length">
+          <i class='icon-a-homepage_Goodat icon'></i>
+          <view class="skill">
+            <view class="skill-item" v-for="(item,index) of personData.designTags" :key='index'>
+              {{item}}
+            </view>
+          </view>
+        </view>
+        <view class="item">
+          <i class='icon-a-homepage_data icon'></i>
+          <view class="msg-content introudc-msg" >
+            <view class="report-text" :class="{'report-text-hidden':isHidden}">{{personData.intro||'这个人很懒，什么都没写'}}</view>
+            <view class="openHidden" v-if="showBtn" @click="clickHidden">
+              {{hddenText}}
+            </view>
+          </view>
+        </view>
+
       </view>
-      <view class="msg-content introudc-msg" >
-        <view class="report-text" :class="{'report-text-hidden':isHidden}">{{personData.intro||'这个人很懒，什么都没写'}}</view>
-        <view class="openHidden" v-if="showBtn" @click="clickHidden">
-          {{hddenText}}
-        </view>
+      <view class="value-rank" v-if="personData.valueRank>0&&personData.isFlag" @click="toRankList">
+        <text class="top-font">Top.</text>
+        <text class="num top-font">{{personData.valueRank}}</text>
+        <text class="rank-text">打扮家最具价值设计师榜单</text>
+        <i class="icon-alert_notice_jump"></i>
+        <image :src="personData.valueRank>9?'../../../static/person_rank.png':'../../../static/person_rank_one.png'" mode=""></image>
       </view>
     </view>
   </view>
@@ -143,6 +165,9 @@
       queryAttention(data,from='attention'){
         this.$emit('queryAttention',data,from)
       },
+      openPopup(){
+        this.$emit('openPopup')
+      },
       clickHidden(){
         this.isHidden = !this.isHidden
         this.hddenText = this.isHidden?'查看全部':'收起隐藏'
@@ -160,11 +185,15 @@
       },
       sendMsg(){
         if(!this.isAttention){
-          this.queryAttention(1001,'auto') 
+          this.queryAttention(1001,'auto')
         }else{
           this.$emit('sendMsg')
         }
-        
+      },
+      toRankList(){
+        uni.navigateTo({
+          url:'/sub-home/pages/find-design/designer-rank-list'
+        })
       }
     }
   }
@@ -284,6 +313,37 @@
           text-overflow: ellipsis;
           white-space: nowrap;
         }
+
+      }
+      .introduce{
+        border-bottom: 0.5px solid rgba(255, 255, 255, 0.2);;
+        .item{
+          display: flex;
+          margin-bottom: 24rpx;
+          .icon{
+            color: #fff;
+            margin-right: 12rpx;
+            // margin-top: 6rpx;
+            line-height: 42rpx;
+            font-size: 20rpx;
+          }
+          .icon-a-homepage_data{
+            margin-top: 4rpx;
+          }
+          .tag-tip{
+            color: #fff;
+            opacity: 0.8;
+            font-size: 22rpx;
+            margin-right: 12rpx;
+            line-height: 40rpx;
+          }
+          .icon-alert_notice_jump{
+            color: #fff;
+            opacity: 0.8;
+            font-size: 24rpx;
+            line-height: 40rpx;
+          }
+        }
         .tag{
           display: flex;
           align-items: center;
@@ -305,7 +365,7 @@
       }
       .skill{
         display: flex;
-        margin-bottom: 22rpx;
+        // margin-bottom: 22rpx;
         flex-wrap: wrap;
         .skill-item{
           background: rgba(255, 255, 255, 0.05);
@@ -324,7 +384,7 @@
         }
       }
       .msg-content{
-        margin-bottom: 30rpx;
+        // margin-bottom: 30rpx;
         .report-text {
           color: #fff;
           font-size: 26rpx;
@@ -357,6 +417,41 @@
           font-size: 24rpx;
           
         }
+      }
+    }
+    .value-rank{
+      margin: 32rpx 0;
+      height: 60rpx;
+      line-height: 60rpx;
+      font-size: 26rpx;
+      color: #865E41;
+      position: relative;
+      padding: 0 24rpx;
+      text{
+        z-index: 10;
+        position: relative;
+      }
+      .rank-text{
+        letter-spacing: 0.2px;
+      }
+      .num{
+        margin: 0 54rpx 0 8rpx;
+        font-size: 28rpx;
+        font-weight: bold;
+      }
+      i{
+        position: relative;
+        z-index: 10;
+        margin-left: 8rpx;
+        font-size: 20rpx;
+        display: inline-block;
+      }
+      image{
+        position: absolute;
+        left: 0;
+        top: 0;
+        height: 60rpx;
+        width: 100%;
       }
     }
   }

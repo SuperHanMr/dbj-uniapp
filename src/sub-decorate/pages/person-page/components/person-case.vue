@@ -144,6 +144,7 @@
       				this.pagState.totalRows = res.totalRows;
               
               this.$emit('contentEmpty','caseEmpty',res.list.length>0?true:false)
+          // this.$emit('contentEmpty','caseEmpty',false)
       			}else{
               this.$emit('contentEmpty','caseEmpty',false)
             }

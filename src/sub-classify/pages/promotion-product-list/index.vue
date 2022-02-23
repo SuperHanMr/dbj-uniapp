@@ -22,9 +22,10 @@
 			}
 		},
 		onLoad(e) {
-			this.baseUrl = this.ENV.VUE_APP_BASE_H5//'https://localhost'
+			this.baseUrl = this.ENV.VUE_APP_BASE_H5 // 'https://localhost'
 			this.searchToken = getApp().globalData.token
 			this.houseId = getApp().globalData.currentHouse.id
+			console.log(getApp().globalData.token);
 		},
 
 		onShow() {
