@@ -425,7 +425,7 @@ export default {
         sortType: "", //排序类型 0:默认排序，1:服务次数排序 2： 好评率排序"
       };
 			console.log("请求设计师列表参数==",params)
-      searchDesigner(params).then((res) => {
+      firstsearchDesigner(params).then((res) => {
         this.searchDesignerList = res.list;
         this.searchDesignerList = res.list.map(item=>{
 					if(item.artImage.indexOf('?x-oss-process=image/resize,m_fill,h_160,w_120,limit_0') !==-1){
