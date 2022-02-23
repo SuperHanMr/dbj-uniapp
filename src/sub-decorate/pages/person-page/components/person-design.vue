@@ -115,7 +115,7 @@
       <view class="value-rank" v-if="personData.valueRank>0&&personData.isFlag" @click="toRankList">
         <text class="top-font">Top.</text>
         <text class="num top-font">{{personData.valueRank}}</text>
-        <text>打扮家最具价值设计师榜单</text>
+        <text class="rank-text">打扮家最具价值设计师榜单</text>
         <i class="icon-alert_notice_jump"></i>
         <image :src="personData.valueRank>9?'../../../static/person_rank.png':'../../../static/person_rank_one.png'" mode=""></image>
       </view>
@@ -423,13 +423,16 @@
       margin: 32rpx 0;
       height: 60rpx;
       line-height: 60rpx;
-      font-size: 24rpx;
+      font-size: 26rpx;
       color: #865E41;
       position: relative;
       padding: 0 24rpx;
       text{
         z-index: 10;
         position: relative;
+      }
+      .rank-text{
+        letter-spacing: 0.2px;
       }
       .num{
         margin: 0 54rpx 0 8rpx;

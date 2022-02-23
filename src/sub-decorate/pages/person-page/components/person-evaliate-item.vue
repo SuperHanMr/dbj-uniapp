@@ -1,7 +1,7 @@
 <template>
   <view class="evaluate-item" :class="{'border-none':last}">
     <view class="item-top">
-      <view class="name">{{item.anonymous?'匿名用户':item.userName}}</view>
+      <view class="name">{{item.anonymous?'匿名业主':item.userName}}</view>
       <view class="time">{{item.createTime}}</view>
     </view>
     <view class="item-content">
@@ -73,7 +73,7 @@
             
             this.isHidden = res&&(res.height/20 >= 6);
             this.showBtn = res&&(res.height/20 >= 6);
-            console.log(res.height,this.isHidden)
+            // console.log(res.height,this.isHidden)
             
           }).exec()
         })
