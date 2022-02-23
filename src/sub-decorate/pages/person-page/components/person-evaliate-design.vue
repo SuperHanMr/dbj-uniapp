@@ -29,7 +29,7 @@
     <view class="" v-if="commentData.list[0]&&commentData.list[0].rank>3">
       <view class="title">
         来自 
-        <text>业主{{commentData.list[0].anonymous?'匿名用户':commentData.list[0].userName}} </text>
+        <text>业主{{commentData.list[0].anonymous?'匿名业主':commentData.list[0].userName}} </text>
         <text class="weight"> 的评价</text>
       </view>
       <view class="evaluate-text" :class="{'report-text-hidden':isHidden}">
