@@ -45,7 +45,7 @@
 								<view class="liveAreaValue" v-if="item1.liveArea"
 									:class="{anotherStyle:item1.liveArea.length>=8}"
 								><text>{{item1.liveArea}}</text></view>
-								<view class="attrValue">{{item1.liveArea?"&nbsp;| ":''}}服务次数{{item1.searchDesignerVO.totalCount || "0" }}  |  好评率{{item1.searchDesignerVO.praiseEfficiency || "0"}}%</view>
+								<view class="attrValue">{{item1.liveArea?"&nbsp;| ":''}}服务次数{{item1.searchDesignerVO.totalCount || "0" }}{{item1.searchDesignerVO.praiseEfficiency ?`&nbsp;|&nbsp;好评率${item1.searchDesignerVO.praiseEfficiency}%`:''}}</view>
 							</view>
 							<view class="label_container">
 							<view
@@ -91,7 +91,7 @@
 									</text>
 									<text v-if="!item2.roomNum && !item2.hallNum">-室-厅</text>
 
-									<text class="line" v-if="item2.roomNum || item2.hallNum"></text>
+									<text class="line" v-if="item2.roomNum || item2.hallNum || (!item2.roomNum && !item2.hallNum)"></text>
 
 									<text class="text">{{item2.insideArea?`${Math.floor(item2.insideArea)}`: "-"}}m²</text>
 									<text class="line"></text>
@@ -221,10 +221,19 @@
 				uni.navigateBack({});
 			},
 			gotoPersonalPage(item, type){
+				
 				if(type =="total" && item.valuationCaseVOS.length<=2) return ;
-				uni.navigateTo({
-					url:`../../../sub-decorate/pages/person-page/person-page?personId=${item.searchDesignerVO.id}&isToContent=true`
-				})
+				if(type == "total"){
+					uni.navigateTo({
+						url:`../../../sub-decorate/pages/person-page/person-page?personId=${item.searchDesignerVO.id}&isToContent=true`
+					})
+				}else{
+					uni.navigateTo({
+						url:`../../../sub-decorate/pages/person-page/person-page?personId=${item.searchDesignerVO.id}`
+					})
+				}
+				
+			
 			},
 			gotoCaseDetail(item){
 				console.log("去案例详情",item)
