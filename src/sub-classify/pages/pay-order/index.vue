@@ -659,6 +659,12 @@ export default {
     getBundleDetail(params) {
       getBundleDetail(params).then(data => {
         this.reducePayParams(this.reduceDetailInfo(data));
+      }).catch(err => {
+        uni.showToast({
+          title: err.data?.message || '程序异常',
+          icon: 'none',
+          duration: 3000,
+        })
       })
     },
     emitInfo(val) {
