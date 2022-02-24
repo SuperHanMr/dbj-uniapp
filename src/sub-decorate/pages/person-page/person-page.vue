@@ -396,6 +396,7 @@ export default {
   },
   computed: {
     navStyle() {
+      console.log(this.opacityNum)
       return {
         opacity: this.opacityNum,
       };
@@ -429,7 +430,7 @@ export default {
   },
   onLoad(e) {
     this.userType = e.userType;
-    this.personId = e.personId || 8093;
+    this.personId = e.personId || 7720;
     //价值排行榜进入主页需要滚动至案例区域
     this.isToContent = e.isToContent||false
     uni.showShareMenu();
@@ -492,7 +493,10 @@ export default {
     },
     pageScroll(scrollTop) {
       this.scrollTop = scrollTop;
-      this.changeOpacity(this.scrollTop);
+      //从深层页面返回时，避免触发导致显示异常
+      if(scrollTop!=0){
+        this.changeOpacity(this.scrollTop);
+      }
       this.getTopDistance();
       if (this.personData.roleId === 1) {
         this.currentItem =
@@ -580,7 +584,7 @@ export default {
           }
           this.isAttention = !this.isAttention;
         }
-        console.log(from,'zzzzzzzzzzzzzzzzzzzzzz')
+        
         if(from==='auto'){
           uni.showToast({
           	title: '已为你关注该设计师。',
@@ -679,7 +683,7 @@ export default {
     },
     back() {
       let pages = getCurrentPages()
-      console.log(pages.length,'当前栈深度')
+      // console.log(pages.length,'当前栈深度')
       if(pages.length<2){
         uni.switchTab({
         	url: '/pages/home/index/index'
