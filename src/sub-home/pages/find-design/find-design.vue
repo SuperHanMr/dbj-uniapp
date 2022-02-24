@@ -136,10 +136,10 @@
 								{{item4.fullName}}
 							</view>
 							<view class="price">
-								<text style="color: #999;font-size: 20rpx;">￥</text>
-								<text style="color: #333;font-size: 28rpx;">{{handlePrice(item4.price/100)[0]}}</text>
-								<text style="color: #333;font-size: 24rpx;">.{{handlePrice(item4.price/100)[1]}}</text>
-								<text style="color: #999;font-size: 22rpx;">/{{item4.unit}}</text>
+								<text style="font-size: 20rpx;">￥</text>
+								<text style="font-size: 28rpx;">{{handlePrice(item4.price/100)[0]}}</text>
+								<text style="font-size: 24rpx;">.{{handlePrice(item4.price/100)[1]}}</text>
+								<text style="font-size: 22rpx;">/{{item4.unit}}</text>
 							</view>
 						</view>
 					</view>
@@ -670,7 +670,7 @@ export default {
 }
 .designCard_container {
   height: 698rpx;
-  padding-left: 32rpx;
+  // padding-left: 32rpx;
   background: linear-gradient(180deg, #ffffff 0%, #f6f6f6 100%);
   display: flex;
   align-items: center;
@@ -678,7 +678,7 @@ export default {
     .design-card-item {
       width: 434rpx;
       height: 698rpx;
-      margin-right: 32rpx;
+      margin-left: 32rpx;
       background-color: pink;
       border-radius: 16rpx;
       background-color: #ffffff;
@@ -721,7 +721,8 @@ export default {
             box-sizing: border-box;
             padding: 0 8rpx;
             line-height: 26rpx;
-            border: 0.5px solid #ffffff;
+            border: 0.5px solid rgba(255, 255, 255, 0.44);
+						background: rgba(255, 255, 255, 0.1);
             box-sizing: border-box;
             border-radius: 4rpx;
             color: #ffffff;
@@ -739,9 +740,10 @@ export default {
 							text{
 								display: block;
 								height: 30rpx;
+								line-height: 30rpx;
 								box-sizing: border-box;
 								color: #865E41;
-								padding: 0 8rpx 2rpx;
+								padding: 0 8rpx ;
 								background: linear-gradient(180deg, #FFEBCC 0%, #FFE5B7 100%);
 								font-weight: 500;
 								font-size: 20rpx;
@@ -754,8 +756,9 @@ export default {
 							background: linear-gradient(180deg, #FFEBCC 0%, #FFE5B7 100%);
 							text{
 								height: 30rpx;
+								line-height: 30rpx;
 								box-sizing: border-box;
-								padding: 0 8rpx 2rpx;
+								padding: 0 8rpx ;
 								background: linear-gradient(180deg, #FFDFA8 0%, #EFC988 100%);
 								display: block;
 								color: #865E41;
@@ -819,6 +822,7 @@ export default {
       overflow: hidden;
       display: inline-block;
       position: relative;
+			margin-left: 32rpx;
 			image{
 				width: 252rpx;
 				height: 698rpx;
@@ -1102,7 +1106,9 @@ export default {
 						text-overflow: ellipsis
 					}
 					.price{
-
+						text{
+							color: #333333;
+						}
 					}
 				}
 			}

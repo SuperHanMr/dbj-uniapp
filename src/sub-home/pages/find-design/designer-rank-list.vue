@@ -2,13 +2,13 @@
 	<view class="container">
 		<custom-navbar
 		  :opacity="scrollTop/100"
-		  bgcolor="#FFF"
+		  bgcolor=""
 		>
 		  <template v-slot:back>
 		    <view @click="toBack">
 		      <i
 		        class="icon-ic_cancel_white header-back"
-		        :style="{color:scrollTop>0?'black':'white'}"
+						style="color:white"
 		      >
 		      </i>
 		    </view>
@@ -291,10 +291,10 @@
 				width: 52rpx;
 				height: 130rpx;
 				box-sizing: border-box;
-				background: linear-gradient(90deg, rgba(248, 223, 181, 0.1) -5.56%, rgba(22, 24, 29, 0.07) 100%);
+				background: rgba(243, 226, 197, 0.12);
 				padding: 10rpx 10rpx 8rpx;
 				border-radius: 8rpx 0 0 8rpx;
-				color: #595652;
+				color: #94918C;
 				font-size: 24rpx;
 				letter-spacing: 2rpx;
 				writing-mode: vertical-lr;/*从左向右 从右向左是 writing-mode: vertical-rl;*/
@@ -327,6 +327,7 @@
 				border-radius: 24rpx;
 				z-index: 2;
 				position: relative;
+				width: 702rpx;
 				.designer-topNum{
 					position: absolute;
 					left: 32rpx;
@@ -492,7 +493,7 @@
 	}
 
 	.case-container{
-		padding-left: 24rpx;
+		// padding-left: 24rpx;
 		padding-bottom: 32rpx;
 		display: flex;
 		align-items: center;
@@ -501,18 +502,12 @@
 				display: flex;
 				align-items: center;
 				flex-flow: row nowrap;
-				.case-item-style{
-					position: relative;
-					display: inline-block;
-					margin-right: 24rpx;
-
-				}
 				.case-item{
 					position: relative;
 					width: 462rpx;
 					height: 336rpx;
 					display: inline-block;
-					margin-right: 24rpx;
+					margin-left: 24rpx;
 					.icon{
 						position: absolute;
 						width: 132rpx;
@@ -594,6 +589,7 @@
 					display: inline-block;
 					width: 64rpx;
 					height: 338rpx;
+					margin-left: 24rpx;
 					.text{
 						width: 64rpx;
 						height: 242rpx;
