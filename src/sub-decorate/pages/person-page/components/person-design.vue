@@ -389,7 +389,7 @@
           color: #fff;
           font-size: 26rpx;
           font-weight: 400;
-          letter-spacing: 1px;
+          letter-spacing: 0.2px;
           width: 100%;
           line-height: 42rpx;
           word-break: break-word;
