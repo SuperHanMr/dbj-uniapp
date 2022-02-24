@@ -74,8 +74,8 @@
 								<image v-if="item2.favourite" class="icon" src="https://ali-image.dabanjia.com/static/mp/dabanjia/images/theme-red/home/favouriteWork.png" />
 
 								<view class="img-Container">
-									<image v-if="item2.imageUrlList.length < 2" class="oneImg" :src="`${item2.imageUrlList[0]}?x-oss-process=image/resize,m_fill,h_484,w_924,limit_0`"/>
-									<view v-else class="threeImg">
+									<image v-if=" item2.imageUrlList.length==1 " class="oneImg" :src="`${item2.imageUrlList[0]}?x-oss-process=image/resize,m_fill,h_484,w_924,limit_0`"/>
+									<view v-if="item2.imageUrlList.length >= 3" class="threeImg">
 										<image class="bigImg" :src="`${item2.imageUrlList[0]}?x-oss-process=image/resize,m_fill,h_484,w_924,limit_0`"/>
 										<view class="smallImg-Container">
 											<image class="smalImg1" :src="`${item2.imageUrlList[1]}?x-oss-process=image/resize,m_fill,h_484,w_924,limit_0`"/>
@@ -89,12 +89,14 @@
 										<text v-if="item2.roomNum">{{item2.roomNum ||"-"}}室</text>
 										<text v-if="item2.hallNum">{{item2.hallNum || "-"}}厅</text>
 									</text>
+									<text v-if="!item2.roomNum && !item2.hallNum">-室-厅</text>
+
 									<text class="line" v-if="item2.roomNum || item2.hallNum"></text>
 
-									<text class="text">{{item2.insideArea?`${Math.floor(item2.insideArea)}m²`: "-"}}</text>
+									<text class="text">{{item2.insideArea?`${Math.floor(item2.insideArea)}`: "-"}}m²</text>
 									<text class="line"></text>
 
-									<text class="text">预算：{{ item2.budget?`${Math.floor(item2.budget)}万` : '-'}}</text>
+									<text class="text">预算：{{ Math.floor(item2.budget)?`${Math.floor(item2.budget)}` : '-'}}万</text>
 								</view>
 							</view>
 							<view class="show-more" v-if="item1.showMoreCase">
@@ -233,7 +235,6 @@
 			},
 			handleDesigner(item,index){
 				console.log("是否关注设计师")
-				console.log("itemmmmmmm====",item.searchDesignerVO.id)
 				let params ={
 					authorId:-1,
 					equipmentId:this.equipmentId,
@@ -493,6 +494,8 @@
 	.case-container{
 		padding-left: 24rpx;
 		padding-bottom: 32rpx;
+		display: flex;
+		align-items: center;
 		scroll-view{
 			.case-content{
 				display: flex;
