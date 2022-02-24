@@ -88,7 +88,7 @@
           </view>
 
           <view class="rate-wrapper">
-            <text class="designer-score">接单数 {{designer.totalCount}}</text>
+            <text class="designer-score">服务次数 {{designer.totalCount}}</text>
             <view
               class="split-line"
               v-if="designer.praiseEfficiency"
@@ -102,7 +102,7 @@
           </view>
 
           <view class="designer-des">
-            {{designer.intro}}
+            {{designer.intro || "这个设计师很忙，还没有填写个人简介"}}
           </view>
           <view class="designer-tags">
             <view
