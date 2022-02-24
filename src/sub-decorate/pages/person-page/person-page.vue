@@ -429,7 +429,7 @@ export default {
   },
   onLoad(e) {
     this.userType = e.userType;
-    this.personId = e.personId || 6954;
+    this.personId = e.personId || 8093;
     //价值排行榜进入主页需要滚动至案例区域
     this.isToContent = e.isToContent||false
     uni.showShareMenu();
@@ -630,7 +630,7 @@ export default {
             this.getTopDistance();
             this.pageScroll(0);
             
-          }, 1000);
+          }, 500);
         } else {
           // this.personData = getApp().globalData.userInfo
           // console.log(this.personData)

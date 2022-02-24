@@ -26,13 +26,14 @@
     </view>
     <view class="user-evaliate">
     <image class="bg" src="../../../static/design_comment.png" mode=""></image>
-    <view class="" v-if="commentData.list[0].rank>3">
+    <view class="" v-if="commentData.list[0]&&commentData.list[0].rank>3">
       <view class="title">
-        来自 {{commentData.list[0].anonymous?'匿名用户':commentData.list[0].userName}} 
-        <text> 的评价</text>
+        来自 
+        <text>业主{{commentData.list[0].anonymous?'匿名业主':commentData.list[0].userName}} </text>
+        <text class="weight"> 的评价</text>
       </view>
       <view class="evaluate-text" :class="{'report-text-hidden':isHidden}">
-        {{commentData.list[0].content?commentData.list[0].content:(JSON.parse(commentData.list[0].imgList).length>0?'此用户上传了图片评价。':`用户对设计师进行了${commentData.list[0].rank}星好评`)}}
+        {{commentData.list[0].content?commentData.list[0].content:(JSON.parse(commentData.list[0].imgList).length>0?'此用户上传了图片评价。':`用户对设计师进行了${commentData.list[0]&&commentData.list[0].rank}星好评`)}}
       </view>
       <view class="openHidden" v-if="showBtn" @click="clickHidden">
         {{hddenText}}<i :class="{'icon-list_arrow_dropdown':isHidden,'icon-list_arrow_pullup':!isHidden}"></i>
@@ -196,6 +197,10 @@
           font-size: 24rpx;
           color: #666;
           margin-right: 12rpx;
+          max-width: 152rpx;
+          overflow: hidden;
+          text-overflow: ellipsis;
+          white-space: nowrap;
         }
         .design-job{
           padding: 0 8rpx;
@@ -210,6 +215,10 @@
         .design-rank{
           height: 30rpx;
           line-height: 30rpx;
+          z-index: 10;
+          display: flex;
+          align-items: center;
+
           text{
             display: inline-block;
             padding: 0 8rpx;
@@ -277,25 +286,28 @@
       width: 116rpx;
       height: 90rpx;
       position: absolute;
-      top: 32rpx;
+      top: 10rpx;
       left: -10rpx;
     }
     .title{
       padding: 68rpx 0 32rpx;
       border-bottom: 2rpx solid #F6F6F6;
       font-size: 32rpx;
-      color: #333;
+      color: #999;
       position: relative;
       z-index: 1;
-      text{
+      .weight{
         font-weight: 500;
+      }
+      text{
         display: inline-block;
         margin-left: 10rpx;
+        color: #666;
       }
     }
     .evaluate-text{
       font-size: 28rpx;
-      color: #666;
+      color: #333;
       line-height: 44rpx;
       overflow : hidden;
       text-overflow: ellipsis;
@@ -363,7 +375,7 @@
     }
     .link{
       width: 100%;
-      color: #333;
+      color: #999;
       font-size: 26rpx;
       text-align: center;
       height: 74rpx;
