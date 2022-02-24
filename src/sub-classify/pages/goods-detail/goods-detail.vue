@@ -31,7 +31,7 @@
 				userId: 0,
 				gomeDivisionCode: 0,
 				skuTemplateId: 0,
-				fromPackage: 0,
+				fromPackage: 2,
 				bundleId: 0,
 				spuId: 0
 			}
