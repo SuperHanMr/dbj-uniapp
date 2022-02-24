@@ -102,7 +102,7 @@
           </view>
 
           <view class="designer-des">
-            {{designer.intro}}
+            {{designer.intro || "这个设计师很忙，还没有填写个人简介"}}
           </view>
           <view class="designer-tags">
             <view
