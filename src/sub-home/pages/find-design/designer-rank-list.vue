@@ -74,7 +74,7 @@
 								<image v-if="item2.favourite" class="icon" src="https://ali-image.dabanjia.com/static/mp/dabanjia/images/theme-red/home/favouriteWork.png" />
 
 								<view class="img-Container">
-									<image v-if=" item2.imageUrlList.length==1 " class="oneImg" :src="`${item2.imageUrlList[0]}?x-oss-process=image/resize,m_fill,h_484,w_924,limit_0`"/>
+									<image v-if="item2.imageUrlList.length>=1 && item2.imageUrlList.length<3" class="oneImg" :src="`${item2.imageUrlList[0]}?x-oss-process=image/resize,m_fill,h_484,w_924,limit_0`"/>
 									<view v-if="item2.imageUrlList.length >= 3" class="threeImg">
 										<image class="bigImg" :src="`${item2.imageUrlList[0]}?x-oss-process=image/resize,m_fill,h_484,w_924,limit_0`"/>
 										<view class="smallImg-Container">
@@ -93,7 +93,7 @@
 
 									<text class="line" v-if="item2.roomNum || item2.hallNum || (!item2.roomNum && !item2.hallNum)"></text>
 
-									<text class="text">{{item2.insideArea?`${Math.floor(item2.insideArea)}`: "-"}}m²</text>
+									<text class="text">{{Math.floor(item2.insideArea)?`${Math.floor(item2.insideArea)}`: "-"}}m²</text>
 									<text class="line"></text>
 
 									<text class="text">预算：{{ Math.floor(item2.budget)?`${Math.floor(item2.budget)}` : '-'}}万</text>
