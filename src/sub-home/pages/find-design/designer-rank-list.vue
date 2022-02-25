@@ -64,6 +64,7 @@
 					<view class="case-container">
 						<scroll-view
 							scroll-x="true"
+							lower-threshold="10"
 							style="white-space: nowrap;"
 							@scrolltolower.stop="gotoPersonalPage(item1,'total')"
 							:scroll-left="scrollLeft"
@@ -96,7 +97,7 @@
 									<text class="text">{{Math.floor(item2.insideArea)?`${Math.floor(item2.insideArea)}`: "-"}}m²</text>
 									<text class="line"></text>
 
-									<text class="text">预算：{{ Math.floor(item2.budget)?`${Math.floor(item2.budget)}` : '-'}}万</text>
+									<text class="text">预算：{{ Math.floor(item2.budget)?`¥${Math.floor(item2.budget)}` : '¥-'}}万</text>
 								</view>
 							</view>
 							<view class="show-more" v-if="item1.showMoreCase">
