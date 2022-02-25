@@ -64,7 +64,7 @@
 					<view class="case-container">
 						<scroll-view
 							scroll-x="true"
-							lower-threshold="5"
+							lower-threshold="4"
 							style="white-space: nowrap;"
 							@scrolltolower.stop="gotoPersonalPage(item1,'total')"
 							:scroll-left="scrollLeft"
@@ -223,7 +223,7 @@
 				uni.navigateBack({});
 			},
 			gotoPersonalPage(item, type){
-				
+
 				if(type =="total" && item.valuationCaseVOS.length<=2) return ;
 				if(type == "total"){
 					uni.navigateTo({
@@ -234,8 +234,8 @@
 						url:`../../../sub-decorate/pages/person-page/person-page?personId=${item.searchDesignerVO.id}`
 					})
 				}
-				
-			
+
+
 			},
 			gotoCaseDetail(item){
 				console.log("去案例详情",item)
@@ -249,7 +249,7 @@
 				},500)()
 
 			},
-			
+
 			handleDesigner(item,index){
 				console.log("是否关注设计师")
 				let params ={

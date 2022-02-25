@@ -75,6 +75,7 @@
       <scroll-view
         scroll-x="true"
         style="white-space: nowrap;"
+				lower-threshold="4"
         @scrolltolower.stop="gotoMoreDesigner"
 				:scroll-left="scrollLeft"
       >
