@@ -6,9 +6,9 @@
 			</view>
 			<view class="evaluate-list">
 				<view class="evaluate-item"
-				v-for="(item,index) in peerCommentsList"
+				v-for="(item,index) in commentsList"
 				:key="index"
-				:style="{borderBottom:index==peerCommentsList.length-1?'1rpx solid #F4F4F4;':''}"
+				:style="{borderBottom:index==commentsList.length-1?'1rpx solid #F4F4F4;':''}"
 				>
 
 					<view class="evaluate-person-info">
@@ -46,6 +46,7 @@
 				personId: 0,
 				showCommentCount:"",
 				peerCommentsList:[],
+				commentsList:[],
 				pageInfo: {
 					page: 1,
 					totalPage: 0,
@@ -89,6 +90,10 @@
 						item.commentTags = item.commentTags.split(",")
 						return item
 					})
+					if(this.peerCommentsList.length){
+						this.commentsList  =this.commentsList.concat(this.peerCommentsList)
+						console.log("commentsList===",this.commentsList)
+					}
 
 					this.showCommentCount = res.aggregations.showCommentCount
 				})
@@ -105,7 +110,7 @@
 			gotoPersonalPage(id){
 				console.log("去设计师主页")
 				uni.navigateTo({
-					url:`./person-page?personId=${id}&isToContent=true`
+					url:`./person-page?personId=${id}`
 				})
 			},
 			gotoDesignerRankListPage(){

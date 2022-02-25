@@ -104,7 +104,7 @@
         <view class="item">
           <i class='icon-a-homepage_data icon'></i>
           <view class="msg-content introudc-msg" >
-            <view class="report-text" :class="{'report-text-hidden':isHidden}">{{personData.intro||'这个设计师很忙，还没有填写个人简历'}}</view>
+            <view class="report-text" :class="{'report-text-hidden':isHidden}">{{personData.intro||'这个设计师很忙，还没有填写个人简介'}}</view>
             <view class="openHidden" v-if="showBtn" @click="clickHidden">
               {{hddenText}}
             </view>
