@@ -1,0 +1,13 @@
+VUE_APP_BASE_API=https://design-test.meiwu365.com
+VUE_APP_ZEUS=https://zeus-stage.meiwu365.com
+VUE_APP_BASE_H5=https://design-h5-test.meiwu365.com
+VUE_APP_POP=https://pop-test.meiwu365.com
+VUE_APP_MP_H5=https://mp-h5-test.meiwu365.com
+VUE_APP_GOME_API=http://apis-dbj.gomeuat.com.cn
+VUE_APP_GOME_H5=http://h5stage-dbj.gomeuat.com.cn
+VUE_APP_GOME_LOGIN=http://login.m.gomeuat.com.cn/login.html
+VUE_APP_GOME_SDK_APP=/libs/GomeJSBridge.min.js
+VUE_APP_GIO_ACCOUNT_ID=80deb8ab374ba9e1
+VUE_APP_GIO_DATASOURCE_ID=ad2b409beab5ce1f
+VUE_APP_LOGIN_INIT_APPID=B7E436F6DEF6E37296AADD3BC9F35165
+VUE_APP_LOGIN_INIT_ENV=test
