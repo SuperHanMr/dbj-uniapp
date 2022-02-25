@@ -64,7 +64,7 @@
 					<view class="case-container">
 						<scroll-view
 							scroll-x="true"
-							lower-threshold="10"
+							lower-threshold="5"
 							style="white-space: nowrap;"
 							@scrolltolower.stop="gotoPersonalPage(item1,'total')"
 							:scroll-left="scrollLeft"
@@ -132,6 +132,7 @@
 </template>
 
 <script>
+	import { debounce } from "@/utils/common.js";
 	import { getDesignRank, queryAttention } from "../../../api/decorate.js"
 	export default {
 		data() {
@@ -238,11 +239,17 @@
 			},
 			gotoCaseDetail(item){
 				console.log("去案例详情",item)
-				uni.navigateTo({
-					url: `/pages/real-case/real-case-webview/real-case-webview?id=${item.id}`
-				})
+				// uni.navigateTo({
+				// 	url: `/pages/real-case/real-case-webview/real-case-webview?id=${item.id}`
+				// })
+				debounce(() => {
+					uni.navigateTo({
+						url:`/pages/real-case/real-case-webview/real-case-webview?id=${item.id}`,
+					});
+				},500)()
 
 			},
+			
 			handleDesigner(item,index){
 				console.log("是否关注设计师")
 				let params ={
