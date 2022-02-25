@@ -326,5 +326,12 @@
     height: 88rpx;
   }
 
+  /* #ifdef H5 */
+  /* 处理H5中toast提示被盖住的问题 */
+  uni-toast {
+    z-index: 2000;
+  }
+  /* #endif */
+
   /*每个页面公共css */
 </style>
