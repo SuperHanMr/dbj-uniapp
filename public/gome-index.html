@@ -43,6 +43,7 @@
       }
       return ret;
     }
+    var pageParams = getPageParms();
     function request(options) {
       var xhr = new XMLHttpRequest()
       xhr.withCredentials = true;
@@ -68,21 +69,66 @@
       xhr.setRequestHeader('Content-Type', 'application/json');
       xhr.send(JSON.stringify(options.data));
     }
+
+    var routeMap = {
+      orderDetail: "/sub-my/pages/my-order/order-detail/order-detail", //订单详情
+      goodsDetail: "/sub-classify/pages/goods-detail/goods-detail" //商品详情
+    }
+    /**
+     * 获取hash
+     * 第一种方式，是从search的route传递过来，这种方式支持两种
+     * 1.传过来路由别名，通过routeMap映射成具体的路由
+     * 2.直接把原hash通过encodeURIComponent编码之后传递过来
+     * 第二种方式，直接是hash传递过来
+     */
+    function getHash() {
+      var route = pageParams.route;
+      if (route) {
+        if (routeMap[route]) {
+          var hash = "#" + routeMap[route];
+          if (route === "orderDetail") {
+            hash += "?orderId=" + pageParams.orderId;
+          } else if (route === "goodsDetail") {
+            var qs = [];
+            if (pageParams.goodId) {
+              qs.push("goodId=" + pageParams.goodId);
+            }
+            if (pageParams.skuTemplateId) {
+              qs.push("skuTemplateId=" + pageParams.skuTemplateId);
+            }
+            if (pageParams.gomeDivisionCode) {
+              qs.push("gomeDivisionCode=" + pageParams.gomeDivisionCode);
+            }
+            if (pageParams.fromPakage) {
+              qs.push("fromPakage=" + pageParams.fromPakage);
+            }
+            hash += "?" + qs.join("&");
+          }
+          return hash;
+        }
+        return "#" + decodeURIComponent(route);
+      }
+      return window.location.hash;
+    }
+
     function redirectToWeb(token, isGomeMp) {
-      var hash = window.location.hash;
-      // 跳转gome域名的H5站
-      // if (token) {
-      //   localStorage.setItem("scn", token);
-      // } else {
-      //   localStorage.removeItem("scn");
-      //   localStorage.removeItem("userId");
-      // }
-      // window.location.replace('/' + (isGomeMp ? '?isGomeMp=true' : '') + hash);
-      // XXX: 以下是跳转打扮家域名的H5站，先保留，以后可能有用
-      if (token) {
-        window.location.replace('<%= VUE_APP_MP_H5 %>/?token=' + token + (isGomeMp ? '&isGomeMp=true' : '') + hash);
+      var hash = getHash();
+      // 如果是在国美小程序中，跳转gome域名的H5站
+      if (isGomeMp) {
+        if (token) {
+          localStorage.setItem("scn", token);
+        } else {
+          localStorage.removeItem("scn");
+          localStorage.removeItem("userId");
+        }
+        window.location.replace('/' + (isGomeMp ? '?isGomeMp=true' : '') + hash);
       } else {
-        window.location.replace('<%= VUE_APP_MP_H5 %>/?token=CLEAR' + (isGomeMp ? '&isGomeMp=true' : '') + hash);
+        //  跳转打扮家域名的H5站
+        if (token) {
+          window.location.replace('<%= VUE_APP_MP_H5 %>/?token=' + token + (isGomeMp ? '&isGomeMp=true' : '') + hash);
+        } else {
+          window.location.replace('<%= VUE_APP_MP_H5 %>/?token=CLEAR' + (isGomeMp ? '&isGomeMp=true' : '') + hash);
+        }
       }
     }
     function requestToken() {
@@ -111,7 +157,6 @@
         }
       });
     }
-    var pageParams = getPageParms();
     if (pageParams.scn) {
       // 是否在真快乐小程序中
       var isGomeMp = /plt-wxApp/.test(pageParams.ctx);
