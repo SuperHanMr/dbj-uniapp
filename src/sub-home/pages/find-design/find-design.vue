@@ -202,7 +202,7 @@
               <text v-if="item4.similarity" class="icon"></text>
 
               <text v-if="item4.flag">附近{{ item4.distance/1000>1
-							?`${Math.floor(item4.distance/1000)}km`:`${parseInt(item4.distance)}m`}}</text>
+							?`${Math.floor(item4.distance/1000)}km`:item4.distance>500?`${parseInt(item4.distance)}m`:'500m以内'}}</text>
               <text v-if="item4.flag" class="icon"></text>
 
               <text v-if="!item4.flag">{{item4.cityName|| "-"}}</text>
