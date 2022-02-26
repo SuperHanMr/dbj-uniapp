@@ -661,7 +661,7 @@ export default {
         this.reducePayParams(this.reduceDetailInfo(data));
       }).catch(err => {
         uni.showToast({
-          title: err?.data?.code === 400 ? '商品已下架' : err.data?.message,
+          title: err.data?.message || '程序异常',
           icon: 'none',
           duration: 3000,
         })
