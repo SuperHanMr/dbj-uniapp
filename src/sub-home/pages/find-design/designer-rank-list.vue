@@ -45,7 +45,7 @@
 								<view class="liveAreaValue" v-if="item1.liveArea"
 									:class="{anotherStyle:item1.liveArea.length>=8}"
 								><text>{{item1.liveArea}}</text></view>
-								<view class="attrValue">{{item1.liveArea?"&nbsp;| ":''}}服务次数{{item1.searchDesignerVO.totalCount || "0" }}{{item1.searchDesignerVO.praiseEfficiency ?`&nbsp;|&nbsp;好评率${item1.searchDesignerVO.praiseEfficiency}%`:''}}</view>
+								<view class="attrValue">{{item1.searchDesignerVO.totalCount?`&nbsp;| 服务次数${item1.searchDesignerVO.totalCount}`:''}}{{item1.searchDesignerVO.praiseEfficiency ?`&nbsp;|&nbsp;好评率${item1.searchDesignerVO.praiseEfficiency}%`:''}}</view>
 							</view>
 							<view class="label_container">
 							<view
