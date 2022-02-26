@@ -22,8 +22,8 @@
 			}
 		},
 		onLoad(e) {
-			// this.baseUrl = this.ENV.VUE_APP_BASE_H5
-			this.baseUrl = 'https://localhost'
+			this.baseUrl = this.ENV.VUE_APP_BASE_H5
+			// this.baseUrl = 'https://localhost'
 			this.searchToken = getApp().globalData.token
 			this.houseId = getApp().globalData.currentHouse.id //g
 			console.log(getApp().globalData.token);
