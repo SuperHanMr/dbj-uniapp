@@ -1,17 +1,20 @@
 <template>
 	<view>
 		<web-view
-			:src="baseUrl + '/app-pages/goods-detail/index.html?token=' + searchToken + '#wx-goodsId='+ goodId + '&wx-houseId='
+			:src="baseUrl + '/app-pages/goods-detail/index.html?token=' + '#wx-goodsId='+ goodId + '&wx-houseId='
         + houseId + '&wx-defaultHouseId=' + defaultHouseInfo.id  + '&wx-defaultProvinceId=' + defaultHouseInfo.provinceId
         + '&wx-defaultCityId=' + defaultHouseInfo.cityId + '&wx-defaultAreaId=' + defaultHouseInfo.areaId 
         + '&wx-defaultLocationName=' + defaultHouseInfo.name  + '&wx-token=' + hashToken + '&wx-deviceId=' + deviceId + '&from=' + from
          + '&shareAreaId=' + shareAreaId + '&shareAreaName=' + shareAreaName+ '&shareOriginType=' + shareOriginType + '&wx-userId=' + userId
-        + '&skuTemplateId=' + skuTemplateId + '&gomeDivisionCode=' + gomeDivisionCode + '&fromPackage='  + fromPackage + '&wx-bundleId='  + bundleId + '&wx-spuId=' + spuId">
+        + '&skuTemplateId=' + skuTemplateId + '&gomeDivisionCode=' + gomeDivisionCode + '&fromPackage='  + fromPackage + '&wx-bundleId='  + bundleId + '&wx-spuId=' + spuId + '&changTime=' + changTime">
 		</web-view>
 	</view>
 </template>
 
 <script>
+	import {
+		queryEstates
+	} from "../../../api/decorate.js";
 	export default {
 		data() {
 			return {
@@ -33,7 +36,8 @@
 				skuTemplateId: 0,
 				fromPackage: 2,
 				bundleId: 0,
-				spuId: 0
+				spuId: 0,
+				changTime: 0,
 			}
 		},
 		onLoad(e) {
@@ -75,13 +79,15 @@
 			}
 		},
 		onShow() {
-			if (!this.searchToken) {
-				this.searchToken = getApp().globalData.token
-			} else {
-				this.hashToken = getApp().globalData.token
-			}
+			// if (!this.searchToken) {
+			// 	this.searchToken = getApp().globalData.token
+			// } else {
+			// 	this.hashToken = getApp().globalData.token
+			// }
+			this.hashToken = getApp().globalData.token
 			console.log(getApp().globalData.token, "getApp().globalData.token")
-			this.baseUrl = this.ENV.VUE_APP_BASE_H5, //"https://localhost"
+			this.baseUrl = this.ENV.VUE_APP_BASE_H5
+			// this.baseUrl = 'https://localhost'
 			this.defaultHouseInfo = getApp().globalData.currentHouse
 			uni.getSystemInfo({
 				success: res => {
@@ -93,7 +99,33 @@
 				this.houseId = uni.getStorageSync('houseListChooseId')
 				uni.removeStorageSync("houseListChooseId")
 			}
-		}
+			if (this.hashToken && !this.houseId) {
+				this.getHouseList()
+			}
+			this.changTime = new Date().getTime()
+		},
+		methods: {
+			async getHouseList() {
+				let houseList = await queryEstates({
+					isNeedRelative: false
+				}, false, true);
+				let house = null;
+				let defaultHouse;
+				if (houseList && houseList.length) {
+					defaultHouse = houseList.find((e) => {
+						return e.defaultEstate == true;
+					});
+				}
+				if (defaultHouse) {
+					house = defaultHouse;
+				} else if (houseList.length) {
+					house = houseList[0];
+				}
+				if (house) {
+					this.houseId = house.id
+				}
+			},
+		},
 	}
 </script>
 
