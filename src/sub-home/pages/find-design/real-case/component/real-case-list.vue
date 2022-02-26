@@ -140,7 +140,6 @@
 		width: 100%;
 		height: 100%;
 		background-color: #FFFFFF;
-		padding-bottom: 80rpx;
 
 		.real-case-list-scroll {
 			height: 100%;
