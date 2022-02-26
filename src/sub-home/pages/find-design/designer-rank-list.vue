@@ -2,13 +2,13 @@
 	<view class="container">
 		<custom-navbar
 		  :opacity="scrollTop/100"
-		  bgcolor="#FFF"
+		  bgcolor=""
 		>
 		  <template v-slot:back>
 		    <view @click="toBack">
 		      <i
 		        class="icon-ic_cancel_white header-back"
-		        :style="{color:scrollTop>0?'black':'white'}"
+						style="color:white"
 		      >
 		      </i>
 		    </view>
@@ -45,7 +45,7 @@
 								<view class="liveAreaValue" v-if="item1.liveArea"
 									:class="{anotherStyle:item1.liveArea.length>=8}"
 								><text>{{item1.liveArea}}</text></view>
-								<view class="attrValue">{{item1.liveArea?"&nbsp;| ":''}}服务次数{{item1.searchDesignerVO.totalPeopleCount || "0" }}  |  好评率{{item1.searchDesignerVO.praiseEfficiency || "0"}}%</view>
+								<view class="attrValue">{{item1.searchDesignerVO.totalCount?`&nbsp;| 服务次数${item1.searchDesignerVO.totalCount}`:''}}{{item1.searchDesignerVO.praiseEfficiency ?`&nbsp;|&nbsp;好评率${item1.searchDesignerVO.praiseEfficiency}%`:''}}</view>
 							</view>
 							<view class="label_container">
 							<view
@@ -64,18 +64,19 @@
 					<view class="case-container">
 						<scroll-view
 							scroll-x="true"
+							lower-threshold="4"
 							style="white-space: nowrap;"
 							@scrolltolower.stop="gotoPersonalPage(item1,'total')"
 							:scroll-left="scrollLeft"
 						>
 						<view class="case-content">
-							<view class="case-item" v-for="item2 in item1.valuationCaseVOS" :key="item2.id" @click="gotoCaseDetail(item2)">
+							<view class="case-item" v-for="item2 in item1.valuationCaseList" :key="item2.id" @click="gotoCaseDetail(item2)">
 								<image v-if="item2.famous" class="icon" src="https://ali-image.dabanjia.com/static/mp/dabanjia/images/theme-red/home/famousWork.png" />
 								<image v-if="item2.favourite" class="icon" src="https://ali-image.dabanjia.com/static/mp/dabanjia/images/theme-red/home/favouriteWork.png" />
 
 								<view class="img-Container">
-									<image v-if="item2.imageUrlList.length < 2" class="oneImg" :src="`${item2.imageUrlList[0]}?x-oss-process=image/resize,m_fill,h_484,w_924,limit_0`"/>
-									<view v-else class="threeImg">
+									<image v-if="item2.imageUrlList.length>=1 && item2.imageUrlList.length<3" class="oneImg" :src="`${item2.imageUrlList[0]}?x-oss-process=image/resize,m_fill,h_484,w_924,limit_0`"/>
+									<view v-if="item2.imageUrlList.length >= 3" class="threeImg">
 										<image class="bigImg" :src="`${item2.imageUrlList[0]}?x-oss-process=image/resize,m_fill,h_484,w_924,limit_0`"/>
 										<view class="smallImg-Container">
 											<image class="smalImg1" :src="`${item2.imageUrlList[1]}?x-oss-process=image/resize,m_fill,h_484,w_924,limit_0`"/>
@@ -86,18 +87,20 @@
 								<view class="caseName">{{item2.caseName}}</view>
 								<view class="caseInfo">
 									<text class="text" v-if="item2.roomNum || item2.hallNum">
-										<text>{{item2.roomNum ||"-"}}室</text>
-										<text>{{item2.hallNum || "-"}}厅</text>
+										<text v-if="item2.roomNum">{{item2.roomNum ||"-"}}室</text>
+										<text v-if="item2.hallNum">{{item2.hallNum || "-"}}厅</text>
 									</text>
-									<text class="line" v-if="item2.roomNum || item2.hallNum"></text>
+									<text v-if="!item2.roomNum && !item2.hallNum">-室-厅</text>
 
-									<text class="text">{{item2.insideArea?`${Math.floor(item2.insideArea)}m²`: "-"}}</text>
+									<text class="line" v-if="item2.roomNum || item2.hallNum || (!item2.roomNum && !item2.hallNum)"></text>
+
+									<text class="text">{{Math.floor(item2.insideArea)?`${Math.floor(item2.insideArea)}`: "-"}}m²</text>
 									<text class="line"></text>
 
-									<text class="text">预算：{{ item2.budget?`${Math.floor(item2.budget)}万` : '-'}}</text>
+									<text class="text">预算：{{ Math.floor(item2.budget)?`¥${Math.floor(item2.budget)}` : '¥-'}}万</text>
 								</view>
 							</view>
-							<view class="show-more" v-if="item1.valuationCaseVOS.length >2">
+							<view class="show-more" v-if="item1.showMoreCase">
 								<view class="text">左滑查看更多</view>
 							</view>
 						</view>
@@ -119,8 +122,9 @@
 					</view>
 				</view>
 				<scroll-view :scroll-y="true" class="toast-content">
-					<p>打扮家平台通过对设计师智能测评，以及对设计师服务能力、设计水平等多维度的评估，评选出最具价值设计师</p>
-					<p>我们的算法，包括对Wide & Deep、Learning、xDeepFM等算法、以及NLP双塔模型的独特应用</p>
+				<view class="bankingComplain">
+					榜单说明：本榜单为打扮家平台对设计师四维能力的综合评估得分排行，数据实时更新。评估数据维度包含：设计师综合能力估值，设计水平，服务水平及业主反馈。
+				</view>
 				</scroll-view>
 			</view>
 		</uni-popup>
@@ -128,6 +132,7 @@
 </template>
 
 <script>
+	import { debounce } from "@/utils/common.js";
 	import { getDesignRank, queryAttention } from "../../../api/decorate.js"
 	export default {
 		data() {
@@ -197,27 +202,56 @@
 				getDesignRank().then(res=>{
 					console.log("res====",res)
 					this.designerList = res
+					this.designerList=this.designerList.map(item=>{
+						if(item.valuationCaseVOS && item.valuationCaseVOS.length>2){
+							item.showMoreCase = true
+							console.log("item.valuationCase-=====",item.valuationCaseVOS)
+							item.valuationCaseList=item.valuationCaseVOS.slice(0,2)
+						}else if(item.valuationCaseVOS && item.valuationCaseVOS.length<=2){
+							item.valuationCaseList = item.valuationCaseVOS
+							item.showMoreCase = false
+						}else{
+							console.log("案例个数不超过三个")
+							item.valuationCaseList=[]
+							item.showMoreCase = false
+						}
+						return item
+					})
 				})
 			},
 			toBack(){
 				uni.navigateBack({});
 			},
 			gotoPersonalPage(item, type){
+
 				if(type =="total" && item.valuationCaseVOS.length<=2) return ;
-				uni.navigateTo({
-					url:`../../../sub-decorate/pages/person-page/person-page?personId=${item.searchDesignerVO.id}&isToContent=true`
-				})
+				if(type == "total"){
+					uni.navigateTo({
+						url:`../../../sub-decorate/pages/person-page/person-page?personId=${item.searchDesignerVO.id}&isToContent=true`
+					})
+				}else{
+					uni.navigateTo({
+						url:`../../../sub-decorate/pages/person-page/person-page?personId=${item.searchDesignerVO.id}`
+					})
+				}
+
+
 			},
 			gotoCaseDetail(item){
 				console.log("去案例详情",item)
-				uni.navigateTo({
-					url: `/pages/real-case/real-case-webview/real-case-webview?id=${item.id}`
-				})
+				// uni.navigateTo({
+				// 	url: `/pages/real-case/real-case-webview/real-case-webview?id=${item.id}`
+				// })
+				debounce(() => {
+					uni.navigateTo({
+						url:`/pages/real-case/real-case-webview/real-case-webview?id=${item.id}`,
+					});
+				},500)()
 
 			},
+
 			handleDesigner(item,index){
 				console.log("是否关注设计师")
-				console.log("itemmmmmmm====",item.searchDesignerVO.id)
 				let params ={
 					authorId:-1,
 					equipmentId:this.equipmentId,
@@ -274,10 +308,10 @@
 				width: 52rpx;
 				height: 130rpx;
 				box-sizing: border-box;
-				background: linear-gradient(90deg, rgba(248, 223, 181, 0.1) -5.56%, rgba(22, 24, 29, 0.07) 100%);
+				background: rgba(243, 226, 197, 0.12);
 				padding: 10rpx 10rpx 8rpx;
 				border-radius: 8rpx 0 0 8rpx;
-				color: #595652;
+				color: #94918C;
 				font-size: 24rpx;
 				letter-spacing: 2rpx;
 				writing-mode: vertical-lr;/*从左向右 从右向左是 writing-mode: vertical-rl;*/
@@ -310,6 +344,7 @@
 				border-radius: 24rpx;
 				z-index: 2;
 				position: relative;
+				width: 702rpx;
 				.designer-topNum{
 					position: absolute;
 					left: 32rpx;
@@ -359,6 +394,10 @@
 					font-size: 32rpx;
 					font-weight: 500;
 					margin-right: 24rpx;
+					max-width: 276rpx;
+					overflow: hidden;
+					white-space: nowrap;
+					text-overflow: ellipsis;
 				}
 				.rank{
 					display: block;
@@ -471,25 +510,21 @@
 	}
 
 	.case-container{
-		padding-left: 24rpx;
+		// padding-left: 24rpx;
 		padding-bottom: 32rpx;
+		display: flex;
+		align-items: center;
 		scroll-view{
 			.case-content{
 				display: flex;
 				align-items: center;
 				flex-flow: row nowrap;
-				.case-item-style{
-					position: relative;
-					display: inline-block;
-					margin-right: 24rpx;
-
-				}
 				.case-item{
 					position: relative;
 					width: 462rpx;
 					height: 336rpx;
 					display: inline-block;
-					margin-right: 24rpx;
+					margin-left: 24rpx;
 					.icon{
 						position: absolute;
 						width: 132rpx;
@@ -571,6 +606,7 @@
 					display: inline-block;
 					width: 64rpx;
 					height: 338rpx;
+					margin-left: 24rpx;
 					.text{
 						width: 64rpx;
 						height: 242rpx;
@@ -601,7 +637,7 @@
 		justify-content: center;
 		align-items: center;
 		color: #111111;
-		font-weight: 500;
+		font-weight: bold;
 		font-size: 32rpx;
 
 	}
@@ -632,12 +668,12 @@
 		padding: 0 32rpx 38rpx;
 		background-color: #FFFFFF;
 	}
-	p {
+	 .bankingComplain{
 		text-align: justify;
 		color: #999999;
 		margin-bottom: 10rpx;
 		line-height: 44rpx;
-		text-indent: 52rpx;
+		// text-indent: 52rpx;
 		font-size: 26rpx;
 		letter-spacing: 1rpx;
 	}

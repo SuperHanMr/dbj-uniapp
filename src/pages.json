@@ -1030,7 +1030,8 @@
         {
           "path": "pages/person-page/person-peer-evaluate-list",
           "style": {
-            "navigationBarTitleText": "同行评价"
+            "navigationBarTitleText": "同行评价",
+						"onReachBottomDistance": 10
           }
         },
         {

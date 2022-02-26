@@ -659,6 +659,12 @@ export default {
     getBundleDetail(params) {
       getBundleDetail(params).then(data => {
         this.reducePayParams(this.reduceDetailInfo(data));
+      }).catch(err => {
+        uni.showToast({
+          title: err?.data?.code === 400 ? '套包中所选商品已下架，请重新下单~' : err.data?.message,
+          icon: 'none',
+          duration: 3000,
+        })
       })
     },
     emitInfo(val) {
@@ -874,6 +880,7 @@ export default {
       return this.isFromPackage ? payBundleOrder(params) : payOrder(params);
     },
     payOrder() {
+      let _that = this;
       let details = [];
       this.orderDetails.map((v, k) => {
         details.push(v.orderDetailItem);
@@ -931,12 +938,12 @@ export default {
                 console.log(e, "取消付款");
                 if (data.subOrderIds && data.subOrderIds.length === 1) {
                   uni.navigateTo({
-										url:`../../../sub-my/pages/my-order/order-detail/order-detail?orderId=${data.subOrderIds[0]}&from=waitPayOrder`
+										url:`../../../sub-my/pages/my-order/order-detail/order-detail?orderId=${data.subOrderIds[0]}&from=waitPayOrder&fromPackage=${_that.isFromPackage}`
                     // url: `/sub-my/pages/my-order/order-wait-pay/order-wait-pay?orderNo=${data.subOrderIds[0]}&from=waitPayOrder`,
                   });
                 } else {
                   uni.navigateTo({
-										url:`../../../sub-my/pages/my-order/order-detail/order-detail?orderId=${data.id}&from=waitPayOrder`
+										url:`../../../sub-my/pages/my-order/order-detail/order-detail?orderId=${data.id}&from=waitPayOrder&fromPackage=${_that.isFromPackage}`
                     // url: `/sub-my/pages/my-order/order-wait-pay/order-wait-pay?orderNo=${data.id}&from=waitPayOrder`,
                   });
                 }
@@ -954,6 +961,8 @@ export default {
               url: "/sub-classify/pages/pay-order/pay-success?orderId=" + data.id,
             });
           }
+        }).catch(e => {
+          this.$refs.payDialog.close();
         });
         //#endif
         //#ifdef H5

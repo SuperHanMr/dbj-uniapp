@@ -87,8 +87,8 @@
             </view>
           </view>
 
-          <view class="rate-wrapper">
-            <text class="designer-score">接单数 {{designer.totalCount}}</text>
+          <view class="rate-wrapper" v-if="designer.totalCount>0&&designer.praiseEfficiency">
+            <text class="designer-score" v-if="designer.totalCount>0">服务次数 {{designer.totalCount}}</text>
             <view
               class="split-line"
               v-if="designer.praiseEfficiency"
@@ -102,7 +102,7 @@
           </view>
 
           <view class="designer-des">
-            {{designer.intro}}
+            {{designer.intro || "这个设计师很忙，还没有填写个人简介"}}
           </view>
           <view class="designer-tags">
             <view
@@ -495,16 +495,16 @@ export default {
         display: flex;
         background: linear-gradient(to bottom, #fff0d9, #f0ca89);
         justify-content: space-between;
-        height: 30rpx;
         border-radius: 2px;
         overflow: hidden;
         color: rgba(134, 94, 65, 1);
 
         .rank-left {
-          height: 100%;
+          height: 30rpx;
           border-bottom-right-radius: 10rpx;
           padding: 0 8rpx;
           font-weight: 500;
+          line-height: 32rpx;
           background: linear-gradient(
             180deg,
             rgba(255, 235, 204, 1),
@@ -514,7 +514,8 @@ export default {
 
         .rank-right {
           flex: 1;
-          height: 100%;
+          line-height: 32rpx;
+          height: 30rpx;
           padding: 0 8rpx 0 10rpx;
           border-top-left-radius: 10rpx;
           background: linear-gradient(180deg, #fedfa7, #e8cc94);

@@ -75,6 +75,7 @@
       <scroll-view
         scroll-x="true"
         style="white-space: nowrap;"
+				lower-threshold="4"
         @scrolltolower.stop="gotoMoreDesigner"
 				:scroll-left="scrollLeft"
       >
@@ -136,10 +137,10 @@
 								{{item4.fullName}}
 							</view>
 							<view class="price">
-								<text style="color: #999;font-size: 20rpx;">￥</text>
-								<text style="color: #333;font-size: 28rpx;">{{handlePrice(item4.price/100)[0]}}</text>
-								<text style="color: #333;font-size: 24rpx;">.{{handlePrice(item4.price/100)[1]}}</text>
-								<text style="color: #999;font-size: 22rpx;">/{{item4.unit}}</text>
+								<text style="font-size: 20rpx;">￥</text>
+								<text style="font-size: 28rpx;">{{handlePrice(item4.price/100)[0]}}</text>
+								<text style="font-size: 24rpx;">.{{handlePrice(item4.price/100)[1]}}</text>
+								<text style="font-size: 22rpx;">/{{item4.unit}}</text>
 							</view>
 						</view>
 					</view>
@@ -150,12 +151,12 @@
 
     <view
       class="perfectHouseInfo_container"
-      @click="gotoEditHouse"
       v-if="!userId || (userId && !hasEstate)"
     >
       <image
         class="bigImage"
         src="https://ali-image.dabanjia.com/static/mp/dabanjia/images/home/perfectHouseInfo.svg"
+				@click="gotoEditHouse"
       />
 
       <view
@@ -202,7 +203,7 @@
               <text v-if="item4.similarity" class="icon"></text>
 
               <text v-if="item4.flag">附近{{ item4.distance/1000>1
-							?`${Math.floor(item4.distance/1000)}km`:`${parseInt(item4.distance)}m`}}</text>
+							?`${(item4.distance/1000).toFixed(2)}km`:item4.distance>500?`${parseInt(item4.distance)}m`:'500m以内'}}</text>
               <text v-if="item4.flag" class="icon"></text>
 
               <text v-if="!item4.flag">{{item4.cityName|| "-"}}</text>
@@ -229,10 +230,9 @@
         />
       </view>
     </view>
-		<!-- <view class="connectServiceContainer" v-if="showFloating" @click="gotoRankPage" :style="{bottom: containerPaddingBottom}"> -->
-		<view class="connectServiceContainer" v-if="showFloating":style="{bottom: containerPaddingBottom}">
+		<view class="connectServiceContainer" v-if="showFloating" :style="{bottom: containerPaddingBottom}">
 			<view class="connectServiceContent">
-				<image src="https://ali-image.dabanjia.com/static/mp/dabanjia/images/theme-red/home/kefu.png"  @click="gotoEvaluatePage"/>
+				<image src="https://ali-image.dabanjia.com/static/mp/dabanjia/images/theme-red/home/kefu.png" />
 				<view class="contentInfo">
 					<view class="no">不知道如何选择设计师</view>
 					<view class="find">找我聊聊为您推荐</view>
@@ -329,6 +329,7 @@ export default {
 		if (uni.getStorageSync("recommendDesignerPage")) {
 		  this.page = uni.getStorageSync("recommendDesignerPage");
 		}
+		
 		this.page++;
 		uni.setStorageSync("recommendDesignerPage", this.page);
 		const hhh = uni.getStorageSync("recommendDesignerPage");
@@ -338,6 +339,9 @@ export default {
 		// 处理弹框展示问题
 		if (uni.getStorageSync("intoPageNum")) {
 			this.intoPageNum = uni.getStorageSync("intoPageNum");
+		}
+		if(uni.getStorageSync("intoDesignerListPage")){
+			this.intoDesignerListPage = uni.getStorageSync("intoDesignerListPage")
 		}
 		this.intoPageNum ++;
 
@@ -366,6 +370,7 @@ export default {
 				this.intoDesignerListPage = 0
 			}
 			this.getRecommendCaseList();
+			console.log("this.intoDesignerListPage=====",this.intoDesignerListPage)
 		})
 	},
 
@@ -382,18 +387,6 @@ export default {
 		}
 	},
   methods: {
-		gotoRankPage(){
-			console.log("去设计师榜单列表页面")
-			// uni.navigateTo({
-			// 	url:"designer-rank-list"
-			// })
-		},
-		gotoEvaluatePage(){
-			console.log("去同行评价页面")
-			// uni.navigateTo({
-			// 	url:"../../../sub-decorate/pages/person-page/person-peer-evaluate-list?id=8772"
-			// })
-		},
     toBack() {
       uni.navigateBack({});
     },
@@ -424,21 +417,17 @@ export default {
         style: "",
         sortType: "", //排序类型 0:默认排序，1:服务次数排序 2： 好评率排序"
       };
-			console.log("请求设计师列表参数==",params)
       firstsearchDesigner(params).then((res) => {
         this.searchDesignerList = res.list;
         this.searchDesignerList = res.list.map(item=>{
 					if(item.artImage.indexOf('?x-oss-process=image/resize,m_fill,h_160,w_120,limit_0') !==-1){
 						item.artImage = item.artImage.split('?')[0]
 					}
-					console.log("设计师列表item===",item)
 					return item
 				})
 
         this.totalPage = res.totalPage;
-				console.log("this.totalPgae====",this.totalPage)
         uni.setStorageSync("recommendDesignerTotalPage", res.totalPage);
-        console.log("res.totalRows==",res.totalRows);
 				// // 返回的总条数不是5的倍数
 				// if ((res.totalRows % 5 !== 0) && (this.page == (this.totalPage - 1))) {
 				// 	this.page = 0;
@@ -459,12 +448,14 @@ export default {
 		reqDesignServiceRecommendList(){
 			designServiceList().then(res=>{
 				this.designServiceRecList = res
-				//处理一下price /100
-				console.log("designerServiceRecList===",res)
+				// console.log("designerServiceRecList===",res)
 			})
 		},
 		//商品详情页面
 		gotoProduceDetail(item){
+			if(this.intoDesignerListPage){
+				this.intoDesignerListPage ++
+			}
 			uni.navigateTo({
 				url:`../../../sub-classify/pages/goods-detail/goods-detail?goodId=${item.id}`,
 			});
@@ -485,10 +476,14 @@ export default {
 			console.log("cancelShow!!!!!!!!!!!")
 		},
 		immediatelyChat(){
+			this.intoDesignerListPage++;
 			this.$store.dispatch("openCustomerConversation");
 		},
 		//自己找设计师
     findOwnDesigner() {
+			if(this.intoDesignerListPage){
+				this.intoDesignerListPage ++
+			}
       uni.navigateTo({
         url: "/sub-home/pages/find-design/search-design",
       });
@@ -505,12 +500,6 @@ export default {
 			});
     },
     //更多设计师
-  //   gotoMoreDesigner: debounce(() => {
-		// 	uni.navigateTo({
-		// 		url: "/sub-home/pages/find-design/designer-list",
-		// 	});
-		// },500),
-
 		gotoMoreDesigner(){
 			this.intoDesignerListPage ++ ;
 			console.log("this.intoDesignerListPage===more",this.intoDesignerListPage)
@@ -524,17 +513,24 @@ export default {
     //去设计师个人主页
     gotoDesignerHomePage(zeusId) {
       console.log("zeusId====", zeusId);
+			if(this.intoDesignerListPage){
+				this.intoDesignerListPage ++;
+			}
       uni.navigateTo({
         url: `/sub-decorate/pages/person-page/person-page?personId=${zeusId}`,
       });
     },
     //去推荐案例
     gotoRealCase() {
+			if(this.intoDesignerListPage){
+				this.intoDesignerListPage++
+			}
       uni.navigateTo({
         url: "/sub-home/pages/find-design/real-case/real-case",
       });
     },
 		toRealCaseDetail(item) {
+
 			console.log("item4===",item)
 		  uni.navigateTo({
 		    url: `/pages/real-case/real-case-webview/real-case-webview?id=${item.id}`,
@@ -669,7 +665,7 @@ export default {
 }
 .designCard_container {
   height: 698rpx;
-  padding-left: 32rpx;
+  // padding-left: 32rpx;
   background: linear-gradient(180deg, #ffffff 0%, #f6f6f6 100%);
   display: flex;
   align-items: center;
@@ -677,7 +673,7 @@ export default {
     .design-card-item {
       width: 434rpx;
       height: 698rpx;
-      margin-right: 32rpx;
+      margin-left: 32rpx;
       background-color: pink;
       border-radius: 16rpx;
       background-color: #ffffff;
@@ -720,7 +716,8 @@ export default {
             box-sizing: border-box;
             padding: 0 8rpx;
             line-height: 26rpx;
-            border: 0.5px solid #ffffff;
+            border: 0.5px solid rgba(255, 255, 255, 0.44);
+						background: rgba(255, 255, 255, 0.1);
             box-sizing: border-box;
             border-radius: 4rpx;
             color: #ffffff;
@@ -738,9 +735,10 @@ export default {
 							text{
 								display: block;
 								height: 30rpx;
+								line-height: 30rpx;
 								box-sizing: border-box;
 								color: #865E41;
-								padding: 0 8rpx 2rpx;
+								padding: 0 8rpx ;
 								background: linear-gradient(180deg, #FFEBCC 0%, #FFE5B7 100%);
 								font-weight: 500;
 								font-size: 20rpx;
@@ -753,8 +751,9 @@ export default {
 							background: linear-gradient(180deg, #FFEBCC 0%, #FFE5B7 100%);
 							text{
 								height: 30rpx;
+								line-height: 30rpx;
 								box-sizing: border-box;
-								padding: 0 8rpx 2rpx;
+								padding: 0 8rpx ;
 								background: linear-gradient(180deg, #FFDFA8 0%, #EFC988 100%);
 								display: block;
 								color: #865E41;
@@ -818,6 +817,7 @@ export default {
       overflow: hidden;
       display: inline-block;
       position: relative;
+			margin-left: 32rpx;
 			image{
 				width: 252rpx;
 				height: 698rpx;
@@ -1101,7 +1101,9 @@ export default {
 						text-overflow: ellipsis
 					}
 					.price{
-
+						text{
+							color: #333333;
+						}
 					}
 				}
 			}

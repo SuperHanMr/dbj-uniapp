@@ -71,7 +71,7 @@ instance.interceptors.request.use(
 			requestTimeMap.set(config, new Date().getTime());
 			const token = getApp().globalData.token;
 			const ip = getApp().globalData.ip;
-			
+
 			if (token) {
 				config.headers = {
 					...(config.headers ?? {}),
@@ -165,7 +165,8 @@ instance.interceptors.response.use(
 				if ((error.response.data.code != 10001) && !(config.data && config.data.hideToast)) {
 					uni.showToast({
 						title: error.response.data.message,
-						icon: 'none'
+						icon: 'none',
+						duration: 3000,
 					})
 				}
 

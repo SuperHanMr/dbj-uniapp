@@ -1,32 +1,41 @@
 <template>
-	<view class="peer-evaluate-page">
-		<view class="evaluate-head-bac">
-			<view class="evaluate-head">共获得{{showCommentCount}}次同行的评价</view>
-		</view>
-		<view class="evaluate-list">
-			<view class="evaluate-item" v-for="(item,index) in peerCommentsList" :key="index">
+	<view class="container">
+		<view class="peer-evaluate-page">
+			<view class="evaluate-head-bac">
+				<view class="evaluate-head">共获得{{showCommentCount}}次同行的评价</view>
+			</view>
+			<view class="evaluate-list">
+				<view class="evaluate-item"
+				v-for="(item,index) in commentsList"
+				:key="index"
+				:style="{borderBottom:index==commentsList.length-1?'1rpx solid #F4F4F4;':''}"
+				>
 
-				<view class="evaluate-person-info">
-					<image :src="item.avatar"  @click="gotoPersonalPage(item.userId)"/>
-					<view class="right">
-						<text class="name">{{item.userName}}</text>
-						<view class="design-tag-info">
-							<text class="design-leve">{{item.roleName}}</text>
-							<view class="design-tag" v-if="item.valueRank>=1">
-								<view class="topNum top-font"> <text>TOP.{{item.valueRank}}</text></view>
-								<view class="tagText"><text>最具价值</text></view >
+					<view class="evaluate-person-info">
+						<image :src="item.avatar"  @click="gotoPersonalPage(item.userId)"/>
+						<view class="right">
+							<text class="name">{{item.userName}}</text>
+							<view class="design-tag-info">
+								<text class="design-leve">{{item.roleName}}</text>
+								<view class="design-tag" v-if="item.valueRank>=1">
+									<view class="topNum top-font"> <text>TOP.{{item.valueRank}}</text></view>
+									<view class="tagText"><text>最具价值</text></view >
+								</view>
 							</view>
 						</view>
 					</view>
+					<view class="evaluate-tag" v-if="item.commentTags.length">
+						<view v-for="tageItem in item.commentTags" :key="tageItem" @click="gotoDesignerRankListPage">{{tageItem}}</view>
+					</view>
+					<view class="evaluate-content">
+						<text>{{item.content}}</text>
+					</view>
 				</view>
-				<view class="evaluate-tag" v-if="item.commentTags.length">
-					<view v-for="tageItem in item.commentTags" :key="tageItem" @click="gotoDesignerRankListPage">{{tageItem}}</view>
-				</view>
-				<view class="evaluate-content">{{item.content}}</view>
 			</view>
-		</view>
 
+		</view>
 	</view>
+
 </template>
 
 <script>
@@ -37,16 +46,20 @@
 				personId: 0,
 				showCommentCount:"",
 				peerCommentsList:[],
+				commentsList:[],
 				pageInfo: {
 					page: 1,
 					totalPage: 0,
 					totalRow: 0,
 				},
 				totalNum: 0,
+				loading:false,
 			}
 		},
 		onLoad(e) {
 			this.personId = e.id
+		},
+		onShow() {
 			this.getComments()
 		},
 
@@ -61,26 +74,43 @@
 		methods: {
 			getComments() {
 				let params = {
-					// userId: 8772,
 					userId: this.personId,
 					showFlag:true,
 					page: this.pageInfo.page,
 					rows: 10,
 				}
+				this.loading = true
 				getPeerCommentsList(params).then(res => {
 					console.log("res=====",res)
+					this.loading = false
+					this.pageInfo.totalPage = res.totalPage
+					this.pageInfo.page++
 					this.peerCommentsList = res.list
 					this.peerCommentsList  = this.peerCommentsList.map(item=>{
 						item.commentTags = item.commentTags.split(",")
 						return item
 					})
+					if(this.peerCommentsList.length){
+						this.commentsList  =this.commentsList.concat(this.peerCommentsList)
+						console.log("commentsList===",this.commentsList)
+					}
+
 					this.showCommentCount = res.aggregations.showCommentCount
 				})
 			},
+		//页面上拉触底事件的处理函数
+			onReachBottom(e) {
+				console.log("底部")// 滚动到页面执行该方法
+				console.log("this.pageInfo.page====",this.pageInfo.page)
+				console.log("this.pageInfo.totalPage",this.pageInfo.totalPage)
+				if( this.loading || this.pageInfo.page > this.pageInfo.totalPage) return
+				this.getComments()
+			},
+
 			gotoPersonalPage(id){
 				console.log("去设计师主页")
 				uni.navigateTo({
-					url:`./person-page?personId=${id}&isToContent=true`
+					url:`./person-page?personId=${id}`
 				})
 			},
 			gotoDesignerRankListPage(){
@@ -94,13 +124,13 @@
 </script>
 
 <style lang="scss" scoped>
-	page {
-		background-color: #fff;
+	.container{
+		background-color: #FFFFFF;
+		height: 100%;
 	}
 	.peer-evaluate-page {
 		background-color: #fff;
-		padding: 32rpx 32rpx 0 32rpx;
-		height: 100%;
+		padding: 32rpx 32rpx 40rpx;
 
 		.evaluate-head-bac {
 			position: fixed;
@@ -126,6 +156,7 @@
 
 		.evaluate-list {
 			padding-top: 112rpx;
+			background-color: #FFFFFF;
 			.evaluate-item {
 				margin-top: 24rpx;
 				padding-bottom: 32rpx;
@@ -243,6 +274,7 @@
 
 
 			}
+
 		}
 
 	}

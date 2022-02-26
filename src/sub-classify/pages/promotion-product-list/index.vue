@@ -49,7 +49,7 @@
 				}
 				if (defaultHouse) {
 					house = defaultHouse;
-				} else if (houseList.length) {
+				} else if (houseList && houseList.length) {
 					house = houseList[0];
 				}
 				if (house) {
