@@ -11,11 +11,11 @@
 						<view class="head-icon icon-alert_notice_jump" @click="goBack"></view>
 					</view>
 					<view class="info">
-						<view class="pattern">
-							<text>{{item.roomNum || '-'}}室</text>
-							<text>{{item.hallNum || '-'}}厅</text>
+						<view class="pattern" v-if="item.roomNum||item.hallNum">
+							<text v-if="item.roomNum">{{item.roomNum || '-'}}室</text>
+							<text v-if="item.hallNum ">{{item.hallNum || '-'}}厅</text>
 						</view>
-						<view class="line">
+						<view class="line" v-if="item.roomNum||item.hallNum">
 
 						</view>
 						<view class="area" v-if="item.insideArea != 0">
