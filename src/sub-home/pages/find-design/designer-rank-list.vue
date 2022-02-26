@@ -69,6 +69,7 @@
 							@scrolltolower.stop="gotoPersonalPage(item1,'total')"
 							:scroll-left="scrollLeft"
 						>
+							<!-- @scroll="scroll($event,item1)" -->
 						<view class="case-content">
 							<view class="case-item" v-for="item2 in item1.valuationCaseList" :key="item2.id" @click="gotoCaseDetail(item2)">
 								<image v-if="item2.famous" class="icon" src="https://ali-image.dabanjia.com/static/mp/dabanjia/images/theme-red/home/famousWork.png" />
@@ -222,6 +223,12 @@
 			toBack(){
 				uni.navigateBack({});
 			},
+			// scroll(e,item1){
+			// 	console.log("item1===",item1)
+			// 	console.log("e=====",e.target.scrollLeft)
+			// 	if (e.target && e.target.scrollTop < 171) return
+			// 	this.gotoPersonalPage(item1,'part')
+			// },
 			gotoPersonalPage(item, type){
 				if(type =="total" && item.valuationCaseVOS.length<=2) return ;
 				uni.navigateTo({
@@ -592,7 +599,11 @@
 						}
 					}
 				}
-
+				
+					
+				.case-item:nth-last-child(1){
+					padding-right: 24rpx;
+				}
 				.show-more{
 					display: inline-block;
 					width: 64rpx;
