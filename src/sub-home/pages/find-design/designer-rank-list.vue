@@ -64,7 +64,7 @@
 					<view class="case-container">
 						<scroll-view
 							scroll-x="true"
-							lower-threshold="0"
+							lower-threshold="1"
 							style="white-space: nowrap;"
 							@scrolltolower.stop="gotoPersonalPage(item1,'total')"
 							:scroll-left="scrollLeft"
@@ -100,7 +100,7 @@
 									<text class="text">预算：{{ Math.floor(item2.budget)?`¥${Math.floor(item2.budget)}` : '¥-'}}万</text>
 								</view>
 							</view>
-							<view class="show-more" v-if="item1.showMoreCase">
+							<view class="show-more" v-if="item1.showMoreCase" @click="gotoPersonalPage(item1,'part')">
 								<view class="text">左滑查看更多</view>
 							</view>
 						</view>
@@ -223,13 +223,10 @@
 				uni.navigateBack({});
 			},
 			gotoPersonalPage(item, type){
-
 				if(type =="total" && item.valuationCaseVOS.length<=2) return ;
 				uni.navigateTo({
 					url:`../../../sub-decorate/pages/person-page/person-page?personId=${item.searchDesignerVO.id}`
 				})
-
-
 			},
 			gotoCaseDetail(item){
 				console.log("去案例详情",item)
