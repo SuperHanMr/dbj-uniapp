@@ -3,6 +3,7 @@
 		<scroll-view class="real-case-list-scroll" :scroll-top="scrollTop" scroll-y="true" @scroll="scroll"
 			@scrolltoupper='scrolltoupper' @scrolltolower='scrolltolower'
 			refresher-enabled='true' @refresherrefresh='refresherrefresh' :refresher-triggered="triggered"
+      :lower-threshold='100'
 			>
 			<view class="list" v-for="item in realCaseListData" :key='item.id' @click="toCaseDetail(item)">
 				<view class="head">
@@ -79,7 +80,7 @@
 		methods: {
 			scroll(e) {
 				// this.old.scrollTop = e.target.scrollTop;
-				if (e.target && e.target.scrollTop < 50) {
+				if (e.target && e.target.scrollTop < 100) {
 					this.$emit('scrollUpper')
 				} else {
 					this.$emit('triggerScroll')
