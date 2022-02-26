@@ -64,7 +64,7 @@
 					<view class="case-container">
 						<scroll-view
 							scroll-x="true"
-							lower-threshold="4"
+							lower-threshold="0"
 							style="white-space: nowrap;"
 							@scrolltolower.stop="gotoPersonalPage(item1,'total')"
 							:scroll-left="scrollLeft"
@@ -225,15 +225,9 @@
 			gotoPersonalPage(item, type){
 
 				if(type =="total" && item.valuationCaseVOS.length<=2) return ;
-				if(type == "total"){
-					uni.navigateTo({
-						url:`../../../sub-decorate/pages/person-page/person-page?personId=${item.searchDesignerVO.id}&isToContent=true`
-					})
-				}else{
-					uni.navigateTo({
-						url:`../../../sub-decorate/pages/person-page/person-page?personId=${item.searchDesignerVO.id}`
-					})
-				}
+				uni.navigateTo({
+					url:`../../../sub-decorate/pages/person-page/person-page?personId=${item.searchDesignerVO.id}`
+				})
 
 
 			},
