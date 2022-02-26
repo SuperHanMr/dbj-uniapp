@@ -87,8 +87,8 @@
             </view>
           </view>
 
-          <view class="rate-wrapper">
-            <text class="designer-score">服务次数 {{designer.totalCount}}</text>
+          <view class="rate-wrapper" v-if="designer.totalCount>0&&designer.praiseEfficiency">
+            <text class="designer-score" v-if="designer.totalCount>0">服务次数 {{designer.totalCount}}</text>
             <view
               class="split-line"
               v-if="designer.praiseEfficiency"
