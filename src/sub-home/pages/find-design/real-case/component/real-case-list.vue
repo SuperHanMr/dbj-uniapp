@@ -120,7 +120,11 @@
 			nearHandler(item){
 				let itemReturn = '';
 				if (item.distance < 1000) {
-					itemReturn =  `附近${item.distance}m`
+					if(item.distance<=500){
+						itemReturn =  `附近500m以内`
+					}else{
+						itemReturn =  `附近${item.distance}m`
+					}
 				} else {
 					itemReturn = `附近${(item.distance / 1000).toFixed(2)}km`
 				}

@@ -45,7 +45,7 @@
 								<view class="liveAreaValue" v-if="item1.liveArea"
 									:class="{anotherStyle:item1.liveArea.length>=8}"
 								><text>{{item1.liveArea}}</text></view>
-								<view class="attrValue">{{item1.liveArea?"&nbsp;| ":''}}服务次数{{item1.searchDesignerVO.totalCount || "0" }}  |  好评率{{item1.searchDesignerVO.praiseEfficiency || "0"}}%</view>
+								<view class="attrValue">{{item1.searchDesignerVO.totalCount?`&nbsp;| 服务次数${item1.searchDesignerVO.totalCount}`:''}}{{item1.searchDesignerVO.praiseEfficiency ?`&nbsp;|&nbsp;好评率${item1.searchDesignerVO.praiseEfficiency}%`:''}}</view>
 							</view>
 							<view class="label_container">
 							<view
@@ -64,6 +64,7 @@
 					<view class="case-container">
 						<scroll-view
 							scroll-x="true"
+							lower-threshold="4"
 							style="white-space: nowrap;"
 							@scrolltolower.stop="gotoPersonalPage(item1,'total')"
 							:scroll-left="scrollLeft"
@@ -74,7 +75,7 @@
 								<image v-if="item2.favourite" class="icon" src="https://ali-image.dabanjia.com/static/mp/dabanjia/images/theme-red/home/favouriteWork.png" />
 
 								<view class="img-Container">
-									<image v-if=" item2.imageUrlList.length==1 " class="oneImg" :src="`${item2.imageUrlList[0]}?x-oss-process=image/resize,m_fill,h_484,w_924,limit_0`"/>
+									<image v-if="item2.imageUrlList.length>=1 && item2.imageUrlList.length<3" class="oneImg" :src="`${item2.imageUrlList[0]}?x-oss-process=image/resize,m_fill,h_484,w_924,limit_0`"/>
 									<view v-if="item2.imageUrlList.length >= 3" class="threeImg">
 										<image class="bigImg" :src="`${item2.imageUrlList[0]}?x-oss-process=image/resize,m_fill,h_484,w_924,limit_0`"/>
 										<view class="smallImg-Container">
@@ -91,12 +92,12 @@
 									</text>
 									<text v-if="!item2.roomNum && !item2.hallNum">-室-厅</text>
 
-									<text class="line" v-if="item2.roomNum || item2.hallNum"></text>
+									<text class="line" v-if="item2.roomNum || item2.hallNum || (!item2.roomNum && !item2.hallNum)"></text>
 
-									<text class="text">{{item2.insideArea?`${Math.floor(item2.insideArea)}`: "-"}}m²</text>
+									<text class="text">{{Math.floor(item2.insideArea)?`${Math.floor(item2.insideArea)}`: "-"}}m²</text>
 									<text class="line"></text>
 
-									<text class="text">预算：{{ Math.floor(item2.budget)?`${Math.floor(item2.budget)}` : '-'}}万</text>
+									<text class="text">预算：{{ Math.floor(item2.budget)?`¥${Math.floor(item2.budget)}` : '¥-'}}万</text>
 								</view>
 							</view>
 							<view class="show-more" v-if="item1.showMoreCase">
@@ -131,6 +132,7 @@
 </template>
 
 <script>
+	import { debounce } from "@/utils/common.js";
 	import { getDesignRank, queryAttention } from "../../../api/decorate.js"
 	export default {
 		data() {
@@ -221,18 +223,33 @@
 				uni.navigateBack({});
 			},
 			gotoPersonalPage(item, type){
+
 				if(type =="total" && item.valuationCaseVOS.length<=2) return ;
-				uni.navigateTo({
-					url:`../../../sub-decorate/pages/person-page/person-page?personId=${item.searchDesignerVO.id}&isToContent=true`
-				})
+				if(type == "total"){
+					uni.navigateTo({
+						url:`../../../sub-decorate/pages/person-page/person-page?personId=${item.searchDesignerVO.id}&isToContent=true`
+					})
+				}else{
+					uni.navigateTo({
+						url:`../../../sub-decorate/pages/person-page/person-page?personId=${item.searchDesignerVO.id}`
+					})
+				}
+
+
 			},
 			gotoCaseDetail(item){
 				console.log("去案例详情",item)
-				uni.navigateTo({
-					url: `/pages/real-case/real-case-webview/real-case-webview?id=${item.id}`
-				})
+				// uni.navigateTo({
+				// 	url: `/pages/real-case/real-case-webview/real-case-webview?id=${item.id}`
+				// })
+				debounce(() => {
+					uni.navigateTo({
+						url:`/pages/real-case/real-case-webview/real-case-webview?id=${item.id}`,
+					});
+				},500)()
 
 			},
+
 			handleDesigner(item,index){
 				console.log("是否关注设计师")
 				let params ={

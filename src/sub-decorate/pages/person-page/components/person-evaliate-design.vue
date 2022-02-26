@@ -24,7 +24,7 @@
         <i class='icon-alert_notice_jump'></i>
       </view>
     </view>
-    <view class="user-evaliate">
+    <view class="user-evaliate" v-if="commentData.list.length>0">
     <image class="bg" src="../../../static/design_comment.png" mode=""></image>
     <view class="" v-if="commentData.list[0]&&commentData.list[0].rank>3">
       <view class="title">
