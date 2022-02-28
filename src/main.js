@@ -72,14 +72,22 @@ if (params.token) {
     uni.clearStorageSync("scn");
     uni.clearStorageSync("userId");
   } else {
-    console.log("save scn:", params.token);
-    try {
-      uni.setStorageSync("scn", params.token)
-    } catch(e) {
-      console.error(e);
-      localStorage.setItem("scn", params.token);
-    }
-    console.log("get scn:", uni.setStorageSync("scn"));
+    console.log("save scn1:", params.token);
+    setTimeout(function() {
+      console.log("get scn:", uni.setStorageSync("scn"));
+      console.log("get scn2:", localStorage.setItem("scn"));
+    }, 500);
+    uni.setStorage({
+      key: "scn",
+      data: params.token,
+      success: function() {
+        console.log("save scn success");
+      },
+      fail: function(e) {
+        console.error("save scn fail!", e);
+        localStorage.setItem("scn", params.token);
+      }
+    });
   }
   // window.location.replace('/' + (params.isGomeMp ? '?isGomeMp=true' : '') + window.location.hash);
 }
