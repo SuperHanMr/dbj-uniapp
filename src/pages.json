@@ -581,6 +581,16 @@
 		    "navigationBarBackgroundColor": "#E16D1B"
 		  }
 		},
+		
+		{
+		  "path": "pages/product-detail/index",
+		  "style": {
+		    "navigationBarTitleText": "商品详情",
+		    "enablePullDownRefresh": true,
+			"navigationBarTextStyle":"white",
+		    "navigationBarBackgroundColor": "#E16D1B"
+		  }
+		},
         {
           "path": "pages/pay-order/index",
           "style": {
