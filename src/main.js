@@ -74,7 +74,7 @@ if (params.token) {
   } else {
     console.log("save scn1:", params.token);
     setTimeout(function() {
-      console.log("get scn:", uni.setStorageSync("scn"));
+      console.log("get scn:", uni.getStorageSync("scn"));
       console.log("get scn2:", localStorage.setItem("scn"));
     }, 500);
     uni.setStorage({
