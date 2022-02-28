@@ -13,6 +13,10 @@ module.exports = {
     port: 443
   },
   configureWebpack: {
+    output: {
+      filename: 'static/js/[name].[hash:8].js',
+      chunkFilename: 'static/js/[name].[hash:8].js'
+    },
     plugins: [
       new CopyWebpackPlugin([
         {

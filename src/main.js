@@ -73,7 +73,12 @@ if (params.token) {
     uni.clearStorageSync("userId");
   } else {
     console.log("save scn:", params.token);
-    uni.setStorageSync("scn", params.token)
+    try {
+      uni.setStorageSync("scn", params.token)
+    } catch(e) {
+      console.error(e);
+      localStorage.setItem("scn", params.token);
+    }
     console.log("get scn:", uni.setStorageSync("scn"));
   }
   // window.location.replace('/' + (params.isGomeMp ? '?isGomeMp=true' : '') + window.location.hash);
