@@ -989,6 +989,9 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+  uni-page-body{
+    background-color: unset;
+  }
 	.header {
 		margin-bottom: 32rpx;
 		 display: flex;
