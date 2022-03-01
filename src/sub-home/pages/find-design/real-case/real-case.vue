@@ -3,24 +3,26 @@
 		<Navigation-bar :paddingTop='statusHeight' :showScreen='showScreen' :currentHouse='currentHouse'
 			@openHomeList='openHomeList' />
 		<view class="container" :style="{marginTop: Number(statusHeight) + 44 + 'px'}">
-			<view class="home-address" v-if="currentHouse.id && showScreen">
+			<!-- <view class="home-address" v-if="currentHouse.id && showScreen">
 				<home-address :currentHouse='currentHouse' @openHomeList='openHomeList' />
-			</view>
+			</view> -->
 			<view class="no-case" v-if="currentHouse.id && !caseDetailInfo.caseFlag && showScreen">
 				当前房屋所在地区暂无真实案例，为您推荐其他地区的精选案例
 			</view>
-			<view class="screening" v-if="!currentHouse.id">
+			<view class="screening">
 				<real-case-screening v-show="showScreen" @updateTag='updateTag' ref='realCaseScreeningRef' />
 				<view class="hide-screen" v-if="!showScreen" @click="onShowScreen">
 					<view class="title" v-if="selectTag.length <= 0">
 						筛选
 					</view>
 					<view class="tag" v-else>
-						<view class="name" v-for="item in selectTag" :key='item.key'>
-							{{item.name}}
-						</view>
-						<view class="point" v-if="selectTag.length >= 2">
-
+						<view class="name" v-for="(item, index) in selectTag" :key='item.key'>
+							<view class="text">
+								{{item.name}}
+							</view>
+							<view class="point" v-if="selectTag.length - 1 > index">
+							
+							</view>
 						</view>
 					</view>
 					<view class="tag-icon icon-list_arrow_dropdown">
@@ -29,15 +31,15 @@
 				</view>
 			</view>
 			<view class="list" @scroll='scrollHandler'>
-				<view :class="['screening', {'screening-noShowScreen': !showScreen}]">
-					<!-- <view class="screening-tag" @click="checkoutScreen(item.key)" v-for="item in realListScreen" :key='item.key'>
+				<!-- <view :class="['screening', {'screening-noShowScreen': !showScreen}]">
+					<view class="screening-tag" @click="checkoutScreen(item.key)" v-for="item in realListScreen" :key='item.key'>
 						<view :class="['title', {'title-active': selectScreenTag == item.key}]">
 							{{item.title}}
 						</view>
 						<view :class="['screening-icon', 'icon-zhuangxiushouye_fuwushouqijiantou', {'screening-icon-active icon-zhuangxiushouye_fuwuzhankaijiantou': selectScreenTag == item.key}]">
 						</view>
-					</view> -->
-				</view>
+					</view>
+				</view> -->
 				<view class="box" @scroll='scrollHandler' v-if="realCaseListData && realCaseListData.length > 0">
 					<real-case-list :currentHouse='currentHouse' :realCaseListData='realCaseListData'
 						@triggerScroll='triggerScroll' @scrollUpper='scrollUpper' @scrolltolower='scrolltolower'
@@ -284,12 +286,12 @@
 			}
 
 			.no-case {
-				margin: 8rpx 0 24rpx;
+				padding: 16rpx 0;
 				width: 100%;
 				text-align: center;
 				font-size: 22rpx;
-				line-height: 30rpx;
-				color: #999999;
+				color: #A28645;
+				background: #FFF5DE;
 			}
 
 			.hide-screen {
@@ -315,16 +317,16 @@
 					display: flex;
 
 					.name {
-						margin-right: 38rpx;
+						margin-right: 16rpx;
+						display: flex;
+						align-items: center;
 					}
 
 					.point {
 						width: 4rpx;
 						height: 4rpx;
 						background: #333333;
-						position: absolute;
-						left: 102rpx;
-						top: 38rpx;
+						margin-left: 16rpx;
 					}
 				}
 

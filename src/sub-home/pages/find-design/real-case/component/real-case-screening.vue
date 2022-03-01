@@ -70,7 +70,37 @@
 								key: '90-120'
 							},
 						]
+					},
+					{
+						title: '风格',
+						key: 3,
+						list: [{
+								name: '全部',
+								key: null
+							},
+							{
+								name: '现代',
+								key: '1'
+							},
+							{
+								name: '简约',
+								key: '2'
+							},
+							{
+								name: '北约',
+								key: '3'
+							},
+							{
+								name: '新中式现代',
+								key: '4'
+							},
+							{
+								name: '简单的',
+								key: '5'
+							},
+						]
 					}
+					
 				],
 				tagSelect: [null, null],
 				selectData: {
@@ -97,11 +127,12 @@
 	.real-case-screening {
 		width: 100%;
 		height: 100%;
+		background-color: #ffffff;
 
 		.list {
 			display: flex;
 			align-items: center;
-			padding: 16rpx 0 16rpx 32rpx;
+			padding: 18rpx 0 18rpx 32rpx;
 			position: relative;
 
 			.left {

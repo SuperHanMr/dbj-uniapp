@@ -9,7 +9,13 @@
 				<view class="head">
 					<view class="title">
 						<text>{{item.nikeName || '--'}} Ta家</text>
-						<view class="head-icon icon-alert_notice_jump" @click="goBack"></view>
+						<view class="collection-box" :class="{'collection-box-active': collectionActive}" @click="goBack">
+							<view class="collection-icon icon-zhuangxiushouye_fuwuzhankaijiantou">
+							</view>
+							<view class="text">
+								收藏
+							</view>
+						</view>
 					</view>
 					<view class="info">
 						<view class="pattern" v-if="item.roomNum||item.hallNum">
@@ -74,7 +80,8 @@
 			return {
 				noEmit: false,
 				scrollTop: 0,
-				triggered: false
+				triggered: false,
+				collectionActive: true
 			}
 		},
 		methods: {
@@ -173,9 +180,33 @@
 					}
 				}
 
-				.head-icon {
-					font-size: 20rpx;
-					color: #000000;
+				.collection-box {
+					background: #FFFFFF;
+					border: 0.5px solid #CCCCCC;
+					box-sizing: border-box;
+					border-radius: 68rpx;
+					padding: 10rpx 20rpx;
+					display: flex;
+					align-items: center;
+					.collection-icon{
+						font-size: 20rpx;
+						color: #CCCCCC;
+					}
+					.text{
+						margin-left: 8rpx;
+						font-size: 20rpx;
+						line-height: 28rpx;
+						height: 28rpx;
+						text-align: center;
+						color: #333333;
+					}
+				}
+				.collection-box-active{
+					background: rgba(255, 192, 91, 0.08);
+					border: 0.5px solid rgba(255, 192, 91, 0.15);
+					.collection-icon, .text{
+						color: #FFC05B;
+					}
 				}
 
 				.info {
