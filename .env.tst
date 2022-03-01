@@ -5,6 +5,7 @@ VUE_APP_POP=https://pop-test.meiwu365.com
 VUE_APP_MP_H5=https://mp-h5-test.meiwu365.com
 VUE_APP_GOME_API=http://apis-dbj.gomeuat.com.cn
 VUE_APP_GOME_H5=http://h5stage-dbj.gomeuat.com.cn
+VUE_APP_GOME_HOME=http://m.gomeuat.com.cn/shopping.html
 VUE_APP_GOME_LOGIN=http://login.m.gomeuat.com.cn/login.html
 VUE_APP_GOME_SDK_APP=/libs/GomeJSBridge.min.js
 VUE_APP_GIO_ACCOUNT_ID=80deb8ab374ba9e1
