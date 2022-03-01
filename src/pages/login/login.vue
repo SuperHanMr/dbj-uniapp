@@ -37,7 +37,7 @@
 			// 生产环境appletId=E370C3ABB4F1EEC5A3946F23BCB15C29
 			let loginInit = {};
 			loginInit.imgUrl = "../../../../static/logo.png";
-				// "https://ali-image.dabanjia.com/static/mp/dabanjia/images/decorate/logo.0ccb88de.png"; // 登录logo
+			// "https://ali-image.dabanjia.com/static/mp/dabanjia/images/decorate/logo.0ccb88de.png"; // 登录logo
 			loginInit.imgWidth = 130; // logo的宽度
 			loginInit.imgHeight = 130; // logo的高度
 			// loginInit.ctx = "app-guomeijia|ver-v8.2.2|plt-wxApp|cmpid-"; //登录ctx
@@ -120,13 +120,13 @@
 							userSig: data.userSign,
 						});
 						let shaerId = uni.getStorageSync("shareId");
-            //临时测试用，上线前修改
-            // if (shaerId ) {
-            // 	bindCapsule({
-            // 		zeusId: data.id,
-            // 		salesmanPhone: shaerId
-            // 	});
-            // }
+						//临时测试用，上线前修改
+						// if (shaerId ) {
+						// 	bindCapsule({
+						// 		zeusId: data.id,
+						// 		salesmanPhone: shaerId
+						// 	});
+						// }
 						if (shaerId && type == "register") {
 							bindCapsule({
 								zeusId: data.id,

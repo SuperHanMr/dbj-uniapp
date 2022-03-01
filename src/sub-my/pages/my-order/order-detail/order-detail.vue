@@ -80,7 +80,7 @@
 										￥{{item.freight?`${item.freight}`:"0.00"}}
 									</text>
 									<text class="price-font" :style="{marginTop:item.freight?'0':'8rpx'}" v-else>
-										{{item.freight?`￥${item.freight}`:"--"}}
+										{{item.freight?`￥${item.freight}`: (isFromPackage ? "￥0.00" : "--")}}
 									</text>
 								</view>
 							</view>
@@ -95,7 +95,7 @@
 									<text
 									  class="price-font" :style="{marginTop:item.handlingFees ? '0' : '8rpx' }"
 									  v-else
-									>{{item.handlingFees?`￥${item.handlingFees}`:"--"}}</text>
+									>{{item.handlingFees?`￥${item.handlingFees}`:(isFromPackage ? "￥0.00" : "--")}}</text>
 								</view>
 							</view>
 							<view class="item_css_style"  v-if="item.storeDiscount">
@@ -125,7 +125,12 @@
 					:payPrice="payPrice"
 				/>
 
-				<view v-if="haveCard && orderInfo.isReplenish" class="pay-way" style="justify-content:center" @click="clickCard">
+				<view
+					v-if="haveCard && orderInfo.isReplenish"
+					class="pay-way"
+					style="justify-content:center"
+					@click="clickCard"
+				>
 				  <image
 				    class="card-img"
 				    src="https://ali-image.dabanjia.com/static/mp/dabanjia/images/classify/ic_card.png"
@@ -140,7 +145,7 @@
 					<image
 				    v-if="cardClick"
 				    class="selected-img"
-				    src="https://ali-image.dabanjia.com/static/mp/dabanjia/images/classify/pay_selected.png"
+				    src="https://ali-image.dabanjia.com/static/mp/dabanjia/images/theme-red/decorate/ic_checked.svg"
 				  />
 				  <image
 				    v-else
@@ -280,7 +285,7 @@
 			  <view v-if="orderInfo.showCancelBtn" class="canclePay" @click="handleCancelOrder" >
 			    取消订单
 			  </view>
-			  <view v-if="orderInfo.showToPayBtn" class="gotoPay" @click="toPay(payPrice)">
+			  <view v-if="orderInfo.showToPayBtn" class="gotoPay" @click="toPay()">
 			    去付款
 			  </view>
 
@@ -453,6 +458,7 @@ export default {
   },
   data() {
     return {
+			isFromPackage: false, // 来自套包下单页面时，运费搬运分固定展示 0
       scrollTop: 0,
       headerTitle: "订单详情",
       orderId: -1,//订单id
@@ -480,6 +486,7 @@ export default {
 			totalPrice: "0.00",
 			bottomStyle:"",
 			remarks: "",
+			needPay:"",
 			orderStatusList:[
 				{
 					value:0,
@@ -514,11 +521,15 @@ export default {
         res,
         Number(this.totalPrice) * 100
       );
-      if (this.cardClick && res <= 0) {
-        return true;
-      } else {
-        return false;
-      }
+      if(!this.orderInfo.isReplenish){
+				return false
+			}else{
+				if (this.cardClick && res <= 0 ) {
+					return true;
+				} else {
+					return false;
+				}
+			}
     },
     payChannelPrice() {
       //提示框价格
@@ -539,17 +550,25 @@ export default {
         return Number(this.totalPrice) * 100;
       }
     },
-    payPrice() {
-      if (this.cardClick) {
-        var res = Number(this.totalPrice) * 100 - this.cardBalance;
-        if (res <= 0) {
-          return "0.00";
-        }
-        return String((res / 100).toFixed(2));
-      } else {
-        return String(this.totalPrice);
-      }
-    },
+		payPrice() {
+		  if (this.cardClick) {
+		    var res = Number(this.totalPrice) * 100 - this.cardBalance;
+		    if (res <= 0 && !this.orderInfo.isReplenish) {
+					this.needPay = String(this.totalPrice)
+					return String(this.totalPrice);
+		    }
+				if(res <=0 && this.orderInfo.isReplenish){
+					this.needPay = "0.00"
+					return "0.00";
+				}
+				this.needPay = String((res / 100).toFixed(2))
+		    return String((res / 100).toFixed(2));
+		  } else {
+				this.needPay = String(this.totalPrice)
+		    return String(this.totalPrice);
+		  }
+		},
+
   },
 
   mounted(e) {
@@ -577,6 +596,7 @@ export default {
     this.orderId = Number(e.orderId);
     this.status = Number(e.status);
     this.from = e.from;
+		this.isFromPackage = !!e.fromPackage;
 
 		const currentHouse = getApp().globalData.currentHouse;
 		console.log("currentHouse=", currentHouse);
@@ -630,9 +650,24 @@ export default {
 				this.orderStatus = e.orderStatus
 				this.approvalCompleted =e.approvalCompleted
 				console.log("this.orderStatus===",this.orderStatus)
-				//以下代码是代付款独有的
 				this.totalPrice = this.orderInfo.payAmount;
+				//以下代码是代付款独有的
+				// this.totalPrice = 4991050
+				let res = Number(this.totalPrice) * 100 - this.cardBalance;
+				if(!this.orderInfo.isReplenish){
+					this.cardClick=false
+				}else{
+					if (res <= 0) {
+						this.cardClick = true
+					}else{
+						this.cardClick = false
+					}
+					console.log("this.cardClick yayay =",this.cardClick)
+				}
+
+
 				this.bottomStyle = this.orderInfo.showCancelBtn
+
 				  ? "space-between"
 				  : "flex-end";
 				console.log("this.orderInfo=", this.orderInfo);
@@ -727,7 +762,7 @@ export default {
 			this.from = "waitpay"
 			this.orderDetail()
 		  // uni.redirectTo({
-		  //   url: `../order-failed/order-failed?type=close&id=${this.orderNo}&from=waitPay`,
+		  //   url: `../order-failed/order-failed?type=close&id=${this.orderId}&from=waitPay`,
 		  // });
 		},
 		// 取消订单
@@ -769,11 +804,12 @@ export default {
 		      url: `../multiple-payments/multiple-payments?orderId=${this.orderId}&type=detail&remainTime=${this.orderInfo.remainTime}`,
 		    });
 		  } else {
-		    if (this.cardClick) {
+				console.log("this.cardClick-=====",this.cardClick)
+		    if (this.cardClick  && this.orderInfo.isReplenish) {
 		      this.$refs.payDialog.open();
 		      return;
 		    }
-		    this.payOrder(totalAmount);
+		    this.payOrder(this.needPay);
 		  }
 		},
 		payOrder(totalAmount) {
@@ -844,6 +880,7 @@ export default {
 		    }
 		  });
 		},
+
 
 		formatTime(msTime) {
 		  let time = msTime / 1000;
@@ -956,7 +993,7 @@ export default {
 				this.orderDetail()
 				this.from ="hhhhhhh"
 				// uni.redirectTo({
-				// 	url: `../order-success/order-success?type=complete&id=${this.orderNo}`,
+				// 	url: `../order-success/order-success?type=complete&id=${this.orderId}`,
 				// });
 			});
 		},

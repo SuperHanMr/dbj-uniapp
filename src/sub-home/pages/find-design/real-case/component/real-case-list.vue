@@ -3,6 +3,7 @@
 		<scroll-view class="real-case-list-scroll" :scroll-top="scrollTop" scroll-y="true" @scroll="scroll"
 			@scrolltoupper='scrolltoupper' @scrolltolower='scrolltolower'
 			refresher-enabled='true' @refresherrefresh='refresherrefresh' :refresher-triggered="triggered"
+      :lower-threshold='100'
 			>
 			<view class="list" v-for="item in realCaseListData" :key='item.id' @click="toCaseDetail(item)">
 				<view class="head">
@@ -11,11 +12,11 @@
 						<view class="head-icon icon-alert_notice_jump" @click="goBack"></view>
 					</view>
 					<view class="info">
-						<view class="pattern">
-							<text>{{item.roomNum || '-'}}室</text>
-							<text>{{item.hallNum || '-'}}厅</text>
+						<view class="pattern" v-if="item.roomNum||item.hallNum">
+							<text v-if="item.roomNum">{{item.roomNum || '-'}}室</text>
+							<text v-if="item.hallNum ">{{item.hallNum || '-'}}厅</text>
 						</view>
-						<view class="line">
+						<view class="line" v-if="item.roomNum||item.hallNum">
 
 						</view>
 						<view class="area" v-if="item.insideArea != 0">
@@ -79,7 +80,7 @@
 		methods: {
 			scroll(e) {
 				// this.old.scrollTop = e.target.scrollTop;
-				if (e.target && e.target.scrollTop < 50) {
+				if (e.target && e.target.scrollTop < 100) {
 					this.$emit('scrollUpper')
 				} else {
 					this.$emit('triggerScroll')
@@ -120,7 +121,11 @@
 			nearHandler(item){
 				let itemReturn = '';
 				if (item.distance < 1000) {
-					itemReturn =  `附近${item.distance}m`
+					if(item.distance<=500){
+						itemReturn =  `附近500m以内`
+					}else{
+						itemReturn =  `附近${item.distance}m`
+					}
 				} else {
 					itemReturn = `附近${(item.distance / 1000).toFixed(2)}km`
 				}
@@ -136,7 +141,6 @@
 		width: 100%;
 		height: 100%;
 		background-color: #FFFFFF;
-		padding-bottom: 80rpx;
 
 		.real-case-list-scroll {
 			height: 100%;

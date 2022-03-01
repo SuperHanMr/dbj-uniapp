@@ -1,6 +1,6 @@
 <template>
   <view class="order-container">
-    <view v-if="!isShow">
+    <view v-if="!isShow && !isFromPackage">
       <uni-popup
         ref="houseDialog"
         :mask-click="false"
@@ -28,7 +28,7 @@
         @typeServe2="typeServe2"
         :originFrom="originFrom"
         :addUser="addUser"
-        v-if="isShow"
+        v-if="isShow && !isFromPackage"
       >
       </address-picker>
       <view class="content">
@@ -242,7 +242,7 @@
         <image
           v-if="cardClick"
           class="selected-img"
-          src="https://ali-image.dabanjia.com/static/mp/dabanjia/images/classify/pay_selected.png"
+          src="https://ali-image.dabanjia.com/static/mp/dabanjia/images/theme-red/decorate/ic_checked.svg"
           mode=""
         >
         </image>
@@ -414,6 +414,8 @@ import {
   getAddWorker,
   getDetailInfo,
   payOrder,
+  getBundleDetail,
+  payBundleOrder,
 } from "../../../api/classify.js";
 import { getBalance } from "../../../api/user.js";
 import orderToast from "./order-toast.vue";
@@ -430,6 +432,8 @@ export default {
   },
   data() {
     return {
+      isFromPackage: false, // 来源于套包下单
+      packageId: 0, // 促销套包id
       isShow: true,
       hasTime: false,
       time: "",
@@ -527,6 +531,20 @@ export default {
     if (e.from) {
       this.originFrom = e.from;
     }
+    console.log('h5 传递的数据', e);
+    if (Number(e.fromPackage) === 1) { // 套包下单
+      this.isFromPackage = true;
+      this.packageId = e.packageId;
+      // e.houseId = 277;
+      this.estateId = e.houseId;
+      let skuIds = e.skuIdsString.split(',').filter(l => !!l)
+      // TODO 接收套包下单页传递的商品列表信息
+      // this.orderCartParams = e.
+      this.getBundleDetail({
+        bundleId: this.packageId,
+        skuIds: skuIds
+      });
+    }
     this.houseId = e.houseId ? e.houseId : getApp().globalData.currentHouse.id;
     this.buyCount = e.buyCount;
     this.skuId = e.skuId;
@@ -566,10 +584,6 @@ export default {
       if (e != null) {
         this.haveCard = true;
         this.cardBalance = e;
-         var res = Number(this.totalPrice) * 100 - this.cardBalance;
-         if(res <= 0) {
-           this.cardClick = true
-         }
       }
     });
     if (!getApp().globalData.openId) {
@@ -642,6 +656,17 @@ export default {
     cancelHousePop() {
       this.$refs.houseDialog.close();
     },
+    getBundleDetail(params) {
+      getBundleDetail(params).then(data => {
+        this.reducePayParams(this.reduceDetailInfo(data));
+      }).catch(err => {
+        uni.showToast({
+          title: err.data?.message || '程序异常',
+          icon: 'none',
+          duration: 3000,
+        })
+      })
+    },
     emitInfo(val) {
       this.addUser = [];
       this.hasCanBuy = false;
@@ -671,13 +696,78 @@ export default {
         };
       }
       getDetailInfo(params).then((data) => {
-        this.totalPrice = (
+        this.reducePayParams(this.reduceDetailInfo(data));
+      });
+    },
+    // XXX: getBundleDetail 和 getDetailInfo 接口返回的数据接口不一致
+    // 对getBundleDetail 数据聚合以供 reducePayParams 方法使用
+    reduceDetailInfo(data) {
+      if (this.isFromPackage) {
+        let storeInfos = []
+        let storeMap = {};
+        data.skuPropertyVOS.forEach(sku => {
+          let storeId = sku.storeId;
+          let store = storeMap[storeId];
+          if (!storeMap[storeId]) {
+            store = {
+              storeId: storeId,
+              storeName: sku.storeName,
+              skuInfos: [],
+            }
+            storeMap[storeId] = store;
+            storeInfos.push(store);
+          }
+
+          let skuInfo = {
+            ...sku,
+            skuId: sku.id,
+				    // storeId: storeId,
+				    // productType: sku.productType,
+				    // categoryTypeId: sku.categoryTypeId,
+				    // categoryId: sku.categoryId,
+				    skuName: sku.name,
+				    // spuName: sku.spuName,
+				    // spuId: sku.spuId,
+				    // imageUrl: sku.imageUrl,
+				    // appointmentRequired: sku.appointmentRequired,
+				    // unit: sku.unit,
+				    price: sku.discountPrice / 100, // 折后价
+				    buyCount: sku.minimumOrderQuantity, // 购买数量取起购价
+				    handlingFee: sku.stairwayRoomHandlingFee,
+				    // deposit: sku.deposit,
+				    // shippingFee: sku.shippingFee,
+				    // refundable:sku.refundable
+          }
+
+          store.skuInfos.push(skuInfo);
+        })
+
+        return {
+          totalPrice: data.totalPrice / 100,
+          totalDeliveryFee: 0,
+          totalHandlingFee: 0,
+          totalDeposit: 0,
+          totalDiscount: 0,
+          storeInfos: storeInfos,
+        }
+      }
+
+      return data
+    },
+    // 整理结算相关参数
+    reducePayParams(data) {
+      this.totalPrice = (
           data.totalPrice +
           data.totalDeliveryFee +
           data.totalHandlingFee +
           data.totalDeposit -
           data.totalDiscount
         ).toFixed(2);
+        var res = Number(this.totalPrice) * 100 - this.cardBalance;
+        console.log(this.totalPrice, res, "res666666666")
+        if(res <= 0) {
+          this.cardClick = true
+        }
         let dataInfo = data;
         this.orderInfo = dataInfo;
         this.noStoreInfos = JSON.parse(JSON.stringify(dataInfo));
@@ -763,7 +853,6 @@ export default {
         if (this.orderInfo.storeInfos[0].skuInfos.length === 1) {
           this.totalClassNum = 1;
         }
-      });
     },
     chooseTime(shopIndex, goodIndex) {
       this.shopIndex = shopIndex;
@@ -787,7 +876,11 @@ export default {
       }
       this.payOrder();
     },
+    createOrder(params) {
+      return this.isFromPackage ? payBundleOrder(params) : payOrder(params);
+    },
     payOrder() {
+      let _that = this;
       let details = [];
       this.orderDetails.map((v, k) => {
         details.push(v.orderDetailItem);
@@ -801,6 +894,8 @@ export default {
       let orderPrice = Number(
         Number(this.totalPrice).toFixed(2).replace(".", "")
       );
+
+
         //#ifdef MP-WEIXIN
         let params = {
           payType: 1, //"int //支付方式  1微信支付",
@@ -813,9 +908,10 @@ export default {
           orderName: "", //"string //订单名称 可为空",
           details: details,
           isCardPay: this.cardClick,
-          origin: this.shareOriginType
+          origin: this.shareOriginType,
+          packageId: this.isFromPackage ? parseInt(this.packageId) : undefined, // 套包下单时需要套包id参数，默认undefined
         };
-        payOrder(params).then((data) => {
+        this.createOrder(params).then((data) => {
           const {
             wechatPayJsapi,
             cardPayComplete
@@ -842,12 +938,12 @@ export default {
                 console.log(e, "取消付款");
                 if (data.subOrderIds && data.subOrderIds.length === 1) {
                   uni.navigateTo({
-										url:`../../../sub-my/pages/my-order/order-detail/order-detail?orderId=${data.subOrderIds[0]}&from=waitPayOrder`
+										url:`../../../sub-my/pages/my-order/order-detail/order-detail?orderId=${data.subOrderIds[0]}&from=waitPayOrder&fromPackage=${_that.isFromPackage}`
                     // url: `/sub-my/pages/my-order/order-wait-pay/order-wait-pay?orderNo=${data.subOrderIds[0]}&from=waitPayOrder`,
                   });
                 } else {
                   uni.navigateTo({
-										url:`../../../sub-my/pages/my-order/order-detail/order-detail?orderId=${data.id}&from=waitPayOrder`
+										url:`../../../sub-my/pages/my-order/order-detail/order-detail?orderId=${data.id}&from=waitPayOrder&fromPackage=${_that.isFromPackage}`
                     // url: `/sub-my/pages/my-order/order-wait-pay/order-wait-pay?orderNo=${data.id}&from=waitPayOrder`,
                   });
                 }
@@ -865,6 +961,8 @@ export default {
               url: "/sub-classify/pages/pay-order/pay-success?orderId=" + data.id,
             });
           }
+        }).catch(e => {
+          this.$refs.payDialog.close();
         });
         //#endif
         //#ifdef H5
@@ -880,9 +978,10 @@ export default {
           orderName: "", //"string //订单名称 可为空",
           details: details,
           isCardPay: this.cardClick,
-          origin: this.shareOriginType
+          origin: this.shareOriginType,
+          packageId: this.isFromPackage ? parseInt(this.packageId) : undefined, // 套包下单时需要套包id参数，默认undefined
         };
-        payOrder(params).then((data) => {
+        this.createOrder(params).then((data) => {
           if (!data.cardPayComplete) {
             uni.navigateTo({
               url: `/sub-classify/pages/pay-order/pay-h5?payTal=${data.gomePayH5.payModeList[0].payTal}&totalPrice=${orderPrice}&payRecordId=${data.payRecordId}`,
