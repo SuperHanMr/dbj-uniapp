@@ -18,5 +18,20 @@ export function recommendCaseList(params) {
 
 // //设计师主页个人案例列表分页
 export function searchDesigner(params) {
+	//    /app/search/designer/recommend
 	return request.post(`/app/search/designer`, params);
+}
+
+//找设计首页设计服务
+export function designServiceList(params){
+	return request.get(`/app/search/designer/getServiceRecommend`,params)
+}
+// 找设计首页设计师列表
+export function firstsearchDesigner(params) {
+	return request.post(`/app/search/designer/recommend`, params);
+}
+
+// 设计师榜单top10
+export function requestDesignerTopRank(params = {}) {
+	return request.get(`/app/designRank/getTop10Ranking`, params)
 }

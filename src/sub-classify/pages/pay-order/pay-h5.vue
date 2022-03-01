@@ -87,8 +87,24 @@
               url: './pay-h5-success?payStatus=1'
             })
           } else {
-            uni.navigateTo({
-              url: `./pay-h5-success?payStatus=0&payTal=${this.payTal}&payRedirectUrl=${encodeURIComponent(location.href + '&isRedirect=1')}`
+            checkPay(params).then((data) => {// 如果查询订单支付失败，再次查询
+              if (data.payStatus) {
+                uni.navigateTo({
+                  url: './pay-h5-success?payStatus=1'
+                })
+              } else {
+                checkPay(params).then((data) => {
+                  if (data.payStatus) {
+                    uni.navigateTo({
+                      url: './pay-h5-success?payStatus=1'
+                    })
+                  } else {
+                    uni.navigateTo({
+                      url: `./pay-h5-success?payStatus=0&payTal=${this.payTal}&payRedirectUrl=${encodeURIComponent(location.href + '&isRedirect=1')}`
+                    })
+                  }
+                })
+              }
             })
           }
         })

@@ -49,7 +49,7 @@
       isSaler:false
     },
 
-    onLaunch: function(options) {   
+    onLaunch: function(options) {
         // let isSaler = uni.getStorageSync("isSaler");
         // if(isSaler){
         //   this.globalData.isSaler = true;
@@ -170,8 +170,8 @@
       if (shareId && !this.globalData.shareId) {
         this.globalData.shareId = shareId;
       }
-      let token = uni.getStorageSync("scn");
-      if (token) {
+      if (userId) {
+        let token = uni.getStorageSync("scn");
         this.globalData.token = token;
         oauthGomeInfo({
             hideToast: true,
@@ -321,10 +321,26 @@
   .price-font {
     font-family: PriceFont;
   }
+   @font-face {
+  	font-family:TopFont;
+  	src: url("https://ali-res.dabanjia.com/static/font/rank-font/rank-font-Bold.woff2"),
+	       url("https://ali-res.dabanjia.com/static/font/rank-font/rank-font-Bold.woff");
+  }
+
+  .top-font{
+	  font-family: TopFont;
+  }
 
   .navbar-height{
     height: 88rpx;
   }
+
+  /* #ifdef H5 */
+  /* 处理H5中toast提示被盖住的问题 */
+  uni-toast {
+    z-index: 2000;
+  }
+  /* #endif */
 
   /*每个页面公共css */
 </style>

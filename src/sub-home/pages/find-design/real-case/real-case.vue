@@ -28,7 +28,7 @@
 					</view>
 				</view>
 			</view>
-			<view class="list">
+			<view class="list" @scroll='scrollHandler'>
 				<view :class="['screening', {'screening-noShowScreen': !showScreen}]">
 					<!-- <view class="screening-tag" @click="checkoutScreen(item.key)" v-for="item in realListScreen" :key='item.key'>
 						<view :class="['title', {'title-active': selectScreenTag == item.key}]">
@@ -38,7 +38,7 @@
 						</view>
 					</view> -->
 				</view>
-				<view class="box" v-if="realCaseListData && realCaseListData.length > 0">
+				<view class="box" @scroll='scrollHandler' v-if="realCaseListData && realCaseListData.length > 0">
 					<real-case-list :currentHouse='currentHouse' :realCaseListData='realCaseListData'
 						@triggerScroll='triggerScroll' @scrollUpper='scrollUpper' @scrolltolower='scrolltolower'
 						@refresherrefresh='refresherrefresh' @toCaseDetail='toCaseDetail' ref='realCaseList' />
@@ -51,6 +51,9 @@
 						暂无相关案例～
 					</view>
 				</view>
+			</view>
+			<view class="bottom-view">
+				
 			</view>
 		</view>
 		<view class="home-info-box" v-if="!currentHouse.id">
@@ -249,6 +252,9 @@
 			toCaseDetail(){
 				console.log('toCaseDetail', ">>>>>>")
 				this.caseDetail = true;
+			},
+			scrollHandler(e){
+				console.log(e, '>>>>')
 			}
 		}
 	}
@@ -269,6 +275,12 @@
 			.home-address {
 				padding: 0 32rpx;
 				margin-bottom: 40rpx;
+			}
+			
+			.bottom-view{
+				height: 120rpx;
+				width: 100%;
+				background-color: rgb(255,255,255);
 			}
 
 			.no-case {

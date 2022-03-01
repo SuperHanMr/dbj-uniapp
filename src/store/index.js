@@ -3,13 +3,18 @@ import Vuex from 'vuex'
 import createLogger from 'vuex/dist/logger'
 import message from './modules/message'
 import merchantEntry from "./modules/merchant-entry.js";
+import {requestDesignerTopRank} from "@/api/home-find-design";
 
 Vue.use(Vuex)
 
 export default new Vuex.Store({
   state: {
+    designTopRank: {}, // 设计师榜单top10，用于私聊展示设计师排行标签
   },
   mutations: {
+    setDesignTopRank(state, payload) {
+      state.designTopRank = payload;
+    }
   },
   actions: {
     /**
@@ -43,6 +48,22 @@ export default new Vuex.Store({
           index: 3
         })
       }
+    },
+    requestDesignTopRank(context) {
+      requestDesignerTopRank().then(designList => {
+        if (designList && designList instanceof Array) {
+          let designTopRank = designList.reduce(
+            (map, designer, index) => {
+              if (designer.searchDesignerVO?.id) {
+                map[`zeus_${designer.searchDesignerVO.id}`] = index + 1;
+              }
+              return map;
+            },
+            {}
+          );
+          context.commit('setDesignTopRank', designTopRank)
+        }
+      })
     }
   },
   modules: {

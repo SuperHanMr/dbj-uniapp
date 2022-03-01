@@ -51,8 +51,8 @@
 			</view>
 		</view>
     <view class="no-house" :style="{marginBottom:systemHeight}"  v-else >
-      <image src="https://ali-image.dabanjia.com/static/mp/dabanjia/images/decorate/empty.png"></image>
-      <text>暂无收货地址</text>
+      <image src="../../static/img_sys_noaddress.png"></image>
+      <text>暂无房屋地址</text>
       <view class="no-add-btn" @click="toAddHouse">
         添加地址
       </view>
@@ -466,13 +466,13 @@
 		}
 	}
   .no-house{
-    width: 248rpx;
+    width: 400rpx;
     margin: 0 auto;
     padding-top: 260rpx;
     // display: flex;
     image{
-      width: 248rpx;
-      height: 248rpx;
+      width: 400rpx;
+      height: 400rpx;
       margin-bottom: 22rpx;
     }
     text{
@@ -487,12 +487,13 @@
       height: 64rpx;
       background: linear-gradient(117.02deg, #FA3B34 24.56%, #FF6A33 92.21%);
       border-radius: 12rpx;
-      line-height: 88rpx;
+      line-height: 64rpx;
       text-align: center;
-      margin-top: 76rpx;
+      // margin-top: 76rpx;
       color: #fff;
       font-size: 24rpx;
       font-weight: 500;
+      margin: 24rpx auto 0;
     }
   }
 </style>

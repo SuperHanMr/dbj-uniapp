@@ -65,14 +65,29 @@ let params = (function (a) {
   }
   return ret;
 })(window.location);
+function removeUrlToken() {
+  window.location.replace('/' + (params.isGomeMp ? '?isGomeMp=true' : '') + window.location.hash);
+}
 if (params.token) {
   if (params.token === "CLEAR") {
     uni.clearStorageSync("scn");
     uni.clearStorageSync("userId");
+    // removeUrlToken();
   } else {
-    uni.setStorageSync("scn", params.token)
+    uni.setStorage({
+      key: "scn",
+      data: params.token,
+      success: function() {
+        console.log("save scn success");
+        // removeUrlToken();
+      },
+      fail: function(e) {
+        console.error("save scn fail!", e);
+        localStorage.setItem("scn", params.token);
+        // removeUrlToken();
+      }
+    });
   }
-  window.location.replace('/' + (params.isGomeMp ? '?isGomeMp=true' : '') + window.location.hash);
 }
 // #endif
 
