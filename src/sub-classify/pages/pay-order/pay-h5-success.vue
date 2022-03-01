@@ -49,9 +49,13 @@
         })
       },
       backApplication() {
+          if (window.GomeJSBridge && window.GomeJSBridge.ready) {
+            location.href = process.env.VUE_APP_GOME_APP_HOME
+          } else {
+            location.href = process.env.VUE_APP_GOME_H5_HOME
+          }
         // location.href = 'gome://m.gome.com.cn/appHome_2.html'
         // 'https://m.gome.com.cn/appHome_2.html'
-        location.href = process.env.VUE_APP_GOME_HOME
       }
     }
   }
