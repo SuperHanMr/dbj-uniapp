@@ -1,7 +1,7 @@
 <template>
   <view class="evaluate-item" :class="{'border-none':last}">
     <view class="item-top">
-      <view class="name">{{item.anonymous?'匿名':item.userName}}</view>
+      <view class="name">{{item.anonymous?'匿名业主':item.userName}}</view>
       <view class="time">{{item.createTime}}</view>
     </view>
     <view class="item-content">
@@ -71,9 +71,9 @@
         this.$nextTick(function(){
           query.select(".evaluate-text").boundingClientRect((res) => {
             
-            this.isHidden = res.height/20 >= 6;
-            this.showBtn = res.height/20 >= 6;
-            console.log(res.height,this.isHidden)
+            this.isHidden = res&&(res.height/20 >= 6);
+            this.showBtn = res&&(res.height/20 >= 6);
+            // console.log(res.height,this.isHidden)
             
           }).exec()
         })

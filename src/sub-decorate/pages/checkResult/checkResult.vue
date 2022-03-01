@@ -4,10 +4,12 @@
     <bottom-btn style="width: 100%;" :showDefaultBtn="false">
       <view class="add-btn" @click="submit">确认验房结果</view>
     </bottom-btn>
+    
   </view>
 </template>
 
 <script>
+  
   import resultContent from '../../components/result-content/result-content.vue'
   import {
     

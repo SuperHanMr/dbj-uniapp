@@ -19,7 +19,25 @@ export function getDetailInfo(params) {
 export function payOrder(params) {
 	return request.post(`/order-center/app/order/createOrder`, params)
 }
+
+export function payH5(params) {
+  return request.post("/order-center/app/pay/gomeConfirmPay", params);
+}
 export function getProductID(params) {
   return request.get("/pm/web/project/getProjectIdByEstateId", {params});
+}
+// 套包下单
+export function payBundleOrder(params) {
+  return request.post(`/order-center/app/order/createPromotionPackageOrder`, params)
+}
+// 确认订单页获取套包详情
+export function getBundleDetail(params) {
+  let parmStr = params.skuIds instanceof Array ? params.skuIds.map((id) => {
+    return `skuIds=${id}`
+  }).join('&') : '';
+  return request.get(`/product/app/bundle/${params.bundleId}/property?${parmStr}`);
+}
+export function checkPay(params) {
+  return request.get("/order-center/app/order/queryPayResult", {params});
 }
 

@@ -19,17 +19,23 @@
           <text  style="margin-right: 8rpx;">运费</text>
           <image class="icon" src="../../static/price_icon.svg" mode="" @click="readExpenses(1)"/>
         </view>
-        <view v-if="waitPay">
-          <text v-if="data.stockType==1">--</text>
-          <text v-else>
+        <!-- <view v-if="waitPay">
+					<text v-if="data.stockType==1">0.00</text>
+					<text v-else>
             <text>￥</text>
             <text class="price-style price-font">{{handlePrice(data.freight)[0]}}.{{handlePrice(data.freight)[1]}}</text>
           </text>
         </view>
-        <view v-else>
+				<view v-else>
+				  <text>￥</text>
+				  <text class="price-style price-font">{{handlePrice(data.freight)[0]}}.{{handlePrice(data.freight)[1]}}</text>
+				</view> -->
+				
+        <view >
           <text>￥</text>
           <text class="price-style price-font">{{handlePrice(data.freight)[0]}}.{{handlePrice(data.freight)[1]}}</text>
         </view>
+				
       </view>
 
       <!-- 搬运费  有仓库默认显示  无仓库必显示-->
@@ -38,7 +44,7 @@
           <text style="margin-right: 8rpx;">搬运费</text>
           <image class="icon" src="../../static/price_icon.svg" mode=""  @click="readExpenses(2)"/>
         </view>
-        <view v-if="waitPay">
+        <!-- <view v-if="waitPay">
           <text v-if="data.stockType==1">--</text>
           <text v-else>
             <text>￥</text>
@@ -48,7 +54,11 @@
         <view v-else>
           <text>￥</text>
           <text class="price-style price-font">{{handlePrice(data.handlingFees)[0]}}.{{handlePrice(data.handlingFees)[1]}}</text>
-        </view>
+        </view> -->
+				<view >
+				  <text>￥</text>
+				  <text class="price-style price-font">{{handlePrice(data.handlingFees)[0]}}.{{handlePrice(data.handlingFees)[1]}}</text>
+				</view>
       </view>
 
       <!-- 有押金就显示 -->

@@ -115,7 +115,10 @@
 
         </view>
       </view>
-    </view>
+			<!-- view @click="gotoDetail">
+				订单详情
+			</view> -->
+		</view>
   </view>
 </template>
 
@@ -270,6 +273,11 @@ export default {
   },
 
   methods: {
+		gotoDetail(){
+			uni.navigateTo({
+				url:"../../../sub-my/pages/my-order/order-detail/order-detail?orderId=30324"
+			})
+		},
     toLogin() {
       if (!this.isLogin) {
         uni.navigateTo({

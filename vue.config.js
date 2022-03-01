@@ -1,4 +1,6 @@
 const fs = require('fs');
+const CopyWebpackPlugin = require('copy-webpack-plugin')
+const envTransformer = require("./build/envTransformer")
 
 module.exports = {
   transpileDependencies:['@dcloudio/uni-ui'],
@@ -9,5 +11,20 @@ module.exports = {
     },
     host: 'local.meiwu365.com',
     port: 443
+  },
+  configureWebpack: {
+    plugins: [
+      new CopyWebpackPlugin([
+        {
+          from: 'gome-*.html',
+          context: './public',
+          transform: envTransformer
+        },
+        {
+          from: 'libs/*',
+          context: './public'
+        },
+      ])
+    ]
   }
 }

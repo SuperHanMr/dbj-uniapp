@@ -1,7 +1,18 @@
 <template>
   <view class="person-desgin">
     <view class="header">
-      <image :src="personData.avatar" mode="aspectFill"></image>
+      <view class="header-image">
+        <image :src="personData.avatar" mode="aspectFill"></image>
+        <i
+          class="icon icon-ic_nan"
+          v-if="personId!=0&&personData.gender===1"
+        ></i>
+        <i
+          class="icon icon-ic_nv"
+          v-if="personId!=0&&personData.gender===2"
+        ></i>
+      </view>
+
       <view class="header-right">
         <view class="header-right-top">
           <view class="list-item">
@@ -60,13 +71,11 @@
         <view class="name">
           {{personData.realName}}
         </view>
-        <view class="tag">
-          <image v-for="(item,index) in personData.personAllBadgeVO.basicBadges" :key='item.badgeId' :src="item.ico" mode=""></image>
-          <image v-for="(item,index) in personData.personAllBadgeVO.skillBadges" :key='item.badgeId' :src="item.ico" mode=""></image>
-        </view>
+
       </view>
       <view class="info-list">
-        {{personData.gender===1?'男':'女'}}
+        <!-- {{personData.gender===1?'男':'女'}} -->
+        {{'居住地'+personData.liveAddress}}
         <text>|</text>
         {{personData.roleLevel?personData.roleLevel:''}}设计师 
         <text v-if="personData.praiseRate">|</text>
@@ -74,16 +83,41 @@
         <text v-if="personData.industryYearsStr">|</text>
         {{personData.industryYearsStr?personData.industryYearsStr:''}}
       </view>
-      <view class="skill">
-        <view class="skill-item" v-for="(item,index) of personData.designTags" :key='index'>
-          {{item}}
+      <view class="introduce">
+        <view class="item" @click="openPopup" v-if="personData.personAllBadgeVO.skillBadges.length||personData.personAllBadgeVO.basicBadges.length">
+          <i class='icon-a-homepage_Thebadge icon'></i>
+          <text class="tag-tip">Ta的徽章</text>
+          <view class="tag">
+            <image v-for="(item,index) in personData.personAllBadgeVO.basicBadges" :key='item.badgeId' :src="item.ico" mode=""></image>
+            <image v-for="(item,index) in personData.personAllBadgeVO.skillBadges" :key='item.badgeId' :src="item.ico" mode=""></image>
+          </view>
+          <i class="icon-alert_notice_jump"></i>
         </view>
+        <view class="item" v-if="personData.designTags.length">
+          <i class='icon-a-homepage_Goodat icon'></i>
+          <view class="skill">
+            <view class="skill-item" v-for="(item,index) of personData.designTags" :key='index'>
+              {{item}}
+            </view>
+          </view>
+        </view>
+        <view class="item">
+          <i class='icon-a-homepage_data icon'></i>
+          <view class="msg-content introudc-msg" >
+            <view class="report-text" :class="{'report-text-hidden':isHidden}">{{personData.intro||'这个设计师很忙，还没有填写个人简介'}}</view>
+            <view class="openHidden" v-if="showBtn" @click="clickHidden">
+              {{hddenText}}
+            </view>
+          </view>
+        </view>
+
       </view>
-      <view class="msg-content introudc-msg" >
-        <view class="report-text" :class="{'report-text-hidden':isHidden}">{{personData.intro||'这个人很懒，什么都没写'}}</view>
-        <view class="openHidden" v-if="showBtn" @click="clickHidden">
-          {{hddenText}}
-        </view>
+      <view class="value-rank" v-if="personData.valueRank>0&&personData.isFlag" @click="toRankList">
+        <text class="top-font">TOP.</text>
+        <text class="num top-font">{{personData.valueRank}}</text>
+        <text class="rank-text">打扮家最具价值设计师榜单</text>
+        <i class="icon-alert_notice_jump"></i>
+        <image :src="personData.valueRank>9?'../../../static/person_rank.png':'../../../static/person_rank_one.png'" mode=""></image>
       </view>
     </view>
   </view>
@@ -128,8 +162,11 @@
       // clickHidden(){
       //   
       // },
-      queryAttention(data){
-        this.$emit('queryAttention',data)
+      queryAttention(data,from='attention'){
+        this.$emit('queryAttention',data,from)
+      },
+      openPopup(){
+        this.$emit('openPopup')
       },
       clickHidden(){
         this.isHidden = !this.isHidden
@@ -147,8 +184,16 @@
         })
       },
       sendMsg(){
-        
-        this.$emit('sendMsg')
+        if(!this.isAttention){
+          this.queryAttention(1001,'auto')
+        }else{
+          this.$emit('sendMsg')
+        }
+      },
+      toRankList(){
+        uni.navigateTo({
+          url:'/sub-home/pages/find-design/designer-rank-list'
+        })
       }
     }
   }
@@ -165,6 +210,26 @@
         height: 172rpx;
         border: 4rpx solid #fff;
         border-radius: 50%;
+      }
+      .header-image{
+        position: relative;
+        .icon {
+          position: absolute;
+          // width: 32rpx;
+          // height: 32rpx;
+          font-size: 32rpx;
+          left: 128rpx;
+          bottom: 10rpx;
+          background-color: #fff;
+          padding: 1px;
+          border-radius: 50%;
+        }
+        .icon-ic_nan {
+          color: #5196FF;
+        }
+        .icon-ic_nv {
+          color: #FF56B1;
+        }
       }
       .header-right{
         padding: 10rpx 10rpx;
@@ -248,6 +313,37 @@
           text-overflow: ellipsis;
           white-space: nowrap;
         }
+
+      }
+      .introduce{
+        border-bottom: 0.5px solid rgba(255, 255, 255, 0.2);;
+        .item{
+          display: flex;
+          margin-bottom: 24rpx;
+          .icon{
+            color: #fff;
+            margin-right: 12rpx;
+            // margin-top: 6rpx;
+            line-height: 42rpx;
+            font-size: 20rpx;
+          }
+          .icon-a-homepage_data{
+            margin-top: 4rpx;
+          }
+          .tag-tip{
+            color: #fff;
+            opacity: 0.8;
+            font-size: 22rpx;
+            margin-right: 12rpx;
+            line-height: 40rpx;
+          }
+          .icon-alert_notice_jump{
+            color: #fff;
+            opacity: 0.8;
+            font-size: 24rpx;
+            line-height: 40rpx;
+          }
+        }
         .tag{
           display: flex;
           align-items: center;
@@ -269,11 +365,11 @@
       }
       .skill{
         display: flex;
-        margin-bottom: 22rpx;
+        // margin-bottom: 22rpx;
         flex-wrap: wrap;
         .skill-item{
           background: rgba(255, 255, 255, 0.05);
-          border: 0.5px solid rgba(255, 255, 255, 0.08);
+          border: 0.5px solid rgba(255, 255, 255, 0.13);
           border-radius: 3px;
           // width: 64rpx;
           padding: 0 12rpx;
@@ -288,12 +384,12 @@
         }
       }
       .msg-content{
-        margin-bottom: 30rpx;
+        // margin-bottom: 30rpx;
         .report-text {
           color: #fff;
           font-size: 26rpx;
           font-weight: 400;
-          letter-spacing: 1px;
+          letter-spacing: 0.2px;
           width: 100%;
           line-height: 42rpx;
           word-break: break-word;
@@ -311,7 +407,7 @@
           width: 148rpx;
           height: 44rpx;
           opacity: 1;
-          border: 2rpx solid #cccccc;
+          border: 0.5px solid #cccccc;
           border-radius: 12px;
           margin: 24rpx auto;
           line-height: 44rpx;
@@ -321,6 +417,41 @@
           font-size: 24rpx;
           
         }
+      }
+    }
+    .value-rank{
+      margin: 32rpx 0;
+      height: 60rpx;
+      line-height: 60rpx;
+      font-size: 26rpx;
+      color: #865E41;
+      position: relative;
+      padding: 0 24rpx;
+      text{
+        z-index: 10;
+        position: relative;
+      }
+      .rank-text{
+        letter-spacing: 0.2px;
+      }
+      .num{
+        margin: 0 54rpx 0 8rpx;
+        font-size: 28rpx;
+        font-weight: bold;
+      }
+      i{
+        position: relative;
+        z-index: 10;
+        margin-left: 8rpx;
+        font-size: 20rpx;
+        display: inline-block;
+      }
+      image{
+        position: absolute;
+        left: 0;
+        top: 0;
+        height: 60rpx;
+        width: 100%;
       }
     }
   }

@@ -72,7 +72,10 @@
           </check-box>
         </template>
       </service-card>
-      <view class="recharge-row" v-if="haveCard">
+      <view
+        class="recharge-row"
+        v-if="haveCard"
+      >
 
         <view
           v-if="couponList.length"
@@ -183,8 +186,17 @@
         </view>
       </view>
     </view>
-    <view v-if="noData === 1" class="payment-wrap" :style="{paddingBottom:systemBottom}">
-      <payment @gotopay="gotopay" :pieces="pieces" :countPrice="payPrice" :isAllChecked="isAllChecked">
+    <view
+      v-if="noData === 1"
+      class="payment-wrap"
+      :style="{paddingBottom:systemBottom}"
+    >
+      <payment
+        @gotopay="gotopay"
+        :pieces="pieces"
+        :countPrice="payPrice"
+        :isAllChecked="isAllChecked"
+      >
       </payment>
     </view>
 
@@ -389,6 +401,7 @@ export default {
       let chpriceCount = Math.trunc(chprice * insideArea);
       let temp = dpriceCount + apriceCount + chpriceCount;
       console.log(">>>>总价:", temp);
+      this.cardClick = this.cardBalance >= temp;
       return temp;
     },
   },
@@ -438,10 +451,9 @@ export default {
   onShow() {
     this.haveCard = false;
     getBalance().then((e) => {
-      
       if (e != null) {
         this.haveCard = true;
-        this.cardBalance = e
+        this.cardBalance = e;
       }
     });
     const { serviceType } = this.selectedServer;
@@ -795,9 +807,17 @@ export default {
       }
     },
     payOrder() {
-      // let skuInfos = []
+      //#ifdef MP-WEIXIN
+      let payType = 1;
+      let deviceType = 0;
+      //#endif
+      //#ifdef H5
+      let payType = 3;
+      let deviceType = 2;
+      //#endif
       let params = {
-        payType: 1, //"int //支付方式  1在线支付",
+        payType: payType, //"int //支付方式  1在线支付",
+        deviceType: deviceType,
         openid: getApp().globalData.openId, //"string //微信openid 小程序支付用 app支付不传或传空",
         projectId: this.projectId || 0, //"long //项目id  非必须 默认0",
         customerId: this.customerId || 0, //"long //业主id  非必须 默认0",
@@ -810,13 +830,6 @@ export default {
         isCardPay: this.cardClick,
       };
       if (this.design.checked) {
-        // skuInfos.push({
-        //   skuId: this.design.id,//"long //商品id",
-        //   storeId: this.design.storeId,//"long //店铺id",
-        //   buyCount: this.currentHouse.insideArea,//"double //购买数量",
-        //   unit: "平米",//"string //单位",
-        //   level: this.design.level,//"int //等级"
-        // })
         params.details.push({
           relationId: this.design.id, //"long //实体id",
           type: 2, //"int //实体类型   1材料  2服务   3专项付款",
@@ -830,13 +843,6 @@ export default {
         });
       }
       if (this.actuary.checked) {
-        // skuInfos.push({
-        //   skuId: this.actuary.id,//"long //商品id",
-        //   storeId: this.actuary.storeId,//"long //店铺id",
-        //   buyCount: this.currentHouse.insideArea,//"double //购买数量",
-        //   unit: "平米",//"string //单位",
-        //   level: 1,//"int //等级"
-        // })
         params.details.push({
           relationId: this.actuary.id, //"long //实体id",
           type: 2, //"int //实体类型   1材料  2服务   3专项付款",
@@ -849,13 +855,6 @@ export default {
         });
       }
       if (this.checkHouse.checked) {
-        // skuInfos.push({
-        //   skuId: this.checkHouse.id,//"long //商品id",
-        //   storeId: this.checkHouse.storeId,//"long //店铺id",
-        //   buyCount: this.currentHouse.insideArea,//"double //购买数量",
-        //   unit: "平米",//"string //单位",
-        //   level: 1,//"int //等级"
-        // })
         params.details.push({
           relationId: this.checkHouse.id, //"long //实体id",
           type: 2, //"int //实体类型   1材料  2服务   3专项付款",
@@ -870,21 +869,12 @@ export default {
         });
       }
       this.createOrder(params);
-      // uni.navigateTo({
-      //   url: "/sub-classify/pages/pay-order/index",
-      //   success: (res) => {
-      //     res.eventChannel.emit('acceptDataFromOpenerPage', {
-      //       skuInfos,
-      //       originFrom: "decorate",
-      //       estateId: this.currentHouse.id
-      //     })
-      //   }
-      // })
     },
     createOrder(obj) {
       createOrder(obj).then((data) => {
         const { wechatPayJsapi, cardPayComplete } = data;
         if (!cardPayComplete) {
+          //#ifdef MP-WEIXIN
           uni.requestPayment({
             provider: "wxpay",
             ...wechatPayJsapi,
@@ -917,6 +907,12 @@ export default {
               });
             },
           });
+          //#endif
+          //#ifdef H5
+          uni.navigateTo({
+            url: `/sub-classify/pages/pay-order/pay-h5?payTal=${data.gomePayH5.payModeList[0].payTal}&totalPrice=${this.countPrice}&payRecordId=${data.payRecordId}`,
+          });
+          //#endif
         } else {
           uni.redirectTo({
             url: `/sub-classify/pages/pay-order/pay-success`,
@@ -979,6 +975,7 @@ export default {
   padding: 32rpx;
   font-size: 28rpx;
   border-radius: 32rpx;
+
   .row-item {
     width: 100%;
     display: flex;

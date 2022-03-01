@@ -47,6 +47,7 @@
        :isAttention='isAttention'
        @sendMsg='sendMsg'
        @clickHidden='clickHidden'
+       @openPopup='openPopup'
        class="person-design"
        ></personDesign>
       <view
@@ -215,13 +216,14 @@
       >
         <personEvaluateDesign 
         :commentData='commentData'
+        :peerComment='peerComment'
         :userId='personId'
-        v-if="personData.roleId===1&&commentData.totalRows>0"
+        v-if="personData.roleId===1&&(commentData.totalRows>0||peerComment.showCommentCount>0)"
         @toEvaluateList='toEvaluateList'
          ></personEvaluateDesign>
         <view
           class="interval"
-          v-if="commentData.totalRows>0&&commentEmpty&&personData.roleId===1"
+          v-if="commentData.totalRows>0&&serviceEmpty&&personData.roleId===1"
         ></view>
         <personService
           ref='service'
@@ -243,6 +245,7 @@
           @contentEmpty='contentEmpty'
           v-if="personData.roleId===1||personData.roleId===2"
         ></personCase>
+        <designEmpty v-if='!caseEmpty&&!serviceEmpty&&commentData.totalRows===0'></designEmpty>
         <view class="interval" v-if="caseEmpty&&dynamicEmpty"></view>
         <personDynamic
           ref='dynamic'
@@ -313,6 +316,9 @@
       </view>
       <text class="title">打扮家 - 让用户家装更称心、更省心、更放心、更省钱最终达到真快乐的终极目标。</text>
     </view>
+    <uni-popup ref="popup" type="bottom">
+      <tagShow :imgList='personData.personAllBadgeVO' @closePopup='closePopup'></tagShow>
+    </uni-popup>
   </view>
 </template>
 
@@ -324,6 +330,8 @@ import personCase from "./components/person-case.vue";
 import personDynamic from "./components/person-dynamic.vue";
 import personDesign from "./components/person-design.vue"
 import personEvaluateDesign from "./components/person-evaliate-design.vue";
+import designEmpty from "./components/design-empty.vue"
+import tagShow from "./components/tag-show.vue"
 import { unitChange } from "@/utils/util.js";
 import {
   getSkuList,
@@ -331,7 +339,8 @@ import {
   queryAttention,
   getAttention,
   getServiceStatus,
-  getComments
+  getComments,
+  getPeerComments
 } from "@/api/decorate.js";
 var query = {};
 export default {
@@ -342,7 +351,9 @@ export default {
     personCase,
     personDynamic,
     personDesign,
-    personEvaluateDesign
+    personEvaluateDesign,
+    designEmpty,
+    tagShow
   },
   data() {
     return {
@@ -358,6 +369,7 @@ export default {
         personAllBadgeVO:{}
       },
       commentData:{},
+      peerComment:{},
       currentItem: "serviceTop",
       scrollTop: 0,
       interact: 0,
@@ -378,11 +390,13 @@ export default {
       evaluateEmpty:false,
       serviceEmpty:false,
       commentEmpty:true,
+      isToContent:false,
       maskHeight:'1010rpx'
     };
   },
   computed: {
     navStyle() {
+      console.log(this.opacityNum)
       return {
         opacity: this.opacityNum,
       };
@@ -416,9 +430,11 @@ export default {
   },
   onLoad(e) {
     this.userType = e.userType;
-    this.personId = e.personId || 7270;
+    this.personId = e.personId || 7720;
+    //价值排行榜进入主页需要滚动至案例区域
+    this.isToContent = e.isToContent||false
     uni.showShareMenu();
-    console.log(this.personId);
+    
     // this.getGrabDetail()
   },
   onShow() {
@@ -434,23 +450,24 @@ export default {
     // this.getNodeHeight()
     query = uni.createSelectorQuery();
     query.select(".person-interact").boundingClientRect((res) => {
-      this.interact = res && res.top;
+      this.interact = res?res.top:0;
     });
     query.select(".content").boundingClientRect((res) => {
-      this.serviceTop = res && res.top;
+      this.serviceTop = res?res.top:0;
     });
     query.select(".person-case").boundingClientRect((res) => {
-      this.caseTop = res && res.top;
+      // console.log(res,"<<<<<<<<<<<<")
+      this.caseTop = res?res.top:0;
     });
     query.select(".person-dynamic").boundingClientRect((res) => {
-      this.dynamicTop = res && res.top;
+      this.dynamicTop = res?res.top:0;
     });
     query.select(".person-evaluate").boundingClientRect((res) => {
-      this.evaluateTop = res && res.top;
+      this.evaluateTop =res?res.top:0;
     });
     query.select(".person-design").boundingClientRect((res) => {
       // console.log(res.height)
-      this.maskHeight = res && res.height*2+129*2+60+'rpx';
+      this.maskHeight = res?res.height*2+129*2+60+'rpx':0;
       
     });
     query.exec(function (res) {});
@@ -466,12 +483,20 @@ export default {
       this.getGrabDetail();
     },
     contentEmpty(name,value){
-      console.log(name,value)
+      
       this[name] = value
+      if(name==='caseEmpty'&&this.isToContent){
+        setTimeout(()=>{
+          this.toItem('caseTop')
+        },1000)
+      }
     },
     pageScroll(scrollTop) {
       this.scrollTop = scrollTop;
-      this.changeOpacity(this.scrollTop);
+      //从深层页面返回时，避免触发导致显示异常
+      if(scrollTop!=0){
+        this.changeOpacity(this.scrollTop);
+      }
       this.getTopDistance();
       if (this.personData.roleId === 1) {
         this.currentItem =
@@ -531,7 +556,7 @@ export default {
         this.queryAttention(routeId);
       }
     },
-    queryAttention(routeId) {
+    queryAttention(routeId, from = 'attention') {
       let data = {
         subBizType: this.personData.roleId,
         routeId: routeId,
@@ -540,7 +565,7 @@ export default {
         equipmentId: uni.getSystemInfoSync().deviceId,
         userType: this.userType,
       };
-      console.log(data)
+      // console.log(data)
       queryAttention(data).then((res) => {
         if (routeId === 2001) {
           if (this.isRecommend) {
@@ -559,7 +584,17 @@ export default {
           }
           this.isAttention = !this.isAttention;
         }
-
+        
+        if(from==='auto'){
+          uni.showToast({
+          	title: '已为你关注该设计师。',
+          	icon: 'none',
+          	
+          })
+          setTimeout(()=>{
+            this.sendMsg()
+          },1000)
+        }
         if (routeId === 2001 && this.isRecommend) {
           uni.showToast({
             title: "购买服务后，将为您优先推荐该服务者",
@@ -598,7 +633,8 @@ export default {
             this.getNodeHeight();
             this.getTopDistance();
             this.pageScroll(0);
-          }, 1000);
+            
+          }, 500);
         } else {
           // this.personData = getApp().globalData.userInfo
           // console.log(this.personData)
@@ -627,7 +663,7 @@ export default {
     },
     toItem(name) {
       this.currentItem = name;
-
+      // console.log(this[name], this.scrollTop ,name,'>>>>>>>>>>>>>')
       uni.pageScrollTo({
         duration: 100, // 过渡时间
         scrollTop: this[name] + this.scrollTop - 115, // 滚动的实际距离
@@ -646,7 +682,15 @@ export default {
       query.exec(function (res) {});
     },
     back() {
-      uni.navigateBack();
+      let pages = getCurrentPages()
+      // console.log(pages.length,'当前栈深度')
+      if(pages.length<2){
+        uni.switchTab({
+        	url: '/pages/home/index/index'
+        });
+      }else{
+        uni.navigateBack();
+      }
     },
     getSkuList() {
       let data = {
@@ -664,7 +708,7 @@ export default {
         //   this.$refs.service.isOpen = true;
         //   this.$refs.service.open();
         // }
-        console.log(res)
+        // console.log(res)
         if(res.length==0){
           this.serviceEmpty = false
         }else{
@@ -682,6 +726,9 @@ export default {
         userId:this.personId,
         sortType:0
       }
+      getPeerComments(this.personId).then(res=>{
+        this.peerComment = res
+      })
       getComments(params).then(res=>{
         this.commentData = res
         // this.commentData.list[0].rank = 3
@@ -700,6 +747,12 @@ export default {
     },
     clickHidden(num){
       this.maskHeight = num+'px'
+    },
+    openPopup(){
+      this.$refs.popup.open()
+    },
+    closePopup(){
+      this.$refs.popup.close()
     }
   },
 };

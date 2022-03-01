@@ -138,7 +138,7 @@
           margin-bottom: 8rpx;
         }
         .price{
-          color: #999;
+          color: #333;
           font-size: 20rpx;
           display: inline-block;
           .integer{
@@ -151,6 +151,7 @@
           }
           .unit{
             font-size: 22rpx;
+            color: #333;
           }
         }
         .service-tag{

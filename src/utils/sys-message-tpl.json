@@ -91,7 +91,7 @@
     "color":"#94A4B1"
   },
   "sys_replenish_apply_to_owner_pay":{
-    "url":"/sub-my/pages/my-order/order-wait-pay/order-wait-pay",
+    "url":"/sub-my/pages/my-order/order-detail/order-detail",
     "name":"补差价",
     "variable":"serverName",
     "msg":"${name}服务申请补人工，请支付差价",
@@ -141,7 +141,7 @@
     "icon":"icon-icwodejia_qita_csn",
     "color":"#94A4B1"
   },
-  
+
   "11":{
     "icon":"icon-ic_wodejia_liangfangfuwu_csn1",
     "color":"#54A7F3"

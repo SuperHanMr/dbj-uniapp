@@ -2,7 +2,7 @@
   "version": 1,
   "group_share_visiting_card": {
     "type": "group_share_visiting_card",
-    "template": "card",
+    "template": "servecard",
     "summary": "名片",
     "body": {
       "title": "${name}",
@@ -17,7 +17,7 @@
         "title": "查看详情",
         "type": "native",
         "userType": 0,
-        "targetRouter": "personal",
+        "targetRouter": "conversation",
         "params": {
           "userId": "${zeusId}",
           "groupId": "personal",
@@ -28,7 +28,7 @@
   },
   "single_share_visiting_card": {
     "type": "single_share_visiting_card",
-    "template": "card",
+    "template": "servecard",
     "summary": "名片",
     "body": {
       "title": "${name}",
@@ -43,7 +43,7 @@
         "title": "查看详情",
         "type": "native",
         "userType": 0,
-        "targetRouter": "personal",
+        "targetRouter": "conversation",
         "params": {
           "userId": "${zeusId}",
           "groupId": "personal",
