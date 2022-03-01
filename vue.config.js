@@ -2,6 +2,13 @@ const fs = require('fs');
 const CopyWebpackPlugin = require('copy-webpack-plugin')
 const envTransformer = require("./build/envTransformer")
 
+const isH5 = process.env.UNI_PLATFORM === 'h5';
+const outputConfig = isH5 ? {
+  output:  {
+    filename: 'static/js/[name].[hash:8].js',
+    chunkFilename: 'static/js/[name].[hash:8].js'
+  }
+} : {};
 module.exports = {
   transpileDependencies:['@dcloudio/uni-ui'],
   devServer: {
@@ -13,10 +20,7 @@ module.exports = {
     port: 443
   },
   configureWebpack: {
-    output: {
-      filename: 'static/js/[name].[hash:8].js',
-      chunkFilename: 'static/js/[name].[hash:8].js'
-    },
+    ...outputConfig,
     plugins: [
       new CopyWebpackPlugin([
         {
