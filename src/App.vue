@@ -170,8 +170,8 @@
       if (shareId && !this.globalData.shareId) {
         this.globalData.shareId = shareId;
       }
-      if (userId) {
-        let token = uni.getStorageSync("scn");
+      let token = uni.getStorageSync("scn");
+      if (token) {
         this.globalData.token = token;
         oauthGomeInfo({
             hideToast: true,
