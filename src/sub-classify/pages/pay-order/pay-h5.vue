@@ -58,6 +58,7 @@
       this.payTal = e.payTal
       this.payRecordId = e.payRecordId
       this.isRedirect = Number(e.isRedirect)
+      this.isApp = Number(e.isApp)
       if (this.isRedirect) {
         this.$nextTick(() => {
           this.$refs.payDialog.open()
@@ -74,8 +75,12 @@
           payTal: this.payTal
         }
         payH5(params).then((data) => {
-          // let payUrl = data.url + encodeURIComponent(location.href + '&isRedirect=1')
-          let payUrl = data.url + encodeURIComponent('gome://m.gome.com.cn/appHome_2.html')
+          let isApp = 0
+          if (window.GomeJSBridge && window.GomeJSBridge.ready) {
+            isApp = 1
+          }
+          let payUrl = data.url + encodeURIComponent(location.href + '&isRedirect=1&isApp=' + isApp)
+          // let payUrl = data.url + encodeURIComponent('gome://m.gome.com.cn/appHome_2.html')
           location.href = payUrl
         })
       },
@@ -86,23 +91,23 @@
         checkPay(params).then((data) => {
           if (data.payStatus) {
             uni.navigateTo({
-              url: './pay-h5-success?payStatus=1'
+              url: './pay-h5-success?payStatus=1&isApp=' + this.isApp
             })
           } else {
             checkPay(params).then((data) => {// 如果查询订单支付失败，再次查询
               if (data.payStatus) {
                 uni.navigateTo({
-                  url: './pay-h5-success?payStatus=1'
+                  url: './pay-h5-success?payStatus=1&isApp=' + this.isApp
                 })
               } else {
                 checkPay(params).then((data) => {
                   if (data.payStatus) {
                     uni.navigateTo({
-                      url: './pay-h5-success?payStatus=1'
+                      url: './pay-h5-success?payStatus=1&isApp=' + this.isApp
                     })
                   } else {
                     uni.navigateTo({
-                      url: `./pay-h5-success?payStatus=0&payTal=${this.payTal}&payRedirectUrl=${encodeURIComponent(location.href + '&isRedirect=1')}`
+                      url: `./pay-h5-success?payStatus=0&payTal=${this.payTal}&payRedirectUrl=${encodeURIComponent(location.href + '&isRedirect=1')}$isApp=${this.isApp}`
                     })
                   }
                 })

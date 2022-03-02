@@ -30,13 +30,15 @@
       return {
         payStatus: 0,
         payTal: '',
-        payRedirectUrl: ''
+        payRedirectUrl: '',
+        isApp: 0
       }
     },
     onLoad(e) {
       this.payStatus = Number(e.payStatus)
       this.payTal = e.payTal
       this.payRedirectUrl = e.payRedirectUrl
+      this.isApp = Number(e.isApp)
     },
     methods: {
       rePay() {
@@ -52,7 +54,7 @@
           if (window.GomeJSBridge && window.GomeJSBridge.ready) {
             location.href = process.env.VUE_APP_GOME_APP_HOME
           } else {
-            location.href = process.env.VUE_APP_GOME_H5_HOME
+            location.href = this.isApp? 'gome://m.gome.com.cn/appHome_2.html' : process.env.VUE_APP_GOME_H5_HOME
           }
         // location.href = 'gome://m.gome.com.cn/appHome_2.html'
         // 'https://m.gome.com.cn/appHome_2.html'
