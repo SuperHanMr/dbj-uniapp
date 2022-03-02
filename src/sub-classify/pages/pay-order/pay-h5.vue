@@ -63,6 +63,7 @@
           this.$refs.payDialog.open()
         })
       }
+      console.log('gome://m.gome.com.cn/appHome_2.html')
       // this.$nextTick(() => {
       //   this.$refs.payDialog.open()
       // })
