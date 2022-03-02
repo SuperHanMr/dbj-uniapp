@@ -147,6 +147,7 @@
 		},
 		methods: {
 			getListData(isTagSearch) {
+				console.log(this.endPage, !isTagSearch, 'this.endPage && !isTagSearch.....')
 				// 如果是最后一页  直接返回
 				if (this.endPage && !isTagSearch) return;
 				let obj;
@@ -196,6 +197,9 @@
 					}
 					if (this.listParam.page >= obj.totalPage && !isTagSearch) {
 						this.endPage = true;
+					}
+					if (this.listParam.page < obj.totalPage && isTagSearch) {
+						this.endPage = false;
 					}
 					if (this.$refs.realCaseList) {
 						this.$refs.realCaseList.triggered = false;
