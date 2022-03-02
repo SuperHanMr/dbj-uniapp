@@ -46,7 +46,7 @@
 			</view>
 			<!--  代付款订单详情的时候展示 -->
 			<view v-if="orderInfo.orderStatus == 0">
-				<view class="store-container" v-for="(item,index) in orderInfo.details":key="index" >
+				<view class="store-container" v-for="(item,index) in orderInfo.details" :key="index" >
 				  <view v-if="index > 0" class="store-line" />
 				  <view class="storeItem" :class="{paddingBottom: item.stockType == 1 }" :style="{borderRadius:index >= 1 ? '0' :'24rpx 24rpx 0 0'}" >
 				    <view class="header">
@@ -76,7 +76,7 @@
 									<image class="icon" @click="readExpenses(1)" src="../../../../static/price_icon.svg"/>
 								</view>
 								<view class="right">
-									<text class="price-font"v-if="orderInfo.stockType == 0">
+									<text class="price-font" v-if="orderInfo.stockType == 0">
 										￥{{item.freight?`${item.freight}`:"0.00"}}
 									</text>
 									<text class="price-font" :style="{marginTop:item.freight?'0':'8rpx'}" v-else>
@@ -970,6 +970,10 @@ export default {
 		// 进行中订单详情接口
 		// 点击商品区域，跳转到商品详情页面
 		goToDetail(item2) {
+			if (getApp().globalData.isInGomeMp) {
+				console.warn('在国美小程序中，不可跳转商品详情');
+				return;
+			}
 			uni.navigateTo({
 				url: `../../../../sub-classify/pages/goods-detail/goods-detail?goodId=${item2.id}`,
 			});
