@@ -50,7 +50,9 @@
         payTal: '',
         isPay: false,
         payRecordId: 0,
-        isRedirect: 0
+        isRedirect: 0,
+        isApp: 0,
+        token: ''
       }
     },
     onLoad(e) {
@@ -59,6 +61,7 @@
       this.payRecordId = e.payRecordId
       this.isRedirect = Number(e.isRedirect)
       this.isApp = Number(e.isApp)
+      this.token = e.token? e.token: getApp().globalData.token
       if (this.isRedirect) {
         this.$nextTick(() => {
           this.$refs.payDialog.open()
@@ -79,12 +82,12 @@
           if (window.GomeJSBridge && window.GomeJSBridge.ready) {
             isApp = 1
           }
-          let payUrl = data.url + encodeURIComponent(location.href + '&isRedirect=1&isApp=' + isApp)
-          // let payUrl = data.url + encodeURIComponent('gome://m.gome.com.cn/appHome_2.html')
+          let payUrl = data.url + encodeURIComponent(location.href + '&isRedirect=1&isApp=' + isApp + '&token=' + this.token)
           location.href = payUrl
         })
       },
       checkPay() {
+        getApp().globalData.token = this.token
         let params = {
           payRecordId: this.payRecordId
         }
