@@ -140,10 +140,6 @@
       };
       if (scn) {
         params.token = scn;
-        // 后端接口有问题，只能读cookie
-        var host = '<%= VUE_APP_GOME_API %>';
-        var domain = host.slice(host.indexOf(".")+1);
-        document.cookie = "SCN=" + scn + ";domain=" + domain;
       }
       request({
         url: url,
