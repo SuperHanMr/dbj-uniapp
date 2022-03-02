@@ -76,19 +76,19 @@ if (params.token) {
   if (params.token === "CLEAR") {
     uni.clearStorageSync("scn");
     uni.clearStorageSync("userId");
-    removeUrlToken();
+    // removeUrlToken();
   } else {
     uni.setStorage({
       key: "scn",
       data: params.token,
       success: function() {
         console.log("save scn success");
-        removeUrlToken();
+        // removeUrlToken();
       },
       fail: function(e) {
         console.error("save scn fail!", e);
         localStorage.setItem("scn", params.token);
-        removeUrlToken();
+        // removeUrlToken();
       }
     });
   }
