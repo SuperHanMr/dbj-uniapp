@@ -422,7 +422,7 @@
 				{
 					"path" : "pages/my-order/order-detail/order-detail",
 					"style": {
-					  "navigationBarTitleText": "",
+					  "navigationBarTitleText": "订单详情",
 					  "enablePullDownRefresh": false,
 					  "navigationStyle": "custom"
 					}
