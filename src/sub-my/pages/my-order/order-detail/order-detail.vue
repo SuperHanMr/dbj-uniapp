@@ -706,9 +706,14 @@ export default {
 			}
 			else {
 				console.log("this.from====%%%%%%%%%%%",this.from)
+				//#ifdef MP-WEIXIN
         uni.navigateBack({
           delta: 1,
         });
+				//#endif
+				//#ifdef H5
+				window.history.back();
+				//#endif
       }
     },
 
