@@ -62,6 +62,9 @@
       this.isRedirect = Number(e.isRedirect)
       this.isApp = Number(e.isApp)
       this.token = e.token? e.token: getApp().globalData.token
+      if (window.GomeJSBridge && window.GomeJSBridge.ready) {
+        this.isApp = 1
+      }
       if (this.isRedirect) {
         this.$nextTick(() => {
           this.$refs.payDialog.open()
@@ -78,11 +81,7 @@
           payTal: this.payTal
         }
         payH5(params).then((data) => {
-          let isApp = 0
-          if (window.GomeJSBridge && window.GomeJSBridge.ready) {
-            isApp = 1
-          }
-          let payUrl = data.url + encodeURIComponent(location.href + '&isRedirect=1&isApp=' + isApp + '&token=' + this.token)
+          let payUrl = data.url + encodeURIComponent(location.href + '&isRedirect=1&isApp=' + this.isApp + '&token=' + this.token)
           location.href = payUrl
         })
       },
