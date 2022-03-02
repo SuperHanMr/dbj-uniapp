@@ -74,8 +74,8 @@
           payTal: this.payTal
         }
         payH5(params).then((data) => {
-          let payUrl = data.url + encodeURIComponent(location.href + '&isRedirect=1')
-          // let payUrl = data.url + 'gome://m.gome.com.cn/appHome_2.html'
+          // let payUrl = data.url + encodeURIComponent(location.href + '&isRedirect=1')
+          let payUrl = data.url + encodeURIComponent('gome://m.gome.com.cn/appHome_2.html')
           location.href = payUrl
         })
       },
