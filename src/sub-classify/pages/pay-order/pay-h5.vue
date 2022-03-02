@@ -29,7 +29,7 @@
             <view>请确认微信支付
               是否已完成</view>
             <view class="pay-button">
-              <button @click="checkPay">已完成支付</button>
+              <button @click="clickCheckPay">已完成支付</button>
             </view>
           </view>
         </view>
@@ -86,7 +86,7 @@
           location.href = payUrl
         })
       },
-      checkPay() {
+      clickCheckPay() {
         let params = {
           params: {
             payRecordId: this.payRecordId
