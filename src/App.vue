@@ -238,20 +238,20 @@
     methods: {
       watchMsg() {
         if (
-          !this.globalData.token ||
-          (!this.globalData.currentHouse.id && !this.globalData.currentEstate.id)
+          !getApp().globalData.token ||
+          (!getApp().globalData.currentHouse.id && !getApp().globalData.currentEstate.id)
         ) {
           return;
         }
         setTimeout(() => {
           getMsgNumByHouse(
-              this.globalData.currentHouse ?
-              this.globalData.currentHouse.id :
-              this.globalData.currentEstate.id
+              getApp().globalData.currentHouse ?
+              getApp().globalData.currentHouse.id :
+              getApp().globalData.currentEstate.id
             )
             .then((res) => {
               let num = res.count + "";
-              this.globalData.decorateMsgNum = num;
+              getApp().globalData.decorateMsgNum = num;
               if (res.count === 0) {
                 uni.removeTabBarBadge({
                   index: 2,
