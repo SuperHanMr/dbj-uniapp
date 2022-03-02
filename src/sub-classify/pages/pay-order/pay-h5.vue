@@ -61,7 +61,7 @@
       this.payRecordId = e.payRecordId
       this.isRedirect = Number(e.isRedirect)
       this.isApp = Number(e.isApp)
-      this.token = e.token? e.token: getApp().globalData.token
+      this.token = e.token ? e.token : getApp().globalData.token
       if (window.GomeJSBridge && window.GomeJSBridge.ready) {
         this.isApp = 1
       }
@@ -81,7 +81,8 @@
           payTal: this.payTal
         }
         payH5(params).then((data) => {
-          let payUrl = data.url + encodeURIComponent(location.href + '&isRedirect=1&isApp=' + this.isApp + '&token=' + this.token)
+          let payUrl = data.url + encodeURIComponent(location.href + '&isRedirect=1&isApp=' + this.isApp +
+            '&token=' + this.token)
           location.href = payUrl
         })
       },
@@ -90,7 +91,9 @@
           params: {
             payRecordId: this.payRecordId
           },
-          headers:{accessToken:this.token}
+          headers: {
+            accessToken: this.token
+          }
         }
         checkPay(params).then((data) => {
           if (data.payStatus) {
@@ -98,25 +101,29 @@
               url: './pay-h5-success?payStatus=1&isApp=' + this.isApp
             })
           } else {
-            checkPay(params).then((data) => {// 如果查询订单支付失败，再次查询
-              if (data.payStatus) {
-                uni.navigateTo({
-                  url: './pay-h5-success?payStatus=1&isApp=' + this.isApp
-                })
-              } else {
-                checkPay(params).then((data) => {
-                  if (data.payStatus) {
-                    uni.navigateTo({
-                      url: './pay-h5-success?payStatus=1&isApp=' + this.isApp
+            setTimeout(() => {
+              checkPay(params).then((data) => { // 如果查询订单支付失败，再次查询
+                if (data.payStatus) {
+                  uni.navigateTo({
+                    url: './pay-h5-success?payStatus=1&isApp=' + this.isApp
+                  })
+                } else {
+                  setTimeout(() => {
+                    checkPay(params).then((data) => {
+                      if (data.payStatus) {
+                        uni.navigateTo({
+                          url: './pay-h5-success?payStatus=1&isApp=' + this.isApp
+                        })
+                      } else {
+                        uni.navigateTo({
+                          url: `./pay-h5-success?payStatus=0&payTal=${this.payTal}&payRedirectUrl=${encodeURIComponent(location.href + '&isRedirect=1')}$isApp=${this.isApp}`
+                        })
+                      }
                     })
-                  } else {
-                    uni.navigateTo({
-                      url: `./pay-h5-success?payStatus=0&payTal=${this.payTal}&payRedirectUrl=${encodeURIComponent(location.href + '&isRedirect=1')}$isApp=${this.isApp}`
-                    })
-                  }
-                })
-              }
-            })
+                  }, 300)
+                }
+              })
+            }, 300)
           }
         })
       },
