@@ -86,9 +86,11 @@
         })
       },
       checkPay() {
-        getApp().globalData.token = this.token
         let params = {
-          payRecordId: this.payRecordId
+          params: {
+            payRecordId: this.payRecordId
+          },
+          headers:{accessToken:this.token}
         }
         checkPay(params).then((data) => {
           if (data.payStatus) {
