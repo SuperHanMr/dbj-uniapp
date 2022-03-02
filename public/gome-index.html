@@ -117,12 +117,11 @@
       if (isGomeMp) {
         if (token) {
           localStorage.setItem("scn", token);
-          window.location.replace('/?token=' + token + (isGomeMp ? '&isGomeMp=true' : '') + hash);
         } else {
           localStorage.removeItem("scn");
           localStorage.removeItem("userId");
-          window.location.replace('/' + (isGomeMp ? '?isGomeMp=true' : '') + hash);
         }
+        window.location.replace('/' + (isGomeMp ? '?isGomeMp=true' : '') + hash);
       } else {
         //  跳转打扮家域名的H5站
         if (token) {
@@ -132,12 +131,16 @@
         }
       }
     }
-    function requestToken() {
+    function requestToken(scn, isGomeMp) {
+      isGomeMp = isGomeMp || false;
       var url = '<%= VUE_APP_GOME_API %>/app/oauth/gome/loginByCookie';
       var params = {
         clientType: "3",
         clientCode: "APPLET"
       };
+      if (scn) {
+        params.scn = scn;
+      }
       request({
         url: url,
         data: params,
@@ -147,21 +150,21 @@
           console.log('success:', resText, res);
           if (res.data) {
             var data = res.data || {};
-            redirectToWeb(data.accessToken);
+            redirectToWeb(data.accessToken, isGomeMp);
           } else {
-            redirectToWeb();
+            redirectToWeb('', isGomeMp);
           }
         },
         error: function(err) {
           console.error(err);
-          redirectToWeb();
+          redirectToWeb('', isGomeMp);
         }
       });
     }
     if (pageParams.scn) {
       // 是否在真快乐小程序中
       var isGomeMp = /plt-\w+App/.test(pageParams.ctx);
-      redirectToWeb(pageParams.scn, isGomeMp);
+      requestToken(pageParams.scn, isGomeMp);
     } else {
       requestToken();
     }
