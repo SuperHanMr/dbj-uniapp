@@ -1,17 +1,10 @@
 <template>
   <view class="home">
     <view class="home-top">
-    	<custom-navbar :opacity="Number(1)" :showBack="false" bgcolor="#FFF">
-    	  <template v-slot:back>
-    	    <image class="icon_logo" src="https://ali-image.dabanjia.com/static/mp/dabanjia/images/theme-red/home/dbj_logo_new.png"
-    	      mode="">
-    	    </image>
-    	  </template>
-    	</custom-navbar>
-    	<!-- 		<view :style="{height: navBarHeight}" style="width: 100%;background-color: red;">
-    	
-    	</view> -->
-    	
+      <view class="home-header-icon">
+        <image class="icon_logo" src="https://ali-image.dabanjia.com/static/mp/dabanjia/images/theme-red/home/dbj_logo_new.png" mode="">
+        </image>
+      </view>
     	<!-- //头部 -->
     	<view class="state-bar" :style="{top:navBarHeight}">
     	  <view class=" header-flex-row flex1" @click="toCity">
@@ -42,7 +35,7 @@
     	<view class="banner-content">
     	  <swiper class="banner" :autoplay="swiperAuto" interval="2000" duration="500" :circular="true"
     	    @change="swiperChange">
-    	    <swiper-item v-for="(item,index) in bannerList" :key="item.id">
+    	    <swiper-item v-for="(item) in bannerList" :key="item.id">
     	      <image class="banner-img" :src="item.resUrl" mode="scaleToFill" @click="toWebview(item.jumpUrl)">
     	      </image>
     	    </swiper-item>
@@ -56,7 +49,7 @@
     	<!-- 金刚区 -->
     	<view class="zone-view">
     		<view class="item-box">
-    			<view :class="['item', {'item-more': zoneList.length > 8}]" v-for="(item,index) in zoneList" :key="item.id" @click="onZoneClick(item)">
+    			<view :class="['item', {'item-more': zoneList.length > 8}]" v-for="(item) in zoneList" :key="item.id" @click="onZoneClick(item)">
     				<image class="icon" :src="item.icon"></image>
     				<view class="name">
     				  {{item.name}}
@@ -101,11 +94,10 @@
     	</view>-->
     	<!-- 快捷栏目 -->
     	<view style="padding: 0 24rpx;">
-    	  <image v-for="(item,index) in status1List" :key="item.id" @click="onZoneClick(item)" :src="item.icon"
-    	    class="experience">
+    	  <image v-for="(item) in status1List" :key="item.id" @click="onZoneClick(item)" :src="item.icon"
+    	    class="experience"></image>
     	</view>
     	
-    	</image>
     	<view v-if="status2List.length" class="example-content">
     	
     	  <image @click="onZoneClick(status2List[0])" class="item" :src="status2List[0].icon"></image>
@@ -142,7 +134,6 @@
     			<image class="img"
     				:src="item.mediaType==1?item.roomLiveMediaVO.scaleImg:item.roomVideoMediaVO.scaleImg |imgFormat(494,660)"
     				mode="aspectFill"></image>
-    			</image>
     			<view class="top-content">
     				<image class="top-content-img"
     					:src="item.mediaType==1?'https://ali-image.dabanjia.com/static/mp/dabanjia/images/theme-red/home/living.gif':'https://ali-image.dabanjia.com/static/mp/dabanjia/images/theme-red/home/live-repaly.png'">
@@ -840,10 +831,21 @@
     flex-shrink: 0;
   }
 
-  .icon_logo {
-    width: 164rpx;
-    height: 60rpx;
-    margin-left: 10rpx;
+  .home-header-icon {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 999;
+    height: 88rpx;
+    display: flex;
+    align-items: center;
+
+    .icon_logo {
+      width: 164rpx;
+      height: 60rpx;
+      margin-left: 34rpx;
+    }
   }
 
   .icon-search {
