@@ -2,7 +2,7 @@
   <view class="pay-h5">
     <view class="pay-num">
       <view>应付金额</view>
-      <!-- <view>¥<text class="price-font pay-font">{{(totalPrice/100).toFixed(2)}}</text></view> -->
+      <view>¥<text class="price-font pay-font">{{(totalPrice/100).toFixed(2)}}</text></view>
     </view>
     <view class="pay-way-box">
       <view>请选择支付方式</view>
