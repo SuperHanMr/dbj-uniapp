@@ -30,6 +30,25 @@
         </script>
         <script src="<%= VUE_APP_GOME_SDK_APP %>"></script>
         <script>
+        // 插入样式隐藏H5的头
+        function injectHideHeadCss() {
+            var style = document.createElement('style');
+            style.innerText = [
+                'uni-page-head {',
+                    'display: none !important;',
+                '}',
+                '.uni-app--showtabbar uni-page-head[uni-page-head-type="default"] ~ uni-page-wrapper {',
+                    'height: calc(100% - 50px);',
+                '}',
+                'uni-page-head[uni-page-head-type=default]~uni-page-wrapper {',
+                    'height: 100%;',
+                '}',
+                '.nav {',
+                    'display: none;',
+                '}'
+            ].join('');
+            document.body.appendChild(style);
+        }
         (function(GomeJSBridge, document) {
             // 处理当页面的title变化时，修改APP的title
             function setAppTitle(title) {
@@ -54,22 +73,22 @@
                         }
                     })
                 });
-                // 插入样式隐藏H5的头
-                var style = document.createElement('style');
-                style.innerText = [
-                    'uni-page-head {',
-                        'display: none !important;',
-                    '}',
-                    '.uni-app--showtabbar uni-page-head[uni-page-head-type="default"] ~ uni-page-wrapper {',
-                        'height: calc(100% - 50px);',
-                    '}',
-                    'uni-page-head[uni-page-head-type=default]~uni-page-wrapper {',
-                        'height: 100%;',
-                    '}',
-                ].join('');
-                document.body.appendChild(style);
+                injectHideHeadCss();
             }
         })(window.GomeJSBridge, window.document);
+        (function (a) {
+            var params = {},
+                seg = a.search.replace(/^\?/, '').split('&'),
+                len = seg.length, i = 0, s;
+            for (; i < len; i++) {
+                if (!seg[i]) { continue; }
+                s = seg[i].split('=');
+                params[s[0]] = s[1];
+            }
+            if (params.isGomeMp) {
+                injectHideHeadCss();
+            }
+        })(window.location);
         </script>
         <!-- built files will be auto injected -->
     </body>
