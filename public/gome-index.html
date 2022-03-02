@@ -117,11 +117,12 @@
       if (isGomeMp) {
         if (token) {
           localStorage.setItem("scn", token);
+          window.location.replace('/?token=' + token + (isGomeMp ? '&isGomeMp=true' : '') + hash);
         } else {
           localStorage.removeItem("scn");
           localStorage.removeItem("userId");
+          window.location.replace('/' + (isGomeMp ? '?isGomeMp=true' : '') + hash);
         }
-        window.location.replace('/' + (isGomeMp ? '?isGomeMp=true' : '') + hash);
       } else {
         //  跳转打扮家域名的H5站
         if (token) {
@@ -159,7 +160,7 @@
     }
     if (pageParams.scn) {
       // 是否在真快乐小程序中
-      var isGomeMp = /plt-wxApp/.test(pageParams.ctx);
+      var isGomeMp = /plt-\w+App/.test(pageParams.ctx);
       redirectToWeb(pageParams.scn, isGomeMp);
     } else {
       requestToken();

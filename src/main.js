@@ -66,6 +66,10 @@ let params = (function (a) {
   return ret;
 })(window.location);
 function removeUrlToken() {
+  // 在APP中时不移除url中的token，因为在ios版本的真快乐APP移除token之后，登录状态失效
+  if (window.GomeJSBridge && window.GomeJSBridge.ready) {
+    return;
+  }
   window.location.replace('/' + (params.isGomeMp ? '?isGomeMp=true' : '') + window.location.hash);
 }
 if (params.token) {
