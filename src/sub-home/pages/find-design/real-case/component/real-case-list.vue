@@ -1,17 +1,17 @@
 <template>
-	<view class="real-case-list" v-if="realCaseListData.length > 0">
+	<view class="real-case-list" v-if="listData.length > 0">
 		<scroll-view class="real-case-list-scroll" :scroll-top="scrollTop" scroll-y="true" @scroll="scroll"
 			@scrolltoupper='scrolltoupper' @scrolltolower='scrolltolower'
 			refresher-enabled='true' @refresherrefresh='refresherrefresh' :refresher-triggered="triggered"
       :lower-threshold='100'
 			>
-			<view class="list" v-for="item in realCaseListData" :key='item.id' @click="toCaseDetail(item)">
+			<view class="list" v-for="(item, index) in listData" :key='item.id' @click="toCaseDetail(item)">
 				<view class="head">
 					<view class="title">
 						<text>{{item.nikeName || '--'}} Ta家</text>
-						<view class="collection-box" :class="{'collection-box-active': collectionActive}" @click="goBack">
-							<view class="collection-icon icon-zhuangxiushouye_fuwuzhankaijiantou">
-							</view>
+						<view class="collection-box" :class="{'collection-box-active': item.isCollection}" @click.stop="collectionHandler(item, index)">
+							<image v-if="item.isCollection" class="collection-icon" src="/static/images/collection.png" mode=""></image>
+							<image v-if="!item.isCollection" class="collection-icon" src="/static/images/no_collection.png" mode=""></image>
 							<view class="text">
 								收藏
 							</view>
@@ -36,8 +36,9 @@
 						</view>
 					</view>
 					<view class="tag-box">
-						<view class="tag" v-for="tag in itemHandler([item.styleName, ...item.features])" :key='tag.key'>
-							<text v-if="tag">{{tag}}</text>
+						<!-- ...item.customLabelList,  -->
+						<view class="tag" v-for="(tag, index) in itemHandler([item.styleName, ...item.features])" :key='tag.key'>
+							<text v-if="tag && index <=3">{{tag}}</text>
 						</view>
 					</view>
 				</view>
@@ -61,7 +62,10 @@
 </template>
 
 <script>
-	import ImgList from './img-list.vue'
+	import ImgList from './img-list.vue';
+	import {
+	  getCollection,
+	} from "@/api/real-case.js";
 	export default {
 		props: {
 			realCaseListData: {
@@ -81,7 +85,16 @@
 				noEmit: false,
 				scrollTop: 0,
 				triggered: false,
-				collectionActive: true
+				listData: this.$props.realCaseListData
+			}
+		},
+		watch: {
+			realCaseListData: {
+				handler: function handler(val) {
+				  this.listData = val;
+				},
+				deep: true,
+				immediate: true
 			}
 		},
 		methods: {
@@ -137,6 +150,24 @@
 					itemReturn = `附近${(item.distance / 1000).toFixed(2)}km`
 				}
 				return itemReturn;
+			},
+			collectionHandler(item, index){
+				let list = this.listData;
+				getCollection({
+				  routeId: 5001, // 固定内容
+				  subBizType: item.parentType, // 内容下的子项   视频 VR  图片
+				  relationId: item.id, // 作品ID
+				  authorId: item.zeusId, // 作者ID
+				}).then((res) => {
+				  if (list[index].isCollection != false) {
+				    uni.showToast({
+				      title: "收藏已取消",
+				      icon: "none",
+				    });
+				  }
+				  list[index].isCollection = !list[index].isCollection;
+					this.listData = JSON.parse(JSON.stringify(list));
+				});
 			}
 		}
 	}
@@ -189,8 +220,8 @@
 					display: flex;
 					align-items: center;
 					.collection-icon{
-						font-size: 20rpx;
-						color: #CCCCCC;
+						width: 20rpx;
+						height: 20rpx;
 					}
 					.text{
 						margin-left: 8rpx;
@@ -204,7 +235,7 @@
 				.collection-box-active{
 					background: rgba(255, 192, 91, 0.08);
 					border: 0.5px solid rgba(255, 192, 91, 0.15);
-					.collection-icon, .text{
+					.text{
 						color: #FFC05B;
 					}
 				}

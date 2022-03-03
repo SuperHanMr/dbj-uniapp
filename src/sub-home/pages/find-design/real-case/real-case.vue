@@ -10,7 +10,7 @@
 				当前房屋所在地区暂无真实案例，为您推荐其他地区的精选案例
 			</view>
 			<view class="screening">
-				<real-case-screening v-show="showScreen" @updateTag='updateTag' ref='realCaseScreeningRef' />
+				<real-case-screening v-show="showScreen" :caseStyleList="caseStyleList" @updateTag='updateTag' ref='realCaseScreeningRef' />
 				<view class="hide-screen" v-if="!showScreen" @click="onShowScreen">
 					<view class="title" v-if="selectTag.length <= 0">
 						筛选
@@ -71,7 +71,8 @@
 	import NavigationBar from './component/navigation-bar.vue';
 	import AddHomeInfo from './component/add-home-info.vue';
 	import {
-		moreCaseList
+		moreCaseList,
+		getCaseStyleList
 	} from '/src/api/home-find-design.js'
 	export default {
 		components: {
@@ -107,7 +108,8 @@
 				endPage: false,
 				selectData: {},
 				triggered: false,
-				caseDetail: false
+				caseDetail: false,
+				caseStyleList: []
 			}
 		},
 		onLoad() {
@@ -121,10 +123,8 @@
 			})
 
 			const menuButtonInfo = uni.getMenuButtonBoundingClientRect();
-			console.log("menuButtonInfo=", menuButtonInfo);
 			this.systemBottom = menuButtonInfo.bottom + 32 + "rpx";
-			console.log("this.systemBottom=", this.systemBottom);
-
+			this.getCaseStyleListHandler();
 
 		},
 		onShow() {
@@ -147,6 +147,7 @@
 		},
 		methods: {
 			getListData(isTagSearch) {
+				console.log(this.endPage, !isTagSearch, 'this.endPage && !isTagSearch.....')
 				// 如果是最后一页  直接返回
 				if (this.endPage && !isTagSearch) return;
 				let obj;
@@ -158,15 +159,19 @@
 				}
 				let param = {};
 				// 居室查询条件
-				if (obj[0] && obj[0].key != null) {
-					param.roomNum = obj[0].key;
+				if (obj[0] && obj[0].code != null) {
+					param.roomNum = obj[0].code;
 				}
 				// 面积查询条件
-				if (obj[1] && obj[1].key != null) {
-					let areaObj = obj[1].key.split('-');
+				if (obj[1] && obj[1].code != null) {
+					let areaObj = obj[1].code.split('-');
 					param.minInsideArea = Number(areaObj[0]);
 					param.maxInsideArea = Number(areaObj[1]);
 				}
+				// 风格查询条件
+				// if (obj[2] && obj[2].code != null) {
+				// 	param.roomNum = obj[2].code;
+				// }
 				// 有无默认房屋
 				if (this.currentHouse.id) {
 					param.estateId = this.currentHouse.id;
@@ -193,6 +198,9 @@
 					if (this.listParam.page >= obj.totalPage && !isTagSearch) {
 						this.endPage = true;
 					}
+					if (this.listParam.page < obj.totalPage && isTagSearch) {
+						this.endPage = false;
+					}
 					if (this.$refs.realCaseList) {
 						this.$refs.realCaseList.triggered = false;
 					}
@@ -217,7 +225,7 @@
 			updateTag(obj) {
 				const arr = [];
 				for (let i in obj) {
-					if (obj[i].key != null) {
+					if (obj[i].code != null) {
 						arr.push(obj[i])
 					}
 				}
@@ -257,6 +265,12 @@
 			},
 			scrollHandler(e){
 				console.log(e, '>>>>')
+			},
+			getCaseStyleListHandler(){
+				getCaseStyleList().then((res) => {
+					console.log(res, '>><><>');
+					this.caseStyleList = res;
+				})
 			}
 		}
 	}
