@@ -103,7 +103,6 @@
         method: "post",
         success: function(resText) {
           var res = JSON.parse(resText);
-          console.log('success:', resText, res);
           if (res.data) {
             var data = res.data || {};
             redirectToWeb(data.accessToken);
@@ -119,7 +118,6 @@
         }
       });
     }
-    console.log('======bridge', window.GomeJSBridge, window.GomeJSBridge && window.GomeJSBridge.ready);
     // 是否在真快乐APP中
     if (window.GomeJSBridge && window.GomeJSBridge.ready) {
       var pageParams = getPageParms();
@@ -127,10 +125,8 @@
         requestToken();
       } else {
         GomeJSBridge.ready(function() {
-          console.log('========bridge ready', GomeJSBridge.login)
           GomeJSBridge.login(
             function(data) {
-              console.log('========bridge login success', data, data.isLogined);
               if (data.isLogined === 'Y') {
                 var loginedUrl = window.location.origin + window.location.pathname + '?isLogin=true' + (pageParams.fromDbj ? '&fromDbj=true' : '') + window.location.hash;
                 window.location.replace(loginedUrl);
