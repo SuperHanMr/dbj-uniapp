@@ -1,7 +1,7 @@
 <template>
   <view class="home">
     <view class="home-top">
-      <view class="home-header-icon">
+      <view class="home-header-icon" :style="{top: tophight}">
         <image class="icon_logo" src="https://ali-image.dabanjia.com/static/mp/dabanjia/images/theme-red/home/dbj_logo_new.png" mode="">
         </image>
       </view>
