@@ -720,6 +720,10 @@ export default {
 
     // 跳转到店铺页面
     gotoShop(item) {
+			if (getApp().globalData.isInGomeMp) {
+				console.warn('在国美小程序中，不可跳转店铺详情');
+				return;
+			}
 			if (item.type == 5) return;
 			console.log("去店铺首页！！！！");
 			console.log("this.storeId=", item.storeId, "this.areaId=", this.areaId);
