@@ -9,7 +9,6 @@
 			</view>
 		</view>
 		<view class="content-view">
-			<!-- :scroll-into-view="'tab' + scrollInto" 点击移动 -->
 			<scroll-view id="tab-bar" class="scroll-h" scroll-x="true" :show-scrollbar="false"
 				v-if="dataList.length > 1" scroll-with-animation="true" :scroll-into-view="'tab' + tabIndex">
 				<view v-for="(tab,index) in dataList" :key="index" :class="{'uni-tab-item': dataList.length >4, 'uni-tab-item-short2': dataList.length === 2,
@@ -44,7 +43,6 @@
 				newsList: [1, 2, 3, 4],
 				cacheTab: [],
 				tabIndex: 0,
-				scrollInto: "",
 				areaId: ''
 			}
 		},
@@ -109,7 +107,6 @@
 					return;
 				}
 				this.tabIndex = index;
-				this.scrollInto = index;
 			}
 		}
 	}
@@ -242,12 +239,4 @@
 		flex-direction: row;
 	}
 
-	.scroll-v {
-		flex: 1;
-		/* #ifndef MP-ALIPAY */
-		flex-direction: column;
-		/* #endif */
-		width: 750rpx;
-		width: 100%;
-	}
 </style>

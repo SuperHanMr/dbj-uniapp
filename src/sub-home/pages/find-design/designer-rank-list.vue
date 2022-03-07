@@ -20,96 +20,116 @@
 				榜单说明
 			</view>
 		</view>
+    
+    
 		<view class="list-container">
-			<view class="designer-item" v-for="(item1,index1) in designerList" :key="index1">
-				<view class="designer-bg"
-					:style="{backgroundColor:index1>2?bgColorList[3].bgColor:bgColorList[index1].bgColor}"
-				></view>
-				<view class="basicInfo-container">
-					<view class="designer-topNum"
-					:style="{backgroundImage:index1>2?`url(${bgColorList[3].bgImg})`:`url(${bgColorList[index1].bgImg})`,backgroundSize:'100% 100%'}">
-						<view class="top-font"
-						:style="{color:index1>2?bgColorList[3].color:bgColorList[index1].color}"
-						>{{index1+1}}</view>
-					</view>
+      
+      <view class="content-view">
+      	<scroll-view id="tab-bar" class="scroll-h" scroll-x="true" :show-scrollbar="false"
+      		v-if="dataList.length > 1" scroll-with-animation="true" :scroll-into-view="'tab' + tabIndex">
+      		<view v-for="(tab,index) in dataList" :key="index" :class="{'uni-tab-item': dataList.length >4, 'uni-tab-item-short2': dataList.length === 2,
+               'uni-tab-item-short3': dataList.length === 3, 'uni-tab-item-short4': dataList.length === 4}"
+      			:id="'tab' + index" :data-current="index" @click="ontabtap">
+      			<text class="uni-tab-item-title"
+      				:class="tabIndex==index ? 'uni-tab-item-title-active' : ''">{{index}}</text>
+      		</view>
+      	</scroll-view>
+      	<swiper :current="tabIndex" :duration="300" @change="ontabchange" class="swiper">
+      		<swiper-item class="swiper-item" v-for="(tab,index1) in dataList" :key="index1">
+      			<view class="designer-item" v-for="(item1,index1) in designerList" :key="index1">
+      				<view class="designer-bg"
+      					:style="{backgroundColor:index1>2?bgColorList[3].bgColor:bgColorList[index1].bgColor}"
+      				></view>
+      				<view class="basicInfo-container">
+      					<view class="designer-topNum"
+      					:style="{backgroundImage:index1>2?`url(${bgColorList[3].bgImg})`:`url(${bgColorList[index1].bgImg})`,backgroundSize:'100% 100%'}">
+      						<view class="top-font"
+      						:style="{color:index1>2?bgColorList[3].color:bgColorList[index1].color}"
+      						>{{index1+1}}</view>
+      					</view>
+      			
+      					<view class="designer-info">
+      						<image class="avatar" @click="gotoPersonalPage(item1,'part')"  :src="`${item1.searchDesignerVO.avatar}?x-oss-process=image/resize,m_fill,h_88,w_88,limit_0`" />
+      						<view class="basic-info">
+      							<view class="name-container">
+      								<text class="name"> {{item1.searchDesignerVO.name}}</text>
+      								<text class="rank"> {{item1.levelName || ""}}设计师 </text>
+      							</view>
+      							<view class="attr">
+      								<!-- liveArea 居住地 -->
+      								<view class="liveAreaValue" v-if="item1.liveArea"
+      									:class="{anotherStyle:item1.liveArea.length>=8}"
+      								><text>{{item1.liveArea}}</text></view>
+      								<view class="attrValue">{{item1.searchDesignerVO.totalCount?`&nbsp;| 服务次数${item1.searchDesignerVO.totalCount}`:''}}{{item1.searchDesignerVO.praiseEfficiency ?`&nbsp;|&nbsp;好评率${item1.searchDesignerVO.praiseEfficiency}%`:''}}</view>
+      							</view>
+      							<view class="label_container">
+      							<view
+      								class="label_item" v-if="item1.searchDesignerVO.designs.length" v-for="tagItem in item1.searchDesignerVO.designs" :key="tagItem">{{tagItem}}</view>
+      							</view>
+      						</view>
+      						<view class="hasAttention" v-if="item1.isFocusOn" @click.stop="handleDesigner(item1,index1)">
+      							已关注
+      						</view>
+      						<view class="attention" v-else @click.stop="handleDesigner(item1,index1)">
+      							<image src="https://ali-image.dabanjia.com/static/mp/dabanjia/images/theme-red/home/attentionIcon.png"  />
+      							<text>关注</text>
+      						</view>
+      					</view>
+      			
+      					<view class="case-container">
+      						<scroll-view
+      							scroll-x="true"
+      							lower-threshold="1"
+      							style="white-space: nowrap;"
+      							@scrolltolower.stop="gotoPersonalPage(item1,'total')"
+      							:scroll-left="scrollLeft"
+      						>
+      							<!-- @scroll="scroll($event,item1)" -->
+      						<view class="case-content">
+      							<view class="case-item" v-for="item2 in item1.valuationCaseList" :key="item2.id" @click="gotoCaseDetail(item2)">
+      								<image v-if="item2.famous" class="icon" src="https://ali-image.dabanjia.com/static/mp/dabanjia/images/theme-red/home/famousWork.png" />
+      								<image v-if="item2.favourite" class="icon" src="https://ali-image.dabanjia.com/static/mp/dabanjia/images/theme-red/home/favouriteWork.png" />
+      			
+      								<view class="img-Container">
+      									<image v-if="item2.imageUrlList.length>=1 && item2.imageUrlList.length<3" class="oneImg" :src="`${item2.imageUrlList[0]}?x-oss-process=image/resize,m_fill,h_484,w_924,limit_0`"/>
+      									<view v-if="item2.imageUrlList.length >= 3" class="threeImg">
+      										<image class="bigImg" :src="`${item2.imageUrlList[0]}?x-oss-process=image/resize,m_fill,h_484,w_924,limit_0`"/>
+      										<view class="smallImg-Container">
+      											<image class="smalImg1" :src="`${item2.imageUrlList[1]}?x-oss-process=image/resize,m_fill,h_484,w_924,limit_0`"/>
+      											<image class="smalImg2" :src="`${item2.imageUrlList[2]}?x-oss-process=image/resize,m_fill,h_484,w_924,limit_0`"/>
+      										</view>
+      									</view>
+      								</view>
+      								<view class="caseName">{{item2.caseName}}</view>
+      								<view class="caseInfo">
+      									<text class="text" v-if="item2.roomNum || item2.hallNum">
+      										<text v-if="item2.roomNum">{{item2.roomNum ||"-"}}室</text>
+      										<text v-if="item2.hallNum">{{item2.hallNum || "-"}}厅</text>
+      									</text>
+      									<text v-if="!item2.roomNum && !item2.hallNum">-室-厅</text>
+      			
+      									<text class="line" v-if="item2.roomNum || item2.hallNum || (!item2.roomNum && !item2.hallNum)"></text>
+      			
+      									<text class="text">{{Math.floor(item2.insideArea)?`${Math.floor(item2.insideArea)}`: "-"}}m²</text>
+      									<text class="line"></text>
+      			
+      									<text class="text">预算：{{ Math.floor(item2.budget)?`¥${Math.floor(item2.budget)}` : '¥-'}}万</text>
+      								</view>
+      							</view>
+      							<view class="show-more" v-if="item1.showMoreCase" @click="gotoPersonalPage(item1,'part')">
+      								<view class="text">左滑查看更多</view>
+      							</view>
+      						</view>
+      						</scroll-view>
+      					</view>
+      			
+      				</view>
+      			</view>
+      		</swiper-item>
+      	</swiper>
+      </view>
+      
 
-					<view class="designer-info">
-						<image class="avatar" @click="gotoPersonalPage(item1,'part')"  :src="`${item1.searchDesignerVO.avatar}?x-oss-process=image/resize,m_fill,h_88,w_88,limit_0`" />
-						<view class="basic-info">
-							<view class="name-container">
-								<text class="name"> {{item1.searchDesignerVO.name}}</text>
-								<text class="rank"> {{item1.levelName || ""}}设计师 </text>
-							</view>
-							<view class="attr">
-								<!-- liveArea 居住地 -->
-								<view class="liveAreaValue" v-if="item1.liveArea"
-									:class="{anotherStyle:item1.liveArea.length>=8}"
-								><text>{{item1.liveArea}}</text></view>
-								<view class="attrValue">{{item1.searchDesignerVO.totalCount?`&nbsp;| 服务次数${item1.searchDesignerVO.totalCount}`:''}}{{item1.searchDesignerVO.praiseEfficiency ?`&nbsp;|&nbsp;好评率${item1.searchDesignerVO.praiseEfficiency}%`:''}}</view>
-							</view>
-							<view class="label_container">
-							<view
-								class="label_item" v-if="item1.searchDesignerVO.designs.length" v-for="tagItem in item1.searchDesignerVO.designs" :key="tagItem">{{tagItem}}</view>
-							</view>
-						</view>
-						<view class="hasAttention" v-if="item1.isFocusOn" @click.stop="handleDesigner(item1,index1)">
-							已关注
-						</view>
-						<view class="attention" v-else @click.stop="handleDesigner(item1,index1)">
-							<image src="https://ali-image.dabanjia.com/static/mp/dabanjia/images/theme-red/home/attentionIcon.png"  />
-							<text>关注</text>
-						</view>
-					</view>
-
-					<view class="case-container">
-						<scroll-view
-							scroll-x="true"
-							lower-threshold="1"
-							style="white-space: nowrap;"
-							@scrolltolower.stop="gotoPersonalPage(item1,'total')"
-							:scroll-left="scrollLeft"
-						>
-							<!-- @scroll="scroll($event,item1)" -->
-						<view class="case-content">
-							<view class="case-item" v-for="item2 in item1.valuationCaseList" :key="item2.id" @click="gotoCaseDetail(item2)">
-								<image v-if="item2.famous" class="icon" src="https://ali-image.dabanjia.com/static/mp/dabanjia/images/theme-red/home/famousWork.png" />
-								<image v-if="item2.favourite" class="icon" src="https://ali-image.dabanjia.com/static/mp/dabanjia/images/theme-red/home/favouriteWork.png" />
-
-								<view class="img-Container">
-									<image v-if="item2.imageUrlList.length>=1 && item2.imageUrlList.length<3" class="oneImg" :src="`${item2.imageUrlList[0]}?x-oss-process=image/resize,m_fill,h_484,w_924,limit_0`"/>
-									<view v-if="item2.imageUrlList.length >= 3" class="threeImg">
-										<image class="bigImg" :src="`${item2.imageUrlList[0]}?x-oss-process=image/resize,m_fill,h_484,w_924,limit_0`"/>
-										<view class="smallImg-Container">
-											<image class="smalImg1" :src="`${item2.imageUrlList[1]}?x-oss-process=image/resize,m_fill,h_484,w_924,limit_0`"/>
-											<image class="smalImg2" :src="`${item2.imageUrlList[2]}?x-oss-process=image/resize,m_fill,h_484,w_924,limit_0`"/>
-										</view>
-									</view>
-								</view>
-								<view class="caseName">{{item2.caseName}}</view>
-								<view class="caseInfo">
-									<text class="text" v-if="item2.roomNum || item2.hallNum">
-										<text v-if="item2.roomNum">{{item2.roomNum ||"-"}}室</text>
-										<text v-if="item2.hallNum">{{item2.hallNum || "-"}}厅</text>
-									</text>
-									<text v-if="!item2.roomNum && !item2.hallNum">-室-厅</text>
-
-									<text class="line" v-if="item2.roomNum || item2.hallNum || (!item2.roomNum && !item2.hallNum)"></text>
-
-									<text class="text">{{Math.floor(item2.insideArea)?`${Math.floor(item2.insideArea)}`: "-"}}m²</text>
-									<text class="line"></text>
-
-									<text class="text">预算：{{ Math.floor(item2.budget)?`¥${Math.floor(item2.budget)}` : '¥-'}}万</text>
-								</view>
-							</view>
-							<view class="show-more" v-if="item1.showMoreCase" @click="gotoPersonalPage(item1,'part')">
-								<view class="text">左滑查看更多</view>
-							</view>
-						</view>
-						</scroll-view>
-					</view>
-
-				</view>
-			</view>
 		</view>
 		<uni-popup ref="explainPopup" type="bottom" >
 			<view
@@ -166,6 +186,8 @@
 				containerPaddingBottom:"",
 				equipmentId:"",
 				scrollLeft:0,
+        tabIndex: 0,
+        dataList: [[1,2,3], [1,2,3], [1,2,3]]
 			}
 		},
 		mounted() {
@@ -199,6 +221,21 @@
 		  this.scrollTop = scrollTop.scrollTop;
 		},
 		methods: {
+      ontabtap(e) {
+      	let index = e.target.dataset.current || e.currentTarget.dataset.current;
+      	this.id = 0
+      	this.switchTab(index);
+      },
+      ontabchange(e) {
+      	let index = e.target.current || e.detail.current;
+      	this.switchTab(index);
+      },
+      switchTab(index) {
+      	if (this.tabIndex === index) {
+      		return;
+      	}
+      	this.tabIndex = index;
+      },
 			reqDesignerRank(){
 				getDesignRank().then(res=>{
 					console.log("res====",res)
@@ -291,6 +328,7 @@
 	.container{
 		background: #101216 !important;
 		position: relative;
+    height: 100%;
 		.bgImg{
 			height: 382rpx;
 			width: 750rpx;
@@ -682,7 +720,98 @@
 	.anotherStyle{
 		flex: 1;
 	}
-
+  .content-view {
+  	height: 100%
+  }
+  
+  .tabs {
+  	flex: 1;
+  	flex-direction: column;
+  	overflow: hidden;
+  	background-color: #ffffff;
+  	height: 100vh;
+  }
+  
+  .scroll-h {
+  	width: 100%;
+  	height: 60rpx;
+  	text-align: center;
+  	white-space: nowrap;
+  }
+  
+  .uni-tab-item-short2 {
+  	display: inline-block;
+  	text-align: center;
+  	min-width: calc(50% - 64rpx);
+  	width: fit-content;
+  	margin: 0 1%;
+  }
+  
+  .uni-tab-item-short3 {
+  	display: inline-block;
+  	flex-wrap: nowrap;
+  	text-align: center;
+  	min-width: calc(33.3% - 42.7rpx);
+  	width: fit-content;
+  	margin: 0 1%;
+  }
+  
+  .uni-tab-item-short4 {
+  	display: inline-block;
+  	flex-wrap: nowrap;
+  	text-align: center;
+  	min-width: calc(25% - 32rpx);
+  	width: fit-content;
+  	margin: 0 1%;
+  }
+  
+  .uni-tab-item {
+  	/* #ifndef APP-PLUS */
+  	display: inline-block;
+  	/* #endif */
+  	flex-wrap: nowrap;
+  	text-align: center;
+  	width: fit-content;
+  	padding: 0 26rpx;
+  }
+  
+  .uni-tab-item-title {
+  	color: #555;
+  	font-size: 30rpx;
+  	height: 60rpx;
+  	line-height: 80rpx;
+  	flex-wrap: nowrap;
+  	white-space: nowrap;
+  	font-family: PingFangSC;
+  	color: #999999;
+  }
+  
+  .uni-tab-item-title-active {
+  	position: relative;
+  	color: #111111;
+  }
+  
+  .uni-tab-item-title-active::after {
+  	content: "";
+  	display: inline-block;
+  	width: 32rpx;
+  	height: 6rpx;
+  	background: linear-gradient(116.19deg, #F83112 16.48%, #FD6421 83.52%);
+  	border-radius: 100px 100px 0px 0px;
+  	position: absolute;
+  	bottom: -12rpx;
+  	left: 0;
+  	right: 0;
+  	margin: auto;
+  }
+  .swiper{
+    height: calc(100% - 60rpx);
+  }
+  .swiper-item {
+  	flex: 1;
+  	flex-direction: row;
+    overflow-y: scroll;
+  }
 
 
 
