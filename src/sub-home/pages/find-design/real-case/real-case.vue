@@ -147,7 +147,6 @@
 		},
 		methods: {
 			getListData(isTagSearch) {
-				console.log(this.endPage, !isTagSearch, 'this.endPage && !isTagSearch.....')
 				// 如果是最后一页  直接返回
 				if (this.endPage && !isTagSearch) return;
 				let obj;
@@ -169,9 +168,9 @@
 					param.maxInsideArea = Number(areaObj[1]);
 				}
 				// 风格查询条件
-				// if (obj[2] && obj[2].code != null) {
-				// 	param.roomNum = obj[2].code;
-				// }
+				if (obj[2] && obj[2].code != null) {
+					param.styleCode = obj[2].code;
+				}
 				// 有无默认房屋
 				if (this.currentHouse.id) {
 					param.estateId = this.currentHouse.id;
@@ -260,7 +259,6 @@
 				uni.stopPullDownRefresh()
 			},
 			toCaseDetail(){
-				console.log('toCaseDetail', ">>>>>>")
 				this.caseDetail = true;
 			},
 			scrollHandler(e){
@@ -268,7 +266,6 @@
 			},
 			getCaseStyleListHandler(){
 				getCaseStyleList().then((res) => {
-					console.log(res, '>><><>');
 					this.caseStyleList = res;
 				})
 			}
