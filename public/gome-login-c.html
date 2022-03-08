@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <link rel="icon" href="https://www.dabanjia.com/favicon.ico" mce_href="http://www.dabanjia.com/favicon.ico"
+    type="image/x-icon" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>登录</title>
+  <style>
+    html, body {
+      padding: 0;
+      margin: 0;
+      width: 100%;
+      height: 100%;
+    }
+    .container {
+      width: 100%;
+      height: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .loading-img {
+      width: 40px;
+      height: 40px;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <img class="loading-img" src="https://ali-image.dabanjia.com/static/image/loading/loading-red-circle.gif">
+  </div>
+  <script src="./libs/base64.js"></script>
+  <script>
+    function getPageParms() {
+      var ret = {},
+        seg = window.location.search.replace(/^\?/, '').split('&'),
+        len = seg.length, i = 0, s;
+      for (; i < len; i++) {
+        if (!seg[i]) { continue; }
+        s = seg[i].split('=');
+        ret[s[0]] = s[1];
+      }
+      return ret;
+    }
+    function request(options) {
+      var xhr = new XMLHttpRequest()
+      xhr.withCredentials = true;
+      xhr.onreadystatechange = function() {
+        if (xhr.readyState === 4) {
+          if (xhr.status === 200) {
+            if (options.success) {
+              options.success(xhr.responseText);
+            }
+          } else {
+            if (options.error) {
+              options.error(xhr.status);
+            }
+          }
+        }
+      }
+      xhr.onerror = function(err) {
+        if (options.error) {
+          options.error(err);
+        }
+      }
+      xhr.open(options.method, options.url)
+      xhr.setRequestHeader('Content-Type', 'application/json');
+      xhr.send(JSON.stringify(options.data));
+    }
+    function redirectToWeb(token) {
+      var returnUrl = localStorage.getItem("_dbj_return_url");
+      if (/^https?:\/\/[\w-]+\.(meiwu365|dabanjia)\.com/.test(returnUrl)) {
+        localStorage.removeItem("_dbj_return_url");
+      } else {
+        throw new Error("非打扮家域名，不支持跳转");
+      }
+      if (/\{token\}/.test(returnUrl)) {
+        window.location.replace(returnUrl.replace(/\{token\}/g, token));
+      } else {
+        var url = returnUrl;
+        var hash = '';
+        var hashIdx = returnUrl.indexOf('#');
+        if (hashIdx > 0) {
+          url = returnUrl.slice(0, hashIdx);
+          hash = returnUrl.slice(hashIdx);
+        }
+        url += url.indexOf("?") > 0 ? ('&token=' + token) : ('?token=' + token);
+        window.location.replace(url + hash);
+      }
+    }
+    function requestToken() {
+      var url = '<%= VUE_APP_GOME_API %>/app/oauth/gome/loginByCookie';
+      var params = {
+        clientType: "3",
+        clientCode: "APPLET"
+      };
+      request({
+        url: url,
+        data: params,
+        method: "post",
+        success: function(resText) {
+          var res = JSON.parse(resText);
+          if (res.data) {
+            var data = res.data || {};
+            redirectToWeb(data.accessToken);
+          } else {
+            // 读取cookie失败
+            console.log('读取cookie失败', res);
+            // redirectToWeb();
+          }
+        },
+        error: function(err) {
+          console.error(err);
+          // redirectToWeb();
+        }
+      });
+    }
+    // H5站的登录
+    var pageParams = getPageParms();
+    if (pageParams.isLogin) {
+      requestToken();
+    } else {
+      if (pageParams.returnUrl) {
+        var returnUrl = decodeURIComponent(pageParams.returnUrl);
+        if (/^https?:\/\/[\w-]+\.(meiwu365|dabanjia)\.com/.test(returnUrl)) {
+          localStorage.setItem("_dbj_return_url", returnUrl);
+        } else {
+          throw new Error("非打扮家域名，不支持跳转");
+        }
+      }
+      var backURL = window.location.origin + window.location.pathname + '?isLogin=true';
+      window.location.replace('<%= VUE_APP_GOME_LOGIN %>?return_url=' + Base64.encode(backURL));
+    }
+  </script>
+</body>
+</html>
