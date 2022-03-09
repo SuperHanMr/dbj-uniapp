@@ -10,13 +10,13 @@
     <view class="content">
       <!-- <view class="label-item"></view> -->
       <view class="img-list">
-        <view class="img-item" v-for="item of imgList.basicBadges">
+        <view class="img-item" v-for="(item,index) of imgList.basicBadges" :key='index'>
         <image :src="item.ico" ></image>
         <view class="text">
           {{item.name}}
         </view>
         </view>
-        <view class="img-item" v-for="item of imgList.skillBadges">
+        <view class="img-item" v-for="(item,index) of imgList.skillBadges" :key='index'>
         <image :src="item.ico" ></image>
         <view class="text">
           {{item.name ==='设计'?item.name+`(${item.levelName})`:item.name}}

@@ -430,7 +430,7 @@ export default {
   },
   onLoad(e) {
     this.userType = e.userType;
-    this.personId = e.personId || 7720;
+    this.personId = e.personId || 8093;
     //价值排行榜进入主页需要滚动至案例区域
     this.isToContent = e.isToContent||false
     uni.showShareMenu();
