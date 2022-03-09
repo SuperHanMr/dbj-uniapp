@@ -72,10 +72,18 @@
                 <view class="level-label">{{designer.levelName}}{{designer.roleName}}</view>
                 <view
                   class="rank-label"
-                  v-if="designer.rank > 0"
+                  :style="{
+                    background: `url(${designerRank(designer).styleImage}) no-repeat`,
+                    backgroundSize: '100% 100%',
+                  }"
+                  v-if="
+                    designerRank(designer)
+                    && (designerRank(designer).realNumber > 0 && designerRank(designer).realNumber < 10)
+                  "
                 >
-                  <view class="rank-left top-font">TOP.{{designer.rank}}</view>
-                  <view class="rank-right top-font">最具价值</view>
+                  <!-- <image class="rank-background" :src="designerRank(designer).styleImage"></image> -->
+                  <view class="rank-left top-font">TOP.{{designerRank(designer).realNumber}}</view>
+                  <view class="rank-right top-font">{{designerRank(designer).abbreviation}}</view>
                 </view>
               </view>
             </view>
@@ -87,24 +95,31 @@
             </view>
           </view>
 
-          <view class="rate-wrapper" v-if="designer.totalCount>0&&designer.praiseEfficiency">
+          <view class="rate-wrapper">
             <text class="designer-score" v-if="designer.totalCount>0">服务次数 {{designer.totalCount}}</text>
             <view
               class="split-line"
-              v-if="designer.praiseEfficiency"
+              v-if="designer.totalCount > 0 && designer.praiseEfficiency"
             ></view>
-            <view
+            <text
               class="designer-ordernum"
-              v-if="designer.praiseEfficiency"
+              v-if="designer.praiseEfficiency && designer.totalCount > 0"
             >
-              <text>好评率 {{designer.praiseEfficiency}}%</text>
-            </view>
+              好评率 {{designer.praiseEfficiency}}%
+            </text>
+            <view
+              class="split-line"
+              v-if="(designer.praiseEfficiency || designer.totalCount > 0) && getGoodAt(designer)"
+            ></view>
+            <text class="designer-goodat" v-if="getGoodAt(designer)">
+              {{getGoodAt(designer)}}
+            </text>
           </view>
 
-          <view class="designer-des">
+          <!-- <view class="designer-des">
             {{designer.intro || "这个设计师很忙，还没有填写个人简介"}}
-          </view>
-          <view class="designer-tags">
+          </view> -->
+          <view class="designer-tags" v-if="getTags(designer).length">
             <view
               v-for="(style, index) in getTags(designer)"
               :key="index"
@@ -112,6 +127,38 @@
             >
               <view class="tag-text"><text>{{style}}</text></view>
             </view>
+          </view>
+          <view class="case-wrapper" v-if="getCaseList(designer).length">
+            <template
+              v-for="item in getCaseList(designer)"
+            >
+              <view class="case-item"  :key="item.id">
+                <view class="case-image">
+                  <image mode="aspectFill" :src="item.imageUrl"></image>
+                  <view class="isFamos" v-if="item.famous === 1"></view>
+                  <view class="isBest" v-if="item.favourite === 1"></view>
+                </view>
+                <view class="case-title">
+                  <text>{{item.caseName}}</text>
+                </view>
+                <view class="case-info">
+                  <text v-if="item.roomNum">{{item.roomNum}}室</text>
+                  <text v-if="item.hallNum">{{item.hallNum}}厅</text>
+                  <text v-if="item.kitchenNum">{{item.kitchenNum}}厨</text>
+                  <text v-if="item.bathroomNum">{{item.bathroomNum}}卫</text>
+                  <template v-if="item.insideArea">
+                    <text class="split">|</text>
+                    <text>{{item.insideArea}}㎡</text>
+                  </template>
+                  <template v-if="item.budget">
+                    <text class="split">|</text>
+                    <text>预算:￥{{item.budget}}万</text>
+                  </template>
+
+                </view>
+              </view>
+            </template>
+
           </view>
         </view>
       </view>
@@ -206,12 +253,26 @@ export default {
     this.searchList();
   },
   methods: {
+    designerRank(designer) {
+      console.log('---', designer.ranks instanceof Array &&  designer.ranks.length > 0 ? designer.ranks[0] : null)
+      return designer.ranks instanceof Array &&  designer.ranks.length > 0 ? designer.ranks[0] : null
+    },
+    getCaseList(designer) {
+      if (designer?.valuationCaseVOS?.length) {
+        return designer.valuationCaseVOS.slice(0, 2);
+      }
+      return []
+    },
+    getGoodAt(designer) {
+      let str = '';
+      if (designer?.designs?.length || designer?.houses?.length) {
+        str += `擅长`;
+          str += [].concat(designer?.designs || [], designer?.houses || []).join('、')
+      }
+      return str;
+    },
     getTags(designer) {
-      return [
-        ...(designer.styles || []),
-        ...(designer.designs || []),
-        ...(designer.houses || []),
-      ];
+      return designer.featureLabel || [];
     },
     showDesigner(designer) {
       let url =
@@ -501,15 +562,15 @@ export default {
 
         .rank-left {
           height: 30rpx;
-          border-bottom-right-radius: 10rpx;
+          // border-bottom-right-radius: 10rpx;
           padding: 0 8rpx;
           font-weight: 500;
           line-height: 32rpx;
-          background: linear-gradient(
-            180deg,
-            rgba(255, 235, 204, 1),
-            rgba(255, 229, 183, 1)
-          );
+          // background: linear-gradient(
+          //   180deg,
+          //   rgba(255, 235, 204, 1),
+          //   rgba(255, 229, 183, 1)
+          // );
         }
 
         .rank-right {
@@ -517,8 +578,8 @@ export default {
           line-height: 32rpx;
           height: 30rpx;
           padding: 0 8rpx 0 10rpx;
-          border-top-left-radius: 10rpx;
-          background: linear-gradient(180deg, #fedfa7, #e8cc94);
+          // border-top-left-radius: 10rpx;
+          // background: linear-gradient(180deg, #fedfa7, #e8cc94);
         }
       }
     }
@@ -545,14 +606,11 @@ export default {
 
 .rate-wrapper {
   margin-top: 18rpx;
-  height: 34rpx;
   font-size: 24rpx;
-  display: flex;
-  flex-direction: row;
-  align-items: center;
   .designer-score,
-  .designer-ordernum {
-    color: #333333;
+  .designer-ordernum,
+  .designer-goodat {
+    color: #666;
     font-size: 24rpx;
   }
   .split-line {
@@ -561,9 +619,6 @@ export default {
     background: #ccc;
     height: 22rpx;
     margin: 0 16rpx;
-  }
-  .designer-ordernum {
-    display: inline-block;
   }
 }
 
@@ -585,6 +640,7 @@ export default {
   flex-direction: row;
   flex-wrap: wrap;
   overflow: hidden;
+  padding-top: 8rpx;
   .designer-tag {
     display: flex;
     // justify-content: center;
@@ -599,7 +655,8 @@ export default {
     color: #999999;
     padding: 0 12rpx;
     margin-right: 16rpx;
-    margin-bottom: 16rpx;
+    margin-top: 8rpx;
+    // margin-bottom: 16rpx;
 
     max-width: 100%;
     .tag-text {
@@ -644,5 +701,69 @@ export default {
   text-align: center;
   color: #ccc;
   line-height: 34rpx;
+}
+
+.case-wrapper{
+  margin-top: 32rpx;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+
+  .case-item{
+    width: 272rpx;
+
+    .case-image{
+      position: relative;
+      image{
+        width: 272rpx;
+        height: 218rpx;
+        border-radius: 12rpx;
+        object-fit: cover;
+      }
+      .isFamos,.isBest{
+        position: absolute;
+        top: 16rpx;
+        left: 16rpx;
+        width: 132rpx;
+        height: 42rpx;
+      }
+
+      .isFamos{
+        background: url('@/static/images/casefamos@2x.png') no-repeat;
+        background-size: 100%;
+      }
+      .isBest{
+        background: url('@/static/images/casebest@2x.png') no-repeat;
+        background-size: 100%;
+      }
+
+    }
+
+    .case-title{
+      margin-top: 16rpx;
+      font-size: 26rpx;
+      color: #333;
+      height: 36rpx;
+      line-height: 36rpx;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+
+
+    .case-info{
+      margin-top: 8rpx;
+      color: #999;
+      font-size: 20rpx;
+      line-height: 28rpx;
+      height: 28rpx;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+      .split{
+        margin: 8rpx;
+      }
+    }
+  }
 }
 </style>

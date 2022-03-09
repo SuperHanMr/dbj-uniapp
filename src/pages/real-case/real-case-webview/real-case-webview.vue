@@ -51,7 +51,7 @@
 
         this.url =
           this.ENV.VUE_APP_BASE_H5 +
-          `/app-pages/case-detail/case-detail.html?id=${this.id}&height=${
+          `/app-pages/new-case-detail/preview-detail.html?id=${this.id}&height=${
           this.height
         }#${token ? token : 0}`;
       },
