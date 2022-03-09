@@ -112,12 +112,12 @@
         </view>
 
       </view>
-      <view class="value-rank" v-if="personData.valueRank>0&&personData.isFlag" @click="toRankList">
+      <view class="value-rank" :style="{'color':`#${item.fontColor}`}" v-for="(item,index) in rankData" :key='index' v-if="item.realNumber>0" @click="toRankList(item.abbreviation)">
         <text class="top-font">TOP.</text>
-        <text class="num top-font">{{personData.valueRank}}</text>
-        <text class="rank-text">打扮家最具价值设计师榜单</text>
+        <text class="num top-font">{{item.realNumber}}</text>
+        <text class="rank-text">打扮家{{item.name}}榜单</text>
         <i class="icon-alert_notice_jump"></i>
-        <image :src="personData.valueRank>9?'../../../static/person_rank.png':'../../../static/person_rank.png'" mode=""></image>
+        <image :src="item.styleImage" mode=""></image>
       </view>
     </view>
   </view>
@@ -128,7 +128,7 @@
   export default{
     props:{
       personData:{},
-      
+      rankData:{},
       isAttention:{
         type:Boolean,
         default:false
@@ -142,7 +142,7 @@
       }
     },
     mounted(){
-      console.log(".............")
+      
       let query = uni.createSelectorQuery().in(this)
       this.$nextTick(function(){
         query.select(".report-text").boundingClientRect((res) => {
@@ -190,9 +190,9 @@
           this.$emit('sendMsg')
         }
       },
-      toRankList(){
+      toRankList(data){
         uni.navigateTo({
-          url:'/sub-home/pages/find-design/designer-rank-list'
+          url:'/sub-home/pages/find-design/designer-rank-list?initTabName='+data
         })
       }
     }
