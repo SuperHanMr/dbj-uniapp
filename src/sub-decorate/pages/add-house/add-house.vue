@@ -381,7 +381,7 @@ export default {
       this.getHouseStep();
       this.hasPoint = true;
     }
-    this.delta = e.delta;
+    this.delta = +e.delta || 1;
   },
   watch: {
     "addData.floors": function () {
