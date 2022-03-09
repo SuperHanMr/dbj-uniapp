@@ -70,15 +70,20 @@
               <view class="designer-name">{{designer.name}}</view>
               <view class="designer-level">
                 <view class="level-label">{{designer.levelName}}{{designer.roleName}}</view>
-                <view
-                  class="rank-label"
-                  v-if="designer.rank > 0"
-                >
-                  <view class="rank-left top-font">TOP.{{designer.rank}}</view>
-                  <view class="rank-right top-font">最具价值</view>
+                <view v-if="designer.rank > 0">
+									<view class="rank-label" 
+									v-for="rankItem in designer.ranks" 
+									:key="rankItem" 
+									:style="{backgroundImage:`url(${handleLabelImg(rankItem).bgImg})`,}"
+								>
+										<view class="rank-left top-font" :style="{color:`#${rankItem.fontColor}`,background:handleLabelImg(rankItem).bgcolor}">
+											TOP.{{rankItem.realNumber}}</view>
+										<view class="rank-right top-font" :style="{color:`#${rankItem.fontColor}`}">
+										{{rankItem.abbreviation}}</view>
+									</view>
                 </view>
               </view>
-            </view>
+            </view> 
             <view class="designer-opera">
               <button
                 class="btn-find-designer"
@@ -87,7 +92,7 @@
             </view>
           </view>
 
-          <view class="rate-wrapper" v-if="designer.totalCount>0&&designer.praiseEfficiency">
+          <view class="rate-wrapper" v-if="designer.totalCount>0 && designer.praiseEfficiency">
             <text class="designer-score" v-if="designer.totalCount>0">服务次数 {{designer.totalCount}}</text>
             <view
               class="split-line"
@@ -161,6 +166,24 @@ export default {
       searchVal: "",
       topic: "",
       style: "",
+			labelList:[
+				{
+					bgcolor:"linear-gradient(180deg, #EAE3D1 0%, #DED5BF 100%)",
+					bgImg:"https://ali-image.dabanjia.com/static/mp/dabanjia/images/theme-red/home/labelRank1.png",
+				},
+				{
+					bgcolor:"linear-gradient(180deg, #FAD7CD 0%, #E8C2B5 100%)",
+					bgImg:"https://ali-image.dabanjia.com/static/mp/dabanjia/images/theme-red/home/labelRank2.png",
+				},
+				{
+					bgcolor:"linear-gradient(180deg, #B9E6F3 0%, #9FD3E3 100%)",
+					bgImg:"https://ali-image.dabanjia.com/static/mp/dabanjia/images/theme-red/home/labelRank3.png",
+				},
+				{
+					bgcolor:"linear-gradient(180deg, #FFEBCC 0%, #FFE5B7 100%)",
+					bgImg:"https://ali-image.dabanjia.com/static/mp/dabanjia/images/theme-red/home/labelRank999.png",
+				}
+			],
     };
   },
   created() {
@@ -318,6 +341,21 @@ export default {
         });
       });
     },
+		//处理标签图片展示问题
+		handleLabelImg(rankItem){
+			console.log("rankIteman",rankItem.styleCode,typeof rankItem.styleCode)
+			switch(rankItem.styleCode){
+				case 1:
+					return this.labelList[0];
+				case 2:
+					return  this.labelList[1];
+				case 3:
+					return  this.labelList[2];
+				case 9999: 
+					console.log("99999",)
+					return  this.labelList[3];
+			}
+		},
   },
 };
 </script>
@@ -485,45 +523,42 @@ export default {
         line-height: 30rpx;
         background: #f0fbff;
         border-radius: 4rpx;
-        margin-right: 12rpx;
         padding: 0 8rpx;
         font-weight: 500;
         color: #4fbeed;
       }
 
-      .rank-label {
-        display: flex;
-        background: linear-gradient(to bottom, #fff0d9, #f0ca89);
-        justify-content: space-between;
-        border-radius: 2px;
-        overflow: hidden;
-        color: rgba(134, 94, 65, 1);
-
-        .rank-left {
-          height: 30rpx;
-          border-bottom-right-radius: 10rpx;
-          padding: 0 8rpx;
-          font-weight: 500;
-          line-height: 32rpx;
-          background: linear-gradient(
-            180deg,
-            rgba(255, 235, 204, 1),
-            rgba(255, 229, 183, 1)
-          );
-        }
-
-        .rank-right {
-          flex: 1;
-          line-height: 32rpx;
-          height: 30rpx;
-          padding: 0 8rpx 0 10rpx;
-          border-top-left-radius: 10rpx;
-          background: linear-gradient(180deg, #fedfa7, #e8cc94);
-        }
-      }
-    }
+     
+		}
   }
+	.rank-label {
+		display: flex;
+		align-items: center;
+		flex-flow: row nowrap;
+		border-radius: 4rpx;
+		margin-left: 12rpx;
+		background-size: 182rpx 30rpx;
+		background-position:right center;
+		.rank-left {
+			height: 30rpx;
+			line-height: 30rpx;
+			padding: 0 16rpx 0 10rpx;
+			text-align: center;
+			font-weight: 500;
+			font-size: 20rpx;
+			border-radius: 4rpx 0 14rpx 4rpx;
+		}
 
+		.rank-right {
+			width: 98rpx;
+			height: 30rpx;
+			line-height: 30rpx;
+			text-align: center;
+			font-weight: 500;
+			font-size: 20rpx;
+		}
+	}
+    
   .designer-opera {
     width: 126rpx;
     margin-left: 32rpx;

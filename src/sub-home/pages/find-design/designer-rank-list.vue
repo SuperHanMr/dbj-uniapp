@@ -167,7 +167,7 @@
     data() {
       return {
         scrollTop: 0,
-        headerBgImg: "https://ali-image.dabanjia.com/static/mp/dabanjia/images/theme-red/home/designerRankBg.png?x-oss-process=image/resize,m_fill,h_382,w_750,limit_0",
+        headerBgImg: "../../static/design-bg.png",
         bgColorList: [{
             bgColor: "#EDC48E",
             color: "#725947",
@@ -197,6 +197,7 @@
         isFold: false,
         title: '',
         opacity: 0,
+        initTabName: '',
         tabList: [],
       }
     },
@@ -205,7 +206,8 @@
       this.containerPaddingBottom = menuButtonInfo.bottom + "rpx";
       console.log("this.containerPaddingBottom ====", this.containerPaddingBottom)
     },
-    onLoad() {
+    onLoad(e) {
+      this.initTabName = e.initTabName
       uni.getSystemInfo({
         success: res => {
           this.equipmentId = res.deviceId
@@ -258,6 +260,11 @@
       reqTabList() {
         getTabList().then(res => {
           this.tabList = res
+          this.tabList.map((item, index) => {
+            if(item.name === this.initTabName) {
+              this.tabIndex = index
+            }
+          })
         })
       },
       reqDesignerRank(index, code) {
