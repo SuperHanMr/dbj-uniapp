@@ -218,6 +218,12 @@ export function getPeerComments(params) {
 	return request.get(`/pm/app/commentSetting/getPeerComments?refUserId=`+params)
 }
 
+//获取个人主页榜单信息
+export function getJoinedRankings(params) {
+	return request.get(`/app/designChart/joinedRankings?zeusId=`+params)
+}
+
+
 //查询服务中是否可以换人
 export function checkServeingChange(params) {
 	return request.get(`/pm/app/serve/serveing/change/check/${params}`)
