@@ -138,15 +138,13 @@
       <view :style="{paddingBottom:containerPaddingBottom}"
         style="z-index: 999;background-color: #FFFFFF;border-radius: 32rpx 32rpx 0 0;">
         <view class="header-popup">
-          <text>最具价值设计师</text>
+          <text>排行说明</text>
           <view class="close-popup" @click="close">
             <i class="icon-xiaochengxu_youshangjiaodankuangguanbi_ic close-icon-popup"></i>
           </view>
         </view>
         <scroll-view :scroll-y="true" class="toast-content">
-          <view class="bankingComplain">
-            榜单说明：本榜单为打扮家平台对设计师四维能力的综合评估得分排行，数据实时更新。评估数据维度包含：设计师综合能力估值，设计水平，服务水平及业主反馈。
-          </view>
+          <view class="bankingComplain">{{instructions}}</view>
         </scroll-view>
       </view>
     </uni-popup>
@@ -158,6 +156,7 @@
     debounce
   } from "@/utils/common.js";
   import {
+    getChartInstructions,
     getTabList,
     getListByCode,
     getDesignRank,
@@ -189,6 +188,7 @@
             bgImg: "https://ali-image.dabanjia.com/static/mp/dabanjia/images/theme-red/home/rank_top4.png",
           },
         ],
+        instructions: '',
         designerList: [], //设计师列表
         containerPaddingBottom: "",
         equipmentId: "",
@@ -222,6 +222,7 @@
         }
       });
       this.reqTabList()
+      this.reqChartInstructions()
     },
     onShow() {
       this.scrollLeft = 1
@@ -255,6 +256,11 @@
           return;
         }
         this.tabIndex = index;
+      },
+      reqChartInstructions() {
+         getChartInstructions().then(res => {
+           this.instructions = res
+         })
       },
       reqTabList() {
         getTabList().then(res => {

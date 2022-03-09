@@ -190,6 +190,11 @@ export function getDesignRank(index, code) {
   }
 }
 
+//设计师榜单说明
+export function getChartInstructions(params = {}) {
+	return request.get(`/app/designChart/getChartInstructions`, params)
+}
+
 // 设计师榜单tab
 export function getTabList(params = {}) {
 	return request.get(`/app/designChart/getTabList`, params)
@@ -217,12 +222,6 @@ export function getCaseList(params) {
 export function getPeerComments(params) {
 	return request.get(`/pm/app/commentSetting/getPeerComments?refUserId=`+params)
 }
-
-//获取个人主页榜单信息
-export function getJoinedRankings(params) {
-	return request.get(`/app/designChart/joinedRankings?zeusId=`+params)
-}
-
 
 //查询服务中是否可以换人
 export function checkServeingChange(params) {
