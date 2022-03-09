@@ -45,7 +45,14 @@
                 '}',
                 '.nav {',
                     'display: none;',
-                '}'
+                '}',
+                // 腾讯地图选择页面的导航
+                '.uni-system-choose-location .nav {',
+                    'display: block;',
+                '}',
+                '.uni-system-choose-location .nav .nav-btn.back {',
+                    'display: none;',
+                '}',
             ].join('');
             document.body.appendChild(style);
         }
