@@ -138,15 +138,13 @@
       <view :style="{paddingBottom:containerPaddingBottom}"
         style="z-index: 999;background-color: #FFFFFF;border-radius: 32rpx 32rpx 0 0;">
         <view class="header-popup">
-          <text>最具价值设计师</text>
+          <text>排行说明</text>
           <view class="close-popup" @click="close">
             <i class="icon-xiaochengxu_youshangjiaodankuangguanbi_ic close-icon-popup"></i>
           </view>
         </view>
         <scroll-view :scroll-y="true" class="toast-content">
-          <view class="bankingComplain">
-            榜单说明：本榜单为打扮家平台对设计师四维能力的综合评估得分排行，数据实时更新。评估数据维度包含：设计师综合能力估值，设计水平，服务水平及业主反馈。
-          </view>
+          <view class="bankingComplain">{{instructions}}</view>
         </scroll-view>
       </view>
     </uni-popup>
@@ -158,6 +156,7 @@
     debounce
   } from "@/utils/common.js";
   import {
+    getChartInstructions,
     getTabList,
     getListByCode,
     getDesignRank,
@@ -167,7 +166,7 @@
     data() {
       return {
         scrollTop: 0,
-        headerBgImg: "https://ali-image.dabanjia.com/static/mp/dabanjia/images/theme-red/home/designerRankBg.png?x-oss-process=image/resize,m_fill,h_382,w_750,limit_0",
+        headerBgImg: "../../static/design-bg.png",
         bgColorList: [{
             bgColor: "#EDC48E",
             color: "#725947",
@@ -189,6 +188,7 @@
             bgImg: "https://ali-image.dabanjia.com/static/mp/dabanjia/images/theme-red/home/rank_top4.png",
           },
         ],
+        instructions: '',
         designerList: [], //设计师列表
         containerPaddingBottom: "",
         equipmentId: "",
@@ -197,6 +197,7 @@
         isFold: false,
         title: '',
         opacity: 0,
+        initTabName: '',
         tabList: [],
       }
     },
@@ -205,7 +206,8 @@
       this.containerPaddingBottom = menuButtonInfo.bottom + "rpx";
       console.log("this.containerPaddingBottom ====", this.containerPaddingBottom)
     },
-    onLoad() {
+    onLoad(e) {
+      this.initTabName = e.initTabName
       uni.getSystemInfo({
         success: res => {
           this.equipmentId = res.deviceId
@@ -219,8 +221,8 @@
           timingFunc: 'easeIn'
         }
       });
-      this.reqDesignerRank()
       this.reqTabList()
+      this.reqChartInstructions()
     },
     onShow() {
       this.scrollLeft = 1
@@ -255,9 +257,20 @@
         }
         this.tabIndex = index;
       },
+      reqChartInstructions() {
+         getChartInstructions().then(res => {
+           this.instructions = res
+         })
+      },
       reqTabList() {
         getTabList().then(res => {
           this.tabList = res
+          this.tabList.map((item, index) => {
+            if(item.name === this.initTabName) {
+              this.tabIndex = index
+            }
+          })
+          this.reqDesignerRank(this.tabIndex, this.tabList[this.tabIndex].code)
         })
       },
       reqDesignerRank(index, code) {

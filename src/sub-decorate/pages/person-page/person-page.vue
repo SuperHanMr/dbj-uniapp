@@ -45,6 +45,7 @@
        v-if="personData.roleId===1"
        @queryAttention='queryAttention'
        :isAttention='isAttention'
+       :rankData='rankData'
        @sendMsg='sendMsg'
        @clickHidden='clickHidden'
        @openPopup='openPopup'
@@ -340,7 +341,8 @@ import {
   getAttention,
   getServiceStatus,
   getComments,
-  getPeerComments
+  getPeerComments,
+  getJoinedRankings
 } from "@/api/decorate.js";
 var query = {};
 export default {
@@ -370,6 +372,7 @@ export default {
       },
       commentData:{},
       peerComment:{},
+      rankData:{},
       currentItem: "serviceTop",
       scrollTop: 0,
       interact: 0,
@@ -430,7 +433,7 @@ export default {
   },
   onLoad(e) {
     this.userType = e.userType;
-    this.personId = e.personId || 7720;
+    this.personId = e.personId || 8093;
     //价值排行榜进入主页需要滚动至案例区域
     this.isToContent = e.isToContent||false
     uni.showShareMenu();
@@ -481,6 +484,7 @@ export default {
       // this.getCaseList()
       this.getSkuList();
       this.getGrabDetail();
+      this.getJoinedRankings()
     },
     contentEmpty(name,value){
       
@@ -732,6 +736,11 @@ export default {
       getComments(params).then(res=>{
         this.commentData = res
         // this.commentData.list[0].rank = 3
+      })
+    },
+    getJoinedRankings(){
+      getJoinedRankings(this.personId).then(res=>{
+        this.rankData = res
       })
     },
     sendMsg() {

@@ -23,18 +23,30 @@
 			<view class="position-icon">
 				<image src="/static/images/real-case/video_ic.png" mode="" v-if="params.parentType == 0"></image>
 				<image src="/static/images/real-case/ic_vr.png" mode="" v-if="params.parentType == 1"></image>
-				<image src="/static/images/real-case/img_ic.png" mode="" v-if="params.parentType == 2"></image>
+				<image src="/static/images/real-case/img_ic.png" mode="" v-if="params.parentType > 1&&params.recommendCategoryVO.categoryCount==0"></image>
+        <image src="/static/images/real-case/ic_goods.png" mode="" v-if="params.parentType > 1&&params.recommendCategoryVO.categoryCount>0"></image>
 			</view>
 		</view>
 		<!-- <video v-if="params.parentType !== 0" id="myVideo" :src="params.videoUrl"
 		                    @error="videoErrorCallback" :danmu-list="danmuList" enable-danmu danmu-btn controls></video> -->
 		<view class="content">
+      <view class="goods-tag">
+        <view class="tag-list item" >
+          
+            {{params.recommendCategoryVO.allName}}
+          
+        </view>
+        <view class="item" v-if="params.recommendCategoryVO.recommendCategoryList">
+          推荐
+        </view>
+      </view>
 			<view class="title">{{params.caseName}}</view>
       <view class="tag">
+        <view v-if="params.customLabelList">{{params.customLabelList[0].labelName}}</view>
         <view class="" v-if="params.styleName">
           {{params.styleName}}
         </view>
-        <view v-for="item of params.features" :key='item'>{{item}}</view>
+        <view v-if="params.features">{{ params.features[0]}}</view>
         
       </view>
 			<view class="case-info">
@@ -176,8 +188,23 @@
 	}
 	
 	.content{
+    .goods-tag{
+      display: flex;
+      margin: 20rpx 0 4rpx;
+      .tag-list{
+        
+        max-width: 280rpx;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+      }
+      .item{
+        color: #4AA4FC;
+        font-size: 20rpx;
+      }
+    }
 		.title{
-			margin: 20rpx 0 10rpx 0;
+			margin: 0 0 10rpx 0;
 			font-size: 26rpx;
 			font-family: PingFangSC, PingFangSC-Medium;
 			// font-weight: bold;

@@ -59,6 +59,7 @@
         uni.hideLoading();
       },
       message(event) {
+        console.log(event)
         uni.$emit("isCollect", event.detail.data[event.detail.data.length - 1]);
       },
     },

@@ -190,6 +190,11 @@ export function getDesignRank(index, code) {
   }
 }
 
+//设计师榜单说明
+export function getChartInstructions(params = {}) {
+	return request.get(`/app/designChart/getChartInstructions`, params)
+}
+
 // 设计师榜单tab
 export function getTabList(params = {}) {
 	return request.get(`/app/designChart/getTabList`, params)

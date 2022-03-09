@@ -138,6 +138,14 @@
       	}
       		getCaseList(params).then((res) => {
       			if (res && res.list) {
+              res.list.forEach(item=>{
+                item.recommendCategoryVO.allName = ''
+                
+                item.recommendCategoryVO.categoryCount>0&&item.recommendCategoryVO.recommendCategoryList.forEach(el=>{
+                  item.recommendCategoryVO.allName = item.recommendCategoryVO.allName?item.recommendCategoryVO.allName+','+el.category4Name:item.recommendCategoryVO.allName+el.category4Name
+                })
+
+              })
       				this.addList(res.list);
       				this.pagState.page = res.page+1;
       				this.pagState.totalPage = res.totalPage;
