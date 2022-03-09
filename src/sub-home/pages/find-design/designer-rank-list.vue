@@ -221,7 +221,6 @@
           timingFunc: 'easeIn'
         }
       });
-      this.reqDesignerRank()
       this.reqTabList()
     },
     onShow() {
@@ -265,6 +264,7 @@
               this.tabIndex = index
             }
           })
+          this.reqDesignerRank(this.tabIndex, this.tabList[this.tabIndex].code)
         })
       },
       reqDesignerRank(index, code) {
