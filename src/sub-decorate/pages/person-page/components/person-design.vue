@@ -117,7 +117,7 @@
         <text class="num top-font">{{personData.valueRank}}</text>
         <text class="rank-text">打扮家最具价值设计师榜单</text>
         <i class="icon-alert_notice_jump"></i>
-        <image :src="personData.valueRank>9?'../../../static/person_rank.png':'../../../static/person_rank_one.png'" mode=""></image>
+        <image :src="personData.valueRank>9?'../../../static/person_rank.png':'../../../static/person_rank.png'" mode=""></image>
       </view>
     </view>
   </view>
