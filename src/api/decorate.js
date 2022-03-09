@@ -180,11 +180,25 @@ export function getPeerCommentsList(params) {
 
 
 //查询设计师 前10名排行榜 榜单信息
-export function getDesignRank(params) {
-	return request.get("/app/designRank/getTop10Ranking", {params})
+export function getDesignRank(index, code) {
+  console.log(index, code)
+  let params = {code: code}
+  if(!index) {
+    return request.get("/app/designRank/getTop10Ranking", {params})
+  }else {
+    return request.get(`/app/designChart/getListByCode`, {params})
+  }
 }
 
+// 设计师榜单tab
+export function getTabList(params = {}) {
+	return request.get(`/app/designChart/getTabList`, params)
+}
 
+// 设计师tab其它榜单
+export function getListByCode(params = {}) {
+	return request.get(`/app/designChart/getListByCode`, params)
+}
 
 //查询设计师个人主页评价
 export function getDesignComments(params) {

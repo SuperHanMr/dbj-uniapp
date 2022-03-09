@@ -473,7 +473,7 @@ export default {
       cardClick: false,
       haveCard: false, //是否有会员卡
       cardBalance: 0, //会员卡余额
-      shareOriginType: "",
+      originType: "",
     };
   },
   computed: {
@@ -552,7 +552,7 @@ export default {
     this.unit = e.unit;
     this.level = e.level;
     this.goodDetailId = uni.getStorageSync("goodId");
-    this.shareOriginType = e.shareOriginType;
+    this.originType = e.originType;
     console.log(e.houseId, getApp().globalData.currentHouse.id);
   },
   onShow() {
@@ -908,7 +908,7 @@ export default {
           orderName: "", //"string //订单名称 可为空",
           details: details,
           isCardPay: this.cardClick,
-          origin: this.shareOriginType,
+          origin: this.originType,
           packageId: this.isFromPackage ? parseInt(this.packageId) : undefined, // 套包下单时需要套包id参数，默认undefined
         };
         this.createOrder(params).then((data) => {
@@ -978,7 +978,7 @@ export default {
           orderName: "", //"string //订单名称 可为空",
           details: details,
           isCardPay: this.cardClick,
-          origin: this.shareOriginType,
+          origin: this.originType,
           packageId: this.isFromPackage ? parseInt(this.packageId) : undefined, // 套包下单时需要套包id参数，默认undefined
         };
         this.createOrder(params).then((data) => {

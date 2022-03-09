@@ -17,16 +17,20 @@
     <view class="head-box" v-else></view>
     <view class="list-container" :class="{'list-box': isFold}">
       <view class="content-view">
-        <scroll-view id="tab-bar" class="scroll-h" scroll-x="true" :show-scrollbar="false" v-if="dataList.length > 1"
+        <scroll-view id="tab-bar" class="scroll-h" scroll-x="true" :show-scrollbar="false" v-if="tabList.length > 1"
           scroll-with-animation="true" :scroll-into-view="'tab' + tabIndex">
-          <view v-for="(tab,index) in dataList" :key="index" :class="{'uni-tab-item': dataList.length >4, 'uni-tab-item-short2': dataList.length === 2,
-               'uni-tab-item-short3': dataList.length === 3, 'uni-tab-item-short4': dataList.length === 4}"
-            :id="'tab' + index" :data-current="index" @click="ontabtap">
-            <text class="uni-tab-item-title" :class="tabIndex==index ? 'uni-tab-item-title-active' : ''">{{tab}}</text>
+          <view v-for="(tab,index) in tabList" :key="index" :class="{'uni-tab-item': tabList.length >4, 'uni-tab-item-short2': tabList.length === 2,
+               'uni-tab-item-short3': tabList.length === 3, 'uni-tab-item-short4': tabList.length === 4}"
+            :id="'tab' + index" :data-current="index" @click="ontabtap(index, tab.code)">
+            <view class="uni-tab-item-title"  :class="tabIndex==index ? 'uni-tab-item-title-active' : ''" v-if="tab.code === 9999">
+              <image src="../../static/valuest-designer-active.png" mode="" v-if="tabIndex==index"></image>
+              <image src="../../static/valuest-designer.png" mode="" v-else></image>
+            </view>
+            <view class="uni-tab-item-title" :class="tabIndex==index ? 'uni-tab-item-title-active' : ''" v-else>{{tab.name}}</view>
           </view>
         </scroll-view>
         <swiper :current="tabIndex" :duration="300" @change="ontabchange" class="swiper">
-          <swiper-item class="swiper-item" :class="{'swipe-box': isFold}" v-for="(tab,index1) in dataList"
+          <swiper-item class="swiper-item" :class="{'swipe-box': isFold}" v-for="(tab,index1) in tabList"
             :key="index1">
             <view class="designer-item" v-for="(item1,index1) in designerList" :key="index1">
               <view class="designer-bg"
@@ -124,11 +128,11 @@
 
               </view>
             </view>
+            <view class="bottom-box"></view>
           </swiper-item>
         </swiper>
       </view>
-
-
+      
     </view>
     <uni-popup ref="explainPopup" type="bottom">
       <view :style="{paddingBottom:containerPaddingBottom}"
@@ -154,6 +158,8 @@
     debounce
   } from "@/utils/common.js";
   import {
+    getTabList,
+    getListByCode,
     getDesignRank,
     queryAttention
   } from "../../../api/decorate.js"
@@ -191,7 +197,7 @@
         isFold: false,
         title: '',
         opacity: 0,
-        dataList: ['设计师', '设计师', '设计师', '设计师', '设计师', '设计师', '设计师', '设计师', '设计师']
+        tabList: [],
       }
     },
     mounted() {
@@ -214,6 +220,7 @@
         }
       });
       this.reqDesignerRank()
+      this.reqTabList()
     },
     onShow() {
       this.scrollLeft = 1
@@ -233,13 +240,13 @@
       this.title = this.isFold? '优选排行': ''
     },
     methods: {
-      ontabtap(e) {
-        let index = e.target.dataset.current || e.currentTarget.dataset.current;
+      ontabtap(index, code) {
         this.id = 0
         this.switchTab(index);
       },
       ontabchange(e) {
         let index = e.target.current || e.detail.current;
+        this.reqDesignerRank(index, this.tabList[index].code)
         this.switchTab(index);
       },
       switchTab(index) {
@@ -248,9 +255,13 @@
         }
         this.tabIndex = index;
       },
-      reqDesignerRank() {
-        getDesignRank().then(res => {
-          console.log("res====", res)
+      reqTabList() {
+        getTabList().then(res => {
+          this.tabList = res
+        })
+      },
+      reqDesignerRank(index, code) {
+        getDesignRank(index, code).then(res => {
           this.designerList = res
           this.designerList = this.designerList.map(item => {
             if (item.valuationCaseVOS && item.valuationCaseVOS.length > 2) {
@@ -842,7 +853,7 @@
 
   .uni-tab-item-title {
     color: #555;
-    font-size: 30rpx;
+    font-size: 14px;
     height: 60rpx;
     line-height: 80rpx;
     flex-wrap: nowrap;
@@ -859,17 +870,26 @@
   .uni-tab-item-title-active::after {
     content: "";
     display: inline-block;
-    width: 32rpx;
+    width: 30rpx;
     height: 6rpx;
-    background: linear-gradient(117.02deg, #F9E1B7 24.56%, #E7BA90 92.21%);
-    border-radius: 100px 100px 0px 0px;
+    background-image: url('../../static/tab_bottom_icon.png');
+    background-size: contain;
+    background-repeat: no-repeat;
+    // background: linear-gradient(117.02deg, #F9E1B7 24.56%, #E7BA90 92.21%);
+    // border-radius: 100px 100px 0px 0px;
     position: absolute;
     bottom: -12rpx;
     left: 0;
     right: 0;
     margin: auto;
   }
-
+  .uni-tab-item-title image {
+    width: 186rpx;
+    height: 22px;
+    vertical-align: middle;
+    position: relative;
+    bottom: 1px;
+  }
   .swiper {
     height: calc(100% - 60rpx);
   }
@@ -881,5 +901,8 @@
 
   .swipe-box {
     overflow: scroll;
+  }
+  .bottom-box{
+    height: 100rpx;
   }
 </style>
