@@ -776,6 +776,7 @@
 									buyCount: ele.buyCount,
 									unit: ele.unitName,
 									level: 0,
+									origin:ele.origin
 								});
 								//根据productType商品类型划分为服务类和实物类
 								if (ele.productType === 2) {
@@ -825,6 +826,7 @@
 					uni.navigateTo({
 						url: "/sub-classify/pages/pay-order/index",
 						success: (res) => {
+							console.log("checkedList===",checkedList)
 							res.eventChannel.emit("acceptDataFromOpenerPage", {
 								skuInfos: checkedList,
 								originFrom: "shopCart",

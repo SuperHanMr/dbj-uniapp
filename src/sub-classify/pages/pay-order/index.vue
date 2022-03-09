@@ -473,18 +473,13 @@ export default {
       cardClick: false,
       haveCard: false, //是否有会员卡
       cardBalance: 0, //会员卡余额
-      shareOriginType: "",
+      originType: "",
     };
   },
   computed: {
     payChannel() {
       var res = Number(this.totalPrice) * 100 - this.cardBalance;
       //支付渠道 true 储值卡  false 微信
-      console.log(
-        this.cardClick && res > 0,
-        res,
-        Number(this.totalPrice) * 100
-      );
       if (this.cardClick && res <= 0) {
         return true;
       } else {
@@ -515,7 +510,6 @@ export default {
         }
         return String((res / 100).toFixed(2));
       } else {
-        console.log(this.totalPrice);
         return this.totalPrice;
       }
     },
@@ -531,7 +525,6 @@ export default {
     if (e.from) {
       this.originFrom = e.from;
     }
-    console.log('h5 传递的数据', e);
     if (Number(e.fromPackage) === 1) { // 套包下单
       this.isFromPackage = true;
       this.packageId = e.packageId;
@@ -552,13 +545,11 @@ export default {
     this.unit = e.unit;
     this.level = e.level;
     this.goodDetailId = uni.getStorageSync("goodId");
-    this.shareOriginType = e.shareOriginType;
-    console.log(e.houseId, getApp().globalData.currentHouse.id);
+    this.originType = e.originType;
   },
   onShow() {
     if (uni.getStorageSync("houseListChooseId")) {
       this.houseId = uni.getStorageSync("houseListChooseId");
-      console.log(this.houseId, "this.houseId");
       if (this.$refs.houseDialog) {
         this.$refs.houseDialog.close();
       }
@@ -579,7 +570,6 @@ export default {
     }
 
     this.haveCard = false;
-    console.log("!!!!!!!!!!");
     getBalance().then((e) => {
       if (e != null) {
         this.haveCard = true;
@@ -764,7 +754,6 @@ export default {
           data.totalDiscount
         ).toFixed(2);
         var res = Number(this.totalPrice) * 100 - this.cardBalance;
-        console.log(this.totalPrice, res, "res666666666")
         if(res <= 0) {
           this.cardClick = true
         }
@@ -832,6 +821,7 @@ export default {
                 storeId: storeItem.storeId, //店铺id,
                 storeType: 0, //店铺类型 0普通 1设计师",
                 number: skuItem.buyCount, //购买数量",
+                origin: skuItem.origin,
                 params: {}, //与订单无关的参数 如上门时间 doorTime
               };
               this.orderDetails.push({
@@ -894,8 +884,6 @@ export default {
       let orderPrice = Number(
         Number(this.totalPrice).toFixed(2).replace(".", "")
       );
-
-
         //#ifdef MP-WEIXIN
         let params = {
           payType: 1, //"int //支付方式  1微信支付",
@@ -908,7 +896,7 @@ export default {
           orderName: "", //"string //订单名称 可为空",
           details: details,
           isCardPay: this.cardClick,
-          origin: this.shareOriginType,
+          origin: this.originType,
           packageId: this.isFromPackage ? parseInt(this.packageId) : undefined, // 套包下单时需要套包id参数，默认undefined
         };
         this.createOrder(params).then((data) => {
@@ -978,7 +966,7 @@ export default {
           orderName: "", //"string //订单名称 可为空",
           details: details,
           isCardPay: this.cardClick,
-          origin: this.shareOriginType,
+          origin: this.originType,
           packageId: this.isFromPackage ? parseInt(this.packageId) : undefined, // 套包下单时需要套包id参数，默认undefined
         };
         this.createOrder(params).then((data) => {
