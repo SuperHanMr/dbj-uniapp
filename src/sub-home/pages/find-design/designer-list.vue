@@ -70,18 +70,14 @@
               <view class="designer-name">{{designer.name}}</view>
               <view class="designer-level">
                 <view class="level-label">{{designer.levelName}}{{designer.roleName}}</view>
-                <view v-if="designer.rank > 0">
-									<view class="rank-label" 
-									v-for="rankItem in designer.ranks" 
-									:key="rankItem" 
-									:style="{backgroundImage:`url(${handleLabelImg(rankItem).bgImg})`,}"
+								<view class="rank-label" v-if="designer.rank > 0"
+								:style="{backgroundImage:`url(${handleLabelImg(designer.ranks[0]).bgImg})`,}"
 								>
-										<view class="rank-left top-font" :style="{color:`#${rankItem.fontColor}`,background:handleLabelImg(rankItem).bgcolor}">
-											TOP.{{rankItem.realNumber}}</view>
-										<view class="rank-right top-font" :style="{color:`#${rankItem.fontColor}`}">
-										{{rankItem.abbreviation}}</view>
-									</view>
-                </view>
+									<view class="rank-left top-font" :style="{color:`#${designer.ranks[0].fontColor}`,background:handleLabelImg(designer.ranks[0]).bgcolor}">
+										TOP.{{designer.ranks[0].realNumber}}</view>
+									<view class="rank-right top-font" :style="{color:`#${designer.ranks[0].fontColor}`}">
+									{{designer.ranks[0].abbreviation}}</view>
+								</view>
               </view>
             </view> 
             <view class="designer-opera">
@@ -343,7 +339,6 @@ export default {
     },
 		//处理标签图片展示问题
 		handleLabelImg(rankItem){
-			console.log("rankIteman",rankItem.styleCode,typeof rankItem.styleCode)
 			switch(rankItem.styleCode){
 				case 1:
 					return this.labelList[0];
@@ -352,7 +347,6 @@ export default {
 				case 3:
 					return  this.labelList[2];
 				case 9999: 
-					console.log("99999",)
 					return  this.labelList[3];
 			}
 		},

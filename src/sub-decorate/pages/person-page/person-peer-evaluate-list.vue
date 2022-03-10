@@ -17,9 +17,15 @@
 							<text class="name">{{item.userName}}</text>
 							<view class="design-tag-info">
 								<text class="design-leve">{{item.roleName}}</text>
-								<view class="design-tag" v-if="item.valueRank>=1">
-									<view class="topNum top-font"> <text>TOP.{{item.valueRank}}</text></view>
-									<view class="tagText"><text>最具价值</text></view >
+								<view class="design-tag" v-if="item.valueRank>=1" 
+									:style="{backgroundImage:`url(${handleLabelImg(item.appChartRelations[0]).bgImg})`}"
+								>
+									<view class="topNum top-font"
+										:style="{color:`#${item.appChartRelations[0].fontColor}`,background:handleLabelImg(item.appChartRelations[0]).bgcolor}"
+									>TOP.{{item.appChartRelations[0].realNumber}}</view>
+									<view class="tagText"
+										:style="{color:`#${item.appChartRelations[0].fontColor}`}"
+									>{{item.appChartRelations[0].abbreviation}}</view >
 								</view>
 							</view>
 						</view>
@@ -54,6 +60,24 @@
 				},
 				totalNum: 0,
 				loading:false,
+				labelList:[
+					{
+						bgcolor:"linear-gradient(180deg, #EAE3D1 0%, #DED5BF 100%)",
+						bgImg:"https://ali-image.dabanjia.com/static/mp/dabanjia/images/theme-red/home/labelRank1.png",
+					},
+					{
+						bgcolor:"linear-gradient(180deg, #FAD7CD 0%, #E8C2B5 100%)",
+						bgImg:"https://ali-image.dabanjia.com/static/mp/dabanjia/images/theme-red/home/labelRank2.png",
+					},
+					{
+						bgcolor:"linear-gradient(180deg, #B9E6F3 0%, #9FD3E3 100%)",
+						bgImg:"https://ali-image.dabanjia.com/static/mp/dabanjia/images/theme-red/home/labelRank3.png",
+					},
+					{
+						bgcolor:"linear-gradient(180deg, #FFEBCC 0%, #FFE5B7 100%)",
+						bgImg:"https://ali-image.dabanjia.com/static/mp/dabanjia/images/theme-red/home/labelRank999.png",
+					}
+				],
 			}
 		},
 		onLoad(e) {
@@ -118,6 +142,19 @@
 				uni.navigateTo({
 					url:"../../../sub-home/pages/find-design/designer-rank-list"
 				})
+			},
+			//处理标签图片展示问题
+			handleLabelImg(rankItem){
+				switch(rankItem.styleCode){
+					case 1:
+						return this.labelList[0];
+					case 2:
+						return  this.labelList[1];
+					case 3:
+						return  this.labelList[2];
+					case 9999:
+						return  this.labelList[3];
+				}
 			},
 		}
 	}
@@ -199,48 +236,9 @@
 								border-radius: 4rpx;
 								padding: 0 8rpx 2rpx;
 							}
-
-							.design-tag {
-								margin-left: 12rpx;
-								display: flex;
-								.topNum {
-									height: 30rpx;
-									border-radius: 4rpx 0 0 4rpx;
-									background: linear-gradient(180deg, #FFDFA8 0%, #EFC988 100%);
-									text{
-										display: block;
-										background: linear-gradient(180deg, #FFEBCC 0%, #FFE5B7 100%);
-										height: 30rpx;
-										line-height: 34rpx;
-										padding: 0 8rpx;
-										box-sizing: border-box;
-										border-radius: 4rpx 0 8rpx 4rpx;
-										font-size: 20rpx;
-										font-weight: bold;
-										color: #865e41;
-									}
-								}
-								.tagText {
-									height: 30rpx;
-									background: linear-gradient(180deg, #FFEBCC 0%, #FFE5B7 100%);
-									text{
-										background: linear-gradient(180deg, #FFDFA8 0%, #EFC988 100%);
-										display: block;
-										height: 30rpx;
-										line-height: 32rpx;
-										box-sizing: border-box;
-										padding: 0 8rpx;
-										border-radius:8rpx 4rpx 4rpx 0;
-										font-size: 20rpx;
-										font-weight: 500;
-										color: #865e41;
-									}
-								}
-							}
 						}
 					}
 				}
-
 				.evaluate-tag {
 					margin-top: 26rpx;
 					display: flex;
@@ -262,7 +260,6 @@
 						margin:0 12rpx 12rpx 0 ;
 					}
 				}
-
 				.evaluate-content {
 					margin-top: 4rpx;
 					font-family: PingFang SC;
@@ -271,11 +268,32 @@
 					letter-spacing: 0.2rpx;
 					color: #333333;
 				}
-
-
 			}
-
 		}
-
+		.design-tag {
+			margin-left: 12rpx;
+			display: flex;
+			align-items: center;
+			flex-flow: row nowrap;
+			background-size: 182rpx 30rpx;
+			background-position: right center;
+			.topNum {
+			 padding: 0 16rpx 0 10rpx;
+			 height: 30rpx;
+			 line-height: 30rpx;
+			 text-align: center;
+			 font-weight: 500;
+			 font-size: 20rpx;
+			 border-radius: 4rpx 0 14rpx 4rpx;
+			}
+			.tagText {
+			 width: 98rpx;
+			 height: 30rpx;
+			 line-height: 30rpx;
+			 text-align: center;
+			 font-weight: 500;
+			 font-size: 20rpx;
+			}
+		}
 	}
 </style>

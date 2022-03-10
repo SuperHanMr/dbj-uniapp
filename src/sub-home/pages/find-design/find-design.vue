@@ -90,20 +90,19 @@
             <view class="header">
               <view class="name">{{item2.name}}</view>
               <view class="rank">{{item2.levelName}}设计师</view>
-							<view v-if="item2.rank >=1 && item2.ranks.length">
-								<view class="ranking-container"
-									v-for="rankItem in item2.ranks"
-									:key="rankItem.realNumber"
-									:style="{backgroundImage:`url(${handleLabelImg(rankItem).bgImg})`}"
+							<view class="ranking-container" 
+								v-if="item2.rank >=1 && item2.ranks.length"
+								:style="{backgroundImage:`url(${handleLabelImg(item2.ranks[0]).bgImg})`}"
+							>
+								<view class="num top-font" 
+									:style="{color:`#${item2.ranks[0].fontColor}`,background:handleLabelImg(item2.ranks[0]).bgcolor}"
 								>
-									<view class="num top-font" :style="{color:`#${rankItem.fontColor}`,background:handleLabelImg(rankItem).bgcolor}">
-										TOP.{{rankItem.realNumber}}
-                  </view>
-									<view class="text top-font" :style="{color:`#${rankItem.fontColor}`}">
-										{{rankItem.abbreviation}}
-                  </view>
+									TOP.{{item2.ranks[0].realNumber}}
 								</view>
-							</view>
+								<view class="text top-font" :style="{color:`#${item2.ranks[0].fontColor}`}">
+									{{item2.ranks[0].abbreviation}}
+								</view>
+							</view> 
             </view>
             <view class="goodPraise" style="margin-bottom: 8rpx;">
               <view class="item">
@@ -572,7 +571,6 @@ export default {
 		},
 		//处理标签图片展示问题
 		handleLabelImg(rankItem){
-			console.log("rankIteman",rankItem.styleCode,typeof rankItem.styleCode)
 			switch(rankItem.styleCode){
 				case 1:
 					return this.labelList[0];
@@ -581,7 +579,6 @@ export default {
 				case 3:
 					return  this.labelList[2];
 				case 9999: 
-					console.log("99999",)
 					return  this.labelList[3];
 			}
 		},
@@ -878,7 +875,6 @@ export default {
 			text-align: center;
 			font-weight: 500;
 			font-size: 20rpx;
-
 		}
 		
 	}
