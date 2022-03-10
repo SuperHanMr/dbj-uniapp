@@ -190,6 +190,11 @@ export function getDesignRank(index, code) {
   }
 }
 
+export function getJoinedRankings(params) {
+	return request.get(`/app/designChart/joinedRankings?zeusId=`+params)
+}
+
+
 //设计师榜单说明
 export function getChartInstructions(params = {}) {
 	return request.get(`/app/designChart/getChartInstructions`, params)
