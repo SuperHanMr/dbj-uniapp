@@ -1,9 +1,7 @@
 <template>
   <view class="">
-    <web-view ref='webview' :src="url" @message='message' @load='loadSuccessHandler'></web-view>
-    <view class="" ref='sad'>
-
-    </view>
+   <web-view ref='webview' :src="`${baseUrl}/app-pages/new-case-detail/case-detail.html?id=${id}&source=small#params=${params}`" 
+	@message='message' @load='loadSuccessHandler'></web-view>
   </view>
 
 </template>
@@ -17,44 +15,38 @@
         searchToken: "",
         hashToken: "",
         height: 0,
+		
+		userInfo:{
+			token:'',
+			userId:''
+		},
+		
+		params:'',
+		baseUrl:''
+		
       };
     },
     onBackPress() {
       console.log(123123);
     },
-    onShow(props) {
-      console.log("onShow", props, this.url, ">>>>>>>>>>>>>>>");
-      this.goH5();
+    onShow() {
+      console.log("onShow",  ">>>>>>>>>>>>>>>");
+      // this.goH5();
       // this.loadSuccessHandler();
+	  this.userInfo.token = getApp().globalData.token,
+	  this.userInfo.userId = getApp().globalData.userInfo.id,
+	  this.params = JSON.stringify(this.userInfo)
+	  console.log(getApp().globalData.token);
     },
+	
     onLoad(props) {
+	  this.baseUrl = this.ENV.VUE_APP_BASE_H5	
+	  // this.baseUrl = 'https://localhost'
       this.id = props.id;
-      uni.showLoading({
-        title: "加载中",
-      });
-      setTimeout(function() {
-        uni.hideLoading();
-      }, 2000);
       uni.showShareMenu();
     },
 
     methods: {
-      goH5() {
-        const token = getApp().globalData.token;
-        if (!this.height) {
-          uni.getSystemInfo({
-            success: (res) => {
-              this.height = res.windowHeight;
-            },
-          });
-        }
-
-        this.url =
-          this.ENV.VUE_APP_BASE_H5 +
-          `/app-pages/case-detail/case-detail.html?id=${this.id}&height=${
-          this.height
-        }#${token ? token : 0}`;
-      },
       loadSuccessHandler(e) {
         uni.hideLoading();
       },
