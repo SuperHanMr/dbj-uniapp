@@ -9,13 +9,13 @@
   export default {
     data() {
       return {
-        url:'/static/delivery-report/index.html?token='
+        url:'/app-pages/new-case-detail/delivery-detail.html?token='
       }
     },
     onLoad(e){
       let themeId = e.themeId
       let id = e.id
-      this.url = process.env.VUE_APP_BASE_API+this.url +getApp().globalData.token + "&id=" + id
+      this.url = process.env.VUE_APP_BASE_H5+this.url +getApp().globalData.token + "&id=" + id
       console.log(this.url)
       
     },

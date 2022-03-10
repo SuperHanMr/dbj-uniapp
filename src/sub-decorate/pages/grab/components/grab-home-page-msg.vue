@@ -31,7 +31,7 @@
           <image :src="item.ico"></image>
           <text>{{item.name}}</text>
         </view>
-        <view class="badge"  v-for="(item, idx) of personData.personAllBadgeVO.skillBadges" :key="idx+personData.personAllBadgeVO.basicBadges.length">
+        <view class="badge"  v-for="(item, idx) of personData.personAllBadgeVO.skillBadges" :key="idx">
           <image :src="item.ico"></image>
           <text>{{item.name}}{{item.level?'·'+item.levelName:''}}</text>
         </view>

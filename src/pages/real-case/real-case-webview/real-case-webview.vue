@@ -1,6 +1,6 @@
 <template>
   <view class="">
-   <web-view ref='webview' :src="`${baseUrl}/app-pages/new-case-detail/case-detail.html?id=${id}&source=small#params=${params}`" 
+   <web-view ref='webview' :src="`${baseUrl}/app-pages/new-case-detail/case-detail.html?id=${id}&source=small#params=${params}`"
 	@message='message' @load='loadSuccessHandler'></web-view>
   </view>
 
@@ -15,15 +15,15 @@
         searchToken: "",
         hashToken: "",
         height: 0,
-		
+
 		userInfo:{
 			token:'',
 			userId:''
 		},
-		
+
 		params:'',
 		baseUrl:''
-		
+
       };
     },
     onBackPress() {
@@ -38,9 +38,9 @@
 	  this.params = JSON.stringify(this.userInfo)
 	  console.log(getApp().globalData.token);
     },
-	
+
     onLoad(props) {
-	  this.baseUrl = this.ENV.VUE_APP_BASE_H5	
+	  this.baseUrl = this.ENV.VUE_APP_BASE_H5
 	  // this.baseUrl = 'https://localhost'
       this.id = props.id;
       uni.showShareMenu();

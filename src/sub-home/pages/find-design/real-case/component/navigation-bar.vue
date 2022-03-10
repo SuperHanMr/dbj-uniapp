@@ -1,15 +1,15 @@
 <template>
 	<view class="navigation-bar"
-		:style="{paddingTop: Number(paddingTop) + 'px', backgroundColor: !showScreen ? '#FFFFFF' : 'none'}">
+		:style="{paddingTop: Number(paddingTop) + 'px', backgroundColor: '#FFFFFF'}">
 		<view class="box">
 			<view class="navigation-bar-back icon-ic_cancel_white" @click="goBack">
 			</view>
 			<view class="title" @click="openHomeList">
 				<view class="text">
-					{{(!showScreen && currentHouse.id) ? `${currentHouse.housingEstate || ''}${currentHouse.address || ''}` : '推荐案例'}}
+					{{currentHouse.id ? `${currentHouse.housingEstate || ''}${currentHouse.address || ''}` : '推荐案例'}}
 				</view>
 				<view class="address-icon icon-zhuangxiushouye_fuwuzhankaijiantou"
-					v-if="(!showScreen && currentHouse.id)">
+					v-if="currentHouse.id">
 				</view>
 			</view>
 		</view>

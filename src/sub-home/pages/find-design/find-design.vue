@@ -90,10 +90,19 @@
             <view class="header">
               <view class="name">{{item2.name}}</view>
               <view class="rank">{{item2.levelName}}设计师</view>
-							<view class="ranking-container" v-if="item2.rank >=1" >
-								<view class="num"><text class="top-font">TOP.{{item2.rank}}</text></view>
-								<view class="text"><text class="top-font">最具价值</text></view>
-							</view>
+							<view class="ranking-container" 
+								v-if="item2.rank >=1 && item2.ranks.length"
+								:style="{backgroundImage:`url(${handleLabelImg(item2.ranks[0]).bgImg})`}"
+							>
+								<view class="num top-font" 
+									:style="{color:`#${item2.ranks[0].fontColor}`,background:handleLabelImg(item2.ranks[0]).bgcolor}"
+								>
+									TOP.{{item2.ranks[0].realNumber}}
+								</view>
+								<view class="text top-font" :style="{color:`#${item2.ranks[0].fontColor}`}">
+									{{item2.ranks[0].abbreviation}}
+								</view>
+							</view> 
             </view>
             <view class="goodPraise" style="margin-bottom: 8rpx;">
               <view class="item">
@@ -298,6 +307,24 @@ export default {
           name: "服务保障",
         },
       ],
+			labelList:[
+				{
+					bgcolor:"linear-gradient(180deg, #EAE3D1 0%, #DED5BF 100%)",
+					bgImg:"https://ali-image.dabanjia.com/static/mp/dabanjia/images/theme-red/home/labelRank1.png",
+				},
+				{
+					bgcolor:"linear-gradient(180deg, #FAD7CD 0%, #E8C2B5 100%)",
+					bgImg:"https://ali-image.dabanjia.com/static/mp/dabanjia/images/theme-red/home/labelRank2.png",
+				},
+				{
+					bgcolor:"linear-gradient(180deg, #B9E6F3 0%, #9FD3E3 100%)",
+					bgImg:"https://ali-image.dabanjia.com/static/mp/dabanjia/images/theme-red/home/labelRank3.png",
+				},
+				{
+					bgcolor:"linear-gradient(180deg, #FFEBCC 0%, #FFE5B7 100%)",
+					bgImg:"https://ali-image.dabanjia.com/static/mp/dabanjia/images/theme-red/home/labelRank999.png",
+				}
+			],
       searchDesignerList: [], //设计师列表
 			designServiceRecList:[],//设计服务推荐
       caseList: [], //推荐列表
@@ -313,8 +340,7 @@ export default {
 			showFloating:false,
     };
   },
-
-
+	
 
 	mounted() {
 		const menuButtonInfo = uni.getMenuButtonBoundingClientRect();
@@ -329,7 +355,7 @@ export default {
 		if (uni.getStorageSync("recommendDesignerPage")) {
 		  this.page = uni.getStorageSync("recommendDesignerPage");
 		}
-		
+  
 		this.page++;
 		uni.setStorageSync("recommendDesignerPage", this.page);
 		const hhh = uni.getStorageSync("recommendDesignerPage");
@@ -530,9 +556,7 @@ export default {
       });
     },
 		toRealCaseDetail(item) {
-
-			console.log("item4===",item)
-		  uni.navigateTo({
+			uni.navigateTo({
 		    url: `/pages/real-case/real-case-webview/real-case-webview?id=${item.id}`,
 		  });
 		},
@@ -545,6 +569,20 @@ export default {
 		    return [list[0], list[1]];
 		  }
 		},
+		//处理标签图片展示问题
+		handleLabelImg(rankItem){
+			switch(rankItem.styleCode){
+				case 1:
+					return this.labelList[0];
+				case 2:
+					return  this.labelList[1];
+				case 3:
+					return  this.labelList[2];
+				case 9999: 
+					return  this.labelList[3];
+			}
+		},
+		
   },
 };
 </script>
@@ -723,47 +761,8 @@ export default {
             color: #ffffff;
             font-size: 20rpx;
           }
-					.ranking-container{
-						display: flex;
-						align-items: center;
-						flex-flow: row nowrap;
-						margin-left: 8rpx;
-						.num{
-							border-radius: 4rpx 0 0 4rpx;
-							background: linear-gradient(180deg, #FFDFA8 0%, #EFC988 100%);
-							height: 30rpx;
-							text{
-								display: block;
-								height: 30rpx;
-								line-height: 30rpx;
-								box-sizing: border-box;
-								color: #865E41;
-								padding: 0 8rpx ;
-								background: linear-gradient(180deg, #FFEBCC 0%, #FFE5B7 100%);
-								font-weight: 500;
-								font-size: 20rpx;
-								border-radius:4rpx 0 8rpx 4rpx;
-							}
-						}
-						.text{
-							border-radius:0 4rpx 4rpx 0;
-							height: 30rpx;
-							background: linear-gradient(180deg, #FFEBCC 0%, #FFE5B7 100%);
-							text{
-								height: 30rpx;
-								line-height: 30rpx;
-								box-sizing: border-box;
-								padding: 0 8rpx ;
-								background: linear-gradient(180deg, #FFDFA8 0%, #EFC988 100%);
-								display: block;
-								color: #865E41;
-								font-weight: 500;
-								font-size: 20rpx;
-								border-radius:8rpx 4rpx 4rpx 0;
-							}
-						}
-					}
-          .item {
+
+					.item {
             display: flex;
             flex-flow: row nowrap;
             align-items: center;
@@ -852,8 +851,35 @@ export default {
   }
 }
 
+	.ranking-container{
+		display: flex;
+		align-items: center;
+		flex-flow: row nowrap;
+		margin-left: 8rpx;
+		border-radius: 4rpx;
+		background-size: 182rpx 30rpx;
+		background-position: right center;
+		.num{
+			padding: 0 16rpx 0 10rpx;
+			height: 30rpx;
+			line-height: 30rpx;
+			text-align: center;
+			font-weight: 500;
+			font-size: 20rpx;
+			border-radius: 4rpx 0 8rpx 4rpx;
+		}
+		.text{
+			width: 98rpx;
+			height: 30rpx;
+			line-height: 30rpx;
+			text-align: center;
+			font-weight: 500;
+			font-size: 20rpx;
+		}
+		
+	}
+
 .perfectHouseInfo_container {
-  // margin: 54rpx 32rpx 60rpx;
   margin: 20rpx 0 60rpx;
   display: flex;
   flex-flow: column nowrap;
