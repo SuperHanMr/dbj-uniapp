@@ -241,6 +241,8 @@
 				}
 				.evaluate-tag {
 					margin-top: 26rpx;
+					max-height: 92rpx;
+					overflow: hidden;
 					display: flex;
 					align-items: center;
 					flex-flow: row wrap;
