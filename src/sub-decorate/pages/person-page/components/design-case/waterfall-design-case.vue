@@ -36,7 +36,7 @@
             {{params.recommendCategoryVO.allName}}
           
         </view>
-        <view class="item" v-if="params.recommendCategoryVO.recommendCategoryList">
+        <view class="item" v-if="params.recommendCategoryVO.recommendCategoryList&&params.recommendCategoryVO.recommendCategoryList.length>0">
           推荐
         </view>
       </view>
