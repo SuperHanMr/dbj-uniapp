@@ -91,7 +91,7 @@
               <view class="name">{{item2.name}}</view>
               <view class="rank">{{item2.levelName}}设计师</view>
 							<view class="ranking-container" 
-								v-if="item2.rank >=1 && item2.ranks.length"
+								v-if="item2.ranks && item2.ranks.length>=1 && item2.ranks[0].realNumber>0"
 								:style="{backgroundImage:`url(${handleLabelImg(item2.ranks[0]).bgImg})`}"
 							>
 								<view class="num top-font" 
@@ -224,13 +224,13 @@
             </view>
           </view>
           <view class="attr_container">
-						<view class="attr_item" v-if="item4.styleName">{{item4.styleName}}</view>
             <view
               class="attr_item"
-							v-if="item4.features"
-              v-for="item5 in item4.features"
+							v-if="itemHandler(item4)"
+              v-for="item5 in itemHandler(item4) "
               :key="item5"
             >{{item5}}</view>
+						
           </view>
         </view>
         <image
@@ -486,7 +486,16 @@ export default {
 				url:`../../../sub-classify/pages/goods-detail/goods-detail?goodId=${item.id}`,
 			});
 		},
-
+		itemHandler(item) {
+			let arr = [item.styleName];
+			if (item.features && item.features.length) {
+				arr.push(item.features[0]);
+			}
+			if (item.customLabelList && item.customLabelList.length){
+					arr.unshift(item.customLabelList[0].labelName);
+			}
+			return arr;
+		},
 		// 换一批
 		changeDesignerList(){
 			console.log("换一批！")
@@ -787,7 +796,7 @@ export default {
 
         .attr {
           display: flex;
-          flex-flow: row nowrap;
+          flex-flow: row wrap;
           align-items: center;
 					height: 34rpx;
 					overflow: hidden;

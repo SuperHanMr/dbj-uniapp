@@ -17,7 +17,7 @@
 							<text class="name">{{item.userName}}</text>
 							<view class="design-tag-info">
 								<text class="design-leve">{{item.roleName}}</text>
-								<view class="design-tag" v-if="item.valueRank>=1" 
+								<view class="design-tag" v-if="item.appChartRelations && item.appChartRelations.length>=1 &&item.appChartRelations[0].realNumber>0" 
 									:style="{backgroundImage:`url(${handleLabelImg(item.appChartRelations[0]).bgImg})`}"
 								>
 									<view class="topNum top-font"

@@ -19,7 +19,7 @@
         <text class="design-job">{{peerComment.roleName}}</text>
         <view
           class="design-rank"
-          v-if="peerComment.valueRank>0"
+          v-if="peerComment.appChartRelations &&peerComment.appChartRelations.length >=1 &&peerComment.appChartRelations[0].realNumber"
 					:style="{backgroundImage: `url(${handleLabelImg(peerComment.appChartRelations[0]).bgImg})`}"
         >
           <text class="num top-font" 
