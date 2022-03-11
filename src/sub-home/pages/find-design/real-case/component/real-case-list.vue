@@ -36,9 +36,14 @@
 						</view>
 					</view>
 					<view class="tag-box">
+<<<<<<< Updated upstream
 						<!-- ...item.customLabelList,  -->
 						<view class="tag" v-for="(tag, index) in itemHandler([item.styleName, ...item.features])" :key='tag.key'>
 							<text v-if="tag && index <=3">{{tag}}</text>
+=======
+						<view class="tag" v-for="tag in itemHandler(item)" :key='tag.key'>
+							<text v-if="tag">{{tag}}</text>
+>>>>>>> Stashed changes
 						</view>
 					</view>
 				</view>
@@ -135,7 +140,14 @@
 			refresherrefresh() {
 				this.$emit('refresherrefresh')
 			},
-			itemHandler(arr) {
+			itemHandler(item) {
+				let arr = [item.styleName];
+				if (item.features && item.features.length) {
+					arr.push(item.features[0]);
+				}
+				if (item.customLabelList && item.customLabelList.length){
+						arr.unshift(item.customLabelList[0].labelName);
+				}
 				return arr;
 			},
 			nearHandler(item){
