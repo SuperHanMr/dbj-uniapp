@@ -662,8 +662,32 @@
             "enablePullDownRefresh": false,
             "navigationBarBackgroundColor": "#ffffff"
           }
-        }
-      ]
+        },
+				{
+					"path" : "pages/shop-store-list/shop-store-list",
+					"style" : {
+						"navigationBarTitleText": "店铺",
+						"enablePullDownRefresh": false,
+						"navigationBarBackgroundColor": "#ffffff"
+					}
+				},
+				{
+					"path" : "pages/rank-list/rank-list",
+					"style" : {
+						"navigationBarTitleText": "",
+						"enablePullDownRefresh": false,
+						"navigationStyle": "custom"
+					}
+				},
+				{
+					"path" : "pages/rank-list/rank-detail",
+					"style" : {
+						"navigationBarTitleText": "",
+						"enablePullDownRefresh": false,
+						"navigationStyle": "custom"
+					}
+				}
+			]
     },
     {
       "root": "sub-other", //其他页面
