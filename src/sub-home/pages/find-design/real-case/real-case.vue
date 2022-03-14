@@ -120,6 +120,11 @@
 			});
 			uni.$on('defaultHouseChange',() => {
 				this.caseDetail = false;
+				this.cleanDefaultSelect();
+			})
+			
+			uni.$on('selectedHouse', () => {
+				this.cleanDefaultSelect();
 			})
 
 			const menuButtonInfo = uni.getMenuButtonBoundingClientRect();
@@ -268,6 +273,9 @@
 				getCaseStyleList().then((res) => {
 					this.caseStyleList = res;
 				})
+			},
+			cleanDefaultSelect(){
+				this.$refs.realCaseScreeningRef.tagSelect = [null, null, null]
 			}
 		}
 	}

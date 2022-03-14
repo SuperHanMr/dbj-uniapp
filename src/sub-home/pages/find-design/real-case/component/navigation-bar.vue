@@ -37,7 +37,7 @@
 				uni.navigateBack()
 			},
 			openHomeList() {
-				if (this.$props.showScreen) return;
+				// if (this.$props.showScreen) return;
 				this.$emit('openHomeList')
 			}
 		}

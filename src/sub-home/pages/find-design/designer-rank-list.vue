@@ -104,14 +104,14 @@
                         </view>
                         <view class="caseName">{{item2.caseName}}</view>
                         <view class="caseInfo">
-                          <text class="text" v-if="item2.roomNum || item2.hallNum">
+                          <text class="text" v-if="item2.parentType !==3 && (item2.roomNum || item2.hallNum)">
                             <text v-if="item2.roomNum">{{item2.roomNum ||"-"}}室</text>
                             <text v-if="item2.hallNum">{{item2.hallNum || "-"}}厅</text>
                           </text>
-                          <text v-if="!item2.roomNum && !item2.hallNum">-室-厅</text>
+                          <text v-if="item2.parentType !==3 && (!item2.roomNum && !item2.hallNum)">-室-厅</text>
 
                           <text class="line"
-                            v-if="item2.roomNum || item2.hallNum || (!item2.roomNum && !item2.hallNum)"></text>
+                            v-if="item2.parentType !==3 && (item2.roomNum || item2.hallNum || (!item2.roomNum && !item2.hallNum))"></text>
 
                           <text
                             class="text">{{Math.floor(item2.insideArea)?`${Math.floor(item2.insideArea)}`: "-"}}m²</text>
