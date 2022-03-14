@@ -99,6 +99,7 @@
             <view class="skill-item" v-for="(item,index) of personData.designTags" :key='index'>
               {{item}}
             </view>
+            
           </view>
         </view>
         <view class="item">
@@ -112,10 +113,10 @@
         </view>
 
       </view>
-      <view class="value-rank" :style="{'color':`#${item.fontColor}`}" v-for="(item,index) in rankData" :key='index' v-if="item.realNumber>0" @click="toRankList(item.abbreviation)">
+      <view class="value-rank" :style="{'color':`#${item.fontColor}`}" v-for="(item,index) in rankData" :key='index' v-if="item.realNumber>0" @click="toRankList(item.name)">
         <text class="top-font">TOP.</text>
         <text class="num top-font">{{item.realNumber}}</text>
-        <text class="rank-text">打扮家{{item.name}}榜单</text>
+        <text class="rank-text">{{item.name}}</text>
         <i class="icon-alert_notice_jump"></i>
         <image :src="item.styleImage" mode=""></image>
       </view>
@@ -191,6 +192,7 @@
         }
       },
       toRankList(data){
+        
         uni.navigateTo({
           url:'/sub-home/pages/find-design/designer-rank-list?initTabName='+data
         })

@@ -39,7 +39,8 @@
                 <view class="designer-topNum"
                   :style="{backgroundImage:index1>2?`url(${bgColorList[3].bgImg})`:`url(${bgColorList[index1].bgImg})`,backgroundSize:'100% 100%'}">
                   <view class="top-font" :style="{color:index1>2?bgColorList[3].color:bgColorList[index1].color}">
-                    {{index1+1}}
+                    <text v-if="!tabIndex">{{index1+1}}</text>
+                    <text v-else>{{item1.sort}}</text>
                   </view>
                 </view>
 

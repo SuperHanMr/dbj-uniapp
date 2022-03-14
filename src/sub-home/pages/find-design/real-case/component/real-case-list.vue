@@ -1,21 +1,15 @@
 <template>
-	<view class="real-case-list" v-if="listData.length > 0">
+	<view class="real-case-list" v-if="realCaseListData.length > 0">
 		<scroll-view class="real-case-list-scroll" :scroll-top="scrollTop" scroll-y="true" @scroll="scroll"
 			@scrolltoupper='scrolltoupper' @scrolltolower='scrolltolower'
 			refresher-enabled='true' @refresherrefresh='refresherrefresh' :refresher-triggered="triggered"
       :lower-threshold='100'
 			>
-			<view class="list" v-for="(item, index) in listData" :key='item.id' @click="toCaseDetail(item)">
+			<view class="list" v-for="item in realCaseListData" :key='item.id' @click="toCaseDetail(item)">
 				<view class="head">
 					<view class="title">
 						<text>{{item.nikeName || '--'}} Ta家</text>
-						<view class="collection-box" :class="{'collection-box-active': item.isCollection}" @click.stop="collectionHandler(item, index)">
-							<image v-if="item.isCollection" class="collection-icon" src="/static/images/collection.png" mode=""></image>
-							<image v-if="!item.isCollection" class="collection-icon" src="/static/images/no_collection.png" mode=""></image>
-							<view class="text">
-								收藏
-							</view>
-						</view>
+						<view class="head-icon icon-alert_notice_jump" @click="goBack"></view>
 					</view>
 					<view class="info">
 						<view class="pattern" v-if="item.roomNum||item.hallNum">
@@ -36,9 +30,8 @@
 						</view>
 					</view>
 					<view class="tag-box">
-						<!-- ...item.customLabelList,  -->
-						<view class="tag" v-for="(tag, index) in itemHandler([item.styleName, ...item.features])" :key='tag.key'>
-							<text v-if="tag && index <=3">{{tag}}</text>
+						<view class="tag" v-for="tag in itemHandler(item)" :key='tag.key'>
+							<text v-if="tag">{{tag}}</text>
 						</view>
 					</view>
 				</view>
@@ -62,10 +55,7 @@
 </template>
 
 <script>
-	import ImgList from './img-list.vue';
-	import {
-	  getCollection,
-	} from "@/api/real-case.js";
+	import ImgList from './img-list.vue'
 	export default {
 		props: {
 			realCaseListData: {
@@ -84,17 +74,7 @@
 			return {
 				noEmit: false,
 				scrollTop: 0,
-				triggered: false,
-				listData: this.$props.realCaseListData
-			}
-		},
-		watch: {
-			realCaseListData: {
-				handler: function handler(val) {
-				  this.listData = val;
-				},
-				deep: true,
-				immediate: true
+				triggered: false
 			}
 		},
 		methods: {
@@ -135,8 +115,29 @@
 			refresherrefresh() {
 				this.$emit('refresherrefresh')
 			},
-			itemHandler(arr) {
-				return arr;
+			itemHandler(item) {
+				// let arr = [item.styleName];
+				// if (item.features && item.features.length) {
+				// 	arr.push(item.features[0]);
+				// }
+				// if (item.customLabelList && item.customLabelList.length){
+				// 		arr.unshift(item.customLabelList[0].labelName);
+				// }
+				// return arr;
+				let arr=[];
+				if(item.customLabelList && item.customLabelList.length){
+					arr = item.customLabelList.map(Item=>{
+						return Item.labelName
+					})
+				}
+				if(item.styleName){
+					arr.push(item.styleName)
+				}
+				if(item.features && item.features.length){
+					arr = arr.concat(item.features)
+				}
+				// console.log("自定义标签arr",arr)
+				return arr
 			},
 			nearHandler(item){
 				let itemReturn = '';
@@ -150,24 +151,6 @@
 					itemReturn = `附近${(item.distance / 1000).toFixed(2)}km`
 				}
 				return itemReturn;
-			},
-			collectionHandler(item, index){
-				let list = this.listData;
-				getCollection({
-				  routeId: 5001, // 固定内容
-				  subBizType: item.parentType, // 内容下的子项   视频 VR  图片
-				  relationId: item.id, // 作品ID
-				  authorId: item.zeusId, // 作者ID
-				}).then((res) => {
-				  if (list[index].isCollection != false) {
-				    uni.showToast({
-				      title: "收藏已取消",
-				      icon: "none",
-				    });
-				  }
-				  list[index].isCollection = !list[index].isCollection;
-					this.listData = JSON.parse(JSON.stringify(list));
-				});
 			}
 		}
 	}
@@ -211,33 +194,9 @@
 					}
 				}
 
-				.collection-box {
-					background: #FFFFFF;
-					border: 0.5px solid #CCCCCC;
-					box-sizing: border-box;
-					border-radius: 68rpx;
-					padding: 10rpx 20rpx;
-					display: flex;
-					align-items: center;
-					.collection-icon{
-						width: 20rpx;
-						height: 20rpx;
-					}
-					.text{
-						margin-left: 8rpx;
-						font-size: 20rpx;
-						line-height: 28rpx;
-						height: 28rpx;
-						text-align: center;
-						color: #333333;
-					}
-				}
-				.collection-box-active{
-					background: rgba(255, 192, 91, 0.08);
-					border: 0.5px solid rgba(255, 192, 91, 0.15);
-					.text{
-						color: #FFC05B;
-					}
+				.head-icon {
+					font-size: 20rpx;
+					color: #000000;
 				}
 
 				.info {
@@ -279,6 +238,9 @@
 				.tag-box {
 					display: flex;
 					align-items: center;
+					flex-flow: row wrap;
+					overflow: hidden;
+					max-height: 40rpx;
 
 					.tag {
 						margin-right: 16rpx;

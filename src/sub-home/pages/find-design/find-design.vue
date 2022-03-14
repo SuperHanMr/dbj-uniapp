@@ -90,20 +90,19 @@
             <view class="header">
               <view class="name">{{item2.name}}</view>
               <view class="rank">{{item2.levelName}}设计师</view>
-							<view v-if="item2.rank >=1 && item2.ranks.length">
-								<view class="ranking-container"
-									v-for="rankItem in item2.ranks"
-									:key="rankItem.realNumber"
-									:style="{backgroundImage:`url(${handleLabelImg(rankItem).bgImg})`}"
+							<view class="ranking-container" 
+								v-if="item2.ranks && item2.ranks.length>=1 && item2.ranks[0].realNumber>0"
+								:style="{backgroundImage:`url(${handleLabelImg(item2.ranks[0]).bgImg})`}"
+							>
+								<view class="num top-font" 
+									:style="{color:`#${item2.ranks[0].fontColor}`,background:handleLabelImg(item2.ranks[0]).bgcolor}"
 								>
-									<view class="num top-font" :style="{color:`#${rankItem.fontColor}`,background:handleLabelImg(rankItem).bgcolor}">
-										TOP.{{rankItem.realNumber}}
-                  </view>
-									<view class="text top-font" :style="{color:`#${rankItem.fontColor}`}">
-										{{rankItem.abbreviation}}
-                  </view>
+									TOP.{{item2.ranks[0].realNumber}}
 								</view>
-							</view>
+								<view class="text top-font" :style="{color:`#${item2.ranks[0].fontColor}`}">
+									{{item2.ranks[0].abbreviation}}
+								</view>
+							</view> 
             </view>
             <view class="goodPraise" style="margin-bottom: 8rpx;">
               <view class="item">
@@ -225,13 +224,13 @@
             </view>
           </view>
           <view class="attr_container">
-						<view class="attr_item" v-if="item4.styleName">{{item4.styleName}}</view>
             <view
               class="attr_item"
-							v-if="item4.features"
-              v-for="item5 in item4.features"
+							v-if="itemHandler(item4)"
+              v-for="item5 in itemHandler(item4) "
               :key="item5"
             >{{item5}}</view>
+						
           </view>
         </view>
         <image
@@ -487,7 +486,30 @@ export default {
 				url:`../../../sub-classify/pages/goods-detail/goods-detail?goodId=${item.id}`,
 			});
 		},
-
+		itemHandler(item) {
+			// let arr = [item.styleName];
+			// if (item.features && item.features.length) {
+			// 	arr.push(item.features[0]);
+			// }
+			// if (item.customLabelList && item.customLabelList.length){
+			// 	arr.unshift(item.customLabelList[0].labelName);
+			// }
+			// return arr;
+			let arr=[];
+			if(item.customLabelList && item.customLabelList.length){
+				arr = item.customLabelList.map(Item=>{
+					return Item.labelName
+				})
+			}
+			if(item.styleName){
+				arr.push(item.styleName)
+			}
+			if(item.features && item.features.length){
+				arr = arr.concat(item.features)
+			}
+			// console.log("自定义标签arr",arr)
+			return arr
+		},
 		// 换一批
 		changeDesignerList(){
 			console.log("换一批！")
@@ -572,7 +594,6 @@ export default {
 		},
 		//处理标签图片展示问题
 		handleLabelImg(rankItem){
-			console.log("rankIteman",rankItem.styleCode,typeof rankItem.styleCode)
 			switch(rankItem.styleCode){
 				case 1:
 					return this.labelList[0];
@@ -581,7 +602,6 @@ export default {
 				case 3:
 					return  this.labelList[2];
 				case 9999: 
-					console.log("99999",)
 					return  this.labelList[3];
 			}
 		},
@@ -790,7 +810,7 @@ export default {
 
         .attr {
           display: flex;
-          flex-flow: row nowrap;
+          flex-flow: row wrap;
           align-items: center;
 					height: 34rpx;
 					overflow: hidden;
@@ -878,7 +898,6 @@ export default {
 			text-align: center;
 			font-weight: 500;
 			font-size: 20rpx;
-
 		}
 		
 	}
@@ -1070,7 +1089,8 @@ export default {
       .attr_container {
         display: flex;
         flex-flow: row wrap;
-				min-height: 40rpx;
+				max-height: 40rpx;
+				overflow: hidden;
         align-items: center;
         .attr_item {
           // width: 128rpx;

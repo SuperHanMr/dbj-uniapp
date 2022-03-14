@@ -70,18 +70,14 @@
               <view class="designer-name">{{designer.name}}</view>
               <view class="designer-level">
                 <view class="level-label">{{designer.levelName}}{{designer.roleName}}</view>
-                <view v-if="designer.rank > 0">
-									<view class="rank-label"
-									v-for="rankItem in designer.ranks"
-									:key="rankItem"
-									:style="{backgroundImage:`url(${handleLabelImg(rankItem).bgImg})`,}"
+								<view class="rank-label" v-if="designer.rank > 0"
+								:style="{backgroundImage:`url(${handleLabelImg(designer.ranks[0]).bgImg})`,}"
 								>
-										<view class="rank-left top-font" :style="{color:`#${rankItem.fontColor}`,background:handleLabelImg(rankItem).bgcolor}">
-											TOP.{{rankItem.realNumber}}</view>
-										<view class="rank-right top-font" :style="{color:`#${rankItem.fontColor}`}">
-										{{rankItem.abbreviation}}</view>
-									</view>
-                </view>
+									<view class="rank-left top-font" :style="{color:`#${designer.ranks[0].fontColor}`,background:handleLabelImg(designer.ranks[0]).bgcolor}">
+										TOP.{{designer.ranks[0].realNumber}}</view>
+									<view class="rank-right top-font" :style="{color:`#${designer.ranks[0].fontColor}`}">
+									{{designer.ranks[0].abbreviation}}</view>
+								</view>
               </view>
             </view>
             <view class="designer-opera">
@@ -126,35 +122,31 @@
             </view>
           </view>
           <view class="case-wrapper" v-if="getCaseList(designer).length">
-            <template
-              v-for="item in getCaseList(designer)"
-            >
-              <view class="case-item"  :key="item.id">
-                <view class="case-image">
-                  <image mode="aspectFill" :src="item.imageUrl"></image>
-                  <view class="isFamos" v-if="item.famous === 1"></view>
-                  <view class="isBest" v-if="item.favourite === 1"></view>
-                </view>
-                <view class="case-title">
-                  <text>{{item.caseName}}</text>
-                </view>
-                <view class="case-info">
-                  <text v-if="item.roomNum">{{item.roomNum}}室</text>
-                  <text v-if="item.hallNum">{{item.hallNum}}厅</text>
-                  <text v-if="item.kitchenNum">{{item.kitchenNum}}厨</text>
-                  <text v-if="item.bathroomNum">{{item.bathroomNum}}卫</text>
-                  <template v-if="item.insideArea">
-                    <text class="split">|</text>
-                    <text>{{item.insideArea}}㎡</text>
-                  </template>
-                  <template v-if="item.budget">
-                    <text class="split">|</text>
-                    <text>预算:￥{{item.budget}}万</text>
-                  </template>
-
-                </view>
+            <view class="case-item"   v-for="item in getCaseList(designer)"  :key="item.id" >
+              <view class="case-image">
+                <image mode="aspectFill" :src="item.imageUrl"></image>
+                <view class="isFamos" v-if="item.famous === 1"></view>
+                <view class="isBest" v-if="item.favourite === 1"></view>
               </view>
-            </template>
+              <view class="case-title">
+                <text>{{item.caseName}}</text>
+              </view>
+              <view class="case-info">
+                <text v-if="item.roomNum">{{item.roomNum}}室</text>
+                <text v-if="item.hallNum">{{item.hallNum}}厅</text>
+                <text v-if="item.kitchenNum">{{item.kitchenNum}}厨</text>
+                <text v-if="item.bathroomNum">{{item.bathroomNum}}卫</text>
+                <template v-if="item.insideArea">
+                  <text class="split">|</text>
+                  <text>{{item.insideArea}}㎡</text>
+                </template>
+                <template v-if="item.budget">
+                  <text class="split">|</text>
+                  <text>预算:￥{{item.budget}}万</text>
+                </template>
+
+              </view>
+            </view>
 
           </view>
         </view>
@@ -396,7 +388,6 @@ export default {
     },
 		//处理标签图片展示问题
 		handleLabelImg(rankItem){
-			console.log("rankIteman",rankItem.styleCode,typeof rankItem.styleCode)
 			switch(rankItem.styleCode){
 				case 1:
 					return this.labelList[0];
@@ -405,7 +396,6 @@ export default {
 				case 3:
 					return  this.labelList[2];
 				case 9999:
-					console.log("99999",)
 					return  this.labelList[3];
 			}
 		},
