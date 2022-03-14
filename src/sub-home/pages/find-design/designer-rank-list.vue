@@ -406,7 +406,7 @@
     padding: 0 24rpx 24rpx;
     height: calc(100% - 380rpx);
     background-color: #101216 !important;
-
+    padding-top: 20rpx;
     .designer-item {
       padding-top: 40rpx;
       box-sizing: border-box;
