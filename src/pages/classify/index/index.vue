@@ -1,6 +1,6 @@
 <template>
 	<view class="classify">
-		<view class="nav-box">
+		<view :class="['nav-box', {'nav-box-active': navActive}]">
 			<view class="uni-searchbar" @click="searchClick">
 				<view class="uni-searchbar__box-icon-search">
 					<uni-icons color="#999999" size="18" type="search" />
@@ -23,7 +23,7 @@
 			</view>
 		</view>
 		<scroll-view class="classify-scroll" scroll-y="true" @scrolltolower='scrolltolower' refresher-enabled='true'
-			@refresherrefresh='refresherrefresh' :refresher-triggered="triggered">
+			@refresherrefresh='refresherrefresh' @scroll="scrollHandler" :refresher-triggered="triggered">
 			<Head :swiperAuto="swiperAuto" />
 			<view class="container-box">
 				<Container />
@@ -47,7 +47,8 @@
 			return {
 				swiperAuto: false,
 				page: 0,
-				areaId: 43
+				areaId: 43,
+				navActive: false
 			}
 		},
 		onShow() {
@@ -62,6 +63,23 @@
 			},
 			refresherrefresh() {
 
+			},
+			scrollHandler(e) {
+				if (e.detail && e.detail.scrollTop) {
+					if (e.detail.scrollTop >= 100) {
+						if (!this.navActive) {
+							this.navActive = true;
+						} else {
+							return;
+						}
+					} else {
+						if (this.navActive) {
+							this.navActive = false;
+						} else {
+							return;
+						}
+					}
+				}
 			}
 		}
 	}
@@ -70,18 +88,16 @@
 <style lang="scss" scoped>
 	.nav-box {
 		position: fixed;
-		top: 28rpx;
+		top: 0rpx;
 		left: 0rpx;
-		padding: 0 32rpx;
 		width: 100%;
-		height: 62rpx;
 		z-index: 102;
 		display: flex;
+		padding: 28rpx 32rpx 30rpx;
 
 		.right {
 			flex: 1;
 			display: flex;
-			align-items: center;
 
 			.box {
 				width: 64rpx;
@@ -115,6 +131,18 @@
 				width: 32rpx;
 				height: 32rpx;
 				line-height: 32rpx;
+			}
+		}
+	}
+
+	.nav-box-active {
+		background-color: #fff;
+
+		.right {
+
+			.store,
+			.shoppingcart {
+				color: #666666;
 			}
 		}
 	}
