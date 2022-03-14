@@ -9,7 +9,8 @@
       </template>
     </custom-navbar>
 
-    <view class="bgImg" :style="{backgroundImage:`url(${headerBgImg})`,}" v-if="!isFold">
+    <view class="bgImg" v-if="!isFold">
+      <image src="../../static/design-bg.png" mode="" class="bgImgPng"></image>
       <view class="rankExplain" @click="openExplain">
         榜单说明
       </view>
@@ -167,7 +168,6 @@
     data() {
       return {
         scrollTop: 0,
-        headerBgImg: "../../static/design-bg.png",
         bgColorList: [{
             bgColor: "#EDC48E",
             color: "#725947",
@@ -374,7 +374,10 @@
       display: flex;
       align-items: flex-end;
       justify-content: flex-end;
-
+     .bgImgPng{
+       width: 100%;
+       height: 100%;
+     }
       .rankExplain {
         width: 52rpx;
         height: 130rpx;
