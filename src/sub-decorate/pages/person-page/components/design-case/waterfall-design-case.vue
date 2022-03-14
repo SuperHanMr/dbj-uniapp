@@ -46,7 +46,7 @@
         <view class="" v-if="params.styleName">
           {{params.styleName}}
         </view>
-        <view v-for="(item,index) of params.features" :key='index'>{{ item.features}}</view>
+        <view v-for="(item,index) of params.features" :key='index'>{{ item}}</view>
         
       </view>
 			<view class="case-info">
