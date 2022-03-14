@@ -116,14 +116,28 @@
 				this.$emit('refresherrefresh')
 			},
 			itemHandler(item) {
-				let arr = [item.styleName];
-				if (item.features && item.features.length) {
-					arr.push(item.features[0]);
+				// let arr = [item.styleName];
+				// if (item.features && item.features.length) {
+				// 	arr.push(item.features[0]);
+				// }
+				// if (item.customLabelList && item.customLabelList.length){
+				// 		arr.unshift(item.customLabelList[0].labelName);
+				// }
+				// return arr;
+				let arr=[];
+				if(item.customLabelList && item.customLabelList.length){
+					arr = item.customLabelList.map(Item=>{
+						return Item.labelName
+					})
 				}
-				if (item.customLabelList && item.customLabelList.length){
-						arr.unshift(item.customLabelList[0].labelName);
+				if(item.styleName){
+					arr.push(item.styleName)
 				}
-				return arr;
+				if(item.features && item.features.length){
+					arr = arr.concat(item.features)
+				}
+				// console.log("自定义标签arr",arr)
+				return arr
 			},
 			nearHandler(item){
 				let itemReturn = '';
@@ -224,6 +238,9 @@
 				.tag-box {
 					display: flex;
 					align-items: center;
+					flex-flow: row wrap;
+					overflow: hidden;
+					max-height: 40rpx;
 
 					.tag {
 						margin-right: 16rpx;
