@@ -466,7 +466,7 @@ export default {
 		},
 		gotoRankDetail(){
 			uni.navigateTo({
-				url:"../../../sub-classify/pages/rank-list/rank-detail"
+				url:"../../../sub-classify/pages/brand-list/brand-detail"
 			})
 		},
 		// 换一批

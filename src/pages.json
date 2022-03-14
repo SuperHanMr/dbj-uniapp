@@ -672,7 +672,7 @@
 					}
 				},
 				{
-					"path" : "pages/rank-list/rank-list",
+					"path" : "pages/brand-list/brand-list",
 					"style" : {
 						"navigationBarTitleText": "",
 						"enablePullDownRefresh": false,
@@ -680,7 +680,7 @@
 					}
 				},
 				{
-					"path" : "pages/rank-list/rank-detail",
+					"path" : "pages/brand-list/brand-detail",
 					"style" : {
 						"navigationBarTitleText": "",
 						"enablePullDownRefresh": false,
