@@ -16,7 +16,7 @@
         </view>
       </template>
     </custom-navbar>
-
+		
     <view
       class="header-container"
       :style="{backgroundImage:`url(${bgImg2})`}"
@@ -49,7 +49,11 @@
         </view>
       </view>
     </view>
+		
     <view class="recommendForYou-container">
+			<view @click="gotoRankDetail">
+					去品牌详情页面
+			</view>
       <view class="title_container">
         <view class="left">
 					<view class="recommend">
@@ -460,7 +464,11 @@ export default {
 				url:`../../../sub-classify/pages/goods-detail/goods-detail?goodId=${item.id}`,
 			});
 		},
-
+		gotoRankDetail(){
+			uni.navigateTo({
+				url:"../../../sub-classify/pages/rank-list/rank-detail"
+			})
+		},
 		// 换一批
 		changeDesignerList(){
 			console.log("换一批！")
