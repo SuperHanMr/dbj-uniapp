@@ -116,7 +116,7 @@
       <view class="value-rank" :style="{'color':`#${item.fontColor}`}" v-for="(item,index) in rankData" :key='index' v-if="item.realNumber>0" @click="toRankList(item.name)">
         <text class="top-font">TOP.</text>
         <text class="num top-font">{{item.realNumber}}</text>
-        <text class="rank-text">打扮家{{item.name}}榜单</text>
+        <text class="rank-text">{{item.name}}</text>
         <i class="icon-alert_notice_jump"></i>
         <image :src="item.styleImage" mode=""></image>
       </view>
