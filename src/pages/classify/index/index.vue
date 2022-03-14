@@ -1,140 +1,132 @@
 <template>
-	<view class="tabs">
-		<view class="search">
+	<view class="classify">
+		<view class="nav-box">
 			<view class="uni-searchbar" @click="searchClick">
 				<view class="uni-searchbar__box-icon-search">
 					<uni-icons color="#999999" size="18" type="search" />
-					<text class="uni-searchbar__text-placeholder">请输入搜索内容</text>
+					<text class="uni-searchbar__text-placeholder">搜好货</text>
+				</view>
+			</view>
+			<view class="right">
+				<view class="box box-left">
+					<view class="store icon-shop">
+
+					</view>
+				</view>
+				<view class="box">
+					<view class="shoppingcart icon-shoppingcart">
+						<view class="corner-mark">
+							2
+						</view>
+					</view>
 				</view>
 			</view>
 		</view>
-		<view class="content-view">
-			<!-- :scroll-into-view="'tab' + scrollInto" 点击移动 -->
-			<scroll-view id="tab-bar" class="scroll-h" scroll-x="true" :show-scrollbar="false"
-				v-if="dataList.length > 1" scroll-with-animation="true" :scroll-into-view="'tab' + tabIndex">
-				<view v-for="(tab,index) in dataList" :key="index" :class="{'uni-tab-item': dataList.length >4, 'uni-tab-item-short2': dataList.length === 2,
-             'uni-tab-item-short3': dataList.length === 3, 'uni-tab-item-short4': dataList.length === 4}"
-					:id="'tab' + index" :data-current="index" @click="ontabtap">
-					<text class="uni-tab-item-title"
-						:class="tabIndex==index ? 'uni-tab-item-title-active' : ''">{{tab.name}}</text>
-				</view>
-			</scroll-view>
-			<swiper :current="tabIndex" style="flex: 1;height: 100%" :duration="300" @change="ontabchange">
-				<swiper-item class="swiper-item" v-for="(tab,index1) in dataList" :key="index1">
-					<index-item :detailData="tab['children']" :tabIndex="tabIndex"></index-item>
-				</swiper-item>
-			</swiper>
-		</view>
+		<scroll-view class="classify-scroll" scroll-y="true" @scrolltolower='scrolltolower' refresher-enabled='true'
+			@refresherrefresh='refresherrefresh' :refresher-triggered="triggered">
+			<Head :swiperAuto="swiperAuto" />
+			<view class="container-box">
+				<Container />
+			</view>
+			<ShopList :page="page" :areaId="areaId" />
+		</scroll-view>
 	</view>
 </template>
-<script>
-	import indexItem from './index-item.vue';
-	import {
-		getClassifyList
-	} from "../../../api/classify.js";
 
+<script>
+	import Head from './components/head.vue';
+	import Container from './components/container.vue';
+	import ShopList from '@/components/classify-shop/shop-list.vue';
 	export default {
 		components: {
-			indexItem
+			Head,
+			Container,
+			ShopList
 		},
 		data() {
 			return {
-				navBarHeight: 0,
-				dataList: [],
-				newsList: [1, 2, 3, 4],
-				cacheTab: [],
-				tabIndex: 0,
-				scrollInto: "",
-				areaId: ''
+				swiperAuto: false,
+				page: 0,
+				areaId: 43
 			}
-		},
-		onShareAppMessage(res) {
-			return {
-				title: '商城',
-				path: `/pages/classify/index/index?areaId=${this.areaId}`
-			}
-		},
-		onLoad(e) {
-			getApp().globalData.currentRoute = "/pages/classify/index/index";
-			if (e.areaId) {
-				this.areaId = e.areaId;
-			} else {
-				this.areaId = getApp().globalData.currentHouse.areaId
-			}
-		},
-		mounted() {
-			uni.showTabBar()
 		},
 		onShow() {
-			uni.showTabBar()
-			//增加首页跳转过来逻辑处理
-			let naviData = getApp().globalData.naviData
-			if (naviData && naviData.id) {
-				this.id = naviData.id;
-				getApp().globalData.naviData = null
-			}
-			this.getList();
-			this.$store.dispatch("updateTabBarBadge");
+			this.swiperAuto = true;
+		},
+		onHide() {
+			this.swiperAuto = false;
 		},
 		methods: {
-			searchClick() {
-				uni.navigateTo({
-					url: "/sub-classify/pages/search/index"
-				})
+			scrolltolower() {
+
 			},
-			getList() {
-				let areaId = this.areaId;
-				getClassifyList(areaId).then((data) => {
-					this.dataList = data;
-					if (this.id) {
-						for (let i = 0; i < data.length; i++) {
-							if (this.id == data[i].id) {
-								this.tabIndex = i;
-							}
-						}
-					}
-				})
-			},
-			ontabtap(e) {
-				let index = e.target.dataset.current || e.currentTarget.dataset.current;
-				this.id = 0
-				this.switchTab(index);
-			},
-			ontabchange(e) {
-				let index = e.target.current || e.detail.current;
-				this.switchTab(index);
-			},
-			switchTab(index) {
-				if (this.tabIndex === index) {
-					return;
-				}
-				this.tabIndex = index;
-				this.scrollInto = index;
+			refresherrefresh() {
+
 			}
 		}
 	}
 </script>
 
-<style scoped>
-	.search {
-		position: relative;
-		height: 90rpx;
+<style lang="scss" scoped>
+	.nav-box {
+		position: fixed;
+		top: 28rpx;
+		left: 0rpx;
+		padding: 0 32rpx;
+		width: 100%;
+		height: 62rpx;
+		z-index: 102;
+		display: flex;
+
+		.right {
+			flex: 1;
+			display: flex;
+			align-items: center;
+
+			.box {
+				width: 64rpx;
+				height: 64rpx;
+				display: flex;
+				justify-content: center;
+				align-items: center;
+			}
+
+			.box-left {
+				margin-left: 24rpx;
+			}
+
+			.store,
+			.shoppingcart {
+				font-size: 34rpx;
+				color: #fff;
+				position: relative;
+			}
+
+			.corner-mark {
+				position: absolute;
+				top: -16rpx;
+				left: 20rpx;
+				background: linear-gradient(117.02deg, #FA3B34 24.56%, #FF6A33 92.21%);
+				border: 0.5px solid #FFFFFF;
+				color: #FFFFFF;
+				text-align: center;
+				font-size: 20rpx;
+				border-radius: 50%;
+				width: 32rpx;
+				height: 32rpx;
+				line-height: 32rpx;
+			}
+		}
 	}
 
 	.uni-searchbar {
 		display: flex;
-		align-items: center;
-		position: absolute;
-		left: 0;
-		right: 0;
-		top: 0;
-		bottom: 0;
-		margin: auto;
-		width: 686rpx;
+		width: 534rpx;
 		height: 62rpx;
-		opacity: 1;
+		opacity: .85;
+		backdrop-filter: blur(16px);
 		background: #f7f7f7;
-		border-radius: 16rpx;
+		border-radius: 116rpx;
 	}
 
 	.uni-searchbar__box-icon-search {
@@ -151,103 +143,18 @@
 		margin-left: 10rpx;
 	}
 
-	.content-view {
-		height: 100%
-	}
-
-	.tabs {
-		flex: 1;
-		flex-direction: column;
-		overflow: hidden;
-		background-color: #ffffff;
+	.classify {
+		width: 100%;
 		height: 100vh;
 	}
 
-	.scroll-h {
-		width: 100%;
-		height: 80rpx;
-		text-align: center;
-		white-space: nowrap;
-		padding-right: 16rpx;
+	.classify-scroll {
+		height: 100%;
 	}
 
-	.uni-tab-item-short2 {
-		display: inline-block;
-		text-align: center;
-		min-width: calc(50% - 64rpx);
-		width: fit-content;
-		margin: 0 1%;
-	}
-
-	.uni-tab-item-short3 {
-		display: inline-block;
-		flex-wrap: nowrap;
-		text-align: center;
-		min-width: calc(33.3% - 42.7rpx);
-		width: fit-content;
-		margin: 0 1%;
-	}
-
-	.uni-tab-item-short4 {
-		display: inline-block;
-		flex-wrap: nowrap;
-		text-align: center;
-		min-width: calc(25% - 32rpx);
-		width: fit-content;
-		margin: 0 1%;
-	}
-
-	.uni-tab-item {
-		/* #ifndef APP-PLUS */
-		display: inline-block;
-		/* #endif */
-		flex-wrap: nowrap;
-		text-align: center;
-		width: fit-content;
-		padding: 0 26rpx;
-	}
-
-	.uni-tab-item-title {
-		color: #555;
-		font-size: 30rpx;
-		height: 80rpx;
-		line-height: 80rpx;
-		flex-wrap: nowrap;
-		white-space: nowrap;
-		font-family: PingFangSC;
-		color: #999999;
-	}
-
-	.uni-tab-item-title-active {
-		position: relative;
-		color: #111111;
-	}
-
-	.uni-tab-item-title-active::after {
-		content: "";
-		display: inline-block;
-		width: 32rpx;
-		height: 6rpx;
-		background: linear-gradient(116.19deg, #F83112 16.48%, #FD6421 83.52%);
-		border-radius: 100px 100px 0px 0px;
-		position: absolute;
-		bottom: -12rpx;
-		left: 0;
-		right: 0;
-		margin: auto;
-	}
-
-	.swiper-item {
-		flex: 1;
-		flex-direction: row;
-	}
-
-	.scroll-v {
-		flex: 1;
-		/* #ifndef MP-ALIPAY */
-		flex-direction: column;
-		/* #endif */
-		width: 750rpx;
-		width: 100%;
+	.container-box {
+		background: #FFFFFF;
+		border-radius: 16rpx 16rpx 0 0;
+		padding: 48rpx 32rpx;
 	}
 </style>

@@ -15,7 +15,7 @@
     	      src="https://ali-image.dabanjia.com/static/mp/dabanjia/images/theme-red/home/home_ic_down.png" mode="">
     	    </image>
     	  </view>
-    	  <image @click="toSearch" class="icon-search"
+    	  <image @click="toSearch" class="icon-search-home"
     	    src="/static/home_ic_search.png" mode=""></image>
     	  <image @click="toMessage" class="img"
     	    src="https://ali-image.dabanjia.com/static/mp/dabanjia/images/theme-red/home/online-server.png" mode="">
@@ -848,7 +848,7 @@
     }
   }
 
-  .icon-search {
+  .icon-search-home {
     width: 48rpx;
     height: 48rpx;
     margin-right: 32rpx;
