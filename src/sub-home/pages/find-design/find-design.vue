@@ -487,14 +487,28 @@ export default {
 			});
 		},
 		itemHandler(item) {
-			let arr = [item.styleName];
-			if (item.features && item.features.length) {
-				arr.push(item.features[0]);
+			// let arr = [item.styleName];
+			// if (item.features && item.features.length) {
+			// 	arr.push(item.features[0]);
+			// }
+			// if (item.customLabelList && item.customLabelList.length){
+			// 	arr.unshift(item.customLabelList[0].labelName);
+			// }
+			// return arr;
+			let arr=[];
+			if(item.customLabelList && item.customLabelList.length){
+				arr = item.customLabelList.map(Item=>{
+					return Item.labelName
+				})
 			}
-			if (item.customLabelList && item.customLabelList.length){
-					arr.unshift(item.customLabelList[0].labelName);
+			if(item.styleName){
+				arr.push(item.styleName)
 			}
-			return arr;
+			if(item.features && item.features.length){
+				arr = arr.concat(item.features)
+			}
+			// console.log("自定义标签arr",arr)
+			return arr
 		},
 		// 换一批
 		changeDesignerList(){
@@ -1075,7 +1089,8 @@ export default {
       .attr_container {
         display: flex;
         flex-flow: row wrap;
-				min-height: 40rpx;
+				max-height: 40rpx;
+				overflow: hidden;
         align-items: center;
         .attr_item {
           // width: 128rpx;

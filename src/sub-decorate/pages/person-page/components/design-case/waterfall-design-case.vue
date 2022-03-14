@@ -42,11 +42,11 @@
       </view>
 			<view class="title">{{params.caseName}}</view>
       <view class="tag">
-        <view v-if="params.customLabelList">{{params.customLabelList[0].labelName}}</view>
+        <view v-for="(item,index) of params.customLabelList" :key='index'>{{item.labelName}}</view>
         <view class="" v-if="params.styleName">
           {{params.styleName}}
         </view>
-        <view v-if="params.features">{{ params.features[0]}}</view>
+        <view v-for="(item,index) of params.features" :key='index'>{{ item}}</view>
         
       </view>
 			<view class="case-info">
