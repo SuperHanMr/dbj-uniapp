@@ -285,9 +285,9 @@
 		display: flex;
 		align-item: center;
 		.flagship-store-icon{
-			font-size: 20rpx;
+			font-size: 16rpx;
 			color: #999999;
-			margin: 4rpx 0 0 4rpx;
+			margin: 7rpx 0 0 4rpx;
 		}
 	}
 </style>
