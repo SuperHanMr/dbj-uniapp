@@ -21,10 +21,10 @@
         
       </view>
 			<view class="position-icon">
-				<image src="/static/images/real-case/video_ic.png" mode="" v-if="params.parentType == 0"></image>
-				<image src="/static/images/real-case/ic_vr.png" mode="" v-if="params.parentType == 1"></image>
-				<image src="/static/images/real-case/img_ic.png" mode="" v-if="params.parentType > 1&&params.recommendCategoryVO.categoryCount==0"></image>
-        <image src="/static/images/real-case/ic_goods.png" mode="" v-if="params.parentType > 1&&params.recommendCategoryVO.categoryCount>0"></image>
+				<i class="icon-video" mode="" v-if="params.parentType == 0"></i>
+				<i class="icon-vr" mode="" v-if="params.parentType == 1"></i>
+				<i class="icon-image" mode="" v-if="params.parentType > 1&&params.recommendCategoryVO.categoryCount==0"></i>
+        <i class="icon-shops" mode="" v-if="params.parentType > 1&&params.recommendCategoryVO.categoryCount>0"></i>
 			</view>
 		</view>
 		<!-- <video v-if="params.parentType !== 0" id="myVideo" :src="params.videoUrl"
@@ -180,9 +180,13 @@
 			position: absolute;
 			right: 16rpx;
 			top: 16rpx;
-			image{
-				width: 44rpx;
-				height: 44rpx;
+      background-color:  rgba(0, 0, 0, 0.2);
+      padding: 10rpx;
+      border-radius: 50%;
+			i{
+				font-size: 22rpx;
+				color: #fff;
+        opacity: 1;
 			}
 		}
 	}
