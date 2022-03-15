@@ -328,6 +328,7 @@
             // margin-top: 6rpx;
             line-height: 42rpx;
             font-size: 20rpx;
+            opacity: 0.9;
           }
           .icon-a-homepage_data{
             margin-top: 4rpx;
@@ -435,6 +436,7 @@
       }
       .rank-text{
         letter-spacing: 0.2px;
+        font-weight: 500;
       }
       .num{
         margin: 0 54rpx 0 8rpx;
