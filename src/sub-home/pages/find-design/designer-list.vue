@@ -70,7 +70,7 @@
               <view class="designer-name">{{designer.name}}</view>
               <view class="designer-level">
                 <view class="level-label">{{designer.levelName}}{{designer.roleName}}</view>
-								<view class="rank-label" v-if="designer.rank > 0"
+								<view class="rank-label" v-if="designer.ranks && designer.ranks.length > 0 && designer.ranks[0].realNumber > 0 && designer.ranks[0].realNumber < 100"
 								:style="{backgroundImage:`url(${handleLabelImg(designer.ranks[0]).bgImg})`,}"
 								>
 									<view class="rank-left top-font" :style="{color:`#${designer.ranks[0].fontColor}`,background:handleLabelImg(designer.ranks[0]).bgcolor}">
@@ -88,7 +88,7 @@
             </view>
           </view>
 
-          <view class="rate-wrapper" v-if="designer.totalCount>0 && designer.praiseEfficiency">
+          <view class="rate-wrapper" >
             <text class="designer-score" v-if="designer.totalCount>0">服务次数 {{designer.totalCount}}</text>
             <view
               class="split-line"
@@ -134,15 +134,15 @@
               <view class="case-info">
                 <text v-if="item.roomNum">{{item.roomNum}}室</text>
                 <text v-if="item.hallNum">{{item.hallNum}}厅</text>
-                <text v-if="item.kitchenNum">{{item.kitchenNum}}厨</text>
-                <text v-if="item.bathroomNum">{{item.bathroomNum}}卫</text>
+                <!-- <text v-if="item.kitchenNum">{{item.kitchenNum}}厨</text>
+                <text v-if="item.bathroomNum">{{item.bathroomNum}}卫</text> -->
                 <template v-if="item.insideArea">
-                  <text class="split">|</text>
-                  <text>{{item.insideArea}}㎡</text>
+                  <text class="split" v-if="item.roomNum || item.hallNum">|</text>
+                  <text>{{item.insideArea >= 1 ? item.insideArea : '-'}}㎡</text>
                 </template>
                 <template v-if="item.budget">
                   <text class="split">|</text>
-                  <text>预算:￥{{item.budget}}万</text>
+                  <text>预算:￥{{item.budget >= 1 ? item.budget : '-'}}万</text>
                 </template>
 
               </view>
