@@ -1,20 +1,25 @@
 <template>
 	<view class="container">
-		<custom-navbar
+		<custom-navbar 
 		  :opacity="scrollTop/100"
-		  title="品牌详情"
+		  title="品牌名称"
 		  bgcolor="#FFF"
 		>
 		  <template v-slot:back>
 		    <view @click="toBack">
 		      <i
-		        class="icon-ic_cancel_white header-back"
-		        style="color:white"
-		      >
+						class="icon-ic_cancel_white header-back"
+		        :style="{color:scrollTop>0?'black':'white'}"
+					>
 		      </i>
 		    </view>
 		  </template>
 		</custom-navbar>
+		
+		
+		
+		
+		
 		<view class="baseInfo-contaienr">
 			<view class="bgImg"></view>
 			<view class="baseInfo">
@@ -39,7 +44,17 @@
 					<view class="scrollContaienr">
 						<scroll-view scroll-x="true" style="white-space: nowrap;">
 							<view class="itemStyle">
-								<video src="https://1257297063.vod2.myqcloud.com/cc93f4acvodcq1257297063/2a750abf8602268010648813155/f0.mp4" controls></video>
+								<video 
+									:autoplay="true"
+									:muted="true"
+									:controls="false"
+									:show-fullscreen-btn="false"
+									:object-fit="fill"
+									:show-center-play-btn="false"
+									@play="continuePlay"
+									@pause="pause"
+									src="https://ali-video-test.dabanjia.com/video/20220225/17/1645781404867_5025%24%E8%A7%86%E9%A2%91.mp4"
+								></video>
 							</view>
 							<view class="itemStyle" v-for="ITEM in 4" :key="ITEM">
 								<image  src="../../static/image/pay-bg.png" mode=""></image>
@@ -51,6 +66,22 @@
 					</view>
 				</view>
 			</view>
+			
+			<view class="productContainer">
+				<view class="title">
+					<text class="name">品牌商品</text>
+					<view class="allProduct">
+						<text>全部商品</text>
+						<image src="../../../static/images/ic_more_black.png" mode=""></image>
+					</view>
+				</view>
+				<view class="checkBox">
+					<view class="checkItem" v-for="labelItem in checkList" :key="labelItem">
+						{{labelItem}}
+					</view>
+				</view>
+			</view>
+		
 		</view>
 		<!-- 弹框 -->
 		<uni-popup ref="brandExplain" type="bottom" >
@@ -75,11 +106,34 @@
 </template>
 
 <script>
+	var query = {};
 	export default {
 		data() {
 			return {
-				
+				opacityNum: 0,
+				scrollTop:0,
+				productTop:0,
+				checkList:["中式","欧式","田园","这是风格标签","风格啊","风格啊","这是自定义标签","这是样式标签","样式标签啊","随意写的一个标签","aa这个也是标签"],
 			}
+		},
+		computed: {
+		  navStyle() {
+		    console.log(this.opacityNum)
+		    return {
+		      opacity: this.opacityNum,
+		    };
+		  },
+		},
+		onPageScroll(scrollTop) {
+			// console.log(scrollTop.scrollTop)
+			this.pageScroll(scrollTop.scrollTop);
+		},
+		onLoad() {
+			query = uni.createSelectorQuery();
+			query.select().boundingClientRect(res=>{
+				this.productTop =res?res.top:0
+			})
+			query.exec(function (res) {});
 		},
 		methods: {
 			toBack(){
@@ -90,7 +144,34 @@
 			},
 			closeBrandExplain(){
 				this.$refs.brandExplain.close()
-			}
+			},
+			continuePlay(){
+				console.log("继续播放！")
+			},
+			pause(){
+				console.log("暂停播放！")
+			},
+			changeOpacity(num) {
+			  // console.log(num)
+			  num < 150
+			    ? (this.opacityNum = 0)
+			    : num < 180
+			    ? (this.opacityNum = 0.8)
+			    : (this.opacityNum = 1);
+			  // console.log(this.opacityNum)
+			},
+			
+			pageScroll(scrollTop) {
+			  this.scrollTop = scrollTop;
+			  //从深层页面返回时，避免触发导致显示异常
+			  if(scrollTop!=0){
+			    this.changeOpacity(this.scrollTop);
+			  }
+			  this.getTopDistance();
+			},
+			getTopDistance() {
+			  query.exec(function (res) {});
+			},
 		}
 	}
 </script>
@@ -100,6 +181,7 @@
 		.container{
 			height: 100%;
 		}
+		
 		.baseInfo-contaienr{
 			// padding: 0;
 			padding-top: 304rpx;
@@ -182,7 +264,7 @@
 				.brandAlbum{
 					.header{
 						color: #333333;
-						font-weight: 500;
+						font-weight: bolder;
 						font-size: 32rpx;
 						height: 44rpx;
 						line-height: 44rpx;
@@ -203,6 +285,50 @@
 								border-radius: 16rpx;
 							}
 						}
+					}
+				}
+			}
+			.productContainer{
+				background-color: #fff;
+				.title{
+					height: 108rpx;
+					display: flex;
+					align-items: center;
+					flex-flow: row nowrap;
+					justify-content: space-between;
+					box-sizing: border-box;
+					padding: 0 22rpx 0 32rpx;
+					.name{
+						color: #222222;
+						font-size: 32rpx;
+						font-weight: bolder;
+					}
+					.allProduct{
+						display: flex;
+						align-items: center;
+						text{
+							color: #333333;
+							font-size: 24rpx;
+						}
+						image{
+							width: 28rpx;
+							height: 28rpx;
+						}
+					}
+				}
+				.checkBox{
+					padding: 0 0 24rpx 32rpx;
+					overflow-x: scroll;
+					white-space: nowrap;
+					.checkItem{
+						display: inline-block;
+						padding: 11rpx 20rpx;
+						height: 34rpx;
+						line-height: 34rpx;
+						color: #999999;
+						background: #F7F7F7;
+						border-radius: 10rpx;
+						margin-right: 16rpx;
 					}
 				}
 			}
@@ -258,5 +384,8 @@
 			font-size: 26rpx;
 			letter-spacing: 1rpx;
 		}
+		
+		
+		
 		
 </style>
