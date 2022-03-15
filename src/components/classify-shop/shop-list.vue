@@ -1,3 +1,7 @@
+/**
+ * shopList  列表数据
+ * page 当前查询列表的下标  需要用来区分是否是下拉刷新
+*/
 <template>
   <view class="goods-list">
 
@@ -38,10 +42,6 @@
         type: Number,
         default: 1,
       },
-      areaId: {
-        type: Number,
-        default: 0,
-      },
 			shopList: {
 				type: Array,
 				default: () => []
@@ -57,7 +57,6 @@
 		watch:{
 			shopList: {
 				handler: function handler(val) {
-					debugger
 				  if (this.page == 1) {
 				    this.list1 = [];
 				    this.list2 = [];
