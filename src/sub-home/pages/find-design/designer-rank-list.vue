@@ -29,7 +29,8 @@
               <image src="../../static/valuest-designer.png" mode="" v-else></image>
             </view>
             <view class="uni-tab-item-title" :class="tabIndex==index ? 'uni-tab-item-title-active' : ''" v-else>
-              {{tab.name}}</view>
+              {{tab.name}}
+            </view>
           </view>
         </scroll-view>
         <swiper :current="tabIndex" :duration="300" @change="ontabchange" class="swiper">
@@ -39,11 +40,17 @@
               <view class="designer-bg"
                 :style="{backgroundColor:index1>2?bgColorList[3].bgColor:bgColorList[index1].bgColor}"></view>
               <view class="basicInfo-container">
-                <view class="designer-topNum"
+                <view class="designer-topNum" v-if="!tabIndex"
                   :style="{backgroundImage:index1>2?`url(${bgColorList[3].bgImg})`:`url(${bgColorList[index1].bgImg})`,backgroundSize:'100% 100%'}">
                   <view class="top-font" :style="{color:index1>2?bgColorList[3].color:bgColorList[index1].color}">
-                    <text v-if="!tabIndex">{{index1+1}}</text>
-                    <text v-else>{{item1.sort}}</text>
+                    <text>{{index1+1}}</text>
+                  </view>
+                </view>
+                <view class="designer-topNum" v-else
+                  :style="{backgroundImage:item1.sort>3?`url(${bgColorList[3].bgImg})`:`url(${bgColorList[item1.sort - 1].bgImg})`,backgroundSize:'100% 100%'}">
+                  <view class="top-font"
+                    :style="{color:item1.sort>3?bgColorList[3].color:bgColorList[item1.sort - 1].color}">
+                    <text>{{item1.sort}}</text>
                   </view>
                 </view>
 
