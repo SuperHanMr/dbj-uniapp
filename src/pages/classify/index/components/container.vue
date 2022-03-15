@@ -121,9 +121,15 @@
 			},
 			brandHandler(){
 				console.log('跳转品牌页')
+				uni.navigateTo({
+					url: '/sub-classify/pages/brand-list/brand-list'
+				})
 			},
 			brandItemHandler(){
 				console.log('跳转对应品牌页面')
+				uni.navigateTo({
+					url: '/sub-classify/pages/brand-list/brand-detail'
+				})
 			}
 		}
 	}
