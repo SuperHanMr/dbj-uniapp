@@ -130,6 +130,7 @@
 		width: 100%;
 		height: 100%;
 		background-color: #ffffff;
+		margin-bottom: 32rpx;
 
 		.list {
 			display: flex;
