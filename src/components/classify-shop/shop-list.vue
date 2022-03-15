@@ -1,3 +1,7 @@
+/**
+ * shopList  列表数据
+ * page 当前查询列表的下标  需要用来区分是否是下拉刷新
+*/
 <template>
   <view class="goods-list">
 
@@ -38,10 +42,10 @@
         type: Number,
         default: 1,
       },
-      areaId: {
-        type: Number,
-        default: 0,
-      },
+			shopList: {
+				type: Array,
+				default: () => []
+			}
     },
     data() {
       return {
@@ -50,24 +54,19 @@
         itemHeight: "",
       };
     },
-    mounted() {
-			this.getHomeGoodsList();
+		watch:{
+			shopList: {
+				handler: function handler(val) {
+				  if (this.page == 1) {
+				    this.list1 = [];
+				    this.list2 = [];
+				  }
+				  this.resetList(val);
+				},
+				immediate: true
+			}
 		},
     methods: {
-      getHomeGoodsList() {
-        getHomeGoodsList({
-          pageIndex: this.page,
-          areaId: this.areaId,
-          simplified: true,
-          excludeFields: "product.spu,product.process, product.store,product.supplier,product.areaIds,product.areaPrices,product.category",
-        }).then((e) => {
-          if (this.page == 1) {
-            this.list1 = [];
-            this.list2 = [];
-          }
-          this.resetList(e.page);
-        });
-      },
       resetList(list) {
         let list1 = [];
         let list2 = [];
@@ -136,6 +135,7 @@
 	.goods-list{
 		position: relative;
 		z-index: 10;
+		background: #fff;
 	}
   .goods-view {
     padding: 0 32rpx;

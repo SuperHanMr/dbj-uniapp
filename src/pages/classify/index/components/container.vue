@@ -1,7 +1,7 @@
 <template>
 	<view class="container">
 		<view class="classify-shop">
-			<view class="list" v-for="item in classList" :key="item.title">
+			<view class="list" v-for="item in classList" :key="item.title" @click="classHandler">
 				<image :src="item.url" class="list-img"></image>
 				<view class="list-title">
 					{{ item.title }}
@@ -9,7 +9,7 @@
 			</view>
 		</view>
 		<view class="recommended">
-			<view class="img-box" v-for="item in recommendedList" :key="item">
+			<view class="img-box" v-for="item in recommendedList" :key="item" @click="recommendedHandler">
 				<image :src="item" mode="" class="img"></image>
 			</view>
 		</view>
@@ -21,7 +21,7 @@
 				<view class="left">
 					<image src="/static/images/classify-brand-text.png" mode="" class="img"></image>
 				</view>
-				<view class="right">
+				<view class="right" @click="brandHandler">
 					<view class="brand-title">
 						全部品牌 (13)
 					</view>
@@ -32,7 +32,7 @@
 			<view class="bottom">
 				<scroll-view class="scroll-view_H" scroll-x="true" scroll-left="0" @scrolltolower="scrolltolowerHandler">
 					<view class="box">
-						<view class="brand-item-box" v-for="item in brandList" :key="item.title">
+						<view class="brand-item-box" v-for="item in brandList" :key="item.title" @click="brandItemHandler">
 							<view class="item-box" v-if="item.key !== 'all'">
 								<image :src="item.url" mode="" class="brand-item-img"></image>
 								<image :src="item.icon" mode="" class="brand-item-icon"></image>
@@ -112,6 +112,18 @@
 		methods:{
 			scrolltolowerHandler(){
 				console.log(111111111)
+			},
+			classHandler(){
+				console.log('分类点击事件')
+			},
+			recommendedHandler(){
+				console.log('推荐点击事件')
+			},
+			brandHandler(){
+				console.log('跳转品牌页')
+			},
+			brandItemHandler(){
+				console.log('跳转对应品牌页面')
 			}
 		}
 	}

@@ -1,6 +1,6 @@
 <template>
 	<view class="classify">
-		<view class="nav-box">
+		<view :class="['nav-box', {'nav-box-active': navActive}]">
 			<view class="uni-searchbar" @click="searchClick">
 				<view class="uni-searchbar__box-icon-search">
 					<uni-icons color="#999999" size="18" type="search" />
@@ -23,12 +23,17 @@
 			</view>
 		</view>
 		<scroll-view class="classify-scroll" scroll-y="true" @scrolltolower='scrolltolower' refresher-enabled='true'
-			@refresherrefresh='refresherrefresh' :refresher-triggered="triggered">
+			@refresherrefresh='refresherrefresh' @scroll="scrollHandler" :refresher-triggered="triggered">
 			<Head :swiperAuto="swiperAuto" />
 			<view class="container-box">
 				<Container />
 			</view>
-			<ShopList :page="page" :areaId="areaId" />
+			<view class="shop-list-box">
+				<view class="recommend-title">
+					精选推荐
+				</view>
+				<ShopList :page="query.page" :shopList="shopList" />
+			</view>
 		</scroll-view>
 	</view>
 </template>
@@ -37,6 +42,9 @@
 	import Head from './components/head.vue';
 	import Container from './components/container.vue';
 	import ShopList from '@/components/classify-shop/shop-list.vue';
+	import {
+	  getHomeGoodsList
+	} from "@/api/classify.js";
 	export default {
 		components: {
 			Head,
@@ -46,8 +54,15 @@
 		data() {
 			return {
 				swiperAuto: false,
-				page: 0,
-				areaId: 43
+				query: {
+					page: 1,
+					row: 10,
+					totalPage: 0
+				},
+				areaId: 43,
+				navActive: false,
+				shopList: [],
+				triggered: false
 			}
 		},
 		onShow() {
@@ -56,13 +71,58 @@
 		onHide() {
 			this.swiperAuto = false;
 		},
+		mounted(){
+			this.getHomeGoodsList();
+		},
 		methods: {
+			getHomeGoodsList() {
+			  getHomeGoodsList({
+			    pageIndex: this.query.page,
+			    areaId: this.areaId,
+			    simplified: true,
+			    excludeFields: "product.spu,product.process, product.store,product.supplier,product.areaIds,product.areaPrices,product.category",
+			  }).then((res) => {
+			    console.log(res, '>>>>>>>>>')
+					this.query.totalPage = res.totalPage;
+					this.query.page++;
+					this.shopList = res.page;
+					this.triggered = false;
+			  });
+			},
 			scrolltolower() {
-
+				console.log('scrolltolower')
+				if (this.query.totalPage >= this.query.page) {
+					this.getHomeGoodsList();
+				}
 			},
 			refresherrefresh() {
-
-			}
+				this.shopList = [];
+				this.query.page = 1;
+				this.triggered = true;
+				this.getHomeGoodsList();
+			},
+			scrollHandler(e) {
+				if (e.detail && e.detail.scrollTop) {
+					if (e.detail.scrollTop >= 60) { 
+						if (!this.navActive) {
+							this.navActive = true;
+						} else {
+							return;
+						}
+					} else {
+						if (this.navActive) {
+							this.navActive = false;
+						} else {
+							return;
+						}
+					}
+				}
+			},
+			searchClick() {
+				uni.navigateTo({
+					url: "/sub-classify/pages/search/index"
+				})
+			},
 		}
 	}
 </script>
@@ -70,18 +130,16 @@
 <style lang="scss" scoped>
 	.nav-box {
 		position: fixed;
-		top: 28rpx;
+		top: 0rpx;
 		left: 0rpx;
-		padding: 0 32rpx;
 		width: 100%;
-		height: 62rpx;
 		z-index: 102;
 		display: flex;
+		padding: 28rpx 32rpx 30rpx;
 
 		.right {
 			flex: 1;
 			display: flex;
-			align-items: center;
 
 			.box {
 				width: 64rpx;
@@ -115,6 +173,18 @@
 				width: 32rpx;
 				height: 32rpx;
 				line-height: 32rpx;
+			}
+		}
+	}
+
+	.nav-box-active {
+		background-color: #fff;
+
+		.right {
+
+			.store,
+			.shoppingcart {
+				color: #666666;
 			}
 		}
 	}
@@ -156,5 +226,17 @@
 		background: #FFFFFF;
 		border-radius: 16rpx 16rpx 0 0;
 		padding: 48rpx 32rpx;
+	}
+	
+	.shop-list-box{
+		background: #fff;
+		.recommend-title{
+			padding-left: 34rpx;
+			font-weight: 600;
+			font-size: 32rpx;
+			color: #2B2F33;
+			margin-bottom: 16rpx;
+		}
+		
 	}
 </style>
