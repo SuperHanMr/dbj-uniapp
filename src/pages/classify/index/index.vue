@@ -8,12 +8,12 @@
 				</view>
 			</view>
 			<view class="right">
-				<view class="box box-left">
+				<view class="box box-left" @click="toStoreHandler">
 					<view class="store icon-shop">
 
 					</view>
 				</view>
-				<view class="box">
+				<view class="box" @click="toShoppingCartHandler">
 					<view class="shoppingcart icon-shoppingcart">
 						<view class="corner-mark">
 							2
@@ -43,7 +43,7 @@
 	import Container from './components/container.vue';
 	import ShopList from '@/components/classify-shop/shop-list.vue';
 	import {
-	  getHomeGoodsList
+		getHomeGoodsList
 	} from "@/api/classify.js";
 	export default {
 		components: {
@@ -71,23 +71,23 @@
 		onHide() {
 			this.swiperAuto = false;
 		},
-		mounted(){
+		mounted() {
 			this.getHomeGoodsList();
 		},
 		methods: {
 			getHomeGoodsList() {
-			  getHomeGoodsList({
-			    pageIndex: this.query.page,
-			    areaId: this.areaId,
-			    simplified: true,
-			    excludeFields: "product.spu,product.process, product.store,product.supplier,product.areaIds,product.areaPrices,product.category",
-			  }).then((res) => {
-			    console.log(res, '>>>>>>>>>')
+				getHomeGoodsList({
+					pageIndex: this.query.page,
+					areaId: this.areaId,
+					simplified: true,
+					excludeFields: "product.spu,product.process, product.store,product.supplier,product.areaIds,product.areaPrices,product.category",
+				}).then((res) => {
+					console.log(res, '>>>>>>>>>')
 					this.query.totalPage = res.totalPage;
 					this.query.page++;
 					this.shopList = res.page;
 					this.triggered = false;
-			  });
+				});
 			},
 			scrolltolower() {
 				console.log('scrolltolower')
@@ -103,7 +103,7 @@
 			},
 			scrollHandler(e) {
 				if (e.detail && e.detail.scrollTop) {
-					if (e.detail.scrollTop >= 60) { 
+					if (e.detail.scrollTop >= 60) {
 						if (!this.navActive) {
 							this.navActive = true;
 						} else {
@@ -123,6 +123,26 @@
 					url: "/sub-classify/pages/search/index"
 				})
 			},
+			toStoreHandler() {
+				uni.navigateTo({
+					url: "/sub-classify/pages/shop-store-list/shop-store-list"
+				})
+			},
+			toShoppingCartHandler() {
+				uni.getStorage({
+					key: 'scn',
+					success: function(res) {
+						uni.navigateTo({
+							url: "/sub-my/pages/shopping-cart/shopping-cart"
+						})
+					},
+					fail: function(res) {
+						uni.navigateTo({
+							url: "/pages/login/login"
+						})
+					}
+				});
+			}
 		}
 	}
 </script>
@@ -227,16 +247,17 @@
 		border-radius: 16rpx 16rpx 0 0;
 		padding: 48rpx 32rpx;
 	}
-	
-	.shop-list-box{
+
+	.shop-list-box {
 		background: #fff;
-		.recommend-title{
+
+		.recommend-title {
 			padding-left: 34rpx;
 			font-weight: 600;
 			font-size: 32rpx;
 			color: #2B2F33;
 			margin-bottom: 16rpx;
 		}
-		
+
 	}
 </style>
