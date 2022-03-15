@@ -33,7 +33,7 @@
         <swiper :current="tabIndex" :duration="300" @change="ontabchange" class="swiper">
           <swiper-item class="swiper-item" :class="{'swipe-box': isFold}" v-for="(tab,index1) in tabList"
             :key="index1">
-            <view class="designer-item" v-for="(item1,index1) in designerList" :key="index1">
+            <view class="designer-item" v-for="(item1,index1) in designerList" :key="index1" v-if="showItem && !listDataTag">
               <view class="designer-bg"
                 :style="{backgroundColor:index1>2?bgColorList[3].bgColor:bgColorList[index1].bgColor}"></view>
               <view class="basicInfo-container">
@@ -130,6 +130,10 @@
 
               </view>
             </view>
+            <view v-if="listDataTag" class="no-data-box">
+              <image src="../../static/no_data_icon.png" mode=""></image>
+              <view>暂无上榜设计师</view>
+            </view>
             <view class="bottom-box"></view>
           </swiper-item>
         </swiper>
@@ -200,6 +204,8 @@
         opacity: 0,
         initTabName: '',
         tabList: [],
+        showItem: true,
+        listDataTag: 0
       }
     },
     mounted() {
@@ -253,6 +259,7 @@
         this.switchTab(index);
       },
       switchTab(index) {
+        this.showItem = false
         if (this.tabIndex === index) {
           return;
         }
@@ -276,7 +283,9 @@
       },
       reqDesignerRank(index, code) {
         getDesignRank(index, code).then(res => {
+          this.showItem = true
           this.designerList = res
+          this.listDataTag = res.length
           this.designerList = this.designerList.map(item => {
             if (item.valuationCaseVOS && item.valuationCaseVOS.length > 2) {
               item.showMoreCase = true
@@ -379,6 +388,7 @@
        height: 100%;
      }
       .rankExplain {
+        position: absolute;
         width: 52rpx;
         height: 130rpx;
         box-sizing: border-box;
@@ -452,7 +462,14 @@
       }
 
     }
-
+    .no-data-box{
+      text-align: center;
+      color: #CBCCCC;
+      image{
+        width: 400rpx;
+        height: 400rpx;
+      }
+    }
   }
 
   .list-box {
