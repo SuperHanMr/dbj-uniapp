@@ -130,7 +130,7 @@
 
               </view>
             </view>
-            <view v-if="!listDataTag" class="no-data-box">
+            <view v-if="showItem && !listDataTag" class="no-data-box">
               <image src="../../static/no_data_icon.png" mode=""></image>
               <view>暂无上榜设计师</view>
             </view>
@@ -205,7 +205,7 @@
         initTabName: '',
         tabList: [],
         showItem: true,
-        listDataTag: 0
+        listDataTag: 1
       }
     },
     mounted() {
@@ -254,12 +254,12 @@
         this.switchTab(index);
       },
       ontabchange(e) {
+        this.showItem = false
         let index = e.target.current || e.detail.current;
         this.reqDesignerRank(index, this.tabList[index].code)
         this.switchTab(index);
       },
       switchTab(index) {
-        this.showItem = false
         if (this.tabIndex === index) {
           return;
         }
