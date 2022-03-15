@@ -33,7 +33,7 @@
         <swiper :current="tabIndex" :duration="300" @change="ontabchange" class="swiper">
           <swiper-item class="swiper-item" :class="{'swipe-box': isFold}" v-for="(tab,index1) in tabList"
             :key="index1">
-            <view class="designer-item" v-for="(item1,index1) in designerList" :key="index1" v-if="showItem && !listDataTag">
+            <view class="designer-item" v-for="(item1,index1) in designerList" :key="index1" v-if="showItem && listDataTag">
               <view class="designer-bg"
                 :style="{backgroundColor:index1>2?bgColorList[3].bgColor:bgColorList[index1].bgColor}"></view>
               <view class="basicInfo-container">
@@ -130,7 +130,7 @@
 
               </view>
             </view>
-            <view v-if="listDataTag" class="no-data-box">
+            <view v-if="!listDataTag" class="no-data-box">
               <image src="../../static/no_data_icon.png" mode=""></image>
               <view>暂无上榜设计师</view>
             </view>
