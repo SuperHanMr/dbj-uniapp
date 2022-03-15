@@ -42,6 +42,10 @@
         type: Number,
         default: 0,
       },
+			shopList: {
+				type: Array,
+				default: () => []
+			}
     },
     data() {
       return {
@@ -50,24 +54,20 @@
         itemHeight: "",
       };
     },
-    mounted() {
-			this.getHomeGoodsList();
+		watch:{
+			shopList: {
+				handler: function handler(val) {
+					debugger
+				  if (this.page == 1) {
+				    this.list1 = [];
+				    this.list2 = [];
+				  }
+				  this.resetList(val);
+				},
+				immediate: true
+			}
 		},
     methods: {
-      getHomeGoodsList() {
-        getHomeGoodsList({
-          pageIndex: this.page,
-          areaId: this.areaId,
-          simplified: true,
-          excludeFields: "product.spu,product.process, product.store,product.supplier,product.areaIds,product.areaPrices,product.category",
-        }).then((e) => {
-          if (this.page == 1) {
-            this.list1 = [];
-            this.list2 = [];
-          }
-          this.resetList(e.page);
-        });
-      },
       resetList(list) {
         let list1 = [];
         let list2 = [];

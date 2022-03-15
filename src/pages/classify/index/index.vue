@@ -28,7 +28,7 @@
 			<view class="container-box">
 				<Container />
 			</view>
-			<ShopList :page="page" :areaId="areaId" />
+			<ShopList :page="query.page" :shopList="shopList" />
 		</scroll-view>
 	</view>
 </template>
@@ -37,6 +37,9 @@
 	import Head from './components/head.vue';
 	import Container from './components/container.vue';
 	import ShopList from '@/components/classify-shop/shop-list.vue';
+	import {
+	  getHomeGoodsList
+	} from "@/api/classify.js";
 	export default {
 		components: {
 			Head,
@@ -46,9 +49,15 @@
 		data() {
 			return {
 				swiperAuto: false,
-				page: 0,
+				query: {
+					page: 1,
+					row: 10,
+					totalPage: 0
+				},
 				areaId: 43,
-				navActive: false
+				navActive: false,
+				shopList: [],
+				triggered: false
 			}
 		},
 		onShow() {
@@ -57,16 +66,39 @@
 		onHide() {
 			this.swiperAuto = false;
 		},
+		mounted(){
+			this.getHomeGoodsList();
+		},
 		methods: {
+			getHomeGoodsList() {
+			  getHomeGoodsList({
+			    pageIndex: this.page,
+			    areaId: this.areaId,
+			    simplified: true,
+			    excludeFields: "product.spu,product.process, product.store,product.supplier,product.areaIds,product.areaPrices,product.category",
+			  }).then((res) => {
+			    console.log(res, '>>>>>>>>>')
+					this.query.totalPage = res.totalPage;
+					this.query.page++;
+					this.shopList = res.page;
+					this.triggered = false;
+			  });
+			},
 			scrolltolower() {
-
+				console.log('scrolltolower')
+				if (this.query.totalPage >= this.query.page) {
+					this.getHomeGoodsList();
+				}
 			},
 			refresherrefresh() {
-
+				this.shopList = [];
+				this.query.page = 1;
+				this.triggered = true;
+				this.getHomeGoodsList();
 			},
 			scrollHandler(e) {
 				if (e.detail && e.detail.scrollTop) {
-					if (e.detail.scrollTop >= 100) {
+					if (e.detail.scrollTop >= 100) { 
 						if (!this.navActive) {
 							this.navActive = true;
 						} else {
