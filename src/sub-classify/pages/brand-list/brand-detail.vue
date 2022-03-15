@@ -1,6 +1,6 @@
 <template>
 	<view class="container">
-		<custom-navbar 
+		<custom-navbar
 		  :opacity="scrollTop/100"
 		  title="品牌名称"
 		  bgcolor="#FFF"
@@ -15,11 +15,6 @@
 		    </view>
 		  </template>
 		</custom-navbar>
-		
-		
-		
-		
-		
 		<view class="baseInfo-contaienr">
 			<view class="bgImg"></view>
 			<view class="baseInfo">
@@ -32,9 +27,9 @@
 						CHEERS芝华仕沙发，把舒适、健康带回家健康带回家健康带回家健康带回家健康带回家健康带回家健康带回家健康带回家
 					</view>
 					<view class="brand-introduce">
-						在国内，CHEERS芝华仕头等舱沙发拥有超过1900家专卖店，芝华仕沙发位居中国休闲沙发销量前列，2016年敏华在中国大陆功能沙发市场占有率达到近37.7%，深敏华在中国大陆功能沙发敏华在中陆功沙发ddddddd 
+						在国内，CHEERS芝华仕头等舱沙发拥有超过1900家专卖店，芝华仕沙发位居中国休闲沙发销量前列，2016年敏华在中国大陆功能沙发市场占有率达到近37.7%，深敏华在中国大陆功能沙发敏华在中陆功沙发ddddddd
 						<span>ddd</span>
-						<image class="showMoreIcon" src="../../static/image/wechat_icon.png" />	
+						<image class="showMoreIcon" src="../../static/image/wechat_icon.png" />
 					</view>
 				</view>
 				<view class="brandAlbum">
@@ -44,44 +39,44 @@
 					<view class="scrollContaienr">
 						<scroll-view scroll-x="true" style="white-space: nowrap;">
 							<view class="itemStyle">
-								<video 
+								<video
 									:autoplay="true"
-									:muted="true"
-									:controls="false"
-									:show-fullscreen-btn="false"
+									:controls="true"
+									:show-fullscreen-btn="bottom"
 									:object-fit="fill"
-									:show-center-play-btn="false"
-									@play="continuePlay"
-									@pause="pause"
 									src="https://ali-video-test.dabanjia.com/video/20220225/17/1645781404867_5025%24%E8%A7%86%E9%A2%91.mp4"
 								></video>
 							</view>
 							<view class="itemStyle" v-for="ITEM in 4" :key="ITEM">
 								<image  src="../../static/image/pay-bg.png" mode=""></image>
 							</view>
-							<view class="categoryIconContainer">
-								
-							</view>
 						</scroll-view>
 					</view>
 				</view>
 			</view>
-			
+
 			<view class="productContainer">
 				<view class="title">
 					<text class="name">品牌商品</text>
 					<view class="allProduct">
 						<text>全部商品</text>
-						<image src="../../../static/images/ic_more_black.png" mode=""></image>
+						<image src="https://ali-image.dabanjia.com/static/mp/dabanjia/images/theme-red/my/small_gotoShop.svg" mode=""></image>
 					</view>
 				</view>
 				<view class="checkBox">
-					<view class="checkItem" v-for="labelItem in checkList" :key="labelItem">
-						{{labelItem}}
+					<view class="checkItem"
+						v-for="(labelItem,labelKey) in checkList"
+						:key="labelKey"
+						:style="{color:labelItem.checked?'#fff':'#999',
+						background:labelItem.checked?'#222':'#F7F7F7'}"
+						@click="chooseAttr(labelItem,labelItem.key)"
+					>
+						{{labelItem.name}}
 					</view>
 				</view>
+				<!-- <shop-list :shopList="shopList"></shop-list> -->
 			</view>
-		
+
 		</view>
 		<!-- 弹框 -->
 		<uni-popup ref="brandExplain" type="bottom" >
@@ -106,34 +101,103 @@
 </template>
 
 <script>
+	import {
+	  getHomeGoodsList
+	} from "@/api/classify.js";
+	import ShopList from '@/components/classify-shop/shop-list.vue';
+
 	var query = {};
 	export default {
+		components: {
+			ShopList,
+		},
 		data() {
 			return {
 				opacityNum: 0,
 				scrollTop:0,
 				productTop:0,
-				checkList:["中式","欧式","田园","这是风格标签","风格啊","风格啊","这是自定义标签","这是样式标签","样式标签啊","随意写的一个标签","aa这个也是标签"],
+				triggered:false,
+				shopList:[],
+				query:{
+					page:1,
+					row:10,
+					totalPage:0
+				},
+				areaId: 43,
+				checkList:[
+					{
+						name:	"中式",
+						key:1,
+						checked:true,
+					},
+					{
+						name:	"欧式",
+						key:2,
+						checked:false,
+					},
+					{
+						name:	"田园",
+						key:3,
+						checked:false,
+					},
+					{
+						name:	"这是风格标签",
+						key:4,
+						checked:false,
+					},
+					{
+						name:	"风格啊",
+						key:5,
+						checked:false,
+					},
+					{
+						name:	"风格啊",
+						key:6,
+						checked:false,
+					},
+					{
+						name:	"这是自定义标签",
+						key:7,
+						checked:false,
+					},
+					{
+						name:	"这是样式标签",
+						key:8,
+						checked:false,
+					},
+					{
+						name:	"样式标签啊",
+						key:9,
+						checked:false,
+					},
+					{
+						name:	"随意写的一个标签",
+						key:10,
+						checked:false,
+					},
+				],
 			}
 		},
-		computed: {
-		  navStyle() {
-		    console.log(this.opacityNum)
-		    return {
-		      opacity: this.opacityNum,
-		    };
-		  },
-		},
 		onPageScroll(scrollTop) {
-			// console.log(scrollTop.scrollTop)
-			this.pageScroll(scrollTop.scrollTop);
+		  this.scrollTop = scrollTop.scrollTop;
+			console.log("this.scrollTop",this.scrollTop)
+		},
+		watch: {
+			checkList(newValue, oldValue) {
+				console.log("newVal",newValue)
+				console.log("oldVal",oldValue)
+			},
+			// scrollTop:{
+			// 	immediate: true,
+			// 	handler(newVal,oldVal){
+			// 		console.log("newVal,==",newVal)
+			// 		console.log("oldVal,==",oldVal)
+			// 	}
+			// },
 		},
 		onLoad() {
-			query = uni.createSelectorQuery();
-			query.select().boundingClientRect(res=>{
-				this.productTop =res?res.top:0
-			})
-			query.exec(function (res) {});
+			// 商品列表的请求接口
+			this.getHomeGoodsList();
 		},
 		methods: {
 			toBack(){
@@ -145,43 +209,65 @@
 			closeBrandExplain(){
 				this.$refs.brandExplain.close()
 			},
-			continuePlay(){
-				console.log("继续播放！")
+			chooseAttr(labelItem,key){
+				this.checkList=this.checkList.map(item=>{
+					if(item.key==key){
+						item.checked =true
+					}else{
+						item.checked=false
+					}
+					return item
+				})
 			},
-			pause(){
-				console.log("暂停播放！")
+			getHomeGoodsList() {
+				this.triggered=true
+			  getHomeGoodsList({
+			    pageIndex: this.query.page,
+			    areaId: this.areaId,
+			    simplified: true,
+			    excludeFields: "product.spu,product.process, product.store,product.supplier,product.areaIds,product.areaPrices,product.category",
+			  }).then((res) => {
+			    console.log(res, '>>>>>>>>>')
+					// this.query.totalPage = res.totalPage;
+					// this.query.page++;
+					this.shopList = res.page;
+					this.triggered = false;
+			  });
 			},
-			changeOpacity(num) {
-			  // console.log(num)
-			  num < 150
-			    ? (this.opacityNum = 0)
-			    : num < 180
-			    ? (this.opacityNum = 0.8)
-			    : (this.opacityNum = 1);
-			  // console.log(this.opacityNum)
-			},
-			
-			pageScroll(scrollTop) {
-			  this.scrollTop = scrollTop;
-			  //从深层页面返回时，避免触发导致显示异常
-			  if(scrollTop!=0){
-			    this.changeOpacity(this.scrollTop);
-			  }
-			  this.getTopDistance();
-			},
-			getTopDistance() {
-			  query.exec(function (res) {});
-			},
+
+
+
+			// changeOpacity(num) {
+			//   // console.log(num)
+			//   num < 150
+			//     ? (this.opacityNum = 0)
+			//     : num < 180
+			//     ? (this.opacityNum = 0.8)
+			//     : (this.opacityNum = 1);
+			//   // console.log(this.opacityNum)
+			// },
+
+			// pageScroll(scrollTop) {
+			//   this.scrollTop = scrollTop;
+			//   //从深层页面返回时，避免触发导致显示异常
+			//   if(scrollTop!=0){
+			//     this.changeOpacity(this.scrollTop);
+			//   }
+			//   this.getTopDistance();
+			// },
+			// getTopDistance() {
+			//   query.exec(function (res) {});
+			// },
 		}
 	}
 </script>
 
 <style lang="scss" scoped>
-	
+
 		.container{
 			height: 100%;
 		}
-		
+
 		.baseInfo-contaienr{
 			// padding: 0;
 			padding-top: 304rpx;
@@ -272,7 +358,6 @@
 					}
 					.scrollContaienr{
 						height: 376rpx;
-						background-color: pink;
 						.itemStyle{
 							display: inline-block;
 							width: 668rpx;
@@ -326,6 +411,7 @@
 						height: 34rpx;
 						line-height: 34rpx;
 						color: #999999;
+						font-size: 24rpx;
 						background: #F7F7F7;
 						border-radius: 10rpx;
 						margin-right: 16rpx;
@@ -333,7 +419,7 @@
 				}
 			}
 		}
-		
+
 		.header-popup {
 			width: 750rpx;
 			height: 102rpx;
@@ -346,7 +432,7 @@
 			color: #111111;
 			font-weight: bold;
 			font-size: 32rpx;
-		
+
 		}
 		.close-popup {
 			position: absolute;
@@ -358,7 +444,7 @@
 			justify-content: center;
 			align-items: center;
 		}
-		
+
 		.close {
 			position: absolute;
 			width: 80rpx;
@@ -384,8 +470,8 @@
 			font-size: 26rpx;
 			letter-spacing: 1rpx;
 		}
-		
-		
-		
-		
+
+
+
+
 </style>
