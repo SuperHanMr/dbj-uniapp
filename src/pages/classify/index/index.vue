@@ -28,7 +28,12 @@
 			<view class="container-box">
 				<Container />
 			</view>
-			<ShopList :page="query.page" :shopList="shopList" />
+			<view class="shop-list-box">
+				<view class="recommend-title">
+					精选推荐
+				</view>
+				<ShopList :page="query.page" :shopList="shopList" />
+			</view>
 		</scroll-view>
 	</view>
 </template>
@@ -72,7 +77,7 @@
 		methods: {
 			getHomeGoodsList() {
 			  getHomeGoodsList({
-			    pageIndex: this.page,
+			    pageIndex: this.query.page,
 			    areaId: this.areaId,
 			    simplified: true,
 			    excludeFields: "product.spu,product.process, product.store,product.supplier,product.areaIds,product.areaPrices,product.category",
@@ -98,7 +103,7 @@
 			},
 			scrollHandler(e) {
 				if (e.detail && e.detail.scrollTop) {
-					if (e.detail.scrollTop >= 100) { 
+					if (e.detail.scrollTop >= 60) { 
 						if (!this.navActive) {
 							this.navActive = true;
 						} else {
@@ -112,7 +117,12 @@
 						}
 					}
 				}
-			}
+			},
+			searchClick() {
+				uni.navigateTo({
+					url: "/sub-classify/pages/search/index"
+				})
+			},
 		}
 	}
 </script>
@@ -216,5 +226,17 @@
 		background: #FFFFFF;
 		border-radius: 16rpx 16rpx 0 0;
 		padding: 48rpx 32rpx;
+	}
+	
+	.shop-list-box{
+		background: #fff;
+		.recommend-title{
+			padding-left: 34rpx;
+			font-weight: 600;
+			font-size: 32rpx;
+			color: #2B2F33;
+			margin-bottom: 16rpx;
+		}
+		
 	}
 </style>
