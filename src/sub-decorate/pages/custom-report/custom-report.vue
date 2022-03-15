@@ -9,7 +9,7 @@
   export default {
     data() {
       return {
-        url:'/app-pages/new-case-detail/delivery-detail.html?token='
+        url:'/app-pages/new-case-detail/delivery-detail.html?source=small&token='
       }
     },
     onLoad(e){
