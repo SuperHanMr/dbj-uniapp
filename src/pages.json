@@ -344,7 +344,6 @@
 					"path" : "pages/find-design/designer-rank-list",
 					"style" : {
 						"navigationBarTitleText": "",
-						"enablePullDownRefresh": true,
 						"navigationStyle": "custom"
 					}
 				}
