@@ -5,13 +5,14 @@
 				<image class="storeImg" src="../../static/image/pay-bg.png" mode=""></image>
 				<view class="baseInfo-container">
 					<view class="header">
-						<image class="icon" src="../../../static/home_owner.png" mode=""></image>
+						<image class="icon" src="../../static/image/ziyingIcon.png" mode=""></image>
 						<view class="title">芝华仕家具(北京石景山区店)</view>
 					</view>
 					<view class="label-container">
 						<view class="labelItem">家具</view>
 						<view class="labelItem">全屋定制</view>
 						<view class="labelItem">软装</view>
+						<view class="labelItem">家具</view>
 					</view>
 					<view class="product-container">
 						<view class="productItem" v-for="item2 in 3" :key="item2">
@@ -107,6 +108,10 @@
 			
 			.label-container{
 				margin-bottom: 28rpx;
+				flex-flow: row wrap;
+				height: 36rpx;
+				max-width: 544rpx;
+				overflow: hidden;
 				.labelItem{
 					padding: 0 12rpx;
 					height: 36rpx;
