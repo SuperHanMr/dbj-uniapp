@@ -115,6 +115,9 @@
 			},
 			classHandler(){
 				console.log('分类点击事件')
+        uni.navigateTo({
+        	url: '/sub-classify/pages/all-classify/index'
+        })
 			},
 			recommendedHandler(){
 				console.log('推荐点击事件')

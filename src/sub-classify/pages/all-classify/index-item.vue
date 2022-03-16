@@ -2,7 +2,7 @@
   <view class="page-body">
     <scroll-view class="nav-left" scroll-y :scroll-top="scrollLeftTop" scroll-with-animation>
       <view class="left-title-block">
-        <view class="nav-left-item" @click="categoryClickMain(menu2, index2)"
+        <view class="nav-left-item" @click="categoryClickMain(index2)"
           :class="{'active': index2==categoryActive, 'preNode': index2==categoryActive -1, 'nextNode': index2==categoryActive +1}"
           v-for="(menu2,index2) in detailData" :key="index2">
           <text v-if="detailData[categoryActive]['children'].length">{{menu2.name}}</text>
@@ -10,9 +10,9 @@
         <view class="nav-left-item" :class="{'nextNode':  categoryActive === detailData.length - 1}"></view>
       </view>
     </scroll-view>
-    <scroll-view class="nav-right" scroll-y="true" :scroll-into-view="'tab' + activeId" scroll-with-animation="true"
+    <scroll-view class="nav-right" scroll-y="true" :scroll-into-view="'tab' + categoryActive" scroll-with-animation="true"
       @scroll="rightScroll">
-      <view v-for="(menu2, index2) in detailData" :key="index2" :id="'tab' + menu2.id" ref='itemBox'>
+      <view v-for="(menu2, index2) in detailData" :key="index2" :id="'tab' + index2" class='itemBox'>
         <view class="right-view" v-for="(menu3, index3) in menu2['children']" :key="index3">
           <view v-if="menu3['children'].length">
             <text class="menu3-title">{{menu3.name}}</text>
@@ -46,12 +46,16 @@
     },
     data() {
       return {
-        activeId: 0,
+        heightList: [],
         categoryActive: 0,
       };
     },
-    created(){
-      console.log(this.detailData)
+    created(){   
+      this.detailData.forEach((item, key) => {
+        uni.createSelectorQuery().in(this).select(`#tab${key}`).boundingClientRect(res => {
+          this.heightList.push(res.height)
+        }).exec()
+      })
     },
     watch: {
       tabIndex: {
@@ -62,12 +66,18 @@
       },
     },
     methods: {
-      categoryClickMain(menu, index) {
-        this.activeId = menu.id
+      categoryClickMain(index) {
         this.categoryActive = index;
       },
       rightScroll(e) {
-        console.log(this.$refs, e)
+        let scrollHeight = this.heightList[0]
+        let scrollIndex = 0
+        while(scrollHeight <= e.detail.scrollTop) {
+          scrollIndex ++
+          scrollHeight += this.heightList[scrollIndex]
+        }
+        this.categoryActive = scrollIndex
+        console.log(scrollIndex)
       },
       toGoodsList(name, id) {
         uni.navigateTo({
