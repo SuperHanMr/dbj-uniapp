@@ -160,7 +160,7 @@
         </view>
         <scroll-view :scroll-y="true" class="toast-content">
           <view class="bankingComplain">
-            <text>{{instructions}}</text>
+            <text space="nbsp">{{instructions}}</text>
           </view>
         </scroll-view>
       </view>
@@ -279,6 +279,7 @@
       reqChartInstructions() {
         getChartInstructions().then(res => {
           this.instructions = res
+          console.log(res)
         })
       },
       reqTabList() {
