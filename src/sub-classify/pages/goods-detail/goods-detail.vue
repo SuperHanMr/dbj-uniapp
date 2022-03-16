@@ -51,7 +51,7 @@
       uni.showShareMenu(); // 显示分享按钮
       this.shareAreaId = e.shareAreaId
       this.shareAreaName = e.shareAreaName
-      this.originType = decodeURIComponent(e.originType)
+      this.originType = e.originType
       this.from = e.from
       this.userId = e.userId
       this.bundleId = e.bundleId
