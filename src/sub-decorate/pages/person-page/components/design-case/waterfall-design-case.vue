@@ -181,13 +181,26 @@
 			right: 16rpx;
 			top: 16rpx;
       background-color:  rgba(0, 0, 0, 0.2);
-      padding: 10rpx;
+      width: 44rpx;
+      height: 44rpx;
+      /* text-align: center; */
+      /* line-height: 44rpx; */
+      display: flex;
+      align-items: center;
+      justify-content: center;
       border-radius: 50%;
 			i{
-				font-size: 22rpx;
+				font-size: 20rpx;
 				color: #fff;
         opacity: 1;
 			}
+      .icon-vr{
+        font-size: 18rpx;
+      }
+      .icon-video{
+        margin-bottom: 4rpx;
+        margin-left: 4rpx;
+      }
 		}
 	}
 	
