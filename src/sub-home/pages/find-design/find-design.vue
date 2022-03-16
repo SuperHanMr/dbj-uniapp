@@ -51,9 +51,6 @@
     </view>
 		
     <view class="recommendForYou-container">
-			<view @click="gotoRankDetail">
-					去品牌详情页面
-			</view>
       <view class="title_container">
         <view class="left">
 					<view class="recommend">
@@ -463,11 +460,6 @@ export default {
 			uni.navigateTo({
 				url:`../../../sub-classify/pages/goods-detail/goods-detail?goodId=${item.id}`,
 			});
-		},
-		gotoRankDetail(){
-			uni.navigateTo({
-				url:"../../../sub-classify/pages/brand-list/brand-detail"
-			})
 		},
 		// 换一批
 		changeDesignerList(){
