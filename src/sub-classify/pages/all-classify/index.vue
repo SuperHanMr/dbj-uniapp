@@ -20,8 +20,8 @@
 				</view>
 			</scroll-view>
 			<swiper :current="tabIndex" style="flex: 1;height: 100%" :duration="300" @change="ontabchange">
-				<swiper-item class="swiper-item" v-for="(tab,index1) in dataList" :key="index1">
-					<index-item :detailData="tab['children']" :tabIndex="tabIndex"></index-item>
+				<swiper-item class="swiper-item" v-for="(menu1,index1) in dataList" :key="index1">
+					<index-item :detailData="menu1['children']" :tabIndex="tabIndex"></index-item>
 				</swiper-item>
 			</swiper>
 		</view>

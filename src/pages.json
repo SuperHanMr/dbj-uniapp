@@ -185,11 +185,6 @@
         "query": "" //启动参数，在页面的onLoad函数里面得到
       },
       {
-        "name": "wangbinyan", //模式名称
-        "path": "sub-decorate/pages/gj-process-cost/gj-process-cost", //启动页面，必选
-        "query": "" //启动参数，在页面的onLoad函数里面得到
-      },
-      {
         "name": "change-application", //模式名称
         "path": "sub-decorate/pages/change-application/change-application", //启动页面，必选
         "query": "" //启动参数，在页面的onLoad函数里面得到
@@ -344,7 +339,6 @@
 					"path" : "pages/find-design/designer-rank-list",
 					"style" : {
 						"navigationBarTitleText": "",
-						"enablePullDownRefresh": true,
 						"navigationStyle": "custom"
 					}
 				}
