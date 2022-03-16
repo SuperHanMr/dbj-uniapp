@@ -219,7 +219,7 @@
               <text v-if="!item4.flag" class="icon"></text>
 
               <text>{{item4.budget
-							?Math.floor(item4.budget)<1?`预算：-万`:`预算：￥${Math.floor(item4.budget)}万`
+							?Math.floor(item4.budget)<1?`预算：￥-万`:`预算：￥${Math.floor(item4.budget)}万`
 							: "预算：-"}}</text>
             </view>
           </view>
