@@ -14,7 +14,7 @@
 							<image v-if="!item.isCollection" class="collection-icon"
 								src="/static/images/no_collection.png" mode=""></image>
 							<view class="text">
-								收藏
+								{{item.isCollection ? "已收藏" : "收藏"}}
 							</view>
 						</view>
 
