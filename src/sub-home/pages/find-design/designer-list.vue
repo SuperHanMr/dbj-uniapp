@@ -56,17 +56,16 @@
         class="designer-item"
         v-for="designer in dataSource"
         :key="designer.id"
-        @click="showDesigner(designer)"
       >
-        <view class="designer-avatar">
+        <view class="designer-avatar" @click="showDesigner(designer)">
           <image
             class="designer-avatar-img"
             :src="designer.avatar + '?x-oss-process=image/resize,m_mfit,w_88,h_88'"
           />
         </view>
-        <view class="designer-message">
+        <view class="designer-message" >
           <view class="base-message">
-            <view class="base-items">
+            <view class="base-items" @click="showDesigner(designer)">
               <view class="designer-name">{{designer.name}}</view>
               <view class="designer-level">
                 <view class="level-label">{{designer.levelName}}{{designer.roleName}}</view>
@@ -88,7 +87,7 @@
             </view>
           </view>
 
-          <view class="rate-wrapper" >
+          <view class="rate-wrapper" @click="showDesigner(designer)">
             <text class="designer-score" v-if="designer.totalCount>0">服务次数 {{designer.totalCount}}</text>
             <view
               class="split-line"
@@ -112,7 +111,7 @@
           <!-- <view class="designer-des">
             {{designer.intro || "这个设计师很忙，还没有填写个人简介"}}
           </view> -->
-          <view class="designer-tags" v-if="getTags(designer).length">
+          <view class="designer-tags" v-if="getTags(designer).length" @click="showDesigner(designer)">
             <view
               v-for="(style, index) in getTags(designer)"
               :key="index"
