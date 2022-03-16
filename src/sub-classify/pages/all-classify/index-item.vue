@@ -10,8 +10,9 @@
         <view class="nav-left-item" :class="{'nextNode':  categoryActive === detailData.length - 1}"></view>
       </view>
     </scroll-view>
-    <scroll-view class="nav-right" scroll-y="true"  :scroll-into-view="'tab' + activeId" scroll-with-animation="true">
-      <view v-for="(menu2, index2) in detailData" :key="index2" :id="'tab' + menu2.id">
+    <scroll-view class="nav-right" scroll-y="true" :scroll-into-view="'tab' + activeId" scroll-with-animation="true"
+      @scroll="rightScroll">
+      <view v-for="(menu2, index2) in detailData" :key="index2" :id="'tab' + menu2.id" ref='itemBox'>
         <view class="right-view" v-for="(menu3, index3) in menu2['children']" :key="index3">
           <view v-if="menu3['children'].length">
             <text class="menu3-title">{{menu3.name}}</text>
@@ -49,14 +50,24 @@
         categoryActive: 0,
       };
     },
-    onShow() {
+    created(){
+      console.log(this.detailData)
     },
-    onload() {
+    watch: {
+      tabIndex: {
+        handler(v) {
+          this.categoryActive = 0;
+        },
+        immediate: true
+      },
     },
     methods: {
       categoryClickMain(menu, index) {
         this.activeId = menu.id
         this.categoryActive = index;
+      },
+      rightScroll(e) {
+        console.log(this.$refs, e)
       },
       toGoodsList(name, id) {
         uni.navigateTo({
@@ -67,12 +78,7 @@
             "&originFrom=classify4",
         });
       },
-    },
-    watch: {
-      tabIndex(v) {
-        this.categoryActive = 0;
-      },
-    },
+    }
   };
 </script>
 
