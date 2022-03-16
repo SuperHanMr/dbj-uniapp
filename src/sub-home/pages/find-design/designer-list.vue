@@ -122,7 +122,7 @@
             </view>
           </view>
           <view class="case-wrapper" v-if="getCaseList(designer).length">
-            <view class="case-item"   v-for="item in getCaseList(designer)"  :key="item.id" >
+            <view class="case-item" @click.stop="goCaseDetail(item.id)"  v-for="item in getCaseList(designer)"  :key="item.id" >
               <view class="case-image">
                 <image mode="aspectFill" :src="item.imageUrl"></image>
                 <view class="isFamos" v-if="item.famous === 1"></view>
@@ -260,6 +260,13 @@ export default {
     this.searchList();
   },
   methods: {
+    goCaseDetail(id) {
+      let url =
+        "/pages/real-case/real-case-webview/real-case-webview?id=" + id;
+      uni.navigateTo({
+        url,
+      });
+    },
     designerRank(designer) {
       console.log('---', designer.ranks instanceof Array &&  designer.ranks.length > 0 ? designer.ranks[0] : null)
       return designer.ranks instanceof Array &&  designer.ranks.length > 0 ? designer.ranks[0] : null
