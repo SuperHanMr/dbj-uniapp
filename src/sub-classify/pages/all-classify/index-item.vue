@@ -6,7 +6,8 @@
         <view class="nav-left-item" @click="categoryClickMain(index2, menu2)"
           :class="{'active': index2==categoryActive, 'preNode': index2==categoryActive -1, 'nextNode': index2==categoryActive +1}"
           v-for="(menu2,index2) in detailData" :key="index2" :id="'left' + index2">
-          <text v-if="detailData[categoryActive]['children'].length">{{menu2.name}}</text>
+          <view v-if="menu2.brandTag"><image src="../../static/image/brand_icon.png" mode=""></image></view>
+          <text v-if="detailData[categoryActive]['children'].length && !menu2.brandTag">{{menu2.name}}</text>
         </view>
         <view class="nav-left-item" :class="{'nextNode':  categoryActive === detailData.length - 1}"></view>
       </view>
@@ -76,7 +77,6 @@
               this.heightList.push(res.height)
             }).exec()
           })
-          console.log(this.detailData)
         },
         deep: true
       },
@@ -121,7 +121,7 @@
   };
 </script>
 
-<style scoped>
+<style scoped lang="scss">
   .page-body {
     display: flex;
     height: calc(100% - 150rpx);
@@ -159,6 +159,10 @@
     align-items: center;
     justify-content: center;
     background-color: #ffffff;
+    image {
+      width: 80rpx;
+      height: 35rpx;
+    }
   }
 
   .active {

@@ -55,26 +55,12 @@
       }
     },
     onLoad(e) {
-      getApp().globalData.currentRoute = "/pages/classify/index/index";
       if (e.areaId) {
         this.areaId = e.areaId;
       } else {
         this.areaId = getApp().globalData.currentHouse.areaId
       }
-    },
-    mounted() {
-      uni.showTabBar()
-    },
-    onShow() {
-      uni.showTabBar()
-      //增加首页跳转过来逻辑处理
-      let naviData = getApp().globalData.naviData
-      if (naviData && naviData.id) {
-        this.id = naviData.id;
-        getApp().globalData.naviData = null
-      }
       this.getList();
-      this.$store.dispatch("updateTabBarBadge");
     },
     methods: {
       searchClick() {
