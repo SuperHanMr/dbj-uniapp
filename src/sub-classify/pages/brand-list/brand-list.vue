@@ -5,22 +5,24 @@
 		  bgcolor=""
 		>
 		  <template v-slot:back>
-		    <view @click="toBack">
+		    <view @click="toBack" style="display: flex;flex-flow: row; align-items: center;">
 		      <i
 		        class="icon-ic_cancel_white header-back"
 		        style="color:white"
 		      >
 		      </i>
+					<image class="smallBrandText" v-if=" scrollTop >0" src="../../static/image/bgBrandName.png" mode=""></image>
 		    </view>
 		  </template>
 		</custom-navbar>
 		
-		<view class="bgImg" :style="{backgroundImage:`url(${brandHeadBgImg})`}">
-			<view class="brandTextContainer">
+		<view class="bgImg"  :style="{backgroundImage:`url(${brandHeadBgImg})`,height:scrollTop >0?'192rpx':'326rpx'}">
+			<view class="brandTextContainer" v-if="scrollTop<=0">
 				<image src="../../static/image/bgBrandName.png" mode=""></image>
 				<view class="line"></view>
 			</view>
 		</view>
+		
 		
 		<view class="rankList-container">
 			<view class="rankItem" 
@@ -121,16 +123,20 @@
 </script>
 
 <style lang="scss" scoped>
-
+	.smallBrandText{
+		width: 116rpx;
+		height: 38rpx;
+		margin-left: 236rpx;
+	}
 	.container{
 		height: 100%;
 		background: #fff;
 		position: relative;
 	}
 	.bgImg{
-		height: 326rpx;
+		// height: 326rpx;
 		width: 100%;
-		background-size: contain;
+		background-size: cover;
 		background-repeat: no-repeat;
 		position: fixed;
 		display: flex;
