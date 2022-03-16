@@ -5,7 +5,7 @@
         + houseId + '&wx-defaultHouseId=' + defaultHouseInfo.id  + '&wx-defaultProvinceId=' + defaultHouseInfo.provinceId
         + '&wx-defaultCityId=' + defaultHouseInfo.cityId + '&wx-defaultAreaId=' + defaultHouseInfo.areaId 
         + '&wx-defaultLocationName=' + defaultHouseInfo.name  + '&wx-token=' + hashToken  + '&from=' + from
-         + '&shareAreaId=' + shareAreaId + '&shareAreaName=' + shareAreaName+ '&originType=' + originType
+         + '&shareAreaId=' + shareAreaId + '&shareAreaName=' + shareAreaName+ '&wx-originType=' + originType
         + '&skuTemplateId=' + skuTemplateId + '&gomeDivisionCode=' + gomeDivisionCode + '&fromPackage='  + fromPackage + '&wx-bundleId='  + bundleId + '&wx-spuId=' + spuId + '&changTime=' + changTime + '&isWX=' + isWX + '&wx-userId=' + userId">
     </web-view>
   </view>
