@@ -20,7 +20,7 @@
       <!-- <view v-else class="lookDetail">未生成颜值报告</view> -->
     </view>
     <view v-if="detail.customReport && detail.customReport.id" class="card flex-row-bet">
-      <view class="t">{{detail.customReport.title}}</view>
+      <view class="t">设计报告详情</view>
       <view class="lookDetail flex-row-start" @click="customReport">
         <view>立即查看</view>
         <image src="https://ali-image.dabanjia.com/static/mp/dabanjia/images/decorate/ic_more.svg"></image>

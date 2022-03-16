@@ -1001,7 +1001,7 @@
         {
           "path": "pages/custom-report/custom-report",
           "style": {
-            "navigationBarTitleText": "自定义报告",
+            "navigationBarTitleText": "",
             "enablePullDownRefresh": false
           }
         },

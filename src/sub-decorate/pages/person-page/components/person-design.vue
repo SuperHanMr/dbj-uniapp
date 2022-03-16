@@ -359,7 +359,7 @@
       }
       .info-list{
         font-size: 20rpx;
-        color: rgba(255, 255, 255, 0.6);;
+        color: rgba(255, 255, 255, 0.5);;
         margin-bottom: 24rpx;
         text{
           display: inline-block;
@@ -381,7 +381,7 @@
           line-height: 34rpx;
           margin-right: 12rpx;
           color: #fff;
-          opacity: 0.6;
+          opacity: 0.8;
           font-size: 20rpx;
           margin-bottom: 10rpx;
         }
@@ -397,7 +397,7 @@
           line-height: 42rpx;
           word-break: break-word;
           display: inline-block;
-          opacity: 0.6;
+          opacity: 0.8;
         }
         .report-text-hidden{
           overflow : hidden;
