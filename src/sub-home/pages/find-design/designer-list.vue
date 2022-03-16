@@ -538,8 +538,8 @@ export default {
   .designer-message {
     flex: 1;
     margin-left: 24rpx;
-    border-bottom: 1px solid #f3f3f3;
-    padding-bottom: 16rpx;
+    border-bottom: 1rpx solid #f3f3f3;
+    padding-bottom: 32rpx;
     overflow: hidden;
   }
 }
