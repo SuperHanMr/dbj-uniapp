@@ -135,6 +135,7 @@
 	.goods-list{
 		position: relative;
 		z-index: 10;
+		background: #fff;
 	}
   .goods-view {
     padding: 0 32rpx;

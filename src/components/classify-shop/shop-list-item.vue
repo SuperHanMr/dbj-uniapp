@@ -2,15 +2,23 @@
 	<view class="item" @click="toGoodsDetail(item.product.skuId)">
 		<image class="img" :src="item.product.spuImage |imgFormat" mode="aspectFill"></image>
 		<view class="info">
+			<view class="category">
+				<view class="category-item" v-for="(category, categoryIndex) in categoryList" :key="category">
+					<text>{{category}}</text>
+					<text v-if="categoryIndex !== categoryList.length - 1">|</text>
+				</view>
+			</view>
 			<view class="title">
-				<text class="tip">
-					{{item.product.productTypeId==1?'物品':'服务'}}
-				</text>
 				<text>{{item.product.spuName}}</text>
 			</view>
-			<view v-if="item.product.hasAllowance" class="allowance-view">
-				<view class="allowance">
+			<!-- v-if="item.product.hasAllowance" -->
+			<view  class="allowance-view">
+				<!-- <view class="allowance">
 					打扮家补贴{{foramtPrePrice(item.product.sku.marketPrice-item.product.skuPrice)}}元
+				</view> -->
+				<view class="recommended">
+					<text class="recommended-icon icon-goods"></text>
+					<text>23位设计师推荐</text>
 				</view>
 			</view>
 			<view class="price">
@@ -25,20 +33,23 @@
 					/{{item.product.salesUnit.unitName||''}}
 				</text>
 			</view>
-			<view v-if="(item.product.sku.marketPrice-item.product.skuPrice)>0" class=" price " style="color: #bcbcbc;margin-top: -5rpx;">
-				<text style="font-size: 20rpx;margin-right: 10rpx;text-decoration:line-through">市场价 :
-					<text class="price-font pre " style="font-size: 20rpx;">
+			<view v-if="(item.product.sku.marketPrice-item.product.skuPrice)>0" class="price original-price">
+				<text class="original-price-through">
+					<text class="original-price-price-font price-font pre ">
 						¥
 					</text>
-					<text class=" price-font amount" style="color: #bcbcbc;font-size: 26rpx;">
+					<text class=" price-font amount original-price-amount">
 						{{foramtPrice(item.product.sku.marketPrice)}}
 					</text>
-					<text class="price-font ex"
-						style="color: #bcbcbc;font-size: 20rpx;">.{{formatCent(item.product.sku.marketPrice)}}</text>
-					<text style="vertical-align: 13%; color: #bcbcbc;font-size: 20rpx;">
+					<text class="price-font ex original-price-ex">.{{formatCent(item.product.sku.marketPrice)}}</text>
+					<text class="original-price-unitName">
 						/{{item.product.salesUnit.unitName||''}}
 					</text>
 				</text>
+			</view>
+			<view class="flagship-store" @click.stop="toFlagShipShopHandler">
+				<view>打扮家旗舰店</view>
+				<view class="flagship-store-icon icon-alert_notice_jump"></view>
 			</view>
 		</view>
 		<view style="height: 18rpx;">
@@ -63,7 +74,9 @@
 			}
 		},
 		data() {
-			return {}
+			return {
+				categoryList: ["沙发", "品类", "品牌名称"]
+			}
 		},
 		methods: {
 			toGoodsDetail(id) {
@@ -87,6 +100,9 @@
 					return "";
 				}
 			},
+			toFlagShipShopHandler(){
+				console.log('toFlagShipShopHandler')
+			}
 		}
 	}
 </script>
@@ -103,7 +119,7 @@
 
 		.img {
 			width: 100%;
-			height: 343rpx;
+			height: 328rpx;
 			display: block;
 			border-radius: 16rpx;
 		}
@@ -111,6 +127,23 @@
 		.allowance-view {
 			display: flex;
 			margin-top: 8rpx;
+			
+			.recommended{
+				border: 0.5px solid rgba(197, 165, 141, 0.299899);
+				box-sizing: border-box;
+				border-radius: 4rpx;
+				line-height: 30rpx;
+				height: 30rpx;
+				font-weight: 400;
+				font-size: 20rpx;
+				color: #AF8D73;
+				padding: 0 8rpx;
+				.recommended-icon{
+					font-size: 20rpx;
+					color: #AF8D73;
+					margin: 0 5rpx 2rpx 0;
+				}
+			}
 
 			.allowance {
 				line-height: 30rpx;
@@ -127,7 +160,7 @@
 		}
 
 		.price {
-			margin-top: 13rpx;
+			margin-top: 12rpx;
 			font-size: 20rpx;
 			font-weight: 400;
 			color: #939699;
@@ -155,17 +188,68 @@
 				vertical-align: 3%;
 			}
 		}
+		
+		.original-price{
+			color: #bcbcbc;
+			margin-top: -5rpx;
+			height: 30rpx;
+			
+			.original-price-through{
+				font-size: 20rpx;
+				margin-right: 10rpx;
+				text-decoration:line-through;
+				.original-price-price-font{
+					font-size: 20rpx;
+				}
+				.original-price-amount{
+					color: #bcbcbc;
+					font-size: 26rpx;
+				}
+				.original-price-ex{
+					color: #bcbcbc;
+					font-size: 20rpx;
+				}
+				.original-price-unitName{
+					vertical-align: 13%; 
+					color: #bcbcbc;
+					font-size: 20rpx;
+				}
+			}
+		}
 
 		.info {
 			// padding: 0 24rpx;
 			display: flex;
 			flex-direction: column;
 
+			.category {
+				margin-top: 18rpx;
+				display: flex;
+				align-item: center;
+				font-weight: 400;
+				font-size: 20rpx;
+				letter-spacing: 0.1px;
+				color: #666666;
+				width: 100%;
+				white-space: nowrap;
+				overflow: hidden;
+				text-overflow: ellipsis;
+
+				.category-item {
+
+					text {
+						margin-right: 6rpx;
+					}
+				}
+			}
+
 			.title {
-				margin-top: 20rpx;
-				font-size: 28rpx;
-				color: #2b2f33;
+				margin-top: 6rpx;
+				font-weight: 400;
+				font-size: 26rpx;
 				line-height: 44rpx;
+				letter-spacing: 0.1px;
+				color: #333333;
 				overflow: hidden;
 				text-overflow: ellipsis;
 				display: -webkit-box;
@@ -188,6 +272,22 @@
 				background: linear-gradient(90.48deg, #B4EEE1 0.28%, #EAFCD7 99.48%);
 				vertical-align: 13%;
 			}
+		}
+	}
+	
+	.flagship-store{
+		position: relative;
+		z-index: 10;
+		margin-top: 10rpx;
+		font-weight: 400;
+		font-size: 18rpx;
+		color: #999999;
+		display: flex;
+		align-item: center;
+		.flagship-store-icon{
+			font-size: 16rpx;
+			color: #999999;
+			margin: 7rpx 0 0 4rpx;
 		}
 	}
 </style>
