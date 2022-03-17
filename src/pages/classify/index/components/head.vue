@@ -107,7 +107,7 @@
 			},
 			jumpDeal3Handler(item){
 				uni.navigateTo({
-					url: `/pages/common/shop-detail/shop-detail?id=${item.jumpUrl}`,
+					url: `/sub-classify/pages/shops-detail/shops-detail?storeId=${item.jumpUrl}`,
 				});
 			},
 			jumpDeal4Handler(item){

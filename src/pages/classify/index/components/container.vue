@@ -21,26 +21,28 @@
 				<view class="left">
 					<image src="/static/images/classify-brand-text.png" mode="" class="img"></image>
 				</view>
-				<view class="right" @click="brandHandler">
+				<view v-if="pavilionObj.totalRows > 8" class="right" @click="brandHandler">
 					<view class="brand-title">
-						全部品牌 (13)
+						全部品牌 {{ `(${pavilionObj.totalRows})` }}
 					</view>
 					<view class="brand-icon icon-alert_notice_jump">
 					</view>
 				</view>
 			</view>
 			<view class="bottom">
-				<scroll-view class="scroll-view_H" scroll-x="true" scroll-left="0" @scrolltolower="scrolltolowerHandler">
+				<scroll-view class="scroll-view_H" scroll-x="true" lower-threshold="20"
+					@scrolltolower="scrolltolowerHandler">
 					<view class="box">
-						<view class="brand-item-box" v-for="item in brandList" :key="item.title" @click="brandItemHandler">
+						<view class="brand-item-box" v-for="item in pavilionObj.list" :key="item.id"
+							@click="brandItemHandler(item)">
 							<view class="item-box" v-if="item.key !== 'all'">
-								<image :src="item.url" mode="" class="brand-item-img"></image>
-								<image :src="item.icon" mode="" class="brand-item-icon"></image>
+								<image :src="item.brandBagImage" mode="" class="brand-item-img"></image>
+								<image :src="item.brandLogoImage" mode="" class="brand-item-icon"></image>
 								<view class="brand-item-title">
-									{{item.title}}
+									{{item.brandShortName}}
 								</view>
 							</view>
-							<view class="item-all" v-else>
+							<view class="item-all" v-if="item.key === 'all' && pavilionObj.list.length > 3">
 								左滑查看更多
 							</view>
 						</view>
@@ -52,7 +54,16 @@
 </template>
 
 <script>
+	import {
+		throttle
+	} from '~@/../utils/common.js';
 	export default {
+		props: {
+			pavilionObj: {
+				type: Object,
+				default: () => {}
+			}
+		},
 		data() {
 			return {
 				classList: [{
@@ -79,60 +90,34 @@
 				recommendedList: [
 					"", ""
 				],
-				brandList: [
-					{
-						url: '',
-						icon: '',
-						title: 'TATA木门'
-					},
-					{
-						url: '',
-						icon: '',
-						title: '林氏木业'
-					},
-					{
-						url: '',
-						icon: '',
-						title: 'TATA木门1'
-					},
-					{
-						url: '',
-						icon: '',
-						title: 'TATA木门2'
-					},
-					{
-						url: '',
-						icon: '',
-						title: 'TATA木门2',
-						key: 'all'
-					}
-				]
+				brandList: []
 			}
 		},
-		methods:{
-			scrolltolowerHandler(){
+		methods: {
+			scrolltolowerHandler: throttle(function() {
 				console.log(111111111)
 				this.brandHandler();
-			},
-			classHandler(){
+			}, 500),
+			classHandler() {
 				console.log('分类点击事件')
-        uni.navigateTo({
-        	url: '/sub-classify/pages/all-classify/index'
-        })
+				uni.navigateTo({
+					url: '/sub-classify/pages/all-classify/index'
+				})
 			},
-			recommendedHandler(){
+			recommendedHandler() {
 				console.log('推荐点击事件')
 			},
-			brandHandler(){
+			brandHandler() {
 				console.log('跳转品牌页')
 				uni.navigateTo({
 					url: '/sub-classify/pages/brand-list/brand-list'
 				})
 			},
-			brandItemHandler(){
+			brandItemHandler(item) {
 				console.log('跳转对应品牌页面')
+				if (item.key === 'all') return;
 				uni.navigateTo({
-					url: '/sub-classify/pages/brand-list/brand-detail'
+					url: `/sub-classify/pages/brand-list/brand-detail?id=${item.id}`
 				})
 			}
 		}
@@ -235,20 +220,23 @@
 				}
 			}
 		}
-		
-		.bottom{
-			.scroll-view_H{
+
+		.bottom {
+			.scroll-view_H {
 				width: 100%;
-				.box{
+
+				.box {
 					display: flex;
 					padding-left: 28rpx;
 				}
 			}
-			.brand-item-box{
+
+			.brand-item-box {
 				position: relative;
 				margin-right: 20rpx;
 			}
-			.item-all{
+
+			.item-all {
 				background: #F4F3F4;
 				padding: 24rpx 20rpx;
 				font-weight: 400;
@@ -256,13 +244,17 @@
 				text-align: center;
 				color: #666666;
 				border-radius: 16rpx 0 0 16rpx;
+				max-width: 23rpx;
 			}
-			.brand-item-img{
+
+			.brand-item-img {
 				width: 236rpx;
 				height: 114rpx;
 				border-radius: 12rpx 12rpx 0px 0px;
+				display: block;
 			}
-			.brand-item-icon{
+
+			.brand-item-icon {
 				width: 80rpx;
 				height: 80rpx;
 				border-radius: 50%;
@@ -271,7 +263,8 @@
 				top: 74rpx;
 				background: red;
 			}
-			.brand-item-title{
+
+			.brand-item-title {
 				width: 100%;
 				height: 104rpx;
 				padding-top: 52rpx;
