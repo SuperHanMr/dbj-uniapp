@@ -1,18 +1,20 @@
 <template>
   <view class="page-body">
-    <scroll-view class="nav-left" scroll-y :scroll-top="scrollLeftTop" scroll-with-animation>
+    <scroll-view class="nav-left" scroll-y :scroll-top="scrollLeftTop" scroll-with-animation
+      :scroll-into-view="'left' + categoryActive">
       <view class="left-title-block">
-        <view class="nav-left-item" @click="categoryClickMain(menu2, index2)"
+        <view class="nav-left-item" @click="categoryClickMain(index2, menu2)"
           :class="{'active': index2==categoryActive, 'preNode': index2==categoryActive -1, 'nextNode': index2==categoryActive +1}"
-          v-for="(menu2,index2) in detailData" :key="index2">
-          <text v-if="detailData[categoryActive]['children'].length">{{menu2.name}}</text>
+          v-for="(menu2,index2) in detailData" :key="index2" :id="'left' + index2">
+          <view v-if="menu2.brandTag"><image src="../../static/image/brand_icon.png" mode=""></image></view>
+          <text v-if="detailData[categoryActive]['children'].length && !menu2.brandTag">{{menu2.name}}</text>
         </view>
         <view class="nav-left-item" :class="{'nextNode':  categoryActive === detailData.length - 1}"></view>
       </view>
     </scroll-view>
     <scroll-view class="nav-right" scroll-y="true" :scroll-into-view="'tab' + activeId" scroll-with-animation="true"
       @scroll="rightScroll">
-      <view v-for="(menu2, index2) in detailData" :key="index2" :id="'tab' + menu2.id" ref='itemBox'>
+      <view v-for="(menu2, index2) in detailData" :key="index2" :id="'tab' + menu2.id" class='itemBox'>
         <view class="right-view" v-for="(menu3, index3) in menu2['children']" :key="index3">
           <view v-if="menu3['children'].length">
             <text class="menu3-title">{{menu3.name}}</text>
@@ -30,7 +32,6 @@
           </view>
         </view>
       </view>
-
     </scroll-view>
   </view>
 </template>
@@ -46,28 +47,66 @@
     },
     data() {
       return {
-        activeId: 0,
+        timer: null,
+        heightList: [],
         categoryActive: 0,
+        activeId: 0,
+        isClickMenu2: false
       };
     },
-    created(){
-      console.log(this.detailData)
+    created() {
+      // this.detailData.forEach((item, key) => {
+      //   uni.createSelectorQuery().in(this).select(`#tab${item.id}`).boundingClientRect(res => {
+      //     this.heightList.push(res.height)
+      //   }).exec()
+      // })
+      // console.log(this.detailData)
     },
     watch: {
       tabIndex: {
         handler(v) {
           this.categoryActive = 0;
+          this.activeId = 0
         },
         immediate: true
       },
+      detailData: {
+        handler(v) {
+          v.forEach((item, key) => {
+            uni.createSelectorQuery().in(this).select(`#tab${item.id}`).boundingClientRect(res => {
+              this.heightList.push(res.height)
+            }).exec()
+          })
+        },
+        deep: true
+      },
     },
     methods: {
-      categoryClickMain(menu, index) {
-        this.activeId = menu.id
+      categoryClickMain(index, menu) {
         this.categoryActive = index;
+        this.activeId = menu.id
+        this.isClickMenu2 = true
       },
       rightScroll(e) {
-        console.log(this.$refs, e)
+        clearTimeout(this.timer)
+        this.timer = null
+        let timeStamp = e.timeStamp
+        this.timer = setTimeout(() => {
+          if(timeStamp === e.timeStamp) {
+            this.isClickMenu2 = false
+          }
+        })
+        if(this.isClickMenu2) {
+          return
+        }
+        let scrollHeight = this.heightList[0]
+        let scrollIndex = 0
+        while (scrollHeight <= e.detail.scrollTop) {
+          scrollIndex++
+          scrollHeight += this.heightList[scrollIndex]
+        }
+        this.categoryActive = scrollIndex
+        
       },
       toGoodsList(name, id) {
         uni.navigateTo({
@@ -82,7 +121,7 @@
   };
 </script>
 
-<style scoped>
+<style scoped lang="scss">
   .page-body {
     display: flex;
     height: calc(100% - 150rpx);
@@ -120,6 +159,10 @@
     align-items: center;
     justify-content: center;
     background-color: #ffffff;
+    image {
+      width: 80rpx;
+      height: 35rpx;
+    }
   }
 
   .active {

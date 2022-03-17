@@ -3,6 +3,9 @@ import axios from 'axios'
 export function getClassifyList (areaId) {
   return request.get('/product/app/prod-categories/front/tree/area/' + areaId)
 }
+export function getBrandList (params) {
+  return request.post('/product/app/search/aggregation/count/brandId/size/12', params)
+}
 export function getGoodsList (params) {
   return request.post('/product/app/search/query', params)
 }
@@ -39,6 +42,11 @@ export function getBundleDetail(params) {
 }
 export function checkPay(params) {
   return request.get("/order-center/app/order/queryPayResult", params);
+}
+
+// 商城首页 banner
+export function getClassifyBanner() {
+  return request.get("/app/dbj/banner/list");
 }
 
 

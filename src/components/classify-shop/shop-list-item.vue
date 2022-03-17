@@ -3,7 +3,7 @@
 		<image class="img" :src="item.product.spuImage |imgFormat" mode="aspectFill"></image>
 		<view class="info">
 			<view class="category">
-				<view class="category-item" v-for="(category, categoryIndex) in categoryList" :key="category">
+				<view class="category-item" v-for="(category, categoryIndex) in categoryListHandler()" :key="category">
 					<text>{{category}}</text>
 					<text v-if="categoryIndex !== categoryList.length - 1">|</text>
 				</view>
@@ -102,6 +102,9 @@
 			},
 			toFlagShipShopHandler(){
 				console.log('toFlagShipShopHandler')
+			},
+			categoryListHandler(){
+				return this.categoryList;
 			}
 		}
 	}
@@ -111,17 +114,17 @@
 	.item {
 		margin-top: 16rpx;
 		flex-shrink: 0;
-		width: 328rpx;
 		// border-radius: 18rpx;
 		// border: 0.3px solid #e6eaed;
 		position: relative;
 		overflow: hidden;
 
 		.img {
-			width: 100%;
+			width: 328rpx;
 			height: 328rpx;
 			display: block;
 			border-radius: 16rpx;
+			border: 0.5px solid #E8E8E8;
 		}
 
 		.allowance-view {
