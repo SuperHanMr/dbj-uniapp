@@ -26,7 +26,11 @@
       </view>
     </view>
     <view class="content" @scrolltolower="loadMoreList">
-      <uni-swipe-action v-if="listArr.length>0">
+      <view>
+        <text v-for="(v, k) in tabArr" :key="k">全部</text>
+      </view>
+      <goods-list :shopList="listArr"></goods-list>
+<!--      <uni-swipe-action v-if="listArr.length>0">
         <uni-swipe-action-item v-for="(goodsItem,goodsIndex) in listArr" :key="goodsIndex">
           <view class="goodsItem" @click="toDetails(goodsItem.product.skuId)">
             <image :src="goodsItem.product.spuImage + '?x-oss-process=image/resize,m_lfit,w_400,h_400' "
@@ -62,8 +66,8 @@
               </view>
             </view>
           </view>
-        </uni-swipe-action-item>
-      </uni-swipe-action>
+        </uni-swipe-action-item> -->
+      <!-- </uni-swipe-action> -->
       <view v-if="isPageReady && !(listArr.length > 0)" class="no-goods">
         <view class="img"></view>
         <view class="text">抱歉，没有找到符合的商品 请换关键词再搜搜看吧～</view>
@@ -74,23 +78,25 @@
 
 <script>
   import sortButton from "./sort-button.vue";
+  import goodsList from "../../../components/classify-shop/shop-list.vue";
   import {
     getGoodsList
   } from "../../../api/classify.js";
   export default {
     components: {
-      sortButton
+      sortButton,
+      goodsList
     },
     data() {
       return {
         originFrom: "",
         totalPage: 0,
+        tabArr: [1, 2, 3],
         listArr: [],
         initSearch: true,
         isPageReady: false,
         isShow: true,
         page: 1,
-        timer: null,
         sort: "",
         isLoadMore: false,
         searchVal: "",
