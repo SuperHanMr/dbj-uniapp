@@ -102,6 +102,8 @@
 
 <script>
 	import {
+		getBrandDetail,
+		getBrandProductList,
 	  getHomeGoodsList
 	} from "@/api/classify.js";
 	import ShopList from '@/components/classify-shop/shop-list.vue';

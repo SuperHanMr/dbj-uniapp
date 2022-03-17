@@ -1,5 +1,5 @@
 <template>
-	<view class="contaienr">
+	<view class="container">
 		<custom-navbar
 		  :opacity="scrollTop/100"
 		  bgcolor=""
@@ -15,31 +15,64 @@
 		    </view>
 		  </template>
 		</custom-navbar>
-		
+
 		<view class="bgImg"  :style="{backgroundImage:`url(${brandHeadBgImg})`,height:scrollTop >0?'192rpx':'326rpx'}">
 			<view class="brandTextContainer" v-if="scrollTop<=0">
 				<image src="../../static/image/bgBrandName.png" mode=""></image>
 				<view class="line"></view>
 			</view>
 		</view>
-		
-		
-		<view class="rankList-container">
-			<view class="rankItem" 
-				v-for="item in brandList" 
-				:key="item.key" 
+
+
+		<view class="rankList-container" v-if="brandList.length">
+			<view class="rankItem"
+				v-for="item in brandList"
+				:key="item.key"
 				:style="{backgroundImage:`url(${headerBgImg})`,backgroundSize:'320rpx 146rpx',backgroundPosition:'top center',backgroundRepeat:'no-repeat'}"
+				@click="gotoDetail(item)"
 			>
-			<image class="brandBgImg"  src="../../static/image/brandItemBgImg.png" mode=""></image>
-				<image class="rankImage" src="../../../static/images/no-goods.png" mode=""></image>
+				<image class="brandBgImg"  src="../../static/image/brandItemBgImg.png" />
+				<image class="rankImage" src="../../../static/images/no-goods.png" />
 				<view class="rankName">{{item.brandName}}</view>
 			</view>
-		</view>
+			
+			<!-- <view class="rankItem"
+				v-for="item in brandList"
+				:key="item.id"
+				:style="{backgroundImage:`url(${item.brandBagImage})`}"
+				@click="gotoDetail(item)"
+			>
+				<image class="brandBgImg"  src="../../static/image/brandItemBgImg.png" />
+				<image class="rankImage" :src="item.brandLogoImage" />
+				<view class="rankName">{{item.brandShortName}}</view>
+			</view> -->
 			
 		</view>
+		
+		<view class="noData-container" v-if="!brandList.length || showNowifiStyle">
+			<view class="noBrandData" v-if="!brandList.length">
+				<image src="../../static/image/no_brandListData.png" mode=""></image>
+				<view class="text">
+					暂无相关品牌
+				</view>
+			</view>
+			<view class="noBrandData" v-if="showNowifiStyle">
+				<image src="../../static/image/brandPage_nowifi.png" mode=""></image>
+				<view class="text">
+					暂无网络
+				</view>
+				<view class="refreshText">
+					网络环境较差请点击刷新一下~
+				</view>
+			</view>
+		</view>
+	</view>
 </template>
 
 <script>
+	import {
+		getBrandList,
+	}from "@/api/classify.js"
 	export default {
 		data() {
 			return {
@@ -47,6 +80,12 @@
 				brandHeadBgImg:"../../static/image/brandHeadBg.png",
 				bgImg:"../../static/image/brandItemBgImg.png",
 				headerBgImg:"https://ali-image.dabanjia.com/static/mp/dabanjia/images/theme-red/home/designerRankBg.png",
+				query:{
+					page:1,
+					rows:10,
+					totalPage:1,
+					positon:"",
+				},
 				brandList:[
 					{
 						brandName:"TATA木门",
@@ -92,15 +131,15 @@
 						brandName:"老板电器",
 						key:12,
 					},
-
-				]
+				],
+				brandList:[],
+				showNowifiStyle:false,
 			}
 		},
 		onPageScroll(scrollTop){
 			this.scrollTop = scrollTop.scrollTop
 		},
 		onLoad() {
-			this.reqRankList()
 			uni.setNavigationBarColor({
 			  frontColor: "#ffffff",
 			  backgroundColor: "#ff0000",
@@ -110,13 +149,35 @@
 			  },
 			});
 		},
-		
+		onShow() {
+			this.reqRankList()
+		},
+
 		methods: {
 			toBack(){
 				uni.navigateBack({})
 			},
 			reqRankList(){
-
+				let params={
+					page:this.query.page,
+					rows:this.query.rows,
+					// position:this.query.positon,
+				}
+				getBrandList(params).then(res=>{
+					if(res.code ==401){
+						this.showNowifiStyle = true
+					}else{
+						console.log(res)
+						this.brandList =res.list
+						this.page++
+					}
+				})
+			},
+			gotoDetail(item){
+				console.log("brandItem==",item)
+				uni.navigateTo({
+					url:"./brand-detail"
+				})
 			},
 		}
 	}
@@ -130,7 +191,7 @@
 	}
 	.container{
 		height: 100%;
-		background: #fff;
+		background: #101721;
 		position: relative;
 	}
 	.bgImg{
@@ -177,6 +238,9 @@
 			margin-right: 30rpx;
 			position: relative;
 			background: #101721;
+			background-size: 320rpx 146rpx;
+			background-repeat:no-repeat;
+			background-position:top center;
 			.brandBgImg{
 				position: absolute;
 				top: -8rpx;
@@ -206,6 +270,36 @@
 				color: #ffffff;
 			}
 		}
+	}
+	.noData-container{
+		padding-top: 326rpx;
+		.noBrandData{
+			margin-top: 268rpx;
+			padding: 0 auto;
+			display: flex;
+			flex-flow: column nowrap;
+			align-items: center;
+			image{
+				width: 400rpx;
+				height: 400rpx;
+			}
+			.text{
+				height: 34rpx;
+				line-height: 34rpx;
+				font-size: 24rpx;
+				color: #CBCCCC;
+			}
+			.refreshText{
+				margin-top: 8rpx;
+				font-size: 24rpx;
+				color: #ffffff;
+				opacity: 0.4;
+				height: 34rpx;
+				line-height: 34rpx;
+			}
+			
+		}
+		
 	}
 
 </style>
