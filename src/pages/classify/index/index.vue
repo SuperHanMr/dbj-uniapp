@@ -45,7 +45,7 @@
 	import {
 		getHomeGoodsList,
 		getClassifyBanner,
-		getPavilionList
+		getBrandHallList
 	} from "@/api/classify.js";
 	export default {
 		components: {
@@ -85,7 +85,7 @@
 		},
 		methods: {
 			getPavilionListHandler(){
-				getPavilionList({
+				getBrandHallList({
 					page: 1,
 					rows: 8
 				}).then((res) => {
