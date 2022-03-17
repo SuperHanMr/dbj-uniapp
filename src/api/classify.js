@@ -44,3 +44,8 @@ export function checkPay(params) {
   return request.get("/order-center/app/order/queryPayResult", params);
 }
 
+// 商城首页 banner
+export function getClassifyBanner() {
+  return request.get("/app/dbj/banner/list");
+}
+

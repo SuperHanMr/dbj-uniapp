@@ -112,6 +112,7 @@
 		methods:{
 			scrolltolowerHandler(){
 				console.log(111111111)
+				this.brandHandler();
 			},
 			classHandler(){
 				console.log('分类点击事件')

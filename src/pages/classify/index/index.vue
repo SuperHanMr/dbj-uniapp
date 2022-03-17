@@ -24,7 +24,7 @@
 		</view>
 		<scroll-view class="classify-scroll" scroll-y="true" @scrolltolower='scrolltolower' refresher-enabled='true'
 			@refresherrefresh='refresherrefresh' @scroll="scrollHandler" :refresher-triggered="triggered">
-			<Head :swiperAuto="swiperAuto" />
+			<Head :swiperAuto="swiperAuto" :bannerList="bannerList" />
 			<view class="container-box">
 				<Container />
 			</view>
@@ -43,7 +43,8 @@
 	import Container from './components/container.vue';
 	import ShopList from '@/components/classify-shop/shop-list.vue';
 	import {
-		getHomeGoodsList
+		getHomeGoodsList,
+		getClassifyBanner
 	} from "@/api/classify.js";
 	export default {
 		components: {
@@ -62,7 +63,8 @@
 				areaId: 43,
 				navActive: false,
 				shopList: [],
-				triggered: false
+				triggered: false,
+				bannerList: [],
 			}
 		},
 		onShow() {
@@ -72,9 +74,15 @@
 			this.swiperAuto = false;
 		},
 		mounted() {
+			this.getClassifyBannerHandler();
 			this.getHomeGoodsList();
 		},
 		methods: {
+			getClassifyBannerHandler(){
+				getClassifyBanner().then((res) => {
+					this.bannerList = res;
+				})
+			},
 			getHomeGoodsList() {
 				getHomeGoodsList({
 					pageIndex: this.query.page,
