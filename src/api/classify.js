@@ -44,3 +44,33 @@ export function checkPay(params) {
   return request.get("/order-center/app/order/queryPayResult", params);
 }
 
+// 商城首页 banner
+export function getClassifyBanner() {
+  return request.get("/app/dbj/banner/list");
+}
+
+// 商城首页 banner
+export function getPavilionList(params) {
+  return request.get("/app/brand/pavilion/page", params);
+}
+
+
+
+//商城改版新接口
+
+// 品牌馆列表
+export function getBrandHallList(params){
+	return request.get("/app/brand/pavilion/page",{params})
+}
+//品牌详情
+export function getBrandDetail(id,params){
+	return request.get(`/app/brand/pavilion/${id}/detail`,{params})
+}
+//根据品牌馆品牌id和tagI获取商品列表
+export function getBrandProductList(id,tagId,params){
+	return request.get(`/app/brand/pavilion/${id}/${tagId}/product`,{params})
+}
+// 店铺列表
+export function getStoreList(params){
+	return request.get(`/product/app/search/store/search`,{params})
+}
