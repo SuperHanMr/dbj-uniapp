@@ -54,7 +54,7 @@ export function getClassifyBanner() {
 //商城改版新接口
 
 // 品牌馆列表
-export function getBrandList(params){
+export function getBrandHallList(params){
 	return request.get("/app/brand/pavilion/page",{params})
 }
 //品牌详情

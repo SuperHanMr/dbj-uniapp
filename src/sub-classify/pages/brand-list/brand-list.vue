@@ -35,7 +35,7 @@
 				<image class="rankImage" src="../../../static/images/no-goods.png" />
 				<view class="rankName">{{item.brandName}}</view>
 			</view>
-			
+
 			<!-- <view class="rankItem"
 				v-for="item in brandList"
 				:key="item.id"
@@ -46,9 +46,9 @@
 				<image class="rankImage" :src="item.brandLogoImage" />
 				<view class="rankName">{{item.brandShortName}}</view>
 			</view> -->
-			
+
 		</view>
-		
+
 		<view class="noData-container" v-if="!brandList.length || showNowifiStyle">
 			<view class="noBrandData" v-if="!brandList.length">
 				<image src="../../static/image/no_brandListData.png" mode=""></image>
@@ -71,7 +71,7 @@
 
 <script>
 	import {
-		getBrandList,
+		getBrandHallList,
 	}from "@/api/classify.js"
 	export default {
 		data() {
@@ -163,7 +163,7 @@
 					rows:this.query.rows,
 					// position:this.query.positon,
 				}
-				getBrandList(params).then(res=>{
+				getBrandHallList(params).then(res=>{
 					if(res.code ==401){
 						this.showNowifiStyle = true
 					}else{
@@ -297,9 +297,9 @@
 				height: 34rpx;
 				line-height: 34rpx;
 			}
-			
+
 		}
-		
+
 	}
 
 </style>
