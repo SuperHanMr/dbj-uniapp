@@ -1,6 +1,7 @@
 <template>
 	<view>
-		<web-view :src="`${baseUrl}/app-pages/product-promotion-list/index.html#params=${userInfo}`"
+		<web-view
+			:src="`${baseUrl}/app-pages/product-detail/product-detail.html?id=${productId}&source=small#params=${paramsJson}`">
 		</web-view>
 	</view>
 </template>
@@ -13,66 +14,82 @@
 		data() {
 			return {
 				baseUrl: '',
-				houseId: '',
-				searchToken: '',
-				hashToken: '',
-				params:{
-					productId:'',
-					productType:'',
-					houseId:'',
-					provinceId:'',
-					cityId:'',
-					areaId:'',
-					address:'',
-					shareAreaId:'',
-					shareAreaName:'',
-					shareOriginType:'',
-					gomeskuTemplateId:'',
-					gomeDivisionCode:'',
+				productId: '',
+				params: {
+					token: '',
+					userId: '',
+					// 房屋Id
+					houseId: '',
+					defaultHouseId:'',
+					estate: {
+						// 省Id
+						provinceId: 1,
+						// 城市Id
+						cityId: 36,
+						// 区域Id
+						areaId: 41,
+						// 用户位置
+						name: '北京朝阳',
+					},
+					// 分享Id
+					shareAreaId: '',
+					// 分享人姓名
+					shareAreaName: '',
+					// 分享类型
+					shareOriginType: '',
+					// 国美参数
+					skuTemplateId: '',
+					gomeDivisionCode: '',
+					upDateTime:'',
+					
 				},
-				userInfo:''
-				
+				paramsJson: '',
 			}
 		},
 		onLoad(e) {
-			this.baseUrl = this.ENV.VUE_APP_BASE_H5//'https://localhost'
-			this.searchToken = getApp().globalData.token
-			this.houseId = getApp().globalData.currentHouse.id
+			uni.showShareMenu(); // 显示分享按钮
+			// this.baseUrl = this.ENV.VUE_APP_BASE_H5
+			this.baseUrl = 'https://localhost'
+			this.productId = e.goodId
+
+			this.params.token = getApp().globalData.token
+			this.params.bundleId = e.bundleId
+
+			this.params.shareAreaId = e.shareAreaId
+			this.params.shareAreaName = e.shareAreaName
+			this.params.shareOriginType = e.originType
+
+			this.params.skuTemplateId = e.skuTemplateId 
+			this.params.gomeDivisionCode = e.gomeDivisionCode
+		
 		},
 
 		onShow() {
-			if (getApp().globalData.token && !this.houseId) {
-				this.getHouseList()
+			if (getApp().globalData.token) {
+				this.params.token = getApp().globalData.token
+				this.params.userId = getApp().globalData.userInfo.id
 			}
+			if (getApp().globalData.currentHouse) {
+				this.params.defaultHouseId  = getApp().globalData.currentHouse.id
+				this.params.estate.provinceId = getApp().globalData.currentHouse.provinceId
+				this.params.estate.cityId = getApp().globalData.currentHouse.cityId
+				this.params.estate.areaId = getApp().globalData.currentHouse.areaId
+				this.params.estate.name = getApp().globalData.currentHouse.name
+			}
+			
+			if (uni.getStorageSync('houseListChooseId')) {
+			  this.params.houseId = uni.getStorageSync('houseListChooseId')
+			  uni.removeStorageSync("houseListChooseId")
+			}
+		
+			this.paramsJson = JSON.stringify(this.params)
+			console.log('params:',this.params)
+			console.log('userInfo:',getApp().globalData);
 		},
 
-		methods: {
-			async getHouseList() {
-				let houseList = await queryEstates({
-					isNeedRelative: false
-				}, false, true);
-				let house = null;
-				let defaultHouse;
-				if (houseList && houseList.length) {
-					defaultHouse = houseList.find((e) => {
-						return e.defaultEstate == true;
-					});
-				}
-				if (defaultHouse) {
-					house = defaultHouse;
-				} else if (houseList.length) {
-					house = houseList[0];
-				}
-				if (house) {
-					this.houseId = house.id
-				}
-				this.hashToken = getApp().globalData.token
-			},
-		},
+		methods: {},
 	}
 </script>
 
 <style>
-
 </style>
-

@@ -410,8 +410,12 @@ export default {
 		},
 		//商品详情页面
 		gotoProduceDetail(item){
+			// uni.navigateTo({
+			// 	url:`../../../sub-classify/pages/goods-detail/goods-detail?goodId=${item.id}`,
+			// });
+			
 			uni.navigateTo({
-				url:`../../../sub-classify/pages/goods-detail/goods-detail?goodId=${item.id}`,
+				url:`../../../sub-classify/pages/product-detail/product-detail?goodId=${item.id}`,
 			});
 		},
     
