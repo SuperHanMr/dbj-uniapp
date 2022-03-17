@@ -118,10 +118,11 @@
 		// border: 0.3px solid #e6eaed;
 		position: relative;
 		overflow: hidden;
+		width: 328rpx;
 
 		.img {
-			width: 328rpx;
-			height: 328rpx;
+			width: 324rpx;
+			height: 324rpx;
 			display: block;
 			border-radius: 16rpx;
 			border: 0.5px solid #E8E8E8;

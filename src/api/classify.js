@@ -49,6 +49,11 @@ export function getClassifyBanner() {
   return request.get("/app/dbj/banner/list");
 }
 
+// 商城首页 banner
+export function getPavilionList(params) {
+  return request.get("/app/brand/pavilion/page", params);
+}
+
 
 
 //商城改版新接口

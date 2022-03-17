@@ -26,7 +26,7 @@
 			@refresherrefresh='refresherrefresh' @scroll="scrollHandler" :refresher-triggered="triggered">
 			<Head :swiperAuto="swiperAuto" :bannerList="bannerList" />
 			<view class="container-box">
-				<Container />
+				<Container :pavilionObj="pavilionObj" />
 			</view>
 			<view class="shop-list-box">
 				<view class="recommend-title">
@@ -44,7 +44,8 @@
 	import ShopList from '@/components/classify-shop/shop-list.vue';
 	import {
 		getHomeGoodsList,
-		getClassifyBanner
+		getClassifyBanner,
+		getPavilionList
 	} from "@/api/classify.js";
 	export default {
 		components: {
@@ -65,6 +66,10 @@
 				shopList: [],
 				triggered: false,
 				bannerList: [],
+				pavilionObj: {
+					list: [],
+					totalRows: 0
+				}
 			}
 		},
 		onShow() {
@@ -75,9 +80,22 @@
 		},
 		mounted() {
 			this.getClassifyBannerHandler();
+			this.getPavilionListHandler();
 			this.getHomeGoodsList();
 		},
 		methods: {
+			getPavilionListHandler(){
+				getPavilionList({
+					page: 1,
+					rows: 8
+				}).then((res) => {
+					console.log(res, '>>>>>>>>>>>>')
+					if (res && res.list) {
+						this.pavilionObj.totalRows = res.totalRows;
+						this.pavilionObj.list = [...res.list, {key: 'all'}];
+					}
+				})
+			},
 			getClassifyBannerHandler(){
 				getClassifyBanner().then((res) => {
 					this.bannerList = res;
