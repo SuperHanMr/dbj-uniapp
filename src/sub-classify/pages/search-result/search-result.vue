@@ -10,27 +10,21 @@
           <view v-else class="search-default">请搜索您要的商品</view>
         </view>
       </view>
-      <uni-search-bar
-        v-else
-        @confirm="searchConfirm"
-        clearButton="auto"
-        cancelButton="false"
-        :focus="true"
-        bgColor="transparent"
-        placeholder="请搜索您要的商品"
-        :radius="8">
+      <uni-search-bar v-else @confirm="searchConfirm" clearButton="auto" cancelButton="false" :focus="true"
+        bgColor="transparent" placeholder="请搜索您要的商品" :radius="8">
         <uni-icons slot="searchIcon" />
       </uni-search-bar>
       <view @click="sortList">
         <sort-button class="sort-button"></sort-button>
       </view>
     </view>
-    <view class="content" @scrolltolower="loadMoreList">
-      <view>
-        <text v-for="(v, k) in tabArr" :key="k">全部</text>
-      </view>
+    <view class="content">
+      <scroll-view scroll-x="true" :show-scrollbar="false" class="content-scroll" v-if="tabArr.length">
+        <text :class="{'activeTab': activeTabIndex === 0}" @click="clickTab(0, 0)">全部</text>
+        <text v-for="(v, k) in tabArr" :key="k" :class="{'activeTab': activeTabIndex === k + 1}" @click="clickTab(k + 1, v.id)">{{v.name}}</text>
+      </scroll-view>
       <goods-list :shopList="listArr"></goods-list>
-<!--      <uni-swipe-action v-if="listArr.length>0">
+      <!--      <uni-swipe-action v-if="listArr.length>0">
         <uni-swipe-action-item v-for="(goodsItem,goodsIndex) in listArr" :key="goodsIndex">
           <view class="goodsItem" @click="toDetails(goodsItem.product.skuId)">
             <image :src="goodsItem.product.spuImage + '?x-oss-process=image/resize,m_lfit,w_400,h_400' "
@@ -90,8 +84,9 @@
     data() {
       return {
         originFrom: "",
+        activeTabIndex: 0,
         totalPage: 0,
-        tabArr: [1, 2, 3],
+        tabArr: [],
         listArr: [],
         initSearch: true,
         isPageReady: false,
@@ -100,7 +95,10 @@
         sort: "",
         isLoadMore: false,
         searchVal: "",
+        aggregation: true,
         categoryId: 0,
+        category1Id: 0,
+        category2Id: 0,
         searchText: ''
       }
     },
@@ -111,17 +109,13 @@
       uni.removeStorageSync('goodId')
     },
     onLoad(e) {
+      this.category1Id = e.category1Id
+      this.category1Id = 1
       this.categoryId = e.categoryId
       this.searchText = e.searchText
       this.originFrom = e.originFrom
       this.searchVal = this.originFrom ? "" : (e.searchText || "")
       this.getList()
-      // 对上一个页面传值
-      // var shequ = getCurrentPages();
-      // var prevShequ = shequ[shequ.length - 2];
-      // prevShequ.brand ={
-      //   name:"dd"
-      //  }
     },
     onPullDownRefresh() {
       this.isLoadMore = false
@@ -132,29 +126,37 @@
       this.loadMoreList()
     },
     methods: {
+      clickTab(index, id) {
+        console.log(index, id)
+        this.activeTabIndex = index
+        this.category2Id = id
+        this.aggregation = !Boolean(index)
+        this.getList()
+      },
       getList() {
         let params = {
-          serviceVersion: 0,
-          query: this.searchVal, //查询的关键词
-          categoryId: this.originFrom ? Number(this.categoryId) : "", //搜索范围，在指定的商品分类id的范围内搜索，可不传（表示不限定商品分类）,
-          supplierId: 0, //搜索范围，在指定的供应商 id 的范围内搜索，可不传（表示不限定供应商）,
-          storeId: 0, //搜索范围，在指定的店铺 id 的范围内搜索，可不传（表示不限定店铺）,
-          areaId: getApp().globalData.currentHouse
-            .areaId, //区域编号，会按这个区域进行搜索；      区域的取值，请参考相关需求，好像是：有当前房屋就取当前房屋所在区域，没有当前房屋就取用户选取的位置区域...（具体逻辑比这个还复杂点）,
-          sort: this.sort, //搜索排序方式：      price_asc  表示按价格从低到高排序；      price_desc 表示按价格从高到低排序；,
-          pageIndex: this.page, //页面序号，从 1 开始，不传取 默认值第 1 页；,
-          pageSize: 20, //每页数据量大小，不传取默认值 10；,
-          maxErrorSize: 0, //容错程度； 0 表示数据不能有问题； -1 表示数据可以有问题；大于 1 的数表示允许问题数量在多少范围内。每条数据都记录了自己在同步时的问题数量。对本参数设置一个容错程度，可以指定问题达到什么程度的数据就不搜出来了。,
-          cache: false, //是否允许缓存数据      如果为 true，则返回数据可能是从缓存中读的（如果缓存被命中的话）,
-          u: 0, //设备id（目前没用到，为以后作兼容处理预留的）,
-          p1: "", //平台码（目前没用到，为以后作兼容处理预留的）,
-          v: "" //客户端版本号（目前没用到，为以后作兼容处理预留的）
+          searchItemType: 'product',
+          aggregation: this.aggregation,
+          aggregationField: 'category2Id',
+          product: {
+            category1Id: this.originFrom ? Number(this.category1Id) : "", // 一级分类id
+            category2Id: this.originFrom ? Number(this.category2Id) : "", // 二级分类id
+            // categoryId: this.originFrom ? Number(this.categoryId) : "", // 四级分类id
+            query: this.searchVal, //查询的关键词
+            areaId: getApp().globalData.currentHouse
+              .areaId, //区域编号，会按这个区域进行搜索；      区域的取值，请参考相关需求，好像是：有当前房屋就取当前房屋所在区域，没有当前房屋就取用户选取的位置区域...（具体逻辑比这个还复杂点）,
+            sort: this.sort, //搜索排序方式：      price_asc  表示按价格从低到高排序；      price_desc 表示按价格从高到低排序；,
+            pageIndex: this.page, //页面序号，从 1 开始，不传取 默认值第 1 页；,
+            pageSize: 20, //每页数据量大小，不传取默认值 10；,          
+          }
         }
-
         getGoodsList(params).then((data) => {
           uni.stopPullDownRefresh()
           this.isPageReady = true
           this.totalPage = data.total
+          if(data.aggregationResults) {
+            this.tabArr = data.aggregationResults
+          }
           if (this.isLoadMore) {
             this.listArr = this.listArr.concat(data.page)
           } else {
@@ -288,7 +290,26 @@
     width: 100%;
     overflow: scroll;
   }
-
+  .content-scroll{
+    height: 80rpx;
+    white-space: nowrap;
+    display: flex;
+    align-items: center;
+  }
+  .content-scroll .activeTab{
+    background-color: #222222;
+    color: #ffffff;
+  }
+  .content-scroll text{
+    text-align: center;
+    width: fit-content;
+    padding: 11rpx 20rpx;
+    margin-left: 16rpx;
+    border-radius: 10rpx;
+    background-color: #F7F7F7;
+    color: #999999;
+    font-size: 24rpx
+  }
   .content-item {
     height: 20%;
     display: flex;

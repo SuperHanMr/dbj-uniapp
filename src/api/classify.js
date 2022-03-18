@@ -7,7 +7,7 @@ export function getBrandList (params) {
   return request.post('/product/app/search/aggregation/count/brandId/size/12', params)
 }
 export function getGoodsList (params) {
-  return request.post('/product/app/search/query', params)
+  return request.post('/product/app/search/query/v2', params)
 }
 export function getHomeGoodsList (params) {
   return request.post('/product/app/search/recommend/home', params)
