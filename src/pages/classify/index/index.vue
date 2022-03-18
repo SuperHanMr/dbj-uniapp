@@ -142,7 +142,7 @@
 	.container-box {
 		background: #FFFFFF;
 		border-radius: 16rpx 16rpx 0 0;
-		padding: 48rpx 32rpx;
+		padding: 24rpx 32rpx;
 	}
 
 	.shop-list-box {

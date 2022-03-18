@@ -15,15 +15,13 @@
 		</view>
 		<view class="brand">
 			<view class="top">
-				<view class="top-bg">
-
-				</view>
 				<view class="left">
 					<image src="/static/images/classify-brand-text.png" mode="" class="img"></image>
 				</view>
-				<view v-if="pavilionObj.totalRows > 8" class="right" @click="brandHandler">
+				<!-- v-if="pavilionObj.totalRows > 8" -->
+				<view  class="right" @click="brandHandler">
 					<view class="brand-title">
-						全部品牌 {{ `(${pavilionObj.totalRows})` }}
+						全部 {{ `(${pavilionObj.totalRows})` }}
 					</view>
 					<view class="brand-icon icon-alert_notice_jump">
 					</view>
@@ -130,11 +128,13 @@
 		display: flex;
 		justify-content: space-between;
 		align-items: center;
+		padding: 0 10rpx;
 
 		.list-img {
-			width: 80rpx;
-			height: 80rpx;
-			margin-bottom: 12rpx;
+			width: 96rpx;
+			height: 96rpx;
+			display: block;
+			margin-bottom: 4rpx;
 		}
 
 		.list-title {
@@ -142,18 +142,19 @@
 			font-size: 24rpx;
 			text-align: center;
 			letter-spacing: 0.1px;
+			line-height: 34rpx;
 			color: #333333;
 		}
 	}
 
 	.recommended {
-		margin-top: 54rpx;
+		margin-top: 64rpx;
 		display: flex;
 		justify-content: space-between;
 
 		.img-box {
-			width: 333rpx;
-			height: 152rpx;
+			width: 328rpx;
+			height: 132rpx;
 
 			.img {
 				width: 100%;
@@ -165,15 +166,14 @@
 	}
 
 	.brand {
-		height: 342rpx;
-		margin-top: 20rpx;
-		border: 0.5px solid #FCF2FF;
+		// height: 342rpx;
+		margin-top: 76rpx;
+		// border: 0.5px solid #FCF2FF;
 		box-sizing: border-box;
-		border-radius: 16rpx;
-		background: linear-gradient(177.52deg, #FCFAFF 2.21%, #FFFEFF 98.1%);
+		// border-radius: 16rpx;
+		// background: linear-gradient(177.52deg, #FCFAFF 2.21%, #FFFEFF 98.1%);
 
 		.top {
-			height: 88rpx;
 			display: flex;
 			justify-content: space-between;
 			position: relative;
@@ -201,9 +201,13 @@
 			}
 
 			.right {
+				height: 40rpx;
+				padding: 0 12rpx 0 20rpx;
 				display: flex;
 				align-items: center;
-				margin-right: 24rpx;
+				margin-right: 3rpx;
+				border: 0.5px solid #ADADAD;
+				border-radius: 6px;
 
 				.brand-title {
 					font-weight: 400;
@@ -232,8 +236,11 @@
 			}
 
 			.brand-item-box {
-				position: relative;
 				margin-right: 20rpx;
+
+				.item-box {
+					position: relative;
+				}
 			}
 
 			.item-all {
@@ -248,35 +255,32 @@
 			}
 
 			.brand-item-img {
-				width: 236rpx;
-				height: 114rpx;
-				border-radius: 12rpx 12rpx 0px 0px;
+				width: 216rpx;
+				height: 176rpx;
+				border-radius: 16rpx;
 				display: block;
 			}
 
 			.brand-item-icon {
-				width: 80rpx;
-				height: 80rpx;
+				width: 84rpx;
+				height: 84rpx;
 				border-radius: 50%;
 				position: absolute;
-				left: 78rpx;
-				top: 74rpx;
-				background: red;
+				left: 66rpx;
+				top: 28rpx;
 			}
 
 			.brand-item-title {
 				width: 100%;
-				height: 104rpx;
-				padding-top: 52rpx;
-				font-weight: 500;
-				font-size: 24rpx;
+				font-weight: 400;
+				font-size: 22rpx;
 				text-align: center;
+				line-height: 15px;
 				letter-spacing: 0.1px;
-				color: #333333;
-				background: #FFFFFF;
-				border: 0.5px solid #EBEBEB;
-				box-sizing: border-box;
-				border-radius: 0 0 12rpx 12rpx;
+				color: #5C4939;
+				position: absolute;
+				bottom: 24rpx;
+				left: 0;
 			}
 		}
 	}
