@@ -2,7 +2,7 @@
 	<view :class="['nav-box', {'nav-box-active': navActive}]">
 		<view class="uni-searchbar" @click="searchClick">
 			<view class="uni-searchbar__box-icon-search">
-				<uni-icons color="#999999" size="18" type="search" />
+				<text class="uni-searchbar-icon icon-search"></text>
 				<text class="uni-searchbar__text-placeholder">搜好货</text>
 			</view>
 		</view>
@@ -139,6 +139,10 @@
 		flex-direction: row;
 		padding: 0 16rpx;
 		align-items: center;
+		.uni-searchbar-icon{
+			font-size: 24rpx;
+			color: #999999;
+		}
 	}
 	
 	.uni-searchbar__text-placeholder {
