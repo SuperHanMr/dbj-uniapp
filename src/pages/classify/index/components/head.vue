@@ -4,7 +4,7 @@
 			<swiper class="banner" :autoplay="swiperAuto" interval="2000" duration="500" :circular="true"
 				@change="swiperChange">
 				<swiper-item v-for="(item) in bannerList" :key="item.id">
-					<image class="banner-img" :src="item.resUrl" mode="scaleToFill" @click="toJumpHandler(item)">
+					<image class="banner-img" :src="item.thumbnailUrl" mode="scaleToFill" @click="toJumpHandler(item)">
 					</image>
 				</swiper-item>
 			</swiper>
@@ -36,64 +36,25 @@
 		data() {
 			return {
 				currentSwiper: 0,
-				// bannerList: [{
-				// 		"createTime": 1645527292000,
-				// 		"id": 15,
-				// 		"jumpUrl": "https://design-h5-stage.meiwu365.com/app-pages/product-promotion-list/index.html?token=",
-				// 		"release": true,
-				// 		"resType": 1,
-				// 		"resUrl": "https://ali-image-test.dabanjia.com/image/20220222/18/1645527289651_2418%24%E9%A3%9E%E4%B9%A620220222-185414.png",
-				// 		"sort": 1,
-				// 		"title": "促销套包",
-				// 		"type": 1,
-				// 		"videoThumbnail": ""
-				// 	},
-				// 	{
-				// 		"createTime": 1635497710000,
-				// 		"id": 10,
-				// 		"jumpUrl": "https://form-stage.meiwu365.com/app/questionnaire/guest?token=a717c18f7d7ccadf22a9806f06fb4bfa",
-				// 		"release": true,
-				// 		"resType": 1,
-				// 		"resUrl": "https://ali-image-test.dabanjia.com/image/20211029/16/1635497599384_1717%24banner1.png",
-				// 		"sort": 0,
-				// 		"title": "调查问卷",
-				// 		"type": 1,
-				// 		"videoThumbnail": ""
-				// 	},
-				// 	{
-				// 		"createTime": 1634264830000,
-				// 		"id": 4,
-				// 		"jumpUrl": "www.baidu.com",
-				// 		"release": true,
-				// 		"resType": 1,
-				// 		"resUrl": "https://ali-image-test.dabanjia.com/image/20211015/10/1634264823038_8700%24%E9%A3%9E%E4%B9%A620211015-102522.png",
-				// 		"sort": 0,
-				// 		"title": "测试1",
-				// 		"type": 1,
-				// 		"videoThumbnail": ""
-				// 	},
-				// 	{
-				// 		"createTime": 1634264672000,
-				// 		"id": 3,
-				// 		"jumpUrl": "www.baidu.com",
-				// 		"release": true,
-				// 		"resType": 1,
-				// 		"resUrl": "https://ali-image-test.dabanjia.com/image/20211015/10/1634264662477_8840%24%E9%A3%9E%E4%B9%A620211015-102357.png",
-				// 		"sort": 0,
-				// 		"title": "测试测试",
-				// 		"type": 1,
-				// 		"videoThumbnail": ""
-				// 	}
-				// ]
 			}
 		},
 		methods: {
 			toJumpHandler(item) {
 				debugger
 				if (item && item.id) {
-					// 跳转类型 1: 链接 2: 商品详情 3：店铺详情:4：无跳转",
+					// 跳转类型 0：无跳转 1： 链接 2： 商品详情 3：店铺详情",
 					this.[`jumpDeal${item.jumpType}Handler`](item)
 				}
+			},
+			jumpDeal0Handler(item){
+				// uni.navigateTo({
+				// 	url: "pages/common/webview/webview?url=" + encodeURIComponent(item.jumpUrl),
+				// });
+				// uni.showToast({
+				//   title: "无跳转",
+				//   icon: "none",
+				// });
+				console.log('无跳转');
 			},
 			jumpDeal1Handler(item){
 				uni.navigateTo({
@@ -110,12 +71,7 @@
 					url: `/sub-classify/pages/shops-detail/shops-detail?storeId=${item.jumpUrl}`,
 				});
 			},
-			jumpDeal4Handler(item){
-				// uni.navigateTo({
-				// 	url: "pages/common/webview/webview?url=" + encodeURIComponent(item.jumpUrl),
-				// });
-				console.log('无跳转');
-			},
+			
 			swiperChange(e) {
 				this.currentSwiper = e.detail.current;
 			},
