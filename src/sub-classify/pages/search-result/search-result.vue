@@ -3,8 +3,8 @@
     <view class="search">
       <view v-if="initSearch" class="uni-searchbar" @click="clickInitSearch">
         <view class="uni-searchbar__box">
-          <view class="search-card" v-if="searchVal">
-            <text>{{searchVal}}</text>
+          <view class="search-card" v-if="searchText">
+            <text>{{searchText}}</text>
             <uni-icons color="#c0c4cc" size="15" type="clear" />
           </view>
           <view v-else class="search-default">请搜索您要的商品</view>
@@ -94,12 +94,11 @@
         page: 1,
         sort: "",
         isLoadMore: false,
-        searchVal: "",
-        aggregation: true,
-        categoryId: 0,
+        searchText: "",
+        aggregation: false,
         category1Id: 0,
         category2Id: 0,
-        searchText: ''
+        category4Id: 0,
       }
     },
     onShow() {
@@ -110,11 +109,9 @@
     },
     onLoad(e) {
       this.category1Id = e.category1Id
-      this.category1Id = 1
-      this.categoryId = e.categoryId
+      this.category4Id = e.category4Id
       this.searchText = e.searchText
-      this.originFrom = e.originFrom
-      this.searchVal = this.originFrom ? "" : (e.searchText || "")
+      this.aggregation = Boolean(Number(e.aggregation))
       this.getList()
     },
     onPullDownRefresh() {
@@ -146,10 +143,10 @@
           aggregation: this.aggregation,
           aggregationField: 'category2Id',
           product: {
-            category1Id: this.originFrom ? Number(this.category1Id) : "", // 一级分类id
-            category2Id: this.originFrom ? Number(this.category2Id) : "", // 二级分类id
-            // categoryId: this.originFrom ? Number(this.categoryId) : "", // 四级分类id
-            query: this.searchVal, //查询的关键词
+            category1Id: Number(this.category1Id), // 一级分类id
+            category2Id: Number(this.category2Id), // 二级分类id
+            category4Id: Number(this.category4Id), // 四级分类id
+            query: this.searchText, //查询的关键词
             areaId: getApp().globalData.currentHouse
               .areaId, //区域编号，会按这个区域进行搜索；      区域的取值，请参考相关需求，好像是：有当前房屋就取当前房屋所在区域，没有当前房屋就取用户选取的位置区域...（具体逻辑比这个还复杂点）,
             sort: this.sort, //搜索排序方式：      price_asc  表示按价格从低到高排序；      price_desc 表示按价格从高到低排序；,
@@ -196,7 +193,7 @@
       },
       searchConfirm(resText) {
         this.isLoadMore = false
-        this.searchVal = resText.value
+        this.searchText = resText.value
         this.getList()
       },
       toDetails(id) {
