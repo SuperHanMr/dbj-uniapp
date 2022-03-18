@@ -23,7 +23,7 @@
         <text :class="{'activeTab': activeTabIndex === 0}" @click="clickTab(0, 0)">全部</text>
         <text v-for="(v, k) in tabArr" :key="k" :class="{'activeTab': activeTabIndex === k + 1}" @click="clickTab(k + 1, v.id)">{{v.name}}</text>
       </scroll-view>
-      <goods-list :shopList="listArr"></goods-list>
+      <goods-list :shopList="listArr" :page="page"></goods-list>
       <!--      <uni-swipe-action v-if="listArr.length>0">
         <uni-swipe-action-item v-for="(goodsItem,goodsIndex) in listArr" :key="goodsIndex">
           <view class="goodsItem" @click="toDetails(goodsItem.product.skuId)">
@@ -125,9 +125,16 @@
     onReachBottom() {
       this.loadMoreList()
     },
+    onPageScroll(e) {
+      if(e.scrollTop > 0) {
+        uni.pageScrollTo({
+        	scrollTop: 0
+        });
+      }
+    },
     methods: {
       clickTab(index, id) {
-        console.log(index, id)
+        this.page = 1
         this.activeTabIndex = index
         this.category2Id = id
         this.aggregation = !Boolean(index)
@@ -283,9 +290,9 @@
 
   .content {
     background-color: #FFFFFF;
-    height: calc(100% - 120rpx);
+    height: calc(100% - 110rpx);
     padding-bottom: 20rpx;
-    margin-top: 115rpx;
+    margin-top: 110rpx;
     position: relative;
     width: 100%;
     overflow: scroll;
