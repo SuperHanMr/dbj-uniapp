@@ -90,11 +90,11 @@
             <view class="header">
               <view class="name">{{item2.name}}</view>
               <view class="rank">{{item2.levelName}}设计师</view>
-							<view class="ranking-container" 
+							<view class="ranking-container"
 								v-if="item2.ranks && item2.ranks.length>=1 && item2.ranks[0].realNumber>0"
 								:style="{backgroundImage:`url(${handleLabelImg(item2.ranks[0]).bgImg})`}"
 							>
-								<view class="num top-font" 
+								<view class="num top-font"
 									:style="{color:`#${item2.ranks[0].fontColor}`,background:handleLabelImg(item2.ranks[0]).bgcolor}"
 								>
 									TOP.{{item2.ranks[0].realNumber}}
@@ -102,7 +102,7 @@
 								<view class="text top-font" :style="{color:`#${item2.ranks[0].fontColor}`}">
 									{{item2.ranks[0].abbreviation}}
 								</view>
-							</view> 
+							</view>
             </view>
             <view class="goodPraise" style="margin-bottom: 8rpx;">
               <view class="item">
@@ -219,7 +219,7 @@
               <text v-if="!item4.flag" class="icon"></text>
 
               <text>{{item4.budget
-							?Math.floor(item4.budget)<1?`预算：￥-万`:`预算：￥${Math.floor(item4.budget)}万`
+g	? Math.floor(item4.budget) &lt; 1?`预算：￥-万`:`预算：￥${Math.floor(item4.budget)}万`
 							: "预算：-"}}</text>
             </view>
           </view>
@@ -230,7 +230,7 @@
               v-for="item5 in itemHandler(item4) "
               :key="item5"
             >{{item5}}</view>
-						
+
           </view>
         </view>
         <image
@@ -340,7 +340,7 @@ export default {
 			showFloating:false,
     };
   },
-	
+  
 
 	mounted() {
 		const menuButtonInfo = uni.getMenuButtonBoundingClientRect();
@@ -355,7 +355,7 @@ export default {
 		if (uni.getStorageSync("recommendDesignerPage")) {
 		  this.page = uni.getStorageSync("recommendDesignerPage");
 		}
-  
+
 		this.page++;
 		uni.setStorageSync("recommendDesignerPage", this.page);
 		const hhh = uni.getStorageSync("recommendDesignerPage");
@@ -429,6 +429,10 @@ export default {
       };
       recommendCaseList(params).then((res) => {
         this.caseList = res;
+        // this.caseList = this.caseList.map(item=>{
+        //   item.budget =0.08
+        //   return item
+        // })
       });
     },
 
@@ -601,11 +605,11 @@ export default {
 					return  this.labelList[1];
 				case 3:
 					return  this.labelList[2];
-				case 9999: 
+				case 9999:
 					return  this.labelList[3];
 			}
 		},
-		
+
   },
 };
 </script>
@@ -899,7 +903,7 @@ export default {
 			font-weight: 500;
 			font-size: 20rpx;
 		}
-		
+
 	}
 
 .perfectHouseInfo_container {
