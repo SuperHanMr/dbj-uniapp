@@ -128,30 +128,6 @@
 		}
 	}
 
-	.uni-searchbar {
-		display: flex;
-		width: 534rpx;
-		height: 62rpx;
-		opacity: .85;
-		backdrop-filter: blur(16px);
-		background: #f7f7f7;
-		border-radius: 116rpx;
-	}
-
-	.uni-searchbar__box-icon-search {
-		display: flex;
-		align-items: center;
-		flex-direction: row;
-		padding: 0 16rpx;
-		align-items: center;
-	}
-
-	.uni-searchbar__text-placeholder {
-		font-size: 26rpx;
-		color: #A9A9A9;
-		margin-left: 10rpx;
-	}
-
 	.classify-banner-content {
 		position: relative;
 		z-index: 101;

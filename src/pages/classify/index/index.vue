@@ -147,6 +147,7 @@
 
 	.shop-list-box {
 		background: #fff;
+		padding-top: 40rpx;
 
 		.recommend-title {
 			padding-left: 34rpx;
