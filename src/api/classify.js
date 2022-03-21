@@ -7,7 +7,7 @@ export function getBrandList (params) {
   return request.post('/product/app/search/aggregation/count/brandId/size/12', params)
 }
 export function getGoodsList (params) {
-  return request.post('/product/app/search/query', params)
+  return request.post('/product/app/search/query/v2', params)
 }
 export function getHomeGoodsList (params) {
   return request.post('/product/app/search/recommend/home', params)
@@ -44,19 +44,12 @@ export function checkPay(params) {
   return request.get("/order-center/app/order/queryPayResult", params);
 }
 
+//商城改版新接口
+
 // 商城首页 banner
 export function getClassifyBanner() {
   return request.get("/app/dbj/banner/list");
 }
-
-// 商城首页 banner
-export function getPavilionList(params) {
-  return request.get("/app/brand/pavilion/page", params);
-}
-
-
-
-//商城改版新接口
 
 // 品牌馆列表
 export function getBrandHallList(params){
