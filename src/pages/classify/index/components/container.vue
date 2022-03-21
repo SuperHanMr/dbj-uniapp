@@ -16,12 +16,13 @@
 		<view class="brand">
 			<view class="top">
 				<view class="left">
-					<image src="/static/images/classify-brand-text.png" mode="" class="img"></image>
+					<view class=".brand-left-icon .icon-a-Brandpavilion">
+					</view>
 				</view>
-				<!-- v-if="pavilionObj.totalRows > 8" -->
-				<view  class="right" @click="brandHandler">
+				<!--  v-if="pavilionObj.totalRows > 8"  {{ `(${pavilionObj.totalRows})` }}-->
+				<view v-if="pavilionObj.totalRows > 8" class="right" @click="brandHandler">
 					<view class="brand-title">
-						全部 {{ `(${pavilionObj.totalRows})` }}
+						全部
 					</view>
 					<view class="brand-icon icon-alert_notice_jump">
 					</view>
@@ -33,14 +34,14 @@
 					<view class="box">
 						<view class="brand-item-box" v-for="item in pavilionObj.list" :key="item.id"
 							@click="brandItemHandler(item)">
-							<view class="item-box" v-if="item.key !== 'all'">
-								<image :src="item.brandBagImage" mode="" class="brand-item-img"></image>
+							<view class="item-box" v-if="item.key !== 'all'"
+								:style="{'background': `linear-gradient(180deg, rgba(244, 244, 244, 0.3) 0%, rgba(244, 244, 244, 0.96) 79.55%, #F1F1F1 100.39%), url(${item.brandBagImage})`}">
 								<image :src="item.brandLogoImage" mode="" class="brand-item-icon"></image>
 								<view class="brand-item-title">
 									{{item.brandShortName}}
 								</view>
 							</view>
-							<view class="item-all" v-if="item.key === 'all' && pavilionObj.list.length > 3">
+							<view class="item-all" v-if="item.key === 'all' && pavilionObj.totalRows > 8">
 								左滑查看更多
 							</view>
 						</view>
@@ -94,10 +95,14 @@
 		methods: {
 			scrolltolowerHandler: throttle(function() {
 				console.log(111111111)
+				if (pavilionObj.totalRows <= 8) return;
 				this.brandHandler();
 			}, 500),
 			classHandler() {
 				console.log('分类点击事件')
+				// 成品家具
+				// let url = '/pages/search-result/search-result?category1Id=${this.category1Id}&aggregation=1'
+				// 全部分类
 				uni.navigateTo({
 					url: '/sub-classify/pages/all-classify/index'
 				})
@@ -192,16 +197,16 @@
 			.left {
 				width: 138rpx;
 				height: 50rpx;
-				margin: 12rpx 0 0 14rpx;
+				padding-bottom: 14rpx;
 
-				.img {
-					width: 100%;
-					height: 100%;
+				.brand-left-icon {
+					font-size: 34rpx;
+					margin-left: 8rpx;
 				}
 			}
 
 			.right {
-				height: 40rpx;
+				height: 36rpx;
 				padding: 0 12rpx 0 20rpx;
 				display: flex;
 				align-items: center;
@@ -211,7 +216,7 @@
 
 				.brand-title {
 					font-weight: 400;
-					font-size: 24rpx;
+					font-size: 22rpx;
 					text-align: right;
 					letter-spacing: 0.1px;
 
@@ -219,8 +224,7 @@
 				}
 
 				.brand-icon {
-					margin-left: 4rpx;
-					font-size: 20rpx;
+					font-size: 16rpx;
 				}
 			}
 		}
@@ -231,34 +235,31 @@
 
 				.box {
 					display: flex;
-					padding-left: 28rpx;
 				}
 			}
 
 			.brand-item-box {
-				margin-right: 20rpx;
+				margin-right: 32rpx;
 
 				.item-box {
 					position: relative;
+					width: 216rpx;
+					height: 176rpx;
+					border-radius: 16rpx;
+					background-repeat: no-repeat;
+					background-size: 100% 100%;
 				}
 			}
 
 			.item-all {
 				background: #F4F3F4;
-				padding: 24rpx 20rpx;
+				padding: 4rpx 22rpx;
 				font-weight: 400;
-				font-size: 22rpx;
+				font-size: 20rpx;
 				text-align: center;
 				color: #666666;
 				border-radius: 16rpx 0 0 16rpx;
 				max-width: 23rpx;
-			}
-
-			.brand-item-img {
-				width: 216rpx;
-				height: 176rpx;
-				border-radius: 16rpx;
-				display: block;
 			}
 
 			.brand-item-icon {

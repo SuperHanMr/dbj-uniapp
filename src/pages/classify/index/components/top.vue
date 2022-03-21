@@ -113,7 +113,9 @@
 	
 	.nav-box-active {
 		background-color: #fff;
-	
+		.uni-searchbar{
+			background: #F3F3F3;
+		}
 		.right {
 	
 			.store,
@@ -129,7 +131,7 @@
 		height: 62rpx;
 		opacity: .85;
 		backdrop-filter: blur(16px);
-		background: #f7f7f7;
+		background: #ffffff;
 		border-radius: 116rpx;
 	}
 	
@@ -137,7 +139,7 @@
 		display: flex;
 		align-items: center;
 		flex-direction: row;
-		padding: 0 16rpx;
+		padding: 0 20rpx;
 		align-items: center;
 		.uni-searchbar-icon{
 			font-size: 24rpx;
@@ -148,7 +150,7 @@
 	.uni-searchbar__text-placeholder {
 		font-size: 26rpx;
 		color: #A9A9A9;
-		margin-left: 10rpx;
+		margin-left: 14rpx;
 	}
 	
 </style>

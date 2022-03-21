@@ -1,9 +1,8 @@
 @font-face {
-	font-family: 'iconfont';
-	/* Project id 2785499 */
-	src: url('//at.alicdn.com/t/font_2785499_zljhsqqisq8.woff2?t=1647241477611') format('woff2'),
-		url('//at.alicdn.com/t/font_2785499_zljhsqqisq8.woff?t=1647241477611') format('woff'),
-		url('//at.alicdn.com/t/font_2785499_zljhsqqisq8.ttf?t=1647241477611') format('truetype');
+  font-family: 'iconfont';  /* Project id 2785499 */
+  src: url('//at.alicdn.com/t/font_2785499_onspbm8io4.woff2?t=1647843303393') format('woff2'),
+       url('//at.alicdn.com/t/font_2785499_onspbm8io4.woff?t=1647843303393') format('woff'),
+       url('//at.alicdn.com/t/font_2785499_onspbm8io4.ttf?t=1647843303393') format('truetype');
 }
 
 .iconfont {
@@ -12,6 +11,25 @@
 	font-style: normal;
 	-webkit-font-smoothing: antialiased;
 	-moz-osx-font-smoothing: grayscale;
+}
+.icon-a-Brandpavilion:before {
+  content: "\e664";
+}
+
+.icon-video:before {
+  content: "\e660";
+}
+
+.icon-image:before {
+  content: "\e65c";
+}
+
+.icon-shops:before {
+  content: "\e658";
+}
+
+.icon-vr:before {
+  content: "\e657";
 }
 
 .icon-on:before {
