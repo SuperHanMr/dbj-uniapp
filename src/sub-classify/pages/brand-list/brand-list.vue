@@ -1,9 +1,10 @@
 <template>
 	<view class="container">
 		<custom-navbar
-		  :opacity="scrollTop/100"
-		  bgcolor=""
+			:opacity="scrollTop>0?'1':'0'"
+		  :bgcolor="scrollTop>0?'#101721':''"
 		>
+		  <!-- :opacity="scrollTop/100" -->
 		  <template v-slot:back>
 		    <view @click="toBack" style="display: flex;flex-flow: row; align-items: center;position: relative;">
 		      <i
@@ -20,48 +21,32 @@
 		  </template>
 		</custom-navbar>
 
-		<view class="bgImg"  :style="{backgroundImage:`url(${brandHeadBgImg})`,height:scrollTop >0?'192rpx':'536rpx'}">
-			<!-- <view class="brandTextContainer" v-if="scrollTop<=0">
-				<image src="../../static/image/bgBrandName.png" mode=""></image>
-				<view class="line"></view>
-			</view> -->
-		</view>
-
+		<view v-if="scrollTop>100" style="width: 100%;height: 300rpx;"></view>
+		<view v-else class="bgImg" :style="{backgroundImage:`url(${brandHeadBgImg})`}"></view>
 
 		<view class="rankList-container" v-if="brandList.length">
 			<view class="rankItem"
 				v-for="item in brandList"
-				:key="item.key"
-				:style="{backgroundImage:`url(${headerBgImg})`,backgroundSize:'320rpx 146rpx',backgroundPosition:'top center',backgroundRepeat:'no-repeat'}"
-				@click="gotoDetail(item)"
-			>
-				<image class="brandBgImg"  src="../../static/image/brandItemBgImg.png" />
-				<image class="rankImage" src="../../../static/images/no-goods.png" />
-				<view class="rankName">{{item.brandName}}</view>
-			</view>
-
-			<!-- <view class="rankItem"
-				v-for="item in brandList"
 				:key="item.id"
-				:style="{backgroundImage:`url(${item.brandBagImage})`}"
 				@click="gotoDetail(item)"
 			>
-				<image class="brandBgImg"  src="../../static/image/brandItemBgImg.png" />
-				<image class="rankImage" :src="item.brandLogoImage" />
-				<view class="rankName">{{item.brandShortName}}</view>
-			</view> -->
-
+				<image class="brandBgImg" v-if="item.id" src="../../static/image/brandItemBgImg.png" /> 
+				<image class="brandBgImage" :src="item.brandBagImage"/>
+				<image class="rankImage"  :src="item.brandLogoImage" />
+				<view class="rankName" v-if="item.brandShortName">{{item.brandShortName}}</view>
+				<view class="blankRankName" v-if="!item.brandShortName"></view>
+			</view>
 		</view>
 
 		<view class="noData-container" v-if="!brandList.length || showNowifiStyle">
 			<view class="noBrandData" v-if="!brandList.length">
-				<image src="../../static/image/no_brandListData.png" mode=""></image>
+				<image src="../../static/image/no_brandListData.png" />
 				<view class="text">
 					暂无相关品牌
 				</view>
 			</view>
 			<view class="noBrandData" v-if="showNowifiStyle">
-				<image src="../../static/image/brandPage_nowifi.png" mode=""></image>
+				<image src="../../static/image/brandPage_nowifi.png" />
 				<view class="text">
 					暂无网络
 				</view>
@@ -90,53 +75,7 @@
 					totalPage:1,
 					positon:"",
 				},
-				brandList:[
-					{
-						brandName:"TATA木门",
-						key:1,
-					},
-					{
-						brandName:"索菲亚家具",
-						key:2,
-					},
-					{
-						brandName:"芝华仕家具",
-						key:3,
-					},
-					{
-						brandName:"林氏木业",
-						key:4,
-					},
-					{
-						brandName:"TATA木门",
-						key:6,
-					},
-					{
-						brandName:"索菲亚家具",
-						key:7
-					},
-					{
-						brandName:"芝华仕家具",
-						key:8,
-					},
-					{
-						brandName:"林氏木业",
-						key:9,
-					},
-					{
-						brandName:"TATA木门",
-						key:10,
-					},
-					{
-						brandName:"立邦油漆",
-						key:11,
-					},
-					{
-						brandName:"老板电器",
-						key:12,
-					},
-				],
-				// brandList:[],
+				brandList:[{},{},{},{},{},{},{},{}],
 				showNowifiStyle:false,
 			}
 		},
@@ -218,25 +157,22 @@
 		}
 	}
 	.bgImg{
-		// height: 326rpx;
 		width: 100%;
+		height: 536rpx;
 		background-size: cover;
 		background-repeat: no-repeat;
-		position: fixed;
 		display: flex;
 		z-index: 1;
-		flex-direction: row;
-		align-items: flex-end;
-		justify-content:center;
+		// position: fixed;
 	}
 	.rankList-container{
 		display: flex;
 		flex-flow: row wrap;
 		box-sizing: border-box;
-		padding-top: 412rpx;
+		// padding-top: 412rpx;
 		// margin-top: 134rpx;
 		padding-left: 40rpx;
-		background: #101721 ;
+		background: #101721;
 		.rankItem{
 			width: 320rpx;
 			height: 238rpx;
@@ -248,6 +184,7 @@
 			background-size: 320rpx 146rpx;
 			background-repeat:no-repeat;
 			background-position:top center;
+			border:0.5px solid #1A222F;
 			.brandBgImg{
 				position: absolute;
 				top: -8rpx;
@@ -256,6 +193,15 @@
 				height: 290rpx;
 				border-radius: 24rpx;
 			}
+			.brandBgImage{
+				position: absolute;
+				top: 0;
+				left: 0;
+				width: 320rpx;
+				height: 146rpx;
+				background-color: #1A222F;
+				border-radius: 24rpx 24rpx 0 0;
+			}
 			.rankImage{
 				position: absolute;
 				bottom: 70rpx;
@@ -263,6 +209,7 @@
 				width: 84rpx;
 				height: 84rpx;
 				border-radius: 50%;
+				background-color: #232D3A;
 			}
 			.rankName{
 				position: absolute;
@@ -276,12 +223,20 @@
 				letter-spacing: 1rpx;
 				color: #ffffff;
 			}
+			.blankRankName{
+				position: absolute;
+				bottom: 20rpx;
+				left:86rpx;
+				width: 150rpx;
+				height: 32rpx;
+				background: #232D3A;
+				border-radius: 8rpx;
+			}
 		}
 	}
 	.noData-container{
-		padding-top: 326rpx;
 		.noBrandData{
-			margin-top: 268rpx;
+			margin-top: 234rpx;
 			padding: 0 auto;
 			display: flex;
 			flex-flow: column nowrap;
