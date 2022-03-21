@@ -28,12 +28,15 @@
 					</view>
 					<view class="brand-introduce">
 						在国内，CHEERS芝华仕头等舱沙发拥有超过1900家专卖店，芝华仕沙发位居中国休闲沙发销量前列，2016年敏华在中国大陆功能沙发市场占有率达到近37.7%，深敏华在中国大陆功能沙发敏华在中陆功沙发ddddddd
-						<span>ddd</span>
-						<image class="showMoreIcon" src="../../static/image/wechat_icon.png" />
+						<image 
+							class="showMoreIcon" 
+							src="../../static/image/wechat_icon.png" 
+							@click="openBrandExplain"
+						/>
 					</view>
 				</view>
 				<view class="brandAlbum">
-					<view class="header" @click="openBrandExplain">
+					<view class="header" >
 						品牌相册
 					</view>
 					<view class="scrollContaienr">
@@ -189,17 +192,13 @@
 				console.log("newVal",newValue)
 				console.log("oldVal",oldValue)
 			},
-			// scrollTop:{
-			// 	immediate: true,
-			// 	handler(newVal,oldVal){
-			// 		console.log("newVal,==",newVal)
-			// 		console.log("oldVal,==",oldVal)
-			// 	}
-			// },
 		},
 		onLoad() {
 			// 商品列表的请求接口
 			this.getHomeGoodsList();
+			this.$nextTick(()=>{
+				this.scrollTop = 0
+			})
 		},
 		methods: {
 			toBack(){
@@ -236,30 +235,6 @@
 					this.triggered = false;
 			  });
 			},
-
-
-
-			// changeOpacity(num) {
-			//   // console.log(num)
-			//   num < 150
-			//     ? (this.opacityNum = 0)
-			//     : num < 180
-			//     ? (this.opacityNum = 0.8)
-			//     : (this.opacityNum = 1);
-			//   // console.log(this.opacityNum)
-			// },
-
-			// pageScroll(scrollTop) {
-			//   this.scrollTop = scrollTop;
-			//   //从深层页面返回时，避免触发导致显示异常
-			//   if(scrollTop!=0){
-			//     this.changeOpacity(this.scrollTop);
-			//   }
-			//   this.getTopDistance();
-			// },
-			// getTopDistance() {
-			//   query.exec(function (res) {});
-			// },
 		}
 	}
 </script>

@@ -1,5 +1,8 @@
 <template>
 	<view class="container">
+		<view @click="gotoBrandlist">
+			品牌馆
+		</view>
 		<view class="store-container">
 			<view class="storeItem" v-for="storeItem in storeList" :key="storeItem.id">
 				<image class="storeImg" @click="gotoStoreDetail(storeItem)" :src="storeItem.store.avatar" />
@@ -60,6 +63,11 @@
 			this.areaId = currentHouse.areaId;
 		},
 		methods: {
+			gotoBrandlist(){
+					uni.navigateTo({
+						url:"../brand-list/brand-detail"
+					})
+			},
 			reqStoreList(){
 				this.onLoading = true
 				let params ={
