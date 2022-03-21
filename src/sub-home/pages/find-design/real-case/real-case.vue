@@ -120,13 +120,8 @@
 			});
 			uni.$on('defaultHouseChange',() => {
 				this.caseDetail = false;
-				this.cleanDefaultSelect();
 			})
 			
-			uni.$on('selectedHouse', () => {
-				this.cleanDefaultSelect();
-			})
-
 			const menuButtonInfo = uni.getMenuButtonBoundingClientRect();
 			this.systemBottom = menuButtonInfo.bottom + 32 + "rpx";
 			this.getCaseStyleListHandler();
@@ -142,6 +137,12 @@
 			if (this.currentHouse.id != currentHouse.id) {
 				isRefshList = true;
 				this.listParam.page = 0;
+				if (this.$refs.realCaseScreeningRef) {
+					this.$refs.realCaseScreeningRef.selectData = {}
+					this.selectData = {};
+					this.selectTag = [];
+					this.$refs.realCaseScreeningRef.tagSelect = [null, null, null]
+				}
 			}
 			this.currentHouse = currentHouse;
 			this.getListData(isRefshList);
@@ -273,9 +274,6 @@
 				getCaseStyleList().then((res) => {
 					this.caseStyleList = res;
 				})
-			},
-			cleanDefaultSelect(){
-				this.$refs.realCaseScreeningRef.tagSelect = [null, null, null]
 			}
 		}
 	}
