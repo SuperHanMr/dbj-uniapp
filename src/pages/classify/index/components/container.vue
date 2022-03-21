@@ -100,6 +100,8 @@
 			}, 500),
 			classHandler() {
 				console.log('分类点击事件')
+				// 全屋定制
+				// `/pages/common/webview/webview?url=${encodeURIComponent(process.env.VUE_APP_BASE_H5 + '/app-pages/whole-house-do/whole-house-do.html')}`
 				// 成品家具
 				// let url = '/pages/search-result/search-result?category1Id=${this.category1Id}&aggregation=1'
 				// 全部分类
