@@ -675,6 +675,7 @@ export default {
               buyCount: this.buyCount,
               unit: this.unit ? this.unit : "",
               level: this.level,
+              origin: this.originType
             },
           ],
           estateId: this.estateId,
