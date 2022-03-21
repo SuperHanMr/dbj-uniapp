@@ -5,22 +5,26 @@
 		  bgcolor=""
 		>
 		  <template v-slot:back>
-		    <view @click="toBack" style="display: flex;flex-flow: row; align-items: center;">
+		    <view @click="toBack" style="display: flex;flex-flow: row; align-items: center;position: relative;">
 		      <i
 		        class="icon-ic_cancel_white header-back"
 		        style="color:white"
 		      >
 		      </i>
 					<image class="smallBrandText" v-if=" scrollTop >0" src="../../static/image/bgBrandName.png" mode=""></image>
-		    </view>
+					<view class="brandTextContainer" v-if="scrollTop<=0">
+						<image src="../../static/image/bgBrandName.png" mode=""></image>
+						<view class="line"></view>
+					</view>
+				</view>
 		  </template>
 		</custom-navbar>
 
-		<view class="bgImg"  :style="{backgroundImage:`url(${brandHeadBgImg})`,height:scrollTop >0?'192rpx':'326rpx'}">
-			<view class="brandTextContainer" v-if="scrollTop<=0">
+		<view class="bgImg"  :style="{backgroundImage:`url(${brandHeadBgImg})`,height:scrollTop >0?'192rpx':'536rpx'}">
+			<!-- <view class="brandTextContainer" v-if="scrollTop<=0">
 				<image src="../../static/image/bgBrandName.png" mode=""></image>
 				<view class="line"></view>
-			</view>
+			</view> -->
 		</view>
 
 
@@ -132,7 +136,7 @@
 						key:12,
 					},
 				],
-				brandList:[],
+				// brandList:[],
 				showNowifiStyle:false,
 			}
 		},
@@ -163,15 +167,15 @@
 					rows:this.query.rows,
 					// position:this.query.positon,
 				}
-				getBrandHallList(params).then(res=>{
-					if(res.code ==401){
-						this.showNowifiStyle = true
-					}else{
-						console.log(res)
-						this.brandList =res.list
-						this.page++
-					}
-				})
+				// getBrandHallList(params).then(res=>{
+				// 	if(res.code ==401){
+				// 		this.showNowifiStyle = true
+				// 	}else{
+				// 		console.log(res)
+				// 		this.brandList =res.list
+				// 		this.page++
+				// 	}
+				// })
 			},
 			gotoDetail(item){
 				console.log("brandItem==",item)
@@ -194,6 +198,25 @@
 		background: #101721;
 		position: relative;
 	}
+	.brandTextContainer{
+		position: absolute;
+		top: 76rpx;
+		left: 34rpx;
+		// margin-bottom: 40rpx;
+		display: flex;
+		align-items: center;
+		flex-flow: column;
+		image{
+			width: 174rpx;
+			height: 56rpx;
+			margin-bottom: 18rpx;
+		}
+		.line{
+			width: 192rpx;
+			height: 2rpx;
+			background: radial-gradient(50% 460800% at 50% 49.99%, #6087C0 0%, #221F2C 100%);
+		}
+	}
 	.bgImg{
 		// height: 326rpx;
 		width: 100%;
@@ -205,28 +228,12 @@
 		flex-direction: row;
 		align-items: flex-end;
 		justify-content:center;
-		.brandTextContainer{
-			margin-bottom: 40rpx;
-			display: flex;
-			align-items: center;
-			flex-flow: column;
-			image{
-				width: 174rpx;
-				height: 56rpx;
-				margin-bottom: 18rpx;
-			}
-			.line{
-				width: 192rpx;
-				height: 2rpx;
-				background: radial-gradient(50% 460800% at 50% 49.99%, #6087C0 0%, #221F2C 100%);
-			}
-		}
 	}
 	.rankList-container{
 		display: flex;
 		flex-flow: row wrap;
 		box-sizing: border-box;
-		padding-top: 326rpx;
+		padding-top: 412rpx;
 		// margin-top: 134rpx;
 		padding-left: 40rpx;
 		background: #101721 ;
