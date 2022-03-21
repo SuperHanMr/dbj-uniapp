@@ -30,7 +30,7 @@
 				:key="item.id"
 				@click="gotoDetail(item)"
 			>
-				<image class="brandBgImg" v-if="item.id" src="../../static/image/brandItemBgImg.png" /> 
+				<image class="brandBgImg" v-if="item.id" src="../../static/image/brandItemBgImg.png" />
 				<image class="brandBgImage" :src="item.brandBagImage"/>
 				<image class="rankImage"  :src="item.brandLogoImage" />
 				<view class="rankName" v-if="item.brandShortName">{{item.brandShortName}}</view>
@@ -76,6 +76,7 @@
 					positon:"",
 				},
 				brandList:[{},{},{},{},{},{},{},{}],
+				dataListLength:0,
 				showNowifiStyle:false,
 			}
 		},
@@ -95,7 +96,12 @@
 		onShow() {
 			this.reqRankList()
 		},
-
+		//页面上拉触底事件的处理函数
+		onReachBottom(e) {
+			console.log("底部")// 滚动到页面执行该方法
+			if((this.query.page > this.query.totalPage) || this.dataListLength == 0 )
+			this.reqRankList();
+		},
 		methods: {
 			toBack(){
 				uni.navigateBack({})
@@ -106,15 +112,17 @@
 					rows:this.query.rows,
 					// position:this.query.positon,
 				}
-				// getBrandHallList(params).then(res=>{
-				// 	if(res.code ==401){
-				// 		this.showNowifiStyle = true
-				// 	}else{
-				// 		console.log(res)
-				// 		this.brandList =res.list
-				// 		this.page++
-				// 	}
-				// })
+				getBrandHallList(params).then(res=>{
+					if(res.code ==401){
+						this.showNowifiStyle = true
+					}else{
+						console.log(res)
+						this.dataListLength = res.list.length
+						this.brandList = this.brandList.concat(res.list);
+						this.query.page ++
+						this.query.totalPage = res.totalPage
+					}
+				})
 			},
 			gotoDetail(item){
 				console.log("brandItem==",item)

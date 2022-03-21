@@ -657,6 +657,7 @@
 					"style" : {
 						"navigationBarTitleText": "店铺",
 						"enablePullDownRefresh": false,
+						"onReachBottomDistance": 10,
 						"navigationBarBackgroundColor": "#ffffff"
 					}
 				},
@@ -665,6 +666,7 @@
 					"style" : {
 						"navigationBarTitleText": "",
 						"enablePullDownRefresh": false,
+						"onReachBottomDistance": 10,
 						"navigationStyle": "custom"
 					}
 				},
