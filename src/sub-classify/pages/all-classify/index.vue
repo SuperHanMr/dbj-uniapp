@@ -76,7 +76,7 @@
           if (this.category1Id) {
             this.dataList.map((v, k) => {
               if (this.category1Id == res[k].id) { // 定位一级标题
-                this.tabIndex = i;
+                this.tabIndex = k;
               }
             })
           } 
