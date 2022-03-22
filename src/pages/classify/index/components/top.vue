@@ -14,8 +14,8 @@
 			</view>
 			<view class="box" @click="toShoppingCartHandler">
 				<view class="shoppingcart icon-shoppingcart">
-					<view class="corner-mark">
-						2
+					<view class="corner-mark" v-if="shopListNum">
+						{{shopListNum}}
 					</view>
 				</view>
 			</view>
@@ -29,6 +29,10 @@
 			navActive: {
 				type: Boolean,
 				default: false
+			},
+			shopListNum: {
+				type: Number,
+				default: 0
 			}
 		},
 		methods:{

@@ -1,6 +1,6 @@
 <template>
 	<view class="classify">
-		<Top :navActive="navActive" />
+		<Top :navActive="navActive" :shopListNum="shopListNum" />
 		<scroll-view class="classify-scroll" scroll-y="true" @scrolltolower='scrolltolower' refresher-enabled='true'
 			@refresherrefresh='refresherrefresh' @scroll="scrollHandler" :refresher-triggered="triggered">
 			<Head :swiperAuto="swiperAuto" :bannerList="bannerList" />
@@ -28,7 +28,8 @@
 	import {
 		getHomeGoodsList,
 		getClassifyBanner,
-		getBrandHallList
+		getBrandHallList,
+		getShoppingCarNum
 	} from "@/api/classify.js";
 	export default {
 		components: {
@@ -55,7 +56,9 @@
 					totalRows: 0
 				},
 				classList: [],
-				recommendList: []
+				recommendList: [],
+				areaId: '',
+				shopListNum: 0
 			}
 		},
 		onShow() {
@@ -65,21 +68,34 @@
 			this.swiperAuto = false;
 		},
 		mounted() {
-			uni.$on("defaultHouseChange", (item) => {
-			  this.getNavHandler();
+			let currentHouse = getApp().globalData.currentHouse;
+			this.areaId = currentHouse.areaId;
+			uni.$on("currentHouseChange", (item) => {
+				console.log(item, '>>>>>>>>>>>>')
+				this.areaId = item.areaId;
 			});
-			this.getNavHandler();
-			// this.getClassifyBannerHandler();
-			// this.getPavilionListHandler();
-			// this.getHomeGoodsList();
+			// this.getNavHandler();
+			this.getClassifyBannerHandler();
+			this.getPavilionListHandler();
+			this.getHomeGoodsList();
+		},
+		watch: {
+			areaId: {
+				handler: function () {
+					console.log('11111111111111111')
+					this.getShoppingCarNumHandler();
+				}
+			}
 		},
 		methods: {
 			getNavHandler() {
-				let currentHouse = getApp().globalData.currentHouse;
+				this.classList = [];
+				this.recommendList = [];
+				
 				let params = {
-					provinceId: currentHouse.provinceId,
-					cityId: currentHouse.cityId,
-					areaId: currentHouse.areaId,
+					// provinceId: this.currentHouse.provinceId,
+					// cityId: this.currentHouse.cityId,
+					// areaId: this.currentHouse.areaId,
 					version: 14
 				}
 				console.log(getApp().globalData)
@@ -99,6 +115,16 @@
 			},
 			nav2Handler(item){
 				this.recommendList.push(item);
+			},
+			getShoppingCarNumHandler() {
+				uni.getStorage({
+					key: 'scn',
+					success: () => {
+						getShoppingCarNum(this.areaId).then(res => {
+							console.log(res, '>>>>>>>><<<<<<<<sjhop[ingn]')
+						})
+					}
+				})
 			},
 			getPavilionListHandler() {
 				getBrandHallList({
