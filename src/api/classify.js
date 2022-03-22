@@ -50,7 +50,9 @@ export function checkPay(params) {
 export function getClassifyBanner() {
   return request.get("/app/dbj/banner/list");
 }
-
+export function getShoppingCarNum(areaId) {
+	return request.get(`product/app/products/shoppingCart/number/area/${areaId}`)
+}
 // 品牌馆列表
 export function getBrandHallList(params){
 	return request.get("/app/brand/pavilion/page",{params})
