@@ -12,7 +12,7 @@
     </view>
     <view v-if="detail.beautyReport && detail.beautyReport.id && detail.beautyReport.templateId"
       class="card flex-row-bet">
-      <view class="t">{{颜值报告}}</view>
+      <view class="t">颜值报告</view>
       <view class="lookDetail flex-row-start" @click="beatifulReport">
         <view>立即查看</view>
         <image src="https://ali-image.dabanjia.com/static/mp/dabanjia/images/decorate/ic_more.svg"></image>
