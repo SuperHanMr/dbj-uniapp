@@ -23,6 +23,9 @@
 	import ShopList from '@/components/classify-shop/shop-list.vue';
 	import Top from './components/top.vue';
 	import {
+		navList
+	} from "@/api/home.js";
+	import {
 		getHomeGoodsList,
 		getClassifyBanner,
 		getBrandHallList
@@ -60,12 +63,29 @@
 			this.swiperAuto = false;
 		},
 		mounted() {
+			uni.$on("defaultHouseChange", (item) => {
+			  this.getNavHandler();
+			});
+			this.getNavHandler();
 			this.getClassifyBannerHandler();
 			this.getPavilionListHandler();
 			this.getHomeGoodsList();
 		},
 		methods: {
-			getPavilionListHandler(){
+			getNavHandler() {
+				let currentHouse = getApp().globalData.currentHouse;
+				let params = {
+					provinceId: currentHouse.provinceId,
+					cityId: currentHouse.cityId,
+					areaId: currentHouse.areaId,
+					version: 14
+				}
+				console.log(getApp().globalData)
+				navList(params).then(res => {
+					console.log(res, '>>>>>>>>>>>><<<<<<<<<')
+				})
+			},
+			getPavilionListHandler() {
 				getBrandHallList({
 					page: 1,
 					rows: 8
@@ -73,11 +93,13 @@
 					console.log(res, '>>>>>>>>>>>>')
 					if (res && res.list) {
 						this.pavilionObj.totalRows = res.totalRows;
-						this.pavilionObj.list = [...res.list, {key: 'all'}];
+						this.pavilionObj.list = [...res.list, {
+							key: 'all'
+						}];
 					}
 				})
 			},
-			getClassifyBannerHandler(){
+			getClassifyBannerHandler() {
 				getClassifyBanner().then((res) => {
 					this.bannerList = res;
 				})

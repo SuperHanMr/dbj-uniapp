@@ -704,6 +704,7 @@
           provinceId: this.currentAddress.provinceId,
           cityId: this.currentAddress.cityId,
           areaId: this.currentAddress.areaId,
+					version: 12
         }).then((e) => {
           this.zoneList = [];
 					let arr = []
