@@ -5,7 +5,7 @@
 			@refresherrefresh='refresherrefresh' @scroll="scrollHandler" :refresher-triggered="triggered">
 			<Head :swiperAuto="swiperAuto" :bannerList="bannerList" />
 			<view class="container-box">
-				<Container :pavilionObj="pavilionObj" />
+				<Container :pavilionObj="pavilionObj" :classList="classList" :recommendList="recommendList" />
 			</view>
 			<view class="shop-list-box">
 				<view class="recommend-title">
@@ -53,7 +53,9 @@
 				pavilionObj: {
 					list: [],
 					totalRows: 0
-				}
+				},
+				classList: [],
+				recommendList: []
 			}
 		},
 		onShow() {
@@ -67,9 +69,9 @@
 			  this.getNavHandler();
 			});
 			this.getNavHandler();
-			this.getClassifyBannerHandler();
-			this.getPavilionListHandler();
-			this.getHomeGoodsList();
+			// this.getClassifyBannerHandler();
+			// this.getPavilionListHandler();
+			// this.getHomeGoodsList();
 		},
 		methods: {
 			getNavHandler() {
@@ -82,8 +84,21 @@
 				}
 				console.log(getApp().globalData)
 				navList(params).then(res => {
-					console.log(res, '>>>>>>>>>>>><<<<<<<<<')
+					res.forEach(item => {
+						if (item && item.configParams) {
+							let configParams = JSON.parse(item.configParams);
+							console.log(configParams, '>>>>>>>>>>>')
+							this.[`nav${configParams.style}Handler`](item)
+						}
+					})
+					console.log(res, this.classList, '>>>>>>>>>>>><<<<<<<<<')
 				})
+			},
+			nav1Handler(item){
+				this.classList.push(item);
+			},
+			nav2Handler(item){
+				this.recommendList.push(item);
 			},
 			getPavilionListHandler() {
 				getBrandHallList({

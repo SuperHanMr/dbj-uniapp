@@ -1,16 +1,16 @@
 <template>
 	<view class="container">
 		<view class="classify-shop">
-			<view class="list" v-for="item in classList" :key="item.title" @click="classHandler">
-				<image :src="item.url" class="list-img"></image>
+			<view class="list" v-for="item in classList" :key="item.id" @click="classHandler(item)">
+				<image :src="item.icon" class="list-img"></image>
 				<view class="list-title">
-					{{ item.title }}
+					{{ item.name }}
 				</view>
 			</view>
 		</view>
 		<view class="recommended">
-			<view class="img-box" v-for="item in recommendedList" :key="item" @click="recommendedHandler">
-				<image :src="item" mode="" class="img"></image>
+			<view class="img-box" v-for="item in recommendList" :key="item.id" @click="recommendedHandler(item)">
+				<image :src="item.icon" mode="" class="img"></image>
 			</view>
 		</view>
 		<view class="brand">
@@ -61,31 +61,39 @@
 			pavilionObj: {
 				type: Object,
 				default: () => {}
+			},
+			classList: {
+				type: Array,
+				default: () => []
+			},
+			recommendList: {
+				type: Array,
+				default: () => []
 			}
 		},
 		data() {
 			return {
-				classList: [{
-						url: '',
-						title: '全屋定制'
-					},
-					{
-						url: '',
-						title: '家装建材'
-					},
-					{
-						url: '',
-						title: '成品家具'
-					},
-					{
-						url: '',
-						title: '软装配饰'
-					},
-					{
-						url: '',
-						title: '全部分类'
-					}
-				],
+				// classList: [{
+				// 		url: '',
+				// 		title: '全屋定制'
+				// 	},
+				// 	{
+				// 		url: '',
+				// 		title: '家装建材'
+				// 	},
+				// 	{
+				// 		url: '',
+				// 		title: '成品家具'
+				// 	},
+				// 	{
+				// 		url: '',
+				// 		title: '软装配饰'
+				// 	},
+				// 	{
+				// 		url: '',
+				// 		title: '全部分类'
+				// 	}
+				// ],
 				recommendedList: [
 					"", ""
 				],
@@ -98,19 +106,72 @@
 				if (pavilionObj.totalRows <= 8) return;
 				this.brandHandler();
 			}, 500),
-			classHandler() {
+			isLoginHandler(params) {
+				let hasToken = false;
+				uni.getStorage({
+					key: 'scn',
+					success() {
+						hasToken = true;
+					},
+					fail() {
+						hasToken = false;
+					}
+				})
+				if (params.needLogin && !hasToken) {
+					uni.navigateTo({
+						url: "../../login/login",
+					});
+					return;
+				}
+			},
+			classHandler(item) {
+				let param = JSON.parse(item.configParams)
+				this.isLoginHandler(param);
 				console.log('分类点击事件')
-				// 全屋定制
-				// `/pages/common/webview/webview?url=${encodeURIComponent(process.env.VUE_APP_BASE_H5 + '/app-pages/whole-house-do/whole-house-do.html')}`
 				// 成品家具
 				// let url = '/pages/search-result/search-result?category1Id=${this.category1Id}&aggregation=1'
 				// 全部分类
+				this.[`classJump${item.type}Handler`](item);
+			},
+			dealWithUrlParamHandler(item) {
+				let param = JSON.parse(item.urlParams)
+				let keyArr = Object.keys(param);
+				let valueArr = Object.values(param);
+				let urlParams = '';
+				keyArr.forEach((key, index) => {
+					urlParams += `${key}=${param[key]}`;
+					if (index < keyArr.length - 1) {
+						urlParams += '&';
+					}
+				})
+				return urlParams;
+			},
+			classJump1Handler(item) {
+				let param = this.dealWithUrlParamHandler(item)
+				console.log(`${item.url}?${param}`, '>>>>`${item.url}?${param}`')
 				uni.navigateTo({
-					url: '/sub-classify/pages/all-classify/index'
+					url: `${item.url}?${param}`
 				})
 			},
-			recommendedHandler() {
-				console.log('推荐点击事件')
+			classJump3Handler(item) {
+				this.recommendJump3Handler(item);
+			},
+			recommendedHandler(item) {
+				console.log(item, '推荐点击事件')
+
+				this. [`recommendJump${item.type}Handler`](item)
+			},
+			recommendJump3Handler(item) {
+				uni.navigateTo({
+					url: "/pages/common/webview/webview?url=" + encodeURIComponent(item.url),
+				});
+			},
+			recommendJump1Handler(item) {
+				let param = this.dealWithUrlParamHandler(item)
+				console.log(keyArr, valueArr, urlParams, '.valueArr')
+				uni.navigateTo({
+					url: `${item.url}?${param}`
+				})
 			},
 			brandHandler() {
 				console.log('跳转品牌页')
@@ -167,7 +228,7 @@
 				width: 100%;
 				height: 100%;
 				border-radius: 16rpx;
-				background: red;
+				display: block;
 			}
 		}
 	}
