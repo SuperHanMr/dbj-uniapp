@@ -18,9 +18,9 @@
             :class="tabIndex==index ? 'uni-tab-item-title-active' : ''">{{tab.name}}</text>
         </view>
       </scroll-view>
-      <swiper :current="tabIndex" style="flex: 1;height: 100%" :duration="300" @change="ontabchange">
+      <swiper :current="tabIndex" style="flex: 1;height: 100%" :duration="300" @change="onSwiperChange">
         <swiper-item class="swiper-item" v-for="(menu1,index1) in dataList" :key="index1">
-          <index-item :detailData="menu1['children']" :tabIndex="tabIndex"></index-item>
+          <index-item :detailData="menu1['children']" :category1Id="category1Id"></index-item>
         </swiper-item>
       </swiper>
     </view>
@@ -45,7 +45,8 @@
         cacheTab: [],
         tabIndex: 0,
         scrollInto: "",
-        areaId: ''
+        areaId: '',
+        category1Id: 0
       }
     },
     onShareAppMessage(res) {
@@ -60,6 +61,7 @@
       } else {
         this.areaId = getApp().globalData.currentHouse.areaId
       }
+      this.category1Id = e.category1Id
       this.getList();
     },
     methods: {
@@ -71,15 +73,14 @@
       getList() {
         getClassifyList(this.areaId).then((res) => {
           this.dataList = res
-          if (this.id) {
+          if (this.category1Id) {
             this.dataList.map((v, k) => {
-              if (this.id == res[k].id) { // 定位一级标题
+              if (this.category1Id == res[k].id) { // 定位一级标题
                 this.tabIndex = i;
               }
             })
-          } else {
-            this.regDataList(0)
-          }
+          } 
+          this.switchTab(this.tabIndex)
         })
       },
       ontabtap(e) {
@@ -87,13 +88,9 @@
         this.id = 0
         this.switchTab(index);
       },
-      ontabchange(e) {
+      onSwiperChange(e) {
         let index = e.target.current || e.detail.current;
         this.switchTab(index);
-        let params = {
-          areaId: this.areaId,
-          category1Id: this.dataList[index].id
-        }
       },
       switchTab(index) {
         if (this.tabIndex === index) {
@@ -103,7 +100,8 @@
         this.scrollInto = index;
         this.regDataList(index)
       },
-      regDataList(index) {// 处理datalist数据
+      regDataList(index) { // 处理datalist数据
+        this.category1Id = this.dataList[index].id
         let params = {
           areaId: this.areaId,
           category1Id: this.dataList[index].id
@@ -111,13 +109,13 @@
         getBrandList(params).then((res) => {
           let brandItem = {
             brandTag: 1,
-            id: 666,
+            id: 666, // 标识id，固定不变
             children: [{
               name: '品牌',
               children: res
             }]
           }
-          if(!this.dataList[index].children[0].brandTag) {
+          if (!this.dataList[index].children[0].brandTag) {
             this.dataList[index].children.unshift(brandItem)
           }
         })

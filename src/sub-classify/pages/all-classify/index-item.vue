@@ -6,7 +6,9 @@
         <view class="nav-left-item" @click="categoryClickMain(index2, menu2)"
           :class="{'active': index2==categoryActive, 'preNode': index2==categoryActive -1, 'nextNode': index2==categoryActive +1}"
           v-for="(menu2,index2) in detailData" :key="index2" :id="'left' + index2">
-          <view v-if="menu2.brandTag"><image src="../../static/image/brand_icon.png" mode=""></image></view>
+          <view v-if="menu2.brandTag">
+            <image src="../../static/image/brand_icon.png" mode=""></image>
+          </view>
           <text v-if="detailData[categoryActive]['children'].length && !menu2.brandTag">{{menu2.name}}</text>
         </view>
         <view class="nav-left-item" :class="{'nextNode':  categoryActive === detailData.length - 1}"></view>
@@ -21,7 +23,7 @@
             <scroll-view class="right-card" scroll-y="true">
               <view class="card-box">
                 <view class="right-detail" v-for="(menue4, index4) in menu3['children']" :key="index4"
-                  @click="toGoodsList(menue4.id)">
+                  @click="toGoodsList(menu2.brandTag, menue4.id)">
                   <view class="img-view">
                     <image :src="menue4.imageUrl  + '?x-oss-process=image/resize,m_lfit,w_124,h_124' "></image>
                   </view>
@@ -43,7 +45,7 @@
         type: Array,
         default: [],
       },
-      tabIndex: 0,
+      category1Id: 0,
     },
     data() {
       return {
@@ -54,16 +56,8 @@
         isClickMenu2: false
       };
     },
-    created() {
-      // this.detailData.forEach((item, key) => {
-      //   uni.createSelectorQuery().in(this).select(`#tab${item.id}`).boundingClientRect(res => {
-      //     this.heightList.push(res.height)
-      //   }).exec()
-      // })
-      // console.log(this.detailData)
-    },
     watch: {
-      tabIndex: {
+      category1Id: {
         handler(v) {
           this.categoryActive = 0;
           this.activeId = 0
@@ -72,6 +66,7 @@
       },
       detailData: {
         handler(v) {
+          console.log(999999999)
           v.forEach((item, key) => {
             uni.createSelectorQuery().in(this).select(`#tab${item.id}`).boundingClientRect(res => {
               this.heightList.push(res.height)
@@ -92,11 +87,11 @@
         this.timer = null
         let timeStamp = e.timeStamp
         this.timer = setTimeout(() => {
-          if(timeStamp === e.timeStamp) {
+          if (timeStamp === e.timeStamp) {
             this.isClickMenu2 = false
           }
         })
-        if(this.isClickMenu2) {
+        if (this.isClickMenu2) {
           return
         }
         let scrollHeight = this.heightList[0]
@@ -106,11 +101,19 @@
           scrollHeight += this.heightList[scrollIndex]
         }
         this.categoryActive = scrollIndex
-        
+
       },
-      toGoodsList(id) {
+      toGoodsList(brandTag, id) {
+        let brandId, category4Id
+        if(brandTag) {
+          brandId = id
+          category4Id = 0
+        } else {
+          brandId = 0
+          category4Id = id
+        }
         uni.navigateTo({
-          url: "/sub-classify/pages/search-result/search-result?category4Id=" + id
+          url: `/sub-classify/pages/search-result/search-result?category1Id=${this.category1Id}&category4Id=${category4Id}&brandId=${brandId}`
         });
       },
     }
@@ -155,6 +158,7 @@
     align-items: center;
     justify-content: center;
     background-color: #ffffff;
+
     image {
       width: 80rpx;
       height: 35rpx;

@@ -99,6 +99,7 @@
         category1Id: 0,
         category2Id: 0,
         category4Id: 0,
+        brandId: 0
       }
     },
     onShow() {
@@ -110,6 +111,7 @@
     onLoad(e) {
       this.category1Id = e.category1Id
       this.category4Id = e.category4Id
+      this.brandId = e.brandId
       this.searchText = e.searchText
       this.aggregation = Boolean(Number(e.aggregation))
       this.getList()
@@ -146,6 +148,7 @@
             category1Id: Number(this.category1Id), // 一级分类id
             category2Id: Number(this.category2Id), // 二级分类id
             category4Id: Number(this.category4Id), // 四级分类id
+            brandId: Number(this.brandId),
             query: this.searchText, //查询的关键词
             areaId: getApp().globalData.currentHouse
               .areaId, //区域编号，会按这个区域进行搜索；      区域的取值，请参考相关需求，好像是：有当前房屋就取当前房屋所在区域，没有当前房屋就取用户选取的位置区域...（具体逻辑比这个还复杂点）,
