@@ -16,7 +16,7 @@
         </view>
       </template>
     </custom-navbar>
-		
+
     <view
       class="header-container"
       :style="{backgroundImage:`url(${bgImg2})`}"
@@ -49,7 +49,7 @@
         </view>
       </view>
     </view>
-		
+
     <view class="recommendForYou-container">
       <view class="title_container">
         <view class="left">
@@ -330,7 +330,7 @@ export default {
 		if (uni.getStorageSync("recommendDesignerPage")) {
 		  this.page = uni.getStorageSync("recommendDesignerPage");
 		}
-		
+
 		this.page++;
 		uni.setStorageSync("recommendDesignerPage", this.page);
 		const hhh = uni.getStorageSync("recommendDesignerPage");
@@ -353,7 +353,7 @@ export default {
 		this.scrollLeft = 1
 		this.$nextTick(()=>{
 			this.scrollLeft = 0
-			uni.$emit("currentHouseChange")
+			// uni.$on("currentHouseChange")
 			this.userId = getApp().globalData.token;
 			console.log("getApp().globalData===",getApp().globalData)
 			this.estateId = getApp().globalData.currentHouse.id
