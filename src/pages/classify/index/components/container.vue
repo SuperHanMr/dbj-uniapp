@@ -73,31 +73,6 @@
 		},
 		data() {
 			return {
-				// classList: [{
-				// 		url: '',
-				// 		title: '全屋定制'
-				// 	},
-				// 	{
-				// 		url: '',
-				// 		title: '家装建材'
-				// 	},
-				// 	{
-				// 		url: '',
-				// 		title: '成品家具'
-				// 	},
-				// 	{
-				// 		url: '',
-				// 		title: '软装配饰'
-				// 	},
-				// 	{
-				// 		url: '',
-				// 		title: '全部分类'
-				// 	}
-				// ],
-				recommendedList: [
-					"", ""
-				],
-				brandList: []
 			}
 		},
 		methods: {
@@ -127,13 +102,10 @@
 			classHandler(item) {
 				let param = JSON.parse(item.configParams)
 				this.isLoginHandler(param);
-				console.log('分类点击事件')
-				// 成品家具
-				// let url = '/pages/search-result/search-result?category1Id=${this.category1Id}&aggregation=1'
-				// 全部分类
 				this.[`classJump${item.type}Handler`](item);
 			},
 			dealWithUrlParamHandler(item) {
+				if (!item.urlParams) return;
 				let param = JSON.parse(item.urlParams)
 				let keyArr = Object.keys(param);
 				let valueArr = Object.values(param);
@@ -147,28 +119,24 @@
 				return urlParams;
 			},
 			classJump1Handler(item) {
-				let param = this.dealWithUrlParamHandler(item)
-				console.log(`${item.url}?${param}`, '>>>>`${item.url}?${param}`')
+				let param = this.dealWithUrlParamHandler(item);
 				uni.navigateTo({
 					url: `${item.url}?${param}`
 				})
 			},
-			classJump3Handler(item) {
-				this.recommendJump3Handler(item);
+			classJump2Handler(item) {
+				this.recommendJump2Handler(item);
 			},
 			recommendedHandler(item) {
-				console.log(item, '推荐点击事件')
-
 				this. [`recommendJump${item.type}Handler`](item)
 			},
-			recommendJump3Handler(item) {
+			recommendJump2Handler(item) {
 				uni.navigateTo({
 					url: "/pages/common/webview/webview?url=" + encodeURIComponent(item.url),
 				});
 			},
 			recommendJump1Handler(item) {
 				let param = this.dealWithUrlParamHandler(item)
-				console.log(keyArr, valueArr, urlParams, '.valueArr')
 				uni.navigateTo({
 					url: `${item.url}?${param}`
 				})
