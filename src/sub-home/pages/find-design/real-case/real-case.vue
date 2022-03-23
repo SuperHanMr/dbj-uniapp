@@ -158,6 +158,7 @@
 			const currentHouse = getApp().globalData.currentHouse;
 			let isRefshList = null;
 			if (this.currentHouse.id === currentHouse.id) {
+				this.listParam.page = 0;
 				isRefshList = true;
 			}
 			this.getListData(isRefshList);
