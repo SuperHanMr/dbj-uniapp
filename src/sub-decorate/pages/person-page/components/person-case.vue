@@ -61,8 +61,8 @@
     mounted(){
       this.getList()
       uni.$on('isCollect',(data)=>{
-        console.log('person++++++++++',this.activeList[this.activeIndex])
-        if(data){
+        console.log('person++++++++++',this.activeList[this.activeIndex],data)
+        if(data.isCollect){
           this.activeList[this.activeIndex].collectionCount += 1
         }else{
           this.activeList[this.activeIndex].collectionCount -=1
