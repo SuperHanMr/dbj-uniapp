@@ -3,22 +3,24 @@
 		<image class="img" :src="item.product.spuImage |imgFormat" mode="aspectFill"></image>
 		<view class="info">
 			<view class="category">
-				<view class="category-item" v-for="(category, categoryIndex) in categoryListHandler()" :key="category">
+				<view class="category-item"
+					v-for="(category, categoryIndex) in categoryListHandler(item.product.categories, item.product.brand)"
+					:key="category">
 					<text>{{category}}</text>
-					<text v-if="categoryIndex !== categoryList.length - 1">|</text>
+					<text v-if="categoryIndex !== categoryListHandler(item.product.categories, item.product.brand).length - 1">|</text>
 				</view>
 			</view>
 			<view class="title">
 				<text>{{item.product.spuName}}</text>
 			</view>
 			<!-- v-if="item.product.hasAllowance" -->
-			<view  class="allowance-view">
-				<!-- <view class="allowance">
+			<view class="allowance-view" v-if="item.product.hasAllowance || item.product.designerRecommendNumber">
+				<view class="allowance" v-if="item.product.hasAllowance && item.product.designerRecommendNumber">
 					打扮家补贴{{foramtPrePrice(item.product.sku.marketPrice-item.product.skuPrice)}}元
-				</view> -->
-				<view class="recommended">
+				</view>
+				<view class="recommended" v-if="item.product.designerRecommendNumber">
 					<text class="recommended-icon icon-goods"></text>
-					<text>23位设计师推荐</text>
+					<text>{{item.product.designerRecommendNumber}}位设计师推荐</text>
 				</view>
 			</view>
 			<view class="price">
@@ -47,12 +49,12 @@
 					</text>
 				</text>
 			</view>
-			<view class="flagship-store" @click.stop="toFlagShipShopHandler">
-				<view>打扮家旗舰店</view>
+			<view class="flagship-store" @click.stop="toFlagShipShopHandler(item.product.storeId)">
+				<view>{{item.product.storeName}}</view>
 				<view class="flagship-store-icon icon-alert_notice_jump"></view>
 			</view>
 		</view>
-		<view style="height: 18rpx;">
+		<view class="bottom-padding">
 		</view>
 
 	</view>
@@ -75,7 +77,6 @@
 		},
 		data() {
 			return {
-				categoryList: ["沙发", "品类", "品牌名称"]
 			}
 		},
 		methods: {
@@ -100,11 +101,28 @@
 					return "";
 				}
 			},
-			toFlagShipShopHandler(){
-				console.log('toFlagShipShopHandler')
+			toFlagShipShopHandler(storeId) {
+				let currentHouse = getApp().globalData.currentHouse;
+				uni.navigateTo({
+					url: `/sub-classify/pages/shops/shops?storeId=${storeId}&houseId=${currentHouse.id}`
+				})
 			},
-			categoryListHandler(){
-				return this.categoryList;
+			categoryListHandler(categories, brand) {
+				let categoriesName1 = '';
+				let categoriesName2 = '';
+				let arr = []
+				if (categories && categories[0] && categories[0].category4Name) {
+					categoriesName1 = categories[0].category4Name
+					arr.push(categoriesName1);
+				}
+				if (categories && categories[1] && categories[1].category4Name) {
+					categoriesName2 = categories[1].category4Name
+					arr.push(categoriesName2);
+				}
+				if (brand && brand.name) {
+					arr.push(brand.name);
+				}
+				return arr;
 			}
 		}
 	}
@@ -112,7 +130,6 @@
 
 <style lang="scss" scoped>
 	.item {
-		margin-top: 16rpx;
 		flex-shrink: 0;
 		// border-radius: 18rpx;
 		// border: 0.3px solid #e6eaed;
@@ -131,8 +148,8 @@
 		.allowance-view {
 			display: flex;
 			margin-top: 8rpx;
-			
-			.recommended{
+
+			.recommended {
 				border: 0.5px solid rgba(197, 165, 141, 0.299899);
 				box-sizing: border-box;
 				border-radius: 4rpx;
@@ -142,7 +159,8 @@
 				font-size: 20rpx;
 				color: #AF8D73;
 				padding: 0 8rpx;
-				.recommended-icon{
+
+				.recommended-icon {
 					font-size: 20rpx;
 					color: #AF8D73;
 					margin: 0 5rpx 2rpx 0;
@@ -164,7 +182,7 @@
 		}
 
 		.price {
-			margin-top: 12rpx;
+			margin-top: 4rpx;
 			font-size: 20rpx;
 			font-weight: 400;
 			color: #939699;
@@ -192,29 +210,33 @@
 				vertical-align: 3%;
 			}
 		}
-		
-		.original-price{
+
+		.original-price {
 			color: #bcbcbc;
 			margin-top: -5rpx;
 			height: 30rpx;
-			
-			.original-price-through{
+
+			.original-price-through {
 				font-size: 20rpx;
 				margin-right: 10rpx;
-				text-decoration:line-through;
-				.original-price-price-font{
+				text-decoration: line-through;
+
+				.original-price-price-font {
 					font-size: 20rpx;
 				}
-				.original-price-amount{
+
+				.original-price-amount {
 					color: #bcbcbc;
 					font-size: 26rpx;
 				}
-				.original-price-ex{
+
+				.original-price-ex {
 					color: #bcbcbc;
 					font-size: 20rpx;
 				}
-				.original-price-unitName{
-					vertical-align: 13%; 
+
+				.original-price-unitName {
+					vertical-align: 13%;
 					color: #bcbcbc;
 					font-size: 20rpx;
 				}
@@ -278,20 +300,25 @@
 			}
 		}
 	}
-	
-	.flagship-store{
+
+	.flagship-store {
 		position: relative;
 		z-index: 10;
-		margin-top: 10rpx;
+		margin-top: 6rpx;
 		font-weight: 400;
 		font-size: 18rpx;
 		color: #999999;
 		display: flex;
 		align-item: center;
-		.flagship-store-icon{
+
+		.flagship-store-icon {
 			font-size: 16rpx;
 			color: #999999;
 			margin: 7rpx 0 0 4rpx;
 		}
+	}
+
+	.bottom-padding {
+		height: 48rpx;
 	}
 </style>

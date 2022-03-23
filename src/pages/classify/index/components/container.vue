@@ -72,8 +72,7 @@
 			}
 		},
 		data() {
-			return {
-			}
+			return {}
 		},
 		methods: {
 			scrolltolowerHandler: throttle(function() {
@@ -102,7 +101,7 @@
 			classHandler(item) {
 				let param = JSON.parse(item.configParams)
 				this.isLoginHandler(param);
-				this.[`classJump${item.type}Handler`](item);
+				this. [`classJump${item.type}Handler`] && this. [`classJump${item.type}Handler`](item);
 			},
 			dealWithUrlParamHandler(item) {
 				if (!item.urlParams) return;
@@ -128,12 +127,10 @@
 				this.recommendJump2Handler(item);
 			},
 			recommendedHandler(item) {
-				this. [`recommendJump${item.type}Handler`](item)
+				this. [`recommendJump${item.type}Handler`] && this. [`recommendJump${item.type}Handler`](item)
 			},
 			recommendJump2Handler(item) {
-				uni.navigateTo({
-					url: "/pages/common/webview/webview?url=" + encodeURIComponent(item.url),
-				});
+				this.toWebview(item.url)
 			},
 			recommendJump1Handler(item) {
 				let param = this.dealWithUrlParamHandler(item)
@@ -148,11 +145,13 @@
 				})
 			},
 			brandItemHandler(item) {
-				console.log('跳转对应品牌页面')
 				if (item.key === 'all') return;
+				this.toWebview(`/app-pages/brand-shop/index.html?storeId=${item.id}`);
+			},
+			toWebview(url) {
 				uni.navigateTo({
-					url: `/sub-classify/pages/brand-list/brand-detail?id=${item.id}`
-				})
+					url: "/pages/common/webview/webview?url=" + encodeURIComponent(url),
+				});
 			}
 		}
 	}

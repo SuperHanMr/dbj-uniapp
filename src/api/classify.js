@@ -53,6 +53,10 @@ export function getClassifyBanner() {
 export function getShoppingCarNum(areaId) {
 	return request.get(`product/app/products/shoppingCart/number/area/${areaId}`)
 }
+// 商城商品列表
+export function getClassifyShopList (params) {
+  return request.post('product/app/search/mall/recommend/home', params)
+}
 // 品牌馆列表
 export function getBrandHallList(params){
 	return request.get("/app/brand/pavilion/page",{params})
