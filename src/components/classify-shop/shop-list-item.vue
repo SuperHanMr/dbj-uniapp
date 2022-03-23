@@ -52,7 +52,7 @@
 				<view class="flagship-store-icon icon-alert_notice_jump"></view>
 			</view>
 		</view>
-		<view style="height: 18rpx;">
+		<view class="bottom-padding">
 		</view>
 
 	</view>
@@ -112,7 +112,6 @@
 
 <style lang="scss" scoped>
 	.item {
-		margin-top: 16rpx;
 		flex-shrink: 0;
 		// border-radius: 18rpx;
 		// border: 0.3px solid #e6eaed;
@@ -293,5 +292,8 @@
 			color: #999999;
 			margin: 7rpx 0 0 4rpx;
 		}
+	}
+	.bottom-padding{
+		height: 48rpx;
 	}
 </style>

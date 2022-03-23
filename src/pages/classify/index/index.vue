@@ -104,7 +104,7 @@
 						if (item && item.configParams) {
 							let configParams = JSON.parse(item.configParams);
 							console.log(configParams, '>>>>>>>>>>>')
-							this.[`nav${configParams.style}Handler`](item)
+							this.[`nav${configParams.style}Handler`] && this.[`nav${configParams.style}Handler`](item)
 						}
 					})
 					console.log(res, this.classList, '>>>>>>>>>>>><<<<<<<<<')
@@ -217,7 +217,7 @@
 			font-weight: 600;
 			font-size: 32rpx;
 			color: #2B2F33;
-			margin-bottom: 16rpx;
+			margin-bottom: 32rpx;
 		}
 
 	}

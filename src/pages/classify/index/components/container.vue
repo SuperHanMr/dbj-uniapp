@@ -102,7 +102,7 @@
 			classHandler(item) {
 				let param = JSON.parse(item.configParams)
 				this.isLoginHandler(param);
-				this.[`classJump${item.type}Handler`](item);
+				this.[`classJump${item.type}Handler`] && this.[`classJump${item.type}Handler`](item);
 			},
 			dealWithUrlParamHandler(item) {
 				if (!item.urlParams) return;
@@ -128,7 +128,7 @@
 				this.recommendJump2Handler(item);
 			},
 			recommendedHandler(item) {
-				this. [`recommendJump${item.type}Handler`](item)
+				this.[`recommendJump${item.type}Handler`] && this.[`recommendJump${item.type}Handler`](item)
 			},
 			recommendJump2Handler(item) {
 				uni.navigateTo({
