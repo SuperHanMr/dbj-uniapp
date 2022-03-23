@@ -43,7 +43,7 @@
 				<view class="box" @scroll='scrollHandler' v-if="realCaseListData && realCaseListData.length > 0">
 					<real-case-list :currentHouse='currentHouse' :realCaseListData='realCaseListData'
 						@triggerScroll='triggerScroll' @scrollUpper='scrollUpper' @scrolltolower='scrolltolower'
-						@refresherrefresh='refresherrefresh' @toCaseDetail='toCaseDetail' ref='realCaseList' />
+						@refresherrefresh='refresherrefresh' @toCaseDetail='toCaseDetail' ref='realCaseList' :key='renderKey' />
 				</view>
 				<view class="no-service" v-else>
 					<image
@@ -110,7 +110,8 @@
 				triggered: false,
 				caseDetail: false,
 				caseStyleList: [],
-				toDetailIndex: 0
+				toDetailIndex: 0,
+				renderKey: ''
 			}
 		},
 		onLoad() {
@@ -123,7 +124,10 @@
 				this.caseDetail = false;
 			})
 			uni.$on('isCollect', (item) => {
-				this.realCaseListData[this.toDetailIndex].isCollection = item.isCollect;
+				uni.$emit('updateCollection', {
+					item,
+					index: this.toDetailIndex
+				})
 			})
 			const menuButtonInfo = uni.getMenuButtonBoundingClientRect();
 			this.systemBottom = menuButtonInfo.bottom + 32 + "rpx";
