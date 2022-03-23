@@ -26,10 +26,10 @@
 		navList
 	} from "@/api/home.js";
 	import {
-		getHomeGoodsList,
 		getClassifyBanner,
 		getBrandHallList,
-		getShoppingCarNum
+		getShoppingCarNum,
+		getClassifyShopList
 	} from "@/api/classify.js";
 	export default {
 		components: {
@@ -77,7 +77,7 @@
 			// this.getNavHandler();
 			this.getClassifyBannerHandler();
 			this.getPavilionListHandler();
-			this.getHomeGoodsList();
+			this.getClassifyShopListHandler();
 		},
 		watch: {
 			areaId: {
@@ -88,6 +88,21 @@
 			}
 		},
 		methods: {
+			getClassifyShopListHandler(){
+				getClassifyShopList({
+					pageIndex: this.query.page,
+					product: {
+						areaId: this.areaId,
+					},
+					simplified: true,
+					excludeFields: "product.spu,product.process, product.store,product.supplier,product.areaIds,product.areaPrices,product.category",
+				}).then(res => {
+					this.query.totalPage = res.totalPage;
+					this.query.page++;
+					this.shopList = res.page;
+					this.triggered = false;
+				})
+			},
 			getNavHandler() {
 				this.classList = [];
 				this.recommendList = [];
@@ -144,20 +159,6 @@
 				getClassifyBanner().then((res) => {
 					this.bannerList = res;
 				})
-			},
-			getHomeGoodsList() {
-				getHomeGoodsList({
-					pageIndex: this.query.page,
-					areaId: this.areaId,
-					simplified: true,
-					excludeFields: "product.spu,product.process, product.store,product.supplier,product.areaIds,product.areaPrices,product.category",
-				}).then((res) => {
-					console.log(res, '>>>>>>>>>')
-					this.query.totalPage = res.totalPage;
-					this.query.page++;
-					this.shopList = res.page;
-					this.triggered = false;
-				});
 			},
 			scrolltolower() {
 				console.log('scrolltolower')

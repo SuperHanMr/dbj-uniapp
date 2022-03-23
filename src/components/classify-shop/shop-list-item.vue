@@ -47,8 +47,8 @@
 					</text>
 				</text>
 			</view>
-			<view class="flagship-store" @click.stop="toFlagShipShopHandler">
-				<view>打扮家旗舰店</view>
+			<view class="flagship-store" @click.stop="toFlagShipShopHandler(item.product.storeId)">
+				<view>{{item.product.storeName}}</view>
 				<view class="flagship-store-icon icon-alert_notice_jump"></view>
 			</view>
 		</view>
@@ -100,7 +100,7 @@
 					return "";
 				}
 			},
-			toFlagShipShopHandler(){
+			toFlagShipShopHandler(storeId){
 				console.log('toFlagShipShopHandler')
 			},
 			categoryListHandler(){
