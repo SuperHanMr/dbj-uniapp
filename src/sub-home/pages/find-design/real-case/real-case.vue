@@ -125,6 +125,7 @@
 				this.caseDetail = false;
 			})
 			uni.$on('currentHouseChange', (item) => {
+				if (item.id === this.currentHouse.id) return;
 				this.currentHouse = item;
 				this.listParam.page = 0;
 				if (this.$refs.realCaseScreeningRef) {
