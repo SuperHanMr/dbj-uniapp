@@ -353,7 +353,7 @@ export default {
 		this.scrollLeft = 1
 		this.$nextTick(()=>{
 			this.scrollLeft = 0
-			// uni.$on("currentHouseChange")
+			uni.$on("currentHouseChange")
 			this.userId = getApp().globalData.token;
 			console.log("getApp().globalData===",getApp().globalData)
 			this.estateId = getApp().globalData.currentHouse.id
