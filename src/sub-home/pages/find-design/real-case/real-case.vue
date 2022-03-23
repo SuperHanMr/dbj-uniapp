@@ -157,7 +157,7 @@
 			}
 			const currentHouse = getApp().globalData.currentHouse;
 			let isRefshList = null;
-			if (this.currentHouse.id != currentHouse.id) {
+			if (this.currentHouse.id === currentHouse.id) {
 				isRefshList = true;
 			}
 			this.getListData(isRefshList);
