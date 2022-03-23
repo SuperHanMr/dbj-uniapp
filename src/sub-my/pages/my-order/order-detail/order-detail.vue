@@ -46,7 +46,7 @@
 			</view>
 			<!--  代付款订单详情的时候展示 -->
 			<view v-if="orderInfo.orderStatus == 0">
-				<view class="store-container" v-for="(item,index) in orderInfo.details":key="index" >
+				<view class="store-container" v-for="(item,index) in orderInfo.details" :key="index" >
 				  <view v-if="index > 0" class="store-line" />
 				  <view class="storeItem" :class="{paddingBottom: item.stockType == 1 }" :style="{borderRadius:index >= 1 ? '0' :'24rpx 24rpx 0 0'}" >
 				    <view class="header">
@@ -76,7 +76,7 @@
 									<image class="icon" @click="readExpenses(1)" src="../../../../static/price_icon.svg"/>
 								</view>
 								<view class="right">
-									<text class="price-font"v-if="orderInfo.stockType == 0">
+									<text class="price-font" v-if="orderInfo.stockType == 0">
 										￥{{item.freight?`${item.freight}`:"0.00"}}
 									</text>
 									<text class="price-font" :style="{marginTop:item.freight?'0':'8rpx'}" v-else>
@@ -706,15 +706,24 @@ export default {
 			}
 			else {
 				console.log("this.from====%%%%%%%%%%%",this.from)
+				//#ifdef MP-WEIXIN
         uni.navigateBack({
           delta: 1,
         });
+				//#endif
+				//#ifdef H5
+				window.history.back();
+				//#endif
       }
     },
 
 
     // 跳转到店铺页面
     gotoShop(item) {
+			if (getApp().globalData.isInGomeMp) {
+				console.warn('在国美小程序中，不可跳转店铺详情');
+				return;
+			}
 			if (item.type == 5) return;
 			console.log("去店铺首页！！！！");
 			console.log("this.storeId=", item.storeId, "this.areaId=", this.areaId);
@@ -747,6 +756,10 @@ export default {
 
 		// 跳转到商品详情页面
 		productDetail(item, type) {
+			if (getApp().globalData.isInGomeMp) {
+				console.warn('在国美小程序中，不可跳转商品详情');
+				return;
+			}
 		  console.log("item=", item, "type=", type);
 		  uni.navigateTo({
 				url: `../../../../sub-classify/pages/goods-detail/goods-detail?goodId=${item.id}`,
@@ -810,7 +823,6 @@ export default {
 		},
 		payOrder(totalAmount) {
 		  let openId = getApp().globalData.openId;
-
       //#ifdef MP-WEIXIN
       let payType = 1
       let deviceType = 0
@@ -967,6 +979,10 @@ export default {
 		// 进行中订单详情接口
 		// 点击商品区域，跳转到商品详情页面
 		goToDetail(item2) {
+			if (getApp().globalData.isInGomeMp) {
+				console.warn('在国美小程序中，不可跳转商品详情');
+				return;
+			}
 			uni.navigateTo({
 				url: `../../../../sub-classify/pages/goods-detail/goods-detail?goodId=${item2.id}`,
 			});
@@ -1023,6 +1039,9 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+  uni-page-body{
+    background-color: unset;
+  }
 	.header {
 		margin-bottom: 32rpx;
 		 display: flex;

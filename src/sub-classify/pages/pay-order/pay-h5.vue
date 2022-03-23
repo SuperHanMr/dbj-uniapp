@@ -29,7 +29,7 @@
             <view>请确认微信支付
               是否已完成</view>
             <view class="pay-button">
-              <button @click="checkPay">已完成支付</button>
+              <button @click="clickCheckPay">已完成支付</button>
             </view>
           </view>
         </view>
@@ -50,7 +50,9 @@
         payTal: '',
         isPay: false,
         payRecordId: 0,
-        isRedirect: 0
+        isRedirect: 0,
+        isApp: 0,
+        token: ''
       }
     },
     onLoad(e) {
@@ -58,11 +60,17 @@
       this.payTal = e.payTal
       this.payRecordId = e.payRecordId
       this.isRedirect = Number(e.isRedirect)
+      this.isApp = Number(e.isApp)
+      this.token = e.token ? e.token : getApp().globalData.token
+      if (window.GomeJSBridge && window.GomeJSBridge.ready) {
+        this.isApp = 1
+      }
       if (this.isRedirect) {
         this.$nextTick(() => {
           this.$refs.payDialog.open()
         })
       }
+      console.log('gome://m.gome.com.cn/appHome_2.html')
       // this.$nextTick(() => {
       //   this.$refs.payDialog.open()
       // })
@@ -73,25 +81,53 @@
           payTal: this.payTal
         }
         payH5(params).then((data) => {
-          let payUrl = data.url + encodeURIComponent(location.href + '&isRedirect=1')
+          let payUrl = data.url + encodeURIComponent(location.href + '&isRedirect=1&isApp=' + this.isApp +
+            '&token=' + this.token)
           location.href = payUrl
         })
       },
-      checkPay() {
+      clickCheckPay() {
         let params = {
-          payRecordId: this.payRecordId
-        }
-        checkPay(params).then((data) => {
-          if (data.payStatus) {
-            uni.navigateTo({
-              url: './pay-h5-success?payStatus=1'
-            })
-          } else {
-            uni.navigateTo({
-              url: `./pay-h5-success?payStatus=0&payTal=${this.payTal}&payRedirectUrl=${encodeURIComponent(location.href + '&isRedirect=1')}`
-            })
+          params: {
+            payRecordId: this.payRecordId
+          },
+          headers: {
+            accessToken: this.token
           }
-        })
+        }
+        if (this.token) {
+          checkPay(params).then((data) => {
+            if (data.payStatus) {
+              uni.navigateTo({
+                url: './pay-h5-success?payStatus=1&isApp=' + this.isApp
+              })
+            } else {
+              setTimeout(() => {
+                checkPay(params).then((data) => { // 如果查询订单支付失败，再次查询
+                  if (data.payStatus) {
+                    uni.navigateTo({
+                      url: './pay-h5-success?payStatus=1&isApp=' + this.isApp
+                    })
+                  } else {
+                    setTimeout(() => {
+                      checkPay(params).then((data) => {
+                        if (data.payStatus) {
+                          uni.navigateTo({
+                            url: './pay-h5-success?payStatus=1&isApp=' + this.isApp
+                          })
+                        } else {
+                          uni.navigateTo({
+                            url: `./pay-h5-success?payStatus=0&payTal=${this.payTal}&payRedirectUrl=${encodeURIComponent(location.href + '&isRedirect=1')}$isApp=${this.isApp}`
+                          })
+                        }
+                      })
+                    }, 300)
+                  }
+                })
+              }, 300)
+            }
+          })
+        }
       },
     }
   }

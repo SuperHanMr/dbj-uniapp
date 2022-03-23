@@ -95,7 +95,7 @@
 						<view class="title">编辑数量</view>
 						<view class="text">当前最小单位为{{step}}，输入的数量需为{{step}}的倍数</view>
 					</view>
-					<input class="uni-input" type="digit" v-model="buyNum" focus :cursor-spacing="102" />
+					<input class="uni-input" type="digit" v-model="buyNum" :cursor-spacing="102" />
 					<view class="button">
 						<view class="cancel" @click="closeDialog">取消</view>
 						<view class="confirm" @click="defineCount">完成</view>
@@ -121,7 +121,7 @@
 						<image v-else class="dec" @click="changeCount(false,currentShopIndex, currentGoodsIndex)"
 							src="https://ali-image.dabanjia.com/static/mp/dabanjia/images/my/details_pop_subtract_disabled%402x.png">
 						</image>
-						<input class="input-style" type="digit" v-model="buyNum"	focus :cursor-spacing="102" />
+						<input class="input-style" type="digit" v-model="buyNum" :cursor-spacing="102" />
 
 						<image class="inc" @click="changeCount(true, currentShopIndex,currentGoodsIndex)"
 							src="https://ali-image.dabanjia.com/static/mp/dabanjia/images/my/details_pop_add_normal%402x.png">
