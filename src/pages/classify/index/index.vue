@@ -163,7 +163,7 @@
 			scrolltolower() {
 				console.log('scrolltolower')
 				if (this.query.totalPage >= this.query.page) {
-					this.getHomeGoodsList();
+					this.getClassifyShopListHandler();
 				}
 			},
 			refresherrefresh() {
