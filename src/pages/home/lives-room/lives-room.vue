@@ -1,153 +1,135 @@
 <template>
 	<view class="content" :catchtouchmove="true" @click="handleLiveRoomClick">
-		<custom-navbar opacity="1" :title="title" titleColor="#FFFFFF" bgcolor="none">
-			<template v-slot:back>
-				<view @click="toBack">
-					<i class="icon-ic_cancel_white" style="color: white;">
-					</i>
-				</view>
-			</template>
-		</custom-navbar>
-		<!-- 占位 -->
-		<view :style="{height:navBarHeight}">
-		</view>
-		<!-- 占位 -->
-		<view style="height: 10rpx;">
-		</view>
+		<cover-view class="live-room-navbar" :style="{top: tophight}">
+			<cover-view class="navbar-btn" @click="toBack">
+				<cover-image class="navbar-icon" src="../../../static/ic_back_white.png"></cover-image>
+			</cover-view>
+			<cover-view class="navbar-title">{{ title }}</cover-view>
+		</cover-view>
+
+
 		<view class="liveing" v-if="isLiveing">
+			<cover-view class="state-bar" :style="{top: navBarHeight}">
+				<cover-view v-for="(item,index) in roomInfo.interactionInfo" :key="item.id">
 
-			<view class="state-bar">
-				<view v-for="(item,index) in roomInfo.interactionInfo" :key="item.id">
-
-					<view v-if="index==0||item.connectStatus=='connecting'" class="user"
+					<cover-view v-if="index==0||item.connectStatus=='connecting'" class="user"
 						@click="toPersonal({index,item})">
-						<image class="img" :src="item.userAvatar">
-						</image>
-						<view class="name">
+						<cover-image class="img" :src="item.userAvatar">
+						</cover-image>
+						<cover-view class="name">
 							{{item.userNickName}}
-						</view>
+						</cover-view>
 
-					</view>
-				</view>
-				<view class="flex1">
+					</cover-view>
+				</cover-view>
+				<cover-view class="flex1">
 
-				</view>
-				<view class="state-bar-text">
-					<image class="img" src="https://ali-image.dabanjia.com/static/mp/dabanjia/images/home/ic_gkrs.png"
+				</cover-view>
+				<cover-view class="state-bar-text">
+					<cover-image class="img" src="https://ali-image.dabanjia.com/static/mp/dabanjia/images/home/ic_gkrs.png"
 						mode="">
-					</image>
-					{{getHotCount(roomInfo.hotCount) }}
-				</view>
-			</view>
-			<live-player class="player" :src="livePreview" autoplay @statechange="statechange" @error="error" />
-			<view class="player-end">
-
-			</view>
-			<view class="bottom-contain">
-				<!-- <view class="chat-cover">
-
-				</view> -->
+					</cover-image>
+					<cover-view>{{getHotCount(roomInfo.hotCount) }}</cover-view>
+				</cover-view>
+			</cover-view>
+			<live-player class="player" :src="livePreview" object-fit="contain" autoplay @statechange="statechange" @error="error" />
+			<cover-view class="bottom-contain">
 				<!-- 聊天 -->
-				<scroll-view id="scrollview" :scroll-top="scrollTop" :style="{maxHeight:chatMax}" class="scorll-chat"
-					scroll-y="true" :scroll-into-view="bottomId">
-					<view class="chat-item-height">
-						<view v-for="(item,index) in list" :key="item.ID">
-							<view v-if="item.type=='TIMTextElem' || item.type=='TIMImageElem'" class="chat-item">
-								<view class="avater">
-									<image class="img" :src="item.avatar">
-									</image>
-								</view>
-								<image class="anchor" v-if="item.from.startsWith('anchor')"
-									src="https://ali-image.dabanjia.com/static/mp/dabanjia/images/home/anchor.png">
-								</image>
-
-								<text class="name">{{item.nick}} :</text>
-								<text v-if="item.type=='TIMTextElem'" class="text-info">{{item.payload.text}}</text>
-								<image class="img" v-if="item.type=='TIMImageElem'"
+				<cover-view class="scorll-chat">
+					<cover-view class="chat-item-height">
+						<cover-view v-for="item in dislplayMessageList" :key="item.ID">
+							<cover-view v-if="item.type=='TIMTextElem' || item.type=='TIMImageElem'" class="chat-item">
+								<cover-view class="author-wrapper">
+									<cover-image class="avatar" :src="item.avatar">
+									</cover-image>
+									<cover-image class="anchor" v-if="item.from.startsWith('anchor')"
+										src="https://ali-image.dabanjia.com/static/mp/dabanjia/images/home/anchor.png">
+									</cover-image>
+									<cover-view class="name">{{item.nick}} :</cover-view>
+								</cover-view>
+								<cover-view v-if="item.type=='TIMTextElem'" class="text-info">{{item.payload.text}}</cover-view>
+								<cover-image class="img" v-if="item.type=='TIMImageElem'"
 									:src="item.payload.imageInfoArray[0].imageUrl" mode="aspectFit"
-									@click="previewImg(item.payload.imageInfoArray[0].imageUrl)"> </image>
-							</view>
+									@click="previewImg(item.payload.imageInfoArray[0].imageUrl)"> </cover-image>
+							</cover-view>
 
-							<view v-if="item.type=='TIMGroupTipElem'&&item.payload.operationType==joinType"
+							<cover-view v-if="item.type=='TIMGroupTipElem'&&item.payload.operationType==joinType"
 								class="chat-item">
-								<text class="name">{{item.nick}} </text>
-								<text>进入直播间</text>
-							</view>
+								<cover-view class="author-wrapper">
+									<cover-view class="name">{{item.nick}} </cover-view>
+									<cover-view>进入直播间</cover-view>
+								</cover-view>
+							</cover-view>
 
-							<view
+							<cover-view
 								v-if="item.type=='TIMCustomElem'&&item.formatData&&(item.formatData.type=='group_product'||item.formatData.type=='img_message')"
 								class="chat-item" @click="toGoodsDetail(item.formatData.params)">
-								<view class="avater">
-									<image class="img" :src="item.avatar">
-									</image>
-								</view>
-								<image class="anchor" v-if="item.from.startsWith('anchor')"
-									src="https://ali-image.dabanjia.com/static/mp/dabanjia/images/home/anchor.png">
-								</image>
-
-								<text class="name">{{item.nick}} </text>
-								<image v-if="item.formatData.type=='img_message'" class="img"
+								<cover-view class="author-wrapper">
+									<cover-image class="avatar" :src="item.avatar">
+									</cover-image>
+									<cover-image class="anchor" v-if="item.from.startsWith('anchor')"
+										src="https://ali-image.dabanjia.com/static/mp/dabanjia/images/home/anchor.png">
+									</cover-image>
+									<cover-view class="name">{{item.nick}} :</cover-view>
+								</cover-view>
+								<cover-image v-if="item.formatData.type=='img_message'" class="img"
 									:src="item.formatData.fileUrl" mode="aspectFit"
-									@click="previewImg(item.formatData.fileUrl)"> </image>
-								<view v-if="item.formatData.type=='group_product'" class="product">
-									<view class="product-name">
+									@click="previewImg(item.formatData.fileUrl)"> </cover-image>
+								<cover-view v-if="item.formatData.type=='group_product'" class="product">
+									<cover-view class="product-name">
 										{{item.formatData.params.spuName}}
-									</view>
-									<view class="product-info">
-										<image class="product-info-img" :src="item.formatData.params.imageUrl" mode="">
-										</image>
-										<view class="product-info-name">
-											<view class="title">
+									</cover-view>
+									<cover-view class="product-info">
+										<cover-image class="product-info-img" :src="item.formatData.params.imageUrl" mode="">
+										</cover-image>
+										<cover-view class="product-info-name">
+											<cover-view class="title">
 												{{item.formatData.params.skuName}}
-											</view>
-											<view class="price-info">
-												<text class="nomal">¥</text>
-												<text class="big price-font">
-													{{ foramtPrice(item.formatData.params.price)}}</text>
-												<text class="nomal price-font">
-													.{{ formatCent(item.formatData.params.price)}}</text>
-											</view>
-										</view>
-									</view>
-								</view>
-							</view>
-						</view>
-					</view>
-				</scroll-view>
+											</cover-view>
+											<cover-view class="price-info">
+												<cover-view class="nomal">¥</cover-view>
+												<cover-view class="big price-font">
+													{{ foramtPrice(item.formatData.params.price)}}</cover-view>
+												<cover-view class="nomal price-font">
+													.{{ formatCent(item.formatData.params.price)}}</cover-view>
+											</cover-view>
+										</cover-view>
+									</cover-view>
+								</cover-view>
+							</cover-view>
+						</cover-view>
+					</cover-view>
+				</cover-view>
 				<!-- 底部功能栏 -->
-				<view class="bottom-send">
-					<view class="input-text" @click.stop="handleShowSendBox">
-						说点什么...
-						<image class="iconfont"
+				<cover-view class="bottom-send">
+					<cover-view class="input-text" @click.stop="handleShowSendBox">
+						<cover-view>说点什么...</cover-view>
+						<cover-image class="iconfont"
 							src="https://ali-image.dabanjia.com/static/mp/dabanjia/images/home/ic_live_upload.png"
-							@click.stop="handleChooseImage"></image>
-					</view>
-					<view class="macphone" @click="showDownload=true">
-						<image class="icon_macphone"
+							@click.stop="handleChooseImage"></cover-image>
+					</cover-view>
+					<cover-view class="macphone" @click="showDownload=true">
+						<cover-image class="icon_macphone"
 							src="https://ali-image.dabanjia.com/static/mp/dabanjia/images/home/lives_macphone.png"
 							mode="">
-						</image>
-						连麦
-					</view>
-					<image class="bottom-icon"
+						</cover-image>
+						<cover-view>连麦</cover-view>
+					</cover-view>
+					<cover-image class="bottom-icon"
 						src="https://ali-image.dabanjia.com/static/mp/dabanjia/images/home/lives_shopping_new.png"
 						mode="" @click="showDownload=true">
-					</image>
-					<view class="bottom-icon" @click="clickLike">
-						<image class="img"
+					</cover-image>
+					<cover-view class="bottom-icon with-bandage" @click="clickLike">
+						<cover-image class="img"
 							src="https://ali-image.dabanjia.com/static/mp/dabanjia/images/home/lives_agree_new.png"
 							mode="">
-						</image>
-						<view class="like-count">
+						</cover-image>
+						<cover-view class="like-count">
 							{{totoalLick}}
-						</view>
-					</view>
-					<!-- 		<view class="chat-item" v-for="(item,index) in list" :key="index">
-						{{item}}
-					</view> -->
-				</view>
-				</scroll-view>
-			</view>
+						</cover-view>
+					</cover-view>
+				</cover-view>
+			</cover-view>
 		</view>
 		<view v-else class="unlived">
 			<image class="img" src="https://ali-image.dabanjia.com/static/mp/dabanjia/images/theme-red/home/un-liveing.png"
@@ -175,30 +157,26 @@
 
 		</view>
 
-		<view v-if="showDownload" class="alert-app">
-			<view class="content">
-				<view class="img">
-					<view class="close" @click="showDownload=false">
-
-					</view>
-
-				</view>
-				<view class="text-content">
-					<view class="text-title">
+		<cover-view v-if="downTipLoaded" v-show="showDownload" class="alert-app">
+			<cover-view class="content">
+				<cover-image class="bg-img" src="https://ali-image.dabanjia.com/static/mp/dabanjia/images/home/lives_download.png"></cover-image>
+				<cover-image class="close" src="https://ali-image.dabanjia.com/static/mp/dabanjia/images/home/ic_closed_black.png" @click="showDownload=false"></cover-image>
+				<cover-view class="text-content">
+					<cover-view class="text-title">
 						请下载APP使用
-					</view>
-					<view class="text-tips text-top">
+					</cover-view>
+					<cover-view class="text-tips text-top">
 						咨询家装问题，去手机应用市场搜索
-					</view>
-					<view class="text-tips">
+					</cover-view>
+					<cover-view class="text-tips">
 						【打扮家】APP与主播进行交流吧
-					</view>
-					<view class="text-btn" @click="showDownload=false">
+					</cover-view>
+					<cover-view class="text-btn" @click="showDownload=false">
 						知道了
-					</view>
-				</view>
-			</view>
-		</view>
+					</cover-view>
+				</cover-view>
+			</cover-view>
+		</cover-view>
 		<message-send-box :group-id="groupId" @add-message="handleAddMessage"></message-send-box>
 	</view>
 </template>
@@ -229,20 +207,18 @@
 				navBarHeight: "",
 				tophight: "",
 				list: [],
-				scrollTop: 0,
 				count: 0,
 				isLogin: false,
 				imReady: false,
 				title: "",
 				isLiveing: true,
+				downTipLoaded: false,
 				showDownload: false,
-				scrollTop: 0,
 				roomInfo: {},
 				joinType: null,
 				timer: null,
 				userLikeTotal: 0,
 				likeCount: 0,
-				chatMax: "",
 				fromShare: false
 			};
 		},
@@ -253,26 +229,17 @@
 			totoalLick() {
 				return (this.userLikeTotal || 0) + this.likeCount;
 			},
+			// 要显示的消息列表，最多15条
+			dislplayMessageList() {
+				return this.list.slice(-15);
+			}
 		},
-		onHide() {
-			clearInterval(this.timer);
-			removeListener("MESSAGE_RECEIVED", (e) => {
-				this.messageRecived(e);
-			});
-		},
-		onReady() {
-			let that = this; //windoHeight为窗口高度，主要使用的是这个
-			let chatH = uni.createSelectorQuery().select(".player-end"); //想要获取高度的元素名（class/id）
-			chatH
-				.boundingClientRect((data) => {
-					let sendH = uni.createSelectorQuery().select(".bottom-send");
-					sendH
-						.boundingClientRect((bottom) => {
-							this.chatMax = bottom.top - data.top + "px";
-						})
-						.exec();
-				})
-				.exec();
+		watch: {
+			showDownload(val) {
+				if (val) {
+					this.downTipLoaded = true;
+				}
+			}
 		},
 		onShareAppMessage(res) {
 			return {
@@ -315,9 +282,7 @@
 			if (token) {
 				this.isLogin = true;
 				if (!this.imReady) {
-					addListener("MESSAGE_RECEIVED", (e) => {
-						this.messageRecived(e);
-					});
+					addListener("MESSAGE_RECEIVED", this.messageRecived, 'live-room-message-received');
 					getSafeTim().then((tim) => {
 						tim
 							.joinGroup({
@@ -346,11 +311,18 @@
 				}
 			}
 		},
+		onHide() {
+			if (this.timer) {
+				clearInterval(this.timer);
+				this.timer = null;
+			}
+		},
 		onUnload() {
-			clearInterval(this.timer);
-			removeListener("MESSAGE_RECEIVED", (e) => {
-				this.messageRecived(e);
-			});
+			if (this.timer) {
+				clearInterval(this.timer);
+				this.timer = null;
+			}
+			removeListener("MESSAGE_RECEIVED", "live-room-message-received");
 		},
 		methods: {
 			getHotCount(count) {
@@ -444,7 +416,6 @@
 						}
 					});
 					this.list = this.list.concat(systemMessageList);
-					this.scrollToBottom();
 				}
 			},
 			toLogin() {
@@ -458,19 +429,9 @@
 					url: '/pages/home/index/index'
 				});
 			},
-			scrollToBottom() {
-				console.log("!!!!!!!");
-				let that = this;
-				let query = uni.createSelectorQuery();
-				query.selectAll(".chat-item-height").boundingClientRect();
-				// query.select('#scrollview').boundingClientRect();
-				query.exec((res) => {
-					if (res[0] && res[0][0].height) {
-						this.scrollTop = res[0][0].height;
-					}
-				});
+			statechange(e) {
+				console.log('live player state:', e);
 			},
-			statechange(e) {},
 			error(e) {},
 			handleShowSendBox() {
 				if (this.showDownload || !this.isLogin || !this.isLiveing) {
@@ -490,7 +451,6 @@
 					message.formatData = JSON.parse(message.payload.data);
 				}
 				this.list.push(message);
-				this.scrollToBottom();
 			},
 			handleChooseImage() {
 				const self = this;
@@ -567,7 +527,39 @@
 </script>
 
 <style lang="scss">
-	.cover {}
+	.live-room-navbar {
+		position: absolute;
+		z-index: 1;
+		width: 100%;
+		height: 88rpx;
+		line-height: 88rpx;
+		min-height: 88rpx;
+		display: flex;
+		align-items: center;
+		color: #fff;
+		font-size: 16px;
+		.navbar-btn {
+			width: 40rpx;
+			height: 40rpx;
+			margin-left: 24rpx;
+			display: flex;
+			align-content: center;
+			justify-content: center;
+			.navbar-icon {
+				display: inline-block;
+				width: 16px;
+				height: 16px;
+			}
+		}
+		.navbar-title {
+			color: #fff;
+			flex: 1;
+			height: 40rpx;
+			line-height: 40rpx;
+			margin-right: 64rpx;
+			text-align: center;
+		}
+	}
 
 	.product {
 		margin-top: 18rpx;
@@ -602,6 +594,7 @@
 			}
 
 			.product-info-name {
+				width: 100%;
 				color: black;
 				margin-left: 16rpx;
 				display: flex;
@@ -609,6 +602,7 @@
 				justify-content: space-between;
 
 				.title {
+					width: 100%;
 					line-height: 30rpx;
 					height: 30rpx;
 					color: #111111;
@@ -624,14 +618,19 @@
 					line-height: 30rpx;
 					height: 30rpx;
 					color: #f92a2a;
+					display: flex;
+					flex-flow: row nowrap;
+					align-items: flex-end;
 
 					.nomal {
 						font-size: 22rpx;
+						line-height: 22rpx;
 					}
 
 					.big {
 						font-size: 32rpx;
-						margin-left: 4rpx;
+						line-height: 32rpx;
+						padding-left: 4rpx;
 					}
 				}
 			}
@@ -640,6 +639,7 @@
 
 	.alert-app {
 		position: fixed;
+		z-index: 1999;
 		width: 100vw;
 		height: 100vh;
 		display: flex;
@@ -654,27 +654,19 @@
 			background-color: #fff;
 			border-radius: 24rpx;
 			overflow: hidden;
-
-			.img {
+			position: relative;
+			.close {
+				position: absolute;
+				z-index: 1;
+				width: 64rpx;
+				height: 64rpx;
+				right: 24rpx;
+				top: 24rpx;
+			}
+			.bg-img {
 				width: 640rpx;
 				height: 350rpx;
-				background: url("https://ali-image.dabanjia.com/static/mp/dabanjia/images/home/lives_download.png");
-				background-size: contain;
-				position: relative;
-				border-top-right-radius: 24rpx;
-				border-top-left-radius: 24rpx;
-
-				.close {
-					float: right;
-					width: 64rpx;
-					height: 64rpx;
-					margin-right: 24rpx;
-					margin-top: 24rpx;
-					background: url("https://ali-image.dabanjia.com/static/mp/dabanjia/images/home/ic_closed_black.png");
-					background-size: contain;
-				}
 			}
-
 			.text-content {
 				background-color: #fff;
 				width: 640rpx;
@@ -787,18 +779,6 @@
 		}
 	}
 
-	.chat-cover {
-		position: absolute;
-		bottom: 0;
-		right: 0;
-		left: 0;
-		z-index: 500;
-		width: 100%;
-		height: 92rpx;
-		background: linear-gradient(180deg, rgba(0, 0, 0, 0.00) 44%, rgba(0, 0, 0, 0.26) 100%);
-
-	}
-
 	.bottom-contain {
 		position: absolute;
 		bottom: 0;
@@ -817,7 +797,7 @@
 			flex-direction: row;
 			align-items: center;
 			margin-bottom: 20rpx;
-			margin-top: 40rpx;
+			padding-top: 20rpx;
 
 			.input-text {
 				margin-left: 24rpx;
@@ -849,20 +829,24 @@
 					height: 72rpx;
 				}
 
-				.like-count {
-					position: absolute;
-					right: 0;
-					top: -14rpx;
-					width: 44rpx;
-					height: 28rpx;
-					font-size: 22rpx;
-					font-weight: 500;
-					color: #ffffff;
-					text-align: center;
-					line-height: 28rpx;
-					background: rgba(88, 90, 93, 0.35);
-					border-radius: 10rpx 10rpx 10rpx 4rpx;
-					backdrop-filter: blur(2rpx);
+				&.with-bandage {
+					margin-top: -14rpx;
+					padding-top: 14rpx;
+					.like-count {
+						position: absolute;
+						right: 0;
+						top: 0;
+						width: 44rpx;
+						height: 28rpx;
+						font-size: 22rpx;
+						font-weight: 500;
+						color: #ffffff;
+						text-align: center;
+						line-height: 28rpx;
+						background: rgba(88, 90, 93, 0.35);
+						border-radius: 10rpx 10rpx 10rpx 4rpx;
+						backdrop-filter: blur(2rpx);
+					}
 				}
 			}
 
@@ -889,9 +873,13 @@
 		}
 
 		.scorll-chat {
-			// max-height: 50vh;
-			// max-height: 30vh;
+			position: relative;
+			height: 440rpx;
 
+			.chat-item-height {
+				position: absolute;
+				bottom: 0;
+			}
 			.text-center {
 				text-align: center;
 				color: white;
@@ -909,13 +897,21 @@
 				color: #fff;
 				font-size: 28rpx;
 				padding: 12rpx 24rpx;
+				white-space: normal;
 				word-break: break-all;
 				display: inline-block;
+				opacity: 0.7;
 
 				.img {
 					display: inline-block;
 					width: 128rpx;
 					height: 128rpx;
+				}
+
+				.author-wrapper {
+					display: flex;
+					flex-flow: row nowrap;
+					align-items: center;
 				}
 
 				.anchor {
@@ -926,32 +922,13 @@
 					margin-right: 8rpx;
 				}
 
-				.anchor:after {
-					display: inline-block;
-					vertical-align: middle;
-					content: "";
-					height: 100%;
-				}
-
-				.avater {
-					display: inline-block;
+				.avatar {
+					width: 32rpx;
+					height: 32rpx;
+					border-radius: 50%;
 					margin-right: 12rpx;
-					line-height: 44rpx;
-
-					.img {
-						width: 32rpx;
-						height: 32rpx;
-						border-radius: 50%;
-						display: inline-block;
-						vertical-align: middle;
-					}
-				}
-
-				.avater:after {
 					display: inline-block;
 					vertical-align: middle;
-					content: "";
-					height: 100%;
 				}
 
 				.name {
@@ -965,12 +942,16 @@
 					font-weight: 400;
 					color: #ffffff;
 					line-height: 44rpx;
+					white-space: normal;
 				}
 			}
 		}
 	}
 
 	.state-bar {
+		position: absolute;
+		z-index: 1;
+		width: 100%;
 		height: 112rpx;
 		display: flex;
 		align-items: center;
@@ -1037,7 +1018,7 @@
 	}
 
 	.player {
-		height: 52vh;
+		height: 100%;
 		width: 100vw;
 	}
 
