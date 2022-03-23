@@ -134,7 +134,6 @@
 					this.$refs.realCaseScreeningRef.tagSelect = [null, null, null]
 				}
 				this.getListData();
-				console.log(item, '>>>>>>>>>>>>>>>>>>>>>')
 			})
 			uni.$on('isCollect', (item) => {
 				uni.$emit('updateCollection', {
@@ -157,7 +156,6 @@
 				return;
 			}
 			const currentHouse = getApp().globalData.currentHouse;
-			console.log(currentHouse, this.currentHouse, '>>>>>>>>>>>>>>>>>')
 			let isRefshList = null;
 			if (this.currentHouse.id != currentHouse.id) {
 				isRefshList = true;
