@@ -123,7 +123,6 @@
 				this.caseDetail = false;
 			})
 			uni.$on('isCollect', (item) => {
-				console.log(item, 'itemitemitemitem>>>>>>>>>>>')
 				this.realCaseListData[this.toDetailIndex].isCollection = item.isCollect;
 			})
 			const menuButtonInfo = uni.getMenuButtonBoundingClientRect();
