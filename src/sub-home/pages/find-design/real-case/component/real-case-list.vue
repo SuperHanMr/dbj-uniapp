@@ -3,7 +3,7 @@
 		<scroll-view class="real-case-list-scroll" :scroll-top="scrollTop" scroll-y="true" @scroll="scroll"
 			@scrolltoupper='scrolltoupper' @scrolltolower='scrolltolower' refresher-enabled='true'
 			@refresherrefresh='refresherrefresh' :refresher-triggered="triggered" :lower-threshold='100'>
-			<view class="list" v-for="(item, index) in listData" :key='item.id' @click="toCaseDetail(item)">
+			<view class="list" v-for="(item, index) in listData" :key='item.id' @click="toCaseDetail(item, index)">
 				<view class="head">
 					<view class="title">
 						<text>{{item.nikeName || '--'}} Ta家</text>
@@ -125,8 +125,8 @@
 					return name = item.name.substring(0, item.name.indexOf('市'))
 				}
 			},
-			toCaseDetail(item) {
-				this.$emit('toCaseDetail');
+			toCaseDetail(item, index) {
+				this.$emit('toCaseDetail', index);
 				uni.navigateTo({
 					url: `/pages/real-case/real-case-webview/real-case-webview?id=${item.id}`,
 				});

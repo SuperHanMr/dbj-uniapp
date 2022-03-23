@@ -109,7 +109,8 @@
 				selectData: {},
 				triggered: false,
 				caseDetail: false,
-				caseStyleList: []
+				caseStyleList: [],
+				toDetailIndex: 0
 			}
 		},
 		onLoad() {
@@ -121,11 +122,18 @@
 			uni.$on('defaultHouseChange',() => {
 				this.caseDetail = false;
 			})
-			
+			uni.$on('isCollect', (item) => {
+				console.log(item, 'itemitemitemitem>>>>>>>>>>>')
+				this.realCaseListData[this.toDetailIndex].isCollection = item.isCollect;
+			})
 			const menuButtonInfo = uni.getMenuButtonBoundingClientRect();
 			this.systemBottom = menuButtonInfo.bottom + 32 + "rpx";
 			this.getCaseStyleListHandler();
-
+			
+		},
+		onUnload() {
+		  uni.$off("isCollect");
+		  uni.$off("defaultHouseChange");
 		},
 		onShow() {
 			if (this.caseDetail) {
@@ -264,8 +272,10 @@
 				this.getListData(true);
 				uni.stopPullDownRefresh()
 			},
-			toCaseDetail(){
+			toCaseDetail(index){
 				this.caseDetail = true;
+				console.log(index, '>>>>>>>>>>>index,,,<<<')
+				this.toDetailIndex = index;
 			},
 			scrollHandler(e){
 				console.log(e, '>>>>')
