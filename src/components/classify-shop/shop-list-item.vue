@@ -7,7 +7,7 @@
 					v-for="(category, categoryIndex) in categoryListHandler(item.product.categories, item.product.brand)"
 					:key="category">
 					<text>{{category}}</text>
-					<text v-if="categoryIndex !== categoryList.length - 1">|</text>
+					<text v-if="categoryIndex !== categoryListHandler(item.product.categories, item.product.brand).length - 1">|</text>
 				</view>
 			</view>
 			<view class="title">
@@ -77,7 +77,6 @@
 		},
 		data() {
 			return {
-				categoryList: ["沙发", "品类", "品牌名称"]
 			}
 		},
 		methods: {
@@ -103,19 +102,24 @@
 				}
 			},
 			toFlagShipShopHandler(storeId) {
-				console.log('toFlagShipShopHandler')
+				let currentHouse = getApp().globalData.currentHouse;
+				uni.navigateTo({
+					url: `/sub-classify/pages/shops/shops?storeId=${storeId}&houseId=${currentHouse.id}`
+				})
 			},
 			categoryListHandler(categories, brand) {
 				let categoriesName1 = '';
 				let categoriesName2 = '';
-				if (categories[0] && categories[0].category4Name) {
+				let arr = []
+				if (categories && categories[0] && categories[0].category4Name) {
 					categoriesName1 = categories[0].category4Name
+					arr.push(categoriesName1);
 				}
-				if (categories[1] && categories[1].category4Name) {
+				if (categories && categories[1] && categories[1].category4Name) {
 					categoriesName2 = categories[1].category4Name
+					arr.push(categoriesName2);
 				}
-				let arr = [categoriesName1, categoriesName2]
-				if (brand.name) {
+				if (brand && brand.name) {
 					arr.push(brand.name);
 				}
 				return arr;
