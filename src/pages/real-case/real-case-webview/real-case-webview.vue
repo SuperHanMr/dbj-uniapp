@@ -1,6 +1,6 @@
 <template>
   <view class="">
-   <web-view ref='webview' :src="`${baseUrl}/app-pages/new-case-detail/case-detail.html?id=${id}&source=small#params=${params}`"
+   <web-view ref='webview' :src="`${baseUrl}/app-pages/new-case-detail/case-detail.html?id=${id}&source=small&isFromIM=${isFromIM ? true : ''}#params=${params}`"
 	@message='message' @load='loadSuccessHandler'></web-view>
   </view>
 
@@ -15,6 +15,7 @@
         searchToken: "",
         hashToken: "",
         height: 0,
+        isFromIM: false,
 
 		userInfo:{
 			token:'',
@@ -40,6 +41,9 @@
     },
 
     onLoad(props) {
+      if (props.isFromIM) {
+        this.isFromIM = true;
+      }
 	  this.baseUrl = this.ENV.VUE_APP_BASE_H5
       this.id = props.id;
       uni.showShareMenu();
