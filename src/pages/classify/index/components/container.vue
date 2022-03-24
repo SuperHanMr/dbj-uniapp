@@ -127,13 +127,17 @@
 				this.recommendJump2Handler(item);
 			},
 			recommendedHandler(item) {
-				this. [`recommendJump${item.type}Handler`] && this. [`recommendJump${item.type}Handler`](item)
+				this[`recommendJump${item.type}Handler`] && this[`recommendJump${item.type}Handler`](item)
 			},
 			recommendJump2Handler(item) {
 				this.toWebview(item.url)
 			},
 			recommendJump1Handler(item) {
 				let param = this.dealWithUrlParamHandler(item)
+				let currentHouse = getApp().globalData.currentHouse;
+				if (param.isToStore) {
+					param.houseId = currentHouse.id;
+				}
 				uni.navigateTo({
 					url: `${item.url}?${param}`
 				})
@@ -150,7 +154,7 @@
 			},
 			toWebview(url) {
 				uni.navigateTo({
-					url: "/pages/common/webview/webview?url=" + encodeURIComponent(url),
+					url: "/pages/common/webview/webview?url=" + encodeURIComponent(this.ENV.VUE_APP_BASE_H5 + url),
 				});
 			}
 		}

@@ -121,7 +121,7 @@
 						if (item && item.configParams) {
 							let configParams = JSON.parse(item.configParams);
 							console.log(configParams, '>>>>>>>>>>>')
-							this.[`nav${configParams.style}Handler`] && this.[`nav${configParams.style}Handler`](item)
+							this[`nav${configParams.style}Handler`] && this[`nav${configParams.style}Handler`](item)
 						}
 					})
 					console.log(res, this.classList, '>>>>>>>>>>>><<<<<<<<<')
@@ -138,7 +138,7 @@
 					key: 'scn',
 					success: () => {
 						getShoppingCarNum(this.areaId).then(res => {
-							this.shopListNum = res;
+							this.shopListNum = res.validNumber;
 						})
 					}
 				})
