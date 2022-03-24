@@ -179,7 +179,7 @@
 		height: 22px;
 		line-height: 22px;
 		font-weight: 500;
-		color: #00C2B8;
+		color: #FA4D32;
 		border-radius: 11px;
 	}
 

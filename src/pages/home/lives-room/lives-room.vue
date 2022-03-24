@@ -6,7 +6,8 @@
 			</cover-view>
 			<cover-view class="navbar-title">{{ title }}</cover-view>
 		</cover-view>
-
+		<!-- 占位 -->
+		<view :style="{height: navBarHeight}"></view>
 
 		<view class="liveing" v-if="isLiveing">
 			<cover-view class="state-bar" :style="{top: navBarHeight}">
@@ -147,24 +148,20 @@
 
 			</view>
 		</view>
-		<view v-if="!isLogin&&isLiveing" class="remark">
-			<view class="flex1">
-
-			</view>
-			<view class="remark-btn" @click="toLogin">
+		<!-- 占位 -->
+		<view :style="{height: navBarHeight}"></view>
+		<cover-view v-if="!isLogin&&isLiveing" class="remark">
+			<cover-view class="remark-btn" @click="toLogin">
 				登录以使用完整功能
-			</view>
-
-		</view>
+			</cover-view>
+		</cover-view>
 
 		<cover-view v-if="downTipLoaded" v-show="showDownload" class="alert-app">
 			<cover-view class="content">
-				<cover-image class="bg-img" src="https://ali-image.dabanjia.com/static/mp/dabanjia/images/home/lives_download.png"></cover-image>
+				<cover-image class="bg-img" src="https://ali-image.dabanjia.com/static/mp/dabanjia/images/theme-red/home/live_pop_bg.png"></cover-image>
 				<cover-image class="close" src="https://ali-image.dabanjia.com/static/mp/dabanjia/images/home/ic_closed_black.png" @click="showDownload=false"></cover-image>
 				<cover-view class="text-content">
-					<cover-view class="text-title">
-						请下载APP使用
-					</cover-view>
+					<cover-view class="text-title">请下载APP使用</cover-view>
 					<cover-view class="text-tips text-top">
 						咨询家装问题，去手机应用市场搜索
 					</cover-view>
@@ -529,7 +526,7 @@
 <style lang="scss">
 	.live-room-navbar {
 		position: absolute;
-		z-index: 1;
+		z-index: 1000;
 		width: 100%;
 		height: 88rpx;
 		line-height: 88rpx;
@@ -678,11 +675,13 @@
 				align-items: center;
 
 				.text-title {
+					font-family: -apple-system;
 					font-size: 36rpx;
 					font-weight: 500;
 					color: #333333;
 					line-height: 50rpx;
 					margin-top: 40rpx;
+					padding: 0 4px;
 				}
 
 				.text-tips {
@@ -751,6 +750,7 @@
 
 	.remark {
 		position: absolute;
+		z-index: 900;
 		left: 0;
 		right: 0;
 		bottom: 0;
@@ -762,16 +762,16 @@
 		justify-content: center;
 		align-items: center;
 
-		.flex1 {
-			flex: 1;
-		}
-
 		.remark-btn {
+			position: absolute;
+			bottom: 280rpx;
+			margin: 0 auto;
+			z-index: 900;
 			width: 396rpx;
 			height: 88rpx;
-			margin-bottom: 280rpx;
 			line-height: 88rpx;
 			text-align: center;
+			background-color: #FA3B34;
 			background: linear-gradient(117.02deg, #FA3B34 24.56%, #FF6A33 92.21%);
 			color: white;
 			font-size: 28rpx;
@@ -889,7 +889,7 @@
 				margin-top: 12rpx;
 				margin-left: 24rpx;
 				max-width: 544rpx;
-				background: rgba(255, 255, 255, 0.1);
+				background: rgba(255, 255, 255, 0.3);
 				border-radius: 14rpx;
 				color: #fff;
 				padding: 0 16rpx;
@@ -899,7 +899,6 @@
 				padding: 12rpx 24rpx;
 				white-space: normal;
 				word-break: break-all;
-				display: inline-block;
 				opacity: 0.7;
 
 				.img {
