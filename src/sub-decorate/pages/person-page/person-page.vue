@@ -394,6 +394,7 @@ export default {
       serviceEmpty:false,
       commentEmpty:true,
       isToContent:false,
+      pageScrollNum:0,
       maskHeight:'1010rpx'
     };
   },
@@ -476,8 +477,8 @@ export default {
     query.exec(function (res) {});
   },
   onPageScroll(scrollTop) {
-    // console.log(scrollTop.scrollTop)
     this.pageScroll(scrollTop.scrollTop);
+
   },
   methods: {
     init() {
@@ -498,7 +499,7 @@ export default {
     pageScroll(scrollTop) {
       this.scrollTop = scrollTop;
       //从深层页面返回时，避免触发导致显示异常
-      if(scrollTop!=0){
+      if(scrollTop!=1){
         this.changeOpacity(this.scrollTop);
       }
       this.getTopDistance();
@@ -636,7 +637,7 @@ export default {
           setTimeout(() => {
             this.getNodeHeight();
             this.getTopDistance();
-            this.pageScroll(0);
+            this.pageScroll(1);
             
           }, 500);
         } else {
@@ -657,7 +658,7 @@ export default {
     //   // })
     // },
     changeOpacity(num) {
-      // console.log(num)
+      
       num < 150
         ? (this.opacityNum = 0)
         : num < 180
