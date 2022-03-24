@@ -26,6 +26,7 @@
 </template>
 
 <script>
+import { addTask } from "../../utils/tick-task";
 	export default {
 		name: "count-down",
 		props: {
@@ -75,7 +76,7 @@
 			this.minute = (minutes < 10 ? ('0' + minutes) : minutes);
 			this.second = (seconds < 10 ? ('0' + seconds) : seconds);
 			
-			var interval = setInterval(() => {
+			this.removeTask = addTask(() => {
 				this.second = (Array(2).join(0) + parseInt(--this.second)).slice(-2)
 				if (this.second == 0) {
 					if (this.minute != 0) {
@@ -87,14 +88,20 @@
 							this.minute = 59
 							this.second = 59
 						} else {
-							clearInterval(interval)
+							if (this.removeTask) {
+								this.removeTask();
+							}
 							this.finality()
 						}
 					}
 				}
-			}, 1000)
+			})
 		},
-		
+		beforeDestroy() {
+			if (this.removeTask) {
+				this.removeTask();
+			}
+		},
 		methods: {
 			finality(){
 				this.$emit('finish');

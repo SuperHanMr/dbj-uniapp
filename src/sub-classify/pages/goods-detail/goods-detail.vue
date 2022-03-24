@@ -5,7 +5,7 @@
         + houseId + '&wx-defaultHouseId=' + defaultHouseInfo.id  + '&wx-defaultProvinceId=' + defaultHouseInfo.provinceId
         + '&wx-defaultCityId=' + defaultHouseInfo.cityId + '&wx-defaultAreaId=' + defaultHouseInfo.areaId 
         + '&wx-defaultLocationName=' + defaultHouseInfo.name  + '&wx-token=' + hashToken  + '&from=' + from
-         + '&shareAreaId=' + shareAreaId + '&shareAreaName=' + shareAreaName+ '&shareOriginType=' + shareOriginType
+         + '&shareAreaId=' + shareAreaId + '&shareAreaName=' + shareAreaName+ '&wx-originType=' + originType
         + '&skuTemplateId=' + skuTemplateId + '&gomeDivisionCode=' + gomeDivisionCode + '&fromPackage='  + fromPackage + '&wx-bundleId='  + bundleId + '&wx-spuId=' + spuId + '&changTime=' + changTime + '&isWX=' + isWX + '&wx-userId=' + userId">
     </web-view>
   </view>
@@ -30,7 +30,7 @@
         shareAreaId: '',
         shareAreaName: '',
         pageOpts: {},
-        shareOriginType: '',
+        originType: '',
         userId: 0,
         gomeDivisionCode: 0,
         skuTemplateId: 0,
@@ -51,7 +51,7 @@
       uni.showShareMenu(); // 显示分享按钮
       this.shareAreaId = e.shareAreaId
       this.shareAreaName = e.shareAreaName
-      this.shareOriginType = e.originType
+      this.originType = e.originType
       this.from = e.from
       this.userId = e.userId
       this.bundleId = e.bundleId

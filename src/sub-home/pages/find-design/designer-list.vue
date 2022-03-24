@@ -56,21 +56,20 @@
         class="designer-item"
         v-for="designer in dataSource"
         :key="designer.id"
-        @click="showDesigner(designer)"
       >
-        <view class="designer-avatar">
+        <view class="designer-avatar" @click="showDesigner(designer)">
           <image
             class="designer-avatar-img"
             :src="designer.avatar + '?x-oss-process=image/resize,m_mfit,w_88,h_88'"
           />
         </view>
-        <view class="designer-message">
+        <view class="designer-message" >
           <view class="base-message">
-            <view class="base-items">
+            <view class="base-items" @click="showDesigner(designer)">
               <view class="designer-name">{{designer.name}}</view>
               <view class="designer-level">
                 <view class="level-label">{{designer.levelName}}{{designer.roleName}}</view>
-								<view class="rank-label" v-if="designer.rank > 0"
+								<view class="rank-label" v-if="designer.ranks && designer.ranks.length > 0 && designer.ranks[0].realNumber > 0 && designer.ranks[0].realNumber < 100"
 								:style="{backgroundImage:`url(${handleLabelImg(designer.ranks[0]).bgImg})`,}"
 								>
 									<view class="rank-left top-font" :style="{color:`#${designer.ranks[0].fontColor}`,background:handleLabelImg(designer.ranks[0]).bgcolor}">
@@ -88,7 +87,7 @@
             </view>
           </view>
 
-          <view class="rate-wrapper" v-if="designer.totalCount>0 && designer.praiseEfficiency">
+          <view class="rate-wrapper" @click="showDesigner(designer)">
             <text class="designer-score" v-if="designer.totalCount>0">服务次数 {{designer.totalCount}}</text>
             <view
               class="split-line"
@@ -112,7 +111,7 @@
           <!-- <view class="designer-des">
             {{designer.intro || "这个设计师很忙，还没有填写个人简介"}}
           </view> -->
-          <view class="designer-tags" v-if="getTags(designer).length">
+          <view class="designer-tags" v-if="getTags(designer).length" @click="showDesigner(designer)">
             <view
               v-for="(style, index) in getTags(designer)"
               :key="index"
@@ -122,7 +121,7 @@
             </view>
           </view>
           <view class="case-wrapper" v-if="getCaseList(designer).length">
-            <view class="case-item"   v-for="item in getCaseList(designer)"  :key="item.id" >
+            <view class="case-item" @click.stop="goCaseDetail(item.id)"  v-for="item in getCaseList(designer)"  :key="item.id" >
               <view class="case-image">
                 <image mode="aspectFill" :src="item.imageUrl"></image>
                 <view class="isFamos" v-if="item.famous === 1"></view>
@@ -134,15 +133,15 @@
               <view class="case-info">
                 <text v-if="item.roomNum">{{item.roomNum}}室</text>
                 <text v-if="item.hallNum">{{item.hallNum}}厅</text>
-                <text v-if="item.kitchenNum">{{item.kitchenNum}}厨</text>
-                <text v-if="item.bathroomNum">{{item.bathroomNum}}卫</text>
+                <!-- <text v-if="item.kitchenNum">{{item.kitchenNum}}厨</text>
+                <text v-if="item.bathroomNum">{{item.bathroomNum}}卫</text> -->
                 <template v-if="item.insideArea">
-                  <text class="split">|</text>
-                  <text>{{item.insideArea}}㎡</text>
+                  <text class="split" v-if="item.roomNum || item.hallNum">|</text>
+                  <text>{{item.insideArea >= 1 ? item.insideArea : '-'}}㎡</text>
                 </template>
                 <template v-if="item.budget">
                   <text class="split">|</text>
-                  <text>预算:￥{{item.budget}}万</text>
+                  <text>预算:￥{{item.budget >= 1 ? item.budget : '-'}}万</text>
                 </template>
 
               </view>
@@ -260,6 +259,13 @@ export default {
     this.searchList();
   },
   methods: {
+    goCaseDetail(id) {
+      let url =
+        "/pages/real-case/real-case-webview/real-case-webview?id=" + id;
+      uni.navigateTo({
+        url,
+      });
+    },
     designerRank(designer) {
       console.log('---', designer.ranks instanceof Array &&  designer.ranks.length > 0 ? designer.ranks[0] : null)
       return designer.ranks instanceof Array &&  designer.ranks.length > 0 ? designer.ranks[0] : null
@@ -531,8 +537,8 @@ export default {
   .designer-message {
     flex: 1;
     margin-left: 24rpx;
-    border-bottom: 1px solid #f3f3f3;
-    padding-bottom: 16rpx;
+    border-bottom: 1rpx solid #f3f3f3;
+    padding-bottom: 32rpx;
     overflow: hidden;
   }
 }

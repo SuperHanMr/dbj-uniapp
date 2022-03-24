@@ -21,10 +21,10 @@
         
       </view>
 			<view class="position-icon">
-				<image src="/static/images/real-case/video_ic.png" mode="" v-if="params.parentType == 0"></image>
-				<image src="/static/images/real-case/ic_vr.png" mode="" v-if="params.parentType == 1"></image>
-				<image src="/static/images/real-case/img_ic.png" mode="" v-if="params.parentType > 1&&params.recommendCategoryVO.categoryCount==0"></image>
-        <image src="/static/images/real-case/ic_goods.png" mode="" v-if="params.parentType > 1&&params.recommendCategoryVO.categoryCount>0"></image>
+				<i class="icon-video" mode="" v-if="params.parentType == 0"></i>
+				<i class="icon-vr" mode="" v-if="params.parentType == 1"></i>
+				<i class="icon-image" mode="" v-if="params.parentType > 1&&params.recommendCategoryVO.categoryCount==0"></i>
+        <i class="icon-shops" mode="" v-if="params.parentType > 1&&params.recommendCategoryVO.categoryCount>0"></i>
 			</view>
 		</view>
 		<!-- <video v-if="params.parentType !== 0" id="myVideo" :src="params.videoUrl"
@@ -42,11 +42,11 @@
       </view>
 			<view class="title">{{params.caseName}}</view>
       <view class="tag">
-        <view v-if="params.customLabelList">{{params.customLabelList[0].labelName}}</view>
+        <view v-for="(item,index) of params.customLabelList" :key='index'>{{item.labelName}}</view>
         <view class="" v-if="params.styleName">
           {{params.styleName}}
         </view>
-        <view v-if="params.features">{{ params.features[0]}}</view>
+        <view v-for="(item,index) of params.features" :key='index'>{{ item}}</view>
         
       </view>
 			<view class="case-info">
@@ -180,10 +180,27 @@
 			position: absolute;
 			right: 16rpx;
 			top: 16rpx;
-			image{
-				width: 44rpx;
-				height: 44rpx;
+      background-color:  rgba(0, 0, 0, 0.2);
+      width: 44rpx;
+      height: 44rpx;
+      /* text-align: center; */
+      /* line-height: 44rpx; */
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 50%;
+			i{
+				font-size: 20rpx;
+				color: #fff;
+        opacity: 1;
 			}
+      .icon-vr{
+        font-size: 18rpx;
+      }
+      .icon-video{
+        margin-bottom: 4rpx;
+        margin-left: 4rpx;
+      }
 		}
 	}
 	

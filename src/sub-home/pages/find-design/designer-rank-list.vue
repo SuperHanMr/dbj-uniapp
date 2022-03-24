@@ -9,9 +9,10 @@
       </template>
     </custom-navbar>
 
-    <view class="bgImg" :style="{backgroundImage:`url(${headerBgImg})`,}" v-if="!isFold">
+    <view class="bgImg" v-if="!isFold">
+      <image src="../../static/design-bg.png" mode="" class="bgImgPng"></image>
       <view class="rankExplain" @click="openExplain">
-        榜单说明
+        排行说明
       </view>
     </view>
     <view class="head-box" v-else></view>
@@ -22,24 +23,34 @@
           <view v-for="(tab,index) in tabList" :key="index" :class="{'uni-tab-item': tabList.length >4, 'uni-tab-item-short2': tabList.length === 2,
                'uni-tab-item-short3': tabList.length === 3, 'uni-tab-item-short4': tabList.length === 4}"
             :id="'tab' + index" :data-current="index" @click="ontabtap(index, tab.code)">
-            <view class="uni-tab-item-title"  :class="tabIndex==index ? 'uni-tab-item-title-active' : ''" v-if="tab.code === 9999">
+            <view class="uni-tab-item-title" :class="tabIndex==index ? 'uni-tab-item-title-active' : ''"
+              v-if="tab.code === 9999">
               <image src="../../static/valuest-designer-active.png" mode="" v-if="tabIndex==index"></image>
               <image src="../../static/valuest-designer.png" mode="" v-else></image>
             </view>
-            <view class="uni-tab-item-title" :class="tabIndex==index ? 'uni-tab-item-title-active' : ''" v-else>{{tab.name}}</view>
+            <view class="uni-tab-item-title" :class="tabIndex==index ? 'uni-tab-item-title-active' : ''" v-else>
+              {{tab.name}}
+            </view>
           </view>
         </scroll-view>
         <swiper :current="tabIndex" :duration="300" @change="ontabchange" class="swiper">
-          <swiper-item class="swiper-item" :class="{'swipe-box': isFold}" v-for="(tab,index1) in tabList"
-            :key="index1">
-            <view class="designer-item" v-for="(item1,index1) in designerList" :key="index1">
+          <swiper-item class="swiper-item" :class="{'swipe-box': isFold}" v-for="(tab,index1) in tabList" :key="index1">
+            <view class="designer-item" v-for="(item1,index1) in designerList" :key="index1"
+              v-if="showItem && listDataTag">
               <view class="designer-bg"
                 :style="{backgroundColor:index1>2?bgColorList[3].bgColor:bgColorList[index1].bgColor}"></view>
               <view class="basicInfo-container">
-                <view class="designer-topNum"
+                <view class="designer-topNum" v-if="!tabIndex"
                   :style="{backgroundImage:index1>2?`url(${bgColorList[3].bgImg})`:`url(${bgColorList[index1].bgImg})`,backgroundSize:'100% 100%'}">
                   <view class="top-font" :style="{color:index1>2?bgColorList[3].color:bgColorList[index1].color}">
-                    {{index1+1}}
+                    <text>{{index1+1}}</text>
+                  </view>
+                </view>
+                <view class="designer-topNum" v-else
+                  :style="{backgroundImage:item1.sort>3?`url(${bgColorList[3].bgImg})`:`url(${bgColorList[item1.sort - 1].bgImg})`,backgroundSize:'100% 100%'}">
+                  <view class="top-font"
+                    :style="{color:item1.sort>3?bgColorList[3].color:bgColorList[item1.sort - 1].color}">
+                    <text>{{item1.sort}}</text>
                   </view>
                 </view>
 
@@ -102,14 +113,14 @@
                         </view>
                         <view class="caseName">{{item2.caseName}}</view>
                         <view class="caseInfo">
-                          <text class="text" v-if="item2.roomNum || item2.hallNum">
+                          <text class="text" v-if="item2.parentType !==3 && (item2.roomNum || item2.hallNum)">
                             <text v-if="item2.roomNum">{{item2.roomNum ||"-"}}室</text>
                             <text v-if="item2.hallNum">{{item2.hallNum || "-"}}厅</text>
                           </text>
-                          <text v-if="!item2.roomNum && !item2.hallNum">-室-厅</text>
+                          <text v-if="item2.parentType !==3 && (!item2.roomNum && !item2.hallNum)">-室-厅</text>
 
                           <text class="line"
-                            v-if="item2.roomNum || item2.hallNum || (!item2.roomNum && !item2.hallNum)"></text>
+                            v-if="item2.parentType !==3 && (item2.roomNum || item2.hallNum || (!item2.roomNum && !item2.hallNum))"></text>
 
                           <text
                             class="text">{{Math.floor(item2.insideArea)?`${Math.floor(item2.insideArea)}`: "-"}}m²</text>
@@ -128,11 +139,15 @@
 
               </view>
             </view>
+            <view v-if="showItem && !listDataTag" class="no-data-box">
+              <image src="../../static/no_data_icon.png" mode=""></image>
+              <view>暂无上榜设计师</view>
+            </view>
             <view class="bottom-box"></view>
           </swiper-item>
         </swiper>
       </view>
-      
+
     </view>
     <uni-popup ref="explainPopup" type="bottom">
       <view :style="{paddingBottom:containerPaddingBottom}"
@@ -144,7 +159,9 @@
           </view>
         </view>
         <scroll-view :scroll-y="true" class="toast-content">
-          <view class="bankingComplain">{{instructions}}</view>
+          <view class="bankingComplain">
+            <text space="nbsp">{{instructions}}</text>
+          </view>
         </scroll-view>
       </view>
     </uni-popup>
@@ -166,7 +183,6 @@
     data() {
       return {
         scrollTop: 0,
-        headerBgImg: "../../static/design-bg.png",
         bgColorList: [{
             bgColor: "#EDC48E",
             color: "#725947",
@@ -199,6 +215,8 @@
         opacity: 0,
         initTabName: '',
         tabList: [],
+        showItem: true,
+        listDataTag: 1
       }
     },
     mounted() {
@@ -238,8 +256,8 @@
       } else {
         this.isFold = false
       }
-      this.opacity = this.isFold? 1: 0
-      this.title = this.isFold? '优选排行': ''
+      this.opacity = this.isFold ? 1 : 0
+      this.title = this.isFold ? '优选排行' : ''
     },
     methods: {
       ontabtap(index, code) {
@@ -247,6 +265,7 @@
         this.switchTab(index);
       },
       ontabchange(e) {
+        this.showItem = false
         let index = e.target.current || e.detail.current;
         this.reqDesignerRank(index, this.tabList[index].code)
         this.switchTab(index);
@@ -258,15 +277,16 @@
         this.tabIndex = index;
       },
       reqChartInstructions() {
-         getChartInstructions().then(res => {
-           this.instructions = res
-         })
+        getChartInstructions().then(res => {
+          this.instructions = res
+          console.log(res)
+        })
       },
       reqTabList() {
         getTabList().then(res => {
           this.tabList = res
           this.tabList.map((item, index) => {
-            if(item.name === this.initTabName) {
+            if (item.name === this.initTabName) {
               this.tabIndex = index
             }
           })
@@ -275,7 +295,9 @@
       },
       reqDesignerRank(index, code) {
         getDesignRank(index, code).then(res => {
+          this.showItem = true
           this.designerList = res
+          this.listDataTag = res.length
           this.designerList = this.designerList.map(item => {
             if (item.valuationCaseVOS && item.valuationCaseVOS.length > 2) {
               item.showMoreCase = true
@@ -374,7 +396,13 @@
       align-items: flex-end;
       justify-content: flex-end;
 
+      .bgImgPng {
+        width: 100%;
+        height: 100%;
+      }
+
       .rankExplain {
+        position: absolute;
         width: 52rpx;
         height: 130rpx;
         box-sizing: border-box;
@@ -402,6 +430,7 @@
     padding: 0 24rpx 24rpx;
     height: calc(100% - 380rpx);
     background-color: #101216 !important;
+    padding-top: 36rpx;
 
     .designer-item {
       padding-top: 40rpx;
@@ -449,6 +478,15 @@
 
     }
 
+    .no-data-box {
+      text-align: center;
+      color: #CBCCCC;
+
+      image {
+        width: 400rpx;
+        height: 400rpx;
+      }
+    }
   }
 
   .list-box {
@@ -794,11 +832,10 @@
   }
 
   .bankingComplain {
-    text-align: justify;
     color: #999999;
     margin-bottom: 10rpx;
     line-height: 44rpx;
-    // text-indent: 52rpx;
+    word-break: break-word;
     font-size: 26rpx;
     letter-spacing: 1rpx;
   }
@@ -851,7 +888,7 @@
     text-align: center;
     min-width: calc(25% - 32rpx);
     width: fit-content;
-    margin: 0 1%;
+    margin: 0 20rpx;
   }
 
   .uni-tab-item {
@@ -896,6 +933,7 @@
     right: 0;
     margin: auto;
   }
+
   .uni-tab-item-title image {
     width: 186rpx;
     height: 22px;
@@ -903,6 +941,7 @@
     position: relative;
     bottom: 1px;
   }
+
   .swiper {
     height: calc(100% - 60rpx);
   }
@@ -915,7 +954,8 @@
   .swipe-box {
     overflow: scroll;
   }
-  .bottom-box{
+
+  .bottom-box {
     height: 100rpx;
   }
 </style>

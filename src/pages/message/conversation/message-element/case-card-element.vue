@@ -11,7 +11,7 @@
 					:src="data.imageUrl"
 					mode="aspectFill"
 				/>
-				<view class="case-info">
+				<view class="case-info" v-if="data.parentType !== 3">
 					<text v-if="data.roomNum || data.hallNum || data.kitchenNum || data.bathroomNum ">
 						<template v-if="data.roomNum">{{data.roomNum}}室</template>
 						<template v-if="data.hallNum">{{data.hallNum}}厅</template>

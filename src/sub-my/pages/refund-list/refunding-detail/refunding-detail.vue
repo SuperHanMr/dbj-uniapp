@@ -8,8 +8,7 @@
 		</custom-navbar>
 
 		<view class="refund-container" :style="{paddingBottom:containerPaddingBottom}" >
-			<view style="position: relative;">
-				<view	class="bgcStyle"	:style="{backgroundImage:`url(${bgImg})`,backgroundSize: '100% 100%'}"/>
+			<view style="position: relative;" :style="{backgroundImage:`url(${bgImg})`,backgroundSize: '100% 100%'}">
 				<view :style="{height:navBarHeight}"></view>
 
 				<view class="refund-status" >
