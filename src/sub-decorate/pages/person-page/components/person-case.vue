@@ -62,6 +62,9 @@
       this.getList()
       uni.$on('isCollect',(data)=>{
         console.log('person++++++++++',this.activeList[this.activeIndex],data)
+        if(data.isCollect === this.activeList[this.activeIndex].isCollection){
+          return
+        }
         if(data.isCollect){
           this.activeList[this.activeIndex].collectionCount += 1
         }else{
@@ -78,6 +81,7 @@
       	} else {
       		this.rightHeight += height;
       	}
+        console.log(this.leftHeight,this.rightHeight ,'LLLLLLLLLLL' )
       },
       onJump(list, index, isDecorate) {
       	
@@ -194,26 +198,29 @@
       	];
       	// 获取插入的方向
       	let getDirection = (index) => {
-          
+       
+          differ = this.leftHeight - this.rightHeight;
+        
+        
       		/* 左侧高度大于右侧超过 600px 时，则前3条数据都插入到右边 */
       if(differ!==0){
-        if (differ >= 800 && index < 3) {
-        	differVal = 1;
-        	return "right";
-        }
+        // if (differ >= 800 && index < 3) {
+        // 	differVal = 1;
+        // 	return "right";
+        // }
               
-        /* 右侧高度大于左侧超过 600px 时，则前3条数据都插入到左边 */
-        if (differ <= -800 && index < 3) {
-        	differVal = -1;
-        	return "left";
-        }
+        // /* 右侧高度大于左侧超过 600px 时，则前3条数据都插入到左边 */
+        // if (differ <= -800 && index < 3) {
+        // 	differVal = -1;
+        // 	return "left";
+        // }
               
         /* 左侧高度大于右侧超过 350px 时，则前2条数据都插入到右边 */
-        if (differ >= 350 && index < 2) {
+        if (differ >= 350) {
         	return "right";
         }
         /* 右侧高度大于左侧超过 350px 时，则前2条数据都插入到左边 */
-        if (differ <= -350 && index < 2) {
+        if (differ <= -350) {
         	differVal = -1;
         	return "left";
         }
