@@ -115,6 +115,7 @@
 			}
 		},
 		onLoad() {
+			this.currentHouse = getApp().globalData.currentHouse;
 			uni.getSystemInfo({
 				success: (res) => {
 					this.statusHeight = res.statusBarHeight;
@@ -122,6 +123,18 @@
 			});
 			uni.$on('defaultHouseChange',() => {
 				this.caseDetail = false;
+			})
+			uni.$on('currentHouseChange', (item) => {
+				if (item.id === this.currentHouse.id) return;
+				this.currentHouse = item;
+				this.listParam.page = 0;
+				if (this.$refs.realCaseScreeningRef) {
+					this.$refs.realCaseScreeningRef.selectData = {}
+					this.selectData = {};
+					this.selectTag = [];
+					this.$refs.realCaseScreeningRef.tagSelect = [null, null, null]
+				}
+				this.getListData(true);
 			})
 			uni.$on('isCollect', (item) => {
 				uni.$emit('updateCollection', {
@@ -143,20 +156,14 @@
 				this.caseDetail = false;
 				return;
 			}
-			const currentHouse = getApp().globalData.currentHouse;
-			let isRefshList = null;
-			if (this.currentHouse.id != currentHouse.id) {
-				isRefshList = true;
-				this.listParam.page = 0;
-				if (this.$refs.realCaseScreeningRef) {
-					this.$refs.realCaseScreeningRef.selectData = {}
-					this.selectData = {};
-					this.selectTag = [];
-					this.$refs.realCaseScreeningRef.tagSelect = [null, null, null]
-				}
-			}
-			this.currentHouse = currentHouse;
-			this.getListData(isRefshList);
+			// const currentHouse = getApp().globalData.currentHouse;
+			// let isRefshList = null;
+			// if (this.currentHouse.id === currentHouse.id) {
+			// 	this.listParam.page = 0;
+			// 	isRefshList = true;
+			// }
+			this.listParam.page = 0;
+			this.getListData(true);
 			this.$nextTick(function() {
 				this.$refs.realCaseList && this.$refs.realCaseList.scrollToTop && this.$refs.realCaseList
 					.scrollToTop();
