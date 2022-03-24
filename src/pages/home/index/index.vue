@@ -575,10 +575,6 @@
         if (!url) {
           return;
         }
-		uni.navigateTo({
-		  url: "../../../sub-classify/pages/product-detail/index",
-		});
-		return;
 		 if (url.indexOf("product-promotion-list")!=-1) {
 			 uni.navigateTo({
 			   url: "../../../sub-classify/pages/promotion-product-list/index",

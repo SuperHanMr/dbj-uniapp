@@ -1,9 +1,6 @@
 <template>
 	<view>
-		<web-view :src="baseUrl + '/app-pages/product-promotion-list/index.html?token=' 
-	  + searchToken 
-	  +  '#houseId='+ houseId 
-	  + '&wx-token=' + hashToken">
+		<web-view :src="baseUrl + '/app-pages/product-promotion-list/index.html'">
 		</web-view>
 	</view>
 </template>
@@ -22,15 +19,13 @@
 			}
 		},
 		onLoad(e) {
-			this.baseUrl = this.ENV.VUE_APP_BASE_H5//'https://localhost'
+			// this.baseUrl = this.ENV.VUE_APP_BASE_H5//'https://localhost'
+			this.baseUrl = 'https://localhost'
 			this.searchToken = getApp().globalData.token
 			this.houseId = getApp().globalData.currentHouse.id
 		},
 
 		onShow() {
-			if (getApp().globalData.token && !this.houseId) {
-				this.getHouseList()
-			}
 		},
 
 		methods: {
