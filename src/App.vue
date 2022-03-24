@@ -20,6 +20,7 @@
   } from "api/decorate.js";
   export default {
     globalData: {
+      isInGomeMp: false, //是否在国美小程序中(编译H5站的情况下)
       userInfo: {},
       token: "",
       city: "",
@@ -169,8 +170,8 @@
       if (shareId && !this.globalData.shareId) {
         this.globalData.shareId = shareId;
       }
-      if (userId) {
-        let token = uni.getStorageSync("scn");
+      let token = uni.getStorageSync("scn");
+      if (token) {
         this.globalData.token = token;
         oauthGomeInfo({
             hideToast: true,
@@ -333,6 +334,13 @@
   .navbar-height{
     height: 88rpx;
   }
+
+  /* #ifdef H5 */
+  /* 处理H5中toast提示被盖住的问题 */
+  uni-toast {
+    z-index: 2000;
+  }
+  /* #endif */
 
   /*每个页面公共css */
 </style>

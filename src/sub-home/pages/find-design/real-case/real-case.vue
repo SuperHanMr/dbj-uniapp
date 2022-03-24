@@ -43,7 +43,7 @@
 				<view class="box" @scroll='scrollHandler' v-if="realCaseListData && realCaseListData.length > 0">
 					<real-case-list :currentHouse='currentHouse' :realCaseListData='realCaseListData'
 						@triggerScroll='triggerScroll' @scrollUpper='scrollUpper' @scrolltolower='scrolltolower'
-						@refresherrefresh='refresherrefresh' @toCaseDetail='toCaseDetail' ref='realCaseList' />
+						@refresherrefresh='refresherrefresh' @toCaseDetail='toCaseDetail' ref='realCaseList' :key='renderKey' />
 				</view>
 				<view class="no-service" v-else>
 					<image
@@ -109,10 +109,13 @@
 				selectData: {},
 				triggered: false,
 				caseDetail: false,
-				caseStyleList: []
+				caseStyleList: [],
+				toDetailIndex: 0,
+				renderKey: ''
 			}
 		},
 		onLoad() {
+			this.currentHouse = getApp().globalData.currentHouse;
 			uni.getSystemInfo({
 				success: (res) => {
 					this.statusHeight = res.statusBarHeight;
@@ -121,21 +124,9 @@
 			uni.$on('defaultHouseChange',() => {
 				this.caseDetail = false;
 			})
-			
-			const menuButtonInfo = uni.getMenuButtonBoundingClientRect();
-			this.systemBottom = menuButtonInfo.bottom + 32 + "rpx";
-			this.getCaseStyleListHandler();
-
-		},
-		onShow() {
-			if (this.caseDetail) {
-				this.caseDetail = false;
-				return;
-			}
-			const currentHouse = getApp().globalData.currentHouse;
-			let isRefshList = null;
-			if (this.currentHouse.id != currentHouse.id) {
-				isRefshList = true;
+			uni.$on('currentHouseChange', (item) => {
+				if (item.id === this.currentHouse.id) return;
+				this.currentHouse = item;
 				this.listParam.page = 0;
 				if (this.$refs.realCaseScreeningRef) {
 					this.$refs.realCaseScreeningRef.selectData = {}
@@ -143,9 +134,36 @@
 					this.selectTag = [];
 					this.$refs.realCaseScreeningRef.tagSelect = [null, null, null]
 				}
+				this.getListData(true);
+			})
+			uni.$on('isCollect', (item) => {
+				uni.$emit('updateCollection', {
+					item,
+					index: this.toDetailIndex
+				})
+			})
+			const menuButtonInfo = uni.getMenuButtonBoundingClientRect();
+			this.systemBottom = menuButtonInfo.bottom + 32 + "rpx";
+			this.getCaseStyleListHandler();
+			
+		},
+		onUnload() {
+		  uni.$off("isCollect");
+		  uni.$off("defaultHouseChange");
+		},
+		onShow() {
+			if (this.caseDetail) {
+				this.caseDetail = false;
+				return;
 			}
-			this.currentHouse = currentHouse;
-			this.getListData(isRefshList);
+			// const currentHouse = getApp().globalData.currentHouse;
+			// let isRefshList = null;
+			// if (this.currentHouse.id === currentHouse.id) {
+			// 	this.listParam.page = 0;
+			// 	isRefshList = true;
+			// }
+			this.listParam.page = 0;
+			this.getListData(true);
 			this.$nextTick(function() {
 				this.$refs.realCaseList && this.$refs.realCaseList.scrollToTop && this.$refs.realCaseList
 					.scrollToTop();
@@ -264,8 +282,10 @@
 				this.getListData(true);
 				uni.stopPullDownRefresh()
 			},
-			toCaseDetail(){
+			toCaseDetail(index){
 				this.caseDetail = true;
+				console.log(index, '>>>>>>>>>>>index,,,<<<')
+				this.toDetailIndex = index;
 			},
 			scrollHandler(e){
 				console.log(e, '>>>>')

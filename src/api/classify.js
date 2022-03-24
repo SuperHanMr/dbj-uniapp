@@ -38,6 +38,6 @@ export function getBundleDetail(params) {
   return request.get(`/product/app/bundle/${params.bundleId}/property?${parmStr}`);
 }
 export function checkPay(params) {
-  return request.get("/order-center/app/order/queryPayResult", {params});
+  return request.get("/order-center/app/order/queryPayResult", params);
 }
 

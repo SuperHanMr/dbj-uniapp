@@ -65,14 +65,33 @@ let params = (function (a) {
   }
   return ret;
 })(window.location);
+function removeUrlToken() {
+  // 在APP中时不移除url中的token，因为在ios版本的真快乐APP移除token之后，登录状态失效
+  if (window.GomeJSBridge && window.GomeJSBridge.ready) {
+    return;
+  }
+  window.location.replace('/' + (params.isGomeMp ? '?isGomeMp=true' : '') + window.location.hash);
+}
 if (params.token) {
   if (params.token === "CLEAR") {
     uni.clearStorageSync("scn");
     uni.clearStorageSync("userId");
+    // removeUrlToken();
   } else {
-    uni.setStorageSync("scn", params.token)
+    uni.setStorage({
+      key: "scn",
+      data: params.token,
+      success: function() {
+        console.log("save scn success");
+        // removeUrlToken();
+      },
+      fail: function(e) {
+        console.error("save scn fail!", e);
+        localStorage.setItem("scn", params.token);
+        // removeUrlToken();
+      }
+    });
   }
-  window.location.replace('/' + window.location.hash);
 }
 // #endif
 
@@ -104,3 +123,12 @@ Vue.mixin({
   }
 })
 app.$mount()
+
+// #ifdef H5
+// 是否在国美小程序中的标记
+if (params.isGomeMp) {
+  app.globalData.isInGomeMp = true;
+} else {
+  app.globalData.isInGomeMp = false;
+}
+// #endif

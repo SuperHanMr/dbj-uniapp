@@ -94,7 +94,7 @@
 			if (e && e.isEdit==0) {
 				this.isEdit = false
 			}
-			this.delta = e.delta || 1
+			this.delta = +e.delta || 1
 			this.isMy = e.isMy || false
 
 			const menuButtonInfo = uni.getMenuButtonBoundingClientRect();

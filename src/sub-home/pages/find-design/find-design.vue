@@ -778,10 +778,10 @@ export default {
 						text-overflow: ellipsis;
           }
           .rank {
-            margin-left: 12rpx;
+            margin-left: 8rpx;
             height: 30rpx;
             box-sizing: border-box;
-            padding: 0 8rpx;
+            padding: 0 6rpx;
             line-height: 26rpx;
             border: 0.5px solid rgba(255, 255, 255, 0.44);
 						background: rgba(255, 255, 255, 0.1);
@@ -813,7 +813,9 @@ export default {
             }
           }
         }
-
+				.header{
+					width: 402rpx;
+				}
         .attr {
           display: flex;
           flex-flow: row wrap;
