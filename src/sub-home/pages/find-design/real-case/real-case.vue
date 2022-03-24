@@ -134,7 +134,7 @@
 					this.selectTag = [];
 					this.$refs.realCaseScreeningRef.tagSelect = [null, null, null]
 				}
-				this.getListData();
+				this.getListData(true);
 			})
 			uni.$on('isCollect', (item) => {
 				uni.$emit('updateCollection', {
@@ -156,13 +156,14 @@
 				this.caseDetail = false;
 				return;
 			}
-			const currentHouse = getApp().globalData.currentHouse;
-			let isRefshList = null;
-			if (this.currentHouse.id === currentHouse.id) {
-				this.listParam.page = 0;
-				isRefshList = true;
-			}
-			this.getListData(isRefshList);
+			// const currentHouse = getApp().globalData.currentHouse;
+			// let isRefshList = null;
+			// if (this.currentHouse.id === currentHouse.id) {
+			// 	this.listParam.page = 0;
+			// 	isRefshList = true;
+			// }
+			this.listParam.page = 0;
+			this.getListData(true);
 			this.$nextTick(function() {
 				this.$refs.realCaseList && this.$refs.realCaseList.scrollToTop && this.$refs.realCaseList
 					.scrollToTop();
