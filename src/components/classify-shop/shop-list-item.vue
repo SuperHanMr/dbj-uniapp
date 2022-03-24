@@ -213,7 +213,7 @@
 
 		.original-price {
 			color: #bcbcbc;
-			margin-top: -5rpx;
+			margin: -5rpx 0 4rpx;
 			height: 30rpx;
 
 			.original-price-through {
@@ -305,6 +305,7 @@
 		margin-top: 6rpx;
 		font-weight: 400;
 		font-size: 18rpx;
+		line-height: 26rpx;
 		color: #999999;
 		display: flex;
 		align-item: center;
