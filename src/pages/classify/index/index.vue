@@ -71,13 +71,9 @@
 			let currentHouse = getApp().globalData.currentHouse;
 			this.areaId = currentHouse.areaId;
 			uni.$on("currentHouseChange", (item) => {
-				console.log(item, '>>>>>>>>>>>>')
 				this.areaId = item.areaId;
 			});
-			// this.getNavHandler();
-			this.getClassifyBannerHandler();
-			this.getPavilionListHandler();
-			this.getClassifyShopListHandler();
+			this.mountedHandler();
 		},
 		watch: {
 			areaId: {
@@ -88,6 +84,12 @@
 			}
 		},
 		methods: {
+			mountedHandler(){
+				this.getNavHandler();
+				this.getClassifyBannerHandler();
+				this.getPavilionListHandler();
+				this.getClassifyShopListHandler();
+			},
 			getClassifyShopListHandler(){
 				getClassifyShopList({
 					pageIndex: this.query.page,
@@ -136,7 +138,7 @@
 					key: 'scn',
 					success: () => {
 						getShoppingCarNum(this.areaId).then(res => {
-							console.log(res, '>>>>>>>><<<<<<<<sjhop[ingn]')
+							this.shopListNum = res;
 						})
 					}
 				})
@@ -170,7 +172,7 @@
 				this.shopList = [];
 				this.query.page = 1;
 				this.triggered = true;
-				this.getHomeGoodsList();
+				this.getClassifyShopListHandler();
 			},
 			scrollHandler(e) {
 				if (e.detail && e.detail.scrollTop) {

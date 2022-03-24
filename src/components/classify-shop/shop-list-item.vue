@@ -1,6 +1,6 @@
 <template>
 	<view class="item" @click="toGoodsDetail(item.product.skuId)">
-		<image class="img" :src="item.product.spuImage |imgFormat" mode="aspectFill"></image>
+		<image class="img" :src="item.product.spuImage || imgFormat" mode="aspectFill"></image>
 		<view class="info">
 			<view class="category">
 				<view class="category-item"
@@ -15,7 +15,7 @@
 			</view>
 			<!-- v-if="item.product.hasAllowance" -->
 			<view class="allowance-view" v-if="item.product.hasAllowance || item.product.designerRecommendNumber">
-				<view class="allowance" v-if="item.product.hasAllowance && item.product.designerRecommendNumber">
+				<view class="allowance" v-if="item.product.hasAllowance && !item.product.designerRecommendNumber">
 					打扮家补贴{{foramtPrePrice(item.product.sku.marketPrice-item.product.skuPrice)}}元
 				</view>
 				<view class="recommended" v-if="item.product.designerRecommendNumber">
@@ -50,7 +50,7 @@
 				</text>
 			</view>
 			<view class="flagship-store" @click.stop="toFlagShipShopHandler(item.product.storeId)">
-				<view>{{item.product.storeName}}</view>
+				<view class="flagship-store-title">{{item.product.storeName}}</view>
 				<view class="flagship-store-icon icon-alert_notice_jump"></view>
 			</view>
 		</view>
@@ -147,7 +147,7 @@
 
 		.allowance-view {
 			display: flex;
-			margin-top: 8rpx;
+			margin: 8rpx 0 6rpx;
 
 			.recommended {
 				border: 0.5px solid rgba(197, 165, 141, 0.299899);
@@ -310,7 +310,12 @@
 		color: #999999;
 		display: flex;
 		align-item: center;
-
+		.flagship-store-title{
+			max-width: 100%;
+			white-space: nowrap;
+			overflow: hidden;
+			text-overflow: ellipsis;
+		}
 		.flagship-store-icon {
 			font-size: 16rpx;
 			color: #999999;
