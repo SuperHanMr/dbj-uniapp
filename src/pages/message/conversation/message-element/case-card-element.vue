@@ -72,7 +72,7 @@ export default {
 	methods: {
 		goCaseDetail() {
 			uni.navigateTo({
-				url: `/pages/real-case/real-case-webview/real-case-webview?id=${this.data.id}`
+				url: `/pages/real-case/real-case-webview/real-case-webview?id=${this.data.id}&isFromIM=true`
 			});
 		}
 	},
