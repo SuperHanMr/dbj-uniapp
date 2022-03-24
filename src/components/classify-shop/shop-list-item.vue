@@ -1,21 +1,21 @@
 <template>
 	<view class="item" @click="toGoodsDetail(item.product.skuId)">
-		<image class="img" :src="item.product.spuImage |imgFormat" mode="aspectFill"></image>
+		<image class="img" :src="item.product.spuImage || imgFormat" mode="aspectFill"></image>
 		<view class="info">
 			<view class="category">
-				<view class="category-item"
+				<text class="category-item"
 					v-for="(category, categoryIndex) in categoryListHandler(item.product.categories, item.product.brand)"
 					:key="category">
 					<text>{{category}}</text>
 					<text v-if="categoryIndex !== categoryListHandler(item.product.categories, item.product.brand).length - 1">|</text>
-				</view>
+				</text>
 			</view>
 			<view class="title">
 				<text>{{item.product.spuName}}</text>
 			</view>
 			<!-- v-if="item.product.hasAllowance" -->
 			<view class="allowance-view" v-if="item.product.hasAllowance || item.product.designerRecommendNumber">
-				<view class="allowance" v-if="item.product.hasAllowance && item.product.designerRecommendNumber">
+				<view class="allowance" v-if="item.product.hasAllowance && !item.product.designerRecommendNumber">
 					打扮家补贴{{foramtPrePrice(item.product.sku.marketPrice-item.product.skuPrice)}}元
 				</view>
 				<view class="recommended" v-if="item.product.designerRecommendNumber">
@@ -50,7 +50,7 @@
 				</text>
 			</view>
 			<view class="flagship-store" @click.stop="toFlagShipShopHandler(item.product.storeId)">
-				<view>{{item.product.storeName}}</view>
+				<view class="flagship-store-title">{{item.product.storeName}}</view>
 				<view class="flagship-store-icon icon-alert_notice_jump"></view>
 			</view>
 		</view>
@@ -147,7 +147,7 @@
 
 		.allowance-view {
 			display: flex;
-			margin-top: 8rpx;
+			margin: 8rpx 0 6rpx;
 
 			.recommended {
 				border: 0.5px solid rgba(197, 165, 141, 0.299899);
@@ -213,7 +213,7 @@
 
 		.original-price {
 			color: #bcbcbc;
-			margin-top: -5rpx;
+			margin: -5rpx 0 4rpx;
 			height: 30rpx;
 
 			.original-price-through {
@@ -250,8 +250,6 @@
 
 			.category {
 				margin-top: 18rpx;
-				display: flex;
-				align-item: center;
 				font-weight: 400;
 				font-size: 20rpx;
 				letter-spacing: 0.1px;
@@ -307,10 +305,16 @@
 		margin-top: 6rpx;
 		font-weight: 400;
 		font-size: 18rpx;
+		line-height: 26rpx;
 		color: #999999;
 		display: flex;
 		align-item: center;
-
+		.flagship-store-title{
+			max-width: 100%;
+			white-space: nowrap;
+			overflow: hidden;
+			text-overflow: ellipsis;
+		}
 		.flagship-store-icon {
 			font-size: 16rpx;
 			color: #999999;
