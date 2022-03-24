@@ -3,12 +3,12 @@
 		<image class="img" :src="item.product.spuImage || imgFormat" mode="aspectFill"></image>
 		<view class="info">
 			<view class="category">
-				<view class="category-item"
+				<text class="category-item"
 					v-for="(category, categoryIndex) in categoryListHandler(item.product.categories, item.product.brand)"
 					:key="category">
 					<text>{{category}}</text>
 					<text v-if="categoryIndex !== categoryListHandler(item.product.categories, item.product.brand).length - 1">|</text>
-				</view>
+				</text>
 			</view>
 			<view class="title">
 				<text>{{item.product.spuName}}</text>
@@ -250,8 +250,6 @@
 
 			.category {
 				margin-top: 18rpx;
-				display: flex;
-				align-item: center;
 				font-weight: 400;
 				font-size: 20rpx;
 				letter-spacing: 0.1px;
