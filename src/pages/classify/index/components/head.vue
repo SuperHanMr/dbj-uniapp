@@ -24,7 +24,7 @@
 <script>
 	import {
 		imgFormat
-	} from '~@/../utils/common.js'
+	} from '~@/../utils/common.js';
 	export default {
 		filters: {
 			imgFormat
