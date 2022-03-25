@@ -120,8 +120,10 @@
 		.uni-searchbar{
 			background: rgba(243, 243, 243, 1);
 		}
-		.uni-searchbar-icon{
-			color: rgba(255, 255, 255, 1);
+		.uni-searchbar__box-icon-search{
+			.uni-searchbar-icon{
+				color: rgba(153, 153, 153, 1);
+			}
 		}
 		.uni-searchbar__text-placeholder {
 			color: rgba(153, 153, 153, 1);
