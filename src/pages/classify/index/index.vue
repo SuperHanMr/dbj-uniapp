@@ -65,24 +65,20 @@
 			this.swiperAuto = true;
 			let currentHouse = getApp().globalData.currentHouse;
 			this.areaId = currentHouse.areaId;
-			uni.$on("currentHouseChange", (item) => {
-				this.areaId = item.areaId;
-			});
 			this.mountedHandler();
 		},
 		onHide() {
 			this.swiperAuto = false;
 		},
-		watch: {
-			areaId: {
-				handler: function () {
-					this.getShoppingCarNumHandler();
-				}
-			}
+		mounted() {
+			uni.$on("currentHouseChange", (item) => {
+				this.areaId = item.areaId;
+			});
 		},
 		methods: {
 			mountedHandler(){
 				this.getNavHandler();
+				this.getShoppingCarNumHandler();
 				this.getClassifyBannerHandler();
 				this.getPavilionListHandler();
 				this.getClassifyShopListHandler();
