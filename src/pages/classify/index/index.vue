@@ -78,7 +78,6 @@
 		watch: {
 			areaId: {
 				handler: function () {
-					console.log('11111111111111111')
 					this.getShoppingCarNumHandler();
 				}
 			}
@@ -120,11 +119,9 @@
 					res.forEach(item => {
 						if (item && item.configParams) {
 							let configParams = JSON.parse(item.configParams);
-							console.log(configParams, '>>>>>>>>>>>')
 							this[`nav${configParams.style}Handler`] && this[`nav${configParams.style}Handler`](item)
 						}
 					})
-					console.log(res, this.classList, '>>>>>>>>>>>><<<<<<<<<')
 				})
 			},
 			nav1Handler(item){
@@ -148,7 +145,6 @@
 					page: 1,
 					rows: 8
 				}).then((res) => {
-					console.log(res, '>>>>>>>>>>>>')
 					if (res && res.list) {
 						this.pavilionObj.totalRows = res.totalRows;
 						this.pavilionObj.list = [...res.list, {
@@ -163,7 +159,6 @@
 				})
 			},
 			scrolltolower() {
-				console.log('scrolltolower')
 				if (this.query.totalPage >= this.query.page) {
 					this.getClassifyShopListHandler();
 				}
