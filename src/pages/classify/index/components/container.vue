@@ -76,8 +76,7 @@
 		},
 		methods: {
 			scrolltolowerHandler: throttle(function() {
-				console.log(111111111)
-				if (pavilionObj.totalRows <= 8) return;
+				if (this.$props.pavilionObj.totalRows <= 8) return;
 				this.brandHandler();
 			}, 500),
 			isLoginHandler(params) {
@@ -143,7 +142,6 @@
 				})
 			},
 			brandHandler() {
-				console.log('跳转品牌页')
 				uni.navigateTo({
 					url: '/sub-classify/pages/brand-list/brand-list'
 				})
