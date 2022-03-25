@@ -4,7 +4,7 @@
 			<swiper class="banner" :autoplay="swiperAuto" interval="2000" duration="500" :circular="true"
 				@change="swiperChange">
 				<swiper-item v-for="(item) in bannerList" :key="item.id">
-					<image class="banner-img" :src="item.thumbnailUrl" mode="scaleToFill" @click="toJumpHandler(item)">
+					<image class="banner-img" :src="item.thumbnailUrl | imgFormat(750, 560)" mode="scaleToFill" @click="toJumpHandler(item)">
 					</image>
 				</swiper-item>
 			</swiper>
@@ -22,7 +22,13 @@
 </template>
 
 <script>
+	import {
+		imgFormat
+	} from '~@/../utils/common.js'
 	export default {
+		filters: {
+			imgFormat
+		},
 		props: {
 			swiperAuto: {
 				type: Boolean,

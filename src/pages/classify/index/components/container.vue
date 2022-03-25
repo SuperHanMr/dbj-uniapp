@@ -2,7 +2,7 @@
 	<view class="container">
 		<view class="classify-shop">
 			<view class="list" v-for="item in classList" :key="item.id" @click="classHandler(item)">
-				<image :src="item.icon" class="list-img"></image>
+				<image :src="item.icon | imgFormat(92, 92)" class="list-img"></image>
 				<view class="list-title">
 					{{ item.name }}
 				</view>
@@ -10,7 +10,7 @@
 		</view>
 		<view class="recommended">
 			<view class="img-box" v-for="item in recommendList" :key="item.id" @click="recommendedHandler(item)">
-				<image :src="item.icon" mode="" class="img"></image>
+				<image :src="item.icon | imgFormat(328, 132)" mode="aspectFill" class="img"></image>
 			</view>
 		</view>
 		<view class="brand">
@@ -36,7 +36,7 @@
 							@click="brandItemHandler(item)">
 							<view class="item-box" v-if="item.key !== 'all'"
 								:style="{'background': `linear-gradient(180deg, rgba(244, 244, 244, 0.3) 0%, rgba(244, 244, 244, 0.96) 79.55%, #F1F1F1 100.39%), url(${item.brandBagImage})`}">
-								<image :src="item.brandLogoImage" mode="" class="brand-item-icon"></image>
+								<image :src="item.brandLogoImage | imgFormat(84, 84)" class="brand-item-icon"></image>
 								<view class="brand-item-title">
 									{{item.brandShortName}}
 								</view>
@@ -54,9 +54,13 @@
 
 <script>
 	import {
-		throttle
+		throttle,
+		imgFormat
 	} from '~@/../utils/common.js';
 	export default {
+		filters: {
+			imgFormat
+		},
 		props: {
 			pavilionObj: {
 				type: Object,
