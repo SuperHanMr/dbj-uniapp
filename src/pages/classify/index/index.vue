@@ -63,29 +63,22 @@
 		},
 		onShow() {
 			this.swiperAuto = true;
+			let currentHouse = getApp().globalData.currentHouse;
+			this.areaId = currentHouse.areaId;
+			this.mountedHandler();
 		},
 		onHide() {
 			this.swiperAuto = false;
 		},
 		mounted() {
-			let currentHouse = getApp().globalData.currentHouse;
-			this.areaId = currentHouse.areaId;
 			uni.$on("currentHouseChange", (item) => {
 				this.areaId = item.areaId;
 			});
-			this.mountedHandler();
-		},
-		watch: {
-			areaId: {
-				handler: function () {
-					console.log('11111111111111111')
-					this.getShoppingCarNumHandler();
-				}
-			}
 		},
 		methods: {
 			mountedHandler(){
 				this.getNavHandler();
+				this.getShoppingCarNumHandler();
 				this.getClassifyBannerHandler();
 				this.getPavilionListHandler();
 				this.getClassifyShopListHandler();
@@ -120,11 +113,9 @@
 					res.forEach(item => {
 						if (item && item.configParams) {
 							let configParams = JSON.parse(item.configParams);
-							console.log(configParams, '>>>>>>>>>>>')
 							this[`nav${configParams.style}Handler`] && this[`nav${configParams.style}Handler`](item)
 						}
 					})
-					console.log(res, this.classList, '>>>>>>>>>>>><<<<<<<<<')
 				})
 			},
 			nav1Handler(item){
@@ -140,6 +131,9 @@
 						getShoppingCarNum(this.areaId).then(res => {
 							this.shopListNum = res.validNumber;
 						})
+					},
+					fail: () => {
+						this.shopListNum = 0;
 					}
 				})
 			},
@@ -148,7 +142,6 @@
 					page: 1,
 					rows: 8
 				}).then((res) => {
-					console.log(res, '>>>>>>>>>>>>')
 					if (res && res.list) {
 						this.pavilionObj.totalRows = res.totalRows;
 						this.pavilionObj.list = [...res.list, {
@@ -163,7 +156,6 @@
 				})
 			},
 			scrolltolower() {
-				console.log('scrolltolower')
 				if (this.query.totalPage >= this.query.page) {
 					this.getClassifyShopListHandler();
 				}

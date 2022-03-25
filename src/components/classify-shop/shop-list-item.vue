@@ -1,6 +1,6 @@
 <template>
 	<view class="item" @click="toGoodsDetail(item.product.skuId)">
-		<image class="img" :src="item.product.spuImage || imgFormat" mode="aspectFill"></image>
+		<image class="img" :src="item.product.spuImage | imgFormat" mode="aspectFill"></image>
 		<view class="info">
 			<view class="category">
 				<text class="category-item"
