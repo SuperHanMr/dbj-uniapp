@@ -131,6 +131,9 @@
 						getShoppingCarNum(this.areaId).then(res => {
 							this.shopListNum = res.validNumber;
 						})
+					},
+					fail: () => {
+						this.shopListNum = 0;
 					}
 				})
 			},
