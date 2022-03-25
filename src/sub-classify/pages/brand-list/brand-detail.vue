@@ -1,7 +1,7 @@
 <template>
 	<view class="container">
 		<web-view
-		:src="baseUrl + 'app-pages/brand-shop/index.html?' + 'storeId='+ storeId + '&houseId='+ houseId"
+		:src="baseUrl + '/app-pages/brand-shop/index.html?' + 'storeId='+ storeId + '&houseId='+ houseId"
 		></web-view>
 
 	</view>
@@ -15,17 +15,14 @@
 				baseUrl: '',
 				storeId:'',//品牌馆ID
 				houseId:'',//地址ID
+				hashToken:"",
 			}
 		},
 		onLoad(e) {
 			console.log("dddddd~~~")
 			this.storeId = e.brandId
-			// this.storeId = 3
-
-			// uni.showShareMenu(); // 显示分享按钮
-		},
-		onShow() {
 			this.baseUrl = this.ENV.VUE_APP_BASE_H5
+			this.hashToken = getApp().globalData.token
 			// this.baseUrl = "https://10.20.17.11:443/"
 			// 获取房屋信息
 			if (uni.getStorageSync('houseListChooseId')) {
@@ -35,6 +32,8 @@
 			if (this.hashToken && !this.houseId) {
 			  this.getHouseList()
 			}
+		},
+		onShow() {
 		},
 		methods: {
 			async getHouseList() {

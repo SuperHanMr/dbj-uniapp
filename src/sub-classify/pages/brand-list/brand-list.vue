@@ -126,7 +126,7 @@
 			gotoDetail(item){
 				console.log("brandItem==",item)
 				uni.navigateTo({
-					url:`./brand-detail?storeId=${item.id}`
+					url:`./brand-detail?brandId=${item.id}`
 				})
 			},
 		}
