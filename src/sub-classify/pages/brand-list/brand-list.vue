@@ -94,12 +94,13 @@
 			});
 		},
 		onShow() {
+			this.brandList=[]
 			this.reqRankList()
 		},
 		//页面上拉触底事件的处理函数
 		onReachBottom(e) {
 			console.log("底部")// 滚动到页面执行该方法
-			if((this.query.page > this.query.totalPage) || this.dataListLength == 0 )
+			if((this.query.page > this.query.totalPage) || this.dataListLength == 0 ) return 
 			this.reqRankList();
 		},
 		methods: {
