@@ -164,11 +164,12 @@
           if(data.aggregationResults) {
             this.tabArr = data.aggregationResults
           }
-          if (this.isLoadMore) {
-            this.listArr = this.listArr.concat(data.page)
-          } else {
-            this.listArr = data.page
-          }
+          // if (this.isLoadMore) {
+          //   this.listArr = this.listArr.concat(data.page)
+          // } else {
+          //   this.listArr = data.page
+          // }
+          this.listArr = data.page
         })
       },
       sortList() {
