@@ -12,8 +12,8 @@
 		        style="color:white"
 		      >
 		      </i>
-					<image class="smallBrandText" v-if=" scrollTop >0" src="../../static/image/bgBrandName.png" mode=""></image>
-					<view class="brandTextContainer" v-if="scrollTop<=0">
+					<image class="smallBrandText" v-if="scrollTop > 0" src="../../static/image/bgBrandName.png" mode=""></image>
+					<view class="brandTextContainer" v-else>
 						<image src="../../static/image/bgBrandName.png" mode=""></image>
 						<view class="line"></view>
 					</view>
@@ -21,9 +21,8 @@
 		  </template>
 		</custom-navbar>
 
-		<view v-if="scrollTop>100" style="width: 100%;height: 300rpx;"></view>
-		<view v-else class="bgImg" :style="{backgroundImage:`url(${brandHeadBgImg})`}"></view>
-
+		<view class="bgImg" :style="{backgroundImage:`url(${brandHeadBgImg})`}"></view>
+		
 		<view class="rankList-container" v-if="brandList.length">
 			<view class="rankItem"
 				v-for="item in brandList"
@@ -75,7 +74,7 @@
 					totalPage:1,
 					positon:"",
 				},
-				brandList:[{},{},{},{},{},{},{},{}],
+				brandList:[],
 				dataListLength:0,
 				showNowifiStyle:false,
 			}
@@ -99,7 +98,7 @@
 		//页面上拉触底事件的处理函数
 		onReachBottom(e) {
 			console.log("底部")// 滚动到页面执行该方法
-			if((this.query.page > this.query.totalPage) || this.dataListLength == 0 )
+			if((this.query.page > this.query.totalPage) || this.dataListLength == 0 ) return 
 			this.reqRankList();
 		},
 		methods: {
@@ -127,7 +126,7 @@
 			gotoDetail(item){
 				console.log("brandItem==",item)
 				uni.navigateTo({
-					url:`./brand-detail?storeId=${item.id}`
+					url:`./brand-detail?brandId=${item.id}`
 				})
 			},
 		}

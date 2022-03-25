@@ -7,9 +7,19 @@
 			<view class="storeItem" v-for="storeItem in storeList" :key="storeItem.id">
 				<image class="storeImg" @click="gotoStoreDetail(storeItem)" :src="storeItem.store.avatar" />
 				<view class="baseInfo-container">
-					<view class="header">
-						<image v-if="storeItem.store.type == 2" class="icon" src="../../static/image/ziyingIcon.png" />
-						<image v-if="storeItem.store.type == 1" class="icon" src="../../static/image/zhuanyingIcon.png" />
+					<view class="header" >
+						<image 
+							v-if="storeItem.store.type == 2" 
+							@click="gotoStoreDetail(storeItem)" 
+							class="icon" 
+							src="../../static/image/ziyingIcon.png" 
+						/>
+						<image 
+							v-if="storeItem.store.type == 1" 
+							@click="gotoStoreDetail(storeItem)" 
+							class="icon" 
+							src="../../static/image/zhuanyingIcon.png" 
+						/>
 						<view class="title" @click="gotoStoreDetail(storeItem)">
 							<text>{{storeItem.store.name}}</text>
 							<text v-if="storeItem.store.address">{{`(${storeItem.store.address})`}}</text>
@@ -52,19 +62,23 @@
 				query:{
 					page:1,
 					rows:15,
-					areaId:"",
+					houseId:0,
 					totalPage:1,
 				},
 				storeList:[],
 				dataListLength:0,
+				userInfo: {},
+				userId: "",
 			}
 		},
 		onLoad() {
+			const currentHouse = getApp().globalData.currentHouse;
+			console.log("houseId==",currentHouse)
+			this.query.houseId = currentHouse.id;
+			this.userId = getApp().globalData.token;
+			this.reqStoreList()
 		},
 		onShow() {
-			const currentHouse = getApp().globalData.currentHouse;
-			this.query.areaId = currentHouse.areaId;
-			this.reqStoreList()
 		},
 		//页面上拉触底事件的处理函数
 		onReachBottom(e) {
@@ -84,7 +98,7 @@
 				let params ={
 					page:this.query.page,
 					rows:this.query.rows,
-					areaId:this.query.areaId,
+					houseId:this.query.houseId,
 				}
 				console.log("araaaaaaaaaa==",params)
 				getStoreList(params).then(res=>{
@@ -97,19 +111,33 @@
 				})
 				console.log("this.storeList===",this.storeList)
 			},
-			//去店铺详情页面
+			//去店铺详情页面  如果没有登陆的话先登陆然后再进入店铺详情页面
 			gotoStoreDetail(item){
 				console.log("去店铺详情页面",item)
+				console.log("item.storeId==",item.store.id)
+				console.log("houseId==",this.query.houseId)
+				if(!this.userId){
+					uni.navigateTo({
+						url:"../../../pages/login/login"
+					})
+				}else{
+					if(this.query.houseId){
+						uni.navigateTo({
+							url:`../shops/shops?storeId=${item.store.id}&houseId=${this.query.houseId}`
+						})
+					}else{
+						uni.navigateTo({
+							url:`../shops/shops?storeId=${item.id}`
+						})
+					}
+				}
 				
-				uni.navigateTo({
-					url:`../shops/shops?storeId=${item.storeId}&areaId=${this.areaId}`
-				})
 			},
 			// 去商品详情页面
 			gotoProductDetail(item){
-				console.log("去商品详情页面")
+				console.log("去商品详情页面",item)
 				uni.navigateTo({
-					url:`../goods-detail/goods-detail?goodId=${item.spuId}`
+					url:`../goods-detail/goods-detail?goodId=${item.skuId}`
 				})
 			},
 			handlePrice(price){
