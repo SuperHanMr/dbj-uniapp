@@ -133,9 +133,8 @@
 		display: flex;
 		width: 534rpx;
 		height: 62rpx;
-		opacity: .85;
 		backdrop-filter: blur(16px);
-		background: #ffffff;
+		background: rgba(255,255,255,.2);
 		border-radius: 116rpx;
 	}
 	
@@ -147,13 +146,13 @@
 		align-items: center;
 		.uni-searchbar-icon{
 			font-size: 24rpx;
-			color: #999999;
+			color: #ffffff;
 		}
 	}
 	
 	.uni-searchbar__text-placeholder {
 		font-size: 26rpx;
-		color: #A9A9A9;
+		color: #ffffff;
 		margin-left: 14rpx;
 	}
 	
