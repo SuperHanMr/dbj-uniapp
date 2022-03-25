@@ -66,7 +66,18 @@
 </script>
 
 <style lang="scss" scoped>
+	@keyframes navBoxDefine {
+		0% { background: rgba(255, 255, 255, 1) }
+		50% { background: rgba(255, 255, 255, .5) }
+		100% { background: none }
+	}
+	@keyframes navBoxActive {
+		0% { background: none }
+		50% { background: rgba(255, 255, 255, .5) }
+		100% { background: rgba(255, 255, 255, 1) }
+	}
 	.nav-box {
+		animation: .25s navBoxDefine;
 		position: fixed;
 		top: 0rpx;
 		left: 0rpx;
@@ -117,6 +128,7 @@
 	
 	.nav-box-active {
 		background-color: rgba(255, 255, 255, 1);
+		animation: .25s navBoxActive;
 		.uni-searchbar{
 			background: rgba(243, 243, 243, 1);
 		}
@@ -136,6 +148,7 @@
 			}
 		}
 	}
+	
 	
 	.uni-searchbar {
 		display: flex;
