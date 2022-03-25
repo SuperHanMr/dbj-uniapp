@@ -10,7 +10,6 @@
 		<view class="refund-container" :style="{paddingBottom:containerPaddingBottom}" >
 			<view style="position: relative;" :style="{backgroundImage:`url(${bgImg})`,backgroundSize: '100% 100%'}">
 				<view :style="{height:navBarHeight}"></view>
-
 				<view class="refund-status" >
 					<view v-for="statusItem in refundStatusList" :key="statusItem.value">
 						<view class="status" v-if="refundInfo.status == statusItem.value">
@@ -23,7 +22,6 @@
 					>{{refundInfo.createTime | formatDate}}</view>
 				</view>
 			</view>
-
 
 			<!-- 退款关闭独有的 -->
 			<view class="order-header" 	v-if="refundInfo.status ==3 || refundInfo.status ==4 || refundInfo.status ==5">
@@ -198,6 +196,25 @@
 			</view>
 			<!-- 公用的 -->
 			<order-refund-info :refundInfo="refundInfo"></order-refund-info>
+			
+			<!-- 对公收付款 -->
+			<view class="offline-info">
+				<view class="header">
+					退款线下收款信息
+				</view>
+				<view class="item">
+					<text class="item-header">户名：</text>
+					<text class="item-body">￥{{handlePrice(refundInfo.refundAmount)[0]}}.{{handlePrice(refundInfo.refundAmount)[1]}}</text>
+				</view>
+				<view class="item">
+					<text class="item-header">银行账号：</text>
+					<text class="item-body">￥{{handlePrice(refundInfo.refundAmount)[0]}}.{{handlePrice(refundInfo.refundAmount)[1]}}</text>
+				</view>
+				<view class="item">
+					<text class="item-header">开户行：</text>
+					<text class="item-body">￥{{handlePrice(refundInfo.refundAmount)[0]}}.{{handlePrice(refundInfo.refundAmount)[1]}}</text>
+				</view>
+			</view>
 		</view>
 
 		<!-- 退款关闭底部按钮 -->
@@ -885,6 +902,45 @@ export default {
 	background-color: #ffffff;
 	margin-bottom: 16rpx;
 	border-radius: 24rpx;
+}
+.offline-info{
+	background-color: #fff;
+	padding: 32rpx;
+	border-radius: 24rpx;
+	margin-top: 16rpx;
+	.header{
+		font-size: 30rpx;
+		font-weight: 1000;
+		height: 48rpx;
+		line-height: 48rpx;
+		margin-bottom: 16rpx;
+	}
+	.item{
+		font-size: 28rpx;
+		display: flex;
+		flex: 1;
+		flex-flow: row nowrap;
+		justify-content: flex-start;
+		margin-bottom: 16rpx;
+		.item-header{
+			width: 140rpx;
+			height: 40rpx;
+			line-height: 40rpx;
+			color: #999999;
+			display: block;
+			flex: 1;
+		}
+		.item-body{
+			width: 546rpx;
+			line-height: 40rpx;
+			display: flex;
+			flex-flow: row nowrap;
+			
+		}
+	}
+	.item:nth-last-child(1){
+		margin-bottom: 0;
+	}
 }
 // 底部 取消支付按钮样式 确认收货 及申请退款按钮
 .footerBtn-container {

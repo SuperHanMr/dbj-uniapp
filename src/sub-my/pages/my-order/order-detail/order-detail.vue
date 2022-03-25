@@ -25,14 +25,17 @@
 						</view>
 					</view>
 
-				  <view class="time" v-if="orderInfo.showCancelOrderTime && orderInfo.orderStatus==0">
+				 <!-- <view class="time" v-if="orderInfo.showCancelOrderTime && orderInfo.orderStatus==0">
 				    <text style="margin-right: 16rpx;">剩余支付时间</text>
 				    <count-down
 				      class="countStyle"
 				      :start="orderInfo.remainTime"
 				      @finish="goToCancelDetail"
 				    />
-				  </view>
+				  </view> -->
+					<view class="time">
+						<view class="showText">请尽快线下汇款，汇款时务必填写汇款识别码</view>
+					</view>
 				</view>
 			</view>
 
@@ -1428,6 +1431,13 @@ export default {
 			    mix-blend-mode: normal;
 			    border: 2rpx solid rgba(255, 255, 255, 0.3);
 			  }
+				.showText{
+					border-radius: 16rpx;
+					padding: 8rpx 32rpx;
+					background: rgba(144,135,135,0.33);
+					color: #ffffff;
+					font-size: 24rpx;
+				}
 			}
 
     }
