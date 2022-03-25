@@ -75,7 +75,7 @@
 					totalPage:1,
 					positon:"",
 				},
-				brandList:[{},{},{},{},{},{},{},{}],
+				brandList:[],
 				dataListLength:0,
 				showNowifiStyle:false,
 			}
@@ -94,7 +94,6 @@
 			});
 		},
 		onShow() {
-			this.brandList=[]
 			this.reqRankList()
 		},
 		//页面上拉触底事件的处理函数
