@@ -116,9 +116,15 @@
 	}
 	
 	.nav-box-active {
-		background-color: #fff;
+		background-color: rgba(255, 255, 255, 1);
 		.uni-searchbar{
-			background: #F3F3F3;
+			background: rgba(243, 243, 243, 1);
+		}
+		.uni-searchbar-icon{
+			color: rgba(255, 255, 255, 1);
+		}
+		.uni-searchbar__text-placeholder {
+			color: rgba(153, 153, 153, 1);
 		}
 		.right {
 	

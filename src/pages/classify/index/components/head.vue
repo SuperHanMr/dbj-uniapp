@@ -40,16 +40,12 @@
 		},
 		methods: {
 			toJumpHandler(item) {
-				debugger
 				if (item && item.id) {
 					// 跳转类型 0：无跳转 1： 链接 2： 商品详情 3：店铺详情",
 					this.[`jumpDeal${item.jumpType}Handler`](item)
 				}
 			},
 			jumpDeal0Handler(item){
-				// uni.navigateTo({
-				// 	url: "pages/common/webview/webview?url=" + encodeURIComponent(item.jumpUrl),
-				// });
 				// uni.showToast({
 				//   title: "无跳转",
 				//   icon: "none",
