@@ -108,6 +108,10 @@
       </view>
       <view class="cover" v-if="showBuyBtn"></view>
       <view class="buyWrap" v-if="showBuyBtn">
+        <view class="pay-way-box" @click="morePayWay">
+          <view>请选择支付方式</view>
+          <view>在线支付<view class="pay-icon"></view></view>
+        </view>
         <view class="button" @click="buyNow">立即购买</view>
         <view class="explain" @click="toActivityRules">购买即同意
           <text>《打扮家储值卡使用规则》</text>
@@ -125,6 +129,10 @@
         <!-- <scroll-view scroll-y="true" class="content">{{ruleText}}</scroll-view> -->
       </view>
     </uni-popup>
+    <pay-way-toast
+      ref='payWayToast'
+      @payWay="payWay"
+    ></pay-way-toast>
   </view>
 </template>
 
@@ -144,7 +152,8 @@
         showBuyBtn: true,
         checkedId: 0,
         ruleText: "",
-        totalPrice: 0
+        totalPrice: 0,
+        payWayTag: 0
       }
     },
     onShow() {
@@ -160,6 +169,12 @@
       }, 1000)
     },
     methods: {
+      morePayWay() {
+        this.$refs.payWayToast.showPupop();
+      },
+      payWay(payWayTag) {
+        this.payWayTag = payWayTag
+      },
       toBillingDetails() {
         uni.navigateTo({
           url: "/sub-my/pages/deposit-card/billing-details"
@@ -184,6 +199,10 @@
         this.totalPrice = amount
       },
       buyNow() {
+        if (this.payWayTag) {
+          console.log("对公支付转账")
+          return;
+        }
         const openId = getApp().globalData.openId;
         //#ifdef MP-WEIXIN
         let payType = 1
@@ -703,7 +722,19 @@
     background: #fff;
     box-shadow: 0px 4px 12px rgba(190, 102, 21, 0.15);
   }
-
+  .buyWrap .pay-way-box{
+    display: flex;
+    justify-content: space-between;
+    padding: 24rpx 32rpx 0 32rpx;
+  }
+  .pay-way-box .pay-icon{
+    vertical-align: middle;
+    display: inline-block;
+    width: 48rpx;
+    height: 52rpx;
+    background-image: url("../../static/more_pay_icon.png");
+    background-size: contain;
+  }
   .button {
     width: 686rpx;
     height: 88rpx;
