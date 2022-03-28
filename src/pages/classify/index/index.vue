@@ -1,7 +1,7 @@
 <template>
 	<view class="classify">
 		<Top :navActive="navActive" :shopListNum="shopListNum" />
-		<scroll-view class="classify-scroll" scroll-y="true" @scrolltolower='scrolltolower' refresher-enabled='true'
+		<scroll-view class="classify-scroll" scroll-y="true" :scroll-top="scrollTop" @scrolltolower='scrolltolower' refresher-enabled='true'
 			@refresherrefresh='refresherrefresh' @scroll="scrollHandler" :refresher-triggered="triggered">
 			<Head :swiperAuto="swiperAuto" :bannerList="bannerList" />
 			<view class="container-box">
@@ -11,7 +11,7 @@
 				<view class="recommend-title">
 					精选推荐
 				</view>
-				<ShopList :page="query.page" :shopList="shopList" />
+				<ShopList @clickDetail="clickDetailHandler"/>
 			</view>
 		</scroll-view>
 	</view>
@@ -44,11 +44,10 @@
 				query: {
 					page: 1,
 					row: 10,
-					totalPage: 0
+					totalPage: 0,
 				},
 				areaId: 43,
 				navActive: false,
-				shopList: [],
 				triggered: false,
 				bannerList: [],
 				pavilionObj: {
@@ -58,34 +57,36 @@
 				classList: [],
 				recommendList: [],
 				areaId: '',
-				shopListNum: 0
+				shopListNum: 0,
+				isFormShopDetail: false,
+				scrollTop:0
 			}
 		},
 		onShow() {
 			this.swiperAuto = true;
+			if (!this.isFormShopDetail) {
+				this.query.page = 1;
+				uni.$emit('resetScrollLeft');
+				this.scrollToTop();
+				this.mountedHandler();
+			} else {
+				this.isFormShopDetail = false;
+			}
+			let currentHouse = getApp().globalData.currentHouse;
+			this.areaId = currentHouse.areaId;
 		},
 		onHide() {
 			this.swiperAuto = false;
 		},
 		mounted() {
-			let currentHouse = getApp().globalData.currentHouse;
-			this.areaId = currentHouse.areaId;
 			uni.$on("currentHouseChange", (item) => {
 				this.areaId = item.areaId;
 			});
-			this.mountedHandler();
-		},
-		watch: {
-			areaId: {
-				handler: function () {
-					console.log('11111111111111111')
-					this.getShoppingCarNumHandler();
-				}
-			}
 		},
 		methods: {
 			mountedHandler(){
 				this.getNavHandler();
+				this.getShoppingCarNumHandler();
 				this.getClassifyBannerHandler();
 				this.getPavilionListHandler();
 				this.getClassifyShopListHandler();
@@ -100,8 +101,10 @@
 					excludeFields: "product.spu,product.process, product.store,product.supplier,product.areaIds,product.areaPrices,product.category",
 				}).then(res => {
 					this.query.totalPage = res.totalPage;
-					this.query.page++;
-					this.shopList = res.page;
+					uni.$emit('passShopList', {
+						page: this.query.page,
+						shopList: res.page
+					})
 					this.triggered = false;
 				})
 			},
@@ -115,16 +118,13 @@
 					// areaId: this.currentHouse.areaId,
 					version: 14
 				}
-				console.log(getApp().globalData)
 				navList(params).then(res => {
 					res.forEach(item => {
 						if (item && item.configParams) {
 							let configParams = JSON.parse(item.configParams);
-							console.log(configParams, '>>>>>>>>>>>')
 							this[`nav${configParams.style}Handler`] && this[`nav${configParams.style}Handler`](item)
 						}
 					})
-					console.log(res, this.classList, '>>>>>>>>>>>><<<<<<<<<')
 				})
 			},
 			nav1Handler(item){
@@ -140,6 +140,9 @@
 						getShoppingCarNum(this.areaId).then(res => {
 							this.shopListNum = res.validNumber;
 						})
+					},
+					fail: () => {
+						this.shopListNum = 0;
 					}
 				})
 			},
@@ -148,7 +151,6 @@
 					page: 1,
 					rows: 8
 				}).then((res) => {
-					console.log(res, '>>>>>>>>>>>>')
 					if (res && res.list) {
 						this.pavilionObj.totalRows = res.totalRows;
 						this.pavilionObj.list = [...res.list, {
@@ -163,16 +165,16 @@
 				})
 			},
 			scrolltolower() {
-				console.log('scrolltolower')
 				if (this.query.totalPage >= this.query.page) {
+					this.query.page++;
 					this.getClassifyShopListHandler();
 				}
 			},
 			refresherrefresh() {
-				this.shopList = [];
 				this.query.page = 1;
 				this.triggered = true;
-				this.getClassifyShopListHandler();
+				uni.$emit('resetScrollLeft')
+				this.mountedHandler();
 			},
 			scrollHandler(e) {
 				if (e.detail && e.detail.scrollTop) {
@@ -190,7 +192,16 @@
 						}
 					}
 				}
-			}
+			},
+			clickDetailHandler(){
+				this.isFormShopDetail = true;
+			},
+			scrollToTop() {
+				this.scrollTop = 1;
+				this.$nextTick(() => {
+					this.scrollTop = 0;
+				});
+			},
 		}
 	}
 </script>

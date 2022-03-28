@@ -66,7 +66,18 @@
 </script>
 
 <style lang="scss" scoped>
+	@keyframes navBoxDefine {
+		0% { background: rgba(255, 255, 255, 1) }
+		50% { background: rgba(255, 255, 255, .5) }
+		100% { background: none }
+	}
+	@keyframes navBoxActive {
+		0% { background: none }
+		50% { background: rgba(255, 255, 255, .5) }
+		100% { background: rgba(255, 255, 255, 1) }
+	}
 	.nav-box {
+		animation: .25s navBoxDefine;
 		position: fixed;
 		top: 0rpx;
 		left: 0rpx;
@@ -116,9 +127,18 @@
 	}
 	
 	.nav-box-active {
-		background-color: #fff;
+		background-color: rgba(255, 255, 255, 1);
+		animation: .25s navBoxActive;
 		.uni-searchbar{
-			background: #F3F3F3;
+			background: rgba(243, 243, 243, 1);
+		}
+		.uni-searchbar__box-icon-search{
+			.uni-searchbar-icon{
+				color: rgba(153, 153, 153, 1);
+			}
+		}
+		.uni-searchbar__text-placeholder {
+			color: rgba(153, 153, 153, 1);
 		}
 		.right {
 	
@@ -129,13 +149,13 @@
 		}
 	}
 	
+	
 	.uni-searchbar {
 		display: flex;
 		width: 534rpx;
 		height: 62rpx;
-		opacity: .85;
 		backdrop-filter: blur(16px);
-		background: #ffffff;
+		background: rgba(255,255,255,.2);
 		border-radius: 116rpx;
 	}
 	
@@ -147,13 +167,13 @@
 		align-items: center;
 		.uni-searchbar-icon{
 			font-size: 24rpx;
-			color: #999999;
+			color: #ffffff;
 		}
 	}
 	
 	.uni-searchbar__text-placeholder {
 		font-size: 26rpx;
-		color: #A9A9A9;
+		color: #ffffff;
 		margin-left: 14rpx;
 	}
 	
