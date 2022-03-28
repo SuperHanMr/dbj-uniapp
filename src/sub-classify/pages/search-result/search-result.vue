@@ -23,7 +23,7 @@
         <text :class="{'activeTab': activeTabIndex === 0}" @click="clickTab(0, 0)">全部</text>
         <text v-for="(v, k) in tabArr" :key="k" :class="{'activeTab': activeTabIndex === k + 1}" @click="clickTab(k + 1, v.id)">{{v.name}}</text>
       </scroll-view>
-      <goods-list :shopList="listArr" :page="page"></goods-list>
+      <goods-list></goods-list>
       <!--      <uni-swipe-action v-if="listArr.length>0">
         <uni-swipe-action-item v-for="(goodsItem,goodsIndex) in listArr" :key="goodsIndex">
           <view class="goodsItem" @click="toDetails(goodsItem.product.skuId)">
@@ -91,9 +91,9 @@
         initSearch: true,
         isPageReady: false,
         isShow: true,
-        page: 1,
+        pageNum: 1,
         sort: "",
-        isLoadMore: false,
+        // isLoadMore: false,
         searchText: "",
         aggregation: false,
         category1Id: 0,
@@ -117,8 +117,8 @@
       this.getList()
     },
     onPullDownRefresh() {
-      this.isLoadMore = false
-      this.page = 1
+      // this.isLoadMore = false
+      this.pageNum = 1
       this.getList()
     },
     onReachBottom() {
@@ -133,7 +133,7 @@
     },
     methods: {
       clickTab(index, id) {
-        this.page = 1
+        this.pageNum = 1
         this.activeTabIndex = index
         this.category2Id = id
         this.aggregation = !Boolean(index)
@@ -152,10 +152,10 @@
             query: this.searchText, //查询的关键词
             areaId: getApp().globalData.currentHouse
               .areaId, //区域编号，会按这个区域进行搜索；      区域的取值，请参考相关需求，好像是：有当前房屋就取当前房屋所在区域，没有当前房屋就取用户选取的位置区域...（具体逻辑比这个还复杂点）,
-            sort: this.sort //搜索排序方式：      price_asc  表示按价格从低到高排序；      price_desc 表示按价格从高到低排序；,      
-          },
-          pageIndex: this.page, //页面序号，从 1 开始，不传取 默认值第 1 页；,
-          pageSize: 20, //每页数据量大小，不传取默认值 10；,    
+            sort: this.sort, //搜索排序方式：      price_asc  表示按价格从低到高排序；      price_desc 表示按价格从高到低排序；,
+            pageIndex: this.pageNum, //页面序号，从 1 开始，不传取 默认值第 1 页；,
+            pageSize: 20, //每页数据量大小，不传取默认值 10；,          
+          }
         }
         getGoodsList(params).then((data) => {
           uni.stopPullDownRefresh()
@@ -169,11 +169,14 @@
           // } else {
           //   this.listArr = data.page
           // }
-          this.listArr = data.page
+          uni.$emit('passShopList', {
+          	page: data.page,
+          	shopList: this.pageNum
+          })
         })
       },
       sortList() {
-        this.isLoadMore = false
+        // this.isLoadMore = false
         if (!this.sort) {
           this.sort = "price_asc"
         } else if (this.sort === "price_asc") {
@@ -184,19 +187,19 @@
         this.getList()
       },
       loadMoreList() {
-        if (this.page < this.totalPage) {
-          this.page++
+        if (this.pageNum < this.totalPage) {
+          this.pageNum++
         } else {
           return
         }
-        this.isLoadMore = true
+        // this.isLoadMore = true
         this.getList()
       },
       clickInitSearch() {
         this.initSearch = false
       },
       searchConfirm(resText) {
-        this.isLoadMore = false
+        // this.isLoadMore = false
         this.searchText = resText.value
         this.getList()
       },
