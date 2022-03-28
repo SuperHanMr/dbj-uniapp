@@ -29,7 +29,7 @@
 				</view>
 			</view>
 			<view class="bottom">
-				<scroll-view class="scroll-view_H" scroll-x="true" lower-threshold="20"
+				<scroll-view class="scroll-view_H" scroll-x="true" :scroll-left="scrollLeft" lower-threshold="20"
 					@scrolltolower="scrolltolowerHandler">
 					<view class="box">
 						<view class="brand-item-box" v-for="item in pavilionObj.list" :key="item.id"
@@ -76,7 +76,17 @@
 			}
 		},
 		data() {
-			return {}
+			return {
+				scrollLeft: 0
+			}
+		},
+		mounted() {
+			uni.$on('resetScrollLeft', () => {
+				this.scrollLeft = 1;
+				this.$nextTick(() => {
+					this.scrollLeft = 0;
+				});
+			})
 		},
 		methods: {
 			scrolltolowerHandler: throttle(function() {
@@ -137,7 +147,7 @@
 				uni.getStorage({
 					key: 'scn',
 					success: (res) => {
-						this.toWebview(`${item.url}&token=${res.data}#${res.data}`)
+						this.toWebview(item.url)
 					},
 					fail: () => {
 						this.toWebview(item.url)
@@ -164,6 +174,7 @@
 				this.toWebview(`/app-pages/brand-shop/index.html?storeId=${item.id}`);
 			},
 			toWebview(url) {
+				console.log(`${this.ENV.VUE_APP_BASE_H5}${url}`, '>>>>>>>>>>')
 				uni.navigateTo({
 					url: "/pages/common/webview/webview?url=" + encodeURIComponent(`${this.ENV.VUE_APP_BASE_H5}${url}`),
 				});
@@ -232,9 +243,6 @@
 				position: absolute;
 				top: 0;
 				right: 176rpx;
-				background-image: url(../../../../static/images/classify-brand-bg.png);
-				background-repeat: no-repeat;
-				background-size: 100%;
 				width: 312rpx;
 				height: 88rpx;
 			}

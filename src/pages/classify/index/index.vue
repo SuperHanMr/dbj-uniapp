@@ -1,7 +1,7 @@
 <template>
 	<view class="classify">
 		<Top :navActive="navActive" :shopListNum="shopListNum" />
-		<scroll-view class="classify-scroll" scroll-y="true" @scrolltolower='scrolltolower' refresher-enabled='true'
+		<scroll-view class="classify-scroll" scroll-y="true" :scroll-top="scrollTop" @scrolltolower='scrolltolower' refresher-enabled='true'
 			@refresherrefresh='refresherrefresh' @scroll="scrollHandler" :refresher-triggered="triggered">
 			<Head :swiperAuto="swiperAuto" :bannerList="bannerList" />
 			<view class="container-box">
@@ -59,12 +59,15 @@
 				areaId: '',
 				shopListNum: 0,
 				isFormShopDetail: false,
+				scrollTop:0
 			}
 		},
 		onShow() {
 			this.swiperAuto = true;
 			if (!this.isFormShopDetail) {
 				this.query.page = 1;
+				uni.$emit('resetScrollLeft');
+				this.scrollToTop();
 				this.mountedHandler();
 			} else {
 				this.isFormShopDetail = false;
@@ -170,7 +173,8 @@
 			refresherrefresh() {
 				this.query.page = 1;
 				this.triggered = true;
-				this.getClassifyShopListHandler();
+				uni.$emit('resetScrollLeft')
+				this.mountedHandler();
 			},
 			scrollHandler(e) {
 				if (e.detail && e.detail.scrollTop) {
@@ -191,7 +195,13 @@
 			},
 			clickDetailHandler(){
 				this.isFormShopDetail = true;
-			}
+			},
+			scrollToTop() {
+				this.scrollTop = 1;
+				this.$nextTick(() => {
+					this.scrollTop = 0;
+				});
+			},
 		}
 	}
 </script>

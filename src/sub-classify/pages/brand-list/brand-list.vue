@@ -34,7 +34,7 @@
 				:key="item.id"
 				@click="gotoDetail(item)"
 			>
-				<image class="brandBgImg" v-if="item.id" :src="brandItemBgImg" />
+				<image class="brandBgImg" v-if="item.id" src="https://ali-image.dabanjia.com/static/mp/dabanjia/images/theme-red/classify/brandBgImg.png" />
 				<image class="brandBgImage" :src="item.brandBagImage"/>
 				<image class="rankImage"  :src="item.brandLogoImage" />
 				<view class="rankName" v-if="item.brandShortName">{{item.brandShortName}}</view>

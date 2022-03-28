@@ -12,13 +12,13 @@
 							v-if="storeItem.store.type == 2" 
 							@click="gotoStoreDetail(storeItem)" 
 							class="icon" 
-							src="../../static/image/ziyingIcon.png" 
+							src="https://ali-image.dabanjia.com/static/mp/dabanjia/images/theme-red/classify/ziyingIcon.png" 
 						/>
 						<image 
 							v-if="storeItem.store.type == 1" 
 							@click="gotoStoreDetail(storeItem)" 
 							class="icon" 
-							src="../../static/image/zhuanyingIcon.png" 
+							src="https://ali-image.dabanjia.com/static/mp/dabanjia/images/theme-red/classify/zhuanyingIcon.png" 
 						/>
 						<view class="title" @click="gotoStoreDetail(storeItem)">
 							<text>{{storeItem.store.name}}</text>
@@ -96,8 +96,8 @@
 			reqStoreList(){
 				this.onLoading = true
 				let params ={
-					page:this.query.page,
-					rows:this.query.rows,
+					pageIndex:this.query.page,
+					pageSize:this.query.rows,
 					houseId:this.query.houseId,
 				}
 				console.log("araaaaaaaaaa==",params)
@@ -229,6 +229,7 @@
 			}
 
 			.product-container{
+				overflow: hidden;
 				.productItem{
 					display: flex;
 					flex-flow: column nowrap;
