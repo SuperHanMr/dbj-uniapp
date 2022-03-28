@@ -6,22 +6,25 @@
 </template>
 
 <script>
-	import {
-		queryEstates
-	} from "../../../api/decorate.js";
 	export default {
 		data() {
 			return {
 				baseUrl: '',
 				h5Url: '',
+				// 商品Id
 				productId: '',
 				params: {
+					// 用户token
 					token: '',
+					// 套包商品 supId
 					spuId:'',
+					// 用户Id
 					userId: '',
 					// 房屋Id
 					houseId: '',
+					// 默认房屋Id
 					defaultHouseId: '',
+					// 用户地址
 					estate: {
 						// 省Id
 						provinceId: 1,
@@ -41,8 +44,6 @@
 					// 国美参数
 					skuTemplateId: '',
 					gomeDivisionCode: '',
-					upDateTime: '',
-
 				},
 				paramsJson: '',
 			}
@@ -95,7 +96,6 @@
 
 			this.paramsJson = JSON.stringify(this.params)
 			console.log('params:', this.params)
-			console.log('userInfo:', getApp().globalData);
 		},
 
 		methods: {},
