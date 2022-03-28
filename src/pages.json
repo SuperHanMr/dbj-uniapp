@@ -684,6 +684,13 @@
         		"navigationBarTitleText": "",
         		"enablePullDownRefresh": false
         	}
+        },
+        {
+        	"path" : "pages/whole-webview/whole-webview",
+        	"style" : {
+        		"navigationBarTitleText": "",
+        		"enablePullDownRefresh": false
+        	}
         }
 			]
     },
