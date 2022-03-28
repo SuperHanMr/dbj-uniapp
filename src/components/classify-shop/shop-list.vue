@@ -63,6 +63,7 @@
 				  }
 				  this.resetList(val);
 				},
+				deep: true,
 				immediate: true
 			}
 		},
