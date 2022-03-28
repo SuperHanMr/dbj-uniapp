@@ -1,7 +1,7 @@
 <template>
 	<view class="container">
 		<web-view
-		:src="baseUrl + '/app-pages/brand-shop/index.html?' + 'estateId='+ storeId + '&houseId='+ houseId"
+		:src="baseUrl + '/app-pages/brand-shop/index.html?' + 'brandId='+ brandId + '&houseId='+ houseId"
 		></web-view>
 
 	</view>
@@ -11,16 +11,16 @@
 	import { queryEstates } from "../../../api/decorate.js"
 	export default{
 		data() {
-			return {
+			return{
 				baseUrl: '',
-				storeId:'',//品牌馆ID
+				brandId:'',//品牌馆ID
 				houseId:'',//地址ID
 				hashToken:"",
 			}
 		},
 		onLoad(e) {
 			console.log("dddddd~~~")
-			this.storeId = e.brandId
+			this.brandId = e.brandId
 			this.baseUrl = this.ENV.VUE_APP_BASE_H5
 			this.hashToken = getApp().globalData.token
 			// this.baseUrl = "https://10.20.17.11:443/"

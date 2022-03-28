@@ -61,7 +61,7 @@
     mounted(){
       this.getList()
       uni.$on('isCollect',(data)=>{
-        console.log('person++++++++++',this.activeList[this.activeIndex],data)
+        
         if(data.isCollect === this.activeList[this.activeIndex].isCollection){
           return
         }
@@ -89,7 +89,7 @@
       	const listUrl = list[index].videoUrl
         this.activeIndex = index
         this.activeList = list
-        console.log(list,index)
+        // console.log(list,index)
       	uni.navigateTo({
       		url: `/pages/real-case/real-case-webview/real-case-webview?id=${list[index].id}`
       	})
