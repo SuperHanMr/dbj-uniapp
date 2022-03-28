@@ -134,7 +134,7 @@
 				uni.getStorage({
 					key: 'scn',
 					success: (res) => {
-						this.toWebview(`${item.url}&token=${res.data}&userId='1'`)
+						this.toWebview(`${item.url}&token=${res.data}#${res.data}`)
 					},
 					fail: () => {
 						this.toWebview(item.url)
