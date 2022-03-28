@@ -96,8 +96,8 @@
 			reqStoreList(){
 				this.onLoading = true
 				let params ={
-					page:this.query.page,
-					rows:this.query.rows,
+					pageIndex:this.query.page,
+					pageSize:this.query.rows,
 					houseId:this.query.houseId,
 				}
 				console.log("araaaaaaaaaa==",params)
@@ -229,6 +229,7 @@
 			}
 
 			.product-container{
+				overflow: hidden;
 				.productItem{
 					display: flex;
 					flex-flow: column nowrap;
