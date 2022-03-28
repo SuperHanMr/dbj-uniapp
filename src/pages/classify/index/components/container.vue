@@ -232,9 +232,6 @@
 				position: absolute;
 				top: 0;
 				right: 176rpx;
-				background-image: url(../../../../static/images/classify-brand-bg.png);
-				background-repeat: no-repeat;
-				background-size: 100%;
 				width: 312rpx;
 				height: 88rpx;
 			}
