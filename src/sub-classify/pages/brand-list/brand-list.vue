@@ -11,10 +11,10 @@
 		        style="color:white"
 		      >
 		      </i>
-					<image 
-						class="smallBrandText" 
-						v-if="scrollTop > 0" 
-						src="https://ali-image.dabanjia.com/static/mp/dabanjia/images/theme-red/classify/bgBrandName.png" 
+					<image
+						class="smallBrandText"
+						v-if="scrollTop > 0"
+						src="https://ali-image.dabanjia.com/static/mp/dabanjia/images/theme-red/classify/bgBrandName.png"
 					/>
 					<view class="brandTextContainer" v-else>
 						<image src="../../static/image/bgBrandName.png" mode=""></image>
@@ -24,10 +24,10 @@
 		  </template>
 		</custom-navbar>
 
-		<view class="bgImg" 
+		<view class="bgImg"
 			style="background-image:url(https://ali-image.dabanjia.com/static/mp/dabanjia/images/theme-red/classify/brandHeadBg.png)"
 		></view>
-		
+
 		<view class="rankList-container" v-if="brandList.length">
 			<view class="rankItem"
 				v-for="item in brandList"
@@ -42,14 +42,14 @@
 			</view>
 		</view>
 
-		<view class="noData-container" v-if="!brandList.length || showNowifiStyle">
+		<view class="noData-container" v-if="!brandList.length">
 			<view class="noBrandData" v-if="!brandList.length">
 				<image src="https://ali-image.dabanjia.com/static/mp/dabanjia/images/theme-red/classify/no_brandListData.png" />
 				<view class="text">
 					暂无相关品牌
 				</view>
 			</view>
-			<view class="noBrandData" v-if="showNowifiStyle">
+			<!-- <view class="noBrandData" v-if="showNowifiStyle">
 				<image src="https://ali-image.dabanjia.com/static/mp/dabanjia/images/theme-red/classify/brandPage_nowifi.png" />
 				<view class="text">
 					暂无网络
@@ -57,7 +57,7 @@
 				<view class="refreshText">
 					网络环境较差请点击刷新一下~
 				</view>
-			</view>
+			</view> -->
 		</view>
 	</view>
 </template>
@@ -101,7 +101,7 @@
 		//页面上拉触底事件的处理函数
 		onReachBottom(e) {
 			console.log("底部")// 滚动到页面执行该方法
-			if((this.query.page > this.query.totalPage) || this.dataListLength == 0 ) return 
+			if((this.query.page > this.query.totalPage) || this.dataListLength == 0 ) return
 			this.reqRankList();
 		},
 		methods: {
@@ -115,15 +115,15 @@
 					// position:this.query.positon,
 				}
 				getBrandHallList(params).then(res=>{
-					if(res.code ==401){
-						this.showNowifiStyle = true
-					}else{
+					// if(res.code ==401){
+					// 	this.showNowifiStyle = true
+					// }else{
 						console.log(res)
 						this.dataListLength = res.list.length
 						this.brandList = this.brandList.concat(res.list);
 						this.query.page ++
 						this.query.totalPage = res.totalPage
-					}
+					// }
 				})
 			},
 			gotoDetail(item){
