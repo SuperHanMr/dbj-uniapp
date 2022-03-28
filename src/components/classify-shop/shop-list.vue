@@ -37,6 +37,12 @@
 		components: {
 			ShopListItem,
 		},
+		props:{
+			emitName: {
+				type: String,
+				default: 'passShopList'
+			}
+		},
 		data() {
 			return {
 				list1: [],
@@ -46,13 +52,13 @@
 			};
 		},
 		mounted() {
-			uni.$on('passShopList', (param) => {
+			uni.$on(this.$props.emitName, (param) => {
 				this.page = param.page;
 				this.resetList(param.shopList);
 			})
 		},
 		destroyed() {
-			uni.$off("passShopList")
+			uni.$off(this.$props.emitName);
 		},
 		methods: {
 			resetList(list) {
@@ -107,7 +113,7 @@
 									this.list1 = [];
 									this.list2 = [];
 								}
-
+								
 								this.list1 = this.list1.concat(list1);
 								this.list2 = this.list2.concat(list2);
 							})

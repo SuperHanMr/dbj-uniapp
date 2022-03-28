@@ -11,7 +11,7 @@
 				<view class="recommend-title">
 					精选推荐
 				</view>
-				<ShopList @clickDetail="clickDetailHandler"/>
+				<ShopList emitName="classifyListData" @clickDetail="clickDetailHandler"/>
 			</view>
 		</scroll-view>
 	</view>
@@ -101,7 +101,7 @@
 					excludeFields: "product.spu,product.process, product.store,product.supplier,product.areaIds,product.areaPrices,product.category",
 				}).then(res => {
 					this.query.totalPage = res.totalPage;
-					uni.$emit('passShopList', {
+					uni.$emit('classifyListData', {
 						page: this.query.page,
 						shopList: res.page
 					})
