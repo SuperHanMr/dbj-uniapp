@@ -1,7 +1,7 @@
 <template>
 	<view class="classify">
 		<Top :navActive="navActive" :shopListNum="shopListNum" />
-		<scroll-view class="classify-scroll" scroll-y="true" @scrolltolower='scrolltolower' refresher-enabled='true'
+		<scroll-view class="classify-scroll" scroll-y="true" :scroll-top="scrollTop" @scrolltolower='scrolltolower' refresher-enabled='true'
 			@refresherrefresh='refresherrefresh' @scroll="scrollHandler" :refresher-triggered="triggered">
 			<Head :swiperAuto="swiperAuto" :bannerList="bannerList" />
 			<view class="container-box">
@@ -11,7 +11,7 @@
 				<view class="recommend-title">
 					精选推荐
 				</view>
-				<ShopList :page="query.page" :shopList="shopList" @clickDetail="clickDetailHandler" />
+				<ShopList @clickDetail="clickDetailHandler"/>
 			</view>
 		</scroll-view>
 	</view>
@@ -42,13 +42,12 @@
 			return {
 				swiperAuto: false,
 				query: {
-					page: 0,
+					page: 1,
 					row: 10,
-					totalPage: 0
+					totalPage: 0,
 				},
 				areaId: 43,
 				navActive: false,
-				shopList: [],
 				triggered: false,
 				bannerList: [],
 				pavilionObj: {
@@ -59,17 +58,18 @@
 				recommendList: [],
 				areaId: '',
 				shopListNum: 0,
-				isFormShopDetail: false
+				isFormShopDetail: false,
+				scrollTop:0
 			}
 		},
 		onShow() {
 			this.swiperAuto = true;
 			if (!this.isFormShopDetail) {
-				this.query.page = 0;
+				this.query.page = 1;
+				this.scrollToTop();
 				this.mountedHandler();
 			} else {
 				this.isFormShopDetail = false;
-				this.shopList = [];
 			}
 			let currentHouse = getApp().globalData.currentHouse;
 			this.areaId = currentHouse.areaId;
@@ -100,8 +100,10 @@
 					excludeFields: "product.spu,product.process, product.store,product.supplier,product.areaIds,product.areaPrices,product.category",
 				}).then(res => {
 					this.query.totalPage = res.totalPage;
-					this.query.page++;
-					this.shopList = res.page;
+					uni.$emit('passShopList', {
+						page: this.query.page,
+						shopList: res.page
+					})
 					this.triggered = false;
 				})
 			},
@@ -115,7 +117,6 @@
 					// areaId: this.currentHouse.areaId,
 					version: 14
 				}
-				console.log(getApp().globalData)
 				navList(params).then(res => {
 					res.forEach(item => {
 						if (item && item.configParams) {
@@ -164,11 +165,11 @@
 			},
 			scrolltolower() {
 				if (this.query.totalPage >= this.query.page) {
+					this.query.page++;
 					this.getClassifyShopListHandler();
 				}
 			},
 			refresherrefresh() {
-				this.shopList = [];
 				this.query.page = 1;
 				this.triggered = true;
 				this.getClassifyShopListHandler();
@@ -192,7 +193,13 @@
 			},
 			clickDetailHandler(){
 				this.isFormShopDetail = true;
-			}
+			},
+			scrollToTop() {
+				this.scrollTop = 1;
+				this.$nextTick(() => {
+					this.scrollTop = 0;
+				});
+			},
 		}
 	}
 </script>

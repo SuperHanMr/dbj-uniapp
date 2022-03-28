@@ -125,7 +125,10 @@
 				})
 			},
 			classJump2Handler(item) {
-				this.recommendJump2Handler(item);
+				// this.recommendJump2Handler(item);
+				uni.navigateTo({
+					url: "/sub-classify/pages/whole-webview/whole-webview",
+				});
 			},
 			recommendedHandler(item) {
 				this[`recommendJump${item.type}Handler`] && this[`recommendJump${item.type}Handler`](item)
@@ -134,7 +137,7 @@
 				uni.getStorage({
 					key: 'scn',
 					success: (res) => {
-						this.toWebview(`${item.url}&token=${res.data}&userId='1'`)
+						this.toWebview(`${item.url}&token=${res.data}#${res.data}`)
 					},
 					fail: () => {
 						this.toWebview(item.url)
@@ -229,9 +232,6 @@
 				position: absolute;
 				top: 0;
 				right: 176rpx;
-				background-image: url(../../../../static/images/classify-brand-bg.png);
-				background-repeat: no-repeat;
-				background-size: 100%;
 				width: 312rpx;
 				height: 88rpx;
 			}
