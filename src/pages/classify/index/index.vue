@@ -1,7 +1,7 @@
 <template>
 	<view class="classify">
 		<Top :navActive="navActive" :shopListNum="shopListNum" />
-		<scroll-view class="classify-scroll" scroll-y="true" :scroll-top="scrollTop" @scrolltolower='scrolltolower' refresher-enabled='true'
+		<scroll-view class="classify-scroll" scroll-y="true" :scroll-top="scrollTop" @scrolltoupper='scrolltoupper' @scrolltolower='scrolltolower' refresher-enabled='true'
 			@refresherrefresh='refresherrefresh' @scroll="scrollHandler" :refresher-triggered="triggered">
 			<Head :swiperAuto="swiperAuto" :bannerList="bannerList" />
 			<view class="container-box">
@@ -176,9 +176,14 @@
 				uni.$emit('resetScrollLeft')
 				this.mountedHandler();
 			},
+			scrolltoupper() {
+				if (this.navActive) {
+					this.navActive = false;
+				}
+			},
 			scrollHandler(e) {
 				if (e.detail && e.detail.scrollTop) {
-					if (e.detail.scrollTop >= 60) {
+					if (e.detail.scrollTop >= 100) {
 						if (!this.navActive) {
 							this.navActive = true;
 						} else {
