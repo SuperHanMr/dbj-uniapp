@@ -1,7 +1,7 @@
 <template>
 	<view class="waterfall-item" :class="{'is-grab':!isGrab}">
 		<view class="img-box" @tap="onTap">
-			<image :src="params.imageUrl" mode="widthFix" @load="emitHeight" @error="emitHeight"></image>
+			<image :src="params.imageUrl" mode="aspectFill" @load="emitHeight" @error="emitHeight"></image>
       <image class="person-tag" src="../../../../static/famous.png" mode="" v-if="params.famous"></image>
       <image class="person-tag" src="../../../../static/favourite.png" mode="" v-if="params.favourite"></image>
 			<view class="comment-like">
@@ -134,7 +134,8 @@
 			display: block;
 			width: 100%;
 			// 默认设置一个图片的大约值
-			max-height: 600rpx;
+      
+			height: 458rpx;
 			border-radius: 8px;
 		}
     .person-tag{
