@@ -1,5 +1,5 @@
 <template>
-  <view style="background-color: #F6F6F6;margin-bottom: 60rpx;">
+  <view style="background-color: #F6F6F6;margin-bottom: 60rpx;position: relative;">
     <!-- <view > -->
     <custom-navbar
       :opacity="scrollTop/100"
@@ -49,6 +49,7 @@
         </view>
       </view>
     </view>
+
     <view class="recommendForYou-container">
       <view class="title_container">
         <view class="left">
@@ -75,6 +76,7 @@
       <scroll-view
         scroll-x="true"
         style="white-space: nowrap;"
+				lower-threshold="4"
         @scrolltolower.stop="gotoMoreDesigner"
 				:scroll-left="scrollLeft"
       >
@@ -89,11 +91,21 @@
             <view class="header">
               <view class="name">{{item2.name}}</view>
               <view class="rank">{{item2.levelName}}设计师</view>
+							<view class="ranking-container"
+								v-if="item2.ranks && item2.ranks.length>=1 && item2.ranks[0].realNumber>0"
+								:style="{backgroundImage:`url(${handleLabelImg(item2.ranks[0]).bgImg})`}"
+							>
+								<view class="num top-font"
+									:style="{color:`#${item2.ranks[0].fontColor}`,background:handleLabelImg(item2.ranks[0]).bgcolor}"
+								>
+									TOP.{{item2.ranks[0].realNumber}}
+								</view>
+								<view class="text top-font" :style="{color:`#${item2.ranks[0].fontColor}`}">
+									{{item2.ranks[0].abbreviation}}
+								</view>
+							</view>
             </view>
-            <view
-              class="goodPraise"
-              style="margin-bottom: 8rpx;"
-            >
+            <view class="goodPraise" style="margin-bottom: 8rpx;">
               <view class="item">
                 <text v-if="item2.praiseEfficiency">好评率{{item2.praiseEfficiency}}%</text>
                 <text v-if="item2.praiseEfficiency" class="icon"></text>
@@ -113,15 +125,15 @@
 				</view>
       </scroll-view>
 		</view>
-		
+
 		<!-- 元宵节新增需求 -->
 		<view class="design-service-container">
 			<view class="title">
 				设计服务推荐
 			</view>
 			<view class="scroll-container">
-				<scroll-view  
-					scroll-x="true"	
+				<scroll-view
+					scroll-x="true"
 					style="white-space: nowrap;"
 				>
 					<view class="design-service-item"
@@ -135,26 +147,26 @@
 								{{item4.fullName}}
 							</view>
 							<view class="price">
-								<text style="color: #999;font-size: 20rpx;">￥</text>
-								<text style="color: #333;font-size: 28rpx;">{{handlePrice(item4.price/100)[0]}}</text>
-								<text style="color: #333;font-size: 24rpx;">.{{handlePrice(item4.price/100)[1]}}</text>
-								<text style="color: #999;font-size: 22rpx;">/{{item4.unit}}</text>
+								<text style="font-size: 20rpx;">￥</text>
+								<text style="font-size: 28rpx;">{{handlePrice(item4.price/100)[0]}}</text>
+								<text style="font-size: 24rpx;">.{{handlePrice(item4.price/100)[1]}}</text>
+								<text style="font-size: 22rpx;">/{{item4.unit}}</text>
 							</view>
 						</view>
 					</view>
 				</scroll-view>
 			</view>
 		</view>
-		
-		
+
+
     <view
       class="perfectHouseInfo_container"
-      @click="gotoEditHouse"
       v-if="!userId || (userId && !hasEstate)"
     >
       <image
         class="bigImage"
         src="https://ali-image.dabanjia.com/static/mp/dabanjia/images/home/perfectHouseInfo.svg"
+				@click="gotoEditHouse"
       />
 
       <view
@@ -165,7 +177,7 @@
         <image src="https://ali-image.dabanjia.com/static/mp/dabanjia/images/home/gotoCase.svg" />
       </view>
     </view>
-		
+
 
     <view
       v-if="userId && hasEstate"
@@ -201,25 +213,27 @@
               <text v-if="item4.similarity" class="icon"></text>
 
               <text v-if="item4.flag">附近{{ item4.distance/1000>1
-							?`${Math.floor(item4.distance/1000)}km`:`${parseInt(item4.distance)}m`}}</text>
+							?`${(item4.distance/1000).toFixed(2)}km`:item4.distance>500?`${parseInt(item4.distance)}m`:'500m以内'}}</text>
               <text v-if="item4.flag" class="icon"></text>
 
               <text v-if="!item4.flag">{{item4.cityName|| "-"}}</text>
               <text v-if="!item4.flag" class="icon"></text>
 
-              <text>{{item4.budget
-							?Math.floor(item4.budget)<1?`预算：-万`:`预算：￥${Math.floor(item4.budget)}万`
-							: "预算：-"}}</text>
+              <text>
+							{{item4.budget
+								? Math.floor(item4.budget) &lt; 1?`预算：￥-万`:`预算：￥${Math.floor(item4.budget)}万`
+								: "预算：-"
+							}}</text>
             </view>
           </view>
           <view class="attr_container">
-						<view class="attr_item" v-if="item4.styleName">{{item4.styleName}}</view>
             <view
               class="attr_item"
-							v-if="item4.features"
-              v-for="item5 in item4.features"
+							v-if="itemHandler(item4)"
+              v-for="item5 in itemHandler(item4) "
               :key="item5"
             >{{item5}}</view>
+
           </view>
         </view>
         <image
@@ -228,7 +242,21 @@
         />
       </view>
     </view>
-
+		<view class="connectServiceContainer" v-if="showFloating" :style="{bottom: containerPaddingBottom}">
+			<view class="connectServiceContent">
+				<image src="https://ali-image.dabanjia.com/static/mp/dabanjia/images/theme-red/home/kefu.png" />
+				<view class="contentInfo">
+					<view class="no">不知道如何选择设计师</view>
+					<view class="find">找我聊聊为您推荐</view>
+				</view>
+				<view class="btn" @click="immediatelyChat">
+					立即沟通
+				</view>
+				<view class="cancel-Container" @click.stop="cancelShowFloating">
+					<image src="https://ali-image.dabanjia.com/static/mp/dabanjia/images/theme-red/home/find-designer-cancel.png" mode=""></image>
+				</view>
+			</view>
+		</view>
   </view>
 </template>
 
@@ -238,6 +266,7 @@ import {
   recommendCaseList,
   searchDesigner,
 	designServiceList,
+  firstsearchDesigner,
 } from "../../../api/home-find-design.js";
 export default {
   data() {
@@ -281,6 +310,24 @@ export default {
           name: "服务保障",
         },
       ],
+			labelList:[
+				{
+					bgcolor:"linear-gradient(180deg, #EAE3D1 0%, #DED5BF 100%)",
+					bgImg:"https://ali-image.dabanjia.com/static/mp/dabanjia/images/theme-red/home/labelRank1.png",
+				},
+				{
+					bgcolor:"linear-gradient(180deg, #FAD7CD 0%, #E8C2B5 100%)",
+					bgImg:"https://ali-image.dabanjia.com/static/mp/dabanjia/images/theme-red/home/labelRank2.png",
+				},
+				{
+					bgcolor:"linear-gradient(180deg, #B9E6F3 0%, #9FD3E3 100%)",
+					bgImg:"https://ali-image.dabanjia.com/static/mp/dabanjia/images/theme-red/home/labelRank3.png",
+				},
+				{
+					bgcolor:"linear-gradient(180deg, #FFEBCC 0%, #FFE5B7 100%)",
+					bgImg:"https://ali-image.dabanjia.com/static/mp/dabanjia/images/theme-red/home/labelRank999.png",
+				}
+			],
       searchDesignerList: [], //设计师列表
 			designServiceRecList:[],//设计服务推荐
       caseList: [], //推荐列表
@@ -288,10 +335,22 @@ export default {
       hasEstate: false, //是否有房屋
       estateId: "", //房屋id
       page: 0,
+			totalRows:"",
       totalPage: "",
-			
+			containerPaddingBottom:"",
+			intoPageNum:0,
+			intoDesignerListPage:0,
+			showFloating:false,
     };
   },
+
+
+	mounted() {
+		const menuButtonInfo = uni.getMenuButtonBoundingClientRect();
+		this.systemBottom = menuButtonInfo.bottom + "rpx";
+		this.containerPaddingBottom = menuButtonInfo.bottom + 58 + "rpx";
+		console.log("this.containerPaddingBottom ====",this.containerPaddingBottom )
+	},
 
   onLoad() {
     const systemInfo = uni.getSystemInfoSync();
@@ -299,36 +358,55 @@ export default {
 		if (uni.getStorageSync("recommendDesignerPage")) {
 		  this.page = uni.getStorageSync("recommendDesignerPage");
 		}
+
 		this.page++;
 		uni.setStorageSync("recommendDesignerPage", this.page);
 		const hhh = uni.getStorageSync("recommendDesignerPage");
+
+
+
+		// 处理弹框展示问题
+		if (uni.getStorageSync("intoPageNum")) {
+			this.intoPageNum = uni.getStorageSync("intoPageNum");
+		}
+		if(uni.getStorageSync("intoDesignerListPage")){
+			this.intoDesignerListPage = uni.getStorageSync("intoDesignerListPage")
+		}
+		this.intoPageNum ++;
+
 		this.getDesignerList();
 		this.reqDesignServiceRecommendList()
   },
-  onShow() { 
+  onShow() {
 		this.scrollLeft = 1
 		this.$nextTick(()=>{
 			this.scrollLeft = 0
-			uni.$emit("currentHouseChange")
+			uni.$on("currentHouseChange")
 			this.userId = getApp().globalData.token;
 			console.log("getApp().globalData===",getApp().globalData)
 			this.estateId = getApp().globalData.currentHouse.id
 			if (this.userId) {
-			  // 登录
 			  this.hasEstate = this.estateId ? true : false
+				uni.setStorageSync("intoPageNum", this.intoPageNum);
+				uni.setStorageSync("intoDesignerListPage",this.intoDesignerListPage)
+				if(this.intoDesignerListPage == 1){
+					this.showFloating = true
+				}else{
+					this.showFloating =false
+				}
 			} else {
-			  // 未登录
 			  this.estateId = "";
+				this.intoDesignerListPage = 0
 			}
-			console.log("this.estateId==",this.estateId)
-			console.log("this.hasEstate==",this.hasEstate)
 			this.getRecommendCaseList();
+			console.log("this.intoDesignerListPage=====",this.intoDesignerListPage)
 		})
 	},
-	
+
   onPageScroll(scrollTop) {
     this.scrollTop = scrollTop.scrollTop;
   },
+
 	watch:{
 		searchDesignerList:{
 			deep:true,
@@ -338,7 +416,6 @@ export default {
 		}
 	},
   methods: {
-
     toBack() {
       uni.navigateBack({});
     },
@@ -355,6 +432,10 @@ export default {
       };
       recommendCaseList(params).then((res) => {
         this.caseList = res;
+        // this.caseList = this.caseList.map(item=>{
+        //   item.budget =0.08
+        //   return item
+        // })
       });
     },
 
@@ -369,67 +450,96 @@ export default {
         style: "",
         sortType: "", //排序类型 0:默认排序，1:服务次数排序 2： 好评率排序"
       };
-			console.log("请求设计师列表参数==",params)
-      searchDesigner(params).then((res) => {
+      firstsearchDesigner(params).then((res) => {
         this.searchDesignerList = res.list;
         this.searchDesignerList = res.list.map(item=>{
 					if(item.artImage.indexOf('?x-oss-process=image/resize,m_fill,h_160,w_120,limit_0') !==-1){
 						item.artImage = item.artImage.split('?')[0]
 					}
-					console.log("设计师列表item===",item)
 					return item
 				})
-				
+
         this.totalPage = res.totalPage;
-				console.log("this.totalPgae====",this.totalPage)
         uni.setStorageSync("recommendDesignerTotalPage", res.totalPage);
-        console.log("res.totalRows==",res.totalRows);
-				// 返回的总条数不是5的倍数
-				if ((res.totalRows % 5 !== 0) && (this.page == (this.totalPage - 1))) {
-					this.page = 0;
-					uni.setStorageSync("recommendDesignerPage", this.page);
-				}
-				//返回的总条数是5的倍数
-				if((res.totalRows % 5 == 0) && (this.page ==this.totalPage)){
-					this.page = 0;
-					uni.setStorageSync("recommendDesignerPage", this.page);
-				}
-				// if(this.page == this.totalPage){
-				// 	this.page = 0 
+				// // 返回的总条数不是5的倍数
+				// if ((res.totalRows % 5 !== 0) && (this.page == (this.totalPage - 1))) {
+				// 	this.page = 0;
 				// 	uni.setStorageSync("recommendDesignerPage", this.page);
 				// }
+				// //返回的总条数是5的倍数
+				// if((res.totalRows % 5 == 0) && (this.page ==this.totalPage)){
+				// 	this.page = 0;
+				// 	uni.setStorageSync("recommendDesignerPage", this.page);
+				// }
+				if(this.page == this.totalPage){
+					this.page = 0
+					uni.setStorageSync("recommendDesignerPage", this.page);
+				}
       });
     },
-		
+
 		reqDesignServiceRecommendList(){
 			designServiceList().then(res=>{
 				this.designServiceRecList = res
-				//处理一下price /100 
-				console.log("designerServiceRecList===",res)
+				// console.log("designerServiceRecList===",res)
 			})
 		},
 		//商品详情页面
 		gotoProduceDetail(item){
-			// uni.navigateTo({
-			// 	url:`../../../sub-classify/pages/goods-detail/goods-detail?goodId=${item.id}`,
-			// });
-			
+			if(this.intoDesignerListPage){
+				this.intoDesignerListPage ++
+			}
 			uni.navigateTo({
-				url:`../../../sub-classify/pages/product-detail/product-detail?goodId=${item.id}`,
+				url:`../../../sub-classify/pages/goods-detail/goods-detail?goodId=${item.id}`,
 			});
 		},
-    
+		itemHandler(item) {
+			// let arr = [item.styleName];
+			// if (item.features && item.features.length) {
+			// 	arr.push(item.features[0]);
+			// }
+			// if (item.customLabelList && item.customLabelList.length){
+			// 	arr.unshift(item.customLabelList[0].labelName);
+			// }
+			// return arr;
+			let arr=[];
+			if(item.customLabelList && item.customLabelList.length){
+				arr = item.customLabelList.map(Item=>{
+					return Item.labelName
+				})
+			}
+			if(item.styleName){
+				arr.push(item.styleName)
+			}
+			if(item.features && item.features.length){
+				arr = arr.concat(item.features)
+			}
+			// console.log("自定义标签arr",arr)
+			return arr
+		},
 		// 换一批
 		changeDesignerList(){
 			console.log("换一批！")
 			this.page++;
+			console.log("this.page22==",this.page)
 			uni.setStorageSync("recommendDesignerPage", this.page);
-			console.log("this.page==",this.page)
 			this.getDesignerList();
 		},
-		
+
+		cancelShowFloating(){
+			this.showFloating  =false;
+			this.intoDesignerListPage++;
+			console.log("cancelShow!!!!!!!!!!!")
+		},
+		immediatelyChat(){
+			this.intoDesignerListPage++;
+			this.$store.dispatch("openCustomerConversation");
+		},
 		//自己找设计师
     findOwnDesigner() {
+			if(this.intoDesignerListPage){
+				this.intoDesignerListPage ++
+			}
       uni.navigateTo({
         url: "/sub-home/pages/find-design/search-design",
       });
@@ -438,47 +548,45 @@ export default {
     contactService() {
       console.log("联系客服");
       this.$store.dispatch("openCustomerConversation");
-      // uni.navigateTo({
-      // 	url:""
-      // })
     },
     //去完善房屋信息
     gotoEditHouse() {
-      // if (this.userId) {
-        //登录的情况下 调整到编辑房屋页面
-        uni.navigateTo({
-          url: "/sub-my/pages/my-house/my-house?fromHome=true",
-        });
-      // } else {
-      //   //未登录的情况下跳转到登录页面
-      //   console.log("跳转到登录页面");
-      //   uni.navigateTo({
-      //     url: "/pages/login/login",
-      //   });
-      // }
+			uni.navigateTo({
+				url: "/sub-my/pages/my-house/my-house?fromHome=true",
+			});
     },
     //更多设计师
-    gotoMoreDesigner: debounce(() => {
-			  uni.navigateTo({
-			    url: "/sub-home/pages/find-design/designer-list",
-			  });
-		},500),
+		gotoMoreDesigner(){
+			this.intoDesignerListPage ++ ;
+			console.log("this.intoDesignerListPage===more",this.intoDesignerListPage)
+			debounce(() => {
+				uni.navigateTo({
+					url: "/sub-home/pages/find-design/designer-list",
+				});
+			},500)()
+		},
+
     //去设计师个人主页
     gotoDesignerHomePage(zeusId) {
       console.log("zeusId====", zeusId);
+			if(this.intoDesignerListPage){
+				this.intoDesignerListPage ++;
+			}
       uni.navigateTo({
         url: `/sub-decorate/pages/person-page/person-page?personId=${zeusId}`,
       });
     },
     //去推荐案例
     gotoRealCase() {
+			if(this.intoDesignerListPage){
+				this.intoDesignerListPage++
+			}
       uni.navigateTo({
         url: "/sub-home/pages/find-design/real-case/real-case",
       });
     },
 		toRealCaseDetail(item) {
-			console.log("item4===",item)
-		  uni.navigateTo({
+			uni.navigateTo({
 		    url: `/pages/real-case/real-case-webview/real-case-webview?id=${item.id}`,
 		  });
 		},
@@ -491,6 +599,20 @@ export default {
 		    return [list[0], list[1]];
 		  }
 		},
+		//处理标签图片展示问题
+		handleLabelImg(rankItem){
+			switch(rankItem.styleCode){
+				case 1:
+					return this.labelList[0];
+				case 2:
+					return  this.labelList[1];
+				case 3:
+					return  this.labelList[2];
+				case 9999:
+					return  this.labelList[3];
+			}
+		},
+
   },
 };
 </script>
@@ -611,7 +733,7 @@ export default {
 }
 .designCard_container {
   height: 698rpx;
-  padding-left: 32rpx;
+  // padding-left: 32rpx;
   background: linear-gradient(180deg, #ffffff 0%, #f6f6f6 100%);
   display: flex;
   align-items: center;
@@ -619,7 +741,7 @@ export default {
     .design-card-item {
       width: 434rpx;
       height: 698rpx;
-      margin-right: 32rpx;
+      margin-left: 32rpx;
       background-color: pink;
       border-radius: 16rpx;
       background-color: #ffffff;
@@ -636,11 +758,7 @@ export default {
         height: 170rpx;
         box-sizing: border-box;
         padding: 24rpx;
-        background: linear-gradient(
-          180deg,
-          rgba(136, 141, 145, 0.79) -2.26%,
-          rgba(74, 81, 86, 0.51) 100%
-        );
+        background: linear-gradient(180deg, rgba(52, 85, 116, 0.35) -2.26%, rgba(52, 85, 116, 0.8) 100%);
         border-radius: 16rpx;
         backdrop-filter: blur(28rpx);
         // transform: matrix(1, 0, 0, -1, 0, 0);
@@ -661,18 +779,20 @@ export default {
 						text-overflow: ellipsis;
           }
           .rank {
-            margin-left: 12rpx;
+            margin-left: 8rpx;
             height: 30rpx;
             box-sizing: border-box;
-            padding: 0 8rpx;
+            padding: 0 6rpx;
             line-height: 26rpx;
-            border: 0.5px solid #ffffff;
+            border: 0.5px solid rgba(255, 255, 255, 0.44);
+						background: rgba(255, 255, 255, 0.1);
             box-sizing: border-box;
             border-radius: 4rpx;
             color: #ffffff;
             font-size: 20rpx;
           }
-          .item {
+
+					.item {
             display: flex;
             flex-flow: row nowrap;
             align-items: center;
@@ -694,11 +814,15 @@ export default {
             }
           }
         }
-
+				.header{
+					width: 402rpx;
+				}
         .attr {
           display: flex;
-          flex-flow: row nowrap;
+          flex-flow: row wrap;
           align-items: center;
+					height: 34rpx;
+					overflow: hidden;
           .attrItem {
             height: 34rpx;
             line-height: 30rpx;
@@ -714,6 +838,9 @@ export default {
         }
       }
     }
+    // .design-card-item:nth-last-child(1) {
+    // 	margin-right: 0;
+    // }
     .showMoreCard_container {
       width: 252rpx;
       height: 698rpx;
@@ -721,6 +848,7 @@ export default {
       overflow: hidden;
       display: inline-block;
       position: relative;
+			margin-left: 32rpx;
 			image{
 				width: 252rpx;
 				height: 698rpx;
@@ -755,8 +883,35 @@ export default {
   }
 }
 
+	.ranking-container{
+		display: flex;
+		align-items: center;
+		flex-flow: row nowrap;
+		margin-left: 8rpx;
+		border-radius: 4rpx;
+		background-size: 182rpx 30rpx;
+		background-position: right center;
+		.num{
+			padding: 0 16rpx 0 10rpx;
+			height: 30rpx;
+			line-height: 30rpx;
+			text-align: center;
+			font-weight: 500;
+			font-size: 20rpx;
+			border-radius: 4rpx 0 8rpx 4rpx;
+		}
+		.text{
+			width: 98rpx;
+			height: 30rpx;
+			line-height: 30rpx;
+			text-align: center;
+			font-weight: 500;
+			font-size: 20rpx;
+		}
+
+	}
+
 .perfectHouseInfo_container {
-  // margin: 54rpx 32rpx 60rpx;
   margin: 20rpx 0 60rpx;
   display: flex;
   flex-flow: column nowrap;
@@ -943,7 +1098,8 @@ export default {
       .attr_container {
         display: flex;
         flex-flow: row wrap;
-				min-height: 40rpx;
+				max-height: 40rpx;
+				overflow: hidden;
         align-items: center;
         .attr_item {
           // width: 128rpx;
@@ -968,10 +1124,10 @@ export default {
 }
 
 
-// 元宵节新增需求 
+// 元宵节新增需求
 
 .design-service-container{
-	
+
 	.title{
 		padding: 48rpx 40rpx 24rpx;
 		color: #333333;
@@ -999,12 +1155,14 @@ export default {
 						margin-bottom: 8rpx;
 						color: #333333;
 						font-size: 26rpx;
-						overflow: hidden; 
-						white-space: nowrap; 
+						overflow: hidden;
+						white-space: nowrap;
 						text-overflow: ellipsis
 					}
 					.price{
-						
+						text{
+							color: #333333;
+						}
 					}
 				}
 			}
@@ -1015,5 +1173,72 @@ export default {
 	}
 }
 
+
+.connectServiceContainer{
+	position: fixed;
+	width: 686rpx;
+	height: 120rpx;
+	box-sizing: border-box;
+	padding:0 48rpx;
+	border-radius: 16rpx;
+	background: rgba(0, 0, 0, 0.75);
+	left: 32rpx;
+	.connectServiceContent{
+		display: flex;
+		flex-flow: row nowrap;
+		align-items: center;
+		image{
+			width: 76rpx;
+			height: 76rpx;
+		}
+		.contentInfo{
+			margin: 26rpx 70rpx 26rpx 16rpx;
+			position: relative;
+			.no{
+				width: 288rpx;
+				height: 36rpx;
+				line-height: 36rpx;
+				color: #FFFFFF;
+				font-size: 26rpx;
+				font-weight: 500;
+				margin-bottom: 4rpx;
+				letter-spacing: 1rpx;
+			}
+			.find{
+				height: 28rpx;
+				line-height: 28rpx;
+				color: #FFFFFF;
+				font-size: 20rpx;
+				letter-spacing: 1rpx;
+			}
+		}
+		.btn{
+			width: 140rpx;
+			height: 56rpx;
+			line-height: 56rpx;
+			text-align: center;
+			color: #FFFFFF;
+			font-size: 24rpx;
+			border-radius: 8rpx;
+			background: linear-gradient(116.19deg, #F83112 16.48%, #FD6421 83.52%)
+		}
+		.cancel-Container{
+			position: absolute;
+			width: 44rpx;
+			height: 28rpx;
+			border-radius: 0 16rpx 0 16rpx;
+			background: rgba(255, 255, 255, 0.23);
+			display: flex;
+			align-items: center;
+			justify-content: space-around;
+			top: 0;
+			right: 0;
+			image{
+				width: 15rpx;
+				height: 15rpx;
+			}
+		}
+	}
+}
 
 </style>

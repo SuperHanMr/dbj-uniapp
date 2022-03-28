@@ -1,8 +1,11 @@
 const fs = require('fs');
 const CopyWebpackPlugin = require('copy-webpack-plugin')
 const envTransformer = require("./build/envTransformer")
+const UglifyJsPlugin = require('uglifyjs-webpack-plugin')
 
-module.exports = {
+const isH5 = process.env.UNI_PLATFORM === 'h5';
+
+module.exports = isH5 ? {
   transpileDependencies:['@dcloudio/uni-ui'],
   devServer: {
     https: {
@@ -13,7 +16,20 @@ module.exports = {
     port: 443
   },
   configureWebpack: {
+    output:  {
+      filename: 'static/js/[name].[hash:8].js',
+      chunkFilename: 'static/js/[name].[hash:8].js'
+    },
     plugins: [
+      new UglifyJsPlugin({
+        uglifyOptions: {
+          compress: {
+            warnings: false
+          }
+        },
+        sourceMap: true,
+        parallel: true
+      }),
       new CopyWebpackPlugin([
         {
           from: 'gome-*.html',
@@ -27,4 +43,6 @@ module.exports = {
       ])
     ]
   }
-}
+} : {
+  transpileDependencies:['@dcloudio/uni-ui']
+};

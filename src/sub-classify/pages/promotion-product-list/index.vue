@@ -1,6 +1,9 @@
 <template>
 	<view>
-		<web-view :src="baseUrl + '/app-pages/product-promotion-list/index.html'">
+		<web-view :src="baseUrl + '/app-pages/product-promotion-list/index.html?token=' 
+	  + searchToken 
+	  +  '#houseId='+ houseId 
+	  + '&wx-token=' + hashToken">
 		</web-view>
 	</view>
 </template>
@@ -19,13 +22,17 @@
 			}
 		},
 		onLoad(e) {
-			// this.baseUrl = this.ENV.VUE_APP_BASE_H5//'https://localhost'
-			this.baseUrl = 'https://localhost'
+			this.baseUrl = this.ENV.VUE_APP_BASE_H5
+			// this.baseUrl = 'https://localhost'
 			this.searchToken = getApp().globalData.token
-			this.houseId = getApp().globalData.currentHouse.id
+			this.houseId = getApp().globalData.currentHouse.id //g
+			console.log(getApp().globalData.token);
 		},
 
 		onShow() {
+			if (getApp().globalData.token && !this.houseId) {
+				this.getHouseList()
+			}
 		},
 
 		methods: {
@@ -42,7 +49,7 @@
 				}
 				if (defaultHouse) {
 					house = defaultHouse;
-				} else if (houseList.length) {
+				} else if (houseList && houseList.length) {
 					house = houseList[0];
 				}
 				if (house) {

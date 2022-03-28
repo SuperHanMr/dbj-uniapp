@@ -56,7 +56,7 @@
         </view>
       </view>
     </scroll-view>
-    <message-send-box v-if="type === CONV_TYPES.COMMON || type === CONV_TYPES.CUSTOMER"></message-send-box>
+    <message-send-box ref="messageSendBox" v-if="type === CONV_TYPES.COMMON || type === CONV_TYPES.CUSTOMER"></message-send-box>
     <reply-box v-if="type === CONV_TYPES.INTERACTION" />
   </view>
 </template>
@@ -138,6 +138,11 @@
           }
         }
       },
+      // type() {
+      //   if (this.type === this.CONV_TYPES.COMMON) {
+      //     this.$store.dispatch('requestDesignTopRank')
+      //   }
+      // }
     },
     mounted() {
       uni.$on("scroll-to-bottom", this.scrollToBottom);
@@ -148,7 +153,7 @@
       });
       const query = uni.createSelectorQuery().in(this);
       this.messageListNodesRef = query.select("#messageList");
-      
+
       this.messageListRectTask = this.messageListNodesRef.boundingClientRect();
       this.messageListOffsetTask = this.messageListNodesRef.scrollOffset();
       // setTimeout(() => {
@@ -168,7 +173,7 @@
       this.messageListRectTask = null;
       this.messageListOffsetTask = null;
       this.messageListNodesRef = null;
-      
+
       // this.listBodyRectTask = null;
       // this.listBodyNodesRef = null;
     },
@@ -180,6 +185,9 @@
         });
         this.$store.dispatch("checkoutConversation", conv.conversationID).then(res => {
           this.loaded = true;
+          if (options.textData) {
+            this.$refs.messageSendBox.sendMessage(options.textData)
+          }
         })
       } else {
         uni.setNavigationBarTitle({
@@ -200,6 +208,9 @@
             }).then(this.calcUnreadStartBarPos);
           } else if (this.unreadCount >= 8){
             this.calcUnreadStartBarPos();
+          }
+          if (options.textData) {
+            this.$refs.messageSendBox.sendMessage(options.textData)
           }
           if (!options.name) {
             if (this.currentConversation.userProfile) {
@@ -341,7 +352,7 @@
         uni.$emit("message-list-click");
       },
       requestGroupMembers() {
-        if (this.currentConversation.type === TIM.TYPES.CONV_GROUP && 
+        if (this.currentConversation.type === TIM.TYPES.CONV_GROUP &&
           this.type !== this.CONV_TYPES.CUSTOMER) {
           let chatGroupId = 0;
           let currentConvId = this.currentConversation.conversationID;
@@ -430,7 +441,7 @@
     color: #00C2B8;
     font-size: 13px;
   }
-  
+
   .unread-msg-tip .tip-icon {
     display: inline-block;
     font-size: 18px;
@@ -442,7 +453,7 @@
     height: 1rpx;
     background: transparent;
   }
-  
+
   .video-player-wrapper {
     position: absolute;
     left: 0;

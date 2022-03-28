@@ -1,13 +1,13 @@
 <template>
   <view class="evaluate-item" :class="{'border-none':last}">
     <view class="item-top">
-      <view class="name">{{item.anonymous?'匿名用户':item.userName}}</view>
+      <view class="name">{{item.anonymous?'匿名业主':item.userName}}</view>
       <view class="time">{{item.createTime}}</view>
     </view>
     <view class="item-content">
       <view class="evaluate-list">
         <image v-for="(el, idx) of item.rank" :key="idx" src="../../../static/ic_score_star@2x.png" mode=""></image>
-        <image v-for="(el, idx) of 5-item.rank" :key="5-idx" src="../../../static/ic_blank_star@2x.png" mode=""></image>
+        <image v-for="(el, idx) of 5-item.rank" :key="idx" src="../../../static/ic_blank_star@2x.png" mode=""></image>
       </view>
       <view class="evaluate-text" :class="{'report-text-hidden':isHidden}">{{item.content}}</view>
       <view class="openHidden" v-if="showBtn" @click="clickHidden">
@@ -71,9 +71,9 @@
         this.$nextTick(function(){
           query.select(".evaluate-text").boundingClientRect((res) => {
             
-            this.isHidden = res.height/20 >= 6;
-            this.showBtn = res.height/20 >= 6;
-            console.log(res.height,this.isHidden)
+            this.isHidden = res&&(res.height/20 >= 6);
+            this.showBtn = res&&(res.height/20 >= 6);
+            // console.log(res.height,this.isHidden)
             
           }).exec()
         })

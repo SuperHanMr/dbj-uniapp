@@ -10,6 +10,7 @@
     "build:h5": "cross-env NODE_ENV=production UNI_PLATFORM=h5 vue-cli-service uni-build",
     "build:h5-stage": "cross-env NODE_ENV=development UNI_PLATFORM=h5 vue-cli-service uni-build",
     "build:h5-dev": "cross-env NODE_ENV=dev UNI_PLATFORM=h5 vue-cli-service uni-build",
+    "build:h5-test": "cross-env NODE_ENV=tst UNI_PLATFORM=h5 vue-cli-service uni-build",
     "build:mp-360": "cross-env NODE_ENV=production UNI_PLATFORM=mp-360 vue-cli-service uni-build",
     "build:mp-alipay": "cross-env NODE_ENV=production UNI_PLATFORM=mp-alipay vue-cli-service uni-build",
     "build:mp-baidu": "cross-env NODE_ENV=production UNI_PLATFORM=mp-baidu vue-cli-service uni-build",
@@ -97,6 +98,7 @@
     "postcss-comment": "^2.0.0",
     "sass": "^1.38.0",
     "sass-loader": "10.1.1",
+    "uglifyjs-webpack-plugin": "^1.3.0",
     "vue-template-compiler": "^2.6.11"
   },
   "browserslist": [

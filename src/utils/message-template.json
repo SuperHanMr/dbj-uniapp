@@ -2477,6 +2477,16 @@
     "template": "goods",
     "summary": "${fullName}"
   },
+  "single_case_send": {
+    "type": "single_case_send",
+    "template": "case",
+    "summary": "${caseName}"
+  },
+  "group_case_send": {
+    "type": "group_case_send",
+    "template": "case",
+    "summary": "${caseName}"
+  },
   "group_product_card": {
     "type": "group_product_card",
     "template": "goods",

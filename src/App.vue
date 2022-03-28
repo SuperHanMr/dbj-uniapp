@@ -20,6 +20,7 @@
   } from "api/decorate.js";
   export default {
     globalData: {
+      isInGomeMp: false, //是否在国美小程序中(编译H5站的情况下)
       userInfo: {},
       token: "",
       city: "",
@@ -48,7 +49,7 @@
       isSaler:false
     },
 
-    onLaunch: function(options) {   
+    onLaunch: function(options) {
         // let isSaler = uni.getStorageSync("isSaler");
         // if(isSaler){
         //   this.globalData.isSaler = true;
@@ -238,20 +239,20 @@
     methods: {
       watchMsg() {
         if (
-          !this.globalData.token ||
-          (!this.globalData.currentHouse.id && !this.globalData.currentEstate.id)
+          !getApp().globalData.token ||
+          (!getApp().globalData.currentHouse.id && !getApp().globalData.currentEstate.id)
         ) {
           return;
         }
         setTimeout(() => {
           getMsgNumByHouse(
-              this.globalData.currentHouse ?
-              this.globalData.currentHouse.id :
-              this.globalData.currentEstate.id
+              getApp().globalData.currentHouse ?
+              getApp().globalData.currentHouse.id :
+              getApp().globalData.currentEstate.id
             )
             .then((res) => {
               let num = res.count + "";
-              this.globalData.decorateMsgNum = num;
+              getApp().globalData.decorateMsgNum = num;
               if (res.count === 0) {
                 uni.removeTabBarBadge({
                   index: 2,
@@ -316,14 +317,30 @@
     src: url("https://ali-res.dabanjia.com/static/font/price-font/price-font.woff2"),
       url("https://ali-res.dabanjia.com/static/font/price-font/price-font.woff");
   }
-  
+
   .price-font {
     font-family: PriceFont;
   }
-  
+   @font-face {
+  	font-family:TopFont;
+  	src: url("https://ali-res.dabanjia.com/static/font/rank-font/rank-font-Bold.woff2"),
+	       url("https://ali-res.dabanjia.com/static/font/rank-font/rank-font-Bold.woff");
+  }
+
+  .top-font{
+	  font-family: TopFont;
+  }
+
   .navbar-height{
     height: 88rpx;
   }
+
+  /* #ifdef H5 */
+  /* 处理H5中toast提示被盖住的问题 */
+  uni-toast {
+    z-index: 2000;
+  }
+  /* #endif */
 
   /*每个页面公共css */
 </style>

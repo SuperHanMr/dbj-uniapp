@@ -1,7 +1,9 @@
 <template>
 	<view class="waterfall-item" :class="{'is-grab':!isGrab}">
 		<view class="img-box" @tap="onTap">
-			<image :src="params.imageUrl" mode="widthFix" @load="emitHeight" @error="emitHeight"></image>
+			<image :src="params.imageUrl" mode="aspectFill" @load="emitHeight" @error="emitHeight"></image>
+      <image class="person-tag" src="../../../../static/famous.png" mode="" v-if="params.famous"></image>
+      <image class="person-tag" src="../../../../static/favourite.png" mode="" v-if="params.favourite"></image>
 			<view class="comment-like">
 				<view class="address" v-if="params.cityName">
           {{params.roomNum!==0?`${params.roomNum}室`:params.hallNum!==0?`${params.hallNum}厅`:''}}
@@ -19,20 +21,32 @@
         
       </view>
 			<view class="position-icon">
-				<image src="/static/images/real-case/video_ic.png" mode="" v-if="params.parentType == 0"></image>
-				<image src="/static/images/real-case/ic_vr.png" mode="" v-if="params.parentType == 1"></image>
-				<image src="/static/images/real-case/img_ic.png" mode="" v-if="params.parentType == 2"></image>
+				<i class="icon-video" mode="" v-if="params.parentType == 0"></i>
+				<i class="icon-vr" mode="" v-if="params.parentType == 1"></i>
+				<i class="icon-image" mode="" v-if="params.parentType > 1&&params.recommendCategoryVO.categoryCount==0"></i>
+        <i class="icon-shops" mode="" v-if="params.parentType > 1&&params.recommendCategoryVO.categoryCount>0"></i>
 			</view>
 		</view>
 		<!-- <video v-if="params.parentType !== 0" id="myVideo" :src="params.videoUrl"
 		                    @error="videoErrorCallback" :danmu-list="danmuList" enable-danmu danmu-btn controls></video> -->
 		<view class="content">
+      <view class="goods-tag">
+        <view class="tag-list item" >
+          
+            {{params.recommendCategoryVO.allName}}
+          
+        </view>
+        <view class="item" v-if="params.recommendCategoryVO.recommendCategoryList&&params.recommendCategoryVO.recommendCategoryList.length>0">
+          推荐
+        </view>
+      </view>
 			<view class="title">{{params.caseName}}</view>
       <view class="tag">
+        <view v-for="(item,index) of params.customLabelList" :key='index'>{{item.labelName}}</view>
         <view class="" v-if="params.styleName">
           {{params.styleName}}
         </view>
-        <view v-for="item of params.features" :key='item'>{{item}}</view>
+        <view v-for="(item,index) of params.features" :key='index'>{{ item}}</view>
         
       </view>
 			<view class="case-info">
@@ -120,9 +134,18 @@
 			display: block;
 			width: 100%;
 			// 默认设置一个图片的大约值
-			max-height: 600rpx;
+      
+			height: 458rpx;
 			border-radius: 8px;
 		}
+    .person-tag{
+      width: 132rpx;
+      height: 42rpx;
+      position: absolute;
+      top: 16rpx;
+      left: 16rpx;
+      border-radius: 0;
+    }
 		.comment-like{
 			position: absolute;
 			bottom: 0;
@@ -158,16 +181,48 @@
 			position: absolute;
 			right: 16rpx;
 			top: 16rpx;
-			image{
-				width: 44rpx;
-				height: 44rpx;
+      background-color:  rgba(0, 0, 0, 0.2);
+      width: 44rpx;
+      height: 44rpx;
+      /* text-align: center; */
+      /* line-height: 44rpx; */
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 50%;
+			i{
+				font-size: 20rpx;
+				color: #fff;
+        opacity: 1;
 			}
+      .icon-vr{
+        font-size: 18rpx;
+      }
+      .icon-video{
+        margin-bottom: 4rpx;
+        margin-left: 4rpx;
+      }
 		}
 	}
 	
 	.content{
+    .goods-tag{
+      display: flex;
+      margin: 20rpx 0 4rpx;
+      .tag-list{
+        
+        max-width: 280rpx;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+      }
+      .item{
+        color: #4AA4FC;
+        font-size: 20rpx;
+      }
+    }
 		.title{
-			margin: 20rpx 0 10rpx 0;
+			margin: 0 0 10rpx 0;
 			font-size: 26rpx;
 			font-family: PingFangSC, PingFangSC-Medium;
 			// font-weight: bold;

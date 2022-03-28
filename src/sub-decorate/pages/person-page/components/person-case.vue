@@ -61,8 +61,11 @@
     mounted(){
       this.getList()
       uni.$on('isCollect',(data)=>{
-        console.log('person++++++++++',this.activeList[this.activeIndex])
-        if(data){
+        
+        if(data.isCollect === this.activeList[this.activeIndex].isCollection){
+          return
+        }
+        if(data.isCollect){
           this.activeList[this.activeIndex].collectionCount += 1
         }else{
           this.activeList[this.activeIndex].collectionCount -=1
@@ -78,6 +81,7 @@
       	} else {
       		this.rightHeight += height;
       	}
+        console.log(this.leftHeight,this.rightHeight ,'LLLLLLLLLLL' )
       },
       onJump(list, index, isDecorate) {
       	
@@ -85,7 +89,7 @@
       	const listUrl = list[index].videoUrl
         this.activeIndex = index
         this.activeList = list
-        console.log(list,index)
+        // console.log(list,index)
       	uni.navigateTo({
       		url: `/pages/real-case/real-case-webview/real-case-webview?id=${list[index].id}`
       	})
@@ -138,12 +142,21 @@
       	}
       		getCaseList(params).then((res) => {
       			if (res && res.list) {
+              res.list.forEach(item=>{
+                item.recommendCategoryVO.allName = ''
+                
+                item.recommendCategoryVO.categoryCount>0&&item.recommendCategoryVO.recommendCategoryList.forEach(el=>{
+                  item.recommendCategoryVO.allName = item.recommendCategoryVO.allName?item.recommendCategoryVO.allName+','+el.category4Name:item.recommendCategoryVO.allName+el.category4Name
+                })
+
+              })
       				this.addList(res.list);
       				this.pagState.page = res.page+1;
       				this.pagState.totalPage = res.totalPage;
       				this.pagState.totalRows = res.totalRows;
               
               this.$emit('contentEmpty','caseEmpty',res.list.length>0?true:false)
+          // this.$emit('contentEmpty','caseEmpty',false)
       			}else{
               this.$emit('contentEmpty','caseEmpty',false)
             }
@@ -185,26 +198,29 @@
       	];
       	// 获取插入的方向
       	let getDirection = (index) => {
-          
+       
+          differ = this.leftHeight - this.rightHeight;
+        
+        
       		/* 左侧高度大于右侧超过 600px 时，则前3条数据都插入到右边 */
       if(differ!==0){
-        if (differ >= 800 && index < 3) {
-        	differVal = 1;
-        	return "right";
-        }
+        // if (differ >= 800 && index < 3) {
+        // 	differVal = 1;
+        // 	return "right";
+        // }
               
-        /* 右侧高度大于左侧超过 600px 时，则前3条数据都插入到左边 */
-        if (differ <= -800 && index < 3) {
-        	differVal = -1;
-        	return "left";
-        }
+        // /* 右侧高度大于左侧超过 600px 时，则前3条数据都插入到左边 */
+        // if (differ <= -800 && index < 3) {
+        // 	differVal = -1;
+        // 	return "left";
+        // }
               
         /* 左侧高度大于右侧超过 350px 时，则前2条数据都插入到右边 */
-        if (differ >= 350 && index < 2) {
+        if (differ >= 350) {
         	return "right";
         }
         /* 右侧高度大于左侧超过 350px 时，则前2条数据都插入到左边 */
-        if (differ <= -350 && index < 2) {
+        if (differ <= -350) {
         	differVal = -1;
         	return "left";
         }

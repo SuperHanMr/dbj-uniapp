@@ -46,7 +46,7 @@
 			</view>
 			<!--  代付款订单详情的时候展示 -->
 			<view v-if="orderInfo.orderStatus == 0">
-				<view class="store-container" v-for="(item,index) in orderInfo.details":key="index" >
+				<view class="store-container" v-for="(item,index) in orderInfo.details" :key="index" >
 				  <view v-if="index > 0" class="store-line" />
 				  <view class="storeItem" :class="{paddingBottom: item.stockType == 1 }" :style="{borderRadius:index >= 1 ? '0' :'24rpx 24rpx 0 0'}" >
 				    <view class="header">
@@ -76,11 +76,11 @@
 									<image class="icon" @click="readExpenses(1)" src="../../../../static/price_icon.svg"/>
 								</view>
 								<view class="right">
-									<text class="price-font"v-if="orderInfo.stockType == 0">
+									<text class="price-font" v-if="orderInfo.stockType == 0">
 										￥{{item.freight?`${item.freight}`:"0.00"}}
 									</text>
 									<text class="price-font" :style="{marginTop:item.freight?'0':'8rpx'}" v-else>
-										{{item.freight?`￥${item.freight}`:"--"}}
+										{{item.freight?`￥${item.freight}`: (isFromPackage ? "￥0.00" : "--")}}
 									</text>
 								</view>
 							</view>
@@ -95,7 +95,7 @@
 									<text
 									  class="price-font" :style="{marginTop:item.handlingFees ? '0' : '8rpx' }"
 									  v-else
-									>{{item.handlingFees?`￥${item.handlingFees}`:"--"}}</text>
+									>{{item.handlingFees?`￥${item.handlingFees}`:(isFromPackage ? "￥0.00" : "--")}}</text>
 								</view>
 							</view>
 							<view class="item_css_style"  v-if="item.storeDiscount">
@@ -458,6 +458,7 @@ export default {
   },
   data() {
     return {
+			isFromPackage: false, // 来自套包下单页面时，运费搬运分固定展示 0
       scrollTop: 0,
       headerTitle: "订单详情",
       orderId: -1,//订单id
@@ -595,6 +596,7 @@ export default {
     this.orderId = Number(e.orderId);
     this.status = Number(e.status);
     this.from = e.from;
+		this.isFromPackage = !!e.fromPackage;
 
 		const currentHouse = getApp().globalData.currentHouse;
 		console.log("currentHouse=", currentHouse);
@@ -704,15 +706,24 @@ export default {
 			}
 			else {
 				console.log("this.from====%%%%%%%%%%%",this.from)
+				//#ifdef MP-WEIXIN
         uni.navigateBack({
           delta: 1,
         });
+				//#endif
+				//#ifdef H5
+				window.history.back();
+				//#endif
       }
     },
 
 
     // 跳转到店铺页面
     gotoShop(item) {
+			if (getApp().globalData.isInGomeMp) {
+				console.warn('在国美小程序中，不可跳转店铺详情');
+				return;
+			}
 			if (item.type == 5) return;
 			console.log("去店铺首页！！！！");
 			console.log("this.storeId=", item.storeId, "this.areaId=", this.areaId);
@@ -745,6 +756,10 @@ export default {
 
 		// 跳转到商品详情页面
 		productDetail(item, type) {
+			if (getApp().globalData.isInGomeMp) {
+				console.warn('在国美小程序中，不可跳转商品详情');
+				return;
+			}
 		  console.log("item=", item, "type=", type);
 		  uni.navigateTo({
 				url: `../../../../sub-classify/pages/goods-detail/goods-detail?goodId=${item.id}`,
@@ -808,7 +823,6 @@ export default {
 		},
 		payOrder(totalAmount) {
 		  let openId = getApp().globalData.openId;
-
       //#ifdef MP-WEIXIN
       let payType = 1
       let deviceType = 0
@@ -875,7 +889,7 @@ export default {
 		    }
 		  });
 		},
-		
+
 
 		formatTime(msTime) {
 		  let time = msTime / 1000;
@@ -965,6 +979,10 @@ export default {
 		// 进行中订单详情接口
 		// 点击商品区域，跳转到商品详情页面
 		goToDetail(item2) {
+			if (getApp().globalData.isInGomeMp) {
+				console.warn('在国美小程序中，不可跳转商品详情');
+				return;
+			}
 			uni.navigateTo({
 				url: `../../../../sub-classify/pages/goods-detail/goods-detail?goodId=${item2.id}`,
 			});
@@ -1021,6 +1039,9 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+  uni-page-body{
+    background-color: unset;
+  }
 	.header {
 		margin-bottom: 32rpx;
 		 display: flex;

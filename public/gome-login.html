@@ -25,50 +25,14 @@
       width: 40px;
       height: 40px;
     }
-    #log-window {
-      position: absolute;
-      z-index: 10000;
-      background: rgba(0, 0, 0, 0.5);
-      width: 80%;
-      height: 50%;
-      right: 0;
-      bottom: 0;
-      color: #fff;
-      font-size: 14px;
-      padding: 8px;
-      white-space: pre-wrap;
-      overflow-y: auto;
-    }
   </style>
 </head>
 <body>
   <div class="container">
     <img class="loading-img" src="https://ali-image.dabanjia.com/static/image/loading/loading-red-circle.gif">
   </div>
-  <div id="log-window"></div>
   <script src="./libs/base64.js"></script>
-  <script src="./libs/vconsole.min.js"></script>
-  <script>
-    new VConsole();
-  </script>
-  <script>
-    var logs = [];
-    var _log = console.log;
-    var _error = console.error;
-    console.log = (...args) => {
-      logs.push(args.map(arg => typeof arg === 'object' ? JSON.stringify(arg) : arg.toString()).join(' '));
-      _log.apply(console, args);
-      printLogs();
-    }
-    console.error = (...args) => {
-      logs.push(args.join(' '));
-      _error.apply(console, args);
-      printLogs();
-    }
-    function printLogs() {
-      document.getElementById('log-window').innerText = logs.join('\n');
-    } 
-  </script>
+  <script src="<%= VUE_APP_GOME_SDK_APP %>"></script>
   <script>
     function getPageParms() {
       var ret = {},
@@ -108,10 +72,9 @@
     }
     function redirectToWeb(token) {
       var hash = window.location.hash;
-      var fromDbj = localStorage.getItem("fromDbj");
-      if (fromDbj) {
+      var pageParams = getPageParms();
+      if (pageParams.fromDbj) {
         // 如果来自打扮家的域名，跳转打扮家域名的H5站
-        localStorage.removeItem("fromDbj");
         if (token) {
           window.location.replace('<%= VUE_APP_MP_H5 %>/?token=' + token + hash);
         } else {
@@ -129,7 +92,7 @@
       }
     }
     function requestToken() {
-      var url = '/customer/app/oauth/gome/loginByCookie';
+      var url = '<%= VUE_APP_GOME_API %>/app/oauth/gome/loginByCookie';
       var params = {
         clientType: "3",
         clientCode: "APPLET"
@@ -140,11 +103,12 @@
         method: "post",
         success: function(resText) {
           var res = JSON.parse(resText);
-          console.log('success:', resText, res);
           if (res.data) {
-            var token = res.data;
-            redirectToWeb(token);
+            var data = res.data || {};
+            redirectToWeb(data.accessToken);
           } else {
+            // 读取cookie失败
+            console.log('读取cookie失败', res);
             redirectToWeb();
           }
         },
@@ -154,41 +118,39 @@
         }
       });
     }
-    console.log('bridge', window.GomeJSBridge);
     // 是否在真快乐APP中
-    if (window.GomeJSBridge) {
-      GomeJSBridge.ready(function() {
-        console.log('bridge ready', GomeJSBridge.isLogin)
-        GomeJSBridge.isLogin(function(data) {
-          console.log('bridge logined?', data, data.isLogin, data.isLogined);
-          if (data.isLogin === 'Y' || data.isLogined === 'Y') {
-            requestToken();
-          } else {
-            GomeJSBridge.login(
-              null,
-              function(err) {
-                console.error('login error:', err);
-                redirectToWeb();
-              },
-              {
-                refresh: true
-              }
-            );
-          }
-        });
-      })
-    } else {
-      // H5站的登录
+    if (window.GomeJSBridge && window.GomeJSBridge.ready) {
       var pageParams = getPageParms();
-      if (pageParams.fromDbj) {
-        localStorage.setItem("fromDbj", "true");
-      } else if (!pageParams.isLogin) {
-        localStorage.removeItem("fromDbj");
-      }
       if (pageParams.isLogin) {
         requestToken();
       } else {
-        var backURL = window.location.origin + window.location.pathname + '?isLogin=true' + window.location.hash;
+        GomeJSBridge.ready(function() {
+          GomeJSBridge.login(
+            function(data) {
+              if (data.isLogined === 'Y') {
+                var loginedUrl = window.location.origin + window.location.pathname + '?isLogin=true' + (pageParams.fromDbj ? '&fromDbj=true' : '') + window.location.hash;
+                window.location.replace(loginedUrl);
+              } else {
+                redirectToWeb();
+              }
+            },
+            function(err) {
+              console.error('=======bridge login error:', err);
+              redirectToWeb();
+            },
+            {
+              refresh: false
+            }
+          );
+        })
+      }
+    } else {
+      // H5站的登录
+      var pageParams = getPageParms();
+      if (pageParams.isLogin) {
+        requestToken();
+      } else {
+        var backURL = window.location.origin + window.location.pathname + '?isLogin=true' + (pageParams.fromDbj ? '&fromDbj=true' : '')  + window.location.hash;
         window.location.replace('<%= VUE_APP_GOME_LOGIN %>?return_url=' + Base64.encode(backURL));
       }
     }

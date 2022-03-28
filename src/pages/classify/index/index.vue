@@ -1,253 +1,238 @@
 <template>
-	<view class="tabs">
-		<view class="search">
-			<view class="uni-searchbar" @click="searchClick">
-				<view class="uni-searchbar__box-icon-search">
-					<uni-icons color="#999999" size="18" type="search" />
-					<text class="uni-searchbar__text-placeholder">请输入搜索内容</text>
-				</view>
+	<view class="classify">
+		<Top :navActive="navActive" :shopListNum="shopListNum" />
+		<scroll-view class="classify-scroll" scroll-y="true" :scroll-top="scrollTop" @scrolltolower='scrolltolower' refresher-enabled='true'
+			@refresherrefresh='refresherrefresh' @scroll="scrollHandler" :refresher-triggered="triggered">
+			<Head :swiperAuto="swiperAuto" :bannerList="bannerList" />
+			<view class="container-box">
+				<Container :pavilionObj="pavilionObj" :classList="classList" :recommendList="recommendList" />
 			</view>
-		</view>
-		<view class="content-view">
-			<!-- :scroll-into-view="'tab' + scrollInto" 点击移动 -->
-			<scroll-view id="tab-bar" class="scroll-h" scroll-x="true" :show-scrollbar="false"
-				v-if="dataList.length > 1" scroll-with-animation="true" :scroll-into-view="'tab' + tabIndex">
-				<view v-for="(tab,index) in dataList" :key="index" :class="{'uni-tab-item': dataList.length >4, 'uni-tab-item-short2': dataList.length === 2,
-             'uni-tab-item-short3': dataList.length === 3, 'uni-tab-item-short4': dataList.length === 4}"
-					:id="'tab' + index" :data-current="index" @click="ontabtap">
-					<text class="uni-tab-item-title"
-						:class="tabIndex==index ? 'uni-tab-item-title-active' : ''">{{tab.name}}</text>
+			<view class="shop-list-box">
+				<view class="recommend-title">
+					精选推荐
 				</view>
-			</scroll-view>
-			<swiper :current="tabIndex" style="flex: 1;height: 100%" :duration="300" @change="ontabchange">
-				<swiper-item class="swiper-item" v-for="(tab,index1) in dataList" :key="index1">
-					<index-item :detailData="tab['children']" :tabIndex="tabIndex"></index-item>
-				</swiper-item>
-			</swiper>
-		</view>
+				<ShopList emitName="classifyListData" @clickDetail="clickDetailHandler"/>
+			</view>
+		</scroll-view>
 	</view>
 </template>
-<script>
-	import indexItem from './index-item.vue';
-	import {
-		getClassifyList
-	} from "../../../api/classify.js";
 
+<script>
+	import Head from './components/head.vue';
+	import Container from './components/container.vue';
+	import ShopList from '@/components/classify-shop/shop-list.vue';
+	import Top from './components/top.vue';
+	import {
+		navList
+	} from "@/api/home.js";
+	import {
+		getClassifyBanner,
+		getBrandHallList,
+		getShoppingCarNum,
+		getClassifyShopList
+	} from "@/api/classify.js";
 	export default {
 		components: {
-			indexItem
+			Head,
+			Container,
+			ShopList,
+			Top
 		},
 		data() {
 			return {
-				navBarHeight: 0,
-				dataList: [],
-				newsList: [1, 2, 3, 4],
-				cacheTab: [],
-				tabIndex: 0,
-				scrollInto: "",
-				areaId: ''
+				swiperAuto: false,
+				query: {
+					page: 1,
+					row: 10,
+					totalPage: 0,
+				},
+				areaId: 43,
+				navActive: false,
+				triggered: false,
+				bannerList: [],
+				pavilionObj: {
+					list: [],
+					totalRows: 0
+				},
+				classList: [],
+				recommendList: [],
+				areaId: '',
+				shopListNum: 0,
+				isFormShopDetail: false,
+				scrollTop:0
 			}
-		},
-		onShareAppMessage(res) {
-			return {
-				title: '商城',
-				path: `/pages/classify/index/index?areaId=${this.areaId}`
-			}
-		},
-		onLoad(e) {
-			getApp().globalData.currentRoute = "/pages/classify/index/index";
-			if (e.areaId) {
-				this.areaId = e.areaId;
-			} else {
-				this.areaId = getApp().globalData.currentHouse.areaId
-			}
-		},
-		mounted() {
-			uni.showTabBar()
 		},
 		onShow() {
-			uni.showTabBar()
-			//增加首页跳转过来逻辑处理
-			let naviData = getApp().globalData.naviData
-			if (naviData && naviData.id) {
-				this.id = naviData.id;
-				getApp().globalData.naviData = null
+			this.swiperAuto = true;
+			if (!this.isFormShopDetail) {
+				this.query.page = 1;
+				uni.$emit('resetScrollLeft');
+				this.scrollToTop();
+				this.mountedHandler();
+			} else {
+				this.isFormShopDetail = false;
 			}
-			this.getList();
-			this.$store.dispatch("updateTabBarBadge");
+			let currentHouse = getApp().globalData.currentHouse;
+			this.areaId = currentHouse.areaId;
+		},
+		onHide() {
+			this.swiperAuto = false;
+		},
+		mounted() {
+			uni.$on("currentHouseChange", (item) => {
+				this.areaId = item.areaId;
+			});
 		},
 		methods: {
-			searchClick() {
-				uni.navigateTo({
-					url: "/sub-classify/pages/search/index"
+			mountedHandler(){
+				this.getNavHandler();
+				this.getShoppingCarNumHandler();
+				this.getClassifyBannerHandler();
+				this.getPavilionListHandler();
+				this.getClassifyShopListHandler();
+			},
+			getClassifyShopListHandler(){
+				getClassifyShopList({
+					pageIndex: this.query.page,
+					product: {
+						areaId: this.areaId,
+					},
+					simplified: true,
+					excludeFields: "product.spu,product.process, product.store,product.supplier,product.areaIds,product.areaPrices,product.category",
+				}).then(res => {
+					this.query.totalPage = res.totalPage;
+					uni.$emit('classifyListData', {
+						page: this.query.page,
+						shopList: res.page
+					})
+					this.triggered = false;
 				})
 			},
-			getList() {
-				let areaId = this.areaId;
-				getClassifyList(areaId).then((data) => {
-					this.dataList = data;
-					if (this.id) {
-						for (let i = 0; i < data.length; i++) {
-							if (this.id == data[i].id) {
-								this.tabIndex = i;
-							}
+			getNavHandler() {
+				this.classList = [];
+				this.recommendList = [];
+				
+				let params = {
+					// provinceId: this.currentHouse.provinceId,
+					// cityId: this.currentHouse.cityId,
+					// areaId: this.currentHouse.areaId,
+					version: 14
+				}
+				navList(params).then(res => {
+					res.forEach(item => {
+						if (item && item.configParams) {
+							let configParams = JSON.parse(item.configParams);
+							this[`nav${configParams.style}Handler`] && this[`nav${configParams.style}Handler`](item)
 						}
+					})
+				})
+			},
+			nav1Handler(item){
+				this.classList.push(item);
+			},
+			nav2Handler(item){
+				this.recommendList.push(item);
+			},
+			getShoppingCarNumHandler() {
+				uni.getStorage({
+					key: 'scn',
+					success: () => {
+						getShoppingCarNum(this.areaId).then(res => {
+							this.shopListNum = res.validNumber;
+						})
+					},
+					fail: () => {
+						this.shopListNum = 0;
 					}
 				})
 			},
-			ontabtap(e) {
-				let index = e.target.dataset.current || e.currentTarget.dataset.current;
-				this.id = 0
-				this.switchTab(index);
+			getPavilionListHandler() {
+				getBrandHallList({
+					page: 1,
+					rows: 8
+				}).then((res) => {
+					if (res && res.list) {
+						this.pavilionObj.totalRows = res.totalRows;
+						this.pavilionObj.list = [...res.list, {
+							key: 'all'
+						}];
+					}
+				})
 			},
-			ontabchange(e) {
-				let index = e.target.current || e.detail.current;
-				this.switchTab(index);
+			getClassifyBannerHandler() {
+				getClassifyBanner().then((res) => {
+					this.bannerList = res;
+				})
 			},
-			switchTab(index) {
-				if (this.tabIndex === index) {
-					return;
+			scrolltolower() {
+				if (this.query.totalPage >= this.query.page) {
+					this.query.page++;
+					this.getClassifyShopListHandler();
 				}
-				this.tabIndex = index;
-				this.scrollInto = index;
-			}
+			},
+			refresherrefresh() {
+				this.query.page = 1;
+				this.triggered = true;
+				uni.$emit('resetScrollLeft')
+				this.mountedHandler();
+			},
+			scrollHandler(e) {
+				if (e.detail && e.detail.scrollTop) {
+					if (e.detail.scrollTop >= 60) {
+						if (!this.navActive) {
+							this.navActive = true;
+						} else {
+							return;
+						}
+					} else {
+						if (this.navActive) {
+							this.navActive = false;
+						} else {
+							return;
+						}
+					}
+				}
+			},
+			clickDetailHandler(){
+				this.isFormShopDetail = true;
+			},
+			scrollToTop() {
+				this.scrollTop = 1;
+				this.$nextTick(() => {
+					this.scrollTop = 0;
+				});
+			},
 		}
 	}
 </script>
 
-<style scoped>
-	.search {
-		position: relative;
-		height: 90rpx;
-	}
-
-	.uni-searchbar {
-		display: flex;
-		align-items: center;
-		position: absolute;
-		left: 0;
-		right: 0;
-		top: 0;
-		bottom: 0;
-		margin: auto;
-		width: 686rpx;
-		height: 62rpx;
-		opacity: 1;
-		background: #f7f7f7;
-		border-radius: 16rpx;
-	}
-
-	.uni-searchbar__box-icon-search {
-		display: flex;
-		align-items: center;
-		flex-direction: row;
-		padding: 0 16rpx;
-		align-items: center;
-	}
-
-	.uni-searchbar__text-placeholder {
-		font-size: 26rpx;
-		color: #A9A9A9;
-		margin-left: 10rpx;
-	}
-
-	.content-view {
-		height: 100%
-	}
-
-	.tabs {
-		flex: 1;
-		flex-direction: column;
-		overflow: hidden;
-		background-color: #ffffff;
+<style lang="scss" scoped>
+	.classify {
+		width: 100%;
 		height: 100vh;
 	}
 
-	.scroll-h {
-		width: 100%;
-		height: 80rpx;
-		text-align: center;
-		white-space: nowrap;
-		padding-right: 16rpx;
+	.classify-scroll {
+		height: 100%;
 	}
 
-	.uni-tab-item-short2 {
-		display: inline-block;
-		text-align: center;
-		min-width: calc(50% - 64rpx);
-		width: fit-content;
-		margin: 0 1%;
+	.container-box {
+		background: #FFFFFF;
+		border-radius: 16rpx 16rpx 0 0;
+		padding: 24rpx 32rpx;
 	}
 
-	.uni-tab-item-short3 {
-		display: inline-block;
-		flex-wrap: nowrap;
-		text-align: center;
-		min-width: calc(33.3% - 42.7rpx);
-		width: fit-content;
-		margin: 0 1%;
-	}
+	.shop-list-box {
+		background: #fff;
+		padding-top: 40rpx;
 
-	.uni-tab-item-short4 {
-		display: inline-block;
-		flex-wrap: nowrap;
-		text-align: center;
-		min-width: calc(25% - 32rpx);
-		width: fit-content;
-		margin: 0 1%;
-	}
+		.recommend-title {
+			padding-left: 34rpx;
+			font-weight: 600;
+			font-size: 32rpx;
+			color: #2B2F33;
+			margin-bottom: 32rpx;
+		}
 
-	.uni-tab-item {
-		/* #ifndef APP-PLUS */
-		display: inline-block;
-		/* #endif */
-		flex-wrap: nowrap;
-		text-align: center;
-		width: fit-content;
-		padding: 0 26rpx;
-	}
-
-	.uni-tab-item-title {
-		color: #555;
-		font-size: 30rpx;
-		height: 80rpx;
-		line-height: 80rpx;
-		flex-wrap: nowrap;
-		white-space: nowrap;
-		font-family: PingFangSC;
-		color: #999999;
-	}
-
-	.uni-tab-item-title-active {
-		position: relative;
-		color: #111111;
-	}
-
-	.uni-tab-item-title-active::after {
-		content: "";
-		display: inline-block;
-		width: 32rpx;
-		height: 6rpx;
-		background: linear-gradient(116.19deg, #F83112 16.48%, #FD6421 83.52%);
-		border-radius: 100px 100px 0px 0px;
-		position: absolute;
-		bottom: -12rpx;
-		left: 0;
-		right: 0;
-		margin: auto;
-	}
-
-	.swiper-item {
-		flex: 1;
-		flex-direction: row;
-	}
-
-	.scroll-v {
-		flex: 1;
-		/* #ifndef MP-ALIPAY */
-		flex-direction: column;
-		/* #endif */
-		width: 750rpx;
-		width: 100%;
 	}
 </style>

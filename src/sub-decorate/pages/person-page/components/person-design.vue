@@ -12,7 +12,7 @@
           v-if="personId!=0&&personData.gender===2"
         ></i>
       </view>
-      
+
       <view class="header-right">
         <view class="header-right-top">
           <view class="list-item">
@@ -71,10 +71,7 @@
         <view class="name">
           {{personData.realName}}
         </view>
-        <view class="tag">
-          <image v-for="(item,index) in personData.personAllBadgeVO.basicBadges" :key='item.badgeId' :src="item.ico" mode=""></image>
-          <image v-for="(item,index) in personData.personAllBadgeVO.skillBadges" :key='item.badgeId' :src="item.ico" mode=""></image>
-        </view>
+
       </view>
       <view class="info-list">
         <!-- {{personData.gender===1?'男':'女'}} -->
@@ -86,16 +83,42 @@
         <text v-if="personData.industryYearsStr">|</text>
         {{personData.industryYearsStr?personData.industryYearsStr:''}}
       </view>
-      <view class="skill">
-        <view class="skill-item" v-for="(item,index) of personData.designTags" :key='index'>
-          {{item}}
+      <view class="introduce">
+        <view class="item" @click="openPopup" v-if="personData.personAllBadgeVO.skillBadges.length||personData.personAllBadgeVO.basicBadges.length">
+          <i class='icon-a-homepage_Thebadge icon'></i>
+          <text class="tag-tip">Ta的徽章</text>
+          <view class="tag">
+            <image v-for="(item,index) in personData.personAllBadgeVO.basicBadges" :key='item.badgeId' :src="item.ico" mode=""></image>
+            <image v-for="(item,index) in personData.personAllBadgeVO.skillBadges" :key='item.badgeId' :src="item.ico" mode=""></image>
+          </view>
+          <i class="icon-alert_notice_jump"></i>
         </view>
+        <view class="item" v-if="personData.designTags.length">
+          <i class='icon-a-homepage_Goodat icon'></i>
+          <view class="skill">
+            <view class="skill-item" v-for="(item,index) of personData.designTags" :key='index'>
+              {{item}}
+            </view>
+            
+          </view>
+        </view>
+        <view class="item">
+          <i class='icon-a-homepage_data icon'></i>
+          <view class="msg-content introudc-msg" >
+            <view class="report-text" :class="{'report-text-hidden':isHidden}">{{personData.intro||'这个设计师很忙，还没有填写个人简介'}}</view>
+            <view class="openHidden" v-if="showBtn" @click="clickHidden">
+              {{hddenText}}
+            </view>
+          </view>
+        </view>
+
       </view>
-      <view class="msg-content introudc-msg" >
-        <view class="report-text" :class="{'report-text-hidden':isHidden}">{{personData.intro||'这个人很懒，什么都没写'}}</view>
-        <view class="openHidden" v-if="showBtn" @click="clickHidden">
-          {{hddenText}}
-        </view>
+      <view class="value-rank" :style="{'color':`#${item.fontColor}`}" v-for="(item,index) in rankData" :key='index' v-if="item.realNumber>0" @click="toRankList(item.name)">
+        <text class="top-font">TOP.</text>
+        <text class="num top-font">{{item.realNumber}}</text>
+        <text class="rank-text">{{item.name}}</text>
+        <i class="icon-alert_notice_jump"></i>
+        <image :src="item.styleImage" mode=""></image>
       </view>
     </view>
   </view>
@@ -106,7 +129,7 @@
   export default{
     props:{
       personData:{},
-      
+      rankData:{},
       isAttention:{
         type:Boolean,
         default:false
@@ -120,7 +143,7 @@
       }
     },
     mounted(){
-      console.log(".............")
+      
       let query = uni.createSelectorQuery().in(this)
       this.$nextTick(function(){
         query.select(".report-text").boundingClientRect((res) => {
@@ -143,6 +166,9 @@
       queryAttention(data,from='attention'){
         this.$emit('queryAttention',data,from)
       },
+      openPopup(){
+        this.$emit('openPopup')
+      },
       clickHidden(){
         this.isHidden = !this.isHidden
         this.hddenText = this.isHidden?'查看全部':'收起隐藏'
@@ -160,11 +186,16 @@
       },
       sendMsg(){
         if(!this.isAttention){
-          this.queryAttention(1001,'auto') 
+          this.queryAttention(1001,'auto')
         }else{
           this.$emit('sendMsg')
         }
+      },
+      toRankList(data){
         
+        uni.navigateTo({
+          url:'/sub-home/pages/find-design/designer-rank-list?initTabName='+data
+        })
       }
     }
   }
@@ -284,6 +315,38 @@
           text-overflow: ellipsis;
           white-space: nowrap;
         }
+
+      }
+      .introduce{
+        border-bottom: 0.5px solid rgba(255, 255, 255, 0.2);;
+        .item{
+          display: flex;
+          margin-bottom: 24rpx;
+          .icon{
+            color: #fff;
+            margin-right: 12rpx;
+            // margin-top: 6rpx;
+            line-height: 42rpx;
+            font-size: 20rpx;
+            opacity: 0.9;
+          }
+          .icon-a-homepage_data{
+            margin-top: 4rpx;
+          }
+          .tag-tip{
+            color: #fff;
+            opacity: 0.8;
+            font-size: 22rpx;
+            margin-right: 12rpx;
+            line-height: 40rpx;
+          }
+          .icon-alert_notice_jump{
+            color: #fff;
+            opacity: 0.8;
+            font-size: 24rpx;
+            line-height: 40rpx;
+          }
+        }
         .tag{
           display: flex;
           align-items: center;
@@ -296,7 +359,7 @@
       }
       .info-list{
         font-size: 20rpx;
-        color: rgba(255, 255, 255, 0.6);;
+        color: rgba(255, 255, 255, 0.5);;
         margin-bottom: 24rpx;
         text{
           display: inline-block;
@@ -305,11 +368,11 @@
       }
       .skill{
         display: flex;
-        margin-bottom: 22rpx;
+        // margin-bottom: 22rpx;
         flex-wrap: wrap;
         .skill-item{
           background: rgba(255, 255, 255, 0.05);
-          border: 0.5px solid rgba(255, 255, 255, 0.08);
+          border: 0.5px solid rgba(255, 255, 255, 0.13);
           border-radius: 3px;
           // width: 64rpx;
           padding: 0 12rpx;
@@ -318,23 +381,23 @@
           line-height: 34rpx;
           margin-right: 12rpx;
           color: #fff;
-          opacity: 0.6;
+          opacity: 0.8;
           font-size: 20rpx;
           margin-bottom: 10rpx;
         }
       }
       .msg-content{
-        margin-bottom: 30rpx;
+        // margin-bottom: 30rpx;
         .report-text {
           color: #fff;
           font-size: 26rpx;
           font-weight: 400;
-          letter-spacing: 1px;
+          letter-spacing: 0.2px;
           width: 100%;
           line-height: 42rpx;
           word-break: break-word;
           display: inline-block;
-          opacity: 0.6;
+          opacity: 0.8;
         }
         .report-text-hidden{
           overflow : hidden;
@@ -347,7 +410,7 @@
           width: 148rpx;
           height: 44rpx;
           opacity: 1;
-          border: 2rpx solid #cccccc;
+          border: 0.5px solid #cccccc;
           border-radius: 12px;
           margin: 24rpx auto;
           line-height: 44rpx;
@@ -357,6 +420,42 @@
           font-size: 24rpx;
           
         }
+      }
+    }
+    .value-rank{
+      margin: 32rpx 0;
+      height: 60rpx;
+      line-height: 60rpx;
+      font-size: 26rpx;
+      color: #865E41;
+      position: relative;
+      padding: 0 24rpx;
+      text{
+        z-index: 10;
+        position: relative;
+      }
+      .rank-text{
+        letter-spacing: 0.2px;
+        font-weight: 500;
+      }
+      .num{
+        margin: 0 54rpx 0 8rpx;
+        font-size: 28rpx;
+        font-weight: bold;
+      }
+      i{
+        position: relative;
+        z-index: 10;
+        margin-left: 8rpx;
+        font-size: 20rpx;
+        display: inline-block;
+      }
+      image{
+        position: absolute;
+        left: 0;
+        top: 0;
+        height: 60rpx;
+        width: 100%;
       }
     }
   }

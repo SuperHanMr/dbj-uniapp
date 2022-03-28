@@ -6,7 +6,7 @@
     type="image/x-icon" />
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>跳转打扮家中...</title>
+  <title>打扮家装修</title>
   <style>
     html, body {
       padding: 0;
@@ -32,6 +32,18 @@
     <img class="loading-img" src="https://ali-image.dabanjia.com/static/image/loading/loading-red-circle.gif">
   </div>
   <script>
+    function getPageParms() {
+      var ret = {},
+        seg = window.location.search.replace(/^\?/, '').split('&'),
+        len = seg.length, i = 0, s;
+      for (; i < len; i++) {
+        if (!seg[i]) { continue; }
+        s = seg[i].split('=');
+        ret[s[0]] = s[1];
+      }
+      return ret;
+    }
+    var pageParams = getPageParms();
     function request(options) {
       var xhr = new XMLHttpRequest()
       xhr.withCredentials = true;
@@ -57,50 +69,108 @@
       xhr.setRequestHeader('Content-Type', 'application/json');
       xhr.send(JSON.stringify(options.data));
     }
-    function redirectToWeb(token) {
-      var hash = window.location.hash;
-      // 跳转gome域名的H5站
-      if (token) {
-        localStorage.setItem("scn", token);
-      } else {
-        localStorage.removeItem("scn");
-        localStorage.removeItem("userId");
-      }
-      window.location.replace('/' + hash);
-      // XXX: 以下是跳转打扮家域名的H5站，先保留，以后可能有用
-      // if (token) {
-      //   window.location.replace('<%= VUE_APP_MP_H5 %>/?token=' + token + hash);
-      // } else {
-      //   window.location.replace('<%= VUE_APP_MP_H5 %>/?token=CLEAR' + hash);
-      // }
+
+    var routeMap = {
+      orderDetail: "/sub-my/pages/my-order/order-detail/order-detail", //订单详情
+      goodsDetail: "/sub-classify/pages/goods-detail/goods-detail" //商品详情
     }
-    function requestToken() {
-      var url = '/customer/app/oauth/gome/loginByCookie';
+    /**
+     * 获取hash
+     * 第一种方式，是从search的route传递过来，这种方式支持两种
+     * 1.传过来路由别名，通过routeMap映射成具体的路由
+     * 2.直接把原hash通过encodeURIComponent编码之后传递过来
+     * 第二种方式，直接是hash传递过来
+     */
+    function getHash() {
+      var route = pageParams.route;
+      if (route) {
+        if (routeMap[route]) {
+          var hash = "#" + routeMap[route];
+          if (route === "orderDetail") {
+            hash += "?orderId=" + pageParams.orderId;
+          } else if (route === "goodsDetail") {
+            var qs = [];
+            if (pageParams.goodId) {
+              qs.push("goodId=" + pageParams.goodId);
+            }
+            if (pageParams.skuTemplateId) {
+              qs.push("skuTemplateId=" + pageParams.skuTemplateId);
+            }
+            if (pageParams.gomeDivisionCode) {
+              qs.push("gomeDivisionCode=" + pageParams.gomeDivisionCode);
+            }
+            if (pageParams.fromPakage) {
+              qs.push("fromPakage=" + pageParams.fromPakage);
+            }
+            hash += "?" + qs.join("&");
+          }
+          return hash;
+        }
+        return "#" + decodeURIComponent(route);
+      }
+      return window.location.hash;
+    }
+
+    function redirectToWeb(token, isGomeMp) {
+      var hash = getHash();
+      // 如果是在国美小程序中，跳转gome域名的H5站
+      if (isGomeMp) {
+        if (token) {
+          localStorage.setItem("scn", token);
+        } else {
+          localStorage.removeItem("scn");
+          localStorage.removeItem("userId");
+        }
+        window.location.replace('/' + (isGomeMp ? '?isGomeMp=true' : '') + hash);
+      } else {
+        //  跳转打扮家域名的H5站
+        if (token) {
+          window.location.replace('<%= VUE_APP_MP_H5 %>/?token=' + token + (isGomeMp ? '&isGomeMp=true' : '') + hash);
+        } else {
+          window.location.replace('<%= VUE_APP_MP_H5 %>/?token=CLEAR' + (isGomeMp ? '&isGomeMp=true' : '') + hash);
+        }
+      }
+    }
+    function requestToken(scn, isGomeMp) {
+      isGomeMp = isGomeMp || false;
+      var url = '<%= VUE_APP_GOME_API %>/app/oauth/gome/loginByCookie';
       var params = {
         clientType: "3",
         clientCode: "APPLET"
       };
+      if (scn) {
+        params.token = scn;
+        // 后端接口有问题，只能读cookie
+        var host = '<%= VUE_APP_GOME_API %>';
+        var domain = host.slice(host.indexOf(".")+1);
+        document.cookie = "SCN=" + scn + ";domain=" + domain;
+      }
       request({
         url: url,
         data: params,
         method: "post",
         success: function(resText) {
           var res = JSON.parse(resText);
-          console.log('success:', resText, res);
           if (res.data) {
-            var token = res.data;
-            redirectToWeb(token);
+            var data = res.data || {};
+            redirectToWeb(data.accessToken, isGomeMp);
           } else {
-            redirectToWeb();
+            redirectToWeb('', isGomeMp);
           }
         },
         error: function(err) {
           console.error(err);
-          redirectToWeb();
+          redirectToWeb('', isGomeMp);
         }
       });
     }
-    requestToken();
+    if (pageParams.scn) {
+      // 是否在真快乐小程序中
+      var isGomeMp = /plt-\w+App/.test(pageParams.ctx);
+      requestToken(pageParams.scn, isGomeMp);
+    } else {
+      requestToken();
+    }
   </script>
 </body>
 </html>

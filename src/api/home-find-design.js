@@ -26,3 +26,18 @@ export function searchDesigner(params) {
 export function designServiceList(params){
 	return request.get(`/app/search/designer/getServiceRecommend`,params)
 }
+// 找设计首页设计师列表
+export function firstsearchDesigner(params) {
+	return request.post(`/app/search/designer/recommend`, params);
+}
+
+// 设计师榜单top10
+export function requestDesignerTopRank(params = {}) {
+	return request.get(`/app/designRank/getTop10Ranking`, params)
+}
+
+// 获取图文案例风格
+export function getCaseStyleList() {
+	return request.get(`/web/case/getCaseStyleList`)
+}
+
