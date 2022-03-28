@@ -100,6 +100,16 @@
 										@changeBgc="changeBgc"
 									/>
 								</view>
+								<view
+									class="countDownStyle"
+									v-if="currentIndex==1 &&item.isOrderCompanyTransfer"
+									:style="{backgroundSize: '100% 100%',backgroundImage:`url(${countDownBgc2})`}"
+								>
+									<view class="showText">
+										请尽快付款
+									</view>
+								</view>
+								
               </view>
 
               <view class="body">
@@ -820,6 +830,15 @@ export default {
 			position: absolute;
 			top: 2rpx;
 			right: 16rpx;
+		}
+		.showText{
+			position: absolute;
+			top: 0;
+			height: 37rpx;
+			line-height: 37rpx;
+			right: 28rpx;
+			color: #999999;
+			font-size: 20rpx;
 		}
 
 	}

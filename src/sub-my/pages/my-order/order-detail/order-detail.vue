@@ -25,7 +25,7 @@
 						</view>
 					</view>
 
-				  <view class="time" v-if="orderInfo.showCancelOrderTime && orderInfo.orderStatus==0">
+				 <view class="time" v-if="orderInfo.showCancelOrderTime && orderInfo.orderStatus==0">
 				    <text style="margin-right: 16rpx;">剩余支付时间</text>
 				    <count-down
 				      class="countStyle"
@@ -33,6 +33,9 @@
 				      @finish="goToCancelDetail"
 				    />
 				  </view>
+					<view class="time" v-if="item.isOrderCompanyTransfer && orderInfo.orderStatus==0">
+						<view class="showText">请尽快线下汇款，汇款时务必填写汇款识别码</view>
+					</view>
 				</view>
 			</view>
 
@@ -154,13 +157,18 @@
 				  />
 				</view>
 
-				<view class="pay-way mrb">
+				<view class="pay-way mrb" v-if="!orderInfo.isOrderCompanyTransfer">
 				  <text style="color: #333333;">支付方式</text>
 					<view v-if="payChannel" class="flex-center"><text>储值卡支付</text></view>
 				  <view v-else class="flex-center"><text>在线支付</text></view>
 				</view>
+				<!-- 支付模块新增需求  只有代付款 -->
+				<order-payment-info 
+					v-if="orderInfo.isOrderCompanyTransfer"
+					:orderInfo="orderInfo"
+				></order-payment-info>
 
-				<view class='remarks'>
+				<view class='remarks' v-if="!orderInfo.isOrderCompanyTransfer">
 				  <text>备注</text>
 				  <view class="remarks-right">
 				    <textarea
@@ -243,8 +251,10 @@
         :data="orderInfo"
         :orderFailed="true"
       />
+			
+			
 			<order-info
-			 v-if="orderStatus==0"
+				v-if="orderStatus==0"
 			  :orderNo="orderInfo.orderNo"
 			  :createTime="orderInfo.createTime"
 			/>
@@ -1428,6 +1438,10 @@ export default {
 			    mix-blend-mode: normal;
 			    border: 2rpx solid rgba(255, 255, 255, 0.3);
 			  }
+				.showText{
+					font-size: 24rpx;
+					color: #ffffff;
+				}
 			}
 
     }
