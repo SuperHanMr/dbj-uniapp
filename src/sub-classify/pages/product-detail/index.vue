@@ -46,9 +46,11 @@
 					gomeDivisionCode: '',
 				},
 				paramsJson: '',
+				pageOpts:{},
 			}
 		},
 		onLoad(e) {
+			this.pageOpts = {...e}
 			uni.showShareMenu(); // 显示分享按钮
 			// this.baseUrl = this.ENV.VUE_APP_BASE_H5
 			this.baseUrl = 'https://localhost'
@@ -97,7 +99,23 @@
 			this.paramsJson = JSON.stringify(this.params)
 			console.log('params:', this.params)
 		},
-
+		
+		onShareAppMessage(res) {
+		  let params = [];
+		  Object.keys(this.pageOpts).forEach(key => {
+		    params.push(`${key}=${this.pageOpts[key]}`)
+		  });
+		  if (getApp().globalData.isSaler) {
+		    params.push(`shareId=${getApp().globalData.shareId}`)
+		  }
+		  let path = `/sub-classify/pages/goods-detail/goods-detail`;
+		  if (params.length) {
+		    path += '?' + params.join('&')
+		  }
+		  return {
+		    path: path
+		  }
+		},
 		methods: {},
 	}
 </script>
