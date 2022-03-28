@@ -172,7 +172,7 @@
 			refresherrefresh() {
 				this.query.page = 1;
 				this.triggered = true;
-				this.getClassifyShopListHandler();
+				this.mountedHandler();
 			},
 			scrollHandler(e) {
 				if (e.detail && e.detail.scrollTop) {
