@@ -684,6 +684,13 @@
         		"navigationBarTitleText": "",
         		"enablePullDownRefresh": false
         	}
+        },
+        {
+        	"path" : "pages/whole-webview/whole-webview",
+        	"style" : {
+        		"navigationBarTitleText": "",
+        		"enablePullDownRefresh": false
+        	}
         }
 			]
     },
@@ -1024,7 +1031,7 @@
         {
           "path": "pages/custom-report/custom-report",
           "style": {
-            "navigationBarTitleText": "自定义报告",
+            "navigationBarTitleText": "",
             "enablePullDownRefresh": false
           }
         },

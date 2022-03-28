@@ -35,3 +35,9 @@ export function firstsearchDesigner(params) {
 export function requestDesignerTopRank(params = {}) {
 	return request.get(`/app/designRank/getTop10Ranking`, params)
 }
+
+// 获取图文案例风格
+export function getCaseStyleList() {
+	return request.get(`/web/case/getCaseStyleList`)
+}
+
