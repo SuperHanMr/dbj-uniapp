@@ -19,17 +19,23 @@
         <text class="design-job">{{peerComment.roleName}}</text>
         <view
           class="design-rank"
-          v-if="peerComment.valueRank>0"
+          v-if="peerComment.appChartRelations &&peerComment.appChartRelations.length >=1 &&peerComment.appChartRelations[0].realNumber"
+					:style="{backgroundImage: `url(${handleLabelImg(peerComment.appChartRelations[0]).bgImg})`}"
         >
-          <text class="num top-font">TOP.{{peerComment.valueRank}}</text>
-          <text class="text">最具价值</text>
+          <text class="num top-font" 
+						:style="{color:`#${peerComment.appChartRelations[0].fontColor}`,background:handleLabelImg(peerComment.appChartRelations[0]).bgcolor}"
+					>TOP.{{peerComment.appChartRelations[0].realNumber}}</text>
+          <text class="text top-font" 
+						:style="{color:`#${peerComment.appChartRelations[0].fontColor}`}" 
+					>{{peerComment.appChartRelations[0].abbreviation}}</text>
         </view>
+					
       </view>
       <view class="tag-list">
         <view
           class="tag-item"
-          v-for="(item,index) of peerComment.commentTags.split(',')"
-          :key='index'
+          v-for="item of peerComment.commentTags.split(',')"
+          :key='item'
         >
           {{item}}
         </view>
@@ -149,6 +155,24 @@ export default {
       isHidden: false,
       showBtn: false,
       hddenText: "展开",
+			labelList:[
+				{
+					bgcolor:"linear-gradient(180deg, #EAE3D1 0%, #DED5BF 100%)",
+					bgImg:"https://ali-image.dabanjia.com/static/mp/dabanjia/images/theme-red/home/labelRank1.png",
+				},
+				{
+					bgcolor:"linear-gradient(180deg, #FAD7CD 0%, #E8C2B5 100%)",
+					bgImg:"https://ali-image.dabanjia.com/static/mp/dabanjia/images/theme-red/home/labelRank2.png",
+				},
+				{
+					bgcolor:"linear-gradient(180deg, #B9E6F3 0%, #9FD3E3 100%)",
+					bgImg:"https://ali-image.dabanjia.com/static/mp/dabanjia/images/theme-red/home/labelRank3.png",
+				},
+				{
+					bgcolor:"linear-gradient(180deg, #FFEBCC 0%, #FFE5B7 100%)",
+					bgImg:"https://ali-image.dabanjia.com/static/mp/dabanjia/images/theme-red/home/labelRank999.png",
+				}
+			],
     };
   },
   // mounted() {
@@ -221,6 +245,22 @@ export default {
     //     url:'/sub-home/pages/find-design/designer-rank-list'
     //   })
     // }
+
+		//处理标签图片展示问题
+		handleLabelImg(rankItem){
+			console.log("rankIteman",rankItem.styleCode,typeof rankItem.styleCode)
+			switch(rankItem.styleCode){
+				case 1:
+					return this.labelList[0];
+				case 2:
+					return  this.labelList[1];
+				case 3:
+					return  this.labelList[2];
+				case 9999:
+					console.log("99999",)
+					return  this.labelList[3];
+			}
+		},
   },
 };
 </script>
@@ -274,29 +314,8 @@ export default {
         font-size: 20rpx;
         margin-right: 12rpx;
       }
-      .design-rank {
-        height: 30rpx;
-        line-height: 30rpx;
-        z-index: 10;
-        display: flex;
-        align-items: center;
 
-        text {
-          display: inline-block;
-          padding: 0 8rpx;
-          font-size: 20rpx;
-          color: #865e41;
-        }
-        .num {
-          background: linear-gradient(180deg, #ffebcc 0%, #ffe5b7 100%);
-          border-radius: 4rpx 0 0 4rpx;
-        }
-        .text {
-          background: linear-gradient(180deg, #ffdfa8 0%, #efc988 100%);
-          border-radius: 0 4rpx 4rpx 0;
-        }
-      }
-    }
+		}
     .tag-list {
       display: flex;
       margin: 14rpx 0 12rpx;
@@ -341,6 +360,35 @@ export default {
       }
     }
   }
+	.design-rank {
+	  z-index: 10;
+	  display: flex;
+	  align-items: center;
+		flex-flow: row nowrap;
+		background-size: 182rpx 30rpx;
+		background-position: right center;
+	  text {
+	    display: inline-block;
+	  }
+	  .num {
+	   padding: 0 16rpx 0 10rpx;
+	   height: 30rpx;
+	   line-height: 30rpx;
+	   text-align: center;
+	   font-weight: 500;
+	   font-size: 20rpx;
+	   border-radius: 4rpx 0 14rpx 4rpx;
+	  }
+	  .text {
+	   width: 98rpx;
+	   height: 30rpx;
+	   line-height: 30rpx;
+	   text-align: center;
+	   font-weight: 500;
+	   font-size: 20rpx;
+	  }
+	}
+
   .user-evaliate {
     position: relative;
   }

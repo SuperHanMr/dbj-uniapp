@@ -4,7 +4,6 @@
 			:opacity="scrollTop>0?'1':'0'"
 		  :bgcolor="scrollTop>0?'#101721':''"
 		>
-		  <!-- :opacity="scrollTop/100" -->
 		  <template v-slot:back>
 		    <view @click="toBack" style="display: flex;flex-flow: row; align-items: center;position: relative;">
 		      <i
@@ -12,7 +11,11 @@
 		        style="color:white"
 		      >
 		      </i>
-					<image class="smallBrandText" v-if="scrollTop > 0" src="../../static/image/bgBrandName.png" mode=""></image>
+					<image 
+						class="smallBrandText" 
+						v-if="scrollTop > 0" 
+						src="https://ali-image.dabanjia.com/static/mp/dabanjia/images/theme-red/classify/bgBrandName.png" 
+					/>
 					<view class="brandTextContainer" v-else>
 						<image src="../../static/image/bgBrandName.png" mode=""></image>
 						<view class="line"></view>
@@ -21,7 +24,9 @@
 		  </template>
 		</custom-navbar>
 
-		<view class="bgImg" :style="{backgroundImage:`url(${brandHeadBgImg})`}"></view>
+		<view class="bgImg" 
+			style="background-image:url(https://ali-image.dabanjia.com/static/mp/dabanjia/images/theme-red/classify/brandHeadBg.png)"
+		></view>
 		
 		<view class="rankList-container" v-if="brandList.length">
 			<view class="rankItem"
@@ -29,7 +34,7 @@
 				:key="item.id"
 				@click="gotoDetail(item)"
 			>
-				<image class="brandBgImg" v-if="item.id" src="../../static/image/brandItemBgImg.png" />
+				<image class="brandBgImg" v-if="item.id" :src="brandItemBgImg" />
 				<image class="brandBgImage" :src="item.brandBagImage"/>
 				<image class="rankImage"  :src="item.brandLogoImage" />
 				<view class="rankName" v-if="item.brandShortName">{{item.brandShortName}}</view>
@@ -39,13 +44,13 @@
 
 		<view class="noData-container" v-if="!brandList.length || showNowifiStyle">
 			<view class="noBrandData" v-if="!brandList.length">
-				<image src="../../static/image/no_brandListData.png" />
+				<image src="https://ali-image.dabanjia.com/static/mp/dabanjia/images/theme-red/classify/no_brandListData.png" />
 				<view class="text">
 					暂无相关品牌
 				</view>
 			</view>
 			<view class="noBrandData" v-if="showNowifiStyle">
-				<image src="../../static/image/brandPage_nowifi.png" />
+				<image src="https://ali-image.dabanjia.com/static/mp/dabanjia/images/theme-red/classify/brandPage_nowifi.png" />
 				<view class="text">
 					暂无网络
 				</view>
@@ -65,15 +70,13 @@
 		data() {
 			return {
 				scrollTop:0,
-				brandHeadBgImg:"../../static/image/brandHeadBg.png",
-				bgImg:"../../static/image/brandItemBgImg.png",
-				headerBgImg:"https://ali-image.dabanjia.com/static/mp/dabanjia/images/theme-red/home/designerRankBg.png",
 				query:{
 					page:1,
 					rows:10,
 					totalPage:1,
 					positon:"",
 				},
+				brandItemBgImg:"../../static/image/brandItemBgImg.png",
 				brandList:[],
 				dataListLength:0,
 				showNowifiStyle:false,

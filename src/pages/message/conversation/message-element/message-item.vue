@@ -47,6 +47,10 @@
     v-else-if="message.type === TIM.TYPES.MSG_CUSTOM && template.template === 'servecard'"
     :message="message"
   />
+  <case-card-element
+    v-else-if="message.type === TIM.TYPES.MSG_CUSTOM && template.template === 'case'"
+    :message="message"
+  />
   <card-template
     v-else-if="message.type === TIM.TYPES.MSG_CUSTOM && template.template === 'card'"
     :template="template"
@@ -89,6 +93,7 @@
   import UnsupportedElement from "./unsupported-element.vue";
   import CardTemplate from "./template/card-tpl.vue"
   import ServeCardElement from "./serve-card-element.vue";
+  import CaseCardElement from "./case-card-element.vue";
   import TipTemplate from "./template/tip-tpl.vue"
   import Tip2Template from "./template/tip2-tpl.vue"
   import TextTemplate from "./template/text-tpl.vue"
@@ -116,6 +121,7 @@
       TipTemplate,
       Tip2Template,
       TextTemplate,
+      CaseCardElement,
       ServeCardElement,
     },
     computed: {

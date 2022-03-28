@@ -1,12 +1,12 @@
 <template>
 	<view class="real-case-screening">
-		<view class="list" v-for="(item, index) in list" :key='item.key'>
+		<view class="list" v-for="(item, index) in list" :key='item.key' :style="{ left : a ? a : 'none', right: v ? v :'none', top: b}">
 			<view class="left">
 				{{item.title}}
 			</view>
 			<view class="right">
-				<view :class="['tag', {'tag-all': tag.key == tagSelect[index]}]" v-for="(tag, tagIndex) in item.list"
-					:key='tag.key' @click="onTag(index,tag.key, tagIndex)">
+				<view :class="['tag', {'tag-all': tag.code == tagSelect[index]}]" v-for="(tag, tagIndex) in item.list"
+					:key='tag.code' @click="onTag(index,tag.code, tagIndex)">
 					{{tag.name}}
 				</view>
 			</view>
@@ -19,6 +19,7 @@
 
 <script>
 	export default {
+		props:["caseStyleList"],
 		data() {
 			return {
 				list: [{
@@ -26,27 +27,27 @@
 						key: 1,
 						list: [{
 								name: '全部',
-								key: null
+								code: null
 							},
 							{
 								name: '一室',
-								key: 1
+								code: 1
 							},
 							{
 								name: '二室',
-								key: 2
+								code: 2
 							},
 							{
 								name: '三室',
-								key: 3
+								code: 3
 							},
 							{
 								name: '四室',
-								key: 4
+								code: 4
 							},
 							{
 								name: '五室',
-								key: 5
+								code: 5
 							}
 						]
 					},
@@ -55,27 +56,58 @@
 						key: 2,
 						list: [{
 								name: '全部',
-								key: null
+								code: null
 							},
 							{
 								name: '60m²以下',
-								key: '0-60'
+								code: '0-60'
 							},
 							{
 								name: '60-90m²',
-								key: '60-90'
+								code: '60-90'
 							},
 							{
 								name: '90-120m²',
-								key: '90-120'
+								code: '90-120'
+							},
+							{
+								name: '120-150m²',
+								code: '120-150'
+							},
+							{
+								name: '150m²以上',
+								code: '150'
 							},
 						]
+					},
+					{
+						title: '风格',
+						key: 3,
+						list: []
 					}
+					
 				],
 				tagSelect: [null, null],
 				selectData: {
 
 				}
+			}
+		},
+		watch:{
+			caseStyleList: {
+				handler: function handler(val){
+					let arr = JSON.parse(JSON.stringify(val));
+					if (arr[0].code != null) {
+						arr.unshift({
+							code: null,
+							name: '全部'
+						})
+					}
+					console.log(arr, '>>><><><')
+					this.list[2].list = arr;
+				},
+				deep: true,
+				immediate: true
 			}
 		},
 		methods: {
@@ -84,8 +116,8 @@
 				arr[index] = key;
 				this.tagSelect = arr;
 				this.selectData[index] = {
-					name: this.list[index].list[tagIndex].key == null ? '' : this.list[index].list[tagIndex].name,
-					key: this.list[index].list[tagIndex].key,
+					name: this.list[index].list[tagIndex].code == null ? '' : this.list[index].list[tagIndex].name,
+					code: this.list[index].list[tagIndex].code,
 				};
 				this.$emit('updateTag', this.selectData);
 			}
@@ -97,11 +129,13 @@
 	.real-case-screening {
 		width: 100%;
 		height: 100%;
+		background-color: #ffffff;
+		margin-bottom: 32rpx;
 
 		.list {
 			display: flex;
 			align-items: center;
-			padding: 16rpx 0 16rpx 32rpx;
+			padding: 18rpx 0 18rpx 32rpx;
 			position: relative;
 
 			.left {
