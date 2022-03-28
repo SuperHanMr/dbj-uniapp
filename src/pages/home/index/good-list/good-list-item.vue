@@ -67,8 +67,11 @@
 		},
 		methods: {
 			toGoodsDetail(id) {
+				// uni.navigateTo({
+				// 	url: "/sub-classify/pages/product-detail/index?goodId=" + id,
+				// });
 				uni.navigateTo({
-					url: "/sub-classify/pages/product-detail/index?goodId=" + id,
+					url: `/sub-classify/pages/product-detail/index?productId=${id}`
 				});
 			},
 			foramtPrice(item) {

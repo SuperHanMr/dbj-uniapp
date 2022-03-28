@@ -35,7 +35,7 @@
 						// 用户位置
 						name: '北京朝阳',
 					},
-					// 分享Id
+					// 分享地区Id
 					shareAreaId: '',
 					// 分享人姓名
 					shareAreaName: '',
