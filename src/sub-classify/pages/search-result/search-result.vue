@@ -169,9 +169,11 @@
           // } else {
           //   this.listArr = data.page
           // }
+          console.log(data.page, "data.page")
+          this.listArr = data.page
           uni.$emit('passShopList', {
-          	page: data.page,
-          	shopList: this.pageNum
+          	page: this.pageNum,
+          	shopList: data.page
           })
         })
       },
