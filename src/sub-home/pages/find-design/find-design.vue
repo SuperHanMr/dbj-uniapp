@@ -49,6 +49,7 @@
         </view>
       </view>
     </view>
+
     <view class="recommendForYou-container">
       <view class="title_container">
         <view class="left">
@@ -342,7 +343,7 @@ export default {
 			showFloating:false,
     };
   },
-  
+
 
 	mounted() {
 		const menuButtonInfo = uni.getMenuButtonBoundingClientRect();
@@ -380,7 +381,7 @@ export default {
 		this.scrollLeft = 1
 		this.$nextTick(()=>{
 			this.scrollLeft = 0
-			uni.$emit("currentHouseChange")
+			uni.$on("currentHouseChange")
 			this.userId = getApp().globalData.token;
 			console.log("getApp().globalData===",getApp().globalData)
 			this.estateId = getApp().globalData.currentHouse.id
