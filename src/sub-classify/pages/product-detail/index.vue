@@ -52,8 +52,8 @@
 		onLoad(e) {
 			this.pageOpts = {...e}
 			uni.showShareMenu(); // 显示分享按钮
-			// this.baseUrl = this.ENV.VUE_APP_BASE_H5
-			this.baseUrl = 'https://localhost'
+			this.baseUrl = this.ENV.VUE_APP_BASE_H5
+			// this.baseUrl = 'https://localhost'
 			switch (e.productType) {
 				case 'product':
 					this.h5Url = "/app-pages/product-detail/product-detail.html"
@@ -108,7 +108,7 @@
 		  if (getApp().globalData.isSaler) {
 		    params.push(`shareId=${getApp().globalData.shareId}`)
 		  }
-		  let path = `/sub-classify/pages/goods-detail/goods-detail`;
+		  let path = `/sub-classify/pages/product-detail/index`;
 		  if (params.length) {
 		    path += '?' + params.join('&')
 		  }

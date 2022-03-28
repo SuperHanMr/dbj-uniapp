@@ -83,8 +83,9 @@
 			toGoodsDetail(id) {
 				this.$emit('clickDetail');
 				uni.navigateTo({
-					url: "/sub-classify/pages/goods-detail/goods-detail?goodId=" + id,
+					url: "/sub-classify/pages/product-detail/index?productId=" + id,
 				});
+				
 			},
 			foramtPrice(item) {
 				let price = String(item || "0");
