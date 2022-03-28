@@ -84,27 +84,25 @@
 				this.brandHandler();
 			}, 500),
 			isLoginHandler(params) {
-				let hasToken = false;
 				uni.getStorage({
 					key: 'scn',
 					success() {
-						hasToken = true;
 					},
 					fail() {
-						hasToken = false;
+						if (params.needLogin) {
+							uni.navigateTo({
+								url: "../../login/login",
+							});
+							return;
+						}
 					}
 				})
-				if (params.needLogin && !hasToken) {
-					uni.navigateTo({
-						url: "../../login/login",
-					});
-					return;
-				}
+				
 			},
 			classHandler(item) {
 				let param = JSON.parse(item.configParams)
 				this.isLoginHandler(param);
-				this. [`classJump${item.type}Handler`] && this. [`classJump${item.type}Handler`](item);
+				this[`classJump${item.type}Handler`] && this[`classJump${item.type}Handler`](item);
 			},
 			dealWithUrlParamHandler(item) {
 				if (!item.urlParams) return;
@@ -133,7 +131,15 @@
 				this[`recommendJump${item.type}Handler`] && this[`recommendJump${item.type}Handler`](item)
 			},
 			recommendJump2Handler(item) {
-				this.toWebview(item.url)
+				uni.getStorage({
+					key: 'scn',
+					success: (res) => {
+						this.toWebview(`${item.url}&token=${res.data}&userId='1'`)
+					},
+					fail: () => {
+						this.toWebview(item.url)
+					}
+				})
 			},
 			recommendJump1Handler(item) {
 				let param = this.dealWithUrlParamHandler(item)
@@ -156,7 +162,7 @@
 			},
 			toWebview(url) {
 				uni.navigateTo({
-					url: "/pages/common/webview/webview?url=" + encodeURIComponent(this.ENV.VUE_APP_BASE_H5 + url),
+					url: "/pages/common/webview/webview?url=" + encodeURIComponent(`${this.ENV.VUE_APP_BASE_H5}${url}`),
 				});
 			}
 		}

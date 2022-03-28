@@ -42,7 +42,7 @@
 			return {
 				swiperAuto: false,
 				query: {
-					page: 1,
+					page: 0,
 					row: 10,
 					totalPage: 0
 				},
@@ -63,16 +63,16 @@
 			}
 		},
 		onShow() {
-			if (!this.isFormShopDetail) {
-				this.query.page = 1;
-				this.getClassifyShopListHandler();
-			}
-			this.isFormShopDetail = false;
-			this.shopList = [];
 			this.swiperAuto = true;
+			if (!this.isFormShopDetail) {
+				this.query.page = 0;
+				this.mountedHandler();
+			} else {
+				this.isFormShopDetail = false;
+				this.shopList = [];
+			}
 			let currentHouse = getApp().globalData.currentHouse;
 			this.areaId = currentHouse.areaId;
-			this.mountedHandler();
 		},
 		onHide() {
 			this.swiperAuto = false;
@@ -88,6 +88,7 @@
 				this.getShoppingCarNumHandler();
 				this.getClassifyBannerHandler();
 				this.getPavilionListHandler();
+				this.getClassifyShopListHandler();
 			},
 			getClassifyShopListHandler(){
 				getClassifyShopList({
