@@ -66,6 +66,7 @@
 			this.swiperAuto = true;
 			if (!this.isFormShopDetail) {
 				this.query.page = 1;
+				uni.$emit('resetScrollLeft');
 				this.scrollToTop();
 				this.mountedHandler();
 			} else {
@@ -172,7 +173,8 @@
 			refresherrefresh() {
 				this.query.page = 1;
 				this.triggered = true;
-				this.getClassifyShopListHandler();
+				uni.$emit('resetScrollLeft')
+				this.mountedHandler();
 			},
 			scrollHandler(e) {
 				if (e.detail && e.detail.scrollTop) {
