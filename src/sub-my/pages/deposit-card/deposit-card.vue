@@ -170,6 +170,7 @@
     },
     methods: {
       morePayWay() {
+        console.log(this.$refs.payWayToast, "this.$refs.payWayToast")
         this.$refs.payWayToast.showPupop();
       },
       payWay(payWayTag) {
