@@ -244,7 +244,7 @@
 
         </view>
         <view v-else @click="morePayWay">
-          <text>在线支付</text><view class="more_pay_icon"></view>
+          <text>{{payWayTag?'公司转账':'在线支付'}}</text><view class="more_pay_icon"></view>
         </view>
       </view>
       <view class='remarks'>
@@ -385,7 +385,7 @@
 import {
   getAddWorker,
   getDetailInfo,
-  payOrder,
+  payOrderApi,
   getBundleDetail,
   payBundleOrder,
 } from "../../../api/classify.js";
@@ -560,6 +560,9 @@ export default {
     payWay(payWayTag) {
       this.payWayTag = payWayTag
     },
+    morePayWay() {
+      this.$refs.payWayToast.showPupop();
+    },
     closePayDialog() {
       this.$refs.payDialog.close();
     },
@@ -567,9 +570,6 @@ export default {
       if (this.cardBalance) {
         this.cardClick = !this.cardClick;
       }
-    },
-    morePayWay() {
-      this.$refs.payWayToast.showPupop();
     },
     backFrom() {
       uni.navigateBack();
@@ -843,19 +843,16 @@ export default {
         this.$refs.payDialog.open();
         return;
       }
-      if (this.payWayTag) {
-        let orderPrice = Number(
-          Number(this.totalPrice).toFixed(2).replace(".", "")
-        );
-        console.log("对公支付转账", orderPrice)
-        return;
-      }
       this.payOrder();
     },
     createOrder(params) {
-      return this.isFromPackage ? payBundleOrder(params) : payOrder(params);
+      return this.isFromPackage ? payBundleOrder(params) : payOrderApi(params);
     },
     payOrder() {
+      if (this.payWayTag) {
+        console.log("对公支付转账")
+        return;
+      }
       let _that = this;
       let details = [];
       this.orderDetails.map((v, k) => {
@@ -1355,7 +1352,7 @@ export default {
     display: inline-block;
     width: 48rpx;
     height: 52rpx;
-    background-image: url("../../static/image/more_pay_icon.png");
+    background-image: url("https://ali-image.dabanjia.com/static/mp/dabanjia/images/theme-red/classify/more_pay_icon.png");
     background-size: contain;
     margin-right: 12rpx;
   }

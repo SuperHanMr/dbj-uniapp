@@ -110,7 +110,7 @@
       <view class="buyWrap" v-if="showBuyBtn">
         <view class="pay-way-box" @click="morePayWay">
           <view>请选择支付方式</view>
-          <view>在线支付<view class="pay-icon"></view></view>
+          <view>{{payWayTag?'公司转账':'在线支付'}}<view class="pay-icon"></view></view>
         </view>
         <view class="button" @click="buyNow">立即购买</view>
         <view class="explain" @click="toActivityRules">购买即同意
@@ -733,7 +733,7 @@
     display: inline-block;
     width: 48rpx;
     height: 52rpx;
-    background-image: url("../../static/more_pay_icon.png");
+    background-image: url("https://ali-image.dabanjia.com/static/mp/dabanjia/images/theme-red/classify/more_pay_icon.png");
     background-size: contain;
   }
   .button {
