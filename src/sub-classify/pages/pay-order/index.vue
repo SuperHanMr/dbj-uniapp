@@ -311,6 +311,9 @@
         @toastConfirm="toastConfirm"
         @backCart="backCart"
       ></order-toast>
+      <pay-way-toast
+        ref='payWayToast'
+      ></pay-way-toast>
       <uni-popup
         ref="cancelDialog"
         :mask-click="false"
@@ -388,8 +391,8 @@ import {
 import { getBalance } from "../../../api/user.js";
 import orderToast from "./order-toast.vue";
 import datePicker from "./date-picker.vue";
-// import expensesToast from "./expenses-toast.vue"
 import safeguardToast from "./safeguard-toast.vue";
+import payWayToast from "./pay-way-toast.vue";
 import { log } from "../../../utils/log.js";
 
 export default {
@@ -397,6 +400,7 @@ export default {
     orderToast,
     datePicker,
     safeguardToast,
+    payWayToast
   },
   data() {
     return {
@@ -562,7 +566,7 @@ export default {
       }
     },
     morePayWay() {
-      console.log(99999)
+      this.$refs.payWayToast.showPupop();
     },
     backFrom() {
       uni.navigateBack();

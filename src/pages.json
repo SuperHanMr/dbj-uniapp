@@ -685,7 +685,16 @@
         		"enablePullDownRefresh": false
         	}
         }
-			]
+			    ,{
+                    "path" : "pay-way-toast",
+                    "style" :                                                                                    
+                {
+                    "navigationBarTitleText": "",
+                    "enablePullDownRefresh": false
+                }
+                
+                }
+            ]
     },
     {
       "root": "sub-other", //其他页面
