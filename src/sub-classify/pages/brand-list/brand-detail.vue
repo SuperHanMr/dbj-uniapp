@@ -1,7 +1,7 @@
 <template>
 	<view class="container">
 		<web-view
-		:src="baseUrl + '/app-pages/brand-shop/index.html?' + 'storeId='+ storeId + '&houseId='+ houseId"
+		:src="baseUrl + '/app-pages/brand-shop/index.html?' + 'estateId='+ storeId + '&houseId='+ houseId"
 		></web-view>
 
 	</view>
