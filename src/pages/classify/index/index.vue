@@ -66,6 +66,7 @@
 			this.swiperAuto = true;
 			if (!this.isFormShopDetail) {
 				this.query.page = 1;
+				uni.$emit('resetScrollLeft');
 				this.scrollToTop();
 				this.mountedHandler();
 			} else {
@@ -172,6 +173,7 @@
 			refresherrefresh() {
 				this.query.page = 1;
 				this.triggered = true;
+				uni.$emit('resetScrollLeft')
 				this.mountedHandler();
 			},
 			scrollHandler(e) {
