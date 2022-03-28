@@ -23,7 +23,7 @@
         <text :class="{'activeTab': activeTabIndex === 0}" @click="clickTab(0, 0)">全部</text>
         <text v-for="(v, k) in tabArr" :key="k" :class="{'activeTab': activeTabIndex === k + 1}" @click="clickTab(k + 1, v.id)">{{v.name}}</text>
       </scroll-view>
-      <goods-list></goods-list>
+      <goods-list emitName="searchListData"></goods-list>
       <!--      <uni-swipe-action v-if="listArr.length>0">
         <uni-swipe-action-item v-for="(goodsItem,goodsIndex) in listArr" :key="goodsIndex">
           <view class="goodsItem" @click="toDetails(goodsItem.product.skuId)">
@@ -171,7 +171,7 @@
           // }
           console.log(data.page, "data.page")
           this.listArr = data.page
-          uni.$emit('passShopList', {
+          uni.$emit('searchListData', {
           	page: this.pageNum,
           	shopList: data.page
           })
