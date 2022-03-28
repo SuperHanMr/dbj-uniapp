@@ -125,7 +125,10 @@
 				})
 			},
 			classJump2Handler(item) {
-				this.recommendJump2Handler(item);
+				// this.recommendJump2Handler(item);
+				uni.navigateTo({
+					url: "/sub-classify/pages/whole-webview/whole-webview",
+				});
 			},
 			recommendedHandler(item) {
 				this[`recommendJump${item.type}Handler`] && this[`recommendJump${item.type}Handler`](item)
