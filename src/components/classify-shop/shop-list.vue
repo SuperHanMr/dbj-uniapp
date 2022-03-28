@@ -8,7 +8,7 @@
 		<view class="goods-view">
 			<view>
 				<view v-for="(item1,index) in list1" class="row-item " :key=" item1.id">
-					<shop-list-item :class="{'good-item-first' :index==0}" :item="item1"></shop-list-item>
+					<shop-list-item :class="{'good-item-first' :index==0}" :item="item1" @clickDetail='clickDetailHandler'></shop-list-item>
 				</view>
 				<view class="list-left">
 				</view>
