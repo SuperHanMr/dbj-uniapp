@@ -81,6 +81,7 @@
 		},
 		methods: {
 			toGoodsDetail(id) {
+				this.$emit('clickDetail');
 				uni.navigateTo({
 					url: "/sub-classify/pages/goods-detail/goods-detail?goodId=" + id,
 				});

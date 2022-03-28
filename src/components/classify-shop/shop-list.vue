@@ -15,7 +15,7 @@
       </view>
       <view>
         <view v-for="(item2,index) in list2" class="row-item " :key="item2.id">
-          <shop-list-item :item="item2"></shop-list-item>
+          <shop-list-item :item="item2" @clickDetail='clickDetailHandler'></shop-list-item>
         </view>
         <view class="list-right">
         </view>
@@ -127,6 +127,9 @@
           })
           .exec();
       },
+			clickDetailHandler(){
+				this.$emit('clickDetail');
+			}
     },
   };
 </script>

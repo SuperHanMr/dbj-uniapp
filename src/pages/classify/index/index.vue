@@ -11,7 +11,7 @@
 				<view class="recommend-title">
 					精选推荐
 				</view>
-				<ShopList :page="query.page" :shopList="shopList" />
+				<ShopList :page="query.page" :shopList="shopList" @clickDetail="clickDetailHandler" />
 			</view>
 		</scroll-view>
 	</view>
@@ -58,10 +58,17 @@
 				classList: [],
 				recommendList: [],
 				areaId: '',
-				shopListNum: 0
+				shopListNum: 0,
+				isFormShopDetail: false
 			}
 		},
 		onShow() {
+			if (!this.isFormShopDetail) {
+				this.query.page = 1;
+				this.getClassifyShopListHandler();
+			}
+			this.isFormShopDetail = false;
+			this.shopList = [];
 			this.swiperAuto = true;
 			let currentHouse = getApp().globalData.currentHouse;
 			this.areaId = currentHouse.areaId;
@@ -81,7 +88,6 @@
 				this.getShoppingCarNumHandler();
 				this.getClassifyBannerHandler();
 				this.getPavilionListHandler();
-				this.getClassifyShopListHandler();
 			},
 			getClassifyShopListHandler(){
 				getClassifyShopList({
@@ -182,6 +188,9 @@
 						}
 					}
 				}
+			},
+			clickDetailHandler(){
+				this.isFormShopDetail = true;
 			}
 		}
 	}
