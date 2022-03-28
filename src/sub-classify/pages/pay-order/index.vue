@@ -313,6 +313,7 @@
       ></order-toast>
       <pay-way-toast
         ref='payWayToast'
+        @payWay="payWay"
       ></pay-way-toast>
       <uni-popup
         ref="cancelDialog"
@@ -392,15 +393,13 @@ import { getBalance } from "../../../api/user.js";
 import orderToast from "./order-toast.vue";
 import datePicker from "./date-picker.vue";
 import safeguardToast from "./safeguard-toast.vue";
-import payWayToast from "./pay-way-toast.vue";
 import { log } from "../../../utils/log.js";
 
 export default {
   components: {
     orderToast,
     datePicker,
-    safeguardToast,
-    payWayToast
+    safeguardToast
   },
   data() {
     return {
@@ -446,6 +445,7 @@ export default {
       haveCard: false, //是否有会员卡
       cardBalance: 0, //会员卡余额
       originType: "",
+      payWayTag: 0
     };
   },
   computed: {
@@ -557,6 +557,9 @@ export default {
     uni.removeStorageSync("houseListChooseId");
   },
   methods: {
+    payWay(payWayTag) {
+      this.payWayTag = payWayTag
+    },
     closePayDialog() {
       this.$refs.payDialog.close();
     },
@@ -838,6 +841,13 @@ export default {
       }
       if (this.cardClick) {
         this.$refs.payDialog.open();
+        return;
+      }
+      if (this.payWayTag) {
+        let orderPrice = Number(
+          Number(this.totalPrice).toFixed(2).replace(".", "")
+        );
+        console.log("对公支付转账", orderPrice)
         return;
       }
       this.payOrder();

@@ -5,13 +5,13 @@
       <view class="toast-content">
         <view class="title">请选择支付方式</view>
         <view class="text">
-          <view>
-            <view :class="{'select-text': !selectTag}">在线支付</view>
-            <view :class="{'select-icon': !selectTag}"></view>
+          <view class="text-box" @click="select(0)">
+            <view :class="{'selected-text': !payWayTag}">在线支付</view>
+            <view class="unselected-icon" :class="{'selected-icon': !payWayTag}"></view>
           </view>
-          <view>
-            <view>公司转账</view>
-            <view></view>
+          <view class="text-box" @click="select(1)">
+            <view :class="{'selected-text': payWayTag}">公司转账</view>
+            <view class="unselected-icon" :class="{'selected-icon': payWayTag}"></view>
           </view>
         </view>
       </view>
@@ -23,7 +23,7 @@
   export default {
     data() {
       return {
-        selectTag: 0
+        payWayTag: 0
       }
     },
     methods: {
@@ -31,7 +31,11 @@
         this.$refs.payWayToast.open()
       },
       close() {
+        this.$emit('payWay', this.payWayTag)
         this.$refs.payWayToast.close()
+      },
+      select(tag) {
+        this.payWayTag = tag
       }
     }
   }
@@ -48,7 +52,7 @@
     height: 80rpx;
     top: 14rpx;
     right: 14rpx;
-    background-image: url("../../static/image/close.png");
+    background-image: url("../../static/close.png");
     background-size: contain;
   }
 
@@ -62,20 +66,31 @@
   .title {
     height: 100rpx;
     font-size: 32rpx;
-    color: #333333;
+    color: #111111;
     font-weight: 500;
     text-align: center;
     line-height: 100rpx;
   }
 
-  .text {
-    padding: 0 32rpx 50rpx;
+  .text-box{
+    font-size: 30rpx;
+    padding: 32rpx 38rpx;
+    color: #111111;
+    font-weight: 400;
+    display: flex;
+    justify-content: space-between;
   }
-
-  p {
-    text-align: justify;
-    text-indent: 2em;
-    color: #999999;
-    margin-top: 24rpx;
+  .selected-text{
+    color: #111111;
+    font-weight: 500;
+  }
+  .unselected-icon{
+    width: 48rpx;
+    height: 48rpx;
+    background-image: url("../../static/pay-way-unselected.png");
+    background-size: contain;
+  }
+  .selected-icon{
+    background-image: url("../../static/pay-way-selected.png");
   }
 </style>
