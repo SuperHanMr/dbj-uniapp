@@ -80,7 +80,7 @@
               }
             })
           } 
-          this.switchTab(this.tabIndex)
+          this.regDataList(this.tabIndex)
         })
       },
       ontabtap(e) {
