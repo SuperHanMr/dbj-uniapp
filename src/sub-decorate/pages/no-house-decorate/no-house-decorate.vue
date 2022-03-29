@@ -217,7 +217,8 @@
         selectCoupon: {
           total: 10000,
         },
-        payWayTag: 0
+        payWayTag: 0,
+        payType: 0
       };
     },
     mounted() {
@@ -402,6 +403,9 @@
     methods: {
       payWay(payWayTag) {
         this.payWayTag = payWayTag
+        if (this.payWayTag) {
+          this.payType = 6
+        }
       },
       morePayWay() {
         this.$refs.payWayToast.showPupop();
@@ -727,7 +731,7 @@
         let deviceType = 2;
         //#endif
         let params = {
-          payType: payType, //"int //支付方式  1在线支付",
+          payType: this.payType ? this.payType : payType, //"int //支付方式  1微信支付",
           deviceType: deviceType,
           openid: getApp().globalData.openId, //"string //微信openid 小程序支付用 app支付不传或传空",
           projectId: this.projectId || 0, //"long //项目id  非必须 默认0",
@@ -782,11 +786,13 @@
         this.createOrder(params);
       },
       createOrder(obj) {
-        if (this.payWayTag) {
-          console.log("对公支付转账")
-          return;
-        }
         createOrder(obj).then((data) => {
+          if (this.payWayTag) {
+            uni.navigateTo({
+              url: `/sub-classify/pages/pay-order/cashier?remittanceCode=${data.companyTransferPayVO.remittanceCode}&amount=${data.companyTransferPayVO.amount}`
+            })
+            return;
+          }
           const {
             wechatPayJsapi,
             cardPayComplete
