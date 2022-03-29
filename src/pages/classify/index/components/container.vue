@@ -162,7 +162,7 @@
 				}
 				uni.navigateTo({
 					url: `${item.url}?${param}`
-				})
+				}) 
 			},
 			brandHandler() {
 				uni.navigateTo({
@@ -171,7 +171,7 @@
 			},
 			brandItemHandler(item) {
 				if (item.key === 'all') return;
-				this.toWebview(`/app-pages/brand-shop/index.html?storeId=${item.id}`);
+				this.toWebview(`/app-pages/brand-shop/index.html?brandId=${item.id}`);
 			},
 			toWebview(url) {
 				console.log(`${this.ENV.VUE_APP_BASE_H5}${url}`, '>>>>>>>>>>')

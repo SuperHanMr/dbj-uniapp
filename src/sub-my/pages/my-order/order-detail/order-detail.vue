@@ -931,24 +931,32 @@ export default {
 		// 申请退款
 		toApplayForRefund(data, type) {
 			// this.title = "您确定要取消订单吗?";
-			//type: 1 部分退款  2 整体退款
-			if (type == 1) {
-				console.log("orderId=", this.orderInfo.orderId);
-				console.log("部分退款", "data=", data);
+			// 判斷是否是对公转账
+			if(this.orderInfo.isOrderCompanyTransfer){
 				uni.navigateTo({
-					url:`../../apply-for-refund/apply-for-refund?orderId=${this.orderId}&type=partical&status=1&applyMode=1&orderDetailsId=${data.orderDetailId}`
-				});
-			} else {
-				let status; //此处的status值影响到申请退款页面样式
-				if(this.orderStatus ==2){
-					status = 2
-				}else{
-					status = 1
+					// url:"../choice-refund-account/choice-refund-account?orderId={orderId}&type={type}"
+					url:"",
+				})
+			}else{
+				//type: 1 部分退款  2 整体退款
+				if (type == 1) {
+					console.log("orderId=", this.orderInfo.orderId);
+					console.log("部分退款", "data=", data);
+					uni.navigateTo({
+						url:`../../apply-for-refund/apply-for-refund?orderId=${this.orderId}&type=partical&status=1&applyMode=1&orderDetailsId=${data.orderDetailId}`
+					});
+				} else {
+					let status; //此处的status值影响到申请退款页面样式
+					if(this.orderStatus ==2){
+						status = 2
+					}else{
+						status = 1
+					}
+					console.log("全部退款data=", data);
+					uni.navigateTo({
+						url:`../../apply-for-refund/apply-for-refund?orderId=${this.orderId}&type=whole&status=${status}&applyMode=2`
+					});
 				}
-				console.log("全部退款data=", data);
-				uni.navigateTo({
-					url:`../../apply-for-refund/apply-for-refund?orderId=${this.orderId}&type=whole&status=${status}&applyMode=2`
-				});
 			}
 		},
 		// 申请售后
