@@ -65,7 +65,7 @@
 			},
 			jumpDeal2Handler(item){
 				uni.navigateTo({
-					url: `/sub-classify/pages/product-detail/product-detail?goodId=${item.jumpUrl}`,
+					url: `/sub-classify/pages/product-detail/index?productId=${item.jumpUrl}`,
 				});
 			},
 			jumpDeal3Handler(item){
