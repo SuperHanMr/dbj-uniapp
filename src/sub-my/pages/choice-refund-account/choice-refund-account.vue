@@ -49,6 +49,7 @@ import {
   particalOrderApplyForRefund,
   wholeOrderApplyForRefund,
 } from "@/api/order.js";
+import { goodsBack, goodsRefund } from "@/api/decorate.js";
 export default {
   data() {
     return {
@@ -104,7 +105,6 @@ export default {
           remark: "string //备注",
         },
       ],
-      // orderId: 0,
       checkedAccount: null,
       query: null,
     };
@@ -127,19 +127,44 @@ export default {
       this.checkedAccount = { ...item };
     },
     submitApply() {
-      if (this.query.type && this.query.type === "whole") {
-        wholeOrderApplyForRefund(this.query.params).then((res) => {
-          uni.redirectTo({
-            url: `../refund-list/refunding-detail/refunding-detail?id=${res.id}`,
+      let { type, params } = this.query;
+      switch (type) {
+        case "whole":
+          wholeOrderApplyForRefund(params).then((res) => {
+            uni.redirectTo({
+              url: `../refund-list/refunding-detail/refunding-detail?id=${res.id}`,
+            });
           });
-        });
-      } else {
-        particalOrderApplyForRefund(params).then((res) => {
-          uni.redirectTo({
-            url: `../refund-list/refunding-detail/refunding-detail?id=${res.id}`,
+          break;
+        case "partical":
+          particalOrderApplyForRefund(params).then((res) => {
+            uni.redirectTo({
+              url: `../refund-list/refunding-detail/refunding-detail?id=${res.id}`,
+            });
           });
-        });
+          break;
+        case 1:
+          goodsBack(params).then((data) => {
+            this.toastHandler();
+          });
+          break;
+        default:
+          goodsRefund(params).then((data) => {
+            this.toastHandler();
+          });
+          break;
       }
+    },
+    toastHandler() {
+      uni.showToast({
+        title: "提交成功",
+        icon: "none",
+      });
+      setTimeout(() => {
+        uni.navigateBack({
+          delta: 3,
+        });
+      }, 1000);
     },
   },
 };
