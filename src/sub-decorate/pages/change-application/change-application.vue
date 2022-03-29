@@ -88,7 +88,8 @@
       <view
         class="wx"
         v-if="totalAmount > 0"
-      >在线支付</view>
+        @click="morePayWay"
+      >{{payWayTag?'公司转账':'在线支付'}}<view class="more_pay_icon"></view></view>
       <view
         class="store-pay"
         v-else
@@ -140,6 +141,10 @@
       >
       </pay-dialog>
     </uni-popup>
+    <pay-way-toast
+      ref='payWayToast'
+      @payWay="payWay"
+    ></pay-way-toast>
   </view>
 </template>
 
@@ -168,6 +173,7 @@ export default {
       cardBalance: 0,
       remarks: "",
       changeOrderData: {},
+      payWayTag: 0
     };
   },
   computed: {
@@ -219,6 +225,12 @@ export default {
     this.getBalance();
   },
   methods: {
+    morePayWay() {
+      this.$refs.payWayToast.showPupop();
+    },
+    payWay(payWayTag) {
+      this.payWayTag = payWayTag
+    },
     changeValue(){
       this.isCardPay = !this.isCardPay
     },
@@ -314,6 +326,10 @@ export default {
       });
     },
     createPayOrder() {
+      if (this.payWayTag) {
+        console.log("对公支付转账")
+        return;
+      }
       //TODO
       //#ifdef MP-WEIXIN
       let bodyObj = {
@@ -601,7 +617,14 @@ export default {
   height: 100%;
   overflow: scroll;
 }
-
+.pay-way .more_pay_icon {
+  vertical-align: middle;
+  display: inline-block;
+  width: 48rpx;
+  height: 52rpx;
+  background-image: url("https://ali-image.dabanjia.com/static/mp/dabanjia/images/theme-red/classify/more_pay_icon.png");
+  background-size: contain;
+}
 .pay-wrap {
   padding: 24rpx 32rpx;
   background: #fff;

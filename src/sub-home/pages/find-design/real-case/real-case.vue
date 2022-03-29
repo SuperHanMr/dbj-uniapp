@@ -3,24 +3,26 @@
 		<Navigation-bar :paddingTop='statusHeight' :showScreen='showScreen' :currentHouse='currentHouse'
 			@openHomeList='openHomeList' />
 		<view class="container" :style="{marginTop: Number(statusHeight) + 44 + 'px'}">
-			<view class="home-address" v-if="currentHouse.id && showScreen">
+			<!-- <view class="home-address" v-if="currentHouse.id && showScreen">
 				<home-address :currentHouse='currentHouse' @openHomeList='openHomeList' />
-			</view>
+			</view> -->
 			<view class="no-case" v-if="currentHouse.id && !caseDetailInfo.caseFlag && showScreen">
 				当前房屋所在地区暂无真实案例，为您推荐其他地区的精选案例
 			</view>
-			<view class="screening" v-if="!currentHouse.id">
-				<real-case-screening v-show="showScreen" @updateTag='updateTag' ref='realCaseScreeningRef' />
+			<view class="screening">
+				<real-case-screening v-show="showScreen" :caseStyleList="caseStyleList" @updateTag='updateTag' ref='realCaseScreeningRef' />
 				<view class="hide-screen" v-if="!showScreen" @click="onShowScreen">
 					<view class="title" v-if="selectTag.length <= 0">
 						筛选
 					</view>
 					<view class="tag" v-else>
-						<view class="name" v-for="item in selectTag" :key='item.key'>
-							{{item.name}}
-						</view>
-						<view class="point" v-if="selectTag.length >= 2">
-
+						<view class="name" v-for="(item, index) in selectTag" :key='item.key'>
+							<view class="text">
+								{{item.name}}
+							</view>
+							<view class="point" v-if="selectTag.length - 1 > index">
+							
+							</view>
 						</view>
 					</view>
 					<view class="tag-icon icon-list_arrow_dropdown">
@@ -29,19 +31,19 @@
 				</view>
 			</view>
 			<view class="list" @scroll='scrollHandler'>
-				<view :class="['screening', {'screening-noShowScreen': !showScreen}]">
-					<!-- <view class="screening-tag" @click="checkoutScreen(item.key)" v-for="item in realListScreen" :key='item.key'>
+				<!-- <view :class="['screening', {'screening-noShowScreen': !showScreen}]">
+					<view class="screening-tag" @click="checkoutScreen(item.key)" v-for="item in realListScreen" :key='item.key'>
 						<view :class="['title', {'title-active': selectScreenTag == item.key}]">
 							{{item.title}}
 						</view>
 						<view :class="['screening-icon', 'icon-zhuangxiushouye_fuwushouqijiantou', {'screening-icon-active icon-zhuangxiushouye_fuwuzhankaijiantou': selectScreenTag == item.key}]">
 						</view>
-					</view> -->
-				</view>
+					</view>
+				</view> -->
 				<view class="box" @scroll='scrollHandler' v-if="realCaseListData && realCaseListData.length > 0">
 					<real-case-list :currentHouse='currentHouse' :realCaseListData='realCaseListData'
 						@triggerScroll='triggerScroll' @scrollUpper='scrollUpper' @scrolltolower='scrolltolower'
-						@refresherrefresh='refresherrefresh' @toCaseDetail='toCaseDetail' ref='realCaseList' />
+						@refresherrefresh='refresherrefresh' @toCaseDetail='toCaseDetail' ref='realCaseList' :key='renderKey' />
 				</view>
 				<view class="no-service" v-else>
 					<image
@@ -69,7 +71,8 @@
 	import NavigationBar from './component/navigation-bar.vue';
 	import AddHomeInfo from './component/add-home-info.vue';
 	import {
-		moreCaseList
+		moreCaseList,
+		getCaseStyleList
 	} from '/src/api/home-find-design.js'
 	export default {
 		components: {
@@ -105,10 +108,14 @@
 				endPage: false,
 				selectData: {},
 				triggered: false,
-				caseDetail: false
+				caseDetail: false,
+				caseStyleList: [],
+				toDetailIndex: 0,
+				renderKey: ''
 			}
 		},
 		onLoad() {
+			this.currentHouse = getApp().globalData.currentHouse;
 			uni.getSystemInfo({
 				success: (res) => {
 					this.statusHeight = res.statusBarHeight;
@@ -117,27 +124,46 @@
 			uni.$on('defaultHouseChange',() => {
 				this.caseDetail = false;
 			})
-
+			uni.$on('currentHouseChange', (item) => {
+				if (item.id === this.currentHouse.id) return;
+				this.currentHouse = item;
+				this.listParam.page = 0;
+				if (this.$refs.realCaseScreeningRef) {
+					this.$refs.realCaseScreeningRef.selectData = {}
+					this.selectData = {};
+					this.selectTag = [];
+					this.$refs.realCaseScreeningRef.tagSelect = [null, null, null]
+				}
+				this.getListData(true);
+			})
+			uni.$on('isCollect', (item) => {
+				uni.$emit('updateCollection', {
+					item,
+					index: this.toDetailIndex
+				})
+			})
 			const menuButtonInfo = uni.getMenuButtonBoundingClientRect();
-			console.log("menuButtonInfo=", menuButtonInfo);
 			this.systemBottom = menuButtonInfo.bottom + 32 + "rpx";
-			console.log("this.systemBottom=", this.systemBottom);
-
-
+			this.getCaseStyleListHandler();
+			
+		},
+		onUnload() {
+		  uni.$off("isCollect");
+		  uni.$off("defaultHouseChange");
 		},
 		onShow() {
 			if (this.caseDetail) {
 				this.caseDetail = false;
 				return;
 			}
-			const currentHouse = getApp().globalData.currentHouse;
-			let isRefshList = null;
-			if (this.currentHouse.id != currentHouse.id) {
-				isRefshList = true;
-				this.listParam.page = 0;
-			}
-			this.currentHouse = currentHouse;
-			this.getListData(isRefshList);
+			// const currentHouse = getApp().globalData.currentHouse;
+			// let isRefshList = null;
+			// if (this.currentHouse.id === currentHouse.id) {
+			// 	this.listParam.page = 0;
+			// 	isRefshList = true;
+			// }
+			this.listParam.page = 0;
+			this.getListData(true);
 			this.$nextTick(function() {
 				this.$refs.realCaseList && this.$refs.realCaseList.scrollToTop && this.$refs.realCaseList
 					.scrollToTop();
@@ -156,14 +182,18 @@
 				}
 				let param = {};
 				// 居室查询条件
-				if (obj[0] && obj[0].key != null) {
-					param.roomNum = obj[0].key;
+				if (obj[0] && obj[0].code != null) {
+					param.roomNum = obj[0].code;
 				}
 				// 面积查询条件
-				if (obj[1] && obj[1].key != null) {
-					let areaObj = obj[1].key.split('-');
+				if (obj[1] && obj[1].code != null) {
+					let areaObj = obj[1].code.split('-');
 					param.minInsideArea = Number(areaObj[0]);
 					param.maxInsideArea = Number(areaObj[1]);
+				}
+				// 风格查询条件
+				if (obj[2] && obj[2].code != null) {
+					param.styleCode = obj[2].code;
 				}
 				// 有无默认房屋
 				if (this.currentHouse.id) {
@@ -191,6 +221,9 @@
 					if (this.listParam.page >= obj.totalPage && !isTagSearch) {
 						this.endPage = true;
 					}
+					if (this.listParam.page < obj.totalPage && isTagSearch) {
+						this.endPage = false;
+					}
 					if (this.$refs.realCaseList) {
 						this.$refs.realCaseList.triggered = false;
 					}
@@ -215,7 +248,7 @@
 			updateTag(obj) {
 				const arr = [];
 				for (let i in obj) {
-					if (obj[i].key != null) {
+					if (obj[i].code != null) {
 						arr.push(obj[i])
 					}
 				}
@@ -249,12 +282,18 @@
 				this.getListData(true);
 				uni.stopPullDownRefresh()
 			},
-			toCaseDetail(){
-				console.log('toCaseDetail', ">>>>>>")
+			toCaseDetail(index){
 				this.caseDetail = true;
+				console.log(index, '>>>>>>>>>>>index,,,<<<')
+				this.toDetailIndex = index;
 			},
 			scrollHandler(e){
 				console.log(e, '>>>>')
+			},
+			getCaseStyleListHandler(){
+				getCaseStyleList().then((res) => {
+					this.caseStyleList = res;
+				})
 			}
 		}
 	}
@@ -284,12 +323,12 @@
 			}
 
 			.no-case {
-				margin: 8rpx 0 24rpx;
+				padding: 16rpx 0;
 				width: 100%;
 				text-align: center;
 				font-size: 22rpx;
-				line-height: 30rpx;
-				color: #999999;
+				color: #A28645;
+				background: #FFF5DE;
 			}
 
 			.hide-screen {
@@ -315,16 +354,16 @@
 					display: flex;
 
 					.name {
-						margin-right: 38rpx;
+						margin-right: 16rpx;
+						display: flex;
+						align-items: center;
 					}
 
 					.point {
 						width: 4rpx;
 						height: 4rpx;
 						background: #333333;
-						position: absolute;
-						left: 102rpx;
-						top: 38rpx;
+						margin-left: 16rpx;
 					}
 				}
 

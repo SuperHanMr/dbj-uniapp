@@ -198,21 +198,21 @@
 			<order-refund-info :refundInfo="refundInfo"></order-refund-info>
 			
 			<!-- 对公收付款 -->
-			<view class="offline-info">
+			<view class="offline-info" v-if="refundInfo.isOrderCompanyTransfer">
 				<view class="header">
 					退款线下收款信息
 				</view>
 				<view class="item">
 					<text class="item-header">户名：</text>
-					<text class="item-body">￥{{handlePrice(refundInfo.refundAmount)[0]}}.{{handlePrice(refundInfo.refundAmount)[1]}}</text>
+					<text class="item-body">{{refundInfo.accountName}}</text>
 				</view>
 				<view class="item">
 					<text class="item-header">银行账号：</text>
-					<text class="item-body">￥{{handlePrice(refundInfo.refundAmount)[0]}}.{{handlePrice(refundInfo.refundAmount)[1]}}</text>
+					<text class="item-body">{{refundInfo.accountNo}}</text>
 				</view>
 				<view class="item">
 					<text class="item-header">开户行：</text>
-					<text class="item-body">￥{{handlePrice(refundInfo.refundAmount)[0]}}.{{handlePrice(refundInfo.refundAmount)[1]}}</text>
+					<text class="item-body">{{refundInfo.accountBank}}</text>
 				</view>
 			</view>
 		</view>

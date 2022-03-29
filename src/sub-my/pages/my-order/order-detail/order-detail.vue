@@ -38,15 +38,21 @@
             </view>
           </view>
 
-          <!-- <view class="time" v-if="orderInfo.showCancelOrderTime && orderInfo.orderStatus==0">
-				    <text style="margin-right: 16rpx;">剩余支付时间</text>
-				    <count-down
-				      class="countStyle"
-				      :start="orderInfo.remainTime"
-				      @finish="goToCancelDetail"
-				    />
-				  </view> -->
-          <view class="time">
+          <view
+            class="time"
+            v-if="orderInfo.showCancelOrderTime && orderInfo.orderStatus==0"
+          >
+            <text style="margin-right: 16rpx;">剩余支付时间</text>
+            <count-down
+              class="countStyle"
+              :start="orderInfo.remainTime"
+              @finish="goToCancelDetail"
+            />
+          </view>
+          <view
+            class="time"
+            v-if="item.isOrderCompanyTransfer && orderInfo.orderStatus==0"
+          >
             <view class="showText">请尽快线下汇款，汇款时务必填写汇款识别码</view>
           </view>
         </view>
@@ -230,7 +236,10 @@
           />
         </view>
 
-        <view class="pay-way mrb">
+        <view
+          class="pay-way mrb"
+          v-if="!orderInfo.isOrderCompanyTransfer"
+        >
           <text style="color: #333333;">支付方式</text>
           <view
             v-if="payChannel"
@@ -241,8 +250,16 @@
             class="flex-center"
           ><text>在线支付</text></view>
         </view>
+        <!-- 支付模块新增需求  只有代付款 -->
+        <order-payment-info
+          v-if="orderInfo.isOrderCompanyTransfer"
+          :orderInfo="orderInfo"
+        ></order-payment-info>
 
-        <view class='remarks'>
+        <view
+          class='remarks'
+          v-if="!orderInfo.isOrderCompanyTransfer"
+        >
           <text>备注</text>
           <view class="remarks-right">
             <textarea
@@ -368,6 +385,7 @@
         :data="orderInfo"
         :orderFailed="true"
       />
+
       <order-info
         v-if="orderStatus==0"
         :orderNo="orderInfo.orderNo"
@@ -1571,6 +1589,37 @@ uni-page-body {
       }
       .status1 {
         margin-bottom: 32rpx;
+      }
+
+      .time {
+        color: #ffffff;
+        height: 40rpx;
+        line-height: 40rpx;
+        font-size: 24rpx;
+        font-weight: 400;
+        padding-left: 5rpx;
+        margin-bottom: 32rpx;
+        box-sizing: border-box;
+        display: flex;
+        flex-flow: row nowrap;
+        align-items: center;
+        .countStyle {
+          width: 154rpx;
+          height: 40rpx;
+          padding-left: 4rpx;
+          display: flex;
+          align-items: center;
+          box-sizing: border-box;
+          border-radius: 8rpx;
+          background: rgba(255, 255, 255, 0.06);
+          background-blend-mode: darken;
+          mix-blend-mode: normal;
+          border: 2rpx solid rgba(255, 255, 255, 0.3);
+        }
+        .showText {
+          font-size: 24rpx;
+          color: #ffffff;
+        }
       }
 
       .time {
