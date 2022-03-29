@@ -65,12 +65,12 @@
 			},
 			jumpDeal2Handler(item){
 				uni.navigateTo({
-					url: `/sub-classify/pages/goods-detail/goods-detail?goodId=${item.jumpUrl}`,
+					url: `/sub-classify/pages/product-detail/product-detail?goodId=${item.jumpUrl}`,
 				});
 			},
 			jumpDeal3Handler(item){
 				uni.navigateTo({
-					url: `/sub-classify/pages/shops-detail/shops-detail?storeId=${item.jumpUrl}`,
+					url: `/sub-classify/pages/shops/shops?storeId=${item.jumpUrl}`,
 				});
 			},
 			
