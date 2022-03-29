@@ -156,7 +156,8 @@
         selectCoupon: {
           total: 10000,
         },
-        payWayTag: 0
+        payWayTag: 0,
+        payType: 0
       };
     },
     computed: {
@@ -217,6 +218,9 @@
     methods: {
       payWay(payWayTag) {
         this.payWayTag = payWayTag
+        if (this.payWayTag) {
+          this.payType = 6
+        }
       },
       morePayWay() {
         this.$refs.payWayToast.showPupop();
@@ -263,10 +267,6 @@
           this.$refs.payDialog.open();
           return;
         }
-        if (this.payWayTag) {
-          console.log("对公支付转账")
-          return;
-        }
         this.onConform();
       },
       onConform() {
@@ -290,13 +290,18 @@
           payFreight({
             orderId: this.detail.orderId,
             goodsRequireId: this.id,
-            payType: payType,
+            payType: this.payType ? this.payType : payType, //"int //支付方式  1微信支付",
             deviceType: deviceType,
             openid,
             isCardPay: this.cardClick,
           }).then((e) => {
+            if (this.payWayTag) {
+              uni.navigateTo({
+                url: `/sub-classify/pages/pay-order/cashier?remittanceCode=${e.companyTransferPayVO.remittanceCode}&amount=${e.companyTransferPayVO.amount}`
+              })
+              return;
+            }
             const cardPayComplete = e.cardPayComplete;
-
             if (!cardPayComplete) {
               //#ifdef MP-WEIXIN
               const payInfo = e.wechatPayJsapi;
