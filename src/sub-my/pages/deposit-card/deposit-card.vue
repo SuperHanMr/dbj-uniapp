@@ -733,6 +733,7 @@
     display: flex;
     justify-content: space-between;
     padding: 24rpx 32rpx 0 32rpx;
+    font-size: 28rpx;
   }
 
   .pay-way-box .pay-icon {
