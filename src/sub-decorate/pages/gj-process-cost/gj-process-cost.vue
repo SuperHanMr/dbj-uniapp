@@ -231,7 +231,8 @@
         haveCard: false, //是否有会员卡
         cardBalance: 0, //会员卡余额
         isHas: true,
-        payWayTag: 0
+        payWayTag: 0,
+        payType: 0
       };
     },
     mounted() {
@@ -292,6 +293,9 @@
     methods: {
       payWay(payWayTag) {
         this.payWayTag = payWayTag
+        if (this.payWayTag) {
+          this.payType = 6
+        }
       },
       morePayWay() {
         this.$refs.payWayToast.showPupop();
@@ -670,7 +674,7 @@
       payOrder() {
         //#ifdef MP-WEIXIN
         let params = {
-          payType: 1, //"int //支付方式  1在线支付",
+          payType: this.payType ? this.payType : 1, //"int //支付方式  1微信支付",
           openid: getApp().globalData.openId, //"string //微信openid 小程序支付用 app支付不传或传空",
           projectId: Number(this.msg.projectId), //"long //项目id  非必须 默认0",
           customerId: Number(this.msg.customerId), //"long //业主id  非必须 默认0",
@@ -749,11 +753,13 @@
         this.createOrder(params);
       },
       createOrder(obj) {
-        if (this.payWayTag) {
-          console.log("对公支付转账")
-          return;
-        }
         createOrder(obj).then((data) => {
+          if (this.payWayTag) {
+            uni.navigateTo({
+              url: `/sub-classify/pages/pay-order/cashier?remittanceCode=${data.companyTransferPayVO.remittanceCode}&amount=${data.companyTransferPayVO.amount}`
+            })
+            return;
+          }
           const {
             wechatPayJsapi,
             cardPayComplete,
