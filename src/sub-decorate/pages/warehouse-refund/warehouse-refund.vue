@@ -233,7 +233,7 @@
         if (this.type == 1) {
           params.details = this.refundList;
           goodsBack(params).then((e) => {
-            if(!e.isRefundSuccess){
+            if(e.isRefundSuccess){
               this.toastHandler()
             }else{
               this.toChoicePage(params)
@@ -245,7 +245,7 @@
             params.goodsId = this.data.stockAppVOS[0].relationId;
           }
           goodsRefund(params).then((e) => {
-            if(!e.isRefundSuccess){
+            if(e.isRefundSuccess){
               this.toastHandler()
             }else{
               this.toChoicePage(params)
@@ -264,9 +264,16 @@
 					});
 				}, 1000)
 			},
-      toChoicePage(obj){
+      toChoicePage(params){
+          
+        let obj = {
+          orderId:this.id,
+          type:this.type,
+          params:params
+        }
+        console.log(params,"跳转选择")
          uni.navigateTo({
-           url:`sub-my/pages/choice-refund-account/choice-refund-account?query=${encodeURIComponent(
+           url:`/sub-my/pages/choice-refund-account/choice-refund-account?query=${encodeURIComponent(
             JSON.stringify(obj)
           )}`
          })
