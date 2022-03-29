@@ -116,6 +116,10 @@ export function evaluateDetail(params) {
 	return request.get(`/pm/app/commentSetting/getByServeId`, { params })
 }
 
+// 我的-订单-退款-选择退款收款账号
+export function getCompanyTransfes(params) {
+	return request.get(`/order-center/app/goods/return/companyTransfe/list`, { params })
+}
 
 
 
