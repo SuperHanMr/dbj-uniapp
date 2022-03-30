@@ -115,9 +115,7 @@
               children: res
             }]
           }
-          if (!this.dataList[index].children[0].brandTag) {
-            this.dataList[index].children.unshift(brandItem)
-          }
+          this.dataList[index].children.unshift(brandItem)
         })
       }
     }
