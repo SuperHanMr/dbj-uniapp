@@ -1,5 +1,6 @@
 {
-  "pages": [{
+  "pages": [
+    {
       "path": "pages/home/index/index",
       "style": {
         "navigationBarTitleText": "首页",
@@ -145,7 +146,8 @@
     "selectedColor": "#333333",
     "borderStyle": "white",
     "backgroundColor": "#FFFFFF",
-    "list": [{
+    "list": [
+      {
         "pagePath": "pages/home/index/index",
         "iconPath": "static/tab-bar/home.png",
         "selectedIconPath": "static/tab-bar/home_s.png",
@@ -179,7 +181,8 @@
   },
   "condition": { //模式配置，仅开发期间生效
     "current": 0, //当前激活的模式(list 的索引项)
-    "list": [{
+    "list": [
+      {
         "name": "default", //模式名称
         "path": "pages/home/index/index", //启动页面，必选
         "query": "" //启动参数，在页面的onLoad函数里面得到
@@ -206,9 +209,11 @@
       }
     ]
   },
-  "subPackages": [{
+  "subPackages": [
+    {
       "root": "sub-home", //首页模块分包
-      "pages": [{
+      "pages": [
+        {
           "path": "pages/lives-room/lives-room",
           "style": {
             "navigationBarTitleText": "",
@@ -323,21 +328,21 @@
           }
         },
         {
-					"path" : "pages/find-design/real-case/real-case",
-					"style" :{
-						"navigationBarTitleText": "",
-						"enablePullDownRefresh": true,
-						"navigationStyle": "custom"
-					}
-				},
-				{
-					"path" : "pages/find-design/designer-rank-list",
-					"style" : {
-						"navigationBarTitleText": "",
-						"navigationStyle": "custom"
-					}
-				}
-		]
+          "path": "pages/find-design/real-case/real-case",
+          "style": {
+            "navigationBarTitleText": "",
+            "enablePullDownRefresh": true,
+            "navigationStyle": "custom"
+          }
+        },
+        {
+          "path": "pages/find-design/designer-rank-list",
+          "style": {
+            "navigationBarTitleText": "",
+            "navigationStyle": "custom"
+          }
+        }
+      ]
     },
     {
       "root": "sub-message", //消息模块分包
@@ -345,7 +350,8 @@
     },
     {
       "root": "sub-my", //我的模块分包
-      "pages": [{
+      "pages": [
+        {
           "path": "pages/apply-for-refund/apply-for-refund",
           "style": {
             "navigationBarTitleText": "申请退款",
@@ -408,42 +414,10 @@
             "enablePullDownRefresh": false
           }
         },
-				{
-					"path" : "pages/my-order/order-detail/order-detail",
-					"style": {
-					  "navigationBarTitleText": "订单详情",
-					  "enablePullDownRefresh": false,
-					  "navigationStyle": "custom"
-					}
-				},
         {
-          "path": "pages/my-order/order-in-progress/order-in-progress",
+          "path": "pages/my-order/order-detail/order-detail",
           "style": {
-            "navigationBarTitleText": "",
-            "enablePullDownRefresh": false,
-            "navigationStyle": "custom"
-          }
-        },
-        {
-          "path": "pages/my-order/order-success/order-success",
-          "style": {
-            "navigationBarTitleText": "",
-            "enablePullDownRefresh": false,
-            "navigationStyle": "custom"
-          }
-        },
-        {
-          "path": "pages/my-order/order-failed/order-failed",
-          "style": {
-            "navigationBarTitleText": "",
-            "enablePullDownRefresh": false,
-            "navigationStyle": "custom"
-          }
-        },
-        {
-          "path": "pages/my-order/order-wait-pay/order-wait-pay",
-          "style": {
-            "navigationBarTitleText": "",
+            "navigationBarTitleText": "订单详情",
             "enablePullDownRefresh": false,
             "navigationStyle": "custom"
           }
@@ -541,12 +515,20 @@
             "navigationBarTitleText": "历史优惠券",
             "enablePullDownRefresh": false
           }
+        },
+        {
+          "path": "pages/choice-refund-account/choice-refund-account",
+          "style": {
+            "navigationBarTitleText": "",
+            "enablePullDownRefresh": false
+          }
         }
       ]
     },
     {
       "root": "sub-classify", //商城模块分包
-      "pages": [{
+      "pages": [
+        {
           "path": "pages/search/index",
           "style": {
             "navigationBarTitleText": "",
@@ -570,23 +552,23 @@
             "navigationBarBackgroundColor": "#ffffff"
           }
         },
-		{
-		  "path": "pages/product-detail/index",
-		  "style": {
-		    "navigationBarTitleText": "商品详情",
-		    "enablePullDownRefresh": true,
-		    "navigationBarBackgroundColor": "#ffffff"
-		  }
-		},
-		{
-		  "path": "pages/promotion-product-list/index",
-		  "style": {
-		    "navigationBarTitleText": "活动详情",
-		    "enablePullDownRefresh": true,
-			"navigationBarTextStyle":"white",
-		    "navigationBarBackgroundColor": "#E16D1B"
-		  }
-		},
+        {
+          "path": "pages/product-detail/index",
+          "style": {
+            "navigationBarTitleText": "商品详情",
+            "enablePullDownRefresh": true,
+            "navigationBarBackgroundColor": "#ffffff"
+          }
+        },
+        {
+          "path": "pages/promotion-product-list/index",
+          "style": {
+            "navigationBarTitleText": "活动详情",
+            "enablePullDownRefresh": true,
+            "navigationBarTextStyle": "white",
+            "navigationBarBackgroundColor": "#E16D1B"
+          }
+        },
         {
           "path": "pages/pay-order/index",
           "style": {
@@ -669,51 +651,52 @@
             "navigationBarBackgroundColor": "#ffffff"
           }
         },
-				{
-					"path" : "pages/shop-store-list/shop-store-list",
-					"style" : {
-						"navigationBarTitleText": "店铺",
-						"enablePullDownRefresh": false,
-						"onReachBottomDistance": 10,
-						"navigationBarBackgroundColor": "#ffffff"
-					}
-				},
-				{
-					"path" : "pages/brand-list/brand-list",
-					"style" : {
-						"navigationBarTitleText": "",
-						"enablePullDownRefresh": false,
-						"onReachBottomDistance": 10,
-						"navigationStyle": "custom"
-					}
-				},
-				{
-					"path" : "pages/brand-list/brand-detail",
-					"style" : {
-						"navigationBarTitleText": "",
-						"enablePullDownRefresh": false,
-						"navigationStyle": "custom"
-					}
-				},
         {
-        	"path" : "pages/all-classify/index",
-        	"style" : {
-        		"navigationBarTitleText": "",
-        		"enablePullDownRefresh": false
-        	}
+          "path": "pages/shop-store-list/shop-store-list",
+          "style": {
+            "navigationBarTitleText": "店铺",
+            "enablePullDownRefresh": false,
+            "onReachBottomDistance": 10,
+            "navigationBarBackgroundColor": "#ffffff"
+          }
         },
         {
-        	"path" : "pages/whole-webview/whole-webview",
-        	"style" : {
-        		"navigationBarTitleText": "",
-        		"enablePullDownRefresh": false
-        	}
+          "path": "pages/brand-list/brand-list",
+          "style": {
+            "navigationBarTitleText": "",
+            "enablePullDownRefresh": false,
+            "onReachBottomDistance": 10,
+            "navigationStyle": "custom"
+          }
+        },
+        {
+          "path": "pages/brand-list/brand-detail",
+          "style": {
+            "navigationBarTitleText": "",
+            "enablePullDownRefresh": false,
+            "navigationStyle": "custom"
+          }
+        },
+        {
+          "path": "pages/all-classify/index",
+          "style": {
+            "navigationBarTitleText": "",
+            "enablePullDownRefresh": false
+          }
+        },
+        {
+          "path": "pages/whole-webview/whole-webview",
+          "style": {
+            "navigationBarTitleText": "",
+            "enablePullDownRefresh": false
+          }
         }
-			]
+      ]
     },
     {
       "root": "sub-other", //其他页面
-      "pages": [{
+      "pages": [
+        {
           "path": "pages/merchant-entry/merchant-entry",
           "style": {
             "navigationBarTitleText": "商家入驻",
@@ -745,7 +728,8 @@
     },
     {
       "root": "sub-decorate", //装修模块分包
-      "pages": [{
+      "pages": [
+        {
           "path": "pages/service-list/service-list",
           "style": {
             "navigationBarTitleText": "",
@@ -1077,7 +1061,7 @@
           "path": "pages/person-page/person-peer-evaluate-list",
           "style": {
             "navigationBarTitleText": "同行评价",
-						"onReachBottomDistance": 10
+            "onReachBottomDistance": 10
           }
         },
         {
