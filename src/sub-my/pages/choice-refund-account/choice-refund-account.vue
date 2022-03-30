@@ -131,26 +131,54 @@ export default {
       switch (type) {
         case "whole":
           wholeOrderApplyForRefund(params).then((res) => {
-            uni.redirectTo({
-              url: `../refund-list/refunding-detail/refunding-detail?id=${res.id}`,
-            });
+            if (res.isRefundSuccess) {
+              uni.redirectTo({
+                url: `../refund-list/refunding-detail/refunding-detail?id=${res.id}`,
+              });
+            } else {
+              uni.showToast({
+                title: "提交失败，请稍后重试",
+                icon: "none",
+              });
+            }
           });
           break;
         case "partical":
           particalOrderApplyForRefund(params).then((res) => {
-            uni.redirectTo({
-              url: `../refund-list/refunding-detail/refunding-detail?id=${res.id}`,
-            });
+            if (res.isRefundSuccess) {
+              uni.redirectTo({
+                url: `../refund-list/refunding-detail/refunding-detail?id=${res.id}`,
+              });
+            } else {
+              uni.showToast({
+                title: "提交失败，请稍后重试",
+                icon: "none",
+              });
+            }
           });
           break;
         case 1:
           goodsBack(params).then((data) => {
-            this.toastHandler();
+            if (data.isRefundSuccess) {
+              this.toastHandler();
+            } else {
+              uni.showToast({
+                title: "提交失败，请稍后重试",
+                icon: "none",
+              });
+            }
           });
           break;
         default:
           goodsRefund(params).then((data) => {
-            this.toastHandler();
+            if (data.isRefundSuccess) {
+              this.toastHandler();
+            } else {
+              uni.showToast({
+                title: "提交失败，请稍后重试",
+                icon: "none",
+              });
+            }
           });
           break;
       }
