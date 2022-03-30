@@ -103,8 +103,11 @@
       regDataList(index) { // 处理datalist数据
         this.category1Id = this.dataList[index].id
         let params = {
-          areaId: this.areaId,
-          category1Id: this.dataList[index].id
+          "searchItemType": "product",
+          "product": {
+            "areaId": this.areaId,
+            "category1Id": this.dataList[index].id,
+          },
         }
         getBrandList(params).then((res) => {
           let brandItem = {
@@ -115,7 +118,9 @@
               children: res
             }]
           }
-          this.dataList[index].children.unshift(brandItem)
+          if (!this.dataList[index].children[0].brandTag) {
+            this.dataList[index].children.unshift(brandItem)
+          }
         })
       }
     }
