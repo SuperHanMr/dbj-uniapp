@@ -52,8 +52,10 @@
 			};
 		},
 		mounted() {
+			console.log(this.$props.emitName, '>>>>>>>>emitName')
 			uni.$on(this.$props.emitName, (param) => {
 				this.page = param.page;
+				console.log(param, '>>>>>>>>param')
 				this.resetList(param.shopList);
 			})
 		},
