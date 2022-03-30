@@ -51,7 +51,7 @@
 				itemHeight: "",
 			};
 		},
-		mounted() {
+		created() {
 			uni.$on(this.$props.emitName, (param) => {
 				this.page = param.page;
 				this.resetList(param.shopList);

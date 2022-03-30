@@ -34,8 +34,8 @@
 					<view class="box">
 						<view class="brand-item-box" v-for="item in pavilionObj.list" :key="item.id"
 							@click="brandItemHandler(item)">
-							<view class="item-box" v-if="item.key !== 'all'"
-								:style="{'background': `linear-gradient(180deg, rgba(244, 244, 244, 0.3) 0%, rgba(244, 244, 244, 0.96) 79.55%, #F1F1F1 100.39%), url(${item.brandBagImage + '?x-oss-process=image/resize,m_mfit,w_216,h_176'})`}">
+							<view class="item-box" v-if="item.key !== 'all'" :style="{'background': `linear-gradient(180deg, rgba(244, 244, 244, 0.3) 0%, rgba(244, 244, 244, 0.96) 79.55%, #F1F1F1 100.39%), url(${item.brandBagImage + '?x-oss-process=image/resize,m_mfit,w_216,h_176'})`, 'background-repeat': 'no-repeat',
+					'background-size': '100% 100%'}">
 								<image :src="item.brandLogoImage | imgFormat(84, 84)" class="brand-item-icon"></image>
 								<view class="brand-item-title">
 									{{item.brandShortName}}
@@ -96,8 +96,7 @@
 			isLoginHandler(params) {
 				uni.getStorage({
 					key: 'scn',
-					success() {
-					},
+					success() {},
 					fail() {
 						if (params.needLogin) {
 							uni.navigateTo({
@@ -107,7 +106,7 @@
 						}
 					}
 				})
-				
+
 			},
 			classHandler(item) {
 				let param = JSON.parse(item.configParams)
@@ -162,7 +161,7 @@
 				}
 				uni.navigateTo({
 					url: `${item.url}?${param}`
-				}) 
+				})
 			},
 			brandHandler() {
 				uni.navigateTo({
@@ -176,7 +175,8 @@
 			toWebview(url) {
 				console.log(`${this.ENV.VUE_APP_BASE_H5}${url}`, '>>>>>>>>>>')
 				uni.navigateTo({
-					url: "/pages/common/webview/webview?url=" + encodeURIComponent(`${this.ENV.VUE_APP_BASE_H5}${url}`),
+					url: "/pages/common/webview/webview?url=" + encodeURIComponent(
+						`${this.ENV.VUE_APP_BASE_H5}${url}`),
 				});
 			}
 		}
@@ -299,8 +299,6 @@
 					width: 216rpx;
 					height: 176rpx;
 					border-radius: 16rpx;
-					background-repeat: no-repeat;
-					background-size: 100% 100%;
 				}
 			}
 

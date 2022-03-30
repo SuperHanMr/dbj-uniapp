@@ -7,7 +7,8 @@
           :class="{'active': index2==categoryActive, 'preNode': index2==categoryActive -1, 'nextNode': index2==categoryActive +1}"
           v-for="(menu2,index2) in detailData" :key="index2" :id="'left' + index2">
           <view v-if="menu2.brandTag">
-            <image src="../../static/image/brand_icon.png" mode=""></image>
+            <image src="../../static/image/brand_active.png" mode="" v-if="index2==categoryActive"></image>
+            <image src="../../static/image/brand_icon.png" mode="" v-else></image>
           </view>
           <text v-if="detailData[categoryActive]['children'].length && !menu2.brandTag">{{menu2.name}}</text>
         </view>
@@ -66,7 +67,6 @@
       },
       detailData: {
         handler(v) {
-          console.log(999999999)
           v.forEach((item, key) => {
             uni.createSelectorQuery().in(this).select(`#tab${item.id}`).boundingClientRect(res => {
               this.heightList.push(res.height)
@@ -161,7 +161,7 @@
 
     image {
       width: 80rpx;
-      height: 35rpx;
+      height: 30rpx;
     }
   }
 

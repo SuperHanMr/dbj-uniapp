@@ -1,6 +1,6 @@
 <template>
   <view class="good-toast">
-    <uni-popup ref="payWayToast" type="bottom">
+    <uni-popup ref="payWayToast" type="bottom" @maskClick="close">
       <view class="close" @click="close"></view>
       <view class="toast-content">
         <view class="title">请选择支付方式</view>
