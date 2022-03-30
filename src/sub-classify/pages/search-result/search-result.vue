@@ -92,7 +92,6 @@
         isPageReady: false,
         pageNum: 1,
         sort: "",
-        // isLoadMore: false,
         searchText: "",
         aggregation: false,
         category1Id: 0,
@@ -110,7 +109,6 @@
       this.getList()
     },
     onPullDownRefresh() {
-      // this.isLoadMore = false
       this.pageNum = 1
       this.getList()
     },
@@ -157,11 +155,6 @@
           if(data.aggregationResults) {
             this.tabArr = data.aggregationResults
           }
-          // if (this.isLoadMore) {
-          //   this.listArr = this.listArr.concat(data.page)
-          // } else {
-          //   this.listArr = data.page
-          // }
           console.log(data.page, "data.page")
           this.listArr = data.page
           uni.$emit('searchListData', {
@@ -171,7 +164,6 @@
         })
       },
       sortList() {
-        // this.isLoadMore = false
         if (!this.sort) {
           this.sort = "price_asc"
         } else if (this.sort === "price_asc") {
@@ -187,14 +179,12 @@
         } else {
           return
         }
-        // this.isLoadMore = true
         this.getList()
       },
       clickInitSearch() {
         this.initSearch = false
       },
       searchConfirm(resText) {
-        // this.isLoadMore = false
         this.searchText = resText.value
         this.getList()
       },
