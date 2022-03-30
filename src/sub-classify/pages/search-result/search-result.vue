@@ -1,5 +1,5 @@
 <template>
-  <view class="search-result" v-if='isShow'>
+  <view class="search-result">
     <view class="search">
       <view v-if="initSearch" class="uni-searchbar" @click="clickInitSearch">
         <view class="uni-searchbar__box">
@@ -90,7 +90,6 @@
         listArr: [],
         initSearch: true,
         isPageReady: false,
-        isShow: true,
         pageNum: 1,
         sort: "",
         // isLoadMore: false,
@@ -101,12 +100,6 @@
         category4Id: 0,
         brandId: 0
       }
-    },
-    onShow() {
-      this.isShow = true
-      //从支付页面或者房屋选择页面回到列表后，清空缓存的id
-      uni.removeStorageSync('houseListChooseId')
-      uni.removeStorageSync('goodId')
     },
     onLoad(e) {
       this.category1Id = e.category1Id
