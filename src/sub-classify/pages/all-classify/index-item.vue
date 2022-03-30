@@ -24,7 +24,7 @@
             <scroll-view class="right-card" scroll-y="true">
               <view class="card-box">
                 <view class="right-detail" v-for="(menue4, index4) in menu3['children']" :key="index4"
-                  @click="toGoodsList(menu2.brandTag, menue4.id)">
+                  @click="toGoodsList(menu2.brandTag, menu2.id, menue4.id)">
                   <view class="img-view">
                     <image :src="menue4.imageUrl  + '?x-oss-process=image/resize,m_lfit,w_124,h_124' "></image>
                   </view>
@@ -103,17 +103,17 @@
         this.categoryActive = scrollIndex
 
       },
-      toGoodsList(brandTag, id) {
+      toGoodsList(brandTag, id2, id4) {
         let brandId, category4Id
         if(brandTag) {
-          brandId = id
+          brandId = id4
           category4Id = 0
         } else {
           brandId = 0
-          category4Id = id
+          category4Id = id4
         }
         uni.navigateTo({
-          url: `/sub-classify/pages/search-result/search-result?category1Id=${this.category1Id}&category4Id=${category4Id}&brandId=${brandId}`
+          url: `/sub-classify/pages/search-result/search-result?category1Id=${this.category1Id}&category2Id=${id2}&category4Id=${category4Id}&brandId=${brandId}`
         });
       },
     }
