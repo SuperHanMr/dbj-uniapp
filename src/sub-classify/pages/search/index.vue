@@ -41,7 +41,7 @@
     methods: {
       searchConfirm(resText){
         uni.navigateTo({
-          url: "/sub-classify/pages/search-result/search-result?searchText=" + resText.value
+          url: "/sub-classify/pages/search-result/search-result?searchText=" + resText.value + "&from=searchPage"
         })
       },
       clearHistory() {
