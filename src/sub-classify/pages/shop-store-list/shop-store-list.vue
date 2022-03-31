@@ -65,7 +65,7 @@
 				query:{
 					page:1,
 					rows:15,
-					houseId:0,
+					areaId:0,
 					totalPage:1,
 				},
 				storeList:[],
@@ -76,8 +76,9 @@
 		},
 		onLoad() {
 			const currentHouse = getApp().globalData.currentHouse;
-			console.log("houseId==",currentHouse)
-			this.query.houseId = currentHouse.id;
+			this.query.areaId = currentHouse.areaId;
+			console.log("currentHouse!!!!!==",currentHouse)
+			console.log("areaId!!!!!==",currentHouse.areaId)
 			this.userId = getApp().globalData.token;
 			this.reqStoreList()
 		},
@@ -101,7 +102,7 @@
 				let params ={
 					pageIndex:this.query.page,
 					pageSize:this.query.rows,
-					houseId:this.query.houseId,
+					areaId:this.query.areaId,
 				}
 				console.log("araaaaaaaaaa==",params)
 				getStoreList(params).then(res=>{
