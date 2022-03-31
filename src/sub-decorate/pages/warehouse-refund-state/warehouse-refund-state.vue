@@ -173,6 +173,24 @@
           {{detail.remark}}
         </view>
       </view>
+      
+    </view>
+    <view class="offline-info" v-if="detail.isOrderCompanyTransfer">
+    	<view class="header">
+    		退款线下收款信息
+    	</view>
+    	<view class="item">
+    		<text class="item-header">户名：</text>
+    		<text class="item-body">{{detail.accountName}}</text>
+    	</view>
+    	<view class="item">
+    		<text class="item-header">银行账号：</text>
+    		<text class="item-body">{{detail.accountNo}}</text>
+    	</view>
+    	<view class="item">
+    		<text class="item-header">开户行：</text>
+    		<text class="item-body">{{detail.accountBank}}</text>
+    	</view>
     </view>
     <view
       v-if="[4,5].includes(detail.status)&&ownered"
@@ -426,7 +444,45 @@ export default {
       }
     }
   }
-
+.offline-info{
+	background-color: #fff;
+	padding: 32rpx;
+	border-radius: 24rpx;
+	margin-top: 16rpx;
+	.header{
+		font-size: 30rpx;
+		font-weight: 1000;
+		height: 48rpx;
+		line-height: 48rpx;
+		margin-bottom: 16rpx;
+	}
+	.item{
+		font-size: 28rpx;
+		display: flex;
+		flex: 1;
+		flex-flow: row nowrap;
+		justify-content: flex-start;
+		margin-bottom: 16rpx;
+		.item-header{
+			width: 140rpx;
+			height: 40rpx;
+			line-height: 40rpx;
+			color: #999999;
+			display: block;
+			flex: 1;
+		}
+		.item-body{
+			width: 546rpx;
+			line-height: 40rpx;
+			display: flex;
+			flex-flow: row nowrap;
+			
+		}
+	}
+	.item:nth-last-child(1){
+		margin-bottom: 0;
+	}
+}
   .success-icon {
     width: 64rpx;
     height: 64rpx;
