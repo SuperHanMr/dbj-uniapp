@@ -1114,12 +1114,11 @@ export default {
     toApplayForRefund(data, type) {
       // this.title = "您确定要取消订单吗?";
       //type: 1 部分退款  2 整体退款
-      let isOrderCompanyTransfer = this.orderInfo.isOrderCompanyTransfer;
       if (type == 1) {
         console.log("orderId=", this.orderInfo.orderId);
         console.log("部分退款", "data=", data);
         uni.navigateTo({
-          url: `../../apply-for-refund/apply-for-refund?orderId=${this.orderId}&type=partical&status=1&applyMode=1&orderDetailsId=${data.orderDetailId}&isCompany=${isOrderCompanyTransfer}`,
+          url: `../../apply-for-refund/apply-for-refund?orderId=${this.orderId}&type=partical&status=1&applyMode=1&orderDetailsId=${data.orderDetailId}`,
         });
       } else {
         let status; //此处的status值影响到申请退款页面样式
@@ -1130,7 +1129,7 @@ export default {
         }
         console.log("全部退款data=", data);
         uni.navigateTo({
-          url: `../../apply-for-refund/apply-for-refund?orderId=${this.orderId}&type=whole&status=${status}&applyMode=2&isCompany=${isOrderCompanyTransfer}`,
+          url: `../../apply-for-refund/apply-for-refund?orderId=${this.orderId}&type=whole&status=${status}&applyMode=2`,
         });
       }
     },

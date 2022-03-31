@@ -9,12 +9,12 @@
     <view class="account-list">
       <view
         v-for="item in accountList"
-        :key="item.id"
+        :key="item.accountNo"
         class="account-item"
       >
         <view class="card-left">
           <img
-            v-if="item.id === checkedAccount.id"
+            v-if="item.accountNo === checkedAccount.accountNo"
             src="https://ali-image.dabanjia.com/image/20220328/16/164845631915103.png"
             alt=""
           >
@@ -127,7 +127,7 @@ export default {
       this.checkedAccount = { ...item };
     },
     submitApply() {
-      if (!this.checkedAccount.id) {
+      if (!this.checkedAccount.accountNo) {
         uni.showToast({
           title: "请选择退款收款账户",
           icon: "none",
@@ -135,6 +135,7 @@ export default {
         return;
       }
       let { type, params } = this.query;
+      params.accountNo = this.checkedAccount.accountNo;
       switch (type) {
         case "whole":
           wholeOrderApplyForRefund(params).then((res) => {

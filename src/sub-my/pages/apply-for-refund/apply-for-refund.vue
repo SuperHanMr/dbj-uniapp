@@ -422,7 +422,6 @@ export default {
       handlingFees: "",
       refundType: "", //1:材料 2:订单 5:储值卡
       isServerOrder: true,
-      isCompany: false, // 是否公司转账收款单
     };
   },
   mounted(e) {
@@ -448,7 +447,6 @@ export default {
       this.status = this.query.status;
       this.applyMode = Number(e.applyMode); //	申请方式 1单商品 2整单退
       console.log("this.type=", e);
-      this.isCompany = e.isCompany === "true";
       if (this.type == "partical") {
         let params = {
           orderId: this.query.orderId,
@@ -672,34 +670,42 @@ export default {
         : (params.orderDetailsId = this.orderDetailsId
             ? this.orderDetailsId
             : this.orderDetailId);
-      console.log("申请退款", this.isCompany);
-      if (this.isCompany) {
-        let query = {
-          type: this.type,
-          orderId: this.query.orderId,
-          params,
-        };
+      // if (this.isCompany) {
+      let query = {
+        type: this.type,
+        orderId: this.query.orderId,
+        params,
+      };
 
-        uni.navigateTo({
-          url: `../choice-refund-account/choice-refund-account?query=${encodeURIComponent(
-            JSON.stringify(query)
-          )}`,
-        });
-        return;
-      }
       if (this.type == "whole") {
         wholeOrderApplyForRefund(params).then((data) => {
           console.log("data=", data, "data.id=", data.id);
-          uni.redirectTo({
-            url: `../refund-list/refunding-detail/refunding-detail?id=${data.id}`,
-          });
+          if (!data.isRefundSuccess) {
+            uni.navigateTo({
+              url: `../choice-refund-account/choice-refund-account?query=${encodeURIComponent(
+                JSON.stringify(query)
+              )}`,
+            });
+          } else {
+            uni.redirectTo({
+              url: `../refund-list/refunding-detail/refunding-detail?id=${data.id}`,
+            });
+          }
         });
       } else {
         particalOrderApplyForRefund(params).then((data) => {
           console.log("打印返回的数据=", data, "退款单id（data.id）=", data.id);
-          uni.redirectTo({
-            url: `../refund-list/refunding-detail/refunding-detail?id=${data.id}`,
-          });
+          if (!data.isRefundSuccess) {
+            uni.navigateTo({
+              url: `../choice-refund-account/choice-refund-account?query=${encodeURIComponent(
+                JSON.stringify(query)
+              )}`,
+            });
+          } else {
+            uni.redirectTo({
+              url: `../refund-list/refunding-detail/refunding-detail?id=${data.id}`,
+            });
+          }
         });
       }
     },
