@@ -17,12 +17,12 @@
       <view @click="sortList">
         <sort-button class="sort-button"></sort-button>
       </view>
-    </view>
-    <view class="content">
       <scroll-view scroll-x="true" :show-scrollbar="false" class="content-scroll" v-if="tabArr.length">
         <text :class="{'activeTab': activeTabIndex === 0}" @click="clickTab(0, 0)">全部</text>
         <text v-for="(v, k) in tabArr" :key="k" :class="{'activeTab': activeTabIndex === k + 1}" @click="clickTab(k + 1, v.id)">{{v.name}}</text>
       </scroll-view>
+    </view>
+    <view class="content" :class="{'tag-content': tabArr[0]}">
       <goods-list emitName="searchListData"></goods-list>
       <!--      <uni-swipe-action v-if="listArr.length>0">
         <uni-swipe-action-item v-for="(goodsItem,goodsIndex) in listArr" :key="goodsIndex">
@@ -268,6 +268,7 @@
 
   .search {
     display: flex;
+    flex-wrap: wrap;
     justify-content: center;
     align-items: center;
   }
@@ -279,18 +280,26 @@
 
   .content {
     background-color: #FFFFFF;
-    height: calc(100% - 110rpx);
+    height: calc(100% - 100rpx);
     padding-bottom: 20rpx;
-    margin-top: 110rpx;
+    margin-top: 100rpx;
     position: relative;
     width: 100%;
     overflow: scroll;
+    padding-top: 5rpx;
+  }
+  .tag-content{
+    height: calc(100% - 150rpx);
+    margin-top: 150rpx;
   }
   .content-scroll{
+    width: 100%;
     height: 80rpx;
     white-space: nowrap;
     display: flex;
     align-items: center;
+    margin-top: 22rpx;
+    padding: 0 20rpx;
   }
   .content-scroll .activeTab{
     background-color: #222222;
