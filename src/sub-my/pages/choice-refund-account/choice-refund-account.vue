@@ -141,7 +141,7 @@ export default {
           wholeOrderApplyForRefund(params).then((res) => {
             if (res.isRefundSuccess) {
               uni.redirectTo({
-                url: `../refund-list/refunding-detail/refunding-detail?id=${res.id}`,
+                url: `../refund-list/refunding-detail/refunding-detail?id=${res.id}&from=refund`,
               });
             } else {
               uni.showToast({
@@ -155,7 +155,7 @@ export default {
           particalOrderApplyForRefund(params).then((res) => {
             if (res.isRefundSuccess) {
               uni.redirectTo({
-                url: `../refund-list/refunding-detail/refunding-detail?id=${res.id}`,
+                url: `../refund-list/refunding-detail/refunding-detail?id=${res.id}&from=refund`,
               });
             } else {
               uni.showToast({
