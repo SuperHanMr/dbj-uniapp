@@ -9,8 +9,8 @@
 
 		<view class="refund-container" :style="{paddingBottom:containerPaddingBottom}" >
 			<view style="position: relative;" >
-				<view 
-					class="bgcStyle" 
+				<view
+					class="bgcStyle"
 					:style="{backgroundImage:`url(${bgImg})`,backgroundSize: '100% 100%'}"
 				/>
 				<view :style="{height:navBarHeight}"></view>
@@ -200,7 +200,7 @@
 			</view>
 			<!-- 公用的 -->
 			<order-refund-info :refundInfo="refundInfo"></order-refund-info>
-			
+
 			<!-- 对公收付款 -->
 			<view class="offline-info" v-if="refundInfo.isOrderCompanyTransfer">
 				<view class="header">
@@ -355,7 +355,7 @@ export default {
 					url:"../../my-order/my-order?index=2&firstEntry=true"
 			  });
 			}else if(this.from == "refund"){
-				uni.redirectTo({
+				uni.reLaunch({
 					url:"../refund-list"
 				})
 			}
@@ -947,7 +947,7 @@ export default {
 			line-height: 40rpx;
 			display: flex;
 			flex-flow: row nowrap;
-			
+
 		}
 	}
 	.item:nth-last-child(1){
