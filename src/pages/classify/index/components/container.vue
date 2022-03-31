@@ -213,7 +213,7 @@
 
 		.img-box {
 			width: 328rpx;
-			height: 146rpx;
+			height: 144rpx;
 
 			.img {
 				width: 100%;
