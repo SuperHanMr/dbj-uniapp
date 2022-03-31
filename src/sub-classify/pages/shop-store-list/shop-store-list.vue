@@ -7,7 +7,10 @@
 			<view class="storeItem" v-for="storeItem in storeList" :key="storeItem.id">
 				<image class="storeImg" @click="gotoStoreDetail(storeItem)" :src="storeItem.store.avatar" />
 				<view class="baseInfo-container">
-					<view class="header" >
+					<view class="header"
+					 :style="{marginTop:!(storeItem.store.tags && storeItem.store.tags.length)?'24rpx':'0',
+					 marginBottom:!(storeItem.store.tags && storeItem.store.tags.length)?'32rpx':'12rpx'}"
+					>
 						<image 
 							v-if="storeItem.store.type == 2" 
 							@click="gotoStoreDetail(storeItem)" 
