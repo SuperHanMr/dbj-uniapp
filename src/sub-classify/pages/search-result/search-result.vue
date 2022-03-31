@@ -256,7 +256,6 @@
     position: absolute;
     top: 0;
     flex-wrap: wrap;
-    padding: 20rpx;
   }
 
   .search /deep/ .uni-searchbar {
@@ -339,6 +338,7 @@
     white-space: nowrap;
     display: flex;
     align-items: center;
+    padding: 20rpx;
   }
 
   .content-scroll .activeTab {
