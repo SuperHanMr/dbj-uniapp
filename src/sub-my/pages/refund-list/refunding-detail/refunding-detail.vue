@@ -355,8 +355,8 @@ export default {
 					url:"../../my-order/my-order?index=2&firstEntry=true"
 			  });
 			}else if(this.from == "refund"){
-				uni.reLaunch({
-					url:"../refund-list"
+					uni.navigateBack({
+					delta:3
 				})
 			}
 			else{
