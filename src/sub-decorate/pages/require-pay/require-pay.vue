@@ -240,6 +240,9 @@
       clickCard() {
         if (this.cardBalance) {
           this.cardClick = !this.cardClick;
+          if (this.cardClick) {
+            this.payType = 0
+          }
         }
       },
       onReject() {
@@ -295,7 +298,7 @@
             openid,
             isCardPay: this.cardClick,
           }).then((e) => {
-            if (this.payWayTag) {
+            if (this.payWayTag && this.payType) {
               uni.navigateTo({
                 url: `/sub-classify/pages/pay-order/cashier?remittanceCode=${e.companyTransferPayVO.remittanceCode}&amount=${e.companyTransferPayVO.amount}`
               })

@@ -171,6 +171,9 @@
       },
       changeValue() {
         this.isCardPay = !this.isCardPay
+        if (this.cardClick) {
+          this.payType = 0
+        }
       },
       closePayDialog() {
         this.$refs.payDialog.close();
@@ -282,7 +285,7 @@
             });
             return;
           }
-          if (this.payWayTag) {
+          if (this.payWayTag && this.payType) {
             uni.navigateTo({
               url: `/sub-classify/pages/pay-order/cashier?remittanceCode=${data.companyTransferPayVO.remittanceCode}&amount=${data.companyTransferPayVO.amount}`
             })
@@ -351,6 +354,12 @@
             uni.switchTab({
               url: "/pages/decorate/index/index",
             });
+            return;
+          }
+          if (this.payWayTag && this.payType) {
+            uni.navigateTo({
+              url: `/sub-classify/pages/pay-order/cashier?remittanceCode=${data.companyTransferPayVO.remittanceCode}&amount=${data.companyTransferPayVO.amount}`
+            })
             return;
           }
           const {

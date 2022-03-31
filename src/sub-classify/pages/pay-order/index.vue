@@ -573,6 +573,9 @@ export default {
     clickCard() {
       if (this.cardBalance) {
         this.cardClick = !this.cardClick;
+        if(this.cardClick) {
+          this.payType = 0
+        }
       }
     },
     backFrom() {
@@ -883,7 +886,7 @@ export default {
           packageId: this.isFromPackage ? parseInt(this.packageId) : undefined, // 套包下单时需要套包id参数，默认undefined
         };
         this.createOrder(params).then((data) => {
-          if (this.payWayTag) {
+          if (this.payWayTag && this.payType) {
             uni.navigateTo({
               url: `/sub-classify/pages/pay-order/cashier?remittanceCode=${data.companyTransferPayVO.remittanceCode}&amount=${data.companyTransferPayVO.amount}`
             })
@@ -959,6 +962,12 @@ export default {
           packageId: this.isFromPackage ? parseInt(this.packageId) : undefined, // 套包下单时需要套包id参数，默认undefined
         };
         this.createOrder(params).then((data) => {
+          if (this.payWayTag && this.payType) {
+            uni.navigateTo({
+              url: `/sub-classify/pages/pay-order/cashier?remittanceCode=${data.companyTransferPayVO.remittanceCode}&amount=${data.companyTransferPayVO.amount}`
+            })
+            return;
+          }
           if (!data.cardPayComplete) {
             uni.navigateTo({
               url: `/sub-classify/pages/pay-order/pay-h5?payTal=${data.gomePayH5.payModeList[0].payTal}&totalPrice=${orderPrice}&payRecordId=${data.payRecordId}`,
