@@ -280,10 +280,12 @@
 
 			// 点击单个item的操作获取选中的数据
 			onSelectedItem(data) {
+				console.log("data====",data)
 				if(this.showMgrBtn){
 					if(this.currentIndex ==0){
 						uni.navigateTo({
-							url: `/sub-classify/pages/goods-detail/goods-detail?goodId=${data.id}`
+							url:`/sub-classify/pages/product-detail/index?productId=${data.id}`
+							// url: `/sub-classify/pages/goods-detail/goods-detail?goodId=${data.id}`
 						 })
 					}else{
 						uni.navigateTo({

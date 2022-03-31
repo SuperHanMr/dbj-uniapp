@@ -957,7 +957,8 @@ export default {
       }
       console.log("item=", item, "type=", type);
       uni.navigateTo({
-        url: `../../../../sub-classify/pages/goods-detail/goods-detail?goodId=${item.id}`,
+				url:`../../../../sub-classify/pages/product-detail/index?productId=${item.id}`
+        // url: `../../../../sub-classify/pages/goods-detail/goods-detail?goodId=${item.id}`,
       });
     },
 

@@ -373,8 +373,10 @@ export default {
 
 		// 跳转到商品详情页面
 		productDetail(item){
+			console.log("item!!!!",item)
 			uni.navigateTo({
-				url:`../../../../sub-classify/pages/goods-detail/goods-detail?goodId=${item.relationId}`
+				url:`../../../../sub-classify/pages/product-detail/index?productId=${item.relationId}`
+				// url:`../../../../sub-classify/pages/goods-detail/goods-detail?goodId=${item.relationId}`
 			})
 		},
 
