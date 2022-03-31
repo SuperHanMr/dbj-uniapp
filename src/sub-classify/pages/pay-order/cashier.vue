@@ -1,5 +1,10 @@
 <template>
 	<view class="wrapper">
+		<custom-navbar  title="收银台" bgcolor="#F2EBE5">
+			<template v-slot:back>
+				<i class="icon-ic_cancel_white back-icon" :style="{color: 'black'}" @click="toBack"></i>
+			</template>
+		</custom-navbar>
 		<view class="header_count_title">
 			<text>订单已提交成功，需支付金额</text>
 		</view>
@@ -100,6 +105,11 @@ export default {
 		}
 	},
 	methods: {
+		toBack() {
+			uni.redirectTo({
+				url: "../../../sub-my/pages/my-order/my-order?firstEntry=true&index=1"
+			})
+		},
 		handleCopy() {
 			uni.setClipboardData({
 				data: `户名： 打扮家（北京）科技有限公司 \n银行账号： 110928376810201 \n开户行： 招商银行股份有限公司北京分行世纪城支行 \n银行联行号： 308100005301 \n汇款识别码： ${this.remittanceCode}`,
@@ -129,6 +139,10 @@ export default {
 	overflow-y: auto;
 	padding: 0 32rpx 250rpx 32rpx;
 	box-sizing: border-box;
+}
+
+.back-icon{
+	z-index: 10;
 }
 
 .header_count_title{

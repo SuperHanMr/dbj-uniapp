@@ -580,7 +580,8 @@
         {
           "path": "pages/pay-order/cashier",
           "style": {
-            "navigationBarTitleText": "收银台",
+            "navigationBarTitleText": "",
+            "navigationStyle": "custom",
             "enablePullDownRefresh": false,
             "navigationBarBackgroundColor": "#F2EBE5",
             "backgroundColor": "#F2EBE5"
