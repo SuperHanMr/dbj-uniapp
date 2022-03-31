@@ -10,7 +10,7 @@
 		</view>
 		<view class="recommended">
 			<view class="img-box" v-for="item in recommendList" :key="item.id" @click="recommendedHandler(item)">
-				<image :src="item.icon | imgFormat(328, 132)" mode="aspectFill" class="img"></image>
+				<image :src="item.icon" mode="aspectFill" class="img"></image>
 			</view>
 		</view>
 		<view class="brand">
