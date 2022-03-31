@@ -716,7 +716,7 @@
 
   .cover {
     width: 750rpx;
-    height: 256rpx;
+    height: 350rpx;
     margin-top: 24rpx;
   }
 
