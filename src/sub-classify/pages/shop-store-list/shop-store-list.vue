@@ -242,6 +242,8 @@
 						height: 178rpx;
 						border-radius: 16rpx;
 						margin-bottom: 16rpx;
+						border: 0.5px solid #F2F2F2;
+						box-sizing: border-box;
 					}
 					.productName{
 						height: 40rpx;
