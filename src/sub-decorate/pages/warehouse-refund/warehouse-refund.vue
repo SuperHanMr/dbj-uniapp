@@ -248,6 +248,7 @@
             if(e.isRefundSuccess){
               this.toastHandler()
             }else{
+              params.orderId = e.orderId
               this.toChoicePage(params)
             }
           });
@@ -267,7 +268,7 @@
       toChoicePage(params){
           
         let obj = {
-          orderId:this.id,
+          orderId:params.orderId,
           type:+this.type,
           params:params
         }
