@@ -16,10 +16,10 @@
 						v-if="scrollTop > 0"
 						src="https://ali-image.dabanjia.com/static/mp/dabanjia/images/theme-red/classify/bgBrandName.png"
 					/>
-					<view class="brandTextContainer" v-else>
+					<!-- <view class="brandTextContainer" v-else>
 						<image src="../../static/image/bgBrandName.png" mode=""></image>
 						<view class="line"></view>
-					</view>
+					</view> -->
 				</view>
 		  </template>
 		</custom-navbar>
