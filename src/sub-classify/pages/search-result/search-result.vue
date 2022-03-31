@@ -23,13 +23,13 @@
         <view @click="sortList">
           <sort-button class="sort-button"></sort-button>
         </view>
-      </view>
-      <view class="content">
         <scroll-view scroll-x="true" :show-scrollbar="false" class="content-scroll" v-if="tabArr.length">
           <text :class="{'activeTab': activeTabIndex === 0}" @click="clickTab(0, 0)">全部</text>
           <text v-for="(v, k) in tabArr" :key="k" :class="{'activeTab': activeTabIndex === k + 1}"
             @click="clickTab(k + 1, v.id)">{{v.name}}</text>
         </scroll-view>
+      </view>
+      <view class="content" :class="{'tag-content': tabArr[0]}">
         <goods-list emitName="searchListData"></goods-list>
         <!--      <uni-swipe-action v-if="listArr.length>0">
         <uni-swipe-action-item v-for="(goodsItem,goodsIndex) in listArr" :key="goodsIndex">
@@ -239,18 +239,23 @@
 <style scoped>
   .body {
     height: 100%;
-    overflow: hidden;
   }
 
   .search-result {
     display: flex;
     justify-content: center;
     position: relative;
+    height: calc(100% - 120rpx);
+    background-color: #FFFFFF;
   }
 
   .search {
+    display: flex;
+    justify-content: center;
+    align-items: center;
     position: absolute;
     top: 0;
+    flex-wrap: wrap;
   }
 
   .search /deep/ .uni-searchbar {
@@ -312,25 +317,20 @@
     margin-left: 10rpx;
   }
 
-  .search {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-  }
-
-  .search-result {
-    height: 100%;
-    background-color: #FFFFFF;
-  }
 
   .content {
     background-color: #FFFFFF;
-    height: calc(100% - 110rpx);
+    height: calc(100% - 100rpx);
     padding-bottom: 20rpx;
-    margin-top: 110rpx;
+    margin-top: 100rpx;
     position: relative;
     width: 100%;
     overflow: scroll;
+  }
+
+  .tag-content {
+    height: calc(100% - 150rpx);
+    margin-top: 150rpx;
   }
 
   .content-scroll {
@@ -338,6 +338,7 @@
     white-space: nowrap;
     display: flex;
     align-items: center;
+    padding: 20rpx;
   }
 
   .content-scroll .activeTab {
