@@ -104,6 +104,7 @@
 				}
 			},
 			toFlagShipShopHandler(storeId) {
+				this.$emit('clickDetail');
 				let currentHouse = getApp().globalData.currentHouse;
 				uni.navigateTo({
 					url: `/sub-classify/pages/shops/shops?storeId=${storeId}&houseId=${currentHouse.id}`
@@ -303,7 +304,7 @@
 
 	.flagship-store {
 		position: relative;
-		z-index: 10;
+		z-index: 20;
 		margin-top: 6rpx;
 		font-weight: 400;
 		font-size: 18rpx;
@@ -311,6 +312,7 @@
 		color: #999999;
 		display: flex;
 		align-item: center;
+		width: 100%;
 		.flagship-store-title{
 			max-width: 100%;
 			white-space: nowrap;

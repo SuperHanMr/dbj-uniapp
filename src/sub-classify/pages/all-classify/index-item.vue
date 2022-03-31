@@ -7,7 +7,8 @@
           :class="{'active': index2==categoryActive, 'preNode': index2==categoryActive -1, 'nextNode': index2==categoryActive +1}"
           v-for="(menu2,index2) in detailData" :key="index2" :id="'left' + index2">
           <view v-if="menu2.brandTag">
-            <image src="../../static/image/brand_icon.png" mode=""></image>
+            <image src="../../static/image/brand_active.png" mode="" v-if="index2==categoryActive"></image>
+            <image src="../../static/image/brand_icon.png" mode="" v-else></image>
           </view>
           <text v-if="detailData[categoryActive]['children'].length && !menu2.brandTag">{{menu2.name}}</text>
         </view>
@@ -23,7 +24,7 @@
             <scroll-view class="right-card" scroll-y="true">
               <view class="card-box">
                 <view class="right-detail" v-for="(menue4, index4) in menu3['children']" :key="index4"
-                  @click="toGoodsList(menu2.brandTag, menue4.id)">
+                  @click="toGoodsList(menu2.brandTag, menu2.id, menue4.id)">
                   <view class="img-view">
                     <image :src="menue4.imageUrl  + '?x-oss-process=image/resize,m_lfit,w_124,h_124' "></image>
                   </view>
@@ -66,7 +67,6 @@
       },
       detailData: {
         handler(v) {
-          console.log(999999999)
           v.forEach((item, key) => {
             uni.createSelectorQuery().in(this).select(`#tab${item.id}`).boundingClientRect(res => {
               this.heightList.push(res.height)
@@ -103,17 +103,17 @@
         this.categoryActive = scrollIndex
 
       },
-      toGoodsList(brandTag, id) {
+      toGoodsList(brandTag, id2, id4) {
         let brandId, category4Id
         if(brandTag) {
-          brandId = id
+          brandId = id4
           category4Id = 0
         } else {
           brandId = 0
-          category4Id = id
+          category4Id = id4
         }
         uni.navigateTo({
-          url: `/sub-classify/pages/search-result/search-result?category1Id=${this.category1Id}&category4Id=${category4Id}&brandId=${brandId}`
+          url: `/sub-classify/pages/search-result/search-result?category1Id=${this.category1Id}&category2Id=${id2}&category4Id=${category4Id}&brandId=${brandId}`
         });
       },
     }
@@ -161,7 +161,7 @@
 
     image {
       width: 80rpx;
-      height: 35rpx;
+      height: 30rpx;
     }
   }
 

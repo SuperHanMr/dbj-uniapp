@@ -80,7 +80,7 @@
               }
             })
           } 
-          this.switchTab(this.tabIndex)
+          this.regDataList(this.tabIndex)
         })
       },
       ontabtap(e) {
@@ -103,8 +103,11 @@
       regDataList(index) { // 处理datalist数据
         this.category1Id = this.dataList[index].id
         let params = {
-          areaId: this.areaId,
-          category1Id: this.dataList[index].id
+          "searchItemType": "product",
+          "product": {
+            "areaId": this.areaId,
+            "category1Id": this.dataList[index].id,
+          },
         }
         getBrandList(params).then((res) => {
           let brandItem = {

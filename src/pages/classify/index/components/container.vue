@@ -2,7 +2,7 @@
 	<view class="container">
 		<view class="classify-shop">
 			<view class="list" v-for="item in classList" :key="item.id" @click="classHandler(item)">
-				<image :src="item.icon | imgFormat(92, 92)" class="list-img"></image>
+				<image :src="item.icon" class="list-img"></image>
 				<view class="list-title">
 					{{ item.name }}
 				</view>
@@ -34,8 +34,8 @@
 					<view class="box">
 						<view class="brand-item-box" v-for="item in pavilionObj.list" :key="item.id"
 							@click="brandItemHandler(item)">
-							<view class="item-box" v-if="item.key !== 'all'"
-								:style="{'background': `linear-gradient(180deg, rgba(244, 244, 244, 0.3) 0%, rgba(244, 244, 244, 0.96) 79.55%, #F1F1F1 100.39%), url(${item.brandBagImage + '?x-oss-process=image/resize,m_mfit,w_216,h_176'})`}">
+							<view class="item-box" v-if="item.key !== 'all'" :style="{'background': `linear-gradient(180deg, rgba(244, 244, 244, 0.3) 0%, rgba(244, 244, 244, 0.96) 79.55%, #F1F1F1 100.39%), url(${item.brandBagImage + '?x-oss-process=image/resize,m_mfit,w_216,h_176'})`, 'background-repeat': 'no-repeat',
+					'background-size': '100% 100%'}">
 								<image :src="item.brandLogoImage | imgFormat(84, 84)" class="brand-item-icon"></image>
 								<view class="brand-item-title">
 									{{item.brandShortName}}
@@ -96,8 +96,7 @@
 			isLoginHandler(params) {
 				uni.getStorage({
 					key: 'scn',
-					success() {
-					},
+					success() {},
 					fail() {
 						if (params.needLogin) {
 							uni.navigateTo({
@@ -107,7 +106,7 @@
 						}
 					}
 				})
-				
+
 			},
 			classHandler(item) {
 				let param = JSON.parse(item.configParams)
@@ -162,7 +161,7 @@
 				}
 				uni.navigateTo({
 					url: `${item.url}?${param}`
-				}) 
+				})
 			},
 			brandHandler() {
 				uni.navigateTo({
@@ -174,9 +173,9 @@
 				this.toWebview(`/app-pages/brand-shop/index.html?brandId=${item.id}`);
 			},
 			toWebview(url) {
-				console.log(`${this.ENV.VUE_APP_BASE_H5}${url}`, '>>>>>>>>>>')
 				uni.navigateTo({
-					url: "/pages/common/webview/webview?url=" + encodeURIComponent(`${this.ENV.VUE_APP_BASE_H5}${url}`),
+					url: "/pages/common/webview/webview?url=" + encodeURIComponent(
+						`${this.ENV.VUE_APP_BASE_H5}${url}`),
 				});
 			}
 		}
@@ -185,7 +184,6 @@
 
 <style lang="scss" scoped>
 	.classify-shop {
-		width: 100%;
 		display: flex;
 		justify-content: space-between;
 		align-items: center;
@@ -215,7 +213,7 @@
 
 		.img-box {
 			width: 328rpx;
-			height: 132rpx;
+			height: 144rpx;
 
 			.img {
 				width: 100%;
@@ -250,10 +248,10 @@
 			.left {
 				width: 138rpx;
 				height: 50rpx;
-				padding-bottom: 14rpx;
+				padding-bottom: 22rpx;
 
 				.brand-left-icon {
-					font-size: 34rpx;
+					font-size: 35rpx;
 					margin-left: 8rpx;
 				}
 			}
@@ -299,8 +297,6 @@
 					width: 216rpx;
 					height: 176rpx;
 					border-radius: 16rpx;
-					background-repeat: no-repeat;
-					background-size: 100% 100%;
 				}
 			}
 
@@ -325,16 +321,20 @@
 			}
 
 			.brand-item-title {
-				width: 100%;
+				position: absolute;
+				bottom: 24rpx;
+				left: 0;
+				width: 144rpx;
+				margin: 0 36rpx;
 				font-weight: 400;
 				font-size: 22rpx;
 				text-align: center;
 				line-height: 15px;
 				letter-spacing: 0.1px;
 				color: #5C4939;
-				position: absolute;
-				bottom: 24rpx;
-				left: 0;
+				overflow: hidden;
+				white-space: nowrap;
+				text-overflow: ellipsis;
 			}
 		}
 	}

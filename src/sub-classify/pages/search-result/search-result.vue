@@ -1,30 +1,37 @@
 <template>
-  <view class="search-result" v-if='isShow'>
-    <view class="search">
-      <view v-if="initSearch" class="uni-searchbar" @click="clickInitSearch">
-        <view class="uni-searchbar__box">
-          <view class="search-card" v-if="searchText">
-            <text>{{searchText}}</text>
-            <uni-icons color="#c0c4cc" size="15" type="clear" />
+  <view class="body">
+    <custom-navbar bgcolor="#ffffff">
+      <template v-slot:back>
+        <i class="icon-ic_cancel_white back-icon" :style="{color: 'black'}" @click="back"></i>
+      </template>
+    </custom-navbar>
+    <view class="search-result" v-if='isShow'>
+      <view class="search">
+        <view v-if="initSearch" class="uni-searchbar" @click="clickInitSearch">
+          <view class="uni-searchbar__box">
+            <view class="search-card" v-if="searchText">
+              <text>{{searchText}}</text>
+              <uni-icons color="#c0c4cc" size="15" type="clear" />
+            </view>
+            <view v-else class="search-default">请搜索您要的商品</view>
           </view>
-          <view v-else class="search-default">请搜索您要的商品</view>
+        </view>
+        <uni-search-bar v-else @confirm="searchConfirm" clearButton="auto" cancelButton="false" :focus="true"
+          bgColor="transparent" placeholder="请搜索您要的商品" :radius="8">
+          <uni-icons slot="searchIcon" />
+        </uni-search-bar>
+        <view @click="sortList">
+          <sort-button class="sort-button"></sort-button>
         </view>
       </view>
-      <uni-search-bar v-else @confirm="searchConfirm" clearButton="auto" cancelButton="false" :focus="true"
-        bgColor="transparent" placeholder="请搜索您要的商品" :radius="8">
-        <uni-icons slot="searchIcon" />
-      </uni-search-bar>
-      <view @click="sortList">
-        <sort-button class="sort-button"></sort-button>
-      </view>
-    </view>
-    <view class="content">
-      <scroll-view scroll-x="true" :show-scrollbar="false" class="content-scroll" v-if="tabArr.length">
-        <text :class="{'activeTab': activeTabIndex === 0}" @click="clickTab(0, 0)">全部</text>
-        <text v-for="(v, k) in tabArr" :key="k" :class="{'activeTab': activeTabIndex === k + 1}" @click="clickTab(k + 1, v.id)">{{v.name}}</text>
-      </scroll-view>
-      <goods-list emitName="searchListData"></goods-list>
-      <!--      <uni-swipe-action v-if="listArr.length>0">
+      <view class="content">
+        <scroll-view scroll-x="true" :show-scrollbar="false" class="content-scroll" v-if="tabArr.length">
+          <text :class="{'activeTab': activeTabIndex === 0}" @click="clickTab(0, 0)">全部</text>
+          <text v-for="(v, k) in tabArr" :key="k" :class="{'activeTab': activeTabIndex === k + 1}"
+            @click="clickTab(k + 1, v.id)">{{v.name}}</text>
+        </scroll-view>
+        <goods-list emitName="searchListData"></goods-list>
+        <!--      <uni-swipe-action v-if="listArr.length>0">
         <uni-swipe-action-item v-for="(goodsItem,goodsIndex) in listArr" :key="goodsIndex">
           <view class="goodsItem" @click="toDetails(goodsItem.product.skuId)">
             <image :src="goodsItem.product.spuImage + '?x-oss-process=image/resize,m_lfit,w_400,h_400' "
@@ -61,10 +68,11 @@
             </view>
           </view>
         </uni-swipe-action-item> -->
-      <!-- </uni-swipe-action> -->
-      <view v-if="isPageReady && !(listArr.length > 0)" class="no-goods">
-        <view class="img"></view>
-        <view class="text">抱歉，没有找到符合的商品 请换关键词再搜搜看吧～</view>
+        <!-- </uni-swipe-action> -->
+        <view v-if="isPageReady && !(listArr.length > 0)" class="no-goods">
+          <view class="img"></view>
+          <view class="text">抱歉，没有找到符合的商品 请换关键词再搜搜看吧～</view>
+        </view>
       </view>
     </view>
   </view>
@@ -83,7 +91,7 @@
     },
     data() {
       return {
-        originFrom: "",
+        from: "",
         activeTabIndex: 0,
         totalPage: 0,
         tabArr: [],
@@ -110,10 +118,12 @@
     },
     onLoad(e) {
       this.category1Id = e.category1Id
+      this.category2Id = e.category2Id
       this.category4Id = e.category4Id
       this.brandId = e.brandId
       this.searchText = e.searchText
       this.aggregation = Boolean(Number(e.aggregation))
+      this.from = e.from
       this.getList()
     },
     onPullDownRefresh() {
@@ -125,13 +135,22 @@
       this.loadMoreList()
     },
     onPageScroll(e) {
-      if(e.scrollTop > 0) {
+      if (e.scrollTop > 0) {
         uni.pageScrollTo({
-        	scrollTop: 0
+          scrollTop: 0
         });
       }
     },
     methods: {
+      back() {
+        if (this.from === 'searchPage') {
+          uni.navigateBack({
+            delta: 2
+          })
+        } else {
+          uni.navigateBack({});
+        }
+      },
       clickTab(index, id) {
         this.pageNum = 1
         this.activeTabIndex = index
@@ -145,15 +164,15 @@
           aggregation: this.aggregation,
           aggregationField: 'category2Id',
           product: {
-            category1Id: Number(this.category1Id), // 一级分类id
-            category2Id: Number(this.category2Id), // 二级分类id
-            category4Id: Number(this.category4Id), // 四级分类id
+            category1Id: Number(this.brandId) ? 0 : Number(this.category1Id), // 一级分类id
+            category2Id: Number(this.brandId) ? 0 : Number(this.category2Id), // 二级分类id
+            category4Id: Number(this.brandId) ? 0 : Number(this.category4Id), // 四级分类id
             brandId: Number(this.brandId),
-            query: this.searchText, //查询的关键词
             areaId: getApp().globalData.currentHouse
               .areaId, //区域编号，会按这个区域进行搜索；      区域的取值，请参考相关需求，好像是：有当前房屋就取当前房屋所在区域，没有当前房屋就取用户选取的位置区域...（具体逻辑比这个还复杂点）,
             sort: this.sort //搜索排序方式：      price_asc  表示按价格从低到高排序；      price_desc 表示按价格从高到低排序；,        
           },
+          query: this.searchText, //查询的关键词
           pageIndex: this.pageNum, //页面序号，从 1 开始，不传取 默认值第 1 页；,
           pageSize: 20, //每页数据量大小，不传取默认值 10；,  
         }
@@ -161,7 +180,7 @@
           uni.stopPullDownRefresh()
           this.isPageReady = true
           this.totalPage = data.total
-          if(data.aggregationResults) {
+          if (data.aggregationResults) {
             this.tabArr = data.aggregationResults
           }
           // if (this.isLoadMore) {
@@ -172,8 +191,8 @@
           console.log(data.page, "data.page")
           this.listArr = data.page
           uni.$emit('searchListData', {
-          	page: this.pageNum,
-          	shopList: data.page
+            page: this.pageNum,
+            shopList: data.page
           })
         })
       },
@@ -203,6 +222,10 @@
       searchConfirm(resText) {
         // this.isLoadMore = false
         this.searchText = resText.value
+        this.category1Id = 0
+        this.category2Id = 0
+        this.category4Id = 0
+        this.brandId = 0
         this.getList()
       },
       toDetails(id) {
@@ -214,9 +237,15 @@
   }
 </script>
 <style scoped>
+  .body {
+    height: 100%;
+    overflow: hidden;
+  }
+
   .search-result {
     display: flex;
     justify-content: center;
+    position: relative;
   }
 
   .search {
@@ -303,17 +332,20 @@
     width: 100%;
     overflow: scroll;
   }
-  .content-scroll{
+
+  .content-scroll {
     height: 80rpx;
     white-space: nowrap;
     display: flex;
     align-items: center;
   }
-  .content-scroll .activeTab{
+
+  .content-scroll .activeTab {
     background-color: #222222;
     color: #ffffff;
   }
-  .content-scroll text{
+
+  .content-scroll text {
     text-align: center;
     width: fit-content;
     padding: 11rpx 20rpx;
@@ -323,6 +355,7 @@
     color: #999999;
     font-size: 24rpx
   }
+
   .content-item {
     height: 20%;
     display: flex;
