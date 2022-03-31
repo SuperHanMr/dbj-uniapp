@@ -8,7 +8,11 @@
 		</custom-navbar>
 
 		<view class="refund-container" :style="{paddingBottom:containerPaddingBottom}" >
-			<view style="position: relative;" :style="{backgroundImage:`url(${bgImg})`,backgroundSize: '100% 100%'}">
+			<view style="position: relative;" >
+				<view 
+					class="bgcStyle" 
+					:style="{backgroundImage:`url(${bgImg})`,backgroundSize: '100% 100%'}"
+				/>
 				<view :style="{height:navBarHeight}"></view>
 				<view class="refund-status" >
 					<view v-for="statusItem in refundStatusList" :key="statusItem.value">
@@ -271,7 +275,7 @@ export default {
 			bgImg: "https://ali-image.dabanjia.com/static/mp/dabanjia/images/theme-red/decorate/order_bg.png",
 			areaId:"" ,
 			status: "", //退款状态 0待确认 1退款中 2退款完成 3已拒绝 4已取消 5退款失败  退款处理中(0,1) 退款成功(2) 退款关闭(3,4)"
-
+			from:"",
 			expensesType: 0,
 			refundStatusList:[
 				{
@@ -320,6 +324,7 @@ export default {
 	},
   onLoad(e) {
 		this.id =Number(e.id);
+		this.from = e.from
 		this.refundDetail()
 		this.status = Number(e.status);
 		const systemInfo = uni.getSystemInfoSync();
@@ -349,7 +354,12 @@ export default {
 			  uni.redirectTo({
 					url:"../../my-order/my-order?index=2&firstEntry=true"
 			  });
-			}else{
+			}else if(this.from == "refund"){
+				uni.redirectTo({
+					url:"../refund-list"
+				})
+			}
+			else{
 				uni.navigateBack({
 					delta:1
 				})
@@ -369,8 +379,10 @@ export default {
 
 		// 跳转到商品详情页面
 		productDetail(item){
+			console.log("item!!!!",item)
 			uni.navigateTo({
-				url:`../../../../sub-classify/pages/goods-detail/goods-detail?goodId=${item.relationId}`
+				url:`../../../../sub-classify/pages/product-detail/index?productId=${item.relationId}`
+				// url:`../../../../sub-classify/pages/goods-detail/goods-detail?goodId=${item.relationId}`
 			})
 		},
 

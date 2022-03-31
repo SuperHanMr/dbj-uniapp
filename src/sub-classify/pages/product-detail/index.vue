@@ -1,6 +1,6 @@
 <template>
 	<view>
-		<web-view :src="`${baseUrl}${h5Url}?id=${productId}&source=small#params=${paramsJson}`">
+		<web-view :src="`${baseUrl}${h5Url}?id=${productId}&spuId=${spuId}&source=small#params=${paramsJson}`">
 		</web-view>
 	</view>
 </template>
@@ -13,11 +13,10 @@
 				h5Url: '',
 				// 商品Id
 				productId: '',
+				spuId:'',
 				params: {
 					// 用户token
 					token: '',
-					// 套包商品 supId
-					spuId:'',
 					// 用户Id
 					userId: '',
 					// 房屋Id

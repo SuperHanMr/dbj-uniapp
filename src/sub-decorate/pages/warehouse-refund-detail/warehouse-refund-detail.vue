@@ -335,7 +335,7 @@ export default {
       };
       getApp().globalData.naviData = params;
       uni.navigateTo({
-        url: `../warehouse-refund/warehouse-refund?type=0&refundType=2&id=${this.id}`,
+        url: `../warehouse-refund/warehouse-refund?type=0&refundType=1&id=${this.id}`,
       });
     },
     toBackGoodItem(item) {
@@ -344,7 +344,7 @@ export default {
       };
       getApp().globalData.naviData = params;
       uni.navigateTo({
-        url: `../warehouse-refund/warehouse-refund?type=1&id=${this.id}`,
+        url: `../warehouse-refund/warehouse-refund?type=2&id=${this.id}`,
       });
     },
     toBack() {

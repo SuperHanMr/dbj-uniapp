@@ -2,7 +2,7 @@
 	<view class="container">
 		<view class="classify-shop">
 			<view class="list" v-for="item in classList" :key="item.id" @click="classHandler(item)">
-				<image :src="item.icon | imgFormat(92, 92)" class="list-img"></image>
+				<image :src="item.icon" class="list-img"></image>
 				<view class="list-title">
 					{{ item.name }}
 				</view>
@@ -10,7 +10,7 @@
 		</view>
 		<view class="recommended">
 			<view class="img-box" v-for="item in recommendList" :key="item.id" @click="recommendedHandler(item)">
-				<image :src="item.icon | imgFormat(328, 132)" mode="aspectFill" class="img"></image>
+				<image :src="item.icon" mode="aspectFill" class="img"></image>
 			</view>
 		</view>
 		<view class="brand">
@@ -173,7 +173,6 @@
 				this.toWebview(`/app-pages/brand-shop/index.html?brandId=${item.id}`);
 			},
 			toWebview(url) {
-				console.log(`${this.ENV.VUE_APP_BASE_H5}${url}`, '>>>>>>>>>>')
 				uni.navigateTo({
 					url: "/pages/common/webview/webview?url=" + encodeURIComponent(
 						`${this.ENV.VUE_APP_BASE_H5}${url}`),
@@ -185,7 +184,6 @@
 
 <style lang="scss" scoped>
 	.classify-shop {
-		width: 100%;
 		display: flex;
 		justify-content: space-between;
 		align-items: center;
@@ -215,7 +213,7 @@
 
 		.img-box {
 			width: 328rpx;
-			height: 132rpx;
+			height: 144rpx;
 
 			.img {
 				width: 100%;
@@ -250,10 +248,10 @@
 			.left {
 				width: 138rpx;
 				height: 50rpx;
-				padding-bottom: 14rpx;
+				padding-bottom: 22rpx;
 
 				.brand-left-icon {
-					font-size: 34rpx;
+					font-size: 35rpx;
 					margin-left: 8rpx;
 				}
 			}
@@ -323,16 +321,20 @@
 			}
 
 			.brand-item-title {
-				width: 100%;
+				position: absolute;
+				bottom: 24rpx;
+				left: 0;
+				width: 144rpx;
+				margin: 0 36rpx;
 				font-weight: 400;
 				font-size: 22rpx;
 				text-align: center;
 				line-height: 15px;
 				letter-spacing: 0.1px;
 				color: #5C4939;
-				position: absolute;
-				bottom: 24rpx;
-				left: 0;
+				overflow: hidden;
+				white-space: nowrap;
+				text-overflow: ellipsis;
 			}
 		}
 	}

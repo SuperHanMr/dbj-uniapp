@@ -7,7 +7,10 @@
 			<view class="storeItem" v-for="storeItem in storeList" :key="storeItem.id">
 				<image class="storeImg" @click="gotoStoreDetail(storeItem)" :src="storeItem.store.avatar" />
 				<view class="baseInfo-container">
-					<view class="header" >
+					<view class="header"
+					 :style="{marginTop:!(storeItem.store.tags && storeItem.store.tags.length)?'24rpx':'0',
+					 marginBottom:!(storeItem.store.tags && storeItem.store.tags.length)?'32rpx':'12rpx'}"
+					>
 						<image 
 							v-if="storeItem.store.type == 2" 
 							@click="gotoStoreDetail(storeItem)" 
@@ -22,7 +25,7 @@
 						/>
 						<view class="title" @click="gotoStoreDetail(storeItem)">
 							<text>{{storeItem.store.name}}</text>
-							<text v-if="storeItem.store.address">{{`(${storeItem.store.address})`}}</text>
+							<!-- <text v-if="storeItem.store.address">{{`(${storeItem.store.address})`}}</text> -->
 						</view>
 					</view>
 					<view class="label-container" v-if="storeItem.store.tags && storeItem.store.tags.length">
@@ -127,7 +130,7 @@
 						})
 					}else{
 						uni.navigateTo({
-							url:`../shops/shops?storeId=${item.id}`
+							url:`../shops/shops?storeId=${item.store.id}`
 						})
 					}
 				}

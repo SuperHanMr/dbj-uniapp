@@ -541,7 +541,8 @@
           "style": {
             "navigationBarTitleText": "",
             "enablePullDownRefresh": true,
-            "navigationBarBackgroundColor": "#FFFFFF"
+            "navigationBarBackgroundColor": "#FFFFFF",
+            "navigationStyle": "custom"
           }
         },
         {

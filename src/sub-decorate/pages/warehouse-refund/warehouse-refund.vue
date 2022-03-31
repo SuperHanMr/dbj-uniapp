@@ -248,6 +248,7 @@
             if(e.isRefundSuccess){
               this.toastHandler()
             }else{
+              params.orderId = e.orderId
               this.toChoicePage(params)
             }
           });
@@ -267,8 +268,8 @@
       toChoicePage(params){
           
         let obj = {
-          orderId:this.id,
-          type:this.type,
+          orderId:params.orderId,
+          type:+this.type,
           params:params
         }
         console.log(params,"跳转选择")

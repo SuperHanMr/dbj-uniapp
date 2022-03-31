@@ -96,9 +96,9 @@
         </image><text>储值卡支付</text>
 
       </view>
-      <view v-else @click="morePayWay">
+      <view v-else>
         <text>{{payWayTag?'公司转账':'在线支付'}}</text>
-        <view class="more_pay_icon"></view>
+        <!-- <view class="more_pay_icon"></view> -->
       </view>
     </view>
 
