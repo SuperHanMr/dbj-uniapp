@@ -268,7 +268,7 @@
           
         let obj = {
           orderId:this.id,
-          type:this.type,
+          type:+this.type,
           params:params
         }
         console.log(params,"跳转选择")
