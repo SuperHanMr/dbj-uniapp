@@ -28,7 +28,7 @@
 				<view class="copy-style" @click="duplicate()">复制</view>
 			</view>
 		</view>
-		<view class="item">
+		<view class="item" v-if="!refundInfo.isOrderCompanyTransfer">
 			<text class="item-header">备注信息：</text>
 			<text class="item-body">{{refundInfo.remark}}</text>
 		</view>
