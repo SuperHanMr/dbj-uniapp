@@ -239,13 +239,14 @@
 <style scoped>
   .body {
     height: 100%;
-    overflow: hidden;
   }
 
   .search-result {
     display: flex;
     justify-content: center;
     position: relative;
+    height: calc(100% - 120rpx);
+    background-color: #FFFFFF;
   }
 
   .search {
@@ -316,11 +317,6 @@
     display: flex;
     justify-content: center;
     align-items: center;
-  }
-
-  .search-result {
-    height: 100%;
-    background-color: #FFFFFF;
   }
 
   .content {
