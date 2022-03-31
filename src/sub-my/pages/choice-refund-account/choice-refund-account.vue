@@ -127,6 +127,13 @@ export default {
       this.checkedAccount = { ...item };
     },
     submitApply() {
+      if (!this.checkedAccount.id) {
+        uni.showToast({
+          title: "请选择退款收款账户",
+          icon: "none",
+        });
+        return;
+      }
       let { type, params } = this.query;
       switch (type) {
         case "whole":
