@@ -30,7 +30,7 @@
           <view class="lineWrap">
 						<image src="/static/images/real-case/select_head.png" class="underline"
               v-if='navIndex===index' mode=""></image>
-            
+
           </view>
         </view>
       </scroll-view>
@@ -339,13 +339,16 @@ export default {
 }
 .options .designerInfo .designerName {
   /* width: fit-content; */
-  width: 100rpx;
+  max-width: 260rpx;
   height: 42rpx;
   margin: 18rpx 8rpx 16rpx 24rpx;
   font-size: 30rpx;
   font-weight: 500;
   color: #333333;
   text-align: center;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 .options .designerInfo .role {
   width: 76rpx;
@@ -479,12 +482,15 @@ export default {
 }
 
 .designerInfo > view .designerName {
-  width: 90rpx;
+  max-width: 260rpx;
   height: 42rpx;
   margin: 8rpx 0;
   font-size: 30rpx;
   font-weight: 500;
   color: #333333;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 .designerInfo > view .role {
   width: 76rpx;

@@ -22,7 +22,7 @@
 						/>
 						<view class="title" @click="gotoStoreDetail(storeItem)">
 							<text>{{storeItem.store.name}}</text>
-							<text v-if="storeItem.store.address">{{`(${storeItem.store.address})`}}</text>
+							<!-- <text v-if="storeItem.store.address">{{`(${storeItem.store.address})`}}</text> -->
 						</view>
 					</view>
 					<view class="label-container" v-if="storeItem.store.tags && storeItem.store.tags.length">
@@ -127,7 +127,7 @@
 						})
 					}else{
 						uni.navigateTo({
-							url:`../shops/shops?storeId=${item.id}`
+							url:`../shops/shops?storeId=${item.store.id}`
 						})
 					}
 				}

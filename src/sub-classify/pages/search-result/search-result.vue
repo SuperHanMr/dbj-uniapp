@@ -1,5 +1,5 @@
 <template>
-  <view class="search-result" v-if='isShow'>
+  <view class="search-result">
     <view class="search">
       <view v-if="initSearch" class="uni-searchbar" @click="clickInitSearch">
         <view class="uni-searchbar__box">
@@ -90,10 +90,8 @@
         listArr: [],
         initSearch: true,
         isPageReady: false,
-        isShow: true,
         pageNum: 1,
         sort: "",
-        // isLoadMore: false,
         searchText: "",
         aggregation: false,
         category1Id: 0,
@@ -101,12 +99,6 @@
         category4Id: 0,
         brandId: 0
       }
-    },
-    onShow() {
-      this.isShow = true
-      //从支付页面或者房屋选择页面回到列表后，清空缓存的id
-      uni.removeStorageSync('houseListChooseId')
-      uni.removeStorageSync('goodId')
     },
     onLoad(e) {
       this.category1Id = e.category1Id
@@ -117,7 +109,6 @@
       this.getList()
     },
     onPullDownRefresh() {
-      // this.isLoadMore = false
       this.pageNum = 1
       this.getList()
     },
@@ -164,11 +155,6 @@
           if(data.aggregationResults) {
             this.tabArr = data.aggregationResults
           }
-          // if (this.isLoadMore) {
-          //   this.listArr = this.listArr.concat(data.page)
-          // } else {
-          //   this.listArr = data.page
-          // }
           console.log(data.page, "data.page")
           this.listArr = data.page
           uni.$emit('searchListData', {
@@ -178,7 +164,6 @@
         })
       },
       sortList() {
-        // this.isLoadMore = false
         if (!this.sort) {
           this.sort = "price_asc"
         } else if (this.sort === "price_asc") {
@@ -194,14 +179,12 @@
         } else {
           return
         }
-        // this.isLoadMore = true
         this.getList()
       },
       clickInitSearch() {
         this.initSearch = false
       },
       searchConfirm(resText) {
-        // this.isLoadMore = false
         this.searchText = resText.value
         this.getList()
       },

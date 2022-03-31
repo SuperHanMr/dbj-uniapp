@@ -51,7 +51,7 @@
           </view>
           <view
             class="time"
-            v-if="item.isOrderCompanyTransfer && orderInfo.orderStatus==0"
+            v-if="orderInfo.isOrderCompanyTransfer && orderInfo.orderStatus==0"
           >
             <view class="showText">请尽快线下汇款，汇款时务必填写汇款识别码</view>
           </view>
@@ -1619,40 +1619,6 @@ uni-page-body {
         .showText {
           font-size: 24rpx;
           color: #ffffff;
-        }
-      }
-
-      .time {
-        color: #ffffff;
-        height: 40rpx;
-        line-height: 40rpx;
-        font-size: 24rpx;
-        font-weight: 400;
-        padding-left: 5rpx;
-        margin-bottom: 32rpx;
-        box-sizing: border-box;
-        display: flex;
-        flex-flow: row nowrap;
-        align-items: center;
-        .countStyle {
-          width: 154rpx;
-          height: 40rpx;
-          padding-left: 4rpx;
-          display: flex;
-          align-items: center;
-          box-sizing: border-box;
-          border-radius: 8rpx;
-          background: rgba(255, 255, 255, 0.06);
-          background-blend-mode: darken;
-          mix-blend-mode: normal;
-          border: 2rpx solid rgba(255, 255, 255, 0.3);
-        }
-        .showText {
-          border-radius: 16rpx;
-          padding: 8rpx 32rpx;
-          background: rgba(144, 135, 135, 0.33);
-          color: #ffffff;
-          font-size: 24rpx;
         }
       }
     }
