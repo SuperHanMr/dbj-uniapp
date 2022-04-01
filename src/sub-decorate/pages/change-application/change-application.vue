@@ -278,12 +278,25 @@
           isCardPay: this.isCardPay, //"boolean //是否使用储值卡支付  默认false"
         };
         createChangeOrderApi(bodyObj).then((data) => {
+          
           if (!data) {
             // 退款跳转装修首页
             uni.switchTab({
               url: "/pages/decorate/index/index",
             });
             return;
+          }
+          if(data.accounts){
+            let obj = {
+              type:'changeApplication',
+              params:bodyObj
+            }
+             uni.navigateTo({
+               url:`/sub-my/pages/choice-refund-account/choice-refund-account?query=${encodeURIComponent(
+                JSON.stringify(obj)
+              )}`
+             })
+             return
           }
           if (this.payWayTag && this.payType) {
             uni.navigateTo({
