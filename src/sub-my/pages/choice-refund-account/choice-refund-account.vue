@@ -12,7 +12,10 @@
         :key="item.accountNo"
         class="account-item"
       >
-        <view class="card-left">
+        <view
+          @click="choiceAccount(item)"
+          class="card-left"
+        >
           <img
             v-if="item.accountNo === checkedAccount.accountNo"
             src="https://ali-image.dabanjia.com/image/20220328/16/164845631915103.png"
