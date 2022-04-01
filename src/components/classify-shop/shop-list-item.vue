@@ -2,7 +2,7 @@
 	<view class="item" @click="toGoodsDetail(item.product.skuId)">
 		<image class="img" :src="item.product.spuImage | imgFormat" mode="aspectFill"></image>
 		<view class="info">
-			<view class="category">
+			<view class="category" v-if="categoryListHandler(item.product.categories, item.product.brand)">
 				<text class="category-item"
 					v-for="(category, categoryIndex) in categoryListHandler(item.product.categories, item.product.brand)"
 					:key="category">
