@@ -173,7 +173,7 @@
           {{detail.remark}}
         </view>
       </view>
-      
+
     </view>
     <view class="offline-info" v-if="detail.isOrderCompanyTransfer">
     	<view class="header">
@@ -476,7 +476,9 @@ export default {
 			line-height: 40rpx;
 			display: flex;
 			flex-flow: row nowrap;
-			
+			overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
 		}
 	}
 	.item:nth-last-child(1){
