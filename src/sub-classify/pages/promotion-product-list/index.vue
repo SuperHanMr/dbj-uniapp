@@ -10,12 +10,13 @@
 	export default {
 		data() {
 			return {
-		
+			baseUrl:'',
 			}
 		},
 		onLoad(e) {
 			this.baseUrl = this.ENV.VUE_APP_BASE_H5
 			// this.baseUrl = 'https://localhost'
+			
 		},
 
 		onShow() {
