@@ -1,89 +1,104 @@
 <template>
-	<view class="wrapper">
-		<custom-navbar  title="收银台" bgcolor="#F2EBE5">
+	<view class="wrapper_layout">
+		<view class="topBar_height" :style="topbarStyle">
+			<custom-navbar  title="收银台"
+			bgcolor="#F2EBE5"
+			opacity="99"
+		>
 			<template v-slot:back>
 				<i class="icon-ic_cancel_white back-icon" :style="{color: 'black'}" @click="toBack"></i>
 			</template>
 		</custom-navbar>
-		<view class="header_count_title">
-			<text>订单已提交成功，需支付金额</text>
 		</view>
-		<view class="header_count">
-			<text class="count_unit">￥</text>
-			<text class="count_num">{{amount}}</text>
+		<view class="wrapper">
+			<view class="wrapper_scroll">
+				<view class="header_count_title">
+					<text>订单已提交成功，需支付金额</text>
+				</view>
+				<view class="header_count">
+				<text class="count_unit">￥</text>
+				<text class="count_num">{{amount}}</text>
+			</view>
+			<view class="red-header">
+
+			</view>
+			<view class="content_message">
+				<view class="content_header">
+					<view class="title">
+						<text>线下汇款信息</text>
+					</view>
+					<view class="button" @click="handleCopy">
+						<text>一键复制</text>
+					</view>
+				</view>
+
+				<view class="content_wrapper">
+					<view class="content_row">
+						<view class="content_label">户名</view>
+						<view class="content_text">打扮家（北京）科技有限公司</view>
+					</view>
+					<view class="content_row">
+						<view class="content_label">银行账号</view>
+						<view class="content_text">110928376810201</view>
+					</view>
+					<view class="content_row">
+						<view class="content_label">开户行</view>
+						<view class="content_text">招商银行股份有限公司北京分行世纪城支行</view>
+					</view>
+					<view class="content_row">
+						<view class="content_label">银行联行号</view>
+						<view class="content_text">308100005301</view>
+					</view>
+					<view class="content_row">
+						<view class="content_label">汇款识别码</view>
+						<view class="content_text">{{remittanceCode}}</view>
+					</view>
+				</view>
+				<view class="content_tips_wrapper">
+					<view class="content_tips">
+						线下汇款，请务必填写【汇款识别码】。务必将【汇款识别码】填写至汇款单“用途”，“附言”等栏。
+					</view>
+				</view>
+
+
+				<view class="split_wrapper">
+				</view>
+
+				<view class="tip_wrapper">
+					<view class="tip_title">注意事项</view>
+					<view class="tip_item">1. 一个汇款识别码对应一个订单，请勿多转账、少转账和分次转账，否则影响订单对账进度。</view>
+					<view class="tip_item">2. 汇款后超出1个工作日仍为“待付款”状态，请提供订单号及汇款单（汇款单包含收付款户名、收付款账号、付款金额、付款日期等），联系在线客服。</view>
+					<view class="tip_item">3. 汇款后款项仅用于汇款公司使用。</view>
+				</view>
+			</view>
+			<view class="process_wrapper">
+				<view class="process_header">
+					<text>公司转账流程</text>
+				</view>
+				<view class="process_list">
+					<view class="process_item successed">
+						<view class="process_circle">1</view>
+						<view class="process_name">提交公司订单</view>
+					</view>
+					<view class="process_item successed">
+						<view class="process_circle">2</view>
+						<view class="process_name">银行公司转账</view>
+					</view>
+					<view class="process_item">
+						<view class="process_circle">3</view>
+						<view class="process_name">转账成功</view>
+					</view>
+				</view>
+
+			</view>
+
+
+
+
+			</view>
 		</view>
 
-		<view class="red-header">
 
-		</view>
-		<view class="content_message">
-			<view class="content_header">
-				<view class="title">
-					<text>线下汇款信息</text>
-				</view>
-				<view class="button" @click="handleCopy">
-					<text>一键复制</text>
-				</view>
-			</view>
-
-			<view class="content_wrapper">
-				<view class="content_row">
-					<view class="content_label">户名</view>
-					<view class="content_text">打扮家（北京）科技有限公司</view>
-				</view>
-				<view class="content_row">
-					<view class="content_label">银行账号</view>
-					<view class="content_text">110928376810201</view>
-				</view>
-				<view class="content_row">
-					<view class="content_label">开户行</view>
-					<view class="content_text">招商银行股份有限公司北京分行世纪城支行</view>
-				</view>
-				<view class="content_row">
-					<view class="content_label">银行联行号</view>
-					<view class="content_text">308100005301</view>
-				</view>
-				<view class="content_row">
-					<view class="content_label">汇款识别码</view>
-					<view class="content_text">{{remittanceCode}}</view>
-				</view>
-			</view>
-			<view class="content_tips_wrapper">
-				<view class="content_tips">
-					线下汇款，请务必填写【汇款识别码】。务必将【汇款识别码】填写至汇款单“用途”，“附言”等栏。
-				</view>
-			</view>
-
-
-			<view class="split_wrapper">
-			</view>
-
-			<view class="tip_wrapper">
-				<view class="tip_title">注意事项</view>
-				<view class="tip_item">1. 一个汇款识别码对应一个订单，请勿多转账、少转账和分次转账，否则影响订单对账进度。</view>
-				<view class="tip_item">2. 汇款后超出1个工作日仍为“待付款”状态，请提供订单号及汇款单（汇款单包含收付款户名、收付款账号、付款金额、付款日期等），联系在线客服。</view>
-				<view class="tip_item">3. 汇款后款项仅用于汇款公司使用。</view>
-			</view>
-		</view>
-		<view class="process_wrapper">
-			<view class="process_header">
-				<text>公司转账流程</text>
-			</view>
-			<view class="process_list">
-				<view class="process_item successed">
-					<view class="process_circle">1</view>
-					<view class="process_name">提交公司订单</view>
-				</view>
-				<view class="process_item successed">
-					<view class="process_circle">2</view>
-					<view class="process_name">银行公司转账</view>
-				</view>
-				<view class="process_item">
-					<view class="process_circle">3</view>
-					<view class="process_name">转账成功</view>
-				</view>
-			</view>
-		</view>
 	</view>
 </template>
 
@@ -93,6 +108,7 @@ export default {
 		return {
 			amount: 0,
 			remittanceCode: '',
+			headerHeight: 0,
 		}
 	},
 	onLoad(props) {
@@ -103,6 +119,19 @@ export default {
 		if (props.remittanceCode) {
 			this.remittanceCode = props.remittanceCode;
 		}
+	},
+	computed: {
+		topbarStyle() {
+			return `
+				height: 88rpx;
+				padding-top: ${this.headerHeight}px;
+			`
+
+		}
+	},
+	created() {
+		const systemInfo = uni.getSystemInfoSync();
+		this.headerHeight =  systemInfo.statusBarHeight;
 	},
 	methods: {
 		toBack() {
@@ -133,12 +162,25 @@ export default {
 }
 </script>
 <style scoped lang="scss">
+.wrapper_layout{
+	height: 100%;
+	overflow: hidden;
+	display: flex;
+	flex-direction: column;
+}
 .wrapper{
+	flex: 1;
+	overflow: hidden;
 	height: 100%;
 	background: linear-gradient(173.71deg, #F2EBE5 0%, #DBCFC8 99.87%);
-	overflow-y: auto;
-	padding: 0 32rpx 250rpx 32rpx;
-	box-sizing: border-box;
+
+
+	.wrapper_scroll{
+		height: 100%;
+		overflow-y: auto;
+		box-sizing: border-box;
+		padding: 0 32rpx 250rpx 32rpx;
+	}
 }
 
 .back-icon{
