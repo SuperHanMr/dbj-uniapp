@@ -166,7 +166,7 @@
           product: {
             category1Id: Number(this.brandId) ? 0 : Number(this.category1Id), // 一级分类id
             category2Id: Number(this.brandId) ? 0 : Number(this.category2Id), // 二级分类id
-            category4Id: Number(this.brandId) ? 0 : Number(this.category4Id), // 四级分类id
+            categoryId: Number(this.brandId) ? 0 : Number(this.category4Id), // 四级分类id
             brandId: Number(this.brandId),
             areaId: getApp().globalData.currentHouse
               .areaId, //区域编号，会按这个区域进行搜索；      区域的取值，请参考相关需求，好像是：有当前房屋就取当前房屋所在区域，没有当前房屋就取用户选取的位置区域...（具体逻辑比这个还复杂点）,
