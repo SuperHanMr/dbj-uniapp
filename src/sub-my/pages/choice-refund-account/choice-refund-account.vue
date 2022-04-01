@@ -50,6 +50,7 @@ import {
   wholeOrderApplyForRefund,
 } from "@/api/order.js";
 import { goodsBack, goodsRefund } from "@/api/decorate.js";
+import { createChangeOrderApi } from "@/api/changeOrder.js";
 export default {
   data() {
     return {
@@ -114,12 +115,22 @@ export default {
     this.query = JSON.parse(decodeURIComponent(e.query));
   },
   mounted() {
-    this.getCompanyTransfes();
+    if (this.query.type !== "changeApplication") {
+      this.getCompanyTransfes();
+    } else if (this.query.type === "changeApplication") {
+      this.getCompanyAccounts();
+    }
   },
   methods: {
     getCompanyTransfes() {
       getCompanyTransfes({ orderId: this.query.orderId }).then((res) => {
         this.accountList = res;
+        this.checkedAccount = { ...this.accountList[0] };
+      });
+    },
+    getCompanyAccounts() {
+      createChangeOrderApi(this.query.params).then((data) => {
+        this.accountList = data.accounts;
         this.checkedAccount = { ...this.accountList[0] };
       });
     },
@@ -165,6 +176,12 @@ export default {
             }
           });
           break;
+        case "changeApplication":
+          createChangeOrderApi(params).then((data) => {
+            uni.switchTab({
+              url: "/pages/decorate/index/index",
+            });
+          });
         case 1:
           goodsBack(params).then((data) => {
             if (data.isRefundSuccess) {
