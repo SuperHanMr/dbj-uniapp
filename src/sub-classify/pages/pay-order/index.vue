@@ -887,7 +887,7 @@ export default {
         };
         this.createOrder(params).then((data) => {
           if (this.payWayTag && this.payType) {
-            uni.navigateTo({
+            uni.redirectTo({
               url: `/sub-classify/pages/pay-order/cashier?remittanceCode=${data.companyTransferPayVO.remittanceCode}&amount=${data.companyTransferPayVO.amount}`
             })
             return;
