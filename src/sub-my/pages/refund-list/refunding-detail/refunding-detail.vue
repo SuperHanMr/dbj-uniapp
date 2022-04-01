@@ -946,7 +946,8 @@ export default {
 			width: 546rpx;
 			line-height: 40rpx;
 			display: flex;
-			flex-flow: row nowrap;
+			flex-flow: row wrap;
+			word-break: break-all;
 
 		}
 	}
