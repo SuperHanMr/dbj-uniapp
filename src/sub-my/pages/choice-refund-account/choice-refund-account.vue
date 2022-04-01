@@ -12,7 +12,10 @@
         :key="item.accountNo"
         class="account-item"
       >
-        <view class="card-left">
+        <view
+          @click="choiceAccount(item)"
+          class="card-left"
+        >
           <img
             v-if="item.accountNo === checkedAccount.accountNo"
             src="https://ali-image.dabanjia.com/image/20220328/16/164845631915103.png"
@@ -54,58 +57,7 @@ import { createChangeOrderApi } from "@/api/changeOrder.js";
 export default {
   data() {
     return {
-      accountList: [
-        {
-          id: 1,
-          accountName: "string //开户名",
-          accountNo: "string //银行账号",
-          accountBank: "string //开户行",
-          amount: "double //交易金额  单位元",
-          payNo: "string //交易流水号",
-          payTime: "date //交易时间",
-          remark: "string //备注",
-        },
-        {
-          id: 2,
-          accountName: "string //开户名",
-          accountNo: "string //银行账号",
-          accountBank: "string //开户行",
-          amount: "double //交易金额  单位元",
-          payNo: "string //交易流水号",
-          payTime: "date //交易时间",
-          remark: "string //备注",
-        },
-        {
-          id: 3,
-          accountName: "string //开户名",
-          accountNo: "string //银行账号",
-          accountBank: "string //开户行",
-          amount: "double //交易金额  单位元",
-          payNo: "string //交易流水号",
-          payTime: "date //交易时间",
-          remark: "string //备注",
-        },
-        {
-          id: 4,
-          accountName: "string //开户名",
-          accountNo: "string //银行账号",
-          accountBank: "string //开户行",
-          amount: "double //交易金额  单位元",
-          payNo: "string //交易流水号",
-          payTime: "date //交易时间",
-          remark: "string //备注",
-        },
-        {
-          id: 5,
-          accountName: "string //开户名",
-          accountNo: "string //银行账号",
-          accountBank: "string //开户行",
-          amount: "double //交易金额  单位元",
-          payNo: "string //交易流水号",
-          payTime: "date //交易时间",
-          remark: "string //备注",
-        },
-      ],
+      accountList: [],
       checkedAccount: null,
       query: null,
     };
