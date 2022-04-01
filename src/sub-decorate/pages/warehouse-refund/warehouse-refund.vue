@@ -143,6 +143,7 @@
           stockId: e.id,
           goodsId: e.relationId,
           price: e.discountPrice,
+          orderId:e.orderId,
           alreadyReturnNumber: e.returnNumber || 0,
           number: e.number || e.totoalNum,
           actualIncomeAmount: e.actualIncomeAmount,
@@ -238,6 +239,7 @@
             if(e.isRefundSuccess){
               this.toastHandler()
             }else{
+              params.orderId = e.orderId
               this.toChoicePage(params)
             }
           });
@@ -251,6 +253,7 @@
               this.toastHandler()
             }else{
               params.orderId = e.orderId
+              
               this.toChoicePage(params)
             }
           });
@@ -274,7 +277,7 @@
           type:+this.type,
           params:params
         }
-        console.log(params,"跳转选择")
+        console.log(obj,"跳转选择")
          uni.navigateTo({
            url:`/sub-my/pages/choice-refund-account/choice-refund-account?query=${encodeURIComponent(
             JSON.stringify(obj)
