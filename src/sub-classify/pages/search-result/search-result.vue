@@ -69,7 +69,7 @@
           </view>
         </uni-swipe-action-item> -->
         <!-- </uni-swipe-action> -->
-        <view v-if="isPageReady && !(listArr.length > 0)" class="no-goods">
+        <view v-if="isPageReady && noData" class="no-goods">
           <view class="img"></view>
           <view class="text">抱歉，没有找到符合的商品 请换关键词再搜搜看吧～</view>
         </view>
@@ -107,7 +107,8 @@
         category1Id: 0,
         category2Id: 0,
         category4Id: 0,
-        brandId: 0
+        brandId: 0,
+        noData: false
       }
     },
     onShow() {
@@ -188,7 +189,9 @@
           // } else {
           //   this.listArr = data.page
           // }
-          console.log(data.page, "data.page")
+          if(this.pageNum === 1 && !data.page.length) {
+            this.noData = true
+          }
           this.listArr = data.page
           uni.$emit('searchListData', {
             page: this.pageNum,
