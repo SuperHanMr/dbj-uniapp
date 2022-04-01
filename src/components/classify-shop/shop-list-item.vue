@@ -3,12 +3,17 @@
 		<image class="img" :src="item.product.spuImage | imgFormat" mode="aspectFill"></image>
 		<view class="info">
 			<view class="category">
-				<text class="category-item"
-					v-for="(category, categoryIndex) in categoryListHandler(item.product.categories, item.product.brand)"
-					:key="category">
-					<text>{{category}}</text>
-					<text v-if="categoryIndex !== categoryListHandler(item.product.categories, item.product.brand).length - 1">|</text>
-				</text>
+				<view class="category-item-box">
+					<text class="category-item"
+						v-for="(category, categoryIndex) in categoryListHandler(item.product.categories)"
+						:key="category">
+						<text>{{category}}</text>
+					</text>
+				</view>
+				<view class="brand-box" v-if="showBrandHandler(item)">
+					<text class="line">|</text>
+					<text>{{item.product.brand && item.product.brand.name}}</text>
+				</view>
 			</view>
 			<view class="title">
 				<text>{{item.product.spuName}}</text>
@@ -80,6 +85,14 @@
 			}
 		},
 		methods: {
+			showBrandHandler(item) {
+				let product = item.product;
+				if (product.categories && product.categories[0] && product.categories[0].category4Name && (product.brand && product.brand.name)) {
+					return true;
+				} else {
+					return false;
+				}
+			},
 			toGoodsDetail(id) {
 				this.$emit('clickDetail');
 				uni.navigateTo({
@@ -121,9 +134,6 @@
 				if (categories && categories[1] && categories[1].category4Name) {
 					categoriesName2 = categories[1].category4Name
 					arr.push(categoriesName2);
-				}
-				if (brand && brand.name) {
-					arr.push(brand.name);
 				}
 				return arr;
 			}
@@ -257,10 +267,23 @@
 				font-size: 20rpx;
 				letter-spacing: 0.1px;
 				color: #666666;
-				width: 100%;
-				white-space: nowrap;
-				overflow: hidden;
-				text-overflow: ellipsis;
+				display: flex;
+				align-items: center;
+				.category-item-box{
+					white-space: nowrap;
+					overflow: hidden;
+					text-overflow: ellipsis;
+				}
+				.brand-box{
+					flex: 1;
+					min-width: 118rpx;
+					white-space: nowrap;
+					overflow: hidden;
+					text-overflow: ellipsis;
+					.line{
+						margin: 0 8rpx;
+					}
+				}
 
 				.category-item {
 
