@@ -171,6 +171,9 @@
       },
       changeValue() {
         this.isCardPay = !this.isCardPay
+        if (this.cardClick) {
+          this.payType = 0
+        }
       },
       closePayDialog() {
         this.$refs.payDialog.close();
@@ -275,6 +278,7 @@
           isCardPay: this.isCardPay, //"boolean //是否使用储值卡支付  默认false"
         };
         createChangeOrderApi(bodyObj).then((data) => {
+          
           if (!data) {
             // 退款跳转装修首页
             uni.switchTab({
@@ -282,7 +286,19 @@
             });
             return;
           }
-          if (this.payWayTag) {
+          if(data.accounts){
+            let obj = {
+              type:'changeApplication',
+              params:bodyObj
+            }
+             uni.navigateTo({
+               url:`/sub-my/pages/choice-refund-account/choice-refund-account?query=${encodeURIComponent(
+                JSON.stringify(obj)
+              )}`
+             })
+             return
+          }
+          if (this.payWayTag && this.payType) {
             uni.navigateTo({
               url: `/sub-classify/pages/pay-order/cashier?remittanceCode=${data.companyTransferPayVO.remittanceCode}&amount=${data.companyTransferPayVO.amount}`
             })
@@ -351,6 +367,12 @@
             uni.switchTab({
               url: "/pages/decorate/index/index",
             });
+            return;
+          }
+          if (this.payWayTag && this.payType) {
+            uni.navigateTo({
+              url: `/sub-classify/pages/pay-order/cashier?remittanceCode=${data.companyTransferPayVO.remittanceCode}&amount=${data.companyTransferPayVO.amount}`
+            })
             return;
           }
           const {

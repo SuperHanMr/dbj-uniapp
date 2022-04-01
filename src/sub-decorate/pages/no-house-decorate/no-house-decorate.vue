@@ -426,6 +426,9 @@
       clickCard() {
         if (this.cardBalance) {
           this.cardClick = !this.cardClick;
+          if (this.cardClick) {
+            this.payType = 0
+          }
         }
       },
       setDoorTime(value) {
@@ -787,7 +790,7 @@
       },
       createOrder(obj) {
         createOrder(obj).then((data) => {
-          if (this.payWayTag) {
+          if (this.payWayTag && this.payType) {
             uni.navigateTo({
               url: `/sub-classify/pages/pay-order/cashier?remittanceCode=${data.companyTransferPayVO.remittanceCode}&amount=${data.companyTransferPayVO.amount}`
             })
