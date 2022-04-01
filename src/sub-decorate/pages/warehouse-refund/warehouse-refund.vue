@@ -27,11 +27,13 @@
           <view style="flex:1">
           </view>
           <view class="flex-row">
-            <input style="color: #FF3347;max-width: 200rpx;text-align: right;" dir="rtl" type="number"
-              placeholder="请输入金额" :disabled="true" v-model="num" />
+      <!--      <input style="color: #FF3347;max-width: 200rpx;text-align: right;" dir="rtl" type="number"
+              placeholder="请输入金额" :disabled="true" v-model="num" /> -->
+            <view style="color: #FF3347;max-width: 200rpx;text-align: right;">¥{{num}}</view>
             <!-- <i class="icon-xiaochengxu_fangwuguanli_bianji icon-size"></i> -->
           </view>
         </view>
+        <view class="tip">商品未发货，商家同意后将会全额退还</view>
       </view>
     </view>
 
@@ -366,7 +368,11 @@
     flex-direction: row;
     align-items: center;
   }
-
+  .tip{
+    color: #808080;
+    font-size: 24rpx;
+    margin: 16rpx 32rpx;
+  }
   .remark-tip {
     color: #808080;
     font-size: 24rpx;
