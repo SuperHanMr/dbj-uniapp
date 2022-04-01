@@ -134,6 +134,7 @@ export default {
               url: "/pages/decorate/index/index",
             });
           });
+          break;
         case 1:
           goodsBack(params).then((data) => {
             if (data.isRefundSuccess) {

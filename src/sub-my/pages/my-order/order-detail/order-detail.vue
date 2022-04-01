@@ -397,6 +397,7 @@
         :createTime="orderInfo.createTime"
         :showPayTime="true"
         :showPayType="true"
+				:isOrderCompanyTransfer = "orderInfo.isOrderCompanyTransfer"
         :payTime="orderInfo.payTime"
         :payChannel="orderInfo.payChannel"
       />
@@ -405,6 +406,7 @@
         :orderNo="orderInfo.orderNo"
         :createTime="orderInfo.createTime"
         :showPayTime="true"
+				:isOrderCompanyTransfer="orderInfo.isOrderCompanyTransfer"
         :payChannel="orderInfo.payChannel"
         :payTime="orderInfo.payTime"
         :showPayType="true"
@@ -412,6 +414,7 @@
       <order-info
         v-if="orderStatus==3"
         :orderNo="orderInfo.orderNo"
+				:isOrderCompanyTransfer="orderInfo.isOrderCompanyTransfer"
         :createTime="orderInfo.createTime"
         :cancelTime="orderInfo.cancelTime"
         :showCancelTime="true"
