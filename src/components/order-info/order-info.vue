@@ -125,7 +125,7 @@
 			color: #333333;
 			height: 48rpx;
 			line-height: 48rpx;
-			margin-bottom: 16rpx;
+			margin-bottom: 32rpx;
 		}
 		
 		.item{
@@ -134,7 +134,7 @@
 			flex: 1;
 			flex-flow: row nowrap;
 			justify-content: flex-start;
-			margin-bottom: 16rpx;
+			margin-bottom: 20rpx;
 			.item-header{
 				width: 140rpx;
 				height: 40rpx;

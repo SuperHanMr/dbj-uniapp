@@ -111,7 +111,7 @@
 			flex: 1;
 			flex-flow: row nowrap;
 			justify-content: flex-start;
-			margin-bottom: 16rpx;
+			margin-bottom: 20rpx;
 			.item-header{
 				width: 168rpx;
 				height: 40rpx;

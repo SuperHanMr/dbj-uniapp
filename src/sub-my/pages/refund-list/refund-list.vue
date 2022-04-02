@@ -389,16 +389,17 @@
 						line-height: 36 rpx;
 						.icon{
 							width: 60rpx;
-							height: 30rpx;
-							margin-right: 8rpx;
-							line-height: 30rpx;
+							height: 34rpx;
+							line-height: 34rpx;
+							margin-right: 4rpx;
 							border-radius: 4rpx;
 							color: #212121;
-							font-weight: 500;
-							background: linear-gradient(90deg, #BDD9E5 0%, #CDEFCE 94.34%);
+							font-weight: 600;
+							background: linear-gradient(90.48deg, #B4EEE1 0.28%, #EAFCD7 99.48%);
 							font-size: 20rpx;
 							text-align: center;
 							display: inline-block;
+							vertical-align: 13%;
 						}
 						.name{
 							font-size: 26rpx;
