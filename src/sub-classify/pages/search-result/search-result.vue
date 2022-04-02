@@ -163,7 +163,7 @@
           aggregation: this.aggregation,
           aggregationField: 'category2Id',
           product: {
-            category1Id: Number(this.brandId) ? 0 : Number(this.category1Id), // 一级分类id
+            category1Id: Number(this.category1Id), // 一级分类id
             category2Id: Number(this.brandId) ? 0 : Number(this.category2Id), // 二级分类id
             categoryId: Number(this.brandId) ? 0 : Number(this.category4Id), // 四级分类id
             brandId: Number(this.brandId),
