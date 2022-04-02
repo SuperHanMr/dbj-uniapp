@@ -11,7 +11,7 @@
 		<view class="line"></view>
 		
 		<view class="item">
-			<text class="item-header" >戶名：</text>
+			<text class="item-header" >户名：</text>
 			<view class="item-body">{{commonMesageInfo.CompanyPay_AccountName}}</view>
 		</view>
 		<view class="item">
@@ -52,7 +52,6 @@
 				required:true,
 			},
 			commonMesageInfo:{
-				type:Object,
 				required:true,
 			}
 			
@@ -133,10 +132,11 @@
 		// 	margin-bottom: 0;
 		// }
 		.introduce{
-			margin-top: 4rpx;
+			margin-top: 8rpx;
 			padding: 18rpx 24rpx;
 			background: #FCFCFC;
 			border: 0.5px solid #F3F3F3;
+			border-radius: 12rpx;
 			text{
 				color: #999999;
 				font-size: 22rpx;
