@@ -171,9 +171,6 @@
       },
       changeValue() {
         this.isCardPay = !this.isCardPay
-        if (this.cardClick) {
-          this.payType = 0
-        }
       },
       closePayDialog() {
         this.$refs.payDialog.close();
@@ -227,7 +224,7 @@
                   that.createPayOrder();
                 } else if (flag === 0) {
                   that.createPayOrder();
-                  // that.agreeChangeOrder()
+                  that.agreeChangeOrder()
                 }
               } else if (res.cancel) {
                 console.log("用户取消了变更单申请的提交");
@@ -298,7 +295,7 @@
              })
              return
           }
-          if (this.payWayTag && this.payType) {
+          if (this.payWayTag && !this.isCardPay) {
             uni.navigateTo({
               url: `/sub-classify/pages/pay-order/cashier?remittanceCode=${data.companyTransferPayVO.remittanceCode}&amount=${data.companyTransferPayVO.amount}`
             })

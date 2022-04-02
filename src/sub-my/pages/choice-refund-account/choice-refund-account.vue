@@ -1,8 +1,8 @@
 <template>
   <view class="container">
-    <text class="refund-title">
+    <view class="refund-title">
       请选择退款收款账户
-    </text>
+    </view>
     <view class="refund-tips">
       因您在付款时通过不同银行账号进行汇款，故需要您选择汇款信息，我们将根据您所选的汇款信息进行线下公司银行转账。
     </view>
@@ -24,6 +24,7 @@
         </view>
         <view
           @click="choiceAccount(item)"
+          :class="{'active-card':item.accountNo === checkedAccount.accountNo}"
           class="card-right"
         >
           <view class="card-row">
@@ -185,6 +186,7 @@ export default {
 }
 .refund-title {
   font-size: 36rpx;
+  margin-top: 24rpx;
   line-height: 56rpx;
   color: #222;
 }
@@ -192,6 +194,7 @@ export default {
   margin: 24rpx 0 40rpx;
   padding: 16rpx 24rpx;
   background: #fcfcfc;
+  border: 1rpx solid #f3f3f3;
   color: #999;
   font-size: 22rpx;
   line-height: 38rpx;
@@ -219,8 +222,17 @@ export default {
     padding: 32rpx 32rpx 16rpx;
     line-height: 40rpx;
     background: #fafafa;
-    border: 2rpx solid transparent;
+    border: 1rpx solid transparent;
     border-radius: 16rpx;
+  }
+  .active-card {
+    border-color: #333;
+    background: linear-gradient(
+      90.11deg,
+      rgba(255, 255, 255, 0) 0.09%,
+      rgba(0, 0, 0, 0.03) 101.66%
+    );
+    box-shadow: 0px 2px 6px #f0f0f0;
   }
   .card-row {
     display: flex;
@@ -232,7 +244,7 @@ export default {
     }
     text {
       &:last-child {
-        flex: 1;
+        max-width: 410rpx;
         color: #333;
       }
     }
