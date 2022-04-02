@@ -836,9 +836,9 @@ export default {
 			top: 0;
 			height: 37rpx;
 			line-height: 37rpx;
-			right: 28rpx;
+			right: 24rpx;
 			color: #999999;
-			font-size: 20rpx;
+			font-size: 22rpx;
 		}
 
 	}

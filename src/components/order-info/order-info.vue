@@ -19,7 +19,7 @@
 				
 			</view>
 			
-			<view class="item" v-if="showPayTime && !isOrderCompanyTransfer">
+			<view class="item" v-if="showPayTime">
 				<text class="item-header">付款时间：</text>
 				<text class="item-body">{{payTime | formatDate }}</text>
 			</view>
@@ -80,9 +80,6 @@
 				type:Boolean,
 				default:false,
 			},
-			isOrderCompanyTransfer:{
-				type:Boolean
-			}
 		},
 	
 		data() {
@@ -125,7 +122,7 @@
 			color: #333333;
 			height: 48rpx;
 			line-height: 48rpx;
-			margin-bottom: 16rpx;
+			margin-bottom: 32rpx;
 		}
 		
 		.item{
@@ -134,7 +131,7 @@
 			flex: 1;
 			flex-flow: row nowrap;
 			justify-content: flex-start;
-			margin-bottom: 16rpx;
+			margin-bottom: 20rpx;
 			.item-header{
 				width: 140rpx;
 				height: 40rpx;
