@@ -116,7 +116,7 @@
           退款原因：
         </view>
         <view class="text">
-          {{detail.reason}}
+          {{detail.reason||''}}
         </view>
       </view>
 
@@ -136,7 +136,7 @@
           退款金额：
 
         </view>
-        <view class="text">
+        <view class="text" v-if="detail.refundAmount">
           ￥{{detail.refundAmount}}
         </view>
       </view>
@@ -156,10 +156,11 @@
 
         </view>
         <view class="text">
-          {{detail.refundNo}}
+          {{detail.refundNo||''}}
           <text
             class="tip"
             @click="copy(detail.refundNo)"
+            v-if="detail.refundNo"
           >
             复制</text>
         </view>
@@ -170,7 +171,7 @@
           备注信息：
         </view>
         <view class="text">
-          {{detail.remark}}
+          {{detail.remark||''}}
         </view>
       </view>
 
