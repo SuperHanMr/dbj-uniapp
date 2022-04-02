@@ -34,6 +34,8 @@
 						// 用户位置
 						name: '北京朝阳',
 					},
+					// 来源
+					from:'',
 					// 分享地区Id
 					shareAreaId: '',
 					// 分享人姓名
@@ -71,6 +73,7 @@
 			this.params.shareAreaId = e.shareAreaId
 			this.params.shareAreaName = e.shareAreaName
 			this.params.originType = e.originType
+			this.params.from = e.from
 
 			this.params.skuTemplateId = e.skuTemplateId
 			this.params.gomeDivisionCode = e.gomeDivisionCode
