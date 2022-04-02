@@ -222,17 +222,17 @@
 		</view>
 
 		<!-- 退款关闭底部按钮 -->
-		<view v-if="refundInfo.showContactCustomer || refundInfo.showReApply || refundInfo.cancelRefunded"
+		<view v-if="refundInfo.contactCustomer || refundInfo.reapplyed || refundInfo.cancelRefunded"
 			class="footerBtn-container"
 			:style="{paddingBottom:systemBottom}"
 		>
-			<view v-if="refundInfo.showContactCustomer" class="contact-customer" @click="contactCustomer()">
+			<view v-if="refundInfo.contactCustomer" class="contact-customer" @click="contactCustomer()">
 				联系客服
 			</view>
-			<view v-if="refundInfo.showReApply" class="Reapply" @click="toApplayForRefund(refundInfo)" >
+			<view v-if="refundInfo.reapplyed" class="Reapply" @click="toApplayForRefund(refundInfo)" >
 				重新申请
 			</view>
-			<view class="button"  @click="cancelToPay()">
+			<view v-if="refundInfo.cancelRefunded" class="button"  @click="cancelToPay()">
 				取消退款
 			</view>
 		</view>
@@ -964,7 +964,7 @@ export default {
 	display: flex;
 	flex-flow: row nowrap;
 	align-items: center;
-	justify-content: space-between;
+	justify-content: flex-end;
 	padding: 20rpx 32rpx;
 	font-size: 26rpx;
 	.button{

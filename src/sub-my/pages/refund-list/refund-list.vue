@@ -1,6 +1,6 @@
 <template>
 	<view class="container" :style="{paddingBottom:dataList.length > 0 ? systemBottom : 0,backgroundColor:dataList.length>0 ? '#ffffff':''}" >
-		<view v-if="dataList.length>0">
+		<view v-if="dataList.length>0 ">
 			<view class="order-container" v-for="(item,index) in dataList" :key="index" >
 				<!-- 服务和材料 -->
 				<view class="header" >
@@ -13,8 +13,6 @@
 						<!-- <text> {{item.type==0?"仅退款(未发货)":item.type==1 ? "仅退款(退库存)":item.type==2 ? "仅退款(已收货)":item.type==3?"服务退款":item.type==5?"储值卡退款":""}}</text>				 -->
 					</view>
 				</view>
-
-
 				<view class="body" @click="goToDetail(item)">
 					<view class="body-main" v-for="(item2,index2) in item.detailAppVOS" :key="index2">
 						<view class="pic">
@@ -84,7 +82,10 @@
 
 				<view class="footer">
 					<view class="button-container">
-						<view v-if="item.status ==0 ||item.status == 1" class="cancel-apply"  @click="open(item)">
+						<view class="reapply" v-if="item.reapplyed" @click="reApply(item)">
+							重新申请
+						</view>
+						<view v-if="item.cancelRefunded" class="cancel-apply"  @click="open(item)">
 							取消申请
 						</view>
 						<view class="view-detail" style="margin-left: 24rpx;" @click="goToDetail(item)">
@@ -96,7 +97,7 @@
 			</view>
 		</view>
 
-		<view class="empty-container" v-else>
+		<view class="empty-container" v-if="dataList.length==0 && !loading">
 			<view class="line" />
 			<view class="show">
 				<image src="https://ali-image.dabanjia.com/static/mp/dabanjia/images/theme-red/my/img_noOrder.svg" mode=""></image>
@@ -128,6 +129,7 @@
 					lastId:-1,
 					rows:15,
 				},
+				loading:false,
 				dataList:[],
 				dataListLength:"",
 				itemId:"",
@@ -172,7 +174,9 @@
 			getList(){
 				console.log("获取退款列表数据")
 				let params=this.query
+				this.loading = true
 				getRefundList(params).then(data=>{
+					this.loading = false
 					let refundList=data;
 					this.dataListLength=refundList.length
 					if(refundList.length >= 1){
@@ -240,6 +244,26 @@
 						// url:`../my-order/order-failed/order-failed?type=refund&id=${data.id}&status=${data.status}&showReApply=true`
 					})
 				}
+			},
+			// 重新申请
+			reApply(item){
+				console.log("item.===",item)
+			  if (item.isWarehoused) {
+			    // 有仓库跳转到成龙的页面
+			    getApp().globalData.naviData = item;
+			    let type = 0;
+			    if (item.isReturnInventory) {
+			      type = 1;
+			    }
+			    uni.redirectTo({
+			      url: `/sub-decorate/pages/warehouse-refund/warehouse-refund?refundType=${item.type}&id=${item.id}&type=${type}`,
+			    });
+			  } else {
+			    wx.setStorageSync("wholeRefundOrderInfo", JSON.stringify(item));
+			    uni.redirectTo({
+			      url: `/sub-my/pages/apply-for-refund/apply-for-refund?refundId=${item.id}`,
+			    });
+			  }
 			},
 
 			open(data) {
@@ -465,7 +489,7 @@
 			flex-flow: row nowrap;
 			justify-content:  flex-end;
 			z-index: 99;
-			.cancel-apply,.view-detail{
+			.reapply,.cancel-apply,.view-detail{
 				width: 140rpx;
 				height: 56rpx;
 				text-align: center;
