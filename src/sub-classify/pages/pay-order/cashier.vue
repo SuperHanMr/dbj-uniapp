@@ -35,19 +35,19 @@
 				<view class="content_wrapper">
 					<view class="content_row">
 						<view class="content_label">户名</view>
-						<view class="content_text">打扮家（北京）科技有限公司</view>
+						<view class="content_text">{{info.CompanyPay_AccountName}}</view>
 					</view>
 					<view class="content_row">
 						<view class="content_label">银行账号</view>
-						<view class="content_text">110928376810201</view>
+						<view class="content_text">{{info.CompanyPay_BankAccount}}</view>
 					</view>
 					<view class="content_row">
 						<view class="content_label">开户行</view>
-						<view class="content_text">招商银行股份有限公司北京分行世纪城支行</view>
+						<view class="content_text">{{info.CompanyPay_BankAddress}}</view>
 					</view>
 					<view class="content_row">
 						<view class="content_label">银行联行号</view>
-						<view class="content_text">308100005301</view>
+						<view class="content_text">{{info.CompanyPay_BankNumber}}</view>
 					</view>
 					<view class="content_row">
 						<view class="content_label">汇款识别码</view>
@@ -55,8 +55,8 @@
 					</view>
 				</view>
 				<view class="content_tips_wrapper">
-					<view class="content_tips">
-						线下汇款，请务必填写【汇款识别码】。务必将【汇款识别码】填写至汇款单“用途”，“附言”等栏。
+					<view class="content_tips" v-html="info.CompanyPay_Attention">
+						<!-- 线下汇款，请务必填写【汇款识别码】。务必将【汇款识别码】填写至汇款单“用途”，“附言”等栏。-->
 					</view>
 				</view>
 
@@ -66,9 +66,10 @@
 
 				<view class="tip_wrapper">
 					<view class="tip_title">注意事项</view>
-					<view class="tip_item">1. 一个汇款识别码对应一个订单，请勿多转账、少转账和分次转账，否则影响订单对账进度。</view>
+					<view class="tip_item" style="white-space: break-spaces;" v-html="info.CompanyPay_Description"></view>
+					<!-- <view class="tip_item">1. 一个汇款识别码对应一个订单，请勿多转账、少转账和分次转账，否则影响订单对账进度。</view>
 					<view class="tip_item">2. 汇款后超出1个工作日仍为“待付款”状态，请提供订单号及汇款单（汇款单包含收付款户名、收付款账号、付款金额、付款日期等），联系在线客服。</view>
-					<view class="tip_item">3. 汇款后款项仅用于汇款公司使用。</view>
+					<view class="tip_item">3. 汇款后款项仅用于汇款公司使用。</view> -->
 				</view>
 			</view>
 			<view class="process_wrapper">
@@ -103,12 +104,22 @@
 </template>
 
 <script>
+import {getCommonConfigs} from '@/api/classify.js';
+
 export default {
 	data() {
 		return {
 			amount: 0,
 			remittanceCode: '',
 			headerHeight: 0,
+			info: {
+				CompanyPay_AccountName: '',
+				CompanyPay_Attention: '',
+				CompanyPay_BankAccount: '',
+				CompanyPay_BankAddress: '',
+				CompanyPay_BankNumber: '',
+				CompanyPay_Description: '',
+			},
 		}
 	},
 	onLoad(props) {
@@ -132,16 +143,30 @@ export default {
 	created() {
 		const systemInfo = uni.getSystemInfoSync();
 		this.headerHeight =  systemInfo.statusBarHeight;
+
+		this.getInfo();
 	},
 	methods: {
+		getInfo() {
+			getCommonConfigs().then(res => {
+				this.info = res;
+			}).catch(e => {
+				uni.showToast({
+						title: "系统异常，请稍后重试",
+						icon: "none",
+						duration: 1000,
+				})
+			})
+		},
 		toBack() {
 			uni.redirectTo({
 				url: "../../../sub-my/pages/my-order/my-order?firstEntry=true&index=1"
 			})
 		},
 		handleCopy() {
+			let info = this.info;
 			uni.setClipboardData({
-				data: `户名： 打扮家（北京）科技有限公司 \n银行账号： 110928376810201 \n开户行： 招商银行股份有限公司北京分行世纪城支行 \n银行联行号： 308100005301 \n汇款识别码： ${this.remittanceCode}`,
+				data: `户名： ${info.CompanyPay_AccountName} \n银行账号： ${info.CompanyPay_BankAccount} \n开户行： ${info.CompanyPay_BankAddress} \n银行联行号： ${info.CompanyPay_BankNumber} \n汇款识别码： ${this.remittanceCode}`,
 				success() {
 					uni.showToast({
 						title: "复制成功",

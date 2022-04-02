@@ -33,6 +33,10 @@ export function getProductID(params) {
 export function payBundleOrder(params) {
   return request.post(`/order-center/app/order/createPromotionPackageOrder`, params)
 }
+
+export function getCommonConfigs() {
+  return request.get(`/app/common/config`);
+}
 // 确认订单页获取套包详情
 export function getBundleDetail(params) {
   let parmStr = params.skuIds instanceof Array ? params.skuIds.map((id) => {
