@@ -222,17 +222,17 @@
 		</view>
 
 		<!-- 退款关闭底部按钮 -->
-		<view v-if="refundInfo.showContactCustomer || refundInfo.showReApply || refundInfo.cancelRefunded"
+		<view v-if="refundInfo.contactCustomer || refundInfo.reapplyed || refundInfo.cancelRefunded"
 			class="footerBtn-container"
 			:style="{paddingBottom:systemBottom}"
 		>
-			<view v-if="refundInfo.showContactCustomer" class="contact-customer" @click="contactCustomer()">
+			<view v-if="refundInfo.contactCustomer" class="contact-customer" @click="contactCustomer()">
 				联系客服
 			</view>
-			<view v-if="refundInfo.showReApply" class="Reapply" @click="toApplayForRefund(refundInfo)" >
+			<view v-if="refundInfo.reapplyed" class="Reapply" @click="toApplayForRefund(refundInfo)" >
 				重新申请
 			</view>
-			<view class="button"  @click="cancelToPay()">
+			<view v-if="refundInfo.cancelRefunded" class="button"  @click="cancelToPay()">
 				取消退款
 			</view>
 		</view>
@@ -925,7 +925,7 @@ export default {
 		font-weight: 1000;
 		height: 48rpx;
 		line-height: 48rpx;
-		margin-bottom: 16rpx;
+		margin-bottom: 20rpx;
 	}
 	.item{
 		font-size: 28rpx;
@@ -933,7 +933,7 @@ export default {
 		flex: 1;
 		flex-flow: row nowrap;
 		justify-content: flex-start;
-		margin-bottom: 16rpx;
+		margin-bottom: 20rpx;
 		.item-header{
 			width: 140rpx;
 			height: 40rpx;
@@ -946,7 +946,8 @@ export default {
 			width: 546rpx;
 			line-height: 40rpx;
 			display: flex;
-			flex-flow: row nowrap;
+			flex-flow: row wrap;
+			word-break: break-all;
 
 		}
 	}
@@ -963,7 +964,7 @@ export default {
 	display: flex;
 	flex-flow: row nowrap;
 	align-items: center;
-	justify-content: space-between;
+	justify-content: flex-end;
 	padding: 20rpx 32rpx;
 	font-size: 26rpx;
 	.button{

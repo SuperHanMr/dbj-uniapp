@@ -227,7 +227,7 @@
                   that.createPayOrder();
                 } else if (flag === 0) {
                   that.createPayOrder();
-                  // that.agreeChangeOrder()
+                  that.agreeChangeOrder()
                 }
               } else if (res.cancel) {
                 console.log("用户取消了变更单申请的提交");
