@@ -825,7 +825,7 @@ export default {
   width: 100%;
   height: 100%;
   overflow-y: auto;
-  margin-bottom: 128rpx;
+  margin-bottom: 200rpx;
   // background-color: #f2f3f3;
   // padding-bottom: 400rpx;
 
