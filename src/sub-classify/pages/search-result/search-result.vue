@@ -101,7 +101,6 @@
         isShow: true,
         pageNum: 1,
         sort: "",
-        // isLoadMore: false,
         searchText: "",
         aggregation: false,
         category1Id: 0,
@@ -128,7 +127,6 @@
       this.getList()
     },
     onPullDownRefresh() {
-      // this.isLoadMore = false
       this.pageNum = 1
       this.getList()
     },
@@ -180,15 +178,10 @@
         getGoodsList(params).then((data) => {
           uni.stopPullDownRefresh()
           this.isPageReady = true
-          this.totalPage = data.total
+          this.totalPage = data.totalPage
           if (data.aggregationResults) {
             this.tabArr = data.aggregationResults
           }
-          // if (this.isLoadMore) {
-          //   this.listArr = this.listArr.concat(data.page)
-          // } else {
-          //   this.listArr = data.page
-          // }
           if(this.pageNum === 1 && !data.page.length) {
             this.noData = true
           }
@@ -200,7 +193,6 @@
         })
       },
       sortList() {
-        // this.isLoadMore = false
         if (!this.sort) {
           this.sort = "price_asc"
         } else if (this.sort === "price_asc") {
@@ -216,14 +208,12 @@
         } else {
           return
         }
-        // this.isLoadMore = true
         this.getList()
       },
       clickInitSearch() {
         this.initSearch = false
       },
       searchConfirm(resText) {
-        // this.isLoadMore = false
         this.searchText = resText.value
         this.category1Id = 0
         this.category2Id = 0
