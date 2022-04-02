@@ -375,52 +375,23 @@
           </view>
         </view>
       </view>
-
-      <order-price
-        v-if="orderStatus ==1 || orderStatus ==2"
-        :data="orderInfo"
-      />
-
-      <order-price
-        v-if="orderStatus ==3"
-        :data="orderInfo"
-        :orderFailed="true"
-      />
-
-      <order-info
-        v-if="orderStatus==0"
-        :orderNo="orderInfo.orderNo"
-        :createTime="orderInfo.createTime"
-      />
-      <order-info
-        v-if="orderStatus==1"
-        :orderNo="orderInfo.orderNo"
-        :createTime="orderInfo.createTime"
-        :showPayTime="true"
-        :showPayType="true"
-				:isOrderCompanyTransfer = "orderInfo.isOrderCompanyTransfer"
-        :payTime="orderInfo.payTime"
-        :payChannel="orderInfo.payChannel"
-      />
-      <order-info
-        v-if="orderStatus==2"
-        :orderNo="orderInfo.orderNo"
-        :createTime="orderInfo.createTime"
-        :showPayTime="true"
-				:isOrderCompanyTransfer="orderInfo.isOrderCompanyTransfer"
-        :payChannel="orderInfo.payChannel"
-        :payTime="orderInfo.payTime"
-        :showPayType="true"
-      />
-      <order-info
-        v-if="orderStatus==3"
-        :orderNo="orderInfo.orderNo"
-				:isOrderCompanyTransfer="orderInfo.isOrderCompanyTransfer"
-        :createTime="orderInfo.createTime"
-        :cancelTime="orderInfo.cancelTime"
-        :showCancelTime="true"
-        :payChannel="orderInfo.payChannel"
-      />
+			
+			<order-price
+			  :data="orderInfo"
+			  :orderFailed="orderStatus ==3"
+			></order-price>
+			
+			<!-- 订单信息 -->
+			<order-info
+				:orderNo="orderInfo.orderNo"
+				:createTime="orderInfo.createTime"
+				:showPayTime="orderInfo.payTime>0"
+				:payTime="orderInfo.payTime"
+				:showCancelTime="orderStatus ==3"
+				:cancelTime="orderInfo.cancelTime"
+				:showPayType="orderStatus==1|| orderStatus==2"
+				:payChannel="orderInfo.payChannel"	
+			></order-info>
 
       <!-- 代付款订单详情 底部按钮 -->
       <view
