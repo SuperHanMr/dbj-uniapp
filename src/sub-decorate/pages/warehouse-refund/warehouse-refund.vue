@@ -27,11 +27,13 @@
           <view style="flex:1">
           </view>
           <view class="flex-row">
-            <input style="color: #FF3347;max-width: 200rpx;text-align: right;" dir="rtl" type="number"
-              placeholder="请输入金额" :disabled="true" v-model="num" />
+      <!--      <input style="color: #FF3347;max-width: 200rpx;text-align: right;" dir="rtl" type="number"
+              placeholder="请输入金额" :disabled="true" v-model="num" /> -->
+            <view style="color: #FF3347;max-width: 200rpx;text-align: right;">¥{{num}}</view>
             <!-- <i class="icon-xiaochengxu_fangwuguanli_bianji icon-size"></i> -->
           </view>
         </view>
+        <view class="tip">商品未发货，商家同意后将会全额退还</view>
       </view>
     </view>
 
@@ -141,6 +143,7 @@
           stockId: e.id,
           goodsId: e.relationId,
           price: e.discountPrice,
+          orderId:e.orderId,
           alreadyReturnNumber: e.returnNumber || 0,
           number: e.number || e.totoalNum,
           actualIncomeAmount: e.actualIncomeAmount,
@@ -236,6 +239,7 @@
             if(e.isRefundSuccess){
               this.toastHandler()
             }else{
+              params.orderId = e.orderId
               this.toChoicePage(params)
             }
           });
@@ -249,6 +253,7 @@
               this.toastHandler()
             }else{
               params.orderId = e.orderId
+              
               this.toChoicePage(params)
             }
           });
@@ -272,7 +277,7 @@
           type:+this.type,
           params:params
         }
-        console.log(params,"跳转选择")
+        console.log(obj,"跳转选择")
          uni.navigateTo({
            url:`/sub-my/pages/choice-refund-account/choice-refund-account?query=${encodeURIComponent(
             JSON.stringify(obj)
@@ -366,7 +371,11 @@
     flex-direction: row;
     align-items: center;
   }
-
+  .tip{
+    color: #808080;
+    font-size: 24rpx;
+    margin: 16rpx 32rpx;
+  }
   .remark-tip {
     color: #808080;
     font-size: 24rpx;

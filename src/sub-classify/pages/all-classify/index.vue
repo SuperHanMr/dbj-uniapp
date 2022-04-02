@@ -79,7 +79,7 @@
                 this.tabIndex = k;
               }
             })
-          } 
+          }
           this.regDataList(this.tabIndex)
         })
       },
@@ -118,7 +118,9 @@
               children: res
             }]
           }
-          this.dataList[index].children.unshift(brandItem)
+          if (!this.dataList[index].children[0].brandTag) {
+            this.dataList[index].children.unshift(brandItem)
+          }
         })
       }
     }

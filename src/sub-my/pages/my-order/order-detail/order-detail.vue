@@ -254,6 +254,7 @@
         <order-payment-info
           v-if="orderInfo.isOrderCompanyTransfer"
           :orderInfo="orderInfo"
+					:commonMesageInfo="commonMesageInfo"
         ></order-payment-info>
 
         <view
@@ -397,6 +398,7 @@
         :createTime="orderInfo.createTime"
         :showPayTime="true"
         :showPayType="true"
+				:isOrderCompanyTransfer = "orderInfo.isOrderCompanyTransfer"
         :payTime="orderInfo.payTime"
         :payChannel="orderInfo.payChannel"
       />
@@ -405,6 +407,7 @@
         :orderNo="orderInfo.orderNo"
         :createTime="orderInfo.createTime"
         :showPayTime="true"
+				:isOrderCompanyTransfer="orderInfo.isOrderCompanyTransfer"
         :payChannel="orderInfo.payChannel"
         :payTime="orderInfo.payTime"
         :showPayType="true"
@@ -412,6 +415,7 @@
       <order-info
         v-if="orderStatus==3"
         :orderNo="orderInfo.orderNo"
+				:isOrderCompanyTransfer="orderInfo.isOrderCompanyTransfer"
         :createTime="orderInfo.createTime"
         :cancelTime="orderInfo.cancelTime"
         :showCancelTime="true"
@@ -642,13 +646,14 @@
 </template>
 
 <script>
-import { formatDate } from "../../../../utils/common.js";
+import { formatDate, } from "../../../../utils/common.js";
 import {
   getRefundDetail,
   getOrderDetail,
   cancelRefund,
   orderPay,
   cancelOrder,
+	commonMessage,
   confirmReceiptOrder,
 } from "@/api/order.js";
 import { getBalance } from "../../../../api/user.js";
@@ -671,7 +676,7 @@ export default {
       orderInfo: {},
       orderStatus: "",
       approvalCompleted: "", // 退款是否审核完成 是否审核完成 true不可取消 false可取消"
-
+			commonMesageInfo:"",//对公转账的信息
       expensesType: 0,
 
       systemBottom: "",
@@ -849,6 +854,9 @@ export default {
       getOrderDetail({ id: this.orderId }).then((e) => {
         this.orderInfo = e;
         this.orderStatus = e.orderStatus;
+				if(this.orderStatus==0){
+					this.reqCommonMessage()
+				}
         this.approvalCompleted = e.approvalCompleted;
         console.log("this.orderStatus===", this.orderStatus);
         this.totalPrice = this.orderInfo.payAmount;
@@ -872,6 +880,13 @@ export default {
         console.log("this.orderInfo=", this.orderInfo);
       });
     },
+		reqCommonMessage(){
+			commonMessage().then(res=>{
+				this.commonMesageInfo = res
+				// console.log("res======!!!!!!!!!!!",res)
+				// console.log("Res--",JSON.parse(res))
+			})
+		},
 
     // 改变返回下一个页面的路径
     toBack() {
