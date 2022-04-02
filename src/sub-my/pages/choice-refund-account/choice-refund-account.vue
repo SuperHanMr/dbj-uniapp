@@ -244,7 +244,7 @@ export default {
     }
     text {
       &:last-child {
-        flex: 1;
+        max-width: 410rpx;
         color: #333;
       }
     }
