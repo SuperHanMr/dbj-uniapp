@@ -69,7 +69,7 @@
           </view>
         </uni-swipe-action-item> -->
         <!-- </uni-swipe-action> -->
-        <view v-if="isPageReady && !(listArr.length > 0)" class="no-goods">
+        <view v-if="isPageReady && noData" class="no-goods">
           <view class="img"></view>
           <view class="text">抱歉，没有找到符合的商品 请换关键词再搜搜看吧～</view>
         </view>
@@ -101,13 +101,13 @@
         isShow: true,
         pageNum: 1,
         sort: "",
-        // isLoadMore: false,
         searchText: "",
         aggregation: false,
         category1Id: 0,
         category2Id: 0,
         category4Id: 0,
-        brandId: 0
+        brandId: 0,
+        noData: false
       }
     },
     onShow() {
@@ -127,7 +127,6 @@
       this.getList()
     },
     onPullDownRefresh() {
-      // this.isLoadMore = false
       this.pageNum = 1
       this.getList()
     },
@@ -179,16 +178,13 @@
         getGoodsList(params).then((data) => {
           uni.stopPullDownRefresh()
           this.isPageReady = true
-          this.totalPage = data.total
+          this.totalPage = data.totalPage
           if (data.aggregationResults) {
             this.tabArr = data.aggregationResults
           }
-          // if (this.isLoadMore) {
-          //   this.listArr = this.listArr.concat(data.page)
-          // } else {
-          //   this.listArr = data.page
-          // }
-          console.log(data.page, "data.page")
+          if(this.pageNum === 1 && !data.page.length) {
+            this.noData = true
+          }
           this.listArr = data.page
           uni.$emit('searchListData', {
             page: this.pageNum,
@@ -197,7 +193,6 @@
         })
       },
       sortList() {
-        // this.isLoadMore = false
         if (!this.sort) {
           this.sort = "price_asc"
         } else if (this.sort === "price_asc") {
@@ -213,14 +208,12 @@
         } else {
           return
         }
-        // this.isLoadMore = true
         this.getList()
       },
       clickInitSearch() {
         this.initSearch = false
       },
       searchConfirm(resText) {
-        // this.isLoadMore = false
         this.searchText = resText.value
         this.category1Id = 0
         this.category2Id = 0

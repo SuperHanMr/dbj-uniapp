@@ -476,9 +476,7 @@ export default {
 			line-height: 40rpx;
 			display: flex;
 			flex-flow: row nowrap;
-			overflow: hidden;
-      text-overflow: ellipsis;
-      white-space: nowrap;
+      word-break:break-all
 		}
 	}
 	.item:nth-last-child(1){
