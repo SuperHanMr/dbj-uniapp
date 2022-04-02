@@ -44,8 +44,18 @@
 							<view class="productName">{{productItem.spuName}}</view>
 							<view class="price">
 								<text style="font-size: 22rpx;">￥</text>
-								<text style="font-size: 28rpx;font-weight: 500;"> {{handlePrice(productItem.skuPrice/100)[0]}}.{{handlePrice(productItem.skuPrice/100)[1]}}</text>
-								<text style="font-size: 20rpx;">/{{productItem.unitName}}</text>
+								<text 
+									style="font-size: 28rpx;font-weight: 500;" 
+									class="price-font"
+								> 
+									{{handlePrice(productItem.skuPrice/100)[0]}}.
+								</text>
+								<text 
+									style="font-size: 24rpx;" 
+									class="price-font"
+								>
+									{{handlePrice(productItem.skuPrice/100)[1]}}/{{productItem.unitName}}
+								</text>
 							</view>
 						</view>
 					</view>
