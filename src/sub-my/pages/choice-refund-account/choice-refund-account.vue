@@ -253,7 +253,8 @@ export default {
     }
     text {
       &:last-child {
-        max-width: 410rpx;
+        flex: 1;
+        word-break: break-all;
         color: #333;
       }
     }
