@@ -573,9 +573,6 @@ export default {
     clickCard() {
       if (this.cardBalance) {
         this.cardClick = !this.cardClick;
-        if(this.cardClick) {
-          this.payType = 0
-        }
       }
     },
     backFrom() {
@@ -886,7 +883,7 @@ export default {
           packageId: this.isFromPackage ? parseInt(this.packageId) : undefined, // 套包下单时需要套包id参数，默认undefined
         };
         this.createOrder(params).then((data) => {
-          if (this.payWayTag && this.payType) {
+          if (this.payWayTag && !this.cardClick) {
             uni.redirectTo({
               url: `/sub-classify/pages/pay-order/cashier?remittanceCode=${data.companyTransferPayVO.remittanceCode}&amount=${data.companyTransferPayVO.amount}`
             })
