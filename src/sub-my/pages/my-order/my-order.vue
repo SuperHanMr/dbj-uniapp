@@ -359,8 +359,8 @@ export default {
       title: "我的订单",
 			bgcIcon:"https://ali-image.dabanjia.com/static/mp/dabanjia/images/theme-red/my/selectIcon.svg",
 			countDownBgc1:"https://ali-image.dabanjia.com/static/mp/dabanjia/images/theme-red/my/countDown_danger.svg" ,//小于两个小时的样式
-			countDownBgc2:"https://ali-image.dabanjia.com/static/mp/dabanjia/images/theme-red/my/countDown_normal.svg",//大于两个小时的样式
-			// countDown_normal:"../../static/countDown_normal.svg",
+			// countDownBgc2:"https://ali-image.dabanjia.com/static/mp/dabanjia/images/theme-red/my/countDown_normal.svg",//大于两个小时的样式
+			countDownBgc2:"https://ali-image.dabanjia.com/image/20220406/16/164923586840366.png",
 		};
   },
 
