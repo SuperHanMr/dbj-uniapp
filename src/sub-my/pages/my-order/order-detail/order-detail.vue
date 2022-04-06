@@ -1198,17 +1198,19 @@ export default {
     // 退款失败
     refundFailed(item) {
       this.orderDetail();
-      // uni.navigateTo({
-      // 	url: `../order-failed/order-failed?type=refund&id=${item.refundId}`,
-      // });
+      uni.navigateTo({
+      	// url: `../order-failed/order-failed?type=refund&id=${item.refundId}`,
+				url: `../../refund-list/refunding-detail/refunding-detail?id=${item.refundId}`
+      });
     },
 
     // 退款关闭
     refundClose(item) {
       this.orderDetail();
-      // uni.navigateTo({
-      // 	url: `../order-failed/order-failed?type=refund&id=${item.refundId}`,
-      // });
+      uni.navigateTo({
+      	// url: `../order-failed/order-failed?type=refund&id=${item.refundId}`,
+				url: `../../refund-list/refunding-detail/refunding-detail?id=${item.refundId}`
+      });
     },
   },
 };
