@@ -135,7 +135,7 @@
               <image
                 class="avatar"
                 :src="item.avatar+'?x-oss-process=image/resize,m_mfit,w_38,h_38'"
-                mode="aspectFit"
+                
               ></image>
               <view class="designerName">{{item.userName}}</view>
               <view class="role">{{item.role}}</view>
@@ -328,7 +328,7 @@ export default {
 }
 .options .designerInfo {
   display: flex;
-  width: 402rpx;
+  width: 502rpx;
   height: 76rpx;
   margin: 22rpx 32rpx;
 }
