@@ -162,7 +162,7 @@
         let totalBack = 0;
         this.refundList.forEach((e) => {
           if (e.returnNumber == e.amountNumber && e.alreadyReturnNumber == 0 && e.discountSubtotal > 0) {
-            totalBack += e.discountSubtotal* 100
+            totalBack += e.actualIncomeAmount* 100
           } else {
 
 
@@ -171,7 +171,7 @@
             console.log(e.returnNumber)
             console.log(e.alreadyReturnNumber)
             console.log(e.number)
-            if (e.returnNumber + e.alreadyReturnNumber <= e.number) {
+            if (e.returnNumber  <= e.number) {
 
               totalBack += e.price * e.returnNumber * 100;
               console.log('~~~~~~totalBack11111111', totalBack)
