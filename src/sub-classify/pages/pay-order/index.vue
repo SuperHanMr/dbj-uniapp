@@ -560,9 +560,7 @@ export default {
   methods: {
     payWay(payWayTag) {
       this.payWayTag = payWayTag
-      if(this.payWayTag) {
-        this.payType = 6
-      }
+      this.payType = this.payWayTag?6:0 
     },
     morePayWay() {
       this.$refs.payWayToast.showPupop();
@@ -944,7 +942,7 @@ export default {
         //#endif
         //#ifdef H5
         let params = {
-          payType: 3, //"int //支付方式  1微信支付",
+          payType: this.payType? this.payType: 3, //"int //支付方式  1微信支付",
           deviceType: 2,
           openid: getApp().globalData.openId, //"string //微信openid 小程序支付用 app支付不传或传空",
           projectId: this.projectId, //"long //项目id  非必须 默认0",
