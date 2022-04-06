@@ -293,14 +293,14 @@
             openid,
             isCardPay: this.cardClick,
           }).then((e) => {
-            if (this.payWayTag && !this.cardClick) {
-              uni.navigateTo({
-                url: `/sub-classify/pages/pay-order/cashier?remittanceCode=${e.companyTransferPayVO.remittanceCode}&amount=${e.companyTransferPayVO.amount}`
-              })
-              return;
-            }
             const cardPayComplete = e.cardPayComplete;
             if (!cardPayComplete) {
+              if (this.payWayTag) {
+                uni.navigateTo({
+                  url: `/sub-classify/pages/pay-order/cashier?remittanceCode=${e.companyTransferPayVO.remittanceCode}&amount=${e.companyTransferPayVO.amount}`
+                })
+                return;
+              }
               //#ifdef MP-WEIXIN
               const payInfo = e.wechatPayJsapi;
               uni.requestPayment({
