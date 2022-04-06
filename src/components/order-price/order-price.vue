@@ -16,7 +16,7 @@
       <!-- 运费  有仓库默认显示  无仓库必显示-->
       <view v-if="data.showFreight" class="price-item">
         <view class="title" >
-          <text  style="margin-right: 8rpx;">运费</text>
+          <text  style="margin-right: 8rpx;">总运费</text>
           <image class="icon" src="../../static/price_icon.svg" mode="" @click="readExpenses(1)"/>
         </view>
         <!-- <view v-if="waitPay">
@@ -41,7 +41,7 @@
       <!-- 搬运费  有仓库默认显示  无仓库必显示-->
       <view v-if="data.showFreight" class="price-item">
         <view class="title">
-          <text style="margin-right: 8rpx;">搬运费</text>
+          <text style="margin-right: 8rpx;">总搬运费</text>
           <image class="icon" src="../../static/price_icon.svg" mode=""  @click="readExpenses(2)"/>
         </view>
         <!-- <view v-if="waitPay">
@@ -82,7 +82,7 @@
 
       <!-- 有商家优惠就显示 -->
       <view v-if="data.storeDiscount" class="price-item" >
-        <view>商家优惠</view>
+        <view>总商家优惠</view>
 				<view>
           <text>-￥</text>
           <text class="price-style price-font">{{handlePrice(data.storeDiscount)[0]}}.{{handlePrice(data.storeDiscount)[1]}}</text>
@@ -91,7 +91,7 @@
 
       <!-- 有平台优惠就显示 -->
       <view v-if="data.platformDiscount" class="price-item">
-        <view>平台优惠</view>
+        <view>总平台优惠</view>
         <view>
           <text>-￥</text>
           <text class="price-style price-font">{{handlePrice(data.platformDiscount)[0]}}.{{handlePrice(data.platformDiscount)[1]}}</text>
