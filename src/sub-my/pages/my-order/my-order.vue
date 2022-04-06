@@ -66,7 +66,7 @@
                     mode=" "
                   />
                 </view>
-                <view v-if="currentIndex!==1"
+                <view v-if="(currentIndex!==1 && item.orderStatus !==0 )"
                   class="order-status"
                   :class="{active: item.orderStatus == 2 || item.orderStatus == 3}"
                   @click="goToDetail(item)"
@@ -87,7 +87,7 @@
                 </view>
 								<view
 									class="countDownStyle"
-									v-if="currentIndex==1 && item.showCancelOrderTime"
+									v-if="(currentIndex==1|| currentIndex ==0) && item.showCancelOrderTime && !item.isOrderCompanyTransfer"
 									:style="{backgroundImage:showDangerBgc?`url(${countDownBgc1})`:`url(${countDown_normal})`,backgroundSize: '100% 100%'}"
 								>
 									<count-down
@@ -102,7 +102,7 @@
 								</view>
 								<view
 									class="countDownStyle"
-									v-if="currentIndex==1 &&item.isOrderCompanyTransfer"
+									v-if="(currentIndex==1 ||currentIndex ==0) &&item.isOrderCompanyTransfer"
 									:style="{backgroundSize: '100% 100%',backgroundImage:`url(${countDown_normal})`}"
 								>
 									<view class="showText">
