@@ -40,9 +40,12 @@
 					e.forEach(curr => {
 						if (curr.id == this.item.id) {
 							haveCurrent = true
+              
 							this.value = curr.count
+              console.log(this.value,this.item.fullName)
 						}
 					});
+          
 					if (!haveCurrent) {
 						this.value = 0;
 					}
