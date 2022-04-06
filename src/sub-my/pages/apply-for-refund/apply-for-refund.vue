@@ -26,7 +26,7 @@
               :key="index1"
             >
               <view
-                v-if="item1.isOriginalOrder"
+                v-if="item1.isOriginalOrder && item1.type==2"
                 class="header-title"
               >
                 <text class="title"> 原始订单</text>
@@ -66,7 +66,7 @@
               :key="index2"
             >
               <view
-                v-if="item2.isOriginalOrder"
+                v-if="item2.isOriginalOrder && item2.type==2"
                 class="header-title"
               >
                 <text class="title"> 原始订单</text>
@@ -122,7 +122,7 @@
               :key="item4.id"
             >
               <view
-                v-if="item4.isOriginalOrder"
+                v-if="item4.isOriginalOrder && item4.type==2"
                 class="header-title"
               >
                 <text class="title"> 原始订单</text>
@@ -459,6 +459,7 @@ export default {
           this.refundType = this.refundInfo.type;
           this.showToast();
           console.log("this.refundInfo=", this.refundInfo);
+					console.log("refundInfo.details====",this.refundInfo.details)
           this.refundInfo.actualIncomeAmount = this.refundInfo.maxRefundAmount;
           this.returnMoney = this.refundInfo.maxRefundAmount;
         });

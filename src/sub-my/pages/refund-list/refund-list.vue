@@ -389,9 +389,10 @@
 						line-height: 36 rpx;
 						.icon{
 							width: 60rpx;
-							height: 34rpx;
-							line-height: 34rpx;
+							height: 30rpx;
+							line-height: 30rpx;
 							margin-right: 4rpx;
+							margin-bottom: 4rpx;
 							border-radius: 4rpx;
 							color: #212121;
 							font-weight: 600;
