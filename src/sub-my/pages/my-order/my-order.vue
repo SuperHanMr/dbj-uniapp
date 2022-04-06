@@ -66,7 +66,7 @@
                     mode=" "
                   />
                 </view>
-                <view v-if="currentIndex!==1"
+                <view v-if="(currentIndex!==1 && item.orderStatus !==0 )"
                   class="order-status"
                   :class="{active: item.orderStatus == 2 || item.orderStatus == 3}"
                   @click="goToDetail(item)"
@@ -87,8 +87,8 @@
                 </view>
 								<view
 									class="countDownStyle"
-									v-if="currentIndex==1 && item.showCancelOrderTime"
-									:style="{backgroundImage:showDangerBgc?`url(${countDownBgc1})`:`url(${countDownBgc2})`,backgroundSize: '100% 100%'}"
+									v-if="(currentIndex==1|| currentIndex ==0) && item.showCancelOrderTime && !item.isOrderCompanyTransfer"
+									:style="{backgroundImage:showDangerBgc?`url(${countDownBgc1})`:`url(${countDown_normal})`,backgroundSize: '100% 100%'}"
 								>
 									<count-down
 										class="count_down"
@@ -102,8 +102,8 @@
 								</view>
 								<view
 									class="countDownStyle"
-									v-if="currentIndex==1 &&item.isOrderCompanyTransfer"
-									:style="{backgroundSize: '100% 100%',backgroundImage:`url(${countDownBgc2})`}"
+									v-if="(currentIndex==1 ||currentIndex ==0) &&item.isOrderCompanyTransfer"
+									:style="{backgroundSize: '100% 100%',backgroundImage:`url(${countDown_normal})`}"
 								>
 									<view class="showText">
 										请尽快付款
@@ -360,7 +360,8 @@ export default {
 			bgcIcon:"https://ali-image.dabanjia.com/static/mp/dabanjia/images/theme-red/my/selectIcon.svg",
 			countDownBgc1:"https://ali-image.dabanjia.com/static/mp/dabanjia/images/theme-red/my/countDown_danger.svg" ,//小于两个小时的样式
 			countDownBgc2:"https://ali-image.dabanjia.com/static/mp/dabanjia/images/theme-red/my/countDown_normal.svg",//大于两个小时的样式
-    };
+			countDown_normal:"../../static/countDown_normal.svg",
+		};
   },
 
   mounted(e) {

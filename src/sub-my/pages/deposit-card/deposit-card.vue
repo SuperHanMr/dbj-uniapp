@@ -175,9 +175,7 @@
       },
       payWay(payWayTag) {
         this.payWayTag = payWayTag
-        if (this.payWayTag) {
-          this.payType = 6
-        }
+        this.payType = this.payWayTag?6:0 
       },
       toBillingDetails() {
         uni.navigateTo({

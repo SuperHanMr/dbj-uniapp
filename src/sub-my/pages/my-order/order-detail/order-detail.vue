@@ -250,6 +250,7 @@
             class="flex-center"
           ><text>在线支付</text></view>
         </view>
+				
         <!-- 支付模块新增需求  只有代付款 -->
         <order-payment-info
           v-if="orderInfo.isOrderCompanyTransfer"
@@ -257,7 +258,7 @@
 					:commonMesageInfo="commonMesageInfo"
         ></order-payment-info>
 
-        <view
+       <!-- <view
           class='remarks'
           v-if="!orderInfo.isOrderCompanyTransfer"
         >
@@ -273,7 +274,7 @@
               placeholder="选填,说点什么～"
             />
           </view>
-        </view>
+        </view> -->
       </view>
 
       <!--进行中订单样式 -->
@@ -377,9 +378,10 @@
       </view>
 			
 			<order-price
+				v-if="orderStatus!==0"
 			  :data="orderInfo"
 			  :orderFailed="orderStatus ==3"
-			></order-price>
+			/>
 			
 			<!-- 订单信息 -->
 			<order-info
