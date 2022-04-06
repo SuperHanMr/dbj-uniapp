@@ -1,10 +1,10 @@
 <template>
   <view class="">
     <view v-if='houseId'>
-      <view class="header-address">
+      <view class="header-address" @click="checkAddress">
         <span class="locationIcon"></span>
         <!-- <image src="../../static/images/ic_location@2x.png" class="locationIcon"></image> -->
-        <view class="address" @click="checkAddress">
+        <view class="address">
           <view class="way">
             <text class="default" v-if="addressInfo.defaultEstate">默认</text>
             <text class="txt">{{addressInfo.housingEstate}}</text>

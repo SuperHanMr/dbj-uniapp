@@ -36,6 +36,8 @@
       },
       select(tag) {
         this.payWayTag = tag
+        this.$emit('payWay', this.payWayTag)
+        this.$refs.payWayToast.close()
       }
     }
   }
@@ -61,6 +63,7 @@
     overflow: scroll;
     background-color: #f5f6f7;
     border-radius: 16px 16px 0px 0px;
+    padding-bottom: 30rpx;
   }
 
   .title {
