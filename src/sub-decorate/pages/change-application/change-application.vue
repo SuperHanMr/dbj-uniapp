@@ -48,7 +48,7 @@
     </view>
     <view class="pay-way" v-if="changeOrderData.totalAmount > 0">
       <view class="label">支付方式</view>
-      <view class="wx" v-if="totalAmount > 0" @click="morePayWay">{{payWayTag?'公司转账':'在线支付'}}
+      <view class="wx" v-if="totalAmount > 0" @touchstart.stop.prevent="morePayWay">{{payWayTag?'公司转账':'在线支付'}}
         <view class="more_pay_icon"></view>
       </view>
       <view class="store-pay" v-else>储值卡支付</view>
@@ -293,18 +293,18 @@
              })
              return
           }
-          if (this.payWayTag && !this.isCardPay) {
-            uni.navigateTo({
-              url: `/sub-classify/pages/pay-order/cashier?remittanceCode=${data.companyTransferPayVO.remittanceCode}&amount=${data.companyTransferPayVO.amount}`
-            })
-            return;
-          }
           const {
             wechatPayJsapi,
             cardPayComplete,
             id
           } = data;
           if (!cardPayComplete) {
+            if (this.payWayTag) {
+              uni.navigateTo({
+                url: `/sub-classify/pages/pay-order/cashier?remittanceCode=${data.companyTransferPayVO.remittanceCode}&amount=${data.companyTransferPayVO.amount}`
+              })
+              return;
+            }
             uni.requestPayment({
               provider: "wxpay",
               ...wechatPayJsapi,
@@ -364,18 +364,18 @@
             });
             return;
           }
-          if (this.payWayTag && this.payType) {
-            uni.navigateTo({
-              url: `/sub-classify/pages/pay-order/cashier?remittanceCode=${data.companyTransferPayVO.remittanceCode}&amount=${data.companyTransferPayVO.amount}`
-            })
-            return;
-          }
           const {
             wechatPayJsapi,
             cardPayComplete,
             id
           } = data;
           if (!cardPayComplete) {
+            if (this.payWayTag) {
+              uni.navigateTo({
+                url: `/sub-classify/pages/pay-order/cashier?remittanceCode=${data.companyTransferPayVO.remittanceCode}&amount=${data.companyTransferPayVO.amount}`
+              })
+              return;
+            }
             uni.navigateTo({
               url: `/sub-classify/pages/pay-order/pay-h5?payTal=${data.gomePayH5.payModeList[0].payTal}&totalPrice=${this.totalAmount}&payRecordId=${data.payRecordId}`,
             });

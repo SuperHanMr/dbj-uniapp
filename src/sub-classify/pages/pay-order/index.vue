@@ -243,7 +243,7 @@
           <text>储值卡支付</text>
 
         </view>
-        <view v-else @click="morePayWay">
+        <view v-else @touchstart.stop.prevent="morePayWay">
           <text>{{payWayTag?'公司转账':'在线支付'}}</text><view class="more_pay_icon"></view>
         </view>
       </view>
@@ -735,7 +735,7 @@ export default {
           data.totalDiscount
         ).toFixed(2);
         var res = Number(this.totalPrice) * 100 - this.cardBalance;
-        if(res <= 0) {
+        if(res <= 0) {// 当储值卡余额大于总金额，直接选中储值卡
           this.cardClick = true
         }
         let dataInfo = data;
@@ -881,17 +881,17 @@ export default {
           packageId: this.isFromPackage ? parseInt(this.packageId) : undefined, // 套包下单时需要套包id参数，默认undefined
         };
         this.createOrder(params).then((data) => {
-          if (this.payWayTag && !this.cardClick) {
-            uni.redirectTo({
-              url: `/sub-classify/pages/pay-order/cashier?remittanceCode=${data.companyTransferPayVO.remittanceCode}&amount=${data.companyTransferPayVO.amount}`
-            })
-            return;
-          }
           const {
             wechatPayJsapi,
             cardPayComplete
           } = data;
           if (!cardPayComplete) {
+            if (this.payWayTag) {
+              uni.redirectTo({
+                url: `/sub-classify/pages/pay-order/cashier?remittanceCode=${data.companyTransferPayVO.remittanceCode}&amount=${data.companyTransferPayVO.amount}`
+              })
+              return;
+            }
             uni.requestPayment({
               provider: "wxpay",
               ...wechatPayJsapi,
@@ -957,13 +957,13 @@ export default {
           packageId: this.isFromPackage ? parseInt(this.packageId) : undefined, // 套包下单时需要套包id参数，默认undefined
         };
         this.createOrder(params).then((data) => {
-          if (this.payWayTag && this.payType) {
-            uni.navigateTo({
-              url: `/sub-classify/pages/pay-order/cashier?remittanceCode=${data.companyTransferPayVO.remittanceCode}&amount=${data.companyTransferPayVO.amount}`
-            })
-            return;
-          }
           if (!data.cardPayComplete) {
+            if (this.payWayTag) {
+              uni.navigateTo({
+                url: `/sub-classify/pages/pay-order/cashier?remittanceCode=${data.companyTransferPayVO.remittanceCode}&amount=${data.companyTransferPayVO.amount}`
+              })
+              return;
+            }
             uni.navigateTo({
               url: `/sub-classify/pages/pay-order/pay-h5?payTal=${data.gomePayH5.payModeList[0].payTal}&totalPrice=${orderPrice}&payRecordId=${data.payRecordId}`,
             });

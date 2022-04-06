@@ -153,7 +153,8 @@
 			},
 			getLeftList() {
 				categoryList({
-					projectId: this.projectId
+					projectId: this.projectId,
+          workType: 0
 				}).then((e) => {
           console.log(this.cartList)
           this.leftList = [
@@ -179,19 +180,21 @@
 				params.rows = 1000;
 				params.projectId = this.projectId;
 				params.categoryId = this.currentCategoryId;
+        params.workType = 0
 				inventoryDetails(params).then((e) => {
-          for(let i = 0;i<e.length;i++){
-            for(let n = 0;n<e[i].stockAppVOS.length;n++){
-              if(e[i].stockAppVOS[n].stockNumber===0){
-                e[i].stockAppVOS.splice(n,1)
-                n--
-              }
-            }
-            if(e[i].stockAppVOS.length===0){
-              e.splice(i,1)
-              i--
-            }
-          }
+          // for(let i = 0;i<e.length;i++){
+          //   for(let n = 0;n<e[i].stockAppVOS.length;n++){
+          //     if(e[i].stockAppVOS[n].stockNumber===0){
+          //       e[i].stockAppVOS.splice(n,1)
+          //       n--
+          //     }
+          //   }
+          //   if(e[i].stockAppVOS.length===0){
+          //     e.splice(i,1)
+              
+          //     i--
+          //   }
+          // }
 					this.goodsList = e;
 				});
 			},
