@@ -131,6 +131,7 @@
       this.id = e.id;
       let list = [];
       this.data.stockAppVOS.forEach((e) => {
+        console.log(e,">>>>>>>>>")
         list.push({
           returnNumber: e.refundNumber ?
             e.refundNumber : e.requireNumber ?
@@ -141,7 +142,7 @@
             e.requireNumber : e.stockNumber ?
             e.stockNumber : e.requireNumber,
           stockId: e.id,
-          goodsId: e.relationId,
+          goodsId: e.goodsId||e.relationId,
           price: e.discountPrice,
           orderId:e.orderId,
           alreadyReturnNumber: e.returnNumber || 0,

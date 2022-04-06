@@ -395,6 +395,11 @@ export default {
         }
       });
     },
+    // toDetail(item){
+    //   uni.navigateTo({
+    //     url:"/sub-classify/pages/product-detail/index?productId=" + item.id,
+    //   })
+    // },
     back() {
       uni.navigateBack({});
     },
