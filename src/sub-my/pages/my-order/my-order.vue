@@ -430,7 +430,7 @@ export default {
         return this.orderList4;
       }
     },
-  },
+	},
   methods: {
     // 获取列表数据
     getOrderList() {
@@ -443,30 +443,26 @@ export default {
       }).then((data) => {
         this.triggered = false;
 				this.requestedDataLength[this.currentIndex]=data.length
-				console.log("请求回来的数据requestedDataLength===",this.requestedDataLength[this.currentIndex])
-        if (!data.length) {
+				if (!data.length) {
           this.loading = false;
-          console.log("this.loading=", this.loading);
           return;
         }
+				this.lastId[this.currentIndex] =data[data.length - 1].id
+
         if (this.currentIndex == 0) {
-          this.lastId[0] = data[data.length - 1].id;
           this.orderList0 = this.orderList0.concat(data);
         } else if (this.currentIndex == 1) {
-          this.lastId[1] = data[data.length - 1].id;
           this.orderList1 = this.orderList1.concat(data);
         } else if (this.currentIndex == 2) {
-          this.lastId[2] = data[data.length - 1].id;
           this.orderList2 = this.orderList2.concat(data);
         } else if (this.currentIndex == 3) {
-          this.lastId[3] = data[data.length - 1].id;
           this.orderList3 = this.orderList3.concat(data);
         } else {
-          this.lastId[4] = data[data.length - 1].id;
           this.orderList4 = this.orderList4.concat(data);
         }
+
+
         this.loading = false;
-        console.log("this.loading=", this.loading);
         this.firstEntry = false;
       });
     },
@@ -475,7 +471,7 @@ export default {
       let index = e.target.current || e.detail.current;
       this.currentIndex = index;
       //index对应的list数据是否为空 为空的话请求数据 有数据的话就不请求了
-      switch (this.currentIndex) {
+			switch (this.currentIndex) {
         case 0:
           if (this.orderList0.length < 1) this.getOrderList();
           break;
@@ -502,32 +498,15 @@ export default {
 
     //跳转到详情页面
     goToDetail(data) {
-      switch (data.orderStatus) {
-        case 0:
-          console.log("订单id===", data.id);
-					uni.navigateTo({
-						url:`order-detail/order-detail?orderId=${data.id}&from=waitPay`
-					})
-          break;
-        case 1:
-					console.log("订单id===", data.id);
-					uni.navigateTo({
-						url:`order-detail/order-detail?orderId=${data.id}`
-					});
-          break;
-        case 2:
-          uni.navigateTo({
-						url:`order-detail/order-detail?orderId=${data.id}`
-          });
-          break;
-        case 3:
-          uni.navigateTo({
-            // url: `order-failed/order-failed?type=close&id=${data.id}`,
-						url:`order-detail/order-detail?orderId=${data.id}`
-          });
-          break;
-      }
-
+			if(!data.orderStatus){
+				uni.navigateTo({
+					url:`order-detail/order-detail?orderId=${data.id}&from=waitPay`
+				})
+			}else{
+				uni.navigateTo({
+					url:`order-detail/order-detail?orderId=${data.id}`
+				});
+			}
     },
 
     //去店铺首页
@@ -552,7 +531,6 @@ export default {
     onLoadMore() {
       if (this.loading) return;
       // 这个是排除请求回来没有数据的情况
-			console.log("加载更多requestedDataLength===",this.requestedDataLength[this.currentIndex])
       if (!this.requestedDataLength[this.currentIndex] && this.lastId[this.currentIndex] > 0) return;
       this.getOrderList();
     },
@@ -698,7 +676,7 @@ export default {
       return list.map((item) => item.imgUrl);
     },
     handleReset() {
-      switch (this.currentIndex) {
+			switch (this.currentIndex) {
         case 0:
           this.orderList0 = [];
           break;
