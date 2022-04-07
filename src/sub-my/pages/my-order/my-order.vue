@@ -348,7 +348,7 @@ export default {
       orderList3: [],
       orderList4: [],
 
-      requestedDataLength: -1,
+      requestedDataLength:[-1,-1,-1,-1,-1],
       orderListLength: 1,
 
       id: -1,
@@ -442,6 +442,8 @@ export default {
         rows: this.rows,
       }).then((data) => {
         this.triggered = false;
+				this.requestedDataLength[this.currentIndex]=data.length
+				console.log("请求回来的数据requestedDataLength===",this.requestedDataLength[this.currentIndex])
         if (!data.length) {
           this.loading = false;
           console.log("this.loading=", this.loading);
@@ -550,8 +552,8 @@ export default {
     onLoadMore() {
       if (this.loading) return;
       // 这个是排除请求回来没有数据的情况
-      if (!this.requestedDataLength && this.lastId[this.currentIndex] > 0)
-        return;
+			console.log("加载更多requestedDataLength===",this.requestedDataLength[this.currentIndex])
+      if (!this.requestedDataLength[this.currentIndex] && this.lastId[this.currentIndex] > 0) return;
       this.getOrderList();
     },
 
