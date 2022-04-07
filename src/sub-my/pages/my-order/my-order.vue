@@ -28,7 +28,7 @@
         <scroll-view
           class="scroll-view"
           :enable-back-to-top="true"
-          lower-threshold="10"
+          :lower-threshold="100"
           scroll-y="true"
           refresher-background="#FFF"
           :refresher-triggered="triggered"
