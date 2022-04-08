@@ -138,7 +138,8 @@
       		rows: this.pagState.rows,
           sortType:3,
           // sortPropNameType: 5,
-          zeusId:this.personId
+          zeusId:this.personId,
+          parentType : 3
       	}
       		getCaseList(params).then((res) => {
       			if (res && res.list) {
