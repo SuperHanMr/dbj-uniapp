@@ -247,7 +247,12 @@
 				getRealCaseList({
 					page:this.page[1]
 				}).then(data => {
-					this.caseList = this.caseList.concat(data.list)
+					// this.caseList = this.caseList.concat(data.list)
+					let list = data.list.filter(item=>{
+						if(item.parentType) return item
+					})
+					console.log("案例列表数据11111===",list)
+					this.caseList = this.caseList.concat(list)
 					this.caseList = this.handleList(this.caseList,false,"case")
 					this.page[1] = data.page
 					this.totalPage[1]= data.totalPage

@@ -98,20 +98,19 @@
     	    </view>
     	  </view>
     	</view>-->
+		
 			<!-- 快捷栏目 -->
 			<view style="padding: 0 24rpx;">
 				<image v-for="(item) in status1List" :key="item.id" @click="onZoneClick(item)" :src="item.icon"
 					class="experience"></image>
 			</view>
-
+	<!-- #ifdef H5 -->
 			<view v-if="status2List.length" class="example-content">
-
 				<image @click="onZoneClick(status2List[0])" class="item" :src="status2List[0].icon"></image>
 				<view class="holder-item">
 				</view>
 				<image @click="onZoneClick(status2List[1])" class="item" :src="status2List[1].icon"></image>
 			</view>
-			<!-- #ifdef MP-WEIXIN -->
 			<!-- 直播 -->
 			<view class="flex-row-common" style="margin-top: 44rpx;">
 				<view class="title">
