@@ -66,7 +66,7 @@
         <text>储值卡支付</text>
 
       </view>
-      <view v-else @click="morePayWay">
+      <view v-else @touchstart.stop.prevent="morePayWay">
         <text>{{payWayTag?'公司转账':'在线支付'}}</text>
         <view class="more_pay_icon"></view>
       </view>
@@ -293,9 +293,7 @@
     methods: {
       payWay(payWayTag) {
         this.payWayTag = payWayTag
-        if (this.payWayTag) {
-          this.payType = 6
-        }
+        this.payType = this.payWayTag?6:0 
       },
       morePayWay() {
         this.$refs.payWayToast.showPupop();
@@ -306,9 +304,6 @@
       clickCard() {
         if (this.cardBalance) {
           this.cardClick = !this.cardClick;
-          if (this.cardClick) {
-            this.payType = 0
-          }
         }
       },
       selectedMaterialCb(values) {
@@ -757,18 +752,18 @@
       },
       createOrder(obj) {
         createOrder(obj).then((data) => {
-          if (this.payWayTag && this.payType) {
-            uni.navigateTo({
-              url: `/sub-classify/pages/pay-order/cashier?remittanceCode=${data.companyTransferPayVO.remittanceCode}&amount=${data.companyTransferPayVO.amount}`
-            })
-            return;
-          }
           const {
             wechatPayJsapi,
             cardPayComplete,
             id
           } = data;
           if (!cardPayComplete) {
+            if (this.payWayTag) {
+              uni.navigateTo({
+                url: `/sub-classify/pages/pay-order/cashier?remittanceCode=${data.companyTransferPayVO.remittanceCode}&amount=${data.companyTransferPayVO.amount}`
+              })
+              return;
+            }
             //#ifdef MP-WEIXIN
             uni.requestPayment({
               provider: "wxpay",

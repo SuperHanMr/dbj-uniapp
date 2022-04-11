@@ -235,7 +235,7 @@
 				getGoodsList(params).then(data=>{
 					this.productList = this.productList.concat(data);
 					this.productList = this.handleList(this.productList,false,"product")
-					this.productListLength= this.productList.length
+					this.productListLength= data.length
 					console.log("this.productList=",this.productList,"this.productList.length=",this.productList.length)
 					this.loading = false;
 					this.firstEntry = false;
@@ -413,14 +413,11 @@
 
 
 			onLoadMore() {
-				// if (this.loading || this.page >= this.totalPage) {
-				//   return;
-				// }
 				// this.page++;
 				if (this.loading) return;
 				if(this.currentIndex==0){
-					// if(this.loading || this.productListLength !== 10) return
-					if(this.loading || this.page[0] >=this.totalPage[0]) return
+					if(this.loading || this.productListLength == 0) return
+					// if(this.loading || this.page[0] >=this.totalPage[0]) return
 					this.page[0]++
 					this.getProductList()
 				}else{

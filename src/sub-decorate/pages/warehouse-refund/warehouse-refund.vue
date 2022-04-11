@@ -131,6 +131,7 @@
       this.id = e.id;
       let list = [];
       this.data.stockAppVOS.forEach((e) => {
+        console.log(e,">>>>>>>>>")
         list.push({
           returnNumber: e.refundNumber ?
             e.refundNumber : e.requireNumber ?
@@ -141,7 +142,7 @@
             e.requireNumber : e.stockNumber ?
             e.stockNumber : e.requireNumber,
           stockId: e.id,
-          goodsId: e.relationId,
+          goodsId: e.goodsId||e.relationId,
           price: e.discountPrice,
           orderId:e.orderId,
           alreadyReturnNumber: e.returnNumber || 0,
@@ -161,7 +162,7 @@
         let totalBack = 0;
         this.refundList.forEach((e) => {
           if (e.returnNumber == e.amountNumber && e.alreadyReturnNumber == 0 && e.discountSubtotal > 0) {
-            totalBack += e.discountSubtotal* 100
+            totalBack += e.actualIncomeAmount* 100
           } else {
 
 
@@ -170,7 +171,7 @@
             console.log(e.returnNumber)
             console.log(e.alreadyReturnNumber)
             console.log(e.number)
-            if (e.returnNumber + e.alreadyReturnNumber <= e.number) {
+            if (e.returnNumber  <= e.number) {
 
               totalBack += e.price * e.returnNumber * 100;
               console.log('~~~~~~totalBack11111111', totalBack)

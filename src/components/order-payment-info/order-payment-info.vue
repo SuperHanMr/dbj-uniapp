@@ -11,20 +11,20 @@
 		<view class="line"></view>
 		
 		<view class="item">
-			<text class="item-header" >戶名：</text>
-			<view class="item-body">打扮家(北京)科技有限公司</view>
+			<text class="item-header" >户名：</text>
+			<view class="item-body">{{commonMesageInfo.CompanyPay_AccountName}}</view>
 		</view>
 		<view class="item">
 			<text class="item-header">银行账号：</text>
-			<text class="item-body">110928376810201</text>
+			<text class="item-body">{{commonMesageInfo.CompanyPay_BankAccount}}</text>
 		</view>
 		<view class="item">
 			<text class="item-header">开户行：</text>
-			<text class="item-body">招商银行股份有限公司北京分行世纪城支行</text>
+			<text class="item-body">{{commonMesageInfo.CompanyPay_BankAddress}}</text>
 		</view>
 		<view class="item">
 			<text class="item-header">银行联行号：</text>
-			<text class="item-body">308100005301</text>
+			<text class="item-body">{{commonMesageInfo.CompanyPay_BankNumber}}</text>
 		</view>
 		
 		<view class="item">
@@ -32,7 +32,7 @@
 			<text class="item-body">{{orderInfo.remittanceCode}}</text>
 		</view>
 		<view class="introduce">
-			汇款后超出1个工作日仍为“待付款”状态，请提供订单号及汇款单（汇款单包含收付款户名、收付款账号、付款金额、付款日期等），联系在线客服。
+			<text>{{commonMesageInfo.CompanyPay_Description}}</text>
 		</view>
 		
 
@@ -51,6 +51,9 @@
 				type:Object,
 				required:true,
 			},
+			commonMesageInfo:{
+				required:true,
+			}
 			
 		},
 	
@@ -108,7 +111,7 @@
 			flex: 1;
 			flex-flow: row nowrap;
 			justify-content: flex-start;
-			margin-bottom: 16rpx;
+			margin-bottom: 20rpx;
 			.item-header{
 				width: 168rpx;
 				height: 40rpx;
@@ -129,13 +132,16 @@
 		// 	margin-bottom: 0;
 		// }
 		.introduce{
-			margin-top: 4rpx;
+			margin-top: 8rpx;
 			padding: 18rpx 24rpx;
 			background: #FCFCFC;
 			border: 0.5px solid #F3F3F3;
-			color: #999999;
-			font-size: 22rpx;
-			line-height: 32rpx;
+			border-radius: 12rpx;
+			text{
+				color: #999999;
+				font-size: 22rpx;
+				line-height: 32rpx;
+			}
 		}
 	}
 	

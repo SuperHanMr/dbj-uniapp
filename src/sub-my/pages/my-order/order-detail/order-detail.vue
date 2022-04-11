@@ -250,13 +250,15 @@
             class="flex-center"
           ><text>在线支付</text></view>
         </view>
+				
         <!-- 支付模块新增需求  只有代付款 -->
         <order-payment-info
           v-if="orderInfo.isOrderCompanyTransfer"
           :orderInfo="orderInfo"
+					:commonMesageInfo="commonMesageInfo"
         ></order-payment-info>
 
-        <view
+       <!-- <view
           class='remarks'
           v-if="!orderInfo.isOrderCompanyTransfer"
         >
@@ -272,7 +274,7 @@
               placeholder="选填,说点什么～"
             />
           </view>
-        </view>
+        </view> -->
       </view>
 
       <!--进行中订单样式 -->
@@ -374,52 +376,24 @@
           </view>
         </view>
       </view>
-
-      <order-price
-        v-if="orderStatus ==1 || orderStatus ==2"
-        :data="orderInfo"
-      />
-
-      <order-price
-        v-if="orderStatus ==3"
-        :data="orderInfo"
-        :orderFailed="true"
-      />
-
-      <order-info
-        v-if="orderStatus==0"
-        :orderNo="orderInfo.orderNo"
-        :createTime="orderInfo.createTime"
-      />
-      <order-info
-        v-if="orderStatus==1"
-        :orderNo="orderInfo.orderNo"
-        :createTime="orderInfo.createTime"
-        :showPayTime="true"
-        :showPayType="true"
-				:isOrderCompanyTransfer = "orderInfo.isOrderCompanyTransfer"
-        :payTime="orderInfo.payTime"
-        :payChannel="orderInfo.payChannel"
-      />
-      <order-info
-        v-if="orderStatus==2"
-        :orderNo="orderInfo.orderNo"
-        :createTime="orderInfo.createTime"
-        :showPayTime="true"
-				:isOrderCompanyTransfer="orderInfo.isOrderCompanyTransfer"
-        :payChannel="orderInfo.payChannel"
-        :payTime="orderInfo.payTime"
-        :showPayType="true"
-      />
-      <order-info
-        v-if="orderStatus==3"
-        :orderNo="orderInfo.orderNo"
-				:isOrderCompanyTransfer="orderInfo.isOrderCompanyTransfer"
-        :createTime="orderInfo.createTime"
-        :cancelTime="orderInfo.cancelTime"
-        :showCancelTime="true"
-        :payChannel="orderInfo.payChannel"
-      />
+			
+			<order-price
+				v-if="orderStatus!==0"
+			  :data="orderInfo"
+			  :orderFailed="orderStatus ==3"
+			/>
+			
+			<!-- 订单信息 -->
+			<order-info
+				:orderNo="orderInfo.orderNo"
+				:createTime="orderInfo.createTime"
+				:showPayTime="orderInfo.payTime>0"
+				:payTime="orderInfo.payTime"
+				:showCancelTime="orderStatus ==3"
+				:cancelTime="orderInfo.cancelTime"
+				:showPayType="orderStatus==1|| orderStatus==2"
+				:payChannel="orderInfo.payChannel"	
+			></order-info>
 
       <!-- 代付款订单详情 底部按钮 -->
       <view
@@ -645,13 +619,14 @@
 </template>
 
 <script>
-import { formatDate } from "../../../../utils/common.js";
+import { formatDate, } from "../../../../utils/common.js";
 import {
   getRefundDetail,
   getOrderDetail,
   cancelRefund,
   orderPay,
   cancelOrder,
+	commonMessage,
   confirmReceiptOrder,
 } from "@/api/order.js";
 import { getBalance } from "../../../../api/user.js";
@@ -674,7 +649,7 @@ export default {
       orderInfo: {},
       orderStatus: "",
       approvalCompleted: "", // 退款是否审核完成 是否审核完成 true不可取消 false可取消"
-
+			commonMesageInfo:"",//对公转账的信息
       expensesType: 0,
 
       systemBottom: "",
@@ -852,6 +827,9 @@ export default {
       getOrderDetail({ id: this.orderId }).then((e) => {
         this.orderInfo = e;
         this.orderStatus = e.orderStatus;
+				if(this.orderStatus==0){
+					this.reqCommonMessage()
+				}
         this.approvalCompleted = e.approvalCompleted;
         console.log("this.orderStatus===", this.orderStatus);
         this.totalPrice = this.orderInfo.payAmount;
@@ -875,6 +853,13 @@ export default {
         console.log("this.orderInfo=", this.orderInfo);
       });
     },
+		reqCommonMessage(){
+			commonMessage().then(res=>{
+				this.commonMesageInfo = res
+				// console.log("res======!!!!!!!!!!!",res)
+				// console.log("Res--",JSON.parse(res))
+			})
+		},
 
     // 改变返回下一个页面的路径
     toBack() {
@@ -1215,17 +1200,19 @@ export default {
     // 退款失败
     refundFailed(item) {
       this.orderDetail();
-      // uni.navigateTo({
-      // 	url: `../order-failed/order-failed?type=refund&id=${item.refundId}`,
-      // });
+      uni.navigateTo({
+      	// url: `../order-failed/order-failed?type=refund&id=${item.refundId}`,
+				url: `../../refund-list/refunding-detail/refunding-detail?id=${item.refundId}`
+      });
     },
 
     // 退款关闭
     refundClose(item) {
       this.orderDetail();
-      // uni.navigateTo({
-      // 	url: `../order-failed/order-failed?type=refund&id=${item.refundId}`,
-      // });
+      uni.navigateTo({
+      	// url: `../order-failed/order-failed?type=refund&id=${item.refundId}`,
+				url: `../../refund-list/refunding-detail/refunding-detail?id=${item.refundId}`
+      });
     },
   },
 };

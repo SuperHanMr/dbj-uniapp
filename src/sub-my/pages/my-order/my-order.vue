@@ -28,7 +28,7 @@
         <scroll-view
           class="scroll-view"
           :enable-back-to-top="true"
-          lower-threshold="10"
+          :lower-threshold="100"
           scroll-y="true"
           refresher-background="#FFF"
           :refresher-triggered="triggered"
@@ -66,7 +66,7 @@
                     mode=" "
                   />
                 </view>
-                <view v-if="currentIndex!==1"
+                <view v-if="(currentIndex!==1 && item.orderStatus !==0 )"
                   class="order-status"
                   :class="{active: item.orderStatus == 2 || item.orderStatus == 3}"
                   @click="goToDetail(item)"
@@ -87,7 +87,7 @@
                 </view>
 								<view
 									class="countDownStyle"
-									v-if="currentIndex==1 && item.showCancelOrderTime"
+									v-if="(currentIndex==1|| currentIndex ==0) && item.showCancelOrderTime && !item.isOrderCompanyTransfer"
 									:style="{backgroundImage:showDangerBgc?`url(${countDownBgc1})`:`url(${countDownBgc2})`,backgroundSize: '100% 100%'}"
 								>
 									<count-down
@@ -102,14 +102,14 @@
 								</view>
 								<view
 									class="countDownStyle"
-									v-if="currentIndex==1 &&item.isOrderCompanyTransfer"
+									v-if="(currentIndex==1 ||currentIndex ==0) &&item.isOrderCompanyTransfer"
 									:style="{backgroundSize: '100% 100%',backgroundImage:`url(${countDownBgc2})`}"
 								>
 									<view class="showText">
 										请尽快付款
 									</view>
 								</view>
-								
+
               </view>
 
               <view class="body">
@@ -348,7 +348,7 @@ export default {
       orderList3: [],
       orderList4: [],
 
-      requestedDataLength: -1,
+      requestedDataLength:[-1,-1,-1,-1,-1],
       orderListLength: 1,
 
       id: -1,
@@ -359,8 +359,9 @@ export default {
       title: "我的订单",
 			bgcIcon:"https://ali-image.dabanjia.com/static/mp/dabanjia/images/theme-red/my/selectIcon.svg",
 			countDownBgc1:"https://ali-image.dabanjia.com/static/mp/dabanjia/images/theme-red/my/countDown_danger.svg" ,//小于两个小时的样式
-			countDownBgc2:"https://ali-image.dabanjia.com/static/mp/dabanjia/images/theme-red/my/countDown_normal.svg",//大于两个小时的样式
-    };
+			// countDownBgc2:"https://ali-image.dabanjia.com/static/mp/dabanjia/images/theme-red/my/countDown_normal.svg",//大于两个小时的样式
+			countDownBgc2:"https://ali-image.dabanjia.com/image/20220406/16/164923586840366.png",
+		};
   },
 
   mounted(e) {
@@ -429,7 +430,7 @@ export default {
         return this.orderList4;
       }
     },
-  },
+	},
   methods: {
     // 获取列表数据
     getOrderList() {
@@ -441,29 +442,27 @@ export default {
         rows: this.rows,
       }).then((data) => {
         this.triggered = false;
-        if (!data.length) {
+				this.requestedDataLength[this.currentIndex]=data.length
+				if (!data.length) {
           this.loading = false;
-          console.log("this.loading=", this.loading);
           return;
         }
+				this.lastId[this.currentIndex] =data[data.length - 1].id
+
         if (this.currentIndex == 0) {
-          this.lastId[0] = data[data.length - 1].id;
           this.orderList0 = this.orderList0.concat(data);
         } else if (this.currentIndex == 1) {
-          this.lastId[1] = data[data.length - 1].id;
           this.orderList1 = this.orderList1.concat(data);
         } else if (this.currentIndex == 2) {
-          this.lastId[2] = data[data.length - 1].id;
           this.orderList2 = this.orderList2.concat(data);
         } else if (this.currentIndex == 3) {
-          this.lastId[3] = data[data.length - 1].id;
           this.orderList3 = this.orderList3.concat(data);
         } else {
-          this.lastId[4] = data[data.length - 1].id;
           this.orderList4 = this.orderList4.concat(data);
         }
+
+
         this.loading = false;
-        console.log("this.loading=", this.loading);
         this.firstEntry = false;
       });
     },
@@ -472,7 +471,7 @@ export default {
       let index = e.target.current || e.detail.current;
       this.currentIndex = index;
       //index对应的list数据是否为空 为空的话请求数据 有数据的话就不请求了
-      switch (this.currentIndex) {
+			switch (this.currentIndex) {
         case 0:
           if (this.orderList0.length < 1) this.getOrderList();
           break;
@@ -499,32 +498,15 @@ export default {
 
     //跳转到详情页面
     goToDetail(data) {
-      switch (data.orderStatus) {
-        case 0:
-          console.log("订单id===", data.id);
-					uni.navigateTo({
-						url:`order-detail/order-detail?orderId=${data.id}&from=waitPay`
-					})
-          break;
-        case 1:
-					console.log("订单id===", data.id);
-					uni.navigateTo({
-						url:`order-detail/order-detail?orderId=${data.id}`
-					});
-          break;
-        case 2:
-          uni.navigateTo({
-						url:`order-detail/order-detail?orderId=${data.id}`
-          });
-          break;
-        case 3:
-          uni.navigateTo({
-            // url: `order-failed/order-failed?type=close&id=${data.id}`,
-						url:`order-detail/order-detail?orderId=${data.id}`
-          });
-          break;
-      }
-
+			if(!data.orderStatus){
+				uni.navigateTo({
+					url:`order-detail/order-detail?orderId=${data.id}&from=waitPay`
+				})
+			}else{
+				uni.navigateTo({
+					url:`order-detail/order-detail?orderId=${data.id}`
+				});
+			}
     },
 
     //去店铺首页
@@ -549,8 +531,7 @@ export default {
     onLoadMore() {
       if (this.loading) return;
       // 这个是排除请求回来没有数据的情况
-      if (!this.requestedDataLength && this.lastId[this.currentIndex] > 0)
-        return;
+      if (!this.requestedDataLength[this.currentIndex] && this.lastId[this.currentIndex] > 0) return;
       this.getOrderList();
     },
 
@@ -695,7 +676,7 @@ export default {
       return list.map((item) => item.imgUrl);
     },
     handleReset() {
-      switch (this.currentIndex) {
+			switch (this.currentIndex) {
         case 0:
           this.orderList0 = [];
           break;
@@ -836,9 +817,9 @@ export default {
 			top: 0;
 			height: 37rpx;
 			line-height: 37rpx;
-			right: 28rpx;
+			right: 24rpx;
 			color: #999999;
-			font-size: 20rpx;
+			font-size: 22rpx;
 		}
 
 	}

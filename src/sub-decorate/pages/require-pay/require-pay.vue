@@ -218,9 +218,7 @@
     methods: {
       payWay(payWayTag) {
         this.payWayTag = payWayTag
-        if (this.payWayTag) {
-          this.payType = 6
-        }
+        this.payType = this.payWayTag?6:0 
       },
       morePayWay() {
         this.$refs.payWayToast.showPupop();
@@ -240,9 +238,6 @@
       clickCard() {
         if (this.cardBalance) {
           this.cardClick = !this.cardClick;
-          if (this.cardClick) {
-            this.payType = 0
-          }
         }
       },
       onReject() {
@@ -298,14 +293,14 @@
             openid,
             isCardPay: this.cardClick,
           }).then((e) => {
-            if (this.payWayTag && this.payType) {
-              uni.navigateTo({
-                url: `/sub-classify/pages/pay-order/cashier?remittanceCode=${e.companyTransferPayVO.remittanceCode}&amount=${e.companyTransferPayVO.amount}`
-              })
-              return;
-            }
             const cardPayComplete = e.cardPayComplete;
             if (!cardPayComplete) {
+              if (this.payWayTag) {
+                uni.navigateTo({
+                  url: `/sub-classify/pages/pay-order/cashier?remittanceCode=${e.companyTransferPayVO.remittanceCode}&amount=${e.companyTransferPayVO.amount}`
+                })
+                return;
+              }
               //#ifdef MP-WEIXIN
               const payInfo = e.wechatPayJsapi;
               uni.requestPayment({

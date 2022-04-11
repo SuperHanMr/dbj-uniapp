@@ -44,8 +44,8 @@
 							<view class="productName">{{productItem.spuName}}</view>
 							<view class="price">
 								<text style="font-size: 22rpx;">￥</text>
-								<text style="font-size: 28rpx;font-weight: 500;"> {{handlePrice(productItem.skuPrice/100)[0]}}.{{handlePrice(productItem.skuPrice/100)[1]}}</text>
-								<text style="font-size: 20rpx;">/{{productItem.unitName}}</text>
+								<text class="price-font" style="font-size: 28rpx;font-weight: 500;"> {{handlePrice(productItem.skuPrice/100)[0]}}</text>
+								<text class="price-font" style="font-size: 24rpx;">.{{handlePrice(productItem.skuPrice/100)[1]}}/{{productItem.unitName}}</text>
 							</view>
 						</view>
 					</view>
@@ -243,6 +243,8 @@
 						height: 178rpx;
 						border-radius: 16rpx;
 						margin-bottom: 16rpx;
+						border: 0.5px solid #F2F2F2;
+						box-sizing: border-box;
 					}
 					.productName{
 						height: 40rpx;

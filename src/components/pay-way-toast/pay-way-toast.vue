@@ -5,11 +5,11 @@
       <view class="toast-content">
         <view class="title">请选择支付方式</view>
         <view class="text">
-          <view class="text-box" @click="select(0)">
+          <view class="text-box" @touchstart.stop.prevent="select(0)">
             <view :class="{'selected-text': !payWayTag}">在线支付</view>
             <view class="unselected-icon" :class="{'selected-icon': !payWayTag}"></view>
           </view>
-          <view class="text-box" @click="select(1)">
+          <view class="text-box" @touchstart.stop.prevent="select(1)">
             <view :class="{'selected-text': payWayTag}">公司转账</view>
             <view class="unselected-icon" :class="{'selected-icon': payWayTag}"></view>
           </view>
@@ -36,6 +36,8 @@
       },
       select(tag) {
         this.payWayTag = tag
+        this.$emit('payWay', this.payWayTag)
+        this.$refs.payWayToast.close()
       }
     }
   }
@@ -61,6 +63,7 @@
     overflow: scroll;
     background-color: #f5f6f7;
     border-radius: 16px 16px 0px 0px;
+    padding-bottom: 30rpx;
   }
 
   .title {
