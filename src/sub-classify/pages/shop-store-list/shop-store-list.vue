@@ -11,17 +11,17 @@
 					 :style="{marginTop:!(storeItem.store.tags && storeItem.store.tags.length)?'24rpx':'0',
 					 marginBottom:!(storeItem.store.tags && storeItem.store.tags.length)?'32rpx':'12rpx'}"
 					>
-						<image 
-							v-if="storeItem.store.type == 2" 
-							@click="gotoStoreDetail(storeItem)" 
-							class="icon" 
-							src="https://ali-image.dabanjia.com/static/mp/dabanjia/images/theme-red/classify/ziyingIcon.png" 
+						<image
+							v-if="storeItem.store.type == 2"
+							@click="gotoStoreDetail(storeItem)"
+							class="icon"
+							src="https://ali-image.dabanjia.com/static/mp/dabanjia/images/theme-red/classify/ziyingIcon.png"
 						/>
-						<image 
-							v-if="storeItem.store.type == 1" 
-							@click="gotoStoreDetail(storeItem)" 
-							class="icon" 
-							src="https://ali-image.dabanjia.com/static/mp/dabanjia/images/theme-red/classify/zhuanyingIcon.png" 
+						<image
+							v-if="storeItem.store.type == 1"
+							@click="gotoStoreDetail(storeItem)"
+							class="icon"
+							src="https://ali-image.dabanjia.com/static/mp/dabanjia/images/theme-red/classify/zhuanyingIcon.png"
 						/>
 						<view class="title" @click="gotoStoreDetail(storeItem)">
 							<text>{{storeItem.store.name}}</text>
@@ -34,9 +34,9 @@
 						</view>
 					</view>
 					<view class="product-container">
-						<view 
-							class="productItem" 
-							v-for="productItem in storeItem.store.materialSpu" 
+						<view
+							class="productItem"
+							v-for="productItem in storeItem.store.materialSpu"
 							:key="productItem.spuId"
 							@click="gotoProductDetail(productItem)"
 						>
@@ -44,14 +44,14 @@
 							<view class="productName">{{productItem.spuName}}</view>
 							<view class="price">
 								<text style="font-size: 22rpx;">￥</text>
-								<text 
-									style="font-size: 28rpx;font-weight: 500;" 
+								<text
+									style="font-size: 28rpx;font-weight: 500;"
 									class="price-font"
-								> 
+								>
 									{{handlePrice(productItem.skuPrice/100)[0]}}.
 								</text>
-								<text 
-									style="font-size: 24rpx;" 
+								<text
+									style="font-size: 24rpx;"
 									class="price-font"
 								>
 									{{handlePrice(productItem.skuPrice/100)[1]}}/{{productItem.unitName}}
@@ -96,7 +96,7 @@
 		//页面上拉触底事件的处理函数
 		onReachBottom(e) {
 			console.log("底部")// 滚动到页面执行该方法
-			if(this.query.page>this.query.totalPage  ||  this.dataListLength == 0) return 
+			if(this.query.page>this.query.totalPage  ||  this.dataListLength == 0) return
 			this.reqStoreList();
 
 		},
@@ -129,22 +129,21 @@
 				console.log("去店铺详情页面",item)
 				console.log("item.storeId==",item.store.id)
 				console.log("houseId==",this.query.houseId)
-				if(!this.userId){
+				// if(!this.userId){
+				// 	uni.navigateTo({
+				// 		url:"../../../pages/login/login"
+				// 	})
+				// }else{
+				// 	}
+				if(this.query.houseId){
 					uni.navigateTo({
-						url:"../../../pages/login/login"
+						url:`../shops/shops?storeId=${item.store.id}&houseId=${this.query.houseId}`
 					})
 				}else{
-					if(this.query.houseId){
-						uni.navigateTo({
-							url:`../shops/shops?storeId=${item.store.id}&houseId=${this.query.houseId}`
-						})
-					}else{
-						uni.navigateTo({
-							url:`../shops/shops?storeId=${item.store.id}`
-						})
-					}
+					uni.navigateTo({
+						url:`../shops/shops?storeId=${item.store.id}`
+					})
 				}
-				
 			},
 			// 去商品详情页面
 			gotoProductDetail(item){
