@@ -92,7 +92,6 @@
           this.$emit("typeServe2")
           return
         }
-        this.$emit("closeToast")
         uni.navigateTo({
           url: "/sub-my/pages/my-house/my-house?isEdit=0&id=" +
             Number(this.houseId),

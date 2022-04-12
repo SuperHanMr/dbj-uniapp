@@ -1,6 +1,6 @@
 <template>
   <view>
-    <web-view :src="`${baseUrl}${h5Url}?id=${productId}&spuId=${spuId}&source=small#params=${paramsJson}`">
+   <web-view :src="`${baseUrl}${h5Url}?id=${productId}&spuId=${spuId}&source=small#params=${paramsJson}`">
     </web-view>
   </view>
 </template>
@@ -64,6 +64,10 @@
           break;
         case 'service':
           this.h5Url = "/app-pages/product-detail/service-product.html"
+          uni.setNavigationBarColor({
+            backgroundColor: "#F3F3F3",
+            frontColor: '#000000'
+          })
           break;
         default:
           this.h5Url = "/app-pages/product-detail/product-detail.html"
@@ -81,7 +85,6 @@
       this.params.gomeDivisionCode = e.gomeDivisionCode
 
     },
-
     onShow() {
       if (getApp().globalData.token) {
         this.params.token = getApp().globalData.token
