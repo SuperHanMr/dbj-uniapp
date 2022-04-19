@@ -5,11 +5,11 @@
       <view class="toast-content">
         <view class="title">请选择支付方式</view>
         <view class="text">
-          <view class="text-box" @click="select(0)">
+          <view class="text-box" @touchstart.stop.prevent="select(0)">
             <view :class="{'selected-text': !payWayTag}">在线支付</view>
             <view class="unselected-icon" :class="{'selected-icon': !payWayTag}"></view>
           </view>
-          <view class="text-box" @click="select(1)">
+          <view class="text-box" @touchstart.stop.prevent="select(1)">
             <view :class="{'selected-text': payWayTag}">公司转账</view>
             <view class="unselected-icon" :class="{'selected-icon': payWayTag}"></view>
           </view>

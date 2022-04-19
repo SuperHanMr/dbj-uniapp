@@ -135,6 +135,7 @@
               <image
                 class="avatar"
                 :src="item.avatar+'?x-oss-process=image/resize,m_mfit,w_38,h_38'"
+                
               ></image>
               <view class="designerName">{{item.userName}}</view>
               <view class="role">{{item.role}}</view>
@@ -327,7 +328,7 @@ export default {
 }
 .options .designerInfo {
   display: flex;
-  width: 302rpx;
+  width: 502rpx;
   height: 76rpx;
   margin: 22rpx 32rpx;
 }
@@ -452,10 +453,11 @@ export default {
   position: fixed;
   left: 0;
   top: 136rpx;
+  justify-content: space-between;
 }
 .designer .select {
   display: flex;
-  margin: 72rpx 0 68rpx 274rpx;
+  margin: 72rpx 0 68rpx 0;
 }
 .select > view {
   width: 130rpx;

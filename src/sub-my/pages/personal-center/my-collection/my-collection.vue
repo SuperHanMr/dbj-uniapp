@@ -235,7 +235,7 @@
 				getGoodsList(params).then(data=>{
 					this.productList = this.productList.concat(data);
 					this.productList = this.handleList(this.productList,false,"product")
-					this.productListLength= this.productList.length
+					this.productListLength= data.length
 					console.log("this.productList=",this.productList,"this.productList.length=",this.productList.length)
 					this.loading = false;
 					this.firstEntry = false;
@@ -247,7 +247,12 @@
 				getRealCaseList({
 					page:this.page[1]
 				}).then(data => {
-					this.caseList = this.caseList.concat(data.list)
+					// this.caseList = this.caseList.concat(data.list)
+					let list = data.list.filter(item=>{
+						if(item.parentType) return item
+					})
+					console.log("案例列表数据11111===",list)
+					this.caseList = this.caseList.concat(list)
 					this.caseList = this.handleList(this.caseList,false,"case")
 					this.page[1] = data.page
 					this.totalPage[1]= data.totalPage
@@ -413,14 +418,11 @@
 
 
 			onLoadMore() {
-				// if (this.loading || this.page >= this.totalPage) {
-				//   return;
-				// }
 				// this.page++;
 				if (this.loading) return;
 				if(this.currentIndex==0){
-					// if(this.loading || this.productListLength !== 10) return
-					if(this.loading || this.page[0] >=this.totalPage[0]) return
+					if(this.loading || this.productListLength == 0) return
+					// if(this.loading || this.page[0] >=this.totalPage[0]) return
 					this.page[0]++
 					this.getProductList()
 				}else{

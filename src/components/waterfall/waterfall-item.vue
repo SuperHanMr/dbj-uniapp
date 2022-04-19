@@ -64,6 +64,9 @@
 
 		<!-- 案例的样式 -->
 		<view class="info-container" v-else>
+			<view class="caseName">
+				{{item.name}}
+			</view>
 			<view class="avatar-name">
 				<image :src="item.authorAvatar"	mode="" />
 				<text>{{item.authorNickname}}</text>
@@ -295,7 +298,20 @@
 				margin-top: 22rpx;
 				font-size: 22rpx;
 			}
-
+			.caseName{
+				width: 312rpx;
+				color: #333;
+				font-size: 26rpx;
+				line-height: 40rpx;
+				text-overflow: -o-ellipsis-lastline;
+				overflow: hidden;
+				text-overflow: ellipsis;
+				display: -webkit-box;
+				word-break: break-all;
+				-webkit-line-clamp: 2;
+				line-clamp: 2;
+				-webkit-box-orient: vertical;
+			}
 			.avatar-name {
 				width: 312rpx;
 				display: flex;

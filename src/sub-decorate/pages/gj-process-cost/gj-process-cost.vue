@@ -66,7 +66,7 @@
         <text>储值卡支付</text>
 
       </view>
-      <view v-else @click="morePayWay">
+      <view v-else @touchstart.stop.prevent="morePayWay">
         <text>{{payWayTag?'公司转账':'在线支付'}}</text>
         <view class="more_pay_icon"></view>
       </view>
@@ -752,18 +752,18 @@
       },
       createOrder(obj) {
         createOrder(obj).then((data) => {
-          if (this.payWayTag && !this.cardClick) {
-            uni.navigateTo({
-              url: `/sub-classify/pages/pay-order/cashier?remittanceCode=${data.companyTransferPayVO.remittanceCode}&amount=${data.companyTransferPayVO.amount}`
-            })
-            return;
-          }
           const {
             wechatPayJsapi,
             cardPayComplete,
             id
           } = data;
           if (!cardPayComplete) {
+            if (this.payWayTag) {
+              uni.navigateTo({
+                url: `/sub-classify/pages/pay-order/cashier?remittanceCode=${data.companyTransferPayVO.remittanceCode}&amount=${data.companyTransferPayVO.amount}`
+              })
+              return;
+            }
             //#ifdef MP-WEIXIN
             uni.requestPayment({
               provider: "wxpay",

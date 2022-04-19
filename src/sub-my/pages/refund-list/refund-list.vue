@@ -388,19 +388,31 @@
 						font-size: 26rpx;
 						line-height: 36 rpx;
 						.icon{
-							width: 60rpx;
-							height: 30rpx;
+							// width: 60rpx;
+							// height: 30rpx;
+							// line-height: 30rpx;
+							// margin-right: 4rpx;
+							// margin-bottom: 4rpx;
+							// border-radius: 4rpx;
+							// color: #212121;
+							// font-weight: 600;
+							// background: linear-gradient(90.48deg, #B4EEE1 0.28%, #EAFCD7 99.48%);
+							// font-size: 20rpx;
+							// text-align: center;
+							// display: inline-block;
+							// vertical-align: 13%;
+							padding: 3rpx 8rpx 1rpx;
+							margin-right: 8rpx;
 							line-height: 30rpx;
-							margin-right: 4rpx;
-							margin-bottom: 4rpx;
 							border-radius: 4rpx;
-							color: #212121;
+							letter-spacing: 0.2px;
+							color: #222222;
 							font-weight: 600;
-							background: linear-gradient(90.48deg, #B4EEE1 0.28%, #EAFCD7 99.48%);
-							font-size: 20rpx;
+							font-size: 21rpx;
 							text-align: center;
 							display: inline-block;
-							vertical-align: 13%;
+							background: -webkit-linear-gradient(359.52deg, #B4EEE1 0.28%, #EAFCD7 99.48%);
+							background: linear-gradient(90.48deg, #B4EEE1 0.28%, #EAFCD7 99.48%);
 						}
 						.name{
 							font-size: 26rpx;
