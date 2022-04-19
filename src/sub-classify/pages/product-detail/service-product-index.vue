@@ -1,6 +1,6 @@
 <template>
 	<view>
-		<web-view :src="`${baseUrl}/app-pages/product-detail/service-product.html?spuId=${spuId}&houseId=${houseId}&source=small&token=${token}`">
+		<web-view :src="`${baseUrl}/app-pages/product-detail/service-product.html?spuId=${spuId}&houseId=${houseId}&from=${from}&remove=${remove}&time=${time}&source=small&token=${token}`">
 		</web-view>
 	</view>
 </template>
@@ -9,17 +9,23 @@
 	export default {
 		data() {
 			return {
+        time: 0,
+        from: '',
+        remove: 1,
 				baseUrl: '',
-				spuId:'',
-        houseId: 0,
-        token: ''
+				spuId: 215,
+        houseId: 42,
+        token: "Pc0jlCMLaageAbuvl97z3OjRNz%2BFxXrdHjTV3svtxH8ZYtzDTO87dW6k2vvjBtUQyLEPHeV5zz83m0uzapHU7QbrbIUQdNHAeHborfCk0%2BepBS37v6tt2xoRrGRY4lGf9dcf7fd204df220958cedd9bfbf6af7a"
 			}
 		},
 		onLoad(e) {
       this.baseUrl = this.ENV.VUE_APP_BASE_H5
-      thos.token = getApp().globalData.token
-      this.spuId = e.spuId
-      this.houseId = e.houseId
+      // this.token = getApp().globalData.token
+      // this.spuId = e.spuId
+      // this.houseId = e.houseId ? e.houseId : getApp().globalData.currentHouse.id;
+      // this.from = e.from
+      // this.remove = e.remove
+      // this.time = e.time
 		}
 	}
 </script>

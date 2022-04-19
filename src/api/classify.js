@@ -77,3 +77,8 @@ export function getBrandProductList(id,tagId,params){
 export function getStoreList(params){
 	return request.get(`/product/app/search/store/search`,{params})
 }
+
+// 获取设计师服务商品信息
+export function getServiceDetail(skuId){
+	return request.get(`/serve-product/app/serveProduct/sku/${skuId}`)
+}

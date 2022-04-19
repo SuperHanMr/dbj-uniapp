@@ -12,59 +12,48 @@
       </uni-popup>
     </view>
     <view v-else>
-      <address-picker :houseId="houseId" @emitInfo="emitInfo" @typeServe2="typeServe2" :addUser="addUser" v-if="isShow">
+      <address-picker :houseId="houseId" @emitInfo="emitInfo" @typeServe2="typeServe2" v-if="isShow">
       </address-picker>
       <view class="content">
-        <view class="shop-item" v-for="(shopItem, shopIndex) in orderInfo.storeInfos" :key="shopIndex">
-          <view class="shop-name" v-if="shopItem.skuInfos.length">{{shopItem.storeName}}</view>
-          <view class="item-box" v-for="(goodsItem, goodIndex) in shopItem.skuInfos" :key="goodIndex">
+        <view class="shop-item">
+          <view class="shop-name">{{detailData.userInfo.name}}</view>
+          <view class="item-box">
             <view class="goods-item">
-              <image :src="goodsItem.imageUrl" class="goodsItemImg"></image>
-              <!-- <image src="https://ali-image-test.dabanjia.com/image/20210816/11/1629087052820_2600%241626858792066_0436s4.png" class="goodsItemImg"></image> -->
+              <image :src="productCommonData.data.userInfo.avatar" class="goodsItemImg"></image>
               <view class="goods-info">
                 <view class="goods-desc">
-                  <text class="goods-type">{{"服务商品"}}</text>
-                  {{goodsItem.spuName}}
+                  <text class="goods-type">{{"设计师服务"}}</text>
+                  {{detailData.name}}
                 </view>
                 <view class="spu-class">
-                  <view class='tag'>{{goodsItem.levelName?goodsItem.levelName + '|': ''}}{{goodsItem.skuName}}</view>
+                  <view class='tag'>{{detailData.userInfo.name}}｜设计师</view>
                 </view>
                 <view class="goods-spec">
                   <view class="goods-money price-font">
                     ￥
                     <text
-                      class="integer-price">{{String(goodsItem.price).split(".")[0]?String(goodsItem.price).split(".")[0]:0}}</text>
-                    <text>.{{String(goodsItem.price).split(".")[1]?String(goodsItem.price).split(".")[1]:0}}</text>
-                    <text>/{{goodsItem.unit?goodsItem.unit:""}}</text>
-                  </view>
-                  <view>
-                    <view class="sku-deposit price-font" v-if="goodsItem.deposit">押金
-                      ¥{{goodsItem.deposit}}</view>
-                  </view>
-                  <view class="total-num">共{{goodsItem.buyCount}}{{goodsItem.unit?goodsItem.unit:""}}
+                      class="integer-price">{{detailData.serviceMinPrice?(detailData.serviceMinPrice/100).toFixed(2).split(".")[0]:0}}</text>
+                    <text>.{{detailData.serviceMinPrice?(detailData.serviceMinPrice/100).toFixed(2).split(".")[1]:0}}</text>
+                    <text>/平米</text>
                   </view>
                 </view>
                 <view class="buy-num">
-                  <input type="number" v-model="buyNum" />㎡
+                  <span v-if="from === 'IM'">{{buyNum}}㎡</span>
+                  <span v-else>
+                    <input type="number" v-model="buyNum" /><span>㎡</span>
+                  </span>
                 </view>
               </view>
             </view>
-            <view class="shop-reduce no-send-tip good-tip">
+            <!--         <view class="shop-reduce no-send-tip good-tip">
               <view class="item-reduce-box house-tip">
-                <text>当前地址不在商品服务范围内，请更换地址</text>
+                <text>你的房屋面积和购买面积不一致，请检查</text>
               </view>
-            </view>
-            <view class="choose-time" v-if="goodsItem.appointmentRequired">
-              <view class="time-bar" @click='chooseTime(shopIndex, goodIndex)'>
-                <view v-if="!time"><text style="color: #FF3347">* </text> 请选择上门时间</view>
-                <text v-else>{{time}}</text>
-                <image class="choose-icon" src="../../../static/images/ic_back.png"></image>
-              </view>
-            </view>
+            </view> -->
           </view>
           <view class="serve-box">
             <view class="measuring-title">量房服务</view>
-            <view class="shop-reduce no-send-tip good-tip">
+            <view class="shop-reduce no-send-tip good-tip" v-if="!isInArea">
               <view class="item-reduce-box">
                 <text>当前地址不在商品服务范围内，请更换地址</text>
               </view>
@@ -80,7 +69,7 @@
                   </view>
                   <view class="check-box">
                     <view>修改服务</view>
-                    <view class="check-icon"></view>
+                    <view class="check-icon" v-if="from !== 'IM'"></view>
                   </view>
                 </view>
                 <view class="serve-area">
@@ -97,7 +86,7 @@
                   </view>
                   <view class="check-box">
                     <view>修改服务</view>
-                    <view class="check-icon"></view>
+                    <view class="check-icon" v-if="from !== 'IM'"></view>
                   </view>
                 </view>
                 <view class="serve-area">
@@ -111,11 +100,7 @@
       <view class="good-store-account is-store">
         <view class="price-font">
           <text>商品总价</text>
-          <text>¥{{orderInfo.totalPrice}}</text>
-        </view>
-        <view class="pledge price-font total-deposit" v-if="orderInfo.totalDeposit">
-          <text>押金</text>
-          <text>¥{{orderInfo.totalDeposit}}</text>
+          <text>¥{{totalPrice}}</text>
         </view>
       </view>
       <view v-if="haveCard" class="pay-way" style="justify-content:center" @click="clickCard">
@@ -190,27 +175,7 @@
       </view>
       <expenses-toast ref='expensesToast' :expensesType="expensesType"></expenses-toast>
       <change-serve-toast ref='changeServeToast' @isRemove="isRemoveFn"></change-serve-toast>
-      <date-picker ref='datePicker' @getTime="getTime"></date-picker>
-      <order-toast ref='orderToast' :houseId="houseId" :hasCanBuy="hasCanBuy" :noStoreInfos="noStoreInfos"
-        @toastConfirm="toastConfirm" @backCart="backCart"></order-toast>
       <pay-way-toast ref='payWayToast' @payWay="payWay"></pay-way-toast>
-      <uni-popup ref="cancelDialog" :mask-click="false">
-        <view class="popup-item">
-          <view class="popup-title">{{toastText}}</view>
-          <view class="popup-button">
-            <view class="popup-ok" @click='cancelGoodPop'>取消</view>
-            <view class="popup-cancel" @click='confirmGoodPop'>去购买</view>
-          </view>
-        </view>
-      </uni-popup>
-      <uni-popup ref="timeDialog" :mask-click="false">
-        <view class="popup-item">
-          <view class="popup-title">请选择期望上门时间</view>
-          <view class="popup-button">
-            <view class="popup-cancel" @click='confirmTimePop'>确定</view>
-          </view>
-        </view>
-      </uni-popup>
       <uni-popup ref="payDialog" type="bottom">
         <pay-dialog :payChannel="payChannel" :payChannelPrice="payChannelPrice" @payOrder="payOrder"
           @closePayDialog="closePayDialog"></pay-dialog>
@@ -221,17 +186,12 @@
 </template>
 <script>
   import {
-    getAddWorker,
-    getDetailInfo,
     payOrderApi,
-    getBundleDetail,
-    payBundleOrder,
+    getServiceDetail // 获取设计师服务商品信息
   } from "../../../api/classify.js";
   import {
     getBalance
   } from "../../../api/user.js";
-  import orderToast from "./order-toast.vue";
-  import datePicker from "./date-picker.vue";
   import changeServeToast from "./change-serve-toast.vue";
   import {
     log
@@ -239,8 +199,6 @@
 
   export default {
     components: {
-      orderToast,
-      datePicker,
       changeServeToast
     },
     data() {
@@ -248,28 +206,9 @@
         isShow: true,
         hasTime: false,
         time: "",
-        shopIndex: 0,
-        goodIndex: 0,
-        orderCartParams: {},
-        addressInfo: {},
-        orderInfo: {},
-        canStoreInfos: {},
-        noStoreInfos: {},
         hasNoBuyItem: false,
-        houseId: 0,
-        addUser: [],
-        goodDetailId: 0,
-        buyCount: 0,
         skuId: 0,
-        storeId: 0,
-        unit: "",
-        estateId: 0,
         expensesType: 0,
-        productType: 2,
-        frontendServe: "",
-        toastType: 0,
-        toastText: "",
-        tipTest: "",
         remarks: "",
         buyNum: "",
         orderName: "",
@@ -279,15 +218,18 @@
         hasCanBuy: false,
         projectId: 0,
         level: 0,
-        cancelDialog: false,
-        refundable: false,
         cardClick: false,
         haveCard: false, //是否有会员卡
         cardBalance: 0, //会员卡余额
         originType: "",
         payWayTag: 0,
         payType: 0,
-        isRemove: true // 是否选择量远程量房
+        isRemove: true, // 是否选择量远程量房
+        houseId: 0,
+        areaInfo: {},
+        detailData: {},
+        from: '',
+        isInArea: true
       };
     },
     computed: {
@@ -330,13 +272,11 @@
     },
     onLoad(e) {
       this.houseId = e.houseId ? e.houseId : getApp().globalData.currentHouse.id;
-      this.buyCount = e.buyCount;
+      this.buyNum = e.buyNum;
       this.skuId = e.skuId;
-      this.storeId = e.storeId;
-      this.unit = e.unit;
-      this.level = e.level;
-      this.goodDetailId = uni.getStorageSync("goodId");
-      this.originType = e.originType;
+      this.from = e.from
+      this.isRemove = e.remove
+      this.getDetail()
     },
     onShow() {
       if (uni.getStorageSync("houseListChooseId")) {
@@ -345,7 +285,7 @@
           this.$refs.houseDialog.close();
         }
       }
-      if (!Number(this.houseId)) {
+      if (!Number(this.houseId) || Number(this.houseId) < 0) {
         this.isShow = false;
         setTimeout(() => {
           if (this.$refs.houseDialog) {
@@ -376,6 +316,12 @@
       uni.removeStorageSync("houseListChooseId");
     },
     methods: {
+      getDetail() {
+        getServiceDetail(this.skuId).then((data) => {
+          this.detailData = data
+          this.totalPrice = (data.serviceMinPrice * this.buyNum / 100).toFixed(2)
+        })
+      },
       isRemoveFn(v) {
         this.isRemove = v
       },
@@ -385,6 +331,9 @@
         });
       },
       changeServe() {
+        if (this.from === 'IM') {
+          return
+        }
         this.$refs.changeServeToast.showPupop();
       },
       payWay(payWayTag) {
@@ -410,9 +359,6 @@
       backFrom() {
         uni.navigateBack();
       },
-      backCart() {
-        uni.removeStorageSync("houseListChooseId");
-      },
       chooseHouse() {
         uni.navigateTo({
           url: "/sub-my/pages/my-house/my-house?isEdit=0",
@@ -427,175 +373,12 @@
         this.expensesType = num;
         this.$refs.expensesToast.showPupop();
       },
-      getTime(val) {
-        this.time =
-          val[0] +
-          "年" +
-          val[1] +
-          "月" +
-          val[2] +
-          "日" +
-          val[3] +
-          "时" +
-          val[4] +
-          "分";
-        this.$set(
-          this.orderInfo.storeInfos[this.shopIndex].skuInfos[this.goodIndex],
-          "doorTime",
-          this.time
-        );
-      },
-      getBundleDetail(params) {
-        getBundleDetail(params).then(data => {
-          this.reducePayParams(this.reduceDetailInfo(data));
-        }).catch(err => {
-          uni.showToast({
-            title: err.data?.message || '程序异常',
-            icon: 'none',
-            duration: 3000,
-          })
-        })
-      },
       emitInfo(val) {
-        this.addUser = [];
-        this.hasCanBuy = false;
-        this.hasNoBuyItem = false;
-        this.projectId = val.projectId;
-        this.orderDetails = [];
-        this.addressInfo = val;
-        this.estateId = val.id ? val.id : 0;
-        let params = {};
-        params = {
-          skuInfos: [{
-            skuId: this.skuId,
-            storeId: this.storeId,
-            buyCount: this.buyCount,
-            unit: this.unit ? this.unit : "",
-            level: this.level,
-            origin: this.originType
-          }, ],
-          estateId: this.estateId,
-        };
-        getDetailInfo(params).then((data) => {
-          this.reducePayParams(data);
-        });
-      },
-      // 整理结算相关参数
-      reducePayParams(data) {
-        this.totalPrice = (
-          data.totalPrice +
-          data.totalDeliveryFee +
-          data.totalHandlingFee +
-          data.totalDeposit -
-          data.totalDiscount
-        ).toFixed(2);
-        var res = Number(this.totalPrice) * 100 - this.cardBalance;
-        if (res <= 0) {
-          this.cardClick = true
-        }
-        let dataInfo = data;
-        this.orderInfo = dataInfo;
-        this.noStoreInfos = JSON.parse(JSON.stringify(dataInfo));
-        this.noStoreInfos.storeInfos = [];
-        this.canStoreInfos = JSON.parse(JSON.stringify(dataInfo));
-        this.canStoreInfos.storeInfos = [];
-        this.orderInfo.storeInfos.map((storeItem, storeK) => {
-          let noStoreItem = JSON.parse(JSON.stringify(storeItem));
-          noStoreItem.skuInfos = [];
-          let canStoreItem = JSON.parse(JSON.stringify(storeItem));
-          canStoreItem.skuInfos = [];
-          this.noStoreInfos.storeInfos.push(noStoreItem);
-          this.canStoreInfos.storeInfos.push(canStoreItem);
-          storeItem.skuInfos.map((skuItem, skuK) => {
-            this.productType = skuItem.productType;
-            // 头部补人工数据
-            if (skuItem.addingJobName) {
-              this.addUser.push({
-                addingJobName: skuItem.addingJobName,
-                addingUserName: skuItem.addingUserName,
-                addingUserId: skuItem.addingUserId,
-              });
-            }
-            if (skuItem.appointmentRequired) {
-              this.hasTime = true;
-            }
-            // 结算可配送和不可配送数据
-            if (skuItem.errorType) {
-              noStoreItem.skuInfos.push(skuItem);
-              if (skuItem.errorType === 4) {
-                this.toastType = 4;
-                this.toastText = "该服务需精算师指导下完成";
-                if (this.$refs.cancelDialog.open) {
-                  this.$refs.cancelDialog.open();
-                }
-              } else if (skuItem.errorType === 5) {
-                this.toastType = 5;
-                this.toastText = "请从精算单购买管家服务";
-                if (this.$refs.cancelDialog.open) {
-                  this.$refs.cancelDialog.open();
-                }
-              } else if (skuItem.errorType === 8) {
-                this.toastType = 8;
-                this.toastText = "请从装修页面查询购买";
-                if (this.$refs.cancelDialog.open) {
-                  this.$refs.cancelDialog.open();
-                }
-              }
-              this.hasNoBuyItem = true; // 判断所有数据中有没有不可配送数据
-            } else {
-              this.hasCanBuy = true;
-              canStoreItem.skuInfos.push(skuItem);
-              this.totalClassNum += 1;
-              // 整理出结算参数
-              let orderDetailItem = {
-                relationId: skuItem.skuId, //实体id,
-                type: skuItem.productType, //1材料  2服务   3专项付款,
-                businessType: skuItem.categoryTypeId, //业务类型,
-                roleType: skuItem.roleType ? Number(skuItem.roleType) : 0, //角色类型  7工人  10管家  购买工人和管家时参数必传,
-                workType: skuItem.workType ? Number(skuItem.workType) : -2, //工种类型 购买工人时参数必传,
-                level: skuItem.level, //等级  0中级  1高级 2特级  3钻石",
-                storeId: storeItem.storeId, //店铺id,
-                storeType: 0, //店铺类型 0普通 1设计师",
-                number: skuItem.buyCount, //购买数量",
-                origin: skuItem.origin,
-                params: {}, //与订单无关的参数 如上门时间 doorTime
-              };
-              this.orderDetails.push({
-                orderDetailItem: orderDetailItem,
-                paramsInfo: skuItem,
-              });
-            }
-          });
-        });
-        if (
-          this.orderInfo.storeInfos.length > 1 ||
-          this.orderInfo.storeInfos[0].skuInfos.length > 1
-        ) {
-          this.orderInfo = this.canStoreInfos;
-          if (this.hasNoBuyItem) {
-            this.$refs.orderToast.showPupop();
-          }
-        }
-        if (this.orderInfo.storeInfos[0].skuInfos.length === 1) {
-          this.totalClassNum = 1;
-        }
-      },
-      chooseTime(shopIndex, goodIndex) {
-        this.shopIndex = shopIndex;
-        this.goodIndex = goodIndex;
-        this.$refs.datePicker.showDatePicker();
-      },
-      toastConfirm() {
-        this.hasNoBuyItem = false;
+        this.areaInfo.provinceId = val.provinceId
+        this.areaInfo.cityId = val.cityId
+        this.areaInfo.areaId = val.areaId
       },
       pay() {
-        if (this.hasTime && !this.time) {
-          this.$refs.timeDialog.open();
-          return;
-        }
-        if (!this.hasCanBuy || this.hasNoBuyItem || !this.totalPrice) {
-          return;
-        }
         if (this.cardClick) {
           this.$refs.payDialog.open();
           return;
@@ -620,16 +403,17 @@
         //#ifdef MP-WEIXIN
         let params = {
           payType: this.payType ? this.payType : 1, //"int //支付方式  1微信支付",
+          deviceType: 3,
           openid: getApp().globalData.openId, //"string //微信openid 小程序支付用 app支付不传或传空",
           projectId: this.projectId, //"long //项目id  非必须 默认0",
           customerId: 0, //"long //业主id  非必须 默认0",
-          estateId: this.estateId, //"long //房产id   非必须 默认0",
+          estateId: this.houseId, //"long //房产id   非必须 默认0",
+          sourceId: 100,
           total: orderPrice, //"int //总计",
           remarks: this.remarks, //"string //备注",
-          orderName: "", //"string //订单名称 可为空",
-          details: details,
           isCardPay: this.cardClick,
-          origin: this.originType
+          origin: this.originType,
+          details: details
         };
         payOrderApi(params).then((data) => {
           if (this.payWayTag && this.payType) {
@@ -696,7 +480,7 @@
           openid: getApp().globalData.openId, //"string //微信openid 小程序支付用 app支付不传或传空",
           projectId: this.projectId, //"long //项目id  非必须 默认0",
           customerId: 0, //"long //业主id  非必须 默认0",
-          estateId: this.estateId, //"long //房产id   非必须 默认0",
+          houseId: this.houseId, //"long //房产id   非必须 默认0",
           total: orderPrice, //"int //总计",
           remarks: this.remarks, //"string //备注",
           orderName: "", //"string //订单名称 可为空",
@@ -722,39 +506,10 @@
           }
         });
         //#endif
-      },
-      cancelGoodPop() {
-        this.cancelDialog = true;
-        this.$refs.cancelDialog.close();
-      },
-      confirmGoodPop() {
-        if (this.toastType === 4) {
-          uni.navigateTo({
-            url: "/sub-classify/pages/search-result/search-result?searchText=" +
-              "精算",
-          });
-        } else if (this.toastType === 5) {
-          uni.switchTab({
-            url: "/pages/decorate/index/index",
-          });
-        } else if (this.toastType === 8) {
-          uni.switchTab({
-            url: "/pages/decorate/index/index",
-          });
-        }
-      },
-      confirmTimePop() {
-        this.$refs.timeDialog.close();
-      },
+      }
     },
   };
 </script>
-<style>
-  /*  .text-placeholder{
-    color: green !important;
-    line-height: 100rpx !important;
-  } */
-</style>
 <style lang="scss" scoped>
   .mt26 {
     margin-top: 26rpx;
@@ -858,13 +613,11 @@
     padding-bottom: 24rpx;
     border-bottom: 1rpx solid #F4F4F4;
   }
-  
+
   .goods-item {
     width: 100%;
     display: flex;
     align-items: center;
-    border-bottom: 1rpx solid #F4F4F4;
-    padding-bottom: 20rpx;
   }
 
   .goods-item .good-tip {
@@ -940,6 +693,11 @@
     border-radius: 6rpx;
     background-color: #F2F2F2;
     margin-right: 12rpx;
+  }
+
+  .buy-num span {
+    display: flex;
+    align-items: center;
   }
 
   .goods-info .goods-spec {
@@ -1110,13 +868,16 @@
     position: absolute;
     bottom: 16rpx;
   }
-  .serve-box .shop-reduce{
+
+  .serve-box .shop-reduce {
     margin-top: 24rpx;
   }
-  .house-tip{
+
+  .house-tip {
     background-color: #FFF7F0 !important;
     color: #FC8B19 !important;
   }
+
   .item-reduce-box .question-icon {
     top: 0;
   }

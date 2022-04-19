@@ -527,7 +527,7 @@ export default {
         this.$refs.houseDialog.close();
       }
     }
-    if (!Number(this.houseId)) {
+    if (!Number(this.houseId) || Number(this.houseId) < 0) {
       this.isShow = false;
       setTimeout(() => {
         if (this.$refs.houseDialog) {
