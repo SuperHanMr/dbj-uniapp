@@ -434,7 +434,7 @@ export default {
   },
   onLoad(e) {
     this.userType = e.userType;
-    this.personId = e.personId || 6680;
+    this.personId = e.personId || 7635;
     //价值排行榜进入主页需要滚动至案例区域
     this.isToContent = e.isToContent||false
     uni.showShareMenu();
@@ -699,22 +699,20 @@ export default {
     },
     getSkuList() {
       let data = {
-        relationId: this.personId,
-        relationType: 7,
+        createUser: this.personId,
+        auditStatus: 2,
         page: 1,
         row: 10000,
-        spuIsEnabled: 1,
-        
-        hidden:0
+        marketStatus: 1,
       };
       getSkuList(data).then((res) => {
-        this.serviceData = res;
+        this.serviceData = res.list;
         // if (this.$refs.service) {
         //   this.$refs.service.isOpen = true;
         //   this.$refs.service.open();
         // }
         // console.log(res)
-        if(res.length==0){
+        if(res.list.length==0){
           this.serviceEmpty = false
         }else{
           this.serviceEmpty = true

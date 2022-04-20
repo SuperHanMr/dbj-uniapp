@@ -148,8 +148,8 @@ export function getResultProblem(params) {
 
 //获取服务人员挂载商品
 export function getSkuList(params) {
-	const str = objectToUrlString(params)
-	return request.get("/product/app/products/relation/related/skus/list?" + str)
+	// const str = objectToUrlString(params)
+	return request.post("/serve-product/web/serveProduct/spu" , params)
 }
 
 //查询业主与服务者服务状态
