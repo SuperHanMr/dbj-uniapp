@@ -22,7 +22,9 @@ export function getDetailInfo(params) {
 export function payOrderApi(params) {
 	return request.post(`/order-center/app/order/createOrder`, params)
 }
-
+export function payServeOrder(params) {
+	return request.post(`/order-center/app/order/createServeProductOrder`, params)
+}
 export function payH5(params) {
   return request.post("/order-center/app/pay/gomeConfirmPay", params);
 }

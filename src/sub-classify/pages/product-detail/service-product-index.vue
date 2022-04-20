@@ -15,7 +15,7 @@
 				baseUrl: '',
 				spuId: 215,
         houseId: 42,
-        token: "Pc0jlCMLaageAbuvl97z3OjRNz%2BFxXrdHjTV3svtxH8ZYtzDTO87dW6k2vvjBtUQyLEPHeV5zz83m0uzapHU7QbrbIUQdNHAeHborfCk0%2BepBS37v6tt2xoRrGRY4lGf9dcf7fd204df220958cedd9bfbf6af7a"
+        token: "Pc0jlCMLaageAbuvl97z3OjRNz%2BFxXrdHjTV3svtxH8ZYtzDTO87dW6k2vvjBtUQ9qjQdxNRl6qAnrUHeu7LPl2L%2FDzcYnx9Lsw5vPGkvBKJD8jX9l4aCRoRrGRY4lGfbfe83a56341abd221f8ee44d38ef3692"
 			}
 		},
 		onLoad(e) {

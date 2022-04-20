@@ -16,17 +16,17 @@
       </address-picker>
       <view class="content">
         <view class="shop-item">
-          <view class="shop-name">{{detailData.userInfo.name}}</view>
+          <view class="shop-name">{{detailData.designerInfo.name}}</view>
           <view class="item-box">
             <view class="goods-item">
-              <image :src="productCommonData.data.userInfo.avatar" class="goodsItemImg"></image>
+              <image :src="productCommonData.data.designerInfo.avatar" class="goodsItemImg"></image>
               <view class="goods-info">
                 <view class="goods-desc">
                   <text class="goods-type">{{"设计师服务"}}</text>
                   {{detailData.name}}
                 </view>
                 <view class="spu-class">
-                  <view class='tag'>{{detailData.userInfo.name}}｜设计师</view>
+                  <view class='tag'>{{detailData.designerInfo.name}}｜设计师</view>
                 </view>
                 <view class="goods-spec">
                   <view class="goods-money price-font">
@@ -36,24 +36,25 @@
                     <text>.{{detailData.serviceMinPrice?(detailData.serviceMinPrice/100).toFixed(2).split(".")[1]:0}}</text>
                     <text>/平米</text>
                   </view>
+                  <view class="total-num" v-if="!buySquareMeter">1套</view>
                 </view>
-                <view class="buy-num">
-                  <span v-if="from === 'IM'">{{buyNum}}㎡</span>
+                <view class="buy-num" v-if="buySquareMeter">
+                  <span v-if="isIMCard">{{buyNum}}㎡</span>
                   <span v-else>
                     <input type="number" v-model="buyNum" /><span>㎡</span>
                   </span>
                 </view>
               </view>
             </view>
-            <!--         <view class="shop-reduce no-send-tip good-tip">
+            <view class="shop-reduce no-send-tip good-tip" v-if="!isInNum">
               <view class="item-reduce-box house-tip">
                 <text>你的房屋面积和购买面积不一致，请检查</text>
               </view>
-            </view> -->
+            </view>
           </view>
           <view class="serve-box">
             <view class="measuring-title">量房服务</view>
-            <view class="shop-reduce no-send-tip good-tip" v-if="!isInArea">
+            <view class="shop-reduce no-send-tip good-tip" v-if="!isInArea && !isRemove">
               <view class="item-reduce-box">
                 <text>当前地址不在商品服务范围内，请更换地址</text>
               </view>
@@ -69,7 +70,7 @@
                   </view>
                   <view class="check-box">
                     <view>修改服务</view>
-                    <view class="check-icon" v-if="from !== 'IM'"></view>
+                    <view class="check-icon" v-if="!isIMCard"></view>
                   </view>
                 </view>
                 <view class="serve-area">
@@ -86,7 +87,7 @@
                   </view>
                   <view class="check-box">
                     <view>修改服务</view>
-                    <view class="check-icon" v-if="from !== 'IM'"></view>
+                    <view class="check-icon" v-if="!isIMCard"></view>
                   </view>
                 </view>
                 <view class="serve-area">
@@ -169,16 +170,23 @@
             </view>
 
           </view>
-          <button class="pay-button" :class="{'no-pay': !hasCanBuy || hasNoBuyItem}" @click="pay"
-            ref="test">立即支付</button>
+          <button class="pay-button" :class="{'no-pay': !isInArea || !isInNum}" @click="pay" ref="test">立即支付</button>
         </view>
       </view>
       <expenses-toast ref='expensesToast' :expensesType="expensesType"></expenses-toast>
-      <change-serve-toast ref='changeServeToast' @isRemove="isRemoveFn"></change-serve-toast>
+      <change-serve-toast ref='changeServeToast' @isRemove="isRemoveFn" :isPropsRemove="isRemove"></change-serve-toast>
       <pay-way-toast ref='payWayToast' @payWay="payWay"></pay-way-toast>
       <uni-popup ref="payDialog" type="bottom">
         <pay-dialog :payChannel="payChannel" :payChannelPrice="payChannelPrice" @payOrder="payOrder"
           @closePayDialog="closePayDialog"></pay-dialog>
+      </uni-popup>
+      <uni-popup ref="orderDialog" :mask-click="false">
+        <view class="popup-item">
+          <view class="popup-title">你有个待付款的订单</view>
+          <view class="popup-button popup-order" @click='confirmOrderPop'>
+            立即付款
+          </view>
+        </view>
       </uni-popup>
     </view>
 
@@ -186,7 +194,7 @@
 </template>
 <script>
   import {
-    payOrderApi,
+    payServeOrder,
     getServiceDetail // 获取设计师服务商品信息
   } from "../../../api/classify.js";
   import {
@@ -227,9 +235,14 @@
         isRemove: true, // 是否选择量远程量房
         houseId: 0,
         areaInfo: {},
+        measuringArea: [],
         detailData: {},
-        from: '',
-        isInArea: true
+        isIMCard: 0, // 是否从聊天推送卡片进入
+        isInArea: true, // 地址是否在配送区域
+        isAreaTip: false, // 不在量房范围的提示是否显示
+        isInNum: true, // 购买数量是否在范围内
+        buySquareMeter: true, // 是否以平米购买
+        waitOrderId: 0 // 代付款订单id
       };
     },
     computed: {
@@ -270,12 +283,27 @@
         }
       },
     },
+    watch: {
+      buyNum(v) {
+        if (v) {
+          this.totalPrice = (this.detailData.serviceMinPrice * v / 100).toFixed(2)
+          if (this.detailData.skuList) {
+            let maxNum = this.detailData.skuList[0].areaProp.values[0].propValue.split('-')[1]
+            let minNum = this.detailData.skuList[0].areaProp.values[0].propValue.split('-')[0]
+            if (v > maxNum || v < minNum) {
+              this.isInNum = false
+            }
+          }
+        }
+      }
+    },
     onLoad(e) {
-      this.houseId = e.houseId ? e.houseId : getApp().globalData.currentHouse.id;
-      this.buyNum = e.buyNum;
-      this.skuId = e.skuId;
-      this.from = e.from
-      this.isRemove = e.remove
+      this.houseId = Number(e.houseId ? e.houseId : getApp().globalData.currentHouse.id);
+      this.buyNum = Number(e.buyNum);
+      this.skuId = Number(e.skuId);
+      this.isIMCard = Number(e.isIMCard)
+      this.isRemove = JSON.parse(e.remove)
+      this.buySquareMeter = JSON.parse(e.buySquareMeter)
       this.getDetail()
     },
     onShow() {
@@ -320,6 +348,8 @@
         getServiceDetail(this.skuId).then((data) => {
           this.detailData = data
           this.totalPrice = (data.serviceMinPrice * this.buyNum / 100).toFixed(2)
+          var res = Number(this.totalPrice) * 100 - this.cardBalance;
+          this.cardClick = Number(this.totalPrice) * 100 - this.cardBalance <= 0
         })
       },
       isRemoveFn(v) {
@@ -331,10 +361,15 @@
         });
       },
       changeServe() {
-        if (this.from === 'IM') {
+        if (this.isIMCard) {
           return
         }
         this.$refs.changeServeToast.showPupop();
+      },
+      confirmOrderPop() {
+        uni.navigateTo({
+          url: `../../../sub-my/pages/my-order/order-detail/order-detail?orderId=${this.waitOrderId}&from=waitPayOrder`
+        });
       },
       payWay(payWayTag) {
         this.payWayTag = payWayTag
@@ -377,7 +412,24 @@
         this.areaInfo.provinceId = val.provinceId
         this.areaInfo.cityId = val.cityId
         this.areaInfo.areaId = val.areaId
+        this.measuringArea.some(
+          (item1, k1) => {
+            if (item1.cityId) {
+              if (item1.areaId) {
+                return (this.isInArea =
+                  this.areaInfo.areaId === item1.areaId);
+              } else {
+                return (this.isInArea =
+                  this.areaInfo.cityId === item1.cityId);
+              }
+            } else {
+              return (this.isInArea =
+                this.areaInfo.provinceId === item1.provinceId);
+            }
+          }
+        );
       },
+
       pay() {
         if (this.cardClick) {
           this.$refs.payDialog.open();
@@ -387,15 +439,13 @@
       },
       payOrder() {
         let _that = this;
-        let details = [];
-        this.orderDetails.map((v, k) => {
-          details.push(v.orderDetailItem);
-          Object.keys(v.paramsInfo).map((item, index) => {
-            if (item === "doorTime") {
-              v.orderDetailItem.params[item] = v.paramsInfo.doorTime;
-            }
-          });
-        });
+        let details = [{
+          relationId: this.skuId,
+          type: 6,
+          businessType: 61,
+          number: this.buyNum,
+          origin: this.originType
+        }];
         uni.$emit("submitOrder"); // 购物车需要的逻辑
         let orderPrice = Number(
           Number(this.totalPrice).toFixed(2).replace(".", "")
@@ -403,7 +453,6 @@
         //#ifdef MP-WEIXIN
         let params = {
           payType: this.payType ? this.payType : 1, //"int //支付方式  1微信支付",
-          deviceType: 3,
           openid: getApp().globalData.openId, //"string //微信openid 小程序支付用 app支付不传或传空",
           projectId: this.projectId, //"long //项目id  非必须 默认0",
           customerId: 0, //"long //业主id  非必须 默认0",
@@ -412,11 +461,14 @@
           total: orderPrice, //"int //总计",
           remarks: this.remarks, //"string //备注",
           isCardPay: this.cardClick,
-          origin: this.originType,
           details: details
         };
-        payOrderApi(params).then((data) => {
-          if (this.payWayTag && this.payType) {
+        payServeOrder(params).then((data) => {
+          if(data.unpaidOrderId) {
+            this.waitOrderId = data.unpaidOrderId
+            this.$refs.orderDialog.open();
+          }
+          if (this.payWayTag) {
             uni.redirectTo({
               url: `/sub-classify/pages/pay-order/cashier?remittanceCode=${data.companyTransferPayVO.remittanceCode}&amount=${data.companyTransferPayVO.amount}`
             })
@@ -854,6 +906,7 @@
   .shop-reduce {
     position: relative;
     height: 56rpx;
+    margin-top: 36rpx;
   }
 
   .item-reduce-box {
@@ -1133,5 +1186,12 @@
   .popup-button .popup-cancel {
     flex: 1;
     color: #00bfb6;
+  }
+
+  .popup-order {
+    justify-content: center;
+    text-align: center;
+    line-height: 84rpx;
+    color: #FA3B34;
   }
 </style>

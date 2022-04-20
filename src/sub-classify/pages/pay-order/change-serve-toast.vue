@@ -16,7 +16,7 @@
             </view>
           </view>
           <view class="serve-card-box" @click="selectScene">
-            <view class="serve-unselected" :class="{'serve-selected': !isRemove}"></view>
+            <view class="serve-unselected" :class="{'serve-selected': !isPropsRemove}"></view>
             <view class="serve-card">
               <view class="card-price">
                 <view>现场量房：200元</view>
@@ -32,9 +32,17 @@
 
 <script>
   export default {
+    props: {
+      isPropsRemove: true
+    },
     data() {
       return {
-        isRemove: true,
+        isRemove: this.isPropsRemove,
+      }
+    },
+    watch: {
+      isPropsRemove (v) {
+        this.isRemove = v
       }
     },
     methods: {
@@ -47,6 +55,9 @@
       },
       selectScene() {
         this.isRemove = !this.isRemove
+        console.log(this.isRemove , "this.isRemove9999999")
+        this.$refs.safeToast.close()
+        this.$emit("isRemove", this.isRemove)
       }
     }
   }
