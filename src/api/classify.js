@@ -41,3 +41,10 @@ export function checkPay(params) {
   return request.get("/order-center/app/order/queryPayResult", params);
 }
 
+export function getServeProduct(spuId) {
+  return request.get(`/serve-product/app/serveProduct/spu/${spuId}`, {});
+}
+
+export function sendServeProduct(params) {
+  return request.post(`/serve-product/app/serveProduct/sendProduct`, params, true, false)
+}
