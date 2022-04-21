@@ -47,6 +47,14 @@
     v-else-if="message.type === TIM.TYPES.MSG_CUSTOM && template.template === 'servecard'"
     :message="message"
   />
+  <consult-product-element
+    v-else-if="message.type === TIM.TYPES.MSG_CUSTOM && template.template === 'consult_product'"
+    :message="message"
+  />
+  <serve-product-element
+    v-else-if="message.type === TIM.TYPES.MSG_CUSTOM && template.template === 'serve_product'"
+    :message="message"
+  />
   <case-card-element
     v-else-if="message.type === TIM.TYPES.MSG_CUSTOM && template.template === 'case'"
     :message="message"
@@ -90,6 +98,8 @@
   import RevokeElement from "./revoke-element.vue";
   import CallElement from "./call-element.vue"
   import GoodsElement from "./goods-element.vue"
+  import ConsultProductElement from "./consult-product-element.vue";
+  import ServeProductElement from "./serve-product-element.vue";
   import UnsupportedElement from "./unsupported-element.vue";
   import CardTemplate from "./template/card-tpl.vue"
   import ServeCardElement from "./serve-card-element.vue";
@@ -123,6 +133,8 @@
       TextTemplate,
       CaseCardElement,
       ServeCardElement,
+      ConsultProductElement,
+      ServeProductElement,
     },
     computed: {
       TIM() {

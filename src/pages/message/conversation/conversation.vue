@@ -56,6 +56,7 @@
         </view>
       </view>
     </scroll-view>
+    <consult-product :spuId="showSendProductId" v-if="showSendProductId" @close="showSendProductId = 0"></consult-product>
     <message-send-box ref="messageSendBox" v-if="type === CONV_TYPES.COMMON || type === CONV_TYPES.CUSTOMER"></message-send-box>
     <reply-box v-if="type === CONV_TYPES.INTERACTION" />
   </view>
@@ -68,6 +69,7 @@
   import MessageItem from "./message-element/message-item.vue"
   import MessageItemSystem from "./message-element/message-item-system.vue"
   import MessageItemInteraction from "./message-element/message-item-interaction.vue"
+  import ConsultProduct from './consult-product.vue';
   import { mapState } from "vuex";
   import { calendarFormat } from "@/utils/date.js"
   import TIM from 'tim-wx-sdk'
@@ -79,6 +81,7 @@
       MessageItem,
       MessageItemSystem,
       MessageItemInteraction,
+      ConsultProduct,
     },
     data() {
       return {
@@ -88,7 +91,8 @@
         currentScrollTop: 0,
         unreadCount: 0,
         unreadStartBarPos: 0, //未读消息块的相对父容器的位置
-        loaded: false
+        loaded: false,
+        showSendProductId: 0,
       }
     },
     computed: {
@@ -178,6 +182,9 @@
       // this.listBodyNodesRef = null;
     },
     onLoad(options) {
+      if (options.spuId) {
+        this.showSendProductId = options.spuId;
+      }
       if (options.id === "CUSTOMER") {
         let conv = this.cstServConv;
         uni.setNavigationBarTitle({

@@ -2492,6 +2492,16 @@
     "template": "goods",
     "summary": "${fullName}"
   },
+  "single_serve_product": {
+    "type": "single_serve_product",
+    "template": "consult_product",
+    "summary": "${productName}"
+  },
+  "single_serve_product_intent": {
+    "type": "single_serve_product_intent",
+    "template": "serve_product",
+    "summary": "${productName}"
+  },
   "custom_agant_coming": {
     "type": "custom_agant_coming",
     "template": "tip2",
