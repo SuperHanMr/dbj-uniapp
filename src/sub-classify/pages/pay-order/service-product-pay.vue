@@ -39,10 +39,10 @@
                   <view class="total-num" v-if="!buySquareMeter">1套</view>
                 </view>
                 <view class="buy-num" v-if="buySquareMeter">
-                  <span v-if="isIMCard">{{buyNum}}㎡</span>
-                  <span v-else>
-                    <input type="number" v-model="buyNum" /><span>㎡</span>
-                  </span>
+                  <text v-if="isIMCard">{{buyNum}}㎡</text>
+                  <view v-else>
+                    <input type="number" v-model="buyNum" /><text>㎡</text>
+                  </view>
                 </view>
               </view>
             </view>
@@ -64,7 +64,7 @@
                 <view class="measuring-price-box">
                   <view class="measuring-price price-font" @click.stop="readMeasuring('site')">
                     <view>
-                      现场量房 ¥200
+                      现场量房 ¥{{(detailData.measureServiceProduct.serviceMinPrice/100).toFixed(2)}}
                     </view>
                     <view class="card-icon"></view>
                   </view>
@@ -74,7 +74,12 @@
                   </view>
                 </view>
                 <view class="serve-area">
-                  服务区域：北京东城区，北京石景山区，上海，广州，北京东城区
+                  服务区域：
+                  <text v-for="(v, k) in measuringArea" :key="k">
+                    {{(v.province?v.province:"") + (v.city?v.city:"") + (v.area?v.area:"")}}
+                    <text v-if="k !== measuringArea.length - 1">,
+                    </text>
+                  </text>
                 </view>
               </view>
               <view class="measuring-serve" v-else>
@@ -174,22 +179,13 @@
         </view>
       </view>
       <expenses-toast ref='expensesToast' :expensesType="expensesType"></expenses-toast>
-      <change-serve-toast ref='changeServeToast' @isRemove="isRemoveFn" :isPropsRemove="isRemove"></change-serve-toast>
+      <change-serve-toast ref='changeServeToast' @isRemove="isRemoveFn" :isPropsRemove="isRemove" :price="(detailData.measureServiceProduct.serviceMinPrice/100).toFixed(2)" :measuringArea="measuringArea"></change-serve-toast>
       <pay-way-toast ref='payWayToast' @payWay="payWay"></pay-way-toast>
       <uni-popup ref="payDialog" type="bottom">
         <pay-dialog :payChannel="payChannel" :payChannelPrice="payChannelPrice" @payOrder="payOrder"
           @closePayDialog="closePayDialog"></pay-dialog>
       </uni-popup>
-      <uni-popup ref="orderDialog" :mask-click="false">
-        <view class="popup-item">
-          <view class="popup-title">你有个待付款的订单</view>
-          <view class="popup-button popup-order" @click='confirmOrderPop'>
-            立即付款
-          </view>
-        </view>
-      </uni-popup>
     </view>
-
   </view>
 </template>
 <script>
@@ -218,7 +214,7 @@
         skuId: 0,
         expensesType: 0,
         remarks: "",
-        buyNum: "",
+        buyNum: 0,
         orderName: "",
         orderDetails: [],
         totalClassNum: 0,
@@ -239,7 +235,6 @@
         detailData: {},
         isIMCard: 0, // 是否从聊天推送卡片进入
         isInArea: true, // 地址是否在配送区域
-        isAreaTip: false, // 不在量房范围的提示是否显示
         isInNum: true, // 购买数量是否在范围内
         buySquareMeter: true, // 是否以平米购买
         waitOrderId: 0 // 代付款订单id
@@ -285,16 +280,7 @@
     },
     watch: {
       buyNum(v) {
-        if (v) {
-          this.totalPrice = (this.detailData.serviceMinPrice * v / 100).toFixed(2)
-          if (this.detailData.skuList) {
-            let maxNum = this.detailData.skuList[0].areaProp.values[0].propValue.split('-')[1]
-            let minNum = this.detailData.skuList[0].areaProp.values[0].propValue.split('-')[0]
-            if (v > maxNum || v < minNum) {
-              this.isInNum = false
-            }
-          }
-        }
+        this.regBuyNum(v)
       }
     },
     onLoad(e) {
@@ -344,12 +330,43 @@
       uni.removeStorageSync("houseListChooseId");
     },
     methods: {
+      regBuyNum(v) {
+        this.totalPrice = (this.detailData.serviceMinPrice * v / 100).toFixed(2)
+        if (this.detailData.skuList) {
+          let maxNum = this.detailData.skuList[0].areaProp.values[0].propValue.split('-')[1]
+          let minNum = this.detailData.skuList[0].areaProp.values[0].propValue.split('-')[0]
+          if (v != this.areaInfo.insideArea) {
+            this.isInNum = false
+          } else {
+            this.isInNum = true
+          }
+        }
+      },
       getDetail() {
         getServiceDetail(this.skuId).then((data) => {
           this.detailData = data
           this.totalPrice = (data.serviceMinPrice * this.buyNum / 100).toFixed(2)
           var res = Number(this.totalPrice) * 100 - this.cardBalance;
           this.cardClick = Number(this.totalPrice) * 100 - this.cardBalance <= 0
+          this.regBuyNum(this.buyNum)
+          this.measuringArea = data.measureServiceProduct.serviceAreas
+          this.measuringArea.some(
+            (item1, k1) => {
+              if (item1.cityId) {
+                if (item1.areaId) {
+                  return (this.isInArea =
+                    this.areaInfo.areaId === item1.areaId);
+                } else {
+                  return (this.isInArea =
+                    this.areaInfo.cityId === item1.cityId);
+                }
+              } else {
+                return (this.isInArea =
+                  this.areaInfo.provinceId === item1.provinceId);
+              }
+            }
+          );
+          console.log(this.measuringArea, "measuringArea8888")
         })
       },
       isRemoveFn(v) {
@@ -412,22 +429,7 @@
         this.areaInfo.provinceId = val.provinceId
         this.areaInfo.cityId = val.cityId
         this.areaInfo.areaId = val.areaId
-        this.measuringArea.some(
-          (item1, k1) => {
-            if (item1.cityId) {
-              if (item1.areaId) {
-                return (this.isInArea =
-                  this.areaInfo.areaId === item1.areaId);
-              } else {
-                return (this.isInArea =
-                  this.areaInfo.cityId === item1.cityId);
-              }
-            } else {
-              return (this.isInArea =
-                this.areaInfo.provinceId === item1.provinceId);
-            }
-          }
-        );
+        this.areaInfo.insideArea = val.insideArea
       },
 
       pay() {
@@ -464,10 +466,6 @@
           details: details
         };
         payServeOrder(params).then((data) => {
-          if(data.unpaidOrderId) {
-            this.waitOrderId = data.unpaidOrderId
-            this.$refs.orderDialog.open();
-          }
           if (this.payWayTag) {
             uni.redirectTo({
               url: `/sub-classify/pages/pay-order/cashier?remittanceCode=${data.companyTransferPayVO.remittanceCode}&amount=${data.companyTransferPayVO.amount}`
@@ -738,6 +736,10 @@
     align-items: baseline;
   }
 
+  .buy-num view {
+    display: flex;
+  }
+
   .buy-num input {
     text-align: center;
     width: 108rpx;
@@ -747,7 +749,7 @@
     margin-right: 12rpx;
   }
 
-  .buy-num span {
+  .buy-num text {
     display: flex;
     align-items: center;
   }
