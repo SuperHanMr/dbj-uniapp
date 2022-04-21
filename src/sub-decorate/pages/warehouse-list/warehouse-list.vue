@@ -92,9 +92,9 @@
         this.getList(true);
       // }
     },
-    onShow() {
-      // this.onRefresh()
-    },
+    // onShow() {
+    //   this.onRefresh()
+    // },
     methods: {
       onConfirmGoods(item) {
         let vm = this;

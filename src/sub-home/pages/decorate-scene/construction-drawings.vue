@@ -30,7 +30,7 @@
           <view class="lineWrap">
 						<image src="/static/images/real-case/select_head.png" class="underline"
               v-if='navIndex===index' mode=""></image>
-            
+
           </view>
         </view>
       </scroll-view>
@@ -135,6 +135,7 @@
               <image
                 class="avatar"
                 :src="item.avatar+'?x-oss-process=image/resize,m_mfit,w_38,h_38'"
+                
               ></image>
               <view class="designerName">{{item.userName}}</view>
               <view class="role">{{item.role}}</view>
@@ -327,7 +328,7 @@ export default {
 }
 .options .designerInfo {
   display: flex;
-  width: 302rpx;
+  width: 502rpx;
   height: 76rpx;
   margin: 22rpx 32rpx;
 }
@@ -339,13 +340,16 @@ export default {
 }
 .options .designerInfo .designerName {
   /* width: fit-content; */
-  width: 100rpx;
+  max-width: 260rpx;
   height: 42rpx;
   margin: 18rpx 8rpx 16rpx 24rpx;
   font-size: 30rpx;
   font-weight: 500;
   color: #333333;
   text-align: center;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 .options .designerInfo .role {
   width: 76rpx;
@@ -449,10 +453,11 @@ export default {
   position: fixed;
   left: 0;
   top: 136rpx;
+  justify-content: space-between;
 }
 .designer .select {
   display: flex;
-  margin: 72rpx 0 68rpx 274rpx;
+  margin: 72rpx 0 68rpx 0;
 }
 .select > view {
   width: 130rpx;
@@ -479,12 +484,15 @@ export default {
 }
 
 .designerInfo > view .designerName {
-  width: 90rpx;
+  max-width: 260rpx;
   height: 42rpx;
   margin: 8rpx 0;
   font-size: 30rpx;
   font-weight: 500;
   color: #333333;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 .designerInfo > view .role {
   width: 76rpx;

@@ -108,6 +108,12 @@
       </view>
       <view class="cover" v-if="showBuyBtn"></view>
       <view class="buyWrap" v-if="showBuyBtn">
+        <view class="pay-way-box" @click="morePayWay">
+          <view>请选择支付方式</view>
+          <view>{{payWayTag?'公司转账':'在线支付'}}
+            <view class="pay-icon"></view>
+          </view>
+        </view>
         <view class="button" @click="buyNow">立即购买</view>
         <view class="explain" @click="toActivityRules">购买即同意
           <text>《打扮家储值卡使用规则》</text>
@@ -121,10 +127,11 @@
           <image src="https://ali-image.dabanjia.com/static/mp/dabanjia/images/my/close_rules.png" @click="closeRules">
           </image>
         </view>
-         <view class="content">{{ruleText}}</view>
+        <view class="content">{{ruleText}}</view>
         <!-- <scroll-view scroll-y="true" class="content">{{ruleText}}</scroll-view> -->
       </view>
     </uni-popup>
+    <pay-way-toast ref='payWayToast' @payWay="payWay"></pay-way-toast>
   </view>
 </template>
 
@@ -144,7 +151,9 @@
         showBuyBtn: true,
         checkedId: 0,
         ruleText: "",
-        totalPrice: 0
+        totalPrice: 0,
+        payWayTag: 0,
+        payType: 0
       }
     },
     onShow() {
@@ -160,6 +169,14 @@
       }, 1000)
     },
     methods: {
+      morePayWay() {
+        console.log(this.$refs.payWayToast, "this.$refs.payWayToast")
+        this.$refs.payWayToast.showPupop();
+      },
+      payWay(payWayTag) {
+        this.payWayTag = payWayTag
+        this.payType = this.payWayTag?6:0 
+      },
       toBillingDetails() {
         uni.navigateTo({
           url: "/sub-my/pages/deposit-card/billing-details"
@@ -195,11 +212,17 @@
         //#endif
         createCardOrder({
           activityDetailId: this.checkedId,
-          payType: payType, //"int //支付方式  1在线支付",
+          payType: this.payType ? this.payType : payType, //"int //支付方式  1微信支付",
           deviceType: deviceType,
           openid: openId,
           sourceId: 100, //订单来源渠道 100小程序
         }).then(e => {
+          if (this.payWayTag) {
+            uni.navigateTo({
+              url: `/sub-classify/pages/pay-order/cashier?remittanceCode=${e.companyTransferPayVO.remittanceCode}&amount=${e.companyTransferPayVO.amount}`
+            })
+            return;
+          }
           const payInfo = e.wechatPayJsapi;
           const id = e.id
           //#ifdef MP-WEIXIN
@@ -691,7 +714,7 @@
 
   .cover {
     width: 750rpx;
-    height: 256rpx;
+    height: 350rpx;
     margin-top: 24rpx;
   }
 
@@ -702,6 +725,22 @@
     width: 750rpx;
     background: #fff;
     box-shadow: 0px 4px 12px rgba(190, 102, 21, 0.15);
+  }
+
+  .buyWrap .pay-way-box {
+    display: flex;
+    justify-content: space-between;
+    padding: 24rpx 32rpx 0 32rpx;
+    font-size: 28rpx;
+  }
+
+  .pay-way-box .pay-icon {
+    vertical-align: middle;
+    display: inline-block;
+    width: 48rpx;
+    height: 52rpx;
+    background-image: url("https://ali-image.dabanjia.com/static/mp/dabanjia/images/theme-red/classify/more_pay_icon.png");
+    background-size: contain;
   }
 
   .button {

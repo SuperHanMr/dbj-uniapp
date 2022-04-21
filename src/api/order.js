@@ -31,6 +31,10 @@ export function queryOrderList(params) {
 export function getOrderDetail(params) {
 	return request.get(`/order-center/app/order/v26/detail`, { params });
 }
+//C端用户通用接口
+export function commonMessage(params) {
+	return request.get(`/app/common/config`, params)
+}
 
 //我的-订单-取消订单
 export function cancelOrder(params) {
@@ -116,6 +120,10 @@ export function evaluateDetail(params) {
 	return request.get(`/pm/app/commentSetting/getByServeId`, { params })
 }
 
+// 我的-订单-退款-选择退款收款账号
+export function getCompanyTransfes(params) {
+	return request.get(`/order-center/app/goods/return/companyTransfe/list`, { params })
+}
 
 
 

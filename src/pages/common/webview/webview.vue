@@ -1,6 +1,6 @@
 <template>
 	<view>
-		<web-view ref="web" :webview-styles="webviewStyles" :src="url"></web-view>
+		<web-view ref="web" :webview-styles="webviewStyles" :src="url" @message="handleMessage"></web-view>
 	</view>
 </template>
 
@@ -39,6 +39,11 @@
         path: `/pages/common/webview/webview?url=${encodeURIComponent(this.url)}`
       }
     },
+		methods: {
+			handleMessage(msg) {
+				console.log(msg);
+			}
+		}
 	}
 </script>
 

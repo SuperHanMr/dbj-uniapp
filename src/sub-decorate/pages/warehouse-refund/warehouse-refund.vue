@@ -27,11 +27,13 @@
           <view style="flex:1">
           </view>
           <view class="flex-row">
-            <input style="color: #FF3347;max-width: 200rpx;text-align: right;" dir="rtl" type="number"
-              placeholder="请输入金额" :disabled="true" v-model="num" />
+      <!--      <input style="color: #FF3347;max-width: 200rpx;text-align: right;" dir="rtl" type="number"
+              placeholder="请输入金额" :disabled="true" v-model="num" /> -->
+            <view style="color: #FF3347;max-width: 200rpx;text-align: right;">¥{{num}}</view>
             <!-- <i class="icon-xiaochengxu_fangwuguanli_bianji icon-size"></i> -->
           </view>
         </view>
+        <view class="tip">商品未发货，商家同意后将会全额退还</view>
       </view>
     </view>
 
@@ -129,6 +131,7 @@
       this.id = e.id;
       let list = [];
       this.data.stockAppVOS.forEach((e) => {
+        console.log(e,">>>>>>>>>")
         list.push({
           returnNumber: e.refundNumber ?
             e.refundNumber : e.requireNumber ?
@@ -139,8 +142,9 @@
             e.requireNumber : e.stockNumber ?
             e.stockNumber : e.requireNumber,
           stockId: e.id,
-          goodsId: e.relationId,
+          goodsId: e.goodsId||e.relationId,
           price: e.discountPrice,
+          orderId:e.orderId,
           alreadyReturnNumber: e.returnNumber || 0,
           number: e.number || e.totoalNum,
           actualIncomeAmount: e.actualIncomeAmount,
@@ -158,7 +162,7 @@
         let totalBack = 0;
         this.refundList.forEach((e) => {
           if (e.returnNumber == e.amountNumber && e.alreadyReturnNumber == 0 && e.discountSubtotal > 0) {
-            totalBack += e.discountSubtotal* 100
+            totalBack += e.actualIncomeAmount* 100
           } else {
 
 
@@ -167,7 +171,7 @@
             console.log(e.returnNumber)
             console.log(e.alreadyReturnNumber)
             console.log(e.number)
-            if (e.returnNumber + e.alreadyReturnNumber <= e.number) {
+            if (e.returnNumber  <= e.number) {
 
               totalBack += e.price * e.returnNumber * 100;
               console.log('~~~~~~totalBack11111111', totalBack)
@@ -233,7 +237,12 @@
         if (this.type == 1) {
           params.details = this.refundList;
           goodsBack(params).then((e) => {
-            this.toastHandler()
+            if(e.isRefundSuccess){
+              this.toastHandler()
+            }else{
+              params.orderId = e.orderId
+              this.toChoicePage(params)
+            }
           });
         } else {
           params.type = this.refundType;
@@ -241,7 +250,13 @@
             params.goodsId = this.data.stockAppVOS[0].relationId;
           }
           goodsRefund(params).then((e) => {
-            this.toastHandler()
+            if(e.isRefundSuccess){
+              this.toastHandler()
+            }else{
+              params.orderId = e.orderId
+              
+              this.toChoicePage(params)
+            }
           });
         }
       },
@@ -256,6 +271,20 @@
 					});
 				}, 1000)
 			},
+      toChoicePage(params){
+          
+        let obj = {
+          orderId:params.orderId,
+          type:+this.type,
+          params:params
+        }
+        console.log(obj,"跳转选择")
+         uni.navigateTo({
+           url:`/sub-my/pages/choice-refund-account/choice-refund-account?query=${encodeURIComponent(
+            JSON.stringify(obj)
+          )}`
+         })
+      },
       selectRes() {
         uni.showActionSheet({
           itemList: this.reasonList,
@@ -343,7 +372,11 @@
     flex-direction: row;
     align-items: center;
   }
-
+  .tip{
+    color: #808080;
+    font-size: 24rpx;
+    margin: 16rpx 32rpx;
+  }
   .remark-tip {
     color: #808080;
     font-size: 24rpx;

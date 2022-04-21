@@ -18,7 +18,6 @@
       }
     },
     onLoad(e){
-      console.log(e, "teste")
       this.storeId = e.storeId,
       this.houseId = e.houseId
     },

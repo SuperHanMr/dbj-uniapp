@@ -57,7 +57,7 @@
       </view>
     </scroll-view>
     <consult-product :spuId="showSendProductId" v-if="showSendProductId" @close="showSendProductId = 0"></consult-product>
-    <message-send-box v-if="type === CONV_TYPES.COMMON || type === CONV_TYPES.CUSTOMER"></message-send-box>
+    <message-send-box ref="messageSendBox" v-if="type === CONV_TYPES.COMMON || type === CONV_TYPES.CUSTOMER"></message-send-box>
     <reply-box v-if="type === CONV_TYPES.INTERACTION" />
   </view>
 </template>
@@ -192,6 +192,9 @@
         });
         this.$store.dispatch("checkoutConversation", conv.conversationID).then(res => {
           this.loaded = true;
+          if (options.textData) {
+            this.$refs.messageSendBox.sendMessage(options.textData)
+          }
         })
       } else {
         uni.setNavigationBarTitle({
@@ -212,6 +215,9 @@
             }).then(this.calcUnreadStartBarPos);
           } else if (this.unreadCount >= 8){
             this.calcUnreadStartBarPos();
+          }
+          if (options.textData) {
+            this.$refs.messageSendBox.sendMessage(options.textData)
           }
           if (!options.name) {
             if (this.currentConversation.userProfile) {

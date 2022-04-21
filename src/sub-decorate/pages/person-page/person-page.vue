@@ -45,6 +45,7 @@
        v-if="personData.roleId===1"
        @queryAttention='queryAttention'
        :isAttention='isAttention'
+       :rankData='rankData'
        @sendMsg='sendMsg'
        @clickHidden='clickHidden'
        @openPopup='openPopup'
@@ -340,7 +341,8 @@ import {
   getAttention,
   getServiceStatus,
   getComments,
-  getPeerComments
+  getPeerComments,
+  getJoinedRankings
 } from "@/api/decorate.js";
 var query = {};
 export default {
@@ -370,6 +372,7 @@ export default {
       },
       commentData:{},
       peerComment:{},
+      rankData:{},
       currentItem: "serviceTop",
       scrollTop: 0,
       interact: 0,
@@ -391,6 +394,7 @@ export default {
       serviceEmpty:false,
       commentEmpty:true,
       isToContent:false,
+      pageScrollNum:0,
       maskHeight:'1010rpx'
     };
   },
@@ -430,7 +434,7 @@ export default {
   },
   onLoad(e) {
     this.userType = e.userType;
-    this.personId = e.personId || 7720;
+    this.personId = e.personId || 7635;
     //价值排行榜进入主页需要滚动至案例区域
     this.isToContent = e.isToContent||false
     uni.showShareMenu();
@@ -473,14 +477,15 @@ export default {
     query.exec(function (res) {});
   },
   onPageScroll(scrollTop) {
-    // console.log(scrollTop.scrollTop)
     this.pageScroll(scrollTop.scrollTop);
+
   },
   methods: {
     init() {
       // this.getCaseList()
       this.getSkuList();
       this.getGrabDetail();
+      this.getJoinedRankings()
     },
     contentEmpty(name,value){
       
@@ -494,7 +499,7 @@ export default {
     pageScroll(scrollTop) {
       this.scrollTop = scrollTop;
       //从深层页面返回时，避免触发导致显示异常
-      if(scrollTop!=0){
+      if(scrollTop!=1){
         this.changeOpacity(this.scrollTop);
       }
       this.getTopDistance();
@@ -632,7 +637,7 @@ export default {
           setTimeout(() => {
             this.getNodeHeight();
             this.getTopDistance();
-            this.pageScroll(0);
+            this.pageScroll(1);
             
           }, 500);
         } else {
@@ -653,7 +658,7 @@ export default {
     //   // })
     // },
     changeOpacity(num) {
-      // console.log(num)
+      
       num < 150
         ? (this.opacityNum = 0)
         : num < 180
@@ -694,22 +699,20 @@ export default {
     },
     getSkuList() {
       let data = {
-        relationId: this.personId,
-        relationType: 7,
+        createUser: this.personId,
+        auditStatus: 2,
         page: 1,
         row: 10000,
-        spuIsEnabled: 1,
-        
-        hidden:0
+        marketStatus: 1,
       };
       getSkuList(data).then((res) => {
-        this.serviceData = res;
+        this.serviceData = res.list;
         // if (this.$refs.service) {
         //   this.$refs.service.isOpen = true;
         //   this.$refs.service.open();
         // }
         // console.log(res)
-        if(res.length==0){
+        if(res.list.length==0){
           this.serviceEmpty = false
         }else{
           this.serviceEmpty = true
@@ -732,6 +735,11 @@ export default {
       getComments(params).then(res=>{
         this.commentData = res
         // this.commentData.list[0].rank = 3
+      })
+    },
+    getJoinedRankings(){
+      getJoinedRankings(this.personId).then(res=>{
+        this.rankData = res
       })
     },
     sendMsg() {
