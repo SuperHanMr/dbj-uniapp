@@ -124,7 +124,7 @@
           {{res.createTime |formatDate}}
         </view>
       </view>
-      <view class="order-info-row">
+      <view class="order-info-row" v-if="res.payTime">
         <view class="order-info-row-pre">
           付款时间:
         </view>
@@ -137,7 +137,7 @@
           支付方式:
         </view>
         <view class="order-info-row-con">
-          {{payType(res.payType)}}
+          {{res.payChannel}}
         </view>
       </view>
       <view
@@ -335,7 +335,7 @@ export default {
       };
       getApp().globalData.naviData = params;
       uni.navigateTo({
-        url: `../warehouse-refund/warehouse-refund?type=0&refundType=2&id=${this.id}`,
+        url: `../warehouse-refund/warehouse-refund?type=0&refundType=1&id=${this.id}`,
       });
     },
     toBackGoodItem(item) {
@@ -344,7 +344,7 @@ export default {
       };
       getApp().globalData.naviData = params;
       uni.navigateTo({
-        url: `../warehouse-refund/warehouse-refund?type=1&id=${this.id}`,
+        url: `../warehouse-refund/warehouse-refund?type=2&id=${this.id}`,
       });
     },
     toBack() {

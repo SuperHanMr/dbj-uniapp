@@ -1,10 +1,10 @@
 <template>
   <view class="">
     <view v-if='houseId'>
-      <view class="header-address">
+      <view class="header-address" @click="checkAddress">
         <span class="locationIcon"></span>
         <!-- <image src="../../static/images/ic_location@2x.png" class="locationIcon"></image> -->
-        <view class="address" @click="checkAddress">
+        <view class="address">
           <view class="way">
             <text class="default" v-if="addressInfo.defaultEstate">默认</text>
             <text class="txt">{{addressInfo.housingEstate}}</text>
@@ -72,27 +72,12 @@
         estateId: 0
       };
     },
-    mounted() {
-      // if (this.originFrom === "orderToast") {
-      //   getAddressInfo(this.houseId).then((data) => {
-      //     this.addressInfo = data
-      //     let params = {
-      //       estateId: this.houseId
-      //     }
-      //     getProductID(params).then((data) => {
-      //       this.addressInfo.projectId = data
-      //       this.$emit('emitInfo', this.addressInfo)
-      //     })
-      //   })
-      // }
-    },
     methods: {
       checkAddress() {
         if (this.productType === 2) {
           this.$emit("typeServe2")
           return
         }
-        this.$emit("closeToast")
         uni.navigateTo({
           url: "/sub-my/pages/my-house/my-house?isEdit=0&id=" +
             Number(this.houseId),
@@ -102,13 +87,6 @@
     watch: {
       houseId: {
         handler(v) {
-          // if (uni.getStorageSync("houseIdChange")) {
-          //   return
-          // }
-          // uni.setStorageSync("houseIdChange", "changed")
-          // this.timer = setTimeout(() => {
-          //   uni.removeStorageSync("houseIdChange")
-          // }, 300)
           if (v) {
             getAddressInfo(v).then((data) => {
               this.addressInfo = data
@@ -121,9 +99,6 @@
               })
             })
           }
-          setTimeout(() => {
-            console.log(this.addUser)
-          }, 5000)
         },
         immediate: true
       }

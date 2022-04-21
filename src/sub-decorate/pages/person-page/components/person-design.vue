@@ -99,6 +99,7 @@
             <view class="skill-item" v-for="(item,index) of personData.designTags" :key='index'>
               {{item}}
             </view>
+            
           </view>
         </view>
         <view class="item">
@@ -112,12 +113,12 @@
         </view>
 
       </view>
-      <view class="value-rank" v-if="personData.valueRank>0&&personData.isFlag" @click="toRankList">
+      <view class="value-rank" :style="{'color':`#${item.fontColor}`}" v-for="(item,index) in rankData" :key='index' v-if="item.realNumber>0" @click="toRankList(item.name)">
         <text class="top-font">TOP.</text>
-        <text class="num top-font">{{personData.valueRank}}</text>
-        <text class="rank-text">打扮家最具价值设计师榜单</text>
+        <text class="num top-font">{{item.realNumber}}</text>
+        <text class="rank-text">{{item.name}}</text>
         <i class="icon-alert_notice_jump"></i>
-        <image :src="personData.valueRank>9?'../../../static/person_rank.png':'../../../static/person_rank_one.png'" mode=""></image>
+        <image :src="item.styleImage" mode=""></image>
       </view>
     </view>
   </view>
@@ -128,7 +129,7 @@
   export default{
     props:{
       personData:{},
-      
+      rankData:{},
       isAttention:{
         type:Boolean,
         default:false
@@ -142,7 +143,7 @@
       }
     },
     mounted(){
-      console.log(".............")
+      
       let query = uni.createSelectorQuery().in(this)
       this.$nextTick(function(){
         query.select(".report-text").boundingClientRect((res) => {
@@ -190,9 +191,10 @@
           this.$emit('sendMsg')
         }
       },
-      toRankList(){
+      toRankList(data){
+        
         uni.navigateTo({
-          url:'/sub-home/pages/find-design/designer-rank-list'
+          url:'/sub-home/pages/find-design/designer-rank-list?initTabName='+data
         })
       }
     }
@@ -326,6 +328,7 @@
             // margin-top: 6rpx;
             line-height: 42rpx;
             font-size: 20rpx;
+            opacity: 0.9;
           }
           .icon-a-homepage_data{
             margin-top: 4rpx;
@@ -356,7 +359,7 @@
       }
       .info-list{
         font-size: 20rpx;
-        color: rgba(255, 255, 255, 0.6);;
+        color: rgba(255, 255, 255, 0.5);;
         margin-bottom: 24rpx;
         text{
           display: inline-block;
@@ -378,7 +381,7 @@
           line-height: 34rpx;
           margin-right: 12rpx;
           color: #fff;
-          opacity: 0.6;
+          opacity: 0.8;
           font-size: 20rpx;
           margin-bottom: 10rpx;
         }
@@ -394,7 +397,7 @@
           line-height: 42rpx;
           word-break: break-word;
           display: inline-block;
-          opacity: 0.6;
+          opacity: 0.8;
         }
         .report-text-hidden{
           overflow : hidden;
@@ -433,6 +436,7 @@
       }
       .rank-text{
         letter-spacing: 0.2px;
+        font-weight: 500;
       }
       .num{
         margin: 0 54rpx 0 8rpx;

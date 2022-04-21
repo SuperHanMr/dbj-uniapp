@@ -116,7 +116,7 @@
           退款原因：
         </view>
         <view class="text">
-          {{detail.reason}}
+          {{detail.reason||''}}
         </view>
       </view>
 
@@ -136,7 +136,7 @@
           退款金额：
 
         </view>
-        <view class="text">
+        <view class="text" v-if="detail.refundAmount">
           ￥{{detail.refundAmount}}
         </view>
       </view>
@@ -156,10 +156,11 @@
 
         </view>
         <view class="text">
-          {{detail.refundNo}}
+          {{detail.refundNo||''}}
           <text
             class="tip"
             @click="copy(detail.refundNo)"
+            v-if="detail.refundNo"
           >
             复制</text>
         </view>
@@ -170,9 +171,27 @@
           备注信息：
         </view>
         <view class="text">
-          {{detail.remark}}
+          {{detail.remark||''}}
         </view>
       </view>
+
+    </view>
+    <view class="offline-info" v-if="detail.isOrderCompanyTransfer">
+    	<view class="header">
+    		退款线下收款信息
+    	</view>
+    	<view class="item">
+    		<text class="item-header">户名：</text>
+    		<text class="item-body">{{detail.accountName}}</text>
+    	</view>
+    	<view class="item">
+    		<text class="item-header">银行账号：</text>
+    		<text class="item-body">{{detail.accountNo}}</text>
+    	</view>
+    	<view class="item">
+    		<text class="item-header">开户行：</text>
+    		<text class="item-body">{{detail.accountBank}}</text>
+    	</view>
     </view>
     <view
       v-if="[4,5].includes(detail.status)&&ownered"
@@ -376,6 +395,11 @@ export default {
         }
       });
     },
+    // toDetail(item){
+    //   uni.navigateTo({
+    //     url:"/sub-classify/pages/product-detail/index?productId=" + item.id,
+    //   })
+    // },
     back() {
       uni.navigateBack({});
     },
@@ -426,7 +450,45 @@ export default {
       }
     }
   }
-
+.offline-info{
+	background-color: #fff;
+	padding: 32rpx;
+	border-radius: 24rpx;
+	margin-top: 16rpx;
+	.header{
+		font-size: 30rpx;
+		font-weight: 1000;
+		height: 48rpx;
+		line-height: 48rpx;
+		margin-bottom: 16rpx;
+	}
+	.item{
+		font-size: 28rpx;
+		display: flex;
+		flex: 1;
+		flex-flow: row nowrap;
+		justify-content: flex-start;
+		margin-bottom: 16rpx;
+		.item-header{
+			width: 140rpx;
+			height: 40rpx;
+			line-height: 40rpx;
+			color: #999999;
+			display: block;
+			flex: 1;
+		}
+		.item-body{
+			width: 546rpx;
+			line-height: 40rpx;
+			display: flex;
+			flex-flow: row nowrap;
+      word-break:break-all
+		}
+	}
+	.item:nth-last-child(1){
+		margin-bottom: 0;
+	}
+}
   .success-icon {
     width: 64rpx;
     height: 64rpx;

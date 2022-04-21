@@ -42,8 +42,23 @@ export function debounce (fn, wait) {
   }
   debounced.cancel = function () {
     console.log('cace;')
-    clearTimeout(timer);
+    clearTimeout(timer); 
     timer = null;
   }
   return debounced;
+}
+// 节流函数
+export function throttle (fn, wait){
+	
+	let time = new Date().getTime();
+	return function (){
+		let args = arguments;
+		let result;
+		let newTime = new Date().getTime();
+		if (newTime - time >= wait) {
+			result = fn.apply(this, args);
+			time = new Date().getTime();
+		}
+		return result;
+	}
 }

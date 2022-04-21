@@ -56,27 +56,27 @@
         class="designer-item"
         v-for="designer in dataSource"
         :key="designer.id"
-        @click="showDesigner(designer)"
       >
-        <view class="designer-avatar">
+        <view class="designer-avatar" @click="showDesigner(designer)">
           <image
             class="designer-avatar-img"
             :src="designer.avatar + '?x-oss-process=image/resize,m_mfit,w_88,h_88'"
           />
         </view>
-        <view class="designer-message">
+        <view class="designer-message" >
           <view class="base-message">
-            <view class="base-items">
+            <view class="base-items" @click="showDesigner(designer)">
               <view class="designer-name">{{designer.name}}</view>
               <view class="designer-level">
                 <view class="level-label">{{designer.levelName}}{{designer.roleName}}</view>
-                <view
-                  class="rank-label"
-                  v-if="designer.rank > 0"
-                >
-                  <view class="rank-left top-font">TOP.{{designer.rank}}</view>
-                  <view class="rank-right top-font">最具价值</view>
-                </view>
+								<view class="rank-label" v-if="designer.ranks && designer.ranks.length > 0 && designer.ranks[0].realNumber > 0 && designer.ranks[0].realNumber < 100"
+								:style="{backgroundImage:`url(${handleLabelImg(designer.ranks[0]).bgImg})`,}"
+								>
+									<view class="rank-left top-font" :style="{color:`#${designer.ranks[0].fontColor}`,background:handleLabelImg(designer.ranks[0]).bgcolor}">
+										TOP.{{designer.ranks[0].realNumber}}</view>
+									<view class="rank-right top-font" :style="{color:`#${designer.ranks[0].fontColor}`}">
+									{{designer.ranks[0].abbreviation}}</view>
+								</view>
               </view>
             </view>
             <view class="designer-opera">
@@ -87,24 +87,31 @@
             </view>
           </view>
 
-          <view class="rate-wrapper" v-if="designer.totalCount>0&&designer.praiseEfficiency">
+          <view class="rate-wrapper" @click="showDesigner(designer)">
             <text class="designer-score" v-if="designer.totalCount>0">服务次数 {{designer.totalCount}}</text>
             <view
               class="split-line"
-              v-if="designer.praiseEfficiency"
+              v-if="designer.totalCount > 0 && designer.praiseEfficiency"
             ></view>
-            <view
+            <text
               class="designer-ordernum"
-              v-if="designer.praiseEfficiency"
+              v-if="designer.praiseEfficiency && designer.totalCount > 0"
             >
-              <text>好评率 {{designer.praiseEfficiency}}%</text>
-            </view>
+              好评率 {{designer.praiseEfficiency}}%
+            </text>
+            <view
+              class="split-line"
+              v-if="(designer.praiseEfficiency || designer.totalCount > 0) && getGoodAt(designer)"
+            ></view>
+            <text class="designer-goodat" v-if="getGoodAt(designer)">
+              {{getGoodAt(designer)}}
+            </text>
           </view>
 
-          <view class="designer-des">
+          <!-- <view class="designer-des">
             {{designer.intro || "这个设计师很忙，还没有填写个人简介"}}
-          </view>
-          <view class="designer-tags">
+          </view> -->
+          <view class="designer-tags" v-if="getTags(designer).length" @click="showDesigner(designer)">
             <view
               v-for="(style, index) in getTags(designer)"
               :key="index"
@@ -112,6 +119,34 @@
             >
               <view class="tag-text"><text>{{style}}</text></view>
             </view>
+          </view>
+          <view class="case-wrapper" v-if="getCaseList(designer).length">
+            <view class="case-item" @click.stop="goCaseDetail(item.id)"  v-for="item in getCaseList(designer)"  :key="item.id" >
+              <view class="case-image">
+                <image mode="aspectFill" :src="item.imageUrl"></image>
+                <view class="isFamos" v-if="item.famous === 1"></view>
+                <view class="isBest" v-if="item.favourite === 1"></view>
+              </view>
+              <view class="case-title">
+                <text>{{item.caseName}}</text>
+              </view>
+              <view class="case-info">
+                <text v-if="item.roomNum">{{item.roomNum}}室</text>
+                <text v-if="item.hallNum">{{item.hallNum}}厅</text>
+                <!-- <text v-if="item.kitchenNum">{{item.kitchenNum}}厨</text>
+                <text v-if="item.bathroomNum">{{item.bathroomNum}}卫</text> -->
+                <template v-if="item.insideArea">
+                  <text class="split" v-if="item.roomNum || item.hallNum">|</text>
+                  <text>{{item.insideArea >= 1 ? item.insideArea : '-'}}㎡</text>
+                </template>
+                <template v-if="item.budget">
+                  <text class="split">|</text>
+                  <text>预算:￥{{item.budget >= 1 ? item.budget : '-'}}万</text>
+                </template>
+
+              </view>
+            </view>
+
           </view>
         </view>
       </view>
@@ -161,6 +196,24 @@ export default {
       searchVal: "",
       topic: "",
       style: "",
+			labelList:[
+				{
+					bgcolor:"linear-gradient(180deg, #EAE3D1 0%, #DED5BF 100%)",
+					bgImg:"https://ali-image.dabanjia.com/static/mp/dabanjia/images/theme-red/home/labelRank1.png",
+				},
+				{
+					bgcolor:"linear-gradient(180deg, #FAD7CD 0%, #E8C2B5 100%)",
+					bgImg:"https://ali-image.dabanjia.com/static/mp/dabanjia/images/theme-red/home/labelRank2.png",
+				},
+				{
+					bgcolor:"linear-gradient(180deg, #B9E6F3 0%, #9FD3E3 100%)",
+					bgImg:"https://ali-image.dabanjia.com/static/mp/dabanjia/images/theme-red/home/labelRank3.png",
+				},
+				{
+					bgcolor:"linear-gradient(180deg, #FFEBCC 0%, #FFE5B7 100%)",
+					bgImg:"https://ali-image.dabanjia.com/static/mp/dabanjia/images/theme-red/home/labelRank999.png",
+				}
+			],
     };
   },
   created() {
@@ -206,12 +259,33 @@ export default {
     this.searchList();
   },
   methods: {
+    goCaseDetail(id) {
+      let url =
+        "/pages/real-case/real-case-webview/real-case-webview?id=" + id;
+      uni.navigateTo({
+        url,
+      });
+    },
+    designerRank(designer) {
+      console.log('---', designer.ranks instanceof Array &&  designer.ranks.length > 0 ? designer.ranks[0] : null)
+      return designer.ranks instanceof Array &&  designer.ranks.length > 0 ? designer.ranks[0] : null
+    },
+    getCaseList(designer) {
+      if (designer?.valuationCaseVOS?.length) {
+        return designer.valuationCaseVOS.slice(0, 2);
+      }
+      return []
+    },
+    getGoodAt(designer) {
+      let str = '';
+      if (designer?.designs?.length || designer?.houses?.length) {
+        str += `擅长`;
+          str += [].concat(designer?.designs || [], designer?.houses || []).join('、')
+      }
+      return str;
+    },
     getTags(designer) {
-      return [
-        ...(designer.styles || []),
-        ...(designer.designs || []),
-        ...(designer.houses || []),
-      ];
+      return designer.featureLabel || [];
     },
     showDesigner(designer) {
       let url =
@@ -318,6 +392,19 @@ export default {
         });
       });
     },
+		//处理标签图片展示问题
+		handleLabelImg(rankItem){
+			switch(rankItem.styleCode){
+				case 1:
+					return this.labelList[0];
+				case 2:
+					return  this.labelList[1];
+				case 3:
+					return  this.labelList[2];
+				case 9999:
+					return  this.labelList[3];
+			}
+		},
   },
 };
 </script>
@@ -450,8 +537,8 @@ export default {
   .designer-message {
     flex: 1;
     margin-left: 24rpx;
-    border-bottom: 1px solid #f3f3f3;
-    padding-bottom: 16rpx;
+    border-bottom: 1rpx solid #f3f3f3;
+    padding-bottom: 32rpx;
     overflow: hidden;
   }
 }
@@ -485,44 +572,41 @@ export default {
         line-height: 30rpx;
         background: #f0fbff;
         border-radius: 4rpx;
-        margin-right: 12rpx;
         padding: 0 8rpx;
         font-weight: 500;
         color: #4fbeed;
       }
 
-      .rank-label {
-        display: flex;
-        background: linear-gradient(to bottom, #fff0d9, #f0ca89);
-        justify-content: space-between;
-        border-radius: 2px;
-        overflow: hidden;
-        color: rgba(134, 94, 65, 1);
 
-        .rank-left {
-          height: 30rpx;
-          border-bottom-right-radius: 10rpx;
-          padding: 0 8rpx;
-          font-weight: 500;
-          line-height: 32rpx;
-          background: linear-gradient(
-            180deg,
-            rgba(255, 235, 204, 1),
-            rgba(255, 229, 183, 1)
-          );
-        }
-
-        .rank-right {
-          flex: 1;
-          line-height: 32rpx;
-          height: 30rpx;
-          padding: 0 8rpx 0 10rpx;
-          border-top-left-radius: 10rpx;
-          background: linear-gradient(180deg, #fedfa7, #e8cc94);
-        }
-      }
-    }
+		}
   }
+	.rank-label {
+		display: flex;
+		align-items: center;
+		flex-flow: row nowrap;
+		border-radius: 4rpx;
+		margin-left: 12rpx;
+		background-size: 182rpx 30rpx;
+		background-position:right center;
+		.rank-left {
+			height: 30rpx;
+			line-height: 30rpx;
+			padding: 0 16rpx 0 10rpx;
+			text-align: center;
+			font-weight: 500;
+			font-size: 20rpx;
+			border-radius: 4rpx 0 14rpx 4rpx;
+		}
+
+		.rank-right {
+			width: 98rpx;
+			height: 30rpx;
+			line-height: 30rpx;
+			text-align: center;
+			font-weight: 500;
+			font-size: 20rpx;
+		}
+	}
 
   .designer-opera {
     width: 126rpx;
@@ -545,14 +629,11 @@ export default {
 
 .rate-wrapper {
   margin-top: 18rpx;
-  height: 34rpx;
   font-size: 24rpx;
-  display: flex;
-  flex-direction: row;
-  align-items: center;
   .designer-score,
-  .designer-ordernum {
-    color: #333333;
+  .designer-ordernum,
+  .designer-goodat {
+    color: #666;
     font-size: 24rpx;
   }
   .split-line {
@@ -561,9 +642,6 @@ export default {
     background: #ccc;
     height: 22rpx;
     margin: 0 16rpx;
-  }
-  .designer-ordernum {
-    display: inline-block;
   }
 }
 
@@ -585,6 +663,7 @@ export default {
   flex-direction: row;
   flex-wrap: wrap;
   overflow: hidden;
+  padding-top: 8rpx;
   .designer-tag {
     display: flex;
     // justify-content: center;
@@ -599,7 +678,8 @@ export default {
     color: #999999;
     padding: 0 12rpx;
     margin-right: 16rpx;
-    margin-bottom: 16rpx;
+    margin-top: 8rpx;
+    // margin-bottom: 16rpx;
 
     max-width: 100%;
     .tag-text {
@@ -644,5 +724,69 @@ export default {
   text-align: center;
   color: #ccc;
   line-height: 34rpx;
+}
+
+.case-wrapper{
+  margin-top: 32rpx;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+
+  .case-item{
+    width: 272rpx;
+
+    .case-image{
+      position: relative;
+      image{
+        width: 272rpx;
+        height: 218rpx;
+        border-radius: 12rpx;
+        object-fit: cover;
+      }
+      .isFamos,.isBest{
+        position: absolute;
+        top: 16rpx;
+        left: 16rpx;
+        width: 132rpx;
+        height: 42rpx;
+      }
+
+      .isFamos{
+        background: url('@/static/images/casefamos@2x.png') no-repeat;
+        background-size: 100%;
+      }
+      .isBest{
+        background: url('@/static/images/casebest@2x.png') no-repeat;
+        background-size: 100%;
+      }
+
+    }
+
+    .case-title{
+      margin-top: 16rpx;
+      font-size: 26rpx;
+      color: #333;
+      height: 36rpx;
+      line-height: 36rpx;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+
+
+    .case-info{
+      margin-top: 8rpx;
+      color: #999;
+      font-size: 20rpx;
+      line-height: 28rpx;
+      height: 28rpx;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+      .split{
+        margin: 8rpx;
+      }
+    }
+  }
 }
 </style>

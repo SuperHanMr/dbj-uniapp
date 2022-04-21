@@ -2,7 +2,7 @@
   <view class="service-design">
     <view class="design-report">
       <view class="report-item" v-if="designData.customReport">
-        <view class="title">设计报告详情</view>
+        <view class="title">自定义报告详情</view>
         <view class="check" @click="toDesign">
           <text>立即查看</text>
           <i class="icon-ic_wodejia_beiwanglugengduo_csn"></i>

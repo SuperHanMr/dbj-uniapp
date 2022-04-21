@@ -38,17 +38,10 @@
         list: ['test','test','test','test','test']
       }
     },
-    onShow(){
-       // 接收上一个页面传值
-       //  var shequ = getCurrentPages();
-      	// var prevShequ = shequ[shequ.length - 1];
-      	// var brand = prevShequ.brand;
-      	// console.log(brand, 'test')
-    },
     methods: {
       searchConfirm(resText){
         uni.navigateTo({
-          url: "/sub-classify/pages/search-result/search-result?searchText=" + resText.value
+          url: "/sub-classify/pages/search-result/search-result?searchText=" + resText.value + "&from=searchPage"
         })
       },
       clearHistory() {

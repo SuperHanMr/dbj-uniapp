@@ -99,7 +99,7 @@
 
     .tigs {
       .username {
-        width: 90rpx;
+        max-width: 440rpx;
         height: 42rpx;
         font-size: 30rpx;
         font-family: PingFangSC, PingFangSC-Medium;
@@ -107,6 +107,9 @@
         text-align: left;
         color: #333333;
         line-height: 42rpx;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
       }
 
       .role {

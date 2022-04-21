@@ -119,8 +119,12 @@ export default {
 			houselist:[],
 			craftsmanlist:[],
       recommendlist: [],
-			page:[1,1,1],
-      totalPage: [1,1,1],
+			query:{
+				page:[1,1,1],
+				rows:10,
+				totalPage:[1,1,1]
+			},
+			listLength:[0,0,0],
       loading: false,
 			bgcIcon:"https://ali-image.dabanjia.com/static/mp/dabanjia/images/theme-red/my/selectIcon.svg",
       routeId:"",
@@ -136,7 +140,8 @@ export default {
 		})
 	},
   onShow() {
-		this.houseList();
+		// this.reqHouseList();
+		this.handleReset()
 	},
 
 	mounted(e) {
@@ -161,22 +166,26 @@ export default {
       this.currentIndex = index;
 			switch(this.currentIndex){
 				case 0:
-					this.houselist.length <1 ? this.houseList() :"";
+					this.houselist.length <1 ? this.reqHouseList() :"";
 					break;
 				case 1:
-					this.craftsmanlist.length <1 ? this.craftsmanList() :"";
+					this.craftsmanlist.length <1 ? this.reqCraftsmanList() :"";
 					break;
 				case 2:
-					this.recommendlist.length <1 ? this.recommendList() :"";
+					this.recommendlist.length <1 ? this.reqRecommendList() :"";
 					break;
 			}
 		},
 
 		// 房屋请求
-		houseList(){
+		reqHouseList(){
 			this.loading = true;
-			getHouseList({routeId:1002}).then(data=>{
-				this.houselist = data;
+			getHouseList({
+				page:this.query.page[0],
+				rows:this.query.rows
+			}).then(data=>{
+				this.houselist = this.houselist.concat(data);
+				this.listLength[0] = data.length
 				this.loading = false;
 				this.triggered = false;
 				console.log("data= ",data)
@@ -184,13 +193,16 @@ export default {
 		},
 
 		// 工匠请求
-		craftsmanList(){
+		reqCraftsmanList(){
 			this.loading = true;
-			getCraftsmanList({routeId:1001}).then(data=>{
-				this.craftsmanlist = data;
+			getCraftsmanList({
+				page:this.query.page[1],
+				rows:this.query.rows
+			}).then(data=>{
+				this.craftsmanlist = this.craftsmanlist.concat(data)
+				this.listLength[1] = data.length
 				this.loading = false;
 				this.triggered = false;
-				console.log("data= ",data)
 			})
 		},
 		handleCraftsman(data,index2){
@@ -216,16 +228,12 @@ export default {
 					})
 					this.currentList[index2].isFocused = true;
 				}
-				// this.craftsmanlist=[]
-				setTimeout(()=>{
-					// this.craftsmanList()
-				},1000)
 			}).catch(()=>{})
 		},
 
 
 		// 优先推荐请求
-    recommendList() {
+    reqRecommendList() {
       this.loading = true;
 			getRecommendList({routeId:2001}).then(data=>{
 				this.recommendlist = data;
@@ -257,12 +265,10 @@ export default {
 					})
 					this.recommendlist[index3].isRecommend = true;
 				}
-				// this.recommendList()
 			}).catch(()=>{})
 		},
 		// 去房屋的页面
 		goToHouse(item){
-			console.log("item=",item,"!!!!!!!!!!!!!!!!!!!!!!!!!");
 			uni.navigateTo({
 				url:`../../../../sub-home/pages/decorate-scene/decorate-scene?projectId=${item.id}`
 			})
@@ -278,19 +284,31 @@ export default {
 		},
 
 		onLoadMore() {
-      if (this.loading || this.page[this.currentIndex] >= this.totalPage[this.currentIndex]) {
-        return;
-      }
-      this.page[this.currentIndex]++;
-			switch(this.currentIndex ==0){
-
+			if(this.loading) return 
+      // if (this.loading || this.page[this.currentIndex] >= this.totalPage[this.currentIndex]) {
+      //   return;
+      // }
+      // this.page[this.currentIndex]++;
+			switch(this.currentIndex){
+				case 0:
+					this.query.page[0]++
+					if(!this.listLength[0]) return 
+					this.reqHouseList()
+					break
+				case 1:
+					this.query.page[1]++
+					if(!this.listLength[1]) return
+					this.reqCraftsmanList()
+					break
+				case 2:
+					console.log("this.currentIndex22222222222")
+					break
 			}
     },
 
     onRefresh(e) {
       this.triggered = true;
 			if(this.loading) return
-			// this.lastId[this.currentIndex] = -1;
 			this.handleReset();
 
     },
@@ -298,13 +316,19 @@ export default {
 		handleReset(){
 			switch(this.currentIndex){
 				case 0 :
-				 this.houseList()
-				 break
-				 case 1:
-				 this.craftsmanList()
-				 break
-				  case 2:
-					this.recommendList()
+					this.query.page[0] = 1
+					this.houselist=[]
+					this.listLength[0] = 1
+					this.reqHouseList()
+					break
+				case 1:
+					this.query.page[1]=1
+					this.craftsmanlist =[]
+					this.listLength[1]=1
+					this.reqCraftsmanList()
+					break
+				case 2:
+					this.reqRecommendList()
 					return
 			}
 		},

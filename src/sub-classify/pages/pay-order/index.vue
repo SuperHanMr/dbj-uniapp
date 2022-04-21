@@ -123,38 +123,6 @@
               </view>
             </view>
           </view>
-<!--          <view
-            class="cost-detail"
-            v-if="(shopItem.deliveryFee || shopItem.totalHandlingFee) && productType === 1"
-          >
-            <view
-              v-if="shopItem.deliveryFee !== undefined"
-              class="price-font"
-            >
-              <text>运费</text>
-              <text>¥{{shopItem.deliveryFee}}</text>
-            </view>
-            <view
-              v-if="shopItem.totalHandlingFee !== undefined"
-              class="price-font"
-            >
-              <text>搬运费</text>
-              <text>¥{{shopItem.totalHandlingFee}}</text>
-            </view>
-          </view> -->
-<!--          <view
-            class="shop-reduce"
-            v-if="shopItem.freeDeliveryCount && productType === 1"
-          >
-            <view class="item-reduce-box">
-              <view class="question-box">本订单已获得了该店铺{{shopItem.freeDeliveryCount}}次免运费权益
-                <text
-                  class="question-icon free-icon"
-                  @click="readExpenses(0)"
-                ></text>
-              </view>
-            </view>
-          </view> -->
         </view>
       </view>
       <view
@@ -259,7 +227,7 @@
         >
         </view>
       </view>
-      <view class="pay-way">
+      <view class="pay-way" :class="{'more_pay':!payChannel}">
         <text>支付方式</text>
 
         <view
@@ -275,8 +243,8 @@
           <text>储值卡支付</text>
 
         </view>
-        <view v-else>
-          <view class="wechat_icon"></view><text>在线支付</text>
+        <view v-else @touchstart.stop.prevent="morePayWay">
+          <text>{{payWayTag?'公司转账':'在线支付'}}</text><view class="more_pay_icon"></view>
         </view>
       </view>
       <view class='remarks'>
@@ -343,6 +311,10 @@
         @toastConfirm="toastConfirm"
         @backCart="backCart"
       ></order-toast>
+      <pay-way-toast
+        ref='payWayToast'
+        @payWay="payWay"
+      ></pay-way-toast>
       <uni-popup
         ref="cancelDialog"
         :mask-click="false"
@@ -413,14 +385,13 @@
 import {
   getAddWorker,
   getDetailInfo,
-  payOrder,
+  payOrderApi,
   getBundleDetail,
   payBundleOrder,
 } from "../../../api/classify.js";
 import { getBalance } from "../../../api/user.js";
 import orderToast from "./order-toast.vue";
 import datePicker from "./date-picker.vue";
-// import expensesToast from "./expenses-toast.vue"
 import safeguardToast from "./safeguard-toast.vue";
 import { log } from "../../../utils/log.js";
 
@@ -428,7 +399,7 @@ export default {
   components: {
     orderToast,
     datePicker,
-    safeguardToast,
+    safeguardToast
   },
   data() {
     return {
@@ -473,18 +444,15 @@ export default {
       cardClick: false,
       haveCard: false, //是否有会员卡
       cardBalance: 0, //会员卡余额
-      shareOriginType: "",
+      originType: "",
+      payWayTag: 0,
+      payType: 0
     };
   },
   computed: {
     payChannel() {
       var res = Number(this.totalPrice) * 100 - this.cardBalance;
       //支付渠道 true 储值卡  false 微信
-      console.log(
-        this.cardClick && res > 0,
-        res,
-        Number(this.totalPrice) * 100
-      );
       if (this.cardClick && res <= 0) {
         return true;
       } else {
@@ -515,7 +483,6 @@ export default {
         }
         return String((res / 100).toFixed(2));
       } else {
-        console.log(this.totalPrice);
         return this.totalPrice;
       }
     },
@@ -531,7 +498,6 @@ export default {
     if (e.from) {
       this.originFrom = e.from;
     }
-    console.log('h5 传递的数据', e);
     if (Number(e.fromPackage) === 1) { // 套包下单
       this.isFromPackage = true;
       this.packageId = e.packageId;
@@ -552,18 +518,16 @@ export default {
     this.unit = e.unit;
     this.level = e.level;
     this.goodDetailId = uni.getStorageSync("goodId");
-    this.shareOriginType = e.shareOriginType;
-    console.log(e.houseId, getApp().globalData.currentHouse.id);
+    this.originType = e.originType;
   },
   onShow() {
     if (uni.getStorageSync("houseListChooseId")) {
       this.houseId = uni.getStorageSync("houseListChooseId");
-      console.log(this.houseId, "this.houseId");
       if (this.$refs.houseDialog) {
         this.$refs.houseDialog.close();
       }
     }
-    if (!Number(this.houseId)) {
+    if (!Number(this.houseId) || Number(this.houseId) < 0) {
       this.isShow = false;
       setTimeout(() => {
         if (this.$refs.houseDialog) {
@@ -579,7 +543,6 @@ export default {
     }
 
     this.haveCard = false;
-    console.log("!!!!!!!!!!");
     getBalance().then((e) => {
       if (e != null) {
         this.haveCard = true;
@@ -595,6 +558,13 @@ export default {
     uni.removeStorageSync("houseListChooseId");
   },
   methods: {
+    payWay(payWayTag) {
+      this.payWayTag = payWayTag
+      this.payType = this.payWayTag?6:0 
+    },
+    morePayWay() {
+      this.$refs.payWayToast.showPupop();
+    },
     closePayDialog() {
       this.$refs.payDialog.close();
     },
@@ -685,6 +655,7 @@ export default {
               buyCount: this.buyCount,
               unit: this.unit ? this.unit : "",
               level: this.level,
+              origin: this.originType
             },
           ],
           estateId: this.estateId,
@@ -764,8 +735,7 @@ export default {
           data.totalDiscount
         ).toFixed(2);
         var res = Number(this.totalPrice) * 100 - this.cardBalance;
-        console.log(this.totalPrice, res, "res666666666")
-        if(res <= 0) {
+        if(res <= 0) {// 当储值卡余额大于总金额，直接选中储值卡
           this.cardClick = true
         }
         let dataInfo = data;
@@ -832,6 +802,7 @@ export default {
                 storeId: storeItem.storeId, //店铺id,
                 storeType: 0, //店铺类型 0普通 1设计师",
                 number: skuItem.buyCount, //购买数量",
+                origin: skuItem.origin,
                 params: {}, //与订单无关的参数 如上门时间 doorTime
               };
               this.orderDetails.push({
@@ -877,7 +848,7 @@ export default {
       this.payOrder();
     },
     createOrder(params) {
-      return this.isFromPackage ? payBundleOrder(params) : payOrder(params);
+      return this.isFromPackage ? payBundleOrder(params) : payOrderApi(params);
     },
     payOrder() {
       let _that = this;
@@ -894,11 +865,9 @@ export default {
       let orderPrice = Number(
         Number(this.totalPrice).toFixed(2).replace(".", "")
       );
-
-
         //#ifdef MP-WEIXIN
         let params = {
-          payType: 1, //"int //支付方式  1微信支付",
+          payType: this.payType? this.payType: 1, //"int //支付方式  1微信支付",
           openid: getApp().globalData.openId, //"string //微信openid 小程序支付用 app支付不传或传空",
           projectId: this.projectId, //"long //项目id  非必须 默认0",
           customerId: 0, //"long //业主id  非必须 默认0",
@@ -908,7 +877,7 @@ export default {
           orderName: "", //"string //订单名称 可为空",
           details: details,
           isCardPay: this.cardClick,
-          origin: this.shareOriginType,
+          origin: this.originType,
           packageId: this.isFromPackage ? parseInt(this.packageId) : undefined, // 套包下单时需要套包id参数，默认undefined
         };
         this.createOrder(params).then((data) => {
@@ -917,6 +886,12 @@ export default {
             cardPayComplete
           } = data;
           if (!cardPayComplete) {
+            if (this.payWayTag) {
+              uni.redirectTo({
+                url: `/sub-classify/pages/pay-order/cashier?remittanceCode=${data.companyTransferPayVO.remittanceCode}&amount=${data.companyTransferPayVO.amount}`
+              })
+              return;
+            }
             uni.requestPayment({
               provider: "wxpay",
               ...wechatPayJsapi,
@@ -967,7 +942,7 @@ export default {
         //#endif
         //#ifdef H5
         let params = {
-          payType: 3, //"int //支付方式  1微信支付",
+          payType: this.payType? this.payType: 3, //"int //支付方式  1微信支付",
           deviceType: 2,
           openid: getApp().globalData.openId, //"string //微信openid 小程序支付用 app支付不传或传空",
           projectId: this.projectId, //"long //项目id  非必须 默认0",
@@ -978,11 +953,17 @@ export default {
           orderName: "", //"string //订单名称 可为空",
           details: details,
           isCardPay: this.cardClick,
-          origin: this.shareOriginType,
+          origin: this.originType,
           packageId: this.isFromPackage ? parseInt(this.packageId) : undefined, // 套包下单时需要套包id参数，默认undefined
         };
         this.createOrder(params).then((data) => {
           if (!data.cardPayComplete) {
+            if (this.payWayTag) {
+              uni.navigateTo({
+                url: `/sub-classify/pages/pay-order/cashier?remittanceCode=${data.companyTransferPayVO.remittanceCode}&amount=${data.companyTransferPayVO.amount}`
+              })
+              return;
+            }
             uni.navigateTo({
               url: `/sub-classify/pages/pay-order/pay-h5?payTal=${data.gomePayH5.payModeList[0].payTal}&totalPrice=${orderPrice}&payRecordId=${data.payRecordId}`,
             });
@@ -1373,13 +1354,15 @@ export default {
     overflow: hidden;
     border-radius: 32rpx;
   }
-
-  .pay-way .wechat_icon {
-    vertical-align: sub;
+  .more_pay{
+    padding-right: 10rpx;
+  }
+  .pay-way .more_pay_icon {
+    vertical-align: middle;
     display: inline-block;
-    width: 32rpx;
-    height: 32rpx;
-    // background-image: url("../../static/image/wechat_icon.png");
+    width: 48rpx;
+    height: 52rpx;
+    background-image: url("https://ali-image.dabanjia.com/static/mp/dabanjia/images/theme-red/classify/more_pay_icon.png");
     background-size: contain;
     margin-right: 12rpx;
   }
