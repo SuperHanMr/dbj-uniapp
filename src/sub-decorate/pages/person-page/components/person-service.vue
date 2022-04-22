@@ -7,9 +7,9 @@
       <scroll-view class="scroll-view" scroll-x="true">
         <!-- <view class="" style="width: 100%;"> -->
           <view class="service-item" v-for="item of serviceList" :key='item.id' @click="toBuy(item)">
-              <image v-if='item.houseType.split('|')[0]==="单空间"' src="../../../../static/images/person-single-bg.png" mode="aspectFill"></image>
-              <image v-if='item.houseType.split('|')[0]==="全屋"' src="../../../../static/images/person-all-bg.png" mode="aspectFill"></image>
-              <view class="top-bg"></view>
+              <image v-if='item.houseType.split("|")[0]==="单空间"' src="../../../../static/images/person-single-bg.png" mode="aspectFill"></image>
+              <image v-if='item.houseType.split("|")[0]==="全屋"' src="../../../../static/images/person-all-bg.png" mode="aspectFill"></image>
+              <view class="top-bg" :class="{'all':item.houseType.split('|')[0]==='全屋'}"></view>
               <view class="item-msg">
                 <view class="name">{{item.name}}</view>
                 <view class="type">{{item.houseType.split('|')[0]}} <view class="type-string">
@@ -19,11 +19,22 @@
                   <view v-for="el of item.serviceTag" :key='el.code'>{{el.name}}</view>
                   
                 </view>
-                <view class="price">¥
-                    <text class="integer">{{item.convertedPrice?item.convertedPrice.split('.')[0]:'0'}}</text>
-                    <text class="decimals">.{{item.convertedPrice?item.convertedPrice.split('.')[1]:'00'}}</text>
-                    <text class="unit"  v-if="item.unitName">/{{item.unitName}}</text>
-                  </view>
+                <view class="price" v-if="item.serviceMaxPrice===item.serviceMinPrice">¥
+                    <text class="integer">{{((item.serviceMinPrice/100).toFixed(2)).split('.')[0]}}</text>
+                    <text class="decimals">.{{((item.serviceMinPrice/100).toFixed(2)).split('.')[1]}}</text>
+                    <text class="unit"  v-if="item.salesUnits.unitName">/{{item.salesUnits.unitName}}</text>
+                </view>
+                <view class="price" v-else>
+                  ¥
+                  <text class="integer">{{((item.serviceMinPrice/100).toFixed(2)).split('.')[0]}}</text>
+                  <text class="decimals">.{{((item.serviceMinPrice/100).toFixed(2)).split('.')[1]}}</text>
+                  <text class="interval">
+                    ~
+                  </text>
+                  <text class="integer">{{((item.serviceMaxPrice/100).toFixed(2)).split('.')[0]}}</text>
+                  <text class="decimals">.{{((item.serviceMaxPrice/100).toFixed(2)).split('.')[1]}}</text>
+                  <text class="unit"  v-if="item.salesUnits.unitName">/{{item.salesUnits.unitName}}</text>
+                </view>
                 </view>
               </view>
   <!--      </view> -->
@@ -89,7 +100,7 @@
       //   console.log(this.isOpen)
       // },
       toBuy(item){
-        // console.log('/sub-classify/pages/goods-detail/goods-detail?goodId='+item.id+'&userId='+this.userId+'&originType='+`2|${this.userId}|${this.userId}|`)
+        console.log(`/sub-classify/pages/product-detail/service-product-index?spuId=${item.id}`)
 
         uni.navigateTo({
           url:`/sub-classify/pages/product-detail/service-product-index?spuId=${item.id}`
@@ -144,6 +155,9 @@
       background: linear-gradient(180deg, #FBF6F0 0%, rgba(255, 255, 255, 0.1) 100.23%);
       border-radius: 8px 8px 0 0;
     }
+    .all{
+      background: linear-gradient(183.61deg, rgba(217, 225, 238, 0.4) 7.58%, rgba(255, 255, 255, 0) 103.66%);
+    }
     .item-msg{
         margin: 20rpx;
         position: relative;
@@ -162,14 +176,17 @@
           line-height: 30rpx;
           color: #999;
           margin-bottom: 6rpx;
+          max-width: 100%;
+          overflow: hidden;
           .type-string{
-            
+            display: inline-block;
+            margin: 0 8rpx;
           }
         }
         .tag-list{
-          // height: 30rpx;
-          max-width: 100%;
+          white-space: normal;
           overflow: hidden;
+          height: 60rpx;
           view{
             border: 0.5px solid #CCCCCC;
             box-sizing: border-box;
@@ -195,6 +212,11 @@
             color: #333;
             font-size: 24rpx;
             font-family: PriceFont;
+          }
+          .interval{
+            font-size: 20rpx;
+            color: #333;
+            margin: 0 10rpx;
           }
           .unit{
             font-size: 22rpx;

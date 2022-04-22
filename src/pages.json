@@ -949,6 +949,13 @@
           }
         },
         {
+          "path": "pages/design-report/design-serve",
+          "style": {
+            "navigationBarTitleText": "确认设计服务",
+            "enablePullDownRefresh": false
+          }
+        },
+        {
           "path": "pages/require-success/require-success",
           "style": {
             "navigationBarTitleText": "",
