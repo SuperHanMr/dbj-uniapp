@@ -19,9 +19,15 @@
             <view class="serve-unselected" :class="{'serve-selected': !isPropsRemove}"></view>
             <view class="serve-card">
               <view class="card-price">
-                <view>现场量房：200元</view>
+                <view>现场量房：{{price}}元</view>
               </view>
-              <view class="card-area">可服务区域：北京东城区，北京石景山区，上海，广州，北京东城区</view>
+              <view class="card-area">可服务区域：
+                <text v-for="(v, k) in measuringArea" :key="k">
+                  {{(v.province?v.province:"") + (v.city?v.city:"") + (v.area?v.area:"")}}
+                  <text v-if="k !== measuringArea.length - 1">,
+                  </text>
+                </text>
+              </view>
             </view>
           </view>
         </view>
@@ -33,7 +39,9 @@
 <script>
   export default {
     props: {
-      isPropsRemove: true
+      isPropsRemove: true,
+      price: '0',
+      measuringArea: []
     },
     data() {
       return {
@@ -41,7 +49,7 @@
       }
     },
     watch: {
-      isPropsRemove (v) {
+      isPropsRemove(v) {
         this.isRemove = v
       }
     },
@@ -55,7 +63,7 @@
       },
       selectScene() {
         this.isRemove = !this.isRemove
-        console.log(this.isRemove , "this.isRemove9999999")
+        console.log(this.isRemove, "this.isRemove9999999")
         this.$refs.safeToast.close()
         this.$emit("isRemove", this.isRemove)
       }
@@ -155,7 +163,7 @@
         border: 1rpx solid #e0e0e0;
         border-radius: 12rpx;
         background-color: #fefffe;
-
+        width: 100%;
         .card-price {
           font-size: 26rpx;
           color: #333333;
