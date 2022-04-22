@@ -250,7 +250,7 @@
             class="flex-center"
           ><text>在线支付</text></view>
         </view>
-				
+
         <!-- 支付模块新增需求  只有代付款 -->
         <order-payment-info
           v-if="orderInfo.isOrderCompanyTransfer"
@@ -312,7 +312,7 @@
               :dataList="item2"
               :productNum="item.details.length"
               :refundApplyMode="orderInfo.refundApplyMode"
-              @handleDetail="goToDetail(item2)"
+              @handleDetail="productDetail(item2)"
               @toApplayForRefund="toApplayForRefund(item2,1)"
               @refundCancel="refundCancel(item2)"
               @refundSuccess="refundSuccess(item2)"
@@ -376,13 +376,13 @@
           </view>
         </view>
       </view>
-			
+
 			<order-price
 				v-if="orderStatus!==0"
 			  :data="orderInfo"
 			  :orderFailed="orderStatus ==3"
 			/>
-			
+
 			<!-- 订单信息 -->
 			<order-info
 				:orderNo="orderInfo.orderNo"
@@ -392,7 +392,7 @@
 				:showCancelTime="orderStatus ==3"
 				:cancelTime="orderInfo.cancelTime"
 				:showPayType="orderStatus==1|| orderStatus==2"
-				:payChannel="orderInfo.payChannel"	
+				:payChannel="orderInfo.payChannel"
 			></order-info>
 
       <!-- 代付款订单详情 底部按钮 -->
@@ -937,29 +937,7 @@ export default {
       this.$refs.expensesToast.showPupop();
     },
 
-    // 跳转到商品详情页面
-    productDetail(item, type) {
-      if (getApp().globalData.isInGomeMp) {
-        console.warn("在国美小程序中，不可跳转商品详情");
-        return;
-      }
-      console.log("item=", item, "type=", type);
-			if(item.type==6) return //设计服务商品
-			uni.navigateTo({
-				url:`../../../../sub-classify/pages/product-detail/index?productId=${item.id}`,
-			});
-			
-			// if(item.type==6){
-			// 	uni.navigateTo({
-			// 		url:`/sub-classify/pages/pay-order/service-product-pay?spuId=${item.spuId}`
-			// 	})
-			// }else{
-			// 	uni.navigateTo({
-			// 		url:`../../../../sub-classify/pages/product-detail/index?productId=${item.id}`
-			// 		// url: `../../../../sub-classify/pages/goods-detail/goods-detail?goodId=${item.id}`,
-			// 	});
-			// }
-    },
+
 
     // 倒计时间触发到的时间
     goToCancelDetail() {
@@ -1165,18 +1143,42 @@ export default {
         });
       }
     },
+		// 跳转到商品详情页面
+		productDetail(item) {
+		  if (getApp().globalData.isInGomeMp) {
+		    console.warn("在国美小程序中，不可跳转商品详情");
+		    return;
+		  }
+		  console.log("item=", item, "type类型",item.type);
+			if(item.type==6) return //设计服务商品
+			uni.navigateTo({
+				url:`../../../../sub-classify/pages/product-detail/index?productId=${item.id}`,
+			});
+
+			// if(item.type==6){
+			// 	uni.navigateTo({
+			// 		url:`/sub-classify/pages/pay-order/service-product-pay?spuId=${item.spuId}`
+			// 	})
+			// }else{
+			// 	uni.navigateTo({
+			// 		url:`../../../../sub-classify/pages/product-detail/index?productId=${item.id}`
+			// 		// url: `../../../../sub-classify/pages/goods-detail/goods-detail?goodId=${item.id}`,
+			// 	});
+			// }
+		},
 
     // 进行中订单详情接口
     // 点击商品区域，跳转到商品详情页面
-    goToDetail(item2) {
-      if (getApp().globalData.isInGomeMp) {
-        console.warn("在国美小程序中，不可跳转商品详情");
-        return;
-      }
-      uni.navigateTo({
-        url: `../../../../sub-classify/pages/goods-detail/goods-detail?goodId=${item2.id}`,
-      });
-    },
+    // goToDetail(item2) {
+    //   if (getApp().globalData.isInGomeMp) {
+    //     console.warn("在国美小程序中，不可跳转商品详情");
+    //     return;
+    //   }
+    //   uni.navigateTo({
+				// url:`../../../../sub-classify/pages/product-detail/index?productId=${item.id}`,
+    //     // url: `../../../../sub-classify/pages/goods-detail/goods-detail?goodId=${item2.id}`,
+    //   });
+    // },
 
     // 进行中订单独有的接口
     // 确认收货
