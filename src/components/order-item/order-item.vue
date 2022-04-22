@@ -21,16 +21,17 @@
 				<view class="icon-status2" v-if="dataList.refundBillStatus == 2" >
 					已退款
 				</view>
-				<image :src="`${dataList.imgUrl}?x-oss-process=image/resize,m_mfit,w_272,h_272`" mode=""/>
+				<image @click.stop="gotoPersonalPage(dataList)"  :src="`${dataList.imgUrl}?x-oss-process=image/resize,m_mfit,w_272,h_272`" mode=""/>
 			</view>
 			<view class="pic" v-else>
-				<image :src="`${dataList.imgUrl}?x-oss-process=image/resize,m_mfit,w_272,h_272`" mode="" />
+				<image @click.stop="gotoPersonalPage(dataList)"  :src="`${dataList.imgUrl}?x-oss-process=image/resize,m_mfit,w_272,h_272`" mode="" />
 			</view>
 
 			<view class="basic-info">
 				<view class="name-attr">
 					<view class="text">
-						<text class="icon">{{dataList.type == 2?'服务':'物品'}}</text>
+						<!-- <text class="icon">{{dataList.type == 2?'服务':'物品'}}</text> -->
+						<text class="icon">{{handleIcon(dataList)}}</text>
 						<text class="name">{{dataList.fullName}}</text>
 					</view>
 					<view class="attr" v-if="isEvaluate">
@@ -179,15 +180,45 @@
 			handleDetail(){
 				this.$emit('handleDetail')
 			},
+			handleIcon(item){
+				switch(item.type){
+					case 1:
+						return "物品"
+					case 2:
+						return "服务"
+					case 6:
+						if(item.additionalServices){
+							return "附加服务"
+						}else{
+							return "设计师服务"
+						}
+				}
+			},
+			// 点击图片 跳转到设计师个人主页
+			gotoPersonalPage(data){
+				console.log("data===",data)
+				if(data.type==6){
+					if( !data.additionalServices){
+						uni.navigateTo({
+							url:`/sub-classify/pages/pay-order/service-product-pay?spuId=${data.spuId}`
+							// url:`../../sub-decorate/pages/person-page/person-page?personId=${data.id}`
+						})
+					}
+				}else{
+					if(!data.orderStatus){
+						uni.navigateTo({
+							url:`order-detail/order-detail?orderId=${data.id}&from=waitPay`
+						})
+					}else{
+						uni.navigateTo({
+							url:`order-detail/order-detail?orderId=${data.id}`
+						});
+					}
+				}
+			},
 
 			handlePrice(price){
-				if(!price) return ['0','00']
-				let list=String(price).split(".")
-				if(list.length==1){
-					return [list[0],"00"]
-				}else{
-					return[list[0],list[1]]
-				}
+				return Number(price || 0).toFixed(2).split(".")
 			},
 
 			particalRefund(){
