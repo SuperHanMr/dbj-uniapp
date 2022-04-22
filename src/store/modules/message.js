@@ -543,7 +543,7 @@ const message = {
         });
         return;
       }
-      const { id, name, spuId } = payload;
+      const { id, name, spuId = '' } = payload;
       let userIMID = id;
       let userId = id;
       if (!isNaN(id)) {
