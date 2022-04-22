@@ -18,7 +18,7 @@
         </view>
       </view>
       <view class="service-progress" @click="toTimeLine">
-        <text>{{designData.serveType===201?designData.state:'服务进度'}}</text>
+        <text>{{designData.serveType===61?designData.state:'服务进度'}}</text>
         <i class="icon-alert_notice_jump"></i>
       </view>
     </view>
@@ -57,7 +57,7 @@
     methods:{
       toTimeLine(item){
         console.log(this.tab)
-        if(this.designData.serveType===201){
+        if(this.designData.serveType===61){
           return
         }
         uni.navigateTo({
