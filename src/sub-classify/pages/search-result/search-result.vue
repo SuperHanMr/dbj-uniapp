@@ -1,32 +1,37 @@
 <template>
-  <view class="search-result" v-if='isShow'>
-    <view class="search">
-      <view v-if="initSearch" class="uni-searchbar" @click="clickInitSearch">
-        <view class="uni-searchbar__box">
-          <view class="search-card" v-if="searchVal">
-            <text>{{searchVal}}</text>
-            <uni-icons color="#c0c4cc" size="15" type="clear" />
+  <view class="body">
+    <custom-navbar bgcolor="#ffffff">
+      <template v-slot:back>
+        <i class="icon-ic_cancel_white back-icon" :style="{color: 'black'}" @click="back"></i>
+      </template>
+    </custom-navbar>
+    <view class="search-result" v-if='isShow'>
+      <view class="search">
+        <view v-if="initSearch" class="uni-searchbar" @click="clickInitSearch">
+          <view class="uni-searchbar__box">
+            <view class="search-card" v-if="searchText">
+              <text>{{searchText}}</text>
+              <uni-icons color="#c0c4cc" size="15" type="clear" />
+            </view>
+            <view v-else class="search-default">请搜索您要的商品</view>
           </view>
-          <view v-else class="search-default">请搜索您要的商品</view>
         </view>
+        <uni-search-bar v-else @confirm="searchConfirm" clearButton="auto" cancelButton="false" :focus="true"
+          bgColor="transparent" placeholder="请搜索您要的商品" :radius="8">
+          <uni-icons slot="searchIcon" />
+        </uni-search-bar>
+        <view @click="sortList">
+          <sort-button class="sort-button"></sort-button>
+        </view>
+        <scroll-view scroll-x="true" :show-scrollbar="false" class="content-scroll" v-if="tabArr.length">
+          <text :class="{'activeTab': activeTabIndex === 0}" @click="clickTab(0, 0)">全部</text>
+          <text v-for="(v, k) in tabArr" :key="k" :class="{'activeTab': activeTabIndex === k + 1}"
+            @click="clickTab(k + 1, v.id)">{{v.name}}</text>
+        </scroll-view>
       </view>
-      <uni-search-bar
-        v-else
-        @confirm="searchConfirm"
-        clearButton="auto"
-        cancelButton="false"
-        :focus="true"
-        bgColor="transparent"
-        placeholder="请搜索您要的商品"
-        :radius="8">
-        <uni-icons slot="searchIcon" />
-      </uni-search-bar>
-      <view @click="sortList">
-        <sort-button class="sort-button"></sort-button>
-      </view>
-    </view>
-    <view class="content" @scrolltolower="loadMoreList">
-      <uni-swipe-action v-if="listArr.length>0">
+      <view class="content" :class="{'tag-content': tabArr[0]}">
+        <goods-list emitName="searchListData"></goods-list>
+        <!--      <uni-swipe-action v-if="listArr.length>0">
         <uni-swipe-action-item v-for="(goodsItem,goodsIndex) in listArr" :key="goodsIndex">
           <view class="goodsItem" @click="toDetails(goodsItem.product.skuId)">
             <image :src="goodsItem.product.spuImage + '?x-oss-process=image/resize,m_lfit,w_400,h_400' "
@@ -62,11 +67,12 @@
               </view>
             </view>
           </view>
-        </uni-swipe-action-item>
-      </uni-swipe-action>
-      <view v-if="isPageReady && !(listArr.length > 0)" class="no-goods">
-        <view class="img"></view>
-        <view class="text">抱歉，没有找到符合的商品 请换关键词再搜搜看吧～</view>
+        </uni-swipe-action-item> -->
+        <!-- </uni-swipe-action> -->
+        <view v-if="isPageReady && noData" class="no-goods">
+          <view class="img"></view>
+          <view class="text">抱歉，没有找到符合的商品 请换关键词再搜搜看吧～</view>
+        </view>
       </view>
     </view>
   </view>
@@ -74,28 +80,34 @@
 
 <script>
   import sortButton from "./sort-button.vue";
+  import goodsList from "../../../components/classify-shop/shop-list.vue";
   import {
     getGoodsList
   } from "../../../api/classify.js";
   export default {
     components: {
-      sortButton
+      sortButton,
+      goodsList
     },
     data() {
       return {
-        originFrom: "",
+        from: "",
+        activeTabIndex: 0,
         totalPage: 0,
+        tabArr: [],
         listArr: [],
         initSearch: true,
         isPageReady: false,
         isShow: true,
-        page: 1,
-        timer: null,
+        pageNum: 1,
         sort: "",
-        isLoadMore: false,
-        searchVal: "",
-        categoryId: 0,
-        searchText: ''
+        searchText: "",
+        aggregation: false,
+        category1Id: 0,
+        category2Id: 0,
+        category4Id: 0,
+        brandId: 0,
+        noData: false
       }
     },
     onShow() {
@@ -105,59 +117,82 @@
       uni.removeStorageSync('goodId')
     },
     onLoad(e) {
-      this.categoryId = e.categoryId
+      this.category1Id = e.category1Id
+      this.category2Id = e.category2Id
+      this.category4Id = e.category4Id
+      this.brandId = e.brandId
       this.searchText = e.searchText
-      this.originFrom = e.originFrom
-      this.searchVal = this.originFrom ? "" : (e.searchText || "")
+      this.aggregation = Boolean(Number(e.aggregation))
+      this.from = e.from
       this.getList()
-      // 对上一个页面传值
-      // var shequ = getCurrentPages();
-      // var prevShequ = shequ[shequ.length - 2];
-      // prevShequ.brand ={
-      //   name:"dd"
-      //  }
     },
     onPullDownRefresh() {
-      this.isLoadMore = false
-      this.page = 1
+      this.pageNum = 1
       this.getList()
     },
     onReachBottom() {
       this.loadMoreList()
     },
+    onPageScroll(e) {
+      if (e.scrollTop > 0) {
+        uni.pageScrollTo({
+          scrollTop: 0
+        });
+      }
+    },
     methods: {
+      back() {
+        if (this.from === 'searchPage') {
+          uni.navigateBack({
+            delta: 2
+          })
+        } else {
+          uni.navigateBack({});
+        }
+      },
+      clickTab(index, id) {
+        this.pageNum = 1
+        this.activeTabIndex = index
+        this.category2Id = id
+        this.aggregation = !Boolean(index)
+        this.getList()
+      },
       getList() {
         let params = {
-          serviceVersion: 0,
-          query: this.searchVal, //查询的关键词
-          categoryId: this.originFrom ? Number(this.categoryId) : "", //搜索范围，在指定的商品分类id的范围内搜索，可不传（表示不限定商品分类）,
-          supplierId: 0, //搜索范围，在指定的供应商 id 的范围内搜索，可不传（表示不限定供应商）,
-          storeId: 0, //搜索范围，在指定的店铺 id 的范围内搜索，可不传（表示不限定店铺）,
-          areaId: getApp().globalData.currentHouse
-            .areaId, //区域编号，会按这个区域进行搜索；      区域的取值，请参考相关需求，好像是：有当前房屋就取当前房屋所在区域，没有当前房屋就取用户选取的位置区域...（具体逻辑比这个还复杂点）,
-          sort: this.sort, //搜索排序方式：      price_asc  表示按价格从低到高排序；      price_desc 表示按价格从高到低排序；,
-          pageIndex: this.page, //页面序号，从 1 开始，不传取 默认值第 1 页；,
-          pageSize: 20, //每页数据量大小，不传取默认值 10；,
-          maxErrorSize: 0, //容错程度； 0 表示数据不能有问题； -1 表示数据可以有问题；大于 1 的数表示允许问题数量在多少范围内。每条数据都记录了自己在同步时的问题数量。对本参数设置一个容错程度，可以指定问题达到什么程度的数据就不搜出来了。,
-          cache: false, //是否允许缓存数据      如果为 true，则返回数据可能是从缓存中读的（如果缓存被命中的话）,
-          u: 0, //设备id（目前没用到，为以后作兼容处理预留的）,
-          p1: "", //平台码（目前没用到，为以后作兼容处理预留的）,
-          v: "" //客户端版本号（目前没用到，为以后作兼容处理预留的）
+          searchItemType: 'product',
+          aggregation: this.aggregation,
+          aggregationField: 'category2Id',
+          product: {
+            category1Id: Number(this.category1Id), // 一级分类id
+            category2Id: Number(this.brandId) ? 0 : Number(this.category2Id), // 二级分类id
+            categoryId: Number(this.brandId) ? 0 : Number(this.category4Id), // 四级分类id
+            brandId: Number(this.brandId),
+            areaId: getApp().globalData.currentHouse
+              .areaId, //区域编号，会按这个区域进行搜索；      区域的取值，请参考相关需求，好像是：有当前房屋就取当前房屋所在区域，没有当前房屋就取用户选取的位置区域...（具体逻辑比这个还复杂点）,
+            sort: this.sort //搜索排序方式：      price_asc  表示按价格从低到高排序；      price_desc 表示按价格从高到低排序；,        
+          },
+          query: this.searchText, //查询的关键词
+          pageIndex: this.pageNum, //页面序号，从 1 开始，不传取 默认值第 1 页；,
+          pageSize: 20, //每页数据量大小，不传取默认值 10；,  
         }
-
         getGoodsList(params).then((data) => {
           uni.stopPullDownRefresh()
           this.isPageReady = true
-          this.totalPage = data.total
-          if (this.isLoadMore) {
-            this.listArr = this.listArr.concat(data.page)
-          } else {
-            this.listArr = data.page
+          this.totalPage = data.totalPage
+          if (data.aggregationResults) {
+            this.tabArr = data.aggregationResults
           }
+          if(this.pageNum === 1 && !data.page.length) {
+            this.noData = true
+          }
+          this.listArr = data.page
+          uni.$emit('searchListData', {
+            page: this.pageNum,
+            shopList: data.page
+          })
         })
       },
       sortList() {
-        this.isLoadMore = false
         if (!this.sort) {
           this.sort = "price_asc"
         } else if (this.sort === "price_asc") {
@@ -168,20 +203,22 @@
         this.getList()
       },
       loadMoreList() {
-        if (this.page < this.totalPage) {
-          this.page++
+        if (this.pageNum < this.totalPage) {
+          this.pageNum++
         } else {
           return
         }
-        this.isLoadMore = true
         this.getList()
       },
       clickInitSearch() {
         this.initSearch = false
       },
       searchConfirm(resText) {
-        this.isLoadMore = false
-        this.searchVal = resText.value
+        this.searchText = resText.value
+        this.category1Id = 0
+        this.category2Id = 0
+        this.category4Id = 0
+        this.brandId = 0
         this.getList()
       },
       toDetails(id) {
@@ -193,14 +230,25 @@
   }
 </script>
 <style scoped>
+  .body {
+    height: 100%;
+  }
+
   .search-result {
     display: flex;
     justify-content: center;
+    position: relative;
+    height: calc(100% - 120rpx);
+    background-color: #FFFFFF;
   }
 
   .search {
+    display: flex;
+    justify-content: center;
+    align-items: center;
     position: absolute;
     top: 0;
+    flex-wrap: wrap;
   }
 
   .search /deep/ .uni-searchbar {
@@ -262,25 +310,44 @@
     margin-left: 10rpx;
   }
 
-  .search {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-  }
-
-  .search-result {
-    height: 100%;
-    background-color: #FFFFFF;
-  }
 
   .content {
     background-color: #FFFFFF;
-    height: calc(100% - 120rpx);
+    height: calc(100% - 100rpx);
     padding-bottom: 20rpx;
-    margin-top: 115rpx;
+    margin-top: 100rpx;
     position: relative;
     width: 100%;
     overflow: scroll;
+  }
+
+  .tag-content {
+    height: calc(100% - 150rpx);
+    margin-top: 150rpx;
+  }
+
+  .content-scroll {
+    height: 80rpx;
+    white-space: nowrap;
+    display: flex;
+    align-items: center;
+    padding: 20rpx;
+  }
+
+  .content-scroll .activeTab {
+    background-color: #222222;
+    color: #ffffff;
+  }
+
+  .content-scroll text {
+    text-align: center;
+    width: fit-content;
+    padding: 11rpx 20rpx;
+    margin-left: 16rpx;
+    border-radius: 10rpx;
+    background-color: #F7F7F7;
+    color: #999999;
+    font-size: 24rpx
   }
 
   .content-item {

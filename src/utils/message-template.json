@@ -2477,10 +2477,30 @@
     "template": "goods",
     "summary": "${fullName}"
   },
+  "single_case_send": {
+    "type": "single_case_send",
+    "template": "case",
+    "summary": "${caseName}"
+  },
+  "group_case_send": {
+    "type": "group_case_send",
+    "template": "case",
+    "summary": "${caseName}"
+  },
   "group_product_card": {
     "type": "group_product_card",
     "template": "goods",
     "summary": "${fullName}"
+  },
+  "single_serve_product": {
+    "type": "single_serve_product",
+    "template": "consult_product",
+    "summary": "${productName}"
+  },
+  "single_serve_product_intent": {
+    "type": "single_serve_product_intent",
+    "template": "serve_product",
+    "summary": "${productName}"
   },
   "custom_agant_coming": {
     "type": "custom_agant_coming",

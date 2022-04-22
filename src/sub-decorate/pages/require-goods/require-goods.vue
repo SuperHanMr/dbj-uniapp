@@ -60,7 +60,7 @@
 				</view>
 			</view>
 			<scroll-view :scroll-y="true" class="cart-content">
-				<view v-for="(cart, cartIndex) in cartList" :key="cartIndex">
+				<view v-for="(cart, cartIndex) in cartList" :key="cart.id">
 					<goods-item :cartList="cartList" :item="cart" @change="changeFromCart($event,cartIndex)">
 					</goods-item>
 				</view>
@@ -117,10 +117,9 @@
 		onShow() {},
 		computed: {
 			cartCount() {
-				let count = 0;
-				this.cartList.map((e) => {
-					count += e.count;
-				});
+				let count = this.cartList.length;
+        console.log(this.cartList)
+				
 				return count;
 			},
 		},
@@ -138,6 +137,7 @@
 				this.projectId = e.projectId;
 			}
 			let list = getApp().globalData.naviData;
+      
 			if (list && list.length) {
 				this.cartList = list;
 				console.log(this.cartList);
@@ -153,12 +153,22 @@
 			},
 			getLeftList() {
 				categoryList({
-					projectId: this.projectId
+					projectId: this.projectId,
+          workType: 0
 				}).then((e) => {
-					this.leftList = e;
+          console.log(this.cartList)
+          this.leftList = [
+            {
+              categoryName:'全部',
+              stockAppVOS:this.cartList
+            }
+          ]
+					this.leftList = this.leftList.concat(e);
 					if (this.leftList.length) {
 						this.currentCategoryId = this.leftList[0].categoryId;
 					}
+          
+          
 					this.getRightItems();
 				});
 			},
@@ -170,7 +180,21 @@
 				params.rows = 1000;
 				params.projectId = this.projectId;
 				params.categoryId = this.currentCategoryId;
+        params.workType = 0
 				inventoryDetails(params).then((e) => {
+          // for(let i = 0;i<e.length;i++){
+          //   for(let n = 0;n<e[i].stockAppVOS.length;n++){
+          //     if(e[i].stockAppVOS[n].stockNumber===0){
+          //       e[i].stockAppVOS.splice(n,1)
+          //       n--
+          //     }
+          //   }
+          //   if(e[i].stockAppVOS.length===0){
+          //     e.splice(i,1)
+              
+          //     i--
+          //   }
+          // }
 					this.goodsList = e;
 				});
 			},
@@ -206,11 +230,25 @@
 				this.getRightItems();
 			},
 			changeFromCart(item, index) {
-
-				this.$set(this.cartList, index, item);
+        console.log(index)
+        if(item.count===0){
+          this.$set(this.cartList, index, item);
+          this.cartList.splice(index,1)
+        }else{
+          this.$set(this.cartList, index, item);
+        }
+        if(this.cartList.length===0){
+          this.$refs.popup.close();
+        }
 			},
 			onChange(item) {
 				let haveItem = false;
+        if(item.count===0){
+          let index = this.cartList.findIndex(el=>{
+            return item.id === el.id
+          })
+          this.cartList.splice(index,1)
+        }else{
 				this.cartList.forEach((e) => {
 					if (e.id == item.id) {
 						haveItem = true;
@@ -220,6 +258,7 @@
 				if (!haveItem) {
 					this.cartList.push(item);
 				}
+        }
 			},
 		},
 	};

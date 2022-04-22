@@ -4,8 +4,8 @@
       <view class="line-block" v-if="list.length>1">
         
       </view>
-      <view class="line-content">
-        <view class="item" v-if="list.length>0" v-for="(item,index) of list" :key='index'>
+      <view v-if="list.length>0" class="line-content">
+        <view class="item" v-for="(item) of list" :key='item.operatorId'>
             <view class="out">
             </view>
             

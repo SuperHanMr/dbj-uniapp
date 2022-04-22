@@ -8,9 +8,12 @@
 		</custom-navbar>
 
 		<view class="refund-container" :style="{paddingBottom:containerPaddingBottom}" >
-			<view style="position: relative;" :style="{backgroundImage:`url(${bgImg})`,backgroundSize: '100% 100%'}">
+			<view style="position: relative;" >
+				<view
+					class="bgcStyle"
+					:style="{backgroundImage:`url(${bgImg})`,backgroundSize: '100% 100%'}"
+				/>
 				<view :style="{height:navBarHeight}"></view>
-
 				<view class="refund-status" >
 					<view v-for="statusItem in refundStatusList" :key="statusItem.value">
 						<view class="status" v-if="refundInfo.status == statusItem.value">
@@ -23,7 +26,6 @@
 					>{{refundInfo.createTime | formatDate}}</view>
 				</view>
 			</view>
-
 
 			<!-- 退款关闭独有的 -->
 			<view class="order-header" 	v-if="refundInfo.status ==3 || refundInfo.status ==4 || refundInfo.status ==5">
@@ -198,20 +200,39 @@
 			</view>
 			<!-- 公用的 -->
 			<order-refund-info :refundInfo="refundInfo"></order-refund-info>
+
+			<!-- 对公收付款 -->
+			<view class="offline-info" v-if="refundInfo.isOrderCompanyTransfer">
+				<view class="header">
+					退款线下收款信息
+				</view>
+				<view class="item">
+					<text class="item-header">户名：</text>
+					<text class="item-body">{{refundInfo.accountName}}</text>
+				</view>
+				<view class="item">
+					<text class="item-header">银行账号：</text>
+					<text class="item-body">{{refundInfo.accountNo}}</text>
+				</view>
+				<view class="item">
+					<text class="item-header">开户行：</text>
+					<text class="item-body">{{refundInfo.accountBank}}</text>
+				</view>
+			</view>
 		</view>
 
 		<!-- 退款关闭底部按钮 -->
-		<view v-if="refundInfo.showContactCustomer || refundInfo.showReApply || refundInfo.cancelRefunded"
+		<view v-if="refundInfo.contactCustomer || refundInfo.reapplyed || refundInfo.cancelRefunded"
 			class="footerBtn-container"
 			:style="{paddingBottom:systemBottom}"
 		>
-			<view v-if="refundInfo.showContactCustomer" class="contact-customer" @click="contactCustomer()">
+			<view v-if="refundInfo.contactCustomer" class="contact-customer" @click="contactCustomer()">
 				联系客服
 			</view>
-			<view v-if="refundInfo.showReApply" class="Reapply" @click="toApplayForRefund(refundInfo)" >
+			<view v-if="refundInfo.reapplyed" class="Reapply" @click="toApplayForRefund(refundInfo)" >
 				重新申请
 			</view>
-			<view class="button"  @click="cancelToPay()">
+			<view v-if="refundInfo.cancelRefunded" class="button"  @click="cancelToPay()">
 				取消退款
 			</view>
 		</view>
@@ -254,7 +275,7 @@ export default {
 			bgImg: "https://ali-image.dabanjia.com/static/mp/dabanjia/images/theme-red/decorate/order_bg.png",
 			areaId:"" ,
 			status: "", //退款状态 0待确认 1退款中 2退款完成 3已拒绝 4已取消 5退款失败  退款处理中(0,1) 退款成功(2) 退款关闭(3,4)"
-
+			from:"",
 			expensesType: 0,
 			refundStatusList:[
 				{
@@ -303,6 +324,7 @@ export default {
 	},
   onLoad(e) {
 		this.id =Number(e.id);
+		this.from = e.from
 		this.refundDetail()
 		this.status = Number(e.status);
 		const systemInfo = uni.getSystemInfoSync();
@@ -332,7 +354,12 @@ export default {
 			  uni.redirectTo({
 					url:"../../my-order/my-order?index=2&firstEntry=true"
 			  });
-			}else{
+			}else if(this.from == "refund"){
+					uni.navigateBack({
+					delta:3
+				})
+			}
+			else{
 				uni.navigateBack({
 					delta:1
 				})
@@ -352,8 +379,10 @@ export default {
 
 		// 跳转到商品详情页面
 		productDetail(item){
+			console.log("item!!!!",item)
 			uni.navigateTo({
-				url:`../../../../sub-classify/pages/goods-detail/goods-detail?goodId=${item.relationId}`
+				url:`../../../../sub-classify/pages/product-detail/index?productId=${item.relationId}`
+				// url:`../../../../sub-classify/pages/goods-detail/goods-detail?goodId=${item.relationId}`
 			})
 		},
 
@@ -886,6 +915,46 @@ export default {
 	margin-bottom: 16rpx;
 	border-radius: 24rpx;
 }
+.offline-info{
+	background-color: #fff;
+	padding: 32rpx;
+	border-radius: 24rpx;
+	margin-top: 16rpx;
+	.header{
+		font-size: 30rpx;
+		font-weight: 1000;
+		height: 48rpx;
+		line-height: 48rpx;
+		margin-bottom: 20rpx;
+	}
+	.item{
+		font-size: 28rpx;
+		display: flex;
+		flex: 1;
+		flex-flow: row nowrap;
+		justify-content: flex-start;
+		margin-bottom: 20rpx;
+		.item-header{
+			width: 140rpx;
+			height: 40rpx;
+			line-height: 40rpx;
+			color: #999999;
+			display: block;
+			flex: 1;
+		}
+		.item-body{
+			width: 546rpx;
+			line-height: 40rpx;
+			display: flex;
+			flex-flow: row wrap;
+			word-break: break-all;
+
+		}
+	}
+	.item:nth-last-child(1){
+		margin-bottom: 0;
+	}
+}
 // 底部 取消支付按钮样式 确认收货 及申请退款按钮
 .footerBtn-container {
 	position: fixed;
@@ -895,7 +964,7 @@ export default {
 	display: flex;
 	flex-flow: row nowrap;
 	align-items: center;
-	justify-content: space-between;
+	justify-content: flex-end;
 	padding: 20rpx 32rpx;
 	font-size: 26rpx;
 	.button{

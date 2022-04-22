@@ -28,7 +28,7 @@
 				<view class="copy-style" @click="duplicate()">复制</view>
 			</view>
 		</view>
-		<view class="item">
+		<view class="item" v-if="!refundInfo.isOrderCompanyTransfer">
 			<text class="item-header">备注信息：</text>
 			<text class="item-body">{{refundInfo.remark}}</text>
 		</view>
@@ -110,7 +110,7 @@
 			font-weight: 1000;
 			height: 48rpx;
 			line-height: 48rpx;
-			margin-bottom: 16rpx;
+			margin-bottom: 20rpx;
 		}
 		.item{
 			font-size: 28rpx;
@@ -118,7 +118,7 @@
 			flex: 1;
 			flex-flow: row nowrap;
 			justify-content: flex-start;
-			margin-bottom: 16rpx;
+			margin-bottom: 20rpx;
 			.item-header{
 				width: 140rpx;
 				height: 40rpx;

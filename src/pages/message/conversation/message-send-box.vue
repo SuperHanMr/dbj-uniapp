@@ -16,7 +16,7 @@
         :cursor-spacing="16"
         auto-height
         class="message-send-input"
-        placeholder-class="message-send-input-placeholder" 
+        placeholder-class="message-send-input-placeholder"
         placeholder="聊点什么吧"
 		style="caret-color: #FA462A"
         @keyboardheightchange="handleKeyboradHeightChange"
@@ -33,18 +33,18 @@
       >
         {{ recordStart ? `松开${recordCancel ? '取消' : '发送'}` : '按住说话' }}
       </view>
-      <view 
-        class="iconfont icon-a-icxiaoxidibubiaoqing" 
+      <view
+        class="iconfont icon-a-icxiaoxidibubiaoqing"
         @click="showEmojiChooser = !showEmojiChooser"
       />
-      <view 
-        v-if="!canSendText || showRecordBtn" 
-        class="iconfont icon-a-icxiaoxidibutianjia" 
+      <view
+        v-if="!canSendText || showRecordBtn"
+        class="iconfont icon-a-icxiaoxidibutianjia"
         @click="showFileChooser = !showFileChooser"
       />
-      <view 
-        v-else 
-        class="message-send-btn" 
+      <view
+        v-else
+        class="message-send-btn"
         @click="sendTextMessage">发送</view>
     </view>
     <view v-if="showFooter" class="message-send-box-footer">
@@ -84,10 +84,10 @@
         </view> -->
       </view>
       <view v-if="showEmojiChooser" class="emoji-choose-container">
-        <image 
+        <image
           v-for="emoji in emojiName"
           :key="emoji"
-          :src="emojiMap[emoji]" 
+          :src="emojiMap[emoji]"
           :alt="emoji"
           class="emoji"
           @click="handleChooseEmoji(emoji)"
@@ -211,7 +211,7 @@
       const query = uni.createSelectorQuery().in(this);
       this.recordBarNodesRef = query.select("#recordBar");
       this.recordBarRectTask = this.recordBarNodesRef.boundingClientRect();
-  
+
       uni.$on("message-list-click", showFooter);
       this.$once("hook:beforeDestroy", () => {
         uni.$off("message-list-click", showFooter);
@@ -284,6 +284,10 @@
         };
         this.inputCursor = 0;
       },
+      sendMessage(text) {
+        this.messageContent = text;
+        this.sendTextMessage()
+      },
       sendTextMessage() {
         console.log(this.toAccount, this.currentConversation.type, this.messageContent, 11111);
         let text = this.messageContent.trim();
@@ -308,7 +312,7 @@
           message = getTim().createTextAtMessage({
             to: this.toAccount,
             conversationType: this.currentConversation.type,
-            payload: { 
+            payload: {
               text: msgText,
               atUserList: atUserList
             },
@@ -334,7 +338,7 @@
         let self = this;
         const {size: fileSize,path: filePath} = tempFile;
         uni.getImageInfo({
-          src: filePath, 
+          src: filePath,
           complete(info) {
             const { width = 0, height = 0 } = info;
             console.log("file path:", filePath, "file info:", info, 111111);
@@ -659,9 +663,9 @@
         if (this.recordBarBounding) {
           let {left, right, top, bottom} = this.recordBarBounding;
           if (
-            mouseX >= left && 
-            mouseX <= right && 
-            mouseY >= top && 
+            mouseX >= left &&
+            mouseX <= right &&
+            mouseY >= top &&
             mouseY <= bottom) {
             this.recordCancel = false;
           } else {
@@ -711,7 +715,7 @@
     flex: none;
     background: #fff;
   }
-  
+
   .message-send-box-header {
     padding: 24rpx 20rpx;
     display: flex;
@@ -761,7 +765,7 @@
   .message-send-box.iphone .message-send-input {
     padding: 1px 16px;
   }
-  
+
   .audio-record-btn {
     text-align: center;
     height: 38px;
@@ -811,7 +815,7 @@
     margin-top: 16rpx;
     line-height: 32rpx;
   }
-  
+
   .emoji-choose-container {
     width: 100%;
     box-sizing: border-box;
@@ -819,7 +823,7 @@
     flex-flow: row wrap;
     padding: 22rpx;
   }
-  
+
   .emoji-choose-container .emoji {
     width: 24px;
     height: 24px;

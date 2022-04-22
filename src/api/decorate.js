@@ -148,8 +148,8 @@ export function getResultProblem(params) {
 
 //获取服务人员挂载商品
 export function getSkuList(params) {
-	const str = objectToUrlString(params)
-	return request.get("/product/app/products/relation/related/skus/list?" + str)
+	// const str = objectToUrlString(params)
+	return request.post("/serve-product/web/serveProduct/spu" , params)
 }
 
 //查询业主与服务者服务状态
@@ -180,11 +180,35 @@ export function getPeerCommentsList(params) {
 
 
 //查询设计师 前10名排行榜 榜单信息
-export function getDesignRank(params) {
-	return request.get("/app/designRank/getTop10Ranking", {params})
+export function getDesignRank(index, code) {
+  console.log(index, code)
+  let params = {code: code}
+  if(!index) {
+    return request.get("/app/designRank/getTop10Ranking", {params})
+  }else {
+    return request.get(`/app/designChart/getListByCode`, {params})
+  }
+}
+
+export function getJoinedRankings(params) {
+	return request.get(`/app/designChart/joinedRankings?zeusId=`+params)
 }
 
 
+//设计师榜单说明
+export function getChartInstructions(params = {}) {
+	return request.get(`/app/designChart/getChartInstructions`, params)
+}
+
+// 设计师榜单tab
+export function getTabList(params = {}) {
+	return request.get(`/app/designChart/getTabList`, params)
+}
+
+// 设计师tab其它榜单
+export function getListByCode(params = {}) {
+	return request.get(`/app/designChart/getListByCode`, params)
+}
 
 //查询设计师个人主页评价
 export function getDesignComments(params) {

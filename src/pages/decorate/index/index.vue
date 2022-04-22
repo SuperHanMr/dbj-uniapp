@@ -37,7 +37,7 @@
             <view class="picture-btn-wrap">
               <picture-btn v-if="aServiceData.showDesignFlag"
                 iconUrl="https://ali-image.dabanjia.com/static/mp/dabanjia/images/decorate/ic_sgtz.svg" class="p-i-t"
-                text="施工图纸" @gotoPage="goDesignPicture">
+                text="设计服务交付物内容" @gotoPage="goDesignPicture">
               </picture-btn>
               <picture-btn v-if="aServiceData.showActuaryFlag"
                 iconUrl="https://ali-image.dabanjia.com/static/mp/dabanjia/images/decorate/ic_jsd.svg" class="p-i-t"
