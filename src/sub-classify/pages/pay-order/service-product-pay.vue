@@ -336,8 +336,10 @@
       regBuyNum(v) {
         this.totalPrice = (this.detailData.serviceMinPrice * v / 100).toFixed(2)
         if (this.detailData.skuList) {
-          let maxNum = this.detailData.skuList[0].areaProp?this.detailData.skuList[0].areaProp.values[0].propValue.split('-')[1]:'0'
-          let minNum = this.detailData.skuList[0].areaProp?this.detailData.skuList[0].areaProp.values[0].propValue.split('-')[0]:'0'
+          let maxNum = this.detailData.skuList[0].areaProp ? this.detailData.skuList[0].areaProp.values[0].propValue
+            .split('-')[1] : '0'
+          let minNum = this.detailData.skuList[0].areaProp ? this.detailData.skuList[0].areaProp.values[0].propValue
+            .split('-')[0] : '0'
           if (v != this.areaInfo.insideArea && this.buySquareMeter) {
             this.isInNum = false
           } else {
@@ -360,6 +362,9 @@
           }
           this.measuringArea.some(
             (item1, k1) => {
+              if (item1.countryId === 0) {
+                return this.isInArea = true
+              }
               if (item1.cityId) {
                 if (item1.areaId) {
                   return (this.isInArea =
