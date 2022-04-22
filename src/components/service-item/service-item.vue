@@ -39,7 +39,7 @@
           <i class='icon-alert_notice_jump'></i>
         </view>
       </view>
-      <view class="procsss flex-row-bet">
+      <view class="procsss flex-row-bet" v-if="serviceData.processDenominator!==0">
         <view class="s0">进度</view>
         <view class="s1 flex-row-start" @click="goTimeLine">
           <view>{{serviceData.processNumerator}}/{{serviceData.processDenominator}}</view>

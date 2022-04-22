@@ -68,6 +68,14 @@
     "icon":"icon-icwodejia_qita_csn",
     "color":"#94A4B1"
   },
+  "sys_design_apply_finish_msg":{
+    "url":"/sub-decorate/pages/design-online-disclosure/design-online-disclosure",
+    "name":"服务完成",
+    "variable":"serverName",
+    "msg":"您有${name}待验收",
+    "icon":"icon-icwodejia_qita_csn",
+    "color":"#94A4B1"
+  },
   "sys_butler_project_completion_to_owner":{
     "url":"/sub-decorate/pages/housekeeper-c-a-application/housekeeper-c-a-application",
     "name":"竣工交付",
