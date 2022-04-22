@@ -63,7 +63,7 @@
               <view class="measuring-serve" v-if="!isRemove">
                 <view class="measuring-price-box">
                   <view class="measuring-price price-font" @click.stop="readMeasuring('site')">
-                    <view>
+                    <view v-if="detailData.measureServiceProduct">
                       现场量房 ¥{{(detailData.measureServiceProduct.serviceMinPrice/100).toFixed(2)}}
                     </view>
                     <view class="card-icon"></view>
@@ -92,7 +92,7 @@
                   </view>
                   <view class="check-box">
                     <view>修改服务</view>
-                    <view class="check-icon" v-if="!isIMCard"></view>
+                    <view class="check-icon" v-if="!isIMCard && hasLocalMeasur"></view>
                   </view>
                 </view>
                 <view class="serve-area">
@@ -179,7 +179,9 @@
         </view>
       </view>
       <expenses-toast ref='expensesToast' :expensesType="expensesType"></expenses-toast>
-      <change-serve-toast ref='changeServeToast' @isRemove="isRemoveFn" :isPropsRemove="isRemove" :price="(detailData.measureServiceProduct.serviceMinPrice/100).toFixed(2)" :measuringArea="measuringArea"></change-serve-toast>
+      <change-serve-toast v-if="detailData.measureServiceProduct" ref='changeServeToast' @isRemove="isRemoveFn"
+        :isPropsRemove="isRemove" :price="(detailData.measureServiceProduct.serviceMinPrice/100).toFixed(2)"
+        :measuringArea="measuringArea"></change-serve-toast>
       <pay-way-toast ref='payWayToast' @payWay="payWay"></pay-way-toast>
       <uni-popup ref="payDialog" type="bottom">
         <pay-dialog :payChannel="payChannel" :payChannelPrice="payChannelPrice" @payOrder="payOrder"
@@ -237,7 +239,8 @@
         isInArea: true, // 地址是否在配送区域
         isInNum: true, // 购买数量是否在范围内
         buySquareMeter: true, // 是否以平米购买
-        waitOrderId: 0 // 代付款订单id
+        waitOrderId: 0, // 代付款订单id
+        hasLocalMeasur: true // 是否提供现场量房服务
       };
     },
     computed: {
@@ -333,9 +336,9 @@
       regBuyNum(v) {
         this.totalPrice = (this.detailData.serviceMinPrice * v / 100).toFixed(2)
         if (this.detailData.skuList) {
-          let maxNum = this.detailData.skuList[0].areaProp.values[0].propValue.split('-')[1]
-          let minNum = this.detailData.skuList[0].areaProp.values[0].propValue.split('-')[0]
-          if (v != this.areaInfo.insideArea) {
+          let maxNum = this.detailData.skuList[0].areaProp?this.detailData.skuList[0].areaProp.values[0].propValue.split('-')[1]:'0'
+          let minNum = this.detailData.skuList[0].areaProp?this.detailData.skuList[0].areaProp.values[0].propValue.split('-')[0]:'0'
+          if (v != this.areaInfo.insideArea && this.buySquareMeter) {
             this.isInNum = false
           } else {
             this.isInNum = true
@@ -349,7 +352,12 @@
           var res = Number(this.totalPrice) * 100 - this.cardBalance;
           this.cardClick = Number(this.totalPrice) * 100 - this.cardBalance <= 0
           this.regBuyNum(this.buyNum)
-          this.measuringArea = data.measureServiceProduct.serviceAreas
+          if (data.suppleMeasure && data.localMeasure) {
+            this.hasLocalMeasur = false
+          }
+          if (!this.hasLocalMeasur) {
+            this.measuringArea = data.measureServiceProduct.serviceAreas
+          }
           this.measuringArea.some(
             (item1, k1) => {
               if (item1.cityId) {
@@ -366,19 +374,21 @@
               }
             }
           );
-          console.log(this.measuringArea, "measuringArea8888")
         })
       },
       isRemoveFn(v) {
         this.isRemove = v
       },
       readMeasuring(type) {
+        if (!this.hasLocalMeasur && type !== 'remove') {
+          return
+        }
         uni.navigateTo({
           url: `/sub-classify/pages/product-detail/service-measuring-text?productId=&type=${type}`,
         });
       },
       changeServe() {
-        if (this.isIMCard) {
+        if (this.isIMCard && !this.hasLocalMeasur) {
           return
         }
         this.$refs.changeServeToast.showPupop();
