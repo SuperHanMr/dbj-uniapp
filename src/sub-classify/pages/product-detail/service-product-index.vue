@@ -1,6 +1,6 @@
 <template>
 	<view>
-		<web-view :src="`${baseUrl}/app-pages/product-detail/service-product.html?spuId=${spuId}&houseId=${houseId}&from=${from}&productId=${productId}&time=${time}&source=small&token=${token}`">
+		<web-view :src="`${baseUrl}/app-pages/product-detail/service-product.html?spuId=${spuId}&houseId=${houseId}&from=${from}&productId=${productId}&time=${time}&source=small&sourceIMId=${sourceIMId}&token=${token}`">
 		</web-view>
 	</view>
 </template>
@@ -12,6 +12,7 @@
         time: 0,
         from: '',
 				baseUrl: '',
+        sourceIMId: getApp().globalData.userInfo.id,
 				spuId: 227,
         productId: 0,
         houseId: 42,
