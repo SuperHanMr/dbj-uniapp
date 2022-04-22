@@ -197,10 +197,11 @@
 			// 点击图片 跳转到设计师个人主页
 			gotoPersonalPage(data){
 				console.log("data===",data)
-				if(data.type==6 ){
-					if( !item.additionalServices){
+				if(data.type==6){
+					if( !data.additionalServices){
 						uni.navigateTo({
-							url:`../../sub-decorate/pages/person-page/person-page?personId=${data.id}`
+							url:`/sub-classify/pages/pay-order/service-product-pay?spuId=${data.spuId}`
+							// url:`../../sub-decorate/pages/person-page/person-page?personId=${data.id}`
 						})
 					}
 				}else{

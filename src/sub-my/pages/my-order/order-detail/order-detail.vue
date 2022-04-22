@@ -944,10 +944,21 @@ export default {
         return;
       }
       console.log("item=", item, "type=", type);
-      uni.navigateTo({
-				url:`../../../../sub-classify/pages/product-detail/index?productId=${item.id}`
-        // url: `../../../../sub-classify/pages/goods-detail/goods-detail?goodId=${item.id}`,
-      });
+			if(item.type==6) return //设计服务商品
+			uni.navigateTo({
+				url:`../../../../sub-classify/pages/product-detail/index?productId=${item.id}`,
+			});
+			
+			// if(item.type==6){
+			// 	uni.navigateTo({
+			// 		url:`/sub-classify/pages/pay-order/service-product-pay?spuId=${item.spuId}`
+			// 	})
+			// }else{
+			// 	uni.navigateTo({
+			// 		url:`../../../../sub-classify/pages/product-detail/index?productId=${item.id}`
+			// 		// url: `../../../../sub-classify/pages/goods-detail/goods-detail?goodId=${item.id}`,
+			// 	});
+			// }
     },
 
     // 倒计时间触发到的时间
