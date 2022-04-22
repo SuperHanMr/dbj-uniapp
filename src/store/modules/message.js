@@ -536,14 +536,14 @@ const message = {
      * @param {Object} context
      * @param {Object} userInfo
      */
-    openC2CConversation(context, userInfo) {
+    openC2CConversation(context, payload) {
       if (!isSDKReady()) {
         uni.navigateTo({
           url: "/pages/login/login",
         });
         return;
       }
-      const { id, name } = userInfo;
+      const { id, name, spuId } = payload;
       let userIMID = id;
       let userId = id;
       if (!isNaN(id)) {
@@ -558,7 +558,7 @@ const message = {
         targetZeusId: userId
       }
       createC2CChat(params).then(res => {
-        let url = "/pages/message/conversation/conversation?id=" + convId;
+        let url = "/pages/message/conversation/conversation?id=" + convId + "&spuId=" + spuId;
         if (name) {
           url += "&name=" + name
         }
