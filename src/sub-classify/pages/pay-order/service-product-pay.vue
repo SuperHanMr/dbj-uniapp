@@ -95,7 +95,7 @@
                   </view>
                   <view class="check-box">
                     <view>修改服务</view>
-                    <view class="check-icon" v-if="!isIMCard && hasLocalMeasur"></view>
+                    <view class="check-icon" v-if="!isIMCard && hasLocalMeasure"></view>
                   </view>
                 </view>
                 <view class="serve-area">
@@ -244,7 +244,7 @@
         isInNum: true, // 购买数量是否在范围内
         buySquareMeter: true, // 是否以平米购买
         waitOrderId: 0, // 代付款订单id
-        hasLocalMeasur: true // 是否提供现场量房服务
+        hasLocalMeasure: true // 是否提供现场量房服务
       };
     },
     computed: {
@@ -358,10 +358,10 @@
           var res = Number(this.totalPrice) * 100 - this.cardBalance;
           this.cardClick = Number(this.totalPrice) * 100 - this.cardBalance <= 0
           this.regBuyNum(this.buyNum)
-          if (data.suppleMeasure && data.localMeasure) {
-            this.hasLocalMeasur = false
+          if (data.localMeasure) {
+            this.hasLocalMeasure = false
           }
-          if (!this.hasLocalMeasur) {
+          if (!this.hasLocalMeasure) {
             this.measuringArea = data.measureServiceProduct.serviceAreas
           }
           this.measuringArea.some(
@@ -390,7 +390,7 @@
         this.isRemove = v
       },
       readMeasuring(type) {
-        if (!this.hasLocalMeasur && type !== 'remove') {
+        if (!this.hasLocalMeasure && type !== 'remove') {
           return
         }
         uni.navigateTo({
@@ -398,7 +398,7 @@
         });
       },
       changeServe() {
-        if (this.isIMCard && !this.hasLocalMeasur) {
+        if (this.isIMCard && !this.hasLocalMeasure) {
           return
         }
         this.$refs.changeServeToast.showPupop();
