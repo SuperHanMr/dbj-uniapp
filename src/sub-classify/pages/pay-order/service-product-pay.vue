@@ -12,7 +12,7 @@
       </uni-popup>
     </view>
     <view v-else>
-      <address-picker :houseId="houseId" @emitInfo="emitInfo" @typeServe2="typeServe2" v-if="isShow">
+      <address-picker :houseId="houseId" @emitInfo="emitInfo" :isIMCard="isIMCard" v-if="isShow">
       </address-picker>
       <view class="content">
         <view class="shop-item">
@@ -75,11 +75,14 @@
                 </view>
                 <view class="serve-area">
                   服务区域：
-                  <text v-for="(v, k) in measuringArea" :key="k">
-                    {{(v.province?v.province:"") + (v.city?v.city:"") + (v.area?v.area:"")}}
-                    <text v-if="k !== measuringArea.length - 1">,
+                  <text v-if="!isCountryArea">
+                    <text v-for="(v, k) in measuringArea" :key="k">
+                      {{(v.province?v.province:"") + (v.city?v.city:"") + (v.area?v.area:"")}}
+                      <text v-if="k !== measuringArea.length - 1">,
+                      </text>
                     </text>
                   </text>
+                  <text v-else>全国</text>
                 </view>
               </view>
               <view class="measuring-serve" v-else>
@@ -180,8 +183,8 @@
       </view>
       <expenses-toast ref='expensesToast' :expensesType="expensesType"></expenses-toast>
       <change-serve-toast v-if="detailData.measureServiceProduct" ref='changeServeToast' @isRemove="isRemoveFn"
-        :isPropsRemove="isRemove" :price="(detailData.measureServiceProduct.serviceMinPrice/100).toFixed(2)"
-        :measuringArea="measuringArea"></change-serve-toast>
+        :isPropsRemove="isRemove" :measuringArea="measuringArea" :isCountryArea="isCountryArea"
+        :price="(detailData.measureServiceProduct.serviceMinPrice/100).toFixed(2)"></change-serve-toast>
       <pay-way-toast ref='payWayToast' @payWay="payWay"></pay-way-toast>
       <uni-popup ref="payDialog" type="bottom">
         <pay-dialog :payChannel="payChannel" :payChannelPrice="payChannelPrice" @payOrder="payOrder"
@@ -235,6 +238,7 @@
         areaInfo: {},
         measuringArea: [],
         detailData: {},
+        isCountryArea: false, // 是否全国范围可量房
         isIMCard: 0, // 是否从聊天推送卡片进入
         isInArea: true, // 地址是否在配送区域
         isInNum: true, // 购买数量是否在范围内
@@ -363,6 +367,7 @@
           this.measuringArea.some(
             (item1, k1) => {
               if (item1.countryId === 0) {
+                this.isCountryArea = true
                 return this.isInArea = true
               }
               if (item1.cityId) {
