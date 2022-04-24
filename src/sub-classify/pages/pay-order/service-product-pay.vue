@@ -62,11 +62,11 @@
             <view @click="changeServe">
               <view class="measuring-serve" v-if="!isRemove">
                 <view class="measuring-price-box">
-                  <view class="measuring-price price-font" @click.stop="readMeasuring('site')">
+                  <view class="measuring-price price-font">
                     <view v-if="detailData.measureServiceProduct">
                       现场量房 ¥{{(detailData.measureServiceProduct.serviceMinPrice/100).toFixed(2)}}
                     </view>
-                    <view class="card-icon"></view>
+                    <view class="card-icon" @click.stop="readMeasuring('site')"></view>
                   </view>
                   <view class="check-box">
                     <view>修改服务</view>
