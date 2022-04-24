@@ -15,7 +15,7 @@
             <text class="userPhone">{{addressInfo.contactPhone}}</text>
           </view> 
         </view>
-        <image class="switchSite" src="../../static/ic_back.png"></image>
+        <image class="switchSite" src="../../static/ic_back.png" v-if="!isIMCard"></image>
       </view>
       <view class="header-operator" v-for="(item, index) in addUser" :key="index" v-if="addUser.length">
         <view v-if="item.addingJobName" class="add-box">
@@ -58,6 +58,9 @@
       productType: {
         default: 1
       },
+      isIMCard: {
+        default: 0
+      },
       addUser: {
         default: [{
           addingJobName: '',
@@ -76,6 +79,9 @@
       checkAddress() {
         if (this.productType === 2) {
           this.$emit("typeServe2")
+          return
+        }
+        if(this.isIMCard) {
           return
         }
         uni.navigateTo({
