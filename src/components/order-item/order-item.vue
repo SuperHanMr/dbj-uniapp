@@ -198,11 +198,13 @@
 			gotoPersonalPage(data){
 				console.log("data===",data)
 				if(data.type==6){
-					if( !data.additionalServices){
+					if(!data.additionalServices){
 						uni.navigateTo({
-							url:`/sub-classify/pages/pay-order/service-product-pay?spuId=${data.spuId}`
+							url:`/sub-classify/pages/product-detail/service-product-index?spuId=${data.spuId}`
 							// url:`../../sub-decorate/pages/person-page/person-page?personId=${data.id}`
 						})
+					}else{
+						console.log("附加服务！！")
 					}
 				}else{
 					if(!data.orderStatus){
