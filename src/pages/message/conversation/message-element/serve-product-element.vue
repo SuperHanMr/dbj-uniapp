@@ -89,7 +89,7 @@ export default {
 			return (number % 100 < 10) ? `0${number % 100}`  : number % 100
 		},
     handlePreview() {
-			let url = `/sub-classify/pages/product-detail/service-product-index?spuId=${this.params.spuId}&productId=${this.params.intentId}&from=IM&time=`;
+			let url = `/sub-classify/pages/product-detail/service-product-index?spuId=${this.params.spuId}&productId=${this.params.intentId}&from=IM&time=${this.params.expireDate}`;
 			console.log(url)
       uni.navigateTo({
         url
