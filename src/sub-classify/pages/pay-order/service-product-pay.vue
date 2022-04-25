@@ -291,6 +291,7 @@
       }
     },
     onLoad(e) {
+      console.log(getApp().globalData.userInfo.id, "getApp().globalData.userId")
       this.houseId = Number(e.houseId ? e.houseId : getApp().globalData.currentHouse.id);
       this.buyNum = Number(e.buyNum);
       this.skuId = Number(e.skuId);
@@ -344,6 +345,7 @@
             .split('-')[1] : '0'
           let minNum = this.detailData.skuList[0].areaProp ? this.detailData.skuList[0].areaProp.values[0].propValue
             .split('-')[0] : '0'
+            console.log(this.areaInfo.insideArea, "this.areaInfo.insideArea")
           if (v != this.areaInfo.insideArea && this.buySquareMeter) {
             this.isInNum = false
           } else {
@@ -450,6 +452,7 @@
         this.areaInfo.cityId = val.cityId
         this.areaInfo.areaId = val.areaId
         this.areaInfo.insideArea = val.insideArea
+        this.regBuyNum(this.buyNum)
       },
 
       pay() {
