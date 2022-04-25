@@ -78,8 +78,8 @@
         {{'居住地'+personData.liveAddress}}
         <text>|</text>
         {{personData.roleLevel?personData.roleLevel:''}}设计师 
-        <text v-if="personData.praiseRate">|</text>
-        {{personData.praiseRate?'好评率'+personData.praiseRate:''}}
+        <text >|</text>
+        {{personData.commentCount<5?'好评率不足5单':personData.praiseRate?'好评率'+personData.praiseRate:''}}
         <text v-if="personData.industryYearsStr">|</text>
         {{personData.industryYearsStr?personData.industryYearsStr:''}}
       </view>
