@@ -498,6 +498,7 @@ export default {
 
     //跳转到详情页面
     goToDetail(data) {
+		
 			if(!data.orderStatus){
 				uni.navigateTo({
 					url:`order-detail/order-detail?orderId=${data.id}&from=waitPay`
@@ -511,11 +512,19 @@ export default {
 
     //去店铺首页
     gotoShop(item) {
+			console.log("type类型===",item)
       if ((item.orderName || item.isReplenish) && item.orderStatus == 0) return; //多店铺购买 或者变更单
       if (item.type == 5) return; //  储值卡
-      uni.navigateTo({
-        url: `../../../sub-classify/pages/shops/shops?storeId=${item.storeId}&areaId=${this.areaId}`,
-      });
+			if(item.type==6){
+				//跳转到个人主页
+				uni.navigateTo({
+					url:`../../../sub-decorate/pages/person-page/person-page?personId=${item.storeId}`
+				})
+			}else{
+				uni.navigateTo({
+					url: `../../../sub-classify/pages/shops/shops?storeId=${item.storeId}&areaId=${this.areaId}`,
+				});
+			}
     },
 
     //刷新
