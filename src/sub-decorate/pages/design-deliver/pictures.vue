@@ -1,5 +1,5 @@
 <template>
-  <view class="wrap">
+  <view class="wrap" :class="{'new-wrap':isNew}">
     <view class="picture flex-row">
       <view class="imgs" v-for="(item, index) in imgList" :key="index">
         <image mode="aspectFill" :src="item.fileUrl+'?x-oss-process=image/resize,m_mfit,w_108,h_108'" @click="clickImg(imgList, index)"></image>
@@ -14,6 +14,10 @@
     props: {
       imgList: {
         type: Array
+      },
+      isNew:{
+        type:Boolean,
+        default:false,
       }
     },
     data() {
@@ -54,5 +58,12 @@
 </script>
 
 <style scoped lang="scss">
+  .new-wrap{
+    padding: 0 !important;
+    background-color: transparent !important;
+  }
+</style>
+<style scoped lang="scss">
   @import "./design-picture.scss"
+
 </style>

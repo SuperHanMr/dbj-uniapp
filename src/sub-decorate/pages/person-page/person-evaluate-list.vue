@@ -5,7 +5,7 @@
       <view class="left">
         全部评价（{{pageInfo.totalRow}}）
       </view>
-      <view class="right">综合好评率 {{totalNum}}</view>
+      <view class="right">{{pageInfo.totalRow<5?'好评率不足5单':'综合好评率'+totalNum}}</view>
     </view>
     </view>
     <scroll-view :scroll-y="true" style="height:600px" @scrolltolower="bindscrolltolower">
