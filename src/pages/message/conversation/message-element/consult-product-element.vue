@@ -1,25 +1,26 @@
 <template>
   <message-bubble :message="message" class="consult-product-message" no-padding>
     <view class="consult-product-element" @click="handlePreview">
-      <view class="product-content">
-        <view class="product-name">
-					<text>{{params.productName}}</text>
-        </view>
-				<view class="product-houseType">
-					<text>{{params.houseType}}</text>
-				</view>
-				<view class="product-tags">
-					<view class="product-tag" v-for="tag in (params.tags || [])" :key="tag">
-						{{tag}}
+			<view class="consult-product-wrapper">
+				<view class="product-content">
+					<view class="product-name">
+						<text>{{params.productName}}</text>
+					</view>
+					<view class="product-houseType">
+						<text>{{params.houseType}}</text>
+					</view>
+					<view class="product-tags">
+						<view class="product-tag" v-for="tag in (params.tags || [])" :key="tag">
+							{{tag}}
+						</view>
+					</view>
+					<view class="product-price">
+						<view class="bottom-left">
+							<view class="price">￥<text class="price-prefix">{{getPricePre(params.minPrice)}}</text>.{{getPriceAppend(params.minPrice)}}<template v-if="params.minPrice !== params.maxPrice"> ~ <text class="price-prefix">{{getPricePre(params.maxPrice)}}</text>.{{getPriceAppend(params.maxPrice)}}</template></view>/{{params.unitName}}
+						</view>
 					</view>
 				</view>
-				<view class="product-price">
-					<view class="bottom-left">
-						<view class="price">￥<text class="price-prefix">{{getPricePre(params.minPrice)}}</text>.{{getPriceAppend(params.minPrice)}} ~ <text class="price-prefix">{{getPricePre(params.maxPrice)}}</text>.{{getPriceAppend(params.maxPrice)}}</view>/{{params.unitName}}
-					</view>
-				</view>
-
-      </view>
+			</view>
     </view>
   </message-bubble>
 </template>
@@ -62,11 +63,23 @@ export default {
 
 <style lang="scss" scoped>
 .consult-product-element {
-  background: #fff;
+	.consult-product-wrapper{
+		height: 100%;
+		width: 100%;
+		overflow: hidden;
+		background-image: url("https://ali-image.dabanjia.com/image/20220424/10/165077072191202.png");
+		background-repeat: no-repeat;
+		background-size: 88rpx 88rpx;
+		background-position: 410rpx 0;
+		padding: 16rpx 24rpx;
+		box-sizing: border-box;
+	}
+  background: linear-gradient(180deg, #FFFBF8 0%, #FFFFFF 40%);
+
   border-radius: 16rpx;
   width: 510rpx;
   overflow: hidden;
-	padding: 16rpx 24rpx;
+
   .product-name {
 		font-size: 30rpx;
 		font-weight: 500 ;
@@ -102,6 +115,7 @@ export default {
 			color: #999;
 			border-radius: 4rpx;
 			border: 1rpx solid #ccc;
+			margin-right: 12rpx;
 		}
 	}
 

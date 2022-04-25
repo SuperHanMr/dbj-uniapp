@@ -20,7 +20,7 @@
 				</view>
 				<view class="product-price">
 					<view class="bottom-left">
-						<view class="price">￥<text class="price-prefix">{{getPricePre(detail.serviceMinPrice)}}</text>.{{getPriceAppend(detail.serviceMinPrice)}} ~ <text class="price-prefix">{{getPricePre(detail.serviceMaxPrice)}}</text>.{{getPriceAppend(detail.serviceMaxPrice)}}</view>/平米
+						<view class="price">￥<text class="price-prefix">{{getPricePre(detail.serviceMinPrice)}}</text>.{{getPriceAppend(detail.serviceMinPrice)}}<template v-if="detail.serviceMinPrice !== detail.serviceMaxPrice"> ~ <text class="price-prefix">{{getPricePre(detail.serviceMaxPrice)}}</text>.{{getPriceAppend(detail.serviceMaxPrice)}}</template></view>/{{detail.salesUnits ? detail.salesUnits.unitName : '-'}}
 					</view>
 					<view class="send_product" @click="sendProduct">
 						发送商品
@@ -99,10 +99,17 @@ export default {
 .consult-product {
   background: #fff;
   border-radius: 16rpx;
-  overflow: hidden;
-	padding: 16rpx 24rpx;
+	background: linear-gradient(180deg, #FFFBF8 0%, #FFFFFF 40%);
 	margin: 0 32rpx 32rpx;
 	position: relative;
+	.product-content{
+		overflow: hidden;
+		padding: 16rpx 24rpx;
+		background-image: url("https://ali-image.dabanjia.com/image/20220424/10/165077072191202.png");
+		background-repeat: no-repeat;
+		background-size: 88rpx 88rpx;
+		background-position: 510rpx 0;
+	}
 	.product-header{
 		display: flex;
 		.close{
@@ -148,6 +155,7 @@ export default {
 			color: #999;
 			border-radius: 4rpx;
 			border: 1rpx solid #ccc;
+			margin-right: 12rpx;
 		}
 	}
 
