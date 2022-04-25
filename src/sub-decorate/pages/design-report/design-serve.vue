@@ -1,8 +1,8 @@
 <template>
   <view class="wrap" id="design-serve">
     <view class="top">
-      
-    
+
+
     <view class="avtor-wrap flex-row-bet">
       <view class="flex-row-start">
         <image class="avtor" :src="(detail.designServerVO && detail.designServerVO.avatar)"></image>
@@ -38,7 +38,7 @@
       <Pictures :imgList="item.imageFileList" :isNew="true"></Pictures>
     </view>
     <view class="btn-blck">
-      <button class="btn" v-if="isSure" @click="confirm">确认设计服务完成</button>
+      <button class="btn" v-if="!isSure" @click="confirm">确认设计服务完成</button>
     </view>
   </view>
 </template>
