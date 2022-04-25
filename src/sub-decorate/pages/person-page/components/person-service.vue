@@ -19,6 +19,7 @@
                   <view v-for="el of item.serviceTag" :key='el.code'>{{el.name}}</view>
                   
                 </view>
+                <view class="" v-if="item.serviceMinPrice">
                 <view class="price" v-if="item.serviceMaxPrice===item.serviceMinPrice">¥
                     <text class="integer">{{((item.serviceMinPrice/100).toFixed(2)).split('.')[0]}}</text>
                     <text class="decimals">.{{((item.serviceMinPrice/100).toFixed(2)).split('.')[1]}}</text>
@@ -34,6 +35,7 @@
                   <text class="integer">{{((item.serviceMaxPrice/100).toFixed(2)).split('.')[0]}}</text>
                   <text class="decimals">.{{((item.serviceMaxPrice/100).toFixed(2)).split('.')[1]}}</text>
                   <text class="unit"  v-if="item.salesUnits.unitName">/{{item.salesUnits.unitName}}</text>
+                </view>
                 </view>
                 </view>
               </view>

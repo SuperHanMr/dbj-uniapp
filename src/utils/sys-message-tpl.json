@@ -69,7 +69,7 @@
     "color":"#94A4B1"
   },
   "sys_design_apply_finish_msg":{
-    "url":"/sub-decorate/pages/design-online-disclosure/design-online-disclosure",
+    "url":"/sub-decorate/pages/design-report/design-serve",
     "name":"服务完成",
     "variable":"serverName",
     "msg":"您有${name}待验收",
