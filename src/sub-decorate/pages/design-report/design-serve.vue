@@ -1,9 +1,23 @@
 <template>
+   
   <view class="wrap" id="design-serve">
+    <custom-navbar
+       :title="isSure?'设计服务':'确认设计服务'"
+     >
+       <template v-slot:back>
+         <i
+           class="icon-ic_cancel_white back-icon"
+           @click="back"
+         ></i>
+       </template>
+     </custom-navbar>
     <view class="top">
-
+    <view class="top-name">
+      {{detail.severName}}
+    </view>
 
     <view class="avtor-wrap flex-row-bet">
+      
       <view class="flex-row-start">
         <image class="avtor" :src="(detail.designServerVO && detail.designServerVO.avatar)"></image>
         <view class="tigs">
@@ -12,6 +26,7 @@
         </view>
       </view>
       <view class="date">{{calendarFormat(detail)}}</view>
+
     </view>
     <view v-if="detail.beautyReport && detail.beautyReport.id && detail.beautyReport.templateId"
       class="card flex-row-bet">
@@ -37,8 +52,8 @@
       </view>
       <Pictures :imgList="item.imageFileList" :isNew="true"></Pictures>
     </view>
-    <view class="btn-blck">
-      <button class="btn" v-if="!isSure" @click="confirm">确认设计服务完成</button>
+    <view class="btn-blck" v-if="!isSure">
+      <button class="btn"  @click="confirm">确认设计服务完成</button>
     </view>
   </view>
 </template>
@@ -165,6 +180,12 @@
       },
       calendarFormat(detail) {
         return calendarFormat(detail?.designServerVO?.updateTime)
+      },
+      
+      back(){
+        uni.switchTab({
+          url: "/pages/decorate/index/index",
+        });
       }
     }
   }
@@ -175,12 +196,26 @@
     // height: 100%;
   }
   .top{
+    background-color: #fff;
+    border-radius: 8px;
+    .top-name{
+      width: 100%;
+      color: #333;
+      font-weight: 500;
+      font-size: 32rpx;
+      line-height: 92rpx;
+      height: 92rpx;
+      margin: 0 32rpx;
+      border-bottom: 0.5px solid #F3F3F3;
+    }
   }
+  
   .avtor-wrap {
     margin-bottom: 33rpx;
     border-bottom: 2rpx solid #f4f4f4;
     padding: 24rpx;
     background: #ffffff;
+    
     .avtor {
       width: 104rpx;
       height: 104rpx;
