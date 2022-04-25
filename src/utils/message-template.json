@@ -2533,5 +2533,62 @@
     "body": {
       "content": "${message}"
     }
+  },
+  "sys_design_serve_deliverables_msg": {
+    "type": "sys_design_serve_deliverables_msg",
+    "template": "form",
+    "summary": "设计服务交付文件有新增，请查看~",
+    "body": {
+      "title": "设计服务交付文件",
+      "subTitle": "${name}新增了${fileCount}个文件，快去查看吧~",
+      "actions": [
+        {
+          "title": "查看详情",
+          "type": "native_uri",
+          "targetRouter": "/sub-decorate/pages/design-report/design-serve?serveId=${serveId}&type=true",
+          "params": {
+            "projectId": "${serveId}"
+          }
+        }
+      ]
+    }
+  },
+  "sys_design_deliver_report_msg": {
+    "type": "sys_design_deliver_report_msg ",
+    "template": "form",
+    "summary": "设计服务交付报告已发布，请查看~",
+    "body": {
+      "title": "设计服务交付报告",
+      "subTitle": "${name}交付报告已发布，快去查看吧~",
+      "actions": [
+        {
+          "title": "查看详情",
+          "type": "native_uri",
+          "targetRouter": "/sub-decorate/pages/design-report/design-serve?serveId=${serveId}&type=true",
+          "params": {
+            "projectId": "${serveId}"
+          }
+        }
+      ]
+    }
+  },
+  "sys_design_apply_finish_msg": {
+    "type": "sys_design_apply_finish_msg ",
+    "template": "form",
+    "summary": "设计服务已完成，点击查看~",
+    "body": {
+      "title": "设计服务已完成，请查看~",
+      "subTitle": "${name}已完成，快去确认吧~",
+      "actions": [
+        {
+          "title": "查看详情",
+          "type": "native_uri",
+          "targetRouter": "/sub-decorate/pages/design-report/design-serve?serveId=${serveId}&type=",
+          "params": {
+            "projectId": "${serveId}"
+          }
+        }
+      ]
+    }
   }
 }
