@@ -78,7 +78,7 @@
         decorateMsg: {},
         detail: {},
         detailImage:{},
-        isSure:true
+        isSure:false
       }
     },
     onLoad(e) {
