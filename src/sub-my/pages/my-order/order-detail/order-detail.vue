@@ -910,11 +910,17 @@ export default {
         return;
       }
       if (item.type == 5) return;
-      console.log("去店铺首页！！！！");
-      console.log("this.storeId=", item.storeId, "this.areaId=", this.areaId);
-      uni.navigateTo({
-        url: `../../../../sub-classify/pages/shops/shops?storeId=${item.storeId}&areaId=${this.areaId}`,
-      });
+			console.log("item!!!!!!!",item)
+			if(this.orderInfo.type==6){
+				//去設計師主頁
+				uni.navigateTo({
+					url:`../../../../sub-decorate/pages/person-page/person-page?personId=${item.storeId}`
+				})
+			}else{
+				uni.navigateTo({
+					url: `../../../../sub-classify/pages/shops/shops?storeId=${item.storeId}&areaId=${this.areaId}`,
+				});
+			}
     },
 
     // 联系客服
