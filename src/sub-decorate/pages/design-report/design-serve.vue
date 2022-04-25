@@ -1,5 +1,8 @@
 <template>
-  <view class="wrap">
+  <view class="wrap" id="design-serve">
+    <view class="top">
+
+
     <view class="avtor-wrap flex-row-bet">
       <view class="flex-row-start">
         <image class="avtor" :src="(detail.designServerVO && detail.designServerVO.avatar)"></image>
@@ -27,19 +30,22 @@
       </view>
       <!-- <view v-else class="lookDetail">未生成自定义报告</view> -->
     </view>
+    </view>
     <view class="img-item" v-for="(item,index) of detailImage" :key='index'>
       <view class="title">
         {{item.categoryName}}
       </view>
-      <Pictures :imgList="item.imageFileList"></Pictures>
+      <Pictures :imgList="item.imageFileList" :isNew="true"></Pictures>
     </view>
-    <button class="btn" @click="confirm">确认设计服务完成</button>
+    <view class="btn-blck">
+      <button class="btn" v-if="!isSure" @click="confirm">确认设计服务完成</button>
+    </view>
   </view>
 </template>
 
 <script>
   import {
-    confirmDesignReport,
+    confirmNewDesignReport,
     serverReports,
     isAllowOperate,
     designListByQuery,
@@ -57,10 +63,18 @@
         decorateMsg: {},
         detail: {},
         detailImage:{},
+        isSure:true
       }
     },
-    onLoad() {
-      this.decorateMsg = getApp().globalData.decorateMsg
+    onLoad(e) {
+      // e.serveId = 33483
+      if(e.serveId){
+        this.isSure = e.type
+        this.decorateMsg.serveId = e.serveId
+      }else{
+        this.decorateMsg = getApp().globalData.decorateMsg
+        console.log(this.decorateMsg )
+      }
     },
     onShow() {
       this.getPorts()
@@ -69,12 +83,12 @@
       confirm() {
         uni.showModal({
           title: "",
-          content: "确认通过设计报告验收?",
+          content: "是否确认该服务?",
           confirmText: "确定",
           success: (res) => {
             if (res.confirm) {
               console.log("点击了确认")
-              confirmDesignReport(this.decorateMsg.serveId).then(data => {
+              confirmNewDesignReport(this.decorateMsg.serveId).then(data => {
                 uni.navigateBack({})
               })
             } else {
@@ -155,19 +169,18 @@
     }
   }
 </script>
-
 <style scoped lang="scss">
   .wrap {
-    padding: 24rpx;
-    background: #ffffff;
-    height: 100%;
+    padding: 24rpx 24rpx 176rpx;
+    // height: 100%;
   }
-
+  .top{
+  }
   .avtor-wrap {
     margin-bottom: 33rpx;
     border-bottom: 2rpx solid #f4f4f4;
-    padding-bottom: 24rpx;
-
+    padding: 24rpx;
+    background: #ffffff;
     .avtor {
       width: 104rpx;
       height: 104rpx;
@@ -224,10 +237,16 @@
     align-items: center;
     flex-direction: row;
   }
-
-  .btn {
+  .btn-blck{
     position: fixed;
-    bottom: 64rpx;
+    bottom: 0;
+    left: 0;
+    height: 152rpx;
+    width: 100%;
+    background-color: #fff;
+    padding-top:24rpx
+  }
+  .btn {
     width: calc(100% - 64rpx);
     height: 88rpx;
     line-height: 88rpx;
@@ -242,7 +261,7 @@
 
   .card {
     height: 100rpx;
-    background: #f7f7f7;
+    background: #fff;
     border-radius: 24rpx;
     padding: 30rpx 16rpx 30rpx 36rpx;
     margin-bottom: 24rpx;

@@ -88,6 +88,19 @@
           </view>
 
           <view class="rate-wrapper" @click="showDesigner(designer)">
+            <text class="designer-score" v-if="designer.minPrice || designer.minPrice === 0">
+              <template v-if="designer.minPrice === designer.maxPrice">
+                {{designer.minPrice.toFixed(2)}}
+              </template>
+              <template v-else>
+                {{designer.minPrice.toFixed(2)}}~{{designer.maxPrice.toFixed(2)}}
+              </template>
+              元/{{designer.unit}}
+            </text>
+            <view
+              class="split-line"
+              v-if="designer.minPrice || designer.minPrice === 0"
+            ></view>
             <text class="designer-score" v-if="designer.totalCount>0">服务次数 {{designer.totalCount}}</text>
             <view
               class="split-line"
@@ -97,7 +110,12 @@
               class="designer-ordernum"
               v-if="designer.praiseEfficiency && designer.totalCount > 0"
             >
-              好评率 {{designer.praiseEfficiency}}%
+              <template v-if="designer.commentCount >= 5">
+                好评率 {{designer.praiseEfficiency}}%
+              </template>
+              <template v-else>
+                好评率不足5单
+              </template>
             </text>
             <view
               class="split-line"

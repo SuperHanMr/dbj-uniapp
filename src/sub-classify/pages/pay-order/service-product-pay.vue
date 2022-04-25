@@ -12,7 +12,7 @@
       </uni-popup>
     </view>
     <view v-else>
-      <address-picker :houseId="houseId" @emitInfo="emitInfo" @typeServe2="typeServe2" v-if="isShow">
+      <address-picker :houseId="houseId" @emitInfo="emitInfo" :isIMCard="isIMCard" v-if="isShow">
       </address-picker>
       <view class="content">
         <view class="shop-item">
@@ -62,11 +62,11 @@
             <view @click="changeServe">
               <view class="measuring-serve" v-if="!isRemove">
                 <view class="measuring-price-box">
-                  <view class="measuring-price price-font" @click.stop="readMeasuring('site')">
+                  <view class="measuring-price price-font">
                     <view v-if="detailData.measureServiceProduct">
                       现场量房 ¥{{(detailData.measureServiceProduct.serviceMinPrice/100).toFixed(2)}}
                     </view>
-                    <view class="card-icon"></view>
+                    <view class="card-icon" @click.stop="readMeasuring('site')"></view>
                   </view>
                   <view class="check-box">
                     <view>修改服务</view>
@@ -75,11 +75,14 @@
                 </view>
                 <view class="serve-area">
                   服务区域：
-                  <text v-for="(v, k) in measuringArea" :key="k">
-                    {{(v.province?v.province:"") + (v.city?v.city:"") + (v.area?v.area:"")}}
-                    <text v-if="k !== measuringArea.length - 1">,
+                  <text v-if="!isCountryArea">
+                    <text v-for="(v, k) in measuringArea" :key="k">
+                      {{(v.province?v.province:"") + (v.city?v.city:"") + (v.area?v.area:"")}}
+                      <text v-if="k !== measuringArea.length - 1">,
+                      </text>
                     </text>
                   </text>
+                  <text v-else>全国</text>
                 </view>
               </view>
               <view class="measuring-serve" v-else>
@@ -92,7 +95,7 @@
                   </view>
                   <view class="check-box">
                     <view>修改服务</view>
-                    <view class="check-icon" v-if="!isIMCard && hasLocalMeasur"></view>
+                    <view class="check-icon" v-if="!isIMCard && hasLocalMeasure"></view>
                   </view>
                 </view>
                 <view class="serve-area">
@@ -180,8 +183,8 @@
       </view>
       <expenses-toast ref='expensesToast' :expensesType="expensesType"></expenses-toast>
       <change-serve-toast v-if="detailData.measureServiceProduct" ref='changeServeToast' @isRemove="isRemoveFn"
-        :isPropsRemove="isRemove" :price="(detailData.measureServiceProduct.serviceMinPrice/100).toFixed(2)"
-        :measuringArea="measuringArea"></change-serve-toast>
+        :isPropsRemove="isRemove" :measuringArea="measuringArea" :isCountryArea="isCountryArea"
+        :price="(detailData.measureServiceProduct.serviceMinPrice/100).toFixed(2)"></change-serve-toast>
       <pay-way-toast ref='payWayToast' @payWay="payWay"></pay-way-toast>
       <uni-popup ref="payDialog" type="bottom">
         <pay-dialog :payChannel="payChannel" :payChannelPrice="payChannelPrice" @payOrder="payOrder"
@@ -235,12 +238,13 @@
         areaInfo: {},
         measuringArea: [],
         detailData: {},
+        isCountryArea: false, // 是否全国范围可量房
         isIMCard: 0, // 是否从聊天推送卡片进入
         isInArea: true, // 地址是否在配送区域
         isInNum: true, // 购买数量是否在范围内
         buySquareMeter: true, // 是否以平米购买
         waitOrderId: 0, // 代付款订单id
-        hasLocalMeasur: true // 是否提供现场量房服务
+        hasLocalMeasure: true // 是否提供现场量房服务
       };
     },
     computed: {
@@ -287,6 +291,7 @@
       }
     },
     onLoad(e) {
+      console.log(getApp().globalData.userInfo.id, "getApp().globalData.userId")
       this.houseId = Number(e.houseId ? e.houseId : getApp().globalData.currentHouse.id);
       this.buyNum = Number(e.buyNum);
       this.skuId = Number(e.skuId);
@@ -340,6 +345,7 @@
             .split('-')[1] : '0'
           let minNum = this.detailData.skuList[0].areaProp ? this.detailData.skuList[0].areaProp.values[0].propValue
             .split('-')[0] : '0'
+            console.log(this.areaInfo.insideArea, "this.areaInfo.insideArea")
           if (v != this.areaInfo.insideArea && this.buySquareMeter) {
             this.isInNum = false
           } else {
@@ -354,15 +360,16 @@
           var res = Number(this.totalPrice) * 100 - this.cardBalance;
           this.cardClick = Number(this.totalPrice) * 100 - this.cardBalance <= 0
           this.regBuyNum(this.buyNum)
-          if (data.suppleMeasure && data.localMeasure) {
-            this.hasLocalMeasur = false
+          if (data.localMeasure) {
+            this.hasLocalMeasure = false
           }
-          if (!this.hasLocalMeasur) {
+          if (!this.hasLocalMeasure) {
             this.measuringArea = data.measureServiceProduct.serviceAreas
           }
           this.measuringArea.some(
             (item1, k1) => {
               if (item1.countryId === 0) {
+                this.isCountryArea = true
                 return this.isInArea = true
               }
               if (item1.cityId) {
@@ -385,7 +392,7 @@
         this.isRemove = v
       },
       readMeasuring(type) {
-        if (!this.hasLocalMeasur && type !== 'remove') {
+        if (!this.hasLocalMeasure && type !== 'remove') {
           return
         }
         uni.navigateTo({
@@ -393,7 +400,7 @@
         });
       },
       changeServe() {
-        if (this.isIMCard && !this.hasLocalMeasur) {
+        if (this.isIMCard && !this.hasLocalMeasure) {
           return
         }
         this.$refs.changeServeToast.showPupop();
@@ -445,6 +452,7 @@
         this.areaInfo.cityId = val.cityId
         this.areaInfo.areaId = val.areaId
         this.areaInfo.insideArea = val.insideArea
+        this.regBuyNum(this.buyNum)
       },
 
       pay() {

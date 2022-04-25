@@ -22,11 +22,14 @@
                 <view>现场量房：{{price}}元</view>
               </view>
               <view class="card-area">可服务区域：
-                <text v-for="(v, k) in measuringArea" :key="k">
-                  {{(v.province?v.province:"") + (v.city?v.city:"") + (v.area?v.area:"")}}
-                  <text v-if="k !== measuringArea.length - 1">,
+                <text v-if="!isCountryArea">
+                  <text v-for="(v, k) in measuringArea" :key="k">
+                    {{(v.province?v.province:"") + (v.city?v.city:"") + (v.area?v.area:"")}}
+                    <text v-if="k !== measuringArea.length - 1">,
+                    </text>
                   </text>
                 </text>
+                <text>全国</text>
               </view>
             </view>
           </view>
@@ -39,9 +42,18 @@
 <script>
   export default {
     props: {
-      isPropsRemove: true,
-      price: '0',
-      measuringArea: []
+      isPropsRemove: {
+        default: true
+      },
+      price: {
+        default: '0'
+      },
+      measuringArea: {
+        default: []
+      },
+      isCountryArea: {
+        default: false
+      }
     },
     data() {
       return {
@@ -164,6 +176,7 @@
         border-radius: 12rpx;
         background-color: #fefffe;
         width: 100%;
+
         .card-price {
           font-size: 26rpx;
           color: #333333;
