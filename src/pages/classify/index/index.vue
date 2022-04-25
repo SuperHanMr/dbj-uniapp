@@ -99,6 +99,7 @@
 					},
 					simplified: true,
 					excludeFields: "product.spu,product.process, product.store,product.supplier,product.areaIds,product.areaPrices,product.category",
+					sessionId:getApp().globalData.sessionId,
 				}).then(res => {
 					this.query.totalPage = res.totalPage;
 					uni.$emit('classifyListData', {

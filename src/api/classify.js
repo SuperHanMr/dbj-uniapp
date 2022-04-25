@@ -68,7 +68,7 @@ export function getShoppingCarNum(areaId) {
 }
 // 商城商品列表
 export function getClassifyShopList (params) {
-  return request.post('product/app/search/mall/recommend/home', params)
+  return request.post('product/app/search/mall/recommend/home/v2', params)
 }
 // 品牌馆列表
 export function getBrandHallList(params){

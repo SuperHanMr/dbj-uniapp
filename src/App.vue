@@ -46,7 +46,8 @@
       goHomeUrl: false,
       MarketStoreSwitch: false,
       ip: "",
-      isSaler:false
+      isSaler:false,
+	  sessionId:'',
     },
 
     onLaunch: function(options) {
@@ -117,6 +118,11 @@
           this.globalData.MarketStoreSwitch = true;
         }
       });
+	  uni.getSystemInfo({
+	  	success: (res)=> {
+			this.globalData.sessionId = res.deviceId;			
+	  	}
+	  });
       // #endif
       const userId = uni.getStorageSync("userId");
       const shareId = uni.getStorageSync("shareId");
@@ -227,6 +233,8 @@
           title: "新版本下载失败",
         });
       });
+	  
+	  
     },
     onShow: function() {
       console.log("App Show");
