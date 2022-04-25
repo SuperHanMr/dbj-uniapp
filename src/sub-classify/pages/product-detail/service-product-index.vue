@@ -13,10 +13,10 @@
         from: '',
 				baseUrl: '',
         sourceIMId: getApp().globalData.userInfo.id,
-				spuId: 227,
+				spuId: 0,
         productId: 0,
-        houseId: 42,
-        token: "Pc0jlCMLaageAbuvl97z3OjRNz%2BFxXrdHjTV3svtxH8ZYtzDTO87dW6k2vvjBtUQ9qjQdxNRl6qAnrUHeu7LPl2L%2FDzcYnx9Lsw5vPGkvBKJD8jX9l4aCRoRrGRY4lGfbfe83a56341abd221f8ee44d38ef3692"
+        houseId: 0,
+        token: ""
 			}
 		},
 		onLoad(e) {
