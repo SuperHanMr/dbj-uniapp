@@ -64,7 +64,7 @@
                 <view class="measuring-price-box">
                   <view class="measuring-price price-font">
                     <view v-if="detailData.measureServiceProduct">
-                      现场量房 ¥{{(detailData.measureServiceProduct.serviceMinPrice/100).toFixed(2)}}
+                      现场量房 ¥{{detailData.skuList?(detailData.skuList[0].relatedSkuList[0].price/100).toFixed(2):'0.00'}}
                     </view>
                     <view class="card-icon" @click.stop="readMeasuring('site')"></view>
                   </view>
@@ -109,7 +109,7 @@
       <view class="good-store-account is-store">
         <view class="price-font">
           <text>商品总价</text>
-          <text>¥{{totalPrice}}</text>
+          <text>¥{{totalPrice !== 'NaN'?totalPrice: '0.00'}}</text>
         </view>
       </view>
       <view v-if="haveCard" class="pay-way" style="justify-content:center" @click="clickCard">
@@ -184,7 +184,7 @@
       <expenses-toast ref='expensesToast' :expensesType="expensesType"></expenses-toast>
       <change-serve-toast v-if="detailData.measureServiceProduct" ref='changeServeToast' @isRemove="isRemoveFn"
         :isPropsRemove="isRemove" :measuringArea="measuringArea" :isCountryArea="isCountryArea"
-        :price="(detailData.measureServiceProduct.serviceMinPrice/100).toFixed(2)"></change-serve-toast>
+        :price="detailData.skuList?(detailData.skuList[0].relatedSkuList[0].price/100).toFixed(2):'0.00'"></change-serve-toast>
       <pay-way-toast ref='payWayToast' @payWay="payWay"></pay-way-toast>
       <uni-popup ref="payDialog" type="bottom">
         <pay-dialog :payChannel="payChannel" :payChannelPrice="payChannelPrice" @payOrder="payOrder"
@@ -292,7 +292,6 @@
       }
     },
     onLoad(e) {
-      console.log(getApp().globalData.userInfo.id, "getApp().globalData.userId")
       this.houseId = Number(e.houseId ? e.houseId : getApp().globalData.currentHouse.id);
       this.buyNum = Number(e.buyNum);
       this.skuId = Number(e.skuId);
@@ -340,13 +339,17 @@
     },
     methods: {
       regBuyNum(v) {
-        this.totalPrice = (this.detailData.serviceMinPrice * v / 100).toFixed(2)
+        if (!this.isRemove) {
+          this.totalPrice = ((this.detailData.serviceMinPrice * this.buyNum + this.detailData.skuList[0].relatedSkuList[
+            0].price) / 100).toFixed((2))
+        } else {
+          this.totalPrice = (this.detailData.serviceMinPrice * this.buyNum / 100).toFixed(2)
+        }
         if (this.detailData.skuList) {
           let maxNum = this.detailData.skuList[0].areaProp ? this.detailData.skuList[0].areaProp.values[0].propValue
             .split('-')[1] : '0'
           let minNum = this.detailData.skuList[0].areaProp ? this.detailData.skuList[0].areaProp.values[0].propValue
             .split('-')[0] : '0'
-            console.log(this.areaInfo.insideArea, "this.areaInfo.insideArea")
           if (v != this.areaInfo.insideArea && this.buySquareMeter) {
             this.isInNum = false
           } else {
@@ -357,7 +360,12 @@
       getDetail() {
         getServiceDetail(this.skuId).then((data) => {
           this.detailData = data
-          this.totalPrice = (data.serviceMinPrice * this.buyNum / 100).toFixed(2)
+          if (!this.isRemove) {
+            this.totalPrice = ((data.serviceMinPrice * this.buyNum + data.skuList[0].relatedSkuList[0].price)/100)
+              .toFixed((2))
+          } else {
+            this.totalPrice = (data.serviceMinPrice * this.buyNum / 100).toFixed(2)
+          }
           var res = Number(this.totalPrice) * 100 - this.cardBalance;
           this.cardClick = Number(this.totalPrice) * 100 - this.cardBalance <= 0
           this.regBuyNum(this.buyNum)
@@ -390,6 +398,12 @@
       },
       isRemoveFn(v) {
         this.isRemove = v
+        if (!v) {
+          this.totalPrice = ((this.detailData.serviceMinPrice * this.buyNum + this.detailData.skuList[0].relatedSkuList[
+            0].price) / 100).toFixed((2))
+        } else {
+          this.totalPrice = (this.detailData.serviceMinPrice * this.buyNum / 100).toFixed(2)
+        }
       },
       readMeasuring(type) {
         if (!this.hasLocalMeasure && type !== 'remove') {
@@ -463,14 +477,30 @@
         this.payOrder();
       },
       payOrder() {
-        let _that = this;
-        let details = [{
-          relationId: this.skuId,
-          type: 6,
-          businessType: 61,
-          number: this.buyNum,
-          origin: this.originType
-        }];
+        let details
+        if (this.isRemove && this.hasMeasure) {
+          details = [{
+            relationId: this.skuId,
+            type: 6,
+            businessType: 61,
+            number: this.buyNum,
+            origin: this.originType
+          }];
+        } else {
+          details = [{
+            relationId: this.skuId,
+            type: 6,
+            businessType: 61,
+            number: this.buyNum,
+            origin: this.originType
+          }, {
+            relationId: this.detailData.skuList[0].relatedSkuList[0].id,
+            type: 6,
+            businessType: 61,
+            number: this.buyNum,
+            origin: this.originType
+          }];
+        }
         uni.$emit("submitOrder"); // 购物车需要的逻辑
         let orderPrice = Number(
           Number(this.totalPrice).toFixed(2).replace(".", "")
