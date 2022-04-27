@@ -73,7 +73,7 @@
                     <view class="check-icon" v-if="!isIMCard"></view>
                   </view>
                 </view>
-                <view class="serve-area">
+                <view class="serve-area" v-if="measuringArea[0] !== 'noArea'">
                   服务区域：
                   <text v-if="!isCountryArea">
                     <text v-for="(v, k) in measuringArea" :key="k">
@@ -372,7 +372,10 @@
           this.hasLocalMeasure = data.localMeasure
           this.hasMeasure = data.localMeasure || productCommonData.data.remoteMeasure
           if (this.hasLocalMeasure) {
-            this.measuringArea = data.measureServiceProduct.serviceAreas
+            this.measuringArea = data.measureServiceProduct.serviceAreas?data.measureServiceProduct.serviceAreas:['noArea']
+          }
+          if(this.measuringArea[0] === 'noArea') {
+            return
           }
           this.measuringArea.some(
             (item1, k1) => {

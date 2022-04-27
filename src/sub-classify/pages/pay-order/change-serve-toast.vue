@@ -21,7 +21,7 @@
               <view class="card-price">
                 <view>现场量房：{{price}}元</view>
               </view>
-              <view class="card-area">可服务区域：
+              <view class="card-area" v-if="measuringArea[0] !== 'noArea'">可服务区域：
                 <text v-if="!isCountryArea">
                   <text v-for="(v, k) in measuringArea" :key="k">
                     {{(v.province?v.province:"") + (v.city?v.city:"") + (v.area?v.area:"")}}
