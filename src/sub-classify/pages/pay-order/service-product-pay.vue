@@ -339,7 +339,8 @@
     },
     methods: {
       regBuyNum(v) {
-        if (!this.isRemove) {
+        console.log(this.detailData.skuList, "this.detailData.skuList888")
+        if (!this.isRemove && this.detailData.skuList) {
           this.totalPrice = ((this.detailData.serviceMinPrice * this.buyNum + this.detailData.skuList[0].relatedSkuList[
             0].price) / 100).toFixed((2))
         } else {
