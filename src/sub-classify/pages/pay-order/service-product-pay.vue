@@ -501,7 +501,7 @@
             relationId: this.detailData.skuList[0].relatedSkuList[0].id,
             type: 6,
             businessType: 61,
-            number: this.buyNum,
+            number: 1,
             origin: this.originType
           }];
         }
