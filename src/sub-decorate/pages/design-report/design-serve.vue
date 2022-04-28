@@ -2,7 +2,7 @@
    
   <view class="wrap" id="design-serve">
     <custom-navbar
-       :title="isSure?'设计服务':'确认设计服务'"
+       :title="detail.state!=='待确认'?'设计服务':'确认设计服务'"
      >
        <template v-slot:back>
          <i
@@ -52,7 +52,7 @@
       </view>
       <Pictures :imgList="item.imageFileList" :isNew="true"></Pictures>
     </view>
-    <view class="btn-blck" v-if="!isSure">
+    <view class="btn-blck" v-if="detail.state==='待确认'">
       <button class="btn"  @click="confirm">确认设计服务完成</button>
     </view>
   </view>
