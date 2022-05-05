@@ -29,7 +29,7 @@
                     </text>
                   </text>
                 </text>
-                <text>全国</text>
+                <text v-else>全国</text>
               </view>
             </view>
           </view>
