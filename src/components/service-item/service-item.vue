@@ -250,6 +250,7 @@
       line-height: 34rpx;
     }
     .s1 {
+      max-width: 70%;
       view {
         height: 34rpx;
         opacity: 1;
@@ -260,6 +261,10 @@
         color: #333333;
         line-height: 34rpx;
         margin-right: 8rpx;
+        max-width: 90%;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
       }
       image {
         width: 24rpx;
