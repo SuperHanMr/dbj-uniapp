@@ -184,7 +184,8 @@
       <expenses-toast ref='expensesToast' :expensesType="expensesType"></expenses-toast>
       <change-serve-toast v-if="detailData.measureServiceProduct" ref='changeServeToast' @isRemove="isRemoveFn"
         :isPropsRemove="isRemove" :measuringArea="measuringArea" :isCountryArea="isCountryArea"
-        :price="detailData.skuList?(detailData.skuList[0].relatedSkuList[0].price/100).toFixed(2):'0.00'"></change-serve-toast>
+        :price="detailData.skuList?(detailData.skuList[0].relatedSkuList[0].price/100).toFixed(2):'0.00'">
+      </change-serve-toast>
       <pay-way-toast ref='payWayToast' @payWay="payWay"></pay-way-toast>
       <uni-popup ref="payDialog" type="bottom">
         <pay-dialog :payChannel="payChannel" :payChannelPrice="payChannelPrice" @payOrder="payOrder"
@@ -339,7 +340,6 @@
     },
     methods: {
       regBuyNum(v) {
-        console.log(this.detailData.skuList, "this.detailData.skuList888")
         if (!this.isRemove && this.detailData.skuList) {
           this.totalPrice = ((this.detailData.serviceMinPrice * this.buyNum + this.detailData.skuList[0].relatedSkuList[
             0].price) / 100).toFixed((2))
@@ -362,7 +362,7 @@
         getServiceDetail(this.skuId).then((data) => {
           this.detailData = data
           if (!this.isRemove) {
-            this.totalPrice = ((data.serviceMinPrice * this.buyNum + data.skuList[0].relatedSkuList[0].price)/100)
+            this.totalPrice = ((data.serviceMinPrice * this.buyNum + data.skuList[0].relatedSkuList[0].price) / 100)
               .toFixed((2))
           } else {
             this.totalPrice = (data.serviceMinPrice * this.buyNum / 100).toFixed(2)
@@ -373,9 +373,10 @@
           this.hasLocalMeasure = data.localMeasure
           this.hasMeasure = data.localMeasure || productCommonData.data.remoteMeasure
           if (this.hasLocalMeasure) {
-            this.measuringArea = data.measureServiceProduct.serviceAreas?data.measureServiceProduct.serviceAreas:['noArea']
+            this.measuringArea = data.measureServiceProduct.serviceAreas ? data.measureServiceProduct.serviceAreas :
+              ['noArea']
           }
-          if(this.measuringArea[0] === 'noArea') {
+          if (this.measuringArea[0] === 'noArea') {
             return
           }
           this.measuringArea.some(
@@ -398,6 +399,12 @@
               }
             }
           );
+          if (!this.isInArea) {
+            uni.showToast({
+              icon: "error",
+              title: "很抱歉，当前房屋不在量房范围内",
+            });
+          }
         })
       },
       isRemoveFn(v) {
@@ -470,6 +477,32 @@
         this.areaInfo.cityId = val.cityId
         this.areaInfo.areaId = val.areaId
         this.areaInfo.insideArea = val.insideArea
+        this.measuringArea.some(
+          (item1, k1) => {
+            if (item1.countryId === 0) {
+              this.isCountryArea = true
+              return this.isInArea = true
+            }
+            if (item1.cityId) {
+              if (item1.areaId) {
+                return (this.isInArea =
+                  this.areaInfo.areaId === item1.areaId);
+              } else {
+                return (this.isInArea =
+                  this.areaInfo.cityId === item1.cityId);
+              }
+            } else {
+              return (this.isInArea =
+                this.areaInfo.provinceId === item1.provinceId);
+            }
+          }
+        );
+        if (!this.isInArea) {
+          uni.showToast({
+            icon: "error",
+            title: "很抱歉，当前房屋不在量房范围内",
+          });
+        }
         this.regBuyNum(this.buyNum)
       },
 
