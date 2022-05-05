@@ -19,11 +19,14 @@
           <view class="shop-name">{{detailData.designerInfo.name}}</view>
           <view class="item-box">
             <view class="goods-item">
-              <image :src="productCommonData.data.designerInfo.avatar" class="goodsItemImg"></image>
+              <image :src="detailData.designerInfo.avatar" class="goodsItemImg"></image>
               <view class="goods-info">
                 <view class="goods-desc">
                   <text class="goods-type">{{"设计师服务"}}</text>
                   {{detailData.name}}
+                </view>
+                <view class="spu-class">
+                  <view class='tag'>{{detailData.houseType}}</view>
                 </view>
                 <view class="spu-class">
                   <view class='tag'>{{detailData.designerInfo.name}}｜设计师</view>
@@ -178,7 +181,7 @@
             </view>
 
           </view>
-          <button class="pay-button" :class="{'no-pay': !isInArea || !isInNum}" @click="pay" ref="test">立即支付</button>
+          <button class="pay-button" :class="{'no-pay': (!isInArea && !isRemove) || !isInNum}" @click="pay" ref="test">立即支付</button>
         </view>
       </view>
       <expenses-toast ref='expensesToast' :expensesType="expensesType"></expenses-toast>
@@ -507,6 +510,9 @@
       },
 
       pay() {
+        if((!isInArea && !isRemove) || !isInNum) {
+          return
+        }
         if (this.cardClick) {
           this.$refs.payDialog.open();
           return;
