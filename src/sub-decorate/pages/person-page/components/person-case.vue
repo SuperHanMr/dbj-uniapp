@@ -139,7 +139,7 @@
           sortType:3,
           // sortPropNameType: 5,
           zeusId:this.personId,
-          parentType : 3
+          parentType : [1,2,3]
       	}
       		getCaseList(params).then((res) => {
       			if (res && res.list) {
