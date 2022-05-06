@@ -73,7 +73,7 @@
                 >
                   {{
 										item.orderStatus == 1
-										?(item.type == 2
+										?(item.type==2 ||item.type==6
 											? "进行中"
 											:item.stockType == 1
 											?"进行中"
