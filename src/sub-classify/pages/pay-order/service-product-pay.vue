@@ -500,7 +500,7 @@
             }
           }
         );
-        if (!this.isInArea) {
+        if (!this.isInArea) { 
           uni.showToast({
             icon: "error",
             title: "很抱歉，当前房屋不在量房范围内",

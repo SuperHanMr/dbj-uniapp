@@ -428,7 +428,7 @@
   .list-container {
     box-sizing: border-box;
     padding: 0 24rpx 24rpx;
-    height: calc(100% - 380rpx);
+    height: calc(100% - 360rpx);
     background-color: #101216 !important;
     padding-top: 36rpx;
 
