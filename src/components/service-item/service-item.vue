@@ -140,6 +140,8 @@
 }
 .item-name {
   padding: 34rpx 40rpx 34rpx 24rpx;
+  max-width: 70%;
+
   image {
     width: 32rpx;
     height: 32rpx;
@@ -187,6 +189,10 @@
     text-align: left;
     color: #333333;
     line-height: 36rpx;
+    max-width: 81%;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
   }
 }
 .status-name {

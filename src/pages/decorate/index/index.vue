@@ -96,7 +96,7 @@
                 <view class="r flex-start-row" v-if="aServiceData.myServiceFlag" @click="goToMyDecorate">
                   <text>查看全部</text>
                   <i class='icon-alert_notice_jump'></i>
-                  
+
                 </view>
               </view>
               <service-item v-for="(item, index) in purchasedServiceList" :key="item.nodeType" :serviceData="item"
