@@ -158,10 +158,14 @@
           background-color: #eee;
         }
         text{
+          display: block;
           font-weight: 400;
           text-align: left;
           color: #333333;
           font-size: 24rpx;
+              max-width: 100%;
+              // white-space: nowrap;
+              word-break: break-all;
         }
         
       }
