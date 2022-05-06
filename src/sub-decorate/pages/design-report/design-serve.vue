@@ -25,7 +25,7 @@
           <view class="role">设计</view>
         </view>
       </view>
-      <view class="date">{{calendarFormat(detail)}}</view>
+      <!-- <view class="date">{{calendarFormat(detail)}}</view> -->
 
     </view>
     <view v-if="detail.beautyReport && detail.beautyReport.id && detail.beautyReport.templateId"
