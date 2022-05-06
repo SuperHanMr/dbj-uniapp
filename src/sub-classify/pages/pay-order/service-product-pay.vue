@@ -510,7 +510,7 @@
       },
 
       pay() {
-        if((!isInArea && !isRemove) || !isInNum) {
+        if((!this.isInArea && !this.isRemove) || !this.isInNum) {
           return
         }
         if (this.cardClick) {
