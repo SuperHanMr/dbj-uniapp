@@ -44,7 +44,7 @@
                 <view class="buy-num" v-if="buySquareMeter">
                   <text v-if="isIMCard">{{buyNum}}㎡</text>
                   <view v-else>
-                    <input type="number" v-model="buyNum" /><text>㎡</text>
+                    <input type="digit" v-model="buyNum" /><text>㎡</text>
                   </view>
                 </view>
               </view>
