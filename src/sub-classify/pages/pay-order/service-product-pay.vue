@@ -181,7 +181,7 @@
             </view>
 
           </view>
-          <button class="pay-button" :class="{'no-pay': (!isInArea && !isRemove) || !isInNum}" @click="pay" ref="test">立即支付</button>
+          <button class="pay-button" :class="{'no-pay': !isInArea && !isRemove}" @click="pay" ref="test">立即支付</button>
         </view>
       </view>
       <expenses-toast ref='expensesToast' :expensesType="expensesType"></expenses-toast>
@@ -510,7 +510,7 @@
       },
 
       pay() {
-        if((!this.isInArea && !this.isRemove) || !this.isInNum) {
+        if(!this.isInArea && !this.isRemove) {
           return
         }
         if (this.cardClick) {
