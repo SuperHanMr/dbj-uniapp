@@ -1065,6 +1065,13 @@
           }
         },
         {
+          "path": "pages/service-area-change/service-area-change",
+          "style": {
+            "navigationBarTitleText": "服务面积变更",
+            "enablePullDownRefresh": false
+          }
+        },
+        {
           "path": "pages/custom-report/custom-report",
           "style": {
             "navigationBarTitleText": "",

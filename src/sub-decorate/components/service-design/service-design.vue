@@ -1,5 +1,14 @@
 <template>
   <view class="service-design">
+    <view class="service-change">
+      <view class="change-item" v-if="designData.customReport">
+        <view class="title">服务面积变更详情</view>
+        <view class="check" @click="toServiceAreaChange">
+          <text>立即查看</text>
+          <i class="icon-ic_wodejia_beiwanglugengduo_csn"></i>
+        </view>
+      </view>
+    </view>
     <view class="design-report">
       <view class="report-item" v-if="designData.customReport">
         <view class="title">自定义报告详情</view>
@@ -53,7 +62,7 @@
           },
           immediate: true
         }
-      
+
     },
     methods:{
       getMyDesignServe(){
@@ -64,6 +73,12 @@
           if(res.fileListVO.length===0){
             this.$emit('isEmpty',this.index)
           }
+        })
+      },
+      // 跳转至服务面积变更详情
+      toServiceAreaChange(){
+        uni.navigateTo({
+          url:`/sub-decorate/pages/service-area-change/service-area-change?id=${this.designData.customReport.id}&serveId=${this.serverId}`
         })
       },
       toDesign(){
@@ -93,21 +108,21 @@
 <style lang="scss" scoped>
   .service-design{
     margin: 24rpx;
-    .design-report{
-      
-      
+
+    .design-report,.service-change{
       padding: 0 20rpx 0 32rpx;
       background-color: #fff;
       border-radius: 24rpx;
       margin-bottom: 48rpx;
-      .report-item{
+      .report-item, .change-item{
         height: 100rpx;
         border-bottom: 0.5px solid #F4F4F4;
         display: flex;
         justify-content: space-between;
         align-items: center;
       }
-      .report-item:last-child{
+      .report-item:last-child,
+      .change-item:last-child{
         border: none;
       }
       .title{
@@ -131,6 +146,9 @@
           margin-left: 16rpx;
         }
       }
+    }
+    .service-change{
+      margin-bottom: 24rpx;
     }
     .design-list{
       margin-top: 8rpx;
@@ -167,7 +185,7 @@
               // white-space: nowrap;
               word-break: break-all;
         }
-        
+
       }
     }
   }
