@@ -5,7 +5,7 @@
         <view class="title">服务面积变更详情</view>
         <view class="check" @click="toServiceAreaChange">
           <text>立即查看</text>
-          <i class="icon-ic_wodejia_beiwanglugengduo_csn"></i>
+          <i class="icon-alert_notice_jump"></i>
         </view>
       </view>
     </view>
@@ -14,14 +14,14 @@
         <view class="title">自定义报告详情</view>
         <view class="check" @click="toDesign">
           <text>立即查看</text>
-          <i class="icon-ic_wodejia_beiwanglugengduo_csn"></i>
+          <i class="icon-alert_notice_jump"></i>
         </view>
       </view>
       <view class="report-item" v-if="designData.beautyReport">
         <view class="title">颜值报告详情</view>
         <view class="check" @click="toBeatiful">
           <text>立即查看</text>
-          <i class="icon-ic_wodejia_beiwanglugengduo_csn"></i>
+          <i class="icon-alert_notice_jump"></i>
         </view>
       </view>
     </view>

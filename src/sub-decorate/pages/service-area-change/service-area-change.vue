@@ -21,28 +21,25 @@
               您还没有任何数据~
             </view>
           </view> -->
-
-          <!-- <service-area-change-item v-for="item in currentList" :item="item" :key="item.id" @detail="toDetail"
-            @refund="toRefund" @confirmGoods="onConfirmGoods" :showRecived="currentIndex==1&&ownered"
-            :showBacking="currentIndex==3&&ownered" :showPrePrice="false" :showSubCount="currentIndex!=3"
-            :showDetail="currentIndex==3">
-          </service-area-change-item> -->
-
-
           <view class="service-area-change-item" v-for="item in currentList" :key="item">
             <view class="item-top">
               <view class="item-top-left">
                 <image class="avatar" :src="isDesign&&(designData.designServerVO && designData.designServerVO.avatar)||tab.avatar" mode="aspectFit"></image>
-                <view>
+              </view>
+              <view class="item-top-middle">
                   <view>
-
+                    <text class="name">拉布布</text>
+                    <text class="role">设计师</text>
                   </view>
-                  <text>服务者姓名</text>
-                </view>
+                  <view class="time">2022-5-30 12:00:00</view>
               </view>
               <view class="item-top-right">
-                <text class="status">已支付</text>
-                <text class="price">590</text>
+                <view class="status">已支付</view>
+                <view ><text class="symbol">￥</text>
+                <text class="price-font price">
+                  {{"590.00"}}
+                </text>
+                </view>
               </view>
             </view>
             <view class="item-bottom">
@@ -69,9 +66,9 @@
     data() {
       return {
         projectId: "0",
-        list0: [{name:'测试'}],
-        list1: [],
-        list2: [],
+        list0: [{name:'测试'},{name:'测试'}],
+        list1: [{name:'测试'}],
+        list2: [{name:'测试'}],
         tabList: ["已完成", "待处理", "已拒绝"],
         lastId: ["", "", ""],
         triggered: false, //控制刷新显示字段
@@ -112,6 +109,23 @@
     //   this.onRefresh()
     // },
     methods: {
+      foramtPrice(item) {
+        let price = String(item || "0");
+        console.log(price)
+        return price.slice(0, price.length - 2) || "0";
+      },
+      foramtPrePrice(price) {
+        return Number(price / 100).toFixed(2);
+      },
+      formatCent(item) {
+        let price = String(item || "0");
+        let fixedNum = Number(price / 100).toFixed(2);
+        if (String(fixedNum).split(".").length > 1) {
+          return String(fixedNum).split(".")[1];
+        } else {
+          return "";
+        }
+      },
       toDetail(e) {
         let id;
         if (this.currentIndex == 0) {
@@ -368,10 +382,65 @@
   .service-area-change-item{
     display: flex;
     flex-direction: column;
+    background: #fff;
+    margin: 24rpx;
+    padding: 24rpx;
+    border-radius: 24rpx;
     .item-top{
+      display: flex;
+      .item-top-left{
+        .avatar {
+          width: 72rpx;
+          height: 72rpx;
+          border-radius: 36px;
+          object-fit: cover;
+          background: rgb(228, 227, 227);
+        }
+      }
+      .item-top-middle{
+        margin-left: 24rpx;
+        .name{
+          font-size: 28rpx;
+          color: #333333;
+
+        }
+        .role{
+          margin-left: 12rpx;
+          padding: 0 8rpx;
+          line-height: 28ppx;
+          font-size: 20rpx;
+          color: #4FBEED;
+          background: #F4FBFE;
+        }
+        .time {
+          font-size: 22rpx;
+          color: #999999;
+        }
+      }
+      .item-top-right{
+        flex: 1;
+        text-align: right;
+        .status{
+          font-size: 26rpx;
+          color: #999999
+        }
+        .symbol{
+          font-size: 24rpx;
+        }
+        .price{
+          font-size: 32rpx;
+          color: #333333;
+        }
+      }
 
     }
     .item-bottom{
+      margin-top: 16rpx;
+      padding: 16rpx 40rpx;
+      background: #F6F7F7;
+      border-radius: 8rpx;
+      font-size: 26rpx;
+      color: #333333;
 
     }
   }
