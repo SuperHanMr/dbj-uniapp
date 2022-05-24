@@ -32,9 +32,13 @@
           <view class="service-area-change-item" v-for="item in currentList" :key="item">
             <view class="item-top">
               <view class="item-top-left">
-                <image class="avatar" @click="toPerson" :src="isDesign&&(designData.designServerVO && designData.designServerVO.avatar)||tab.avatar" mode="aspectFit"></image>
+                <image class="avatar" :src="isDesign&&(designData.designServerVO && designData.designServerVO.avatar)||tab.avatar" mode="aspectFit"></image>
+                <view>
+                  <view>
 
-                <view></view>
+                  </view>
+                  <text>服务者姓名</text>
+                </view>
               </view>
               <view class="item-top-right">
                 <text class="status">已支付</text>
@@ -61,13 +65,7 @@
     confirmGoods,
     judgeOwner
   } from "../../../api/decorate.js";
-    import {
-    ServiceAreaChangeItem
-  } from "../../components/service-area-change-item/service-area-change-item.vue"
   export default {
-    components: {
-      ServiceAreaChangeItem,
-    },
     data() {
       return {
         projectId: "0",
@@ -369,6 +367,13 @@
 
   .service-area-change-item{
     display: flex;
+    flex-direction: column;
+    .item-top{
+
+    }
+    .item-bottom{
+
+    }
   }
 
 </style>
