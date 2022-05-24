@@ -1,48 +1,42 @@
 <template>
-  <view
-    class="container"
-    :style="{paddingBottom:containerPaddingBottom}"
-  >
-    <custom-navbar
-      :opacity="scrollTop/100"
-      :title="headerTitle"
-    >
+  <view class="container" :style="{ paddingBottom: containerPaddingBottom }">
+    <custom-navbar :opacity="scrollTop / 100" :title="headerTitle">
       <template v-slot:back>
         <i
           class="icon-ic_cancel_white back-icon"
-          :style="{color: (scrollTop/100>1)?'black':'white'}"
+          :style="{ color: scrollTop / 100 > 1 ? 'black' : 'white' }"
           @click="toBack"
         ></i>
       </template>
     </custom-navbar>
 
     <view class="order-container">
-      <view style="position: relative;">
+      <view style="position: relative">
         <view
           class="bgcStyle"
-          :style="{backgroundImage:`url(${bgImg})`,backgroundSize: '100% 100%'}"
+          :style="{
+            backgroundImage: `url(${bgImg})`,
+            backgroundSize: '100% 100%',
+          }"
         />
-        <view :style="{height:navBarHeight}"></view>
+        <view :style="{ height: navBarHeight }"></view>
 
         <view class="order-status">
-          <view
-            v-for="statusItem in orderStatusList"
-            :key="statusItem.value"
-          >
+          <view v-for="statusItem in orderStatusList" :key="statusItem.value">
             <view
               class="status1"
-              v-if="orderInfo.orderStatus==statusItem.value"
+              v-if="orderInfo.orderStatus == statusItem.value"
             >
               <image :src="statusItem.imgUrl" />
-              <view class="text">{{statusItem.statusName}}</view>
+              <view class="text">{{ statusItem.statusName }}</view>
             </view>
           </view>
 
           <view
             class="time"
-            v-if="orderInfo.showCancelOrderTime && orderInfo.orderStatus==0"
+            v-if="orderInfo.showCancelOrderTime && orderInfo.orderStatus == 0"
           >
-            <text style="margin-right: 16rpx;">剩余支付时间</text>
+            <text style="margin-right: 16rpx">剩余支付时间</text>
             <count-down
               class="countStyle"
               :start="orderInfo.remainTime"
@@ -51,82 +45,80 @@
           </view>
           <view
             class="time"
-            v-if="orderInfo.isOrderCompanyTransfer && orderInfo.orderStatus==0"
+            v-if="
+              orderInfo.isOrderCompanyTransfer && orderInfo.orderStatus == 0
+            "
           >
-            <view class="showText">请尽快线下汇款，汇款时务必填写汇款识别码</view>
+            <view class="showText"
+              >请尽快线下汇款，汇款时务必填写汇款识别码</view
+            >
           </view>
         </view>
       </view>
 
       <order-user-base-info
-        v-if="orderInfo.customerName && orderInfo.customerPhone && orderInfo.estateInfo"
+        v-if="
+          orderInfo.customerName &&
+          orderInfo.customerPhone &&
+          orderInfo.estateInfo
+        "
         :data="orderInfo"
       />
 
       <view
         class="moreStore"
-        v-if=" orderInfo.orderStatus==0 && orderInfo.orderName && orderInfo.type !==5 "
+        v-if="
+          orderInfo.orderStatus == 0 &&
+          orderInfo.orderName &&
+          orderInfo.type !== 5
+        "
       >
-        {{orderInfo.orderName}}
+        {{ orderInfo.orderName }}
       </view>
       <!--  代付款订单详情的时候展示 -->
       <view v-if="orderInfo.orderStatus == 0">
         <view
           class="store-container"
-          v-for="(item,index) in orderInfo.details"
+          v-for="(item, index) in orderInfo.details"
           :key="index"
         >
-          <view
-            v-if="index > 0"
-            class="store-line"
-          />
+          <view v-if="index > 0" class="store-line" />
           <view
             class="storeItem"
-            :class="{paddingBottom: item.stockType == 1 }"
-            :style="{borderRadius:index >= 1 ? '0' :'24rpx 24rpx 0 0'}"
+            :class="{ paddingBottom: item.stockType == 1 }"
+            :style="{ borderRadius: index >= 1 ? '0' : '24rpx 24rpx 0 0' }"
           >
             <view class="header">
-              <view
-                class="header-content"
-                v-if="orderInfo.type !== 5"
-              >
-                <view
-                  class="storeName"
-                  @click="gotoShop(item)"
-                >{{item.storeName}}</view>
-                <image src="https://ali-image.dabanjia.com/static/mp/dabanjia/images/theme-red/my/small_gotoShop.svg" />
+              <view class="header-content" v-if="orderInfo.type !== 5">
+                <view class="storeName" @click="gotoShop(item)">{{
+                  item.storeName
+                }}</view>
+                <image
+                  src="https://ali-image.dabanjia.com/static/mp/dabanjia/images/theme-red/my/small_gotoShop.svg"
+                />
               </view>
-              <view
-                class="header-content"
-                v-else
-              >
-                <view class="storeName">{{orderInfo.orderName}}</view>
+              <view class="header-content" v-else>
+                <view class="storeName">{{ orderInfo.orderName }}</view>
               </view>
               <view class="icon"></view>
             </view>
-            <view
-              v-for="item2 in item.details"
-              :key="item2.id"
-            >
+            <view v-for="item2 in item.details" :key="item2.id">
               <order-item
-                v-if="item2.type !==5"
+                v-if="item2.type !== 5"
                 :orderStatus="1"
                 :dataList="item2"
                 @handleDetail="productDetail(item2)"
               />
-              <store-calue-card-item
-                :dataInfo="item2"
-                v-else
-              />
+              <store-calue-card-item :dataInfo="item2" v-else />
             </view>
 
             <view
               class="discount-container"
-              v-if="item.hasMaterial &&  orderInfo.details.length>1"
+              v-if="item.hasMaterial && orderInfo.details.length > 1"
             >
               <view class="item_css_style">
                 <view class="left">
-                  <view style="margin-right: 8rpx;">运费</view>
+                  <view style="margin-right: 8rpx">运费</view>
                   <image
                     class="icon"
                     @click="readExpenses(1)"
@@ -134,24 +126,27 @@
                   />
                 </view>
                 <view class="right">
-                  <text
-                    class="price-font"
-                    v-if="orderInfo.stockType == 0"
-                  >
-                    ￥{{item.freight?`${item.freight}`:"0.00"}}
+                  <text class="price-font" v-if="orderInfo.stockType == 0">
+                    ￥{{ item.freight ? `${item.freight}` : "0.00" }}
                   </text>
                   <text
                     class="price-font"
-                    :style="{marginTop:item.freight?'0':'8rpx'}"
+                    :style="{ marginTop: item.freight ? '0' : '8rpx' }"
                     v-else
                   >
-                    {{item.freight?`￥${item.freight}`: (isFromPackage ? "￥0.00" : "--")}}
+                    {{
+                      item.freight
+                        ? `￥${item.freight}`
+                        : isFromPackage
+                        ? "￥0.00"
+                        : "--"
+                    }}
                   </text>
                 </view>
               </view>
               <view class="item_css_style">
                 <view class="left">
-                  <view style="margin-right: 8rpx;">搬运费</view>
+                  <view style="margin-right: 8rpx">搬运费</view>
                   <image
                     class="icon"
                     @click="readExpenses(2)"
@@ -159,38 +154,39 @@
                   />
                 </view>
                 <view class="right">
-                  <text
-                    class="price-font"
-                    v-if="orderInfo.stockType == 0"
+                  <text class="price-font" v-if="orderInfo.stockType == 0">
+                    ￥{{ item.handlingFees ? item.handlingFees : "0.00" }}</text
                   >
-                    ￥{{item.handlingFees?item.handlingFees:"0.00"}}</text>
                   <text
                     class="price-font"
-                    :style="{marginTop:item.handlingFees ? '0' : '8rpx' }"
+                    :style="{ marginTop: item.handlingFees ? '0' : '8rpx' }"
                     v-else
-                  >{{item.handlingFees?`￥${item.handlingFees}`:(isFromPackage ? "￥0.00" : "--")}}</text>
+                    >{{
+                      item.handlingFees
+                        ? `￥${item.handlingFees}`
+                        : isFromPackage
+                        ? "￥0.00"
+                        : "--"
+                    }}</text
+                  >
                 </view>
               </view>
-              <view
-                class="item_css_style"
-                v-if="item.storeDiscount"
-              >
+              <view class="item_css_style" v-if="item.storeDiscount">
                 <view class="left">
                   <text>商家</text>
                 </view>
                 <view class="right">
-                  <text class="price-font"> -￥{{item.storeDiscount}}</text>
+                  <text class="price-font"> -￥{{ item.storeDiscount }}</text>
                 </view>
               </view>
-              <view
-                class="item_css_style"
-                v-if="item.platformDiscount"
-              >
+              <view class="item_css_style" v-if="item.platformDiscount">
                 <view class="left">
                   <text>平台优惠</text>
                 </view>
                 <view class="right">
-                  <text class="price-font"> -￥{{item.platformDiscount}}</text>
+                  <text class="price-font">
+                    -￥{{ item.platformDiscount }}</text
+                  >
                 </view>
               </view>
             </view>
@@ -198,16 +194,12 @@
           <view class="split-line" />
         </view>
 
-        <order-price
-          :data="orderInfo"
-          :waitPay="true"
-          :payPrice="payPrice"
-        />
+        <order-price :data="orderInfo" :waitPay="true" :payPrice="payPrice" />
 
         <view
           v-if="haveCard && orderInfo.isReplenish"
           class="pay-way"
-          style="justify-content:center"
+          style="justify-content: center"
           @click="clickCard"
         >
           <image
@@ -216,13 +208,14 @@
           />
           <view>
             <text>储值卡</text>
-            <text class="card-sub">(可用余额:{{(cardBalance/100).toFixed(2)}}元)</text>
+            <text class="card-sub"
+              >(可用余额:{{ (cardBalance / 100).toFixed(2) }}元)</text
+            >
           </view>
-          <view style="flex:1"> </view>
-          <view
-            v-if="cardClick"
-            class="card-price"
-          > -¥{{(this.cardPrice/100).toFixed(2)}}</view>
+          <view style="flex: 1"> </view>
+          <view v-if="cardClick" class="card-price">
+            -¥{{ (this.cardPrice / 100).toFixed(2) }}</view
+          >
 
           <image
             v-if="cardClick"
@@ -236,29 +229,22 @@
           />
         </view>
 
-        <view
-          class="pay-way mrb"
-          v-if="!orderInfo.isOrderCompanyTransfer"
-        >
-          <text style="color: #333333;">支付方式</text>
-          <view
-            v-if="payChannel"
-            class="flex-center"
-          ><text>储值卡支付</text></view>
-          <view
-            v-else
-            class="flex-center"
-          ><text>在线支付</text></view>
+        <view class="pay-way mrb" v-if="!orderInfo.isOrderCompanyTransfer">
+          <text style="color: #333333">支付方式</text>
+          <view v-if="payChannel" class="flex-center"
+            ><text>储值卡支付</text></view
+          >
+          <view v-else class="flex-center"><text>在线支付</text></view>
         </view>
 
         <!-- 支付模块新增需求  只有代付款 -->
         <order-payment-info
           v-if="orderInfo.isOrderCompanyTransfer"
           :orderInfo="orderInfo"
-					:commonMesageInfo="commonMesageInfo"
+          :commonMesageInfo="commonMesageInfo"
         ></order-payment-info>
 
-       <!-- <view
+        <!-- <view
           class='remarks'
           v-if="!orderInfo.isOrderCompanyTransfer"
         >
@@ -278,10 +264,7 @@
       </view>
 
       <!--进行中订单样式 -->
-      <view
-        class="storeContainer"
-        v-if="orderInfo.orderStatus == 1"
-      >
+      <view class="storeContainer" v-if="orderInfo.orderStatus == 1">
         <view
           v-for="item in orderInfo.details"
           :key="item.storeId"
@@ -289,10 +272,9 @@
         >
           <view class="header">
             <view class="header-content">
-              <view
-                class="storeName"
-                @click="gotoShop(item)"
-              >{{item.storeName}}</view>
+              <view class="storeName" @click="gotoShop(item)">{{
+                item.storeName
+              }}</view>
               <image
                 src="https://ali-image.dabanjia.com/static/mp/dabanjia/images/theme-red/my/small_gotoShop.svg"
                 mode=""
@@ -313,10 +295,10 @@
               :productNum="item.details.length"
               :refundApplyMode="orderInfo.refundApplyMode"
               @handleDetail="productDetail(item2)"
-              @toApplayForRefund="toApplayForRefund(item2,1)"
+              @toApplayForRefund="toApplayForRefund(item2, 1)"
               @refundCancel="refundCancel(item2)"
               @refundSuccess="refundSuccess(item2)"
-              @refundFailed="refundFailed(item2,1)"
+              @refundFailed="refundFailed(item2, 1)"
               @refundClose="refundClose(item2)"
             />
           </view>
@@ -324,28 +306,23 @@
       </view>
 
       <!--已完成和已关闭订单样式 -->
-      <view
-        class="body2"
-        v-if="orderStatus ==2 || orderStatus ==3"
-      >
+      <view class="body2" v-if="orderStatus == 2 || orderStatus == 3">
         <view
           class="part1"
-          v-for="(item2,index2) in orderInfo.details"
+          v-for="(item2, index2) in orderInfo.details"
           :key="index2"
         >
           <view class="header">
             <view class="header-content">
               <view
-                v-if="orderInfo.type !==5"
+                v-if="orderInfo.type !== 5"
                 class="storeName"
                 @click="gotoShop(item2)"
-              >{{item2.storeName}}</view>
-              <view
-                v-else
-                class="storeName"
-              >{{orderInfo.orderName}}</view>
+                >{{ item2.storeName }}</view
+              >
+              <view v-else class="storeName">{{ orderInfo.orderName }}</view>
               <image
-                v-if="orderInfo.type !==5 "
+                v-if="orderInfo.type !== 5"
                 src="https://ali-image.dabanjia.com/static/mp/dabanjia/images/theme-red/my/small_gotoShop.svg"
                 mode=""
               />
@@ -359,48 +336,45 @@
             class="orederItem"
           >
             <order-item
-              v-if="item3.type !==5 && orderStatus ==2"
+              v-if="item3.type !== 5 && orderStatus == 2"
               :dataList="item3"
               :orderStatus="3"
               @handleDetail="productDetail(item3)"
             />
             <order-item
-              v-if="item3.type !== 5 && orderStatus ==3"
+              v-if="item3.type !== 5 && orderStatus == 3"
               :dataList="item3"
               @handleDetail="productDetail(item3)"
             />
-            <store-calue-card-item
-              :dataInfo="item3"
-              v-if="item3.type ==5"
-            />
+            <store-calue-card-item :dataInfo="item3" v-if="item3.type == 5" />
           </view>
         </view>
       </view>
 
-			<order-price
-				v-if="orderStatus!==0"
-			  :data="orderInfo"
-			  :orderFailed="orderStatus ==3"
-			/>
+      <order-price
+        v-if="orderStatus !== 0"
+        :data="orderInfo"
+        :orderFailed="orderStatus == 3"
+      />
 
-			<!-- 订单信息 -->
-			<order-info
-				:orderNo="orderInfo.orderNo"
-				:createTime="orderInfo.createTime"
-				:showPayTime="orderInfo.payTime>0"
-				:payTime="orderInfo.payTime"
-				:showCancelTime="orderStatus ==3"
-				:cancelTime="orderInfo.cancelTime"
-				:showPayType="orderStatus==1|| orderStatus==2"
-				:payChannel="orderInfo.payChannel"
-			></order-info>
+      <!-- 订单信息 -->
+      <order-info
+        :orderNo="orderInfo.orderNo"
+        :createTime="orderInfo.createTime"
+        :showPayTime="orderInfo.payTime > 0"
+        :payTime="orderInfo.payTime"
+        :showCancelTime="orderStatus == 3"
+        :cancelTime="orderInfo.cancelTime"
+        :showPayType="orderStatus == 1 || orderStatus == 2"
+        :payChannel="orderInfo.payChannel"
+      ></order-info>
 
       <!-- 代付款订单详情 底部按钮 -->
       <view
-        v-if="orderInfo.showCancelBtn || orderInfo.showToPayBtn "
+        v-if="orderInfo.showCancelBtn || orderInfo.showToPayBtn"
         class="footer-container"
-        :class="{noCancelBtn:true}"
-        :style="{paddingBottom:systemBottom,justifyContent:bottomStyle }"
+        :class="{ noCancelBtn: true }"
+        :style="{ paddingBottom: systemBottom, justifyContent: bottomStyle }"
       >
         <view
           v-if="orderInfo.showCancelBtn"
@@ -409,31 +383,29 @@
         >
           取消订单
         </view>
-        <view
-          v-if="orderInfo.showToPayBtn"
-          class="gotoPay"
-          @click="toPay()"
-        >
+        <view v-if="orderInfo.showToPayBtn" class="gotoPay" @click="toPay()">
           去付款
         </view>
-
       </view>
 
       <!-- 进行中订单底部按钮 -->
       <view
-        v-if="orderInfo.showRefundBtn || (orderInfo.stockType == 0 && orderInfo.shipmentStatus == 1)"
+        v-if="
+          orderInfo.showRefundBtn ||
+          (orderInfo.stockType == 0 && orderInfo.shipmentStatus == 1)
+        "
         class="applyforRefund-confirmReceipt"
-        :style="{paddingBottom:systemBottom}"
+        :style="{ paddingBottom: systemBottom }"
       >
         <view
           v-if="orderInfo.showRefundBtn"
           class="applyforRefund"
-          @click="toApplayForRefund(orderInfo,2)"
+          @click="toApplayForRefund(orderInfo, 2)"
         >
           申请退款
         </view>
         <view
-          v-if="orderInfo.stockType==0 && orderInfo.shipmentStatus == 1"
+          v-if="orderInfo.stockType == 0 && orderInfo.shipmentStatus == 1"
           class="confirmReceipt"
           @click="handleConfirmReceipt"
         >
@@ -443,14 +415,17 @@
 
       <!-- 已完成订单底部按钮 -->
       <view
-        v-if="orderStatus ==2 && ( orderInfo.showRefundBtn || orderInfo.showApplyAfterSalesBtn)"
-        :style="{paddingBottom:systemBottom,}"
+        v-if="
+          orderStatus == 2 &&
+          (orderInfo.showRefundBtn || orderInfo.showApplyAfterSalesBtn)
+        "
+        :style="{ paddingBottom: systemBottom }"
         class="applyforRefund-container"
       >
         <view
           v-if="orderInfo.showRefundBtn"
           class="applyforRefund"
-          @click="toApplayForRefund(orderInfo,2)"
+          @click="toApplayForRefund(orderInfo, 2)"
         >
           申请退款
         </view>
@@ -474,13 +449,20 @@
       <!-- 进行中订单底部按钮 -->
       <view
         class="applyforRefund-confirmReceipt2"
-        :style="{paddingBottom:systemBottom}"
-        v-if="orderStatus == 1 && !orderInfo.showRefundBtn && orderInfo.refundApplyMode == 2 && (orderInfo.stockType == 0 || orderInfo.type == 2)"
+        :style="{ paddingBottom: systemBottom }"
+        v-if="
+          orderStatus == 1 &&
+          !orderInfo.showRefundBtn &&
+          orderInfo.refundApplyMode == 2 &&
+          (orderInfo.stockType == 0 || orderInfo.type == 2)
+        "
       >
-
         <view
           class="refundOrderStatus"
-          v-if="orderInfo.refundBillStatus == 0 || (orderInfo.refundBillStatus == 1 && orderInfo.type == 2)"
+          v-if="
+            orderInfo.refundBillStatus == 0 ||
+            (orderInfo.refundBillStatus == 1 && orderInfo.type == 2)
+          "
           @click="refundCancel(orderInfo)"
         >
           取消退款
@@ -496,7 +478,7 @@
 
         <view
           class="refundOrderStatus"
-          style="color:#FF3347;"
+          style="color: #ff3347"
           v-if="orderInfo.refundBillStatus == 5"
           @click="refundFailed(orderInfo)"
         >
@@ -505,7 +487,12 @@
 
         <view
           class="refundOrderStatus"
-          v-if="(orderInfo.refundBillStatus == 3 || orderInfo.refundBillStatus == 4) && (orderInfo.shipmentStatus == 0 || (orderInfo.type ==2 && orderInfo.shipmentStatus == -1 ))"
+          v-if="
+            (orderInfo.refundBillStatus == 3 ||
+              orderInfo.refundBillStatus == 4) &&
+            (orderInfo.shipmentStatus == 0 ||
+              (orderInfo.type == 2 && orderInfo.shipmentStatus == -1))
+          "
           @click="refundClose(orderInfo)"
         >
           退款关闭
@@ -515,13 +502,20 @@
       <!-- 已完成订单底部按钮 -->
       <view
         class="applyforRefund-confirmReceipt2"
-        :style="{paddingBottom:systemBottom}"
-        v-if="orderStatus==2 && !orderInfo.showRefundBtn && orderInfo.refundApplyMode == 2 && (orderInfo.stockType == 0 || orderInfo.type == 5)"
+        :style="{ paddingBottom: systemBottom }"
+        v-if="
+          orderStatus == 2 &&
+          !orderInfo.showRefundBtn &&
+          orderInfo.refundApplyMode == 2 &&
+          (orderInfo.stockType == 0 || orderInfo.type == 5)
+        "
       >
-
         <view
           class="refundOrderStatus"
-          v-if="orderInfo.refundBillStatus == 0 || (orderInfo.refundBillStatus == 1 && orderInfo.type == 5)"
+          v-if="
+            orderInfo.refundBillStatus == 0 ||
+            (orderInfo.refundBillStatus == 1 && orderInfo.type == 5)
+          "
           @click="refundCancel(orderInfo)"
         >
           取消退款
@@ -537,7 +531,7 @@
 
         <view
           class="refundOrderStatus"
-          style="color:#FA4D32;"
+          style="color: #fa4d32"
           v-if="orderInfo.refundBillStatus == 5"
           @click="refundFailed(orderInfo)"
         >
@@ -545,13 +539,17 @@
         </view>
         <view
           class="refundOrderStatus"
-          v-if="(orderInfo.refundBillStatus == 3 || orderInfo.refundBillStatus == 4) && (orderInfo.type ==5 && orderInfo.shipmentStatus == -1 )"
+          v-if="
+            (orderInfo.refundBillStatus == 3 ||
+              orderInfo.refundBillStatus == 4) &&
+            orderInfo.type == 5 &&
+            orderInfo.shipmentStatus == -1
+          "
           @click="refundClose(orderInfo)"
         >
           退款关闭
         </view>
       </view>
-
     </view>
 
     <!-- 取消该订单弹框 -->
@@ -562,10 +560,7 @@
       @confirm="cancleConfirm"
     />
     <!-- 立即支付弹框 -->
-    <uni-popup
-      ref="payDialog"
-      type="bottom"
-    >
+    <uni-popup ref="payDialog" type="bottom">
       <view class="cart-header">
         立即支付
         <image
@@ -577,27 +572,25 @@
       <view class="pay-diaolog">
         <view class="pay-diaolog-title"> 需支付 </view>
         <view class="pay-diaolog-price">
-          <text style="font-size: 28rpx;">¥</text>{{payChannelPrice}}
+          <text style="font-size: 28rpx">¥</text>{{ payChannelPrice }}
         </view>
         <view class="pay-diaolog-tip">
-          {{payChannel?'您正在使用储值卡支付,请确认':'您还需用在线支付,请确认'}}
+          {{
+            payChannel
+              ? "您正在使用储值卡支付,请确认"
+              : "您还需用在线支付,请确认"
+          }}
         </view>
         <view class="pay-diaolog-alert">
           金额以实际金额为准，若储值卡余额不足将用在线支付剩余部分
         </view>
-        <view
-          class="pay-diaolog-btn"
-          @click="payOrder(payChannelPrice*100)"
-        >
+        <view class="pay-diaolog-btn" @click="payOrder(payChannelPrice * 100)">
           确认支付
         </view>
       </view>
     </uni-popup>
 
-    <expenses-toast
-      ref='expensesToast'
-      :expensesType="expensesType"
-    />
+    <expenses-toast ref="expensesToast" :expensesType="expensesType" />
 
     <!-- 确认收货的弹框 -->
     <popup-dialog
@@ -614,19 +607,18 @@
       @close="cancelRefundClose"
       @confirm="cancelRefundConfirm"
     />
-
   </view>
 </template>
 
 <script>
-import { formatDate, } from "../../../../utils/common.js";
+import { formatDate } from "../../../../utils/common.js";
 import {
   getRefundDetail,
   getOrderDetail,
   cancelRefund,
   orderPay,
   cancelOrder,
-	commonMessage,
+  commonMessage,
   confirmReceiptOrder,
 } from "@/api/order.js";
 import { getBalance } from "../../../../api/user.js";
@@ -649,7 +641,7 @@ export default {
       orderInfo: {},
       orderStatus: "",
       approvalCompleted: "", // 退款是否审核完成 是否审核完成 true不可取消 false可取消"
-			commonMesageInfo:"",//对公转账的信息
+      commonMesageInfo: "", //对公转账的信息
       expensesType: 0,
 
       systemBottom: "",
@@ -827,9 +819,9 @@ export default {
       getOrderDetail({ id: this.orderId }).then((e) => {
         this.orderInfo = e;
         this.orderStatus = e.orderStatus;
-				if(this.orderStatus==0){
-					this.reqCommonMessage()
-				}
+        if (this.orderStatus == 0) {
+          this.reqCommonMessage();
+        }
         this.approvalCompleted = e.approvalCompleted;
         console.log("this.orderStatus===", this.orderStatus);
         this.totalPrice = this.orderInfo.payAmount;
@@ -853,13 +845,13 @@ export default {
         console.log("this.orderInfo=", this.orderInfo);
       });
     },
-		reqCommonMessage(){
-			commonMessage().then(res=>{
-				this.commonMesageInfo = res
-				// console.log("res======!!!!!!!!!!!",res)
-				// console.log("Res--",JSON.parse(res))
-			})
-		},
+    reqCommonMessage() {
+      commonMessage().then((res) => {
+        this.commonMesageInfo = res;
+        // console.log("res======!!!!!!!!!!!",res)
+        // console.log("Res--",JSON.parse(res))
+      });
+    },
 
     // 改变返回下一个页面的路径
     toBack() {
@@ -910,17 +902,17 @@ export default {
         return;
       }
       if (item.type == 5) return;
-			console.log("item!!!!!!!",item)
-			if(this.orderInfo.type==6){
-				//去設計師主頁
-				uni.navigateTo({
-					url:`../../../../sub-decorate/pages/person-page/person-page?personId=${item.storeId}`
-				})
-			}else{
-				uni.navigateTo({
-					url: `../../../../sub-classify/pages/shops/shops?storeId=${item.storeId}&areaId=${this.areaId}`,
-				});
-			}
+      console.log("item!!!!!!!", item);
+      if (this.orderInfo.type == 6) {
+        //去設計師主頁
+        uni.navigateTo({
+          url: `../../../../sub-decorate/pages/person-page/person-page?personId=${item.storeId}`,
+        });
+      } else {
+        uni.navigateTo({
+          url: `../../../../sub-classify/pages/shops/shops?storeId=${item.storeId}&areaId=${this.areaId}`,
+        });
+      }
     },
 
     // 联系客服
@@ -942,8 +934,6 @@ export default {
       this.expensesType = num;
       this.$refs.expensesToast.showPupop();
     },
-
-
 
     // 倒计时间触发到的时间
     goToCancelDetail() {
@@ -1149,29 +1139,29 @@ export default {
         });
       }
     },
-		// 跳转到商品详情页面
-		productDetail(item) {
-		  if (getApp().globalData.isInGomeMp) {
-		    console.warn("在国美小程序中，不可跳转商品详情");
-		    return;
-		  }
-		  console.log("item=", item, "type类型",item.type);
-			if(item.type==6) return //设计服务商品
-			uni.navigateTo({
-				url:`../../../../sub-classify/pages/product-detail/index?productId=${item.id}`,
-			});
+    // 跳转到商品详情页面
+    productDetail(item) {
+      if (getApp().globalData.isInGomeMp) {
+        console.warn("在国美小程序中，不可跳转商品详情");
+        return;
+      }
+      console.log("item=", item, "type类型", item.type);
+      if (item.type == 6) return; //设计服务商品
+      uni.navigateTo({
+        url: `../../../../sub-classify/pages/product-detail/index?productId=${item.id}`,
+      });
 
-			// if(item.type==6){
-			// 	uni.navigateTo({
-			// 		url:`/sub-classify/pages/pay-order/service-product-pay?spuId=${item.spuId}`
-			// 	})
-			// }else{
-			// 	uni.navigateTo({
-			// 		url:`../../../../sub-classify/pages/product-detail/index?productId=${item.id}`
-			// 		// url: `../../../../sub-classify/pages/goods-detail/goods-detail?goodId=${item.id}`,
-			// 	});
-			// }
-		},
+      // if(item.type==6){
+      // 	uni.navigateTo({
+      // 		url:`/sub-classify/pages/pay-order/service-product-pay?spuId=${item.spuId}`
+      // 	})
+      // }else{
+      // 	uni.navigateTo({
+      // 		url:`../../../../sub-classify/pages/product-detail/index?productId=${item.id}`
+      // 		// url: `../../../../sub-classify/pages/goods-detail/goods-detail?goodId=${item.id}`,
+      // 	});
+      // }
+    },
 
     // 进行中订单详情接口
     // 点击商品区域，跳转到商品详情页面
@@ -1181,7 +1171,7 @@ export default {
     //     return;
     //   }
     //   uni.navigateTo({
-				// url:`../../../../sub-classify/pages/product-detail/index?productId=${item.id}`,
+    // url:`../../../../sub-classify/pages/product-detail/index?productId=${item.id}`,
     //     // url: `../../../../sub-classify/pages/goods-detail/goods-detail?goodId=${item2.id}`,
     //   });
     // },
@@ -1220,8 +1210,8 @@ export default {
     refundFailed(item) {
       this.orderDetail();
       uni.navigateTo({
-      	// url: `../order-failed/order-failed?type=refund&id=${item.refundId}`,
-				url: `../../refund-list/refunding-detail/refunding-detail?id=${item.refundId}`
+        // url: `../order-failed/order-failed?type=refund&id=${item.refundId}`,
+        url: `../../refund-list/refunding-detail/refunding-detail?id=${item.refundId}`,
       });
     },
 
@@ -1229,8 +1219,8 @@ export default {
     refundClose(item) {
       this.orderDetail();
       uni.navigateTo({
-      	// url: `../order-failed/order-failed?type=refund&id=${item.refundId}`,
-				url: `../../refund-list/refunding-detail/refunding-detail?id=${item.refundId}`
+        // url: `../order-failed/order-failed?type=refund&id=${item.refundId}`,
+        url: `../../refund-list/refunding-detail/refunding-detail?id=${item.refundId}`,
       });
     },
   },
