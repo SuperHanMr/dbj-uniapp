@@ -21,7 +21,7 @@
               您还没有任何数据~
             </view>
           </view> -->
-          <view class="service-area-change-item" v-for="item in currentList" :key="item">
+          <view class="service-area-change-item" v-for="item in currentList" :key="item" @click="toCost">
             <view class="item-top">
               <view class="item-top-left">
                 <image class="avatar" :src="isDesign&&(designData.designServerVO && designData.designServerVO.avatar)||tab.avatar" mode="aspectFit"></image>
@@ -169,6 +169,12 @@
           return;
         }
         // this.getList(false);
+      },
+      toCost(){
+        console.log(111)
+        uni.navigateTo({
+          url: `/sub-decorate/pages/service-area-change-cost/service-area-change-cost?projectId=${this.projectId}`,
+        });
       },
       getList(isRefresh) {
         if (this.lastId[this.currentIndex] == "-1") {
