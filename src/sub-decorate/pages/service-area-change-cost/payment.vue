@@ -73,6 +73,8 @@
   }
 
   .btn-refuse{
+    flex: 1;
+    margin-right: 32rpx;
     border: 1rpx solid #cccccc;
     background: #ffffff;
     color: #666666;

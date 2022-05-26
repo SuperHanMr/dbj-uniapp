@@ -1,13 +1,8 @@
 <template>
-  <view class="process-cost">
-    <view class="material-cost" v-if="msg.obtainType != 1 && isHas">
-      <!-- <view class="title" v-if="msg.isBOM !== '1'">
-        <view>{{msg.materialTypeName || '辅材费用'}}</view>
-      </view>
-      <view class="process-cost-list">
-
-      </view> -->
-      <no-data v-if="noData" :words="message"></no-data>
+  <view class="service-area-change-cost">
+    <view class="cost-detail">
+      <order-detail :detailData="detailData"></order-detail>
+      <!-- <no-data v-if="noData" :words="message"></no-data> -->
     </view>
     <view class="change-cost">
       <text>增量费用</text>
@@ -80,12 +75,10 @@
 </template>
 
 <script>
-  import ProcessCostArtificial from "../../components/process-cost/process-cost-artificial.vue";
-  import ProcessCostMaterials from "../../components/process-cost/process-cost-materials.vue";
-  // import Payment from "../../components/payment/payment.vue";
   import ChangeLevel from "../../components/change-level/change-level.vue";
   import NoData from "../../components/no-data/no-data.vue";
   import Payment from "./payment.vue";
+  import OrderDetail from "./order-detail.vue";
   import {
     log
   } from "../../../utils/log.js";
@@ -107,10 +100,9 @@
 
   export default {
     components: {
-      ProcessCostArtificial,
       Payment,
+      OrderDetail,
       ChangeLevel,
-      ProcessCostMaterials,
       NoData,
     },
     onLoad(option) {
@@ -215,7 +207,8 @@
         cardBalance: 0, //会员卡余额
         isHas: true,
         payWayTag: 0,
-        payType: 0
+        payType: 0,
+        detailData: {},
       };
     },
     mounted() {
@@ -801,10 +794,15 @@
     overflow: scroll;
   }
 
-  .process-cost {
+  .service-area-change-cost {
     position: relative;
     height: 100%;
-    padding-bottom: 96px;
+    width: 100%;
+    padding-bottom: 96rpx;
+
+    .cost-detail{
+      width: 100%;
+    }
   }
 
   .title {
