@@ -53,7 +53,11 @@
             全屋 | 平层 | 60-100平
           </view>
           <view class="service-info-bottom">
-            ￥59.00/平米
+            <view class="price-detail">
+              <text class="symbol">￥</text>
+              <text class="price">59.00</text>
+              <text class="unit">/平米</text>
+            </view>
           </view>
         </view>
 
@@ -162,23 +166,25 @@ export default {
         background: #cfcfcf;
       }
       .service-info-detail {
+        flex: 1;
         display: flex;
         flex-direction: column;
         .service-info-top {
+          display: flex;
           .service-type {
             height: 30rpx;
             padding: 2rpx 10rpx 2rpx 10rpx;
-            margin-right: 4rpx;
+            margin-right: 10rpx;
             border-radius: 4rpx;
             font-size: 20rpx;
             font-weight: 500;
             color: #333333;
             line-height: 28rpx;
             text-align: center;
-            // vertical-align: middle;
             background: linear-gradient(90.48deg, #B4EEE1 0.28%, #EAFCD7 99.48%);
           }
           .spu-name {
+            flex: 1;
             width: 260rpx;
             font-size: 28rpx;
             color: #333333;
@@ -193,8 +199,25 @@ export default {
           color: #999999;
         }
         .service-info-bottom {
+          flex: 1;
+          display: flex;
+          flex-direction: column;
+          justify-content: flex-end;
           font-size: 32rpx;
           color: #666666;
+          .price-detail {
+            .symbol {
+              font-size: 22rpx;
+            }
+            .price {
+              font-family: PriceFont;
+              font-size: 32rpx;
+            }
+            .unit {
+              font-size: 20rpx;
+            }
+          }
+
         }
       }
 
