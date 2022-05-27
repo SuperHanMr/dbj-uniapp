@@ -1,5 +1,5 @@
 <template>
-·  <view class="container">
+  <view class="container">
     <view
       class="body-main"
       :style="{ paddingBottom: containerPaddingBottom + 'rpx' }"
