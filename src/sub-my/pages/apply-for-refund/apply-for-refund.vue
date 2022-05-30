@@ -1,15 +1,11 @@
 <template>
   <view>
-
     <view>
       <view class="container">
-        <view
-          v-if="refundType==2"
-          class="server-order-tip"
-        >
+        <view v-if="refundType == 2" class="server-order-tip">
           <view
             class="icon-icon_order_tips"
-            style="font-size: 28rpx;margin-right: 12rpx;"
+            style="font-size: 28rpx; margin-right: 12rpx"
           >
           </view>
           <view v-if="refundInfo.isWorker">
@@ -20,32 +16,30 @@
           </view>
         </view>
         <view class="product-container">
-          <view v-if="type == 'whole' && refundId ">
-            <view
-              v-for="(item1,index1) in refundInfo.details"
-              :key="index1"
-            >
+          <view v-if="type == 'whole' && refundId">
+            <view v-for="(item1, index1) in refundInfo.details" :key="index1">
               <view
-                v-if="item1.isOriginalOrder && item1.type==2"
+                v-if="item1.isOriginalOrder && item1.type == 2"
                 class="header-title"
               >
                 <text class="title"> 原始订单</text>
                 <text class="tip">(该订单为购买该服务的首笔订单)</text>
               </view>
               <view
-                v-if="!item1.isOriginalOrder&&refundInfo.details.length>1"
+                v-if="!item1.isOriginalOrder && refundInfo.details.length > 1"
                 class="header-title"
               >
                 <text class="title"> 补单</text>
-                <text class="tip">(该订单为购买该服务除首笔订单外的后续补单)</text>
+                <text class="tip"
+                  >(该订单为购买该服务除首笔订单外的后续补单)</text
+                >
               </view>
               <view
-                v-for="(item1Item,index1Item) in item1.detailAppVOS"
+                v-for="(item1Item, index1Item) in item1.detailAppVOS"
                 :key="item1Item.id"
               >
-
                 <order-item
-                  v-if="item1Item.type !==5"
+                  v-if="item1Item.type !== 5"
                   :refundType="true"
                   :orderType="refundType"
                   :dataList="item1Item"
@@ -59,28 +53,31 @@
               </view>
             </view>
           </view>
-          <view v-if="type == 'whole' && !refundId ">
-
+          <view v-if="type == 'whole' && !refundId">
             <view
-              v-for="(item2,index2) in refundInfo.detailAppVOS"
+              v-for="(item2, index2) in refundInfo.detailAppVOS"
               :key="index2"
             >
               <view
-                v-if="item2.isOriginalOrder && item2.type==2"
+                v-if="item2.isOriginalOrder && item2.type == 2"
                 class="header-title"
               >
                 <text class="title"> 原始订单</text>
                 <text class="tip">(该订单为购买该服务的首笔订单)</text>
               </view>
               <view
-                v-if="!item2.isOriginalOrder&&refundInfo.detailAppVOS.length>1"
+                v-if="
+                  !item2.isOriginalOrder && refundInfo.detailAppVOS.length > 1
+                "
                 class="header-title"
               >
                 <text class="title"> 补单</text>
-                <text class="tip">(该订单为购买该服务除首笔订单外的后续补单)</text>
+                <text class="tip"
+                  >(该订单为购买该服务除首笔订单外的后续补单)</text
+                >
               </view>
               <view
-                v-for="(item2Item,item2index2) in item2.detailAppVOS"
+                v-for="(item2Item, item2index2) in item2.detailAppVOS"
                 :key="item2Item.id"
               >
                 <order-item
@@ -101,11 +98,8 @@
             </view>
           </view>
 
-          <view v-if="type=='partical' && refundId ">
-            <view
-              v-for="item3 in refundInfo"
-              :key="item3.id"
-            >
+          <view v-if="type == 'partical' && refundId">
+            <view v-for="item3 in refundInfo" :key="item3.id">
               <order-item
                 :refundType="true"
                 :orderType="refundType"
@@ -116,29 +110,27 @@
             </view>
           </view>
 
-          <view v-if="type == 'partical' && !refundId ">
-            <view
-              v-for="item4 in refundInfo.detailAppVOS"
-              :key="item4.id"
-            >
+          <view v-if="type == 'partical' && !refundId">
+            <view v-for="item4 in refundInfo.detailAppVOS" :key="item4.id">
               <view
-                v-if="item4.isOriginalOrder && item4.type==2"
+                v-if="item4.isOriginalOrder && item4.type == 2"
                 class="header-title"
               >
                 <text class="title"> 原始订单</text>
                 <text class="tip">(该订单为购买该服务的首笔订单)</text>
               </view>
               <view
-                v-if="!item4.isOriginalOrder&&refundInfo.detailAppVOS.length>1"
+                v-if="
+                  !item4.isOriginalOrder && refundInfo.detailAppVOS.length > 1
+                "
                 class="header-title"
               >
                 <text class="title"> 补单</text>
-                <text class="tip">(该订单为购买该服务除首笔订单外的后续补单)</text>
+                <text class="tip"
+                  >(该订单为购买该服务除首笔订单外的后续补单)</text
+                >
               </view>
-              <view
-                v-for="item4Item in item4.detailAppVOS"
-                :key="item4Item.id"
-              >
+              <view v-for="item4Item in item4.detailAppVOS" :key="item4Item.id">
                 <order-item
                   :refundType="true"
                   :orderType="refundType"
@@ -155,15 +147,9 @@
             class="price-container"
             v-if="refundInfo.freight || refundInfo.handlingFees"
           >
-            <view
-              class="price-item"
-              v-if="refundInfo.freight"
-            >
-              <view
-                class="header"
-                style="margin-bottom: 16rpx;"
-              >
-                <text style="margin-right: 8rpx;">运费</text>
+            <view class="price-item" v-if="refundInfo.freight">
+              <view class="header" style="margin-bottom: 16rpx">
+                <text style="margin-right: 8rpx">运费</text>
                 <image
                   class="icon"
                   src="../../../static/price_icon.svg"
@@ -173,20 +159,17 @@
                 </image>
               </view>
               <text>
-                <text style="font-size: 24rpx;">￥</text>
-                <text
-                  style="font-size: 28rpx;"
-                  class="price-font"
-                >{{handlePrice(refundInfo.freight)[0]}}.{{handlePrice(refundInfo.freight)[1]}}</text>
+                <text style="font-size: 24rpx">￥</text>
+                <text style="font-size: 28rpx" class="price-font"
+                  >{{ handlePrice(refundInfo.freight)[0] }}.{{
+                    handlePrice(refundInfo.freight)[1]
+                  }}</text
+                >
               </text>
             </view>
-            <view
-              class="price-item"
-              v-if="refundInfo.handlingFees"
-            >
+            <view class="price-item" v-if="refundInfo.handlingFees">
               <view class="header">
-
-                <text style="margin-right: 8rpx;">搬运费</text>
+                <text style="margin-right: 8rpx">搬运费</text>
                 <image
                   class="icon"
                   src="../../../static/price_icon.svg"
@@ -196,11 +179,12 @@
                 </image>
               </view>
               <text>
-                <text style="font-size: 24rpx;">￥</text>
-                <text
-                  style="font-size: 28rpx;"
-                  class="price-font"
-                >{{handlePrice(refundInfo.handlingFees)[0]}}.{{handlePrice(refundInfo.handlingFees)[1]}}</text>
+                <text style="font-size: 24rpx">￥</text>
+                <text style="font-size: 28rpx" class="price-font"
+                  >{{ handlePrice(refundInfo.handlingFees)[0] }}.{{
+                    handlePrice(refundInfo.handlingFees)[1]
+                  }}</text
+                >
               </text>
             </view>
           </view>
@@ -210,19 +194,21 @@
           <view class="refund-reason">
             <view class="left">
               <view class="icon">*</view>
-              <text style="color: #666666;">退款原因</text>
+              <text style="color: #666666">退款原因</text>
             </view>
             <view class="reason">
               <text
-                style="color: #bbbbbb;"
+                style="color: #bbbbbb"
                 v-if="!reasonName"
                 @click="openPopup()"
-              >请选择</text>
+                >请选择</text
+              >
               <text
                 v-else
-                style="margin-right: 16rpx;color: #333333;"
+                style="margin-right: 16rpx; color: #333333"
                 @click="openPopup()"
-              >{{reasonName}}</text>
+                >{{ reasonName }}</text
+              >
               <image
                 src="../../static/ic_arraw_down.svg"
                 mode=""
@@ -233,58 +219,49 @@
 
           <view class="line" />
           <!-- 材料服务 退款金额 -->
-          <view
-            class="refund-price"
-            v-if="!refundInfo.editabled"
-          >
+          <view class="refund-price" v-if="!refundInfo.editabled">
             <view class="edit-price">
               <view class="left">
                 <view class="icon">*</view>
-                <text style="color:#666666;">退款金额</text>
+                <text style="color: #666666">退款金额</text>
               </view>
               <view class="right1">
-                <text
-                  v-if="refundInfo.actualIncomeAmount"
-                  class="price-font"
-                >￥{{handlePrice(refundInfo.actualIncomeAmount)[0] || 0}}.{{handlePrice(refundInfo.actualIncomeAmount)[1]}}</text>
-                <text
-                  v-else
-                  class="price-font"
-                >￥{{handlePrice(refundInfo.totalActualIncomeAmount)[0] || 0}}.{{handlePrice(refundInfo.totalActualIncomeAmount)[1]}}</text>
+                <text v-if="refundInfo.actualIncomeAmount" class="price-font"
+                  >￥{{ handlePrice(refundInfo.actualIncomeAmount)[0] || 0 }}.{{
+                    handlePrice(refundInfo.actualIncomeAmount)[1]
+                  }}</text
+                >
+                <text v-else class="price-font"
+                  >￥{{
+                    handlePrice(refundInfo.totalActualIncomeAmount)[0] || 0
+                  }}.{{
+                    handlePrice(refundInfo.totalActualIncomeAmount)[1]
+                  }}</text
+                >
               </view>
             </view>
-            <view
-              class="tip-text"
-              v-if="refundType == 1"
-            >
+            <view class="tip-text" v-if="refundType == 1">
               商品未发货，商家同意后将会全额退还。
             </view>
-            <view
-              class="tip-text"
-              v-if="refundType == 2"
-            >
+            <view class="tip-text" v-if="refundType == 2">
               服务未开始，商家同意后将会全额退还。
             </view>
           </view>
 
           <!-- 储值卡退款 -->
-          <view
-            class="refund-price"
-            v-else
-          >
-            <view :class="{'edit-price': showEditInput, 'show-price': !showEditInput }">
-              <view
-                class="left"
-                style="flex: 1;"
-              >
+          <view class="refund-price" v-else>
+            <view
+              :class="{
+                'edit-price': showEditInput,
+                'show-price': !showEditInput,
+              }"
+            >
+              <view class="left" style="flex: 1">
                 <view class="icon">*</view>
-                <text style="color:#666666;">退款金额</text>
+                <text style="color: #666666">退款金额</text>
               </view>
-              <view style="flex:1"></view>
-              <view
-                class="right1"
-                v-if="showEditInput"
-              >
+              <view style="flex: 1"></view>
+              <view class="right1" v-if="showEditInput">
                 <view class="eidt-style">
                   <text>￥</text>
                   <input
@@ -295,32 +272,29 @@
                     maxlength="10"
                     @focus="onKeyFocus"
                     @blur="onKeyBlur"
-                    :style="{width:inputWidth,'maxWidth':'294rpx !important'}"
+                    :style="{
+                      width: inputWidth,
+                      maxWidth: '294rpx !important',
+                    }"
                   />
                 </view>
               </view>
-              <view
-                class="right2"
-                v-else
-              >
-                <text style="color:#FF3347;font-size: 40rpx;">￥{{inputValue==0?"0.00":inputValue}}</text>
+              <view class="right2" v-else>
+                <text style="color: #ff3347; font-size: 40rpx"
+                  >￥{{ inputValue == 0 ? "0.00" : inputValue }}</text
+                >
                 <image
+                  v-if="refundInfo.editabled"
                   src="../../static/ic_mine_edit_gray@2x.png"
                   mode=""
-                  @click="showEditInput=true"
+                  @click="showEditInput = true"
                 />
               </view>
             </view>
-            <view
-              class="tip-text"
-              v-if="refundInfo.cardUseIdentification"
-            >
+            <view class="tip-text" v-if="refundInfo.cardUseIdentification">
               储值卡已使用过，具体退款金额以您与商家沟通协商的结果为准
             </view>
-            <view
-              class="tip-text"
-              v-else
-            >
+            <view class="tip-text" v-else>
               储值卡未使用，商家同意后将会全额退还
             </view>
           </view>
@@ -329,7 +303,6 @@
         <view class="remark-container">
           <view class="header">
             <text>备注说明</text>
-
           </view>
           <view class="body">
             <textarea
@@ -340,39 +313,23 @@
               class="remark"
               @input="onTextAreaInput"
             />
-            <text
-              class="fontNum"
-              style="color: #999999;font-size: 26rpx;"
-            >{{textAreaLength>500?500:textAreaLength}}/500</text>
+            <text class="fontNum" style="color: #999999; font-size: 26rpx"
+              >{{ textAreaLength > 500 ? 500 : textAreaLength }}/500</text
+            >
           </view>
         </view>
         <view class="proposal">建议与商家沟通后再发起退款</view>
-        <view
-          class="sumbit-button"
-          :style="{paddingBottom:systemBottom}"
-        >
-          <view
-            class="buttons1"
-            v-if="!reasonName"
-          >
-            提交申请
-          </view>
-          <view
-            v-else
-            class="buttons"
-            @click="submitApply"
-          >
-            提交申请
-          </view>
+        <view class="sumbit-button" :style="{ paddingBottom: systemBottom }">
+          <view class="buttons1" v-if="!reasonName"> 提交申请 </view>
+          <view v-else class="buttons" @click="submitApply"> 提交申请 </view>
         </view>
       </view>
     </view>
     <expenses-toast
-      ref='expensesToast'
+      ref="expensesToast"
       :expensesType="expensesType"
     ></expenses-toast>
   </view>
-
 </template>
 
 <script>
@@ -459,7 +416,7 @@ export default {
           this.refundType = this.refundInfo.type;
           this.showToast();
           console.log("this.refundInfo=", this.refundInfo);
-					console.log("refundInfo.details====",this.refundInfo.details)
+          console.log("refundInfo.details====", this.refundInfo.details);
           this.refundInfo.actualIncomeAmount = this.refundInfo.maxRefundAmount;
           this.returnMoney = this.refundInfo.maxRefundAmount;
         });
@@ -476,7 +433,11 @@ export default {
           this.refundInfo.actualIncomeAmount = this.refundInfo.maxRefundAmount;
           this.returnMoney = this.refundInfo.maxRefundAmount;
           this.showToast();
-          if (this.refundType == 5 || this.refundType == 2) {
+          if (
+            this.refundType == 5 ||
+            this.refundType == 2 ||
+            this.refundType == 6
+          ) {
             this.inputValue = this.refundInfo.maxRefundAmount;
             this.refundAmount = this.refundInfo.refundAmount;
             this.maxRefundAmount = this.refundInfo.maxRefundAmount;
@@ -506,21 +467,8 @@ export default {
     },
     inputValue(newVal, oldVal) {
       this.reqInputWidth(newVal);
-      console.log("newVal=====", newVal, String(newVal).length);
-      console.log("this.refundAmount===", this.refundAmount);
+      console.log("this.refundAmount===", this.refundAmount, this.type);
       console.log("this.maxRefundAmount===", this.maxRefundAmount);
-      // if (newVal > this.maxRefundAmount) {
-      // 	uni.showToast({
-      // 		title: this.errorTitle,
-      // 		icon: "none",
-      // 		duration: 1000,
-      // 	});
-      // 	this.returnMoney = Number(newVal);
-      // 	return this.returnMoney;
-      // } else {
-      // 	this.returnMoney = Number(newVal);
-      // 	return newVal;
-      // }
     },
 
     textAreaLength(newVal, oldVal) {},
@@ -559,7 +507,11 @@ export default {
         this.reasonValue = data.reasonId;
         this.reasonName = data.reason;
         console.log("this.refundType===", this.refundType);
-        if (this.refundType == 5 || this.refundType == 2) {
+        if (
+          this.refundType == 5 ||
+          this.refundType == 2 ||
+          this.refundType == 6
+        ) {
           this.maxRefundAmount = data.maxRefundAmount;
           this.refundAmount = data.refundAmount;
           this.returnMoney = data.refundAmount;
@@ -679,19 +631,29 @@ export default {
       };
 
       if (this.type == "whole") {
-        wholeOrderApplyForRefund(params).then((data) => {
-          console.log("data=", data, "data.id=", data.id);
-          if (!data.isRefundSuccess) {
-            uni.navigateTo({
-              url: `../choice-refund-account/choice-refund-account?query=${encodeURIComponent(
-                JSON.stringify(query)
-              )}`,
-            });
-          } else {
-            uni.redirectTo({
-              url: `../refund-list/refunding-detail/refunding-detail?id=${data.id}`,
-            });
-          }
+        uni.showModal({
+          title: "提示",
+          content:
+            "发起退款且通过后，该服务会记为结束状态，且服务者不会再提供服务，若您想对服务内容进行调整可以联系客服",
+          showCancel: true,
+          success: ({ confirm, cancel }) => {
+            if (confirm) {
+              wholeOrderApplyForRefund(params).then((data) => {
+                console.log("data=", data, "data.id=", data.id);
+                if (!data.isRefundSuccess) {
+                  uni.navigateTo({
+                    url: `../choice-refund-account/choice-refund-account?query=${encodeURIComponent(
+                      JSON.stringify(query)
+                    )}`,
+                  });
+                } else {
+                  uni.redirectTo({
+                    url: `../refund-list/refunding-detail/refunding-detail?id=${data.id}`,
+                  });
+                }
+              });
+            }
+          },
         });
       } else {
         particalOrderApplyForRefund(params).then((data) => {
@@ -718,6 +680,9 @@ export default {
           break;
         case 5:
           this.errorTitle = "退款金额大于储值卡余额，请修改";
+        case 6:
+          this.errorTitle = "退款金额大于最大退款金额，请修改";
+          break;
       }
     },
 
