@@ -437,5 +437,27 @@ export function judgeOwner(params) {
 
 // 是否可以操作（换人申请中是否可以操作）
 export function isAllowOperate(serveId) {
-	return request.get(`/pm/app/worker/service/isAllowOperate/${serveId}`)
+	return request.get(`/pm/app/worker/service/isAllowOperate/${serveId}`, {
+		params
+	})
+}
+
+//---------------------设计服务面积变更-----------------------
+// 查询面积变更单
+export function getAreaChangeOrder(params) {
+	return request.get(`/pm/app/changeOrder/getAreaChangeOrder`, {
+		params
+	})
+}
+
+// 面积变更单详情
+export function getAreaChangeOrderDetail(params) {
+	return request.get(`/pm/app/changeOrder/getAreaChangeOrderDetail`, {
+		params
+	})
+}
+
+// 业主拒绝变更单
+export function refuseAreaChangeOrder(params) {
+	return request.post(`/pm/app/areaChangeOrder/refuse`, params)
 }

@@ -1,88 +1,63 @@
 <template>
-  <view class="service-area-change-cost">
-    <view class="cost-detail">
-      <order-detail :detailData="detailData"></order-detail>
-      <!-- <no-data v-if="noData" :words="message"></no-data> -->
-    </view>
-    <view class="change-cost">
-      <text>增量费用</text>
-      <view class="">
-        <text>￥</text>
-        <text>{{"590.00"}}</text>
+  <view class="application-wrap">
+    <order-detail :detailData="detailData"></order-detail>
+    <view class="summary">
+      <view class="change-money">
+        <view class="label">{{detailData.type == 1 ? "增量":"减量"}}费用</view>
+        <view class="money price-font">￥<text
+            class="ft-28">{{detailData.amount ? (detailData.amount/100).toFixed(2) : 0}}</text>
+        </view>
       </view>
     </view>
-    <view v-if="(!msg.payStatus || msg.payStatus != 2)&&haveCard" class="pay-way" style="justify-content:center"
-      @click="clickCard">
-      <image class="card-img" src="https://ali-image.dabanjia.com/static/mp/dabanjia/images/classify/ic_card.png"
-        mode="">
-      </image>
-      <view>
-        <text>储值卡</text>
-        <text class="card-sub">(可用余额:{{(cardBalance/100).toFixed(2)}}元)</text>
+    <view class="store-money-card" v-if="detailData.amount > 0 && detailData.status == 2">
+      <view class="yu-e">
+        <image src="https://ali-image.dabanjia.com/static/mp/dabanjia/images/classify/ic_card.png"></image>
+        <view class="c-1">储值卡</view>
+        <view class="c-2">(可用余额：￥{{(cardBalance/100).toFixed(2)}})</view>
       </view>
-      <view style="flex:1">
-      </view>
-      <view v-if="cardClick" class="card-price">
-        <text style="margin-right:4rpx ;">-</text> <text
-          style="margin-right:2rpx ;">¥</text>{{(this.cardPrice/100).toFixed(2)}}
-      </view>
-
-      <image v-if="cardClick" class="selected-img"
-        src="https://ali-image.dabanjia.com/static/mp/dabanjia/images/theme-red/decorate/ic_checked.svg" mode="">
-      </image>
-      <image v-if="!cardClick&&cardBalance" class="selected-img"
-        src="https://ali-image.dabanjia.com/static/mp/dabanjia/images/classify/pay_unselected.png" mode="">
-      </image>
-      <view v-if="!cardClick&&!cardBalance" class="select-disable">
-      </view>
+      <check-box :borderRadius="'50%'" height="36rpx" width="36rpx" :checked="isCardPay" @change="changStoreValueCard"
+        @click='changeValue'>
+      </check-box>
     </view>
-    <view v-if="!msg.payStatus || msg.payStatus != 2" class="pay-way">
-      <text>支付方式</text>
-      <view v-if="payChannel" class="flex-center">
-        <text>储值卡支付</text>
-      </view>
-      <view v-else @touchstart.stop.prevent="morePayWay">
-        <text>{{payWayTag?'公司转账':'在线支付'}}</text>
+    <view class="pay-way" v-if="detailData.amount > 0 && detailData.status == 2">
+      <view class="label">支付方式</view>
+      <view class="wx" v-if="totalAmount > 0" @touchstart.stop.prevent="morePayWay">{{payWayTag?'公司转账':'在线支付'}}
         <view class="more_pay_icon"></view>
       </view>
+      <view class="store-pay" v-else>储值卡支付</view>
     </view>
-    <view class="refuse-reason">
+
+    <view v-if="detailData.status == 3" class="refuse-reason">
       <view class="title">拒绝原因</view>
-      <!-- <view class="remarks-right">
-        <input type="text" maxlength="200" v-model="remarks" cursor-spacing="15px" placeholder-class="text-placeholder"
-          style="width:100%;height: 100%;overflow: scroll;" placeholder="选填,说点什么～" />
-      </view> -->
       <view class="content">
-        原因原因原因原因原因原因原因原因原因原因原因原因原因原因原因原因原因原因原因原因原因原因原因原因原因原因
-        原因原因原因原因原因原因原因原因原因原因原因原因原因原因原因原因原因原因原因原因原因原因原因原因原因原因
+        {{ detailData.refuseReason }}
       </view>
     </view>
-    <view :style="{paddingBottom:containerBottom * 2 + 48 + 88 + 'rpx'}">
 
+    <view :style="{paddingBottom:containerBottom * 2 + 48 + 88 + 'rpx'}">
     </view>
-    <view v-if="!msg.payStatus || msg.payStatus != 2" class="payment-wrap" :style="{paddingBottom:systemBottom}">
-      <!-- <payment @gotopay="gotopay" :pieces="pieces" :countPrice="payPrice" :isAllChecked="isAllChecked">
-      </payment> -->
-      <bottom-btn @gotopay="gotopay" :countPrice="payPrice">
-      </bottom-btn>
+
+    <view v-if="detailData.status == 2" class="pay-wrap" :style="{paddingBottom:systemBottom}">
+      <view class="b-t-1" @click="refuse">拒绝申请</view>
+      <view class="b-t-1 b-t-p" v-if="detailData.amount > 0" @click="submitCard">同意并支付<text
+          class="unit price-font">￥</text><text class="price-font">{{(Math.abs(detailData.amount)/100).toFixed(2)}}</text></view>
+      <view class="b-t-1 b-t-p" v-if="detailData.amount === 0" @click="submit(0)">同意申请</view>
+      <view class="b-t-1 b-t-p" v-if="detailData.amount < 0" @click="submit(-1)">同意并退还您<text
+          class="unit price-font">￥</text><text
+          class="price-font">{{(Math.abs(detailData.amount)/100).toFixed(2)}}</text></view>
     </view>
-    <uni-popup ref="level">
-      <change-level @changeLevel="setLevel" @close="close" :dataList="levelList" descType="worker"
-        :current="levelList[0]"></change-level>
-    </uni-popup>
     <uni-popup ref="payDialog" type="bottom">
-      <pay-dialog :payChannel="payChannel" :payChannelPrice="payChannelPrice" @payOrder="payOrder"
-        @closePayDialog="closePayDialog"></pay-dialog>
+      <pay-dialog :payChannelPrice="payChannelPrice" @payOrder="submit(2)" @closePayDialog="closePayDialog">
+      </pay-dialog>
     </uni-popup>
     <pay-way-toast ref='payWayToast' @payWay="payWay"></pay-way-toast>
   </view>
 </template>
 
 <script>
-  import ChangeLevel from "../../components/change-level/change-level.vue";
-  import NoData from "../../components/no-data/no-data.vue";
-  import BottomBtn from "./bottom-btn.vue";
+  import CheckBox from "../../components/check-box/check-box.vue";
   import OrderDetail from "./order-detail.vue";
+
   import {
     log
   } from "../../../utils/log.js";
@@ -90,130 +65,63 @@
     getBalance
   } from "../../../api/user.js";
   import {
-    LEVEL
-  } from "../../../utils/dict.js";
+    createChangeOrderApi,
+    agreeChangeOrderApi,
+  } from "../../../api/changeOrder.js";
+
   import {
-    createOrder
-  } from "../../../api/order-center.js";
-  import {
-    sellList
+    getAreaChangeOrderDetail
   } from "../../../api/decorate.js";
-  import {
-    batchChangeLevel
-  } from "../../../api/level.js";
 
   export default {
     components: {
-      BottomBtn,
       OrderDetail,
-      ChangeLevel,
-      NoData,
-    },
-    onLoad(option) {
-      const {
-        partpay,
-        isActuarial
-      } = option;
-      console.log(option, "optionoption>>>>>>>>>>>>");
-      if (partpay) {
-        this.msg = {
-          ...option,
-        };
-        this.partpay = partpay;
-      } else if (isActuarial === "1") {
-        this.msg = {
-          ...option,
-        };
-      } else {
-        console.log(getApp().globalData.decorateMsg);
-        this.msg = getApp().globalData.decorateMsg;
-      }
-      uni.$on("selectedMaterial", this.selectedMaterialCb);
-      this.getDataList();
-    },
-    onShow() {
-      this.haveCard = false;
-      getBalance().then((e) => {
-        if (e != null) {
-          this.haveCard = true;
-          this.cardBalance = e;
-        }
-      });
-      if (this.selectedMaterialData?.categoryId) {
-        const {
-          origin,
-          categoryId
-        } = this.selectedMaterialData;
-        this.setMaterial(categoryId, origin);
-      } else {
-        // this.getDataList()
-        this.title = "";
-        switch (Number(this.msg.serviceType)) {
-          case 5:
-            this.title = "管家工序费";
-            break;
-          case 6:
-            this.title = "拆除工序费";
-            break;
-          case 7:
-            this.title = "水电工序费";
-            break;
-          case 8:
-            this.title = "泥瓦工序费";
-            break;
-          case 9:
-            this.title = "木工工序费";
-            break;
-          case 10:
-            this.title = "油漆工序费";
-            break;
-          default:
-            this.title = this.msg.materialTypeName; // 支持精算单中材料汇总跳转结算
-            break;
-        }
-        uni.setNavigationBarTitle({
-          title: this.title,
-        });
-        if (!getApp().globalData.openId) {
-          //确保拿到openId，否则无法支付
-          getApp().globalData.openId = uni.getStorageSync("openId");
-        }
-      }
+      CheckBox,
     },
     data() {
       return {
-        partpay: null,
+        isCardPay: false,
         msg: {},
-        dataOrigin: {},
-        checkedIds: [],
-        shopping: {
-          artificial: [],
-          material: [],
-        },
-        countPrice: 0,
-        pieces: 0,
-        artificialLevel: 1,
-        levelLabel: "",
-        curr_artificial_categoryId: null,
-        levelList: [],
-        workerLevelSkuMapping: [],
+        cardBalance: 0,
+        changeOrderData: {},
+        payWayTag: 0,
+        payType: 0,
         containerBottom: null,
         systemBottom: null,
         systemHeight: null,
-        noData: false,
-        message: null,
-        skuRelation: [], // 精算单更换商品  新旧商品id对照表
-        selectedMaterialData: null,
-        title: "",
-        remarks: "",
-        cardClick: false,
-        haveCard: false, //是否有会员卡
-        cardBalance: 0, //会员卡余额
-        isHas: true,
-        payWayTag: 0,
-        payType: 0,
+        changeOrderId: 0,
         detailData: {},
+        cardClick: false,
+        noData: false,
       };
+    },
+
+    computed: {
+
+      totalAmount() {
+        if (this.isCardPay) {
+          let temp = this.cardBalance - this.detailData.amount;
+          if (temp >= 0) {
+            return 0;
+          } else {
+            return (
+              (this.detailData.amount - this.cardBalance) /
+              100
+            ).toFixed(2);
+          }
+        } else {
+          return (this.detailData.amount / 100).toFixed(2);
+        }
+      },
+      payChannelPrice() {
+        //提示框价格
+        let temp = this.cardBalance - this.detailData.amount;
+        if (temp <= 0) {
+          return (this.cardBalance / 100).toFixed(2);
+        } else {
+          return (this.detailData.amount / 100).toFixed(2);
+        }
+      },
     },
     mounted() {
       const menuButtonInfo = uni.getMenuButtonBoundingClientRect();
@@ -229,394 +137,148 @@
         },
       });
     },
-    computed: {
-      isAllChecked() {
-        return this.checkedIds.length > 0;
-      },
-      payChannel() {
-        var res = this.countPrice - this.cardBalance;
-        //支付渠道 true 储值卡  false 微信
-        if (this.cardClick && res <= 0) {
-          return true;
-        } else {
-          return false;
-        }
-      },
-      payChannelPrice() {
-        //提示框价格
-        if (!this.payChannel) {
-          return (this.cardPrice / 100).toFixed(2);
-        } else {
-          return (this.countPrice / 100).toFixed(2);
-        }
-      },
-      cardPrice() {
-        var res = this.countPrice - this.cardBalance;
-        if (res >= 0) {
-          return this.cardBalance;
-        } else {
-          return this.countPrice;
-        }
-      },
-      payPrice() {
-        if (this.cardClick) {
-          var res = this.countPrice - this.cardBalance;
-          if (res <= 0) {
-            return 0;
-          }
-          return res;
-        } else {
-          return this.countPrice;
-        }
-      },
+    onLoad(option) {
+      const {
+        changeOrderId
+      } = option;
+      this.changeOrderId = changeOrderId;
+
+      console.log(
+        "getApp().globalData.decorateMsg：",
+        getApp().globalData.decorateMsg
+      );
+      if (
+        getApp().globalData.decorateMsg.msgType ===
+        "sys_area_change_order_apply"
+      ) {
+        this.msg = getApp().globalData.decorateMsg;
+      } else {}
+    },
+    onShow() {
+      this.getChangeOrderDetail();
+      this.getBalance();
     },
     methods: {
-      payWay(payWayTag) {
-        this.payWayTag = payWayTag
-        this.payType = this.payWayTag?6:0
+      foramtPrePrice(price) {
+        return Number(price / 100).toFixed(2);
       },
       morePayWay() {
         this.$refs.payWayToast.showPupop();
       },
+      payWay(payWayTag) {
+        this.payWayTag = payWayTag
+        this.payType = this.payWayTag?6:0
+      },
+      changeValue() {
+        this.isCardPay = !this.isCardPay
+      },
       closePayDialog() {
         this.$refs.payDialog.close();
       },
-      clickCard() {
-        if (this.cardBalance) {
-          this.cardClick = !this.cardClick;
-        }
-      },
-
-      setSkuRelation(item) {
-        // 添加新旧id对应关系
-        const flgArr = this.skuRelation.filter(
-          (t) => t.originalId == item.originalId
-        );
-        if (flgArr?.length > 0) {
-          if (item.checked) {
-            // 如果选择了
-            // 如果是已经存在了新旧id对应关系，则替换新的id
-            flgArr[0].newSku = item.id;
-          } else {
-            let index = null;
-            for (let i = 0; i < this.skuRelation.length > 0; i++) {
-              if (this.skuRelation[i].originalId == item.originalId) {
-                index = i;
-                break;
-              }
-            }
-            if (index) {
-              this.skuRelation.splice(index, 1);
-            }
-          }
-          // 如果是已经存在了新旧id对应关系，则替换新的id
-          flgArr[0].newSku = item.id;
-        } else {
-          if (item.checked) {
-            // 否则就是初始化
-            this.skuRelation.push({
-              originalId: item.originalId,
-              oldSku: item.oldId || item.id,
-              newSku: item.id,
-            });
-          }
-        }
-      },
-      openPopUp() {
-        if (this.levelList.length > 0) {
-          this.$refs.level.open("bottom");
-        } else {
-          uni.showToast({
-            icon: "none",
-            title: "无等级可替换",
-          });
-        }
-      },
-      initData() {
-        this.checkedIds = [];
-        if (this.msg.obtainType != 2) {
-          this.dataOrigin?.artificial?.categoryList?.forEach((t) => {
-            t.itemList.forEach((it) => {
-              it.originalId = it.originalId || -1;
-              // 默认初始化SkuRelation
-              this.skuRelation.push({
-                originalId: it.originalId,
-                oldSku: it.id,
-                newSku: it.id,
-              });
-              this.checkedIds.push(it.originalId);
-            });
-          });
-        }
-
-        if (this.msg.obtainType != 1) {
-          this.dataOrigin?.material?.categoryList?.forEach((t) => {
-            t.itemList.forEach((it) => {
-              it.checked = true;
-              it.isEdit = false;
-              if (it.inServiceArea && !it.selling) {
-                this.checkedIds.push(it.originalId);
-                // 默认初始化SkuRelation
-                this.skuRelation.push({
-                  originalId: it.originalId,
-                  oldSku: it.id,
-                  newSku: it.id,
-                });
-              }
-            });
-          });
-        }
-
-        this.computePriceAndShopping();
-      },
-      computePriceAndShopping() {
-        // 先清空
-        this.shopping = {
-          artificial: [],
-          material: [],
-        };
-        this.countPrice = 0;
-        this.pieces = 0;
-
-        if (this.msg?.obtainType != 2) {
-          // 先计算人工费用
-          this.dataOrigin?.artificial?.categoryList?.forEach((item, i) => {
-            item.itemList.forEach((it, j) => {
-              this.shopping.artificial.push(it);
-              this.countPrice += Math.trunc(it.price * it.count);
-              this.pieces += it.count;
-            });
-          });
-        }
-
-        if (this.msg?.obtainType != 1) {
-          // 再计算辅材费用
-          this.dataOrigin?.material?.categoryList?.forEach((item, i) => {
-            item.itemList.forEach((it, j) => {
-              if (this.checkedIds.includes(it.originalId)) {
-                this.shopping.material.push(it);
-                this.countPrice += Math.trunc(it.price * it.count);
-                this.pieces += it.count;
-              }
-            });
-          });
-        }
-        this.pieces = (this.pieces * 100) / 100;
-        this.cardClick = this.countPrice <= this.cardBalance;
-
-        console.log(">>>>>>总价：>>>>>", this.countPrice);
-      },
-      batchChangeLevel(cllist) {
-        batchChangeLevel({
-          changeLevelDetailList: cllist,
-        }).then((data) => {
-          if (data && data.length > 0) {
-            let list = [];
-            // 取第一项查询所有等级
-            data[0].changeLevelDetailList.forEach((itm) => {
-              list.push({
-                value: itm.level,
-                label: itm.levelName,
-                totalPrice: 0,
-              });
-            });
-            this.levelLabel = "（" + list[0].label + "）";
-            data.forEach((workerSku) => {
-              // 储存所有工人对应的等级列表和溢价价格
-              workerSku.changeLevelDetailList.forEach((levelItem) => {
-                this.workerLevelSkuMapping.push({
-                  ...levelItem,
-                  skuId: workerSku.skuId,
-                });
-              });
-              workerSku.changeLevelDetailList.forEach((it) => {
-                let level = list.find((l) => l.value == it.level);
-                level.totalPrice += it.totalPrice;
-              });
-            });
-            this.levelList = list;
-          } else {
-            this.levelList = [];
+      getBalance() {
+        getBalance().then((e) => {
+          if (e != null) {
+            this.cardBalance = e;
           }
         });
       },
-      getDataList() {
-        this.noData = false;
-        let params = {
-          projectId: this.msg.projectId,
-          type: this.msg.serviceType,
-        };
-        // 精算立即购买跳转的也需要赋值obtainType
-        if (!this.partpay || this.msg.isActuarial === "1") {
-          params.obtainType = this.msg.obtainType;
-        }
-        console.log(">>>>>>>params>>>>>>>", params);
-        if (this.msg.isBOM === "1") {
-          params.isBOM = "1";
-        }
-        sellList(params)
-          .then((data) => {
-            this.dealListData(data);
-          })
-          .catch((err) => {
-            const {
-              data
-            } = err;
-            if (data && data.code !== 1) {
-              this.noData = true;
-              this.message = data.message;
-            }
-          });
+      changStoreValueCard(value) {
+        console.log("isCardPay", value);
+        this.isCardPay = value;
       },
-      dealListData(data) {
-        this.dataOrigin = data;
-        this.isHas = this.dataOrigin?.material?.categoryList?.length > 0;
-        if (this.dataOrigin?.artificial?.categoryList?.length > 0) {
-          let cllist = [];
-          this.dataOrigin?.artificial?.categoryList?.forEach((category) => {
-            category?.itemList.forEach((t) => {
-              let obj = {
-                skuId: t.id, //"long //商品id【必须】",
-                cityId: this.dataOrigin.cityId, //"long //市id【必须】",
-                categoryTypeId: t.categoryTypeId, //"int //商品品类类型id【必须】",
-                price: t.price, //"int //商品总价格 工艺商品单价个数 单位分【必须】",
-                count: t.count,
-              };
-              if (t.categoryTypeId == 7) {
-                obj.workerType = t.workType; //"int //工种,品类为工人时（categoryTypeId=7）必传
-              }
-              cllist.push(obj);
-            });
-          });
-          if (cllist.length > 0) {
-            this.batchChangeLevel(cllist);
-          } else {
-            this.levelLabel = "（中级）";
-          }
-        }
-        // if (this.selectedMaterialData?.categoryId) {
-        //   const {
-        //     origin,
-        //     categoryId
-        //   } = this.selectedMaterialData
-        //   this.setMaterial(categoryId, origin)
-        // }
-        if (data?.material?.categoryList?.length > 0) {
-          let tempArr = [...data?.material?.categoryList];
-          tempArr.forEach((category) => {
-            category.itemList.forEach((it) => {
-              it.oldId = it.id;
-              it.checked = true;
-              it.isEdit = false;
-            });
-          });
-          uni.setStorageSync("originMaterialList", tempArr);
-        }
-        this.initData();
-      },
-      gotopay() {
-        // TODO去结算页面
-        // let skuInfos = []
-        if (
-          this.shopping?.artificial?.length > 0 ||
-          this?.shopping?.material?.length > 0
-        ) {
-          if (this.cardClick) {
-            this.$refs.payDialog.open();
-            return;
-          }
-          this.payOrder();
+      submitCard() {
+        if (this.isCardPay) {
+          this.$refs.payDialog.open();
         } else {
-          uni.showToast({
-            title: "请您先选择人工",
-            icon: "none",
-            duration: 3000,
+          this.submit(1);
+        }
+      },
+      submit(flag) {
+        let title, content;
+        if (flag === 1) {
+          title = "是否同意设计面积变更申请";
+          content = `并支付￥${this.totalAmount}`;
+        } else if (flag === -1) {
+          title = "是否同意设计面积变更申请";
+          content = `退还您￥${(
+          Math.abs(this.detailData.amount) / 100).toFixed(2)}`;
+        } else if (flag === 0) {
+          title = "是否同意设计面积变更申请";
+          content = "";
+        }
+        let that = this;
+        if (flag === 2) {
+          that.createPayOrder();
+        } else {
+          uni.showModal({
+            content,
+            title,
+            cancelText: "取消",
+            cancelColor: "#333333",
+            confirmText: "同意",
+            confirmColor: "#FA3B34",
+            success(res) {
+              if (res.confirm) {
+                if (flag === 1 || flag === -1) {
+                  that.createPayOrder();
+                } else if (flag === 0) {
+                  that.createPayOrder();
+                  that.agreeChangeOrder()
+                }
+              } else if (res.cancel) {
+                console.log("用户取消了变更单申请的提交");
+              }
+            },
+            fail() {},
           });
         }
       },
-      payOrder() {
+      refuse() {
+        uni.navigateTo({
+          url: `/sub-decorate/pages/service-area-change-refuse/service-area-change-refuse?changeOrderId=${this.msg?.changeOrderId || this.changeOrderId}`,
+        });
+      },
+      agreeChangeOrder() {
+        agreeChangeOrderApi({
+          changeOrderId: this.msg?.changeOrderId || this.changeOrderId,
+        }).then((data) => {
+          console.log(data);
+          uni.switchTab({
+            url: "/pages/decorate/index/index",
+          });
+        });
+      },
+      createPayOrder() {
         //#ifdef MP-WEIXIN
-        let params = {
+        let bodyObj = {
+          remarks: this.remarks,
           payType: this.payType ? this.payType : 1, //"int //支付方式  1微信支付",
           openid: getApp().globalData.openId, //"string //微信openid 小程序支付用 app支付不传或传空",
-          projectId: Number(this.msg.projectId), //"long //项目id  非必须 默认0",
-          customerId: Number(this.msg.customerId), //"long //业主id  非必须 默认0",
-          estateId: Number(this.msg.estateId), //"long //房产id   非必须 默认0",
-          total: this.countPrice, //"int //总计",
-          remarks: this.remarks, //"string //备注",
-          orderName: this.title || "工序费", //"string //订单名称",
-          details: [],
-          isCardPay: this.cardClick,
-          params: {
-            skuRelation: this.skuRelation,
-            serviceType: this.msg.serviceType,
-          }, //string //与订单无关的参数"
+          sourceId: 100, //"long //订单来源渠道  1app  100小程序",
+          changeId: this.msg.changeOrderId || this.changeOrderId, //"long //变更单id",
+          isCardPay: this.isCardPay, //"boolean //是否使用储值卡支付  默认false"
         };
-        //#endif
-        //#ifdef H5
-        let params = {
-          payType: 3, //"int //支付方式  1微信支付",
-          deviceType: 2,
-          openid: getApp().globalData.openId, //"string //微信openid 小程序支付用 app支付不传或传空",
-          projectId: Number(this.msg.projectId), //"long //项目id  非必须 默认0",
-          customerId: Number(this.msg.customerId), //"long //业主id  非必须 默认0",
-          estateId: Number(this.msg.estateId), //"long //房产id   非必须 默认0",
-          total: this.countPrice, //"int //总计",
-          remarks: this.remarks, //"string //备注",
-          orderName: this.title || "工序费", //"string //订单名称",
-          details: [],
-          isCardPay: this.cardClick,
-          params: {
-            skuRelation: this.skuRelation,
-            serviceType: this.msg.serviceType,
-          }, //string //与订单无关的参数"
-        };
-        //#endif
-        // roleType 7工人，10管家
-        let roleType = this.msg.serviceType == 5 ? 10 : 7;
-        if (this.msg.obtainType != 2) {
-          this.shopping?.artificial?.forEach((it) => {
-            params.details.push({
-              // supplierType: it.supplierType,
-              roleType,
-              relationId: it.id, //"long //实体id",
-              type: 2, //"int //实体类型   1材料  2服务   3专项付款",
-              businessType: it.categoryTypeId, //"int //业务类型",
-              workType: it.workType, //"int //工种类型",
-              level: this.artificialLevel, //"int //等级  0中级  1高级 2特级  3钻石",
-              storeId: it.storeId, //"long //店铺id",
-              storeType: 0, //"int //店铺类型 0普通 1设计师",
-              number: it.count, //"double //购买数量",
-              // params: {
-              // 	skuRelation: this.skuRelation,
-              // 	serviceType: this.msg.serviceType,
-              // }, //string //与订单无关的参数 如上门时间 doorTime"
+        createChangeOrderApi(bodyObj).then((data) => {
+
+          if (!data) {
+            // 退款跳转装修首页
+            uni.switchTab({
+              url: "/pages/decorate/index/index",
             });
-          });
-        }
-        if (this.msg.obtainType != 1) {
-          this.shopping?.material?.forEach((it) => {
-            params.details.push({
-              // supplierType: it.supplierType,
-              relationId: it.id, //"long //实体id",
-              type: 1, //"int //实体类型   1材料  2服务   3专项付款",
-              businessType: 1, //it.categoryTypeId, //"int //业务类型",辅材的businessType固定为1
-              workType: it.workType, //"int //工种类型",
-              // level: 1, //"int //等级  0中级  1高级 2特级  3钻石",
-              storeId: it.storeId, //"long //店铺id",
-              storeType: 0, //"int //店铺类型 0普通 1设计师",
-              number: it.count, //"double //购买数量",
-              params: {
-                skuRelation: this.skuRelation,
-                serviceType: this.msg.serviceType,
-              }, //string //与订单无关的参数 如上门时间 doorTime"
-            });
-          });
-        }
-        this.createOrder(params);
-      },
-      createOrder(obj) {
-        createOrder(obj).then((data) => {
+            return;
+          }
+          if(data.accounts){
+            let obj = {
+              type:'changeApplication',
+              params:bodyObj
+            }
+             uni.navigateTo({
+               url:`/sub-my/pages/choice-refund-account/choice-refund-account?query=${encodeURIComponent(
+                JSON.stringify(obj)
+              )}`
+             })
+             return
+          }
           const {
             wechatPayJsapi,
             cardPayComplete,
@@ -629,7 +291,6 @@
               })
               return;
             }
-            //#ifdef MP-WEIXIN
             uni.requestPayment({
               provider: "wxpay",
               ...wechatPayJsapi,
@@ -664,112 +325,225 @@
                 }
               },
             });
-            //#endif
-            //#ifdef H5
-            uni.navigateTo({
-              url: `/sub-classify/pages/pay-order/pay-h5?payTal=${data.gomePayH5.payModeList[0].payTal}&totalPrice=${this.countPrice}&payRecordId=${data.payRecordId}`,
-            });
-            //#endif
           } else {
             uni.redirectTo({
               url: `/sub-classify/pages/pay-order/pay-success?orderId=${id}`,
             });
           }
         });
-      },
-      setLevel(levelObj) {
-        this.artificialLevel = levelObj.value;
-        this.levelLabel = "（" + levelObj.label + "）";
-
-        this.dataOrigin?.artificial?.categoryList?.forEach((category) => {
-          category.itemList.forEach((item) => {
-            let temp = this.workerLevelSkuMapping.filter(
-              (t) => t.skuId === item.id && levelObj.value === t.level
-            );
-            if (temp?.length > 0) {
-              item.price = temp[0].price;
+        //#endif
+        //#ifdef H5
+        let bodyObj = {
+          remarks: this.remarks,
+          payType: 3, //"int //支付方式  1微信支付",
+          deviceType: 2,
+          openid: getApp().globalData.openId, //"string //微信openid 小程序支付用 app支付不传或传空",
+          sourceId: 100, //"long //订单来源渠道  1app  100小程序",
+          changeId: this.msg.changeOrderId || this.changeOrderId, //"long //变更单id",
+          isCardPay: this.isCardPay, //"boolean //是否使用储值卡支付  默认false"
+        };
+        createChangeOrderApi(bodyObj).then((data) => {
+          if (!data) {
+            // 退款跳转装修首页
+            uni.switchTab({
+              url: "/pages/decorate/index/index",
+            });
+            return;
+          }
+          const {
+            wechatPayJsapi,
+            cardPayComplete,
+            id
+          } = data;
+          if (!cardPayComplete) {
+            if (this.payWayTag) {
+              uni.navigateTo({
+                url: `/sub-classify/pages/pay-order/cashier?remittanceCode=${data.companyTransferPayVO.remittanceCode}&amount=${data.companyTransferPayVO.amount}`
+              })
+              return;
             }
-          });
+            uni.navigateTo({
+              url: `/sub-classify/pages/pay-order/pay-h5?payTal=${data.gomePayH5.payModeList[0].payTal}&totalPrice=${this.totalAmount}&payRecordId=${data.payRecordId}`,
+            });
+          } else {
+            uni.redirectTo({
+              url: `/sub-classify/pages/pay-order/pay-success?orderId=${id}`,
+            });
+          }
         });
-
-        this.close();
-        this.computePriceAndShopping();
+        //#endif
       },
-      close() {
-        this.$refs.level.close();
+
+      getChangeOrderDetail() {
+        this.noData = false;
+        const params = {
+          changeOrderId: this.msg?.changeOrderId || this.changeOrderId,
+        }
+        getAreaChangeOrderDetail(params).then((res) => {
+          this.detailData = res;
+          this.isCardPay = this.cardBalance >= this.detailData.amount
+        }).catch((err) => {
+          const {data} = err;
+          if (data && data.code !== 1) {
+            this.noData = true;
+            this.message = data.message;
+          }
+        })
+
       },
     },
   };
 </script>
 
-<style scoped lang="scss">
-  .select-disable {
-    width: 36rpx;
-    height: 36rpx;
-    background: #f5f5f5;
-    border: 1rpx solid #e8e8e8;
-    border-radius: 50%;
-    margin-left: 16rpx;
+<style lang="scss">
+  .application-wrap {
+    padding-top: 16rpx;
+    background: #f5f6f6;
   }
 
-  .pay-way,
-  .pledge,
-  .remarks,
-  .change-cost {
-    padding: 5rpx 32rpx;
-    background-color: #ffffff;
-    margin-top: 16rpx;
-    font-size: 28rpx;
-    font-family: PingFangSC, PingFangSC-Regular;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    height: 104rpx;
-    line-height: 104rpx;
-    border-radius: 32rpx;
-  }
-
-  .card-img {
-    width: 32rpx;
-    height: 32rpx;
-    margin-right: 12rpx;
-  }
-
-  .card-price {
-    font-family: PriceFont;
-    font-size: 28rpx;
-    color: #ff3347;
-  }
-
-  .card-sub {
-    font-size: 24rpx;
-    font-weight: 400;
-    color: #999999;
-  }
-
-  .selected-img {
-    width: 36rpx;
-    height: 36rpx;
-    margin-left: 16rpx;
-  }
-
-  .flex-center {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-  }
-
-  .pay-way .wechat_icon {
-    vertical-align: sub;
-    display: inline-block;
-    width: 32rpx;
-    height: 32rpx;
-    background-image: url("../../static/wechat_icon.png");
-    background-size: contain;
-    margin-right: 12rpx;
+  .list {
+    padding-bottom: 32rpx;
     background-color: #fff;
   }
 
+  .summary {
+    padding: 24rpx 32rpx;
+    background-color: #fff;
+    margin: 16rpx 0;
+    border-radius: 32rpx;
+  }
+
+  .change-money {
+    display: flex;
+    justify-content: space-between;
+    flex-direction: row;
+    align-items: center;
+
+    .label {
+      height: 40rpx;
+      font-size: 28rpx;
+      font-family: PingFangSC, PingFangSC-Regular;
+      font-weight: 400;
+      text-align: left;
+      color: #333333;
+      line-height: 40rpx;
+    }
+
+    .money {
+      height: 40rpx;
+      font-size: 24rpx;
+      font-weight: 400;
+      text-align: right;
+      color: #333333;
+      line-height: 40rpx;
+
+      .ft-28 {
+        font-size: 32rpx;
+      }
+    }
+  }
+
+  .store-money-card {
+    padding: 34rpx 32rpx;
+    background-color: #fff;
+    margin-bottom: 16rpx;
+    border-radius: 32rpx;
+    display: flex;
+    justify-content: space-between;
+    flex-direction: row;
+    align-items: center;
+
+    .yu-e {
+      display: flex;
+      justify-content: flex-start;
+      flex-direction: row;
+      align-items: center;
+    }
+
+    image {
+      width: 32rpx;
+      height: 32rpx;
+      margin-right: 12rpx;
+    }
+
+    .c-1 {
+      width: 84rpx;
+      height: 28rpx;
+      font-size: 28rpx;
+      font-family: PingFangSC, PingFangSC-Regular;
+      font-weight: 400;
+      text-align: left;
+      color: #333333;
+      line-height: 28rpx;
+    }
+
+    .c-2 {
+      height: 28rpx;
+      font-size: 24rpx;
+      font-family: PingFangSC, PingFangSC-Regular;
+      font-weight: 400;
+      text-align: left;
+      color: #999;
+      line-height: 28rpx;
+    }
+  }
+
+  .pay-way {
+    display: flex;
+    justify-content: space-between;
+    flex-direction: row;
+    align-items: center;
+    padding: 32rpx;
+    background-color: #fff;
+    border-radius: 32rpx;
+
+    .label {
+      height: 40rpx;
+      font-size: 28rpx;
+      font-family: PingFangSC, PingFangSC-Regular;
+      font-weight: 400;
+      text-align: left;
+      color: #333333;
+      line-height: 40rpx;
+    }
+
+    .wx {
+      height: 32rpx;
+      font-size: 28rpx;
+      font-family: PingFangSC, PingFangSC-Regular;
+      font-weight: 400;
+      text-align: right;
+      padding-left: 44rpx;
+      color: #111111;
+      line-height: 32rpx;
+      background-image: url("http://dbj.dragonn.top/static/mp/dabanjia/images/ic_order_wechat2x.png");
+      background-size: 32rpx 32rpx;
+      background-repeat: no-repeat;
+    }
+
+    .store-pay {
+      height: 32rpx;
+      font-size: 28rpx;
+      font-family: PingFangSC, PingFangSC-Regular;
+      font-weight: 400;
+      text-align: right;
+      padding-left: 44rpx;
+      color: #111111;
+      line-height: 32rpx;
+      background-image: url("http://dbj.dragonn.top/static/mp/dabanjia/images/ic_store_store_card2x.png");
+      background-size: 32rpx 32rpx;
+      background-repeat: no-repeat;
+    }
+  }
+
+  .pay-way .more_pay_icon {
+    vertical-align: middle;
+    display: inline-block;
+    width: 48rpx;
+    height: 52rpx;
+    background-image: url("https://ali-image.dabanjia.com/static/mp/dabanjia/images/theme-red/classify/more_pay_icon.png");
+    background-size: contain;
+  }
 
   .refuse-reason {
     padding: 32rpx 32rpx;
@@ -792,94 +566,39 @@
     }
   }
 
-  // .remarks {
-  //   padding: 5rpx 32rpx;
-  //   background-color: #ffffff;
-  //   margin-top: 16rpx;
-  //   font-size: 28rpx;
-  //   font-family: PingFangSC, PingFangSC-Regular;
-  //   display: flex;
-  //   justify-content: space-between;
-  //   align-items: center;
-  //   height: 104rpx;
-  //   line-height: 104rpx;
-  // }
-
-  // .remarks {
-  //   overflow: hidden;
-  // }
-
-  // .remarks text {
-  //   min-width: 180rpx;
-  // }
-
-  // .remarks .remarks-right {
-  //   flex: 1;
-  //   position: relative;
-  //   height: 100%;
-  //   overflow: scroll;
-  // }
-
-  .service-area-change-cost {
-    position: relative;
-    height: 100%;
-    width: 100%;
-    padding-bottom: 96rpx;
-
-    .cost-detail{
-      width: 100%;
-    }
-  }
-
-  // .title {
-  //   display: flex;
-  //   justify-content: space-between;
-  //   flex-direction: row;
-  //   align-items: center;
-  //   box-sizing: border-box;
-  //   height: 112rpx;
-  //   padding: 48rpx 32rpx 16rpx;
-  //   background: #f5f6f6;
-  //   font-size: 28rpx;
-  //   font-family: PingFangSC, PingFangSC-Medium;
-  //   font-weight: 700;
-  //   text-align: left;
-  //   color: #333333;
-  //   line-height: 40rpx;
-
-  //   .change-level {
-  //     height: 34rpx;
-  //     font-size: 24rpx;
-  //     font-family: PingFangSC, PingFangSC-Regular;
-  //     font-weight: 400;
-  //     text-align: center;
-  //     color: #999999;
-  //     line-height: 34rpx;
-  //   }
-  // }
-
-  .process-cost-list {
-    padding: 0 32rpx;
-    background-color: #fff;
-    border-radius: 32rpx;
-  }
-
-  .payment-wrap {
+  .pay-wrap {
     position: fixed;
     bottom: 0;
     left: 0;
     width: 100%;
-    padding: 30rpx 32rpx 24rpx;
-    background-color: #fff;
     box-sizing: border-box;
-  }
+    padding: 24rpx 32rpx;
+    background: #fff;
+    display: flex;
+    justify-content: space-between;
 
-  .pay-way .more_pay_icon {
-    vertical-align: middle;
-    display: inline-block;
-    width: 48rpx;
-    height: 52rpx;
-    background-image: url("https://ali-image.dabanjia.com/static/mp/dabanjia/images/theme-red/classify/more_pay_icon.png");
-    background-size: contain;
+    .b-t-1 {
+      width: 188rpx;
+      height: 88rpx;
+      line-height: 88rpx;
+      border: 1rpx solid #cccccc;
+      border-radius: 16rpx;
+      text-align: center;
+      font-size: 30rpx;
+      font-family: PingFangSC, PingFangSC-Regular;
+      font-weight: 400;
+      color: #666666;
+    }
+
+    .b-t-p {
+      flex: 1;
+      background: linear-gradient(116.19deg, #f83112 16.48%, #fd6421 83.52%);
+      margin-left: 32rpx;
+      color: #fff;
+
+      .unit {
+        font-size: 24rpx;
+      }
+    }
   }
 </style>

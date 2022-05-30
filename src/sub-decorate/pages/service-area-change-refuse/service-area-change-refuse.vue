@@ -3,21 +3,21 @@
     <view class="content">
       <text class="replace-tip">请选择拒绝原因</text>
       <view class="radio-group">
-        <view class="radio-item" v-for="(item, index) in items" :class="{last:item.id === 4}" :key="item.id"
+        <view class="radio-item" v-for="item in items" :class="{last:item.id===4}" :key="item.id"
           @click="radioChange(item)">
           <view class="text">{{item.reason}}</view>
           <view class="circle" v-if="currentId !== item.id" >
-            <image
-              src="https://ali-image.dabanjia.com/static/mp/dabanjia/images/classify/pay_unselected.png">
-            </image>
+            <view></view>
           </view>
           <view class="circle" v-else>
-            <image src="https://ali-image.dabanjia.com/static/mp/dabanjia/images/theme-red/decorate/ic_checked.svg"></image>
+            <image src="https://ali-image.dabanjia.com/static/mp/dabanjia/images/theme-red/decorate/ic_checked.svg" mode=""></image>
           </view>
         </view>
       </view>
       <view class="text-area" v-if="currentId === 4">
-        <textarea v-model="otherReason" :show-confirm-bar='false' class="replace-text-area"  placeholder="请输入原因详情" />
+        <textarea v-model="otherReason" :show-confirm-bar='false' class="replace-text-area" :maxlength='500' placeholder="请输入原因详情" />
+        <text class="text-area-warning" v-if="!otherReason">（必填）</text>
+        <text class="text-area-info" v-if="otherReason">{{otherReason.length>500?500:otherReason.length}}/500</text>
       </view>
     </view>
     <bottom-btn style="width: 100%;" :showDefaultBtn="false">
@@ -28,25 +28,21 @@
 
 <script>
   import {
-    rejectChangeOrder,
-    rejectReson
+    rejectReson,
+    refuseAreaChangeOrder
   } from "../../../api/decorate.js";
-  import upload from '../../../utils/upload.js'
   export default {
     data() {
       return {
         num: 0,
         items: [],
         currentId: "",
-        imageValue: [],
         otherReason: "",
         changeOrderId: '',
-        isServed:false
       };
     },
     onLoad(e) {
       this.changeOrderId = e.changeOrderId || 1,
-      this.isServed = e.isServed
       this.rejectReson()
     },
     methods: {
@@ -56,35 +52,33 @@
           this.items = res
         })
       },
-      radioChange(e) {
-        this.currentId = e.id;
+      radioChange(evt) {
+        this.currentId = evt.id;
       },
       submit() {
         if (!this.currentId) {
           uni.showToast({
-            title: "请您选择更换原因",
+            title: "请您选择拒绝原因",
+            duration: 2000,
+            icon: "none",
+          });
+          return;
+        } else if (this.currentId === 4 && this.otherReason.length === 0) {
+          uni.showToast({
+            title: "请您描述具体原因",
             duration: 2000,
             icon: "none",
           });
           return;
         }
-        // else if (this.currentId === 4 && this.otherReason.length === 0) {
-        //   uni.showToast({
-        //     title: "请您描述具体原因",
-        //     duration: 2000,
-        //     icon: "none",
-        //   });
-        //   return;
-        // }
         this.submitQuery()
       },
       submitQuery() {
         let data = {
           changeOrderId: this.changeOrderId,
-          optionId: this.currentId,
-          optionMsg: this.currentId!==4?this.items[this.currentId-1].reason:this.otherReason.substr(0,500)
+          remark: this.currentId !== 4 ? this.items[this.currentId-1].reason : this.otherReason.substr(0,500)
         }
-          rejectChangeOrder(data).then(res => {
+          refuseAreaChangeOrder(data).then(res => {
             uni.showToast({
               title: '已提交申请',
               duration: 2000,
@@ -134,22 +128,22 @@
         width: 32rpx;
         height: 32rpx;
         border-radius: 50%;
-        border: 0.5rpx solid #bababa;
+        border: 0.5px solid #bababa;
         display: flex;
         align-items: center;
         justify-content: center;
       }
 
-      // .isActive {
-      //   border: 0.5rpx solid #35c4c4;
+      .isActive {
+        border: 0.5px solid #35c4c4;
 
-      //   view {
-      //     width: 16rpx;
-      //     height: 16rpx;
-      //     border-radius: 50%;
-      //     background: #35c4c4;
-      //   }
-      // }
+        view {
+          width: 16rpx;
+          height: 16rpx;
+          border-radius: 50%;
+          background: #35c4c4;
+        }
+      }
     }
 
     .last {
