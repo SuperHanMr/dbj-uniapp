@@ -1,7 +1,7 @@
 <template>
   <view class="service-design">
     <view class="service-change">
-      <view class="change-item" v-if="designData.customReport">
+      <view class="change-item" v-if="!designData.areaChangeOrder">
         <view class="title">服务面积变更详情</view>
         <view class="check" @click="toServiceAreaChange">
           <text>立即查看</text>

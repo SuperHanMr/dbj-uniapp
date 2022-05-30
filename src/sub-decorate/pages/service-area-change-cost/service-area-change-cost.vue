@@ -46,21 +46,25 @@
         <view class="more_pay_icon"></view>
       </view>
     </view>
-    <!-- <view class='remarks' v-if="!msg.payStatus || msg.payStatus != 2">
-      <text>备注</text>
-      <view class="remarks-right">
+    <view class="refuse-reason">
+      <view class="title">拒绝原因</view>
+      <!-- <view class="remarks-right">
         <input type="text" maxlength="200" v-model="remarks" cursor-spacing="15px" placeholder-class="text-placeholder"
           style="width:100%;height: 100%;overflow: scroll;" placeholder="选填,说点什么～" />
+      </view> -->
+      <view class="content">
+        原因原因原因原因原因原因原因原因原因原因原因原因原因原因原因原因原因原因原因原因原因原因原因原因原因原因
+        原因原因原因原因原因原因原因原因原因原因原因原因原因原因原因原因原因原因原因原因原因原因原因原因原因原因
       </view>
-    </view> -->
+    </view>
     <view :style="{paddingBottom:containerBottom * 2 + 48 + 88 + 'rpx'}">
 
     </view>
     <view v-if="!msg.payStatus || msg.payStatus != 2" class="payment-wrap" :style="{paddingBottom:systemBottom}">
       <!-- <payment @gotopay="gotopay" :pieces="pieces" :countPrice="payPrice" :isAllChecked="isAllChecked">
       </payment> -->
-      <payment @gotopay="gotopay" :countPrice="payPrice">
-      </payment>
+      <bottom-btn @gotopay="gotopay" :countPrice="payPrice">
+      </bottom-btn>
     </view>
     <uni-popup ref="level">
       <change-level @changeLevel="setLevel" @close="close" :dataList="levelList" descType="worker"
@@ -70,14 +74,14 @@
       <pay-dialog :payChannel="payChannel" :payChannelPrice="payChannelPrice" @payOrder="payOrder"
         @closePayDialog="closePayDialog"></pay-dialog>
     </uni-popup>
-    <!-- <pay-way-toast ref='payWayToast' @payWay="payWay"></pay-way-toast> -->
+    <pay-way-toast ref='payWayToast' @payWay="payWay"></pay-way-toast>
   </view>
 </template>
 
 <script>
   import ChangeLevel from "../../components/change-level/change-level.vue";
   import NoData from "../../components/no-data/no-data.vue";
-  import Payment from "./payment.vue";
+  import BottomBtn from "./bottom-btn.vue";
   import OrderDetail from "./order-detail.vue";
   import {
     log
@@ -100,7 +104,7 @@
 
   export default {
     components: {
-      Payment,
+      BottomBtn,
       OrderDetail,
       ChangeLevel,
       NoData,
@@ -766,33 +770,55 @@
     background-color: #fff;
   }
 
-  .remarks {
-    padding: 5rpx 32rpx;
+
+  .refuse-reason {
+    padding: 32rpx 32rpx;
     background-color: #ffffff;
     margin-top: 16rpx;
     font-size: 28rpx;
-    font-family: PingFangSC, PingFangSC-Regular;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    height: 104rpx;
-    line-height: 104rpx;
+    border-radius: 32rpx;
+
+    .title {
+      font-size: 30rpx;
+      line-height: 48rpx;
+      color: #222222;
+    }
+
+    .content {
+      margin-top: 16rpx;
+      font-size: 28rpx;
+      line-height: 40rpx;
+      color: #999999;
+    }
   }
 
-  .remarks {
-    overflow: hidden;
-  }
+  // .remarks {
+  //   padding: 5rpx 32rpx;
+  //   background-color: #ffffff;
+  //   margin-top: 16rpx;
+  //   font-size: 28rpx;
+  //   font-family: PingFangSC, PingFangSC-Regular;
+  //   display: flex;
+  //   justify-content: space-between;
+  //   align-items: center;
+  //   height: 104rpx;
+  //   line-height: 104rpx;
+  // }
 
-  .remarks text {
-    min-width: 180rpx;
-  }
+  // .remarks {
+  //   overflow: hidden;
+  // }
 
-  .remarks .remarks-right {
-    flex: 1;
-    position: relative;
-    height: 100%;
-    overflow: scroll;
-  }
+  // .remarks text {
+  //   min-width: 180rpx;
+  // }
+
+  // .remarks .remarks-right {
+  //   flex: 1;
+  //   position: relative;
+  //   height: 100%;
+  //   overflow: scroll;
+  // }
 
   .service-area-change-cost {
     position: relative;
@@ -805,32 +831,32 @@
     }
   }
 
-  .title {
-    display: flex;
-    justify-content: space-between;
-    flex-direction: row;
-    align-items: center;
-    box-sizing: border-box;
-    height: 112rpx;
-    padding: 48rpx 32rpx 16rpx;
-    background: #f5f6f6;
-    font-size: 28rpx;
-    font-family: PingFangSC, PingFangSC-Medium;
-    font-weight: 700;
-    text-align: left;
-    color: #333333;
-    line-height: 40rpx;
+  // .title {
+  //   display: flex;
+  //   justify-content: space-between;
+  //   flex-direction: row;
+  //   align-items: center;
+  //   box-sizing: border-box;
+  //   height: 112rpx;
+  //   padding: 48rpx 32rpx 16rpx;
+  //   background: #f5f6f6;
+  //   font-size: 28rpx;
+  //   font-family: PingFangSC, PingFangSC-Medium;
+  //   font-weight: 700;
+  //   text-align: left;
+  //   color: #333333;
+  //   line-height: 40rpx;
 
-    .change-level {
-      height: 34rpx;
-      font-size: 24rpx;
-      font-family: PingFangSC, PingFangSC-Regular;
-      font-weight: 400;
-      text-align: center;
-      color: #999999;
-      line-height: 34rpx;
-    }
-  }
+  //   .change-level {
+  //     height: 34rpx;
+  //     font-size: 24rpx;
+  //     font-family: PingFangSC, PingFangSC-Regular;
+  //     font-weight: 400;
+  //     text-align: center;
+  //     color: #999999;
+  //     line-height: 34rpx;
+  //   }
+  // }
 
   .process-cost-list {
     padding: 0 32rpx;

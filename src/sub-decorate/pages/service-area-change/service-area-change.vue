@@ -15,12 +15,12 @@
           refresher-background="#FFF" refresher-enabled="true" :refresher-triggered="triggered" @scroll="onScroll"
           @refresherrefresh="onRefresh" @scrolltolower="onLoadMore">
 
-          <!-- <view v-if="currentList.length==0" class="no-list-content">
+          <view v-if="currentList.length==0" class="no-list-content">
             <image class="no-list" src="/static/order/blank_house@2x.png" mode=""></image>
             <view class="tip-text">
               您还没有任何数据~
             </view>
-          </view> -->
+          </view>
           <view class="service-area-change-item" v-for="item in currentList" :key="item" @click="toCost">
             <view class="item-top">
               <view class="item-top-left">
@@ -171,7 +171,6 @@
         // this.getList(false);
       },
       toCost(){
-        console.log(111)
         uni.navigateTo({
           url: `/sub-decorate/pages/service-area-change-cost/service-area-change-cost?projectId=${this.projectId}`,
         });
