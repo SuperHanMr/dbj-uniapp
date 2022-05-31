@@ -14,7 +14,7 @@
         <view class="message-box">
           <view class="message-title">服务消息确认</view>
           <view class="message-content-box">
-            <view class="message-content" v-for="(item, index) in messageItem" :key="'text'+index"><text>{{item}}</text></view>
+            <view class="message-content" v-for="(item, index) in messageItem" :key="'text'+messageInfo.id+index"><text>{{item}}</text></view>
             <button class="detail-btn" @click="showDialog = true">查看详情</button>
           </view>
           <view class="message-status">
@@ -37,7 +37,7 @@
         <image class="dialog-title-img" src="../../../../static/close.png" @click="showDialog = false"></image>
       </view>
       <view class="dialog-content">
-        <view class="message-content" v-for="(item, index) in messageItem" :key="'dialog'+index"><text>{{item}}</text></view>
+        <view class="message-content" v-for="(item, index) in messageItem" :key="'dialog'+messageInfo.id"><text>{{item}}</text></view>
         <text class="message-code">服务单编号：{{messageInfo.serveNo}}</text>
         <view class="dialog-state-box">
           <button class="state-btn state-refuse" v-if="messageInfo.state == 0" @click="refuseOperate">拒绝</button>
@@ -82,6 +82,17 @@ export default {
       return this.messageInfo.content.split('\n');
     }
   },
+  watch: {
+    message: {
+      handler(data) {
+        if (data.payloadData.params.state != 1 && data.payloadData.params.state != 2) {
+          this.changeState();
+        }
+      },
+      deep:true,
+      immediate: true
+    }
+  },
   methods: {
     agreeOperate() {
       let that = this;
@@ -104,15 +115,17 @@ export default {
         that.showDialog = false;
         that.$set(that.message.payloadData.params, 'state', 2);
       })
-    }
-  },
-  mounted() {
-    console.log(this.message)
-    if (this.messageInfo.state != 1 && this.messageInfo.state != 2) {
+    },
+    changeState() {
       getMessageState(this.messageInfo.id).then(res => {
         this.$set(this.message.payloadData.params, 'state', res.state);
         this.$forceUpdate();
       })
+    }
+  },
+  mounted() {
+    if (this.messageInfo.state != 1 && this.messageInfo.state != 2) {
+      this.changeState();
     }
   }
 };
