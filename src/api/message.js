@@ -56,3 +56,18 @@ export function createC2CChat(params) {
 export function getGroupMembers(chatGroupId) {
   return request.get(`/app/chatGroupMember/${chatGroupId}/getGroupMember`);
 }
+
+// 服务消息确认卡--同意
+export function designAgreedMsg(params) {
+  return request.post(`/pm/app/serve/design/agreedMsg/${params.serveId}/${params.id}`, {});
+}
+
+// 服务消息确认卡--拒绝
+export function designRejectedMsg(params) {
+  return request.post(`/pm/app/serve/design/rejectedMsg/${params.serveId}/${params.id}`, {});
+}
+
+// 查询服务确认消息状态
+export function getMessageState(id) {
+  return request.get(`/pm/app/serve/design/message/${id}/state`);
+}

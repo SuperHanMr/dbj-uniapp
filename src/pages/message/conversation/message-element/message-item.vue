@@ -79,6 +79,11 @@
     :template="template"
     :message="message"
   />
+  <product-template
+    v-else-if="message.type === TIM.TYPES.MSG_CUSTOM && template.template === 'product-tpl'"
+    :template="template"
+    :message="message"
+  />
   <unsupported-element
     v-else
     :message="message"
@@ -88,6 +93,7 @@
 <script>
   import MessageTemplate from "@/utils/message-template.json";
   import TIM from "tim-wx-sdk";
+  import ProductTemplate from "./product-template.vue";
   import TextElement from "./text-element.vue";
   import ImageElement from "./image-element.vue";
   import VideoElement from "./video-element.vue";
@@ -116,6 +122,7 @@
       },
     },
     components: {
+      ProductTemplate,
       TextElement,
       ImageElement,
       VideoElement,
