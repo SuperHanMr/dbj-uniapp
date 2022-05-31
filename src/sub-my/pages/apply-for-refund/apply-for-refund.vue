@@ -675,14 +675,11 @@ export default {
 
     showToast() {
       switch (this.refundType) {
-        case 2:
+        case 2 || 6:
           this.errorTitle = "退款金额大于最大退款金额，请修改";
           break;
         case 5:
           this.errorTitle = "退款金额大于储值卡余额，请修改";
-        case 6:
-          this.errorTitle = "退款金额大于最大退款金额，请修改";
-          break;
       }
     },
 
