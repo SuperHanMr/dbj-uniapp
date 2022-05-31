@@ -46,6 +46,9 @@
           class="unit price-font">￥</text><text
           class="price-font">{{(Math.abs(detailData.amount)/100).toFixed(2)}}</text></view>
     </view>
+    <view v-if="detailData.status == 5 || detailData.status == 7" class="view-order" :style="{paddingBottom:systemBottom}">
+      <view class="btn-view-order" @click="toOrderList(detailData.status)">查看订单</view>
+    </view>
     <uni-popup ref="payDialog" type="bottom">
       <pay-dialog :payChannelPrice="payChannelPrice" @payOrder="submit(2)" @closePayDialog="closePayDialog">
       </pay-dialog>
@@ -89,7 +92,7 @@
         containerBottom: null,
         systemBottom: null,
         systemHeight: null,
-        changeOrderId: 0,
+        changeOrderId: null,
         detailData: {},
         cardClick: false,
         noData: false,
@@ -235,12 +238,25 @@
       },
       refuse() {
         uni.navigateTo({
-          url: `/sub-decorate/pages/service-area-change-refuse/service-area-change-refuse?changeOrderId=${this.msg?.changeOrderId || this.changeOrderId}`,
+          url: `/sub-decorate/pages/service-area-change-refuse/service-area-change-refuse?changeOrderId=${this.changeOrderId || this.msg?.changeOrderId}`,
         });
+      },
+      toOrderList(status) {
+        if (status == 7) {
+          // 已支付
+          uni.redirectTo({
+            url: "../../../sub-my/pages/my-order/my-order?firstEntry=true&index=2"
+          });
+        } else if(status == 5){
+          // 待付款
+          uni.redirectTo({
+            url: "../../../sub-my/pages/my-order/my-order?firstEntry=true&index=1"
+          });
+        }
       },
       agreeChangeOrder() {
         agreeChangeOrderApi({
-          changeOrderId: this.msg?.changeOrderId || this.changeOrderId,
+          changeOrderId: this.changeOrderId || this.msg?.changeOrderId,
         }).then((data) => {
           console.log(data);
           uni.switchTab({
@@ -339,7 +355,7 @@
           deviceType: 2,
           openid: getApp().globalData.openId, //"string //微信openid 小程序支付用 app支付不传或传空",
           sourceId: 100, //"long //订单来源渠道  1app  100小程序",
-          changeId: this.msg.changeOrderId || this.changeOrderId, //"long //变更单id",
+          changeId: this.changeOrderId || this.msg.changeOrderId, //"long //变更单id",
           isCardPay: this.isCardPay, //"boolean //是否使用储值卡支付  默认false"
         };
         createChangeOrderApi(bodyObj).then((data) => {
@@ -377,7 +393,7 @@
       getChangeOrderDetail() {
         this.noData = false;
         const params = {
-          changeOrderId: this.msg?.changeOrderId || this.changeOrderId,
+          changeOrderId: this.changeOrderId || this.msg?.changeOrderId,
         }
         getAreaChangeOrderDetail(params).then((res) => {
           this.detailData = res;
@@ -599,6 +615,29 @@
       .unit {
         font-size: 24rpx;
       }
+    }
+  }
+
+  .view-order {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    box-sizing: border-box;
+    padding: 24rpx 32rpx;
+    background: #fff;
+    display: flex;
+    justify-content: flex-end;
+    .btn-view-order {
+      width: 160rpx;
+      height: 56rpx;
+      line-height: 56rpx;
+      border: 1rpx solid #eaeaea;
+      border-radius: 16rpx;
+      text-align: center;
+      font-size: 24rpx;
+      font-family: PingFangSC, PingFangSC-Regular;
+      color: #333333;
     }
   }
 </style>
