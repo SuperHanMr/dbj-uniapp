@@ -1079,6 +1079,12 @@
           }
         },
         {
+          "path": "pages/service-area-change-refuse/service-area-change-refuse",
+          "style": {
+            "navigationBarTitleText": "拒绝设计面积变更申请"
+          }
+        },
+        {
           "path": "pages/custom-report/custom-report",
           "style": {
             "navigationBarTitleText": "",

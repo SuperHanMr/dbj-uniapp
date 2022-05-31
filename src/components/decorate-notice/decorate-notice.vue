@@ -11,7 +11,7 @@
   <!--                 <view
             class="notice-item"
             @click="to(3)"
-          > 
+          >
             <view class="item-top">
               <view class="item-top-left">
                 <image
@@ -87,7 +87,7 @@
     },
     created(){
       this.systemHeight = wx.getSystemInfoSync().windowHeight + 'px'
-      
+
     },
     mounted() {
       this.getMsg()
@@ -116,24 +116,23 @@
       getMsg() {
         this.isNoMessage = false
         getMsgList(this.current).then(res => {
-          
           res.map(item => {
             item.data = JSON.parse(item.msgBody)
             item.url = sysMessage[item.msgType].url
             if(item.msgType==='sys_design_stage_report_msg'&&item.data.isOnline){
               item.url = '/sub-decorate/pages/design-online-disclosure/design-online-disclosure'
             }
-            
+
             let name = item.data.serveType == 14?item.data.serveType+''+item.data.workerType:item.data.serveType
-            
+
             item.icon = sysMessage[name]?sysMessage[name].icon:sysMessage[item.msgType].icon
             item.iconColor = sysMessage[name]?sysMessage[name].color:sysMessage[item.msgType].color
-            
+
           })
           this.list = res
           this.scrollHeight = res.length * 140 * 2 + 'rpx'
           this.isNoMessage = res.length < 1
-          
+
           console.log(this.scrollHeight)
         })
       }
@@ -205,8 +204,8 @@
       .icon{
         display: inline-block;
         vertical-align: middle;
-        
-        
+
+
       }
       // z-index: 11;
       .item-top {
@@ -287,7 +286,7 @@
     left: 50%;
     top: 50%;
     transform: translate(-50%, -50%);
-    
+
     image {
       width: 400rpx;
       height: 400rpx;

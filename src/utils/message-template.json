@@ -2502,6 +2502,11 @@
     "template": "serve_product",
     "summary": "${productName}"
   },
+  "single_design_confirm_record_msg": {
+    "type": "single_design_confirm_record_msg",
+    "template": "product-tpl",
+    "summary": "${productName}"
+  },
   "custom_agant_coming": {
     "type": "custom_agant_coming",
     "template": "tip2",

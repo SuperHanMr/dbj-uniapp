@@ -25,11 +25,12 @@
     </view>
     <swiper :current="tabIndex" style="flex: 1;min-height: 600px;" :style="{height:contentHeight}" :duration="300" @change="ontabchange">
       <swiper-item class="swiper-item" v-for="(tab,index1) in dataList" :key="index1">
-        
+
         <service-hunman :isDesign="tab.nodeType===1" :serverId='serverId' :tab='tab' :designName='designList' :designData='designData' @openPopup='openPopup'></service-hunman>
         <amount-house :checkData='checkData' :isReport='false' id="d3" @isEmpty='isEmpty' :index='index1' v-if="tab.nodeType===3&&!tab.currentEmpty"></amount-house>
         <resultContent ref='result' id="d2" @isEmpty='isEmpty' :index='index1' :serverId='tab.serveCardId' v-if="tab.nodeType===2&&!tab.currentEmpty" @getData='getData' :scrollTop='scrollTop'
           :isReport='true'></resultContent>
+        <serviceDesignAreaChange id="d1" v-if="tab.nodeType===1 && designData.areaChangeOrder" :serverId='tab.serveCardId'></serviceDesignAreaChange>
         <serviceDesign id="d1" v-if="tab.nodeType===1&&!tab.currentEmpty" :projectId='projectId' @isEmpty='isEmpty' :index='index1' @changeDesign='changeDesign' :serverId='tab.serveCardId'></serviceDesign>
         <serviceActuarial id="d4" v-if="tab.nodeType===4&&!tab.currentEmpty" @isEmpty='isEmpty' :index='index1' :projectId='projectId' :serverId='tab.serveCardId'></serviceActuarial>
         <serviceSteward id="d5" v-if="tab.nodeType===5&&!tab.currentEmpty" @isEmpty='isEmpty' :index='index1' :serveCardId='tab.serveCardId'></serviceSteward>
@@ -46,6 +47,7 @@
   import serviceActuarial from '../../components/service-actuarial/service-actuarial.vue'
   import serviceDismantle from '../../components/service-dismantle/service-dismantle.vue'
   import serviceDesign from '../../components/service-design/service-design.vue'
+  import serviceDesignAreaChange from '../../components/service-design-area-change/service-design-area-change.vue'
   import serviceSteward from '../../components/service-steward/service-steward.vue'
   import serviceDesignChange from '../../components/service-design-change/service-design-change.vue'
   import {getDesignServeMenu,getMyService} from '../../../api/decorate.js'
@@ -57,6 +59,7 @@
       serviceDismantle,
       serviceDesign,
       serviceDesignChange,
+      serviceDesignAreaChange,
       serviceSteward
     },
     data() {
@@ -95,7 +98,7 @@
       this.processId = e.processId
     },
     mounted() {
-      
+
       this.getMyService()
     },
     methods: {
@@ -113,7 +116,7 @@
         this.tabIndex = current
         this.tabName = 'd'+(this.dataList[current].nodeType>6?6:this.dataList[current].nodeType)
         this.serverId = this.dataList[current].serveCardId
-        
+
         this.dataList[current].currentEmpty = 0
         this.checkData = {
           serveId:this.dataList[current].serveCardId,
@@ -128,6 +131,7 @@
       openPopup(){
         this.$refs.popup.open('bottom')
       },
+
       toItem(id) {
         this.currentItem = id
         // let location = this[id] + 16
@@ -143,10 +147,10 @@
         this.result = e
       },
       isEmpty(item){
-        
+
         this.dataList[item].currentEmpty = 1
-        
-        
+
+
       },
       changeDesign(e){
         this.designData = e
@@ -157,7 +161,7 @@
         setTimeout(()=>{
           this.$nextTick(function(){
             let query = uni.createSelectorQuery()
-            
+
             query.select('#' + this.tabName).boundingClientRect();
             query.exec((res) => {
               if (res && res[0]) {
@@ -165,10 +169,10 @@
               }
             });
           })
-          
+
         },1000)
-          
-        
+
+
       },
       chooseItem(e){
         this.dataList[this.tabIndex].serveCardId= e.severId
@@ -187,7 +191,7 @@
           // processId:this.processId
         }
         getMyService(data).then(res=>{
-          
+
           this.dataList = res
           this.serverId = this.dataList[0].serveCardId
           this.tabName = 'd'+(this.dataList[0].nodeType>6?6:this.dataList[0].nodeType)
@@ -195,13 +199,13 @@
             serveId:this.dataList[0].serveCardId,
             type:this.dataList[0].serveType
           }
-          
+
           if(this.dataList.findIndex(item=>{
             return item.nodeType === 1
           })!==-1){
             this.getDesignServeMenu()
           }
-          
+
           this.changeHeight()
         })
       }
@@ -236,7 +240,7 @@
     white-space: nowrap;
     height: 88rpx;
     max-width: 550rpx;
-    
+
   }
 
   .item {
@@ -286,13 +290,13 @@
       color: #999;
       font-size: 28rpx;
     }
-  
+
     .item {
       position: relative;
-  
+
       width: 33.3%;
     }
-  
+
     .report-item {
       width: 144rpx;
       margin-right: 16rpx;
@@ -301,7 +305,7 @@
       border: 0.5px solid #ececec;
       border-radius: 8rpx;
     }
-  
+
     .report-item-active {
       background: rgba(0, 191, 182, 0.07);
       border: 0.5px solid #00bfb6;
@@ -309,7 +313,7 @@
       font-size: 26rpx;
       font-weight: 400;
     }
-  
+
     .item-active::after {
       content: "";
       display: inline-block;

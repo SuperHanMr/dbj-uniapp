@@ -12,38 +12,40 @@
     <swiper class="swiper" :current="currentIndex" :duration="200" @change="swiperChange">
       <swiper-item class="swiper-item" v-for="item in tabList" :key="item">
         <scroll-view class="scroll-view" :enable-back-to-top="true" scroll-y="true" lower-threshold="10"
-          refresher-background="#FFF" refresher-enabled="true" :refresher-triggered="triggered" @scroll="onScroll"
-          @refresherrefresh="onRefresh" @scrolltolower="onLoadMore">
-
-          <!-- <view v-if="currentList.length==0" class="no-list-content">
+          refresher-background="#FFF" :refresher-enabled="true" :refresher-triggered="triggered" @scroll="onScroll"
+          @refresherrefresh="onRefresh">
+          <view v-if="currentList.length==0" class="no-list-content">
             <image class="no-list" src="/static/order/blank_house@2x.png" mode=""></image>
             <view class="tip-text">
               您还没有任何数据~
             </view>
-          </view> -->
-          <view class="service-area-change-item" v-for="item in currentList" :key="item" @click="toCost">
+          </view>
+          <view class="service-area-change-item" v-for="item in currentList" :key="item" @click="toCost(item)">
             <view class="item-top">
               <view class="item-top-left">
-                <image class="avatar" :src="isDesign&&(designData.designServerVO && designData.designServerVO.avatar)||tab.avatar" mode="aspectFit"></image>
+                <image class="avatar" :src="item.imageUrl" mode="aspectFit"></image>
               </view>
               <view class="item-top-middle">
                   <view>
-                    <text class="name">拉布布</text>
+                    <text class="name">{{ item.serverName }}</text>
                     <text class="role">设计师</text>
                   </view>
-                  <view class="time">2022-5-30 12:00:00</view>
+                  <view class="time"> {{ item.createTime | formatDate}}</view>
               </view>
               <view class="item-top-right">
-                <view class="status">已支付</view>
+                <view :class="{ 'status': true, 'status-green': item.status == 2,
+                  'status-orange': item.status == 5 || item.status == 6 }">
+                  {{ getStatusStr(item.status) }}
+                </view>
                 <view ><text class="symbol">￥</text>
                 <text class="price-font price">
-                  {{"590.00"}}
+                  {{ foramtPrePrice(item.amount) }}
                 </text>
                 </view>
               </view>
             </view>
             <view class="item-bottom">
-              增加面积：10平米
+              {{ item.type == 3 ? "减少": "增加" }}面积：{{ item.newNum }}{{ item.unit }}
             </view>
           </view>
         </scroll-view>
@@ -54,28 +56,27 @@
 
 <script>
   import {
-    deliveredList,
-    reimburseList,
-    receivedList,
-  } from "../../../api/order.js";
-  import {
-    confirmGoods,
-    judgeOwner
+    getAreaChangeOrder
   } from "../../../api/decorate.js";
+  import {
+    formatDate
+  } from '@/utils/common.js'
   export default {
     data() {
       return {
-        projectId: "0",
-        list0: [{name:'测试'},{name:'测试'}],
-        list1: [{name:'测试'}],
-        list2: [{name:'测试'}],
+        serveCardId: 0,
+        list0: [],
+        list1: [],
+        list2: [],
         tabList: ["已完成", "待处理", "已拒绝"],
-        lastId: ["", "", ""],
         triggered: false, //控制刷新显示字段
         currentIndex: 0,
         refreshIndex: -1,
         ownered: false,
       };
+    },
+    filters: {
+      formatDate
     },
     computed: {
       currentList() {
@@ -89,29 +90,13 @@
       },
     },
     onLoad(e) {
-      if (e && e.projectId) {
-        this.projectId = e.projectId;
-        judgeOwner({
-          projectId: this.projectId
-        }).then((e) => {
-          this.ownered = e.ownered;
-        });
-      }
-      if (e && e.type) {
-        this.currentIndex = Number(e.type);
-      }
-
-      // if (this.currentIndex == 0) {
-        // this.getList(true);
-      // }
+      this.serveCardId = e.serveCardId
+      this.getList(true);
     },
-    // onShow() {
-    //   this.onRefresh()
-    // },
+
     methods: {
       foramtPrice(item) {
         let price = String(item || "0");
-        console.log(price)
         return price.slice(0, price.length - 2) || "0";
       },
       foramtPrePrice(price) {
@@ -126,35 +111,32 @@
           return "";
         }
       },
-      toDetail(e) {
-        let id;
-        if (this.currentIndex == 0) {
-          id = e.orderId;
-        } else {
-          id = e.id;
+
+      getStatusStr(status) {
+        let res = "";
+        switch(status) {
+          case 2:
+            res = "待确认";
+            break;
+          case 3:
+            res = "已拒绝";
+            break;
+          case 5:
+            res = "待付款";
+            break;
+          case 6:
+            res = "退款中";
+            break;
+          case 7:
+            res = "已支付";
+            break;
+          case 8:
+            res = "已退款";
+            break;
         }
-        if (this.currentIndex != 3) {
-          uni.navigateTo({
-            url: `/sub-decorate/pages/warehouse-refund-detail/warehouse-refund-detail?type=${this.currentIndex}&id=${id}&projectId=${this.projectId}&stockStatus=${e.stockStatus}`,
-          });
-        } else {
-          uni.navigateTo({
-            url: `/sub-decorate/pages/warehouse-refund-state/warehouse-refund-state?type=${this.currentIndex}&id=${id}&projectId=${this.projectId}&stockStatus=${e.stockStatus}`,
-          });
-        }
+        return res;
       },
-      toRequire() {
-        getApp().globalData.naviData = [];
-        uni.navigateTo({
-          url: `/sub-decorate/pages/require-goods/require-goods?projectId=${this.projectId}`,
-        });
-      },
-      toRefund() {
-        getApp().globalData.naviData = {};
-        uni.navigateTo({
-          url: "/sub-decorate/pages/warehouse-refund/warehouse-refund?projectId=${this.projectId}",
-        });
-      },
+
       onScroll(e) {},
       swiperChange(e) {
         let index = e.target.current || e.detail.current;
@@ -168,107 +150,41 @@
         if (this.currentIndex == 2 && this.list2.length) {
           return;
         }
-        // this.getList(false);
-      },
-      toCost(){
-        console.log(111)
-        uni.navigateTo({
-          url: `/sub-decorate/pages/service-area-change-cost/service-area-change-cost?projectId=${this.projectId}`,
-        });
-      },
-      getList(isRefresh) {
-        if (this.lastId[this.currentIndex] == "-1") {
-          return;
-        }
-        let params = {};
-        params.projectId = this.projectId;
-        params.rows = 10;
-        if (this.lastId[this.currentIndex]) {
-          params.lastId = this.lastId[this.currentIndex];
-        }
-        if (this.currentIndex == 0) {
-          deliveredList(params)
-            .then((e) => {
-              if (isRefresh) {
-                this.triggered = false;
-                this.refreshIndex = -1;
-              }
-              if (e.length) {
-                this.lastId[this.currentIndex] = e[e.length - 1].orderId;
-                e.forEach((item) => {
-                  item.stockAppVOS.forEach((subItem) => {
-                    subItem.number = subItem.stockNumber;
-                  });
-                });
-                console.log(e);
-                this.list0 = this.list0.concat(e);
-              } else {
-                if (this.lastId[this.currentIndex]) {
-                  this.lastId[this.currentIndex] = "-1";
-                }
-              }
-            })
-            .catch((e) => {
-              if (isRefresh) {
-                this.triggered = false;
-                this.refreshIndex = -1;
-              }
-            });
-        } else if ([1, 2].includes(this.currentIndex)) {
-          params.status = this.currentIndex + 1;
-          receivedList(params)
-            .then((e) => {
-              if (isRefresh) {
-                this.triggered = false;
-                this.refreshIndex = -1;
-              }
-              if (e.length) {
-                this.lastId[this.currentIndex] = e[e.length - 1].id;
-                if (this.currentIndex == 1) {
-                  this.list1 = this.list1.concat(e);
-                }
-                if (this.currentIndex == 2) {
-                  this.list2 = this.list2.concat(e);
-                }
-              } else {
-                if (this.lastId[this.currentIndex]) {
-                  this.lastId[this.currentIndex] = "-1";
-                }
-              }
-            })
-            .catch((e) => {
-              if (isRefresh) {
-                this.triggered = false;
-                this.refreshIndex = -1;
-              }
-            });
-        } else {
-          reimburseList(params)
-            .then((e) => {
-              if (isRefresh) {
-                this.triggered = false;
-                this.refreshIndex = -1;
-              }
-              if (e.length) {
-                this.lastId[this.currentIndex] = e[e.length - 1].id;
-                this.list3 = this.list3.concat(e);
-              } else {
-                if (this.lastId[this.currentIndex]) {
-                  this.lastId[this.currentIndex] = "-1";
-                }
-              }
-            })
-            .catch((e) => {
-              if (isRefresh) {
-                this.triggered = false;
-                this.refreshIndex = -1;
-              }
-            });
-        }
-      },
-      onLoadMore() {
         this.getList(false);
       },
+
+      toCost(item){
+        uni.navigateTo({
+          url: `/sub-decorate/pages/service-area-change-cost/service-area-change-cost?changeOrderId=${item.changeOrderId}`,
+        });
+      },
+
+      getList(isRefresh) {
+        const params = {
+          state: this.currentIndex,
+          serveCardId : this.serveCardId
+        };
+        getAreaChangeOrder(params).then((res) => {
+          if (isRefresh) {
+            this.triggered = false;
+            this.refreshIndex = -1;
+          }
+          if(!res.length) return;
+          if (this.currentIndex === 0) {
+            this.list0 = this.list0.concat(res);
+          } else if (this.currentIndex === 1) {
+            this.list1 = this.list1.concat(res);
+          } else if (this.currentIndex === 2) {
+            this.list2 = this.list2.concat(res);
+          }
+        }).catch((e) => {
+          if(isRefresh) {
+            this.triggered = false;
+            this.refreshIndex = -1;
+          }
+        })
+      },
+
       onRefresh() {
         if (this.refreshIndex == -1) {
           this.refreshIndex = this.currentIndex;
@@ -276,7 +192,6 @@
           return;
         }
         this.triggered = true;
-        this.lastId[this.currentIndex] = "";
         if (this.currentIndex == 0) {
           this.list0 = [];
         }
@@ -428,7 +343,13 @@
         text-align: right;
         .status{
           font-size: 26rpx;
-          color: #999999
+          color: #999999;
+        }
+        .status-green{
+          color: #00BFB6;
+        }
+        .status-orange{
+          color: #FE9000;
         }
         .symbol{
           font-size: 24rpx;

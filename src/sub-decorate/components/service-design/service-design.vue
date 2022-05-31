@@ -1,14 +1,5 @@
 <template>
   <view class="service-design">
-    <view class="service-change">
-      <view class="change-item" v-if="designData.customReport">
-        <view class="title">服务面积变更详情</view>
-        <view class="check" @click="toServiceAreaChange">
-          <text>立即查看</text>
-          <i class="icon-alert_notice_jump"></i>
-        </view>
-      </view>
-    </view>
     <view class="design-report">
       <view class="report-item" v-if="designData.customReport">
         <view class="title">自定义报告详情</view>
@@ -75,12 +66,6 @@
           }
         })
       },
-      // 跳转至服务面积变更详情
-      toServiceAreaChange(){
-        uni.navigateTo({
-          url:`/sub-decorate/pages/service-area-change/service-area-change?id=${this.designData.customReport.id}&serveId=${this.serverId}`
-        })
-      },
       toDesign(){
         uni.navigateTo({
           url:`/sub-decorate/pages/custom-report/custom-report?id=${this.designData.customReport.id}&serveId=${this.serverId}`
@@ -109,7 +94,7 @@
   .service-design{
     margin: 24rpx;
 
-    .design-report,.service-change{
+    .design-report{
       padding: 0 20rpx 0 32rpx;
       background-color: #fff;
       border-radius: 24rpx;
@@ -147,9 +132,7 @@
         }
       }
     }
-    .service-change{
-      margin-bottom: 24rpx;
-    }
+
     .design-list{
       margin-top: 8rpx;
       text{

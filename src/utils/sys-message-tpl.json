@@ -149,6 +149,13 @@
     "icon":"icon-icwodejia_qita_csn",
     "color":"#94A4B1"
   },
+  "sys_area_change_order_apply":{
+    "url":"/sub-decorate/pages/service-area-change-cost/service-area-change-cost",
+    "name":"设计服务面积变更申请",
+    "msg":"您有一个设计服务面积变更申请，请确认",
+    "icon":"icon-icwodejia_qita_csn",
+    "color":"#94A4B1"
+  },
 
   "11":{
     "icon":"icon-ic_wodejia_liangfangfuwu_csn1",

@@ -3,60 +3,31 @@
     <view class="order-overview">
       <view class="order-status">
         <view class="title">
-          设计师服务增量
+          设计师服务{{ detailData.type == 1 ?"增量": "减量"}}
         </view>
-        <view :class="'status'">
-          待付款
+        <view :class="{ 'status': true, 'status-green': detailData.status == 2,
+          'status-orange': detailData.status == 5 || detailData.status == 6 }">
+          {{ getStatusStr(detailData.status) }}
         </view>
       </view>
-      <view class="order-no">变更单号：{{"DJ2324923i4923i4392042"}}</view>
+      <view class="order-no">变更单号：{{ detailData.changeOrderNo }}</view>
     </view>
     <view class="order-detail">
-      <!-- <image :src="detailData.designerInfo.avatar" class="goods-item-img"></image>
-      <view class="goods-info">
-        <view class="goods-desc">
-          <text class="goods-type">{{"设计师服务"}}</text>
-          {{detailData.name}}
-        </view>
-        <view class="spu-class">
-          <view class='tag'>{{detailData.houseType}}</view>
-        </view>
-        <view class="spu-class">
-          <view class='tag'>{{detailData.designerInfo.name}}｜设计师</view>
-        </view>
-        <view class="goods-spec">
-          <view class="goods-money price-font">
-            ￥
-            <text
-              class="integer-price">{{detailData.serviceMinPrice?(detailData.serviceMinPrice/100).toFixed(2).split(".")[0]:0}}</text>
-            <text>.{{detailData.serviceMinPrice?  (detailData.serviceMinPrice/100).toFixed(2).split(".")[1]:0}}</text>
-            <text>/平米</text>
-          </view>
-          <view class="total-num" v-if="!buySquareMeter">1套</view>
-        </view>
-        <view class="buy-num" v-if="buySquareMeter">
-          <text v-if="isIMCard">{{buyNum}}㎡</text>
-          <view v-else>
-            <input type="digit" v-model="buyNum" /><text>㎡</text>
-          </view>
-        </view>
-      </view> -->
-
       <view class="service-info">
-        <image src="" class="service-info-img"></image>
+        <image :src="detailData.imageUrl" class="service-info-img"></image>
         <view class="service-info-detail">
           <view class="service-info-top">
             <text class="service-type">{{"设计师服务"}}</text>
-            <text class="spu-name">{{"SPU名称SPU名称SPU名称SPU名称SPU名称SPU名称SPU名称SPU名称"}}</text>
+            <text class="spu-name">{{ detailData.spuName }}</text>
           </view>
           <view class="service-info-middle">
-            全屋 | 平层 | 60-100平
+            {{ detailData.skuName }}
           </view>
           <view class="service-info-bottom">
             <view class="price-detail">
               <text class="symbol">￥</text>
-              <text class="price">59.00</text>
-              <text class="unit">/平米</text>
+              <text class="price">{{ (detailData.price / 100).toFixed(2) }}</text>
+              <text class="unit">/{{ detailData.unit }}</text>
             </view>
           </view>
         </view>
@@ -65,21 +36,27 @@
       <view class="order-change-detail">
         <view class="total-price">
           <text class="symbol">￥</text>
-          <text class="price price-font">{{"590.00"}}</text>
+          <text class="price price-font">{{ (detailData.amount / 100).toFixed(2) }}</text>
         </view>
         <view class="divider"></view>
         <view class="chang-info-detail">
-          <view class="change-area">增加面积：10平米</view>
-          <view class="change-info">已购买：120平米；变更后：130平米</view>
+          <view class="change-area">{{ detailData.type == 1 ? "增加":"减少" }}面积：{{detailData.newNum}}{{ detailData.unit }}</view>
+          <view class="change-info">已购买：{{ detailData.oldNum }}{{ detailData.unit }}；
+            变更后：{{ changedArea }}{{ detailData.unit }}</view>
         </view>
       </view>
     </view>
     <view class="remarks">
       <view>注：</view>
-      <view>
-        该增项金额是根据您房屋实际需要补充的面积核算后的金额；
+      <view v-if="detailData.type == 1">
+        该增量金额是根据您房屋实际需要补充的面积核算后的金额；
         支付完成后服务者会根据变更后的面积为您提供服务。
       </view>
+      <view v-else>
+        该减量金额是根据您房屋实际需要减少的面积核算后的金额；
+        您同意后系统将退还您差额，服务者会根据变更后的面积为您提供服务。
+      </view>
+
     </view>
   </view>
 </template>
@@ -87,35 +64,50 @@
 export default {
   name: "OrderDetail",
   props: {
-    goodsDetail: {
+    detailData: {
       type: Object,
       default: {}
-    },
+    }
   },
   computed: {
+    changedArea(){
+      const {newNum, oldNum} = this.detailData;
+      if(this.detailData.type == 1) {
+        return +oldNum + newNum;
+      } else {
+        return oldNum - newNum;
+      }
+    }
   },
   data() {
     return {
-      detailData: {
-        houseType: "全屋"
-      }
     }
   },
   methods: {
-    handleStatusClass(status) {
+    getStatusStr(status) {
       let res = "";
       switch(status) {
-        case 1:
-          res = "payment"
-          break;
         case 2:
-          res = "refund";
+          res = "待确认";
           break;
-        default:
-          res = "";
+        case 3:
+          res = "已拒绝";
+          break;
+        case 5:
+          res = "待付款";
+          break;
+        case 6:
+          res = "退款中";
+          break;
+        case 7:
+          res = "已支付";
+          break;
+        case 8:
+          res = "已退款";
+          break;
       }
       return res;
-    }
+    },
   }
 }
 </script>
@@ -136,6 +128,12 @@ export default {
       font-size: 28rpx;
       .status {
         color: #999999;
+      }
+      .status-green{
+        color: #00BFB6;
+      }
+      .status-orange{
+        color: #FE9000;
       }
       .payment {
         color: #FE9000;
@@ -268,140 +266,5 @@ export default {
     color: #999999;
   }
 }
-
-
-  .goods-item {
-    width: 100%;
-    display: flex;
-    align-items: center;
-  }
-
-  .goods-item .good-tip {
-    width: 100%;
-  }
-
-  .good-tip .item-reduce-box {
-    bottom: 0;
-  }
-
-  .goods-item .goodsItemImg {
-    width: 192rpx;
-    height: 192rpx;
-    display: block;
-    margin-right: 24rpx;
-    border-radius: 8rpx;
-  }
-
-  .goods-item .goods-info {
-    height: 200rpx;
-    position: relative;
-    flex: 1;
-  }
-
-  .goods-info .goods-desc {
-    width: 260rpx;
-    font-size: 28rpx;
-    color: #333333;
-    line-height: 40rpx;
-    text-overflow: -o-ellipsis-lastline;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    display: -webkit-box;
-    -webkit-line-clamp: 2;
-    line-clamp: 2;
-    -webkit-box-orient: vertical;
-    vertical-align: middle;
-    padding-bottom: 2rpx;
-  }
-
-  .goods-info .goods-desc .goods-type {
-    height: 30rpx;
-    padding: 2rpx 10rpx 2rpx 10rpx;
-    margin-right: 4rpx;
-    border-radius: 4rpx;
-    font-size: 20rpx;
-    font-weight: 500;
-    color: #333333;
-    line-height: 28rpx;
-    text-align: center;
-    vertical-align: middle;
-    background: linear-gradient(90.48deg, #B4EEE1 0.28%, #EAFCD7 99.48%);
-  }
-
-  .goods-info .buy-num {
-    display: flex;
-    align-items: center;
-    width: fit-content;
-    text-overflow: ellipsis;
-    padding: 0 4rpx;
-    margin-top: 2rpx;
-    font-size: 22rpx;
-    position: absolute;
-    bottom: 0;
-    right: 0;
-    align-items: baseline;
-  }
-
-  .buy-num view {
-    display: flex;
-  }
-
-  .buy-num input {
-    text-align: center;
-    width: 108rpx;
-    height: 48rpx;
-    border-radius: 6rpx;
-    background-color: #F2F2F2;
-    margin-right: 12rpx;
-  }
-
-  .buy-num text {
-    display: flex;
-    align-items: center;
-  }
-
-  .goods-info .goods-spec {
-    width: fit-content;
-    text-overflow: ellipsis;
-    padding: 0 4rpx;
-    margin-top: 2rpx;
-    font-size: 22rpx;
-    position: absolute;
-    top: 0;
-    right: 0;
-    align-items: baseline;
-  }
-
-  .goods-info .spu-class {
-    position: relative;
-    margin-top: 10rpx;
-  }
-
-  .goods-info .tag {
-    font-size: 22rpx;
-    color: #999999;
-    line-height: 38rpx;
-    text-align: center;
-    border-radius: 6rpx;
-    text-overflow: -o-ellipsis-lastline;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    display: -webkit-box;
-    -webkit-line-clamp: 2;
-    line-clamp: 2;
-    -webkit-box-orient: vertical;
-    max-width: 270rpx;
-    text-align: left;
-  }
-
-  .goods-info .total-num {
-    font-size: 28rpx;
-    color: #999999;
-    float: right;
-  }
-
-  .goods-info .sku-deposit {
-    float: right;
-  }
 
 </style>
