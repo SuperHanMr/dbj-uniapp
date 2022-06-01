@@ -15,7 +15,7 @@
           <view class="message-title">服务消息确认</view>
           <view class="message-content-box">
             <view class="message-content" v-for="(item, index) in messageItem" :key="'text'+messageInfo.id+index"><text>{{item}}</text></view>
-            <button class="detail-btn" @click="showDialog = true">查看详情</button>
+            <button class="detail-btn" @click="showDialogOperate">查看详情</button>
           </view>
           <view class="message-status">
             <image v-if="messageInfo.state == 0" src="../../../../static/message-wait.png" class="message-icon"></image>
@@ -34,11 +34,13 @@
     <view v-if="showDialog" class="message-dialog">
       <view class="dialog-title">
         <view class="dialog-title-text">温馨提示</view>
-        <image class="dialog-title-img" src="../../../../static/close.png" @click="showDialog = false"></image>
+        <image class="dialog-title-img" src="../../../../static/close.png" @click="closeDialogOperate"></image>
       </view>
       <view class="dialog-content">
-        <view class="message-content" v-for="(item, index) in messageItem" :key="'dialog'+messageInfo.id"><text>{{item}}</text></view>
-        <text class="message-code">服务单编号：{{messageInfo.serveNo}}</text>
+        <view class="message-content-box">
+          <view class="message-content" v-for="(item, index) in messageItem" :key="'dialog'+messageInfo.id"><text>{{item}}</text></view>
+          <text class="message-code">服务单编号：{{messageInfo.serveNo}}</text>
+        </view>
         <view class="dialog-state-box">
           <button class="state-btn state-refuse" v-if="messageInfo.state == 0" @click="refuseOperate">拒绝</button>
           <button class="state-btn state-agree" v-if="messageInfo.state == 0" @click="agreeOperate">同意</button>
@@ -61,6 +63,10 @@ export default {
       type: Object,
       required: true,
     },
+    hasDialog: {
+      type: Boolean,
+      default: false,
+    }
   },
   data() {
     return {
@@ -100,7 +106,6 @@ export default {
         serveId: that.messageInfo.serveId,
         id: that.messageInfo.id
       }).then(res => {
-        console.log("res", res);
         that.showDialog = false;
         that.$set(that.message.payloadData.params, 'state', 1);
       })
@@ -111,7 +116,6 @@ export default {
         serveId: that.messageInfo.serveId,
         id: that.messageInfo.id
       }).then(res => {
-        console.log("res", res);
         that.showDialog = false;
         that.$set(that.message.payloadData.params, 'state', 2);
       })
@@ -121,11 +125,16 @@ export default {
         this.$set(this.message.payloadData.params, 'state', res.state);
         this.$forceUpdate();
       })
-    }
-  },
-  mounted() {
-    if (this.messageInfo.state != 1 && this.messageInfo.state != 2) {
-      this.changeState();
+    },
+    showDialogOperate() {
+      if (!this.hasDialog) {
+        this.showDialog = true;
+        this.$emit("change", true);
+      }
+    },
+    closeDialogOperate() {
+      this.showDialog = false;
+      this.$emit("change", false);
     }
   }
 };
@@ -211,9 +220,9 @@ export default {
           margin-right: 8rpx;
         }
         .message-text {
-          font-size: 24rpx;
+          font-size: 12px;
           font-family: PingFangSC, PingFangSC-Medium;
-          font-weight: 600;
+          font-weight: 500;
           text-align: left;
         }
         .message-wait {
@@ -243,6 +252,7 @@ export default {
   left: 40rpx;
   background: #ffffff;
   border-radius: 16rpx;
+  z-index: 99;
   .dialog-title {
     display: flex;
     align-items: center;
@@ -265,6 +275,10 @@ export default {
   }
   .dialog-content {
     padding: 0 32rpx;
+    .message-content-box {
+      max-height: 490rpx;
+      overflow-y: auto;
+    }
     .message-content {
       font-size: 26rpx;
       font-family: PingFangSC, PingFangSC-Regular;
@@ -322,7 +336,7 @@ export default {
         text-align: center;
         font-size: 30rpx;
         font-family: PingFangSC, PingFangSC-Medium;
-        font-weight: 600;
+        font-weight: 500;
       }
       .dialog-state-agree {
         color: #5bbc3e;

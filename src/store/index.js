@@ -1,3 +1,4 @@
+
 import Vue from 'vue'
 import Vuex from 'vuex'
 import createLogger from 'vuex/dist/logger'
@@ -10,10 +11,19 @@ Vue.use(Vuex)
 export default new Vuex.Store({
   state: {
     designTopRank: {}, // 设计师榜单top10，用于私聊展示设计师排行标签
+    houseId:-1,// 房屋Id
+  },
+  getters:{
+    getHouseId(state){
+      return state.houseId
+    }
   },
   mutations: {
     setDesignTopRank(state, payload) {
       state.designTopRank = payload;
+    },
+    setHouseId(state,houseId){
+      state.houseId = houseId
     }
   },
   actions: {
