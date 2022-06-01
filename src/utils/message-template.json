@@ -2595,5 +2595,74 @@
         }
       ]
     }
+  },
+  "sys_area_change_order_apply": {
+    "type": "sys_area_change_order_apply",
+    "template": "form",
+    "summary": "设计师在${skuName}，发起设计服务面积变更申请~",
+    "body": {
+      "title": "设计服务面积变更申请",
+      "subTitle": "设计师在${skuName}，发起设计服务面积变更申请~",
+      "actions": [
+        {
+          "title": "查看详情",
+          "type": "native_uri",
+          "targetRouter": "/sub-decorate/pages/service-area-change-cost/service-area-change-cost?changeOrderId=${changeOrderId}",
+          "params": {
+            "changeOrderId": "${changeOrderId}",
+            "projectId": "${projectId}",
+            "estateId": "${estateId}",
+            "serveCardId": "${serveCardId}",
+            "skuName": "${skuName}"
+          }
+        }
+      ]
+    }
+  },
+  "sys_area_change_order_payment_customer": {
+    "type": "sys_area_change_order_payment_customer",
+    "template": "form",
+    "summary": "设计师在${skuName}，发起设计服务面积变更已支付~",
+    "body": {
+      "title": "设计服务面积变更成功",
+      "subTitle": "设计师在${skuName}，发起设计服务面积变更已支付~",
+      "actions": [
+        {
+          "title": "查看详情",
+          "type": "native_uri",
+          "targetRouter": "/sub-decorate/pages/service-area-change-cost/service-area-change-cost?changeOrderId=${changeOrderId}",
+          "params": {
+            "changeOrderId": "${changeOrderId}",
+            "projectId": "${projectId}",
+            "estateId": "${estateId}",
+            "serveCardId": "${serveCardId}",
+            "skuName": "${skuName}"
+          }
+        }
+      ]
+    }
+  },
+  "sys_area_change_order_refund_customer": {
+    "type": "sys_area_change_order_refund_customer",
+    "template": "form",
+    "summary": "设计师在${skuName}，发起设计服务面积变更已退款成功~",
+    "body": {
+      "title": "设计服务面积变更成功",
+      "subTitle": "设计师在${skuName}，发起设计服务面积变更已退款成功~",
+      "actions": [
+        {
+          "title": "查看详情",
+          "type": "native_uri",
+          "targetRouter": "/sub-decorate/pages/service-area-change-cost/service-area-change-cost?changeOrderId=${changeOrderId}",
+          "params": {
+            "changeOrderId": "${changeOrderId}",
+            "projectId": "${projectId}",
+            "estateId": "${estateId}",
+            "serveCardId": "${serveCardId}",
+            "skuName": "${skuName}"
+          }
+        }
+      ]
+    }
   }
 }
