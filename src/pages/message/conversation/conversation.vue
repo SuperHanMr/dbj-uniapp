@@ -29,7 +29,7 @@
               class="message-tags-time"
             >{{ formatMessageTime(msg.time) }}</view>
             <view v-if="unreadCount >= 8 && (currentMessageList.length - idx === unreadCount)" :key="msgKey(msg)" :id="'startBar' + msg.ID" class="unread-message-start-bar"></view>
-            <message-item :key="msgKey(msg)" :message="msg"></message-item>
+            <message-item :key="msgKey(msg)" :hasDialog="hasDialog" :message="msg" @changeBol="changeBol"></message-item>
           </template>
         </view>
         <view v-else-if="type === CONV_TYPES.SYSTEM" id="listBody" class="message-list-body" style="padding-bottom: 48rpx">
@@ -93,6 +93,7 @@
         unreadStartBarPos: 0, //未读消息块的相对父容器的位置
         loaded: false,
         showSendProductId: 0,
+        hasDialog: false
       }
     },
     computed: {
@@ -396,6 +397,9 @@
         this.scrollTop = this.unreadStartBarPos;
         this.unreadCount = 0;
         this.unreadStartBarPos = 0;
+      },
+      changeBol(bol) {
+        this.hasDialog = bol;
       }
     }
   }
