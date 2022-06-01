@@ -2505,7 +2505,7 @@
   "single_design_confirm_record_msg": {
     "type": "single_design_confirm_record_msg",
     "template": "product-tpl",
-    "summary": "${productName}"
+    "summary": "设计服务消息，请前往确认～"
   },
   "custom_agant_coming": {
     "type": "custom_agant_coming",
