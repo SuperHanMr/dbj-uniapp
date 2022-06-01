@@ -39,8 +39,6 @@
       <view class="dialog-content">
         <view class="message-content-box">
           <view class="message-content" v-for="(item, index) in messageItem" :key="'dialog'+messageInfo.id"><text>{{item}}</text></view>
-          <view class="message-content" v-for="(item, index) in messageItem" :key="'dialog1'+messageInfo.id"><text>{{item}}</text></view>
-          <view class="message-content" v-for="(item, index) in messageItem" :key="'dialog2'+messageInfo.id"><text>{{item}}</text></view>
           <text class="message-code">服务单编号：{{messageInfo.serveNo}}</text>
         </view>
         <view class="dialog-state-box">
