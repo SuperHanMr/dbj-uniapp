@@ -122,11 +122,6 @@ export default {
         this.$forceUpdate();
       })
     }
-  },
-  mounted() {
-    if (this.messageInfo.state != 1 && this.messageInfo.state != 2) {
-      this.changeState();
-    }
   }
 };
 </script>
