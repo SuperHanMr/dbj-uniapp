@@ -83,6 +83,8 @@
     v-else-if="message.type === TIM.TYPES.MSG_CUSTOM && template.template === 'product-tpl'"
     :template="template"
     :message="message"
+    :hasDialog="hasDialog"
+    @change="changeBol"
   />
   <unsupported-element
     v-else
@@ -120,6 +122,10 @@
         type: Object,
         required: true,
       },
+      hasDialog: {
+        type: Boolean,
+        default: false,
+      }
     },
     components: {
       ProductTemplate,
@@ -152,6 +158,11 @@
       },
       template() {
         return MessageTemplate[this.payloadData.type] || {};
+      }
+    },
+    methods: {
+      changeBol(bol) {
+        this.$emit("changeBol", bol);
       }
     }
   }

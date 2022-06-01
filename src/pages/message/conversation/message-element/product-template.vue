@@ -15,7 +15,7 @@
           <view class="message-title">服务消息确认</view>
           <view class="message-content-box">
             <view class="message-content" v-for="(item, index) in messageItem" :key="'text'+messageInfo.id+index"><text>{{item}}</text></view>
-            <button class="detail-btn" @click="showDialog = true">查看详情</button>
+            <button class="detail-btn" @click="showDialogOperate">查看详情</button>
           </view>
           <view class="message-status">
             <image v-if="messageInfo.state == 0" src="../../../../static/message-wait.png" class="message-icon"></image>
@@ -34,7 +34,7 @@
     <view v-if="showDialog" class="message-dialog">
       <view class="dialog-title">
         <view class="dialog-title-text">温馨提示</view>
-        <image class="dialog-title-img" src="../../../../static/close.png" @click="showDialog = false"></image>
+        <image class="dialog-title-img" src="../../../../static/close.png" @click="closeDialogOperate"></image>
       </view>
       <view class="dialog-content">
         <view class="message-content-box">
@@ -63,6 +63,10 @@ export default {
       type: Object,
       required: true,
     },
+    hasDialog: {
+      type: Boolean,
+      default: false,
+    }
   },
   data() {
     return {
@@ -102,7 +106,6 @@ export default {
         serveId: that.messageInfo.serveId,
         id: that.messageInfo.id
       }).then(res => {
-        console.log("res", res);
         that.showDialog = false;
         that.$set(that.message.payloadData.params, 'state', 1);
       })
@@ -113,7 +116,6 @@ export default {
         serveId: that.messageInfo.serveId,
         id: that.messageInfo.id
       }).then(res => {
-        console.log("res", res);
         that.showDialog = false;
         that.$set(that.message.payloadData.params, 'state', 2);
       })
@@ -123,6 +125,16 @@ export default {
         this.$set(this.message.payloadData.params, 'state', res.state);
         this.$forceUpdate();
       })
+    },
+    showDialogOperate() {
+      if (!this.hasDialog) {
+        this.showDialog = true;
+        this.$emit("change", true);
+      }
+    },
+    closeDialogOperate() {
+      this.showDialog = false;
+      this.$emit("change", false);
     }
   }
 };
@@ -240,6 +252,7 @@ export default {
   left: 40rpx;
   background: #ffffff;
   border-radius: 16rpx;
+  z-index: 99;
   .dialog-title {
     display: flex;
     align-items: center;
