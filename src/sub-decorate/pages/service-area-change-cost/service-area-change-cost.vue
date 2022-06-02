@@ -10,7 +10,7 @@
         </view>
       </view>
     </view>
-    <view class="store-money-card" v-if="detailData.amount > 0 && detailData.status == 2">
+    <view class="store-money-card" v-if="detailData.amount > 0 && (detailData.status == 2 || detailData.status == 5)">
       <view class="yu-e">
         <image src="https://ali-image.dabanjia.com/static/mp/dabanjia/images/classify/ic_card.png"></image>
         <view class="c-1">储值卡</view>
@@ -20,7 +20,7 @@
         @click='changeValue'>
       </check-box>
     </view>
-    <view class="pay-way" v-if="detailData.amount > 0 && detailData.status == 2">
+    <view class="pay-way" v-if="detailData.amount > 0 && (detailData.status == 2 || detailData.status == 5)">
       <view class="label">支付方式</view>
       <view class="wx" v-if="totalAmount > 0" @touchstart.stop.prevent="morePayWay">{{payWayTag?'公司转账':'在线支付'}}
         <view class="more_pay_icon"></view>
@@ -38,7 +38,7 @@
     <view :style="{paddingBottom:containerBottom * 2 + 48 + 88 + 'rpx'}">
     </view>
 
-    <view v-if="detailData.status == 2" class="pay-wrap" :style="{paddingBottom:systemBottom}">
+    <view v-if="detailData.status == 2 || detailData.status == 5" class="pay-wrap" :style="{paddingBottom:systemBottom}">
       <view class="b-t-1" @click="refuse">拒绝申请</view>
       <view class="b-t-1 b-t-p" v-if="detailData.amount > 0" @click="submit(1)">同意并支付<text
           class="unit price-font">￥</text><text class="price-font">{{(Math.abs(detailData.amount)/100).toFixed(2)}}</text></view>
@@ -47,7 +47,7 @@
           class="unit price-font">￥</text><text
           class="price-font">{{(Math.abs(detailData.amount)/100).toFixed(2)}}</text></view>
     </view>
-    <view v-if="detailData.status == 5 || detailData.status == 7" class="view-order" :style="{paddingBottom:systemBottom}">
+    <view v-if="detailData.status == 7" class="view-order" :style="{paddingBottom:systemBottom}">
       <view class="btn-view-order" @click="toOrderList(detailData.status)">查看订单</view>
     </view>
     <uni-popup ref="payDialog" type="bottom">
@@ -192,22 +192,7 @@
       },
       submitCard() {
         if (this.isCardPay) {
-          uni.showModal({
-            content,
-            title,
-            cancelText: "取消",
-            cancelColor: "#333333",
-            confirmText: "同意",
-            confirmColor: "#FA3B34",
-            success(res) {
-              if (res.confirm) {
-                this.$refs.payDialog.open();
-              } else if (res.cancel) {
-                console.log("用户取消了变更单申请的提交");
-              }
-            },
-            fail() {},
-          });
+          this.$refs.payDialog.open();
         } else {
           this.submit(1);
         }
@@ -238,7 +223,13 @@
             confirmColor: "#FA3B34",
             success(res) {
               if (res.confirm) {
-                if (flag === 1 || flag === -1) {
+                if(flag === 1){
+                  if(that.isCardPay){
+                    that.$refs.payDialog.open();
+                  } else {
+                    that.createPayOrder();
+                  }
+                } else if (flag === -1) {
                   that.createPayOrder();
                 } else if (flag === 0) {
                   that.createPayOrder();
