@@ -48,7 +48,7 @@
           class="price-font">{{(Math.abs(detailData.amount)/100).toFixed(2)}}</text></view>
     </view>
     <view v-if="detailData.status == 7" class="view-order" :style="{paddingBottom:systemBottom}">
-      <view class="btn-view-order" @click="toOrderList(detailData.status)">查看订单</view>
+      <view class="btn-view-order" @click="toOrderDetail">查看订单</view>
     </view>
     <uni-popup ref="payDialog" type="bottom">
       <pay-dialog :payChannelPrice="payChannelPrice" @payOrder="submit(2)" @closePayDialog="closePayDialog">
@@ -248,19 +248,20 @@
           url: `/sub-decorate/pages/service-area-change-refuse/service-area-change-refuse?changeOrderId=${this.changeOrderId || this.msg?.changeOrderId}`,
         });
       },
-      toOrderList(status) {
-        if (status == 7) {
-          // 已支付
-          uni.redirectTo({
-            url: "../../../sub-my/pages/my-order/my-order?firstEntry=true&index=2"
-          });
-        } else if(status == 5){
-          // 待付款
-          uni.redirectTo({
-            url: "../../../sub-my/pages/my-order/my-order?firstEntry=true&index=1"
-          });
-        }
+      toOrderList() {
+        uni.redirectTo({
+          url: "../../../sub-my/pages/my-order/my-order?firstEntry=true&index=2"
+        });
       },
+      toOrderDetail() {
+        console.log(this.detailData)
+        const orderId =  this.detailData.orderId;
+        if(!orderId) return
+        uni.redirectTo({
+          url: `../../../sub-my/pages/my-order/order-detail/order-detail?orderId=${orderId}`
+        });
+      },
+
       agreeChangeOrder() {
         agreeChangeOrderApi({
           changeOrderId: this.changeOrderId || this.msg?.changeOrderId,
