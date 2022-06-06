@@ -33,13 +33,13 @@
                   <view class="time"> {{ item.createTime | formatDate}}</view>
               </view>
               <view class="item-top-right">
-                <view :class="{ 'status': true, 'status-green': item.status == 2,
-                  'status-orange': item.status == 5 || item.status == 6 }">
-                  {{ getStatusStr(item.status) }}
+                <view :class="{ 'status': true, 'status-green': item.status == 2 && item.type == 3,
+                  'status-orange': (item.status == 2 && item.type == 1) || item.status == 5 || item.status == 6 }">
+                  {{ getStatusStr(item.type, item.status) }}
                 </view>
-                <view ><text class="symbol">￥</text>
+                <view><text class="symbol"><text v-if="item.type == 3">-</text>￥</text>
                 <text class="price-font price">
-                  {{ foramtPrePrice(item.amount) }}
+                  {{ (Math.abs(item.amount) / 100).toFixed(2)}}
                 </text>
                 </view>
               </view>
@@ -112,11 +112,15 @@
         }
       },
 
-      getStatusStr(status) {
+      getStatusStr(type, status) {
         let res = "";
         switch(status) {
           case 2:
-            res = "待确认";
+            if(type == 1){
+              res = "待付款";
+            } else if (type == 3){
+              res = "待退款";
+            }
             break;
           case 3:
             res = "已拒绝";

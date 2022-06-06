@@ -1074,7 +1074,7 @@
         {
           "path": "pages/service-area-change-cost/service-area-change-cost",
           "style": {
-            "navigationBarTitleText": "服务面积变更",
+            "navigationBarTitleText": "设计面积变更申请",
             "enablePullDownRefresh": false
           }
         },
