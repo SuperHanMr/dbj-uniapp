@@ -78,16 +78,18 @@
           changeOrderId: this.changeOrderId,
           remark: this.currentId !== 4 ? this.items[this.currentId-1].reason : this.otherReason.substr(0,500)
         }
-          refuseAreaChangeOrder(data).then(res => {
-            uni.showToast({
-              title: '已提交申请',
-              duration: 2000,
-              icon: 'success'
-            })
+        refuseAreaChangeOrder(data).then(res => {
+          uni.showToast({
+            title: '已拒绝',
+            duration: 2000,
+          })
+          setTimeout(() => {
+            // 退款跳转装修首页
             uni.switchTab({
               url: "/pages/decorate/index/index",
             });
-          })
+          }, 2000)
+        })
       }
     },
   };

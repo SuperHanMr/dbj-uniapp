@@ -1,15 +1,16 @@
 <template>
   <view class="application-wrap">
-    <order-detail :detailData="detailData"></order-detail>
+    <no-data v-if="loading || noData" words="暂无数据"></no-data>
+    <order-detail v-else :detailData="detailData"></order-detail>
     <view class="summary">
       <view class="change-money">
         <view class="label">{{detailData.type == 1 ? "增量":"减量"}}费用</view>
-        <view class="money price-font">￥<text
-            class="ft-28">{{detailData.amount ? (detailData.amount/100).toFixed(2) : 0}}</text>
+        <view class="money price-font"><text v-if="detailData.type == 3">-</text>￥<text
+            class="ft-28">{{detailData.amount ? (Math.abs(detailData.amount)/100).toFixed(2) : 0}}</text>
         </view>
       </view>
     </view>
-    <view class="store-money-card" v-if="detailData.amount > 0 && detailData.status == 2">
+    <view class="store-money-card" v-if="detailData.amount > 0 && (detailData.status == 2 || detailData.status == 5)">
       <view class="yu-e">
         <image src="https://ali-image.dabanjia.com/static/mp/dabanjia/images/classify/ic_card.png"></image>
         <view class="c-1">储值卡</view>
@@ -19,7 +20,7 @@
         @click='changeValue'>
       </check-box>
     </view>
-    <view class="pay-way" v-if="detailData.amount > 0 && detailData.status == 2">
+    <view class="pay-way" v-if="detailData.amount > 0 && (detailData.status == 2 || detailData.status == 5)">
       <view class="label">支付方式</view>
       <view class="wx" v-if="totalAmount > 0" @touchstart.stop.prevent="morePayWay">{{payWayTag?'公司转账':'在线支付'}}
         <view class="more_pay_icon"></view>
@@ -37,17 +38,17 @@
     <view :style="{paddingBottom:containerBottom * 2 + 48 + 88 + 'rpx'}">
     </view>
 
-    <view v-if="detailData.status == 2" class="pay-wrap" :style="{paddingBottom:systemBottom}">
+    <view v-if="detailData.status == 2 || detailData.status == 5" class="pay-wrap" :style="{paddingBottom:systemBottom}">
       <view class="b-t-1" @click="refuse">拒绝申请</view>
-      <view class="b-t-1 b-t-p" v-if="detailData.amount > 0" @click="submitCard">同意并支付<text
+      <view class="b-t-1 b-t-p" v-if="detailData.amount > 0" @click="submit(1)">同意并支付<text
           class="unit price-font">￥</text><text class="price-font">{{(Math.abs(detailData.amount)/100).toFixed(2)}}</text></view>
       <view class="b-t-1 b-t-p" v-if="detailData.amount === 0" @click="submit(0)">同意申请</view>
       <view class="b-t-1 b-t-p" v-if="detailData.amount < 0" @click="submit(-1)">同意并退还您<text
           class="unit price-font">￥</text><text
           class="price-font">{{(Math.abs(detailData.amount)/100).toFixed(2)}}</text></view>
     </view>
-    <view v-if="detailData.status == 5 || detailData.status == 7" class="view-order" :style="{paddingBottom:systemBottom}">
-      <view class="btn-view-order" @click="toOrderList(detailData.status)">查看订单</view>
+    <view v-if="detailData.status == 7" class="view-order" :style="{paddingBottom:systemBottom}">
+      <view class="btn-view-order" @click="toOrderDetail">查看订单</view>
     </view>
     <uni-popup ref="payDialog" type="bottom">
       <pay-dialog :payChannelPrice="payChannelPrice" @payOrder="submit(2)" @closePayDialog="closePayDialog">
@@ -96,11 +97,11 @@
         detailData: {},
         cardClick: false,
         noData: false,
+        loading: false
       };
     },
 
     computed: {
-
       totalAmount() {
         if (this.isCardPay) {
           let temp = this.cardBalance - this.detailData.amount;
@@ -200,7 +201,7 @@
         let title, content;
         if (flag === 1) {
           title = "是否同意设计面积变更申请";
-          content = `并支付￥${this.totalAmount}`;
+          content = `并支付￥${(this.detailData.amount / 100).toFixed(2)}`;
         } else if (flag === -1) {
           title = "是否同意设计面积变更申请";
           content = `退还您￥${(
@@ -222,7 +223,13 @@
             confirmColor: "#FA3B34",
             success(res) {
               if (res.confirm) {
-                if (flag === 1 || flag === -1) {
+                if(flag === 1){
+                  if(that.isCardPay){
+                    that.$refs.payDialog.open();
+                  } else {
+                    that.createPayOrder();
+                  }
+                } else if (flag === -1) {
                   that.createPayOrder();
                 } else if (flag === 0) {
                   that.createPayOrder();
@@ -241,19 +248,20 @@
           url: `/sub-decorate/pages/service-area-change-refuse/service-area-change-refuse?changeOrderId=${this.changeOrderId || this.msg?.changeOrderId}`,
         });
       },
-      toOrderList(status) {
-        if (status == 7) {
-          // 已支付
-          uni.redirectTo({
-            url: "../../../sub-my/pages/my-order/my-order?firstEntry=true&index=2"
-          });
-        } else if(status == 5){
-          // 待付款
-          uni.redirectTo({
-            url: "../../../sub-my/pages/my-order/my-order?firstEntry=true&index=1"
-          });
-        }
+      toOrderList() {
+        uni.redirectTo({
+          url: "../../../sub-my/pages/my-order/my-order?firstEntry=true&index=2"
+        });
       },
+      toOrderDetail() {
+        console.log(this.detailData)
+        const orderId =  this.detailData.orderId;
+        if(!orderId) return
+        uni.redirectTo({
+          url: `../../../sub-my/pages/my-order/order-detail/order-detail?orderId=${orderId}`
+        });
+      },
+
       agreeChangeOrder() {
         agreeChangeOrderApi({
           changeOrderId: this.changeOrderId || this.msg?.changeOrderId,
@@ -275,77 +283,83 @@
           isCardPay: this.isCardPay, //"boolean //是否使用储值卡支付  默认false"
         };
         createChangeOrderApi(bodyObj).then((data) => {
-
           if (!data) {
-            // 退款跳转装修首页
-            uni.switchTab({
-              url: "/pages/decorate/index/index",
+            uni.showToast({
+              title: "提交成功",
+              icon: "none",
             });
-            return;
-          }
-          if(data.accounts){
-            let obj = {
-              type:'changeApplication',
-              params:bodyObj
-            }
-             uni.navigateTo({
-               url:`/sub-my/pages/choice-refund-account/choice-refund-account?query=${encodeURIComponent(
-                JSON.stringify(obj)
-              )}`
-             })
-             return
-          }
-          const {
-            wechatPayJsapi,
-            cardPayComplete,
-            id
-          } = data;
-          if (!cardPayComplete) {
-            if (this.payWayTag) {
-              uni.navigateTo({
-                url: `/sub-classify/pages/pay-order/cashier?remittanceCode=${data.companyTransferPayVO.remittanceCode}&amount=${data.companyTransferPayVO.amount}`
-              })
-              return;
-            }
-            uni.requestPayment({
-              provider: "wxpay",
-              ...wechatPayJsapi,
-              success(res) {
-                console.log("付款成功", res);
-                uni.switchTab({
-                  url: "/pages/decorate/index/index",
-                });
-              },
-              fail(e) {
-                console.log(e);
-                const {
-                  errMsg
-                } = e;
-                if (errMsg.indexOf("cancel") !== -1) {
-                  uni.navigateTo({
-                    url: `/sub-my/pages/my-order/my-order?index=1&firstEntry=true`,
-                  });
-                  log({
-                    type: "wx-pay-fail",
-                    page: "gj-process-cost",
-                    data: e,
-                    openId: getApp().globalData.openId,
-                    openIdLocal: uni.getStorageSync("openId"),
-                  });
-                } else {
-                  uni.showToast({
-                    title: "支付失败",
-                    icon: "none",
-                    duration: 3000,
-                  });
-                }
-              },
-            });
+            setTimeout(() => {
+              // 退款跳转装修首页
+              uni.switchTab({
+                url: "/pages/decorate/index/index",
+              });
+            }, 2000)
           } else {
-            uni.redirectTo({
-              url: `/sub-classify/pages/pay-order/pay-success?orderId=${id}`,
-            });
+            if(data.accounts){
+              let obj = {
+                type:'changeApplication',
+                params:bodyObj
+              }
+              uni.navigateTo({
+                url:`/sub-my/pages/choice-refund-account/choice-refund-account?query=${encodeURIComponent(
+                  JSON.stringify(obj)
+                )}`
+              })
+              return
+            }
+            const {
+              wechatPayJsapi,
+              cardPayComplete,
+              id
+            } = data;
+            if (!cardPayComplete) {
+              if (this.payWayTag) {
+                uni.navigateTo({
+                  url: `/sub-classify/pages/pay-order/cashier?remittanceCode=${data.companyTransferPayVO.remittanceCode}&amount=${data.companyTransferPayVO.amount}`
+                })
+                return;
+              }
+              uni.requestPayment({
+                provider: "wxpay",
+                ...wechatPayJsapi,
+                success(res) {
+                  console.log("付款成功", res);
+                  uni.switchTab({
+                    url: "/pages/decorate/index/index",
+                  });
+                },
+                fail(e) {
+                  console.log(e);
+                  const {
+                    errMsg
+                  } = e;
+                  if (errMsg.indexOf("cancel") !== -1) {
+                    uni.navigateTo({
+                      url: `/sub-my/pages/my-order/my-order?index=1&firstEntry=true`,
+                    });
+                    log({
+                      type: "wx-pay-fail",
+                      page: "gj-process-cost",
+                      data: e,
+                      openId: getApp().globalData.openId,
+                      openIdLocal: uni.getStorageSync("openId"),
+                    });
+                  } else {
+                    uni.showToast({
+                      title: "支付失败",
+                      icon: "none",
+                      duration: 3000,
+                    });
+                  }
+                },
+              });
+            } else {
+              uni.redirectTo({
+                url: `/sub-classify/pages/pay-order/pay-success?orderId=${id}`,
+              });
+            }
           }
+
         });
         //#endif
         //#ifdef H5
@@ -360,31 +374,37 @@
         };
         createChangeOrderApi(bodyObj).then((data) => {
           if (!data) {
-            // 退款跳转装修首页
-            uni.switchTab({
-              url: "/pages/decorate/index/index",
+            uni.showToast({
+              title: "提交成功",
+              icon: "none",
             });
-            return;
-          }
-          const {
-            wechatPayJsapi,
-            cardPayComplete,
-            id
-          } = data;
-          if (!cardPayComplete) {
-            if (this.payWayTag) {
-              uni.navigateTo({
-                url: `/sub-classify/pages/pay-order/cashier?remittanceCode=${data.companyTransferPayVO.remittanceCode}&amount=${data.companyTransferPayVO.amount}`
-              })
-              return;
-            }
-            uni.navigateTo({
-              url: `/sub-classify/pages/pay-order/pay-h5?payTal=${data.gomePayH5.payModeList[0].payTal}&totalPrice=${this.totalAmount}&payRecordId=${data.payRecordId}`,
-            });
+            setTimeout(() => {
+              // 退款跳转装修首页
+              uni.switchTab({
+                url: "/pages/decorate/index/index",
+              });
+            }, 2000)
           } else {
-            uni.redirectTo({
-              url: `/sub-classify/pages/pay-order/pay-success?orderId=${id}`,
-            });
+            const {
+              wechatPayJsapi,
+              cardPayComplete,
+              id
+            } = data;
+            if (!cardPayComplete) {
+              if (this.payWayTag) {
+                uni.navigateTo({
+                  url: `/sub-classify/pages/pay-order/cashier?remittanceCode=${data.companyTransferPayVO.remittanceCode}&amount=${data.companyTransferPayVO.amount}`
+                })
+                return;
+              }
+              uni.navigateTo({
+                url: `/sub-classify/pages/pay-order/pay-h5?payTal=${data.gomePayH5.payModeList[0].payTal}&totalPrice=${this.totalAmount}&payRecordId=${data.payRecordId}`,
+              });
+            } else {
+              uni.redirectTo({
+                url: `/sub-classify/pages/pay-order/pay-success?orderId=${id}`,
+              });
+            }
           }
         });
         //#endif
@@ -392,10 +412,12 @@
 
       getChangeOrderDetail() {
         this.noData = false;
+        this.loading = true;
         const params = {
           changeOrderId: this.changeOrderId || this.msg?.changeOrderId,
         }
         getAreaChangeOrderDetail(params).then((res) => {
+          this.loading = false;
           this.detailData = res;
           this.isCardPay = this.cardBalance >= this.detailData.amount
         }).catch((err) => {

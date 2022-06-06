@@ -5,9 +5,9 @@
         <view class="title">
           设计师服务{{ detailData.type == 1 ?"增量": "减量"}}
         </view>
-        <view :class="{ 'status': true, 'status-green': detailData.status == 2,
-          'status-orange': detailData.status == 5 || detailData.status == 6 }">
-          {{ getStatusStr(detailData.status) }}
+        <view :class="{ 'status': true, 'status-green': detailData.status == 2 && detailData.type == 3,
+          'status-orange': (detailData.status == 2 && detailData.type == 1) || detailData.status == 5 || detailData.status == 6 }">
+          {{ getStatusStr(detailData.type, detailData.status) }}
         </view>
       </view>
       <view class="order-no">变更单号：{{ detailData.changeOrderNo }}</view>
@@ -35,8 +35,8 @@
       </view>
       <view class="order-change-detail">
         <view class="total-price">
-          <text class="symbol">￥</text>
-          <text class="price price-font">{{ (detailData.amount / 100).toFixed(2) }}</text>
+          <text class="symbol"><text v-if="detailData.type == 3">-</text>￥</text>
+          <text class="price price-font">{{ (Math.abs(detailData.amount) / 100).toFixed(2) }}</text>
         </view>
         <view class="divider"></view>
         <view class="chang-info-detail">
@@ -84,11 +84,15 @@ export default {
     }
   },
   methods: {
-    getStatusStr(status) {
+    getStatusStr(type, status) {
       let res = "";
       switch(status) {
         case 2:
-          res = "待确认";
+          if(type == 1){
+            res = "待付款";
+          } else if (type == 3){
+            res = "待退款";
+          }
           break;
         case 3:
           res = "已拒绝";
