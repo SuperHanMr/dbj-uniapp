@@ -227,15 +227,12 @@ export default {
         }
         .message-wait {
           color: #fe9908;
-          background: #fef7f6;
         }
         .message-agree {
           color: #5bbc3e;
-          background: #fcf8f5;
         }
         .message-refuse {
           color: #fe5147;
-          background: #f5fcf6;
         }
       }
     }
