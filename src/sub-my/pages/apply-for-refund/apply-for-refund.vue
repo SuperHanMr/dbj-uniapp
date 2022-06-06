@@ -2,7 +2,10 @@
   <view>
     <view>
       <view class="container">
-        <view v-if="refundType == 2" class="server-order-tip">
+        <view
+          v-if="refundType == 2 || refundType == 6"
+          class="server-order-tip"
+        >
           <view
             class="icon-icon_order_tips"
             style="font-size: 28rpx; margin-right: 12rpx"
@@ -19,7 +22,7 @@
           <view v-if="type == 'whole' && refundId">
             <view v-for="(item1, index1) in refundInfo.details" :key="index1">
               <view
-                v-if="item1.isOriginalOrder && item1.type == 2"
+                v-if="item1.isOriginalOrder && item1.type == 6"
                 class="header-title"
               >
                 <text class="title"> 原始订单</text>
@@ -59,7 +62,7 @@
               :key="index2"
             >
               <view
-                v-if="item2.isOriginalOrder && item2.type == 2"
+                v-if="item2.isOriginalOrder && item2.type == 6"
                 class="header-title"
               >
                 <text class="title"> 原始订单</text>
@@ -113,7 +116,7 @@
           <view v-if="type == 'partical' && !refundId">
             <view v-for="item4 in refundInfo.detailAppVOS" :key="item4.id">
               <view
-                v-if="item4.isOriginalOrder && item4.type == 2"
+                v-if="item4.isOriginalOrder && item4.type == 6"
                 class="header-title"
               >
                 <text class="title"> 原始订单</text>
@@ -246,6 +249,9 @@
             <view class="tip-text" v-if="refundType == 2">
               服务未开始，商家同意后将会全额退还。
             </view>
+            <view class="tip-text" v-if="refundType == 6">
+              该服务单退款支持部分退款和全额退款，退款完成后会计为该服务结束
+            </view>
           </view>
 
           <!-- 储值卡退款 -->
@@ -291,7 +297,11 @@
                 />
               </view>
             </view>
-            <view class="tip-text" v-if="refundInfo.cardUseIdentification">
+
+            <view class="tip-text" v-if="refundType == 6">
+              该服务单退款支持部分退款和全额退款，退款完成后会计为该服务结束
+            </view>
+            <view class="tip-text" v-else-if="refundInfo.cardUseIdentification">
               储值卡已使用过，具体退款金额以您与商家沟通协商的结果为准
             </view>
             <view class="tip-text" v-else>
@@ -765,6 +775,7 @@ export default {
   }
 
   .tip {
+    margin-left: 12rpx;
     color: #999999;
     font-weight: 400;
     font-size: 24rpx;
@@ -788,7 +799,7 @@ export default {
   width: 100%;
   height: 100%;
   overflow-y: auto;
-  margin-bottom: 200rpx;
+  padding-bottom: 240rpx;
   // background-color: #f2f3f3;
   // padding-bottom: 400rpx;
 

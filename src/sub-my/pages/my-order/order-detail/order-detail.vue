@@ -1146,7 +1146,12 @@ export default {
         return;
       }
       console.log("item=", item, "type类型", item.type);
-      if (item.type == 6) return; //设计服务商品
+      if (item.type == 6) {
+        uni.navigateTo({
+          url: `/sub-classify/pages/product-detail/service-product-index?spuId=${item.spuId}`,
+        });
+        return;
+      } //设计服务商品
       uni.navigateTo({
         url: `../../../../sub-classify/pages/product-detail/index?productId=${item.id}`,
       });

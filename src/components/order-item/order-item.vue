@@ -314,8 +314,6 @@ export default {
             url: `/sub-classify/pages/product-detail/service-product-index?spuId=${data.spuId}`,
             // url:`../../sub-decorate/pages/person-page/person-page?personId=${data.id}`
           });
-        } else {
-          console.log("附加服务！！");
         }
       } else {
         if (!data.orderStatus) {
