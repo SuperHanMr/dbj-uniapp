@@ -491,7 +491,7 @@
             (orderInfo.refundBillStatus == 3 ||
               orderInfo.refundBillStatus == 4) &&
             (orderInfo.shipmentStatus == 0 ||
-              (orderInfo.type == 2 && orderInfo.shipmentStatus == -1))
+              (orderInfo.type == 2|| orderInfo.type == 6&& orderInfo.shipmentStatus == -1))
           "
           @click="refundClose(orderInfo)"
         >

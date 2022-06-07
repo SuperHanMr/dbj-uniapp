@@ -312,7 +312,6 @@ export default {
         if (!data.additionalServices) {
           uni.navigateTo({
             url: `/sub-classify/pages/product-detail/service-product-index?spuId=${data.spuId}`,
-            // url:`../../sub-decorate/pages/person-page/person-page?personId=${data.id}`
           });
         }
       } else {
