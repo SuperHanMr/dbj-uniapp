@@ -343,7 +343,7 @@
         }
       }
       .item-top-right{
-        flex: 1;
+        flex: 1 0 30%;
         text-align: right;
         .status{
           font-size: 26rpx;
