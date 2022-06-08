@@ -1,6 +1,7 @@
 <template>
 	<view class="item" @click="toGoodsDetail(item.product.skuId)">
 		<image class="img" :src="item.product.spuImage | imgFormat" mode="aspectFill"></image>
+		<image class="img-float" v-if="item.product.hasChusejiaMould" src="@/static/middle-img.png" @click.stop="to3DModel()"></image>
 		<view class="info">
 			<view class="category" v-if="categoryListHandler(item.product.categories) && categoryListHandler(item.product.categories).length > 0">
 				<view class="category-item-box">
@@ -136,6 +137,9 @@
 					arr.push(categoriesName2);
 				}
 				return arr;
+			},
+			to3DModel() {
+				console.log('oooooooooooo');
 			}
 		}
 	}
@@ -156,6 +160,14 @@
 			display: block;
 			border-radius: 16rpx;
 			border: 0.5px solid #E8E8E8;
+		}
+
+		.img-float {
+			position: absolute;
+			right: 25rpx;
+			top: 245rpx;
+			width: 60rpx;
+			height: 60rpx;
 		}
 
 		.allowance-view {

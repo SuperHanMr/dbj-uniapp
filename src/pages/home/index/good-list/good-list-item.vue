@@ -1,6 +1,7 @@
 <template>
 	<view class="item" @click="toGoodsDetail(item.product.skuId)">
 		<image class="img" :src="item.product.spuImage |imgFormat" mode="aspectFill"></image>
+		<image class="img-float" v-if="item.product.hasChusejiaMould" src="@/static/middle-img.png" @click.stop="to3DModel()"></image>
 		<view class="info">
 			<view class="title">
 				<text class="tip">
@@ -90,6 +91,9 @@
 					return "";
 				}
 			},
+			to3DModel() {
+				console.log('mmmmmmmmmmmmmmm');
+			}
 		}
 	}
 </script>
@@ -109,6 +113,14 @@
 			height: 343rpx;
 			display: block;
 			border-radius: 16rpx;
+		}
+
+		.img-float {
+			position: absolute;
+			right: 25rpx;
+			top: 260rpx;
+			width: 60rpx;
+			height: 60rpx;
 		}
 
 		.allowance-view {
