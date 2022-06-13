@@ -717,6 +717,13 @@
             "navigationBarTitleText": "",
             "enablePullDownRefresh": false
           }
+        },
+        {
+          "path": "pages/product-detail/3d-model",
+          "style": {
+            "navigationBarTitleText": "",
+            "enablePullDownRefresh": false
+          }
         }
       ]
     },
