@@ -92,7 +92,6 @@
 				}
 			},
 			to3DModel() {
-				console.log('mmmmmmmmmmmmmmm',`/sub-classify/pages/product-detail/3d-model?skuId=${this.item.product.skuId}`);
 				uni.navigateTo({
 					url: `/sub-classify/pages/product-detail/3d-model?skuId=${this.item.product.skuId}`,
 				});
